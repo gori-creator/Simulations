@@ -966,14 +966,18 @@ export default defineSimulation({
         plot.text(xl, y0, `Δt = ${fmt.num(dt, 2)} s`, { color: resultColor, size: small, weight: '600', align: 'center', baseline: below ? 'top' : 'bottom', offset: [0, below ? 4 : -4] });
       }
       if (Math.abs(plot.py(c[1]) - plot.py(b[1])) > 16) {
-        // vorwärts: Beschriftung rechts neben der senkrechten Kathete, rückwärts links davon (rechts geht der Graph weiter)
-        plot.text(b[0], (b[1] + c[1]) / 2, `${key === 's' ? 'Δs' : 'Δv'} = ${fmt.num(rate * dt, 2)} ${unitDelta}`, {
+        // Rechts neben der senkrechten Kathete ist meist Platz (der Graph verläuft dort ober- bzw. unterhalb);
+        // nur am rechten Rand weicht die Beschriftung nach links aus.
+        const label = `${key === 's' ? 'Δs' : 'Δv'} = ${fmt.num(rate * dt, 2)} ${unitDelta}`;
+        surface.g.font = `600 ${small}px ${ctx.theme.font}`;
+        const right = plot.px(b[0]) + 6 + surface.g.measureText(label).width < plot.rect.x + plot.rect.w - 6;
+        plot.text(b[0], (b[1] + c[1]) / 2, label, {
           color: resultColor,
           size: small,
           weight: '600',
-          align: forward ? 'left' : 'right',
+          align: right ? 'left' : 'right',
           baseline: 'middle',
-          offset: [forward ? 6 : -6, 0],
+          offset: [right ? 6 : -6, 0],
         });
       }
       return { d: rate * dt, dt, rate };
