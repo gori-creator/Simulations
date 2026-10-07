@@ -75,7 +75,23 @@ export const physik: Subject = {
           title: L('Kräfte', 'Forces'),
           grades: [7, 10],
           simulations: [
-            planned('hookesches-gesetz', L('Hookesches Gesetz', 'Hooke’s law'), [7, 8]),
+            {
+              id: 'hookesches-gesetz',
+              status: 'ready',
+              slug: L('hookesches-gesetz', 'hookes-law'),
+              title: L('Hookesches Gesetz', 'Hooke’s law'),
+              summary: L(
+                'Massestücke an eine Feder hängen, die Verlängerung messen und im F-s-Diagramm die Ursprungsgerade finden – mit Federn hintereinander und nebeneinander und der Elastizitätsgrenze.',
+                'Hang weights on a spring, measure the extension and find the straight line through the origin in the force–extension graph – with springs in series and in parallel and the elastic limit.',
+              ),
+              grades: [7, 8],
+              kmk: ['P-E', 'P-S', 'P-K', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Hookesches Gesetz', 'Feder', 'Federhärte', 'Federkonstante', 'Verlängerung', 'Kraft', 'Gewichtskraft', 'Proportionalität', 'Ursprungsgerade', 'Elastizitätsgrenze', 'Kraftmesser', 'Reihenschaltung', 'Parallelschaltung'],
+                ['Hooke’s law', 'spring', 'spring constant', 'extension', 'force', 'weight', 'proportionality', 'elastic limit', 'spring balance', 'springs in series', 'springs in parallel'],
+              ),
+              thumb: 'generic',
+            },
             planned('hebelgesetz', L('Hebelgesetz', 'Law of the lever'), [7, 8]),
             planned('kraefteaddition', L('Kräfte addieren und zerlegen', 'Adding and resolving forces'), [8, 10], { kmk: ['P-S', 'P-BK-Wechselwirkung'] }),
             planned('schiefe-ebene', L('Schiefe Ebene', 'Inclined plane'), [8, 10]),

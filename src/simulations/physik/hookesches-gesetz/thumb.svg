@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M44 14H190M48 14V172M30 172H90" stroke-width="5" stroke-opacity="0.55" />
+    <path d="M150 14V26L164 30L136 37L164 44L136 51L164 58L136 65L164 72L136 79L164 86L136 93L164 100L136 107L150 111V119" stroke-width="3.5" />
+    <rect x="96" y="36" width="16" height="124" rx="2" stroke-width="2.5" stroke-opacity="0.6" />
+    <path d="M104 50h8M104 64h8M104 78h8M104 92h8M104 106h8M104 120h8M104 134h8M104 148h8" stroke-width="2" stroke-opacity="0.6" />
+    <path d="M140 119H118" stroke-width="3" />
+    <path d="M230 152H304M230 152V64" stroke-width="3" stroke-opacity="0.55" />
+    <path d="M230 152L298 78" stroke-width="4" />
+  </g>
+  <g fill="currentColor">
+    <path d="M112 119l9-5v10z" />
+    <rect x="134" y="123" width="32" height="13" rx="3" fill-opacity="0.55" />
+    <rect x="134" y="138" width="32" height="13" rx="3" fill-opacity="0.75" />
+    <rect x="134" y="153" width="32" height="13" rx="3" />
+    <circle cx="246" cy="134.6" r="5" />
+    <circle cx="262" cy="117.2" r="5" />
+    <circle cx="278" cy="99.8" r="5" />
+  </g>
+</svg>
