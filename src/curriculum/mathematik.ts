@@ -195,7 +195,23 @@ export const mathematik: Subject = {
           planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
-          planned('koerpernetze', L('Netze und Oberflächen von Körpern', 'Nets and surface areas of solids'), [5, 8]),
+          {
+            id: 'koerpernetze',
+            status: 'ready',
+            slug: L('koerpernetze', 'nets-of-solids'),
+            title: L('Netze und Oberflächen von Körpern', 'Nets and surface areas of solids'),
+            summary: L(
+              'Netze von Würfel, Quader, Prisma, Pyramide und Zylinder falten sich in 3D zum Körper. Welche der 15 Netze ergeben einen Würfel? Oberfläche direkt aus dem Netz.',
+              'Nets of a cube, cuboid, prism, pyramid and cylinder fold into the solid in 3D. Which of the 15 nets make a cube? Surface area straight from the net.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Körpernetz', 'Würfelnetz', 'Würfel', 'Quader', 'Prisma', 'Pyramide', 'Zylinder', 'Oberfläche', 'Mantel', 'Raumvorstellung', 'falten', 'Spielwürfel'],
+              ['net', 'cube net', 'cube', 'cuboid', 'prism', 'pyramid', 'cylinder', 'surface area', 'lateral surface', 'spatial reasoning', 'folding', 'dice'],
+            ),
+            thumb: 'generic',
+          },
           planned('prisma-zylinder', L('Prisma und Zylinder: Oberfläche und Volumen', 'Prism and cylinder: surface area and volume'), [8, 8]),
           planned('pyramide-kegel-kugel', L('Pyramide, Kegel und Kugel', 'Pyramid, cone and sphere'), [10, 10]),
           planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),

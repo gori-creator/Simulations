@@ -73,6 +73,12 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 **Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
 
+**3D-Ansichten** – `view3d.ts` (nur Canvas 2D, kein WebGL). Weltkoordinaten wie im Unterricht: x₁ schräg nach vorn, x₂ nach rechts, x₃ nach oben.
+
+- `View3D` ist wie `Plot` ein Zeigerziel der `Surface` (eigener Bereich über `region`): Drehen per Ziehen (Azimut/Elevation, begrenzt, mit Nachlaufen), Zoom (Pinch, Strg+Mausrad, Schaltflächen), Antippen (`onTap` + `pick()` liefert die `id` der obersten Fläche) und ziehbare 3D-Punkte (`addHandle` in einer Ebene oder entlang einer Geraden). Drehen ist auch bei gesperrten Reglern erlaubt.
+- Gezeichnet wird zwischen `begin()` und `end()`: `face`, `mesh` (Polygonnetz mit sichtbaren und gestrichelten verdeckten Kanten), `segment`/`polyline`/`arrow`, `point`, `label`, `axes` (Pfeile, Teilstriche, x₁/x₂/x₃), `grid`, `shadow`. Alles wird nach Tiefe sortiert (Maleralgorithmus); Ebenen `back`/`scene`/`front` steuern Ausnahmen. Flächen werden mit einfacher Beleuchtung (Lambert) aus der Grundfarbe aufgehellt bzw. abgedunkelt.
+- `Camera3D` rechnet ohne DOM (perspektivisch oder orthografisch, Welt → Bildschirm, Sichtstrahl), `mesh3d` erzeugt Quader, Prisma, Pyramide, Zylinder, Kegel und Kugel, `foldNet` faltet Körpernetze, `vec3` enthält Vektorhilfen.
+
 **Formatierung** – `format.ts` (Dezimalkomma, echtes Minuszeichen, Vielfache von π, Punkte als `(1,5 | 2)` bzw. `(1.5, 2)`) und `formula.ts` (Terme wie `0,5x − 2` korrekt zusammensetzen).
 
 ## 4. Lernmaterial und Formeln
