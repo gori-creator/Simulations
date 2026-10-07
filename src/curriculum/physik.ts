@@ -34,8 +34,40 @@ export const physik: Subject = {
           title: L('Bewegungen', 'Motion'),
           grades: [7, 10],
           simulations: [
-            planned('bewegungsdiagramme', L('Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme)', 'Uniform and accelerated motion (distance–time and velocity–time graphs)'), [7, 10], { kmk: ['P-E', 'P-K'] }),
-            planned('freier-fall', L('Freier Fall', 'Free fall'), [9, 10]),
+            {
+              id: 'bewegungsdiagramme',
+              status: 'ready',
+              slug: L('bewegungsdiagramme', 'motion-graphs'),
+              title: L('Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme)', 'Uniform and accelerated motion (distance–time and velocity–time graphs)'),
+              summary: L(
+                'Ein Auto fährt gleichförmig, beschleunigt oder nach Fahrplan – live entstehen t-s-, t-v- und t-a-Diagramm mit Steigungsdreieck, Fläche unter dem Graphen und Stroboskop.',
+                'A car moves uniformly, accelerates or follows a schedule – the distance–time, velocity–time and acceleration–time graphs appear live, with slope triangles, the area under the graph and a stroboscope.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-E', 'P-K', 'P-S'],
+              keywords: L(
+                ['Bewegung', 'gleichförmige Bewegung', 'beschleunigte Bewegung', 't-s-Diagramm', 't-v-Diagramm', 't-a-Diagramm', 'Zeit-Ort-Diagramm', 'Geschwindigkeit', 'Beschleunigung', 'Bremsweg', 'Durchschnittsgeschwindigkeit', 'Steigungsdreieck'],
+                ['motion', 'uniform motion', 'accelerated motion', 'distance–time graph', 'velocity–time graph', 'acceleration–time graph', 'velocity', 'acceleration', 'braking distance', 'average velocity', 'slope'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'freier-fall',
+              status: 'ready',
+              slug: L('freier-fall', 'free-fall'),
+              title: L('Freier Fall', 'Free fall'),
+              summary: L(
+                'Stroboskopaufnahme einer fallenden Kugel auf Erde, Mond, Mars oder Jupiter, Kugel und Feder in der Fallröhre mit und ohne Luft und ein Reaktionstest mit fallendem Lineal.',
+                'Stroboscopic picture of a falling ball on Earth, the Moon, Mars or Jupiter, a ball and a feather in a tube with and without air, and a reaction test with a falling ruler.',
+              ),
+              grades: [9, 10],
+              kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['freier Fall', 'Fallbeschleunigung', 'Ortsfaktor', 'Fallröhre', 'Vakuum', 'Luftwiderstand', 'Stroboskop', 'Fallgesetz', 'Reaktionszeit', 'Lineal', 'gleichmäßig beschleunigte Bewegung'],
+                ['free fall', 'gravitational acceleration', 'feather', 'vacuum', 'air resistance', 'stroboscope', 'law of falling bodies', 'reaction time', 'ruler', 'uniformly accelerated motion'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
@@ -43,7 +75,23 @@ export const physik: Subject = {
           title: L('Kräfte', 'Forces'),
           grades: [7, 10],
           simulations: [
-            planned('hookesches-gesetz', L('Hookesches Gesetz', 'Hooke’s law'), [7, 8]),
+            {
+              id: 'hookesches-gesetz',
+              status: 'ready',
+              slug: L('hookesches-gesetz', 'hookes-law'),
+              title: L('Hookesches Gesetz', 'Hooke’s law'),
+              summary: L(
+                'Massestücke an eine Feder hängen, die Verlängerung messen und im F-s-Diagramm die Ursprungsgerade finden – mit Federn hintereinander und nebeneinander und der Elastizitätsgrenze.',
+                'Hang weights on a spring, measure the extension and find the straight line through the origin in the force–extension graph – with springs in series and in parallel and the elastic limit.',
+              ),
+              grades: [7, 8],
+              kmk: ['P-E', 'P-S', 'P-K', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Hookesches Gesetz', 'Feder', 'Federhärte', 'Federkonstante', 'Verlängerung', 'Kraft', 'Gewichtskraft', 'Proportionalität', 'Ursprungsgerade', 'Elastizitätsgrenze', 'Kraftmesser', 'Reihenschaltung', 'Parallelschaltung'],
+                ['Hooke’s law', 'spring', 'spring constant', 'extension', 'force', 'weight', 'proportionality', 'elastic limit', 'spring balance', 'springs in series', 'springs in parallel'],
+              ),
+              thumb: 'generic',
+            },
             planned('hebelgesetz', L('Hebelgesetz', 'Law of the lever'), [7, 8]),
             planned('kraefteaddition', L('Kräfte addieren und zerlegen', 'Adding and resolving forces'), [8, 10], { kmk: ['P-S', 'P-BK-Wechselwirkung'] }),
             planned('schiefe-ebene', L('Schiefe Ebene', 'Inclined plane'), [8, 10]),
