@@ -467,7 +467,11 @@ class SimulationHost {
       const query = encodeState(this.defs, this.values, { lock: this.locked, hide: this.flags.hide });
       const next = `${location.pathname}${query ? `?${query}` : ''}${location.hash}`;
       if (next !== `${location.pathname}${location.search}${location.hash}`) {
-        history.replaceState(history.state, '', next);
+        try {
+          history.replaceState(history.state, '', next);
+        } catch {
+          // In eingebetteten Ansichten (z. B. iframe-Vorschau) kann das verboten sein.
+        }
       }
     }, 250);
   }
