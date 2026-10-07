@@ -8,11 +8,13 @@ Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht
 
 - **Bibliothek entlang des Lehrplans:** Mathematik und Physik, gegliedert nach Themen (KMK-Bildungsstandards) und Klassenstufen (5–13, teils Uni). Alle geplanten Simulationen (aktuell 129, davon 93 in Mathematik) sind bereits im Katalog eingetragen und werden nach und nach umgesetzt.
 - **Nach Jahrgangsstufe:** Für Mathematik am bayerischen Gymnasium (LehrplanPLUS, Jgst. 5–13) gibt es eine Ansicht pro Jahrgangsstufe mit allen Lernbereichen und passenden Simulationen.
-- **Fertige Simulationen (Mathematik, 12):**
-  - Funktionen: lineare Funktion, quadratische Funktion, Einheitskreis, allgemeine Sinusfunktion
-  - Terme und Geometrie: binomische Formeln (animiertes Flächenmodell), Satz des Thales, Satz des Pythagoras (mit Puzzle-Beweis)
-  - Daten und Zufall: Gesetz der großen Zahlen, Ziegenproblem (spielbar), Monte-Carlo-Methode für π, Galtonbrett
-  - Analysis: von der Sekante zur Tangente
+- **Fertige Simulationen (20):**
+  - Mathematik – Zahlen und Terme: Bruchteile (Pizza, Kuchen, Strecke), binomische Formeln (animiertes Flächenmodell)
+  - Mathematik – Geometrie: Satz des Thales, Satz des Pythagoras (mit Puzzle-Beweis), Kreiszahl π (Abrollen, Umlegen, Archimedes)
+  - Mathematik – Funktionen: lineare Funktion, quadratische Funktion, Einheitskreis, allgemeine Sinusfunktion, exponentielles Wachstum
+  - Mathematik – Daten und Zufall: Gesetz der großen Zahlen, Ziegenproblem (spielbar), Monte-Carlo-Methode für π, Galtonbrett
+  - Mathematik – Analysis: von der Sekante zur Tangente, Ober- und Untersummen
+  - Physik: schiefer Wurf (Erde, Mond, Mars, Luftwiderstand), Fadenpendel, Energieerhaltung an der Achterbahn, Brechung und Totalreflexion
 - **Optionale Bilder:** Simulationen können Fotos nutzen (Liste mit Bild-Prompts in [`docs/BILDER.md`](docs/BILDER.md)); fehlt ein Bild, wird eine gezeichnete Ersatzgrafik verwendet.
 - **Regler, Schalter und ziehbare Punkte** – mit Maus, Stift oder Finger; Zoomen und Verschieben.
 - **Teilen per Link und QR-Code:** Jede Einstellung steckt in der Adresse. Optional mit **gesperrten Reglern** oder **verdeckten Ergebnissen** (Aufgabenmodus).

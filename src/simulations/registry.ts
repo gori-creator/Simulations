@@ -22,4 +22,12 @@ export const registry: Record<string, SimulationLoader> = {
   'monte-carlo-pi': () => import('./mathematik/monte-carlo-pi').then((m) => m.default),
   'sekante-tangente': () => import('./mathematik/sekante-tangente').then((m) => m.default),
   galtonbrett: () => import('./mathematik/galtonbrett').then((m) => m.default),
+  bruchteile: () => import('./mathematik/bruchteile').then((m) => m.default),
+  'kreiszahl-pi': () => import('./mathematik/kreiszahl-pi').then((m) => m.default),
+  'exponentielles-wachstum': () => import('./mathematik/exponentielles-wachstum').then((m) => m.default),
+  'ober-untersummen': () => import('./mathematik/ober-untersummen').then((m) => m.default),
+  'schiefer-wurf': () => import('./physik/schiefer-wurf').then((m) => m.default),
+  fadenpendel: () => import('./physik/fadenpendel').then((m) => m.default),
+  energieerhaltung: () => import('./physik/energieerhaltung').then((m) => m.default),
+  brechung: () => import('./physik/brechung').then((m) => m.default),
 };

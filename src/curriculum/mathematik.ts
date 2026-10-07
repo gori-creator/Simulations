@@ -37,7 +37,23 @@ export const mathematik: Subject = {
           planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
-          planned('bruchteile', L('Bruchteile darstellen', 'Representing fractions'), [6, 6], { kmk: ['M-L1', 'M-K4'] }),
+          {
+            id: 'bruchteile',
+            status: 'ready',
+            slug: L('bruchteile', 'fractions'),
+            title: L('Bruchteile darstellen', 'Representing fractions'),
+            summary: L(
+              'Pizza, Blechkuchen oder Strecke in gleich große Teile schneiden, Stücke antippen und Brüche erweitern, kürzen und als Dezimalzahl sehen.',
+              'Cut a pizza, a sheet cake or a line segment into equal parts, tap pieces and see fractions expanded, reduced and as decimals.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Bruch', 'Bruchteil', 'Zähler', 'Nenner', 'erweitern', 'kürzen', 'Dezimalbruch', 'periodisch', 'Prozent', 'gemischte Zahl'],
+              ['fraction', 'numerator', 'denominator', 'equivalent fractions', 'reduce', 'decimal', 'recurring decimal', 'percentage', 'mixed number'],
+            ),
+            thumb: 'fraction',
+          },
           planned('brueche-vergleichen', L('Brüche erweitern, kürzen und vergleichen', 'Equivalent fractions and comparing'), [6, 6]),
           planned('dezimalbrueche', L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'), [6, 6]),
           planned('brueche-rechnen', L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'), [6, 6]),
@@ -188,7 +204,23 @@ export const mathematik: Subject = {
           planned('quader-volumen', L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'), [6, 6]),
         ]),
         topic('kreis', L('Kreis', 'Circle'), [
-          planned('kreiszahl-pi', L('Kreisumfang, Kreisfläche und die Zahl π', 'Circumference, area of a circle and the number π'), [8, 8]),
+          {
+            id: 'kreiszahl-pi',
+            status: 'ready',
+            slug: L('kreiszahl-pi', 'number-pi'),
+            title: L('Kreisumfang, Kreisfläche und die Zahl π', 'Circumference, area of a circle and the number π'),
+            summary: L(
+              'Ein Rad rollt einmal ab, Kreissektoren werden zu einem Rechteck umgelegt und Vielecke schließen π ein wie bei Archimedes.',
+              'A wheel rolls once, circle sectors are rearranged into a rectangle and polygons trap π like Archimedes did.',
+            ),
+            grades: [8, 8],
+            kmk: ['M-L2', 'M-L4', 'M-K1'],
+            keywords: L(
+              ['Kreiszahl', 'Pi', 'Kreisumfang', 'Kreisfläche', 'Durchmesser', 'Radius', 'Archimedes', 'Kreissektor'],
+              ['pi', 'circumference', 'area of a circle', 'diameter', 'radius', 'Archimedes', 'sector'],
+            ),
+            thumb: 'circle-pi',
+          },
         ]),
       ],
     }),
@@ -291,7 +323,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('exponentialfunktionen', L('Exponentialfunktionen und Logarithmus', 'Exponential functions and logarithms'), [
-          planned('exponentielles-wachstum', L('Exponentielles Wachstum und Zerfall', 'Exponential growth and decay'), [10, 10], { kmk: ['M-L3', 'M-K3'] }),
+          {
+            id: 'exponentielles-wachstum',
+            status: 'ready',
+            slug: L('exponentielles-wachstum', 'exponential-growth'),
+            title: L('Exponentielles Wachstum und Zerfall', 'Exponential growth and decay'),
+            summary: L(
+              'Seerosen auf dem Teich, Zinseszins und radioaktiver Zerfall: f(t) = a · bᵗ mit Verdopplungs- und Halbwertszeit, im Vergleich zum linearen Wachstum.',
+              'Water lilies on a pond, compound interest and radioactive decay: f(t) = a · bᵗ with doubling time and half-life, compared with linear growth.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L3', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['exponentielles Wachstum', 'Wachstumsfaktor', 'Verdopplungszeit', 'Halbwertszeit', 'Zinseszins', 'Zerfall', 'Exponentialfunktion', 'logarithmische Skala'],
+              ['exponential growth', 'growth factor', 'doubling time', 'half-life', 'compound interest', 'decay', 'exponential function', 'logarithmic scale'],
+            ),
+            thumb: 'growth',
+          },
           planned('logarithmus', L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'), [10, 12]),
           planned('e-funktion', L('Die natürliche Exponentialfunktion', 'The natural exponential function'), [12, 12]),
         ]),
@@ -442,7 +490,23 @@ export const mathematik: Subject = {
           planned('stammfunktion-grafisch', L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'), [12, 13]),
         ]),
         topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
-          planned('ober-untersummen', L('Integral als Flächenbilanz (Rechtecksummen)', 'The integral as signed area (rectangle sums)'), [12, 13], { kmk: ['M-L2', 'M-K4'] }),
+          {
+            id: 'ober-untersummen',
+            status: 'ready',
+            slug: L('ober-und-untersummen', 'riemann-sums'),
+            title: L('Integral als Flächenbilanz (Rechtecksummen)', 'The integral as signed area (rectangle sums)'),
+            summary: L(
+              'Unter-, Ober-, Mittel- und Trapezsummen annähern, n verdoppeln und zusehen, wie die Summen gegen das Integral streben.',
+              'Approximate with lower, upper, midpoint and trapezoidal sums, double n and watch the sums approach the integral.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L2', 'M-L3', 'M-K4'],
+            keywords: L(
+              ['Integral', 'Untersumme', 'Obersumme', 'Rechtecksumme', 'Flächenbilanz', 'Riemann-Summe', 'Trapezregel', 'Grenzwert'],
+              ['integral', 'lower sum', 'upper sum', 'Riemann sum', 'signed area', 'trapezoidal rule', 'limit'],
+            ),
+            thumb: 'riemann',
+          },
           planned('hauptsatz', L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'), [12, 13], { uni: true }),
           planned('aenderungsrate', L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'), [13, 13]),
           planned('rotationskoerper', L('Rotationskörper', 'Solids of revolution'), [13, 13]),

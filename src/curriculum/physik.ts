@@ -54,7 +54,23 @@ export const physik: Subject = {
           title: L('Energie und Impuls', 'Energy and momentum'),
           grades: [9, 11],
           simulations: [
-            planned('energieerhaltung', L('Energieerhaltung (Achterbahn)', 'Conservation of energy (roller coaster)'), [9, 10], { kmk: ['P-BK-Energie'] }),
+            {
+              id: 'energieerhaltung',
+              status: 'ready',
+              slug: L('energieerhaltung-achterbahn', 'energy-roller-coaster'),
+              title: L('Energieerhaltung (Achterbahn)', 'Conservation of energy (roller coaster)'),
+              summary: L(
+                'Ein Wagen rollt über Tal, Hügel oder Looping: Lage- und Bewegungsenergie wandeln sich um, mit Reibung entsteht innere Energie.',
+                'A car rolls through a valley, hills or a loop: potential and kinetic energy convert into each other; friction produces internal energy.',
+              ),
+              grades: [9, 10],
+              kmk: ['P-BK-Energie', 'P-S', 'P-E'],
+              keywords: L(
+                ['Energieerhaltung', 'Lageenergie', 'Bewegungsenergie', 'Höhenenergie', 'kinetische Energie', 'Reibung', 'Achterbahn', 'Looping', 'Energieumwandlung'],
+                ['conservation of energy', 'potential energy', 'kinetic energy', 'friction', 'roller coaster', 'loop', 'energy conversion'],
+              ),
+              thumb: 'coaster',
+            },
             planned('stoesse', L('Elastische und unelastische Stöße', 'Elastic and inelastic collisions'), [10, 11], { kmk: ['P-BK-Erhaltung'] }),
           ],
         },
@@ -62,7 +78,25 @@ export const physik: Subject = {
           id: 'wuerfe',
           title: L('Würfe', 'Projectile motion'),
           grades: [10, 11],
-          simulations: [planned('schiefer-wurf', L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'), [10, 11], { kmk: ['P-E', 'P-BK-Superposition'] })],
+          simulations: [
+            {
+              id: 'schiefer-wurf',
+              status: 'ready',
+              slug: L('schiefer-wurf', 'projectile-motion'),
+              title: L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'),
+              summary: L(
+                'Ball mit v₀ unter dem Winkel α werfen – auf Erde, Mond oder Mars, mit oder ohne Luftwiderstand. Mit Bahn, Stroboskop und Geschwindigkeitsvektoren.',
+                'Throw a ball with v₀ at angle α – on Earth, the Moon or Mars, with or without air resistance. With trajectory, stroboscope and velocity vectors.',
+              ),
+              grades: [10, 11],
+              kmk: ['P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wurf', 'schiefer Wurf', 'waagerechter Wurf', 'Wurfparabel', 'Wurfweite', 'Steighöhe', 'Superposition', 'Luftwiderstand', 'Fallbeschleunigung'],
+                ['projectile', 'oblique throw', 'horizontal throw', 'trajectory', 'range', 'maximum height', 'superposition', 'air resistance', 'gravitational acceleration'],
+              ),
+              thumb: 'projectile',
+            },
+          ],
         },
         {
           id: 'kreisbewegung-gravitation',
@@ -91,7 +125,23 @@ export const physik: Subject = {
           title: L('Mechanische Schwingungen', 'Mechanical oscillations'),
           grades: [10, 12],
           simulations: [
-            planned('fadenpendel', L('Fadenpendel', 'Simple pendulum'), [10, 12], { kmk: ['P-E', 'P-BK-Mathematisieren'] }),
+            {
+              id: 'fadenpendel',
+              status: 'ready',
+              slug: L('fadenpendel', 'simple-pendulum'),
+              title: L('Fadenpendel', 'Simple pendulum'),
+              summary: L(
+                'Pendel auslenken und loslassen: Periodendauer messen, mit 2π√(l/g) vergleichen, Energie, Dämpfung und große Auslenkungen untersuchen.',
+                'Pull the pendulum aside and release it: measure the period, compare it with 2π√(l/g) and explore energy, damping and large amplitudes.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung'],
+                ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping'],
+              ),
+              thumb: 'pendulum',
+            },
             planned('federpendel', L('Federpendel', 'Spring pendulum'), [10, 12]),
             planned('resonanz', L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'), [11, 13], { uni: true }),
           ],
@@ -161,7 +211,23 @@ export const physik: Subject = {
           simulations: [
             planned('licht-schatten', L('Licht und Schatten', 'Light and shadow'), [6, 7]),
             planned('reflexion', L('Reflexion am ebenen Spiegel', 'Reflection at a plane mirror'), [6, 8]),
-            planned('brechung', L('Brechung und Totalreflexion', 'Refraction and total internal reflection'), [8, 10]),
+            {
+              id: 'brechung',
+              status: 'ready',
+              slug: L('brechung-totalreflexion', 'refraction'),
+              title: L('Brechung und Totalreflexion', 'Refraction and total internal reflection'),
+              summary: L(
+                'Laser auf der optischen Scheibe drehen: Einfalls- und Brechungswinkel ablesen, Brechungsgesetz prüfen und den Grenzwinkel der Totalreflexion finden.',
+                'Turn a laser on the optical disc: read angles of incidence and refraction, check the law of refraction and find the critical angle.',
+              ),
+              grades: [8, 10],
+              kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter'],
+                ['refraction', 'Snell’s law', 'total internal reflection', 'critical angle', 'refractive index', 'normal', 'angle of incidence'],
+              ),
+              thumb: 'refraction',
+            },
             planned('linsen', L('Linsen und Bildentstehung', 'Lenses and image formation'), [8, 10]),
           ],
         },

@@ -33,6 +33,20 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 | Monte-Carlo-Methode | `paper` | `src/assets/sims/monte-carlo-pi/papier.webp` | 1024 × 1024 | deckend |
 | Galtonbrett | `board` | `src/assets/sims/galtonbrett/holzbrett.webp` | 1600 × 1600 | deckend |
 | Galtonbrett | `ball` | `src/assets/sims/galtonbrett/stahlkugel.webp` | 256 × 256 | transparent |
+| Schiefer Wurf | `erde` | `src/assets/sims/schiefer-wurf/hintergrund-erde.webp` | 2400 × 1200 | deckend |
+| Schiefer Wurf | `mond` | `src/assets/sims/schiefer-wurf/hintergrund-mond.webp` | 2400 × 1200 | deckend |
+| Schiefer Wurf | `mars` | `src/assets/sims/schiefer-wurf/hintergrund-mars.webp` | 2400 × 1200 | deckend |
+| Schiefer Wurf | `ball` | `src/assets/sims/schiefer-wurf/ball.webp` | 256 × 256 | transparent |
+| Fadenpendel | `bob` | `src/assets/sims/fadenpendel/pendelkugel.webp` | 256 × 256 | transparent |
+| Achterbahn | `car` | `src/assets/sims/energieerhaltung/wagen.webp` | 960 × 510 | transparent |
+| Achterbahn | `sky` | `src/assets/sims/energieerhaltung/himmel.webp` | 1920 × 1200 | deckend |
+| Brechung | `laser` | `src/assets/sims/brechung/laser.webp` | 700 × 200 | transparent |
+| Bruchteile | `pizza` | `src/assets/sims/bruchteile/pizza.webp` | 1024 × 1024 | transparent |
+| Bruchteile | `cake` | `src/assets/sims/bruchteile/blechkuchen.webp` | 1400 × 1000 | deckend |
+| Kreiszahl π | `wheel` | `src/assets/sims/kreiszahl-pi/rad.webp` | 1024 × 1024 | transparent |
+| Kreiszahl π | `pizza` | `src/assets/sims/kreiszahl-pi/pizza.webp` | 1024 × 1024 | transparent |
+| Exponentielles Wachstum | `pond` | `src/assets/sims/exponentielles-wachstum/teich.webp` | 1024 × 1024 | deckend |
+| Exponentielles Wachstum | `lily` | `src/assets/sims/exponentielles-wachstum/seerose.webp` | 256 × 256 | transparent |
 
 ## Ziegenproblem
 
@@ -113,3 +127,97 @@ Hintergrund des Bretts, bildfüllend (wird beschnitten). Nägel, Fächer und Kug
 Wird für jede Kugel in einem kleinen Quadrat gezeichnet (Durchmesser ca. 5 bis 15 Pixel auf dem Bildschirm). Die Kugel muss das Bild **randlos ausfüllen**, mit transparentem Hintergrund und klarem Glanzlicht oben links.
 
 > A single polished steel ball bearing, perfectly round, the sphere fills the entire square image edge to edge, bright specular highlight at the upper left, subtle reflections, isolated on a transparent background, no shadow, photorealistic
+
+## Schiefer Wurf
+
+Die drei Hintergründe füllen den Himmel über dem Boden. Der Boden selbst wird gezeichnet – der **Horizont muss genau am unteren Bildrand liegen**, ohne Vordergrund. Wichtige Bildteile in die Mitte, weil das Bild je nach Bildschirm seitlich oder oben beschnitten wird.
+
+### `hintergrund-erde.webp` – Erde
+
+> Wide panoramic landscape background, bright blue sky with a few soft white clouds, gentle distant green hills and a faint tree line, the horizon line lies exactly at the bottom edge of the image, no foreground ground, no people, no buildings, no text, calm and friendly, photorealistic, 2:1
+
+### `hintergrund-mond.webp` – Mond
+
+> Wide panoramic view from the surface of the Moon, deep black sky with stars, distant grey lunar mountains and crater rims at the horizon, the Earth small in the upper sky, the horizon line lies exactly at the bottom edge of the image, no foreground ground, no astronauts, no spacecraft, no text, photorealistic, 2:1
+
+### `hintergrund-mars.webp` – Mars
+
+> Wide panoramic view on Mars, dusty butterscotch-coloured sky, distant reddish-brown mountains and mesas at the horizon, the horizon line lies exactly at the bottom edge of the image, no foreground ground, no rovers, no people, no text, photorealistic, 2:1
+
+### `ball.webp` – Ball
+
+Wird klein (Durchmesser ca. 18 Pixel) gezeichnet und dreht sich im Flug.
+
+> A classic black and white football (soccer ball), the ball fills the entire square image edge to edge, generic design without logos, soft studio lighting, isolated on a transparent background, no shadow, photorealistic
+
+## Fadenpendel
+
+### `pendelkugel.webp` – Pendelkörper
+
+Der Faden wird bis zur Mitte gezeichnet, die Kugel darüber.
+
+> A polished solid brass sphere as a physics pendulum bob, perfectly round, the sphere fills the entire square image edge to edge, warm golden reflections, bright highlight at the upper left, no hook, isolated on a transparent background, no shadow, photorealistic
+
+## Achterbahn (Energieerhaltung)
+
+### `wagen.webp` – Wagen
+
+Wird entlang der Schiene gedreht. Seitenansicht, Fahrtrichtung nach **rechts**, die Räder liegen genau auf dem **unteren Bildrand** (dort sitzt die Schiene).
+
+> Side view of a single empty modern roller coaster car facing right, bright red with yellow details, empty seats with safety bars, visible wheels at the very bottom edge of the image, no people, no track, no logos, no text, isolated on a transparent background, photorealistic, aspect ratio 1.9:1
+
+### `himmel.webp` – Himmel
+
+Füllt den Hintergrund; unten wird ein Wiesenstreifen darübergezeichnet.
+
+> Bright summer sky with soft cumulus clouds, a faint distant amusement park skyline with a Ferris wheel along the bottom edge, gentle colours, no people, no text, no logos, photorealistic, 16:10
+
+## Brechung
+
+### `laser.webp` – Laser
+
+Seitenansicht, die **Austrittsöffnung zeigt nach rechts** und liegt am rechten Bildrand (dort beginnt der Strahl).
+
+> Side view of a metal laboratory laser module, cylindrical brushed aluminium body with a black end cap on the left and the light aperture on the right edge of the image, small red indicator light, isolated on a transparent background, soft studio lighting, photorealistic, aspect ratio 3.5:1
+
+## Bruchteile
+
+### `pizza.webp` – Pizza
+
+Wird in Stücke geschnitten (Draufsicht). Die Pizza muss das Bild **randlos ausfüllen** (Kreis berührt alle vier Bildkanten), außerhalb transparent. Schnittlinien zeichnet die Simulation.
+
+> Top-down view of a whole round margherita pizza with a few slices of salami and basil leaves, evenly distributed toppings, golden crust, not cut, the pizza fills the entire square image edge to edge, isolated on a transparent background, no plate, no shadow, photorealistic
+
+### `blechkuchen.webp` – Blechkuchen
+
+Draufsicht, randlos, **ohne Blech und ohne Schnittlinien**.
+
+> Top-down view of a rectangular German sheet cake with crumble topping (Streuselkuchen) and a few strawberries, evenly distributed, the cake fills the entire image edge to edge, no baking tray, no cuts, no plate, soft daylight, photorealistic, aspect ratio 1.4:1
+
+## Kreiszahl π
+
+### `rad.webp` – Rad
+
+Dreht sich beim Abrollen. Frontansicht, das Rad füllt das Bild **randlos** aus.
+
+> Front view of a bicycle wheel with black tyre, silver rim and thin spokes, perfectly circular and centred, the tyre touches all four edges of the square image, isolated on a transparent background, no shadow, photorealistic
+
+### `pizza.webp` – Pizza
+
+Wie bei Bruchteile (dasselbe Bild kann verwendet werden): Draufsicht, randlos, transparent.
+
+> Top-down view of a whole round margherita pizza with a few slices of salami and basil leaves, evenly distributed toppings, golden crust, not cut, the pizza fills the entire square image edge to edge, isolated on a transparent background, no plate, no shadow, photorealistic
+
+## Exponentielles Wachstum
+
+### `teich.webp` – Teich
+
+Draufsicht. Die Wasserfläche sollte als **Ellipse in der Mitte** liegen (etwa 85 % der Bildbreite und 75 % der Bildhöhe), drumherum Ufer und Gras. Die Seerosen setzt die Simulation darauf.
+
+> Top-down aerial view of a small oval garden pond, clear dark green-blue water surface in the centre covering about 85 percent of the width and 75 percent of the height, grassy bank with a few stones around it, no water lilies, no plants on the water, no people, soft daylight, photorealistic, square
+
+### `seerose.webp` – Seerosenblatt
+
+Wird klein (ca. 20–30 Pixel) und gedreht gezeichnet.
+
+> Top-down view of a single round green water lily pad with a small notch, a tiny pink water lily flower on it, the pad fills the entire square image, isolated on a transparent background, no water, no shadow, photorealistic

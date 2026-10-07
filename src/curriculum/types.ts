@@ -19,6 +19,14 @@ export type Thumb =
   | 'monte-carlo'
   | 'secant'
   | 'galton'
+  | 'fraction'
+  | 'circle-pi'
+  | 'growth'
+  | 'riemann'
+  | 'projectile'
+  | 'pendulum'
+  | 'coaster'
+  | 'refraction'
   | 'generic';
 
 /** Klassenstufen von–bis. Werte über 13 stehen für die Universität. */
