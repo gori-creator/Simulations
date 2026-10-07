@@ -13,6 +13,9 @@ npm-debug.log*
 .env
 .env.*
 
+# Arbeitskopien von Werkzeugen (git worktree)
+.claude/worktrees/
+
 # Editor / Betriebssystem
 .DS_Store
 .vscode/*
