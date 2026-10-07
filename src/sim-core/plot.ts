@@ -15,6 +15,10 @@ export interface AxisOptions {
   pi?: boolean;
   /** Werte sind im Bogenmaß, beschriftet wird in Grad (30°, 90°, …). */
   degrees?: boolean;
+  /** Eigene Beschriftung der Teilstriche (z. B. 10^v bei logarithmischer Achse). */
+  format?: (value: number) => string;
+  /** Teilstriche nie enger als dieser Abstand (in Einheiten). */
+  minStep?: number;
   /** Zahlen an den Teilstrichen anzeigen (Standard: ja). */
   numbers?: boolean;
 }
@@ -119,6 +123,11 @@ export class Plot implements PointerTarget {
     | null = null;
   private controlsEl: HTMLElement | null = null;
   private viewChanged = false;
+  private padded: {
+    x: readonly [number, number];
+    y: readonly [number, number];
+    padding: { left?: number; right?: number; top?: number; bottom?: number };
+  } | null = null;
 
   constructor(
     readonly surface: Surface,
@@ -161,7 +170,8 @@ export class Plot implements PointerTarget {
   resize(): void {
     const { width, height } = this.surface;
     this.r = this.options.region ? this.options.region(width, height) : { x: 0, y: 0, w: width, h: height };
-    this.updateScale();
+    if (this.padded) this.applyPadded();
+    else this.updateScale();
     this.positionControls();
   }
 
@@ -192,7 +202,32 @@ export class Plot implements PointerTarget {
    * Zeichenfläche). Darf auch während `render()` aufgerufen werden.
    */
   setRange(x: readonly [number, number], y: readonly [number, number]): void {
+    this.padded = null;
     this.options = { ...this.options, x, y };
+    this.applyInitialView();
+  }
+
+  /**
+   * Wie `setRange`, lässt aber am Rand Platz in Pixeln – z. B. links für die
+   * Zahlen an der y-Achse in Diagrammen. Bleibt bei Größenänderungen erhalten.
+   * Gedacht für Diagramme mit `equalAspect: false`.
+   */
+  setRangePadded(
+    x: readonly [number, number],
+    y: readonly [number, number],
+    padding: { left?: number; right?: number; top?: number; bottom?: number },
+  ): void {
+    this.padded = { x, y, padding };
+    this.applyPadded();
+  }
+
+  private applyPadded(): void {
+    if (!this.padded) return;
+    const { x, y, padding } = this.padded;
+    const { left = 0, right = 0, top = 0, bottom = 0 } = padding;
+    const ux = (x[1] - x[0]) / Math.max(1, this.r.w - left - right);
+    const uy = (y[1] - y[0]) / Math.max(1, this.r.h - top - bottom);
+    this.options = { ...this.options, x: [x[0] - left * ux, x[1] + right * ux], y: [y[0] - bottom * uy, y[1] + top * uy] };
     this.applyInitialView();
   }
 
@@ -271,7 +306,7 @@ export class Plot implements PointerTarget {
     const opts = axis === 'x' ? this.options.xAxis : this.options.yAxis;
     const scale = axis === 'x' ? this.sx : this.sy;
     const angular = !!(opts?.pi || opts?.degrees);
-    const minUnits = (angular ? 64 : 56) / scale;
+    const minUnits = Math.max((angular ? 64 : 56) / scale, opts?.minStep ?? 0);
     return angular ? piStep(minUnits) : niceStep(minUnits);
   }
 
@@ -315,6 +350,7 @@ export class Plot implements PointerTarget {
   }
 
   private tickLabel(value: number, step: number, opts: AxisOptions): string {
+    if (opts.format) return opts.format(value);
     if (opts.degrees) return `${this.fmt.num((value * 180) / Math.PI, 0)}°`;
     if (opts.pi) return formatPiFraction(value, [1, 2, 3, 4, 6, 12]) ?? this.fmt.num(value, 2);
     const decimals = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));

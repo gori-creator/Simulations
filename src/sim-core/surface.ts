@@ -209,3 +209,53 @@ export class Surface {
     );
   }
 }
+
+/**
+ * Klickbarer Bereich ohne Koordinatensystem (z. B. Türen, Karten, Knöpfe im
+ * Canvas). `hit` liefert eine ID oder `null`; `onTap` wird beim Antippen mit
+ * dieser ID aufgerufen.
+ */
+export class TapTarget implements PointerTarget {
+  private hovered: string | null = null;
+
+  constructor(
+    private readonly surface: Surface,
+    private readonly options: {
+      hit: (px: number, py: number) => string | null;
+      onTap: (id: string) => void;
+      onHover?: (id: string | null) => void;
+    },
+  ) {
+    surface.addTarget(this);
+  }
+
+  contains(px: number, py: number): boolean {
+    return this.options.hit(px, py) !== null;
+  }
+
+  pointerDown(p: SurfacePointer): boolean {
+    const id = this.options.hit(p.px, p.py);
+    if (id === null) return false;
+    this.options.onTap(id);
+    this.surface.host.requestRender();
+    return true;
+  }
+
+  pointerMove(): void {}
+
+  pointerUp(): void {}
+
+  hover(p: SurfacePointer | null): void {
+    const id = p ? this.options.hit(p.px, p.py) : null;
+    this.surface.setCursor(id ? 'pointer' : '');
+    if (id !== this.hovered) {
+      this.hovered = id;
+      this.options.onHover?.(id);
+      this.surface.host.requestRender();
+    }
+  }
+
+  wheel(): boolean {
+    return false;
+  }
+}

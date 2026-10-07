@@ -47,8 +47,10 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 | `params` | Parameter (Zahl, Schalter, Auswahl) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group` und `visibleIf` |
 | `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
 | `presets` | Beispiel-Einstellungen |
-| `animated`, `layout`, `dragHint`, `strings` | Abspielen-Knopf, Seitenverhältnis, Hinweistext, eigene Texte |
-| `mount(ctx)` | baut die Simulation auf und gibt `{ update, render, tick?, resetTime?, resetView?, destroy? }` zurück |
+| `animated`, `layout`, `dragHint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), Hinweistext, eigene Texte |
+| `actions` | Knöpfe unter der Bühne (z. B. „Würfeln“, „Wechseln“), optional mit `visibleIf`; Beschriftung/Aktivierung zur Laufzeit über `ctx.setAction()` |
+| `images` | optionale Bilder aus `src/assets/sims/<id>/` (Liste in `docs/BILDER.md`); fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik |
+| `mount(ctx)` | baut die Simulation auf und gibt `{ update, render, tick?, action?, resetTime?, resetView?, destroy? }` zurück |
 
 **Host (`host.ts`)** – erzeugt aus den Definitionen automatisch Regler (`controls.ts`), Ergebnisliste, Beispiel-Knöpfe und kümmert sich um:
 
@@ -66,7 +68,10 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 - Zoomen (Strg + Mausrad, Pinch, Schaltflächen) und Verschieben.
 - **Ziehbare Punkte** über `plot.addHandle({ get, set, axis?, enabled? })`.
 - Mehrere Koordinatensysteme auf einer Fläche (`region`), z. B. Einheitskreis + Graph.
+- Diagramme mit festem Bereich und Platz für Achsenzahlen: `plot.setRangePadded(x, y, { left, bottom, … })`.
 - Gezeichnet wird im „Immediate Mode“: `render()` zeichnet jedes Mal alles neu.
+
+**Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
 
 **Formatierung** – `format.ts` (Dezimalkomma, echtes Minuszeichen, Vielfache von π, Punkte als `(1,5 | 2)` bzw. `(1.5, 2)`) und `formula.ts` (Terme wie `0,5x − 2` korrekt zusammensetzen).
 
@@ -85,5 +90,5 @@ Markdown in `src/content/simulations/<sprache>/<id>.md`. Formeln werden mit `$�
 ## 7. Qualitätssicherung
 
 - `npm run check` – strenge Typprüfung.
-- `npm test` – Unit-Tests für Kernfunktionen und Modelle sowie **Konsistenztests**: eindeutige IDs, Texte in allen Sprachen, gültige KMK-Bezüge, jede fertige Simulation ist registriert und hat Lernmaterial, gültige Beispiele, eindeutige Adressen.
+- `npm test` – Unit-Tests für Kernfunktionen und Modelle sowie **Konsistenztests**: eindeutige IDs, Texte in allen Sprachen, gültige KMK-Bezüge, jede fertige Simulation ist registriert und hat Lernmaterial, gültige Beispiele, eindeutige Adressen, Links im Lernmaterial setzen nur gültige Werte, alle Bilder stehen in `docs/BILDER.md`.
 - GitHub Actions: `ci.yml` prüft Branches und Pull Requests, `deploy.yml` veröffentlicht `main`.

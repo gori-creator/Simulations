@@ -5,6 +5,7 @@ import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
 import { Formatter } from './format';
+import { ImageStore } from './images';
 import { defaultValues, sanitize, valuesEqual } from './params';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
@@ -69,6 +70,8 @@ class SimulationHost {
   private theme: Theme;
   private readonly fmt: Formatter;
   private readonly clock = new Clock();
+  private images!: ImageStore;
+  private actionButtons = new Map<string, HTMLButtonElement>();
   private readonly stage: HTMLElement;
   private instance: SimInstance | null = null;
   private controls: Controls | null = null;
@@ -107,7 +110,9 @@ class SimulationHost {
     this.buildReadouts();
     this.buildPresets();
     this.bindToolbar();
+    this.buildActions();
     this.bindShare();
+    this.images = new ImageStore(def.id, def.images ?? {}, () => this.requestRender());
     this.bindMaterialLinks();
     this.applyLock();
 
@@ -147,9 +152,18 @@ class SimulationHost {
       },
       fmt: this.fmt,
       clock: this.clock,
+      get images() {
+        return host.images;
+      },
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,
+      setAction: (id, state) => {
+        const button = this.actionButtons.get(id);
+        if (!button) return;
+        if (state.enabled !== undefined) button.disabled = !state.enabled;
+        if (state.label !== undefined) button.textContent = state.label;
+      },
       requestRender: () => this.requestRender(),
     };
   }
@@ -191,6 +205,7 @@ class SimulationHost {
     }
     this.flushing = false;
     this.controls?.sync(this.values);
+    this.syncActions();
     this.scheduleUrlUpdate();
     this.requestRender();
   }
@@ -318,6 +333,38 @@ class SimulationHost {
     row.last = text;
     if (typeof value === 'string') row.value.textContent = value;
     else row.value.innerHTML = value.html;
+  }
+
+  /* ---------- Aktionen ---------- */
+
+  private buildActions(): void {
+    const actions = this.def.actions ?? [];
+    if (!actions.length) return;
+    const wrap = this.query('[data-sim-actions]');
+    for (const action of actions) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = action.primary ? 'btn btn--primary' : 'btn';
+      button.textContent = action.label[this.lang];
+      button.dataset.simAction = action.id;
+      button.addEventListener('click', () => {
+        this.instance?.action?.(action.id);
+        if (this.pending.size) this.flush();
+        this.requestRender();
+      });
+      wrap.append(button);
+      this.actionButtons.set(action.id, button);
+    }
+    wrap.hidden = false;
+    this.syncActions();
+  }
+
+  /** Sichtbarkeit der Aktions-Knöpfe an die aktuellen Werte anpassen. */
+  private syncActions(): void {
+    for (const action of this.def.actions ?? []) {
+      const button = this.actionButtons.get(action.id);
+      if (button && action.visibleIf) button.hidden = !action.visibleIf(this.values);
+    }
   }
 
   /* ---------- Werkzeugleiste ---------- */

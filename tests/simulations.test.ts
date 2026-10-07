@@ -1,3 +1,4 @@
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { LANGS } from '../src/i18n/config';
 import { defaultValues, sanitize, valuesEqual } from '../src/sim-core/params';
@@ -43,6 +44,47 @@ describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
   it('hat eindeutige Ergebnis-Schlüssel', () => {
     const keys = (def.readouts ?? []).map((r) => r.key);
     expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('hat eindeutige, beschriftete Aktionen', () => {
+    const ids = (def.actions ?? []).map((a) => a.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const action of def.actions ?? []) {
+      for (const lang of LANGS) expect(action.label[lang].trim(), action.id).not.toBe('');
+    }
+  });
+
+  it('führt alle Bilder in docs/BILDER.md auf', () => {
+    const doc = readFileSync('docs/BILDER.md', 'utf8');
+    const files = Object.values(def.images ?? {});
+    for (const file of files) {
+      expect(file, 'nur Kleinbuchstaben, Ziffern und Bindestriche').toMatch(/^[a-z0-9-]+\.(webp|png|jpg|svg)$/);
+      expect(doc, file).toContain(`src/assets/sims/${id}/${file}`);
+    }
+    // Abgelegte Bilder müssen auch deklariert sein (sonst werden sie nie geladen).
+    const dir = `src/assets/sims/${id}`;
+    if (existsSync(dir)) {
+      for (const file of readdirSync(dir)) expect(files, `${dir}/${file}`).toContain(file);
+    }
+  });
+
+  it('setzt in Links im Lernmaterial nur gültige Werte', () => {
+    const defs = new Map(def.params.map((p) => [p.key, p as ParamDef]));
+    for (const lang of LANGS) {
+      const path = `src/content/simulations/${lang}/${id}.md`;
+      if (!existsSync(path)) continue;
+      const text = readFileSync(path, 'utf8');
+      for (const match of text.matchAll(/\]\(\?([^)\s]+)\)/g)) {
+        for (const [key, raw] of new URLSearchParams(match[1])) {
+          if (key === '_hide' || key === '_lock') continue;
+          const param = defs.get(key);
+          expect(param, `${path}: ${match[0]}`).toBeDefined();
+          const value = param!.type === 'number' ? Number(raw) : param!.type === 'boolean' ? raw === '1' : raw;
+          if (param!.type === 'boolean') expect(['0', '1'], `${path}: ${match[0]}`).toContain(raw);
+          expect(valuesEqual(sanitize(param!, value), value as never), `${path}: ${match[0]}`).toBe(true);
+        }
+      }
+    }
   });
 });
 

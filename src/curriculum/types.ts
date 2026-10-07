@@ -6,7 +6,20 @@ export type SubjectId = 'mathematik' | 'physik' | 'chemie';
 export type SimStatus = 'ready' | 'planned';
 
 /** Vorschaubild auf Karten (siehe components/SimThumb.astro). */
-export type Thumb = 'line' | 'parabola' | 'sine' | 'unit-circle' | 'generic';
+export type Thumb =
+  | 'line'
+  | 'parabola'
+  | 'sine'
+  | 'unit-circle'
+  | 'thales'
+  | 'binomial'
+  | 'pythagoras'
+  | 'frequency'
+  | 'doors'
+  | 'monte-carlo'
+  | 'secant'
+  | 'galton'
+  | 'generic';
 
 /** Klassenstufen von–bis. Werte über 13 stehen für die Universität. */
 export type GradeSpan = readonly [from: number, to: number];

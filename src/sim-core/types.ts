@@ -1,6 +1,7 @@
 import type { Lang, Localized } from '../i18n/config';
 import type { Clock } from './clock';
 import type { Formatter } from './format';
+import type { ImageStore } from './images';
 import type { Theme } from './theme';
 
 /* ------------------------------------------------------------------ */
@@ -95,6 +96,16 @@ export interface ParamGroup {
   label: Localized;
 }
 
+/** Knopf für eine Aktion der Simulation (z. B. „Würfeln“, „Tür öffnen“). */
+export interface ActionDef {
+  id: string;
+  label: Localized;
+  /** Hervorgehobener Knopf. */
+  primary?: boolean;
+  /** Nur anzeigen, wenn die Bedingung erfüllt ist (z. B. abhängig vom Modus). */
+  visibleIf?: (values: ParamValues) => boolean;
+}
+
 export interface StageLayout {
   /** Seitenverhältnis Breite/Höhe der Bühne (Standard 16/10). */
   aspect?: number;
@@ -116,12 +127,16 @@ export interface SimContext<V> {
   readonly fmt: Formatter;
   /** Uhr für animierte Simulationen. */
   readonly clock: Clock;
+  /** Optionale Bilder aus `images` (siehe src/assets/sims/). */
+  readonly images: ImageStore;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
   readout(key: string, value: ReadoutValue): void;
   /** Simulationseigener Text aus `strings`. */
   t(key: string): string;
+  /** Aktions-Knopf aktivieren/deaktivieren oder umbenennen. */
+  setAction(id: string, state: { enabled?: boolean; label?: string }): void;
   /** Neu zeichnen (wird zusammengefasst, höchstens einmal pro Frame). */
   requestRender(): void;
 }
@@ -145,6 +160,8 @@ export interface SimInstance {
   render(): void;
   /** Animationsschritt in Sekunden (nur wenn `animated`). */
   tick?(dt: number): void;
+  /** Ein Aktions-Knopf wurde gedrückt. */
+  action?(id: string): void;
   /** Zeit/Animation auf den Anfang setzen. */
   resetTime?(): void;
   /** Zoom/Verschiebung der Ansicht zurücksetzen. */
@@ -165,6 +182,10 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   layout?: StageLayout;
   /** Zusätzliche Texte der Simulation, abrufbar über `ctx.t(key)`. */
   strings?: Localized<Record<string, string>>;
+  /** Knöpfe unter der Bühne. */
+  actions?: ActionDef[];
+  /** Optionale Bilder: Schlüssel → Dateiname in src/assets/sims/<id>/ (Liste in docs/BILDER.md). */
+  images?: Record<string, string>;
   mount(ctx: SimContext<ValuesOf<P>>): SimInstance;
 }
 

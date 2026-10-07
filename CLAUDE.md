@@ -27,5 +27,6 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - Farben in Simulationen nur über `ctx.theme` (CSS-Variablen `--plot-*`, `--series-*`).
 - Parameter-Schlüssel kurz, stabil (stehen in geteilten Links), nie mit `_` beginnend (`_lock`, `_hide` sind reserviert).
 - Abgeleitete Werte in `update(changed, source)` nur bei `source === 'input'` per `ctx.set()` umrechnen (geteilte Links, Beispiele!).
+- Bilder sind optional (`images`, Ablage `src/assets/sims/<id>/`); jedes Bild mit Prompt in `docs/BILDER.md` eintragen und immer eine gezeichnete Ersatzgrafik vorsehen.
 - Neue Rechenlogik mit Tests in `tests/` absichern; Konsistenztests nicht abschwächen.
 - KMK-Zuordnungen und fachliche Inhalte sorgfältig formulieren; Unsicheres als Entwurf kennzeichnen.

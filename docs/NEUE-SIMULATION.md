@@ -88,6 +88,11 @@ export default defineSimulation({
 | `plot.fn`, `line`, `segment`, `arrow`, `point`, `circle`, `arc`, `polygon`, `fillBetween`, `text` | Zeichnen in Weltkoordinaten |
 | `new Plot(surface, { region })` | mehrere Koordinatensysteme auf einer Fläche |
 | `FixedStepper`, `rk4` | Physik: feste Zeitschritte und genaue Integration |
+| `actions` + `action(id)` | Knöpfe unter der Bühne (z. B. „Würfeln“); `ctx.setAction(id, { enabled, label })` ändert sie zur Laufzeit |
+| `new TapTarget(surface, { hit, onTap })` | antippbare Bereiche ohne Koordinatensystem (Türen, Karten …) |
+| `Tween`, `ease` | Übergänge, die durch Knöpfe ausgelöst werden; in `render()` abfragen und `ctx.requestRender()` aufrufen, solange `running` |
+| `images` + `ctx.images.get(key)` | optionale Bilder; liefert `null`, solange das Bild fehlt → immer eine gezeichnete Ersatzgrafik vorsehen |
+| `plot.setRangePadded(x, y, { left, bottom })` | Diagramme mit Platz für Achsenzahlen |
 
 ### Regeln
 
@@ -98,6 +103,7 @@ export default defineSimulation({
 - Ergebnisse, die eine Aufgabe verraten würden, als `spoiler: true` markieren.
 - Ziehbare Punkte mit `enabled: () => !ctx.locked` versehen.
 - Keine externen Bibliotheken oder Server einbinden, die Daten übertragen.
+- **Bilder** (optional): Dateien in `src/assets/sims/<id>/`, in `images` deklarieren und mit Größe, Hintergrund und Bild-Prompt in `docs/BILDER.md` eintragen (ein Test prüft das).
 
 ## 4. Lernmaterial schreiben
 
@@ -124,5 +130,6 @@ Die Konsistenztests melden u. a. fehlende Registrierung, fehlendes Lernmaterial,
 - [ ] Hell- und Dunkelmodus geprüft
 - [ ] Geteilter Link stellt den Zustand exakt wieder her (auch mit `_lock`/`_hide`)
 - [ ] Rechenlogik getestet
+- [ ] Bilder (falls verwendet) in `docs/BILDER.md` mit Prompt eingetragen; Ersatzgrafik sieht ordentlich aus
 - [ ] Lernmaterial (DE) mit Aufgaben und Lösungen; Englisch optional
 - [ ] `npm run verify` ist grün

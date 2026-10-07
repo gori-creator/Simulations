@@ -471,7 +471,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Baumdiagramme und Pfadregeln, Simulationen (z. B. Ziegenproblem, Geburtstagsproblem) und die Monte-Carlo-Methode für π.',
             'Tree diagrams and path rules, simulations (e.g. Monty Hall, birthday problem) and the Monte Carlo method for π.',
           ),
-          simulations: ['baumdiagramm', 'ziegenproblem', 'monte-carlo-pi'],
+          simulations: ['baumdiagramm', 'ziegenproblem', 'geburtstagsproblem', 'monte-carlo-pi'],
         },
         {
           code: '3',

@@ -62,7 +62,23 @@ export const mathematik: Subject = {
       topics: [
         topic('terme', L('Terme', 'Terms'), [
           planned('termbaum', L('Termbaum: die Struktur von Termen', 'Expression trees: the structure of terms'), [5, 7], { kmk: ['M-L1', 'M-K5'] }),
-          planned('binomische-formeln', L('Binomische Formeln am Quadrat', 'Binomial formulas with squares'), [7, 7], { kmk: ['M-L3', 'M-K1'] }),
+          {
+            id: 'binomische-formeln',
+            status: 'ready',
+            slug: L('binomische-formeln', 'binomial-formulas'),
+            title: L('Binomische Formeln am Quadrat', 'Binomial formulas with squares'),
+            summary: L(
+              'Die drei binomischen Formeln als Flächen sehen: Das Quadrat zerfällt animiert in a², b² und zwei Rechtecke ab.',
+              'See the three binomial formulas as areas: the square splits into a², b² and two rectangles ab – animated.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L3', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['binomische Formel', 'Quadrat', 'Flächenmodell', 'ausmultiplizieren', 'Term', 'a plus b', 'Differenz'],
+              ['binomial formula', 'square', 'area model', 'expand', 'expression', 'difference of squares'],
+            ),
+            thumb: 'binomial',
+          },
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
           planned('waagemodell', L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'), [7, 7], { kmk: ['M-L3', 'M-K5'] }),
@@ -96,11 +112,43 @@ export const mathematik: Subject = {
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
           planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
-          planned('thales', L('Satz des Thales', 'Thales’s theorem'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
+          {
+            id: 'thales',
+            status: 'ready',
+            slug: L('satz-des-thales', 'thales-theorem'),
+            title: L('Satz des Thales', 'Thales’s theorem'),
+            summary: L(
+              'Den Punkt C über den Halbkreis ziehen: Der Winkel bei C bleibt immer 90°. Mit Beweisidee über gleichschenklige Dreiecke.',
+              'Drag point C along the semicircle: the angle at C always stays 90°. With the proof idea using isosceles triangles.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Thaleskreis', 'rechter Winkel', 'Halbkreis', 'Umkreis', 'gleichschenkliges Dreieck', 'Winkelsumme', 'Beweis'],
+              ['Thales circle', 'right angle', 'semicircle', 'circumcircle', 'isosceles triangle', 'angle sum', 'proof'],
+            ),
+            thumb: 'thales',
+          },
           planned('besondere-linien', L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'), [7, 8]),
         ]),
         topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
-          planned('pythagoras', L('Satz des Pythagoras (Flächenbeweis)', 'Pythagorean theorem (area proof)'), [8, 9], { kmk: ['M-L4', 'M-K1'] }),
+          {
+            id: 'pythagoras',
+            status: 'ready',
+            slug: L('satz-des-pythagoras', 'pythagorean-theorem'),
+            title: L('Satz des Pythagoras', 'Pythagorean theorem'),
+            summary: L(
+              'Quadrate über den Seiten eines rechtwinkligen Dreiecks und ein animierter Puzzle-Beweis: a² + b² = c².',
+              'Squares on the sides of a right triangle and an animated puzzle proof: a² + b² = c².',
+            ),
+            grades: [8, 9],
+            kmk: ['M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Pythagoras', 'Hypotenuse', 'Kathete', 'rechtwinkliges Dreieck', 'Flächenbeweis', 'Quadrat', 'Beweis'],
+              ['Pythagoras', 'hypotenuse', 'leg', 'right triangle', 'area proof', 'square', 'proof'],
+            ),
+            thumb: 'pythagoras',
+          },
         ]),
         topic('aehnlichkeit', L('Ähnlichkeit und Strahlensätze', 'Similarity and intercept theorems'), [
           planned('strahlensaetze', L('Strahlensätze', 'Intercept theorems'), [9, 9]),
@@ -275,17 +323,82 @@ export const mathematik: Subject = {
           planned('boxplot', L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'), [7, 7]),
         ]),
         topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
-          planned('gesetz-grosse-zahlen', L('Gesetz der großen Zahlen', 'Law of large numbers'), [6, 9], { kmk: ['M-L5', 'M-K3'] }),
+          {
+            id: 'gesetz-grosse-zahlen',
+            status: 'ready',
+            slug: L('gesetz-der-grossen-zahlen', 'law-of-large-numbers'),
+            title: L('Gesetz der großen Zahlen', 'Law of large numbers'),
+            summary: L(
+              'Münze, Würfel oder Reißnagel tausendfach werfen: Die relative Häufigkeit stabilisiert sich bei der Wahrscheinlichkeit.',
+              'Toss a coin, die or drawing pin thousands of times: the relative frequency settles at the probability.',
+            ),
+            grades: [6, 9],
+            kmk: ['M-L5', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['relative Häufigkeit', 'absolute Häufigkeit', 'Wahrscheinlichkeit', 'Zufallsexperiment', 'Würfel', 'Münze', 'Reißnagel', 'empirisches Gesetz der großen Zahlen'],
+              ['relative frequency', 'absolute frequency', 'probability', 'random experiment', 'die', 'coin', 'drawing pin', 'law of large numbers'],
+            ),
+            thumb: 'frequency',
+          },
           planned('baumdiagramm', L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'), [8, 10]),
-          planned('ziegenproblem', L('Ziegenproblem und Geburtstagsproblem simulieren', 'Simulating the Monty Hall and birthday problems'), [10, 10]),
-          planned('monte-carlo-pi', L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'), [10, 10]),
+          {
+            id: 'ziegenproblem',
+            status: 'ready',
+            slug: L('ziegenproblem', 'monty-hall-problem'),
+            title: L('Ziegenproblem', 'Monty Hall problem'),
+            summary: L(
+              'Selbst spielen oder tausende Spiele simulieren: Lohnt es sich, die Tür zu wechseln? Auch mit bis zu zehn Türen.',
+              'Play yourself or simulate thousands of games: is it worth switching doors? Also with up to ten doors.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L5', 'M-K2', 'M-K3'],
+            keywords: L(
+              ['Ziegenproblem', 'Monty-Hall-Problem', 'Drei-Türen-Problem', 'bedingte Wahrscheinlichkeit', 'Simulation', 'Baumdiagramm', 'Wechseln'],
+              ['Monty Hall problem', 'three doors', 'goat', 'conditional probability', 'simulation', 'tree diagram', 'switch'],
+            ),
+            thumb: 'doors',
+          },
+          planned('geburtstagsproblem', L('Geburtstagsproblem simulieren', 'Simulating the birthday problem'), [10, 10]),
+          {
+            id: 'monte-carlo-pi',
+            status: 'ready',
+            slug: L('monte-carlo-pi', 'monte-carlo-pi'),
+            title: L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'),
+            summary: L(
+              'Zufallspunkte regnen auf ein Quadrat: Aus dem Anteil im Kreis wird ein Schätzwert für π – und er wird immer genauer.',
+              'Random points rain onto a square: the share inside the circle gives an estimate of π – and it keeps improving.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L5', 'M-L2', 'M-K3'],
+            keywords: L(
+              ['Monte-Carlo', 'Kreiszahl', 'Pi', 'Simulation', 'Zufallszahlen', 'Flächenverhältnis', 'Kreisfläche'],
+              ['Monte Carlo', 'pi', 'simulation', 'random numbers', 'area ratio', 'circle area'],
+            ),
+            thumb: 'monte-carlo',
+          },
         ]),
         topic('verknuepfte-ereignisse', L('Verknüpfte Ereignisse und bedingte Wahrscheinlichkeit', 'Combined events and conditional probability'), [
           planned('vierfeldertafel', L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'), [9, 11]),
           planned('bedingte-wahrscheinlichkeit', L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'), [11, 11], { kmk: ['M-L5', 'M-K3'] }),
         ]),
         topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
-          planned('galtonbrett', L('Galtonbrett', 'Galton board'), [9, 12]),
+          {
+            id: 'galtonbrett',
+            status: 'ready',
+            slug: L('galtonbrett', 'galton-board'),
+            title: L('Galtonbrett', 'Galton board'),
+            summary: L(
+              'Kugeln prallen an Nagelreihen ab und sammeln sich in Fächern – so entsteht die Binomialverteilung, mit Pascal’schem Dreieck und Glockenkurve.',
+              'Balls bounce off rows of pegs and collect in bins – forming the binomial distribution, with Pascal’s triangle and bell curve.',
+            ),
+            grades: [9, 12],
+            kmk: ['M-L5', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Galtonbrett', 'Binomialverteilung', 'Bernoulli-Kette', 'Pascal’sches Dreieck', 'Binomialkoeffizient', 'Normalverteilung', 'Erwartungswert', 'Standardabweichung'],
+              ['Galton board', 'binomial distribution', 'Bernoulli trials', 'Pascal’s triangle', 'binomial coefficient', 'normal distribution', 'expected value', 'standard deviation'],
+            ),
+            thumb: 'galton',
+          },
           planned('binomialverteilung', L('Binomialverteilung', 'Binomial distribution'), [12, 12]),
           planned('signifikanztest', L('Einseitiger Signifikanztest: Fehler 1. und 2. Art', 'One-sided significance test: type I and II errors'), [12, 12]),
           planned('normalverteilung', L('Normalverteilung', 'Normal distribution'), [13, 13], { uni: true }),
@@ -303,7 +416,23 @@ export const mathematik: Subject = {
       kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K4'],
       topics: [
         topic('differenzialrechnung', L('Differenzialrechnung', 'Differential calculus'), [
-          planned('sekante-tangente', L('Von der Sekante zur Tangente', 'From secant to tangent'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
+          {
+            id: 'sekante-tangente',
+            status: 'ready',
+            slug: L('sekante-tangente', 'secant-to-tangent'),
+            title: L('Von der Sekante zur Tangente', 'From secant to tangent'),
+            summary: L(
+              'Den Punkt Q auf P zulaufen lassen: Aus dem Differenzenquotienten wird die Ableitung – mit Wertetabelle und Ableitungsgraph.',
+              'Let point Q run towards P: the difference quotient becomes the derivative – with a table of values and the derivative graph.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Sekante', 'Tangente', 'Differenzenquotient', 'Differentialquotient', 'Ableitung', 'Steigung', 'Grenzwert', 'h-Methode', 'lokale Änderungsrate'],
+              ['secant', 'tangent', 'difference quotient', 'derivative', 'slope', 'limit', 'rate of change'],
+            ),
+            thumb: 'secant',
+          },
           planned('newton-verfahren', L('Newton-Verfahren', 'Newton’s method'), [11, 11]),
           planned('ableitungsfunktion', L('Ableitungsfunktion grafisch', 'The derivative function graphically'), [11, 12]),
           planned('kurvendiskussion', L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'), [11, 12]),
