@@ -47,6 +47,7 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 | Kreiszahl π | `pizza` | `src/assets/sims/kreiszahl-pi/pizza.webp` | 1024 × 1024 | transparent |
 | Exponentielles Wachstum | `pond` | `src/assets/sims/exponentielles-wachstum/teich.webp` | 1024 × 1024 | deckend |
 | Exponentielles Wachstum | `lily` | `src/assets/sims/exponentielles-wachstum/seerose.webp` | 256 × 256 | transparent |
+| Freier Fall | `feather` | `src/assets/sims/freier-fall/feder.webp` | 1024 × 384 | transparent |
 
 ## Ziegenproblem
 
@@ -221,3 +222,11 @@ Draufsicht. Die Wasserfläche sollte als **Ellipse in der Mitte** liegen (etwa 8
 Wird klein (ca. 20–30 Pixel) und gedreht gezeichnet.
 
 > Top-down view of a single round green water lily pad with a small notch, a tiny pink water lily flower on it, the pad fills the entire square image, isolated on a transparent background, no water, no shadow, photorealistic
+
+## Freier Fall
+
+### `feder.webp` – Feder
+
+Fällt in der Fallröhre neben der Stahlkugel. Wird klein (etwa 35–40 Pixel lang) und leicht schaukelnd gezeichnet. Die Feder liegt **waagerecht**, der Kiel zeigt nach **links**, die Spitze nach rechts; sie füllt die Bildbreite **randlos** aus und ist senkrecht mittig.
+
+> A single small white bird feather lying horizontally, quill pointing to the left and tip to the right, side view, soft natural barbs with a slight grey tint at the edges, the feather spans the full width of the image edge to edge and is vertically centred, isolated on a transparent background, no shadow, no text, photorealistic, aspect ratio 8:3

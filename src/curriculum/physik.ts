@@ -51,7 +51,23 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('freier-fall', L('Freier Fall', 'Free fall'), [9, 10]),
+            {
+              id: 'freier-fall',
+              status: 'ready',
+              slug: L('freier-fall', 'free-fall'),
+              title: L('Freier Fall', 'Free fall'),
+              summary: L(
+                'Stroboskopaufnahme einer fallenden Kugel auf Erde, Mond, Mars oder Jupiter, Kugel und Feder in der Fallröhre mit und ohne Luft und ein Reaktionstest mit fallendem Lineal.',
+                'Stroboscopic picture of a falling ball on Earth, the Moon, Mars or Jupiter, a ball and a feather in a tube with and without air, and a reaction test with a falling ruler.',
+              ),
+              grades: [9, 10],
+              kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['freier Fall', 'Fallbeschleunigung', 'Ortsfaktor', 'Fallröhre', 'Vakuum', 'Luftwiderstand', 'Stroboskop', 'Fallgesetz', 'Reaktionszeit', 'Lineal', 'gleichmäßig beschleunigte Bewegung'],
+                ['free fall', 'gravitational acceleration', 'feather', 'vacuum', 'air resistance', 'stroboscope', 'law of falling bodies', 'reaction time', 'ruler', 'uniformly accelerated motion'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
