@@ -402,6 +402,8 @@ export default defineSimulation({
     const onKey = (event: KeyboardEvent) => {
       if (mode() !== 'ruler' || (phase !== 'armed' && phase !== 'falling')) return;
       if (event.key !== ' ' && event.code !== 'Space') return;
+      const target = event.target as HTMLElement | null;
+      if (target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) return;
       event.preventDefault();
       catchRuler();
     };

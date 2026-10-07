@@ -633,8 +633,11 @@ export default defineSimulation({
       gx.restore();
       const ink = '#3d2f0c';
       const pxPerCm = g0.scale / 100;
-      const major = pxPerCm >= 9 ? 1 : pxPerCm >= 3 ? 5 : 10;
-      const minor = pxPerCm >= 9 ? 0.5 : pxPerCm >= 3 ? 1 : 2;
+      // Teilung passend zum Maßstab: kleine Striche ≥ 4 px, große ≥ 9 px, Zahlen ≥ 16 px auseinander
+      const steps = [0.5, 1, 2, 5, 10, 20, 50, 100, 200];
+      const multipleOf = (a: number, b: number) => Math.abs(a / b - Math.round(a / b)) < 1e-9;
+      const minor = steps.find((q) => q * pxPerCm >= 4) ?? 200;
+      const major = steps.find((q) => q * pxPerCm >= 9 && multipleOf(q, minor)) ?? 200;
       gx.strokeStyle = ink;
       gx.lineWidth = 1;
       gx.beginPath();
@@ -646,9 +649,9 @@ export default defineSimulation({
         gx.lineTo(rx + 13 - (isMajor ? 9 : 5), y);
       }
       gx.stroke();
-      const labelEvery = major * (major * pxPerCm < 16 ? 2 : 1);
+      const labelEvery = steps.find((q) => q * pxPerCm >= 16 && multipleOf(q, major)) ?? 200;
       for (let c = 0; c * pxPerCm <= rBot - g0.zeroY - 6; c += labelEvery) {
-        text(gx, String(c), rx - 1, g0.zeroY + c * pxPerCm, { font: `700 ${small ? 9 : 10}px ${theme.font}`, color: ink, align: 'right' });
+        text(gx, fmt.num(c, 1), rx - 1, g0.zeroY + c * pxPerCm, { font: `700 ${small ? 9 : 10}px ${theme.font}`, color: ink, align: 'right' });
       }
       text(gx, 'cm', rx, rTop + 7, { font: `700 9px ${theme.font}`, color: ink });
       // Zeiger
@@ -711,12 +714,13 @@ export default defineSimulation({
 
       // Kraftpfeile
       if (p.arrows && p.n > 0) {
-        const k = (small ? 80 : 110) / Math.max(1e-6, maxForce());
         const F = force();
         const kEl = D();
         const Fs = Math.max(0, F + kEl * (x - eq.s));
         const ax = Math.max(g0.loadX + g0.pieceW / 2 + (small ? 10 : 14), Math.max(...g0.springX) + R + 10);
         const cy = (hookY + 7 + stackBottom) / 2;
+        // Pfeillänge proportional zur Kraft, aber nicht unter die Tischkante
+        const k = Math.min((small ? 80 : 110) / Math.max(1e-6, maxForce()), Math.max(10, g0.tableY - 8 - cy) / Math.max(F, 1e-6));
         arrow(ax + (small ? 14 : 18), cy, cy + F * k, theme.series[1]!, tr('FG', { F: fmt.num(F, 2) }), 'right');
         arrow(ax, hookY + 6, hookY + 6 - Fs * k, theme.series[0]!, tr('FF', { F: fmt.num(Fs, 2) }), 'right');
       }
