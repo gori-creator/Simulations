@@ -1,0 +1,15 @@
+---
+interface Props {
+  ready: number;
+  total: number;
+  label: string;
+}
+
+const { ready, total, label } = Astro.props;
+const percent = total > 0 ? Math.max(3, Math.round((ready / total) * 100)) : 0;
+---
+
+<div class="progress">
+  <div class="progress__bar" role="img" aria-label={label}><span style={`width:${percent}%`}></span></div>
+  <div class="progress__label">{label}</div>
+</div>

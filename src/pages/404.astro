@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+import { SITE } from '../config/site';
+import { withBase } from '../lib/routes';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 – {SITE.name.de}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="container section">
+      <h1>Seite nicht gefunden <span class="muted" lang="en">· Page not found</span></h1>
+      <p class="lead">
+        Diese Seite gibt es leider nicht (mehr).
+        <span lang="en">Sorry, this page does not exist (anymore).</span>
+      </p>
+      <p style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn--primary" href={withBase('/de/')}>Zur Startseite</a>
+        <a class="btn" href={withBase('/en/')} lang="en">Home page (English)</a>
+      </p>
+    </main>
+  </body>
+</html>

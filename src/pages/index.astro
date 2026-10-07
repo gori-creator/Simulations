@@ -1,0 +1,38 @@
+---
+/**
+ * Einstieg ohne Sprache: leitet zur gemerkten bzw. Browsersprache weiter
+ * (Standard: Deutsch).
+ */
+import { SITE } from '../config/site';
+import { withBase } from '../lib/routes';
+
+const de = withBase('/de/');
+const en = withBase('/en/');
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{SITE.name.de}</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="alternate" hreflang="de" href={de} />
+    <link rel="alternate" hreflang="en" href={en} />
+    <noscript><meta http-equiv="refresh" content={`0; url=${de}`} /></noscript>
+    <script is:inline define:vars={{ de, en }}>
+      let lang = null;
+      try {
+        lang = localStorage.getItem('lang');
+      } catch {}
+      if (lang !== 'de' && lang !== 'en') {
+        lang = (navigator.languages || [navigator.language]).some((l) => String(l).toLowerCase().startsWith('de')) ? 'de' : 'en';
+      }
+      location.replace(lang === 'en' ? en : de);
+    </script>
+  </head>
+  <body>
+    <p><a href={de}>Deutsch</a> · <a href={en}>English</a></p>
+  </body>
+</html>

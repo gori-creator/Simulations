@@ -1,0 +1,47 @@
+---
+import { getSubject } from '../curriculum';
+import type { SimulationEntry } from '../curriculum/types';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import { href } from '../lib/routes';
+import GradeBadge from './GradeBadge.astro';
+import SimThumb from './SimThumb.astro';
+
+interface Props {
+  lang: Lang;
+  sim: SimulationEntry;
+  showSubject?: boolean;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+}
+
+const { lang, sim, showSubject = false, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const ready = sim.status === 'ready';
+const subject = getSubject(sim.subject);
+const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords?.[lang] ?? []), subject.title[lang]]
+  .join(' ')
+  .toLowerCase();
+---
+
+<article
+  class:list={['card', `subject-${sim.subject}`, ready ? 'card--link' : 'card--planned']}
+  data-sim-card
+  data-subject={sim.subject}
+  data-status={sim.status}
+  data-grade-from={sim.grades[0]}
+  data-grade-to={sim.uni ? Math.max(sim.grades[1], 14) : sim.grades[1]}
+  data-search={searchText}
+>
+  <div class="card__thumb"><SimThumb kind={sim.thumb} /></div>
+  <div class="card__body">
+    <Heading class="card__title">
+      {ready ? <a class="card__link" href={href(lang, { kind: 'simulation', id: sim.id })}>{sim.title[lang]}</a> : sim.title[lang]}
+    </Heading>
+    {sim.summary && <p class="card__text">{sim.summary[lang]}</p>}
+    <div class="card__meta">
+      {showSubject && <span class={`badge badge--subject-${sim.subject}`}>{subject.title[lang]}</span>}
+      <GradeBadge lang={lang} grades={sim.grades} uni={sim.uni} />
+      <span class:list={['badge', { 'badge--ready': ready }]}>{t(lang, ready ? 'status.ready' : 'status.planned')}</span>
+    </div>
+  </div>
+</article>

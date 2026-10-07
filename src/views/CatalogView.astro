@@ -1,0 +1,105 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SimCard from '../components/SimCard.astro';
+import { allSimulations, GRADE_BANDS, SUBJECTS } from '../curriculum';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+// Fertige Simulationen zuerst, sonst Lehrplan-Reihenfolge
+const sims = [...allSimulations()].sort((a, b) => Number(b.status === 'ready') - Number(a.status === 'ready'));
+const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
+---
+
+<BaseLayout lang={lang} title={t(lang, 'catalog.title')} alternates={alternates({ kind: 'catalog' })} section="catalog">
+  <div class="container">
+    <Breadcrumbs lang={lang} items={[{ label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) }, { label: t(lang, 'catalog.title') }]} />
+    <header class="page-head">
+      <h1>{t(lang, 'catalog.title')}</h1>
+      <p class="lead">{t(lang, 'catalog.lead')}</p>
+    </header>
+
+    <form class="catalog-filters" data-catalog-filters role="search" onsubmit="return false">
+      <label class="field field--search">
+        {t(lang, 'catalog.search')}
+        <input class="input" type="search" name="q" placeholder={t(lang, 'catalog.searchPlaceholder')} autocomplete="off" />
+      </label>
+      <label class="field">
+        {t(lang, 'catalog.subject')}
+        <select class="select" name="subject">
+          <option value="">{t(lang, 'catalog.allSubjects')}</option>
+          {SUBJECTS.map((s) => <option value={s.id}>{s.title[lang]}</option>)}
+        </select>
+      </label>
+      <label class="field">
+        {t(lang, 'catalog.grade')}
+        <select class="select" name="grade">
+          <option value="">{t(lang, 'grades.all')}</option>
+          {GRADE_BANDS.map((b) => <option value={`${b.span[0]}-${b.span[1]}`}>{t(lang, `grades.band.${b.id}`)}</option>)}
+        </select>
+      </label>
+      <label class="switch" style="min-height:42px">
+        <input class="switch__input" type="checkbox" name="planned" checked />
+        <span class="switch__track" aria-hidden="true"></span>
+        <span class="switch__label">{t(lang, 'catalog.showPlanned')}</span>
+      </label>
+    </form>
+
+    <p class="result-count" data-result-count data-template={resultTemplate} aria-live="polite">
+      {t(lang, 'catalog.results', { n: sims.length })}
+    </p>
+    <div class="card-grid" data-catalog>
+      {sims.map((sim) => <SimCard lang={lang} sim={sim} showSubject headingLevel="h2" />)}
+    </div>
+    <p class="note" data-catalog-empty hidden>{t(lang, 'catalog.empty')}</p>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-catalog-filters]');
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-catalog] [data-sim-card]')];
+  const count = document.querySelector<HTMLElement>('[data-result-count]');
+  const empty = document.querySelector<HTMLElement>('[data-catalog-empty]');
+
+  function apply(): void {
+    if (!form) return;
+    const data = new FormData(form);
+    const words = String(data.get('q') ?? '')
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+    const subject = String(data.get('subject') ?? '');
+    const [from, to] = String(data.get('grade') ?? '')
+      .split('-')
+      .map(Number);
+    const showPlanned = data.get('planned') !== null;
+    let visible = 0;
+    for (const card of cards) {
+      const d = card.dataset;
+      const match =
+        (!subject || d.subject === subject) &&
+        (showPlanned || d.status === 'ready') &&
+        (!from || (Number(d.gradeFrom) <= (to ?? from) && from <= Number(d.gradeTo))) &&
+        words.every((w) => (d.search ?? '').includes(w));
+      card.hidden = !match;
+      if (match) visible++;
+    }
+    if (count) count.textContent = (count.dataset.template ?? '{n}').replace('{n}', String(visible));
+    if (empty) empty.hidden = visible > 0;
+  }
+
+  form?.addEventListener('input', apply);
+  form?.addEventListener('change', apply);
+  // Suchbegriff aus der Adresse übernehmen (z. B. /de/simulationen/?q=parabel)
+  const q = new URLSearchParams(location.search).get('q');
+  if (q && form) {
+    (form.elements.namedItem('q') as HTMLInputElement).value = q;
+  }
+  apply();
+</script>

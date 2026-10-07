@@ -1,0 +1,23 @@
+# Build-Ausgabe
+dist/
+.astro/
+
+# Abhängigkeiten
+node_modules/
+
+# Logs
+npm-debug.log*
+*.log
+
+# Umgebungsvariablen
+.env
+.env.*
+
+# Editor / Betriebssystem
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Test-Artefakte
+coverage/

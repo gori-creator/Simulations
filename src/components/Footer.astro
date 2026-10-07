@@ -1,0 +1,30 @@
+---
+import { SITE } from '../config/site';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import { href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <p style="margin:0 0 4px"><strong>{SITE.name[lang]}</strong> · {t(lang, 'footer.tagline')}</p>
+      <p style="margin:0">{t(lang, 'footer.offline')}</p>
+    </div>
+    <ul class="site-footer__links">
+      <li><a href={href(lang, { kind: 'page', page: 'about' })}>{t(lang, 'nav.about')}</a></li>
+      <li><a href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'nav.teachers')}</a></li>
+      <li><a href={href(lang, { kind: 'page', page: 'imprint' })}>{t(lang, 'footer.imprint')}</a></li>
+      <li><a href={href(lang, { kind: 'page', page: 'privacy' })}>{t(lang, 'footer.privacy')}</a></li>
+      <li><a href={SITE.repoUrl} rel="noopener">{t(lang, 'footer.source')}</a></li>
+      <li>© {year}</li>
+    </ul>
+  </div>
+</footer>

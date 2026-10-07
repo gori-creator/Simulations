@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import GradeBadge from '../components/GradeBadge.astro';
+import KmkList from '../components/KmkList.astro';
+import SimulationShell from '../components/SimulationShell.astro';
+import { getArea, getSimulation, getSubject, getTopic, readySimulations } from '../curriculum';
+import type { Lang } from '../i18n/config';
+import { formatGrades, t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  simId: string;
+}
+
+const { lang, simId } = Astro.props;
+const sim = getSimulation(simId);
+const subject = getSubject(sim.subject);
+const area = getArea(sim.subject, sim.area);
+const topic = getTopic(sim.subject, sim.area, sim.topic);
+const related = readySimulations().filter((s) => s.area === sim.area && s.id !== sim.id);
+
+// Lernmaterial: zuerst in der gewählten Sprache, sonst Deutsch
+const texts = await getCollection('simulationTexts');
+const entry = texts.find((e) => e.id === `${lang}/${simId}`) ?? texts.find((e) => e.id === `de/${simId}`);
+const isFallback = !!entry && !entry.id.startsWith(`${lang}/`);
+const rendered = entry ? await render(entry) : null;
+const Content = rendered?.Content;
+const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
+---
+
+<BaseLayout
+  lang={lang}
+  title={sim.title[lang]}
+  description={entry?.data.description ?? sim.summary?.[lang]}
+  alternates={alternates({ kind: 'simulation', id: simId })}
+  section={sim.subject}
+>
+  <div class:list={['container', `subject-${sim.subject}`]}>
+    <Breadcrumbs
+      lang={lang}
+      items={[
+        { label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) },
+        { label: subject.title[lang], href: href(lang, { kind: 'subject', subject: sim.subject }) },
+        { label: area.title[lang], href: href(lang, { kind: 'area', subject: sim.subject, area: sim.area }) },
+        { label: sim.title[lang] },
+      ]}
+    />
+    <header class="page-head">
+      <div class="page-head__meta">
+        <span class={`badge badge--subject-${sim.subject}`}>{subject.title[lang]}</span>
+        <GradeBadge lang={lang} grades={sim.grades} uni={sim.uni} />
+      </div>
+      <h1>{sim.title[lang]}</h1>
+      {sim.summary && <p class="lead">{sim.summary[lang]}</p>}
+    </header>
+
+    <SimulationShell lang={lang} simId={simId} title={sim.title[lang]} />
+
+    <div class="sim-page__material">
+      <article class="prose" data-sim-material>
+        {isFallback && <p class="note note--warning">{t(lang, 'material.translationMissing')}</p>}
+        {Content && <Content />}
+      </article>
+
+      <aside class="sim-page__aside">
+        {
+          toc.length > 0 && (
+            <nav class="aside-box aside-box--toc" aria-label={t(lang, 'material.toc')}>
+              <h2>{t(lang, 'material.toc')}</h2>
+              <ul>
+                {toc.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )
+        }
+        <section class="aside-box" style="position:static">
+          <h2>{t(lang, 'material.curriculum')}</h2>
+          <dl>
+            <dt>{t(lang, 'material.grades')}</dt>
+            <dd>{formatGrades(lang, sim.grades, sim.uni)}</dd>
+            <dt>{t(lang, 'material.topic')}</dt>
+            <dd>
+              <a href={`${href(lang, { kind: 'area', subject: sim.subject, area: sim.area })}#${topic.id}`}>{topic.title[lang]}</a>
+            </dd>
+            {
+              sim.kmk && sim.kmk.length > 0 && (
+                <>
+                  <dt>KMK</dt>
+                  <dd>
+                    <KmkList lang={lang} ids={sim.kmk} />
+                  </dd>
+                </>
+              )
+            }
+          </dl>
+        </section>
+        {
+          related.length > 0 && (
+            <section class="aside-box" style="position:static">
+              <h2>{t(lang, 'material.related')}</h2>
+              <ul>
+                {related.map((r) => (
+                  <li>
+                    <a href={href(lang, { kind: 'simulation', id: r.id })}>{r.title[lang]}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

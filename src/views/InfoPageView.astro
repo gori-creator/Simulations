@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href, type InfoPageId } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  page: InfoPageId;
+}
+
+const { lang, page } = Astro.props;
+const pages = await getCollection('pages');
+const entry = pages.find((e) => e.id === `${lang}/${page}`) ?? pages.find((e) => e.id === `de/${page}`);
+if (!entry) throw new Error(`Inhalt für Seite "${page}" fehlt (src/content/pages/${lang}/${page}.md).`);
+const isFallback = !entry.id.startsWith(`${lang}/`);
+const { Content } = await render(entry);
+const section = page === 'teachers' ? 'teachers' : page === 'about' ? 'about' : undefined;
+---
+
+<BaseLayout lang={lang} title={entry.data.title} description={entry.data.description} alternates={alternates({ kind: 'page', page })} section={section}>
+  <div class="container">
+    <Breadcrumbs lang={lang} items={[{ label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) }, { label: entry.data.title }]} />
+    <header class="page-head">
+      <h1>{entry.data.title}</h1>
+      {entry.data.description && <p class="lead">{entry.data.description}</p>}
+    </header>
+    <article class="prose">
+      {isFallback && <p class="note note--warning">{t(lang, 'material.translationMissing')}</p>}
+      <Content />
+    </article>
+  </div>
+</BaseLayout>

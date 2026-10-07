@@ -1,0 +1,32 @@
+{
+  "name": "mint-simulationen",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Kostenlose, interaktive Simulationen für den Mathematik- und Physikunterricht (DE/EN).",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run check && npm run test && npm run build",
+    "new:sim": "node scripts/new-simulation.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.3",
+    "astro": "^7.3.6",
+    "katex": "^0.19.0",
+    "qrcode-generator": "^2.0.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/node": "^22.20.5",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
+  }
+}

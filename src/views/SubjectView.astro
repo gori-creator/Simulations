@@ -1,0 +1,131 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import GradeBadge from '../components/GradeBadge.astro';
+import Progress from '../components/Progress.astro';
+import SimCard from '../components/SimCard.astro';
+import { GRADE_BANDS, getSubject, progressOf, simulationsOf } from '../curriculum';
+import type { SubjectId } from '../curriculum/types';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  subjectId: SubjectId;
+}
+
+const { lang, subjectId } = Astro.props;
+const subject = getSubject(subjectId);
+const sims = simulationsOf({ subject: subjectId });
+const progress = progressOf(sims);
+const ready = sims.filter((s) => s.status === 'ready');
+---
+
+<BaseLayout
+  lang={lang}
+  title={subject.title[lang]}
+  description={subject.description[lang]}
+  alternates={alternates({ kind: 'subject', subject: subjectId })}
+  section={subjectId}
+>
+  <div class:list={['container', `subject-${subjectId}`]}>
+    <Breadcrumbs lang={lang} items={[{ label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) }, { label: subject.title[lang] }]} />
+    <header class="page-head">
+      <h1>{subject.title[lang]}</h1>
+      <p class="lead">{subject.description[lang]}</p>
+      {subject.status === 'active' && <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />}
+    </header>
+
+    {subject.status === 'planned' && <p class="note">{t(lang, 'subject.plannedText')}</p>}
+
+    {
+      ready.length > 0 && (
+        <section class="section" style="padding-top:8px">
+          <div class="section__head">
+            <h2>{t(lang, 'home.featured')}</h2>
+          </div>
+          <div class="card-grid">
+            {ready.map((sim) => (
+              <SimCard lang={lang} sim={sim} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      subject.areas.length > 0 && (
+        <section class="section" style="padding-top:8px">
+          <div class="section__head">
+            <h2>{t(lang, 'subject.areas')}</h2>
+          </div>
+          <div class="filter-bar" role="group" aria-label={t(lang, 'subject.filterLabel')} data-grade-filter>
+            <span class="filter-bar__label">{t(lang, 'subject.filterLabel')}:</span>
+            <button class="chip" type="button" data-band="" aria-pressed="true">
+              {t(lang, 'grades.all')}
+            </button>
+            {GRADE_BANDS.map((band) => (
+              <button class="chip" type="button" data-band={band.id} data-from={band.span[0]} data-to={band.span[1]} aria-pressed="false">
+                {t(lang, `grades.band.${band.id}`)}
+              </button>
+            ))}
+          </div>
+          <div class="area-list">
+            {subject.areas.map((area) => {
+              const areaProgress = progressOf(simulationsOf({ subject: subjectId, area: area.id }));
+              return (
+                <article
+                  class="card card--link area-card"
+                  data-grade-from={area.grades[0]}
+                  data-grade-to={area.grades[1]}
+                  data-area-card
+                >
+                  <div>
+                    <h3>
+                      <a class="card__link" href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>
+                        {area.title[lang]}
+                      </a>
+                    </h3>
+                    <p class="card__text" style="margin-top:6px">{area.description[lang]}</p>
+                  </div>
+                  <div class="area-card__side">
+                    <GradeBadge lang={lang} grades={area.grades} />
+                    <Progress ready={areaProgress.ready} total={areaProgress.total} label={t(lang, 'subject.progress', areaProgress)} />
+                  </div>
+                  <ul class="area-card__topics">
+                    {area.topics.map((topic) => (
+                      <li>{topic.title[lang]}</li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+          <p class="note" data-no-match hidden>{t(lang, 'subject.noMatch')}</p>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  // Themenbereiche nach Klassenstufe filtern
+  const bar = document.querySelector<HTMLElement>('[data-grade-filter]');
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-area-card]')];
+  const empty = document.querySelector<HTMLElement>('[data-no-match]');
+  bar?.addEventListener('click', (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>('button[data-band]');
+    if (!button) return;
+    for (const b of bar.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
+    const from = Number(button.dataset.from ?? -Infinity);
+    const to = Number(button.dataset.to ?? Infinity);
+    let visible = 0;
+    for (const card of cards) {
+      const show = !button.dataset.band || (Number(card.dataset.gradeFrom) <= to && from <= Number(card.dataset.gradeTo));
+      card.hidden = !show;
+      if (show) visible++;
+    }
+    if (empty) empty.hidden = visible > 0;
+  });
+</script>

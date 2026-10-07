@@ -1,0 +1,141 @@
+---
+import { SUBJECTS } from '../curriculum';
+import { LANG_META, LANGS, type Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import { href } from '../lib/routes';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  section?: string;
+}
+
+const { lang, alternates, section } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href={href(lang, { kind: 'home' })}>
+      <Logo class="brand__logo" />
+      <span>{SITE.name[lang]}</span>
+    </a>
+
+    <nav class="site-nav" id="site-nav" aria-label={t(lang, 'nav.main')}>
+      {
+        SUBJECTS.map((subject) => (
+          <a
+            class:list={['site-nav__link', { 'is-active': section === subject.id }]}
+            href={href(lang, { kind: 'subject', subject: subject.id })}
+          >
+            {subject.title[lang]}
+            {subject.status === 'planned' && <span class="site-nav__soon">{t(lang, 'nav.soon')}</span>}
+          </a>
+        ))
+      }
+      <a class:list={['site-nav__link', { 'is-active': section === 'catalog' }]} href={href(lang, { kind: 'catalog' })}>
+        {t(lang, 'nav.catalog')}
+      </a>
+      <a
+        class:list={['site-nav__link', { 'is-active': section === 'teachers' }]}
+        href={href(lang, { kind: 'page', page: 'teachers' })}
+      >
+        {t(lang, 'nav.teachers')}
+      </a>
+    </nav>
+
+    <div class="header-tools">
+      <div class="lang-switch" role="group" aria-label={t(lang, 'lang.label')}>
+        {
+          LANGS.map((l) => (
+            <a
+              href={alternates[l]}
+              hreflang={l}
+              lang={l}
+              aria-current={l === lang ? 'true' : undefined}
+              title={LANG_META[l].name}
+              data-keep-query
+            >
+              {l}
+            </a>
+          ))
+        }
+      </div>
+      <button class="btn btn--ghost btn--icon" type="button" data-theme-toggle aria-label={t(lang, 'theme.toggle')} title={t(lang, 'theme.toggle')}>
+        <Icon name="moon" class="theme-icon theme-icon--moon" />
+        <Icon name="sun" class="theme-icon theme-icon--sun" />
+      </button>
+      <button
+        class="btn btn--ghost btn--icon menu-toggle"
+        type="button"
+        aria-controls="site-nav"
+        aria-expanded="false"
+        aria-label={t(lang, 'nav.menu')}
+        data-menu-toggle
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .theme-icon--sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-icon--sun {
+    display: block;
+  }
+
+  :global(:root[data-theme='dark']) .theme-icon--moon {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .theme-icon--sun {
+      display: block;
+    }
+
+    :global(:root:not([data-theme='light'])) .theme-icon--moon {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Hell/Dunkel umschalten und merken
+  const root = document.documentElement;
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* z. B. privater Modus – dann eben nicht merken */
+    }
+  });
+
+  // Mobiles Menü
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = document.getElementById('site-nav');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  // Beim Sprachwechsel Einstellungen der Simulation (Query) mitnehmen und Sprache merken
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-keep-query]')) {
+    link.addEventListener('click', () => {
+      try {
+        localStorage.setItem('lang', link.hreflang);
+      } catch {
+        /* ignorieren */
+      }
+      if (location.search) link.href = link.href.split('?')[0] + location.search;
+    });
+  }
+</script>

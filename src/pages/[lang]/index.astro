@@ -1,0 +1,155 @@
+---
+import Icon from '../../components/Icon.astro';
+import Progress from '../../components/Progress.astro';
+import SimCard from '../../components/SimCard.astro';
+import { allSimulations, progressOf, readySimulations, simulationsOf, SUBJECTS } from '../../curriculum';
+import { LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { alternates, href } from '../../lib/routes';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const ready = readySimulations();
+const overall = progressOf(allSimulations());
+const subjectIcon = { mathematik: 'function', physik: 'atom', chemie: 'flask' } as const;
+---
+
+<BaseLayout lang={lang} alternates={alternates({ kind: 'home' })}>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div>
+        <span class="hero__eyebrow">{t(lang, 'home.eyebrow')}</span>
+        <h1>{t(lang, 'home.title')}</h1>
+        <p class="lead">{t(lang, 'home.lead')}</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary btn--lg" href={href(lang, { kind: 'catalog' })}>
+            {t(lang, 'home.ctaCatalog')}
+            <Icon name="arrow" size={18} />
+          </a>
+          <a class="btn btn--lg" href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'home.ctaTeachers')}</a>
+        </div>
+        <Progress ready={overall.ready} total={overall.total} label={t(lang, 'home.progress', overall)} />
+      </div>
+      <div class="hero__art" aria-hidden="true">
+        <svg viewBox="0 0 480 300">
+          <rect x="0" y="0" width="330" height="300" rx="12" fill="var(--plot-bg)" />
+          <g stroke="var(--plot-grid-minor)" stroke-width="1">
+            {Array.from({ length: 16 }, (_, i) => <line x1={i * 22} y1="0" x2={i * 22} y2="300" />)}
+            {Array.from({ length: 14 }, (_, i) => <line x1="0" y1={i * 22} x2="330" y2={i * 22} />)}
+          </g>
+          <g stroke="var(--plot-axis)" stroke-width="2">
+            <line x1="0" y1="198" x2="330" y2="198" />
+            <line x1="132" y1="0" x2="132" y2="300" />
+          </g>
+          <path d="M60 10Q154 360 248 10" fill="none" stroke="var(--series-1)" stroke-width="5" stroke-linecap="round" />
+          <path d="M0 150C30 150 40 100 70 100S110 200 140 200 180 100 210 100 250 200 280 200 310 150 330 150" fill="none" stroke="var(--series-2)" stroke-width="3.5" stroke-dasharray="8 7" stroke-linecap="round" />
+          <circle cx="154" cy="185" r="14" fill="var(--series-1)" opacity="0.18" />
+          <circle cx="154" cy="185" r="7" fill="var(--series-1)" stroke="var(--plot-bg)" stroke-width="2" />
+          <g font-family="var(--font-sans)" font-size="13" font-weight="700" fill="var(--muted)">
+            <text x="350" y="40">a</text>
+            <text x="350" y="104">d</text>
+            <text x="350" y="168">e</text>
+          </g>
+          <g stroke-linecap="round">
+            <line x1="350" y1="56" x2="465" y2="56" stroke="var(--surface-3)" stroke-width="6" />
+            <line x1="350" y1="56" x2="420" y2="56" stroke="var(--brand)" stroke-width="6" />
+            <circle cx="420" cy="56" r="9" fill="var(--surface)" stroke="var(--brand)" stroke-width="3" />
+            <line x1="350" y1="120" x2="465" y2="120" stroke="var(--surface-3)" stroke-width="6" />
+            <line x1="350" y1="120" x2="380" y2="120" stroke="var(--brand)" stroke-width="6" />
+            <circle cx="380" cy="120" r="9" fill="var(--surface)" stroke="var(--brand)" stroke-width="3" />
+            <line x1="350" y1="184" x2="465" y2="184" stroke="var(--surface-3)" stroke-width="6" />
+            <line x1="350" y1="184" x2="440" y2="184" stroke="var(--brand)" stroke-width="6" />
+            <circle cx="440" cy="184" r="9" fill="var(--surface)" stroke="var(--brand)" stroke-width="3" />
+          </g>
+          <rect x="350" y="222" width="115" height="34" rx="8" fill="var(--brand)" />
+          <text x="407" y="244" text-anchor="middle" font-family="var(--font-sans)" font-size="13" font-weight="700" fill="var(--on-brand)">QR · Link</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section__head"><h2>{t(lang, 'home.featured')}</h2></div>
+      <div class="card-grid">
+        {ready.map((sim) => <SimCard lang={lang} sim={sim} showSubject />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head"><h2>{t(lang, 'home.subjects')}</h2></div>
+      <div class="card-grid">
+        {
+          SUBJECTS.map((subject) => {
+            const progress = progressOf(simulationsOf({ subject: subject.id }));
+            return (
+              <article class:list={['card', 'card--link', 'subject-card', `subject-${subject.id}`]}>
+                <div class="subject-card__icon">
+                  <Icon name={subjectIcon[subject.id]} size={26} />
+                </div>
+                <h3>
+                  <a class="card__link" href={href(lang, { kind: 'subject', subject: subject.id })}>
+                    {subject.title[lang]}
+                  </a>
+                </h3>
+                <p class="card__text">{subject.description[lang]}</p>
+                {subject.status === 'active' ? (
+                  <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
+                ) : (
+                  <p style="margin-top:auto;padding-top:16px">
+                    <span class="badge">{t(lang, 'status.subjectPlanned')}</span>
+                  </p>
+                )}
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head"><h2>{t(lang, 'home.howTitle')}</h2></div>
+      <ol class="steps">
+        <li><h3>{t(lang, 'home.how1Title')}</h3><p>{t(lang, 'home.how1Text')}</p></li>
+        <li><h3>{t(lang, 'home.how2Title')}</h3><p>{t(lang, 'home.how2Text')}</p></li>
+        <li><h3>{t(lang, 'home.how3Title')}</h3><p>{t(lang, 'home.how3Text')}</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head"><h2>{t(lang, 'home.principlesTitle')}</h2></div>
+      <div class="principles">
+        <div class="principle">
+          <div class="principle__icon"><Icon name="shield" /></div>
+          <h3>{t(lang, 'home.p1Title')}</h3>
+          <p>{t(lang, 'home.p1Text')}</p>
+        </div>
+        <div class="principle">
+          <div class="principle__icon"><Icon name="offline" /></div>
+          <h3>{t(lang, 'home.p2Title')}</h3>
+          <p>{t(lang, 'home.p2Text')}</p>
+        </div>
+        <div class="principle">
+          <div class="principle__icon"><Icon name="devices" /></div>
+          <h3>{t(lang, 'home.p3Title')}</h3>
+          <p>{t(lang, 'home.p3Text')}</p>
+        </div>
+        <div class="principle">
+          <div class="principle__icon"><Icon name="heart" /></div>
+          <h3>{t(lang, 'home.p4Title')}</h3>
+          <p>{t(lang, 'home.p4Text')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,125 @@
+---
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import Icon from './Icon.astro';
+
+/**
+ * HTML-Gerüst einer Simulation. Das Leben (Regler, Zeichnen, Teilen …)
+ * kommt aus src/sim-core/host.ts, das hier per Skript gestartet wird.
+ */
+interface Props {
+  lang: Lang;
+  simId: string;
+  title: string;
+}
+
+const { lang, simId, title } = Astro.props;
+const dialogTitleId = `share-title-${simId}`;
+---
+
+<section class="sim" data-sim-root data-sim-id={simId} data-lang={lang} aria-label={title}>
+  <div class="sim__layout">
+    <div class="sim__main">
+      <div class="sim__stage" data-sim-stage>
+        <p class="sim__status" data-sim-status>{t(lang, 'sim.loading')}</p>
+        <noscript><p class="sim__status">{t(lang, 'sim.noscript')}</p></noscript>
+      </div>
+      <div class="sim__toolbar" role="toolbar" aria-label={t(lang, 'sim.toolbar')}>
+        <div class="sim__toolbar-group">
+          <div class="sim__toolbar-group" data-sim-anim hidden>
+            <button class="btn btn--primary" type="button" data-action="play" aria-pressed="false">
+              <Icon name="play" class="icon-play" />
+              <Icon name="pause" class="icon-pause" />
+              <span data-label>{t(lang, 'sim.play')}</span>
+            </button>
+            <button class="btn btn--icon" type="button" data-action="reset-time" title={t(lang, 'sim.resetTime')} aria-label={t(lang, 'sim.resetTime')}>
+              <Icon name="skip-back" />
+            </button>
+          </div>
+          <button class="btn" type="button" data-action="reset" title={t(lang, 'sim.resetHint')}>
+            <Icon name="reset" />
+            <span data-label>{t(lang, 'sim.reset')}</span>
+          </button>
+        </div>
+        <div class="sim__toolbar-group">
+          <button class="btn" type="button" data-action="share">
+            <Icon name="share" />
+            <span data-label>{t(lang, 'sim.share')}</span>
+          </button>
+          <button class="btn btn--icon" type="button" data-action="image" title={t(lang, 'sim.image')} aria-label={t(lang, 'sim.image')}>
+            <Icon name="download" />
+          </button>
+          <button class="btn btn--icon" type="button" data-action="fullscreen" title={t(lang, 'sim.fullscreen')} aria-label={t(lang, 'sim.fullscreen')} aria-pressed="false">
+            <Icon name="fullscreen" />
+          </button>
+        </div>
+      </div>
+      <p class="sim__hint" data-sim-hint hidden>{t(lang, 'sim.dragHint')}</p>
+    </div>
+
+    <aside class="sim__panel" aria-label={t(lang, 'sim.controls')}>
+      <div class="sim__lock" data-sim-lock hidden>
+        <span>{t(lang, 'sim.locked')}</span>
+        <button class="btn" type="button" data-action="unlock"><Icon name="lock" size={16} />{t(lang, 'sim.unlock')}</button>
+      </div>
+      <div data-sim-presets hidden>
+        <span class="sim__panel-title">{t(lang, 'sim.presets')}</span>
+        <div class="chips" data-sim-preset-list></div>
+      </div>
+      <div>
+        <span class="sim__panel-title">{t(lang, 'sim.controls')}</span>
+        <div data-sim-controls></div>
+      </div>
+      <div data-sim-readouts-wrap hidden>
+        <span class="sim__panel-title">{t(lang, 'sim.readouts')}</span>
+        <dl class="readouts" data-sim-readouts aria-live="off"></dl>
+      </div>
+    </aside>
+  </div>
+
+  <dialog class="share-dialog" data-sim-share aria-labelledby={dialogTitleId}>
+    <form method="dialog" class="share">
+      <div class="share__head">
+        <h2 id={dialogTitleId}>{t(lang, 'share.title')}</h2>
+        <button class="btn btn--ghost btn--icon" value="close" aria-label={t(lang, 'share.close')}><Icon name="close" /></button>
+      </div>
+      <p class="share__intro">{t(lang, 'share.intro')}</p>
+      <div class="share__options">
+        <label class="switch share__option">
+          <input class="switch__input" type="checkbox" role="switch" data-share-lock />
+          <span class="switch__track" aria-hidden="true"></span>
+          <span class="switch__label">{t(lang, 'share.lock')}</span>
+        </label>
+        <label class="switch share__option">
+          <input class="switch__input" type="checkbox" role="switch" data-share-hide />
+          <span class="switch__track" aria-hidden="true"></span>
+          <span class="switch__label">{t(lang, 'share.hide')}</span>
+        </label>
+      </div>
+      <div class="share__link">
+        <input class="input" type="text" readonly data-share-url aria-label={t(lang, 'share.link')} />
+        <button class="btn btn--primary" type="button" data-share-copy><Icon name="copy" size={18} /><span data-label>{t(lang, 'share.copy')}</span></button>
+      </div>
+      <div class="share__qr">
+        <div class="share__qr-code" data-share-qr></div>
+        <div>
+          <p class="muted" style="margin:0 0 10px;font-size:.9rem">{t(lang, 'share.qr')}</p>
+          <button class="btn" type="button" data-share-qr-large><Icon name="qr" size={18} />{t(lang, 'share.qrLarge')}</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="qr-overlay" data-qr-overlay hidden tabindex="-1" role="dialog" aria-label={t(lang, 'share.qr')}>
+    <div class="qr-overlay__code" data-qr-large></div>
+    <div class="qr-overlay__url" data-qr-url></div>
+  </div>
+</section>
+
+<script>
+  import { mountSimulation } from '../sim-core/host';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-sim-root]')) {
+    void mountSimulation(root);
+  }
+</script>

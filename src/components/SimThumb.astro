@@ -1,0 +1,69 @@
+---
+import type { Thumb } from '../curriculum/types';
+
+/**
+ * Schlichte Vorschaubilder für Simulationskarten (Farbe über currentColor).
+ */
+interface Props {
+  kind?: Thumb;
+}
+
+const { kind = 'generic' } = Astro.props;
+---
+
+<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <g stroke="currentColor" stroke-opacity="0.12" stroke-width="1">
+    {Array.from({ length: 17 }, (_, i) => <line x1={i * 20} y1="0" x2={i * 20} y2="180" />)}
+    {Array.from({ length: 10 }, (_, i) => <line x1="0" y1={i * 20} x2="320" y2={i * 20} />)}
+  </g>
+  <g stroke="currentColor" stroke-opacity="0.45" stroke-width="2">
+    <line x1="0" y1="100" x2="320" y2="100" />
+    <line x1="140" y1="0" x2="140" y2="180" />
+  </g>
+  {
+    kind === 'line' && (
+      <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+        <line x1="20" y1="160" x2="300" y2="20" />
+        <path d="M140 100h40v-20" stroke-width="3" stroke-opacity="0.6" />
+        <circle cx="140" cy="100" r="7" fill="currentColor" stroke="none" />
+      </g>
+    )
+  }
+  {
+    kind === 'parabola' && (
+      <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+        <path d="M70 0Q160 260 250 0" />
+        <line x1="160" y1="0" x2="160" y2="180" stroke-width="2" stroke-dasharray="6 6" stroke-opacity="0.6" />
+        <circle cx="160" cy="130" r="7" fill="currentColor" stroke="none" />
+      </g>
+    )
+  }
+  {
+    kind === 'sine' && (
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M0 100C30 100 40 45 70 45S110 155 140 155 180 45 210 45 250 155 280 155 310 100 320 100" stroke-width="5" />
+        <path d="M0 100C30 100 40 70 70 70S110 130 140 130 180 70 210 70 250 130 280 130" stroke-width="2.5" stroke-opacity="0.4" stroke-dasharray="6 6" />
+      </g>
+    )
+  }
+  {
+    kind === 'unit-circle' && (
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <circle cx="140" cy="100" r="62" stroke-width="3" stroke-opacity="0.6" />
+        <line x1="140" y1="100" x2="194" y2="69" stroke-width="4" />
+        <line x1="194" y1="100" x2="194" y2="69" stroke-width="5" />
+        <path d="M168 100A28 28 0 0 0 164 86" stroke-width="3" />
+        <circle cx="194" cy="69" r="7" fill="currentColor" stroke="none" />
+        <path d="M210 69C230 69 240 40 255 40S285 100 300 100" stroke-width="3" stroke-opacity="0.7" stroke-dasharray="6 6" />
+      </g>
+    )
+  }
+  {
+    kind === 'generic' && (
+      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-opacity="0.55">
+        <path d="M20 150C80 150 100 50 160 50s80 70 140 70" />
+        <circle cx="160" cy="50" r="7" fill="currentColor" stroke="none" />
+      </g>
+    )
+  }
+</svg>

@@ -1,0 +1,93 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import GradeBadge from '../components/GradeBadge.astro';
+import KmkList from '../components/KmkList.astro';
+import Progress from '../components/Progress.astro';
+import SimCard from '../components/SimCard.astro';
+import { getArea, getSubject, progressOf, simulationsOf } from '../curriculum';
+import type { SubjectId } from '../curriculum/types';
+import type { Lang } from '../i18n/config';
+import { formatGrades, t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  subjectId: SubjectId;
+  areaId: string;
+}
+
+const { lang, subjectId, areaId } = Astro.props;
+const subject = getSubject(subjectId);
+const area = getArea(subjectId, areaId);
+const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }));
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${area.title[lang]} – ${subject.title[lang]}`}
+  description={area.description[lang]}
+  alternates={alternates({ kind: 'area', subject: subjectId, area: areaId })}
+  section={subjectId}
+>
+  <div class:list={['container', `subject-${subjectId}`]}>
+    <Breadcrumbs
+      lang={lang}
+      items={[
+        { label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) },
+        { label: subject.title[lang], href: href(lang, { kind: 'subject', subject: subjectId }) },
+        { label: area.title[lang] },
+      ]}
+    />
+    <header class="page-head">
+      <div class="page-head__meta">
+        <span class={`badge badge--subject-${subjectId}`}>{subject.title[lang]}</span>
+        <GradeBadge lang={lang} grades={area.grades} />
+      </div>
+      <h1>{area.title[lang]}</h1>
+      <p class="lead">{area.description[lang]}</p>
+      <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
+      <div style="margin-top:20px">
+        <span class="sim__panel-title">{t(lang, 'area.kmk')}</span>
+        <KmkList lang={lang} ids={area.kmk} />
+      </div>
+    </header>
+
+    {
+      area.topics.map((topic) => {
+        const ready = topic.simulations.filter((s) => s.status === 'ready');
+        const planned = topic.simulations.filter((s) => s.status === 'planned');
+        const entries = simulationsOf({ subject: subjectId, area: areaId, topic: topic.id });
+        return (
+          <section class="topic" id={topic.id}>
+            <div class="topic__head">
+              <h2>{topic.title[lang]}</h2>
+              <span class="badge">{formatGrades(lang, topic.grades)}</span>
+            </div>
+            {ready.length > 0 && (
+              <div class="card-grid" style="margin-bottom:14px">
+                {entries
+                  .filter((s) => s.status === 'ready')
+                  .map((sim) => (
+                    <SimCard lang={lang} sim={sim} />
+                  ))}
+              </div>
+            )}
+            {planned.length > 0 && (
+              <ul class="planned-list">
+                {planned.map((sim) => (
+                  <li>
+                    {sim.title[lang]}
+                    <span class="badge">{t(lang, 'status.planned')}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+      })
+    }
+
+    <p class="note" style="margin-top:40px">{t(lang, 'area.plannedHint')}</p>
+  </div>
+</BaseLayout>

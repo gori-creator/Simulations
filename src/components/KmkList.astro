@@ -1,0 +1,26 @@
+---
+import { getKmkStandard } from '../curriculum/kmk';
+import type { Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+  ids: string[];
+}
+
+const { lang, ids } = Astro.props;
+const standards = ids.map((id) => getKmkStandard(id)).filter((s) => s !== undefined);
+const short = (id: string) => id.replace(/^[MP]-/, '').replace(/^BK-.*/, 'BK');
+---
+
+{
+  standards.length > 0 && (
+    <ul class="kmk">
+      {standards.map((s) => (
+        <li>
+          <abbr title={s.id}>{short(s.id)}</abbr>
+          {s.title[lang]}
+        </li>
+      ))}
+    </ul>
+  )
+}

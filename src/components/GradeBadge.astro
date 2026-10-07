@@ -1,0 +1,15 @@
+---
+import type { GradeSpan } from '../curriculum/types';
+import type { Lang } from '../i18n/config';
+import { formatGrades } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  grades: GradeSpan;
+  uni?: boolean;
+}
+
+const { lang, grades, uni } = Astro.props;
+---
+
+<span class="badge">{formatGrades(lang, grades, uni)}</span>
