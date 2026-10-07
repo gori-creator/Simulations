@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M147 44L108 78M173 44L212 78M212 104L186 132M228 104L254 132M96 104L70 132M112 104L138 132" stroke-width="4" stroke-opacity="0.5" />
+    <circle cx="160" cy="30" r="19" stroke-width="4.5" />
+    <circle cx="220" cy="90" r="18" stroke-width="4.5" />
+    <circle cx="100" cy="90" r="18" stroke-width="4.5" />
+  </g>
+  <g fill="currentColor">
+    <circle cx="62" cy="148" r="17" fill-opacity="0.9" />
+    <circle cx="146" cy="148" r="17" fill-opacity="0.55" />
+    <circle cx="178" cy="148" r="17" fill-opacity="0.9" />
+    <circle cx="262" cy="148" r="17" fill-opacity="0.35" />
+    <circle cx="104" cy="148" r="3.5" fill-opacity="0.6" />
+    <circle cx="220" cy="148" r="3.5" fill-opacity="0.6" />
+    <circle cx="160" cy="90" r="3.5" fill-opacity="0.6" />
+  </g>
+</svg>

@@ -65,7 +65,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('primfaktoren', L('Primfaktorzerlegung und Teilbarkeit', 'Prime factorisation and divisibility'), [5, 6]),
+          {
+            id: 'primfaktoren',
+            status: 'ready',
+            slug: L('primfaktoren-teilbarkeit', 'prime-factors-divisibility'),
+            title: L('Primfaktorzerlegung und Teilbarkeit', 'Prime factorisation and divisibility'),
+            summary: L(
+              'Faktorbäume wachsen lassen, Teilbarkeitsregeln prüfen, Primzahlen mit dem Sieb des Eratosthenes finden und ggT und kgV im Mengenbild der Primfaktoren sehen.',
+              'Grow factor trees, check divisibility rules, find primes with the sieve of Eratosthenes and see gcd and lcm in a set diagram of prime factors.',
+            ),
+            grades: [5, 6],
+            kmk: ['M-L1', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Primzahl', 'Primfaktorzerlegung', 'Faktorbaum', 'Teiler', 'Teilbarkeitsregeln', 'Quersumme', 'Sieb des Eratosthenes', 'ggT', 'kgV', 'Potenz', 'teilerfremd'],
+              ['prime number', 'prime factorisation', 'factor tree', 'divisor', 'divisibility rules', 'digit sum', 'sieve of Eratosthenes', 'gcd', 'lcm', 'power', 'coprime'],
+            ),
+            thumb: 'generic',
+          },
           planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
