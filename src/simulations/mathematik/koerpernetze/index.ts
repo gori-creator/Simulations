@@ -201,8 +201,8 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
-    const cm = (v: number, d = 2) => `${fmt.num(v, d)} cm`;
-    const cm2 = (v: number, d = 2) => `${fmt.num(v, d)} cm²`;
+    const cm = (v: number, d = 2) => `${fmt.num(v, d)}\u00a0cm`;
+    const cm2 = (v: number, d = 2) => `${fmt.num(v, d)}\u00a0cm²`;
 
     let selected: string | null = null;
     const view: View3D = new View3D(surface, {

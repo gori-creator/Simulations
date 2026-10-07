@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-opacity="0.45" stroke-linejoin="round">
+    <path d="M80 150V78H200V150M80 78L113 45H233L200 78M233 45V117L200 150" />
+  </g>
+  <g fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
+    <path d="M80 150H200V126H80Z" fill-opacity="0.5" />
+    <path d="M80 126H200L233 93H113Z" fill-opacity="0.22" />
+    <path d="M200 150L233 117V93L200 126Z" fill-opacity="0.36" />
+    <path d="M139 100.6H163V76.6H139Z" fill-opacity="0.5" />
+    <path d="M139 76.6H163L174 65.6H150Z" fill-opacity="0.22" />
+    <path d="M163 100.6L174 89.6V65.6L163 76.6Z" fill-opacity="0.36" />
+  </g>
+  <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-opacity="0.8">
+    <path d="M104 150V126M128 150V126M152 150V126M176 150V126" />
+    <path d="M104 126L137 93M128 126L161 93M152 126L185 93M176 126L209 93" />
+    <path d="M91 115H211M102 104H222" />
+    <path d="M211 139V115M222 128V104" />
+  </g>
+</svg>

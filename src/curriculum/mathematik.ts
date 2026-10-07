@@ -217,7 +217,23 @@ export const mathematik: Subject = {
           planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),
         ]),
         topic('volumen', L('Volumen', 'Volume'), [
-          planned('quader-volumen', L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'), [6, 6]),
+          {
+            id: 'quader-volumen',
+            status: 'ready',
+            slug: L('quader-volumen', 'volume-of-cuboids'),
+            title: L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'),
+            summary: L(
+              'Einheitswürfel füllen einen gläsernen Quader – Reihe für Reihe, Schicht für Schicht. So wird V = a · b · c sichtbar, dazu cm³, dm³, Liter und m³.',
+              'Unit cubes fill a glass cuboid row by row and layer by layer, making V = a · b · c visible – with cm³, dm³, litres and m³.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Volumen', 'Rauminhalt', 'Quader', 'Würfel', 'Einheitswürfel', 'Kubikzentimeter', 'Liter', 'Volumeneinheiten', 'Schicht', 'Reihe'],
+              ['volume', 'cuboid', 'cube', 'unit cube', 'cubic centimetre', 'litre', 'units of volume', 'layer', 'row'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('kreis', L('Kreis', 'Circle'), [
           {
