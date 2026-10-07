@@ -195,13 +195,61 @@ export const mathematik: Subject = {
           planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
-          planned('koerpernetze', L('Netze und Oberflächen von Körpern', 'Nets and surface areas of solids'), [5, 8]),
-          planned('prisma-zylinder', L('Prisma und Zylinder: Oberfläche und Volumen', 'Prism and cylinder: surface area and volume'), [8, 8]),
+          {
+            id: 'koerpernetze',
+            status: 'ready',
+            slug: L('koerpernetze', 'nets-of-solids'),
+            title: L('Netze und Oberflächen von Körpern', 'Nets and surface areas of solids'),
+            summary: L(
+              'Netze von Würfel, Quader, Prisma, Pyramide und Zylinder falten sich in 3D zum Körper. Welche der 15 Netze ergeben einen Würfel? Oberfläche direkt aus dem Netz.',
+              'Nets of a cube, cuboid, prism, pyramid and cylinder fold into the solid in 3D. Which of the 15 nets make a cube? Surface area straight from the net.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Körpernetz', 'Würfelnetz', 'Würfel', 'Quader', 'Prisma', 'Pyramide', 'Zylinder', 'Oberfläche', 'Mantel', 'Raumvorstellung', 'falten', 'Spielwürfel'],
+              ['net', 'cube net', 'cube', 'cuboid', 'prism', 'pyramid', 'cylinder', 'surface area', 'lateral surface', 'spatial reasoning', 'folding', 'dice'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'prisma-zylinder',
+            status: 'ready',
+            slug: L('prisma-und-zylinder', 'prism-and-cylinder'),
+            title: L('Prisma und Zylinder: Oberfläche und Volumen', 'Prism and cylinder: surface area and volume'),
+            summary: L(
+              'Schichten stapeln zeigt V = G · h, Abrollen auf dem Boden zeigt den Mantel u · h. Mit wachsender Eckenzahl wird das Prisma zum Zylinder.',
+              'Stacking layers shows V = G · h, rolling the solid on the floor shows the lateral surface u · h. With more and more vertices the prism turns into a cylinder.',
+            ),
+            grades: [8, 8],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Prisma', 'Zylinder', 'Volumen', 'Oberfläche', 'Mantel', 'Grundfläche', 'Netz', 'Abwicklung', 'Vieleck', 'Kreis'],
+              ['prism', 'cylinder', 'volume', 'surface area', 'lateral surface', 'base area', 'net', 'development', 'polygon', 'circle'],
+            ),
+            thumb: 'generic',
+          },
           planned('pyramide-kegel-kugel', L('Pyramide, Kegel und Kugel', 'Pyramid, cone and sphere'), [10, 10]),
           planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),
         ]),
         topic('volumen', L('Volumen', 'Volume'), [
-          planned('quader-volumen', L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'), [6, 6]),
+          {
+            id: 'quader-volumen',
+            status: 'ready',
+            slug: L('quader-volumen', 'volume-of-cuboids'),
+            title: L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'),
+            summary: L(
+              'Einheitswürfel füllen einen gläsernen Quader – Reihe für Reihe, Schicht für Schicht. So wird V = a · b · c sichtbar, dazu cm³, dm³, Liter und m³.',
+              'Unit cubes fill a glass cuboid row by row and layer by layer, making V = a · b · c visible – with cm³, dm³, litres and m³.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Volumen', 'Rauminhalt', 'Quader', 'Würfel', 'Einheitswürfel', 'Kubikzentimeter', 'Liter', 'Volumeneinheiten', 'Schicht', 'Reihe'],
+              ['volume', 'cuboid', 'cube', 'unit cube', 'cubic centimetre', 'litre', 'units of volume', 'layer', 'row'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('kreis', L('Kreis', 'Circle'), [
           {
