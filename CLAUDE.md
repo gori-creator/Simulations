@@ -14,7 +14,7 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - `src/curriculum/lehrplaene/` – Länder-Lehrpläne (aktuell Bayern, Gymnasium, Mathematik): Jahrgangsstufe → Lernbereich → Simulations-IDs; Kurzbeschreibungen in eigenen Worten
 - `src/lib/routes.ts` – alle Seiten/Adressen; interne Links immer über `href()`/`withBase()`
 - `src/sim-core/` – Kern (Host, Regler, URL-Zustand, Plot/Surface, Format, Uhr). Simulationen importieren nur aus `src/sim-core/index.ts`
-- `src/simulations/<fach>/<id>/` – Umsetzung (`index.ts`), Rechenlogik (`model.ts`); Registrierung in `registry.ts`
+- `src/simulations/<fach>/<id>/` – Umsetzung (`index.ts`), Rechenlogik (`model.ts`), optional Vorschaubild (`thumb.svg`); `registry.ts` findet die Ordner automatisch
 - `src/content/simulations/{de,en}/<id>.md` – Lernmaterial; `src/content/pages/{de,en}/` – Infoseiten
 - `src/i18n/ui.ts` – alle UI-Texte (DE ist Referenz, EN muss alle Schlüssel haben)
 - Details: `docs/ARCHITEKTUR.md`

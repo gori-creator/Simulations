@@ -13,7 +13,8 @@ Die `id` muss mit der ID im Lehrplan übereinstimmen (z. B. `fadenpendel` in `sr
 
 - `src/simulations/<fach>/<id>/index.ts` – die Umsetzung (Vorlage)
 - `src/content/simulations/de/<id>.md` – das Lernmaterial (Vorlage)
-- einen Eintrag in `src/simulations/registry.ts`
+
+Die Registry (`src/simulations/registry.ts`) findet jeden Ordner `src/simulations/<fach>/<id>/` mit einer `index.ts` automatisch; der Ordnername ist die ID.
 
 ## 2. Im Lehrplan freischalten
 
@@ -29,7 +30,7 @@ In `src/curriculum/<fach>.ts` den `planned(...)`-Eintrag durch einen vollständi
   grades: [10, 12],                                 // Klassenstufen; > 13 = Uni
   kmk: ['P-E', 'P-BK-Mathematisieren'],             // IDs aus curriculum/kmk.ts
   keywords: L(['Schwingung', 'Periode'], ['oscillation', 'period']),
-  thumb: 'generic',                                 // Vorschaubild, siehe components/SimThumb.astro
+  thumb: 'generic',                                 // Vorschaubild; besser: eigene thumb.svg im Simulationsordner
 },
 ```
 

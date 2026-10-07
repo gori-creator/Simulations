@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allSimulations, getSimulation, readySimulations, SUBJECTS } from '../src/curriculum';
 import { getKmkStandard } from '../src/curriculum/kmk';
@@ -63,6 +63,17 @@ describe('Fertige Simulationen', () => {
       expect(sim.slug, sim.id).toBeDefined();
       expect(sim.summary, sim.id).toBeDefined();
       expect(sim.thumb, sim.id).toBeDefined();
+    }
+  });
+
+  it('haben gültige eigene Vorschaubilder (thumb.svg)', () => {
+    for (const sim of ready) {
+      const file = `src/simulations/${sim.subject}/${sim.id}/thumb.svg`;
+      if (!existsSync(file)) continue;
+      const svg = readFileSync(file, 'utf8');
+      expect(svg, file).toMatch(/^<svg[^>]*viewBox="0 0 320 180"/);
+      expect(svg, `${file}: Farben nur über currentColor`).not.toMatch(/(fill|stroke|color)\s*[=:]\s*["']?\s*(#|rgb|hsl)/i);
+      expect(svg, `${file}: keine Skripte, Texte oder externen Verweise`).not.toMatch(/<script|<text|href=|url\(/i);
     }
   });
 

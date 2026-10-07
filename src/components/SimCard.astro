@@ -32,7 +32,7 @@ const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords
   data-grade-to={sim.uni ? Math.max(sim.grades[1], 14) : sim.grades[1]}
   data-search={searchText}
 >
-  <div class="card__thumb"><SimThumb kind={sim.thumb} /></div>
+  <div class="card__thumb"><SimThumb kind={sim.thumb} id={sim.id} /></div>
   <div class="card__body">
     <Heading class="card__title">
       {ready ? <a class="card__link" href={href(lang, { kind: 'simulation', id: sim.id })}>{sim.title[lang]}</a> : sim.title[lang]}

@@ -6,9 +6,19 @@ import type { Thumb } from '../curriculum/types';
  */
 interface Props {
   kind?: Thumb;
+  /** ID der Simulation: Liegt `src/simulations/<fach>/<id>/thumb.svg` vor, wird diese Datei gezeigt. */
+  id?: string;
 }
 
-const { kind = 'generic' } = Astro.props;
+/** Eigene Vorschaubilder der Simulationen (SVG 320 × 180, Farben nur über currentColor). */
+const files = import.meta.glob<string>('../simulations/*/*/thumb.svg', { query: '?raw', import: 'default', eager: true });
+const custom = Object.fromEntries(
+  Object.entries(files).map(([file, svg]) => [file.split('/')[3] ?? file, svg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '')]),
+);
+
+const { kind: requested = 'generic', id } = Astro.props;
+const own = id ? custom[id] : undefined;
+const kind = own ? 'custom' : requested;
 /** Vorschaubilder mit Koordinatenachsen (Funktionen); die übrigen zeigen nur das Gitter. */
 const withAxes = ['line', 'parabola', 'sine', 'unit-circle', 'secant', 'growth', 'riemann', 'generic'].includes(kind);
 ---
@@ -250,6 +260,7 @@ const withAxes = ['line', 'parabola', 'sine', 'unit-circle', 'secant', 'growth',
       </g>
     )
   }
+  {own && <g set:html={own} />}
   {
     kind === 'generic' && (
       <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-opacity="0.55">

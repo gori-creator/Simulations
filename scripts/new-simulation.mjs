@@ -11,7 +11,7 @@
  * Erzeugt:
  *   src/simulations/<fach>/<id>/index.ts         Umsetzung (Vorlage)
  *   src/content/simulations/de/<id>.md           Lernmaterial (Vorlage)
- * und trägt die Simulation in src/simulations/registry.ts ein.
+ * Die Registry (src/simulations/registry.ts) findet den neuen Ordner automatisch.
  *
  * Danach im Lehrplan (src/curriculum/<fach>.ts) den Eintrag mit dieser ID
  * auf `status: 'ready'` setzen und `slug`, `summary` und `thumb` ergänzen.
@@ -43,7 +43,6 @@ if (!['mathematik', 'physik', 'chemie'].includes(subject)) fail('--subject muss 
 const root = path.resolve(import.meta.dirname, '..');
 const simDir = path.join(root, 'src/simulations', subject, id);
 const contentFile = path.join(root, 'src/content/simulations/de', `${id}.md`);
-const registryFile = path.join(root, 'src/simulations/registry.ts');
 const curriculumFile = path.join(root, 'src/curriculum', `${subject}.ts`);
 
 if (existsSync(simDir)) fail(`${path.relative(root, simDir)} existiert bereits.`);
@@ -220,21 +219,12 @@ mkdirSync(simDir, { recursive: true });
 writeFileSync(path.join(simDir, 'index.ts'), values.animated ? animatedTemplate : staticTemplate);
 if (!existsSync(contentFile)) writeFileSync(contentFile, contentTemplate);
 
-// In die Registry eintragen
-const registry = readFileSync(registryFile, 'utf8');
-const key = /^[a-z][a-z0-9]*$/.test(id) ? id : `'${id}'`;
-const line = `  ${key}: () => import('./${subject}/${id}').then((m) => m.default),\n`;
-if (!registry.includes(`'./${subject}/${id}'`)) {
-  writeFileSync(registryFile, registry.replace(/\n};\s*$/, `\n${line}};\n`));
-}
-
 const inCurriculum = existsSync(curriculumFile) && readFileSync(curriculumFile, 'utf8').includes(`'${id}'`);
 
 console.log(`
 ✔ Simulation „${id}“ angelegt:
    src/simulations/${subject}/${id}/index.ts
    src/content/simulations/de/${id}.md
-   Eintrag in src/simulations/registry.ts
 
 Nächste Schritte:
  1. ${inCurriculum ? `In src/curriculum/${subject}.ts den Eintrag '${id}'` : `In src/curriculum/${subject}.ts einen Eintrag mit id '${id}' anlegen und`} auf
