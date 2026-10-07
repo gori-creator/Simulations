@@ -14,7 +14,7 @@ import type { PointerTarget, Rect, Surface, SurfacePointer } from './surface';
  *   (Maus, Finger, Stift) inklusive Trägheit, Zoom (Pinch, Strg+Mausrad,
  *   Schaltflächen), Antippen von Flächen und ziehbaren 3D-Punkten. Gezeichnet
  *   wird im „Immediate Mode“ zwischen `begin()` und `end()`: Flächen, Linien,
- *   Punkte und Beschriftungen werden gesammelt, nach Tiefe sortiert
+ *   Punkte, Kugeln und Beschriftungen werden gesammelt, nach Tiefe sortiert
  *   (Maleralgorithmus) und mit einfacher Beleuchtung (Lambert) gezeichnet.
  * - `mesh3d`: Polygonnetze (Quader, Prisma, Pyramide, Zylinder, Kegel, Kugel).
  * - `vec3`: kleine Vektorhilfen.
@@ -1317,6 +1317,39 @@ export class View3D implements PointerTarget {
         g.lineWidth = 1.5;
         g.strokeStyle = theme.bg;
         g.stroke();
+      }
+    });
+  }
+
+  /**
+   * Glatt schattierte Kugel (Kreis mit Farbverlauf, perspektivisch skaliert),
+   * z. B. für Kugeln, Murmeln oder dicke Punkte. Wird als Ganzes nach der Tiefe
+   * des Mittelpunkts sortiert; für Kugeln, die andere Körper schneiden, besser
+   * `mesh3d.sphere` verwenden.
+   */
+  ball(center: Vec3, radius: number, style: { color?: string; alpha?: number; layer?: Layer3D; id?: string } = {}): void {
+    const q = this.camera.project(center);
+    const rpx = radius * this.camera.scale * q.k;
+    if (rpx < 0.3) return;
+    const base = parseColor(style.color ?? this.surface.theme.series[0]!);
+    const alpha = style.alpha ?? 1;
+    this.add(style.layer ?? 'scene', q.depth, () => {
+      const g = this.surface.g;
+      // Glanzpunkt in Richtung der Lichtquelle (links oben)
+      const hx = q.x + LIGHT[0] * rpx * 0.45;
+      const hy = q.y - LIGHT[1] * rpx * 0.45;
+      const grad = g.createRadialGradient(hx, hy, rpx * 0.05, q.x, q.y, rpx);
+      grad.addColorStop(0, rgbCss(mixRgb(base, [255, 255, 255], 0.55), alpha));
+      grad.addColorStop(0.35, rgbCss(mixRgb(base, [255, 255, 255], 0.12), alpha));
+      grad.addColorStop(0.85, rgbCss(mixRgb(base, [0, 0, 0], 0.22), alpha));
+      grad.addColorStop(1, rgbCss(mixRgb(base, [0, 0, 0], 0.38), alpha));
+      g.beginPath();
+      g.arc(q.x, q.y, rpx, 0, Math.PI * 2);
+      g.fillStyle = grad;
+      g.fill();
+      if (style.id) {
+        const pts: Vec2[] = Array.from({ length: 16 }, (_, i) => [q.x + rpx * Math.cos((i * Math.PI) / 8), q.y + rpx * Math.sin((i * Math.PI) / 8)]);
+        this.picks.push({ id: style.id, pts });
       }
     });
   }
