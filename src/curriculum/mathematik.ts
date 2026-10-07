@@ -31,7 +31,23 @@ export const mathematik: Subject = {
       kmk: ['M-L1', 'M-K4', 'M-K5'],
       topics: [
         topic('ganze-zahlen', L('Natürliche und ganze Zahlen', 'Natural numbers and integers'), [
-          planned('stellenwerte', L('Stellenwertsystem und Runden', 'Place value and rounding'), [5, 5], { kmk: ['M-L1'] }),
+          {
+            id: 'stellenwerte',
+            status: 'ready',
+            slug: L('stellenwerte-runden', 'place-value-rounding'),
+            title: L('Stellenwertsystem und Runden', 'Place value and rounding'),
+            summary: L(
+              'Plättchen in der Stellenwerttafel bündeln, große Zahlen in Dreiergruppen lesen und am Zahlenstrahl mit Lupe auf eine wählbare Stelle runden.',
+              'Regroup counters in a place value chart, read large numbers in groups of three and round to any place on a number line with a magnifier.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Stellenwerttafel', 'Stellenwert', 'Zehnersystem', 'Bündeln', 'große Zahlen', 'Million', 'Milliarde', 'Zahlwort', 'Runden', 'Zahlenstrahl', 'Nachbarzahl'],
+              ['place value chart', 'place value', 'base ten', 'regrouping', 'large numbers', 'million', 'billion', 'number words', 'rounding', 'number line'],
+            ),
+            thumb: 'generic',
+          },
           planned('zahlengerade', L('Ganze Zahlen an der Zahlengeraden addieren und subtrahieren', 'Adding and subtracting integers on the number line'), [5, 5], { kmk: ['M-L1', 'M-K4'] }),
           planned('primfaktoren', L('Primfaktorzerlegung und Teilbarkeit', 'Prime factorisation and divisibility'), [5, 6]),
           planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
