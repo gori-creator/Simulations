@@ -21,7 +21,7 @@ Mathematics and physics are best understood by trying things out: change a param
 1. **Secondary school mathematics and physics**, step by step along the German educational standards. All planned simulations are already listed in the catalogue.
 2. **Chemistry.**
 3. **University** – advanced simulations, e.g. Fourier series, differential equations and linear algebra.
-4. **State curricula** – mapping simulations to the curricula of individual German states.
+4. **State curricula** – mapping simulations to the curricula of individual German states, starting with mathematics at Bavarian Gymnasium schools.
 
 ## Technology
 

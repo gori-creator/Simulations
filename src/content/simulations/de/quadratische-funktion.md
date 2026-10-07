@@ -113,3 +113,4 @@ Der Scheitelpunkt $S(5 \mid 6)$ ist der höchste Punkt: 6 m Höhe nach 5 m. Land
   - Der Parameter $b$ der allgemeinen Form wird als Verschiebung interpretiert – beim Ziehen am Scheitel sieht man, dass sich $b$ und $c$ gemeinsam ändern.
 - **Regionale Unterschiede:** Je nach Bundesland wird mit der $pq$-Formel (Normalform $x^2 + px + q$) oder der $abc$-Formel gearbeitet. Die Simulation zeigt die Diskriminante $b^2 - 4ac$; für $a = 1$ entspricht sie $p^2 - 4q$.
 - **Aufgabenmodus:** Mit **Teilen → Ergebnisse verdecken** werden Funktionsgleichungen, Scheitelpunkt und Nullstellen verdeckt. So eignet sich jede Einstellung als Ableseaufgabe.
+- **Schreibweise in Bayern:** Der LehrplanPLUS schreibt den Term als $a \cdot (x + d)^2 + e$. Unter **Anzeige → Schreibweise der Scheitelpunktform** lässt sich die Simulation darauf umstellen; ein positives $d$ verschiebt dann nach links.

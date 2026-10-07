@@ -44,16 +44,10 @@ export const physik: Subject = {
           grades: [7, 10],
           simulations: [
             planned('hookesches-gesetz', L('Hookesches Gesetz', 'Hooke’s law'), [7, 8]),
+            planned('hebelgesetz', L('Hebelgesetz', 'Law of the lever'), [7, 8]),
             planned('kraefteaddition', L('Kräfte addieren und zerlegen', 'Adding and resolving forces'), [8, 10], { kmk: ['P-S', 'P-BK-Wechselwirkung'] }),
             planned('schiefe-ebene', L('Schiefe Ebene', 'Inclined plane'), [8, 10]),
-            planned('hebelgesetz', L('Hebelgesetz', 'Law of the lever'), [7, 8]),
           ],
-        },
-        {
-          id: 'wuerfe',
-          title: L('Würfe', 'Projectile motion'),
-          grades: [10, 11],
-          simulations: [planned('schiefer-wurf', L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'), [10, 11], { kmk: ['P-E', 'P-BK-Superposition'] })],
         },
         {
           id: 'energie-impuls',
@@ -63,6 +57,12 @@ export const physik: Subject = {
             planned('energieerhaltung', L('Energieerhaltung (Achterbahn)', 'Conservation of energy (roller coaster)'), [9, 10], { kmk: ['P-BK-Energie'] }),
             planned('stoesse', L('Elastische und unelastische Stöße', 'Elastic and inelastic collisions'), [10, 11], { kmk: ['P-BK-Erhaltung'] }),
           ],
+        },
+        {
+          id: 'wuerfe',
+          title: L('Würfe', 'Projectile motion'),
+          grades: [10, 11],
+          simulations: [planned('schiefer-wurf', L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'), [10, 11], { kmk: ['P-E', 'P-BK-Superposition'] })],
         },
         {
           id: 'kreisbewegung-gravitation',
@@ -102,9 +102,9 @@ export const physik: Subject = {
           grades: [10, 13],
           simulations: [
             planned('wellen-ausbreitung', L('Transversal- und Longitudinalwellen', 'Transverse and longitudinal waves'), [10, 12]),
+            planned('doppler-effekt', L('Doppler-Effekt', 'Doppler effect'), [10, 12]),
             planned('interferenz', L('Interferenz zweier Kreiswellen', 'Interference of two circular waves'), [11, 13], { kmk: ['P-BK-Superposition'] }),
             planned('stehende-wellen', L('Stehende Wellen', 'Standing waves'), [11, 13]),
-            planned('doppler-effekt', L('Doppler-Effekt', 'Doppler effect'), [10, 12]),
           ],
         },
       ],

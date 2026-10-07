@@ -40,7 +40,9 @@ Unter jeder Simulation finden Sie:
 
 ## Lehrplanbezug
 
-Die Themen sind bundeslandneutral nach den **Bildungsstandards der Kultusministerkonferenz (KMK)** und nach Klassenstufen gegliedert. Bei jeder Simulation sehen Sie die passende Klassenstufe und die Bezüge zu Leitideen bzw. Kompetenzbereichen. Die Zuordnung zu den Lehrplänen einzelner Bundesländer ist für später geplant.
+Die Themen sind nach den **Bildungsstandards der Kultusministerkonferenz (KMK)** und nach Klassenstufen gegliedert. Bei jeder Simulation sehen Sie die passende Klassenstufe und die Bezüge zu Leitideen bzw. Kompetenzbereichen.
+
+Für **Mathematik am bayerischen Gymnasium** gibt es zusätzlich eine Ansicht **nach Jahrgangsstufe**: Für jede Jahrgangsstufe von 5 bis 13 sehen Sie die Lernbereiche des LehrplanPLUS mit den passenden Simulationen – zu finden auf der Seite [Mathematik](../mathematik/). Weitere Fächer, Bundesländer und Schularten folgen.
 
 ## Datenschutz
 

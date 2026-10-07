@@ -5,6 +5,7 @@ import GradeBadge from '../components/GradeBadge.astro';
 import KmkList from '../components/KmkList.astro';
 import SimulationShell from '../components/SimulationShell.astro';
 import { getArea, getSimulation, getSubject, getTopic, readySimulations } from '../curriculum';
+import { referencesFor, unitAnchor } from '../curriculum/lehrplaene';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -21,6 +22,11 @@ const subject = getSubject(sim.subject);
 const area = getArea(sim.subject, sim.area);
 const topic = getTopic(sim.subject, sim.area, sim.topic);
 const related = readySimulations().filter((s) => s.area === sim.area && s.id !== sim.id);
+const references = referencesFor(simId);
+const curriculaRefs = [...new Set(references.map((r) => r.curriculum))].map((curriculum) => ({
+  curriculum,
+  refs: references.filter((r) => r.curriculum === curriculum),
+}));
 
 // Lernmaterial: zuerst in der gewählten Sprache, sonst Deutsch
 const texts = await getCollection('simulationTexts');
@@ -101,6 +107,22 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
             }
           </dl>
         </section>
+        {
+          curriculaRefs.map(({ curriculum, refs }) => (
+            <section class="aside-box" style="position:static">
+              <h2>{t(lang, 'curriculum.reference', { state: curriculum.state[lang], school: curriculum.schoolType[lang] })}</h2>
+              <ul>
+                {refs.map((r) => (
+                  <li>
+                    <a href={`${href(lang, { kind: 'grade', curriculum: curriculum.id, grade: r.grade })}#${unitAnchor(r.unit.code)}`}>
+                      <strong>{t(lang, 'curriculum.gradeShort', { n: r.grade })}</strong> · {r.unit.code} {r.unit.title[lang]}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
         {
           related.length > 0 && (
             <section class="aside-box" style="position:static">

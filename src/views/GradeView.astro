@@ -1,0 +1,85 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import GradeNav from '../components/GradeNav.astro';
+import Progress from '../components/Progress.astro';
+import UnitSimulations from '../components/UnitSimulations.astro';
+import { getSimulation, getSubject, progressOf } from '../curriculum';
+import { getCurriculum, getCurriculumGrade, simulationsOfGrade, unitAnchor } from '../curriculum/lehrplaene';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  curriculumId: string;
+  grade: number;
+}
+
+const { lang, curriculumId, grade } = Astro.props;
+const curriculum = getCurriculum(curriculumId);
+const entry = getCurriculumGrade(curriculumId, grade);
+const subject = getSubject(curriculum.subject);
+const progress = progressOf(simulationsOfGrade(entry).map((id) => getSimulation(id)));
+const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang], subject: subject.title[lang], source: curriculum.sourceName, n: grade };
+const title = t(lang, 'curriculum.gradeTitle', vars);
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${title} (${t(lang, 'curriculum.label', vars)})`}
+  alternates={alternates({ kind: 'grade', curriculum: curriculumId, grade })}
+  section={curriculum.subject}
+>
+  <div class:list={['container', `subject-${curriculum.subject}`]}>
+    <Breadcrumbs
+      lang={lang}
+      items={[
+        { label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) },
+        { label: subject.title[lang], href: href(lang, { kind: 'subject', subject: curriculum.subject }) },
+        { label: t(lang, 'curriculum.label', vars), href: href(lang, { kind: 'curriculum', curriculum: curriculumId }) },
+        { label: t(lang, 'curriculum.grade', vars) },
+      ]}
+    />
+    <header class="page-head">
+      <div class="page-head__meta">
+        <span class={`badge badge--subject-${curriculum.subject}`}>{subject.title[lang]}</span>
+        <span class="badge">{t(lang, 'curriculum.label', vars)}</span>
+      </div>
+      <h1>{title}</h1>
+      {entry.note && <p class="lead">{entry.note[lang]}</p>}
+      <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
+      <div style="margin-top:20px">
+        <GradeNav lang={lang} curriculum={curriculum} current={grade} />
+      </div>
+    </header>
+
+    {
+      entry.units.map((unit) => (
+        <section class="lp-unit" id={unitAnchor(unit.code)}>
+          <h2>
+            <span class="lp-code">{t(lang, 'curriculum.unit', { code: unit.code })}</span>
+            {unit.title[lang]}
+          </h2>
+          {unit.summary && <p class="lp-summary">{unit.summary[lang]}</p>}
+          {!unit.parts && <UnitSimulations lang={lang} ids={unit.simulations ?? []} />}
+          {unit.parts?.map((part) => (
+            <div class="lp-part" id={unitAnchor(part.code)}>
+              <h3>
+                <span class="lp-code">{part.code}</span>
+                {part.title[lang]}
+              </h3>
+              {part.summary && <p class="lp-summary">{part.summary[lang]}</p>}
+              <UnitSimulations lang={lang} ids={part.simulations ?? []} />
+            </div>
+          ))}
+        </section>
+      ))
+    }
+
+    <p class="note" style="margin-top:40px">
+      {t(lang, 'curriculum.disclaimer')}{' '}
+      <a href={entry.sourceUrl} rel="noopener">{t(lang, 'curriculum.source', vars)}</a>
+    </p>
+  </div>
+</BaseLayout>

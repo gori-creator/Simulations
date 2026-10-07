@@ -1122,6 +1122,167 @@ sup {
   color: var(--warning-text);
 }
 
+/* ---------- Länder-Lehrpläne (nach Jahrgangsstufe) ---------- */
+
+.grade-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.grade-nav__item {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.grade-nav__item:hover {
+  border-color: var(--accent, var(--brand));
+  color: var(--accent, var(--brand));
+}
+
+.grade-nav__item[aria-current='page'] {
+  background: var(--accent, var(--brand));
+  border-color: var(--accent, var(--brand));
+  color: var(--on-brand);
+}
+
+.lp-entry {
+  display: grid;
+  gap: 10px;
+  margin: 8px 0 16px;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.lp-entry h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.lp-entry p {
+  margin: 0;
+}
+
+.lp-entry__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+
+.lp-entry__label {
+  font-weight: 700;
+}
+
+.lp-unit {
+  margin-top: 40px;
+  padding-top: 8px;
+}
+
+.lp-unit h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+}
+
+.lp-code {
+  color: var(--accent, var(--brand));
+  font-size: 0.8em;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.lp-summary {
+  max-width: 75ch;
+  color: var(--muted);
+}
+
+.lp-part {
+  margin: 22px 0 0;
+  padding-left: 18px;
+  border-left: 3px solid var(--border);
+}
+
+.lp-part h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 6px;
+}
+
+.lp-sims {
+  display: grid;
+  gap: 12px;
+}
+
+.lp-none {
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+.lp-grades {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.lp-grade {
+  padding: 20px 22px;
+}
+
+.lp-grade h2 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+}
+
+.lp-grade h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.lp-grade h2 a:hover {
+  color: var(--accent, var(--brand));
+}
+
+.lp-grade__units {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.93rem;
+}
+
+.lp-grade__units a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.lp-grade__units a:hover {
+  color: var(--accent, var(--brand));
+  text-decoration: underline;
+}
+
+.lp-grade .progress {
+  margin-top: auto;
+}
+
 /* ---------- Katalog ---------- */
 
 .catalog-filters {

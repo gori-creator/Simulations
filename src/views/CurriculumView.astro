@@ -1,0 +1,76 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import GradeNav from '../components/GradeNav.astro';
+import Progress from '../components/Progress.astro';
+import { getSimulation, getSubject, progressOf } from '../curriculum';
+import { getCurriculum, simulationsOfGrade, unitAnchor } from '../curriculum/lehrplaene';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { alternates, href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+  curriculumId: string;
+}
+
+const { lang, curriculumId } = Astro.props;
+const curriculum = getCurriculum(curriculumId);
+const subject = getSubject(curriculum.subject);
+const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang], subject: subject.title[lang], source: curriculum.sourceName };
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${t(lang, 'curriculum.overviewTitle', vars)} (${t(lang, 'curriculum.label', vars)})`}
+  alternates={alternates({ kind: 'curriculum', curriculum: curriculumId })}
+  section={curriculum.subject}
+>
+  <div class:list={['container', `subject-${curriculum.subject}`]}>
+    <Breadcrumbs
+      lang={lang}
+      items={[
+        { label: t(lang, 'nav.home'), href: href(lang, { kind: 'home' }) },
+        { label: subject.title[lang], href: href(lang, { kind: 'subject', subject: curriculum.subject }) },
+        { label: t(lang, 'curriculum.label', vars) },
+      ]}
+    />
+    <header class="page-head">
+      <div class="page-head__meta">
+        <span class={`badge badge--subject-${curriculum.subject}`}>{subject.title[lang]}</span>
+        <span class="badge">{t(lang, 'curriculum.label', vars)}</span>
+      </div>
+      <h1>{t(lang, 'curriculum.overviewTitle', vars)}</h1>
+      <p class="lead">{t(lang, 'curriculum.overviewLead', vars)}</p>
+      <GradeNav lang={lang} curriculum={curriculum} />
+    </header>
+
+    <div class="lp-grades">
+      {
+        curriculum.grades.map((g) => {
+          const progress = progressOf(simulationsOfGrade(g).map((id) => getSimulation(id)));
+          const gradeHref = href(lang, { kind: 'grade', curriculum: curriculumId, grade: g.grade });
+          return (
+            <article class="card lp-grade">
+              <h2>
+                <a href={gradeHref}>{t(lang, 'curriculum.grade', { n: g.grade })}</a>
+              </h2>
+              <ol class="lp-grade__units">
+                {g.units.map((unit) => (
+                  <li>
+                    <a href={`${gradeHref}#${unitAnchor(unit.code)}`}>
+                      <span class="lp-code">{unit.code}</span> {unit.title[lang]}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+              <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <p class="note" style="margin-top:32px">{t(lang, 'curriculum.disclaimer')}</p>
+  </div>
+</BaseLayout>

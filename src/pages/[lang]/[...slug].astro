@@ -7,6 +7,8 @@ import { LANGS, type Lang } from '../../i18n/config';
 import { allRoutes, routeSegments, type Route } from '../../lib/routes';
 import AreaView from '../../views/AreaView.astro';
 import CatalogView from '../../views/CatalogView.astro';
+import CurriculumView from '../../views/CurriculumView.astro';
+import GradeView from '../../views/GradeView.astro';
 import InfoPageView from '../../views/InfoPageView.astro';
 import SimulationView from '../../views/SimulationView.astro';
 import SubjectView from '../../views/SubjectView.astro';
@@ -29,3 +31,5 @@ const { route } = Astro.props as { route: Route };
 {route.kind === 'subject' && <SubjectView lang={lang} subjectId={route.subject} />}
 {route.kind === 'area' && <AreaView lang={lang} subjectId={route.subject} areaId={route.area} />}
 {route.kind === 'simulation' && <SimulationView lang={lang} simId={route.id} />}
+{route.kind === 'curriculum' && <CurriculumView lang={lang} curriculumId={route.curriculum} />}
+{route.kind === 'grade' && <GradeView lang={lang} curriculumId={route.curriculum} grade={route.grade} />}

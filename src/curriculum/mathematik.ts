@@ -1,362 +1,354 @@
-import { L, planned } from './helpers';
+import { area, L, planned, topic } from './helpers';
 import type { Subject } from './types';
 
 /**
- * Lehrplanstruktur Mathematik (bundeslandneutral, orientiert an den
- * KMK-Bildungsstandards und typischen Klassenstufen).
+ * Lehrplanstruktur Mathematik.
+ *
+ * Gegliedert nach Themenbereichen (orientiert an den Leitideen der
+ * KMK-Bildungsstandards); innerhalb eines Bereichs sind Themen und
+ * Simulationen nach Klassenstufe sortiert. Die Klassenstufen richten sich nach
+ * dem LehrplanPLUS für das bayerische Gymnasium (G9). Die genaue Zuordnung zu
+ * Jahrgangsstufen und Lernbereichen steht in lehrplaene/bayern-gymnasium-mathematik.ts.
  */
 export const mathematik: Subject = {
   id: 'mathematik',
   slug: L('mathematik', 'mathematics'),
   title: L('Mathematik', 'Mathematics'),
   description: L(
-    'Funktionen, Geometrie, Analysis und Stochastik zum Anfassen: Parameter verändern und sofort sehen, was passiert.',
-    'Functions, geometry, calculus and probability you can touch: change parameters and see what happens instantly.',
+    'Zahlen, Terme, Geometrie, Funktionen, Analysis und Stochastik zum Anfassen: Parameter verändern und sofort sehen, was passiert.',
+    'Numbers, algebra, geometry, functions, calculus and probability you can touch: change parameters and see what happens instantly.',
   ),
   status: 'active',
   areas: [
-    {
+    area({
       id: 'zahlen',
       slug: L('zahlen-und-operationen', 'numbers-and-operations'),
       title: L('Zahlen und Operationen', 'Numbers and operations'),
       description: L(
-        'Brüche, negative Zahlen, Prozente, Potenzen und Wurzeln anschaulich darstellen.',
-        'Visualising fractions, negative numbers, percentages, powers and roots.',
+        'Ganze Zahlen, Brüche, Dezimalbrüche, Prozente und Wurzeln anschaulich darstellen und verstehen.',
+        'Visualising integers, fractions, decimals, percentages and roots.',
       ),
-      grades: [5, 9],
       kmk: ['M-L1', 'M-K4', 'M-K5'],
       topics: [
-        {
-          id: 'brueche',
-          title: L('Brüche', 'Fractions'),
-          grades: [5, 6],
-          simulations: [
-            planned('bruchteile', L('Bruchteile darstellen', 'Representing fractions'), [5, 6], { kmk: ['M-L1', 'M-K4'] }),
-            planned('brueche-vergleichen', L('Brüche erweitern, kürzen und vergleichen', 'Equivalent fractions and comparing'), [5, 6]),
-          ],
-        },
-        {
-          id: 'negative-zahlen',
-          title: L('Negative Zahlen', 'Negative numbers'),
-          grades: [6, 7],
-          simulations: [
-            planned('zahlenstrahl', L('Rechnen am Zahlenstrahl', 'Calculating on the number line'), [6, 7]),
-          ],
-        },
-        {
-          id: 'prozente',
-          title: L('Prozentrechnung', 'Percentages'),
-          grades: [7, 7],
-          simulations: [planned('prozentstreifen', L('Prozentstreifen', 'Percentage bar'), [6, 8])],
-        },
-        {
-          id: 'potenzen',
-          title: L('Potenzen und Wurzeln', 'Powers and roots'),
-          grades: [8, 10],
-          simulations: [
-            planned('quadratwurzel', L('Quadratwurzel geometrisch (Heron-Verfahren)', 'Square roots geometrically (Heron’s method)'), [8, 9]),
-            planned('zehnerpotenzen', L('Zehnerpotenzen und Größenordnungen', 'Powers of ten and orders of magnitude'), [8, 10]),
-          ],
-        },
+        topic('ganze-zahlen', L('Natürliche und ganze Zahlen', 'Natural numbers and integers'), [
+          planned('stellenwerte', L('Stellenwertsystem und Runden', 'Place value and rounding'), [5, 5], { kmk: ['M-L1'] }),
+          planned('zahlengerade', L('Ganze Zahlen an der Zahlengeraden addieren und subtrahieren', 'Adding and subtracting integers on the number line'), [5, 5], { kmk: ['M-L1', 'M-K4'] }),
+          planned('primfaktoren', L('Primfaktorzerlegung und Teilbarkeit', 'Prime factorisation and divisibility'), [5, 6]),
+          planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
+        ]),
+        topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
+          planned('bruchteile', L('Bruchteile darstellen', 'Representing fractions'), [6, 6], { kmk: ['M-L1', 'M-K4'] }),
+          planned('brueche-vergleichen', L('Brüche erweitern, kürzen und vergleichen', 'Equivalent fractions and comparing'), [6, 6]),
+          planned('dezimalbrueche', L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'), [6, 6]),
+          planned('brueche-rechnen', L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'), [6, 6]),
+        ]),
+        topic('prozente', L('Prozentrechnung', 'Percentages'), [
+          planned('prozentstreifen', L('Prozentstreifen', 'Percentage bar'), [6, 7]),
+        ]),
+        topic('reelle-zahlen', L('Wurzeln und reelle Zahlen', 'Roots and real numbers'), [
+          planned('quadratwurzel', L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'), [9, 9]),
+        ]),
       ],
-    },
-    {
-      id: 'funktionen',
-      slug: L('funktionen', 'functions'),
-      title: L('Funktionen', 'Functions'),
+    }),
+    area({
+      id: 'terme',
+      slug: L('terme-und-gleichungen', 'terms-and-equations'),
+      title: L('Terme und Gleichungen', 'Terms and equations'),
       description: L(
-        'Von Zuordnungen über lineare und quadratische Funktionen bis zu Sinus und Exponentialfunktion – mit Reglern und ziehbaren Punkten.',
-        'From proportional relationships to linear, quadratic, sine and exponential functions – with sliders and draggable points.',
+        'Die Struktur von Termen sichtbar machen, Termumformungen geometrisch deuten und Gleichungen lösen – rechnerisch und grafisch.',
+        'Make the structure of terms visible, interpret algebraic manipulation geometrically and solve equations algebraically and graphically.',
       ),
-      grades: [6, 11],
-      kmk: ['M-L3', 'M-K3', 'M-K4', 'M-K5'],
+      kmk: ['M-L1', 'M-L3', 'M-K5'],
       topics: [
-        {
-          id: 'zuordnungen',
-          title: L('Zuordnungen', 'Relationships'),
-          grades: [6, 7],
-          simulations: [
-            planned('proportional', L('Proportionale und antiproportionale Zuordnungen', 'Direct and inverse proportion'), [6, 7], { kmk: ['M-L3', 'M-K3'] }),
-          ],
-        },
-        {
-          id: 'lineare-funktionen',
-          title: L('Lineare Funktionen', 'Linear functions'),
-          grades: [7, 9],
-          simulations: [
-            {
-              id: 'lineare-funktion',
-              status: 'ready',
-              slug: L('lineare-funktion', 'linear-function'),
-              title: L('Lineare Funktion', 'Linear function'),
-              summary: L(
-                'Steigung und y-Achsenabschnitt erforschen, Steigungsdreieck und Nullstelle ablesen und zwei Geraden vergleichen.',
-                'Explore slope and y-intercept, read off the slope triangle and the zero, and compare two lines.',
-              ),
-              grades: [7, 9],
-              kmk: ['M-L3', 'M-K4', 'M-K5'],
-              keywords: L(
-                ['Gerade', 'Steigung', 'Steigungsdreieck', 'y-Achsenabschnitt', 'Nullstelle', 'Schnittpunkt', 'parallel', 'senkrecht'],
-                ['line', 'slope', 'gradient', 'intercept', 'zero', 'intersection', 'parallel', 'perpendicular'],
-              ),
-              thumb: 'line',
-            },
-            planned('lgs-grafisch', L('Lineare Gleichungssysteme grafisch lösen', 'Solving linear systems graphically'), [8, 9]),
-          ],
-        },
-        {
-          id: 'quadratische-funktionen',
-          title: L('Quadratische Funktionen', 'Quadratic functions'),
-          grades: [9, 10],
-          simulations: [
-            {
-              id: 'quadratische-funktion',
-              status: 'ready',
-              slug: L('quadratische-funktion', 'quadratic-function'),
-              title: L('Quadratische Funktion', 'Quadratic function'),
-              summary: L(
-                'Parabeln strecken, spiegeln und verschieben – in Scheitelpunktform oder allgemeiner Form, mit Nullstellen und Scheitelpunkt.',
-                'Stretch, reflect and shift parabolas – in vertex form or standard form, with zeros and vertex.',
-              ),
-              grades: [9, 10],
-              kmk: ['M-L3', 'M-K4', 'M-K5'],
-              keywords: L(
-                ['Parabel', 'Scheitelpunkt', 'Scheitelpunktform', 'Normalparabel', 'Nullstellen', 'Diskriminante', 'pq-Formel', 'Streckfaktor'],
-                ['parabola', 'vertex', 'vertex form', 'zeros', 'roots', 'discriminant', 'quadratic formula'],
-              ),
-              thumb: 'parabola',
-            },
-            planned('quadratische-gleichungen', L('Quadratische Gleichungen grafisch lösen', 'Solving quadratic equations graphically'), [9, 10]),
-          ],
-        },
-        {
-          id: 'potenz-exponential',
-          title: L('Potenz- und Exponentialfunktionen', 'Power and exponential functions'),
-          grades: [10, 11],
-          simulations: [
-            planned('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [10, 11]),
-            planned('exponentielles-wachstum', L('Exponentielles Wachstum und Zerfall', 'Exponential growth and decay'), [10, 11], { kmk: ['M-L3', 'M-K3'] }),
-            planned('logarithmus', L('Logarithmus als Umkehrfunktion', 'Logarithm as inverse function'), [10, 12]),
-          ],
-        },
-        {
-          id: 'trigonometrische-funktionen',
-          title: L('Trigonometrische Funktionen', 'Trigonometric functions'),
-          grades: [10, 11],
-          simulations: [
-            {
-              id: 'einheitskreis',
-              status: 'ready',
-              slug: L('einheitskreis', 'unit-circle'),
-              title: L('Einheitskreis', 'Unit circle'),
-              summary: L(
-                'Sinus, Kosinus und Tangens am Einheitskreis – und wie daraus die Sinuskurve entsteht. Mit Animation.',
-                'Sine, cosine and tangent on the unit circle – and how the sine curve emerges from it. With animation.',
-              ),
-              grades: [10, 11],
-              kmk: ['M-L3', 'M-L4', 'M-K4'],
-              keywords: L(
-                ['Sinus', 'Kosinus', 'Tangens', 'Bogenmaß', 'Gradmaß', 'Winkel', 'Quadrant', 'Periode'],
-                ['sine', 'cosine', 'tangent', 'radians', 'degrees', 'angle', 'quadrant', 'period'],
-              ),
-              thumb: 'unit-circle',
-            },
-            {
-              id: 'sinusfunktion',
-              status: 'ready',
-              slug: L('sinusfunktion', 'sine-function'),
-              title: L('Allgemeine Sinusfunktion', 'General sine function'),
-              summary: L(
-                'Amplitude, Periode und Verschiebungen von f(x) = a·sin(b(x − c)) + d mit Reglern und ziehbaren Punkten erkunden.',
-                'Explore amplitude, period and shifts of f(x) = a·sin(b(x − c)) + d with sliders and draggable points.',
-              ),
-              grades: [10, 11],
-              kmk: ['M-L3', 'M-K3', 'M-K4'],
-              keywords: L(
-                ['Sinus', 'Kosinus', 'Amplitude', 'Periode', 'Phasenverschiebung', 'Schwingung', 'Bogenmaß'],
-                ['sine', 'cosine', 'amplitude', 'period', 'phase shift', 'oscillation', 'radians'],
-              ),
-              thumb: 'sine',
-            },
-          ],
-        },
-        {
-          id: 'werkzeuge',
-          title: L('Werkzeuge', 'Tools'),
-          grades: [7, 13],
-          simulations: [
-            planned('funktionsplotter', L('Funktionsplotter mit eigenen Termen', 'Function plotter with custom terms'), [7, 13], { uni: true }),
-          ],
-        },
+        topic('terme', L('Terme', 'Terms'), [
+          planned('termbaum', L('Termbaum: die Struktur von Termen', 'Expression trees: the structure of terms'), [5, 7], { kmk: ['M-L1', 'M-K5'] }),
+          planned('binomische-formeln', L('Binomische Formeln am Quadrat', 'Binomial formulas with squares'), [7, 7], { kmk: ['M-L3', 'M-K1'] }),
+        ]),
+        topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
+          planned('waagemodell', L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'), [7, 7], { kmk: ['M-L3', 'M-K5'] }),
+          planned('lgs-grafisch', L('Lineare Gleichungssysteme grafisch lösen', 'Solving linear systems graphically'), [8, 8]),
+          planned('gleichungen-grafisch', L('Gleichungen grafisch lösen: Schnittpunkte von Graphen', 'Solving equations graphically: intersections of graphs'), [8, 9]),
+        ]),
       ],
-    },
-    {
+    }),
+    area({
       id: 'geometrie',
       slug: L('geometrie', 'geometry'),
       title: L('Geometrie', 'Geometry'),
       description: L(
-        'Winkel, Dreiecke, Kreise, Ähnlichkeit und Körper dynamisch konstruieren und untersuchen.',
-        'Construct and investigate angles, triangles, circles, similarity and solids dynamically.',
+        'Figuren, Symmetrie, Winkel, Dreiecke, Ähnlichkeit und Trigonometrie dynamisch konstruieren und untersuchen.',
+        'Construct and investigate figures, symmetry, angles, triangles, similarity and trigonometry dynamically.',
       ),
-      grades: [5, 10],
-      kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K4'],
+      kmk: ['M-L4', 'M-K1', 'M-K4'],
       topics: [
-        {
-          id: 'winkel',
-          title: L('Winkel', 'Angles'),
-          grades: [5, 6],
-          simulations: [planned('winkel-messen', L('Winkel schätzen und messen', 'Estimating and measuring angles'), [5, 6])],
-        },
-        {
-          id: 'dreiecke',
-          title: L('Dreiecke', 'Triangles'),
-          grades: [7, 8],
-          simulations: [
-            planned('winkelsumme', L('Winkelsumme im Dreieck', 'Angle sum in a triangle'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
-            planned('besondere-linien', L('Besondere Linien im Dreieck', 'Special lines in a triangle'), [7, 8]),
-          ],
-        },
-        {
-          id: 'pythagoras',
-          title: L('Satz des Pythagoras', 'Pythagorean theorem'),
-          grades: [9, 9],
-          simulations: [planned('pythagoras', L('Satz des Pythagoras (Flächenbeweis)', 'Pythagorean theorem (area proof)'), [8, 9], { kmk: ['M-L4', 'M-K1'] })],
-        },
-        {
-          id: 'kreis',
-          title: L('Kreis', 'Circle'),
-          grades: [8, 9],
-          simulations: [planned('kreiszahl-pi', L('Kreisumfang und die Zahl π', 'Circumference and the number π'), [8, 9])],
-        },
-        {
-          id: 'aehnlichkeit',
-          title: L('Ähnlichkeit und Strahlensätze', 'Similarity and intercept theorems'),
-          grades: [9, 9],
-          simulations: [planned('strahlensaetze', L('Strahlensätze', 'Intercept theorems'), [9, 9])],
-        },
-        {
-          id: 'trigonometrie-dreieck',
-          title: L('Trigonometrie im Dreieck', 'Trigonometry in triangles'),
-          grades: [9, 10],
-          simulations: [planned('sin-cos-tan-dreieck', L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'), [9, 10])],
-        },
-        {
-          id: 'koerper',
-          title: L('Körper', 'Solids'),
-          grades: [5, 10],
-          simulations: [
-            planned('koerpernetze', L('Netze von Körpern', 'Nets of solids'), [5, 7]),
-            planned('volumen-oberflaeche', L('Volumen und Oberfläche', 'Volume and surface area'), [8, 10]),
-          ],
-        },
+        topic('grundbegriffe', L('Grundbegriffe der Geometrie', 'Basic geometric concepts'), [
+          planned('koordinaten-lage', L('Punkte, Geraden und Kreise: Lagebeziehungen', 'Points, lines and circles: relative positions'), [5, 5]),
+          planned('winkel-messen', L('Winkel schätzen und messen', 'Estimating and measuring angles'), [5, 5]),
+          planned('vierecke', L('Das Haus der Vierecke', 'The family of quadrilaterals'), [5, 7], { kmk: ['M-L4', 'M-K1'] }),
+        ]),
+        topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
+          planned('spiegelung', L('Achsen- und Punktspiegelung', 'Reflections in a line and in a point'), [7, 7]),
+          planned('mittelsenkrechte', L('Mittelsenkrechte und Winkelhalbierende', 'Perpendicular bisector and angle bisector'), [7, 7]),
+        ]),
+        topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
+          planned('winkel-geradenkreuzung', L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'), [7, 7]),
+          planned('winkelsumme', L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
+        ]),
+        topic('dreiecke', L('Dreiecke', 'Triangles'), [
+          planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
+          planned('thales', L('Satz des Thales', 'Thales’s theorem'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
+          planned('besondere-linien', L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'), [7, 8]),
+        ]),
+        topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
+          planned('pythagoras', L('Satz des Pythagoras (Flächenbeweis)', 'Pythagorean theorem (area proof)'), [8, 9], { kmk: ['M-L4', 'M-K1'] }),
+        ]),
+        topic('aehnlichkeit', L('Ähnlichkeit und Strahlensätze', 'Similarity and intercept theorems'), [
+          planned('strahlensaetze', L('Strahlensätze', 'Intercept theorems'), [9, 9]),
+          planned('vergroessern', L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'), [9, 9]),
+        ]),
+        topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
+          planned('sin-cos-tan-dreieck', L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'), [9, 10]),
+          planned('sinussatz-kosinussatz', L('Sinussatz und Kosinussatz', 'Law of sines and law of cosines'), [9, 10]),
+        ]),
       ],
-    },
-    {
-      id: 'analysis',
-      slug: L('analysis', 'calculus'),
-      title: L('Analysis', 'Calculus'),
+    }),
+    area({
+      id: 'flaechen-koerper',
+      slug: L('flaechen-und-koerper', 'area-and-volume'),
+      title: L('Größen, Flächen und Körper', 'Measures, area and volume'),
       description: L(
-        'Ableitung und Integral anschaulich: von der Sekante zur Tangente und von Rechtecksummen zur Fläche.',
-        'Derivatives and integrals made visual: from secant to tangent and from rectangle sums to area.',
+        'Einheiten, Flächeninhalte, Volumen und Oberflächen begreifen: zerlegen, ergänzen, auslegen und Körper drehen.',
+        'Understand units, area, volume and surface area: decompose, complete, tile and rotate solids.',
       ),
-      grades: [11, 13],
-      kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K4'],
+      kmk: ['M-L2', 'M-L4', 'M-K3'],
       topics: [
-        {
-          id: 'differenzialrechnung',
-          title: L('Differenzialrechnung', 'Differential calculus'),
-          grades: [11, 12],
-          simulations: [
-            planned('sekante-tangente', L('Von der Sekante zur Tangente', 'From secant to tangent'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
-            planned('ableitungsfunktion', L('Ableitungsfunktion grafisch', 'The derivative function graphically'), [11, 12]),
-            planned('kurvendiskussion', L('Kurvendiskussion', 'Curve sketching'), [11, 12]),
-          ],
-        },
-        {
-          id: 'integralrechnung',
-          title: L('Integralrechnung', 'Integral calculus'),
-          grades: [12, 13],
-          simulations: [
-            planned('ober-untersummen', L('Ober- und Untersummen', 'Upper and lower sums'), [12, 12], { kmk: ['M-L2', 'M-K4'] }),
-            planned('hauptsatz', L('Hauptsatz der Differenzial- und Integralrechnung', 'Fundamental theorem of calculus'), [12, 13], { uni: true }),
-          ],
-        },
-        {
-          id: 'weiterfuehrend',
-          title: L('Weiterführend', 'Further topics'),
-          grades: [12, 14],
-          simulations: [
-            planned('taylor-polynome', L('Taylorpolynome', 'Taylor polynomials'), [13, 14], { uni: true }),
-            planned('fourier-reihen', L('Fourier-Reihen', 'Fourier series'), [14, 14], { uni: true }),
-          ],
-        },
+        topic('groessen', L('Größen und Einheiten', 'Measures and units'), [
+          planned('einheiten', L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'), [5, 5]),
+          planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
+        ]),
+        topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
+          planned('umfang-flaeche', L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'), [5, 5]),
+          planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
+        ]),
+        topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
+          planned('koerpernetze', L('Netze und Oberflächen von Körpern', 'Nets and surface areas of solids'), [5, 8]),
+          planned('prisma-zylinder', L('Prisma und Zylinder: Oberfläche und Volumen', 'Prism and cylinder: surface area and volume'), [8, 8]),
+          planned('pyramide-kegel-kugel', L('Pyramide, Kegel und Kugel', 'Pyramid, cone and sphere'), [10, 10]),
+          planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),
+        ]),
+        topic('volumen', L('Volumen', 'Volume'), [
+          planned('quader-volumen', L('Volumen von Quadern mit Einheitswürfeln', 'Volume of cuboids with unit cubes'), [6, 6]),
+        ]),
+        topic('kreis', L('Kreis', 'Circle'), [
+          planned('kreiszahl-pi', L('Kreisumfang, Kreisfläche und die Zahl π', 'Circumference, area of a circle and the number π'), [8, 8]),
+        ]),
       ],
-    },
-    {
+    }),
+    area({
+      id: 'funktionen',
+      slug: L('funktionen', 'functions'),
+      title: L('Funktionen', 'Functions'),
+      description: L(
+        'Vom Funktionsbegriff über lineare, quadratische und gebrochen-rationale Funktionen bis zu Sinus, Exponential- und ganzrationalen Funktionen – mit Reglern und ziehbaren Punkten.',
+        'From the concept of a function to linear, quadratic, rational, sine, exponential and polynomial functions – with sliders and draggable points.',
+      ),
+      kmk: ['M-L3', 'M-K3', 'M-K4', 'M-K5'],
+      topics: [
+        topic('funktionsbegriff', L('Funktionsbegriff und Zuordnungen', 'Functions and relationships'), [
+          planned('proportional', L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'), [6, 8], { kmk: ['M-L3', 'M-K3'] }),
+          planned('funktion-zuordnung', L('Funktion oder nicht? Zuordnungen und ihre Graphen', 'Function or not? Relations and their graphs'), [8, 8]),
+          planned('funktionsplotter', L('Funktionsplotter mit eigenen Termen', 'Function plotter with custom terms'), [8, 13], { uni: true }),
+        ]),
+        topic('lineare-funktionen', L('Lineare Funktionen', 'Linear functions'), [
+          {
+            id: 'lineare-funktion',
+            status: 'ready',
+            slug: L('lineare-funktion', 'linear-function'),
+            title: L('Lineare Funktion', 'Linear function'),
+            summary: L(
+              'Steigung und y-Achsenabschnitt erforschen, Steigungsdreieck und Nullstelle ablesen und zwei Geraden vergleichen.',
+              'Explore slope and y-intercept, read off the slope triangle and the zero, and compare two lines.',
+            ),
+            grades: [7, 9],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Gerade', 'Steigung', 'Steigungsdreieck', 'y-Achsenabschnitt', 'Nullstelle', 'Schnittpunkt', 'parallel', 'senkrecht'],
+              ['line', 'slope', 'gradient', 'intercept', 'zero', 'intersection', 'parallel', 'perpendicular'],
+            ),
+            thumb: 'line',
+          },
+        ]),
+        topic('gebrochen-rationale', L('Gebrochen-rationale Funktionen', 'Rational functions'), [
+          planned('hyperbel', L('Hyperbeln und ihre Asymptoten', 'Hyperbolas and their asymptotes'), [8, 8]),
+          planned('polstellen-asymptoten', L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'), [11, 12]),
+        ]),
+        topic('quadratische-funktionen', L('Quadratische Funktionen', 'Quadratic functions'), [
+          {
+            id: 'quadratische-funktion',
+            status: 'ready',
+            slug: L('quadratische-funktion', 'quadratic-function'),
+            title: L('Quadratische Funktion', 'Quadratic function'),
+            summary: L(
+              'Parabeln strecken, spiegeln und verschieben – in Scheitelpunktform oder allgemeiner Form, mit Nullstellen und Scheitelpunkt.',
+              'Stretch, reflect and shift parabolas – in vertex form or standard form, with zeros and vertex.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Parabel', 'Scheitelpunkt', 'Scheitelpunktform', 'Normalparabel', 'Nullstellen', 'Diskriminante', 'Lösungsformel', 'Streckfaktor'],
+              ['parabola', 'vertex', 'vertex form', 'zeros', 'roots', 'discriminant', 'quadratic formula'],
+            ),
+            thumb: 'parabola',
+          },
+          planned('parabel-drei-punkte', L('Parabel durch drei Punkte', 'Parabola through three points'), [9, 9]),
+          planned('extremwert-parabel', L('Extremwertaufgaben mit Parabeln', 'Optimisation problems with parabolas'), [9, 9], { kmk: ['M-L3', 'M-K3'] }),
+        ]),
+        topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
+          planned('potenzfunktionen', L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'), [9, 10]),
+        ]),
+        topic('trigonometrische-funktionen', L('Trigonometrische Funktionen', 'Trigonometric functions'), [
+          {
+            id: 'einheitskreis',
+            status: 'ready',
+            slug: L('einheitskreis', 'unit-circle'),
+            title: L('Einheitskreis', 'Unit circle'),
+            summary: L(
+              'Sinus, Kosinus und Tangens am Einheitskreis – und wie daraus die Sinuskurve entsteht. Mit Animation.',
+              'Sine, cosine and tangent on the unit circle – and how the sine curve emerges from it. With animation.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L3', 'M-L4', 'M-K4'],
+            keywords: L(
+              ['Sinus', 'Kosinus', 'Tangens', 'Bogenmaß', 'Gradmaß', 'Winkel', 'Quadrant', 'Periode'],
+              ['sine', 'cosine', 'tangent', 'radians', 'degrees', 'angle', 'quadrant', 'period'],
+            ),
+            thumb: 'unit-circle',
+          },
+          {
+            id: 'sinusfunktion',
+            status: 'ready',
+            slug: L('sinusfunktion', 'sine-function'),
+            title: L('Allgemeine Sinusfunktion', 'General sine function'),
+            summary: L(
+              'Amplitude, Periode und Verschiebungen von f(x) = a·sin(b(x − c)) + d mit Reglern und ziehbaren Punkten erkunden.',
+              'Explore amplitude, period and shifts of f(x) = a·sin(b(x − c)) + d with sliders and draggable points.',
+            ),
+            grades: [10, 11],
+            kmk: ['M-L3', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Sinus', 'Kosinus', 'Amplitude', 'Periode', 'Phasenverschiebung', 'Schwingung', 'Bogenmaß'],
+              ['sine', 'cosine', 'amplitude', 'period', 'phase shift', 'oscillation', 'radians'],
+            ),
+            thumb: 'sine',
+          },
+        ]),
+        topic('exponentialfunktionen', L('Exponentialfunktionen und Logarithmus', 'Exponential functions and logarithms'), [
+          planned('exponentielles-wachstum', L('Exponentielles Wachstum und Zerfall', 'Exponential growth and decay'), [10, 10], { kmk: ['M-L3', 'M-K3'] }),
+          planned('logarithmus', L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'), [10, 12]),
+          planned('e-funktion', L('Die natürliche Exponentialfunktion', 'The natural exponential function'), [12, 12]),
+        ]),
+        topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
+          planned('ganzrationale-funktionen', L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'), [10, 11]),
+        ]),
+        topic('eigenschaften', L('Eigenschaften von Funktionen', 'Properties of functions'), [
+          planned('transformationen', L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
+          planned('grenzverhalten', L('Grenzverhalten und Asymptoten', 'Limits and asymptotes'), [11, 11]),
+          planned('umkehrfunktion', L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'), [12, 12]),
+        ]),
+      ],
+    }),
+    area({
       id: 'stochastik',
       slug: L('daten-und-zufall', 'data-and-chance'),
       title: L('Daten und Zufall', 'Data and chance'),
       description: L(
-        'Zufallsexperimente tausendfach wiederholen, Verteilungen entstehen sehen und Daten auswerten.',
-        'Repeat random experiments thousands of times, watch distributions emerge and analyse data.',
+        'Daten darstellen und kritisch lesen, Zufallsexperimente tausendfach wiederholen und Verteilungen entstehen sehen.',
+        'Display and critically read data, repeat random experiments thousands of times and watch distributions emerge.',
       ),
-      grades: [5, 13],
       kmk: ['M-L5', 'M-K3', 'M-K4'],
       topics: [
-        {
-          id: 'daten',
-          title: L('Daten auswerten', 'Analysing data'),
-          grades: [5, 8],
-          simulations: [planned('boxplot', L('Kennwerte und Boxplot', 'Summary statistics and box plots'), [6, 8])],
-        },
-        {
-          id: 'wahrscheinlichkeit',
-          title: L('Wahrscheinlichkeit', 'Probability'),
-          grades: [6, 9],
-          simulations: [
-            planned('gesetz-grosse-zahlen', L('Gesetz der großen Zahlen', 'Law of large numbers'), [6, 9], { kmk: ['M-L5', 'M-K3'] }),
-            planned('baumdiagramm', L('Baumdiagramme und Pfadregeln', 'Tree diagrams'), [8, 10]),
-          ],
-        },
-        {
-          id: 'verteilungen',
-          title: L('Wahrscheinlichkeitsverteilungen', 'Probability distributions'),
-          grades: [11, 13],
-          simulations: [
-            planned('galtonbrett', L('Galtonbrett', 'Galton board'), [9, 13]),
-            planned('binomialverteilung', L('Binomialverteilung', 'Binomial distribution'), [11, 13]),
-            planned('normalverteilung', L('Normalverteilung', 'Normal distribution'), [12, 13], { uni: true }),
-          ],
-        },
+        topic('zaehlen', L('Zählen', 'Counting'), [
+          planned('zaehlprinzip', L('Zählprinzip und Baumdiagramm', 'Counting principle and tree diagrams'), [5, 8]),
+        ]),
+        topic('daten', L('Daten auswerten', 'Analysing data'), [
+          planned('diagramme', L('Diagramme lesen und kritisch prüfen', 'Reading charts critically'), [6, 6], { kmk: ['M-L5', 'M-K6'] }),
+          planned('boxplot', L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'), [7, 7]),
+        ]),
+        topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
+          planned('gesetz-grosse-zahlen', L('Gesetz der großen Zahlen', 'Law of large numbers'), [6, 9], { kmk: ['M-L5', 'M-K3'] }),
+          planned('baumdiagramm', L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'), [8, 10]),
+          planned('ziegenproblem', L('Ziegenproblem und Geburtstagsproblem simulieren', 'Simulating the Monty Hall and birthday problems'), [10, 10]),
+          planned('monte-carlo-pi', L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'), [10, 10]),
+        ]),
+        topic('verknuepfte-ereignisse', L('Verknüpfte Ereignisse und bedingte Wahrscheinlichkeit', 'Combined events and conditional probability'), [
+          planned('vierfeldertafel', L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'), [9, 11]),
+          planned('bedingte-wahrscheinlichkeit', L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'), [11, 11], { kmk: ['M-L5', 'M-K3'] }),
+        ]),
+        topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
+          planned('galtonbrett', L('Galtonbrett', 'Galton board'), [9, 12]),
+          planned('binomialverteilung', L('Binomialverteilung', 'Binomial distribution'), [12, 12]),
+          planned('signifikanztest', L('Einseitiger Signifikanztest: Fehler 1. und 2. Art', 'One-sided significance test: type I and II errors'), [12, 12]),
+          planned('normalverteilung', L('Normalverteilung', 'Normal distribution'), [13, 13], { uni: true }),
+        ]),
       ],
-    },
-    {
+    }),
+    area({
+      id: 'analysis',
+      slug: L('analysis', 'calculus'),
+      title: L('Analysis', 'Calculus'),
+      description: L(
+        'Ableitung und Integral anschaulich: von der Sekante zur Tangente, von Rechtecksummen zur Fläche und vom Graphen zur Stammfunktion.',
+        'Derivatives and integrals made visual: from secant to tangent, from rectangle sums to area and from a graph to its antiderivative.',
+      ),
+      kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K4'],
+      topics: [
+        topic('differenzialrechnung', L('Differenzialrechnung', 'Differential calculus'), [
+          planned('sekante-tangente', L('Von der Sekante zur Tangente', 'From secant to tangent'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
+          planned('newton-verfahren', L('Newton-Verfahren', 'Newton’s method'), [11, 11]),
+          planned('ableitungsfunktion', L('Ableitungsfunktion grafisch', 'The derivative function graphically'), [11, 12]),
+          planned('kurvendiskussion', L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'), [11, 12]),
+        ]),
+        topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
+          planned('funktionenscharen', L('Funktionenscharen', 'Families of functions'), [12, 13]),
+          planned('stammfunktion-grafisch', L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'), [12, 13]),
+        ]),
+        topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
+          planned('ober-untersummen', L('Integral als Flächenbilanz (Rechtecksummen)', 'The integral as signed area (rectangle sums)'), [12, 13], { kmk: ['M-L2', 'M-K4'] }),
+          planned('hauptsatz', L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'), [12, 13], { uni: true }),
+          planned('aenderungsrate', L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'), [13, 13]),
+          planned('rotationskoerper', L('Rotationskörper', 'Solids of revolution'), [13, 13]),
+          planned('extremwertprobleme', L('Extremwertprobleme', 'Optimisation problems'), [13, 13], { kmk: ['M-L3', 'M-K3'] }),
+        ]),
+        topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
+          planned('taylor-polynome', L('Taylorpolynome', 'Taylor polynomials'), [13, 14], { uni: true }),
+          planned('fourier-reihen', L('Fourier-Reihen', 'Fourier series'), [14, 14], { uni: true }),
+        ]),
+      ],
+    }),
+    area({
       id: 'vektoren',
       slug: L('analytische-geometrie', 'vectors-and-linear-algebra'),
-      title: L('Analytische Geometrie und Lineare Algebra', 'Vectors and linear algebra'),
+      title: L('Analytische Geometrie', 'Analytic geometry'),
       description: L(
-        'Vektoren, Geraden und Ebenen im Raum – drehbar in 3D – sowie Matrizen als Abbildungen.',
-        'Vectors, lines and planes in space – rotatable in 3D – and matrices as transformations.',
+        'Punkte, Vektoren, Geraden, Ebenen und Kugeln im Raum – drehbar in 3D, mit Lagebeziehungen und Abständen.',
+        'Points, vectors, lines, planes and spheres in space – rotatable in 3D, with relative positions and distances.',
       ),
-      grades: [11, 14],
       kmk: ['M-L4', 'M-K4', 'M-K5'],
       topics: [
-        {
-          id: 'vektoren-raum',
-          title: L('Vektoren im Raum', 'Vectors in space'),
-          grades: [11, 13],
-          simulations: [
-            planned('vektoren-3d', L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'), [11, 12]),
-            planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [11, 13]),
-          ],
-        },
-        {
-          id: 'matrizen',
-          title: L('Matrizen', 'Matrices'),
-          grades: [12, 14],
-          simulations: [planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true })],
-        },
+        topic('vektoren-raum', L('Vektoren im Raum', 'Vectors in space'), [
+          planned('koordinaten-3d', L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'), [12, 12]),
+          planned('vektoren-3d', L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'), [12, 12]),
+          planned('skalar-vektorprodukt', L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'), [12, 12]),
+        ]),
+        topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
+          planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),
+          planned('lage-abstaende', L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'), [13, 13]),
+          planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
+        ]),
+        topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
+          planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true }),
+        ]),
       ],
-    },
+    }),
   ],
 };

@@ -1,9 +1,11 @@
 ---
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import GradeBadge from '../components/GradeBadge.astro';
+import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
 import SimCard from '../components/SimCard.astro';
 import { GRADE_BANDS, getSubject, progressOf, simulationsOf } from '../curriculum';
+import { curriculaFor } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
@@ -20,6 +22,7 @@ const subject = getSubject(subjectId);
 const sims = simulationsOf({ subject: subjectId });
 const progress = progressOf(sims);
 const ready = sims.filter((s) => s.status === 'ready');
+const curricula = curriculaFor(subjectId);
 ---
 
 <BaseLayout
@@ -38,6 +41,24 @@ const ready = sims.filter((s) => s.status === 'ready');
     </header>
 
     {subject.status === 'planned' && <p class="note">{t(lang, 'subject.plannedText')}</p>}
+
+    {
+      curricula.length > 0 && (
+        <section class="lp-entry" aria-labelledby="by-grade">
+          <h2 id="by-grade">{t(lang, 'curriculum.byGrade')}</h2>
+          <p class="muted">{t(lang, 'curriculum.byGradeLead')}</p>
+          {curricula.map((c) => (
+            <div class="lp-entry__row">
+              <span class="lp-entry__label">
+                {t(lang, 'curriculum.label', { state: c.state[lang], school: c.schoolType[lang] })}
+              </span>
+              <GradeNav lang={lang} curriculum={c} />
+              <a href={href(lang, { kind: 'curriculum', curriculum: c.id })}>{t(lang, 'curriculum.overview')}</a>
+            </div>
+          ))}
+        </section>
+      )
+    }
 
     {
       ready.length > 0 && (

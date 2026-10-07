@@ -21,7 +21,7 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 1. **Mathematik und Physik der Sekundarstufe I und II** – Schritt für Schritt entlang der KMK-Bildungsstandards. Alle geplanten Simulationen sind bereits im Katalog eingetragen.
 2. **Chemie** – Teilchenmodell, Atombau, Reaktionen und Gleichgewichte.
 3. **Hochschule** – vertiefende Simulationen, z. B. zu Fourier-Reihen, Differentialgleichungen und linearer Algebra.
-4. **Länder-Lehrpläne** – Zuordnung der Simulationen zu den Lehrplänen einzelner Bundesländer.
+4. **Länder-Lehrpläne** – Zuordnung der Simulationen zu den Lehrplänen einzelner Bundesländer. Begonnen mit Mathematik am bayerischen Gymnasium (LehrplanPLUS).
 
 ## Technik
 

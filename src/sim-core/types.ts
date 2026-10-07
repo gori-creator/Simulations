@@ -126,9 +126,21 @@ export interface SimContext<V> {
   requestRender(): void;
 }
 
+/**
+ * Woher eine Änderung kommt:
+ * - `init`: Start der Simulation (Werte ggf. aus einem geteilten Link)
+ * - `input`: die Person hat einen Regler/Schalter bedient
+ * - `replace`: Beispiel, Zurücksetzen oder Link im Lernmaterial (vollständiger Zustand)
+ * - `sim`: die Simulation selbst hat `ctx.set` aufgerufen (z. B. beim Ziehen)
+ *
+ * Abgeleitete Werte (z. B. beim Umschalten einer Darstellungsform) nur bei
+ * `input` umrechnen – sonst würden vollständig vorgegebene Zustände überschrieben.
+ */
+export type UpdateSource = 'init' | 'input' | 'replace' | 'sim';
+
 export interface SimInstance {
   /** Parameter haben sich geändert (beim Start: alle Schlüssel). */
-  update?(changed: ReadonlySet<string>): void;
+  update?(changed: ReadonlySet<string>, source: UpdateSource): void;
   /** Zeichnen. Wird nach `update`, bei Größenänderung und während der Animation aufgerufen. */
   render(): void;
   /** Animationsschritt in Sekunden (nur wenn `animated`). */

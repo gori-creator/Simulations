@@ -1,7 +1,8 @@
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { allSimulations, readySimulations, SUBJECTS } from '../src/curriculum';
+import { allSimulations, getSimulation, readySimulations, SUBJECTS } from '../src/curriculum';
 import { getKmkStandard } from '../src/curriculum/kmk';
+import { STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
 import { LANGS } from '../src/i18n/config';
 import { allRoutes, routePath } from '../src/lib/routes';
 import { registry } from '../src/simulations/registry';
@@ -88,6 +89,63 @@ describe('Routen', () => {
   it('haben Inhalte für alle Infoseiten', () => {
     for (const page of ['teachers', 'about', 'imprint', 'privacy']) {
       expect(existsSync(`src/content/pages/de/${page}.md`), page).toBe(true);
+    }
+  });
+});
+
+describe('Sortierung', () => {
+  it('ordnet Themen und Simulationen innerhalb eines Bereichs nach Klassenstufe', () => {
+    for (const subject of SUBJECTS) {
+      for (const area of subject.areas) {
+        const topicStarts = area.topics.map((t) => t.grades[0]);
+        expect(topicStarts, `${subject.id}/${area.id}`).toEqual([...topicStarts].sort((a, b) => a - b));
+        for (const topic of area.topics) {
+          const simStarts = topic.simulations.map((s) => s.grades[0]);
+          expect(simStarts, `${area.id}/${topic.id}`).toEqual([...simStarts].sort((a, b) => a - b));
+        }
+      }
+    }
+  });
+});
+
+describe('Länder-Lehrpläne', () => {
+  it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s verweist nur auf bekannte Simulationen', (_id, curriculum) => {
+    for (const grade of curriculum.grades) {
+      for (const unit of unitsOf(grade)) {
+        for (const simId of unit.simulations ?? []) {
+          expect(() => getSimulation(simId), `${grade.grade}/${unit.code}: ${simId}`).not.toThrow();
+        }
+      }
+    }
+  });
+
+  it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s passt zu den Klassenstufen der Simulationen', (_id, curriculum) => {
+    for (const grade of curriculum.grades) {
+      for (const unit of unitsOf(grade)) {
+        for (const simId of unit.simulations ?? []) {
+          const sim = getSimulation(simId);
+          expect(sim.grades[0] <= grade.grade && grade.grade <= sim.grades[1], `${simId} in Jgst. ${grade.grade} (${sim.grades.join('–')})`).toBe(true);
+          expect(sim.subject, simId).toBe(curriculum.subject);
+        }
+      }
+    }
+  });
+
+  it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s hat eindeutige, vollständige Lernbereiche', (_id, curriculum) => {
+    const grades = curriculum.grades.map((g) => g.grade);
+    expect(new Set(grades).size).toBe(grades.length);
+    for (const grade of curriculum.grades) {
+      expect(grade.sourceUrl).toMatch(/^https:\/\//);
+      const codes = unitsOf(grade).map((u) => u.code);
+      expect(new Set(codes).size, `Jgst. ${grade.grade}`).toBe(codes.length);
+      for (const unit of grade.units) {
+        for (const part of unit.parts ?? []) expect(part.code.startsWith(`${unit.code}.`), part.code).toBe(true);
+        // Ein Lernbereich hat entweder Unterbereiche oder eigene Simulationen
+        if (unit.parts) expect(unit.simulations, unit.code).toBeUndefined();
+        for (const u of [unit, ...(unit.parts ?? [])]) {
+          for (const lang of LANGS) expect(u.title[lang].trim(), u.code).not.toBe('');
+        }
+      }
     }
   });
 });

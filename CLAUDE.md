@@ -10,7 +10,8 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 
 ## Aufbau
 
-- `src/curriculum/*.ts` – Lehrplan (einzige Quelle für Fächer, Bereiche, Themen, Simulationen; Status `planned`/`ready`)
+- `src/curriculum/*.ts` – Lehrplan (einzige Quelle für Fächer, Bereiche, Themen, Simulationen; Status `planned`/`ready`); innerhalb eines Bereichs nach Klassenstufe sortiert
+- `src/curriculum/lehrplaene/` – Länder-Lehrpläne (aktuell Bayern, Gymnasium, Mathematik): Jahrgangsstufe → Lernbereich → Simulations-IDs; Kurzbeschreibungen in eigenen Worten
 - `src/lib/routes.ts` – alle Seiten/Adressen; interne Links immer über `href()`/`withBase()`
 - `src/sim-core/` – Kern (Host, Regler, URL-Zustand, Plot/Surface, Format, Uhr). Simulationen importieren nur aus `src/sim-core/index.ts`
 - `src/simulations/<fach>/<id>/` – Umsetzung (`index.ts`), Rechenlogik (`model.ts`); Registrierung in `registry.ts`
@@ -25,6 +26,6 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - Texte immer zweisprachig (`L('de', 'en')`); deutsche Zahlen mit Dezimalkomma über `ctx.fmt`/`formatNumber`, Minus als `−`.
 - Farben in Simulationen nur über `ctx.theme` (CSS-Variablen `--plot-*`, `--series-*`).
 - Parameter-Schlüssel kurz, stabil (stehen in geteilten Links), nie mit `_` beginnend (`_lock`, `_hide` sind reserviert).
-- Beim ersten `update()` keine abgeleiteten Werte per `ctx.set()` überschreiben (geteilte Links!).
+- Abgeleitete Werte in `update(changed, source)` nur bei `source === 'input'` per `ctx.set()` umrechnen (geteilte Links, Beispiele!).
 - Neue Rechenlogik mit Tests in `tests/` absichern; Konsistenztests nicht abschwächen.
 - KMK-Zuordnungen und fachliche Inhalte sorgfältig formulieren; Unsicheres als Entwurf kennzeichnen.

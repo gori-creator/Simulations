@@ -1,0 +1,43 @@
+---
+import { getSimulation } from '../curriculum';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import SimCard from './SimCard.astro';
+
+/** Simulationen eines Lernbereichs: fertige als Karten, geplante als Liste. */
+interface Props {
+  lang: Lang;
+  ids: string[];
+}
+
+const { lang, ids } = Astro.props;
+const sims = ids.map((id) => getSimulation(id));
+const ready = sims.filter((s) => s.status === 'ready');
+const planned = sims.filter((s) => s.status === 'planned');
+---
+
+{
+  sims.length === 0 ? (
+    <p class="muted lp-none">{t(lang, 'curriculum.noSim')}</p>
+  ) : (
+    <div class="lp-sims">
+      {ready.length > 0 && (
+        <div class="card-grid">
+          {ready.map((sim) => (
+            <SimCard lang={lang} sim={sim} headingLevel="h4" />
+          ))}
+        </div>
+      )}
+      {planned.length > 0 && (
+        <ul class="planned-list">
+          {planned.map((sim) => (
+            <li>
+              {sim.title[lang]}
+              <span class="badge">{t(lang, 'status.planned')}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}

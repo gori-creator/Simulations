@@ -54,7 +54,7 @@ export default defineSimulation({
     const p = ctx.params;                       // typisiert: p.a ist number, p.grid boolean
 
     return {
-      update(changed) {                         // nach jeder Parameteränderung
+      update(changed, source) {                 // nach jeder Parameteränderung
         ctx.readout('value', `a = ${ctx.fmt.num(p.a)}`);
       },
       render() {                                // zeichnet alles neu
@@ -94,7 +94,7 @@ export default defineSimulation({
 - **Rechenlogik** (ohne Zeichnen) in eine eigene `model.ts` legen und in `tests/simulations.test.ts` testen.
 - **Alle Texte zweisprachig** (`L('…', '…')`). Deutsch zuerst, Englisch darf kurz sein.
 - **Parameter-Schlüssel** kurz halten (sie stehen in geteilten Links) und **nie** mit `_` beginnen.
-- Werte, die erst nach einer **Umrechnung** gesetzt werden (z. B. beim Wechsel der Darstellungsform), nicht beim ersten `update` setzen – sonst werden Werte aus geteilten Links überschrieben.
+- Werte, die durch eine **Umrechnung** entstehen (z. B. beim Wechsel der Darstellungsform), nur setzen, wenn `update(changed, source)` mit `source === 'input'` aufgerufen wird. Bei `init` (geteilter Link) und `replace` (Beispiel, Zurücksetzen, Link im Lernmaterial) bringt der Zustand alle Werte schon mit.
 - Ergebnisse, die eine Aufgabe verraten würden, als `spoiler: true` markieren.
 - Ziehbare Punkte mit `enabled: () => !ctx.locked` versehen.
 - Keine externen Bibliotheken oder Server einbinden, die Daten übertragen.
@@ -119,6 +119,7 @@ Die Konsistenztests melden u. a. fehlende Registrierung, fehlendes Lernmaterial,
 ## Checkliste
 
 - [ ] Lehrplan-Eintrag auf `ready` mit `slug`, `summary`, `thumb`, `kmk`, `keywords`
+- [ ] Zuordnung im Länder-Lehrplan (`src/curriculum/lehrplaene/`) geprüft – Klassenstufen müssen passen
 - [ ] Simulation funktioniert mit Maus, Touch und Tastatur (Regler)
 - [ ] Hell- und Dunkelmodus geprüft
 - [ ] Geteilter Link stellt den Zustand exakt wieder her (auch mit `_lock`/`_hide`)

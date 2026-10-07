@@ -1,4 +1,5 @@
 import { allSimulations, getArea, getSimulation, getSubject, SUBJECTS } from '../curriculum';
+import { getCurriculum, STATE_CURRICULA } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import { LANGS, type Lang, type Localized } from '../i18n/config';
 
@@ -17,7 +18,11 @@ export type Route =
   | { kind: 'page'; page: InfoPageId }
   | { kind: 'subject'; subject: SubjectId }
   | { kind: 'area'; subject: SubjectId; area: string }
-  | { kind: 'simulation'; id: string };
+  | { kind: 'simulation'; id: string }
+  /** Länder-Lehrplan: Übersicht aller Jahrgangsstufen */
+  | { kind: 'curriculum'; curriculum: string }
+  /** Länder-Lehrplan: eine Jahrgangsstufe */
+  | { kind: 'grade'; curriculum: string; grade: number };
 
 export const INFO_PAGES: Record<InfoPageId, Localized> = {
   teachers: { de: 'lehrkraefte', en: 'teachers' },
@@ -27,6 +32,11 @@ export const INFO_PAGES: Record<InfoPageId, Localized> = {
 };
 
 export const CATALOG_SLUG: Localized = { de: 'simulationen', en: 'simulations' };
+
+/** URL-Segment einer Jahrgangsstufe, z. B. "jahrgangsstufe-7" / "grade-7". */
+export function gradeSlug(lang: Lang, grade: number): string {
+  return lang === 'de' ? `jahrgangsstufe-${grade}` : `grade-${grade}`;
+}
 
 /** Pfadsegmente einer Route (ohne Sprache und ohne Basis-Pfad). */
 export function routeSegments(lang: Lang, route: Route): string[] {
@@ -41,6 +51,14 @@ export function routeSegments(lang: Lang, route: Route): string[] {
       return [getSubject(route.subject).slug[lang]];
     case 'area':
       return [getSubject(route.subject).slug[lang], getArea(route.subject, route.area).slug[lang]];
+    case 'curriculum': {
+      const curriculum = getCurriculum(route.curriculum);
+      return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang]];
+    }
+    case 'grade': {
+      const curriculum = getCurriculum(route.curriculum);
+      return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang], gradeSlug(lang, route.grade)];
+    }
     case 'simulation': {
       const sim = getSimulation(route.id);
       if (!sim.slug) throw new Error(`Simulation ${sim.id} hat keinen Slug (nur fertige Simulationen haben eine Seite).`);
@@ -80,5 +98,9 @@ export function allRoutes(): Route[] {
     for (const area of subject.areas) routes.push({ kind: 'area', subject: subject.id, area: area.id });
   }
   for (const sim of allSimulations()) if (sim.status === 'ready') routes.push({ kind: 'simulation', id: sim.id });
+  for (const curriculum of STATE_CURRICULA) {
+    routes.push({ kind: 'curriculum', curriculum: curriculum.id });
+    for (const grade of curriculum.grades) routes.push({ kind: 'grade', curriculum: curriculum.id, grade: grade.grade });
+  }
   return routes;
 }

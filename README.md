@@ -6,7 +6,8 @@ Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht
 
 ## Was die Seite kann
 
-- **Bibliothek entlang des Lehrplans:** Mathematik und Physik, gegliedert nach KMK-Bildungsstandards und Klassenstufen (5–13, teils Uni). Alle geplanten Simulationen (aktuell 78) sind bereits im Katalog eingetragen und werden nach und nach umgesetzt.
+- **Bibliothek entlang des Lehrplans:** Mathematik und Physik, gegliedert nach Themen (KMK-Bildungsstandards) und Klassenstufen (5–13, teils Uni). Alle geplanten Simulationen (aktuell 128, davon 92 in Mathematik) sind bereits im Katalog eingetragen und werden nach und nach umgesetzt.
+- **Nach Jahrgangsstufe:** Für Mathematik am bayerischen Gymnasium (LehrplanPLUS, Jgst. 5–13) gibt es eine Ansicht pro Jahrgangsstufe mit allen Lernbereichen und passenden Simulationen.
 - **Fertige Simulationen (Mathe – Funktionen):** lineare Funktion, quadratische Funktion, Einheitskreis, allgemeine Sinusfunktion.
 - **Regler, Schalter und ziehbare Punkte** – mit Maus, Stift oder Finger; Zoomen und Verschieben.
 - **Teilen per Link und QR-Code:** Jede Einstellung steckt in der Adresse. Optional mit **gesperrten Reglern** oder **verdeckten Ergebnissen** (Aufgabenmodus).
@@ -42,6 +43,7 @@ src/
   config/site.ts          Name, Beschreibung, Repository-Link
   i18n/                   Sprachen, UI-Texte (ui.ts), Hilfsfunktionen
   curriculum/             Lehrplan: Fächer → Bereiche → Themen → Simulationen, KMK-Bezüge
+  curriculum/lehrplaene/  Länder-Lehrpläne (Bayern, Gymnasium): Jahrgangsstufe → Lernbereich → Simulationen
   lib/routes.ts           Alle Seiten und ihre Adressen je Sprache
   sim-core/               Simulations-Kern (Koordinatensystem, Regler, Teilen, Animation …)
   simulations/            Umsetzungen der Simulationen + registry.ts
@@ -75,4 +77,4 @@ Der Basis-Pfad (z. B. `/Simulations/`) wird automatisch gesetzt. Für andere Anb
 
 - **Lizenz:** noch nicht festgelegt. Ein gängiger Weg für freie Bildungsprojekte ist MIT (Code) plus CC BY 4.0 oder CC BY-SA 4.0 (Texte).
 - **Name und Domain** des Projekts.
-- **Zuordnung zu Länder-Lehrplänen** (aktuell bundeslandneutral nach KMK).
+- **Weitere Länder-Lehrpläne:** Bayern (Gymnasium, Mathematik) ist hinterlegt; Physik und andere Bundesländer bzw. Schularten folgen.

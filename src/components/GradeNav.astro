@@ -1,0 +1,30 @@
+---
+import type { StateCurriculum } from '../curriculum/lehrplaene';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import { href } from '../lib/routes';
+
+/** Schnellwahl der Jahrgangsstufen eines Länder-Lehrplans. */
+interface Props {
+  lang: Lang;
+  curriculum: StateCurriculum;
+  current?: number;
+}
+
+const { lang, curriculum, current } = Astro.props;
+---
+
+<nav class="grade-nav" aria-label={t(lang, 'curriculum.gradeNav')}>
+  {
+    curriculum.grades.map((g) => (
+      <a
+        class="grade-nav__item"
+        href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: g.grade })}
+        aria-current={g.grade === current ? 'page' : undefined}
+        title={t(lang, 'curriculum.grade', { n: g.grade })}
+      >
+        {g.grade}
+      </a>
+    ))
+  }
+</nav>

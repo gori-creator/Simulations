@@ -67,6 +67,21 @@ export default defineSimulation({
       visibleIf: (v) => v.piAxis !== true,
     },
     { key: 'd', type: 'number', label: L('Verschiebung in y-Richtung d', 'Vertical shift d'), min: -4, max: 4, step: 0.1, default: 0 },
+    {
+      key: 'notation',
+      type: 'choice',
+      group: 'view',
+      label: L('Schreibweise', 'Notation'),
+      options: [
+        { value: 'minus', label: L('a · sin(b(x − c)) + d', 'a · sin(b(x − c)) + d') },
+        { value: 'plus', label: L('a · sin(b(x + c)) + d', 'a · sin(b(x + c)) + d') },
+      ],
+      default: 'minus',
+      help: L(
+        'Bei „x + c“ (so z. B. im LehrplanPLUS Bayern) verschiebt ein positives c nach links.',
+        'With “x + c”, a positive c shifts the graph to the left.',
+      ),
+    },
     { key: 'piAxis', type: 'boolean', group: 'view', label: L('x-Achse in Vielfachen von π', 'x-axis in multiples of π'), default: true },
     { key: 'compare', type: 'boolean', group: 'view', label: L('Grundfunktion zum Vergleich', 'Base function for comparison'), default: true },
     { key: 'period', type: 'boolean', group: 'view', label: L('Periode markieren', 'Mark the period'), default: true },
@@ -126,9 +141,12 @@ export default defineSimulation({
     const colorAmp = () => ctx.theme.series[2]!;
     const colorPeriod = () => ctx.theme.series[4]!;
 
-    const shift = () => (p.piAxis ? p.cPi * PI_TWELFTH : p.c);
+    /** Tatsächliche Verschiebung nach rechts; bei der Schreibweise „x + c“ ist sie −c. */
+    const sign = () => (p.notation === 'plus' ? -1 : 1);
+    const shift = () => sign() * (p.piAxis ? p.cPi * PI_TWELFTH : p.c);
     const params = (): SineParams => ({ base: p.base, a: p.a, b: p.b, c: shift(), d: p.d });
-    const setShift = (x: number) => (p.piAxis ? ctx.set({ cPi: Math.round(x / PI_TWELFTH) }) : ctx.set({ c: x }));
+    const setShift = (x: number) =>
+      p.piAxis ? ctx.set({ cPi: Math.round((sign() * x) / PI_TWELFTH) }) : ctx.set({ c: sign() * x });
 
     /** Verschiebung als Text: bei π-Achse als Bruchteil von π. */
     const shiftText = (value: number) => (p.piAxis ? (formatPiFraction(Math.abs(value)) ?? fmt.num(Math.abs(value))) : fmt.num(Math.abs(value)));
@@ -164,20 +182,19 @@ export default defineSimulation({
       return term.fnDef('f', term.sum([{ coef: p.a, body, dot: true }, { coef: p.d, body: '' }], fmt));
     }
 
-    let initialized = false;
-
     return {
-      update(changed) {
+      update(changed, source) {
         if (changed.has('piAxis')) {
           plot.setAxes({ x: { pi: p.piAxis } });
-          // Verschiebung beim Umschalten übernehmen (nicht beim Start, sonst
-          // würden Werte aus einem geteilten Link überschrieben).
-          if (initialized) {
+          // Verschiebung beim Umschalten übernehmen – nur bei Bedienung von Hand
+          // (Links und Beispiele bringen alle Werte mit).
+          if (source === 'input') {
             if (p.piAxis) ctx.set({ cPi: Math.round(p.c / PI_TWELFTH) });
             else ctx.set({ c: p.cPi * PI_TWELFTH });
           }
         }
-        initialized = true;
+        // Schreibweise gewechselt: c umdrehen, damit der Graph bleibt
+        if (changed.has('notation') && source === 'input') ctx.set(p.piAxis ? { cPi: -p.cPi } : { c: -p.c });
         const c = shift();
         ctx.readout('f', { html: formula() });
         ctx.readout('amplitude', `|a| = ${fmt.num(Math.abs(p.a))}${p.a < 0 ? ` – ${ctx.t('reflected')}` : ''}`);

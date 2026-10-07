@@ -23,6 +23,9 @@ Lernmaterial (content/*.md) ─────────────────�
   - `ready` – umgesetzt; braucht zusätzlich `slug`, `summary` und `thumb` und bekommt eine eigene Seite.
 - `curriculum/kmk.ts` enthält die Leitideen bzw. Kompetenzbereiche und Basiskonzepte der KMK-Bildungsstandards. Die Zuordnung ist ein erster Entwurf und sollte fachdidaktisch geprüft werden.
 - Klassenstufen über 13 stehen für die Universität.
+- Innerhalb eines Bereichs sind Themen und Simulationen nach Klassenstufe sortiert (ein Test prüft das).
+
+**Länder-Lehrpläne** (`src/curriculum/lehrplaene/`) ergänzen die Gliederung nach Thema um eine Gliederung nach Jahrgangsstufe. Aktuell hinterlegt: Mathematik am bayerischen Gymnasium (LehrplanPLUS, Jgst. 5–13). Jeder Lernbereich hat Nummer und Überschrift wie im Lehrplan, eine Kurzbeschreibung in eigenen Worten und die IDs der passenden Simulationen. Daraus entstehen die Seiten „Nach Jahrgangsstufe“ (`/de/mathematik/bayern-gymnasium/jahrgangsstufe-7/`) und der Lehrplanbezug auf jeder Simulationsseite. Weitere Bundesländer oder Schularten werden als zusätzliche Datei ergänzt.
 
 Übersichtsseiten, Katalog, Fortschrittsbalken und Navigation werden vollständig aus diesen Daten erzeugt.
 
@@ -55,7 +58,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 - **Vollbild**, **Bildexport** (`export.ts`), **Hell/Dunkel** (`theme.ts` liest CSS-Variablen).
 - **Links im Lernmaterial** wie `[Beispiel](?a=2)` laden die Einstellung ohne Neuladen der Seite.
 
-Änderungen über `ctx.set()` werden gesammelt (Microtask), dann ruft der Host einmal `update(changed)` auf, aktualisiert Regler und Adresse und zeichnet im nächsten Frame neu.
+Änderungen über `ctx.set()` werden gesammelt (Microtask), dann ruft der Host einmal `update(changed, source)` auf, aktualisiert Regler und Adresse und zeichnet im nächsten Frame neu. `source` sagt, woher die Änderung kommt (`init`, `input`, `replace`, `sim`), damit Simulationen abgeleitete Werte nur bei Bedienung von Hand umrechnen.
 
 **Zeichnen** – `Surface` (Canvas, scharf auf hochauflösenden Displays, Größenänderungen, Zeiger-Ereignisse) und `Plot` (Koordinatensystem):
 

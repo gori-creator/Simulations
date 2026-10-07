@@ -7,7 +7,16 @@ import { exportStagePng } from './export';
 import { Formatter } from './format';
 import { defaultValues, sanitize, valuesEqual } from './params';
 import { onThemeChange, readTheme, type Theme } from './theme';
-import type { ParamDef, ParamValue, ParamValues, ReadoutValue, SimContext, SimInstance, SimulationDefinition } from './types';
+import type {
+  ParamDef,
+  ParamValue,
+  ParamValues,
+  ReadoutValue,
+  SimContext,
+  SimInstance,
+  SimulationDefinition,
+  UpdateSource,
+} from './types';
 import { decodeState, encodeState, type ShareFlags } from './url-state';
 
 /**
@@ -36,6 +45,13 @@ export async function mountSimulation(root: HTMLElement): Promise<void> {
   }
 }
 
+const SOURCE_RANK: Record<UpdateSource, number> = { sim: 0, input: 1, replace: 2, init: 3 };
+
+/** Bei gemischten Änderungen in einem Durchlauf zählt die „stärkere“ Herkunft. */
+function strongerSource(a: UpdateSource, b: UpdateSource): UpdateSource {
+  return SOURCE_RANK[a] >= SOURCE_RANK[b] ? a : b;
+}
+
 interface ReadoutRow {
   root: HTMLElement;
   value: HTMLElement;
@@ -59,6 +75,7 @@ class SimulationHost {
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
   private pending = new Set<string>();
+  private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
   private flushing = false;
   private frame = 0;
@@ -95,7 +112,7 @@ class SimulationHost {
     this.applyLock();
 
     this.instance = def.mount(this.createContext());
-    this.instance.update?.(new Set(this.defs.map((d) => d.key)));
+    this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
     this.requestRender();
 
@@ -130,14 +147,15 @@ class SimulationHost {
       },
       fmt: this.fmt,
       clock: this.clock,
-      set: (values) => this.set(values),
+      set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,
       requestRender: () => this.requestRender(),
     };
   }
 
-  private set(values: Partial<ParamValues>): void {
+  private set(values: Partial<ParamValues>, source: UpdateSource): void {
+    const before = this.pending.size;
     for (const [key, raw] of Object.entries(values)) {
       const def = this.defsByKey.get(key);
       if (!def || raw === undefined) continue;
@@ -146,11 +164,12 @@ class SimulationHost {
       this.values[key] = value;
       this.pending.add(key);
     }
+    if (this.pending.size > before) this.pendingSource = strongerSource(this.pendingSource, source);
     if (this.pending.size) this.scheduleFlush();
   }
 
   private replaceAll(values: ParamValues): void {
-    this.set(values);
+    this.set(values, 'replace');
   }
 
   private scheduleFlush(): void {
@@ -165,8 +184,10 @@ class SimulationHost {
     let guard = 0;
     while (this.pending.size && guard++ < 10) {
       const changed = new Set(this.pending);
+      const source = this.pendingSource;
       this.pending.clear();
-      this.instance?.update?.(changed);
+      this.pendingSource = 'sim';
+      this.instance?.update?.(changed, source);
     }
     this.flushing = false;
     this.controls?.sync(this.values);
@@ -205,7 +226,7 @@ class SimulationHost {
       defs: this.defs,
       groups: this.def.groups,
       idPrefix: `sim-${this.def.id}`,
-      onInput: (key: string, value: ParamValue) => this.set({ [key]: value }),
+      onInput: (key: string, value: ParamValue) => this.set({ [key]: value }, 'input'),
     });
   }
 

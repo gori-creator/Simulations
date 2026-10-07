@@ -73,6 +73,22 @@ export default defineSimulation({
       default: 0,
       visibleIf: (v) => v.form === 'allgemein',
     },
+    {
+      key: 'notation',
+      type: 'choice',
+      group: 'view',
+      label: L('Schreibweise der Scheitelpunktform', 'Notation of the vertex form'),
+      options: [
+        { value: 'minus', label: L('a(x − d)² + e', 'a(x − d)² + e') },
+        { value: 'plus', label: L('a(x + d)² + e', 'a(x + d)² + e') },
+      ],
+      default: 'minus',
+      help: L(
+        'Bei „x + d“ (so z. B. im LehrplanPLUS Bayern) verschiebt ein positives d nach links.',
+        'With “x + d”, a positive d shifts the graph to the left.',
+      ),
+      visibleIf: (v) => v.form === 'scheitel',
+    },
     { key: 'normal', type: 'boolean', group: 'view', label: L('Normalparabel y = x² zum Vergleich', 'Standard parabola y = x² for comparison'), default: true },
     { key: 'axis', type: 'boolean', group: 'view', label: L('Symmetrieachse', 'Axis of symmetry'), default: true },
     { key: 'zeros', type: 'boolean', group: 'view', label: L('Nullstellen', 'Zeros'), default: true },
@@ -142,17 +158,22 @@ export default defineSimulation({
     const colorZero = () => ctx.theme.series[3]!;
     const colorStep = () => ctx.theme.series[2]!;
 
+    /** x-Koordinate des Scheitels; bei der Schreibweise „x + d“ ist sie −d. */
+    const vertexX = () => (p.notation === 'plus' ? -p.d : p.d);
+    /** Parameter d zu einer Scheitel-x-Koordinate (je nach Schreibweise). */
+    const dFor = (x: number) => (p.notation === 'plus' ? -x : x);
+
     /** Aktuelle Koeffizienten und Scheitelpunkt – egal in welcher Form eingegeben. */
     function state(): Coefficients & { vertex: { d: number; e: number } | null } {
       if (p.form === 'scheitel') {
-        const coefficients = vertexToGeneral(p.a, p.d, p.e);
-        return { ...coefficients, vertex: p.a === 0 ? null : { d: p.d, e: p.e } };
+        const coefficients = vertexToGeneral(p.a, vertexX(), p.e);
+        return { ...coefficients, vertex: p.a === 0 ? null : { d: vertexX(), e: p.e } };
       }
       return { a: p.a, b: p.b, c: p.c, vertex: generalToVertex(p.a, p.b, p.c) };
     }
 
     function moveVertex(d: number, e: number): void {
-      if (p.form === 'scheitel') ctx.set({ d, e });
+      if (p.form === 'scheitel') ctx.set({ d: dFor(d), e });
       else {
         const { b, c } = vertexToGeneral(p.a, d, e);
         ctx.set({ b, c });
@@ -192,23 +213,23 @@ export default defineSimulation({
     });
 
     const sq = term.sup(2);
-    let initialized = false;
 
     return {
-      update(changed) {
-        // Beim Wechsel der Darstellung umrechnen, damit die Parabel gleich bleibt
-        // (nicht beim Start, sonst würden Werte aus einem geteilten Link überschrieben).
-        if (changed.has('form') && initialized) {
+      update(changed, source) {
+        // Beim Wechsel der Darstellung umrechnen, damit die Parabel gleich bleibt – nur
+        // wenn von Hand umgeschaltet wurde (Links und Beispiele bringen alle Werte mit).
+        if (changed.has('form') && source === 'input') {
           if (p.form === 'allgemein') {
-            const { b, c } = vertexToGeneral(p.a, p.d, p.e);
+            const { b, c } = vertexToGeneral(p.a, vertexX(), p.e);
             ctx.set({ b, c });
           } else {
             const v = generalToVertex(p.a, p.b, p.c);
-            if (v) ctx.set({ d: v.d, e: v.e });
+            if (v) ctx.set({ d: dFor(v.d), e: v.e });
           }
         }
+        // Schreibweise gewechselt: d umdrehen, damit die Parabel bleibt
+        if (changed.has('notation') && source === 'input') ctx.set({ d: -p.d });
 
-        initialized = true;
         const s = state();
         const general = term.fnDef('f', term.polynomial([s.a, s.b, s.c], fmt));
         ctx.readout('generalForm', { html: general });
