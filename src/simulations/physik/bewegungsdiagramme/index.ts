@@ -188,7 +188,6 @@ export default defineSimulation({
       thV: 'v am Ende',
       thA: 'a',
       thDs: 'Δs',
-      stand: 'steht',
     },
     en: {
       canvas: 'Car on a road with a measuring tape, below it the distance–time, velocity–time and acceleration–time graphs with a time marker',
@@ -214,7 +213,6 @@ export default defineSimulation({
       thV: 'v at the end',
       thA: 'a',
       thDs: 'Δs',
-      stand: 'at rest',
     },
   },
 
