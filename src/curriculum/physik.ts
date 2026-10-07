@@ -34,7 +34,23 @@ export const physik: Subject = {
           title: L('Bewegungen', 'Motion'),
           grades: [7, 10],
           simulations: [
-            planned('bewegungsdiagramme', L('Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme)', 'Uniform and accelerated motion (distance–time and velocity–time graphs)'), [7, 10], { kmk: ['P-E', 'P-K'] }),
+            {
+              id: 'bewegungsdiagramme',
+              status: 'ready',
+              slug: L('bewegungsdiagramme', 'motion-graphs'),
+              title: L('Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme)', 'Uniform and accelerated motion (distance–time and velocity–time graphs)'),
+              summary: L(
+                'Ein Auto fährt gleichförmig, beschleunigt oder nach Fahrplan – live entstehen t-s-, t-v- und t-a-Diagramm mit Steigungsdreieck, Fläche unter dem Graphen und Stroboskop.',
+                'A car moves uniformly, accelerates or follows a schedule – the distance–time, velocity–time and acceleration–time graphs appear live, with slope triangles, the area under the graph and a stroboscope.',
+              ),
+              grades: [7, 10],
+              kmk: ['P-E', 'P-K', 'P-S'],
+              keywords: L(
+                ['Bewegung', 'gleichförmige Bewegung', 'beschleunigte Bewegung', 't-s-Diagramm', 't-v-Diagramm', 't-a-Diagramm', 'Zeit-Ort-Diagramm', 'Geschwindigkeit', 'Beschleunigung', 'Bremsweg', 'Durchschnittsgeschwindigkeit', 'Steigungsdreieck'],
+                ['motion', 'uniform motion', 'accelerated motion', 'distance–time graph', 'velocity–time graph', 'acceleration–time graph', 'velocity', 'acceleration', 'braking distance', 'average velocity', 'slope'],
+              ),
+              thumb: 'generic',
+            },
             planned('freier-fall', L('Freier Fall', 'Free fall'), [9, 10]),
           ],
         },
