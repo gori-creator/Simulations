@@ -1,0 +1,27 @@
+# Prüft jeden Push und jeden Pull Request: Typen, Tests und Build.
+name: Prüfen
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typprüfung
+        run: npm run check
+      - name: Tests
+        run: npm test
+      - name: Build
+        run: npm run build
