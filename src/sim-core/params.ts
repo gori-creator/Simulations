@@ -1,4 +1,13 @@
-import type { NumberParam, ParamDef, ParamValue, ParamValues } from './types';
+import type { NumberParam, ParamDef, ParamValue, ParamValues, TextParam } from './types';
+
+/** Standard-Höchstlänge für Text-Parameter. */
+export const TEXT_MAX_LENGTH = 80;
+
+/** Entfernt Steuerzeichen und kürzt auf die Höchstlänge (gezählt in Zeichen, nicht in UTF-16-Einheiten). */
+export function cleanText(value: string, def: Pick<TextParam, 'maxLength'>): string {
+  const chars = [...value.replace(/[\u0000-\u001f\u007f]/g, '')];
+  return chars.slice(0, def.maxLength ?? TEXT_MAX_LENGTH).join('');
+}
 
 /** Anzahl der Nachkommastellen einer Schrittweite (0.1 → 1, 0.25 → 2, 1 → 0). */
 export function stepDecimals(step: number): number {
@@ -31,6 +40,8 @@ export function sanitize(def: ParamDef, value: unknown): ParamValue {
       return typeof value === 'boolean' ? value : def.default;
     case 'choice':
       return def.options.some((o) => o.value === value) ? (value as string) : def.default;
+    case 'text':
+      return typeof value === 'string' ? cleanText(value, def) : def.default;
   }
 }
 

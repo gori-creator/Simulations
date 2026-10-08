@@ -1,7 +1,7 @@
 import type { Lang } from '../i18n/config';
 import { Formatter } from './format';
 import { isVisible, stepDecimals } from './params';
-import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues } from './types';
+import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
 
 /**
  * Erzeugt aus den Parameter-Definitionen einer Simulation automatisch die
@@ -85,6 +85,8 @@ export class Controls {
         return this.booleanView(def);
       case 'choice':
         return this.choiceView(def);
+      case 'text':
+        return this.textView(def);
     }
   }
 
@@ -228,6 +230,48 @@ export class Controls {
       root,
       sync: (value) => {
         input.checked = value === true;
+      },
+      setDisabled: (disabled) => {
+        input.disabled = disabled;
+      },
+    };
+  }
+
+  /** Eingabefeld für freien Text; jede Eingabe wird sofort übernommen. */
+  private textView(def: TextParam): ControlView {
+    const { lang, idPrefix, onInput } = this.options;
+    const id = `${idPrefix}-${def.key}`;
+    const root = document.createElement('div');
+    root.className = 'ctl ctl--text';
+    const head = document.createElement('div');
+    head.className = 'ctl__head';
+    const label = document.createElement('label');
+    label.htmlFor = id;
+    label.className = 'ctl__label';
+    label.textContent = def.label[lang];
+    head.append(label);
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = id;
+    input.className = 'ctl__text';
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.setAttribute('autocapitalize', 'off');
+    input.maxLength = def.maxLength ?? 80;
+    if (def.placeholder) input.placeholder = def.placeholder[lang];
+    root.append(head, input);
+    const help = this.helpText(def);
+    if (help) root.append(help);
+    input.addEventListener('input', () => onInput(def.key, input.value));
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') input.blur();
+    });
+    return {
+      def,
+      root,
+      sync: (value) => {
+        const text = String(value);
+        if (document.activeElement !== input && input.value !== text) input.value = text;
       },
       setDisabled: (disabled) => {
         input.disabled = disabled;

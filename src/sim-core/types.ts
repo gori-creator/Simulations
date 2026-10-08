@@ -53,15 +53,30 @@ export interface ChoiceParam<K extends string = string, V extends string = strin
   default: V;
 }
 
-export type ParamDef = NumberParam | BooleanParam | ChoiceParam;
+/**
+ * Freier Text (z. B. ein Term wie „3 · (x + 2)²“). Wird wie die anderen
+ * Parameter in der Adresse gespeichert; die Simulation prüft den Inhalt selbst.
+ */
+export interface TextParam<K extends string = string> extends BaseParam<K> {
+  type: 'text';
+  default: string;
+  /** Höchstlänge in Zeichen (Standard: 80). */
+  maxLength?: number;
+  /** Platzhalter im leeren Eingabefeld. */
+  placeholder?: Localized;
+}
+
+export type ParamDef = NumberParam | BooleanParam | ChoiceParam | TextParam;
 
 type ValueOf<D> = D extends { type: 'number' }
   ? number
   : D extends { type: 'boolean' }
     ? boolean
-    : D extends ChoiceParam<string, infer V>
-      ? V
-      : never;
+    : D extends { type: 'text' }
+      ? string
+      : D extends ChoiceParam<string, infer V>
+        ? V
+        : never;
 
 /** Leitet aus einer Parameterliste den Typ der Werte ab, z. B. `{ m: number; showGrid: boolean }`. */
 export type ValuesOf<P extends readonly ParamDef[]> = { [D in P[number] as D['key']]: ValueOf<D> };
