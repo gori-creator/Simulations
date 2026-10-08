@@ -109,8 +109,40 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('kraefteaddition', L('Kräfte addieren und zerlegen', 'Adding and resolving forces'), [8, 10], { kmk: ['P-S', 'P-BK-Wechselwirkung'] }),
-            planned('schiefe-ebene', L('Schiefe Ebene', 'Inclined plane'), [8, 10]),
+            {
+              id: 'kraefteaddition',
+              status: 'ready',
+              slug: L('kraefte-addieren-und-zerlegen', 'adding-and-resolving-forces'),
+              title: L('Kräfte addieren und zerlegen', 'Adding and resolving forces'),
+              summary: L(
+                'Kraftpfeile am gemeinsamen Angriffspunkt ziehen und die Resultierende mit dem Kräfteparallelogramm oder durch Aneinanderhängen konstruieren, Kräfte zerlegen – und sehen, warum die Seilkraft bei einer flach gespannten Leine so groß wird.',
+                'Drag force arrows acting at one point and construct the resultant with the parallelogram of forces or head to tail, resolve a force – and see why the tension in a nearly straight line becomes so large.',
+              ),
+              grades: [8, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
+              keywords: L(
+                ['Kraft', 'Vektor', 'Kräfteaddition', 'Kräftezerlegung', 'Kräfteparallelogramm', 'Kräftepolygon', 'Krafteck', 'Resultierende', 'Komponenten', 'Gleichgewicht', 'Gegenkraft', 'Seilkraft', 'Federwaage', 'Wäscheleine', 'Lampe'],
+                ['force', 'vector', 'adding forces', 'resolving forces', 'parallelogram of forces', 'polygon of forces', 'resultant', 'components', 'equilibrium', 'tension', 'spring balance', 'clothesline'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'schiefe-ebene',
+              status: 'ready',
+              slug: L('schiefe-ebene', 'inclined-plane'),
+              title: L('Schiefe Ebene', 'Inclined plane'),
+              summary: L(
+                'Klotz oder Wagen auf einer geneigten Ebene: Gewichtskraft in Hangabtriebs- und Normalkraft zerlegen, Haft- und Gleitreibung für verschiedene Materialpaare, Grenzwinkel finden, loslassen und mit dem Kraftmesser hochziehen – mit Diagramm F(α).',
+                'A block or cart on an incline: resolve the weight into the downhill force and the normal force, explore static and kinetic friction for different materials, find the limiting angle, release the body or pull it up with a spring balance – with a graph F(α).',
+              ),
+              grades: [8, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
+              keywords: L(
+                ['schiefe Ebene', 'Hangabtriebskraft', 'Normalkraft', 'Gewichtskraft', 'Kräftezerlegung', 'Reibung', 'Haftreibung', 'Gleitreibung', 'Reibungszahl', 'Grenzwinkel', 'Kraftmesser', 'Kraftwandler', 'Goldene Regel der Mechanik'],
+                ['inclined plane', 'downhill force', 'normal force', 'weight', 'resolving forces', 'friction', 'static friction', 'kinetic friction', 'coefficient of friction', 'limiting angle', 'spring balance', 'golden rule of mechanics'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
