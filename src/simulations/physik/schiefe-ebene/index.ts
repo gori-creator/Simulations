@@ -653,7 +653,8 @@ export default defineSimulation({
       gx.beginPath();
       gx.arc(P0[0], P0[1], ar, 0, -a, true);
       gx.stroke();
-      if (p.a > 0) haloText(`α = ${fmt.num(p.a, 0)}°`, P0[0] + Math.cos(a / 3) * (ar + 26), P0[1] - Math.sin(a / 3) * (ar + 26) + 6, theme.series[3]!, sm ? 11 : 12.5, 'left');
+      // Beschriftung erst nach den Kraftpfeilen zeichnen, damit F_G sie nicht verdeckt
+      const angleLabel = p.a > 0 ? () => haloText(`α = ${fmt.num(p.a, 0)}°`, P0[0] + Math.cos(a / 3) * (ar + 26), P0[1] - Math.sin(a / 3) * (ar + 26) + 6, theme.series[3]!, sm ? 11 : 12.5, 'left') : null;
 
       // Höhe und Länge
       if (p.dims && p.a > 0) {
@@ -700,6 +701,7 @@ export default defineSimulation({
       drawBody(g0);
       // Kräfte
       drawForces(g0);
+      angleLabel?.();
       // Status
       const label = statusLabel();
       const right = `t = ${fmt.fixed(t, 2)} s · v = ${fmt.num(Math.abs(state.v), 2)} m/s`;
