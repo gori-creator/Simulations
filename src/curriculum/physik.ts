@@ -223,7 +223,23 @@ export const physik: Subject = {
           title: L('Stromkreise', 'Circuits'),
           grades: [7, 9],
           simulations: [
-            planned('einfacher-stromkreis', L('Einfacher Stromkreis', 'Simple circuit'), [7, 8]),
+            {
+              id: 'einfacher-stromkreis',
+              status: 'ready',
+              slug: L('einfacher-stromkreis', 'simple-circuit'),
+              title: L('Einfacher Stromkreis', 'Simple circuit'),
+              summary: L(
+                'Batterie, Schalter und Lampe als Aufbau und als Schaltplan: Im geschlossenen Kreis fließen sichtbar Elektronen. Dazu Kurzschluss, Sicherung und ein Leitertest.',
+                'A battery, a switch and a bulb as a set-up and as a circuit diagram: electrons visibly flow in the closed circuit. Plus short circuit, fuse and a conductor test.',
+              ),
+              grades: [7, 8],
+              kmk: ['P-S', 'P-E', 'P-K', 'P-BK-System'],
+              keywords: L(
+                ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
+                ['electric circuit', 'closed circuit', 'open circuit', 'switch', 'light bulb', 'battery', 'electrons', 'conventional current', 'circuit diagram', 'circuit symbols', 'short circuit', 'fuse', 'conductor', 'insulator'],
+              ),
+              thumb: 'generic',
+            },
             planned('ohmsches-gesetz', L('Ohmsches Gesetz', 'Ohm’s law'), [8, 9], { kmk: ['P-E', 'P-K'] }),
             planned('reihe-parallel', L('Reihen- und Parallelschaltung', 'Series and parallel circuits'), [8, 9], { kmk: ['P-BK-System'] }),
           ],
