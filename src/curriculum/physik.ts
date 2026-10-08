@@ -257,7 +257,23 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('reihe-parallel', L('Reihen- und Parallelschaltung', 'Series and parallel circuits'), [8, 9], { kmk: ['P-BK-System'] }),
+            {
+              id: 'reihe-parallel',
+              status: 'ready',
+              slug: L('reihen-und-parallelschaltung', 'series-and-parallel-circuits'),
+              title: L('Reihen- und Parallelschaltung', 'Series and parallel circuits'),
+              summary: L(
+                'Zwei oder drei Lampen in Reihe, parallel oder gemischt: Strom- und Spannungsmesser an beliebige Stellen setzen, Lampen herausdrehen und die Gesetze für Stromstärke, Spannung und Ersatzwiderstand entdecken.',
+                'Two or three bulbs in series, in parallel or mixed: place ammeters and voltmeters anywhere, unscrew bulbs and discover the rules for current, voltage and equivalent resistance.',
+              ),
+              grades: [8, 9],
+              kmk: ['P-BK-System', 'P-E', 'P-S'],
+              keywords: L(
+                ['Reihenschaltung', 'Parallelschaltung', 'gemischte Schaltung', 'Ersatzwiderstand', 'Gesamtwiderstand', 'Knotenregel', 'Maschenregel', 'Spannungsteiler', 'Stromstärke', 'Spannung', 'Glühlampe', 'Kirchhoff', 'Verzweigung'],
+                ['series circuit', 'parallel circuit', 'mixed circuit', 'equivalent resistance', 'total resistance', 'junction rule', 'loop rule', 'voltage divider', 'current', 'voltage', 'light bulb', 'Kirchhoff'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
