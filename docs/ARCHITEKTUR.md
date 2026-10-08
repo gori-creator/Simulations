@@ -44,7 +44,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 | Teil | Aufgabe |
 | --- | --- |
-| `params` | Parameter (Zahl, Schalter, Auswahl) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group` und `visibleIf` |
+| `params` | Parameter (Zahl, Schalter, Auswahl, Text) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group` und `visibleIf` |
 | `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
 | `presets` | Beispiel-Einstellungen |
 | `animated`, `layout`, `dragHint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), Hinweistext, eigene Texte |
@@ -55,6 +55,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 **Host (`host.ts`)** – erzeugt aus den Definitionen automatisch Regler (`controls.ts`), Ergebnisliste, Beispiel-Knöpfe und kümmert sich um:
 
 - **Zustand in der Adresse** (`url-state.ts`): nur abweichende Werte, z. B. `?m=2&b=-1`. Steuerparameter: `_lock=1` (Regler gesperrt), `_hide=1` (Ergebnisse verdeckt). Werte aus Links werden geprüft, gerundet und begrenzt.
+- **Text-Parameter** (`type: 'text'`, z. B. ein Term wie `3 · (x + 2)²`): erscheinen als Eingabefeld, jede Eingabe wird sofort übernommen und wie die anderen Werte in der Adresse gespeichert (`?term=3+%C2%B7+%28x+%2B+2%29`). Der Kern entfernt nur Steuerzeichen und kürzt auf `maxLength` (Standard 80); ob der Text gültig ist, prüft die Simulation selbst und zeigt Fehler verständlich an (Vorbild: `mathematik/termbaum` mit eigenem Parser ohne `eval`).
 - **Teilen**: Link + QR-Code (`qr.ts`, wird erst bei Bedarf geladen), großer QR-Code für den Beamer.
 - **Animation**: `Clock` + `requestAnimationFrame`; `tick(dt)` bekommt Sekunden. Für Physik gibt es `FixedStepper` (feste Zeitschritte) und `rk4` (Runge-Kutta) in `clock.ts`/`numeric.ts`.
 - **Vollbild**, **Bildexport** (`export.ts`), **Hell/Dunkel** (`theme.ts` liest CSS-Variablen).

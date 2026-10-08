@@ -45,6 +45,7 @@ export default defineSimulation({
     { key: 'a', type: 'number', label: L('Amplitude a', 'Amplitude a'), min: -5, max: 5, step: 0.1, default: 1 },
     { key: 'grid', type: 'boolean', label: L('Gitternetz', 'Grid'), default: true },
     { key: 'mode', type: 'choice', label: L('Modus', 'Mode'), options: [...], default: 'x' },
+    { key: 'term', type: 'text', label: L('Term', 'Expression'), default: '3 + 4 · 5', maxLength: 60 },
   ],
   readouts: [{ key: 'value', label: L('Wert', 'Value'), spoiler: true }],
   presets: [{ id: 'big', label: L('Groß', 'Large'), values: { a: 4 } }],
@@ -78,6 +79,7 @@ export default defineSimulation({
 | Baustein | Verwendung |
 | --- | --- |
 | `ctx.params` | aktuelle Werte (nur lesen) |
+| `type: 'text'` | Eingabefeld für freien Text (z. B. Terme, Funktionsterme); wird live übernommen und im Link gespeichert. Den Inhalt prüft die Simulation selbst – nie mit `eval`, sondern mit einem eigenen Parser (Vorbild: `termbaum/model.ts`). In Links im Lernmaterial Sonderzeichen kodieren: `+` als `%2B`, Klammern als `%28`/`%29`, Leerzeichen als `%20`. |
 | `ctx.set({ a: 2 })` | Werte ändern, z. B. beim Ziehen; wird automatisch auf `min`/`max`/`step` gerundet |
 | `ctx.readout(key, text \| { html } \| null)` | Ergebnis anzeigen (`null` blendet aus) |
 | `ctx.fmt` | `num`, `fixed`, `signed`, `pi`, `point` – sprachrichtige Zahlen |

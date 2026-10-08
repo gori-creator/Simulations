@@ -44,6 +44,7 @@ function parseRaw(def: ParamDef, raw: string): unknown {
       if (raw === '0' || raw === 'false') return false;
       return undefined;
     case 'choice':
+    case 'text':
       return raw;
   }
 }
