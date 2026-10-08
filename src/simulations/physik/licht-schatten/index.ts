@@ -1772,7 +1772,6 @@ export default defineSimulation({
         text(g, ln, c2.x + 14, y, { font: titleFont, color: st === 'none' ? theme.text : accent, align: 'left' });
         y += small ? 18 : 20;
       });
-      const bodyFont = `500 ${small ? 11 : 12.5}px ${theme.font}`;
       // Legende: Kästchen mit Text, bei Bedarf in mehreren Zeilen
       const items: [string, string][] = [
         ['rgba(255,214,140,0.9)', ctx.t('legSun')],
@@ -1795,8 +1794,21 @@ export default defineSimulation({
       }
       const rowH = small ? 17 : 19;
       const legendH = placed.length ? (rowN + 1) * rowH + 6 : 0;
-      const body = wrap(ctx.t(st === 'none' ? 'noneText' : `${st}Text`), c2.w - 28, bodyFont);
-      const lh = small ? 14.5 : 17;
+      // Auf breiten Bildschirmen die größte Schrift wählen, bei der der Text ganz passt
+      const bodyStr = ctx.t(st === 'none' ? 'noneText' : `${st}Text`);
+      let bodyFont = `500 ${small ? 11 : 12.5}px ${theme.font}`;
+      let lh = small ? 14.5 : 17;
+      let body = wrap(bodyStr, c2.w - 28, bodyFont);
+      if (!small) {
+        for (const size of [14.5, 14, 13.5, 13]) {
+          const f = `500 ${size}px ${theme.font}`;
+          const ls = wrap(bodyStr, c2.w - 28, f);
+          if (ls.length * Math.round(size * 1.42) <= c2.y + c2.h - legendH - 10 - y) {
+            [bodyFont, lh, body] = [f, Math.round(size * 1.42), ls];
+            break;
+          }
+        }
+      }
       const fit = Math.max(1, Math.floor((c2.y + c2.h - legendH - 6 - y) / lh));
       body.slice(0, fit).forEach((ln, i) => {
         const last = i === fit - 1 && body.length > fit;
