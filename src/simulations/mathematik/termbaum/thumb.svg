@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M70 44C70 70 100 66 100 80M130 44C130 70 100 66 100 80" stroke-width="3.5" />
+    <path d="M190 44C190 70 220 66 220 80M250 44C250 70 220 66 220 80" stroke-width="3.5" stroke-opacity="0.5" />
+    <path d="M100 118C100 136 160 124 160 140M220 106C220 136 160 124 160 140" stroke-width="3.5" stroke-opacity="0.75" />
+    <rect x="52" y="20" width="36" height="24" rx="7" stroke-width="3" />
+    <rect x="112" y="20" width="36" height="24" rx="7" stroke-width="3" />
+    <rect x="172" y="20" width="36" height="24" rx="7" stroke-width="3" stroke-opacity="0.6" />
+    <rect x="232" y="20" width="36" height="24" rx="7" stroke-width="3" stroke-opacity="0.6" />
+    <circle cx="220" cy="93" r="13" stroke-width="3.5" stroke-opacity="0.6" />
+    <rect x="86" y="105" width="28" height="15" rx="7.5" stroke-width="2.5" />
+    <circle cx="160" cy="155" r="16" stroke-width="4" />
+    <path d="M160 147v16M152 155h16" stroke-width="3.5" />
+  </g>
+  <g fill="currentColor">
+    <circle cx="100" cy="91" r="13" fill-opacity="0.85" />
+    <circle cx="220" cy="93" r="2.8" fill-opacity="0.6" />
+  </g>
+</svg>

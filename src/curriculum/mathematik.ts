@@ -77,7 +77,23 @@ export const mathematik: Subject = {
       kmk: ['M-L1', 'M-L3', 'M-K5'],
       topics: [
         topic('terme', L('Terme', 'Terms'), [
-          planned('termbaum', L('Termbaum: die Struktur von Termen', 'Expression trees: the structure of terms'), [5, 7], { kmk: ['M-L1', 'M-K5'] }),
+          {
+            id: 'termbaum',
+            status: 'ready',
+            slug: L('termbaum', 'expression-tree'),
+            title: L('Termbaum: die Struktur von Termen', 'Expression trees: the structure of terms'),
+            summary: L(
+              'Eigene Terme eingeben und als Rechenbaum sehen: Schritt für Schritt wandern die Werte durch den Baum – Klammer vor Potenz vor Punkt vor Strich. Mit Termart, Gliederung in Worten und Variablen.',
+              'Type your own expressions and see them as a tree: step by step the values flow through it – brackets, powers, × ÷, then + −. With the type of expression, its structure in words and variables.',
+            ),
+            grades: [5, 7],
+            kmk: ['M-L1', 'M-K5', 'M-K4'],
+            keywords: L(
+              ['Termbaum', 'Rechenbaum', 'Rechenreihenfolge', 'Punkt vor Strich', 'Klammer', 'Potenz', 'Termart', 'Summe', 'Differenz', 'Produkt', 'Quotient', 'Termgliederung', 'Variable', 'Termwert'],
+              ['expression tree', 'order of operations', 'brackets', 'power', 'sum', 'difference', 'product', 'quotient', 'variable', 'evaluate', 'BODMAS', 'PEMDAS'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'binomische-formeln',
             status: 'ready',
