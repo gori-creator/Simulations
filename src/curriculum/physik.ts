@@ -353,7 +353,23 @@ export const physik: Subject = {
           title: L('Strahlenoptik', 'Ray optics'),
           grades: [6, 9],
           simulations: [
-            planned('licht-schatten', L('Licht und Schatten', 'Light and shadow'), [6, 7]),
+            {
+              id: 'licht-schatten',
+              status: 'ready',
+              slug: L('licht-und-schatten', 'light-and-shadow'),
+              title: L('Licht und Schatten', 'Light and shadow'),
+              summary: L(
+                'Lampe, Scheibe und Schirm auf der optischen Bank verschieben: Randstrahlen zeigen, wie Kern- und Halbschatten entstehen – mit punktförmiger, ausgedehnter oder zwei farbigen Lampen. Dazu Sonnen- und Mondfinsternis im Modell.',
+                'Move a lamp, a disc and a screen on the optical bench: edge rays show how umbra and penumbra form – with a point-like, an extended or two coloured lamps. Plus solar and lunar eclipses in a model.',
+              ),
+              grades: [6, 7],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Licht', 'Schatten', 'Kernschatten', 'Halbschatten', 'Randstrahl', 'Lichtquelle', 'punktförmig', 'geradlinige Ausbreitung', 'farbige Schatten', 'Sonnenfinsternis', 'Mondfinsternis', 'Mondphasen'],
+                ['light', 'shadow', 'umbra', 'penumbra', 'edge ray', 'light source', 'point source', 'rectilinear propagation', 'coloured shadows', 'solar eclipse', 'lunar eclipse', 'moon phases'],
+              ),
+              thumb: 'generic',
+            },
             planned('reflexion', L('Reflexion am ebenen Spiegel', 'Reflection at a plane mirror'), [6, 8]),
             {
               id: 'brechung',
