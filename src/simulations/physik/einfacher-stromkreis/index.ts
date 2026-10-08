@@ -261,11 +261,11 @@ export default defineSimulation({
       fuse: 'Sicherung',
       fuseBlown: 'Sicherung durchgeschmolzen',
       wire: 'Leitung',
-      looseWire: 'lose Leitung',
+      looseWire: 'Leitung zum Überbrücken',
       gap: 'Prüfstrecke',
       tap: 'antippen',
       tapSwitch: 'Schalter antippen',
-      tapWire: 'über das Gerät legen',
+      tapWire: 'antippen: über das Gerät legen',
       tray: 'Gegenstände zum Prüfen – antippen',
       short: 'Kurzschluss!',
       hot: 'Leitung und Batterie werden heiß',
@@ -314,6 +314,7 @@ export default defineSimulation({
       legend: 'Schaltzeichen',
       sBattery: 'Batterie',
       sSwitch: 'Schalter (offen)',
+      sSwitchOn: 'Schalter (geschlossen)',
       sLamp: 'Glühlampe',
       sMotor: 'Elektromotor',
       sBell: 'Klingel',
@@ -338,11 +339,11 @@ export default defineSimulation({
       fuse: 'Fuse',
       fuseBlown: 'Fuse blown',
       wire: 'Wire',
-      looseWire: 'loose wire',
+      looseWire: 'Bridging wire',
       gap: 'Test gap',
       tap: 'tap',
       tapSwitch: 'tap the switch',
-      tapWire: 'connect across the device',
+      tapWire: 'tap: connect across the device',
       tray: 'Objects to test – tap one',
       short: 'Short circuit!',
       hot: 'the wire and the battery get hot',
@@ -391,6 +392,7 @@ export default defineSimulation({
       legend: 'Circuit symbols',
       sBattery: 'Battery',
       sSwitch: 'Switch (open)',
+      sSwitchOn: 'Switch (closed)',
       sLamp: 'Light bulb',
       sMotor: 'Electric motor',
       sBell: 'Bell',
@@ -642,8 +644,8 @@ export default defineSimulation({
         }
         {
           const b = bridge01();
-          const rx = r.x + Math.max(40 * s, r.w * 0.1);
-          const ry = r.y + Math.max(34 * s, r.h * 0.13);
+          const rx = Math.max(r.x + 16 * s, dev[0] - 158 * s);
+          const ry = Math.max(r.y + 22 * s, dev[1] - 74 * s);
           const rest: [Pt, Pt, Pt, Pt] = [[rx, ry + 10 * s], [rx + 24 * s, ry - 8 * s], [rx + 64 * s, ry - 6 * s], [rx + 92 * s, ry + 12 * s]];
           const on: [Pt, Pt, Pt, Pt] = [d1, add(d1, -6 * s, 62 * s), add(d2, 6 * s, 62 * s), d2];
           paths.br = new Path(bezier(mixPt(rest[0], on[0], b), mixPt(rest[1], on[1], b), mixPt(rest[2], on[2], b), mixPt(rest[3], on[3], b)));
@@ -1843,8 +1845,8 @@ export default defineSimulation({
           const bx0 = Math.min(...xs) - 10 * s;
           const by0 = Math.min(...ys) - 8 * s;
           hitbox('bridge', bx0, by0, Math.max(...xs) - bx0 + 10 * s, Math.max(...ys) - by0 + 10 * s);
-          if (b < 0.01 && (p.lbl || hovered === 'bridge')) {
-            const active = hovered === 'bridge' && !ctx.locked;
+          if (b < 0.01) {
+            const active = !ctx.locked && (hovered === 'bridge' || !p.lbl);
             pill((bx0 + Math.max(...xs)) / 2, Math.max(...ys) + 8 * s, ctx.t(active ? 'tapWire' : 'looseWire'), active ? theme.series[0]! : theme.muted, 'center', labelSize());
           }
         }
@@ -1876,7 +1878,9 @@ export default defineSimulation({
           g.font = `700 ${sz}px ${theme.font}`;
           const lw0 = g.measureText(ctx.t(d)).width + 16;
           const right = G.dev[0] + 30 * s + lw0 < r.x + r.w - 6;
-          pill(right ? G.dev[0] + 30 * s : G.dev[0] - 30 * s, G.bulbC[1] - 6 * s, ctx.t(d), theme.muted, right ? 'left' : 'right', sz);
+          // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber
+          if (right) pill(G.dev[0] + 30 * s, G.bulbC[1] - 6 * s, ctx.t(d), theme.muted, 'left', sz);
+          else pill(G.dev[0], Math.max(r.y + 4, G.bulbC[1] - G.bulbR - 26 - (d === 'bell' ? 14 * s : 0)), ctx.t(d), theme.muted, 'center', sz);
           if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? 'fuseBlown' : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
         }
       }
@@ -2158,13 +2162,14 @@ export default defineSimulation({
         },
       ]);
       if (mode() === 'circuit') {
+        const closedNow = switchClosed01() > 0.5;
         items.push([
-          'sSwitch',
+          closedNow ? 'sSwitchOn' : 'sSwitch',
           (x, y) => {
             ln([
               [x - 16, y],
               [x - 7, y],
-              [x + 7, y - 7],
+              closedNow ? [x + 8, y - 3] : [x + 7, y - 7],
             ]);
             ln([
               [x + 8, y],
@@ -2506,7 +2511,10 @@ export default defineSimulation({
 
       action(id) {
         if (ctx.locked) return;
-        if (id === 'switch') tap('switch');
+        if (id === 'switch') {
+          usedSwitch = true;
+          ctx.set({ on: !p.on });
+        }
         else if (id === 'replace') replaceFuse();
         else if (id === 'next') {
           const i = MATERIAL_IDS.indexOf(obj() as MaterialId);
