@@ -4,7 +4,7 @@ Dieses Dokument ist für eine neue Claude-Code-Sitzung, die die Arbeit an den ge
 
 ## 1. Ziel und Wünsche der Person
 
-- Alle geplanten Simulationen (`planned(...)` in `src/curriculum/*.ts`, Stand Übergabe: 38 fertig, 91 offen, davon 6 angefangen in `docs/agenten/wip/`) nacheinander bauen, **so viele wie möglich**, **ohne Qualitätsverlust**: „extrem hochklassig“, gestaltet und animiert wie ein hochwertiges Lernprodukt, fachlich exakt (Gymnasium Bayern, LehrplanPLUS), DE ausführlich und EN kürzer.
+- Alle geplanten Simulationen (`planned(...)` in `src/curriculum/*.ts`, Stand Übergabe: 41 fertig, 88 offen, davon 6 angefangen in `docs/agenten/wip/`) nacheinander bauen, **so viele wie möglich**, **ohne Qualitätsverlust**: „extrem hochklassig“, gestaltet und animiert wie ein hochwertiges Lernprodukt, fachlich exakt (Gymnasium Bayern, LehrplanPLUS), DE ausführlich und EN kürzer.
 - Keine Abstriche bei Prüfrunden (Screenshots), Modell oder Englisch – das hat die Person ausdrücklich so entschieden.
 - Selbstständig weiterarbeiten, bis das Nutzungslimit erreicht ist; nach dem Zurücksetzen von selbst weitermachen (Routine, siehe 6.).
 - Bilder: optional, immer mit gezeichneter Ersatzgrafik, jedes Bild mit Prompt in `docs/BILDER.md`. Die Person erzeugt Bilder gesammelt und lädt sie in einen Ordner `Bilder_neu/` im Repository hoch; dann zuschneiden, als WebP nach `src/assets/sims/<id>/` legen (Ablauf wie Commit d3554a6), Upload-Ordner löschen.
@@ -40,9 +40,9 @@ Bisher fielen bei der Durchsicht u. a. auf: Schaltersymbol zeigte „offen“ be
 
 ## 5. Angefangene Gruppen wieder aufnehmen (zuerst erledigen)
 
-In `docs/agenten/wip/` liegt die Arbeit der drei Gruppen, die beim Wechsel liefen. `0001-…patch` usw. sind fertige Commits, `9999-unfertig.patch` ist der nicht committete Rest.
+In `docs/agenten/wip/` liegt die Arbeit der zwei Gruppen, die beim Wechsel noch nicht fertig waren (P04 wurde noch in der alten Sitzung fertig und zusammengeführt). `0001-…patch` usw. sind fertige Commits, `9999-unfertig.patch` ist der nicht committete Rest.
 
-Für jede Gruppe (M06, P04, M03) einen Agenten mit Worktree starten und ihm auftragen, **zuerst** die Patches einzuspielen:
+Für jede Gruppe (M06, M03) einen Agenten mit Worktree starten und ihm auftragen, **zuerst** die Patches einzuspielen:
 ```
 git am <repo>/docs/agenten/wip/<Gruppe>/0*.patch      # falls vorhanden
 git apply <repo>/docs/agenten/wip/<Gruppe>/9999-unfertig.patch
@@ -50,7 +50,6 @@ git apply <repo>/docs/agenten/wip/<Gruppe>/9999-unfertig.patch
 (Patches aus dem Haupt-Checkout lesen, Pfad absolut angeben.) Danach den angefangenen Teil prüfen, fertigstellen und committen, dann die restlichen Simulationen der Gruppe bauen. Fertige Simulationen trotzdem kurz per Screenshot gegenprüfen lassen.
 
 - **M06** (koordinaten-lage ✔, winkel-messen ✔, umfang-flaeche begonnen): Testgruppe für den Spickzettel. Leseliste: `CLAUDE.md`, `docs/agenten/SPICKZETTEL.md`, Vorbilder `mathematik/lgs-grafisch` und `mathematik/zahlengerade` vollständig, weitere nur gezielt mit grep. Am Ende die Rückmeldung zum Spickzettel erbitten. Danach die Qualität mit den bisherigen Gruppen vergleichen: Hält sie mit, bekommen alle weiteren Gruppen diese verkürzte Leseliste (spart viel Kontingent); sonst die volle Leseliste aus `AUFTRAG.md`.
-- **P04** (licht-schatten ✔, reflexion halb, linsen offen): Vorbild Optik `physik/brechung`.
 - **M03** (brueche-vergleichen fast fertig, Lehrplaneintrag fehlte noch; dezimalbrueche, brueche-rechnen offen): Vorbilder `mathematik/bruchteile`, `zahlengerade`, `primfaktoren`.
 
 Nach dem Zusammenführen einer Gruppe ihren Ordner in `docs/agenten/wip/` löschen und mitcommitten.
