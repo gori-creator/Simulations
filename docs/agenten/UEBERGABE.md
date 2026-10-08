@@ -57,7 +57,7 @@ Nach dem Zusammenführen einer Gruppe ihren Ordner in `docs/agenten/wip/` lösch
 
 ## 6. Sicherheitsnetz gegen das Nutzungslimit
 
-- Die alte stündliche Routine `trig_0182DZL5mq2p1jdrQxyWB7Tf` (gehört zur alten Sitzung) ist deaktiviert; **löschen** (`delete_trigger`).
+- Die Routine der vorigen Sitzung `trig_0182DZL5mq2p1jdrQxyWB7Tf` ist gelöscht. Aktuell: `trig_01HWzcyZq7hPc5hHjUjRByhP` (stündlich, Minute 57, feuert in Sitzung `session_019nyYJcM6dv7breR6K6SSe8`). Bei einem weiteren Sitzungswechsel diese löschen und eine neue anlegen.
 - In der neuen Sitzung eine eigene Routine anlegen, die in diese Sitzung feuert (z. B. stündlich, Minute 57). Inhalt: „Laufen Agenten, nichts tun. Sonst: fertige Worktrees prüfen, mergen, pushen, unterbrochene Agenten fortsetzen bzw. nächste Gruppen starten (max. 3), wie in `docs/agenten/UEBERGABE.md` beschrieben. Sind alle Gruppen fertig, Routine löschen und der Person eine Zusammenfassung samt Bilderliste geben.“
 - Erfahrung: pro 5-Stunden-Fenster schaffen die Agenten etwa 3–4 Simulationen (je Gruppe ca. 650 000–700 000 Agenten-Token).
 
