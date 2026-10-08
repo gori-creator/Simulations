@@ -126,7 +126,23 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('schiefe-ebene', L('Schiefe Ebene', 'Inclined plane'), [8, 10]),
+            {
+              id: 'schiefe-ebene',
+              status: 'ready',
+              slug: L('schiefe-ebene', 'inclined-plane'),
+              title: L('Schiefe Ebene', 'Inclined plane'),
+              summary: L(
+                'Klotz oder Wagen auf einer geneigten Ebene: Gewichtskraft in Hangabtriebs- und Normalkraft zerlegen, Haft- und Gleitreibung für verschiedene Materialpaare, Grenzwinkel finden, loslassen und mit dem Kraftmesser hochziehen – mit Diagramm F(α).',
+                'A block or cart on an incline: resolve the weight into the downhill force and the normal force, explore static and kinetic friction for different materials, find the limiting angle, release the body or pull it up with a spring balance – with a graph F(α).',
+              ),
+              grades: [8, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
+              keywords: L(
+                ['schiefe Ebene', 'Hangabtriebskraft', 'Normalkraft', 'Gewichtskraft', 'Kräftezerlegung', 'Reibung', 'Haftreibung', 'Gleitreibung', 'Reibungszahl', 'Grenzwinkel', 'Kraftmesser', 'Kraftwandler', 'Goldene Regel der Mechanik'],
+                ['inclined plane', 'downhill force', 'normal force', 'weight', 'resolving forces', 'friction', 'static friction', 'kinetic friction', 'coefficient of friction', 'limiting angle', 'spring balance', 'golden rule of mechanics'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
