@@ -113,7 +113,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
-          planned('waagemodell', L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'), [7, 7], { kmk: ['M-L3', 'M-K5'] }),
+          {
+            id: 'waagemodell',
+            status: 'ready',
+            slug: L('waagemodell', 'balance-model'),
+            title: L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'),
+            summary: L(
+              'x-Päckchen und Gewichtsstücke auf einer Balkenwaage: Wer auf beiden Seiten dasselbe wegnimmt oder teilt, hält das Gleichgewicht – wer nur eine Seite ändert, sieht die Waage kippen. Mit Umformungskette und Probe.',
+              'x-boxes and weights on a balance: removing or dividing the same on both sides keeps it level – changing only one side makes it tip. With the chain of transformations and a check.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L3', 'M-K5', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Gleichung', 'lineare Gleichung', 'Waagemodell', 'Balkenwaage', 'Äquivalenzumformung', 'Lösungsmenge', 'Probe', 'Variable', 'Gleichgewicht', 'Umformung'],
+              ['equation', 'linear equation', 'balance model', 'equivalent transformation', 'solution set', 'check', 'variable', 'solving equations'],
+            ),
+            thumb: 'generic',
+          },
           planned('lgs-grafisch', L('Lineare Gleichungssysteme grafisch lösen', 'Solving linear systems graphically'), [8, 8]),
           planned('gleichungen-grafisch', L('Gleichungen grafisch lösen: Schnittpunkte von Graphen', 'Solving equations graphically: intersections of graphs'), [8, 9]),
         ]),
