@@ -1944,12 +1944,11 @@ export default defineSimulation({
       ];
       const bh = W ? 13 : 10;
       const gapB = W ? 11 : 7;
-      const contentH = (W ? 22 : 0) + 2 * bh + gapB + (W ? 14 : 8) + 8;
-      let top = y + Math.max(W ? 10 : 8, (h3 - contentH) / 2);
-      if (W) {
-        title(R.x + pad, top + 7, ctx.t('compareTitle'));
-        top += 22;
-      }
+      // Überschrift oben wie bei den anderen Karten, Balken und Folgerung im Rest mittig
+      const head = W ? 30 : 0;
+      if (W) title(R.x + pad, y + 16, ctx.t('compareTitle'));
+      const contentH = 2 * bh + gapB + (W ? 14 : 8) + 8;
+      const top = y + head + Math.max(W ? 4 : 8, (h3 - head - contentH) / 2);
       bars.forEach(([name, v, color], i) => {
         const yb = top + i * (bh + gapB);
         const isR = name === 'r';

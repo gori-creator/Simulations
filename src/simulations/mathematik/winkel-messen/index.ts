@@ -762,16 +762,17 @@ export default defineSimulation({
       const showVal = mode() === 'messen' ? p.show : answered;
       if (al > 0) {
         const mid = al === 360 ? aDir + 180 : aDir + al / 2;
-        const rr = al === 90 ? G * 0.3 : al > 180 ? G * 0.3 : G * 0.37;
-        const [lx, ly] = polar(mid, rr);
         const f = `italic 700 ${wide() ? 22 : 18}px ${theme.mathFont}`;
+        const vf = `800 ${wide() ? 17 : 14}px ${theme.font}`;
+        g.font = f;
+        const w1 = g.measureText('α').width;
+        g.font = vf;
+        const vtxt = ` = ${fmt.num(al, 0)}°`;
+        const w2 = showVal ? g.measureText(vtxt).width : 0;
+        // Beim Vollwinkel die Beschriftung ganz außerhalb des Kreisbogens
+        const rr = al === 360 ? G * 0.2 + (w1 + w2) / 2 + 12 : al === 90 ? G * 0.3 : al > 180 ? G * 0.3 : G * 0.37;
+        const [lx, ly] = polar(mid, rr);
         if (showVal) {
-          const vf = `800 ${wide() ? 17 : 14}px ${theme.font}`;
-          g.font = f;
-          const w1 = g.measureText('α').width;
-          g.font = vf;
-          const vtxt = ` = ${fmt.num(al, 0)}°`;
-          const w2 = g.measureText(vtxt).width;
           const x0 = lx - (w1 + w2) / 2;
           haloText('α', x0, ly, f, tc, 'left');
           haloText(vtxt, x0 + w1, ly + 1, vf, tc, 'left');
@@ -780,7 +781,8 @@ export default defineSimulation({
 
       // Scheitel und Punkte
       if (p.names) {
-        const opp = al === 0 || al === 360 ? aDir + 180 : aDir + al / 2 + 180;
+        // Nullwinkel: S unter den Schenkel, sonst gegenüber dem Winkelfeld
+        const opp = al === 0 ? aDir - 90 : al === 360 ? aDir + 180 : aDir + al / 2 + 180;
         const [sx, sy] = polar(opp, wide() ? 20 : 16);
         haloText('S', sx, sy, `700 ${wide() ? 17 : 15}px ${theme.font}`, ink);
       }
