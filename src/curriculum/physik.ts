@@ -256,8 +256,40 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('ohmsches-gesetz', L('Ohmsches Gesetz', 'Ohm’s law'), [8, 9], { kmk: ['P-E', 'P-K'] }),
-            planned('reihe-parallel', L('Reihen- und Parallelschaltung', 'Series and parallel circuits'), [8, 9], { kmk: ['P-BK-System'] }),
+            {
+              id: 'ohmsches-gesetz',
+              status: 'ready',
+              slug: L('ohmsches-gesetz', 'ohms-law'),
+              title: L('Ohmsches Gesetz', 'Ohm’s law'),
+              summary: L(
+                'Spannung am Netzgerät einstellen, Stromstärke und Spannung an Zeigerinstrumenten ablesen und die Kennlinie aufnehmen: Ursprungsgerade beim Widerstand und Konstantandraht, gekrümmte Kennlinie bei der Glühlampe.',
+                'Set the voltage, read current and voltage on analogue meters and record the characteristic: a straight line through the origin for a resistor and a constantan wire, a curved one for a light bulb.',
+              ),
+              grades: [8, 9],
+              kmk: ['P-E', 'P-K', 'P-S', 'P-BK-System'],
+              keywords: L(
+                ['Ohmsches Gesetz', 'Widerstand', 'Kennlinie', 'I-U-Diagramm', 'U-I-Diagramm', 'Stromstärke', 'Spannung', 'Amperemeter', 'Voltmeter', 'Glühlampe', 'Konstantan', 'spezifischer Widerstand', 'Ursprungsgerade', 'Proportionalität'],
+                ['Ohm’s law', 'resistance', 'characteristic', 'current–voltage graph', 'current', 'voltage', 'ammeter', 'voltmeter', 'light bulb', 'constantan', 'resistivity', 'proportionality'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'reihe-parallel',
+              status: 'ready',
+              slug: L('reihen-und-parallelschaltung', 'series-and-parallel-circuits'),
+              title: L('Reihen- und Parallelschaltung', 'Series and parallel circuits'),
+              summary: L(
+                'Zwei oder drei Lampen in Reihe, parallel oder gemischt: Strom- und Spannungsmesser an beliebige Stellen setzen, Lampen herausdrehen und die Gesetze für Stromstärke, Spannung und Ersatzwiderstand entdecken.',
+                'Two or three bulbs in series, in parallel or mixed: place ammeters and voltmeters anywhere, unscrew bulbs and discover the rules for current, voltage and equivalent resistance.',
+              ),
+              grades: [8, 9],
+              kmk: ['P-BK-System', 'P-E', 'P-S'],
+              keywords: L(
+                ['Reihenschaltung', 'Parallelschaltung', 'gemischte Schaltung', 'Ersatzwiderstand', 'Gesamtwiderstand', 'Knotenregel', 'Maschenregel', 'Spannungsteiler', 'Stromstärke', 'Spannung', 'Glühlampe', 'Kirchhoff', 'Verzweigung'],
+                ['series circuit', 'parallel circuit', 'mixed circuit', 'equivalent resistance', 'total resistance', 'junction rule', 'loop rule', 'voltage divider', 'current', 'voltage', 'light bulb', 'Kirchhoff'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
