@@ -227,7 +227,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('winkel-messen', L('Winkel schätzen und messen', 'Estimating and measuring angles'), [5, 5]),
+          {
+            id: 'winkel-messen',
+            status: 'ready',
+            slug: L('winkel-schaetzen-messen', 'estimating-measuring-angles'),
+            title: L('Winkel schätzen und messen', 'Estimating and measuring angles'),
+            summary: L(
+              'Schenkel ziehen, das Geodreieck verschieben und drehen, bis es richtig anliegt, und an der passenden Skala ablesen – auch überstumpfe Winkel. Dazu Winkelarten in Farbe und ein Schätzspiel mit Punkten.',
+              'Drag the arms, move and turn the set square until it is placed correctly and read the right scale – reflex angles included. With colour-coded types of angles and an estimation game.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L4', 'M-K5'],
+            keywords: L(
+              ['Winkel', 'Scheitel', 'Schenkel', 'Geodreieck', 'Winkelmesser', 'spitzer Winkel', 'rechter Winkel', 'stumpfer Winkel', 'gestreckter Winkel', 'überstumpfer Winkel', 'Vollwinkel', 'Grad', 'schätzen'],
+              ['angle', 'vertex', 'arm', 'set square', 'protractor', 'acute angle', 'right angle', 'obtuse angle', 'straight angle', 'reflex angle', 'full angle', 'degree', 'estimate'],
+            ),
+            thumb: 'generic',
+          },
           planned('vierecke', L('Das Haus der Vierecke', 'The family of quadrilaterals'), [5, 7], { kmk: ['M-L4', 'M-K1'] }),
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
