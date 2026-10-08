@@ -161,8 +161,40 @@ export const mathematik: Subject = {
           },
         ]),
         topic('gleichungen', L('Gleichungen und Gleichungssysteme', 'Equations and systems of equations'), [
-          planned('waagemodell', L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'), [7, 7], { kmk: ['M-L3', 'M-K5'] }),
-          planned('lgs-grafisch', L('Lineare Gleichungssysteme grafisch lösen', 'Solving linear systems graphically'), [8, 8]),
+          {
+            id: 'waagemodell',
+            status: 'ready',
+            slug: L('waagemodell', 'balance-model'),
+            title: L('Lineare Gleichungen am Waagemodell', 'Linear equations with a balance model'),
+            summary: L(
+              'x-Päckchen und Gewichtsstücke auf einer Balkenwaage: Wer auf beiden Seiten dasselbe wegnimmt oder teilt, hält das Gleichgewicht – wer nur eine Seite ändert, sieht die Waage kippen. Mit Umformungskette und Probe.',
+              'x-boxes and weights on a balance: removing or dividing the same on both sides keeps it level – changing only one side makes it tip. With the chain of transformations and a check.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L3', 'M-K5', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Gleichung', 'lineare Gleichung', 'Waagemodell', 'Balkenwaage', 'Äquivalenzumformung', 'Lösungsmenge', 'Probe', 'Variable', 'Gleichgewicht', 'Umformung'],
+              ['equation', 'linear equation', 'balance model', 'equivalent transformation', 'solution set', 'check', 'variable', 'solving equations'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'lgs-grafisch',
+            status: 'ready',
+            slug: L('lgs-grafisch', 'linear-systems-graphically'),
+            title: L('Lineare Gleichungssysteme grafisch lösen', 'Solving linear systems graphically'),
+            summary: L(
+              'Zwei Geraden, ein Schnittpunkt: Gleichungen in Normalform oder allgemeiner Form einstellen oder Punkte ziehen, Lösung ablesen und durch Einsetzen prüfen. Mit parallelen und identischen Geraden und einem Tarifvergleich.',
+              'Two lines, one intersection: set equations in slope-intercept or general form or drag points, read off the solution and check it by substituting. With parallel and identical lines and a tariff comparison.',
+            ),
+            grades: [8, 8],
+            kmk: ['M-L3', 'M-K4', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['lineares Gleichungssystem', 'LGS', 'Schnittpunkt', 'grafisches Lösungsverfahren', 'Gerade', 'parallel', 'identisch', 'Lösungsmenge', 'Probe', 'Gleichsetzungsverfahren', 'Tarifvergleich'],
+              ['system of linear equations', 'simultaneous equations', 'intersection', 'graphical method', 'line', 'parallel', 'coincident', 'solution set', 'check', 'tariff comparison'],
+            ),
+            thumb: 'generic',
+          },
           planned('gleichungen-grafisch', L('Gleichungen grafisch lösen: Schnittpunkte von Graphen', 'Solving equations graphically: intersections of graphs'), [8, 9]),
         ]),
       ],
