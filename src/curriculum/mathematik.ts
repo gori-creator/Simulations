@@ -210,7 +210,23 @@ export const mathematik: Subject = {
       kmk: ['M-L4', 'M-K1', 'M-K4'],
       topics: [
         topic('grundbegriffe', L('Grundbegriffe der Geometrie', 'Basic geometric concepts'), [
-          planned('koordinaten-lage', L('Punkte, Geraden und Kreise: Lagebeziehungen', 'Points, lines and circles: relative positions'), [5, 5]),
+          {
+            id: 'koordinaten-lage',
+            status: 'ready',
+            slug: L('koordinatensystem-lagebeziehungen', 'coordinates-relative-positions'),
+            title: L('Punkte, Geraden und Kreise: Lagebeziehungen', 'Points, lines and circles: relative positions'),
+            summary: L(
+              'Punkte im Koordinatensystem setzen und ablesen, Strecke, Halbgerade und Gerade unterscheiden, parallel und senkrecht mit dem Geodreieck prüfen, Abstände messen und Tangenten an Kreise finden – mit Punkte-Spiel.',
+              'Plot and read points in the coordinate plane, tell segments, rays and lines apart, check parallel and perpendicular lines with a set square, measure distances and find tangents to circles – with a point game.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Koordinatensystem', 'Punkt', 'Strecke', 'Halbgerade', 'Gerade', 'parallel', 'senkrecht', 'Abstand', 'Lot', 'Geodreieck', 'Kreis', 'Radius', 'Durchmesser', 'Tangente', 'Sekante', 'Passante'],
+              ['coordinate plane', 'point', 'segment', 'ray', 'line', 'parallel', 'perpendicular', 'distance', 'set square', 'circle', 'radius', 'diameter', 'tangent', 'secant'],
+            ),
+            thumb: 'generic',
+          },
           planned('winkel-messen', L('Winkel schätzen und messen', 'Estimating and measuring angles'), [5, 5]),
           planned('vierecke', L('Das Haus der Vierecke', 'The family of quadrilaterals'), [5, 7], { kmk: ['M-L4', 'M-K1'] }),
         ]),
