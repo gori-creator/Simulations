@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 140H260" stroke-width="5" />
+    <path d="M70 146l-8 10M90 146l-8 10M110 146l-8 10M130 146l-8 10M150 146l-8 10M170 146l-8 10M190 146l-8 10M210 146l-8 10M230 146l-8 10M250 146l-8 10" stroke-width="2.5" stroke-opacity="0.5" />
+    <path d="M160 138V24" stroke-width="3" stroke-dasharray="7 8" stroke-opacity="0.55" />
+    <path d="M78 46L158 136M162 136L242 46" stroke-width="4.5" />
+    <path d="M131 105A44 44 0 0 1 160 96" stroke-width="3" stroke-opacity="0.8" />
+    <path d="M160 96A44 44 0 0 1 189 105" stroke-width="3" stroke-opacity="0.8" />
+    <path d="M106.9 87.5L118 91L115.8 79.6M199.8 102.5L202 91L190.9 94.5" stroke-width="4" />
+  </g>
+  <path d="M131 105A44 44 0 0 1 160 96L160 138Z" fill="currentColor" fill-opacity="0.18" />
+  <path d="M160 96A44 44 0 0 1 189 105L160 138Z" fill="currentColor" fill-opacity="0.18" />
+</svg>

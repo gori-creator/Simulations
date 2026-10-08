@@ -50,6 +50,9 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Exponentielles Wachstum | `pond` | `src/assets/sims/exponentielles-wachstum/teich.webp` | 1024 × 1024 | deckend |
 | Exponentielles Wachstum | `lily` | `src/assets/sims/exponentielles-wachstum/seerose.webp` | 256 × 256 | transparent |
 | Freier Fall | `feather` | `src/assets/sims/freier-fall/feder.webp` | 1024 × 384 | transparent |
+| Licht und Schatten | `sun` | `src/assets/sims/licht-schatten/sonne.webp` | 1024 × 1024 | transparent |
+| Licht und Schatten | `earth` | `src/assets/sims/licht-schatten/erde.webp` | 1024 × 1024 | transparent |
+| Licht und Schatten | `moon` | `src/assets/sims/licht-schatten/mond.webp` | 1024 × 1024 | transparent |
 
 ## Ziegenproblem
 
@@ -232,3 +235,25 @@ Wird klein (ca. 20–30 Pixel) und gedreht gezeichnet.
 Fällt in der Fallröhre neben der Stahlkugel. Wird klein (etwa 35–40 Pixel lang) und leicht schaukelnd gezeichnet. Die Feder liegt **waagerecht**, der Kiel zeigt nach **links**, die Spitze nach rechts; sie füllt die Bildbreite **randlos** aus und ist senkrecht mittig.
 
 > A single small white bird feather lying horizontally, quill pointing to the left and tip to the right, side view, soft natural barbs with a slight grey tint at the edges, the feather spans the full width of the image edge to edge and is vertically centred, isolated on a transparent background, no shadow, no text, photorealistic, aspect ratio 8:3
+
+## Licht und Schatten
+
+Alle drei Bilder sind kreisrunde Himmelskörper, die das quadratische Bild **randlos ausfüllen** (der Kreis berührt alle vier Bildkanten), außerhalb transparent. Erde und Mond müssen **gleichmäßig von vorn beleuchtet** sein (ohne Nachtseite, ohne Schattenkante) – Tag und Nacht, Mondphasen und Finsternisschatten berechnet die Simulation selbst und legt sie darüber.
+
+### `sonne.webp` – Sonne
+
+Wird als große, leuchtende Kugel am linken Rand gezeichnet; einen Lichtschein ergänzt die Simulation.
+
+> The Sun as a perfectly round glowing disc, yellow-orange surface with fine granulation and slight limb darkening towards the edge, no flares or prominences beyond the disc, no corona, the disc fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
+
+### `erde.webp` – Erde
+
+Blick **von oben auf den Nordpol** (Arktis in der Bildmitte), weil die Simulation die Bahnebene von Norden aus zeigt.
+
+> The planet Earth seen from space directly above the North Pole, Arctic sea ice in the centre, surrounding continents and blue oceans with some white clouds, evenly lit from the front with no night side and no terminator, perfectly round, the globe fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
+
+### `mond.webp` – Mond
+
+Vorderseite des Vollmonds, **Norden oben**. Wird auch im Fenster „Blick zum Mond“ verwendet (Mondphasen und rötlicher Mond bei einer Mondfinsternis entstehen durch die Simulation).
+
+> The full Moon, near side as seen from Earth with north up, grey surface with dark maria and bright craters such as Tycho, evenly lit from the front with no shadow and no terminator, perfectly round, the Moon fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
