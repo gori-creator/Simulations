@@ -19,6 +19,8 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 
 ## Übersicht
 
+Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge kommen unten dazu; ob eine Datei schon existiert, zeigt der Ordner `src/assets/sims/`.
+
 | Simulation | Schlüssel | Datei | Größe | Hintergrund |
 | --- | --- | --- | --- | --- |
 | Ziegenproblem | `stage` | `src/assets/sims/ziegenproblem/buehne.webp` | 1920 × 1080 | deckend |
