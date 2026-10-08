@@ -372,7 +372,23 @@ export const physik: Subject = {
               ),
               thumb: 'refraction',
             },
-            planned('linsen', L('Linsen und Bildentstehung', 'Lenses and image formation'), [8, 10]),
+            {
+              id: 'linsen',
+              status: 'ready',
+              slug: L('linsen-bildentstehung', 'lenses-image-formation'),
+              title: L('Linsen und Bildentstehung', 'Lenses and image formation'),
+              summary: L(
+                'Gegenstand und Brennweite ziehen: Konstruktionsstrahlen zeigen, wo das Bild einer Sammel- oder Zerstreuungslinse entsteht – mit Linsengleichung, Abbildungsmaßstab, Lichtbündel auf dem Schirm und Lupe, Projektor, Kamera und Auge.',
+                'Drag the object and the focal point: construction rays show where a converging or diverging lens forms the image – with the lens equation, magnification, a light beam on a screen and a magnifier, projector, camera and eye.',
+              ),
+              grades: [8, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Linse', 'Sammellinse', 'Zerstreuungslinse', 'Brennweite', 'Brennpunkt', 'Bildkonstruktion', 'Parallelstrahl', 'Mittelpunktstrahl', 'Brennpunktstrahl', 'Linsengleichung', 'Abbildungsgleichung', 'Abbildungsmaßstab', 'reelles Bild', 'virtuelles Bild', 'Lupe', 'Projektor', 'Kamera', 'Auge', 'Akkommodation'],
+                ['lens', 'converging lens', 'diverging lens', 'focal length', 'focal point', 'ray diagram', 'parallel ray', 'central ray', 'focal ray', 'lens equation', 'magnification', 'real image', 'virtual image', 'magnifier', 'projector', 'camera', 'eye', 'accommodation'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
