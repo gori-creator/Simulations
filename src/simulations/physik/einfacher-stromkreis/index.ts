@@ -1985,15 +1985,20 @@ export default defineSimulation({
       } else {
         // Schalter (Schließer)
         const c = switchClosed01();
-        const a = ((13 + (1 - c) * 27) * Math.PI) / 180;
+        // Geschlossen: Schaltstück liegt gerade in der Leitung (wie im Schulbuch);
+        // offen: um 40° herausgeklappt, der Gegenkontakt wird als kurzer Strich sichtbar.
+        const a = ((1 - c) * 40 * Math.PI) / 180;
         const bot: Pt = [x0, ys + 15 * s];
-        const L2 = 31 * s;
+        const L2 = 30 * s;
         g.strokeStyle = ink;
         line([bot, [bot[0] - Math.sin(a) * L2, bot[1] - Math.cos(a) * L2]]);
+        g.save();
+        g.globalAlpha *= 1 - c;
         line([
           [x0, ys - 15 * s],
           [x0 - 7 * s, ys - 15 * s],
         ]);
+        g.restore();
         g.beginPath();
         g.arc(bot[0], bot[1], 2.6 * s, 0, Math.PI * 2);
         g.fill();
@@ -2169,7 +2174,7 @@ export default defineSimulation({
             ln([
               [x - 16, y],
               [x - 7, y],
-              closedNow ? [x + 8, y - 3] : [x + 7, y - 7],
+              closedNow ? [x + 8, y] : [x + 7, y - 7],
             ]);
             ln([
               [x + 8, y],
