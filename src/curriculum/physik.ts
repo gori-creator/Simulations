@@ -215,7 +215,23 @@ export const physik: Subject = {
           title: L('Kreisbewegung und Gravitation', 'Circular motion and gravitation'),
           grades: [10, 13],
           simulations: [
-            planned('kreisbewegung', L('Kreisbewegung und Zentripetalkraft', 'Circular motion and centripetal force'), [10, 11]),
+            {
+              id: 'kreisbewegung',
+              status: 'ready',
+              slug: L('kreisbewegung-zentripetalkraft', 'circular-motion-centripetal-force'),
+              title: L('Kreisbewegung und Zentripetalkraft', 'Circular motion and centripetal force'),
+              summary: L(
+                'Eine Kugel kreist an einer Schnur, ein Auto fährt durch eine Kurve: Bahngeschwindigkeit, Umlaufdauer und Zentripetalkraft F_Z = m·v²/r mit Pfeilen und Diagramm. Reißt die Schnur, fliegt die Kugel tangential weiter; ist das Auto zu schnell, rutscht es aus der Kurve.',
+                'A ball circles on a string, a car drives through a bend: speed, period and centripetal force F_Z = m·v²/r with arrows and a graph. If the string breaks, the ball flies off along the tangent; if the car is too fast, it skids out of the bend.',
+              ),
+              grades: [10, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Kreisbewegung', 'gleichförmige Kreisbewegung', 'Zentripetalkraft', 'Zentripetalbeschleunigung', 'Bahngeschwindigkeit', 'Winkelgeschwindigkeit', 'Umlaufdauer', 'Frequenz', 'Trägheit', 'Tangente', 'Kurvenfahrt', 'Haftreibung', 'Haftreibungszahl', 'Kurvenradius', 'Glatteis'],
+                ['circular motion', 'uniform circular motion', 'centripetal force', 'centripetal acceleration', 'speed', 'angular velocity', 'period', 'frequency', 'inertia', 'tangent', 'cornering', 'static friction', 'coefficient of friction', 'radius of a bend', 'black ice'],
+              ),
+              thumb: 'generic',
+            },
             planned('planetenbahnen', L('Planetenbahnen und Keplersche Gesetze', 'Planetary orbits and Kepler’s laws'), [11, 13], { uni: true }),
           ],
         },
