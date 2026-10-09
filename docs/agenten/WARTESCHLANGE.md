@@ -12,7 +12,7 @@ P01 M01 M23 P03 M05 P02 M06 (fertig) | P04 M03 (angefangen, siehe wip/) | M07 (l
 - P01 fertig — bewegungsdiagramme, freier-fall, hookesches-gesetz
 - P02 fertig — hebelgesetz, kraefteaddition, schiefe-ebene
 - P03 fertig — einfacher-stromkreis, ohmsches-gesetz, reihe-parallel
-- P04 angefangen (wip/P04: licht-schatten fertig committet; reflexion halb fertig) — licht-schatten, reflexion, linsen
+- P04 läuft (licht-schatten, reflexion fertig und gemergt; linsen in Arbeit) — licht-schatten, reflexion, linsen
 - P05 offen — stoesse, kreisbewegung, planetenbahnen
 - P06 offen — federpendel, resonanz, wellen-ausbreitung
 - P07 offen — doppler-effekt, interferenz, stehende-wellen
@@ -24,7 +24,7 @@ P01 M01 M23 P03 M05 P02 M06 (fertig) | P04 M03 (angefangen, siehe wip/) | M07 (l
 ### Mathematik
 - M01 fertig — stellenwerte, zahlengerade, primfaktoren
 - M02 offen — zehnerpotenzen, einheiten, massstab
-- M03 angefangen (wip/M03: brueche-vergleichen fast fertig, noch nicht committet) — brueche-vergleichen, dezimalbrueche, brueche-rechnen
+- M03 läuft (brueche-vergleichen, dezimalbrueche fertig und gemergt; brueche-rechnen in Arbeit) — brueche-vergleichen, dezimalbrueche, brueche-rechnen
 - M04 offen — prozentstreifen, quadratwurzel, proportional
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
 - M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
