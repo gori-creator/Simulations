@@ -319,7 +319,23 @@ export const mathematik: Subject = {
           planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
-          planned('umfang-flaeche', L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'), [5, 5]),
+          {
+            id: 'umfang-flaeche',
+            status: 'ready',
+            slug: L('umfang-flaecheninhalt-rechteck', 'perimeter-area-rectangle'),
+            title: L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'),
+            summary: L(
+              'Rechteck auf Rechenpapier aufziehen, Reihe für Reihe mit Einheitsquadraten auslegen (A = a · b) und eine Ameise einmal herumlaufen lassen (U = 2 · (a + b)). Dazu: gleicher Umfang – verschiedene Fläche, gleiche Fläche – verschiedener Umfang und eine L-Form zum Zerlegen.',
+              'Drag out a rectangle on squared paper, tile it row by row with unit squares (A = a · b) and let an ant walk once around it (P = 2 · (a + b)). Plus: same perimeter – different area, same area – different perimeter, and an L-shape to split up.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Umfang', 'Flächeninhalt', 'Rechteck', 'Quadrat', 'Einheitsquadrat', 'Quadratzentimeter', 'cm²', 'Länge', 'Breite', 'Rechenpapier', 'zerlegen', 'ergänzen', 'L-Form', 'zusammengesetzte Figur'],
+              ['perimeter', 'area', 'rectangle', 'square', 'unit square', 'square centimetre', 'cm²', 'length', 'width', 'squared paper', 'decompose', 'complete', 'L-shape', 'composite shape'],
+            ),
+            thumb: 'generic',
+          },
           planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
