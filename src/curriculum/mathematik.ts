@@ -524,7 +524,23 @@ export const mathematik: Subject = {
       topics: [
         topic('funktionsbegriff', L('Funktionsbegriff und Zuordnungen', 'Functions and relationships'), [
           planned('proportional', L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'), [6, 8], { kmk: ['M-L3', 'M-K3'] }),
-          planned('funktion-zuordnung', L('Funktion oder nicht? Zuordnungen und ihre Graphen', 'Function or not? Relations and their graphs'), [8, 8]),
+          {
+            id: 'funktion-zuordnung',
+            status: 'ready',
+            slug: L('funktion-oder-nicht', 'function-or-not'),
+            title: L('Funktion oder nicht? Zuordnungen und ihre Graphen', 'Function or not? Relations and their graphs'),
+            summary: L(
+              'Pfeile zwischen zwei Mengen setzen und sofort sehen, ob die Zuordnung eindeutig ist – synchron als Pfeildiagramm, Wertetabelle und Graph. Dazu der senkrechte Linientest an Kreis, liegender Parabel, Treppenfunktion und mehr, mit Definitions- und Wertemenge.',
+              'Draw arrows between two sets and see at once whether the relation is unique – as an arrow diagram, table of values and graph in sync. Plus the vertical line test on a circle, a sideways parabola, a step function and more, with domain and range.',
+            ),
+            grades: [8, 8],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Funktion', 'Zuordnung', 'eindeutig', 'Pfeildiagramm', 'Wertetabelle', 'Graph', 'senkrechter Linientest', 'Vertikalentest', 'Definitionsmenge', 'Wertemenge', 'Funktionsgraph', 'Umkehrung', 'Kreis', 'Treppenfunktion'],
+              ['function', 'relation', 'mapping', 'unique', 'arrow diagram', 'table of values', 'graph', 'vertical line test', 'domain', 'range', 'inverse', 'circle', 'step function'],
+            ),
+            thumb: 'generic',
+          },
           planned('funktionsplotter', L('Funktionsplotter mit eigenen Termen', 'Function plotter with custom terms'), [8, 13], { uni: true }),
         ]),
         topic('lineare-funktionen', L('Lineare Funktionen', 'Linear functions'), [
