@@ -370,7 +370,23 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('reflexion', L('Reflexion am ebenen Spiegel', 'Reflection at a plane mirror'), [6, 8]),
+            {
+              id: 'reflexion',
+              status: 'ready',
+              slug: L('reflexion-ebener-spiegel', 'reflection-plane-mirror'),
+              title: L('Reflexion am ebenen Spiegel', 'Reflection at a plane mirror'),
+              summary: L(
+                'Laser auf der optischen Scheibe drehen und das Reflexionsgesetz messen, das Spiegelbild einer Kerze mit Sehstrahlen konstruieren und im Winkelspiegel Mehrfachbilder zählen.',
+                'Turn a laser on the optical disc and measure the law of reflection, construct the image of a candle with lines of sight and count multiple images in two angled mirrors.',
+              ),
+              grades: [6, 8],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Reflexion', 'Reflexionsgesetz', 'Spiegel', 'Einfallswinkel', 'Reflexionswinkel', 'Lot', 'Spiegelbild', 'virtuelles Bild', 'Sehstrahl', 'Winkelspiegel', 'Mehrfachbilder', 'Kaleidoskop'],
+                ['reflection', 'law of reflection', 'mirror', 'angle of incidence', 'angle of reflection', 'normal', 'mirror image', 'virtual image', 'line of sight', 'angled mirrors', 'multiple images', 'kaleidoscope'],
+              ),
+              thumb: 'generic',
+            },
             {
               id: 'brechung',
               status: 'ready',
