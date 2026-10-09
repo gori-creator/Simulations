@@ -210,8 +210,40 @@ export const mathematik: Subject = {
       kmk: ['M-L4', 'M-K1', 'M-K4'],
       topics: [
         topic('grundbegriffe', L('Grundbegriffe der Geometrie', 'Basic geometric concepts'), [
-          planned('koordinaten-lage', L('Punkte, Geraden und Kreise: Lagebeziehungen', 'Points, lines and circles: relative positions'), [5, 5]),
-          planned('winkel-messen', L('Winkel schätzen und messen', 'Estimating and measuring angles'), [5, 5]),
+          {
+            id: 'koordinaten-lage',
+            status: 'ready',
+            slug: L('koordinatensystem-lagebeziehungen', 'coordinates-relative-positions'),
+            title: L('Punkte, Geraden und Kreise: Lagebeziehungen', 'Points, lines and circles: relative positions'),
+            summary: L(
+              'Punkte im Koordinatensystem setzen und ablesen, Strecke, Halbgerade und Gerade unterscheiden, parallel und senkrecht mit dem Geodreieck prüfen, Abstände messen und Tangenten an Kreise finden – mit Punkte-Spiel.',
+              'Plot and read points in the coordinate plane, tell segments, rays and lines apart, check parallel and perpendicular lines with a set square, measure distances and find tangents to circles – with a point game.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Koordinatensystem', 'Punkt', 'Strecke', 'Halbgerade', 'Gerade', 'parallel', 'senkrecht', 'Abstand', 'Lot', 'Geodreieck', 'Kreis', 'Radius', 'Durchmesser', 'Tangente', 'Sekante', 'Passante'],
+              ['coordinate plane', 'point', 'segment', 'ray', 'line', 'parallel', 'perpendicular', 'distance', 'set square', 'circle', 'radius', 'diameter', 'tangent', 'secant'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'winkel-messen',
+            status: 'ready',
+            slug: L('winkel-schaetzen-messen', 'estimating-measuring-angles'),
+            title: L('Winkel schätzen und messen', 'Estimating and measuring angles'),
+            summary: L(
+              'Schenkel ziehen, das Geodreieck verschieben und drehen, bis es richtig anliegt, und an der passenden Skala ablesen – auch überstumpfe Winkel. Dazu Winkelarten in Farbe und ein Schätzspiel mit Punkten.',
+              'Drag the arms, move and turn the set square until it is placed correctly and read the right scale – reflex angles included. With colour-coded types of angles and an estimation game.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L4', 'M-K5'],
+            keywords: L(
+              ['Winkel', 'Scheitel', 'Schenkel', 'Geodreieck', 'Winkelmesser', 'spitzer Winkel', 'rechter Winkel', 'stumpfer Winkel', 'gestreckter Winkel', 'überstumpfer Winkel', 'Vollwinkel', 'Grad', 'schätzen'],
+              ['angle', 'vertex', 'arm', 'set square', 'protractor', 'acute angle', 'right angle', 'obtuse angle', 'straight angle', 'reflex angle', 'full angle', 'degree', 'estimate'],
+            ),
+            thumb: 'generic',
+          },
           planned('vierecke', L('Das Haus der Vierecke', 'The family of quadrilaterals'), [5, 7], { kmk: ['M-L4', 'M-K1'] }),
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
@@ -287,7 +319,23 @@ export const mathematik: Subject = {
           planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
-          planned('umfang-flaeche', L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'), [5, 5]),
+          {
+            id: 'umfang-flaeche',
+            status: 'ready',
+            slug: L('umfang-flaecheninhalt-rechteck', 'perimeter-area-rectangle'),
+            title: L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'),
+            summary: L(
+              'Rechteck aufziehen, Reihe für Reihe mit Einheitsquadraten auslegen und eine Ameise einmal herumlaufen lassen. Dazu Rechtecke mit gleichem Umfang oder gleicher Fläche und eine L-Form zum Zerlegen.',
+              'Drag out a rectangle, tile it row by row with unit squares and let an ant walk once around it. Plus rectangles with the same perimeter or area and an L-shape to split up.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Umfang', 'Flächeninhalt', 'Rechteck', 'Quadrat', 'Einheitsquadrat', 'Quadratzentimeter', 'cm²', 'Länge', 'Breite', 'Rechenpapier', 'zerlegen', 'ergänzen', 'L-Form', 'zusammengesetzte Figur'],
+              ['perimeter', 'area', 'rectangle', 'square', 'unit square', 'square centimetre', 'cm²', 'length', 'width', 'squared paper', 'decompose', 'complete', 'L-shape', 'composite shape'],
+            ),
+            thumb: 'generic',
+          },
           planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
