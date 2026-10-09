@@ -167,7 +167,23 @@ export const physik: Subject = {
               ),
               thumb: 'coaster',
             },
-            planned('stoesse', L('Elastische und unelastische Stöße', 'Elastic and inelastic collisions'), [10, 11], { kmk: ['P-BK-Erhaltung'] }),
+            {
+              id: 'stoesse',
+              status: 'ready',
+              slug: L('elastische-und-unelastische-stoesse', 'elastic-and-inelastic-collisions'),
+              title: L('Elastische und unelastische Stöße', 'Elastic and inelastic collisions'),
+              summary: L(
+                'Zwei Gleiter stoßen auf der Luftkissenbahn zusammen – elastisch, teilelastisch oder mit Klettband. Impuls- und Energiebilanz vorher und nachher, Schwerpunkt, t-v- und t-x-Diagramm.',
+                'Two gliders collide on an air track – elastically, partially elastically or with Velcro. Momentum and energy balance before and after, centre of mass, velocity–time and position–time graphs.',
+              ),
+              grades: [10, 11],
+              kmk: ['P-BK-Erhaltung', 'P-BK-Energie', 'P-E', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Stoß', 'elastischer Stoß', 'unelastischer Stoß', 'teilelastischer Stoß', 'Impuls', 'Impulserhaltung', 'Impulserhaltungssatz', 'Energieerhaltung', 'Bewegungsenergie', 'innere Energie', 'Stoßzahl', 'Schwerpunkt', 'Schwerpunktsgeschwindigkeit', 'Luftkissenbahn', 'Gleiter', 'Klettband'],
+                ['collision', 'elastic collision', 'inelastic collision', 'partially elastic collision', 'momentum', 'conservation of momentum', 'conservation of energy', 'kinetic energy', 'internal energy', 'coefficient of restitution', 'centre of mass', 'air track', 'glider', 'Velcro'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
