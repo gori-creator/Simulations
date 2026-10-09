@@ -263,7 +263,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
-          planned('spiegelung', L('Achsen- und Punktspiegelung', 'Reflections in a line and in a point'), [7, 7]),
+          {
+            id: 'spiegelung',
+            status: 'ready',
+            slug: L('achsen-und-punktspiegelung', 'reflections-line-point'),
+            title: L('Achsen- und Punktspiegelung', 'Reflections in a line and in a point'),
+            summary: L(
+              'Eine Figur an einer ziehbaren Achse oder an einem Zentrum spiegeln, die Konstruktion sehen, umklappen bzw. um 180° drehen lassen und den Umlaufsinn vergleichen. Dazu Symmetrieachsen und Symmetriezentren selbst einzeichnen.',
+              'Reflect a figure in a draggable line or in a point, see the construction, fold it over or turn it by 180° and compare the orientation. Plus: draw lines and centres of symmetry yourself.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Achsenspiegelung', 'Punktspiegelung', 'Spiegelachse', 'Symmetriezentrum', 'achsensymmetrisch', 'punktsymmetrisch', 'Symmetrieachse', 'Umlaufsinn', 'Fixpunkt', 'Fixgerade', 'Lot', 'Drehung um 180°', 'Konstruktion'],
+              ['reflection', 'line of symmetry', 'point symmetry', 'centre of symmetry', 'mirror line', 'orientation', 'fixed point', 'fixed line', 'half turn', 'construction'],
+            ),
+            thumb: 'generic',
+          },
           planned('mittelsenkrechte', L('Mittelsenkrechte und Winkelhalbierende', 'Perpendicular bisector and angle bisector'), [7, 7]),
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
