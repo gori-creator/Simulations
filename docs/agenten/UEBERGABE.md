@@ -38,22 +38,13 @@ Dieses Dokument ist für eine neue Claude-Code-Sitzung, die die Arbeit an den ge
 
 Bisher fielen bei der Durchsicht u. a. auf: Schaltersymbol zeigte „offen“ bei geschlossenem Stromkreis; Winkelbeschriftung vom Kraftpfeil verdeckt. Solche Dinge immer prüfen.
 
-## 5. Angefangene Gruppen wieder aufnehmen (zuerst erledigen)
+## 5. Angefangene Gruppen wieder aufnehmen
 
-In `docs/agenten/wip/` liegt die Arbeit der drei Gruppen, die beim Wechsel liefen. `0001-…patch` usw. sind fertige Commits, `9999-unfertig.patch` ist der nicht committete Rest.
+Erledigt (09.10.2026): M06, P04 und M03 sind fertig und gemergt, `docs/agenten/wip/` ist leer. Ergebnis der Testgruppe M06: die verkürzte Leseliste (Spickzettel) hält die Qualität → gilt jetzt in `AUFTRAG.md` für alle Gruppen.
 
-Für jede Gruppe (M06, P04, M03) einen Agenten mit Worktree starten und ihm auftragen, **zuerst** die Patches einzuspielen:
-```
-git am <repo>/docs/agenten/wip/<Gruppe>/0*.patch      # falls vorhanden
-git apply <repo>/docs/agenten/wip/<Gruppe>/9999-unfertig.patch
-```
-(Patches aus dem Haupt-Checkout lesen, Pfad absolut angeben.) Danach den angefangenen Teil prüfen, fertigstellen und committen, dann die restlichen Simulationen der Gruppe bauen. Fertige Simulationen trotzdem kurz per Screenshot gegenprüfen lassen.
+Falls bei einem Sitzungswechsel wieder Gruppen mitten in der Arbeit stecken: fertige Commits mit `git format-patch` und den Rest mit `git diff` nach `docs/agenten/wip/<Gruppe>/` sichern, committen, pushen; in der neuen Sitzung per `git am`/`git apply` im neuen Worktree einspielen lassen.
 
-- **M06** (koordinaten-lage ✔, winkel-messen ✔, umfang-flaeche begonnen): Testgruppe für den Spickzettel. Leseliste: `CLAUDE.md`, `docs/agenten/SPICKZETTEL.md`, Vorbilder `mathematik/lgs-grafisch` und `mathematik/zahlengerade` vollständig, weitere nur gezielt mit grep. Am Ende die Rückmeldung zum Spickzettel erbitten. Danach die Qualität mit den bisherigen Gruppen vergleichen: Hält sie mit, bekommen alle weiteren Gruppen diese verkürzte Leseliste (spart viel Kontingent); sonst die volle Leseliste aus `AUFTRAG.md`.
-- **P04** (licht-schatten ✔, reflexion halb, linsen offen): Vorbild Optik `physik/brechung`.
-- **M03** (brueche-vergleichen fast fertig, Lehrplaneintrag fehlte noch; dezimalbrueche, brueche-rechnen offen): Vorbilder `mathematik/bruchteile`, `zahlengerade`, `primfaktoren`.
-
-Nach dem Zusammenführen einer Gruppe ihren Ordner in `docs/agenten/wip/` löschen und mitcommitten.
+Tipp: Fertige, geprüfte Simulationen einer laufenden Gruppe ruhig schon vor Gruppenende mergen und pushen (`git merge --no-ff <worktree-branch>`), damit nichts verloren geht, falls der Container abgeräumt wird. Der spätere Merge bringt nur die neuen Commits.
 
 ## 6. Sicherheitsnetz gegen das Nutzungslimit
 
