@@ -1002,7 +1002,6 @@ export default defineSimulation({
         const fs = narrow() ? 12 : 13;
         haloText(areaKnown() ? `− ${cm2(f.c * f.d)}` : '−', x0 + w / 2, y0 + h / 2, `800 ${fs}px ${ctx.theme.font}`, red);
       }
-      void g;
     }
 
     /** L-Form: Die inneren Kanten wandern nach außen an den Rand des großen Rechtecks. */
@@ -1227,10 +1226,10 @@ export default defineSimulation({
         const d1 = wrapAngle(Math.PI - th0);
         const dth = Math.abs(d0) <= Math.abs(d1) ? d0 : d1;
         const th = th0 + dth * e;
-        // kleiner Bogen nach außen, damit die Stücke nicht durch die Figur fliegen
+        // die linke Seite nimmt einen kleinen Bogen nach außen, statt quer durch die Figur zu fliegen
         const lift = Math.sin(Math.PI * e) * 0.6;
         const cx = lerp(cs[0], ct[0], e) - (i === 3 ? lift : 0);
-        const cy = lerp(cs[1], ct[1], e) - (i === 1 ? 0 : 0);
+        const cy = lerp(cs[1], ct[1], e);
         const hx = (Math.cos(th) * len) / 2;
         const hy = (Math.sin(th) * len) / 2;
         drawString(X(cx - hx), Y(cy - hy), X(cx + hx), Y(cy + hy), pc.color, len);

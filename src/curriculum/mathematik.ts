@@ -325,8 +325,8 @@ export const mathematik: Subject = {
             slug: L('umfang-flaecheninhalt-rechteck', 'perimeter-area-rectangle'),
             title: L('Umfang und Flächeninhalt von Rechtecken', 'Perimeter and area of rectangles'),
             summary: L(
-              'Rechteck auf Rechenpapier aufziehen, Reihe für Reihe mit Einheitsquadraten auslegen (A = a · b) und eine Ameise einmal herumlaufen lassen (U = 2 · (a + b)). Dazu: gleicher Umfang – verschiedene Fläche, gleiche Fläche – verschiedener Umfang und eine L-Form zum Zerlegen.',
-              'Drag out a rectangle on squared paper, tile it row by row with unit squares (A = a · b) and let an ant walk once around it (P = 2 · (a + b)). Plus: same perimeter – different area, same area – different perimeter, and an L-shape to split up.',
+              'Rechteck aufziehen, Reihe für Reihe mit Einheitsquadraten auslegen und eine Ameise einmal herumlaufen lassen. Dazu Rechtecke mit gleichem Umfang oder gleicher Fläche und eine L-Form zum Zerlegen.',
+              'Drag out a rectangle, tile it row by row with unit squares and let an ant walk once around it. Plus rectangles with the same perimeter or area and an L-shape to split up.',
             ),
             grades: [5, 5],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
