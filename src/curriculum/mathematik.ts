@@ -119,7 +119,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('dezimalbrueche', L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'), [6, 6]),
+          {
+            id: 'dezimalbrueche',
+            status: 'ready',
+            slug: L('endliche-periodische-dezimalbrueche', 'terminating-repeating-decimals'),
+            title: L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'),
+            summary: L(
+              'Schriftlich dividieren auf Karopapier, bis ein Rest wiederkehrt: Restekreis und Zahlenstrahl-Lupe zeigen, warum Perioden entstehen, die Nenner-Tafel, wann ein Bruch endlich ist.',
+              'Long division on squared paper until a remainder repeats: a remainder circle and a number line zoom show why periods appear, a table of denominators shows when a fraction terminates.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L1', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Dezimalbruch', 'endlich', 'periodisch', 'Periode', 'Vorperiode', 'Periodenstrich', 'schriftliche Division', 'Rest', 'Primfaktoren', 'Nenner', 'Zehnerpotenz', 'Stellenwert'],
+              ['decimal', 'terminating decimal', 'repeating decimal', 'recurring decimal', 'period', 'long division', 'remainder', 'prime factors', 'denominator', 'power of ten', 'place value'],
+            ),
+            thumb: 'generic',
+          },
           planned('brueche-rechnen', L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'), [6, 6]),
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
