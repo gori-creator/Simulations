@@ -404,7 +404,23 @@ export const physik: Subject = {
               ),
               thumb: 'refraction',
             },
-            planned('linsen', L('Linsen und Bildentstehung', 'Lenses and image formation'), [8, 10]),
+            {
+              id: 'linsen',
+              status: 'ready',
+              slug: L('linsen-bildentstehung', 'lenses-image-formation'),
+              title: L('Linsen und Bildentstehung', 'Lenses and image formation'),
+              summary: L(
+                'Gegenstand vor einer Sammel- oder Zerstreuungslinse ziehen und das Bild mit Parallel-, Mittelpunkt- und Brennpunktstrahl konstruieren – mit Linsengleichung, Abbildungsmaßstab und Anwendungen. Auf der optischen Bank das Kerzenbild auf dem Schirm scharf stellen.',
+                'Drag an object in front of a converging or diverging lens and construct the image with parallel, central and focal rays – with the lens equation, magnification and applications. Focus the image of a candle on a screen on the optical bench.',
+              ),
+              grades: [8, 10],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Linse', 'Sammellinse', 'Zerstreuungslinse', 'Brennweite', 'Brennpunkt', 'Parallelstrahl', 'Mittelpunktstrahl', 'Brennpunktstrahl', 'Linsengleichung', 'Abbildungsmaßstab', 'reelles Bild', 'virtuelles Bild', 'Lupe', 'Projektor', 'Kamera', 'Auge', 'Blende', 'Schärfentiefe'],
+                ['lens', 'converging lens', 'diverging lens', 'focal length', 'focal point', 'parallel ray', 'central ray', 'focal ray', 'lens equation', 'magnification', 'real image', 'virtual image', 'magnifying glass', 'projector', 'camera', 'eye', 'aperture', 'depth of field'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {
