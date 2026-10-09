@@ -136,7 +136,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('brueche-rechnen', L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'), [6, 6]),
+          {
+            id: 'brueche-rechnen',
+            status: 'ready',
+            slug: L('brueche-multiplizieren-dividieren', 'multiplying-dividing-fractions'),
+            title: L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'),
+            summary: L(
+              'Im Rechteckmodell überlagern sich zwei Streifen, die Überlappung ist das Produkt – zum Ziehen und Zählen. Beim Dividieren misst ein Streifen, wie oft er hineinpasst; daraus folgt die Kehrwert-Regel.',
+              'In the area model two strips overlap and the overlap is the product – drag and count. For division a strip measures how often it fits, which leads to the reciprocal rule.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L1', 'M-K4', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Bruch', 'multiplizieren', 'dividieren', 'Rechteckmodell', 'Flächenmodell', 'von', 'Anteil', 'kürzen', 'über Kreuz kürzen', 'Kehrwert', 'Messen', 'Aufteilen', 'gemeinsamer Nenner'],
+              ['fraction', 'multiply', 'divide', 'area model', 'rectangle model', 'of', 'cancel', 'cross-cancel', 'reciprocal', 'measuring', 'quotative division', 'common denominator'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
           planned('prozentstreifen', L('Prozentstreifen', 'Percentage bar'), [6, 7]),
