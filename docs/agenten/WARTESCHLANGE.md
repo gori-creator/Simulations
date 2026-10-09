@@ -4,7 +4,7 @@ Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `s
 Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`.
 
 ## Reihenfolge
-P01 M01 M23 P03 M05 P02 (fertig) | M06 P04 M03 (angefangen, siehe wip/) | M07 P05 M11 P06 M24 M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
+P01 M01 M23 P03 M05 P02 M06 (fertig) | P04 M03 (angefangen, siehe wip/) | M07 (läuft) | P05 M11 P06 M24 M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
 
 ## Gruppen
 
@@ -27,8 +27,8 @@ P01 M01 M23 P03 M05 P02 (fertig) | M06 P04 M03 (angefangen, siehe wip/) | M07 P0
 - M03 angefangen (wip/M03: brueche-vergleichen fast fertig, noch nicht committet) — brueche-vergleichen, dezimalbrueche, brueche-rechnen
 - M04 offen — prozentstreifen, quadratwurzel, proportional
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
-- M06 angefangen (wip/M06: koordinaten-lage und winkel-messen fertig committet; umfang-flaeche begonnen) — koordinaten-lage, winkel-messen, umfang-flaeche. **Testgruppe für den Spickzettel** (Leseliste nur CLAUDE.md, SPICKZETTEL.md, Vorbilder lgs-grafisch und zahlengerade).
-- M07 offen — vierecke, spiegelung, mittelsenkrechte
+- M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
+- M07 läuft — vierecke, spiegelung, mittelsenkrechte
 - M08 offen — winkel-geradenkreuzung, winkelsumme, flaechen-zerlegen
 - M09 offen — dreieckskonstruktion, besondere-linien, strahlensaetze
 - M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz

@@ -94,7 +94,7 @@ Parameter-Schlüssel: kurz, stabil, nie mit `_` beginnend (`_lock`, `_hide` rese
 `dark`, `bg`, `grid`, `gridMinor`, `axis`, `text`, `muted`, `series[0..5]` = blau, rot, grün, orange, lila, türkis, `font`, `mathFont`.
 Gegenständliche Objekte (Holz, Metall, Papier …) dürfen eigene Naturfarben/Verläufe haben, müssen aber in beiden Modi gut aussehen (`theme.dark` abfragen).
 
-**draw-Helfer:** `roundRect(g, x, y, w, h, r)` (nur Pfad), `text(g, str, x, y, { font, color, align?, baseline? })` (Standard center/middle), `softShadow(g, dark, blur=14, offY=4)` (zwischen `g.save()`/`g.restore()`), `withAlpha(hex, a)`, `drawImageFit(g, img, rect, 'contain'|'cover')`.
+**draw-Helfer:** `roundRect(g, x, y, w, h, r)` (nur Pfad), `text(g, str, x, y, { font, color, align?, baseline? })` (Standard center/middle), `softShadow(g, dark, blur=14, offY=4)` (zwischen `g.save()`/`g.restore()`), `withAlpha(hex, a)` (**nur** für `#rrggbb`, andere Farben bleiben unverändert), `drawImageFit(g, img, rect, 'contain'|'cover')`. Farben mischen/abdunkeln auch in 2D: `mixColor(a, b, s, alpha?)`, `shade(color, amount, alpha?)` (liefern `rgb()`-Text; aus dem Kern-Index importierbar).
 Schrift: `` `600 13px ${theme.font}` ``, Variablen kursiv: `` `italic 14px ${theme.mathFont}` ``. Minuszeichen immer `−` (`MINUS`), Zahlen nur über `fmt`.
 
 **Plot** (Koordinatensystem, `new Plot(surface, options)`):
@@ -111,7 +111,7 @@ Schrift: `` `600 13px ${theme.font}` ``, Variablen kursiv: `` `italic 14px ${the
 
 ## 3. Animation und Zeit
 
-- **Tween** (Übergänge): `const tw = new Tween(600, ease.inOutCubic)`; `tw.play()` (bei reduzierter Bewegung sofort fertig), `tw.value` (mit Easing 0…1), `tw.t` (roh), `tw.running`, `tw.finish()`. Im `render()` solange `tw.running` → `ctx.requestRender()`. `ease`: `linear`, `inCubic`, `outCubic`, `inOutCubic`, `outBack`, `outBounce`. `mixPoint(a, b, t)`.
+- **Tween** (Übergänge): `const tw = new Tween(600, ease.inOutCubic)`; `tw.play()` bzw. `tw.play(ms)` mit eigener Dauer (bei reduzierter Bewegung sofort fertig), `tw.value` (mit Easing 0…1), `tw.t` (roh), `tw.running`, `tw.finish()`. Im `render()` solange `tw.running` → `ctx.requestRender()`. `ease`: `linear`, `inCubic`, `outCubic`, `inOutCubic`, `outBack`, `outBounce`. `mixPoint(a, b, t)`.
 - **Uhr** (`animated: true`): Host ruft bei laufender Uhr `tick(dt)` auf (dt in s, mit Zeitlupe/Zeitraffer). `ctx.clock`: `time`, `speed`, `playing`, `play()`, `pause()`, `toggle()`, `reset()`, `onChange(fn)`. Aktion „Starten“ kann `ctx.clock.play()` aufrufen. Zeitlupe als boolescher Parameter → `ctx.clock.speed = p.slow ? 0.25 : 1`.
 - **Physik:** `const stepper = new FixedStepper(0.001); stepper.run(dt, (h) => { … })`, `rk4(f, t, y, h)`; `clamp`, `lerp`, `degToRad`, `radToDeg`, `mod`, `nearlyEqual`, `solveQuadratic`.
 - **Zufall reproduzierbar:** `seededRandom(seed)`.
@@ -218,6 +218,12 @@ Lösung mit Rechenweg. [In der Simulation zeigen](?r=3)
 Englisch (`en/<id>.md`): „What is it about?“, „Try it“, „Tasks“ (mit `<summary>Show solution</summary>`), „Notes for teachers“ – kürzer. Links nur mit gültigen Parameterwerten; `_hide=1` verdeckt Spoiler-Ergebnisse, `_lock=1` sperrt Regler.
 
 ## 7. Häufige Stolperfallen (aus früheren Gruppen)
+
+- `_hide=1` verdeckt nur Ergebnisse mit `spoiler: true` in der Ergebnisliste, **nicht** die Zeichenfläche. Stehen Lösungen auch im Bild, einen eigenen booleschen Parameter (z. B. `show`) anbieten und in Aufgabenlinks `show=0` setzen.
+- Ränder für Beschriftungen in **Pixeln** rechnen (nicht in Koordinaten-Einheiten), sonst werden sie bei anderen Bereichen/Bildschirmbreiten abgeschnitten.
+- `ctx.set()` nicht in `render()` aufrufen; Zustandsänderungen gehören in `update`, `action`, `tick` oder Zeiger-Ereignisse.
+- Seiten-URL: `/de/<fach>/<bereich-slug>/<sim-slug>/` – Bereichs-Slug steht im Lehrplan beim Bereich; schneller: nach dem Build `find dist -path "*<sim-slug>*" -name index.html`.
+- Karten/Infokästen (Rahmen, Titel, Text mit Umbruch) baut bisher jede Simulation selbst; ein gutes Vorbild zum Übernehmen: `mathematik/umfang-flaeche` (Funktionen für Karte, Titel, Zeilenumbruch).
 
 - `update` mit `source === 'replace'` darf abgeleitete Werte nicht überschreiben (Beispiele/Links setzen den vollständigen Zustand).
 - Bei `ctx.locked` keine Zustandsänderung durch Antippen/Ziehen/Aktionen.

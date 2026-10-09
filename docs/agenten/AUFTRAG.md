@@ -8,24 +8,21 @@ Du baust eine kleine Gruppe neuer interaktiver Simulationen für eine kostenlose
 - Das Haupt-Checkout `/home/user/Simulations` darfst du **nur lesen**, niemals darin schreiben oder git-Befehle ausführen, die etwas verändern.
 - **Niemals** pushen, Branch wechseln, rebasen, `reset --hard` oder Commits anderer verändern. Keine Pull Requests.
 - Abhängigkeiten: `[ -e node_modules ] || cp -al /home/user/Simulations/node_modules node_modules` (Hardlinks, schnell). Falls das scheitert: `npm ci --prefer-offline`.
-- Entwicklungsserver auf **deinem Port** (steht in deinem Auftrag): `npx astro dev --port <PORT> > <DEIN_ORDNER>/dev.log 2>&1 &` und `echo $! > <DEIN_ORDNER>/dev.pid`. Am Ende mit `kill $(cat <DEIN_ORDNER>/dev.pid)` beenden. Keine Prozesse anderer beenden, nie `pkill`/`killall` benutzen.
+- Entwicklungsserver auf **deinem Port** (steht in deinem Auftrag), im Worktree: `npx astro dev --port <PORT> --background` (Astro 7; Status `npx astro dev status`, Protokoll `npx astro dev logs`). Am Ende `npx astro dev stop`. Startet er nach einem Container-Neustart nicht, die veraltete `.astro/dev.json` im Worktree löschen. Keine Prozesse anderer beenden, nie `pkill`/`killall` benutzen.
+- Das Bash-Werkzeug lehnt im Worktree manche Befehle ab (Shell-Variablen, `printf`, mit `&&` verkettete git-Aufrufe). Dateien mit dem Write-Werkzeug schreiben, git-Befehle einzeln ausführen.
 - `<DEIN_ORDNER>` ist dein Arbeitsordner für Screenshots und Logs (steht in deinem Auftrag), nicht im Repository.
 - Benutze nie die E-Mail-Adresse oder Daten der Person in Code, Commits oder Anfragen.
 
 ## 1. Zuerst lesen (gründlich, bevor du schreibst)
 
-- `CLAUDE.md`, `docs/NEUE-SIMULATION.md`, `docs/ARCHITEKTUR.md`
-- `src/sim-core/index.ts` (alles, was Simulationen importieren dürfen), `src/sim-core/types.ts`, `src/sim-core/plot.ts`, `src/sim-core/surface.ts`, `src/sim-core/anim.ts`, `src/sim-core/draw.ts`, `src/sim-core/format.ts`
-- Vorbilder (genau ansehen, Stil übernehmen):
-  - `src/simulations/physik/fadenpendel/` (animiert, Uhr, Diagramm mit `setRangePadded`, Energiebalken, Ziehen)
-  - `src/simulations/physik/schiefer-wurf/` (Ziehen am Pfeil, Bilder mit Ersatzgrafik, Zeitlupe, Stroboskop)
-  - `src/simulations/mathematik/ober-untersummen/` (Plot, Griffe, Tween-Animation beim Verdoppeln)
-  - `src/simulations/mathematik/bruchteile/` (TapTarget, Bilder, Animationen)
-  - `src/simulations/mathematik/galtonbrett/` oder `ziegenproblem/` (Zufall, Statistik, Aktionen)
-- Lernmaterial-Vorbilder: `src/content/simulations/de/fadenpendel.md`, `src/content/simulations/en/fadenpendel.md`, `src/content/simulations/de/ober-untersummen.md`
-- Lehrplan: `src/curriculum/<fach>.ts` (fertige Einträge als Vorlage), `src/curriculum/kmk.ts` (gültige KMK-IDs)
-- Tests: `tests/batch2-models.test.ts`, `tests/simulations.test.ts`, `tests/curriculum.test.ts`
-- Bilder: `docs/BILDER.md` (Format der Tabelle und der Abschnitte)
+Verkürzte Leseliste (seit Gruppe M06 erprobt, Qualität gleich gut):
+- `CLAUDE.md` und `docs/agenten/SPICKZETTEL.md` (Kern-API, Muster, Formate, Stolperfallen – verbindlich)
+- Die **Vorbilder, die dein Auftrag nennt**, vollständig (`index.ts`, `model.ts`, Lernmaterial DE), dazu `src/simulations/mathematik/umfang-flaeche/` als Beispiel für Karten/Infokästen.
+- Lehrplan: `src/curriculum/<fach>.ts` (fertige Einträge als Vorlage), gültige KMK-IDs per `grep` in `src/curriculum/kmk.ts`.
+- `docs/BILDER.md` nur, wenn du Bilder vorsiehst (Format der Tabelle und der Abschnitte).
+- Alles Weitere (Kern in `src/sim-core/`, `docs/ARCHITEKTUR.md`, Tests) nur **gezielt** mit `grep -n` nachsehen, nicht ganze Dateien lesen.
+
+Weitere gute Vorbilder je nach Thema: `physik/fadenpendel` (Uhr, Diagramm, Energiebalken), `physik/schiefer-wurf` (Ziehen am Pfeil, Bilder mit Ersatzgrafik, Stroboskop), `mathematik/ober-untersummen` (Plot, Griffe, Tween), `mathematik/bruchteile` (TapTarget, Bilder), `mathematik/galtonbrett`/`ziegenproblem` (Zufall, Statistik).
 
 ## 1a. Vorhandene Bausteine
 
@@ -78,7 +75,7 @@ Nur dort, wo ein fotorealistisches Bild die Simulation wirklich schöner oder an
 1. `npx vitest run`: alles grün.
 2. `npx astro check`: 0 errors, 0 warnings, 0 hints.
 3. `npx astro build`: muss durchlaufen. Die Seiten-URL deiner Simulation findest du z. B. mit `find dist -path "*<de-slug>*" -name index.html`.
-4. **Screenshots** mit `node scripts/agenten/simshot.cjs <PORT> <DEIN_ORDNER>/shots <DEIN_ORDNER>/spec.json`. Die Spec-Datei ist ein JSON-Array von `["name", "/de/<fach>/<bereich>/<slug>/?key=wert", breite, "light"|"dark", [schritte]]`, Schritte: `["action","id"]`, `["play"]`, `["wait",ms]`, `["click",x,y]`, `["drag",x1,y1,x2,y2]` (Koordinaten relativ zur Zeichenfläche). Das Skript meldet Fehler in der Konsole und horizontalen Überlauf.
+4. **Screenshots** mit `node scripts/agenten/simshot.cjs <PORT> <DEIN_ORDNER>/shots <DEIN_ORDNER>/spec.json`. Die Spec-Datei ist ein JSON-Array von `["name", "/de/<fach>/<bereich>/<slug>/?key=wert", breite, "light"|"dark", [schritte]]`, Schritte: `["action","id"]`, `["play"]`, `["wait",ms]`, `["click",x,y]`, `["drag",x1,y1,x2,y2]` (Koordinaten relativ zur Zeichenfläche), `["set","key",wert]` (Regler/Schalter/Auswahl wie von Hand bedienen – so lassen sich auch Übergänge prüfen), `["text","Beschriftung"]` (Element mit genau diesem Text anklicken, z. B. ein Beispiel), `["sel","css"]`. Das Skript meldet Fehler in der Konsole und horizontalen Überlauf.
    - Pro Simulation mindestens: Desktop hell (1360), Desktop dunkel, Handy (390), dazu Zustände nach Aktionen/Animation und Extremwerte der Regler.
    - **Sieh dir jeden Screenshot an** (Read-Tool) und verbessere alles, was nicht hervorragend aussieht. Mehrere Runden sind normal.
 5. Lernmaterial-Seite im Screenshot oder im HTML kurz prüfen (Formeln gerendert, Links funktionieren).
