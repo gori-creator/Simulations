@@ -219,6 +219,8 @@ Englisch (`en/<id>.md`): „What is it about?“, „Try it“, „Tasks“ (mit
 
 ## 7. Häufige Stolperfallen (aus früheren Gruppen)
 
+- **Tablet-Breiten:** Das Seitenverhältnis wechselt erst bei **Fensterbreite ≤ 640 px** auf `aspectNarrow`. Bei Fenstern von ca. 641–700 px und 861–1050 px (z. B. iPad quer, 1024 px) ist die Zeichenfläche aber nur ca. 560–640 px breit **bei Desktop-Seitenverhältnis**. Ein reines `surface.width < 640` schaltet dann auf das Handy-Layout in einer flachen Fläche → Inhalte werden abgeschnitten. Layout daher nach Breite **und** Höhe/Seitenverhältnis wählen (z. B. `const narrow = () => surface.width < 640 && surface.height > surface.width * 0.9`) oder eine eigene mittlere Aufteilung vorsehen (Vorbild: `mathematik/vierecke`). Immer auch bei 1024 und 700 px Fensterbreite prüfen.
+
 - `_hide=1` verdeckt nur Ergebnisse mit `spoiler: true` in der Ergebnisliste, **nicht** die Zeichenfläche. Stehen Lösungen auch im Bild, einen eigenen booleschen Parameter (z. B. `show`) anbieten und in Aufgabenlinks `show=0` setzen.
 - Ränder für Beschriftungen in **Pixeln** rechnen (nicht in Koordinaten-Einheiten), sonst werden sie bei anderen Bereichen/Bildschirmbreiten abgeschnitten.
 - `ctx.set()` nicht in `render()` aufrufen; Zustandsänderungen gehören in `update`, `action`, `tick` oder Zeiger-Ereignisse.

@@ -76,7 +76,7 @@ Nur dort, wo ein fotorealistisches Bild die Simulation wirklich schöner oder an
 2. `npx astro check`: 0 errors, 0 warnings, 0 hints.
 3. `npx astro build`: muss durchlaufen. Die Seiten-URL deiner Simulation findest du z. B. mit `find dist -path "*<de-slug>*" -name index.html`.
 4. **Screenshots** mit `node scripts/agenten/simshot.cjs <PORT> <DEIN_ORDNER>/shots <DEIN_ORDNER>/spec.json`. Die Spec-Datei ist ein JSON-Array von `["name", "/de/<fach>/<bereich>/<slug>/?key=wert", breite, "light"|"dark", [schritte]]`, Schritte: `["action","id"]`, `["play"]`, `["wait",ms]`, `["click",x,y]`, `["drag",x1,y1,x2,y2]` (Koordinaten relativ zur Zeichenfläche), `["set","key",wert]` (Regler/Schalter/Auswahl wie von Hand bedienen – so lassen sich auch Übergänge prüfen), `["text","Beschriftung"]` (Element mit genau diesem Text anklicken, z. B. ein Beispiel), `["sel","css"]`. Das Skript meldet Fehler in der Konsole und horizontalen Überlauf.
-   - Pro Simulation mindestens: Desktop hell (1360), Desktop dunkel, Handy (390), dazu Zustände nach Aktionen/Animation und Extremwerte der Regler.
+   - Pro Simulation mindestens: Desktop hell (1360), Desktop dunkel, **Tablet (1024 und 700)**, Handy (390), dazu Zustände nach Aktionen/Animation und Extremwerte der Regler. Tablet-Breiten sind heikel (siehe Spickzettel, Abschnitt 7).
    - **Sieh dir jeden Screenshot an** (Read-Tool) und verbessere alles, was nicht hervorragend aussieht. Mehrere Runden sind normal.
 5. Lernmaterial-Seite im Screenshot oder im HTML kurz prüfen (Formeln gerendert, Links funktionieren).
 
