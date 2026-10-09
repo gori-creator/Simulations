@@ -344,7 +344,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('mittelsenkrechte', L('Mittelsenkrechte und Winkelhalbierende', 'Perpendicular bisector and angle bisector'), [7, 7]),
+          {
+            id: 'mittelsenkrechte',
+            status: 'ready',
+            slug: L('mittelsenkrechte-winkelhalbierende', 'perpendicular-and-angle-bisectors'),
+            title: L('Mittelsenkrechte und Winkelhalbierende', 'Perpendicular bisector and angle bisector'),
+            summary: L(
+              'Einen Punkt P ziehen und seine Abstände vergleichen: Wer von A und B bzw. von zwei Schenkeln gleich weit entfernt ist, liegt auf der Mittelsenkrechten bzw. Winkelhalbierenden. Dazu beide Konstruktionen mit Zirkel und Lineal Schritt für Schritt und der Umkreismittelpunkt als Ausblick.',
+              'Drag a point P and compare its distances: every point equally far from A and B, or from two arms, lies on the perpendicular bisector or the angle bisector. Plus both constructions with compasses and ruler step by step and the circumcentre as an outlook.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Mittelsenkrechte', 'Winkelhalbierende', 'Ortslinie', 'Abstand', 'gleich weit entfernt', 'Mittelpunkt', 'Lot', 'Zirkel', 'Lineal', 'Konstruktion', 'Grundkonstruktion', 'Umkreis', 'Umkreismittelpunkt', 'Drachenviereck'],
+              ['perpendicular bisector', 'angle bisector', 'locus', 'distance', 'equidistant', 'midpoint', 'perpendicular', 'compasses', 'ruler', 'construction', 'circumcircle', 'circumcentre', 'kite'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
           planned('winkel-geradenkreuzung', L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'), [7, 7]),
