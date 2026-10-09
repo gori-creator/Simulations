@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 140L160 100A40 40 0 0 0 131.7 111.7Z" fill="currentColor" fill-opacity="0.22" stroke="none" />
+    <path d="M160 140L160 108A32 32 0 0 1 182.6 117.4Z" fill="currentColor" fill-opacity="0.4" stroke="none" />
+    <path d="M160 136V30" stroke-width="3" stroke-opacity="0.5" stroke-dasharray="8 9" />
+    <path d="M70 50L160 140L250 50" stroke-width="4.5" />
+    <path d="M104 98H118V84M192 94H206V108" stroke-width="4" />
+    <path d="M56 140H264" stroke-width="7" />
+    <path d="M72 148L62 160M92 148L82 160M112 148L102 160M132 148L122 160M152 148L142 160M172 148L162 160M192 148L182 160M212 148L202 160M232 148L222 160M252 148L242 160" stroke-width="3" stroke-opacity="0.45" />
+  </g>
+  <circle cx="66" cy="46" r="10" fill="currentColor" />
+</svg>
