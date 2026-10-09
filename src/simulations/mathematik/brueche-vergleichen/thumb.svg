@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="currentColor">
+    <rect x="40" y="26" width="56" height="40" rx="7" fill-opacity="0.9" />
+    <rect x="100" y="26" width="56" height="40" rx="7" fill-opacity="0.9" />
+    <rect x="160" y="26" width="56" height="40" rx="7" fill-opacity="0.9" />
+    <rect x="40" y="84" width="36.7" height="40" rx="6" fill-opacity="0.5" />
+    <rect x="80.7" y="84" width="36.7" height="40" rx="6" fill-opacity="0.5" />
+    <rect x="121.3" y="84" width="36.7" height="40" rx="6" fill-opacity="0.5" />
+    <rect x="162" y="84" width="36.7" height="40" rx="6" fill-opacity="0.5" />
+    <rect x="202.7" y="84" width="36.7" height="40" rx="6" fill-opacity="0.5" />
+    <circle cx="216" cy="152" r="7" />
+    <circle cx="239.3" cy="152" r="7" fill-opacity="0.55" />
+  </g>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="220" y="26" width="56" height="40" rx="7" stroke-width="3" stroke-opacity="0.5" />
+    <rect x="243.3" y="84" width="36.7" height="40" rx="6" stroke-width="3" stroke-opacity="0.5" />
+    <path d="M216 72V140M239.3 130V140" stroke-width="3" stroke-dasharray="5 6" stroke-opacity="0.6" />
+    <path d="M30 152H292" stroke-width="4" />
+    <path d="M40 142V162M280 142V162" stroke-width="4" />
+  </g>
+  <path d="M302 152l-14 -8v16z" fill="currentColor" />
+</svg>

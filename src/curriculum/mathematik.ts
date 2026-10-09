@@ -102,8 +102,40 @@ export const mathematik: Subject = {
             ),
             thumb: 'fraction',
           },
-          planned('brueche-vergleichen', L('Brüche erweitern, kürzen und vergleichen', 'Equivalent fractions and comparing'), [6, 6]),
-          planned('dezimalbrueche', L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'), [6, 6]),
+          {
+            id: 'brueche-vergleichen',
+            status: 'ready',
+            slug: L('brueche-erweitern-kuerzen-vergleichen', 'equivalent-fractions-comparing'),
+            title: L('Brüche erweitern, kürzen und vergleichen', 'Equivalent fractions and comparing'),
+            summary: L(
+              'Zwei Brüche als Streifen oder Kreise vergleichen: Beim Gleichnamigmachen werden die Teile sichtbar feiner geschnitten, der Anteil bleibt gleich. Dazu Kürzen mit Gruppen, die Bruchwand und ein Spiel zum Ordnen.',
+              'Compare two fractions as bars or circles: finding a common denominator visibly cuts the parts finer while the amount stays the same. Plus reducing with groups, the fraction wall and a game for ordering fractions.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L1', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['Bruch', 'erweitern', 'kürzen', 'vergleichen', 'gleichnamig', 'Hauptnenner', 'kgV', 'ggT', 'gleichwertige Brüche', 'Bruchwand', 'Zahlenstrahl', 'ordnen'],
+              ['fraction', 'equivalent fractions', 'expand', 'reduce', 'simplify', 'compare', 'common denominator', 'lcm', 'gcd', 'fraction wall', 'number line', 'ordering'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'dezimalbrueche',
+            status: 'ready',
+            slug: L('endliche-periodische-dezimalbrueche', 'terminating-repeating-decimals'),
+            title: L('Endliche und periodische Dezimalbrüche', 'Terminating and repeating decimals'),
+            summary: L(
+              'Schriftlich dividieren auf Karopapier, bis ein Rest wiederkehrt: Restekreis und Zahlenstrahl-Lupe zeigen, warum Perioden entstehen, die Nenner-Tafel, wann ein Bruch endlich ist.',
+              'Long division on squared paper until a remainder repeats: a remainder circle and a number line zoom show why periods appear, a table of denominators shows when a fraction terminates.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L1', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Dezimalbruch', 'endlich', 'periodisch', 'Periode', 'Vorperiode', 'Periodenstrich', 'schriftliche Division', 'Rest', 'Primfaktoren', 'Nenner', 'Zehnerpotenz', 'Stellenwert'],
+              ['decimal', 'terminating decimal', 'repeating decimal', 'recurring decimal', 'period', 'long division', 'remainder', 'prime factors', 'denominator', 'power of ten', 'place value'],
+            ),
+            thumb: 'generic',
+          },
           planned('brueche-rechnen', L('Brüche multiplizieren und dividieren am Rechteckmodell', 'Multiplying and dividing fractions with area models'), [6, 6]),
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
