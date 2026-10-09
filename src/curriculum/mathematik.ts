@@ -244,7 +244,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('vierecke', L('Das Haus der Vierecke', 'The family of quadrilaterals'), [5, 7], { kmk: ['M-L4', 'M-K1'] }),
+          {
+            id: 'vierecke',
+            status: 'ready',
+            slug: L('haus-der-vierecke', 'family-of-quadrilaterals'),
+            title: L('Das Haus der Vierecke', 'The family of quadrilaterals'),
+            summary: L(
+              'Die Ecken eines Vierecks ziehen: Parallele und gleich lange Seiten, rechte Winkel und Symmetrieachsen werden live markiert, und im Haus der Vierecke leuchten alle passenden Arten auf. Mit Bau- und Einordnungsaufgaben.',
+              'Drag the corners of a quadrilateral: parallel and equal sides, right angles and lines of symmetry are marked live, and every matching type lights up in the house of quadrilaterals. With building and classifying tasks.',
+            ),
+            grades: [5, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Viereck', 'Haus der Vierecke', 'Quadrat', 'Rechteck', 'Raute', 'Parallelogramm', 'Trapez', 'gleichschenkliges Trapez', 'Drachenviereck', 'parallel', 'Symmetrieachse', 'punktsymmetrisch', 'Diagonale', 'Eigenschaften'],
+              ['quadrilateral', 'square', 'rectangle', 'rhombus', 'parallelogram', 'trapezium', 'trapezoid', 'isosceles trapezium', 'kite', 'parallel', 'line of symmetry', 'point symmetry', 'diagonal', 'properties'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
           planned('spiegelung', L('Achsen- und Punktspiegelung', 'Reflections in a line and in a point'), [7, 7]),
