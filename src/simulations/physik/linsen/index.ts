@@ -744,7 +744,10 @@ export default defineSimulation({
             g.lineTo(fx, ly + 5);
             g.stroke();
           }
-          label(k === 1 ? 'F' : '2F', fx, ly + 15, { size: 13, color: theme.text, italic: true });
+          // Beschriftung weicht einem nach unten zeigenden Bild aus
+          const imgX = p.show && info.b !== null && info.B !== null && info.B < 0 ? P(info.b, 0)[0] : null;
+          const clash = imgX !== null && Math.abs(imgX - fx) < 14;
+          label(k === 1 ? 'F' : '2F', clash ? fx - 10 : fx, ly + 15, { size: 13, color: theme.text, italic: true, align: clash ? 'right' : 'center' });
         }
       }
       const show = p.show;
@@ -794,7 +797,8 @@ export default defineSimulation({
           const right = info.kind === 'real';
           label('B', ix + (right ? 12 : -12), (iy0 + Math.max(scene.y + 12, Math.min(scene.y + scene.h - 12, iy1))) / 2, { size: 14, color: theme.series[1]!, italic: true, align: right ? 'left' : 'right' });
           if (info.kind === 'virtual') {
-            const ty = clamp(iy1 + (info.B > 0 ? -14 : 14), scene.y + 12, stripY - 12);
+            const off = Math.abs(iy1 - iy0) < 34 ? 30 : 14;
+            const ty = clamp(iy1 + (info.B > 0 ? -off : off), scene.y + 12, stripY - 12);
             label(ctx.t('virt'), ix, ty, { size: 11, color: theme.series[1]!, weight: 600 });
           }
         } else {
