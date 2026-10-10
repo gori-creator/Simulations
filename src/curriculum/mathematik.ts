@@ -541,7 +541,24 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('funktionsplotter', L('Funktionsplotter mit eigenen Termen', 'Function plotter with custom terms'), [8, 13], { uni: true }),
+          {
+            id: 'funktionsplotter',
+            status: 'ready',
+            slug: L('funktionsplotter', 'function-plotter'),
+            title: L('Funktionsplotter mit eigenen Termen', 'Function plotter with custom terms'),
+            summary: L(
+              'Bis zu drei eigene Terme eingeben und als Graphen sehen – mit Zoom, Spurpunkt zum Ziehen, Wertetabelle, näherungsweise markierten Nullstellen, Schnitt- und Extrempunkten, Polstellen ohne senkrechte Striche und Scharen mit Parameter.',
+              'Type up to three expressions of your own and see their graphs – with zoom, a traced point to drag, a table of values, approximate zeros, intersections and turning points, poles without vertical lines and families with a parameter.',
+            ),
+            grades: [8, 13],
+            uni: true,
+            kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K2'],
+            keywords: L(
+              ['Funktionsplotter', 'Funktionenplotter', 'Graph zeichnen', 'Term', 'Wertetabelle', 'Spur', 'Nullstelle', 'Schnittpunkt', 'Hochpunkt', 'Tiefpunkt', 'Extrempunkt', 'Polstelle', 'Definitionslücke', 'Asymptote', 'Funktionenschar', 'Parameter', 'Tangente', 'Sinus', 'Exponentialfunktion', 'Logarithmus', 'gebrochen-rational', 'ganzrational'],
+              ['function plotter', 'graphing', 'expression', 'table of values', 'trace', 'zero', 'root', 'intersection', 'maximum', 'minimum', 'turning point', 'pole', 'asymptote', 'family of functions', 'parameter', 'tangent', 'sine', 'exponential', 'logarithm', 'rational function', 'polynomial'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('lineare-funktionen', L('Lineare Funktionen', 'Linear functions'), [
           {
