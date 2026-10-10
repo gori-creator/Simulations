@@ -53,6 +53,8 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Licht und Schatten | `sun` | `src/assets/sims/licht-schatten/sonne.webp` | 1024 × 1024 | transparent |
 | Licht und Schatten | `earth` | `src/assets/sims/licht-schatten/erde.webp` | 1024 × 1024 | transparent |
 | Licht und Schatten | `moon` | `src/assets/sims/licht-schatten/mond.webp` | 1024 × 1024 | transparent |
+| Planetenbahnen | `sun` | `src/assets/sims/planetenbahnen/sonne.webp` | 1024 × 1024 | transparent |
+| Planetenbahnen | `planet` | `src/assets/sims/planetenbahnen/erde.webp` | 1024 × 1024 | transparent |
 
 ## Ziegenproblem
 
@@ -257,3 +259,19 @@ Blick **von oben auf den Nordpol** (Arktis in der Bildmitte), weil die Simulatio
 Vorderseite des Vollmonds, **Norden oben**. Wird auch im Fenster „Blick zum Mond“ verwendet (Mondphasen und rötlicher Mond bei einer Mondfinsternis entstehen durch die Simulation).
 
 > The full Moon, near side as seen from Earth with north up, grey surface with dark maria and bright craters such as Tycho, evenly lit from the front with no shadow and no terminator, perfectly round, the Moon fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
+
+## Planetenbahnen
+
+Beide Bilder sind **dieselben Dateien wie bei „Licht und Schatten“** (gleicher Prompt, gleiche Größe) – liegen sie dort schon vor, genügt es, sie nach `src/assets/sims/planetenbahnen/` zu kopieren. Kreisrunde Himmelskörper, die das quadratische Bild **randlos ausfüllen**, außerhalb transparent. Beide werden klein gezeichnet (Stern etwa 10–30 px, Planet etwa 13–16 px Durchmesser); den Lichtschein der Sonne und die Nachtseite des Planeten (zum Stern abgewandte Hälfte) ergänzt die Simulation.
+
+### `sonne.webp` – Sonne
+
+Der Zentralstern im Brennpunkt der Bahn.
+
+> The Sun as a perfectly round glowing disc, yellow-orange surface with fine granulation and slight limb darkening towards the edge, no flares or prominences beyond the disc, no corona, the disc fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
+
+### `erde.webp` – Planet (Erde)
+
+Blick **von oben auf den Nordpol**, passend zur Draufsicht auf die Bahnebene (der Planet läuft gegen den Uhrzeigersinn). **Gleichmäßig von vorn beleuchtet**, ohne Nachtseite.
+
+> The planet Earth seen from space directly above the North Pole, Arctic sea ice in the centre, surrounding continents and blue oceans with some white clouds, evenly lit from the front with no night side and no terminator, perfectly round, the globe fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
