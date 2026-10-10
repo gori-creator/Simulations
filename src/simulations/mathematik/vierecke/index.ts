@@ -73,7 +73,7 @@ const NODE: Record<QuadClass, { de: string[][]; en: string[][] }> = {
   rechteck: { de: [['Rechteck']], en: [['Rectangle']] },
   raute: { de: [['Raute']], en: [['Rhombus']] },
   parallelogramm: { de: [['Parallelogramm'], ['Parallelo-', 'gramm']], en: [['Parallelogram'], ['Parallelo-', 'gram']] },
-  gltrapez: { de: [['gleichschenkliges', 'Trapez'], ['gleichschenkl.', 'Trapez']], en: [['Isosceles', 'trapezium']] },
+  gltrapez: { de: [['gleichschenkliges', 'Trapez'], ['gleichschenkl.', 'Trapez'], ['gleich-', 'schenkl.', 'Trapez']], en: [['Isosceles', 'trapezium']] },
   drachen: { de: [['Drachenviereck'], ['Drachen-', 'viereck']], en: [['Kite']] },
   trapez: { de: [['Trapez']], en: [['Trapezium']] },
   viereck: { de: [['Viereck']], en: [['Quadrilateral'], ['Quadri-', 'lateral']] },
@@ -287,6 +287,7 @@ export default defineSimulation({
       canvas: 'Karopapier mit einem Viereck ABCD, dessen Ecken man ziehen kann, daneben das Haus der Vierecke, in dem alle zutreffenden Vierecksarten hervorgehoben sind',
       house: 'Haus der Vierecke',
       legend: 'ist ein Spezialfall von',
+      legendShort: 'Spezialfall von',
       props: 'Eigenschaften deines Vierecks',
       pPar: 'Parallele Seiten',
       pEq: 'Gleich lange Seiten',
@@ -313,6 +314,7 @@ export default defineSimulation({
       marksLegend: 'Achte auf die Markierungen: Pfeile = parallel, Striche = gleich lang, Viertelkreis mit Punkt = rechter Winkel, Strichpunktlinie = Symmetrieachse.',
       pointSym: 'punktsymmetrisch',
       concave: 'nicht konvex – eine Ecke zeigt nach innen',
+      concaveShort: 'nicht konvex',
       sum: 'Summe',
       hidden: 'Erst einordnen, dann aufdecken.',
       yourQuad: 'Dein Viereck',
@@ -354,6 +356,7 @@ export default defineSimulation({
       canvas: 'Squared paper with a quadrilateral ABCD whose corners can be dragged, next to the family tree (“house”) of quadrilaterals in which every matching type is highlighted',
       house: 'House of quadrilaterals',
       legend: 'is a special case of',
+      legendShort: 'special case of',
       props: 'Properties of your quadrilateral',
       pPar: 'Parallel sides',
       pEq: 'Equal sides',
@@ -380,6 +383,7 @@ export default defineSimulation({
       marksLegend: 'Look at the marks: arrows = parallel, ticks = equal length, quarter circle with dot = right angle, dash-dot line = line of symmetry.',
       pointSym: 'point symmetry',
       concave: 'not convex – one corner points inwards',
+      concaveShort: 'not convex',
       sum: 'sum',
       hidden: 'Classify first, then reveal.',
       yourQuad: 'Your quadrilateral',
@@ -506,6 +510,22 @@ export default defineSimulation({
           props: { x: 2, y: ph + 12, w: leftW - 4, h: H - ph - 14 },
           house: { x: W - colW, y: 2, w: colW - 2, h: houseH },
           info: { x: W - colW, y: houseH + 12, w: colW - 2, h: H - houseH - 14 },
+        };
+      }
+      if (W > H * 1.05) {
+        // Tablet quer bzw. schmales Fenster (Zeichenfläche unter 640 px, aber im Querformat):
+        // Papier und Erklärkarte links, das Haus über die ganze Höhe rechts
+        const colW = Math.round(clamp(W * 0.48, 225, 300));
+        const leftW = W - colW - 10;
+        const cell = Math.min((leftW - 2) / (GRID_W + 1), (H * 0.56) / (GRID_H + 1));
+        const pw = Math.floor(cell * (GRID_W + 1));
+        const ph = Math.floor(cell * (GRID_H + 1));
+        return {
+          paper: { x: Math.round((leftW - pw) / 2), y: 2, w: pw, h: ph },
+          cell,
+          props: null,
+          house: { x: W - colW, y: 2, w: colW - 2, h: H - 4 },
+          info: { x: 2, y: ph + 10, w: leftW - 4, h: H - ph - 12 },
         };
       }
       const cell = (W - 4) / (GRID_W + 1);
@@ -1244,9 +1264,10 @@ export default defineSimulation({
       return clamp((houseTw.t - delay) / 0.22, 0, 1);
     }
 
-    function nodeLines(k: QuadClass, maxW: number, size: number): { lines: string[]; size: number } {
+    function nodeLines(k: QuadClass, maxW: number, size: number, maxLines = 3): { lines: string[]; size: number } {
       const g = surface.g;
-      const variants = NODE[k][lang];
+      const all = NODE[k][lang];
+      const variants = all.filter((v) => v.length <= maxLines).length ? all.filter((v) => v.length <= maxLines) : all;
       for (const s of [size, size - 0.5, size - 1]) {
         g.font = `700 ${s}px ${ctx.theme.font}`;
         for (const v of variants) if (v.every((l) => g.measureText(l).width <= maxW)) return { lines: v, size: s };
@@ -1326,24 +1347,31 @@ export default defineSimulation({
       const lf = `600 ${W ? 11 : 10.5}px ${theme.font}`;
       const lx = R.x + R.w - (W ? 14 : 10);
       const ly = R.y + 16;
+      g.font = `700 ${W ? 12 : 11}px ${theme.font}`;
+      const titleW = g.measureText(ctx.t('house')).width;
       g.font = lf;
-      const lw = g.measureText(ctx.t('legend')).width;
-      text(g, ctx.t('legend'), lx, ly, { font: lf, color: theme.muted, align: 'right' });
-      const ax1 = lx - lw - 8;
-      const ax0 = ax1 - (W ? 22 : 18);
-      g.strokeStyle = theme.muted;
-      g.fillStyle = theme.muted;
-      g.lineWidth = 1.5;
-      g.beginPath();
-      g.moveTo(ax0, ly);
-      g.lineTo(ax1 - 5, ly);
-      g.stroke();
-      g.beginPath();
-      g.moveTo(ax1, ly);
-      g.lineTo(ax1 - 7, ly - 3.5);
-      g.lineTo(ax1 - 7, ly + 3.5);
-      g.closePath();
-      g.fill();
+      const arrowW = (W ? 22 : 18) + 8;
+      const room = lx - (R.x + 12 + titleW + 12);
+      const legend = g.measureText(ctx.t('legend')).width + arrowW <= room ? ctx.t('legend') : g.measureText(ctx.t('legendShort')).width + arrowW <= room ? ctx.t('legendShort') : '';
+      const lw = g.measureText(legend).width;
+      if (legend) {
+        text(g, legend, lx, ly, { font: lf, color: theme.muted, align: 'right' });
+        const ax1 = lx - lw - 8;
+        const ax0 = ax1 - (W ? 22 : 18);
+        g.strokeStyle = theme.muted;
+        g.fillStyle = theme.muted;
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.moveTo(ax0, ly);
+        g.lineTo(ax1 - 5, ly);
+        g.stroke();
+        g.beginPath();
+        g.moveTo(ax1, ly);
+        g.lineTo(ax1 - 7, ly - 3.5);
+        g.lineTo(ax1 - 7, ly + 3.5);
+        g.closePath();
+        g.fill();
+      }
 
       for (const n of nodes) drawNode(n);
     }
@@ -1451,7 +1479,8 @@ export default defineSimulation({
       const fg = isBest ? onColor() : lit > 0 || fb ? theme.text : theme.muted;
       const iconCol = isBest ? onColor() : lit > 0 ? ch : withAlpha(theme.text, 0.45);
       const iconFill = isBest ? withAlpha(onColor(), 0.25) : lit > 0 ? withAlpha(ch, 0.2) : withAlpha(theme.text, 0.05);
-      const { lines, size } = nodeLines(n.k, n.w - 10, W ? 12 : 11.5);
+      // breit: Symbol und höchstens zwei Zeilen; schmal: bis zu drei Zeilen ohne Symbol
+      const { lines, size } = nodeLines(n.k, n.w - 10, W ? 12 : 11.5, W ? 2 : 3);
       const lh = size + 1.5;
       if (W) {
         const iconH = 18;
@@ -1572,26 +1601,38 @@ export default defineSimulation({
       const sizesH = 44;
       const top = R.y + 32;
       const avail = R.h - 32 - sizesH - 8;
-      const rh = clamp(avail / rows.length, 22, 30);
-      const labelW = 130;
-      rows.forEach(([kind, label, value, on], i) => {
-        const y = top + i * rh + rh / 2;
-        propIcon(kind, R.x + pad + 11, y);
-        text(g, label, R.x + pad + 30, y, { font: `600 12px ${theme.font}`, color: theme.muted, align: 'left' });
-        const shownVal = reveal ? value : '?';
-        let v = shownVal;
-        const maxW = R.w - pad * 2 - 30 - labelW;
-        // erst kleiner schreiben, nur im Notfall kürzen
-        let size = 12.5;
-        let vf = `${on ? 700 : 500} ${size}px ${theme.font}`;
-        g.font = vf;
-        while (g.measureText(v).width > maxW && size > 11) {
-          size -= 0.5;
-          vf = `${on ? 700 : 500} ${size}px ${theme.font}`;
-          g.font = vf;
-        }
-        while (g.measureText(v).width > maxW && v.length > 4) v = `${v.slice(0, -2)}…`;
-        text(g, v, R.x + pad + 30 + labelW, y, { font: vf, color: on && reveal ? theme.text : theme.muted, align: 'left' });
+      // Spalte der Bezeichnungen so breit wie nötig
+      const lf = `600 12px ${theme.font}`;
+      g.font = lf;
+      const labelW = clamp(Math.max(...rows.map((r) => g.measureText(r[1]).width)) + 14, 90, 140);
+      const maxW = R.w - pad * 2 - 30 - labelW;
+      // Werte umbrechen statt abschneiden (an den Trennpunkten „·“); wenn es eng wird, etwas kleiner
+      const layoutRows = (size: number, lh: number) =>
+        rows.map(([, , value, on]) => {
+          const vf = `${on ? 700 : 500} ${size}px ${theme.font}`;
+          const lines = wrap(reveal ? value : '?', maxW, vf).map((ln) => ln.replace(/\u00a0·$/, ''));
+          return { vf, lines, need: Math.max(22, lines.length * lh + 7) };
+        });
+      let lh = 15;
+      let laid = layoutRows(12.5, lh);
+      if (laid.reduce((s, r) => s + r.need, 0) > avail) {
+        lh = 14;
+        laid = layoutRows(11.5, lh);
+      }
+      const extra = Math.max(0, avail - laid.reduce((s, r) => s + r.need, 0)) / rows.length;
+      let y = top;
+      rows.forEach(([kind, label, , on], i) => {
+        const { vf, lines, need } = laid[i]!;
+        const rh = need + Math.min(extra, 8);
+        const cy = y + rh / 2;
+        propIcon(kind, R.x + pad + 11, cy);
+        text(g, label, R.x + pad + 30, cy, { font: lf, color: theme.muted, align: 'left' });
+        // höchstens so viele Zeilen, wie in den Rest der Karte passen
+        const room = Math.max(1, Math.floor((top + avail - y) / lh));
+        const shown = lines.slice(0, room);
+        if (shown.length < lines.length) shown[shown.length - 1] = `${shown[shown.length - 1]!.replace(/\s*·?\s*$/, '')} …`;
+        shown.forEach((ln, k) => text(g, ln, R.x + pad + 30 + labelW, cy + (k - (shown.length - 1) / 2) * lh, { font: vf, color: on && reveal ? theme.text : theme.muted, align: 'left' }));
+        y += rh;
       });
       // Seiten und Winkel
       const y0 = R.y + R.h - sizesH - 2;
@@ -1601,16 +1642,37 @@ export default defineSimulation({
       g.moveTo(R.x + pad, y0 - 4);
       g.lineTo(R.x + R.w - pad, y0 - 4);
       g.stroke();
-      const f = `600 12px ${theme.font}`;
-      const sidesTxt = SIDE.map((s, i) => `${s} ${lenText(i)}`).join('   ');
-      let sum = an.angles.reduce((s, a) => s + a, 0);
-      sum = Math.round(sum);
-      const angTxt = `${ANGLE.map((s, i) => `${s} ${angleText(i)}`).join('   ')}   (${ctx.t('sum')} ${fmt.num(sum, 0)}°)`;
-      text(g, sidesTxt, R.x + pad, y0 + 9, { font: f, color: theme.text, align: 'left' });
-      text(g, angTxt, R.x + pad, y0 + 29, { font: f, color: theme.text, align: 'left' });
+      const sum = Math.round(an.angles.reduce((s, a) => s + a, 0));
+      // Abstände zwischen den Angaben verkleinern, falls die Zeile sonst zu breit wäre
+      const fitRow = (parts: string[], tail = ''): { str: string; f: string } => {
+        for (const [gap, size] of [
+          ['   ', 12],
+          ['  ', 12],
+          ['  ', 11.5],
+          [' ', 11],
+        ] as [string, number][]) {
+          const f = `600 ${size}px ${theme.font}`;
+          const str = parts.join(gap) + (tail ? gap + tail : '');
+          g.font = f;
+          if (g.measureText(str).width <= R.w - 2 * pad) return { str, f };
+        }
+        return { str: parts.join(' ') + (tail ? ` ${tail}` : ''), f: `600 11px ${theme.font}` };
+      };
+      const sidesRow = fitRow(SIDE.map((s, i) => `${s} ${lenText(i)}`));
+      const angRow = fitRow(
+        ANGLE.map((s, i) => `${s} ${angleText(i)}`),
+        `(${ctx.t('sum')} ${fmt.num(sum, 0)}°)`,
+      );
+      text(g, sidesRow.str, R.x + pad, y0 + 9, { font: sidesRow.f, color: theme.text, align: 'left' });
+      text(g, angRow.str, R.x + pad, y0 + 29, { font: angRow.f, color: theme.text, align: 'left' });
       if (!an.convex) {
-        // Hinweis bei nicht konvexem Viereck rechts oben
-        text(g, ctx.t('concave'), R.x + R.w - pad, R.y + 17, { font: `600 11px ${theme.font}`, color: col.house(), align: 'right' });
+        // Hinweis bei nicht konvexem Viereck rechts oben (kurz, wenn neben dem Titel kein Platz ist)
+        const cf = `600 11px ${theme.font}`;
+        g.font = `700 ${wide() ? 12 : 11}px ${theme.font}`;
+        const tw = g.measureText(ctx.t('props')).width;
+        g.font = cf;
+        const note = g.measureText(ctx.t('concave')).width + tw + 24 <= R.w - 2 * pad ? ctx.t('concave') : ctx.t('concaveShort');
+        text(g, note, R.x + R.w - pad, R.y + 17, { font: cf, color: col.house(), align: 'right' });
       }
     }
 
@@ -1672,13 +1734,24 @@ export default defineSimulation({
       } else statusRows.push({ txt: ctx.t('hidden'), color: theme.muted, font: `600 ${W ? 12 : 11.5}px ${theme.font}` });
       // weitere Eigenschaften, soweit Platz ist
       const mf = `500 ${W ? 12 : 11.5}px ${theme.font}`;
-      const mRows = wrap(T(INFO[k].more), inner, mf);
+      let mRows = wrap(T(INFO[k].more), inner, mf);
       const sRows = statusRows.flatMap((s) => wrap(s.txt, inner, s.font).map((r) => ({ ...s, txt: r })));
       const btnY = bottom - bh;
       const spaceForMore = btnY - 8 - (y + 6) - sRows.length * lh - 4;
       const nMore = Math.max(0, Math.min(mRows.length, Math.floor(spaceForMore / lh)));
+      if (nMore < mRows.length) {
+        // nicht mitten in einer Angabe abschneiden: so viele ganze Angaben (getrennt durch „·“), wie passen
+        const facts = T(INFO[k].more).replace(/\.$/, '').split(' · ');
+        let best: string[] = [];
+        for (let j = 1; j <= facts.length; j++) {
+          const rows = wrap(`${facts.slice(0, j).join(' · ')} …`, inner, mf);
+          if (rows.length > nMore) break;
+          best = rows;
+        }
+        mRows = best;
+      }
       y += 4;
-      if (nMore > 0) y += textRows(mRows.slice(0, nMore), R.x + pad, y + lh / 2, lh, mf, theme.muted) + 4;
+      if (mRows.length > 0) y += textRows(mRows.slice(0, nMore), R.x + pad, y + lh / 2, lh, mf, theme.muted) + 4;
       sRows.forEach((s, i) => text(g, s.txt, R.x + pad, y + lh / 2 + i * lh, { font: s.font, color: s.color, align: 'left' }));
       // Knopf und Hinweis
       if (!ctx.locked && (mode() === 'frei' || quizDone)) {
@@ -1690,7 +1763,8 @@ export default defineSimulation({
         if (mode() === 'frei' && !sel) {
           const hf = `500 ${W ? 11.5 : 11}px ${theme.font}`;
           const hr = wrap(ctx.t('tapHint'), R.w - 2 * pad - bw - 10, hf);
-          textRows(hr.slice(0, 2), R.x + pad, btnY + bh / 2 - ((Math.min(2, hr.length) - 1) * 14) / 2, 14, hf, theme.muted);
+          // nur ganz zeigen, nie mitten im Satz abbrechen
+          if (hr.length <= 2) textRows(hr, R.x + pad, btnY + bh / 2 - ((hr.length - 1) * 14) / 2, 14, hf, theme.muted);
         }
         if (mode() === 'einordnen') {
           const sf = `600 ${W ? 11.5 : 11}px ${theme.font}`;
