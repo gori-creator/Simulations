@@ -34,7 +34,9 @@ export function formatNumber(value: number, lang: Lang, options: NumberOptions =
   if (!Number.isFinite(value)) return value > 0 ? '∞' : `${MINUS}∞`;
   const decimals = options.decimals ?? 2;
   const factor = 10 ** decimals;
-  let rounded = Math.round(value * factor) / factor;
+  // Kaufmännisch runden (5 aufwärts, vom Betrag her – also −0,875 → −0,88 wie im
+  // Unterricht); der winzige Zuschlag gleicht Darstellungsfehler wie 1,005 · 100 = 100,4999… aus.
+  let rounded = (Math.sign(value) * Math.round(Math.abs(value) * factor * (1 + 4 * Number.EPSILON))) / factor;
   if (Object.is(rounded, -0) || rounded === 0) rounded = 0;
   const text = numberFormat(lang, options.fixed ? decimals : 0, decimals).format(Math.abs(rounded));
   if (rounded < 0) return MINUS + text;
