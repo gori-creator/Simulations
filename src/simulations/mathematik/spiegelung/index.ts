@@ -388,16 +388,20 @@ export default defineSimulation({
     function computeLayout(): Layout {
       const W = surface.width;
       const H = surface.height;
-      if (wide()) {
-        const colW = Math.round(clamp(W * 0.34, 250, 310));
-        const leftW = W - colW - 12;
+      // Querformat: Papier links, Karten rechts. Auch bei schmaler Zeichenfläche (Tablet quer,
+      // Fenster 641–700 bzw. 861–1100 px), die dann zwar unter 640 px breit ist, aber nicht hochkant.
+      if (wide() || W > H * 1.05) {
+        const compact = !wide();
+        const colW = Math.round(compact ? clamp(W * 0.42, 190, 270) : clamp(W * 0.34, 250, 310));
+        const gap = compact ? 10 : 12;
+        const leftW = W - colW - gap;
         const cell = Math.min((leftW - 2) / (GRID_W + 1), (H * 0.7) / (GRID_H + 1));
         const pw = Math.floor(cell * (GRID_W + 1));
         const ph = Math.floor(cell * (GRID_H + 1));
         return {
           paper: { x: Math.round((leftW - pw) / 2), y: 2, w: pw, h: ph },
           cell,
-          below: { x: 2, y: ph + 12, w: leftW - 4, h: H - ph - 14 },
+          below: { x: 2, y: ph + gap, w: leftW - 4, h: H - ph - gap - 2 },
           side: { x: W - colW, y: 2, w: colW - 2, h: H - 4 },
         };
       }
@@ -1316,22 +1320,36 @@ export default defineSimulation({
         if (y + hr.length * 15 <= bottom) textRows(hr, R.x + pad, y + 7, 15, hf, theme.muted);
         return;
       }
-      if (y + 22 > bottom) return;
-      title(R.x + pad, y + 6, ctx.t(isPoint ? 'distPoint' : 'distAxis'));
-      y += 22;
-      const colW = (R.w - 2 * pad) / Math.min(4, pts.length);
+      if (y + 14 > bottom) return;
       const df = `700 ${W ? 12.5 : 11.5}px ${theme.font}`;
-      pts.forEach((q, i) => {
-        const x = R.x + pad + i * colW;
-        const d = isPoint ? dist(q, Z()) : lineDistance(q, P(), Q());
-        const n = names[i]!;
-        if (y + 10 > bottom) return;
+      const ds = pts.map((q) => cm(isPoint ? dist(q, Z()) : lineDistance(q, P(), Q())));
+      g.font = df;
+      const colsFor = (ls: string[]) => {
+        const need = Math.max(...ls.map((l, i) => g.measureText(l).width + 18 + i * 2.5)) + 8;
+        return Math.max(1, Math.min(4, ls.length, Math.floor((R.w - 2 * pad) / need)));
+      };
+      // „A, A′: …“; passt das nicht in eine Zeile, die Kurzform „A: …“; sonst mehrere Zeilen
+      const full = ds.map((d, i) => `${names[i]!}, ${names[i]!}${PRIME}: ${d}`);
+      const short = ds.map((d, i) => `${names[i]!}: ${d}`);
+      const labels = colsFor(full) >= full.length || colsFor(short) < short.length ? full : short;
+      const nCol = colsFor(labels);
+      const colW = (R.w - 2 * pad) / nCol;
+      const nRows = Math.ceil(labels.length / nCol);
+      // Überschrift „Abstand von …“ nur, wenn danach alle Zeilen Platz haben (die Strichmarken ordnen ohnehin zu)
+      if (y + 22 + (nRows - 1) * 18 + 8 <= bottom) {
+        title(R.x + pad, y + 6, ctx.t(isPoint ? 'distPoint' : 'distAxis'));
+        y += 22;
+      } else y += 8;
+      labels.forEach((label, i) => {
+        const x = R.x + pad + (i % nCol) * colW;
+        const yy = y + Math.floor(i / nCol) * 18;
+        if (yy + 8 > bottom) return;
         // Strichmarken wie im Bild
-        ticks(x + 6, y, [1, 0], i + 1, col.tick(), 5);
-        const label = `${n}, ${n}${PRIME}: ${cm(d)}`;
-        text(g, label, x + 14 + i * 2.5, y, { font: df, color: theme.text, align: 'left' });
+        ticks(x + 6, yy, [1, 0], i + 1, col.tick(), 5);
+        text(g, label, x + 14 + i * 2.5, yy, { font: df, color: theme.text, align: 'left' });
       });
-      if (!W && p.fix && y + 34 < bottom) {
+      y += (nRows - 1) * 18;
+      if (!W && !layout().side && p.fix && y + 34 < bottom) {
         const ff = `500 11.5px ${theme.font}`;
         textRows(wrap(ctx.t(isPoint ? 'fixPoint' : 'fixAxis'), R.w - 2 * pad, ff), R.x + pad, y + 22, 15, ff, theme.muted);
       }
@@ -1359,9 +1377,12 @@ export default defineSimulation({
       const f = `600 ${W ? 12 : 11.5}px ${theme.font}`;
       const vf = `700 ${W ? 13 : 12}px ${theme.font}`;
       const sf = `500 ${W ? 11.5 : 11}px ${theme.font}`;
-      // Handy: Name und Wert in einer Zeile
-      const labelW = W ? 0 : 84;
-      const rowH = (r: (typeof rows)[number]) => (W ? 40 : 24) + (r.sub ? wrap(r.sub, R.w - 2 * pad - 26, sf).length * 14 + (W ? 0 : 2) : 0);
+      // Handy: Name und Wert in einer Zeile; in der Seitenspalte untereinander
+      const twoLine = W || layout().side !== null;
+      const labelW = twoLine ? 0 : 84;
+      // Werte in der Seitenspalte notfalls umbrechen
+      const valRows = (r: (typeof rows)[number]) => (twoLine ? wrap(r.value, R.w - 2 * pad - 26, vf) : [r.value]);
+      const rowH = (r: (typeof rows)[number]) => (twoLine ? (W ? 40 : 37) + (valRows(r).length - 1) * 16 : 24) + (r.sub ? wrap(r.sub, R.w - 2 * pad - 26, sf).length * 14 + (W ? 0 : 2) : 0);
       const h = Math.min(R.h, (W ? 34 : 30) + rows.reduce((s, r) => s + rowH(r), 0) + 4);
       card({ x: R.x, y: R.y, w: R.w, h });
       title(R.x + pad, R.y + 16, ctx.t('keepT'));
@@ -1377,21 +1398,24 @@ export default defineSimulation({
         g.fill();
         text(g, r.ok ? '✓' : '↺', R.x + pad + 8, y + 11.5, { font: `800 10px ${theme.font}`, color: onColor() });
         text(g, r.label, R.x + pad + 24, y + 11, { font: f, color: theme.muted, align: 'left' });
-        text(g, r.value, R.x + pad + 24 + labelW, y + (W ? 28 : 11), { font: vf, color: theme.text, align: 'left' });
-        if (r.sub) textRows(wrap(r.sub, R.w - 2 * pad - 26, sf), R.x + pad + 24, y + (W ? 44 : 27), 14, sf, theme.muted);
+        const vr = valRows(r);
+        textRows(vr, R.x + pad + 24 + labelW, y + (twoLine ? (W ? 28 : 26) : 11), 16, vf, theme.text);
+        if (r.sub) textRows(wrap(r.sub, R.w - 2 * pad - 26, sf), R.x + pad + 24, y + (twoLine ? (W ? 44 : 41) + (vr.length - 1) * 16 : 27), 14, sf, theme.muted);
         y += hh;
       }
       return h;
     }
 
     function fixHeight(w: number): number {
-      const rows = wrap(ctx.t(mode() === 'punkt' ? 'fixPoint' : 'fixAxis'), w - 28, `500 12.5px ${ctx.theme.font}`);
-      return 34 + rows.length * 17 + 10;
+      const W = wide();
+      const rows = wrap(ctx.t(mode() === 'punkt' ? 'fixPoint' : 'fixAxis'), w - 2 * (W ? 14 : 12), `500 ${W ? 12.5 : 12}px ${ctx.theme.font}`);
+      return 34 + rows.length * (W ? 17 : 16) + 10;
     }
 
     function merkeHeight(w: number): number {
-      const rows = wrap(ctx.t('merke'), w - 28, `500 12.5px ${ctx.theme.font}`);
-      return 32 + rows.length * 17 + 10;
+      const W = wide();
+      const rows = wrap(ctx.t('merke'), w - 2 * (W ? 14 : 12), `500 ${W ? 12.5 : 12}px ${ctx.theme.font}`);
+      return 32 + rows.length * (W ? 17 : 16) + 10;
     }
 
     function fixCard(R: Rect): void {
@@ -1403,7 +1427,8 @@ export default defineSimulation({
       const lh = W ? 17 : 16;
       const rows = wrap(ctx.t(isPoint ? 'fixPoint' : 'fixAxis'), R.w - 2 * pad, f);
       const h = Math.min(R.h, 34 + rows.length * lh + 10);
-      if (h < 50) return;
+      // nur ganz zeigen (nicht mitten im Text abbrechen)
+      if (h < 34 + rows.length * lh + 10) return;
       card({ x: R.x, y: R.y, w: R.w, h }, p.fix ? col.mirror() : undefined, p.fix ? 0.05 : 0);
       title(R.x + pad, R.y + 16, ctx.t('fixT'));
       textRows(rows, R.x + pad, R.y + 34 + lh / 2, lh, f, theme.text);
@@ -1527,11 +1552,14 @@ export default defineSimulation({
       const fbRows = fbTxt ? wrap(fbTxt.head, R.w - 2 * pad, fbFont) : [];
       const bodyRows = fbTxt && fbTxt.body ? wrap(fbTxt.body, R.w - 2 * pad, f) : [];
       const needFb = (fbRows.length + bodyRows.length) * lh + (fbTxt ? 6 : 0);
-      const needProg = prog.length * 20 + 6;
+      // Fortschrittszeilen in schmalen Karten umbrechen
+      const pf = `600 ${W ? 12.5 : 12}px ${theme.font}`;
+      const progRows = prog.map((pr) => wrap(pr.txt, R.w - 2 * pad - 21, pf));
+      const needProg = progRows.reduce((acc, r) => acc + 20 + (r.length - 1) * 15, 0) + 6;
       const avail = btnY - 8 - y;
       const showTask = avail - needFb - needProg >= taskRows.length * lh;
       if (showTask) y += textRows(taskRows, R.x + pad, y + lh / 2, lh, f, theme.text) + 6;
-      for (const pr of prog) {
+      for (const [k, pr] of prog.entries()) {
         g.beginPath();
         g.arc(R.x + pad + 7, y + 9, 7, 0, Math.PI * 2);
         if (pr.on) {
@@ -1543,8 +1571,9 @@ export default defineSimulation({
           g.lineWidth = 1.5;
           g.stroke();
         }
-        text(g, pr.txt, R.x + pad + 21, y + 9, { font: `600 ${W ? 12.5 : 12}px ${theme.font}`, color: pr.on ? theme.text : theme.muted, align: 'left' });
-        y += 20;
+        const pr2 = progRows[k]!;
+        textRows(pr2, R.x + pad + 21, y + 9, 15, pf, pr.on ? theme.text : theme.muted);
+        y += 20 + (pr2.length - 1) * 15;
       }
       y += 6;
       if (fbTxt) {
@@ -1602,8 +1631,10 @@ export default defineSimulation({
       if (mode() === 'symmetrie') {
         if (lay.side) {
           const mh = merkeHeight(lay.side.w);
-          symCard({ x: lay.side.x, y: lay.side.y, w: lay.side.w, h: lay.side.h - mh - 10 });
-          merkeCard({ x: lay.side.x, y: lay.side.y + lay.side.h - mh, w: lay.side.w, h: mh });
+          if (lay.side.h - mh - 10 >= 230) {
+            symCard({ x: lay.side.x, y: lay.side.y, w: lay.side.w, h: lay.side.h - mh - 10 });
+            merkeCard({ x: lay.side.x, y: lay.side.y + lay.side.h - mh, w: lay.side.w, h: mh });
+          } else symCard(lay.side);
           galleryCard(lay.below);
         } else {
           const gh = 84;
@@ -1615,9 +1646,13 @@ export default defineSimulation({
         const h = keepCard(lay.side);
         let y = lay.side.y + h + 10;
         const fh = fixHeight(lay.side.w);
-        fixCard({ x: lay.side.x, y, w: lay.side.w, h: fh });
-        y += fh + 10;
-        stepsCard({ x: lay.side.x, y, w: lay.side.w, h: lay.side.y + lay.side.h - y });
+        const bottom = lay.side.y + lay.side.h;
+        // Karten nur, wenn sie ganz in die Spalte passen
+        if (y + fh <= bottom) {
+          fixCard({ x: lay.side.x, y, w: lay.side.w, h: fh });
+          y += fh + 10;
+        }
+        stepsCard({ x: lay.side.x, y, w: lay.side.w, h: bottom - y });
       } else {
         const rh = 122;
         ruleCard({ x: lay.below.x, y: lay.below.y, w: lay.below.w, h: rh });
