@@ -65,23 +65,21 @@ function niceCeil(x: number): number {
   return 10 * p;
 }
 
-/**
- * Obergrenze einer Achse knapp über v, so gewählt, dass auf `px` Pixeln
- * mindestens zwei beschriftete Teilstriche (Abstand ≥ 56 px, Schritte 1, 2, 5 · 10^k) passen.
- */
-function niceTop(v: number, px: number): number {
-  if (!(v > 0)) return 1;
-  const n = Math.max(2, Math.floor(px / 56));
-  const raw = (v * 1.04) / n;
-  const p = 10 ** Math.floor(Math.log10(raw));
-  const step = [1, 2, 5, 10].map((m) => m * p).find((s) => s >= raw - 1e-12) ?? 10 * p;
-  return Math.ceil((v * 1.04) / step - 1e-9) * step;
+/** Kleinste Schrittweite 1, 2, 5 · 10^k, die mindestens x ist (wie bei den Achsen der Diagramme). */
+function step125(x: number): number {
+  if (!(x > 0)) return 1;
+  const p = 10 ** Math.floor(Math.log10(x));
+  return ([1, 2, 5, 10].find((m) => m * p >= x - 1e-12) ?? 10) * p;
 }
 
-/** Bühne: links der Blick auf die Bahnebene, rechts die Auswertung (Handy: untereinander). */
+/**
+ * Bühne: links der Blick auf die Bahnebene, rechts die Auswertung; im
+ * Hochformat (Handy) untereinander. Entschieden wird nach dem Seitenverhältnis,
+ * denn auch ein schmaler Tablet-Bildschirm kann die breite Bühne zeigen.
+ */
 function regions(w: number, h: number): { scene: Rect; panel: Rect } {
-  if (w >= 640) {
-    const sw = Math.round(Math.min(h, w * 0.6));
+  if (w > h) {
+    const sw = Math.round(Math.min(h, w * (w < 760 ? 0.56 : 0.6)));
     return { scene: { x: 0, y: 0, w: sw, h }, panel: { x: sw + 10, y: 0, w: w - sw - 10, h } };
   }
   const sh = Math.round(Math.min(w * 1.02, h * 0.55));
@@ -252,8 +250,11 @@ export default defineSimulation({
       k3TUnit: 'in a',
       k3Q: 'T²/a³',
       k3QUnit: 'in 10⁻¹⁹ s²/m³',
+      k3QUnit1: 'in 10⁻¹⁹',
+      k3QUnit2: 's²/m³',
       k3Own: 'Bahn {n}',
       k3OwnM: 'Bahn {n} ({M} M☉)',
+      k3OwnShort: 'B{n} · {M} M☉',
       k3Pending: 'deine Bahn',
       k3PendingNote: 'nach einem Umlauf',
       k3Open: 'offene Bahn: kein Umlauf',
@@ -336,8 +337,11 @@ export default defineSimulation({
       k3TUnit: 'in yr',
       k3Q: 'T²/a³',
       k3QUnit: 'in 10⁻¹⁹ s²/m³',
+      k3QUnit1: 'in 10⁻¹⁹',
+      k3QUnit2: 's²/m³',
       k3Own: 'orbit {n}',
       k3OwnM: 'orbit {n} ({M} M☉)',
+      k3OwnShort: 'O{n} · {M} M☉',
       k3Pending: 'your orbit',
       k3PendingNote: 'after one orbit',
       k3Open: 'open orbit: no period',
@@ -423,10 +427,19 @@ export default defineSimulation({
     let ready = false;
 
     /** Tabelle zum 3. Keplerschen Gesetz: Zeilenhöhe und (wenn Platz ist) ein doppelt-logarithmisches Diagramm. */
+    /** Spalten der Tabelle; `tall`: Einheit von T²/a³ zweizeilig, weil sie sonst mit der Spalte T kollidiert. */
+    function k3Columns(R: Rect): { xName: number; cA: number; cT: number; cQ: number; tall: boolean } {
+      const small = narrow() || R.w < 360;
+      const cT = R.x + R.w * (small ? 0.71 : 0.7);
+      const cQ = R.x + R.w - 12;
+      const tall = cT + 8 > cQ - richWidth(ctx.t('k3QUnit'), small ? 10 : 10.5, 600);
+      return { xName: R.x + 12, cA: R.x + R.w * (small ? 0.5 : 0.49), cT, cQ, tall };
+    }
+
     function k3Layout(R: Rect): { headY: number; top: number; foot: number; rh: number; chartTitle: number; chart: Rect | null } {
       const small = narrow() || R.w < 360;
       const headY = R.y + (small ? 40 : 44);
-      const top = headY + 32;
+      const top = headY + 32 + (k3Columns(R).tall ? 12 : 0);
       const foot = small ? 40 : 46;
       const rows = PLANETS.length + meas.length + (run.complete ? 0 : 1);
       const avail = R.y + R.h - foot - top;
@@ -1666,7 +1679,12 @@ export default defineSimulation({
       const o = run.orbit;
       const { tf, xMax } = chartRanges();
       const vRef = vPeak();
-      const vTop = niceTop(Math.max(vRef, run.vMax), chart.rect.h - 18 - 24);
+      // knapp über dem Höchstwert – oder bis zum nächsten beschrifteten Teilstrich, wenn er nah ist
+      const vHi = Math.max(vRef, run.vMax);
+      let vTop = vHi * 1.08;
+      const st = step125((56 * vTop) / Math.max(40, chart.rect.h - 42));
+      const nextTick = Math.ceil((vHi * 1.02) / st) * st;
+      if (nextTick <= vHi * 1.2) vTop = nextTick;
       chart.setAxes({ x: { label: ctx.t(daysMode() ? 'axisTd' : 'axisTa') }, y: { label: ctx.t('axisV') } });
       chart.setRangePadded([0, xMax], [0, vTop], { left: small ? 36 : 42, right: 14, top: 18, bottom: 24 });
       chart.begin();
@@ -1709,7 +1727,9 @@ export default defineSimulation({
           ] as const) {
             const label = p.num ? `v_[${name}] = ${n2(q.v, 1)}` : `v_[${name}]`;
             const w = richWidth(label, 11.5);
-            const x = clamp(chart.px(q.t * tf), cr.x + w / 2 + 44, cr.x + cr.w - w / 2 - 6);
+            // nahe der y-Achse (deren Beschriftung) lieber am rechten Ende, wo die Kurve wieder ansteigt
+            const px0 = chart.px(q.t * tf);
+            const x = name === 'P' && px0 - cr.x < 110 ? cr.x + cr.w - w / 2 - 22 : clamp(px0, cr.x + w / 2 + 44, cr.x + cr.w - w / 2 - 6);
             rich(label, x, chart.py(q.v) + dy, small ? 11 : 11.5, theme.series[0]!, 'center', panelHalo(), 700);
           }
         }
@@ -1727,10 +1747,7 @@ export default defineSimulation({
       panelTitle(R, ctx.t('k3Title'));
       const fs = small ? 11.5 : 12;
       const pad = 12;
-      const xName = R.x + pad;
-      const cA = R.x + R.w * (small ? 0.5 : 0.49);
-      const cT = R.x + R.w * (small ? 0.71 : 0.7);
-      const cQ = R.x + R.w - pad;
+      const { xName, cA, cT, cQ, tall } = k3Columns(R);
       const lay = k3Layout(R);
       const headY = lay.headY;
       // Kopfzeile (zweizeilig)
@@ -1741,12 +1758,16 @@ export default defineSimulation({
       head(xName, ctx.t('k3Body'), '', 'left');
       head(cA, ctx.t('k3a'), ctx.t('k3aUnit'), 'right');
       head(cT, ctx.t('k3T'), ctx.t('k3TUnit'), 'right');
-      head(cQ, ctx.t('k3Q'), ctx.t('k3QUnit'), 'right');
+      if (tall) {
+        head(cQ, ctx.t('k3Q'), ctx.t('k3QUnit1'), 'right');
+        rich(ctx.t('k3QUnit2'), cQ, headY + 26, small ? 10 : 10.5, theme.muted, 'right', null, 600);
+      } else head(cQ, ctx.t('k3Q'), ctx.t('k3QUnit'), 'right');
+      const lineY = headY + (tall ? 36.5 : 24.5);
       g.strokeStyle = withAlpha(theme.muted, 0.35);
       g.lineWidth = 1;
       g.beginPath();
-      g.moveTo(R.x + pad, headY + 24.5);
-      g.lineTo(R.x + R.w - pad, headY + 24.5);
+      g.moveTo(R.x + pad, lineY);
+      g.lineTo(R.x + R.w - pad, lineY);
       g.stroke();
       // Zeilen
       interface Row {
@@ -1772,9 +1793,13 @@ export default defineSimulation({
         };
       });
       const ownColor = theme.series[0]!;
+      // Platz für den Namen bis zur Zahl in der Spalte a
+      const nameRoom = cA - richWidth('00,000', fs, 500) - (xName + 13) - 6;
       for (const m of meas) {
+        let name = Math.abs(m.M - 1) < 1e-9 ? tr('k3Own', { n: String(m.id) }) : tr('k3OwnM', { n: String(m.id), M: fmt.num(m.M, 1) });
+        if (richWidth(name, fs, 700) > nameRoom) name = tr('k3OwnShort', { n: String(m.id), M: fmt.num(m.M, 1) });
         rows.push({
-          name: Math.abs(m.M - 1) < 1e-9 ? tr('k3Own', { n: String(m.id) }) : tr('k3OwnM', { n: String(m.id), M: fmt.num(m.M, 1) }),
+          name,
           dot: ownColor,
           a: p.num ? fmt.fixed(m.a, m.a < 10 ? 3 : 2) : '?',
           T: p.num ? fmt.fixed(m.T, m.T < 10 ? 3 : 2) : '?',
@@ -1960,9 +1985,8 @@ export default defineSimulation({
       const { tf, xMax } = chartRanges();
       const potMax = (GM_SUN * p.M) / (rLow() * AU) / unit;
       const kinMax = (0.5 * (vPeak() * 1000) ** 2) / unit;
-      const H = chart.rect.h - 18 - 14;
-      const yHi = niceTop(Math.max(kinMax, 0.1), (H * kinMax) / (kinMax + potMax));
-      const yLo = -niceTop(potMax, (H * potMax) / (kinMax + potMax));
+      const yHi = Math.max(kinMax, 0.1) * 1.08;
+      const yLo = -potMax * 1.08;
       chart.setAxes({ x: { label: ctx.t(daysMode() ? 'axisTd' : 'axisTa') }, y: { label: tr('axisE', { k: sup(k) }) } });
       chart.setRangePadded([0, xMax], [yLo, yHi], { left: small ? 36 : 42, right: 14, top: 18, bottom: 14 });
       chart.begin();
