@@ -253,7 +253,8 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const reduced = prefersReducedMotion();
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (m, k: string) => String(vars[k] ?? m));
-    const narrow = () => surface.width < 640;
+    /** Handy-Layout nur bei schmaler und hoher Fläche (Tablets mit 560–640 px breiter, flacher Fläche bleiben beim Desktop-Layout). */
+    const narrow = () => surface.width < 640 && surface.height > surface.width * 0.9;
     const mode = () => p.mode as 'map' | 'graph';
     const cur = () => p.cur as CurveId;
     const blue = () => ctx.theme.series[0]!;
@@ -466,7 +467,9 @@ export default defineSimulation({
       const g = surface.g;
       const small = narrow();
       const titleH = small ? 26 : 32;
-      const hintH = small ? 30 : 22;
+      const hintFs = small ? 11 : 12;
+      const hintRows = Math.min(2, wrap(ctx.t('tapHint'), Rr.w - 16, `600 ${hintFs}px ${ctx.theme.font}`).length);
+      const hintH = hintRows * hintFs * 1.3 + 6;
       const top = Rr.y + titleH + 4;
       const bottom = Rr.y + Rr.h - hintH - 4;
       const ry = (bottom - top) / 2;
@@ -737,17 +740,26 @@ export default defineSimulation({
       const top = Rr.y + pad + 18;
       const rowH = (Rr.y + Rr.h - pad - top) / 2;
       const fs = small ? 13 : 14.5;
-      g.font = `750 ${fs}px ${theme.font}`;
-      const headW = Math.max(g.measureText(label({ label: map.titleA })).width, g.measureText(label({ label: map.titleB })).width) + 18;
       const n = map.a.length;
+      const headOf = (size: number) => {
+        g.font = `750 ${size}px ${theme.font}`;
+        return Math.max(g.measureText(label({ label: map.titleA })).width, g.measureText(label({ label: map.titleB })).width) + 18;
+      };
+      // Bei engen Spalten (Tablet) die Kopfspalte mit kleinerer Schrift setzen
+      let fsHead = fs;
+      let headW = headOf(fsHead);
+      if ((Rr.w - 2 * pad - headW) / n < 46) {
+        fsHead = Math.max(11, fs * 0.8);
+        headW = headOf(fsHead);
+      }
       const colW = (Rr.w - 2 * pad - headW) / n;
       // Kopfspalte
       const rowY = (r: number) => top + r * rowH;
       g.fillStyle = withAlpha(blue(), theme.dark ? 0.16 : 0.08);
       roundRect(g, Rr.x + pad, rowY(0), Rr.w - 2 * pad, rowH, 6);
       g.fill();
-      text(g, label({ label: map.titleA }), Rr.x + pad + 8, rowY(0) + rowH / 2, { font: `750 ${fs}px ${theme.font}`, color: blue(), align: 'left' });
-      text(g, label({ label: map.titleB }), Rr.x + pad + 8, rowY(1) + rowH / 2, { font: `750 ${fs}px ${theme.font}`, color: purple(), align: 'left' });
+      text(g, label({ label: map.titleA }), Rr.x + pad + 8, rowY(0) + rowH / 2, { font: `750 ${fsHead}px ${theme.font}`, color: blue(), align: 'left' });
+      text(g, label({ label: map.titleB }), Rr.x + pad + 8, rowY(1) + rowH / 2, { font: `750 ${fsHead}px ${theme.font}`, color: purple(), align: 'left' });
       g.strokeStyle = theme.dark ? '#2b3545' : '#dfe4ea';
       g.lineWidth = 1;
       g.beginPath();
@@ -1238,7 +1250,10 @@ export default defineSimulation({
       roundRect(g, bar.x + 0.5, bar.y + 0.5, bar.w - 1, bar.h - 1, 8);
       g.stroke();
       if (!segsDone.length || (visited.length === 1 && visited[0]![1] - visited[0]![0] < 0.3 && !scan)) {
-        text(g, narrow() ? ctx.t('stripHint') : `${ctx.t('strip')}: ${ctx.t('stripHint')}`, bar.x + bar.w / 2, bar.y + bar.h / 2, { font: `600 ${narrow() ? 11 : 11.5}px ${theme.font}`, color: theme.muted });
+        const hf = `600 ${narrow() ? 11 : 11.5}px ${theme.font}`;
+        g.font = hf;
+        const long = `${ctx.t('strip')}: ${ctx.t('stripHint')}`;
+        text(g, g.measureText(long).width <= bar.w - 16 ? long : ctx.t('stripHint'), bar.x + bar.w / 2, bar.y + bar.h / 2, { font: hf, color: theme.muted });
       } else text(g, ctx.t('strip'), bar.x + 8, bar.y - 0.5, { font: `700 10px ${theme.font}`, color: theme.muted, align: 'left', baseline: 'bottom' });
       // Marke der aktuellen Stelle
       const mx = plot.px(lineX(now));
