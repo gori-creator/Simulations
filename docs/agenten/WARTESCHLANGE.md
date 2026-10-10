@@ -4,12 +4,12 @@ Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `s
 Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`.
 
 ## Reihenfolge
-P01 M01 M23 P03 M05 P02 M06 P04 M03 (fertig) | M07 P05 M11 (läuft) | T01 P06 M24 M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
+P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 (fertig) | P05 M11 T01 (läuft) | P06 M24 M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
 
 ## Gruppen
 
 ### Korrekturen
-- T01 offen — **Tablet-Breiten** (Fenster 1024 px = iPad quer und 700 px; Bühne dort ca. 620–635 px breit bei Desktop-Seitenverhältnis, Simulationen schalten aber auf ihr Handy-Layout). Prüfung vom 10.10. (Screenshots nur der Bühne) ergab Fehler bei: `linsen` (Konstruktion auf ca. 80 px Höhe gestaucht – schwer), `winkel-messen` (Geodreieck winzig, Karten abgeschnitten), `gleichungen-grafisch` (Lösungskarte unten abgeschnitten), `stoesse` (Diagrammtitel überlappt Energiebalken), `kreisbewegung` (Diagramm F_Z(v) stark gestaucht, Beschriftungen überlappen), `schiefe-ebene` (Kraftpfeil-Beschriftungen überlappen in gestauchter Szene), `bruchteile` (Text „= 0,75 = 75 %“ unten abgeschnitten), `licht-schatten` (Beschriftungen unter der optischen Bank abgeschnitten), `reflexion` (Szene klein). Bereits behoben: `vierecke`, `spiegelung` (Gruppe M07). Ansatz wie in `mathematik/vierecke`: Layout nach Breite **und** Höhe wählen bzw. mittlere Aufteilung; danach bei 1360/1024/700/390 prüfen.
+- T01 läuft — **Tablet-Breiten** (Fenster 1024 px = iPad quer und 700 px; Bühne dort ca. 620–635 px breit bei Desktop-Seitenverhältnis, Simulationen schalten aber auf ihr Handy-Layout). Prüfung vom 10.10. (Screenshots nur der Bühne) ergab Fehler bei: `linsen` (Konstruktion auf ca. 80 px Höhe gestaucht – schwer), `winkel-messen` (Geodreieck winzig, Karten abgeschnitten), `gleichungen-grafisch` (Lösungskarte unten abgeschnitten), `stoesse` (Diagrammtitel überlappt Energiebalken), `kreisbewegung` (Diagramm F_Z(v) stark gestaucht, Beschriftungen überlappen), `schiefe-ebene` (Kraftpfeil-Beschriftungen überlappen in gestauchter Szene), `bruchteile` (Text „= 0,75 = 75 %“ unten abgeschnitten), `licht-schatten` (Beschriftungen unter der optischen Bank abgeschnitten), `reflexion` (Szene klein). Bereits behoben: `vierecke`, `spiegelung` (Gruppe M07, Commits 9b01368, da0f756). Ansatz wie in `mathematik/vierecke`: Layout nach Breite **und** Höhe wählen bzw. mittlere Aufteilung; danach bei 1360/1024/700/390 prüfen.
 
 ### Physik
 - P01 fertig — bewegungsdiagramme, freier-fall, hookesches-gesetz
@@ -31,7 +31,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 (fertig) | M07 P05 M11 (läuft) | T01 P06 M2
 - M04 offen — prozentstreifen, quadratwurzel, proportional
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
 - M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
-- M07 läuft (vierecke, spiegelung gemergt; mittelsenkrechte in Arbeit) — vierecke, spiegelung, mittelsenkrechte
+- M07 fertig — vierecke, spiegelung, mittelsenkrechte
 - M08 offen — winkel-geradenkreuzung, winkelsumme, flaechen-zerlegen
 - M09 offen — dreieckskonstruktion, besondere-linien, strahlensaetze
 - M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
