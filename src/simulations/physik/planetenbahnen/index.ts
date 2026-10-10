@@ -30,7 +30,7 @@ const L = (de: string, en: string) => ({ de, en });
 type Panel = 'k2' | 'k3' | 'energy';
 type Done = 'crash' | 'escape' | 'far' | null;
 
-/** Länge des Pfeils für v = v_K in Vielfachen von r₀. */
+/** Länge des Pfeils für v = v_K in Vielfachen von r₀ (auf dem Handy etwas kürzer). */
 const ARROW = 0.5;
 /** Echtzeit (s) für eine Bezugszeit (bei geschlossenen Bahnen: ein Umlauf). */
 const LOOP_SECONDS = 8;
@@ -530,7 +530,7 @@ export default defineSimulation({
     let rectKey = '';
 
     /** Pfeillänge in AE pro km/s (der Pfeil für v_K ist ARROW · r₀ lang). */
-    const kArrow = () => (ARROW * p.r0) / circularSpeed(p.r0, p.M);
+    const kArrow = () => ((narrow() ? ARROW * 0.84 : ARROW) * p.r0) / circularSpeed(p.r0, p.M);
     /** Pfeilmaßstab während des Laufs: der schnellste Pfeil (Perihel) bleibt kürzer als 0,42 · a. */
     const kLive = () => {
       const o = run.orbit;
