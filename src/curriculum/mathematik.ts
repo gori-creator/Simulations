@@ -485,7 +485,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('pyramide-kegel-kugel', L('Pyramide, Kegel und Kugel', 'Pyramid, cone and sphere'), [10, 10]),
+          {
+            id: 'pyramide-kegel-kugel',
+            status: 'ready',
+            slug: L('pyramide-kegel-kugel', 'pyramid-cone-sphere'),
+            title: L('Pyramide, Kegel und Kugel', 'Pyramid, cone and sphere'),
+            summary: L(
+              'Hilfsdreiecke mit dem Satz des Pythagoras, Wasser umschütten (Pyramide und Kegel füllen ein Drittel, Kegel und Halbkugel zusammen den Zylinder) und Oberflächen über das Netz – drehbar in 3D.',
+              'Helper triangles with Pythagoras’ theorem, pouring water (pyramid and cone fill one third, cone and hemisphere together fill the cylinder) and surface areas from the net – rotatable in 3D.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Pyramide', 'Kegel', 'Kugel', 'Volumen', 'Oberfläche', 'Mantel', 'Seitenhöhe', 'Seitenkante', 'Mantellinie', 'Satz des Pythagoras', 'Kreissektor', 'Umschüttversuch', 'Archimedes', 'Halbkugel', 'Netz'],
+              ['pyramid', 'cone', 'sphere', 'volume', 'surface area', 'lateral surface', 'slant height', 'lateral edge', 'Pythagorean theorem', 'circular sector', 'pouring experiment', 'Archimedes', 'hemisphere', 'net'],
+            ),
+            thumb: 'generic',
+          },
           planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),
         ]),
         topic('volumen', L('Volumen', 'Volume'), [
