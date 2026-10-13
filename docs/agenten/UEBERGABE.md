@@ -4,15 +4,16 @@ Dieses Dokument ist für eine neue Claude-Code-Sitzung, die die Arbeit an den ge
 
 ## 0. Spar-Modus (gilt ab 13.10.2026, Vorrang vor allem anderen)
 
-Die Person hat den automatischen Betrieb gestoppt, weil der Verbrauch (vor allem das wiederholte Lesen des Zwischenspeichers bei langen Verläufen) zu hoch war. Deshalb:
+Die Person hat den automatischen Betrieb gestoppt, weil der Verbrauch (vor allem das wiederholte Lesen des Zwischenspeichers bei langen Verläufen) zu hoch war. Neuer Plan (13.10.2026, später als die frühere Sonnet-Regel): **Opus mit Aufwand „Mittel“**, immer **ein Agent, eine Simulation am Stück**.
 
 - **Nichts läuft automatisch.** Keine Routine, kein Wecker, keine Hintergrund-Agenten ohne ausdrücklichen Zuruf der Person. Abschnitt 6 ist außer Kraft.
-- **Ein Agent pro Simulation** (nicht drei) und **höchstens 1–2 gleichzeitig**, damit jeder Verlauf kurz bleibt.
-- **Agenten laufen mit Sonnet** (Modell beim Start ausdrücklich angeben), die Sitzung selbst ebenfalls. Opus nur für Planung auf Wunsch der Person.
-- **Erst planen, dann bauen:** Für jede Simulation entsteht zuerst eine genaue Bauanleitung (`docs/agenten/plaene/<id>.md`: Modell/Formeln, Aufbau der Ansicht, Regler, Zustände, Tests, Gliederung des Lernmaterials). Die Person gibt sie frei; erst dann startet der Bau-Agent mit genau dieser Anleitung.
-- Nach dem Bau: wenige, gezielte Screenshots (Desktop hell, Dunkel, Tablet 700, Handy 390), keine endlosen Prüfrunden. Qualitätsmaßstab bleibt hoch, aber Prüfumfang ist begrenzt.
-- Lange Sitzungen vermeiden: nach jeder Simulation committen, pushen und bei Bedarf in einer neuen Sitzung weitermachen.
-- Angehaltener Stand: `docs/agenten/wip/LIES-MICH.md` (T01, P06, M24 als Patches).
+- **Genau ein Agent zugleich, genau eine Simulation.** Erst wenn er fertig ist und das Ergebnis geprüft, zusammengeführt und gepusht ist, kommt die nächste dran, und nur auf Zuruf.
+- **Modell:** Sitzung und Agent auf Opus, Aufwand „Mittel“ (stellt die Person in der Sitzung ein). Den Aufwand beim Agent nur setzen, wenn die Person es ausdrücklich verlangt.
+- **Stückweise bauen:** Ein Agent baut eine Simulation vollständig (Modell + Tests, Ansicht, Lernmaterial DE/EN, Vorschaubild, Lehrplan-Eintrag `ready`). Bei großen Simulationen darf die Person den Bau in Etappen verlangen (1. Modell und Tests, 2. Ansicht, 3. Lernmaterial und Feinschliff), jeweils mit eigenem Commit.
+- Nach dem Bau: wenige, gezielte Screenshots (Desktop hell, Dunkel, Tablet 700, Handy 390), höchstens eine Korrekturrunde. Qualitätsmaßstab bleibt hoch, Prüfumfang ist begrenzt.
+- Lange Sitzungen vermeiden: nach jeder Simulation `npm run verify`, committen, pushen. Bei Bedarf neue Sitzung.
+- Angehaltener Stand: `docs/agenten/wip/LIES-MICH.md` (T01, P06, M24 als Patches). Beispiel für eine Bauanleitung: `docs/agenten/plaene/pyramide-kegel-kugel.md`.
+- Fertig seit dem Spar-Modus: pyramide-kegel-kugel (M24, erste Simulation der Gruppe).
 
 ## 1. Ziel und Wünsche der Person
 
