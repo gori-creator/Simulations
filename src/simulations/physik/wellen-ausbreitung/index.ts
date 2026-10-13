@@ -1236,7 +1236,10 @@ export default defineSimulation({
       drawHeader(r, vt);
       // Erreger beschriften
       const first = (g0.trans ?? g0.long)!;
-      if (!g0.sm) richText(ctx.t('exciter'), g0.excCx, first.top + 9, 12, ctx.theme.muted, 'center', true, 650);
+      // nur eine Wellenart: direkt unter die Kurbelscheibe (sonst stünde die Beschriftung weit entfernt am Maßband)
+      const below = first.cy + g0.excR + (g0.sm ? 12 : 16);
+      if (!(g0.trans && g0.long) && below < g0.frontY - 8) richText(ctx.t('exciter'), g0.excCx, below, g0.sm ? 10.5 : 12, ctx.theme.muted, 'center', true, 650);
+      else if (!g0.sm) richText(ctx.t('exciter'), g0.excCx, first.top + 9, 12, ctx.theme.muted, 'center', true, 650);
       else if (!g0.long || g0.long.cy + g0.excR + 12 < g0.frontY - 6) richText(ctx.t('exciter'), g0.excCx, g0.frontY, 10.5, ctx.theme.muted, 'center', true, 650);
       g.restore();
     }
@@ -1324,7 +1327,9 @@ export default defineSimulation({
       if (lamOn()) {
         const partner = inPhasePartner(w, xm());
         if (partner !== null && w.c * vt >= Math.max(xm(), partner)) {
-          const yb = ymax * 1.22;
+          // nicht unter der Überschrift (Chip oben links) verschwinden: notfalls unter den Chip rücken
+          const chipBottom = plot.rect.y + 5 + (sm ? 18 : 20);
+          const yb = Math.min(ymax * 1.22, plot.toWorld(0, chipBottom + 9)[1]);
           const a = Math.min(xm(), partner);
           const b = Math.max(xm(), partner);
           const lbl = tr('lam', { l: n(wavelength(w), 2) });
