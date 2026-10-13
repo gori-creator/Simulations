@@ -2,6 +2,18 @@
 
 Dieses Dokument ist für eine neue Claude-Code-Sitzung, die die Arbeit an den geplanten Simulationen weiterführt (Stand 08.10.2026, 20:30 UTC). Erst ganz lesen, dann loslegen. Rückfragen an die Person nur, wenn wirklich etwas fehlt.
 
+## 0. Spar-Modus (gilt ab 13.10.2026, Vorrang vor allem anderen)
+
+Die Person hat den automatischen Betrieb gestoppt, weil der Verbrauch (vor allem das wiederholte Lesen des Zwischenspeichers bei langen Verläufen) zu hoch war. Deshalb:
+
+- **Nichts läuft automatisch.** Keine Routine, kein Wecker, keine Hintergrund-Agenten ohne ausdrücklichen Zuruf der Person. Abschnitt 6 ist außer Kraft.
+- **Ein Agent pro Simulation** (nicht drei) und **höchstens 1–2 gleichzeitig**, damit jeder Verlauf kurz bleibt.
+- **Agenten laufen mit Sonnet** (Modell beim Start ausdrücklich angeben), die Sitzung selbst ebenfalls. Opus nur für Planung auf Wunsch der Person.
+- **Erst planen, dann bauen:** Für jede Simulation entsteht zuerst eine genaue Bauanleitung (`docs/agenten/plaene/<id>.md`: Modell/Formeln, Aufbau der Ansicht, Regler, Zustände, Tests, Gliederung des Lernmaterials). Die Person gibt sie frei; erst dann startet der Bau-Agent mit genau dieser Anleitung.
+- Nach dem Bau: wenige, gezielte Screenshots (Desktop hell, Dunkel, Tablet 700, Handy 390), keine endlosen Prüfrunden. Qualitätsmaßstab bleibt hoch, aber Prüfumfang ist begrenzt.
+- Lange Sitzungen vermeiden: nach jeder Simulation committen, pushen und bei Bedarf in einer neuen Sitzung weitermachen.
+- Angehaltener Stand: `docs/agenten/wip/LIES-MICH.md` (T01, P06, M24 als Patches).
+
 ## 1. Ziel und Wünsche der Person
 
 - Alle geplanten Simulationen (`planned(...)` in `src/curriculum/*.ts`, Stand Übergabe: 38 fertig, 91 offen, davon 6 angefangen in `docs/agenten/wip/`) nacheinander bauen, **so viele wie möglich**, **ohne Qualitätsverlust**: „extrem hochklassig“, gestaltet und animiert wie ein hochwertiges Lernprodukt, fachlich exakt (Gymnasium Bayern, LehrplanPLUS), DE ausführlich und EN kürzer.
