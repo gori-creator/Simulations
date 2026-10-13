@@ -329,7 +329,23 @@ export const physik: Subject = {
           title: L('Wellen', 'Waves'),
           grades: [10, 13],
           simulations: [
-            planned('wellen-ausbreitung', L('Transversal- und Longitudinalwellen', 'Transverse and longitudinal waves'), [10, 12]),
+            {
+              id: 'wellen-ausbreitung',
+              status: 'ready',
+              slug: L('transversal-longitudinalwellen', 'transverse-longitudinal-waves'),
+              title: L('Transversal- und Longitudinalwellen', 'Transverse and longitudinal waves'),
+              summary: L(
+                'Ein Erreger regt eine Kette gekoppelter Teilchen an: Die Wellenfront läuft los, ein markiertes Teilchen schwingt nur um seine Ruhelage, quer oder längs zur Ausbreitung. Wellenlänge zwischen gleichphasigen Teilchen messen, c = λ·f prüfen, Momentaufnahme y(x) und Zeitverlauf y(t), Zeiger und Einzelpuls.',
+                'A source drives a chain of coupled particles: the wave front sets off, a marked particle only oscillates about its rest position, across or along the direction of travel. Measure the wavelength between particles in phase, check c = λ·f, snapshot y(x) and time graph y(t), phasors and a single pulse.',
+              ),
+              grades: [10, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Materie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Welle', 'mechanische Welle', 'Transversalwelle', 'Longitudinalwelle', 'Querwelle', 'Längswelle', 'Wellenlänge', 'Frequenz', 'Ausbreitungsgeschwindigkeit', 'c = λ·f', 'Wellenfront', 'Verdichtung', 'Verdünnung', 'Wellenberg', 'Wellental', 'Phase', 'gleichphasig', 'Zeigerdiagramm', 'gekoppelte Oszillatoren', 'Momentaufnahme', 'Schall'],
+                ['wave', 'mechanical wave', 'transverse wave', 'longitudinal wave', 'wavelength', 'frequency', 'wave speed', 'c = λf', 'wave front', 'compression', 'rarefaction', 'crest', 'trough', 'phase', 'in phase', 'phasor', 'coupled oscillators', 'snapshot', 'sound'],
+              ),
+              thumb: 'generic',
+            },
             planned('doppler-effekt', L('Doppler-Effekt', 'Doppler effect'), [10, 12]),
             planned('interferenz', L('Interferenz zweier Kreiswellen', 'Interference of two circular waves'), [11, 13], { kmk: ['P-BK-Superposition'] }),
             planned('stehende-wellen', L('Stehende Wellen', 'Standing waves'), [11, 13]),

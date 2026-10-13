@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M28 64H298" stroke-width="2.5" stroke-opacity="0.3" stroke-dasharray="5 7" />
+    <path d="M28 64Q55 30 82 64T136 64T190 64T244 64" stroke-width="4" />
+    <path d="M244 64H298" stroke-width="4" stroke-opacity="0.45" />
+    <path d="M190 64V122" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="3 5" />
+    <path d="M28 142H298" stroke-width="3" stroke-opacity="0.3" />
+  </g>
+  <g fill="currentColor">
+    <circle cx="28" cy="64" r="5" />
+    <circle cx="55" cy="47" r="5" />
+    <circle cx="82" cy="64" r="5" />
+    <circle cx="109" cy="81" r="5" />
+    <circle cx="136" cy="64" r="5" />
+    <circle cx="163" cy="47" r="5" />
+    <circle cx="217" cy="81" r="5" />
+    <circle cx="244" cy="64" r="5" />
+    <circle cx="271" cy="64" r="5" fill-opacity="0.45" />
+    <circle cx="298" cy="64" r="5" fill-opacity="0.45" />
+    <circle cx="190" cy="64" r="8" fill-opacity="0.95" />
+    <circle cx="28" cy="142" r="4.5" />
+    <circle cx="40" cy="142" r="4.5" />
+    <circle cx="50" cy="142" r="4.5" />
+    <circle cx="68" cy="142" r="4.5" />
+    <circle cx="92" cy="142" r="4.5" />
+    <circle cx="112" cy="142" r="4.5" />
+    <circle cx="124" cy="142" r="4.5" />
+    <circle cx="134" cy="142" r="4.5" />
+    <circle cx="152" cy="142" r="4.5" />
+    <circle cx="176" cy="142" r="4.5" />
+    <circle cx="196" cy="142" r="4.5" />
+    <circle cx="208" cy="142" r="4.5" />
+    <circle cx="218" cy="142" r="4.5" />
+    <circle cx="236" cy="142" r="4.5" />
+    <circle cx="262" cy="142" r="4.5" fill-opacity="0.45" />
+    <circle cx="280" cy="142" r="4.5" fill-opacity="0.45" />
+    <circle cx="298" cy="142" r="4.5" fill-opacity="0.45" />
+    <rect x="34" y="128" width="26" height="28" rx="6" fill-opacity="0.14" />
+    <rect x="118" y="128" width="26" height="28" rx="6" fill-opacity="0.14" />
+    <rect x="202" y="128" width="26" height="28" rx="6" fill-opacity="0.14" />
+  </g>
+</svg>
