@@ -304,7 +304,24 @@ export const physik: Subject = {
               ),
               thumb: 'generic',
             },
-            planned('resonanz', L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'), [11, 13], { uni: true }),
+            {
+              id: 'resonanz',
+              status: 'ready',
+              slug: L('erzwungene-schwingung-resonanz', 'driven-oscillation-resonance'),
+              title: L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'),
+              summary: L(
+                'Ein Motor treibt das Pohlsche Rad an: Einschwingvorgang, Resonanzkurve und Phasenverschiebung als Messreihe mit Theorie, Zeigerdiagramm von Erreger und Rad, Wirbelstrombremse und Resonanzkatastrophe bei zu kleiner Dämpfung.',
+                'A motor drives Pohl’s wheel: transient, resonance curve and phase shift as measurements with theory, a phasor diagram of driver and wheel, an eddy-current brake and a resonance disaster when the damping is too weak.',
+              ),
+              grades: [11, 13],
+              uni: true,
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
+              keywords: L(
+                ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
+                ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
         {

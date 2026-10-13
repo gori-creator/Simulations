@@ -17,7 +17,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | T01 P06 M24 (angehalt
 - P03 fertig — einfacher-stromkreis, ohmsches-gesetz, reihe-parallel
 - P04 fertig — licht-schatten, reflexion, linsen
 - P05 fertig — stoesse, kreisbewegung, planetenbahnen
-- P06 läuft — federpendel (fertig), resonanz, wellen-ausbreitung
+- P06 läuft — federpendel (fertig), resonanz (fertig), wellen-ausbreitung
 - P07 offen — doppler-effekt, interferenz, stehende-wellen
 - P08 offen — teilchenmodell, gasgesetze, radioaktiver-zerfall
 - P09 offen — feldlinien, kondensator, lorentzkraft
