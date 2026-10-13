@@ -4,7 +4,7 @@ Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `s
 Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`.
 
 ## Reihenfolge
-P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (Rest: bruchteile, licht-schatten, reflexion) M24 (pyramide-kegel-kugel fertig; offen: cavalieri, rotationskoerper) | M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
+P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (Rest: bruchteile, licht-schatten, reflexion) M24 (pyramide-kegel-kugel, cavalieri fertig; offen: rotationskoerper) | M12 P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
 
 ## Gruppen
 
@@ -48,7 +48,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (R
 - M21 offen — stammfunktion-grafisch, hauptsatz, aenderungsrate
 - M22 offen — extremwertprobleme, matrix-abbildungen
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
-- M24 läuft — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
+- M24 läuft — pyramide-kegel-kugel (fertig), cavalieri (fertig), rotationskoerper (3D)
 - M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
 - M26 offen — geraden-ebenen, lage-abstaende, kugeln (3D)
 
