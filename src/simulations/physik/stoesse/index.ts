@@ -35,10 +35,16 @@ function niceRange(values: number[]): Range {
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
 
-/** Bühne aufteilen: oben die Luftkissenbahn, darunter Diagramm und Bilanz. */
+/**
+ * Bühne aufteilen: oben die Luftkissenbahn, darunter Diagramm und Bilanz nebeneinander.
+ * Nur auf dem Handy hochkant (Fenster ≤ 640 px, Seitenverhältnis `aspectNarrow`) untereinander;
+ * bei Tablet quer (Fenster 641–700 bzw. 861–1050 px) ist die Fläche zwar schmaler als 640 px,
+ * hat aber das Desktop-Seitenverhältnis und bekommt die Desktop-Aufteilung (mit kleiner Schrift).
+ */
 function regions(w: number, h: number): { scene: Rect; chart: Rect; bal: Rect } {
-  if (w >= 640) {
-    const sh = Math.round(h * 0.42);
+  if (w >= 640 || h < w * 0.9) {
+    // Tablet quer: Bahn mindestens ca. 190 px hoch (Platz für Massestapel, Pfeile und Anzeigen oben)
+    const sh = w >= 640 ? Math.round(h * 0.42) : Math.max(Math.round(h * 0.42), Math.min(190, Math.round(h * 0.52)));
     const top = sh + 10;
     const cw = Math.round((w - 10) * 0.55);
     return { scene: { x: 0, y: 0, w, h: sh }, chart: { x: 0, y: top, w: cw, h: h - top }, bal: { x: cw + 10, y: top, w: w - cw - 10, h: h - top } };
@@ -1067,11 +1073,13 @@ export default defineSimulation({
       const g = surface.g;
       const theme = ctx.theme;
       const small = narrow();
+      // Tablet quer: wenig Höhe unter der Bahn → Zeilen etwas enger
+      const tab = small && surface.height < surface.width * 0.9;
       card(R);
       const b = balance(run);
       const done = run.collides && t >= run.tc;
       const grow = done ? (reveal.running ? reveal.value : 1) : 0;
-      const pad = small ? 10 : 14;
+      const pad = tab ? 8 : small ? 10 : 14;
       const labelW = small ? 54 : 64;
       const valueW = small ? 46 : 54;
       const x0 = R.x + pad + labelW;
@@ -1081,8 +1089,8 @@ export default defineSimulation({
       const gapSec = small ? 8 : 12;
       const footH = small ? 0 : 26;
       const avail = R.h - 2 * pad - legendH - 2 * (head + 6) - gapSec - 6 - footH;
-      const rowP = clamp((avail * 0.56) / 2, 28, 56);
-      const rowE = clamp((avail * 0.44) / 2, 20, 42);
+      const rowP = clamp((avail * 0.56) / 2, tab ? 24 : 28, 56);
+      const rowE = clamp((avail * 0.44) / 2, tab ? 18 : 20, 42);
       const total = legendH + 6 + 2 * (head + 6) + gapSec + 2 * rowP + 2 * rowE + footH;
       let y = R.y + Math.max(pad, (R.h - total) / 2);
       const fontS = `600 ${small ? 11 : 12}px ${theme.font}`;

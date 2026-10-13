@@ -252,7 +252,14 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const reduced = prefersReducedMotion();
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (m, k: string) => String(vars[k] ?? m));
-    const narrow = () => surface.width < 640;
+    /**
+     * Handy hochkant (Fenster ≤ 640 px, Seitenverhältnis `aspectNarrow`): Koordinatensystem über den Karten.
+     * Bei Tablet quer (Fenster 641–700 bzw. 861–1050 px) ist die Zeichenfläche zwar schmaler als 640 px,
+     * hat aber das Desktop-Seitenverhältnis: dort stehen die Karten wie auf dem Desktop rechts daneben.
+     */
+    const narrow = () => surface.width < 640 && surface.height > surface.width * 0.9;
+    /** Kleine Schrift und schmale Kartenspalte: Handy und Tablet quer. */
+    const small = () => surface.width < 640;
     const sub = (i: number) => String(i + 1).replace(/[0-9]/g, (c) => '₀₁₂₃₄₅₆₇₈₉'[Number(c)]!);
     const xName = (i: number) => `x${sub(i)}`;
 
@@ -293,8 +300,8 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       if (!narrow()) {
-        const pw = Math.round(clamp(w * 0.33, 236, 310));
-        return { plot: { x: 0, y: 0, w: w - pw - 12, h }, panel: { x: w - pw, y: 0, w: pw, h } };
+        const pw = Math.round(small() ? clamp(w * 0.4, 200, 250) : clamp(w * 0.33, 236, 310));
+        return { plot: { x: 0, y: 0, w: w - pw - (small() ? 10 : 12), h }, panel: { x: w - pw, y: 0, w: pw, h } };
       }
       const ph = Math.round(Math.min(w * 1.02, h * 0.6));
       return { plot: { x: 0, y: 0, w, h: ph }, panel: { x: 0, y: ph + 8, w, h: h - ph - 8 } };
@@ -1053,7 +1060,16 @@ export default defineSimulation({
       signDot(ta.x - 15, by, hAt(iv.a));
       const tb = tag(pb + 7, by, `b = ${ivNum(iv.b, 'b')}`, orange, 'left', 11.5);
       signDot(tb.x + tb.w + 15, by, hAt(iv.b));
-      if (!hit) tag(plot.px(m), r.y + 16, `m ${ivNum(m, 'm').startsWith('≈') ? '' : '= '}${ivNum(m, 'm')}`, orange, 'center', 11.5);
+      if (!hit) {
+        const mStr = `m ${ivNum(m, 'm').startsWith('≈') ? '' : '= '}${ivNum(m, 'm')}`;
+        const mx = plot.px(m);
+        surface.g.font = `700 11.5px ${ctx.theme.font}`;
+        const mw = surface.g.measureText(mStr).width + 11.5;
+        // nicht unter dem Übersichtsfenster oben links verstecken (schmale Zeichenfläche)
+        const ins = insetRect();
+        const under = mx - mw / 2 < ins.x + ins.w + 4 && mx + mw / 2 > ins.x - 4;
+        tag(mx, under ? ins.y + ins.h + 16 : r.y + 16, mStr, orange, 'center', 11.5);
+      }
     }
 
     /** Runder Knopf mit dem Vorzeichen von f − g (blau: f oben, rot: g oben). */
@@ -1144,7 +1160,7 @@ export default defineSimulation({
     }
 
     function titleRow(label: string, color?: string): Row {
-      const fs = narrow() ? 11 : 12;
+      const fs = small() ? 11 : 12;
       return {
         h: fs + 8,
         draw: (x, y) => text(surface.g, label.toUpperCase(), x, y + fs / 2 + 2, { font: `750 ${fs}px ${ctx.theme.font}`, color: color ?? ctx.theme.muted, align: 'left' }),
@@ -1157,7 +1173,7 @@ export default defineSimulation({
     }
 
     function noteRow(str: string, maxW: number, color?: string, size?: number): Row {
-      const fs = size ?? (narrow() ? 11.5 : 12.5);
+      const fs = size ?? (small() ? 11.5 : 12.5);
       const font = `600 ${fs}px ${ctx.theme.font}`;
       const rows = wrap(str, maxW, font);
       return {
@@ -1167,7 +1183,7 @@ export default defineSimulation({
     }
 
     function pillRow(label: string, color: string): Row {
-      const fs = narrow() ? 12 : 13;
+      const fs = small() ? 12 : 13;
       return {
         h: fs + 14,
         draw: (x, y) => {
@@ -1405,20 +1421,31 @@ export default defineSimulation({
     }
 
     function drawPanel(R: Rect): void {
-      const pad = narrow() ? 10 : 13;
-      const gap = narrow() ? 8 : 10;
+      const pad = small() ? 10 : 13;
+      const gap = small() ? 8 : 10;
       const inner = R.w - 2 * pad;
       if (!narrow()) {
         let y = R.y;
-        const eq = equationCard(inner, false);
-        const eh = rowsHeight(eq) + pad * 2 - 4;
+        const cardH = (rows: Row[]) => rowsHeight(rows) + pad * 2 - 4;
+        let eq = equationCard(inner, false);
+        let sc: Row[] | null = solutionCard(inner, !!bis);
+        if (small()) {
+          // Tablet quer (wenig Höhe): Karten kompakt, damit nichts abgeschnitten wird;
+          // bei der Intervallhalbierung notfalls ohne Lösungskarte (wie auf dem Handy)
+          const bisMin = bis ? cardH(bisectCard(inner, true, 1)) + gap : 0;
+          if (cardH(eq) + gap + cardH(sc) + bisMin > R.h) eq = equationCard(inner, true);
+          if (cardH(eq) + gap + cardH(sc) + bisMin > R.h) sc = solutionCard(inner, true);
+          if (bis && cardH(eq) + gap + cardH(sc) + bisMin > R.h) sc = null;
+        }
+        const eh = cardH(eq);
         drawCard({ x: R.x, y, w: R.w, h: eh }, eq, pad);
         y += eh + gap;
-        const sc = solutionCard(inner, !!bis);
-        const sh = rowsHeight(sc) + pad * 2 - 4;
-        drawCard({ x: R.x, y, w: R.w, h: sh }, sc, pad, colS(), 0.035);
-        y += sh + gap;
-        const bc = bis ? bisectFit(inner, false, R.y + R.h - y, pad) : [];
+        if (sc) {
+          const sh = cardH(sc);
+          drawCard({ x: R.x, y, w: R.w, h: sh }, sc, pad, colS(), 0.035);
+          y += sh + gap;
+        }
+        const bc = bis ? bisectFit(inner, small(), R.y + R.h - y, pad) : [];
         if (bc.length) drawCard({ x: R.x, y, w: R.w, h: Math.min(rowsHeight(bc) + pad * 2 - 4, R.y + R.h - y) }, bc, pad, colB(), 0.035);
         else {
           const pc = probeCard(inner);

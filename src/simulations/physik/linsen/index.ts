@@ -257,7 +257,15 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
-    const narrow = () => surface.width < 640;
+    /**
+     * Handy hochkant (Fenster ≤ 640 px, Seitenverhältnis `aspectNarrow`): Szene über den Karten.
+     * Bei Tablet quer (Fenster 641–700 bzw. 861–1050 px) ist die Zeichenfläche zwar schmaler als
+     * 640 px, hat aber das Desktop-Seitenverhältnis: dort gilt die Desktop-Aufteilung mit kleiner Schrift.
+     */
+    const narrowAt = (w: number, h: number) => w < 640 && h > w * 0.9;
+    const narrow = () => narrowAt(surface.width, surface.height);
+    /** Kleine Schrift auf schmaler Zeichenfläche (Handy und Tablet quer). */
+    const smallFont = () => surface.width < 640;
     const mode = () => p.mode as Mode;
     const g = surface.g;
 
@@ -282,18 +290,23 @@ export default defineSimulation({
     /* ---------- Bereiche ---------- */
     const OFF: Rect = { x: -60, y: -60, w: 1, h: 1 };
     function conRegions(w = surface.width, h = surface.height): { scene: Rect; card: Rect } {
-      if (w >= 640) {
-        const ch = 104;
+      if (!narrowAt(w, h)) {
+        // Tablet quer: Karte mit Legendenzeile
+        const ch = w < 640 ? 116 : 104;
         return { scene: { x: 0, y: 0, w, h: h - ch - 10 }, card: { x: 0, y: h - ch, w, h: ch } };
       }
       const sh = Math.round(h - 275);
       return { scene: { x: 0, y: 0, w, h: sh }, card: { x: 0, y: sh + 10, w, h: h - sh - 10 } };
     }
     function benchRegions(w = surface.width, h = surface.height): { scene: Rect; view: Rect; info: Rect } {
-      if (w >= 640) {
-        const sh = Math.round(h * 0.5);
+      if (!narrowAt(w, h)) {
+        // Tablet quer: Bank etwas flacher, Schirmansicht nur so breit wie nötig (mehr Platz für den Text)
+        const tab = w < 640;
+        const sh = Math.round(h * (tab ? 0.46 : 0.5));
         const rh = h - sh - 10;
-        const vw = Math.round(Math.min(w * 0.42, rh * 1.12));
+        g.font = `700 13px ${ctx.theme.font}`;
+        const titleW = g.measureText(ctx.t('front')).width + 30;
+        const vw = Math.round(tab ? Math.min(w * 0.36, Math.max(rh - 30, titleW)) : Math.min(w * 0.42, rh * 1.12));
         return { scene: { x: 0, y: 0, w, h: sh }, view: { x: 0, y: sh + 10, w: vw, h: rh }, info: { x: vw + 10, y: sh + 10, w: w - vw - 10, h: rh } };
       }
       const sh = Math.round(h * 0.36);
@@ -333,7 +346,8 @@ export default defineSimulation({
       const xc = (x0 + x1) / 2;
       const yMax = axisPx / sc;
       conPlot.setRange([xc - r.w / sc / 2, xc + r.w / sc / 2], [yMax - r.h / sc, yMax]);
-      lensH = clamp(1.3 * f + 2, 7, yMax * 0.86);
+      // oben Platz für die Beschriftung der Linse lassen
+      lensH = clamp(1.3 * f + 2, 7, Math.min(yMax * 0.86, yMax - 24 / sc));
     }
     /** Bank: waagerecht ganze Bank; senkrecht auf dem Handy etwas überhöht, damit Kerze und Bündel gut sichtbar sind. */
     function fitBench(): void {
@@ -661,7 +675,7 @@ export default defineSimulation({
     function drawCon(): void {
       const theme = ctx.theme;
       const dark = theme.dark;
-      const small = narrow();
+      const small = smallFont();
       const { scene, card: cr } = conRegions();
       fitCon();
       conPlot.begin();
@@ -815,7 +829,7 @@ export default defineSimulation({
         if (small) pill(ctx.t('noImageShort'), scene.x + scene.w - 8, scene.y + 18, theme.series[4]!, { size: 11, solid: true, align: 'right' });
         else pill(ctx.t('noImage'), (lx + scene.x + scene.w) / 2 + 20, scene.y + 22, theme.series[4]!, { size: 12, solid: true });
       }
-      // Legende der Strahlen (auf dem Handy in der Karte)
+      // Legende der Strahlen (auf schmaler Zeichenfläche in der Karte)
       if (show && !small) drawRayLegend(scene);
       conPlot.end();
       drawConCard(cr, f, gg);
@@ -907,7 +921,7 @@ export default defineSimulation({
         }
         g.stroke();
         g.restore();
-        const size = narrow() ? 11 : 12;
+        const size = smallFont() ? 11 : 12;
         g.font = `700 ${size}px ${theme.font}`;
         const pw = g.measureText(str).width + 16;
         if (c - a >= pw + 8) pill(str, (a + c) / 2, yy, color, { size });
@@ -925,7 +939,7 @@ export default defineSimulation({
 
     function drawRayLegend(scene: Rect): void {
       const theme = ctx.theme;
-      const small = narrow();
+      const small = smallFont();
       const items = (['par', 'mid', 'foc'] as RayId[]).filter((id) => rayOn(id));
       if (!items.length) return;
       const font = `600 ${small ? 11 : 12}px ${theme.font}`;
@@ -950,7 +964,7 @@ export default defineSimulation({
 
     function drawZones(scene: Rect, y: number, h: number, f: number, gg: number): void {
       const theme = ctx.theme;
-      const small = narrow();
+      const small = smallFont();
       const P = (x: number) => conPlot.toPx(x, 0)[0];
       const zone: Zone | null = p.show ? zoneOf(f, gg) : null;
       const left = scene.x + 4;
@@ -1035,19 +1049,23 @@ export default defineSimulation({
 
     function drawConCard(r: Rect, f: number, gg: number): void {
       const theme = ctx.theme;
+      // Handy: alles untereinander; sonst zwei Spalten (Tablet quer mit kleiner Schrift)
       const small = narrow();
+      const tight = smallFont();
+      // nur Tablet quer: Chips enger
+      const mid = tight && !small;
       card(r);
       const info = describeImage(f, gg, p.gs);
       const show = p.show;
       // Spalten: links Eigenschaften und Anwendung, rechts die Rechnung
-      const formulaW = small ? r.w - 28 : Math.min(330, r.w * 0.4);
-      const leftW = small ? r.w - 28 : r.w - formulaW - 42;
+      const formulaW = small ? r.w - 28 : tight ? clamp(r.w * 0.38, 178, 230) : Math.min(330, r.w * 0.4);
+      const leftW = small ? r.w - 28 : r.w - formulaW - (tight ? 36 : 42);
       const x = r.x + 14;
-      let y = r.y + (small ? 22 : 24);
+      let y = r.y + (tight ? 22 : 24);
       text(g, ctx.t('imgLabel'), x, y, { font: `700 13px ${theme.font}`, color: theme.text, align: 'left' });
       g.font = `700 13px ${theme.font}`;
-      let cx = x + g.measureText(ctx.t('imgLabel')).width + 10;
-      const size = small ? 11.5 : 12.5;
+      let cx = x + g.measureText(ctx.t('imgLabel')).width + (mid ? 8 : 10);
+      const size = tight ? 11.5 : 12.5;
       const chips: [string, string][] = [];
       if (!show) chips.push([ctx.t('hiddenShort'), theme.muted]);
       else if (info.kind === 'none') chips.push([ctx.t('kNone'), theme.series[4]!]);
@@ -1064,14 +1082,14 @@ export default defineSimulation({
           y += 26;
         }
         pill(str, cx, y, col, { size, align: 'left' });
-        cx += w + 8;
+        cx += w + (mid ? 6 : 8);
       }
-      y += small ? 26 : 30;
+      y += tight ? 26 : 30;
       // Anwendung bzw. Hinweis
       const zone = zoneOf(f, gg);
       const appText = show ? ctx.t(`z_${zone}`) : ctx.t('hidden');
       const ic: 'cam' | 'proj' | 'lupe' | 'eye' | 'glasses' | null = !show ? null : zone === 'far' ? 'cam' : zone === 'mid' || zone === 'twice' ? 'proj' : zone === 'near' ? 'lupe' : zone === 'diverging' ? 'glasses' : null;
-      const font = `500 ${small ? 12 : 12.5}px ${theme.font}`;
+      const font = `500 ${tight ? 12 : 12.5}px ${theme.font}`;
       const tx = ic ? x + 28 : x;
       if (ic) icon(ic, x + 10, y + 1, theme.muted);
       const lines = wrap(appText, leftW - (tx - x), font);
@@ -1090,18 +1108,18 @@ export default defineSimulation({
         g.lineTo(r.x + r.w - 14, y + 4);
         g.stroke();
       } else {
-        fx = r.x + r.w - formulaW - 14;
+        fx = r.x + r.w - formulaW - (tight ? 10 : 14);
         fy = r.y + 30;
         g.strokeStyle = theme.dark ? 'rgba(255,255,255,0.08)' : 'rgba(16,24,40,0.08)';
         g.lineWidth = 1;
         g.beginPath();
         g.moveTo(fx - 14, r.y + 12);
-        g.lineTo(fx - 14, r.y + r.h - 12);
+        g.lineTo(fx - 14, r.y + r.h - (mid ? 30 : 12));
         g.stroke();
       }
-      drawFormula(fx, fy, gg, info.b, show, small);
-      if (small && show) {
-        // Legende der Strahlen
+      drawFormula(fx, fy, gg, info.b, show, tight);
+      if (tight && show) {
+        // Legende der Strahlen (Handy und Tablet quer; Desktop: in der Szene)
         const items = (['par', 'mid', 'foc'] as RayId[]).filter((id) => rayOn(id));
         const lf = `600 11px ${theme.font}`;
         g.font = lf;
@@ -1159,7 +1177,7 @@ export default defineSimulation({
     function drawBench(): void {
       const theme = ctx.theme;
       const dark = theme.dark;
-      const small = narrow();
+      const small = smallFont();
       const { scene, view, info } = benchRegions();
       fitBench();
       bench.begin();
@@ -1561,7 +1579,7 @@ export default defineSimulation({
 
     function drawScreenView(r: Rect, f: number, gg: number, a: number, b: number | null): void {
       const theme = ctx.theme;
-      const small = narrow();
+      const small = smallFont();
       const top = card(r, ctx.t('front'));
       const capH = 26;
       const n = Math.floor(Math.min(r.w - 28, r.y + r.h - top - capH - 6));
@@ -1603,17 +1621,19 @@ export default defineSimulation({
       else text(g, ctx.t(real ? 'blurry' : 'noReal'), r.x + r.w / 2, cy, { font: `600 ${small ? 11 : 12}px ${theme.font}`, color: theme.muted });
     }
 
-    /** Bereich des Diagramms „Unschärfe über s“ in der rechten Hälfte der Karte (nur auf breiten Bildschirmen). */
+    /** Bereich des Diagramms „Unschärfe über s“ in der rechten Hälfte der Karte (nicht auf dem Handy). */
     function blurRect(w = surface.width, h = surface.height): Rect | null {
-      if (w < 640 || !p.dia) return null;
+      if (narrowAt(w, h) || !p.dia) return null;
       const { info } = benchRegions(w, h);
+      // Tablet quer: nur, wenn daneben genug Platz für den Text bleibt
+      if (w < 640 && info.w < 420) return null;
       const cw = Math.round(info.w * 0.47);
       return { x: info.x + info.w - cw - 8, y: info.y + 30, w: cw, h: info.h - 38 };
     }
 
     function drawFocusCard(r: Rect, f: number, gg: number, a: number, b: number | null): void {
       const theme = ctx.theme;
-      const small = narrow();
+      const small = smallFont();
       let y = card(r, ctx.t('focusTitle'));
       const chartR = blurRect();
       const x = r.x + 14;
@@ -1675,7 +1695,14 @@ export default defineSimulation({
     /** Diagramm: Durchmesser des Unschärfekreises (mm) über dem Schirmabstand s. */
     function drawBlurChart(r: Rect, a: number, b: number | null): void {
       const theme = ctx.theme;
-      text(g, ctx.t('blurChart'), r.x + 6, r.y - 10, { font: `700 12px ${theme.font}`, color: theme.text, align: 'left' });
+      // Überschrift notfalls etwas kleiner, damit sie in die Karte passt
+      let tf = `700 12px ${theme.font}`;
+      for (const sz of [11.5, 11, 10.5]) {
+        g.font = tf;
+        if (g.measureText(ctx.t('blurChart')).width <= r.w - 4) break;
+        tf = `700 ${sz}px ${theme.font}`;
+      }
+      text(g, ctx.t('blurChart'), r.x + 6, r.y - 10, { font: tf, color: theme.text, align: 'left' });
       blurPlot.setRangePadded([0, S_MAX], [0, 40], { left: 32, bottom: 22, top: 12, right: 14 });
       blurPlot.begin();
       const cr = blurPlot.rect;

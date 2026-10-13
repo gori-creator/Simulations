@@ -273,6 +273,13 @@ export default defineSimulation({
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (m, k: string) => String(vars[k] ?? m));
     const mode = () => p.mode as Mode;
     const wide = () => surface.width >= 640;
+    /**
+     * Karten in einer Seitenspalte rechts: auf dem Desktop und bei Tablet quer (Fenster 641–700
+     * bzw. 861–1050 px), wo die Zeichenfläche schmaler als 640 px ist, aber das Desktop-Seitenverhältnis hat.
+     */
+    const side = () => wide() || surface.width > surface.height * 1.05;
+    /** Große Karten mit Überschriften: Desktop und Tablet quer mit genug Höhe. */
+    const roomy = () => wide() || (side() && surface.height >= 370);
     const onColor = () => (ctx.theme.dark ? '#10161f' : '#ffffff');
 
     const typeColor = (t: AngleType): string => {
@@ -342,10 +349,12 @@ export default defineSimulation({
     function layout(): { scene: Rect; panel: Rect; S: [number, number]; G: number } {
       const W = surface.width;
       const H = surface.height;
-      if (wide()) {
-        const panelW = Math.round(clamp(W * 0.33, 250, 300));
-        const scene = { x: 0, y: 0, w: W - panelW - 12, h: H };
-        const G = Math.min(scene.w, scene.h) / 2 - 16;
+      if (side()) {
+        // Tablet quer: schmalere Spalte, damit das Papier groß bleibt
+        const compact = !wide();
+        const panelW = Math.round(compact ? clamp(W * 0.4, 200, 250) : clamp(W * 0.33, 250, 300));
+        const scene = { x: 0, y: 0, w: W - panelW - (compact ? 10 : 12), h: H };
+        const G = Math.min(scene.w, scene.h) / 2 - (compact ? 12 : 16);
         return { scene, panel: { x: W - panelW, y: 2, w: panelW - 2, h: H - 4 }, S: [scene.x + scene.w / 2, scene.y + scene.h / 2], G };
       }
       const scene = { x: 0, y: 0, w: W, h: Math.min(W, H * 0.6) };
@@ -1121,7 +1130,7 @@ export default defineSimulation({
     function typeBar(x: number, y: number, w: number, reveal = true): void {
       const g = surface.g;
       const theme = ctx.theme;
-      const W = wide();
+      const W = roomy();
       const h = W ? 10 : 9;
       const X = (d: number) => x + (d / 360) * w;
       const segs: [number, number, AngleType, string][] = [
@@ -1184,7 +1193,7 @@ export default defineSimulation({
 
     /** Höhe eines Eintrags der Checkliste (für die Kartenhöhe). */
     function checkHeight(it: CheckItem, maxW: number): number {
-      const lh = wide() ? 16 : 14.5;
+      const lh = roomy() ? 16 : 14.5;
       const rows = wrap(it.label, maxW - 26, it.font);
       return Math.max(20, rows.length * lh + 4);
     }
@@ -1193,7 +1202,7 @@ export default defineSimulation({
     function checkRow(x: number, y: number, it: CheckItem, maxW: number, n: number): number {
       const g = surface.g;
       const theme = ctx.theme;
-      const lh = wide() ? 16 : 14.5;
+      const lh = roomy() ? 16 : 14.5;
       const cy = y + 9;
       if (it.state !== 'plain') {
         const c = it.state === 'ok' ? typeColor('spitz') : it.state === 'warn' ? theme.series[1]! : withAlpha(theme.text, 0.35);
@@ -1218,7 +1227,7 @@ export default defineSimulation({
     function panelMessen(R: Rect): void {
       const g = surface.g;
       const theme = ctx.theme;
-      const W = wide();
+      const W = roomy();
       const pad = W ? 14 : 10;
       const al = alpha();
       const t = angleType(al);
@@ -1312,8 +1321,8 @@ export default defineSimulation({
         y += h2 + 10;
       }
 
-      // Karte 3: Merksatz
-      if (!W) return;
+      // Karte 3: Merksatz (Desktop und Seitenspalte bei Tablet quer, wenn Platz ist)
+      if (!W && !side()) return;
       const rest = R.y + R.h - y;
       const tipKey = { null: 'tipNull', spitz: 'tipSpitz', recht: 'tipRecht', stumpf: 'tipStumpf', gestreckt: 'tipGestreckt', ueberstumpf: tool === 'voll' ? 'tipUeberVoll' : 'tipUeber', voll: 'tipVoll' }[t];
       const nf = `500 12.5px ${theme.font}`;
@@ -1389,13 +1398,15 @@ export default defineSimulation({
     function panelSpiel(R: Rect): void {
       const g = surface.g;
       const theme = ctx.theme;
-      const W = wide();
+      const W = roomy();
+      // schmale Seitenspalte bei Tablet quer mit wenig Höhe: kleine Karten, aber untereinander statt nebeneinander
+      const col = !W && side();
       const pad = W ? 14 : 10;
       const pc = theme.series[4]!;
       const isEst = task.kind === 'schaetzen';
       let y = R.y;
       // Karte 1: Aufgabe
-      const h1 = W ? 104 : 58;
+      const h1 = W ? 104 : col ? 74 : 58;
       card({ x: R.x, y, w: R.w, h: h1 }, pc, 0.05);
       const s = taskPop.running ? Math.max(0.3, taskPop.value) : 1;
       if (W) {
@@ -1406,6 +1417,13 @@ export default defineSimulation({
         g.scale(s, s);
         text(g, isEst ? (answered ? `α = ${task.target}°` : 'α = ?') : `${task.target}°`, 0, 0, { font: `800 30px ${theme.font}`, color: isEst && !answered ? theme.muted : pc, align: 'left' });
         g.restore();
+      } else if (col) {
+        title(R.x + pad, y + 14, `${tr('task', { n: taskNo })} · ${ctx.t(isEst ? 'kindEst' : 'kindDraw')}`);
+        const q = ctx.t(isEst ? 'qEst' : 'qDraw');
+        g.font = `700 13px ${theme.font}`;
+        const qf = `700 ${g.measureText(q).width > R.w - 2 * pad ? 12 : 13}px ${theme.font}`;
+        text(g, q, R.x + pad, y + 33, { font: qf, color: theme.text, align: 'left' });
+        text(g, isEst ? (answered ? `α = ${task.target}°` : 'α = ?') : `${task.target}°`, R.x + pad, y + 56, { font: `800 22px ${theme.font}`, color: isEst && !answered ? theme.muted : pc, align: 'left' });
       } else {
         text(g, ctx.t(isEst ? 'qEst' : 'qDraw'), R.x + pad, y + 17, { font: `700 13px ${theme.font}`, color: theme.text, align: 'left' });
         text(g, isEst ? (answered ? `α = ${task.target}°` : 'α = ?') : `${task.target}°`, R.x + pad, y + 41, { font: `800 22px ${theme.font}`, color: isEst && !answered ? theme.muted : pc, align: 'left' });
@@ -1413,17 +1431,18 @@ export default defineSimulation({
       }
       y += h1 + (W ? 10 : 7);
 
-      const scoreH = W ? 70 : 24;
+      const scoreH = W ? 70 : col ? 40 : 24;
       const avail = R.y + R.h - scoreH - (W ? 10 : 6) - y;
       if (!answered) {
         // Karte 2: Eingabe
-        const h2 = Math.min(avail, W ? 214 : 122);
+        const h2 = Math.min(avail, W ? 214 : col && isEst ? 138 : 122);
         card({ x: R.x, y, w: R.w, h: h2 });
         if (isEst) {
           if (W) title(R.x + pad, y + 17, ctx.t('yourEst'));
-          const vy = y + (W ? 46 : 20);
+          else if (col) title(R.x + pad, y + 14, ctx.t('yourEst'));
+          const vy = y + (W ? 46 : col ? 38 : 20);
           text(g, `${est}°`, R.x + pad, vy, { font: `800 ${W ? 26 : 20}px ${theme.font}`, color: pc, align: 'left' });
-          if (!W) text(g, ctx.t('yourEst'), R.x + pad + 62, vy + 1, { font: `600 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
+          if (!W && !col) text(g, ctx.t('yourEst'), R.x + pad + 62, vy + 1, { font: `600 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
           const bw = W ? 34 : 32;
           button({ x: R.x + R.w - pad - 2 * bw - 6, y: vy - 14, w: bw, h: 28 }, '−', 'minus', pc);
           button({ x: R.x + R.w - pad - bw, y: vy - 14, w: bw, h: 28 }, '+', 'plus', pc);
@@ -1449,13 +1468,18 @@ export default defineSimulation({
         const last = history[history.length - 1]!;
         const pts = last.pts;
         const rc = pts === 3 ? typeColor('spitz') : pts === 2 ? theme.series[5]! : pts === 1 ? theme.series[3]! : theme.series[1]!;
-        const h2 = Math.min(avail, W ? 200 : 100);
+        const h2 = Math.min(avail, W ? 200 : col ? 128 : 100);
         card({ x: R.x, y, w: R.w, h: h2 }, rc, 0.07);
         const sc = resultPop.running ? Math.max(0.2, resultPop.value) : 1;
         g.save();
         g.translate(R.x + pad, y + (W ? 22 : 15));
         g.scale(sc, sc);
-        text(g, `${ctx.t(`p${pts}`)}  ${tr('plus', { p: pts })}`, 0, 0, { font: `800 ${W ? 18 : 14.5}px ${theme.font}`, color: rc, align: 'left' });
+        // Überschrift notfalls kleiner, damit sie in die Karte passt (schmale Spalte)
+        const head = `${ctx.t(`p${pts}`)}  ${tr('plus', { p: pts })}`;
+        let hs = W ? 18 : 14.5;
+        g.font = `800 ${hs}px ${theme.font}`;
+        if (g.measureText(head).width > R.w - 2 * pad) hs = Math.max(13, (hs * (R.w - 2 * pad)) / g.measureText(head).width);
+        text(g, head, 0, 0, { font: `800 ${hs}px ${theme.font}`, color: rc, align: 'left' });
         g.restore();
         const rows: [string, string][] = isEst
           ? [
@@ -1477,6 +1501,13 @@ export default defineSimulation({
           const kindOf = tr('isType', { a: task.target, t: typeName(angleType(task.target)) });
           const kr = wrap(kindOf, R.w - 2 * pad, `500 12px ${theme.font}`);
           if (118 + kr.length * 16 <= h2 - 46) textRows(kr, R.x + pad, y + 124, 16, `500 12px ${theme.font}`, theme.muted);
+        } else if (col) {
+          // schmale Spalte: Werte als kleine Tabelle
+          rows.forEach(([a, b], i) => {
+            const ry = y + 37 + i * 17;
+            text(g, a, R.x + pad, ry, { font: `${i === 2 ? 700 : 500} 12px ${theme.font}`, color: i === 2 ? rc : theme.text, align: 'left' });
+            text(g, b, R.x + R.w - pad, ry, { font: `800 12.5px ${theme.font}`, color: i === 2 ? rc : theme.text, align: 'right' });
+          });
         } else {
           text(g, `${rows[0]![0]} ${rows[0]![1]}  ·  ${rows[1]![0]} ${rows[1]![1]}`, R.x + pad, y + 37, { font: `500 12px ${theme.font}`, color: theme.text, align: 'left' });
           text(g, `${rows[2]![0]}: ${rows[2]![1]}`, R.x + pad, y + 56, { font: `800 13px ${theme.font}`, color: rc, align: 'left' });
@@ -1506,6 +1537,10 @@ export default defineSimulation({
         text(g, n ? tr(n === 1 ? 'score1' : 'score', { p: total, n }) : ctx.t('scoreEmpty'), R.x + pad, ys + 17, { font: `700 13px ${theme.font}`, color: theme.text, align: 'left' });
         if (n) text(g, tr('avg', { d: fmt.num(avg, 0) }), R.x + pad, ys + 34, { font: `600 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
         dots(R.x + pad, ys + 54, R.w - 2 * pad);
+      } else if (col) {
+        // schmale Spalte: Text über den Punkten
+        text(g, n ? tr(n === 1 ? 'score1' : 'score', { p: total, n }) : ctx.t('scoreEmpty'), R.x + 2, ys + 10, { font: `700 12px ${theme.font}`, color: theme.text, align: 'left' });
+        dots(R.x + 2, ys + 30, R.w - 4);
       } else {
         text(g, n ? tr(n === 1 ? 'score1' : 'score', { p: total, n }) : ctx.t('scoreEmpty'), R.x + 2, ys + scoreH / 2, { font: `700 12px ${theme.font}`, color: theme.text, align: 'left' });
         dots(R.x + R.w * 0.55, ys + scoreH / 2, R.w * 0.45 - 2);

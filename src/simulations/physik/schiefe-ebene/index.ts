@@ -214,7 +214,9 @@ export default defineSimulation({
     function regions(): { scene: Rect; chart: Rect } {
       const w = surface.width;
       const h = surface.height;
-      if (w >= 640) {
+      // Desktop und Tablet quer (Fenster 641–700 bzw. 861–1050 px: Fläche schmaler als 640 px, aber im
+      // Desktop-Seitenverhältnis): Szene links, Diagramm rechts. Nur auf dem Handy hochkant untereinander.
+      if (w >= 640 || h < w * 0.9) {
         const sw = Math.round(w * 0.6);
         return { scene: { x: 0, y: 0, w: sw, h }, chart: { x: sw + 10, y: 0, w: w - sw - 10, h } };
       }
@@ -400,13 +402,20 @@ export default defineSimulation({
 
     /* ---------- Geometrie ---------- */
     const small = () => narrow();
+    /** Tablet quer: schmale Zeichenfläche im Desktop-Seitenverhältnis (Szene links neben dem Diagramm). */
+    const tablet = () => narrow() && surface.height < surface.width * 0.9;
+    /** Feld der Beschriftung von F_G (für das Ausweichen der Winkelbeschriftung bei Tablet quer). */
+    let fgBox: Rect | null = null;
     function sceneGeo(r: Rect): { P0: Pt; L: number; groundY: number; r: Rect } {
       const sm = small();
       // Tischplatte so hoch, dass die Kraftpfeile darunter Platz haben
       const groundY = r.y + r.h * (sm ? 0.76 : 0.72);
       const left = sm ? 40 : 78;
       const sinMax = Math.sin((MAX_ANGLE * Math.PI) / 180);
-      const L = Math.min(r.w - left - (sm ? 54 : 70), (groundY - r.y - (sm ? 30 : 40)) / sinMax);
+      // nie negativ (z. B. kurz während einer Größenänderung), sonst scheitert das Zeichnen der Räder
+      // rechts Platz für „h = … cm“ (Tablet quer: die Szene endet am Diagramm)
+      const right = sm ? (tablet() ? 76 : 54) : 70;
+      const L = Math.max(1, Math.min(r.w - left - right, (groundY - r.y - (sm ? 30 : 40)) / sinMax));
       return { P0: [r.x + left, groundY], L, groundY, r };
     }
 
@@ -654,7 +663,27 @@ export default defineSimulation({
       gx.arc(P0[0], P0[1], ar, 0, -a, true);
       gx.stroke();
       // Beschriftung erst nach den Kraftpfeilen zeichnen, damit F_G sie nicht verdeckt
-      const angleLabel = p.a > 0 ? () => haloText(`α = ${fmt.num(p.a, 0)}°`, P0[0] + Math.cos(a / 3) * (ar + 26), P0[1] - Math.sin(a / 3) * (ar + 26) + 6, theme.series[3]!, sm ? 11 : 12.5, 'left') : null;
+      const angleLabel =
+        p.a > 0
+          ? () => {
+              const str = `α = ${fmt.num(p.a, 0)}°`;
+              const size = sm ? 11 : 12.5;
+              let x = P0[0] + Math.cos(a / 3) * (ar + 26);
+              let y = P0[1] - Math.sin(a / 3) * (ar + 26) + 6;
+              // Tablet quer: liegt die Beschriftung von F_G im Weg, nach links (noch rechts vom Bogen)
+              // oder sonst unter die Beschriftung von F_G ausweichen
+              if (tablet() && fgBox) {
+                gx.font = `700 ${size}px ${theme.font}`;
+                const tw = gx.measureText(str).width;
+                const hit = x < fgBox.x + fgBox.w + 4 && x + tw > fgBox.x - 4 && y - size / 2 < fgBox.y + fgBox.h + 2 && y + size / 2 > fgBox.y - 2;
+                if (hit) {
+                  if (fgBox.x - 6 - tw >= P0[0] + ar + 4) x = fgBox.x - 6 - tw;
+                  else y = Math.max(groundY + 20, fgBox.y + fgBox.h + size / 2 + 4);
+                }
+              }
+              haloText(str, x, y, theme.series[3]!, size, 'left');
+            }
+          : null;
 
       // Höhe und Länge
       if (p.dims && p.a > 0) {
@@ -984,7 +1013,11 @@ export default defineSimulation({
         }
       }
       arrowPx(C[0], C[1], G1[0], G1[1], theme.series[1]!, 3.6, 13);
-      haloText(`F_G = ${fmt.num(f.FG, 1)} N`, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
+      const fgStr = `F_G = ${fmt.num(f.FG, 1)} N`;
+      haloText(fgStr, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
+      surface.g.font = `700 ${fs}px ${theme.font}`;
+      const fgW = surface.g.measureText(fgStr).width;
+      fgBox = { x: G1[0] - 8 - fgW, y: G1[1] - 4 - fs / 2 - 2, w: fgW, h: fs + 4 };
       // Reibungskraft an der Unterseite (gegen die Bewegung bzw. die Bewegungstendenz)
       if (p.body === 'block') {
         const fr = state.v !== 0 ? -Math.sign(state.v) * f.FRslide : friction;
@@ -1012,7 +1045,10 @@ export default defineSimulation({
       chart.axes();
       const fn = (a: number) => inclineForces(p.m, a, muH, mu().muG);
       chart.hline(f.FG, { color: theme.series[1], width: 1.4, dash: [6, 4] });
-      chart.text(40, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', baseline: 'bottom', offset: [0, -4] });
+      // schmales Diagramm (Tablet quer): Beschriftungen so setzen, dass sie sich nicht berühren
+      const slim = chart.rect.w < 260;
+      if (slim) chart.text(0, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', align: 'left', baseline: 'bottom', offset: [6, -4] });
+      else chart.text(40, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', baseline: 'bottom', offset: [0, -4] });
       if (block) {
         const ag = limitAngle(muH);
         chart.fn((a) => fn(a).FRmax, { color: theme.series[2], width: 2.2, dash: [7, 4], from: 0, to: 90 });
@@ -1025,7 +1061,16 @@ export default defineSimulation({
       chart.fn((a) => fn(a).FN, { color: theme.series[0], width: 2.6, from: 0, to: 90 });
       // Beschriftung der Kurven
       chart.text(84, fn(84).FH, 'F_H', { color: theme.series[3], size: 12, weight: 'bold', align: 'right', baseline: 'bottom', offset: [0, -6] });
-      chart.text(8, fn(8).FN, 'F_N', { color: theme.series[0], size: 12, weight: 'bold', baseline: 'top', offset: [2, 8] });
+      // F_N: im schmalen Diagramm nicht auf den Punkt beim aktuellen Winkel setzen
+      let nAt = 8;
+      if (slim) {
+        gx.font = `700 12px ${theme.font}`;
+        const nw = gx.measureText('F_N').width;
+        const lx = chart.px(8) - nw / 2 + 2;
+        const pxA = chart.px(p.a);
+        if (pxA > lx - 14 && pxA < lx + nw + 14) nAt = chart.toWorld(pxA + 16 + nw / 2, 0)[0];
+      }
+      chart.text(nAt, fn(nAt).FN, 'F_N', { color: theme.series[0], size: 12, weight: 'bold', baseline: 'top', offset: [2, 8] });
       if (block) chart.text(58, fn(58).FRmax, 'F_R,max', { color: theme.series[2], size: 11.5, weight: 'bold', align: 'right', baseline: 'top', offset: [-4, 6] });
       // aktueller Winkel
       chart.vline(p.a, { color: theme.muted, width: 1.2, dash: [2, 3] });

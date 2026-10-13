@@ -41,7 +41,7 @@ function niceCeil(x: number): number {
   return 10 * p;
 }
 
-/** Bühne: links die Draufsicht, rechts Kraftvergleich und Diagramm (Handy: untereinander). */
+/** Bühne: links die Draufsicht, rechts Kraftvergleich und Diagramm (Handy: untereinander; Tablet quer: gemischt). */
 function regions(w: number, h: number): { scene: Rect; gauge: Rect; chart: Rect } {
   if (w >= 640) {
     const sw = Math.round(w * 0.56);
@@ -49,6 +49,14 @@ function regions(w: number, h: number): { scene: Rect; gauge: Rect; chart: Rect 
     const cw = w - x;
     const gh = 100;
     return { scene: { x: 0, y: 0, w: sw, h }, gauge: { x, y: 0, w: cw, h: gh }, chart: { x, y: gh + 10, w: cw, h: h - gh - 10 } };
+  }
+  if (h < w * 0.9) {
+    // Tablet quer (Fenster 641–700 bzw. 861–1050 px): Fläche schmaler als 640 px, aber im Desktop-
+    // Seitenverhältnis. Oben Draufsicht und Diagramm nebeneinander, unten der Kraftvergleich über die ganze Breite.
+    const gh = 92;
+    const th = h - gh - 8;
+    const sw = Math.round(w * 0.5);
+    return { scene: { x: 0, y: 0, w: sw, h: th }, gauge: { x: 0, y: th + 8, w, h: gh }, chart: { x: sw + 8, y: 0, w: w - sw - 8, h: th } };
   }
   const sh = Math.round(h * 0.5);
   const gh = 92;
