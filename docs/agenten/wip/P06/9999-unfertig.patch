@@ -1,0 +1,3948 @@
+diff --git a/src/content/simulations/de/federpendel.md b/src/content/simulations/de/federpendel.md
+new file mode 100644
+index 0000000..32aecbc
+--- /dev/null
++++ b/src/content/simulations/de/federpendel.md
+@@ -0,0 +1,139 @@
++---
++description: "Interaktive Simulation zum Federpendel – harmonische Schwingung mit Zeigerdiagramm, y(t)-, v(t)- und a(t)-Diagramm, Energieumwandlung, Dämpfung und Messung der Periodendauer T = 2π·√(m/D) mit der Stoppuhr."
++---
++
++## Worum geht es?
++
++Ein Körper der Masse $m$ hängt an einer Schraubenfeder mit der **Federhärte** $D$. In der **Ruhelage** ist die Feder um $s_0$ gedehnt; dort ist die Federkraft genauso groß wie die Gewichtskraft:
++
++$$
++D \cdot s_0 = m \cdot g \qquad\Rightarrow\qquad s_0 = \frac{m \cdot g}{D}
++$$
++
++Lenkt man den Körper um die **Elongation** $y$ aus der Ruhelage aus (hier: nach oben positiv), bleibt als resultierende Kraft die **Rückstellkraft**
++
++$$
++F = -D \cdot y .
++$$
++
++Sie ist proportional zur Elongation und ihr entgegengesetzt (**lineares Kraftgesetz**). Daraus folgt eine **harmonische Schwingung** mit dem Zeit-Elongation-Gesetz
++
++$$
++y(t) = \hat y \cdot \sin(\omega t + \varphi_0), \qquad \omega = \frac{2\pi}{T} = 2\pi f .
++$$
++
++Dabei ist $\hat y$ die **Amplitude**, $\omega$ die **Kreisfrequenz** und $\varphi_0$ der **Nullphasenwinkel** (Lage zur Zeit $t = 0$). Für die **Periodendauer** gilt
++
++$$
++T = 2\pi \sqrt{\frac{m}{D}} .
++$$
++
++$T$ hängt weder von der Amplitude noch vom Ortsfaktor $g$ ab: Die Gewichtskraft verschiebt nur die Ruhelage.
++
++**Zeigerdiagramm:** Ein Zeiger der Länge $\hat y$ dreht sich mit der Winkelgeschwindigkeit $\omega$ gegen den Uhrzeigersinn. Der Winkel zur Waagerechten ist der Phasenwinkel $\varphi = \omega t + \varphi_0$; die senkrechte Projektion der Zeigerspitze ist die Elongation $y$. Eine volle Umdrehung dauert genau eine Periode.
++
++**Geschwindigkeit und Beschleunigung** sind ebenfalls sinusförmig:
++
++$$
++v(t) = \hat y \, \omega \cos(\omega t + \varphi_0), \qquad a(t) = -\hat y \, \omega^2 \sin(\omega t + \varphi_0) = -\omega^2 \, y(t)
++$$
++
++In der Ruhelage ist der Betrag der Geschwindigkeit am größten ($\hat v = \hat y \, \omega$), in den Umkehrpunkten die Beschleunigung ($\hat a = \hat y \, \omega^2$).
++
++**Energie:** Spann- und Lageenergie zusammen ändern sich wie $\tfrac12 D y^2$. Ohne Reibung gilt
++
++$$
++\tfrac12 D y^2 + \tfrac12 m v^2 = \tfrac12 D \hat y^2 = \text{konstant}.
++$$
++
++Mit **Dämpfung** wird Energie in innere Energie umgewandelt; die Amplitude nimmt mit $e^{-\delta t}$ ab.
++
++## Ausprobieren
++
++1. Ziehe den Körper nach unten und lass ihn los. Verfolge, wie die Projektion des Zeigers und der Körper gemeinsam auf und ab gehen.
++2. Halte an und tippe in eines der Diagramme: Die Zeitmarke zeigt den Zustand zu diesem Zeitpunkt. Setze sie auf einen Hochpunkt von $y(t)$. Was gilt dort für $v$ und $a$?
++3. Starte die Stoppuhr, wenn der Zeiger an einer gut erkennbaren Stelle ist, und stoppe nach 10 vollen Umdrehungen. Vergleiche $T = t/10$ mit der Formel.
++4. Verändere die Amplitude. Ändert sich die Periodendauer? [Kleine Amplitude](?amp=2)
++5. Vergleiche zwei Pendel: vierfache Masse [Beispiel laden](?cmp=1&m=0.25&m2=1&D2=20) oder vierfache Federhärte [Beispiel laden](?cmp=1&m=0.3&D=10&m2=0.3&D2=40).
++6. Schau dir die Kräfte und alle drei Energieformen an. Warum ändert sich die Bewegungsenergie so wenig? [Kräfte und Energieformen](?energy=full&vec=F&graphs=yv)
++7. Schalte die Dämpfung ein und beobachte Zeiger, Diagramm und Energie. [Gedämpft](?damp=0.3&graphs=y)
++
++## Aufgaben
++
++### Aufgabe 1: Periodendauer berechnen
++
++Ein Körper mit $m = 0{,}5\,\text{kg}$ hängt an einer Feder mit $D = 20\,\tfrac{\text{N}}{\text{m}}$. Berechne Periodendauer und Frequenz und prüfe mit der Stoppuhr. [Aufgabe laden](?per=0&_hide=1)
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++$T = 2\pi\sqrt{\frac{0{,}5\,\text{kg}}{20\,\text{N/m}}} \approx 0{,}99\,\text{s}$ und $f = \frac1T \approx 1{,}01\,\text{Hz}$. Zehn Perioden dauern also knapp $10\,\text{s}$. [In der Simulation zeigen](?per=1)
++
++</details>
++
++### Aufgabe 2: Federhärte aus einer Messung
++
++Ein Körper mit $m = 0{,}4\,\text{kg}$ führt 10 Schwingungen in $12{,}6\,\text{s}$ aus. Wie groß ist die Federhärte?
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++$T = 1{,}26\,\text{s}$. Aus $T = 2\pi\sqrt{m/D}$ folgt $D = \frac{4\pi^2 m}{T^2} = \frac{4\pi^2 \cdot 0{,}4\,\text{kg}}{(1{,}26\,\text{s})^2} \approx 9{,}9\,\tfrac{\text{N}}{\text{m}}$, also etwa $10\,\tfrac{\text{N}}{\text{m}}$. [Prüfen](?m=0.4&D=10)
++
++</details>
++
++### Aufgabe 3: Doppelte Periodendauer
++
++Wie muss man die Masse ändern, damit sich die Periodendauer verdoppelt? Und wie die Federhärte?
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++Wegen $T \sim \sqrt{m}$ braucht man die **vierfache** Masse, wegen $T \sim \frac{1}{\sqrt{D}}$ alternativ eine Feder mit einem **Viertel** der Federhärte. [Vergleich zeigen](?cmp=1&m=0.25&m2=1&D2=20)
++
++</details>
++
++### Aufgabe 4: Höchstwerte
++
++Für $m = 0{,}5\,\text{kg}$, $D = 20\,\tfrac{\text{N}}{\text{m}}$ und $\hat y = 8\,\text{cm}$: Berechne die größte Geschwindigkeit und die größte Beschleunigung. Wo treten sie auf? [Aufgabe laden](?_hide=1)
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++$\omega = \sqrt{D/m} \approx 6{,}32\,\tfrac1{\text{s}}$, also $\hat v = \hat y\,\omega \approx 0{,}51\,\tfrac{\text{m}}{\text{s}}$ (beim Durchgang durch die Ruhelage) und $\hat a = \hat y\,\omega^2 = 3{,}2\,\tfrac{\text{m}}{\text{s}^2}$ (in den Umkehrpunkten, zur Ruhelage hin gerichtet).
++
++</details>
++
++### Aufgabe 5: Dehnung und Periodendauer
++
++Zeige mit $s_0 = \frac{m g}{D}$, dass $T = 2\pi\sqrt{\frac{s_0}{g}}$ gilt. Wie groß ist $T$ bei $s_0 = 24{,}5\,\text{cm}$?
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++Aus $s_0 = \frac{mg}{D}$ folgt $\frac{m}{D} = \frac{s_0}{g}$, also $T = 2\pi\sqrt{\frac{s_0}{g}} = 2\pi\sqrt{\frac{0{,}245\,\text{m}}{9{,}81\,\text{m/s}^2}} \approx 0{,}99\,\text{s}$. Man kann $T$ also schon an der Dehnung in der Ruhelage ablesen – unabhängig davon, wie $m$ und $D$ einzeln gewählt sind. [Beispiel: m und D verdoppelt](?m=1&D=40)
++
++</details>
++
++### Aufgabe 6: Phasenwinkel
++
++Der Körper wird aus der Ruhelage nach oben angestoßen: $y(t) = 8\,\text{cm} \cdot \sin(\omega t)$. Wo ist er bei $t = \tfrac14 T$, $t = \tfrac12 T$ und $t = \tfrac34 T$? Welcher Nullphasenwinkel gehört zu „nach unten ziehen und loslassen“?
++
++<details>
++<summary>Lösung anzeigen</summary>
++
++Bei $\tfrac14 T$ im oberen Umkehrpunkt ($y = 8\,\text{cm}$), bei $\tfrac12 T$ wieder in der Ruhelage (nach unten unterwegs), bei $\tfrac34 T$ im unteren Umkehrpunkt. Nach unten ziehen und loslassen bedeutet $y(0) = -\hat y$, also $\varphi_0 = -\tfrac{\pi}{2}$ ($-90^\circ$). [Anstoßen zeigen](?phi=0)
++
++</details>
++
++## Hinweise für Lehrkräfte
++
++- **Einsatz:** Mechanische Schwingungen in der Oberstufe bzw. dort, wo der Lehrplan harmonische Schwingungen vorsieht: Einstieg (Beobachten, Zeigerdiagramm), Erarbeitung von $T = 2\pi\sqrt{m/D}$ durch Messen mit der Stoppuhr und Vergleichspendel, Vertiefung (Phasenbeziehungen von $y$, $v$, $a$ mit der Zeitmarke; Energie; Dämpfung).
++- **Modell:** Ideale, masselose Feder, für die das Hookesche Gesetz auch beim Stauchen gilt. Die Elongation $y$ ist **nach oben positiv**. Die Dämpfung ist geschwindigkeitsproportional ($m\ddot y = -Dy - 2m\delta\dot y$); die Bewegung wird mit dem Runge-Kutta-Verfahren (Schrittweite $1\,\text{ms}$) berechnet. Spann- und Lageenergie werden in der Einstellung „½·D·y²“ zusammengefasst; die dritte Einstellung zeigt sie getrennt (Bezugsniveau der Lageenergie: unterer Umkehrpunkt).
++- **Vergleichspendel:** Die beiden Pendel sind so aufgehängt, dass ihre Ruhelagen auf gleicher Höhe liegen; sie starten mit gleicher Amplitude und gleichem Nullphasenwinkel.
++- **Stoppuhr:** Der Zähler $n$ zählt volle Umdrehungen des Zeigers seit dem Start (grüne Marke). Wird zwischen zwei vollen Perioden gestoppt, weist die Auswertung darauf hin. Am Vergleich mit einer Messung über nur eine Periode lässt sich zeigen, warum man mehrere Perioden misst.
++- **Typische Fehlvorstellungen:**
++  - „Bei größerer Amplitude dauert eine Schwingung länger.“ – Beim Federpendel ist $T$ unabhängig von $\hat y$.
++  - „Im Umkehrpunkt ist die Beschleunigung null, weil der Körper kurz still steht.“ – Dort ist $|a|$ am größten.
++  - „In der Ruhelage wirkt keine Kraft.“ – Gewichtskraft und Federkraft wirken, ihre Summe ist null.
++  - „Auf dem Mond schwingt ein Federpendel langsamer.“ – $g$ geht nicht in $T$ ein, nur die Dehnung $s_0$ ist kleiner.
+diff --git a/src/content/simulations/de/resonanz.md b/src/content/simulations/de/resonanz.md
+new file mode 100644
+index 0000000..bd05d6c
+--- /dev/null
++++ b/src/content/simulations/de/resonanz.md
+@@ -0,0 +1,7 @@
++---
++description: "Resonanz."
++---
++
++## Worum geht es?
++
++Entwurf.
+diff --git a/src/content/simulations/en/federpendel.md b/src/content/simulations/en/federpendel.md
+new file mode 100644
+index 0000000..a0f1424
+--- /dev/null
++++ b/src/content/simulations/en/federpendel.md
+@@ -0,0 +1,63 @@
++---
++description: "Interactive spring pendulum – harmonic oscillation with a phasor diagram, y(t), v(t) and a(t) graphs, energy conversion, damping and measuring the period T = 2π·√(m/D) with a stopwatch."
++---
++
++## What is it about?
++
++A body of mass $m$ hangs on a coil spring with spring constant $D$. At the **equilibrium position** the spring is stretched by $s_0 = \frac{m g}{D}$, so that the spring force balances the weight. If the body is displaced by $y$ (here: upwards positive), the resulting force is the **restoring force** $F = -D \cdot y$. This linear force law leads to a **harmonic oscillation**
++
++$$
++y(t) = \hat y \sin(\omega t + \varphi_0), \qquad T = 2\pi\sqrt{\frac{m}{D}} .
++$$
++
++The period depends neither on the amplitude nor on $g$. In the **phasor diagram** a pointer of length $\hat y$ rotates with angular frequency $\omega$; its vertical projection is the displacement. Velocity and acceleration are $v = \hat y\,\omega\cos(\omega t + \varphi_0)$ and $a = -\omega^2 y$. Without friction $\tfrac12 D y^2 + \tfrac12 m v^2 = \tfrac12 D \hat y^2$ stays constant; with damping the amplitude decreases as $e^{-\delta t}$.
++
++## Try it
++
++1. Pull the body down and let go. Watch the phasor and the graphs.
++2. Pause and tap a graph to set the time marker, e.g. at a maximum of $y(t)$. What are $v$ and $a$ there?
++3. Time 10 full turns of the phasor with the stopwatch and compare $t/10$ with the formula.
++4. Compare two pendulums: [four times the mass](?cmp=1&m=0.25&m2=1&D2=20) or [four times as stiff](?cmp=1&m=0.3&D=10&m2=0.3&D2=40).
++5. Look at the forces and all three forms of energy. [Forces and energy](?energy=full&vec=F&graphs=yv)
++
++## Tasks
++
++### Task 1: Period
++
++Calculate the period for $m = 0.5\,\text{kg}$ and $D = 20\,\text{N/m}$. [Load task](?per=0&_hide=1)
++
++<details>
++<summary>Show solution</summary>
++
++$T = 2\pi\sqrt{0.5/20}\,\text{s} \approx 0.99\,\text{s}$, $f \approx 1.01\,\text{Hz}$.
++
++</details>
++
++### Task 2: Doubling the period
++
++How must the mass be changed to double the period?
++
++<details>
++<summary>Show solution</summary>
++
++Since $T \sim \sqrt{m}$, the mass must be multiplied by four. [Show](?cmp=1&m=0.25&m2=1&D2=20)
++
++</details>
++
++### Task 3: Maximum values
++
++For $m = 0.5\,\text{kg}$, $D = 20\,\text{N/m}$ and $\hat y = 8\,\text{cm}$ find the maximum speed and acceleration.
++
++<details>
++<summary>Show solution</summary>
++
++$\omega \approx 6.32\,\text{s}^{-1}$, $\hat v = \hat y\,\omega \approx 0.51\,\text{m/s}$ (at the equilibrium position), $\hat a = \hat y\,\omega^2 = 3.2\,\text{m/s}^2$ (at the turning points).
++
++</details>
++
++## Notes for teachers
++
++- **Model:** ideal massless spring obeying Hooke’s law, displacement positive upwards, velocity-proportional damping, Runge–Kutta integration with a step of $1\,\text{ms}$.
++- The two pendulums in comparison mode are suspended so that their equilibrium positions are at the same height.
++- The stopwatch counts full turns of the phasor since the start (green mark).
++- **Misconceptions:** “A larger amplitude means a longer period.” – “At the turning point the acceleration is zero.” – “On the Moon a spring pendulum oscillates more slowly.”
+diff --git a/src/content/simulations/en/resonanz.md b/src/content/simulations/en/resonanz.md
+new file mode 100644
+index 0000000..7880f73
+--- /dev/null
++++ b/src/content/simulations/en/resonanz.md
+@@ -0,0 +1,7 @@
++---
++description: "Resonance."
++---
++
++## What is it about?
++
++Draft.
+diff --git a/src/curriculum/physik.ts b/src/curriculum/physik.ts
+index 5dae079..13ce042 100644
+--- a/src/curriculum/physik.ts
++++ b/src/curriculum/physik.ts
+@@ -270,8 +270,41 @@ export const physik: Subject = {
+               ),
+               thumb: 'pendulum',
+             },
+-            planned('federpendel', L('Federpendel', 'Spring pendulum'), [10, 12]),
+-            planned('resonanz', L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'), [11, 13], { uni: true }),
++            {
++              id: 'federpendel',
++              status: 'ready',
++              slug: L('federpendel', 'spring-pendulum'),
++              title: L('Federpendel', 'Spring pendulum'),
++              summary: L(
++                'Ein Körper schwingt an einer Schraubenfeder: Zeigerdiagramm, synchrone y(t)-, v(t)- und a(t)-Diagramme mit Zeitmarke, Energieumwandlung, Dämpfung und Messung der Periodendauer T = 2π·√(m/D) mit der Stoppuhr – auch im Vergleich zweier Pendel.',
++                'A body oscillates on a coil spring: phasor diagram, synchronised y(t), v(t) and a(t) graphs with a time marker, energy conversion, damping and measuring the period T = 2π·√(m/D) with a stopwatch – also comparing two pendulums.',
++              ),
++              grades: [10, 12],
++              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
++              keywords: L(
++                ['Federpendel', 'Schwingung', 'harmonische Schwingung', 'Periodendauer', 'Frequenz', 'Kreisfrequenz', 'Amplitude', 'Elongation', 'Phase', 'Nullphasenwinkel', 'Zeigerdiagramm', 'Federhärte', 'Rückstellkraft', 'lineares Kraftgesetz', 'Spannenergie', 'Dämpfung', 'Stoppuhr'],
++                ['spring pendulum', 'mass on a spring', 'oscillation', 'harmonic motion', 'period', 'frequency', 'angular frequency', 'amplitude', 'displacement', 'phase', 'initial phase', 'phasor diagram', 'spring constant', 'restoring force', 'elastic energy', 'damping', 'stopwatch'],
++              ),
++              thumb: 'generic',
++            },
++            {
++              id: 'resonanz',
++              status: 'ready',
++              slug: L('erzwungene-schwingung-resonanz', 'driven-oscillation-resonance'),
++              title: L('Erzwungene Schwingung und Resonanz', 'Driven oscillation and resonance'),
++              summary: L(
++                'Ein Motor treibt das Pohlsche Rad an: Einschwingvorgang, Resonanzkurve und Phasenverschiebung als Messreihe mit Theorie, Zeigerdiagramm von Erreger und Rad, Wirbelstrombremse und Resonanzkatastrophe bei zu kleiner Dämpfung.',
++                'A motor drives Pohl’s wheel: transient, resonance curve and phase shift as measurements with theory, a phasor diagram of driver and wheel, an eddy-current brake and a resonance disaster when the damping is too weak.',
++              ),
++              grades: [11, 13],
++              uni: true,
++              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
++              keywords: L(
++                ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
++                ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
++              ),
++              thumb: 'generic',
++            },
+           ],
+         },
+         {
+diff --git a/src/simulations/physik/federpendel/index.ts b/src/simulations/physik/federpendel/index.ts
+new file mode 100644
+index 0000000..4104667
+--- /dev/null
++++ b/src/simulations/physik/federpendel/index.ts
+@@ -0,0 +1,1816 @@
++import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
++import { acceleration, dampedOmega, dampedPeriod, energies, equilibriumExtension, forces, initialState, omega0, period, phasor, step, type State } from './model';
++
++const L = (de: string, en: string) => ({ de, en });
++/** Länge der ungedehnten Feder in m. */
++const L0 = 0.12;
++/** Abstand der gespeicherten Messwerte (Simulationszeit) in s. */
++const SAMPLE = 1 / 240;
++const DEG = Math.PI / 180;
++const TAU = 2 * Math.PI;
++
++type GraphKey = 'y' | 'v' | 'a';
++type EnergyMode = 'off' | 'osc' | 'full';
++type VecMode = 'va' | 'F' | 'off';
++
++const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
++
++/** Zeitfenster der Diagramme: etwa drei Perioden, auf „glatte“ Werte gerundet. */
++function niceWindow(T: number): number {
++  const want = 3.3 * T;
++  for (const w of [2, 3, 4, 5, 6, 8, 10]) if (w >= want) return w;
++  return 12;
++}
++
++/** Messwertspeicher: Zeit, Elongation und Geschwindigkeit beider Pendel. */
++class History {
++  t: number[] = [];
++  ya: number[] = [];
++  va: number[] = [];
++  yb: number[] = [];
++  vb: number[] = [];
++  head = 0;
++
++  clear(): void {
++    this.t = [];
++    this.ya = [];
++    this.va = [];
++    this.yb = [];
++    this.vb = [];
++    this.head = 0;
++  }
++
++  push(t: number, a: State, b: State): void {
++    this.t.push(t);
++    this.ya.push(a[0]);
++    this.va.push(a[1]);
++    this.yb.push(b[0]);
++    this.vb.push(b[1]);
++  }
++
++  get size(): number {
++    return this.t.length - this.head;
++  }
++
++  /** Alte Werte verwerfen (bis kurz vor tMin). */
++  trim(tMin: number): void {
++    while (this.head < this.t.length - 2 && this.t[this.head + 1]! < tMin) this.head++;
++    if (this.head > 4000) {
++      this.t = this.t.slice(this.head);
++      this.ya = this.ya.slice(this.head);
++      this.va = this.va.slice(this.head);
++      this.yb = this.yb.slice(this.head);
++      this.vb = this.vb.slice(this.head);
++      this.head = 0;
++    }
++  }
++
++  first(): number {
++    return this.t[this.head] ?? 0;
++  }
++
++  /** Index des ersten Werts mit Zeit ≥ tt. */
++  indexAt(tt: number): number {
++    let lo = this.head;
++    let hi = this.t.length - 1;
++    while (lo < hi) {
++      const mid = (lo + hi) >> 1;
++      if (this.t[mid]! < tt) lo = mid + 1;
++      else hi = mid;
++    }
++    return lo;
++  }
++
++  /** Zustände beider Pendel zur Zeit tt (linear interpoliert). */
++  stateAt(tt: number): { a: [number, number]; b: [number, number] } | null {
++    if (this.size < 1) return null;
++    const i = this.indexAt(tt);
++    const j = Math.max(this.head, i - 1);
++    const t0 = this.t[j]!;
++    const t1 = this.t[i]!;
++    const s = t1 > t0 ? clamp((tt - t0) / (t1 - t0), 0, 1) : 0;
++    const mix = (arr: number[]) => arr[j]! + (arr[i]! - arr[j]!) * s;
++    return { a: [mix(this.ya), mix(this.va)], b: [mix(this.yb), mix(this.vb)] };
++  }
++}
++
++interface Pend {
++  /** Mitte des Körpers (x) in Pixeln. */
++  x: number;
++  m: number;
++  D: number;
++  s0: number;
++  mw: number;
++  mh: number;
++  /** Aufhängepunkt (y) und Stativstange (x). */
++  sup: number;
++  rod: number;
++  /** +1: Pfeile/Beschriftung rechts vom Körper, −1: links. */
++  side: 1 | -1;
++}
++
++interface Geo {
++  r: Rect;
++  small: boolean;
++  k: number;
++  yEq: number;
++  tableY: number;
++  rulerX: number;
++  rulerW: number;
++  rulerTop: number;
++  rulerBot: number;
++  hook: number;
++  pend: Pend[];
++  /** Zeigerdiagramm: Mittelpunkt und Radius (Pixel). */
++  cx: number;
++  R: number;
++  arrowsW: number;
++}
++
++interface Layout {
++  scene: Rect;
++  charts: Partial<Record<GraphKey, Rect>>;
++  chartArea: Rect;
++  energy: Rect | null;
++  tall: boolean;
++}
++
++/**
++ * Federpendel: senkrecht an einer Schraubenfeder schwingender Körper mit
++ * Maßstab, Zeigerdiagramm, synchronen y(t)-, v(t)- und a(t)-Diagrammen mit
++ * Zeitmarke, Energiebalken, Stoppuhr, Dämpfung und Vergleichspendel.
++ */
++export default defineSimulation({
++  id: 'federpendel',
++  animated: true,
++  dragHint: true,
++  layout: { aspect: 1.32, aspectNarrow: 0.46 },
++  groups: [
++    { id: 'start', label: L('Anfangsbedingung', 'Initial condition') },
++    { id: 'cmp', label: L('Vergleichspendel B', 'Comparison pendulum B') },
++    { id: 'view', label: L('Anzeige', 'Display') },
++  ],
++  params: [
++    { key: 'm', type: 'number', label: L('Masse m', 'Mass m'), min: 0.1, max: 1, step: 0.05, default: 0.5, unit: 'kg' },
++    { key: 'D', type: 'number', label: L('Federhärte D', 'Spring constant D'), min: 10, max: 60, step: 1, default: 20, unit: 'N/m' },
++    {
++      key: 'damp',
++      type: 'number',
++      label: L('Dämpfung δ', 'Damping δ'),
++      help: L('Abklingkonstante: Die Amplitude nimmt mit e^(−δ·t) ab.', 'Decay constant: the amplitude decreases as e^(−δ·t).'),
++      min: 0,
++      max: 2,
++      step: 0.05,
++      default: 0,
++      unit: '1/s',
++    },
++    {
++      key: 'amp',
++      type: 'number',
++      group: 'start',
++      label: L('Amplitude ŷ', 'Amplitude ŷ'),
++      help: L('Oder: Körper nach oben oder unten ziehen und loslassen.', 'Or: pull the body up or down and let go.'),
++      min: 1,
++      max: 10,
++      step: 0.5,
++      default: 8,
++      unit: 'cm',
++    },
++    {
++      key: 'phi',
++      type: 'number',
++      group: 'start',
++      label: L('Nullphasenwinkel φ₀', 'Initial phase φ₀'),
++      help: L('−90°: nach unten gezogen und losgelassen; 0°: aus der Ruhelage nach oben angestoßen. Oder: Zeiger ziehen.', '−90°: pulled down and released; 0°: pushed upwards from the equilibrium position. Or drag the phasor.'),
++      min: -180,
++      max: 180,
++      step: 15,
++      default: -90,
++      unit: '°',
++    },
++    { key: 'cmp', type: 'boolean', group: 'cmp', label: L('Zweites Pendel zum Vergleich', 'Second pendulum for comparison'), default: false },
++    { key: 'm2', type: 'number', group: 'cmp', label: L('Masse m_B', 'Mass m_B'), min: 0.1, max: 1, step: 0.05, default: 1, unit: 'kg', visibleIf: (v) => v.cmp === true },
++    { key: 'D2', type: 'number', group: 'cmp', label: L('Federhärte D_B', 'Spring constant D_B'), min: 10, max: 60, step: 1, default: 20, unit: 'N/m', visibleIf: (v) => v.cmp === true },
++    {
++      key: 'graphs',
++      type: 'choice',
++      group: 'view',
++      label: L('Diagramme', 'Graphs'),
++      options: [
++        { value: 'y', label: L('y(t)', 'y(t)') },
++        { value: 'yv', label: L('y(t), v(t)', 'y(t), v(t)') },
++        { value: 'yva', label: L('y(t), v(t), a(t)', 'y(t), v(t), a(t)') },
++      ],
++      default: 'yva',
++    },
++    {
++      key: 'energy',
++      type: 'choice',
++      group: 'view',
++      label: L('Energie', 'Energy'),
++      options: [
++        { value: 'off', label: L('aus', 'off') },
++        { value: 'osc', label: L('½·D·y² und ½·m·v²', '½·D·y² and ½·m·v²') },
++        { value: 'full', label: L('Spann-, Lage-, Bewegungsenergie', 'elastic, gravitational, kinetic') },
++      ],
++      default: 'osc',
++    },
++    {
++      key: 'vec',
++      type: 'choice',
++      group: 'view',
++      label: L('Pfeile am Körper', 'Arrows on the body'),
++      options: [
++        { value: 'va', label: L('v und a', 'v and a') },
++        { value: 'F', label: L('Kräfte', 'forces') },
++        { value: 'off', label: L('keine', 'none') },
++      ],
++      default: 'va',
++    },
++    { key: 'phasor', type: 'boolean', group: 'view', label: L('Zeigerdiagramm', 'Phasor diagram'), default: true },
++    { key: 'per', type: 'boolean', group: 'view', label: L('Periodendauer anzeigen', 'Show the period'), default: true },
++    { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
++  ],
++  actions: [
++    { id: 'go', label: L('Start', 'Start'), primary: true },
++    { id: 'watch', label: L('Stoppuhr starten', 'Start stopwatch') },
++  ],
++  readouts: [
++    { key: 'T', label: L('Periodendauer', 'Period'), spoiler: true },
++    { key: 'eq', label: L('Ruhelage', 'Equilibrium position') },
++    { key: 'law', label: L('Zeit-Elongation-Gesetz', 'Displacement–time law'), spoiler: true },
++    { key: 'watch', label: L('Stoppuhr', 'Stopwatch') },
++    { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
++    { key: 'now', label: L('Momentan', 'Right now') },
++  ],
++  presets: [
++    { id: 'start', label: L('Nach unten ziehen und loslassen', 'Pull down and release'), values: {} },
++    { id: 'mass', label: L('Vierfache Masse im Vergleich', 'Four times the mass compared'), values: { cmp: true, m: 0.25, m2: 1, D2: 20 } },
++    { id: 'stiff', label: L('Vierfache Federhärte im Vergleich', 'Four times as stiff compared'), values: { cmp: true, m: 0.3, D: 10, m2: 0.3, D2: 40 } },
++    { id: 'push', label: L('Aus der Ruhelage angestoßen (φ₀ = 0°)', 'Pushed from equilibrium (φ₀ = 0°)'), values: { phi: 0 } },
++    { id: 'damped', label: L('Gedämpfte Schwingung', 'Damped oscillation'), values: { damp: 0.3, amp: 8, graphs: 'y' } },
++    { id: 'energy', label: L('Kräfte und Energieformen', 'Forces and forms of energy'), values: { energy: 'full', vec: 'F', graphs: 'yv' } },
++  ],
++  strings: {
++    de: {
++      canvas: 'Senkrechtes Federpendel am Stativ mit Maßstab und Zeigerdiagramm, daneben Diagramme von Elongation, Geschwindigkeit und Beschleunigung über der Zeit sowie Energiebalken',
++      axisT: 't in s',
++      axisY: 'y in cm',
++      axisV: 'v in m/s',
++      axisA: 'a in m/s²',
++      rest: 'Ruhelage',
++      cm: 'cm',
++      energy: 'Energie',
++      energyA: 'Energie (Pendel A)',
++      ePot: 'E_[pot] = ½·D·y²',
++      eKin: 'E_[kin] = ½·m·v²',
++      ePotS: 'E_[pot]',
++      eKinS: 'E_[kin]',
++      eSpring: 'Spannenergie',
++      eGrav: 'Lageenergie',
++      eKinL: 'Bewegungsenergie',
++      eSpringS: 'E_[Spann]',
++      eGravS: 'E_[Lage]',
++      eSum: 'Summe',
++      eLoss: 'innere Energie',
++      watch: 'Stoppuhr',
++      periods: 'n = {n}',
++      scrub: 'Zeitmarke',
++      scrubHint: 'Diagramm antippen: Zeitmarke setzen',
++      T: 'T = {T} s',
++      TAB: 'T_[A] = {a} s · T_[B] = {b} s',
++      Tshort: 'T ≈ {T} s',
++      Tlabel: 'T',
++      pendA: 'A',
++      pendB: 'B',
++      FF: 'F_[F]',
++      FG: 'F_[G]',
++      FR: 'F_[R]',
++      lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
++      lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
++      eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9,81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> Dehnung; dort gilt <var>F</var><sub>F</sub> = <var>F</var><sub>G</sub>.',
++      TText: '<var>T</var> = 2π · √(<var>m</var> / <var>D</var>) = 2π · √({m} kg / {D} N/m) ≈ <strong>{T} s</strong><br><var>f</var> = 1/<var>T</var> ≈ {f} Hz · <var>ω</var> = 2π/<var>T</var> ≈ {w} 1/s',
++      TDamped: '<br>gedämpft: <var>T</var><sub>d</sub> = 2π / √(<var>ω</var>₀² − <var>δ</var>²) ≈ {Td} s',
++      watchIdle: 'Starte die Stoppuhr und stoppe sie nach einigen vollen Perioden (wenn der Zeiger wieder die Startmarke erreicht).',
++      watchRun: 'läuft: {t} s · {n} volle Perioden',
++      watchDone: '{n} Perioden in <var>t</var> = {t} s → <var>T</var> = <var>t</var> / {n} ≈ <strong>{T} s</strong>',
++      watchNone: 'Gestoppt nach {t} s – noch keine volle Periode.',
++      watchOff: 'Gestoppt nach {t} s und {n} vollen Perioden; der Zeiger war nicht genau an der Startmarke.',
++      cmpText: '<var>T</var><sub>B</sub> ≈ {Tb} s; <var>T</var><sub>B</sub> : <var>T</var><sub>A</sub> = √(<var>m</var><sub>B</sub> · <var>D</var><sub>A</sub> / (<var>m</var><sub>A</sub> · <var>D</var><sub>B</sub>)) ≈ <strong>{r}</strong>',
++      now: 't = {t} s · y = {y} cm · v = {v} m/s · a = {a} m/s²',
++      nowScrub: 'Zeitmarke t = {t} s · y = {y} cm · v = {v} m/s · a = {a} m/s²',
++      startLabel: 'Stoppuhr starten',
++      stopLabel: 'Stoppuhr stoppen',
++    },
++    en: {
++      canvas: 'Vertical spring pendulum on a stand with a scale and a phasor diagram, next to it graphs of displacement, velocity and acceleration against time and energy bars',
++      axisT: 't in s',
++      axisY: 'y in cm',
++      axisV: 'v in m/s',
++      axisA: 'a in m/s²',
++      rest: 'equilibrium',
++      cm: 'cm',
++      energy: 'Energy',
++      energyA: 'Energy (pendulum A)',
++      ePot: 'E_[pot] = ½·D·y²',
++      eKin: 'E_[kin] = ½·m·v²',
++      ePotS: 'E_[pot]',
++      eKinS: 'E_[kin]',
++      eSpring: 'elastic energy',
++      eGrav: 'grav. energy',
++      eKinL: 'kinetic energy',
++      eSpringS: 'E_[el]',
++      eGravS: 'E_[grav]',
++      eSum: 'total',
++      eLoss: 'internal energy',
++      watch: 'Stopwatch',
++      periods: 'n = {n}',
++      scrub: 'time marker',
++      scrubHint: 'Tap a graph to set the time marker',
++      T: 'T = {T} s',
++      TAB: 'T_[A] = {a} s · T_[B] = {b} s',
++      Tshort: 'T ≈ {T} s',
++      Tlabel: 'T',
++      pendA: 'A',
++      pendB: 'B',
++      FF: 'F_[s]',
++      FG: 'F_[g]',
++      FR: 'F_[r]',
++      lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
++      lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
++      eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9.81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> extension; there <var>F</var><sub>s</sub> = <var>F</var><sub>g</sub>.',
++      TText: '<var>T</var> = 2π · √(<var>m</var> / <var>D</var>) = 2π · √({m} kg / {D} N/m) ≈ <strong>{T} s</strong><br><var>f</var> = 1/<var>T</var> ≈ {f} Hz · <var>ω</var> = 2π/<var>T</var> ≈ {w} 1/s',
++      TDamped: '<br>damped: <var>T</var><sub>d</sub> = 2π / √(<var>ω</var>₀² − <var>δ</var>²) ≈ {Td} s',
++      watchIdle: 'Start the stopwatch and stop it after a few full periods (when the phasor reaches the start mark again).',
++      watchRun: 'running: {t} s · {n} full periods',
++      watchDone: '{n} periods in <var>t</var> = {t} s → <var>T</var> = <var>t</var> / {n} ≈ <strong>{T} s</strong>',
++      watchNone: 'Stopped after {t} s – not a full period yet.',
++      watchOff: 'Stopped after {t} s and {n} full periods; the phasor was not exactly at the start mark.',
++      cmpText: '<var>T</var><sub>B</sub> ≈ {Tb} s; <var>T</var><sub>B</sub> : <var>T</var><sub>A</sub> = √(<var>m</var><sub>B</sub> · <var>D</var><sub>A</sub> / (<var>m</var><sub>A</sub> · <var>D</var><sub>B</sub>)) ≈ <strong>{r}</strong>',
++      now: 't = {t} s · y = {y} cm · v = {v} m/s · a = {a} m/s²',
++      nowScrub: 'time marker t = {t} s · y = {y} cm · v = {v} m/s · a = {a} m/s²',
++      startLabel: 'Start stopwatch',
++      stopLabel: 'Stop stopwatch',
++    },
++  },
++
++  mount(ctx) {
++    const surface = new Surface(ctx, ctx.t('canvas'));
++    const p = ctx.params;
++    const fmt = ctx.fmt;
++    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
++    const small = () => surface.width < 700;
++    const yColor = () => ctx.theme.series[0]!;
++    const vColor = () => ctx.theme.series[3]!;
++    const aColor = () => ctx.theme.series[4]!;
++    const COLOR: Record<GraphKey, () => string> = { y: yColor, v: vColor, a: aColor };
++
++    /* ---------- Größen ---------- */
++    const mB = () => (p.cmp ? p.m2 : p.m);
++    const DB = () => (p.cmp ? p.D2 : p.D);
++    const graphs = (): GraphKey[] => (p.graphs === 'y' ? ['y'] : p.graphs === 'yv' ? ['y', 'v'] : ['y', 'v', 'a']);
++    const energyMode = () => p.energy as EnergyMode;
++    const vecMode = () => p.vec as VecMode;
++    const ampM = () => p.amp / 100;
++    const maxT = () => Math.max(period(p.m, p.D), p.cmp ? period(mB(), DB()) : 0);
++
++    /* ---------- Aufteilung der Bühne ---------- */
++    function computeLayout(): Layout {
++      const w = surface.width;
++      const h = surface.height;
++      const sm = small();
++      const tall = w < 640 && h > w * 0.9;
++      const em = energyMode();
++      const rowH = sm ? 19 : 21;
++      const eh = em === 'off' ? 0 : (em === 'full' ? 4 : 3) * rowH + (sm ? 36 : 40);
++      let scene: Rect;
++      let col: Rect;
++      if (!tall) {
++        const sw = Math.round(w * (w < 760 ? 0.55 : 0.52));
++        scene = { x: 0, y: 0, w: sw, h };
++        col = { x: sw + 10, y: 0, w: w - sw - 10, h };
++      } else {
++        const sh = Math.round(h * 0.5);
++        scene = { x: 0, y: 0, w, h: sh };
++        col = { x: 0, y: sh + 8, w, h: h - sh - 8 };
++      }
++      const energy = eh ? { x: col.x, y: col.y + col.h - eh, w: col.w, h: eh } : null;
++      const area: Rect = { x: col.x, y: col.y, w: col.w, h: col.h - (eh ? eh + 8 : 0) };
++      const keys = graphs();
++      const gap = 8;
++      const each = (area.h - gap * (keys.length - 1)) / keys.length;
++      const charts: Partial<Record<GraphKey, Rect>> = {};
++      keys.forEach((key, i) => {
++        charts[key] = { x: area.x, y: area.y + i * (each + gap), w: area.w, h: each };
++      });
++      return { scene, charts, chartArea: area, energy, tall };
++    }
++    let lay = computeLayout();
++
++    const HIDDEN: Rect = { x: -10, y: -10, w: 1, h: 1 };
++    const makePlot = (key: GraphKey) =>
++      new Plot(surface, {
++        x: [0, 4],
++        y: [-1, 1],
++        equalAspect: false,
++        pan: false,
++        zoom: false,
++        controls: false,
++        region: () => lay.charts[key] ?? HIDDEN,
++        xAxis: { label: ctx.t('axisT') },
++        yAxis: { label: '', numbers: false },
++      });
++    const plots: Record<GraphKey, Plot> = { y: makePlot('y'), v: makePlot('v'), a: makePlot('a') };
++
++    /* ---------- Zustand ---------- */
++    let sA: State = [0, 0];
++    let sB: State = [0, 0];
++    let t = 0;
++    let nextSample = 0;
++    const hist = new History();
++    const stepper = new FixedStepper(0.001);
++    /** Aufsummierter Phasenwinkel von Pendel A (für die Stoppuhr). */
++    let phaseAcc = 0;
++    let lastPhase = 0;
++    /** Anfangsenergie (Bezug für die Energiebalken) und Bezugsniveau der Lageenergie. */
++    let e0 = 1;
++    let yRef = 0;
++    let scrub: number | null = null;
++    let watch: { state: 'idle' | 'run' | 'done'; t0: number; ph0: number; t: number; n: number; exact: boolean } = { state: 'idle', t0: 0, ph0: 0, t: 0, n: 0, exact: true };
++    const pop = new Tween(450, ease.outBack);
++    let kView = 0;
++    let lastFrame = performance.now();
++    let geo: Geo | null = null;
++    let drag: { kind: 'mass' | 'phasor'; moved: boolean; x: number; y: number } | null = null;
++    let hoverKind: 'mass' | 'phasor' | null = null;
++
++    function restart(): void {
++      sA = initialState(ampM(), p.phi * DEG, p.m, p.D, p.damp);
++      sB = initialState(ampM(), p.phi * DEG, mB(), DB(), p.damp);
++      t = 0;
++      nextSample = SAMPLE;
++      hist.clear();
++      hist.push(0, sA, sB);
++      stepper.reset();
++      phaseAcc = phasor(sA, p.m, p.D, p.damp).phase;
++      lastPhase = phaseAcc;
++      yRef = -ampM();
++      const e = energies(sA, p.m, p.D, yRef);
++      e0 = energyMode() === 'full' ? e.spring + e.grav + e.kin : e.osc + e.kin;
++      scrub = null;
++      watch = { state: 'idle', t0: 0, ph0: 0, t: 0, n: 0, exact: true };
++    }
++
++    /** Angezeigter Zustand: live oder an der Zeitmarke. */
++    function view(): { t: number; a: State; b: State } {
++      if (scrub !== null) {
++        const s = hist.stateAt(scrub);
++        if (s) return { t: scrub, a: s.a, b: s.b };
++      }
++      return { t, a: sA, b: sB };
++    }
++
++    /* ---------- Ergebnisse ---------- */
++    const n = (v: number, d: number) => fmt.num(v, d);
++
++    function phiText(): string {
++      if (p.phi === 0) return '';
++      const s = fmt.pi(Math.abs(p.phi) * DEG);
++      return ` ${p.phi < 0 ? '−' : '+'} ${s}`;
++    }
++
++    function updateNow(): void {
++      const v = view();
++      const a = acceleration(v.a, p.m, p.D, p.damp);
++      ctx.readout('now', tr(scrub !== null ? 'nowScrub' : 'now', { t: fmt.fixed(v.t, 2), y: n(v.a[0] * 100, 1), v: n(v.a[1], 2), a: n(a, 2) }));
++    }
++
++    function updateWatch(): void {
++      if (watch.state === 'idle') ctx.readout('watch', ctx.t('watchIdle'));
++      else if (watch.state === 'run') ctx.readout('watch', tr('watchRun', { t: fmt.fixed(watch.t, 2), n: String(watch.n) }));
++      else if (watch.n < 1) ctx.readout('watch', tr('watchNone', { t: fmt.fixed(watch.t, 2) }));
++      else ctx.readout('watch', { html: tr('watchDone', { t: fmt.fixed(watch.t, 2), n: String(watch.n), T: n(watch.t / watch.n, 3) }) + (watch.exact ? '' : `<br>${tr('watchOff', { t: fmt.fixed(watch.t, 2), n: String(watch.n) })}`) });
++      ctx.setAction('watch', { label: ctx.t(watch.state === 'run' ? 'stopLabel' : 'startLabel'), enabled: !ctx.locked });
++    }
++
++    function updateReadouts(): void {
++      const T = period(p.m, p.D);
++      const w = omega0(p.m, p.D);
++      let html = tr('TText', { m: n(p.m, 2), D: n(p.D, 0), T: n(T, 3), f: n(1 / T, 2), w: n(w, 2) });
++      if (p.damp > 0) html += tr('TDamped', { Td: n(dampedPeriod(p.m, p.D, p.damp), 3) });
++      ctx.readout('T', { html });
++      ctx.readout('eq', { html: tr('eqText', { m: n(p.m, 2), D: n(p.D, 0), s: n(equilibriumExtension(p.m, p.D) * 100, 1) }) });
++      if (p.damp > 0) ctx.readout('law', { html: tr('lawDamped', { amp: n(p.amp, 1), d: n(p.damp, 2), w: n(dampedOmega(p.m, p.D, p.damp), 2), phi: phiText() }) });
++      else ctx.readout('law', { html: tr('lawText', { amp: n(p.amp, 1), w: n(w, 2), phi: phiText(), v: n(ampM() * w, 2), a: n(ampM() * w * w, 2) }) });
++      if (p.cmp) {
++        const Tb = period(mB(), DB());
++        ctx.readout('cmp', { html: tr('cmpText', { Tb: n(Tb, 3), r: n(Tb / T, 2) }) });
++      } else ctx.readout('cmp', null);
++      updateWatch();
++      updateNow();
++    }
++
++    /* ---------- Geometrie der Szene ---------- */
++    function massSize(m: number, sm: boolean): { w: number; h: number } {
++      const w = (24 + 20 * Math.cbrt(m)) * (sm ? 0.82 : 1);
++      return { w, h: w * 0.82 };
++    }
++
++    /** Waagerechte Anordnung (ohne Maßstab k). */
++    function placeX(r: Rect, sm: boolean): { rodA: number; rulerX: number; rulerW: number; xA: number; xB: number; rodB: number; cx: number; space: number; arrowsW: number } {
++      const pad = sm ? 8 : 12;
++      const rulerW = sm ? 22 : 26;
++      const arrowsW = vecMode() === 'off' ? 0 : sm ? 32 : 40;
++      const ma = massSize(p.m, sm);
++      const mb = massSize(mB(), sm);
++      let rodA = r.x + pad + 4;
++      let xA: number;
++      let xB = 0;
++      let rodB = 0;
++      if (p.phasor || p.cmp) xA = rodA + 14 + rulerW + 10 + ma.w / 2;
++      else {
++        xA = r.x + r.w * 0.5;
++        rodA = Math.max(rodA, xA - ma.w / 2 - 10 - rulerW - 60);
++      }
++      const left = xA + ma.w / 2 + arrowsW + 6;
++      let right = r.x + r.w - pad;
++      if (p.cmp) {
++        rodB = r.x + r.w - pad - 4;
++        xB = p.phasor ? rodB - 14 - mb.w / 2 - 6 : Math.max(left + mb.w / 2 + arrowsW + 30, r.x + r.w * 0.66);
++        right = xB - mb.w / 2 - arrowsW - 6;
++      }
++      const rulerX = xA - ma.w / 2 - 10 - rulerW / 2;
++      return { rodA, rulerX, rulerW, xA, xB, rodB, cx: (left + right) / 2, space: right - left, arrowsW };
++    }
++
++    function verticalFrame(r: Rect, sm: boolean): { top: number; bottom: number; tableY: number; hook: number } {
++      const tableY = r.y + r.h - (sm ? 16 : 20);
++      return { top: r.y + (sm ? 46 : 54), bottom: tableY - 10, tableY, hook: sm ? 7 : 9 };
++    }
++
++    function pendList(): { m: number; D: number }[] {
++      return p.cmp ? [{ m: p.m, D: p.D }, { m: mB(), D: DB() }] : [{ m: p.m, D: p.D }];
++    }
++
++    /** Maßstab (Pixel pro m), damit alles in die Szene passt. */
++    function kTarget(r: Rect): number {
++      const sm = small();
++      const vf = verticalFrame(r, sm);
++      const ampV = Math.max(ampM(), 0.02);
++      const list = pendList();
++      const mhMax = Math.max(...list.map((q) => massSize(q.m, sm).h));
++      let k = Infinity;
++      for (const q of list) {
++        const mh = massSize(q.m, sm).h;
++        const room = vf.bottom - vf.top - mh / 2 - vf.hook - mhMax / 2;
++        k = Math.min(k, room / (L0 + equilibriumExtension(q.m, q.D) + ampV));
++      }
++      if (p.phasor) {
++        const hx = placeX(r, sm);
++        k = Math.min(k, Math.max(18, hx.space / 2 - (sm ? 8 : 14)) / ampM());
++      }
++      return Math.max(40, k);
++    }
++
++    function buildGeo(r: Rect, k: number): Geo {
++      const sm = small();
++      const vf = verticalFrame(r, sm);
++      const hx = placeX(r, sm);
++      const list = pendList();
++      const ampV = Math.max(ampM(), 0.02);
++      const sizes = list.map((q) => massSize(q.m, sm));
++      const mhMax = Math.max(...sizes.map((s) => s.h));
++      const upper = Math.max(...list.map((q, i) => sizes[i]!.h / 2 + vf.hook + (L0 + equilibriumExtension(q.m, q.D)) * k));
++      const lower = ampV * k + mhMax / 2;
++      const slack = Math.max(0, vf.bottom - vf.top - upper - lower);
++      const yEq = vf.top + upper + slack * 0.45;
++      const pend: Pend[] = list.map((q, i) => {
++        const s0 = equilibriumExtension(q.m, q.D);
++        const size = sizes[i]!;
++        return {
++          x: i === 0 ? hx.xA : hx.xB,
++          m: q.m,
++          D: q.D,
++          s0,
++          mw: size.w,
++          mh: size.h,
++          sup: yEq - size.h / 2 - vf.hook - (L0 + s0) * k,
++          rod: i === 0 ? hx.rodA : hx.rodB,
++          side: i === 0 ? 1 : -1,
++        };
++      });
++      const span = ampV * k + (sm ? 14 : 18);
++      return {
++        r,
++        small: sm,
++        k,
++        yEq,
++        tableY: vf.tableY,
++        rulerX: hx.rulerX,
++        rulerW: hx.rulerW,
++        rulerTop: yEq - span,
++        rulerBot: yEq + span,
++        hook: vf.hook,
++        pend,
++        cx: hx.cx,
++        R: ampM() * k,
++        arrowsW: hx.arrowsW,
++      };
++    }
++
++    /* ---------- Zeiger: Körper und Zeigerspitze ziehen, Diagramm antippen ---------- */
++    function phasorTip(g0: Geo, s: State, m: number, D: number): [number, number] {
++      const ph = phasor(s, m, D, p.damp);
++      const len = ph.amp * g0.k;
++      return [g0.cx + len * Math.cos(ph.phase), g0.yEq - len * Math.sin(ph.phase)];
++    }
++
++    function hitScene(px: number, py: number): 'mass' | 'phasor' | null {
++      if (!geo) return null;
++      const v = view();
++      if (p.phasor) {
++        const [tx, ty] = phasorTip(geo, v.a, p.m, p.D);
++        if (Math.hypot(px - tx, py - ty) < 16) return 'phasor';
++      }
++      const A = geo.pend[0]!;
++      const yc = geo.yEq - v.a[0] * geo.k;
++      if (Math.abs(px - A.x) <= A.mw / 2 + 8 && Math.abs(py - yc) <= A.mh / 2 + 10) return 'mass';
++      return null;
++    }
++
++    surface.addTarget({
++      contains: (px: number, py: number) => !ctx.locked && hitScene(px, py) !== null,
++      pointerDown: (q: { px: number; py: number }) => {
++        const kind = hitScene(q.px, q.py);
++        if (!kind || ctx.locked) return false;
++        ctx.clock.pause();
++        scrub = null;
++        drag = { kind, moved: false, x: q.px, y: q.py };
++        surface.setCursor('grabbing');
++        return true;
++      },
++      pointerMove: (q: { px: number; py: number }) => {
++        if (!drag || !geo) return;
++        if (!drag.moved && Math.hypot(q.px - drag.x, q.py - drag.y) < 3) return;
++        drag.moved = true;
++        if (drag.kind === 'mass') {
++          const y = (geo.yEq - q.py) / geo.k;
++          ctx.set({ amp: clamp(Math.abs(y) * 100, 1, 10), phi: y >= 0 ? 90 : -90 });
++        } else {
++          const dx = q.px - geo.cx;
++          const dy = geo.yEq - q.py;
++          const ang = Math.atan2(dy, dx) / DEG;
++          ctx.set({ amp: clamp((Math.hypot(dx, dy) / geo.k) * 100, 1, 10), phi: ang > 172.5 ? -180 : ang });
++        }
++      },
++      pointerUp: () => {
++        const moved = drag?.moved ?? false;
++        drag = null;
++        surface.setCursor(hoverKind ? 'grab' : '');
++        if (moved && !ctx.locked) ctx.clock.play();
++        ctx.requestRender();
++      },
++      hover: (q: { px: number; py: number } | null) => {
++        const kind = q ? hitScene(q.px, q.py) : null;
++        if (kind !== hoverKind) {
++          hoverKind = kind;
++          ctx.requestRender();
++        }
++        surface.setCursor(kind ? 'grab' : '');
++      },
++      wheel: () => false,
++    });
++
++    // Zeitmarke: Diagramme antippen oder darüberziehen (hält die Bewegung an)
++    const window0 = () => {
++      const W = niceWindow(maxT());
++      return { W, t0: Math.max(0, t - 0.86 * W) };
++    };
++    function setScrub(px: number): void {
++      const plot = plots[graphs()[0]!];
++      const tt = plot.toWorld(px, 0)[0];
++      const { t0 } = window0();
++      scrub = clamp(tt, Math.max(t0, hist.first()), t);
++      updateNow();
++      ctx.requestRender();
++    }
++    const inArea = (px: number, py: number) => {
++      const a = lay.chartArea;
++      return px >= a.x && px <= a.x + a.w && py >= a.y && py <= a.y + a.h;
++    };
++    surface.addTarget({
++      contains: (px: number, py: number) => !ctx.locked && hist.size > 2 && inArea(px, py),
++      pointerDown: (q: { px: number; py: number }) => {
++        if (ctx.locked || hist.size <= 2) return false;
++        ctx.clock.pause();
++        setScrub(q.px);
++        return true;
++      },
++      pointerMove: (q: { px: number; py: number }) => setScrub(q.px),
++      pointerUp: () => {},
++      hover: (q: { px: number; py: number } | null) => surface.setCursor(q ? 'ew-resize' : ''),
++      wheel: () => false,
++    });
++
++    const offClock = ctx.clock.onChange((playing) => {
++      if (playing && scrub !== null) {
++        scrub = null;
++        updateNow();
++      }
++    });
++
++    /* ---------- Zeichenhilfen ---------- */
++    /** Text mit tiefgestellten Teilen: „F_[G]“. */
++    function parts(str: string): { t: string; sub: boolean }[] {
++      const out: { t: string; sub: boolean }[] = [];
++      const re = /_\[([^\]]*)\]/g;
++      let last = 0;
++      let mm: RegExpExecArray | null;
++      while ((mm = re.exec(str))) {
++        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
++        out.push({ t: mm[1]!, sub: true });
++        last = re.lastIndex;
++      }
++      if (last < str.length) out.push({ t: str.slice(last), sub: false });
++      return out;
++    }
++
++    function richWidth(str: string, size: number, weight = 700): number {
++      const g = surface.g;
++      return parts(str).reduce((w, q) => {
++        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
++        return w + g.measureText(q.t).width;
++      }, 0);
++    }
++
++    function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const list = parts(str);
++      const total = richWidth(str, size, weight);
++      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
++      g.textAlign = 'left';
++      g.textBaseline = 'middle';
++      for (const pass of halo ? [0, 1] : [1]) {
++        let cx = start;
++        for (const q of list) {
++          const s = q.sub ? Math.round(size * 0.74) : size;
++          g.font = `${weight} ${s}px ${theme.font}`;
++          const yy = y + (q.sub ? size * 0.3 : 0);
++          if (pass === 0) {
++            g.lineWidth = 3.5;
++            g.lineJoin = 'round';
++            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
++            g.strokeText(q.t, cx, yy);
++          } else {
++            g.fillStyle = color;
++            g.fillText(q.t, cx, yy);
++          }
++          cx += g.measureText(q.t).width;
++        }
++      }
++      return total;
++    }
++
++    function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const w = richWidth(label, size) + 16;
++      const h = size + 11;
++      const x0 = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
++      g.save();
++      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
++      g.shadowBlur = 6;
++      g.shadowOffsetY = 1;
++      g.fillStyle = fill ?? (theme.dark ? 'rgba(16,22,31,0.9)' : 'rgba(255,255,255,0.94)');
++      roundRect(g, x0, y, w, h, h / 2);
++      g.fill();
++      g.restore();
++      if (!fill) {
++        g.strokeStyle = withAlpha(color, 0.45);
++        g.lineWidth = 1;
++        roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
++        g.stroke();
++      }
++      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? '#ffffff' : color, 'center', false);
++      return w;
++    }
++
++    function card(r: Rect): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      g.save();
++      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
++      g.shadowBlur = 12;
++      g.shadowOffsetY = 3;
++      g.fillStyle = theme.bg;
++      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
++      g.fill();
++      g.restore();
++      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
++      g.lineWidth = 1.2;
++      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
++      g.stroke();
++    }
++
++    /** Senkrechter Pfeil in Pixeln (von y0 nach y1). */
++    function vArrow(x: number, y0: number, y1: number, color: string, width: number): void {
++      const g = surface.g;
++      const len = Math.abs(y1 - y0);
++      if (len < 3) return;
++      const dir = Math.sign(y1 - y0);
++      const head = Math.min(10, len * 0.6);
++      g.strokeStyle = color;
++      g.fillStyle = color;
++      g.lineWidth = width;
++      g.lineCap = 'round';
++      g.beginPath();
++      g.moveTo(x, y0);
++      g.lineTo(x, y1 - dir * head * 0.7);
++      g.stroke();
++      g.beginPath();
++      g.moveTo(x, y1);
++      g.lineTo(x - head * 0.55, y1 - dir * head);
++      g.lineTo(x + head * 0.55, y1 - dir * head);
++      g.closePath();
++      g.fill();
++    }
++
++    function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width: number, head = 10): void {
++      const g = surface.g;
++      const len = Math.hypot(x1 - x0, y1 - y0);
++      if (len < 2) return;
++      const ux = (x1 - x0) / len;
++      const uy = (y1 - y0) / len;
++      const h = Math.min(head, len * 0.6);
++      g.strokeStyle = color;
++      g.lineWidth = width;
++      g.lineCap = 'round';
++      g.beginPath();
++      g.moveTo(x0, y0);
++      g.lineTo(x1 - ux * h * 0.7, y1 - uy * h * 0.7);
++      g.stroke();
++      g.fillStyle = color;
++      g.beginPath();
++      g.moveTo(x1, y1);
++      g.lineTo(x1 - ux * h - uy * h * 0.5, y1 - uy * h + ux * h * 0.5);
++      g.lineTo(x1 - ux * h + uy * h * 0.5, y1 - uy * h - ux * h * 0.5);
++      g.closePath();
++      g.fill();
++    }
++
++    /* ---------- Szene ---------- */
++    const metal = (x0: number, w: number) => {
++      const m = surface.g.createLinearGradient(x0, 0, x0 + w, 0);
++      m.addColorStop(0, '#5d6570');
++      m.addColorStop(0.45, '#d5dae1');
++      m.addColorStop(1, '#5d6570');
++      return m;
++    };
++
++    /** Schraubenfeder von y0 bis y1. */
++    function drawSpring(cx: number, y0: number, y1: number, coils: number, R: number): void {
++      const g = surface.g;
++      const dark = ctx.theme.dark;
++      const lead = 6;
++      const top = y0 + lead;
++      const bot = y1 - lead;
++      const per = 18;
++      const total = coils * per;
++      const pos = (i: number): [number, number, number] => {
++        const ph = (i / per) * TAU;
++        return [cx + R * Math.sin(ph), top + ((bot - top) * i) / total + R * 0.22 * Math.cos(ph), Math.cos(ph)];
++      };
++      const steel = dark ? '#c3cbd6' : '#8f99a6';
++      const back = dark ? '#5b6573' : '#5e6874';
++      g.save();
++      g.lineCap = 'round';
++      g.lineJoin = 'round';
++      g.strokeStyle = steel;
++      g.lineWidth = 2.2;
++      g.beginPath();
++      g.moveTo(cx, y0);
++      g.lineTo(cx, top);
++      g.moveTo(cx, bot);
++      g.lineTo(cx, y1);
++      g.stroke();
++      for (const front of [false, true]) {
++        g.strokeStyle = front ? steel : back;
++        g.lineWidth = front ? 2.4 : 1.6;
++        g.beginPath();
++        let pen = false;
++        for (let i = 0; i <= total; i++) {
++          const [px, py, depth] = pos(i);
++          if (depth >= 0 !== front) {
++            pen = false;
++            continue;
++          }
++          if (!pen) {
++            const [qx, qy] = pos(Math.max(0, i - 1));
++            g.moveTo(qx, qy);
++            pen = true;
++          }
++          g.lineTo(px, py);
++        }
++        g.stroke();
++      }
++      g.strokeStyle = 'rgba(255,255,255,0.45)';
++      g.lineWidth = 0.9;
++      g.beginPath();
++      for (let i = 0; i <= total; i++) {
++        const [px, py, depth] = pos(i);
++        if (depth > 0.55) g.lineTo(px - 0.6, py - 0.8);
++        else g.moveTo(px - 0.6, py - 0.8);
++      }
++      g.stroke();
++      g.restore();
++    }
++
++    /** Massestück aus Messing mit Haken; (x, y) = Mitte. */
++    function drawMass(x: number, y: number, w: number, h: number, hook: number, label: string, highlight: number): void {
++      const g = surface.g;
++      const dark = ctx.theme.dark;
++      const top = y - h / 2;
++      // Öse, in die die Feder eingehängt ist
++      g.strokeStyle = dark ? '#c3cbd6' : '#5d6570';
++      g.lineWidth = 2;
++      g.beginPath();
++      g.moveTo(x, top);
++      g.lineTo(x, top - hook * 0.45);
++      g.stroke();
++      g.beginPath();
++      g.ellipse(x, top - hook * 0.72, 2.6, hook * 0.3, 0, 0, TAU);
++      g.stroke();
++      if (highlight > 0) {
++        g.fillStyle = withAlpha(ctx.theme.series[0]!, 0.14 + 0.12 * highlight);
++        g.beginPath();
++        g.ellipse(x, y, w / 2 + 9 + 3 * highlight, h / 2 + 9 + 3 * highlight, 0, 0, TAU);
++        g.fill();
++      }
++      g.save();
++      g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
++      g.shadowBlur = 8;
++      g.shadowOffsetY = 3;
++      const brass = g.createLinearGradient(x - w / 2, 0, x + w / 2, 0);
++      brass.addColorStop(0, '#8d6a24');
++      brass.addColorStop(0.3, '#f0d27a');
++      brass.addColorStop(0.55, '#d4ad4c');
++      brass.addColorStop(1, '#7c5b1c');
++      g.fillStyle = brass;
++      roundRect(g, x - w / 2, top, w, h, 4);
++      g.fill();
++      g.restore();
++      // Deckel- und Bodenkante
++      const cap = Math.max(3, h * 0.16);
++      g.fillStyle = 'rgba(255,255,255,0.28)';
++      roundRect(g, x - w / 2 + 1.5, top + 1.5, w - 3, cap, 2);
++      g.fill();
++      g.fillStyle = 'rgba(0,0,0,0.16)';
++      g.fillRect(x - w / 2 + 2, top + h - 3.5, w - 4, 2);
++      text(g, label, x, y + cap * 0.35, { font: `700 ${w > 40 ? 10.5 : 9.5}px ${ctx.theme.font}`, color: '#3d2a06' });
++    }
++
++    function drawStand(rod: number, armY: number, armTo: number, tableY: number, side: 1 | -1): void {
++      const g = surface.g;
++      const dark = ctx.theme.dark;
++      // Fuß
++      g.fillStyle = dark ? '#2b3340' : '#3c4552';
++      roundRect(g, side === 1 ? rod - 14 : rod - 46, tableY - 7, 60, 8, 3);
++      g.fill();
++      // Stange
++      g.fillStyle = metal(rod - 4, 8);
++      g.fillRect(rod - 4, armY - 16, 8, tableY - 7 - (armY - 16));
++      // Ausleger
++      const arm = g.createLinearGradient(0, armY - 4, 0, armY + 4);
++      arm.addColorStop(0, '#d5dae1');
++      arm.addColorStop(1, '#5d6570');
++      g.fillStyle = arm;
++      const x0 = Math.min(rod, armTo);
++      const x1 = Math.max(rod, armTo);
++      g.fillRect(x0, armY - 4, x1 - x0 + (side === 1 ? 10 : -10) * 0 + 8, 7);
++      g.fillStyle = dark ? '#6b7584' : '#4a5361';
++      roundRect(g, rod - 9, armY - 9, 18, 18, 3);
++      g.fill();
++    }
++
++    function drawRuler(g0: Geo): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const rx = g0.rulerX;
++      const half = g0.rulerW / 2;
++      const top = g0.rulerTop;
++      const bot = g0.rulerBot;
++      // Halter vom Stativ zum Maßstab
++      const A = g0.pend[0]!;
++      const holder = g.createLinearGradient(0, top + 4, 0, top + 10);
++      holder.addColorStop(0, '#d5dae1');
++      holder.addColorStop(1, '#5d6570');
++      g.fillStyle = holder;
++      g.fillRect(A.rod, top + 4, rx - A.rod, 6);
++      g.fillStyle = dark ? '#6b7584' : '#4a5361';
++      roundRect(g, A.rod - 7, top, 14, 14, 3);
++      g.fill();
++      const wood = g.createLinearGradient(rx - half, 0, rx + half, 0);
++      wood.addColorStop(0, dark ? '#d8c27f' : '#f8e7a8');
++      wood.addColorStop(1, dark ? '#b9a25e' : '#e8cd7a');
++      g.save();
++      g.shadowColor = 'rgba(0,0,0,0.2)';
++      g.shadowBlur = 5;
++      g.shadowOffsetX = 1;
++      g.shadowOffsetY = 2;
++      g.fillStyle = wood;
++      roundRect(g, rx - half, top, g0.rulerW, bot - top, 3);
++      g.fill();
++      g.restore();
++      const ink = '#3d2f0c';
++      const pxPerCm = g0.k / 100;
++      const multipleOf = (a: number, b: number) => Math.abs(a / b - Math.round(a / b)) < 1e-9;
++      // Beschriftung alle 1, 2, 5, … cm (mindestens 17 px Abstand), feinere Striche als Teiler davon
++      const labelEvery = [1, 2, 5, 10, 20, 50].find((q) => q * pxPerCm >= 17) ?? 50;
++      const divisors = [0.5, 1, 2, 5, 10, 20, 50].filter((q) => q <= labelEvery && multipleOf(labelEvery, q));
++      const minor = divisors.find((q) => q * pxPerCm >= 4) ?? labelEvery;
++      const major = divisors.find((q) => q * pxPerCm >= 9 && multipleOf(q, minor) && q > minor) ?? labelEvery;
++      const range = (g0.yEq - top - 6) / pxPerCm;
++      g.strokeStyle = ink;
++      g.lineWidth = 1;
++      g.beginPath();
++      for (let c = -Math.floor(range / minor) * minor; c <= range + 1e-9; c += minor) {
++        const y = Math.round(g0.yEq - c * pxPerCm) + 0.5;
++        const isMajor = multipleOf(c, major);
++        g.moveTo(rx + half, y);
++        g.lineTo(rx + half - (isMajor ? 8 : 4.5), y);
++      }
++      g.stroke();
++      const fs = g0.small ? 9 : 10;
++      for (let c = -Math.floor(range / labelEvery) * labelEvery; c <= range + 1e-9; c += labelEvery) {
++        const y = g0.yEq - c * pxPerCm;
++        if (y < top + 8 || y > bot - 6) continue;
++        const label = c === 0 ? '0' : `${c > 0 ? '+' : '−'}${fmt.num(Math.abs(c), 1)}`;
++        text(g, label, rx - 1, y, { font: `700 ${fs}px ${theme.font}`, color: ink, align: 'center' });
++      }
++      text(g, ctx.t('cm'), rx, top - 7, { font: `700 ${fs}px ${theme.font}`, color: theme.muted });
++    }
++
++    function drawScene(r: Rect): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const g0 = geo!;
++      const sm = g0.small;
++      const v = view();
++      g.save();
++      roundRect(g, r.x, r.y, r.w, r.h, 12);
++      g.clip();
++      // Wand und Tisch
++      const wall = g.createLinearGradient(0, r.y, 0, r.y + r.h);
++      wall.addColorStop(0, dark ? '#172131' : '#f1f4f8');
++      wall.addColorStop(1, dark ? '#101824' : '#e1e7ee');
++      g.fillStyle = wall;
++      g.fillRect(r.x, r.y, r.w, r.h);
++      const table = g.createLinearGradient(0, g0.tableY, 0, r.y + r.h);
++      table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
++      table.addColorStop(1, dark ? '#33281e' : '#9c7349');
++      g.fillStyle = table;
++      g.fillRect(r.x, g0.tableY, r.w, r.y + r.h - g0.tableY);
++      g.fillStyle = 'rgba(255,255,255,0.22)';
++      g.fillRect(r.x, g0.tableY, r.w, 1.5);
++
++      // Stative
++      for (const q of g0.pend) drawStand(q.rod, q.sup, q.x, g0.tableY, q.side);
++      drawRuler(g0);
++
++      // Ruhelage
++      const restColor = withAlpha(theme.text, dark ? 0.45 : 0.4);
++      g.strokeStyle = restColor;
++      g.lineWidth = 1.2;
++      g.setLineDash([5, 5]);
++      g.beginPath();
++      const restRight = p.cmp ? g0.pend[1]!.x + g0.pend[1]!.mw / 2 + 4 : p.phasor ? g0.cx + g0.R + 14 : g0.pend[0]!.x + g0.pend[0]!.mw / 2 + 24;
++      g.moveTo(g0.rulerX + g0.rulerW / 2 + 2, g0.yEq);
++      g.lineTo(restRight, g0.yEq);
++      g.stroke();
++      g.setLineDash([]);
++
++      g0.pend.forEach((q, i) => drawSpringInfo(g0, q, i));
++      // Zeigerdiagramm
++      if (p.phasor) drawPhasor(g0, v);
++      // Beschriftung der Ruhelage (im Zeigerkreis links unter der Linie)
++      if (p.phasor) {
++        const rs = sm ? 10.5 : 11.5;
++        if (richWidth(ctx.t('rest'), rs, 600) < g0.R - 22) richText(ctx.t('rest'), g0.cx - g0.R + 5, g0.yEq + (sm ? 10 : 11), rs, theme.muted, 'left', true, 600);
++        else richText(ctx.t('rest'), g0.cx - 16, g0.yEq + g0.R + (sm ? 12 : 14), rs, theme.muted, 'right', true, 600);
++      }
++      else richText(ctx.t('rest'), g0.pend[0]!.x + g0.pend[0]!.mw / 2 + g0.arrowsW + 10, g0.yEq - 9, sm ? 10.5 : 11.5, theme.muted, 'left', true, 600);
++
++      // Pendel
++      g0.pend.forEach((q, i) => {
++        const s = i === 0 ? v.a : v.b;
++        const yc = g0.yEq - s[0] * g0.k;
++        const topMass = yc - q.mh / 2 - g0.hook;
++        // Aufhängung am Ausleger
++        g.fillStyle = dark ? '#8a94a3' : '#4a5361';
++        roundRect(g, q.x - 4, q.sup - 1, 8, 5, 1.5);
++        g.fill();
++        drawSpring(q.x, q.sup, topMass, sm ? 12 : 14, sm ? 8 : 10);
++        const hl = i === 0 && !ctx.locked ? (drag?.kind === 'mass' ? 1 : hoverKind === 'mass' ? 0.6 : 0.25) : 0;
++        drawMass(q.x, yc, q.mw, q.mh, g0.hook, `${fmt.num(q.m * 1000, 0)} g`, hl);
++        // Zeiger am Maßstab (nur Pendel A)
++        if (i === 0) {
++          g.strokeStyle = withAlpha(yColor(), 0.9);
++          g.lineWidth = 1.6;
++          g.beginPath();
++          g.moveTo(q.x - q.mw / 2 - 2, yc);
++          g.lineTo(g0.rulerX + g0.rulerW / 2 + 2, yc);
++          g.stroke();
++          g.fillStyle = yColor();
++          g.beginPath();
++          g.moveTo(g0.rulerX + g0.rulerW / 2, yc);
++          g.lineTo(g0.rulerX + g0.rulerW / 2 + 7, yc - 4);
++          g.lineTo(g0.rulerX + g0.rulerW / 2 + 7, yc + 4);
++          g.closePath();
++          g.fill();
++        }
++        drawVectors(q, s, yc);
++      });
++
++      // Anzeigen oben
++      const size = sm ? 11 : 12;
++      const w1 = pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(v.t, 2)} s`, scrub !== null ? aColor() : theme.text, 'left', size);
++      let right = r.x + r.w - 8;
++      if (p.per) {
++        const label = p.cmp ? tr('TAB', { a: fmt.fixed(period(p.m, p.D), 2), b: fmt.fixed(period(mB(), DB()), 2) }) : tr('T', { T: fmt.fixed(period(p.m, p.D), 2) });
++        right -= pill(right, r.y + 8, label, theme.text, 'right', size) + 6;
++      }
++      if (watch.state !== 'idle') drawWatchPill(r, r.x + 8 + w1 + 6, right, size);
++      if (scrub !== null && !sm) text(g, ctx.t('scrubHint'), r.x + r.w / 2, r.y + r.h - 8, { font: `600 10.5px ${theme.font}`, color: 'rgba(255,255,255,0.85)' });
++      g.restore();
++    }
++
++    /** Beschriftung neben der Feder: Name, Federhärte und Maßlinien für L₀ und s₀ (Ruhelage). */
++    function drawSpringInfo(g0: Geo, q: Pend, i: number): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const sm = g0.small;
++      const side = q.side;
++      const x = Math.round(q.x + side * (sm ? 15 : 20)) + 0.5;
++      const yA = q.sup;
++      const yB = q.sup + L0 * g0.k;
++      const yC = g0.yEq - q.mh / 2 - g0.hook;
++      const align: CanvasTextAlign = side === 1 ? 'left' : 'right';
++      const lx = x + side * 6;
++      const fs = sm ? 10.5 : 11.5;
++      const s0c = theme.series[2]!;
++      const s0Text = `s_[0] = ${n(q.s0 * 100, 1)} cm`;
++      // höchste Lage der Oberkante des Körpers: darüber ist Platz für die Beschriftung von s₀
++      const highest = yC - ampM() * g0.k - (vecMode() === 'off' ? 6 : 14);
++      const roomy = highest > yA + (sm ? 40 : 46);
++      const head = `${p.cmp ? `${ctx.t(i === 0 ? 'pendA' : 'pendB')}: ` : ''}D = ${n(q.D, 0)} N/m`;
++      const hw = richText(head, lx, yA + (sm ? 11 : 13), sm ? 11 : 12, theme.text, align);
++      if (!roomy) richText(s0Text, lx + side * (hw + 8), yA + (sm ? 11 : 13), fs, s0c, align, true, 700);
++      const tick = (y: number, color: string) => {
++        g.strokeStyle = color;
++        g.lineWidth = 1.3;
++        g.beginPath();
++        g.moveTo(x - 4, y);
++        g.lineTo(x + 4, y);
++        g.stroke();
++      };
++      const top = yA + (sm ? 22 : 26);
++      if (yB - top > 10) {
++        g.strokeStyle = withAlpha(theme.text, 0.4);
++        g.lineWidth = 1.2;
++        g.beginPath();
++        g.moveTo(x, top);
++        g.lineTo(x, yB);
++        g.stroke();
++        const s0Label = Math.min((yB + yC) / 2, highest);
++        if (roomy && yB - top > 26 && s0Label - (top + yB) / 2 > 18) richText(sm ? 'L_[0]' : `L_[0] = ${n(L0 * 100, 0)} cm`, lx, (top + yB) / 2, fs, theme.muted, align, true, 650);
++      }
++      tick(yB, withAlpha(theme.text, 0.5));
++      g.strokeStyle = s0c;
++      g.lineWidth = 2;
++      g.beginPath();
++      g.moveTo(x, yB);
++      g.lineTo(x, yC);
++      g.stroke();
++      tick(yC, s0c);
++      // Beschriftung oberhalb der höchsten Lage des Körpers, damit er sie nicht verdeckt
++      if (roomy) richText(s0Text, lx, Math.min((yB + yC) / 2, highest), fs, s0c, align, true, 700);
++    }
++
++    function drawWatchPill(r: Rect, left: number, right: number, size: number): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const run = watch.state === 'run';
++      const color = run ? theme.series[2]! : theme.text;
++      const timeStr = `${fmt.fixed(watch.t, 2)} s`;
++      const countStr = tr('periods', { n: String(watch.n) });
++      g.font = `700 ${size}px ${theme.font}`;
++      const icon = size + 6;
++      const w = icon + 8 + g.measureText(timeStr).width + 10 + g.measureText(countStr).width + 16;
++      const h = size + 11;
++      let x0 = Math.min(right - w, Math.max(left, (r.x + r.w) / 2 - w / 2));
++      let y0 = r.y + 8;
++      if (x0 < left) {
++        x0 = r.x + 8;
++        y0 = r.y + 8 + h + 6;
++      }
++      const k = pop.running ? 1 + 0.08 * Math.sin(Math.PI * pop.t) : 1;
++      g.save();
++      g.translate(x0 + w / 2, y0 + h / 2);
++      g.scale(k, k);
++      g.translate(-(x0 + w / 2), -(y0 + h / 2));
++      g.save();
++      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
++      g.shadowBlur = 6;
++      g.shadowOffsetY = 1;
++      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.92)' : 'rgba(255,255,255,0.96)';
++      roundRect(g, x0, y0, w, h, h / 2);
++      g.fill();
++      g.restore();
++      g.strokeStyle = withAlpha(run ? theme.series[2]! : theme.muted, 0.7);
++      g.lineWidth = run ? 1.6 : 1;
++      roundRect(g, x0 + 0.5, y0 + 0.5, w - 1, h - 1, h / 2);
++      g.stroke();
++      // Stoppuhr-Symbol
++      const ix = x0 + 8 + icon / 2;
++      const iy = y0 + h / 2 + 1;
++      const ir = icon / 2 - 2;
++      g.strokeStyle = color;
++      g.lineWidth = 1.6;
++      g.beginPath();
++      g.arc(ix, iy, ir, 0, TAU);
++      g.stroke();
++      g.beginPath();
++      g.moveTo(ix, iy - ir - 1);
++      g.lineTo(ix, iy - ir - 3.5);
++      g.moveTo(ix - 2.5, iy - ir - 3.5);
++      g.lineTo(ix + 2.5, iy - ir - 3.5);
++      g.stroke();
++      const ang = (watch.t % 1) * TAU - Math.PI / 2;
++      g.beginPath();
++      g.moveTo(ix, iy);
++      g.lineTo(ix + Math.cos(ang) * (ir - 1.5), iy + Math.sin(ang) * (ir - 1.5));
++      g.stroke();
++      let tx = x0 + 8 + icon + 8;
++      text(g, timeStr, tx, y0 + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color, align: 'left' });
++      tx += g.measureText(timeStr).width + 10;
++      text(g, countStr, tx, y0 + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: theme.muted, align: 'left' });
++      g.restore();
++    }
++
++    function drawPhasor(g0: Geo, v: { a: State; b: State }): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const sm = g0.small;
++      const cx = g0.cx;
++      const cy = g0.yEq;
++      const R = g0.R;
++      // Bezugskreis
++      g.fillStyle = withAlpha(yColor(), theme.dark ? 0.07 : 0.05);
++      g.beginPath();
++      g.arc(cx, cy, R, 0, TAU);
++      g.fill();
++      g.strokeStyle = withAlpha(theme.text, 0.35);
++      g.lineWidth = 1.3;
++      g.setLineDash([4, 4]);
++      g.stroke();
++      g.setLineDash([]);
++      // senkrechte Achse (y)
++      g.strokeStyle = withAlpha(theme.text, 0.25);
++      g.lineWidth = 1;
++      g.beginPath();
++      g.moveTo(cx, cy - R - 8);
++      g.lineTo(cx, cy + R + 8);
++      g.stroke();
++      // Drehsinn
++      const ra = R + (sm ? 7 : 9);
++      g.strokeStyle = theme.muted;
++      g.lineWidth = 1.4;
++      g.beginPath();
++      g.arc(cx, cy, ra, -Math.PI * 0.42, -Math.PI * 0.18);
++      g.stroke();
++      const ea = -Math.PI * 0.42;
++      const ex = cx + ra * Math.cos(ea);
++      const ey = cy + ra * Math.sin(ea);
++      g.fillStyle = theme.muted;
++      g.beginPath();
++      g.moveTo(ex - 1, ey - 1);
++      g.lineTo(ex + 6, ey - 3.5);
++      g.lineTo(ex + 3.5, ey + 4.5);
++      g.closePath();
++      g.fill();
++      text(g, 'ω', cx + (ra + 9) * Math.cos(-Math.PI * 0.3), cy + (ra + 9) * Math.sin(-Math.PI * 0.3), { font: `italic 600 ${sm ? 12 : 13}px ${theme.mathFont}`, color: theme.muted });
++      // Startmarke der Stoppuhr
++      if (watch.state !== 'idle') {
++        const a0 = watch.ph0;
++        g.strokeStyle = theme.series[2]!;
++        g.lineWidth = 3;
++        g.beginPath();
++        g.moveTo(cx + (R - 6) * Math.cos(a0), cy - (R - 6) * Math.sin(a0));
++        g.lineTo(cx + (R + 6) * Math.cos(a0), cy - (R + 6) * Math.sin(a0));
++        g.stroke();
++      }
++      const list: [State, number, number, boolean][] = [[v.a, p.m, p.D, false]];
++      if (p.cmp) list.push([v.b, mB(), DB(), true]);
++      // B zuerst, A darüber
++      for (const [s, m, D, isB] of [...list].reverse()) {
++        const ph = phasor(s, m, D, p.damp);
++        const len = ph.amp * g0.k;
++        const tx = cx + len * Math.cos(ph.phase);
++        const ty = cy - len * Math.sin(ph.phase);
++        const target = isB ? g0.pend[1]! : g0.pend[0]!;
++        // Projektion zum Körper
++        g.strokeStyle = withAlpha(yColor(), 0.7);
++        g.lineWidth = 1.3;
++        g.setLineDash([3, 4]);
++        g.beginPath();
++        g.moveTo(tx, ty);
++        g.lineTo(target.x + (isB ? -1 : 1) * (target.mw / 2 + 2), ty);
++        g.stroke();
++        g.setLineDash([]);
++        // Elongation als senkrechte Komponente
++        g.strokeStyle = withAlpha(yColor(), isB ? 0.45 : 0.75);
++        g.lineWidth = isB ? 3 : 4;
++        g.lineCap = 'butt';
++        g.beginPath();
++        g.moveTo(tx, cy);
++        g.lineTo(tx, ty);
++        g.stroke();
++        g.lineCap = 'round';
++        // Winkel φ (nur A)
++        if (!isB && len > 30) {
++          let a = ph.phase % TAU;
++          if (a < 0) a += TAU;
++          const rr = Math.min(sm ? 14 : 18, len * 0.45);
++          g.fillStyle = withAlpha(aColor(), 0.16);
++          g.strokeStyle = aColor();
++          g.lineWidth = 1.5;
++          g.beginPath();
++          g.moveTo(cx, cy);
++          g.arc(cx, cy, rr, 0, -a, true);
++          g.closePath();
++          g.fill();
++          g.beginPath();
++          g.arc(cx, cy, rr, 0, -a, true);
++          g.stroke();
++          const mid = a / 2;
++          const lr = rr + (sm ? 8 : 10);
++          text(g, 'φ', cx + lr * Math.cos(mid), cy - lr * Math.sin(mid), { font: `italic 700 ${sm ? 12 : 14}px ${theme.mathFont}`, color: aColor() });
++        }
++        // Zeiger
++        if (isB) {
++          g.save();
++          g.setLineDash([5, 4]);
++          g.strokeStyle = yColor();
++          g.lineWidth = 2.2;
++          g.beginPath();
++          g.moveTo(cx, cy);
++          g.lineTo(tx, ty);
++          g.stroke();
++          g.restore();
++          g.fillStyle = yColor();
++          g.beginPath();
++          g.arc(tx, ty, 3.2, 0, TAU);
++          g.fill();
++          richText(ctx.t('pendB'), tx + (tx >= cx ? 8 : -8), ty + (ty <= cy ? -8 : 8), sm ? 11 : 12, yColor(), tx >= cx ? 'left' : 'right');
++        } else {
++          arrowPx(cx, cy, tx, ty, yColor(), sm ? 2.6 : 3, sm ? 9 : 11);
++          if (!ctx.locked) {
++            const hl = drag?.kind === 'phasor' ? 1 : hoverKind === 'phasor' ? 0.6 : 0.25;
++            g.fillStyle = withAlpha(yColor(), 0.15 + 0.15 * hl);
++            g.beginPath();
++            g.arc(tx, ty, 10 + 3 * hl, 0, TAU);
++            g.fill();
++          }
++        }
++      }
++      // Mittelpunkt
++      g.fillStyle = theme.text;
++      g.beginPath();
++      g.arc(cx, cy, 2.6, 0, TAU);
++      g.fill();
++    }
++
++    function drawVectors(q: Pend, s: State, yc: number): void {
++      const mode = vecMode();
++      if (mode === 'off') return;
++      const g0 = geo!;
++      const sm = g0.small;
++      const theme = ctx.theme;
++      const x0 = q.x + q.side * (q.mw / 2 + (sm ? 9 : 11));
++      const dx = q.side * (sm ? 14 : 17);
++      const lab = sm ? 11 : 12;
++      const labelAt = (x: number, y: number, str: string, color: string, below: boolean) => richText(str, x, y + (below ? 9 : -9), lab, color, 'center');
++      if (mode === 'va') {
++        const w = omega0(q.m, q.D);
++        const vMax = ampM() * w;
++        const aMax = ampM() * w * w;
++        const Lmax = sm ? 30 : 40;
++        const vv = s[1];
++        const aa = acceleration(s, q.m, q.D, p.damp);
++        const lv = (vv / vMax) * Lmax;
++        const la = (aa / aMax) * Lmax;
++        vArrow(x0, yc, yc - lv, vColor(), sm ? 2.6 : 3);
++        vArrow(x0 + dx, yc, yc - la, aColor(), sm ? 2.6 : 3);
++        if (Math.abs(lv) > 8) text(surface.g, 'v', x0, yc - lv - Math.sign(lv) * 9, { font: `italic 700 ${lab + 1}px ${theme.font}`, color: vColor() });
++        if (Math.abs(la) > 8) text(surface.g, 'a', x0 + dx, yc - la - Math.sign(la) * 9, { font: `italic 700 ${lab + 1}px ${theme.font}`, color: aColor() });
++        return;
++      }
++      // Kräfte: Federkraft und Gewichtskraft (beide an der Oberkante angesetzt, damit die Gewichtskraft
++      // auch im unteren Umkehrpunkt über dem Tisch endet) und resultierende Kraft im Schwerpunkt
++      const f = forces(s[0], q.m, q.D);
++      const weight = q.m * 9.81;
++      const topY = yc - q.mh / 2;
++      const room = g0.tableY - 8 - (g0.yEq + ampM() * g0.k - q.mh / 2);
++      const k = Math.min((sm ? 46 : 60) / (weight + q.D * ampM()), Math.max(20, room) / weight);
++      const red = theme.series[1]!;
++      const blue = theme.series[0]!;
++      vArrow(x0, topY, topY - f.spring * k, blue, sm ? 2.6 : 3);
++      vArrow(x0 + dx, topY, topY - f.weight * k, red, sm ? 2.6 : 3);
++      vArrow(x0 + 2 * dx, yc, yc - f.net * k, aColor(), sm ? 2.6 : 3);
++      labelAt(x0, topY - f.spring * k, ctx.t('FF'), blue, false);
++      labelAt(x0 + dx, topY - f.weight * k, ctx.t('FG'), red, true);
++      if (Math.abs(f.net * k) > 6) labelAt(x0 + 2 * dx, yc - f.net * k, ctx.t('FR'), aColor(), f.net < 0);
++    }
++
++    /* ---------- Diagramme ---------- */
++    function valueOf(key: GraphKey, y: number, v: number, m: number, D: number): number {
++      if (key === 'y') return y * 100;
++      if (key === 'v') return v;
++      return acceleration([y, v], m, D, p.damp);
++    }
++
++    function drawChart(key: GraphKey, R0: Rect): void {
++      const plot = plots[key];
++      const theme = ctx.theme;
++      const sm = small();
++      const color = COLOR[key]();
++      const { W, t0 } = window0();
++      const wA = omega0(p.m, p.D);
++      const wB = p.cmp ? omega0(mB(), DB()) : wA;
++      const w = Math.max(wA, wB);
++      const ymax = key === 'y' ? p.amp : key === 'v' ? ampM() * w : ampM() * w * w;
++      const range = ymax * 1.22;
++      plot.setRangePadded([t0, t0 + W], [-range, range], { left: sm ? 40 : 46, right: 10, top: 8, bottom: 6 });
++      const g = plot.begin();
++      plot.grid({ minor: false });
++      // eigene Teilung der Hochachse: ±Schritt (und ±2·Schritt), Schritt ≤ Höchstwert
++      const p10 = 10 ** Math.floor(Math.log10(ymax));
++      const stepY = ([5, 2, 1].map((f) => f * p10).find((s) => s <= ymax * (1 + 1e-9)) ?? p10);
++      const ticks = [-2, -1, 1, 2].map((k) => k * stepY).filter((yy) => Math.abs(yy) < range * 0.97);
++      for (const yy of ticks) plot.hline(yy, { color: theme.grid, width: 1 });
++      plot.axes();
++      if (t0 > 0) plot.vline(t0, { color: theme.axis, width: 1.5 });
++      const gutter = plot.px(t0);
++      const dec = Math.max(0, -Math.floor(Math.log10(stepY) + 1e-9));
++      // eng beieinander: nur den positiven Wert beschriften (die Null steht am Ursprung)
++      const tight = Math.abs(plot.py(stepY) - plot.py(0)) < 32;
++      const labelled = ticks.filter((yy) => !tight || yy > 0);
++      for (const yy of t0 > 0 ? [...labelled, 0] : labelled) plot.textPx(gutter - 6, plot.py(yy), fmt.num(yy, dec), { color: theme.muted, size: 12, align: 'right', baseline: 'middle' });
++      // Kurven (B gestrichelt, A durchgezogen)
++      const r = plot.rect;
++      const i0 = hist.indexAt(t0 - 0.05);
++      const count = hist.t.length - i0;
++      const stride = Math.max(1, Math.floor(count / (r.w * 1.5)));
++      const curve = (isB: boolean): [number, number][] => {
++        const pts: [number, number][] = [];
++        const m = isB ? mB() : p.m;
++        const D = isB ? DB() : p.D;
++        const ys = isB ? hist.yb : hist.ya;
++        const vs = isB ? hist.vb : hist.va;
++        for (let i = i0; i < hist.t.length; i += stride) pts.push([hist.t[i]!, valueOf(key, ys[i]!, vs[i]!, m, D)]);
++        const last = hist.t.length - 1;
++        if (last >= i0 && (last - i0) % stride !== 0) pts.push([hist.t[last]!, valueOf(key, ys[last]!, vs[last]!, m, D)]);
++        return pts;
++      };
++      if (p.cmp) plot.polyline(curve(true), { color, width: 2, dash: [6, 4], alpha: 0.75 });
++      plot.polyline(curve(false), { color, width: 2.6 });
++      // Periodendauer markieren (nur y, Pendel A)
++      // Zeitmarke
++      const v = view();
++      const tm = v.t;
++      // Etikett der Achse (Lage wird für Ausweichregeln gebraucht)
++      const fsz = sm ? 11 : 12;
++      const chipH = sm ? 18 : 20;
++      const name = ctx.t(key === 'y' ? 'axisY' : key === 'v' ? 'axisV' : 'axisA');
++      g.font = `700 ${fsz}px ${theme.font}`;
++      const nameW = g.measureText(name).width + 12;
++      const legend = p.cmp && key === graphs()[0];
++      const legW = legend ? 86 : 0;
++      const chip: Rect = { x: gutter + 6, y: r.y + 5, w: nameW + legW, h: chipH };
++      if (key === 'y' && p.per && !p.cmp && scrub === null) drawPeriodMark(plot, range, chip.x + chip.w + 6, plot.px(tm) - 64);
++      plot.segment([tm, -range * 2], [tm, range * 2], { color: scrub !== null ? aColor() : theme.muted, width: scrub !== null ? 2 : 1.2, dash: scrub !== null ? [] : [4, 4], alpha: 0.9 });
++      const valA = valueOf(key, v.a[0], v.a[1], p.m, p.D);
++      if (p.cmp) plot.point(tm, valueOf(key, v.b[0], v.b[1], mB(), DB()), { color, radius: 4, hollow: true });
++      plot.point(tm, valA, { color, radius: 5 });
++      // Achsenbeschriftung (und Legende A/B) als Etikett
++      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)';
++      roundRect(g, chip.x, chip.y, chip.w, chip.h, 6);
++      g.fill();
++      const cyc = chip.y + chipH / 2 + 0.5;
++      text(g, name, chip.x + 6, cyc, { font: `700 ${fsz}px ${theme.font}`, color, align: 'left' });
++      if (legend) {
++        const lx = chip.x + nameW + 4;
++        g.strokeStyle = theme.text;
++        g.lineWidth = 2.4;
++        g.beginPath();
++        g.moveTo(lx, cyc);
++        g.lineTo(lx + 16, cyc);
++        g.stroke();
++        text(g, ctx.t('pendA'), lx + 20, cyc, { font: `700 ${fsz}px ${theme.font}`, color: theme.text, align: 'left' });
++        g.setLineDash([5, 3]);
++        g.beginPath();
++        g.moveTo(lx + 38, cyc);
++        g.lineTo(lx + 54, cyc);
++        g.stroke();
++        g.setLineDash([]);
++        text(g, ctx.t('pendB'), lx + 58, cyc, { font: `700 ${fsz}px ${theme.font}`, color: theme.text, align: 'left' });
++      }
++      // Wert an der Zeitmarke (weicht dem Etikett aus)
++      const unit = key === 'y' ? 'cm' : key === 'v' ? 'm/s' : 'm/s²';
++      const label = `${n(valA, key === 'y' ? 1 : 2)} ${unit}`.replace(/^-/, '−');
++      g.font = `bold ${fsz}px ${theme.font}`;
++      const labW = g.measureText(label).width;
++      const pxm = plot.px(tm);
++      const pyv = plot.py(valA);
++      const rightSide = pxm < r.x + r.w - labW - 16;
++      const lx0 = rightSide ? pxm + 8 : pxm - 8 - labW;
++      // Platz der Achsenbeschriftung „t in s“ (rechts über der Zeitachse)
++      g.font = `600 13px ${theme.font}`;
++      const tW = g.measureText(ctx.t('axisT')).width;
++      const axisPy = plot.py(0);
++      const tBox: Rect = { x: r.x + r.w - 8 - tW, y: axisPy - 22, w: tW + 4, h: 18 };
++      const hits = (box: Rect, o: Rect) => box.x < o.x + o.w && o.x < box.x + box.w && box.y < o.y + o.h && o.y < box.y + box.h;
++      const fits = (base: number) => {
++        const box = { x: lx0 - 2, y: base - fsz, w: labW + 4, h: fsz + 3 };
++        return !hits(box, chip) && !hits(box, tBox);
++      };
++      let base = valA >= 0 ? pyv - 8 : pyv + fsz + 6;
++      if (!fits(base)) base = valA >= 0 ? pyv + fsz + 6 : pyv - 8;
++      base = clamp(base, r.y + fsz + 2, r.y + r.h - 4);
++      plot.textPx(lx0, base, label, { color, size: fsz, weight: 'bold', align: 'left' });
++      plot.end();
++      g.save();
++      g.strokeStyle = theme.grid;
++      g.lineWidth = 1;
++      roundRect(g, R0.x + 0.5, R0.y + 0.5, R0.w - 1, R0.h - 1, 10);
++      g.stroke();
++      g.restore();
++    }
++
++    /** Klammer „T“ zwischen den beiden letzten Hochpunkten von y(t). */
++    function drawPeriodMark(plot: Plot, range: number, pxMin: number, pxMax: number): void {
++      const theme = ctx.theme;
++      const { t0 } = window0();
++      const peaks: number[] = [];
++      const i0 = Math.max(hist.head + 1, hist.indexAt(t0));
++      const minHeight = ampM() * 0.06;
++      for (let i = hist.t.length - 2; i >= i0 && peaks.length < 2; i--) {
++        const a = hist.ya[i - 1]!;
++        const b = hist.ya[i]!;
++        const c = hist.ya[i + 1]!;
++        if (b > a && b >= c && b > minHeight) {
++          // Scheitel einer Parabel durch drei Punkte
++          const den = a - 2 * b + c;
++          const off = den !== 0 ? (0.5 * (a - c)) / den : 0;
++          const tp = hist.t[i]! + off * SAMPLE;
++          const px = plot.px(tp);
++          if (px > pxMax) continue;
++          if (px < pxMin) break;
++          peaks.push(tp);
++        }
++      }
++      if (peaks.length < 2) return;
++      const [t2, t1] = peaks as [number, number];
++      const y = range * 0.93;
++      const color = theme.text;
++      plot.segment([t1, y], [t2, y], { color, width: 1.4 });
++      for (const tt of [t1, t2]) plot.segment([tt, y - range * 0.07], [tt, y + range * 0.05], { color, width: 1.4 });
++      const px1 = plot.px(t1);
++      const px2 = plot.px(t2);
++      const py = plot.py(y);
++      const g = surface.g;
++      g.fillStyle = color;
++      for (const [x, dir] of [
++        [px1, 1],
++        [px2, -1],
++      ] as const) {
++        g.beginPath();
++        g.moveTo(x, py);
++        g.lineTo(x + dir * 7, py - 3.5);
++        g.lineTo(x + dir * 7, py + 3.5);
++        g.closePath();
++        g.fill();
++      }
++      const label = px2 - px1 > 70 ? tr('Tshort', { T: fmt.fixed(t2 - t1, 2) }) : ctx.t('Tlabel');
++      plot.textPx((px1 + px2) / 2, py + 4, label, { color, size: small() ? 11 : 12, weight: 'bold', align: 'center', baseline: 'top' });
++    }
++
++    /* ---------- Energie ---------- */
++    function drawEnergy(R0: Rect): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const sm = small();
++      card(R0);
++      const pad = sm ? 10 : 14;
++      const v = view();
++      const e = energies(v.a, p.m, p.D, yRef);
++      const full = energyMode() === 'full';
++      richText(ctx.t(p.cmp ? 'energyA' : 'energy'), R0.x + pad, R0.y + (sm ? 14 : 16), sm ? 11.5 : 12.5, theme.text, 'left', false);
++      const blue = theme.series[0]!;
++      const green = theme.series[2]!;
++      const orange = vColor();
++      const red = theme.series[1]!;
++      const rows: [string, number, string][] = full
++        ? [
++            [ctx.t(sm ? 'eSpringS' : 'eSpring'), e.spring, blue],
++            [ctx.t(sm ? 'eGravS' : 'eGrav'), e.grav, green],
++            [ctx.t(sm ? 'eKinS' : 'eKinL'), e.kin, orange],
++          ]
++        : [
++            [ctx.t(sm ? 'ePotS' : 'ePot'), e.osc, blue],
++            [ctx.t(sm ? 'eKinS' : 'eKin'), e.kin, orange],
++          ];
++      const sum = rows.reduce((s, q) => s + q[1], 0);
++      const loss = Math.max(0, e0 - sum);
++      const rowH = sm ? 19 : 21;
++      const y0 = R0.y + (sm ? 28 : 32);
++      const labelW = Math.min(sm ? 74 : 150, R0.w * 0.36);
++      const valW = sm ? 58 : 66;
++      const bx = R0.x + pad + labelW;
++      const bw = R0.w - pad * 2 - labelW - valW;
++      const scale = bw / Math.max(e0, 1e-9);
++      const fs = sm ? 11 : 12;
++      const digits = e0 < 0.1 ? 4 : 3;
++      rows.forEach(([label, value, color], i) => {
++        const y = y0 + i * rowH;
++        richText(label, bx - 8, y + rowH / 2, fs, theme.muted, 'right', false, 650);
++        g.fillStyle = withAlpha(theme.muted, 0.13);
++        roundRect(g, bx, y + 4, bw, rowH - 8, 4);
++        g.fill();
++        g.fillStyle = color;
++        roundRect(g, bx, y + 4, Math.max(0, Math.min(bw, value * scale)), rowH - 8, 4);
++        g.fill();
++        text(g, `${fmt.num(value, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `600 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
++      });
++      // Summe als gestapelter Balken
++      const y = y0 + rows.length * rowH;
++      richText(ctx.t('eSum'), bx - 8, y + rowH / 2, fs, theme.text, 'right', false, 700);
++      g.save();
++      roundRect(g, bx, y + 3, bw, rowH - 6, 4);
++      g.clip();
++      g.fillStyle = withAlpha(theme.muted, 0.13);
++      g.fillRect(bx, y + 3, bw, rowH - 6);
++      let x = bx;
++      for (const [, value, color] of rows) {
++        const w = value * scale;
++        g.fillStyle = color;
++        g.fillRect(x, y + 3, w, rowH - 6);
++        x += w;
++      }
++      if (loss > e0 * 1e-4) {
++        g.fillStyle = withAlpha(red, 0.75);
++        g.fillRect(x, y + 3, loss * scale, rowH - 6);
++      }
++      g.restore();
++      g.strokeStyle = withAlpha(theme.text, 0.5);
++      g.lineWidth = 1;
++      roundRect(g, bx + 0.5, y + 3.5, bw - 1, rowH - 7, 4);
++      g.stroke();
++      text(g, `${fmt.num(sum, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `700 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
++      if (p.damp > 0) {
++        // Legende: innere Energie (durch Reibung umgewandelt)
++        const lbl = `${ctx.t('eLoss')}: ${fmt.num(loss, digits)} J`;
++        g.font = `600 ${fs - 1}px ${theme.font}`;
++        const lw2 = g.measureText(lbl).width;
++        const lx = R0.x + R0.w - pad - lw2;
++        const ly = R0.y + (sm ? 14 : 16);
++        g.fillStyle = withAlpha(red, 0.75);
++        roundRect(g, lx - 15, ly - 4, 10, 8, 2);
++        g.fill();
++        text(g, lbl, lx, ly, { font: `600 ${fs - 1}px ${theme.font}`, color: theme.muted, align: 'left' });
++      }
++    }
++
++    /* ---------- Ablauf ---------- */
++    /** Phasenwinkel (aufsummiert) beim Start der Stoppuhr. */
++    let ph0Acc = 0;
++    function startStopWatch(): void {
++      if (watch.state === 'run') {
++        const turns = (phaseAcc - ph0Acc) / TAU;
++        const nn = Math.floor(turns + 1e-9);
++        const frac = turns - nn;
++        watch = { ...watch, state: 'done', t: t - watch.t0, n: nn, exact: frac < 0.06 || frac > 0.94 };
++        if (frac > 0.94) watch.n = nn + 1;
++      } else {
++        scrub = null;
++        ph0Acc = phaseAcc;
++        let a = phaseAcc % TAU;
++        if (a < 0) a += TAU;
++        watch = { state: 'run', t0: t, ph0: a, t: 0, n: 0, exact: true };
++        if (!ctx.clock.playing) ctx.clock.play();
++      }
++      pop.play();
++      updateWatch();
++      ctx.requestRender();
++    }
++
++    restart();
++
++    return {
++      update(changed, source) {
++        const restartKeys = ['m', 'D', 'amp', 'phi', 'cmp', 'm2', 'D2'];
++        // Dämpfung vor dem Start: Anfangszustand neu berechnen (sonst läuft die Bewegung einfach weiter)
++        const dampAtStart = changed.has('damp') && t === 0;
++        if (source === 'init' || source === 'replace' || dampAtStart || restartKeys.some((key) => changed.has(key))) {
++          restart();
++          if (source === 'init' || source === 'replace') {
++            ctx.clock.pause();
++            kView = 0;
++          }
++        }
++        if (changed.has('energy')) {
++          const e = energies(initialState(ampM(), p.phi * DEG, p.m, p.D, p.damp), p.m, p.D, yRef);
++          e0 = energyMode() === 'full' ? e.spring + e.grav + e.kin : e.osc + e.kin;
++        }
++        lay = computeLayout();
++        for (const key of ['y', 'v', 'a'] as const) plots[key].resize();
++        updateReadouts();
++      },
++
++      action(id) {
++        if (ctx.locked) return;
++        if (id === 'go') {
++          restart();
++          updateReadouts();
++          ctx.clock.play();
++        } else if (id === 'watch') startStopWatch();
++      },
++
++      tick(dt) {
++        if (drag) return;
++        const h = dt * (p.slow ? 0.25 : 1);
++        const mb = mB();
++        const Db = DB();
++        stepper.run(h, (hh) => {
++          sA = step(sA, p.m, p.D, p.damp, hh);
++          sB = step(sB, mb, Db, p.damp, hh);
++          t += hh;
++          const ph = phasor(sA, p.m, p.D, p.damp).phase;
++          let d = ph - lastPhase;
++          if (d > Math.PI) d -= TAU;
++          if (d < -Math.PI) d += TAU;
++          phaseAcc += d;
++          lastPhase = ph;
++          if (t >= nextSample - 1e-9) {
++            hist.push(t, sA, sB);
++            nextSample += SAMPLE;
++          }
++        });
++        hist.trim(t - niceWindow(maxT()) - 0.5);
++        if (watch.state === 'run') {
++          watch.t = t - watch.t0;
++          const nn = Math.floor((phaseAcc - ph0Acc) / TAU + 1e-9);
++          if (nn !== watch.n) {
++            watch.n = nn;
++            pop.play();
++          }
++          updateWatch();
++        }
++        updateNow();
++      },
++
++      resetTime() {
++        restart();
++        updateReadouts();
++      },
++
++      render() {
++        const now = performance.now();
++        const dt = Math.min(0.1, (now - lastFrame) / 1000);
++        lastFrame = now;
++        lay = computeLayout();
++        const target = kTarget(lay.scene);
++        if (kView <= 0 || prefersReducedMotion()) kView = target;
++        else if (!drag) {
++          kView += (target - kView) * Math.min(1, dt * 7);
++          if (Math.abs(kView - target) < 0.5) kView = target;
++        }
++        geo = buildGeo(lay.scene, kView);
++        for (const key of ['y', 'v', 'a'] as const) plots[key].resize();
++        surface.begin();
++        drawScene(lay.scene);
++        for (const key of graphs()) drawChart(key, lay.charts[key]!);
++        if (lay.energy) drawEnergy(lay.energy);
++        if (kView !== target || pop.running) ctx.requestRender();
++      },
++
++      destroy: () => {
++        offClock();
++        surface.destroy();
++      },
++    };
++  },
++});
+diff --git a/src/simulations/physik/federpendel/model.ts b/src/simulations/physik/federpendel/model.ts
+new file mode 100644
+index 0000000..0ac86c0
+--- /dev/null
++++ b/src/simulations/physik/federpendel/model.ts
+@@ -0,0 +1,114 @@
++/**
++ * Rechenlogik „Federpendel“: senkrecht hängender Körper (Masse m) an einer
++ * idealen, masselosen Schraubenfeder (Federhärte D), optional mit
++ * geschwindigkeitsproportionaler Dämpfung.
++ *
++ * Koordinate: Elongation y = Auslenkung aus der Ruhelage, **nach oben
++ * positiv**. In der Ruhelage ist die Feder um s₀ = m·g/D gedehnt; dort heben
++ * sich Gewichtskraft und Federkraft auf. Die resultierende Kraft ist die
++ * Rückstellkraft F = −D·y (lineares Kraftgesetz), also
++ *
++ *   m·ÿ = −D·y − 2·m·δ·ẏ    bzw.    ÿ = −ω₀²·y − 2δ·ẏ
++ *
++ * mit ω₀ = √(D/m) und der Abklingkonstante δ (in 1/s).
++ * Lösung (schwach gedämpft): y(t) = ŷ·e^(−δt)·sin(ω_d·t + φ₀), ω_d = √(ω₀² − δ²).
++ */
++import { rk4 } from '../../../sim-core/numeric';
++
++/** Ortsfaktor in N/kg. */
++export const G = 9.81;
++
++/** Zustand: Elongation y (m, nach oben positiv) und Geschwindigkeit v (m/s). */
++export type State = readonly [number, number];
++
++/** Kreisfrequenz des ungedämpften Pendels ω₀ = √(D/m) in 1/s. */
++export function omega0(m: number, D: number): number {
++  return Math.sqrt(D / m);
++}
++
++/** Periodendauer T = 2π·√(m/D). */
++export function period(m: number, D: number): number {
++  return 2 * Math.PI * Math.sqrt(m / D);
++}
++
++/** Kreisfrequenz mit Dämpfung ω_d = √(ω₀² − δ²); 0 im aperiodischen Fall. */
++export function dampedOmega(m: number, D: number, delta: number): number {
++  const w2 = D / m - delta * delta;
++  return w2 > 0 ? Math.sqrt(w2) : 0;
++}
++
++/** Periodendauer mit Dämpfung T_d = 2π/ω_d (Infinity, wenn nicht mehr schwingend). */
++export function dampedPeriod(m: number, D: number, delta: number): number {
++  const w = dampedOmega(m, D, delta);
++  return w > 0 ? (2 * Math.PI) / w : Infinity;
++}
++
++/** Dehnung der Feder in der Ruhelage s₀ = m·g/D (m). */
++export function equilibriumExtension(m: number, D: number): number {
++  return (m * G) / D;
++}
++
++/**
++ * Anfangszustand zu Amplitude ŷ (m) und Nullphasenwinkel φ₀ (rad), so dass
++ * y(t) = ŷ·e^(−δt)·sin(ω_d·t + φ₀) gilt.
++ */
++export function initialState(amp: number, phi0: number, m: number, D: number, delta: number): [number, number] {
++  const w = dampedOmega(m, D, delta);
++  return [amp * Math.sin(phi0), amp * (w * Math.cos(phi0) - delta * Math.sin(phi0))];
++}
++
++/** Exakte Lösung (schwach gedämpft) – Elongation zur Zeit t. */
++export function analyticY(t: number, amp: number, phi0: number, m: number, D: number, delta: number): number {
++  return amp * Math.exp(-delta * t) * Math.sin(dampedOmega(m, D, delta) * t + phi0);
++}
++
++/** Beschleunigung ÿ = −(D/m)·y − 2δ·v. */
++export function acceleration(state: State, m: number, D: number, delta: number): number {
++  return -(D / m) * state[0] - 2 * delta * state[1];
++}
++
++/** Ein Zeitschritt mit dem klassischen Runge-Kutta-Verfahren. */
++export function step(state: State, m: number, D: number, delta: number, h: number): [number, number] {
++  const k = D / m;
++  const f = (_t: number, y: readonly number[]) => [y[1]!, -k * y[0]! - 2 * delta * y[1]!];
++  const next = rk4(f, 0, state, h);
++  return [next[0]!, next[1]!];
++}
++
++/**
++ * Zeiger (Zeigerdiagramm) zum momentanen Zustand: Länge (momentane Amplitude)
++ * und Phasenwinkel φ = ω_d·t + φ₀, so dass y = Länge · sin φ.
++ */
++export function phasor(state: State, m: number, D: number, delta: number): { amp: number; phase: number } {
++  const w = dampedOmega(m, D, delta);
++  if (w <= 0) return { amp: Math.abs(state[0]), phase: state[0] >= 0 ? Math.PI / 2 : -Math.PI / 2 };
++  const c = (state[1] + delta * state[0]) / w;
++  return { amp: Math.hypot(state[0], c), phase: Math.atan2(state[0], c) };
++}
++
++export interface Energies {
++  /** Bewegungsenergie ½·m·v². */
++  kin: number;
++  /** „Schwingungs-Spannenergie“ ½·D·y² (Spann- und Lageenergie zusammen, bis auf eine Konstante). */
++  osc: number;
++  /** Spannenergie der Feder ½·D·s² mit der Dehnung s = s₀ − y. */
++  spring: number;
++  /** Lageenergie m·g·h, Höhe h über dem Bezugsniveau y = yRef. */
++  grav: number;
++}
++
++/**
++ * Energien zum Zustand; `yRef` ist das Bezugsniveau der Lageenergie (z. B. der
++ * tiefste Punkt der Bewegung, y = −ŷ).
++ */
++export function energies(state: State, m: number, D: number, yRef: number): Energies {
++  const [y, v] = state;
++  const s = equilibriumExtension(m, D) - y;
++  return { kin: 0.5 * m * v * v, osc: 0.5 * D * y * y, spring: 0.5 * D * s * s, grav: m * G * (y - yRef) };
++}
++
++/** Kräfte am Körper (N, nach oben positiv): Gewichtskraft, Federkraft, resultierende Kraft. */
++export function forces(y: number, m: number, D: number): { weight: number; spring: number; net: number } {
++  const spring = D * (equilibriumExtension(m, D) - y);
++  return { weight: -m * G, spring, net: spring - m * G };
++}
+diff --git a/src/simulations/physik/federpendel/thumb.svg b/src/simulations/physik/federpendel/thumb.svg
+new file mode 100644
+index 0000000..c6047d6
+--- /dev/null
++++ b/src/simulations/physik/federpendel/thumb.svg
+@@ -0,0 +1,17 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
++  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
++    <path d="M24 14H96" stroke-width="5" stroke-opacity="0.55" />
++    <path d="M70 14V22L84 27L56 33L84 39L56 45L84 51L56 57L84 63L56 69L70 72V78" stroke-width="3.5" />
++    <path d="M30 116H300" stroke-width="2.5" stroke-opacity="0.35" stroke-dasharray="6 7" />
++    <circle cx="146" cy="116" r="34" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="5 6" />
++    <path d="M146 116L170 92" stroke-width="4" />
++    <path d="M170 92V116" stroke-width="3" stroke-opacity="0.55" />
++    <path d="M170 92H94" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="4 5" />
++    <path d="M200 116Q216 48 232 116T264 116T296 116" stroke-width="4" />
++  </g>
++  <g fill="currentColor">
++    <rect x="52" y="78" width="36" height="28" rx="4" fill-opacity="0.85" />
++    <path d="M174 86l3 10-10-3z" />
++    <circle cx="146" cy="116" r="3.5" />
++  </g>
++</svg>
+diff --git a/src/simulations/physik/resonanz/index.ts b/src/simulations/physik/resonanz/index.ts
+new file mode 100644
+index 0000000..97d234e
+--- /dev/null
++++ b/src/simulations/physik/resonanz/index.ts
+@@ -0,0 +1,1340 @@
++import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
++import { amplitudeRatio, driveAngle, drivePhase, F0, integrate, OMEGA0, phaseShift, readPhasor, resonanceOmega, step, type Drive, type State } from './model';
++
++const L = (de: string, en: string) => ({ de, en });
++const DEG = Math.PI / 180;
++const TAU = 2 * Math.PI;
++/** Belastungsgrenze der Spiralfeder (Auslenkung des Rades). */
++const LIMIT = 120 * DEG;
++/** Abstand der gespeicherten Messwerte (Simulationszeit) in s. */
++const SAMPLE = 1 / 120;
++/** Größte Erregerfrequenz in den Diagrammen (Hz). */
++const F_MAX = 1.5;
++/** Frequenzen der automatischen Messreihe (Hz), um f₀ dichter. */
++const SWEEP = [0.1, 0.2, 0.28, 0.34, 0.39, 0.43, 0.46, 0.48, 0.5, 0.52, 0.54, 0.57, 0.61, 0.66, 0.73, 0.82, 0.95, 1.1, 1.3, 1.5];
++
++type Speed = 'slow' | 'normal' | 'fast';
++const SPEED: Record<Speed, number> = { slow: 0.25, normal: 1, fast: 4 };
++
++const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
++
++/** Aufrunden auf einen „glatten“ Wert für Achsen (in Grad). */
++function niceCeil(x: number): number {
++  for (const v of [10, 15, 20, 25, 30, 40, 50, 60, 80, 100, 120, 140]) if (v >= x) return v;
++  return 140;
++}
++
++function niceWindow(T: number): number {
++  for (const w of [4, 5, 6, 8, 10, 15, 20, 30, 40, 60]) if (w >= T) return w;
++  return 60;
++}
++
++interface Point {
++  f: number;
++  amp: number;
++  shift: number;
++  over: boolean;
++}
++
++interface Layout {
++  scene: Rect;
++  time: Rect;
++  res: Rect;
++  phase: Rect | null;
++  tall: boolean;
++}
++
++interface Geo {
++  r: Rect;
++  small: boolean;
++  cx: number;
++  cy: number;
++  /** Radius der Skala (außen) und des Rades (außen). */
++  Rs: number;
++  Rw: number;
++  /** Länge des Erregerhebels. */
++  lever: number;
++  /** Motor (Achse) und Exzenterradius. */
++  mx: number;
++  my: number;
++  re: number;
++  /** Zeigerdiagramm. */
++  card: Rect;
++}
++
++/**
++ * Erzwungene Schwingung und Resonanz am Pohlschen Rad: Motor mit Exzenter,
++ * Spiralfeder, Wirbelstrombremse; Einschwingvorgang, Resonanzkurve und
++ * Phasenverschiebung als Messpunkte mit theoretischen Kurven, Zeigerdiagramm
++ * und Resonanzkatastrophe.
++ */
++export default defineSimulation({
++  id: 'resonanz',
++  animated: true,
++  dragHint: true,
++  layout: { aspect: 1.32, aspectNarrow: 0.42 },
++  groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
++  params: [
++    {
++      key: 'fE',
++      type: 'number',
++      label: L('Erregerfrequenz f_E', 'Driving frequency f_E'),
++      help: L('Drehfrequenz des Motors. Oder: Linie im Resonanzdiagramm ziehen.', 'Rotation frequency of the motor. Or drag the line in the resonance graph.'),
++      min: 0.05,
++      max: F_MAX,
++      step: 0.01,
++      default: 0.3,
++      unit: 'Hz',
++    },
++    {
++      key: 'damp',
++      type: 'number',
++      label: L('Dämpfung δ (Wirbelstrombremse)', 'Damping δ (eddy-current brake)'),
++      help: L('Abklingkonstante; ein größerer Strom durch die Bremse dämpft stärker.', 'Decay constant; a larger current through the brake damps more strongly.'),
++      min: 0.03,
++      max: 1.5,
++      step: 0.01,
++      default: 0.25,
++      unit: '1/s',
++    },
++    { key: 'amp', type: 'number', label: L('Erregeramplitude φ̂_E', 'Driving amplitude φ̂_E'), min: 2, max: 15, step: 1, default: 5, unit: '°' },
++    { key: 'theory', type: 'boolean', group: 'view', label: L('Theoretische Kurven', 'Theoretical curves'), default: true },
++    { key: 'phase', type: 'boolean', group: 'view', label: L('Diagramm der Phasenverschiebung', 'Graph of the phase shift'), default: true },
++    {
++      key: 'speed',
++      type: 'choice',
++      group: 'view',
++      label: L('Ablauf', 'Speed'),
++      options: [
++        { value: 'slow', label: L('Zeitlupe', 'slow motion') },
++        { value: 'normal', label: L('normal', 'normal') },
++        { value: 'fast', label: L('Zeitraffer (×4)', 'fast (×4)') },
++      ],
++      default: 'normal',
++    },
++  ],
++  actions: [
++    { id: 'go', label: L('Start aus der Ruhe', 'Start from rest'), primary: true },
++    { id: 'skip', label: L('Einschwingen abwarten', 'Wait until steady') },
++    { id: 'auto', label: L('Resonanzkurve aufnehmen', 'Record resonance curve') },
++    { id: 'clear', label: L('Messpunkte löschen', 'Clear data') },
++  ],
++  readouts: [
++    { key: 'f0', label: L('Eigenfrequenz', 'Natural frequency') },
++    { key: 'state', label: L('Messung', 'Measurement') },
++    { key: 'amp', label: L('Amplitude (Theorie)', 'Amplitude (theory)'), spoiler: true },
++    { key: 'shift', label: L('Phasenverschiebung (Theorie)', 'Phase shift (theory)'), spoiler: true },
++    { key: 'table', label: L('Messwerte', 'Measured values') },
++    { key: 'now', label: L('Momentan', 'Right now') },
++  ],
++  presets: [
++    { id: 'start', label: L('Langsame Erregung', 'Slow driving'), values: {} },
++    { id: 'res', label: L('Resonanz: f_E = f₀', 'Resonance: f_E = f₀'), values: { fE: 0.5 } },
++    { id: 'high', label: L('Schnelle Erregung: Gegenphase', 'Fast driving: antiphase'), values: { fE: 1 } },
++    { id: 'strong', label: L('Starke Dämpfung', 'Strong damping'), values: { fE: 0.5, damp: 1 } },
++    { id: 'weak', label: L('Schwache Dämpfung, Zeitraffer', 'Weak damping, fast'), values: { fE: 0.45, damp: 0.08, speed: 'fast' } },
++    { id: 'cat', label: L('Resonanzkatastrophe', 'Resonance disaster'), values: { fE: 0.5, damp: 0.03, amp: 10 } },
++  ],
++  strings: {
++    de: {
++      canvas: 'Pohlsches Rad mit Spiralfeder, Motor mit Exzenter und Wirbelstrombremse, Zeigerdiagramm sowie Diagramme der Auslenkung über der Zeit, der Resonanzkurve und der Phasenverschiebung',
++      axisT: 't in s',
++      axisF: 'f_E in Hz',
++      chipT: 'φ in °',
++      chipAmp: 'Amplitude φ̂ in °',
++      chipShift: 'Phasenverschiebung Δφ',
++      rad: 'Rad',
++      erreger: 'Erreger',
++      motor: 'Motor',
++      brake: 'Wirbelstrombremse',
++      phasor: 'Zeigerdiagramm',
++      lag: 'Δφ = {d}°',
++      lagText: 'Das Rad hinkt um {d}° hinterher.',
++      inPhase: 'Rad und Erreger schwingen fast gleichphasig.',
++      quarter: 'Das Rad hinkt um etwa eine Viertelperiode hinterher.',
++      anti: 'Rad und Erreger schwingen fast gegenphasig.',
++      limit: 'Belastungsgrenze',
++      settling: 'Einschwingen …',
++      steady: 'eingeschwungen',
++      broken: 'Resonanzkatastrophe: Belastungsgrenze überschritten!',
++      brokenShort: 'Resonanzkatastrophe!',
++      jump: 'Zeitsprung + {s} s',
++      empty: 'Hier erscheinen die Messpunkte.',
++      emptyHint: 'Warte, bis das Rad eingeschwungen ist.',
++      f0: 'f₀',
++      fR: 'f_[R]',
++      fE: 'f_[E] = {f} Hz',
++      top: 'f_[E] = {f} Hz · f₀ = 0,50 Hz',
++      f0Text: '<var>f</var>₀ = 0,50 Hz (<var>T</var>₀ = 2,00 s); Resonanz bei <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
++      ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r}-fach)',
++      shiftText: 'Δ<var>φ</var> = arctan <span class="frac"><span>2<var>δω</var><sub>E</sub></span><span><var>ω</var>₀² − <var>ω</var><sub>E</sub>²</span></span> ≈ <strong>{d}°</strong>',
++      stateSettling: 'Einschwingen … (Amplitude ändert sich noch)',
++      stateSteady: 'eingeschwungen: <var>φ̂</var> = {a}°, Δ<var>φ</var> = {d}° – als Messpunkt eingetragen',
++      stateBroken: 'Resonanzkatastrophe: Die Auslenkung hat die Belastungsgrenze von ±120° überschritten. Dämpfung erhöhen oder Erregerfrequenz ändern.',
++      stateAuto: 'Messreihe läuft: Punkt {i} von {n}',
++      thF: 'f_E in Hz',
++      thA: 'φ̂ in °',
++      thD: 'Δφ in °',
++      none: 'Noch keine Messwerte.',
++      over: '> 120',
++      now: 't = {t} s · φ = {p}° · φ_E = {e}°',
++    },
++    en: {
++      canvas: 'Pohl’s wheel with a spiral spring, a motor with an eccentric and an eddy-current brake, a phasor diagram and graphs of the deflection against time, the resonance curve and the phase shift',
++      axisT: 't in s',
++      axisF: 'f_E in Hz',
++      chipT: 'φ in °',
++      chipAmp: 'amplitude φ̂ in °',
++      chipShift: 'phase shift Δφ',
++      rad: 'wheel',
++      erreger: 'driver',
++      motor: 'motor',
++      brake: 'eddy-current brake',
++      phasor: 'Phasor diagram',
++      lag: 'Δφ = {d}°',
++      lagText: 'The wheel lags behind by {d}°.',
++      inPhase: 'Wheel and driver are almost in phase.',
++      quarter: 'The wheel lags behind by about a quarter period.',
++      anti: 'Wheel and driver are almost in antiphase.',
++      limit: 'load limit',
++      settling: 'settling …',
++      steady: 'steady state',
++      broken: 'Resonance disaster: load limit exceeded!',
++      brokenShort: 'Resonance disaster!',
++      jump: 'time jump + {s} s',
++      empty: 'Your data points will appear here.',
++      emptyHint: 'Wait until the wheel has settled.',
++      f0: 'f₀',
++      fR: 'f_[R]',
++      fE: 'f_[E] = {f} Hz',
++      top: 'f_[E] = {f} Hz · f₀ = 0.50 Hz',
++      f0Text: '<var>f</var>₀ = 0.50 Hz (<var>T</var>₀ = 2.00 s); resonance at <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
++      ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r} times)',
++      shiftText: 'Δ<var>φ</var> = arctan <span class="frac"><span>2<var>δω</var><sub>E</sub></span><span><var>ω</var>₀² − <var>ω</var><sub>E</sub>²</span></span> ≈ <strong>{d}°</strong>',
++      stateSettling: 'settling … (the amplitude is still changing)',
++      stateSteady: 'steady state: <var>φ̂</var> = {a}°, Δ<var>φ</var> = {d}° – recorded as a data point',
++      stateBroken: 'Resonance disaster: the deflection exceeded the load limit of ±120°. Increase the damping or change the driving frequency.',
++      stateAuto: 'recording: point {i} of {n}',
++      thF: 'f_E in Hz',
++      thA: 'φ̂ in °',
++      thD: 'Δφ in °',
++      none: 'No data yet.',
++      over: '> 120',
++      now: 't = {t} s · φ = {p}° · φ_E = {e}°',
++    },
++  },
++
++  mount(ctx) {
++    const surface = new Surface(ctx, ctx.t('canvas'));
++    const p = ctx.params;
++    const fmt = ctx.fmt;
++    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
++    const small = () => surface.width < 700;
++    const radColor = () => ctx.theme.series[0]!;
++    const eColor = () => ctx.theme.series[2]!;
++    const shiftColor = () => ctx.theme.series[4]!;
++    const red = () => ctx.theme.series[1]!;
++    const n = (v: number, d: number) => fmt.num(v, d);
++
++    /* ---------- Aufteilung ---------- */
++    function computeLayout(): Layout {
++      const w = surface.width;
++      const h = surface.height;
++      const tall = w < 640 && h > w * 0.9;
++      let scene: Rect;
++      let col: Rect;
++      if (!tall) {
++        const sw = Math.round(w * (w < 760 ? 0.5 : 0.46));
++        scene = { x: 0, y: 0, w: sw, h };
++        col = { x: sw + 10, y: 0, w: w - sw - 10, h };
++      } else {
++        const sh = Math.round(Math.min(h * 0.5, w * 1.12));
++        scene = { x: 0, y: 0, w, h: sh };
++        col = { x: 0, y: sh + 8, w, h: h - sh - 8 };
++      }
++      const gap = 8;
++      const shares = p.phase ? [0.32, 0.4, 0.28] : [0.4, 0.6];
++      const avail = col.h - gap * (shares.length - 1);
++      const rects: Rect[] = [];
++      let y = col.y;
++      for (const s of shares) {
++        const hh = avail * s;
++        rects.push({ x: col.x, y, w: col.w, h: hh });
++        y += hh + gap;
++      }
++      return { scene, time: rects[0]!, res: rects[1]!, phase: p.phase ? rects[2]! : null, tall };
++    }
++    let lay = computeLayout();
++    const HIDDEN: Rect = { x: -10, y: -10, w: 1, h: 1 };
++    const plotOpts = { equalAspect: false, pan: false, zoom: false, controls: false } as const;
++    const plotT = new Plot(surface, { ...plotOpts, x: [0, 10], y: [-10, 10], region: () => lay.time, xAxis: { label: ctx.t('axisT') }, yAxis: { label: '', numbers: false } });
++    const plotR = new Plot(surface, { ...plotOpts, x: [0, F_MAX], y: [0, 40], region: () => lay.res, xAxis: { label: ctx.t('axisF') }, yAxis: { label: '', numbers: false } });
++    const plotP = new Plot(surface, { ...plotOpts, x: [0, F_MAX], y: [0, 180], region: () => lay.phase ?? HIDDEN, xAxis: { label: ctx.t('axisF') }, yAxis: { label: '', numbers: false } });
++
++    /* ---------- Zustand ---------- */
++    /** Phasenversatz des Motors; bei einer neuen Erregerfrequenz so gesetzt, dass die Drehung stetig bleibt. */
++    let phase0 = 0;
++    let lastFE = p.fE;
++    const drive = (): Drive => {
++      if (p.fE !== lastFE) {
++        const psi = TAU * lastFE * t + phase0;
++        phase0 = psi - TAU * p.fE * t;
++        lastFE = p.fE;
++      }
++      return { ampE: p.amp * DEG, omegaE: TAU * p.fE, delta: p.damp, omega0: OMEGA0, phase0 };
++    };
++    let s: State = [0, 0];
++    let t = 0;
++    let nextSample = 0;
++    let hist: { t: number[]; phi: number[]; e: number[] } = { t: [], phi: [], e: [] };
++    const stepper = new FixedStepper(0.001);
++    let points: Point[] = [];
++    let broken = false;
++    /** Einschwingen verfolgen: Amplituden der letzten Erregerperioden. */
++    let cycleIndex = 0;
++    let cycleMax = 0;
++    let amps: number[] = [];
++    let tChange = 0;
++    let steady = false;
++    let liveAmp = 0;
++    let liveShift = 0;
++    let auto: { i: number; next: number } | null = null;
++    let jumpNote: { s: number; until: number } | null = null;
++    const pop = new Tween(500, ease.outBack);
++    const flash = new Tween(900, ease.outCubic);
++    let rangeT = 10;
++    let wasSteady = false;
++    let lastFrame = performance.now();
++
++    function resetTracking(): void {
++      cycleIndex = Math.floor(drivePhase(drive(), t) / TAU);
++      cycleMax = Math.abs(s[0]);
++      amps = [];
++      tChange = t;
++      steady = false;
++    }
++
++    function restart(): void {
++      s = [0, 0];
++      t = 0;
++      phase0 = 0;
++      lastFE = p.fE;
++      nextSample = 0;
++      hist = { t: [0], phi: [0], e: [0] };
++      stepper.reset();
++      broken = false;
++      liveAmp = 0;
++      liveShift = 0;
++      jumpNote = null;
++      resetTracking();
++    }
++
++    function record(over = false): void {
++      const d = drive();
++      const ph = readPhasor(d, t, s);
++      const pt: Point = { f: p.fE, amp: over ? LIMIT : ph.amp, shift: over ? phaseShift(d.omegaE, OMEGA0, p.damp) : clamp(ph.shift, 0, Math.PI), over };
++      points = [...points.filter((q) => Math.abs(q.f - pt.f) > 0.004), pt].sort((a, b) => a.f - b.f);
++      pop.play();
++      updateReadouts();
++    }
++
++    /** Einschwingvorgang überspringen: lange genug weiterrechnen (ohne Anzeige). */
++    function skipTransient(silent: boolean): void {
++      const d = drive();
++      const duration = clamp(7 / p.damp, 12, 240);
++      const res = integrate(d, t, s, duration, 0.002, LIMIT);
++      if (res.exceeded) {
++        if (silent) {
++          // Messreihe: Punkt über der Belastungsgrenze markieren, Rad anhalten und weitermachen
++          t = res.t;
++          s = [0, 0];
++          record(true);
++        } else {
++          t = res.t;
++          s = [Math.sign(res.s[0]) * LIMIT, 0];
++          breakDown();
++        }
++      } else {
++        t = res.t;
++        s = res.s;
++        record(false);
++        steady = true;
++      }
++      const ph = readPhasor(d, t, s);
++      liveAmp = ph.amp;
++      liveShift = ph.shift;
++      hist = { t: [t], phi: [s[0]], e: [driveAngle(d, t)] };
++      nextSample = t + SAMPLE;
++      stepper.reset();
++      jumpNote = { s: duration, until: performance.now() + 2200 };
++      resetTracking();
++      steady = !res.exceeded;
++    }
++
++    function breakDown(): void {
++      broken = true;
++      auto = null;
++      ctx.clock.pause();
++      flash.play();
++      updateReadouts();
++    }
++
++    /* ---------- Ergebnisse ---------- */
++    function updateNow(): void {
++      ctx.readout('now', tr('now', { t: fmt.fixed(t, 2), p: n(s[0] / DEG, 1), e: n(driveAngle(drive(), t) / DEG, 1) }));
++    }
++
++    function updateReadouts(): void {
++      const d = drive();
++      const fr = resonanceOmega(OMEGA0, p.damp) / TAU;
++      ctx.readout('f0', { html: tr('f0Text', { fr: n(fr, 3) }) });
++      const ratio = amplitudeRatio(d.omegaE, OMEGA0, p.damp);
++      ctx.readout('amp', { html: tr('ampText', { a: n(p.amp * ratio, 1), r: n(ratio, 2) }) });
++      ctx.readout('shift', { html: tr('shiftText', { d: n(phaseShift(d.omegaE, OMEGA0, p.damp) / DEG, 0) }) });
++      if (broken) ctx.readout('state', ctx.t('stateBroken'));
++      else if (auto) ctx.readout('state', tr('stateAuto', { i: String(Math.min(auto.i + 1, SWEEP.length)), n: String(SWEEP.length) }));
++      else if (steady) ctx.readout('state', { html: tr('stateSteady', { a: n(liveAmp / DEG, 1), d: n(clamp(liveShift, 0, Math.PI) / DEG, 0) }) });
++      else ctx.readout('state', ctx.t('stateSettling'));
++      if (points.length) {
++        const rows = points
++          .map((q) => `<tr><td>${n(q.f, 2)}</td><td>${q.over ? ctx.t('over') : n(q.amp / DEG, 1)}</td><td>${q.over ? '–' : n(q.shift / DEG, 0)}</td></tr>`)
++          .join('');
++        ctx.readout('table', { html: `<table class="mini-table"><tr><th>${ctx.t('thF')}</th><th>${ctx.t('thA')}</th><th>${ctx.t('thD')}</th></tr>${rows}</table>` });
++      } else ctx.readout('table', ctx.t('none'));
++      ctx.setAction('skip', { enabled: !ctx.locked && !broken });
++      ctx.setAction('auto', { enabled: !ctx.locked, label: ctx.lang === 'de' ? (auto ? 'Messreihe anhalten' : 'Resonanzkurve aufnehmen') : auto ? 'Stop recording' : 'Record resonance curve' });
++      ctx.setAction('clear', { enabled: !ctx.locked && points.length > 0 });
++      updateNow();
++    }
++
++    /* ---------- Ziehen: Erregerfrequenz im Resonanzdiagramm ---------- */
++    plotR.addHandle({
++      get: () => [p.fE, Math.max(0, liveAmp / DEG)],
++      set: (x) => {
++        auto = null;
++        ctx.set({ fE: clamp(x, 0.05, F_MAX) });
++      },
++      axis: 'x',
++      enabled: () => !ctx.locked,
++      color: () => eColor(),
++    });
++    plotP.addHandle({
++      get: () => [p.fE, clamp(liveShift, 0, Math.PI) / DEG],
++      set: (x) => {
++        auto = null;
++        ctx.set({ fE: clamp(x, 0.05, F_MAX) });
++      },
++      axis: 'x',
++      enabled: () => !ctx.locked && p.phase,
++      color: () => eColor(),
++    });
++
++    /* ---------- Zeichenhilfen ---------- */
++    function parts(str: string): { t: string; sub: boolean }[] {
++      const out: { t: string; sub: boolean }[] = [];
++      const re = /_\[([^\]]*)\]/g;
++      let last = 0;
++      let mm: RegExpExecArray | null;
++      while ((mm = re.exec(str))) {
++        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
++        out.push({ t: mm[1]!, sub: true });
++        last = re.lastIndex;
++      }
++      if (last < str.length) out.push({ t: str.slice(last), sub: false });
++      return out;
++    }
++
++    function richWidth(str: string, size: number, weight = 700): number {
++      const g = surface.g;
++      return parts(str).reduce((w, q) => {
++        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
++        return w + g.measureText(q.t).width;
++      }, 0);
++    }
++
++    function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const list = parts(str);
++      const total = richWidth(str, size, weight);
++      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
++      g.textAlign = 'left';
++      g.textBaseline = 'middle';
++      for (const pass of halo ? [0, 1] : [1]) {
++        let cx = start;
++        for (const q of list) {
++          const sz = q.sub ? Math.round(size * 0.74) : size;
++          g.font = `${weight} ${sz}px ${theme.font}`;
++          const yy = y + (q.sub ? size * 0.3 : 0);
++          if (pass === 0) {
++            g.lineWidth = 3.5;
++            g.lineJoin = 'round';
++            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
++            g.strokeText(q.t, cx, yy);
++          } else {
++            g.fillStyle = color;
++            g.fillText(q.t, cx, yy);
++          }
++          cx += g.measureText(q.t).width;
++        }
++      }
++      return total;
++    }
++
++    function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const w = richWidth(label, size) + 16;
++      const h = size + 11;
++      const x0 = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
++      g.save();
++      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
++      g.shadowBlur = 6;
++      g.shadowOffsetY = 1;
++      g.fillStyle = fill ?? (theme.dark ? 'rgba(16,22,31,0.9)' : 'rgba(255,255,255,0.94)');
++      roundRect(g, x0, y, w, h, h / 2);
++      g.fill();
++      g.restore();
++      if (!fill) {
++        g.strokeStyle = withAlpha(color, 0.45);
++        g.lineWidth = 1;
++        roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
++        g.stroke();
++      }
++      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? '#ffffff' : color, 'center', false);
++      return w;
++    }
++
++    function card(r: Rect): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      g.save();
++      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
++      g.shadowBlur = 12;
++      g.shadowOffsetY = 3;
++      g.fillStyle = theme.bg;
++      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
++      g.fill();
++      g.restore();
++      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
++      g.lineWidth = 1.2;
++      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
++      g.stroke();
++    }
++
++    function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width: number, head = 10): void {
++      const g = surface.g;
++      const len = Math.hypot(x1 - x0, y1 - y0);
++      if (len < 2) return;
++      const ux = (x1 - x0) / len;
++      const uy = (y1 - y0) / len;
++      const hd = Math.min(head, len * 0.6);
++      g.strokeStyle = color;
++      g.lineWidth = width;
++      g.lineCap = 'round';
++      g.beginPath();
++      g.moveTo(x0, y0);
++      g.lineTo(x1 - ux * hd * 0.7, y1 - uy * hd * 0.7);
++      g.stroke();
++      g.fillStyle = color;
++      g.beginPath();
++      g.moveTo(x1, y1);
++      g.lineTo(x1 - ux * hd - uy * hd * 0.5, y1 - uy * hd + ux * hd * 0.5);
++      g.lineTo(x1 - ux * hd + uy * hd * 0.5, y1 - uy * hd - ux * hd * 0.5);
++      g.closePath();
++      g.fill();
++    }
++
++    /** Etikett oben links im Diagramm (Achsenname), gibt das Rechteck zurück. */
++    function chip(r: Rect, x: number, label: string, color: string): Rect {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const sz = small() ? 11 : 12;
++      const w = richWidth(label, sz) + 12;
++      const h = sz + 8;
++      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)';
++      roundRect(g, x, r.y + 5, w, h, 6);
++      g.fill();
++      richText(label, x + 6, r.y + 5 + h / 2 + 0.5, sz, color, 'left', false);
++      return { x, y: r.y + 5, w, h };
++    }
++
++    function frame(r: Rect): void {
++      const g = surface.g;
++      g.save();
++      g.strokeStyle = ctx.theme.grid;
++      g.lineWidth = 1;
++      roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 10);
++      g.stroke();
++      g.restore();
++    }
++
++    /* ---------- Szene ---------- */
++    function buildGeo(r: Rect): Geo {
++      const sm = small();
++      const pad = sm ? 10 : 14;
++      const top = r.y + (sm ? 34 : 40);
++      const wheelH = (r.h - (top - r.y)) * (lay.tall ? 0.66 : 0.6);
++      const Rs = Math.max(60, Math.min(r.w * 0.36, wheelH / 2 - 6));
++      const cx = r.x + pad + Rs + 4;
++      const cy = top + Rs + 4;
++      const lever = Rs + (sm ? 20 : 26);
++      const re = lever * Math.sin(p.amp * DEG);
++      const mx = cx + lever;
++      const my = Math.min(cy + Rs + (sm ? 46 : 60) + re, r.y + r.h - re - (sm ? 26 : 34));
++      const cardTop = cy + Rs + (sm ? 26 : 34);
++      const cardRight = mx - re - (sm ? 30 : 40);
++      const card: Rect = { x: r.x + pad, y: cardTop, w: Math.max(80, cardRight - r.x - pad), h: Math.max(60, r.y + r.h - pad - cardTop) };
++      return { r, small: sm, cx, cy, Rs, Rw: Rs - (sm ? 22 : 26), lever, mx, my, re, card };
++    }
++
++    /** Punkt auf einem Kreis um die Radachse; a = Winkel von oben im Uhrzeigersinn. */
++    const polar = (g0: Geo, a: number, rr: number): [number, number] => [g0.cx + rr * Math.sin(a), g0.cy - rr * Math.cos(a)];
++
++    function drawScale(g0: Geo): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const inner = g0.Rw + 4;
++      const outer = g0.Rs;
++      const a0 = -150 * DEG;
++      const a1 = 150 * DEG;
++      // Skalenring (feststehend)
++      g.save();
++      g.beginPath();
++      g.arc(g0.cx, g0.cy, outer, a0 - Math.PI / 2, a1 - Math.PI / 2);
++      g.arc(g0.cx, g0.cy, inner, a1 - Math.PI / 2, a0 - Math.PI / 2, true);
++      g.closePath();
++      g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.18)';
++      g.shadowBlur = 6;
++      g.shadowOffsetY = 2;
++      g.fillStyle = dark ? '#d9cfae' : '#f6efd6';
++      g.fill();
++      g.restore();
++      // Ausschlag (Amplitude) als Band
++      const A = Math.min(liveAmp, 150 * DEG);
++      if (A > 0.5 * DEG) {
++        g.fillStyle = withAlpha(radColor(), dark ? 0.32 : 0.22);
++        g.beginPath();
++        g.arc(g0.cx, g0.cy, inner + 7, -A - Math.PI / 2, A - Math.PI / 2);
++        g.arc(g0.cx, g0.cy, inner, A - Math.PI / 2, -A - Math.PI / 2, true);
++        g.closePath();
++        g.fill();
++      }
++      // Belastungsgrenze
++      g.fillStyle = withAlpha(red(), flash.running ? 0.35 + 0.5 * (1 - flash.value) : 0.28);
++      for (const sgn of [-1, 1]) {
++        g.beginPath();
++        g.arc(g0.cx, g0.cy, outer, sgn > 0 ? LIMIT - Math.PI / 2 : a0 - Math.PI / 2, sgn > 0 ? a1 - Math.PI / 2 : -LIMIT - Math.PI / 2);
++        g.arc(g0.cx, g0.cy, inner, sgn > 0 ? a1 - Math.PI / 2 : -LIMIT - Math.PI / 2, sgn > 0 ? LIMIT - Math.PI / 2 : a0 - Math.PI / 2, true);
++        g.closePath();
++        g.fill();
++      }
++      // Teilung
++      const ink = '#3d2f0c';
++      g.strokeStyle = ink;
++      g.lineCap = 'butt';
++      for (let dgr = -150; dgr <= 150; dgr += 5) {
++        const a = dgr * DEG;
++        const major = dgr % 30 === 0;
++        const mid = dgr % 10 === 0;
++        const len = major ? 8 : mid ? 5.5 : 3;
++        const [x0, y0] = polar(g0, a, inner);
++        const [x1, y1] = polar(g0, a, inner + len);
++        g.lineWidth = major ? 1.4 : 1;
++        g.beginPath();
++        g.moveTo(x0, y0);
++        g.lineTo(x1, y1);
++        g.stroke();
++        if (major) {
++          const [tx, ty] = polar(g0, a, inner + (outer - inner) * 0.66);
++          g.save();
++          g.translate(tx, ty);
++          g.rotate(a);
++          text(g, dgr === 0 ? '0' : `${dgr < 0 ? '−' : ''}${Math.abs(dgr)}`, 0, 0.5, { font: `700 ${g0.small ? 8.5 : 9.5}px ${theme.font}`, color: Math.abs(dgr) >= 120 ? '#8a1f1f' : ink });
++          g.restore();
++        }
++      }
++    }
++
++    function drawSpiral(g0: Geo, phi: number, phiE: number, hot: boolean): void {
++      const g = surface.g;
++      const rin = g0.small ? 9 : 11;
++      const rout = g0.Rw * 0.46;
++      const turns = 4;
++      const N = 220;
++      g.save();
++      g.lineCap = 'round';
++      g.lineJoin = 'round';
++      for (const pass of [0, 1]) {
++        g.strokeStyle = pass === 0 ? 'rgba(0,0,0,0.35)' : hot ? red() : ctx.theme.dark ? '#d3dae3' : '#7e8794';
++        g.lineWidth = pass === 0 ? 3.2 : 1.9;
++        g.beginPath();
++        for (let i = 0; i <= N; i++) {
++          const u = i / N;
++          const rr = rin + (rout - rin) * u;
++          // Winkel von rechts (3 Uhr) im Uhrzeigersinn: innen dreht das Rad, außen der Erregerhebel
++          const a = -TAU * turns * (1 - u) + phi * (1 - u) + phiE * u;
++          const x = g0.cx + rr * Math.cos(a) + (pass === 0 ? 0.8 : 0);
++          const y = g0.cy + rr * Math.sin(a) + (pass === 0 ? 1.2 : 0);
++          if (i === 0) g.moveTo(x, y);
++          else g.lineTo(x, y);
++        }
++        g.stroke();
++      }
++      g.restore();
++    }
++
++    function drawWheel(g0: Geo, phi: number): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const Rw = g0.Rw;
++      const rim = g0.small ? 11 : 14;
++      g.save();
++      g.translate(g0.cx, g0.cy);
++      // Speichen (drehen mit)
++      g.save();
++      g.rotate(phi);
++      g.strokeStyle = dark ? '#8a6a4f' : '#9a6b45';
++      g.lineWidth = g0.small ? 4 : 5;
++      g.lineCap = 'round';
++      for (let k = 0; k < 4; k++) {
++        const a = (k * Math.PI) / 2 + Math.PI / 4;
++        g.beginPath();
++        g.moveTo(Math.cos(a) * 16, Math.sin(a) * 16);
++        g.lineTo(Math.cos(a) * (Rw - rim + 2), Math.sin(a) * (Rw - rim + 2));
++        g.stroke();
++      }
++      g.restore();
++      // Kupferring
++      g.save();
++      g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
++      g.shadowBlur = 10;
++      g.shadowOffsetY = 3;
++      const cu = g.createRadialGradient(-Rw * 0.3, -Rw * 0.35, Rw * 0.2, 0, 0, Rw);
++      cu.addColorStop(0, '#f0b98a');
++      cu.addColorStop(0.55, '#c47a43');
++      cu.addColorStop(0.85, '#9a5a2c');
++      cu.addColorStop(1, '#7a4420');
++      g.fillStyle = cu;
++      g.beginPath();
++      g.arc(0, 0, Rw, 0, TAU);
++      g.arc(0, 0, Rw - rim, 0, TAU, true);
++      g.fill('evenodd');
++      g.restore();
++      // Glanzkante
++      g.strokeStyle = 'rgba(255,230,200,0.55)';
++      g.lineWidth = 1.2;
++      g.beginPath();
++      g.arc(0, 0, Rw - 1.5, Math.PI * 1.05, Math.PI * 1.6);
++      g.stroke();
++      g.strokeStyle = 'rgba(60,25,5,0.5)';
++      g.beginPath();
++      g.arc(0, 0, Rw - rim + 0.8, 0, TAU);
++      g.stroke();
++      // Zeiger am Rad (zeigt in die Skala)
++      g.save();
++      g.rotate(phi);
++      g.fillStyle = dark ? '#f4f6f8' : '#1b2330';
++      g.beginPath();
++      g.moveTo(-3.5, -Rw + 2);
++      g.lineTo(3.5, -Rw + 2);
++      g.lineTo(1.4, -g0.Rs + 3);
++      g.lineTo(-1.4, -g0.Rs + 3);
++      g.closePath();
++      g.fill();
++      g.restore();
++      g.restore();
++    }
++
++    function drawHub(g0: Geo): void {
++      const g = surface.g;
++      const rad = g0.small ? 9 : 11;
++      const grad = g.createRadialGradient(g0.cx - rad * 0.3, g0.cy - rad * 0.3, 1, g0.cx, g0.cy, rad);
++      grad.addColorStop(0, '#f2f4f7');
++      grad.addColorStop(1, '#6d7682');
++      g.fillStyle = grad;
++      g.beginPath();
++      g.arc(g0.cx, g0.cy, rad, 0, TAU);
++      g.fill();
++      g.fillStyle = '#3a414b';
++      g.beginPath();
++      g.arc(g0.cx, g0.cy, rad * 0.35, 0, TAU);
++      g.fill();
++    }
++
++    function drawBrake(g0: Geo): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const sm = g0.small;
++      const x = g0.cx;
++      const yTop = g0.cy + g0.Rw - (sm ? 16 : 20);
++      const w = sm ? 24 : 30;
++      const hPole = sm ? 30 : 38;
++      // Feld (je stärker die Dämpfung, desto deutlicher)
++      const k = clamp(p.damp / 1.5, 0, 1);
++      if (k > 0.03) {
++        const glow = g.createRadialGradient(x, yTop + hPole * 0.4, 2, x, yTop + hPole * 0.4, w * 1.6);
++        glow.addColorStop(0, withAlpha(radColor(), 0.15 + 0.45 * k));
++        glow.addColorStop(1, withAlpha(radColor(), 0));
++        g.fillStyle = glow;
++        g.beginPath();
++        g.arc(x, yTop + hPole * 0.4, w * 1.6, 0, TAU);
++        g.fill();
++      }
++      // Polschuh (vor dem Rad)
++      g.save();
++      g.shadowColor = 'rgba(0,0,0,0.35)';
++      g.shadowBlur = 5;
++      g.shadowOffsetY = 2;
++      const iron = g.createLinearGradient(x - w / 2, 0, x + w / 2, 0);
++      iron.addColorStop(0, '#3c434d');
++      iron.addColorStop(0.5, '#8d96a3');
++      iron.addColorStop(1, '#3c434d');
++      g.fillStyle = iron;
++      roundRect(g, x - w / 2, yTop, w, hPole, 3);
++      g.fill();
++      g.restore();
++      // Spule
++      const cw = w + (sm ? 12 : 16);
++      const ch = sm ? 20 : 26;
++      const cyc = yTop + hPole - 2;
++      const coil = g.createLinearGradient(0, cyc, 0, cyc + ch);
++      coil.addColorStop(0, '#e19a52');
++      coil.addColorStop(0.5, '#b8692b');
++      coil.addColorStop(1, '#8a4a1c');
++      g.fillStyle = coil;
++      roundRect(g, x - cw / 2, cyc, cw, ch, 4);
++      g.fill();
++      g.strokeStyle = 'rgba(70,30,5,0.45)';
++      g.lineWidth = 1;
++      g.beginPath();
++      for (let yy = cyc + 3; yy < cyc + ch - 1; yy += 3) {
++        g.moveTo(x - cw / 2 + 2, yy);
++        g.lineTo(x + cw / 2 - 2, yy);
++      }
++      g.stroke();
++      // Kabel
++      g.strokeStyle = dark ? '#c9a24a' : '#3a414b';
++      g.lineWidth = 1.6;
++      g.beginPath();
++      g.moveTo(x + cw / 2, cyc + ch * 0.5);
++      g.bezierCurveTo(x + cw / 2 + 14, cyc + ch * 0.5, x + cw / 2 + 10, cyc + ch + 12, x + cw / 2 + 26, cyc + ch + 10);
++      g.stroke();
++      if (!sm || g0.Rs > 100) text(g, ctx.t('brake'), x - cw / 2 - 6, cyc + ch * 0.5, { font: `600 ${sm ? 10 : 11}px ${theme.font}`, color: theme.muted, align: 'right' });
++    }
++
++    function drawDrive(g0: Geo, phiE: number): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const sm = g0.small;
++      const d = drive();
++      const psi = drivePhase(d, t);
++      // Hebelende und Exzenterzapfen
++      const lx = g0.cx + g0.lever * Math.cos(phiE);
++      const ly = g0.cy + g0.lever * Math.sin(phiE);
++      const px = g0.mx + g0.re * Math.cos(psi + Math.PI / 2) * -1;
++      const py = g0.my + g0.re * Math.sin(psi);
++      // Motorgehäuse
++      const box = Math.max(g0.re * 2 + (sm ? 18 : 24), sm ? 40 : 52);
++      g.save();
++      g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
++      g.shadowBlur = 8;
++      g.shadowOffsetY = 3;
++      const body = g.createLinearGradient(g0.mx - box / 2, 0, g0.mx + box / 2, 0);
++      body.addColorStop(0, dark ? '#2b3340' : '#3c4552');
++      body.addColorStop(0.5, dark ? '#4a5463' : '#5d6878');
++      body.addColorStop(1, dark ? '#2b3340' : '#3c4552');
++      g.fillStyle = body;
++      roundRect(g, g0.mx - box / 2, g0.my - box / 2, box, box, 8);
++      g.fill();
++      g.restore();
++      text(g, ctx.t('motor'), g0.mx, g0.my + box / 2 + (sm ? 9 : 11), { font: `600 ${sm ? 10 : 11}px ${theme.font}`, color: theme.muted });
++      // Exzenterscheibe (dreht)
++      const dr = g0.re + (sm ? 7 : 9);
++      const disk = g.createRadialGradient(g0.mx - dr * 0.3, g0.my - dr * 0.3, 2, g0.mx, g0.my, dr);
++      disk.addColorStop(0, '#eef1f5');
++      disk.addColorStop(1, '#8a939f');
++      g.fillStyle = disk;
++      g.beginPath();
++      g.arc(g0.mx, g0.my, dr, 0, TAU);
++      g.fill();
++      g.strokeStyle = 'rgba(0,0,0,0.25)';
++      g.lineWidth = 1;
++      g.stroke();
++      // Markierung auf der Scheibe
++      g.strokeStyle = 'rgba(40,46,56,0.55)';
++      g.lineWidth = 2;
++      g.beginPath();
++      g.moveTo(g0.mx, g0.my);
++      g.lineTo(px, py);
++      g.stroke();
++      g.fillStyle = '#3a414b';
++      g.beginPath();
++      g.arc(g0.mx, g0.my, 3, 0, TAU);
++      g.fill();
++      // Schubstange
++      g.strokeStyle = dark ? '#c3cbd6' : '#5d6570';
++      g.lineWidth = sm ? 3 : 3.5;
++      g.lineCap = 'round';
++      g.beginPath();
++      g.moveTo(px, py);
++      g.lineTo(lx, ly);
++      g.stroke();
++      g.fillStyle = eColor();
++      g.beginPath();
++      g.arc(px, py, sm ? 4 : 5, 0, TAU);
++      g.fill();
++      // Erregerhebel (an der Achse, außen an der Spiralfeder)
++      const r0 = g0.Rw * 0.46;
++      g.strokeStyle = dark ? '#aeb7c4' : '#4a5361';
++      g.lineWidth = sm ? 4 : 5;
++      g.beginPath();
++      g.moveTo(g0.cx + r0 * Math.cos(phiE), g0.cy + r0 * Math.sin(phiE));
++      g.lineTo(lx, ly);
++      g.stroke();
++      g.fillStyle = eColor();
++      g.beginPath();
++      g.arc(lx, ly, sm ? 4 : 5, 0, TAU);
++      g.fill();
++      richText(ctx.t('erreger'), lx + 2, ly - (sm ? 12 : 14), sm ? 10.5 : 11.5, eColor(), 'center');
++    }
++
++    function drawPhasor(g0: Geo): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const sm = g0.small;
++      const R0 = g0.card;
++      card(R0);
++      const pad = sm ? 8 : 12;
++      richText(ctx.t('phasor'), R0.x + pad, R0.y + (sm ? 13 : 15), sm ? 11 : 12, theme.text, 'left', false);
++      const d = drive();
++      const shift = clamp(liveShift, -Math.PI, Math.PI);
++      const footer = sm ? 26 : 30;
++      const avail = Math.min(R0.w - 2 * pad, R0.h - (sm ? 26 : 30) - footer);
++      const R = Math.max(14, avail / 2 - 4);
++      const cx = R0.x + R0.w / 2;
++      const cy = R0.y + (sm ? 26 : 30) + avail / 2;
++      g.strokeStyle = withAlpha(theme.text, 0.25);
++      g.lineWidth = 1;
++      g.setLineDash([3, 4]);
++      g.beginPath();
++      g.arc(cx, cy, R, 0, TAU);
++      g.stroke();
++      g.setLineDash([]);
++      g.beginPath();
++      g.moveTo(cx - R - 4, cy);
++      g.lineTo(cx + R + 4, cy);
++      g.stroke();
++      const aE = drivePhase(d, t);
++      const aR = aE - (steady || liveAmp > 0.2 * DEG ? shift : 0);
++      const lenE = R * 0.62;
++      const lenR = R * 0.95;
++      // Winkel zwischen den Zeigern
++      if (liveAmp > 0.2 * DEG && Math.abs(shift) > 2 * DEG) {
++        const rr = Math.min(R * 0.42, sm ? 22 : 28);
++        g.fillStyle = withAlpha(shiftColor(), 0.16);
++        g.strokeStyle = shiftColor();
++        g.lineWidth = 1.6;
++        g.beginPath();
++        g.moveTo(cx, cy);
++        g.arc(cx, cy, rr, -aE, -aR, shift < 0);
++        g.closePath();
++        g.fill();
++        g.beginPath();
++        g.arc(cx, cy, rr, -aE, -aR, shift < 0);
++        g.stroke();
++      }
++      arrowPx(cx, cy, cx + lenE * Math.cos(aE), cy - lenE * Math.sin(aE), eColor(), sm ? 2.6 : 3, sm ? 9 : 10);
++      if (liveAmp > 0.2 * DEG) arrowPx(cx, cy, cx + lenR * Math.cos(aR), cy - lenR * Math.sin(aR), radColor(), sm ? 2.8 : 3.2, sm ? 9 : 11);
++      g.fillStyle = theme.text;
++      g.beginPath();
++      g.arc(cx, cy, 2.4, 0, TAU);
++      g.fill();
++      // Beschriftungen an den Spitzen
++      const lab = (a: number, len: number, str: string, color: string) => {
++        const lx = cx + (len + 12) * Math.cos(a);
++        const ly = cy - (len + 12) * Math.sin(a);
++        richText(str, clamp(lx, R0.x + 22, R0.x + R0.w - 22), clamp(ly, R0.y + 26, R0.y + R0.h - footer), sm ? 10.5 : 11.5, color, 'center');
++      };
++      lab(aE, lenE, ctx.t('erreger'), eColor());
++      if (liveAmp > 0.2 * DEG) lab(aR, lenR, ctx.t('rad'), radColor());
++      // Fußzeile: Phasenverschiebung
++      const dd = clamp(shift, 0, Math.PI) / DEG;
++      const msg = liveAmp < 0.2 * DEG ? '' : tr('lag', { d: n(dd, 0) });
++      if (msg) richText(msg, cx, R0.y + R0.h - footer / 2 - 2, sm ? 12 : 13, shiftColor(), 'center', false);
++    }
++
++    function drawScene(r: Rect): void {
++      const g = surface.g;
++      const theme = ctx.theme;
++      const dark = theme.dark;
++      const g0 = buildGeo(r);
++      const sm = g0.small;
++      g.save();
++      roundRect(g, r.x, r.y, r.w, r.h, 12);
++      g.clip();
++      const wall = g.createLinearGradient(0, r.y, 0, r.y + r.h);
++      wall.addColorStop(0, dark ? '#172131' : '#f1f4f8');
++      wall.addColorStop(1, dark ? '#101824' : '#e1e7ee');
++      g.fillStyle = wall;
++      g.fillRect(r.x, r.y, r.w, r.h);
++      // Grundplatte hinter dem Rad
++      const plateR = g0.Rs + (sm ? 8 : 10);
++      g.save();
++      g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.16)';
++      g.shadowBlur = 14;
++      g.shadowOffsetY = 4;
++      g.fillStyle = dark ? '#222c3b' : '#dfe5ec';
++      roundRect(g, g0.cx - plateR, g0.cy - plateR, plateR * 2, plateR * 2 + (sm ? 10 : 14), 18);
++      g.fill();
++      g.restore();
++      const d = drive();
++      const phiE = driveAngle(d, t);
++      drawScale(g0);
++      drawWheel(g0, s[0]);
++      drawSpiral(g0, s[0], phiE, broken);
++      drawHub(g0);
++      drawBrake(g0);
++      drawDrive(g0, phiE);
++      drawPhasor(g0);
++      // Anzeigen oben
++      const size = sm ? 11 : 12;
++      pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(t, 1)} s`, theme.text, 'left', size);
++      pill(r.x + r.w - 8, r.y + 8, tr('top', { f: fmt.fixed(p.fE, 2) }), theme.text, 'right', size);
++      if (broken) {
++        const k = flash.running ? 1 + 0.08 * Math.sin(Math.PI * flash.t) : 1;
++        g.save();
++        g.translate(g0.cx, g0.cy);
++        g.scale(k, k);
++        pill(0, -11, ctx.t(sm ? 'brokenShort' : 'broken'), red(), 'center', size + 1, withAlpha(red(), 0.94));
++        g.restore();
++      } else if (jumpNote && performance.now() < jumpNote.until) {
++        pill(g0.cx, g0.cy + (sm ? 22 : 26), tr('jump', { s: fmt.num(jumpNote.s, 0) }), theme.muted, 'center', size);
++      }
++      g.restore();
++    }
++
++    /* ---------- Diagramme ---------- */
++    function yTicks(plot: Plot, gutter: number, ticks: number[], dec: number, suffix = ''): void {
++      const theme = ctx.theme;
++      for (const v of ticks) {
++        plot.hline(v, { color: theme.grid, width: 1 });
++      }
++      for (const v of ticks) plot.textPx(gutter - 6, plot.py(v), `${fmt.num(v, dec)}${suffix}`, { color: theme.muted, size: 12, align: 'right', baseline: 'middle' });
++    }
++
++    function drawTime(R0: Rect, dt: number): void {
++      const plot = plotT;
++      const theme = ctx.theme;
++      const sm = small();
++      const W = niceWindow(Math.max(4, 3.2 / p.fE));
++      const t0 = Math.max(hist.t[0] ?? 0, t - 0.88 * W);
++      // Bereich weich nachführen
++      let mx = p.amp;
++      const i0 = hist.t.findIndex((tt) => tt >= t0 - 0.2);
++      for (let i = Math.max(0, i0); i < hist.phi.length; i++) mx = Math.max(mx, Math.abs(hist.phi[i]!) / DEG);
++      const target = Math.max(6, Math.min(140, mx * 1.2));
++      rangeT = prefersReducedMotion() ? target : rangeT + (target - rangeT) * Math.min(1, dt * 4);
++      if (Math.abs(rangeT - target) < 0.05) rangeT = target;
++      plot.setRangePadded([t0, t0 + W], [-rangeT, rangeT], { left: sm ? 38 : 44, right: 10, top: 8, bottom: 6 });
++      const g = plot.begin();
++      plot.grid({ minor: false });
++      const p10 = 10 ** Math.floor(Math.log10(rangeT / 1.2));
++      const stepY = [5, 2, 1].map((f) => f * p10).find((v) => v <= rangeT / 1.2) ?? p10;
++      const ticks = [-2, -1, 1, 2].map((k) => k * stepY).filter((v) => Math.abs(v) < rangeT * 0.95);
++      plot.axes();
++      const gutter = plot.px(t0);
++      if (t0 > 0) plot.vline(t0, { color: theme.axis, width: 1.5 });
++      yTicks(plot, gutter, t0 > 0 ? [...ticks, 0] : ticks, 0);
++      // Belastungsgrenze
++      if (rangeT > 100) for (const sg of [-1, 1]) plot.hline(sg * 120, { color: red(), width: 1.4, dash: [6, 4], alpha: 0.8 });
++      // Kurven
++      const r = plot.rect;
++      const start = Math.max(0, i0);
++      const count = hist.t.length - start;
++      const stride = Math.max(1, Math.floor(count / (r.w * 1.5)));
++      const ptsE: [number, number][] = [];
++      const ptsR: [number, number][] = [];
++      for (let i = start; i < hist.t.length; i += stride) {
++        ptsE.push([hist.t[i]!, hist.e[i]! / DEG]);
++        ptsR.push([hist.t[i]!, hist.phi[i]! / DEG]);
++      }
++      ptsE.push([t, driveAngle(drive(), t) / DEG]);
++      ptsR.push([t, s[0] / DEG]);
++      plot.polyline(ptsE, { color: eColor(), width: 2, dash: [6, 4] });
++      plot.polyline(ptsR, { color: radColor(), width: 2.6 });
++      plot.point(t, driveAngle(drive(), t) / DEG, { color: eColor(), radius: 4 });
++      plot.point(t, s[0] / DEG, { color: radColor(), radius: 5 });
++      // Etikett und Legende
++      const c = chip(r, gutter + 6, ctx.t('chipT'), theme.text);
++      const fs = sm ? 11 : 12;
++      const ly = c.y + c.h / 2;
++      let lx = c.x + c.w + 10;
++      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)';
++      g.font = `700 ${fs}px ${theme.font}`;
++      const legW = 20 + g.measureText(ctx.t('rad')).width + 14 + 20 + g.measureText(ctx.t('erreger')).width + 10;
++      roundRect(g, lx - 4, c.y, legW, c.h, 6);
++      g.fill();
++      g.strokeStyle = radColor();
++      g.lineWidth = 2.6;
++      g.beginPath();
++      g.moveTo(lx, ly);
++      g.lineTo(lx + 14, ly);
++      g.stroke();
++      text(g, ctx.t('rad'), lx + 18, ly + 0.5, { font: `700 ${fs}px ${theme.font}`, color: radColor(), align: 'left' });
++      lx += 18 + g.measureText(ctx.t('rad')).width + 14;
++      g.strokeStyle = eColor();
++      g.lineWidth = 2;
++      g.setLineDash([5, 3]);
++      g.beginPath();
++      g.moveTo(lx, ly);
++      g.lineTo(lx + 14, ly);
++      g.stroke();
++      g.setLineDash([]);
++      text(g, ctx.t('erreger'), lx + 18, ly + 0.5, { font: `700 ${fs}px ${theme.font}`, color: eColor(), align: 'left' });
++      // Zustand
++      const st = broken ? null : steady ? ctx.t('steady') : ctx.t('settling');
++      if (st && r.w > 300) richText(st, r.x + r.w - 10, r.y + r.h - 12, fs, steady ? theme.series[2]! : theme.muted, 'right', true, 700);
++      plot.end();
++      frame(R0);
++    }
++
++    function drawRes(R0: Rect): void {
++      const plot = plotR;
++      const theme = ctx.theme;
++      const sm = small();
++      const ratioPeak = amplitudeRatio(Math.max(resonanceOmega(OMEGA0, p.damp), 1e-6), OMEGA0, p.damp);
++      const theoryPeak = p.theory ? p.amp * ratioPeak : 0;
++      const measured = points.reduce((m, q) => Math.max(m, q.amp / DEG), 0);
++      const yMax = niceCeil(Math.max(theoryPeak, measured, liveAmp / DEG, p.amp * 1.5) * 1.12);
++      plot.setRangePadded([0, F_MAX], [0, yMax], { left: sm ? 38 : 44, right: 12, top: 30, bottom: 20 });
++      plot.begin();
++      plot.grid({ minor: false });
++      const step = yMax <= 20 ? 5 : yMax <= 50 ? 10 : yMax <= 100 ? 20 : 30;
++      const ticks: number[] = [];
++      for (let v = step; v <= yMax * 0.98; v += step) ticks.push(v);
++      plot.axes();
++      yTicks(plot, plot.px(0), ticks, 0);
++      // Eigenfrequenz
++      plot.segment([F0, 0], [F0, yMax * 2], { color: theme.muted, width: 1.2, dash: [4, 4] });
++      plot.text(F0, 0, ctx.t('f0'), { color: theme.muted, size: 12, weight: 'bold', align: 'left', baseline: 'bottom', offset: [4, -4] });
++      // Belastungsgrenze
++      if (yMax > 120) {
++        plot.hline(120, { color: red(), width: 1.4, dash: [6, 4], alpha: 0.85 });
++        plot.text(F_MAX, 120, ctx.t('limit'), { color: red(), size: 11, weight: 'bold', align: 'right', baseline: 'bottom', offset: [-4, -3] });
++      }
++      // Theorie
++      if (p.theory) {
++        const f = (x: number) => Math.min(yMax * 1.5, p.amp * amplitudeRatio(TAU * x, OMEGA0, p.damp));
++        plot.fn(f, { color: radColor(), width: 2.2, from: 0, to: F_MAX, alpha: 0.55 });
++      }
++      // Messpunkte
++      points.forEach((q, i) => {
++        const last = i === points.length - 1 && pop.running;
++        if (q.over) {
++          const [px, py] = plot.toPx(q.f, 120);
++          const g = surface.g;
++          g.fillStyle = red();
++          g.beginPath();
++          g.moveTo(px, py - 7);
++          g.lineTo(px - 6, py + 4);
++          g.lineTo(px + 6, py + 4);
++          g.closePath();
++          g.fill();
++        } else plot.point(q.f, q.amp / DEG, { color: radColor(), radius: last ? 5 * Math.max(0.3, pop.value) : 5 });
++      });
++      // aktuelle Erregerfrequenz
++      plot.segment([p.fE, 0], [p.fE, yMax * 2], { color: eColor(), width: 1.6, dash: [5, 4] });
++      const r = plot.rect;
++      chip(r, plot.px(0) + 6, ctx.t('chipAmp'), radColor());
++      if (!points.length && !p.theory) {
++        plot.textPx(r.x + r.w / 2 + 16, r.y + r.h * 0.45, ctx.t('empty'), { color: theme.muted, size: 13, weight: '600', align: 'center' });
++        plot.textPx(r.x + r.w / 2 + 16, r.y + r.h * 0.45 + 18, ctx.t('emptyHint'), { color: theme.muted, size: 12, align: 'center' });
++      }
++      plot.end();
++      frame(R0);
++    }
++
++    function drawPhase(R0: Rect): void {
++      const plot = plotP;
++      const theme = ctx.theme;
++      const sm = small();
++      plot.setRangePadded([0, F_MAX], [0, 180], { left: sm ? 38 : 44, right: 12, top: 28, bottom: 20 });
++      plot.begin();
++      plot.grid({ minor: false });
++      plot.axes();
++      yTicks(plot, plot.px(0), [90, 180], 0, '°');
++      plot.segment([F0, 0], [F0, 400], { color: theme.muted, width: 1.2, dash: [4, 4] });
++      if (p.theory) plot.fn((x) => phaseShift(TAU * x, OMEGA0, p.damp) / DEG, { color: shiftColor(), width: 2.2, from: 0, to: F_MAX, alpha: 0.6 });
++      points.forEach((q, i) => {
++        if (q.over) return;
++        const last = i === points.length - 1 && pop.running;
++        plot.point(q.f, q.shift / DEG, { color: shiftColor(), radius: last ? 5 * Math.max(0.3, pop.value) : 5 });
++      });
++      plot.segment([p.fE, 0], [p.fE, 400], { color: eColor(), width: 1.6, dash: [5, 4] });
++      chip(plot.rect, plot.px(0) + 6, ctx.t('chipShift'), shiftColor());
++      plot.end();
++      frame(R0);
++    }
++
++    /* ---------- Ablauf ---------- */
++    function autoStep(): void {
++      if (!auto) return;
++      if (auto.i >= SWEEP.length) {
++        auto = null;
++        updateReadouts();
++        return;
++      }
++      const f = SWEEP[auto.i]!;
++      ctx.set({ fE: f });
++      skipTransient(true);
++      auto.i++;
++      auto.next = performance.now() + (prefersReducedMotion() ? 120 : 420);
++      updateReadouts();
++    }
++
++    restart();
++
++    return {
++      update(changed, source) {
++        if (source === 'init' || source === 'replace') {
++          restart();
++          points = [];
++          auto = null;
++          ctx.clock.pause();
++        } else {
++          if (changed.has('fE')) {
++            if (broken && source === 'input') restart();
++            resetTracking();
++          }
++          if (changed.has('damp') || changed.has('amp')) {
++            points = [];
++            if (broken && source === 'input') restart();
++            resetTracking();
++          }
++          if (source === 'input' && (changed.has('fE') || changed.has('damp') || changed.has('amp'))) auto = null;
++        }
++        lay = computeLayout();
++        plotT.resize();
++        plotR.resize();
++        plotP.resize();
++        updateReadouts();
++      },
++
++      action(id) {
++        if (ctx.locked) return;
++        if (id === 'go') {
++          auto = null;
++          restart();
++          updateReadouts();
++          ctx.clock.play();
++        } else if (id === 'skip') {
++          if (broken) return;
++          auto = null;
++          skipTransient(false);
++          updateReadouts();
++          ctx.requestRender();
++        } else if (id === 'auto') {
++          if (auto) {
++            auto = null;
++          } else {
++            if (broken) restart();
++            points = [];
++            auto = { i: 0, next: 0 };
++            ctx.clock.play();
++          }
++          updateReadouts();
++        } else if (id === 'clear') {
++          points = [];
++          updateReadouts();
++        }
++      },
++
++      tick(dt) {
++        if (broken) return;
++        if (auto && performance.now() >= auto.next) autoStep();
++        const h = dt * SPEED[p.speed as Speed];
++        const d = drive();
++        let finished = false;
++        stepper.run(h, (hh) => {
++          if (broken) return;
++          s = step(d, t, s, hh);
++          t += hh;
++          const a = Math.abs(s[0]);
++          if (a > LIMIT) {
++            s = [Math.sign(s[0]) * LIMIT, 0];
++            finished = true;
++            broken = true;
++            return;
++          }
++          cycleMax = Math.max(cycleMax, a);
++          if (t >= nextSample - 1e-9) {
++            hist.t.push(t);
++            hist.phi.push(s[0]);
++            hist.e.push(driveAngle(d, t));
++            nextSample += SAMPLE;
++          }
++          // Ende einer Erregerperiode: Amplitude dieser Periode festhalten
++          const ci = Math.floor(drivePhase(d, t) / TAU);
++          if (ci !== cycleIndex) {
++            cycleIndex = ci;
++            amps.push(cycleMax);
++            if (amps.length > 6) amps.shift();
++            liveAmp = cycleMax;
++            liveShift = readPhasor(d, t, s).shift;
++            cycleMax = a;
++            const k = amps.length;
++            const stable =
++              k >= 3 && t - tChange > 3 / p.fE && Math.abs(amps[k - 1]! - amps[k - 2]!) < 0.004 * amps[k - 1]! + 0.02 * DEG && Math.abs(amps[k - 2]! - amps[k - 3]!) < 0.004 * amps[k - 2]! + 0.02 * DEG;
++            if (stable && !steady) {
++              steady = true;
++              record(false);
++            } else if (!stable && steady && Math.abs(amps[k - 1]! - amps[k - 2]!) > 0.02 * amps[k - 1]!) steady = false;
++          } else liveAmp = Math.max(liveAmp, cycleMax);
++        });
++        if (finished) breakDown();
++        if (steady !== wasSteady) {
++          wasSteady = steady;
++          updateReadouts();
++        }
++        // alte Messwerte verwerfen
++        const W = niceWindow(Math.max(4, 3.2 / p.fE));
++        const cut = hist.t.findIndex((tt) => tt >= t - W - 1);
++        if (cut > 400) {
++          hist.t.splice(0, cut);
++          hist.phi.splice(0, cut);
++          hist.e.splice(0, cut);
++        }
++        updateNow();
++      },
++
++      resetTime() {
++        auto = null;
++        restart();
++        updateReadouts();
++      },
++
++      render() {
++        const now = performance.now();
++        const dt = Math.min(0.1, (now - lastFrame) / 1000);
++        lastFrame = now;
++        lay = computeLayout();
++        plotT.resize();
++        plotR.resize();
++        plotP.resize();
++        surface.begin();
++        drawScene(lay.scene);
++        drawTime(lay.time, dt);
++        drawRes(lay.res);
++        if (lay.phase) drawPhase(lay.phase);
++        if (pop.running || flash.running || (jumpNote && now < jumpNote.until)) ctx.requestRender();
++      },
++
++      destroy: () => surface.destroy(),
++    };
++  },
++});
+diff --git a/src/simulations/physik/resonanz/model.ts b/src/simulations/physik/resonanz/model.ts
+new file mode 100644
+index 0000000..bde963c
+--- /dev/null
++++ b/src/simulations/physik/resonanz/model.ts
+@@ -0,0 +1,134 @@
++/**
++ * Rechenlogik „Erzwungene Schwingung und Resonanz“ am Pohlschen Rad.
++ *
++ * Ein Drehpendel (Rad mit Spiralfeder) wird über einen Motor mit Exzenter
++ * angetrieben: Das äußere Ende der Spiralfeder (Erregerhebel) schwingt mit
++ * φ_E(t) = φ̂_E · sin(ω_E · t). Mit der Eigenkreisfrequenz ω₀ und der
++ * Abklingkonstante δ (Wirbelstrombremse) gilt für die Auslenkung φ des Rades
++ *
++ *   φ'' = −ω₀² · (φ − φ_E(t)) − 2δ · φ'
++ *
++ * Nach dem Einschwingen schwingt das Rad mit der Erregerfrequenz:
++ *   φ(t) = φ̂ · sin(ω_E · t − Δφ)
++ * mit der Amplitude φ̂ = φ̂_E · ω₀² / √((ω₀² − ω_E²)² + (2δω_E)²)
++ * und der Phasenverschiebung Δφ = arctan(2δω_E / (ω₀² − ω_E²)) ∈ [0; π].
++ *
++ * Winkel im Bogenmaß, Zeiten in s.
++ */
++
++/** Eigenfrequenz des Rades: f₀ = 0,5 Hz (T₀ = 2 s), ω₀ = π 1/s. */
++export const F0 = 0.5;
++export const OMEGA0 = 2 * Math.PI * F0;
++
++export interface Drive {
++  /** Erregeramplitude φ̂_E (rad). */
++  ampE: number;
++  /** Erregerkreisfrequenz ω_E (1/s). */
++  omegaE: number;
++  /** Abklingkonstante δ (1/s). */
++  delta: number;
++  /** Eigenkreisfrequenz ω₀ (1/s). */
++  omega0: number;
++  /**
++   * Phasenversatz des Motors (rad): φ_E = φ̂_E · sin(ω_E · t + ψ₀). Ändert man
++   * die Drehzahl, bleibt die Drehung des Motors dadurch stetig.
++   */
++  phase0?: number;
++}
++
++/** Zustand: Auslenkung φ (rad) und Winkelgeschwindigkeit φ' (rad/s). */
++export type State = readonly [number, number];
++
++/** Auslenkung des Erregers zur Zeit t. */
++export function driveAngle(d: Drive, t: number): number {
++  return d.ampE * Math.sin(d.omegaE * t + (d.phase0 ?? 0));
++}
++
++/** Phasenwinkel des Erregers ω_E · t + ψ₀. */
++export function drivePhase(d: Drive, t: number): number {
++  return d.omegaE * t + (d.phase0 ?? 0);
++}
++
++/** Winkelbeschleunigung φ'' zum Zustand. */
++export function acceleration(d: Drive, t: number, s: State): number {
++  return -d.omega0 * d.omega0 * (s[0] - driveAngle(d, t)) - 2 * d.delta * s[1];
++}
++
++/** Ein Runge-Kutta-Schritt (4. Ordnung) der Länge h ab der Zeit t. */
++export function step(d: Drive, t: number, s: State, h: number): [number, number] {
++  const w2 = d.omega0 * d.omega0;
++  const k = 2 * d.delta;
++  const p0 = d.phase0 ?? 0;
++  const acc = (tt: number, x: number, v: number) => -w2 * (x - d.ampE * Math.sin(d.omegaE * tt + p0)) - k * v;
++  const [x, v] = s;
++  const a1 = acc(t, x, v);
++  const x2 = x + 0.5 * h * v;
++  const v2 = v + 0.5 * h * a1;
++  const a2 = acc(t + 0.5 * h, x2, v2);
++  const x3 = x + 0.5 * h * v2;
++  const v3 = v + 0.5 * h * a2;
++  const a3 = acc(t + 0.5 * h, x3, v3);
++  const x4 = x + h * v3;
++  const v4 = v + h * a3;
++  const a4 = acc(t + h, x4, v4);
++  return [x + (h / 6) * (v + 2 * v2 + 2 * v3 + v4), v + (h / 6) * (a1 + 2 * a2 + 2 * a3 + a4)];
++}
++
++/** Verhältnis φ̂ / φ̂_E im eingeschwungenen Zustand. */
++export function amplitudeRatio(omegaE: number, omega0: number, delta: number): number {
++  const a = omega0 * omega0 - omegaE * omegaE;
++  const b = 2 * delta * omegaE;
++  return (omega0 * omega0) / Math.sqrt(a * a + b * b);
++}
++
++/** Amplitude φ̂ im eingeschwungenen Zustand (rad). */
++export function steadyAmplitude(d: Drive): number {
++  return d.ampE * amplitudeRatio(d.omegaE, d.omega0, d.delta);
++}
++
++/** Phasenverschiebung Δφ zwischen Erreger und Rad (rad, 0 … π). */
++export function phaseShift(omegaE: number, omega0: number, delta: number): number {
++  return Math.atan2(2 * delta * omegaE, omega0 * omega0 - omegaE * omegaE);
++}
++
++/** Resonanzkreisfrequenz (größte Amplitude) ω_R = √(ω₀² − 2δ²); 0, wenn es kein Maximum gibt. */
++export function resonanceOmega(omega0: number, delta: number): number {
++  const w2 = omega0 * omega0 - 2 * delta * delta;
++  return w2 > 0 ? Math.sqrt(w2) : 0;
++}
++
++/** Eingeschwungener Zustand zur Zeit t (ohne Einschwingvorgang). */
++export function steadyState(d: Drive, t: number): [number, number] {
++  const A = steadyAmplitude(d);
++  const ph = drivePhase(d, t) - phaseShift(d.omegaE, d.omega0, d.delta);
++  return [A * Math.sin(ph), A * d.omegaE * Math.cos(ph)];
++}
++
++/**
++ * Amplitude und Phasenverschiebung, die man aus einem Zustand abliest, wenn
++ * man ihn als harmonische Schwingung mit der Erregerfrequenz deutet
++ * (im eingeschwungenen Zustand exakt).
++ */
++export function readPhasor(d: Drive, t: number, s: State): { amp: number; shift: number } {
++  const amp = Math.hypot(s[0], s[1] / d.omegaE);
++  const own = Math.atan2(s[0], s[1] / d.omegaE);
++  let shift = (drivePhase(d, t) - own) % (2 * Math.PI);
++  if (shift < -Math.PI) shift += 2 * Math.PI;
++  if (shift > Math.PI) shift -= 2 * Math.PI;
++  return { amp, shift };
++}
++
++/**
++ * Integriert ab (t, s) über die Dauer `duration` mit der Schrittweite h.
++ * Bricht ab, sobald |φ| die Grenze `limit` überschreitet.
++ */
++export function integrate(d: Drive, t: number, s: State, duration: number, h: number, limit = Infinity): { t: number; s: [number, number]; exceeded: boolean } {
++  let state: [number, number] = [s[0], s[1]];
++  const n = Math.max(1, Math.round(duration / h));
++  for (let i = 0; i < n; i++) {
++    state = step(d, t, state, h);
++    t += h;
++    if (Math.abs(state[0]) > limit) return { t, s: state, exceeded: true };
++  }
++  return { t, s: state, exceeded: false };
++}
+diff --git a/tests/federpendel.test.ts b/tests/federpendel.test.ts
+new file mode 100644
+index 0000000..7857f66
+--- /dev/null
++++ b/tests/federpendel.test.ts
+@@ -0,0 +1,112 @@
++import { describe, expect, it } from 'vitest';
++import {
++  acceleration,
++  analyticY,
++  dampedOmega,
++  dampedPeriod,
++  energies,
++  equilibriumExtension,
++  forces,
++  G,
++  initialState,
++  omega0,
++  period,
++  phasor,
++  step,
++  type State,
++} from '../src/simulations/physik/federpendel/model';
++
++/** Integriert mit fester Schrittweite bis zur Zeit T. */
++function run(state: State, m: number, D: number, delta: number, T: number, h = 0.001): State {
++  let s: State = state;
++  const n = Math.round(T / h);
++  for (let i = 0; i < n; i++) s = step(s, m, D, delta, h);
++  return s;
++}
++
++describe('Modell: Federpendel', () => {
++  it('berechnet die Periodendauer T = 2π·√(m/D)', () => {
++    expect(period(0.5, 20)).toBeCloseTo(0.99346, 4);
++    expect(period(1, 10)).toBeCloseTo(1.98692, 4);
++    // vierfache Masse → doppelte Periodendauer, vierfache Federhärte → halbe
++    expect(period(1, 20) / period(0.25, 20)).toBeCloseTo(2, 12);
++    expect(period(0.3, 40) / period(0.3, 10)).toBeCloseTo(0.5, 12);
++    expect(omega0(0.5, 20)).toBeCloseTo(Math.sqrt(40), 12);
++  });
++
++  it('Dehnung in der Ruhelage s₀ = m·g/D (Federkraft = Gewichtskraft)', () => {
++    expect(equilibriumExtension(0.5, 20)).toBeCloseTo(0.24525, 10);
++    const f = forces(0, 0.5, 20);
++    expect(f.spring).toBeCloseTo(0.5 * G, 10);
++    expect(f.net).toBeCloseTo(0, 12);
++    // lineares Kraftgesetz: resultierende Kraft = −D·y
++    expect(forces(0.03, 0.5, 20).net).toBeCloseTo(-0.6, 10);
++    expect(forces(-0.05, 0.5, 20).net).toBeCloseTo(1, 10);
++  });
++
++  it('Anfangszustand passt zu y = ŷ·sin(ωt + φ₀)', () => {
++    const down = initialState(0.05, -Math.PI / 2, 0.5, 20, 0);
++    expect(down[0]).toBeCloseTo(-0.05, 12);
++    expect(down[1]).toBeCloseTo(0, 12);
++    const push = initialState(0.05, 0, 0.5, 20, 0);
++    expect(push[0]).toBeCloseTo(0, 12);
++    expect(push[1]).toBeCloseTo(0.05 * Math.sqrt(40), 12);
++  });
++
++  it('Runge-Kutta stimmt mit der exakten Lösung überein (ungedämpft und gedämpft)', () => {
++    for (const delta of [0, 0.3, 1.5]) {
++      const s = run(initialState(0.05, 0.4, 0.5, 20, delta), 0.5, 20, delta, 7.5);
++      expect(s[0]).toBeCloseTo(analyticY(7.5, 0.05, 0.4, 0.5, 20, delta), 8);
++    }
++  });
++
++  it('nach einer Periodendauer ist der Zustand wieder derselbe', () => {
++    const s0 = initialState(0.08, -Math.PI / 2, 0.4, 25, 0);
++    const T = period(0.4, 25);
++    const s = run(s0, 0.4, 25, 0, T, T / 2000);
++    expect(s[0]).toBeCloseTo(s0[0], 9);
++    expect(s[1]).toBeCloseTo(s0[1], 8);
++  });
++
++  it('Energie bleibt ohne Dämpfung erhalten: ½Dy² + ½mv² = ½Dŷ²', () => {
++    const m = 0.5;
++    const D = 20;
++    const amp = 0.05;
++    let s: State = initialState(amp, 1, m, D, 0);
++    for (let k = 0; k < 5; k++) {
++      s = run(s, m, D, 0, 0.37);
++      const e = energies(s, m, D, -amp);
++      expect(e.osc + e.kin).toBeCloseTo(0.5 * D * amp * amp, 9);
++      // Spann-, Lage- und Bewegungsenergie zusammen sind ebenfalls konstant
++      expect(e.spring + e.grav + e.kin).toBeCloseTo(0.5 * D * equilibriumExtension(m, D) ** 2 + m * G * amp + 0.5 * D * amp * amp, 9);
++    }
++  });
++
++  it('Dämpfung: Amplitude nimmt in einer Periode um e^(−δ·T_d) ab', () => {
++    const m = 0.5;
++    const D = 20;
++    const delta = 0.4;
++    const Td = dampedPeriod(m, D, delta);
++    expect(Td).toBeCloseTo((2 * Math.PI) / Math.sqrt(40 - 0.16), 12);
++    expect(Td).toBeGreaterThan(period(m, D));
++    const s0 = initialState(0.05, 0.7, m, D, delta);
++    const s1 = run(s0, m, D, delta, Td, Td / 4000);
++    expect(phasor(s1, m, D, delta).amp / phasor(s0, m, D, delta).amp).toBeCloseTo(Math.exp(-delta * Td), 8);
++  });
++
++  it('Zeiger: Länge = Amplitude, Projektion = Elongation', () => {
++    const z = phasor(initialState(0.05, 2.1, 0.5, 20, 0), 0.5, 20, 0);
++    expect(z.amp).toBeCloseTo(0.05, 12);
++    expect(z.phase).toBeCloseTo(2.1, 12);
++    const zd = phasor(initialState(0.03, -1.2, 0.5, 20, 0.5), 0.5, 20, 0.5);
++    expect(zd.amp).toBeCloseTo(0.03, 12);
++    expect(zd.phase).toBeCloseTo(-1.2, 12);
++  });
++
++  it('Beschleunigung a = −ω²·y (ohne Dämpfung) und Grenzfälle', () => {
++    expect(acceleration([0.02, 0.3], 0.5, 20, 0)).toBeCloseTo(-0.8, 12);
++    expect(acceleration([0, 0.3], 0.5, 20, 0.5)).toBeCloseTo(-0.3, 12);
++    expect(dampedOmega(0.5, 20, 7)).toBe(0);
++    expect(dampedPeriod(0.5, 20, 7)).toBe(Infinity);
++  });
++});
+diff --git a/tests/resonanz.test.ts b/tests/resonanz.test.ts
+new file mode 100644
+index 0000000..b69bcc5
+--- /dev/null
++++ b/tests/resonanz.test.ts
+@@ -0,0 +1,85 @@
++import { describe, expect, it } from 'vitest';
++import {
++  amplitudeRatio,
++  F0,
++  integrate,
++  OMEGA0,
++  phaseShift,
++  readPhasor,
++  resonanceOmega,
++  steadyAmplitude,
++  steadyState,
++  type Drive,
++} from '../src/simulations/physik/resonanz/model';
++
++const DEG = Math.PI / 180;
++const drive = (fE: number, delta: number, ampDeg = 5): Drive => ({ ampE: ampDeg * DEG, omegaE: 2 * Math.PI * fE, delta, omega0: OMEGA0 });
++
++describe('Modell: Erzwungene Schwingung (Pohlsches Rad)', () => {
++  it('Eigenfrequenz f₀ = 0,5 Hz', () => {
++    expect(F0).toBe(0.5);
++    expect(OMEGA0).toBeCloseTo(Math.PI, 12);
++  });
++
++  it('Amplitudenverhältnis: 1 bei kleiner, Q bei Eigen-, → 0 bei großer Erregerfrequenz', () => {
++    expect(amplitudeRatio(1e-6, OMEGA0, 0.25)).toBeCloseTo(1, 9);
++    // bei ω_E = ω₀: φ̂/φ̂_E = ω₀ / (2δ)
++    expect(amplitudeRatio(OMEGA0, OMEGA0, 0.25)).toBeCloseTo(OMEGA0 / 0.5, 12);
++    expect(amplitudeRatio(20 * OMEGA0, OMEGA0, 0.25)).toBeLessThan(0.003);
++    // konkreter Wert: φ̂_E = 5°, δ = 0,25 1/s, f_E = f₀ → φ̂ ≈ 31,4°
++    expect(steadyAmplitude(drive(0.5, 0.25)) / DEG).toBeCloseTo(31.416, 2);
++  });
++
++  it('Phasenverschiebung 0 → π/2 → π', () => {
++    expect(phaseShift(0.01, OMEGA0, 0.25)).toBeCloseTo(0, 2);
++    expect(phaseShift(OMEGA0, OMEGA0, 0.25)).toBeCloseTo(Math.PI / 2, 12);
++    expect(phaseShift(30, OMEGA0, 0.25)).toBeGreaterThan(Math.PI * 0.99);
++    // stärkere Dämpfung → flacherer Übergang
++    expect(phaseShift(0.8 * OMEGA0, OMEGA0, 1)).toBeGreaterThan(phaseShift(0.8 * OMEGA0, OMEGA0, 0.1));
++  });
++
++  it('Resonanzfrequenz ω_R = √(ω₀² − 2δ²) liegt etwas unter ω₀ und ist das Maximum', () => {
++    const delta = 0.8;
++    const wr = resonanceOmega(OMEGA0, delta);
++    expect(wr).toBeCloseTo(Math.sqrt(Math.PI ** 2 - 1.28), 12);
++    const peak = amplitudeRatio(wr, OMEGA0, delta);
++    expect(peak).toBeGreaterThan(amplitudeRatio(wr * 1.01, OMEGA0, delta));
++    expect(peak).toBeGreaterThan(amplitudeRatio(wr * 0.99, OMEGA0, delta));
++    expect(resonanceOmega(OMEGA0, 3)).toBe(0);
++  });
++
++  it('numerische Lösung erreicht den eingeschwungenen Zustand (aus der Ruhe gestartet)', () => {
++    for (const [fE, delta] of [
++      [0.3, 0.25],
++      [0.5, 0.4],
++      [0.9, 0.6],
++    ] as const) {
++      const d = drive(fE, delta);
++      const res = integrate(d, 0, [0, 0], 30 / delta, 0.002);
++      const exact = steadyState(d, res.t);
++      expect(res.s[0]).toBeCloseTo(exact[0], 6);
++      expect(res.s[1]).toBeCloseTo(exact[1], 5);
++      const ph = readPhasor(d, res.t, res.s);
++      expect(ph.amp).toBeCloseTo(steadyAmplitude(d), 6);
++      expect(ph.shift).toBeCloseTo(phaseShift(d.omegaE, OMEGA0, delta), 5);
++    }
++  });
++
++  it('eingeschwungener Zustand bleibt eingeschwungen', () => {
++    const d = drive(0.45, 0.2);
++    const s0 = steadyState(d, 1.3);
++    const res = integrate(d, 1.3, s0, 7.7, 0.001);
++    const exact = steadyState(d, res.t);
++    expect(res.s[0]).toBeCloseTo(exact[0], 8);
++  });
++
++  it('Resonanzkatastrophe: Grenze wird bei kleiner Dämpfung überschritten', () => {
++    const d = drive(0.5, 0.03, 10);
++    const res = integrate(d, 0, [0, 0], 60, 0.002, 120 * DEG);
++    expect(res.exceeded).toBe(true);
++    expect(res.t).toBeGreaterThan(5);
++    expect(res.t).toBeLessThan(20);
++    const calm = integrate(drive(0.5, 0.5, 10), 0, [0, 0], 60, 0.002, 120 * DEG);
++    expect(calm.exceeded).toBe(false);
++  });
++});
