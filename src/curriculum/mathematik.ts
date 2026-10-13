@@ -502,7 +502,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('cavalieri', L('Prinzip von Cavalieri', 'Cavalieri’s principle'), [10, 10]),
+          {
+            id: 'cavalieri',
+            status: 'ready',
+            slug: L('prinzip-von-cavalieri', 'cavalieris-principle'),
+            title: L('Prinzip von Cavalieri', 'Cavalieri’s principle'),
+            summary: L(
+              'Münzstapel und Spielkarten schief schieben oder verbiegen: Eine Schnittebene zeigt in jeder Höhe gleich große Querschnitte, also bleibt das Volumen gleich – bis hin zum Kugelvolumen aus Halbkugel und Zylinder ohne Kegel.',
+              'Push or bend stacks of coins and playing cards: a cutting plane shows equal cross-sections at every height, so the volume stays the same – all the way to the volume of a sphere from a hemisphere and a cylinder without a cone.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K2', 'M-K4'],
+            keywords: L(
+              ['Cavalieri', 'Prinzip von Cavalieri', 'Querschnitt', 'Schnittfläche', 'Volumen', 'schiefer Zylinder', 'schiefes Prisma', 'schiefe Pyramide', 'schiefer Kegel', 'Kugelvolumen', 'Halbkugel', 'Münzstapel', 'Scheiben', 'Grenzwert'],
+              ['Cavalieri', 'Cavalieri’s principle', 'cross-section', 'volume', 'oblique cylinder', 'oblique prism', 'oblique pyramid', 'oblique cone', 'volume of a sphere', 'hemisphere', 'stack of coins', 'slices', 'limit'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('volumen', L('Volumen', 'Volume'), [
           {
