@@ -196,9 +196,9 @@ function layout(g: CanvasRenderingContext2D, nodes: Node[], ctx: Ctx, style: For
         const top = big * 0.8;
         const bottom = big * 0.28;
         boxes.push({
-          w: gw + Math.max(lo.w, hi.w) + ctx.size * 0.22,
+          w: gw + Math.max(lo.w + gw * 0.2, hi.w) + ctx.size * 0.22,
           asc: top + hi.asc * 0.4,
-          desc: bottom + lo.desc + 1,
+          desc: bottom + lo.desc + lo.asc * 0.25 + 1,
           draw: (g2, x, y) => {
             g2.font = font;
             g2.fillStyle = color;
@@ -206,7 +206,7 @@ function layout(g: CanvasRenderingContext2D, nodes: Node[], ctx: Ctx, style: For
             g2.textBaseline = 'alphabetic';
             g2.fillText('∫', x, y + big * 0.2);
             hi.draw(g2, x + gw * 0.92, y - top + hi.asc * 0.95);
-            lo.draw(g2, x + gw * 0.5, y + bottom);
+            lo.draw(g2, x + gw * 0.68, y + bottom + lo.asc * 0.25);
           },
         });
         break;

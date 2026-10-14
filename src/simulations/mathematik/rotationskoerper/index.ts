@@ -302,7 +302,7 @@ export default defineSimulation({
       return narrow() ? 12 : w < 700 ? 11.5 : w < 860 ? 12.5 : 13.5;
     };
 
-    const VIEW0 = { azimuth: 30, elevation: 17 };
+    const VIEW0 = { azimuth: 30, elevation: 21 };
     const view = new View3D(surface, { ...VIEW0, elevationLimits: [-30, 75], region: () => rects().scene });
     const plot = new Plot(surface, {
       x: [0, 1],
@@ -432,6 +432,11 @@ export default defineSimulation({
         case 'horn':
           return `\\f{${N(k * k, 4)}}{x²}`;
       }
+    }
+    /** (f(x))² als Integrand: Summen in Klammern, sonst ohne. */
+    function f2Wrapped(s: Shape): string {
+      const t = f2Term(s);
+      return /^\(.*\)²$/.test(t) || !/ [+−] /.test(t) ? `${t} ` : `(${t}) `;
     }
     /** Grenze als Text (π, π/2 erkennen). */
     const limText = (x: number) => (Math.abs(x - Math.PI) < 1e-9 ? 'π' : Math.abs(x - Math.PI / 2) < 1e-9 ? '\\f{π}{2}' : N(x));
@@ -726,7 +731,7 @@ export default defineSimulation({
       const M = angles.length - 1;
       const SN = angles.map(Math.sin);
       const CS = angles.map(Math.cos);
-      const P = (x: number, r: number, j: number): Vec3 => [r * SN[j]!, x, r * CS[j]!];
+      const P = (x: number, r: number, j: number): Vec3 => [-r * SN[j]!, x, r * CS[j]!];
       const px = (q: Vec3): Vec2 => view.toPx(q) as unknown as Vec2;
 
       const xMin = segs.length ? segs[0]!.x0 : 0;
@@ -776,8 +781,8 @@ export default defineSimulation({
         for (let j = 0; j < M; j++) {
           if (angles[j + 1]! - angles[j]! < 1e-6) continue;
           const pc = (angles[j]! + angles[j + 1]!) / 2;
-          const n = vec3.normalize([Math.sin(pc), slope, Math.cos(pc)]);
-          const ctr: Vec3 = [rm * Math.sin(pc), xm, rm * Math.cos(pc)];
+          const n = vec3.normalize([-Math.sin(pc), slope, Math.cos(pc)]);
+          const ctr: Vec3 = [-rm * Math.sin(pc), xm, rm * Math.cos(pc)];
           if (vec3.dot(n, vec3.sub(camPos, ctr)) <= 0) continue;
           const pts = [ring0[j]!, ring0[j + 1]!, ring1[j + 1]!, ring1[j]!];
           const jj = j;
@@ -829,8 +834,8 @@ export default defineSimulation({
           const ax0 = px([0, q.x0, 0]);
           const ax1 = px([0, q.x1, 0]);
           const sides: [number, Vec3][] = [
-            [0, [-1, 0, 0]],
-            [M, [CS[M]!, 0, -SN[M]!]],
+            [0, [1, 0, 0]],
+            [M, [-CS[M]!, 0, -SN[M]!]],
           ];
           for (const [j, n] of sides) {
             const ctr = P(xm, rm / 2, j);
@@ -985,7 +990,7 @@ export default defineSimulation({
         const steps = Math.max(6, Math.ceil(Phi / 0.08));
         for (let i = 0; i <= steps; i++) {
           const t = (Phi * i) / steps;
-          pts.push([rr * Math.sin(t), xa, rr * Math.cos(t)]);
+          pts.push([-rr * Math.sin(t), xa, rr * Math.cos(t)]);
         }
         view.segment([0, xa, 0], [0, xa, rr * 1.15], { color: c.area, width: 1.4, dash: [4, 4], layer: 'front' });
         view.polyline(pts, { color: c.area, width: 2.4, layer: 'front' });
@@ -996,8 +1001,9 @@ export default defineSimulation({
         view.custom(
           mid,
           () => {
-            const [x, y] = view.toPx([mid[0] * 1.25, xa, mid[2] * 1.25]);
-            pill(Math.max(sc.x + 44, Math.min(sc.x + sc.w - 44, x)), y, tr('angle', { v: Math.round((Phi * 180) / Math.PI) }), th().text, 'center', size - 0.5, c.area);
+            const [x, y] = view.toPx([0, xa, 0]);
+            const off = rr * view.pixelsPerUnit([0, xa, 0]);
+            pill(Math.max(sc.x + 44, x - off - 40), y, tr('angle', { v: Math.round((Phi * 180) / Math.PI) }), th().text, 'center', size - 0.5, c.area);
           },
           'front',
         );
@@ -1159,7 +1165,7 @@ export default defineSimulation({
       const ex = exactText(V);
       const Vs = nums.V.v;
       const tail = vals ? ` ${ex ? `= ${ex} ` : ''}≈ ${num(Vs)}` : '';
-      lines.push({ f: `= π \\i{${a}}{${b}}(${f2Term(sh)}) \\t{d}x${tail}`, bold: true });
+      lines.push({ f: `= π \\i{${a}}{${b}}${f2Wrapped(sh)}\\t{d}x${tail}`, bold: true });
       if (sh.list) {
         const S = nums.S.v;
         const dev = V > 1e-9 ? ((discSum(sh.list) - V) / V) * 100 : 0;
@@ -1377,7 +1383,7 @@ export default defineSimulation({
         [sh.b, 'b'],
       ] as const) {
         plot.segment([x, y0], [x, y1], { color: c.lim, width: 1.3, dash: [5, 4], alpha: 0.8 });
-        plot.text(x, 0, name, { color: c.lim, math: true, size: 14, weight: 'bold', offset: [x === sh.a ? -9 : 9, 15] });
+        plot.text(x, y1, name, { color: c.lim, math: true, size: 14, weight: 'bold', offset: [x === sh.a ? -8 : 8, 10] });
       }
       // Querschnitt
       if (p.sec) {
@@ -1426,7 +1432,7 @@ export default defineSimulation({
         ctx.readout('A', { html: `${toHtml('A(x) = π · (f(x))²')}: ${toHtml(`A(${num(x)}) = π · ${num(fx, 3)}²`)} ≈ <strong>${num(crossSection(sh.fn, sh.fp, x))}</strong>` });
       } else ctx.readout('A', null);
       const ex = exactText(V);
-      ctx.readout('V', { html: `${toHtml(`V = π \\i{${limText(sh.a)}}{${limText(sh.b)}}(${f2Term(sh)}) \\t{d}x`)} ${ex ? `= ${toHtml(ex)} ` : ''}≈ <strong>${num(V)}</strong>` });
+      ctx.readout('V', { html: `${toHtml(`V = π \\i{${limText(sh.a)}}{${limText(sh.b)}}${f2Wrapped(sh)}\\t{d}x`)} ${ex ? `= ${toHtml(ex)} ` : ''}≈ <strong>${num(V)}</strong>` });
       if (sh.list) {
         const S = discSum(sh.list);
         const dx = (sh.b - sh.a) / sh.list.length;
