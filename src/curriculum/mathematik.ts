@@ -878,7 +878,23 @@ export const mathematik: Subject = {
           },
           planned('hauptsatz', L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'), [12, 13], { uni: true }),
           planned('aenderungsrate', L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'), [13, 13]),
-          planned('rotationskoerper', L('Rotationskörper', 'Solids of revolution'), [13, 13]),
+          {
+            id: 'rotationskoerper',
+            status: 'ready',
+            slug: L('rotationskoerper', 'solids-of-revolution'),
+            title: L('Rotationskörper', 'Solids of revolution'),
+            summary: L(
+              'Die Fläche unter einem Graphen dreht sich um die x-Achse: Kugel, Kegel, Paraboloid oder Gabriels Horn entstehen, werden in Zylinderscheiben zerlegt und ihr Volumen V = π∫f(x)² dx berechnet.',
+              'The region under a graph turns about the x-axis: a sphere, cone, paraboloid or Gabriel’s horn appears, is cut into cylindrical discs and its volume V = π∫f(x)² dx is computed.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L2', 'M-L3', 'M-L4', 'M-K4'],
+            keywords: L(
+              ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],
+              ['solid of revolution', 'volume of revolution', 'integral', 'disc method', 'cross-section', 'sphere', 'cone', 'paraboloid', 'Gabriel’s horn', 'volume'],
+            ),
+            thumb: 'generic',
+          },
           planned('extremwertprobleme', L('Extremwertprobleme', 'Optimisation problems'), [13, 13], { kmk: ['M-L3', 'M-K3'] }),
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
