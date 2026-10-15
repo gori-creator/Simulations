@@ -1202,7 +1202,10 @@ export default defineSimulation({
         const fs = sm ? 11 : 12;
         const wpx = richWidth(lbl, fs) + 16;
         const right = obs[0] + s * 0.75 + wpx < r.x + r.w - 6;
-        pill(right ? obs[0] + s * 0.75 : obs[0] - s * 0.75, obs[1] - s * 0.62 - 6, lbl, fColor(shownF), right ? 'left' : 'right', fs);
+        // Läuft der Beobachter aus dem Bild, bleibt die Anzeige am Rand sichtbar
+        const want = right ? obs[0] + s * 0.75 : obs[0] - s * 0.75 - wpx;
+        const x0 = Math.max(r.x + 6, Math.min(r.x + r.w - 6 - wpx, want));
+        pill(x0, obs[1] - s * 0.62 - 6, lbl, fColor(shownF), 'left', fs);
       }
       g.restore();
 

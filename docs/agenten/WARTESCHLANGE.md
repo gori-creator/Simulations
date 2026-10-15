@@ -18,7 +18,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - P04 fertig — licht-schatten, reflexion, linsen
 - P05 fertig — stoesse, kreisbewegung, planetenbahnen
 - P06 fertig — federpendel, resonanz, wellen-ausbreitung
-- P07 offen — doppler-effekt, interferenz, stehende-wellen
+- P07 läuft — doppler-effekt (fertig 15.10.), interferenz, stehende-wellen
 - P08 offen — teilchenmodell, gasgesetze, radioaktiver-zerfall
 - P09 offen — feldlinien, kondensator, lorentzkraft
 - P10 offen — induktion, doppelspalt, photoeffekt
