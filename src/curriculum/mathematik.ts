@@ -682,7 +682,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('extremwert-parabel', L('Extremwertaufgaben mit Parabeln', 'Optimisation problems with parabolas'), [9, 9], { kmk: ['M-L3', 'M-K3'] }),
+          {
+            id: 'extremwert-parabel',
+            status: 'ready',
+            slug: L('extremwertaufgaben-parabeln', 'optimisation-problems-parabolas'),
+            title: L('Extremwertaufgaben mit Parabeln', 'Optimisation problems with parabolas'),
+            summary: L(
+              'Gehege, Rechteck im Dreieck, Eintrittspreis, Regenrinne: Bild und Graph der quadratischen Zielfunktion bewegen sich gemeinsam – das Maximum erst durch Probieren, dann exakt mit quadratischer Ergänzung finden.',
+              'Enclosure, rectangle in a triangle, ticket price, gutter: the picture and the graph of the quadratic objective function move together – find the maximum by trial and error first, then exactly by completing the square.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L3', 'M-K2', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Extremwertaufgabe', 'Maximum', 'Scheitelpunkt', 'quadratische Ergänzung', 'Scheitelform', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Optimierung', 'Erlös'],
+              ['optimisation problem', 'maximum', 'vertex', 'completing the square', 'vertex form', 'objective function', 'constraint', 'domain', 'optimization', 'revenue'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
           planned('potenzfunktionen', L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'), [9, 10]),
