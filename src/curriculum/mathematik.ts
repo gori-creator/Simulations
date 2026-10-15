@@ -628,7 +628,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('gebrochen-rationale', L('Gebrochen-rationale Funktionen', 'Rational functions'), [
-          planned('hyperbel', L('Hyperbeln und ihre Asymptoten', 'Hyperbolas and their asymptotes'), [8, 8]),
+          {
+            id: 'hyperbel',
+            status: 'ready',
+            slug: L('hyperbel-asymptoten', 'hyperbola-asymptotes'),
+            title: L('Hyperbeln und ihre Asymptoten', 'Hyperbolas and their asymptotes'),
+            summary: L(
+              'Hyperbeln f(x) = a/(x − b) + c strecken und verschieben: Asymptoten, Definitions- und Wertemenge, Rechtecke mit gleichem Flächeninhalt und die Annäherung an die Asymptoten.',
+              'Stretch and shift hyperbolas f(x) = a/(x − b) + c: asymptotes, domain and range, rectangles of equal area and how the graph approaches its asymptotes.',
+            ),
+            grades: [8, 8],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Hyperbel', 'Asymptote', 'Polstelle', 'Definitionslücke', 'Definitionsmenge', 'Wertemenge', 'indirekte Proportionalität', 'gebrochen-rationale Funktion', 'Kehrwertfunktion'],
+              ['hyperbola', 'asymptote', 'pole', 'domain', 'range', 'inverse proportion', 'rational function', 'reciprocal function'],
+            ),
+            thumb: 'generic',
+          },
           planned('polstellen-asymptoten', L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'), [11, 12]),
         ]),
         topic('quadratische-funktionen', L('Quadratische Funktionen', 'Quadratic functions'), [
