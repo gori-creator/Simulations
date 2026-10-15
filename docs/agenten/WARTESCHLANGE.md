@@ -36,7 +36,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M09 offen — dreieckskonstruktion, besondere-linien, strahlensaetze
 - M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
 - M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
-- M12 offen — hyperbel, parabel-drei-punkte, extremwert-parabel
+- M12 läuft — hyperbel (fertig 15.10.), parabel-drei-punkte, extremwert-parabel
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
 - M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
