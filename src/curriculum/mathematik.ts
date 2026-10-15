@@ -665,7 +665,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'parabola',
           },
-          planned('parabel-drei-punkte', L('Parabel durch drei Punkte', 'Parabola through three points'), [9, 9]),
+          {
+            id: 'parabel-drei-punkte',
+            status: 'ready',
+            slug: L('parabel-durch-drei-punkte', 'parabola-through-three-points'),
+            title: L('Parabel durch drei Punkte', 'Parabola through three points'),
+            summary: L(
+              'Drei Punkte ziehen, die Parabel y = ax² + bx + c gleitet mit: Einsetzen ergibt ein lineares Gleichungssystem, das Schritt für Schritt gelöst wird – mit Scheitel- und Nullstellenform und den Sonderfällen.',
+              'Drag three points and the parabola y = ax² + bx + c follows: substituting gives a system of linear equations that is solved step by step – with vertex form, factored form and the special cases.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L3', 'M-K2', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Parabel', 'drei Punkte', 'lineares Gleichungssystem', 'Additionsverfahren', 'Einsetzen', 'Scheitelform', 'Nullstellenform', 'quadratische Funktion', 'Funktionsterm bestimmen'],
+              ['parabola', 'three points', 'system of linear equations', 'elimination', 'substitution', 'vertex form', 'factored form', 'quadratic function', 'curve fitting'],
+            ),
+            thumb: 'generic',
+          },
           planned('extremwert-parabel', L('Extremwertaufgaben mit Parabeln', 'Optimisation problems with parabolas'), [9, 9], { kmk: ['M-L3', 'M-K3'] }),
         ]),
         topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
