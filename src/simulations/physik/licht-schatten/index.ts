@@ -413,7 +413,9 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const lang = ctx.lang as Lang;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
-    const narrow = () => surface.width < 640;
+    // Breites Layout auch bei schmaler, aber flacher Bühne (Tablet)
+    const wideLayout = (w: number, h: number) => w >= 640 || w >= h * 1.3;
+    const narrow = () => !wideLayout(surface.width, surface.height);
     const mode = () => p.mode as Mode;
     const src = () => p.src as Src;
 
@@ -427,15 +429,15 @@ export default defineSimulation({
     /* ---------- Bereiche ---------- */
     const OFF: Rect = { x: -60, y: -60, w: 1, h: 1 };
     function labRegions(w = surface.width, h = surface.height): { side: Rect; panel: Rect } {
-      if (w >= 640) {
-        const pw = Math.round(clamp(w * 0.26, 200, 260));
+      if (wideLayout(w, h)) {
+        const pw = Math.round(clamp(w * 0.26, 190, 260));
         return { side: { x: 0, y: 0, w: w - pw - 12, h }, panel: { x: w - pw, y: 0, w: pw, h } };
       }
       const sh = Math.round(Math.min(h * 0.56, w * 0.82));
       return { side: { x: 0, y: 0, w, h: sh }, panel: { x: 0, y: sh + 10, w, h: h - sh - 10 } };
     }
     function spaceRegions(w = surface.width, h = surface.height): { scene: Rect; row: Rect } {
-      const sh = Math.round(h * (w >= 640 ? 0.6 : 0.56));
+      const sh = Math.round(h * (wideLayout(w, h) ? 0.6 : 0.56));
       return { scene: { x: 0, y: 0, w, h: sh }, row: { x: 0, y: sh + 10, w, h: h - sh - 10 } };
     }
 

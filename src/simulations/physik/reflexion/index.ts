@@ -267,7 +267,9 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
-    const narrow = () => surface.width < 640;
+    // Breites Layout auch bei schmaler, aber flacher Bühne (Tablet)
+    const wideLayout = (w: number, h: number) => w >= 640 || w >= h * 1.3;
+    const narrow = () => !wideLayout(surface.width, surface.height);
     const mode = () => p.mode as Mode;
     const g = surface.g;
 
@@ -294,7 +296,7 @@ export default defineSimulation({
     /* ---------- Bereiche ---------- */
     const OFF: Rect = { x: -60, y: -60, w: 1, h: 1 };
     function lawRegions(w = surface.width, h = surface.height): { disc: Rect; card: Rect } {
-      if (w >= 640) {
+      if (wideLayout(w, h)) {
         const cw = Math.round(clamp(w * 0.36, 250, 340));
         return { disc: { x: 0, y: 0, w: w - cw - 12, h }, card: { x: w - cw, y: 0, w: cw, h } };
       }
@@ -303,11 +305,11 @@ export default defineSimulation({
     }
     function imageRegions(w = surface.width, h = surface.height): { scene: Rect; chips: Rect } {
       // Handy: Szene so hoch, wie die Breite es braucht; darunter Eigenschaften und Beobachtung
-      const sh = w >= 640 ? h - 74 : Math.round(Math.min(h - 190, w * 0.86));
+      const sh = wideLayout(w, h) ? h - 74 : Math.round(Math.min(h - 190, w * 0.86));
       return { scene: { x: 0, y: 0, w, h: sh }, chips: { x: 0, y: sh + 10, w, h: h - sh - 10 } };
     }
     function multiRegions(w = surface.width, h = surface.height): { scene: Rect; card: Rect } {
-      if (w >= 640) {
+      if (wideLayout(w, h)) {
         const sw = Math.min(h * 1.12, w * 0.64);
         return { scene: { x: 0, y: 0, w: sw, h }, card: { x: sw + 12, y: 0, w: w - sw - 12, h } };
       }
@@ -345,7 +347,7 @@ export default defineSimulation({
     /** Aufteilung der Karte im Winkelspiegel: Legende unten, darüber (wenn Platz ist) das Diagramm. */
     function multiCardLayout(w = surface.width, h = surface.height): { card: Rect; legTop: number; legend: { x: number; row: number; key: string }[]; chart: Rect | null } {
       const { card: r } = multiRegions(w, h);
-      const small = w < 640;
+      const small = !wideLayout(w, h);
       g.font = `500 ${small ? 11 : 12}px ${ctx.theme.font}`;
       const legend: { x: number; row: number; key: string }[] = [];
       let lx = r.x + 16;
@@ -373,7 +375,7 @@ export default defineSimulation({
     /** Lage des Diagramms in der Karte „Messreihe“. */
     function chartRect(w = surface.width, h = surface.height): Rect {
       const { card } = lawRegions(w, h);
-      if (w >= 640) {
+      if (wideLayout(w, h)) {
         const top = card.y + 52 + MAX_ROWS * 21 + 30;
         return { x: card.x + 8, y: top, w: card.w - 16, h: card.y + card.h - top - 8 };
       }

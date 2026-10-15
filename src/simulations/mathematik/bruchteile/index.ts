@@ -84,7 +84,8 @@ export default defineSimulation({
     let hover = -1;
 
     const wholes = () => Math.max(1, Math.min(MAX_WHOLES, Math.ceil(p.z / p.n)));
-    const isWide = () => surface.width >= 640;
+    // Nebeneinander auch bei schmaler, aber flacher Bühne (Tablet); untereinander nur hochkant
+    const isWide = () => surface.width >= 640 || surface.width >= surface.height * 1.3;
 
     function regions(): { visual: Rect; panel: Rect } {
       const w = surface.width;
@@ -464,7 +465,12 @@ export default defineSimulation({
         const dec = !d.pre && !d.period ? String(d.integer) : `${d.integer}${sep}${d.pre}${d.period ? `${d.period}…` : ''}`;
         lines.push(`= ${dec}${d.period ? ` (${ctx.lang === 'de' ? 'Periode' : 'period'} ${d.period})` : ''} = ${fmt.num((z / n) * 100, 1)} %`);
       }
-      lines.forEach((line, i) => text(g, line, cx, cy + size * 1.55 + i * 22, { font: `600 ${wide ? 15 : 13}px ${theme.font}`, color: theme.text }));
+      // Schrift so wählen, dass jede Zeile in den Bereich passt
+      let fs = wide ? 15 : 13;
+      g.font = `600 ${fs}px ${theme.font}`;
+      const longest = Math.max(...lines.map((l) => g.measureText(l).width));
+      if (longest > r.w - 16) fs = Math.max(10, (fs * (r.w - 16)) / longest);
+      lines.forEach((line, i) => text(g, line, cx, cy + size * 1.55 + i * 22, { font: `600 ${fs}px ${theme.font}`, color: theme.text }));
       if (p.z > MAX_WHOLES * n) text(g, `(${ctx.t('more')})`, cx, cy + size * 1.55 + lines.length * 22, { font: `500 12px ${theme.font}`, color: theme.muted });
     }
 
