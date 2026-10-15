@@ -115,11 +115,13 @@ $V_\text{Stapel} = \pi \cdot 1{,}25\,\text{cm} \cdot (9 + 5{,}0625 + 2{,}25 + 0{
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich Körperberechnung (Pyramide, Kegel, Kugel; Prinzip von Cavalieri) im LehrplanPLUS Bayern, Gymnasium – Zuordnung als Entwurf, bitte gegen den aktuellen Lehrplan prüfen. Geeignet als Einstieg (Münzstapel, Kartenstapel), zur Begründung der Formeln für schiefe Körper und als Höhepunkt zur Herleitung des Kugelvolumens.
 - **Modell:** Die Scheiben umschließen den Körper (Radius am unteren Scheibenrand); der Mittelpunkt jeder Scheibe liegt auf der verschobenen bzw. gebogenen Achse. Die orange Fläche ist der exakte Querschnitt des Körpers. Das Diagramm $A(z)$ zeigt die Scheiben als Balken – ein Ausblick auf den Integralgedanken („Fläche unter der Kurve = Volumen“).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Ein schiefer Zylinder hat mehr Volumen, weil er länger ist.“ – Entscheidend ist die senkrechte Höhe, nicht die schräge Mantellinie.
   - „Gleiche Grundfläche und gleiche Höhe genügen.“ – Kegel und Zylinder zeigen: Es kommt auf die Querschnitte **in jeder Höhe** an.
   - „Bei der Kugel ist der Querschnitt in halber Höhe die halbe Grundfläche.“ – Er ist $\pi\left(r^2 - \tfrac{r^2}{4}\right) = \tfrac{3}{4}\pi r^2$.

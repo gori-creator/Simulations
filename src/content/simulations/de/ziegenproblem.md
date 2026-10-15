@@ -80,12 +80,14 @@ Nein, jetzt ist es tatsächlich $\frac{1}{2}$ zu $\frac{1}{2}$. Mögliche gleich
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 10 (mehrstufige Zufallsexperimente, Simulationen). Gut als Einstieg: Die Klasse stimmt vorher ab, ob sie wechseln würde.
 - **Spielmodus:** Türen können direkt angetippt werden – auch am Smartboard. Im Simulationsmodus laufen tausende Spiele in Sekunden.
 - **Bilder:** Bühne, Türen, Ziege und Auto werden gezeichnet; optional können Bilder ergänzt werden (siehe `docs/BILDER.md`).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Zwei Türen übrig, also 50 : 50.“ – Die Moderatorin wählt nicht zufällig.
   - Die Bedeutung der Spielregeln wird übersehen (Aufgabe 4).
 - **Historisches:** Das Problem wurde 1990 durch eine Kolumne von Marilyn vos Savant berühmt; selbst viele Fachleute hielten die richtige Lösung zunächst für falsch.

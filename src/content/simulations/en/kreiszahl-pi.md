@@ -36,6 +36,8 @@ $707\,\text{cm}^2$ versus $628\,\text{cm}^2$ – the big one is larger.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 8 (circumference, area of a circle, approximations of π).

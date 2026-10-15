@@ -43,8 +43,10 @@ $D = 10\,\tfrac{\text{N}}{\text{m}}$, so $s \approx 19.6\,\text{cm}$. In paralle
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - A data point is recorded once the spring is at rest. Use `fit=0` to hide the fitted line.
 - The mass of the spring is neglected; damping is qualitative. The elastic limit is a simple model (elastic up to $25\,\text{cm}$ extension).
-- **Misconception:** “The length of the spring is proportional to the force” – it is the extension.
+- **Common stumbling blocks:** “The length of the spring is proportional to the force” – it is the extension.

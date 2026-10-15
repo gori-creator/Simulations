@@ -208,14 +208,16 @@ Lösung mit Rechenweg. [In der Simulation zeigen](?r=3)
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe, Lernbereich (LehrplanPLUS Bayern, Gymnasium), Einstieg/Übung/Vertiefung.
 - **Modell/Vereinfachungen:** …
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „…“ – richtig ist …
 ```
-Englisch (`en/<id>.md`): „What is it about?“, „Try it“, „Tasks“ (mit `<summary>Show solution</summary>`), „Notes for teachers“ – kürzer. Links nur mit gültigen Parameterwerten; `_hide=1` verdeckt Spoiler-Ergebnisse, `_lock=1` sperrt Regler.
+Englisch (`en/<id>.md`): „What is it about?“, „Try it“, „Tasks“ (mit `<summary>Show solution</summary>`), „Ideas for the classroom“ (Zeile `*Just suggestions – you know your class best.*`, „Common stumbling blocks“) – kürzer. Ton dort wie überall: Anregung, nie belehrend. Links nur mit gültigen Parameterwerten; `_hide=1` verdeckt Spoiler-Ergebnisse, `_lock=1` sperrt Regler.
 
 ## 7. Häufige Stolperfallen (aus früheren Gruppen)
 

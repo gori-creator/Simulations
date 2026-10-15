@@ -105,13 +105,15 @@ Ortsänderung $\Delta s = 0$ (die Flächen über und unter der t-Achse heben sic
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Gleichförmige Bewegung, Geschwindigkeit und t-s-Diagramm im Anfangsunterricht Mechanik (etwa Klasse 7/8); gleichmäßig beschleunigte Bewegung, t-v-Diagramm und Bremsweg in Klasse 9/10. Die Diagramme lassen sich einzeln ausblenden, das t-a-Diagramm z. B. für jüngere Klassen.
 - **Bezeichnungen:** Die Simulation nennt den Ort $s$; viele Lehrwerke schreiben $x$ und sprechen vom **Zeit-Ort-Diagramm**. Ortsänderung $\Delta s$ (mit Vorzeichen) und zurückgelegter Weg (immer positiv) werden unterschieden.
 - **Modell:** Das Auto wird als Massepunkt behandelt (weißer Messpunkt, Lot auf das Maßband); gezeichnet ist es größer als maßstäblich. Beim Bremsen hält es bei $v = 0$ an und fährt nicht von selbst rückwärts. Im Fahrplan ändert sich die Geschwindigkeit in jedem Abschnitt gleichmäßig; die Sprünge im t-a-Diagramm sind idealisiert.
 - **Vorhersagen:** Mit „Graphen schon vor der Fahrt zeigen“ aus und `_hide=1` können Lernende die Diagramme erst skizzieren und dann überprüfen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Das t-s-Diagramm wird als Bild der Bahn gelesen („das Auto fährt bergauf“).
   - „Hoch im t-v-Diagramm heißt weit weg“ – tatsächlich zählt die **Fläche** unter dem Graphen.
   - „Bei $v = 0$ ist auch $a = 0$“ – im Umkehrpunkt (Aufgabe 6) stimmt das nicht.

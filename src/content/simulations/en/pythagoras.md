@@ -54,7 +54,9 @@ $49 + 576 = 625 = 25^2$: right-angled. $25 + 36 = 61 \neq 64$: not right-angled.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 8/9. Counting squares works best with integer triples like 3-4-5.
-- **Misconceptions:** applying the theorem to non-right triangles; choosing the wrong side as $c$; $\sqrt{a^2 + b^2} = a + b$.
+- **Common stumbling blocks:** applying the theorem to non-right triangles; choosing the wrong side as $c$; $\sqrt{a^2 + b^2} = a + b$.

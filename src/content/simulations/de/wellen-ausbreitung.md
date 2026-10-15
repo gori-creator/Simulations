@@ -105,12 +105,14 @@ $\lambda = \frac{340\,\text{m/s}}{440\,\text{Hz}} \approx 0{,}77\,\text{m}$ und 
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Einstieg in mechanische Wellen (Jahrgangsstufe 10 bzw. Oberstufe, je nach Lehrplanstand): Entstehung durch Kopplung, Unterscheidung transversal/longitudinal, Grundgleichung $c = \lambda \cdot f$, Momentaufnahme und Zeitverlauf. Gut für Erarbeitung an der Tafel (Wiedergabe anhalten, Zeitmarke setzen) und für Schülerarbeit mit den Aufträgen.
 - **Modell:** Die Bewegung wird analytisch berechnet: Jedes Teilchen wiederholt die Bewegung des Erregers mit der Verspätung $x/c$ (ideale, verlustfreie Kette ohne Reflexion am Ende, keine Dispersion). Die Kette ist $4\,\text{m}$ lang, die Teilchen haben $10\,\text{cm}$ Abstand. Quer zur Kette wird die Transversalwelle zur besseren Sichtbarkeit überhöht gezeichnet (der Faktor steht im Bild); die Longitudinalwelle ist maßstäblich.
 - **Darstellung:** Die Färbung des Bandes zeigt die Teilchendichte. Ist $2\pi\hat y/\lambda \ge 1$, würden sich benachbarte Teilchen der Longitudinalwelle überholen – die Simulation weist darauf hin.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Die Teilchen wandern mit der Welle mit.“ – Sie schwingen nur um ihre Ruhelage; transportiert wird Energie bzw. der Schwingungszustand (roter Schwingungsbereich, „Wellenberg verfolgen“).
   - „Eine höhere Frequenz macht die Welle schneller.“ – $c$ hängt vom Träger ab; bei höherem $f$ wird $\lambda$ kleiner.
   - „Die Momentaufnahme $y(x)$ und das Diagramm $y(t)$ sind dasselbe.“ – Gleiche Form, aber andere Achse: Abstand der Hochpunkte ist $\lambda$ bzw. $T$; außerdem sind sie gespiegelt (die Welle läuft nach rechts, das zuerst angeregte Teilchen ist links).

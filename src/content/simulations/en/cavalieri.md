@@ -60,8 +60,10 @@ Both are $5\pi\,\text{cm}^2 \approx 15.71\,\text{cm}^2$. $V = \tfrac{4}{3}\pi \c
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 10, volumes of pyramids, cones and spheres; Cavalieri’s principle. Good as an introduction (stacks of coins) and for deriving the volume of a sphere.
 - **Model:** The slices enclose the solid; the orange area is the exact cross-section. The chart $A(z)$ shows the slices as bars – a first glimpse of integration.
-- **Misconception:** “An oblique cylinder holds more because it is longer.” – Only the perpendicular height counts.
+- **Common stumbling blocks:** “An oblique cylinder holds more because it is longer.” – Only the perpendicular height counts.

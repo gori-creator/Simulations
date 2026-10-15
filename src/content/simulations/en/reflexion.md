@@ -66,9 +66,11 @@ $360^\circ : \varphi - 1 = 5$ gives $\varphi = 60^\circ$. [Show 60°](?mode=mult
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** introductory optics (law of reflection, plane mirror images), lower secondary level.
 - **Optical disc:** the disc turns with the mirror, so the scale always shows the angle to the normal; the measured values are ideal.
 - **Angled mirrors:** top view; the number at each image counts the reflections. The mirrors have a finite length, so not every image is visible from the eye.
-- **Misconceptions:** angles measured from the mirror surface; the image lies on the mirror surface; stepping back shows more of yourself.
+- **Common stumbling blocks:** angles measured from the mirror surface; the image lies on the mirror surface; stepping back shows more of yourself.

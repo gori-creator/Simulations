@@ -103,12 +103,14 @@ Bei $12\,\text{V}$ würden $\frac{12\,\text{V}}{4{,}9\,\Omega} \approx 2{,}4\,\t
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Widerstand, ohmsches Gesetz und Kennlinien (Klasse 8/9), der Drahtwiderstand $R = \rho \cdot \frac{l}{A}$ als Vertiefung. Die Messwerte entstehen wie im Versuch durch Ablesen; mit `fit=0` zeichnen die Lernenden die Ausgleichsgerade selbst. Weil Schulbücher beide Darstellungen verwenden, lässt sich zwischen $I$-$U$-Kennlinie und $U$-$I$-Diagramm umschalten. Mehrere Messreihen bleiben zum Vergleich im Diagramm.
 - **Messgeräte:** Die Zeigerinstrumente wählen ihren Messbereich selbst (er steht unter der Skala, kleine Stromstärken in mA). Bei echten Geräten stellt man ihn von Hand ein – und beginnt mit dem größten Bereich.
 - **Modell:** Netzgerät $0$ bis $12\,\text{V}$ mit Strombegrenzung $2\,\text{A}$; ideale Messgeräte. Glühlampe $12\,\text{V}\,/\,0{,}25\,\text{A}$: Gleichgewicht aus zugeführter Leistung und Abgabe durch Strahlung und Wärmeleitung, Widerstand von Wolfram $R \sim T^{1{,}2}$. Erwärmung des Konstantandrahtes vernachlässigt. Die Wendeltemperatur ist eine Modellangabe.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „$R = U / I$ ist das ohmsche Gesetz.“ – Das ist die Definition des Widerstands und gilt für jedes Bauteil. Das ohmsche Gesetz sagt, dass $R$ konstant ist ($I \sim U$).
   - „Ein großer Widerstand lässt viel Strom durch.“ – Umgekehrt.
   - „Das Amperemeter misst auch parallel.“ – Parallel geschaltet entsteht fast ein Kurzschluss.

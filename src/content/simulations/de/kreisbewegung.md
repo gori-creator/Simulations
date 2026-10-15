@@ -98,11 +98,13 @@ $r_{\min} = \frac{v^2}{\mu_H \cdot g} = \frac{100}{0{,}1 \cdot 9{,}81}\,\text{m}
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Kreisbewegung und Zentripetalkraft in der Mechanik der Jahrgangsstufen 10/11 (am bayerischen Gymnasium im Rahmen der Newton’schen Mechanik; Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Gut als Einstieg (Schnur durchschneiden), zum Erarbeiten von $F_Z \sim v^2$ und $F_Z \sim \frac{1}{r}$ bzw. $F_Z \sim r$ (Diagramm) und als Anwendung (Kurvenfahrt, Verkehrserziehung).
 - **Modell:** Die Kugel bewegt sich reibungsfrei auf einem waagerechten Tisch (Draufsicht); die Gewichtskraft wird vom Tisch ausgeglichen, die Schnurkraft ist die Zentripetalkraft. Die Kurve des Autos ist nicht maßstäblich gezeichnet. Die Haftreibungszahlen sind Richtwerte. Rutscht das Auto, wird vereinfacht angenommen, dass bei gleicher Geschwindigkeit weiter die größte Haftreibung wirkt; das Auto fährt dann auf einem Kreis mit dem größeren Radius $r' = \frac{v^2}{\mu_H g}$ (in Wirklichkeit ist die Gleitreibung noch kleiner).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Eine Fliehkraft treibt die Kugel nach außen.“ – Im ruhenden Bezugssystem wirkt nur die Kraft zum Mittelpunkt; ohne sie fliegt die Kugel tangential weiter, nicht radial nach außen.
   - „Bei gleichbleibender Geschwindigkeit wirkt keine Kraft.“ – Die Richtung ändert sich, dafür ist eine Kraft nötig.
   - „Schwere Autos fliegen eher aus der Kurve.“ – Die Grenzgeschwindigkeit hängt nicht von der Masse ab.

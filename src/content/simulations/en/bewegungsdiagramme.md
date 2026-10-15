@@ -52,8 +52,10 @@ Displacement $0$, distance travelled $64\,\text{m}$. At the turning point $v = 0
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Many textbooks write $x$ instead of $s$ for the position. The car is treated as a point (white marker); braking stops at $v = 0$.
 - Switch off “Show the graphs before the trip” for prediction tasks.
-- **Misconceptions:** reading the s–t graph as a picture of the path; “high in the v–t graph means far away”; “$v = 0$ implies $a = 0$”.
+- **Common stumbling blocks:** reading the s–t graph as a picture of the path; “high in the v–t graph means far away”; “$v = 0$ implies $a = 0$”.

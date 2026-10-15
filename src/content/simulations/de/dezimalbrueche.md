@@ -118,13 +118,15 @@ $\frac{1}{47}$ (und jeder andere Bruch $\frac{z}{47}$, der sich nicht kürzen l�
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.2 „Dezimalbrüche“ (LehrplanPLUS Bayern, Gymnasium): Brüche als endliche oder periodische Dezimalbrüche, Umwandeln. Geeignet zur Erarbeitung (Schritt für Schritt mit `show=0`) und zur Vertiefung (Restekreis, Tafel). Die Primfaktorzerlegung aus der Simulation „Primfaktorzerlegung und Teilbarkeit“ wird hier angewendet.
 - **Zwei Ansichten:** *Schriftlich dividieren* (Rechenblatt auf Karopapier, wahlweise mit Restekreis oder Zahlenstrahl-Lupe) und *Welche Nenner?* (alle Brüche $\frac{z}{n}$ mit $n \leq 50$ als farbige Kacheln, wahlweise mit Primfaktoren; weggekürzte Faktoren sind durchgestrichen).
 - **Begründen statt merken:** Der Restekreis macht das Schubfachprinzip sichtbar: Es gibt nur endlich viele Reste, also muss sich einer wiederholen. Die Plaketten an den Resten zeigen, dass jeder Rest seine nächste Ziffer festlegt – deshalb wiederholen sich mit dem Rest auch die Ziffern.
 - **Zur Vertiefung:** Die Länge der Vorperiode ist der größere der beiden Exponenten von $2$ und $5$ im gekürzten Nenner ($12 = 2^2 \cdot 3$ → $2$ Stellen). Das Umwandeln gemischt periodischer Dezimalbrüche in Brüche wird hier nicht behandelt.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Die Periode beginnt, sobald sich eine Ziffer wiederholt.“ – Bei $\frac{1}{17} = 0{,}0588\ldots$ kommt die $8$ doppelt vor, die Periode hat aber $16$ Ziffern. Entscheidend ist der **Rest**, nicht die Ziffer.
   - „$0{,}\overline{3}$ ist ungefähr $\frac{1}{3}$.“ – $0{,}\overline{3}$ ist **genau** $\frac{1}{3}$; nur $0{,}333$ ist gerundet. Taschenrechner zeigen gerundete Werte wie $0{,}6666666667$.
   - „Der Nenner $6$ enthält eine $2$, also ist $\frac{1}{6}$ endlich.“ – Es dürfen **nur** $2$ und $5$ vorkommen.

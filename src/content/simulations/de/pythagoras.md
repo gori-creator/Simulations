@@ -83,11 +83,13 @@ Prüfe, ob die Dreiecke mit den Seitenlängen $7, 24, 25$ und $5, 6, 8$ rechtwin
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 9 (Satz des Pythagoras), anschaulich vorbereitend auch früher. Das Kästchenzählen in der Quadrat-Ansicht funktioniert besonders gut bei ganzzahligen Tripeln wie 3-4-5.
 - **Beweis:** Der Puzzle-Beweis kommt ohne Rechnung aus. Anschließend kann man ihn algebraisch nachrechnen: $(a + b)^2 = c^2 + 4 \cdot \frac{1}{2}ab$ liefert mit der 1. binomischen Formel $a^2 + b^2 = c^2$.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Der Satz wird auf nicht rechtwinklige Dreiecke angewendet.
   - $c$ wird mit irgendeiner Seite gleichgesetzt statt mit der Seite gegenüber dem rechten Winkel.
   - $\sqrt{a^2 + b^2} = a + b$ – mit Zahlen prüfen lassen ($\sqrt{9 + 16} = 5 \neq 7$).

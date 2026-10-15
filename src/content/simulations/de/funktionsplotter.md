@@ -114,12 +114,14 @@ $f'(x) = 3x^2 - 3$, also $f'(2) = 9$ und mit $f(2) = 2$: $t(x) = 9(x - 2) + 2 = 
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 8, Lernbereich 1 „Funktion und Term“ (Graphen mit einem Funktionenplotter erstellen und untersuchen), danach als Werkzeug durch alle Jahrgangsstufen: quadratische Funktionen und Scharen (9), Potenz-, Exponential- und Sinusfunktionen (10), gebrochen-rationale Funktionen und Ableitung (11–13), auch im Studium.
 - **Sicher und datensparsam:** Die Terme werden von einem eigenen Leseprogramm ausgewertet (kein `eval`, keine Übertragung). Geteilte Links enthalten die Terme, den Ausschnitt und alle Einstellungen; mit `_hide=1` werden die Ergebnislisten verdeckt, die Marken im Bild schaltet man in Aufgabenlinks einzeln ab (`nst=0`, `sct=0`, `ext=0`, `asy=0`).
 - **Numerik:** Alle besonderen Punkte sind Näherungen im sichtbaren Ausschnitt. Sehr flache Extrempunkte (z. B. bei $x^{10}$) oder sehr dicht liegende Nullstellen können übersehen werden; hebbare Lücken werden an Stellen eines Viertelrasters gesucht. Potenzen mit negativer Basis sind nur für ganzzahlige Exponenten definiert (wie im Unterricht): `x^(1/3)` ist für $x < 0$ nicht definiert.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der senkrechte Strich an der Polstelle gehört zum Graphen.“ – Er entsteht nur, wenn ein Plotter Punkte blind verbindet.
   - „Der Rechner liefert exakte Werte.“ – Er rundet; $1{,}41$ ist nicht $\sqrt{2}$.
   - `1/2x` statt `1/(2x)`, `-x^2` statt `(-x)^2`, `sin(x)` im Gradmaß erwartet.

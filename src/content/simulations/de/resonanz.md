@@ -110,13 +110,15 @@ Für die Phase gilt $\tan \Delta\varphi = \frac{2\delta\,\omega_E}{\omega_0^2 - 
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Erzwungene Schwingungen und Resonanz in der Oberstufe, vor allem als Ergänzung oder Ersatz für den Versuch mit dem echten Pohlschen Rad: Einschwingen beobachten, eine Messreihe der Resonanzkurve in kurzer Zeit aufnehmen, Einfluss der Dämpfung untersuchen, Phasenverschiebung im Zeigerdiagramm sichtbar machen.
 - **Modell:** Bewegungsgleichung $\ddot\varphi = -\omega_0^2\,(\varphi - \varphi_E(t)) - 2\delta\,\dot\varphi$ mit geschwindigkeitsproportionaler Dämpfung (Wirbelstrombremse), gelöst mit dem Runge-Kutta-Verfahren. Eigenfrequenz fest $f_0 = 0{,}5\,\text{Hz}$. Die Amplitude kann bei sehr kleinem $\delta$ unrealistisch groß werden, deshalb gibt es die Belastungsgrenze $120°$.
 - **Messreihe:** „Resonanzkurve aufnehmen“ springt bei jeder Frequenz über das Einschwingen hinweg (Hinweis „Zeitsprung“) und misst dann Amplitude und Phasenverschiebung. Messpunkte und theoretische Kurve lassen sich vergleichen; die Theorie kann man ausblenden.
 - **Halbwertsbreite:** Bei schwacher Dämpfung ist die Breite der Resonanzkurve auf Höhe $\hat\varphi_{\max}/\sqrt2$ etwa $\Delta f \approx \delta/\pi$ – je kleiner die Dämpfung, desto schmaler und höher die Kurve.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Das Rad schwingt mit seiner Eigenfrequenz.“ – Nur beim Einschwingen; danach mit $f_E$.
   - „Bei Resonanz sind Rad und Erreger im Gleichtakt.“ – Bei Resonanz ist $\Delta\varphi = 90°$; Gleichtakt herrscht bei kleiner Erregerfrequenz.
   - „Je schneller der Motor, desto stärker schwingt das Rad.“ – Oberhalb der Resonanz wird die Amplitude wieder kleiner.

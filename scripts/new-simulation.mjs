@@ -209,10 +209,12 @@ TODO: Lösung.
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** TODO
-- **Typische Fehlvorstellungen:** TODO
+- **Häufige Stolpersteine:** TODO
 `;
 
 mkdirSync(simDir, { recursive: true });

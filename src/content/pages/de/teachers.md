@@ -1,6 +1,6 @@
 ---
 title: Für Lehrkräfte
-description: So setzen Sie die Simulationen im Unterricht ein – am Beamer, auf Tablets oder als Hausaufgabe.
+description: Wie sich die Simulationen im Unterricht nutzen lassen – am Beamer, auf Tablets oder als Hausaufgabe.
 ---
 
 ## Kurz gesagt
@@ -36,7 +36,7 @@ Unter jeder Simulation finden Sie:
 - eine kurze **Erklärung** des Themas,
 - **Ausprobier-Aufträge** mit Links, die passende Einstellungen direkt laden,
 - **Aufgaben mit Lösungen** zum Aufklappen,
-- **Hinweise für Lehrkräfte** mit typischen Fehlvorstellungen und Einsatzideen.
+- **Ideen für den Unterricht** mit häufigen Stolpersteinen und Einsatzmöglichkeiten – als Anregung gedacht, denn Sie kennen Ihre Klasse am besten.
 
 ## Lehrplanbezug
 
@@ -50,4 +50,4 @@ Die Seite speichert keine personenbezogenen Daten und setzt keine Cookies. Im Br
 
 ## Feedback und Wünsche
 
-Sie vermissen ein Thema, haben einen Fehler gefunden oder eine Idee für eine Simulation? Das Projekt ist offen entwickelt – Rückmeldungen aus der Praxis sind ausdrücklich willkommen. Kontaktmöglichkeiten finden Sie auf der Seite [Über das Projekt](../ueber/).
+Sie vermissen ein Thema, haben einen Fehler gefunden oder eine Idee für eine Simulation? Das Projekt ist offen entwickelt, und Ihre Erfahrung aus dem Unterricht hilft sehr – Rückmeldungen sind herzlich willkommen. Kontaktmöglichkeiten finden Sie auf der Seite [Über das Projekt](../ueber/).

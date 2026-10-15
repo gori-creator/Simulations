@@ -110,13 +110,15 @@ $F_S = F_G$ gilt für $\sin\alpha = \tfrac12$, also $\alpha = 30^\circ$. Je flac
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Kraft als gerichtete Größe, Kräfteaddition und -zerlegung, Kräftegleichgewicht (Klasse 8–10). Ohne Trigonometrie lässt sich alles zeichnerisch mit Maßstab lösen; das Karoraster zeigt den Maßstab („1 Kästchen ≙ … N“). Pythagoras, Sinus und Kosinus erscheinen in den Ergebnissen für höhere Klassen.
 - **Aufgabenmodus:** Mit `res=0` werden Parallelogramm, Krafteck und Komponenten ausgeblendet; **Konstruieren** bzw. **Zerlegen** zeigt die Konstruktion Schritt für Schritt. `_hide=1` verdeckt zusätzlich die Zahlenwerte unter den Ergebnissen, `vals=0` die Beträge an den Pfeilen.
 - **Richtungen** werden als Winkel gegen die Waagerechte nach rechts angegeben (gegen den Uhrzeigersinn positiv, $-180^\circ$ bis $180^\circ$). Beim Ziehen rasten Winkel auf Vielfache von $15^\circ$ und Beträge auf halbe Newton ein.
 - **Modell Lampe/Wäscheleine:** Seile und Federwaagen sind masselos, die Last hängt in der Mitte zwischen gleich hohen Aufhängepunkten. Die Federwaagen haben einen Messbereich von $100\,\text{N}$. Bei sehr steilen Seilen rücken die Aufhängepunkte in der Zeichnung zusammen, damit die Lampe in der Szene bleibt; der Winkel stimmt immer.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Kräfte addieren sich immer zu $F_1 + F_2$.“ – nur bei gleicher Richtung.
   - „Die Resultierende ist eine zusätzliche Kraft.“ – Sie **ersetzt** die Einzelkräfte, sie wirkt nicht zusätzlich.
   - „Komponenten sind immer kleiner als die Kraft.“ – Bei fast entgegengesetzten Richtungen werden sie sehr groß.

@@ -116,12 +116,14 @@ Die Zielfunktion ist jeweils ein Produkt aus zwei linearen Faktoren. An den Rän
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 9, Lernbereich „Quadratische Funktionen“ (LehrplanPLUS Bayern, Gymnasium), Anwendungen und Modellieren. Ableitungen werden nicht benötigt; die Simulation eignet sich zur Einführung (Probieren, Wertetabelle) und zur Übung (Rechenweg).
 - **Aufbau einer Lösung:** Hauptbedingung, Nebenbedingung, Zielfunktion, Definitionsbereich, Scheitel bestimmen, Ergebnis im Sachzusammenhang deuten. Die Karte rechts zeigt genau diese Schritte.
 - **Bedienung:** Der Wert $x$ lässt sich am Griff in der Szene, am Punkt auf dem Graphen und am Regler ändern. Werte außerhalb des Definitionsbereichs werden auf den Rand begrenzt. Mit `sol=0` und **Teilen → Ergebnisse verdecken** sind Scheitel und Rechnung verdeckt; „Maximum suchen“ zeigt sie.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der Scheitel ist schon das Ergebnis.“ – Gefragt ist meist nach den Maßen (Breite, Länge, Preis) und dem größten Wert mit Einheit.
   - „Das Quadrat ist immer am besten.“ – Nur beim festen Umfang ohne Mauer. An der Mauer ist das beste Gehege doppelt so lang wie breit.
   - Vorzeichenfehler beim Ausklammern eines negativen Faktors: $-2x^2 + 40x = -2\,(x^2 - 20x)$, nicht $-2\,(x^2 + 20x)$.

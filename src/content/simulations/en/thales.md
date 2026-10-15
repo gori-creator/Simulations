@@ -59,8 +59,10 @@ For a point of contact $B$ we have $\angle MBP = 90^\circ$, so $B$ lies on the T
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Discovery lesson in grade 7. Let students state a conjecture before showing the proof idea.
-- **Misconceptions:** the right angle is placed at $M$; theorem and converse are not distinguished; the triangle below $\overline{AB}$ is not recognised.
+- **Common stumbling blocks:** the right angle is placed at $M$; theorem and converse are not distinguished; the triangle below $\overline{AB}$ is not recognised.
 - **Task mode:** **Share → Hide results** hides the angle and proof idea so students can conjecture first.

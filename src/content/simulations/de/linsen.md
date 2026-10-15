@@ -113,14 +113,16 @@ Mit $g = 2f$: $\frac{1}{b} = \frac{1}{f} - \frac{1}{2f} = \frac{1}{2f}$, also $b
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Optik in der Mittelstufe (Linsen, Bildentstehung, optische Geräte); am bayerischen Gymnasium im Physikunterricht der Jahrgangsstufen 8 bis 10 (Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Teil 1 eignet sich zum Einführen und Üben der Bildkonstruktion, Teil 2 als Ersatz oder Vorbereitung für den Versuch auf der optischen Bank.
 - **Modell:** dünne Linse, achsennahe Strahlen, keine Linsenfehler; gebrochen wird an der Mittelebene. Konstruktionsstrahlen dürfen die Mittelebene auch außerhalb der gezeichneten Linse treffen – sie dienen nur der Konstruktion. Die Zeichnung passt ihren Maßstab der Brennweite an.
 - **Vorzeichen:** virtuelles Bild $b < 0$, Zerstreuungslinse $f < 0$; im Abbildungsmaßstab werden Beträge verwendet.
 - **Konstruktionsübungen:** Unter „Anzeige“ lassen sich Bild und Strahlen ausblenden, die Ergebnisse mit `_hide=1` verdecken.
 - **Optische Bank:** Das Schirmbild entsteht aus den Lichtbündeln aller Kerzenpunkte (Unschärfekreis aus ähnlichen Dreiecken); als scharf gilt ein Unschärfekreis bis $3\,\text{mm}$. Die Blende verkleinert die wirksame Linsenöffnung.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Deckt man die halbe Linse ab, fehlt die Hälfte des Bildes.“ – Das ganze Bild bleibt, es wird nur dunkler (kleine Blende ausprobieren).
   - „Das Bild entsteht erst, wenn ein Schirm da ist.“ – Die Lichtbündel treffen sich auch ohne Schirm; der Schirm macht das Bild sichtbar.
   - „Es gibt nur die drei Konstruktionsstrahlen.“ – Sie sind Hilfsmittel; das Lichtbündel zeigt, dass alle Strahlen durch den Bildpunkt gehen.

@@ -119,13 +119,15 @@ Bestimme die Lösungsmenge: (a) $3x + 5 = 3x + 2$, (b) $2x + 4 = 2x + 4$.
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 7, Lernbereich 3 (Lineare Gleichungen: Gleichungen aufstellen und durch Äquivalenzumformungen lösen) – als anschaulicher Einstieg, bevor Gleichungen mit negativen Zahlen rein rechnerisch gelöst werden.
 - **Bedienung:** Ein Antippen nimmt einen Gegenstand **nur auf einer Seite** weg – die Waage kippt und die Umformung wird rot markiert. Erst wenn auf der anderen Seite dasselbe weggenommen wird, entsteht eine gültige Zeile (aufeinanderfolgende gleichartige Schritte werden wie im Heft zusammengefasst, z. B. $\mid -2$). Die Knöpfe führen Umformungen auf beiden Seiten aus; „Beide Seiten : n“ schlägt einen passenden Teiler vor und teilt die Schalen sichtbar in gleiche Gruppen.
 - **Geteilte Links** enthalten die Ausgangsgleichung. „Neue Gleichung“ erzeugt Aufgaben mit natürlicher Lösung von 1 bis 6.
 - **Grenzen des Modells** (bewusst thematisieren): keine negativen Zahlen und keine Differenzen wie $3x - 2$, Lösungen nur positiv, Teilen nur, wenn es aufgeht; Addieren und Multiplizieren beider Seiten werden hier nicht angeboten, weil sie zum Lösen solcher Gleichungen nicht nötig sind.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Es wird nur auf einer Seite umgeformt (genau das zeigt die kippende Waage).
   - Beim Dividieren wird nur ein Teil einer Seite geteilt: $2x + 4 = 10 \mid :2$ ergibt nicht $x + 4 = 5$, sondern $x + 2 = 5$.
   - „Rüberbringen mit Vorzeichenwechsel“ als Regel ohne Verständnis – die Waage zeigt, dass eigentlich auf beiden Seiten subtrahiert wird.

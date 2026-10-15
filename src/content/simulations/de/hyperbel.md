@@ -99,11 +99,13 @@ $a + c = 5$ und $\frac{a}{4} + c = 2$. Subtrahieren: $\frac{3}{4}a = 3$, also $a
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 8, Lernbereich „Elementare gebrochen-rationale Funktionen“ (LehrplanPLUS Bayern, Gymnasium): Einstieg über die indirekte Proportionalität (Rechtecke gleichen Flächeninhalts), danach Einfluss der Parameter, Definitions- und Wertemenge, Asymptoten. Die Schreibweise $\frac{a}{x - b} + c$ entspricht der Scheitelpunktform der Parabel – die Animation „Erst strecken, dann verschieben“ knüpft daran an.
 - **Grenzwertbegriff:** Die Annäherung an die Asymptoten wird nur propädeutisch über Wertetabellen behandelt („kommt beliebig nahe, erreicht aber nicht“); $x \to \infty$ ist hier eine Sprechweise, kein formaler Grenzwert.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der Graph schneidet die Asymptote nie.“ – Für diese Hyperbeln stimmt das, im Allgemeinen (später: gebrochen-rationale Funktionen) kann ein Graph seine waagrechte Asymptote durchaus schneiden.
   - Das Vorzeichen von $b$: Bei $\frac{a}{x + 2}$ liegt die Polstelle bei $x = -2$.
   - „Die beiden Äste sind zwei Funktionen.“ – Es ist **eine** Funktion mit einer Definitionslücke; die Äste liegen punktsymmetrisch zu $Z(b \mid c)$.

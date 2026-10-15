@@ -70,7 +70,9 @@ The points are $(-5 \mid 0)$, $(0 \mid 5)$ and $(5 \mid 0)$, which give $f(x) = 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Year 9, quadratic functions combined with systems of linear equations. Good for consolidation and modelling.
 - Points snap to a 0.5 grid, so the working stays exact. Non-terminating results are shown as reduced fractions.

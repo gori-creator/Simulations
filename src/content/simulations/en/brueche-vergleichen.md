@@ -59,9 +59,11 @@ In $24$ths: $18, 16, 15, 14$. So $\frac{7}{12} < \frac{5}{8} < \frac{2}{3} < \fr
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Three views: comparing (bars or circles with a shared number line), expanding and reducing (steps with arcs, group brackets, fraction wall) and a game for ordering fractions.
 - With `show=0` students tap the comparison sign themselves.
 - Pieces are numbered only once they have equal size, so learners are not invited to compare numerators of different-sized pieces.
-- **Misconceptions:** “larger denominator, larger fraction”; comparing only numerators; “$\frac{3}{4} = \frac{4}{5}$ because one piece is missing each time”.
+- **Common stumbling blocks:** “larger denominator, larger fraction”; comparing only numerators; “$\frac{3}{4} = \frac{4}{5}$ because one piece is missing each time”.

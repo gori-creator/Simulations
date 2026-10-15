@@ -97,10 +97,12 @@ Ein Handytarif kostet 5 € Grundgebühr im Monat und 2 € pro verbrauchtem Gig
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Einführung in Klasse 7/8 oder Wiederholung vor quadratischen Funktionen. Am Beamer bewährt: Die Klasse sagt vorher, was passiert, bevor ein Regler bewegt wird.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Steigung und y-Achsenabschnitt werden verwechselt.
   - Bei negativer Steigung wird das Steigungsdreieck „nach oben“ gezeichnet.
   - Die konstante Funktion ($m = 0$) wird nicht als lineare Funktion erkannt.

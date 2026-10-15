@@ -45,8 +45,10 @@ About $18\,\Omega$ at $2\,\text{V}$ ($0.110\,\text{A}$) and $48\,\Omega$ at $12\
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Data are read off like in the lab; `fit=0` hides the best-fit line. Both graph conventions ($I$ against $U$ and $U$ against $I$) are available; several series stay in the graph for comparison.
 - Model: supply $0$–$12\,\text{V}$ with a $2\,\text{A}$ current limit, ideal meters with automatic range, bulb $12\,\text{V}/0.25\,\text{A}$ with a radiation–conduction energy balance and $R \propto T^{1.2}$.
-- **Misconception:** “$R = U/I$ is Ohm’s law” – it defines resistance; Ohm’s law states that $R$ is constant.
+- **Common stumbling blocks:** “$R = U/I$ is Ohm’s law” – it defines resistance; Ohm’s law states that $R$ is constant.

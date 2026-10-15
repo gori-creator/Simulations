@@ -72,7 +72,9 @@ $\lambda = 340/440\,\text{m} \approx 0.77\,\text{m}$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Model:** analytic wave on an ideal, lossless chain (4 m, particles 10 cm apart) without reflection or dispersion. The transverse wave is drawn enlarged across the chain (factor shown in the picture); the longitudinal wave is to scale. If $2\pi\hat y/\lambda \ge 1$, neighbouring particles of the longitudinal wave would overtake each other – the simulation points this out.
-- **Misconceptions:** particles do not travel with the wave; a higher frequency does not make the wave faster; $y(x)$ and $y(t)$ look alike but show different things ($\lambda$ vs. $T$); compressions are not where the displacement is largest.
+- **Common stumbling blocks:** particles do not travel with the wave; a higher frequency does not make the wave faster; $y(x)$ and $y(t)$ look alike but show different things ($\lambda$ vs. $T$); compressions are not where the displacement is largest.

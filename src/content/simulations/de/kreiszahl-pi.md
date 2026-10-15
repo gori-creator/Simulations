@@ -76,11 +76,13 @@ Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der 
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 8 (Kreis und Zylinder: Kreisumfang, Kreisfläche, Näherungen für π).
 - **Drei Zugänge:** Abrollen (Umfang), Umlegen (Fläche) und Archimedes (Näherung). Alle drei Animationen werden über den Knopf unter der Bühne gestartet.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Umfang und Fläche werden verwechselt; $\pi r^2$ und $2\pi r$ werden vertauscht.
   - „π ist genau 3,14.“
 - **Bilder:** Rad und Pizza können durch Fotos ergänzt werden (siehe `docs/BILDER.md`).

@@ -77,10 +77,12 @@ $$f(t) \approx 3{,}8 \cdot \sin\big(0{,}52\,(t - 2{,}7)\big) + 0{,}2$$
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Reihenfolge:** Zuerst die „vertikalen“ Parameter $a$ und $d$, dann $c$, zuletzt $b$ – die Wirkung von $b$ ist für viele am wenigsten intuitiv.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Größeres $b$ – längere Periode“: Tatsächlich wird die Periode kürzer.
   - Das Vorzeichen von $c$ wird wie bei Parabeln falsch gedeutet.
   - Bei $\sin(bx + c)$ wird $c$ direkt als Verschiebung gelesen.

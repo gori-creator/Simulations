@@ -120,12 +120,14 @@ Die Hyperbel $y = \frac{1}{x}$ nähert sich der $x$-Achse beliebig nahe an, erre
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz (Bezug als Entwurf):** Jahrgangsstufe 8, Lernbereich 4 (Bruchgleichungen lösen und als Schnittproblem von Graphen deuten), aufbauend auf dem Funktionsbegriff aus Lernbereich 1; Jahrgangsstufe 9, Lernbereich 2 (quadratische Gleichungen, Schnittpunkte von Parabel und Gerade) und Lernbereich 1 (Näherungswerte für Quadratwurzeln: die Intervallhalbierung ist eine Form der Intervallschachtelung). Geeignet als Einstieg, zum Üben und zum Vergleich grafisch – rechnerisch.
 - **Modell:** Jede Seite ist eine Gerade $mx + t$, Parabel $a(x - d)^2 + e$, Hyperbel $\frac{a}{x - d} + e$ oder ein Betragsgraph $a \cdot |x - d| + e$. Die Simulation rechnet die Lösungen exakt (bei quadratischen Gleichungen mit Wurzeln, z. B. $\frac{1 + \sqrt{5}}{2}$), bei Gleichungen dritten Grades (Hyperbel und Parabel) numerisch. Grundmenge ist $\mathbb{R}$; in Jahrgangsstufe 8 (rationale Zahlen) Beispiele mit rationalen Lösungen wählen.
 - **Aufgabenmodus:** `show=0` blendet Schnittpunkte, Lote und Lösungskarte im Bild aus, `_hide=1` verdeckt Anzahl, Lösungsmenge und Probe in den Ergebnissen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Als Lösung wird der Schnittpunkt $(2 \mid 3)$ angegeben statt seiner $x$-Koordinate $2$.
   - Ein Berührpunkt wird übersehen oder als „zwei Lösungen“ gezählt.
   - Bei Bruchgleichungen wird die Definitionsmenge vergessen. Nach dem Multiplizieren mit dem Nenner können Scheinlösungen entstehen: $\frac{x}{x - 1} = \frac{1}{x - 1}$ führt auf $x = 1$, das nicht in $D$ liegt. Die Graphen von $\frac{1}{x - 1} + 1$ (das ist $\frac{x}{x - 1}$) und $\frac{1}{x - 1}$ haben tatsächlich keinen gemeinsamen Punkt. [Zeigen](?f=hyp&g=hyp&a1=1&d1=1&e1=1&a2=1&d2=1&e2=0)

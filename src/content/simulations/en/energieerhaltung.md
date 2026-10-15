@@ -42,7 +42,9 @@ At the top ($h = 2r$): $v^2 \ge g r$. Energy: $m g h_0 = 2 m g r + \tfrac12 m v^
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Conservation of energy (grade 9/10); the loop links to circular motion.
-- **Misconception:** "With friction energy is lost" – it is converted, not destroyed.
+- **Common stumbling blocks:** "With friction energy is lost" – it is converted, not destroyed.

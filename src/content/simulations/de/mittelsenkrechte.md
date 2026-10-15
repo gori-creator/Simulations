@@ -101,12 +101,14 @@ Er gehört in den Schnittpunkt $U$ der Mittelsenkrechten (zwei genügen, die dri
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich 2.1 „Achsen- und punktsymmetrische Figuren“ (LehrplanPLUS Gymnasium Bayern): Grundkonstruktionen Mittelsenkrechte und Winkelhalbierende, Begründung über Symmetrie, Ortslinien. Geeignet zur Erarbeitung (Ortslinie entdecken), zum Vorführen der Konstruktionen am Beamer und für Übungsphasen. Der Umkreis ist hier als Ausblick gedacht und wird bei der Behandlung von Dreiecken vertieft.
 - **Bedienung:** $P$, die Punkte $A$, $B$, $C$, der Scheitel $S$, die Schenkel sowie $G$ und $H$ lassen sich ziehen. Mit „Ortslinie zeigen“ aus können die Lernenden die Gerade erst selbst entdecken; „Spur löschen“ startet neu. Die Konstruktion lässt sich schrittweise oder ganz abspielen.
 - **Modell:** Karopapier mit $0{,}5\,\text{cm}$ pro Kästchen. Bei der Mittelsenkrechten springt $P$ auf Gitterpunkte und rastet in der Nähe von $m$ auf $m$ ein; bei der Winkelhalbierenden bewegt sich $P$ frei im Winkelfeld und rastet auf $w$ ein. Gerundete Längen werden mit „≈“ angezeigt.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Jede Senkrechte zu $[AB]$ ist eine Mittelsenkrechte.“ – Sie muss durch den Mittelpunkt gehen.
   - Der Zirkel wird zwischen den beiden Bögen verstellt oder kleiner als die halbe Strecke geöffnet.
   - Der Abstand zu einem Schenkel wird schräg statt senkrecht gemessen.

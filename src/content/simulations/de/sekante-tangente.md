@@ -83,11 +83,13 @@ Es entsteht die Kosinusfunktion: $(\sin x)' = \cos x$. Zum Beispiel ist die Stei
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 11 (Einführung der Ableitung). Die Animation **h → 0** verkleinert $h$ logarithmisch, sodass die Annäherung gleichmäßig sichtbar bleibt.
 - **Tabelle:** Die Annäherungstabelle zeigt die Differenzenquotienten für $h = 1;\ 0{,}1;\ 0{,}01;\ 0{,}001$ – gut geeignet, um den Grenzwertbegriff numerisch vorzubereiten.
 - **h = 0:** Stellt man $h = 0$ ein, ist der Differenzenquotient nicht definiert ($\frac{0}{0}$); die Simulation zeigt dann nur die Tangente. Ein guter Anlass, über den Unterschied zwischen „$h = 0$ einsetzen“ und „Grenzwert für $h \to 0$“ zu sprechen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Die Tangente berührt den Graphen „nur in einem Punkt“ – bei der kubischen Funktion schneidet die Tangente den Graphen oft noch an einer anderen Stelle.
   - Sekante und Tangente werden verwechselt; Farben und Legende unterscheiden sie konsequent.

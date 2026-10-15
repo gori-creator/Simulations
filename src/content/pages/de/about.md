@@ -11,7 +11,7 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 
 - **Kostenlos und werbefrei** – dauerhaft.
 - **Ohne Anmeldung, ohne Tracking** – datensparsam und damit unkompliziert im Schulalltag.
-- **Fachlich sauber und didaktisch durchdacht** – mit Erklärungen, Aufgaben und Hinweisen für Lehrkräfte.
+- **Fachlich sauber und didaktisch durchdacht** – mit Erklärungen, Aufgaben und Ideen für den Unterricht.
 - **Für alle Geräte** – vom Smartphone bis zum interaktiven Whiteboard.
 - **Zweisprachig** – zuerst Deutsch, nach und nach auch Englisch.
 - **Offen** – der Quellcode ist öffentlich, Beiträge sind willkommen.

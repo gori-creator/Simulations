@@ -77,10 +77,12 @@ Man addiert alle Treffer und alle Punkte: $\pi \approx 4 \cdot \frac{k_1 + k_2 +
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 10 (Simulation von Zufallsexperimenten, Kreiszahl). Verknüpft Stochastik, Flächeninhalt des Kreises und den Satz des Pythagoras.
 - **Darstellung:** Die ersten $120\,000$ Punkte werden gezeichnet, gezählt wird unbegrenzt. Der Trichter zeigt den Bereich, in dem etwa 95 % der Schätzwerte nach $n$ Punkten liegen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Mit mehr Punkten wird der Wert bei jedem Schritt genauer.“ – Der Schätzwert schwankt weiter, nur immer weniger.
   - Zufallszahlen am Computer sind „echt zufällig“ – tatsächlich sind es Pseudozufallszahlen, die für solche Zwecke aber gut genug sind.

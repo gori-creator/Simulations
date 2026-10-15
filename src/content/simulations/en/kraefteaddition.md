@@ -63,8 +63,10 @@ $F_S = \frac{19.6\,\text{N}}{2 \cdot \sin 10^\circ} \approx 56.5\,\text{N}$ – 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Everything can be solved graphically with the grid as scale; Pythagoras and trigonometry appear in the results for older students. `res=0` hides the construction, **Construct** and **Resolve** animate it step by step.
 - Directions are angles to the horizontal, anticlockwise positive. Ropes and spring balances are massless; the balances have a range of $100\,\text{N}$.
-- **Misconceptions:** “forces always add up to $F_1 + F_2$”, “the resultant is an additional force”, “components are always smaller than the force”, “a tight rope can carry more”.
+- **Common stumbling blocks:** “forces always add up to $F_1 + F_2$”, “the resultant is an additional force”, “components are always smaller than the force”, “a tight rope can carry more”.

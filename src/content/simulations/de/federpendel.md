@@ -126,13 +126,15 @@ Bei $\tfrac14 T$ im oberen Umkehrpunkt ($y = 8\,\text{cm}$), bei $\tfrac12 T$ wi
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Mechanische Schwingungen in der Oberstufe bzw. dort, wo der Lehrplan harmonische Schwingungen vorsieht: Einstieg (Beobachten, Zeigerdiagramm), Erarbeitung von $T = 2\pi\sqrt{m/D}$ durch Messen mit der Stoppuhr und Vergleichspendel, Vertiefung (Phasenbeziehungen von $y$, $v$, $a$ mit der Zeitmarke; Energie; Dämpfung).
 - **Modell:** Ideale, masselose Feder, für die das Hookesche Gesetz auch beim Stauchen gilt. Die Elongation $y$ ist **nach oben positiv**. Die Dämpfung ist geschwindigkeitsproportional ($m\ddot y = -Dy - 2m\delta\dot y$); die Bewegung wird mit dem Runge-Kutta-Verfahren (Schrittweite $1\,\text{ms}$) berechnet. Spann- und Lageenergie werden in der Einstellung „½·D·y²“ zusammengefasst; die dritte Einstellung zeigt sie getrennt (Bezugsniveau der Lageenergie: unterer Umkehrpunkt).
 - **Vergleichspendel:** Die beiden Pendel sind so aufgehängt, dass ihre Ruhelagen auf gleicher Höhe liegen; sie starten mit gleicher Amplitude und gleichem Nullphasenwinkel.
 - **Stoppuhr:** Der Zähler $n$ zählt volle Umdrehungen des Zeigers seit dem Start (grüne Marke). Wird zwischen zwei vollen Perioden gestoppt, weist die Auswertung darauf hin. Am Vergleich mit einer Messung über nur eine Periode lässt sich zeigen, warum man mehrere Perioden misst.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Bei größerer Amplitude dauert eine Schwingung länger.“ – Beim Federpendel ist $T$ unabhängig von $\hat y$.
   - „Im Umkehrpunkt ist die Beschleunigung null, weil der Körper kurz still steht.“ – Dort ist $|a|$ am größten.
   - „In der Ruhelage wirkt keine Kraft.“ – Gewichtskraft und Federkraft wirken, ihre Summe ist null.

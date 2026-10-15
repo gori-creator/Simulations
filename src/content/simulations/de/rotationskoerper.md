@@ -126,11 +126,13 @@ $V(b) = \pi \int_1^b \tfrac{1}{x^2} \, dx = \pi\left(1 - \tfrac{1}{b}\right)$, f
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 13, Integralrechnung (Anwendungen des Integrals) – Zuordnung als Entwurf, bitte gegen den aktuellen LehrplanPLUS prüfen; Rotationskörper sind je nach Lehrplanfassung Vertiefung bzw. Ausblick. Geeignet als Einstieg (Drehen der Fläche), zur Herleitung der Formel über die Scheibensumme und zur Kontrolle bekannter Körperformeln aus Jahrgangsstufe 10.
 - **Modell:** Die Scheiben sind Zylinder der Dicke $\Delta x$; als Radius dienen wahlweise der Funktionswert in der Streifenmitte, der kleinste oder der größte Wert im Streifen. Die Seitenansicht zeigt den Graphen mit den zugehörigen Rechtecken und ihr Spiegelbild (Längsschnitt). Grenzen außerhalb des Definitionsbereichs werden angepasst (z. B. höchstens $\pi$ beim Sinus).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „$V = \pi \int_a^b f(x) \, dx$“ – der Radius wird quadriert, weil der Querschnitt die Kreisfläche $\pi f(x)^2$ ist; ein Faktor 2 beim Doppeln von $f$ wird zum Faktor 4 beim Volumen.
   - „$V = \left(\pi \int_a^b f(x)\,dx\right)^2$“ – quadriert wird der Integrand, nicht das Integral.
   - „Liegt der Graph unter der $x$-Achse, wird das Volumen negativ.“ – $f(x)^2 \geq 0$, das Volumen ist immer positiv.

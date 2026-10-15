@@ -107,12 +107,14 @@ Die Bahn des Mondes ist um etwa $5^\circ$ gegen die Bahn der Erde um die Sonne g
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Optik im Anfangsunterricht (Lichtausbreitung, Schatten, Finsternisse); am bayerischen Gymnasium im Physikunterricht der Jahrgangsstufe 7 (Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Geeignet als Einstieg, zum Üben der Randstrahlen-Konstruktion und als Vertiefung mit Finsternissen und Mondphasen.
 - **Modell:** Lampe und Gegenstand sind runde Scheiben parallel zum Schirm (die Milchglaslampe wird als leuchtende Scheibe mit Durchmesser $d$ gerechnet). Die Halter werfen keinen Schatten. Die Helligkeit auf dem Schirm berücksichtigt Abstand und Schräglage; das Lichtbündel ist sichtbar gezeichnet, als stünde etwas Dunst im Raum.
 - **Finsternisse:** Das Modell ist schematisch und nicht maßstäblich. Sonne und Mond erscheinen von der Erde aus (wie in Wirklichkeit) etwa gleich groß, Abstände und Größen sind aber stark verändert, und die Bahnneigung fehlt. Man blickt von Norden auf die Bahnebene; der Ort des Beobachters auf dem Erdumfang entspricht der Tageszeit.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der Schatten ist ein dunkles Abbild, das vom Gegenstand ausgeht.“ – Schatten ist der Bereich, in den kein (oder weniger) Licht gelangt.
   - „Rückt der Gegenstand näher an die Lampe, wird der Schatten kleiner.“ – Er wird größer, siehe $S = G \cdot \frac{b}{a}$.
   - „Halbschatten heißt: halb so groß.“ – Im Halbschatten fehlt ein Teil des Lichts.

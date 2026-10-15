@@ -80,12 +80,14 @@ Für $p = 0{,}5$ ist jeder Weg gleich wahrscheinlich, und es gibt zu Fach $k$ ge
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 12 (Bernoulli-Ketten, Binomialverteilung); qualitativ auch früher bei mehrstufigen Zufallsexperimenten. Die Glockenkurve leitet zur Normalverteilung über.
 - **Darstellung:** Solange es passt, werden die Kugeln einzeln gestapelt; bei vielen Kugeln werden die Fächer als Säulen dargestellt. Die roten Markierungen zeigen die erwartete Anzahl $N \cdot P(X = k)$ bei $N$ Kugeln.
 - **Bilder:** Holzbrett und Kugeln werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Die Kugel wird zur Mitte gelenkt.“ – Es gibt nur mehr Wege dorthin.
   - Fachnummer und Weg werden verwechselt: Viele verschiedene Wege führen ins gleiche Fach.
   - Die Glockenkurve ist eine Näherung für große $n$ – für kleine $n$ oder $p$ nahe 0 oder 1 passt sie schlecht.

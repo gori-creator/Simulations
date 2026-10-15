@@ -63,7 +63,9 @@ The Moon’s orbit is tilted by about $5^\circ$ against the Earth’s orbit, so 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Lamp and object are modelled as discs parallel to the screen; holders cast no shadow. The eclipse model is schematic and not to scale (the Sun and the Moon look about equally large from the Earth, as in reality).
-- **Misconceptions:** “The shadow gets smaller when the object moves towards the lamp.” – It gets larger. “The phases of the Moon are caused by the Earth’s shadow.” – Only a lunar eclipse is.
+- **Common stumbling blocks:** “The shadow gets smaller when the object moves towards the lamp.” – It gets larger. “The phases of the Moon are caused by the Earth’s shadow.” – Only a lunar eclipse is.

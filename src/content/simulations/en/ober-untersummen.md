@@ -31,7 +31,9 @@ $U_4 = 1.75$, $O_4 = 3.75$; exact value $\frac{8}{3}$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 12/13 (definite integral).
-- **Misconception:** integral and area are the same even when the graph goes below the x-axis.
+- **Common stumbling blocks:** integral and area are the same even when the graph goes below the x-axis.

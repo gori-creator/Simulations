@@ -110,13 +110,15 @@ $F_Z = F_H + \mu_G \cdot F_N = 3{,}36\,\text{N} + 0{,}3 \cdot 9{,}22\,\text{N} \
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Kraftzerlegung an der schiefen Ebene (zeichnerisch über das Kräftedreieck, mit $h/l$ oder trigonometrisch), Reibung und Grenzwinkel, schiefe Ebene als Kraftwandler (Klasse 8–10); die Bewegungsgleichung $a = g(\sin\alpha - \mu_G\cos\alpha)$ eher ab Klasse 10.
 - **Bezeichnungen:** Die Komponente der Gewichtskraft senkrecht zur Ebene heißt hier Normalkraft $F_N$. Manche Lehrwerke unterscheiden davon die gleich große Kraft der Unterlage auf den Körper.
 - **Modell:** Ebene $1\,\text{m}$ lang, $g = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Die Reibungszahlen der Materialpaare sind **Richtwerte**; reale Werte hängen stark von Oberfläche, Feuchtigkeit und Sauberkeit ab. Der Wagen hat eine sehr kleine Rollreibung ($0{,}005$). Vor dem Loslassen hält die Hand den Körper; deshalb ist die angezeigte Haftreibung höchstens $F_{R,\max}$. Am unteren Ende hält ein Anschlag den Körper.
 - **Messreihe:** Mit eingehängtem Kraftmesser lässt sich ein Messwert nur eintragen, wenn der Körper mit dieser Zugkraft liegen bleibt. Beim Wagen liegen die Messpunkte auf der Kurve $F_H(\alpha)$; beim Klotz gibt es wegen der Haftreibung einen ganzen Bereich von Haltekräften – ein guter Anlass zum Diskutieren.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Die Normalkraft ist immer gleich der Gewichtskraft.“ – Auf der schiefen Ebene ist sie kleiner: $F_N = F_G \cdot \cos\alpha$.
   - „Schwere Körper rutschen früher.“ – Der Grenzwinkel hängt nur von $\mu_H$ ab, nicht von der Masse.
   - „Die Reibungskraft ist immer $\mu \cdot F_N$.“ – Die Haftreibung ist nur so groß wie nötig, höchstens $\mu_H \cdot F_N$.

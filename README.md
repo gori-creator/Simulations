@@ -18,7 +18,7 @@ Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht
 - **Optionale Bilder:** Simulationen können Fotos nutzen (Liste mit Bild-Prompts in [`docs/BILDER.md`](docs/BILDER.md)); fehlt ein Bild, wird eine gezeichnete Ersatzgrafik verwendet.
 - **Regler, Schalter und ziehbare Punkte** – mit Maus, Stift oder Finger; Zoomen und Verschieben.
 - **Teilen per Link und QR-Code:** Jede Einstellung steckt in der Adresse. Optional mit **gesperrten Reglern** oder **verdeckten Ergebnissen** (Aufgabenmodus).
-- **Lernmaterial zu jeder Simulation:** Erklärung mit Formeln, Ausprobier-Aufträge, Aufgaben mit Lösungen, Hinweise für Lehrkräfte.
+- **Lernmaterial zu jeder Simulation:** Erklärung mit Formeln, Ausprobier-Aufträge, Aufgaben mit Lösungen, Ideen für den Unterricht.
 - **Vollbild für den Beamer**, **Export als Bild**, **Hell-/Dunkelmodus**.
 - **Datenschutz:** keine Konten, keine Cookies, kein Tracking, keine externen Server oder Schriftarten.
 - **Offline-fähig:** Nach dem ersten Besuch funktioniert alles auch ohne WLAN (Service Worker).

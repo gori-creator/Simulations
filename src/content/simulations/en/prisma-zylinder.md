@@ -51,7 +51,9 @@ From $n = 26$ on (for $n = 6$ it is only about $82.7\,\%$). [n = 26](?n=26&ghost
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - “Stack layers” justifies $V = G \cdot h$, “Roll out” justifies $M = u \cdot h$. The calculation in the picture can be switched off with `calc=0`.
-- **Misconceptions:** confusing $u \cdot h$ with $G \cdot h$ (and cm² with cm³), using the diameter instead of the radius, counting only one base, expecting the volume to double when the radius doubles.
+- **Common stumbling blocks:** confusing $u \cdot h$ with $G \cdot h$ (and cm² with cm³), using the diameter instead of the radius, counting only one base, expecting the volume to double when the radius doubles.

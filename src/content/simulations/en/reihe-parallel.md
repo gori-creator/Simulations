@@ -45,8 +45,10 @@ $I_1 = 0.3\,\text{A}$, $I_2 = 0.2\,\text{A}$, $I = 0.5\,\text{A}$, $R = 12\,\Ome
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Two ammeters and two voltmeters can be placed like in a student experiment; `a1=0&v1=0` with `_hide=1` turns a set-up into a calculation task.
 - Model: ideal source and meters; bulbs as fixed $12\,\Omega$ resistors ($6\,\text{V}$, $0.5\,\text{A}$), brightness from the power via the filament temperature; a bulb blows above $9\,\text{V}$. The dots have the same spacing everywhere and move at a speed proportional to the current.
-- **Misconceptions:** current is used up from bulb to bulb; the battery always supplies the same current; more bulbs always mean more resistance.
+- **Common stumbling blocks:** current is used up from bulb to bulb; the battery always supplies the same current; more bulbs always mean more resistance.

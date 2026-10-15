@@ -119,12 +119,14 @@ Wären bei $x = 2$ beide Punkte voll, also $(2 \mid 1)$ und $(2 \mid 2)$, dann w
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz (Bezug als Entwurf):** Jahrgangsstufe 8, Lernbereich 1 „Funktion und Term“: Funktion als eindeutige Zuordnung, Definitions- und Wertemenge, Graphen. Gut als Einstieg (Alltagszuordnungen im Pfeildiagramm) und zur Sicherung (Linientest, Umkehrung).
 - **Darstellungen:** Pfeildiagramm, Wertetabelle und Graph sind synchron – antippen oder ziehen ändert alle drei. Rot markiert sind Elemente mit mehreren Pfeilen (Zahl) oder ohne Pfeil (?). Mit `show=0` werden Färbung und Urteil ausgeblendet; die Lernenden entscheiden selbst.
 - **Linientest:** Die Leiste unter dem Graphen zeigt, wie viele Schnittpunkte die senkrechte Gerade an jeder besuchten Stelle hat. Bei Funktionsgraphen markiert die Simulation $D$ (türkis, auf der $x$-Achse) und $W$ (lila, auf der $y$-Achse). Der Halbkreis $f(x) = \sqrt{9 - x^2}$ greift der Wurzel aus Jahrgangsstufe 9 vor und kann auch nur als Graph betrachtet werden.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Wenn zwei Pfeile beim selben Element ankommen, ist es keine Funktion.“ – Es kommt nur auf die ausgehenden Pfeile an.
   - „Eine Funktion braucht eine Formel.“ – Auch Kind $\mapsto$ Geburtsmonat ist eine Funktion.
   - „Ein Graph muss zusammenhängend sein.“ – Hyperbel und Treppenfunktion sind Funktionsgraphen.

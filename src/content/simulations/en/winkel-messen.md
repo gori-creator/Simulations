@@ -59,8 +59,10 @@ $6^\circ$ per minute: $60^\circ$ and $270^\circ$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** grade 5, measuring and drawing angles up to $360^\circ$ and naming types of angles; the estimation game works well for practice.
 - **Handling:** move the set square in the middle, turn it at the round handles or corners; it snaps to the vertex and the arms. With “Show the size of the angle” off, students must actually read the scale.
-- **Misconceptions:** reading the wrong scale, thinking longer arms mean a larger angle, giving the other angle for reflex angles.
+- **Common stumbling blocks:** reading the wrong scale, thinking longer arms mean a larger angle, giving the other angle for reflex angles.

@@ -88,11 +88,13 @@ Konstruktion: Mittelpunkt von $\overline{MP}$ bestimmen, Thaleskreis über $\ove
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Entdeckend in Jahrgangsstufe 7 (Bayern: Lernbereich zu Dreiecken und besonderen Linien). Die Lernenden formulieren die Vermutung selbst, bevor die Beweisidee eingeblendet wird.
 - **Animation:** Mit **Abspielen** wandert $C$ gleichmäßig über den Kreis. Gut geeignet, um die Konstanz von $\gamma$ trotz wechselnder $\alpha$ und $\beta$ zu betonen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der rechte Winkel liegt bei $M$.“ – Der rechte Winkel liegt immer gegenüber dem Durchmesser, also bei $C$.
   - Satz und Umkehrung werden nicht unterschieden. Der Modus **C frei verschieben** macht die Umkehrung erfahrbar.
   - In der Lage unterhalb von $\overline{AB}$ wird der Winkel nicht wiedererkannt – auch dort gilt der Satz.

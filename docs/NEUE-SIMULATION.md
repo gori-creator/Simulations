@@ -110,7 +110,7 @@ export default defineSimulation({
 
 ## 4. Lernmaterial schreiben
 
-`src/content/simulations/de/<id>.md` mit den Abschnitten **Worum geht es?**, **Ausprobieren**, **Aufgaben** und **Hinweise für Lehrkräfte**.
+`src/content/simulations/de/<id>.md` mit den Abschnitten **Worum geht es?**, **Ausprobieren**, **Aufgaben** und **Ideen für den Unterricht**.
 
 - Formeln: `$f(x) = mx + b$` bzw. `$$ … $$`. Im Deutschen Dezimalkomma mit `{,}` schreiben: `$-1{,}5$`.
 - Einstellungen laden: `[Beispiel laden](?a=2&b=-1)`. Mit `_hide=1` werden Ergebnisse verdeckt: `[Aufgabe laden](?a=2&_hide=1)`.

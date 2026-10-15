@@ -99,12 +99,14 @@ $112^\circ$ (etwas mehr als ein rechter Winkel), $38^\circ$ (etwas weniger als d
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 „Geometrische Figuren und Lagebeziehungen“ (LehrplanPLUS Gymnasium Bayern): Winkel bis $360^\circ$ schätzen, messen und zeichnen, Winkelarten. Gut geeignet für die Erarbeitung am Whiteboard (Geodreieck gemeinsam anlegen) und für Einzelarbeit mit dem Schätzspiel.
 - **Bedienung:** Das Geodreieck lässt sich in der Mitte verschieben und an den runden Griffen bzw. den Ecken drehen. In der Nähe des Scheitels und der Schenkel rastet es ein. Mit „Winkelgröße anzeigen“ aus muss die Größe tatsächlich abgelesen werden; die Hervorhebung zeigt dann nur, an welcher Skala.
 - **Modell:** Geodreieck und Kästchen passen zueinander: Die Kante ist 16 cm lang, ein Kästchen 5 mm. Winkel werden auf ganze Grad gerundet. „Zufälliger Winkel“ blendet die Größe aus und legt das Geodreieck zur Seite.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Ablesen an der falschen Skala (Ergebnis und richtiger Wert ergänzen sich zu $180^\circ$) – eine Plausibilitätsprüfung mit der Winkelart hilft.
   - Längere Schenkel bedeuten einen größeren Winkel. Die Schenkel sind Halbgeraden; ihre gezeichnete Länge spielt keine Rolle.
   - Der Nullpunkt wird an die Ecke des Geodreiecks statt auf den Scheitel gelegt.

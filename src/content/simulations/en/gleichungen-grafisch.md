@@ -57,9 +57,11 @@ $[1, 2] \to [1.5, 2] \to [1.5, 1.75] \to [1.625, 1.75] \to [1.6875, 1.75]$: ever
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** solving equations graphically, fractional equations as an intersection problem, quadratic equations (parabola and line), approximating irrational roots by bisection.
 - **Model:** each side is a line, parabola $a(x - d)^2 + e$, hyperbola $\frac{a}{x - d} + e$ or V-shaped graph $a|x - d| + e$. Solutions are computed exactly (with square roots for quadratics), cubic cases numerically.
 - **Task mode:** `show=0` hides intersections and solutions in the picture, `_hide=1` hides the results.
-- **Misconceptions:** giving the point $(2, 3)$ instead of $x = 2$; missing a touching point; forgetting the domain of fractional equations.
+- **Common stumbling blocks:** giving the point $(2, 3)$ instead of $x = 2$; missing a touching point; forgetting the domain of fractional equations.

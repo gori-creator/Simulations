@@ -56,7 +56,9 @@ $\frac{5}{6} \div \frac{4}{6} = 5 \div 4 = \frac{5}{4}$, and $\frac{5}{6} \cdot 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Grade 6 (Bavarian Gymnasium, learning area 1.4): “part of” for multiplication, “how often does it fit?” (measuring) for division. For whole-number divisors, sharing is the more natural idea: $\frac{3}{4} \div 3$ means sharing among $3$ people.
-- Common misconceptions: “multiplying makes bigger”; taking the reciprocal of the wrong fraction; cancelling diagonally in additions.
+- Common stumbling blocks: “multiplying makes bigger”; taking the reciprocal of the wrong fraction; cancelling diagonally in additions.

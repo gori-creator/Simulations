@@ -63,9 +63,11 @@ $f(x) = x + 2$ for $x \neq 2$: a line with a **hole** at $(2, 4)$. $g$ cannot be
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** from grade 8 (functions and their graphs) up to calculus and university; tangents and families of functions for upper grades.
 - Expressions are evaluated by a custom parser (no `eval`). In task links, hide the result lists with `_hide=1` and switch off the marks in the picture (`nst=0`, `sct=0`, `ext=0`, `asy=0`).
 - All special points are numerical approximations within the window; very flat turning points may be missed.
-- **Misconceptions:** the vertical line at a pole is part of the graph; the computer gives exact values; `1/2x` instead of `1/(2x)`; expecting degrees in `sin(x)`.
+- **Common stumbling blocks:** the vertical line at a pole is part of the graph; the computer gives exact values; `1/2x` instead of `1/(2x)`; expecting degrees in `sin(x)`.

@@ -52,7 +52,9 @@ $V \approx 65.45\,\text{cm}^3$, $O = 25\pi\,\text{cm}^2 \approx 78.54\,\text{cm}
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** grade 10, solids (Bavarian Gymnasium curriculum; assignment is a draft, please check against the current curriculum).
 - **Common mistakes:** forgetting the factor $\tfrac{1}{3}$; mixing up $r$ and $d$; confusing $h$ with $h_a$ or $s$.

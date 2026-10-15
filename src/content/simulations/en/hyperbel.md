@@ -61,9 +61,11 @@ $a + c = 5$ and $\frac{a}{4} + c = 2$, so $\frac{3}{4}a = 3$: $a = 4$, $c = 1$. 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 8 (Bavaria: elementary rational functions), starting from inverse proportion, then the effect of the parameters, domain, range and asymptotes. The form $\frac{a}{x-b} + c$ mirrors the vertex form of a parabola.
 - **Limits** are treated informally with tables of values only.
-- **Misconceptions:** the sign of $b$ ($\frac{a}{x+2}$ has its pole at $x = -2$); the two branches are **one** function with a gap in its domain; the pole is not a zero.
+- **Common stumbling blocks:** the sign of $b$ ($\frac{a}{x+2}$ has its pole at $x = -2$); the two branches are **one** function with a gap in its domain; the pole is not a zero.
 - **Task mode:** `info=0` together with *Share → hide results* hides the key features, table values and labels.

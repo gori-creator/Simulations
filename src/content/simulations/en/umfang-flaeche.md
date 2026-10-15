@@ -77,8 +77,10 @@ $8 \cdot 2 + 5 \cdot 4 = 36$ and $8 \cdot 6 - 3 \cdot 4 = 36$, so $A = 36\,\text
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Year 5 (Bavarian Gymnasium), measures and units – area. Introduce with tiling and the ant, practise with task links (`show=0&_hide=1`), extend with the comparison modes and the L-shape.
 - **Model:** whole-centimetre sides; the paper shows whole and half centimetres, as in German squared exercise books (one $1\,\text{cm}^2$ = four small squares).
-- **Misconceptions:** comparing perimeter and area directly; "larger perimeter means larger area"; swapping the formulas; forgetting the inner edges of an L-shape.
+- **Common stumbling blocks:** comparing perimeter and area directly; "larger perimeter means larger area"; swapping the formulas; forgetting the inner edges of an L-shape.

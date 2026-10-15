@@ -43,8 +43,10 @@ $t = \sqrt{2 \cdot 0.18 / 9.81}\,\text{s} \approx 0.19\,\text{s}$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - The drop tower ignores air resistance. In the tube, air resistance is modelled proportional to $v^2$ with approximate terminal velocities ($75\,\tfrac{\text{m}}{\text{s}}$ for the steel ball, $0.6\,\tfrac{\text{m}}{\text{s}}$ for the feather).
 - Screen and input devices add some latency, so on-screen reaction times are usually a little longer than with a real ruler.
-- **Misconception:** “Heavy objects fall faster.”
+- **Common stumbling blocks:** “Heavy objects fall faster.”

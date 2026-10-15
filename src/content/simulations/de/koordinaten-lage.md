@@ -119,11 +119,13 @@ Zwölf: Vier davon erreicht man mit „5 nach rechts, links, oben oder unten“,
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 „Geometrische Figuren und Lagebeziehungen“ (LehrplanPLUS Gymnasium Bayern): Einstieg ins Koordinatensystem, Erarbeitung der Begriffe parallel, senkrecht, Abstand und Tangente, Übung mit dem Punkte-Spiel (auch als Warm-up am Whiteboard).
 - **Modell:** Alle Punkte liegen auf Gitterpunkten im 1. Quadranten; eine Längeneinheit entspricht 1 cm, also zwei Kästchen. „Senkrecht“, „parallel“ und „Tangente“ werden exakt (ganzzahlig) entschieden. Längen wie $\overline{AB}$ oder Abstände werden wie mit dem Lineal auf Millimeter gerundet angegeben ($\approx$). Das Geodreieck ist verkleinert (Zeichenkante 8 cm statt 16 cm).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - x- und y-Koordinate werden vertauscht – das Spiel erkennt diesen Fehler und gibt gezielt Rückmeldung („erst nach rechts, dann nach oben“).
   - „Senkrecht“ wird mit „lotrecht/hochkant“ verwechselt. In der Mathematik ist „senkrecht“ immer eine Beziehung **zwischen zwei** Geraden; auch schräge Geraden können senkrecht zueinander sein.
   - Parallel heißt nicht „gleich lang“ oder „waagerecht“; Geraden haben keine Länge.

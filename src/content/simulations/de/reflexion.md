@@ -114,13 +114,15 @@ Das mittlere Bild entsteht durch **zwei** Spiegelungen (erst an einem, dann am a
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Optik im Anfangsunterricht (Reflexion, Spiegelbild); am bayerischen Gymnasium im Physikunterricht der Jahrgangsstufe 7, Vorbereitung in Natur und Technik (Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Teil 1 eignet sich als Ersatz oder Ergänzung zum Schülerversuch mit der optischen Scheibe, Teil 2 zum Üben der Bildkonstruktion, Teil 3 als Vertiefung.
 - **Optische Scheibe:** Die Scheibe dreht sich mit dem Spiegel, die Skala zeigt also immer den Winkel zum Lot. Die Messwerte sind ideal ($\alpha' = \alpha$); im Realexperiment lohnt sich ein Vergleich mit Messabweichungen. Zeigt der Laser auf die Rückseite, wird nichts reflektiert.
 - **Spiegelbild:** Kerze, Auge und Spiegel lassen sich ziehen. „Konstruktion“ zeigt Lot und Abstände sowie an den Auftreffpunkten Lot und gleiche Winkel. Der Sichtbereich wird mit dem Bild des Auges konstruiert: Alles, was in diesem Bereich steht, sieht das Auge im Spiegel.
 - **Winkelspiegel:** Draufsicht; die Zahl am Bild ist die Anzahl der Spiegelungen. Die Spiegel sind endlich lang, daher sind vom Auge aus nicht immer alle Bilder zu sehen. Das Diagramm zeigt die Bildanzahl für alle Winkel bei der aktuellen Lage der Figur – mit Abweichungen von $360^\circ : \varphi - 1$, wenn $360^\circ : \varphi$ keine gerade Zahl ist.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der Einfallswinkel wird zur Spiegelfläche gemessen.“ – Beide Winkel werden zum Lot gemessen.
   - „Das Spiegelbild liegt auf der Spiegeloberfläche.“ – Es liegt so weit hinter dem Spiegel wie der Gegenstand davor.
   - „Geht man weiter weg, sieht man mehr von sich.“ – Der nötige Teil des Spiegels bleibt die halbe Körpergröße.

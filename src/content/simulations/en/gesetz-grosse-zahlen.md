@@ -40,7 +40,9 @@ Wrong (gambler's fallacy): the throws are independent, each has probability $\fr
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grades 6–8 (relative frequency, probability as an estimate).
-- **Misconceptions:** gambler's fallacy; "600 throws give exactly 100 sixes"; the absolute deviation $k - np$ typically grows, only the relative deviation shrinks.
+- **Common stumbling blocks:** gambler's fallacy; "600 throws give exactly 100 sixes"; the absolute deviation $k - np$ typically grows, only the relative deviation shrinks.

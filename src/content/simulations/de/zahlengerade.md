@@ -105,13 +105,15 @@ $7$ und $-7$ haben den Betrag $7$. Einen Betrag kleiner als $3$ haben $-2, -1, 0
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 5, Lernbereiche 1.1 (negative Zahlen, Anordnung, Gegenzahl und Betrag an der Zahlengeraden) und 1.2 (Addition und Subtraktion ganzer Zahlen, Strategien mit Guthaben und Schulden).
 - **Modelle:** Die Simulation verbindet das Pfeilmodell mit dem Laufmodell. Bei der Subtraktion wird der Pfeil der zweiten Zahl gestrichelt gezeichnet und klappt beim Umdrehen in die Gegenrichtung – das macht die Regel „Subtrahieren heißt Gegenzahl addieren“ sichtbar. Rechenzeichen und Vorzeichen haben verschiedene Farben und Rollen.
 - **Bedienung:** Blauen Startpunkt und Pfeilspitze ziehen, mit **Los!** den Ablauf zeigen. Ist „Ergebnis sofort zeigen“ ausgeschaltet (`show=0`), erscheinen Ergebnis und Pfeil erst nach **Los!**; der Ausschnitt der Zahlengeraden verrät die Richtung dann nicht.
 - **Sachsituationen:** Thermometer, Meeresspiegel und Kontostand beschreiben jeweils die tatsächliche Änderung. Das Konto eignet sich besonders für das Subtrahieren negativer Zahlen („Schulden werden gestrichen“).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Subtrahieren macht immer kleiner“ – $2 - (-4) = 6$ ist größer als $2$.
   - Regeln der Multiplikation werden übertragen: $-3 + (-4) = +7$ statt $-7$.
   - Beim Ordnen wird der Betrag verglichen: „$-5 > -2$, weil $5 > 2$.“

@@ -93,11 +93,13 @@ Bei $n = 6$ sind es etwa $82{,}7\,\%$, bei $n = 12$ etwa $95{,}5\,\%$. Ab $n = 2
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 8, Lernbereich 7 (Kreis und Zylinder): Prismen und Zylinder mit Netz, Oberfläche und Volumen. Sinnvoll im Anschluss an die Kreisberechnung (siehe Simulation zur Kreiszahl π).
 - **Zwei Zugänge:** „Schichten stapeln“ begründet $V = G \cdot h$ (anschlussfähig an das Würfelzählen beim Quader), „Abrollen“ begründet $M = u \cdot h$. Die Rechnung im Bild lässt sich ausschalten (`calc=0`).
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Mantel und Volumen werden verwechselt ($u \cdot h$ statt $G \cdot h$) – auch bei den Einheiten $\text{cm}^2$ und $\text{cm}^3$.
   - Beim Zylinder wird mit dem Durchmesser statt mit dem Radius gerechnet.
   - Bei der Oberfläche wird nur eine Grundfläche gezählt.

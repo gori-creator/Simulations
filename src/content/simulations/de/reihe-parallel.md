@@ -110,12 +110,14 @@ Jedes Gerät erhält so die volle Netzspannung, lässt sich unabhängig ein- und
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Gesetzmäßigkeiten der Reihen- und Parallelschaltung, Ersatzwiderstand und Knotenregel (Klasse 8/9). Zwei Strom- und zwei Spannungsmesser lassen sich an die nummerierten Messstellen bzw. an Bauteile und Quelle setzen – wie im Schülerversuch. Mit `a1=0&v1=0` und `_hide=1` werden daraus Rechenaufgaben, mit `sym=1` erscheinen die Lampen als Schaltzeichen.
 - **Modell:** ideale Spannungsquelle, ideale Messgeräte, Leitungen ohne Widerstand. Die Glühlampen werden – wie meist im Unterricht – als feste Widerstände von $12\,\Omega$ ($6\,\text{V}$; $0{,}5\,\text{A}$) behandelt. Echte Glühlampen haben kalt einen kleineren Widerstand (siehe Simulation zum ohmschen Gesetz); die Helligkeitsunterschiede wären in Wirklichkeit etwas geringer. Die Helligkeit ergibt sich aus der Leistung über die Temperatur der Wendel; ab $9\,\text{V}$ an einer Lampe brennt sie durch.
 - **Strom-Animation:** Die Punkte haben überall denselben Abstand (gleiche Elektronendichte im Metall), ihre Geschwindigkeit ist proportional zur Stromstärke. An den Verzweigungen sieht man so, wie sich der Strom aufteilt und wieder vereinigt.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Der Strom wird von Lampe zu Lampe verbraucht – die erste Lampe in Reihe leuchtet am hellsten.“
   - „Die Batterie liefert immer denselben Strom.“ – In der Parallelschaltung fließt mehr Strom als in der Reihenschaltung.
   - „Mehr Lampen bedeuten immer mehr Widerstand.“ – Das gilt nur in Reihe; parallel sinkt der Ersatzwiderstand.

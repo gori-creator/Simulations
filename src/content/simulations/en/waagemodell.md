@@ -47,8 +47,10 @@ He removed $x$ on the right only – the balance tips. Correct: $2x + 4 = 10$, s
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Tapping an object removes it on one side only, so the balance tips and the line is marked red; removing the same on the other side turns it into a valid step.
 - Discuss the limits: no negative numbers or differences, positive solutions only, dividing only when it works out.
-- **Misconception:** dividing only part of a side, e.g. $2x + 4 = 10 \mid :2 \Rightarrow x + 4 = 5$.
+- **Common stumbling blocks:** dividing only part of a side, e.g. $2x + 4 = 10 \mid :2 \Rightarrow x + 4 = 5$.

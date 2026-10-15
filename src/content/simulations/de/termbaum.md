@@ -119,14 +119,16 @@ Tim rechnet: $-3^2 = 9$ und $20 - 8 - 2 = 20 - 6 = 14$. Erkläre seine Fehler mi
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 5 (LB 1.2 und 3.2: Struktur von Termen, „Punkt vor Strich“), Jahrgangsstufe 6 (LB 1.5: Termstrukturen mit rationalen Zahlen) und Jahrgangsstufe 7 (LB 1.1: Terme mit Variablen, Termwerte, Termstrukturen benennen).
 - **Eingabe:** Malpunkt als `*` oder `·`, Division mit `:`, Potenzen mit `^` oder `²`, Klammern `( )` und `[ ]`. Ein Schrägstrich zwischen zwei ganzen Zahlen (`3/4`) steht für einen **Bruch** (eine Zahl), sonst für eine Division. Erlaubte Variablen: $a, b, c, n, x, y, z$. Eigene Terme lassen sich über **Teilen** als Link oder QR-Code weitergeben.
 - **Darstellung:** Wie in vielen Schulbüchern stehen die Zahlen oben und das Ergebnis unten; unter „Anzeige“ lässt sich der Baum umdrehen. Die Rechenarten sind farbig unterschieden (Strich blau, Punkt grün, Potenz orange).
 - **Reihenfolge und Struktur:** „Nächster Rechenschritt“ folgt der Regel. Tippt man selbst eine andere *mögliche* Rechnung an, wird sie ausgeführt und kommentiert: Unabhängige Teilterme dürfen in beliebiger Reihenfolge berechnet werden – die Regeln legen die Struktur fest, nicht die Reihenfolge innerhalb unabhängiger Teile.
 - **Rechnen:** exakt mit Brüchen; Dezimalzahlen werden als Dezimalzahlen angezeigt, wenn sie im Term vorkommen. Ein Vorzeichen direkt nach einem Rechenzeichen wird (wie im Unterricht) nicht akzeptiert: $5 \cdot (-3)$ statt $5 \cdot -3$. $0^0$ und Division durch $0$ gelten als nicht definiert.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Es wird stur von links nach rechts gerechnet: $3 + 4 \cdot 5 = 35$.
   - $-3^2 = 9$ und $2x^2 = (2x)^2$.
   - Die Termart wird nach dem ersten (statt dem zuletzt ausgeführten) Rechenzeichen benannt.

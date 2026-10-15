@@ -58,8 +58,10 @@ A composite number $a \cdot b \le 100$ with $a \le b$ has $a \le 10$, so it has 
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Three views: factor tree with divisibility rules, sieve and set diagram; each prime keeps its colour in all views.
 - With `show=0` everything is built up step by step.
-- **Misconceptions:** “$1$ is prime”, “odd numbers are prime” ($91 = 7 \cdot 13$), mixing up gcd and lcm.
+- **Common stumbling blocks:** “$1$ is prime”, “odd numbers are prime” ($91 = 7 \cdot 13$), mixing up gcd and lcm.

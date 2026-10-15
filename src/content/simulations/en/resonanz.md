@@ -52,8 +52,10 @@ $\delta > \hat\varphi_E\,\omega_0 / (2 \cdot 120°) = 10° \cdot \pi / 240° \ap
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Model: $\ddot\varphi = -\omega_0^2(\varphi - \varphi_E) - 2\delta\dot\varphi$, solved with Runge–Kutta; $f_0 = 0.5\,\text{Hz}$ fixed; load limit $120°$.
 - “Record resonance curve” skips the transient at each frequency and measures amplitude and phase shift; theory curves can be hidden.
-- Common misconceptions: the wheel keeps its natural frequency (no – it follows $f_E$); at resonance driver and wheel are in phase (no – $\Delta\varphi = 90°$); faster driving always means larger amplitude (no).
+- Common stumbling blocks: the wheel keeps its natural frequency (no – it follows $f_E$); at resonance driver and wheel are in phase (no – $\Delta\varphi = 90°$); faster driving always means larger amplitude (no).

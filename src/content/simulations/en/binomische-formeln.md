@@ -57,8 +57,10 @@ $(x + 5)^2$ and $(7 + y)(7 - y)$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 7/8 as an introduction and as a justification of the middle term $2ab$.
-- **Misconceptions:** $(a + b)^2 = a^2 + b^2$; $(2x)^2 = 2x^2$; the $+b^2$ in the second formula feels wrong – the animation shows that $b^2$ is subtracted twice.
+- **Common stumbling blocks:** $(a + b)^2 = a^2 + b^2$; $(2x)^2 = 2x^2$; the $+b^2$ in the second formula feels wrong – the animation shows that $b^2$ is subtracted twice.
 - **Limits of the model:** areas need positive lengths; the formulas hold for all numbers.

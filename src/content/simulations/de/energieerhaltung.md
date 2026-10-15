@@ -79,11 +79,13 @@ Der Wagen kommt nicht mehr ganz auf $15\,\text{m}$, und mit jeder Fahrt durch da
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Energieerhaltung in der Mittelstufe (Jahrgangsstufe 9/10); der Looping eignet sich als Vertiefung zur Kreisbewegung in der Oberstufe.
 - **Modell:** Der Wagen wird als Massenpunkt auf der Schiene behandelt. Die Reibung ist proportional zur Normalkraft (auch im Looping). Am Ende der Bahn stehen Prellböcke.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Schwere Wagen sind schneller.“
   - „Mit Reibung geht Energie verloren.“ – Sie wird umgewandelt, nicht vernichtet.
 - **Bilder:** Wagen und Himmel können durch Bilder ergänzt werden (siehe `docs/BILDER.md`).

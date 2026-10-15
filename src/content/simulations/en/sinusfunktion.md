@@ -58,8 +58,10 @@ $p = \frac{2\pi}{3}$, so exactly 3 oscillations. [Show in simulation](?b=3)
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Order:** first the "vertical" parameters $a$ and $d$, then $c$, and $b$ last – its effect is the least intuitive.
-- **Common misconceptions:** "larger $b$ means a longer period" (it gets shorter); the sign of $c$; reading $c$ in $\sin(bx + c)$ directly as the shift.
+- **Common stumbling blocks:** "larger $b$ means a longer period" (it gets shorter); the sign of $c$; reading $c$ in $\sin(bx + c)$ directly as the shift.
 - **π axis:** by default the x-axis is labelled in multiples of $\pi$ and $c$ snaps to steps of $\frac{\pi}{12}$. Turn this off under **Display** for modelling tasks with decimal values.

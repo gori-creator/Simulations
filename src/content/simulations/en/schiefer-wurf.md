@@ -43,7 +43,9 @@ $T = \sqrt{2 \cdot 20 / 9.81} \approx 2.02\,\text{s}$, $w \approx 16.2\,\text{m}
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Mechanics, superposition of motions (grade 10/11).
-- **Misconception:** "At the highest point the speed is zero" – only $v_y$ is zero.
+- **Common stumbling blocks:** "At the highest point the speed is zero" – only $v_y$ is zero.

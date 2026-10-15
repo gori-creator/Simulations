@@ -74,11 +74,13 @@ Das Licht trifft flach (unter großem Einfallswinkel) auf die Wand der Faser. We
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Optik in der Mittelstufe (Brechung, Totalreflexion), vertiefend mit dem Brechungsgesetz.
 - **Optische Scheibe:** Die Darstellung entspricht dem Schulversuch mit Winkelscheibe. Die Helligkeit der Strahlen folgt den Fresnel-Formeln für unpolarisiertes Licht; so sieht man, dass auch bei der Brechung immer ein Teil reflektiert wird und der reflektierte Anteil kurz vor dem Grenzwinkel stark ansteigt.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Winkel werden zur Grenzfläche statt zum Lot gemessen.
   - „Bei Totalreflexion wird das Licht verschluckt.“
 - **Bilder:** Der Laser kann durch ein Foto ersetzt werden (siehe `docs/BILDER.md`).

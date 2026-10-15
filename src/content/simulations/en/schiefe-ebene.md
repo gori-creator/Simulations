@@ -60,8 +60,10 @@ $a = 9.81\,\tfrac{\text{m}}{\text{s}^2} \cdot (\sin 35^\circ - 0.3 \cdot \cos 35
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Plane length $1\,\text{m}$, $g = 9.81\,\tfrac{\text{N}}{\text{kg}}$. The coefficients of friction are typical values only; the cart has a very small rolling friction ($0.005$).
 - A measurement can only be recorded when the body stays at rest with the set pulling force. For the cart the points lie on $F_H(\alpha)$.
-- **Misconceptions:** “the normal force always equals the weight”, “heavy bodies start sliding earlier”, “friction is always $\mu \cdot F_N$”, “the inclined plane saves work”.
+- **Common stumbling blocks:** “the normal force always equals the weight”, “heavy bodies start sliding earlier”, “friction is always $\mu \cdot F_N$”, “the inclined plane saves work”.

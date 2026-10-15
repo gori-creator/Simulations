@@ -61,8 +61,10 @@ $0.35 = \frac{35}{100} = \frac{7}{20}$ and $0.\overline{36} = \frac{36}{99} = \f
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Fits grade 6 (Bavarian Gymnasium, learning area 1.2 “Decimals”). Use `show=0` for step-by-step work in class.
 - The remainder circle makes the pigeonhole argument visible; the tags next to the remainders show that each remainder fixes its next digit.
-- Common misconception: “the period starts when a digit repeats” – in $\frac{1}{17} = 0.0588\ldots$ the $8$ appears twice, yet the period has $16$ digits. What matters is the remainder.
+- Common stumbling blocks: “the period starts when a digit repeats” – in $\frac{1}{17} = 0.0588\ldots$ the $8$ appears twice, yet the period has $16$ digits. What matters is the remainder.

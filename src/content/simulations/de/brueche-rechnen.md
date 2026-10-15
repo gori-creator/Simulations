@@ -115,12 +115,14 @@ $\frac{1}{2}$ passt mehr als einmal in $\frac{3}{4}$, nämlich $\frac{3}{4} \cdo
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.4 „Multiplikation und Division rationaler Zahlen“ (LehrplanPLUS Bayern, Gymnasium): tragfähige Vorstellungen „Anteil von“ (Rechteckmodell) und „Aufteilen/Messen“ (Division). Zur Erarbeitung im Unterricht und zur Übung; die Vorstellung des Erweiterns und Gleichnamigmachens aus „Brüche erweitern, kürzen und vergleichen“ wird beim Dividieren genutzt.
 - **Modell:** Faktoren bis $3$ (also bis zu $3 \times 3$ Ganze im Bild) und Nenner bis $12$. Die Griffe am Rand rasten in Schritten von $\frac{1}{b}$ bzw. $\frac{1}{d}$ ein. Mit „Aufbauen“ entsteht das Bild schrittweise: erst der eine Faktor, dann der andere, dann die Überlappung mit durchnummerierten Feldern.
 - **Division:** Die Simulation nutzt die Vorstellung des **Aufteilens (Messens)**: „Wie oft passt …?“. Ist der Divisor eine natürliche Zahl, liegt die Vorstellung des **Verteilens** näher: $\frac{3}{4} : 3$ heißt „$\frac{3}{4}$ auf $3$ Personen verteilen“, also $\frac{1}{4}$ für jede. Beide Vorstellungen führen auf $\frac{3}{4} \cdot \frac{1}{3}$.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Mal macht größer, geteilt macht kleiner.“ – Das gilt nur für Faktoren bzw. Divisoren größer als $1$.
   - Vor dem Multiplizieren gleichnamig machen: Das ist nicht falsch, aber unnötig und macht die Zahlen groß.
   - Den Kehrwert des falschen Bruchs bilden: $\frac{3}{4} : \frac{2}{3} \neq \frac{4}{3} \cdot \frac{2}{3}$. Umgedreht wird nur der **Divisor**.

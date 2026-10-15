@@ -59,7 +59,9 @@ The vertex $S(5, 6)$ is the highest point: 6 m. Landing: $(x - 5)^2 = 30 \Righta
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
 
-- **Common misconceptions:** the sign of $d$ is misread – $(x + 2)^2$ shifts to the **left**; "stretched" is confused with "wider"; the coefficient $b$ of the standard form is mistaken for a shift.
+*Just suggestions – you know your class best.*
+
+- **Common stumbling blocks:** the sign of $d$ is misread – $(x + 2)^2$ shifts to the **left**; "stretched" is confused with "wider"; the coefficient $b$ of the standard form is mistaken for a shift.
 - **Exercise mode:** **Share → Hide results** hides equations, vertex and zeros, turning any setup into an exercise.

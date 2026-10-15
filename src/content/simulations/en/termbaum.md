@@ -54,8 +54,10 @@ $2 \cdot (-2)^2 - 3 \cdot (-2) + 1 = 8 + 6 + 1 = 15$.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - Input: `*` or `·`, `:` for division, `^` or `²` for powers, brackets `( )` and `[ ]`; `3/4` between two whole numbers is a fraction. Variables $a, b, c, n, x, y, z$. Custom expressions can be shared as a link.
 - “Next step” follows the rules; tapping another possible operation is allowed and commented on – independent parts may be evaluated in any order.
-- **Misconceptions:** working strictly from left to right; $-3^2 = 9$; naming the type after the first instead of the last operation.
+- **Common stumbling blocks:** working strictly from left to right; $-3^2 = 9$; naming the type after the first instead of the last operation.

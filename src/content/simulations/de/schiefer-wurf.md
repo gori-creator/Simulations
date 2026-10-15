@@ -96,12 +96,14 @@ Mit Luftwiderstand ist die Bahn keine Parabel mehr: Der Ball fliegt deutlich wen
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Mechanik der Oberstufe (Superposition von Bewegungen), je nach Lehrplan Jahrgangsstufe 10 oder 11.
 - **Darstellung:** Die Stroboskop-Punkte zeigen die gleichförmige waagerechte Bewegung besonders deutlich. Mit **Zeitlupe** und **Abspielen/Anhalten** lassen sich einzelne Momente besprechen; der Bereich **Momentan** zeigt $t$, $x$, $y$ und $v$.
 - **Luftwiderstand:** Modell mit quadratischem Luftwiderstand für einen Fußball ($m = 0{,}43\,\text{kg}$, $d = 22\,\text{cm}$, $c_w \approx 0{,}25$). Auf dem Mond gibt es keine Luft, auf dem Mars ist die Luftdichte etwa 60-mal kleiner.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - „Im höchsten Punkt ist die Geschwindigkeit null.“ – Nur $v_y$ ist null, $v_x$ bleibt erhalten.
   - „Ein schneller waagerecht geworfener Ball fällt langsamer.“ – Die Fallzeit hängt nur von $h_0$ ab.
 - **Bilder:** Hintergründe und Ball können durch Fotos ergänzt werden (siehe `docs/BILDER.md`).

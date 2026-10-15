@@ -42,6 +42,8 @@ $1000 \cdot 1.05^{10} \approx 1628.89\,€$; doubling time $\approx 14.2$ years.
 
 </details>
 
-## Notes for teachers
+## Ideas for the classroom
+
+*Just suggestions – you know your class best.*
 
 - **Use:** Grade 10 (exponential functions, logarithm). A logarithmic axis turns exponential graphs into straight lines.

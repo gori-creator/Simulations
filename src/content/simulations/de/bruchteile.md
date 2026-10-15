@@ -77,11 +77,13 @@ $\frac{1}{6} = 0{,}1\overline{6}$ und $\frac{5}{6} = 0{,}8\overline{3}$ – vor 
 
 </details>
 
-## Hinweise für Lehrkräfte
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Bayern Jahrgangsstufe 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
 - **Bedienung:** Stücke können direkt angetippt werden – gut am Smartboard. Die ausgewählten Stücke werden herausgezogen.
-- **Typische Fehlvorstellungen:**
+- **Häufige Stolpersteine:**
   - Teile müssen **gleich groß** sein – sonst ist es kein Bruchteil.
   - „$\frac{6}{8}$ ist mehr als $\frac{3}{4}$, weil die Zahlen größer sind.“ – Das Erweitern zeigt, dass es dieselbe Menge ist.
   - „Ein größerer Nenner bedeutet ein größeres Stück.“
