@@ -4,7 +4,7 @@ Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `s
 Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`.
 
 ## Reihenfolge
-P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (fertig) M24 (fertig) | M12 (fertig) | P07 M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
+P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (fertig) M24 (fertig) | M12 (fertig) | P07 (fertig) | M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
 
 ## Gruppen
 
@@ -18,7 +18,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - P04 fertig — licht-schatten, reflexion, linsen
 - P05 fertig — stoesse, kreisbewegung, planetenbahnen
 - P06 fertig — federpendel, resonanz, wellen-ausbreitung
-- P07 läuft — doppler-effekt, interferenz (fertig 15.10.), stehende-wellen
+- P07 fertig — doppler-effekt, interferenz, stehende-wellen (15.10.)
 - P08 offen — teilchenmodell, gasgesetze, radioaktiver-zerfall
 - P09 offen — feldlinien, kondensator, lorentzkraft
 - P10 offen — induktion, doppelspalt, photoeffekt
