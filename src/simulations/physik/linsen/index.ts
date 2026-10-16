@@ -1,7 +1,11 @@
-import { defineSimulation, ease, Plot, roundRect, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { blurRadius, constructionRays, describeImage, imageDistance, isSharp, power, rayThrough, rayY, screenScale, zoneOf, type RayId, type Zone } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Kerze (kerze.webp, 144 × 631): Schnitt unter der Flamme des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Sammellinse hochkant (linse.webp, 97 × 731): Mitte der Linse (dickste Stelle) in x. */
+const LENS_IMG = { w: 97, h: 731, cx: 48 };
 type Mode = 'con' | 'bench';
 
 /** Stelle der Linse auf der optischen Bank (cm). */
@@ -31,6 +35,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
+  images: { candle: 'kerze.webp', lens: 'linse.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -577,6 +582,28 @@ export default defineSimulation({
 
     /** Linsenkörper (Pixel): `form` 1 = bikonvex, −1 = bikonkav; Dicke nach Brennweite. */
     function lensBody(cx: number, top: number, bottom: number, form: number, f: number, scaleX: number): void {
+      // Sammellinse als Foto (Mitte der Linse genau auf der Linsenebene); beim Umschalten weich überblendet
+      const photo = form > 0 ? ctx.images.get('lens') : null;
+      if (photo) {
+        const h = bottom - top;
+        const w = (h * LENS_IMG.w) / LENS_IMG.h;
+        if (form < 0.999) {
+          g.save();
+          g.globalAlpha *= 1 - form;
+          drawnLens(cx, top, bottom, form, f, scaleX);
+          g.restore();
+        }
+        g.save();
+        g.globalAlpha *= form * 0.92;
+        softShadow(g, ctx.theme.dark, 8, 2);
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr), cx - LENS_IMG.cx * (w / LENS_IMG.w), top, w, h);
+        g.restore();
+        return;
+      }
+      drawnLens(cx, top, bottom, form, f, scaleX);
+    }
+
+    function drawnLens(cx: number, top: number, bottom: number, form: number, f: number, scaleX: number): void {
       const theme = ctx.theme;
       const hh = (bottom - top) / 2;
       const cy = top + hh;
@@ -1354,6 +1381,38 @@ export default defineSimulation({
       g.fillRect(px - w / 2, py, w, railY - py - 6);
     }
 
+    /**
+     * Kerzenkörper aus dem Foto: Kopf und Fuß unverzerrt, nur der gleichförmige
+     * Schaft wird gestreckt. Die Flamme des Fotos ist abgeschnitten, die Simulation
+     * zeichnet ihre eigene. `flip`: um 180° gedreht (Bild auf dem Schirm).
+     */
+    const candleCache = new Map<string, HTMLCanvasElement>();
+    function candleSprite(img: HTMLImageElement, w: number, h: number, dpr: number, flip: boolean): HTMLCanvasElement {
+      const key = `${Math.round(w * 4)}|${Math.round(h * 2)}|${flip ? 1 : 0}|${dpr}`;
+      let c = candleCache.get(key);
+      if (c) return c;
+      if (candleCache.size > 12) candleCache.clear();
+      const C = CANDLE_IMG;
+      const k = w / C.w;
+      const o = offscreenCanvas(w, h, dpr);
+      const q = o.g;
+      if (flip) {
+        q.translate(w, h);
+        q.scale(-1, -1);
+      }
+      let headH = (C.shaft - C.top) * k;
+      let footH = (C.h - C.foot) * k;
+      const fit = Math.min(1, (h * 0.9) / (headH + footH));
+      headH *= fit;
+      footH *= fit;
+      q.drawImage(img, 0, C.top, C.w, C.shaft - C.top, 0, 0, w, headH);
+      q.drawImage(img, 0, C.shaft, C.w, C.foot - C.shaft, 0, headH - 0.5, w, Math.max(1, h - headH - footH + 1));
+      q.drawImage(img, 0, C.foot, C.w, C.h - C.foot, 0, h - footH, w, footH);
+      c = o.canvas;
+      candleCache.set(key, c);
+      return c;
+    }
+
     function drawCandle(x: number, top: number, sx: number, sy: number, railY: number): void {
       const bottom = -top;
       const flameH = Math.min(2.6, (top - bottom) * 0.38);
@@ -1367,13 +1426,31 @@ export default defineSimulation({
       g.fillStyle = '#7d8592';
       roundRect(g, px - w * 0.95, pBot, w * 1.9, Math.max(3, 0.6 * sy), 1.5);
       g.fill();
-      const wax = g.createLinearGradient(px - w / 2, 0, px + w / 2, 0);
-      wax.addColorStop(0, '#d9c7a8');
-      wax.addColorStop(0.35, '#fbf3e3');
-      wax.addColorStop(1, '#bfa983');
-      g.fillStyle = wax;
-      roundRect(g, px - w / 2, pBodyTop, w, pBot - pBodyTop, Math.min(3, w / 3));
-      g.fill();
+      const photo = ctx.images.get('candle');
+      if (photo) {
+        const C = CANDLE_IMG;
+        const k = w / C.w;
+        const y0 = pBodyTop - (C.dome - C.top) * k;
+        g.save();
+        softShadow(g, ctx.theme.dark, 6, 2);
+        g.drawImage(candleSprite(photo, w, pBot - y0, surface.dpr, false), px - w / 2, y0, w, pBot - y0);
+        g.restore();
+        // Docht
+        g.strokeStyle = '#2b2118';
+        g.lineWidth = Math.max(1, w * 0.07);
+        g.beginPath();
+        g.moveTo(px, pBodyTop + 1);
+        g.lineTo(px, pBodyTop - Math.max(2, (pBodyTop - pTip) * 0.18));
+        g.stroke();
+      } else {
+        const wax = g.createLinearGradient(px - w / 2, 0, px + w / 2, 0);
+        wax.addColorStop(0, '#d9c7a8');
+        wax.addColorStop(0.35, '#fbf3e3');
+        wax.addColorStop(1, '#bfa983');
+        g.fillStyle = wax;
+        roundRect(g, px - w / 2, pBodyTop, w, pBot - pBodyTop, Math.min(3, w / 3));
+        g.fill();
+      }
       // Flamme mit Lichthof
       const fh = pBodyTop - pTip;
       const fw = Math.max(3.5, w * 0.42);
@@ -1512,7 +1589,8 @@ export default defineSimulation({
     function renderScreenImage(n: number, f: number, gg: number, a: number, b: number | null): HTMLCanvasElement {
       const dpr = surface.dpr || 1;
       const N = Math.max(40, Math.round(n * dpr));
-      const key = `${N}|${f}|${gg.toFixed(3)}|${p.gs}|${a}|${sNow.toFixed(3)}`;
+      const candlePhoto = ctx.images.get('candle');
+      const key = `${N}|${f}|${gg.toFixed(3)}|${p.gs}|${a}|${sNow.toFixed(3)}|${candlePhoto ? 1 : 0}`;
       if (key === viewKey && blurCanvas) return blurCanvas;
       viewKey = key;
       if (!sharpCanvas) sharpCanvas = document.createElement('canvas');
@@ -1537,8 +1615,26 @@ export default defineSimulation({
       const bodyTop = top - flameH;
       const wBody = 1.8;
       // Körper (schwach von der Flamme beleuchtet)
-      sc.fillStyle = 'rgba(255,214,160,0.34)';
-      sc.fillRect(-wBody / 2, -top, wBody, top + bodyTop);
+      if (candlePhoto) {
+        // Foto um 180° gedreht (umgekehrtes, seitenvertauschtes Bild), warm und gedämpft
+        const C = CANDLE_IMG;
+        const kc = wBody / C.w;
+        const domeOff = (C.dome - C.top) * kc;
+        const hh = top + bodyTop + domeOff;
+        const pxs = pxPerCm * m;
+        const spr = candleSprite(candlePhoto, wBody * pxs, hh * pxs, 1, true);
+        sc.save();
+        sc.globalAlpha = 0.5;
+        sc.drawImage(spr, -wBody / 2, -top, wBody, hh);
+        sc.globalCompositeOperation = 'source-atop';
+        sc.globalAlpha = 0.45;
+        sc.fillStyle = 'rgb(255,190,120)';
+        sc.fillRect(-wBody / 2, -top, wBody, hh);
+        sc.restore();
+      } else {
+        sc.fillStyle = 'rgba(255,214,160,0.34)';
+        sc.fillRect(-wBody / 2, -top, wBody, top + bodyTop);
+      }
       // Flamme (hell) – im Schirmbild unten
       const fl = sc.createLinearGradient(0, bodyTop, 0, top);
       fl.addColorStop(0, 'rgba(255,170,70,1)');

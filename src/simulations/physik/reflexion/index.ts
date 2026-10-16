@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, softShadow, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dirFromVertical,
   glancingAngle,
@@ -22,6 +22,10 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Kerze (kerze.webp, 144 × 631): Schnitt über dem Docht, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Laser (laser.webp, 700 × 200): Höhe der Austrittsöffnung rechts. */
+const LASER_IMG = { noseY: 78 };
 type Mode = 'law' | 'image' | 'multi';
 
 /** Länge der Spiegel im Winkelspiegel (Einheiten der Zeichnung). */
@@ -59,6 +63,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
+  images: { candle: 'kerze.webp', laser: 'laser.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -989,6 +994,14 @@ export default defineSimulation({
       g.rotate(ang);
       g.shadowColor = 'rgba(0,0,0,0.35)';
       g.shadowBlur = 8;
+      const photo = ctx.images.get('laser');
+      if (photo) {
+        // Foto (wie bei der Brechung): Austrittsöffnung rechts, genau im Strahlursprung
+        const ph = (len * photo.height) / photo.width;
+        g.drawImage(scaledSprite(photo, len, ph, surface.dpr), -len, -LASER_IMG.noseY * (ph / photo.height), len, ph);
+        g.restore();
+        return;
+      }
       const body = g.createLinearGradient(0, -hgt / 2, 0, hgt / 2);
       body.addColorStop(0, '#5b6270');
       body.addColorStop(0.45, '#b7bfcc');
@@ -1082,6 +1095,38 @@ export default defineSimulation({
     /* Spiegelbild                                                          */
     /* =================================================================== */
 
+    /**
+     * Kerzenkörper aus dem Foto: Kopf (Rand mit Wölbung) und Fuß bleiben unverzerrt,
+     * nur der gleichförmige Schaft wird auf die eingestellte Höhe gestreckt.
+     * Die Flamme des Fotos wird abgeschnitten; Docht und Flamme zeichnet die Simulation.
+     */
+    const candleCache = new Map<string, HTMLCanvasElement>();
+    function candleSprite(img: HTMLImageElement, w: number, h: number, flip: boolean): HTMLCanvasElement {
+      const key = `${Math.round(w * 4)}|${Math.round(h * 2)}|${flip ? 1 : 0}|${surface.dpr}`;
+      let c = candleCache.get(key);
+      if (c) return c;
+      if (candleCache.size > 12) candleCache.clear();
+      const C = CANDLE_IMG;
+      const k = w / C.w;
+      const o = offscreenCanvas(w, h, surface.dpr);
+      const q = o.g;
+      if (flip) {
+        q.translate(w, 0);
+        q.scale(-1, 1);
+      }
+      let headH = (C.shaft - C.top) * k;
+      let footH = (C.h - C.foot) * k;
+      const fit = Math.min(1, (h * 0.9) / (headH + footH));
+      headH *= fit;
+      footH *= fit;
+      q.drawImage(img, 0, C.top, C.w, C.shaft - C.top, 0, 0, w, headH);
+      q.drawImage(img, 0, C.shaft, C.w, C.foot - C.shaft, 0, headH - 0.5, w, Math.max(1, h - headH - footH + 1));
+      q.drawImage(img, 0, C.foot, C.w, C.h - C.foot, 0, h - footH, w, footH);
+      c = o.canvas;
+      candleCache.set(key, c);
+      return c;
+    }
+
     function drawCandle(x: number, h: number, alpha: number, ghost: boolean): void {
       // x, h in Welt-cm; Docht oben bei h − 4,5, Flammenspitze bei h
       const s = imgPlot.scale.x;
@@ -1091,6 +1136,17 @@ export default defineSimulation({
       const w = 3.2 * s;
       g.save();
       g.globalAlpha = alpha;
+      const photo = ctx.images.get('candle');
+      if (photo) {
+        // Oberkante der Wölbung (Mitte) liegt bei der Körperhöhe; das Spiegelbild ist seitenverkehrt
+        const C = CANDLE_IMG;
+        const k = w / C.w;
+        const top = pyT - (C.dome - C.top) * k;
+        g.save();
+        if (!ghost) softShadow(g, ctx.theme.dark, 8, 2);
+        g.drawImage(candleSprite(photo, w, py0 - top, ghost), px - w / 2, top, w, py0 - top);
+        g.restore();
+      } else {
       // Kerzenkörper
       const wax = g.createLinearGradient(px - w / 2, 0, px + w / 2, 0);
       wax.addColorStop(0, '#d9c7a8');
@@ -1103,6 +1159,7 @@ export default defineSimulation({
       g.beginPath();
       g.ellipse(px, pyT + 1.5, w / 2 - 1, Math.max(1.5, w * 0.12), 0, 0, Math.PI * 2);
       g.fill();
+      }
       // Docht
       const [, pyW] = imgPlot.toPx(x, bodyTop + 1.2);
       g.strokeStyle = '#2b2118';

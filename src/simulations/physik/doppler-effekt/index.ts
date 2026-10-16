@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   arrivals,
   C_AIR,
@@ -69,6 +69,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.25, aspectNarrow: 0.56 },
+  images: { road: 'strasse.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'f', type: 'number', label: L('Frequenz der Quelle f_Q', 'Source frequency f_Q'), min: 200, max: 1000, step: 10, default: 440, unit: 'Hz' },
@@ -605,10 +606,107 @@ export default defineSimulation({
     };
 
     /* ---------- Szene: Hintergrund ---------- */
+    /*
+     * Untergrund aus dem Foto strasse.webp (Draufsicht, 1800 × 890): Die Wiese
+     * (Zeilen GRASS) und eine Fahrspur aus reinem Asphalt (Zeilen LANE) dienen als
+     * Texturen und werden gespiegelt gekachelt – so bleibt der Maßstab der Szene
+     * (Fahrbahnbreite, Lage der Straße) genau wie gezeichnet. Markierungen
+     * zeichnet die Simulation selbst (deutsche Mittellinie, gestrichelt).
+     */
+    const GRASS = { y: 592, h: 196 };
+    const LANE = { y: 357, h: 74 };
+    let groundCache: { key: string; c: HTMLCanvasElement } | null = null;
+
+    /** Ausschnitt eines Bildes gespiegelt gekachelt (abwechselnd normal/gespiegelt, damit keine Kanten sichtbar sind). */
+    function mirrorTile(q: CanvasRenderingContext2D, img: HTMLImageElement, sy: number, sh: number, x: number, y: number, w: number, h: number, tw: number, th: number, flipRows: boolean): void {
+      q.save();
+      q.beginPath();
+      q.rect(x, y, w, h);
+      q.clip();
+      for (let row = 0, ty = y; ty < y + h; row++, ty += th) {
+        for (let col = 0, tx = x; tx < x + w; col++, tx += tw) {
+          q.save();
+          q.translate(tx + (col % 2 ? tw : 0), ty + (flipRows && row % 2 ? th : 0));
+          q.scale(col % 2 ? -1 : 1, flipRows && row % 2 ? -1 : 1);
+          q.drawImage(img, 0, sy, img.width, sh, 0, 0, tw + 0.5, th + 0.5);
+          q.restore();
+        }
+      }
+      q.restore();
+    }
+
+    function drawGroundPhoto(g0: SceneGeo, img: HTMLImageElement): void {
+      const g = surface.g;
+      const r = g0.r;
+      const dark = ctx.theme.dark;
+      const key = `${Math.round(r.w)}x${Math.round(r.h)}|${Math.round(g0.roadY - r.y)}|${g0.rh}|${dark ? 1 : 0}|${surface.dpr}`;
+      if (!groundCache || groundCache.key !== key) {
+        const o = offscreenCanvas(r.w, r.h, surface.dpr);
+        const q = o.g;
+        const roadY = g0.roadY - r.y;
+        // Wiese: Grundton, darüber das Gras (gedämpft, damit die Wellenfronten gut sichtbar bleiben)
+        q.fillStyle = dark ? '#121c17' : '#e3edd8';
+        q.fillRect(0, 0, r.w, r.h);
+        const gk = clamp(r.w / 1500, 0.36, 0.6);
+        q.globalAlpha = dark ? 0.42 : 0.52;
+        mirrorTile(q, img, GRASS.y, GRASS.h, 0, 0, r.w, r.h, img.width * gk, GRASS.h * gk, true);
+        q.globalAlpha = 1;
+        if (dark) {
+          q.fillStyle = 'rgba(8,14,12,0.35)';
+          q.fillRect(0, 0, r.w, r.h);
+        }
+        // Gehweg unterhalb der Straße
+        const walkH = Math.max(8, g0.rh * 0.45);
+        const wy = roadY + g0.rh;
+        q.fillStyle = dark ? '#2b333d' : '#d9dde2';
+        q.fillRect(0, wy, r.w, walkH);
+        q.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+        q.lineWidth = 1;
+        q.beginPath();
+        for (let x = 6; x < r.w; x += walkH * 1.6) {
+          q.moveTo(Math.round(x) + 0.5, wy);
+          q.lineTo(Math.round(x) + 0.5, wy + walkH);
+        }
+        q.stroke();
+        // Fahrbahn: zwei Spuren aus der Asphalt-Textur (Seitenverhältnis wie im Foto)
+        q.save();
+        q.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.22)';
+        q.shadowBlur = 10;
+        q.shadowOffsetY = 2;
+        q.fillStyle = '#4a4d52';
+        q.fillRect(-2, roadY - g0.rh, r.w + 4, 2 * g0.rh);
+        q.restore();
+        const lk = g0.rh / LANE.h;
+        mirrorTile(q, img, LANE.y, LANE.h, -2, roadY - g0.rh, r.w + 4, 2 * g0.rh, img.width * lk, g0.rh, true);
+        if (dark) {
+          q.fillStyle = 'rgba(10,14,20,0.32)';
+          q.fillRect(-2, roadY - g0.rh, r.w + 4, 2 * g0.rh);
+        }
+        // Randlinien und gestrichelte Mittellinie
+        q.strokeStyle = dark ? 'rgba(230,234,240,0.6)' : 'rgba(255,255,255,0.9)';
+        q.lineWidth = g0.sm ? 1.2 : 1.6;
+        q.beginPath();
+        q.moveTo(0, roadY - g0.rh + 3);
+        q.lineTo(r.w, roadY - g0.rh + 3);
+        q.moveTo(0, roadY + g0.rh - 3);
+        q.lineTo(r.w, roadY + g0.rh - 3);
+        q.stroke();
+        q.setLineDash([Math.max(8, 6 * g0.k), Math.max(8, 6 * g0.k)]);
+        q.beginPath();
+        q.moveTo(0, roadY);
+        q.lineTo(r.w, roadY);
+        q.stroke();
+        groundCache = { key, c: o.canvas };
+      }
+      g.drawImage(groundCache.c, r.x, r.y, r.w, r.h);
+    }
+
     function drawGround(g0: SceneGeo): void {
       const g = surface.g;
       const r = g0.r;
       const dark = ctx.theme.dark;
+      const photo = ctx.images.get('road');
+      if (photo) return drawGroundPhoto(g0, photo);
       // Wiese
       const field = g.createLinearGradient(0, r.y, 0, r.y + r.h);
       field.addColorStop(0, dark ? '#16221d' : '#e6efdc');

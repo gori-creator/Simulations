@@ -72,6 +72,24 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Resonanz | `wheel` | `src/assets/sims/resonanz/rad.webp` | 384 × 376 | transparent |
 | Wellenausbreitung | `ball` | `src/assets/sims/wellen-ausbreitung/kugel.webp` | 202 × 201 | transparent |
 | Achterbahn | `land` | `src/assets/sims/energieerhaltung/landschaft.webp` | 1003 × 126 | transparent oben |
+| Einfacher Stromkreis | `battery` | `src/assets/sims/einfacher-stromkreis/batterie.webp` | 350 × 307 | transparent |
+| Einfacher Stromkreis | `bulb` | `src/assets/sims/einfacher-stromkreis/gluehlampe.webp` | 250 × 445 | transparent |
+| Einfacher Stromkreis | `switch` | `src/assets/sims/einfacher-stromkreis/schalter.webp` | 415 × 254 | transparent |
+| Einfacher Stromkreis | `motor` | `src/assets/sims/einfacher-stromkreis/motor.webp` | 382 × 312 | transparent |
+| Einfacher Stromkreis | `bell` | `src/assets/sims/einfacher-stromkreis/klingel.webp` | 302 × 398 | transparent |
+| Reihen- und Parallelschaltung | `battery` | `src/assets/sims/reihe-parallel/batterie.webp` | 350 × 307 | transparent |
+| Reihen- und Parallelschaltung | `bulb` | `src/assets/sims/reihe-parallel/gluehlampe.webp` | 250 × 445 | transparent |
+| Reihen- und Parallelschaltung | `resistor` | `src/assets/sims/reihe-parallel/widerstand.webp` | 788 × 96 | transparent |
+| Ohmsches Gesetz | `supply` | `src/assets/sims/ohmsches-gesetz/netzgeraet.webp` | 347 × 251 | transparent |
+| Ohmsches Gesetz | `meter` | `src/assets/sims/ohmsches-gesetz/messgeraet.webp` | 322 × 321 | transparent |
+| Licht und Schatten | `lamp` | `src/assets/sims/licht-schatten/lampe.webp` | 448 × 206 | transparent |
+| Licht und Schatten | `sky` | `src/assets/sims/licht-schatten/sternenhimmel.webp` | 1400 × 1400 | deckend |
+| Planetenbahnen | `sky` | `src/assets/sims/planetenbahnen/sternenhimmel.webp` | 1400 × 1400 | deckend |
+| Reflexion | `candle` | `src/assets/sims/reflexion/kerze.webp` | 144 × 631 | transparent |
+| Reflexion | `laser` | `src/assets/sims/reflexion/laser.webp` | 700 × 200 | transparent |
+| Linsen | `candle` | `src/assets/sims/linsen/kerze.webp` | 144 × 631 | transparent |
+| Linsen | `lens` | `src/assets/sims/linsen/linse.webp` | 97 × 731 | transparent |
+| Doppler-Effekt | `road` | `src/assets/sims/doppler-effekt/strasse.webp` | 1800 × 890 | deckend |
 
 ## Ziegenproblem
 
@@ -417,3 +435,130 @@ Rote Kugel; wird für jedes Teilchen vorab skaliert und in der Farbe des Zustand
 
 > A small glossy red sphere, perfectly round, soft highlight, isolated on a transparent background, photorealistic
 
+## Einfacher Stromkreis
+
+### `batterie.webp` – 4,5-V-Flachbatterie
+
+Steht wie die gezeichnete Batterie unten im Aufbau (Breite fest, Seitenverhältnis bleibt). Die lange Messingfahne links ist der Minuspol, die kurze rechts der Pluspol; die Kabel setzen genau an den Fahnen an. Banderole mit „4,5 V“ und die Polzeichen zeichnet die Simulation auf die Vorderseite (das Foto ist ohne Aufdruck).
+
+> A 4.5 volt flat battery with two brass contact tabs on top, generic design with no brand or text, three-quarter view, isolated on a transparent background, photorealistic
+
+### `gluehlampe.webp` – Glühlampe
+
+Das Foto zeigt die Lampe **leuchtend**. Die ausgeschaltete Lampe wird beim Laden daraus abgeleitet (`sim-core/circuit-photos.ts`): Das warme Licht im Glas wird weichgezeichnet entfernt, die helle Wendel wird zu dunklem, kaltem Draht, das Glas leicht durchsichtig. Bei schwachem Strom glüht zuerst nur die Wendel, ab mittlerer Helligkeit der ganze Kolben (stufenlose Überblendung). Die Lampe steckt in einer gezeichneten Fassung; Elektronen laufen entlang der Haltedrähte und der Wendel des Fotos. Eine eigene Aufnahme der ausgeschalteten Lampe wäre noch besser (siehe Prompt in `docs/BILDER-WUNSCHLISTE.md`).
+
+> The same small clear incandescent bulb switched on, warm bright glowing filament with soft light bloom, front view, isolated on a transparent background, photorealistic
+
+### `schalter.webp` – Hebelschalter
+
+Holzsockel mit Lagerbock und Federkontakt, im Foto offen. Der Hebel wird beim Laden ausgeschnitten und dreht sich beim Schalten um seine Achse (offen etwa 8° weiter geöffnet als im Foto, geschlossen im Federkontakt); der Lagerbock wird darübergelegt. Die Kabel setzen an den beiden Anschlussschrauben an, bei geschlossenem Schalter laufen die Elektronen über Lagerbock, Hebel und Kontakt.
+
+> A simple school lab knife switch on a small wooden base, brass lever, three-quarter view, isolated on a transparent background, photorealistic
+
+### `motor.webp` – Elektromotor mit Propeller
+
+Liegt mit waagerechter Welle auf einem gezeichneten Halter über dem Grundbrett. Der Propeller wird ausgeschnitten und dreht sich um die Welle (Seitenansicht: senkrecht gestaucht mit dem Drehwinkel), bei hoher Drehzahl mit Bewegungsunschärfe; die Nabe bleibt stehen. Der kleine Aufdruck auf dem Gehäuse wird mit einem sauberen Stück Gehäuse überdeckt. Gezeichnete Anschlussdrähte führen zu den Buchsen.
+
+> A small electric hobby motor with a red propeller, silver metal housing, side view, isolated on a transparent background, photorealistic
+
+### `klingel.webp` – Klingel
+
+Steht auf dem Grundbrett; der Klöppelarm wird ausgeschnitten und schwingt beim Läuten (etwa 11 Schläge je Sekunde). Kurze gezeichnete Leitungen führen von den Klemmen unten zu den Buchsen.
+
+> A classic electric bell with a shiny brass dome and a small hammer, front view, isolated on a transparent background, photorealistic
+
+## Reihen- und Parallelschaltung
+
+### `batterie.webp` – Batterie
+
+Dieselbe Datei wie beim einfachen Stromkreis, gespiegelt (Pluspol wie im Schaltzeichen links bzw. oben); in senkrechten Leitungen liegt sie gedreht. Die Leitung läuft hinter dem Gehäuse, kurze Anschlussdrähte führen zu den Fahnen; ein Spannungsmesser an der Quelle greift außerhalb der Batterie ab. Nur ohne „Schaltzeichen“.
+
+> A 4.5 volt flat battery with two brass contact tabs on top, generic design with no brand or text, three-quarter view, isolated on a transparent background, photorealistic
+
+### `gluehlampe.webp` – Glühlampe
+
+Dieselbe Datei wie beim einfachen Stromkreis (leuchtend; „aus“ wird daraus abgeleitet, die Helligkeit jeder Lampe stufenlos gemischt). Gezeigt wird der Kolben bis kurz unter den Hals mit gezeichneter Fassung; der Kolben liegt auf der Leitung, der Sockel zeigt vom Spannungsmesser weg. Durchgebrannte Lampen bekommen einen Rußschleier.
+
+> The same small clear incandescent bulb switched on, warm bright glowing filament with soft light bloom, front view, isolated on a transparent background, photorealistic
+
+### `widerstand.webp` – Kohleschicht-Widerstand
+
+Waagerecht, in senkrechten Leitungen gedreht; die Anschlussdrähte reichen genau bis zu den Leitungsenden. Die Farbringe des Fotos werden überdeckt und **passend zum eingestellten Wert neu gemalt** (zwei Ziffern + Multiplikator + Gold, bei drei Ziffern fünf Ringe mit Braun für ±1 %), damit das Bild nie einen falschen Wert zeigt.
+
+> A single through-hole resistor with coloured bands, beige body, horizontal, isolated on a transparent background, photorealistic
+
+## Ohmsches Gesetz
+
+### `netzgeraet.webp` – Netzgerät
+
+Frontansicht mit Drehknopf, leerem Display, roter und schwarzer Buchse, Schalter und zwei Leuchten. Der Drehknopf wird rund ausgeschnitten und dreht sich mit der eingestellten Spannung (Strich oben = 6 V); Skala, Spannungsanzeige im Display (grüne LCD-Schrift, bei Strombegrenzung mit Hinweis), Leuchten (grün = an, rot = I-Begrenzung) zeichnet die Simulation. Die Kabel stecken in den Buchsen des Fotos.
+
+> A school laboratory DC power supply, grey metal housing, one large black rotary knob and two banana-plug sockets red and black, an empty dark display window, front view, no text, isolated on a transparent background, photorealistic
+
+### `messgeraet.webp` – Zeigerinstrument
+
+Quadratisches Gehäuse mit leerem rundem Zifferblatt; die Zeigerachse in der Mitte ist Mittelpunkt von Skala (±62°) und Zeiger, beides wird genau in den Kreis gezeichnet. Buchsen (+, COM) sitzen gezeichnet auf dem schwarzen Rahmen unter dem Zifferblatt.
+
+> An analogue lab meter housing, black case with a large blank white dial face without any scale or numbers and without a needle, front view, isolated on a transparent background, photorealistic
+
+## Licht und Schatten (Lampe, Sternenhimmel)
+
+### `lampe.webp` – Experimentierleuchte
+
+Schwarzes Gehäuse, Öffnung nach rechts, Kabel links. Die Mitte der Öffnung liegt genau im Ursprung der Lichtstrahlen; bei der ausgedehnten Lampe ist die leuchtende Öffnung so hoch wie die Lichtquelle (2 r), die Randstrahlen gehen also vom Rand der Öffnung aus. Das Leuchten in der Öffnung zeichnet die Simulation (auch farbig bei zwei Lampen).
+
+> A small lab lamp housing with a round opening facing right, black metal, side view, isolated on a transparent background, photorealistic
+
+### `sternenhimmel.webp` – Sternenhimmel
+
+Hintergrund im Modus „Sonnen- und Mondfinsternis“, bildfüllend zugeschnitten (Seitenverhältnis bleibt), gedämpft; ersetzt die gezeichneten Sterne. Dieselbe Datei wie bei den Planetenbahnen.
+
+> Deep space starfield, black background with many tiny white and faintly coloured stars, very subtle distant blue and purple nebula haze, no planets, no bright objects in the centre, photorealistic astrophotography
+
+## Planetenbahnen (Sternenhimmel)
+
+### `sternenhimmel.webp` – Sternenhimmel
+
+Hintergrund der Bahnebene, bildfüllend zugeschnitten und leicht gedämpft; dazu nur noch wenige gezeichnete helle Sterne. Wird einmal je Größe vorab gerendert.
+
+> Deep space starfield, black background with many tiny white and faintly coloured stars, very subtle distant blue and purple nebula haze, no planets, no bright objects in the centre, photorealistic astrophotography
+
+## Reflexion (Kerze, Laser)
+
+### `kerze.webp` – Kerze
+
+Weiße Kerze; die Flamme des Fotos wird abgeschnitten, Docht und Flamme zeichnet die Simulation (an der eingestellten Höhe). Kopf und Fuß bleiben unverzerrt, nur der gleichförmige Schaft wird auf die eingestellte Höhe gestreckt. Das Spiegelbild ist dasselbe Foto, blass und seitenverkehrt.
+
+> A white wax candle with a small calm burning flame, front view, isolated on a transparent background, photorealistic
+
+### `laser.webp` – Laser
+
+Kopie von `brechung/laser.webp`; Seitenverhältnis bleibt, die Austrittsöffnung liegt genau im Strahlursprung.
+
+> Side view of a metal laboratory laser module, cylindrical brushed aluminium body with a black end cap on the left and the light aperture on the right edge of the image, small red indicator light, isolated on a transparent background, soft studio lighting, photorealistic, aspect ratio 3.5:1
+
+## Linsen (Kerze, Sammellinse)
+
+### `kerze.webp` – Kerze
+
+Dieselbe Datei wie bei der Reflexion: auf der optischen Bank (Flamme gezeichnet, Schaft gestreckt) und im Schirmbild um 180° gedreht, warm und gedämpft, im Maßstab des Bildes.
+
+> A white wax candle with a small calm burning flame, front view, isolated on a transparent background, photorealistic
+
+### `linse.webp` – Sammellinse
+
+Hochkant in Seitenansicht, nur für die Sammellinse (Zerstreuungslinse bleibt gezeichnet, beim Umschalten weich überblendet). Höhe wie die gezeichnete Linse, Seitenverhältnis bleibt; die dickste Stelle liegt genau auf der Linsenebene, an der die Konstruktionsstrahlen abknicken.
+
+> A biconvex glass lens seen exactly edge-on from the side, clear glass with subtle reflections and a thin metal rim, vertical, isolated on a transparent background, photorealistic
+
+## Doppler-Effekt
+
+### `strasse.webp` – Straße von oben
+
+Draufsicht, Straße waagerecht, Wiese beidseitig. Verwendet werden zwei Ausschnitte als Texturen, gespiegelt gekachelt: die Wiese und eine Fahrspur aus reinem Asphalt. So bleiben Maßstab und Lage der Fahrbahn genau wie gezeichnet; Rand- und Mittellinie (gestrichelt, wie in Deutschland) zeichnet die Simulation. Im Dunkelmodus abgedunkelt.
+
+> Top-down aerial view of a straight two-lane road running horizontally, grass on both sides, evenly lit, photorealistic
+
+`krankenwagen.webp` ist **nicht eingebaut** (liegt in `docs/bilder-eingang/doppler-effekt/`): Das Foto ist eine Seitenansicht, die Simulation zeigt die Straße aber von oben. Gebraucht wird eine Draufsicht:
+
+> A modern white ambulance seen exactly from above (top-down view), red stripes, blue lights on the roof, facing right, generic design with no text, no brand, isolated on a transparent background, photorealistic
