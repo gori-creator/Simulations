@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   acceleratedMotion,
   brakingInfo,
@@ -40,6 +40,13 @@ interface Curves {
 
 const SAMPLES = 160;
 const CAR_LENGTH = 4.5;
+/**
+ * Lage im Foto auto.webp (629 × 223 px, Blick nach links): Länge des Autos,
+ * Mitte, Bodenlinie, Radmitten und Radius der Felge (zum Drehen der Räder).
+ */
+const CAR_IMG = { w: 629, h: 223, len: 626, cx: 313.5, ground: 220, wheels: [116, 524], wheelY: 172, rim: 40 };
+/** Foto strasse.webp (2400 × 392 px): Fahrbahn mit Randlinie oben und Grasstreifen unten. */
+const ROAD_IMG = { w: 2400, h: 392 };
 
 /** „Schöne“ Schrittweite (1, 2, 2,5, 5 · 10^k) von mindestens x. */
 function niceStep(x: number): number {
@@ -148,6 +155,7 @@ export default defineSimulation({
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
   ],
   actions: [{ id: 'go', label: L('Losfahren', 'Start'), primary: true }],
+  images: { car: 'auto.webp', road: 'strasse.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
     { key: 'law', label: L('Bewegungsgesetz', 'Equations of motion') },
@@ -507,6 +515,27 @@ export default defineSimulation({
         g.fill();
         g.restore();
       }
+      const img = ctx.images.get('car');
+      if (img) {
+        // Foto (nach rechts gespiegelt); die Felgen werden als eigene Ausschnitte gedreht
+        const k = len / CAR_IMG.len;
+        const w = CAR_IMG.w * k;
+        const h = CAR_IMG.h * k;
+        g.drawImage(scaledSprite(img, w, h, surface.dpr, { flipX: true }), -(CAR_IMG.w - CAR_IMG.cx) * k, -CAR_IMG.ground * k, w, h);
+        if (wheel !== 0) {
+          for (const wx of CAR_IMG.wheels) {
+            g.save();
+            g.translate((CAR_IMG.cx - wx) * k, (CAR_IMG.wheelY - CAR_IMG.ground) * k);
+            g.rotate(wheel);
+            const d = CAR_IMG.rim * 2 * k;
+            g.drawImage(rimSprite(img, wx, d), -d / 2, -d / 2, d, d);
+            g.restore();
+          }
+        }
+        paintMark(g, len, CAR_MARK_IMG);
+        g.restore();
+        return;
+      }
       // Kabine mit Fenstern
       const cabin = () => {
         g.beginPath();
@@ -593,23 +622,74 @@ export default defineSimulation({
           g.stroke();
         }
       }
-      // Messpunkt (der „Ort“ des Autos)
+      paintMark(g, len, CAR_MARK);
+      g.restore();
+    }
+
+    /** Messpunkt (der „Ort“ des Autos) in der Höhe hRel · Länge über dem Boden. */
+    function paintMark(g: CanvasRenderingContext2D, len: number, hRel: number): void {
       g.fillStyle = '#ffffff';
       g.beginPath();
-      g.arc(0, -len * 0.23, Math.max(2.5, len * 0.035), 0, Math.PI * 2);
+      g.arc(0, -len * hRel, Math.max(2.5, len * 0.035), 0, Math.PI * 2);
       g.fill();
-      g.fillStyle = theme.series[0]!;
+      g.fillStyle = ctx.theme.series[0]!;
       g.beginPath();
-      g.arc(0, -len * 0.23, Math.max(1.5, len * 0.022), 0, Math.PI * 2);
+      g.arc(0, -len * hRel, Math.max(1.5, len * 0.022), 0, Math.PI * 2);
       g.fill();
-      g.restore();
+    }
+    /** Höhe des Messpunkts (Anteil der Autolänge): gezeichnetes Auto bzw. Foto (flacher). */
+    const CAR_MARK = 0.23;
+    const CAR_MARK_IMG = 0.17;
+    const markH = () => (ctx.images.get('car') ? CAR_MARK_IMG : CAR_MARK);
+
+    /** Runder Ausschnitt einer Felge aus dem Foto (gespiegelt wie das Auto), Durchmesser d. */
+    const rims = new Map<string, HTMLCanvasElement>();
+    function rimSprite(img: HTMLImageElement, wx: number, d: number): HTMLCanvasElement {
+      const key = `${wx}|${Math.round(d * 2)}|${surface.dpr}`;
+      const hit = rims.get(key);
+      if (hit) return hit;
+      if (rims.size > 8) rims.clear();
+      const { canvas, g } = offscreenCanvas(d, d, surface.dpr);
+      g.beginPath();
+      g.arc(d / 2, d / 2, d / 2, 0, Math.PI * 2);
+      g.clip();
+      g.translate(d, 0);
+      g.scale(-1, 1);
+      const R = CAR_IMG.rim;
+      g.drawImage(img, wx - R, CAR_IMG.wheelY - R, 2 * R, 2 * R, 0, 0, d, d);
+      rims.set(key, canvas);
+      return canvas;
+    }
+
+    /** Fahrbahn aus dem Foto, waagerecht abwechselnd gespiegelt gekachelt (keine sichtbaren Nahtstellen). */
+    let roadCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function roadStrip(img: HTMLImageElement, w: number, h: number, dark: boolean): HTMLCanvasElement {
+      const key = `${Math.round(w)}|${Math.round(h)}|${surface.dpr}|${dark}`;
+      if (roadCache?.key === key) return roadCache.canvas;
+      const { canvas, g } = offscreenCanvas(w, h, surface.dpr);
+      const tw = (ROAD_IMG.w * h) / ROAD_IMG.h;
+      for (let i = 0, x = 0; x < w; i++, x += tw) {
+        g.save();
+        if (i % 2) {
+          g.translate(x + tw, 0);
+          g.scale(-1, 1);
+        } else g.translate(x, 0);
+        g.drawImage(img, 0, 0, tw + 0.5, h);
+        g.restore();
+      }
+      if (dark) {
+        g.fillStyle = 'rgba(8,14,26,0.35)';
+        g.fillRect(0, 0, w, h);
+      }
+      roadCache = { key, canvas };
+      return canvas;
     }
 
     /** Vorgezeichnetes Auto für die Stroboskop-Bilder (sonst überlagern sich die halbdurchsichtigen Teile). */
     const sprites = new Map<string, HTMLCanvasElement>();
     function carSprite(len: number, dir: number): HTMLCanvasElement {
       const dpr = surface.dpr;
-      const key = `${Math.round(len)}|${dir}|${ctx.theme.dark}|${dpr}|${ctx.theme.series[0]}`;
+      const key = `${Math.round(len)}|${dir}|${ctx.theme.dark}|${dpr}|${ctx.theme.series[0]}|${ctx.images.get('car') ? 1 : 0}`;
       const cached = sprites.get(key);
       if (cached) return cached;
       if (sprites.size > 6) sprites.clear();
@@ -711,17 +791,21 @@ export default defineSimulation({
         g.arc(x, roadTop - size * 1.2, size * 0.75, 0, Math.PI * 2);
         g.fill();
       }
-      // Straße
-      const asphalt = g.createLinearGradient(0, roadTop, 0, rulerY);
-      asphalt.addColorStop(0, dark ? '#3a3f48' : '#60666f');
-      asphalt.addColorStop(1, dark ? '#2b2f36' : '#454a52');
-      g.fillStyle = asphalt;
-      g.fillRect(r.x, roadTop, r.w, roadH);
-      g.fillStyle = 'rgba(255,255,255,0.75)';
-      g.fillRect(r.x, roadTop + 2, r.w, 1.5);
-      g.fillRect(r.x, rulerY - 3.5, r.w, 1.5);
-      g.fillStyle = 'rgba(255,255,255,0.5)';
-      for (let x = r.x + 6; x < r.x + r.w; x += 34) g.fillRect(x, roadTop + roadH * 0.42 - 1, 18, 2);
+      // Straße: Foto oder gezeichnet
+      const roadImg = ctx.images.get('road');
+      if (roadImg) g.drawImage(roadStrip(roadImg, r.w, roadH, dark), r.x, roadTop, r.w, roadH);
+      else {
+        const asphalt = g.createLinearGradient(0, roadTop, 0, rulerY);
+        asphalt.addColorStop(0, dark ? '#3a3f48' : '#60666f');
+        asphalt.addColorStop(1, dark ? '#2b2f36' : '#454a52');
+        g.fillStyle = asphalt;
+        g.fillRect(r.x, roadTop, r.w, roadH);
+        g.fillStyle = 'rgba(255,255,255,0.75)';
+        g.fillRect(r.x, roadTop + 2, r.w, 1.5);
+        g.fillRect(r.x, rulerY - 3.5, r.w, 1.5);
+        g.fillStyle = 'rgba(255,255,255,0.5)';
+        for (let x = r.x + 6; x < r.x + r.w; x += 34) g.fillRect(x, roadTop + roadH * 0.42 - 1, 18, 2);
+      }
 
       // Abbildung Ort → Pixel (das Auto wird größer als maßstäblich gezeichnet)
       const padX = 10;
@@ -790,7 +874,7 @@ export default defineSimulation({
       }
 
       // Stroboskop: Auto in gleichen Zeitabständen
-      const roof = carGround - len * 0.52;
+      const roof = carGround - len * (ctx.images.get('car') ? 0.38 : 0.52);
       if (p.strobe && !morph.running) {
         const dt = strobeStep();
         let lastLabel = -Infinity;
@@ -830,7 +914,7 @@ export default defineSimulation({
       g.lineWidth = 1.5;
       g.setLineDash([3, 3]);
       g.beginPath();
-      g.moveTo(x, carGround - len * 0.23);
+      g.moveTo(x, carGround - len * markH());
       g.lineTo(x, rulerY);
       g.stroke();
       g.setLineDash([]);

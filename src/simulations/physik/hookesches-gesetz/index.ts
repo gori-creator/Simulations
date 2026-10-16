@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   elasticLimitForce,
   ELASTIC_LIMIT,
@@ -99,6 +99,7 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
     { id: 'fresh', label: L('Neue Feder einsetzen', 'Fit new springs'), visibleIf: (v) => v.limit === true },
   ],
+  images: { stand: 'stativ.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
     { key: 'law', label: L('Hookesches Gesetz', 'Hooke’s law') },
@@ -545,20 +546,26 @@ export default defineSimulation({
         m.addColorStop(1, '#5d6570');
         return m;
       };
-      gx.fillStyle = dark ? '#2b3340' : '#3c4552';
-      roundRect(gx, g0.rodX - 18, g0.tableY - 7, 70, 8, 3);
-      gx.fill();
-      gx.fillStyle = metal(g0.rodX - 4, 8);
-      gx.fillRect(g0.rodX - 4, g0.armY - 14, 8, g0.tableY - 7 - (g0.armY - 14));
       const armEnd = Math.max(...g0.springX) + 26;
-      const arm = gx.createLinearGradient(0, g0.armY - 4, 0, g0.armY + 4);
-      arm.addColorStop(0, '#d5dae1');
-      arm.addColorStop(1, '#5d6570');
-      gx.fillStyle = arm;
-      gx.fillRect(g0.rodX, g0.armY - 4, armEnd - g0.rodX, 8);
-      gx.fillStyle = dark ? '#6b7584' : '#4a5361';
-      roundRect(gx, g0.rodX - 9, g0.armY - 9, 18, 18, 3);
-      gx.fill();
+      const standImg = ctx.images.get('stand');
+      const sc = small ? 0.46 : 0.55;
+      // Foto des Stativs (Fuß etwas nach vorn auf die Tischplatte gesetzt), sonst gezeichnet
+      const photo = !!standImg && drawLabStand(gx, standImg, { rodX: g0.rodX, armY: g0.armY, armTo: armEnd, floorY: g0.tableY + (small ? 11 : 15), scale: sc, dpr: surface.dpr, dark });
+      if (!photo) {
+        gx.fillStyle = dark ? '#2b3340' : '#3c4552';
+        roundRect(gx, g0.rodX - 18, g0.tableY - 7, 70, 8, 3);
+        gx.fill();
+        gx.fillStyle = metal(g0.rodX - 4, 8);
+        gx.fillRect(g0.rodX - 4, g0.armY - 14, 8, g0.tableY - 7 - (g0.armY - 14));
+        const arm = gx.createLinearGradient(0, g0.armY - 4, 0, g0.armY + 4);
+        arm.addColorStop(0, '#d5dae1');
+        arm.addColorStop(1, '#5d6570');
+        gx.fillStyle = arm;
+        gx.fillRect(g0.rodX, g0.armY - 4, armEnd - g0.rodX, 8);
+        gx.fillStyle = dark ? '#6b7584' : '#4a5361';
+        roundRect(gx, g0.rodX - 9, g0.armY - 9, 18, 18, 3);
+        gx.fill();
+      }
 
       // Federn
       const minS = equilibrium(setup(), springs, 0, p.limit).s;
