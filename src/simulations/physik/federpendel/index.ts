@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { acceleration, dampedOmega, dampedPeriod, energies, equilibriumExtension, forces, initialState, omega0, period, phasor, step, type State } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -93,6 +93,9 @@ class History {
     return { a: [mix(this.ya), mix(this.va)], b: [mix(this.yb), mix(this.vb)] };
   }
 }
+
+/** Lage des Körpers im Foto gewicht.webp (161 × 410 px): Haken oben, darunter der Zylinder. */
+const MASS_IMG = { w: 161, h: 410, cx: 79.5, bodyTop: 100, body: 310, bodyAspect: 310 / 158, hookShare: 100 / 310 };
 
 interface Pend {
   /** Mitte des Körpers (x) in Pixeln. */
@@ -235,6 +238,7 @@ export default defineSimulation({
     { id: 'go', label: L('Start', 'Start'), primary: true },
     { id: 'watch', label: L('Stoppuhr starten', 'Start stopwatch') },
   ],
+  images: { stand: 'stativ.webp', mass: 'gewicht.webp' },
   readouts: [
     { key: 'T', label: L('Periodendauer', 'Period'), spoiler: true },
     { key: 'eq', label: L('Ruhelage', 'Equilibrium position') },
@@ -513,6 +517,8 @@ export default defineSimulation({
     /* ---------- Geometrie der Szene ---------- */
     function massSize(m: number, sm: boolean): { w: number; h: number } {
       const w = (24 + 20 * Math.cbrt(m)) * (sm ? 0.82 : 1);
+      // Foto des Hakengewichts: schlanker Zylinder (Seitenverhältnis des Bildes)
+      if (ctx.images.get('mass')) return { w: w * 0.8, h: w * 0.8 * MASS_IMG.bodyAspect };
       return { w, h: w * 0.82 };
     }
 
@@ -545,7 +551,9 @@ export default defineSimulation({
 
     function verticalFrame(r: Rect, sm: boolean): { top: number; bottom: number; tableY: number; hook: number } {
       const tableY = r.y + r.h - (sm ? 16 : 20);
-      return { top: r.y + (sm ? 46 : 54), bottom: tableY - 10, tableY, hook: sm ? 7 : 9 };
+      // Mit Foto: Platz für den Haken des schwersten Körpers
+      const hook = ctx.images.get('mass') ? Math.ceil(Math.max(...pendList().map((q) => massSize(q.m, sm).h)) * MASS_IMG.hookShare) : sm ? 7 : 9;
+      return { top: r.y + (sm ? 46 : 54), bottom: tableY - 10, tableY, hook };
     }
 
     function pendList(): { m: number; D: number }[] {
@@ -931,6 +939,45 @@ export default defineSimulation({
       const g = surface.g;
       const dark = ctx.theme.dark;
       const top = y - h / 2;
+      const img = ctx.images.get('mass');
+      if (img) {
+        // Foto: Körper (ohne Haken) füllt w × h, der Haken sitzt darüber
+        const k = h / MASS_IMG.body;
+        const iw = MASS_IMG.w * k;
+        const ih = MASS_IMG.h * k;
+        const imgTop = top - MASS_IMG.bodyTop * k;
+        if (hook > MASS_IMG.bodyTop * k + 0.5) {
+          g.strokeStyle = dark ? '#c3cbd6' : '#5d6570';
+          g.lineWidth = 2;
+          g.beginPath();
+          g.moveTo(x, top - hook);
+          g.lineTo(x, imgTop + 4 * k);
+          g.stroke();
+        }
+        if (highlight > 0) {
+          g.fillStyle = withAlpha(ctx.theme.series[0]!, 0.14 + 0.12 * highlight);
+          g.beginPath();
+          g.ellipse(x, y, w / 2 + 9 + 3 * highlight, h / 2 + 9 + 3 * highlight, 0, 0, TAU);
+          g.fill();
+        }
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
+        g.shadowBlur = 8;
+        g.shadowOffsetX = 2;
+        g.shadowOffsetY = 3;
+        g.drawImage(scaledSprite(img, iw, ih, surface.dpr), x - MASS_IMG.cx * k, imgTop, iw, ih);
+        g.restore();
+        g.font = `700 ${w > 30 ? 10 : 9}px ${ctx.theme.font}`;
+        g.textAlign = 'center';
+        g.textBaseline = 'middle';
+        g.lineWidth = 3;
+        g.lineJoin = 'round';
+        g.strokeStyle = 'rgba(255,238,190,0.9)';
+        g.strokeText(label, x, y + h * 0.1);
+        g.fillStyle = '#3d2a06';
+        g.fillText(label, x, y + h * 0.1);
+        return;
+      }
       // Öse, in die die Feder eingehängt ist
       g.strokeStyle = dark ? '#c3cbd6' : '#5d6570';
       g.lineWidth = 2;
@@ -973,6 +1020,10 @@ export default defineSimulation({
     function drawStand(rod: number, armY: number, armTo: number, tableY: number, side: 1 | -1): void {
       const g = surface.g;
       const dark = ctx.theme.dark;
+      const img = ctx.images.get('stand');
+      const sc = small() ? 0.46 : 0.55;
+      // Fuß etwas nach vorn auf die Tischplatte gesetzt (Perspektive), damit er weniger Höhe einnimmt
+      if (img && drawLabStand(g, img, { rodX: rod, armY: armY - 4 * sc, armTo: armTo + side * 8, floorY: tableY + (small() ? 10 : 13), scale: sc, dpr: surface.dpr, dark })) return;
       // Fuß
       g.fillStyle = dark ? '#2b3340' : '#3c4552';
       roundRect(g, side === 1 ? rod - 14 : rod - 46, tableY - 7, 60, 8, 3);

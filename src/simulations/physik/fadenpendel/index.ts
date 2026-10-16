@@ -1,4 +1,4 @@
-import { defineSimulation, FixedStepper, Plot, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, FixedStepper, Plot, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { energies, exactPeriod, smallAnglePeriod, step } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -60,7 +60,7 @@ export default defineSimulation({
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
   ],
   actions: [{ id: 'release', label: L('Loslassen', 'Release'), primary: true }],
-  images: { bob: 'pendelkugel.webp' },
+  images: { bob: 'pendelkugel.webp', stand: 'stativ.webp' },
   readouts: [
     { key: 'formula', label: L('Periodendauer (Kleinwinkelnäherung)', 'Period (small-angle approximation)') },
     { key: 'exact', label: L('Periodendauer bei φ₀ (exakt)', 'Period at φ₀ (exact)'), spoiler: true },
@@ -191,17 +191,37 @@ export default defineSimulation({
       const gx = scene.begin();
       const theme = ctx.theme;
       const r = scene.rect;
-      // Decke mit Schraffur
       const [px, py] = scene.toPx(0, 0);
-      gx.fillStyle = theme.dark ? '#3a4150' : '#c5cbd4';
-      gx.fillRect(px - 70, py - 14, 140, 14);
-      gx.strokeStyle = theme.muted;
-      gx.lineWidth = 1;
-      for (let x = px - 70; x < px + 70; x += 9) {
-        gx.beginPath();
-        gx.moveTo(x, py - 14);
-        gx.lineTo(x + 9, py);
-        gx.stroke();
+      // Aufhängung: Laborstativ (Foto) rechts, sonst Decke mit Schraffur
+      const standImg = ctx.images.get('stand');
+      const ss = r.w < 420 ? 0.5 : 0.62;
+      const stand =
+        !!standImg &&
+        drawLabStand(gx, standImg, {
+          rodX: r.x + r.w - 94 * ss - 4,
+          armY: py - 4 * ss,
+          armTo: px,
+          floorY: r.y + r.h - 3,
+          scale: ss,
+          dpr: surface.dpr,
+          dark: theme.dark,
+        });
+      if (stand) {
+        // kleine Klemme, an der der Faden hängt
+        gx.fillStyle = theme.dark ? '#8a94a3' : '#3c4552';
+        roundRect(gx, px - 4, py - 7 * ss, 8, 7 * ss + 2, 1.5);
+        gx.fill();
+      } else {
+        gx.fillStyle = theme.dark ? '#3a4150' : '#c5cbd4';
+        gx.fillRect(px - 70, py - 14, 140, 14);
+        gx.strokeStyle = theme.muted;
+        gx.lineWidth = 1;
+        for (let x = px - 70; x < px + 70; x += 9) {
+          gx.beginPath();
+          gx.moveTo(x, py - 14);
+          gx.lineTo(x + 9, py);
+          gx.stroke();
+        }
       }
       // Bahn des Pendelkörpers (Kreisbogen)
       const a0 = Math.abs(rad(p.amp));
@@ -259,7 +279,7 @@ export default defineSimulation({
         scene.arrow([x, y], [x + v * k * Math.cos(ang), y + v * k * Math.sin(ang)], { color: theme.series[0], width: 2.5 });
       }
       // Ortsangabe
-      text(gx, `g = ${fmt.num(g(), 2)} m/s²`, r.x + r.w - 10, r.y + r.h - 14, { font: `600 12px ${theme.font}`, color: theme.muted, align: 'right' });
+      text(gx, `g = ${fmt.num(g(), 2)} m/s²`, stand ? r.x + 10 : r.x + r.w - 10, r.y + r.h - 14, { font: `600 12px ${theme.font}`, color: theme.muted, align: stand ? 'left' : 'right' });
       scene.end();
     }
 

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, seededRandom, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dragDistance,
   dragFallTime,
@@ -23,6 +23,8 @@ type Pt = [number, number];
 const TUBE = 1.5;
 const RULER = 0.5;
 const MAX_ATTEMPTS = 12;
+/** Mittelstreifen des Fotos lineal.webp (96 × 1063 px) ohne die Teilstriche am Rand. */
+const RULER_IMG = { x: 24, y: 8, w: 48, h: 1047 };
 
 /** Kleinste „schöne“ Schrittweite (1, 2, 5 · 10^k) ≥ x. */
 function niceStep(x: number): number {
@@ -105,7 +107,7 @@ export default defineSimulation({
     { id: 'catch', label: L('Fangen!', 'Catch!'), visibleIf: (v) => v.mode === 'ruler' },
     { id: 'clear', label: L('Messreihe löschen', 'Clear results'), visibleIf: (v) => v.mode === 'ruler' },
   ],
-  images: { feather: 'feder.webp' },
+  images: { feather: 'feder.webp', ball: 'kugel.webp', ruler: 'lineal.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
     { key: 'law', label: L('Fallgesetze', 'Laws of free fall') },
@@ -491,6 +493,19 @@ export default defineSimulation({
         gx.shadowColor = 'rgba(0,0,0,0.35)';
         gx.shadowBlur = 6;
         gx.shadowOffsetY = 2;
+      }
+      const img = ctx.images.get('ball');
+      if (img) {
+        // Foto der Stahlkugel (füllt das quadratische Bild), vorab auf Größe gebracht;
+        // heller Saum, damit die dunkle Kugel auch vor dem dunklen Fallturm sichtbar bleibt
+        gx.fillStyle = 'rgba(225,235,250,0.55)';
+        gx.beginPath();
+        gx.arc(x, y, r + 1.2, 0, Math.PI * 2);
+        gx.fill();
+        gx.shadowColor = 'transparent';
+        gx.drawImage(scaledSprite(img, 2 * r, 2 * r, surface.dpr), x - r, y - r, 2 * r, 2 * r);
+        gx.restore();
+        return;
       }
       const grad = gx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
       grad.addColorStop(0, '#ffffff');
@@ -995,13 +1010,30 @@ export default defineSimulation({
       gx.shadowBlur = 8;
       gx.shadowOffsetX = 2;
       gx.shadowOffsetY = 3;
-      const wood = gx.createLinearGradient(rx, 0, rx + rw, 0);
-      wood.addColorStop(0, '#f6dc8a');
-      wood.addColorStop(0.5, '#fbe7a6');
-      wood.addColorStop(1, '#e9c76a');
-      gx.fillStyle = wood;
-      roundRect(gx, rx, top - 20, rw, len + 28, 3);
-      gx.fill();
+      const rulerImg = ctx.images.get('ruler');
+      if (rulerImg) {
+        // Holzmaserung aus dem Foto: nur der Mittelstreifen ohne die (ungleichmäßigen) Teilstriche des Fotos,
+        // unverzerrt vergrößert; die Skala zeichnet die Simulation selbst
+        const k = rw / RULER_IMG.w;
+        const crop = { x: RULER_IMG.x, y: RULER_IMG.y, w: RULER_IMG.w, h: Math.min(RULER_IMG.h, (len + 28) / k) };
+        gx.fillStyle = '#e8c58e';
+        roundRect(gx, rx, top - 20, rw, len + 28, 3);
+        gx.fill();
+        gx.shadowColor = 'transparent';
+        gx.clip();
+        gx.drawImage(scaledSprite(rulerImg, rw, crop.h * k, surface.dpr, { crop }), rx, top - 20, rw, crop.h * k);
+        // leichte Aufhellung, damit Striche und Zahlen gut lesbar bleiben
+        gx.fillStyle = 'rgba(255,248,230,0.28)';
+        gx.fillRect(rx, top - 20, rw, len + 28);
+      } else {
+        const wood = gx.createLinearGradient(rx, 0, rx + rw, 0);
+        wood.addColorStop(0, '#f6dc8a');
+        wood.addColorStop(0.5, '#fbe7a6');
+        wood.addColorStop(1, '#e9c76a');
+        gx.fillStyle = wood;
+        roundRect(gx, rx, top - 20, rw, len + 28, 3);
+        gx.fill();
+      }
       gx.restore();
       const ink = '#3d2f0c';
       const yOfCm = (cm: number) => top + len - cm * (len / 50);

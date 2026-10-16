@@ -55,6 +55,14 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Licht und Schatten | `moon` | `src/assets/sims/licht-schatten/mond.webp` | 1024 × 1024 | transparent |
 | Planetenbahnen | `sun` | `src/assets/sims/planetenbahnen/sonne.webp` | 1024 × 1024 | transparent |
 | Planetenbahnen | `planet` | `src/assets/sims/planetenbahnen/erde.webp` | 1024 × 1024 | transparent |
+| Bewegungsdiagramme | `car` | `src/assets/sims/bewegungsdiagramme/auto.webp` | 629 × 223 | transparent |
+| Bewegungsdiagramme | `road` | `src/assets/sims/bewegungsdiagramme/strasse.webp` | 2400 × 392 | deckend |
+| Freier Fall | `ball` | `src/assets/sims/freier-fall/kugel.webp` | 256 × 256 | transparent |
+| Freier Fall | `ruler` | `src/assets/sims/freier-fall/lineal.webp` | 96 × 1063 | transparent |
+| Fadenpendel | `stand` | `src/assets/sims/fadenpendel/stativ.webp` | 183 × 520 | transparent |
+| Federpendel | `stand` | `src/assets/sims/federpendel/stativ.webp` | 183 × 520 | transparent |
+| Federpendel | `mass` | `src/assets/sims/federpendel/gewicht.webp` | 161 × 410 | transparent |
+| Hookesches Gesetz | `stand` | `src/assets/sims/hookesches-gesetz/stativ.webp` | 183 × 520 | transparent |
 
 ## Ziegenproblem
 
@@ -166,6 +174,12 @@ Der Faden wird bis zur Mitte gezeichnet, die Kugel darüber.
 
 > A polished solid brass sphere as a physics pendulum bob, perfectly round, the sphere fills the entire square image edge to edge, warm golden reflections, bright highlight at the upper left, no hook, isolated on a transparent background, no shadow, photorealistic
 
+### `stativ.webp` – Laborstativ
+
+Aufhängung des Pendels (statt der gezeichneten Decke). Fuß unten, senkrechte Stange, oben kurzer Ausleger **nach rechts**; die Simulation spiegelt das Stativ bei Bedarf und streckt nur Stange und Ausleger (gleichförmige Metallstäbe), Fuß und Klemme bleiben unverzerrt (`src/sim-core/lab-stand.ts`). Gleiche Datei wie bei Federpendel und Hookeschem Gesetz.
+
+> A physics lab stand with a heavy dark base, vertical steel rod and a short horizontal clamp arm at the top pointing right, front view, isolated on a transparent background, photorealistic
+
 ## Achterbahn (Energieerhaltung)
 
 ### `wagen.webp` – Wagen
@@ -238,6 +252,18 @@ Fällt in der Fallröhre neben der Stahlkugel. Wird klein (etwa 35–40 Pixel la
 
 > A single small white bird feather lying horizontally, quill pointing to the left and tip to the right, side view, soft natural barbs with a slight grey tint at the edges, the feather spans the full width of the image edge to edge and is vertically centred, isolated on a transparent background, no shadow, no text, photorealistic, aspect ratio 8:3
 
+### `kugel.webp` – Stahlkugel
+
+Kugel im Fallturm (auch Stroboskopbilder) und in der Fallröhre; die Kugel füllt das quadratische Bild randlos. Gezeichnet mit 6–12 px Radius; ein heller Saum hält sie vor dem dunklen Fallturm sichtbar.
+
+> A polished steel ball, perfectly round, bright specular highlight, isolated on a transparent background, photorealistic
+
+### `lineal.webp` – Holzlineal
+
+Reaktionstest. Verwendet wird nur der **Mittelstreifen ohne Teilstriche** als Holzmaserung (unverzerrt vergrößert); Skala, Zahlen und ms-Skala zeichnet die Simulation selbst, weil die Striche des Fotos nicht gleichmäßig sind.
+
+> A wooden school ruler standing vertically, light beech wood with black millimetre tick marks but no numbers, front view, isolated on a transparent background, photorealistic
+
 ## Licht und Schatten
 
 Alle drei Bilder sind kreisrunde Himmelskörper, die das quadratische Bild **randlos ausfüllen** (der Kreis berührt alle vier Bildkanten), außerhalb transparent. Erde und Mond müssen **gleichmäßig von vorn beleuchtet** sein (ohne Nachtseite, ohne Schattenkante) – Tag und Nacht, Mondphasen und Finsternisschatten berechnet die Simulation selbst und legt sie darüber.
@@ -275,3 +301,39 @@ Der Zentralstern im Brennpunkt der Bahn.
 Blick **von oben auf den Nordpol**, passend zur Draufsicht auf die Bahnebene (der Planet läuft gegen den Uhrzeigersinn). **Gleichmäßig von vorn beleuchtet**, ohne Nachtseite.
 
 > The planet Earth seen from space directly above the North Pole, Arctic sea ice in the centre, surrounding continents and blue oceans with some white clouds, evenly lit from the front with no night side and no terminator, perfectly round, the globe fills the entire square image edge to edge, isolated on a transparent background, photorealistic, no text
+
+## Bewegungsdiagramme
+
+### `auto.webp` – Auto
+
+Blaues Kompaktauto in exakter Seitenansicht; das Foto blickt **nach links**, die Simulation spiegelt es je nach Fahrtrichtung. Die Felgen werden als runde Ausschnitte gedreht, solange das Auto fährt; der Messpunkt (Ort des Autos) wird darüber gezeichnet. Auch die Stroboskopbilder verwenden das Foto.
+
+> A small modern compact car in glossy blue, exact side view facing right, wheels visible, generic design with no brand, isolated on a transparent background, soft contact shadow removed, photorealistic
+
+### `strasse.webp` – Fahrbahn
+
+Asphaltstreifen mit weißer Randlinie oben und Grasstreifen unten; wird auf die Höhe der Fahrbahn skaliert und waagerecht abwechselnd gespiegelt gekachelt (keine Nahtstellen), im Dunkelmodus leicht abgedunkelt.
+
+> Straight asphalt road seen exactly from the side as a long horizontal strip, dark grey asphalt with a thin white edge line, a narrow strip of green grass below, seamless horizontally tileable, photorealistic
+
+## Federpendel
+
+### `stativ.webp` – Laborstativ
+
+Gleiche Datei wie beim Fadenpendel (siehe dort); im Vergleichsmodus wird das zweite Stativ gespiegelt.
+
+> A physics lab stand with a heavy dark base, vertical steel rod and a short horizontal clamp arm at the top pointing right, front view, isolated on a transparent background, photorealistic
+
+### `gewicht.webp` – Hakengewicht
+
+Pendelkörper: Messing-Schlitzgewicht mit Haken. Oben der Haken (etwa ein Viertel der Bildhöhe), darunter der Zylinder; der Zylinder bildet den Körper, die Masse steht als Beschriftung darauf. Seitenverhältnis bleibt erhalten (der Körper ist mit Foto schlanker und höher als die Ersatzgrafik).
+
+> A slotted brass laboratory weight with a hook on top, cylindrical, shiny polished brass, front view, isolated on a transparent background, photorealistic
+
+## Hookesches Gesetz
+
+### `stativ.webp` – Laborstativ
+
+Gleiche Datei wie beim Fadenpendel (siehe dort); der Ausleger wird bis über die Federn gestreckt.
+
+> A physics lab stand with a heavy dark base, vertical steel rod and a short horizontal clamp arm at the top pointing right, front view, isolated on a transparent background, photorealistic
