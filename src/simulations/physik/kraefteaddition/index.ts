@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { angleBetween, decompose, G, resultant, resultantMagnitude, ropeForce, toVec, type Force, type Vec } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -9,6 +9,12 @@ const MAX_F = 10;
 /** Messbereich der Federwaagen in N. */
 const SCALE_MAX = 100;
 const NO_REGION: Rect = { x: 0, y: 0, w: 0, h: 0 };
+/**
+ * Lage im Foto `lampe.webp` (267 × 447 px): Das Foto wird unterhalb der
+ * Kabelstummel abgeschnitten (`top`), die Seile greifen innen oben an den
+ * beiden Ösen an (`eyeX` = Abstand von der Mitte, `eyeY`), `bulbY` = Glühlampe.
+ */
+const LAMP_IMG = { w: 267, h: 447, top: 91, cx: 132.5, eyeX: 31.5, eyeY: 97, bulbY: 280 };
 
 const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
 /** Teilfortschritt einer Animationsphase von a bis b. */
@@ -36,6 +42,7 @@ export default defineSimulation({
   id: 'kraefteaddition',
   dragHint: true,
   layout: { aspect: 1.45, aspectNarrow: 0.82 },
+  images: { lamp: 'lampe.webp' },
   groups: [
     { id: 'f3', label: L('Dritte Kraft', 'Third force') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -891,7 +898,8 @@ export default defineSimulation({
       gx.fillStyle = bg;
       gx.fillRect(r.x, r.y, r.w, r.h);
       const top = r.y + (line ? r.h * 0.24 : small ? 16 : 18);
-      const loadH = line ? (small ? 56 : 70) : small ? 84 : 104;
+      // Foto der Lampe etwas größer als die Ersatzgrafik (dann bleiben die Ösen neben den Kraftpfeilen sichtbar)
+      const loadH = line ? (small ? 56 : 70) : ctx.images.get('lamp') ? (small ? 100 : 140) : small ? 84 : 104;
       let floorTop = groundY;
       if (line) {
         const grass = gx.createLinearGradient(0, groundY, 0, r.y + r.h);
@@ -939,11 +947,24 @@ export default defineSimulation({
       }
       const maxDepth = Math.max(30, floorTop - top - loadH - 10);
       const Wfull = r.w * (small ? 0.42 : line ? 0.4 : 0.3);
-      const { W, depth } = lampLayout(p.a, Wfull, maxDepth);
-      lampGeo = { cx, ay: top, maxDepth, W: Wfull };
+      // Foto der Lampe: Die Seile enden an den beiden Ösen (Abstand ±eye von der Mitte). Die Lage
+      // wird dann für die Ösen bestimmt; der Knoten ist der Schnittpunkt der Seilgeraden (Wirkungslinien),
+      // an ihm greifen die (entlang der Wirkungslinien verschobenen) Seilkräfte an. Bei sehr steilen
+      // Seilen läge er unter der Lampe; dann bleibt er im oberen Viertel der Lampe (Richtungen bleiben exakt).
+      const lampImg = line ? null : ctx.images.get('lamp');
+      const lampK = loadH / (LAMP_IMG.h - LAMP_IMG.top);
+      const eye = lampImg ? LAMP_IMG.eyeX * lampK : 0;
+      const lay = lampLayout(p.a, Wfull - eye, maxDepth);
+      lampGeo = { cx, ay: top, maxDepth, W: Wfull - eye };
+      const W = lay.W + eye;
+      const below = eye * Math.tan((p.a * Math.PI) / 180);
+      const clamped = below > loadH * 0.25;
+      const depth = lay.depth + Math.min(below, loadH * 0.25);
       const A1: Pt = [cx - W, top];
       const A2: Pt = [cx + W, top];
       const node: Pt = [cx, top + depth];
+      const E1: Pt = lampImg ? [cx - eye, top + lay.depth] : node;
+      const E2: Pt = lampImg ? [cx + eye, top + lay.depth] : node;
       if (line) {
         for (const A of [A1, A2]) {
           const pw = small ? 7 : 9;
@@ -963,8 +984,8 @@ export default defineSimulation({
       const FG = p.m * G;
       const FS = ropeForce(FG, p.a);
       const meterColor = FS > SCALE_MAX ? theme.series[3]! : theme.series[0]!;
-      drawSpringScale(A1, node, FS, meterColor, small);
-      drawSpringScale(A2, node, FS, meterColor, small);
+      drawSpringScale(A1, E1, FS, meterColor, small);
+      drawSpringScale(A2, E2, FS, meterColor, small);
       for (const A of [A1, A2]) {
         gx.fillStyle = dark ? '#c3cbd6' : '#4a5361';
         gx.beginPath();
@@ -973,12 +994,20 @@ export default defineSimulation({
       }
       // Last
       if (line) drawShirt(node[0], node[1], loadH, small);
-      else drawLamp(node[0], node[1], loadH, small);
+      else if (lampImg) {
+        drawLampPhoto(lampImg, cx, E1[1], lampK);
+        // Wirkungslinien der Seilkräfte bis zum Knoten verlängern
+        if (node[1] - E1[1] > 4 && !clamped) {
+          dashedPx(E1, node, withAlpha(theme.text, 0.45), 1.2, [3, 3]);
+          dashedPx(E2, node, withAlpha(theme.text, 0.45), 1.2, [3, 3]);
+        }
+      } else drawLamp(node[0], node[1], loadH, small);
       // Kräfte am Knoten: F_G nach unten, Seilkräfte entlang der Seile; ihre Summe hält F_G das Gleichgewicht
       const maxLen = Math.min(small ? 110 : 180, Math.hypot(W, depth) * 0.5);
       const kPx = Math.min((small ? 44 : 56) / FG, maxLen / FS);
-      const ropeLen = Math.hypot(A1[0] - node[0], A1[1] - node[1]);
-      const u1: Pt = [(A1[0] - node[0]) / ropeLen, (A1[1] - node[1]) / ropeLen];
+      // Richtung der Seilkraft = Richtung des Seils (von der Öse zum Aufhängepunkt)
+      const ropeLen = Math.hypot(A1[0] - E1[0], A1[1] - E1[1]);
+      const u1: Pt = [(A1[0] - E1[0]) / ropeLen, (A1[1] - E1[1]) / ropeLen];
       const u2: Pt = [-u1[0], u1[1]];
       const t1: Pt = [node[0] + u1[0] * FS * kPx, node[1] + u1[1] * FS * kPx];
       const t2: Pt = [node[0] + u2[0] * FS * kPx, node[1] + u2[1] * FS * kPx];
@@ -1031,6 +1060,33 @@ export default defineSimulation({
       if (p.a < 18) haloText(`α = ${fmt.num(p.a, 0)}°`, A2[0] - ar - 18, A2[1] - 10, theme.series[3]!, small ? 10.5 : 12, 'right');
       else haloText(`α = ${fmt.num(p.a, 0)}°`, A2[0] + Math.cos(mida) * (ar + 10), A2[1] + Math.sin(mida) * (ar + 10) + 8, theme.series[3]!, small ? 10.5 : 12, 'right');
       if (!small) pill(r.x + 10, line ? r.y + 10 : top + 8, ctx.t(line ? 'lineTitle' : 'lampTitle'), theme.text, 'left', 12.5);
+    }
+
+    /** Lampe als Foto; (x, eyeY) = Angriffspunkt der Seile an den Ösen, k = Maßstab. */
+    function drawLampPhoto(img: HTMLImageElement, x: number, eyeY: number, k: number): void {
+      const gx = surface.g;
+      const dark = ctx.theme.dark;
+      const w = LAMP_IMG.w * k;
+      const h = (LAMP_IMG.h - LAMP_IMG.top) * k;
+      const top = eyeY - (LAMP_IMG.eyeY - LAMP_IMG.top) * k;
+      const bulb: Pt = [x, top + (LAMP_IMG.bulbY - LAMP_IMG.top) * k];
+      if (dark) {
+        const r = w * 1.25;
+        const glow = gx.createRadialGradient(bulb[0], bulb[1], 2, bulb[0], bulb[1], r);
+        glow.addColorStop(0, 'rgba(255,214,120,0.42)');
+        glow.addColorStop(1, 'rgba(255,214,120,0)');
+        gx.fillStyle = glow;
+        gx.beginPath();
+        gx.arc(bulb[0], bulb[1], r, 0, Math.PI * 2);
+        gx.fill();
+      }
+      gx.save();
+      gx.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
+      gx.shadowBlur = 10;
+      gx.shadowOffsetX = 2;
+      gx.shadowOffsetY = 4;
+      gx.drawImage(scaledSprite(img, w, h, surface.dpr, { crop: { x: 0, y: LAMP_IMG.top, w: LAMP_IMG.w, h: LAMP_IMG.h - LAMP_IMG.top } }), x - LAMP_IMG.cx * k, top, w, h);
+      gx.restore();
     }
 
     function drawLamp(x: number, y: number, h: number, small: boolean): void {

@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   arrivalTime,
   CHAIN_LENGTH,
@@ -95,6 +95,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.12, aspectNarrow: 0.48 },
+  images: { ball: 'kugel.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -550,8 +551,25 @@ export default defineSimulation({
     }
 
     /** Kugel mit Glanzlicht. */
+    /** Mittlere Helligkeit der roten Kugel im Foto (zum Angleichen der Einfärbung). */
+    const BALL_LUM = 0.27;
+    function luminance(hex: string): number {
+      const m = /^#([0-9a-f]{6})$/i.exec(hex.trim());
+      if (!m) return BALL_LUM;
+      const n = parseInt(m[1]!, 16);
+      return (0.3 * (n >> 16) + 0.59 * ((n >> 8) & 255) + 0.11 * (n & 255)) / 255;
+    }
+
     function ball(x: number, y: number, r: number, color: string): void {
       const g = surface.g;
+      const img = ctx.images.get('ball');
+      if (img && r >= 3.2) {
+        // Foto der Kugel, in der Farbe des Zustands eingefärbt (Glanzlicht bleibt); vorab skaliert, Größe auf halbe Pixel gerundet
+        const rr = Math.ceil(r * 2) / 2;
+        const lift = Math.round(clamp(1 - (1 - luminance(color)) / (1 - BALL_LUM), 0, 0.8) * 20) / 20;
+        g.drawImage(tintedSprite(img, rr * 2, rr * 2, surface.dpr, color, { lift }), x - r, y - r, r * 2, r * 2);
+        return;
+      }
       if (r < 3.2) {
         g.fillStyle = color;
         g.beginPath();

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { balance, planRun, restitution, stateAt, TRACK, type CollisionType, type Run, type RunState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -10,6 +10,12 @@ const ARROW = 0.13;
 /** Masse eines leeren Gleiters in kg (der Rest liegt als Massestücke obendrauf). */
 const GLIDER_MASS = 0.05;
 const PHYSICS = ['type', 'k', 'm1', 'v1', 'm2', 'v2'];
+/**
+ * `bahn.webp` (628 × 54 px): Vierkantprofil, oben die Luftlöcher. Die Enden
+ * (`cap`) bleiben, das gleichförmige Profil dazwischen wird in Längsrichtung
+ * gestreckt (gekachelt sähe man die Helligkeitsverläufe des Fotos als Muster).
+ */
+const TRACK_IMG = { w: 628, h: 54, cap: 8 };
 
 /** „Schöne“ Schrittweite (1, 2, 2,5, 5 · 10^k) von mindestens x. */
 function niceStep(x: number): number {
@@ -81,6 +87,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.28, aspectNarrow: 0.5 },
+  images: { track: 'bahn.webp' },
   groups: [
     { id: 'g1', label: L('Gleiter 1 (links)', 'Glider 1 (left)') },
     { id: 'g2', label: L('Gleiter 2 (rechts)', 'Glider 2 (right)') },
@@ -640,31 +647,37 @@ export default defineSimulation({
       g.lineWidth = 2;
       g.stroke();
       g.restore();
-      // Balken (Aluminiumprofil)
-      const body = g.createLinearGradient(0, bodyTop, 0, G.beamBottom);
-      body.addColorStop(0, dark ? '#a7b0bc' : '#eef1f5');
-      body.addColorStop(0.45, dark ? '#7f8896' : '#c7ced8');
-      body.addColorStop(1, dark ? '#59616e' : '#99a3b0');
-      g.fillStyle = body;
-      g.fillRect(x0, bodyTop, x1 - x0, G.beamH);
-      // Dreiecksprofil oben (mit Luftlöchern)
-      const ridge = g.createLinearGradient(0, G.trackY, 0, bodyTop);
-      ridge.addColorStop(0, dark ? '#c3cad4' : '#ffffff');
-      ridge.addColorStop(1, dark ? '#8a93a0' : '#d3d9e1');
-      g.fillStyle = ridge;
-      g.beginPath();
-      g.moveTo(x0, bodyTop);
-      g.lineTo(x0 + 3, G.trackY);
-      g.lineTo(x1 - 3, G.trackY);
-      g.lineTo(x1, bodyTop);
-      g.closePath();
-      g.fill();
-      g.fillStyle = dark ? 'rgba(10,14,20,0.55)' : 'rgba(40,50,62,0.45)';
-      const holeStep = G.small ? 9 : 12;
-      for (let x = x0 + holeStep; x < x1 - 4; x += holeStep) {
+      const trackImg = ctx.images.get('track');
+      if (trackImg) {
+        // Foto: Profil von der Oberkante bis zur Unterkante des Balkens
+        g.drawImage(trackStrip(trackImg, x1 - x0, G.beamBottom - G.trackY, dark), x0, G.trackY, x1 - x0, G.beamBottom - G.trackY);
+      } else {
+        // Balken (Aluminiumprofil)
+        const body = g.createLinearGradient(0, bodyTop, 0, G.beamBottom);
+        body.addColorStop(0, dark ? '#a7b0bc' : '#eef1f5');
+        body.addColorStop(0.45, dark ? '#7f8896' : '#c7ced8');
+        body.addColorStop(1, dark ? '#59616e' : '#99a3b0');
+        g.fillStyle = body;
+        g.fillRect(x0, bodyTop, x1 - x0, G.beamH);
+        // Dreiecksprofil oben (mit Luftlöchern)
+        const ridge = g.createLinearGradient(0, G.trackY, 0, bodyTop);
+        ridge.addColorStop(0, dark ? '#c3cad4' : '#ffffff');
+        ridge.addColorStop(1, dark ? '#8a93a0' : '#d3d9e1');
+        g.fillStyle = ridge;
         g.beginPath();
-        g.arc(x, G.trackY + G.ridgeH * 0.55, 0.9, 0, Math.PI * 2);
+        g.moveTo(x0, bodyTop);
+        g.lineTo(x0 + 3, G.trackY);
+        g.lineTo(x1 - 3, G.trackY);
+        g.lineTo(x1, bodyTop);
+        g.closePath();
         g.fill();
+        g.fillStyle = dark ? 'rgba(10,14,20,0.55)' : 'rgba(40,50,62,0.45)';
+        const holeStep = G.small ? 9 : 12;
+        for (let x = x0 + holeStep; x < x1 - 4; x += holeStep) {
+          g.beginPath();
+          g.arc(x, G.trackY + G.ridgeH * 0.55, 0.9, 0, Math.PI * 2);
+          g.fill();
+        }
       }
       g.fillStyle = 'rgba(0,0,0,0.18)';
       g.fillRect(x0, G.beamBottom - 1.5, x1 - x0, 1.5);
@@ -710,6 +723,27 @@ export default defineSimulation({
         text(g, label, G.small && i === last ? x + 4 : x, labelY, { font, color: ctx.theme.muted, align: G.small && i === last ? 'right' : 'center' });
       }
       if (!G.small) text(g, ctx.t('scale'), x1 + cap, labelY + 13, { font: `600 10.5px ${ctx.theme.font}`, color: ctx.theme.muted, align: 'right' });
+    }
+
+    /** Bahn aus dem Foto, vorab gerendert (Enden unverzerrt, gleichförmiges Profil in Längsrichtung gestreckt). */
+    let trackCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function trackStrip(img: HTMLImageElement, w: number, h: number, dark: boolean): HTMLCanvasElement {
+      const key = `${Math.round(w)}|${Math.round(h)}|${surface.dpr}|${dark ? 1 : 0}`;
+      if (trackCache?.key === key) return trackCache.canvas;
+      const { canvas, g } = offscreenCanvas(w, h, surface.dpr);
+      const k = h / TRACK_IMG.h;
+      const cap = TRACK_IMG.cap * k;
+      const midW = TRACK_IMG.w - 2 * TRACK_IMG.cap;
+      g.drawImage(img, TRACK_IMG.cap, 0, midW, TRACK_IMG.h, cap - 0.25, 0, w - 2 * cap + 0.5, h);
+      g.drawImage(img, 0, 0, TRACK_IMG.cap, TRACK_IMG.h, 0, 0, cap + 0.5, h);
+      g.drawImage(img, TRACK_IMG.w - TRACK_IMG.cap, 0, TRACK_IMG.cap, TRACK_IMG.h, w - cap - 0.5, 0, cap + 0.5, h);
+      if (dark) {
+        g.globalCompositeOperation = 'source-atop';
+        g.fillStyle = 'rgba(10,16,26,0.22)';
+        g.fillRect(0, 0, w, h);
+      }
+      trackCache = { key, canvas };
+      return canvas;
     }
 
     function drawStack(cx: number, bottom: number, m: number, G: Geo): number {
@@ -764,7 +798,9 @@ export default defineSimulation({
       const cx = scene.px(x);
       const len = G.len;
       const bump = clamp(len * 0.075, 3, 7);
-      const bottom = G.trackY + G.ridgeH * 0.75;
+      // Mit Foto der Bahn (Vierkantprofil, oben flach) schwebt der Gleiter knapp über der Oberkante
+      const flatTrack = !!ctx.images.get('track');
+      const bottom = flatTrack ? G.trackY - 0.5 : G.trackY + G.ridgeH * 0.75;
       const top = G.trackY + G.ridgeH * 0.5 - G.gliderH;
       const type = p.type as CollisionType;
       // Platte ist um den Puffer kürzer; der Puffer zeigt zum anderen Gleiter
@@ -773,7 +809,7 @@ export default defineSimulation({
       // Schatten auf dem Profil (Luftkissen)
       g.fillStyle = theme.dark ? 'rgba(0,0,0,0.35)' : 'rgba(20,30,45,0.16)';
       g.beginPath();
-      g.ellipse(cx, G.trackY + G.ridgeH + 1.5, len * 0.48, 2.2, 0, 0, Math.PI * 2);
+      g.ellipse(cx, flatTrack ? G.trackY + 1 : G.trackY + G.ridgeH + 1.5, len * 0.48, 2.2, 0, 0, Math.PI * 2);
       g.fill();
       // Platte
       g.save();

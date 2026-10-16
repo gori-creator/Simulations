@@ -63,6 +63,15 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Federpendel | `stand` | `src/assets/sims/federpendel/stativ.webp` | 183 × 520 | transparent |
 | Federpendel | `mass` | `src/assets/sims/federpendel/gewicht.webp` | 161 × 410 | transparent |
 | Hookesches Gesetz | `stand` | `src/assets/sims/hookesches-gesetz/stativ.webp` | 183 × 520 | transparent |
+| Hebelgesetz | `mass` | `src/assets/sims/hebelgesetz/gewicht.webp` | 161 × 410 | transparent |
+| Hebelgesetz | `barrow` | `src/assets/sims/hebelgesetz/schubkarre.webp` | 557 × 237 | transparent |
+| Kräfteaddition | `lamp` | `src/assets/sims/kraefteaddition/lampe.webp` | 267 × 447 | transparent |
+| Schiefe Ebene | `block` | `src/assets/sims/schiefe-ebene/holzklotz.webp` | 509 × 109 | transparent |
+| Schiefe Ebene | `board` | `src/assets/sims/schiefe-ebene/brett.webp` | 677 × 68 | deckend |
+| Stöße | `track` | `src/assets/sims/stoesse/bahn.webp` | 628 × 54 | transparent |
+| Resonanz | `wheel` | `src/assets/sims/resonanz/rad.webp` | 384 × 376 | transparent |
+| Wellenausbreitung | `ball` | `src/assets/sims/wellen-ausbreitung/kugel.webp` | 202 × 201 | transparent |
+| Achterbahn | `land` | `src/assets/sims/energieerhaltung/landschaft.webp` | 1003 × 126 | transparent oben |
 
 ## Ziegenproblem
 
@@ -193,6 +202,12 @@ Wird entlang der Schiene gedreht. Seitenansicht, Fahrtrichtung nach **rechts**, 
 Füllt den Hintergrund; unten wird ein Wiesenstreifen darübergezeichnet.
 
 > Bright summer sky with soft cumulus clouds, a faint distant amusement park skyline with a Ferris wheel along the bottom edge, gentle colours, no people, no text, no logos, photorealistic, 16:10
+
+### `landschaft.webp` – Parklandschaft
+
+Panoramastreifen eines Freizeitparks mit durchsichtigem Himmel. Liegt über dem Himmel am unteren Rand hinter der Bahn: volle Breite der Szene (Seitenverhältnis bleibt), die Unterkante reicht knapp in den gezeichneten Wiesenstreifen. Vorab skaliert; im Dunkelmodus wie der Himmel abgedunkelt. Die Auflösung (1003 px breit) reicht für den Hintergrund knapp.
+
+> Wide panoramic strip of a summer amusement park landscape, green rolling grass and a few trees at the bottom, transparent sky above, side view, photorealistic
 
 ## Brechung
 
@@ -337,3 +352,68 @@ Pendelkörper: Messing-Schlitzgewicht mit Haken. Oben der Haken (etwa ein Vierte
 Gleiche Datei wie beim Fadenpendel (siehe dort); der Ausleger wird bis über die Federn gestreckt.
 
 > A physics lab stand with a heavy dark base, vertical steel rod and a short horizontal clamp arm at the top pointing right, front view, isolated on a transparent background, photorealistic
+
+## Hebelgesetz
+
+### `gewicht.webp` – Hakengewicht
+
+Gleiche Datei wie beim Federpendel. Am Hebel wird das Foto zerlegt: Haken und Kopf (bis zur Oberkante des Zylinders) hängen mit der Innenseite des Hakens im Loch, darunter werden die 50-g-Massestücke als waagerechte Bänder aus dem Messingzylinder geschnitten (das unterste mit der gerundeten Unterkante). Breite = Stapelbreite, Seitenverhältnis bleibt; der Haken ist mit Foto etwas länger als in der Ersatzgrafik. Auch die Stücke im Kasten und das gezogene Stück verwenden das Foto.
+
+> A slotted brass laboratory weight with a hook on top, cylindrical, shiny polished brass, front view, isolated on a transparent background, photorealistic
+
+### `schubkarre.webp` – Schubkarre
+
+Beispiel „Hebel im Alltag“: grüne Schubkarre in Seitenansicht, **Rad links**. Das Foto wird um die Radmitte (= Drehachse) gedreht, um 2,6° so geneigt, dass Rad und Stütze auf dem Boden stehen, und so skaliert, dass das Griffende bei 152 cm liegt (Rad dann 21,6 cm Radius). Griffhöhe und Muldenrand sind aus dem Foto vermessen; die Hebelarme (waagerechte Abstände) und Kraftpfeile bleiben unverändert. Der Sand wird hinter die Mulde gezeichnet und schaut oben heraus.
+
+> A classic garden wheelbarrow with a green metal tub, one front wheel and two wooden handles, exact side view facing left, empty, isolated on a transparent background, photorealistic
+
+`flaschenoeffner.webp` (Draufsicht) ist **nicht eingebaut**: Die Szene zeigt den Öffner von der Seite auf der Flasche (Zahn unter dem Kronkorken, Auflagepunkt); dafür wäre eine Seitenansicht nötig. Das Bild liegt weiter in `docs/bilder-eingang/hebelgesetz/`.
+
+## Kräfteaddition
+
+### `lampe.webp` – Laterne
+
+Hängende Laterne mit zwei Ösen. Das Foto wird unterhalb der Kabelstummel abgeschnitten; die Seile enden innen oben an den Ösen. Die Ösen liegen genau auf den Seilgeraden, der Winkel α bleibt exakt. Die Kraftpfeile greifen am Schnittpunkt der Seilgeraden an (Kräfte entlang der Wirkungslinie verschoben, gestrichelt angedeutet); bei sehr steilen Seilen bleibt dieser Punkt im oberen Viertel der Lampe. Im Dunkelmodus leuchtet die Glühlampe.
+
+> A round vintage street lamp hanging from above, dark metal housing with a warm glowing glass globe, front view, two attachment rings on top, isolated on a transparent background, photorealistic
+
+## Schiefe Ebene
+
+### `holzklotz.webp` – Holzklotz
+
+Klotz aus Eiche mit Öse (Seitenansicht), nur bei „Holz auf Holz“ und eigenen Werten. Der Klotz im Foto ist sehr lang (etwa 4 : 1); für die Simulation wird ein Stück aus der Mitte herausgenommen und die Naht weich überblendet (nichts gestreckt), sodass er etwa 2,2 : 1 ist. Er wird mit der Ebene gedreht; die Öse zeigt hangaufwärts zum Kraftmesser.
+
+> A rectangular wooden block of light oak with visible grain and a small metal hook on one end, side view, isolated on a transparent background, photorealistic
+
+### `brett.webp` – Holzleiste
+
+Oberfläche der Ebene bei Holz (auch für den Wagen): wird entlang der Schräge gedreht, auf die Leistendicke skaliert und gespiegelt aneinandergesetzt (höchstens leicht in Längsrichtung gestreckt), im Dunkelmodus leicht abgedunkelt.
+
+> A long plank of smooth light wood seen exactly from the side, horizontal, fine wood grain, seamless horizontally tileable, photorealistic
+
+## Stöße
+
+### `bahn.webp` – Luftkissenbahn
+
+Vierkantprofil mit Luftlöchern oben, von der Oberkante bis zur Unterkante des Balkens. Die Enden bleiben unverzerrt, das gleichförmige Profil wird in Längsrichtung gestreckt (gekachelt sähe man die Helligkeitsverläufe als Muster). Skala, Endstücke und Stützen zeichnet die Simulation darüber; die Gleiter schweben knapp über der Oberkante.
+
+> A long horizontal aluminium air track with tiny holes along the top surface, side view, brushed metal, isolated on a transparent background, photorealistic
+
+`gleiter.webp` ist **nicht eingebaut** (liegt in `docs/bilder-eingang/stoesse/`): Das Foto ist keine reine Seitenansicht (Stirnfläche sichtbar, Unterkante um etwa 3° schräg) und mit 6,6 : 1 zu flach – für die Beschriftung und die Farbe der Gleiter müsste es stark gestaucht und eingefärbt werden, das wirkte unruhiger als die gezeichneten Gleiter. Die Aufschrift „10 cm“ wäre bei der Darstellungsgröße nicht lesbar.
+
+## Resonanz (Pohlsches Rad)
+
+### `rad.webp` – Kupferrad
+
+Verwendet wird nur die Kupferscheibe innerhalb des Skalenrings: kreisförmig ausgeschnitten (ohne Fuß und ohne die Zahlen der Foto-Skala), sie dreht sich mit dem Ausschlag. Die Spiralfeder des Fotos würde starr mitdrehen; sie wird beim Laden mit der Kupferfarbe übermalt, die ringsum gemessen wird (die gebürstete Scheibe ändert ihre Helligkeit nur mit dem Winkel). Skala, Zeiger, Feder, Erreger und Bremse zeichnet die Simulation; sie sind maßgeblich.
+
+> A Pohl's wheel physics apparatus seen from the front: a flat polished copper disc with a fine scale ring around the edge, a coiled spiral spring in the centre, isolated on a transparent background, photorealistic
+
+## Wellenausbreitung
+
+### `kugel.webp` – Teilchen der Kette
+
+Rote Kugel; wird für jedes Teilchen vorab skaliert und in der Farbe des Zustands eingefärbt (in Bewegung, in Ruhe, markiertes Teilchen), Glanzlicht und Schattierung bleiben. Sehr kleine Teilchen (Radius unter 3,2 px) bleiben gezeichnete Punkte.
+
+> A small glossy red sphere, perfectly round, soft highlight, isolated on a transparent background, photorealistic
+

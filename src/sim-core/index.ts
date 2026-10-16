@@ -29,7 +29,7 @@ export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
 export { drawImageFit, roundRect, softShadow, text, withAlpha } from './draw';
 export { ImageStore, simAssetUrl } from './images';
-export { offscreenCanvas, scaledSprite, type SpriteOptions } from './sprites';
+export { offscreenCanvas, scaledSprite, tintedSprite, type SpriteOptions, type TintOptions } from './sprites';
 export { drawLabStand, type LabStandOptions } from './lab-stand';
 export {
   Camera3D,

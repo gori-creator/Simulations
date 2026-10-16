@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   balance,
   balancingForce,
@@ -42,6 +42,25 @@ const SEESAW_MAX = Math.asin(SEESAW_H / SEESAW_HALF);
 /** Drehwinkel beim „Anheben“ (Goldene Regel), je Gegenstand in rad. */
 const LIFT: Record<Exclude<Obj, 'seesaw'>, number> = { barrow: 0.14, opener: 0.2, nut: 0.075 };
 
+/**
+ * Lage im Foto `gewicht.webp` (161 × 410 px, Hakengewicht aus Messing):
+ * Innenseite des Hakens (Auflage am Loch), Oberkante des Zylinders, Zylinder
+ * waagerecht und das Band, aus dem die einzelnen Massestücke geschnitten werden.
+ */
+const MASS_IMG = { w: 161, cx: 79.5, hookY: 24, bodyTop: 158, bodyL: 1, bodyW: 158, bandTop: 168, bottom: 406 };
+
+/**
+ * Lage im Foto `schubkarre.webp` (557 × 237 px, Rad links): Radmitte und
+ * -radius, Drehung, damit Rad und Stütze auf dem Boden stehen, und Maßstab
+ * (cm je Bildpixel), mit dem das Griffende bei x ≈ 152 cm liegt.
+ */
+const BARROW_IMG = { w: 557, h: 237, cx: 84, cy: 159, r: 66, tilt: (2.6 * Math.PI) / 180, cmPerPx: 0.3276 };
+/** Radius des Rads mit Foto in cm (Radmitte = Drehachse liegt so hoch). */
+const BARROW_R_IMG = BARROW_IMG.r * BARROW_IMG.cmPerPx;
+/** Mittellinie des vorderen Griffs und Oberkante der Mulde im Foto, umgerechnet in Weltkoordinaten (cm). */
+const BARROW_RAIL_IMG = { x0: 94.3, y0: 46.5, slope: 0.259 };
+const BARROW_RIM_IMG = { x0: -8, y0: 73, slope: 0.0235 };
+
 /** Geometrie der Laborszene (für Zeichnen und Zeiger). */
 interface LabGeo {
   w: number;
@@ -58,6 +77,8 @@ interface LabGeo {
   pieceH: number;
   hookH: number;
   meter: { hook: number; ext: number; housing: number; ring: number; width: number };
+  /** Mit Foto gezeichnet (Haken ist dann größer). */
+  photo: boolean;
 }
 
 /**
@@ -70,6 +91,7 @@ export default defineSimulation({
   id: 'hebelgesetz',
   dragHint: true,
   layout: { aspect: 1.45, aspectNarrow: 0.8 },
+  images: { mass: 'gewicht.webp', barrow: 'schubkarre.webp' },
   groups: [
     { id: 'w1', label: L('Massestücke (1)', 'Weights (1)') },
     { id: 'w2', label: L('Massestücke (2)', 'Weights (2)') },
@@ -485,14 +507,17 @@ export default defineSimulation({
     function labGeo(): LabGeo {
       const w = surface.width;
       const h = surface.height;
-      if (geo && geo.w === w && geo.h === h) return geo;
+      const photo = !!ctx.images.get('mass');
+      if (geo && geo.w === w && geo.h === h && geo.photo === photo) return geo;
       const small = w < 640;
       const tableY = h - (small ? 22 : 30);
       const trayH = small ? 40 : 48;
       const trayW = small ? 76 : 96;
       const sp = Math.min((w - (small ? 20 : 56)) / 21.6, small ? 18 : 36);
       const pieceH = small ? 10 : 15;
-      const hookH = small ? 9 : 12;
+      const pieceW = Math.min(small ? sp - 3 : 28, 28);
+      // Foto: Haken und Kopf des Hakengewichts in Stapelbreite (Seitenverhältnis bleibt)
+      const hookH = photo ? Math.round(((MASS_IMG.bodyTop - MASS_IMG.hookY) * pieceW) / MASS_IMG.bodyW) : small ? 9 : 12;
       const stackH = MAX_PIECES * (pieceH + 1) + hookH + 4;
       const drop = HOLES * sp * Math.sin(MAX_TILT);
       const ay = Math.min(tableY - trayH - 10 - stackH - drop, h * (small ? 0.5 : 0.49));
@@ -506,9 +531,10 @@ export default defineSimulation({
         beamH: small ? 11 : 16,
         tableY,
         tray: { x: w - trayW - (small ? 8 : 14), y: tableY - trayH, w: trayW, h: trayH },
-        pieceW: Math.min(small ? sp - 3 : 28, 28),
+        pieceW,
         pieceH,
         hookH,
+        photo,
         meter: small ? { hook: 8, ext: 54, housing: 50, ring: 6.5, width: 11 } : { hook: 10, ext: 80, housing: 70, ring: 8, width: 15 },
       };
       return geo;
@@ -674,8 +700,9 @@ export default defineSimulation({
     /* ---------- Griffe im Alltag ---------- */
     const dailyOn = (o: Obj) => () => mode() === 'daily' && obj() === o && !ctx.locked && !liftTween.running && !lifted;
     const nutTheta = () => Math.atan2(NUT_R, p.nl);
-    const yRail = (x: number) => 20 + x * 0.3;
-    const yRim = (x: number) => 70 + (x + 12) * (6 / 104);
+    // Holm (Griff) und Oberkante der Mulde; mit Foto aus dem Foto vermessen (nur die Höhen ändern sich, die Hebelarme nicht)
+    const yRail = (x: number) => (ctx.images.get('barrow') ? BARROW_RAIL_IMG.y0 + (x - BARROW_RAIL_IMG.x0) * BARROW_RAIL_IMG.slope : 20 + x * 0.3);
+    const yRim = (x: number) => (ctx.images.get('barrow') ? BARROW_RIM_IMG.y0 + (x - BARROW_RIM_IMG.x0) * BARROW_RIM_IMG.slope : 70 + (x + 12) * (6 / 104));
     dplot.addHandle({ get: () => [p.bl, yRim(p.bl) + 9], set: (x) => ctx.set({ bl: x }), axis: 'x', enabled: dailyOn('barrow'), color: () => ctx.theme.series[1]! });
     dplot.addHandle({ get: () => [p.bk, yRail(p.bk) + 1.5], set: (x) => ctx.set({ bk: x }), axis: 'x', enabled: dailyOn('barrow'), color: () => ctx.theme.series[2]! });
     dplot.addHandle({ get: () => [-0.4 + p.ok, 0.25], set: (x) => ctx.set({ ok: x + 0.4 }), axis: 'x', enabled: dailyOn('opener'), color: () => ctx.theme.series[2]! });
@@ -781,8 +808,36 @@ export default defineSimulation({
       gx.restore();
     }
 
-    function drawPiece(cx: number, y: number, w: number, h: number, label: string | null): void {
+    function drawPiece(cx: number, y: number, w: number, h: number, label: string | null, last = false): void {
       const gx = surface.g;
+      const img = ctx.images.get('mass');
+      if (img) {
+        // Foto: ein Stück des Messingzylinders in Stapelbreite (unten mit der gerundeten Kante)
+        const rows = (MASS_IMG.bodyW * h) / w;
+        const y0 = last ? MASS_IMG.bottom - rows : MASS_IMG.bandTop;
+        gx.drawImage(scaledSprite(img, w, h, surface.dpr, { crop: { x: MASS_IMG.bodyL, y: y0, w: MASS_IMG.bodyW, h: rows } }), cx - w / 2, y, w, h);
+        const sh = gx.shadowColor;
+        gx.shadowColor = 'transparent';
+        gx.fillStyle = 'rgba(255,248,220,0.45)';
+        gx.fillRect(cx - w / 2 + 1.5, y, w - 3, 1);
+        if (!last) {
+          gx.fillStyle = 'rgba(60,40,5,0.35)';
+          gx.fillRect(cx - w / 2 + 1, y + h - 1, w - 2, 1);
+        }
+        if (label && h >= 12 && w >= 24) {
+          gx.font = `700 ${h >= 15 ? 9.5 : 8.5}px ${ctx.theme.font}`;
+          gx.textAlign = 'center';
+          gx.textBaseline = 'middle';
+          gx.lineJoin = 'round';
+          gx.lineWidth = 2.5;
+          gx.strokeStyle = 'rgba(255,238,190,0.85)';
+          gx.strokeText(label, cx, y + h / 2 + 0.5);
+          gx.fillStyle = '#3d2a06';
+          gx.fillText(label, cx, y + h / 2 + 0.5);
+        }
+        gx.shadowColor = sh;
+        return;
+      }
       const brass = gx.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
       brass.addColorStop(0, '#8d6a24');
       brass.addColorStop(0.3, '#f0d27a');
@@ -989,7 +1044,19 @@ export default defineSimulation({
         let y = hy + gg.hookH;
         if (shared) y += p.n1 * (gg.pieceH + 1);
         const active = (drag?.kind === 'stack' && drag.which === which) || hover === `stack${which}`;
-        if (!shared) {
+        const img = ctx.images.get('mass');
+        if (!shared && img) {
+          // Foto: Haken und Kopf des Hakengewichts; die Innenseite des Hakens liegt im Loch
+          const k = gg.pieceW / MASS_IMG.bodyW;
+          gx.save();
+          gx.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.25)';
+          gx.shadowBlur = 4;
+          gx.shadowOffsetY = 2;
+          const iw = MASS_IMG.w * k;
+          const ih = (MASS_IMG.bodyTop + 2) * k;
+          gx.drawImage(scaledSprite(img, iw, ih, surface.dpr, { crop: { x: 0, y: 0, w: MASS_IMG.w, h: MASS_IMG.bodyTop + 2 } }), hx - MASS_IMG.cx * k, hy - MASS_IMG.hookY * k, iw, ih);
+          gx.restore();
+        } else if (!shared) {
           // Haken
           gx.strokeStyle = dark ? '#c3cbd6' : '#5d6570';
           gx.lineWidth = 1.6;
@@ -1008,7 +1075,9 @@ export default defineSimulation({
         gx.shadowColor = 'rgba(0,0,0,0.22)';
         gx.shadowBlur = 4;
         gx.shadowOffsetY = 2;
-        for (let k = 0; k < s.n; k++) drawPiece(hx, y + k * (gg.pieceH + 1), gg.pieceW, gg.pieceH, small ? null : '50 g');
+        // Hängt Stapel 2 darunter, endet der Zylinder erst unten
+        const lastBelow = which === 1 && p.n2 > 0 && p.x1 === p.x2;
+        for (let k = 0; k < s.n; k++) drawPiece(hx, y + k * (gg.pieceH + 1), gg.pieceW, gg.pieceH, small ? null : '50 g', k === s.n - 1 && !lastBelow);
         gx.restore();
         // Farbmarke des Stapels
         gx.fillStyle = colors[i]!;
@@ -1059,7 +1128,7 @@ export default defineSimulation({
         gx.shadowColor = 'rgba(0,0,0,0.35)';
         gx.shadowBlur = 8;
         gx.shadowOffsetY = 4;
-        drawPiece(drag.px, drag.py - gg.pieceH / 2, gg.pieceW, gg.pieceH, small ? null : '50 g');
+        drawPiece(drag.px, drag.py - gg.pieceH / 2, gg.pieceW, gg.pieceH, small ? null : '50 g', true);
         gx.restore();
       }
 
@@ -1260,7 +1329,7 @@ export default defineSimulation({
       for (let i = 0; i < 10; i++) {
         const col = i % cols;
         const row = Math.floor(i / cols);
-        drawPiece(t0.x + 6 + pw * (col + 0.5), t0.y + t0.h * 0.42 - (row + 1) * (ph - 1) + 2, pw - 2, ph, null);
+        drawPiece(t0.x + 6 + pw * (col + 0.5), t0.y + t0.h * 0.42 - (row + 1) * (ph - 1) + 2, pw - 2, ph, null, row === 0);
       }
       text(gx, ctx.t('tray'), t0.x + t0.w / 2, t0.y + t0.h * 0.66, { font: `700 ${gg.small ? 8.5 : 9.5}px ${theme.font}`, color: '#fff3df' });
       text(gx, ctx.t('each'), t0.x + t0.w / 2, t0.y + t0.h * 0.66 + (gg.small ? 10 : 11), { font: `600 ${gg.small ? 8 : 9}px ${theme.font}`, color: 'rgba(255,243,223,0.85)' });
@@ -1488,7 +1557,9 @@ export default defineSimulation({
       dplot.setRange([-36, 170], [-24, 112]);
       const k = dplot.scale.x;
       const lift = liftValue() * LIFT.barrow;
-      const C: Pt = [0, 20];
+      const img = ctx.images.get('barrow');
+      // Drehachse = Radmitte (mit Foto etwas größeres Rad)
+      const C: Pt = [0, img ? BARROW_R_IMG : 20];
       const R = (q: Pt): Pt => rotateAbout(C, lift, q);
       const P = (q: Pt): Pt => {
         const [x, y] = R(q);
@@ -1511,100 +1582,120 @@ export default defineSimulation({
         }
       };
       ground(0, true);
-      // Rahmen (Holme) und Stütze
-      gx.lineCap = 'round';
-      gx.strokeStyle = '#3a4250';
-      gx.lineWidth = Math.max(3, 3.2 * k);
-      gx.beginPath();
-      const [r0x, r0y] = P([0, 20]);
-      const [r1x, r1y] = P([150, yRail(150)]);
-      gx.moveTo(r0x, r0y);
-      gx.lineTo(r1x, r1y);
-      const [l0x, l0y] = P([72, yRail(72)]);
-      const [l1x, l1y] = P([80, 30]);
-      gx.moveTo(l0x, l0y);
-      gx.lineTo(l1x, l1y);
-      gx.stroke();
-      const [f0x, f0y] = P([72, 30]);
-      gx.lineWidth = Math.max(2.5, 2.4 * k);
-      gx.beginPath();
-      gx.moveTo(f0x, f0y);
-      gx.lineTo(l1x + 4 * k, l1y);
-      gx.stroke();
-      // Griff
-      gx.strokeStyle = '#1d2129';
-      gx.lineWidth = Math.max(5, 5 * k);
-      gx.beginPath();
-      const [g0x, g0y] = P([128, yRail(128)]);
-      gx.moveTo(g0x, g0y);
-      gx.lineTo(r1x, r1y);
-      gx.stroke();
-      // Mulde
-      const tub: Pt[] = [
-        [-12, 70],
-        [92, 76],
-        [79, yRail(79) + 2],
-        [16, yRail(16) + 2],
-      ];
-      const [t0x, t0y] = P([20, 76]);
-      const [t1x, t1y] = P([20, yRail(20)]);
-      const tg = gx.createLinearGradient(t0x, t0y, t1x, t1y);
-      tg.addColorStop(0, '#3f9a5b');
-      tg.addColorStop(1, '#22603a');
       // Sand mit Haufen (Schwerpunkt bei bl)
-      const sand: Pt[] = [];
-      const left = -10;
-      const right = 90;
-      for (let i = 0; i <= 40; i++) {
-        const x = left + ((right - left) * i) / 40;
-        const bump = Math.max(0, 1 - ((x - p.bl) / 32) ** 2);
-        sand.push([x, yRim(x) - 1 + 16 * bump * (0.4 + 0.6 * Math.min(1, p.bm / 80))]);
-      }
-      sand.push([right, yRim(right) - 4], [left, yRim(left) - 4]);
-      const [s0x, s0y] = P([p.bl, 92]);
-      const sg = gx.createLinearGradient(s0x, s0y, s0x, s0y + 30 * k);
-      sg.addColorStop(0, '#e9cf98');
-      sg.addColorStop(1, '#c7a265');
-      poly(sand, sg);
-      gx.save();
-      gx.shadowColor = 'rgba(0,0,0,0.25)';
-      gx.shadowBlur = 6;
-      gx.shadowOffsetY = 2;
-      poly(tub, tg, '#1b4a2c');
-      gx.restore();
-      // Rand der Mulde
-      gx.strokeStyle = '#6cc489';
-      gx.lineWidth = Math.max(2, 1.8 * k);
-      gx.beginPath();
-      const [e0x, e0y] = P([-12, 70]);
-      const [e1x, e1y] = P([92, 76]);
-      gx.moveTo(e0x, e0y);
-      gx.lineTo(e1x, e1y);
-      gx.stroke();
-      // Rad
-      const [wx, wy] = P(C);
-      const wr = 20 * k;
-      gx.save();
-      gx.shadowColor = 'rgba(0,0,0,0.3)';
-      gx.shadowBlur = 6;
-      gx.shadowOffsetY = 2;
-      gx.fillStyle = '#1d2129';
-      gx.beginPath();
-      gx.arc(wx, wy, wr, 0, Math.PI * 2);
-      gx.fill();
-      gx.restore();
-      gx.fillStyle = '#c3cad3';
-      gx.beginPath();
-      gx.arc(wx, wy, wr * 0.62, 0, Math.PI * 2);
-      gx.fill();
-      gx.strokeStyle = '#7d8794';
-      gx.lineWidth = 1.5;
-      for (let i = 0; i < 6; i++) {
-        const a = (i * Math.PI) / 3 + lift;
+      const drawSand = () => {
+        const sand: Pt[] = [];
+        const left = -10;
+        const right = 90;
+        for (let i = 0; i <= 40; i++) {
+          const x = left + ((right - left) * i) / 40;
+          const bump = Math.max(0, 1 - ((x - p.bl) / 32) ** 2);
+          sand.push([x, yRim(x) - 1 + 16 * bump * (0.4 + 0.6 * Math.min(1, p.bm / 80))]);
+        }
+        sand.push([right, yRim(right) - 4], [left, yRim(left) - 4]);
+        const [s0x, s0y] = P([p.bl, 92]);
+        const sg = gx.createLinearGradient(s0x, s0y, s0x, s0y + 30 * k);
+        sg.addColorStop(0, '#e9cf98');
+        sg.addColorStop(1, '#c7a265');
+        poly(sand, sg);
+      };
+      if (img) {
+        // Foto: Sand liegt hinter der Mulde und schaut oben heraus; Radmitte auf der Drehachse
+        drawSand();
+        const k0 = BARROW_IMG.cmPerPx * k;
+        const [wx, wy] = dplot.toPx(C[0], C[1]);
+        const w = BARROW_IMG.w * k0;
+        const h = BARROW_IMG.h * k0;
+        gx.save();
+        gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.28)';
+        gx.shadowBlur = 8;
+        gx.shadowOffsetY = 3;
+        gx.translate(wx, wy);
+        gx.rotate(-(lift + BARROW_IMG.tilt));
+        gx.drawImage(scaledSprite(img, w, h, surface.dpr), -BARROW_IMG.cx * k0, -BARROW_IMG.cy * k0, w, h);
+        gx.restore();
+      } else {
+        // Rahmen (Holme) und Stütze
+        gx.lineCap = 'round';
+        gx.strokeStyle = '#3a4250';
+        gx.lineWidth = Math.max(3, 3.2 * k);
         gx.beginPath();
-        gx.moveTo(wx, wy);
-        gx.lineTo(wx + Math.cos(a) * wr * 0.6, wy + Math.sin(a) * wr * 0.6);
+        const [r0x, r0y] = P([0, 20]);
+        const [r1x, r1y] = P([150, yRail(150)]);
+        gx.moveTo(r0x, r0y);
+        gx.lineTo(r1x, r1y);
+        const [l0x, l0y] = P([72, yRail(72)]);
+        const [l1x, l1y] = P([80, 30]);
+        gx.moveTo(l0x, l0y);
+        gx.lineTo(l1x, l1y);
         gx.stroke();
+        const [f0x, f0y] = P([72, 30]);
+        gx.lineWidth = Math.max(2.5, 2.4 * k);
+        gx.beginPath();
+        gx.moveTo(f0x, f0y);
+        gx.lineTo(l1x + 4 * k, l1y);
+        gx.stroke();
+        // Griff
+        gx.strokeStyle = '#1d2129';
+        gx.lineWidth = Math.max(5, 5 * k);
+        gx.beginPath();
+        const [g0x, g0y] = P([128, yRail(128)]);
+        gx.moveTo(g0x, g0y);
+        gx.lineTo(r1x, r1y);
+        gx.stroke();
+        // Mulde
+        const tub: Pt[] = [
+          [-12, 70],
+          [92, 76],
+          [79, yRail(79) + 2],
+          [16, yRail(16) + 2],
+        ];
+        const [t0x, t0y] = P([20, 76]);
+        const [t1x, t1y] = P([20, yRail(20)]);
+        const tg = gx.createLinearGradient(t0x, t0y, t1x, t1y);
+        tg.addColorStop(0, '#3f9a5b');
+        tg.addColorStop(1, '#22603a');
+        drawSand();
+        gx.save();
+        gx.shadowColor = 'rgba(0,0,0,0.25)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        poly(tub, tg, '#1b4a2c');
+        gx.restore();
+        // Rand der Mulde
+        gx.strokeStyle = '#6cc489';
+        gx.lineWidth = Math.max(2, 1.8 * k);
+        gx.beginPath();
+        const [e0x, e0y] = P([-12, 70]);
+        const [e1x, e1y] = P([92, 76]);
+        gx.moveTo(e0x, e0y);
+        gx.lineTo(e1x, e1y);
+        gx.stroke();
+        // Rad
+        const [wx, wy] = P(C);
+        const wr = 20 * k;
+        gx.save();
+        gx.shadowColor = 'rgba(0,0,0,0.3)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        gx.fillStyle = '#1d2129';
+        gx.beginPath();
+        gx.arc(wx, wy, wr, 0, Math.PI * 2);
+        gx.fill();
+        gx.restore();
+        gx.fillStyle = '#c3cad3';
+        gx.beginPath();
+        gx.arc(wx, wy, wr * 0.62, 0, Math.PI * 2);
+        gx.fill();
+        gx.strokeStyle = '#7d8794';
+        gx.lineWidth = 1.5;
+        for (let i = 0; i < 6; i++) {
+          const a = (i * Math.PI) / 3 + lift;
+          gx.beginPath();
+          gx.moveTo(wx, wy);
+          gx.lineTo(wx + Math.cos(a) * wr * 0.6, wy + Math.sin(a) * wr * 0.6);
+          gx.stroke();
+        }
       }
 
       // Überlagertes Hebelmodell
@@ -1627,7 +1718,7 @@ export default defineSimulation({
       axisMark(C[0], C[1], false);
       const groundDims = lift < 1e-3;
       if (groundDims) {
-        dimension(0, p.bl, -8, `a_L = ${fmt.num(p.bl, 0)} cm`, theme.series[1]!, [20, yRim(p.bl)]);
+        dimension(0, p.bl, -8, `a_L = ${fmt.num(p.bl, 0)} cm`, theme.series[1]!, [C[1], yRim(p.bl)]);
         dimension(0, p.bk, -18, `a_K = ${fmt.num(p.bk, 0)} cm`, theme.series[2]!, [-8, yRail(p.bk)]);
       }
       travelArc(C, [p.bk, yRail(p.bk) + 1.5], lift, theme.series[2]!, tr('sK', { s: fmt.num(p.bk * lift, 1) }), 1);

@@ -1,4 +1,4 @@
-import { defineSimulation, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, FixedStepper, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { holdRange, inclineForces, limitAngle, MATERIALS, pullUpForce, ROLLING, slideAcceleration, slideStep, type InclineForces, type MaterialId, type SlideState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -17,6 +17,19 @@ const FZ_MAX = 50;
 /** Ausschlag des Kraftmessers: voller Auszug bei dieser Kraft. */
 const METER_RANGE = 20;
 const MAX_POINTS = 16;
+/**
+ * Lage im Foto `holzklotz.webp` (509 × 109 px, Seitenansicht): Klotz von
+ * x = 1 bis 446 und y = 1 bis 107, rechts davon die Öse für den Kraftmesser.
+ * Der Klotz im Foto ist sehr lang; für die Simulation wird ein Stück aus der
+ * Mitte herausgenommen (linkes Ende bis `cutL`, rechtes Ende ab `cutR`, an der
+ * Naht `blend` px weich überblendet). Nichts wird gestreckt oder gestaucht.
+ */
+const BLOCK_IMG = { w: 509, h: 109, x0: 1, y0: 1, bodyR: 446, bh: 106, cutL: 138, cutR: 330, blend: 16 };
+/** Breite des zusammengesetzten Fotos und des Klotzes darin (Bildpixel). */
+const BLOCK_W = BLOCK_IMG.cutL + (BLOCK_IMG.w - BLOCK_IMG.cutR) - BLOCK_IMG.blend;
+const BLOCK_BW = BLOCK_W - (BLOCK_IMG.w - BLOCK_IMG.bodyR) - BLOCK_IMG.x0;
+/** `brett.webp` (677 × 68 px): Holzleiste, wird als Oberfläche der Ebene gespiegelt aneinandergesetzt. */
+const BOARD_IMG = { w: 677, h: 68 };
 
 interface Measurement {
   a: number;
@@ -36,6 +49,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.5, aspectNarrow: 0.68 },
+  images: { block: 'holzklotz.webp', board: 'brett.webp' },
   groups: [
     { id: 'meter', label: L('Kraftmesser', 'Spring balance') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -426,9 +440,65 @@ export default defineSimulation({
       return [T[0] - Math.cos(a) * g0.L * s, T[1] + Math.sin(a) * g0.L * s];
     }
 
+    /** Holzklotz als Foto (nur bei Holz bzw. eigenen Werten). */
+    const blockPhoto = () => (p.body === 'block' && (p.mat === 'wood' || p.mat === 'custom') ? ctx.images.get('block') : null);
+
     function bodySize(g0: { L: number }): { bw: number; bh: number } {
       const bw = BODY * g0.L;
+      // Foto: Seitenverhältnis des Klotzes aus dem Foto (flacher als die Ersatzgrafik)
+      if (blockPhoto()) return { bw, bh: (bw * BLOCK_IMG.bh) / BLOCK_BW };
       return { bw, bh: p.body === 'cart' ? bw * 0.5 : bw * 0.58 };
+    }
+
+    /** Holzklotz aus dem Foto: beide Enden, in der Mitte weich zusammengesetzt; vorab gerendert. */
+    let blockCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function blockSprite(img: HTMLImageElement, k: number): HTMLCanvasElement {
+      const key = `${Math.round(k * 1000)}|${surface.dpr}`;
+      if (blockCache?.key === key) return blockCache.canvas;
+      const D = BLOCK_IMG;
+      const w = BLOCK_W * k;
+      const h = D.h * k;
+      const { canvas, g } = offscreenCanvas(w, h, surface.dpr);
+      g.drawImage(img, 0, 0, D.cutL, D.h, 0, 0, D.cutL * k, h);
+      const rw = (D.w - D.cutR) * k;
+      const right = offscreenCanvas(rw, h, surface.dpr);
+      right.g.drawImage(img, D.cutR, 0, D.w - D.cutR, D.h, 0, 0, rw, h);
+      right.g.globalCompositeOperation = 'destination-in';
+      const fade = right.g.createLinearGradient(0, 0, D.blend * k, 0);
+      fade.addColorStop(0, 'rgba(0,0,0,0)');
+      fade.addColorStop(1, 'rgba(0,0,0,1)');
+      right.g.fillStyle = fade;
+      right.g.fillRect(0, 0, rw, h);
+      g.drawImage(right.canvas, (D.cutL - D.blend) * k, 0, rw, h);
+      blockCache = { key, canvas };
+      return canvas;
+    }
+
+    /** Holzleiste als Oberfläche: vorab gerendert (gespiegelt aneinandergesetzt, keine Nahtstellen). */
+    let boardCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function boardStrip(img: HTMLImageElement, len: number, thick: number): HTMLCanvasElement {
+      const dark = ctx.theme.dark;
+      const key = `${Math.round(len)}|${thick}|${surface.dpr}|${dark ? 1 : 0}`;
+      if (boardCache?.key === key) return boardCache.canvas;
+      const { canvas, g } = offscreenCanvas(len, thick, surface.dpr);
+      const natural = (BOARD_IMG.w * thick) / BOARD_IMG.h;
+      // Maserung höchstens leicht in Längsrichtung gestreckt
+      const n = Math.max(1, Math.round(len / (natural * 1.6)));
+      const tw = len / n;
+      for (let i = 0; i < n; i++) {
+        g.drawImage(scaledSprite(img, tw, thick, surface.dpr, { flipX: i % 2 === 1 }), i * tw, 0, tw + 0.5, thick);
+      }
+      if (dark) {
+        g.fillStyle = 'rgba(10,14,22,0.28)';
+        g.fillRect(0, 0, len, thick);
+      }
+      // Kanten: oben Glanz, unten Schattenfuge
+      g.fillStyle = 'rgba(255,255,255,0.35)';
+      g.fillRect(0, 0, len, 1);
+      g.fillStyle = 'rgba(70,40,10,0.45)';
+      g.fillRect(0, thick - 1, len, 1);
+      boardCache = { key, canvas };
+      return canvas;
     }
 
     function bodyCenter(g0: { P0: Pt; L: number }, s: number): Pt {
@@ -614,35 +684,44 @@ export default defineSimulation({
       gx.fill();
       gx.restore();
       // Oberfläche (Material)
-      const thick = sm ? 4 : 6;
+      const boardImg = st.label === 'wood' ? ctx.images.get('board') : null;
+      const thick = boardImg ? (sm ? 6 : 9) : sm ? 4 : 6;
       gx.save();
-      gx.beginPath();
-      gx.moveTo(P0[0], P0[1]);
-      gx.lineTo(T[0], T[1]);
-      gx.lineTo(T[0] + Math.sin(a) * thick, T[1] + Math.cos(a) * thick);
-      gx.lineTo(P0[0] + Math.sin(a) * thick, P0[1] + Math.cos(a) * thick);
-      gx.closePath();
-      gx.fillStyle = st.top;
-      gx.fill();
-      gx.strokeStyle = st.edge;
-      gx.lineWidth = 1;
-      gx.stroke();
-      if (st.label === 'asphalt') {
-        gx.fillStyle = 'rgba(255,255,255,0.35)';
-        for (let i = 0; i < 60; i++) {
-          const f = (i * 0.618) % 1;
-          const q = ((i * 0.37) % 1) * thick;
-          gx.fillRect(P0[0] + (T[0] - P0[0]) * f + Math.sin(a) * q, P0[1] + (T[1] - P0[1]) * f + Math.cos(a) * q, 1.2, 1.2);
-        }
-      } else if (st.label === 'ice') {
-        gx.strokeStyle = 'rgba(255,255,255,0.8)';
-        gx.lineWidth = 1.2;
+      if (boardImg) {
+        // Foto: Holzleiste entlang der Schräge
+        gx.translate(P0[0], P0[1]);
+        gx.rotate(-a);
+        gx.drawImage(boardStrip(boardImg, L, thick), 0, 0, L, thick);
+        gx.restore();
+      } else {
         gx.beginPath();
-        gx.moveTo(P0[0] + (T[0] - P0[0]) * 0.1, P0[1] + (T[1] - P0[1]) * 0.1 + 1.5);
-        gx.lineTo(P0[0] + (T[0] - P0[0]) * 0.9, P0[1] + (T[1] - P0[1]) * 0.9 + 1.5);
+        gx.moveTo(P0[0], P0[1]);
+        gx.lineTo(T[0], T[1]);
+        gx.lineTo(T[0] + Math.sin(a) * thick, T[1] + Math.cos(a) * thick);
+        gx.lineTo(P0[0] + Math.sin(a) * thick, P0[1] + Math.cos(a) * thick);
+        gx.closePath();
+        gx.fillStyle = st.top;
+        gx.fill();
+        gx.strokeStyle = st.edge;
+        gx.lineWidth = 1;
         gx.stroke();
+        if (st.label === 'asphalt') {
+          gx.fillStyle = 'rgba(255,255,255,0.35)';
+          for (let i = 0; i < 60; i++) {
+            const f = (i * 0.618) % 1;
+            const q = ((i * 0.37) % 1) * thick;
+            gx.fillRect(P0[0] + (T[0] - P0[0]) * f + Math.sin(a) * q, P0[1] + (T[1] - P0[1]) * f + Math.cos(a) * q, 1.2, 1.2);
+          }
+        } else if (st.label === 'ice') {
+          gx.strokeStyle = 'rgba(255,255,255,0.8)';
+          gx.lineWidth = 1.2;
+          gx.beginPath();
+          gx.moveTo(P0[0] + (T[0] - P0[0]) * 0.1, P0[1] + (T[1] - P0[1]) * 0.1 + 1.5);
+          gx.lineTo(P0[0] + (T[0] - P0[0]) * 0.9, P0[1] + (T[1] - P0[1]) * 0.9 + 1.5);
+          gx.stroke();
+        }
+        gx.restore();
       }
-      gx.restore();
 
       // Anschlag am unteren Ende der Ebene
       {
@@ -830,7 +909,15 @@ export default defineSimulation({
       gx.shadowColor = 'rgba(0,0,0,0.3)';
       gx.shadowBlur = 6;
       gx.shadowOffsetY = 2;
-      if (p.body === 'cart') {
+      const photo = blockPhoto();
+      if (photo) {
+        // Foto: Klotz füllt bw × bh, die Öse ragt hangaufwärts heraus (dort hängt der Kraftmesser)
+        const k = bw / BLOCK_BW;
+        gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.3)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        gx.drawImage(blockSprite(photo, k), -bw / 2 - BLOCK_IMG.x0 * k, -bh - BLOCK_IMG.y0 * k, BLOCK_W * k, BLOCK_IMG.h * k);
+      } else if (p.body === 'cart') {
         const wr = bh * 0.32;
         const bodyY = -bh;
         const cg = gx.createLinearGradient(0, bodyY, 0, bodyY + bh * 0.62);

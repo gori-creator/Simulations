@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, offscreenCanvas, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { amplitudeRatio, driveAngle, drivePhase, F0, integrate, OMEGA0, phaseShift, readPhasor, resonanceOmega, step, type Drive, type State } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -17,6 +17,16 @@ type Speed = 'slow' | 'normal' | 'fast';
 const SPEED: Record<Speed, number> = { slow: 0.25, normal: 1, fast: 4 };
 
 const clamp = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, x));
+
+/**
+ * Lage im Foto `rad.webp` (384 × 376 px, Frontansicht): Radmitte, Radius der
+ * Kupferscheibe innerhalb des Skalenrings. Verwendet wird nur die Scheibe
+ * (kreisförmig ausgeschnitten, ohne Skala mit Zahlen und ohne Fuß). Die
+ * Spiralfeder des Fotos würde starr mitdrehen; sie wird deshalb bis `fill`
+ * mit der Kupferfarbe übermalt, die ringsum bei `sample` gemessen wird
+ * (die gebürstete Scheibe ändert ihre Helligkeit nur mit dem Winkel).
+ */
+const WHEEL_IMG = { cx: 192, cy: 182, r: 140, fill: 83, fade: 93, sample: [96, 106] as const };
 
 /** Aufrunden auf einen „glatten“ Wert für Achsen (in Grad). */
 function niceCeil(x: number): number {
@@ -73,6 +83,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.32, aspectNarrow: 0.42 },
+  images: { wheel: 'rad.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -685,6 +696,87 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Farben der Kupferscheibe je Winkel (aus dem Foto gemessen, einmal je Bild). */
+    let wheelColors: { img: HTMLImageElement; colors: string[] | null } | null = null;
+    function sampleWheel(img: HTMLImageElement): string[] | null {
+      if (wheelColors?.img === img) return wheelColors.colors;
+      let colors: string[] | null = null;
+      try {
+        const c = document.createElement('canvas');
+        c.width = img.width;
+        c.height = img.height;
+        const cg = c.getContext('2d')!;
+        cg.drawImage(img, 0, 0);
+        const data = cg.getImageData(0, 0, img.width, img.height).data;
+        colors = [];
+        for (let i = 0; i < 180; i++) {
+          let r = 0;
+          let gg = 0;
+          let b = 0;
+          let n = 0;
+          for (let da = -0.8; da <= 0.8; da += 0.4) {
+            const a = ((i * 2 + da) * Math.PI) / 180;
+            for (let rr = WHEEL_IMG.sample[0]; rr <= WHEEL_IMG.sample[1]; rr += 2) {
+              const x = Math.round(WHEEL_IMG.cx + rr * Math.sin(a));
+              const y = Math.round(WHEEL_IMG.cy - rr * Math.cos(a));
+              const k = (y * img.width + x) * 4;
+              r += data[k]!;
+              gg += data[k + 1]!;
+              b += data[k + 2]!;
+              n++;
+            }
+          }
+          colors.push(`rgb(${Math.round(r / n)},${Math.round(gg / n)},${Math.round(b / n)})`);
+        }
+      } catch {
+        colors = null;
+      }
+      wheelColors = { img, colors };
+      return colors;
+    }
+
+    /** Kupferscheibe aus dem Foto (kreisförmig, Feder übermalt), vorab gerendert. */
+    let wheelSprite: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function photoWheel(img: HTMLImageElement, Rw: number): HTMLCanvasElement | null {
+      const key = `${Math.round(Rw * 2)}|${surface.dpr}`;
+      if (wheelSprite?.key === key) return wheelSprite.canvas;
+      const colors = sampleWheel(img);
+      if (!colors) return null;
+      const d = Rw * 2;
+      const k = Rw / WHEEL_IMG.r;
+      const { canvas, g } = offscreenCanvas(d, d, surface.dpr);
+      g.save();
+      g.beginPath();
+      g.arc(Rw, Rw, Rw, 0, TAU);
+      g.clip();
+      g.drawImage(img, WHEEL_IMG.cx - WHEEL_IMG.r, WHEEL_IMG.cy - WHEEL_IMG.r, WHEEL_IMG.r * 2, WHEEL_IMG.r * 2, 0, 0, d, d);
+      g.restore();
+      // Mitte (mit der starren Feder des Fotos) in der gemessenen Kupferfarbe übermalen, weich auslaufend
+      const fill = offscreenCanvas(d, d, surface.dpr);
+      const f = fill.g;
+      const R = WHEEL_IMG.fade * k;
+      for (let i = 0; i < 180; i++) {
+        const a0 = ((i * 2 - 1.3) * Math.PI) / 180 - Math.PI / 2;
+        const a1 = ((i * 2 + 1.3) * Math.PI) / 180 - Math.PI / 2;
+        f.fillStyle = colors[i]!;
+        f.beginPath();
+        f.moveTo(Rw, Rw);
+        f.arc(Rw, Rw, R, a0, a1);
+        f.closePath();
+        f.fill();
+      }
+      f.globalCompositeOperation = 'destination-in';
+      const mask = f.createRadialGradient(Rw, Rw, 0, Rw, Rw, R);
+      mask.addColorStop(0, 'rgba(0,0,0,1)');
+      mask.addColorStop(WHEEL_IMG.fill / WHEEL_IMG.fade, 'rgba(0,0,0,1)');
+      mask.addColorStop(1, 'rgba(0,0,0,0)');
+      f.fillStyle = mask;
+      f.fillRect(0, 0, d, d);
+      g.drawImage(fill.canvas, 0, 0, d, d);
+      wheelSprite = { key, canvas };
+      return canvas;
+    }
+
     function drawWheel(g0: Geo, phi: number): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -693,46 +785,70 @@ export default defineSimulation({
       const rim = g0.small ? 11 : 14;
       g.save();
       g.translate(g0.cx, g0.cy);
-      // Speichen (drehen mit)
-      g.save();
-      g.rotate(phi);
-      g.strokeStyle = dark ? '#8a6a4f' : '#9a6b45';
-      g.lineWidth = g0.small ? 4 : 5;
-      g.lineCap = 'round';
-      for (let k = 0; k < 4; k++) {
-        const a = (k * Math.PI) / 2 + Math.PI / 4;
+      const img = ctx.images.get('wheel');
+      const photo = img ? photoWheel(img, Rw) : null;
+      if (photo) {
+        // Foto: Kupferscheibe dreht sich als Ganzes; Schatten der (runden) Scheibe steht fest
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        g.fillStyle = '#9a5a2c';
         g.beginPath();
-        g.moveTo(Math.cos(a) * 16, Math.sin(a) * 16);
-        g.lineTo(Math.cos(a) * (Rw - rim + 2), Math.sin(a) * (Rw - rim + 2));
+        g.arc(0, 0, Rw - 0.5, 0, TAU);
+        g.fill();
+        g.restore();
+        g.save();
+        g.rotate(phi);
+        g.drawImage(photo, -Rw, -Rw, Rw * 2, Rw * 2);
+        g.restore();
+        g.strokeStyle = 'rgba(60,25,5,0.45)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.arc(0, 0, Rw - 0.5, 0, TAU);
+        g.stroke();
+      } else {
+        // Speichen (drehen mit)
+        g.save();
+        g.rotate(phi);
+        g.strokeStyle = dark ? '#8a6a4f' : '#9a6b45';
+        g.lineWidth = g0.small ? 4 : 5;
+        g.lineCap = 'round';
+        for (let k = 0; k < 4; k++) {
+          const a = (k * Math.PI) / 2 + Math.PI / 4;
+          g.beginPath();
+          g.moveTo(Math.cos(a) * 16, Math.sin(a) * 16);
+          g.lineTo(Math.cos(a) * (Rw - rim + 2), Math.sin(a) * (Rw - rim + 2));
+          g.stroke();
+        }
+        g.restore();
+        // Kupferring
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        const cu = g.createRadialGradient(-Rw * 0.3, -Rw * 0.35, Rw * 0.2, 0, 0, Rw);
+        cu.addColorStop(0, '#f0b98a');
+        cu.addColorStop(0.55, '#c47a43');
+        cu.addColorStop(0.85, '#9a5a2c');
+        cu.addColorStop(1, '#7a4420');
+        g.fillStyle = cu;
+        g.beginPath();
+        g.arc(0, 0, Rw, 0, TAU);
+        g.arc(0, 0, Rw - rim, 0, TAU, true);
+        g.fill('evenodd');
+        g.restore();
+        // Glanzkante
+        g.strokeStyle = 'rgba(255,230,200,0.55)';
+        g.lineWidth = 1.2;
+        g.beginPath();
+        g.arc(0, 0, Rw - 1.5, Math.PI * 1.05, Math.PI * 1.6);
+        g.stroke();
+        g.strokeStyle = 'rgba(60,25,5,0.5)';
+        g.beginPath();
+        g.arc(0, 0, Rw - rim + 0.8, 0, TAU);
         g.stroke();
       }
-      g.restore();
-      // Kupferring
-      g.save();
-      g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.3)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 3;
-      const cu = g.createRadialGradient(-Rw * 0.3, -Rw * 0.35, Rw * 0.2, 0, 0, Rw);
-      cu.addColorStop(0, '#f0b98a');
-      cu.addColorStop(0.55, '#c47a43');
-      cu.addColorStop(0.85, '#9a5a2c');
-      cu.addColorStop(1, '#7a4420');
-      g.fillStyle = cu;
-      g.beginPath();
-      g.arc(0, 0, Rw, 0, TAU);
-      g.arc(0, 0, Rw - rim, 0, TAU, true);
-      g.fill('evenodd');
-      g.restore();
-      // Glanzkante
-      g.strokeStyle = 'rgba(255,230,200,0.55)';
-      g.lineWidth = 1.2;
-      g.beginPath();
-      g.arc(0, 0, Rw - 1.5, Math.PI * 1.05, Math.PI * 1.6);
-      g.stroke();
-      g.strokeStyle = 'rgba(60,25,5,0.5)';
-      g.beginPath();
-      g.arc(0, 0, Rw - rim + 0.8, 0, TAU);
-      g.stroke();
       // Zeiger am Rad (zeigt in die Skala)
       g.save();
       g.rotate(phi);
