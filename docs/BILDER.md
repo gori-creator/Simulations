@@ -90,6 +90,13 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Linsen | `candle` | `src/assets/sims/linsen/kerze.webp` | 144 × 631 | transparent |
 | Linsen | `lens` | `src/assets/sims/linsen/linse.webp` | 97 × 731 | transparent |
 | Doppler-Effekt | `road` | `src/assets/sims/doppler-effekt/strasse.webp` | 1800 × 890 | deckend |
+| Waagemodell | `stand` | `src/assets/sims/waagemodell/waage.webp` | 314 × 332 | transparent |
+| Waagemodell | `pan` | `src/assets/sims/waagemodell/schale.webp` | 199 × 291 | transparent |
+| Waagemodell | `box` | `src/assets/sims/waagemodell/paeckchen.webp` | 291 × 293 | transparent |
+| Waagemodell | `weight` | `src/assets/sims/waagemodell/gewicht.webp` | 284 × 401 | transparent |
+| Ganze Zahlen an der Zahlengerade | `sea` | `src/assets/sims/zahlengerade/meer.webp` | 1600 × 1600 | deckend |
+| Umfang und Flächeninhalt | `ant` | `src/assets/sims/umfang-flaeche/ameise.webp` | 256 × 221 | transparent |
+| Gesetz der großen Zahlen | `die` | `src/assets/sims/gesetz-grosse-zahlen/wuerfel.webp` | 338 × 312 | transparent |
 
 ## Ziegenproblem
 
@@ -562,3 +569,68 @@ Draufsicht, Straße waagerecht, Wiese beidseitig. Verwendet werden zwei Ausschni
 `krankenwagen.webp` ist **nicht eingebaut** (liegt in `docs/bilder-eingang/doppler-effekt/`): Das Foto ist eine Seitenansicht, die Simulation zeigt die Straße aber von oben. Gebraucht wird eine Draufsicht:
 
 > A modern white ambulance seen exactly from above (top-down view), red stripes, blue lights on the roof, facing right, generic design with no text, no brand, isolated on a transparent background, photorealistic
+
+## Waagemodell
+
+### `waage.webp` – Waagensäule
+
+Messingsäule auf Holzsockel, ohne Balken und Schalen. Verwendet werden nur Säule mit Fuß (unterhalb des festen Querträgers abgeschnitten, unverzerrt; Breite wie die gezeichnete Säule) und der Sockel; von der Säule bis zum Drehpunkt führt eine gezeichnete Messingstange. Der Sockel ist höchstens so hoch, dass die tiefste Schale darüber bleibt; seine Mitte (Längsmaserung) wird auf die Lücke zwischen den Schalen gestaucht, die Enden mit den Füßen bleiben unverzerrt. Balken, Drehpunkt, Skala und Zeiger bleiben gezeichnet und maßgeblich.
+
+> A classic brass balance scale stand without the beam and without pans, ornate column on a wooden base, front view, isolated on a transparent background, photorealistic
+
+### `schale.webp` – Waagschale an drei Ketten
+
+Hängt senkrecht unter dem Balkenende: Der Ring liegt über der Balkenspitze, nur die Ketten werden auf die Länge des Gehänges gestreckt, Ring und Schale bleiben unverzerrt (Breite der Schale wie die gezeichnete). Päckchen und Gewichte stehen in Höhe der Mitte des Schalenrands.
+
+> A single shallow brass weighing pan hanging from three thin chains, front view, isolated on a transparent background, photorealistic
+
+### `paeckchen.webp` – x-Päckchen
+
+Schachtel mit Schnur, Seitenverhältnis bleibt (etwas höher als der Platz, stapelt leicht überlappend). Das Etikett mit *x* zeichnet die Simulation auf die untere Hälfte unter die Schnur. Beim Öffnen dreht sich das Foto wie die gezeichnete Schachtel; das Innere (x Gewichtsstücke) bleibt gezeichnet.
+
+> A small cardboard parcel tied with twine, cube shaped, front view, isolated on a transparent background, photorealistic
+
+### `gewicht.webp` – Gewichtsstück (1)
+
+Eisengewicht mit Griff, volle Höhe des Platzes, Breite aus dem Seitenverhältnis. Die „1“ zeichnet die Simulation hell auf den Körper (mit leichtem Schatten, in beiden Farbschemata lesbar).
+
+> A small cast iron weight with a top handle, front view, isolated on a transparent background, photorealistic
+
+## Ganze Zahlen an der Zahlengerade (Meeresspiegel)
+
+### `meer.webp` – Küste mit Unterwasseransicht
+
+Hintergrund des Beispiels „Meeresspiegel“, bildfüllend und gleichmäßig skaliert, rechtsbündig (offenes Meer). Die Wasseroberfläche des Fotos (Bildzeile 683 von 1600, gemessen) liegt immer genau auf der Höhe 0 der Skala, auch wenn sich der Bereich ändert; Wellenlinie, Eisberg, Pinguin und Skala (mit hellem Hintergrund) bleiben gezeichnet. Im Dunkelmodus abgedunkelt. Ein Bild mit polarer Küste würde besser zu Eisberg und Pinguin passen (siehe unten).
+
+> Side cross-section view of a coastal scene: a hill with green grass above the water line, calm blue sea surface in the middle, underwater part fading into deep blue below, photorealistic
+
+## Umfang und Flächeninhalt (Ameise)
+
+### `ameise.webp` – Ameise von oben
+
+Läuft den Rand ab und wird in Laufrichtung gedreht (im Foto ist die Körperachse um 23,6° geneigt, Kopf rechts oben – das gleicht die Simulation aus). Drehpunkt ist die Körpermitte auf der Randlinie; leichtes Pendeln ersetzt die Beinbewegung der gezeichneten Ameise. Im Dunkelmodus aufgehellt.
+
+> A single cute ant seen exactly from above, walking pose, isolated on a transparent background, photorealistic macro
+
+## Gesetz der großen Zahlen (Würfel)
+
+### `wuerfel.webp` – Würfel ohne Augen
+
+Weißer Würfel schräg von vorn. Die Perspektive passt nicht zur Draufsicht, in der das Ergebnis (die Augenzahl oben) gezeigt wird; deshalb nur für den Flug beim einzelnen Wurf: Die Augen werden perspektivisch auf die beiden sichtbaren Seitenflächen gezeichnet (benachbarte Zahlen, nie Gegenseiten), beim Landen blendet der Würfel weich in die gezeichnete Draufsicht über.
+
+> A single white plastic game die without any pips, blank faces, rounded edges, three-quarter view, isolated on a transparent background, photorealistic
+
+## Nicht eingebaute Bilder (Mathematik, Stand 16.10.2026)
+
+Diese Dateien liegen weiter in `docs/bilder-eingang/<id>/`:
+
+- `stellenwerte/plaettchen.webp` – Die Plättchen sind in der Stellenwerttafel nur etwa 18 px groß; die Holzmaserung ist dort nicht zu sehen. Eingefärbt (Farbe der Stellenwert-Gruppe trägt Bedeutung) wirkten die Fotos stumpfer und flacher als die gezeichneten, glänzenden Plättchen.
+- `bruchteile/schokolade.webp` – Nur 441 × 245 px (auf dem Desktop bzw. Beamer 1,5- bis 3-fach vergrößert, unscharf). Eine vierte Darstellung bräuchte eigene Teilungslogik (Teile als Blöcke aus 24 : n Stücken, Antippen, Erweitern nur bei n · k | 24, gezeichnete Tafel für n = 5, 7, 9, 10, 11). Für einen späteren Einbau besser in voller Größe:
+  > A bar of milk chocolate seen exactly from above, 6 by 4 rectangular pieces with deep grooves, unwrapped, no brand, evenly lit, the bar fills the entire image edge to edge, photorealistic, 1400 × 950 px
+- `umfang-flaeche/karopapier.webp` – Das Fotoraster (grau, fest) beißt sich mit dem eigenen, zoombaren Zentimeter-Raster der Simulation; ohne Raster bliebe nur fast einfarbiges Weiß, und im Dunkelmodus ist das Blatt dunkel.
+- `cavalieri/muenze.webp`, `cavalieri/spielkarte.webp` – Die 3D-Ansicht (`view3d`) füllt Flächen einfarbig mit Beleuchtung, Texturen gibt es nicht. Außerdem tragen die Farben Bedeutung (gerader und schiefer Körper, A₁ und A₂ in denselben Farben); goldene Münzen bzw. rote Karten würden diese Zuordnung aufheben.
+- `quader-volumen/holz.webp` – Ebenfalls keine Texturen in `view3d`; die Farben der Einheitswürfel zeigen Reihe, Schicht und abwechselnde Schichten beim Zählen. Eine Holzmaserung je Würfelfläche (bis zu 3000 Flächen beim Drehen) wäre auf Schul-Tablets zu langsam und schwächte die Farbunterscheidung.
+
+Für die Zahlengerade wäre ein polares Motiv stimmiger (Eisberg und Pinguin):
+
+> Side cross-section view of a polar sea: calm dark blue water surface exactly horizontal in the middle of the image, pale sky and distant snowy coast above, clear underwater part below fading into deep blue, no animals, no icebergs in the left half, photorealistic, 1600 × 1600 px

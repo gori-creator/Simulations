@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, prefersReducedMotion, roundRect, Surface, TapTarget, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, text, withAlpha, type Rect } from '../../../sim-core';
 import {
   canDivide,
   canSubtract,
@@ -26,6 +26,20 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+
+/*
+ * Lage der Teile in den Fotos (Bildpixel, gemessen an den Dateien in
+ * src/assets/sims/waagemodell/). Die Fotos werden nur gleichmäßig skaliert;
+ * einzig die Ketten der Schale und die Mitte des Holzsockels (Längsmaserung)
+ * werden in einer Richtung gestreckt.
+ */
+/** waage.webp: Säule (oben abgeschnitten unter dem festen Querträger) und Holzsockel. */
+const STAND_IMG = { w: 314, h: 332, cx: 157, colW: 13, colTop: 99, colX0: 122, colX1: 192, plinthTop: 262, capW: 64 } as const;
+/** schale.webp: Ring zum Einhängen, Ketten, Schale (Rand: Mitte der Ellipse bei rimY). */
+const PAN_IMG = { w: 199, h: 291, cx: 98.5, ringY: 31.5, ringInner: 13.5, chainTop: 49, panTop: 217, rimY: 242, rimW: 197 } as const;
+/** paeckchen.webp: Schachtel (ohne Schleifenenden) und gewicht.webp: Eisengewicht mit Griff. */
+const BOX_IMG = { w: 291, h: 293 } as const;
+const WEIGHT_IMG = { w: 284, h: 401, bodyTop: 140 } as const;
 
 type SideId = 'L' | 'R';
 type Kind = 'x' | '1';
@@ -77,6 +91,7 @@ interface Geo {
 export default defineSimulation({
   id: 'waagemodell',
   layout: { aspect: 1.5, aspectNarrow: 0.66 },
+  images: { stand: 'waage.webp', pan: 'schale.webp', box: 'paeckchen.webp', weight: 'gewicht.webp' },
   groups: [
     { id: 'left', label: L('Linke Waagschale', 'Left pan') },
     { id: 'right', label: L('Rechte Waagschale', 'Right pan') },
@@ -659,7 +674,29 @@ export default defineSimulation({
       g.translate(cx, 0);
       g.scale(Math.max(0.05, flip), 1);
       g.translate(-cx, 0);
-      if (!showInside) {
+      const photo = ctx.images.get('box');
+      if (!showInside && photo) {
+        // Foto der Schachtel (Seitenverhältnis bleibt, etwas höher als der Platz – stapelt leicht überlappend)
+        const ih = bh * 1.06;
+        const iw = (ih * BOX_IMG.w) / BOX_IMG.h;
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
+        g.shadowBlur = 5;
+        g.shadowOffsetY = 1.5;
+        g.drawImage(scaledSprite(photo, iw, ih, surface.dpr), cx - iw / 2, by - ih, iw, ih);
+        g.restore();
+        // Etikett mit x unter der Schnur
+        const lw = iw * 0.54;
+        const lh = ih * 0.4;
+        const ly = by - ih * 0.36;
+        g.fillStyle = '#fbf7ee';
+        g.strokeStyle = 'rgba(120,85,40,0.45)';
+        g.lineWidth = 0.8;
+        roundRect(g, cx - lw / 2, ly - lh / 2, lw, lh, 3);
+        g.fill();
+        g.stroke();
+        text(g, 'x', cx, ly - lh * 0.04, { font: `italic ${lh * 0.98}px ${theme.mathFont}`, color: '#5b3d12' });
+      } else if (!showInside) {
         const grad = g.createLinearGradient(x0, y0, x0 + bw, by);
         grad.addColorStop(0, '#d9a866');
         grad.addColorStop(0.55, '#c08a4a');
@@ -736,6 +773,33 @@ export default defineSimulation({
       const bodyH = wh * 0.74;
       const x0 = cx - ww / 2;
       const y0 = by - bodyH;
+      const photo = ctx.images.get('weight');
+      if (photo) {
+        // Eisengewicht mit Griff: volle Höhe des Platzes, Breite aus dem Seitenverhältnis
+        const iw = (wh * WEIGHT_IMG.w) / WEIGHT_IMG.h;
+        g.save();
+        g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.25)';
+        g.shadowBlur = 4;
+        g.shadowOffsetY = 1.5;
+        g.drawImage(scaledSprite(photo, iw, wh, surface.dpr), cx - iw / 2, by - wh, iw, wh);
+        g.restore();
+        const bodyTop = by - wh * (1 - WEIGHT_IMG.bodyTop / WEIGHT_IMG.h);
+        if (label && iw >= 12) {
+          const fs = Math.max(9, (by - bodyTop) * 0.6);
+          g.save();
+          g.shadowColor = 'rgba(0,0,0,0.6)';
+          g.shadowBlur = 2;
+          text(g, '1', cx, (bodyTop + by) / 2 + 0.5, { font: `800 ${fs}px ${ctx.theme.font}`, color: '#f6eedc' });
+          g.restore();
+        }
+        if (hover) {
+          g.strokeStyle = ctx.theme.series[0]!;
+          g.lineWidth = 2.5;
+          roundRect(g, cx - iw / 2 - 2, by - wh - 2, iw + 4, wh + 4, 4);
+          g.stroke();
+        }
+        return;
+      }
       const brass = g.createLinearGradient(x0, 0, x0 + ww, 0);
       brass.addColorStop(0, '#8a6a22');
       brass.addColorStop(0.32, '#f1d67e');
@@ -759,6 +823,94 @@ export default defineSimulation({
         roundRect(g, x0 - 2, y0 - wh * 0.25, ww + 4, bodyH + wh * 0.25 + 2, 4);
         g.stroke();
       }
+    }
+
+    /** Säule und Sockel aus dem Foto; darüber eine gezeichnete Messingstange bis zum Drehpunkt. */
+    function drawPhotoStand(img: HTMLImageElement, gg: Geo, small: boolean): void {
+      const g = surface.g;
+      const S = STAND_IMG;
+      const s = (small ? 11 : 15) / S.colW;
+      // Sockel: höchstens so hoch, dass die tiefste Schale darüber bleibt; die Mitte (Längsmaserung) wird auf die Lücke zwischen den Schalen gestaucht
+      const plinthSrcH = S.h - S.plinthTop;
+      const ps = Math.min(s, (small ? 26 : 38) / plinthSrcH);
+      const ph = plinthSrcH * ps;
+      const gap = 2 * (gg.arm - gg.panW / 2) - 6;
+      const footW = (S.colX1 - S.colX0) * s;
+      const pw = Math.max(footW * 1.35, Math.min(S.w * ps, gap));
+      const pTop = gg.floorY + 3 - ph;
+      const capW = Math.min(S.capW * ps, pw * 0.3);
+      const capSrc = capW / ps;
+      const x0 = gg.pivotX - pw / 2;
+      const dpr = surface.dpr;
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
+      g.shadowBlur = 10;
+      g.shadowOffsetY = 3;
+      const part = (sx: number, sw: number, dx: number, dw: number) =>
+        g.drawImage(scaledSprite(img, dw, ph, dpr, { crop: { x: sx, y: S.plinthTop, w: sw, h: plinthSrcH } }), dx, pTop, dw, ph);
+      part(0, capSrc, x0, capW);
+      part(capSrc, S.w - 2 * capSrc, x0 + capW - 0.5, pw - 2 * capW + 1);
+      part(S.w - capSrc, capSrc, x0 + pw - capW, capW);
+      g.restore();
+      // Säule mit Fuß (unverzerrt), oben eine glatte Messingstange bis zum Drehpunkt
+      const colH = (S.plinthTop + 2 - S.colTop) * s;
+      const colTopY = pTop + 2 * s - colH;
+      const rodW = S.colW * s * 0.78;
+      const rod = g.createLinearGradient(gg.pivotX - rodW / 2, 0, gg.pivotX + rodW / 2, 0);
+      rod.addColorStop(0, '#6e5420');
+      rod.addColorStop(0.4, '#e9cf86');
+      rod.addColorStop(0.62, '#b8923e');
+      rod.addColorStop(1, '#5e4718');
+      g.fillStyle = rod;
+      g.fillRect(gg.pivotX - rodW / 2, gg.pivotY, rodW, colTopY - gg.pivotY + 4);
+      const cw = (S.colX1 - S.colX0) * s;
+      g.drawImage(
+        scaledSprite(img, cw, colH, dpr, { crop: { x: S.colX0, y: S.colTop, w: S.colX1 - S.colX0, h: S.plinthTop + 2 - S.colTop } }),
+        gg.pivotX - (S.cx - S.colX0) * s,
+        colTopY,
+        cw,
+        colH,
+      );
+    }
+
+    /** Ring und Ketten der Schale: Der Ring hängt über dem Balkenende, nur die Ketten werden auf die Länge des Gehänges gestreckt. */
+    function drawPhotoHanger(img: HTMLImageElement, ex: number, ey: number, py: number, sp: number, beamH: number): void {
+      const g = surface.g;
+      const P = PAN_IMG;
+      const dpr = surface.dpr;
+      const ringY = ey - beamH * 0.35 + P.ringInner * sp;
+      const ringTop = 12;
+      const rw = 46;
+      g.drawImage(
+        scaledSprite(img, rw * sp, (P.chainTop - ringTop) * sp, dpr, { crop: { x: P.cx - rw / 2, y: ringTop, w: rw, h: P.chainTop - ringTop } }),
+        ex - (rw / 2) * sp,
+        ringY - (P.ringY - ringTop) * sp,
+        rw * sp,
+        (P.chainTop - ringTop) * sp,
+      );
+      const top = ringY + (P.chainTop - P.ringY) * sp - 0.5;
+      const bottom = py - (P.rimY - P.panTop) * sp + 0.5;
+      if (bottom - top < 4) return;
+      g.drawImage(
+        scaledSprite(img, P.w * sp, bottom - top, dpr, { crop: { x: 0, y: P.chainTop, w: P.w, h: P.panTop - P.chainTop } }),
+        ex - P.cx * sp,
+        top,
+        P.w * sp,
+        bottom - top,
+      );
+    }
+
+    /** Messingschale aus dem Foto (unverzerrt), Gegenstände stehen in Höhe der Randmitte. */
+    function drawPhotoPan(img: HTMLImageElement, px: number, py: number, sp: number): void {
+      const g = surface.g;
+      const P = PAN_IMG;
+      const h = (P.h - P.panTop) * sp;
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
+      g.shadowBlur = 8;
+      g.shadowOffsetY = 4;
+      g.drawImage(scaledSprite(img, P.w * sp, h, surface.dpr, { crop: { x: 0, y: P.panTop, w: P.w, h: P.h - P.panTop } }), px - P.cx * sp, py - (P.rimY - P.panTop) * sp, P.w * sp, h);
+      g.restore();
     }
 
     function drawScene(r: Rect, now: number, dt: number): void {
@@ -786,33 +938,39 @@ export default defineSimulation({
       g.fillRect(r.x, gg.floorY, r.w, 1.5);
 
       // Fuß und Säule
-      const metal = (x0: number, wdt: number) => {
-        const m = g.createLinearGradient(x0, 0, x0 + wdt, 0);
-        m.addColorStop(0, dark ? '#4c5563' : '#5d6570');
-        m.addColorStop(0.45, dark ? '#c9d0da' : '#e3e7ec');
-        m.addColorStop(1, dark ? '#4c5563' : '#5d6570');
-        return m;
-      };
-      const colW = small ? 10 : 14;
-      g.save();
-      g.shadowColor = 'rgba(0,0,0,0.25)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 3;
-      const baseW = small ? 92 : 132;
-      const base = g.createLinearGradient(0, gg.floorY - 22, 0, gg.floorY);
-      base.addColorStop(0, dark ? '#5a6474' : '#46505d');
-      base.addColorStop(1, dark ? '#2b323d' : '#262d36');
-      g.fillStyle = base;
-      g.beginPath();
-      g.moveTo(gg.pivotX - baseW / 2, gg.floorY);
-      g.lineTo(gg.pivotX - baseW / 2 + 14, gg.floorY - (small ? 14 : 20));
-      g.lineTo(gg.pivotX + baseW / 2 - 14, gg.floorY - (small ? 14 : 20));
-      g.lineTo(gg.pivotX + baseW / 2, gg.floorY);
-      g.closePath();
-      g.fill();
-      g.restore();
-      g.fillStyle = metal(gg.pivotX - colW / 2, colW);
-      g.fillRect(gg.pivotX - colW / 2, gg.pivotY, colW, gg.floorY - (small ? 14 : 20) - gg.pivotY);
+      const standImg = ctx.images.get('stand');
+      const panImg = ctx.images.get('pan');
+      const panScale = gg.panW / PAN_IMG.rimW;
+      if (standImg) drawPhotoStand(standImg, gg, small);
+      else {
+        const metal = (x0: number, wdt: number) => {
+          const m = g.createLinearGradient(x0, 0, x0 + wdt, 0);
+          m.addColorStop(0, dark ? '#4c5563' : '#5d6570');
+          m.addColorStop(0.45, dark ? '#c9d0da' : '#e3e7ec');
+          m.addColorStop(1, dark ? '#4c5563' : '#5d6570');
+          return m;
+        };
+        const colW = small ? 10 : 14;
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.25)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        const baseW = small ? 92 : 132;
+        const base = g.createLinearGradient(0, gg.floorY - 22, 0, gg.floorY);
+        base.addColorStop(0, dark ? '#5a6474' : '#46505d');
+        base.addColorStop(1, dark ? '#2b323d' : '#262d36');
+        g.fillStyle = base;
+        g.beginPath();
+        g.moveTo(gg.pivotX - baseW / 2, gg.floorY);
+        g.lineTo(gg.pivotX - baseW / 2 + 14, gg.floorY - (small ? 14 : 20));
+        g.lineTo(gg.pivotX + baseW / 2 - 14, gg.floorY - (small ? 14 : 20));
+        g.lineTo(gg.pivotX + baseW / 2, gg.floorY);
+        g.closePath();
+        g.fill();
+        g.restore();
+        g.fillStyle = metal(gg.pivotX - colW / 2, colW);
+        g.fillRect(gg.pivotX - colW / 2, gg.pivotY, colW, gg.floorY - (small ? 14 : 20) - gg.pivotY);
+      }
 
       // Waagebalken (dreht sich um den Drehpunkt)
       const t = (theta * Math.PI) / 180;
@@ -872,14 +1030,19 @@ export default defineSimulation({
         g.arc(ex, ey + 3, 4, 0, Math.PI * 2);
         g.stroke();
       };
-      drawHanger(lx, ly, plx, ply);
-      drawHanger(rx, ry, prx, pry);
+      const beamH = small ? 8 : 11;
+      if (panImg) {
+        drawPhotoHanger(panImg, lx, ly, ply, panScale, beamH);
+        drawPhotoHanger(panImg, rx, ry, pry, panScale, beamH);
+      } else {
+        drawHanger(lx, ly, plx, ply);
+        drawHanger(rx, ry, prx, pry);
+      }
 
       // Balken
       g.save();
       g.translate(gg.pivotX, gg.pivotY);
       g.rotate(-t);
-      const beamH = small ? 8 : 11;
       const beam = g.createLinearGradient(0, -beamH / 2, 0, beamH / 2);
       beam.addColorStop(0, '#f6dc8a');
       beam.addColorStop(0.5, '#c99a35');
@@ -910,6 +1073,10 @@ export default defineSimulation({
 
       // Gegenstände (zuerst Schalen-Rückseite, dann Gegenstände, dann Rand)
       const drawPan = (px: number, py: number, front: boolean) => {
+        if (panImg) {
+          if (!front) drawPhotoPan(panImg, px, py, panScale);
+          return;
+        }
         const rx2 = gg.panW / 2;
         const ry2 = small ? 5 : 7;
         if (!front) {

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   canCut,
   clampCut,
@@ -27,6 +27,12 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/**
+ * ameise.webp (256 × 221, von oben): Körperachse um 23,6° gegen die
+ * Waagerechte geneigt (Kopf rechts oben), Körpermitte bei (115,6 | 111,7),
+ * Körperlänge ohne Beine und Fühler etwa 170 px (gemessen).
+ */
+const ANT_IMG = { w: 256, h: 221, cx: 115.6, cy: 111.7, tilt: (23.6 * Math.PI) / 180, body: 170 } as const;
 type Mode = 'rechteck' | 'gleichU' | 'gleichA' | 'lform';
 const isMode =
   (...m: Mode[]) =>
@@ -131,6 +137,7 @@ export default defineSimulation({
   id: 'umfang-flaeche',
   dragHint: true,
   layout: { aspect: 1.7, aspectNarrow: 0.6 },
+  images: { ant: 'ameise.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -790,6 +797,25 @@ export default defineSimulation({
       const body = dark ? '#d49a68' : '#3b2416';
       const shine = dark ? '#f3cfa8' : '#7d5236';
       const s = size;
+      const photo = ctx.images.get('ant');
+      if (photo) {
+        // Foto in Laufrichtung gedreht (Kopf vorn), leichtes Pendeln statt Beinbewegung
+        const k = (s * 0.95) / ANT_IMG.body;
+        const w = ANT_IMG.w * k;
+        const h = ANT_IMG.h * k;
+        // Im Dunkelmodus aufgehellt (wie die gezeichnete Ameise), sonst wäre sie auf dem dunklen Blatt kaum zu sehen
+        const sprite = dark ? tintedSprite(photo, w, h, surface.dpr, '#c98d5c', { lift: 0.42, amount: 0.55 }) : scaledSprite(photo, w, h, surface.dpr);
+        g.save();
+        g.globalAlpha = alpha;
+        g.translate(x, y);
+        g.rotate(angle + ANT_IMG.tilt + Math.sin(phase * 0.5) * 0.05);
+        g.shadowColor = dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.22)';
+        g.shadowBlur = s * 0.12;
+        g.shadowOffsetY = s * 0.06;
+        g.drawImage(sprite, -ANT_IMG.cx * k, -ANT_IMG.cy * k, w, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.globalAlpha = alpha;
       g.translate(x, y);
