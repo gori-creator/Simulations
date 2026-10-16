@@ -153,3 +153,27 @@ export function glowOf(T: number): number {
 export function burnsOut(U: number): boolean {
   return U > BURN_U + 1e-9;
 }
+
+/** Farben der Ringe nach IEC 60062 (0 … 9, dann Gold = ×0,1, Silber = ×0,01). */
+export const RING_COLORS = ['#141414', '#7a3f12', '#d11f1f', '#f07818', '#f2d21b', '#2f9e44', '#1f5fd6', '#7b3fbf', '#8a8f96', '#f4f4f0'];
+export const RING_GOLD = '#c9a43a';
+export const RING_SILVER = '#c3c8cf';
+
+/**
+ * Farbcode eines Widerstands: zwei Ziffern + Multiplikator + Gold (±5 %) oder,
+ * wenn drei Ziffern nötig sind, drei Ziffern + Multiplikator + Braun (±1 %).
+ */
+export function resistorBands(ohm: number): string[] {
+  const mult = (e: number) => (e === -1 ? RING_GOLD : e === -2 ? RING_SILVER : RING_COLORS[e]!);
+  for (const digits of [2, 3]) {
+    for (let e = -2; e <= 9; e++) {
+      const m = ohm / 10 ** e;
+      const r = Math.round(m);
+      if (Math.abs(m - r) < 1e-9 && r >= 10 ** (digits - 1) && r < 10 ** digits) {
+        const ds = String(r).split('').map((d) => RING_COLORS[Number(d)]!);
+        return [...ds, mult(e), digits === 2 ? RING_GOLD : RING_COLORS[1]!];
+      }
+    }
+  }
+  return [RING_COLORS[0]!, RING_COLORS[0]!, RING_COLORS[0]!, RING_GOLD];
+}

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, seededRandom, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   commonTangents,
   EARTH,
@@ -51,6 +51,8 @@ const PAPER_LIT: RGB = [250, 246, 236];
 
 const rad = (d: number) => (d * Math.PI) / 180;
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+/** Foto der Experimentierleuchte (lampe.webp): Mitte und Halbachsen der Öffnung, Lage der Stativstange. */
+const LAMP_IMG = { w: 448, h: 206, ox: 396, oy: 108, rx: 50, ry: 95, rodX: 262 };
 
 /** Ortszeit als Uhrzeit, z. B. „13:20 Uhr“. */
 function clockText(ob: number, lang: Lang): string {
@@ -220,7 +222,7 @@ export default defineSimulation({
     { key: 'names', type: 'boolean', group: 'view', label: L('Kern- und Halbschatten beschriften', 'Label umbra and penumbra'), default: true },
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe (beim Abspielen)', 'Slow motion (when playing)'), default: false },
   ],
-  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp' },
+  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp', lamp: 'lampe.webp', sky: 'sternenhimmel.webp' },
   readouts: [
     { key: 'dist', label: L('Abstände', 'Distances') },
     { key: 'size', label: L('Schatten auf dem Schirm', 'Shadow on the screen'), spoiler: true },
@@ -971,6 +973,11 @@ export default defineSimulation({
       g.arc(cx, cy, glowR, -1.25, 1.25);
       g.closePath();
       g.fill();
+      const photo = ctx.images.get('lamp');
+      if (photo) {
+        drawLampPhoto(photo, lamp, color, scale);
+        return;
+      }
       const metal = (y0: number, y1: number) => {
         const m = g.createLinearGradient(0, y0, 0, y1);
         m.addColorStop(0, '#9aa3b0');
@@ -1037,6 +1044,58 @@ export default defineSimulation({
         g.fillStyle = '#ffffff';
         g.beginPath();
         g.arc(cx, cy, 2.4 * k, 0, Math.PI * 2);
+        g.fill();
+      }
+    }
+
+    /**
+     * Experimentierleuchte als Foto: schwarzes Gehäuse, runde Öffnung nach rechts.
+     * Die Mitte der Öffnung liegt genau im Ursprung der Lichtstrahlen; bei einer
+     * ausgedehnten Lampe ist die leuchtende Öffnung so hoch wie die Lichtquelle (2 r).
+     */
+    function drawLampPhoto(img: HTMLImageElement, lamp: Disc, color: RGB, scale: number): void {
+      const s = lab.scale.x;
+      const [cx, cy] = lab.toPx(lamp.x, lamp.y);
+      const LI = LAMP_IMG;
+      const R = lamp.r * s * scale;
+      // Maßstab: punktförmig wie die gezeichnete Leuchte, ausgedehnt passend zur Öffnung
+      const k = lamp.r > 0 ? (R * 1.06) / LI.ry : (clamp(s / 5, 0.8, 1.35) * scale * 32) / LI.h;
+      const w = LI.w * k;
+      const h = LI.h * k;
+      const x0 = cx - LI.ox * k;
+      const y0 = cy - LI.oy * k;
+      // Stativstange unter dem Gehäuse
+      rod(lamp.x + ((LI.rodX - LI.ox) * k) / s, lamp.y - ((LI.h - 24 - LI.oy) * k) / s);
+      g.save();
+      g.shadowColor = 'rgba(0,0,0,0.5)';
+      g.shadowBlur = 8;
+      g.shadowOffsetY = 2;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), x0, y0, w, h);
+      g.restore();
+      // leuchtendes Inneres der Öffnung
+      g.save();
+      g.beginPath();
+      g.ellipse(cx, cy, LI.rx * 0.84 * k, LI.ry * 0.88 * k, 0, 0, Math.PI * 2);
+      g.clip();
+      const rr = LI.ry * k;
+      const inner = g.createRadialGradient(cx, cy, 0, cx, cy, rr);
+      if (lamp.r > 0) {
+        inner.addColorStop(0, '#ffffff');
+        inner.addColorStop(0.6, lampCss([1, 0.97, 0.88]));
+        inner.addColorStop(1, lampCss(color, 0.85));
+      } else {
+        inner.addColorStop(0, '#ffffff');
+        inner.addColorStop(0.12, lampCss(color));
+        inner.addColorStop(0.5, lampCss(color, 0.35));
+        inner.addColorStop(1, lampCss(color, 0.08));
+      }
+      g.fillStyle = inner;
+      g.fillRect(cx - rr, cy - rr, 2 * rr, 2 * rr);
+      g.restore();
+      if (lamp.r === 0) {
+        g.fillStyle = '#ffffff';
+        g.beginPath();
+        g.arc(cx, cy, Math.max(2, 2.4 * clamp(s / 5, 0.8, 1.35) * scale), 0, Math.PI * 2);
         g.fill();
       }
     }
@@ -1481,6 +1540,21 @@ export default defineSimulation({
       return spaceCanvas;
     }
 
+    /** Sternenhimmel: Foto (bildfüllend, dezent) oder gezeichnete Sterne. */
+    function drawSky(r: Rect): void {
+      const img = ctx.images.get('sky');
+      if (!img) return drawStars(r);
+      // Ausschnitt mit dem Seitenverhältnis der Fläche („cover“), vorab skaliert
+      const k = Math.max(r.w / img.width, r.h / img.height);
+      const cw = r.w / k;
+      const ch = r.h / k;
+      const crop = { x: (img.width - cw) / 2, y: (img.height - ch) / 2, w: cw, h: ch };
+      g.save();
+      g.globalAlpha = ctx.theme.dark ? 0.8 : 0.7;
+      g.drawImage(scaledSprite(img, r.w, r.h, surface.dpr, { crop }), r.x, r.y, r.w, r.h);
+      g.restore();
+    }
+
     function drawStars(r: Rect): void {
       for (const s of stars) {
         g.fillStyle = `rgba(230,236,255,${s.a})`;
@@ -1585,7 +1659,7 @@ export default defineSimulation({
       bg.addColorStop(1, '#0b1326');
       g.fillStyle = bg;
       g.fillRect(scene.x, scene.y, scene.w, scene.h);
-      drawStars(scene);
+      drawSky(scene);
       g.imageSmoothingEnabled = true;
       const fc = spaceField(scene, moon);
       g.drawImage(fc, scene.x, scene.y, fc.width * 3, fc.height * 3);

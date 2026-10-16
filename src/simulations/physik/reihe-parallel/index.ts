@@ -1,4 +1,19 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, TapTarget, text, Tween, withAlpha } from '../../../sim-core';
+import {
+  BATTERY_IMG,
+  BULB_IMG,
+  drawBulbPhoto,
+  defineSimulation,
+  ease,
+  offscreenCanvas,
+  prefersReducedMotion,
+  roundRect,
+  scaledSprite,
+  Surface,
+  TapTarget,
+  text,
+  Tween,
+  withAlpha,
+} from '../../../sim-core';
 import {
   ammeterSlots,
   burnsOut,
@@ -6,6 +21,7 @@ import {
   glowOf,
   LAMP_R,
   partCount,
+  resistorBands,
   slotCurrent,
   solve,
   type Circuit,
@@ -48,6 +64,30 @@ interface Layout {
 }
 
 const SUB = ['₀', '₁', '₂', '₃'];
+
+/*
+ * Fotos: Glühlampe und Batterie (gleiche Dateien wie im einfachen Stromkreis,
+ * Lage der Teile in `sim-core/circuit-photos.ts`) und ein Kohleschicht-
+ * Widerstand. Dessen Farbringe werden passend zum eingestellten Wert neu
+ * gemalt, damit das Bild nie einen falschen Widerstandswert zeigt.
+ */
+/** Lampenfoto nur bis kurz unter den Hals (darunter sitzt eine gezeichnete Fassung). */
+const BULB_CUT = 352;
+/** Widerstandsfoto (widerstand.webp, 788 × 96): Körper, ursprüngliche Ringe, sauberer Streifen. */
+const RES_IMG = {
+  w: 788,
+  h: 96,
+  cx: 398,
+  bodyL: 282,
+  bodyR: 515,
+  rings: [
+    [310, 335],
+    [355, 377],
+    [397, 420],
+    [460, 483],
+  ] as [number, number][],
+  clean: [338, 352] as [number, number],
+};
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const mixPt = (a: Pt, b: Pt, t: number): Pt => [mix(a[0], b[0], t), mix(a[1], b[1], t)];
 
@@ -322,6 +362,7 @@ const VOLT_OPTIONS = [
 export default defineSimulation({
   id: 'reihe-parallel',
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
+  images: { battery: 'batterie.webp', bulb: 'gluehlampe.webp', resistor: 'widerstand.webp' },
   groups: [
     { id: 'parts', label: L('Bauteile', 'Components') },
     { id: 'meters', label: L('Messgeräte', 'Meters') },
@@ -502,6 +543,8 @@ export default defineSimulation({
     const reduced = prefersReducedMotion();
     const DW = () => (narrow() ? 360 : 760);
     const DH_ = () => (narrow() ? 440 : 470);
+    /** Batterie als Foto (nicht bei Schaltzeichen). */
+    const sourcePhoto = () => !p.sym && !!ctx.images.get('battery');
     const sizes = () => (narrow() ? { R: 20, rm: 11.5, off: 34 } : { R: 30, rm: 17, off: 64 });
 
     /* ---------- Zustand ---------- */
@@ -768,6 +811,12 @@ export default defineSimulation({
         g.fillRect(-R * 5, -R * 5, R * 10, R * 10);
       }
       g.rotate(angle);
+      const photo = p.sym ? null : ctx.images.get('bulb');
+      if (photo) {
+        drawLampPhoto(photo, R, glow, isBurnt);
+        g.restore();
+        return;
+      }
       if (p.sym) {
         g.fillStyle = glow > 0.01 ? `rgba(255,236,170,${0.3 + 0.6 * Math.min(1, glow)})` : theme.bg;
         g.beginPath();
@@ -880,8 +929,136 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Vorab gerenderte Teilbilder (je Größe zwischengespeichert). */
+    const partCache = new Map<string, HTMLCanvasElement>();
+    function part(name: string, w: number, h: number, paint: (q: CanvasRenderingContext2D) => void): HTMLCanvasElement {
+      const key = `${name}|${Math.round(w * 2)}|${Math.round(h * 2)}|${surface.dpr}`;
+      let c = partCache.get(key);
+      if (!c) {
+        if (partCache.size > 40) partCache.clear();
+        const o = offscreenCanvas(w, h, surface.dpr);
+        paint(o.g);
+        c = o.canvas;
+        partCache.set(key, c);
+      }
+      return c;
+    }
+
+    /** Größe der Lampe im Foto: Glaskolben so groß wie die gezeichnete Lampe. */
+    const bulbK = (R: number) => (1.72 * R) / (2 * BULB_IMG.glassR);
+    /** Wie weit Lampe und Fassung vom Mittelpunkt in Richtung Sockel reichen. */
+    const bulbReach = (R: number) => (BULB_CUT - BULB_IMG.glassY) * bulbK(R) + 0.24 * R;
+
+    /**
+     * Glühlampe als Foto (Koordinaten: Mitte des Glaskolbens im Ursprung, Leitung
+     * entlang x, Sockel zeigt nach +y – vom Spannungsmesser weg). Hell und dunkel
+     * werden aus zwei vorab gerenderten Bildern stufenlos gemischt.
+     */
+    function drawLampPhoto(img: HTMLImageElement, R: number, glow: number, isBurnt: boolean): void {
+      const dark = ctx.theme.dark;
+      const k = bulbK(R);
+      const w = BULB_IMG.w * k;
+      const h = BULB_IMG.h * k;
+      const x0 = -BULB_IMG.glassX * k;
+      const y0 = -BULB_IMG.glassY * k;
+      const cut = BULB_CUT * k;
+      drawBulbPhoto(g, img, { x: x0, y: y0, w, h, glow: isBurnt ? 0 : glow, dpr: surface.dpr, cutY: BULB_CUT, shadow: dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)' });
+      if (isBurnt) {
+        const soot = g.createRadialGradient(0, -R * 0.35, 0, 0, -R * 0.2, R * 0.85);
+        soot.addColorStop(0, 'rgba(50,50,50,0.5)');
+        soot.addColorStop(1, 'rgba(50,50,50,0)');
+        g.fillStyle = soot;
+        g.beginPath();
+        g.arc(0, 0, R * 0.84, 0, Math.PI * 2);
+        g.fill();
+      }
+      // Fassung am Sockel
+      const fw = (BULB_IMG.baseR - BULB_IMG.baseL + 14) * k;
+      const fy = y0 + cut - 3 * k;
+      const fass = g.createLinearGradient(-fw / 2, 0, fw / 2, 0);
+      fass.addColorStop(0, '#1d2128');
+      fass.addColorStop(0.45, '#5a626e');
+      fass.addColorStop(1, '#1d2128');
+      g.fillStyle = fass;
+      roundRect(g, -fw / 2, fy, fw, 0.26 * R, 0.07 * R);
+      g.fill();
+      // Anschlüsse an der Leitung
+      for (const sgn of [-1, 1]) {
+        const m = g.createLinearGradient(0, -R * 0.3, 0, R * 0.3);
+        m.addColorStop(0, '#f1f4f8');
+        m.addColorStop(0.5, '#a3abb6');
+        m.addColorStop(1, '#6b7380');
+        g.fillStyle = m;
+        roundRect(g, sgn > 0 ? R * 0.8 : -R, -R * 0.2, R * 0.2, R * 0.4, R * 0.07);
+        g.fill();
+      }
+    }
+
+    /** Widerstand als Foto mit Farbringen für den eingestellten Wert (Mitte im Ursprung, waagerecht). */
+    function drawResistorPhoto(img: HTMLImageElement, R: number, value: number): void {
+      const I = RES_IMG;
+      const k = (1.7 * R) / (I.bodyR - I.bodyL);
+      // Anschlussdrähte bis zu den Leitungsenden (±R)
+      const half = R / k;
+      const sx = I.cx - half;
+      const w = 2 * R;
+      const h = I.h * k;
+      const bands = resistorBands(value);
+      const sprite = part(`res-${bands.join('')}`, w, h, (q) => {
+        q.drawImage(img, sx, 0, 2 * half, I.h, 0, 0, w, h);
+        q.globalCompositeOperation = 'source-atop';
+        // ursprüngliche Ringe mit einem sauberen Stück des Körpers überdecken
+        for (const [a, b] of I.rings.slice(0, 3)) q.drawImage(img, I.clean[0], 0, I.clean[1] - I.clean[0], I.h, (a - sx) * k, 0, (b - a) * k, h);
+        // neue Ringe mit Rundung (Glanz oben, Schatten unten)
+        const pos: [number, number][] =
+          bands.length === 4
+            ? [I.rings[0]!, I.rings[1]!, I.rings[2]!, I.rings[3]!]
+            : [
+                [304, 322],
+                [334, 352],
+                [364, 382],
+                [394, 412],
+                I.rings[3]!,
+              ];
+        bands.forEach((col, i) => {
+          const [a, b] = pos[i]!;
+          q.fillStyle = col;
+          q.fillRect((a - sx + 2) * k, 0, (b - a - 4) * k, h);
+        });
+        const shade = q.createLinearGradient(0, 0, 0, h);
+        shade.addColorStop(0, 'rgba(0,0,0,0.25)');
+        shade.addColorStop(0.3, 'rgba(255,255,255,0.28)');
+        shade.addColorStop(0.45, 'rgba(255,255,255,0)');
+        shade.addColorStop(1, 'rgba(0,0,0,0.38)');
+        q.fillStyle = shade;
+        bands.forEach((_, i) => {
+          const [a, b] = pos[i]!;
+          q.fillRect((a - sx + 2) * k, 0, (b - a - 4) * k, h);
+        });
+      });
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.22)';
+      g.shadowBlur = 6;
+      g.shadowOffsetY = 2;
+      g.drawImage(sprite, -R, -h / 2, w, h);
+      g.restore();
+    }
+
     function drawResistor(c: Pt, dir: Dir, R: number, value: number, alpha: number): void {
       const theme = ctx.theme;
+      const photo = ctx.images.get('resistor');
+      if (photo) {
+        g.save();
+        g.globalAlpha = alpha;
+        g.translate(c[0], c[1]);
+        if (dir === 'v') g.rotate(Math.PI / 2);
+        // Leitung unter dem Widerstand abdecken (die Anschlussdrähte des Fotos ersetzen sie)
+        g.fillStyle = theme.dark ? '#121a25' : '#fbfcfe';
+        g.fillRect(-R, -R * 0.12, 2 * R, R * 0.24);
+        drawResistorPhoto(photo, R, value);
+        g.restore();
+        return;
+      }
       g.save();
       g.globalAlpha = alpha;
       const along = R * 1.0;
@@ -906,8 +1083,88 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Breite der Batterie im Foto (CSS-Pixel). */
+    const batteryWidth = (s: number) => 74 * s;
+
+    /**
+     * Batterie als Foto. Die Leitung läuft hinter dem Gehäuse; kurze Anschlussdrähte
+     * führen von ihr zu den Fahnen. Das Foto ist gespiegelt, damit der Pluspol
+     * (kurze Fahne) wie im Schaltzeichen links bzw. oben liegt.
+     */
+    function drawSourcePhoto(img: HTMLImageElement, src: Comp, s: number): void {
+      const theme = ctx.theme;
+      const B = BATTERY_IMG;
+      const w = batteryWidth(s);
+      const k = w / B.w;
+      const h = B.h * k;
+      // Gehäusemitte auf der Leitung
+      const midY = ((B.frontTop + B.frontBot) / 2) * k;
+      const [cx, cy] = src.c;
+      g.save();
+      g.translate(cx, cy);
+      // senkrecht: Fahnen zeigen nach links (vom Spannungsmesser weg), Pluspol oben
+      if (src.dir === 'v') g.transform(0, 1, 1, 0, 0, 0);
+      const x0 = -w / 2;
+      const y0 = -midY;
+      // gespiegelt: kurze Fahne (+) links, lange Fahne (−) rechts
+      const tabX = (ix: number) => x0 + (B.w - ix) * k;
+      const plusTop: Pt = [tabX(B.shortX), y0 + (B.shortTop + 6) * k];
+      const minusTop: Pt = [tabX(B.longX), y0 + (B.longTop + 6) * k];
+      g.lineCap = 'round';
+      g.strokeStyle = theme.text;
+      g.lineWidth = Math.max(2, 2.4 * s);
+      for (const [q, side] of [
+        [plusTop, -1],
+        [minusTop, 1],
+      ] as [Pt, number][]) {
+        const ex = side * (w / 2 + 6 * s);
+        g.beginPath();
+        g.moveTo(ex, 0);
+        g.bezierCurveTo(ex, q[1] + 4 * s, ex - side * 2 * s, q[1], q[0], q[1]);
+        g.stroke();
+      }
+      g.save();
+      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.24)';
+      g.shadowBlur = 10 * s;
+      g.shadowOffsetY = 3 * s;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr, { flipX: true }), x0, y0, w, h);
+      g.restore();
+      // Kabelschuhe an den Fahnen
+      for (const q of [plusTop, minusTop]) {
+        g.fillStyle = '#c7ced8';
+        roundRect(g, q[0] - 3 * s, q[1] - 2.5 * s, 6 * s, 6 * s, 1.5 * s);
+        g.fill();
+      }
+      const sign = `800 ${Math.round(14 * Math.min(1.2, s))}px ${theme.font}`;
+      const signY = y0 + 66 * k;
+      const upright = src.dir === 'h';
+      const signAt = (str: string, x: number, color: string) => {
+        g.save();
+        g.translate(x, signY);
+        if (!upright) g.transform(0, 1, 1, 0, 0, 0);
+        text(g, str, 0, 0, { font: sign, color });
+        g.restore();
+      };
+      signAt('+', tabX(B.shortX) + 1 * s, '#ffffff');
+      signAt('−', tabX(B.longX), '#ffffff');
+      g.restore();
+      // Beschriftung über bzw. links neben der Batterie
+      const label = tr('source', { U: fmt.num(p.U, 1) });
+      const font = `700 ${narrow() ? 12 : 13}px ${theme.font}`;
+      if (src.dir === 'h') text(g, label, cx, cy + y0 - 12 * s, { font, color: theme.text });
+      else {
+        g.save();
+        g.translate(cx + y0 - 12 * s, cy);
+        g.rotate(-Math.PI / 2);
+        text(g, label, 0, 0, { font, color: theme.text });
+        g.restore();
+      }
+    }
+
     function drawSource(src: Comp, s: number): void {
       const theme = ctx.theme;
+      const photo = p.sym ? null : ctx.images.get('battery');
+      if (photo) return drawSourcePhoto(photo, src, s);
       const [cx, cy] = src.c;
       const ink = theme.text;
       g.save();
@@ -1056,7 +1313,12 @@ export default defineSimulation({
       const srcPx: Comp = { c: toPx(src.c), dir: t < 0.5 && morphing ? fromLayout!.source.dir : lay.source.dir, perp: lay.source.perp };
       g.save();
       g.fillStyle = dark ? '#121a25' : '#fbfcfe';
-      if (srcPx.dir === 'h') g.fillRect(srcPx.c[0] - 6 * s, srcPx.c[1] - 22 * s, 12 * s, 44 * s);
+      if (sourcePhoto()) {
+        // Leitung zwischen den Anschlussdrähten der Batterie unterbrechen
+        const half = batteryWidth(s) / 2 + 6 * s - 1.5;
+        if (srcPx.dir === 'h') g.fillRect(srcPx.c[0] - half, srcPx.c[1] - 3 * s, 2 * half, 6 * s);
+        else g.fillRect(srcPx.c[0] - 3 * s, srcPx.c[1] - half, 6 * s, 2 * half);
+      } else if (srcPx.dir === 'h') g.fillRect(srcPx.c[0] - 6 * s, srcPx.c[1] - 22 * s, 12 * s, 44 * s);
       else g.fillRect(srcPx.c[0] - 22 * s, srcPx.c[1] - 6 * s, 44 * s, 12 * s);
       g.restore();
       drawSource(srcPx, s);
@@ -1125,7 +1387,7 @@ export default defineSimulation({
         const vUsed = new Map<string, number>();
         if (p.v1 !== '0') vUsed.set(p.v1, 1);
         if (p.v2 !== '0' && !vUsed.has(p.v2)) vUsed.set(p.v2, 2);
-        const targets: { key: string; comp: Comp; half: number; U: number }[] = [{ key: 'S', comp: lay.source, half: 7, U: p.U }];
+        const targets: { key: string; comp: Comp; half: number; U: number }[] = [{ key: 'S', comp: lay.source, half: sourcePhoto() ? (batteryWidth(s) / 2 + 6 * s) / s : 7, U: p.U }];
         lay.comps.forEach((c, i) => targets.push({ key: String(i + 1), comp: c, half: Ru, U: res.parts[i]?.U ?? 0 }));
         for (const tg of targets) {
           const c = toPx(tg.comp.c);
@@ -1247,13 +1509,18 @@ export default defineSimulation({
 
     function labelPart(i: number, c: Pt, comp: Comp, R: number, s: number, alpha: number): void {
       const theme = ctx.theme;
-      const label = lamps() ? tr('lamp', { i: String(i + 1) }) : tr('res', { i: SUB[i + 1]! });
+      const resPhoto = !lamps() && !!ctx.images.get('resistor');
+      const name = lamps() ? tr('lamp', { i: String(i + 1) }) : tr('res', { i: SUB[i + 1]! });
+      // Beim Foto steht der Wert neben dem Namen (die Farbringe zeigen ihn ebenfalls)
+      const label = resPhoto ? `${name} = ${tr('ohm', { R: fmt.num([p.R1, p.R2, p.R3][i]!, 0) })}` : name;
+      // Lampenfoto: Sockel zeigt vom Spannungsmesser weg, Beschriftung dahinter
+      const reach = lamps() && !p.sym && ctx.images.get('bulb') ? bulbReach(R) - R : 0;
       const size = Math.max(11, Math.round(12.5 * Math.min(1.2, s)));
       g.save();
       g.globalAlpha = alpha;
       // waagerecht: auf der dem Spannungsmesser abgewandten Seite; senkrecht: links oben
       const x = comp.dir === 'h' ? c[0] : c[0] + R * 0.75 + 4 * s;
-      const y = comp.dir === 'h' ? (comp.perp[1] < 0 ? c[1] + R + 13 * s : c[1] - R - 13 * s) : c[1] - R - 4 * s;
+      const y = comp.dir === 'h' ? (comp.perp[1] < 0 ? c[1] + R + reach + 13 * s : c[1] - R - reach - 13 * s) : c[1] - R - 4 * s;
       text(g, label, x, y, { font: `700 ${size}px ${theme.font}`, color: theme.muted, align: comp.dir === 'h' ? 'center' : 'left' });
       if (lamps() && (burnt[i] || removed(i))) {
         const note = ctx.t(burnt[i] ? 'burnt' : 'out');

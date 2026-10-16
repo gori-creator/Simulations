@@ -188,7 +188,7 @@ export default defineSimulation({
     { id: 'vf', label: L('Fluchtgeschwindigkeit: v₀ = v_F', 'Escape speed: v₀ = v_F') },
     { id: 'clear', label: L('Messungen löschen', 'Clear measurements'), visibleIf: (v) => v.panel === 'k3' },
   ],
-  images: { sun: 'sonne.webp', planet: 'erde.webp' },
+  images: { sun: 'sonne.webp', planet: 'erde.webp', sky: 'sternenhimmel.webp' },
   readouts: [
     { key: 'kind', label: L('Bahnform', 'Shape of the orbit'), spoiler: true },
     { key: 'speeds', label: L('Kreisbahn- und Fluchtgeschwindigkeit bei r₀', 'Circular and escape speed at r₀'), spoiler: true },
@@ -904,7 +904,8 @@ export default defineSimulation({
     let starKey = '';
     function stars(r: Rect): HTMLCanvasElement {
       const dpr = surface.dpr || 1;
-      const key = `${r.w}x${r.h}@${dpr}`;
+      const sky = ctx.images.get('sky');
+      const key = `${r.w}x${r.h}@${dpr}|${sky ? 1 : 0}`;
       if (key === starKey) return starCanvas;
       starKey = key;
       starCanvas.width = Math.ceil(r.w * dpr);
@@ -925,8 +926,17 @@ export default defineSimulation({
       band.addColorStop(1, 'rgba(90,110,190,0)');
       sg.fillStyle = band;
       sg.fillRect(0, 0, r.w, r.h);
+      if (sky) {
+        // Foto des Sternenhimmels bildfüllend (Seitenverhältnis bleibt), etwas gedämpft
+        const k = Math.max(r.w / sky.width, r.h / sky.height);
+        sg.imageSmoothingQuality = 'high';
+        sg.globalAlpha = 0.85;
+        sg.drawImage(sky, (r.w - sky.width * k) / 2, (r.h - sky.height * k) / 2, sky.width * k, sky.height * k);
+        sg.globalAlpha = 1;
+      }
       const rnd = seededRandom(7);
-      const count = Math.round((r.w * r.h) / 900);
+      // mit Foto nur wenige zusätzliche helle Sterne
+      const count = Math.round((r.w * r.h) / (sky ? 5200 : 900));
       for (let i = 0; i < count; i++) {
         const x = rnd() * r.w;
         const y = rnd() * r.h;

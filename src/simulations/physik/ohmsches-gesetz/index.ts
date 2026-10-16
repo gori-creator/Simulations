@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   AMP_RANGES,
   autoRange,
@@ -35,6 +35,25 @@ interface Series {
 
 /** Farben der Messreihen (Indizes in theme.series). */
 const SERIES_COLORS = [0, 1, 2, 4, 5, 3];
+
+/*
+ * Fotos (Lage der Teile in Bildpixeln). Skala, Zeiger, Anzeige und Buchsen
+ * zeichnet die Simulation selbst genau darüber.
+ */
+/** Zeigerinstrument (messgeraet.webp): leeres rundes Zifferblatt mit Achse in der Mitte. */
+const METER_IMG = { w: 322, h: 321, cx: 161, cy: 161, dialR: 116 };
+/** Netzgerät (netzgeraet.webp): Drehknopf, leeres Display, Buchsen, Leuchten. */
+const SUPPLY_IMG = {
+  w: 347,
+  h: 251,
+  knob: [63, 76] as Pt,
+  knobR: 33,
+  display: { x: 134, y: 44, w: 172, h: 68 },
+  plus: [152, 163] as Pt,
+  minus: [213, 163] as Pt,
+  ledRed: [152, 210] as Pt,
+  ledGreen: [213, 210] as Pt,
+};
 const MAX_SERIES = 6;
 
 /* ------------------------------------------------------------------ */
@@ -120,6 +139,7 @@ const GOLD = '#c9a43a';
 export default defineSimulation({
   id: 'ohmsches-gesetz',
   layout: { aspect: 1.6, aspectNarrow: 0.56 },
+  images: { meter: 'messgeraet.webp', supply: 'netzgeraet.webp' },
   dragHint: true,
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -415,6 +435,18 @@ export default defineSimulation({
       planRect: Rect | null;
     }
 
+    type Box = { x: number; y: number; w: number; h: number; k: number };
+    /** Lage des Netzgerät-Fotos: Mitte bei `c`, 172 Entwurfseinheiten breit. */
+    function supplyBox(c: Pt, s: number): Box {
+      const k = (172 * s) / SUPPLY_IMG.w;
+      return { x: c[0] - (SUPPLY_IMG.w * k) / 2, y: c[1] - (SUPPLY_IMG.h * k) / 2, w: SUPPLY_IMG.w * k, h: SUPPLY_IMG.h * k, k };
+    }
+    /** Lage des Messgerät-Fotos: quadratisch, Mitte bei `c`. */
+    function meterBox(c: Pt, s: number): Box {
+      const k = (150 * s) / METER_IMG.w;
+      return { x: c[0] - METER_IMG.cx * k, y: c[1] - METER_IMG.cy * k, w: METER_IMG.w * k, h: METER_IMG.h * k, k };
+    }
+
     function geo(r: Rect): Geo {
       const showPlan = p.plan;
       const DW = 400;
@@ -429,17 +461,20 @@ export default defineSimulation({
       const t1 = at(200, boardY + 12);
       // Beim Draht greift eine Klemme den Draht bei der Länge l ab.
       const t2 = p.part === 'wire' ? at(206 + (p.l / 2) * 160, boardY + 12) : at(364, boardY + 12);
+      const supply = at(90, 264);
+      const sb = ctx.images.get('supply') ? supplyBox(supply, s) : null;
+      const onPhoto = (q: Pt): Pt => [sb!.x + q[0] * sb!.k, sb!.y + q[1] * sb!.k];
       return {
         r,
         s,
         at,
         ammeter: at(105, 80),
         voltmeter: at(295, 80),
-        supply: at(90, 264),
-        knob: at(64, 284),
-        knobR: 27 * s,
-        sPlus: at(140, 246),
-        sMinus: at(140, 300),
+        supply,
+        knob: sb ? onPhoto(SUPPLY_IMG.knob) : at(64, 284),
+        knobR: sb ? SUPPLY_IMG.knobR * sb.k : 27 * s,
+        sPlus: sb ? onPhoto(SUPPLY_IMG.plus) : at(140, 246),
+        sMinus: sb ? onPhoto(SUPPLY_IMG.minus) : at(140, 300),
         board,
         t1,
         t2,
@@ -585,8 +620,121 @@ export default defineSimulation({
     }
 
     /* ---------- Bauteile ---------- */
+    /** Zeigerinstrument als Foto: Skala und Zeiger genau im runden Zifferblatt. */
+    function drawMeterPhoto(img: HTMLImageElement, c: Pt, s: number, kind: 'A' | 'V'): void {
+      const theme = ctx.theme;
+      const n = kind === 'A' ? needles.A : needles.V;
+      const b = meterBox(c, s);
+      const k = b.k;
+      g.save();
+      shadowOn(14 * s, 5 * s);
+      g.drawImage(scaledSprite(img, b.w, b.h, surface.dpr), b.x, b.y, b.w, b.h);
+      g.restore();
+      if (theme.dark) {
+        // Rahmen im Dunkelmodus etwas absetzen
+        g.strokeStyle = 'rgba(255,255,255,0.10)';
+        g.lineWidth = 1;
+        roundRect(g, b.x + 1.5 * k, b.y + 1.5 * k, b.w - 3 * k, b.h - 3 * k, 10 * k);
+        g.stroke();
+      }
+      const pivot: Pt = [b.x + METER_IMG.cx * k, b.y + METER_IMG.cy * k];
+      const dialR = METER_IMG.dialR * k;
+      const R = dialR * 0.86;
+      const span = (62 * Math.PI) / 180;
+      const angleOf = (f: number) => -span + 2 * span * f;
+      const range = n.range;
+      const mA = kind === 'A' && range < 1;
+      const scaleMax = mA ? range * 1000 : range;
+      const major = scaleMax === 3 || scaleMax === 300 ? scaleMax / 3 : scaleMax === 30 ? 5 : scaleMax / 5;
+      const minor = scaleMax === 3 || scaleMax === 300 ? major / 10 : scaleMax === 30 ? 1 : major / 4;
+      const ink = '#2a2a2a';
+      g.save();
+      g.beginPath();
+      g.arc(pivot[0], pivot[1], dialR, 0, Math.PI * 2);
+      g.clip();
+      g.strokeStyle = ink;
+      g.lineCap = 'butt';
+      g.lineWidth = 1.2 * s;
+      g.beginPath();
+      g.arc(pivot[0], pivot[1], R, -Math.PI / 2 - span, -Math.PI / 2 + span);
+      g.stroke();
+      // Spiegelbogen
+      g.strokeStyle = 'rgba(160,170,185,0.55)';
+      g.lineWidth = 3 * s;
+      g.beginPath();
+      g.arc(pivot[0], pivot[1], R - 5 * s, -Math.PI / 2 - span, -Math.PI / 2 + span);
+      g.stroke();
+      const steps = Math.round(scaleMax / minor);
+      for (let i = 0; i <= steps; i++) {
+        const v = i * minor;
+        const isMajor = Math.abs(v / major - Math.round(v / major)) < 1e-6;
+        const half = !isMajor && Math.abs(v / (major / 2) - Math.round(v / (major / 2))) < 1e-6;
+        const a = angleOf(v / scaleMax) - Math.PI / 2;
+        const len = (isMajor ? 8 : half ? 6 : 3.5) * s;
+        g.strokeStyle = ink;
+        g.lineWidth = (isMajor ? 1.3 : 0.85) * s;
+        g.beginPath();
+        g.moveTo(pivot[0] + Math.cos(a) * R, pivot[1] + Math.sin(a) * R);
+        g.lineTo(pivot[0] + Math.cos(a) * (R + len), pivot[1] + Math.sin(a) * (R + len));
+        g.stroke();
+        // bei vielen Hauptstrichen nur jeden zweiten beschriften (Platz im runden Zifferblatt)
+        const nMajor = Math.round(scaleMax / major);
+        const im = Math.round(v / major);
+        const labelled = isMajor && (s < 0.85 ? (im * 2) % nMajor === 0 : nMajor <= 5 || im % 2 === 0);
+        if (labelled) {
+          const lr = R - 14 * s;
+          const label = fmt.num(v, v < 1 && v > 0 ? 1 : 0);
+          text(g, label, pivot[0] + Math.cos(a) * lr, pivot[1] + Math.sin(a) * lr, { font: `600 ${Math.max(9, Math.round(9.5 * s))}px ${theme.font}`, color: ink });
+        }
+      }
+      // Einheit und Messbereich in der unteren Hälfte
+      text(g, mA ? 'mA' : kind, pivot[0], pivot[1] + dialR * 0.36, { font: `800 ${Math.round(16 * s)}px ${theme.font}`, color: kind === 'A' ? '#b3261e' : '#1d4f91' });
+      const rangeLabel = mA ? `${fmt.num(range * 1000, 0)} mA` : `${fmt.num(range, range < 1 ? 1 : 0)} ${kind}`;
+      text(g, `0 … ${rangeLabel}`, pivot[0], pivot[1] + dialR * 0.62, { font: `600 ${Math.max(9, Math.round(9 * s))}px ${theme.font}`, color: '#59606b' });
+      // Zeiger (mit weichem Schatten auf dem Zifferblatt)
+      const f = Math.max(-0.03, Math.min(1.06, n.pos));
+      const a = angleOf(f) - Math.PI / 2;
+      g.save();
+      g.shadowColor = 'rgba(0,0,0,0.28)';
+      g.shadowBlur = 2.5 * s;
+      g.shadowOffsetX = 1.2 * s;
+      g.shadowOffsetY = 1.6 * s;
+      g.strokeStyle = '#c62828';
+      g.lineWidth = 1.7 * s;
+      g.lineCap = 'round';
+      g.beginPath();
+      g.moveTo(pivot[0] - Math.cos(a) * 10 * s, pivot[1] - Math.sin(a) * 10 * s);
+      g.lineTo(pivot[0] + Math.cos(a) * (R + 5 * s), pivot[1] + Math.sin(a) * (R + 5 * s));
+      g.stroke();
+      g.restore();
+      g.restore();
+      // Achse (Abdeckkappe wie im Foto)
+      const hub = g.createRadialGradient(pivot[0] - 2 * s, pivot[1] - 2 * s, 0.5 * s, pivot[0], pivot[1], 6 * s);
+      hub.addColorStop(0, '#f4f6f8');
+      hub.addColorStop(0.6, '#9aa2ad');
+      hub.addColorStop(1, '#4d545e');
+      g.fillStyle = hub;
+      g.beginPath();
+      g.arc(pivot[0], pivot[1], 5.5 * s, 0, Math.PI * 2);
+      g.fill();
+      // Buchsen auf dem Rahmen
+      const S = meterSockets(c, s);
+      socket(S.plus[0], S.plus[1], s, '#c62828');
+      socket(S.com[0], S.com[1], s, '#1c1f24');
+      text(g, '+', S.plus[0] - 13 * s, S.plus[1], { font: `800 ${Math.round(11 * s)}px ${theme.font}`, color: '#ffb4ab' });
+      text(g, 'COM', S.com[0] - 10 * s, S.com[1], { font: `700 ${Math.max(8, Math.round(8 * s))}px ${theme.font}`, color: 'rgba(235,240,248,0.8)', align: 'right' });
+      if (Math.abs(n.pos) > 1.02) {
+        g.fillStyle = withAlpha(theme.series[1]!, 0.9);
+        g.beginPath();
+        g.arc(b.x + b.w - 30 * k, b.y + 30 * k, 4 * s, 0, Math.PI * 2);
+        g.fill();
+      }
+    }
+
     function drawMeter(c: Pt, s: number, kind: 'A' | 'V'): void {
       const theme = ctx.theme;
+      const photo = ctx.images.get('meter');
+      if (photo) return drawMeterPhoto(photo, c, s, kind);
       const n = kind === 'A' ? needles.A : needles.V;
       const [cx, cy] = c;
       const W = 172 * s;
@@ -707,10 +855,124 @@ export default defineSimulation({
     }
 
     function meterSockets(c: Pt, s: number): { plus: Pt; com: Pt } {
+      if (ctx.images.get('meter')) {
+        // auf dem schwarzen Rahmen unter dem Zifferblatt
+        const b = meterBox(c, s);
+        const y = b.y + 302 * b.k;
+        return { plus: [c[0] - 40 * s, y], com: [c[0] + 40 * s, y] };
+      }
       return { plus: [c[0] - 54 * s, c[1] + 52 * s], com: [c[0] + 54 * s, c[1] + 52 * s] };
     }
 
+    /** Drehknopf aus dem Foto (rund ausgeschnitten), wird gedreht. */
+    let knobSprite: { key: string; c: HTMLCanvasElement } | null = null;
+
+    /** Netzgerät als Foto: Knopf dreht sich, Anzeige im Display, Leuchten an der Front. */
+    function drawSupplyPhoto(img: HTMLImageElement, Gx: Geo): void {
+      const { s, supply, knob, knobR } = Gx;
+      const theme = ctx.theme;
+      const b = supplyBox(supply, s);
+      const k = b.k;
+      const S = SUPPLY_IMG;
+      const on = (q: Pt): Pt => [b.x + q[0] * k, b.y + q[1] * k];
+      g.save();
+      shadowOn(14 * s, 5 * s);
+      g.drawImage(scaledSprite(img, b.w, b.h, surface.dpr), b.x, b.y, b.w, b.h);
+      g.restore();
+      text(g, ctx.t('supply'), b.x + S.display.x * k, b.y + 27 * k, { font: `700 ${Math.max(9, Math.round(9.5 * s))}px ${theme.font}`, color: '#3b424c', align: 'left' });
+      // Skala um den Knopf (0 … 12 V)
+      const [kx, ky] = knob;
+      const ring = knobR + 4 * s;
+      for (let v = 0; v <= 12; v++) {
+        const a = ((-135 + (v / 12) * 270) * Math.PI) / 180 - Math.PI / 2;
+        const major = v % 2 === 0;
+        g.strokeStyle = 'rgba(40,46,56,0.75)';
+        g.lineWidth = (major ? 1.3 : 0.8) * s;
+        g.beginPath();
+        g.moveTo(kx + Math.cos(a) * ring, ky + Math.sin(a) * ring);
+        g.lineTo(kx + Math.cos(a) * (ring + (major ? 5 : 3) * s), ky + Math.sin(a) * (ring + (major ? 5 : 3) * s));
+        g.stroke();
+        if (major && v % 4 === 0) text(g, String(v), kx + Math.cos(a) * (ring + 11 * s), ky + Math.sin(a) * (ring + 11 * s), { font: `700 ${Math.max(8, Math.round(8.5 * s))}px ${theme.font}`, color: '#3b424c' });
+      }
+      if (knobHover || knobDrag) {
+        g.fillStyle = withAlpha(theme.series[0]!, knobDrag ? 0.32 : 0.2);
+        g.beginPath();
+        g.arc(kx, ky, knobR + 4 * s, 0, Math.PI * 2);
+        g.fill();
+      }
+      // Knopf: Strich im Foto zeigt nach oben (= 6 V), gedreht auf den eingestellten Wert
+      const kr = knobR + 1.5 * k;
+      const key = `${Math.round(kr * 4)}|${surface.dpr}`;
+      if (!knobSprite || knobSprite.key !== key) {
+        const o = offscreenCanvas(2 * kr, 2 * kr, surface.dpr);
+        o.g.beginPath();
+        o.g.arc(kr, kr, kr, 0, Math.PI * 2);
+        o.g.clip();
+        const sr = S.knobR + 1.5;
+        o.g.drawImage(img, S.knob[0] - sr, S.knob[1] - sr, 2 * sr, 2 * sr, 0, 0, 2 * kr, 2 * kr);
+        knobSprite = { key, c: o.canvas };
+      }
+      const ka = ((-135 + (p.U / U_MAX) * 270) * Math.PI) / 180;
+      g.save();
+      g.translate(kx, ky);
+      g.rotate(ka);
+      g.drawImage(knobSprite.c, -kr, -kr, 2 * kr, 2 * kr);
+      g.restore();
+      // Hinweis zum Drehen
+      if (!knobUsed && !ctx.locked) {
+        const pulse = reduced ? 0.6 : 0.5 + 0.5 * Math.sin(performance.now() / 280);
+        const rr = knobR + 21 * s + 2 * pulse;
+        g.strokeStyle = withAlpha(theme.series[0]!, 0.3 + 0.45 * pulse);
+        g.lineWidth = 2;
+        g.beginPath();
+        g.arc(kx, ky, rr, -Math.PI * 0.95, -Math.PI * 0.55);
+        g.stroke();
+        const tip = -Math.PI * 0.55;
+        const tx = kx + Math.cos(tip) * rr;
+        const ty = ky + Math.sin(tip) * rr;
+        g.fillStyle = withAlpha(theme.series[0]!, 0.3 + 0.45 * pulse);
+        g.beginPath();
+        g.moveTo(tx + 6, ty);
+        g.lineTo(tx - 3, ty - 5);
+        g.lineTo(tx - 3, ty + 5);
+        g.closePath();
+        g.fill();
+      }
+      // Display: eingestellte Spannung, bei Strombegrenzung ein Hinweis
+      const D = S.display;
+      const dx = b.x + D.x * k;
+      const dy = b.y + D.y * k;
+      const dw = D.w * k;
+      const dh = D.h * k;
+      const lcd = '#7cf2b0';
+      g.save();
+      g.shadowColor = 'rgba(80,255,170,0.55)';
+      g.shadowBlur = 6 * s;
+      text(g, `${p.U.toFixed(1).replace('.', fmt.decimalSeparator)} V`, dx + dw - 8 * k, dy + dh * (op.limited ? 0.4 : 0.52), { font: `700 ${Math.round(dh * 0.5)}px ui-monospace, Menlo, Consolas, monospace`, color: lcd, align: 'right' });
+      g.restore();
+      if (op.limited) text(g, ctx.t('cc'), dx + dw - 8 * k, dy + dh * 0.8, { font: `700 ${Math.max(8, Math.round(dh * 0.2))}px ${theme.font}`, color: '#ff8a72', align: 'right' });
+      // Leuchten: grün = eingeschaltet, rot = Strombegrenzung
+      const lamp = (q: Pt, color: string, lit: boolean) => {
+        const [x, y] = on(q);
+        g.save();
+        if (lit) {
+          g.shadowColor = color;
+          g.shadowBlur = 10 * s;
+        }
+        g.globalAlpha = lit ? 1 : 0;
+        g.fillStyle = color;
+        g.beginPath();
+        g.arc(x, y, 3.4 * s, 0, Math.PI * 2);
+        g.fill();
+        g.restore();
+      };
+      lamp(S.ledGreen, '#3ee08a', true);
+      lamp(S.ledRed, '#ff5a3c', op.limited);
+    }
+
     function drawSupply(Gx: Geo): void {
+      const photo = ctx.images.get('supply');
+      if (photo) return drawSupplyPhoto(photo, Gx);
       const { s, supply, knob, knobR } = Gx;
       const theme = ctx.theme;
       const [cx, cy] = supply;

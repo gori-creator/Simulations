@@ -1,4 +1,20 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import {
+  BATTERY_IMG,
+  BULB_IMG,
+  drawBulbPhoto,
+  defineSimulation,
+  ease,
+  offscreenCanvas,
+  prefersReducedMotion,
+  roundRect,
+  scaledSprite,
+  Surface,
+  TapTarget,
+  text,
+  Tween,
+  withAlpha,
+  type Rect,
+} from '../../../sim-core';
 import {
   BATTERY_U,
   DEVICE_R,
@@ -27,6 +43,80 @@ const I_REF = BATTERY_U / (DEVICE_R.lamp + 0.7);
 /** Abstand der Elektronen und der Pfeile (in Einheiten des Aufbaus). */
 const GAP = 12;
 const ARROW_GAP = 34;
+
+/*
+ * Lage der Teile in den Fotos (Bildpixel), damit Leitungen, Elektronen und
+ * bewegte Teile genau an den richtigen Stellen ansetzen.
+ */
+/** Hebelschalter auf Holzsockel (schalter.webp), Hebel im Foto offen. */
+const SW_IMG = {
+  w: 415,
+  h: 254,
+  /** Anschlussschrauben links (Drehpunktseite) und rechts (Kontaktseite) */
+  t1: [88, 113] as Pt,
+  t2: [247, 155] as Pt,
+  /** Drehachse des Hebels und Federkontakt, in den der Hebel greift */
+  pivot: [128, 54] as Pt,
+  clip: [254, 92] as Pt,
+  /** Griff (Mitte) */
+  grip: [312, 34] as Pt,
+  /** Umriss des beweglichen Hebels (rechts vom Lagerbock) */
+  lever: [
+    [151, 37],
+    [250, 22],
+    [262, 4],
+    [330, -2],
+    [376, 0],
+    [376, 62],
+    [336, 68],
+    [262, 68],
+    [250, 64],
+    [178, 62],
+    [151, 60],
+  ] as Pt[],
+  /** Lagerbock, der vor dem Hebelende liegt */
+  hinge: { x: 90, y: 16, w: 62, h: 92 },
+  /** Winkel des Hebels gegenüber dem Foto (Grad): offen bzw. geschlossen */
+  openDeg: -8,
+  closedDeg: 12.5,
+};
+/** Gleichstrommotor mit Propeller (motor.webp), Welle waagerecht nach links. */
+const MOTOR_IMG = {
+  w: 382,
+  h: 312,
+  axisY: 150,
+  /** Propeller (wird gedreht) und Nabe (bleibt) */
+  propW: 56,
+  hub: { x: 0, y: 124, w: 50, h: 54 },
+  canL: 88,
+  canR: 268,
+  canBot: 212,
+  /** Enden der Anschlussdrähte */
+  leadA: [380, 113] as Pt,
+  leadB: [378, 190] as Pt,
+  /** Aufdruck auf dem Gehäuse (wird mit sauberem Gehäusestück überdeckt) */
+  print: { x: 219, y: 128, w: 15, h: 50 },
+  clean: { x: 211, w: 8 },
+};
+/** Klingel (klingel.webp): Glocke oben, Spule unten, Klöppel rechts. */
+const BELL_IMG = {
+  w: 302,
+  h: 398,
+  /** Drehpunkt des Klöppelarms und sein Umriss (ohne Fuß am Grundbrett) */
+  pivot: [226, 302] as Pt,
+  arm: [
+    [262, 130],
+    [304, 130],
+    [304, 177],
+    [284, 179],
+    [246, 283],
+    [231, 283],
+    [262, 177],
+  ] as Pt[],
+  /** Mitte der Glocke (für die Schallwellen) */
+  bell: [128, 105] as Pt,
+  bellR: 128,
+};
 
 /* ------------------------------------------------------------------ */
 /* Geometrie                                                           */
@@ -143,6 +233,7 @@ function flowSpeed(I: number): number {
 export default defineSimulation({
   id: 'einfacher-stromkreis',
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
+  images: { battery: 'batterie.webp', bulb: 'gluehlampe.webp', switch: 'schalter.webp', motor: 'motor.webp', bell: 'klingel.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -598,7 +689,45 @@ export default defineSimulation({
       tailB: Pt;
       bulbC: Pt;
       bulbR: number;
+      /** Oberkante und rechter Rand des Geräts (Markierung, Beschriftung) */
+      devTop: number;
+      devRight: number;
       paths: Partial<Record<EdgeId, Path>>;
+    }
+
+    /* ---------- Lage der Fotos (CSS-Pixel); k = CSS-Pixel je Bildpixel ---------- */
+    type Box = { x: number; y: number; w: number; h: number; k: number };
+    const at = (b: Box, q: readonly [number, number]): Pt => [b.x + q[0] * b.k, b.y + q[1] * b.k];
+    /** Batterie: Unterkante wie bei der gezeichneten Batterie. */
+    function batteryBox(bat: Pt, s: number): Box {
+      const k = (136 * s) / BATTERY_IMG.w;
+      const h = BATTERY_IMG.h * k;
+      return { x: bat[0] - (BATTERY_IMG.w * k) / 2, y: bat[1] + 37 * s - h, w: BATTERY_IMG.w * k, h, k };
+    }
+    /** Schalter: die Mitte zwischen den Anschlussschrauben liegt bei `sw`. */
+    function switchBox(sw: Pt, s: number): Box {
+      const k = (138 * s) / SW_IMG.w;
+      const cx = (SW_IMG.t1[0] + SW_IMG.t2[0]) / 2;
+      const cy = (SW_IMG.t1[1] + SW_IMG.t2[1]) / 2;
+      return { x: sw[0] - cx * k, y: sw[1] - cy * k, w: SW_IMG.w * k, h: SW_IMG.h * k, k };
+    }
+    /** Glühlampe: steckt mit dem Schraubsockel in der Fassung auf dem Grundbrett. */
+    function bulbBox(dev: Pt, s: number): Box {
+      const k = (56 * s) / BULB_IMG.w;
+      const bottom = dev[1] - 11 * s - 4 * s;
+      return { x: dev[0] - BULB_IMG.glassX * k, y: bottom - BULB_IMG.h * k, w: BULB_IMG.w * k, h: BULB_IMG.h * k, k };
+    }
+    /** Motor: liegt mit waagerechter Welle auf einem Halter, Gehäusemitte über `dev`. */
+    function motorBox(dev: Pt, s: number): Box {
+      const k = (104 * s) / MOTOR_IMG.w;
+      const axis = dev[1] - 11 * s - 50 * s;
+      return { x: dev[0] - ((MOTOR_IMG.canL + MOTOR_IMG.canR) / 2) * k, y: axis - MOTOR_IMG.axisY * k, w: MOTOR_IMG.w * k, h: MOTOR_IMG.h * k, k };
+    }
+    /** Klingel: steht auf dem Grundbrett. */
+    function bellBox(dev: Pt, s: number): Box {
+      const k = (88 * s) / BELL_IMG.h;
+      const bottom = dev[1] - 9 * s;
+      return { x: dev[0] - (BELL_IMG.w / 2) * k, y: bottom - BELL_IMG.h * k, w: BELL_IMG.w * k, h: BELL_IMG.h * k, k };
     }
 
     function realGeo(r: Rect): RealGeo {
@@ -606,14 +735,21 @@ export default defineSimulation({
       const test = mode() === 'test';
       const bat: Pt = [r.x + r.w * 0.5, r.y + r.h - 64 * s];
       const topY = bat[1] - 35 * s - 12 * s;
-      const minus: Pt = [bat[0] - 30 * s, topY - 30 * s];
-      const plus: Pt = [bat[0] + 30 * s, topY - 14 * s];
+      let minus: Pt = [bat[0] - 30 * s, topY - 30 * s];
+      let plus: Pt = [bat[0] + 30 * s, topY - 14 * s];
+      if (ctx.images.get('battery')) {
+        // Kabel an den Messingfahnen des Fotos: lange Fahne = Minuspol, kurze = Pluspol
+        const b = batteryBox(bat, s);
+        minus = at(b, [BATTERY_IMG.longX, BATTERY_IMG.longTop + 9]);
+        plus = at(b, [BATTERY_IMG.shortX, BATTERY_IMG.shortTop + 9]);
+      }
       const dev: Pt = [r.x + r.w * (test ? 0.74 : 0.72), r.y + Math.max(108 * s, r.h * 0.37)];
       const d1: Pt = [dev[0] - 38 * s, dev[1]];
       const d2: Pt = [dev[0] + 38 * s, dev[1]];
       const sw: Pt = [r.x + Math.max(62 * s, r.w * 0.23), r.y + r.h * 0.47];
-      const s1: Pt = [sw[0] - 34 * s, sw[1]];
-      const s2: Pt = [sw[0] + 34 * s, sw[1]];
+      const swImg = !test && ctx.images.get('switch');
+      const s1: Pt = swImg ? at(switchBox(sw, s), SW_IMG.t1) : [sw[0] - 34 * s, sw[1]];
+      const s2: Pt = swImg ? at(switchBox(sw, s), SW_IMG.t2) : [sw[0] + 34 * s, sw[1]];
       // Sicherung senkrecht zwischen Gerät und Batterie (rechts)
       const fuse: Pt = [Math.min(r.x + r.w - 34 * s, dev[0] + 92 * s), (dev[1] + bat[1]) / 2 + 6 * s];
       const f1: Pt = [fuse[0], fuse[1] - 31 * s];
@@ -623,8 +759,10 @@ export default defineSimulation({
       const tipB: Pt = [objC[0] + 31 * s, objC[1]];
       const tailA: Pt = [tipA[0] - 52 * s, objC[1]];
       const tailB: Pt = [tipB[0] + 52 * s, objC[1]];
-      const bulbR = 22 * s;
-      const bulbC: Pt = [dev[0], dev[1] - 11 * s - 16 * s - 14 * s - bulbR * 0.85];
+      const lampPhoto = device() === 'lamp' && !!ctx.images.get('bulb');
+      const lb = bulbBox(dev, s);
+      const bulbR = lampPhoto ? BULB_IMG.glassR * lb.k : 22 * s;
+      const bulbC: Pt = lampPhoto ? at(lb, [BULB_IMG.glassX, BULB_IMG.glassY]) : [dev[0], dev[1] - 11 * s - 16 * s - 14 * s - bulbR * 0.85];
       const paths: Partial<Record<EdgeId, Path>> = {};
       if (test) {
         paths.w1 = new Path(bezier(minus, add(minus, 0, -60 * s), add(tailA, -55 * s, 0), tailA));
@@ -633,7 +771,18 @@ export default defineSimulation({
         paths.w3 = new Path(bezier(d2, add(d2, 60 * s, 0), add(plus, 0, -80 * s), plus));
       } else {
         paths.w1 = new Path(bezier(minus, add(minus, 0, -60 * s), add(s1, -55 * s, 12 * s), s1));
-        paths.sw = new Path([s1, s2]);
+        if (swImg) {
+          // über Lagerbock, Hebel und Federkontakt (Hebel geschlossen)
+          const b = switchBox(sw, s);
+          const a = (SW_IMG.closedDeg * Math.PI) / 180;
+          const pv = SW_IMG.pivot;
+          const turn = (q: Pt): Pt => {
+            const dx = q[0] - pv[0];
+            const dy = q[1] - pv[1];
+            return at(b, [pv[0] + dx * Math.cos(a) - dy * Math.sin(a), pv[1] + dx * Math.sin(a) + dy * Math.cos(a)]);
+          };
+          paths.sw = new Path([s1, at(b, [118, 92]), at(b, pv), turn([205, 49]), turn([246, 47]), at(b, [SW_IMG.clip[0] - 2, SW_IMG.clip[1] + 22]), s2]);
+        } else paths.sw = new Path([s1, s2]);
         paths.w2 = new Path(bezier(s2, add(s2, 55 * s, 0), add(d1, -55 * s, 0), d1));
         if (p.fuse) {
           paths.w3 = new Path(bezier(d2, add(d2, 34 * s, 0), add(f1, 0, -34 * s), f1));
@@ -653,10 +802,40 @@ export default defineSimulation({
       }
       // Weg durch die Glühlampe: Anschluss → Sockel → Wendel → Sockel → Anschluss
       const base = dev[1] - 11 * s;
-      const neck = bulbC[1] + bulbR * 0.8;
-      const fy = bulbC[1] + 2 * s;
-      paths.dev = new Path([d1, [dev[0] - 12 * s, base], [dev[0] - 5 * s, neck], [dev[0] - 10 * s, fy], [dev[0] + 10 * s, fy], [dev[0] + 5 * s, neck], [dev[0] + 12 * s, base], d2]);
-      return { r, s, bat, minus, plus, sw, s1, s2, dev, d1, d2, fuse, f1, f2, objC, tipA, tipB, tailA, tailB, bulbC, bulbR, paths };
+      if (lampPhoto) {
+        // entlang der Haltedrähte und der Wendel im Foto
+        const B = BULB_IMG;
+        paths.dev = new Path([
+          d1,
+          [dev[0] - 12 * s, base],
+          at(lb, [B.stemL, B.neckY + 40]),
+          at(lb, [B.stemL, B.stemY]),
+          at(lb, [B.filL, B.filY]),
+          at(lb, [B.filR, B.filY]),
+          at(lb, [B.stemR, B.stemY]),
+          at(lb, [B.stemR, B.neckY + 40]),
+          [dev[0] + 12 * s, base],
+          d2,
+        ]);
+      } else {
+        const neck = bulbC[1] + bulbR * 0.8;
+        const fy = bulbC[1] + 2 * s;
+        paths.dev = new Path([d1, [dev[0] - 12 * s, base], [dev[0] - 5 * s, neck], [dev[0] - 10 * s, fy], [dev[0] + 10 * s, fy], [dev[0] + 5 * s, neck], [dev[0] + 12 * s, base], d2]);
+      }
+      // Ausdehnung des Geräts
+      let devTop = bulbC[1] - bulbR;
+      let devRight = dev[0] + 30 * s;
+      const d = device();
+      if (d === 'motor' && ctx.images.get('motor')) {
+        const b = motorBox(dev, s);
+        devTop = b.y;
+        devRight = b.x + b.w + 4 * s;
+      } else if (d === 'bell' && ctx.images.get('bell')) {
+        const b = bellBox(dev, s);
+        devTop = b.y;
+        devRight = b.x + b.w + 4 * s;
+      } else if (d === 'bell') devTop = dev[1] - 11 * s - 52 * s - 23 * s;
+      return { r, s, bat, minus, plus, sw, s1, s2, dev, d1, d2, fuse, f1, f2, objC, tipA, tipB, tailA, tailB, bulbC, bulbR, devTop, devRight, paths };
     }
 
     /* ---------- Geometrie des Schaltplans ---------- */
@@ -980,62 +1159,66 @@ export default defineSimulation({
       const d = 12 * s;
       const x0 = cx - w / 2;
       const y0 = cy - h / 2;
-      // Kontaktfahnen (hinter der Deckfläche beginnend)
-      const tab = (x: number, top: number) => {
-        g.fillStyle = brassGradient(x - 5 * s, x + 5 * s);
+      const photo = ctx.images.get('battery');
+      if (photo) drawBatteryPhoto(G, photo);
+      else {
+        // Kontaktfahnen (hinter der Deckfläche beginnend)
+        const tab = (x: number, top: number) => {
+          g.fillStyle = brassGradient(x - 5 * s, x + 5 * s);
+          g.beginPath();
+          g.moveTo(x - 5 * s, y0 - d * 0.4);
+          g.lineTo(x - 5 * s, top + 3 * s);
+          g.quadraticCurveTo(x - 5 * s, top, x - 2 * s, top);
+          g.lineTo(x + 5 * s, top);
+          g.lineTo(x + 5 * s, y0 - d * 0.4);
+          g.closePath();
+          g.fill();
+          g.fillStyle = 'rgba(255,255,255,0.35)';
+          g.fillRect(x - 3.5 * s, top + 2 * s, 1.2 * s, y0 - d * 0.4 - top - 3 * s);
+        };
+        tab(G.minus[0], G.minus[1] - 4 * s);
+        tab(G.plus[0], G.plus[1] - 4 * s);
+        g.save();
+        shadowOn(16 * s, 6 * s);
+        const body = g.createLinearGradient(x0, 0, x0 + w, 0);
+        body.addColorStop(0, '#26303d');
+        body.addColorStop(0.5, '#3a4657');
+        body.addColorStop(1, '#222a35');
+        g.fillStyle = body;
+        roundRect(g, x0, y0, w, h, 6 * s);
+        g.fill();
+        g.restore();
+        // Deckfläche
+        const top = g.createLinearGradient(0, y0 - d, 0, y0);
+        top.addColorStop(0, '#5b6779');
+        top.addColorStop(1, '#3d4858');
+        g.fillStyle = top;
         g.beginPath();
-        g.moveTo(x - 5 * s, y0 - d * 0.4);
-        g.lineTo(x - 5 * s, top + 3 * s);
-        g.quadraticCurveTo(x - 5 * s, top, x - 2 * s, top);
-        g.lineTo(x + 5 * s, top);
-        g.lineTo(x + 5 * s, y0 - d * 0.4);
+        g.moveTo(x0 + 2 * s, y0 + 2 * s);
+        g.lineTo(x0 + 7 * s, y0 - d);
+        g.lineTo(x0 + w - 7 * s, y0 - d);
+        g.lineTo(x0 + w - 2 * s, y0 + 2 * s);
         g.closePath();
         g.fill();
-        g.fillStyle = 'rgba(255,255,255,0.35)';
-        g.fillRect(x - 3.5 * s, top + 2 * s, 1.2 * s, y0 - d * 0.4 - top - 3 * s);
-      };
-      tab(G.minus[0], G.minus[1] - 4 * s);
-      tab(G.plus[0], G.plus[1] - 4 * s);
-      g.save();
-      shadowOn(16 * s, 6 * s);
-      const body = g.createLinearGradient(x0, 0, x0 + w, 0);
-      body.addColorStop(0, '#26303d');
-      body.addColorStop(0.5, '#3a4657');
-      body.addColorStop(1, '#222a35');
-      g.fillStyle = body;
-      roundRect(g, x0, y0, w, h, 6 * s);
-      g.fill();
-      g.restore();
-      // Deckfläche
-      const top = g.createLinearGradient(0, y0 - d, 0, y0);
-      top.addColorStop(0, '#5b6779');
-      top.addColorStop(1, '#3d4858');
-      g.fillStyle = top;
-      g.beginPath();
-      g.moveTo(x0 + 2 * s, y0 + 2 * s);
-      g.lineTo(x0 + 7 * s, y0 - d);
-      g.lineTo(x0 + w - 7 * s, y0 - d);
-      g.lineTo(x0 + w - 2 * s, y0 + 2 * s);
-      g.closePath();
-      g.fill();
-      // Banderole
-      const band = g.createLinearGradient(0, y0 + h * 0.3, 0, y0 + h * 0.78);
-      band.addColorStop(0, '#f49b3f');
-      band.addColorStop(1, '#d36b17');
-      g.fillStyle = band;
-      g.fillRect(x0, y0 + h * 0.3, w, h * 0.46);
-      g.fillStyle = 'rgba(255,255,255,0.18)';
-      g.fillRect(x0, y0 + h * 0.3, w, 1.5 * s);
-      text(g, '4,5 V'.replace(',', fmt.decimalSeparator), cx, y0 + h * 0.53, { font: `800 ${Math.round(17 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
-      text(g, '−', G.minus[0], y0 + h * 0.15, { font: `800 ${Math.round(15 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
-      text(g, '+', G.plus[0], y0 + h * 0.15, { font: `800 ${Math.round(15 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
-      // Glanz
-      const gloss = g.createLinearGradient(0, y0, 0, y0 + h);
-      gloss.addColorStop(0, 'rgba(255,255,255,0.10)');
-      gloss.addColorStop(0.5, 'rgba(255,255,255,0)');
-      g.fillStyle = gloss;
-      roundRect(g, x0, y0, w, h, 6 * s);
-      g.fill();
+        // Banderole
+        const band = g.createLinearGradient(0, y0 + h * 0.3, 0, y0 + h * 0.78);
+        band.addColorStop(0, '#f49b3f');
+        band.addColorStop(1, '#d36b17');
+        g.fillStyle = band;
+        g.fillRect(x0, y0 + h * 0.3, w, h * 0.46);
+        g.fillStyle = 'rgba(255,255,255,0.18)';
+        g.fillRect(x0, y0 + h * 0.3, w, 1.5 * s);
+        text(g, '4,5 V'.replace(',', fmt.decimalSeparator), cx, y0 + h * 0.53, { font: `800 ${Math.round(17 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
+        text(g, '−', G.minus[0], y0 + h * 0.15, { font: `800 ${Math.round(15 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
+        text(g, '+', G.plus[0], y0 + h * 0.15, { font: `800 ${Math.round(15 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
+        // Glanz
+        const gloss = g.createLinearGradient(0, y0, 0, y0 + h);
+        gloss.addColorStop(0, 'rgba(255,255,255,0.10)');
+        gloss.addColorStop(0.5, 'rgba(255,255,255,0)');
+        g.fillStyle = gloss;
+        roundRect(g, x0, y0, w, h, 6 * s);
+        g.fill();
+      }
       // Wärme bei Kurzschluss
       if (heat > 0.02) {
         g.save();
@@ -1071,6 +1254,8 @@ export default defineSimulation({
     }
 
     function drawSwitch(G: RealGeo): void {
+      const photo = ctx.images.get('switch');
+      if (photo) return drawSwitchPhoto(G, photo);
       const { s, sw, s1, s2 } = G;
       const [cx, cy] = sw;
       baseBoard(cx, cy, 98 * s, 26 * s, s);
@@ -1137,6 +1322,8 @@ export default defineSimulation({
     }
 
     function drawLamp(G: RealGeo, res: CircuitResult): void {
+      const photo = ctx.images.get('bulb');
+      if (photo) return drawLampPhoto(G, res, photo);
       const { s, dev, bulbC, bulbR } = G;
       const T = lampT(res);
       const glow = glowOf(T);
@@ -1246,6 +1433,8 @@ export default defineSimulation({
     }
 
     function drawMotor(G: RealGeo, res: CircuitResult): void {
+      const photo = ctx.images.get('motor');
+      if (photo) return drawMotorPhoto(G, res, photo);
       const { s, dev } = G;
       const [cx] = dev;
       const baseTop = dev[1] - 11 * s;
@@ -1312,6 +1501,8 @@ export default defineSimulation({
     }
 
     function drawBell(G: RealGeo, res: CircuitResult): void {
+      const photo = ctx.images.get('bell');
+      if (photo) return drawBellPhoto(G, res, photo);
       const { s, dev } = G;
       const [cx] = dev;
       const baseTop = dev[1] - 11 * s;
@@ -1398,6 +1589,356 @@ export default defineSimulation({
           g.stroke();
           g.beginPath();
           g.arc(bx, by - 2 * s, rr, Math.PI * 0.88, Math.PI * 1.32);
+          g.stroke();
+        }
+      }
+    }
+
+    /* ---------- Bauteile als Foto ---------- */
+    /** Vorab gerenderte Teilbilder (Foto ohne bewegliches Teil, bewegliches Teil allein …), je Größe zwischengespeichert. */
+    const partCache = new Map<string, HTMLCanvasElement>();
+    function part(name: string, w: number, h: number, paint: (q: CanvasRenderingContext2D) => void): HTMLCanvasElement {
+      const key = `${name}|${Math.round(w * 2)}|${Math.round(h * 2)}|${surface.dpr}`;
+      let c = partCache.get(key);
+      if (!c) {
+        if (partCache.size > 40) partCache.clear();
+        const o = offscreenCanvas(w, h, surface.dpr);
+        paint(o.g);
+        c = o.canvas;
+        partCache.set(key, c);
+      }
+      return c;
+    }
+    function polygon(q: CanvasRenderingContext2D, pts: readonly Pt[], k: number): void {
+      q.beginPath();
+      pts.forEach(([x, y], i) => (i === 0 ? q.moveTo(x * k, y * k) : q.lineTo(x * k, y * k)));
+      q.closePath();
+    }
+
+    function drawBatteryPhoto(G: RealGeo, img: HTMLImageElement): void {
+      const { s, bat } = G;
+      const b = batteryBox(bat, s);
+      const B = BATTERY_IMG;
+      g.save();
+      shadowOn(16 * s, 6 * s);
+      g.drawImage(scaledSprite(img, b.w, b.h, surface.dpr), b.x, b.y, b.w, b.h);
+      g.restore();
+      // Banderole mit Aufdruck auf der Vorderseite; das Foto bleibt durch „overlay“ als Struktur sichtbar
+      const fl = b.x + B.frontL * b.k;
+      const fr = b.x + B.frontR * b.k;
+      const ft = b.y + B.frontTop * b.k;
+      const fb = b.y + B.frontBot * b.k;
+      const bandT = ft + (fb - ft) * 0.33;
+      const bandH = (fb - ft) * 0.36;
+      g.save();
+      g.beginPath();
+      g.rect(fl, bandT, fr - fl, bandH);
+      g.clip();
+      const band = g.createLinearGradient(0, bandT, 0, bandT + bandH);
+      band.addColorStop(0, '#f49b3f');
+      band.addColorStop(1, '#d36b17');
+      g.fillStyle = band;
+      g.fillRect(fl, bandT, fr - fl, bandH);
+      g.globalCompositeOperation = 'overlay';
+      g.globalAlpha = 0.55;
+      g.drawImage(scaledSprite(img, b.w, b.h, surface.dpr), b.x, b.y, b.w, b.h);
+      g.restore();
+      g.fillStyle = 'rgba(255,255,255,0.22)';
+      g.fillRect(fl, bandT, fr - fl, 1.2 * s);
+      g.fillStyle = 'rgba(0,0,0,0.18)';
+      g.fillRect(fl, bandT + bandH - 1.2 * s, fr - fl, 1.2 * s);
+      text(g, '4,5 V'.replace(',', fmt.decimalSeparator), (fl + fr) / 2, bandT + bandH / 2 + 0.5 * s, { font: `800 ${Math.round(17 * s)}px ${ctx.theme.font}`, color: '#ffffff' });
+      // Polzeichen auf dem schwarzen Rand unter den Fahnen
+      const sign = Math.round(14 * s);
+      text(g, '−', b.x + B.longX * b.k, b.y + 64 * b.k, { font: `800 ${sign}px ${ctx.theme.font}`, color: '#ffffff' });
+      text(g, '+', b.x + B.shortX * b.k - 1 * s, b.y + 70 * b.k, { font: `800 ${sign}px ${ctx.theme.font}`, color: '#ffffff' });
+    }
+
+    function drawSwitchPhoto(G: RealGeo, img: HTMLImageElement): void {
+      const { s, sw } = G;
+      const b = switchBox(sw, s);
+      const k = b.k;
+      const S = SW_IMG;
+      // Sockel ohne Hebel, Hebel allein, Lagerbock (liegt vor dem Hebelende)
+      const base = part('sw-base', b.w, b.h, (q) => {
+        q.drawImage(img, 0, 0, b.w, b.h);
+        q.globalCompositeOperation = 'destination-out';
+        polygon(q, S.lever, k);
+        q.fill();
+      });
+      const lever = part('sw-lever', b.w, b.h, (q) => {
+        polygon(q, S.lever, k);
+        q.clip();
+        q.drawImage(img, 0, 0, b.w, b.h);
+      });
+      const hinge = part('sw-hinge', b.w, b.h, (q) => {
+        q.beginPath();
+        q.rect(S.hinge.x * k, S.hinge.y * k, S.hinge.w * k, S.hinge.h * k);
+        q.clip();
+        q.drawImage(img, 0, 0, b.w, b.h);
+      });
+      g.save();
+      shadowOn(12 * s, 5 * s);
+      g.drawImage(base, b.x, b.y, b.w, b.h);
+      g.restore();
+      const closed = switchClosed01();
+      const deg = S.openDeg + (S.closedDeg - S.openDeg) * closed;
+      const [px, py] = at(b, S.pivot);
+      g.save();
+      shadowOn(6 * s, 4 * s, 0.85);
+      g.translate(px, py);
+      g.rotate((deg * Math.PI) / 180);
+      g.translate(-px, -py);
+      g.drawImage(lever, b.x, b.y, b.w, b.h);
+      g.restore();
+      g.drawImage(hinge, b.x, b.y, b.w, b.h);
+    }
+
+    /** Fläche des Schalters (Antippen, Markierung) und Lage seiner Beschriftung. */
+    function switchArea(G: RealGeo): Rect {
+      const { s, sw } = G;
+      if (!ctx.images.get('switch')) return { x: sw[0] - 54 * s, y: sw[1] - 44 * s, w: 108 * s, h: 66 * s };
+      const b = switchBox(sw, s);
+      return { x: b.x - 2 * s, y: b.y - 6 * s, w: b.w + 4 * s, h: b.h + 6 * s };
+    }
+    function swLabelY(G: RealGeo): number {
+      if (!ctx.images.get('switch')) return G.sw[1] + 20 * G.s;
+      const b = switchBox(G.sw, G.s);
+      return b.y + b.h + 2 * G.s;
+    }
+
+    /** Lage des Schaltergriffs (für den Hinweis „Schalter antippen“). */
+    function switchGrip(G: RealGeo): Pt {
+      if (!ctx.images.get('switch')) {
+        const ha = (-34 * Math.PI) / 180;
+        return [G.s1[0] + Math.cos(ha) * 66 * G.s, G.sw[1] - 6 * G.s + Math.sin(ha) * 66 * G.s];
+      }
+      const b = switchBox(G.sw, G.s);
+      const S = SW_IMG;
+      const a = (S.openDeg * Math.PI) / 180;
+      const dx = S.grip[0] - S.pivot[0];
+      const dy = S.grip[1] - S.pivot[1];
+      return at(b, [S.pivot[0] + dx * Math.cos(a) - dy * Math.sin(a), S.pivot[1] + dx * Math.sin(a) + dy * Math.cos(a)]);
+    }
+
+    /** Umriss des Glaskolbens im Lampenfoto (für die Elektronen in der Lampe). */
+    function bulbGlassPath(b: Box): void {
+      const B = BULB_IMG;
+      const k = b.k;
+      g.beginPath();
+      g.arc(b.x + B.glassX * k, b.y + B.glassY * k, (B.glassR - 3) * k, Math.PI, 0);
+      g.lineTo(b.x + 238 * k, b.y + 170 * k);
+      g.lineTo(b.x + 190 * k, b.y + 250 * k);
+      g.lineTo(b.x + 186 * k, b.y + B.neckY * k);
+      g.lineTo(b.x + 64 * k, b.y + B.neckY * k);
+      g.lineTo(b.x + 60 * k, b.y + 250 * k);
+      g.lineTo(b.x + 12 * k, b.y + 170 * k);
+      g.closePath();
+    }
+
+    function drawLampPhoto(G: RealGeo, res: CircuitResult, img: HTMLImageElement): void {
+      const { s, dev, bulbC, bulbR } = G;
+      const T = lampT(res);
+      const glow = glowOf(T);
+      const [cx] = dev;
+      const baseTop = dev[1] - 11 * s;
+      const b = bulbBox(dev, s);
+      // Lichtschein hinter der Lampe
+      if (glow > 0.005) {
+        const [hr, hg, hb] = haloColor(T);
+        const R = bulbR * (1.5 + 3 * Math.min(1, glow));
+        const halo = g.createRadialGradient(bulbC[0], bulbC[1], bulbR * 0.3, bulbC[0], bulbC[1], R);
+        halo.addColorStop(0, `rgba(${hr},${hg},${hb},${0.55 * Math.min(1, glow)})`);
+        halo.addColorStop(0.35, `rgba(${hr},${hg},${hb},${0.22 * Math.min(1, glow)})`);
+        halo.addColorStop(1, `rgba(${hr},${hg},${hb},0)`);
+        g.fillStyle = halo;
+        g.fillRect(bulbC[0] - R, bulbC[1] - R, 2 * R, 2 * R);
+      }
+      // Lampe aus (abgeleitet) und an (Foto), weich überblendet
+      const dark = ctx.theme.dark;
+      drawBulbPhoto(g, img, { x: b.x, y: b.y, w: b.w, h: b.h, glow, dpr: surface.dpr, shadow: dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)' });
+      // Elektronen in der Lampe (nur im Glaskolben)
+      const path = G.paths.dev;
+      if (path) drawFlow(path, 'dev', s, 1.8 * s, { clip: () => (bulbGlassPath(b), g.clip()) });
+      // Fassung auf dem Grundbrett (verdeckt das untere Ende des Gewindes)
+      const fw = 34 * s;
+      const fh = 16 * s;
+      g.save();
+      shadowOn(6 * s, 2 * s, 0.8);
+      const fass = g.createLinearGradient(cx - fw / 2, 0, cx + fw / 2, 0);
+      fass.addColorStop(0, '#1d2128');
+      fass.addColorStop(0.45, '#5a626e');
+      fass.addColorStop(1, '#1d2128');
+      g.fillStyle = fass;
+      roundRect(g, cx - fw / 2, baseTop - fh, fw, fh + 2 * s, 3 * s);
+      g.fill();
+      g.restore();
+      g.fillStyle = 'rgba(255,255,255,0.18)';
+      roundRect(g, cx - fw / 2 + 2 * s, baseTop - fh + 1 * s, fw - 4 * s, 1.6 * s, 0.8 * s);
+      g.fill();
+    }
+
+    function drawMotorPhoto(G: RealGeo, res: CircuitResult, img: HTMLImageElement): void {
+      const { s, dev, d1, d2 } = G;
+      const b = motorBox(dev, s);
+      const k = b.k;
+      const M = MOTOR_IMG;
+      const dark = ctx.theme.dark;
+      const baseTop = dev[1] - 11 * s;
+      const axisY = b.y + M.axisY * k;
+      // Anschlussdrähte von den Motorfahnen zu den Buchsen (liegen hinter dem Motor)
+      g.save();
+      g.lineCap = 'round';
+      g.lineJoin = 'round';
+      g.lineWidth = 2.4 * s;
+      shadowOn(3 * s, 1.5 * s, 0.7);
+      // oberer Draht: rechts herum nach unten, dann auf dem Grundbrett (hinter dem Halter) zur linken Buchse
+      const a = at(b, M.leadA);
+      const yb = baseTop - 2.5 * s;
+      g.strokeStyle = dark ? '#6b7482' : '#2b313a';
+      g.beginPath();
+      g.moveTo(a[0], a[1]);
+      g.bezierCurveTo(a[0] + 16 * s, a[1], a[0] + 12 * s, yb, a[0] - 6 * s, yb);
+      g.lineTo(d1[0] + 10 * s, yb);
+      g.quadraticCurveTo(d1[0] + 2 * s, yb, d1[0], d1[1]);
+      g.stroke();
+      // unterer Draht: direkt zur rechten Buchse
+      const c = at(b, M.leadB);
+      g.strokeStyle = '#c0392b';
+      g.beginPath();
+      g.moveTo(c[0], c[1]);
+      g.bezierCurveTo(c[0] + 8 * s, c[1], d2[0] + 2 * s, d2[1] - 26 * s, d2[0], d2[1]);
+      g.stroke();
+      g.restore();
+      // Halter: Fußplatte, schmale Säule und Schelle unter dem Gehäuse
+      const cx = (b.x + ((M.canL + M.canR) / 2) * k);
+      const canB = b.y + M.canBot * k;
+      const metal = (x0: number, x1: number) => {
+        const m = g.createLinearGradient(x0, 0, x1, 0);
+        m.addColorStop(0, dark ? '#4a525e' : '#3a414c');
+        m.addColorStop(0.45, dark ? '#9aa3af' : '#8a939f');
+        m.addColorStop(1, dark ? '#4a525e' : '#3a414c');
+        return m;
+      };
+      g.save();
+      shadowOn(5 * s, 2 * s, 0.8);
+      g.fillStyle = metal(cx - 20 * s, cx + 20 * s);
+      roundRect(g, cx - 20 * s, baseTop - 4 * s, 40 * s, 5 * s, 1.5 * s);
+      g.fill();
+      g.fillStyle = metal(cx - 5 * s, cx + 5 * s);
+      g.fillRect(cx - 5 * s, canB - 6 * s, 10 * s, baseTop - 3 * s - (canB - 6 * s));
+      g.fillStyle = metal(cx - 26 * s, cx + 26 * s);
+      roundRect(g, cx - 26 * s, canB - 8 * s, 52 * s, 7 * s, 2.5 * s);
+      g.fill();
+      g.restore();
+      // Gehäuse ohne Propeller; Aufdruck mit einem sauberen Stück Gehäuse überdeckt
+      const body = part('motor-body', b.w, b.h, (q) => {
+        q.drawImage(img, 0, 0, b.w, b.h);
+        const P = M.print;
+        q.drawImage(img, M.clean.x, P.y, M.clean.w, P.h, P.x * k, P.y * k, P.w * k, P.h * k);
+        q.globalCompositeOperation = 'destination-out';
+        q.fillRect(0, 0, M.propW * k, b.h);
+      });
+      const prop = part('motor-prop', M.propW * k, b.h, (q) => {
+        q.drawImage(img, 0, 0, M.propW, M.h, 0, 0, M.propW * k, b.h);
+      });
+      const hub = part('motor-hub', M.hub.w * k, M.hub.h * k, (q) => {
+        q.drawImage(img, M.hub.x, M.hub.y, M.hub.w, M.hub.h, 0, 0, M.hub.w * k, M.hub.h * k);
+      });
+      g.save();
+      shadowOn(8 * s, 3 * s, 0.8);
+      g.drawImage(body, b.x, b.y, b.w, b.h);
+      g.restore();
+      // Propeller: dreht sich um die waagerechte Welle (Seitenansicht → senkrecht gestaucht)
+      const speed = flowSpeed(res.Idevice) / 30;
+      const fast = speed > 0.6 && !reduced;
+      const blade = (angle: number, alpha: number) => {
+        const c = Math.cos(angle);
+        if (Math.abs(c) < 0.02) return;
+        g.save();
+        g.globalAlpha = alpha;
+        g.translate(0, axisY);
+        g.scale(1, c);
+        g.translate(0, -axisY);
+        g.drawImage(prop, b.x, b.y, M.propW * k, b.h);
+        g.restore();
+      };
+      if (fast) {
+        // Bewegungsunschärfe: leichter Schleier über die ganze Kreisfläche und mehrere halbtransparente Stellungen
+        const R = (M.h - M.axisY) * k;
+        const disc = g.createLinearGradient(0, axisY - R, 0, axisY + R);
+        disc.addColorStop(0, 'rgba(230,70,60,0)');
+        disc.addColorStop(0.5, 'rgba(230,70,60,0.22)');
+        disc.addColorStop(1, 'rgba(230,70,60,0)');
+        g.fillStyle = disc;
+        g.beginPath();
+        g.ellipse(b.x + M.propW * k * 0.5, axisY, M.propW * k * 0.42, R, 0, 0, Math.PI * 2);
+        g.fill();
+        for (let i = 0; i < 4; i++) blade(motorAngle - i * 0.32, 0.38 - i * 0.07);
+      } else blade(motorAngle, 1);
+      g.drawImage(hub, b.x + M.hub.x * k, b.y + M.hub.y * k, M.hub.w * k, M.hub.h * k);
+    }
+
+    function drawBellPhoto(G: RealGeo, res: CircuitResult, img: HTMLImageElement): void {
+      const { s, dev, d1, d2 } = G;
+      const b = bellBox(dev, s);
+      const k = b.k;
+      const Bl = BELL_IMG;
+      const ringing = res.Idevice > 0.05;
+      // kurze Anschlussleitungen von den Klemmen unten zu den Buchsen
+      g.save();
+      g.lineCap = 'round';
+      g.lineWidth = 2.2 * s;
+      for (const [from, to, color] of [
+        [at(b, [96, 372]), d1, ctx.theme.dark ? '#59616d' : '#2b313a'],
+        [at(b, [162, 372]), d2, '#c0392b'],
+      ] as [Pt, Pt, string][]) {
+        g.strokeStyle = color;
+        g.beginPath();
+        g.moveTo(from[0], from[1]);
+        g.quadraticCurveTo(from[0], to[1], to[0], to[1]);
+        g.stroke();
+      }
+      g.restore();
+      const base = part('bell-base', b.w, b.h, (q) => {
+        q.drawImage(img, 0, 0, b.w, b.h);
+        q.globalCompositeOperation = 'destination-out';
+        polygon(q, Bl.arm, k);
+        q.fill();
+      });
+      const arm = part('bell-arm', b.w, b.h, (q) => {
+        polygon(q, Bl.arm, k);
+        q.clip();
+        q.drawImage(img, 0, 0, b.w, b.h);
+      });
+      g.save();
+      shadowOn(10 * s, 4 * s, 0.85);
+      g.drawImage(base, b.x, b.y, b.w, b.h);
+      g.restore();
+      // Klöppel schwingt (Selbstunterbrecher, ca. 11 Schläge je Sekunde)
+      const vib = ringing && !reduced ? Math.max(0, Math.sin(bellTime * Math.PI * 2 * 11)) * 4 : 0;
+      const [px, py] = at(b, Bl.pivot);
+      g.save();
+      shadowOn(4 * s, 2 * s, 0.7);
+      g.translate(px, py);
+      g.rotate((vib * Math.PI) / 180);
+      g.translate(-px, -py);
+      g.drawImage(arm, b.x, b.y, b.w, b.h);
+      g.restore();
+      if (ringing) {
+        const [bx, by] = at(b, Bl.bell);
+        const R = Bl.bellR * k;
+        for (let i = 0; i < 3; i++) {
+          const u = reduced ? (i + 1) / 4 : (bellTime * 1.6 + i / 3) % 1;
+          const rr = R + 6 * s + u * 28 * s;
+          g.strokeStyle = withAlpha(ctx.theme.series[4]!, (1 - u) * 0.85);
+          g.lineWidth = 2.2 * s;
+          g.lineCap = 'round';
+          g.beginPath();
+          g.arc(bx, by, rr, -Math.PI * 0.3, Math.PI * 0.05);
+          g.stroke();
+          g.beginPath();
+          g.arc(bx, by, rr, Math.PI * 0.95, Math.PI * 1.3);
           g.stroke();
         }
       }
@@ -1815,7 +2356,8 @@ export default defineSimulation({
       } else {
         drawSwitch(G);
         if (G.paths.sw && p.on && !switchT.running) drawFlow(G.paths.sw, 'sw', s, 2 * s);
-        hitbox('switch', G.sw[0] - 54 * s, G.sw[1] - 44 * s, 108 * s, 66 * s);
+        const sa = switchArea(G);
+        hitbox('switch', sa.x, sa.y, sa.w, sa.h);
         drawSocketBoard(G);
         const d = device();
         if (d === 'lamp') drawLamp(G, res);
@@ -1851,14 +2393,15 @@ export default defineSimulation({
           }
         }
       }
-      hitbox('device', G.dev[0] - 50 * s, G.bulbC[1] - G.bulbR - 10 * s, 100 * s, G.dev[1] + 14 * s - (G.bulbC[1] - G.bulbR - 10 * s));
+      hitbox('device', G.dev[0] - 50 * s, G.devTop - 10 * s, 100 * s, G.dev[1] + 14 * s - (G.devTop - 10 * s));
 
       // Hervorhebung und Beschriftungen (dasselbe Bauteil wird in beiden Darstellungen markiert)
       const sz = labelSize();
       highlight(G.bat[0] - 72 * s, G.bat[1] - 88 * s, 144 * s, 128 * s, hovered === 'battery');
-      highlight(G.dev[0] - 56 * s, G.bulbC[1] - G.bulbR - 14 * s, 112 * s, G.dev[1] + 18 * s - (G.bulbC[1] - G.bulbR - 14 * s), hovered === 'device');
+      highlight(G.dev[0] - 56 * s, G.devTop - 14 * s, 112 * s, G.dev[1] + 18 * s - (G.devTop - 14 * s), hovered === 'device');
       if (!test) {
-        highlight(G.sw[0] - 56 * s, G.sw[1] - 46 * s, 112 * s, 70 * s, hovered === 'switch' && !ctx.locked);
+        const sa = switchArea(G);
+        highlight(sa.x - 2 * s, sa.y - 2 * s, sa.w + 4 * s, sa.h + 4 * s, hovered === 'switch' && !ctx.locked);
         highlight(G.fuse[0] - 20 * s, G.fuse[1] - 42 * s, 38 * s, 84 * s, hovered === 'fuse' && p.fuse);
         // Hinweis: Schalter antippen
         if (!usedSwitch && !p.on && !ctx.locked) {
@@ -1867,20 +2410,20 @@ export default defineSimulation({
           g.strokeStyle = withAlpha(theme.series[0]!, 0.35 + 0.4 * pulse);
           g.lineWidth = 2;
           g.beginPath();
-          const ha = (-34 * Math.PI) / 180;
-          g.arc(G.s1[0] + Math.cos(ha) * 66 * s, G.sw[1] - 6 * s + Math.sin(ha) * 66 * s, 14 * s + 4 * pulse, 0, Math.PI * 2);
+          const [gx, gy] = switchGrip(G);
+          g.arc(gx, gy, 14 * s + 4 * pulse, 0, Math.PI * 2);
           g.stroke();
           g.restore();
-          pill(G.sw[0], G.sw[1] + 20 * s, ctx.t('tapSwitch'), theme.series[0]!, 'center', sz, true);
-        } else if (p.lbl) pill(G.sw[0], G.sw[1] + 20 * s, ctx.t('switch'), theme.muted, 'center', sz);
+          pill(G.sw[0], swLabelY(G), ctx.t('tapSwitch'), theme.series[0]!, 'center', sz, true);
+        } else if (p.lbl) pill(G.sw[0], swLabelY(G), ctx.t('switch'), theme.muted, 'center', sz);
         if (p.lbl) {
           const d = device();
           g.font = `700 ${sz}px ${theme.font}`;
           const lw0 = g.measureText(ctx.t(d)).width + 16;
-          const right = G.dev[0] + 30 * s + lw0 < r.x + r.w - 6;
+          const right = G.devRight + lw0 < r.x + r.w - 6;
           // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber
-          if (right) pill(G.dev[0] + 30 * s, G.bulbC[1] - 6 * s, ctx.t(d), theme.muted, 'left', sz);
-          else pill(G.dev[0], Math.max(r.y + 4, G.bulbC[1] - G.bulbR - 26 - (d === 'bell' ? 14 * s : 0)), ctx.t(d), theme.muted, 'center', sz);
+          if (right) pill(G.devRight, d === 'lamp' ? G.bulbC[1] - 6 * s : G.devTop + 4 * s, ctx.t(d), theme.muted, 'left', sz);
+          else pill(G.dev[0], Math.max(r.y + 4, G.devTop - 26), ctx.t(d), theme.muted, 'center', sz);
           if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? 'fuseBlown' : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
         }
       }

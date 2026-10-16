@@ -31,6 +31,7 @@ export { drawImageFit, roundRect, softShadow, text, withAlpha } from './draw';
 export { ImageStore, simAssetUrl } from './images';
 export { offscreenCanvas, scaledSprite, tintedSprite, type SpriteOptions, type TintOptions } from './sprites';
 export { drawLabStand, type LabStandOptions } from './lab-stand';
+export { BATTERY_IMG, BULB_IMG, bulbSprites, drawBulbPhoto, unlitBulbPixels, type BulbDrawOptions } from './circuit-photos';
 export {
   Camera3D,
   closestOnLine,
