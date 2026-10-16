@@ -1,4 +1,4 @@
-import { defineSimulation, FixedStepper, Plot, roundRect, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, FixedStepper, offscreenCanvas, Plot, roundRect, scaledSprite, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { buildTrack, LOOP_RADIUS, normalAcceleration, stepCart, type CartState, type Track, type TrackId } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -55,7 +55,7 @@ export default defineSimulation({
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
   ],
   actions: [{ id: 'start', label: L('Losfahren', 'Go'), primary: true }],
-  images: { car: 'wagen.webp', sky: 'himmel.webp' },
+  images: { car: 'wagen.webp', sky: 'himmel.webp', land: 'landschaft.webp' },
   readouts: [
     { key: 'motion', label: L('Höhe und Geschwindigkeit', 'Height and speed') },
     { key: 'energy', label: L('Energien', 'Energies') },
@@ -192,13 +192,42 @@ export default defineSimulation({
     });
 
     /* ---------- Zeichnen ---------- */
+    /** Parklandschaft (Foto mit durchsichtigem Himmel), vorab skaliert; im Dunkelmodus abgedunkelt. */
+    let landCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function landSprite(img: HTMLImageElement, w: number, h: number, dark: boolean): HTMLCanvasElement {
+      const key = `${Math.round(w)}|${Math.round(h)}|${surface.dpr}|${dark ? 1 : 0}`;
+      if (landCache?.key === key) return landCache.canvas;
+      const base = scaledSprite(img, w, h, surface.dpr);
+      let canvas = base;
+      if (dark) {
+        const off = offscreenCanvas(w, h, surface.dpr);
+        off.g.drawImage(base, 0, 0, w, h);
+        off.g.globalCompositeOperation = 'source-atop';
+        off.g.fillStyle = 'rgba(5,10,25,0.5)';
+        off.g.fillRect(0, 0, w, h);
+        canvas = off.canvas;
+      }
+      landCache = { key, canvas };
+      return canvas;
+    }
+
     function drawSky(): void {
       const g = surface.g;
       const r = plot.rect;
       const img = ctx.images.get('sky');
+      const land = ctx.images.get('land');
+      const groundY = plot.py(-0.8);
+      // Landschaft am unteren Rand: volle Breite (Seitenverhältnis bleibt), unten bis in den Wiesenstreifen
+      const drawLand = (dark: boolean) => {
+        if (!land) return;
+        const w = r.w;
+        const h = (w * land.height) / land.width;
+        g.drawImage(landSprite(land, w, h, dark), r.x, groundY + 6 - h, w, h);
+      };
       if (img) {
         const scale = Math.max(r.w / img.width, r.h / img.height);
         g.drawImage(img, r.x + (r.w - img.width * scale) / 2, r.y + r.h - img.height * scale, img.width * scale, img.height * scale);
+        drawLand(false);
         if (ctx.theme.dark) {
           g.fillStyle = 'rgba(5,10,25,0.5)';
           g.fillRect(r.x, r.y, r.w, r.h);
@@ -209,9 +238,9 @@ export default defineSimulation({
         grad.addColorStop(1, ctx.theme.dark ? '#22324d' : '#e6f3ff');
         g.fillStyle = grad;
         g.fillRect(r.x, r.y, r.w, r.h);
+        drawLand(ctx.theme.dark);
       }
       // Boden
-      const groundY = plot.py(-0.8);
       const ground = g.createLinearGradient(0, groundY, 0, r.y + r.h);
       ground.addColorStop(0, ctx.theme.dark ? '#2f4a2a' : '#6db357');
       ground.addColorStop(1, ctx.theme.dark ? '#1d2e1a' : '#3f7a33');
