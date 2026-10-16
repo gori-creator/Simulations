@@ -4,6 +4,7 @@ import {
   ease,
   Plot,
   roundRect,
+  scaledSprite,
   softShadow,
   Surface,
   text,
@@ -17,6 +18,29 @@ const L = (de: string, en: string) => ({ de, en });
 const MAX_HISTORY = 200_000;
 /** Platz für die Achsenbeschriftungen im Diagramm (Pixel). */
 const CHART_PADDING = { left: 46, right: 18, top: 16, bottom: 24 };
+/**
+ * wuerfel.webp (338 × 312): weißer Würfel ohne Augen, schräg von vorn. Die
+ * beiden Seitenflächen als Parallelogramme (Mitte, halbe Achsen u und v in
+ * Bildpixeln, gemessen) – dorthin zeichnet die Simulation die Augen.
+ */
+const DIE_IMG = {
+  w: 338,
+  h: 312,
+  faces: [
+    { c: [100, 175], u: [84, 12], v: [-1, 113] },
+    { c: [258, 171], u: [66, -13], v: [1.5, 114] },
+  ],
+} as const;
+/** Benachbarte Augenzahl für die rechte Seitenfläche (nie die Gegenseite, deren Summe 7 ist). */
+const SIDE_FACE: Record<number, number> = { 1: 2, 2: 3, 3: 1, 4: 5, 5: 6, 6: 4 };
+const PIPS: Record<number, [number, number][]> = {
+  1: [[0, 0]],
+  2: [[-1, -1], [1, 1]],
+  3: [[-1, -1], [0, 0], [1, 1]],
+  4: [[-1, -1], [1, -1], [-1, 1], [1, 1]],
+  5: [[-1, -1], [1, -1], [0, 0], [-1, 1], [1, 1]],
+  6: [[-1, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [1, 1]],
+};
 
 function layout(w: number, h: number): { obj: Rect; bars: Rect; chart: Rect } {
   if (w >= 700) {
@@ -88,6 +112,7 @@ export default defineSimulation({
     { id: 'reset', label: L('Neu beginnen', 'Start over') },
   ],
   images: {
+    die: 'wuerfel.webp',
     table: 'tischplatte.webp',
     coinHead: 'muenze-kopf.webp',
     coinTail: 'muenze-zahl.webp',
@@ -261,6 +286,39 @@ export default defineSimulation({
       g.restore();
     }
 
+    /**
+     * Würfel im Flug (nur beim einzelnen Wurf): Foto schräg von vorn, die Augen
+     * werden perspektivisch auf die beiden Seitenflächen gezeichnet.
+     */
+    function drawDiePhoto(img: HTMLImageElement, cx: number, cy: number, size: number, face: number, rotation: number, alpha: number): void {
+      const g = surface.g;
+      const h = size * 1.12;
+      const k = h / DIE_IMG.h;
+      const w = DIE_IMG.w * k;
+      g.save();
+      g.globalAlpha = alpha;
+      g.translate(cx, cy);
+      g.rotate(rotation);
+      softShadow(g, ctx.theme.dark, 18, 8);
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), -w / 2, -h / 2, w, h);
+      g.shadowColor = 'transparent';
+      g.translate(-w / 2, -h / 2);
+      [face, SIDE_FACE[face]!].forEach((f, i) => {
+        const { c, u, v } = DIE_IMG.faces[i]!;
+        g.save();
+        // Einheitsquadrat [−1, 1]² → Parallelogramm der Seitenfläche
+        g.transform(u[0] * k, u[1] * k, v[0] * k, v[1] * k, c[0] * k, c[1] * k);
+        g.fillStyle = i === 0 ? (f === 1 ? '#c92a2a' : '#1f2733') : f === 1 ? '#a82222' : '#161c25';
+        for (const [x, y] of PIPS[f] ?? []) {
+          g.beginPath();
+          g.arc(x * 0.5, y * 0.5, f === 1 ? 0.24 : 0.17, 0, Math.PI * 2);
+          g.fill();
+        }
+        g.restore();
+      });
+      g.restore();
+    }
+
     function drawCoin(cx: number, cy: number, size: number, outcome: number, squash: number, highlight: boolean): void {
       const g = surface.g;
       const img = ctx.images.get(outcome === 0 ? 'coinHead' : 'coinTail');
@@ -397,7 +455,16 @@ export default defineSimulation({
         const face = running && animKind === 'single' ? 1 + (Math.floor(now / 70) % 6) : last + 1;
         const rot = running ? (1 - ease.outCubic(t)) * Math.PI * 3 : 0;
         const scale = running ? 1 + 0.18 * Math.sin(Math.PI * t) : 1;
-        drawDie(cx, cy, size * scale, face, rot, highlight);
+        const photo = ctx.images.get('die');
+        // Beim einzelnen Wurf fliegt der Foto-Würfel und blendet beim Landen in die Draufsicht über (die Augenzahl oben zählt)
+        const fly = photo && running && animKind === 'single' ? 1 - ease.inOutCubic(Math.min(1, Math.max(0, (t - 0.55) / 0.3))) : 0;
+        if (fly < 1) {
+          g.save();
+          g.globalAlpha = 1 - fly;
+          drawDie(cx, cy, size * scale, fly > 0 ? last + 1 : face, rot, highlight);
+          g.restore();
+        }
+        if (photo && fly > 0) drawDiePhoto(photo, cx, cy, size * scale, face, rot, fly);
       } else if (experiment() === 'coin') {
         const flips = running && animKind === 'single' ? Math.cos(t * Math.PI * 7) : 1;
         const shown = running && animKind === 'single' ? (Math.floor(t * 7) % 2 === 0 ? last : 1 - last) : last;

@@ -1,8 +1,10 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { drawFrog, drawPenguin, drawPiggy, drawSnowflake, drawSun, groundShadow } from './figures';
 import { absolute, change, compute, num, opposite, operand, randomTask, rewrite, story, termText, viewRange, walkPlan, type Lang, type Op, type Scene } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** meer.webp: 1600 × 1600, die Wasseroberfläche liegt in Bildzeile 683 (gemessen). */
+const SEA_IMG = { w: 1600, h: 1600, water: 683 } as const;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -45,6 +47,7 @@ export default defineSimulation({
   id: 'zahlengerade',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
+  images: { sea: 'meer.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -905,6 +908,7 @@ export default defineSimulation({
       drawVArrows(xArrow, xGhost, yOf, st, S.x + S.w - (wide ? 48 : 40), S.x + S.w - 6);
     }
 
+    let lastSeaY0 = NaN;
     function drawSea(S: Rect, st: WalkState, now: number): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -917,29 +921,43 @@ export default defineSimulation({
       g.save();
       roundRect(g, S.x, S.y, S.w, S.h, 16);
       g.clip();
-      // Himmel
-      const sky = g.createLinearGradient(0, S.y, 0, y0);
-      sky.addColorStop(0, theme.dark ? '#16243a' : '#bfe0f7');
-      sky.addColorStop(1, theme.dark ? '#24364f' : '#eaf6ff');
-      g.fillStyle = sky;
-      g.fillRect(S.x, S.y, S.w, y0 - S.y);
-      // Wasser
-      const sea = g.createLinearGradient(0, y0, 0, S.y + S.h);
-      sea.addColorStop(0, theme.dark ? '#1d5f86' : '#4aa7d8');
-      sea.addColorStop(1, theme.dark ? '#0a2236' : '#11507e');
-      g.fillStyle = sea;
-      g.fillRect(S.x, y0, S.w, S.y + S.h - y0);
-      // Lichtstrahlen im Wasser
-      g.fillStyle = 'rgba(255,255,255,0.05)';
-      for (let i = 0; i < 4; i++) {
-        const x = S.x + S.w * (0.15 + i * 0.24);
-        g.beginPath();
-        g.moveTo(x, y0);
-        g.lineTo(x + 26, y0);
-        g.lineTo(x + 70, S.y + S.h);
-        g.lineTo(x + 20, S.y + S.h);
-        g.closePath();
-        g.fill();
+      const photo = ctx.images.get('sea');
+      if (photo) {
+        // Foto bildfüllend, gleichmäßig skaliert und rechtsbündig (offenes Meer), die Wasseroberfläche genau auf Höhe 0
+        const k = Math.max(S.w / SEA_IMG.w, (y0 - S.y) / SEA_IMG.water, (S.y + S.h - y0) / (SEA_IMG.h - SEA_IMG.water));
+        const crop = { x: SEA_IMG.w - S.w / k, y: SEA_IMG.water - (y0 - S.y) / k, w: S.w / k, h: S.h / k };
+        // Während sich der Bereich ändert direkt zeichnen, sonst ein vorab skaliertes Bild (schärfer, schneller)
+        const moving = Math.abs(y0 - lastSeaY0) > 0.01;
+        lastSeaY0 = y0;
+        if (moving) g.drawImage(photo, crop.x, crop.y, crop.w, crop.h, S.x, S.y, S.w, S.h);
+        else g.drawImage(scaledSprite(photo, S.w, S.h, surface.dpr, { crop }), S.x, S.y, S.w, S.h);
+        g.fillStyle = theme.dark ? 'rgba(8,14,24,0.38)' : 'rgba(255,255,255,0.12)';
+        g.fillRect(S.x, S.y, S.w, S.h);
+      } else {
+        // Himmel
+        const sky = g.createLinearGradient(0, S.y, 0, y0);
+        sky.addColorStop(0, theme.dark ? '#16243a' : '#bfe0f7');
+        sky.addColorStop(1, theme.dark ? '#24364f' : '#eaf6ff');
+        g.fillStyle = sky;
+        g.fillRect(S.x, S.y, S.w, y0 - S.y);
+        // Wasser
+        const sea = g.createLinearGradient(0, y0, 0, S.y + S.h);
+        sea.addColorStop(0, theme.dark ? '#1d5f86' : '#4aa7d8');
+        sea.addColorStop(1, theme.dark ? '#0a2236' : '#11507e');
+        g.fillStyle = sea;
+        g.fillRect(S.x, y0, S.w, S.y + S.h - y0);
+        // Lichtstrahlen im Wasser
+        g.fillStyle = 'rgba(255,255,255,0.05)';
+        for (let i = 0; i < 4; i++) {
+          const x = S.x + S.w * (0.15 + i * 0.24);
+          g.beginPath();
+          g.moveTo(x, y0);
+          g.lineTo(x + 26, y0);
+          g.lineTo(x + 70, S.y + S.h);
+          g.lineTo(x + 20, S.y + S.h);
+          g.closePath();
+          g.fill();
+        }
       }
 
       // Eisberg (zum größten Teil unter Wasser)
