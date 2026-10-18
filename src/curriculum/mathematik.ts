@@ -853,7 +853,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'frequency',
           },
-          planned('baumdiagramm', L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'), [8, 10]),
+          {
+            id: 'baumdiagramm',
+            status: 'ready',
+            slug: L('baumdiagramm-pfadregeln', 'tree-diagram-path-rules'),
+            title: L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'),
+            summary: L(
+              'Kugeln aus einer Urne ziehen – mit oder ohne Zurücklegen. Das Baumdiagramm wächst mit Brüchen an den Ästen, Pfade und Ereignisse leuchten auf (1. und 2. Pfadregel), und beim hundertfachen Ziehen nähern sich die Häufigkeiten den Wahrscheinlichkeiten.',
+              'Draw balls from an urn – with or without replacement. The tree diagram grows with fractions on its branches, paths and events light up (1st and 2nd path rule), and drawing a hundred times brings the frequencies close to the probabilities.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L5', 'M-K4', 'M-K3', 'M-K2'],
+            keywords: L(
+              ['Baumdiagramm', 'Pfadregel', 'Produktregel', 'Summenregel', 'Urnenmodell', 'mit Zurücklegen', 'ohne Zurücklegen', 'mehrstufiges Zufallsexperiment', 'Ereignis', 'Gegenereignis', 'Simulation', 'relative Häufigkeit'],
+              ['tree diagram', 'path rule', 'product rule', 'sum rule', 'urn model', 'with replacement', 'without replacement', 'multi-stage experiment', 'event', 'complement', 'simulation', 'relative frequency'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'ziegenproblem',
             status: 'ready',

@@ -1,0 +1,107 @@
+---
+description: "Kugeln aus einer Urne ziehen – mit oder ohne Zurücklegen. Das Baumdiagramm wächst mit Brüchen an den Ästen, Pfade und Ereignisse leuchten auf (1. und 2. Pfadregel), und beim hundertfachen Ziehen nähern sich die Häufigkeiten den Wahrscheinlichkeiten."
+---
+
+## Worum geht es?
+
+Bei einem **mehrstufigen Zufallsexperiment** wird ein einfaches Experiment mehrmals hintereinander ausgeführt – hier: Aus einer Urne mit $3$ roten und $4$ blauen Kugeln wird zweimal gezogen. Ein **Baumdiagramm** zeigt alle möglichen Abläufe: Jede Stufe ist ein Zug, jeder Ast ein mögliches Ergebnis dieses Zuges, jeder **Pfad** von links nach rechts ein Ergebnis des ganzen Experiments.
+
+An die Äste schreibt man die Wahrscheinlichkeiten. Beim ersten Zug sind das $\frac37$ (rot) und $\frac47$ (blau). Beim zweiten Zug kommt es darauf an:
+
+- **Mit Zurücklegen:** Die Urne ist wieder wie vorher, die Wahrscheinlichkeiten bleiben $\frac37$ und $\frac47$.
+- **Ohne Zurücklegen:** Es sind nur noch $6$ Kugeln da. Wurde zuerst Rot gezogen, ist Rot jetzt $\frac26$, Blau $\frac46$.
+
+**1. Pfadregel (Produktregel):** Die Wahrscheinlichkeit eines Pfades ist das Produkt der Wahrscheinlichkeiten entlang des Pfades:
+
+$$
+P(\text{rot, rot}) = \frac37 \cdot \frac26 = \frac{6}{42} = \frac17.
+$$
+
+**2. Pfadregel (Summenregel):** Die Wahrscheinlichkeit eines Ereignisses ist die Summe der Wahrscheinlichkeiten aller Pfade, die zu ihm gehören:
+
+$$
+P(\text{beide gleichfarbig}) = P(rr) + P(bb) = \frac17 + \frac27 = \frac37.
+$$
+
+An jeder Verzweigung ergeben die Äste zusammen $1$, und alle Pfade zusammen ebenfalls $1$. Daraus folgt der nützliche Weg über das **Gegenereignis**: $P(\text{mindestens eine rote}) = 1 - P(\text{keine rote})$.
+
+Beim **Simulieren** wird das Experiment oft wiederholt. Nach dem empirischen Gesetz der großen Zahlen liegen die relativen Häufigkeiten dann meist nahe bei den Wahrscheinlichkeiten (schwarze Striche an den Balken).
+
+## Ausprobieren
+
+1. Ziehe **einmal**: Die Kugeln fliegen aus der Urne, der Pfad leuchtet im Baum auf. Was ändert sich in der Urne beim zweiten Zug? [Beispiel laden](?r=3&b=4&rep=0)
+2. Schalte **mit Zurücklegen** ein. Welche Brüche ändern sich, welche nicht? [Mit Zurücklegen](?rep=1)
+3. Fahre mit der Maus über ein Ergebnis rechts: Unten erscheint die Rechnung nach der 1. Pfadregel.
+4. Wähle das Ereignis **alle gleichfarbig** und ziehe mehrmals **100-mal**. Wie nah kommt die relative Häufigkeit an $\frac37$? [Ereignis](?ev=same)
+5. Wähle **selbst antippen** und tippe Pfade an. So kannst du beliebige Ereignisse zusammenstellen. [Selbst wählen](?ev=custom)
+6. Bei drei Zügen und „mindestens eine rote“ zeigt die Simulation unten den Weg über das Gegenereignis. [Gegenereignis](?n=3&ev=minR)
+
+## Aufgaben
+
+### Aufgabe 1: Pfadwahrscheinlichkeiten
+
+In der Urne liegen $3$ rote und $4$ blaue Kugeln. Es wird zweimal ohne Zurücklegen gezogen. Berechne die Wahrscheinlichkeiten aller vier Pfade und prüfe, ob sie zusammen $1$ ergeben. [Aufgabe laden](?show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$P(rr) = \frac37 \cdot \frac26 = \frac17$, $P(rb) = \frac37 \cdot \frac46 = \frac27$, $P(br) = \frac47 \cdot \frac36 = \frac27$, $P(bb) = \frac47 \cdot \frac36 = \frac27$. Summe: $\frac{1 + 2 + 2 + 2}{7} = 1$ ✓. [In der Simulation zeigen](?show=1)
+
+</details>
+
+### Aufgabe 2: Mit und ohne Zurücklegen
+
+Wie groß ist die Wahrscheinlichkeit, zwei Kugeln gleicher Farbe zu ziehen – mit und ohne Zurücklegen? Erkläre den Unterschied. [Aufgabe laden](?ev=same&show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Ohne Zurücklegen: $\frac17 + \frac27 = \frac37 \approx 42{,}9\,\%$. Mit Zurücklegen: $\frac{9}{49} + \frac{16}{49} = \frac{25}{49} \approx 51{,}0\,\%$. Ohne Zurücklegen fehlt beim zweiten Zug eine Kugel der zuerst gezogenen Farbe – gleiche Farben werden seltener. [Mit Zurücklegen zeigen](?ev=same&rep=1)
+
+</details>
+
+### Aufgabe 3: Mindestens eine rote
+
+Es wird dreimal mit Zurücklegen gezogen. Berechne $P(\text{mindestens eine rote Kugel})$ geschickt. [Aufgabe laden](?n=3&rep=1&ev=minR&show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Über das Gegenereignis „keine rote“: $1 - \left(\frac47\right)^3 = 1 - \frac{64}{343} = \frac{279}{343} \approx 81{,}3\,\%$. Direkt müsste man sieben Pfade addieren. [In der Simulation zeigen](?n=3&rep=1&ev=minR)
+
+</details>
+
+### Aufgabe 4: Drei Farben
+
+Die Urne enthält $2$ rote, $3$ blaue und $1$ grüne Kugel. Es wird zweimal ohne Zurücklegen gezogen. Mit welcher Wahrscheinlichkeit haben die beiden Kugeln verschiedene Farben? [Aufgabe laden](?r=2&b=3&g=1&ev=diff&show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Gegenereignis „gleiche Farbe“: $\frac26 \cdot \frac15 + \frac36 \cdot \frac25 = \frac{2}{30} + \frac{6}{30} = \frac{8}{30}$ (zwei grüne gibt es nicht). Also $P = 1 - \frac{8}{30} = \frac{11}{15} \approx 73{,}3\,\%$. [In der Simulation zeigen](?r=2&b=3&g=1&ev=diff)
+
+</details>
+
+### Aufgabe 5: Eine kleine Urne
+
+In einer Urne liegen $2$ rote und $1$ blaue Kugel. Es werden alle drei nacheinander gezogen. Mit welcher Wahrscheinlichkeit kommt die blaue Kugel zuletzt? [Aufgabe laden](?r=2&b=1&n=3&show=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Der Pfad $rrb$: $\frac23 \cdot \frac12 \cdot 1 = \frac13$. Alle drei Pfade sind gleich wahrscheinlich – die blaue Kugel landet mit gleicher Wahrscheinlichkeit an jeder Stelle. [In der Simulation zeigen](?r=2&b=1&n=3)
+
+</details>
+
+## Ideen für den Unterricht
+
+*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
+
+- **Einsatz:** Jahrgangsstufe 8 (Laplace-Experimente, Baumdiagramm) und Jahrgangsstufe 10, Lernbereich „Zusammengesetzte Zufallsexperimente und stochastische Simulationen“ (LehrplanPLUS Bayern, Gymnasium).
+- **Echte Urne daneben:** Eine Möglichkeit ist, zuerst mit einer echten Urne einige Male zu ziehen und die Ergebnisse mit der Simulation zu vergleichen – die Simulation ersetzt dann die vielen Wiederholungen.
+- **Bruchdarstellung:** Die Äste zeigen bewusst ungekürzte Brüche (z. B. $\frac26$), damit der Inhalt der Urne erkennbar bleibt; unten werden Produkte gekürzt.
+- **Häufige Stolpersteine:**
+  - Ohne Zurücklegen werden im zweiten Zug dieselben Wahrscheinlichkeiten wie im ersten verwendet.
+  - Wahrscheinlichkeiten entlang eines Pfades werden addiert statt multipliziert.
+  - Pfade wie $rb$ und $br$ werden als dasselbe Ergebnis gezählt und nur einmal addiert.
+  - Bei „mindestens einmal“ werden nicht alle passenden Pfade erfasst; das Gegenereignis ist oft einfacher.
