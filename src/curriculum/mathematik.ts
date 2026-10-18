@@ -439,7 +439,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('aehnlichkeit', L('Ähnlichkeit und Strahlensätze', 'Similarity and intercept theorems'), [
-          planned('strahlensaetze', L('Strahlensätze', 'Intercept theorems'), [9, 9]),
+          {
+            id: 'strahlensaetze',
+            status: 'ready',
+            slug: L('strahlensaetze', 'intercept-theorems'),
+            title: L('Strahlensätze', 'Intercept theorems'),
+            summary: L(
+              'Punkte auf zwei Strahlen ziehen und sehen, wie die Streckenverhältnisse an V- und X-Figur gleich bleiben – solange die Geraden parallel sind. Dazu zwei Anwendungen: Baumhöhe über den Schatten und die Breite eines Teichs.',
+              'Drag points on two rays and see the ratios of the segments in the V and X shapes stay equal – as long as the lines are parallel. Plus two applications: a tree’s height from its shadow and the width of a pond.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L4', 'M-L2', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Umkehrung'],
+              ['intercept theorem', 'V shape', 'X shape', 'parallel lines', 'scale factor', 'ratio', 'similar triangles', 'enlargement', 'tree height', 'shadow', 'converse'],
+            ),
+            thumb: 'generic',
+          },
           planned('vergroessern', L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'), [9, 9]),
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
