@@ -507,7 +507,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
-          planned('sin-cos-tan-dreieck', L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'), [9, 10]),
+          {
+            id: 'sin-cos-tan-dreieck',
+            status: 'ready',
+            slug: L('sinus-kosinus-tangens-dreieck', 'sine-cosine-tangent-triangle'),
+            title: L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'),
+            summary: L(
+              'Gegenkathete, Ankathete und Hypotenuse zum Winkel α oder β farbig markiert; das Seitenverhältnis als Bruch, ähnliche Dreiecke mit gleichem Verhältnis, die Graphen von sin, cos und tan und ihre Zusammenhänge.',
+              'Opposite side, adjacent side and hypotenuse for the angle α or β in colour; the ratio as a fraction, similar triangles with the same ratio, the graphs of sin, cos and tan and how they are related.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L4', 'M-L3', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Sinus', 'Kosinus', 'Tangens', 'Trigonometrie', 'rechtwinkliges Dreieck', 'Gegenkathete', 'Ankathete', 'Hypotenuse', 'Seitenverhältnis', 'Winkel berechnen', 'ähnliche Dreiecke'],
+              ['sine', 'cosine', 'tangent', 'trigonometry', 'right triangle', 'opposite', 'adjacent', 'hypotenuse', 'ratio', 'angle', 'similar triangles', 'SOH CAH TOA'],
+            ),
+            thumb: 'generic',
+          },
           planned('sinussatz-kosinussatz', L('Sinussatz und Kosinussatz', 'Law of sines and law of cosines'), [9, 10]),
         ]),
       ],
