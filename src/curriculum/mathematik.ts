@@ -651,7 +651,23 @@ export const mathematik: Subject = {
       kmk: ['M-L3', 'M-K3', 'M-K4', 'M-K5'],
       topics: [
         topic('funktionsbegriff', L('Funktionsbegriff und Zuordnungen', 'Functions and relationships'), [
-          planned('proportional', L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'), [6, 8], { kmk: ['M-L3', 'M-K3'] }),
+          {
+            id: 'proportional',
+            status: 'ready',
+            slug: L('direkte-indirekte-proportionalitaet', 'direct-and-inverse-proportion'),
+            title: L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'),
+            summary: L(
+              'Äpfel kaufen, ein Beet umgraben, Taxi fahren: Punkt auf dem Graphen ziehen und in der Wertetabelle prüfen, ob die Quotienten oder die Produkte gleich bleiben. Mit Dreisatz, Ursprungsgerade, Hyperbel und Rechtecken gleicher Fläche.',
+              'Buying apples, digging a bed, taking a taxi: drag a point on the graph and check in the table whether quotients or products stay equal. With the rule of three, a line through the origin, a hyperbola and rectangles of equal area.',
+            ),
+            grades: [6, 8],
+            kmk: ['M-L3', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['proportional', 'direkt proportional', 'indirekt proportional', 'antiproportional', 'Dreisatz', 'quotientengleich', 'produktgleich', 'Ursprungsgerade', 'Hyperbel', 'Wertetabelle', 'Zuordnung'],
+              ['proportional', 'directly proportional', 'inversely proportional', 'rule of three', 'equal quotients', 'equal products', 'line through the origin', 'hyperbola', 'table of values', 'relation'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'funktion-zuordnung',
             status: 'ready',
