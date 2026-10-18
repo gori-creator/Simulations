@@ -9,7 +9,7 @@ Zwei Personen arbeiten mit je eigenem Claude Code am Projekt.
 | **Physik** (Gruppen `P…` in `WARTESCHLANGE.md`, `src/curriculum/physik.ts`, `src/simulations/physik/`) | Projektinhaber | `claude/sleepy-goodall-ddchwy` |
 | **Mathematik** (Gruppen `M…`, `src/curriculum/mathematik.ts`, `src/simulations/mathematik/`) | Kollege | eigener Zweig, z. B. `claude/…` oder `mathe/<gruppe>` |
 
-Ausnahme: `diagramme` (Gruppe M16) war beim Wechsel schon in Arbeit und wird noch auf dem Physik-Zweig fertiggestellt.
+Ausnahme: `diagramme` (Gruppe M16) war beim Wechsel schon in Arbeit und ist auf dem Physik-Zweig fertiggestellt (18.10.).
 
 ## Zweige
 
