@@ -817,7 +817,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('boxplot', L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'), [7, 7]),
+          {
+            id: 'boxplot',
+            status: 'ready',
+            slug: L('mittelwert-median-boxplot', 'mean-median-box-plot'),
+            title: L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'),
+            summary: L(
+              'Datenpunkte auf dem Zahlenstrahl ziehen oder ergänzen: Rangliste, Median, Quartile, Boxplot und Mittelwert folgen live. Schritt für Schritt entsteht der Boxplot aus der geordneten Liste, im Vergleich stehen zwei Gruppen übereinander.',
+              'Drag or add data points on the number line: ordered list, median, quartiles, box plot and mean follow live. Step by step the box plot grows out of the ordered list; in comparison mode two groups are stacked.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L5', 'M-K4', 'M-K1', 'M-K6'],
+            keywords: L(
+              ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
+              ['box plot', 'box-and-whisker plot', 'median', 'mean', 'average', 'quartile', 'interquartile range', 'range', 'minimum', 'maximum', 'ordered list', 'outlier', 'summary statistics', 'comparing data'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
           {
