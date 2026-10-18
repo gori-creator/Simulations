@@ -375,7 +375,8 @@ export default defineSimulation({
           text(g, msg, R.x + 14, y, { font: font(700, 12), color: EV(), align: 'left' });
         } else if (total === 0) {
           const lines = wrapText(tt('Ziehe einmal oder hundertmal: Neben jedem Ergebnis wächst ein Balken mit der relativen Häufigkeit.', 'Draw once or a hundred times: a bar with the relative frequency grows next to each outcome.'), R.w - 28, font(550, 11.5));
-          lines.slice(0, 4).forEach((l, i) => text(g, l, R.x + 14, y + i * 15, { font: font(550, 11.5), color: theme.muted, align: 'left' }));
+          const maxL = Math.max(0, Math.floor((R.y + R.h - 8 - y) / 15) + 1);
+          lines.slice(0, Math.min(4, maxL)).forEach((l, i) => text(g, l, R.x + 14, y + i * 15, { font: font(550, 11.5), color: theme.muted, align: 'left' }));
         }
       }
     }

@@ -403,7 +403,10 @@ export default defineSimulation({
         for (const [pp, nm] of items) {
           view.segment(v, pp as Vec3, { color: theme.series[4]!, width: 1.4, dash: [2, 4], alpha: pa * 0.8 });
           view.point(pp as Vec3, { color: theme.series[4]!, radius: 4.5 * pa });
-          view.label(pp as Vec3, showA.at(now) > 0.5 ? `${nm}${coordText(pp)}` : nm, { color: theme.series[4]!, size: 12, weight: '700', offset: [8, -8], baseline: 'bottom' });
+          const sc = regions().scene;
+          const full = showA.at(now) > 0.5 && sc.w >= 520;
+          const right = view.toPx(pp as Vec3)[0] > sc.x + sc.w - (full ? 150 : 70);
+          view.label(pp as Vec3, full ? `${nm}${coordText(pp)}` : nm, { color: theme.series[4]!, size: 12, weight: '700', offset: [right ? -8 : 8, -8], align: right ? 'right' : 'left', baseline: 'bottom' });
         }
       }
       // der Punkt selbst

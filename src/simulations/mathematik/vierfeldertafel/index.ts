@@ -314,8 +314,10 @@ export default defineSimulation({
       const rA = vg.rA * k;
       const rB = vg.rB * k;
       const d = vg.d * k;
-      const mid = box.x + box.w / 2 + (rA - rB) / 2;
-      return { box, ax: mid - d / 2 - (rA - rB) / 2, bx: mid + d / 2 - (rA - rB) / 2, y: box.y + box.h / 2, rA, rB };
+      // ganze Figur (linker Rand von A bis rechter Rand von B) mittig in Ω
+      const left = box.x + box.w / 2 - (rA + d + rB) / 2;
+      const ax = left + rA;
+      return { box, ax, bx: ax + d, y: box.y + box.h / 2, rA, rB };
     }
 
     function drawVenn(): void {
@@ -395,17 +397,22 @@ export default defineSimulation({
       g.stroke();
       g.restore();
       // Beschriftungen der Kreise und Zahlen in den Teilflächen
-      if (grow > 0.8) {
-        text(g, T(cx().A), v.ax - rA * 0.7, v.y - rA * 0.85 - 2, { font: font(800, 12), color: CA(), align: 'right' });
-        text(g, T(cx().B), v.bx + rB * 0.7, v.y - rB * 0.85 - 2, { font: font(800, 12), color: CB(), align: 'left' });
+      if (grow > 0.8 && table(cells()).N === 0) {
+        text(g, tt('Noch keine Daten – stelle die Anzahlen ein.', 'No data yet – set the counts.'), box.x + box.w / 2, box.y + box.h / 2, { font: font(600, 12), color: theme.muted });
+      } else if (grow > 0.8) {
+        g.font = font(800, 12);
+        const la = Math.max(box.x + 8 + g.measureText(T(cx().A)).width, v.ax - rA * 0.7);
+        const lb = Math.min(box.x + box.w - 8 - g.measureText(T(cx().B)).width, v.bx + rB * 0.7);
+        if (rA > 2) text(g, T(cx().A), la, Math.max(box.y + 12, v.y - rA * 0.85 - 2), { font: font(800, 12), color: CA(), align: 'right' });
+        if (rB > 2) text(g, T(cx().B), lb, Math.max(box.y + 12, v.y - rB * 0.85 - 2), { font: font(800, 12), color: CB(), align: 'left' });
         const c = cells();
         const hidden = !p.show;
         const left = Math.min(v.ax - rA * 0.45, (v.ax - rA + Math.min(v.bx - rB, v.ax + rA)) / 2);
         const right = Math.max(v.bx + rB * 0.45, (Math.max(v.ax + rA, v.bx - rB) + v.bx + rB) / 2);
         const midX = (Math.max(v.ax - rA, v.bx - rB) + Math.min(v.ax + rA, v.bx + rB)) / 2;
         const f = font(800, 12.5);
-        if (c[1] > 0 || rA > 4) text(g, hidden ? '?' : val(c[1]), left, v.y, { font: f, color: theme.text });
-        if (c[2] > 0 || rB > 4) text(g, hidden ? '?' : val(c[2]), right, v.y, { font: f, color: theme.text });
+        if (c[1] > 0) text(g, hidden ? '?' : val(c[1]), left, v.y, { font: f, color: theme.text });
+        if (c[2] > 0) text(g, hidden ? '?' : val(c[2]), right, v.y, { font: f, color: theme.text });
         if (c[0] > 0) text(g, hidden ? '?' : val(c[0]), midX, v.y, { font: f, color: theme.text });
         text(g, hidden ? '?' : val(c[3]), box.x + box.w - 14, box.y + box.h - 12, { font: f, color: theme.text, align: 'right' });
       }

@@ -529,7 +529,7 @@ export default defineSimulation({
         const tcol = terms.map(([m, s]) => `${n1(m)} − ${s < 0 ? `(${n1(s)})` : n1(s)}`);
         drawToks([{ kind: 'col', v: [...a], color: ca }, { kind: 'txt', s: '×' }, { kind: 'col', v: [...b], color: cb }, { kind: 'txt', s: '=' }, { kind: 'col', v: res ? tcol : ['?', '?', '?'], color: theme.muted }, { kind: 'txt', s: '=' }, { kind: 'col', v: res ? [...n] : ['?', '?', '?'], color: cn }], x0, y, w, wide ? 13.5 : 12);
         y += 46;
-        row(tt('Parallelogramm |a × b|', 'Parallelogram |a × b|'), q(`√${fmt.num(n[0] ** 2 + n[1] ** 2 + n[2] ** 2, 2)} ≈ ${n1(norm(n))}`), cn);
+        row(tt('Parallelogramm |a × b|', 'Parallelogram |a × b|'), q(norm(n) < 1e-9 ? '0' : `√${fmt.num(n[0] ** 2 + n[1] ** 2 + n[2] ** 2, 2)} ≈ ${n1(norm(n))}`), cn);
         row(tt('Dreieck ½ |a × b|', 'Triangle ½ |a × b|'), q(n1(norm(n) / 2)), CP());
         row(tt('Probe: (a × b) · a', 'Check: (a × b) · a'), q(n1(dot(n, a))));
       } else {
@@ -551,6 +551,7 @@ export default defineSimulation({
       const b = tB();
       if (mode() === 'dot') {
         const d = dot(a, b);
+        if (norm(a) < 1e-9 || norm(b) < 1e-9) return tt('Ein Nullvektor hat keine Richtung – der Winkel ist nicht definiert.', 'A zero vector has no direction – the angle is undefined.');
         if (Math.abs(d) < 1e-9) return tt('a · b = 0: Die Vektoren stehen senkrecht aufeinander.', 'a · b = 0: the vectors are perpendicular.');
         return d > 0 ? tt('a · b > 0: spitzer Winkel. Die Projektion von b zeigt in Richtung von a.', 'a · b > 0: acute angle. The projection of b points along a.') : tt('a · b < 0: stumpfer Winkel. Die Projektion von b zeigt gegen a.', 'a · b < 0: obtuse angle. The projection of b points against a.');
       }
@@ -592,7 +593,7 @@ export default defineSimulation({
         const phi = angleDeg(a, b);
         ctx.readout('calc', `a · b = ${a.map((v, i) => `${n1(v)} · ${b[i]! < 0 ? `(${n1(b[i]!)})` : n1(b[i]!)}`).join(' + ')} = ${n1(dot(a, b))}`);
         ctx.readout('geo', Number.isFinite(phi) ? `cos φ = ${n1(dot(a, b))} / (${n1(norm(a))} · ${n1(norm(b))}) ≈ ${fmt.num(Math.cos((phi * Math.PI) / 180), 3)}, φ ≈ ${fmt.num(phi, 1)}°` : tt('Winkel nicht definiert (Nullvektor)', 'Angle undefined (zero vector)'));
-        ctx.readout('info', orthogonal(a, b) ? tt('a ⊥ b', 'a ⊥ b') : null);
+        ctx.readout('info', norm(a) < 1e-9 || norm(b) < 1e-9 ? tt('Nullvektor: Winkel nicht definiert', 'zero vector: angle undefined') : orthogonal(a, b) ? tt('a ⊥ b', 'a ⊥ b') : null);
       } else if (mode() === 'cross') {
         const n = cross(a, b);
         ctx.readout('calc', `a × b = ${vt(n)}`);

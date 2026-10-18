@@ -911,10 +911,13 @@ export default defineSimulation({
           [xm, x3],
           [x3, xhi],
         ];
-        for (const [a, c] of segs) {
-          if (c - a < 30) continue;
-          halo('25 %', (a + c) / 2, cmp ? y + h / 2 + 11 : y - h / 2 - 10, font(750, 11), theme.muted, 'center', pctA);
-        }
+        segs.forEach(([a, c], k) => {
+          if (c - a < 30) return;
+          // Box-Hälften: Beschriftung in der Box; Antennen: knapp über der Linie
+          const inBox = k === 1 || k === 2;
+          const yy = cmp ? y + h / 2 + 11 : inBox ? y : y - 9;
+          halo('25 %', (a + c) / 2, yy, font(750, 11), theme.muted, 'center', pctA);
+        });
       }
     }
 
@@ -1140,7 +1143,9 @@ export default defineSimulation({
       if (mode() !== 'one' || sums[0]!.n) return;
       const gm = geo!;
       const b = gm.bands[0]!;
-      halo(tt('Noch keine Werte. Tippe auf den Zahlenstrahl oder gib Werte ein.', 'No values yet. Tap the number line or type values.'), gm.C.x + gm.C.w / 2, (b.top + b.base) / 2, font(600, 13), ctx.theme.muted, 'center', A);
+      const f = font(600, 13);
+      const rows = wrap(tt('Noch keine Werte. Tippe auf den Zahlenstrahl oder gib Werte ein.', 'No values yet. Tap the number line or type values.'), gm.C.w - 60, f);
+      rows.forEach((r, i) => halo(r, gm.C.x + gm.C.w / 2, (b.top + b.base) / 2 + (i - (rows.length - 1) / 2) * 18, f, ctx.theme.muted, 'center', A));
     }
 
     /* ---------------- Tafel mit Kennwerten ---------------- */
@@ -1187,7 +1192,11 @@ export default defineSimulation({
         for (let c = 0; c < cols; c++) {
           for (let gi = 0; gi < 2; gi++) {
             const cx = x0 + c * colW + colW - (1 - gi) * valW - 4;
-            halo(T(tx.groups[gi]!).replace(/^Klasse |^Class |^Gruppe |^Group /, ''), cx, y, font(800, 11), groupColor(gi), 'right');
+            let nm = T(tx.groups[gi]!).replace(/^Klasse |^Class |^Gruppe |^Group /, '');
+            g.font = font(800, 11);
+            while (nm.length > 2 && g.measureText(nm).width > valW - 6) nm = nm.slice(0, -1);
+            if (nm !== T(tx.groups[gi]!).replace(/^Klasse |^Class |^Gruppe |^Group /, '')) nm = `${nm}.`;
+            halo(nm, cx, y, font(800, 11), groupColor(gi), 'right');
           }
         }
         y += 16;
