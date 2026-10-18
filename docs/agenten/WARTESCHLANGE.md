@@ -1,7 +1,7 @@
 # Warteschlange: geplante Simulationen
 
 Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `src/curriculum/*.ts` noch als `planned(...)` steht (Gegenprobe: `grep -c "planned('" src/curriculum/*.ts`).
-Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`.
+Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`. **Ab 18.10.2026 Aufteilung: Physik (P…) = Projektinhaber, Mathematik (M…) = Kollege – siehe `docs/agenten/ZUSAMMENARBEIT.md`.**
 
 ## Reihenfolge
 P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (fertig) M24 (fertig) | M12 (fertig) | P07 (fertig) | M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
@@ -40,7 +40,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
 - M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
-- M16 läuft — zaehlprinzip (fertig 18.10.), diagramme, boxplot
+- M16 läuft — zaehlprinzip (fertig 18.10.), diagramme (läuft, Physik-Zweig), boxplot (frei für Mathe)
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
 - M19 offen — normalverteilung, taylor-polynome, fourier-reihen

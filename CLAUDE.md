@@ -18,6 +18,7 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - `src/content/simulations/{de,en}/<id>.md` – Lernmaterial; `src/content/pages/{de,en}/` – Infoseiten
 - `src/i18n/ui.ts` – alle UI-Texte (DE ist Referenz, EN muss alle Schlüssel haben)
 - Details: `docs/ARCHITEKTUR.md`
+- Zusammenarbeit (wer macht was, Zweige, Pull Requests nach `main`): `docs/agenten/ZUSAMMENARBEIT.md`
 
 ## Konventionen
 
