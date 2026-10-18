@@ -789,7 +789,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('polstellen-asymptoten', L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'), [11, 12]),
+          {
+            id: 'polstellen-asymptoten',
+            status: 'ready',
+            slug: L('polstellen-asymptoten', 'poles-asymptotes'),
+            title: L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'),
+            summary: L(
+              'Zähler- und Nennernullstellen ziehen und beobachten: Definitionsmenge, Polstellen mit und ohne Vorzeichenwechsel, behebbare Lücken als Loch im Graphen und waagrechte oder schräge Asymptote aus der Polynomdivision.',
+              'Drag the zeros of numerator and denominator and watch: domain, poles with and without sign change, removable gaps as holes in the graph and the horizontal or oblique asymptote from polynomial division.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert'],
+              ['rational function', 'pole', 'asymptote', 'vertical asymptote', 'horizontal asymptote', 'oblique asymptote', 'removable discontinuity', 'polynomial division', 'sign change', 'limit'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('quadratische-funktionen', L('Quadratische Funktionen', 'Quadratic functions'), [
           {
