@@ -1044,7 +1044,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('skalar-vektorprodukt', L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'), [12, 12]),
+          {
+            id: 'skalar-vektorprodukt',
+            status: 'ready',
+            slug: L('skalarprodukt-vektorprodukt', 'dot-and-cross-product'),
+            title: L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'),
+            summary: L(
+              'Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, senkrecht bei a · b = 0; das Vektorprodukt wächst als Normalenvektor aus dem Parallelogramm, das Spatprodukt liefert das Volumen des Spats.',
+              'Two vectors in space: angle and projection from the dot product, perpendicular when a · b = 0; the cross product grows as a normal vector out of the parallelogram, the triple product gives the volume of the parallelepiped.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-L2', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Skalarprodukt', 'Vektorprodukt', 'Kreuzprodukt', 'Spatprodukt', 'Winkel zwischen Vektoren', 'orthogonal', 'senkrecht', 'Projektion', 'Normalenvektor', 'Parallelogrammfläche', 'Dreiecksfläche', 'Spat', 'Volumen', 'Rechte-Hand-Regel'],
+              ['dot product', 'scalar product', 'cross product', 'vector product', 'triple product', 'angle between vectors', 'orthogonal', 'perpendicular', 'projection', 'normal vector', 'area of a parallelogram', 'triangle area', 'parallelepiped', 'volume', 'right-hand rule'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
           planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),

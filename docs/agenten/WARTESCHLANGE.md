@@ -42,7 +42,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
 - M16 fertig — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (fertig 18.10., Mathe 1)
-- M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
+- M17 läuft (Mathe 1) — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
 - M19 offen — normalverteilung, taylor-polynome, fourier-reihen
 - M20 offen — ableitungsfunktion, kurvendiskussion, funktionenscharen
@@ -50,7 +50,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M22 offen — extremwertprobleme, matrix-abbildungen
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
-- M25 läuft (Mathe 1) — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
+- M25 fertig (Mathe 1, 18.10.) — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
 - M26 offen — geraden-ebenen, lage-abstaende, kugeln (3D)
 
 ## Ideen je Simulation (an Agenten weitergeben)
