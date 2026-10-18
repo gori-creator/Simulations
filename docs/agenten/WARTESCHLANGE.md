@@ -34,7 +34,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M07 fertig — vierecke, spiegelung, mittelsenkrechte
 - M08 offen — winkel-geradenkreuzung, winkelsumme, flaechen-zerlegen
 - M09 fertig — dreieckskonstruktion, besondere-linien, strahlensaetze (18.10., Mathe 2)
-- M10 läuft (Mathe 2) — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
+- M10 läuft (Mathe 2) — vergroessern (fertig 18.10.), sin-cos-tan-dreieck, sinussatz-kosinussatz
 - M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
 - M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
 - M13 offen — potenzfunktionen, logarithmus, e-funktion

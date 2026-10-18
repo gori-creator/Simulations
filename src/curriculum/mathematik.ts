@@ -488,7 +488,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('vergroessern', L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'), [9, 9]),
+          {
+            id: 'vergroessern',
+            status: 'ready',
+            slug: L('aehnliche-figuren-vergroessern', 'similar-figures-scaling'),
+            title: L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'),
+            summary: L(
+              'Mit dem Streckfaktor k vergrößern: Die Strecke wird k-mal so lang, das Quadrat besteht aus k² Einheitsquadraten und der Würfel baut sich aus k³ Einheitswürfeln auf (3D, drehbar). Eine Kurve vergleicht k, k² und k³.',
+              'Scaling with factor k: the segment becomes k times as long, the square consists of k² unit squares and the cube builds up from k³ unit cubes (3D, rotatable). A graph compares k, k² and k³.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Streckfaktor', 'ähnlich', 'Ähnlichkeit', 'zentrische Streckung', 'Vergrößerung', 'Verkleinerung', 'Flächeninhalt', 'Volumen', 'Einheitswürfel', 'Quadrat', 'Würfel'],
+              ['scale factor', 'similar', 'similarity', 'enlargement', 'reduction', 'area', 'volume', 'unit cube', 'square', 'cube'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
           planned('sin-cos-tan-dreieck', L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'), [9, 10]),
