@@ -809,7 +809,23 @@ export const mathematik: Subject = {
           planned('e-funktion', L('Die natürliche Exponentialfunktion', 'The natural exponential function'), [12, 12]),
         ]),
         topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
-          planned('ganzrationale-funktionen', L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'), [10, 11]),
+          {
+            id: 'ganzrationale-funktionen',
+            status: 'ready',
+            slug: L('ganzrationale-funktionen', 'polynomial-functions'),
+            title: L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'),
+            summary: L(
+              'Nullstellen auf der x-Achse ziehen und ihre Vielfachheit wählen: Der Graph schneidet, berührt oder hat einen Terrassenpunkt. Dazu Term in Linearfaktoren und Normalform, Vorzeichenbereiche und Randverhalten.',
+              'Drag zeros along the x-axis and choose their multiplicity: the graph crosses, touches or has a terrace point. With the factored and expanded form, sign regions and end behaviour.',
+            ),
+            grades: [10, 11],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['ganzrationale Funktion', 'Polynom', 'Nullstelle', 'Vielfachheit', 'Linearfaktor', 'Berührpunkt', 'Terrassenpunkt', 'Vorzeichenwechsel', 'Randverhalten', 'Grad', 'Leitkoeffizient', 'Normalform'],
+              ['polynomial function', 'polynomial', 'zero', 'root', 'multiplicity', 'linear factor', 'touching point', 'terrace point', 'sign change', 'end behaviour', 'degree', 'leading coefficient'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('eigenschaften', L('Eigenschaften von Funktionen', 'Properties of functions'), [
           planned('transformationen', L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
