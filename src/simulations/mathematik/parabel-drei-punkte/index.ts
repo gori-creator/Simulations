@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   coefficients,
@@ -135,6 +135,7 @@ export default defineSimulation({
   id: 'parabel-drei-punkte',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.5 },
+  images: { ball: 'ball.webp', river: 'fluss.webp' },
   groups: [
     { id: 'pts', label: L('Punkte (auch im Bild ziehen)', 'Points (you can also drag them)') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -808,11 +809,13 @@ export default defineSimulation({
         g.stroke();
         g.restore();
       }
+      const river = ctx.images.get('river');
+      if (kr > 0.01 && river) drawRiverPhoto(river, y0 + 10, kr);
       if (kr > 0.01 && y0 < r.y + r.h) {
         // Fluss unterhalb von y = 0
         const top = Math.max(r.y, y0 + 10);
         g.save();
-        g.globalAlpha = kr;
+        g.globalAlpha = kr * (river ? 0 : 1);
         const water = th().series[0]!;
         const grad = g.createLinearGradient(0, top, 0, r.y + r.h);
         grad.addColorStop(0, mixColor(water, th().bg, th().dark ? 0.62 : 0.72));
@@ -859,10 +862,58 @@ export default defineSimulation({
         g.lineTo(bankR + 14, r.y + r.h);
         g.lineTo(r.x + r.w, r.y + r.h);
         g.closePath();
-        g.globalAlpha = kr * 0.85;
+        g.globalAlpha = kr * (river ? 1 : 0.85);
+        if (river) {
+          // vor dem Foto: deckende Uferböschung mit Grasnarbe
+          const eg = g.createLinearGradient(0, y0, 0, r.y + r.h);
+          eg.addColorStop(0, th().dark ? '#5d4c3a' : '#b59a77');
+          eg.addColorStop(1, th().dark ? '#3e3226' : '#8f7656');
+          g.fillStyle = eg;
+          g.shadowColor = 'rgba(0,0,0,0.25)';
+          g.shadowBlur = 8;
+        }
         g.fill();
+        if (river) {
+          g.shadowBlur = 0;
+          g.strokeStyle = mixColor(th().series[2]!, '#4d7a35', 0.6);
+          g.lineWidth = 3;
+          g.beginPath();
+          g.moveTo(r.x, y0 + 1);
+          g.lineTo(bankL, y0 + 1);
+          g.moveTo(r.x + r.w, y0 + 1);
+          g.lineTo(bankR, y0 + 1);
+          g.stroke();
+        }
         g.restore();
       }
+    }
+
+    /** Wasserlinie im Foto `fluss.webp` (Bildzeile am fernen Ufer, gemessen). */
+    const RIVER_WATER = 680;
+    /**
+     * Flusslandschaft als Hintergrund des Brückenbogens: gleichmäßig skaliert, die Wasserlinie
+     * des Fotos liegt auf der Höhe des gezeichneten Wasserspiegels (knapp unter y = 0).
+     * Gedämpft, damit Gitter, Graph und Punkte maßgeblich bleiben.
+     */
+    function drawRiverPhoto(img: HTMLImageElement, waterY: number, alpha: number): void {
+      const g = surface.g;
+      const r = plot.rect;
+      const wl = Math.max(r.y, Math.min(r.y + r.h, waterY));
+      const need = Math.max(r.w / img.width, (wl - r.y) / RIVER_WATER, (r.y + r.h - wl) / (img.height - RIVER_WATER));
+      // Größe in kleinen Stufen, damit das vorab skalierte Bild beim Verschieben nicht ständig neu entsteht
+      const k = Math.pow(2, Math.ceil(Math.log2(need) * 24) / 24);
+      const w = Math.round(img.width * k);
+      const h = Math.round(img.height * k);
+      const dark = th().dark;
+      g.save();
+      g.beginPath();
+      g.rect(r.x, r.y, r.w, r.h);
+      g.clip();
+      g.globalAlpha = alpha;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), r.x + (r.w - w) / 2, waterY - RIVER_WATER * k, w, h);
+      g.fillStyle = mixColor(th().bg, th().bg, 0, dark ? 0.62 : 0.45);
+      g.fillRect(r.x, r.y, r.w, r.h);
+      g.restore();
     }
 
     /** Brücke: Fahrbahn über dem Bogen, Hänger, Bogen als Steinband. */
@@ -1181,6 +1232,16 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.3)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
+      const photo = ctx.images.get('ball');
+      if (photo) {
+        // Fußball, dreht sich im Flug (Abrollen entlang der Bahn)
+        const R = ballR + 2;
+        g.translate(px, py);
+        g.rotate((px - plot.px(flight.xs)) / R);
+        g.drawImage(scaledSprite(photo, 2 * R, 2 * R, surface.dpr), -R, -R, 2 * R, 2 * R);
+        g.restore();
+        return;
+      }
       const grad = g.createRadialGradient(px - 3, py - 3, 1, px, py, ballR);
       grad.addColorStop(0, mixColor(th().series[1]!, '#ffffff', 0.55));
       grad.addColorStop(1, th().series[1]!);

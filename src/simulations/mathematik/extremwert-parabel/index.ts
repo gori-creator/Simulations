@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, seededRandom, Surface, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   argMax,
@@ -174,6 +174,7 @@ export default defineSimulation({
   id: 'extremwert-parabel',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.42 },
+  images: { grass: 'wiese.webp', wall: 'mauer.webp', wood: 'holzdreieck.webp', metal: 'blech.webp' },
   groups: [
     { id: 'data', label: L('Angaben der Aufgabe', 'Given data') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -438,6 +439,46 @@ export default defineSimulation({
       return { f: c.f, a: c.area, x: c.x, y: c.y, o: c.opt, w: c.warn, m: th().muted };
     };
     const pillBg = () => (th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)');
+
+    /* ---------- Fotos (optional, sonst gezeichnete Ersatzgrafik) ---------- */
+
+    /** Mauer: Rollschicht oben und zwei Ziegelreihen (Bildzeilen 0–50, endet an einer Fuge). */
+    const WALL_CROP: Rect = { x: 0, y: 0, w: 677, h: 50 };
+    /** Holz: größtes Rechteck im Inneren des Dreiecksbretts (nur Maserung, keine Kante). */
+    const WOOD_CROP: Rect = { x: 140, y: 185, w: 232, h: 180 };
+    /** Blech: untere Bildhälfte ohne den hellen Lichtfleck oben. */
+    const METAL_CROP: Rect = { x: 0, y: 190, w: 1200, h: 206 };
+    const patterns = new Map<string, { key: string; p: CanvasPattern }>();
+    /**
+     * Gekachelte Fototextur, Kachelbreite tileW CSS-Pixel (Seitenverhältnis wie im Foto);
+     * bei mirror wird jede zweite Kachel gespiegelt, damit keine Naht entsteht.
+     */
+    function photoPattern(name: string, img: HTMLImageElement, tileW: number, crop: Rect | undefined, mirror: boolean): CanvasPattern | null {
+      const dpr = surface.dpr;
+      const tw = Math.max(8, Math.round(tileW));
+      const cw = crop ? crop.w : img.width;
+      const chh = crop ? crop.h : img.height;
+      const tileH = Math.max(4, Math.round((tw * chh) / cw));
+      const key = `${tw}|${tileH}|${dpr}`;
+      const hit = patterns.get(name);
+      if (hit && hit.key === key) return hit.p;
+      const o = offscreenCanvas(mirror ? 2 * tw : tw, tileH, dpr);
+      const sp = scaledSprite(img, tw, tileH, dpr, { crop });
+      o.g.drawImage(sp, 0, 0, tw, tileH);
+      if (mirror) o.g.drawImage(scaledSprite(img, tw, tileH, dpr, { crop, flipX: true }), tw, 0, tw, tileH);
+      const p = surface.g.createPattern(o.canvas, 'repeat');
+      if (!p) return null;
+      p.setTransform(new DOMMatrix().scale(1 / dpr));
+      patterns.set(name, { key, p });
+      return p;
+    }
+    /** Fotoausschnitt gleichmäßig skaliert so, dass er das Rechteck r ganz bedeckt (mittig). */
+    function drawCover(img: HTMLImageElement, crop: Rect, r: Rect): void {
+      const k = Math.max(r.w / crop.w, r.h / crop.h);
+      const w = Math.ceil(crop.w * k);
+      const h = Math.ceil(crop.h * k);
+      surface.g.drawImage(scaledSprite(img, w, h, surface.dpr, { crop }), r.x + (r.w - w) / 2, r.y + (r.h - h) / 2, w, h);
+    }
 
     /* ---------- Aufteilung ---------- */
 
@@ -1034,7 +1075,9 @@ export default defineSimulation({
       const small = r.w < 420;
       const size = textSize() - (small ? 1 : 0.5);
       const field = { x: r.x + 6, y: r.y + 6, w: r.w - 12, h: r.h - 10 };
-      const wallH = free ? 0 : 15;
+      const grassImg = ctx.images.get('grass');
+      const wallImg = ctx.images.get('wall');
+      const wallH = free ? 0 : wallImg ? 22 : 15;
       const barH = r.h > 180 ? 30 : 0;
       const padL = small ? 74 : 92;
       const padR = 16;
@@ -1051,8 +1094,31 @@ export default defineSimulation({
       grad.addColorStop(0, mixColor(grass, th().bg, dark ? 0.74 : 0.76));
       grad.addColorStop(1, mixColor(grass, th().bg, dark ? 0.84 : 0.86));
       softPanel(field, grad, alpha);
+      const turf = grassImg ? photoPattern('grass', grassImg, Math.min(360, Math.max(220, field.w * 0.5)), undefined, false) : null;
+      if (turf) {
+        // Rasen von oben, aufgehellt bzw. abgedunkelt, damit Zaun, Maße und Fläche klar bleiben
+        g.save();
+        g.globalAlpha = alpha;
+        g.beginPath();
+        roundRect(g, field.x, field.y, field.w, field.h, 14);
+        g.clip();
+        g.fillStyle = turf;
+        g.fillRect(field.x, field.y, field.w, field.h);
+        g.fillStyle = dark ? mixColor(th().bg, th().bg, 0, 0.5) : mixColor(grass, '#ffffff', 0.86, 0.5);
+        g.fillRect(field.x, field.y, field.w, field.h);
+        if (barH) {
+          // ruhiger Streifen unten für die Zaun-Leiste
+          const vb = g.createLinearGradient(0, field.y + field.h - barH - 12, 0, field.y + field.h);
+          vb.addColorStop(0, mixColor(th().bg, th().bg, 0, 0));
+          vb.addColorStop(0.45, mixColor(th().bg, th().bg, 0, dark ? 0.55 : 0.62));
+          vb.addColorStop(1, mixColor(th().bg, th().bg, 0, dark ? 0.7 : 0.78));
+          g.fillStyle = vb;
+          g.fillRect(field.x, field.y + field.h - barH - 12, field.w, barH + 12);
+        }
+        g.restore();
+      }
       g.save();
-      g.globalAlpha = alpha * 0.55;
+      g.globalAlpha = alpha * (turf ? 0 : 0.55);
       g.strokeStyle = mixColor(grass, th().bg, dark ? 0.45 : 0.5);
       g.lineWidth = 1.2;
       g.lineCap = 'round';
@@ -1078,11 +1144,23 @@ export default defineSimulation({
         const brick = dark ? '#7d4936' : '#c27453';
         g.fillStyle = brick;
         g.fillRect(field.x, field.y, field.w, wallH);
+        const bricks = wallImg ? photoPattern('wall', wallImg, (wallH * WALL_CROP.w) / WALL_CROP.h, WALL_CROP, true) : null;
+        if (bricks) {
+          g.save();
+          g.translate(field.x, field.y);
+          g.fillStyle = bricks;
+          g.fillRect(0, 0, field.w, wallH);
+          if (dark) {
+            g.fillStyle = 'rgba(10,12,20,0.32)';
+            g.fillRect(0, 0, field.w, wallH);
+          }
+          g.restore();
+        }
         g.strokeStyle = dark ? 'rgba(0,0,0,0.35)' : 'rgba(255,240,225,0.75)';
         g.lineWidth = 1;
         g.beginPath();
         const rowH = wallH / 2;
-        for (let row = 0; row < 2; row++) {
+        for (let row = 0; row < (bricks ? 0 : 2); row++) {
           const yy = field.y + row * rowH;
           g.moveTo(field.x, Math.round(yy + rowH) + 0.5);
           g.lineTo(field.x + field.w, Math.round(yy + rowH) + 0.5);
@@ -1103,6 +1181,10 @@ export default defineSimulation({
         g.globalAlpha = alpha * 0.9;
         g.font = `700 ${Math.max(10, size - 2.5)}px ${th().font}`;
         g.fillStyle = '#ffffff';
+        if (bricks) {
+          g.shadowColor = 'rgba(40,16,8,0.85)';
+          g.shadowBlur = 4;
+        }
         g.textAlign = 'right';
         g.textBaseline = 'middle';
         g.fillText(ctx.t('wallWord').toUpperCase(), field.x + field.w - 14, field.y + wallH / 2 + 0.5);
@@ -1127,9 +1209,9 @@ export default defineSimulation({
       }
       // mögliche Lagen der Ecke (gestrichelt)
       g.save();
-      g.globalAlpha = alpha * 0.5;
-      g.strokeStyle = mixColor(c.area, th().bg, 0.2);
-      g.lineWidth = 1.3;
+      g.globalAlpha = alpha * (turf ? 0.85 : 0.5);
+      g.strokeStyle = mixColor(c.area, th().bg, turf ? 0.05 : 0.2);
+      g.lineWidth = turf ? 1.6 : 1.3;
       g.setLineDash([3, 5]);
       g.beginPath();
       g.moveTo(A[0], A[1]);
@@ -1324,8 +1406,28 @@ export default defineSimulation({
       g.closePath();
       g.fill();
       g.restore();
+      const woodImg = ctx.images.get('wood');
+      if (woodImg) {
+        // Holzmaserung aus dem Inneren des Fotos, in die rechtwinklige Form eingeschnitten (unverzerrt)
+        g.save();
+        g.beginPath();
+        g.moveTo(...P0);
+        g.lineTo(...PA);
+        g.lineTo(...PB);
+        g.closePath();
+        g.clip();
+        drawCover(woodImg, WOOD_CROP, { x: ox, y: oy - b * s, w: a * s, h: b * s });
+        // leichte Schattierung wie beim gezeichneten Brett, im Dunkelmodus gedämpft
+        const sh = g.createLinearGradient(ox, oy - b * s, ox + a * s, oy);
+        sh.addColorStop(0, dark ? 'rgba(20,12,6,0.32)' : 'rgba(255,250,240,0.08)');
+        sh.addColorStop(1, dark ? 'rgba(20,12,6,0.5)' : 'rgba(120,80,40,0.14)');
+        g.fillStyle = sh;
+        g.fillRect(ox, oy - b * s, a * s, b * s);
+        g.restore();
+      }
       // Maserung
       g.save();
+      if (woodImg) g.globalAlpha = 0;
       g.beginPath();
       g.moveTo(...P0);
       g.lineTo(...PA);
@@ -1620,9 +1722,31 @@ export default defineSimulation({
         g.closePath();
         g.fill();
       };
-      quad([front[1]!, front[2]!, back[2]!, back[1]!], metalLight);
-      quad([front[0]!, front[1]!, back[1]!, back[0]!], metalMid);
-      quad([front[2]!, front[3]!, back[3]!, back[2]!], mixColor(metalMid, metalLight, 0.5));
+      const metalImg = ctx.images.get('metal');
+      /** Blechfoto in eine Fläche eingeschnitten; die gezeichnete Grundfarbe bleibt als Schattierung. */
+      const sheet = (p: [number, number][], fill: string) => {
+        quad(p, fill);
+        if (!metalImg) return;
+        const xs = p.map((q) => q[0]);
+        const ys = p.map((q) => q[1]);
+        const x0 = Math.min(...xs);
+        const y0 = Math.min(...ys);
+        const w = Math.max(...xs) - x0;
+        const h = Math.max(...ys) - y0;
+        if (w < 1 || h < 1) return;
+        g.save();
+        g.beginPath();
+        p.forEach(([px, py], i) => (i ? g.lineTo(px, py) : g.moveTo(px, py)));
+        g.closePath();
+        g.clip();
+        g.globalAlpha = alpha * (dark ? 0.3 : 0.5);
+        g.globalCompositeOperation = dark ? 'soft-light' : 'multiply';
+        drawCover(metalImg, METAL_CROP, { x: x0, y: y0, w, h });
+        g.restore();
+      };
+      sheet([front[1]!, front[2]!, back[2]!, back[1]!], metalLight);
+      sheet([front[0]!, front[1]!, back[1]!, back[0]!], metalMid);
+      sheet([front[2]!, front[3]!, back[3]!, back[2]!], mixColor(metalMid, metalLight, 0.5));
       // hintere Kante
       g.strokeStyle = mixColor(metal, th().bg, 0.35);
       g.lineWidth = 1.6;

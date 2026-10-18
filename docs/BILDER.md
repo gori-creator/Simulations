@@ -97,6 +97,13 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Ganze Zahlen an der Zahlengerade | `sea` | `src/assets/sims/zahlengerade/meer.webp` | 1600 × 1600 | deckend |
 | Umfang und Flächeninhalt | `ant` | `src/assets/sims/umfang-flaeche/ameise.webp` | 256 × 221 | transparent |
 | Gesetz der großen Zahlen | `die` | `src/assets/sims/gesetz-grosse-zahlen/wuerfel.webp` | 338 × 312 | transparent |
+| Extremwertaufgaben | `grass` | `src/assets/sims/extremwert-parabel/wiese.webp` | 900 × 900 | deckend |
+| Extremwertaufgaben | `wall` | `src/assets/sims/extremwert-parabel/mauer.webp` | 677 × 118 | deckend |
+| Extremwertaufgaben | `wood` | `src/assets/sims/extremwert-parabel/holzdreieck.webp` | 512 × 383 | transparent |
+| Extremwertaufgaben | `metal` | `src/assets/sims/extremwert-parabel/blech.webp` | 1200 × 396 | deckend |
+| Parabel durch drei Punkte | `ball` | `src/assets/sims/parabel-drei-punkte/ball.webp` | 255 × 256 | transparent |
+| Parabel durch drei Punkte | `river` | `src/assets/sims/parabel-drei-punkte/fluss.webp` | 2400 × 1187 | deckend |
+| LGS grafisch lösen | `phone` | `src/assets/sims/lgs-grafisch/handy.webp` | 265 × 565 | transparent |
 
 ## Ziegenproblem
 
@@ -620,6 +627,54 @@ Weißer Würfel schräg von vorn. Die Perspektive passt nicht zur Draufsicht, in
 
 > A single white plastic game die without any pips, blank faces, rounded edges, three-quarter view, isolated on a transparent background, photorealistic
 
+## Extremwertaufgaben (Wiese, Mauer, Holz, Blech)
+
+### `wiese.webp` – Rasen von oben
+
+Nahtlose Kachel (Breite ca. halbe Szene, 220–360 px) als Untergrund der Gehege „an der Mauer“ und „ohne Mauer“, nur innerhalb des abgerundeten Bildfelds. Im Hellmodus mit blassem Grün aufgehellt, im Dunkelmodus abgedunkelt; unten liegt ein ruhiger Streifen unter der Zaun-Leiste. Gezeichnete Grashalme entfallen, die gestrichelte Linie der möglichen Ecken wird kräftiger.
+
+> Top-down view of a lush green meadow with short grass and a few tiny daisies, evenly lit, seamless, photorealistic
+
+### `mauer.webp` – Ziegelmauer
+
+Verwendet wird nur der obere Streifen (Rollschicht und zwei Ziegelreihen, Bildzeilen 0–50, endet an einer Fuge), auf 22 px Höhe skaliert und gespiegelt gekachelt (keine Naht). Mit Foto ist die Mauer 22 statt 15 px hoch; die Aufschrift „MAUER“ bekommt einen dunklen Schein. Im Dunkelmodus abgedunkelt.
+
+> A red brick wall seen exactly from above as a long horizontal strip, seamless horizontally tileable, photorealistic
+
+### `holzdreieck.webp` – Holzmaserung für das Dreiecksbrett
+
+Das Foto zeigt ein gleichschenkliges Brett, die Aufgabe braucht ein rechtwinkliges. Deshalb wird nur die Maserung aus dem größten Rechteck im Inneren (x 140–372, y 185–365) gleichmäßig skaliert in die gezeichnete Dreiecksform eingeschnitten; Umriss, Schatten, rechter Winkel und Rechteck bleiben gezeichnet. Leicht warm schattiert, im Dunkelmodus abgedunkelt.
+
+> Top-down view of a light plywood board with visible wood grain, evenly lit, photorealistic
+
+### `blech.webp` – verzinktes Blech
+
+Untere Bildhälfte (ohne den hellen Lichtfleck oben) als Textur in Boden und Seitenwände der Regenrinne eingeschnitten (hell: multipliziert, dunkel: weiches Licht), die gezeichneten Grautöne bleiben als Schattierung; Wasser, Profil und Maße liegen darüber.
+
+> A sheet of brushed galvanised steel, horizontal, evenly lit, seamless, photorealistic
+
+## Parabel durch drei Punkte (Ball, Fluss)
+
+### `ball.webp` – Fußball
+
+Ersetzt beim „Ball werfen“ den gezeichneten Ball (Durchmesser 22 px) und rollt im Flug ab (Drehwinkel = zurückgelegter Weg / Radius). Bodenschatten und Stroboskop-Spuren bleiben gezeichnet.
+
+> A classic white and black football, perfectly round, isolated on a transparent background, photorealistic
+
+### `fluss.webp` – Flusslandschaft
+
+Hintergrund der Anwendung „Brückenbogen“, nur im Koordinatensystem, gleichmäßig skaliert (deckt die Fläche, Größe in kleinen Stufen vorab skaliert). Die Wasserlinie am fernen Ufer (Bildzeile 680, gemessen) liegt immer auf dem gezeichneten Wasserspiegel knapp unter y = 0, auch beim Verschieben und Zoomen. Stark gedämpft (hell 45 %, dunkel 62 % Hintergrundfarbe darüber), Gitter, Achsen, Graph und Punkte liegen darüber. Die Uferböschungen an den Nullstellen bleiben gezeichnet (mit Foto deckend).
+
+> A wide river landscape seen from the side, calm water in the lower third, grassy banks left and right, soft sky, no bridge, photorealistic
+
+## LGS grafisch lösen (Handy)
+
+### `handy.webp` – Smartphone
+
+Beim Tarifvergleich quer gelegt (um 90° gedreht, einmal je Größe vorab gerendert) als Rahmen der Legende: Die Tarife A und B (Gleichung, Grundgebühr und Minutenpreis) stehen hell auf dem schwarzen Bildschirm (gemessen: x 18–250, y 33–533 im Hochformat); die Spiegelung auf dem Glas wird abgeschwächt. Ohne Foto die gewohnte Karte.
+
+> A generic modern smartphone, front view, blank dark screen, no brand, isolated on a transparent background, photorealistic
+
 ## Nicht eingebaute Bilder (Mathematik, Stand 16.10.2026)
 
 Diese Dateien liegen weiter in `docs/bilder-eingang/<id>/`:
@@ -629,7 +684,15 @@ Diese Dateien liegen weiter in `docs/bilder-eingang/<id>/`:
   > A bar of milk chocolate seen exactly from above, 6 by 4 rectangular pieces with deep grooves, unwrapped, no brand, evenly lit, the bar fills the entire image edge to edge, photorealistic, 1400 × 950 px
 - `umfang-flaeche/karopapier.webp` – Das Fotoraster (grau, fest) beißt sich mit dem eigenen, zoombaren Zentimeter-Raster der Simulation; ohne Raster bliebe nur fast einfarbiges Weiß, und im Dunkelmodus ist das Blatt dunkel.
 - `cavalieri/muenze.webp`, `cavalieri/spielkarte.webp` – Die 3D-Ansicht (`view3d`) füllt Flächen einfarbig mit Beleuchtung, Texturen gibt es nicht. Außerdem tragen die Farben Bedeutung (gerader und schiefer Körper, A₁ und A₂ in denselben Farben); goldene Münzen bzw. rote Karten würden diese Zuordnung aufheben.
+- `quadratische-funktion/brunnen.webp` – Die Simulation hat keine Sachsituation (nur Parameter, Formen, Nullstellen); ein Wasserstrahl-Beispiel mit passendem Maßstab wäre eine neue Funktion. Für einen späteren Einbau müsste die Bahn des Strahls im Foto vermessen werden.
+- `sinusfunktion/riesenrad.webp` – Es gibt keinen Modellieren-Kontext „Riesenrad“ (das Modell-Beispiel ist die Tageslänge). Eine statische Illustration neben dem Graphen würde nur ablenken.
+- `mittelsenkrechte/zirkel.webp` – Ausprobiert (Foto nur gedreht und skaliert, Nadel genau im Einstichpunkt, Bleistiftspitze genau auf dem Bogen): Der Öffnungswinkel im Foto ist fest (etwa 24°), das Foto ist deshalb rund 2,5-mal so hoch wie der Radius. Schon bei der Winkelhalbierenden ragt es beim Bogenschlagen über Papier und Zeichenfläche, bei der Mittelsenkrechten (Radius über die halbe Strecke) ist es fast so hoch wie das Papier. Es hätte nur in einzelnen Schritten gepasst; der Wechsel zwischen Foto und gezeichnetem Zirkel mitten in der Konstruktion wirkte unruhig. Der gezeichnete Zirkel öffnet seine Schenkel passend zum Radius. Besser wäre ein Foto, das sich in Teile zerlegen lässt (siehe unten).
+- `karopapier.webp` in `koordinaten-lage`, `vierecke`, `spiegelung`, `winkel-messen`, `mittelsenkrechte`, `thales` – Alle sechs zeichnen ihr eigenes Raster, dessen Kästchengröße sich mit der Bildschirmbreite ändert (Koordinatensystem, Thales mit Plot, Winkel messen ohne festes Raster); die Kästchenzahl des Fotos (rund 37 × 37, nicht exakt gleichmäßig) passt zu keinem davon. Ein darübergelegtes eigenes Raster ergäbe doppelte Linien, ohne Raster bliebe fast einfarbiges Weiß; im Dunkelmodus ist das Blatt dunkel. Wie bei `umfang-flaeche` nicht eingebaut.
 - `quader-volumen/holz.webp` – Ebenfalls keine Texturen in `view3d`; die Farben der Einheitswürfel zeigen Reihe, Schicht und abwechselnde Schichten beim Zählen. Eine Holzmaserung je Würfelfläche (bis zu 3000 Flächen beim Drehen) wäre auf Schul-Tablets zu langsam und schwächte die Farbunterscheidung.
+
+Für den Zirkel: zwei getrennte Schenkel, damit die Simulation den Öffnungswinkel selbst einstellen kann:
+
+> A metal school compass taken apart into its two legs, each leg shown separately side by side: left the needle leg with the hinge head and grip, right the leg with a clamped yellow pencil, both legs exactly vertical, front view, isolated on a transparent background, photorealistic, 800 × 1000 px
 
 Für die Zahlengerade wäre ein polares Motiv stimmiger (Eisberg und Pinguin):
 

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha } from '../../../sim-core';
 import {
   approxText,
   compareTariffs,
@@ -60,6 +60,7 @@ export default defineSimulation({
   id: 'lgs-grafisch',
   dragHint: true,
   layout: { aspect: 1.5, aspectNarrow: 0.88 },
+  images: { phone: 'handy.webp' },
   groups: [
     { id: 'eq1', label: L('Gleichung I', 'Equation I') },
     { id: 'eq2', label: L('Gleichung II', 'Equation II') },
@@ -439,6 +440,23 @@ export default defineSimulation({
       return inside[0]!;
     }
 
+    /** Bildschirm des quer gelegten Handyfotos (265 × 565, um 90° nach links gedreht → 565 × 265), gemessen. */
+    const PHONE = { w: 565, h: 265, screen: { x: 33, y: 15, w: 500, h: 232 } };
+    let phoneCache: { key: string; c: HTMLCanvasElement } | null = null;
+    /** Handy quer (Lautsprecher links), Breite PHONE.w · k; einmal je Größe vorab gedreht. */
+    function phoneSprite(img: HTMLImageElement, k: number): HTMLCanvasElement {
+      const w = Math.round(PHONE.w * k);
+      const h = Math.round(PHONE.h * k);
+      const key = `${w}|${h}|${surface.dpr}`;
+      if (phoneCache?.key === key) return phoneCache.c;
+      const o = offscreenCanvas(w, h, surface.dpr);
+      o.g.translate(0, h);
+      o.g.rotate(-Math.PI / 2);
+      o.g.drawImage(scaledSprite(img, h, w, surface.dpr), 0, 0, h, w);
+      phoneCache = { key, c: o.canvas };
+      return o.canvas;
+    }
+
     function drawLegend(): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -460,15 +478,40 @@ export default defineSimulation({
       // Beim Tarifvergleich rechts neben der y-Achse und unter ihrer Beschriftung
       const x = form() === 'tarif' ? Math.max(r.x + 10, plot.px(0) + 12) : r.x + 10;
       const y = form() === 'tarif' ? r.y + 30 : r.y + 10;
-      card(x, y, w, h);
-      rows.forEach((q, i) => {
-        const cy = y + 5 + i * rowH + (q.sub ? fs * 0.85 : rowH / 2);
-        g.fillStyle = q.color;
-        roundRect(g, x + 9, cy - fs * 0.62, nameW - 6, fs * 1.24, 5);
+      // Beim Tarifvergleich stehen die Tarife auf dem Bildschirm eines Handys (Foto, quer)
+      const photo = form() === 'tarif' ? ctx.images.get('phone') : null;
+      let ox = x;
+      let oy = y;
+      let ink = theme.text;
+      let inkSub = theme.muted;
+      if (photo) {
+        const sc = PHONE.screen;
+        const k = Math.max(w / sc.w, h / sc.h);
+        const pw = Math.round(PHONE.w * k);
+        const ph = Math.round(PHONE.h * k);
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.28)';
+        g.shadowBlur = 14;
+        g.shadowOffsetY = 4;
+        g.drawImage(phoneSprite(photo, k), x, y, pw, ph);
+        g.restore();
+        // Spiegelung auf dem Glas etwas abschwächen, damit die Schrift gut lesbar ist
+        g.fillStyle = 'rgba(8,10,14,0.55)';
+        roundRect(g, x + sc.x * k, y + sc.y * k, sc.w * k, sc.h * k, 4);
         g.fill();
-        text(g, q.name, x + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: '#ffffff' });
-        mathText(q.eq, x + nameW + 12, cy, fs, theme.text);
-        if (q.sub) mathText(q.sub, x + nameW + 12, cy + fs * 1.15, fs * 0.8, theme.muted, 'left', 500);
+        ox = x + sc.x * k + (sc.w * k - w) / 2;
+        oy = y + sc.y * k + (sc.h * k - h) / 2;
+        ink = '#f3f5f9';
+        inkSub = '#aab4c2';
+      } else card(x, y, w, h);
+      rows.forEach((q, i) => {
+        const cy = oy + 5 + i * rowH + (q.sub ? fs * 0.85 : rowH / 2);
+        g.fillStyle = q.color;
+        roundRect(g, ox + 9, cy - fs * 0.62, nameW - 6, fs * 1.24, 5);
+        g.fill();
+        text(g, q.name, ox + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: '#ffffff' });
+        mathText(q.eq, ox + nameW + 12, cy, fs, ink);
+        if (q.sub) mathText(q.sub, ox + nameW + 12, cy + fs * 1.15, fs * 0.8, inkSub, 'left', 500);
       });
     }
 
