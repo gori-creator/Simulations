@@ -800,7 +800,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('daten', L('Daten auswerten', 'Analysing data'), [
-          planned('diagramme', L('Diagramme lesen und kritisch prüfen', 'Reading charts critically'), [6, 6], { kmk: ['M-L5', 'M-K6'] }),
+          {
+            id: 'diagramme',
+            status: 'ready',
+            slug: L('diagramme-lesen-und-pruefen', 'reading-charts-critically'),
+            title: L('Diagramme lesen und kritisch prüfen', 'Reading charts critically'),
+            summary: L(
+              'Ein Datensatz als Strichliste, Säulen-, Balken-, Linien-, Streifen- oder Kreisdiagramm und Piktogramm – die Formen verwandeln sich ineinander. Dazu typische Täuschungen zum Aufdecken und ein Detektiv-Modus.',
+              'One data set as a tally chart, column, bar, line, strip or pie chart and pictogram – the shapes morph into each other. Plus typical tricks to uncover and a detective mode.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L5', 'M-K6', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['Diagramm', 'Säulendiagramm', 'Balkendiagramm', 'Kreisdiagramm', 'Liniendiagramm', 'Piktogramm', 'Streifendiagramm', 'Strichliste', 'Anteil', 'Prozent', 'Mittelpunktswinkel', 'abgeschnittene Achse', 'Täuschung', 'Daten'],
+              ['chart', 'column chart', 'bar chart', 'pie chart', 'line chart', 'pictogram', 'strip chart', 'tally chart', 'share', 'percent', 'central angle', 'truncated axis', 'misleading graphs', 'data'],
+            ),
+            thumb: 'generic',
+          },
           planned('boxplot', L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'), [7, 7]),
         ]),
         topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
