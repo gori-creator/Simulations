@@ -781,7 +781,23 @@ export const mathematik: Subject = {
       kmk: ['M-L5', 'M-K3', 'M-K4'],
       topics: [
         topic('zaehlen', L('Zählen', 'Counting'), [
-          planned('zaehlprinzip', L('Zählprinzip und Baumdiagramm', 'Counting principle and tree diagrams'), [5, 8]),
+          {
+            id: 'zaehlprinzip',
+            status: 'ready',
+            slug: L('zaehlprinzip-baumdiagramm', 'counting-principle-tree-diagram'),
+            title: L('Zählprinzip und Baumdiagramm', 'Counting principle and tree diagrams'),
+            summary: L(
+              'Outfits, Eistüten, Zahlenschloss, Menü und Siegerpodest: Das Baumdiagramm wächst Stufe für Stufe, jeder Pfad wird ein Ergebnis-Kärtchen – und die Anzahl ist das Produkt der Möglichkeiten je Stufe.',
+              'Outfits, ice-cream cones, a combination lock, a menu and a podium: the tree diagram grows stage by stage, every path becomes an outcome card – and the number is the product of the choices per stage.',
+            ),
+            grades: [5, 8],
+            kmk: ['M-L5', 'M-L1', 'M-K2', 'M-K4'],
+            keywords: L(
+              ['Zählprinzip', 'Produktregel', 'Baumdiagramm', 'Kombinatorik', 'systematisches Abzählen', 'mit Wiederholung', 'ohne Wiederholung', 'Fakultät', 'Reihenfolge', 'PIN'],
+              ['counting principle', 'product rule', 'tree diagram', 'combinatorics', 'systematic counting', 'with repetition', 'without repetition', 'factorial', 'order', 'PIN'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('daten', L('Daten auswerten', 'Analysing data'), [
           planned('diagramme', L('Diagramme lesen und kritisch prüfen', 'Reading charts critically'), [6, 6], { kmk: ['M-L5', 'M-K6'] }),
