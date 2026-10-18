@@ -828,7 +828,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('eigenschaften', L('Eigenschaften von Funktionen', 'Properties of functions'), [
-          planned('transformationen', L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
+          {
+            id: 'transformationen',
+            status: 'ready',
+            slug: L('graphen-verschieben-strecken-spiegeln', 'shifting-stretching-reflecting-graphs'),
+            title: L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'),
+            summary: L(
+              'Aus einer Grundfunktion f wird g(x) = a · f(b(x − c)) + d: Punkte am Graphen ziehen, markante Punkte wandern mit, und eine Schrittfolge zeigt, was jeder Parameter bewirkt – für Parabel, Wurzel, Hyperbel, Sinus, Exponentialfunktion und mehr.',
+              'From a basic function f to g(x) = a · f(b(x − c)) + d: drag points on the graph, watch key points move, and step through what each parameter does – for parabola, square root, hyperbola, sine, exponential and more.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L3', 'M-K4'],
+            keywords: L(
+              ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote'],
+              ['shift', 'translation', 'stretch', 'compression', 'reflection', 'transformation', 'graph', 'parameter', 'basic function'],
+            ),
+            thumb: 'generic',
+          },
           planned('grenzverhalten', L('Grenzverhalten und Asymptoten', 'Limits and asymptotes'), [11, 11]),
           planned('umkehrfunktion', L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'), [12, 12]),
         ]),
