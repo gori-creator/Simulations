@@ -1027,7 +1027,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('vektoren-3d', L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'), [12, 12]),
+          {
+            id: 'vektoren-3d',
+            status: 'ready',
+            slug: L('vektoren-addieren-vervielfachen', 'adding-and-scaling-vectors'),
+            title: L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'),
+            summary: L(
+              'Vektorpfeile im Raum mit ziehbaren Spitzen: Spitze an Fuß und Parallelogramm, Gegenvektor und Differenz, Vielfache, Linearkombinationen in einer Ebene und der Verbindungsvektor AB = B − A – mit Rechnung in Spaltenschreibweise.',
+              'Vector arrows in space with draggable tips: tip to tail and the parallelogram, opposite vector and difference, multiples, linear combinations in a plane and the connecting vector AB = B − A – with the calculation in column form.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Vektor', 'Vektoraddition', 'Vektorsubtraktion', 'Gegenvektor', 'Vielfaches', 'S-Multiplikation', 'Linearkombination', 'Verbindungsvektor', 'Ortsvektor', 'Mittelpunkt', 'Betrag', 'Parallelogramm', 'kollinear'],
+              ['vector', 'vector addition', 'vector subtraction', 'opposite vector', 'scalar multiple', 'linear combination', 'connecting vector', 'position vector', 'midpoint', 'magnitude', 'parallelogram', 'collinear'],
+            ),
+            thumb: 'generic',
+          },
           planned('skalar-vektorprodukt', L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'), [12, 12]),
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
