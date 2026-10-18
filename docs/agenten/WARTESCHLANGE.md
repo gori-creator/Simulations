@@ -28,7 +28,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M01 fertig — stellenwerte, zahlengerade, primfaktoren
 - M02 offen — zehnerpotenzen, einheiten, massstab
 - M03 fertig — brueche-vergleichen, dezimalbrueche, brueche-rechnen
-- M04 läuft (Mathe 2) — prozentstreifen (fertig 18.10.), quadratwurzel, proportional
+- M04 läuft (Mathe 2) — prozentstreifen (fertig 18.10.), quadratwurzel (fertig 18.10.), proportional
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
 - M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
 - M07 fertig — vierecke, spiegelung, mittelsenkrechte

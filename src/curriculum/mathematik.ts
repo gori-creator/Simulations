@@ -174,7 +174,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('reelle-zahlen', L('Wurzeln und reelle Zahlen', 'Roots and real numbers'), [
-          planned('quadratwurzel', L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'), [9, 9]),
+          {
+            id: 'quadratwurzel',
+            status: 'ready',
+            slug: L('quadratwurzel-heron-verfahren', 'square-roots-herons-method'),
+            title: L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'),
+            summary: L(
+              'Ein Rechteck mit Flächeninhalt a wird Schritt für Schritt zum Quadrat – seine Seite nähert sich √a (Heron-Verfahren). Dazu die Intervallschachtelung mit einer Lupe auf dem Zahlenstrahl und die Frage, warum √2 kein Bruch ist.',
+              'A rectangle with area a becomes a square step by step – its side approaches √a (Heron’s method). Plus nested intervals with a magnifier on the number line and why √2 is not a fraction.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert'],
+              ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
