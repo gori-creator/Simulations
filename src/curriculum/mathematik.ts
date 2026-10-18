@@ -1010,7 +1010,23 @@ export const mathematik: Subject = {
       kmk: ['M-L4', 'M-K4', 'M-K5'],
       topics: [
         topic('vektoren-raum', L('Vektoren im Raum', 'Vectors in space'), [
-          planned('koordinaten-3d', L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'), [12, 12]),
+          {
+            id: 'koordinaten-3d',
+            status: 'ready',
+            slug: L('raeumliches-koordinatensystem', '3d-coordinate-system'),
+            title: L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'),
+            summary: L(
+              'Einen Punkt im Raum ziehen und den Koordinatenweg x₁ → x₂ → x₃ verfolgen, Projektionen in die Koordinatenebenen und Quader mit benannten Ecken – drehbar und mit Blick von oben, vorn und von der Seite.',
+              'Drag a point in space and follow its coordinate path x₁ → x₂ → x₃, see projections onto the coordinate planes and cuboids with named corners – rotatable, with views from above, the front and the side.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['räumliches Koordinatensystem', 'Koordinaten', 'Punkt im Raum', 'x₁x₂-Ebene', 'Koordinatenebene', 'Oktant', 'Projektion', 'Quader', 'Eckpunkte', 'Raumdiagonale', 'Abstand vom Ursprung', 'Schrägbild'],
+              ['3D coordinate system', 'coordinates', 'point in space', 'coordinate plane', 'octant', 'projection', 'cuboid', 'corners', 'space diagonal', 'distance from the origin'],
+            ),
+            thumb: 'generic',
+          },
           planned('vektoren-3d', L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'), [12, 12]),
           planned('skalar-vektorprodukt', L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'), [12, 12]),
         ]),

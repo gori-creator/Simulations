@@ -50,7 +50,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M22 offen — extremwertprobleme, matrix-abbildungen
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
-- M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
+- M25 läuft (Mathe 1) — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
 - M26 offen — geraden-ebenen, lage-abstaende, kugeln (3D)
 
 ## Ideen je Simulation (an Agenten weitergeben)
