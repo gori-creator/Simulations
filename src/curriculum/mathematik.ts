@@ -367,7 +367,23 @@ export const mathematik: Subject = {
           planned('winkelsumme', L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
-          planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
+          {
+            id: 'dreieckskonstruktion',
+            status: 'ready',
+            slug: L('dreieckskonstruktion-kongruenzsaetze', 'constructing-triangles-congruence'),
+            title: L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'),
+            summary: L(
+              'Dreiecke aus drei gegebenen Stücken Schritt für Schritt mit Lineal, Geodreieck und Zirkel konstruieren: SSS, SWS, WSW und SsW. Dazu die Sonderfälle: Dreiecksungleichung, zwei Lösungen bei SSW und ähnliche Dreiecke bei WWW.',
+              'Construct triangles from three given parts step by step with ruler, set square and compasses: SSS, SAS, ASA and SsA. Plus the special cases: triangle inequality, two solutions for SSA and similar triangles for AAA.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung'],
+              ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'thales',
             status: 'ready',
