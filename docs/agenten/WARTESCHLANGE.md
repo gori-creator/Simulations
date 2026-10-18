@@ -28,7 +28,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M01 fertig — stellenwerte, zahlengerade, primfaktoren
 - M02 offen — zehnerpotenzen, einheiten, massstab
 - M03 fertig — brueche-vergleichen, dezimalbrueche, brueche-rechnen
-- M04 offen — prozentstreifen, quadratwurzel, proportional
+- M04 läuft (Mathe 2) — prozentstreifen, quadratwurzel, proportional
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
 - M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
 - M07 fertig — vierecke, spiegelung, mittelsenkrechte
@@ -38,7 +38,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
 - M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
-- M14 läuft (Mathe 2) — ganzrationale-funktionen (fertig 18.10.), transformationen (fertig 18.10.), grenzverhalten
+- M14 fertig — ganzrationale-funktionen, transformationen, grenzverhalten (18.10., Mathe 2)
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
 - M16 läuft — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (frei für Mathe)
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
