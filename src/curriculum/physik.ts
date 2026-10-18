@@ -592,7 +592,25 @@ export const physik: Subject = {
           id: 'teilchenmodell',
           title: L('Teilchenmodell', 'Particle model'),
           grades: [7, 8],
-          simulations: [planned('teilchenmodell', L('Teilchenmodell und Temperatur', 'Particle model and temperature'), [7, 8], { kmk: ['P-BK-Materie'] })],
+          simulations: [
+            {
+              id: 'teilchenmodell',
+              status: 'ready',
+              slug: L('teilchenmodell-temperatur', 'particle-model-temperature'),
+              title: L('Teilchenmodell und Temperatur', 'Particle model and temperature'),
+              summary: L(
+                'Wasser heizen und kühlen: Im Eis schwingen die Teilchen um feste Plätze, im Wasser gleiten sie aneinander vorbei, im Dampf fliegen sie frei. Live entsteht das Temperatur-Zeit-Diagramm mit Schmelz- und Siedeplateau; dazu Geschwindigkeitsverteilung und Diffusion von Tinte in kaltem und warmem Wasser.',
+                'Heat and cool water: in ice the particles vibrate about fixed places, in water they slide past each other, in steam they fly freely. The temperature–time graph with melting and boiling plateaus is drawn live; plus the speed distribution and diffusion of ink in cold and warm water.',
+              ),
+              grades: [7, 8],
+              kmk: ['P-BK-Materie', 'P-BK-Energie', 'P-S'],
+              keywords: L(
+                ['Teilchenmodell', 'Temperatur', 'Aggregatzustand', 'fest', 'flüssig', 'gasförmig', 'Schmelzen', 'Sieden', 'Erstarren', 'Kondensieren', 'Schmelztemperatur', 'Siedetemperatur', 'Schmelzwärme', 'Verdampfungswärme', 'Kelvin', 'absoluter Nullpunkt', 'Bewegungsenergie', 'Diffusion', 'Brownsche Bewegung'],
+                ['particle model', 'temperature', 'state of matter', 'solid', 'liquid', 'gas', 'melting', 'boiling', 'freezing', 'condensing', 'melting point', 'boiling point', 'latent heat', 'kelvin', 'absolute zero', 'kinetic energy', 'diffusion'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
         {
           id: 'gase',
