@@ -155,7 +155,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
-          planned('prozentstreifen', L('Prozentstreifen', 'Percentage bar'), [6, 7]),
+          {
+            id: 'prozentstreifen',
+            status: 'ready',
+            slug: L('prozentstreifen', 'percentage-bar'),
+            title: L('Prozentstreifen', 'Percentage bar'),
+            summary: L(
+              'Grundwert, Prozentsatz und Prozentwert am Prozentstreifen: oben Prozente, unten Werte, das Ende des Streifens lässt sich ziehen. Der Dreisatz entsteht Zeile für Zeile; dazu Rabatt, Mehrwertsteuer, Zinsen und der Anteil einer Klasse.',
+              'Base value, rate and percentage on a percentage bar: percent on top, values below, and the end of the bar can be dragged. The rule of three builds up line by line; plus discount, VAT, interest and the share of a class.',
+            ),
+            grades: [6, 7],
+            kmk: ['M-L1', 'M-L2', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Prozent', 'Prozentrechnung', 'Prozentstreifen', 'Grundwert', 'Prozentwert', 'Prozentsatz', 'Dreisatz', 'Rabatt', 'Mehrwertsteuer', 'Zinsen', 'Anteil', 'Bruch'],
+              ['percent', 'percentage', 'percentage bar', 'base value', 'rate', 'rule of three', 'discount', 'VAT', 'interest', 'share', 'fraction'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('reelle-zahlen', L('Wurzeln und reelle Zahlen', 'Roots and real numbers'), [
           planned('quadratwurzel', L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'), [9, 9]),
