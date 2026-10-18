@@ -82,7 +82,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
+          {
+            id: 'zehnerpotenzen',
+            status: 'ready',
+            slug: L('zehnerpotenzen-groessenordnungen', 'powers-of-ten-orders-of-magnitude'),
+            title: L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'),
+            summary: L(
+              'Vom Sandkorn bis zur Erde zoomen: Jede Stufe macht den Ausschnitt 10-mal so groß. Dazu Potenzen als wiederholte Multiplikation mit wachsenden Würfelbauten und die wissenschaftliche Schreibweise mit wanderndem Komma.',
+              'Zoom from a grain of sand to the Earth: every step makes the view 10 times as large. Plus powers as repeated multiplication with growing cube models and scientific notation with a moving decimal point.',
+            ),
+            grades: [5, 6],
+            kmk: ['M-L1', 'M-L2', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
+              ['power', 'power of ten', 'base', 'exponent', 'order of magnitude', 'scale', 'million', 'billion', 'scientific notation', 'standard form', 'units of length', 'kilometre', 'millimetre'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
           {
