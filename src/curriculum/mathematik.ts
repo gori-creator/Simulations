@@ -887,7 +887,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'doors',
           },
-          planned('geburtstagsproblem', L('Geburtstagsproblem simulieren', 'Simulating the birthday problem'), [10, 10]),
+          {
+            id: 'geburtstagsproblem',
+            status: 'ready',
+            slug: L('geburtstagsproblem', 'birthday-problem'),
+            title: L('Geburtstagsproblem simulieren', 'Simulating the birthday problem'),
+            summary: L(
+              'Eine Klasse auslosen und die Geburtstage im Jahreskalender sehen – gemeinsame Tage leuchten auf. Hundert Klassen ergeben eine Häufigkeit nahe der Kurve P(n); schon ab 23 Personen ist ein gemeinsamer Geburtstag wahrscheinlicher als keiner.',
+              'Draw a class and see the birthdays in a calendar – shared days light up. A hundred classes give a frequency close to the curve P(n); from 23 people on a shared birthday is more likely than none.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L5', 'M-K3', 'M-K2', 'M-K1'],
+            keywords: L(
+              ['Geburtstagsproblem', 'Geburtstagsparadoxon', 'Gegenereignis', 'Simulation', 'Pfadregel', 'Laplace', 'relative Häufigkeit', 'Wahrscheinlichkeit', '23 Personen'],
+              ['birthday problem', 'birthday paradox', 'complement', 'simulation', 'path rule', 'Laplace', 'relative frequency', 'probability', '23 people'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'monte-carlo-pi',
             status: 'ready',
