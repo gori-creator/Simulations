@@ -401,7 +401,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'thales',
           },
-          planned('besondere-linien', L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'), [7, 8]),
+          {
+            id: 'besondere-linien',
+            status: 'ready',
+            slug: L('besondere-linien-im-dreieck', 'special-lines-in-a-triangle'),
+            title: L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'),
+            summary: L(
+              'Ecken eines Dreiecks ziehen und beobachten, wie sich Mittelsenkrechten, Winkelhalbierende, Seitenhalbierende und Höhen jeweils in einem Punkt schneiden: Umkreis, Inkreis, Schwerpunkt, Höhenschnittpunkt und die Euler-Gerade.',
+              'Drag the vertices of a triangle and watch the perpendicular bisectors, angle bisectors, medians and altitudes meet at one point each: circumcircle, incircle, centroid, orthocentre and the Euler line.',
+            ),
+            grades: [7, 8],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie'],
+              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
           {
