@@ -39,7 +39,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
 - M14 fertig — ganzrationale-funktionen, transformationen, grenzverhalten (18.10., Mathe 2)
-- M15 läuft (Mathe 2) — polstellen-asymptoten (fertig 18.10.), umkehrfunktion, newton-verfahren
+- M15 läuft (Mathe 2) — polstellen-asymptoten (fertig 18.10.), umkehrfunktion (fertig 18.10.), newton-verfahren
 - M16 läuft — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (frei für Mathe)
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
