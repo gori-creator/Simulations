@@ -923,7 +923,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('verknuepfte-ereignisse', L('Verknüpfte Ereignisse und bedingte Wahrscheinlichkeit', 'Combined events and conditional probability'), [
-          planned('vierfeldertafel', L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'), [9, 11]),
+          {
+            id: 'vierfeldertafel',
+            status: 'ready',
+            slug: L('vierfeldertafel-mengendiagramm', 'two-way-table-venn-diagram'),
+            title: L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'),
+            summary: L(
+              'Vierfeldertafel, flächentreues Mengendiagramm und Baumdiagramm zeigen dieselben Daten – synchron hervorgehoben. Schnitt, Vereinigung und Gegenereignis leuchten überall auf, der Additionssatz rechnet mit, der Baum lässt sich umdrehen.',
+              'Two-way table, area-proportional Venn diagram and tree diagram show the same data – highlighted in sync. Intersection, union and complement light up everywhere, the addition rule is computed, the tree can be reversed.',
+            ),
+            grades: [9, 11],
+            kmk: ['M-L5', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['Vierfeldertafel', 'Mengendiagramm', 'Venn-Diagramm', 'Schnittmenge', 'Vereinigungsmenge', 'Gegenereignis', 'Additionssatz', 'Baumdiagramm', 'umgekehrter Baum', 'bedingte Wahrscheinlichkeit', 'Unabhängigkeit', 'Randsumme'],
+              ['two-way table', 'contingency table', 'Venn diagram', 'intersection', 'union', 'complement', 'addition rule', 'tree diagram', 'reversed tree', 'conditional probability', 'independence', 'marginal total'],
+            ),
+            thumb: 'generic',
+          },
           planned('bedingte-wahrscheinlichkeit', L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'), [11, 11], { kmk: ['M-L5', 'M-K3'] }),
         ]),
         topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
