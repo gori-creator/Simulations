@@ -39,7 +39,7 @@ Diese Dateien ändern beide – dort nur kleine, gezielte Änderungen und vor de
 
 ## Arbeitsweise (für beide Claude-Sitzungen)
 
-- Vor dem Start lesen: `CLAUDE.md`, `docs/agenten/AUFTRAG.md`, `docs/agenten/SPICKZETTEL.md`, diese Datei.
+- Vor dem Start lesen: `CLAUDE.md`, `docs/agenten/AUFTRAG.md`, `docs/agenten/SPICKZETTEL.md`, diese Datei und **`docs/agenten/QUALITAETSSICHERUNG.md`** (Ablauf, Prüfschritte, Abnahme – verbindlich).
 - Eine Simulation nach der anderen; danach `npm run verify`, committen, pushen auf den eigenen Zweig, kurz berichten.
 - Qualitätsmaßstab und „Schöne Animationen“: `AUFTRAG.md`, Abschnitt 3. Ton im Lernmaterial („Ideen für den Unterricht“): Anregung, nie belehrend.
 - Bilder: `docs/BILDER.md`, Wunschliste `docs/BILDER-WUNSCHLISTE.md`; neue Bilder werden in `incoming/` hochgeladen.
