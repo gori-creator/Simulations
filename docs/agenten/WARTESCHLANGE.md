@@ -40,7 +40,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
 - M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
-- M16 offen — zaehlprinzip, diagramme, boxplot
+- M16 läuft — zaehlprinzip (fertig 18.10.), diagramme, boxplot
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
 - M19 offen — normalverteilung, taylor-polynome, fourier-reihen
