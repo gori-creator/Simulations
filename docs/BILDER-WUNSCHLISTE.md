@@ -1,4 +1,50 @@
-# Bilder-Wunschliste (Stand 15.10.2026)
+# Bilder-Wunschliste
+
+## Noch zu erzeugen (Stand 18.10.2026)
+
+Alle bisher gelieferten, passenden Bilder sind eingebaut (siehe `docs/BILDER.md`). Diese Bilder fehlen noch oder müssen neu erzeugt werden. Hochladen: Zweig `claude/sleepy-goodall-ddchwy`, Ordner `incoming/`.
+
+**Fehlen noch ganz**
+
+| Simulation | Bild | Hintergrund | Prompt |
+| --- | --- | --- | --- |
+| Hebelgesetz | Hebelstange | transparent | A long horizontal aluminium lever bar with evenly spaced small holes along its length, brushed metal, front view, isolated on a transparent background, photorealistic, no text |
+| Kreisbewegung | Auto von oben | transparent | A small modern car seen exactly from above, red paint, generic design with no brand, isolated on a transparent background, photorealistic, no text |
+| Kreisbewegung | Asphalt von oben | deckend | Top-down view of a large empty asphalt area with fine texture, dark grey, evenly lit, seamless, photorealistic, no markings |
+| Brechung | Glasblock | transparent | A semicircular clear acrylic glass block seen exactly from above, flat side horizontal, subtle edge reflections, isolated on a transparent background, photorealistic |
+| Zahlengerade | Thermometer | transparent | An outdoor glass thermometer tube with a red liquid column, mounted on a blank white board without any scale or numbers, vertical, front view, isolated on a transparent background, photorealistic |
+| Brüche rechnen | Messbecher | transparent | A clear glass measuring jug, empty, without any scale marks or numbers, front view, isolated on a transparent background, photorealistic |
+| Primfaktoren | zarter Baum | transparent | A delicate stylised tree with bare thin branches spreading upwards, soft light green watercolour style, very subtle and light, isolated on a transparent background, no text |
+| Winkel messen | Geodreieck | transparent | A transparent plastic set square triangle, right isosceles, slightly bluish clear acrylic, completely without scale, marks or numbers, top view, long side horizontal at the bottom, isolated on a transparent background, photorealistic |
+
+**Neu erzeugen (geliefertes Bild passte nicht)**
+
+| Simulation | Bild | Grund | Prompt |
+| --- | --- | --- | --- |
+| Doppler-Effekt | Krankenwagen von oben | geliefert: Seitenansicht, Szene ist Draufsicht | A modern ambulance seen exactly from above (top-down view), white roof with red stripes and blue light bars, generic design with no text, no brand, front pointing right, isolated on a transparent background, photorealistic |
+| Hebelgesetz | Flaschenöffner von der Seite | geliefert: Draufsicht | A simple stainless steel bottle opener seen exactly from the side in profile, showing the hook tooth and the handle, flat, isolated on a transparent background, photorealistic, no text |
+| Stöße | Gleiter | geliefert: schräg, zu flach | A small air track glider seen exactly from the side with no perspective, long aluminium rider with a V-shaped profile, aspect ratio about 3.5 to 1, no text, no markings, isolated on a transparent background, photorealistic |
+| Hookesches Gesetz | flache Schlitzscheibe | geliefert: hohes Hakengewicht | A single flat slotted brass laboratory weight disc seen exactly from the side, thin cylinder, polished brass, isolated on a transparent background, photorealistic, no text |
+| Mittelsenkrechte | Zirkel in zwei Teilen | fester Öffnungswinkel passt nicht | A metal school compass taken apart into its two legs, each leg shown separately side by side: left the needle leg with the hinge head and grip, right the leg with a clamped yellow pencil, both legs exactly vertical, front view, isolated on a transparent background, photorealistic |
+| Bewegungsdiagramme | neutrales Auto | jetziges ist als echtes Modell erkennbar | A small generic compact car in glossy blue, exact side view facing right, simple rounded shape that does not resemble any real brand or model, no logo, isolated on a transparent background, photorealistic |
+
+**Würde verbessern (eingebaut, aber nur mäßig)**
+
+| Simulation | Bild | Prompt |
+| --- | --- | --- |
+| Schiefe Ebene | kompakter Holzklotz | A rectangular wooden block of light oak, aspect ratio about 1.6 to 1, small metal eyelet on the right end, exact side view, isolated on a transparent background, photorealistic |
+| Zahlengerade | Polarmeer (passt zu Eisberg und Pinguin) | Side cross-section view of a polar sea: calm dark blue water surface exactly horizontal in the middle of the image, pale sky and distant snowy coast above, clear underwater part below fading into deep blue, no animals, no icebergs in the left half, photorealistic |
+| Gesetz der großen Zahlen | Würfel von oben | A single white plastic game die without pips seen exactly from above, rounded edges, isolated on a transparent background, photorealistic |
+| Extremwertaufgaben | rechtwinkliges Holzbrett | Top-down view of a right-angled triangular plywood board, right angle at the bottom left, warm wood with clearly visible grain, evenly lit, isolated on a transparent background, photorealistic |
+| Extremwertaufgaben | gebürstetes Blech | A sheet of brushed stainless steel with fine horizontal brushing lines, evenly lit, no hotspot, seamless, photorealistic |
+| Reflexion, Linsen | Kerze ohne Flamme | A white wax candle with a short black wick and no flame, front view, isolated on a transparent background, photorealistic |
+
+**Nicht nötig:** Karopapier, weißer Hintergrund, Baumscheibe, Holzplättchen, Münze, Spielkarte, Holztextur (3D-Ansichten und eigene Raster vertragen keine Fotos), Kanone, Brunnen, Riesenrad (keine passende Stelle in der Simulation).
+
+---
+
+## Ursprüngliche Liste (15.10.2026)
+
 
 Ziel: Die Simulationen sollen durch echte Bilder statt gezeichneter Ersatzgrafiken deutlich hochwertiger wirken. Diese Liste sammelt **Vorschläge mit Prompts**. Eingebaut wird ein Bild erst, wenn die Datei vorliegt; danach kommt der Eintrag nach `docs/BILDER.md` (Regeln dort gelten weiter: keine Schrift, keine Logos, keine Personen, WebP, möglichst < 300 KB, immer gezeichneter Ersatz im Code).
 
