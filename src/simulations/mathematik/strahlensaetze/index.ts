@@ -118,7 +118,7 @@ export default defineSimulation({
       resV: 'k = {k}; AB ∥ A′B′',
       resNo: 'nicht parallel – Verhältnisse verschieden',
       resBaum: 'h = s · |ZB′| : |ZB| = {s} · {dt} : {ds} ≈ {h}',
-      resTeich: '|AB| = {k} · |A′B′| = {k} · {m} = {w}',
+      resTeich: '|AB| = {k} · |A′B′| = {k} · {m} {w}',
       measBaum: 's = {s}, |ZB| = {ds}, |ZB′| = {dt}',
       measTeich: '|A′B′| = {m}',
     },
@@ -152,7 +152,7 @@ export default defineSimulation({
       resV: 'k = {k}; AB ∥ A′B′',
       resNo: 'not parallel – the ratios differ',
       resBaum: 'h = s · ZB′ : ZB = {s} · {dt} : {ds} ≈ {h}',
-      resTeich: 'AB = {k} · A′B′ = {k} · {m} = {w}',
+      resTeich: 'AB = {k} · A′B′ = {k} · {m} {w}',
       measBaum: 's = {s}, ZB = {ds}, ZB′ = {dt}',
       measTeich: 'A′B′ = {m}',
     },
@@ -172,6 +172,8 @@ export default defineSimulation({
     const cm = (v: number) => `${fmt.num(v, 1)} cm`;
     const m1 = (v: number) => `${fmt.num(v, 1)} m`;
     const m2 = (v: number) => `${fmt.num(v, 2)} m`;
+    /** „= 24 m“ bzw. „≈ 40 m“ (Messung auf Zentimeter gerundet). */
+    const approxM = (v: number) => (Math.abs(v * 10 - Math.round(v * 10)) < 1e-6 ? `= ${m1(v)}` : `≈ ${m1(v)}`);
 
     const col = {
       r1: () => ctx.theme.series[0]!,
@@ -271,7 +273,7 @@ export default defineSimulation({
       const padT = flat ? F(36, 26) : 6;
       const padB = flat ? F(40, 30) : app ? F(66, 56) : 6;
       const s = Math.min((stage.w - 2 * padX) / Math.max(1, x1 - x0), (stage.h - padT - padB) / Math.max(1, y1 - y0));
-      const sc = flat ? clamp(s, 10, F(64, 48)) : s;
+      const sc = flat ? clamp(s, 10, F(160, 110)) : s;
       return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 - (padB - padT) / 2 / sc, s: sc };
     }
     function stepView(dt: number): boolean {
@@ -306,9 +308,9 @@ export default defineSimulation({
         ctx.readout('r2', tr('measBaum', { s: m1(p.st), ds: m2(meas.ds), dt: m2(meas.dt) }));
         ctx.readout('res', tr('resBaum', { s: m1(p.st), ds: m2(meas.ds), dt: m2(meas.dt), h: m1(treeHeight(p.st, meas.ds, meas.dt)) }));
       } else {
-        const mm = Math.round((p.w / p.kt) * 10) / 10;
-        ctx.readout('r2', tr('measTeich', { m: m1(mm) }));
-        ctx.readout('res', tr('resTeich', { k: p.kt, m: m1(mm), w: m1(p.kt * mm) }));
+        const mm = Math.round((p.w / p.kt) * 100) / 100;
+        ctx.readout('r2', tr('measTeich', { m: m2(mm) }));
+        ctx.readout('res', tr('resTeich', { k: p.kt, m: m2(mm), w: approxM(p.kt * mm) }));
       }
     }
     /** Gemessene Abstände (auf 0,1 m gerundet, wie mit dem Maßband). */
@@ -419,6 +421,7 @@ export default defineSimulation({
     /** Wert-Schild neben einer Strecke (seitlich, weg von `away`). */
     function tagAt(a: Px, b: Px, label: string, color: string, side: 1 | -1, t = 0.5): void {
       const g = surface.g;
+      if (Math.hypot(b[0] - a[0], b[1] - a[1]) < 22) return;
       const theme = ctx.theme;
       const mx = lerp(a[0], b[0], t);
       const my = lerp(a[1], b[1], t);
@@ -892,8 +895,8 @@ export default defineSimulation({
       // Maßband A′B′
       segment(a2, b2, theme.dark ? '#e6c35a' : '#e0b232', 5);
       segment(a2, b2, withAlpha('#000000', 0.25), 1, [2, 6]);
-      const mm = Math.round((p.w / p.kt) * 10) / 10;
-      tagAt(a2, b2, `|A′B′| = ${m1(mm)}`, col.par(), 1);
+      const mm = Math.round((p.w / p.kt) * 100) / 100;
+      tagAt(a2, b2, `${q('A′B′')} = ${m2(mm)}`, col.par(), 1);
       // Abschnitte von Z aus
       const ratioLab = `|ZA| : |ZA′| = ${p.kt} : 1`;
       tagAt(z, a, ratioLab, col.r1(), -1, 0.55);
@@ -1050,12 +1053,12 @@ export default defineSimulation({
     function teichSpec(): CardSpec {
       const pad = F(14, 12);
       const theme = ctx.theme;
-      const mm = Math.round((p.w / p.kt) * 10) / 10;
+      const mm = Math.round((p.w / p.kt) * 100) / 100;
       const fr = (num: string, den: string, cn: string, cd: string): Item => ({ kind: 'frac', num, den, cn, cd });
       const tx = (s: string, color = theme.text, bold = false): Item => ({ kind: 'txt', s, color, bold });
       const rows: Item[][] = [
         [fr(q('AB'), q('A′B′'), col.k(), col.par()), tx('='), fr(q('ZA'), q('ZA′'), col.r1(), col.r1()), tx('='), tx(String(p.kt), col.r1(), true)],
-        [tx(`${q('AB')} = ${p.kt} ·`), tx(m1(mm), col.par()), tx(p.show ? `= ${m1(p.kt * mm)}` : '= ?', col.k(), true)],
+        [tx(`${q('AB')} = ${p.kt} ·`), tx(m2(mm), col.par()), tx(p.show ? approxM(p.kt * mm) : '= ?', col.k(), true)],
       ];
       const rowH = F(46, 42);
       return {

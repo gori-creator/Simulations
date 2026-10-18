@@ -18,7 +18,7 @@ const X1 = 5.5;
 export default defineSimulation({
   id: 'ganzrationale-funktionen',
   dragHint: true,
-  layout: { aspect: 1.62, aspectNarrow: 0.5 },
+  layout: { aspect: 1.62, aspectNarrow: 0.46 },
   groups: [
     { id: 'zeros', label: L('Nullstellen', 'Zeros') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -79,6 +79,7 @@ export default defineSimulation({
       lim: 'f(x) → {s}∞',
       yint: 'f(0) = {v}',
       degRead: 'Grad {n}, Leitkoeffizient a = {a}',
+      degN: 'Grad n',
     },
     en: {
       canvas: 'Coordinate system with the graph of a polynomial function in factored form; the zeros can be dragged along the x-axis, the leading coefficient on the graph. Next to it the term, the zeros with multiplicity and the end behaviour.',
@@ -107,6 +108,7 @@ export default defineSimulation({
       lim: 'f(x) → {s}∞',
       yint: 'f(0) = {v}',
       degRead: 'degree {n}, leading coefficient a = {a}',
+      degN: 'degree n',
     },
   },
 
@@ -543,7 +545,7 @@ export default defineSimulation({
         rows.forEach((row, k) => text(g, row, R.x + pad + 90, y + 8 + k * lh, { font: f, color: theme.text, align: 'left' }));
         y += Math.max(1, rows.length) * lh + 6;
       });
-      if (merged.length < raw.length) text(g, ctx.t('merged'), R.x + pad, y + 6, { font: font(600, 11), color: theme.muted, align: 'left' });
+      if (merged.length < raw.length) wrap(ctx.t('merged'), R.w - 2 * pad, font(600, 11)).forEach((row, k) => text(g, row, R.x + pad, y + 6 + k * 14, { font: font(600, 11), color: theme.muted, align: 'left' }));
       // Vorzeichenleiste
       const sy = R.y + R.h - 26;
       const x0 = R.x + pad;
@@ -575,7 +577,7 @@ export default defineSimulation({
       const f = font(500, F(12, 11.5));
       let h = 32;
       for (const rt of merged) h += Math.max(1, wrap(p.info ? kindLong(rt.m) : '?', regions().col.w - 2 * F(14, 12) - 92, f).length) * lh + 6;
-      if (merged.length < rawRoots().length) h += 18;
+      if (merged.length < rawRoots().length) h += 4 + 14 * wrap(ctx.t('merged'), regions().col.w - 2 * F(14, 12), font(600, 11)).length;
       return h + 58;
     };
 
@@ -586,6 +588,7 @@ export default defineSimulation({
       const pad = F(14, 12);
       card(R);
       title(R.x + pad, R.y + 16, ctx.t('endsT'));
+      if ((R.w - 2 * pad) / 4 < 82) text(g, ctx.t('degN'), R.x + R.w - pad, R.y + 16, { font: font(600, 11), color: theme.muted, align: 'right' });
       const n = degree(mergeRoots(rawRoots()));
       const types: { even: boolean; pos: boolean; key: string }[] = [
         { even: true, pos: true, key: 'evenPos' },
@@ -634,9 +637,10 @@ export default defineSimulation({
         }
         g.stroke();
         g.restore();
-        const fsz = cw < 70 ? 9.5 : 10.5;
+        const fsz = cw < 82 ? 9.5 : 10.5;
         const [l1, l2] = ctx.t(t.key).split(', ');
-        text(g, l1 ?? '', cx, R.y + R.h - 24, { font: font(cur ? 800 : 600, fsz), color: cur ? theme.text : theme.muted });
+        const l1s = cw < 82 ? (l1 ?? '').replace(/^n /, '') : (l1 ?? '');
+        text(g, l1s, cx, R.y + R.h - 24, { font: font(cur ? 800 : 600, fsz), color: cur ? theme.text : theme.muted });
         text(g, l2 ?? '', cx, R.y + R.h - 11, { font: font(cur ? 800 : 600, fsz), color: cur ? col.f() : theme.muted });
       });
     }
@@ -658,8 +662,9 @@ export default defineSimulation({
       termCard({ x: R.x, y: R.y, w: R.w, h: tH });
       const zH = zerosH();
       const eH = Math.max(84, Math.min(130, R.h - tH - zH - 2 * gap));
-      zerosCard({ x: R.x, y: R.y + tH + gap, w: R.w, h: Math.max(zH, R.h - tH - eH - 2 * gap) });
-      if (R.h - tH - zH - 2 * gap >= 84) endsCard({ x: R.x, y: R.y + R.h - eH, w: R.w, h: eH });
+      const withEnds = R.h - tH - zH - 2 * gap >= 84;
+      zerosCard({ x: R.x, y: R.y + tH + gap, w: R.w, h: withEnds ? Math.max(zH, R.h - tH - eH - 2 * gap) : R.h - tH - gap });
+      if (withEnds) endsCard({ x: R.x, y: R.y + R.h - eH, w: R.w, h: eH });
       if (moving || reveal < 1 || dragging) ctx.requestRender();
     }
 

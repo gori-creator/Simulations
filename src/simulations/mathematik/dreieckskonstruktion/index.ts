@@ -773,7 +773,7 @@ export default defineSimulation({
       const padBot = F(64, 50);
       const bw = Math.max(1, x1 - x0);
       const bh = Math.max(1, y1 - y0);
-      const sc = clamp(Math.min((paper.w - padL - padR) / bw, (paper.h - padTop - padBot) / bh), 8, F(62, 46));
+      const sc = clamp(Math.min((paper.w - padL - padR) / bw, (paper.h - padTop - padBot) / bh), 8, F(90, 64));
       const cx = (x0 + x1) / 2 + (padR - padL) / 2 / sc;
       const cy = (y0 + y1) / 2 - (padBot - padTop) / 2 / sc;
       return { cx, cy, s: sc };
