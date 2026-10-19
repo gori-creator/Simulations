@@ -1068,7 +1068,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('bedingte-wahrscheinlichkeit', L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'), [11, 11], { kmk: ['M-L5', 'M-K3'] }),
+          {
+            id: 'bedingte-wahrscheinlichkeit',
+            status: 'ready',
+            slug: L('bedingte-wahrscheinlichkeit-medizinische-tests', 'conditional-probability-medical-tests'),
+            title: L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'),
+            summary: L(
+              '1000 Personen färben sich nach krank/gesund und nach dem Testergebnis. Nur die positiv Getesteten bleiben übrig – und meist ist nur ein kleiner Teil davon wirklich krank. Mit Baum, umgekehrtem Baum, Formel von Bayes und Zweittest.',
+              '1000 people are coloured by disease status and test result. Only those who tested positive remain – and often only a small part of them really have the disease. With tree, reversed tree, Bayes’ formula and a second test.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
+              ['conditional probability', 'Bayes’ theorem', 'sensitivity', 'specificity', 'prevalence', 'predictive value', 'false positive', 'false negative', 'base rate fallacy', 'natural frequencies', 'reversed tree', 'medical test', 'rapid test'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
           {
