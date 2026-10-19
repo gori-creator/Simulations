@@ -254,20 +254,21 @@ export function intersect(p: Pt, dirP: number, q: Pt, dirQ: number): Pt | null {
 export interface Task {
   given: AngleId;
   value: number;
-  sigma: number;
+  /** Neigung der Geraden g gegen die Waagerechte (−15° … 15°). */
+  tilt: number;
 }
 
-/** Zufällige Aufgabe: ein Winkel zwischen 25° und 155° (in 5°-Schritten, nicht 90°), Lage von s. */
+/** Zufällige Aufgabe: ein Winkel zwischen 25° und 155° (in 5°-Schritten, nicht 90°), Neigung von g. */
 export function makeTask(rand: () => number, prev?: Task): Task {
   for (let i = 0; i < 20; i++) {
     let value = 25 + 5 * Math.floor(rand() * 27);
     if (value === 90) value = 85;
     const given = ANGLE_IDS[Math.floor(rand() * 8)]!;
-    const sigma = 55 + 5 * Math.floor(rand() * 15);
-    const t = { given, value, sigma };
+    const tilt = -15 + 5 * Math.floor(rand() * 7);
+    const t = { given, value, tilt };
     if (!prev || prev.given !== t.given || prev.value !== t.value) return t;
   }
-  return { given: 'a1', value: 50, sigma: 70 };
+  return { given: 'a1', value: 50, tilt: 5 };
 }
 
 /** α₁ (Winkel an g) aus dem gegebenen Winkel: gleich groß oder 180° − Wert. */

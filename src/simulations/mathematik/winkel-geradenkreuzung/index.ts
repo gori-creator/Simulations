@@ -115,7 +115,7 @@ export default defineSimulation({
     },
     { key: 'gi', type: 'choice', label: L('Gegebener Winkel', 'Given angle'), options: ID_OPTIONS, default: 'b2', visibleIf: isMode('aufgabe') },
     { key: 'gv', type: 'number', label: L('Seine Größe', 'Its size'), min: 25, max: 155, step: 5, default: 70, unit: '°', visibleIf: isMode('aufgabe') },
-    { key: 'ts', type: 'number', label: L('Lage der Querlinie s', 'Direction of the transversal s'), min: 25, max: 155, step: 5, default: 65, unit: '°', visibleIf: isMode('aufgabe') },
+    { key: 'tg', type: 'number', label: L('Neigung der Geraden g', 'Tilt of line g'), min: -15, max: 15, step: 5, default: 5, unit: '°', visibleIf: isMode('aufgabe') },
     { key: 'vals', type: 'boolean', group: 'view', label: L('Alle Winkelgrößen zeigen', 'Show all angle sizes'), help: L('Aus: Nur α bzw. α₁ ist gegeben, die anderen Winkel sind gesucht.', 'Off: only α or α₁ is given, the other angles are to be found.'), default: true, visibleIf: (v) => v.mode !== 'aufgabe' },
   ],
   actions: [
@@ -212,7 +212,7 @@ export default defineSimulation({
     const gA = new Glide(p.a);
     const gW = new Glide(p.w);
     // Doppelkreuzung / Aufgabe
-    const effS = () => (mode() === 'aufgabe' ? p.ts : p.s);
+    const effS = () => (mode() === 'aufgabe' ? p.tg + alphaFromGiven(p.gi as AngleId, p.gv) : p.s);
     const effG = () => (mode() === 'aufgabe' ? alphaFromGiven(p.gi as AngleId, p.gv) : p.g);
     const effH = () => (mode() === 'aufgabe' || p.par ? effG() : p.h);
     const gS = new Glide(effS());
@@ -411,8 +411,8 @@ export default defineSimulation({
       const a = gA.at(now);
       const w = gW.at(now);
       const secs = sectors(S, a, w, ['a', 'b', 'c', 'd'], base, Math.round(w));
-      const hr = Math.min(m * 0.39, exitDist(S, a, C, 26));
-      const hh = Math.min(m * 0.39, exitDist(S, a + w + endH, C, 26));
+      const hr = Math.min(m * 0.42, exitDist(S, a, C, 0) - 44);
+      const hh = Math.min(m * 0.42, exitDist(S, a + w + endH, C, 0) - 44);
       return {
         lines: [
           { o: S, d: a, name: 'g' },
@@ -445,7 +445,7 @@ export default defineSimulation({
       const S1 = pol(M, sig + 180, d);
       const S2 = pol(M, sig, d);
       const m = Math.min(C.w, C.h);
-      const base = clamp(m * 0.085, 20, 40);
+      const base = clamp(m * 0.1, 24, 50);
       const dG = sig - w;
       const dH = sig - v;
       const wi = Math.round(w);
@@ -457,7 +457,7 @@ export default defineSimulation({
       if (mode() === 'doppel') {
         handles.push({ id: 'dg', at: pol(S1, dG + endDG, Math.min(d * 1.25, exitDist(S1, dG + endDG, C, 26))), color: ctx.theme.text });
         handles.push({ id: 'dh', at: pol(S2, dH + endDH, Math.min(d * 1.25, exitDist(S2, dH + endDH, C, 26))), color: ctx.theme.text });
-        handles.push({ id: 'ds', at: pol(M, sig, Math.min(d * 1.75, exitDist(M, sig, C, 22))), color: ctx.theme.text });
+        handles.push({ id: 'ds', at: pol(M, sig, Math.min(d * 1.6, exitDist(M, sig, C, 0) - 50)), color: ctx.theme.text });
       }
       return {
         lines: [
@@ -596,7 +596,7 @@ export default defineSimulation({
     }
 
     /** Beschriftung eines Winkels: Buchstabe im Winkelfeld, Größe außerhalb des Bogens. */
-    function drawSectorLabel(s: Sector, a: number, valueText: string | null, scale = 1, color = s.color): void {
+    function drawSectorLabel(s: Sector, a: number, valueText: string | null, scale = 1, color = s.color, boxed = false): void {
       if (a <= 0.01) return;
       const sm = small();
       const mid = s.from + s.sweep / 2;
@@ -606,7 +606,7 @@ export default defineSimulation({
       const vf = font(800, sm ? 12 : 13.5);
       const maxR = Math.min(geo.C.w, geo.C.h) * 0.42;
       const nameW = measure(name, lf);
-      const inside = Math.max(s.r * 0.6, (nameW / 2 + 3) / Math.sin(half));
+      const inside = Math.max(s.value === 90 ? s.r * 0.74 : s.r * 0.6, (nameW / 2 + 3) / Math.sin(half));
       const g = surface.g;
       const at = (r: number) => pol(s.V, mid, r);
       g.save();
@@ -620,10 +620,11 @@ export default defineSimulation({
         const [x, y] = at(inside);
         halo(name, x, y, lf, color, a);
         if (valueText) {
-          const vw = measure(valueText, vf);
+          const vw = measure(valueText, vf) + (boxed ? 14 : 0);
           const r2 = clamp(Math.max(s.r + 6 + vw * 0.45, (vw / 2 + 4) / Math.sin(half)), s.r + 12, maxR);
           const [vx, vy] = at(r2);
-          halo(valueText, vx, vy, vf, color, a);
+          if (boxed) pill(valueText, vx, vy, color, onColor(), sm ? 12 : 13.5, a);
+          else halo(valueText, vx, vy, vf, color, a);
         }
       } else {
         // kleines Winkelfeld: alles außerhalb des Bogens
@@ -631,7 +632,13 @@ export default defineSimulation({
         const f = valueText ? vf : lf;
         const lw = measure(label, f);
         const r2 = clamp(Math.max(s.r + 8 + lw * 0.5, (lw / 2 + 4) / Math.sin(half)), s.r + 12, maxR);
-        const [x, y] = at(r2);
+        let [x, y] = at(r2);
+        if (s.sweep < 24) {
+          // sehr kleiner Winkel: neben das schmale Winkelfeld rücken
+          const [ox, oy] = pol([0, 0], mid + 90, r2 * Math.sin(half) + 12);
+          x += ox;
+          y += oy;
+        }
         if (valueText) {
           const nf = mfont(sm ? 14 : 15.5);
           const w1 = measure(name, nf);
@@ -643,11 +650,11 @@ export default defineSimulation({
       g.restore();
     }
 
-    function drawLineName(o: Pt, d: number, name: string, a: number): void {
+    function drawLineName(o: Pt, d: number, name: string, a: number, side = 1): void {
       const C = geo.C;
       const t = exitDist(o, d, C, 18);
       const [x, y] = pol(o, d, Math.max(0, t - 6));
-      const n = d + 90;
+      const n = d + 90 * side;
       const [nx, ny] = [Math.cos(rad(n)) * 13, -Math.sin(rad(n)) * 13];
       halo(name, clamp(x + nx, C.x + 14, C.x + C.w - 14), clamp(y + ny, C.y + 14, C.y + C.h - 14), mfont(small() ? 18 : 21), ctx.theme.text, a);
     }
@@ -743,7 +750,7 @@ export default defineSimulation({
           strong = true;
           if (an.kind === 'supp') {
             const bump = t < 0.28 ? ease.outCubic(t / 0.28) : t < 0.55 ? 1 - ease.inOutCubic((t - 0.28) / 0.27) : 0;
-            off = bump * (small() ? 13 : 18);
+            off = bump * (small() ? 18 : 26);
           } else if (s.id === an.y) glow = t >= 1 ? Math.max(0, 1 - prog(an.t0 + animMs(an.kind), 900)) : 0;
         }
         if (off > 0) {
@@ -793,7 +800,13 @@ export default defineSimulation({
       }
       drawVertex(sc.S1, lineF);
       const labA = ease.outCubic(prog(introAt + 700, 500));
-      for (const l of sc.lines) drawLineName(l.o, l.name === 'h' ? l.d + endH : l.d, l.name, labA);
+      {
+        const hd = sc.dH + endH;
+        const dlt = ((((hd - sc.dG) % 360) + 540) % 360) - 180;
+        const gs = Math.abs(dlt) < 90 ? (dlt > 0 ? -1 : 1) : -1;
+        drawLineName(sc.S1, sc.dG, 'g', labA, gs);
+        drawLineName(sc.S1, hd, 'h', labA, -gs);
+      }
       sc.secs.forEach((s, i) => {
         const a = ease.outCubic(prog(introAt + 650 + i * 110, 420));
         const v = gW.at(now);
@@ -1077,7 +1090,7 @@ export default defineSimulation({
           const kt = known.get(id);
           const shown = isGiven || (kt !== undefined && now >= kt);
           const pop = kt !== undefined && !isGiven ? 0.6 + 0.4 * ease.outBack(prog(kt, 450)) : 1;
-          drawSectorLabel(s, a0, shown ? deg(s.value) : '?', shown ? pop : 1, shown ? s.color : th.muted);
+          drawSectorLabel(s, a0, shown ? deg(s.value) : '?', shown ? pop : 1, shown ? s.color : th.muted, isGiven);
           return;
         }
         const dim = s.id === px || s.id === py ? 1 : 0.6;
@@ -1085,12 +1098,6 @@ export default defineSimulation({
         const val = s.id[0] === 'a' || s.id[0] === 'c' ? raw : 180 - raw;
         drawSectorLabel(s, a0 * dim, p.vals || s.id === 'a1' ? deg(Math.round(val)) : '?', 1, p.vals || s.id === 'a1' ? s.color : th.muted);
       });
-      // „gegeben“-Marke im Aufgabenmodus
-      if (isTask) {
-        const sg = sc.secs.find((s) => s.id === p.gi)!;
-        const [gx, gy] = pol(sg.V, sg.from + sg.sweep / 2 + 180, small() ? 20 : 24);
-        halo(tt('gegeben', 'given'), gx, gy, font(700, small() ? 10.5 : 11.5), th.muted, labA);
-      }
       for (const h of sc.handles) drawHandle(h, labA);
       g.restore();
       // Hinweis nach der Aktion
@@ -1281,21 +1288,24 @@ export default defineSimulation({
       const gap = small() ? 8 : 10;
       const inner = R.w - 2 * pad;
       const heights = cards.map((c) => cardHeight(c, inner));
-      let n = cards.length;
-      while (n > 1 && heights.slice(0, n).reduce((s, h) => s + h, 0) + gap * (n - 1) > R.h) n--;
-      const used = heights.slice(0, n).reduce((s, h) => s + h, 0) + gap * (n - 1);
-      const extra = Math.max(0, R.h - used);
+      // Mindesthöhe: Titel und erster Eintrag
+      const minH = (c: CardSpec) => pad + 8 + c.items.slice(0, 2).reduce((s, it) => s + itemHeight(it, inner), 0);
       let y = R.y;
-      for (let i = 0; i < n; i++) {
+      for (let i = 0; i < cards.length; i++) {
         const c = cards[i]!;
+        const rest = R.y + R.h - y;
+        if (rest < minH(c)) break;
         let h = heights[i]!;
-        if (i === n - 1) h += extra;
+        const next = cards[i + 1];
+        const last = !next || rest - h - gap < minH(next);
+        if (h > rest || last) h = rest;
         card({ x: R.x, y, w: R.w, h }, c.accent, c.tint ?? 0);
         let yy = y + pad - 2;
         for (const it of c.items) {
           if (yy + itemHeight(it, inner) > y + h + 2) break;
           yy += drawItem(it, R.x + pad, yy, inner);
         }
+        if (last) break;
         y += h + gap;
       }
     }
@@ -1320,6 +1330,8 @@ export default defineSimulation({
       const [n1, n2] = nb(s);
       const hv = !p.vals;
       const right = w === 90 && !hv;
+      const chipF = font(750, small() ? 11.5 : 12);
+      const short = (['a', 'b', 'c', 'd'] as Id[]).reduce((acc, id) => acc + measure(`${angleName(id)} = ${deg(sv(id))}`, chipF) + 24, 0) > geo.panel.w - 2 * cardPad();
       const c1: CardSpec = {
         accent: A,
         tint: 0.04,
@@ -1344,7 +1356,7 @@ export default defineSimulation({
           { kind: 'title', text: tt('Winkel antippen', 'Tap an angle') },
           {
             kind: 'chips',
-            chips: (['a', 'b', 'c', 'd'] as Id[]).map((id) => ({ id: `k:${id}`, label: `${angleName(id)} = ${hv && id !== 'a' ? '?' : deg(sv(id))}`, active: id === s, color: col(id) })),
+            chips: (['a', 'b', 'c', 'd'] as Id[]).map((id) => ({ id: `k:${id}`, label: short ? angleName(id) : `${angleName(id)} = ${hv && id !== 'a' ? '?' : deg(sv(id))}`, active: id === s, color: col(id) })),
           },
           { kind: 'gap', h: 4 },
           { kind: 'rich', size: sz(), segs: [{ t: tt('Scheitelwinkel: ', 'Vertical angles: '), w: 700 }, { t: `${angleName(s)} = ${angleName(opp(s))}`, c: col(s), w: 800 }] },
@@ -1427,7 +1439,7 @@ export default defineSimulation({
           { kind: 'title', text: tt(`${relName(rel)} (${fig}-Figur)`, `${relName(rel)} (${fig} shape)`) },
           {
             kind: 'chips',
-            chips: (['stufen', 'wechsel', 'nachbar'] as Rel3[]).map((r) => ({ id: `r:${r}`, label: { stufen: 'F', wechsel: 'Z', nachbar: 'E' }[r] + ' · ' + relName(r), active: r === rel, color: th.series[0]! })),
+            chips: (['stufen', 'wechsel', 'nachbar'] as Rel3[]).map((r) => ({ id: `r:${r}`, label: tt(`${{ stufen: 'F', wechsel: 'Z', nachbar: 'E' }[r]}-Figur`, `${{ stufen: 'F', wechsel: 'Z', nachbar: 'C' }[r]} shape`), active: r === rel, color: th.series[0]! })),
           },
           eq,
           {
@@ -1728,8 +1740,8 @@ export default defineSimulation({
           }
         }
         if (source === 'input' && changed.has('par') && !p.par && p.h === p.g) ctx.set({ h: clamp(p.g + 8, MIN_W, MAX_W) });
-        if (['gi', 'gv', 'ts'].some((k) => changed.has(k)) || source === 'replace') resetTask();
-        if (source !== 'init' && !drag && ['a', 'w', 'g', 'h', 's', 'par', 'rel', 'gi', 'gv', 'ts'].some((k) => changed.has(k))) anim = null;
+        if (['gi', 'gv', 'tg'].some((k) => changed.has(k)) || source === 'replace') resetTask();
+        if (source !== 'init' && !drag && ['a', 'w', 'g', 'h', 's', 'par', 'rel', 'gi', 'gv', 'tg'].some((k) => changed.has(k))) anim = null;
         if (source !== 'init') syncGlides(source);
         updateReadouts();
         ctx.requestRender();
@@ -1740,8 +1752,8 @@ export default defineSimulation({
         now = performance.now();
         if (id === 'supp' || id === 'vert' || id === 'shift' || id === 'turn') startAnim(id);
         else if (id === 'new') {
-          const t = makeTask(Math.random, { given: p.gi as AngleId, value: p.gv, sigma: p.ts });
-          ctx.set({ gi: t.given, gv: t.value, ts: t.sigma });
+          const t = makeTask(Math.random, { given: p.gi as AngleId, value: p.gv, tilt: p.tg });
+          ctx.set({ gi: t.given, gv: t.value, tg: t.tilt });
         } else if (id === 'all') {
           let i = 0;
           for (const a of ANGLE_IDS) {

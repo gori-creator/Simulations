@@ -72,7 +72,7 @@ $\gamma_1 = 62^\circ$ (Scheitelwinkel), $\beta_1 = \delta_1 = 180^\circ - 62^\ci
 
 ### Aufgabe 4: Eine Begründungskette
 
-$g \parallel h$ und $\beta_2 = 70^\circ$. Bestimme $\alpha_1$ und begründe jeden Schritt. [Aufgabe laden](?mode=aufgabe&gi=b2&gv=70&ts=65)
+$g \parallel h$ und $\beta_2 = 70^\circ$. Bestimme $\alpha_1$ und begründe jeden Schritt. [Aufgabe laden](?mode=aufgabe&gi=b2&gv=70&tg=5)
 
 <details>
 <summary>Lösung anzeigen</summary>
