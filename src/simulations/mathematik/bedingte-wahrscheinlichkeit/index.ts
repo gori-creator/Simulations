@@ -249,9 +249,11 @@ export default defineSimulation({
       return { main: { x: 4, y: 4, w: W - 8, h: mh }, col: { x: 4, y: mh + 12, w: W - 8, h: H - mh - 16 } };
     }
     const HEAD = 50;
+    /** Legende in einer Reihe (breit) oder als 2 × 2 (schmal, Tablet hoch). */
+    const legendOneRow = () => wide() && (regions().main.w - 48) / 4 >= 118;
     function legendRect(): Rect {
       const m = regions().main;
-      const h = wide() ? 52 : 92;
+      const h = legendOneRow() ? 52 : 92;
       return { x: m.x + 12, y: m.y + m.h - h - 10, w: m.w - 24, h };
     }
     function gridArea(): Rect {
@@ -421,6 +423,7 @@ export default defineSimulation({
 
     /** Aktuell sichtbare Farbe: Gewicht der Zielfarbe (0 … 1). */
     function colorMix(q: Person): number {
+      if (reduced) return 1;
       return clamp01((now - q.cT0) / COLOR_MS);
     }
     function setColor(q: Person, role: Role, at: number): void {
@@ -524,7 +527,7 @@ export default defineSimulation({
     const pct = (v: number, dec?: number) => {
       if (!Number.isFinite(v)) return '–';
       const x = v * 100;
-      const d = dec ?? (x >= 99.95 || x === 0 ? 0 : x >= 10 ? 1 : x >= 1 ? 1 : 2);
+      const d = dec ?? (x === 100 || x === 0 ? 0 : x >= 99.9 ? 2 : x >= 1 ? 1 : 2);
       return `${fmt.num(x, d)} %`;
     };
     /** Anteil mit sinnvollen Stellen (z. B. 0,0009) für die Bayes-Formel. */
@@ -732,7 +735,7 @@ export default defineSimulation({
     function chipRects(): { role: Role; r: Rect }[] {
       const lg = legendRect();
       const gap = 8;
-      if (wide()) {
+      if (legendOneRow()) {
         const w = (lg.w - 3 * gap) / 4;
         return ROLES.map((role, k) => ({ role, r: { x: lg.x + k * (w + gap), y: lg.y, w, h: lg.h } }));
       }
@@ -770,6 +773,7 @@ export default defineSimulation({
         const l1 = roleName(role);
         const s1 = fitFont(l1, maxW, 700, 11, 9.5);
         text(g, l1, tx, r.y + r.h / 2 + 8, { font: font(700, s1), color: t.muted, align: 'left' });
+        g.font = font(800, 15);
         const nw = g.measureText(`${n}`).width;
         g.font = font(600, 10.5);
         const sh = roleShort(role);
@@ -1086,7 +1090,7 @@ export default defineSimulation({
             y += 16;
           });
         y += 8 + sp;
-        row(r.w < 250 ? tt('Neg. Vorhersagewert', 'Neg. pred. value') : tt('Negativer Vorhersagewert', 'Negative predictive value'), `P_{−}(${KBf})`, hid(pct(npvV)), t.text);
+        row(r.w < 280 ? tt('Neg. Vorhersagewert', 'Neg. pred. value') : tt('Negativer Vorhersagewert', 'Negative predictive value'), `P_{−}(${KBf})`, hid(pct(npvV)), t.text);
       } else {
         // Handy: links groß der Vorhersagewert, rechts die Kennzahlen
         const lw = w * 0.46;
@@ -1297,7 +1301,7 @@ export default defineSimulation({
         now = performance.now();
         if (id === 'focus') ctx.set({ pos: !p.pos });
         else if (id === 'flip') ctx.set({ dir: p.dir === 'rev' ? 'fwd' : 'rev' });
-        else if (id === 'replay') {
+        else if (id === 'replay' && !reduced) {
           ctx.set({ pos: false });
           stage(now + 50);
           for (const r of ROLES) gc[r].snap(0);
