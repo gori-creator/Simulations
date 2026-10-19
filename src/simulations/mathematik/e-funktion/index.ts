@@ -1339,6 +1339,12 @@ export default defineSimulation({
 
     /* ---------- Bild ---------- */
 
+    /** Aktionswert auf die Reglerstufe (0,01) runden und nur bei Änderung übernehmen. */
+    function syncParam(key: 'b' | 'x0', v: number): void {
+      const r = Math.round(v * 100) / 100;
+      if (Math.abs(r - p[key]) > 1e-9) ctx.set({ [key]: r });
+    }
+
     function render(): void {
       const now = performance.now();
       const dt = Math.min(0.1, Math.max(0, (now - lastTime) / 1000));
@@ -1349,12 +1355,15 @@ export default defineSimulation({
         B.jump(tv.v);
         anim = true;
         if (tv.done) findTl = null;
+        // Regler und Ergebnisse laufen während der Aktion mit
+        else syncParam('b', tv.v);
       } else anim = B.step(now, dt) || anim;
       if (rideTl) {
         const tv = timelineValue(rideTl, now);
         X.jump(tv.v);
         anim = true;
         if (tv.done) rideTl = null;
+        else syncParam('x0', tv.v);
       } else anim = X.step(now, dt) || anim;
       anim = INV.step(now, dt) || anim;
       anim = AN.step(now, dt) || anim;
@@ -1486,7 +1495,7 @@ export default defineSimulation({
           if (instant) B.jump(target);
           else if (source === 'replace') B.glide(target, 800, 80, now);
           else if (!findTl) B.follow(target, dragging() ? 0.05 : target === E ? 0.12 : 0.18);
-          cardT0 = instant ? -Infinity : Math.max(cardT0, now - 300);
+          if (!findTl) cardT0 = instant ? -Infinity : Math.max(cardT0, now - 300);
         }
         if (changed.has('x0') && !rideTl) {
           if (instant) X.jump(p.x0);
