@@ -821,7 +821,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'growth',
           },
-          planned('logarithmus', L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'), [10, 12]),
+          {
+            id: 'logarithmus',
+            status: 'ready',
+            slug: L('logarithmus', 'logarithms'),
+            title: L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'),
+            summary: L(
+              '„b hoch wie viel ergibt y?“ – Graphen von bˣ und log_b x mit animierter Spiegelung an y = x, die Rechengesetze als Pfeile auf einer logarithmischen Skala und Exponentialgleichungen bˣ = c mit Basiswechsel lösen.',
+              '“b to the power of what gives y?” – graphs of bˣ and log_b x with an animated reflection in y = x, the laws of logarithms as arrows on a logarithmic scale, and solving exponential equations bˣ = c with the change of base.',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L1', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Logarithmus', 'Logarithmusfunktion', 'Umkehrfunktion', 'Basis', 'Exponentialgleichung', 'Basiswechsel', 'Produktregel', 'Quotientenregel', 'Potenzregel', 'Zehnerlogarithmus', 'natürlicher Logarithmus', 'lg', 'ln', 'Rechenschieber', 'Spiegelung an y = x'],
+              ['logarithm', 'logarithmic function', 'inverse function', 'base', 'exponential equation', 'change of base', 'product rule', 'quotient rule', 'power rule', 'common logarithm', 'natural logarithm', 'lg', 'ln', 'slide rule', 'reflection in y = x'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'e-funktion',
             status: 'ready',
