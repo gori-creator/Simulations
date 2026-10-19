@@ -293,7 +293,7 @@ export default defineSimulation({
         const pw = Math.round(clamp(W * 0.3, 220, 340));
         return { W, H, wide, C: { x: 6, y: 6, w: W - pw - 20, h: H - 12 }, panel: { x: W - pw - 6, y: 6, w: pw, h: H - 12 } };
       }
-      const ch = Math.round(H * (mode() === 'map' ? 0.66 : 0.6));
+      const ch = Math.round(H * (mode() === 'map' ? 0.72 : mode() === 'zoom' ? 0.66 : 0.6));
       return { W, H, wide, C: { x: 4, y: 4, w: W - 8, h: ch }, panel: { x: 4, y: ch + 10, w: W - 8, h: H - ch - 14 } };
     }
 
@@ -464,7 +464,7 @@ export default defineSimulation({
         waterEdge: shade(water, d ? 0.08 : -0.22),
         waterText: d ? shade(s[0]!, 0.35) : shade(s[0]!, -0.2),
         built: mixColor(paper, mixColor(s[1]!, '#8a8a8a', 0.55), d ? 0.16 : 0.15),
-        house: d ? mixColor('#9a8a86', s[1]!, 0.25) : mixColor('#6e5a55', s[1]!, 0.3),
+        house: d ? mixColor('#a39693', s[1]!, 0.18) : mixColor('#5e5350', s[1]!, 0.18),
         houseRoof: d ? mixColor('#c8b8b2', s[1]!, 0.2) : mixColor('#9b7f78', s[1]!, 0.25),
         garden: mixColor(paper, s[2]!, d ? 0.16 : 0.2),
         gardenTree: mixColor(paper, s[2]!, d ? 0.42 : 0.5),
@@ -556,7 +556,17 @@ export default defineSimulation({
     function aimCamera(ms: number, snap = false): void {
       if (!geo) return;
       const R = mapRect(geo);
-      const c = centreFor(R, N(), A(), B());
+      let a = A();
+      let b = B();
+      if (p.r) {
+        const rt = shortestRoute(ROADS, a, b);
+        if (rt.length > 1) {
+          const bb = bbox(rt);
+          a = { x: bb.x0, y: bb.y0 };
+          b = { x: bb.x1, y: bb.y1 };
+        }
+      }
+      const c = centreFor(R, N(), a, b);
       if (snap || ms <= 0) {
         logN.snap(Math.log(N()));
         camX.snap(c.x);
@@ -1265,6 +1275,7 @@ export default defineSimulation({
       for (const q of vis) {
         if (q.o.kind === 'village') continue;
         const hot = hover === `poi:${q.o.id}` || q.o.id === fromId || q.o.id === toId;
+        if (q.o.id === fromId || q.o.id === toId) continue;
         drawSymbol(q.o.kind, q.x, q.y, s, q.a * (hot ? 1 : symA), hover === `poi:${q.o.id}`);
         if (!ctx.locked) addHit(`poi:${q.o.id}`, { x: q.x - s - 4, y: q.y - s - 4, w: 2 * s + 8, h: 2 * s + 8 });
       }
@@ -1567,7 +1578,6 @@ export default defineSimulation({
         addHit('h:a', { x: ax - 16, y: ay - 16, w: 32, h: 32 }, 'grab');
         addHit('h:b', { x: bx - 16, y: by - 16, w: 32, h: 32 }, 'grab');
       }
-      placed.push({ x0: ax - 11, y0: ay - 11, x1: ax + 11, y1: ay + 11 }, { x0: bx - 11, y0: by - 11, x1: bx + 11, y1: by + 11 });
       void th;
     }
 
@@ -1691,8 +1701,13 @@ export default defineSimulation({
       const fromPoi = poiAt(A());
       const toPoi = poiAt(B());
       drawMapFurniture(v);
-      drawMeasure(v, m);
+      {
+        const [ax, ay] = toPx(v, p.ax, p.ay);
+        const [bx, by] = toPx(v, p.bx, p.by);
+        placed.push({ x0: ax - 11, y0: ay - 11, x1: ax + 11, y1: ay + 11 }, { x0: bx - 11, y0: by - 11, x1: bx + 11, y1: by + 11 });
+      }
       drawPoisAndLabels(v, fromPoi?.id ?? null, toPoi?.id ?? null);
+      drawMeasure(v, m);
       // Hinweis (z. B. Strecke gekürzt, Ort antippen)
       if (note) {
         const age = now - note.at;
@@ -1775,7 +1790,7 @@ export default defineSimulation({
         case 'title':
           return 20;
         case 'rich':
-          return it.size * 1.6;
+          return it.size * 1.5;
         case 'big':
           return it.size * 1.45;
         case 'note':
@@ -1937,7 +1952,7 @@ export default defineSimulation({
         const parts = m.pieces.mm.map((x) => decimalIn(x * UM.mm, 'cm', lang).text);
         const shown = parts.length > 6 ? [...parts.slice(0, 5), '…'] : parts;
         items1.push({ kind: 'note', text: `${shown.join(' + ')} = ${cm1(m.mm)} (${m.pieces.mm.length} ${tt('Abschnitte', 'pieces')})`, color: th.text });
-      } else if (!sm) items1.push({ kind: 'note', text: m.mm === 0 ? tt('Beide Griffe liegen aufeinander – die Strecke ist 0 cm lang.', 'Both handles are on top of each other – the line is 0 cm long.') : tt('Mit dem Lineal gemessen, auf 1 mm gerundet.', 'Measured with the ruler, rounded to 1 mm.') });
+      } else if (!sm && (geo?.panel.h ?? 0) > 560) items1.push({ kind: 'note', text: m.mm === 0 ? tt('Beide Griffe liegen aufeinander – die Strecke ist 0 cm lang.', 'Both handles are on top of each other – the line is 0 cm long.') : tt('Mit dem Lineal gemessen, auf 1 mm gerundet.', 'Measured with the ruler, rounded to 1 mm.') });
       cards.push({ items: items1 });
       // 2) Umrechnung
       const items2: Item[] = [{ kind: 'title', text: tt('In Wirklichkeit', 'In reality') }];
@@ -2377,11 +2392,11 @@ export default defineSimulation({
       g.strokeStyle = alpha(th.series[3]!, th.dark ? 0.3 : 0.28);
       g.lineWidth = 0.9;
       g.beginPath();
-      for (let x = I.x; x < I.x + I.w; x += ppc) {
+      for (let x = I.x; ppc >= 8 && x < I.x + I.w; x += ppc) {
         g.moveTo(Math.round(x) + 0.5, I.y);
         g.lineTo(Math.round(x) + 0.5, I.y + I.h);
       }
-      for (let y = I.y; y < I.y + I.h; y += ppc) {
+      for (let y = I.y; ppc >= 8 && y < I.y + I.h; y += ppc) {
         g.moveTo(I.x, Math.round(y) + 0.5);
         g.lineTo(I.x + I.w, Math.round(y) + 0.5);
       }
@@ -2458,11 +2473,11 @@ export default defineSimulation({
       g.setLineDash([6, 4]);
       g.stroke();
       g.restore();
-      halo(`${tt('Bild im Maßstab', 'Picture at scale')} ${z} : 1`, M.x + 10, M.y + 14, font(750, 12), cScale(), 'left');
       g.save();
       roundRect(g, M.x, M.y, M.w, M.h, 10);
       g.clip();
       drawObject(id, icx, icy, imgPx, objA);
+      halo(`${tt('Bild im Maßstab', 'Picture at scale')} ${z} : 1`, M.x + 10, M.y + 14, font(750, 12), cScale(), 'left');
       // Maßpfeil und Lineal unter dem Bild
       const rx0 = icx - imgPx / 2;
       const rulerY = Math.min(M.y + M.h - clamp(ppc * 0.9, 22, 34) - 8, icy + imgPx * (id === 'stamp' ? 0.6 : 0.45) + 50);
