@@ -1211,8 +1211,8 @@ export const mathematik: Subject = {
             slug: L('monotonie-extrem-wendestellen', 'monotonicity-extrema-inflection'),
             title: L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'),
             summary: L(
-              'Eine Funktionsuntersuchung Schritt für Schritt: Ableitungen, notwendige und hinreichende Bedingung, Hoch-, Tief- und Terrassenpunkte, Wendepunkte, Monotonie- und Krümmungsintervalle – mit Vorzeichentabelle und frei wählbaren Koeffizienten.',
-              'Investigating a function step by step: derivatives, necessary and sufficient conditions, maxima, minima and terrace points, inflection points, intervals of monotonicity and curvature – with a sign chart and freely chosen coefficients.',
+              'Eine Funktionsuntersuchung in sieben Schritten: Ableitungen, Symmetrie und Verhalten im Unendlichen, Nullstellen, notwendige und hinreichende Bedingung, Hoch-, Tief- und Terrassenpunkte, Wendepunkte, Monotonie- und Krümmungsintervalle – mit den Graphen von f′ und f″ darunter, wandernder Tangente, Vorzeichentabelle und frei wählbaren Koeffizienten.',
+              'Investigating a function in seven steps: derivatives, symmetry and end behaviour, zeros, necessary and sufficient conditions, maxima, minima and terrace points, inflection points, intervals of monotonicity and curvature – with the graphs of f′ and f″ below, a moving tangent, a sign chart and freely chosen coefficients.',
             ),
             grades: [11, 12],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],

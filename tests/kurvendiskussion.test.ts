@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analyze, derive, evalPoly, realZeros } from '../src/simulations/mathematik/kurvendiskussion/model';
+import { analyze, derive, evalPoly, limits, realZeros, symmetry, zeros } from '../src/simulations/mathematik/kurvendiskussion/model';
 
 describe('Modell: Monotonie, Extrem- und Wendestellen', () => {
   it('f(x) = x³ − 3x: H(−1 | 2), T(1 | −2), W(0 | 0)', () => {
@@ -53,5 +53,36 @@ describe('Modell: Monotonie, Extrem- und Wendestellen', () => {
         expect(Math.sign(evalPoly(a.d1, x))).toBe(m.sign);
       }
     }
+  });
+  it('Symmetrie: x³ − 3x punktsymmetrisch, 0,5x⁴ − 2x² achsensymmetrisch, −x³ + 3x² keine', () => {
+    expect(symmetry([0, -3, 0, 1])).toBe('odd');
+    expect(symmetry([0, 0, -2, 0, 0.5])).toBe('even');
+    expect(symmetry([0, 0, 3, -1])).toBe('none');
+    expect(symmetry([1, -3, 0, 1])).toBe('none');
+    expect(symmetry([2])).toBe('even');
+  });
+  it('Verhalten im Unendlichen nach Grad und Leitkoeffizient', () => {
+    expect(limits([0, -3, 0, 1])).toEqual([-1, 1]);
+    expect(limits([0, 0, 3, -1])).toEqual([1, -1]);
+    expect(limits([0, 0, -2, 0, 0.5])).toEqual([1, 1]);
+    expect(limits([0, 0, 0, 0, -1])).toEqual([-1, -1]);
+    expect(limits([4])).toEqual([0, 0]);
+  });
+  it('Nullstellen: x³ − 3x bei 0 und ±√3, −x³ + 3x² bei 0 (doppelt) und 3', () => {
+    const z = zeros([0, -3, 0, 1]);
+    expect(z).toHaveLength(3);
+    expect(z[0]).toBeCloseTo(-Math.sqrt(3), 9);
+    expect(z[1]).toBe(0);
+    expect(z[2]).toBeCloseTo(Math.sqrt(3), 9);
+    const z2 = zeros([0, 0, 3, -1]);
+    expect(z2).toHaveLength(2);
+    expect(z2[0]).toBeCloseTo(0, 9);
+    expect(z2[1]).toBeCloseTo(3, 9);
+    expect(zeros([1, 0, 1])).toEqual([]);
+  });
+  it('f″-Kriterium: x³ − 3x hat f″(−1) = −6 < 0 (Hochpunkt) und f″(1) = 6 > 0 (Tiefpunkt)', () => {
+    const a = analyze([0, -3, 0, 1]);
+    expect(evalPoly(a.d2, -1)).toBe(-6);
+    expect(evalPoly(a.d2, 1)).toBe(6);
   });
 });
