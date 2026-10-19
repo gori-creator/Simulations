@@ -7,6 +7,7 @@
  * - `h_a`, `V_{Zyl}`: Index; `x^2`, `r^{n+1}`: Hochzahl (² und ³ gehen auch direkt)
  * - `\f{1}{3}`: Bruch, `\r{h² + r²}`: Wurzel, `\i{a}{b}`: Integralzeichen mit Grenzen
  * - `\c{key}{…}`: Farbe aus der Palette, `\b{…}`: fett, `\t{…}`: aufrecht
+ * - `\m{a}{b}{c}{d}`: 2×2-Matrix in runden Klammern, `\v{x}{y}`: Spaltenvektor
  */
 
 export interface FormulaStyle {
@@ -27,7 +28,8 @@ type Node =
   | { t: 'int'; lo: Node[]; hi: Node[] }
   | { t: 'color'; key: string; c: Node[] }
   | { t: 'bold'; c: Node[] }
-  | { t: 'up'; c: Node[] };
+  | { t: 'up'; c: Node[] }
+  | { t: 'mat'; cells: Node[][]; cols: number };
 
 /** Gesetzter Formelteil: Breite, Ober- und Unterlänge (bezogen auf die Grundlinie), Zeichenfunktion. */
 export interface FormulaBox {
@@ -71,7 +73,7 @@ function parse(src: string): Node[] {
     };
     while (i < src.length && src[i] !== end) {
       const ch = src[i]!;
-      if (ch === '\\' && i + 1 < src.length && 'frcbti'.includes(src[i + 1]!)) {
+      if (ch === '\\' && i + 1 < src.length && 'frcbtimv'.includes(src[i + 1]!)) {
         const cmd = src[i + 1]!;
         i += 2;
         flush();
@@ -86,6 +88,12 @@ function parse(src: string): Node[] {
         else if (cmd === 'c') {
           const key = textOf(group());
           out.push({ t: 'color', key, c: group() });
+        } else if (cmd === 'm') {
+          const cells = [group(), group(), group(), group()];
+          out.push({ t: 'mat', cells, cols: 2 });
+        } else if (cmd === 'v') {
+          const cells = [group(), group()];
+          out.push({ t: 'mat', cells, cols: 1 });
         } else if (cmd === 'b') out.push({ t: 'bold', c: group() });
         else out.push({ t: 'up', c: group() });
       } else if (ch === '_' || ch === '^') {
@@ -207,6 +215,53 @@ function layout(g: CanvasRenderingContext2D, nodes: Node[], ctx: Ctx, style: For
             g2.fillText('∫', x, y + big * 0.2);
             hi.draw(g2, x + gw * 0.92, y - top + hi.asc * 0.95);
             lo.draw(g2, x + gw * 0.68, y + bottom + lo.asc * 0.25);
+          },
+        });
+        break;
+      }
+      case 'mat': {
+        // zwei Zeilen, Spalten rechtsbündig, runde Klammern
+        const boxes2 = node.cells.map((c) => layout(g, c, ctx, style));
+        const cols = node.cols;
+        const colW = Array.from({ length: cols }, (_, j) => Math.max(...boxes2.filter((_, k) => k % cols === j).map((b) => b.w)));
+        const gapX = ctx.size * 0.75;
+        const rowGap = ctx.size * 1.22;
+        const axis = ctx.size * 0.3;
+        const brW = ctx.size * 0.42;
+        const inner = colW.reduce((u, v) => u + v, 0) + gapX * (cols - 1);
+        const half = rowGap / 2 + ctx.size * 0.62;
+        const color = ctx.color;
+        const lw = Math.max(1.2, ctx.size * 0.075);
+        boxes.push({
+          w: inner + 2 * brW + ctx.size * 0.5,
+          asc: axis + half,
+          desc: Math.max(0, half - axis),
+          draw: (g2, x, y) => {
+            const cy = y - axis;
+            g2.save();
+            g2.strokeStyle = color;
+            g2.lineWidth = lw;
+            g2.lineCap = 'round';
+            const x0 = x + ctx.size * 0.12;
+            const x1 = x + ctx.size * 0.38 + inner + 2 * brW;
+            g2.beginPath();
+            g2.moveTo(x0 + brW * 0.8, cy - half);
+            g2.quadraticCurveTo(x0 - brW * 0.35, cy, x0 + brW * 0.8, cy + half);
+            g2.moveTo(x1 - brW * 0.8, cy - half);
+            g2.quadraticCurveTo(x1 + brW * 0.35, cy, x1 - brW * 0.8, cy + half);
+            g2.stroke();
+            g2.restore();
+            let cx = x0 + brW + ctx.size * 0.05;
+            for (let j = 0; j < cols; j++) {
+              const top = boxes2[j]!;
+              const bot = boxes2[cols + j]!;
+              const right = cx + colW[j]!;
+              const b1 = cy - rowGap / 2 + (top.asc - top.desc) / 2;
+              const b2 = cy + rowGap / 2 + (bot.asc - bot.desc) / 2;
+              top.draw(g2, right - top.w, b1);
+              bot.draw(g2, right - bot.w, b2);
+              cx = right + gapX;
+            }
           },
         });
         break;
