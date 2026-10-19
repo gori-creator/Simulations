@@ -1,11 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
   <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M40 150L290 150M40 150L280 30" stroke-width="3" stroke-opacity="0.5" />
-    <path d="M40 150L130 105L150 150Z" fill="currentColor" fill-opacity="0.18" stroke-width="0" />
-    <path d="M130 105L150 150M220 60L260 150" stroke-width="4.5" />
-    <path d="M40 150L130 105M40 150L150 150" stroke-width="5" />
-    <circle cx="40" cy="150" r="5" fill="currentColor" stroke-width="2" />
-    <circle cx="220" cy="60" r="5" fill="currentColor" stroke-width="2" />
-    <circle cx="260" cy="150" r="5" fill="currentColor" stroke-width="2" />
+    <path d="M44 92L300 22M44 92L300 162" stroke-width="3" stroke-opacity="0.35" />
+    <path d="M44 92L262 32L262 152Z" fill="currentColor" fill-opacity="0.08" stroke-width="0" />
+    <path d="M44 92L134 67L134 117Z" fill="currentColor" fill-opacity="0.16" stroke-width="0" />
+    <path d="M44 92L134 67M44 92L134 117" stroke-width="5" stroke-opacity="0.55" />
+    <path d="M134 67L262 32M134 117L262 152" stroke-width="5" />
+    <path d="M134 67L134 117" stroke-width="4" stroke-opacity="0.6" />
+    <path d="M262 32L262 152" stroke-width="4.5" />
+    <path d="M198 43L198 141" stroke-width="3" stroke-opacity="0.3" stroke-dasharray="6 7" />
+    <path d="M128 88L134 94L140 88M256 88L262 94L268 88" stroke-width="3" />
+    <circle cx="44" cy="92" r="5" fill="currentColor" stroke-width="0" />
+    <circle cx="134" cy="67" r="5" fill="currentColor" fill-opacity="0.3" stroke-width="2.5" />
+    <circle cx="134" cy="117" r="5" fill="currentColor" fill-opacity="0.3" stroke-width="2.5" />
+    <circle cx="262" cy="32" r="5.5" fill="currentColor" stroke-width="0" />
+    <circle cx="262" cy="152" r="5.5" fill="currentColor" stroke-width="0" />
   </g>
 </svg>

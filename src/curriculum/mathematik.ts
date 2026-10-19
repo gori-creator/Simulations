@@ -477,14 +477,14 @@ export const mathematik: Subject = {
             slug: L('strahlensaetze', 'intercept-theorems'),
             title: L('Strahlensätze', 'Intercept theorems'),
             summary: L(
-              'Punkte auf zwei Strahlen ziehen und sehen, wie die Streckenverhältnisse an V- und X-Figur gleich bleiben – solange die Geraden parallel sind. Dazu zwei Anwendungen: Baumhöhe über den Schatten und die Breite eines Teichs.',
-              'Drag points on two rays and see the ratios of the segments in the V and X shapes stay equal – as long as the lines are parallel. Plus two applications: a tree’s height from its shadow and the width of a pond.',
+              'Die Parallele von AB nach A′B′ gleiten lassen und an farbigen Maßstäben sehen, dass alle Verhältnisse denselben Faktor k haben – an V- und X-Figur; ohne Parallelen zerfallen sie. Dazu unbekannte Strecken Schritt für Schritt berechnen und zwei gezeichnete Anwendungen: Baumhöhe über den Schatten und Teichbreite.',
+              'Slide the parallel from AB to A′B′ and see on coloured scale bars that all ratios share the same factor k – in the V and X shape; without parallels they fall apart. Plus unknown lengths solved step by step and two drawn applications: a tree’s height from its shadow and the width of a pond.',
             ),
             grades: [9, 9],
             kmk: ['M-L4', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
-              ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Umkehrung'],
-              ['intercept theorem', 'V shape', 'X shape', 'parallel lines', 'scale factor', 'ratio', 'similar triangles', 'enlargement', 'tree height', 'shadow', 'converse'],
+              ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'Verhältnisgleichung', 'Abschnitte', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Teichbreite', 'Umkehrung'],
+              ['intercept theorem', 'V shape', 'X shape', 'parallel lines', 'scale factor', 'ratio', 'proportion', 'similar triangles', 'enlargement', 'tree height', 'shadow', 'pond width', 'converse'],
             ),
             thumb: 'generic',
           },

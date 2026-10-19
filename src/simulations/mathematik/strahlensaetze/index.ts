@@ -656,13 +656,17 @@ export default defineSimulation({
       let best: { cx: number; cy: number; s: number; r: number } | null = null;
       let bestScore = -1;
       for (const [r, pref] of [
-        [figRot(), 1.15],
+        [figRot(), 1.05],
+        [figRot() + Math.PI / 2, 1],
         [0, 1],
         [2 * figRot(), 1],
       ] as [number, number][]) {
-        const v = { ...fitBox(R, boxOf(pts.map((q) => rotP(q, r))), pad, 90), r };
-        if (v.s * pref > bestScore) {
-          bestScore = v.s * pref;
+        const bx = boxOf(pts.map((q) => rotP(q, r)));
+        const v = { ...fitBox(R, bx, pad, 90), r };
+        // sehr schmale, hohe Figuren wirken gedrängt (Beschriftungen) – leicht benachteiligen
+        const slim = (bx[3] - bx[1]) / Math.max(1e-6, bx[2] - bx[0]) > 2.2 ? 0.8 : 1;
+        if (v.s * pref * slim > bestScore) {
+          bestScore = v.s * pref * slim;
           best = v;
         }
       }
@@ -2286,7 +2290,7 @@ export default defineSimulation({
       targets.forEach(([c, v], i) => {
         if (instant) c.jump(v);
         else if (dragging()) c.follow(v, 0.05);
-        else if (source === 'replace' || sideFlip) c.glide(v, sideFlip && (c === KA || c === KB) ? 1300 : 850, i * 30, now);
+        else if (source === 'replace' || sideFlip) c.glide(v, sideFlip && (c === KA || c === KB) ? 1300 : 850, c === KA || c === KB ? 0 : i * 30, now);
         else if (Math.abs(c.goal - v) > 1e-12) c.follow(v, 0.16);
       });
       const flags: [Chan, number][] = [
