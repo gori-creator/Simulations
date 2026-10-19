@@ -180,8 +180,8 @@ export const mathematik: Subject = {
             slug: L('quadratwurzel-heron-verfahren', 'square-roots-herons-method'),
             title: L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'),
             summary: L(
-              'Ein Rechteck mit Flächeninhalt a wird Schritt für Schritt zum Quadrat – seine Seite nähert sich √a (Heron-Verfahren). Dazu die Intervallschachtelung mit einer Lupe auf dem Zahlenstrahl und die Frage, warum √2 kein Bruch ist.',
-              'A rectangle with area a becomes a square step by step – its side approaches √a (Heron’s method). Plus nested intervals with a magnifier on the number line and why √2 is not a fraction.',
+              'Ein Rechteck mit Flächeninhalt a wird Schritt für Schritt zum Quadrat – seine Seite nähert sich √a (Heron-Verfahren). Dazu die Intervallschachtelung mit einer Lupe auf dem Zahlenstrahl, die Wurzelspirale des Theodorus als Konstruktion von √2 bis √17 und die Frage, warum √2 kein Bruch ist.',
+              'A rectangle with area a becomes a square step by step – its side approaches √a (Heron’s method). Plus nested intervals with a magnifier on the number line, the spiral of Theodorus constructing √2 to √17 and why √2 is not a fraction.',
             ),
             grades: [9, 9],
             kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],

@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die 9. Klasse: Quadratwurzeln mit dem Heron-Verfahren annähern – ein Rechteck wird Schritt für Schritt zum Quadrat – und mit der Intervallschachtelung auf einem Zahlenstrahl mit Lupe einschließen; dazu die Frage, warum √2 kein Bruch ist."
+description: "Interaktive Simulation für die 9. Klasse: Quadratwurzeln mit dem Heron-Verfahren annähern – ein Rechteck wird Schritt für Schritt zum Quadrat – und mit der Intervallschachtelung auf einem Zahlenstrahl mit Lupe einschließen, dazu die Wurzelspirale des Theodorus als Konstruktion von √2 bis √17 und die Frage, warum √2 kein Bruch ist."
 ---
 
 ## Worum geht es?
@@ -18,6 +18,8 @@ Die Fläche bleibt immer $a$, das Rechteck wird immer quadratischer. Das geht se
 
 **Intervallschachtelung:** Wegen $1^2 = 1 < 2 < 4 = 2^2$ liegt $\sqrt{2}$ zwischen $1$ und $2$. Wegen $1{,}4^2 = 1{,}96 < 2 < 2{,}25 = 1{,}5^2$ liegt $\sqrt{2}$ zwischen $1{,}4$ und $1{,}5$, und so weiter. Mit jeder Stelle wird das Intervall zehnmal kürzer.
 
+**Wurzelspirale:** Wurzeln kann man auch **konstruieren**. Ein rechtwinkliges Dreieck mit den Katheten $1$ und $1$ hat nach dem Satz des Pythagoras die Hypotenuse $\sqrt{1^2 + 1^2} = \sqrt{2}$. Setzt man an diese Hypotenuse eine Kathete der Länge $1$ im rechten Winkel an, entsteht die Hypotenuse $\sqrt{(\sqrt{2})^2 + 1^2} = \sqrt{3}$, und so weiter. Mit dem Zirkel überträgt man jede Länge auf den Zahlenstrahl. Nach $16$ Dreiecken ($\sqrt{17}$) hat sich die Spirale fast einmal ganz herumgedreht (etwa $351°$).
+
 ## Ausprobieren
 
 1. [√2 mit Heron](?a=2&x0=2): Klicke auf „Nächster Schritt“. Wie ändern sich Länge und Breite? Ab welchem Schritt stimmen in der Tabelle alle angezeigten Stellen?
@@ -25,6 +27,7 @@ Die Fläche bleibt immer $a$, das Rechteck wird immer quadratischer. Das geht se
 3. [Quadratzahl](?a=49&x0=14): Was passiert bei einer Quadratzahl?
 4. [√2 einschachteln](?mode=nest&a=2): Verfolge die Lupe. Welche Ungleichung steht jeweils unten?
 5. [√3](?mode=nest&a=3) und [√25](?mode=nest&a=25): Wann endet die Intervallschachtelung, wann nicht?
+6. [Wurzelspirale](?mode=spiral): Drücke mehrmals „Nächster Schritt“ oder „Alles abspielen“. Bei welchen Dreiecken landet der Zirkel genau auf einer ganzen Zahl? Vergleiche mit der Tabelle.
 
 ## Aufgaben
 
@@ -69,6 +72,17 @@ Bei $\sqrt{2}$ zeigt die Tabelle nach Schritt 3 den Wert $1{,}414215686$. Wie vi
 <summary>Lösung anzeigen</summary>
 
 $\sqrt{2} = 1{,}414213562\ldots$, also stimmen fünf Nachkommastellen. $1{,}414215686^2 \approx 2{,}000006$ – schon sehr nahe an $2$. [Zeigen](?a=2&x0=2)
+
+</details>
+
+### Aufgabe 5: Wurzelspirale
+
+Begründe, warum das fünfte Dreieck der Wurzelspirale die Hypotenuse $\sqrt{6}$ hat. Zwischen welchen ganzen Zahlen liegt $\sqrt{6}$ auf dem Zahlenstrahl? [Aufgabe laden](?mode=spiral)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Das fünfte Dreieck hat die Katheten $\sqrt{5}$ (die Hypotenuse des vierten) und $1$. Nach Pythagoras ist die Hypotenuse $\sqrt{(\sqrt{5})^2 + 1^2} = \sqrt{5 + 1} = \sqrt{6}$. Wegen $2^2 = 4 < 6 < 9 = 3^2$ liegt $\sqrt{6} \approx 2{,}449$ zwischen $2$ und $3$.
 
 </details>
 

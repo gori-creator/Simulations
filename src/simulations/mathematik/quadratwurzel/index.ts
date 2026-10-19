@@ -1,20 +1,24 @@
 import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { exactAt, heronSteps, isPerfectSquare, nestInterval } from './model';
+import { exactAt, heronSteps, isPerfectSquare, nestInterval, spiralVertices } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-type Mode = 'heron' | 'nest';
+type Mode = 'heron' | 'nest' | 'spiral';
 type Px = [number, number];
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const HERON_MAX = 6;
 const NEST_MAX = 7;
+/** Schritte 0 … 15: 1 … 16 Dreiecke, also √2 … √17. */
+const SPIRAL_MAX = 15;
 
 /**
  * Quadratwurzeln: Heron-Verfahren als Folge flächengleicher Rechtecke, die
  * sich animiert zum Quadrat formen (Mittelwert der Seiten), und
  * Intervallschachtelung auf einem Zahlenstrahl mit Lupe, die von Stelle zu
  * Stelle zehnfach vergrößert. Tabellen zeigen, wie schnell die Stellen
- * stimmen.
+ * stimmen. Die Wurzelspirale des Theodorus konstruiert √2, √3, … √17 als
+ * Hypotenusen aneinandergelegter rechtwinkliger Dreiecke und überträgt jede
+ * Länge mit dem Zirkel auf einen Zahlenstrahl.
  */
 export default defineSimulation({
   id: 'quadratwurzel',
@@ -28,10 +32,11 @@ export default defineSimulation({
       options: [
         { value: 'heron', label: L('Heron-Verfahren (Rechtecke)', 'Heron’s method (rectangles)') },
         { value: 'nest', label: L('Intervallschachtelung', 'Nested intervals') },
+        { value: 'spiral', label: L('Wurzelspirale (Konstruktion)', 'Spiral of square roots (construction)') },
       ],
       default: 'heron',
     },
-    { key: 'a', type: 'number', label: L('Radikand a (Fläche)', 'Radicand a (area)'), min: 1, max: 200, step: 1, default: 2 },
+    { key: 'a', type: 'number', label: L('Radikand a (Fläche)', 'Radicand a (area)'), min: 1, max: 200, step: 1, default: 2, visibleIf: (v) => v.mode !== 'spiral' },
     { key: 'x0', type: 'number', label: L('Startlänge x₀', 'Starting length x₀'), min: 1, max: 20, step: 0.5, default: 2, visibleIf: (v) => v.mode === 'heron', help: L('Das Start-Rechteck hat die Seiten x₀ und a/x₀.', 'The starting rectangle has the sides x₀ and a/x₀.') },
     { key: 'grid', type: 'boolean', group: 'view', label: L('Einheitsquadrate', 'Unit squares'), default: true, visibleIf: (v) => v.mode === 'heron' },
   ],
@@ -51,6 +56,7 @@ export default defineSimulation({
     { id: 'nest2', label: L('√2 einschachteln', 'Nesting √2'), values: { mode: 'nest', a: 2 } },
     { id: 'nest3', label: L('√3 einschachteln', 'Nesting √3'), values: { mode: 'nest', a: 3 } },
     { id: 'nest25', label: L('Quadratzahl: √25', 'Perfect square: √25'), values: { mode: 'nest', a: 25 } },
+    { id: 'spiral', label: L('Wurzelspirale', 'Spiral of square roots'), values: { mode: 'spiral' } },
   ],
   strings: {
     de: {
@@ -77,6 +83,11 @@ export default defineSimulation({
       rootRead: '√{a} ≈ {r}',
       startHint: 'Mit „Nächster Schritt“ wird das Rechteck quadratischer.',
       zoom: 'Lupe: zehnfach vergrößert',
+      tabS: 'Wurzelspirale',
+      ideaS: 'Jedes neue Dreieck hat die Katheten √n und 1. Nach dem Satz des Pythagoras ist die Hypotenuse √(n + 1), denn (√n)² + 1² = n + 1. Mit dem Zirkel überträgt man die Länge auf den Zahlenstrahl. Bei √4, √9 und √16 landet man genau auf 2, 3 und 4.',
+      spStart: 'Start: Dreieck mit den Katheten 1 und 1',
+      spStep: 'Dreieck {n}: (√{n})² + 1² = {m}, also Hypotenuse √{m}',
+      spLine: 'Zahlenstrahl',
     },
     en: {
       canvas: 'Heron’s method: rectangles of equal area become more and more square until their side equals the square root; nested intervals: a number line is magnified tenfold with every digit. Next to it a table of the steps.',
@@ -102,6 +113,11 @@ export default defineSimulation({
       rootRead: '√{a} ≈ {r}',
       startHint: 'Press “Next step” to make the rectangle more square.',
       zoom: 'Magnifier: ×10',
+      tabS: 'Spiral of square roots',
+      ideaS: 'Every new triangle has the legs √n and 1. By Pythagoras the hypotenuse is √(n + 1), because (√n)² + 1² = n + 1. A compass transfers the length to the number line. √4, √9 and √16 land exactly on 2, 3 and 4.',
+      spStart: 'Start: triangle with legs 1 and 1',
+      spStep: 'Triangle {n}: (√{n})² + 1² = {m}, so the hypotenuse is √{m}',
+      spLine: 'number line',
     },
   },
 
@@ -132,7 +148,7 @@ export default defineSimulation({
     let from = 0;
     let autoPlay = false;
     let lastStepEnd = 0;
-    const maxStep = () => (mode() === 'heron' ? HERON_MAX : NEST_MAX);
+    const maxStep = () => (mode() === 'heron' ? HERON_MAX : mode() === 'spiral' ? SPIRAL_MAX : NEST_MAX);
     const steps = () => heronSteps(p.a, p.x0, HERON_MAX);
     const root = () => Math.sqrt(p.a);
     /** Angezeigte Werte (gleiten bei Änderungen von a und x₀). */
@@ -185,6 +201,15 @@ export default defineSimulation({
         const s = steps();
         if (step === 0) ctx.readout('now', tr('step0', { x: fmt.num(s[0]!.x, 4), y: fmt.num(s[0]!.y, 4) }));
         else ctx.readout('now', tr('stepN', { n: step, x: fmt.num(s[step - 1]!.x, 6), y: fmt.num(s[step - 1]!.y, 6), r: fmt.num(s[step]!.x, 9) }));
+      } else if (mode() === 'spiral') {
+        // Schritt s zeigt die Dreiecke 1 … s + 1, die längste Hypotenuse ist √(s + 2)
+        ctx.readout('now', step === 0 ? ctx.t('spStart') : tr('spStep', { n: step + 1, m: step + 2 }));
+        const m = step + 2;
+        ctx.readout('root', isPerfectSquare(m) ? `√${m} = ${Math.sqrt(m)}` : tr('rootRead', { a: m, r: fmt.num(Math.sqrt(m), 9) }));
+        ctx.setAction('next', { enabled: !ctx.locked && step < maxStep() });
+        ctx.setAction('play', { enabled: !ctx.locked });
+        ctx.setAction('restart', { enabled: !ctx.locked && step > 0 });
+        return;
       } else {
         const [lo, hi] = nestInterval(p.a, step);
         if (exactAt(p.a, step)) ctx.readout('now', tr('nestExact', { a: p.a, lo: fmt.num(lo, step) }));
@@ -470,12 +495,119 @@ export default defineSimulation({
       text(g, s, R.x + R.w / 2, R.y + R.h - F(22, 18), { font: font(700, size), color: exact ? col.sq() : theme.text });
     }
 
+    /* ---------- Wurzelspirale ---------- */
+    function drawSpiral(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const n = step + 1; // Anzahl der Dreiecke
+      const v = spiralVertices(SPIRAL_MAX + 1);
+      // Mittelpunkt etwas nach links, damit der Zahlenstrahl nach rechts Platz hat
+      const sc = Math.min((R.w - 30) / 9.2, (R.h - 30) / 8.6);
+      const cx = R.x + R.w / 2 - 0.2 * sc;
+      const cy = R.y + R.h / 2 + 0.1 * sc;
+      const P = (q: [number, number]): Px => [cx + q[0] * sc, cy - q[1] * sc];
+      const grow = move.running && step > from ? move.value : 1;
+      const O: Px = [cx, cy];
+      // Zahlenstrahl (nach rechts, mit Einheiten)
+      g.strokeStyle = withAlpha(theme.text, 0.55);
+      g.lineWidth = 1.4;
+      g.beginPath();
+      g.moveTo(cx, cy);
+      g.lineTo(cx + 4.5 * sc, cy);
+      g.stroke();
+      for (let k = 1; k <= 4; k++) {
+        g.beginPath();
+        g.moveTo(cx + k * sc, cy - 5);
+        g.lineTo(cx + k * sc, cy + 5);
+        g.stroke();
+        text(g, String(k), cx + k * sc, cy + 15, { font: font(700, F(11.5, 10.5)), color: theme.muted });
+      }
+      text(g, '0', cx - 8, cy + 15, { font: font(700, F(11.5, 10.5)), color: theme.muted });
+      // Dreiecke
+      for (let k = 1; k <= Math.min(n, SPIRAL_MAX + 1); k++) {
+        const a = P(v[k - 1]!);
+        let b = P(v[k]!);
+        const last = k === n;
+        if (last && grow < 1) b = [lerp(a[0], b[0], grow), lerp(a[1], b[1], grow)];
+        const sq = isPerfectSquare(k + 1);
+        g.fillStyle = withAlpha(sq ? col.sq() : k % 2 ? col.x() : col.rt(), last ? (theme.dark ? 0.32 : 0.22) : theme.dark ? 0.16 : 0.1);
+        g.beginPath();
+        g.moveTo(...O);
+        g.lineTo(...a);
+        g.lineTo(...b);
+        g.closePath();
+        g.fill();
+        // äußere Kante: Länge 1
+        g.strokeStyle = withAlpha(col.y(), 0.9);
+        g.lineWidth = 2;
+        g.beginPath();
+        g.moveTo(...a);
+        g.lineTo(...b);
+        g.stroke();
+        // Hypotenuse √(k + 1)
+        g.strokeStyle = sq ? col.sq() : last ? col.rt() : withAlpha(theme.text, 0.45);
+        g.lineWidth = last || sq ? 2.4 : 1.2;
+        g.beginPath();
+        g.moveTo(...O);
+        g.lineTo(...b);
+        g.stroke();
+        // rechter Winkel an der äußeren Ecke
+        if (last && grow >= 1) {
+          const ux = (O[0] - a[0]) / Math.hypot(O[0] - a[0], O[1] - a[1]);
+          const uy = (O[1] - a[1]) / Math.hypot(O[0] - a[0], O[1] - a[1]);
+          const wx = (b[0] - a[0]) / Math.hypot(b[0] - a[0], b[1] - a[1]);
+          const wy = (b[1] - a[1]) / Math.hypot(b[0] - a[0], b[1] - a[1]);
+          const s8 = 8;
+          g.strokeStyle = theme.text;
+          g.lineWidth = 1.2;
+          g.beginPath();
+          g.moveTo(a[0] + ux * s8, a[1] + uy * s8);
+          g.lineTo(a[0] + ux * s8 + wx * s8, a[1] + uy * s8 + wy * s8);
+          g.lineTo(a[0] + wx * s8, a[1] + wy * s8);
+          g.stroke();
+        }
+        // Beschriftung der Hypotenuse (innen, nahe der Mitte)
+        if (grow >= 1 || !last) {
+          const m: Px = [lerp(O[0], b[0], 0.62), lerp(O[1], b[1], 0.62)];
+          const lbl = sq ? `√${k + 1} = ${Math.sqrt(k + 1)}` : `√${k + 1}`;
+          if (last || sq || k < 8) halo(lbl, m[0], m[1], font(700, F(last ? 12.5 : 11, 10)), sq ? col.sq() : last ? col.rt() : theme.muted);
+        }
+      }
+      // Zirkel: aktuelle Hypotenuse auf den Zahlenstrahl übertragen
+      const r = Math.sqrt(n + 1);
+      const bEnd = v[Math.min(n, SPIRAL_MAX + 1)]!;
+      const ang0 = Math.atan2(bEnd[1], bEnd[0]);
+      if (grow >= 1) {
+        g.save();
+        g.strokeStyle = withAlpha(col.rt(), 0.8);
+        g.lineWidth = 1.6;
+        g.setLineDash([5, 4]);
+        g.beginPath();
+        // Kanvas-Winkel: y nach unten, deshalb negativ
+        g.arc(cx, cy, r * sc, -ang0, 0, ang0 < 0);
+        g.stroke();
+        g.restore();
+        const [qx, qy] = [cx + r * sc, cy];
+        g.fillStyle = col.rt();
+        g.beginPath();
+        g.arc(qx, qy, 5, 0, Math.PI * 2);
+        g.fill();
+        halo(`√${n + 1} ≈ ${fmt.num(r, 3)}`, qx, qy - 16, font(700, F(12, 11)), col.rt());
+      }
+      // Beschriftung nur, solange der Zirkelpunkt nicht daneben liegt
+      if (n + 1 < 6) text(g, ctx.t('spLine'), cx + 4.5 * sc, cy - 10, { font: font(600, F(11, 10)), color: theme.muted, align: 'right' });
+    }
+
     /* ---------- Tabelle ---------- */
     function tableCard(R: Rect): void {
       const g = surface.g;
       const theme = th();
       const pad = F(14, 12);
       const isH = mode() === 'heron';
+      if (mode() === 'spiral') {
+        spiralTable(R);
+        return;
+      }
       card(R, col.rt(), 0.02);
       title(R.x + pad, R.y + 16, ctx.t(isH ? 'tabH' : 'tabN'), col.rt());
       const n = maxStep();
@@ -530,6 +662,38 @@ export default defineSimulation({
       if (isH) text(g, `${ctx.t('digits')}: ${Math.max(0, goodDigits(s[Math.min(step, n)]!.x))}`, R.x + R.w - pad, R.y + 16, { font: font(600, 11), color: theme.muted, align: 'right' });
     }
 
+    /** Tabelle der Wurzelspirale: n und √n, Quadratzahlen hervorgehoben. */
+    function spiralTable(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const pad = F(14, 12);
+      card(R, col.rt(), 0.02);
+      title(R.x + pad, R.y + 16, ctx.t('tabS'), col.rt());
+      const rows = SPIRAL_MAX + 2; // √1 … √17
+      const half = Math.ceil(rows / 2);
+      const lh = Math.min(F(22, 20), (R.h - 44) / half);
+      const colW = (R.w - 2 * pad) / 2;
+      const fv = `600 ${F(12.5, 11.5)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      for (let i = 1; i <= Math.min(step + 2, rows); i++) {
+        const c = Math.floor((i - 1) / half);
+        const rI = (i - 1) % half;
+        const x = R.x + pad + c * colW;
+        const y = R.y + 38 + lh * (rI + 0.5);
+        const cur = i === step + 2;
+        const sq = isPerfectSquare(i);
+        g.save();
+        g.globalAlpha = cur && move.running ? move.value : 1;
+        if (cur) {
+          g.fillStyle = withAlpha(col.rt(), theme.dark ? 0.18 : 0.1);
+          roundRect(g, x - 6, y - lh / 2 + 1, colW - 4, lh - 2, 6);
+          g.fill();
+        }
+        text(g, `√${i}`, x, y, { font: font(700, F(12.5, 11.5)), color: sq ? col.sq() : theme.muted, align: 'left' });
+        text(g, sq ? `= ${Math.sqrt(i)}` : `≈ ${fmt.fixed(Math.sqrt(i), 4)}`, x + F(40, 34), y, { font: fv, color: sq ? col.sq() : theme.text, align: 'left' });
+        g.restore();
+      }
+    }
+
     /* ---------- Rendern ---------- */
     function render(): void {
       const now = performance.now();
@@ -550,14 +714,18 @@ export default defineSimulation({
       surface.begin();
       const lay = layout();
       if (mode() === 'heron') drawHeron(lay.stage);
+      else if (mode() === 'spiral') drawSpiral(lay.stage);
       else drawNest(lay.stage);
       const C = lay.col;
       const gap = F(10, 8);
       const isH = mode() === 'heron';
       const sq = isPerfectSquare(p.a);
-      const exactNow = !isH && exactAt(p.a, step);
-      const infoHead = exactNow ? ctx.t('exactT') : !isH && p.a === 2 ? ctx.t('irrT') : ctx.t('ideaT');
-      const infoBody = exactNow
+      const exactNow = mode() === 'nest' && exactAt(p.a, step);
+      const infoHead = mode() === 'spiral' ? ctx.t('ideaT') : exactNow ? ctx.t('exactT') : !isH && p.a === 2 ? ctx.t('irrT') : ctx.t('ideaT');
+      const isS = mode() === 'spiral';
+      const infoBody = isS
+        ? ctx.t('ideaS')
+        : exactNow
         ? tr('exact', { a: p.a, r: fmt.num(Math.sqrt(p.a), 6) })
         : sq && isH
           ? `${ctx.t('ideaH')} ${tr('perfect', { a: p.a, r: fmt.num(Math.sqrt(p.a), 0) })}`
@@ -571,7 +739,7 @@ export default defineSimulation({
       } else tableCard(C);
       // automatisch weiter
       if (autoPlay && !move.running) {
-        if (step >= maxStep() || (!isH && exactAt(p.a, step))) autoPlay = false;
+        if (step >= maxStep() || (mode() === 'nest' && exactAt(p.a, step))) autoPlay = false;
         else if (now - lastStepEnd > 500) nextStep();
       }
       if (!move.running && wasMoving) lastStepEnd = now;
