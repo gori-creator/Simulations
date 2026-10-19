@@ -900,8 +900,8 @@ export default defineSimulation({
           view.segment(P0 as Vec3, add(P0, scale(dE, 52 / ppu(P0))) as Vec3, { color: shade(ce, -0.2), width: 1.6, alpha: ai });
           view.segment(P0 as Vec3, add(P0, scale(dF, 52 / ppu(P0))) as Vec3, { color: shade(cf, -0.2), width: 1.6, alpha: ai });
           rightAngle(P0, w, dE, alpha(ctx.theme.muted, 0.9), ai * 0.8, 10);
-          normalArrow(add(P0, scale(dE, -pe.h * 0.45)), n, ce, nrm * ai, 'n');
-          normalArrow(add(P0, scale(dF, pf.h * 0.45)), m, cf, nrm * ai, 'm');
+          normalArrow(add(P0, add(scale(dE, -pe.h * 0.55), scale(w, pe.h * 0.4))), n, ce, nrm * ai, 'n');
+          normalArrow(add(P0, add(scale(dF, pf.h * 0.55), scale(w, -pf.h * 0.4))), m, cf, nrm * ai, 'm');
         }
       }
       const ap = caseAlpha('pp:parallel') * u1;
