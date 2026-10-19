@@ -329,7 +329,7 @@ export default defineSimulation({
     };
     const eqV = (v: number) => eqs(v, dV(v));
     /** Basis im Bild: während des Übergangs die mitlaufende Zahl, sonst e bzw. der Reglerwert. */
-    const settled = () => Math.abs(bNow() - baseOf()) < 1e-6 * baseOf();
+    const settled = () => Math.abs(bNow() - baseOf()) < 0.003 * Math.max(1, baseOf());
     const bNum = () => (settled() ? fmt.num(p.b) : fmt.num(rnd(bNow(), 2)));
     const bTxt = () => (p.e && settled() ? '\\t{e}' : bNum());
     /** Name des Logarithmus: ln, log₁₀ oder log_b. */
@@ -1589,7 +1589,7 @@ export default defineSimulation({
             ? tt(`Zahlen multiplizieren:  \\c{a}{${uS}} · \\c{v}{${vS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   Logarithmen addieren`, `Multiply the numbers:  \\c{a}{${uS}} · \\c{v}{${vS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   add the logarithms`)
             : law() === 'quot'
               ? tt(`Zahlen dividieren:  \\c{a}{${uS}} : \\c{v}{${vS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   Logarithmen subtrahieren`, `Divide the numbers:  \\c{a}{${uS}} : \\c{v}{${vS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   subtract the logarithms`)
-              : tt(`Potenzieren:  \\c{a}{${opS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   Logarithmus vervielfachen`, `Raise to a power:  \\c{a}{${opS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   multiply the logarithm`);
+              : tt(`Potenzieren:  \\c{a}{${opS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   Logarithmus vervielfachen`, `\\t{Raise to a power}:  \\c{a}{${opS}} ${eqV(valRes)} \\c{r}{${vr}}   ⇔   multiply the logarithm`);
         pill(r.x + r.w / 2, r.y + r.h - 24, src, { size, maxW: r.w - 24, alpha: clamp01((resReveal - 0.9) * 10) * k.labels, border: c.res });
       }
       g.restore();
@@ -1694,7 +1694,7 @@ export default defineSimulation({
         const s1 = exactTo(q.lu, 4) ? '=' : '≈';
         items.push({ value: `${s1} ${H(nb(`${par(rs)} · ${N4(q.lu)}`))} ${s1 === '=' ? eqs(q.prod, 4) : '≈'} ${H(N4(q.prod))}` });
         items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.prod))} ${eqV(q.value)} ${NV(q.value)}`)} = ${nb(`${par(us)}^{${rs}}`)}`), swatch: c.res });
-        items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`(${bs}^{m})^{r} = ${bs}^{r · m}`)}: ${tt('Beim Potenzieren multipliziert sich die Hochzahl.', 'raising to a power multiplies the exponent.')}`, muted: true });
+        items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`(${bs}^{m})^{r} = ${bs}^{r · m}`)}: ${tt('Beim Potenzieren multipliziert sich die Hochzahl.', 'raising to the power r multiplies the exponent by r.')}`, muted: true });
         items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „hoch r“ wird „r mal“.', '“to the power r” becomes “r times”.'), muted: true });
         return { title: tt('Potenzregel', 'Power rule'), chip: null, chipColor: c.res, head: `${lname}(${us}^{${rs}}) = ${par(rs)} · \\c{a}{${lname} ${us}}`, headColor: th().text, items };
       }
@@ -2112,7 +2112,7 @@ export default defineSimulation({
         if (changed.has('b') || changed.has('e')) {
           const goal = Math.log(baseOf());
           if (instant) LB.jump(goal);
-          else if (source === 'replace') LB.glide(goal, 800, 0, now);
+          else if (source === 'replace' || (source === 'sim' && !dragging())) LB.glide(goal, 800, 0, now);
           else LB.follow(goal, dragging() ? 0.05 : 0.22);
           if (!instant) cardT0 = now;
           if (source === 'input' && !dragging()) lastB = now;
