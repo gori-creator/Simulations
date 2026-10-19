@@ -1241,7 +1241,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('stammfunktion-grafisch', L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'), [12, 13]),
+          {
+            id: 'stammfunktion-grafisch',
+            status: 'ready',
+            slug: L('stammfunktion-grafisch', 'antiderivative-graphically'),
+            title: L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'),
+            summary: L(
+              'Ein Punkt läuft über den Graphen von f, die orientierte Fläche wächst mit – und zeichnet den Graphen einer Stammfunktion F. Die Konstante C verschiebt F; Nullstellen von f werden zu Extremstellen von F.',
+              'A point runs along the graph of f while the signed area grows – drawing the graph of an antiderivative F. The constant C shifts F; zeros of f become extrema of F.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Stammfunktion', 'grafisches Integrieren', 'Integrationskonstante', 'orientierte Fläche', 'Flächenbilanz', 'Integral', 'Ableitung', 'Monotonie', 'Extremstelle', 'Wendestelle'],
+              ['antiderivative', 'graphical integration', 'constant of integration', 'signed area', 'integral', 'derivative', 'monotonicity', 'extremum', 'inflection point'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
           {
