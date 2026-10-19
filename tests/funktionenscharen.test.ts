@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FAMS, slope, type FamKey } from '../src/simulations/mathematik/funktionenscharen/model';
+import { curvature, FAMS, intersections, slope, type FamKey } from '../src/simulations/mathematik/funktionenscharen/model';
 
 describe('Modell: Funktionenscharen', () => {
   it('x³ − kx mit k = 3: H(−1 | 2), T(1 | −2); Ortskurve y = −2x³', () => {
@@ -27,7 +27,7 @@ describe('Modell: Funktionenscharen', () => {
     expect(FAMS.quart.locus(1)).toBe(1);
   });
   it('Plausibilität: Extrempunkte liegen auf der Kurve, f′ = 0, Ortskurve und gemeinsame Punkte stimmen', () => {
-    for (const key of ['cub', 'par', 'exp', 'quart'] as FamKey[]) {
+    for (const key of ['cub', 'par', 'exp', 'quart', 'expk'] as FamKey[]) {
       const fam = FAMS[key];
       for (let i = 0; i < 40; i++) {
         const k = Math.round((Math.random() * 6 - 3) * 10) / 10;
@@ -39,5 +39,44 @@ describe('Modell: Funktionenscharen', () => {
         for (const [x, y] of fam.common) expect(fam.f(k, x)).toBeCloseTo(y, 12);
       }
     }
+  });
+  it('(x − k) · eˣ mit k = 1: T(0 | −1), W(−1 | −2/e); Ortskurven y = −eˣ und y = −2eˣ; kein gemeinsamer Punkt', () => {
+    const e = FAMS.expk.extrema(1)[0]!;
+    expect(e.x).toBe(0);
+    expect(e.y).toBe(-1);
+    const w = FAMS.expk.inflections(1)[0]!;
+    expect(w.x).toBe(-1);
+    expect(w.y).toBeCloseTo(-2 / Math.E, 12);
+    expect(FAMS.expk.common).toEqual([]);
+    expect(intersections(FAMS.expk, 1, 2, -6, 4)).toEqual([]);
+  });
+  it('Wendepunkte: x · e^(−kx) bei k = 1 in (2 | 2/e²), kx² − x⁴ bei k = 6 in (±1 | 5)', () => {
+    const w = FAMS.exp.inflections(1)[0]!;
+    expect(w.x).toBe(2);
+    expect(w.y).toBeCloseTo(2 / Math.E ** 2, 12);
+    const q = FAMS.quart.inflections(6);
+    expect(q[1]!.x).toBeCloseTo(1, 12);
+    expect(q[1]!.y).toBe(5);
+    expect(FAMS.quart.wlocus!(1)).toBe(5);
+    expect(FAMS.quart.inflections(-1)).toEqual([]);
+  });
+  it('Plausibilität Wendepunkte: auf der Kurve, f″ = 0 mit Vorzeichenwechsel, auf der Ortskurve', () => {
+    for (const key of ['cub', 'exp', 'quart', 'expk'] as FamKey[]) {
+      const fam = FAMS[key];
+      for (const k of [-2.5, -1, 0.5, 1, 2.2]) {
+        for (const w of fam.inflections(k)) {
+          expect(fam.f(k, w.x)).toBeCloseTo(w.y, 9);
+          expect(Math.abs(curvature(fam, k, w.x))).toBeLessThan(1e-3);
+          expect(curvature(fam, k, w.x - 0.05) * curvature(fam, k, w.x + 0.05)).toBeLessThan(0);
+          if (fam.wlocus) expect(fam.wlocus(w.x)).toBeCloseTo(w.y, 9);
+        }
+      }
+    }
+  });
+  it('Schnittstellen zweier Scharkurven = gemeinsame Punkte', () => {
+    expect(intersections(FAMS.par, 1, 2, -3, 4)[0]).toBeCloseTo(0.5, 9);
+    const c = intersections(FAMS.cub, 1, 2, -3, 3.001);
+    expect(c).toHaveLength(1);
+    expect(Math.abs(c[0]!)).toBeLessThan(1e-9);
   });
 });

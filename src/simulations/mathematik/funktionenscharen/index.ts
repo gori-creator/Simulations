@@ -1,32 +1,100 @@
 import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaStyle } from './formula';
-import { FAMS, type FamKey } from './model';
+import { FAMS, intersections, type FamKey } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+const lerpK = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const KMIN = -3;
 const KMAX = 3;
 const SWEEP_MS = 7000;
+const INTRO_MS = 1100;
 
-/** Darstellung und Texte je Schar. */
-const INFO: Record<FamKey, { x: [number, number]; y: [number, number]; term: string; ext: string; locus: string; kFromX: (x: number) => number }> = {
-  cub: { x: [-3, 3], y: [-6, 6], term: 'f_k(x) = x³ − kx', ext: 'x_{1,2} = ±\\r{\\f{k}{3}}  \\t{(für} k > 0\\t{)}', locus: 'y = −2x³', kFromX: (x) => 3 * x * x },
-  par: { x: [-3, 4], y: [-8, 4], term: 'f_k(x) = x² − 2kx + k', ext: 'T(k | k − k²)', locus: 'y = x − x²', kFromX: (x) => x },
-  exp: { x: [-3, 6], y: [-1.6, 2.2], term: 'f_k(x) = x · e^{−kx}', ext: '(\\f{1}{k} | \\f{1}{k · e})  \\t{(für} k ≠ 0\\t{)}', locus: 'y = \\f{x}{e}', kFromX: (x) => 1 / x },
-  quart: { x: [-3, 3], y: [-3, 3.5], term: 'f_k(x) = kx² − x^4', ext: 'H(±\\r{\\f{k}{2}} | \\f{k²}{4})  \\t{(für} k > 0\\t{)}', locus: 'y = x^4', kFromX: (x) => 2 * x * x },
+/**
+ * Darstellung und Texte je Schar: Term, Extrempunkte, Ortskurve mit
+ * Herleitung (locD), Herleitung der gemeinsamen Punkte (comD), Wendepunkte
+ * (wp) und deren Ortskurve (wloc).
+ */
+const INFO: Record<
+  FamKey,
+  { x: [number, number]; y: [number, number]; term: string; ext: string; locus: string; locD: [string, string]; comD: string; wp: string | null; wloc: string | null; kFromX: (x: number) => number }
+> = {
+  cub: {
+    x: [-3, 3],
+    y: [-6, 6],
+    term: 'f_k(x) = x³ − kx',
+    ext: 'x_{1,2} = ±\\r{\\f{k}{3}}  \\t{(für} k > 0\\t{)}',
+    locus: 'y = −2x³',
+    locD: ['x² = \\f{k}{3}  ⇒  k = 3x²', 'y = x³ − kx = x³ − 3x³ = −2x³'],
+    comD: '(k₂ − k₁) · x = 0  ⇒  x = 0',
+    wp: 'W(0 | 0)',
+    wloc: null,
+    kFromX: (x) => 3 * x * x,
+  },
+  par: {
+    x: [-3, 4],
+    y: [-8, 4],
+    term: 'f_k(x) = x² − 2kx + k',
+    ext: 'T(k | k − k²)',
+    locus: 'y = x − x²',
+    locD: ['x = k', 'y = k − k² = x − x²'],
+    comD: '(k₂ − k₁) · (2x − 1) = 0  ⇒  x = \\f{1}{2}',
+    wp: null,
+    wloc: null,
+    kFromX: (x) => x,
+  },
+  exp: {
+    x: [-3, 6],
+    y: [-1.6, 2.2],
+    term: 'f_k(x) = x · e^{−kx}',
+    ext: '(\\f{1}{k} | \\f{1}{k · e})  \\t{(für} k ≠ 0\\t{)}',
+    locus: 'y = \\f{x}{e}',
+    locD: ['x = \\f{1}{k}  ⇒  k = \\f{1}{x}', 'y = \\f{1}{k · e} = \\f{x}{e}'],
+    comD: 'x · (e^{−k₁x} − e^{−k₂x}) = 0  ⇒  x = 0',
+    wp: 'W(\\f{2}{k} | \\f{2}{k · e²})',
+    wloc: 'y = \\f{x}{e²}',
+    kFromX: (x) => 1 / x,
+  },
+  quart: {
+    x: [-3, 3],
+    y: [-3, 3.5],
+    term: 'f_k(x) = kx² − x^4',
+    ext: 'H(±\\r{\\f{k}{2}} | \\f{k²}{4})  \\t{(für} k > 0\\t{)}',
+    locus: 'y = x^4',
+    locD: ['x² = \\f{k}{2}  ⇒  k = 2x²', 'y = \\f{k²}{4} = \\f{(2x²)²}{4} = x^4'],
+    comD: '(k₁ − k₂) · x² = 0  ⇒  x = 0',
+    wp: 'W(±\\r{\\f{k}{6}} | \\f{5k²}{36})',
+    wloc: 'y = 5x^4',
+    kFromX: (x) => 2 * x * x,
+  },
+  expk: {
+    x: [-5, 3],
+    y: [-3.5, 3],
+    term: 'f_k(x) = (x − k) · e^x',
+    ext: 'T(k − 1 | −e^{k − 1})',
+    locus: 'y = −e^x',
+    locD: ['x = k − 1  ⇒  k = x + 1', 'y = −e^{k − 1} = −e^x'],
+    comD: '(k₂ − k₁) · e^x = 0  \\t{– nie erfüllt}',
+    wp: 'W(k − 2 | −2e^{k − 2})',
+    wloc: 'y = −2e^x',
+    kFromX: (x) => x + 1,
+  },
 };
 
 /**
- * Funktionenscharen: Viele Graphen einer Schar f_k blass im Hintergrund, der
- * aktuelle kräftig. Die Extrempunkte wandern beim Ändern von k auf ihrer
- * Ortskurve (auch direkt ziehbar); gemeinsame Punkte aller Scharkurven sind
- * markiert. Daneben die Fallunterscheidung nach k.
+ * Funktionenscharen: Viele Graphen einer Schar f_k blass im Hintergrund (beim
+ * Laden fächern sie nacheinander auf), der aktuelle kräftig. Unter dem
+ * Koordinatensystem ein ziehbarer k-Strahl mit der Fallunterscheidung. Die
+ * Extrempunkte wandern beim Ändern von k auf ihrer Ortskurve (auch direkt
+ * ziehbar); gemeinsame Punkte aller Scharkurven sind markiert, wahlweise auch die Wendepunkte mit ihrer Ortskurve. Daneben
+ * Extrempunkte in Abhängigkeit von k und die Herleitungen von Ortskurve und
+ * gemeinsamen Punkten.
  */
 export default defineSimulation({
   id: 'funktionenscharen',
   dragHint: true,
-  layout: { aspect: 1.62, aspectNarrow: 0.48 },
+  layout: { aspect: 1.5, aspectNarrow: 0.44 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -38,12 +106,14 @@ export default defineSimulation({
         { value: 'par', label: L('f_k(x) = x² − 2kx + k', 'f_k(x) = x² − 2kx + k') },
         { value: 'exp', label: L('f_k(x) = x · e^(−kx)', 'f_k(x) = x · e^(−kx)') },
         { value: 'quart', label: L('f_k(x) = kx² − x⁴', 'f_k(x) = kx² − x⁴') },
+        { value: 'expk', label: L('f_k(x) = (x − k) · eˣ', 'f_k(x) = (x − k) · eˣ') },
       ],
       default: 'cub',
     },
     { key: 'k', type: 'number', label: L('Parameter k', 'Parameter k'), min: KMIN, max: KMAX, step: 0.1, default: 1.5, help: L('Auch einen Extrempunkt ziehen.', 'You can also drag an extremum.') },
     { key: 'many', type: 'boolean', group: 'view', label: L('Weitere Scharkurven zeigen', 'Show more members of the family'), default: true },
     { key: 'loc', type: 'boolean', group: 'view', label: L('Ortskurve der Extrempunkte', 'Locus of the extrema'), default: true },
+    { key: 'wp', type: 'boolean', group: 'view', label: L('Wendepunkte und ihre Ortskurve', 'Points of inflection and their locus'), default: false },
     { key: 'show', type: 'boolean', group: 'view', label: L('Ergebnisse zeigen', 'Show the results'), help: L('Aus: Extrempunkte und Ortskurve selbst bestimmen.', 'Off: find the extrema and the locus yourself.'), default: true },
   ],
   actions: [{ id: 'sweep', label: L('k durchlaufen lassen', 'Run through k'), primary: true }],
@@ -57,6 +127,8 @@ export default defineSimulation({
     { id: 'par', label: L('Parabelschar mit gemeinsamem Punkt', 'Parabolas with a common point'), values: { fam: 'par', k: 1 } },
     { id: 'exp', label: L('x · e^(−kx)', 'x · e^(−kx)'), values: { fam: 'exp', k: 1 } },
     { id: 'quart', label: L('kx² − x⁴: W oder umgedrehtes U', 'kx² − x⁴: M shape or upside-down U'), values: { fam: 'quart', k: 2 } },
+    { id: 'expk', label: L('(x − k) · eˣ: kein gemeinsamer Punkt', '(x − k) · eˣ: no common point'), values: { fam: 'expk', k: 1 } },
+    { id: 'wp', label: L('Wendepunkte von x · e^(−kx)', 'Inflection points of x · e^(−kx)'), values: { fam: 'exp', k: 1, wp: true } },
   ],
   strings: {
     de: {
@@ -81,6 +153,19 @@ export default defineSimulation({
       c_quart_pos: 'k > 0: zwei Hochpunkte und ein Tiefpunkt (M-Form).',
       c_quart_neg: 'k ≤ 0: nur ein Hochpunkt bei (0 | 0).',
       locNote: 'Aus x = … nach k auflösen und in y einsetzen.',
+      comNone: 'Kein gemeinsamer Punkt',
+      comD: 'Ansatz:',
+      wpT: 'Wendepunkte',
+      wpAll: 'für alle k',
+      wpNone: 'keine Wendepunkte',
+      kStrip: 'Parameter k',
+      c_expk: 'Für jedes k ein Tiefpunkt; die Kurven sind waagerecht verschoben.',
+      s_none: 'keine Extrema',
+      s_tp: 'Terrassenpunkt',
+      s_ht: 'H und T',
+      s_t: 'Tiefpunkt',
+      s_h: 'Hochpunkt',
+      s_hth: '2 H, 1 T',
     },
     en: {
       canvas: 'Coordinate system with several graphs of a family of functions (faint) and the graph for the chosen parameter k (bold); the extrema lie on a dashed locus and can be dragged along it; points common to all members are marked. Next to it the general term, the extrema depending on k and the case analysis.',
@@ -104,6 +189,19 @@ export default defineSimulation({
       c_quart_pos: 'k > 0: two maxima and one minimum (M shape).',
       c_quart_neg: 'k ≤ 0: only a maximum at (0 | 0).',
       locNote: 'Solve x = … for k and substitute into y.',
+      comNone: 'No common point',
+      comD: 'set',
+      wpT: 'Points of inflection',
+      wpAll: 'for all k',
+      wpNone: 'no points of inflection',
+      kStrip: 'parameter k',
+      c_expk: 'For every k a minimum; the curves are shifted horizontally.',
+      s_none: 'no extrema',
+      s_tp: 'terrace point',
+      s_ht: 'max. and min.',
+      s_t: 'minimum',
+      s_h: 'maximum',
+      s_hth: '2 max., 1 min.',
     },
   },
 
@@ -126,31 +224,42 @@ export default defineSimulation({
       ext: () => th().series[1]!,
       loc: () => th().series[3]!,
       com: () => th().series[2]!,
+      wp: () => th().series[5]!,
     };
     const n2 = (v: number) => fmt.num(Math.abs(v) < 5e-4 ? 0 : v, 2);
     const Q = (s: string) => (p.show ? s : '?');
 
     /* ---------- Aufteilung ---------- */
-    function regions(): { plot: Rect; col: Rect } {
+    const STRIP = 58;
+    function regions(): { plot: Rect; strip: Rect; col: Rect } {
       const w = surface.width;
       const h = surface.height;
+      let left: Rect;
+      let colR: Rect;
       if (!wideLayout()) {
-        const ph = Math.round(clamp(w * 0.9, 260, h * 0.48));
-        return { plot: { x: 0, y: 0, w, h: ph }, col: { x: 2, y: ph + 6, w: w - 4, h: h - ph - 8 } };
+        const ph = Math.round(clamp(w * 1.05, 300, h * 0.52));
+        left = { x: 0, y: 0, w, h: ph };
+        colR = { x: 2, y: ph + 6, w: w - 4, h: h - ph - 8 };
+      } else {
+        const cw = Math.round(clamp(w * 0.38, 270, 370));
+        left = { x: 0, y: 0, w: w - cw - 10, h };
+        colR = { x: w - cw, y: 2, w: cw - 2, h: h - 4 };
       }
-      const cw = Math.round(clamp(w * 0.38, 270, 370));
-      return { plot: { x: 0, y: 0, w: w - cw - 10, h }, col: { x: w - cw, y: 2, w: cw - 2, h: h - 4 } };
+      return { plot: { ...left, h: left.h - STRIP - 4 }, strip: { x: left.x, y: left.y + left.h - STRIP, w: left.w, h: STRIP }, col: colR };
     }
     const plot = new Plot(surface, { x: [-3, 3], y: [-6, 6], equalAspect: false, pan: false, zoom: false, controls: false, region: () => regions().plot });
+    const plotK = new Plot(surface, { x: [KMIN, KMAX], y: [-1, 1], equalAspect: false, pan: false, zoom: false, controls: false, region: () => regions().strip, xAxis: { label: '' }, yAxis: { label: '' } });
 
     /* ---------- Zustand ---------- */
     let shownK = p.k;
     let lastFrame = performance.now();
     let dragging = 0;
     const sweep = new Tween(SWEEP_MS, ease.linear);
+    const intro = new Tween(INTRO_MS, ease.outCubic);
     let sweepFrom = p.k;
     /** Spur der Extrempunkte während des Durchlaufs */
     let trail: [number, number][] = [];
+    let wtrail: [number, number][] = [];
 
     /** k während des Durchlaufs: von k nach KMIN, dann bis KMAX und zurück zu k. */
     function sweepK(t: number): number {
@@ -181,11 +290,23 @@ export default defineSimulation({
       color: () => col.ext(),
     });
 
+    // k direkt auf dem k-Strahl ziehen
+    plotK.addHandle({
+      get: () => [shownK, 0],
+      set: (x) => {
+        dragging = performance.now();
+        ctx.set({ k: Math.round(clamp(x, KMIN, KMAX) * 10) / 10 });
+      },
+      axis: 'x',
+      enabled: () => !ctx.locked && !sweep.running,
+      color: () => col.f(),
+    });
+
     /* ---------- Ergebnisse ---------- */
     function updateReadouts(): void {
       const e = fam().extrema(p.k);
       ctx.readout('ext', e.length ? e.map((q) => `${ctx.t(q.kind)}(${n2(q.x)} | ${n2(q.y)})`).join('; ') : ctx.t('none'));
-      ctx.readout('loc', INFO[key()].locus.replace(/\\f\{([^}]*)\}\{([^}]*)\}/g, '$1/$2').replace(/\^4/g, '⁴'));
+      ctx.readout('loc', INFO[key()].locus.replace(/\\f\{([^}]*)\}\{([^}]*)\}/g, '$1/$2').replace(/\^4/g, '⁴').replace(/\^x/g, 'ˣ'));
     }
 
     /* ---------- Bausteine ---------- */
@@ -234,7 +355,7 @@ export default defineSimulation({
       mathFont: th().mathFont,
       color,
       weight,
-      palette: { f: col.f(), x: col.ext(), l: col.loc(), c: col.com(), m: th().muted },
+      palette: { f: col.f(), x: col.ext(), l: col.loc(), c: col.com(), w: col.wp(), m: th().muted },
     });
     function fitFormula(src: string, maxW: number, size: number, color = th().text, weight = 600) {
       const g = surface.g;
@@ -281,6 +402,8 @@ export default defineSimulation({
           return Math.abs(kk) < 1e-9 ? 'x' : `x · e^{${kk > 0 ? '−' : ''}${Math.abs(kk) === 1 ? '' : fmt.num(Math.abs(kk), 1)}x}`;
         case 'quart':
           return `${s(kk, 'x²', true) || ''}${kk === 0 ? '−x^4' : ' − x^4'}`;
+        case 'expk':
+          return Math.abs(kk) < 1e-9 ? 'x · e^x' : `(x ${kk > 0 ? '−' : '+'} ${fmt.num(Math.abs(kk), 1)}) · e^x`;
       }
     }
     function caseText(k: number): string {
@@ -294,6 +417,34 @@ export default defineSimulation({
           return ctx.t(kk > 0 ? 'c_exp_pos' : kk < 0 ? 'c_exp_neg' : 'c_exp_0');
         case 'quart':
           return ctx.t(kk > 0 ? 'c_quart_pos' : 'c_quart_neg');
+        case 'expk':
+          return ctx.t('c_expk');
+      }
+    }
+    /** Fallunterscheidung als Abschnitte auf dem k-Strahl (k = at: Sonderfall an einer Stelle). */
+    function caseSegs(): { from: number; to: number; label: string; color: string; at?: number }[] {
+      const none = th().muted;
+      switch (key()) {
+        case 'cub':
+          return [
+            { from: KMIN, to: 0, label: ctx.t('s_none'), color: none },
+            { from: 0, to: 0, at: 0, label: ctx.t('s_tp'), color: col.wp() },
+            { from: 0, to: KMAX, label: ctx.t('s_ht'), color: col.ext() },
+          ];
+        case 'par':
+        case 'expk':
+          return [{ from: KMIN, to: KMAX, label: ctx.t('s_t'), color: col.ext() }];
+        case 'exp':
+          return [
+            { from: KMIN, to: 0, label: ctx.t('s_t'), color: col.loc() },
+            { from: 0, to: 0, at: 0, label: ctx.t('s_none'), color: none },
+            { from: 0, to: KMAX, label: ctx.t('s_h'), color: col.ext() },
+          ];
+        case 'quart':
+          return [
+            { from: KMIN, to: 0, label: ctx.t('s_h'), color: col.loc() },
+            { from: 0, to: KMAX, label: ctx.t('s_hth'), color: col.ext() },
+          ];
       }
     }
 
@@ -310,9 +461,14 @@ export default defineSimulation({
       const r = plot.rect;
       // weitere Scharkurven
       if (p.many) {
-        for (let k = KMIN; k <= KMAX + 1e-9; k += 0.5) {
+        const iv = intro.running ? intro.value : 1;
+        let idx = 0;
+        for (let k = KMIN; k <= KMAX + 1e-9; k += 0.5, idx++) {
           if (Math.abs(k - shownK) < 0.05) continue;
-          plot.fn((x) => fa.f(k, x), { color: withAlpha(col.many(), theme.dark ? 0.3 : 0.22), width: 1.4 });
+          // beim Laden fächern die Scharkurven nacheinander auf
+          const a = clamp(iv * 1.8 - idx / 13, 0, 1);
+          if (a <= 0) continue;
+          plot.fn((x) => fa.f(lerpK(shownK, k, a), x), { color: withAlpha(col.many(), (theme.dark ? 0.3 : 0.22) * a), width: 1.4 });
         }
       }
       // Ortskurve
@@ -335,6 +491,7 @@ export default defineSimulation({
       }
       // Spur beim Durchlauf
       for (const [x, y] of trail) plot.point(x, y, { color: withAlpha(col.ext(), 0.35), radius: 2.5 });
+      for (const [x, y] of wtrail) plot.point(x, y, { color: withAlpha(col.wp(), 0.35), radius: 2.2 });
       // aktuelle Kurve
       g.save();
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : mixColor(col.f(), '#ffffff', 0.5, 0.6);
@@ -348,6 +505,34 @@ export default defineSimulation({
         if (p.show && !onExt) {
           const [px, py] = plot.toPx(cx, cy);
           tag(px - 10, py - 16, `\\c{c}{(${n2(cx)} | ${n2(cy)})}`, col.com(), 'right', F(12, 11));
+        }
+      }
+      // Wendepunkte und ihre Ortskurve
+      if (p.wp) {
+        if (fa.wlocus && p.show) {
+          g.save();
+          g.setLineDash([3, 5]);
+          plot.fn(fa.wlocus, { color: withAlpha(col.wp(), 0.9), width: 2 });
+          g.restore();
+        }
+        for (const w of fa.inflections(shownK)) {
+          if (w.x < info.x[0] || w.x > info.x[1] || w.y < info.y[0] || w.y > info.y[1]) continue;
+          const [px, py] = plot.toPx(w.x, w.y);
+          g.save();
+          g.fillStyle = col.wp();
+          g.strokeStyle = theme.bg;
+          g.lineWidth = 2;
+          g.beginPath();
+          g.moveTo(px, py - 7);
+          g.lineTo(px + 7, py);
+          g.lineTo(px, py + 7);
+          g.lineTo(px - 7, py);
+          g.closePath();
+          g.fill();
+          g.stroke();
+          g.restore();
+          const lab = p.show ? `W(${n2(w.x)} | ${n2(w.y)})` : 'W';
+          tag(px + (w.x > 0 ? 10 : -10), py - 14, `\\c{w}{${lab}}`, col.wp(), w.x > 0 ? 'left' : 'right', F(12, 11));
         }
       }
       // Extrempunkte
@@ -402,30 +587,113 @@ export default defineSimulation({
       return h;
     }
 
-    function locCard(R: Rect): void {
+    /** Ortskurve mit Herleitung, gemeinsame Punkte mit Ansatz, Wendepunkte. Gibt die benötigte Höhe zurück (R.h ≤ 0: nur messen). */
+    function locCard(R: Rect): number {
       const g = surface.g;
       const theme = th();
       const pad = F(14, 12);
-      card(R);
-      title(R.x + pad, R.y + 16, ctx.t('locT'), col.loc());
       const info = INFO[key()];
-      const fs = F(15, 13.5);
-      let y = R.y + 28;
-      const b = fitFormula(`\\c{l}{${p.show ? info.locus : 'y = ?'}}`, R.w - 2 * pad, fs);
-      b.draw(g, R.x + pad + 6, y + b.asc);
-      y += b.asc + b.desc + 8;
-      const nf = font(600, F(12, 11));
-      for (const row of wrap(ctx.t('locNote'), R.w - 2 * pad, nf)) {
-        text(g, row, R.x + pad, y + 6, { font: nf, color: theme.muted, align: 'left' });
-        y += 15;
+      const fa = fam();
+      const fs = F(14, 12.5);
+      const maxW = R.w - 2 * pad - 6;
+      const nf = font(600, F(11.5, 10.5));
+      type Row = { t: 'title'; s: string; c: string } | { t: 'f'; s: string; c?: string } | { t: 'note'; s: string };
+      const rows: Row[] = [{ t: 'title', s: ctx.t('locT'), c: col.loc() }];
+      if (p.show) {
+        rows.push({ t: 'f', s: info.locD[0], c: theme.muted }, { t: 'f', s: `\\c{l}{${info.locD[1]}}` });
+      } else {
+        rows.push({ t: 'f', s: '\\c{l}{y = ?}' }, { t: 'note', s: ctx.t('locNote') });
       }
-      y += 8;
-      if (y + 40 > R.y + R.h) return;
-      title(R.x + pad, y + 6, ctx.t('comT'), col.com());
-      y += 16;
-      const c = fam().common.map(([x0, y0]) => `(${Q(n2(x0))} | ${Q(n2(y0))})`).join(', ');
-      const b2 = fitFormula(`\\c{c}{${c}}`, R.w - 2 * pad, fs);
-      b2.draw(g, R.x + pad + 6, y + b2.asc);
+      rows.push({ t: 'title', s: fa.common.length ? ctx.t('comT') : ctx.t('comNone'), c: col.com() });
+      rows.push({ t: 'f', s: `\\t{${ctx.t('comD')}} f_{k₁}(x) = f_{k₂}(x), k₁ ≠ k₂`, c: theme.muted });
+      rows.push({ t: 'f', s: p.show ? `\\c{c}{${info.comD}}` : '\\c{c}{?}' });
+      if (p.wp) {
+        rows.push({ t: 'title', s: ctx.t('wpT'), c: col.wp() });
+        const ws = fa.inflections(p.k);
+        if (!info.wp) rows.push({ t: 'f', s: `\\t{${ctx.t('wpNone')}}` });
+        else if (p.show) {
+          rows.push({ t: 'f', s: `\\c{w}{${info.wp}}${info.wloc ? '' : `  \\t{${ctx.t('wpAll')}}`}` });
+          if (info.wloc) rows.push({ t: 'f', s: `\\t{${ctx.t('locT')}:} \\c{w}{${info.wloc}}` });
+          if (!ws.length) rows.push({ t: 'f', s: `\\t{k = ${fmt.num(p.k, 1)}: ${ctx.t('wpNone')}}`, c: theme.muted });
+        } else rows.push({ t: 'f', s: '\\c{w}{W(? | ?)}' });
+      }
+      // Messen
+      const boxes = rows.map((r) => (r.t === 'f' ? fitFormula(r.s, maxW, fs, r.c ?? theme.text) : null));
+      const noteRows = rows.map((r) => (r.t === 'note' ? wrap(r.s, R.w - 2 * pad, nf) : []));
+      let h = 10;
+      rows.forEach((r, i) => {
+        if (r.t === 'title') h += i ? 24 : 18;
+        else if (r.t === 'note') h += noteRows[i]!.length * 15 + 2;
+        else h += boxes[i]!.asc + boxes[i]!.desc + 6;
+      });
+      h += 6;
+      if (R.h <= 0) return h;
+      card({ ...R, h: Math.min(h, R.h) });
+      let y = R.y + 6;
+      rows.forEach((r, i) => {
+        if (y > R.y + R.h - 12) return;
+        if (r.t === 'title') {
+          if (i) y += 6;
+          title(R.x + pad, y + 10, r.s, r.c);
+          y += 18;
+        } else if (r.t === 'note') {
+          for (const row of noteRows[i]!) {
+            text(g, row, R.x + pad, y + 7, { font: nf, color: theme.muted, align: 'left' });
+            y += 15;
+          }
+          y += 2;
+        } else {
+          const b = boxes[i]!;
+          b.draw(g, R.x + pad + 6, y + b.asc);
+          y += b.asc + b.desc + 6;
+        }
+      });
+      return h;
+    }
+
+    /** k-Strahl: Fallunterscheidung als farbige Abschnitte, aktueller Wert ziehbar. */
+    function drawStrip(): void {
+      const g = surface.g;
+      const theme = th();
+      plotK.setRangePadded([KMIN, KMAX], [-1, 1], { left: 26, right: 26, top: 22, bottom: 16 });
+      plotK.begin();
+      const y0 = plotK.py(0);
+      const segs = caseSegs();
+      for (const sg of segs) {
+        if (sg.at !== undefined) continue;
+        const x0 = plotK.px(sg.from);
+        const x1 = plotK.px(sg.to);
+        g.fillStyle = withAlpha(sg.color, theme.dark ? 0.35 : 0.22);
+        roundRect(g, x0 + 1, y0 - 6, x1 - x0 - 2, 12, 6);
+        g.fill();
+        text(g, sg.label, (x0 + x1) / 2, y0 - 16, { font: font(700, F(11, 10)), color: mixColor(sg.color, theme.text, 0.25) });
+      }
+      for (const sg of segs) {
+        if (sg.at === undefined) continue;
+        plotK.point(sg.at, 0, { color: sg.color, radius: 5 });
+      }
+      const tf = font(600, 10);
+      for (let k = KMIN; k <= KMAX; k++) {
+        const x = plotK.px(k);
+        g.strokeStyle = withAlpha(theme.text, 0.5);
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(x, y0 + 6);
+        g.lineTo(x, y0 + 10);
+        g.stroke();
+        text(g, fmt.num(k, 0), x, y0 + 17, { font: tf, color: theme.muted });
+      }
+      text(g, 'k', plotK.rect.x + plotK.rect.w - 8, y0 + 1, { font: font(700, 12), color: theme.muted });
+      // aktueller Wert
+      const xk = plotK.px(shownK);
+      g.fillStyle = col.f();
+      g.strokeStyle = theme.bg;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.arc(xk, y0, 7, 0, Math.PI * 2);
+      g.fill();
+      g.stroke();
+      plotK.end();
     }
 
     /* ---------- Rendern ---------- */
@@ -438,6 +706,8 @@ export default defineSimulation({
       if (sweep.running) {
         shownK = sweepK(sweep.value);
         for (const e of fam().extrema(shownK)) if (e.kind !== 'saddle') trail.push([e.x, e.y]);
+        if (p.wp) for (const w of fam().inflections(shownK)) wtrail.push([w.x, w.y]);
+        if (wtrail.length > 1500) wtrail = wtrail.slice(-1500);
         if (trail.length > 1500) trail = trail.slice(-1500);
       } else if (dragging || reduced || Math.abs(p.k - shownK) < 1e-3) shownK = p.k;
       else {
@@ -446,19 +716,25 @@ export default defineSimulation({
       }
       surface.begin();
       plot.resize();
+      plotK.resize();
       drawPlot();
+      drawStrip();
       const C = regions().col;
       const gap = F(10, 8);
       const h1 = famCard({ ...C, h: 0 });
       famCard({ x: C.x, y: C.y, w: C.w, h: h1 });
-      if (C.h - h1 - gap > 90) locCard({ x: C.x, y: C.y + h1 + gap, w: C.w, h: Math.min(C.h - h1 - gap, F(170, 160)) });
-      if (moving || dragging || sweep.running) ctx.requestRender();
+      const rest = C.h - h1 - gap;
+      if (rest > 90) locCard({ x: C.x, y: C.y + h1 + gap, w: C.w, h: Math.min(rest, locCard({ ...C, h: 0 })) });
+      if (moving || dragging || sweep.running || intro.running) ctx.requestRender();
     }
 
     return {
-      update(changed) {
+      update(changed, source) {
+        if (source === 'init' && !reduced) intro.play(INTRO_MS);
+        if (changed.has('fam') && source !== 'init' && !reduced) intro.play(INTRO_MS);
         if (changed.has('fam')) {
           trail = [];
+          wtrail = [];
           shownK = p.k;
         }
         updateReadouts();
@@ -467,6 +743,7 @@ export default defineSimulation({
       action(id) {
         if (id !== 'sweep') return;
         trail = [];
+        wtrail = [];
         sweepFrom = p.k;
         sweep.play(reduced ? 1 : SWEEP_MS);
         ctx.requestRender();

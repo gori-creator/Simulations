@@ -1230,14 +1230,14 @@ export const mathematik: Subject = {
             slug: L('funktionenscharen', 'families-of-functions'),
             title: L('Funktionenscharen', 'Families of functions'),
             summary: L(
-              'Viele Graphen einer Schar f_k auf einen Blick: Wie hängen Extrempunkte vom Parameter k ab, auf welcher Ortskurve wandern sie, welche Punkte haben alle Kurven gemeinsam? Mit Fallunterscheidung und ziehbaren Extrempunkten.',
-              'Many graphs of a family f_k at a glance: how do the extrema depend on the parameter k, along which locus do they move, which points do all curves share? With case analysis and draggable extrema.',
+              'Viele Graphen einer Schar f_k auf einen Blick: Wie hängen Extrem- und Wendepunkte vom Parameter k ab, auf welcher Ortskurve wandern sie, welche Punkte haben alle Kurven gemeinsam – und wann keine? Mit Herleitungen, ziehbaren Extrempunkten und der Fallunterscheidung auf einem k-Strahl.',
+              'Many graphs of a family f_k at a glance: how do extrema and points of inflection depend on the parameter k, along which locus do they move, which points do all curves share – and when none? With derivations, draggable extrema and the case analysis on a k-axis.',
             ),
             grades: [12, 13],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K2'],
             keywords: L(
-              ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'e-Funktion', 'ganzrationale Funktion'],
-              ['family of functions', 'family of curves', 'parameter', 'locus', 'extrema', 'common point', 'case analysis', 'exponential function', 'polynomial'],
+              ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'Wendepunkt', 'e-Funktion', 'ganzrationale Funktion'],
+              ['family of functions', 'family of curves', 'parameter', 'locus', 'extrema', 'common point', 'case analysis', 'point of inflection', 'exponential function', 'polynomial'],
             ),
             thumb: 'generic',
           },
