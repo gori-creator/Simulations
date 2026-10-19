@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M10 55 L310 55 M10 140 L310 140" stroke-width="2" stroke-opacity="0.35"/>
-  <path d="M110 55 C130 75 150 80 160 80 C180 80 200 70 220 55 Z" fill="currentColor" fill-opacity="0.25" stroke="none"/>
-  <path d="M40 10 C80 70 120 80 160 80 S240 40 280 10" stroke-width="5"/>
-  <path d="M30 120 C80 90 100 100 160 140 S240 170 290 110" stroke-width="4" stroke-opacity="0.6"/>
-  <path d="M30 100 C80 70 100 80 160 120 S240 150 290 90" stroke-width="2" stroke-opacity="0.3"/>
+  <path d="M20 66 L300 66 M20 138 L300 138" stroke-width="2" stroke-opacity="0.3"/>
+  <path d="M40 12 C90 92 130 80 160 80 S230 92 280 12" stroke-width="4"/>
+  <path d="M60 118 l14 -8 M60 148 l14 -8 M110 126 l14 0 M110 156 l14 0 M200 128 l14 0 M200 158 l14 0 M250 126 l14 -8 M250 156 l14 -8" stroke-width="3" stroke-opacity="0.45"/>
+  <path d="M30 170 C70 112 110 118 160 140 S250 166 290 108" stroke-width="5"/>
+  <path d="M30 150 C70 92 110 98 160 120 S250 146 290 88" stroke-width="2.5" stroke-opacity="0.35"/>
+  <circle cx="160" cy="140" r="7" fill="currentColor" fill-opacity="0.35"/>
 </svg>
