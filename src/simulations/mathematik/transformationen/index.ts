@@ -1879,9 +1879,14 @@ export default defineSimulation({
       if (simp) gs += ` ${simp}`;
       if (order() === 'swap') gs += `; ${T2('vertauscht', 'swapped')}: ${termSrc(kd, t, plain, { name: 'h', swap: true })}`;
       ctx.readout('g', { html: toHtml(gs) });
-      const [u1, v1] = anchors(kd).p1;
-      const [x1, y1] = mapPoint(t, u1, v1);
-      ctx.readout('map', { html: toHtml(`${pt('0', '0')} \\t{↦} ${pt(N(t.c), N(t.d))};  ${pt(X(u1), N(v1))} \\t{↦} ${pt(X(x1), N(y1))}`) });
+      // Nur Punkte, die wirklich auf dem Graphen von f liegen (der Anker ist bei 1/x und 2ˣ kein Graphpunkt)
+      const maps = keyPoints(kd)
+        .slice(0, 3)
+        .map(([u, v]) => {
+          const [x, y] = mapPoint(t, u, v);
+          return `${pt(X(u), N(v))} \\t{↦} ${pt(X(x), N(y))}`;
+        });
+      ctx.readout('map', { html: toHtml(maps.join(';  ')) });
       const parts = [`D_g = ${setSrc(domainOf(kd, t), true)}`, `W_g = ${setSrc(rangeOf(kd, t), false)}`];
       if (kd === 'sin') parts.push(`${T2('Periode', 'period')} ${piSrc(sineData(t).period) ?? N(sineData(t).period)}`);
       ctx.readout('prop', { html: toHtml(parts.join(';  ')) });
