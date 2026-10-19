@@ -242,58 +242,43 @@ export default defineSimulation({
     const caseAlpha = (id: string): number => caseA.get(id)?.at(now) ?? 0;
 
     /* ---------------- Entscheidungsbaum ---------------- */
+    /** Knoten des Entscheidungsbaums: Spalte (Mitte, links, rechts), Zeile, Elternknoten und „ja“/„nein“ an der Kante. */
     interface TreeNode {
       id: string;
-      x: number;
-      lvl: number;
+      col: 'c' | 'L' | 'R';
+      row: number;
       text: string;
       leaf?: boolean;
+      parent?: string;
+      yes?: boolean;
     }
-    interface TreeEdge {
-      from: string;
-      to: string;
-      yes: boolean;
-    }
-    function tree(): { nodes: TreeNode[]; edges: TreeEdge[]; paths: Record<string, string[]> } | null {
+    function tree(): { nodes: TreeNode[]; paths: Record<string, string[]> } | null {
       if (mode() === 'll') {
         return {
           nodes: [
-            { id: 'q1', x: 0.5, lvl: 0, text: tt('Richtungen parallel?', 'Directions parallel?') },
-            { id: 'q2', x: 0.25, lvl: 1, text: tt('A auf h?', 'A on h?') },
-            { id: 'q3', x: 0.75, lvl: 1, text: tt('Schnittpunkt?', 'Common point?') },
-            { id: 'identical', x: 0.125, lvl: 2, text: tt('identisch', 'identical'), leaf: true },
-            { id: 'parallel', x: 0.375, lvl: 2, text: tt('parallel', 'parallel'), leaf: true },
-            { id: 'intersect', x: 0.625, lvl: 2, text: tt('schneidend', 'intersect'), leaf: true },
-            { id: 'skew', x: 0.875, lvl: 2, text: tt('windschief', 'skew'), leaf: true },
-          ],
-          edges: [
-            { from: 'q1', to: 'q2', yes: true },
-            { from: 'q1', to: 'q3', yes: false },
-            { from: 'q2', to: 'identical', yes: true },
-            { from: 'q2', to: 'parallel', yes: false },
-            { from: 'q3', to: 'intersect', yes: true },
-            { from: 'q3', to: 'skew', yes: false },
+            { id: 'q1', col: 'c', row: 0, text: tt('Richtungen parallel?', 'Directions parallel?') },
+            { id: 'q2', col: 'L', row: 1, text: tt('A auf h?', 'A on h?'), parent: 'q1', yes: true },
+            { id: 'q3', col: 'R', row: 1, text: tt('Schnittpunkt?', 'Common point?'), parent: 'q1', yes: false },
+            { id: 'identical', col: 'L', row: 2, text: tt('identisch', 'identical'), leaf: true, parent: 'q2', yes: true },
+            { id: 'parallel', col: 'L', row: 3, text: tt('parallel', 'parallel'), leaf: true, parent: 'q2', yes: false },
+            { id: 'intersect', col: 'R', row: 2, text: tt('schneidend', 'intersecting'), leaf: true, parent: 'q3', yes: true },
+            { id: 'skew', col: 'R', row: 3, text: tt('windschief', 'skew'), leaf: true, parent: 'q3', yes: false },
           ],
           paths: { identical: ['q1', 'q2', 'identical'], parallel: ['q1', 'q2', 'parallel'], intersect: ['q1', 'q3', 'intersect'], skew: ['q1', 'q3', 'skew'] },
         };
       }
       if (mode() === 'lp' || mode() === 'pp') {
         const lp = mode() === 'lp';
+        const same = lp ? 'inPlane' : 'identical';
         return {
           nodes: [
-            { id: 'q1', x: 0.5, lvl: 0, text: lp ? tt('n · u = 0 ?', 'n · u = 0 ?') : tt('n ∥ m ?', 'n ∥ m ?') },
-            { id: 'q2', x: 0.27, lvl: 1, text: lp ? tt('A in E?', 'A in E?') : tt('Punkt von E in F?', 'Point of E in F?') },
-            { id: lp ? 'inPlane' : 'identical', x: 0.13, lvl: 2, text: lp ? tt('g liegt in E', 'g lies in E') : tt('identisch', 'identical'), leaf: true },
-            { id: 'parallel', x: 0.43, lvl: 2, text: tt('parallel', 'parallel'), leaf: true },
-            { id: 'intersect', x: 0.8, lvl: 2, text: lp ? tt('schneidet E', 'intersects E') : tt('Schnittgerade', 'intersect'), leaf: true },
+            { id: 'q1', col: 'c', row: 0, text: lp ? 'n · u = 0 ?' : 'n ∥ m ?' },
+            { id: 'q2', col: 'L', row: 1, text: lp ? tt('A in E?', 'A in E?') : tt('Punkt von E in F?', 'Point of E in F?'), parent: 'q1', yes: true },
+            { id: same, col: 'L', row: 2, text: lp ? tt('g liegt in E', 'g lies in E') : tt('identisch', 'identical'), leaf: true, parent: 'q2', yes: true },
+            { id: 'parallel', col: 'L', row: 3, text: tt('parallel', 'parallel'), leaf: true, parent: 'q2', yes: false },
+            { id: 'intersect', col: 'R', row: 1, text: lp ? tt('schneidet E', 'intersects E') : tt('Schnittgerade', 'intersect'), leaf: true, parent: 'q1', yes: false },
           ],
-          edges: [
-            { from: 'q1', to: 'q2', yes: true },
-            { from: 'q1', to: 'intersect', yes: false },
-            { from: 'q2', to: lp ? 'inPlane' : 'identical', yes: true },
-            { from: 'q2', to: 'parallel', yes: false },
-          ],
-          paths: { [lp ? 'inPlane' : 'identical']: ['q1', 'q2', lp ? 'inPlane' : 'identical'], parallel: ['q1', 'q2', 'parallel'], intersect: ['q1', 'intersect'] },
+          paths: { [same]: ['q1', 'q2', same], parallel: ['q1', 'q2', 'parallel'], intersect: ['q1', 'intersect'] },
         };
       }
       return null;
@@ -1097,13 +1082,15 @@ export default defineSimulation({
       { kind: 'col', v: [...nv], color },
     ];
 
+    /** Entscheidungsbaum: Fragen oben, Ergebnisse untereinander; der Pfad des aktuellen Falls leuchtet. Gibt die Höhe zurück. */
     function drawTree(x0: number, y0: number, w: number, lightT: number): number {
       const tr = tree();
       if (!tr) return 0;
       const g = surface.g;
       const theme = ctx.theme;
-      const lvlH = 36;
-      const pos = (nd: TreeNode): [number, number] => [x0 + nd.x * w, y0 + 11 + nd.lvl * lvlH];
+      const colW = w / 2 - 6;
+      const rowY = [y0 + 11, y0 + 46, y0 + 76, y0 + 104];
+      const colX = (c: TreeNode['col']) => (c === 'L' ? x0 : c === 'R' ? x0 + w / 2 + 6 : x0 + w / 4);
       const show = showA.at(now);
       const cur = currentCase().split(':')[1]!;
       const path = tr.paths[cur] ?? [];
@@ -1111,64 +1098,88 @@ export default defineSimulation({
       const seq = (id: string) => {
         const i = path.indexOf(id);
         if (i < 0) return 1;
-        return clamp((lightT - 0.18 - i * 0.16) / 0.12, 0, 1);
+        return clamp((lightT - 0.16 - i * 0.16) / 0.12, 0, 1);
       };
       const lit = (id: string) => (nodeA.get(id)?.at(now) ?? 0) * show * seq(id);
       const hot = CR();
-      // Kanten
-      for (const e of tr.edges) {
-        const a = tr.nodes.find((nd) => nd.id === e.from)!;
-        const b = tr.nodes.find((nd) => nd.id === e.to)!;
-        const [ax, ay] = pos(a);
-        const [bx, by] = pos(b);
-        const l = Math.min(lit(e.from), lit(e.to));
-        g.save();
-        g.strokeStyle = mixColor(alpha(theme.muted, 0.55), hot, l);
-        g.lineWidth = 1.3 + 1.5 * l;
-        g.beginPath();
-        g.moveTo(ax, ay + 10);
-        g.bezierCurveTo(ax, ay + 22, bx, by - 22, bx, by - 10);
-        g.stroke();
-        g.restore();
-        const mx = (ax + bx) / 2 + (bx < ax ? -9 : 9);
-        const my = (ay + by) / 2 + (b.lvl - a.lvl > 1 ? -lvlH * 0.35 : 0);
-        text(g, e.yes ? tt('ja', 'yes') : tt('nein', 'no'), mx, my, { font: font(700, 10.5), color: l > 0.5 ? hot : theme.muted });
-      }
-      // Knoten
-      const leafW = Math.min(...tr.nodes.filter((nd) => nd.leaf).map((nd, i, arr) => (i + 1 < arr.length ? (arr[i + 1]!.x - nd.x) * w : Infinity))) - 5;
-      for (const nd of tr.nodes) {
-        const [x, y] = pos(nd);
-        const l = lit(nd.id);
+      const dim = alpha(theme.muted, 0.5);
+      const byId = new Map(tr.nodes.map((nd) => [nd.id, nd]));
+      /** Lage (Mitte bzw. linker Rand) und Breite eines Knotens. */
+      const box = (nd: TreeNode): { x: number; y: number; w: number; size: number } => {
+        const y = rowY[nd.row]!;
         let size = 11.5;
         g.font = font(nd.leaf ? 800 : 650, size);
         let tw = g.measureText(nd.text).width;
-        if (nd.leaf) {
-          while (tw + 12 > leafW && size > 10) {
-            size -= 0.5;
-            g.font = font(800, size);
-            tw = g.measureText(nd.text).width;
-          }
+        const stacked = nd.leaf && nd.row >= 2;
+        const maxW = stacked ? colW - 30 : nd.col === 'c' ? w : colW;
+        while (tw + 16 > maxW && size > 10) {
+          size -= 0.5;
+          g.font = font(nd.leaf ? 800 : 650, size);
+          tw = g.measureText(nd.text).width;
         }
-        const bw = nd.leaf ? Math.min(leafW, Math.max(tw + 12, 0)) : tw + 16;
+        const bw = stacked ? maxW : Math.min(maxW, tw + 18);
+        const left = stacked ? colX(nd.col) + 30 : nd.col === 'c' ? x0 + w / 2 - bw / 2 : colX(nd.col) + colW / 2 - bw / 2;
+        return { x: left, y, w: bw, size };
+      };
+      const edgeLabel = (yes: boolean, x: number, y: number, l: number, align: 'left' | 'right' | 'center' = 'center') =>
+        text(g, yes ? tt('ja', 'yes') : tt('nein', 'no'), x, y, { font: font(700, 10.5), color: l > 0.5 ? hot : theme.muted, align });
+      // Kanten
+      for (const nd of tr.nodes) {
+        if (!nd.parent) continue;
+        const par = byId.get(nd.parent)!;
+        const pb = box(par);
+        const nb = box(nd);
+        const l = Math.min(lit(nd.id), lit(par.id));
+        g.save();
+        g.strokeStyle = mixColor(dim, hot, l);
+        g.lineWidth = 1.3 + 1.5 * l;
+        g.lineCap = 'round';
+        g.beginPath();
+        if (nd.leaf && nd.row >= 2) {
+          // Stamm unter der Frage, Abzweig zum Ergebnis
+          const sx = colX(nd.col) + 12;
+          g.moveTo(sx, pb.y + 10);
+          g.lineTo(sx, nb.y - 6);
+          g.quadraticCurveTo(sx, nb.y, sx + 6, nb.y);
+          g.lineTo(nb.x, nb.y);
+          g.stroke();
+          g.restore();
+          edgeLabel(nd.yes ?? true, sx + 9, nb.y - 7, l, 'left');
+        } else {
+          const ax = x0 + w / 2 + (nb.x + nb.w / 2 < x0 + w / 2 ? -14 : 14);
+          const bx = nb.x + nb.w / 2;
+          g.moveTo(ax, pb.y + 10);
+          g.bezierCurveTo(ax, pb.y + 24, bx, nb.y - 24, bx, nb.y - 10);
+          g.stroke();
+          g.restore();
+          edgeLabel(nd.yes ?? true, (ax + bx) / 2 + (bx < ax ? -16 : 16), (pb.y + nb.y) / 2 + 1, l);
+        }
+      }
+      // Knoten
+      for (const nd of tr.nodes) {
+        const b = box(nd);
+        const l = lit(nd.id);
         const bh = 20;
-        const left = clamp(x - bw / 2, x0 - 4, x0 + w + 4 - bw);
         g.save();
         if (l > 0.02 && nd.leaf) {
-          g.shadowColor = alpha(hot, 0.55 * l);
+          g.shadowColor = alpha(hot, 0.5 * l);
           g.shadowBlur = 12 * l;
         }
-        roundRect(g, left, y - bh / 2, bw, bh, 10);
-        g.fillStyle = nd.leaf ? mixColor(alpha(theme.muted, theme.dark ? 0.16 : 0.1), hot, l) : mixColor(alpha(theme.muted, theme.dark ? 0.12 : 0.07), alpha(hot, theme.dark ? 0.22 : 0.13), l);
+        roundRect(g, b.x, b.y - bh / 2, b.w, bh, 10);
+        const base = nd.leaf ? alpha(mixColor(theme.muted, hot, l), (theme.dark ? 0.2 : 0.12) + 0.85 * l) : alpha(mixColor(theme.muted, hot, l), (theme.dark ? 0.16 : 0.09) + 0.08 * l);
+        g.fillStyle = cardBg();
+        g.fill();
+        g.fillStyle = base;
         g.fill();
         g.shadowColor = 'transparent';
-        g.strokeStyle = mixColor(alpha(theme.muted, 0.35), hot, l);
+        g.strokeStyle = alpha(mixColor(theme.muted, hot, l), 0.35 + 0.6 * l);
         g.lineWidth = 1 + l;
         g.stroke();
         g.restore();
-        const color = nd.leaf ? mixColor(theme.text, '#ffffff', l) : l > 0.5 ? (theme.dark ? shade(hot, 0.35) : shade(hot, -0.25)) : theme.text;
-        text(g, nd.text, left + bw / 2, y + 0.5, { font: font(nd.leaf ? 800 : 650, size), color });
+        const color = nd.leaf ? (l > 0.5 ? '#ffffff' : theme.text) : l > 0.5 ? (theme.dark ? shade(hot, 0.35) : shade(hot, -0.2)) : theme.text;
+        text(g, nd.text, b.x + b.w / 2, b.y + 0.5, { font: font(nd.leaf ? 800 : 650, b.size), color });
       }
-      return 2 * lvlH + 22;
+      return rowY[3]! - y0 + 12;
     }
 
     function drawPanel(): void {
