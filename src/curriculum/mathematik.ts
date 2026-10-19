@@ -1301,14 +1301,14 @@ export const mathematik: Subject = {
             slug: L('integral-gesamtaenderung', 'integral-total-change'),
             title: L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'),
             summary: L(
-              'Aus der Änderungsrate den Bestand rekonstruieren: Die Fläche unter dem Geschwindigkeitsgraphen ist der Weg, die Fläche unter der Zuflussrate die Änderung der Füllmenge – mit Rechteckstreifen, Animation und negativen Raten.',
-              'Reconstructing an amount from its rate of change: the area under the velocity graph is the distance, the area under the inflow rate the change in volume – with rectangles, animation and negative rates.',
+              'Aus der Änderungsrate den Bestand rekonstruieren: Die Fläche unter dem Geschwindigkeitsgraphen ist der Weg, die Fläche unter der Zuflussrate die Änderung der Füllmenge – mit Rechtecksummen (links, rechts, Mitte), die sich als Treppe zum Bestand stapeln, Fehlerdiagramm, negativen Flächen, Extremstellen beim Vorzeichenwechsel und einer selbst gezeichneten Rate.',
+              'Reconstructing an amount from its rate of change: the area under the velocity graph is the distance, the area under the inflow rate the change in volume – with rectangle sums (left, right, midpoint) that stack into a staircase, an error chart, negative areas, extrema at sign changes and a rate you draw yourself.',
             ),
             grades: [13, 13],
             kmk: ['M-L3', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
-              ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Modellieren'],
-              ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'modelling'],
+              ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelpunktsumme', 'Hauptsatz', 'Modellieren'],
+              ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'midpoint sum', 'fundamental theorem', 'modelling'],
             ),
             thumb: 'generic',
           },
