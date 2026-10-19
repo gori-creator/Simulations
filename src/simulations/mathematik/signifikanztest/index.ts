@@ -117,7 +117,7 @@ class Bars {
 export default defineSimulation({
   id: 'signifikanztest',
   dragHint: true,
-  layout: { aspect: 1.5, aspectNarrow: 0.46 },
+  layout: { aspect: 1.1, aspectNarrow: 0.38 },
   groups: [
     { id: 'obs', label: L('Stichprobe', 'Sample') },
     { id: 'truth', label: L('Wirklichkeit (angenommen)', 'Reality (assumed)') },
@@ -356,6 +356,11 @@ export default defineSimulation({
       const q = v * 100;
       return `${fmt.fixed(q, q < 10 ? 2 : 1)} %`;
     }
+    /** „≈ 2,80 %“, bei Grenzwerten „< 0,01 %“ bzw. „> 99,9 %“ ohne ≈. */
+    const apx = (v: number) => {
+      const t = pct(v);
+      return /^[<>]/.test(t) ? t : `≈ ${t}`;
+    };
     const sep = de ? '; ' : ', ';
     function setTxt(lo: number, hi: number): string {
       if (lo > hi) return '∅';
@@ -381,26 +386,26 @@ export default defineSimulation({
         const r = ruleTxt(cr);
         const nxt = side() === 'right' ? `X ≥ ${cr.lo - 1}` : `X ≤ ${cr.hi + 1}`;
         ctx.readout('k', `Ā = ${setTxt(cr.lo, cr.hi)}: P(${r}) ≈ ${fmtP(cr.alphaActual)} ≤ ${fmt.num(a, 2)}, ${tt('aber', 'but')} P(${nxt}) ≈ ${fmtP(cr.alphaNext)} > ${fmt.num(a, 2)}`);
-        ctx.readout('alpha', `P(${r}) ≈ ${pct(cr.alphaActual)} ≤ α = ${alphaTxt()}`);
+        ctx.readout('alpha', `P(${r}) ${apx(cr.alphaActual)} ≤ α = ${alphaTxt()}`);
       }
       const pp = p1Now();
       const pTxt = fmt.num(pp, 2);
       if (h1True(side(), p0(), pp)) {
         const b = acceptProb(cr, pp);
-        ctx.readout('beta', { html: `β = P<sub>${pTxt}</sub>(${cr.possible ? accTxt(cr) : tt('alle X', 'all X')}) ≈ ${pct(b)}; ${tt('Macht', 'power')} 1 − β ≈ ${pct(1 - b)}` });
+        ctx.readout('beta', { html: `β = P<sub>${pTxt}</sub>(${cr.possible ? accTxt(cr) : tt('alle X', 'all X')}) ${apx(b)}; ${tt('Macht', 'power')} 1 − β ${apx(1 - b)}` });
       } else {
         const r = rejectProb(cr, pp);
-        ctx.readout('beta', tt(`p₁ = ${pTxt}: H₀ ist wahr, ein Fehler 2. Art ist nicht möglich. P(H₀ nicht ablehnen) ≈ ${pct(1 - r)}, P(Fehler 1. Art) ≈ ${pct(r)}`, `p₁ = ${pTxt}: H₀ is true, no type II error possible. P(keep H₀) ≈ ${pct(1 - r)}, P(type I error) ≈ ${pct(r)}`));
+        ctx.readout('beta', tt(`p₁ = ${pTxt}: H₀ ist wahr, ein Fehler 2. Art ist nicht möglich. P(H₀ nicht ablehnen) ${apx(1 - r)}, P(Fehler 1. Art) ${apx(r)}`, `p₁ = ${pTxt}: H₀ is true, no type II error possible. P(keep H₀) ${apx(1 - r)}, P(type I error) ${apx(r)}`));
       }
       const x = xObs();
       const rej = rejects(cr, x);
-      ctx.readout('dec', rej ? tt(`x = ${x} ∈ Ā: H₀ wird auf dem ${alphaTxt()}-Niveau abgelehnt.`, `x = ${x} ∈ Ā: H₀ is rejected at the ${alphaTxt()} level.`) : tt(`x = ${x} ∉ Ā: H₀ wird nicht abgelehnt (kein Beweis für H₀).`, `x = ${x} ∉ Ā: H₀ is not rejected (no proof of H₀).`));
+      ctx.readout('dec', rej ? tt(`x = ${x} ∈ Ā: H₀ wird auf dem ${p.alpha}-%-Niveau abgelehnt.`, `x = ${x} ∈ Ā: H₀ is rejected at the ${alphaTxt()} level.`) : tt(`x = ${x} ∉ Ā: H₀ wird nicht abgelehnt (kein Beweis für H₀).`, `x = ${x} ∉ Ā: H₀ is not rejected (no proof of H₀).`));
       const total = tally.reduce((s, v) => s + v, 0);
       if (!total) ctx.readout('tally', tt('noch keine – „Stichprobe ziehen“ zieht mit dem wahren p₁', 'none yet – “Draw a sample” uses the true p₁'));
       else {
         const rej2 = tally[0]! + tally[1]!;
         const theo = rejectProb(cr, p.p1);
-        ctx.readout('tally', tt(`${total} mit p = ${fmt.num(p.p1, 2)}: ${rej2}-mal abgelehnt (${fmt.num((rej2 / total) * 100, 1)} %), erwartet ≈ ${pct(theo)}`, `${total} with p = ${fmt.num(p.p1, 2)}: rejected ${rej2} times (${fmt.num((rej2 / total) * 100, 1)} %), expected ≈ ${pct(theo)}`));
+        ctx.readout('tally', tt(`${total} mit p = ${fmt.num(p.p1, 2)}: ${rej2}-mal abgelehnt (${fmt.num((rej2 / total) * 100, 1)} %), erwartet ${apx(theo)}`, `${total} with p = ${fmt.num(p.p1, 2)}: rejected ${rej2} times (${fmt.num((rej2 / total) * 100, 1)} %), expected ${apx(theo)}`));
       }
     }
 
@@ -413,7 +418,7 @@ export default defineSimulation({
     }
 
     /* ---------- Aufteilung ---------- */
-    const wide = () => surface.width >= 640 || surface.width >= surface.height * 1.3;
+    const wide = () => surface.width >= 540 || surface.width >= surface.height * 1.3;
     const ts = () => (wide() ? (surface.width < 800 ? 12 : 13) : 12);
     interface Regions {
       top: Rect;
@@ -426,30 +431,31 @@ export default defineSimulation({
       const W = surface.width;
       const H = surface.height;
       const gap = 10;
+      const RULE_H = 240;
+      const MAT_H = 152;
       if (wide()) {
-        const colW = Math.round(clamp(W * 0.35, 250, 390));
+        const colW = Math.round(clamp(W * 0.4, 250, 340));
         const lw = W - colW - gap - 4;
-        const hist = { x: 4, y: 4, w: lw, h: H - 8 };
-        const [top, bottom] = splitHist(hist, gap);
+        const [top, bottom] = splitHist({ x: 4, y: 4, w: lw, h: H - 8 }, gap);
         const cx = W - colW - 4;
         const avail = H - 8;
-        const ruleH = Math.round(clamp(avail * (p.curve ? 0.44 : 0.56), 220, 300));
-        const matH = Math.round(clamp(avail * (p.curve ? 0.27 : 0.44) - gap, 130, 190));
+        const showPower = p.curve && avail - RULE_H - MAT_H - 2 * gap >= 96;
+        const extra = showPower ? Math.max(0, avail - RULE_H - MAT_H - 2 * gap - 190) : avail - RULE_H - MAT_H - gap;
+        const ruleH = RULE_H + Math.round(extra * 0.45);
+        const matH = MAT_H + Math.round(extra * (showPower ? 0.25 : 0.55));
         const rule = { x: cx, y: 4, w: colW, h: ruleH };
-        const matrix = { x: cx, y: 4 + ruleH + gap, w: colW, h: p.curve ? matH : avail - ruleH - gap };
-        const power = p.curve ? { x: cx, y: matrix.y + matrix.h + gap, w: colW, h: H - 4 - (matrix.y + matrix.h + gap) } : null;
+        const matrix = { x: cx, y: 4 + ruleH + gap, w: colW, h: showPower ? matH : avail - ruleH - gap };
+        const power = showPower ? { x: cx, y: matrix.y + matrix.h + gap, w: colW, h: H - 4 - (matrix.y + matrix.h + gap) } : null;
         return { top, bottom, rule, matrix, power };
       }
-      const histH = Math.round(H * 0.45);
+      const powH = p.curve ? 124 : 0;
+      const histH = Math.max(200, H - 8 - RULE_H - MAT_H - powH - (p.curve ? 3 : 2) * gap);
       const [top, bottom] = splitHist({ x: 4, y: 4, w: W - 8, h: histH }, 8);
       let y = 4 + histH + gap;
-      const rest = H - y - 4;
-      const ruleH = Math.round(rest * (p.curve ? 0.43 : 0.58));
-      const rule = { x: 4, y, w: W - 8, h: ruleH };
-      y += ruleH + gap;
-      const matH = p.curve ? Math.round((rest - ruleH - 2 * gap) * 0.52) : rest - ruleH - gap;
-      const matrix = { x: 4, y, w: W - 8, h: matH };
-      y += matH + gap;
+      const rule = { x: 4, y, w: W - 8, h: RULE_H };
+      y += RULE_H + gap;
+      const matrix = { x: 4, y, w: W - 8, h: p.curve ? MAT_H : H - 4 - y };
+      y += MAT_H + gap;
       const power = p.curve ? { x: 4, y, w: W - 8, h: H - 4 - y } : null;
       return { top, bottom, rule, matrix, power };
     }
@@ -465,7 +471,7 @@ export default defineSimulation({
     /** Zeichenfläche eines Histogramms (innerhalb der Karte). */
     function plotRect(card: Rect): Rect {
       const left = wide() ? 50 : 42;
-      return { x: card.x + left, y: card.y + 36, w: card.w - left - 14, h: card.h - 36 - 28 };
+      return { x: card.x + left, y: card.y + 46, w: card.w - left - 14, h: card.h - 46 - 28 };
     }
     const unit = (pr: Rect) => pr.w / Math.max(1, wHi.v - wLo.v + 1);
     const kx = (pr: Rect, k: number) => pr.x + (k - wLo.v + 0.5) * unit(pr);
@@ -603,7 +609,7 @@ export default defineSimulation({
         g.stroke();
         text(g, fmt.num(v, 3), pr.x - 6, y, { font: font(600, 10.5), color: theme.muted, align: 'right' });
       }
-      text(g, 'P(X = k)', pr.x - 6, pr.y - 8, { font: font(700, 10.5), color: theme.muted, align: 'right' });
+      text(g, 'P(X = k)', pr.x - 6, pr.y - 11, { font: font(700, 10.5), color: theme.muted, align: 'right' });
       // Säulen
       const lo = Math.max(0, Math.floor(wLo.v) - 1);
       const hi = Math.min(p.n, Math.ceil(wHi.v) + 1);
@@ -742,23 +748,23 @@ export default defineSimulation({
             g.closePath();
             g.fill();
             g.restore();
-            if (room > lw + 18) {
-              const tx = right ? Math.min(ex + 8, top.x + top.w - lw - 4) : Math.max(ex - 8, top.x + lw + 4);
-              text(g, lbl, tx, ay - 12, { font: font(800, size), color: shade(c.err1, theme.dark ? 0.2 : -0.15), align: right ? 'left' : 'right' });
-            }
+            const lab2 = room > lw + 18 ? lbl : 'Ā';
+            const lw2 = lab2 === lbl ? lw : 12;
+            const tx = right ? Math.min(ex + 8, top.x + top.w - lw2 - 4) : Math.max(ex - 8, top.x + lw2 + 4);
+            text(g, lab2, tx, ay - 12, { font: font(800, size), color: shade(c.err1, theme.dark ? 0.2 : -0.15), align: right ? 'left' : 'right' });
           }
         }
         // Wahrscheinlichkeiten als Etiketten
         const yPill = top.y + 6;
-        const aTxt = cr.possible ? `P(${ruleTxt(cr)}) ≈ ${pct(aShown.v)}` : tt('kein Ablehnungsbereich', 'no critical region');
+        const aTxt = cr.possible ? `P(${ruleTxt(cr)}) ${apx(aShown.v)}` : tt('kein Ablehnungsbereich', 'no critical region');
         const ra = pill(right ? top.x + top.w - 2 : top.x + 2, yPill, (wide() && top.w > 420 && cr.possible ? tt('Fehler 1. Art: ', 'type I error: ') : '') + aTxt, c.err1, { align: right ? 'right' : 'left', size, a: lab });
         taken.push(ra);
         if (bot) {
           const pp = p1Now();
           const yb = bot.y + 6;
           if (h1True(side(), p0(), pp)) {
-            const bt = `β ≈ ${pct(bShown.v)}`;
-            const pt = `1 − β ≈ ${pct(1 - bShown.v)}`;
+            const bt = `β ${apx(bShown.v)}`;
+            const pt = `1 − β ${apx(1 - bShown.v)}`;
             const longB = wide() && bot.w > 480;
             const rb = pill(right ? bot.x + 2 : bot.x + bot.w - 2, yb, (longB ? tt('Fehler 2. Art: ', 'type II error: ') : '') + bt, c.err2, { align: right ? 'left' : 'right', size, a: lab });
             let rp = pill(right ? bot.x + bot.w - 2 : bot.x + 2, yb, (longB ? tt('Macht: ', 'power: ') : '') + pt, c.power, { align: right ? 'right' : 'left', size, a: 0 });
@@ -767,8 +773,8 @@ export default defineSimulation({
             taken.push(rb, rp);
           } else {
             const r = 1 - bShown.v;
-            const t1 = tt(`H₀ wahr: nicht ablehnen ≈ ${pct(bShown.v)}`, `H₀ true: keep ≈ ${pct(bShown.v)}`);
-            const t2 = tt(`Fehler 1. Art ≈ ${pct(r)}`, `type I error ≈ ${pct(r)}`);
+            const t1 = tt(`H₀ wahr: nicht ablehnen ${apx(bShown.v)}`, `H₀ true: keep ${apx(bShown.v)}`);
+            const t2 = tt(`Fehler 1. Art ${apx(r)}`, `type I error ${apx(r)}`);
             const rb = pill(right ? bot.x + 2 : bot.x + bot.w - 2, yb, t1, c.acc, { align: right ? 'left' : 'right', size, a: lab });
             let rp = pill(right ? bot.x + bot.w - 2 : bot.x + 2, yb, t2, c.err1, { align: right ? 'right' : 'left', size, a: 0 });
             if (overlaps(rb, rp)) rp = { ...rp, y: rp.y + rp.h + 4 };
@@ -858,22 +864,20 @@ export default defineSimulation({
       g.font = font(800, 13);
       const tw = g.measureText(tt('Entscheidungsregel', 'Decision rule')).width;
       text(g, T(cx.title), R.x + R.w - pad, y, { font: fitFont(T(cx.title), W - tw - 16, 650, 11), color: theme.muted, align: 'right' });
-      const roomy = R.h >= 250;
-      y += roomy ? 22 : 19;
+      y += 21;
       text(g, T(cx.question), R.x + pad, y, { font: fitFont(T(cx.question), W, 600, 11.5), color: theme.muted, align: 'left' });
-      y += roomy ? 24 : 20;
+      y += 23;
       // Hypothesen
       const [h0, h1] = hyp();
-      const hs = 13;
+      const hs = 13.5;
       g.font = font(800, hs);
       const w0 = g.measureText(h0).width;
       text(g, h0, R.x + pad, y, { font: font(800, hs), color: c.acc, align: 'left' });
       text(g, h1, R.x + pad + w0 + 18, y, { font: font(800, hs), color: c.h1, align: 'left' });
-      const meta = `n = ${p.n} · α = ${alphaTxt()}`;
-      text(g, meta, R.x + R.w - pad, y, { font: fitFont(meta, Math.max(40, W - w0 - g.measureText(h1).width - 30), 650, 11.5), color: theme.muted, align: 'right' });
-      y += roomy ? 20 : 18;
-      text(g, T(cx.X), R.x + pad, y, { font: fitFont(T(cx.X), W, 600, 11), color: theme.muted, align: 'left' });
-      y += roomy ? 28 : 23;
+      y += 19;
+      const meta = `${T(cx.X)} · n = ${p.n} · α = ${alphaTxt()}`;
+      text(g, meta, R.x + pad, y, { font: fitFont(meta, W, 600, 11.5), color: theme.muted, align: 'left' });
+      y += 26;
       // Regel
       const info = p.info;
       let rule: string;
@@ -887,33 +891,34 @@ export default defineSimulation({
       g.fill();
       g.restore();
       text(g, rule, R.x + pad + 2, y + 0.5, { font: rf, color: theme.text, align: 'left' });
-      y += roomy ? 28 : 25;
+      y += 25;
       // Ablehnungsbereich und Begründung
       if (info) {
         if (cr.possible) {
           const setLine = `Ā = ${setTxt(cr.lo, cr.hi)}`;
           text(g, setLine, R.x + pad, y, { font: fitFont(setLine, W, 750, 12.5), color: shade(c.err1, theme.dark ? 0.2 : -0.15), align: 'left' });
-          y += roomy ? 20 : 18;
+          y += 18;
           const r = ruleTxt(cr);
           const nxt = side() === 'right' ? `X ≥ ${cr.lo - 1}` : `X ≤ ${cr.hi + 1}`;
           const l1 = `P(${r}) ≈ ${fmtP(aShown.v)} ≤ ${fmt.num(alphaVal(), 2)}  ✓`;
           const l2 = `P(${nxt}) ≈ ${fmtP(cr.alphaNext)} > ${fmt.num(alphaVal(), 2)}  ✗`;
           text(g, l1, R.x + pad, y, { font: fitFont(l1, W, 650, 11.5), color: theme.text, align: 'left' });
-          y += roomy ? 18 : 16;
+          y += 16;
           text(g, l2, R.x + pad, y, { font: fitFont(l2, W, 600, 11.5), color: theme.muted, align: 'left' });
         } else {
           const ext = side() === 'right' ? `P(X = ${p.n})` : 'P(X = 0)';
           const l = tt(`${ext} ≈ ${fmtP(cr.alphaNext)} > α: n ist zu klein.`, `${ext} ≈ ${fmtP(cr.alphaNext)} > α: n is too small.`);
           text(g, l, R.x + pad, y, { font: fitFont(l, W, 650, 11.5), color: theme.muted, align: 'left' });
-          y += roomy ? 18 : 16;
+          y += 16;
         }
       } else {
         text(g, tt('Ā = ?  (Werte ausgeblendet)', 'Ā = ?  (values hidden)'), R.x + pad, y, { font: font(650, 12), color: theme.muted, align: 'left' });
-        y += roomy ? 18 : 16;
+        y += 16;
       }
       // Entscheidung
-      const boxTop = Math.max(y + 12, R.y + R.h - (roomy ? 60 : 54));
-      const boxH = R.y + R.h - 10 - boxTop;
+      const boxH = clamp(R.y + R.h - 10 - (y + 10), 44, 72);
+      const boxTop = R.y + R.h - 10 - boxH;
+      const tall = boxH >= 60;
       const st = reduced() ? 1 : clamp01((now - stampT0) / 520);
       const pop = reduced() ? 1 : ease.outBack(st);
       const kk = Math.round(X.v);
@@ -929,8 +934,8 @@ export default defineSimulation({
       g.stroke();
       g.restore();
       const xLine = `x = ${kk}`;
-      text(g, xLine, R.x + 22, boxTop + boxH / 2, { font: font(800, 14), color: shade(c.x, theme.dark ? 0.2 : -0.2), align: 'left' });
-      g.font = font(800, 14);
+      text(g, xLine, R.x + 22, boxTop + boxH / 2, { font: font(800, tall ? 16 : 14), color: shade(c.x, theme.dark ? 0.2 : -0.2), align: 'left' });
+      g.font = font(800, tall ? 16 : 14);
       const xw = g.measureText(xLine).width;
       const tx = R.x + 22 + xw + 14;
       const maxW = R.x + R.w - 20 - tx;
@@ -938,7 +943,8 @@ export default defineSimulation({
         text(g, tt('Entscheidung?', 'Decision?'), tx, boxTop + boxH / 2, { font: font(700, 12.5), color: theme.muted, align: 'left' });
       } else if (settled) {
         const main = rej ? tt('→ H₀ wird abgelehnt', '→ H₀ is rejected') : tt('→ H₀ wird nicht abgelehnt', '→ H₀ is not rejected');
-        const sub = rej ? tt('signifikant – aber kein Beweis für H₁', 'significant – but no proof of H₁') : tt('kein Widerspruch zu H₀ – kein Beweis für H₀', 'no contradiction to H₀ – no proof of H₀');
+        const long = maxW > 230;
+        const sub = rej ? (long ? tt('signifikant – aber kein Beweis für H₁', 'significant – but no proof of H₁') : tt('kein Beweis für H₁', 'no proof of H₁')) : long ? tt('kein Widerspruch zu H₀ – kein Beweis für H₀', 'no contradiction to H₀ – no proof of H₀') : tt('kein Beweis für H₀', 'no proof of H₀');
         g.save();
         const cxp = tx + Math.min(maxW, 180) / 2;
         const cyp = boxTop + boxH / 2;
@@ -946,9 +952,9 @@ export default defineSimulation({
         g.scale(0.6 + 0.4 * pop, 0.6 + 0.4 * pop);
         g.translate(-cxp, -cyp);
         g.globalAlpha = appear * clamp01(st * 2);
-        const mf = fitFont(main, maxW, 800, 13.5);
-        text(g, main, tx, cyp - 8, { font: mf, color: shade(col, theme.dark ? 0.2 : -0.15), align: 'left' });
-        text(g, sub, tx, cyp + 10, { font: fitFont(sub, maxW, 600, 11), color: theme.muted, align: 'left' });
+        const mf = fitFont(main, maxW, 800, tall ? 15 : 13.5);
+        text(g, main, tx, cyp - (tall ? 10 : 8), { font: mf, color: shade(col, theme.dark ? 0.2 : -0.15), align: 'left' });
+        text(g, sub, tx, cyp + (tall ? 12 : 10), { font: fitFont(sub, maxW, 600, tall ? 12 : 11), color: theme.muted, align: 'left' });
         g.restore();
       } else {
         text(g, '…', tx, boxTop + boxH / 2, { font: font(800, 14), color: theme.muted, align: 'left' });
@@ -985,9 +991,9 @@ export default defineSimulation({
       const beta = realH1 ? bShown.v : null;
       const cells = [
         { name: tt('Fehler 1. Art', 'type I error'), val: info ? `≤ ${pct(a)}` : '?', col: c.err1 },
-        { name: tt('richtig (Macht)', 'correct (power)'), val: info ? (beta !== null ? pct(1 - beta) : tt('je nach p', 'depends on p')) : '?', col: c.power },
+        { name: tt('richtig', 'correct'), val: info ? (beta !== null ? `1 − β ${apx(1 - beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.power },
         { name: tt('richtig', 'correct'), val: info ? `≥ ${pct(1 - a)}` : '?', col: c.acc },
-        { name: tt('Fehler 2. Art', 'type II error'), val: info ? (beta !== null ? `β ≈ ${pct(beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.err2 },
+        { name: tt('Fehler 2. Art', 'type II error'), val: info ? (beta !== null ? `β ${apx(beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.err2 },
       ];
       const total = tally.reduce((s, v) => s + v, 0);
       rows.forEach((r, i) => {
@@ -1085,7 +1091,7 @@ export default defineSimulation({
         }
       }
       for (const v of [0, 0.5, 1]) {
-        if (Math.abs(v - p00) < 0.07) continue;
+        if (Math.abs(v - p00) < 0.16) continue;
         text(g, fmt.num(v, 1), X0(v), pr.y + pr.h + 11, { font: font(600, 10.5), color: theme.muted });
       }
       text(g, 'p', pr.x + pr.w + 8, pr.y + pr.h + 11, { font: mfont(12), color: theme.muted });
@@ -1170,7 +1176,7 @@ export default defineSimulation({
       g.beginPath();
       g.arc(px, py, 6.5, 0, Math.PI * 2);
       g.stroke();
-      const lbl = isH1 ? `1 − β ≈ ${pct(rp)}` : `≈ ${pct(rp)}`;
+      const lbl = isH1 ? `1 − β ${apx(rp)}` : `${apx(rp)}`;
       g.font = font(750, 11);
       const lw = g.measureText(lbl).width + 16;
       const onLeft = px + 12 + lw > pr.x + pr.w;
