@@ -1224,7 +1224,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
-          planned('funktionenscharen', L('Funktionenscharen', 'Families of functions'), [12, 13]),
+          {
+            id: 'funktionenscharen',
+            status: 'ready',
+            slug: L('funktionenscharen', 'families-of-functions'),
+            title: L('Funktionenscharen', 'Families of functions'),
+            summary: L(
+              'Viele Graphen einer Schar f_k auf einen Blick: Wie hängen Extrempunkte vom Parameter k ab, auf welcher Ortskurve wandern sie, welche Punkte haben alle Kurven gemeinsam? Mit Fallunterscheidung und ziehbaren Extrempunkten.',
+              'Many graphs of a family f_k at a glance: how do the extrema depend on the parameter k, along which locus do they move, which points do all curves share? With case analysis and draggable extrema.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K2'],
+            keywords: L(
+              ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'e-Funktion', 'ganzrationale Funktion'],
+              ['family of functions', 'family of curves', 'parameter', 'locus', 'extrema', 'common point', 'case analysis', 'exponential function', 'polynomial'],
+            ),
+            thumb: 'generic',
+          },
           planned('stammfunktion-grafisch', L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'), [12, 13]),
         ]),
         topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
