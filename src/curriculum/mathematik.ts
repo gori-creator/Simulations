@@ -927,14 +927,14 @@ export const mathematik: Subject = {
             slug: L('ganzrationale-funktionen', 'polynomial-functions'),
             title: L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'),
             summary: L(
-              'Nullstellen auf der x-Achse ziehen und ihre Vielfachheit wählen: Der Graph schneidet, berührt oder hat einen Terrassenpunkt. Dazu Term in Linearfaktoren und Normalform, Vorzeichenbereiche und Randverhalten.',
-              'Drag zeros along the x-axis and choose their multiplicity: the graph crosses, touches or has a terrace point. With the factored and expanded form, sign regions and end behaviour.',
+              'Nullstellen als Perlen ziehen, Vielfachheit antippen und verschmelzen lassen: Der Graph schneidet, berührt oder hat einen Terrassenpunkt. Mit Linearfaktorform und exakter Normalform, Vorzeichentabelle, Lupe an den Nullstellen und dem Blick aus der Ferne auf das Randverhalten.',
+              'Drag zeros as beads, tap to raise their multiplicity and let them merge: the graph crosses, touches or has a terrace point. With factored and exact expanded form, sign chart, a magnifier at the zeros and a view from far away for the end behaviour.',
             ),
             grades: [10, 11],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
-              ['ganzrationale Funktion', 'Polynom', 'Nullstelle', 'Vielfachheit', 'Linearfaktor', 'Berührpunkt', 'Terrassenpunkt', 'Vorzeichenwechsel', 'Randverhalten', 'Grad', 'Leitkoeffizient', 'Normalform'],
-              ['polynomial function', 'polynomial', 'zero', 'root', 'multiplicity', 'linear factor', 'touching point', 'terrace point', 'sign change', 'end behaviour', 'degree', 'leading coefficient'],
+              ['ganzrationale Funktion', 'Polynom', 'Nullstelle', 'Vielfachheit', 'Linearfaktor', 'Berührpunkt', 'Terrassenpunkt', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Randverhalten', 'Grad', 'Leitkoeffizient', 'Normalform', 'Ausmultiplizieren', 'y-Achsenabschnitt'],
+              ['polynomial function', 'polynomial', 'zero', 'root', 'multiplicity', 'linear factor', 'touching point', 'terrace point', 'sign change', 'sign chart', 'end behaviour', 'degree', 'leading coefficient', 'expanded form', 'y-intercept'],
             ),
             thumb: 'generic',
           },
