@@ -46,7 +46,7 @@ export default defineSimulation({
       ],
       default: 'sq2',
     },
-    { key: 'x0', type: 'number', label: L('Startwert x₀', 'Starting value x₀'), min: -3, max: 4, step: 0.1, default: 1, help: L('Auch x₀ auf der x-Achse ziehen.', 'You can also drag x₀ along the x-axis.') },
+    { key: 'x0', type: 'number', label: L('Startwert x₀', 'Starting value x₀'), min: -3, max: 4, step: 0.05, default: 1, help: L('Auch x₀ auf der x-Achse ziehen.', 'You can also drag x₀ along the x-axis.') },
     { key: 'k', type: 'number', label: L('Anzahl Schritte', 'Number of steps'), min: 0, max: KMAX, step: 1, default: 1 },
     { key: 'zoom', type: 'boolean', group: 'view', label: L('Ansicht mitzoomen', 'Zoom in with the steps'), default: false },
     { key: 'basin', type: 'boolean', group: 'view', label: L('Einzugsbereiche zeigen', 'Show basins of attraction'), help: L('Farbstreifen: Von hier aus gestartet, landet das Verfahren bei der Nullstelle gleicher Farbe.', 'Colour strip: starting here, the method ends at the zero of the same colour.'), default: false },
