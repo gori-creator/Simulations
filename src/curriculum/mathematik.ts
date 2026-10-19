@@ -1277,7 +1277,24 @@ export const mathematik: Subject = {
             ),
             thumb: 'riemann',
           },
-          planned('hauptsatz', L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'), [12, 13], { uni: true }),
+          {
+            id: 'hauptsatz',
+            status: 'ready',
+            slug: L('hauptsatz', 'fundamental-theorem'),
+            title: L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'),
+            summary: L(
+              'Die Fläche von a bis x als Funktion von x: Ein schmaler Streifen der Breite h zeigt, warum die Integralfunktion f als Ableitung hat (h → 0 animiert). Integrale werden mit einer Stammfunktion als F(b) − F(a) berechnet.',
+              'The area from a to x as a function of x: a thin strip of width h shows why the integral function has f as its derivative (h → 0 animated). Integrals are evaluated with an antiderivative as F(b) − F(a).',
+            ),
+            grades: [12, 13],
+            uni: true,
+            kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Hauptsatz der Differential- und Integralrechnung', 'Integralfunktion', 'Stammfunktion', 'bestimmtes Integral', 'Flächenbilanz', 'untere Grenze', 'Differenzenquotient', 'F(b) − F(a)'],
+              ['fundamental theorem of calculus', 'integral function', 'antiderivative', 'definite integral', 'signed area', 'lower limit', 'difference quotient'],
+            ),
+            thumb: 'generic',
+          },
           planned('aenderungsrate', L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'), [13, 13]),
           {
             id: 'rotationskoerper',
