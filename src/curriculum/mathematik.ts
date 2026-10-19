@@ -1408,7 +1408,24 @@ export const mathematik: Subject = {
           planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
-          planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true }),
+          {
+            id: 'matrix-abbildungen',
+            status: 'ready',
+            slug: L('matrizen-lineare-abbildungen', 'matrices-linear-maps'),
+            title: L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'),
+            summary: L(
+              'Eine 2×2-Matrix verformt die Ebene: Bilder der Einheitsvektoren ziehen, Gitter, Einheitsquadrat und ein F mitbewegen. Determinante als Flächenfaktor und Orientierung, Eigenrichtungen als feste Geraden, Drehung, Spiegelung, Scherung und Projektion.',
+              'A 2×2 matrix deforms the plane: drag the images of the unit vectors and watch the grid, the unit square and an F move along. The determinant as area factor and orientation, eigendirections as fixed lines, rotation, reflection, shear and projection.',
+            ),
+            grades: [12, 14],
+            uni: true,
+            kmk: ['M-L4', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Matrix', 'lineare Abbildung', 'Determinante', 'Eigenwert', 'Eigenvektor', 'Drehung', 'Spiegelung', 'Scherung', 'Projektion', 'Einheitsvektor', 'lineare Algebra'],
+              ['matrix', 'linear map', 'determinant', 'eigenvalue', 'eigenvector', 'rotation', 'reflection', 'shear', 'projection', 'unit vector', 'linear algebra'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),

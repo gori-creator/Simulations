@@ -46,7 +46,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M19 fertig — normalverteilung, taylor-polynome, fourier-reihen (19.10., Mathe 2)
 - M20 fertig — ableitungsfunktion, kurvendiskussion, funktionenscharen (19.10., Mathe 2)
 - M21 fertig — stammfunktion-grafisch, hauptsatz, aenderungsrate (19.10., Mathe 2)
-- M22 läuft (Mathe 2) — extremwertprobleme (fertig 19.10.), matrix-abbildungen
+- M22 fertig — extremwertprobleme, matrix-abbildungen (19.10., Mathe 2)
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
 - M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
