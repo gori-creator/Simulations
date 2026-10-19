@@ -1785,7 +1785,12 @@ export default defineSimulation({
       // Kein Dreieck: Hinweisschild
       if (s.kind === 'none' && (fin > 0 || st.special > 0)) {
         const k = Math.max(fin, st.special * 0.999);
-        const msg = say(L('kein Schnittpunkt – kein Dreieck', 'no intersection – no triangle'));
+        const msg =
+          s.reason === 'flat'
+            ? say(L('nur ein Berührpunkt auf [AB] – kein Dreieck', 'only a touching point on [AB] – no triangle'))
+            : s.reason === 'touchA'
+              ? say(L('Kreis trifft den Schenkel nur in A – kein Dreieck', 'circle meets the arm only at A – no triangle'))
+              : say(L('kein Schnittpunkt – kein Dreieck', 'no intersection – no triangle'));
         const ins = regions().inset;
         fpill(ins ? (ins.x + ins.w + P.x + P.w) / 2 : P.x + P.w / 2, P.y + fs(24, 20), `\\c{bad}{✗ ${msg}}`, { alpha: ease.outCubic(k) * panel, border: withAlpha(col.bad(), 0.6) });
       }
