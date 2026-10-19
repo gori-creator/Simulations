@@ -1502,7 +1502,7 @@ export default defineSimulation({
       const color = illColor('mass');
       const F = pair.factor;
       const cx = R.x + R.w / 2;
-      const bl = Math.max(50, Math.min(R.w * 0.42, R.h * 0.8, 150));
+      const bl = Math.max(46, Math.min(R.w * 0.31, R.h * 0.8, 130));
       const sl = bl * 0.62;
       const pw = bl * 0.92;
       const total = sl + bl * 0.62 + 10;
