@@ -1335,14 +1335,14 @@ export const mathematik: Subject = {
             slug: L('extremwertprobleme', 'optimisation-problems'),
             title: L('Extremwertprobleme', 'Optimisation problems'),
             summary: L(
-              'Schachtel aus Karton, Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion: Bild und Graph der Zielfunktion bewegen sich gemeinsam, der Lösungsweg führt von der Nebenbedingung über die Ableitung zum Optimum.',
-              'Box from a sheet of card, can with the smallest surface, rectangle under an exponential: the picture and the graph of the objective function move together, and the solution leads from the constraint via the derivative to the optimum.',
+              'Schachtel aus Karton (mit Faltanimation), Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion, größter Zylinder im Kegel und der schnellste Weg eines Rettungsschwimmers (Brechungsgesetz, Wettrennen): Bild, Zielfunktion und Ableitung bewegen sich gemeinsam, der Lösungsweg führt über notwendige und hinreichende Bedingung und den Randwertvergleich zum Optimum.',
+              'Box from a sheet of card (with folding animation), can with the smallest surface, rectangle under an exponential, largest cylinder in a cone and a lifeguard’s fastest route (law of refraction, race): picture, objective function and derivative move together, and the solution leads via necessary and sufficient conditions and the boundary values to the optimum.',
             ),
             grades: [13, 13],
             kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
             keywords: L(
-              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte'],
-              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values'],
+              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Rettungsschwimmer', 'Brechungsgesetz', 'hinreichende Bedingung'],
+              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'lifeguard problem', 'law of refraction', 'sufficient condition'],
             ),
             thumb: 'generic',
           },
