@@ -333,7 +333,7 @@ export default defineSimulation({
         const pw = Math.round(clamp(W * 0.31, 215, 330));
         return { W, H, wide, paper: { x: 2, y: 2, w: W - pw - 16, h: H - 4 }, panel: { x: W - pw - 2, y: 2, w: pw, h: H - 4 } };
       }
-      const ph = Math.round(H * 0.58);
+      const ph = Math.round(H * 0.52);
       return { W, H, wide, paper: { x: 2, y: 2, w: W - 4, h: ph }, panel: { x: 2, y: ph + 10, w: W - 4, h: H - ph - 12 } };
     }
     const small = () => !!geo && !geo.wide;
@@ -381,7 +381,7 @@ export default defineSimulation({
       const b = worldBox();
       const sm = small();
       const mL = sm ? 40 : 56;
-      const mR = sm ? 48 : 64;
+      const mR = sm ? 64 : 80;
       const mT = sm ? 30 : 40;
       const mB = sm ? 40 : 52;
       const bw = b.x1 - b.x0;
@@ -737,8 +737,8 @@ export default defineSimulation({
         let sx = 0;
         if (others.length) sx = others.every((v) => v[0] >= q[0] - 1e-6) ? -1 : others.every((v) => v[0] <= q[0] + 1e-6) ? 1 : 0;
         else sx = q[0] <= minX + 1e-6 ? -1 : q[0] >= maxX - 1e-6 ? 1 : 0;
-        const x = X(q[0]) + sx * d * 0.9;
-        const y = Y(q[1]) + (bottom ? d * 0.75 : -d * 0.85);
+        const x = X(q[0]) + sx * d * 1.05;
+        const y = Y(q[1]) + (bottom ? d * 0.8 : sx === 0 ? -d * 1.35 : -d * 0.9);
         halo(label, x, y, f, ctx.theme.text, 'center', a);
       });
     }
@@ -759,7 +759,9 @@ export default defineSimulation({
       segLine(X(x0), Y(y) + dy, X(x1), Y(y) + dy, color, small() ? 3.6 : 4.2, a);
       if (!label) return;
       const sz = small() ? 12 : 14;
-      halo(label, (X(x0) + X(x1)) / 2, Y(y) + dy + below * (small() ? 15 : 18), font(800, sz), color, 'center', a);
+      // sehr kurze Seite: Beschriftung weiter weg, damit sie nicht auf den Eckennamen liegt
+      const extra = measure(label, font(800, sz)) + 34 > Math.abs(X(x1) - X(x0)) ? (small() ? 12 : 14) : 0;
+      halo(label, (X(x0) + X(x1)) / 2, Y(y) + dy + below * ((small() ? 15 : 18) + extra), font(800, sz), color, 'center', a);
     }
 
     /* ---------------- Geometrie pro Bild ---------------- */
@@ -873,7 +875,7 @@ export default defineSimulation({
           drawCount(rect, endA);
           if (!counting() && !counted && known) {
             const label = k === 'para' ? `A = ${cm2(G * d.h)}` : `2 · A = ${cm2(G * d.h)}`;
-            fitPill(label, X(rect.x0 + rect.w / 2), Y(rect.h / 2), rect.w * view.cell, rect.h * view.cell, endA);
+            fitPill(label, X(rect.x0 + rect.w / 2), Y(rect.h / 2), rect.w * view.cell * 0.72, rect.h * view.cell * 0.7, endA);
           }
         }
         return;
@@ -1279,7 +1281,11 @@ export default defineSimulation({
       const h = itemHeight(it, w);
       switch (it.kind) {
         case 'title':
-          text(g, it.text, x, y + 9, { font: font(750, small() ? 11 : 12), color: it.color ?? th.muted, align: 'left' });
+          {
+            const base = small() ? 11 : 12;
+            const tw = measure(it.text, font(750, base));
+            text(g, it.text, x, y + 9, { font: font(750, tw > w ? Math.max(10, (base * w) / tw) : base), color: it.color ?? th.muted, align: 'left' });
+          }
           break;
         case 'rich': {
           const a = it.a ?? 1;
