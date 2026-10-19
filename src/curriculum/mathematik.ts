@@ -1235,7 +1235,24 @@ export const mathematik: Subject = {
           planned('extremwertprobleme', L('Extremwertprobleme', 'Optimisation problems'), [13, 13], { kmk: ['M-L3', 'M-K3'] }),
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
-          planned('taylor-polynome', L('Taylorpolynome', 'Taylor polynomials'), [13, 14], { uni: true }),
+          {
+            id: 'taylor-polynome',
+            status: 'ready',
+            slug: L('taylorpolynome', 'taylor-polynomials'),
+            title: L('Taylorpolynome', 'Taylor polynomials'),
+            summary: L(
+              'Polynome schmiegen sich an sin x, cos x, eˣ, ln(1 + x) und 1/(1 − x): Grad erhöhen oder durchlaufen lassen, Entwicklungsstelle ziehen, Fehler an einer Prüfstelle messen und das Konvergenzintervall sehen.',
+              'Polynomials hug sin x, cos x, eˣ, ln(1 + x) and 1/(1 − x): increase the degree or run through all degrees, drag the centre, measure the error at a test point and see the interval of convergence.',
+            ),
+            grades: [13, 14],
+            uni: true,
+            kmk: ['M-L3', 'M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Taylorpolynom', 'Taylorreihe', 'Näherungspolynom', 'Entwicklungsstelle', 'Konvergenzradius', 'Restglied', 'Potenzreihe', 'geometrische Reihe', 'Ableitung'],
+              ['Taylor polynomial', 'Taylor series', 'approximation', 'centre', 'radius of convergence', 'remainder', 'power series', 'geometric series', 'derivative'],
+            ),
+            thumb: 'generic',
+          },
           planned('fourier-reihen', L('Fourier-Reihen', 'Fourier series'), [14, 14], { uni: true }),
         ]),
       ],
