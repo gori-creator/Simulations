@@ -217,7 +217,7 @@ export default defineSimulation({
         const ph = Math.round(h * 0.52);
         return { plot: { x: 0, y: 0, w, h: ph }, col: { x: 4, y: ph + 8, w: w - 8, h: h - ph - 12 } };
       }
-      const colW = Math.round(Math.min(340, Math.max(236, w * 0.32)));
+      const colW = Math.round(Math.min(360, Math.max(240, w * 0.355)));
       return { plot: { x: 0, y: 0, w: w - colW - 6, h }, col: { x: w - colW, y: 6, w: colW - 6, h: h - 12 } };
     }
     const textSize = () => {
@@ -251,7 +251,7 @@ export default defineSimulation({
     /* ---------- Zustand ---------- */
 
     const rangeOf = (v: View, inv: boolean): [number, number, number, number] =>
-      v === 'tangent' ? (inv ? [-3.8, 7.8, -3.8, 7.8] : [-3.9, 2.7, -1.1, 7.8]) : [-3, 2.4, -0.9, 5.2];
+      v === 'tangent' ? (inv ? [-3.8, 7.8, -3.8, 7.8] : [-3.2, 3.3, -1.1, 7.8]) : [-3, 2.4, -0.9, 5.2];
     const r0 = rangeOf(view(), p.inv);
     const RX0 = new Chan(r0[0]);
     const RX1 = new Chan(r0[1]);
@@ -627,6 +627,12 @@ export default defineSimulation({
         g.stroke();
         g.restore();
       }
+      if (inside(r, hx, hy)) {
+        g.save();
+        g.globalAlpha = ka;
+        dot(hx, hy, c.B, 6.5 * ease.outBack(ka));
+        g.restore();
+      }
       label(hx - 12, hy - 4, `(1 | ${hidden() && !atE ? 'b' : bTxt(b)})`, c.B, 'right', size - 0.5, k.labels * ka);
 
       // Namen
@@ -636,13 +642,14 @@ export default defineSimulation({
       if (!atE || close < 0.99) curveLabel(d, 'f′', c.d, k.labels * (1 - close), 1, placed);
 
       // Aussage oben bzw. unten
-      const top = r.y + r.h - 28;
+      const top = r.y + 24;
       const src = atE
         ? tt(`b = ${EU}:  \\c{d}{f′(x)} = \\c{f}{f(x)}`, `b = ${EU}:  \\c{d}{f′(x)} = \\c{f}{f(x)}`)
         : hidden()
           ? `\\c{d}{f′(x)} = ln b · \\c{f}{f(x)}`
           : `\\c{d}{f′(x)} = ln ${bTxt(b)} · \\c{f}{f(x)} ≈ ${fmt.num(lb, 3)} · \\c{f}{f(x)}`;
-      pill(r.x + r.w / 2, top, src, { border: atE ? mixColor(c.f, c.d, 0.5) : undefined, size: size + (atE ? 1 : 0), alpha: k.labels, maxW: r.w - 40, glow: atE ? 0.5 + pulse : 0 });
+      const pb = fit(src, r.w - 40, size + (atE ? 1 : 0), th().text, 700);
+      pill(r.x + 18 + pb.w / 2, top, src, { border: atE ? mixColor(c.f, c.d, 0.5) : undefined, size: size + (atE ? 1 : 0), alpha: k.labels, maxW: r.w - 40, glow: atE ? 0.5 + pulse : 0 });
     }
 
     /* ---------- Ansicht „Tangente“ ---------- */
@@ -660,7 +667,7 @@ export default defineSimulation({
 
       // Asymptote y = 0
       const yAx = plot.py(0);
-      label(r.x + 10, yAx - 13, tt('Asymptote y = 0', 'asymptote y = 0'), th().muted, 'left', size - 1.5, k.labels * 0.9);
+      label(r.x + 10, yAx - 13, tt('Asymptote y = 0', 'asymptote y = 0'), th().muted, 'left', size - 1.5, k.labels * 0.9 * clamp01((plot.px(x0 - 1) - r.x - 150) / 40));
 
       // Umkehrfunktion: Spiegelachse y = x
       if (inv > 0.001) {
@@ -780,8 +787,9 @@ export default defineSimulation({
         // Höhe = f(x₀)
         const hTxt = hidden() ? `f(x_{0})` : `f(x_{0}) ≈ ${fmt.num(y0, 2)}`;
         const tall = F[1] - P[1] > 34;
-        label(F[0] + 9, tall ? (F[1] + P[1]) / 2 : P[1] - 16, hTxt, c.f, 'left', size - 0.5, ka * k.labels);
-        label(P[0] - 12, P[1] - 15, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'right', size, ka * k.labels);
+        if (tall) label(F[0] + 9, (F[1] + P[1]) / 2, hTxt, c.f, 'left', size - 0.5, ka * k.labels);
+        if (tall) label(P[0] - 12, P[1] - 15, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'right', size, ka * k.labels);
+        else label(P[0] + 4, P[1] - 34, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'left', size, ka * k.labels);
       }
       curveLabel(f, `f(x) = ${EU}^{x}`, c.f, k.labels, -1, []);
 
@@ -860,6 +868,7 @@ export default defineSimulation({
       // Säulen trennen und Zinsen (Sprünge) hervorheben, solange man sie einzeln sieht
       const colW = (cplot.px(1) - x0) / n;
       const sep = clamp01((colW - 4) / 10) * (morphing ? 0 : 1);
+      stroke(pts, c.f, 2.6, { glow: true });
       if (sep > 0 && n <= 200) {
         g.save();
         g.globalAlpha = sep;
@@ -886,7 +895,6 @@ export default defineSimulation({
         }
         g.restore();
       }
-      stroke(pts, c.f, 2.6, { glow: true });
 
       // Startwert 1 €
       dot(x0, y1p, c.f, 4.5 * k.pts);
@@ -908,13 +916,14 @@ export default defineSimulation({
       }
       // Erklärung der Säulen
       if (sep > 0.5 && n <= 60) {
-        label(r.x + 54, r.y + 22, tt(`\\c{i}{▮} Zinsen am Ende jeder Periode`, `\\c{i}{▮} interest at the end of each period`), th().muted, 'left', size - 1.5, k.labels * sep);
+        label(cplot.px(0.035), cplot.py(2.5) + 30, tt(`\\c{i}{▮} Zinsen am Ende jeder Periode`, `\\c{i}{▮} interest at the end of each period`), th().muted, 'left', size - 1.5, k.labels * sep);
       }
       // Kopfzeile
       const per = periodTxt(periodOf(n));
       const nShown = Math.round(10 ** LOGN.v);
       const head = `n = ${nTxt(nShown)}${per && !morphing ? ` (${per})` : ''}:  (1 + \\f{1}{n})^{n}`;
-      pill(r.x + r.w / 2 + (wide() ? 10 : 0), r.y + r.h - 64, head, { size: size + 0.5, alpha: k.labels, border: c.f, maxW: r.w - 30 });
+      const hb = fit(head, r.w - 30, size + 0.5, th().text, 700);
+      pill(cplot.px(0.035) + Math.min(hb.w, r.w - 30) / 2 + 10, cplot.py(2.5), head, { size: size + 0.5, alpha: k.labels, border: c.f, maxW: r.w - 30 });
     }
 
     /* ---------- Karten ---------- */
@@ -1037,7 +1046,7 @@ export default defineSimulation({
       // Skala: Lage von ln b (= f′(x) : f(x)) zwischen ln 1,5 und ln 4
       const avail = r.y + r.h - pad - y;
       const scaleH = Math.min(78, Math.max(56, avail - size * 3.2));
-      const sx0 = r.x + pad + 8;
+      const sx0 = r.x + pad + 38;
       const sx1 = r.x + r.w - pad - 8;
       const l0 = Math.log(B_MIN);
       const l1 = Math.log(B_MAX);
@@ -1075,7 +1084,9 @@ export default defineSimulation({
         bot.draw(g, xx - bot.w / 2, ly + 13 + bot.asc);
       }
       const lt = fit('b', 20, size - 1.5, th().muted, 600);
-      lt.draw(g, sx0 - 4 - lt.w, ly - 13);
+      lt.draw(g, r.x + pad, ly - 13);
+      const lnl = fit('ln b', 34, size - 2, th().muted, 600);
+      lnl.draw(g, r.x + pad, ly + 13 + lnl.asc);
       // Marke
       const mx = sxOf(Math.max(l0, Math.min(l1, lb)));
       const mcol = atE ? mixColor(c.f, c.d, 0.5) : c.d;
@@ -1099,10 +1110,12 @@ export default defineSimulation({
         ? [
             { src: `\\c{d}{f′(x)} : \\c{f}{f(x)} = ln ${EU} = 1`, weight: 800 },
             { src: tt('Die Funktion ist ihre eigene Ableitung.', 'The function is its own derivative.'), color: th().muted },
+            { src: tt('Steigung in (0 | 1): genau 1', 'slope at (0 | 1): exactly 1'), bullet: c.tan },
           ]
         : [
             { src: `\\c{d}{f′(x)} : \\c{f}{f(x)} = ln ${bS}${hidden() ? '' : ` ≈ ${fmt.num(lb, 3)}`}`, weight: 700 },
             { src: tt(`für jedes x gleich, ${lb < 1 ? 'kleiner' : 'größer'} als 1`, `the same for every x, ${lb < 1 ? 'less' : 'greater'} than 1`), color: th().muted },
+            { src: tt(`Steigung in (0 | 1): \\c{d}{f′(0)} = ln ${bS}`, `slope at (0 | 1): \\c{d}{f′(0)} = ln ${bS}`), bullet: c.tan },
           ];
       cardLines(r, y, lines, size, stagger, change);
       g.restore();
@@ -1179,8 +1192,8 @@ export default defineSimulation({
         { src: `\\c{t}{t: y = ${EU}^{x_{0}} · (x − x_{0} + 1)}`, weight: 700, scale: 1.05 },
         { src: `x_{0} = ${xs}:  ${tline}`, scale: 1 },
         { src: `\\c{t}{m} = \\c{d}{f′(x_{0})} = \\c{f}{f(x_{0})} ≈ ${m}`, bullet: c.f },
-        { src: tt(`Nullstelle der Tangente: x_{0} − 1 = ${Q(fmt.num(Math.round((x0 - 1) * 100) / 100))}`, `zero of the tangent: x_{0} − 1 = ${Q(fmt.num(Math.round((x0 - 1) * 100) / 100))}`), bullet: c.tan },
-        { src: tt('Grundseite 1, Höhe f(x_{0}): Steigung = f(x_{0})', 'base 1, height f(x_{0}): slope = f(x_{0})'), color: th().muted },
+        { src: tt(`Nullstelle: x_{0} − 1 = ${Q(fmt.num(Math.round((x0 - 1) * 100) / 100))}`, `zero of the tangent: x_{0} − 1 = ${Q(fmt.num(Math.round((x0 - 1) * 100) / 100))}`), bullet: c.tan },
+        { src: tt('Dreieck: Grundseite 1, Höhe f(x_{0})', 'triangle: base 1, height f(x_{0})'), color: th().muted },
       ];
       cardLines(r, y, lines, size, stagger, change);
       g.restore();
@@ -1201,12 +1214,12 @@ export default defineSimulation({
       const R = '\\t{ℝ}';
       const lines: Line[] = [
         { src: `D = ${R},   W = ${R}^{+}`, weight: 700 },
-        { src: tt(`Asymptote y = 0 für x → −∞; keine Nullstelle`, `asymptote y = 0 as x → −∞; no zero`) },
-        { src: tt(`Schnittpunkt mit der y-Achse (0 | 1)`, `y-intercept (0 | 1)`) },
-        { src: tt(`streng monoton steigend, linksgekrümmt`, `strictly increasing, convex`) },
-        { src: `\\c{d}{f′(x)} = \\c{f}{${EU}^{x}}  ${tt('(eigene Ableitung)', '(its own derivative)')}`, bullet: c.d },
-        { src: tt(`Stammfunktion F(x) = ${EU}^{x} + C`, `antiderivative F(x) = ${EU}^{x} + C`) },
-        { src: tt(`Umkehrfunktion ln x:  ln(${EU}^{x}) = x`, `inverse function ln x:  ln(${EU}^{x}) = x`), bullet: c.ln },
+        { src: tt('Asymptote: y = 0 (x → −∞)', 'asymptote: y = 0 (x → −∞)') },
+        { src: tt('S_{y}(0 | 1), keine Nullstelle', 'S_{y}(0 | 1), no zero') },
+        { src: tt('streng monoton steigend', 'strictly increasing') },
+        { src: `\\c{d}{f′(x)} = \\c{f}{${EU}^{x}} = f(x)`, bullet: c.d },
+        { src: tt(`Stammfunktion: ${EU}^{x} + C`, `antiderivative: ${EU}^{x} + C`) },
+        { src: tt('Umkehrfunktion: ln x', 'inverse function: ln x'), bullet: c.ln },
       ];
       cardLines(r, y, lines, size - 0.5, stagger, change);
       g.restore();
@@ -1315,7 +1328,7 @@ export default defineSimulation({
       const rate = 100 / nn;
       const lines: Line[] = [
         { src: `n = ${nTxt(nn)}${per && !morph ? `  (${per})` : ''}`, weight: 800, scale: 1.1 },
-        { src: tt(`Zinssatz je Periode: 100 % : ${nTxt(nn)} ${approx(rate, 4)} ${fmt.num(rate, rate < 0.01 ? 6 : 4)} %`, `rate per period: 100 % ÷ ${nTxt(nn)} ${approx(rate, 4)} ${fmt.num(rate, rate < 0.01 ? 6 : 4)} %`), color: th().muted },
+        { src: tt(`je Periode: 100 % : n ${approx(rate, 4)} ${fmt.num(rate, rate < 0.01 ? 6 : 4)} %`, `per period: 100 % ÷ n ${approx(rate, 4)} ${fmt.num(rate, rate < 0.01 ? 6 : 4)} %`), color: th().muted },
         { src: `\\c{f}{(1 + \\f{1}{n})^{n} ≈ ${Q(fmt.fixed(an, dec))} €}`, weight: 800, scale: 1.15 },
         { src: tt(`Abstand zu ${EU}: ${Q(fmt.num(Math.max(0, E - an), E - an < 1e-4 ? 7 : 4))}`, `distance from ${EU}: ${Q(fmt.num(Math.max(0, E - an), E - an < 1e-4 ? 7 : 4))}`), bullet: c.lim },
         { src: tt(`n → ∞:  (1 + \\f{1}{n})^{n} → ${EU}`, `n → ∞:  (1 + \\f{1}{n})^{n} → ${EU}`), color: th().muted },
