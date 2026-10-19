@@ -822,7 +822,23 @@ export const mathematik: Subject = {
             thumb: 'growth',
           },
           planned('logarithmus', L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'), [10, 12]),
-          planned('e-funktion', L('Die natürliche Exponentialfunktion', 'The natural exponential function'), [12, 12]),
+          {
+            id: 'e-funktion',
+            status: 'ready',
+            slug: L('natuerliche-exponentialfunktion', 'natural-exponential-function'),
+            title: L('Die natürliche Exponentialfunktion', 'The natural exponential function'),
+            summary: L(
+              'Warum gerade e? Für y = bˣ ist f′(x) : f(x) = ln b – nur bei b = e ist es 1 und die Graphen von f und f′ fallen zusammen. Dazu die Tangente an y = eˣ mit Steigungsdreieck und (1 + 1/n)ⁿ als Zinseszins.',
+              'Why e? For y = bˣ, f′(x) : f(x) = ln b – only for b = e is it 1, and the graphs of f and f′ coincide. Plus the tangent to y = eˣ with slope triangle and (1 + 1/n)ⁿ as compound interest.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L3', 'M-K5', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['e-Funktion', 'Exponentialfunktion', 'eulersche Zahl', 'e', 'Ableitung', 'Tangente', 'Steigungsdreieck', 'natürlicher Logarithmus', 'ln', 'Umkehrfunktion', 'Zinseszins', 'Grenzwert', 'Stammfunktion'],
+              ['exponential function', 'natural exponential', "Euler's number", 'e', 'derivative', 'tangent', 'slope triangle', 'natural logarithm', 'ln', 'inverse function', 'compound interest', 'limit', 'antiderivative'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
           planned('ganzrationale-funktionen', L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'), [10, 11]),
