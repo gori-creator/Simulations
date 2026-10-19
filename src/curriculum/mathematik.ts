@@ -749,7 +749,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
-          planned('potenzfunktionen', L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'), [9, 10]),
+          {
+            id: 'potenzfunktionen',
+            status: 'ready',
+            slug: L('potenzfunktionen', 'power-functions'),
+            title: L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'),
+            summary: L(
+              'Graphen von f(x) = a · xⁿ für ganzzahlige Exponenten von −4 bis 6: Der Graph verwandelt sich weich, Symmetrie wird gespiegelt und gedreht, Steckbrief, Familien mit gemeinsamen Punkten und der Vergleich zweier Potenzfunktionen.',
+              'Graphs of f(x) = a · xⁿ for integer exponents from −4 to 6: the graph morphs smoothly, symmetry is shown by reflecting and rotating, key features, families with common points and a comparison of two power functions.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Potenzfunktion', 'Exponent', 'Parabel n-ter Ordnung', 'Hyperbel n-ter Ordnung', 'Achsensymmetrie', 'Punktsymmetrie', 'Monotonie', 'Wertemenge', 'Definitionsmenge', 'Asymptote', 'Polstelle', 'gemeinsame Punkte'],
+              ['power function', 'exponent', 'parabola', 'hyperbola', 'even function', 'odd function', 'symmetry', 'monotonicity', 'range', 'domain', 'asymptote', 'pole'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('trigonometrische-funktionen', L('Trigonometrische Funktionen', 'Trigonometric functions'), [
           {
