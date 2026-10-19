@@ -980,14 +980,14 @@ export const mathematik: Subject = {
             slug: L('umkehrfunktion', 'inverse-function'),
             title: L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'),
             summary: L(
-              'Ein Punkt P auf dem Graphen und sein Spiegelbild P′ an y = x; der Graph klappt per Animation über die Spiegelachse. Rechenweg „nach x auflösen, x und y tauschen“ für x², eˣ, 1/x u. a. – und x² auf ganz ℝ als Gegenbeispiel.',
-              'A point P on the graph and its image P′ in y = x; an animation flips the graph across the mirror line. Steps “solve for x, swap x and y” for x², eˣ, 1/x and more – and x² on all of ℝ as a counterexample.',
+              'Ein Punkt P auf dem Graphen und sein Spiegelbild P′ an y = x; der Graph klappt per Animation über die Spiegelachse, die Wertetabelle tauscht die Spalten. Rechenweg „nach x auflösen, x und y tauschen“ für x², eˣ, 1/x, verschobene Parabel u. a., Waagrechtentest und die Steigung der Umkehrfunktion (f⁻¹)′ = 1/f′.',
+              'A point P on the graph and its image P′ in y = x; an animation flips the graph across the mirror line and the table swaps its columns. Steps “solve for x, swap x and y” for x², eˣ, 1/x, a shifted parabola and more, the horizontal line test and the slope of the inverse (f⁻¹)′ = 1/f′.',
             ),
             grades: [12, 12],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
-              ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'Definitionsmenge', 'Wertemenge'],
-              ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'domain', 'range'],
+              ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'Definitionsmenge', 'Wertemenge', 'Waagrechtentest', 'Ableitung der Umkehrfunktion', 'Wertetabelle'],
+              ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'domain', 'range', 'horizontal line test', 'derivative of the inverse', 'table of values'],
             ),
             thumb: 'generic',
           },
