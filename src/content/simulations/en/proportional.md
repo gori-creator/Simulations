@@ -1,5 +1,5 @@
 ---
-description: "Interactive simulation for years 6 to 8: compare direct and inverse proportion with apples, a garden bed and a taxi – with a draggable point on the graph, a table of quotients and products, the rule of three and rectangles of equal area."
+description: "Interactive simulation for years 6 to 8: compare direct and inverse proportion with apples, a garden bed and a taxi – with a draggable point on the graph, a table of quotients and products, the rule of three and rectangles of equal area, plus “Double x” and a practice mode for identifying relations."
 ---
 
 ## What is it about?
@@ -15,6 +15,8 @@ Careful: a taxi with a base fare is “the more, the more”, but **not** propor
 1. [Apples](?kind=dir&kd=2.5&x=3): drag $P$ and look at the column $y : x$.
 2. [Garden bed](?kind=ind&ki=12&x=3): compare the rectangles.
 3. [Taxi](?kind=lin&kt=2&b=3&x=3): why don’t $3\,\text{km}$ cost three times as much as $1\,\text{km}$?
+4. [Double x](?kind=ind&ki=12&x=2): press “Double x” several times – what happens to $y$?
+5. [Identify the relation](?mode=qz&qs=1): practise with everyday tables. Careful with the [candle](?mode=qz&qs=2): “the more – the less” is not enough for inverse proportionality.
 
 ## Tasks
 

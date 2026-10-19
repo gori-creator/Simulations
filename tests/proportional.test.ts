@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { check, product, quotient, ruleFactors, value, type Relation } from '../src/simulations/mathematik/proportional/model';
+import { check, classify, product, quizItem, QUIZ_CTX, quotient, ruleFactors, value, type Kind, type Relation } from '../src/simulations/mathematik/proportional/model';
 
 const apples: Relation = { kind: 'dir', k: 2.5, b: 0 };
 const bed: Relation = { kind: 'ind', k: 12, b: 0 };
@@ -37,5 +37,33 @@ describe('Modell: Proportionalität', () => {
         expect(value({ kind: 'ind', k, b: 0 }, 2 * x)).toBeCloseTo(value({ kind: 'ind', k, b: 0 }, x) / 2, 9);
       }
     }
+  });
+  it('Kerze: 20 cm, 2 cm pro Stunde – je mehr Zeit, desto kürzer, aber nicht indirekt proportional', () => {
+    const candle: Relation = { kind: 'lin', k: -2, b: 20 };
+    expect(value(candle, 1)).toBe(18);
+    expect(value(candle, 2)).toBe(16);
+    // doppelte Zeit, aber nicht halbe Länge
+    expect(value(candle, 2)).not.toBe(value(candle, 1) / 2);
+    expect(classify([1, 2, 3, 4, 5].map((x) => [x, value(candle, x)] as [number, number]))).toBe('lin');
+  });
+  it('Fahrt über 240 km: 60 km/h → 4 h, 80 km/h → 3 h (produktgleich)', () => {
+    const trip: Relation = { kind: 'ind', k: 240, b: 0 };
+    expect(value(trip, 60)).toBe(4);
+    expect(value(trip, 80)).toBe(3);
+    expect(classify([20, 30, 40, 60, 80].map((x) => [x, value(trip, x)] as [number, number]))).toBe('ind');
+  });
+  it('Übungsaufgaben: reproduzierbar, alle Arten kommen vor, Einordnung stimmt mit der Art überein', () => {
+    expect(quizItem(7)).toEqual(quizItem(7));
+    const seen = new Set<Kind>();
+    for (let seed = 1; seed <= 200; seed++) {
+      const q = quizItem(seed);
+      seen.add(q.kind);
+      expect(QUIZ_CTX[q.kind][q.ctx]).toBeDefined();
+      const pairs = q.xs.map((x) => [x, value(q, x)] as [number, number]);
+      expect(classify(pairs)).toBe(q.kind);
+      // Tabellenwerte sind „schön“: höchstens zwei Nachkommastellen
+      for (const [, y] of pairs) expect(Math.abs(y * 100 - Math.round(y * 100))).toBeLessThan(1e-6);
+    }
+    expect(seen.size).toBe(3);
   });
 });

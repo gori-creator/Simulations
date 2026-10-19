@@ -705,8 +705,8 @@ export const mathematik: Subject = {
             slug: L('direkte-indirekte-proportionalitaet', 'direct-and-inverse-proportion'),
             title: L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'),
             summary: L(
-              'Äpfel kaufen, ein Beet umgraben, Taxi fahren: Punkt auf dem Graphen ziehen und in der Wertetabelle prüfen, ob die Quotienten oder die Produkte gleich bleiben. Mit Dreisatz, Ursprungsgerade, Hyperbel und Rechtecken gleicher Fläche.',
-              'Buying apples, digging a bed, taking a taxi: drag a point on the graph and check in the table whether quotients or products stay equal. With the rule of three, a line through the origin, a hyperbola and rectangles of equal area.',
+              'Äpfel kaufen, ein Beet umgraben, Taxi fahren: Punkt auf dem Graphen ziehen und in der Wertetabelle prüfen, ob die Quotienten oder die Produkte gleich bleiben. Mit Dreisatz, „x verdoppeln“, Ursprungsgerade, Hyperbel, Rechtecken gleicher Fläche und einem Übungsmodus, in dem man Alltagszuordnungen selbst einordnet.',
+              'Buying apples, digging a bed, taking a taxi: drag a point on the graph and check in the table whether quotients or products stay equal. With the rule of three, “double x”, a line through the origin, a hyperbola, rectangles of equal area and a practice mode for classifying everyday relations.',
             ),
             grades: [6, 8],
             kmk: ['M-L3', 'M-K3', 'M-K4'],

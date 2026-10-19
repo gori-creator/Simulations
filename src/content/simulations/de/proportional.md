@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die 6. bis 8. Klasse: direkte und indirekte Proportionalität an Äpfeln, einem Beet und einem Taxi vergleichen – mit ziehbarem Punkt auf dem Graphen, Wertetabelle mit Quotienten und Produkten, Dreisatz und Rechtecken gleicher Fläche."
+description: "Interaktive Simulation für die 6. bis 8. Klasse: direkte und indirekte Proportionalität an Äpfeln, einem Beet und einem Taxi vergleichen – mit ziehbarem Punkt auf dem Graphen, „x verdoppeln“, Wertetabelle mit Quotienten und Produkten, Dreisatz, Rechtecken gleicher Fläche und einem Übungsmodus „Zuordnung erkennen“ mit Alltagsbeispielen."
 ---
 
 ## Worum geht es?
@@ -16,7 +16,9 @@ Bei einer **Zuordnung** gehört zu jedem $x$-Wert ein $y$-Wert. Zwei besondere Z
 
 **Der Dreisatz** nutzt genau diese Eigenschaften: erst auf eine Einheit schließen, dann auf die gesuchte Menge.
 
-**Vorsicht:** Nicht jede „je mehr – desto mehr“-Zuordnung ist proportional. Beim Taxi mit Grundgebühr kostet die doppelte Strecke nicht das Doppelte – die Quotienten sind verschieden und die Gerade geht nicht durch den Ursprung.
+**Vorsicht:** Nicht jede „je mehr – desto mehr“-Zuordnung ist proportional. Beim Taxi mit Grundgebühr kostet die doppelte Strecke nicht das Doppelte – die Quotienten sind verschieden und die Gerade geht nicht durch den Ursprung. Ebenso ist nicht jede „je mehr – desto weniger“-Zuordnung indirekt proportional: Eine $20\,\text{cm}$ lange Kerze, die pro Stunde $1{,}5\,\text{cm}$ abbrennt, ist nach doppelter Zeit nicht halb so lang.
+
+**Übungsmodus „Zuordnung erkennen“:** Die Simulation zeigt eine Wertetabelle aus dem Alltag (Tanken, Pizza teilen, Handytarif, Kerze …) und die Punkte im Koordinatensystem. Du entscheidest: direkt proportional, indirekt proportional oder weder noch? Erst danach erscheinen Quotienten, Produkte und der Graph.
 
 ## Ausprobieren
 
@@ -25,6 +27,8 @@ Bei einer **Zuordnung** gehört zu jedem $x$-Wert ein $y$-Wert. Zwei besondere Z
 3. [Beet umgraben](?kind=ind&ki=12&x=3): Vergleiche die Rechtecke unter den Punkten. Welche Spalte der Tabelle bleibt gleich?
 4. [Großes Beet](?kind=ind&ki=24&x=4): Wie lange brauchen $4$ Personen, wie lange $6$?
 5. [Taxi](?kind=lin&kt=2&b=3&x=3): Warum kosten $3\,\text{km}$ nicht das Dreifache von $1\,\text{km}$? Vergleiche mit der gestrichelten Ursprungsgeraden.
+6. [Verdoppeln](?kind=ind&ki=12&x=2): Drücke mehrmals „x verdoppeln“. Was passiert jedes Mal mit $y$? Probiere dasselbe bei den Äpfeln und beim Taxi.
+7. [Zuordnung erkennen](?mode=qz&qs=1): Entscheide dich für eine Antwort, dann „Neue Aufgabe“. Wie viele schaffst du hintereinander richtig?
 
 ## Aufgaben
 
@@ -72,14 +76,25 @@ Nein. $3\,\text{km}$ kosten $3\,€ + 3 \cdot 2\,€ = 9\,€$. Der Dreisatz fun
 
 </details>
 
+### Aufgabe 5: Die Kerze
+
+Eine Kerze ist $20\,\text{cm}$ lang und brennt pro Stunde $1{,}5\,\text{cm}$ ab. Ist die Länge der Kerze indirekt proportional zur Brenndauer? [Aufgabe laden](?mode=qz&qs=2)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Nein. Nach $1\,\text{h}$ ist sie $18{,}5\,\text{cm}$ lang, nach $2\,\text{h}$ $17\,\text{cm}$ – nicht die Hälfte. Die Produkte $1 \cdot 18{,}5 = 18{,}5$ und $2 \cdot 17 = 34$ sind verschieden. Es gilt $y = 20 - 1{,}5x$: „je länger, desto kürzer“, aber weder direkt noch indirekt proportional.
+
+</details>
+
 ## Ideen für den Unterricht
 
 *Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 6 (Dreisatz, proportionale Zuordnungen), Jahrgangsstufe 8 (lineare Funktionen, elementare gebrochen-rationale Funktionen), LehrplanPLUS Gymnasium Bayern. Die drei Situationen nebeneinander helfen, die Begriffe sauber abzugrenzen.
-- **Sortieraufgabe:** Die Lernenden sammeln Alltagsbeispiele und ordnen sie den drei Typen zu, bevor sie sie in der Simulation prüfen.
+- **Sortieraufgabe:** Die Lernenden sammeln Alltagsbeispiele und ordnen sie den drei Typen zu, bevor sie sie in der Simulation prüfen. Der Übungsmodus liefert weitere Beispiele; über die Aufgabennummer bekommt die ganze Klasse dieselbe Aufgabe.
 - **Modell:** Beim Beet sind nur ganze Personenzahlen möglich; der Graph ist deshalb gestrichelt, die Punkte sind die sinnvollen Werte.
 - **Häufige Stolpersteine:**
-  - „Je mehr – desto mehr“ wird mit direkter Proportionalität gleichgesetzt (Taxi!).
+  - „Je mehr – desto mehr“ wird mit direkter Proportionalität gleichgesetzt (Taxi!), „je mehr – desto weniger“ mit indirekter (Kerze!).
   - Bei indirekter Proportionalität wird beim Dreisatz multipliziert statt dividiert.
   - Der Graph einer indirekten Proportionalität wird als Gerade gezeichnet.
