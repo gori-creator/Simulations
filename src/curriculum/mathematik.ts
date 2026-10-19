@@ -379,7 +379,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
-          planned('winkel-geradenkreuzung', L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'), [7, 7]),
+          {
+            id: 'winkel-geradenkreuzung',
+            status: 'ready',
+            slug: L('winkel-an-geradenkreuzungen', 'angles-at-intersecting-lines'),
+            title: L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'),
+            summary: L(
+              'Geraden drehen und zusehen, wie Scheitelwinkel gleich bleiben und Nebenwinkel sich zu 180° ergänzen. An einer Doppelkreuzung Stufen-, Wechsel- und Nachbarwinkel durch Verschieben und Drehen vergleichen – gleich groß nur bei parallelen Geraden. Dazu Aufgaben zum Begründen.',
+              'Turn the lines and watch vertical angles stay equal and adjacent angles add up to 180°. At a transversal, compare corresponding, alternate and co-interior angles by sliding and turning – equal only for parallel lines. With exercises on giving reasons.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['Scheitelwinkel', 'Nebenwinkel', 'Stufenwinkel', 'Wechselwinkel', 'Nachbarwinkel', 'F-Winkel', 'Z-Winkel', 'E-Winkel', 'Geradenkreuzung', 'Doppelkreuzung', 'parallele Geraden', 'Querlinie', 'Schnittwinkel', 'begründen'],
+              ['vertical angles', 'adjacent angles', 'corresponding angles', 'alternate angles', 'co-interior angles', 'F angles', 'Z angles', 'intersecting lines', 'transversal', 'parallel lines', 'angle of intersection', 'reasoning'],
+            ),
+            thumb: 'generic',
+          },
           planned('winkelsumme', L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
