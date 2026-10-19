@@ -1304,7 +1304,23 @@ export const mathematik: Subject = {
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
           planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),
-          planned('lage-abstaende', L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'), [13, 13]),
+          {
+            id: 'lage-abstaende',
+            status: 'ready',
+            slug: L('lagebeziehungen-abstaende', 'relative-positions-distances'),
+            title: L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'),
+            summary: L(
+              'Zwei Geraden, Gerade und Ebene oder zwei Ebenen im drehbaren 3D-Bild: Ein Entscheidungsbaum führt zu identisch, parallel, schneidend oder windschief, dazu Schnittpunkt, Schnittgerade, Schnittwinkel und Abstände – bis zum animierten Lot mit Hesse-Normalform und Spiegelpunkt.',
+              'Two lines, a line and a plane or two planes in a rotatable 3D picture: a decision tree leads to identical, parallel, intersecting or skew, with point and line of intersection, angles and distances – up to an animated perpendicular with the Hesse normal form and a mirror point.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Lagebeziehung', 'windschief', 'parallel', 'identisch', 'Schnittpunkt', 'Durchstoßpunkt', 'Schnittgerade', 'Schnittwinkel', 'Abstand', 'Hesse-Normalform', 'Lotfußpunkt', 'Lot', 'Spiegelpunkt', 'Normalenvektor', 'Koordinatenform'],
+              ['relative position', 'skew lines', 'parallel', 'identical', 'point of intersection', 'line of intersection', 'angle of intersection', 'distance', 'Hesse normal form', 'foot of the perpendicular', 'perpendicular', 'mirror point', 'normal vector', 'coordinate form'],
+            ),
+            thumb: 'generic',
+          },
           planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
