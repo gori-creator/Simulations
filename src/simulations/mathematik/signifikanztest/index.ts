@@ -274,7 +274,7 @@ export default defineSimulation({
     const tallyShown = [new Chan(0), new Chan(0), new Chan(0), new Chan(0)];
     /** Zählung: [abgelehnt & H₀ wahr, abgelehnt & H₁ wahr, nicht abgelehnt & H₀ wahr, nicht abgelehnt & H₁ wahr] */
     let tally = [0, 0, 0, 0];
-    let sweep: { t0: number; from: number; to: number; dur: number } | null = null;
+    let sweep: { t0: number; start: number; from: number; to: number; dur: number; lead: number } | null = null;
     let sweepTimer: ReturnType<typeof setTimeout> | null = null;
     const trail: [number, number][] = [];
     let stampT0 = reduced() ? -1e9 : now0 + 900;
@@ -989,9 +989,9 @@ export default defineSimulation({
       const info = p.info;
       const a = cr.alphaActual;
       const beta = realH1 ? bShown.v : null;
-      const cells = [
+      const cells: { name: string; val: string; col: string; alt?: string }[] = [
         { name: tt('Fehler 1. Art', 'type I error'), val: info ? `≤ ${pct(a)}` : '?', col: c.err1 },
-        { name: tt('richtig', 'correct'), val: info ? (beta !== null ? `1 − β ${apx(1 - beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.power },
+        { name: tt('richtig', 'correct'), val: info ? (beta !== null ? `1 − β ${apx(1 - beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.power, alt: beta !== null ? apx(1 - beta) : undefined },
         { name: tt('richtig', 'correct'), val: info ? `≥ ${pct(1 - a)}` : '?', col: c.acc },
         { name: tt('Fehler 2. Art', 'type II error'), val: info ? (beta !== null ? `β ${apx(beta)}` : tt('je nach p', 'depends on p')) : '?', col: c.err2 },
       ];
@@ -1018,6 +1018,8 @@ export default defineSimulation({
           }
           const big = h > 46;
           const nameF = fitFont(cell.name, w - 10, 800, 11.5);
+          g.font = font(700, 10.5);
+          if (cell.alt && g.measureText(cell.val).width > w - 10) cell.val = cell.alt;
           const valF = fitFont(cell.val, w - 10, 700, 11.5);
           const tcol = shade(cell.col, theme.dark ? 0.25 : -0.25);
           if (big || h > 34) {
@@ -1284,15 +1286,16 @@ export default defineSimulation({
         ctx.set({ p1: to });
         return;
       }
-      sweep = { t0: now, from, to, dur };
-      P1.jump(from);
+      // erst weich zu p₀ gleiten, dann wandern
+      const lead = Math.abs(P1.v - from) > 0.005 ? 600 : 0;
+      sweep = { t0: now, start: P1.v, from, to, dur, lead };
       sweepTimer = setTimeout(() => {
         sweepTimer = null;
         if (!sweep) return;
         sweep = null;
         ctx.set({ p1: to });
         syncActions();
-      }, dur + 40);
+      }, dur + lead + 40);
       syncActions();
     }
 
@@ -1366,11 +1369,12 @@ export default defineSimulation({
         lastTime = now;
         let busy = false;
         if (sweep) {
-          const t = clamp01((now - sweep.t0) / sweep.dur);
-          const v = lerp(sweep.from, sweep.to, ease.inOutCubic(t));
+          const el = now - sweep.t0;
+          const inLead = el < sweep.lead;
+          const v = inLead ? lerp(sweep.start, sweep.from, ease.inOutCubic(el / sweep.lead)) : lerp(sweep.from, sweep.to, ease.inOutCubic(clamp01((el - sweep.lead) / sweep.dur)));
           P1.jump(v);
           setH1(v, false);
-          trail.push([v, rejectProb(cr, v)]);
+          if (!inLead) trail.push([v, rejectProb(cr, v)]);
           if (now - lastReadout > 120) {
             lastReadout = now;
             updateReadouts();
