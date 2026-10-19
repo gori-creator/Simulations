@@ -1205,7 +1205,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('kurvendiskussion', L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'), [11, 12]),
+          {
+            id: 'kurvendiskussion',
+            status: 'ready',
+            slug: L('monotonie-extrem-wendestellen', 'monotonicity-extrema-inflection'),
+            title: L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'),
+            summary: L(
+              'Eine Funktionsuntersuchung Schritt für Schritt: Ableitungen, notwendige und hinreichende Bedingung, Hoch-, Tief- und Terrassenpunkte, Wendepunkte, Monotonie- und Krümmungsintervalle – mit Vorzeichentabelle und frei wählbaren Koeffizienten.',
+              'Investigating a function step by step: derivatives, necessary and sufficient conditions, maxima, minima and terrace points, inflection points, intervals of monotonicity and curvature – with a sign chart and freely chosen coefficients.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung'],
+              ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
           planned('funktionenscharen', L('Funktionenscharen', 'Families of functions'), [12, 13]),
