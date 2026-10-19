@@ -460,7 +460,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
+          {
+            id: 'massstab',
+            status: 'ready',
+            slug: L('massstab-karte-wirklichkeit', 'scale-map-and-reality'),
+            title: L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'),
+            summary: L(
+              'Auf einer gezeichneten Landkarte mit dem Lineal Entfernungen messen und über den Maßstab in die Wirklichkeit umrechnen – als Luftlinie oder entlang der Straße. Beim Wechsel des Maßstabs zoomt die Karte; dazu Vergrößerungen mit der Lupe und Rechenaufgaben.',
+              'Measure distances on a drawn map with a ruler and convert them to reality using the scale – as the crow flies or along the roads. Changing the scale zooms the map; plus enlargements with a magnifier and calculation tasks.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-K3', 'M-L1', 'M-K4'],
+            keywords: L(
+              ['Maßstab', 'Karte', 'Landkarte', 'Wirklichkeit', 'Maßstabszahl', 'Maßstabsleiste', 'Entfernung', 'Luftlinie', 'Wegstrecke', 'Vergrößerung', 'Verkleinerung', 'Lineal', 'Längen', 'Einheiten', 'Kilometer', 'Zentimeter'],
+              ['scale', 'map', 'reality', 'scale factor', 'scale bar', 'distance', 'straight line', 'route', 'enlargement', 'reduction', 'ruler', 'lengths', 'units', 'kilometre', 'centimetre'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
           {
