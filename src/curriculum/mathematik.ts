@@ -1303,7 +1303,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
-          planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),
+          {
+            id: 'geraden-ebenen',
+            status: 'ready',
+            slug: L('geraden-ebenen-raum', 'lines-and-planes-in-space'),
+            title: L('Geraden und Ebenen im Raum', 'Lines and planes in space'),
+            summary: L(
+              'Ein Punkt X läuft auf der Geraden x = a + t · u, die Pfeilkette zeigt, wie er entsteht; Spurpunkte und Punktprobe. Ebenen in Parameterform mit Parametergitter, Umrechnung in Normalen- und Koordinatenform Schritt für Schritt, Spurpunkte und Spurdreieck – drehbar in 3D.',
+              'A point X moves along the line x = a + t · u while the arrow chain shows how it arises; trace points and point test. Planes in parametric form with a parameter grid, step-by-step conversion to normal and coordinate form, trace points and trace triangle – rotatable in 3D.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Gerade', 'Geradengleichung', 'Parameterform', 'Stützvektor', 'Richtungsvektor', 'Spurpunkt', 'Punktprobe', 'Ebene', 'Spannvektor', 'Normalenvektor', 'Normalenform', 'Koordinatenform', 'Spurgerade', 'Spurdreieck', 'Achsenabschnitt', 'Vektorprodukt'],
+              ['line', 'equation of a line', 'parametric form', 'position vector', 'direction vector', 'trace point', 'point test', 'plane', 'spanning vector', 'normal vector', 'normal form', 'coordinate form', 'trace line', 'trace triangle', 'intercept', 'cross product'],
+            ),
+            thumb: 'generic',
+          },
           planned('lage-abstaende', L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'), [13, 13]),
           planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
         ]),
