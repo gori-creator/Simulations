@@ -946,14 +946,14 @@ export const mathematik: Subject = {
             slug: L('graphen-verschieben-strecken-spiegeln', 'shifting-stretching-reflecting-graphs'),
             title: L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'),
             summary: L(
-              'Aus einer Grundfunktion f wird g(x) = a · f(b(x − c)) + d: Punkte am Graphen ziehen, markante Punkte wandern mit, und eine Schrittfolge zeigt, was jeder Parameter bewirkt – für Parabel, Wurzel, Hyperbel, Sinus, Exponentialfunktion und mehr.',
-              'From a basic function f to g(x) = a · f(b(x − c)) + d: drag points on the graph, watch key points move, and step through what each parameter does – for parabola, square root, hyperbola, sine, exponential and more.',
+              'Aus einer Grundfunktion f wird g(x) = a · f(b(x − c)) + d: Eine Zeitleiste spielt die vier Schritte strecken, verschieben, strecken, verschieben einzeln ab, Anker- und Formpunkt lassen sich ziehen, markante Punkte wandern mit – für Parabel, Wurzel, Betrag, Hyperbel, Sinus und Exponentialfunktion.',
+              'From a basic function f to g(x) = a · f(b(x − c)) + d: a timeline plays the four steps stretch, shift, stretch, shift one by one, anchor and shape points can be dragged and key points move along – for parabola, square root, absolute value, hyperbola, sine and exponential function.',
             ),
             grades: [11, 11],
             kmk: ['M-L3', 'M-K4'],
             keywords: L(
-              ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote'],
-              ['shift', 'translation', 'stretch', 'compression', 'reflection', 'transformation', 'graph', 'parameter', 'basic function'],
+              ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote', 'Reihenfolge', 'Definitionsmenge', 'Wertemenge'],
+              ['shift', 'translation', 'stretch', 'compression', 'reflection', 'transformation', 'graph', 'parameter', 'basic function', 'order', 'domain', 'range'],
             ),
             thumb: 'generic',
           },
