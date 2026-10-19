@@ -1016,29 +1016,28 @@ export default defineSimulation({
             g.lineWidth = 1.5;
             g.stroke();
           }
-          const big = h > 46;
-          const nameF = fitFont(cell.name, w - 10, 800, 11.5);
+          const tl = total > 0 ? 34 : 0;
+          const tw = w - 10 - tl;
+          const tcx = x + (w - tl) / 2;
           g.font = font(700, 10.5);
-          if (cell.alt && g.measureText(cell.val).width > w - 10) cell.val = cell.alt;
-          const valF = fitFont(cell.val, w - 10, 700, 11.5);
+          if (cell.alt && g.measureText(cell.val).width > tw) cell.val = cell.alt;
+          const nameF = fitFont(cell.name, tw, 800, 11.5);
+          const valF = fitFont(cell.val, tw, 700, 11.5);
           const tcol = shade(cell.col, theme.dark ? 0.25 : -0.25);
-          if (big || h > 34) {
-            text(g, cell.name, x + w / 2, y + h / 2 - 8, { font: nameF, color: tcol });
-            text(g, cell.val, x + w / 2, y + h / 2 + 8, { font: valF, color: cur ? theme.text : theme.muted });
+          if (h > 34) {
+            text(g, cell.name, tcx, y + h / 2 - 8, { font: nameF, color: tcol });
+            text(g, cell.val, tcx, y + h / 2 + 8, { font: valF, color: cur ? theme.text : theme.muted });
           } else {
-            text(g, cell.name, x + w / 2, y + h / 2, { font: nameF, color: tcol });
+            text(g, cell.name, tcx, y + h / 2, { font: nameF, color: tcol });
           }
           if (total > 0) {
             const n = Math.round(tallyShown[ci]!.v);
-            if (n > 0 || cur) {
-              const s = `${n}×`;
-              g.font = font(800, 10.5);
-              const sw = g.measureText(s).width + 10;
-              roundRect(g, x + w - sw - 3, y + 3, sw, 16, 8);
-              g.fillStyle = theme.dark ? 'rgba(18,24,34,0.9)' : 'rgba(255,255,255,0.92)';
-              g.fill();
-              text(g, s, x + w - sw / 2 - 3, y + 11.5, { font: font(800, 10.5), color: theme.text });
-            }
+            const s2 = `${n}×`;
+            const bf = fitFont(s2, 26, 800, 10.5);
+            roundRect(g, x + w - 33, y + h / 2 - 9, 30, 18, 9);
+            g.fillStyle = theme.dark ? 'rgba(18,24,34,0.9)' : 'rgba(255,255,255,0.92)';
+            g.fill();
+            text(g, s2, x + w - 18, y + h / 2 + 0.5, { font: bf, color: n > 0 ? theme.text : theme.muted });
           }
         }
       });
