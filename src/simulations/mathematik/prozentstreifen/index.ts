@@ -1,8 +1,8 @@
 import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { asFraction, baseValue, discounted, gross, isNice, percentRate, percentValue, ruleOfThree, type Find } from './model';
+import { asFraction, baseValue, discounted, gross, isNice, niceTask, percentRate, percentValue, ruleOfThree, upThenDown, type Find } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-type Ctx = 'none' | 'rabatt' | 'mwst' | 'zins' | 'klasse';
+type Ctx = 'none' | 'rabatt' | 'mwst' | 'zins' | 'klasse' | 'twice';
 type Px = [number, number];
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
@@ -13,6 +13,7 @@ const START: Record<Ctx, { G: number; p: number }> = {
   mwst: { G: 200, p: 19 },
   zins: { G: 500, p: 2 },
   klasse: { G: 28, p: 25 },
+  twice: { G: 100, p: 20 },
 };
 
 /**
@@ -20,7 +21,9 @@ const START: Record<Ctx, { G: number; p: number }> = {
  * Prozentwert, der Prozentsatz oder der Grundwert; der Dreisatz entsteht
  * Zeile für Zeile, daneben Formel, Bruch und eine Alltagssituation (Rabatt,
  * Mehrwertsteuer, Zinsen, Anteil einer Klasse). Das Ende des Streifens lässt
- * sich ziehen.
+ * sich ziehen. „Erst plus, dann minus“ zeigt in drei Streifen, dass +p % und
+ * danach −p % nicht zum Anfangswert zurückführt, weil sich der Grundwert
+ * ändert. „Neue Aufgabe“ würfelt glatte Werte und blendet die Lösung aus.
  */
 export default defineSimulation({
   id: 'prozentstreifen',
@@ -41,6 +44,7 @@ export default defineSimulation({
         { value: 'mwst', label: L('Mehrwertsteuer', 'Sales tax (VAT)') },
         { value: 'zins', label: L('Zinsen', 'Interest') },
         { value: 'klasse', label: L('Anteil einer Klasse', 'Share of a class') },
+        { value: 'twice', label: L('Erst plus, dann minus', 'First up, then down') },
       ],
       default: 'none',
     },
@@ -54,11 +58,13 @@ export default defineSimulation({
         { value: 'G', label: L('Grundwert G', 'Base value G') },
       ],
       default: 'W',
+      visibleIf: (v) => v.sit !== 'twice',
     },
     { key: 'G', type: 'number', group: 'val', label: L('Grundwert G (≙ 100 %)', 'Base value G (≙ 100 %)'), min: 1, max: 1000, step: 1, default: 80 },
     { key: 'p', type: 'number', group: 'val', label: L('Prozentsatz p', 'Rate p'), min: 0, max: 150, step: 1, default: 25, unit: '%', help: L('Auch am Ende des farbigen Streifens ziehen.', 'You can also drag the end of the coloured bar.') },
     { key: 'show', type: 'boolean', group: 'view', label: L('Lösung zeigen', 'Show the solution'), help: L('Aus: Die gesuchte Größe erscheint als „?“.', 'Off: the unknown appears as “?”.'), default: true },
   ],
+  actions: [{ id: 'dice', label: L('Neue Aufgabe', 'New task'), visibleIf: (v) => v.sit !== 'twice' }],
   readouts: [
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
@@ -70,6 +76,8 @@ export default defineSimulation({
     { id: 'rabatt', label: L('30 % Rabatt', '30 % discount'), values: { sit: 'rabatt', G: 60, p: 30 } },
     { id: 'mwst', label: L('19 % Mehrwertsteuer', '19 % VAT'), values: { sit: 'mwst', G: 200, p: 19 } },
     { id: 'klasse', label: L('7 von 28 Kindern', '7 of 28 children'), values: { sit: 'klasse', find: 'p', G: 28, p: 25 } },
+    { id: 'twice', label: L('+20 %, dann −20 %', '+20 %, then −20 %'), values: { sit: 'twice', G: 100, p: 20 } },
+    { id: 'twice50', label: L('+50 %, dann −50 %', '+50 %, then −50 %'), values: { sit: 'twice', G: 80, p: 50 } },
   ],
   strings: {
     de: {
@@ -114,6 +122,18 @@ export default defineSimulation({
       frac: 'Als Bruch',
       resRead: 'G = {G}, p = {p}, W = {W}',
       shortcut: 'Kurz: W = G · p %',
+      tw_start: 'Start',
+      tw_up: '+ {p}',
+      tw_down: '− {p}',
+      tw_q: 'Ein Preis von {G} steigt um {p} und sinkt danach wieder um {p}. Ist er dann wieder {G}?',
+      tw_factT: 'Mit Faktoren rechnen',
+      tw_f1: 'Erhöhen um {p}: · {q1}',
+      tw_f2: 'Senken um {p}: · {q2}',
+      tw_f: 'Zusammen: {q1} · {q2} = {q}',
+      tw_net: 'Das ist eine Änderung um {n}.',
+      tw_whyT: 'Warum nicht wieder {G}?',
+      tw_why: 'Beim Senken bezieht sich der Prozentsatz auf den neuen, größeren Grundwert {up}. {p} davon sind {d2} – mehr als die {d1}, die vorher dazugekommen sind.',
+      tw_gap: 'fehlt: {v}',
     },
     en: {
       canvas: 'Percentage bar with a percent scale on top and a value scale below; the coloured part shows the percentage and its end can be dragged. Below, the rule of three line by line, the formula and an everyday situation.',
@@ -157,6 +177,18 @@ export default defineSimulation({
       frac: 'As a fraction',
       resRead: 'G = {G}, p = {p}, W = {W}',
       shortcut: 'Short: W = G · p %',
+      tw_start: 'start',
+      tw_up: '+ {p}',
+      tw_down: '− {p}',
+      tw_q: 'A price of {G} rises by {p} and then falls by {p}. Is it {G} again?',
+      tw_factT: 'Calculating with factors',
+      tw_f1: 'increase by {p}: · {q1}',
+      tw_f2: 'decrease by {p}: · {q2}',
+      tw_f: 'together: {q1} · {q2} = {q}',
+      tw_net: 'That is a change of {n}.',
+      tw_whyT: 'Why not {G} again?',
+      tw_why: 'When decreasing, the percentage refers to the new, larger base value {up}. {p} of it is {d2} – more than the {d1} that was added before.',
+      tw_gap: 'missing: {v}',
     },
   },
 
@@ -183,7 +215,7 @@ export default defineSimulation({
 
     /* ---------- Werte ---------- */
     const W = () => percentValue(pr.G, pr.p);
-    const money = () => sit() === 'rabatt' || sit() === 'mwst' || sit() === 'zins';
+    const money = () => sit() === 'rabatt' || sit() === 'mwst' || sit() === 'zins' || sit() === 'twice';
     /** Zahl mit Einheit, z. B. „20 €“, „7 Kinder“. */
     function val(v: number, unit = true): string {
       if (!Number.isFinite(v)) return '–';
@@ -240,6 +272,12 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     function updateReadouts(): void {
+      if (sit() === 'twice') {
+        const r = upThenDown(pr.G, pr.p);
+        ctx.readout('res', `${val(pr.G)} → ${val(r.up)} → ${val(r.down)}`);
+        ctx.readout('calc', `${fmt.num(1 + pr.p / 100, 2)} · ${fmt.num(1 - pr.p / 100, 2)} = ${fmt.num(r.factor, 4)} (${pct(r.netPct)})`);
+        return;
+      }
       ctx.readout('res', tr('resRead', { G: val(pr.G), p: pct(pr.p), W: val(W()) }));
       const f = find();
       let calc: string;
@@ -589,6 +627,7 @@ export default defineSimulation({
         mwst: tr('a_mwst', { v: Q('W', val(gross(pr.G, pr.p))) }),
         zins: tr('a_zins', { v: Q('W', val(gross(pr.G, pr.p))) }),
         klasse: tr('a_klasse', { v: Q('W', val(pr.G - W())) }),
+        twice: null,
       };
       const extra = s === 'klasse' && !isNice(W(), 0) ? ctx.t('noWhole') : add[s];
       if (extra && pr.show) {
@@ -626,6 +665,107 @@ export default defineSimulation({
       }
     }
 
+    /* ---------- Erst plus, dann minus ---------- */
+    function drawTwice(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const G = pr.G;
+      const pS = pShown;
+      const r = upThenDown(G, pS);
+      const padL = F(84, 64);
+      const padR = F(30, 18);
+      const k = (R.w - padL - padR) / Math.max(r.up, G);
+      const x0 = R.x + padL;
+      const bh = F(34, 28);
+      const gapY = F(18, 12);
+      const top = R.y + (R.h - (3 * bh + 2 * gapY)) / 2 + 8;
+      const t = rows.running ? rows.value : 1;
+      const fv = font(700, F(13, 12));
+      const lab = font(700, F(12, 11));
+      // Hilfslinie beim Anfangswert G
+      g.save();
+      g.setLineDash([5, 4]);
+      g.strokeStyle = withAlpha(col.G(), 0.8);
+      g.lineWidth = 1.4;
+      g.beginPath();
+      g.moveTo(x0 + G * k, top - 10);
+      g.lineTo(x0 + G * k, top + 3 * bh + 2 * gapY + 8);
+      g.stroke();
+      g.restore();
+      const bar = (i: number, v: number, label: string, base: string, extra?: { from: number; to: number; color: string; txt: string }) => {
+        const a = clamp(t * 3 - i, 0, 1);
+        if (a <= 0) return;
+        const y = top + i * (bh + gapY);
+        const w = v * k * ease.outCubic(a);
+        g.fillStyle = withAlpha(base, theme.dark ? 0.55 : 0.4);
+        roundRect(g, x0, y, w, bh, 6);
+        g.fill();
+        g.strokeStyle = base;
+        g.lineWidth = 1.5;
+        roundRect(g, x0 + 0.5, y + 0.5, Math.max(1, w - 1), bh - 1, 6);
+        g.stroke();
+        if (extra && a >= 1) {
+          const xa = x0 + extra.from * k;
+          const xb = x0 + extra.to * k;
+          g.fillStyle = withAlpha(extra.color, theme.dark ? 0.6 : 0.45);
+          g.fillRect(Math.min(xa, xb), y + 3, Math.abs(xb - xa), bh - 6);
+          if (Math.abs(xb - xa) > 30) text(g, extra.txt, (xa + xb) / 2, y + bh / 2, { font: font(700, F(11.5, 10.5)), color: theme.text });
+          else text(g, extra.txt, Math.max(xa, xb) + 6, y + bh / 2, { font: font(700, F(11.5, 10.5)), color: extra.color, align: 'left' });
+        }
+        text(g, label, R.x + 10, y + bh / 2, { font: lab, color: theme.muted, align: 'left' });
+        if (a >= 1) text(g, val(v), x0 + 10, y + bh / 2, { font: fv, color: theme.text, align: 'left' });
+      };
+      bar(0, G, ctx.t('tw_start'), col.G());
+      bar(1, r.up, tr('tw_up', { p: pct(pS) }), col.ok(), { from: G, to: r.up, color: col.ok(), txt: `+ ${val(r.up - G)}` });
+      bar(2, r.down, tr('tw_down', { p: pct(pS) }), col.W(), { from: r.up, to: r.down, color: col.bad(), txt: `− ${val(r.up - r.down)}` });
+      // Lücke zum Anfangswert
+      if (t >= 1 && G - r.down > 1e-9) {
+        const y = top + 2 * (bh + gapY) + bh + 14;
+        text(g, tr('tw_gap', { v: Q('W', val(G - r.down)) }), x0 + ((r.down + G) / 2) * k, y, { font: font(700, F(12, 11)), color: col.bad() });
+      }
+      const q = font(600, F(12.5, 11.5));
+      wrap(tr('tw_q', { G: val(G), p: pct(pS) }), R.w - 24, q).forEach((row, i) => text(g, row, R.x + 12, R.y + 14 + i * 16, { font: q, color: theme.text, align: 'left' }));
+    }
+
+    function twiceFactCard(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const pad = F(14, 12);
+      card(R, col.ok(), 0.03);
+      title(R.x + pad, R.y + 16, ctx.t('tw_factT'), col.ok());
+      const p = pr.p;
+      const r = upThenDown(pr.G, p);
+      const q1 = fmt.num(1 + p / 100, 2);
+      const q2 = fmt.num(1 - p / 100, 2);
+      const fv = font(700, F(14, 12.5));
+      const lines: [string, string][] = [
+        [tr('tw_f1', { p: pct(p), q1 }), col.ok()],
+        [tr('tw_f2', { p: pct(p), q2 }), col.bad()],
+        [tr('tw_f', { q1, q2, q: pr.show ? fmt.num(r.factor, 4) : '?' }), theme.text],
+        [tr('tw_net', { n: pr.show ? pct(r.netPct).replace('-', '−') : '?' }), theme.text],
+      ];
+      let y = R.y + 40;
+      for (const [str, c] of lines) {
+        for (const row of wrap(str, R.w - 2 * pad, fv)) {
+          if (y > R.y + R.h - 8) return;
+          text(g, row, R.x + pad, y, { font: fv, color: c, align: 'left' });
+          y += F(24, 21);
+        }
+      }
+    }
+
+    function twiceWhyCard(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const pad = F(14, 12);
+      const r = upThenDown(pr.G, pr.p);
+      card(R);
+      title(R.x + pad, R.y + 16, tr('tw_whyT', { G: val(pr.G) }));
+      const f = font(500, F(12.5, 12));
+      const str = tr('tw_why', { up: val(r.up), p: pct(pr.p), d2: Q('W', val(r.up - r.down)), d1: val(r.up - pr.G) });
+      wrap(str, R.w - 2 * pad, f).forEach((row, i) => text(g, row, R.x + pad, R.y + 36 + i * 17, { font: f, color: theme.text, align: 'left' }));
+    }
+
     /* ---------- Rendern ---------- */
     function render(): void {
       const now = performance.now();
@@ -644,6 +784,19 @@ export default defineSimulation({
       } else maxShown = mt;
       surface.begin();
       const lay = layout();
+      if (sit() === 'twice') {
+        drawTwice(lay.strip);
+        if (lay.c2) {
+          twiceFactCard(lay.c1);
+          twiceWhyCard(lay.c2);
+        } else {
+          const rh = Math.min(F(170, 150), lay.c1.h * 0.55);
+          twiceFactCard({ x: lay.c1.x, y: lay.c1.y, w: lay.c1.w, h: rh });
+          twiceWhyCard({ x: lay.c1.x, y: lay.c1.y + rh + 8, w: lay.c1.w, h: lay.c1.h - rh - 8 });
+        }
+        if (moving || rows.running || pop.running) ctx.requestRender();
+        return;
+      }
       drawStrip();
       if (lay.c2) {
         ruleCard(lay.c1);
@@ -666,9 +819,9 @@ export default defineSimulation({
     }
     const near = (px: number, py: number) => Math.hypot(px - handlePx[0], py - handlePx[1]) < (surface.width >= 640 ? 20 : 26);
     surface.addTarget({
-      contains: (px: number, py: number) => dragging || (!ctx.locked && near(px, py)),
+      contains: (px: number, py: number) => dragging || (!ctx.locked && sit() !== 'twice' && near(px, py)),
       pointerDown: (q: { px: number; py: number }) => {
-        if (ctx.locked || !near(q.px, q.py)) return false;
+        if (ctx.locked || sit() === 'twice' || !near(q.px, q.py)) return false;
         dragging = true;
         surface.setCursor('grabbing');
         ctx.requestRender();
@@ -705,7 +858,7 @@ export default defineSimulation({
       update(changed, source) {
         if (changed.has('sit') && source === 'input') ctx.set(START[sit()]);
         if (sit() === 'klasse' && pr.G > 40) ctx.set({ G: 40 });
-        if (sit() === 'rabatt' && pr.p > 100) ctx.set({ p: 100 });
+        if ((sit() === 'rabatt' || sit() === 'twice') && pr.p > 100) ctx.set({ p: 100 });
         if (changed.has('find') || changed.has('sit') || changed.has('show') || source === 'replace') replay();
         else if (!dragging && (changed.has('G') || changed.has('p'))) {
           pop.play();
@@ -713,6 +866,15 @@ export default defineSimulation({
         }
         updateReadouts();
         ctx.requestRender();
+      },
+      action(id) {
+        if (id !== 'dice' || ctx.locked) return;
+        // glatte Werte würfeln, Lösung ausblenden
+        const t = niceTask(Math.random);
+        const G = sit() === 'klasse' ? [20, 24, 25, 28, 30, 32][Math.floor(Math.random() * 6)]! : t.G;
+        const p = sit() === 'klasse' ? [25, 50, 75, 10, 20][Math.floor(Math.random() * 5)]! : sit() === 'mwst' ? (Math.random() < 0.5 ? 7 : 19) : t.p;
+        const fs: Find[] = ['W', 'p', 'G'];
+        ctx.set({ G, p, find: fs[Math.floor(Math.random() * 3)]!, show: false });
       },
       render,
       destroy: () => surface.destroy(),

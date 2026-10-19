@@ -161,8 +161,8 @@ export const mathematik: Subject = {
             slug: L('prozentstreifen', 'percentage-bar'),
             title: L('Prozentstreifen', 'Percentage bar'),
             summary: L(
-              'Grundwert, Prozentsatz und Prozentwert am Prozentstreifen: oben Prozente, unten Werte, das Ende des Streifens lässt sich ziehen. Der Dreisatz entsteht Zeile für Zeile; dazu Rabatt, Mehrwertsteuer, Zinsen und der Anteil einer Klasse.',
-              'Base value, rate and percentage on a percentage bar: percent on top, values below, and the end of the bar can be dragged. The rule of three builds up line by line; plus discount, VAT, interest and the share of a class.',
+              'Grundwert, Prozentsatz und Prozentwert am Prozentstreifen: oben Prozente, unten Werte, das Ende des Streifens lässt sich ziehen. Der Dreisatz entsteht Zeile für Zeile; dazu Rabatt, Mehrwertsteuer, Zinsen, der Anteil einer Klasse, „Erst plus, dann minus“ mit Faktoren und gewürfelte Übungsaufgaben.',
+              'Base value, rate and percentage on a percentage bar: percent on top, values below, and the end of the bar can be dragged. The rule of three builds up line by line; plus discount, VAT, interest, the share of a class, “first up, then down” with factors and randomly generated practice tasks.',
             ),
             grades: [6, 7],
             kmk: ['M-L1', 'M-L2', 'M-K3', 'M-K4'],
