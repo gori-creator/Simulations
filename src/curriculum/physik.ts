@@ -592,13 +592,50 @@ export const physik: Subject = {
           id: 'teilchenmodell',
           title: L('Teilchenmodell', 'Particle model'),
           grades: [7, 8],
-          simulations: [planned('teilchenmodell', L('Teilchenmodell und Temperatur', 'Particle model and temperature'), [7, 8], { kmk: ['P-BK-Materie'] })],
+          simulations: [
+            {
+              id: 'teilchenmodell',
+              status: 'ready',
+              slug: L('teilchenmodell-temperatur', 'particle-model-temperature'),
+              title: L('Teilchenmodell und Temperatur', 'Particle model and temperature'),
+              summary: L(
+                'Wasser heizen und kühlen: Im Eis schwingen die Teilchen um feste Plätze, im Wasser gleiten sie aneinander vorbei, im Dampf fliegen sie frei. Live entsteht das Temperatur-Zeit-Diagramm mit Schmelz- und Siedeplateau; dazu Geschwindigkeitsverteilung und Diffusion von Tinte in kaltem und warmem Wasser.',
+                'Heat and cool water: in ice the particles vibrate about fixed places, in water they slide past each other, in steam they fly freely. The temperature–time graph with melting and boiling plateaus is drawn live; plus the speed distribution and diffusion of ink in cold and warm water.',
+              ),
+              grades: [7, 8],
+              kmk: ['P-BK-Materie', 'P-BK-Energie', 'P-S'],
+              keywords: L(
+                ['Teilchenmodell', 'Temperatur', 'Aggregatzustand', 'fest', 'flüssig', 'gasförmig', 'Schmelzen', 'Sieden', 'Erstarren', 'Kondensieren', 'Schmelztemperatur', 'Siedetemperatur', 'Schmelzwärme', 'Verdampfungswärme', 'Kelvin', 'absoluter Nullpunkt', 'Bewegungsenergie', 'Diffusion', 'Brownsche Bewegung'],
+                ['particle model', 'temperature', 'state of matter', 'solid', 'liquid', 'gas', 'melting', 'boiling', 'freezing', 'condensing', 'melting point', 'boiling point', 'latent heat', 'kelvin', 'absolute zero', 'kinetic energy', 'diffusion'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
         {
           id: 'gase',
           title: L('Gase', 'Gases'),
           grades: [9, 13],
-          simulations: [planned('gasgesetze', L('Gasgesetze', 'Gas laws'), [9, 13], { uni: true })],
+          simulations: [
+            {
+              id: 'gasgesetze',
+              status: 'ready',
+              slug: L('gasgesetze', 'gas-laws'),
+              title: L('Gasgesetze', 'Gas laws'),
+              summary: L(
+                'Gas im Zylinder mit Kolben im Teilchenbild: isotherm (Boyle-Mariotte), isobar (Gay-Lussac) und isochor (Amontons) mit Manometer und Thermometer. Messreihen im p-V-, p-1/V-, V-T- und p-T-Diagramm, Extrapolation auf den absoluten Nullpunkt und die allgemeine Gasgleichung p · V = n · R · T mit eingesetzten Werten.',
+                'Gas in a cylinder with a piston in the particle model: isothermal (Boyle–Mariotte), isobaric (Gay-Lussac) and isochoric (Amontons) with a pressure gauge and a thermometer. Data series in p–V, p–1/V, V–T and p–T graphs, extrapolation to absolute zero and the ideal gas law p · V = n · R · T with the values substituted.',
+              ),
+              grades: [9, 13],
+              uni: true,
+              kmk: ['P-BK-Materie', 'P-BK-Mathematisieren', 'P-E', 'P-S'],
+              keywords: L(
+                ['Gasgesetze', 'ideales Gas', 'allgemeine Gasgleichung', 'Boyle-Mariotte', 'Gay-Lussac', 'Amontons', 'isotherm', 'isobar', 'isochor', 'Druck', 'Volumen', 'Temperatur', 'Kelvin', 'absoluter Nullpunkt', 'Stoffmenge', 'Gaskonstante', 'Manometer', 'Teilchenmodell', 'Linearisierung', 'Zustandsänderung'],
+                ['gas laws', 'ideal gas', 'ideal gas law', 'Boyle’s law', 'Charles’s law', 'Gay-Lussac', 'Amontons', 'isothermal', 'isobaric', 'isochoric', 'pressure', 'volume', 'temperature', 'kelvin', 'absolute zero', 'amount of substance', 'gas constant', 'pressure gauge', 'particle model', 'linearisation'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
       ],
     },
