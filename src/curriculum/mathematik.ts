@@ -364,7 +364,23 @@ export const mathematik: Subject = {
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
           planned('winkel-geradenkreuzung', L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'), [7, 7]),
-          planned('winkelsumme', L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
+          {
+            id: 'winkelsumme',
+            status: 'ready',
+            slug: L('innenwinkelsumme', 'angle-sum'),
+            title: L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'),
+            summary: L(
+              'Ecken eines Dreiecks abreißen und an einer Geraden zusammenlegen, den Beweis mit der Parallelen und den Wechselwinkeln verfolgen, Vielecke in n − 2 Dreiecke zerlegen und beim Umrunden die Außenwinkel zu 360° aufsummieren.',
+              'Tear off the corners of a triangle and put them together along a line, follow the proof with a parallel and alternate angles, split polygons into n − 2 triangles and add up the exterior angles to 360° while walking around.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K6'],
+            keywords: L(
+              ['Innenwinkelsumme', 'Winkelsumme', 'Dreieck', 'Vieleck', 'n-Eck', 'Wechselwinkel', 'Parallele', 'gestreckter Winkel', 'Außenwinkel', 'regelmäßiges Vieleck', 'konvex', 'Beweis'],
+              ['angle sum', 'interior angles', 'triangle', 'polygon', 'n-gon', 'alternate angles', 'parallel', 'straight angle', 'exterior angle', 'regular polygon', 'convex', 'proof'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
           planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
