@@ -631,7 +631,7 @@ export default defineSimulation({
         const label = valueText ? `${name} ${valueText}` : name;
         const f = valueText ? vf : lf;
         const lw = measure(label, f);
-        const r2 = clamp(Math.max(s.r + 8 + lw * 0.5, (lw / 2 + 4) / Math.sin(half)), s.r + 12, maxR);
+        const r2 = s.sweep < 24 ? s.r + 14 + lw * 0.5 : clamp(Math.max(s.r + 8 + lw * 0.5, (lw / 2 + 4) / Math.sin(half)), s.r + 12, maxR);
         let [x, y] = at(r2);
         if (s.sweep < 24) {
           // sehr kleiner Winkel: neben das schmale Winkelfeld rücken
@@ -727,7 +727,7 @@ export default defineSimulation({
       g.restore();
     }
 
-    const animMs = (k: Anim['kind']) => (k === 'supp' ? 2000 : k === 'vert' ? 1500 : 1700);
+    const animMs = (k: Anim['kind']) => (k === 'supp' ? 2400 : k === 'vert' ? 1500 : 1700);
     const animT = (an: Anim) => prog(an.t0, animMs(an.kind));
 
     /* ---------- einfache Kreuzung ---------- */
@@ -749,7 +749,7 @@ export default defineSimulation({
           const t = animT(an);
           strong = true;
           if (an.kind === 'supp') {
-            const bump = t < 0.28 ? ease.outCubic(t / 0.28) : t < 0.55 ? 1 - ease.inOutCubic((t - 0.28) / 0.27) : 0;
+            const bump = t < 0.25 ? ease.outCubic(t / 0.25) : t < 0.42 ? 1 : t < 0.6 ? 1 - ease.inOutCubic((t - 0.42) / 0.18) : 0;
             off = bump * (small() ? 18 : 26);
           } else if (s.id === an.y) glow = t >= 1 ? Math.max(0, 1 - prog(an.t0 + animMs(an.kind), 900)) : 0;
         }
@@ -765,7 +765,7 @@ export default defineSimulation({
       if (an && an.kind === 'supp') {
         const t = animT(an);
         const sx = sc.secs.find((s) => s.id === an.x)!;
-        const u = ease.inOutCubic(clamp((t - 0.5) / 0.36, 0, 1));
+        const u = ease.inOutCubic(clamp((t - 0.6) / 0.3, 0, 1));
         if (u > 0) {
           const r = Math.max(sc.secs.find((s) => s.id === an.y)!.r, sx.r) + 9;
           const col = th.series[2]!;
@@ -988,7 +988,12 @@ export default defineSimulation({
         } else {
           const id = s.id as AngleId;
           strong = id === p.gi || id === lastTarget || lastSteps.some((st) => st.from === id || st.to === id);
-          a = id === p.gi || known.has(id) ? 1 : 0.55;
+          const kt = known.get(id);
+          const shown = id === p.gi || (kt !== undefined && now >= kt);
+          a = shown ? 1 : 0.6;
+          // Unbekannte Winkel grau: die Farbe würde sonst die Lösung verraten
+          drawSector({ ...s, color: smoothColor(`rev:${id}`, shown ? s.color : th.muted) }, u, a, strong && shown);
+          return;
         }
         drawSector(s, u, a, strong);
       });
@@ -1090,7 +1095,7 @@ export default defineSimulation({
           const kt = known.get(id);
           const shown = isGiven || (kt !== undefined && now >= kt);
           const pop = kt !== undefined && !isGiven ? 0.6 + 0.4 * ease.outBack(prog(kt, 450)) : 1;
-          drawSectorLabel(s, a0, shown ? deg(s.value) : '?', shown ? pop : 1, shown ? s.color : th.muted, isGiven);
+          drawSectorLabel(s, a0, shown ? deg(s.value) : '?', shown ? pop : 1, smoothColor(`rev:${id}`, shown ? s.color : th.muted), isGiven);
           return;
         }
         const dim = s.id === px || s.id === py ? 1 : 0.6;
@@ -1362,7 +1367,7 @@ export default defineSimulation({
           { kind: 'rich', size: sz(), segs: [{ t: tt('Scheitelwinkel: ', 'Vertical angles: '), w: 700 }, { t: `${angleName(s)} = ${angleName(opp(s))}`, c: col(s), w: 800 }] },
           { kind: 'rich', size: sz(), segs: [{ t: tt('Nebenwinkel: ', 'Adjacent angles: '), w: 700 }, { t: `${angleName(s)} + ${angleName(n1)} = 180°`, c: ctx.theme.series[2]!, w: 800 }] },
           ...(hv
-            ? ([{ kind: 'note', text: tt('Berechne die fehlenden Winkel – „Alle Winkelgrößen im Bild“ zeigt die Lösung.', 'Work out the missing angles – “All angle sizes” shows the solution.') }] as Item[])
+            ? ([{ kind: 'note', text: tt('Berechne die fehlenden Winkel – „Alle Winkelgrößen zeigen“ verrät die Lösung.', 'Work out the missing angles – “Show all angle sizes” reveals the solution.') }] as Item[])
             : ([
                 { kind: 'rich', size: sz() - 1, segs: [{ t: `${angleName(n1)} = 180° − ${deg(sv(s))} = ${deg(sv(n1))}`, c: col(n1), w: 650 }] },
                 { kind: 'rich', size: sz() - 1, segs: [{ t: tt(`ebenso ${angleName(n2)} = ${deg(sv(n2))}`, `likewise ${angleName(n2)} = ${deg(sv(n2))}`), c: ctx.theme.muted, w: 600 }] },

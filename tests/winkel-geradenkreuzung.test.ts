@@ -209,7 +209,7 @@ describe('Modell: Winkel an Geradenkreuzungen – Begründen', () => {
       expect(ANGLE_IDS as readonly AngleId[]).toContain(t.given);
       expect(t.tilt).toBeGreaterThanOrEqual(-15);
       expect(t.tilt).toBeLessThanOrEqual(15);
-      expect(t.tilt % 5).toBe(0);
+      expect(Math.abs(t.tilt % 5)).toBe(0);
       expect(t.given !== prev.given || t.value !== prev.value).toBe(true);
       prev = t;
     }
