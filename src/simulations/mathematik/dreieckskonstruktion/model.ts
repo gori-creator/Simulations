@@ -16,6 +16,9 @@
  * Liegt der Winkel der kleineren Seite gegenüber (SSW), gibt es keine, eine
  * oder zwei Lösungen. Drei Winkel (WWW) legen nur die Form fest, nicht die
  * Größe: ähnliche, aber nicht kongruente Dreiecke.
+ *
+ * Die Rechnungen (Kosinus-/Sinussatz) dienen nur der Kontrolle und dem
+ * Zeichnen; in Jahrgangsstufe 7 wird konstruiert und gemessen.
  */
 
 export type Pt = readonly [number, number];
@@ -43,10 +46,19 @@ export type Solution =
   | { kind: 'none'; reason: NoneReason }
   | { kind: 'many'; c: Pt };
 
-export type NoneReason = 'triangle' | 'angles' | 'short' | 'touchA';
+/**
+ * Gründe, warum es kein Dreieck gibt:
+ * - triangle: Dreiecksungleichung verletzt (Kreise erreichen sich nicht),
+ * - flat: Grenzfall a + b = c (Kreise berühren sich auf der Grundseite, C läge auf [AB]),
+ * - angles: α + β > 180° (Schenkel laufen auseinander),
+ * - parallel: α + β = 180° (Schenkel sind parallel),
+ * - short: SSW, a ist kürzer als der Abstand von B zum Schenkel,
+ * - touchA: SSW mit a = c und α ≥ 90° (Kreis trifft den Schenkel nur in A).
+ */
+export type NoneReason = 'triangle' | 'flat' | 'angles' | 'parallel' | 'short' | 'touchA';
 
-const rad = (deg: number) => (deg * Math.PI) / 180;
-const deg = (r: number) => (r * 180) / Math.PI;
+export const rad = (deg: number) => (deg * Math.PI) / 180;
+export const deg = (r: number) => (r * 180) / Math.PI;
 const EPS = 1e-9;
 
 export function dist(p: Pt, q: Pt): number {
@@ -63,14 +75,24 @@ export function onRayB(c: number, len: number, betaDeg: number): Pt {
   return [c - len * Math.cos(rad(betaDeg)), len * Math.sin(rad(betaDeg))];
 }
 
+/**
+ * Überschuss der längsten Seite über die Summe der beiden anderen:
+ * max(c − a − b, b − a − c, a − b − c). Negativ ⇔ Dreieck möglich,
+ * 0 ⇔ Grenzfall (flaches „Dreieck“), positiv ⇔ die Kreise erreichen sich nicht.
+ */
+export function sssExcess(a: number, b: number, c: number): number {
+  return Math.max(c - a - b, b - a - c, a - b - c);
+}
+
 /** Dreiecksungleichung (streng): Jede Seite ist kürzer als die Summe der beiden anderen. */
 export function triangleInequality(a: number, b: number, c: number): boolean {
-  return a + b > c + EPS && a + c > b + EPS && b + c > a + EPS;
+  return sssExcess(a, b, c) < -EPS;
 }
 
 /** SSS: C aus |AC| = b und |BC| = a (Schnitt der Kreise um A und B). */
 export function solveSSS(a: number, b: number, c: number): Solution {
-  if (!triangleInequality(a, b, c)) return { kind: 'none', reason: 'triangle' };
+  const ex = sssExcess(a, b, c);
+  if (ex >= -EPS) return { kind: 'none', reason: ex <= EPS ? 'flat' : 'triangle' };
   const x = (b * b + c * c - a * a) / (2 * c);
   const y = Math.sqrt(Math.max(0, b * b - x * x));
   return { kind: 'one', c: [x, y] };
@@ -82,41 +104,91 @@ export function solveSWS(b: number, al: number): Solution {
   return { kind: 'one', c: onRayA(b, al) };
 }
 
+/** Kontrollrechnung SWS (Kosinussatz): a² = b² + c² − 2·b·c·cos α. */
+export function sideFromSWS(b: number, c: number, al: number): number {
+  return Math.sqrt(Math.max(0, b * b + c * c - 2 * b * c * Math.cos(rad(al))));
+}
+
+/** Dritter Winkel aus der Winkelsumme: γ = 180° − α − β (kann ≤ 0 sein). */
+export function thirdAngle(al: number, be: number): number {
+  return 180 - al - be;
+}
+
 /** WSW: c, α und β; C ist der Schnittpunkt der beiden freien Schenkel. */
 export function solveWSW(c: number, al: number, be: number): Solution {
-  if (al + be >= 180 - EPS) return { kind: 'none', reason: 'angles' };
-  // Sinussatz: b / sin β = c / sin γ mit γ = 180° − α − β
-  const b = (c * Math.sin(rad(be))) / Math.sin(rad(al + be));
+  const ga = thirdAngle(al, be);
+  if (ga <= EPS) return { kind: 'none', reason: Math.abs(ga) <= EPS ? 'parallel' : 'angles' };
+  // Sinussatz: b / sin β = c / sin γ
+  const b = (c * Math.sin(rad(be))) / Math.sin(rad(ga));
   return { kind: 'one', c: onRayA(b, al) };
 }
 
+/** Kontrollrechnung WSW (Sinussatz): a = c·sin α : sin γ, b = c·sin β : sin γ. */
+export function sidesFromWSW(c: number, al: number, be: number): { a: number; b: number; ga: number } | null {
+  const ga = thirdAngle(al, be);
+  if (ga <= EPS) return null;
+  const k = c / Math.sin(rad(ga));
+  return { a: k * Math.sin(rad(al)), b: k * Math.sin(rad(be)), ga };
+}
+
 /**
- * Längen t > 0 auf dem Strahl von A (Winkel α), deren Punkt von B = (c | 0)
- * den Abstand a hat: t² − 2·c·cos α · t + c² − a² = 0.
+ * Beide Lösungen t (mit Vorzeichen) der Gleichung t² − 2·c·cos α · t + c² − a² = 0:
+ * Abstände von A auf der Geraden des Schenkels (t < 0: hinter A, auf der Verlängerung),
+ * deren Punkt von B = (c | 0) den Abstand a hat. Absteigend sortiert.
  */
-export function rayCircleParams(c: number, a: number, al: number): number[] {
+export function lineCircleRoots(c: number, a: number, al: number): number[] {
   const p = c * Math.cos(rad(al));
   const disc = a * a - c * c * Math.sin(rad(al)) ** 2;
-  if (disc < -EPS) return [];
+  if (disc < -1e-9) return [];
   const r = Math.sqrt(Math.max(0, disc));
-  if (r < 1e-7) return p > EPS ? [p] : [];
-  return [p + r, p - r].filter((t) => t > 1e-7).sort((u, v) => v - u);
+  if (r < 1e-7) return [p];
+  return [p + r, p - r];
+}
+
+/** Nur die Lösungen t > 0, also die Punkte auf dem Schenkel selbst (größere zuerst). */
+export function rayCircleParams(c: number, a: number, al: number): number[] {
+  return lineCircleRoots(c, a, al).filter((t) => t > 1e-7);
+}
+
+/** Abstand von B zum freien Schenkel von α (bei α ≥ 90° ist A der nächste Punkt). */
+export function armDistance(c: number, al: number): number {
+  return al < 90 ? c * Math.sin(rad(al)) : c;
 }
 
 /**
  * SsW bzw. SSW: c, α und a (die Seite gegenüber von α). Der Kreis um B mit
  * Radius a schneidet den freien Schenkel von α in keinem, einem oder zwei
- * Punkten. Ist a ≥ c (größere Seite gegenüber), gibt es genau eine Lösung.
+ * Punkten. Ist a > c (größere Seite gegenüber), gibt es genau eine Lösung.
  */
 export function solveSSW(c: number, a: number, al: number): Solution {
   if (al <= 0 || al >= 180) return { kind: 'none', reason: 'angles' };
   const ts = rayCircleParams(c, a, al);
   if (ts.length === 0) {
-    // Kreis berührt den Strahl nur in A (a = c, α ≥ 90°) oder erreicht ihn gar nicht
+    // Kreis trifft den Schenkel nur in A (a = c, α ≥ 90°) oder erreicht ihn gar nicht
     return { kind: 'none', reason: Math.abs(a - c) < 1e-7 ? 'touchA' : 'short' };
   }
   if (ts.length === 1) return { kind: 'one', c: onRayA(ts[0]!, al) };
   return { kind: 'two', c: onRayA(ts[0]!, al), c2: onRayA(ts[1]!, al) };
+}
+
+/** Art des SSW-Falls, wie man ihn im Unterricht unterscheidet. */
+export type SswKind = 'SsW' | 'touch' | 'two' | 'none';
+
+/**
+ * Analyse für SSW: Abstand h von B zum Schenkel, Art der Lösung und – falls der
+ * Kreis die Gerade des Schenkels ein zweites Mal hinter A trifft – dieser Punkt
+ * (er liegt auf der Verlängerung über A hinaus und liefert kein Dreieck).
+ */
+export function sswAnalysis(c: number, a: number, al: number): { h: number; kind: SswKind; behind: Pt | null; foot: Pt } {
+  const h = armDistance(c, al);
+  const s = solveSSW(c, a, al);
+  const foot = al < 90 ? onRayA(c * Math.cos(rad(al)), al) : ([0, 0] as Pt);
+  const roots = lineCircleRoots(c, a, al);
+  const neg = roots.filter((t) => t < -1e-7);
+  const behind = neg.length ? onRayA(neg[0]!, al) : null;
+  if (s.kind === 'two') return { h, kind: 'two', behind, foot };
+  if (s.kind === 'none') return { h, kind: 'none', behind, foot };
+  return { h, kind: isSsW(a, c) ? 'SsW' : 'touch', behind, foot };
 }
 
 /** WWW: α und β (γ folgt); jede Grundseite liefert ein ähnliches Dreieck. */
@@ -124,6 +196,9 @@ export function solveWWW(c: number, al: number, be: number): Solution {
   const s = solveWSW(c, al, be);
   return s.kind === 'one' ? { kind: 'many', c: s.c } : s;
 }
+
+/** Streckfaktoren der weiteren ähnlichen Dreiecke bei WWW. */
+export const FAMILY = [1.6, 0.55] as const;
 
 export function solve(cs: Case, g: Given): Solution {
   switch (cs) {
@@ -143,6 +218,18 @@ export function solve(cs: Case, g: Given): Solution {
 /** Ist SSW hier der „sichere“ Fall SsW (gegebener Winkel liegt der größeren Seite gegenüber)? */
 export function isSsW(a: number, c: number): boolean {
   return a >= c - EPS;
+}
+
+/** Welche Stücke sind im jeweiligen Fall gegeben? */
+export function givenParts(cs: Case): { a: boolean; b: boolean; c: boolean; al: boolean; be: boolean; ga: boolean } {
+  return {
+    a: cs === 'sss' || cs === 'ssw',
+    b: cs === 'sss' || cs === 'sws',
+    c: cs !== 'www',
+    al: cs !== 'sss',
+    be: cs === 'wsw' || cs === 'www',
+    ga: cs === 'www',
+  };
 }
 
 /** Innenwinkel bei p im Dreieck p, q, r (Grad). */
@@ -181,4 +268,65 @@ export function circleIntersections(c1: Pt, r1: number, c2: Pt, r2: number): Pt[
     [px + h * ey, py - h * ex],
   ];
   return s.sort((u, v) => v[1] - u[1]);
+}
+
+/**
+ * Lücke auf der Grundlinie zwischen den beiden Kreisen bei verletzter
+ * Dreiecksungleichung: Kreis um A überdeckt [−b, b], Kreis um B [c − a, c + a]
+ * (jeweils auf der x-Achse). Gibt das Intervall [x0, x1] zwischen den nächsten
+ * Kreispunkten zurück (Länge = sssExcess), sonst null.
+ */
+export function sssGap(a: number, b: number, c: number): [number, number] | null {
+  if (sssExcess(a, b, c) < -EPS) return null;
+  if (c - a - b >= b - a - c && c - a - b >= a - b - c) return [b, c - a];
+  if (b - a - c >= a - b - c) return [c + a, b];
+  return [c - a, -b];
+}
+
+/** Schritte einer Konstruktion (ohne Texte), je nach Fall und Lösung. */
+export type StepKind =
+  | 'base'
+  | 'circA'
+  | 'circB'
+  | 'cut'
+  | 'cutNo'
+  | 'join'
+  | 'angA'
+  | 'armA'
+  | 'circArm'
+  | 'joinB'
+  | 'angB'
+  | 'armB'
+  | 'circBArm'
+  | 'cut2'
+  | 'cut1'
+  | 'cut0'
+  | 'join2'
+  | 'fam1'
+  | 'fam2'
+  | 'measure'
+  | 'end';
+
+/**
+ * Ablauf der Konstruktion wie im Heft. Der letzte Schritt ist „measure“ (fehlende
+ * Stücke messen), bei WWW und ohne Lösung „end“ (Ergebnis festhalten).
+ */
+export function stepPlan(cs: Case, s: Solution): StepKind[] {
+  const ok = s.kind !== 'none';
+  switch (cs) {
+    case 'sss':
+      return ok ? ['base', 'circA', 'circB', 'cut', 'join', 'measure'] : ['base', 'circA', 'circB', 'cutNo', 'end'];
+    case 'sws':
+      return ['base', 'angA', 'armA', 'circArm', 'joinB', 'measure'];
+    case 'wsw':
+      return ok ? ['base', 'angA', 'armA', 'angB', 'armB', 'measure'] : ['base', 'angA', 'armA', 'angB', 'armB', 'end'];
+    case 'ssw': {
+      const head: StepKind[] = ['base', 'angA', 'armA', 'circBArm'];
+      if (s.kind === 'two') return [...head, 'cut2', 'join2', 'measure'];
+      if (s.kind === 'one') return [...head, 'cut1', 'joinB', 'measure'];
+      return [...head, 'cut0', 'end'];
+    }
+    case 'www':
+      return ok ? ['base', 'angA', 'armA', 'angB', 'armB', 'fam1', 'fam2', 'end'] : ['base', 'angA', 'armA', 'angB', 'armB', 'end'];
+  }
 }

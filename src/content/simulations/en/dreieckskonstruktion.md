@@ -1,58 +1,63 @@
 ---
-description: "Interactive simulation for year 7: construct triangles from three given parts with ruler, set square and compasses step by step, meet the congruence criteria SSS, SAS, ASA and SsA, and explore special cases such as the triangle inequality, two solutions for SSA and similar triangles for AAA."
+description: "Interactive simulation for grade 7: construct triangles from three given parts step by step with ruler, set square and compasses – with a sketch, construction steps as in an exercise book and the congruence criteria SSS, SAS, ASA and SsA. Plus the special cases: violated triangle inequality, parallel arms, no, one or two solutions for SSA and similar triangles for AAA."
 ---
 
 ## What is it about?
 
-A triangle has six **parts**: the sides $a$, $b$, $c$ (opposite the vertices $A$, $B$, $C$) and the angles $\alpha$, $\beta$, $\gamma$. Three suitable parts are often enough to fix a triangle completely. Triangles that can be moved onto each other exactly are **congruent**.
+A triangle has six **parts**: the sides $a = [BC]$, $b = [CA]$, $c = [AB]$ (each opposite the vertex with the same letter) and the angles $\alpha$, $\beta$, $\gamma$ at $A$, $B$, $C$. Triangles that can be moved, turned or reflected onto each other are **congruent**.
 
-- **SSS:** three sides – if the **triangle inequality** holds ($a + b > c$ and so on).
-- **SAS:** two sides and the angle **between** them.
-- **ASA:** a side and both **adjacent** angles, with $\alpha + \beta < 180°$.
-- **SsA:** two sides and the angle opposite the **longer** one.
+Three suitable parts are often enough to fix a triangle. The **congruence criteria**:
 
-If the given angle is opposite the **shorter** side (SSA), there may be two triangles, one or none. **AAA** only fixes the shape: the triangles are **similar**, not congruent.
+| Criterion | given | condition |
+| --- | --- | --- |
+| SSS | three sides | the longest side is shorter than the other two together |
+| SAS | two sides and the **included** angle | angle below $180°$ |
+| ASA | one side and **both adjacent** angles | $\alpha + \beta < 180°$ |
+| SsA | two sides and the angle opposite the **longer** one | – |
+
+The SSS condition is the **triangle inequality**. If $a + b < c$, the circles around $A$ and $B$ do not reach each other.
+
+**SSA** (angle opposite the **shorter** side, e.g. $\alpha$ with $a < c$) depends on the distance $h$ from $B$ to the free arm of $\alpha$: no solution for $a < h$, exactly one (right angle at $C$) for $a = h$, and **two** different triangles for $h < a < c$. **AAA** only fixes the shape: the triangles are **similar** but can have any size.
 
 ## Try it
 
-1. Step through the [SSS construction](?cs=sss&c=6&b=4.5&a=5). Then make $a + b$ smaller than $c$: [example](?c=7&b=3&a=2.5).
-2. [SAS](?cs=sws&c=7&b=4&al=40): drag $C$ or $B$ at the end.
-3. [ASA](?cs=wsw&c=6&al=45&be=70): what happens when $\alpha + \beta \ge 180°$?
-4. [SSA with two solutions](?cs=ssw&c=7&a=4.5&al=35): compare $\gamma_1$ and $\gamma_2$.
-5. [AAA](?cs=www&c=4&al=50&be=60): same angles, different sizes.
+1. When the page loads, the construction runs once. Press **“Construct again”** and step through with **“Next step”**: ruler, compasses and set square work, and the matching line appears in the construction steps.
+2. Drag $C$ or $B$, then shrink $a$ and $b$ until the circles no longer meet – the red dimension line shows the **gap**. [Example](?c=6&b=3&a=2)
+3. [ASA](?cs=wsw&c=6&al=50&be=60): set $\alpha + \beta$ to exactly [$180°$](?cs=wsw&c=6&al=100&be=80). What happens to the arms?
+4. [SSA with two solutions](?cs=ssw&c=6&a=4&al=30): change $a$ to [$3\,\text{cm}$](?cs=ssw&c=6&a=3&al=30) and [$2\,\text{cm}$](?cs=ssw&c=6&a=2&al=30). How many triangles are there?
 
 ## Tasks
 
-### Task 1: Possible?
+### Task 1: Constructible?
 
-Is there a triangle with $a = 3\,\text{cm}$, $b = 4\,\text{cm}$, $c = 8\,\text{cm}$? [Load task](?c=8&b=4&a=3&_hide=1)
+Is there a triangle with $a = 2\,\text{cm}$, $b = 3\,\text{cm}$ and $c = 6\,\text{cm}$? [Load task](?c=6&b=3&a=2&meas=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-No: $a + b = 7\,\text{cm} < 8\,\text{cm}$, so the arcs never meet. [Show](?c=8&b=4&a=3)
+No: $a + b = 5\,\text{cm} < 6\,\text{cm} = c$. The circles leave a gap of $1\,\text{cm}$ on $[AB]$. [Show](?c=6&b=3&a=2)
 
 </details>
 
-### Task 2: Two triangles
+### Task 2: Which criterion?
 
-Construct the triangle with $c = 7\,\text{cm}$, $\alpha = 35°$, $a = 4.5\,\text{cm}$. Why are there two? [Load task](?cs=ssw&c=7&a=4.5&al=35&_hide=1)
+Given $c = 6\,\text{cm}$, $b = 4.5\,\text{cm}$ and $\alpha = 50°$. Which criterion fits? Construct and measure $a$. [Load task](?cs=sws&c=6&b=4.5&al=50&meas=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-The arc around $B$ cuts the free arm of $\alpha$ twice ($b_1 \approx 7.8\,\text{cm}$, $b_2 \approx 3.7\,\text{cm}$), because $\alpha$ is opposite the shorter side ($a < c$). [Show](?cs=ssw&c=7&a=4.5&al=35)
+$\alpha$ lies between $b$ and $c$: SAS, the triangle is unique. You measure $a \approx 4.6\,\text{cm}$, $\beta \approx 48°$, $\gamma \approx 82°$. [Show](?cs=sws&c=6&b=4.5&al=50)
 
 </details>
 
-### Task 3: Angles too large
+### Task 3: Two triangles
 
-Can you construct a triangle with $c = 5\,\text{cm}$, $\alpha = 110°$, $\beta = 75°$?
+Given $c = 6\,\text{cm}$, $\alpha = 30°$ and $a = 4\,\text{cm}$. Why are there two triangles? [Load task](?cs=ssw&c=6&a=4&al=30&meas=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-No – the angle sum would already exceed $180°$; the arms diverge. [Show](?cs=wsw&c=5&al=110&be=75)
+The circle around $B$ with radius $4\,\text{cm}$ cuts the arm of $\alpha$ twice: $b_1 \approx 7.8\,\text{cm}$ ($\gamma_1 \approx 48.6°$) and $b_2 \approx 2.6\,\text{cm}$ ($\gamma_2 \approx 131.4°$). The angle lies opposite the shorter side, so SSA is not a criterion. With $a = 3\,\text{cm}$ (the distance $h$) there is exactly one triangle, with $a = 2\,\text{cm}$ none. [Show](?cs=ssw&c=6&a=4&al=30)
 
 </details>
 
@@ -60,6 +65,9 @@ No – the angle sum would already exceed $180°$; the arms diverge. [Show](?cs=
 
 *Just suggestions – you know your class best.*
 
-- Demonstrate a construction on the projector while students construct in their exercise books, then let them write the construction steps in their own words.
-- Let students test which combinations of three parts fix a triangle; SSA and AAA show why the conditions matter.
-- **Common stumbling blocks:** skipping the sketch, mixing up which side is opposite which vertex, taking an angle that is not between the two sides (SSA instead of SAS), believing that three angles fix a triangle.
+- **Use:** grade 7, congruence and triangle constructions. The simulation can construct step by step on the projector while the class draws along; with `meas=0` the sheet starts blank and measurements stay hidden, so students construct first and compare afterwards.
+- **Common stumbling blocks:**
+  - The sketch is skipped or parts are assigned to the wrong side.
+  - For SAS an angle is used that does **not** lie between the two sides – that is SSA.
+  - For SSA only one of the two solutions is drawn.
+  - “Three angles fix a triangle” – they only fix its shape.

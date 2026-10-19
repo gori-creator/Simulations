@@ -405,14 +405,14 @@ export const mathematik: Subject = {
             slug: L('dreieckskonstruktion-kongruenzsaetze', 'constructing-triangles-congruence'),
             title: L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'),
             summary: L(
-              'Dreiecke aus drei gegebenen Stücken Schritt für Schritt mit Lineal, Geodreieck und Zirkel konstruieren: SSS, SWS, WSW und SsW. Dazu die Sonderfälle: Dreiecksungleichung, zwei Lösungen bei SSW und ähnliche Dreiecke bei WWW.',
-              'Construct triangles from three given parts step by step with ruler, set square and compasses: SSS, SAS, ASA and SsA. Plus the special cases: triangle inequality, two solutions for SSA and similar triangles for AAA.',
+              'Dreiecke aus drei gegebenen Stücken Schritt für Schritt mit Lineal, Geodreieck und Zirkel konstruieren – mit Planfigur und Konstruktionsbeschreibung wie im Heft: SSS, SWS, WSW und SsW. Sonderfälle sichtbar: Lücke bei verletzter Dreiecksungleichung, parallele Schenkel, keine, eine oder zwei Lösungen bei SSW und ähnliche Dreiecke bei WWW.',
+              'Construct triangles from three given parts step by step with ruler, set square and compasses – with a sketch and written construction steps: SSS, SAS, ASA and SsA. Special cases made visible: the gap when the triangle inequality fails, parallel arms, no, one or two solutions for SSA and similar triangles for AAA.',
             ),
             grades: [7, 7],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
-              ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung'],
-              ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique'],
+              ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung', 'Kreis', 'Schnittpunkt', 'Winkelsumme', 'ähnlich'],
+              ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique', 'construction steps', 'circle', 'intersection', 'angle sum', 'similar'],
             ),
             thumb: 'generic',
           },
