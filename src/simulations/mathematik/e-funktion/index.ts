@@ -98,7 +98,7 @@ function groupInt(n: number, lang: string): string {
 export default defineSimulation({
   id: 'e-funktion',
   dragHint: true,
-  layout: { aspect: 1.55, aspectNarrow: 0.52 },
+  layout: { aspect: 1.55, aspectNarrow: 0.48 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -214,7 +214,7 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       if (!wide()) {
-        const ph = Math.round(h * 0.52);
+        const ph = Math.round(h * 0.5);
         return { plot: { x: 0, y: 0, w, h: ph }, col: { x: 4, y: ph + 8, w: w - 8, h: h - ph - 12 } };
       }
       const colW = Math.round(Math.min(360, Math.max(240, w * 0.355)));
@@ -851,7 +851,7 @@ export default defineSimulation({
         pts.push([px, cplot.py(y)]);
         prevY = y;
       }
-      const base = cplot.py(cplot.bounds.yMin);
+      const base = cplot.py(0);
       g.save();
       const grad = g.createLinearGradient(0, cplot.py(E), 0, base);
       grad.addColorStop(0, mixColor(c.f, th().bg, 0, th().dark ? 0.42 : 0.3));
@@ -1045,7 +1045,7 @@ export default defineSimulation({
 
       // Skala: Lage von ln b (= f′(x) : f(x)) zwischen ln 1,5 und ln 4
       const avail = r.y + r.h - pad - y;
-      const scaleH = Math.min(78, Math.max(46, avail - size * 4.6));
+      const scaleH = Math.min(78, Math.max(40, avail - size * 1.45 * 3.2));
       const sx0 = r.x + pad + 38;
       const sx1 = r.x + r.w - pad - 8;
       const l0 = Math.log(B_MIN);
@@ -1080,7 +1080,7 @@ export default defineSimulation({
         g.stroke();
         const top = fit(txt, 40, size - 1.5, isEt ? th().text : th().muted, isEt ? 800 : 600);
         top.draw(g, xx - top.w / 2, ly - 13);
-        const bot = fit(isEt ? '1' : fmt.num(Math.log(tb), 2), 50, size - 2, isEt ? th().text : th().muted, isEt ? 800 : 600);
+        const bot = fit(isEt ? '1' : hidden() ? '' : fmt.num(Math.log(tb), 2), 50, size - 2, isEt ? th().text : th().muted, isEt ? 800 : 600);
         bot.draw(g, xx - bot.w / 2, ly + 13 + bot.asc);
       }
       const lt = fit('b', 20, size - 1.5, th().muted, 600);
