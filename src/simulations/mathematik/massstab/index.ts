@@ -1252,7 +1252,7 @@ export default defineSimulation({
     /** Sichtbarkeit eines Ortes bei der aktuellen (gleitenden) Maßstabszahl. */
     const poiA = (o: Poi, n: number) => 1 - smooth(Math.log10(o.maxN) + 0.04, Math.log10(o.maxN) + 0.2, Math.log10(n));
 
-    function drawPoisAndLabels(v: View, fromId: string | null, toId: string | null): void {
+    function drawPoisAndLabels(v: View, fromId: string | null, toId: string | null, phase: 'sym' | 'lab'): void {
       const P = pal();
       const th = ctx.theme;
       const R = v.R;
@@ -1270,6 +1270,7 @@ export default defineSimulation({
         if (x < R.x - 20 || x > R.x + R.w + 20 || y < R.y - 20 || y > R.y + R.h + 20) continue;
         vis.push({ o, x, y, a });
       }
+      if (phase === 'sym') {
       // Platz für Symbole und Griffe freihalten
       for (const q of vis) if (q.o.kind !== 'village') placed.push({ x0: q.x - s, y0: q.y - s, x1: q.x + s, y1: q.y + s });
       for (const q of vis) {
@@ -1279,6 +1280,8 @@ export default defineSimulation({
         drawSymbol(q.o.kind, q.x, q.y, s, q.a * (hot ? 1 : symA), hover === `poi:${q.o.id}`);
         if (!ctx.locked) addHit(`poi:${q.o.id}`, { x: q.x - s - 4, y: q.y - s - 4, w: 2 * s + 8, h: 2 * s + 8 });
       }
+      return;
+      }
       // Ortsnamen (Dörfer) zuerst, groß
       const vf = font(800, narrowMap ? 13 : clamp(15 - (z - 4.4) * 3, 13, 17));
       for (const vil of VILLAGES) {
@@ -1287,7 +1290,7 @@ export default defineSimulation({
         const [x, y] = toPx(v, vil.label.x, vil.label.y);
         if (vil.id === 'v2') {
           const q = vis.find((o) => o.o.id === 'village2');
-          if (q && !ctx.locked) addHit('poi:village2', { x: x - 30, y: y - 14, w: 60, h: 28 });
+          if (q && !ctx.locked && fromId !== 'village2' && toId !== 'village2') addHit('poi:village2', { x: x - 30, y: y - 14, w: 60, h: 28 });
         }
         placeLabel(T(nm).toUpperCase(), x, y, vf, P.label, [[0, 0, 'center'], [0, -18, 'center'], [0, 18, 'center']], 1, R, P.paper);
       }
@@ -1700,14 +1703,15 @@ export default defineSimulation({
       drawLandscape(v);
       const fromPoi = poiAt(A());
       const toPoi = poiAt(B());
-      drawMapFurniture(v);
       {
         const [ax, ay] = toPx(v, p.ax, p.ay);
         const [bx, by] = toPx(v, p.bx, p.by);
         placed.push({ x0: ax - 11, y0: ay - 11, x1: ax + 11, y1: ay + 11 }, { x0: bx - 11, y0: by - 11, x1: bx + 11, y1: by + 11 });
       }
-      drawPoisAndLabels(v, fromPoi?.id ?? null, toPoi?.id ?? null);
+      drawPoisAndLabels(v, fromPoi?.id ?? null, toPoi?.id ?? null, 'sym');
+      drawMapFurniture(v);
       drawMeasure(v, m);
+      drawPoisAndLabels(v, fromPoi?.id ?? null, toPoi?.id ?? null, 'lab');
       // Hinweis (z. B. Strecke gekürzt, Ort antippen)
       if (note) {
         const age = now - note.at;
@@ -1969,8 +1973,7 @@ export default defineSimulation({
         const last = chain[chain.length - 1]!;
         if (sm) {
           // schmal: kürzer
-          const mid = chain.length > 2 ? [S(' = ', th.muted), S(chain[0]!.text(lang), th.text, 700)] : [];
-          items2.push(...stepItems([[...first, ...mid]], [S('= ', th.muted), S(last.text(lang), cReal())], chainAt, 13, 20));
+          items2.push(...stepItems([first, ...(chain.length > 1 ? [[S('= ', th.muted), S(chain[0]!.text(lang), th.text, 700)]] : [])], [S('= ', th.muted), S(last.text(lang), cReal())], chainAt, 13, 19));
         } else items2.push(...stepItems(rows, [S('= ', th.muted), S(last.text(lang), cReal())], chainAt, 15, 26));
       }
       cards.push({ items: items2, accent: cReal(), tint: revealed ? 0.04 : 0 });
