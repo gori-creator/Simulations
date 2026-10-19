@@ -31,25 +31,25 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M01 fertig — stellenwerte, zahlengerade, primfaktoren
 - M02 offen — zehnerpotenzen, einheiten, massstab
 - M03 fertig — brueche-vergleichen, dezimalbrueche, brueche-rechnen
-- M04 offen — prozentstreifen, quadratwurzel, proportional
+- M04 fertig — prozentstreifen, quadratwurzel, proportional (18.10., Mathe 2)
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
 - M06 fertig — koordinaten-lage, winkel-messen, umfang-flaeche (Testgruppe Spickzettel: Qualität gleich gut → verkürzte Leseliste für alle weiteren Gruppen)
 - M07 fertig — vierecke, spiegelung, mittelsenkrechte
 - M08 offen — winkel-geradenkreuzung, winkelsumme, flaechen-zerlegen
-- M09 offen — dreieckskonstruktion, besondere-linien, strahlensaetze
-- M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
+- M09 fertig — dreieckskonstruktion, besondere-linien, strahlensaetze (18.10., Mathe 2)
+- M10 fertig — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz (18.10., Mathe 2)
 - M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
 - M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
 - M13 offen — potenzfunktionen, logarithmus, e-funktion
-- M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
-- M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
+- M14 fertig — ganzrationale-funktionen, transformationen, grenzverhalten (18.10., Mathe 2)
+- M15 fertig — polstellen-asymptoten, umkehrfunktion, newton-verfahren (18.10., Mathe 2)
 - M16 läuft — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (frei für Mathe)
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
-- M19 offen — normalverteilung, taylor-polynome, fourier-reihen
-- M20 offen — ableitungsfunktion, kurvendiskussion, funktionenscharen
-- M21 offen — stammfunktion-grafisch, hauptsatz, aenderungsrate
-- M22 offen — extremwertprobleme, matrix-abbildungen
+- M19 fertig — normalverteilung, taylor-polynome, fourier-reihen (19.10., Mathe 2)
+- M20 fertig — ableitungsfunktion, kurvendiskussion, funktionenscharen (19.10., Mathe 2)
+- M21 fertig — stammfunktion-grafisch, hauptsatz, aenderungsrate (19.10., Mathe 2)
+- M22 fertig — extremwertprobleme, matrix-abbildungen (19.10., Mathe 2)
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
 - M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
