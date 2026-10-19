@@ -1080,6 +1080,7 @@ export default defineSimulation({
         case 'sphere':
           return tt('Alle Punkte X mit |MX| = r bilden die Kugel. Punktprobe: Liegt die linke Seite der Kugelgleichung unter, auf oder über r²?', 'All points X with |MX| = r form the sphere. Point test: is the left-hand side of the equation below, equal to or above r²?');
         case 'plane':
+          if ((spherePlane(tM(), p.r, tN(), p.c)?.kind ?? 'none') !== 'circle') return tt('Ist d ≥ r, gibt es keinen Schnittkreis: Bei d = r berührt E die Kugel im Lotfußpunkt, bei d > r gibt es keinen gemeinsamen Punkt.', 'If d ≥ r there is no circle: for d = r the plane touches the sphere at the foot of the perpendicular, for d > r there is no common point.');
           return tt('Vergleiche den Abstand d des Mittelpunkts von E mit r. Der Schnittkreis hat den Lotfußpunkt M′ als Mittelpunkt (Pythagoras: ρ² + d² = r²).', 'Compare the distance d of the centre from E with r. The circle of intersection is centred at the foot M′ (Pythagoras: ρ² + d² = r²).');
         case 'line':
           return tt('g in K einsetzen ergibt eine quadratische Gleichung in t. Ihre Diskriminante entscheidet: zwei, ein oder kein gemeinsamer Punkt.', 'Substituting g into K gives a quadratic equation in t. Its discriminant decides: two, one or no common point.');
@@ -1161,7 +1162,7 @@ export default defineSimulation({
         const b = projectToSphere(m, r, tB());
         const t = tangentPlane(m, b);
         const red = reducePlane(t.n, t.c);
-        ctx.readout('calc', `${tt('Normalenvektor', 'Normal vector')} B − M = ${pt(t.n)} · n · X = n · B = ${n1(t.c)}`);
+        ctx.readout('calc', `n = B − M = ${pt(t.n)} · n · B = ${n1(t.c)}`);
         ctx.readout('res', `T: ${planeText(red.n, red.c)}`);
       }
     }
