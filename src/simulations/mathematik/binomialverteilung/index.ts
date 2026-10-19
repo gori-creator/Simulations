@@ -201,6 +201,9 @@ export default defineSimulation({
     let muS = binomialMean(p.n, p.p);
     let sdS = binomialSd(p.n, p.p);
     let sigA = p.sig ? 1 : 0;
+    /** Umriss der relativen Häufigkeiten erst ab 20 Ketten (vorher springt er zu stark). */
+    let freqA = 0;
+    const FREQ_MIN = 20;
     let resS = 0;
     const knob = { k: kk(), a: aa(), b: bb() };
     const vt = new Glide(p.view === 'cdf' ? 1 : 0);
@@ -808,6 +811,7 @@ export default defineSimulation({
     }
 
     function drawFreq(now: number): void {
+      if (freqA < 0.01) return;
       let mx = 0;
       for (let i = 0; i < SLOTS; i++) mx = Math.max(mx, rel[i]!);
       if (mx < 1e-4) return;
@@ -821,7 +825,7 @@ export default defineSimulation({
       g.beginPath();
       g.rect(r.x - 2, r.y - 50, r.w + 4, r.h + 52);
       g.clip();
-      g.globalAlpha = fade;
+      g.globalAlpha = fade * freqA;
       g.strokeStyle = c.freq;
       g.lineWidth = 2.4;
       g.lineJoin = 'round';
@@ -1106,8 +1110,13 @@ export default defineSimulation({
       const shown = Math.abs(resS - P) < 5e-5 ? P : resS;
       const big = p.show ? `${rel4(P)} ${shown === P ? prob(P) : fmt.fixed(shown, 4)}` : '= ?';
       const bigSize = Math.min(size * 2.05, 30);
-      const pb = p.show ? fit(`= ${fmt.num(shown * 100, 2)} %`, innerW * 0.32, size, th().muted, 700, 9) : null;
-      const bb2 = fit(`${evSym(ev())} ${big}`, innerW - 8 - (pb ? pb.w + 14 : 0), bigSize, c.ev, 800, 11);
+      let pb = p.show ? fit(`= ${fmt.num(shown * 100, 2)} %`, innerW * 0.32, size, th().muted, 700, 9) : null;
+      let bb2 = fit(`${evSym(ev())} ${big}`, innerW - 8 - (pb ? pb.w + 14 : 0), bigSize, c.ev, 800, 11);
+      if (pb && bb2.w + pb.w + 24 > innerW) {
+        // zu eng: Prozentangabe weglassen, dafür die große Zahl lesbar
+        pb = null;
+        bb2 = fit(`${evSym(ev())} ${big}`, innerW - 8, bigSize, c.ev, 800, 11);
+      }
       const bh = bigSize * 1.45;
       g.save();
       g.globalAlpha = alpha * ease.outCubic(ra);
@@ -1124,6 +1133,31 @@ export default defineSimulation({
         const nb2 = fit(data.note, innerW, size - 1, th().muted, 600, 9);
         nb2.draw(g, r.x + pad, y + size * 0.7 + (nb2.asc - nb2.desc) / 2);
         y += size * 1.4;
+      }
+      // Anteilsbalken: gesuchte Wahrscheinlichkeit als Teil der Gesamtwahrscheinlichkeit 1
+      const yB0 = r.y + r.h - pad - size * 1.55 * 2 - 6;
+      if (yB0 - y > size * 2.4) {
+        const by = y + (yB0 - y) / 2 - 4;
+        const bw = innerW;
+        const share = p.show ? clamp01(shown) : 0;
+        g.save();
+        g.globalAlpha = alpha * ease.outCubic(ra);
+        g.fillStyle = mixColor(th().muted, th().bg, 0, th().dark ? 0.25 : 0.16);
+        roundRect(g, r.x + pad, by, bw, 8, 4);
+        g.fill();
+        if (share > 0) {
+          const grad = g.createLinearGradient(r.x + pad, 0, r.x + pad + bw, 0);
+          grad.addColorStop(0, mixColor(c.ev, th().bg, 0.25));
+          grad.addColorStop(1, c.ev);
+          g.fillStyle = grad;
+          roundRect(g, r.x + pad, by, Math.max(4, bw * share), 8, 4);
+          g.fill();
+        }
+        const l0 = formula(g, '0', fstyle(size - 2.5, th().muted, 600));
+        l0.draw(g, r.x + pad, by + 8 + size * 0.95);
+        const l1 = formula(g, '1', fstyle(size - 2.5, th().muted, 600));
+        l1.draw(g, r.x + pad + bw - l1.w, by + 8 + size * 0.95);
+        g.restore();
       }
       // μ und σ
       const mu = binomialMean(n, p.p);
@@ -1184,6 +1218,7 @@ export default defineSimulation({
       const top = r.y + pad + title.asc + title.desc + 10;
       const statusH = size * 1.9;
       const freqH = total > 0 || run ? size * 1.5 : 0;
+      const few = !run && total < FREQ_MIN;
       const gridH = reqTop - 6 - statusH - freqH - top;
       const gridW = r.w - 2 * pad;
       let chain: boolean[] | null = lastChain && lastChain.length === n ? lastChain : null;
@@ -1273,7 +1308,7 @@ export default defineSimulation({
         g.lineTo(r.x + pad + 20, fy + 1);
         g.stroke();
         g.restore();
-        const fb = fit(tt(`relative Häufigkeiten nach ${chainsTxt(N)}`, `relative frequencies after ${chainsTxt(N)}`), r.w - 2 * pad - 28, size - 1, c.freq, 700, 9);
+        const fb = fit(few ? tt(`${chainsTxt(N)} – Umriss ab ${FREQ_MIN} Ketten`, `${chainsTxt(N)} – outline from ${FREQ_MIN} chains`) : tt(`relative Häufigkeiten nach ${chainsTxt(N)}`, `relative frequencies after ${chainsTxt(N)}`), r.w - 2 * pad - 28, size - 1, few ? th().muted : c.freq, 700, 9);
         fb.draw(g, r.x + pad + 28, fy + (fb.asc - fb.desc) / 2);
       }
       let status: string;
@@ -1358,6 +1393,9 @@ export default defineSimulation({
       muS = follow(muS, binomialMean(n, p.p), dt, reduced() ? 0 : 0.16);
       sdS = follow(sdS, binomialSd(n, p.p), dt, reduced() ? 0 : 0.16);
       sigA = follow(sigA, p.sig ? 1 : 0, dt, reduced() ? 0 : 0.12);
+      const freqGoal = run || total >= FREQ_MIN ? 1 : 0;
+      freqA = follow(freqA, freqGoal, dt, reduced() ? 0 : 0.2);
+      if (freqA !== freqGoal) anim = true;
       knob.k = follow(knob.k, kk(), dt, reduced() || drag ? 0.03 : 0.12);
       knob.a = follow(knob.a, aa(), dt, reduced() || drag ? 0.03 : 0.12);
       knob.b = follow(knob.b, bb(), dt, reduced() || drag ? 0.03 : 0.12);
