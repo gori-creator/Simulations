@@ -15,7 +15,10 @@ const RUN_MS = 7000;
  * und des Nenners lassen sich auf der x-Achse bzw. am oberen Rand ziehen.
  * Daraus ergeben sich Definitionsmenge, Nullstellen, Polstellen (mit oder
  * ohne Vorzeichenwechsel), behebbare Lücken und die Asymptote bzw.
- * Näherungskurve für x → ±∞ (Polynomdivision).
+ * Näherungskurve für x → ±∞ (Polynomdivision). Ein Streifen an der x-Achse
+ * zeigt das Vorzeichen von f, „Blick aus der Ferne“ zoomt achtfach heraus
+ * (der Graph verschmilzt mit der Asymptote), und eine Wertetabelle zeigt,
+ * wie die Funktionswerte an einer Polstelle über alle Grenzen wachsen.
  */
 export default defineSimulation({
   id: 'polstellen-asymptoten',
@@ -36,6 +39,9 @@ export default defineSimulation({
     { key: 'p1', type: 'number', group: 'den', label: L('Nennernullstelle p₁', 'Zero of denominator p₁'), min: -5, max: 5, step: 0.5, default: -2 },
     { key: 'p2', type: 'number', group: 'den', label: L('Nennernullstelle p₂', 'Zero of denominator p₂'), min: -5, max: 5, step: 0.5, default: 2, visibleIf: (v) => (v.pn as number) >= 2 },
     { key: 'asy', type: 'boolean', group: 'view', label: L('Asymptoten zeichnen', 'Draw the asymptotes'), default: true },
+    { key: 'sgn', type: 'boolean', group: 'view', label: L('Vorzeichen von f an der x-Achse', 'Sign of f along the x-axis'), default: true },
+    { key: 'far', type: 'boolean', group: 'view', label: L('Blick aus der Ferne (× 8)', 'View from afar (× 8)'), default: false },
+    { key: 'tab', type: 'boolean', group: 'view', label: L('Wertetabelle an der Polstelle', 'Table of values at the pole'), default: false },
     { key: 'show', type: 'boolean', group: 'view', label: L('Eigenschaften zeigen', 'Show the properties'), help: L('Aus: Definitionsmenge, Polstellen und Asymptote selbst bestimmen.', 'Off: find the domain, poles and asymptote yourself.'), default: true },
   ],
   actions: [{ id: 'run', label: L('Punkt entlanglaufen lassen', 'Let a point run along the graph'), primary: true }],
@@ -52,6 +58,8 @@ export default defineSimulation({
     { id: 'zero', label: L('Asymptote y = 0', 'Asymptote y = 0'), values: { zn: 1, z1: 0, pn: 2, p1: -2, p2: 2, a: 2 } },
     { id: 'oblique', label: L('Schräge Asymptote', 'Oblique asymptote'), values: { zn: 2, z1: 1, z2: -1, pn: 1, p1: 2 } },
     { id: 'curve', label: L('Zählergrad 3: Näherungsparabel', 'Degree 3 on top: approximating parabola'), values: { zn: 3, z1: -2, z2: 0, z3: 2, pn: 1, p1: -1, a: 0.5 } },
+    { id: 'far', label: L('Aus der Ferne: schräge Asymptote', 'From afar: oblique asymptote'), values: { zn: 2, z1: 1, z2: -1, pn: 1, p1: 2, far: true } },
+    { id: 'tab', label: L('Wertetabelle: x → −2', 'Table: x → −2'), values: { tab: true } },
   ],
   strings: {
     de: {
@@ -79,6 +87,12 @@ export default defineSimulation({
       near: 'Annäherung an x = {p}',
       asyLine: 'Asymptote',
       curveLine: 'Näherungskurve',
+      tabT: 'Annäherung an die Polstelle x = {p}',
+      tabNone: 'Keine Polstelle – dann gibt es nichts anzunähern.',
+      left: 'von links',
+      right: 'von rechts',
+      grows: 'Die Beträge wachsen über alle Grenzen: f(x) → {l} bzw. {r}.',
+      farNote: '× 8',
     },
     en: {
       canvas: 'Coordinate system with the graph of a rational function. Zeros of the numerator as draggable points on the x-axis, zeros of the denominator as draggable markers at the top; vertical asymptotes at the poles, a horizontal or oblique asymptote or an approximating curve, holes at removable gaps. Next to it the function, the polynomial division and the properties.',
@@ -105,6 +119,12 @@ export default defineSimulation({
       near: 'approaching x = {p}',
       asyLine: 'asymptote',
       curveLine: 'approximating curve',
+      tabT: 'Approaching the pole x = {p}',
+      tabNone: 'No pole – nothing to approach.',
+      left: 'from the left',
+      right: 'from the right',
+      grows: 'The absolute values grow without bound: f(x) → {l} and {r}.',
+      farNote: '× 8',
     },
   },
 
@@ -303,6 +323,8 @@ export default defineSimulation({
 
     /* ---------- Weiche Übergänge ---------- */
     let shownF: Rational = rational();
+    /** Zoomfaktor (1 normal, 8 „aus der Ferne“), gleitet weich. */
+    let zoomS = p.far ? 8 : 1;
     let lastFrame = performance.now();
     const intro = new Tween(900, ease.outCubic);
     const run = new Tween(RUN_MS, ease.linear);
@@ -328,6 +350,7 @@ export default defineSimulation({
     function drawPlot(): void {
       const g = surface.g;
       const theme = th();
+      plot.setRange([-XR * zoomS, XR * zoomS], [-YR * zoomS, YR * zoomS]);
       plot.begin();
       plot.grid();
       plot.axes();
@@ -378,6 +401,24 @@ export default defineSimulation({
         if (b0 > a0) plot.fn(f, { color: col.f(), width: 3, from: a0, to: b0 });
       }
       g.restore();
+      // Vorzeichen von f als Streifen an der x-Achse
+      if (p.sgn && shownF.a !== 0) {
+        const cutsS = [xMin, ...[...SA.zeros.map((z) => z.x), ...SA.poles.map((q) => q.x)].filter((x) => x > xMin && x < xMax).sort((u, v) => u - v), xMax];
+        const y0 = plot.py(0);
+        for (let i = 0; i < cutsS.length - 1; i++) {
+          const a0 = cutsS[i]!;
+          const b0 = cutsS[i + 1]!;
+          if (b0 - a0 < 1e-9) continue;
+          const sg = Math.sign(f((a0 + b0) / 2));
+          if (!sg) continue;
+          const xa = plot.px(a0);
+          const xb = plot.px(b0);
+          g.fillStyle = withAlpha(sg > 0 ? col.zero() : col.pole(), theme.dark ? 0.75 : 0.6);
+          g.fillRect(xa + 1, sg > 0 ? y0 - 7 : y0 + 1, xb - xa - 2, 6);
+          if (xb - xa > 28) text(g, sg > 0 ? '+' : '−', (xa + xb) / 2, sg > 0 ? y0 - 15 : y0 + 15, { font: font(800, F(13, 12)), color: sg > 0 ? col.zero() : col.pole() });
+        }
+      }
+      if (zoomS > 1.05) text(g, ctx.t('farNote'), r.x + 10, r.y + r.h - 14, { font: font(800, F(13, 12)), color: theme.muted, align: 'left' });
       // Löcher
       for (const h of SA.holes) {
         if (Number.isFinite(h.y)) plot.point(h.x, h.y, { color: col.f(), radius: 5.5, hollow: true });
@@ -518,13 +559,67 @@ export default defineSimulation({
       }
     }
 
+    /** Wertetabelle: x nähert sich der ersten Polstelle von links und rechts. */
+    function poleTableCard(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const pad = F(14, 12);
+      card(R, col.pole(), 0.03);
+      const q = A.poles[0];
+      if (!q || p.a === 0) {
+        title(R.x + pad, R.y + 16, ctx.t('propT'));
+        const fN = font(600, F(12.5, 11.5));
+        wrap(ctx.t('tabNone'), R.w - 2 * pad, fN).forEach((row, i) => text(g, row, R.x + pad, R.y + 38 + i * 16, { font: fN, color: theme.text, align: 'left' }));
+        return;
+      }
+      title(R.x + pad, R.y + 16, tr('tabT', { p: n(q.x) }), col.pole());
+      const fr = rational();
+      const big = (v: number) => (Math.abs(v) >= 100 ? fmt.num(v, 0) : fmt.num(v, 2));
+      const fv = `600 ${F(12.5, 11.5)}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      const c0 = R.x + pad;
+      const c1 = R.x + R.w / 2 - 6;
+      const c2 = R.x + R.w / 2 + 10;
+      const c3 = R.x + R.w - pad;
+      const hy = R.y + 38;
+      text(g, ctx.t('left'), c0, hy, { font: font(700, F(11.5, 10.5)), color: theme.muted, align: 'left' });
+      text(g, ctx.t('right'), c2, hy, { font: font(700, F(11.5, 10.5)), color: theme.muted, align: 'left' });
+      const lh = F(21, 19);
+      for (let k = 1; k <= 4; k++) {
+        const h = 10 ** -k;
+        const y = hy + 8 + lh * k;
+        const xl = q.x - h;
+        const xr = q.x + h;
+        const yl = value(fr, xl);
+        const yr = value(fr, xr);
+        text(g, fmt.num(xl, k), c0, y, { font: fv, color: theme.muted, align: 'left' });
+        text(g, big(yl), c1, y, { font: fv, color: yl > 0 ? col.zero() : col.pole(), align: 'right' });
+        text(g, fmt.num(xr, k), c2, y, { font: fv, color: theme.muted, align: 'left' });
+        text(g, big(yr), c3, y, { font: fv, color: yr > 0 ? col.zero() : col.pole(), align: 'right' });
+      }
+      if (p.show) {
+        const s = poleSides(fr, q.x);
+        const inf = (v: number) => (v > 0 ? '+∞' : '−∞');
+        const fN = font(600, F(12, 11));
+        wrap(tr('grows', { l: inf(s.left), r: inf(s.right) }), R.w - 2 * pad, fN).forEach((row, i) => text(g, row, R.x + pad, hy + 8 + lh * 5 + 6 + i * 15, { font: fN, color: theme.text, align: 'left' }));
+      }
+    }
+
     /* ---------- Rendern ---------- */
     function render(): void {
       const now = performance.now();
       const dt = Math.min(0.05, (now - lastFrame) / 1000);
       lastFrame = now;
       if (dragging && now - dragging > 250) dragging = 0;
-      const moving = stepShown(dt);
+      const moving0 = stepShown(dt);
+      const zGoal = p.far ? 8 : 1;
+      let zMoving = false;
+      if (reduced || Math.abs(zGoal - zoomS) < 1e-3) zoomS = zGoal;
+      else {
+        // logarithmisch gleiten, damit der Zoom gleichmäßig wirkt
+        zoomS = Math.exp(Math.log(zoomS) + (Math.log(zGoal) - Math.log(zoomS)) * (1 - Math.exp(-dt * 4)));
+        zMoving = true;
+      }
+      const moving = moving0 || zMoving;
       surface.begin();
       plot.resize();
       drawPlot();
@@ -532,7 +627,8 @@ export default defineSimulation({
       const gap = F(10, 8);
       const th1 = termCard({ ...C, h: 0 });
       termCard({ x: C.x, y: C.y, w: C.w, h: th1 });
-      propCard({ x: C.x, y: C.y + th1 + gap, w: C.w, h: C.h - th1 - gap });
+      if (p.tab) poleTableCard({ x: C.x, y: C.y + th1 + gap, w: C.w, h: C.h - th1 - gap });
+      else propCard({ x: C.x, y: C.y + th1 + gap, w: C.w, h: C.h - th1 - gap });
       if (moving || intro.running || run.running || dragging) ctx.requestRender();
     }
 

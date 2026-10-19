@@ -795,8 +795,8 @@ export const mathematik: Subject = {
             slug: L('polstellen-asymptoten', 'poles-asymptotes'),
             title: L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'),
             summary: L(
-              'Zähler- und Nennernullstellen ziehen und beobachten: Definitionsmenge, Polstellen mit und ohne Vorzeichenwechsel, behebbare Lücken als Loch im Graphen und waagrechte oder schräge Asymptote aus der Polynomdivision.',
-              'Drag the zeros of numerator and denominator and watch: domain, poles with and without sign change, removable gaps as holes in the graph and the horizontal or oblique asymptote from polynomial division.',
+              'Zähler- und Nennernullstellen ziehen und beobachten: Definitionsmenge, Polstellen mit und ohne Vorzeichenwechsel, behebbare Lücken als Loch im Graphen und waagrechte oder schräge Asymptote aus der Polynomdivision – mit Vorzeichenstreifen, Wertetabelle an der Polstelle und Blick aus der Ferne.',
+              'Drag the zeros of numerator and denominator and watch: domain, poles with and without sign change, removable gaps as holes in the graph and the horizontal or oblique asymptote from polynomial division – with a sign strip, a table of values at the pole and a view from afar.',
             ),
             grades: [11, 12],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],

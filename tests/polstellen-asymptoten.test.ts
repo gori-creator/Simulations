@@ -68,4 +68,17 @@ describe('Sonderfall a = 0', () => {
     expect(r.holes).toEqual([{ x: -2, y: 0 }]);
     expect(r.gaps).toEqual([-2]);
   });
+  it('Wertetabelle an der Polstelle: (x − 1)/(x + 2) bei x = −2,001 ≈ 3001, bei −1,999 ≈ −2999', () => {
+    const f = { a: 1, zeros: [1], poles: [-2] };
+    expect(value(f, -2.001)).toBeCloseTo(3001, 6);
+    expect(value(f, -1.999)).toBeCloseTo(-2999, 6);
+    expect(poleSides(f, -2)).toEqual({ left: 1, right: -1 });
+  });
+  it('Aus der Ferne: (x² − 1)/(x − 2) = x + 2 + 3/(x − 2), Abstand bei x = 40 nur 3/38', () => {
+    const f = { a: 1, zeros: [1, -1], poles: [2] };
+    const an = analyze(f);
+    expect(an.kind).toBe('oblique');
+    expect(an.asym.map((c) => Math.round(c * 1e9) / 1e9)).toEqual([2, 1]);
+    expect(value(f, 40) - (40 + 2)).toBeCloseTo(3 / 38, 12);
+  });
 });
