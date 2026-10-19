@@ -260,7 +260,7 @@ export default defineSimulation({
       const D = doubled(kind(), d);
       return strips(D.G, D.s).filter((s) => Math.abs(s.shift) > 1e-9).length;
     }
-    const kDur = () => 1.5 + 0.3 * Math.min(4, Math.max(0, movingGroups(dims()) - 1));
+    const kDur = () => 2.2 + 0.3 * Math.min(4, Math.max(0, movingGroups(dims()) - 1));
     function stepProgress(dt: number): boolean {
       const t = targets();
       const para = kind() === 'para';
@@ -333,7 +333,7 @@ export default defineSimulation({
         const pw = Math.round(clamp(W * 0.31, 215, 330));
         return { W, H, wide, paper: { x: 2, y: 2, w: W - pw - 16, h: H - 4 }, panel: { x: W - pw - 2, y: 2, w: pw, h: H - 4 } };
       }
-      const ph = Math.round(H * 0.56);
+      const ph = Math.round(H * 0.58);
       return { W, H, wide, paper: { x: 2, y: 2, w: W - 4, h: ph }, panel: { x: 2, y: ph + 10, w: W - 4, h: H - ph - 12 } };
     }
     const small = () => !!geo && !geo.wide;
@@ -365,8 +365,8 @@ export default defineSimulation({
         y1: Math.max(...boxes.map((q) => q.y1)),
       };
       // Mindestgröße, damit kleine Figuren nicht riesig werden
-      const minW = small() ? 9 : 12;
-      const minH = small() ? 5 : 6;
+      const minW = small() ? 7 : 8;
+      const minH = small() ? 4.5 : 5;
       if (b.x1 - b.x0 < minW) {
         const m = (minW - (b.x1 - b.x0)) / 2;
         b.x0 -= m;
@@ -380,8 +380,8 @@ export default defineSimulation({
       const R = geo!.paper;
       const b = worldBox();
       const sm = small();
-      const mL = sm ? 30 : 46;
-      const mR = sm ? 30 : 46;
+      const mL = sm ? 40 : 56;
+      const mR = sm ? 48 : 64;
       const mT = sm ? 30 : 40;
       const mB = sm ? 40 : 52;
       const bw = b.x1 - b.x0;
@@ -674,7 +674,7 @@ export default defineSimulation({
       }
       if (label) {
         const sz = small() ? 12 : 14;
-        halo(label, px + labelSide * 9, (yTop + yBase) / 2, font(800, sz), col, labelSide > 0 ? 'left' : 'right', a * seg(grow, 0.6, 1));
+        besideText(label, px, lerp(yTop, yBase, 0.4), labelSide, font(800, sz), col, a * seg(grow, 0.6, 1));
       }
     }
 
@@ -722,27 +722,35 @@ export default defineSimulation({
     const names = () => (kind() === 'tri' ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D']);
     function vertexNames(poly: Poly, a: number): void {
       if (a <= 0.01) return;
-      const cx = poly.reduce((s, q) => s + q[0], 0) / poly.length;
-      const cy = poly.reduce((s, q) => s + q[1], 0) / poly.length;
       const nm = names();
       const f = font(800, small() ? 13 : 15);
+      const d = small() ? 13 : 15;
+      const minX = Math.min(...poly.map((q) => q[0]));
+      const maxX = Math.max(...poly.map((q) => q[0]));
       poly.forEach((q, i) => {
         if (kind() === 'trap' && i === 2 && shown.c < 0.05) return; // C = D
-        let dx = X(q[0]) - X(cx);
-        let dy = Y(q[1]) - Y(cy);
-        const l = Math.hypot(dx, dy) || 1;
-        dx /= l;
-        dy /= l;
-        // unten nach unten-außen, oben nach oben-außen
-        const vy = q[1] > cy ? -1 : 1;
-        const ux = dx * 0.75;
-        const uy = vy * 0.75 + dy * 0.25;
-        const ul = Math.hypot(ux, uy) || 1;
-        const d = small() ? 15 : 17;
         let label = nm[i]!;
         if (kind() === 'trap' && i === 3 && shown.c < 0.05) label = 'C = D';
-        halo(label, X(q[0]) + (ux / ul) * d, Y(q[1]) + (uy / ul) * d, f, ctx.theme.text, 'center', a);
+        const bottom = q[1] < 1e-6;
+        // links bzw. rechts außen: von der Figur weg; dazwischen gerade nach oben/unten
+        const others = poly.filter((v, j) => j !== i && Math.abs(v[1] - q[1]) < 1e-6);
+        let sx = 0;
+        if (others.length) sx = others.every((v) => v[0] >= q[0] - 1e-6) ? -1 : others.every((v) => v[0] <= q[0] + 1e-6) ? 1 : 0;
+        else sx = q[0] <= minX + 1e-6 ? -1 : q[0] >= maxX - 1e-6 ? 1 : 0;
+        const x = X(q[0]) + sx * d * 0.9;
+        const y = Y(q[1]) + (bottom ? d * 0.75 : -d * 0.85);
+        halo(label, x, y, f, ctx.theme.text, 'center', a);
       });
+    }
+
+    /** Text neben einer senkrechten Linie bei px; weicht auf die andere Seite aus, wenn er sonst aus dem Papier ragt. */
+    function besideText(str: string, px: number, py: number, side: number, f: string, color: string, a: number): void {
+      const R = geo!.paper;
+      const w = measure(str, f);
+      let sd = side;
+      if (sd > 0 && px + 9 + w > R.x + R.w - 6) sd = -1;
+      else if (sd < 0 && px - 9 - w < R.x + 6) sd = 1;
+      halo(str, px + sd * 9, py, f, color, sd > 0 ? 'left' : 'right', a);
     }
 
     /** Farbig hervorgehobene Seite mit Beschriftung darunter (`below` = 1) bzw. darüber (−1). */
@@ -779,10 +787,10 @@ export default defineSimulation({
       // nächste Streifen zuerst
       js.sort((a, b) => Math.abs(a) - Math.abs(b));
       const n = js.length;
-      const delta = n > 1 ? 0.3 / (n - 1) : 0;
-      const dur = n > 1 ? 0.45 : 0.72;
+      const delta = n > 1 ? 0.25 / (n - 1) : 0;
+      const dur = n > 1 ? 0.42 : 0.66;
       const m = new Map<number, [number, number]>();
-      js.forEach((j, i) => m.set(j, [0.25 + i * delta, dur]));
+      js.forEach((j, i) => m.set(j, [0.3 + i * delta, dur]));
       return m;
     }
 
@@ -838,11 +846,11 @@ export default defineSimulation({
         const cuts = cutLines(G, d.h, d.s);
         const cutA = seg(K, 0, 0.12) * (1 - 0.65 * seg(K, 0.8, 1));
         cuts.forEach((c, i) => {
-          const grow = seg(K, 0.02 + i * 0.03, 0.22 + i * 0.03);
+          const grow = seg(K, 0.03 + i * 0.03, 0.24 + i * 0.03);
           if (grow <= 0) return;
           const y0 = Y(c.y1);
           const y1 = lerp(Y(c.y1), Y(c.y0), grow);
-          segLine(X(c.x), y0, X(c.x), y1, cH(), 2.4, cutA, [7, 5]);
+          segLine(X(c.x), y0, X(c.x), y1, cH(), 2.8, cutA, [7, 5]);
           // Schere: kleiner Keil an der Spitze der wachsenden Linie
           if (grow < 1) {
             g.save();
@@ -861,7 +869,7 @@ export default defineSimulation({
           sideLabel(rect.x0, rect.x0 + rect.w, 0, gl, cG(), 1, endA);
           const hx = X(rect.x0 + rect.w);
           segLine(hx, Y(0), hx, Y(rect.h), cH(), sm ? 3.6 : 4.2, endA);
-          halo(`h = ${cm(d.h)}`, hx + 10, Y(rect.h / 2), font(800, sm ? 12 : 14), cH(), 'left', endA);
+          besideText(`h = ${cm(d.h)}`, hx, Y(rect.h / 2), 1, font(800, sm ? 12 : 14), cH(), endA);
           drawCount(rect, endA);
           if (!counting() && !counted && known) {
             const label = k === 'para' ? `A = ${cm2(G * d.h)}` : `2 · A = ${cm2(G * d.h)}`;
@@ -912,8 +920,11 @@ export default defineSimulation({
       if (known && R === 0) {
         const bb = bounds([F]);
         const area = areaGlide.at(now);
-        const cx = F.reduce((s, q) => s + q[0], 0) / F.length;
-        const cy = F.reduce((s, q) => s + q[1], 0) / F.length;
+        // auf einem Drittel der Höhe, in der Mitte der Figur in dieser Höhe (die Höhe ist darüber beschriftet)
+        const yy = d.h * 0.3;
+        const ch = verticalExtent(F, yy);
+        const cx = ch ? (ch[0] + ch[1]) / 2 : (bb.x0 + bb.x1) / 2;
+        const cy = yy;
         fitPill(`A = ${cm2(area)}`, X(cx), Y(cy), (bb.x1 - bb.x0) * view.cell * 0.6, (bb.y1 - bb.y0) * view.cell * 0.55, lblA, sweep !== null);
       }
       if (known && R >= 1 && copy) {
@@ -923,6 +934,17 @@ export default defineSimulation({
       }
       // Griffe
       if (canDrag()) drawHandles(F);
+    }
+
+    /** Waagerechte Ausdehnung eines konvexen Vielecks in der Höhe y. */
+    function verticalExtent(poly: Poly, y: number): [number, number] | null {
+      const xs: number[] = [];
+      for (let i = 0; i < poly.length; i++) {
+        const a = poly[i]!;
+        const b = poly[(i + 1) % poly.length]!;
+        if ((a[1] - y) * (b[1] - y) <= 0 && Math.abs(b[1] - a[1]) > 1e-9) xs.push(a[0] + ((y - a[1]) / (b[1] - a[1])) * (b[0] - a[0]));
+      }
+      return xs.length >= 2 ? [Math.min(...xs), Math.max(...xs)] : null;
     }
 
     /** Pille nur zeigen, wenn sie in den verfügbaren Platz passt. */
@@ -947,7 +969,7 @@ export default defineSimulation({
     /** Drehpunkt M mit Drehpfeil. */
     function drawPivot(m: Pt, ang: number, R: number): void {
       const g = surface.g;
-      const a = seg(R, 0, 0.1) * (1 - 0.55 * seg(R, 0.9, 1));
+      const a = seg(R, 0, 0.1) * (1 - seg(R, 0.88, 1));
       if (a <= 0.01) return;
       const px = X(m[0]);
       const py = Y(m[1]);
@@ -1142,7 +1164,7 @@ export default defineSimulation({
       const n = cells.length;
       const shownN = Math.min(n, Math.max(0, Math.floor(t / dc + 0.4)));
       const done = counted && !counting();
-      const label = done ? (k === 'para' ? T(`${n} Kästchen = ${cm2(n)}`, `${n} squares = ${cm2(n)}`) : T(`${n} Kästchen : 2 = ${cm2(n / 2)}`, `${n} squares : 2 = ${cm2(n / 2)}`)) : T(`${shownN} Kästchen …`, `${shownN} squares …`);
+      const label = done ? (k === 'para' ? T(`${n} Kästchen = ${cm2(n)}`, `${n} squares = ${cm2(n)}`) : T(`${n} : 2 = ${num(n / 2)} Kästchen`, `${n} : 2 = ${num(n / 2)} squares`)) : T(`${shownN} Kästchen …`, `${shownN} squares …`);
       const sz = small() ? 12 : 14;
       const py = Y(rect.h) - (small() ? 20 : 24);
       pill(label, X(rect.x0 + rect.w / 2), py, done ? cOk() : ctx.theme.text, onColor(), sz, a);
@@ -1418,8 +1440,8 @@ export default defineSimulation({
       } else {
         items.push({ kind: 'step', n: 1, text: T('Kopie um 180° um M (Mitte von BC) drehen.', 'Rotate a copy by 180° about M (midpoint of BC).'), state: state(R >= 1, R < 1) });
         items.push({ kind: 'step', n: 2, text: T(`Parallelogramm mit Grundseite ${gName} und Höhe h.`, `A parallelogram with base ${gName} and height h.`), state: state(R >= 1 && (K > 0 || st === 'erg'), false) });
-        items.push({ kind: 'step', n: 3, text: T(`Zum Rechteck umlegen: ${gName} mal h.`, `Rearrange into a rectangle: ${gName} times h.`), state: state(K >= 1, K > 0 && K < 1) });
-        items.push({ kind: 'step', n: 4, text: T(`Die ${k === 'tri' ? 'Dreiecks' : 'Trapez'}fläche ist die Hälfte: : 2.`, `The ${k === 'tri' ? 'triangle' : 'trapezium'} is half of it: : 2.`), state: state(K >= 1 || (R >= 1 && st === 'erg'), false) });
+        items.push({ kind: 'step', n: 3, text: T(`Zum Rechteck umlegen: ${gName} lang, h breit.`, `Rearrange into a rectangle: ${gName} long, h wide.`), state: state(K >= 1, K > 0 && K < 1) });
+        items.push({ kind: 'step', n: 4, text: k === 'tri' ? T('Das Dreieck ist die Hälfte davon: g · h : 2.', 'The triangle is half of it: g · h : 2.') : T('Das Trapez ist die Hälfte davon: (a + c) · h : 2.', 'The trapezium is half of it: (a + c) · h : 2.'), state: state(K >= 1 || (R >= 1 && st === 'erg'), false) });
       }
       // Sonderfälle
       const notes: string[] = [];
@@ -1428,6 +1450,14 @@ export default defineSimulation({
       if (footOutside(d) && atFigure()) notes.push(k === 'tri' ? T('Stumpfer Winkel: Der Fußpunkt der Höhe liegt außerhalb – Grundseite verlängern.', 'Obtuse angle: the foot of the height lies outside – extend the base.') : T('Der Fußpunkt der Höhe liegt außerhalb der Grundseite – Grundseite verlängern.', 'The foot of the height lies outside the base – extend the base.'));
       if (k === 'para' && isRectangle(d.s)) notes.push(T('s = 0: Das Parallelogramm ist ein Rechteck.', 's = 0: the parallelogram is a rectangle.'));
       for (const n of notes) items.push({ kind: 'note', text: n, color: ctx.theme.text });
+      if (small()) {
+        // Handy: nur der aktuelle (bzw. zuletzt erledigte) Schritt
+        const st = items.filter((it): it is Extract<Item, { kind: 'step' }> => it.kind === 'step');
+        const cur = st.find((it) => it.state === 'now') ?? [...st].reverse().find((it) => it.state === 'done') ?? st[0]!;
+        const out: Item[] = [{ kind: 'title', text: T(`Herleitung · Schritt ${cur.n} von ${st.length}`, `Derivation · step ${cur.n} of ${st.length}`) }, cur];
+        if (notes[0]) out.push({ kind: 'note', text: notes[0], color: ctx.theme.text });
+        return { items: out };
+      }
       return { items };
     }
 
@@ -1584,6 +1614,7 @@ export default defineSimulation({
     }
 
     let lastKind = kind();
+    let lastDrei = kind() === 'trap' && step() === 'drei';
     snapProgress();
     updateReadouts();
     updateActions();
@@ -1621,13 +1652,15 @@ export default defineSimulation({
         }
         if (['sp', 'st', 'sz'].some((x) => changed.has(x)) && source !== 'init') {
           if (!pendingCount) resetCount();
-          chainAt = now + (reduced ? -1e6 : 200);
+          const isDrei = k === 'trap' && step() === 'drei';
+          if (isDrei !== lastDrei) chainAt = now + (reduced ? -1e6 : 200);
           if (source === 'replace' && changed.has('fig')) snapProgress();
         }
         if (source === 'replace') {
           resetCount();
           stopSweep();
         }
+        lastDrei = k === 'trap' && step() === 'drei';
         const A = formulaArea(k, dims());
         if (source === 'init' || changed.has('fig')) areaGlide.snap(A);
         else areaGlide.go(A, 550);
