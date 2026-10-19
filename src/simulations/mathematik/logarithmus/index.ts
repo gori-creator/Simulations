@@ -328,9 +328,12 @@ export default defineSimulation({
       return a >= 1000 ? 0 : a >= 100 ? 1 : a >= 10 ? 2 : a >= 0.1 ? 3 : Math.min(6, 2 - Math.floor(Math.log10(a || 1)) + 1);
     };
     const eqV = (v: number) => eqs(v, dV(v));
-    const bTxt = () => (p.e ? '\\t{e}' : fmt.num(p.b));
+    /** Basis im Bild: während des Übergangs die mitlaufende Zahl, sonst e bzw. der Reglerwert. */
+    const settled = () => Math.abs(bNow() - baseOf()) < 1e-6 * baseOf();
+    const bNum = () => (settled() ? fmt.num(p.b) : fmt.num(rnd(bNow(), 2)));
+    const bTxt = () => (p.e && settled() ? '\\t{e}' : bNum());
     /** Name des Logarithmus: ln, log₁₀ oder log_b. */
-    const logName = () => (p.e ? 'ln' : `log_{${fmt.num(p.b)}}`);
+    const logName = () => (p.e && settled() ? 'ln' : `log_{${bNum()}}`);
     /** Potenz b^x als Formel; Basis mit Komma wird nicht geklammert (wie im Schulbuch: 0,5ˣ). */
     const powSrc = (xs: string) => `${bTxt()}^{${xs}}`;
     const num = (v: number) => fmt.num(v);
@@ -581,13 +584,16 @@ export default defineSimulation({
       const b = baseOf();
       const c = p.c;
       const xs = log(b, c);
-      const lo = Math.min(-1.5, xs - 1.3);
-      const hi = Math.max(2.5, xs + 1.3);
-      // y-Bereich: c, der Punkt (0 | 1) und die Potenzen am Rand
-      const top = Math.max(c * 1.32, 2.4, 1.32 * Math.min(Math.max(b ** -1.5, b ** 2.5), c * 3));
+      // kleines c: Ausschnitt eng um die Lösung (sonst läge y = c auf der x-Achse)
+      const small = c < 1.2;
+      const lo = small ? Math.min(-0.4, xs - 1.3) : Math.min(-1.5, xs - 1.3);
+      const hi = small ? Math.max(0.4, xs + 1.3) : Math.max(2.5, xs + 1.3);
+      const top = small ? c * 1.9 : Math.max(c * 1.32, 2.4);
       const r = regions().plot;
       const bottom = -top * (34 / Math.max(120, r.h));
-      const left = lo - (hi - lo) * (16 / Math.max(160, r.w));
+      // links Platz für die Zahlen an der y-Achse (in Pixeln gerechnet)
+      const u = (hi - lo) / Math.max(120, r.w - 60);
+      const left = Math.min(lo - 10 * u, -50 * u);
       solveTarget = [left, hi, bottom, top];
       return solveTarget;
     }
@@ -688,13 +694,23 @@ export default defineSimulation({
       };
     }
 
-    function drawDiagonal(alpha: number, glow: number, b: number): void {
+    function drawDiagonal(alpha: number, glow: number, b: number, phase: 'line' | 'label'): void {
       const g = surface.g;
       const c = C();
       const { xMin, xMax, yMin, yMax } = plot.bounds;
       const lo = Math.max(xMin, yMin);
       const hi = Math.min(xMax, yMax);
       if (hi <= lo) return;
+      if (phase === 'label') {
+        if (alpha > 0.95) {
+          // Beschriftung am oberen Ende (b > 1) bzw. unten links (b < 1: oben rechts steht die Bildunterschrift)
+          const t = b > 1 ? hi - 0.9 : lo + 0.7;
+          const r = plot.rect;
+          const [lx, ly] = clampAnchor(plot.px(t) + 8, plot.py(t) + 2, labelW('y = x'), 'left', r);
+          tryLabel(lx, ly, 'y = x', c.diag, 'left', textSize(), Math.min(1, (alpha - 0.95) * 20));
+        }
+        return;
+      }
       const a: Pt = [plot.px(lo), plot.py(lo)];
       const bb: Pt = [plot.px(lo + (hi - lo) * alpha), plot.py(lo + (hi - lo) * alpha)];
       g.save();
@@ -717,21 +733,24 @@ export default defineSimulation({
       g.lineTo(bb[0], bb[1]);
       g.stroke();
       g.restore();
-      if (alpha > 0.95) {
-        // Beschriftung am oberen Ende (b > 1) bzw. unten links (b < 1: oben rechts steht die Bildunterschrift)
-        const t = b > 1 ? hi - 0.9 : lo + 0.7;
-        const r = plot.rect;
-        const [lx, ly] = clampAnchor(plot.px(t) + 8, plot.py(t) + 2, labelW('y = x'), 'left', r);
-        label(lx, ly, 'y = x', c.diag, 'left', textSize(), Math.min(1, (alpha - 0.95) * 20));
-      }
     }
 
-    function drawAsymptotes(b: number, k: K): void {
+    function drawAsymptotes(b: number, k: K, phase: 'line' | 'label'): void {
       const g = surface.g;
       const c = C();
       const r = plot.rect;
       const ox = Math.round(plot.px(0)) + 0.5;
       const oy = Math.round(plot.py(0)) + 0.5;
+      if (phase === 'label') {
+        const size = textSize() - 1;
+        // „x = 0“ an der y-Achse auf der Seite ohne Graph, „y = 0“ unter den Achsenzahlen
+        if (ox > r.x + 50 && ox < r.x + r.w - 50) tryLabel(ox - 8, b > 1 ? r.y + 22 : r.y + r.h - 16, 'x = 0', c.log, 'right', size, k.labels * k.logG);
+        if (oy > r.y + 20 && oy < r.y + r.h - 40) {
+          if (b > 1) tryLabel(r.x + 10, oy + 28, 'y = 0', c.exp, 'left', size, k.labels * k.graph);
+          else tryLabel(r.x + r.w - 10, oy + 28, 'y = 0', c.exp, 'right', size, k.labels * k.graph);
+        }
+        return;
+      }
       g.save();
       g.lineWidth = 2.2;
       g.setLineDash([8, 6]);
@@ -753,53 +772,95 @@ export default defineSimulation({
         g.stroke();
       }
       g.restore();
-      const size = textSize() - 1;
-      // Beschriftung „x = 0“ unten an der y-Achse (auf der Seite ohne Graph)
-      const yLab = r.y + r.h - 16;
-      if (ox > r.x + 50 && ox < r.x + r.w - 50) {
-        const below = b > 1; // b > 1: log-Graph unten nahe der y-Achse
-        label(ox - 8, below ? r.y + 22 : yLab, 'x = 0', c.log, 'right', size, k.labels * k.logG);
-      }
-      if (oy > r.y + 20 && oy < r.y + r.h - 20) {
-        const leftSide = b > 1; // b > 1: Exponentialgraph links nahe der x-Achse
-        // unter den Achsenzahlen
-        if (leftSide) label(r.x + 10, oy + 28, 'y = 0', c.exp, 'left', size, k.labels * k.graph);
-        else label(r.x + r.w - 10, oy + 28, 'y = 0', c.exp, 'right', size, k.labels * k.graph);
+    }
+
+    /** Kurvennamen: Stelle auf der Kurve nahe dem oberen Rand suchen, an der beide Namen frei stehen. */
+    function drawNames(b: number, k: K): void {
+      if (k.labels <= 0) return;
+      const { yMax } = plot.bounds;
+      const r = plot.rect;
+      const c = C();
+      const size = textSize() + 1.5;
+      const up = b > 1;
+      const eSrc = `y = ${powSrc('x')}`;
+      const lSrc = `y = ${logName()} x`;
+      const ea = up ? 'right' : 'left';
+      for (let i = 0; i < 90; i++) {
+        const y = yMax - (44 + i * 6) / plot.scale.y;
+        if (y <= 0.3) break;
+        const x = log(b, y);
+        if (!Number.isFinite(x)) continue;
+        const ex = plot.px(x);
+        const ey = plot.py(y);
+        const lx = plot.px(y);
+        const ly = plot.py(x);
+        if (!inside(ex, ey, 30) || !inside(lx, ly, 30)) continue;
+        const [ax, ay] = clampAnchor(ex + (up ? -12 : 12), ey - 4, labelW(eSrc, size), ea, r);
+        const [bx, by] = clampAnchor(lx + 8, ly + (up ? 18 : -18), labelW(lSrc, size), 'left', r);
+        const ra = labelBox(ax, ay, eSrc, ea, size);
+        const rb = labelBox(bx, by, lSrc, 'left', size);
+        if (overlaps(ra, rb) || placed.some((q) => overlaps(q, ra) || overlaps(q, rb))) continue;
+        tryLabel(ax, ay, eSrc, c.exp, ea, size, k.labels, true);
+        tryLabel(bx, by, lSrc, c.log, 'left', size, k.labels * k.logG, true);
+        return;
       }
     }
 
-    /** Position für den Kurvennamen: Punkt auf der Kurve nahe dem oberen bzw. rechten Rand. */
-    function nameSpot(b: number, avoid: Pt[]): { e: Pt; l: Pt } | null {
-      const { yMax } = plot.bounds;
-      const r = plot.rect;
-      for (let i = 0; i < 80; i++) {
-        const y = yMax - (48 + i * 6) / plot.scale.y;
-        if (y <= 0.4) break;
-        const x = log(b, y);
-        if (!Number.isFinite(x)) continue;
-        const px = plot.px(x);
-        const py = plot.py(y);
-        const mx = plot.px(y);
-        const my = plot.py(x);
-        if (inside(px, py, 40) && inside(mx, my, 40) && Math.abs(px - mx) + Math.abs(py - my) > 60) {
-          if (px > r.x + r.w - 120 && py < r.y + 40) continue;
-          if (avoid.some(([ax, ay]) => Math.hypot(ax - px, ay - py) < 70 || Math.hypot(ax - mx, ay - my) < 70)) continue;
-          return { e: [x, y], l: [y, x] };
-        }
-      }
-      return null;
+    /* Beschriftungen ohne Überlappung: belegte Rechtecke dieses Bildes */
+    let placed: Rect[] = [];
+    const overlaps = (a: Rect, q: Rect) => a.x < q.x + q.w && q.x < a.x + a.w && a.y < q.y + q.h && q.y < a.y + a.h;
+    function labelBox(x: number, y: number, src: string, align: 'left' | 'center' | 'right', size: number): Rect {
+      const box = formula(surface.g, src, fstyle(size, th().text, 700));
+      const left = align === 'left' ? x : align === 'right' ? x - box.w : x - box.w / 2;
+      const base = y + (box.asc - box.desc) / 2;
+      return { x: left - 4, y: base - box.asc - 2, w: box.w + 8, h: box.asc + box.desc + 4 };
     }
+    /** Beschriftung nur zeichnen, wenn sie frei steht (oder erzwungen). */
+    function tryLabel(x: number, y: number, src: string, color: string, align: 'left' | 'center' | 'right', size: number, alpha: number, force = false): boolean {
+      const rr = labelBox(x, y, src, align, size);
+      if (!force && placed.some((q) => overlaps(q, rr))) return false;
+      placed.push(rr);
+      label(x, y, src, color, align, size, alpha);
+      return true;
+    }
+    type Spot = 'UL' | 'UR' | 'DL' | 'DR' | 'L' | 'R';
+    const SPOT: Record<Spot, [number, number, 'left' | 'right']> = {
+      UL: [-11, -15, 'right'],
+      UR: [11, -15, 'left'],
+      DL: [-11, 16, 'right'],
+      DR: [11, 16, 'left'],
+      L: [-13, 0, 'right'],
+      R: [13, 0, 'left'],
+    };
+    /** Beschriftung neben einem Punkt: die erste freie der Wunschstellen; sonst (force) die erste. */
+    function labelNear(px: number, py: number, src: string, color: string, size: number, alpha: number, spots: Spot[], force = false): void {
+      const r = plot.rect;
+      for (const sp of spots) {
+        const [dx, dy, al] = SPOT[sp];
+        const [ax, ay] = clampAnchor(px + dx, py + dy, labelW(src, size), al, r);
+        if (tryLabel(ax, ay, src, color, al, size, alpha)) return;
+      }
+      if (force) {
+        const [dx, dy, al] = SPOT[spots[0]!];
+        const [ax, ay] = clampAnchor(px + dx, py + dy, labelW(src, size), al, r);
+        tryLabel(ax, ay, src, color, al, size, alpha, true);
+      }
+    }
+    const dotBox = (x: number, y: number): Rect => ({ x: x - 7, y: y - 7, w: 14, h: 14 });
 
     function drawInverse(now: number, k: K): void {
       const c = C();
       const b = bNow();
-      const r = plot.rect;
       const size = textSize();
       const ms = mir !== null ? mirState(now) : null;
       const glow = ms ? ms.show * ms.fade : 0;
-      drawDiagonal(k.labels, glow, b);
-      drawAsymptotes(b, k);
+      const up = b > 1;
+      placed = [];
+      const cap = captionInfo(now, ms, b, k);
+      if (cap) placed.push(cap.rect);
 
+      drawDiagonal(k.labels, glow, b, 'line');
+      drawAsymptotes(b, k, 'line');
       const [e0, e1] = expSpan();
       const [l0, l1] = logSpan();
       const logAlpha = ms ? 1 - 0.85 * ms.show * (1 - ms.hold) : 1;
@@ -807,49 +868,25 @@ export default defineSimulation({
       stroke(curve(b, e0, e0 + (e1 - e0) * k.graph, false), c.exp, 3.4, { glow: true });
       // Logarithmusgraph (wächst nach dem Exponentialgraphen von unten herein)
       if (k.logG > 0) stroke(curve(b, l0, l0 + (l1 - l0) * k.logG, true), c.log, 3.4, { glow: true, alpha: logAlpha });
-
       // Spiegelung: eine Kopie des Exponentialgraphen klappt um y = x
-      if (ms) drawMirror(now, ms, b);
+      if (ms) drawMirror(ms, b);
 
-      // Kurvennamen
-      const xP = X.v;
-      const yP = b ** xP;
-      const spot = nameSpot(b, ms ? [] : [
-        [plot.px(xP), plot.py(yP)],
-        [plot.px(yP), plot.py(xP)],
-      ]);
-      if (spot && k.labels > 0) {
-        const up = b > 1;
-        const eSrc = `y = ${powSrc('x')}`;
-        const lSrc = `y = ${logName()} x`;
-        const [ex, ey] = [plot.px(spot.e[0]), plot.py(spot.e[1])];
-        const [lx, ly] = [plot.px(spot.l[0]), plot.py(spot.l[1])];
-        const ea = up ? 'right' : 'left';
-        const [ax, ay] = clampAnchor(ex + (up ? -12 : 12), ey - 4, labelW(eSrc, size + 1.5), ea, r);
-        label(ax, ay, eSrc, c.exp, ea, size + 1.5, k.labels);
-        const [bx, by] = clampAnchor(lx + 8, ly + (up ? 18 : -18), labelW(lSrc, size + 1.5), 'left', r);
-        label(bx, by, lSrc, c.log, 'left', size + 1.5, k.labels * k.logG);
-      }
-
-      // Feste Punkte: (0 | 1) und (1 | 0), B(1 | b) und B'(b | 1)
+      // Punkte (zuerst als Hindernisse für die Beschriftungen vormerken)
       const kp = ease.outBack(clamp01(k.pts));
-      const fixed: { w: Pt; col: string; txt: string; dx: number; dy: number; align: 'left' | 'right' }[] = [
-        { w: [0, 1], col: c.exp, txt: '(0 | 1)', dx: b > 1 ? -10 : 10, dy: -14, align: b > 1 ? 'right' : 'left' },
-        // b > 1: oben links frei, b < 1: unten links frei
-        { w: [1, 0], col: c.log, txt: '(1 | 0)', dx: -9, dy: b > 1 ? -13 : 15, align: 'right' },
-      ];
-      for (const f of fixed) {
-        const px = plot.px(f.w[0]);
-        const py = plot.py(f.w[1]);
-        if (!inside(px, py)) continue;
-        dot(px, py, f.col, 5 * kp);
-        label(px + f.dx, py + f.dy, f.txt, f.col, f.align, size - 1, k.labels * k.pts);
-      }
-      // B und B' (Griffe für die Basis)
-      const bLab = p.e ? '\\t{e}' : fmt.num(rnd(b, 2));
-      const bq = Math.abs(b - 1) > 0.02;
+      const Z1: Pt = [plot.px(0), plot.py(1)];
+      const Z2: Pt = [plot.px(1), plot.py(0)];
       const Bp: Pt = [plot.px(1), plot.py(b)];
       const Bm: Pt = [plot.px(b), plot.py(1)];
+      const xP = X.v;
+      const yP = b ** xP;
+      const P: Pt = [plot.px(xP), plot.py(yP)];
+      const P2: Pt = [plot.px(yP), plot.py(xP)];
+      const bq = Math.abs(b - 1) > 0.02;
+      const pts: Pt[] = [Z1, Z2];
+      if (bq) pts.push(Bp, Bm);
+      if (!ms) pts.push(P, P2);
+      for (const q of pts) if (inside(q[0], q[1])) placed.push(dotBox(q[0], q[1]));
+
       const showBguide = clamp01(1 - (now - lastB - 900) / 500);
       if (showBguide > 0) {
         const g = surface.g;
@@ -866,31 +903,37 @@ export default defineSimulation({
         g.stroke();
         g.restore();
       }
-      if (bq && inside(Bp[0], Bp[1])) {
-        dot(Bp[0], Bp[1], c.B, 5.5 * kp, true);
-        const [x1, y1] = clampAnchor(Bp[0] + (b > 1 ? -10 : 10), Bp[1] + (b > 1 ? -14 : 14), labelW(`B(1 | ${bLab})`, size - 1), b > 1 ? 'right' : 'left', r);
-        label(x1, y1, `B(1 | ${bLab})`, c.B, b > 1 ? 'right' : 'left', size - 1, k.labels * k.pts);
-      }
-      if (bq && inside(Bm[0], Bm[1])) {
-        dot(Bm[0], Bm[1], c.B, 5.5 * kp, true);
-        const [x2, y2] = clampAnchor(Bm[0] + 10, Bm[1] + (b > 1 ? 15 : -15), labelW(`B'(${bLab} | 1)`, size - 1), 'left', r);
-        label(x2, y2, `B'(${bLab} | 1)`, c.B, 'left', size - 1, k.labels * k.pts);
-      }
+      if (inside(Z1[0], Z1[1])) dot(Z1[0], Z1[1], c.exp, 5 * kp);
+      if (inside(Z2[0], Z2[1])) dot(Z2[0], Z2[1], c.log, 5 * kp);
+      if (bq && inside(Bp[0], Bp[1])) dot(Bp[0], Bp[1], c.B, 5.5 * kp, true);
+      if (bq && inside(Bm[0], Bm[1])) dot(Bm[0], Bm[1], c.B, 5.5 * kp, true);
+      if (!ms) drawPair(b, k, P, P2);
 
-      if (!ms) drawPair(b, k);
-      drawCaption(now, ms, b, k);
+      // Beschriftungen nach Wichtigkeit
+      const la = k.labels * k.pts;
+      if (!ms) {
+        const xs = num(rnd(xP, 1));
+        const ys = NV(yP);
+        if (inside(P[0], P[1], 2)) labelNear(P[0], P[1], hidden() ? 'P' : `P(${xs} | ${ys})`, c.P, size, la, up ? ['UL', 'DR', 'L', 'UR'] : ['UR', 'DL', 'R', 'UL'], true);
+        if (inside(P2[0], P2[1], 2)) labelNear(P2[0], P2[1], hidden() ? "P'" : `P'(${ys} | ${xs})`, c.P, size, la, up ? ['DR', 'UL', 'R', 'DL'] : ['UR', 'DL', 'R', 'DR'], true);
+      }
+      const bLab = bTxt();
+      if (bq && inside(Bp[0], Bp[1])) labelNear(Bp[0], Bp[1], `B(1 | ${bLab})`, c.B, size - 1, la, up ? ['UL', 'L', 'DR'] : ['UR', 'R', 'DL']);
+      if (bq && inside(Bm[0], Bm[1])) labelNear(Bm[0], Bm[1], `B'(${bLab} | 1)`, c.B, size - 1, la, up ? ['DR', 'R', 'UL'] : ['UR', 'R', 'DL']);
+      if (inside(Z1[0], Z1[1])) labelNear(Z1[0], Z1[1], '(0 | 1)', c.exp, size - 1, la, up ? ['UL', 'L', 'DL'] : ['DL', 'L', 'UR']);
+      if (inside(Z2[0], Z2[1])) labelNear(Z2[0], Z2[1], '(1 | 0)', c.log, size - 1, la, up ? ['UL', 'DR', 'UR'] : ['DL', 'UR', 'DR']);
+      drawNames(b, k);
+      drawDiagonal(k.labels, glow, b, 'label');
+      drawAsymptotes(b, k, 'label');
+      if (cap) pill(cap.cx, cap.cy, cap.src, { border: cap.border, size: cap.size, alpha: cap.alpha, maxW: cap.maxW });
     }
 
     /** P(x | bˣ) und P'(bˣ | x) mit Lot auf y = x und gleichen Abständen. */
-    function drawPair(b: number, k: K): void {
+    function drawPair(b: number, k: K, P: Pt, P2: Pt): void {
       const g = surface.g;
       const c = C();
-      const r = plot.rect;
-      const size = textSize();
       const x = X.v;
       const y = b ** x;
-      const P: Pt = [plot.px(x), plot.py(y)];
-      const P2: Pt = [plot.px(y), plot.py(x)];
       const okP = inside(P[0], P[1], 2);
       const okQ = inside(P2[0], P2[1], 2);
       const m = (x + y) / 2;
@@ -933,22 +976,10 @@ export default defineSimulation({
         }
         g.restore();
       }
-      const xs = num(rnd(x, 1));
-      const ys = NV(y);
-      const pTxt = hidden() ? 'P' : `P(${xs} | ${ys})`;
-      const qTxt = hidden() ? "P'" : `P'(${ys} | ${xs})`;
-      const up = b > 1;
-      if (okP) {
-        dot(P[0], P[1], c.P, 6.5 * ease.outBack(a));
-        const al = up ? 'right' : 'left';
-        const [lx, ly] = clampAnchor(P[0] + (up ? -11 : 11), P[1] - 15, labelW(pTxt), al, r);
-        label(lx, ly, pTxt, c.P, al, size, k.labels * a);
-      } else edgeArrow(P, c.P, a);
-      if (okQ) {
-        dot(P2[0], P2[1], c.P, 6.5 * ease.outBack(a), true);
-        const [lx, ly] = clampAnchor(P2[0] + 11, P2[1] + (up ? 16 : -16), labelW(qTxt), 'left', r);
-        label(lx, ly, qTxt, c.P, 'left', size, k.labels * a);
-      } else edgeArrow(P2, c.P, a);
+      if (okP) dot(P[0], P[1], c.P, 6.5 * ease.outBack(a));
+      else edgeArrow(P, c.P, a);
+      if (okQ) dot(P2[0], P2[1], c.P, 6.5 * ease.outBack(a), true);
+      else edgeArrow(P2, c.P, a);
     }
 
     /** Punkt außerhalb des Bildes: kleiner Pfeil am Rand in seine Richtung. */
@@ -966,7 +997,7 @@ export default defineSimulation({
       g.restore();
     }
 
-    function drawMirror(now: number, ms: ReturnType<typeof mirState>, b: number): void {
+    function drawMirror(ms: ReturnType<typeof mirState>, b: number): void {
       const g = surface.g;
       const c = C();
       const [e0, e1] = expSpan();
@@ -1029,30 +1060,41 @@ export default defineSimulation({
       return [r.x + r.w / 2, y];
     }
 
-    function drawCaption(now: number, ms: ReturnType<typeof mirState> | null, b: number, k: K): void {
+    function captionInfo(now: number, ms: ReturnType<typeof mirState> | null, b: number, k: K): { src: string; cx: number; cy: number; size: number; border: string; alpha: number; maxW: number; rect: Rect } | null {
       const r = plot.rect;
       const size = textSize();
       const maxW = r.w - 24;
+      let src: string;
+      let sz = size;
+      let alpha: number;
+      let border: string;
+      let dy = 0;
       if (ms) {
         const t = now - mir!;
-        const src =
+        src =
           t < MIR.show + MIR.move
             ? tt(`Spiegeln an y = x:  (x | ${powSrc('x')})  →  (${powSrc('x')} | x)`, `Reflect in y = x:  (x | ${powSrc('x')})  →  (${powSrc('x')} | x)`)
             : tt(`\\c{l}{y = ${logName()} x} ist die Umkehrfunktion von \\c{e}{y = ${powSrc('x')}}`, `\\c{l}{y = ${logName()} x} is the inverse function of \\c{e}{y = ${powSrc('x')}}`);
-        const [cx, cy] = captionSpot(labelW(src, size + 0.5) + 14, b);
-        pill(cx, cy + (1 - ms.show) * 10 * (b > 1 ? 1 : -1), src, { border: th().series[3]!, size: size + 0.5, alpha: ms.show * ms.fade, maxW });
-        return;
+        sz = size + 0.5;
+        alpha = ms.show * ms.fade;
+        border = th().series[3]!;
+        dy = (1 - ms.show) * 10 * (b > 1 ? 1 : -1);
+      } else {
+        if (k.pts < 0.5) return null;
+        const x = rnd(X.v, 1);
+        const y = b ** x;
+        const xs = num(x);
+        const ys = NV(y);
+        src = hidden()
+          ? `\\c{e}{${powSrc('x')} = y}   ⇔   \\c{l}{${logName()} y = x}`
+          : `\\c{e}{${powSrc(xs)} ${eqV(y)} ${ys}}   ⇔   \\c{l}{${logName()} ${ys} ${eqV(y)} ${xs}}`;
+        alpha = clamp01((k.pts - 0.5) * 2);
+        border = C().P;
       }
-      if (k.pts < 0.5) return;
-      const x = rnd(X.v, 1);
-      const y = b ** x;
-      const xs = num(x);
-      const ys = NV(y);
-      const src = hidden()
-        ? `\\c{e}{${powSrc('x')} = y}   ⇔   \\c{l}{${logName()} y = x}`
-        : `\\c{e}{${powSrc(xs)} ${eqV(y)} ${ys}}   ⇔   \\c{l}{${logName()} ${ys} ${eqV(y)} ${xs}}`;
-      const [cx, cy] = captionSpot(labelW(src, size) + 14, b);
-      pill(cx, cy, src, { border: C().P, size, alpha: clamp01((k.pts - 0.5) * 2), maxW });
+      const w = Math.min(maxW, labelW(src, sz) + 10);
+      const [cx, cy] = captionSpot(w + 4, b);
+      const rect = { x: cx - w / 2 - 6, y: cy - 16, w: w + 12, h: 32 };
+      return { src, cx, cy: cy + dy, size: sz, border, alpha, maxW, rect };
     }
 
     /* ---------- Ansicht „Gleichung lösen“ ---------- */
@@ -1152,7 +1194,9 @@ export default defineSimulation({
       const cSrc = `y = ${num(rnd(cv, 2))}`;
       const cLeft = b > 1; // Beschriftung auf der Seite, auf der der Graph nicht ist
       if (cLeft) {
-        const [lx, ly] = clampAnchor(r.x + 10, cy - 13, labelW(cSrc), 'left', r);
+        // links von S über der Geraden ist frei; liegt die y-Achse dort, rechts neben ihr
+        const lx0 = ox < S[0] - 20 ? Math.max(r.x + 10, ox + 10) : r.x + 10;
+        const [lx, ly] = clampAnchor(lx0, cy - 13, labelW(cSrc), 'left', r);
         label(lx, ly, cSrc, c.c, 'left', size, k.labels * k.pts);
       } else {
         const [lx, ly] = clampAnchor(r.x + r.w - 10, cy - 13, labelW(cSrc), 'right', r);
@@ -1385,7 +1429,8 @@ export default defineSimulation({
         const sg = Math.sign(rr) || 1;
         for (let i = 0; i < n; i++) {
           const f = Math.min(i + 1, Math.abs(rr));
-          segs.push({ from: sg * i * lu, to: sg * f * lu, color: i % 2 ? mixColor(c.a1, th().text, 0.25) : c.a1, lane: 1, label: i === 0 ? lS(uS, lu) : '', reveal: build === null ? 1 : ease.inOutCubic(clamp01((now - build - i * 420) / 400)) });
+          const first = sg > 0 ? lS(uS, lu) : hidden() ? `−${lname} ${uS}` : `−${lname} ${uS} ${eqs(lu, 4)} ${N4(-lu)}`;
+          segs.push({ from: sg * i * lu, to: sg * f * lu, color: i % 2 ? mixColor(c.a1, th().text, 0.25) : c.a1, lane: 1, label: i === 0 ? first : '', reveal: build === null ? 1 : ease.inOutCubic(clamp01((now - build - i * 420) / 400)) });
         }
       }
       const resTo = law() === 'prod' ? lu + lv : law() === 'quot' ? lu - lv : rr * lu;
@@ -1494,8 +1539,9 @@ export default defineSimulation({
       drawSeg({ from: 0, to: resTo, color: c.res, lane: 0, label: resLabel, reveal: resReveal }, 4.5);
 
       // Ziehgriffe an den Pfeilenden (u und v)
-      const uEnd = X0(lu);
-      knobs.push({ key: 'u', px: uEnd, py: laneY(1) });
+      const uSign = law() === 'pow' && rr < 0 ? -1 : 1;
+      const uEnd = X0(uSign * lu);
+      if (!(law() === 'pow' && Math.abs(rr) < 1)) knobs.push({ key: 'u', px: uEnd, py: laneY(1) });
       if (law() !== 'pow') knobs.push({ key: 'v', px: X0(law() === 'prod' ? lu + lv : lu - lv), py: laneY(law() === 'prod' ? 1 : 2) });
       if (editable()) {
         for (const kn of knobs) {
@@ -1615,7 +1661,7 @@ export default defineSimulation({
         items.push({ label: tt('Nullstelle', 'Zero'), value: `${nb('x = 1,')} ${tt('denn', 'since')} ${nb(`${powSrc('0')} = 1`)}`, swatch: c.log });
         items.push({ label: tt('Punkt', 'Point'), value: `${nb(`(${bs} | 1),`)} ${tt('denn', 'since')} ${nb(`${powSrc('1')} = ${bs}`)}`, swatch: c.B });
         items.push({ label: tt('Asymptote', 'Asymptote'), value: `${nb('x = 0')} ${tt('(die y-Achse)', '(the y-axis)')}`, swatch: c.log, dash: true });
-        items.push({ label: tt('Monotonie', 'Monotonicity'), value: b > 1 ? tt('streng monoton steigend (b > 1)', 'strictly increasing (b > 1)') : tt('streng monoton fallend (0 < b < 1)', 'strictly decreasing (0 < b < 1)') });
+        items.push({ label: tt('Monotonie', 'Monotonicity'), value: b > 1 ? tt(`streng monoton steigend ${nb('(b > 1)')}`, `strictly increasing ${nb('(b > 1)')}`) : tt(`streng monoton fallend ${nb('(0 < b < 1)')}`, `strictly decreasing ${nb('(0 < b < 1)')}`) });
         items.push({ label: tt('Umkehrfunktion', 'Inverse function'), value: `\\c{e}{${nb(`y = ${powSrc('x')}`)}}`, swatch: c.exp });
         return { title: tt('Steckbrief', 'Key features'), chip: p.e ? tt('natürlicher Log.', 'natural log') : p.b === 10 ? tt('Zehnerlog. lg', 'common log lg') : null, chipColor: c.log, head: `f(x) = ${lname} x`, headColor: c.log, items };
       }
@@ -1631,7 +1677,7 @@ export default defineSimulation({
           items.push({ value: `${s1} ${H(nb(`${N4(q.lu)} + ${N4(q.lv)}`))} ${s1 === '=' ? eqs(q.sum, 4) : '≈'} ${H(N4(q.sum))}` });
           items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.sum))} ${eqV(q.value)} ${NV(q.value)}`)} = ${nb(`${us} · ${vs}`)}`), swatch: c.res });
           items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`${bs}^{m} · ${bs}^{n} = ${bs}^{m + n}`)}: ${tt('Beim Multiplizieren addieren sich die Hochzahlen.', 'when multiplying, the exponents add up.')}`, muted: true });
-          items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „mal“ wird „plus“: Der Logarithmus macht aus Punkt- Strichrechnung.', '“times” becomes “plus”: logarithms turn multiplication into addition.'), muted: true });
+          items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „mal“ wird „plus“: Der Logarithmus macht aus Punktrechnung Strichrechnung.', '“times” becomes “plus”: logarithms turn multiplication into addition.'), muted: true });
           return { title: tt('Produktregel', 'Product rule'), chip: null, chipColor: c.res, head: `${lname}(${us} · ${vs}) = \\c{a}{${lname} ${us}} + \\c{v}{${lname} ${vs}}`, headColor: th().text, items };
         }
         if (law() === 'quot') {
@@ -1668,7 +1714,7 @@ export default defineSimulation({
         const cb = changeOfBase(b, p.c);
         const F4 = (v: number) => (Number.isInteger(v) ? num(v) : fmt.fixed(v, 4));
         const s1 = exactTo(cb.num, 4) && exactTo(cb.den, 4) ? '=' : '≈';
-        items.push({ label: tt('Basiswechsel', 'Change of base'), value: Q(`${nb(`x = \\f{lg ${cS}}{lg ${bs}}`)} ${s1} ${nb(`\\f{${F4(cb.num)}}{${F4(cb.den)}}`)} ${s1 === '=' ? eqs(x, 4) : '≈'} \\b{${N4(x)}}`), swatch: c.x });
+        items.push({ label: tt('Basiswechsel', 'Change of base'), value: Q(`${nb(`x = \\f{lg ${cS}}{lg ${bs}}`)} ${nb(`${s1} \\f{${F4(cb.num)}}{${F4(cb.den)}}`)} ${nb(`${s1 === '=' ? eqs(x, 4) : '≈'} \\b{${N4(x)}}`)}`), swatch: c.x });
       } else items.push({ label: tt('Taschenrechner', 'Calculator'), value: Q(`${nb(`x = ${lname} ${cS}`)} ${eqs(x, 4)} \\b{${N4(x)}}`), swatch: c.x });
       const back = pow(b, rnd(x, 4));
       items.push({ label: tt('Probe', 'Check'), value: Q(nb(`${powSrc(N4(x))} ${eqV(back)} ${NV(back)}`)), swatch: c.c });
@@ -1740,7 +1786,7 @@ export default defineSimulation({
       g.globalAlpha = alpha;
       const title = formula(g, data.title, fstyle(size - 1, th().muted, 700));
       title.draw(g, r.x + pad, r.y + pad + title.asc);
-      const change = clamp01((now - cardT0) / 420);
+      const change = reduced() ? 1 : clamp01((now - cardT0) / 420);
       if (data.chip) {
         const cb = fit(data.chip, r.w - 2 * pad - title.w - 30, size - 1.5, data.chipColor, 700);
         const cw = cb.w + 24;
@@ -1851,7 +1897,7 @@ export default defineSimulation({
         bv.draw(g, cx - bv.w / 2, top + lh + lh / 2 + (bv.asc - bv.desc) / 2);
       });
       // rückwärts gelesen
-      const yp = baseOf() ** pick;
+      const yp = b ** pick;
       const src = hidden()
         ? tt(`Rückwärts: \\c{l}{${logName()} y = x}`, `Backwards: \\c{l}{${logName()} y = x}`)
         : tt(`Rückwärts: \\c{l}{${logName()} ${NV(yp)} ${eqV(yp)} ${num(pick)}}`, `Backwards: \\c{l}{${logName()} ${NV(yp)} ${eqV(yp)} ${num(pick)}}`);
@@ -1909,7 +1955,7 @@ export default defineSimulation({
       const { x0, x1, s0, s1 } = rulerMap;
       const s = s0 + ((px - x0) / (x1 - x0)) * (s1 - s0);
       const b = baseOf();
-      if (key === 'u') return b ** s;
+      if (key === 'u') return law() === 'pow' && p.r < 0 ? b ** -s : b ** s;
       const lu = log(b, p.u);
       return law() === 'prod' ? b ** (s - lu) : b ** (lu - s);
     }
