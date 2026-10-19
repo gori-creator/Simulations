@@ -325,7 +325,8 @@ export default defineSimulation({
     const P1 = (v: number) => fmt.num(Math.round(v * 10) / 10, 1);
     const N = (v: number) => {
       const r = Math.abs(v);
-      return fmt.num(v, r !== 0 && r < 0.1 ? 3 : r >= 100 ? 1 : 2);
+      const d = r !== 0 && r < 0.1 ? 3 : r >= 100 ? 1 : 2;
+      return fmt.num((Math.sign(v) * Math.round(r * 10 ** d)) / 10 ** d, d);
     };
     const hidden = () => !p.info;
     const Q = (s: string) => (hidden() ? '?' : s);
@@ -875,10 +876,12 @@ export default defineSimulation({
       g.fill();
       g.stroke();
       g.restore();
-      if (view() !== 'family') {
+      if (view() === 'single') {
         const txt = hidden() ? 'Q(1 | a)' : `Q(1 | ${P1(A.v)})`;
         // nicht auf P legen: liegt P nahe bei Q, Beschriftung nach links
-        const nearP = view() === 'single' && Math.abs(X.v - 1) < 0.45;
+        const xp = X.v;
+        const yp = shownF(performance.now())(xp, xp < 0 ? -1 : 1);
+        const nearP = Math.abs(plot.px(xp) - xq) < 110 && Math.abs(plot.py(yp) - yq - 15) < 30 && xp > 0.95;
         label(xq + (nearP ? -10 : 10), yq + 15, txt, c.Q, nearP ? 'right' : 'left', textSize() - 1, k.labels * k.pts);
       }
     }
@@ -1299,8 +1302,8 @@ export default defineSimulation({
     /** Werte für x → ±∞ und nahe 0 (Kartenfassung). */
     function infValue(a: number, n: number): string {
       const l = limits(a, n);
-      if (l.negInf === l.posInf) return nb(`f(x) → ${limTxt(l.posInf)}`);
-      return `${nb(`x → −∞: f(x) → ${limTxt(l.negInf)}`)}, ${nb(`x → +∞: f(x) → ${limTxt(l.posInf)}`)}`;
+      if (l.negInf === l.posInf) return `${nb('x → ±∞:')} ${nb(`f(x) → ${limTxt(l.posInf)}`)}`;
+      return `${nb('x → −∞:')} ${nb(`f(x) → ${limTxt(l.negInf)}`)}, ${nb('x → +∞:')} ${nb(`f(x) → ${limTxt(l.posInf)}`)}`;
     }
     function zeroValue(a: number, n: number): string {
       const l = limits(a, n);
@@ -1340,7 +1343,7 @@ export default defineSimulation({
       items.push({ value: `${nb(`D = ${D}`)}     ${nb(`W = ${W}`)}` });
       items.push({ label: tt('Symmetrie', 'Symmetry'), value: Q(symTxt(n)), swatch: C().sym });
       items.push({ label: tt('Monotonie', 'Monotonicity'), value: Q(monoTxt(a, n)) });
-      items.push({ label: nb('x → ±∞'), value: Q(infValue(a, n)) });
+      items.push({ label: tt('Im Unendlichen', 'At infinity'), value: Q(infValue(a, n)) });
       items.push({ label: tt('Nahe 0', 'Near 0'), value: Q(zeroValue(a, n)) });
       if (n < 0) items.push({ label: tt('Asymptoten', 'Asymptotes'), value: Q(nb('x = 0') + ', ' + nb('y = 0')), swatch: mixColor(col, th().text, 0.15) });
       return { title: tt('Steckbrief', 'Key features'), chip: hidden() ? null : kindTxt(n), chipColor: col, head, headColor: col, items };
@@ -1493,7 +1496,8 @@ export default defineSimulation({
       if (x === 0 && target <= 0) return ND;
       const v = shownF(now, m)(x, x < 0 ? -1 : 1);
       if (!Number.isFinite(v)) return ND;
-      return Q(N(Math.round(v * 1000) / 1000));
+      // symmetrisch runden, damit f(−x) und −f(x) gleich aussehen
+      return Q(N((Math.sign(v) * Math.round(Math.abs(v) * 1000)) / 1000));
     }
 
     function drawTable(r: Rect, size: number, alpha: number, now: number): void {
