@@ -138,7 +138,7 @@ const SWEEP: { to: number; dur: number; hold: number }[] = [
 export default defineSimulation({
   id: 'sin-cos-tan-dreieck',
   dragHint: true,
-  layout: { aspect: 1.4, aspectNarrow: 0.42 },
+  layout: { aspect: 1.4, aspectNarrow: 0.37 },
   groups: [
     { id: 'fig', label: L('Dreieck', 'Triangle') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -836,7 +836,8 @@ export default defineSimulation({
       }
       if (s === 'ramp') {
         const rp = ramp(p.pc, p.rh);
-        const pad = small ? { l: 22, r: 22, t: 64, b: 70 } : { l: 32, r: 32, t: 76, b: 82 };
+        // oben Platz für den Einschub „Was heißt p %?“
+        const pad = small ? { l: 22, r: 22, t: R.h * 0.32 + 84, b: 70 } : { l: 32, r: 32, t: R.h * 0.32 + 92, b: 82 };
         return fitBox(R, [-0.6, 0, rp.run + 3.2, p.rh + 2.9], pad, 120, true);
       }
       if (s === 'ladder') {
@@ -1572,9 +1573,57 @@ export default defineSimulation({
       sidePill(ms[0], ms[1], nS, fs(46, 40), show ? `\\c{h}{s ${eq(rp.slope)} ${N(rp.slope)} ${M}}` : `\\c{h}{s = ?}`, { alpha: lab * k3, bounds: R });
       handle(top, 'rTop', col.opp(), lab);
       handle(foot, 'rFoot', col.adj(), lab);
+      drawGradeInset(R, pc, lab);
       g.restore();
       fpill(R.x + 12, R.y + 30, `\\t{${say(L('Steigung', 'Gradient'))}} \\c{o}{p = ${N(pc, 1)} %}  ⇒  \\c{k}{tan α} = \\f{\\c{o}{h}}{\\c{a}{l}} = ${N(pc / 100, 3)}`, { align: 'left', size: fs(13.5, 12), alpha: k.panel, border: withAlpha(col.ang(), 0.55), maxW: R.w - 40 });
       g.restore();
+    }
+
+    /**
+     * Einschub „Was heißt p %?“: Steigungsdreieck 100 m waagrecht, p m hoch (maßstabsgetreu),
+     * dazu gestrichelt der Winkel p° zum Vergleich (Prozent ≠ Grad).
+     */
+    function drawGradeInset(R: Rect, pc: number, alpha: number): void {
+      const g = surface.g;
+      const theme = th();
+      const x = R.x + 14;
+      const w = R.w - 28;
+      const y = R.y + 62;
+      const bw = w - fs(120, 96);
+      const hPx = (bw * pc) / 100;
+      const hDeg = bw * Math.tan(rad(pc));
+      const h = Math.min(Math.max(hDeg, hPx) + 58, R.h * 0.32);
+      g.save();
+      g.globalAlpha *= alpha * 0.97;
+      g.fillStyle = theme.dark ? 'rgba(15,20,30,0.82)' : 'rgba(255,255,255,0.86)';
+      roundRect(g, x, y, w, h, 12);
+      g.fill();
+      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      roundRect(g, x + 0.5, y + 0.5, w - 1, h - 1, 12);
+      g.stroke();
+      const o: Px = [x + 16, y + h - 26];
+      const e: Px = [o[0] + bw, o[1]];
+      const t: Px = [e[0], o[1] - hPx];
+      // Vergleich: p Grad
+      const hd = Math.min(hDeg, h - 40);
+      const td: Px = [o[0] + hd / Math.tan(rad(pc)), o[1] - hd];
+      line(o, td, withAlpha(theme.muted, 0.9), 1.5, { dash: [5, 4] });
+      g.fillStyle = withAlpha(col.ang(), 0.16);
+      g.beginPath();
+      g.moveTo(o[0], o[1]);
+      g.lineTo(e[0], e[1]);
+      g.lineTo(t[0], t[1]);
+      g.closePath();
+      g.fill();
+      line(o, e, col.adj(), 3);
+      line(e, t, col.opp(), 3);
+      line(o, t, col.hyp(), 2);
+      g.restore();
+      const sz = fs(12, 11);
+      fpill(o[0] + bw / 2, o[1] + 13, `\\c{a}{100 ${M}}`, { size: sz, alpha });
+      fpill(e[0] + 8, (e[1] + t[1]) / 2, `\\c{o}{${N(pc, 1)} ${M}}`, { align: 'left', size: sz, alpha });
+      fpill(td[0] + 8, td[1] - 2, `\\c{m}{${N(pc, 1)}° ≙ ${N(percentFromAngle(pc), 1)} %}`, { align: 'left', size: sz, alpha, bounds: { x, y, w, h } });
+      fpill(x + 10, y + 16, `\\t{${say(L('Was heißt', 'What does'))}} \\c{o}{${N(pc, 1)} %}${lang === 'en' ? ' mean' : ''}?`, { align: 'left', size: sz, alpha });
     }
 
     /** Rollstuhl-Piktogramm, um den Steigungswinkel gedreht (Weltpunkt x, y auf der Rampe). */
@@ -1670,10 +1719,10 @@ export default defineSimulation({
       g.fillStyle = shade;
       g.fillRect(wallX, R.y, 18, gy - R.y);
       // Sicherheitsbereich 65°–75°
-      const rS = clamp(Lv * V.s * 0.32, 50, 150);
+      const rS = clamp(Lv * V.s * 0.45, 60, 210);
       g.save();
       g.globalAlpha *= lab;
-      g.fillStyle = withAlpha(col.ok(), dark ? 0.26 : 0.2);
+      g.fillStyle = withAlpha(col.ok(), dark ? 0.38 : 0.28);
       g.beginPath();
       g.moveTo(foot[0], foot[1]);
       g.arc(foot[0], foot[1], rS, -rad(LADDER_MAX), -rad(LADDER_MIN));
@@ -1682,8 +1731,12 @@ export default defineSimulation({
       g.strokeStyle = withAlpha(col.ok(), 0.8);
       g.lineWidth = 1.4;
       g.setLineDash([4, 3]);
-      for (const a of [LADDER_MIN, LADDER_MAX]) line(foot, [foot[0] + Math.cos(rad(a)) * rS, foot[1] - Math.sin(rad(a)) * rS], withAlpha(col.ok(), 0.8), 1.4, { dash: [4, 3] });
+      for (const a of [LADDER_MIN, LADDER_MAX]) line(foot, [foot[0] + Math.cos(rad(a)) * rS, foot[1] - Math.sin(rad(a)) * rS], withAlpha(col.ok(), 0.9), 1.6, { dash: [4, 3] });
       g.restore();
+      {
+        const tip: Px = [foot[0] + Math.cos(rad(LADDER_MIN)) * rS, foot[1] - Math.sin(rad(LADDER_MIN)) * rS];
+        fpill(tip[0] + 8, tip[1] + 4, `\\c{ok}{${LADDER_MIN}° \\t{${say(L('bis', 'to'))}} ${LADDER_MAX}°}`, { align: 'left', size: fs(11.5, 11), alpha: lab, border: withAlpha(col.ok(), 0.6), bounds: R });
+      }
       // Leiter: zwei Holme mit Sprossen
       const dir: Px = [top[0] - foot[0], top[1] - foot[1]];
       const dl = Math.hypot(dir[0], dir[1]) || 1;

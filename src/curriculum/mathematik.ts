@@ -513,14 +513,14 @@ export const mathematik: Subject = {
             slug: L('sinus-kosinus-tangens-dreieck', 'sine-cosine-tangent-triangle'),
             title: L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'),
             summary: L(
-              'Gegenkathete, Ankathete und Hypotenuse zum Winkel α oder β farbig markiert; das Seitenverhältnis als Bruch, ähnliche Dreiecke mit gleichem Verhältnis, die Graphen von sin, cos und tan und ihre Zusammenhänge.',
-              'Opposite side, adjacent side and hypotenuse for the angle α or β in colour; the ratio as a fraction, similar triangles with the same ratio, the graphs of sin, cos and tan and how they are related.',
+              'Gegenkathete, Ankathete und Hypotenuse wandern mit dem Bezugswinkel; ähnliche Dreiecke wachsen aus der Ecke und zeigen, warum das Seitenverhältnis nur vom Winkel abhängt. Dazu Einheitskreis mit exakten Werten, Winkel aus zwei Seiten und Anwendungen: Rampe in Prozent, Leiter, Turmhöhe.',
+              'Opposite, adjacent and hypotenuse move with the reference angle; similar triangles grow from the vertex and show why the ratio depends on the angle only. Plus the unit circle with exact values, finding an angle from two sides and applications: ramp gradient, ladder, tower height.',
             ),
             grades: [9, 10],
             kmk: ['M-L4', 'M-L3', 'M-K5', 'M-K1'],
             keywords: L(
-              ['Sinus', 'Kosinus', 'Tangens', 'Trigonometrie', 'rechtwinkliges Dreieck', 'Gegenkathete', 'Ankathete', 'Hypotenuse', 'Seitenverhältnis', 'Winkel berechnen', 'ähnliche Dreiecke'],
-              ['sine', 'cosine', 'tangent', 'trigonometry', 'right triangle', 'opposite', 'adjacent', 'hypotenuse', 'ratio', 'angle', 'similar triangles', 'SOH CAH TOA'],
+              ['Sinus', 'Kosinus', 'Tangens', 'Trigonometrie', 'rechtwinkliges Dreieck', 'Gegenkathete', 'Ankathete', 'Hypotenuse', 'Seitenverhältnis', 'Winkel berechnen', 'ähnliche Dreiecke', 'Einheitskreis', 'besondere Werte', 'Steigung in Prozent', 'Höhenwinkel'],
+              ['sine', 'cosine', 'tangent', 'trigonometry', 'right triangle', 'opposite', 'adjacent', 'hypotenuse', 'ratio', 'angle', 'similar triangles', 'SOH CAH TOA', 'unit circle', 'exact values', 'gradient', 'angle of elevation'],
             ),
             thumb: 'generic',
           },
