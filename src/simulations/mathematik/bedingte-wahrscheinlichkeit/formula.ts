@@ -6,7 +6,7 @@
  *   π, Zahlen, Einheiten (cm, cm²) und Wörter bleiben aufrecht
  * - `h_a`, `V_{Zyl}`: Index; `x^2`, `r^{n+1}`: Hochzahl (² und ³ gehen auch direkt)
  * - `\f{1}{3}`: Bruch, `\r{h² + r²}`: Wurzel, `\i{a}{b}`: Integralzeichen mit Grenzen
- * - `\c{key}{…}`: Farbe aus der Palette, `\b{…}`: fett, `\t{…}`: aufrecht
+ * - `\c{key}{…}`: Farbe aus der Palette, `\b{…}`: fett, `\t{…}`: aufrecht, `\o{…}`: Überstrich (Gegenereignis)
  */
 
 export interface FormulaStyle {
@@ -27,7 +27,8 @@ type Node =
   | { t: 'int'; lo: Node[]; hi: Node[] }
   | { t: 'color'; key: string; c: Node[] }
   | { t: 'bold'; c: Node[] }
-  | { t: 'up'; c: Node[] };
+  | { t: 'up'; c: Node[] }
+  | { t: 'over'; c: Node[] };
 
 /** Gesetzter Formelteil: Breite, Ober- und Unterlänge (bezogen auf die Grundlinie), Zeichenfunktion. */
 export interface FormulaBox {
@@ -71,7 +72,7 @@ function parse(src: string): Node[] {
     };
     while (i < src.length && src[i] !== end) {
       const ch = src[i]!;
-      if (ch === '\\' && i + 1 < src.length && 'frcbti'.includes(src[i + 1]!)) {
+      if (ch === '\\' && i + 1 < src.length && 'frcbtio'.includes(src[i + 1]!)) {
         const cmd = src[i + 1]!;
         i += 2;
         flush();
@@ -87,6 +88,7 @@ function parse(src: string): Node[] {
           const key = textOf(group());
           out.push({ t: 'color', key, c: group() });
         } else if (cmd === 'b') out.push({ t: 'bold', c: group() });
+        else if (cmd === 'o') out.push({ t: 'over', c: group() });
         else out.push({ t: 'up', c: group() });
       } else if (ch === '_' || ch === '^') {
         flush();
@@ -143,6 +145,23 @@ function layout(g: CanvasRenderingContext2D, nodes: Node[], ctx: Ctx, style: For
       case 'up':
         boxes.push(layout(g, node.c, { ...ctx, upright: true }, style));
         break;
+      case 'over': {
+        const body = layout(g, node.c, ctx, style);
+        const lw = Math.max(1, ctx.size * 0.07);
+        const top = body.asc + ctx.size * 0.1;
+        const color = ctx.color;
+        boxes.push({
+          w: body.w,
+          asc: top + lw,
+          desc: body.desc,
+          draw: (g2, x, y) => {
+            body.draw(g2, x, y);
+            g2.fillStyle = color;
+            g2.fillRect(x + body.w * 0.08, y - top - lw / 2, body.w * 0.84, lw);
+          },
+        });
+        break;
+      }
       case 'bold':
         boxes.push(layout(g, node.c, { ...ctx, weight: 800 }, style));
         break;

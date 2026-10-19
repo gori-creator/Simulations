@@ -84,7 +84,7 @@ type Place = { x: number; y: number; s: number };
 export default defineSimulation({
   id: 'bedingte-wahrscheinlichkeit',
   dragHint: false,
-  layout: { aspect: 1.36, aspectNarrow: 0.42 },
+  layout: { aspect: 1.42, aspectNarrow: 0.42 },
   groups: [
     { id: 'test', label: L('Test und Krankheit', 'Test and disease') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -100,7 +100,7 @@ export default defineSimulation({
       step: 0.1,
       default: 1,
       unit: '%',
-      help: L('Wie verbreitet ist die Krankheit unter den Getesteten? P(K)', 'How common is the disease among those tested? P(D)'),
+      help: L('Wie verbreitet ist die Krankheit unter den Getesteten?', 'How common is the disease among those tested?'),
     },
     {
       key: 'se',
@@ -112,7 +112,7 @@ export default defineSimulation({
       step: 0.5,
       default: 90,
       unit: '%',
-      help: L('Anteil der Kranken, bei denen der Test positiv ist: P_K(+)', 'Share of people with the disease who test positive: P(+ | D)'),
+      help: L('Anteil der Kranken, bei denen der Test positiv ausfällt (erkennt Kranke).', 'Share of people with the disease who test positive.'),
     },
     {
       key: 'sp',
@@ -124,7 +124,7 @@ export default defineSimulation({
       step: 0.1,
       default: 91,
       unit: '%',
-      help: L('Anteil der Gesunden, bei denen der Test negativ ist: P_K̄(−)', 'Share of healthy people who test negative: P(− | not D)'),
+      help: L('Anteil der Gesunden, bei denen der Test negativ ausfällt (erkennt Gesunde).', 'Share of healthy people who test negative.'),
     },
     {
       key: 'n2',
@@ -198,7 +198,7 @@ export default defineSimulation({
     const KS = de ? 'K' : 'D';
     const KB = de ? 'K̄' : 'D̄';
     const Kf = `\\t{${KS}}`;
-    const KBf = `\\t{${KB}}`;
+    const KBf = `\\o{\\t{${KS}}}`;
 
     /* ---------------- Farben ---------------- */
     const RED = () => th().series[1]!;
@@ -242,7 +242,7 @@ export default defineSimulation({
       const W = surface.width;
       const H = surface.height;
       if (wide()) {
-        const cw = Math.round(clamp(W * 0.31, 214, 300));
+        const cw = Math.round(clamp(W * 0.31, 214, 272));
         return { main: { x: 6, y: 6, w: W - cw - 18, h: H - 12 }, col: { x: W - cw - 6, y: 6, w: cw, h: H - 12 } };
       }
       const mh = Math.round(clamp(H * 0.66, 300, H - 190));
@@ -791,7 +791,7 @@ export default defineSimulation({
     }
     function treeGeo(): TreeGeo {
       const m = regions().main;
-      const fh = wide() ? 112 : 150;
+      const fh = wide() ? 138 : 150;
       const formulaR = { x: m.x + 12, y: m.y + m.h - fh - 10, w: m.w - 24, h: fh };
       const top = m.y + HEAD + 4;
       const bot = formulaR.y - 10;
@@ -809,7 +809,7 @@ export default defineSimulation({
     const LEAF_F: Record<Role, number> = { tp: 0, fn: 1, fp: 2, tn: 3 };
     const LEAF_R: Record<Role, number> = { tp: 0, fp: 1, fn: 2, tn: 3 };
 
-    function nodeBox(x: number, y: number, w: number, h: number, count: string, label: string, color: string, a: number, emph = false): void {
+    function nodeBox(x: number, y: number, w: number, h: number, count: string, label: string, color: string, a: number, emph = false, shift = 0): void {
       const g = surface.g;
       const t = th();
       if (a <= 0.01) return;
@@ -829,10 +829,10 @@ export default defineSimulation({
       g.strokeStyle = alpha(color, emph ? 0.95 : 0.55);
       g.lineWidth = emph ? 2.2 : 1.2;
       g.stroke();
-      const cs = fitFont(count, w - 10, 800, h >= 38 ? 16 : 14, 11);
-      text(g, count, x, y - h * 0.16, { font: font(800, cs), color: t.text });
-      const ls = fitFont(label, w - 8, 650, 11, 9);
-      text(g, label, x, y + h * 0.24, { font: font(650, ls), color: t.muted });
+      const cs = fitFont(count, w - 10 - 2 * shift, 800, h >= 38 ? 16 : 14, 11);
+      text(g, count, x + shift, y - h * 0.16, { font: font(800, cs), color: t.text });
+      const ls = fitFont(label, w - 8 - 2 * shift, 650, 11, 9.5);
+      text(g, label, x + shift, y + h * 0.24, { font: font(650, ls), color: t.muted });
       g.restore();
     }
     function edge(a: [number, number], b: [number, number], color: string, width: number, label: string, alphaE: number, glow: boolean, ax: number): void {
@@ -965,10 +965,12 @@ export default defineSimulation({
           const [x, y] = leafPos(r);
           const n = Math.round(gc[r].at(now));
           const emph = (focus && (r === 'tp' || r === 'fp')) || hoverRole === r;
-          nodeBox(x, y, tg.bw[2], tg.bh, `${n}`, `${roleShort(r)}`, roleColor(r), hoverRole && hoverRole !== r ? 0.45 : 1, emph);
-          // Personen-Symbol am Blatt
+          // Personen-Symbol am Blatt (nur, wenn Platz ist; Text rückt dann nach rechts)
           const is = Math.min(18, tg.bh - 14);
-          g.drawImage(sprite(r, is), x - tg.bw[2] / 2 + 6, y - is / 2 - tg.bh * 0.16 + 1, is, is);
+          const icon = tg.bw[2] >= 128;
+          const shift = icon ? (is + 4) / 2 : 0;
+          nodeBox(x, y, tg.bw[2], tg.bh, `${n}`, `${roleShort(r)}`, roleColor(r), hoverRole && hoverRole !== r ? 0.45 : 1, emph, shift);
+          if (icon) g.drawImage(sprite(r, is), x - tg.bw[2] / 2 + 7, y - is / 2, is, is);
         }
       }
       g.restore();
@@ -990,7 +992,7 @@ export default defineSimulation({
       g.stroke();
       const pad = 12;
       const maxW = r.w - 2 * pad;
-      const size = wide() ? 13.5 : 12.5;
+      const size = wide() ? 15 : 13;
       const Pp = `P_{+}(${Kf})`;
       const gen = `${Pp} = \\f{P(${Kf}) · P_{${Kf}}(+)}{P(${Kf}) · P_{${Kf}}(+) + P(${KBf}) · P_{${KBf}}(+)}`;
       const num1 = s.prev * s.se;
@@ -998,25 +1000,16 @@ export default defineSimulation({
       const res = p.show ? `≈ \\c{a}{\\b{${pct(ppv(s))}}}` : '= ?';
       const nums = `= \\f{${dec(s.prev)} · ${dec(s.se)}}{${dec(s.prev)} · ${dec(s.se)} + ${dec(1 - s.prev)} · ${dec(1 - s.sp)}} = \\f{${dec(num1)}}{${dec(num1 + den2)}} ${res}`;
       const freq = `${tt('Häufigkeiten', 'frequencies')}: ${Pp} ≈ \\f{\\c{r}{${c.tp}}}{\\c{r}{${c.tp}} + \\c{o}{${c.fp}}}${p.show ? ` ≈ ${pct(c.pos ? c.tp / c.pos : NaN)}` : ''}`;
-      const lines = wide() ? [gen, nums, freq] : [gen, nums, freq];
-      const boxes = lines.map((src, k) => fit(src, maxW, k === 2 ? size - 1 : size, k === 2 ? t.muted : t.text, 650, 8.5));
+      const boxes = [gen, nums, freq].map((src, k) => fit(src, maxW, k === 2 ? size - 1 : size, k === 2 ? t.muted : t.text, 650, 9));
       const total = boxes.reduce((s2, b) => s2 + b.asc + b.desc, 0);
-      if (wide() && boxes[0]!.w + boxes[1]!.w + 16 <= maxW) {
-        // eine Zeile für die Formel und die Zahlen
-        const h = Math.max(boxes[0]!.asc, boxes[1]!.asc) + Math.max(boxes[0]!.desc, boxes[1]!.desc);
-        const y0 = r.y + (r.h - h - boxes[2]!.asc - boxes[2]!.desc - 10) / 2 + Math.max(boxes[0]!.asc, boxes[1]!.asc);
-        boxes[0]!.draw(g, r.x + pad, y0);
-        boxes[1]!.draw(g, r.x + pad + boxes[0]!.w + 10, y0);
-        boxes[2]!.draw(g, r.x + pad, y0 + Math.max(boxes[0]!.desc, boxes[1]!.desc) + 10 + boxes[2]!.asc);
-      } else {
-        const gap = Math.max(2, (r.h - 2 * 8 - total) / 2);
-        let y = r.y + 8;
-        boxes.forEach((b) => {
-          y += b.asc;
-          b.draw(g, r.x + pad, y);
-          y += b.desc + gap;
-        });
-      }
+      // Zeilen gleichmäßig im Kasten verteilen
+      const gap = Math.max(2, (r.h - 16 - total) / 4);
+      let y = r.y + 8 + gap;
+      boxes.forEach((b) => {
+        y += b.asc;
+        b.draw(g, r.x + pad, y);
+        y += b.desc + gap;
+      });
       g.restore();
     }
     let viewT0 = -1e9;
@@ -1033,7 +1026,11 @@ export default defineSimulation({
       const x = r.x + pad;
       const w = r.w - 2 * pad;
       let y = r.y + 20;
-      text(g, tt('Kennzahlen des Tests', 'Test figures'), x, y, { font: font(800, 13.5), color: t.text, align: 'left' });
+      /** größere Schrift und Zusatzabstand, wenn die Karte Platz hat */
+      const roomy = !compact && r.w >= 236;
+      const fs = roomy ? 1.08 : 1;
+      const sp = compact ? 0 : clamp((r.h - 410) / 7, 0, 16);
+      text(g, tt('Kennzahlen des Tests', 'Test figures'), x, y, { font: font(800, 14 * fs), color: t.text, align: 'left' });
       if (p.n2) {
         g.font = font(800, 11);
         const chip = tt('2. Test', '2nd test');
@@ -1045,17 +1042,17 @@ export default defineSimulation({
       }
       y += 14;
       const row = (label: string, sym: string, val: string, color: string, help?: string, rowW = w, rx = x) => {
-        const lb = fit(label, rowW * 0.62, 12, t.text, 650, 9.5);
+        const lb = fit(label, rowW * 0.64, 12 * fs, t.text, 650, 10.5);
         lb.draw(g, rx, y + 12);
-        const vs = fitFont(val, rowW * 0.36, 800, 14, 10);
+        const vs = fitFont(val, rowW * 0.36, 800, 14.5 * fs, 11);
         text(g, val, rx + rowW, y + 8, { font: font(800, vs), color, align: 'right' });
-        const sb = fit(sym, rowW * 0.62, 11, t.muted, 600, 9);
-        sb.draw(g, rx, y + 27);
+        const sb = fit(sym, rowW * 0.62, 11.5 * fs, t.muted, 600, 10.5);
+        sb.draw(g, rx, y + 28 * fs);
         if (help && !compact) {
-          const hs = fitFont(help, rowW * 0.4, 600, 10.5, 9);
-          text(g, help, rx + rowW, y + 24, { font: font(600, hs), color: t.muted, align: 'right' });
+          const hs = fitFont(help, rowW * 0.42, 600, 11, 9.5);
+          text(g, help, rx + rowW, y + 26 * fs, { font: font(600, hs), color: t.muted, align: 'right' });
         }
-        y += 38;
+        y += 38 * fs + sp;
       };
       const ppvV = gPpv.at(now);
       const npvV = gNpv.at(now);
@@ -1071,30 +1068,30 @@ export default defineSimulation({
         g.moveTo(x, y);
         g.lineTo(x + w, y);
         g.stroke();
-        y += 12;
+        y += 12 + sp * 0.6;
         // Positiver Vorhersagewert groß
-        text(g, tt('Positiver Vorhersagewert', 'Positive predictive value'), x, y + 6, { font: font(750, fitFont(tt('Positiver Vorhersagewert', 'Positive predictive value'), w, 750, 12.5, 10)), color: t.text, align: 'left' });
-        const sb = fit(`P_{+}(${Kf}) ${tt('– krank, wenn positiv', '– ill if positive')}`, w, 11, t.muted, 600, 9);
-        sb.draw(g, x, y + 24);
-        y += 34;
+        text(g, tt('Positiver Vorhersagewert', 'Positive predictive value'), x, y + 6, { font: font(750, fitFont(tt('Positiver Vorhersagewert', 'Positive predictive value'), w, 750, 13 * fs, 10.5)), color: t.text, align: 'left' });
+        const sb = fit(`P_{+}(${Kf}) ${tt('– krank, wenn positiv', '– ill if positive')}`, w, 11.5 * fs, t.muted, 600, 10);
+        sb.draw(g, x, y + 25 * fs);
+        y += 34 * fs;
         const big = hid(pct(ppvV));
         const bs = fitFont(big, w, 800, r.h > 470 ? 40 : 32, 18);
         text(g, big, x, y + bs * 0.55, { font: font(800, bs), color: RED(), align: 'left', baseline: 'middle' });
         y += bs * 1.1 + 4;
         const sent = tt(`${counts.tp} von ${counts.pos} positiv Getesteten sind krank.`, `${counts.tp} of ${counts.pos} people who tested positive have the disease.`);
-        wrap(sent, w, font(600, 11.5))
+        wrap(sent, w, font(600, 12))
           .slice(0, 2)
           .forEach((l) => {
-            text(g, l, x, y + 6, { font: font(600, 11.5), color: t.muted, align: 'left' });
-            y += 15;
+            text(g, l, x, y + 6, { font: font(600, 12), color: t.muted, align: 'left' });
+            y += 16;
           });
-        y += 8;
-        row(tt('Negativer Vorhersagewert', 'Negative predictive value'), `P_{−}(${KBf})`, hid(pct(npvV)), t.text);
+        y += 8 + sp;
+        row(r.w < 250 ? tt('Neg. Vorhersagewert', 'Neg. pred. value') : tt('Negativer Vorhersagewert', 'Negative predictive value'), `P_{−}(${KBf})`, hid(pct(npvV)), t.text);
       } else {
         // Handy: links groß der Vorhersagewert, rechts die Kennzahlen
         const lw = w * 0.46;
         const top = y;
-        text(g, tt('Positiver Vorhersagewert', 'Positive pred. value'), x, y + 6, { font: font(750, fitFont(tt('Positiver Vorhersagewert', 'Positive pred. value'), lw, 750, 11.5, 9.5)), color: t.text, align: 'left' });
+        text(g, tt('Positiver Vorhersagewert', 'Positive pred. value'), x, y + 6, { font: font(750, fitFont(tt('Positiver Vorhersagewert', 'Positive pred. value'), lw, 750, 12, 10.5)), color: t.text, align: 'left' });
         const sb = fit(`P_{+}(${Kf})`, lw, 11, t.muted, 600, 9);
         sb.draw(g, x, y + 23);
         const big = hid(pct(ppvV));
@@ -1116,8 +1113,12 @@ export default defineSimulation({
         row(tt('Sensitivität', 'Sensitivity'), `P_{${Kf}}(+)`, pct(s.se), RED(), undefined, rw, rx);
         y -= 6;
         row(tt('Spezifität', 'Specificity'), `P_{${KBf}}(−)`, pct(s.sp), t.text, undefined, rw, rx);
-        y -= 6;
-        row(tt('Negativer V.', 'Neg. pred. value'), `P_{−}(${KBf})`, hid(pct(npvV)), t.text, undefined, rw, rx);
+        // negativer Vorhersagewert links unter dem Satz
+        yy += 6;
+        const nb = fit(`P_{−}(${KBf}) = ${hid(pct(npvV))}`, lw, 12, t.text, 700, 10.5);
+        text(g, tt('Negativer Vorhersagewert', 'Negative pred. value'), x, yy, { font: font(650, fitFont(tt('Negativer Vorhersagewert', 'Negative pred. value'), lw, 650, 11, 10)), color: t.muted, align: 'left' });
+        nb.draw(g, x, yy + 20);
+        yy += 28;
         y = Math.max(y, yy) + 2;
       }
       // Merksatz
@@ -1127,7 +1128,7 @@ export default defineSimulation({
       else if (counts.fp === 0) msg = tt('Merksatz: Ohne falsch positive Ergebnisse (Spezifität 100 %) ist jeder positiv Getestete krank.', 'Key idea: with no false positives (specificity 100 %), everyone who tests positive is ill.');
       else if (rare) msg = tt('Merksatz: Ist die Krankheit selten, sind die meisten positiven Ergebnisse falsch positiv – auch bei einem guten Test.', 'Key idea: if the disease is rare, most positive results are false positives – even with a good test.');
       else msg = tt('Merksatz: Je häufiger die Krankheit unter den Getesteten ist, desto eher bedeutet „positiv“ auch „krank“.', 'Key idea: the more common the disease among those tested, the more likely “positive” really means “ill”.');
-      const mf = font(650, 11.5);
+      const mf = font(650, roomy ? 12 : 11.5);
       const lines = wrap(msg, w - 16, mf);
       const avail = r.y + r.h - 10 - y;
       const maxLines = Math.max(1, Math.min(lines.length, Math.floor((avail - 14) / 15)));
