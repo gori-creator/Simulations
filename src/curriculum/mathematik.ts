@@ -1247,14 +1247,14 @@ export const mathematik: Subject = {
             slug: L('stammfunktion-grafisch', 'antiderivative-graphically'),
             title: L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'),
             summary: L(
-              'Ein Punkt läuft über den Graphen von f, die orientierte Fläche wächst mit – und zeichnet den Graphen einer Stammfunktion F. Die Konstante C verschiebt F; Nullstellen von f werden zu Extremstellen von F.',
-              'A point runs along the graph of f while the signed area grows – drawing the graph of an antiderivative F. The constant C shifts F; zeros of f become extrema of F.',
+              'Grafisch aufleiten: Die Höhe von f wird zur Steigung von F, ein Richtungsfeld zeigt die Schar F + C mit ziehbarem Anfangspunkt, Nullstellen und Extremstellen von f werden zu Extrem- und Wendestellen von F, Flächenstücke zu Höhenänderungen – auch umgekehrt von F nach f, mit eigener Skizze zum Vergleichen und acht Alltagsbeispielen von Kontostand bis CO₂ im Klassenzimmer.',
+              'Integrating graphically: the height of f becomes the slope of F, a slope field shows the family F + C with a draggable initial point, zeros and extrema of f become extrema and inflection points of F, area pieces become changes in height – also in reverse from F to f, with your own sketch to compare and eight everyday examples from a bank balance to CO₂ in the classroom.',
             ),
             grades: [12, 13],
             kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
             keywords: L(
-              ['Stammfunktion', 'grafisches Integrieren', 'Integrationskonstante', 'orientierte Fläche', 'Flächenbilanz', 'Integral', 'Ableitung', 'Monotonie', 'Extremstelle', 'Wendestelle'],
-              ['antiderivative', 'graphical integration', 'constant of integration', 'signed area', 'integral', 'derivative', 'monotonicity', 'extremum', 'inflection point'],
+              ['Stammfunktion', 'grafisches Aufleiten', 'grafisches Integrieren', 'Integrationskonstante', 'Kurvenschar', 'Richtungsfeld', 'Anfangswertproblem', 'Anfangswert', 'orientierte Fläche', 'Flächenbilanz', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Terrassenpunkt', 'Vorzeichentabelle', 'Änderungsrate', 'Bestand'],
+              ['antiderivative', 'graphical integration', 'constant of integration', 'family of curves', 'slope field', 'initial value problem', 'signed area', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'sign chart', 'rate of change', 'accumulation'],
             ),
             thumb: 'generic',
           },
