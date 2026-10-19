@@ -1289,7 +1289,23 @@ export const mathematik: Subject = {
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
           planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),
           planned('lage-abstaende', L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'), [13, 13]),
-          planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
+          {
+            id: 'kugeln',
+            status: 'ready',
+            slug: L('kugeln-geraden-ebenen', 'spheres-lines-planes'),
+            title: L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'),
+            summary: L(
+              'Eine Glaskugel im Raum: Kugelgleichung und Punktprobe, eine Ebene schneidet im Schnittkreis (ρ² + d² = r²), eine Gerade als Passante, Tangente oder Sekante über die Diskriminante, und die Tangentialebene in einem ziehbaren Kugelpunkt.',
+              'A glass sphere in space: equation of the sphere and point test, a plane cutting a circle of intersection (ρ² + d² = r²), a line as passing line, tangent or secant via the discriminant, and the tangent plane at a draggable point on the sphere.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Kugel', 'Kugelgleichung', 'Mittelpunkt', 'Radius', 'Punktprobe', 'Schnittkreis', 'Kugel und Ebene', 'Kugel und Gerade', 'Sekante', 'Tangente', 'Passante', 'Diskriminante', 'Tangentialebene', 'Berührpunkt', 'Abstand Punkt Ebene', 'Großkreis'],
+              ['sphere', 'equation of a sphere', 'centre', 'radius', 'point test', 'circle of intersection', 'sphere and plane', 'sphere and line', 'secant', 'tangent', 'passing line', 'discriminant', 'tangent plane', 'point of contact', 'distance point plane', 'great circle'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
           planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true }),
