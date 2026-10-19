@@ -1203,8 +1203,8 @@ export default defineSimulation({
       boxEdges(cont, big ? col.vol() : col.orig(), 2, 0.95);
       // Beschriftungen
       const ok = shown() || !big;
+      const labels3: { x: number; y: number; src: string }[] = [];
       if (opts.dims) {
-        const cc = big ? col.vol() : col.orig();
         const v = (x: number) => `${N(x)} cm`;
         const q = (x: number) => (big ? (ok ? v(x) : '? cm') : v(x));
         const ctr = view.toPx([cont[0] / 2, cont[1] / 2, cont[2] / 2]);
@@ -1215,7 +1215,7 @@ export default defineSimulation({
           const l = Math.hypot(dx, dy) || 1;
           dx /= l;
           dy /= l;
-          view.label(vec3.lerp(a, b, 0.5), txt, { color: cc, size: fs(12, 11), weight: '700', align: 'center', baseline: 'middle', offset: [dx * 22, dy * 16], halo: true, layer: 'front' });
+          labels3.push({ x: m[0] + dx * 24, y: m[1] + dy * 16, src: `\\c{${big ? 'V' : 'o'}}{${txt}}` });
         };
         const [c0, c1, c2] = cont;
         // die beiden vorderen Bodenkanten (im Bild am weitesten unten) und die rechte senkrechte Kante
@@ -1248,6 +1248,7 @@ export default defineSimulation({
         }
       }
       view.end();
+      for (const lb of labels3) fpill(lb.x, lb.y, lb.src, { size: fs(11.5, 11), bounds: R });
       surface.g.restore();
       panelTitle(R, opts.title, col.vol(), k.panel);
       rotateHint(R, k.panel);
@@ -1519,14 +1520,14 @@ export default defineSimulation({
           { key: 'A', name: say(L('Oberfläche', 'Surface')), from: `${N(boxSurface(body))} cm²`, to: ok ? `${N(boxSurface(body) * Kv * Kv)} cm²` : '? cm²', fac: `· k² ${ok ? (reciprocalInt(Kv * Kv) ? `= ${facF(Kv * Kv)}` : v(Kv * Kv, 2)) : '= ?'}`, c: col.area() },
           { key: 'V', name: say(L('Volumen', 'Volume')), from: `${N(boxVolume(body))} cm³`, to: ok ? `${N(boxVolume(body) * Kv ** 3, 3)} cm³` : '? cm³', fac: `· k³ ${ok ? (reciprocalInt(Kv ** 3) ? `= ${facF(Kv ** 3)}` : v(Kv ** 3, 3)) : '= ?'}`, c: col.vol() },
         ];
-        const rh = fs(37, 35);
+        const rh = fs(33, 34);
         const h = 40 + rows.length * rh + 2;
         if (measure) return h;
         card({ ...R, h }, col.k());
         cardTitle(R, say(L('Was passiert mit …', 'What happens to …')), col.k(), `\\c{k}{k = ${N(Kv, 2)}}`);
         const sz = fs(12.5, 12);
         rows.forEach((r, i) => {
-          const y = R.y + 38 + i * rh + 8;
+          const y = R.y + 37 + i * rh + 8;
           const a = ease.outCubic(clamp01(k.stagger * 6 - i));
           g.save();
           g.globalAlpha *= a;
@@ -1539,7 +1540,7 @@ export default defineSimulation({
           const fb = fit(`\\c{${r.key}}{\\b{${r.fac}}}`, R.w - 2 * pad - 26 - nb.w, sz, r.c, 700);
           fb.draw(g, R.x + R.w - pad - fb.w, y + (fb.asc - fb.desc) / 2);
           const mb = fit(`\\c{m}{${r.from} →} \\c{${r.key}}{${r.to}}`, R.w - 2 * pad - 16, fs(12, 11.5), theme.muted, 600);
-          mb.draw(g, R.x + pad + 16, y + 16 + (mb.asc - mb.desc) / 2);
+          mb.draw(g, R.x + pad + 16, y + 15 + (mb.asc - mb.desc) / 2);
           g.restore();
         });
         return h;
@@ -1549,7 +1550,7 @@ export default defineSimulation({
     /** Wachstumsdiagramm: k, k², k³ über k mit laufendem Punkt. */
     function growthCard(k: Intro): CardFn {
       return (R, measure) => {
-        const h = Math.round(clamp(R.w * (isWide() ? 0.66 : 0.58), 176, 236));
+        const h = Math.round(clamp(R.w * (isWide() ? 0.6 : 0.58), 150, 236));
         if (measure) return h;
         const g = surface.g;
         card({ ...R, h }, col.vol());
