@@ -92,22 +92,22 @@ export default defineSimulation({
     num('m2', L('Mittelpunkt m₂', 'Centre m₂'), -4, 4, 0.5, 2, undefined, 'kugel'),
     num('m3', L('Mittelpunkt m₃', 'Centre m₃'), -4, 4, 0.5, 3, undefined, 'kugel'),
     num('r', L('Radius r', 'Radius r'), 0.5, 5, 0.25, 3, undefined, 'kugel'),
-    num('p1', L('Punkt P: p₁', 'Point P: p₁'), -8, 8, 0.5, 4, isMode('sphere')),
-    num('p2', same('p₂'), -8, 8, 0.5, 5, isMode('sphere')),
-    num('p3', same('p₃'), -8, 8, 0.5, 4, isMode('sphere')),
+    num('p1', L('Punkt P: p₁', 'Point P: p₁'), -8, 8, 0.5, 1, isMode('sphere')),
+    num('p2', same('p₂'), -8, 8, 0.5, 7, isMode('sphere')),
+    num('p3', same('p₃'), -8, 8, 0.5, 3, isMode('sphere')),
     { ...num('n1', L('Ebene E: n₁', 'Plane E: n₁'), -3, 3, 1, 2, isMode('plane')), help: L('E: n₁x₁ + n₂x₂ + n₃x₃ = c (Koordinatenform)', 'E: n₁x₁ + n₂x₂ + n₃x₃ = c (coordinate form)') },
     num('n2', same('n₂'), -3, 3, 1, -1, isMode('plane')),
     num('n3', same('n₃'), -3, 3, 1, 2, isMode('plane')),
     num('c', L('rechte Seite c', 'right-hand side c'), -40, 40, 0.5, 12, isMode('plane')),
-    { ...num('a1', L('Gerade g: Aufpunkt a₁', 'Line g: point a₁'), -8, 8, 0.5, 4, isMode('line')), help: L('g: x⃗ = a⃗ + t · u⃗', 'g: x⃗ = a⃗ + t · u⃗') },
+    { ...num('a1', L('Gerade g: Aufpunkt a₁', 'Line g: point a₁'), -8, 8, 0.5, 4, isMode('line')), help: L('g: X = A + t · u (Aufpunkt A, Richtungsvektor u)', 'g: X = A + t · u (point A, direction vector u)') },
     num('a2', same('a₂'), -8, 8, 0.5, 5, isMode('line')),
     num('a3', same('a₃'), -8, 8, 0.5, 6, isMode('line')),
     num('u1', L('Richtung u₁', 'Direction u₁'), -3, 3, 0.5, -1, isMode('line')),
     num('u2', same('u₂'), -3, 3, 0.5, -1, isMode('line')),
     num('u3', same('u₃'), -3, 3, 0.5, -2, isMode('line')),
-    { ...num('b1', L('Berührpunkt B: b₁', 'Point of contact B: b₁'), -9, 9, 0.1, 3, isMode('tangent')), help: L('Liegt B nicht genau auf K, wird der Punkt vom Mittelpunkt aus auf die Kugel geschoben.', 'If B is not exactly on K, it is pushed onto the sphere along the ray from the centre.') },
+    { ...num('b1', L('Berührpunkt B: b₁', 'Point of contact B: b₁'), -9, 9, 0.1, 0, isMode('tangent')), help: L('Liegt B nicht genau auf K, wird der Punkt vom Mittelpunkt aus auf die Kugel geschoben.', 'If B is not exactly on K, it is pushed onto the sphere along the ray from the centre.') },
     num('b2', same('b₂'), -9, 9, 0.1, 4, isMode('tangent')),
-    num('b3', same('b₃'), -9, 9, 0.1, 4, isMode('tangent')),
+    num('b3', same('b₃'), -9, 9, 0.1, 5, isMode('tangent')),
     { key: 'show', type: 'boolean', group: 'view', label: L('Ergebnis anzeigen', 'Show result'), default: true },
     { key: 'grid', type: 'boolean', group: 'view', label: L('Gitter in der x₁x₂-Ebene', 'Grid in the x₁x₂ plane'), default: true },
   ],
@@ -124,11 +124,13 @@ export default defineSimulation({
   presets: [
     { id: 'start', label: L('Punktprobe: P außerhalb', 'Point test: P outside'), values: {} },
     { id: 'on', label: L('Punkt P(1 | 2 | 6) auf K', 'Point P(1, 2, 6) on K'), values: { p1: 1, p2: 2, p3: 6 } },
+    { id: 'in', label: L('Punkt Q(2 | 2 | 3) innen', 'Point Q(2, 2, 3) inside'), values: { p1: 2, p2: 2, p3: 3 } },
     { id: 'circle', label: L('Ebene x₃ = 5: Schnittkreis', 'Plane x₃ = 5: circle of intersection'), values: { mode: 'plane', n1: 0, n2: 0, n3: 1, c: 5 } },
     { id: 'great', label: L('Ebene durch M: Großkreis', 'Plane through M: great circle'), values: { mode: 'plane', n1: 1, n2: 1, n3: 1, c: 6 } },
     { id: 'secant', label: L('Sekante mit zwei Schnittpunkten', 'Secant with two intersection points'), values: { mode: 'line' } },
     { id: 'tangentLine', label: L('Tangente (4 | 2 | 0) + t · (0 | 0 | 1)', 'Tangent line (4, 2, 0) + t · (0, 0, 1)'), values: { mode: 'line', a1: 4, a2: 2, a3: 0, u1: 0, u2: 0, u3: 1 } },
-    { id: 'tplane', label: L('Tangentialebene in B(3 | 4 | 4)', 'Tangent plane at B(3, 4, 4)'), values: { mode: 'tangent' } },
+    { id: 'tplane', label: L('Tangentialebene in B(0 | 4 | 5)', 'Tangent plane at B(0, 4, 5)'), values: { mode: 'tangent' } },
+    { id: 'tflat', label: L('Waagerechte Tangentialebene in B(1 | 2 | 6)', 'Horizontal tangent plane at B(1, 2, 6)'), values: { mode: 'tangent', b1: 1, b2: 2, b3: 6 } },
   ],
   strings: {
     de: { canvas: 'Räumliches Koordinatensystem mit einer durchsichtigen Kugel (Breiten- und Längenkreise), ihrem Mittelpunkt und wahlweise einem Punkt, einer schneidenden Ebene mit Schnittkreis, einer Geraden mit Schnittpunkten oder einer Tangentialebene; Punkte ziehbar, Ansicht drehbar' },
@@ -239,7 +241,7 @@ export default defineSimulation({
       const c = lo.map((v, k) => (v + hi[k]!) / 2);
       const half = Math.hypot(...lo.map((v, k) => hi[k]! - v)) / 2;
       c.forEach((v, i) => set(gt[i]!, v, 700));
-      set(grad, Math.max(3.2, half * 0.74), 700);
+      set(grad, Math.max(3.4, p.r * 1.5, half * 0.9), 700);
       const all = pts.flat();
       set(glo, clamp(Math.min(-1.5, Math.floor(Math.min(...all) - 0.5)), -10, -1.5), 700);
       set(ghi, clamp(Math.max(4, Math.ceil(Math.max(...all) + 1)), 4, 11), 700);
@@ -265,6 +267,8 @@ export default defineSimulation({
     const cardBg = () => (ctx.theme.dark ? shade(ctx.theme.bg, 0.06) : '#ffffff');
     const sep = lang === 'de' ? ' | ' : ', ';
     const pt = (q: V3) => `(${n1(q[0])}${sep}${n1(q[1])}${sep}${n1(q[2])})`;
+    /** Koordinaten, bei gerundeten Werten mit „≈“. */
+    const ptA = (q: V3) => (q.every((v) => Math.abs(v * 100 - Math.round(v * 100)) < 1e-6) ? pt(q) : ` ≈ ${pt(q)}`);
     const SUB = ['₁', '₂', '₃'];
     const nice = (v: number) => Math.abs(v * 4 - Math.round(v * 4)) < 1e-9;
     /** Wurzel exakt, wenn möglich, sonst „√a ≈ b“. */
@@ -460,22 +464,30 @@ export default defineSimulation({
       );
     }
 
-    /** Beschriftung eines Punktes mit Schild, am Bildrand nach innen geklappt. */
-    function ptLabel(q: Vec3, txt: string, color: string, a = 1, dy = -10, size = 13): void {
+    /** Beschriftung eines Punktes mit Schild; weicht Bildrand und Zoom-Knöpfen aus. */
+    function ptLabel(q: Vec3, txt: string, color: string, a = 1, dy = -10, size = 13, side: 1 | -1 = 1): void {
       if (a < 0.05) return;
       const R = regions().scene;
       const [x, y] = view.toPx(q);
       const g = surface.g;
       g.font = font(800, size);
-      const w = g.measureText(txt).width;
-      const right = x + 12 + w > R.x + R.w - 6;
-      const top = y + dy - size < R.y + 44;
+      const w = g.measureText(txt).width + 14;
+      const top = y + dy - size < R.y + 8;
+      const yy = top ? y + Math.abs(dy) + size : y + dy;
+      const bad = (s0: number) => {
+        const l = s0 > 0 ? x + 12 - 7 : x - 12 - w + 7;
+        const r = l + w;
+        const zoom = r > R.x + R.w - 56 && yy - size < R.y + 128;
+        return l < R.x + 4 || r > R.x + R.w - 4 || zoom;
+      };
+      let sd: number = side;
+      if (bad(sd) && !bad(-sd)) sd = -sd;
       view.label(q, txt, {
         color: a < 1 ? alpha(color, a) : color,
         size,
         weight: '800',
-        offset: [right ? -12 : 12, top ? Math.abs(dy) + 4 : dy],
-        align: right ? 'right' : 'left',
+        offset: [sd > 0 ? 12 : -12, top ? Math.abs(dy) + 4 : dy],
+        align: sd > 0 ? 'left' : 'right',
         baseline: top ? 'top' : 'bottom',
         background: alpha(cardBg(), 0.82 * a),
       });
@@ -487,19 +499,23 @@ export default defineSimulation({
       view.polyline([vec3.add(at, uu), vec3.add(vec3.add(at, uu), vv), vec3.add(at, vv)], { color, width: 1.6, alpha: a });
     }
 
-    /** Streckenbeschriftung neben der Mitte (senkrecht zur Bildrichtung). */
-    function segLabel(a: Vec3, b: Vec3, txt: string, color: string, side = 1, alphaV = 1): void {
+    /** Streckenbeschriftung neben der Mitte, auf der Seite in Bildrichtung `pref`. */
+    function segLabel(a: Vec3, b: Vec3, txt: string, color: string, pref: [number, number] = [0, -1], alphaV = 1): void {
       if (alphaV < 0.05) return;
       const [ax, ay] = view.toPx(a);
       const [bx, by] = view.toPx(b);
       const l = Math.hypot(bx - ax, by - ay) || 1;
       let nx = -(by - ay) / l;
       let ny = (bx - ax) / l;
-      if (ny > 0) {
+      if (nx * pref[0] + ny * pref[1] < 0) {
         nx = -nx;
         ny = -ny;
       }
-      view.label(vec3.lerp(a, b, 0.5), txt, { color, size: 12, weight: '800', align: 'center', baseline: 'middle', offset: [nx * 16 * side, ny * 16 * side], background: alpha(cardBg(), 0.85 * alphaV) });
+      const g = surface.g;
+      g.font = font(800, 12);
+      const w = g.measureText(txt).width;
+      const off = 12 + Math.abs(nx) * (w / 2 + 4);
+      view.label(vec3.lerp(a, b, 0.5), txt, { color, size: 12, weight: '800', align: 'center', baseline: 'middle', offset: [nx * off, ny * (off * 0.6 + 6)], background: alpha(cardBg(), 0.85 * alphaV) });
     }
 
     /* ---------------- Kugel ---------------- */
@@ -647,7 +663,7 @@ export default defineSimulation({
 
       // Mittelpunkt M
       view.ball(m, 0.11 + 0.02 * Math.min(r, 3), { color: theme.text });
-      ptLabel(m, p.show ? `M${pt(tM())}` : 'M', theme.text, introOf(500, 400), 12, 12.5);
+      ptLabel(m, p.show ? `M${pt(tM())}` : 'M', theme.text, introOf(500, 400), 24, 12.5, -1);
       view.label(vec3.add(m, vec3.scale(vec3.normalize(vec3.add(vec3.scale(view.camera.up, 0.75), vec3.scale(view.camera.right, -0.66))), r * 1.04)), 'K', { color: CK(), size: 17, weight: '800', math: true, align: 'right', baseline: 'bottom', background: alpha(cardBg(), 0.7) });
 
       for (const md of MODES) {
@@ -669,18 +685,17 @@ export default defineSimulation({
       const rd = radDir();
       const edge = vec3.add(m, vec3.scale(rd, r * u1));
       view.segment(m, edge, { color: CK(), width: 2.6, alpha: A });
-      if (u1 > 0.5) segLabel(m, edge, `r = ${n1(p.r)}`, CK(), -1, A * clamp((u1 - 0.5) * 2, 0, 1));
+      if (u1 > 0.5) segLabel(m, edge, `r = ${n1(p.r)}`, CK(), [0, 1], A * clamp((u1 - 0.5) * 2, 0, 1));
       const P = V(gp) as Vec3;
       const pos = pointPosition(tM(), p.r, tP());
       const col = pos === 'on' ? CE() : pos === 'inside' ? CP() : CS();
       if (u2 > 0) {
         const tip = vec3.lerp(m, P, u2);
         view.segment(m, tip, { color: theme.muted, width: 1.6, dash: [5, 4], alpha: A });
-        if (u2 > 0.95 && p.show) segLabel(m, P, `|MP| = ${sqrtText(sphereLhs(tM(), tP()))}`, col, 1, A);
+        if (u2 > 0.95 && p.show) segLabel(m, P, `|MP| = ${sqrtText(sphereLhs(tM(), tP()))} ${pos === 'on' ? '=' : pos === 'inside' ? '<' : '>'} r`, col, [0, -1], A);
       }
       view.ball(P, 0.15, { color: CP(), alpha: A });
-      const lab = p.show && u2 > 0.95 ? `P${pt(tP())} – ${posText(pos)}` : `P${pt(tP())}`;
-      ptLabel(P, lab, p.show && u2 > 0.95 ? col : theme.text, A);
+      ptLabel(P, `P${pt(tP())}`, theme.text, A);
     }
 
     function drawPlaneMode(m: Vec3, r: number, A: number): void {
@@ -697,7 +712,7 @@ export default defineSimulation({
       const u1 = phase(0, 0.3);
       const u2 = phase(0.3, 0.6);
       const u3 = phase(0.6, 0.95);
-      const half = Math.max(2.6, r * 1.45);
+      const half = Math.max(2.2, r * 1.25);
       drawPlanePatch(vec3.add(foot, vec3.scale(nh, (1 - u1) * 1.5)), nv, half, CE(), A * u1, 'E');
       const rho2 = r * r - d * d;
       const eps = 1e-6 * Math.max(1, r * r);
@@ -705,7 +720,7 @@ export default defineSimulation({
       // Lot von M auf E
       if (d > 0.02 && u2 > 0) {
         view.segment(m, vec3.lerp(m, foot, u2), { color: theme.text, width: 1.8, dash: [5, 4], alpha: A });
-        if (u2 > 0.9) segLabel(m, foot, p.show ? `d = ${n1(d)}` : 'd', theme.text, 1, A);
+        if (u2 > 0.9) segLabel(m, foot, p.show ? `d = ${n1(d)}` : 'd', theme.text, [-1, 0], A);
       }
       if (kind === 'circle') {
         const rho = Math.sqrt(rho2);
@@ -716,16 +731,18 @@ export default defineSimulation({
           view.polyline(pts.slice(0, k), { color: CS(), width: 3.2, alpha: A });
         }
         if (u3 > 0.9) {
-          const [uu] = planeBasis(nv as V3) as [Vec3, Vec3];
+          // Radius ρ im Bild nach rechts zeichnen (Anteil von „rechts“ in der Ebene)
+          const rr = vec3.sub(view.camera.right, vec3.scale(nh, vec3.dot(view.camera.right, nh)));
+          const uu = vec3.length(rr) > 0.2 ? vec3.normalize(rr) : (planeBasis(nv as V3)[0] as Vec3);
           const q = vec3.add(foot, vec3.scale(uu, rho));
           view.segment(foot, q, { color: CS(), width: 2, alpha: A });
           view.segment(m, q, { color: CK(), width: 1.4, alpha: 0.8 * A });
           if (d > 0.25 && rho > 0.3) rightAngle(foot, vec3.sub(m, foot), vec3.sub(q, foot), Math.min(0.3, rho * 0.3, d * 0.4), theme.muted, A);
-          segLabel(foot, q, p.show ? `ρ = ${n1(rho)}` : 'ρ', CS(), -1, A);
-          if (d > 0.25) segLabel(m, q, 'r', CK(), 1, A);
+          segLabel(foot, q, p.show ? `ρ = ${n1(rho)}` : 'ρ', CS(), [0, 1], A);
+          if (d > 0.25) segLabel(m, q, 'r', CK(), [0.3, -1], A);
         }
         view.point(foot, { color: CS(), radius: 4.5 * A });
-        if (u2 > 0.6) ptLabel(foot, p.show && !sweeping() ? `M′${pt(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'M′', CS(), A, 12);
+        if (u2 > 0.6) ptLabel(foot, p.show && !sweeping() ? `M′${ptA(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'M′', CS(), A, 12, 13, -1);
       } else if (kind === 'tangent') {
         view.ball(foot, 0.15, { color: CS(), alpha: A });
         if (u2 > 0.6) ptLabel(foot, p.show && !sweeping() ? `B${pt(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'B', CS(), A);
@@ -804,7 +821,7 @@ export default defineSimulation({
       if (cut.kind !== 'secant' && u1 > 0.95) {
         view.segment(m, cut.closest as Vec3, { color: theme.text, width: 1.6, dash: [5, 4], alpha: A });
         if (cut.dist > 0.3) rightAngle(cut.closest as Vec3, vec3.sub(m, cut.closest as Vec3), u, 0.28, theme.muted, A);
-        segLabel(m, cut.closest as Vec3, p.show ? `d = ${n1(cut.dist)}` : 'd', theme.text, 1, A);
+        segLabel(m, cut.closest as Vec3, p.show ? `d = ${n1(cut.dist)}` : 'd', theme.text, [0, -1], A);
         if (cut.kind === 'passante') view.point(cut.closest as Vec3, { color: theme.muted, radius: 4 * A });
       }
     }
@@ -986,7 +1003,7 @@ export default defineSimulation({
         fitText(`E: ${planeText(n, cNow)}`, x0, y - 6, w, 15, CE(), 800);
         y += lh + 2;
         if (ln < 1e-9) {
-          fitText(tt('n⃗ = o⃗ – das ist keine Ebene.', 'n⃗ = o⃗ – this is not a plane.'), x0, y, w, 12, CS(), 700);
+          fitText(tt('Normalenvektor = Nullvektor: keine Ebene', 'Normal vector = zero vector: not a plane'), x0, y, w, 12, CS(), 700);
         } else {
           const nm = dot(n, m);
           const lnTxt = nice(ln) ? n1(ln) : `√${n1(ln * ln)}`;
@@ -997,7 +1014,7 @@ export default defineSimulation({
           const verdict = cut.kind === 'circle' ? tt('Schnittkreis', 'circle of intersection') : cut.kind === 'tangent' ? tt('Berührpunkt', 'point of contact') : tt('kein gemeinsamer Punkt', 'no common point');
           row(res ? `d ${vs} r = ${n1(r)}` : 'd ? r', q(verdict), cut.kind === 'none' ? theme.muted : CS());
           if (cut.kind === 'circle') {
-            row(tt('Mittelpunkt M′', 'Centre M′'), q(pt(cut.foot)), CS());
+            row(tt('Mittelpunkt M′', 'Centre M′'), q(ptA(cut.foot).trim()), CS());
             row('ρ = √(r² − d²)', q(`√(${n1(r * r)} − ${n1(cut.d * cut.d)}) ${nice(cut.rho) ? '=' : '≈'} ${n1(cut.rho)}`), CS());
           } else if (cut.kind === 'tangent') row(tt('Berührpunkt B', 'Point of contact B'), q(pt(cut.foot)), CS());
           else row(tt('Lotfußpunkt F', 'Foot of perpendicular F'), q(pt(cut.foot)));
@@ -1008,7 +1025,7 @@ export default defineSimulation({
         drawToks([{ kind: 'txt', s: 'g:', math: true }, { kind: 'vec', s: 'x', color: theme.text }, { kind: 'txt', s: '=' }, { kind: 'col', v: [...a], color: CG() }, { kind: 'txt', s: '+ t ·' }, { kind: 'col', v: [...u], color: CG() }], x0, y, w, big);
         y += compact ? 34 : 40;
         const cut = sphereLine(m, r, a, u);
-        if (!cut) fitText(tt('u⃗ = o⃗ – das ist keine Gerade.', 'u⃗ = o⃗ – this is not a line.'), x0, y, w, 12, CS(), 700);
+        if (!cut) fitText(tt('Richtungsvektor = Nullvektor: keine Gerade', 'Direction vector = zero vector: not a line'), x0, y, w, 12, CS(), 700);
         else {
           fitText(`${tt('Einsetzen in K', 'Substitute into K')}: ${q(quadText(cut.A, cut.B, cut.C))}`, x0, y, w, 12, theme.text, 700);
           y += lh;
@@ -1030,7 +1047,7 @@ export default defineSimulation({
         drawToks([{ kind: 'txt', s: 'T:', math: true }, { kind: 'txt', s: '[' }, { kind: 'vec', s: 'x', color: theme.text }, { kind: 'txt', s: '−' }, { kind: 'col', v: [...b], color: CT() }, { kind: 'txt', s: ']·' }, { kind: 'col', v: res ? [...t.n] : ['?', '?', '?'], color: CG() }, { kind: 'txt', s: '= 0' }], x0, y, w, big);
         y += compact ? 34 : 40;
         row(`B${exact ? '' : ' ≈'}`, pt(b), CT());
-        row(`${tt('Normalenvektor', 'Normal vector')} MB⃗ = B − M`, q(pt(t.n)), CG());
+        row(`${tt('Normalenvektor', 'Normal vector')} B − M`, q(pt(t.n)), CG());
         row(tt('Koordinatenform', 'Coordinate form'), q(`${planeText(red.n, red.c)}`), CT());
         row(`|MB| = r`, q(`${sqrtText(sphereLhs(m, b))} = ${n1(r)} ✓`));
       }
@@ -1091,7 +1108,7 @@ export default defineSimulation({
         const n = tN();
         const cut = spherePlane(m, r, n, p.c);
         if (!cut) {
-          ctx.readout('calc', tt('n⃗ = o⃗: keine Ebene', 'n⃗ = o⃗: not a plane'));
+          ctx.readout('calc', tt('Normalenvektor = Nullvektor: keine Ebene', 'Normal vector = zero vector: not a plane'));
           ctx.readout('res', null);
           return;
         }
@@ -1099,7 +1116,7 @@ export default defineSimulation({
         ctx.readout(
           'res',
           cut.kind === 'circle'
-            ? tt(`d < r: Schnittkreis mit M′${pt(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`, `d < r: circle with centre M′${pt(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`)
+            ? tt(`d < r: Schnittkreis mit M′${ptA(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`, `d < r: circle with centre M′${ptA(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`)
             : cut.kind === 'tangent'
               ? tt(`d = r: E berührt K in ${pt(cut.foot)}`, `d = r: E touches K at ${pt(cut.foot)}`)
               : tt('d > r: E und K haben keinen gemeinsamen Punkt', 'd > r: E and K have no common point'),
@@ -1107,7 +1124,7 @@ export default defineSimulation({
       } else if (mode() === 'line') {
         const cut = sphereLine(m, r, tA(), tU());
         if (!cut) {
-          ctx.readout('calc', tt('u⃗ = o⃗: keine Gerade', 'u⃗ = o⃗: not a line'));
+          ctx.readout('calc', tt('Richtungsvektor = Nullvektor: keine Gerade', 'Direction vector = zero vector: not a line'));
           ctx.readout('res', null);
           return;
         }
@@ -1124,7 +1141,7 @@ export default defineSimulation({
         const b = projectToSphere(m, r, tB());
         const t = tangentPlane(m, b);
         const red = reducePlane(t.n, t.c);
-        ctx.readout('calc', `MB⃗ = ${pt(t.n)} · (x⃗ − ${pt(b)}) · ${pt(t.n)} = 0`);
+        ctx.readout('calc', `${tt('Normalenvektor', 'Normal vector')} B − M = ${pt(t.n)} · n · X = n · B = ${n1(t.c)}`);
         ctx.readout('res', `T: ${planeText(red.n, red.c)}`);
       }
     }
