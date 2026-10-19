@@ -439,14 +439,14 @@ export const mathematik: Subject = {
             slug: L('besondere-linien-im-dreieck', 'special-lines-in-a-triangle'),
             title: L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'),
             summary: L(
-              'Ecken eines Dreiecks ziehen und beobachten, wie sich Mittelsenkrechten, Winkelhalbierende, Seitenhalbierende und Höhen jeweils in einem Punkt schneiden: Umkreis, Inkreis, Schwerpunkt, Höhenschnittpunkt und die Euler-Gerade.',
-              'Drag the vertices of a triangle and watch the perpendicular bisectors, angle bisectors, medians and altitudes meet at one point each: circumcircle, incircle, centroid, orthocentre and the Euler line.',
+              'Zirkel, Lineal und Geodreieck konstruieren Mittelsenkrechten, Winkelhalbierende, Seitenhalbierende und Höhen – jedes Mal schneiden sich alle drei in einem Punkt. Mit Begründung über gleiche Abstände, Umkreis, Inkreis, Pappdreieck auf der Nadel, Sonderfällen und Euler-Gerade.',
+              'Compasses, ruler and set square construct the perpendicular bisectors, angle bisectors, medians and altitudes – each time all three meet at one point. With reasoning via equal distances, circumcircle, incircle, a card balancing on a pin, special cases and the Euler line.',
             ),
             grades: [7, 8],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
-              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie'],
-              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus'],
+              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie', 'Konstruktion', 'Zirkel', 'Geodreieck', 'Thaleskreis'],
+              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus', 'construction', 'compasses', 'set square', 'Thales circle'],
             ),
             thumb: 'generic',
           },

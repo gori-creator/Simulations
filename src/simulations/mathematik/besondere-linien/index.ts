@@ -388,7 +388,7 @@ export default defineSimulation({
         area: area(t),
         kd: kind(t, 0.05),
         big: largestAngle(t),
-        eq: isEquilateral(t, 0.012),
+        eq: isEquilateral(t, 0.004),
         iso: isoscelesApex(t, 0.004),
         U,
         R: isDeg ? 0 : circumradius(t),
@@ -949,7 +949,7 @@ export default defineSimulation({
     }
 
     const stepDur = (st: Step) => st.ops.reduce((s, o) => s + o.dur, 0);
-    const speed = () => (fast ? 4.6 : 1.15);
+    const speed = () => (fast ? 6 : 1.15);
     function stepRunning(now = performance.now()): boolean {
       if (reduced || stepIdx === 0) return false;
       const st = steps()[stepIdx - 1];
@@ -1039,10 +1039,10 @@ export default defineSimulation({
       const G = geom();
       const m = mode();
       const pts: Pt[] = [...G.t];
-      const near = (q: Pt | null, k = 2.6): q is Pt => !!q && dist(q, G.S) < k * G.size;
+      const near = (q: Pt | null, k = 1.6): q is Pt => !!q && dist(q, G.S) < k * G.size;
       if (!G.deg) {
         if (m === 'ms' && G.U) {
-          if (G.R < 2.2 * G.size) pts.push([G.U[0] - G.R, G.U[1] - G.R], [G.U[0] + G.R, G.U[1] + G.R]);
+          if (G.R < 1.3 * G.size) pts.push([G.U[0] - G.R, G.U[1] - G.R], [G.U[0] + G.R, G.U[1] + G.R]);
           else if (near(G.U)) pts.push(G.U);
         }
         if (m === 'h' || m === 'eu') {
@@ -1094,9 +1094,8 @@ export default defineSimulation({
     const ov = (s: string) => `<span style="text-decoration: overline">${s}</span>`;
     /** Kurzschrift der Zeichenfläche in HTML für die Ergebnisliste. */
     function toHtml(src: string): string {
-      let s = src;
+      let s = src.replace(/\\o\{([^{}]*)\}/g, (_m, x: string) => ov(x));
       for (let k = 0; k < 4; k++) s = s.replace(/\\c\{[^{}]*\}\{([^{}]*)\}/g, '$1');
-      s = s.replace(/\\o\{([^{}]*)\}/g, (_m, x: string) => ov(x));
       s = s.replace(/_(\{[^{}]*\}|.)/g, (_m, x: string) => `<sub>${x.replace(/[{}]/g, '')}</sub>`);
       return s;
     }
@@ -1853,7 +1852,7 @@ export default defineSimulation({
           if (f === 'ms') {
             at = [lerp(a[0], b[0], 0.1), lerp(a[1], b[1], 0.1)];
           } else {
-            at = [lerp(a[0], b[0], 0.7), lerp(a[1], b[1], 0.7)];
+            at = [lerp(a[0], b[0], 0.36), lerp(a[1], b[1], 0.36)];
           }
           // auf die Seite, die vom Dreiecksinneren wegzeigt bzw. frei ist
           const cx = at[0] - cen[0];
@@ -2118,7 +2117,6 @@ export default defineSimulation({
         const [e0, e1] = clipLine(apex, G.mids[G.iso]);
         segment(toPx(e0), toPx(e1), withAlpha(th().muted, 0.7), 1.3, [2, 5]);
       }
-      if (balK) g.restore();
       // besondere Punkte
       const avoid: Px[] = [...px];
       if (show) {
@@ -2127,8 +2125,10 @@ export default defineSimulation({
           for (const k of order) {
             const q = k === 'U' ? G.U : k === 'H' ? G.H : k === 'S' ? G.S : G.W;
             if (!q) continue;
+            // gleichseitig: nur ein Punkt mit gemeinsamem Namen
+            if (G.eq && k !== 'S') continue;
             const others2 = order.filter((o) => o !== k).map((o) => (o === 'U' ? G.U : o === 'H' ? G.H : o === 'S' ? G.S : G.W)).filter((z): z is Pt => !!z).map(toPx);
-            const r = specialPoint(q, k === 'W' && !G.eq ? PN.W : PN[k], k === 'W' ? (G.eq ? pkCol('W') : withAlpha(th().muted, 1)) : pkCol(k), st.pts[k], [...avoid, ...others2], k === 'W' && !G.eq);
+            const r = specialPoint(q, G.eq ? `${PN.U} = ${PN.W} = S = H` : PN[k], k === 'W' ? (G.eq ? pkCol('W') : withAlpha(th().muted, 1)) : pkCol(k), st.pts[k], [...avoid, ...others2], k === 'W' && !G.eq);
             if (r) avoid.push(r);
           }
         } else {
@@ -2138,6 +2138,7 @@ export default defineSimulation({
         }
       }
       drawVertices(px);
+      if (balK) g.restore();
       // Balancieren: Nadel und Ergebnis
       if (balK) drawPin(balK);
       // Sonderfälle als Hinweisschild
@@ -2145,9 +2146,24 @@ export default defineSimulation({
         const pill = specialPill(G);
         if (pill) fpill(P.x + P.w / 2 + (regions().inset ? 0 : 0), P.y + P.h - fs(30, 26), pill.src, { border: withAlpha(pill.color, 0.6), size: fs(13, 12) });
       }
+
+    }
+
+    /** Messhinweis beim Halbieren einer Seite (über dem Lineal). */
+    function drawNote(st: CState): void {
+      const G = geom();
       if (st.note) {
+        // auf die Seite gegenüber dem Lineal (das liegt bei ny > 0)
+        const [j, kk] = others(IDX.find((i) => dist(G.mids[i], st.note!.p) < 1e-9) ?? 0);
+        const a = toPx(G.t[j]);
+        const b = toPx(G.t[kk]);
+        let [nx, ny] = unit(-(b[1] - a[1]), b[0] - a[0]);
+        if (ny < 0 || (Math.abs(ny) < 1e-6 && nx < 0)) {
+          nx = -nx;
+          ny = -ny;
+        }
         const q = toPx(st.note.p);
-        fpill(q[0], q[1] - fs(40, 34), st.note.src, { alpha: st.note.alpha, size: fs(12.5, 11.5), border: withAlpha(col.sh(), 0.5) });
+        fpill(q[0] - nx * 26, q[1] - ny * 30, st.note.src, { align: Math.abs(nx) < 0.3 ? 'center' : nx < 0 ? 'left' : 'right', alpha: st.note.alpha, size: fs(12.5, 11.5), border: withAlpha(col.sh(), 0.5) });
       }
     }
 
@@ -2813,7 +2829,7 @@ export default defineSimulation({
             g.fillText(PN[key], R.x + pad + 16, y);
             g.font = font(550, fs(12, 11));
             g.fillStyle = key === 'W' ? theme.muted : theme.text;
-            g.fillText(say(txt) + (key === 'W' ? say(L(' (nicht auf der Geraden)', ' (not on the line)')) : ''), R.x + pad + 32, y);
+            g.fillText(say(txt), R.x + pad + 32, y);
             g.restore();
           });
           return h;
@@ -3037,6 +3053,7 @@ export default defineSimulation({
         if (st.pencil.tip && st.pencil.alpha > 0) drawPencil(toPx(st.pencil.tip), st.pencil.alpha);
         if (st.compass) drawCompass(st.compass);
       }
+      drawNote(st);
       if (R.inset) {
         g.save();
         const a = clamp01(k.cards * 1.6);
@@ -3066,6 +3083,8 @@ export default defineSimulation({
         } else {
           autoPlay = false;
           fast = false;
+          // letzten Schritt als erledigt markieren (sonst liefe er mit normaler Geschwindigkeit weiter)
+          stepStart = -Infinity;
           updateReadouts();
           anim = true;
         }
