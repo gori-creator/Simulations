@@ -286,7 +286,7 @@ export default defineSimulation({
 
     /* ---------------- Bildausschnitt und Ebenenmitten (Zielwerte) ---------------- */
     function interest(): { pts: V3[]; e: V3; f: V3 } {
-      const pts: V3[] = [[0, 0, 0]];
+      const pts: V3[] = mode() === 'll' ? [[0, 0, 0]] : [];
       let e: V3 = [0, 0, 0];
       let f: V3 = [0, 0, 0];
       const n = tv('n');
@@ -337,10 +337,10 @@ export default defineSimulation({
       const hi = [0, 1, 2].map((i) => Math.max(...pts.map((q) => q[i]!)));
       const mid = lo.map((v, i) => (v + hi[i]!) / 2);
       const half = Math.max(...lo.map((v, i) => (hi[i]! - v) / 2));
-      set(frameG[0]!, clamp(mid[0]!, -2.5, 2.5), 700);
-      set(frameG[1]!, clamp(mid[1]!, -2.5, 2.5), 700);
-      set(frameG[2]!, clamp(mid[2]!, -2.5, 3), 700);
-      set(frameG[3]!, clamp(Math.ceil(half + 2), 5, 10), 700);
+      set(frameG[0]!, clamp(mid[0]!, -4, 4), 700);
+      set(frameG[1]!, clamp(mid[1]!, -4, 4), 700);
+      set(frameG[2]!, clamp(mid[2]!, -4, 5), 700);
+      set(frameG[3]!, clamp(Math.ceil(half + 2), mode() === 'pd' ? 4 : 5, 10), 700);
       e.forEach((v, i) => set(cenE[i]!, v));
       f.forEach((v, i) => set(cenF[i]!, v));
       // Fälle und Pfad im Entscheidungsbaum
@@ -455,6 +455,14 @@ export default defineSimulation({
     }
     const pt = (q: V3, f = frac) => `(${f(q[0])}${sep}${f(q[1])}${sep}${f(q[2])})`;
     const deg = (v: number) => `${fmt.num(v, 1)}°`;
+    /** „= 1“ bei auf zwei Stellen exakten Werten, sonst „≈ 1,33“. */
+    const eqv = (v: number) => `${Math.abs(v * 100 - Math.round(v * 100)) < 1e-7 ? '=' : '≈'} ${n1(v)}`;
+    /** Betrag eines Vektors: ganzzahlig oder als Wurzel. */
+    const rt = (v: V3) => {
+      const q = normSq(v);
+      const r = Math.round(Math.sqrt(q));
+      return Math.abs(r * r - q) < 1e-9 ? n1(r) : `√${n1(q)}`;
+    };
 
     /* ---------------- Ziehen ---------------- */
     const r05 = (v: number, lim: number) => clamp(Math.round(v * 2) / 2, -lim, lim);
@@ -614,7 +622,7 @@ export default defineSimulation({
       if (grow < 0.01 || norm(u) < 1e-9) return;
       const C = gvec(frameG);
       const R = frameG[3]!.at(now);
-      const clip = clipLineToBox(sub(a, C), u, R * 1.05);
+      const clip = clipLineToBox(sub(a, C), u, R * 0.95);
       if (!clip) return;
       const [t0, t1] = clip;
       const tc = clamp(0, t0, t1);
@@ -651,7 +659,7 @@ export default defineSimulation({
       if (norm(n) < 1e-9 || grow < 0.01) return null;
       const [e1, e2] = planeBasis(n);
       const c0 = projectOntoPlane(center, n, c);
-      const h = frameG[3]!.at(now) * 0.74 * grow;
+      const h = frameG[3]!.at(now) * 0.62 * grow;
       const dark = ctx.theme.dark;
       const N = 10;
       const P = (x: number, y: number): V3 => add(c0, add(scale(e1, x * h), scale(e2, y * h)));
@@ -733,7 +741,7 @@ export default defineSimulation({
       tag(a, 'A', cg, { offset: [-12, 14], align: 'right', a: u0 });
       tag(b, 'B', ch, { offset: [-12, 14], align: 'right', a: u0 });
       tag(add(a, scale(u, 0.6)), 'u', cg, { offset: [8, 14], math: true, bg: false, arrow: true, size: 13, a: u0 });
-      tag(add(b, scale(v, 0.6)), 'v', ch, { offset: [8, 14], math: true, bg: false, arrow: true, size: 13, a: u0 });
+      tag(add(b, scale(v, 0.6)), 'v', ch, { offset: [-10, -10], align: 'right', math: true, bg: false, arrow: true, size: 13, a: u0 });
       const r = lineLine(a, u, b, v);
       // schneidend: Schnittpunkt und Winkel
       const ai = caseAlpha('ll:intersect') * u1;
@@ -760,7 +768,7 @@ export default defineSimulation({
           tag(r.footG, 'F₁', cr, { offset: [-12, 14], align: 'right', a: k, size: 12 });
           tag(r.footH, 'F₂', cr, { offset: [12, -12], a: k, size: 12 });
           const d = lineLine(tv('a'), tv('u'), tv('b'), tv('v')).distance;
-          tag(vec3.lerp(r.footG as Vec3, r.footH as Vec3, 0.5) as V3, res > 0.5 ? `d = ${n1(d * k)}` : 'd', cr, { offset: [14, 0], a: k });
+          tag(vec3.lerp(r.footG as Vec3, r.footH as Vec3, 0.5) as V3, res > 0.5 ? `d ${eqv(d * k)}` : 'd', cr, { offset: [14, 0], a: k });
         }
       }
       // parallel: Abstand als Lot von B auf g
@@ -774,7 +782,7 @@ export default defineSimulation({
           const k = (ap - 0.6) / 0.4;
           rightAngle(f, u, sub(b, f), alpha(cr, 0.9), k);
           const d = lineLine(tv('a'), tv('u'), tv('b'), tv('v')).distance;
-          tag(vec3.lerp(f as Vec3, b as Vec3, 0.5) as V3, res > 0.5 ? `d = ${n1(d * k)}` : 'd', cr, { offset: [14, 0], a: k });
+          tag(vec3.lerp(f as Vec3, b as Vec3, 0.5) as V3, res > 0.5 ? `d ${eqv(d * k)}` : 'd', cr, { offset: [14, 0], a: k });
         }
       }
       if (same > 0.02) tag(add(a, scale(u, -0.9)), 'g = h', cr, { offset: [12, 18], a: same * u1 });
@@ -836,7 +844,7 @@ export default defineSimulation({
           const k = (ap - 0.6) / 0.4;
           ball(f, cr, k, 5.5);
           rightAngle(f, u, sub(a, f), alpha(cr, 0.9), k);
-          tag(vec3.lerp(a as Vec3, f as Vec3, 0.5) as V3, res > 0.5 ? `d = ${n1(tr.distance * k)}` : 'd', cr, { offset: [14, 0], a: k });
+          tag(vec3.lerp(a as Vec3, f as Vec3, 0.5) as V3, res > 0.5 ? `d ${eqv(tr.distance * k)}` : 'd', cr, { offset: [14, 0], a: k });
         }
       }
       if (inP > 0.02) tag(add(a, scale(u, -0.8)), tt('g liegt in E', 'g lies in E'), cr, { offset: [12, 18], a: inP * u1 });
@@ -906,7 +914,7 @@ export default defineSimulation({
         if (ap > 0.6) {
           const kk = (ap - 0.6) / 0.4;
           ball(f, cr, kk, 5.5);
-          tag(vec3.lerp(a0 as Vec3, f as Vec3, 0.5) as V3, res > 0.5 ? `d = ${n1(tr.distance * kk)}` : 'd', cr, { offset: [14, 0], a: kk });
+          tag(vec3.lerp(a0 as Vec3, f as Vec3, 0.5) as V3, res > 0.5 ? `d ${eqv(tr.distance * kk)}` : 'd', cr, { offset: [14, 0], a: kk });
           rightAngle(f, pe.e1, sub(a0, f), alpha(cr, 0.9), kk);
         }
       }
@@ -958,8 +966,8 @@ export default defineSimulation({
         const pop = ease.outBack(l3);
         ball(F, cr, pop, 7);
         if (r.distance > 0.05) rightAngle(F, pl.e1, sub(P, F), alpha(cr, 0.9), l3);
-        tag(F, res > 0.5 ? `F${pt(tr.foot)}` : 'F', cr, { offset: [12, 18], a: l3 });
-        if (r.distance > 0.05) tag(vec3.lerp(P as Vec3, F as Vec3, 0.5) as V3, res > 0.5 ? `d = ${n1(tr.distance * l3)}` : 'd', cr, { offset: [14, 0], a: l3 });
+        if (r.distance > 0.05) tag(F, res > 0.5 ? `F${pt(tr.foot)}` : 'F', cr, { offset: [-12, 18], align: 'right', a: l3 });
+        if (r.distance > 0.05) tag(vec3.lerp(P as Vec3, F as Vec3, 0.5) as V3, res > 0.5 ? `d ${eqv(tr.distance * l3)}` : 'd', cr, { offset: [14, 0], a: l3 });
         else tag(F, tt('P liegt in E: d = 0', 'P lies in E: d = 0'), cr, { offset: [12, -16], a: l3 });
       }
       // Spiegelpunkt P′ = P + 2 · PF
@@ -970,7 +978,7 @@ export default defineSimulation({
         view.ball(end as Vec3, 7 / ppu(end), { color: mixColor(cp, ctx.theme.bg, 0.35) });
         tag(end, res > 0.5 ? `P′${pt(tr.mirror)}` : 'P′', cp, { offset: [12, 16], a: ma });
       }
-      normalArrow(add(pl.c0, add(scale(pl.e1, -pl.h * 0.62), scale(pl.e2, -pl.h * 0.55))), n, ce, nrmA.at(now) * u0, 'n', 62, r.signed >= 0 ? 1 : -1);
+      normalArrow(add(pl.c0, add(scale(pl.e1, pl.h * 0.7), scale(pl.e2, -pl.h * 0.7))), n, ce, nrmA.at(now) * u0, 'n', 62, r.signed >= 0 ? 1 : -1);
     }
 
     /* ---------------- Tafel ---------------- */
@@ -1089,7 +1097,7 @@ export default defineSimulation({
       const g = surface.g;
       const theme = ctx.theme;
       const colW = w / 2 - 6;
-      const rowY = [y0 + 11, y0 + 46, y0 + 76, y0 + 104];
+      const rowY = [y0 + 11, y0 + 50, y0 + 80, y0 + 108];
       const colX = (c: TreeNode['col']) => (c === 'L' ? x0 : c === 'R' ? x0 + w / 2 + 6 : x0 + w / 4);
       const show = showA.at(now);
       const cur = currentCase().split(':')[1]!;
@@ -1111,14 +1119,14 @@ export default defineSimulation({
         g.font = font(nd.leaf ? 800 : 650, size);
         let tw = g.measureText(nd.text).width;
         const stacked = nd.leaf && nd.row >= 2;
-        const maxW = stacked ? colW - 30 : nd.col === 'c' ? w : colW;
+        const maxW = stacked ? colW - 38 : nd.col === 'c' ? w : colW;
         while (tw + 16 > maxW && size > 10) {
           size -= 0.5;
           g.font = font(nd.leaf ? 800 : 650, size);
           tw = g.measureText(nd.text).width;
         }
         const bw = stacked ? maxW : Math.min(maxW, tw + 18);
-        const left = stacked ? colX(nd.col) + 30 : nd.col === 'c' ? x0 + w / 2 - bw / 2 : colX(nd.col) + colW / 2 - bw / 2;
+        const left = stacked ? colX(nd.col) + 38 : nd.col === 'c' ? x0 + w / 2 - bw / 2 : colX(nd.col) + colW / 2 - bw / 2;
         return { x: left, y, w: bw, size };
       };
       const edgeLabel = (yes: boolean, x: number, y: number, l: number, align: 'left' | 'right' | 'center' = 'center') =>
@@ -1137,14 +1145,14 @@ export default defineSimulation({
         g.beginPath();
         if (nd.leaf && nd.row >= 2) {
           // Stamm unter der Frage, Abzweig zum Ergebnis
-          const sx = colX(nd.col) + 12;
+          const sx = colX(nd.col) + 6;
           g.moveTo(sx, pb.y + 10);
           g.lineTo(sx, nb.y - 6);
           g.quadraticCurveTo(sx, nb.y, sx + 6, nb.y);
           g.lineTo(nb.x, nb.y);
           g.stroke();
           g.restore();
-          edgeLabel(nd.yes ?? true, sx + 9, nb.y - 7, l, 'left');
+          edgeLabel(nd.yes ?? true, sx + 8, nb.y - 7, l, 'left');
         } else {
           const ax = x0 + w / 2 + (nb.x + nb.w / 2 < x0 + w / 2 ? -14 : 14);
           const bx = nb.x + nb.w / 2;
@@ -1152,7 +1160,7 @@ export default defineSimulation({
           g.bezierCurveTo(ax, pb.y + 24, bx, nb.y - 24, bx, nb.y - 10);
           g.stroke();
           g.restore();
-          edgeLabel(nd.yes ?? true, (ax + bx) / 2 + (bx < ax ? -16 : 16), (pb.y + nb.y) / 2 + 1, l);
+          edgeLabel(nd.yes ?? true, bx + (bx < ax ? -7 : 7), nb.y - 17, l, bx < ax ? 'right' : 'left');
         }
       }
       // Knoten
@@ -1215,8 +1223,17 @@ export default defineSimulation({
       y += 14;
       const row = (label: string, value: string, color = theme.text) => {
         if (y > R.y + R.h - 8) return;
-        text(g, label, x0, y, { font: font(600, 12), color: theme.muted, align: 'left' });
-        text(g, value, x0 + w, y, { font: font(800, 12), color, align: 'right' });
+        // bei Platzmangel beide Schriften verkleinern (nicht unter 10 px)
+        let fs = 12;
+        const fits = () => {
+          g.font = font(600, fs);
+          const lw = g.measureText(label).width;
+          g.font = font(800, fs);
+          return lw + g.measureText(value).width + 10 <= w;
+        };
+        while (fs > 10 && !fits()) fs -= 0.5;
+        text(g, label, x0, y, { font: font(600, fs), color: theme.muted, align: 'left' });
+        text(g, value, x0 + w, y, { font: font(800, fs), color, align: 'right' });
         y += 20;
       };
       const lightT = animating() ? (now - animStart) / animMs() : 1;
@@ -1249,13 +1266,13 @@ export default defineSimulation({
             row(tt('Schnittwinkel φ', 'Angle φ'), q(deg(r.angleDeg)), CW());
           } else if (r.kind === 'skew') {
             const nn = cross(u, v);
-            row(tt('Abstand d', 'Distance d'), q(`${frac(Math.abs(dot(sub(b, a), nn)))} / ${n1(norm(nn))} ≈ ${n1(r.distance)}`), CR());
+            row(tt('Abstand d', 'Distance d'), q(`${frac(Math.abs(dot(sub(b, a), nn)))} / ${rt(nn)} ${eqv(r.distance)}`), CR());
             if (wide) row('F₁ / F₂', q(`${pt(r.footG)} / ${pt(r.footH)}`));
             row(tt('Winkel der Richtungen', 'Angle of directions'), q(deg(r.angleDeg)), CW());
           } else if (r.kind === 'parallel' || r.kind === 'identical') {
             const kf = dot(v, u) / dot(u, u);
             row(tt('Richtungen', 'Directions'), `v = ${frac(kf)} · u`);
-            row(r.kind === 'parallel' ? tt('Abstand d', 'Distance d') : tt('A liegt auf h', 'A lies on h'), r.kind === 'parallel' ? q(`≈ ${n1(r.distance)}`) : q('✓'), CR());
+            row(r.kind === 'parallel' ? tt('Abstand d', 'Distance d') : tt('A liegt auf h', 'A lies on h'), r.kind === 'parallel' ? q(eqv(r.distance)) : q('✓'), CR());
           } else row(tt('Hinweis', 'Note'), tt('Richtungsvektor 0', 'direction vector 0'), CR());
           break;
         }
@@ -1273,7 +1290,7 @@ export default defineSimulation({
               if (wide) row(tt('Einsetzen', 'Substituting'), q(`${n1(dot(n, a))} ${dot(n, u) < 0 ? '−' : '+'} ${n1(Math.abs(dot(n, u)))}t = ${n1(p.c)} ⇒ t = ${frac(r.t)}`));
               row(tt('Durchstoßpunkt D', 'Point D'), q(pt(r.point!)), CR());
               row('φ: sin φ = |n·u| / (|n|·|u|)', q(deg(r.angleDeg)), CW());
-            } else if (r.kind === 'parallel') row(tt('Abstand d', 'Distance d'), q(`≈ ${n1(r.distance)}`), CR());
+            } else if (r.kind === 'parallel') row(tt('Abstand d', 'Distance d'), q(eqv(r.distance)), CR());
             else row(tt('A in E', 'A in E'), q(`${n1(dot(n, a))} = ${n1(p.c)} ✓`), CR());
           }
           break;
@@ -1292,7 +1309,7 @@ export default defineSimulation({
             row('φ: cos φ = |n·m| / (|n|·|m|)', q(deg(r.angleDeg)), CW());
           } else if (r.kind === 'parallel') {
             row(tt('Normalen', 'Normals'), `m = ${frac(dot(m, n) / dot(n, n))} · n`);
-            row(tt('Abstand d', 'Distance d'), q(`≈ ${n1(r.distance)}`), CR());
+            row(tt('Abstand d', 'Distance d'), q(eqv(r.distance)), CR());
           } else if (r.kind === 'identical') {
             row(tt('Gleichungen', 'Equations'), tt('Vielfache voneinander', 'multiples of each other'));
           } else row(tt('Hinweis', 'Note'), tt('Normalenvektor 0', 'normal vector 0'), CR());
@@ -1316,24 +1333,23 @@ export default defineSimulation({
           const terms = n.map((c, i) => `${i === 0 ? (c < 0 ? '−' : '') : c < 0 ? ' − ' : ' + '}${n1(Math.abs(c))}·${P[i]! < 0 ? `(${n1(P[i]!)})` : n1(P[i]!)}`).join('');
           const cTxt = p.c < 0 ? ` + ${n1(-p.c)}` : ` − ${n1(p.c)}`;
           const lenTxt = Number.isInteger(norm(n)) || Math.abs(norm(n) - Math.round(norm(n))) < 1e-9 ? n1(norm(n)) : `√${n1(normSq(n))}`;
+          drawToks([{ kind: 'txt', s: 'd(P; E) =', bold: true }, { kind: 'frac', num: `|${terms}${cTxt}|`, den: lenTxt }], x0, y, w, wide ? 13 : 12);
+          y += 40;
           drawToks(
             [
-              { kind: 'txt', s: 'd(P; E) =', bold: true },
-              { kind: 'frac', num: `|${terms}${cTxt}|`, den: lenTxt },
               { kind: 'txt', s: '=' },
-              { kind: 'frac', num: q(n1(Math.abs(r.value))), den: lenTxt },
-              { kind: 'txt', s: '=' },
-              { kind: 'txt', s: q(Number.isInteger(r.distance * 1e6) ? n1(r.distance) : `≈ ${n1(r.distance)}`), color: CR(), bold: true },
+              { kind: 'frac', num: q(`|${n1(r.value)}|`), den: lenTxt },
+              { kind: 'txt', s: q(eqv(r.distance)), color: CR(), bold: true },
             ],
-            x0,
+            x0 + 52,
             y,
-            w,
+            w - 52,
             wide ? 13 : 12,
           );
-          y += 34;
-          row(tt('Abstand d(P; E)', 'Distance d(P; E)'), q(r.onPlane ? tt('0 (P liegt in E)', '0 (P lies in E)') : `${n1(r.distance)} ${tt('LE', 'units')}`), CR());
+          y += 32;
+          row(tt('Abstand d(P; E)', 'Distance d(P; E)'), q(r.onPlane ? tt('0 (P liegt in E)', '0 (P lies in E)') : `${eqv(r.distance).replace('= ', '')} ${tt('LE', 'units')}`), CR());
           if (wide) row(tt('Lotgerade', 'Perpendicular'), `x = p + t · n`);
-          row(tt('Lotfußpunkt F', 'Foot F'), q(`${pt(r.foot)}${wide ? `, t = ${frac(r.t)}` : ''}`), CR());
+          row(tt('Lotfußpunkt F', 'Foot F'), q(`${pt(r.foot)}${wide && w > 270 ? `, t = ${frac(r.t)}` : ''}`), CR());
           if (p.mir) row(tt('Spiegelpunkt P′', 'Mirror point P′'), q(pt(r.mirror)), CG());
         }
       }
@@ -1367,7 +1383,7 @@ export default defineSimulation({
             ctx.readout('res', `d = |${n1(dot(sub(b, a), nn))}| / ${n1(norm(nn))} ≈ ${n1(r.distance)} · F₁${pt(r.footG)}, F₂${pt(r.footH)}`);
           } else if (r.kind === 'parallel' || r.kind === 'identical') {
             ctx.readout('calc', tt(`v = ${frac(dot(v, u) / dot(u, u))} · u; A ${r.kind === 'identical' ? 'liegt' : 'liegt nicht'} auf h`, `v = ${frac(dot(v, u) / dot(u, u))} · u; A ${r.kind === 'identical' ? 'lies' : 'does not lie'} on h`));
-            ctx.readout('res', r.kind === 'parallel' ? `d = |(b − a) × u| / |u| ≈ ${n1(r.distance)}` : tt('d = 0', 'd = 0'));
+            ctx.readout('res', r.kind === 'parallel' ? `d = |(b − a) × u| / |u| ${eqv(r.distance)}` : tt('d = 0', 'd = 0'));
           } else {
             ctx.readout('calc', null);
             ctx.readout('res', null);
@@ -1385,13 +1401,13 @@ export default defineSimulation({
           ctx.readout('lage', lage[r.kind]!);
           if (r.kind === 'intersect') {
             ctx.readout('calc', `n · u = ${n1(r.nu)} ≠ 0; ${n1(dot(n, a))} + ${n1(r.nu)} · t = ${n1(p.c)} ⇒ t = ${frac(r.t)}`);
-            ctx.readout('res', `D${pt(r.point!)}, sin φ = ${n1(Math.abs(r.nu))} / (${n1(norm(n))} · ${n1(norm(u))}), φ ≈ ${deg(r.angleDeg)}`);
+            ctx.readout('res', `D${pt(r.point!)}, sin φ = ${n1(Math.abs(r.nu))} / (${rt(n)} · ${rt(u)}), φ ≈ ${deg(r.angleDeg)}`);
           } else if (r.kind === 'invalid') {
             ctx.readout('calc', null);
             ctx.readout('res', null);
           } else {
             ctx.readout('calc', `n · u = 0; n · a = ${n1(dot(n, a))} ${r.kind === 'inPlane' ? '=' : '≠'} ${n1(p.c)}`);
-            ctx.readout('res', r.kind === 'parallel' ? `d = |${n1(dot(n, a))} − ${n1(p.c)}| / ${n1(norm(n))} ≈ ${n1(r.distance)}` : 'd = 0');
+            ctx.readout('res', r.kind === 'parallel' ? `d = |${n1(dot(n, a))} − ${n1(p.c)}| / ${rt(n)} ${eqv(r.distance)}` : 'd = 0');
           }
           break;
         }
@@ -1413,7 +1429,7 @@ export default defineSimulation({
             ctx.readout('res', null);
           } else {
             ctx.readout('calc', `m = ${frac(dot(m, n) / dot(n, n))} · n`);
-            ctx.readout('res', r.kind === 'parallel' ? `d ≈ ${n1(r.distance)}` : 'd = 0');
+            ctx.readout('res', r.kind === 'parallel' ? `d ${eqv(r.distance)}` : 'd = 0');
           }
           break;
         }
@@ -1427,8 +1443,8 @@ export default defineSimulation({
             break;
           }
           ctx.readout('lage', r.onPlane ? tt('P liegt in E.', 'P lies in E.') : r.signed > 0 ? tt('P liegt auf der Seite, in die n zeigt.', 'P lies on the side n points to.') : tt('P liegt auf der Seite, die n abgewandt ist.', 'P lies on the side away from n.'));
-          ctx.readout('calc', `d(P; E) = |n · p − c| / |n| = |${n1(r.value)}| / ${n1(norm(n))}`);
-          ctx.readout('res', `d ≈ ${n1(r.distance)}, F${pt(r.foot)}${p.mir ? `, P′${pt(r.mirror)}` : ''}`);
+          ctx.readout('calc', `d(P; E) = |n · p − c| / |n| = |${n1(r.value)}| / ${rt(n)}`);
+          ctx.readout('res', `d ${eqv(r.distance)}, F${pt(r.foot)}${p.mir ? `, P′${pt(r.mirror)}` : ''}`);
         }
       }
     }
