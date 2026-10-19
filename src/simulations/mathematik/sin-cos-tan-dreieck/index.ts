@@ -1099,7 +1099,13 @@ export default defineSimulation({
       const adjPos = bez(centreAt(anchorB, psJ.w / 2, false), ctrl(fs(30, 22)), centreAt(anchorA, psJ.w / 2, true), w);
       fpill(adjPos[0], adjPos[1], adjSrc, { size: roleSz, alpha: roleA * lerp(0.75, 1, ON.adj.v), border: withAlpha(col.adj(), 0.55), bounds: R });
       fpill(oppPos[0], oppPos[1], oppSrc, { size: roleSz, alpha: roleA * lerp(0.75, 1, ON.opp.v), border: withAlpha(col.opp(), 0.55), bounds: R });
-      sidePill(midC[0], midC[1], nC, 8 + pillSize(cLen, szL).h + 4, `\\c{h}{\\t{${say(ROLE_NAME.hyp)}}}`, { size: roleSz, alpha: roleA * lerp(0.75, 1, ON.hyp.v), border: withAlpha(col.hyp(), 0.55), bounds: R });
+      {
+        // Rollenname direkt über der Längenangabe der Hypotenuse
+        const psC = pillSize(cLen, szL);
+        const offC = Math.abs(nC[0]) * psC.w / 2 + Math.abs(nC[1]) * psC.h / 2 + 8;
+        const roleH = `\\c{h}{\\t{${say(ROLE_NAME.hyp)}}}`;
+        fpill(midC[0] + nC[0] * offC, midC[1] + nC[1] * offC - psC.h - 3, roleH, { size: roleSz, alpha: roleA * lerp(0.75, 1, ON.hyp.v), border: withAlpha(col.hyp(), 0.55), bounds: R });
+      }
       // Ecken
       label(pa, 'A', theme.text, [-1, 0.5], k.panel);
       label(pc, 'C', theme.text, [1, 1], k.panel, 4);
@@ -1251,10 +1257,12 @@ export default defineSimulation({
         fpill(Math.max(o[0] + ps.w / 2 + 4, (o[0] + pF[0]) / 2), below, `\\c{a}{cos α${v3(c)}}`, { size: szL, alpha: lab, bounds: R });
       }
       {
-        const n: Px = [-(pP[1] - o[1]), pP[0] - o[0]];
+        let n: Px = [-(pP[1] - o[1]), pP[0] - o[0]];
         const nl = Math.hypot(n[0], n[1]) || 1;
         const mx = (o[0] + pP[0]) / 2;
         const my = (o[1] + pP[1]) / 2;
+        // nach außen (weg vom Lotfußpunkt F), damit „1“ nicht im Dreieck liegt
+        if (n[0] * (pF[0] - mx) + n[1] * (pF[1] - my) > 0) n = [-n[0], -n[1]];
         sidePill(mx, my, [n[0] / nl, n[1] / nl], 6, `\\c{h}{1}`, { alpha: lab, size: szL });
       }
       {
@@ -1734,8 +1742,8 @@ export default defineSimulation({
       for (const a of [LADDER_MIN, LADDER_MAX]) line(foot, [foot[0] + Math.cos(rad(a)) * rS, foot[1] - Math.sin(rad(a)) * rS], withAlpha(col.ok(), 0.9), 1.6, { dash: [4, 3] });
       g.restore();
       {
-        const tip: Px = [foot[0] + Math.cos(rad(LADDER_MIN)) * rS, foot[1] - Math.sin(rad(LADDER_MIN)) * rS];
-        fpill(tip[0] + 8, tip[1] + 4, `\\c{ok}{${LADDER_MIN}° \\t{${say(L('bis', 'to'))}} ${LADDER_MAX}°}`, { align: 'left', size: fs(11.5, 11), alpha: lab, border: withAlpha(col.ok(), 0.6), bounds: R });
+        const tip: Px = [foot[0] + Math.cos(rad(LADDER_MAX)) * rS, foot[1] - Math.sin(rad(LADDER_MAX)) * rS];
+        fpill(tip[0] - 10, tip[1] - 4, `\\c{ok}{${LADDER_MIN}° \\t{${say(L('bis', 'to'))}} ${LADDER_MAX}°}`, { align: 'right', size: fs(11.5, 11), alpha: lab, border: withAlpha(col.ok(), 0.6), bounds: R });
       }
       // Leiter: zwei Holme mit Sprossen
       const dir: Px = [top[0] - foot[0], top[1] - foot[1]];
