@@ -616,7 +616,26 @@ export const physik: Subject = {
           id: 'gase',
           title: L('Gase', 'Gases'),
           grades: [9, 13],
-          simulations: [planned('gasgesetze', L('Gasgesetze', 'Gas laws'), [9, 13], { uni: true })],
+          simulations: [
+            {
+              id: 'gasgesetze',
+              status: 'ready',
+              slug: L('gasgesetze', 'gas-laws'),
+              title: L('Gasgesetze', 'Gas laws'),
+              summary: L(
+                'Gas im Zylinder mit Kolben im Teilchenbild: isotherm (Boyle-Mariotte), isobar (Gay-Lussac) und isochor (Amontons) mit Manometer und Thermometer. Messreihen im p-V-, p-1/V-, V-T- und p-T-Diagramm, Extrapolation auf den absoluten Nullpunkt und die allgemeine Gasgleichung p · V = n · R · T mit eingesetzten Werten.',
+                'Gas in a cylinder with a piston in the particle model: isothermal (Boyle–Mariotte), isobaric (Gay-Lussac) and isochoric (Amontons) with a pressure gauge and a thermometer. Data series in p–V, p–1/V, V–T and p–T graphs, extrapolation to absolute zero and the ideal gas law p · V = n · R · T with the values substituted.',
+              ),
+              grades: [9, 13],
+              uni: true,
+              kmk: ['P-BK-Materie', 'P-BK-Mathematisieren', 'P-E', 'P-S'],
+              keywords: L(
+                ['Gasgesetze', 'ideales Gas', 'allgemeine Gasgleichung', 'Boyle-Mariotte', 'Gay-Lussac', 'Amontons', 'isotherm', 'isobar', 'isochor', 'Druck', 'Volumen', 'Temperatur', 'Kelvin', 'absoluter Nullpunkt', 'Stoffmenge', 'Gaskonstante', 'Manometer', 'Teilchenmodell', 'Linearisierung', 'Zustandsänderung'],
+                ['gas laws', 'ideal gas', 'ideal gas law', 'Boyle’s law', 'Charles’s law', 'Gay-Lussac', 'Amontons', 'isothermal', 'isobaric', 'isochoric', 'pressure', 'volume', 'temperature', 'kelvin', 'absolute zero', 'amount of substance', 'gas constant', 'pressure gauge', 'particle model', 'linearisation'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
       ],
     },
