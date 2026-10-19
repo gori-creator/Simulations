@@ -427,7 +427,23 @@ export const mathematik: Subject = {
       kmk: ['M-L2', 'M-L4', 'M-K3'],
       topics: [
         topic('groessen', L('Größen und Einheiten', 'Measures and units'), [
-          planned('einheiten', L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'), [5, 5]),
+          {
+            id: 'einheiten',
+            status: 'ready',
+            slug: L('einheiten-umrechnen-einheitentafel', 'converting-units-chart'),
+            title: L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'),
+            summary: L(
+              'Eine Größe mit Ziffernkärtchen in die Einheitentafel legen und zusehen, wie beim Umrechnen das Komma wandert und Nullen ergänzt werden. Für Länge, Masse, Fläche, Volumen und Zeit, mit Lineal, Waage, Kästchenquadrat, Würfel und Uhr zur Anschauung.',
+              'Place a quantity in the unit chart with digit cards and watch the decimal point move and zeros appear as you convert. For length, mass, area, volume and time, with ruler, balance, grid square, cube and clock to picture it.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen'],
+              ['units', 'convert', 'unit conversion chart', 'conversion factor', 'move the decimal point', 'length', 'mass', 'weight', 'time', 'area', 'volume', 'litre', 'millilitre', 'km', 'm', 'cm', 'mm', 'kg', 'g', 'tonne', 'm²', 'cm²', 'are', 'hectare', 'cm³', 'dm³', 'hour', 'minute', 'second', 'measures'],
+            ),
+            thumb: 'generic',
+          },
           planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
