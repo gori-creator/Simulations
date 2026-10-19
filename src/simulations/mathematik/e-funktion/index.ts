@@ -321,7 +321,7 @@ export default defineSimulation({
         const x0 = p.x0;
         const y0 = Math.exp(x0);
         ctx.readout('f', { html: `${fx} = e<sup>${v('x')}</sup>` });
-        ctx.readout('P', `P${fmt.point(x0, Math.round(y0 * 1000) / 1000, 3)}`);
+        ctx.readout("P", `P${fmt.point(x0, y0, y0 < 1 ? 4 : 3)}`);
         ctx.readout('m', { html: `${v('m')} = ${v('f')}′(${fmt.num(x0)}) = e<sup>${fmt.num(x0)}</sup> ≈ ${N3(y0)} = ${v('f')}(${fmt.num(x0)})` });
         const c = y0 * (1 - x0);
         const cTxt = Math.abs(c) < 5e-4 ? '' : ` ${c < 0 ? '−' : '+'} ${N3(Math.abs(c))}`;
@@ -635,12 +635,6 @@ export default defineSimulation({
       }
       label(hx - 12, hy - 4, `(1 | ${hidden() && !atE ? 'b' : bTxt(b)})`, c.B, 'right', size - 0.5, k.labels * ka);
 
-      // Namen
-      const placed: Rect[] = [];
-      const lf = curveLabel(f, atE ? `f = f′` : `f(x) = ${hidden() && !atE ? 'b' : bTxt(b)}^{x}`, c.f, k.labels, -1);
-      if (lf) placed.push(lf);
-      if (!atE || close < 0.99) curveLabel(d, 'f′', c.d, k.labels * (1 - close), 1, placed);
-
       // Aussage oben bzw. unten
       const top = r.y + 24;
       const src = atE
@@ -649,7 +643,13 @@ export default defineSimulation({
           ? `\\c{d}{f′(x)} = ln b · \\c{f}{f(x)}`
           : `\\c{d}{f′(x)} = ln ${bTxt(b)} · \\c{f}{f(x)} ≈ ${fmt.num(lb, 3)} · \\c{f}{f(x)}`;
       const pb = fit(src, r.w - 40, size + (atE ? 1 : 0), th().text, 700);
-      pill(r.x + 18 + pb.w / 2, top, src, { border: atE ? mixColor(c.f, c.d, 0.5) : undefined, size: size + (atE ? 1 : 0), alpha: k.labels, maxW: r.w - 40, glow: atE ? 0.5 + pulse : 0 });
+      const pr = pill(r.x + 18 + pb.w / 2, top, src, { border: atE ? mixColor(c.f, c.d, 0.5) : undefined, size: size + (atE ? 1 : 0), alpha: k.labels, maxW: r.w - 40, glow: atE ? 0.5 + pulse : 0 });
+
+      // Namen (nicht unter der Aussage)
+      const placed: Rect[] = [pr];
+      const lf = curveLabel(f, atE ? `f = f′` : `f(x) = ${hidden() && !atE ? 'b' : bTxt(b)}^{x}`, c.f, k.labels, -1, placed);
+      if (lf) placed.push(lf);
+      if (!atE || close < 0.99) curveLabel(d, 'f′', c.d, k.labels * (1 - close), 1, placed);
     }
 
     /* ---------- Ansicht „Tangente“ ---------- */
@@ -667,7 +667,7 @@ export default defineSimulation({
 
       // Asymptote y = 0
       const yAx = plot.py(0);
-      label(r.x + 10, yAx - 13, tt('Asymptote y = 0', 'asymptote y = 0'), th().muted, 'left', size - 1.5, k.labels * 0.9 * clamp01((plot.px(x0 - 1) - r.x - 150) / 40));
+      label(r.x + 10, yAx - 13, tt('Asymptote y = 0', 'asymptote y = 0'), th().muted, 'left', size - 1.5, k.labels * 0.9 * clamp01((plot.px(x0 - 1) - r.x - 150) / 40) * (1 - clamp01(inv * 3)));
 
       // Umkehrfunktion: Spiegelachse y = x
       if (inv > 0.001) {
@@ -791,12 +791,12 @@ export default defineSimulation({
         if (tall) label(P[0] - 12, P[1] - 15, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'right', size, ka * k.labels);
         else label(P[0] + 4, P[1] - 34, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'left', size, ka * k.labels);
       }
-      curveLabel(f, `f(x) = ${EU}^{x}`, c.f, k.labels, -1, []);
 
       // Merksatz-Pille oben links
       const src = hidden() ? `m = \\c{d}{f′(x_{0})} = \\c{f}{f(x_{0})}` : `m = \\c{d}{f′(x_{0})} = \\c{f}{f(x_{0})} ≈ ${fmt.num(y0, 3)}`;
       const box = fit(src, r.w - 40, size, th().text, 700);
-      pill(r.x + 18 + Math.min(box.w, r.w - 40) / 2 + 2, r.y + 24, src, { border: c.tan, size, alpha: k.labels, maxW: r.w - 40 });
+      const pr = pill(r.x + 18 + Math.min(box.w, r.w - 40) / 2 + 2, r.y + 24, src, { border: c.tan, size, alpha: k.labels, maxW: r.w - 40 });
+      curveLabel(f, `f(x) = ${EU}^{x}`, c.f, k.labels, -1, [pr]);
     }
 
     /* ---------- Ansicht „e entsteht“ ---------- */
@@ -995,8 +995,8 @@ export default defineSimulation({
       const spare = Math.max(0, avail - need);
       const extra = Math.min(size * 0.6, spare / Math.max(1, lines.length));
       lines.forEach((ln, i) => {
-        const s = Math.max(10, size * (ln.scale ?? 1) * Math.min(1, k + 0.08));
-        const lh = s * 1.45 * Math.min(1, k) + extra;
+        const s = Math.max(10, size * (ln.scale ?? 1) * Math.min(1, k + 0.04));
+        const lh = Math.max(s * 1.3, size * (ln.scale ?? 1) * 1.45 * Math.min(1, k)) + extra;
         const aa = clamp01(stagger * (lines.length + 2) - i) * clamp01(change * 2.4 - i * 0.12);
         g.save();
         g.globalAlpha *= 0.25 + 0.75 * ease.outCubic(aa);
@@ -1045,7 +1045,7 @@ export default defineSimulation({
 
       // Skala: Lage von ln b (= f′(x) : f(x)) zwischen ln 1,5 und ln 4
       const avail = r.y + r.h - pad - y;
-      const scaleH = Math.min(78, Math.max(56, avail - size * 3.2));
+      const scaleH = Math.min(78, Math.max(46, avail - size * 4.6));
       const sx0 = r.x + pad + 38;
       const sx1 = r.x + r.w - pad - 8;
       const l0 = Math.log(B_MIN);
@@ -1390,7 +1390,7 @@ export default defineSimulation({
       const v = view();
       if (v === 'limit') {
         cplot.resize();
-        cplot.setRangePadded([0, 1], [0.8, 2.95], { left: 46, bottom: 34, top: 14, right: wide() ? 96 : 84 });
+        cplot.setRangePadded([0, 1], [0, 2.95], { left: 40, bottom: 26, top: 14, right: wide() ? 96 : 84 });
         cplot.begin();
         if (p.grid) cplot.grid();
         cplot.axes();
@@ -1413,7 +1413,7 @@ export default defineSimulation({
       const size = textSize() + 0.5;
       const slide = (1 - k.cards) * 14;
       const ca = k.cards;
-      const split = v === 'base' ? 0.56 : v === 'tangent' ? 0.47 : 0.52;
+      const split = v === 'base' ? 0.6 : v === 'tangent' ? 0.47 : 0.52;
       const h1 = Math.round((col.h - gap) * split);
       const r1: Rect = { x: col.x + slide, y: col.y, w: col.w, h: h1 };
       const r2: Rect = { x: col.x + slide, y: col.y + h1 + gap, w: col.w, h: col.h - h1 - gap };
