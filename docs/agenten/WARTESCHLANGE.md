@@ -19,7 +19,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - P05 fertig — stoesse, kreisbewegung, planetenbahnen
 - P06 fertig — federpendel, resonanz, wellen-ausbreitung
 - P07 fertig — doppler-effekt, interferenz, stehende-wellen (15.10.)
-- P08 läuft (Physik) — teilchenmodell (fertig 18.10.), gasgesetze, radioaktiver-zerfall
+- P08 läuft (Physik) — teilchenmodell (fertig 18.10.), gasgesetze (fertig 19.10.), radioaktiver-zerfall
 - P09 offen — feldlinien, kondensator, lorentzkraft
 - P10 offen — induktion, doppelspalt, photoeffekt
 - P11 offen — linienspektren, elektronenbeugung
