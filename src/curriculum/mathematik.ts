@@ -1188,7 +1188,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('ableitungsfunktion', L('Ableitungsfunktion grafisch', 'The derivative function graphically'), [11, 12]),
+          {
+            id: 'ableitungsfunktion',
+            status: 'ready',
+            slug: L('ableitungsfunktion-grafisch', 'derivative-function-graphically'),
+            title: L('Ableitungsfunktion grafisch', 'The derivative function graphically'),
+            summary: L(
+              'Ein Punkt läuft über den Graphen, die Tangentensteigung wird als Punkt (x | f′(x)) eingetragen – so entsteht der Graph von f′ als Spur. Extremstellen von f liegen bei Nullstellen von f′, Wendestellen bei Extremstellen von f′.',
+              'A point runs along the graph and the slope of the tangent is plotted as (x | f′(x)) – the graph of f′ appears as a trace. Extrema of f sit at zeros of f′, inflection points at extrema of f′.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Ableitung', 'Ableitungsfunktion', 'Tangente', 'Steigung', 'Steigungsdreieck', 'grafisches Ableiten', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Sinus', 'Kosinus'],
+              ['derivative', 'derivative function', 'tangent', 'slope', 'slope triangle', 'graphical differentiation', 'monotonicity', 'extremum', 'inflection point', 'sine', 'cosine'],
+            ),
+            thumb: 'generic',
+          },
           planned('kurvendiskussion', L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'), [11, 12]),
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
