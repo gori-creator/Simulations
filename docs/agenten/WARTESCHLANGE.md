@@ -38,7 +38,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
 - M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
 - M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
-- M13 läuft (Mathe 1) — potenzfunktionen (fertig), logarithmus, e-funktion (fertig)
+- M13 fertig (Mathe 1, 19.10.) — potenzfunktionen, logarithmus, e-funktion
 - M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
 - M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
 - M16 fertig — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (fertig 18.10., Mathe 1)
