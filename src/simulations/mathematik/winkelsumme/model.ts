@@ -22,7 +22,7 @@ export type Pt = readonly [number, number];
 
 /** Breite und Höhe des Karopapiers in Kästchen (Koordinaten 0 … GRID_W bzw. 0 … GRID_H). */
 export const GRID_W = 16;
-export const GRID_H = 10;
+export const GRID_H = 12;
 /** Kleinste und größte Eckenzahl im Vieleck-Modus. */
 export const N_MIN = 3;
 export const N_MAX = 10;
@@ -324,7 +324,7 @@ export function regularPolygon(n: number, cx: number, cy: number, r: number): Pt
 
 /** Regelmäßiges n-Eck in der Mitte des Karopapiers (Radius so, dass es mit Rand hineinpasst). */
 export function regularOnGrid(n: number): Pt[] {
-  return regularPolygon(n, GRID_W / 2, GRID_H / 2, n === 3 ? 4.9 : 4.6).map((p) => [round(p[0], 4), round(p[1], 4)] as Pt);
+  return regularPolygon(n, GRID_W / 2, GRID_H / 2, n === 3 ? 5.6 : 5.2).map((p) => [round(p[0], 4), round(p[1], 4)] as Pt);
 }
 
 /** Alle Seiten und alle Winkel gleich (im Rahmen von `tol`)? */

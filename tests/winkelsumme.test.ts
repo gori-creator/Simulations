@@ -143,7 +143,7 @@ describe('Modell: Innenwinkelsumme – Vieleck', () => {
         expect(p[0]).toBeGreaterThanOrEqual(0);
         expect(p[0]).toBeLessThanOrEqual(16);
         expect(p[1]).toBeGreaterThanOrEqual(0);
-        expect(p[1]).toBeLessThanOrEqual(10);
+        expect(p[1]).toBeLessThanOrEqual(12);
       }
     }
   });
@@ -289,6 +289,7 @@ describe('Modell: Innenwinkelsumme – Hilfsfunktionen', () => {
     expect(formatPoints(P)).toBe('3,2;11,1.5;13.5,6.5');
     expect(parsePoints('1,1;2,2')).toBeNull();
     expect(parsePoints('1,1;2,2;20,3')).toBeNull();
+    expect(parsePoints('1,1;2,2;3,13')).toBeNull();
     expect(parsePoints('a,b;1,1;2,2')).toBeNull();
     expect(parsePoints(formatPoints(regularOnGrid(10)))).toHaveLength(10);
   });

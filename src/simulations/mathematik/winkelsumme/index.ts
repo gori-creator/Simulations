@@ -61,8 +61,8 @@ const NGON_IN: Loc[] = [
   L('im Neuneck', 'in a nonagon'),
   L('im Zehneck', 'in a decagon'),
 ];
-const DEFAULT_PTS = '2.5,2;10,1;14,4.5;9.5,9;3,7';
-const CONCAVE6 = '2,1;14,1;14,9;8,5.5;2,9;4,5';
+const DEFAULT_PTS = '2.5,2;10,1;14,5;9.5,10.5;3,8.5';
+const CONCAVE6 = '2,1;14,1;14,11;8,6.5;2,11;4,6';
 const REGULAR8 = formatPoints(regularOnGrid(8));
 
 /** Schritte der beiden Begründungen im Dreieck. */
@@ -128,7 +128,7 @@ class Prog {
 export default defineSimulation({
   id: 'winkelsumme',
   dragHint: true,
-  layout: { aspect: 1.62, aspectNarrow: 0.6 },
+  layout: { aspect: 1.75, aspectNarrow: 0.6 },
   groups: [
     { id: 'pts', label: L('Ecken (in Kästchen)', 'Corners (in grid squares)') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -150,7 +150,7 @@ export default defineSimulation({
     { key: 'bx', type: 'number', group: 'pts', label: L('B: nach rechts', 'B: right'), min: 0, max: GRID_W, step: 0.5, default: 13.5, visibleIf: isMode('tri') },
     { key: 'by', type: 'number', group: 'pts', label: L('B: nach oben', 'B: up'), min: 0, max: GRID_H, step: 0.5, default: 2.5, visibleIf: isMode('tri') },
     { key: 'cx', type: 'number', group: 'pts', label: L('C: nach rechts', 'C: right'), min: 0, max: GRID_W, step: 0.5, default: 8, visibleIf: isMode('tri') },
-    { key: 'cy', type: 'number', group: 'pts', label: L('C: nach oben', 'C: up'), min: 0, max: GRID_H, step: 0.5, default: 9, visibleIf: isMode('tri') },
+    { key: 'cy', type: 'number', group: 'pts', label: L('C: nach oben', 'C: up'), min: 0, max: GRID_H, step: 0.5, default: 10.5, visibleIf: isMode('tri') },
     {
       key: 'pts',
       type: 'text',
@@ -159,7 +159,7 @@ export default defineSimulation({
       default: DEFAULT_PTS,
       maxLength: 200,
       placeholder: L('z. B. 2,1;14,1;8,9', 'e.g. 2,1;14,1;8,9'),
-      help: L('Einfacher: die Ecken im Bild ziehen. 0 ≤ x ≤ 16, 0 ≤ y ≤ 10, Dezimalpunkt.', 'Easier: drag the corners in the picture. 0 ≤ x ≤ 16, 0 ≤ y ≤ 10, decimal point.'),
+      help: L('Einfacher: die Ecken im Bild ziehen. 0 ≤ x ≤ 16, 0 ≤ y ≤ 12, Dezimalpunkt.', 'Easier: drag the corners in the picture. 0 ≤ x ≤ 16, 0 ≤ y ≤ 12, decimal point.'),
       visibleIf: isMode('poly'),
     },
     { key: 'ext', type: 'boolean', label: L('Außenwinkel', 'Exterior angles'), help: L('Verlängert jede Seite und zeigt den Winkel, um den man an der Ecke abbiegt.', 'Extends each side and shows the angle you turn through at the corner.'), default: false },
@@ -225,7 +225,10 @@ export default defineSimulation({
     let polyCache: { key: string; pts: Pt[] } | null = null;
     function polyFromParams(): Pt[] {
       const key = `${p.pts}|${p.n}`;
-      if (polyCache?.key !== key) polyCache = { key, pts: parsePoints(p.pts) ?? regularOnGrid(p.n) };
+      if (polyCache?.key !== key) {
+        const q = parsePoints(p.pts);
+        polyCache = { key, pts: q && q.length === p.n ? q : regularOnGrid(p.n) };
+      }
       return polyCache.pts;
     }
     const target = (): Pt[] => (mode() === 'tri' ? triFromParams() : polyFromParams());
@@ -756,7 +759,13 @@ export default defineSimulation({
       g.stroke();
       const lr = clamp(r * 0.78, 0, r - 7);
       const [lx, ly] = polar(o, c.mid, Math.max(lr, 14 / Math.max(0.25, Math.sin(rad(Math.min(89, c.sweep / 2))))));
-      text(g, name, lx, ly, { font: `italic 700 ${layout().big ? 17 : 14}px ${theme.mathFont}`, color: col });
+      // Name aufrecht, auch wenn das Stück gerade gedreht wird
+      const m = g.getTransform();
+      g.save();
+      g.translate(lx, ly);
+      g.rotate(-Math.atan2(m.b, m.a));
+      text(g, name, 0, 0, { font: `italic 700 ${layout().big ? 17 : 14}px ${theme.mathFont}`, color: col });
+      g.restore();
     }
 
     /** Gemeinsamer Radius der Winkelstücke: Sie müssen ganz ins Dreieck passen. */
@@ -867,13 +876,9 @@ export default defineSimulation({
         }
         if (tv > 0.9) {
           const a = clamp((tv - 0.9) / 0.1, 0, 1);
-          const c = P[2]!;
-          // Normale weg vom Dreieck
-          const nrm: XY = [-dAB[1], dAB[0]];
-          const towards = (P[0]![0] - c[0]) * nrm[0] + (P[0]![1] - c[1]) * nrm[1] > 0 ? -1 : 1;
           g.save();
           g.globalAlpha = a;
-          labelAt('α + β + γ = 180°', c[0] + nrm[0] * towards * 22, c[1] + nrm[1] * towards * 22, `800 ${big ? 16 : 13}px ${theme.font}`, theme.text);
+          equationAtC('α + β + γ = 180°', P, `800 ${big ? 16 : 13}px ${theme.font}`);
           g.restore();
         }
       }
@@ -992,8 +997,6 @@ export default defineSimulation({
       const hk = clamp((pv - 0.75) / 0.2, 0, 1);
       if (hk > 0) {
         const g = surface.g;
-        const nrm: XY = [-dAB[1], dAB[0]];
-        const inside = (P[0]![0] - c[0]) * nrm[0] + (P[0]![1] - c[1]) * nrm[1] > 0 ? 1 : -1;
         const from = dirAB;
         const sw = halfSweep(dirAB, P, c);
         g.save();
@@ -1004,12 +1007,40 @@ export default defineSimulation({
         g.setLineDash([5, 4]);
         g.stroke();
         g.restore();
-        const away = -inside;
         g.save();
         g.globalAlpha = clamp((pv - 0.85) / 0.12, 0, 1);
-        labelAt('α′ + γ + β′ = 180°', c[0] + nrm[0] * away * 22, c[1] + nrm[1] * away * 22, `800 ${big ? 15 : 12.5}px ${theme.font}`, theme.text);
+        equationAtC('α′ + γ + β′ = 180°', P, `800 ${big ? 15 : 12.5}px ${theme.font}`);
         g.restore();
       }
+    }
+
+    /**
+     * Gleichung an der Geraden g durch C: auf der Seite außerhalb des Dreiecks,
+     * entlang g seitlich versetzt (dorthin, wo mehr Platz ist), damit sie den
+     * Namen C nicht verdeckt.
+     */
+    function equationAtC(str: string, P: XY[], font: string): void {
+      const g = surface.g;
+      const { paper } = layout();
+      const c = P[2]!;
+      const d = unit(P[0]!, P[1]!);
+      const nrm: XY = [-d[1], d[0]];
+      const out = (P[0]![0] - c[0]) * nrm[0] + (P[0]![1] - c[1]) * nrm[1] > 0 ? -1 : 1;
+      g.font = font;
+      const w = g.measureText(str).width;
+      const room = (sgn: number) => {
+        const x = c[0] + sgn * d[0] * (w / 2 + 30);
+        return Math.min(x - paper.x, paper.x + paper.w - x);
+      };
+      const sgn = room(1) >= room(-1) ? 1 : -1;
+      let x = c[0] + sgn * d[0] * (w / 2 + 30) + nrm[0] * out * 16;
+      let y = c[1] + sgn * d[1] * (w / 2 + 30) + nrm[1] * out * 16;
+      // kein Platz außerhalb (C am Rand): ins Dreieck hinein
+      if (y < paper.y + 12 || y > paper.y + paper.h - 12) {
+        x = c[0] + sgn * d[0] * (w / 2 + 30) - nrm[0] * out * 16;
+        y = c[1] + sgn * d[1] * (w / 2 + 30) - nrm[1] * out * 16;
+      }
+      labelAt(str, x, y, font, ctx.theme.text);
     }
 
     /** Halbkreis an g von Richtung AB aus, auf der Seite des Dreiecks (±180°). */
@@ -1240,8 +1271,9 @@ export default defineSimulation({
           const d = Math.max(rr + 8, 11 / half) + w * 0.5 * Math.abs(Math.cos(rad(c.mid))) + 7 * Math.abs(Math.sin(rad(c.mid)));
           const [x, y] = polar(P[i]!, c.mid, d);
           g.save();
-          g.globalAlpha = clamp(k, 0, 1);
-          labelAt(label, x, y, font, reflex ? warnColor() : theme.text);
+          // während der Zerlegung stehen die 180° der Dreiecke im Vordergrund
+          g.globalAlpha = clamp(k, 0, 1) * (showSplitArcs ? 1 - clamp(sv * 3, 0, 1) : 1);
+          if (g.globalAlpha > 0.01) labelAt(label, x, y, font, reflex ? warnColor() : theme.text);
           g.restore();
         }
         // Winkel der Dreiecke an ihren Ecken
@@ -1263,8 +1295,14 @@ export default defineSimulation({
               wedge(P[i]!, rr * ka, d1, sw, col, 0.3, 1.8);
             }
             // 180° in der Mitte des Dreiecks
-            const cx = (P[t[0]]![0] + P[t[1]]![0] + P[t[2]]![0]) / 3;
-            const cy = (P[t[0]]![1] + P[t[1]]![1] + P[t[2]]![1]) / 3;
+            // Inkreismittelpunkt: möglichst weit weg von den Ecken
+            const [Q0, Q1, Q2] = [P[t[0]]!, P[t[1]]!, P[t[2]]!];
+            const la = Math.hypot(Q1[0] - Q2[0], Q1[1] - Q2[1]);
+            const lb = Math.hypot(Q0[0] - Q2[0], Q0[1] - Q2[1]);
+            const lc = Math.hypot(Q0[0] - Q1[0], Q0[1] - Q1[1]);
+            const ls = la + lb + lc || 1;
+            const cx = (la * Q0[0] + lb * Q1[0] + lc * Q2[0]) / ls;
+            const cy = (la * Q0[1] + lb * Q1[1] + lc * Q2[1]) / ls;
             const area = Math.abs((P[t[1]]![0] - P[t[0]]![0]) * (P[t[2]]![1] - P[t[0]]![1]) - (P[t[2]]![0] - P[t[0]]![0]) * (P[t[1]]![1] - P[t[0]]![1])) / 2;
             if (area > 900) {
               g.save();
@@ -1564,13 +1602,13 @@ export default defineSimulation({
       const shownTris = split.v > 0 && tri ? clamp(Math.floor(split.v * m * 1.08 + 0.4), 0, m) : m;
       const counting = split.v > 0 && split.busy;
       const formula = `(${n} − 2) · 180° = ${m} · 180°`;
-      const res = counting ? `${shownTris} · 180° = ${fmt.num(shownTris * 180, 0)}°` : `${fmt.num(angleSum(n), 0)}°`;
+      const res = `${fmt.num((counting ? shownTris : m) * 180, 0)}°`;
       const ff = `700 ${big ? 13.5 : 12}px ${theme.font}`;
       g.font = ff;
       const fw = g.measureText(formula).width;
       const rf = `800 ${big ? 22 : 17}px ${theme.font}`;
       g.font = rf;
-      const rw = g.measureText(`= ${res}`).width;
+      const rw = g.measureText(`= ${fmt.num(angleSum(n), 0)}°`).width + 40;
       if (fw + rw + 10 <= R.w - 2 * pad) {
         text(g, formula, R.x + pad, y, { font: ff, color: theme.text, align: 'left' });
         text(g, `= ${res}`, R.x + R.w - pad, y, { font: rf, color: counting ? angColor(Math.max(0, shownTris - 1)) : theme.text, align: 'right' });
@@ -1605,8 +1643,17 @@ export default defineSimulation({
       }
     }
 
-    function polySumHeight(): number {
-      return layout().big ? 116 : 98;
+    function polySumHeight(w: number): number {
+      const big = layout().big;
+      if (!interiorAngles(target())) return big ? 104 : 90;
+      const n = target().length;
+      const g = surface.g;
+      g.font = `700 ${big ? 13.5 : 12}px ${ctx.theme.font}`;
+      const fw = g.measureText(`(${n} − 2) · 180° = ${n - 2} · 180°`).width;
+      g.font = `800 ${big ? 22 : 17}px ${ctx.theme.font}`;
+      const rw = g.measureText(`= ${fmt.num(angleSum(n), 0)}°`).width + 40;
+      const one = fw + rw + 10 <= w - 2 * (big ? 14 : 10);
+      return (big ? 44 : 34) + (one ? 0 : big ? 24 : 20) + (big ? 24 : 20) + (big ? 16 : 13) + (big ? 20 : 16) + (big ? 12 : 9);
     }
 
     /* ----- Vieleck: Tabelle ----- */
@@ -1801,7 +1848,7 @@ export default defineSimulation({
         }
         return out;
       }
-      push({ h: polySumHeight(), draw: polySumCard });
+      push({ h: polySumHeight(w), draw: polySumCard });
       if (p.ext && interiorAngles(target())) push({ h: extHeight(), draw: extCard });
       const note = shapeNote();
       const nh = noteHeight(w, note.body);
@@ -2012,9 +2059,10 @@ export default defineSimulation({
             if (q && q.length !== p.n) ctx.set({ n: q.length });
           }
         }
-        if (mode() === 'poly' && source === 'replace') {
+        if (mode() === 'poly' && (source === 'replace' || source === 'init')) {
+          // Link mit anderem n als Ecken: regelmäßiges n-Eck (z. B. „?mode=poly&n=8“)
           const q = parsePoints(p.pts);
-          if (q && q.length !== p.n) ctx.set({ n: q.length });
+          if (!q || q.length !== p.n) ctx.set({ pts: formatPoints(regularOnGrid(p.n)) });
         }
         const geo = ['ax', 'ay', 'bx', 'by', 'cx', 'cy', 'pts', 'n'].some((k) => changed.has(k));
         if (geo && source === 'replace') {
