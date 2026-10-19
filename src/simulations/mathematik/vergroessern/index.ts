@@ -388,7 +388,7 @@ export default defineSimulation({
           const w1 = Math.round((R.w - gap) * 0.5);
           return { p1: { x: R.x, y: R.y, w: w1, h: R.h }, p2: { x: R.x + w1 + gap, y: R.y, w: R.w - w1 - gap, h: R.h } };
         }
-        const h1 = Math.round((R.h - gap) * 0.47);
+        const h1 = Math.round((R.h - gap) * (m === 'ov' ? 0.52 : 0.47));
         return { p1: { x: R.x, y: R.y, w: R.w, h: h1 }, p2: { x: R.x, y: R.y + h1 + gap, w: R.w, h: R.h - h1 - gap } };
       }
       if (m === 'modell') {
@@ -943,6 +943,14 @@ export default defineSimulation({
       // Stücke
       const c0 = centroid(ps[0]!.poly);
       let n = 0;
+      // Spalte innerhalb der Reihe (Schachbrettmuster)
+      const colIn: number[] = [];
+      const rowCount = new Map<number, number>();
+      for (const pc of ps) {
+        const c = rowCount.get(pc.row) ?? 0;
+        colIn.push(c);
+        rowCount.set(pc.row, c + 1);
+      }
       ps.forEach((pc, i) => {
         const q = opts.list ? prog(opts.list, i, now) : 1;
         if (q <= 0) return;
@@ -963,8 +971,8 @@ export default defineSimulation({
         const first = i === 0 && !circ;
         let c: string;
         if (first) c = big ? col.orig() : col.area();
-        else if (big) c = (i + pc.row) % 2 === 0 ? col.area() : mixColor(col.area(), '#ffffff', theme.dark ? 0.12 : 0.25);
-        else c = light(col.area(), (i + pc.row) % 2 === 0 ? 0.42 : 0.55);
+        else if (big) c = (colIn[i]! + pc.row) % 2 === 0 ? col.area() : mixColor(col.area(), '#ffffff', theme.dark ? 0.12 : 0.25);
+        else c = light(col.area(), (colIn[i]! + pc.row) % 2 === 0 ? 0.42 : 0.55);
         g.save();
         g.globalAlpha *= Math.min(1, q * 3) * (pc.frac < 0.999 && !first ? 0.85 : 1);
         g.fillStyle = c;
@@ -1587,15 +1595,15 @@ export default defineSimulation({
         const ok = shown();
         const vals = [Kv, Kv * Kv, Kv ** 3];
         let lastY = Infinity;
-        [2, 1, 0].forEach((i) => {
+        [0, 1, 2].forEach((i) => {
           const v = vals[i]!;
           if (v > ymax) return;
           const q: Px = [ax.X(Kv), ax.Y(v)];
           chartDot(q, curves[i]![1]);
-          let ly = q[1];
-          if (Math.abs(ly - lastY) < 17) ly = lastY + 17;
+          let ly = Math.min(q[1], Rp.y + Rp.h - 6);
+          if (lastY - ly < 18) ly = lastY - 18;
           lastY = ly;
-          if (ok) fpill(q[0] + 10, Math.min(ly, Rp.y + Rp.h - 6), `\\c{${['L', 'A', 'V'][i]}}{${N(v, i === 2 ? 3 : 2)}}`, { align: 'left', size: fs(11.5, 11), bounds: { x: Rp.x, y: Rp.y - 12, w: Rp.w + 10, h: Rp.h + 16 } });
+          if (ok) fpill(q[0] + 10, ly, `\\c{${['L', 'A', 'V'][i]}}{${N(v, i === 2 ? 3 : 2)}}`, { align: 'left', size: fs(11.5, 11), bounds: { x: Rp.x, y: Rp.y - 12, w: Rp.w + 10, h: Rp.h + 16 } });
         });
         if (Kv ** 3 > ymax) fpill(ax.X(Kv), Rp.y + 6, `\\c{V}{k³ = ${N(Kv ** 3, 3)} ↑}`, { size: fs(11.5, 11) });
         return h;
@@ -1608,7 +1616,8 @@ export default defineSimulation({
         const paras: { s: string; color?: string; weight?: number }[] = [
           { s: say(L('Alle Längen werden mit k multipliziert, Flächen (auch die Oberfläche) mit k², Volumina mit k³.', 'All lengths are multiplied by k, areas (including the surface) by k², volumes by k³.')), weight: 600 },
         ];
-        if (Math.abs(Kv - 1) < 1e-9) paras.push({ s: say(L('k = 1: Bild und Original sind deckungsgleich (kongruent).', 'k = 1: image and original are congruent.')), color: col.k(), weight: 650 });
+        if (!shown()) paras.push({ s: say(L('Wie viele Kopien sind es? Schätze erst, dann „Kopien auslegen“.', 'How many copies are there? Estimate first, then “Lay out copies”.')), color: col.k(), weight: 650 });
+        else if (Math.abs(Kv - 1) < 1e-9) paras.push({ s: say(L('k = 1: Bild und Original sind deckungsgleich (kongruent).', 'k = 1: image and original are congruent.')), color: col.k(), weight: 650 });
         else if (Kv < 1) {
           const n2 = reciprocalInt(Kv * Kv);
           const n3 = reciprocalInt(Kv ** 3);
@@ -1798,8 +1807,8 @@ export default defineSimulation({
         const ok = shown() || revealed;
         const rows: Row[] = [
           { src: `${say(L('Zerteilt in', 'Cut into'))} ${s.n} ${say(L('Würfel mit', 'cubes with'))} ${N(e, 2)} cm`, size: fs(13, 12), gap: 8 },
-          { src: `\\c{V}{V} ${say(L('bleibt', 'stays'))} \\c{V}{${N(s.V, 3)} cm³}`, size: fs(13.5, 12.5), gap: 8 },
-          { src: `\\c{A}{O}: ${N(s.O0, 2)} cm² → \\c{A}{\\b{${ok ? `${N(s.O1, 2)} cm²` : '?'}}}  ${ok ? `\\c{m}{(· ${N(s.O1 / s.O0, 2)})}` : ''}`, size: fs(13.5, 12.5), gap: 4 },
+          { src: `\\c{V}{V} ${say(L('bleibt', 'stays'))} \\c{V}{${ok ? N(s.V, 3) : '?'} cm³}`, size: fs(13.5, 12.5), gap: 8 },
+          { src: `\\c{A}{O}: ${ok ? N(s.O0, 2) : '?'} cm² → \\c{A}{\\b{${ok ? `${N(s.O1, 2)} cm²` : '?'}}}  ${ok ? `\\c{m}{(· ${N(s.O1 / s.O0, 2)})}` : ''}`, size: fs(13.5, 12.5), gap: 4 },
         ];
         return formulaCard(R, measure, k, say(L('Zerteilen', 'Cutting up')), col.area(), rows);
       };
@@ -2308,9 +2317,11 @@ export default defineSimulation({
       g.fillStyle = th().muted;
       g.textAlign = 'right';
       g.textBaseline = 'middle';
-      g.fillText(say(L('groß: wenig Oberfläche je cm³', 'large: little surface per cm³')), Rp.x + Rp.w, Rp.y + Rp.h - 22);
-      g.textAlign = 'left';
-      g.fillText(say(L('klein: viel Oberfläche je cm³', 'small: much surface per cm³')), ax.X(1.15), ax.Y(10.5));
+      if (Rp.h >= 150) {
+        g.fillText(say(L('groß: wenig Oberfläche je cm³', 'large: little surface per cm³')), Rp.x + Rp.w, ax.Y(9));
+        g.textAlign = 'left';
+        g.fillText(say(L('klein: viel Oberfläche je cm³', 'small: much surface per cm³')), ax.X(1.15), ax.Y(11.2));
+      }
       panelTitle(R, `${say(L('Oberfläche zu Volumen', 'Surface to volume'))}`, col.k(), k.panel);
       // 3D: Würfel, auf Wunsch zerteilt
       const Q = P.p2;
@@ -2365,11 +2376,11 @@ export default defineSimulation({
       view.end();
       g.restore();
       const s = splitCube(p.a, e);
-      const O = lerp(s.O0, s.O1, sp);
+      const O = lerp(s.O0, s.O1, clamp01(sp));
       const ok = shown() || splitAnim !== null || revealed;
       rotateHint(Q, k.panel);
       panelTitle(Q, `\\c{V}{${say(L('Würfel', 'Cube'))}}${sp > 0.02 ? ` \\c{m}{→ ${s.n} ${say(L('Teile', 'pieces'))}}` : ''}`, col.vol(), k.panel);
-      fpill(Q.x + Q.w / 2, Q.y + Q.h - 20, `\\c{A}{O = ${ok || sp < 0.02 ? N(O, 2) : '?'} cm²}   \\c{V}{V = ${N(s.V, 3)} cm³}`, { size: fs(12.5, 11), border: withAlpha(col.area(), 0.5), maxW: Q.w - 30, alpha: k.panel });
+      fpill(Q.x + Q.w / 2, Q.y + Q.h - 20, `\\c{A}{O = ${ok ? N(O, 2) : '?'} cm²}   \\c{V}{V = ${ok ? N(s.V, 3) : '?'} cm³}`, { size: fs(12.5, 11), border: withAlpha(col.area(), 0.5), maxW: Q.w - 30, alpha: k.panel });
       return moving;
     }
 
@@ -2659,7 +2670,8 @@ export default defineSimulation({
         if (source === 'init') {
           if (!reduced()) {
             intro = now;
-            startStory(now, 900);
+            // Aufgabenlinks (show = 0) verraten die Lösung nicht schon beim Laden
+            if (p.show) startStory(now, 900);
           }
         }
         prevMode = m;
