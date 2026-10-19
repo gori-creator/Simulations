@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M20 80 L300 80 M20 170 L300 170 M20 10 L20 170" stroke-width="2" stroke-opacity="0.35"/>
+  <path d="M20 80 L70 30 L200 30 L250 80 Z" fill="currentColor" fill-opacity="0.2" stroke="none"/>
+  <path d="M20 80 L70 30 L200 30 L250 80 L300 80" stroke-width="5"/>
+  <path d="M20 170 Q50 168 70 160 L200 110 Q235 98 250 96 L300 96" stroke-width="4" stroke-opacity="0.6"/>
+  <rect x="150" y="18" width="34" height="12" rx="4" fill="currentColor"/>
+</svg>
