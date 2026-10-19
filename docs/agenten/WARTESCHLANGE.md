@@ -43,8 +43,8 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M16 läuft — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (frei für Mathe)
 - M17 offen — baumdiagramm, geburtstagsproblem, vierfeldertafel
 - M18 offen — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
-- M19 läuft (Mathe 2) — normalverteilung (fertig 19.10.), taylor-polynome (fertig 19.10.), fourier-reihen
-- M20 offen — ableitungsfunktion, kurvendiskussion, funktionenscharen
+- M19 fertig — normalverteilung, taylor-polynome, fourier-reihen (19.10., Mathe 2)
+- M20 läuft (Mathe 2) — ableitungsfunktion, kurvendiskussion, funktionenscharen
 - M21 offen — stammfunktion-grafisch, hauptsatz, aenderungsrate
 - M22 offen — extremwertprobleme, matrix-abbildungen
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
