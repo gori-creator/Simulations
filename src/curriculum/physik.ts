@@ -478,7 +478,23 @@ export const physik: Subject = {
             planned('feldlinien', L('Feldlinien von Punktladungen', 'Field lines of point charges'), [11, 12]),
             planned('kondensator', L('Lade- und Entladekurve des Kondensators', 'Charging and discharging a capacitor'), [11, 12], { kmk: ['P-BK-Mathematisieren'] }),
             planned('lorentzkraft', L('Lorentzkraft und Fadenstrahlrohr', 'Lorentz force and fine-beam tube'), [11, 13]),
-            planned('induktion', L('Elektromagnetische Induktion', 'Electromagnetic induction'), [11, 13]),
+            {
+              id: 'induktion',
+              status: 'ready',
+              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
+              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
+              summary: L(
+                'Drei Versuche zur Induktion: Stabmagnet in eine Spule schieben, Leiterstab auf Schienen durch ein Magnetfeld ziehen, Generator mit rotierender Spule. Spannungsmesser und U(t)-Diagramm laufen live mit, die Lenzsche Regel zeigt Induktionsstrom, induzierte Pole und bremsende Kraft; dazu U = B · l · v und Û = n · B · A · ω.',
+                'Three experiments on induction: push a bar magnet into a coil, pull a conducting rod on rails through a magnetic field, and a generator with a rotating coil. The voltmeter and the U(t) graph run live, Lenz’s law shows the induced current, induced poles and braking force; plus U = B · l · v and Û = n · B · A · ω.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
+                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
       ],
@@ -573,7 +589,25 @@ export const physik: Subject = {
           id: 'wellenoptik',
           title: L('Wellenoptik', 'Wave optics'),
           grades: [11, 13],
-          simulations: [planned('doppelspalt', L('Doppelspalt und Gitter', 'Double slit and grating'), [11, 13], { kmk: ['P-BK-Superposition'] })],
+          simulations: [
+            {
+              id: 'doppelspalt',
+              status: 'ready',
+              slug: L('doppelspalt-gitter', 'double-slit-grating'),
+              title: L('Doppelspalt und Gitter', 'Double slit and grating'),
+              summary: L(
+                'Laserlicht fällt auf einen Einzel-, Doppel- oder Mehrfachspalt oder ein Gitter: Hinter den Spalten überlagern sich Kreiswellen, auf dem Schirm entstehen Maxima bei sin α_k = k · λ/g. Wellenlänge, Spaltabstand, Spaltanzahl und Schirmabstand einstellen, Intensitätsverteilung ansehen und mit der Marke am Schirm messen.',
+                'Laser light falls on a single, double or multiple slit or a grating: behind the slits circular waves overlap, and maxima appear on the screen at sin α_k = k · λ/g. Set wavelength, slit spacing, number of slits and screen distance, look at the intensity distribution and measure with the mark on the screen.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-BK-Superposition', 'P-S', 'P-E', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Doppelspalt', 'Gitter', 'Mehrfachspalt', 'Einzelspalt', 'Interferenz', 'Beugung', 'Gitterkonstante', 'Gangunterschied', 'Maximum', 'Ordnung', 'Nebenmaximum', 'Laser', 'Wellenlänge', 'Huygens', 'Intensitätsverteilung', 'Wellenmodell des Lichts'],
+                ['double slit', 'grating', 'multiple slit', 'single slit', 'interference', 'diffraction', 'grating constant', 'path difference', 'maximum', 'order', 'secondary maximum', 'laser', 'wavelength', 'Huygens', 'intensity distribution', 'wave model of light'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
       ],
     },
@@ -661,7 +695,23 @@ export const physik: Subject = {
           title: L('Quantenphysik', 'Quantum physics'),
           grades: [12, 14],
           simulations: [
-            planned('photoeffekt', L('Photoeffekt', 'Photoelectric effect'), [12, 13]),
+            {
+              id: 'photoeffekt',
+              status: 'ready',
+              slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),
+              title: L('Photoeffekt', 'Photoelectric effect'),
+              summary: L(
+                'Licht wählbarer Wellenlänge und Intensität fällt auf die Kathode einer Fotozelle: Photonen lösen Elektronen aus – oder nicht. Mit der Gegenfeldmethode die Gegenspannung abgleichen, bis kein Strom mehr fließt, Messpunkte im E_kin-f-Diagramm sammeln und aus der Einstein-Geraden h und die Austrittsarbeit bestimmen.',
+                'Light of selectable wavelength and intensity falls on the cathode of a photocell: photons release electrons – or not. Use the retarding field method to adjust the voltage until no current flows, collect data points in the E_kin–f graph and determine h and the work function from Einstein’s line.',
+              ),
+              grades: [12, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Photoeffekt', 'lichtelektrischer Effekt', 'Fotozelle', 'Gegenfeldmethode', 'Gegenspannung', 'Austrittsarbeit', 'Grenzfrequenz', 'Einstein-Gerade', 'Photon', 'Planck-Konstante', 'Bewegungsenergie', 'Intensität', 'Fotostrom', 'Quantenobjekt'],
+                ['photoelectric effect', 'photocell', 'retarding field method', 'stopping voltage', 'work function', 'threshold frequency', 'Einstein line', 'photon', 'Planck constant', 'kinetic energy', 'intensity', 'photocurrent', 'quantum object'],
+              ),
+              thumb: 'generic',
+            },
             {
               id: 'linienspektren',
               status: 'ready',
