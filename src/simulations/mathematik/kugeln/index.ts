@@ -468,6 +468,8 @@ export default defineSimulation({
     function ptLabel(q: Vec3, txt: string, color: string, a = 1, dy = -10, size = 13, side: 1 | -1 = 1): void {
       if (a < 0.05) return;
       const R = regions().scene;
+      // schmale Bühne: nur der Name, die Koordinaten stehen in der Tafel
+      if (R.w < 520) txt = txt.replace(/\s*≈?\s*\(.*$/, '');
       const [x, y] = view.toPx(q);
       const g = surface.g;
       g.font = font(800, size);
@@ -643,12 +645,29 @@ export default defineSimulation({
       }
     }
 
+    /** Seite der Beschriftung von M: weg von der Hauptkonstruktion. */
+    function mLabelSide(m: Vec3): 1 | -1 {
+      let away: V3 | null = null;
+      const M0 = tM();
+      if (mode() === 'sphere') away = tP();
+      else if (mode() === 'tangent') away = projectToSphere(M0, p.r, tB());
+      else if (mode() === 'line') {
+        const cut = sphereLine(M0, p.r, tA(), tU());
+        if (cut) away = cut.kind === 'secant' ? cut.points[0]! : cut.closest;
+      } else {
+        const cut = spherePlane(M0, p.r, tN(), p.c);
+        if (cut && cut.d > 0.3) away = cut.foot;
+      }
+      if (!away) return -1;
+      return view.toPx(away as Vec3)[0] < view.toPx(m)[0] ? 1 : -1;
+    }
+
     /* ---------------- Szene ---------------- */
     function drawScene(): void {
       const theme = ctx.theme;
       const lo = glo.at(now);
       const hi = ghi.at(now);
-      view.setScene({ target: V(gt) as Vec3, radius: grad.at(now), anchor: [0.5, 0.52] });
+      view.setScene({ target: V(gt) as Vec3, radius: grad.at(now) * (regions().scene.w < 520 ? 0.88 : 1), anchor: [0.5, 0.52] });
       view.begin();
       const grow = reduced ? 1 : ease.outCubic(introOf(0, 800));
       if (p.grid) view.grid({ min: [lo, lo], max: [hi, hi], step: 1, color: theme.gridMinor, fade: true });
@@ -663,7 +682,7 @@ export default defineSimulation({
 
       // Mittelpunkt M
       view.ball(m, 0.11 + 0.02 * Math.min(r, 3), { color: theme.text });
-      ptLabel(m, p.show ? `M${pt(tM())}` : 'M', theme.text, introOf(500, 400), 24, 12.5, -1);
+      ptLabel(m, p.show ? `M${pt(tM())}` : 'M', theme.text, introOf(500, 400), 24, 12.5, mLabelSide(m));
       view.label(vec3.add(m, vec3.scale(vec3.normalize(vec3.add(vec3.scale(view.camera.up, 0.75), vec3.scale(view.camera.right, -0.66))), r * 1.04)), 'K', { color: CK(), size: 17, weight: '800', math: true, align: 'right', baseline: 'bottom', background: alpha(cardBg(), 0.7) });
 
       for (const md of MODES) {
@@ -742,10 +761,10 @@ export default defineSimulation({
           if (d > 0.25) segLabel(m, q, 'r', CK(), [0.3, -1], A);
         }
         view.point(foot, { color: CS(), radius: 4.5 * A });
-        if (u2 > 0.6) ptLabel(foot, p.show && !sweeping() ? `M′${ptA(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'M′', CS(), A, 12, 13, -1);
+        if (u2 > 0.6 && d > 0.3) ptLabel(foot, p.show && !sweeping() ? `M′${ptA(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'M′', CS(), A, 12, 13, -1);
       } else if (kind === 'tangent') {
         view.ball(foot, 0.15, { color: CS(), alpha: A });
-        if (u2 > 0.6) ptLabel(foot, p.show && !sweeping() ? `B${pt(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'B', CS(), A);
+        if (u2 > 0.6 && d > 0.3) ptLabel(foot, p.show && !sweeping() ? `B${pt(spherePlane(tM(), p.r, tN(), p.c)?.foot ?? (foot as V3))}` : 'B', CS(), A);
       } else {
         view.point(foot, { color: theme.muted, radius: 4 * A });
         if (u2 > 0.6) ptLabel(foot, 'F', theme.muted, A);
@@ -796,7 +815,8 @@ export default defineSimulation({
         const [ax, ay] = view.toPx(a);
         const [bx, by] = view.toPx(vec3.add(a, u));
         const l = Math.hypot(bx - ax, by - ay) || 1;
-        vecLabel(vec3.lerp(a, vec3.add(a, u), 0.55), 'u', CG(), [(-(by - ay) / l) * 15, ((bx - ax) / l) * 15], 15, A);
+        const sg = -(by - ay) / l > 0 ? -1 : 1;
+        vecLabel(vec3.lerp(a, vec3.add(a, u), 0.55), 'u', CG(), [sg * (-(by - ay) / l) * 15, sg * ((bx - ax) / l) * 15], 15, A);
       }
       // Läufer X(t) beim Abspielen
       if (run > 0 && run < 1) {
