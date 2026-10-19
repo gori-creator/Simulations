@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { coefficients, FNS, remainder, taylor } from '../src/simulations/mathematik/taylor-polynome/model';
+import { coefficients, FNS, lagrangeBound, polyDerivativeAtCentre, remainder, taylor, validInterval } from '../src/simulations/mathematik/taylor-polynome/model';
 
 describe('Modell: Taylorpolynome', () => {
   it('sin um 0: x − x³/6 + x⁵/120', () => {
@@ -43,6 +43,48 @@ describe('Modell: Taylorpolynome', () => {
         const r = Math.min(fn.radius(a), 3);
         const x = a + (Math.random() - 0.5) * r;
         expect(Math.abs(remainder(fn, a, 40, x))).toBeLessThan(1e-3);
+      }
+    }
+  });
+});
+
+describe('Modell: Taylorpolynome – Schmiegen, Gültigkeitsbereich, Restglied', () => {
+  it('Tₙ hat bei a dieselben Ableitungen wie f (k ≤ n), danach 0', () => {
+    for (let k = 0; k <= 5; k++) expect(polyDerivativeAtCentre(FNS.exp, 0.5, 5, k)).toBeCloseTo(Math.exp(0.5), 12);
+    expect(polyDerivativeAtCentre(FNS.sin, 0, 3, 3)).toBeCloseTo(-1, 14);
+    expect(polyDerivativeAtCentre(FNS.sin, 0, 3, 4)).toBe(0);
+  });
+  it('Gültigkeitsbereich: |sin x − x| < 0,01 für |x| < 0,3925', () => {
+    const [l, r] = validInterval(FNS.sin, 0, 1, 0.01, -7, 7);
+    expect(r).toBeCloseTo(0.392493, 4);
+    expect(l).toBeCloseTo(-0.392493, 4);
+  });
+  it('Gültigkeitsbereich wächst mit n: sin, ε = 0,01, n = 3 → |x| < 1,0425', () => {
+    expect(validInterval(FNS.sin, 0, 3, 0.01, -7, 7)[1]).toBeCloseTo(1.042507, 4);
+  });
+  it('eˣ, n = 4, ε = 0,01: Bereich [−1,0726; 1,0010] (unsymmetrisch)', () => {
+    const [l, r] = validInterval(FNS.exp, 0, 4, 0.01, -4, 4);
+    expect(l).toBeCloseTo(-1.072578, 4);
+    expect(r).toBeCloseTo(1.000996, 4);
+  });
+  it('geometrische Reihe: Bereich bleibt im Konvergenzintervall (−1; 1)', () => {
+    const [l, r] = validInterval(FNS.geo, 0, 15, 0.01, -3, 3);
+    expect(l).toBeGreaterThan(-1);
+    expect(r).toBeLessThan(1);
+  });
+  it('Lagrange: eˣ, a = 0, n = 4, x = 1: Schranke e/120 ≈ 0,02265 ≥ wahrer Fehler 0,00995', () => {
+    const b = lagrangeBound('exp', 0, 4, 1)!;
+    expect(b).toBeCloseTo(Math.E / 120, 12);
+    expect(Math.abs(remainder(FNS.exp, 0, 4, 1))).toBeLessThanOrEqual(b);
+    expect(lagrangeBound('ln', 0, 4, 0.5)).toBeNull();
+  });
+  it('Lagrange-Schranke gilt für sin/cos/exp an vielen Zufallsstellen', () => {
+    for (const key of ['sin', 'cos', 'exp'] as const) {
+      for (let i = 0; i < 50; i++) {
+        const a = FNS[key].aMin + Math.random() * (FNS[key].aMax - FNS[key].aMin);
+        const x = a + (Math.random() - 0.5) * 6;
+        const n = Math.floor(Math.random() * 10);
+        expect(Math.abs(remainder(FNS[key], a, n, x))).toBeLessThanOrEqual(lagrangeBound(key, a, n, x)! * (1 + 1e-9) + 1e-12);
       }
     }
   });
