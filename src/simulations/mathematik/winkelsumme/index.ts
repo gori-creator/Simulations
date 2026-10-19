@@ -913,7 +913,8 @@ export default defineSimulation({
       const half = Math.max(0.12, Math.sin(rad(Math.min(89, c.sweep / 2))));
       g.save();
       g.globalAlpha = clamp(k, 0, 1);
-      if (!p.vals) {
+      // sehr kleine Dreiecke: nur die Namen, die Werte stehen in der Karte
+      if (!p.vals || pieceRadius(P) < 30) {
         const d = Math.max(r * 0.66, 13 / half);
         const [x, y] = polar(P[i]!, c.mid, d);
         haloText(name, x, y, nf, col);
@@ -1304,7 +1305,8 @@ export default defineSimulation({
             const cx = (la * Q0[0] + lb * Q1[0] + lc * Q2[0]) / ls;
             const cy = (la * Q0[1] + lb * Q1[1] + lc * Q2[1]) / ls;
             const area = Math.abs((P[t[1]]![0] - P[t[0]]![0]) * (P[t[2]]![1] - P[t[0]]![1]) - (P[t[2]]![0] - P[t[0]]![0]) * (P[t[1]]![1] - P[t[0]]![1])) / 2;
-            if (area > 900) {
+            // nur, wenn das Etikett in den Inkreis passt
+            if ((2 * area) / ls > (big ? 13 : 11)) {
               g.save();
               g.translate(cx, cy);
               g.scale(ka, ka);
@@ -1576,7 +1578,7 @@ export default defineSimulation({
 
     function triAnglesHeight(R: Rect): number {
       const big = layout().big;
-      return R.h >= (big ? 430 : 300) || (layout().wide && R.h >= 330) ? (big ? 196 : 158) : big ? 128 : 112;
+      return R.h >= (big ? 430 : 270) || (layout().wide && R.h >= 330) ? (big ? 196 : 158) : big ? 128 : 112;
     }
 
     /* ----- Vieleck: Winkelsummen-Karte ----- */
@@ -1775,7 +1777,7 @@ export default defineSimulation({
       // Text
       const tx = cxy[0] + dialR + (big ? 14 : 10);
       const tw = R.x + R.w - pad - tx;
-      const head = st && walk.busy ? tt('gedreht:', 'turned:') : tt('Summe:', 'sum:');
+      const head = st && walk.busy ? tt('gedreht:', 'Turned:') : tt('Summe:', 'Sum:');
       text(g, head, tx, cxy[1] - (big ? 16 : 13), { font: `600 ${big ? 12 : 11}px ${theme.font}`, color: theme.muted, align: 'left' });
       text(g, deg(Math.round(turned * 10) / 10), tx, cxy[1] + 4, { font: `800 ${big ? 22 : 17}px ${theme.font}`, color: col, align: 'left' });
       const sub = st && walk.busy ? '' : n === 3 && mode() === 'tri' ? 'α* + β* + γ* = 360°' : tt('eine volle Drehung', 'one full turn');
@@ -1806,8 +1808,8 @@ export default defineSimulation({
         return {
           head: tt('Nicht konvex', 'Not convex'),
           body: tt(
-            `Bei ${list} zeigt die Ecke nach innen: Der Innenwinkel ist größer als 180°. Die Summe ist trotzdem (n − 2) · 180°.${split.v > 0 && triangulation()?.fan !== 0 ? ' Zerlegt wird hier von einer anderen Ecke aus.' : ''}`,
-            `At ${list} the corner points inwards: the interior angle is greater than 180°. The sum is still (n − 2) · 180°.${split.v > 0 && triangulation()?.fan !== 0 ? ' Here the splitting starts at another corner.' : ''}`,
+            `${list.includes(',') ? `Bei ${list} zeigen die Ecken nach innen: Die Innenwinkel sind` : `Bei ${list} zeigt die Ecke nach innen: Der Innenwinkel ist`} größer als 180°. Die Summe ist trotzdem (n − 2) · 180°.${split.v > 0 && triangulation()?.fan !== 0 ? ' Zerlegt wird hier von einer anderen Ecke aus.' : ''}`,
+            `${list.includes(',') ? `At ${list} the corners point inwards: the interior angles are` : `At ${list} the corner points inwards: the interior angle is`} greater than 180°. The sum is still (n − 2) · 180°.${split.v > 0 && triangulation()?.fan !== 0 ? ' Here the splitting starts at another corner.' : ''}`,
           ),
           accent: warnColor(),
         };
@@ -1837,7 +1839,11 @@ export default defineSimulation({
       };
       const rest = () => R.h - used;
       if (mode() === 'tri') {
-        push({ h: triAnglesHeight(R), draw: triAnglesCard });
+        // Läuft eine Begründung, bekommt deren Schrittliste Vorrang (kompakte Winkelkarte)
+        const story = proof.v > 0 || proof.to === 1 ? PROOF_STEPS : tear.v > 0 || tear.to === 1 ? TEAR_STEPS : null;
+        let h1 = triAnglesHeight(R);
+        if (story && !layout().big && R.h - h1 - gap < stepListHeight(w, story)) h1 = 112;
+        push({ h: h1, draw: triAnglesCard });
         if (proof.v > 0 || proof.to === 1) push({ h: Math.min(rest(), stepListHeight(w, PROOF_STEPS)), draw: (r) => stepList(r, tt('Beweis mit der Parallelen', 'Proof with a parallel'), PROOF_STEPS, PROOF_AT, proof.v, parColor()) });
         else if (tear.v > 0 || tear.to === 1) push({ h: Math.min(rest(), stepListHeight(w, TEAR_STEPS)), draw: (r) => stepList(r, tt('Ecken abreißen und anlegen', 'Tearing off and joining the corners'), TEAR_STEPS, TEAR_AT, tear.v, angColor(0)) });
         if (p.ext && rest() >= extHeight()) push({ h: extHeight(), draw: extCard });
