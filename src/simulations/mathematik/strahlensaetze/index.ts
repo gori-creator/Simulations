@@ -1046,6 +1046,8 @@ export default defineSimulation({
         for (const s of segs) {
           if (!(mode() === 'calc' ? show(s.key) : s.key !== 'aa2' && s.key !== 'bb2')) continue;
           if (s.t1 - s.t0 < 1e-6) continue;
+          // k ≈ 1: ZA′ deckt sich mit ZA → nur eine Maßzahl zeigen
+          if (mode() !== 'calc' && (s.key === 'za2' || s.key === 'zb2') && Math.abs(s.t1 - s.t0 - 1) < 0.02 && s.t0 >= 0) continue;
           const side = s.t1 <= 1e-9 ? -1 : 1;
           let lvl = 0;
           while (used.some((u) => u.lvl === lvl && u.side === side && Math.min(u.t1, s.t1) - Math.max(u.t0, s.t0) > 1e-6)) lvl++;
