@@ -1177,14 +1177,14 @@ export const mathematik: Subject = {
             slug: L('newton-verfahren', 'newtons-method'),
             title: L('Newton-Verfahren', 'Newton’s method'),
             summary: L(
-              'Nullstellen näherungsweise bestimmen: Tangente anlegen, Schnittpunkt mit der x-Achse als neuer Wert – Schritt für Schritt animiert, mit ziehbarem Startwert, Tabelle der richtigen Stellen und Gegenbeispielen (waagrechte Tangente, Zyklus).',
-              'Approximating zeros: draw the tangent and use its x-intercept as the next value – animated step by step, with a draggable starting value, a table of correct digits and counterexamples (horizontal tangent, cycle).',
+              'Nullstellen näherungsweise bestimmen: Tangente anlegen, Schnittpunkt mit der x-Achse als neuer Wert – Schritt für Schritt animiert, mit ziehbarem Startwert, Tabelle der richtigen Stellen, Einzugsbereichen der Nullstellen, Vergleich mit der Intervallhalbierung und Gegenbeispielen (waagrechte Tangente, Zyklus).',
+              'Approximating zeros: draw the tangent and use its x-intercept as the next value – animated step by step, with a draggable starting value, a table of correct digits, basins of attraction, a comparison with bisection and counterexamples (horizontal tangent, cycle).',
             ),
             grades: [11, 11],
             kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
             keywords: L(
-              ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Ableitung', 'Startwert', 'Konvergenz', 'Wurzel 2'],
-              ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'derivative', 'starting value', 'convergence'],
+              ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Ableitung', 'Startwert', 'Konvergenz', 'Wurzel 2', 'Intervallhalbierung', 'Bisektion', 'Einzugsbereich', 'quadratische Konvergenz'],
+              ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'derivative', 'starting value', 'convergence', 'bisection', 'basin of attraction', 'quadratic convergence'],
             ),
             thumb: 'generic',
           },

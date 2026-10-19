@@ -1,6 +1,6 @@
 import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaStyle } from './formula';
-import { correctDigits, FNS, isCycle, iterate, nearestRoot, sequence, type FnKey, type Step } from './model';
+import { basinOf, bisection, bracketFor, correctDigits, FNS, isCycle, iterate, nearestRoot, sequence, type FnKey, type Step } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -23,7 +23,9 @@ const VIEW: Record<FnKey, { x: [number, number]; y: [number, number]; term: stri
  * Schnittpunkt mit der x-Achse als nächster Näherungswert. Der Startwert ist
  * ziehbar; eine Tabelle zeigt, wie schnell die richtigen Stellen zunehmen.
  * Gegenbeispiele: waagrechte Tangente, Zyklus, Sprung zu einer anderen
- * Nullstelle. Optional zoomt die Ansicht mit.
+ * Nullstelle. Optional zoomt die Ansicht mit, ein Farbstreifen zeigt die
+ * Einzugsbereiche (welcher Startwert führt zu welcher Nullstelle?), und ein
+ * Diagramm vergleicht die Geschwindigkeit mit der Intervallhalbierung.
  */
 export default defineSimulation({
   id: 'newton-verfahren',
@@ -47,10 +49,13 @@ export default defineSimulation({
     { key: 'x0', type: 'number', label: L('Startwert x₀', 'Starting value x₀'), min: -3, max: 4, step: 0.1, default: 1, help: L('Auch x₀ auf der x-Achse ziehen.', 'You can also drag x₀ along the x-axis.') },
     { key: 'k', type: 'number', label: L('Anzahl Schritte', 'Number of steps'), min: 0, max: KMAX, step: 1, default: 1 },
     { key: 'zoom', type: 'boolean', group: 'view', label: L('Ansicht mitzoomen', 'Zoom in with the steps'), default: false },
+    { key: 'basin', type: 'boolean', group: 'view', label: L('Einzugsbereiche zeigen', 'Show basins of attraction'), help: L('Farbstreifen: Von hier aus gestartet, landet das Verfahren bei der Nullstelle gleicher Farbe.', 'Colour strip: starting here, the method ends at the zero of the same colour.'), default: false },
+    { key: 'cmp', type: 'boolean', group: 'view', label: L('Vergleich mit Intervallhalbierung', 'Compare with bisection'), default: false },
     { key: 'show', type: 'boolean', group: 'view', label: L('Werte zeigen', 'Show values'), help: L('Aus: Näherungswerte selbst berechnen.', 'Off: work out the approximations yourself.'), default: true },
   ],
   actions: [
     { id: 'step', label: L('Nächster Schritt', 'Next step'), primary: true },
+    { id: 'run', label: L('Schritte bis zum Ziel', 'Steps to the end') },
     { id: 'restart', label: L('Neu starten', 'Start again') },
   ],
   readouts: [
@@ -60,10 +65,10 @@ export default defineSimulation({
   presets: [
     { id: 'sqrt2', label: L('√2 mit x₀ = 1', '√2 with x₀ = 1'), values: {} },
     { id: 'newton', label: L('Newtons Beispiel', 'Newton’s example'), values: { fn: 'cubic', x0: 2, k: 2 } },
-    { id: 'cos', label: L('cos x = x', 'cos x = x'), values: { fn: 'cos', x0: 1, k: 2 } },
+    { id: 'cos', label: L('Schneller als Halbieren: cos x = x', 'Faster than bisection: cos x = x'), values: { fn: 'cos', x0: 1, k: 4, cmp: true } },
     { id: 'jump', label: L('Startwert entscheidet', 'The start value matters'), values: { fn: 'three', x0: 0.9, k: 1 } },
     { id: 'cycle', label: L('Zyklus: hin und her', 'Cycle: back and forth'), values: { fn: 'cycle', x0: 0, k: 3 } },
-    { id: 'flat', label: L('Waagrechte Tangente', 'Horizontal tangent'), values: { fn: 'sq2', x0: 0, k: 1 } },
+    { id: 'basin', label: L('Einzugsbereiche: drei Nullstellen', 'Basins: three zeros'), values: { fn: 'three', x0: 0.9, k: 3, basin: true } },
   ],
   strings: {
     de: {
@@ -77,6 +82,14 @@ export default defineSimulation({
       conv: 'Grün: richtige Nachkommastellen. Ihre Anzahl verdoppelt sich ungefähr mit jedem Schritt.',
       other: 'Achtung: Die Folge läuft zu einer anderen Nullstelle als der nächstgelegenen.',
       tangent: 'Tangente',
+      basinT: 'Einzugsbereiche',
+      basinNone: 'grau: keine Nullstelle',
+      cmpT: 'Richtige Nachkommastellen je Schritt',
+      newton: 'Newton',
+      bisect: 'Intervallhalbierung',
+      cmpNote: 'Newton verdoppelt die Stellen ungefähr (quadratische Konvergenz); die Intervallhalbierung gewinnt pro Schritt nur etwa 0,3 Stellen (linear) – dafür funktioniert sie immer, wenn es einen Vorzeichenwechsel gibt.',
+      bracket: 'Startintervall',
+      noBisect: 'Newton findet hier keine Nullstelle – die Intervallhalbierung schon.',
     },
     en: {
       canvas: 'Coordinate system with the graph of f, a draggable starting value x₀ on the x-axis and the tangents of Newton’s method, whose x-intercepts give the next approximations. Next to it the calculation for the current step and a table of approximations.',
@@ -89,6 +102,14 @@ export default defineSimulation({
       conv: 'Green: correct decimal places. Their number roughly doubles with every step.',
       other: 'Note: the sequence runs to a different zero than the nearest one.',
       tangent: 'tangent',
+      basinT: 'Basins of attraction',
+      basinNone: 'grey: no zero',
+      cmpT: 'Correct decimal places per step',
+      newton: 'Newton',
+      bisect: 'Bisection',
+      cmpNote: 'Newton roughly doubles the digits (quadratic convergence); bisection gains only about 0.3 digits per step (linear) – but it always works if there is a change of sign.',
+      bracket: 'starting interval',
+      noBisect: 'Newton finds no zero here – bisection does.',
     },
   },
 
@@ -110,7 +131,10 @@ export default defineSimulation({
       x: () => th().series[1]!,
       ok: () => th().series[2]!,
       bad: () => th().series[1]!,
+      bis: () => withAlpha(th().text, 0.7),
     };
+    /** Farben der Nullstellen (Einzugsbereiche). */
+    const rootCol = (i: number) => [th().series[2]!, th().series[4]!, th().series[5]!][i] ?? th().muted;
 
     const n = (v: number, d = 4) => fmt.num(v, d);
     const Q = (s: string) => (p.show ? s : '?');
@@ -260,6 +284,19 @@ export default defineSimulation({
     /* ---------- Animation ---------- */
     let lastFrame = performance.now();
     const stepT = new Tween(STEP_MS, ease.linear);
+    const intro = new Tween(1200, ease.linear);
+    let autoRun = false;
+    /** Einzugsbereiche je Pixelspalte (zwischengespeichert für Funktion, Ausschnitt und Breite). */
+    let basinCache: { key: string; cols: Int8Array } | null = null;
+    function basinCols(x0: number, x1: number, w: number): Int8Array {
+      const k = `${key()}|${x0.toPrecision(6)}|${x1.toPrecision(6)}|${Math.round(w)}`;
+      if (basinCache?.key === k) return basinCache.cols;
+      const n = Math.max(1, Math.round(w / 2));
+      const cols = new Int8Array(n);
+      for (let i = 0; i < n; i++) cols[i] = basinOf(fn(), x0 + ((i + 0.5) / n) * (x1 - x0), 50, 1e-7);
+      basinCache = { key: k, cols };
+      return cols;
+    }
     /** Fortschritt des zuletzt hinzugekommenen Schritts (1 = fertig gezeichnet). */
     const lastProgress = () => (stepT.running ? stepT.value : 1);
 
@@ -273,8 +310,52 @@ export default defineSimulation({
       plot.axes();
       const r = plot.rect;
       const f = fn();
-      // Graph
+      // Einzugsbereiche als Farbstreifen am unteren Rand und als Färbung der x-Achse
+      const pin = intro.running ? ease.outCubic(clamp(intro.t / 0.6, 0, 1)) : 1;
+      if (p.basin) {
+        const cols = basinCols(view.x0, view.x1, r.w);
+        const sw = r.w / cols.length;
+        const sh = F(12, 10);
+        const yb = r.y + r.h - sh - 2;
+        g.save();
+        g.globalAlpha = pin;
+        for (let i = 0; i < cols.length; i++) {
+          const b = cols[i]!;
+          g.fillStyle = b < 0 ? withAlpha(theme.muted, 0.35) : withAlpha(rootCol(b), theme.dark ? 0.85 : 0.75);
+          g.fillRect(r.x + i * sw, yb, sw + 0.6, sh);
+          // zarte Tönung des ganzen Hintergrunds
+          if (b >= 0) {
+            g.fillStyle = withAlpha(rootCol(b), theme.dark ? 0.07 : 0.05);
+            g.fillRect(r.x + i * sw, r.y, sw + 0.6, r.h - sh - 2);
+          }
+        }
+        g.restore();
+        f.roots.forEach((rt, i) => {
+          const [px, py] = plot.toPx(rt, 0);
+          if (px < r.x || px > r.x + r.w) return;
+          g.save();
+          g.globalAlpha = pin;
+          g.fillStyle = rootCol(i);
+          g.strokeStyle = theme.bg;
+          g.lineWidth = 2;
+          g.beginPath();
+          g.moveTo(px, py - 7);
+          g.lineTo(px + 7, py);
+          g.lineTo(px, py + 7);
+          g.lineTo(px - 7, py);
+          g.closePath();
+          g.fill();
+          g.stroke();
+          g.restore();
+        });
+      }
+      // Graph (zeichnet sich beim Einstieg von links nach rechts)
       g.save();
+      if (intro.running) {
+        g.beginPath();
+        g.rect(r.x, r.y, r.w * pin, r.h);
+        g.clip();
+      }
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : mixColor(col.f(), '#ffffff', 0.5, 0.6);
       g.shadowBlur = 5;
       plot.fn(f.f, { color: col.f(), width: 3 });
@@ -332,6 +413,10 @@ export default defineSimulation({
         const [px, py] = plot.toPx(xm, ym);
         if (px > r.x + 20 && px < r.x + r.w - 20 && py > r.y + 10 && py < r.y + r.h - 10) tag(px + 10, py - 12, `\\c{t}{\\t{${ctx.t('tangent')}}}`, col.tan(), 'left', F(12, 11));
       }
+      if (p.basin) {
+        const yb = r.y + r.h - F(12, 10) - 2;
+        tag(r.x + 8, yb - 12, `\\t{${ctx.t('basinT')} · ${ctx.t('basinNone')}}`, theme.muted, 'left', F(11.5, 10.5));
+      }
       plot.end();
     }
 
@@ -353,7 +438,8 @@ export default defineSimulation({
         const i = st.length - 1;
         if (s.next === null) note = ctx.t('flat');
         else {
-          rows.push(`\\c{x}{x_${i + 1}} = ${n(s.x)} − \\f{${Q(n(s.fx))}}{${Q(n(s.dfx))}} ${p.show && Math.abs(s.next - Math.round(s.next * 1e4) / 1e4) > 1e-12 ? '≈' : '='} \\c{x}{${Q(n(s.next))}}`);
+          const ready = lastProgress() >= 0.98;
+          rows.push(`\\c{x}{x_${i + 1}} = ${n(s.x)} − \\f{${Q(s.fx !== 0 && Math.abs(s.fx) < 1e-4 ? small(s.fx) : n(s.fx))}}{${Q(n(s.dfx))}} ${p.show && Math.abs(s.next - Math.round(s.next * 1e4) / 1e4) > 1e-12 ? '≈' : '='} \\c{x}{${ready ? Q(n(s.next)) : '…'}}`);
           if (s.status === 'far') note = ctx.t('far');
           else if (isCycle(seq)) note = ctx.t('cycle');
         }
@@ -434,6 +520,93 @@ export default defineSimulation({
         .forEach((row, i) => text(g, row, R.x + pad, R.y + R.h - noteH + 8 + i * 14, { font: nf, color: otherRoot ? col.bad() : theme.muted, align: 'left' }));
     }
 
+    /** Vergleich: richtige Nachkommastellen je Schritt für Newton und Intervallhalbierung. */
+    function cmpCard(R: Rect): void {
+      const g = surface.g;
+      const theme = th();
+      const pad = F(14, 12);
+      card(R);
+      title(R.x + pad, R.y + 16, ctx.t('cmpT'));
+      const f = fn();
+      const nx = sequence(f, p.x0, KMAX);
+      const target = nearestRoot(f, nx[nx.length - 1]!);
+      const newtonOk = basinOf(f, p.x0) >= 0;
+      const root = newtonOk ? target : nearestRoot(f, p.x0);
+      const [ba, bb] = bracketFor(f, root);
+      const bis = [(ba + bb) / 2, ...bisection(f, ba, bb, KMAX)].slice(0, KMAX + 1);
+      const dig = (x: number) => (Math.abs(x - root) < 0.5 ? Math.min(12, correctDigits(f, x, 12)) : 0);
+      const dN = nx.map((x) => (newtonOk ? dig(x) : Math.abs(x - root) < 0.5 ? dig(x) : 0));
+      const dB = bis.map(dig);
+      // Legende
+      const ly = R.y + 34;
+      const leg = (x: number, c: string, label: string, dash: boolean) => {
+        g.save();
+        g.strokeStyle = c;
+        g.lineWidth = 2.4;
+        if (dash) g.setLineDash([5, 4]);
+        g.beginPath();
+        g.moveTo(x, ly);
+        g.lineTo(x + 18, ly);
+        g.stroke();
+        g.restore();
+        text(g, label, x + 24, ly, { font: font(700, F(12, 11)), color: c, align: 'left' });
+      };
+      leg(R.x + pad, col.tan(), ctx.t('newton'), false);
+      g.font = font(700, F(12, 11));
+      leg(R.x + pad + 40 + g.measureText(ctx.t('newton')).width, col.bis(), ctx.t('bisect'), true);
+      // Diagramm
+      const note = newtonOk ? ctx.t('cmpNote') : ctx.t('noBisect');
+      g.font = font(600, F(11, 10));
+      const noteRows = wrap(note, R.w - 2 * pad, font(600, F(11, 10)));
+      text(g, `${ctx.t('bracket')} (${ctx.t('bisect')}): [${fmt.num(ba, 2)}; ${fmt.num(bb, 2)}]`, R.x + pad, ly + 17, { font: font(600, F(10.5, 10)), color: theme.muted, align: 'left' });
+      const top = ly + 32;
+      const bottom = R.y + R.h - 24 - noteRows.length * 14;
+      const x0 = R.x + pad + 22;
+      const x1 = R.x + R.w - pad;
+      if (bottom - top < 50) return;
+      const X = (i: number) => x0 + (i / KMAX) * (x1 - x0);
+      const Y = (d: number) => bottom - (d / 12) * (bottom - top);
+      g.strokeStyle = theme.gridMinor;
+      g.lineWidth = 1;
+      for (const d of [0, 4, 8, 12]) {
+        g.beginPath();
+        g.moveTo(x0, Y(d));
+        g.lineTo(x1, Y(d));
+        g.stroke();
+        text(g, String(d), x0 - 5, Y(d), { font: font(600, 9.5), color: theme.muted, align: 'right' });
+      }
+      for (let i = 0; i <= KMAX; i += 2) text(g, String(i), X(i), bottom + 10, { font: font(600, 10), color: theme.muted });
+      // aktueller Schritt
+      g.fillStyle = withAlpha(col.x(), theme.dark ? 0.16 : 0.1);
+      g.fillRect(X(p.k) - 6, top, 12, bottom - top);
+      const grow = intro.running ? ease.outCubic(clamp((intro.t - 0.3) / 0.7, 0, 1)) : 1;
+      const series = (ds: number[], c: string, dash: boolean) => {
+        g.save();
+        g.strokeStyle = c;
+        g.fillStyle = c;
+        g.lineWidth = 2.2;
+        if (dash) g.setLineDash([5, 4]);
+        g.beginPath();
+        ds.forEach((d, i) => {
+          const px = X(i);
+          const py = Y(d * grow);
+          if (i === 0) g.moveTo(px, py);
+          else g.lineTo(px, py);
+        });
+        g.stroke();
+        g.setLineDash([]);
+        ds.forEach((d, i) => {
+          g.beginPath();
+          g.arc(X(i), Y(d * grow), i === p.k ? 4.5 : 2.8, 0, Math.PI * 2);
+          g.fill();
+        });
+        g.restore();
+      };
+      series(dB, col.bis(), true);
+      if (newtonOk) series(dN.slice(0, KMAX + 1), col.tan(), false);
+      noteRows.forEach((row, i) => text(g, row, R.x + pad, R.y + R.h - 12 - (noteRows.length - 1 - i) * 14, { font: font(600, F(11, 10)), color: newtonOk ? theme.muted : col.bad(), align: 'left' }));
+    }
+
     /* ---------- Rendern ---------- */
     function render(): void {
       const now = performance.now();
@@ -442,7 +615,7 @@ export default defineSimulation({
       if (dragging && now - dragging > 250) dragging = 0;
       const goal = viewGoal();
       let moving = false;
-      if (viewFn !== key() || reduced) {
+      if (viewFn === null || reduced) {
         Object.assign(view, goal);
         viewFn = key();
       } else {
@@ -475,26 +648,55 @@ export default defineSimulation({
       calcCard({ x: C.x, y: C.y, w: C.w, h: h1 });
       // Tabelle nur so hoch wie nötig
       const need = 52 + Math.max(3, xs().length) * F(21, 19) + 40;
-      if (C.h - h1 - gap > 100) tableCard({ x: C.x, y: C.y + h1 + gap, w: C.w, h: Math.min(C.h - h1 - gap, wideLayout() ? C.h : need) });
-      if (moving || dragging || stepT.running) ctx.requestRender();
+      if (C.h - h1 - gap > 100) {
+        const R2 = { x: C.x, y: C.y + h1 + gap, w: C.w, h: Math.min(C.h - h1 - gap, wideLayout() ? C.h : p.cmp ? 280 : need) };
+        if (p.cmp) cmpCard(R2);
+        else tableCard(R2);
+      }
+      // „Schritte bis zum Ziel“: nächster Schritt, sobald der vorige fertig gezeichnet ist
+      if (autoRun && !stepT.running) {
+        if (!doStep()) autoRun = false;
+      }
+      if (moving || dragging || stepT.running || intro.running || autoRun) ctx.requestRender();
+    }
+
+    /** Ein Schritt weiter (mit Animation); false, wenn es nicht weitergeht oder schon genau genug ist. */
+    function doStep(): boolean {
+      const st = steps();
+      const last = st[st.length - 1];
+      if (p.k >= KMAX || (last && (last.next === null || last.status !== 'ok'))) return false;
+      const seq = xs();
+      if (autoRun && seq.length > 1 && Math.abs(fn().f(seq[seq.length - 1]!)) < 1e-12) return false;
+      if (autoRun && isCycle(seq)) return false;
+      ctx.set({ k: p.k + 1 });
+      stepT.play(reduced ? 1 : autoRun ? STEP_MS * 0.8 : STEP_MS);
+      return true;
     }
 
     return {
-      update() {
+      update(changed, source) {
+        if (source === 'init' || changed.has('fn')) intro.play();
+        if (changed.has('fn')) basinCache = null;
+        if (source !== 'sim' && autoRun && (changed.has('x0') || changed.has('fn'))) autoRun = false;
         updateReadouts();
         ctx.requestRender();
       },
       action(id) {
+        if (ctx.locked) return;
         if (id === 'restart') {
+          autoRun = false;
           ctx.set({ k: 0 });
           return;
         }
+        if (id === 'run') {
+          autoRun = true;
+          if (!stepT.running && !doStep()) autoRun = false;
+          ctx.requestRender();
+          return;
+        }
         if (id !== 'step') return;
-        const st = steps();
-        const last = st[st.length - 1];
-        if (p.k >= KMAX || (last && (last.next === null || last.status !== 'ok'))) return;
-        ctx.set({ k: p.k + 1 });
-        stepT.play(reduced ? 1 : STEP_MS);
+        autoRun = false;
+        doStep();
       },
       render,
       destroy: () => surface.destroy(),
