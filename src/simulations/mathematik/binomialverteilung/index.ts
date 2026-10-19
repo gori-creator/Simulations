@@ -94,7 +94,7 @@ type Drag = 'k' | 'a' | 'b';
 export default defineSimulation({
   id: 'binomialverteilung',
   dragHint: true,
-  layout: { aspect: 1.6, aspectNarrow: 0.5 },
+  layout: { aspect: 1.45, aspectNarrow: 0.5 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -197,6 +197,7 @@ export default defineSimulation({
     const rel = Array.from({ length: SLOTS }, () => 0);
     let nS = p.n;
     let yMaxS = 0.3;
+    let yP = 0.3;
     let muS = binomialMean(p.n, p.p);
     let sdS = binomialSd(p.n, p.p);
     let sigA = p.sig ? 1 : 0;
@@ -235,13 +236,13 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       if (wide()) {
-        const colW = Math.round(Math.min(360, Math.max(250, w * 0.34)));
+        const colW = Math.round(Math.min(360, Math.max(232, w * 0.33)));
         const col = { x: w - colW, y: 6, w: colW - 6, h: h - 12 };
         const ch = Math.round((col.h - 10) * 0.56);
         return { chart: { x: 0, y: 0, w: w - colW - 8, h }, calc: { x: col.x, y: col.y, w: col.w, h: ch }, chain: { x: col.x, y: col.y + ch + 10, w: col.w, h: col.h - ch - 10 } };
       }
-      const chartH = Math.round(h * 0.44);
-      const calcH = Math.round(h * 0.31);
+      const chartH = Math.round(h * 0.47);
+      const calcH = Math.round(h * 0.29);
       return { chart: { x: 0, y: 0, w, h: chartH }, calc: { x: 4, y: chartH + 6, w: w - 8, h: calcH }, chain: { x: 4, y: chartH + calcH + 14, w: w - 8, h: h - chartH - calcH - 18 } };
     }
     const textSize = () => {
@@ -255,7 +256,7 @@ export default defineSimulation({
       const left = wide() ? 50 : 44;
       const top = 62;
       const bottom = 64;
-      return { x: R.x + left, y: R.y + top, w: R.w - left - 14, h: R.h - top - bottom };
+      return { x: R.x + left, y: R.y + top, w: R.w - left - 26, h: R.h - top - bottom };
     }
     const X0 = -0.7;
     const xEnd = () => nS + 0.7;
@@ -321,6 +322,8 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse (Text) ---------- */
 
+    const chainsTxt = (N: number) => (N === 1 ? tt('1 Kette', '1 chain') : tt(`${fmt.num(N, 0)} Ketten`, `${fmt.num(N, 0)} chains`));
+
     function updateReadouts(): void {
       const n = nn();
       const kind = ev();
@@ -329,14 +332,14 @@ export default defineSimulation({
       const sd = binomialSd(n, p.p);
       ctx.readout('dist', { html: `<var>X</var> ~ B(${n}; ${pTxt()})` });
       ctx.readout('res', `${evSym(kind).replace('P(', 'P(')} ${rel4(P)} ${fmt.fixed(P, 4)} (${pct(P)})${kind === 'ab' && aa() > bb() ? tt(' – leerer Bereich', ' – empty range') : ''}`);
-      ctx.readout('mu', { html: `μ = <var>n</var> · <var>p</var> = ${fmt.num(mu, 2)}; &nbsp; σ = √(<var>n</var> · <var>p</var> · (1 − <var>p</var>)) ≈ ${fmt.num(sd, 3)}` });
+      ctx.readout('mu', { html: `μ = <var>n</var> · <var>p</var> = ${fmt.num(mu, 2)}; &nbsp; σ = √(<var>n</var> · <var>p</var> · (1 − <var>p</var>)) ${Math.abs(sd * 1000 - Math.round(sd * 1000)) < 1e-9 ? '=' : '≈'} ${fmt.num(sd, 3)}` });
       const s1 = sigmaBounds(n, p.p, 1);
       const s2 = sigmaBounds(n, p.p, 2);
       ctx.readout('sig', `P(${s1.lo} ≤ X ≤ ${s1.hi}) ≈ ${pct(sigmaShare(n, p.p, 1))} (μ ± σ); P(${s2.lo} ≤ X ≤ ${s2.hi}) ≈ ${pct(sigmaShare(n, p.p, 2))} (μ ± 2σ)`);
       if (!total) ctx.readout('exp', tt('noch keine Bernoulli-Kette', 'no Bernoulli chain yet'));
       else {
         const hits = counts.reduce((s, c, k) => s + (inEvent(kind, k, sel()) ? c : 0), 0);
-        ctx.readout('exp', tt(`${fmt.num(total, 0)} Ketten, x̄ ≈ ${fmt.num(meanOfCounts(counts), 2)}, relative Häufigkeit des Ereignisses ≈ ${fmt.fixed(hits / total, 3)}`, `${fmt.num(total, 0)} chains, x̄ ≈ ${fmt.num(meanOfCounts(counts), 2)}, relative frequency of the event ≈ ${fmt.fixed(hits / total, 3)}`));
+        ctx.readout('exp', tt(`${chainsTxt(total)}, x̄ ≈ ${fmt.num(meanOfCounts(counts), 2)}, relative Häufigkeit des Ereignisses ≈ ${fmt.fixed(hits / total, 3)}`, `${chainsTxt(total)}, x̄ ≈ ${fmt.num(meanOfCounts(counts), 2)}, relative frequency of the event ≈ ${fmt.fixed(hits / total, 3)}`));
       }
     }
 
@@ -575,6 +578,10 @@ export default defineSimulation({
       const n = nn();
       const unit = unitPx();
       const base = r.y + r.h;
+      g.save();
+      g.beginPath();
+      g.rect(R.x, R.y, R.w, R.h);
+      g.clip();
 
       // Gitter und y-Beschriftung
       const step = niceStep(yMaxS / (r.h > 260 ? 5 : 3.5));
@@ -603,7 +610,7 @@ export default defineSimulation({
       formula(g, 'F(k) = P(X ≤ k)', fstyle(size - 0.5, th().muted, 700)).draw(g, R.x + 8, R.y + 18);
       g.globalAlpha = k.labels;
       const kl = formula(g, 'k', fstyle(size + 1, th().muted, 700));
-      kl.draw(g, r.x + r.w - kl.w, base + 15 + (kl.asc - kl.desc) / 2);
+      kl.draw(g, r.x + r.w + 8, base + 1 + (kl.asc - kl.desc) / 2);
       g.restore();
 
       // σ-Umgebungen (nur Histogramm)
@@ -621,7 +628,7 @@ export default defineSimulation({
         if (h < 0.3) continue;
         const x = X(i) - bw / 2;
         const hh = hl[i]!;
-        const col = mixColor(nb, c.ev, hh);
+        const col = mixColor(mixColor(nb, th().bg, v * 0.45), c.ev, hh);
         const grad = g.createLinearGradient(0, base - h, 0, base);
         grad.addColorStop(0, col);
         grad.addColorStop(1, mixColor(col, th().bg, th().dark ? 0.25 : 0.18));
@@ -657,7 +664,7 @@ export default defineSimulation({
       if (p.show && unit >= 38 && k.labels > 0.5) {
         for (let i = 0; i <= n; i++) {
           const val = lerp(pmf[i]!, F(i), v);
-          if (val < 5e-5 && hl[i]! < 0.5) continue;
+          if (val === 0 || (val < 5e-5 && hl[i]! < 0.5)) continue;
           const y = Y(lerp(shownP[i]!, shownF[i]!, v));
           const b = fit(fmt.fixed(val, unit >= 52 ? 4 : 3), unit - 4, size - 2, hl[i]! > 0.5 ? c.ev : th().muted, 700, 9);
           g.save();
@@ -688,12 +695,7 @@ export default defineSimulation({
         const y = Math.max(r.y + 14, Y(lerp(shownP[hover]!, shownF[hover]!, v)) - 24);
         pill(X(hover), y, src, { size: size - 0.5, clampTo: R, border: mixColor(th().text, th().bg, 0.6) });
       }
-      // Legende: Experiment
-      if (total > 0 || run) {
-        const N = run ? run.baseTotal + Math.round(RUN_COUNT * ease.inOutCubic(runProgress(now))) : total;
-        const src = tt(`relative Häufigkeit, ${fmt.num(N, 0)} Ketten`, `relative frequency, ${fmt.num(N, 0)} chains`);
-        chip(R.x + R.w - 8, R.y + 6, src, c.freq, size - 1.5, 'right', R.w * 0.6);
-      }
+      g.restore();
     }
 
     function drawSigma(now: number, a: number): void {
@@ -736,7 +738,8 @@ export default defineSimulation({
         const share = sigmaShare(n, p.p, row.m);
         const s = row.m === 1 ? 'μ ± σ' : 'μ ± 2σ';
         const src = p.show ? `\\c{sig}{${s}}: ${rel4(share)} ${fmt.num(share * 100, 1)} %` : `\\c{sig}{${s}}`;
-        pill((x1 + x2) / 2, row.y + 1, src, { size, alpha: a, clampTo: { x: r.x - 40, y: 0, w: r.w + 46, h: 0 } });
+        const left = regions().chart.x + 112;
+        pill((x1 + x2) / 2, row.y + 1, src, { size, alpha: a, clampTo: { x: left, y: 0, w: r.x + r.w + 6 - left, h: 0 } });
       }
       void now;
     }
@@ -1085,7 +1088,9 @@ export default defineSimulation({
         { src: data.general, color: th().muted, weight: 600 },
         ...data.lines.map((s) => ({ src: s, color: th().text, weight: 650 })),
       ];
-      const lh = size * 1.75;
+      const spare = r.h - need(size);
+      const lh = size * 1.75 + Math.max(0, Math.min(size * 0.7, spare / (rows.length + 3)));
+      y += Math.max(0, Math.min(size * 0.5, spare / 8));
       rows.forEach((row, i) => {
         const aa2 = clamp01(stagger * (rows.length + 3) - i) * clamp01(change * 2.4 - i * 0.18);
         const box = fit(row.src, innerW, size, row.color, row.weight, 9.5);
@@ -1101,7 +1106,8 @@ export default defineSimulation({
       const shown = Math.abs(resS - P) < 5e-5 ? P : resS;
       const big = p.show ? `${rel4(P)} ${shown === P ? prob(P) : fmt.fixed(shown, 4)}` : '= ?';
       const bigSize = Math.min(size * 2.05, 30);
-      const bb2 = fit(`${evSym(ev())} ${big}`, innerW * (p.show ? 0.7 : 1), bigSize, c.ev, 800, 12);
+      const pb = p.show ? fit(`= ${fmt.num(shown * 100, 2)} %`, innerW * 0.32, size, th().muted, 700, 9) : null;
+      const bb2 = fit(`${evSym(ev())} ${big}`, innerW - 8 - (pb ? pb.w + 14 : 0), bigSize, c.ev, 800, 11);
       const bh = bigSize * 1.45;
       g.save();
       g.globalAlpha = alpha * ease.outCubic(ra);
@@ -1109,12 +1115,11 @@ export default defineSimulation({
       roundRect(g, r.x + pad - 6, y + 2, innerW + 12, bh, 10);
       g.fill();
       bb2.draw(g, r.x + pad + 4, y + 2 + bh / 2 + (bb2.asc - bb2.desc) / 2);
-      if (p.show) {
-        const pb = fit(`= ${fmt.num(shown * 100, 2)} %`, innerW * 0.3, size, th().muted, 700, 9);
+      if (pb) {
         pb.draw(g, r.x + r.w - pad - 2 - pb.w, y + 2 + bh / 2 + (pb.asc - pb.desc) / 2);
       }
       g.restore();
-      y += bh + 8;
+      y += bh + 8 + Math.max(0, Math.min(size * 0.6, spare / 8));
       if (data.note) {
         const nb2 = fit(data.note, innerW, size - 1, th().muted, 600, 9);
         nb2.draw(g, r.x + pad, y + size * 0.7 + (nb2.asc - nb2.desc) / 2);
@@ -1158,12 +1163,15 @@ export default defineSimulation({
       const title = formula(g, tt('Bernoulli-Kette', 'Bernoulli chain'), fstyle(size, th().muted, 800));
       title.draw(g, r.x + pad, r.y + pad + title.asc);
       // Legende
-      const legend = `\\c{hit}{●} ${tt('Treffer', 'success')} (p)   \\c{m}{○} ${tt('Niete', 'failure')} (1 − p)`;
-      const lb = fit(legend, r.w - 2 * pad - title.w - 14, size - 2, th().muted, 600, 9);
-      lb.draw(g, r.x + r.w - pad - lb.w, r.y + pad + title.asc);
+      const legendFull = `\\c{hit}{●} ${tt('Treffer', 'success')} (p)   \\c{m}{○} ${tt('Niete', 'failure')} (1 − p)`;
+      const legendShort = `\\c{hit}{●} ${tt('Treffer', 'success')}  \\c{m}{○} ${tt('Niete', 'failure')}`;
+      const avail = r.w - 2 * pad - title.w - 14;
+      let lb = formula(g, legendFull, fstyle(size - 2, th().muted, 600));
+      if (lb.w > avail) lb = formula(g, legendShort, fstyle(size - 2, th().muted, 600));
+      if (lb.w <= avail) lb.draw(g, r.x + r.w - pad - lb.w, r.y + pad + title.asc);
       // Voraussetzungen (unten)
-      const font = `600 ${Math.max(11, size - 2)}px ${th().font}`;
-      const req = tt('Voraussetzungen: n unabhängige Versuche mit nur zwei Ausgängen (Treffer/Niete) und jedes Mal derselben Trefferwahrscheinlichkeit p.', 'Requirements: n independent trials with only two outcomes (success/failure) and the same probability of success p every time.');
+      const font = `500 ${Math.max(11, size - 2)}px ${th().font}`;
+      const req = tt('Voraussetzung: n unabhängige Versuche, jeder mit Treffer oder Niete und derselben Trefferwahrscheinlichkeit p.', 'Requirement: n independent trials, each a success or a failure with the same probability of success p.');
       const reqLines = wrapText(req, r.w - 2 * pad, font);
       const rlh = Math.max(11, size - 2) * 1.3;
       const reqTop = r.y + r.h - pad - reqLines.length * rlh;
@@ -1175,7 +1183,8 @@ export default defineSimulation({
       // Kette
       const top = r.y + pad + title.asc + title.desc + 10;
       const statusH = size * 1.9;
-      const gridH = reqTop - 6 - statusH - top;
+      const freqH = total > 0 || run ? size * 1.5 : 0;
+      const gridH = reqTop - 6 - statusH - freqH - top;
       const gridW = r.w - 2 * pad;
       let chain: boolean[] | null = lastChain && lastChain.length === n ? lastChain : null;
       let shownCount = chain ? chain.length : 0;
@@ -1247,9 +1256,28 @@ export default defineSimulation({
         }
       }
       // Status
-      const sy = reqTop - 6 - statusH / 2;
+      const sy = reqTop - 6 - freqH - statusH / 2;
+      if (freqH) {
+        const N = run ? run.baseTotal + Math.round(RUN_COUNT * ease.inOutCubic(runProgress(now))) : total;
+        const fy = reqTop - 6 - freqH / 2;
+        g.save();
+        g.strokeStyle = c.freq;
+        g.lineWidth = 2.6;
+        g.lineCap = 'round';
+        g.beginPath();
+        g.moveTo(r.x + pad, fy + 3);
+        g.lineTo(r.x + pad + 6, fy + 3);
+        g.lineTo(r.x + pad + 6, fy - 4);
+        g.lineTo(r.x + pad + 14, fy - 4);
+        g.lineTo(r.x + pad + 14, fy + 1);
+        g.lineTo(r.x + pad + 20, fy + 1);
+        g.stroke();
+        g.restore();
+        const fb = fit(tt(`relative Häufigkeiten nach ${chainsTxt(N)}`, `relative frequencies after ${chainsTxt(N)}`), r.w - 2 * pad - 28, size - 1, c.freq, 700, 9);
+        fb.draw(g, r.x + pad + 28, fy + (fb.asc - fb.desc) / 2);
+      }
       let status: string;
-      if (!chain) status = tt('Tippe auf „Eine Bernoulli-Kette“: n Versuche nacheinander.', 'Tap “One Bernoulli chain”: n trials one after another.');
+      if (!chain) status = tt('Hier erscheinen die n Versuche einer Kette.', 'The n trials of a chain appear here.');
       else {
         const hits = run ? chain.filter(Boolean).length : hitsSoFar;
         const done = !chainAnim || chainAnim.added || run;
@@ -1323,8 +1351,10 @@ export default defineSimulation({
       let pmax = 0;
       for (let i = 0; i <= n; i++) pmax = Math.max(pmax, pmf[i]!);
       if (total >= 100 || run) for (let i = 0; i < SLOTS; i++) pmax = Math.max(pmax, (run ? run.finalRel[i]! : rel[i]!) * 0.98);
-      const yGoal = lerp(Math.max(0.02, pmax * 1.14), 1.06, v);
-      yMaxS = follow(yMaxS, yGoal, dt, reduced() ? 0 : 0.2);
+      const yGoal = Math.max(0.02, pmax * 1.26);
+      yP = follow(yP, yGoal, dt, reduced() ? 0 : 0.2);
+      // Bereich passend zum Übergang Histogramm ↔ F(k): so ragt kein Balken über den Rand
+      yMaxS = lerp(yP, 1.06, v);
       muS = follow(muS, binomialMean(n, p.p), dt, reduced() ? 0 : 0.16);
       sdS = follow(sdS, binomialSd(n, p.p), dt, reduced() ? 0 : 0.16);
       sigA = follow(sigA, p.sig ? 1 : 0, dt, reduced() ? 0 : 0.12);
@@ -1332,7 +1362,7 @@ export default defineSimulation({
       knob.a = follow(knob.a, aa(), dt, reduced() || drag ? 0.03 : 0.12);
       knob.b = follow(knob.b, bb(), dt, reduced() || drag ? 0.03 : 0.12);
       resS = follow(resS, eventProbability(n, p.p, ev(), sel()), dt, reduced() ? 0 : 0.22);
-      if (nS !== goalN || yMaxS !== yGoal || sigA !== (p.sig ? 1 : 0) || muS !== binomialMean(n, p.p) || sdS !== binomialSd(n, p.p)) anim = true;
+      if (nS !== goalN || yP !== yGoal || sigA !== (p.sig ? 1 : 0) || muS !== binomialMean(n, p.p) || sdS !== binomialSd(n, p.p)) anim = true;
       if (knob.k !== kk() || knob.a !== aa() || knob.b !== bb() || resS !== eventProbability(n, p.p, ev(), sel())) anim = true;
       if (vt.busy(now)) anim = true;
       return anim;
@@ -1386,7 +1416,8 @@ export default defineSimulation({
     {
       let pmax = 0;
       for (const v of pmf) pmax = Math.max(pmax, v);
-      yMaxS = p.view === 'cdf' ? 1.06 : Math.max(0.02, pmax * 1.14);
+      yP = Math.max(0.02, pmax * 1.26);
+      yMaxS = p.view === 'cdf' ? 1.06 : yP;
     }
     resS = eventProbability(p.n, p.p, ev(), sel());
     updateReadouts();
