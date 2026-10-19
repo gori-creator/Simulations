@@ -496,7 +496,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
+          {
+            id: 'flaechen-zerlegen',
+            status: 'ready',
+            slug: L('flaechen-zerlegen-ergaenzen', 'area-by-decomposing'),
+            title: L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'),
+            summary: L(
+              'Ein Parallelogramm wird entlang der Höhe zerlegt und zum Rechteck umgelegt, Dreieck und Trapez werden mit einer gedrehten Kopie zum Parallelogramm ergänzt. Dazu Kästchen zählen und die Spitze verschieben – die Fläche bleibt.',
+              'A parallelogram is cut along its height and rearranged into a rectangle; triangles and trapeziums are completed to a parallelogram by a rotated copy. Plus counting squares and sliding the top – the area stays the same.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Flächeninhalt', 'Parallelogramm', 'Dreieck', 'Trapez', 'Grundseite', 'Höhe', 'zerlegen', 'ergänzen', 'verschieben', 'Kopie drehen', 'Scherung', 'Kästchen zählen', 'Flächenformel'],
+              ['area', 'parallelogram', 'triangle', 'trapezium', 'trapezoid', 'base', 'height', 'decompose', 'complete', 'rearrange', 'rotated copy', 'shear', 'counting squares', 'area formula'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
           {
