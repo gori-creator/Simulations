@@ -285,9 +285,14 @@ export default defineSimulation({
       // Ergebnis erst nach „Los!“ (bzw. sofort, wenn „Ergebnis sofort zeigen“ an ist)
       ctx.readout('result', revealed ? `${term} = ${num(result())}` : null);
       const sc = scene();
-      if (sc === 'gerade' || sc === 'konto') {
+      if (sc === 'gerade') {
         const [s1, s2, s3] = steps();
         ctx.readout('context', `${s1}. ${s2}. ${s3}.`);
+      } else if (sc === 'konto') {
+        // Sachsituation wie auf der Zeichenfläche, dazu die Schritte im Laufmodell
+        const st = story('konto', a, op(), b, lang);
+        const [s1, s2, s3] = steps();
+        ctx.readout('context', `${st.start} ${st.change} ${s1}. ${s2}. ${s3}.`);
       } else {
         const st = story(sc, a, op(), b, lang);
         ctx.readout('context', `${st.start} ${st.change}`);
