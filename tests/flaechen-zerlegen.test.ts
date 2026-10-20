@@ -145,6 +145,29 @@ describe('Modell: Flächen durch Zerlegen und Ergänzen', () => {
     expect(rectCells(1, 3, 2)[3]).toEqual([1, 1]);
   });
 
+  it('Neigung nach links (s < 0): nur das kleine Dreieck wird verschoben', () => {
+    // A(0|0), B(6|0), C(4|4), D(−2|4): Schnitt entlang der Höhe von C bei x = 4
+    const pieces = rectPieces(6, -2, [parallelogram(6, 4, -2)]);
+    const moved = pieces.filter((p) => p.shift !== 0);
+    expect(moved).toHaveLength(1);
+    expect(moved[0]!.shift).toBe(-6);
+    expect(polyArea(moved[0]!.poly)).toBeCloseTo((2 * 4) / 2, 12);
+    expect(targetRect(6, 4, -2).x0).toBe(-2);
+    expect(cutLines(6, 4, -2).map((c) => c.x)).toEqual([4]);
+    // Grenzfall s = −g: zwei gleich große Dreiecke, eines wird verschoben
+    const half = rectPieces(5, -5, [parallelogram(5, 3, -5)]);
+    expect(half.filter((p) => p.shift !== 0)).toHaveLength(1);
+    expect(half.reduce((s, p) => s + polyArea(p.poly), 0)).toBeCloseTo(15, 12);
+  });
+
+  it('Dreieck g = 6, h = 4, C(−3|4): Lot außerhalb, Verdoppeln und Umlegen ergibt 24 cm²', () => {
+    const d = D(6, 4, -3);
+    expect(footOutside(d)).toBe(true);
+    const pieces = rectPieces(6, -3, [figure('tri', d), halfTurnCopy('tri', d)]);
+    expect(pieces.reduce((s, p) => s + polyArea(p.poly), 0)).toBeCloseTo(24, 12);
+    expect(pieces.filter((p) => p.src === 0).reduce((s, p) => s + polyArea(p.poly), 0)).toBeCloseTo(12, 12);
+  });
+
   it('viele Zufallsfiguren: Schuhbandformel = Formel, Teile ergeben das Rechteck', () => {
     const r = rng(42);
     const kinds: Kind[] = ['para', 'tri', 'trap'];
@@ -163,8 +186,16 @@ describe('Modell: Flächen durch Zerlegen und Ergänzen', () => {
       const own = pieces.filter((p) => p.src === 0).reduce((s, p) => s + polyArea(p.poly), 0);
       expect(own).toBeCloseTo(formulaArea(kind, d), 9);
       const t = targetRect(P.G, P.h, P.s);
-      expect(t.x0).toBeGreaterThanOrEqual(0);
-      expect(t.x0).toBeLessThan(P.G);
+      // das Rechteck überdeckt einen Teil der Grundseite [0, G]
+      if (P.s >= 0) {
+        expect(t.x0).toBeGreaterThanOrEqual(0);
+        expect(t.x0).toBeLessThan(P.G);
+      } else {
+        expect(t.x0).toBeGreaterThan(-P.G);
+        expect(t.x0).toBeLessThanOrEqual(0);
+      }
+      // genau ein Streifen bleibt liegen
+      expect(new Set(pieces.filter((p) => p.shift === 0).map((p) => p.j)).size).toBe(1);
       for (const p of pieces) for (const q of p.poly) {
         expect(q[0] + p.shift).toBeGreaterThanOrEqual(t.x0 - 1e-9);
         expect(q[0] + p.shift).toBeLessThanOrEqual(t.x0 + t.w + 1e-9);
