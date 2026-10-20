@@ -171,6 +171,61 @@ describe('Modell: Löser – Sonderfälle', () => {
   });
 });
 
+describe('Prüfrunde: SSW an den Grenzen und über das ganze Reglerfeld', () => {
+  it('Aufgabe 3: Flächeninhalte der beiden Dreiecke ≈ 11,76 cm² und ≈ 3,83 cm²', () => {
+    const r = solve('ssw', G({ a: 4, c: 6, al: 30 }));
+    expect(r.kind).toBe('ok');
+    if (r.kind !== 'ok') return;
+    expect(areaSAS(r.tris[0]!.b, 6, 30)).toBeCloseTo(11.763, 3);
+    expect(areaSAS(r.tris[1]!.b, 6, 30)).toBeCloseTo(3.826, 3);
+  });
+  it('α = 90°: nur für a > c ein Dreieck (Hypotenuse a)', () => {
+    expect(solve('ssw', G({ a: 6, c: 6, al: 90 }))).toMatchObject({ kind: 'none', reason: 'obtuse' });
+    const r = solve('ssw', G({ a: 10, c: 6, al: 90 }));
+    expect(r.kind === 'ok' && r.tris.length).toBe(1);
+    if (r.kind === 'ok') expect(r.tris[0]!.b).toBeCloseTo(8, 10);
+  });
+  it('Reglergrenzen: a = 0,5, c = 12, α = 1° → zwei Lösungen; α = 179°, a = 12, c = 0,5 → eine', () => {
+    const two = solve('ssw', G({ a: 0.5, c: 12, al: 1 }));
+    expect(two.kind === 'ok' && two.tris.length).toBe(2);
+    const one = solve('ssw', G({ a: 12, c: 0.5, al: 179 }));
+    expect(one.kind === 'ok' && one.tris.length).toBe(1);
+    const wsw = solve('wsw', G({ c: 0.5, al: 1, be: 1 }));
+    expect(wsw.kind).toBe('ok');
+    if (wsw.kind === 'ok') expect(wsw.tris[0]!.ga).toBeCloseTo(178, 12);
+  });
+  it('Anzahl der Lösungen folgt der Regel (0 / 1 / 2) und jede Lösung erfüllt a, c, α', () => {
+    const rnd = seededRandom(31);
+    const count = [0, 0, 0];
+    for (let n = 0; n < 3000; n++) {
+      const a = Math.round((0.5 + rnd() * 11.5) * 10) / 10;
+      const c = Math.round((0.5 + rnd() * 11.5) * 10) / 10;
+      const al = Math.round((1 + rnd() * 178) * 2) / 2;
+      const sg = (c * Math.sin(al * DEG)) / a;
+      const r = solve('ssw', G({ a, c, al }));
+      const k = r.kind === 'none' ? 0 : r.tris.length;
+      let want: number;
+      if (al >= 90) want = a > c ? 1 : 0;
+      else if (sg > 1 + 1e-9) want = 0;
+      else if (sg >= 1 - 1e-9 || a >= c) want = 1;
+      else want = 2;
+      expect(k).toBe(want);
+      count[k]!++;
+      if (r.kind === 'ok') {
+        for (const s of r.tris) {
+          expect(s.be).toBeGreaterThan(0);
+          const t = placeSolved(s);
+          const [a2, , c2] = sides(t);
+          expect(a2).toBeCloseTo(a, 6);
+          expect(c2).toBeCloseTo(c, 9);
+          expect(angles(t)[0]).toBeCloseTo(al, 6);
+        }
+      }
+    }
+    expect(Math.min(...count)).toBeGreaterThan(100);
+  });
+});
+
 describe('Modell: Geometrie am Dreieck', () => {
   const T: Tri = [
     [1, 1],
