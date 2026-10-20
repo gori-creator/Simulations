@@ -1,5 +1,5 @@
 import type { Lang } from '../i18n/config';
-import { Formatter, withUnit } from './format';
+import { Formatter } from './format';
 import { isVisible, stepDecimals } from './params';
 import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
 
