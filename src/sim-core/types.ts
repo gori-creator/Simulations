@@ -144,6 +144,16 @@ export interface SimContext<V> {
   readonly clock: Clock;
   /** Optionale Bilder aus `images` (siehe src/assets/sims/). */
   readonly images: ImageStore;
+  /**
+   * Aufgabenmodus: `true`, solange Lösungen verdeckt sein sollen – also bei
+   * geteiltem Link mit „Ergebnisse verdecken“ (`_hide=1`), bis ein Ergebnis
+   * aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist.
+   * Damit lassen sich Etiketten im Bild gezielt ausblenden. Bei einem Wechsel
+   * zeichnet der Host neu und ruft `hiddenChange` auf.
+   */
+  readonly hidden: boolean;
+  /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
+  isHidden(key: string): boolean;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
@@ -181,6 +191,8 @@ export interface SimInstance {
   resetTime?(): void;
   /** Zoom/Verschiebung der Ansicht zurücksetzen. */
   resetView?(): void;
+  /** `ctx.hidden` hat sich geändert (z. B. Ergebnis aufgedeckt). Neu gezeichnet wird ohnehin. */
+  hiddenChange?(hidden: boolean): void;
   destroy?(): void;
 }
 

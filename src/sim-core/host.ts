@@ -7,6 +7,7 @@ import { exportStagePng } from './export';
 import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { defaultValues, sanitize, valuesEqual } from './params';
+import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -77,6 +78,8 @@ class SimulationHost {
   private controls: Controls | null = null;
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
+  /** Zuletzt an die Simulation gemeldeter Stand von `ctx.hidden`. */
+  private lastHidden: boolean | null = null;
   private pending = new Set<string>();
   private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
@@ -117,6 +120,7 @@ class SimulationHost {
     this.applyLock();
 
     this.instance = def.mount(this.createContext());
+    this.lastHidden = isTaskHidden(this.taskState());
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
     this.requestRender();
@@ -155,6 +159,10 @@ class SimulationHost {
       get images() {
         return host.images;
       },
+      get hidden() {
+        return isTaskHidden(host.taskState());
+      },
+      isHidden: (key) => isReadoutHidden(this.taskState(), key),
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,
@@ -318,14 +326,30 @@ class SimulationHost {
    * Schalter `resultsParam` der Simulation („Ergebnisse anzeigen“) aus ist.
    */
   private applyHide(): void {
-    const param = this.def.resultsParam;
-    const off = !!param && this.values[param] === false;
+    const state = this.taskState();
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
-      const hidden = off || (this.flags.hide && !this.revealed.has(key));
+      const hidden = isReadoutHidden(state, key);
       row.value.hidden = hidden;
       row.reveal.hidden = !hidden;
     }
+    // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
+    if (!this.instance) return;
+    const hidden = isTaskHidden(state);
+    if (hidden !== this.lastHidden) {
+      this.lastHidden = hidden;
+      this.instance.hiddenChange?.(hidden);
+    }
+    this.requestRender();
+  }
+
+  private taskState(): TaskModeState {
+    const param = this.def.resultsParam;
+    return {
+      hideFlag: this.flags.hide,
+      resultsOff: !!param && this.values[param] === false,
+      revealed: this.revealed,
+    };
   }
 
   private readout(key: string, value: ReadoutValue): void {

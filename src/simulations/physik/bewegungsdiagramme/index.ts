@@ -944,8 +944,11 @@ export default defineSimulation({
       const sLabel = `s = ${fmt.num(st.s, 1)} m`;
       const vLabel = small ? `v = ${fmt.num(st.v, 1)} m/s` : `v = ${fmt.num(st.v, 1)} m/s (${fmt.num(toKmh(st.v), 0)} km/h)`;
       const w1 = pill(r.x + 8, r.y + 8, tLabel, theme.text, 'left', size);
-      pill(r.x + 8 + w1 + 6, r.y + 8, sLabel, theme.series[0]!, 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, vLabel, theme.series[3]!, 'right', size);
+      // Im Aufgabenmodus verraten Ort und Tacho die Lösung (Aufgabe 2: Diagramm ablesen)
+      if (!ctx.hidden) {
+        pill(r.x + 8 + w1 + 6, r.y + 8, sLabel, theme.series[0]!, 'left', size);
+        pill(r.x + r.w - 8, r.y + 8, vLabel, theme.series[3]!, 'right', size);
+      }
       g.restore();
     }
 
