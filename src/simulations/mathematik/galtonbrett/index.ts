@@ -1,5 +1,5 @@
-import { defineSimulation, drawImageFit, roundRect, softShadow, Surface, text, Tween, ease, withAlpha, type Rect } from '../../../sim-core';
-import { binomialCoefficient, binomialMean, binomialPmf, binomialSd, randomPath, statsFromCounts } from './model';
+import { defineSimulation, drawImageFit, prefersReducedMotion, roundRect, softShadow, Surface, text, Tween, ease, withAlpha, type Rect } from '../../../sim-core';
+import { binomialCoefficient, binomialMean, binomialPmf, binomialSd, dropBalls, randomPath, roundedRelation, statsFromCounts } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** Sekunden pro Reihe (Fallzeit von Nagel zu Nagel). */
@@ -77,24 +77,24 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Galtonbrett mit Nagelreihen, fallenden Kugeln und Auffangfächern',
+      canvas: 'Galtonbrett mit Nagelreihen, fallenden Kugeln und nummerierten Auffangfächern; wahlweise mit der Anzahl der Wege an den Nägeln, der erwarteten Anzahl je Fach (waagerechte Striche) und der Glockenkurve',
       right: 'R',
       left: 'L',
       pathText: '{path} → {k}-mal rechts → Fach {k}',
       none: 'noch keine',
-      stats: 'x̄ ≈ {mean}, s ≈ {sd}',
-      theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) ≈ {sigma}',
+      stats: 'x̄ {mean}, s {sd}',
+      theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) {sigma}',
       binomial: 'B({n}; {p})',
       bin: 'k',
     },
     en: {
-      canvas: 'Galton board with rows of pegs, falling balls and collecting bins',
+      canvas: 'Galton board with rows of pegs, falling balls and numbered collecting bins; optionally with the number of paths at the pegs, the expected count per bin (horizontal marks) and the bell curve',
       right: 'R',
       left: 'L',
       pathText: '{path} → {k} times right → bin {k}',
       none: 'none yet',
-      stats: 'x̄ ≈ {mean}, s ≈ {sd}',
-      theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) ≈ {sigma}',
+      stats: 'x̄ {mean}, s {sd}',
+      theory: 'μ = n · p = {mu}, σ = √(n · p · (1 − p)) {sigma}',
       binomial: 'B({n}; {p})',
       bin: 'k',
     },
@@ -134,6 +134,14 @@ export default defineSimulation({
     }
 
     function launch(count: number): void {
+      // Reduzierte Bewegung: Kugeln landen ohne Flug sofort im Fach.
+      if (prefersReducedMotion()) {
+        for (let i = 0; i < count; i++) {
+          const path = randomPath(p.n, p.p, Math.random);
+          land({ path, t: 0, bin: path.reduce((s, v) => s + v, 0), hue: 0 });
+        }
+        return;
+      }
       for (let i = 0; i < count && flying.length < MAX_FLYING; i++) {
         const path = randomPath(p.n, p.p, Math.random);
         flying.push({ path, t: -i * 0.06, bin: path.reduce((s, v) => s + v, 0), hue: (hueSeed++ * 47) % 360 });
@@ -144,10 +152,18 @@ export default defineSimulation({
       counts[ball.bin] = (counts[ball.bin] ?? 0) + 1;
       lastPath = ball.path;
       lastBin = ball.bin;
-      pulse.push({ bin: ball.bin, t: performance.now() });
-      if (pulse.length > 30) pulse.shift();
+      if (!prefersReducedMotion()) {
+        pulse.push({ bin: ball.bin, t: performance.now() });
+        if (pulse.length > 30) pulse.shift();
+      }
       updateReadouts();
     }
+
+    /** „= 2“ bei exakten Werten, sonst „≈ 1,30“ (zwei Stellen, mit Endnull). */
+    const rel = (value: number) => {
+      const r = roundedRelation(value, 2);
+      return `${r.exact ? '=' : '≈'} ${r.exact ? fmt.num(value, 2) : fmt.fixed(value, 2)}`;
+    };
 
     function updateReadouts(): void {
       const stats = statsFromCounts(counts);
@@ -156,8 +172,8 @@ export default defineSimulation({
         const path = lastPath.length ? lastPath.map((v) => ctx.t(v ? 'right' : 'left')).join(' ') : '–';
         ctx.readout('last', tr('pathText', { path, k: lastBin }));
       } else ctx.readout('last', ctx.t('none'));
-      ctx.readout('stats', stats.total ? tr('stats', { mean: fmt.num(stats.mean, 2), sd: fmt.num(stats.sd, 2) }) : '–');
-      ctx.readout('theory', tr('theory', { mu: fmt.num(binomialMean(p.n, p.p), 2), sigma: fmt.num(binomialSd(p.n, p.p), 2) }));
+      ctx.readout('stats', stats.total ? tr('stats', { mean: rel(stats.mean), sd: rel(stats.sd) }) : '–');
+      ctx.readout('theory', tr('theory', { mu: fmt.num(binomialMean(p.n, p.p), 2), sigma: rel(binomialSd(p.n, p.p)) }));
     }
 
     /* ---------- Geometrie ---------- */
@@ -351,10 +367,10 @@ export default defineSimulation({
             const size = Math.max(9, Math.min(13, geo.dx * 0.26));
             g.font = `700 ${size}px ${ctx.theme.font}`;
             const tw = g.measureText(label).width + 8;
-            g.fillStyle = 'rgba(255,255,255,0.88)';
+            g.fillStyle = withAlpha(ctx.theme.bg, 0.88);
             roundRect(g, x - tw / 2, y - geo.pegR - size - 8, tw, size + 4, 4);
             g.fill();
-            text(g, label, x, y - geo.pegR - size / 2 - 6, { font: `700 ${size}px ${ctx.theme.font}`, color: '#4a3410' });
+            text(g, label, x, y - geo.pegR - size / 2 - 6, { font: `700 ${size}px ${ctx.theme.font}`, color: ctx.theme.text });
           }
         }
       }
@@ -393,7 +409,7 @@ export default defineSimulation({
       const half = geo.dx / 2;
       const growT = grow.value;
       // Fachrückwand
-      g.fillStyle = theme.dark ? 'rgba(0,0,0,0.35)' : 'rgba(255,255,255,0.28)';
+      g.fillStyle = withAlpha(theme.bg, theme.dark ? 0.35 : 0.28);
       g.fillRect(binX(geo, 0) - half, bins.y, geo.dx * (n + 1), bins.h);
       for (let k = 0; k <= n; k++) {
         const x = binX(geo, k);
@@ -418,7 +434,7 @@ export default defineSimulation({
           g.fill();
         }
         if (glow > 0) {
-          g.fillStyle = `rgba(255,255,255,${0.35 * glow})`;
+          g.fillStyle = withAlpha(theme.bg, 0.35 * glow);
           g.fillRect(x - half, bins.y, geo.dx, bins.h);
         }
       }
@@ -471,10 +487,11 @@ export default defineSimulation({
       }
       // Beschriftung der Fächer
       const labelSize = Math.max(10, Math.min(14, geo.dx * 0.3));
-      const labelColor = theme.dark ? '#f1e6d6' : '#3b2a14';
+      const labelColor = theme.text;
+      const pillBg = withAlpha(theme.bg, theme.dark ? 0.7 : 0.8);
       for (let k = 0; k <= n; k++) {
         g.save();
-        g.fillStyle = theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.75)';
+        g.fillStyle = pillBg;
         roundRect(g, binX(geo, k) - labelSize * 0.8, bins.y + 4, labelSize * 1.6, labelSize + 6, 5);
         g.fill();
         g.restore();
@@ -482,18 +499,21 @@ export default defineSimulation({
         const c = counts[k] ?? 0;
         if (c > 0 && geo.dx >= 26) {
           const shown = grow.running ? Math.round((growFrom[k] ?? 0) + (c - (growFrom[k] ?? 0)) * growT) : c;
-          const y = Math.max(bins.y + labelSize + 22, bottom - shown * unit - 10);
+          // über Säule und Erwartungsstrich, damit sich beide nicht überdecken
+          const mark = p.binomial ? total * binomialPmf(n, k, p.p) : 0;
+          const stackH = balls && !grow.running ? Math.ceil(shown / scale.perRow) * scale.rowH + geo.ballR * 0.2 : shown * unit;
+          const y = Math.max(bins.y + labelSize + 22, bottom - Math.max(stackH, mark * unit) - 10);
           text(g, fmt.num(shown, 0), binX(geo, k), y, { font: `600 ${Math.max(9, labelSize - 2)}px ${theme.font}`, color: labelColor });
         }
       }
       // Legende
       const items: [string, string][] = [];
       if (p.binomial) items.push([tr('binomial', { n, p: fmt.num(p.p, 2) }), theme.series[1]!]);
-      if (p.normal) items.push(['N(μ; σ²)', theme.series[2]!]);
+      if (p.normal && n >= 2) items.push(['N(μ; σ²)', theme.series[2]!]);
       items.forEach(([label, color], i) => {
         const x = geo.board.x + 18;
         const y = geo.board.y + 22 + i * 22;
-        g.fillStyle = theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.8)';
+        g.fillStyle = pillBg;
         g.font = `700 13px ${theme.font}`;
         roundRect(g, x - 8, y - 10, g.measureText(label).width + 36, 20, 6);
         g.fill();
@@ -566,19 +586,15 @@ export default defineSimulation({
             launch(10);
             break;
           case 'hundred':
-            queued += 100;
+            if (prefersReducedMotion()) launch(100);
+            else queued += 100;
             break;
           case 'instant': {
             growFrom = counts.slice();
-            for (let i = 0; i < 1000; i++) {
-              const path = randomPath(p.n, p.p, Math.random);
-              const k = path.reduce((s, v) => s + v, 0);
-              counts[k] = (counts[k] ?? 0) + 1;
-              if (i === 999) {
-                lastPath = path;
-                lastBin = k;
-              }
-            }
+            const drop = dropBalls(p.n, p.p, 1000, Math.random);
+            drop.counts.forEach((c, k) => (counts[k] = (counts[k] ?? 0) + c));
+            lastPath = drop.lastPath;
+            lastBin = drop.lastBin;
             grow.play();
             updateReadouts();
             break;
