@@ -2,7 +2,7 @@
 
 Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst ändern dürfen, also Kern, `ui.ts` und Lehrplan, und was fachlich entschieden werden muss. Die Punkte werden gebündelt erledigt.
 
-**20.10.:** Die Projektleitung hat alle Vorschläge der Vertretung zu den Rückfragen übernommen. Umsetzung auf dem Zweig `pruefen/paket-1`.
+**20.10.:** Die Projektleitung hat alle Vorschläge der Vertretung zu den Rückfragen übernommen. Umsetzung auf dem Zweig `pruefen/paket-1`. **Ab sofort gilt:** Alles, was falsch ist oder besser werden soll, wird automatisch umgesetzt, ohne Rückfrage. Das betrifft auch die Kern-Punkte und die vorgemerkten Erweiterungen.
 
 ## Für den Kern
 

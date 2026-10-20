@@ -57,7 +57,7 @@ Pro Simulation gibt es **einen Durchgang** mit vier Teilen: Fach, Aufgaben/Texte
 
 - **`src/sim-core/`, `src/i18n/ui.ts`, `src/curriculum/*.ts`, Seiten und Layouts:** Was dort nötig wäre, kommt ins Protokoll unter „Für den Kern“. Die Vertretung sammelt und erledigt das.
 - **Parameter-Schlüssel:** nie umbenennen, weil sie in geteilten Links stehen.
-- **Fachlich Unsicheres:** nicht stillschweigend ändern, sondern unter „Rückfragen“ eintragen.
+- **Fehler und Verbesserungen:** Seit dem 20.10. gilt die Anweisung der Projektleitung, alles, was falsch ist oder besser werden soll, automatisch umzusetzen. Rückfragen sind nicht mehr nötig. Entscheide selbst nach dem Prinzip „fachlich richtig, für die Klassenstufe verständlich, im Zweifel einfacher“. Schreib die Entscheidung mit Begründung ins Protokoll unter „Entscheidungen“. Nur echte Lehrplan-Fragen (Zuordnung zu Land oder Jahrgangsstufe) bleiben als Entwurf gekennzeichnet.
 - **Konsistenztests:** nicht abschwächen.
 
 ## Abgabe
