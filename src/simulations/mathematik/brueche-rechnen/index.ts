@@ -96,6 +96,7 @@ export default defineSimulation({
       vonLine: '{x} von {y} ist {r}.',
       timesLine: '{x}-mal {y} ist {r}.',
       cellsLine: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt sind {a} · {c} = {ac} Felder.',
+      cellsOne: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt ist {a} · {c} = {ac} Feld.',
       cellsMany: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt sind {a} · {c} = {ac} Felder – mehr als ein Ganzes.',
       rule: 'Zähler mal Zähler, Nenner mal Nenner.',
       smaller: '{x} ist kleiner als 1 – das Ergebnis ist kleiner als {y}.',
@@ -113,6 +114,8 @@ export default defineSimulation({
       rowRecip: 'Mit dem Kehrwert',
       fitsMany: '{c} passt {k}-mal ganz in {a}, dazu noch {r} des Streifens.',
       fitsExact: '{c} passt genau {k}-mal in {a}.',
+      fitsManyOne: '{c} passt einmal ganz in {a}, dazu noch {r} des Streifens.',
+      fitsExactOne: '{c} passt genau einmal in {a}.',
       fitsNone: '{c} passt nicht ganz in {a} – nur {r} des Streifens.',
       pieces: '{a} {va} {A} {nameA}, {c} {vc} {C} {nameC}. Also {A} : {C}.',
       isOne: 'ist',
@@ -130,6 +133,7 @@ export default defineSimulation({
       vonLine: '{x} of {y} is {r}.',
       timesLine: '{x} times {y} is {r}.',
       cellsLine: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cells are shaded.',
+      cellsOne: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cell is shaded.',
       cellsMany: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cells are shaded – more than one whole.',
       rule: 'Numerator times numerator, denominator times denominator.',
       smaller: '{x} is less than 1 – the result is less than {y}.',
@@ -147,6 +151,8 @@ export default defineSimulation({
       rowRecip: 'With the reciprocal',
       fitsMany: '{c} fits {k} times into {a}, plus {r} of the strip.',
       fitsExact: '{c} fits exactly {k} times into {a}.',
+      fitsManyOne: '{c} fits once into {a}, plus {r} of the strip.',
+      fitsExactOne: '{c} fits exactly once into {a}.',
       fitsNone: '{c} does not fit into {a} completely – only {r} of the strip.',
       pieces: '{a} {va} {A} {nameA}, {c} {vc} {C} {nameC}. So {A} ÷ {C}.',
       isOne: 'is',
@@ -359,7 +365,7 @@ export default defineSimulation({
       // „von“ passt für Anteile (kleiner als 1), sonst „-mal“
       lines.push({ tokens: rich(compare(x, { z: 1, n: 1 }) < 0 ? 'vonLine' : 'timesLine', { x: fx, y: fy, r: fres }) });
       const vars = { b: bold(String(x.n), colA()), d: bold(String(y.n), colB()), bd: bold(String(pr.raw.n)), a: bold(String(x.z), colA()), c: bold(String(y.z), colB()), ac: bold(String(pr.raw.z), colP()) };
-      lines.push({ tokens: rich(pr.raw.z > pr.raw.n ? 'cellsMany' : 'cellsLine', vars) });
+      lines.push({ tokens: rich(pr.raw.z > pr.raw.n ? 'cellsMany' : pr.raw.z === 1 ? 'cellsOne' : 'cellsLine', vars) });
       const c1 = compare(x, { z: 1, n: 1 });
       lines.push({ tokens: rich(c1 < 0 ? 'smaller' : c1 > 0 ? 'larger' : 'equalOne', { x: fx, y: fy }), color: T.muted });
       if (p.kurz) {
@@ -783,7 +789,9 @@ export default defineSimulation({
       card(R);
       const rows = durchRows();
       if (wide) {
-        const lw = 130;
+        // Platz für die längste Zeilenbeschriftung (EN „COMMON DENOMINATOR“ ist breiter als 130 px)
+        g.font = `800 11px ${F()}`;
+        const lw = Math.max(130, ...rows.map((row) => g.measureText(row.label.toUpperCase()).width + 22));
         rows.forEach((row, i) => {
           const cy = R.y + 33 + i * 58;
           smallCaps(row.label, R.x + 16, cy);
@@ -1012,10 +1020,10 @@ export default defineSimulation({
       const fres = frT(m.restOfStrip.z, m.restOfStrip.n, colB());
       const first =
         m.restParts === 0
-          ? rich('fitsExact', { c: fc, a: fa, k: bold(String(m.full), colP()) })
+          ? rich(m.full === 1 ? 'fitsExactOne' : 'fitsExact', { c: fc, a: fa, k: bold(String(m.full), colP()) })
           : m.full === 0
             ? rich('fitsNone', { c: fc, a: fa, r: fres })
-            : rich('fitsMany', { c: fc, a: fa, k: bold(String(m.full), colP()), r: fres });
+            : rich(m.full === 1 ? 'fitsManyOne' : 'fitsMany', { c: fc, a: fa, k: bold(String(m.full), colP()), r: fres });
       const second =
         x.n === m.N && y.n === m.N
           ? rich('piecesSame', { A: bold(String(m.A), colA()), C: bold(String(m.C), colB()) })
@@ -1173,7 +1181,7 @@ export default defineSimulation({
           }
         }
         ctx.readout('prod', { html: parts.join(' = ') });
-        ctx.readout('cells', lang === 'de' ? `${pr.cells} Felder; ein Ganzes hat ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'Feld' : 'Felder'}` : `${pr.cells} cells; one whole has ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'cell' : 'cells'}`);
+        ctx.readout('cells', lang === 'de' ? `${pr.cells} ${pr.cells === 1 ? 'Feld' : 'Felder'}; ein Ganzes hat ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'Feld' : 'Felder'}` : `${pr.cells} ${pr.cells === 1 ? 'cell' : 'cells'}; one whole has ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'cell' : 'cells'}`);
         ctx.readout('quot', null);
         ctx.readout('common', null);
         ctx.readout('recip', null);
