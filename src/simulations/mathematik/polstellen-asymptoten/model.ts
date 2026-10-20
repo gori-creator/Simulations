@@ -15,9 +15,12 @@
  */
 
 export type Poly = number[];
+export type Sign = 1 | -1;
 
 const EPS = 1e-9;
 const same = (u: number, v: number) => Math.abs(u - v) < EPS;
+/** Rundungsreste (z. B. 2,9999999999) entfernen; Koeffizienten liegen hier auf Vielfachen von 1/2ᵏ. */
+const tidy = (v: number) => (Math.abs(v) < EPS ? 0 : Math.abs(v - Math.round(v * 1e8) / 1e8) < 1e-11 ? Math.round(v * 1e8) / 1e8 : v);
 
 export function fromRoots(a: number, roots: readonly number[]): Poly {
   let p: Poly = [a];
@@ -82,6 +85,11 @@ export interface Analysis {
   rest: Poly;
   num: Poly;
   den: Poly;
+  /** Zählergrad und Nennergrad des gegebenen (ungekürzten) Terms */
+  m: number;
+  n: number;
+  /** Division geht auf (Rest 0): f ist nach dem Kürzen ganzrational, keine echte Asymptote */
+  exact: boolean;
 }
 
 function group(xs: number[]): { x: number; k: number }[] {
@@ -107,6 +115,23 @@ export function reduce(f: Rational): { zeros: number[]; poles: number[]; cancell
     } else poles.push(p);
   }
   return { zeros, poles, cancelled };
+}
+
+/**
+ * Welche Faktoren kürzen sich gegenseitig? Paare (Index im Zähler, Index im
+ * Nenner) in derselben Reihenfolge wie `reduce` (für das Durchstreichen im Term).
+ */
+export function cancelPairs(f: Rational): { zi: number; pi: number; x: number }[] {
+  const used = new Set<number>();
+  const out: { zi: number; pi: number; x: number }[] = [];
+  f.poles.forEach((p, pi) => {
+    const zi = f.zeros.findIndex((z, i) => !used.has(i) && same(z, p));
+    if (zi >= 0) {
+      used.add(zi);
+      out.push({ zi, pi, x: p });
+    }
+  });
+  return out;
 }
 
 export function value(f: Rational, x: number): number {
@@ -136,10 +161,12 @@ export function poleSides(f: Rational, x: number): { left: number; right: number
 }
 
 export function analyze(f: Rational): Analysis {
+  const m = f.zeros.length;
+  const n = f.poles.length;
   if (f.a === 0) {
     // f ist die Nullfunktion mit Definitionslücken: keine Polstellen, nur Löcher auf der x-Achse
     const gaps = group([...f.poles]).map((g) => g.x);
-    return { gaps, zeros: [], poles: [], holes: gaps.map((x) => ({ x, y: 0 })), kind: 'zero', asym: [0], rest: [0], num: [0], den: fromRoots(1, f.poles) };
+    return { gaps, zeros: [], poles: [], holes: gaps.map((x) => ({ x, y: 0 })), kind: 'zero', asym: [0], rest: [0], num: [0], den: fromRoots(1, f.poles), m, n, exact: false };
   }
   const r = reduce(f);
   const poleG = group(r.poles);
@@ -150,8 +177,6 @@ export function analyze(f: Rational): Analysis {
   const zeros = group(r.zeros).filter((z) => !holeXs.some((h) => same(h, z.x)));
   const num = fromRoots(f.a, f.zeros);
   const den = fromRoots(1, f.poles);
-  const m = f.zeros.length;
-  const n = f.poles.length;
   const div = divide(num, den);
   let kind: Analysis['kind'];
   if (m < n) kind = 'zero';
@@ -168,5 +193,186 @@ export function analyze(f: Rational): Analysis {
     rest: div.r,
     num,
     den,
+    m,
+    n,
+    exact: kind !== 'zero' && degree(div.r) < 0,
   };
+}
+
+/* ---------------- Polynomdivision Schritt für Schritt ---------------- */
+
+export interface DivStep {
+  /** Potenz des neuen Quotienten-Summanden c · xᵏ */
+  k: number;
+  c: number;
+  /** abgezogenes Produkt c · xᵏ · q */
+  sub: Poly;
+  /** Rest nach dem Abziehen (alle übrigen Glieder „heruntergeholt“) */
+  rem: Poly;
+}
+
+/**
+ * Polynomdivision wie an der Tafel: höchstes Glied des Rests durch das höchste
+ * Glied des Divisors teilen, mit dem Divisor zurückmultiplizieren, abziehen.
+ * Schritte mit Quotienten-Koeffizient 0 entfallen (wie beim Rechnen von Hand).
+ */
+export function divisionSteps(p: Poly, q: Poly): { steps: DivStep[]; quotient: Poly; rest: Poly } {
+  const dq = degree(q);
+  const dp = degree(p);
+  let r = p.map(tidy);
+  if (dq < 0) throw new Error('Division durch das Nullpolynom');
+  if (dp < dq) return { steps: [], quotient: [0], rest: r.slice(0, Math.max(1, dp + 1)) };
+  const quotient = new Array<number>(dp - dq + 1).fill(0);
+  const steps: DivStep[] = [];
+  for (let k = dp - dq; k >= 0; k--) {
+    const c = tidy(r[k + dq]! / q[dq]!);
+    if (c === 0) continue;
+    quotient[k] = c;
+    const sub = new Array<number>(k + dq + 1).fill(0);
+    for (let j = 0; j <= dq; j++) sub[k + j] = tidy(c * q[j]!);
+    r = r.map((v, i) => tidy(v - (sub[i] ?? 0)));
+    r[k + dq] = 0;
+    steps.push({ k, c, sub, rem: r.slice(0, Math.max(1, k + dq)) });
+  }
+  return { steps, quotient, rest: r.slice(0, Math.max(1, dq)) };
+}
+
+/** Abweichung von der Asymptote (bzw. Näherungskurve): f(x) − s(x) = r(x)/q(x). */
+export function deviation(an: Analysis, x: number): number {
+  return evalPoly(an.rest, x) / evalPoly(an.den, x);
+}
+
+/* ---------------- Verhalten an einer Polstelle ---------------- */
+
+/**
+ * Näherung nahe einer Polstelle x₀ der Ordnung k: f(x) ≈ c / (x − x₀)ᵏ mit
+ * c = a · ∏ (x₀ − zᵢ) / ∏ (x₀ − qⱼ) über die übrigen (gekürzten) Faktoren.
+ * Ist x₀ keine Polstelle, ist k = 0.
+ */
+export function poleApprox(f: Rational, x0: number): { k: number; c: number } {
+  const r = reduce(f);
+  let c = f.a;
+  let k = 0;
+  for (const z of r.zeros) c *= x0 - z;
+  for (const q of r.poles) {
+    if (same(q, x0)) k++;
+    else c /= x0 - q;
+  }
+  return { k, c };
+}
+
+/** Wertetabelle bei x₀ ± h mit h = 0,1; 0,01; … (einseitige Annäherung). */
+export function approachTable(f: Rational, x0: number, count = 4): { h: number; left: { x: number; y: number }; right: { x: number; y: number } }[] {
+  const out: { h: number; left: { x: number; y: number }; right: { x: number; y: number } }[] = [];
+  for (let k = 1; k <= count; k++) {
+    const h = 10 ** -k;
+    const xl = x0 - h;
+    const xr = x0 + h;
+    out.push({ h, left: { x: xl, y: value(f, xl) }, right: { x: xr, y: value(f, xr) } });
+  }
+  return out;
+}
+
+/* ---------------- Vorzeichentabelle ---------------- */
+
+export interface SignRow {
+  /** Nullstelle des Faktors (x − x₀)ᵐ */
+  x: number;
+  m: number;
+  /** Faktor im Zähler oder im Nenner */
+  part: 'num' | 'den';
+  /** Vorzeichen des Faktors in den Intervallen (K + 1 Stück bei K kritischen Stellen) */
+  signs: Sign[];
+}
+
+export interface SignTable {
+  /** kritische Stellen (Zähler- und Nennernullstellen), aufsteigend */
+  xs: number[];
+  /** was an der kritischen Stelle passiert */
+  marks: ('zero' | 'pole' | 'hole')[];
+  rows: SignRow[];
+  /** Vorzeichen von a */
+  lead: Sign;
+  /** Vorzeichen von f in den Intervallen */
+  result: Sign[];
+}
+
+/**
+ * Vorzeichentabelle aus den Faktoren des gegebenen Terms (eine Zeile pro
+ * Faktor bzw. Potenz). (x − x₀)ᵐ ist links von x₀ gleich (−1)ᵐ, rechts positiv;
+ * Nennerfaktoren gehen genauso ein (1/y hat das Vorzeichen von y).
+ */
+export function signTable(f: Rational): SignTable {
+  const zs = group([...f.zeros]);
+  const ps = group([...f.poles]);
+  const xs = group([...f.zeros, ...f.poles]).map((g) => g.x);
+  const K = xs.length;
+  const idx = (x: number) => xs.findIndex((v) => same(v, x));
+  const mk = (g: { x: number; k: number }, part: 'num' | 'den'): SignRow => {
+    const j = idx(g.x);
+    return { x: g.x, m: g.k, part, signs: Array.from({ length: K + 1 }, (_, k) => (k <= j ? ((g.k % 2 === 0 ? 1 : -1) as Sign) : 1)) };
+  };
+  const rows = [...zs.map((g) => mk(g, 'num')), ...ps.map((g) => mk(g, 'den'))];
+  const lead: Sign = f.a < 0 ? -1 : 1;
+  const result = Array.from({ length: K + 1 }, (_, k) => rows.reduce<Sign>((s, r) => (s * r.signs[k]!) as Sign, lead));
+  const an = analyze(f);
+  const marks = xs.map((x) => (an.poles.some((p) => same(p.x, x)) ? 'pole' : an.holes.some((h) => same(h.x, x)) ? 'hole' : 'zero') as 'zero' | 'pole' | 'hole');
+  return { xs, marks, rows, lead, result };
+}
+
+/* ---------------- Weitere Eigenschaften ---------------- */
+
+/** Reelle Nullstellen eines Polynoms vom Grad ≤ 2 (aufsteigend); Nullpolynom: leer. */
+export function realRoots(p: Poly): number[] {
+  const d = degree(p);
+  if (d <= 0) return [];
+  if (d === 1) return [-p[0]! / p[1]!];
+  if (d === 2) {
+    const [c, b, a] = [p[0]!, p[1]!, p[2]!];
+    const D = b * b - 4 * a * c;
+    if (D < -EPS) return [];
+    if (Math.abs(D) <= EPS) return [-b / (2 * a)];
+    const s = Math.sqrt(D);
+    return [(-b - s) / (2 * a), (-b + s) / (2 * a)].sort((u, v) => u - v);
+  }
+  throw new Error('nur bis Grad 2');
+}
+
+/**
+ * Schnittstellen des Graphen mit der Asymptote bzw. Näherungskurve:
+ * f(x) = s(x) ⇔ r(x) = 0 (und x ∈ D). Bei aufgehender Division leer.
+ */
+export function asymptoteCrossings(f: Rational, an: Analysis = analyze(f)): { x: number; y: number }[] {
+  if (f.a === 0 || an.exact) return [];
+  return realRoots(an.rest)
+    .filter((x) => !an.gaps.some((g) => same(g, x)))
+    .map((x) => ({ x: tidy(x), y: tidy(evalPoly(an.asym, x)) }));
+}
+
+/** y-Achsenabschnitt f(0) (NaN, wenn 0 nicht zur Definitionsmenge gehört). */
+export function yIntercept(f: Rational): number {
+  return value(f, 0);
+}
+
+/**
+ * Symmetrie des Graphen: 'even' (achsensymmetrisch zur y-Achse), 'odd'
+ * (punktsymmetrisch zum Ursprung) oder null. Voraussetzung: D ist
+ * symmetrisch; geprüft an Stichproben (f ist durch wenige Werte festgelegt).
+ */
+export function symmetry(f: Rational): 'even' | 'odd' | null {
+  if (f.a === 0) return null;
+  const an = analyze(f);
+  if (!an.gaps.every((g) => an.gaps.some((h) => same(h, -g)))) return null;
+  const xs = [0.37, 1.13, 1.71, 2.29, 3.9, 4.63, 6.3, 7.7];
+  let even = true;
+  let odd = true;
+  for (const x of xs) {
+    const u = value(f, x);
+    const v = value(f, -x);
+    if (!Number.isFinite(u) || !Number.isFinite(v)) continue;
+    const tol = 1e-9 * Math.max(1, Math.abs(u));
+    if (Math.abs(u - v) > tol) even = false;
+    if (Math.abs(u + v) > tol) odd = false;
+  }
+  return even ? 'even' : odd ? 'odd' : null;
 }
