@@ -14,7 +14,7 @@ $$
 
 So sind Sinus und Kosinus nicht nur für spitze Winkel im rechtwinkligen Dreieck, sondern für **alle Winkel** definiert – auch für 150° oder 300°.
 
-- Der **Tangens** ist $\tan\alpha = \frac{\sin\alpha}{\cos\alpha}$. Am Einheitskreis ist er die Länge des Abschnitts auf der Tangente $x = 1$.
+- Der **Tangens** ist $\tan\alpha = \frac{\sin\alpha}{\cos\alpha}$. Am Einheitskreis schneidet die Gerade durch den Ursprung $O$ und $P$ die Tangente $x = 1$. Die y-Koordinate dieses Schnittpunkts ist $\tan\alpha$ (unterhalb der x-Achse negativ).
 - Nach dem Satz des Pythagoras gilt immer $\sin^2\alpha + \cos^2\alpha = 1$.
 
 ### Gradmaß und Bogenmaß
@@ -33,7 +33,7 @@ $$
 
 ## Ausprobieren
 
-1. Starte die **Animation**. Verfolge die waagerechte Hilfslinie: Wie entsteht aus der Kreisbewegung die Sinuskurve?
+1. Starte die **Animation**. Verfolge die Höhe von $P$ und den Punkt auf der Sinuskurve: Wie entsteht aus der Kreisbewegung die Sinuskurve? Auf breiten Bildschirmen verbindet eine waagerechte Hilfslinie die beiden Punkte.
 2. Vergleiche $\alpha = 30^\circ$ und $\alpha = 150^\circ$. Was haben die Sinuswerte gemeinsam? [30°](?angle=30) [150°](?angle=150)
 3. In welchen Quadranten ist der Sinus negativ, in welchen der Kosinus?
 4. Blende den **Tangens** ein und ziehe $P$ in die Nähe von 90°. Was passiert? [Tangens zeigen](?angle=80&tan=1&cos=0)
@@ -83,7 +83,7 @@ Begründe am Einheitskreis, warum $\tan 90^\circ$ nicht definiert ist.
 <details>
 <summary>Lösung anzeigen</summary>
 
-Bei 90° ist $\cos\alpha = 0$ – man müsste durch null teilen. Geometrisch verläuft die Gerade durch $O$ und $P$ dann parallel zur Tangente $x = 1$ und schneidet sie nicht.
+Bei 90° ist $\cos\alpha = 0$ – man müsste durch null teilen. Geometrisch verläuft die Gerade durch den Ursprung $O$ und $P$ dann parallel zur Tangente $x = 1$ und schneidet sie nicht.
 
 </details>
 
