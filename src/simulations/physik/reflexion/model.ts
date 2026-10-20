@@ -165,6 +165,19 @@ export function imageCountRule(w: number): number {
   return 360 / w - 1;
 }
 
+/** Ist 360° : w eine gerade Zahl? Nur dann ist die Zahl der Bilder eindeutig (unabhängig von der Lage der Figur). */
+export function isEvenWedge(w: number): boolean {
+  const ratio = 360 / w;
+  return Math.abs(ratio - Math.round(ratio)) < 1e-6 && Math.round(ratio) % 2 === 0;
+}
+
+/** Ganzzahlige Winkel zwischen `from` und `to`, bei denen 360° : w gerade ist. */
+export function evenWedges(from = 30, to = 180): number[] {
+  const out: number[] = [];
+  for (let w = Math.ceil(from); w <= to; w++) if (isEvenWedge(w)) out.push(w);
+  return out;
+}
+
 /**
  * Lichtweg vom Gegenstand über die Spiegel ins Auge für ein Bild (oder
  * `null`, wenn das Auge dieses Bild nicht sehen kann, weil der Weg neben
