@@ -70,7 +70,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 5–7 | `termbaum` | Termbaum: die Struktur von Termen | `/de/mathematik/terme-und-gleichungen/termbaum/` |
 | ✓ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |
 | ✓ | 5–8 | `koerpernetze` | Netze und Oberflächen von Körpern | `/de/mathematik/flaechen-und-koerper/koerpernetze/` |
-| ☐ | 5–8 | `zaehlprinzip` | Zählprinzip und Baumdiagramm | `/de/mathematik/daten-und-zufall/zaehlprinzip-baumdiagramm/` |
+| ✓ | 5–8 | `zaehlprinzip` | Zählprinzip und Baumdiagramm | `/de/mathematik/daten-und-zufall/zaehlprinzip-baumdiagramm/` |
 | ☐ | 6–6 | `bruchteile` | Bruchteile darstellen | `/de/mathematik/zahlen-und-operationen/bruchteile/` |
 | ☐ | 6–6 | `brueche-rechnen` | Brüche multiplizieren und dividieren am Rechteckmodell | `/de/mathematik/zahlen-und-operationen/brueche-multiplizieren-dividieren/` |
 | ☐ | 6–6 | `brueche-vergleichen` | Brüche erweitern, kürzen und vergleichen | `/de/mathematik/zahlen-und-operationen/brueche-erweitern-kuerzen-vergleichen/` |

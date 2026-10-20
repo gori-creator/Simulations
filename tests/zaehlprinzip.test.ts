@@ -115,6 +115,38 @@ describe('Modell: Zählprinzip und Baumdiagramm', () => {
     expect(t.nodes.filter((n) => n.kind === 'dead')).toHaveLength(2);
   });
 
+  it('Prüfwerte: 3 · 2 · 2 = 12, Schloss 10³ = 1000, 4 aus 10 ohne Wiederholung = 5040, 4! = 24', () => {
+    expect(totalPaths(independentPlan([2, 3, 2]))).toBe(12);
+    expect(enumeratePaths(independentPlan([2, 3, 2]))).toHaveLength(12);
+    expect(totalPaths(poolPlan(10, 3, true))).toBe(1000);
+    expect(stageCounts(poolPlan(10, 4, false))).toEqual([10, 9, 8, 7]);
+    expect(totalPaths(poolPlan(10, 4, false))).toBe(5040);
+    expect(variationsWithoutRep(10, 4)).toBe(5040);
+    expect(totalPaths(poolPlan(4, 4, false))).toBe(24);
+    expect(permutations(4)).toBe(24);
+  });
+
+  it('Baum: Anzahl der Blätter = Produkt, jeder Pfad genau einmal', () => {
+    const t = visibleTree(independentPlan([2, 3, 2]), 30);
+    expect(t.leaves).toHaveLength(12);
+    expect(new Set(t.leaves.map((l) => l.join('.'))).size).toBe(12);
+  });
+
+  it('Stufe mit nur 1 Möglichkeit ändert die Anzahl nicht', () => {
+    expect(totalPaths(independentPlan([1, 1, 1]))).toBe(1);
+    expect(totalPaths(independentPlan([3, 1, 2]))).toBe(6);
+    const t = visibleTree(independentPlan([1, 1, 1]), 30);
+    expect(t.leaves).toEqual([[0, 0, 0]]);
+    expect(t.rows).toBe(1);
+  });
+
+  it('Sackgassen beim Zahlenschloss: 4 verschiedene aus 3 Ziffern = 3 · 2 · 1 · 0 = 0', () => {
+    expect(stageCounts(poolPlan(3, 4, false))).toEqual([3, 2, 1, 0]);
+    const t = visibleTree(poolPlan(3, 4, false), 30);
+    expect(t.total).toBe(0);
+    expect(t.nodes.filter((n) => n.kind === 'dead')).toHaveLength(6);
+  });
+
   it('Tausendertrennung', () => {
     expect(groupDigits(336, 'de')).toBe('336');
     expect(groupDigits(5040, 'de')).toBe('5040');
