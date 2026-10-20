@@ -8,7 +8,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 |---|---|---|---|
 | licht-schatten | `src/curriculum/physik.ts` (summary EN) | Im englischen Text „full shadow and half shadow“ durch „umbra and penumbra“ ersetzen, wie in der Simulation und im Lernmaterial | offen |
 | reflexion | `src/sim-core/` (Zeichenfläche) | Die Bilder im Winkelspiegel lassen sich nur mit Maus oder Finger antippen. Allgemeine Tastaturbedienung für antippbare Objekte auf der Zeichenfläche ergänzen, z. B. Pfeiltasten wechseln die Auswahl und Enter wählt aus. | offen |
-| hebelgesetz | `src/sim-core/draw.ts` | Gemeinsamer Helfer für Text mit tiefgestelltem Index auf der Zeichenfläche. Bisher baut jede Simulation ihren eigenen (`richDraw`, `richText` in energieerhaltung). | offen |
+| hebelgesetz | `src/sim-core/draw.ts` | Gemeinsamer Helfer für Text mit tiefgestelltem Index auf der Zeichenfläche. Bisher baut jede Simulation ihren eigenen (`richDraw` in hebelgesetz, `richText` in energieerhaltung, `arrow` in hookesches-gesetz). | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -22,3 +22,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | einfacher-stromkreis | Das Schaltzeichen der Klingel hat die Schulbuchform. | Gegen DIN EN 60617 prüfen. Die Schulbuchform ist im Unterricht üblich, darum vorerst so lassen. | – |
 | hebelgesetz | Die Goldene Regel wird in Joule angezeigt („≈ 32,96 J“). Arbeit kommt vermutlich erst in Jgst. 8, und zwei Nachkommastellen wirken zu genau. | Auf eine Nachkommastelle runden; den Bezug zum Lehrplan Bayern beim Abgleich prüfen. | – |
 | hebelgesetz | Bei der Wippe heißt es „Der Hebel kippt …“. | Bei der Wippe „Die Wippe kippt …“ schreiben (kleine Textänderung). | – |
+| hookesches-gesetz | Das Modell fürs Überdehnen ist stark vereinfacht: Grenze bei 25 cm, danach halbe Federhärte. | Für Jgst. 7/8 so lassen; das Lernmaterial sagt bereits, dass es ein vereinfachtes Modell ist (beim Abgleich prüfen). | – |
+| hookesches-gesetz | Die automatische Messreihe trägt den Nullpunkt (0 \| 0) in die Tabelle ein. | Lassen: Der Nullpunkt ist ein echter Messpunkt und zeigt die Ursprungsgerade. | – |
