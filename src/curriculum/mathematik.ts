@@ -980,14 +980,14 @@ export const mathematik: Subject = {
             slug: L('umkehrfunktion', 'inverse-function'),
             title: L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'),
             summary: L(
-              'Ein Punkt P auf dem Graphen und sein Spiegelbild P′ an y = x; der Graph klappt per Animation über die Spiegelachse. Rechenweg „nach x auflösen, x und y tauschen“ für x², eˣ, 1/x u. a. – und x² auf ganz ℝ als Gegenbeispiel.',
-              'A point P on the graph and its image P′ in y = x; an animation flips the graph across the mirror line. Steps “solve for x, swap x and y” for x², eˣ, 1/x and more – and x² on all of ℝ as a counterexample.',
+              'Der Graph klappt wie eine Folie um y = x, P(a | b) wandert zu P′(b | a), Definitions- und Wertemenge tauschen sichtbar die Rollen. Eine waagrechte Gerade prüft die Umkehrbarkeit (x² einschränken), der Rechenweg läuft Schritt für Schritt, und das gespiegelte Steigungsdreieck zeigt (f⁻¹)′(b) = 1/f′(a) bis zu (ln x)′ = 1/x.',
+              'The graph flips over y = x like a transparency, P(a | b) moves to P′(b | a), and domain and range visibly swap roles. A horizontal line checks invertibility (restricting x²), the working runs step by step, and the reflected slope triangle shows (f⁻¹)′(b) = 1/f′(a), leading to (ln x)′ = 1/x.',
             ),
             grades: [12, 12],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
-              ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'Definitionsmenge', 'Wertemenge'],
-              ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'domain', 'range'],
+              ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'streng monoton', 'Definitionsmenge', 'Wertemenge', 'Ableitung der Umkehrfunktion', 'senkrechte Tangente', 'arcsin'],
+              ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'strictly monotonic', 'domain', 'range', 'derivative of the inverse', 'vertical tangent', 'arcsin'],
             ),
             thumb: 'generic',
           },
