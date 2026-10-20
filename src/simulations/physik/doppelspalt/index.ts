@@ -60,6 +60,7 @@ export default defineSimulation({
     { key: 'orders', label: L('Anzahl der Maxima', 'Number of maxima'), spoiler: true },
     { key: 'meas', label: L('Messung', 'Measurement') },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Doppelspalt mit rotem Laser', 'Double slit with red laser'), values: {} },
     { id: 'single', label: L('Einzelspalt', 'Single slit'), values: { N: 1, xm: 40 } },

@@ -243,6 +243,7 @@ export default defineSimulation({
     { key: 'angles', label: L('Winkel', 'Angles'), spoiler: true },
     { key: 'law', label: L('Satz', 'Law'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'std', label: L('Sinussatz: spitzwinkliges Dreieck', 'Law of sines: acute triangle'), values: {} },
     { id: 'cos', label: L('Kosinussatz: spitzer Winkel γ', 'Law of cosines: acute angle γ'), values: { m: 'cos' } },

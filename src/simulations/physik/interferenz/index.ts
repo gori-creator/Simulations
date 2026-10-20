@@ -131,6 +131,7 @@ export default defineSimulation({
     { key: 'far', label: L('Fernfeld', 'Far field'), spoiler: true },
     { key: 'now', label: L('Momentan', 'Right now') },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Gleichphasig, d = 3λ', 'In phase, d = 3λ'), values: {} },
     { id: 'amp', label: L('Amplitudenbild mit allen Linien', 'Amplitude pattern with all lines'), values: { view: 'amp', lines: 'both' } },

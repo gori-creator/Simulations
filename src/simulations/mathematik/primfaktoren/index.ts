@@ -1171,8 +1171,21 @@ export default defineSimulation({
     /* ================================================================ */
     /* Ergebnisse                                                       */
     /* ================================================================ */
+    /**
+     * Steht das Ergebnis schon im Bild? Bei „Ergebnis sofort zeigen“ aus erst, wenn der Baum
+     * ganz zerlegt, das Sieb fertig bzw. nach Primfaktoren sortiert ist.
+     */
+    const resultDone = (): boolean => (mode() === 'baum' ? treeComplete() : mode() === 'sieb' ? stage >= finalStage() : sorted);
+    /** Stand von resultDone() beim letzten Füllen der Ergebnisliste. */
+    let readoutDone = false;
+
     function updateReadouts(): void {
       const m = mode();
+      readoutDone = resultDone();
+      if (!readoutDone) {
+        for (const k of ['factors', 'divisors', 'primes', 'gcd', 'lcm', 'common']) ctx.readout(k, null);
+        return;
+      }
       const pw = (n: number) =>
         factorPowers(n)
           .map((q) => (q.e > 1 ? `${q.p}<sup>${q.e}</sup>` : String(q.p)))
@@ -1352,6 +1365,8 @@ export default defineSimulation({
         const now = performance.now();
         const dt = Math.min(0.1, (now - lastFrame) / 1000);
         lastFrame = now;
+        // Ergebnisliste nachziehen, sobald das Ergebnis im Bild fertig ist
+        if (resultDone() !== readoutDone) updateReadouts();
         hits = [];
         surface.begin();
         let animating = false;

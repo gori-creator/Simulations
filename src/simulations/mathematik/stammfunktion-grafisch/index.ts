@@ -429,6 +429,7 @@ export default defineSimulation({
     { key: 'dev', label: L('Deine Skizze', 'Your sketch') },
     { key: 'sit', label: L('Im Alltag', 'In everyday life'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'par', label: L('Parabel → Polynom 3. Grades', 'Parabola → cubic'), values: {} },
     { id: 'field', label: L('Richtungsfeld: alle Stammfunktionen sind parallel', 'Slope field: all antiderivatives are parallel'), values: { mode: 'feld' } },

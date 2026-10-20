@@ -203,6 +203,7 @@ export default defineSimulation({
     { key: 'root', label: L('Wurzel', 'Root'), spoiler: true },
     { key: 'simp', label: L('Wurzel vereinfachen', 'Simplifying the root'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'two', label: L('√2 mit Heron', '√2 with Heron'), values: {} },
     { id: 'ten', label: L('√10: Start mit dem Rechteck 10 × 1', '√10: start with the 10 × 1 rectangle'), values: { a: 10, x0: 10 } },

@@ -122,6 +122,7 @@ export default defineSimulation({
     { key: 'probe', label: L('Probe', 'Check'), spoiler: true },
     { key: 'bis', label: L('Intervallhalbierung', 'Bisection') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Parabel und Gerade', 'Parabola and line'), values: {} },
     { id: 'touch', label: L('Berührpunkt', 'Touching point'), values: { e1: 0, m2: 2, t2: -1 } },

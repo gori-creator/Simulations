@@ -196,6 +196,7 @@ export default defineSimulation({
     { key: 'extra', label: L('Im Sachzusammenhang', 'In context'), spoiler: true },
     { key: 'frac', label: L('Als Bruch und Dezimalzahl', 'As a fraction and decimal'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('25 % von 80 €', '25 % of €80'), values: {} },
     { id: 'umfrage', label: L('12 von 48 – wie viel Prozent?', '12 of 48 – what percentage?'), values: { sit: 'klasse', find: 'p', G: 48, p: 25 } },

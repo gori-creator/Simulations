@@ -1720,7 +1720,9 @@ export default defineSimulation({
     function updateReadouts(): void {
       const pr = predict(p.z, p.n);
       ctx.readout('frac', { html: pr.n === 1 ? `${frac(p.z, p.n)} = ${pr.z}` : pr.n !== p.n ? `${frac(p.z, p.n)} = ${frac(pr.z, pr.n)}` : frac(p.z, p.n) });
-      ctx.readout('dec', { html: decHtml(exp) });
+      // Beim schrittweisen Rechnen („Ganze Rechnung sofort zeigen“ aus) erst am Ende aufdecken
+      const ready = mode() !== 'teilen' || complete();
+      ctx.readout('dec', ready ? { html: decHtml(exp) } : null);
       let kind: string;
       if (exp.kind === 'ganz') kind = ctx.t('kindGanz');
       else if (exp.kind === 'endlich') {
@@ -1728,12 +1730,12 @@ export default defineSimulation({
         kind = `${tr('kindFin', { s: exp.preLength === 1 ? ctx.t('sFin1') : tr('sFin', { k: exp.preLength }) })}: ${frac(pw.z, pw.n)} = ${frac(pw.numerator, pw.power)}`;
       } else if (exp.kind === 'rein') kind = tr('kindRein', { k: exp.periodLength });
       else kind = tr('kindMix', { a: exp.preLength, b: exp.periodLength });
-      ctx.readout('kind', { html: kind });
+      ctx.readout('kind', ready ? { html: kind } : null);
       const fs = primeFactors(pr.n);
       ctx.readout('denom', pr.n === 1 ? '1' : fs.length === 1 ? `${pr.n} ${ctx.t('prime')}` : `${pr.n} = ${fs.join(' · ')}`);
       if (mode() === 'teilen') {
         const rs = remainders(exp);
-        ctx.readout('rests', exp.kind === 'ganz' ? '0' : `${rs.join(', ')}${periodic() ? ', …' : ''}`);
+        ctx.readout('rests', !ready ? null : exp.kind === 'ganz' ? '0' : `${rs.join(', ')}${periodic() ? ', …' : ''}`);
         ctx.readout('finite', null);
       } else {
         ctx.readout('rests', null);
@@ -1853,6 +1855,7 @@ export default defineSimulation({
         else if (id === 'open') {
           if (!ctx.locked) ctx.set({ mode: 'teilen' });
         }
+        updateReadouts();
         updateActions();
         ctx.requestRender();
       },

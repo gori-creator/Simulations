@@ -152,12 +152,13 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
   ],
   readouts: [
-    { key: 'lam', label: L('de-Broglie-Wellenlänge', 'de Broglie wavelength') },
+    { key: 'lam', label: L('de-Broglie-Wellenlänge', 'de Broglie wavelength'), spoiler: true },
     { key: 'ring', label: L('Ringe auf dem Schirm', 'Rings on the screen'), spoiler: true },
     { key: 'meas', label: L('Messkreis', 'Measuring circle') },
     { key: 'table', label: L('Messtabelle', 'Table of measurements') },
     { key: 'fit', label: L('Auswertung', 'Analysis'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('U = 4 kV', 'U = 4 kV'), values: {} },
     { id: 'low', label: L('Kleine Spannung: große Ringe', 'Low voltage: large rings'), values: { U: 2.5 } },

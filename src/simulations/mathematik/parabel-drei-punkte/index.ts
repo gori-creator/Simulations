@@ -185,6 +185,7 @@ export default defineSimulation({
     { key: 'S', label: L('Scheitelpunkt', 'Vertex'), spoiler: true },
     { key: 'note', label: L('Sonderfall', 'Special case'), spoiler: true },
   ],
+  resultsParam: 'calc',
   presets: [
     { id: 'start', label: L('Drei Punkte, eine Parabel', 'Three points, one parabola'), values: {} },
     { id: 'vertex', label: L('Ein Punkt ist der Scheitel', 'One point is the vertex'), values: { way: 'vertex', x1: -1, y1: 2, x2: 1, y2: -2, x3: 2, y3: -1 } },

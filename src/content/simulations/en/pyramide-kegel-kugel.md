@@ -21,7 +21,7 @@ For pyramids, cones and spheres, volume and surface area need their own formulas
 
 ### Task 1: Pyramid
 
-Square pyramid, $a = 4\,\text{cm}$, $h = 5\,\text{cm}$: find $h_a$, $V$, $M$, $O$. [Load task](?a=4&h=5&_hide=1)
+Square pyramid, $a = 4\,\text{cm}$, $h = 5\,\text{cm}$: find $h_a$, $V$, $M$, $O$. [Load task](?a=4&h=5&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
@@ -32,7 +32,7 @@ $h_a = \sqrt{29}\,\text{cm} \approx 5.39\,\text{cm}$, $V \approx 26.67\,\text{cm
 
 ### Task 2: Cone
 
-Cone with $r = 3\,\text{cm}$, $h = 4\,\text{cm}$: find $s$, $V$, $M$, $O$. [Load task](?body=kegel&_hide=1)
+Cone with $r = 3\,\text{cm}$, $h = 4\,\text{cm}$: find $s$, $V$, $M$, $O$. [Load task](?body=kegel&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
@@ -43,7 +43,7 @@ $s = 5\,\text{cm}$, $V = 12\pi\,\text{cm}^3 \approx 37.70\,\text{cm}^3$, $M = 15
 
 ### Task 3: Sphere
 
-Sphere with $r = 2.5\,\text{cm}$: find $V$ and $O$. [Load task](?body=kugel&r=2.5&_hide=1)
+Sphere with $r = 2.5\,\text{cm}$: find $V$ and $O$. [Load task](?body=kugel&r=2.5&calc=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>

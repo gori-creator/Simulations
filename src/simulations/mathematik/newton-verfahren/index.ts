@@ -191,6 +191,7 @@ export default defineSimulation({
     { key: 'rule', label: L('Letzter Schritt', 'Latest step'), spoiler: true },
     { key: 'state', label: L('Verlauf', 'Behaviour'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'sqrt2', label: L('√2 mit x₀ = 1 (wie Heron)', '√2 with x₀ = 1 (like Heron)'), values: {} },
     { id: 'newton', label: L('Newtons Beispiel x³ − 2x − 5', 'Newton’s example x³ − 2x − 5'), values: { fn: 'cubic', x0: 2, k: 3 } },

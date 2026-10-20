@@ -2874,10 +2874,14 @@ export default defineSimulation({
         ctx.readout('scale', `1 : ${gi(n)} · 1 cm ≙ ${lt(UM.cm * n)}`);
         const names = me.fromName || me.toName ? ` (${me.fromName ?? 'A'} → ${me.toName ?? 'B'})` : '';
         ctx.readout('map', `${cm1(me.mm)}${p.r ? ` ${tt('Wegstrecke', 'route')}` : ''}${names}`);
-        ctx.readout('real', lt(me.realUm));
-        const chain = unitChain(me.realUm, 'cm').map((c) => c.text(lang));
-        ctx.readout('calc', `${decimalIn(me.mm * UM.mm, 'cm', lang).text} cm · ${gi(n)} = ${chain.join(' = ')}`);
-        show.add('scale').add('map').add('real').add('calc');
+        show.add('scale').add('map');
+        // Wirklichkeit erst nach „Ergebnis anzeigen“ (bzw. sofort, wenn „Ergebnis sofort anzeigen“ an ist)
+        if (revealed) {
+          ctx.readout('real', lt(me.realUm));
+          const chain = unitChain(me.realUm, 'cm').map((c) => c.text(lang));
+          ctx.readout('calc', `${decimalIn(me.mm * UM.mm, 'cm', lang).text} cm · ${gi(n)} = ${chain.join(' = ')}`);
+          show.add('real').add('calc');
+        }
       } else if (m === 'zoom') {
         const id = (p.o as ObjId) in OBJECTS ? (p.o as ObjId) : 'bug';
         const o = OBJECTS[id];
@@ -2893,7 +2897,7 @@ export default defineSimulation({
         const { task } = calcTexts(cs);
         ctx.readout('task', task);
         show.add('task');
-        if (cs.sol) {
+        if (cs.sol && revealed) {
           const sol = cs.sol;
           ctx.readout('res', cs.sought === 'real' ? lt(sol.realUm) : cs.sought === 'map' ? mapText(sol.mapUm, sol.exact) : `${sol.exact ? '' : '≈ '}1 : ${gi(sol.n)}`);
           ctx.readout(

@@ -189,6 +189,7 @@ export default defineSimulation({
     { key: 'test', label: L('Umkehrbar?', 'Invertible?'), spoiler: true },
     { key: 'slope', label: L('Steigungen', 'Slopes'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'sqrt', label: L('Wurzelfunktion als Umkehrung von x²', 'Square root as the inverse of x²'), values: {} },
     { id: 'lin', label: L('Gerade: f(3) = 5, also f⁻¹(5) = 3', 'Line: f(3) = 5, so f⁻¹(5) = 3'), values: { fn: 'lin', x: 3 } },

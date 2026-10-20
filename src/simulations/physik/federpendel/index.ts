@@ -247,6 +247,7 @@ export default defineSimulation({
     { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
     { key: 'now', label: L('Momentan', 'Right now') },
   ],
+  resultsParam: 'per',
   presets: [
     { id: 'start', label: L('Nach unten ziehen und loslassen', 'Pull down and release'), values: {} },
     { id: 'mass', label: L('Vierfache Masse im Vergleich', 'Four times the mass compared'), values: { cmp: true, m: 0.25, m2: 1, D2: 20 } },

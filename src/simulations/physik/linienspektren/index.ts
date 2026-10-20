@@ -170,6 +170,7 @@ export default defineSimulation({
     { key: 'photon', label: L('Photon: E = h · f', 'Photon: E = h · f'), spoiler: true },
     { key: 'lines', label: L('Sichtbare Linien', 'Visible lines'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Wasserstoff: rote Hα-Linie', 'Hydrogen: red Hα line'), values: {} },
     { id: 'balmer', label: L('Wasserstoff: alle Linien', 'Hydrogen: all lines'), values: { run: 'all' } },

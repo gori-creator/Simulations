@@ -171,6 +171,7 @@ export default defineSimulation({
     { key: 'npv', label: L('Negativer Vorhersagewert', 'Negative predictive value'), spoiler: true },
     { key: 'two', label: L('Zweiter Test', 'Second test'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Seltene Krankheit (1 %)', 'Rare disease (1 %)'), values: {} },
     { id: 'rapid', label: L('Schnelltest bei geringer Verbreitung (vereinfacht)', 'Rapid test with low prevalence (simplified)'), values: { prev: 0.5, se: 80, sp: 98 } },

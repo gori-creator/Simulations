@@ -147,6 +147,7 @@ export default defineSimulation({
     { key: 'size', label: L('Volumen und Raumdiagonale', 'Volume and space diagonal'), spoiler: true },
     { key: 'count', label: L('Zufallspunkte', 'Random points'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Punkt P(3 | 4 | 2)', 'Point P(3, 4, 2)'), values: {} },
     { id: 'neg', label: L('Negative Koordinaten', 'Negative coordinates'), values: { x: -2, y: 3, z: -1.5 } },

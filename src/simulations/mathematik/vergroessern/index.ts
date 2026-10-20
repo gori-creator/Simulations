@@ -2387,9 +2387,16 @@ export default defineSimulation({
     /* =====================================================================
      * Ergebnisse
      * ===================================================================== */
+    /** Stand von shown() beim letzten Füllen der Ergebnisliste. */
+    let readoutShown = shown();
+
     function updateReadouts(): void {
       for (const key of ['len', 'area', 'surf', 'vol', 'giv', 'res']) ctx.readout(key, null);
       const m = mode();
+      // Ergebnisse erst, wenn sie auch im Bild stehen („Ergebnisse zeigen“ oder nach der Animation)
+      readoutShown = shown();
+      const open = readoutShown;
+      const out = (key: string, value: { html: string }) => ctx.readout(key, open ? value : null);
       const sup = (s: string) => `<sup>${s}</sup>`;
       if (m === 'grow') {
         const k = p.k;
@@ -2397,29 +2404,29 @@ export default defineSimulation({
         const body = BODIES[obj()];
         const exactA = fig() === 'q' || fig() === 'r';
         const fA = (x: number) => `${exactA ? '' : '≈ '}${N(x, 2)}`;
-        ctx.readout('len', { html: `${N(spec.len)} cm → <strong>${N(spec.len * k)} cm</strong> (· <var>k</var> = ${N(k, 1)})` });
-        ctx.readout('area', { html: `${fA(spec.area)} cm² → <strong>${fA(spec.area * k * k)} cm²</strong> (· <var>k</var>${sup('2')} = ${N(k, 1)}${sup('2')} = ${facH(k * k, 2)})` });
-        ctx.readout('surf', { html: `${N(boxSurface(body))} cm² → <strong>${N(boxSurface(body) * k * k)} cm²</strong> (· ${facH(k * k, 2)})` });
-        ctx.readout('vol', { html: `${N(boxVolume(body))} cm³ → <strong>${N(boxVolume(body) * k ** 3, 3)} cm³</strong> (· <var>k</var>${sup('3')} = ${N(k, 1)}${sup('3')} = ${facH(k ** 3, 3)})` });
+        out('len', { html: `${N(spec.len)} cm → <strong>${N(spec.len * k)} cm</strong> (· <var>k</var> = ${N(k, 1)})` });
+        out('area', { html: `${fA(spec.area)} cm² → <strong>${fA(spec.area * k * k)} cm²</strong> (· <var>k</var>${sup('2')} = ${N(k, 1)}${sup('2')} = ${facH(k * k, 2)})` });
+        out('surf', { html: `${N(boxSurface(body))} cm² → <strong>${N(boxSurface(body) * k * k)} cm²</strong> (· ${facH(k * k, 2)})` });
+        out('vol', { html: `${N(boxVolume(body))} cm³ → <strong>${N(boxVolume(body) * k ** 3, 3)} cm³</strong> (· <var>k</var>${sup('3')} = ${N(k, 1)}${sup('3')} = ${facH(k ** 3, 3)})` });
       } else if (m === 'back') {
         const d = dimB();
         const kk = kFromFactor(p.f, d);
         const ex = exactRoot(p.f, d);
         ctx.readout('giv', { html: `${d === 2 ? say(L('Flächeninhalt', 'Area')) : say(L('Volumen', 'Volume'))} · ${N(p.f, 1)}` });
-        ctx.readout('res', { html: `<var>k</var>${sup(String(d))} = ${N(p.f, 1)} ⇒ <var>k</var> = ${d === 2 ? '√' : '∛'}${N(p.f, 1)} ${ex !== null ? '=' : '≈'} <strong>${N(kk, 3)}</strong>` });
+        out('res', { html: `<var>k</var>${sup(String(d))} = ${N(p.f, 1)} ⇒ <var>k</var> = ${d === 2 ? '√' : '∛'}${N(p.f, 1)} ${ex !== null ? '=' : '≈'} <strong>${N(kk, 3)}</strong>` });
       } else if (m === 'pizza') {
         ctx.readout('giv', { html: `<var>d</var><sub>1</sub> = ${p.d1} cm, <var>d</var><sub>2</sub> = ${p.d2} cm` });
-        ctx.readout('res', { html: `<var>k</var> = ${p.d2} : ${p.d1} ${eq(p.d2 / p.d1, 3)} ${N(p.d2 / p.d1, 3)} ⇒ ${say(L('Fläche', 'area'))} · <var>k</var>${sup('2')} ${eq(pizzaFactor(p.d1, p.d2), 3)} <strong>${N(pizzaFactor(p.d1, p.d2), 3)}</strong> (${big(pizzaArea(p.d1), 0)} cm² → ${big(pizzaArea(p.d2), 0)} cm²)` });
+        out('res', { html: `<var>k</var> = ${p.d2} : ${p.d1} ${eq(p.d2 / p.d1, 3)} ${N(p.d2 / p.d1, 3)} ⇒ ${say(L('Fläche', 'area'))} · <var>k</var>${sup('2')} ${eq(pizzaFactor(p.d1, p.d2), 3)} <strong>${N(pizzaFactor(p.d1, p.d2), 3)}</strong> (${big(pizzaArea(p.d1), 0)} cm² → ${big(pizzaArea(p.d2), 0)} cm²)` });
       } else if (m === 'modell') {
         const mm = p.m;
         ctx.readout('giv', { html: `${say(L('Maßstab', 'Scale'))} 1 : ${mm}, ${say(L('Autolänge', 'car length'))} ${N(CAR_LEN, 1)} m` });
-        ctx.readout('res', {
+        out('res', {
           html: `${say(L('Länge', 'Length'))} · <span class="frac"><span>1</span><span>${mm}</span></span> (${N((CAR_LEN / mm) * 100, 1)} cm), ${say(L('Lack', 'paint'))} · <span class="frac"><span>1</span><span>${big(mm * mm, 0)}</span></span>, ${say(L('Volumen/Masse', 'volume/mass'))} · <span class="frac"><span>1</span><span>${big(mm ** 3, 0)}</span></span>`,
         });
       } else {
         const r = cubeOV(p.a);
         ctx.readout('giv', { html: `<var>a</var> = ${N(p.a, 1)} cm` });
-        ctx.readout('res', { html: `<var>O</var> = 6<var>a</var>${sup('2')} = ${N(r.O)} cm², <var>V</var> = <var>a</var>${sup('3')} = ${N(r.V, 3)} cm³, <var>O</var> : <var>V</var> = <span class="frac"><span>6</span><span><var>a</var></span></span> ${eq(r.ratio)} <strong>${N(r.ratio)}</strong>` });
+        out('res', { html: `<var>O</var> = 6<var>a</var>${sup('2')} = ${N(r.O)} cm², <var>V</var> = <var>a</var>${sup('3')} = ${N(r.V, 3)} cm³, <var>O</var> : <var>V</var> = <span class="frac"><span>6</span><span><var>a</var></span></span> ${eq(r.ratio)} <strong>${N(r.ratio)}</strong>` });
       }
     }
 
@@ -2464,6 +2471,8 @@ export default defineSimulation({
         revealed = true;
       }
       if (splitAnim && !SPLIT.gliding) splitAnim = null;
+      // Ergebnisliste nachziehen, sobald die Ergebnisse im Bild stehen
+      if (shown() !== readoutShown) updateReadouts();
       if (fill || solve || cut || paint || splitAnim || intro !== null) anim = true;
       const k = introState(now);
       computeNarrowMain(now);
