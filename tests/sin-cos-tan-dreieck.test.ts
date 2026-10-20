@@ -234,3 +234,58 @@ describe('Plausibilität über viele Zufallswerte', () => {
     }
   });
 });
+
+describe('Prüfrunde: Aufgaben, Beispiele und Reglergrenzen', () => {
+  it('Aufgabe 2: β = 55°, sin β = b : c ≈ 0,819 = cos 35°, cos β = a : c ≈ 0,574 = sin 35°', () => {
+    const t = { alpha: 35, c: 6 };
+    const rb = roles(t, 'b');
+    expect(rb.angle).toBe(55);
+    expect(rb.opp / rb.hyp).toBeCloseTo(0.819, 3);
+    expect(rb.adj / rb.hyp).toBeCloseTo(0.574, 3);
+    expect(ratio(t, 'b', 'sin')).toBeCloseTo(trig('cos', 35), 12);
+    expect(ratio(t, 'b', 'cos')).toBeCloseTo(trig('sin', 35), 12);
+  });
+
+  it('Beispiel „Bezugswinkel β“ (α = 35°, c = 8): a ≈ 4,59 (Ankathete), b ≈ 6,55 (Gegenkathete), tan 55° ≈ 1,428', () => {
+    const r = roles({ alpha: 35, c: 8 }, 'b');
+    expect(r.adj).toBeCloseTo(4.589, 3);
+    expect(r.opp).toBeCloseTo(6.553, 3);
+    expect(trig('tan', 55)).toBeCloseTo(1.4281, 4);
+  });
+
+  it('Ausprobieren 4: tan 85° ≈ 11,43 bei c = 10 (a ≈ 9,96, b ≈ 0,87)', () => {
+    const s = sides({ alpha: 85, c: 10 });
+    expect(s.a).toBeCloseTo(9.962, 3);
+    expect(s.b).toBeCloseTo(0.8716, 4);
+    expect(ratio({ alpha: 85, c: 10 }, 'a', 'tan')).toBeCloseTo(11.43, 2);
+  });
+
+  it('Reglergrenzen α = 5° … 85°, c = 2 … 10: Dreieck existiert, alle Werte endlich und positiv', () => {
+    for (const al of [5, 85]) {
+      for (const c of [2, 10]) {
+        const s = sides({ alpha: al, c });
+        expect(s.a).toBeGreaterThan(0);
+        expect(s.b).toBeGreaterThan(0);
+        expect(s.a).toBeLessThan(c);
+        expect(s.b).toBeLessThan(c);
+        for (const f of FNS) expect(Number.isFinite(ratio({ alpha: al, c }, 'a', f))).toBe(true);
+      }
+    }
+  });
+
+  it('Rückwärts an den Reglergrenzen (0,5 … 12 cm): Kathete = Hypotenuse ist kein Dreieck, knapp darunter schon', () => {
+    expect(angleFromSides('sin', 12, 0, 12).ok).toBe(false);
+    expect(angleFromSides('cos', 0, 0.5, 0.5).ok).toBe(false);
+    const r = angleFromSides('sin', 11.9, 0, 12);
+    expect(r.ok).toBe(true);
+    expect(r.angle).toBeCloseTo(82.598, 3);
+    expect(r.adj).toBeCloseTo(Math.sqrt(144 - 141.61), 12);
+    expect(angleFromSides('tan', 12, 0.5, 0).angle).toBeCloseTo(87.61, 2);
+  });
+
+  it('Rampe an den Reglergrenzen: 2 % → 1,15°, 30 % → 16,70°; h = 1,5 m bei 2 % → 75 m waagrecht', () => {
+    expect(angleFromPercent(2)).toBeCloseTo(1.146, 3);
+    expect(angleFromPercent(30)).toBeCloseTo(16.699, 3);
+    expect(ramp(2, 1.5).run).toBeCloseTo(75, 10);
+  });
+});
