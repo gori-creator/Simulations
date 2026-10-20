@@ -167,7 +167,8 @@ export function balancingForce(loads: readonly Load[], meter: Omit<Meter, 'F'>):
   if (Math.abs(lever) < 1e-9) return null;
   const m = loads.reduce((sum, load) => sum + loadTorque(load), 0);
   const F = -m / lever;
-  return F >= 0 ? F : null;
+  // Math.abs: kein „−0“ bei bereits ausgeglichenem Hebel
+  return F >= 0 ? Math.abs(F) : null;
 }
 
 /** Trägheitsmoment des Hebels mit Massestücken (Punktmassen an den Löchern, siehe LOAD_INERTIA_FACTOR). */
