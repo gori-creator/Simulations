@@ -197,7 +197,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Koordinatensystem mit drei ziehbaren Punkten P₁, P₂, P₃ und der Parabel y = ax² + bx + c durch diese Punkte. Daneben der Rechenweg: Einsetzen der Punkte ergibt ein lineares Gleichungssystem, das Schritt für Schritt gelöst wird.',
+      canvas: 'Koordinatensystem mit drei ziehbaren Punkten P₁, P₂, P₃ und der Parabel y = ax² + bx + c durch diese Punkte. Daneben der Rechenweg: Einsetzen der Punkte ergibt ein lineares Gleichungssystem, das Schritt für Schritt gelöst wird. Sonderfälle (gleiche x-Werte, zusammenfallende Punkte, Punkte auf einer Geraden) zeigt ein Hinweis im Bild; als Anwendung lassen sich eine Wurfbahn mit Ball oder ein Brückenbogen über einem Fluss einblenden.',
       card: 'Rechenweg',
       wayLgs: 'Gleichungssystem',
       wayVertex: 'Scheitelform',
@@ -242,7 +242,7 @@ export default defineSimulation({
       ball: 'Ball',
     },
     en: {
-      canvas: 'Coordinate system with three draggable points P₁, P₂, P₃ and the parabola y = ax² + bx + c through them. Next to it the working: substituting the points gives a system of linear equations that is solved step by step.',
+      canvas: 'Coordinate system with three draggable points P₁, P₂, P₃ and the parabola y = ax² + bx + c through them. Next to it the working: substituting the points gives a system of linear equations that is solved step by step. Special cases (equal x-values, coinciding points, points on a line) are marked in the picture; as applications, a thrown ball or a bridge arch over a river can be shown.',
       card: 'Working',
       wayLgs: 'System of equations',
       wayVertex: 'Vertex form',
@@ -307,7 +307,7 @@ export default defineSimulation({
       const c = C();
       return { p1: c.pts[0], p2: c.pts[1], p3: c.pts[2], f: c.f, w: c.warn, v: c.vtx, m: th().muted };
     };
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.93)');
+    const pillBg = () => mixColor(th().bg, th().bg, 0, th().dark ? 0.9 : 0.93);
 
     /* ---------- Aufteilung ---------- */
 
@@ -645,13 +645,21 @@ export default defineSimulation({
         ctx.readout('eq', null);
         ctx.readout('S', null);
         const [i, j] = f.pair!;
-        ctx.readout('note', f.kind === 'sameX' ? tr('sameXText', { p: ptNamePlain(i), q: ptNamePlain(j) }) : tr('samePtText', { p: ptNamePlain(i), q: ptNamePlain(j) }));
+        const all3 = f.kind === 'samePoint' && pts.every((q) => q.x === pts[0].x && q.y === pts[0].y);
+        ctx.readout('note', f.kind === 'sameX' ? tr('sameXText', { p: ptNamePlain(i), q: ptNamePlain(j) }) : all3 ? ctx.t('samePt3Text') : tr('samePtText', { p: ptNamePlain(i), q: ptNamePlain(j) }));
         return;
       }
       ctx.readout('abc', { html: `<var>a</var> = ${htmlRat(f.a)}, &nbsp;<var>b</var> = ${htmlRat(f.b)}, &nbsp;<var>c</var> = ${htmlRat(f.c)}` });
       ctx.readout('eq', { html: htmlPoly(f.a, f.b, f.c) });
       const s = vertexOf(f.a, f.b, f.c);
-      ctx.readout('S', s ? `S${fmt.point(toNumber(s.x), toNumber(s.y), 3)}` : null);
+      if (s) {
+        // nicht abbrechende Koordinaten als Bruch, dazu der gerundete Wert mit ≈
+        const exactS = decimals(s.x, 3) !== null && decimals(s.y, 3) !== null;
+        const coord = (q: Rational) =>
+          q.d === 1 || decimals(q, 3) !== null ? fmt.num(toNumber(q), 3) : `${q.n < 0 ? '−' : ''}<span class="frac"><span>${Math.abs(q.n)}</span><span>${q.d}</span></span>`;
+        const pt = fmt.point(toNumber(s.x), toNumber(s.y), 3);
+        ctx.readout('S', exactS ? `S${pt}` : { html: `S(${coord(s.x)}${de ? ' | ' : ', '}${coord(s.y)}) ≈ S${pt}` });
+      } else ctx.readout('S', null);
       ctx.readout('note', f.kind === 'line' ? ctx.t('lineText') : null);
     }
 
@@ -1054,7 +1062,8 @@ export default defineSimulation({
             g.restore();
             const below = kk.a > 0;
             const near = s.pts.some((q) => Math.hypot(plot.px(q.x) - px, plot.py(q.y) - py) < 30);
-            if (!near) label(px + 9, py + (below ? 16 : -16), `S(${fmt.num(xv, 2)} | ${fmt.num(yv, 2)})`, c.vtx, 'left', size - 1, va);
+            const rounded = [xv, yv].some((v) => Math.abs(v * 100 - Math.round(v * 100)) > 1e-6);
+            if (!near) label(px + 9, py + (below ? 16 : -16), `S${rounded ? ' ≈ ' : ''}(${fmt.num(xv, 2)} | ${fmt.num(yv, 2)})`, c.vtx, 'left', size - 1, va);
           }
         }
       }
@@ -1301,13 +1310,13 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 16;
       g.shadowOffsetY = 4;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.97)' : 'rgba(255,255,255,0.98)';
+      g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.04 : 0, th().dark ? 0.97 : 0.98);
       roundRect(g, r.x, r.y, r.w, r.h, 13);
       g.fill();
       g.restore();
       g.save();
       g.globalAlpha = alpha;
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 13);
       g.stroke();
@@ -1452,7 +1461,7 @@ export default defineSimulation({
         g.save();
         g.globalAlpha = alpha * a;
         if (row.sep) {
-          g.strokeStyle = th().dark ? '#2c3648' : '#e9edf3';
+          g.strokeStyle = th().gridMinor;
           g.lineWidth = 1;
           g.beginPath();
           g.moveTo(card.x + pad, Math.round(top) + 0.5);

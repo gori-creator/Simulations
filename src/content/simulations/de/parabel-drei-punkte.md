@@ -98,12 +98,12 @@ $\text{II} - \text{I}: 2b = 4$, also $b = 2$; $\text{III} - \text{II}: 5{,}25a +
 
 ### Aufgabe 5: Wurfbahn
 
-Von einem geworfenen Ball wurden drei Positionen gemessen (Einheit 1 m): $(-5 \mid 1)$, $(-3 \mid 4)$, $(3 \mid 1)$. Bestimme die Wurfparabel, die größte Höhe und den Landepunkt.
+Von einem geworfenen Ball wurden drei Positionen gemessen (Koordinaten in m): $(-5 \mid 1)$, $(-3 \mid 4)$, $(3 \mid 1)$. Bestimme die Wurfparabel, die größte Höhe und den Landepunkt.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Die Punkte $(-5 \mid 1)$ und $(3 \mid 1)$ sind gleich hoch, also liegt der Scheitel bei $x = -1$: $y = a(x + 1)^2 + e$. Einsetzen: $16a + e = 1$ und $4a + e = 4$, also $a = -\frac{1}{4}$ und $e = 5$. Damit gilt $f(x) = -\frac{1}{4}x^2 - \frac{1}{2}x + 4{,}75$, die größte Höhe ist $5\,\text{m}$. Landepunkt: $(x + 1)^2 = 20$, also $x = -1 + \sqrt{20} \approx 3{,}47$. [In der Simulation zeigen](?scene=ball&x1=-5&y1=1&x2=-3&y2=4&x3=3&y3=1)
+Die Punkte $(-5 \mid 1)$ und $(3 \mid 1)$ sind gleich hoch, also liegt der Scheitel genau in der Mitte bei $x = -1$: $y = a(x + 1)^2 + y_S$. Einsetzen: $16a + y_S = 1$ und $4a + y_S = 4$, also $a = -\frac{1}{4}$ und $y_S = 5$. Damit gilt $f(x) = -\frac{1}{4}x^2 - \frac{1}{2}x + 4{,}75$, die größte Höhe ist $5\,\text{m}$. Landepunkt: $f(x) = 0$ führt auf $(x + 1)^2 = 20$, also $x = -1 + \sqrt{20} \approx 3{,}47$. Der Ball landet etwa $3{,}47\,\text{m}$ rechts vom Ursprung. [In der Simulation zeigen](?scene=ball&x1=-5&y1=1&x2=-3&y2=4&x3=3&y3=1)
 
 </details>
 
