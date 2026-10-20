@@ -45,7 +45,7 @@ $$
 1. Verändere nur $a$ – auch ins Negative. Vergleiche mit der gestrichelten Normalparabel. [a = 2](?a=2) [a = −0,5](?a=-0.5)
 2. Stelle $d = 3$ ein. Warum steht in der Funktionsgleichung dann ein **Minus**? [Beispiel laden](?d=3)
 3. Ziehe den Scheitelpunkt $S$ nach oben und unten. Wann gibt es zwei, eine oder keine Nullstelle?
-4. Schalte das **Streckfaktor-Dreieck** ein: Vom Scheitel aus geht es 1 nach rechts und $a$ nach oben. [Beispiel laden](?a=1.5&d=-1&e=-2&step=1)
+4. Schalte das **Streckfaktor-Dreieck** ein: Vom Scheitel aus geht es 1 nach rechts und $a$ nach oben. Ziehe den hohlen Punkt rechts vom Scheitel nach oben oder unten – so änderst du $a$. [Beispiel laden](?a=1.5&d=-1&e=-2&step=1)
 5. Wechsle oben zur **allgemeinen Form**. Die Parabel bleibt gleich – nur die Darstellung ändert sich.
 
 ## Aufgaben
@@ -112,5 +112,6 @@ Der Scheitelpunkt $S(5 \mid 6)$ ist der höchste Punkt: 6 m Höhe nach 5 m. Land
   - „Gestreckt“ wird mit „breiter“ verwechselt. Der gestrichelte Vergleich mit der Normalparabel hilft.
   - Der Parameter $b$ der allgemeinen Form wird als Verschiebung interpretiert – beim Ziehen am Scheitel sieht man, dass sich $b$ und $c$ gemeinsam ändern.
 - **Regionale Unterschiede:** Je nach Bundesland wird mit der $pq$-Formel (Normalform $x^2 + px + q$) oder der $abc$-Formel gearbeitet. Die Simulation zeigt die Diskriminante $b^2 - 4ac$; für $a = 1$ entspricht sie $p^2 - 4q$.
+- **Gerundete Werte:** Sind Nullstellen oder Scheitel nicht exakt mit zwei Nachkommastellen darstellbar, zeigt die Simulation „≈“ statt „=“ (z. B. $x_2 \approx 10{,}48$ beim Ballwurf). Das ist ein guter Anlass, über exakte Werte wie $5 + \sqrt{30}$ zu sprechen.
 - **Aufgabenmodus:** Mit **Teilen → Ergebnisse verdecken** werden Funktionsgleichungen, Scheitelpunkt und Nullstellen verdeckt. So eignet sich jede Einstellung als Ableseaufgabe.
 - **Schreibweise in Bayern:** Der LehrplanPLUS schreibt den Term als $a \cdot (x + d)^2 + e$. Unter **Anzeige → Schreibweise der Scheitelpunktform** lässt sich die Simulation darauf umstellen; ein positives $d$ verschiebt dann nach links.
