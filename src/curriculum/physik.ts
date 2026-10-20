@@ -736,7 +736,25 @@ export const physik: Subject = {
           id: 'radioaktivitaet',
           title: L('Radioaktivität', 'Radioactivity'),
           grades: [9, 12],
-          simulations: [planned('radioaktiver-zerfall', L('Radioaktiver Zerfall und Halbwertszeit', 'Radioactive decay and half-life'), [9, 12], { kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren'] })],
+          simulations: [
+            {
+              id: 'radioaktiver-zerfall',
+              status: 'ready',
+              slug: L('radioaktiver-zerfall', 'radioactive-decay'),
+              title: L('Radioaktiver Zerfall und Halbwertszeit', 'Radioactive decay and half-life'),
+              summary: L(
+                'Ein Präparat aus vielen Kernen zerfällt zufällig: Kerne blitzen auf, senden α- oder β-Teilchen aus, das Zählrohr knackt. Live entstehen N(t) mit Theoriekurve und Halbwertszeit-Marken (auch logarithmisch) und die Aktivität A = λ · N; dazu fünf echte Nuklide, C-14-Altersbestimmung und ein einzelner Kern, dessen Zerfall sich nicht vorhersagen lässt.',
+                'A sample of many nuclei decays at random: nuclei flash, emit alpha or beta particles, the counter clicks. N(t) with the theoretical curve and half-life marks (also logarithmic) and the activity A = λ · N are drawn live; plus five real nuclides, radiocarbon dating and a single nucleus whose decay cannot be predicted.',
+              ),
+              grades: [9, 12],
+              kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren', 'P-BK-Materie'],
+              keywords: L(
+                ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
+                ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
+              ),
+              thumb: 'generic',
+            },
+          ],
         },
         {
           id: 'quanten',
