@@ -28,7 +28,7 @@ Daraus folgen die Umrechnungen $1\,\text{km} = 10^3\,\text{m}$ und $1\,\text{m} 
 
 **Wissenschaftliche Schreibweise** (Vertiefung bzw. Jahrgangsstufe 6): Große Zahlen schreibt man als $a \cdot 10^n$ mit $1 \le a < 10$, zum Beispiel $35\,000 = 3{,}5 \cdot 10^4$ und $1\,270\,000 = 1{,}27 \cdot 10^6$. Man setzt das Komma hinter die erste Ziffer, die nicht $0$ ist, und zählt, um wie viele Stellen es nach links gewandert ist.
 
-*Ausblick:* Für Zahlen kleiner als $1$ wandert das Komma nach rechts, die Hochzahl wird negativ: $10^{-1} = 0{,}1$, $10^{-3} = 0{,}001$ und $0{,}0042 = 4{,}2 \cdot 10^{-3}$. Negative Hochzahlen kommen in der Simulation bei sehr kleinen Längen vor; im Unterricht der 5. und 6. Klasse sind sie nur ein Ausblick.
+*Ausblick:* Für Zahlen kleiner als $1$ wandert das Komma nach rechts, die Hochzahl wird negativ: $10^{-1} = 0{,}1$, $10^{-3} = 0{,}001$ und $0{,}0042 = 4{,}2 \cdot 10^{-3}$. Negative Hochzahlen kommen in der Simulation bei sehr kleinen Längen vor. In der 5. Klasse sind sie ein Ausblick, in der 6. Klasse lernst du sie genauer kennen.
 
 ## Ausprobieren
 
@@ -65,7 +65,7 @@ $1\,000\,000 = 10^6$ (6 Nullen), $1\,000\,000\,000 = 10^9$ (9 Nullen). $10^9 = 1
 
 ### Aufgabe 3: Größen schätzen
 
-Bei $1$ Kästchen $= 10\,\text{m}$ ist das Haus etwa ein Kästchen hoch. Schätze seine Höhe und vergleiche mit dem Kind. [Aufgabe laden](?e=1&show=0&_hide=1)
+Stelle $1$ Kästchen $= 10\,\text{m}$ ein. Schätze mithilfe der Kästchen, wie hoch das Haus ist. Wie viele Kinder übereinander wären so hoch? [Aufgabe laden](?e=1&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -109,8 +109,8 @@ Das Komma wandert 3 Stellen nach rechts, die Hochzahl ist negativ: $0{,}0042 = 4
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5 (Potenzen und Zehnerpotenzen bei großen Zahlen), Jahrgangsstufe 6 als Wiederholung und für die wissenschaftliche Schreibweise (LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen). Die Reise eignet sich vielleicht als Einstieg am Beamer, die Würfelbauten für das Verständnis von „Hochzahl + 1 heißt mal Grundzahl“.
-- **Schätzen:** Mit ausgeschalteten Ergebnissen könnten die Kinder Größen mithilfe der Kästchen schätzen und anschließend vergleichen.
+- **Einsatz:** Jahrgangsstufe 5 (Potenzen und Zehnerpotenzen bei großen Zahlen), Jahrgangsstufe 6 als Wiederholung und für die wissenschaftliche Schreibweise sowie für negative Hochzahlen wie $10^{-3} = 0{,}001$ (LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen). Die Reise eignet sich als Einstieg am Beamer, die Würfelbauten für das Verständnis von „Hochzahl + 1 heißt mal Grundzahl“.
+- **Schätzen:** Bei ausgeschalteten Ergebnissen schätzen die Schülerinnen und Schüler die Größen mithilfe der Kästchen und vergleichen danach.
 - **Modell:** Die Objekte sind maßstäblich gezeichnet, nur Flugzeug und Raumstation sind als Symbole vergrößert. Die Größen sind typische, gerundete Werte.
 - **Häufige Stolpersteine:**
   - $10^3$ wird als $10 \cdot 3 = 30$ gerechnet – richtig ist $10 \cdot 10 \cdot 10 = 1\,000$.

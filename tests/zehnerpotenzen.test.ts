@@ -235,4 +235,27 @@ describe('Modell: Zehnerpotenzen – Einheiten und Zoom', () => {
     expect(cameraX(E_MAX)).toBe(OBJECTS.find((o) => o.id === 'earth')!.x);
     expect(cameraX(0.146)).toBeCloseTo(0.8, 2);
   });
+
+  it('Prüfrunde: reale Größen plausibel, Faktor 10 pro Zoom-Stufe, Erde–Sonne', () => {
+    const size = (id: string) => OBJECTS.find((o) => o.id === id)!.size;
+    expect(size('sand')).toBe(0.001); // Sandkorn ≈ 1 mm
+    expect(size('child')).toBeGreaterThan(1.2); // Kind der 5. Klasse ≈ 1,4 m
+    expect(size('child')).toBeLessThan(1.6);
+    expect(size('peak')).toBe(2962); // Zugspitze
+    expect(size('earth') / 1000).toBeCloseTo(12_742, 0); // Erde ≈ 12 700 km Durchmesser
+    // eine Stufe in der Hochzahl = Faktor 10
+    for (let k = E_MIN; k < E_MAX; k++) {
+      const a = powerLength(k);
+      const b = powerLength(k + 1);
+      const toM = (v: { value: number; unit: string }) => v.value * 10 ** ({ mm: -3, cm: -2, dm: -1, m: 0, km: 3 } as Record<string, number>)[v.unit]!;
+      expect(toM(b) / toM(a)).toBeCloseTo(10, 9);
+    }
+    // Entfernung Erde–Sonne ≈ 149 600 000 km = 1,496 · 10⁸ km
+    const s = sci('149 600 000')!;
+    expect(s).toEqual({ digits: '1496', exponent: 8 });
+    expect(mantissaText(s, 'de')).toBe('1,496');
+    // 10¹ = 10, 10⁰ = 1
+    expect(power(10, 1)).toBe(10);
+    expect(power(10, 0)).toBe(1);
+  });
 });
