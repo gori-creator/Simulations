@@ -62,6 +62,20 @@ Jetzt sind alle Simulationen fertig. Die Zähler sind daher überflüssig, zum B
 - Texte von „verfügbar/geplant“ auf eine neutrale Form umstellen.
 - Den Status `planned` im Code lassen, damit spätere Fächer wie Chemie wieder geplant werden können. Angezeigt werden soll er aber nur noch, wenn es tatsächlich Geplantes gibt.
 
+## Kopfleiste
+
+### 8. Dunkelmodus geht beim Seitenwechsel verloren bzw. blitzt weiß
+Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist die Seite weiß bzw. wieder im hellen Modus.
+
+**Vermutete Ursache (noch zu prüfen):** Die Theme-Wahl wird nicht gespeichert oder erst nach dem ersten Zeichnen angewendet. Dann gibt es weißes Aufblitzen (FOUC) oder einen Rücksprung auf hell.
+**Ziel:** Die gewählte Darstellung bleibt über alle Seitenwechsel erhalten. Sie wird schon im `<head>` vor dem ersten Zeichnen gesetzt (kleines Inline-Skript, Speicherung in `localStorage`), damit nichts weiß aufblitzt.
+
+### 9. Englische Fassung funktioniert nicht
+Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
+
+**Noch zu prüfen:** Was genau passiert? Möglich sind ein Fehler 404, eine Weiterleitung zurück auf Deutsch oder fehlende bzw. falsche Adressen. Wichtig: Die Slugs sind auf Englisch übersetzt, zum Beispiel `mathematik` → `mathematics` und `analysis` → `calculus`. Der Sprachwechsel muss also auf die passende englische Adresse zeigen und nicht nur `/de/` gegen `/en/` tauschen.
+**Ziel:** Der Sprachwechsel führt auf jeder Seite zur entsprechenden englischen Seite, und alle englischen Seiten laden.
+
 ## Lehrpläne und Sortierung
 
 ### 5. Lehrplan Bayern für Physik fehlt
