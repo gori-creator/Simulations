@@ -1,0 +1,100 @@
+---
+/**
+ * Zahnrad in der Kopfleiste mit der Einstellung „Bundesland“.
+ * Die Wahl steht nur in localStorage ("region") und als data-region am <html>
+ * (früh gesetzt im <head>, siehe BaseLayout). Länderliste: src/lib/region.ts.
+ */
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import { regionsOf } from '../lib/region';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const regions = regionsOf(lang);
+---
+
+<div class="settings" data-settings>
+  <button
+    class="btn btn--ghost btn--icon settings__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="settings-panel"
+    aria-label={t(lang, 'settings.label')}
+    title={t(lang, 'settings.label')}
+    data-settings-toggle
+  >
+    <Icon name="settings" />
+  </button>
+  <div class="settings__panel" id="settings-panel" role="dialog" aria-labelledby="settings-title" hidden data-settings-panel>
+    <h2 class="settings__title" id="settings-title">{t(lang, 'settings.label')}</h2>
+    <label class="field">
+      {t(lang, 'settings.region')}
+      <select class="select" name="region" data-region-select>
+        <option value="">{t(lang, 'settings.regionNone')}</option>
+        {regions.map((r) => <option value={r.id}>{r.name[lang]}</option>)}
+      </select>
+    </label>
+    <p class="settings__hint">{t(lang, 'settings.regionHint')}</p>
+  </div>
+</div>
+
+<script>
+  import { applyRegionOrder, readRegion, storeRegion } from '../lib/region-client';
+
+  const root = document.documentElement;
+  const box = document.querySelector<HTMLElement>('[data-settings]');
+  const toggle = box?.querySelector<HTMLButtonElement>('[data-settings-toggle]');
+  const panel = box?.querySelector<HTMLElement>('[data-settings-panel]');
+  const select = box?.querySelector<HTMLSelectElement>('[data-region-select]');
+  const known = new Set([...(select?.options ?? [])].map((o) => o.value).filter(Boolean));
+
+  function setOpen(open: boolean, focusToggle = false): void {
+    if (!toggle || !panel) return;
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      if (select) select.value = root.dataset.region ?? '';
+      select?.focus();
+    } else if (focusToggle) {
+      toggle.focus();
+    }
+  }
+
+  function apply(region: string): void {
+    if (region && known.has(region)) root.dataset.region = region;
+    else delete root.dataset.region;
+    applyRegionOrder(root.dataset.region);
+  }
+
+  toggle?.addEventListener('click', () => setOpen(Boolean(panel?.hidden)));
+  box?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && panel && !panel.hidden) {
+      event.preventDefault();
+      setOpen(false, true);
+    }
+  });
+  // Klick oder Fokus außerhalb schließt das Menü
+  document.addEventListener('click', (event) => {
+    if (panel && !panel.hidden && box && !box.contains(event.target as Node)) setOpen(false);
+  });
+  box?.addEventListener('focusout', (event) => {
+    if (panel && !panel.hidden && event.relatedTarget && !box.contains(event.relatedTarget as Node)) setOpen(false);
+  });
+
+  select?.addEventListener('change', () => {
+    storeRegion(select.value);
+    apply(select.value);
+  });
+
+  // Änderung in einem anderen Tab übernehmen
+  window.addEventListener('storage', (event) => {
+    if (event.key === null || event.key === 'region') apply(readRegion());
+  });
+
+  // Karten auch in der DOM-Reihenfolge sortieren (Tastatur, Bildschirmleser)
+  applyRegionOrder(root.dataset.region);
+</script>

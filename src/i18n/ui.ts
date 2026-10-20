@@ -18,6 +18,22 @@ const de = {
   'lang.label': 'Sprache',
   'theme.toggle': 'Hell/Dunkel umschalten',
 
+  'settings.label': 'Einstellungen',
+  'settings.region': 'Bundesland',
+  'settings.regionNone': 'Kein Bundesland (allgemeine Sortierung)',
+  'settings.regionHint':
+    'Mit Bundesland werden die Simulationen nach dessen Jahrgangsstufen sortiert. Die Wahl wird nur in diesem Browser gespeichert.',
+  'region.viewTitle': 'Nach Jahrgangsstufe ({state})',
+  'region.viewLead': 'Sortiert nach dem Lehrplan {state} · {school}. Das Bundesland lässt sich über das Zahnrad oben ändern.',
+  'region.gradeHeading': 'Jahrgangsstufe {n} ({state})',
+  'region.again': 'Außerdem passend:',
+  'region.rest': 'Weitere Simulationen',
+  'region.restLead': 'Diese Simulationen sind im Lehrplan {state} keiner Jahrgangsstufe zugeordnet.',
+  'region.noCurriculum': 'Für {state} liegt für dieses Fach noch kein Lehrplan vor – allgemeine Sortierung.',
+  'region.cardGrade': '{state}: Jgst. {grades}',
+  'region.cardGrades': '{state}: Jgst. {grades}',
+  'region.current': 'Gewähltes Bundesland',
+
   'footer.tagline': 'Kostenlos, werbefrei und ohne Anmeldung – für Schulen und alle, die lernen.',
   'footer.imprint': 'Impressum',
   'footer.privacy': 'Datenschutz',
@@ -168,6 +184,22 @@ const en: Record<UiKey, string> = {
 
   'lang.label': 'Language',
   'theme.toggle': 'Toggle light/dark mode',
+
+  'settings.label': 'Settings',
+  'settings.region': 'Federal state',
+  'settings.regionNone': 'No federal state (general order)',
+  'settings.regionHint':
+    'With a federal state selected, simulations are ordered by its grades. Your choice is only stored in this browser.',
+  'region.viewTitle': 'By grade ({state})',
+  'region.viewLead': 'Ordered by the {state} curriculum · {school}. Change the federal state via the gear icon at the top.',
+  'region.gradeHeading': 'Grade {n} ({state})',
+  'region.again': 'Also relevant:',
+  'region.rest': 'More simulations',
+  'region.restLead': 'These simulations are not assigned to a grade in the {state} curriculum.',
+  'region.noCurriculum': 'There is no {state} curriculum for this subject yet – general order.',
+  'region.cardGrade': '{state}: grade {grades}',
+  'region.cardGrades': '{state}: grades {grades}',
+  'region.current': 'Selected federal state',
 
   'footer.tagline': 'Free, ad-free and no sign-up – for schools and everyone who learns.',
   'footer.imprint': 'Imprint',

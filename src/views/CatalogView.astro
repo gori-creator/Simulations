@@ -59,7 +59,7 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
     <p class="result-count" data-result-count data-template={resultTemplate} aria-live="polite">
       {t(lang, 'catalog.results', { n: sims.length })}
     </p>
-    <div class="card-grid" data-catalog>
+    <div class="card-grid" data-catalog data-region-sort>
       {sims.map((sim) => <SimCard lang={lang} sim={sim} showSubject headingLevel="h2" />)}
     </div>
     <p class="note" data-catalog-empty hidden>{t(lang, 'catalog.empty')}</p>

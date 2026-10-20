@@ -3,6 +3,7 @@ import { getSubject } from '../curriculum';
 import type { SimulationEntry } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
+import { regionGrades, regionOrders, regionOrderStyle, regionsOf } from '../lib/region';
 import { href } from '../lib/routes';
 import GradeBadge from './GradeBadge.astro';
 import SimThumb from './SimThumb.astro';
@@ -21,6 +22,11 @@ const subject = getSubject(sim.subject);
 const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords?.[lang] ?? []), subject.title[lang]]
   .join(' ')
   .toLowerCase();
+// Einstellung „Bundesland“: Sortierschlüssel je Land (CSS `order` und Skript) und Etikett mit der Jahrgangsstufe
+const orders = regionOrders(sim.id);
+const regionBadges = regionsOf(lang)
+  .map((region) => ({ region, grades: regionGrades(sim.id, region.id) }))
+  .filter((r) => r.grades.length > 0);
 ---
 
 <article
@@ -31,6 +37,8 @@ const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords
   data-grade-from={sim.grades[0]}
   data-grade-to={sim.uni ? Math.max(sim.grades[1], 14) : sim.grades[1]}
   data-search={searchText}
+  data-region-order={Object.keys(orders).length ? JSON.stringify(orders) : undefined}
+  style={regionOrderStyle(orders)}
 >
   <div class="card__thumb"><SimThumb kind={sim.thumb} id={sim.id} /></div>
   <div class="card__body">
@@ -41,6 +49,13 @@ const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords
     <div class="card__meta">
       {showSubject && <span class={`badge badge--subject-${sim.subject}`}>{subject.title[lang]}</span>}
       <GradeBadge lang={lang} grades={sim.grades} uni={sim.uni} />
+      {
+        regionBadges.map(({ region, grades }) => (
+          <span class="badge badge--region" data-region-only={region.id}>
+            {t(lang, grades.length > 1 ? 'region.cardGrades' : 'region.cardGrade', { state: region.name[lang], grades: grades.join(', ') })}
+          </span>
+        ))
+      }
       <span class:list={['badge', { 'badge--ready': ready }]}>{t(lang, ready ? 'status.ready' : 'status.planned')}</span>
     </div>
   </div>
