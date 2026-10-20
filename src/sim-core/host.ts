@@ -204,6 +204,7 @@ class SimulationHost {
       this.instance?.update?.(changed, source);
     }
     this.flushing = false;
+    this.applyHide();
     this.controls?.sync(this.values);
     this.syncActions();
     this.scheduleUrlUpdate();
@@ -297,6 +298,8 @@ class SimulationHost {
         reveal.textContent = t(this.lang, 'sim.reveal');
         reveal.addEventListener('click', () => {
           this.revealed.add(def.key);
+          const param = this.def.resultsParam;
+          if (param && this.values[param] === false) this.set({ [param]: true }, 'input');
           this.applyHide();
         });
         dd.append(reveal);
@@ -310,11 +313,16 @@ class SimulationHost {
     this.applyHide();
   }
 
-  /** Verdeckt „spoiler“-Ergebnisse, solange der Aufgabenmodus aktiv ist. */
+  /**
+   * Verdeckt „spoiler“-Ergebnisse, solange der Aufgabenmodus aktiv ist oder der
+   * Schalter `resultsParam` der Simulation („Ergebnisse anzeigen“) aus ist.
+   */
   private applyHide(): void {
+    const param = this.def.resultsParam;
+    const off = !!param && this.values[param] === false;
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
-      const hidden = this.flags.hide && !this.revealed.has(key);
+      const hidden = off || (this.flags.hide && !this.revealed.has(key));
       row.value.hidden = hidden;
       row.reveal.hidden = !hidden;
     }

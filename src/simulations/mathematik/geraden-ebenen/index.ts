@@ -143,6 +143,7 @@ export default defineSimulation({
     { key: 'probe', label: L('Punktprobe', 'Point test'), spoiler: true },
     { key: 'info', label: L('Hinweis', 'Note') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Gerade g: Punkt X läuft', 'Line g: point X moves'), values: {} },
     { id: 'probe', label: L('Punktprobe: Q(3 | 1 | 5)', 'Point test: Q(3, 1, 5)'), values: { probe: true, q1: 3, q2: 1, q3: 5 } },

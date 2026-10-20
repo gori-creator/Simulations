@@ -198,6 +198,7 @@ export default defineSimulation({
     { key: 'energy', label: L('Energie pro kg Planetenmasse', 'Energy per kg of planet mass'), spoiler: true },
     { key: 'now', label: L('Momentan', 'Right now') },
   ],
+  resultsParam: 'num',
   presets: [
     { id: 'start', label: L('Ellipse (Start im Perihel)', 'Ellipse (launch at perihelion)'), values: {} },
     { id: 'circle', label: L('Kreisbahn', 'Circular orbit'), values: { v0: 29.78 } },

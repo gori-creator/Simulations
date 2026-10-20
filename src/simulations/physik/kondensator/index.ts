@@ -95,6 +95,7 @@ export default defineSimulation({
     { key: 'half', label: L('Halbwertszeit', 'Half-life'), spoiler: true },
     { key: 'W', label: L('Energie im vollen Kondensator', 'Energy in the full capacitor'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'std', label: L('Laden: 10 kΩ, 100 µF, 10 V', 'Charge: 10 kΩ, 100 µF, 10 V'), values: {} },
     { id: 'dis', label: L('Entladen', 'Discharge'), values: { sw: 'discharge' } },

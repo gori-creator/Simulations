@@ -314,6 +314,8 @@ export default defineSimulation({
 
     /** Was der Flächeninhalt schon „verraten“ darf. */
     const areaKnown = () => p.show || prog.K >= 1 || prog.Q >= 1 || counted;
+    /** Stand von areaKnown() beim letzten Füllen der Ergebnisliste. */
+    let readoutKnown = areaKnown();
     const areaGlide = new Glide(formulaArea(kind(), dims()));
 
     /* ---------------- Aufteilung und Ansicht ---------------- */
@@ -1499,6 +1501,13 @@ export default defineSimulation({
       if (k === 'para') html = `<var>A</var> = <var>g</var> · <var>h</var> = ${cm(d.g)} · ${cm(d.h)} = <strong>${cm2(A)}</strong>`;
       else if (k === 'tri') html = `<var>A</var> = <var>g</var> · <var>h</var> : 2 = ${cm(d.g)} · ${cm(d.h)} : 2 = <strong>${cm2(A)}</strong>`;
       else html = `<var>A</var> = (<var>a</var> + <var>c</var>) · <var>h</var> : 2 = (${cm(d.g)} + ${cm(d.c)}) · ${cm(d.h)} : 2 = <strong>${cm2(A)}</strong>`;
+      // Ergebnis erst, wenn es auch im Bild steht („Flächeninhalt sofort zeigen“ oder nach Zerlegen, Ergänzen, Zählen)
+      readoutKnown = areaKnown();
+      if (!readoutKnown) {
+        ctx.readout('area', null);
+        ctx.readout('way', null);
+        return;
+      }
       ctx.readout('area', { html });
       const st = step();
       const D = doubled(k, d);
@@ -1726,6 +1735,8 @@ export default defineSimulation({
           viewKey = key;
         }
         view = { cell: vCell.at(now), ox: vOx.at(now), oy: vOy.at(now) };
+        // Ergebnisliste nachziehen, sobald der Flächeninhalt im Bild bekannt wird
+        if (areaKnown() !== readoutKnown) updateReadouts();
         // Abläufe starten, sobald die Herleitung steht
         if (pendingCount && animIdle() && prog.K >= 1) {
           pendingCount = false;

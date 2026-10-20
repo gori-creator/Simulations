@@ -216,6 +216,7 @@ export default defineSimulation({
     { key: 'geo', label: L('Geometrisch', 'Geometrically'), spoiler: true },
     { key: 'info', label: L('Hinweis', 'Note'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Winkel zwischen a und b', 'Angle between a and b'), values: {} },
     { id: 'chk45', label: L('(1|0|0) · (1|1|0): Winkel 45°', '(1, 0, 0) · (1, 1, 0): angle 45°'), values: { a1: 1, a2: 0, a3: 0, b1: 1, b2: 1, b3: 0 } },

@@ -178,6 +178,7 @@ export default defineSimulation({
     { key: 'ext', label: L('Außenwinkel', 'Exterior angles'), spoiler: true },
     { key: 'shape', label: L('Art des Vielecks', 'Type of polygon') },
   ],
+  resultsParam: 'vals',
   presets: [
     { id: 'start', label: L('Dreieck', 'Triangle'), values: {} },
     { id: 'recht', label: L('Rechtwinkliges Dreieck', 'Right-angled triangle'), values: { ax: 3, ay: 2, bx: 11, by: 2, cx: 3, cy: 8 } },

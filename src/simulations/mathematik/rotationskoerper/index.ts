@@ -205,6 +205,7 @@ export default defineSimulation({
     { key: 'S', label: L('Scheibensumme', 'Sum of discs'), spoiler: true },
     { key: 'K', label: L('Kontrolle mit der Körperformel', 'Check with the formula for the solid'), spoiler: true },
   ],
+  resultsParam: 'vals',
   presets: [
     { id: 'start', label: L('Kugel aus dem Halbkreis', 'Sphere from a semicircle'), values: {} },
     { id: 'cone', label: L('Kegel aus einer Ursprungsgeraden', 'Cone from a line through the origin'), values: { fn: 'kegel', m: 0.5, a: 0, b: 4, xs: 2.5 } },

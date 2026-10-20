@@ -148,6 +148,7 @@ export default defineSimulation({
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'skew', label: L('Windschiefe Geraden', 'Skew lines'), values: {} },
     { id: 'cut', label: L('Schneidende Geraden', 'Intersecting lines'), values: { a1: 1, a2: 0, a3: 0, u1: 1, u2: 1, u3: 0, b1: 0, b2: 1, b3: 0, v1: 1, v2: -1, v3: 0 } },

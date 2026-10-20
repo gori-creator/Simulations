@@ -84,10 +84,11 @@ export default defineSimulation({
   ],
   actions: [{ id: 'fill', label: L('Füllen', 'Fill'), primary: true }],
   readouts: [
-    { key: 'count', label: L('Eingefüllt', 'Filled in') },
+    { key: 'count', label: L('Eingefüllt', 'Filled in'), spoiler: true },
     { key: 'volume', label: L('Volumen', 'Volume'), spoiler: true },
     { key: 'units', label: L('In anderen Einheiten', 'In other units'), spoiler: true },
   ],
+  resultsParam: 'count',
   presets: [
     { id: 'start', label: L('Quader 5 × 3 × 4', 'Cuboid 5 × 3 × 4'), values: {} },
     { id: 'cube', label: L('Würfel 3 × 3 × 3', 'Cube 3 × 3 × 3'), values: { a: 3, b: 3, c: 3, fill: 'voll' } },

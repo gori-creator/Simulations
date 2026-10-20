@@ -161,6 +161,7 @@ export default defineSimulation({
     { key: 'mono', label: L('Monotonie', 'Monotonicity'), spoiler: true },
     { key: 'slope', label: L('Steigung in P', 'Slope at P'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'cubic', label: L('f(x) = x³ − 3x', 'f(x) = x³ − 3x'), values: {} },
     { id: 'hill', label: L('f(x) = −x³ + 3x²', 'f(x) = −x³ + 3x²'), values: { q: 0, a: -1, b: 3, c: 0, d: 0, px: 0.5 } },

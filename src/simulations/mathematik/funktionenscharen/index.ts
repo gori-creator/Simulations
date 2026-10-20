@@ -270,6 +270,7 @@ export default defineSimulation({
     { key: 'com', label: L('Gemeinsame Punkte', 'Common points'), spoiler: true },
     { key: 'wp', label: L('Wendepunkte', 'Points of inflection'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'cub', label: L('x³ − kx', 'x³ − kx'), values: {} },
     { id: 'cubneg', label: L('x³ − kx mit k < 0: keine Extrema', 'x³ − kx with k < 0: no extrema'), values: { fam: 'cub', k: -1.5 } },

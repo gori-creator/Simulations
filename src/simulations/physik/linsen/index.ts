@@ -114,6 +114,7 @@ export default defineSimulation({
     { key: 'use', label: L('Anwendung', 'Application') },
     { key: 'sharp', label: L('Schirmbild', 'Screen image'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'proj', label: L('Projektor: f < g < 2f', 'Projector: f < g < 2f'), values: {} },
     { id: 'cam', label: L('Kamera: g > 2f', 'Camera: g > 2f'), values: { g: 35, gs: 8 } },

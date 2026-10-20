@@ -82,8 +82,9 @@ export default defineSimulation({
   readouts: [
     { key: 'E', label: L('Feldstärke bei der Probeladung', 'Field strength at the test charge'), spoiler: true },
     { key: 'F', label: L('Kraft auf die Probeladung', 'Force on the test charge'), spoiler: true },
-    { key: 'phi', label: L('Potential', 'Potential') },
+    { key: 'phi', label: L('Potential', 'Potential'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'dipole', label: L('Dipol ±1 nC, Mitte', 'Dipole ±1 nC, midpoint'), values: {} },
     { id: 'single', label: L('Einzelne Ladung, r = 10 cm', 'Single charge, r = 10 cm'), values: { n: 1, x1: 0, y1: 0, px: 10, py: 0 } },

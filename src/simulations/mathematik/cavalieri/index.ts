@@ -155,6 +155,7 @@ export default defineSimulation({
     { key: 'V', label: L('Volumen', 'Volume'), spoiler: true },
     { key: 'stack', label: L('Scheibenstapel', 'Stack of slices'), spoiler: true },
   ],
+  resultsParam: 'calc',
   presets: [
     { id: 'start', label: L('Münzstapel: gerade und schief', 'Stack of coins: straight and oblique'), values: {} },
     { id: 'bent', label: L('Gebogener Münzstapel', 'Bent stack of coins'), values: { s: 1, k: 2.5, n: 20 } },

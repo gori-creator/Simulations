@@ -71,8 +71,9 @@ export default defineSimulation({
     { key: 'law', label: L('Induktionsgesetz', 'Law of induction') },
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
     { key: 'lenz', label: L('Lenzsche Regel', 'Lenz’s law') },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Magnet in die Spule schieben', 'Push the magnet into the coil'), values: {} },
     { id: 'turns', label: L('Dreifache Windungszahl', 'Three times the turns'), values: { n: 300 } },

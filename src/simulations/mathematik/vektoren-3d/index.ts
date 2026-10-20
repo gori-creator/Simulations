@@ -138,6 +138,7 @@ export default defineSimulation({
     { key: 'len', label: L('Länge', 'Length'), spoiler: true },
     { key: 'info', label: L('Hinweis', 'Note'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Addition: Spitze an Fuß', 'Addition: tip to tail'), values: {} },
     { id: 'sub', label: L('Subtraktion', 'Subtraction'), values: { op: 'sub' } },

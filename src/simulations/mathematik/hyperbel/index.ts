@@ -219,6 +219,7 @@ export default defineSimulation({
     { key: 'branch', label: L('Lage der Äste', 'Position of the branches'), spoiler: true },
     { key: 'rect', label: L('Rechteck an P', 'Rectangle at P'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('Indirekte Proportionalität: x · y = 4', 'Inverse proportion: x · y = 4'), values: {} },
     { id: 'base', label: L('Grundfunktion y = 1/x', 'Basic function y = 1/x'), values: { a: 1, u: 1 } },

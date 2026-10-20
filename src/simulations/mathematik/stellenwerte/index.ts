@@ -456,7 +456,8 @@ export default defineSimulation({
       const nb = roundingNeighbors(n, p.r);
       const and = lang === 'de' ? 'und' : 'and';
       ctx.readout('neighbors', `${groupDigits(nb.lower, lang)} ${and} ${groupDigits(nb.upper, lang)} (${ctx.t('mid')}: ${groupDigits(nb.mid, lang)})`);
-      ctx.readout('rounded', `${groupDigits(n, lang)} ≈ ${groupDigits(roundTo(n, p.r), lang)}`);
+      // Gerundete Zahl erst nach „Runden“ (bzw. sofort, wenn „Gerundete Zahl sofort zeigen“ an ist)
+      ctx.readout('rounded', revealed ? `${groupDigits(n, lang)} ≈ ${groupDigits(roundTo(n, p.r), lang)}` : null);
       ctx.setAction('div10', { enabled: n % 10 === 0 && n > 0 && !ctx.locked });
       ctx.setAction('times10', { enabled: n * 10 <= MAX_NUMBER && n > 0 && !ctx.locked });
       ctx.setAction('random', { enabled: !ctx.locked });
@@ -1361,6 +1362,7 @@ export default defineSimulation({
             if (!reduced) viewTween.play();
           }
           startSlide();
+          updateReadouts();
         } else if (id === 'times10') shift(1);
         else if (id === 'div10') shift(-1);
         else if (id === 'random' && !ctx.locked) {

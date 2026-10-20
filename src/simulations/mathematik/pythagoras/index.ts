@@ -34,6 +34,7 @@ export default defineSimulation({
     { key: 'areas', label: L('Flächen', 'Areas'), spoiler: true },
     { key: 'proof', label: L('Beweisidee', 'Proof idea') },
   ],
+  resultsParam: 'numbers',
   presets: [
     { id: '345', label: L('3-4-5-Dreieck', '3-4-5 triangle'), values: {} },
     { id: 'iso', label: L('Gleichschenklig', 'Isosceles'), values: { a: 3, b: 3 } },

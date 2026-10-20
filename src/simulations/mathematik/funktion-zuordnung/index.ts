@@ -115,6 +115,7 @@ export default defineSimulation({
     { key: 'verdict', label: L('Funktion?', 'Function?'), spoiler: true },
     { key: 'dw', label: L('Definitions- und Wertemenge', 'Domain and range'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'square', label: L('Zahl ↦ Quadrat', 'Number ↦ square'), values: {} },
     { id: 'root', label: L('Quadrat ↦ Zahl', 'Square ↦ number'), values: { rev: true } },
@@ -1523,7 +1524,7 @@ export default defineSimulation({
         ctx.readout('table', { html: `<table class="mini-table">${head}${rows}</table>` });
         ctx.readout('line', null);
         const v = verdictLines();
-        ctx.readout('verdict', p.show ? `${v.title}: ${v.lines.join(' ')}` : `${ctx.t(info.isFunction ? 'isFn' : 'noFn')}`);
+        ctx.readout('verdict', `${v.title}: ${v.lines.join(' ')}`);
         ctx.readout('dw', dwText());
       } else {
         const id = cur();

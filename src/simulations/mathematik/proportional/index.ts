@@ -248,6 +248,7 @@ export default defineSimulation({
     { key: 'test', label: L('Kennzeichen', 'Test'), spoiler: true },
     { key: 'dbl', label: L('Verdoppeln', 'Doubling'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'apples', label: L('Äpfel: 4 kg kosten 10 €', 'Apples: 4 kg cost €10'), values: {} },
     { id: 'pumps', label: L('Pumpen: 3 Pumpen brauchen 4 h', 'Pumps: 3 pumps take 4 h'), values: { kind: 'ind', ki: 12, x0: 3, x: 4 } },

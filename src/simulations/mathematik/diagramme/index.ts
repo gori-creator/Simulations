@@ -376,6 +376,7 @@ export default defineSimulation({
     { key: 'sel', label: L('Abgelesen', 'Read off'), spoiler: true },
     { key: 'trick', label: L('Wirkung der Täuschung', 'Effect of the trick'), spoiler: true },
   ],
+  resultsParam: 'lab',
   presets: [
     { id: 'start', label: L('Säulen: Lieblingssport', 'Columns: favourite sport'), values: {} },
     { id: 'pie', label: L('Kreis: 6 von 24 sind 90°', 'Pie: 6 of 24 is 90°'), values: { chart: 'pie' } },

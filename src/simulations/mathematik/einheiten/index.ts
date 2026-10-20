@@ -1746,6 +1746,11 @@ export default defineSimulation({
       } else {
         const c = st.conv;
         ctx.readout('task', `${fd(c.value)} ${c.from.sym} = ? ${c.to.sym}`);
+        shown.add('task');
+      }
+      // Lösung erst nach „Umrechnen“ (bzw. sofort, wenn „Ergebnis sofort anzeigen“ an ist)
+      if (st.value && st.conv && revealed) {
+        const c = st.conv;
         ctx.readout('res', conversionText(c, lang));
         let how: string;
         if (st.q === 'time') {
@@ -1764,7 +1769,7 @@ export default defineSimulation({
         let rel = relationText(st.q, c.from, c.to, lang);
         if (st.q === 'vol' && (c.from.aliasOf || c.to.aliasOf)) rel += ' · 1 dm³ = 1 l · 1 cm³ = 1 ml';
         ctx.readout('rel', rel);
-        shown.add('task').add('res').add('how').add('rel');
+        shown.add('res').add('how').add('rel');
         if (st.q === 'time' && c.from.id !== c.to.id) {
           const mixed = mixedTime(c.value, c.from.id, c.to.id);
           if (mixed.length > 1) {
@@ -1800,6 +1805,7 @@ export default defineSimulation({
           else {
             revealed = true;
             rehop(80);
+            updateReadouts();
             ctx.requestRender();
           }
           return true;
@@ -1881,6 +1887,7 @@ export default defineSimulation({
           const st = getState();
           if (st.conv && st.conv.exact) ctx.set({ v: inputText(st.conv.result, lang), [FROM_KEY[q]]: st.to.id, [TO_KEY[q]]: st.from.id } as never);
         }
+        updateReadouts();
         updateActions();
         ctx.requestRender();
       },

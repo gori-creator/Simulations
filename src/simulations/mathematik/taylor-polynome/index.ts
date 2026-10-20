@@ -256,6 +256,7 @@ export default defineSimulation({
     { key: 'calc', label: L('Richtige Nachkommastellen', 'Correct decimals'), spoiler: true },
     { key: 'small', label: L('Kleinwinkelnäherung', 'Small-angle approximation'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'sin', label: L('sin x um 0', 'sin x about 0'), values: {} },
     { id: 'exp', label: L('eˣ: Näherung für e', 'eˣ: approximating e'), values: { fn: 'exp', n: 4, a: 0, x: 1 } },

@@ -121,6 +121,7 @@ export default defineSimulation({
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Punktprobe: P außerhalb', 'Point test: P outside'), values: {} },
     { id: 'on', label: L('Punkt P(1 | 2 | 6) auf K', 'Point P(1, 2, 6) on K'), values: { p1: 1, p2: 2, p3: 6 } },

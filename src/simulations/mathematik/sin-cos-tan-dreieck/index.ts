@@ -235,6 +235,7 @@ export default defineSimulation({
     { key: 'vals', label: L('Werte', 'Values'), spoiler: true },
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'std', label: L('α = 35°: Seitenverhältnis', 'α = 35°: ratio of sides'), values: {} },
     { id: 'beta', label: L('Bezugswinkel β: Rollen tauschen', 'Reference angle β: roles swap'), values: { ref: 'b', al: 35, c: 8 } },

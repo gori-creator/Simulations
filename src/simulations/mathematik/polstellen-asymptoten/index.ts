@@ -195,6 +195,7 @@ export default defineSimulation({
     { key: 'holes', label: L('Behebbare Lücken', 'Removable gaps'), spoiler: true },
     { key: 'asym', label: L('Asymptote', 'Asymptote'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'std', label: L('Eine Polstelle, y = 1', 'One pole, y = 1'), values: {} },
     { id: 'hole', label: L('Lücke statt Pol: Faktor kürzt sich', 'Gap instead of pole: factor cancels'), values: { zn: 2, z1: 1, z2: -1, pn: 1, p1: 1 } },

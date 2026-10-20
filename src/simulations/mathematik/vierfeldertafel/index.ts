@@ -200,6 +200,7 @@ export default defineSimulation({
     { key: 'add', label: L('Additionssatz bzw. Summenregel', 'Addition rule or sum rule'), spoiler: true },
     { key: 'cond', label: L('Bedingte Wahrscheinlichkeit', 'Conditional probability'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('A oder B: Additionssatz', 'A or B: addition rule'), values: {} },
     { id: 'both', label: L('A und B', 'A and B'), values: { ev: 'AB' } },

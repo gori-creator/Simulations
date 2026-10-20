@@ -132,6 +132,7 @@ export default defineSimulation({
     { key: 'pair', label: L('Beziehung', 'Relation'), spoiler: true },
     { key: 'prog', label: L('Fortschritt', 'Progress') },
   ],
+  resultsParam: 'vals',
   presets: [
     { id: 'start', label: L('Zwei Geraden schneiden sich', 'Two intersecting lines'), values: {} },
     { id: 'recht', label: L('Senkrechte Geraden', 'Perpendicular lines'), values: { w: 90, a: 0 } },

@@ -59,7 +59,7 @@ $$
 
 ### Aufgabe 1: Quadratische Pyramide
 
-Eine quadratische Pyramide hat die Grundkante $a = 4\,\text{cm}$ und die Höhe $h = 5\,\text{cm}$. Berechne Seitenhöhe, Volumen, Mantelfläche und Oberfläche. [Aufgabe laden](?a=4&h=5&_hide=1)
+Eine quadratische Pyramide hat die Grundkante $a = 4\,\text{cm}$ und die Höhe $h = 5\,\text{cm}$. Berechne Seitenhöhe, Volumen, Mantelfläche und Oberfläche. [Aufgabe laden](?a=4&h=5&calc=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -78,7 +78,7 @@ $O = 16\,\text{cm}^2 + 43{,}08\,\text{cm}^2 \approx 59{,}08\,\text{cm}^2$
 
 ### Aufgabe 2: Kegel
 
-Ein Kegel hat den Radius $r = 3\,\text{cm}$ und die Höhe $h = 4\,\text{cm}$. Bestimme $s$, $V$, $M$ und $O$. [Aufgabe laden](?body=kegel&_hide=1)
+Ein Kegel hat den Radius $r = 3\,\text{cm}$ und die Höhe $h = 4\,\text{cm}$. Bestimme $s$, $V$, $M$ und $O$. [Aufgabe laden](?body=kegel&calc=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -97,7 +97,7 @@ $O = 9\pi\,\text{cm}^2 + 15\pi\,\text{cm}^2 = 24\pi\,\text{cm}^2 \approx 75{,}40
 
 ### Aufgabe 3: Kugel
 
-Eine Kugel hat den Radius $r = 2{,}5\,\text{cm}$. Berechne Volumen und Oberfläche. Wie viel Prozent des umgebenden Zylinders (Höhe $2r$) füllt die Kugel? [Aufgabe laden](?body=kugel&r=2.5&_hide=1)
+Eine Kugel hat den Radius $r = 2{,}5\,\text{cm}$. Berechne Volumen und Oberfläche. Wie viel Prozent des umgebenden Zylinders (Höhe $2r$) füllt die Kugel? [Aufgabe laden](?body=kugel&r=2.5&calc=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

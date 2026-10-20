@@ -274,6 +274,7 @@ export default defineSimulation({
     { key: 'sizes', label: L('Seiten und Winkel', 'Sides and angles') },
     { key: 'score', label: L('Punktestand', 'Score') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Allgemeines Viereck', 'General quadrilateral'), values: {} },
     { id: 'drachen', label: L('Drachenviereck', 'Kite'), values: { ax: 9, ay: 1, bx: 14, by: 8, cx: 9, cy: 13, dx: 4, dy: 8, diag: true } },

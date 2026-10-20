@@ -62,6 +62,7 @@ export default defineSimulation({
     { key: 'r', label: L('Bahnradius', 'Orbit radius'), spoiler: true },
     { key: 'em', label: L('Spezifische Ladung aus der Messreihe', 'Specific charge from the series') },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'std', label: L('U = 200 V, I = 1,4 A', 'U = 200 V, I = 1.4 A'), values: {} },
     { id: 'b1', label: L('B ≈ 1 mT (I = 1,28 A)', 'B ≈ 1 mT (I = 1.28 A)'), values: { I: 1.28 } },

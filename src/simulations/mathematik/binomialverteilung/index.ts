@@ -158,6 +158,7 @@ export default defineSimulation({
     { key: 'sig', label: L('σ-Umgebungen', 'σ intervals'), spoiler: true },
     { key: 'exp', label: L('Experiment', 'Experiment') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('B(10; 0,5): höchstens 3 Treffer', 'B(10; 0.5): at most 3 successes'), values: {} },
     { id: 'eq', label: L('B(20; 0,3): genau 6 Treffer', 'B(20; 0.3): exactly 6 successes'), values: { n: 20, p: 0.3, ev: 'eq', k: 6 } },

@@ -203,6 +203,7 @@ export default defineSimulation({
     { key: 'mean', label: L('Mittelwert', 'Mean'), spoiler: true },
     { key: 'spread', label: L('Streuung', 'Spread'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Mathe-Probe der 7a', 'Maths test of class 7a'), values: {} },
     { id: 'outlier', label: L('Ausreißer: Mittelwert ≠ Median', 'Outlier: mean ≠ median'), values: { ctx: 'geld', out: true } },

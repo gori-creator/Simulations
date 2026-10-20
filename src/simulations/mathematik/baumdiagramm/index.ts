@@ -168,6 +168,7 @@ export default defineSimulation({
     { key: 'ev', label: L('Ereignis (2. Pfadregel)', 'Event (2nd path rule)'), spoiler: true },
     { key: 'sim', label: L('Simulation', 'Simulation') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('3 rote, 2 blaue, ohne Zurücklegen', '3 red, 2 blue, without replacement'), values: {} },
     { id: 'rep', label: L('Mit Zurücklegen', 'With replacement'), values: { rep: true } },

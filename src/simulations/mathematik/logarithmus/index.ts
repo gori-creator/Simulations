@@ -206,6 +206,7 @@ export default defineSimulation({
     { key: 'sol', label: L('Lösung', 'Solution'), spoiler: true },
     { key: 'check', label: L('Probe', 'Check'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('log₂ als Umkehrung von 2ˣ', 'log₂ as the inverse of 2ˣ'), values: {} },
     { id: 'half', label: L('Basis 0,5: beide Graphen fallend', 'Base 0.5: both graphs decreasing'), values: { b: 0.5, x: -2 } },

@@ -84,12 +84,13 @@ export default defineSimulation({
     { id: 'roll', label: L('Abrollen', 'Roll out'), primary: true, visibleIf: (v) => v.mode === 'oberflaeche' },
   ],
   readouts: [
-    { key: 'G', label: L('Grundfläche', 'Base area') },
-    { key: 'u', label: L('Umfang der Grundfläche', 'Perimeter of the base') },
+    { key: 'G', label: L('Grundfläche', 'Base area'), spoiler: true },
+    { key: 'u', label: L('Umfang der Grundfläche', 'Perimeter of the base'), spoiler: true },
     { key: 'V', label: L('Volumen', 'Volume'), spoiler: true },
     { key: 'O', label: L('Oberfläche', 'Surface area'), spoiler: true },
     { key: 'cmp', label: L('Vergleich mit dem Zylinder', 'Compared with the cylinder'), spoiler: true },
   ],
+  resultsParam: 'calc',
   presets: [
     { id: 'start', label: L('Sechseckprisma', 'Hexagonal prism'), values: {} },
     { id: 'triangle', label: L('Dreiecksprisma', 'Triangular prism'), values: { base: 'dreieck', g: 4, hg: 3, h: 5 } },
