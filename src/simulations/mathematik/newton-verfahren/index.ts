@@ -667,6 +667,8 @@ export default defineSimulation({
       if (last.next === null) return 'flat';
       if (last.status === 'far') return 'far';
       if (isCycle(xs)) return 'cycle';
+      if (outcome.kind === 'cycle' && steps.length >= 3) return 'cycle';
+      if (outcome.kind !== 'root' && steps.length >= 3) return 'far';
       if (outcome.kind === 'root') {
         if (fn.mult[outcome.index]! > 1) return 'double';
         if (outcome.index !== nearestRootIndex(fn, x0)) return 'jump';
@@ -848,7 +850,8 @@ export default defineSimulation({
       const sk = ease.inOutCubic(ph(u, PH.slide));
       const pnx = M.X(nx);
       // Steigungsdreieck (nur beim hervorgehobenen Schritt)
-      if (em > 0.01 && sk > 0) {
+      const huge = Math.abs(pyf - py0) > M.r.h * 1.5 || Math.abs(pnx - px) > M.r.w * 1.5;
+      if (em > 0.01 && sk > 0 && !huge) {
         g.save();
         g.globalAlpha *= em;
         const hx = lerp(px, pnx, sk);
@@ -918,12 +921,12 @@ export default defineSimulation({
       const wid = Math.abs(px - pnx);
       // Kathete f(x_i) neben dem Lot (außerhalb des Dreiecks)
       if (hgt > 34) {
-        const src = `\\c{f}{f(x_${i})}`;
+        const src = `\\c{f}{f(x_{${i}})}`;
         const ps = pillSize(src, sz);
         fpill(px + side * (ps.w / 2 + 6), (py0 + pyf) / 2, src, { size: sz, alpha: a, bounds: r });
       }
       // Kathete x_i − x_{i+1} im Dreieck an der x-Achse
-      const hsrc = `\\c{x}{x_${i} − x_${i + 1}}`;
+      const hsrc = `\\c{x}{x_{${i}} − x_{${i + 1}}}`;
       const hs = pillSize(hsrc, sz - 0.5);
       if (wid > hs.w + 14 && hgt > hs.h + 18) {
         const dy = (Math.sign(pyf - py0) || -1) * (hs.h / 2 + 6);
@@ -933,7 +936,7 @@ export default defineSimulation({
       if (hgt > 28 && !M.lupe) {
         const xb = s.x - (s.next - s.x) * 0.22;
         const yb = s.fx + s.dfx * (xb - s.x);
-        const src = `\\c{t}{${say(L('Steigung', 'slope'))} f′(x_${i})}`;
+        const src = `\\c{t}{${say(L('Steigung', 'slope'))} f′(x_{${i}})}`;
         const ps = pillSize(src, sz - 0.5);
         const lx = M.X(xb) + side * (ps.w / 2 + 4);
         const ly = M.Y(yb) - Math.sign(py0 - pyf || 1) * 14;
@@ -1085,7 +1088,8 @@ export default defineSimulation({
       if (V.kind === 'cycle' && count >= 2) {
         const last = V.xs.length - 1;
         const done = ph(prog(count - 1, now), [0.85, 1]);
-        drawCycle(V.xs[last]!, V.xs[last - 1]!, done * k.labels);
+        const cv = V.outcome.kind === 'cycle' && !isCycle(V.xs) ? V.outcome.values : [V.xs[last]!, V.xs[last - 1]!];
+        drawCycle(cv[0]!, cv[1]!, done * k.labels);
       }
       // Näherungswerte auf der x-Achse
       const axisY = plot.py(0);
@@ -1127,9 +1131,9 @@ export default defineSimulation({
         const newest = i === pts.length - 1 && i > 0;
         const fy = V.fn.f(x);
         const side = fy > 0 ? 1 : -1;
-        let src = `\\c{x}{x_${i}}`;
+        let src = `\\c{x}{x_{${i}}}`;
         if (newest && !hide()) {
-          const val = `\\c{x}{x_${i} ${eqs(x, 4)} ${N(x, 4)}}`;
+          const val = `\\c{x}{x_{${i}} ${eqs(x, 4)} ${N(x, 4)}}`;
           const w = pillSize(val, sz).w;
           if (!placed.some((q) => q.side === side && px + w / 2 > q.l - 4 && px - w / 2 < q.r + 4)) src = val;
         }
@@ -1159,7 +1163,7 @@ export default defineSimulation({
         g.globalAlpha *= a;
         arrowPx(ex + (left ? 34 : -34), axisY, ex, axisY, col.x(), 3, 11);
         g.restore();
-        fpill(ex + (left ? 44 : -44), axisY - 22, `\\c{x}{x_${i} ${hide() ? '= ?' : `≈ ${numSrc(x, 2)}`}}`, { align: left ? 'left' : 'right', size: fs(12, 11), alpha: a, border: withAlpha(col.x(), 0.55), bounds: r });
+        fpill(ex + (left ? 44 : -44), axisY - 22, `\\c{x}{x_{${i}} ${hide() ? '= ?' : `≈ ${numSrc(x, 2)}`}}`, { align: left ? 'left' : 'right', size: fs(12, 11), alpha: a, border: withAlpha(col.x(), 0.55), bounds: r });
         return;
       }
     }
@@ -1195,7 +1199,7 @@ export default defineSimulation({
       const H = Math.max(Math.abs(s.fx) * 1.7, Math.abs(s.dfx) * W * 0.25, 1e-15);
       const pxSpan = Math.abs(plot.px(hi) - plot.px(lo));
       const pyH = Math.abs(plot.py(s.fx) - plot.py(0));
-      const on = p.zoom && pxSpan < 40 && pyH < 40;
+      const on = p.zoom && pxSpan < 40 && pyH < 40 && span > 1e-11 * Math.max(1, Math.abs(s.x));
       return { c: (lo + hi) / 2, lw: Math.log10(W), yc: s.fx / 2, lh: Math.log10(H), on };
     }
 
@@ -1406,7 +1410,7 @@ export default defineSimulation({
         if (px < inner.x || px > inner.x + inner.w || done.some((q) => Math.abs(q - px) < 34)) continue;
         done.push(px);
         const side = V.fn.f(x) > 0 ? 1 : -1;
-        fpill(px, ay + side * 18, `\\c{x}{x_${i}}`, { size: sz, alpha: pointIn(i, now), bounds: inner, color: col.x() });
+        fpill(px, ay + side * 18, `\\c{x}{x_{${i}}}`, { size: sz, alpha: pointIn(i, now), bounds: inner, color: col.x() });
       }
       g.restore();
       // Vergrößerung
@@ -1494,7 +1498,7 @@ export default defineSimulation({
     function stepCard(V: Shown, now: number, k: Intro, compact: boolean): CardFn {
       return (R, measure) => {
         const m = meta();
-        const i = morph ? -1 : V.steps.length - 1;
+        const i = morph ? -1 : activeStep(V.steps.length, now);
         const rows: Row[] = [
           { src: `\\c{f}{f(x) = ${m.term}}    \\c{t}{f′(x) = ${m.dterm}}`, size: fs(13.5, 12.5), gap: 10 },
           { src: `\\c{x}{x_{n+1}} = \\c{x}{x_n} − \\f{\\c{f}{f(x_n)}}{\\c{t}{f′(x_n)}}`, size: fs(16, 14.5), weight: 650, gap: 10 },
@@ -1535,6 +1539,9 @@ export default defineSimulation({
       if (V.target === null) return '';
       const ds: number[] = [];
       for (let i = 0; i <= upto && i < V.xs.length; i++) ds.push(matchingDecimals(V.xs[i]!, V.target, 12));
+      // nach Erreichen der Höchstzahl (Rechengenauigkeit) nicht weiterzählen
+      const top = Math.max(...ds);
+      ds.length = ds.indexOf(top) + 1;
       // ab dort, wo die Stellenzahl nur noch wächst (Anfang „springt“ oft noch)
       let s0 = ds.length - 1;
       while (s0 > 0 && ds[s0 - 1]! < ds[s0]! && ds[s0 - 1]! >= 0) s0--;
@@ -1596,8 +1603,10 @@ export default defineSimulation({
               { src: `\\c{t}{f′(${last ? N(last.x, 4) : ''}) = 0}  ⇒  \\c{b}{${say(L('kein Schnittpunkt', 'no intercept'))}}`, size: sz },
             ], say(L('Die Tangente verläuft parallel zur x-Achse. Das Verfahren bricht ab – wähle einen anderen Startwert.', 'The tangent runs parallel to the x-axis. The method stops – choose another starting value.')));
         case 'cycle': {
-          const a = V.xs[V.xs.length - 2]!;
-          const b = V.xs[V.xs.length - 1]!;
+          const exact = isCycle(V.xs);
+          const vals = V.outcome.kind === 'cycle' && !exact ? V.outcome.values : [V.xs[V.xs.length - 1]!, V.xs[V.xs.length - 2]!];
+          const b = vals[0]!;
+          const a = vals[1]!;
           return (R, measure) =>
             mixedCard(R, measure, k, say(L('Zyklus', 'Cycle')), col.bad(), [
               { src: `\\c{x}{${s(N(b, 3))} → ${s(N(a, 3))} → ${s(N(b, 3))} → …}`, size: sz },
@@ -1605,7 +1614,7 @@ export default defineSimulation({
         }
         case 'far':
           return (R, measure) =>
-            mixedCard(R, measure, k, say(L('Die Folge läuft davon', 'The sequence runs away')), col.bad(), [], say(L('Der nächste Wert liegt extrem weit weg. Wähle einen Startwert näher an einer Nullstelle.', 'The next value is extremely far away. Choose a starting value closer to a zero.')));
+            mixedCard(R, measure, k, say(L('Kein Ziel in Sicht', 'No target in sight')), col.bad(), [], say(L('Die Werte springen weit umher oder laufen davon. Wähle einen Startwert näher an einer Nullstelle.', 'The values jump far around or run away. Choose a starting value closer to a zero.')));
       }
     }
 
@@ -1629,7 +1638,8 @@ export default defineSimulation({
       const noteFont = `500 ${fs(12, 11)}px ${theme.font}`;
       let note = '';
       const nIn = rowsIn(V, now);
-      if (V.target !== null && (V.kind === 'heron' || V.kind === 'quad' || V.kind === 'jump') && nIn >= 3) {
+      const lastD = V.target === null ? -1 : matchingDecimals(V.xs[nIn - 1]!, V.target, 12);
+      if (V.target !== null && (V.kind === 'heron' || V.kind === 'quad' || V.kind === 'jump') && nIn >= 3 && lastD >= 2) {
         note = hide()
           ? say(L('Fett: richtige Stellen. Ihre Anzahl verdoppelt sich ungefähr.', 'Bold: correct digits. Their number roughly doubles.'))
           : `${say(L('Richtige Stellen', 'Correct digits'))}: ${digitsChain(V, nIn - 1)}${say(L(' – sie verdoppeln sich ungefähr.', ' – they roughly double.'))}`;
@@ -1689,7 +1699,7 @@ export default defineSimulation({
       for (let i = 0; i < V.xs.length; i++) {
         const y = bodyTop + (i - off + 0.5) * rH;
         if (y < bodyTop - rH || y > bodyBot + rH) continue;
-        let a = clamp01(k.stagger * 8 - i) * (morph ? (i === 0 ? 1 : 0) : pointIn(i, now));
+        let a = (k.stagger >= 1 ? 1 : clamp01(k.stagger * 8 - (i - off))) * (morph ? (i === 0 ? 1 : 0) : pointIn(i, now));
         if (a <= 0.001) continue;
         a = ease.outCubic(a);
         g.save();
@@ -1708,7 +1718,8 @@ export default defineSimulation({
           g.restore();
           continue;
         }
-        const sv = Math.abs(x) >= 1e4 ? numTxt(x, 2) : fmt.fixed(x, dec);
+        const lead = Math.max(1, Math.floor(Math.log10(Math.abs(x) || 1)) + 1);
+        const sv = Math.abs(x) >= 1e6 ? numTxt(x, 2) : fmt.fixed(x, Math.max(1, dec + 1 - lead - (lead > 1 ? 1 : 0)));
         const sep = fmt.decimalSeparator;
         const md = V.target === null ? -1 : Math.min(dec, matchingDecimals(x, V.target, 12));
         const ci = sv.indexOf(sep);
@@ -1720,7 +1731,7 @@ export default defineSimulation({
         label(a0, c1, y, mono(800), col.r(), 'left');
         label(b0, c1 + wa, y, mono(500), withAlpha(theme.text, theme.dark ? 0.8 : 0.75), 'left');
         const fx = V.fn.f(x);
-        if (withF) label(numTxt(fx, 4), c2, y, `600 ${fs(12, 11)}px ${theme.font}`, col.f(), 'right');
+        if (withF) label(numTxt(fx, Math.abs(fx) >= 1000 ? 0 : Math.abs(fx) >= 100 ? 2 : 4), c2, y, `600 ${fs(12, 11)}px ${theme.font}`, col.f(), 'right');
         const err = V.target === null ? '–' : numTxt(Math.abs(x - V.target), 4);
         label(err, c3, y, `600 ${fs(12, 11)}px ${theme.font}`, theme.muted, 'right');
         g.restore();
@@ -1762,11 +1773,11 @@ export default defineSimulation({
       let hb = basin ? basin(C, true) : 0;
       // Platz: Rechnung, Erklärung, (Einzugsbereiche), Tabelle – notfalls kürzer bzw. ohne die hinteren Karten
       const free = () => C.h - hs - (hst ? hst + gap : 0) - (hb ? hb + gap : 0) - gap;
-      if (free() < minTable) hb = 0;
       if (free() < minTable) {
         shortNotes = true;
         hst = status(C, true);
       }
+      if (free() < minTable) hb = 0;
       if (free() < minTable && V.kind !== 'flat' && V.kind !== 'cycle' && V.kind !== 'far') hst = 0;
       const place = (fn: CardFn, R: Rect, i: number) => {
         g.save();
@@ -1834,7 +1845,7 @@ export default defineSimulation({
         jump: '',
         flat: say(L('Waagrechte Tangente – das Verfahren bricht ab.', 'Horizontal tangent – the method stops.')),
         cycle: say(L('Zyklus – die Folge springt hin und her.', 'Cycle – the sequence jumps back and forth.')),
-        far: say(L('Die Folge läuft davon.', 'The sequence runs away.')),
+        far: say(L('Die Folge springt umher oder läuft davon.', 'The sequence wanders about or runs away.')),
       };
       let state = txt[kind];
       if (o.kind === 'root' && (kind === 'heron' || kind === 'quad' || kind === 'double' || kind === 'jump' || kind === 'how')) {
@@ -1861,7 +1872,7 @@ export default defineSimulation({
       if (terminal()) return true;
       const xs = sequence(fnNow(), p.x0, kNow());
       const n = xs.length - 1;
-      if (n >= 1 && Math.abs(xs[n]! - xs[n - 1]!) <= 1e-15 * Math.max(1, Math.abs(xs[n]!))) return true;
+      if (n >= 1 && Math.abs(xs[n]! - xs[n - 1]!) <= 1e-11 * Math.max(1, Math.abs(xs[n]!))) return true;
       if (n >= 4 && isCycle(xs)) return true;
       return false;
     }
@@ -1984,10 +1995,24 @@ export default defineSimulation({
             if (reduced()) X0.jump(p.x0);
             else X0.glide(p.x0, 750, 0, now);
           } else if (x0Changed) {
-            if (source === 'sim' && dragging()) X0.follow(p.x0, 0.03);
-            else if (reduced()) X0.jump(p.x0);
-            else X0.glide(p.x0, 600, 0, now);
-            if (!kChanged) completeAll();
+            const big = Math.abs(p.x0 - prevX0) > 0.3;
+            if (source === 'sim' && dragging()) {
+              X0.follow(p.x0, 0.03);
+              if (!kChanged) completeAll();
+            } else if (reduced()) {
+              X0.jump(p.x0);
+              completeAll();
+            } else if (big && !kChanged) {
+              // großer Sprung (Antippen, Eingabe): alte Schritte blenden aus, neue entstehen nach dem Gleiten
+              const snap = snapshotSteps();
+              gone = { key: prevFn, steps: snap.steps, xs: snap.xs, from: 0, t0: now };
+              X0.glide(p.x0, 600, 0, now);
+              completeAll();
+              replayAll(now, 620);
+            } else {
+              X0.glide(p.x0, 400, 0, now);
+              if (!kChanged) completeAll();
+            }
             if (source === 'sim' && dragging() && autoplay) stopAuto();
           }
           if (kChanged) {
