@@ -333,7 +333,8 @@ export default defineSimulation({
     }
     const xRangeOf = (): [number, number] => {
       const d = dist();
-      return sit() === 'abs' ? [-6, 6] : [d.mu - 4 * d.s, d.mu + 4 * d.s];
+      // allgemein: fester Ausschnitt −6 … 6 (Form der Glocke vergleichbar), aber μ ± 4σ immer ganz im Bild
+      return sit() === 'abs' ? [Math.min(-6, d.mu - 4 * d.s), Math.max(6, d.mu + 4 * d.s)] : [d.mu - 4 * d.s, d.mu + 4 * d.s];
     };
     /** Wirksame Grenzen (−∞ / +∞ bei einseitigen Ereignissen, a = b bei X = a). */
     function boundsOf(a: number, b: number): { lo: number; hi: number } {
