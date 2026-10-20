@@ -131,6 +131,49 @@ describe('Termbaum: Parser', () => {
   });
 });
 
+describe('Termbaum: Prüfrunde (Rechenreihenfolge, Termart, Sonderfälle)', () => {
+  it('rechnet die Standardbeispiele richtig', () => {
+    expect(valueOf('2 + 3 · 4')).toBe('14');
+    expect(valueOf('(2 + 3) · 4')).toBe('20');
+    expect(valueOf('20 − 8 − 2')).toBe('10');
+    expect(valueOf('24 : 4 : 2')).toBe('3');
+    expect(valueOf('24/4/2')).toBe('3');
+    expect(valueOf('2 · 3²')).toBe('18');
+    expect(valueOf('−3^2')).toBe('−9');
+    expect(valueOf('(−3)^2')).toBe('9');
+    expect(valueOf('−3² + (−3)²')).toBe('0');
+    expect(valueOf('2 · [3 + (4 − 1)] − 12 : (2 + 4) + 5²')).toBe('35');
+  });
+
+  it('benennt die Termart nach der zuletzt ausgeführten Rechnung', () => {
+    expect(kindOf(parse('20 − 8 − 2').root)).toBe('difference');
+    expect(kindOf(parse('24 : 4 : 2').root)).toBe('quotient');
+    expect(kindOf(parse('2 · 3²').root)).toBe('product');
+    expect(kindOf(parse('2 + 3 · 4').root)).toBe('sum');
+    expect(kindOf(parse('2 · [3 + (4 − 1)] − 12 : (2 + 4) + 5²').root)).toBe('sum');
+  });
+
+  it('rechnet gleichrangige Rechnungen von links nach rechts', () => {
+    const term = parse('24 : 4 : 2');
+    const steps = evaluationOrder(term).map((s) => termText(term.nodes[s.id]!, 'de'));
+    expect(steps).toEqual(['24 : 4', '24 : 4 : 2']);
+  });
+
+  it('fängt Division durch 0 und 0 hoch negativ ab', () => {
+    expect(valueOf('7 : 0')).toBe('divZero');
+    expect(valueOf('0^(−1)')).toBe('divZero');
+    expect(valueOf('x : (x − 2)', { x: 2 })).toBe('divZero');
+    expect(valueOf('0 : 5')).toBe('0');
+  });
+
+  it('setzt Variablen ein (auch negativ und als Dezimalzahl)', () => {
+    expect(valueOf('2x² − 3x + 1', { x: -2 })).toBe('15');
+    expect(valueOf('2x² − 3x + 1', { x: 0.5 })).toBe('0');
+    expect(valueOf('−x²', { x: 3 })).toBe('−9');
+    expect(valueOf('(−x)²', { x: 3 })).toBe('9');
+  });
+});
+
 describe('Termbaum: Rechenreihenfolge', () => {
   const order = (src: string) => {
     const term = parse(src);
