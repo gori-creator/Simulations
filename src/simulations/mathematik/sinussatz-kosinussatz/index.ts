@@ -297,6 +297,8 @@ export default defineSimulation({
     const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
     const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
     const M = '\\t{m}';
+    /** Große Zahlen mit schmalem Leerzeichen gruppieren (377 809). */
+    const grp = (v: number) => N(v, 0).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f');
     /** Im Modus Sinus-/Kosinussatz bei „Ergebnisse zeigen“ aus: nur die gegebenen Stücke. */
     const knownDrag = (name: string) => p.show || (mode() === 'cos' ? ['a', 'b', 'γ'] : ['a', 'α', 'β']).includes(name);
 
@@ -362,7 +364,9 @@ export default defineSimulation({
         const cw = Math.round(clamp(w * 0.37, 236, 380));
         return { main: { x: 0, y: 0, w: w - cw - 10, h }, col: { x: w - cw, y: 0, w: cw, h }, wide: true };
       }
-      const mh = Math.round(clamp(h * 0.47, 300, w * 1.08));
+      const m = mode();
+      const cap = m === 'app' ? 1.4 : m === 'cos' ? 1.18 : m === 'solve' ? 1.2 : 1.08;
+      const mh = Math.round(clamp(h * (m === 'app' ? 0.6 : 0.47), 300, w * cap));
       return { main: { x: 0, y: 0, w, h: mh }, col: { x: 0, y: mh + 10, w, h: h - mh - 10 }, wide: false };
     }
 
@@ -377,7 +381,22 @@ export default defineSimulation({
         s -= 0.5;
         box = formula(g, src, fstyle(s, color, weight));
       }
-      return box;
+      if (box.w <= maxW || maxW <= 0) return box;
+      // notfalls gleichmäßig verkleinern, damit nichts über den Rand ragt
+      const inner = box;
+      const f = maxW / inner.w;
+      return {
+        w: maxW,
+        asc: inner.asc * f,
+        desc: inner.desc * f,
+        draw: (g2, x, y) => {
+          g2.save();
+          g2.translate(x, y);
+          g2.scale(f, f);
+          inner.draw(g2, 0, 0);
+          g2.restore();
+        },
+      };
     }
 
     /* ---------- Zeichenhilfen ---------- */
@@ -746,7 +765,7 @@ export default defineSimulation({
      * Winkelbogen mit Beschriftung an der Ecke i eines Dreiecks (Pixel): Pill auf der
      * Winkelhalbierenden innen, bei zu wenig Platz außen. Gibt zurück, ob die Pill außen liegt.
      */
-    function cornerAngle(pts: [Px, Px, Px], i: number, color: string, emph: number, src: string | null, alpha: number, R: Rect, rMax = fs(38, 30)): boolean {
+    function cornerAngle(pts: [Px, Px, Px], i: number, color: string, emph: number, src: string | null, alpha: number, R: Rect, rMax = fs(38, 30), force = false): boolean {
       const q = pts[i]!;
       const p1 = pts[(i + 1) % 3]!;
       const p2 = pts[(i + 2) % 3]!;
@@ -762,7 +781,7 @@ export default defineSimulation({
       let ext = (Math.abs(dx) * ps.w) / 2 + (Math.abs(dy) * ps.h) / 2;
       let d = r + 5 + ext;
       const room = distToLine(q, p1, p2);
-      const outside = d + ext > room * 0.95;
+      const outside = force || d + ext > room * 0.95;
       if (outside) {
         dx = -dx;
         dy = -dy;
@@ -1221,12 +1240,13 @@ export default defineSimulation({
             const qp = QP(q);
             const w1 = Math.hypot(qp[1]![0] - qp[0]![0], qp[1]![1] - qp[0]![1]);
             const h1 = Math.hypot(qp[3]![0] - qp[0]![0], qp[3]![1] - qp[0]![1]);
-            if (Math.min(w1, h1) < 16 || w1 * h1 < 2400) continue;
-            const cx0 = (qp[0]![0] + qp[2]![0]) / 2;
-            const cy0 = (qp[0]![1] + qp[2]![1]) / 2;
-            const v = a * b * cosD(ga);
-            const src = `\\c{h}{${q.area < 0 ? '+ ' : ''}ab · cos γ${show ? ` ${eq(v, 1)} ${N(v, 1)}` : ''}}`;
-            fpill(cx0, cy0, src, { size: fs(11.5, 11), maxW: Math.max(60, Math.max(w1, h1) - 6), border: withAlpha(col.h(), 0.6) });
+            if (Math.max(w1, h1) < 30 || w1 < 3) continue;
+            const ex: Px = [(qp[2]![0] + qp[3]![0]) / 2, (qp[2]![1] + qp[3]![1]) / 2];
+            const nl = h1 || 1;
+            const n: Px = [(qp[3]![0] - qp[0]![0]) / nl, (qp[3]![1] - qp[0]![1]) / nl];
+            const v = Math.abs(a * b * cosD(ga));
+            const src = q.area < 0 ? `\\c{h}{+ |ab · cos γ|${show ? ` ${eq(v, 1)} ${N(v, 1)}` : ''}}` : `\\c{h}{− ab · cos γ${show ? ` ${eq(v, 1)} ${N(v, 1)}` : ''}}`;
+            sidePill(ex[0], ex[1], n, 5, src, { size: fs(11.5, 11), border: withAlpha(col.h(), 0.6), bounds: R });
           }
           g.restore();
         }
@@ -1243,7 +1263,7 @@ export default defineSimulation({
           // nicht auf das Korrekturrechteck setzen: im Quadrat a bzw. b zur Ecke B bzw. A hin verschieben
           let ox = 0;
           let oy = 0;
-          if (i < 2 && wh > 0.3) {
+          if (i < 2 && wh > 0.3 && (i === 0 ? fig.corrA.area : fig.corrB.area) > 0) {
             const far = i === 0 ? sq[1]! : sq[0]!;
             const near = i === 0 ? sq[0]! : sq[1]!;
             ox = (far[0] - near[0]) * 0.22;
@@ -1439,7 +1459,7 @@ export default defineSimulation({
             const key = angKey[i]!;
             const em = given(key) ? 1 : 0.25;
             const src = second && i === 0 ? null : valSrc(i, angs[i]!, true, i > 0 ? idxSuffix : '');
-            outside[i] = cornerAngle(pts, i, sideCol[i]!(), em, src, lab, R, fs(34, 28));
+            outside[i] = cornerAngle(pts, i, sideCol[i]!(), em, src, lab, R, fs(34, 28), second);
           }
           for (let i = 0; i < 3; i++) {
             if (second && (i === 2 || i === 0)) continue;
@@ -1449,14 +1469,14 @@ export default defineSimulation({
             }
             sideLabel(pts, i, valSrc(i, vals[i]!, false, i === 1 ? idxSuffix : ''), lab, R, given(sideKey[i]!) ? withAlpha(sideCol[i]!(), 0.6) : undefined);
           }
-          if (!second) cornerLabels(pts, VERT, outside, k.panel);
-          else label(pc, 'C₂', theme.text, [pc[0] - pb[0], pc[1] - pb[1]], k.panel);
+          if (!second) cornerLabels(pts, two ? ['A', 'B', 'C₁'] : VERT, outside, k.panel);
+          else label(pc, 'C₂', theme.text, [pb[0] - pc[0], -Math.abs(pb[0] - pc[0]) * 0.8 - 1], k.panel);
           dot(pa[0], pa[1], theme.text, fs(4.5, 4), k.panel);
           dot(pb[0], pb[1], theme.text, fs(4.5, 4), k.panel);
           dot(pc[0], pc[1], second ? col.r() : theme.text, fs(4.5, 4), k.panel);
         });
         if (two) {
-          fpill(R.x + R.w - 12, R.y + R.h - 28, `\\c{r}{\\t{${say(L('Zwei Dreiecke erfüllen die Angaben', 'Two triangles fit the data'))}}}`, { align: 'right', size: fs(12.5, 11.5), border: withAlpha(col.r(), 0.6), alpha: lab, maxW: R.w - 40 });
+          fpill(R.x + R.w - 12, R.y + fs(76, 84), `\\c{r}{\\t{${say(L('Zwei Dreiecke erfüllen die Angaben', 'Two triangles fit the data'))}}}`, { align: 'right', size: fs(12.5, 11.5), border: withAlpha(col.r(), 0.6), alpha: lab, maxW: R.w - 40 });
         }
       } else {
         // kein Dreieck: zeigen, warum
@@ -1684,7 +1704,7 @@ export default defineSimulation({
         g.stroke();
       }
       // Baum am anderen Ufer (Krone von oben)
-      const cr = fs(15, 13);
+      const cr = fs(20, 16);
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.35)';
       g.shadowBlur = 8;
@@ -2133,9 +2153,9 @@ export default defineSimulation({
         const obt = w[0] > 90 ? 'α' : w[1] > 90 ? 'β' : '';
         const rows: Row[] = [
           { src: `\\c{m}{① \\t{${say(L('Dreieck', 'Triangle'))}} AFC:}  sin \\c{a}{α} = \\f{\\c{h}{h_c}}{\\c{b}{b}}  ⇒  \\c{h}{h_c} = \\c{b}{b} · sin \\c{a}{α}`, at: at(0), gap: 4 },
-          { src: show ? `\\c{m}{= ${N(s[1])} · ${N(sa, 3)} ${eq(hc)} ${N(hc)} cm}` : '', size: ms, at: at(0), gap: 8 },
+          { src: show ? `\\c{m}{= ${N(s[1])} · ${N(sa, 3)} ≈ ${N(hc)} cm}` : '', size: ms, at: at(0), gap: 8 },
           { src: `\\c{m}{② \\t{${say(L('Dreieck', 'Triangle'))}} BFC:}  sin \\c{b}{β} = \\f{\\c{h}{h_c}}{\\c{a}{a}}  ⇒  \\c{h}{h_c} = \\c{a}{a} · sin \\c{b}{β}`, at: at(1), gap: 4 },
-          { src: show ? `\\c{m}{= ${N(s[0])} · ${N(sb, 3)} ${eq(s[0] * sb)} ${N(s[0] * sb)} cm}` : '', size: ms, at: at(1), gap: 8 },
+          { src: show ? `\\c{m}{= ${N(s[0])} · ${N(sb, 3)} ≈ ${N(s[0] * sb)} cm}` : '', size: ms, at: at(1), gap: 8 },
           { src: `\\c{m}{③} \\c{b}{b} · sin \\c{a}{α} = \\c{a}{a} · sin \\c{b}{β}`, at: at(2), gap: 8 },
           { src: `\\c{m}{④ | : (sin α · sin β)}   \\f{\\c{a}{a}}{sin \\c{a}{α}} = \\f{\\c{b}{b}}{sin \\c{b}{β}}`, at: at(3), gap: 8 },
           { src: `\\c{m}{⑤ \\t{${say(L('Mit der Höhe', 'With the altitude'))}} h_a: \\f{b}{sin β} = \\f{c}{sin γ}}`, size: ms, color: th().muted, at: at(4), gap: obt ? 6 : 4 },
@@ -2204,7 +2224,14 @@ export default defineSimulation({
         const barH = fs(14, 12);
         const gapR = fs(10, 8);
         const capSize = fs(12, 11);
-        const h = 38 + 3 * (barH + gapR) + capSize * 1.5 + 14;
+        const right0 = Math.abs(ga - 90) < 0.25;
+        const msg = right0
+          ? say(L('γ = 90°: keine Korrektur – Satz des Pythagoras.', 'γ = 90°: no correction – Pythagoras’ theorem.'))
+          : ga < 90
+            ? say(L('γ < 90°: c² ist kleiner als a² + b².', 'γ < 90°: c² is less than a² + b².'))
+            : say(L('γ > 90°: cos γ < 0, c² ist größer als a² + b².', 'γ > 90°: cos γ < 0, c² is greater than a² + b².'));
+        const lines = wrapText(msg, R.w - 2 * pad, `700 ${capSize}px ${theme.font}`);
+        const h = 38 + 3 * (barH + gapR) + lines.length * capSize * 1.35 + 12;
         if (measure) return h;
         card({ ...R, h }, col.h());
         cardTitle(R, say(L('Flächenbilanz', 'Balance of areas')), col.h(), '\\c{h}{cm²}');
@@ -2277,19 +2304,12 @@ export default defineSimulation({
         g.stroke();
         g.restore();
         y += barH + gapR + 2;
-        const right = Math.abs(ga - 90) < 0.25;
-        const msg = right
-          ? say(L('γ = 90°: keine Korrektur – Satz des Pythagoras.', 'γ = 90°: no correction – Pythagoras’ theorem.'))
-          : ga < 90
-            ? say(L('γ < 90°: c² ist kleiner als a² + b².', 'γ < 90°: c² is less than a² + b².'))
-            : say(L('γ > 90°: cos γ < 0, c² ist größer als a² + b².', 'γ > 90°: cos γ < 0, c² is greater than a² + b².'));
         g.save();
         g.font = `700 ${capSize}px ${theme.font}`;
-        g.fillStyle = right ? col.c() : theme.text;
+        g.fillStyle = right0 ? col.c() : theme.text;
         g.textAlign = 'left';
         g.textBaseline = 'middle';
-        const lines = wrapText(msg, R.w - 2 * pad, g.font);
-        g.fillText(lines[0] ?? '', R.x + pad, y + capSize * 0.7);
+        lines.forEach((ln, i) => g.fillText(ln, R.x + pad, y + capSize * 0.7 + i * capSize * 1.35));
         g.restore();
         return h;
       };
@@ -2338,8 +2358,11 @@ export default defineSimulation({
             g.stroke();
             g.restore();
           }
-          const src = `\\b{${say(CASE_NAME[c])}} ⇒ \\c{${law === 'sin' ? 'r' : 'h'}}{\\t{${law === 'sin' ? say(L('Sinussatz', 'law of sines')) : say(L('Kosinussatz', 'law of cosines'))}}} \\c{m}{\\t{(${say(why[c])})}}`;
-          const box = fit(src, R.w - 2 * pad, rs, on ? theme.text : withAlpha(theme.text, 0.6) as string);
+          const core = `\\b{${say(CASE_NAME[c])}} ⇒ \\c{${law === 'sin' ? 'r' : 'h'}}{\\t{${law === 'sin' ? say(L('Sinussatz', 'law of sines')) : say(L('Kosinussatz', 'law of cosines'))}}}`;
+          const full = `${core} \\c{m}{\\t{(${say(why[c])})}}`;
+          // Zusatz nur, wenn er in lesbarer Größe passt
+          const src = formula(g, full, fstyle(11, theme.text)).w <= R.w - 2 * pad ? full : core;
+          const box = fit(src, R.w - 2 * pad, rs, theme.text);
           g.save();
           g.globalAlpha *= on ? 1 : 0.62;
           box.draw(g, R.x + pad, y + (rh - 3) / 2 + (box.asc - box.desc) / 2);
@@ -2384,32 +2407,39 @@ export default defineSimulation({
         if (kc === 'sss') {
           const cg = (G.a * G.a + G.b * G.b - G.c * G.c) / (2 * G.a * G.b);
           const ca = (G.b * G.b + G.c * G.c - G.a * G.a) / (2 * G.b * G.c);
-          add(`① cos \\c{c}{γ} = \\f{\\c{a}{a}² + \\c{b}{b}² − \\c{c}{c}²}{2\\c{a}{a}\\c{b}{b}} = \\f{${n(G.a * G.a)} + ${n(G.b * G.b)} − ${n(G.c * G.c)}}{2 · ${n(G.a)} · ${n(G.b)}} ${eq(cg, 4)} ${N(cg, 4)}`, 0, { gap: 8 });
+          add(`① cos \\c{c}{γ} = \\f{\\c{a}{a}² + \\c{b}{b}² − \\c{c}{c}²}{2\\c{a}{a}\\c{b}{b}}`, 0, { gap: 4 });
+          add(`= \\f{${n(G.a * G.a)} + ${n(G.b * G.b)} − ${n(G.c * G.c)}}{2 · ${n(G.a)} · ${n(G.b)}} ${eq(cg, 4)} \\b{${N(cg, 4)}}`, 0, { gap: 8 });
           add(`② \\c{c}{γ} = cos^{−1}(${N(cg, 4)}) ${eq(s1.ga)} \\c{c}{\\b{${N(s1.ga)}°}}`, 1, { gap: 8 });
-          add(`③ cos \\c{a}{α} = \\f{\\c{b}{b}² + \\c{c}{c}² − \\c{a}{a}²}{2\\c{b}{b}\\c{c}{c}} ${eq(ca, 4)} ${N(ca, 4)}  ⇒  \\c{a}{α} ${eq(s1.al)} \\c{a}{\\b{${N(s1.al)}°}}`, 2, { gap: 8 });
+          add(`③ cos \\c{a}{α} = \\f{\\c{b}{b}² + \\c{c}{c}² − \\c{a}{a}²}{2\\c{b}{b}\\c{c}{c}} ${eq(ca, 4)} ${N(ca, 4)}`, 2, { gap: 4 });
+          add(`\\c{a}{α} = cos^{−1}(${N(ca, 4)}) ${eq(s1.al)} \\c{a}{\\b{${N(s1.al)}°}}`, 2, { gap: 8 });
           add(`④ \\c{b}{β} = 180° − α − γ ${eq(s1.be)} \\c{b}{\\b{${N(s1.be)}°}}`, 3);
         } else if (kc === 'sws') {
           add(`① \\c{c}{c}² = \\c{a}{a}² + \\c{b}{b}² − 2\\c{a}{a}\\c{b}{b} · cos \\c{c}{γ}`, 0, { gap: 4 });
           add(`\\c{m}{= ${n(G.a * G.a)} + ${n(G.b * G.b)} − 2 · ${n(G.a)} · ${n(G.b)} · cos ${N(G.ga, 1)}° ${eq(s1.c * s1.c)} ${n(s1.c * s1.c)}}`, 0, { size: ms, gap: 8 });
           add(`② \\c{c}{c} = \\r{${n(s1.c * s1.c)}} ${eq(s1.c, 3)} \\c{c}{\\b{${N(s1.c, 3)} cm}}`, 1, { gap: 8 });
           const ca = (G.b * G.b + s1.c * s1.c - G.a * G.a) / (2 * G.b * s1.c);
-          add(`③ cos \\c{a}{α} = \\f{\\c{b}{b}² + \\c{c}{c}² − \\c{a}{a}²}{2\\c{b}{b}\\c{c}{c}} ${eq(ca, 4)} ${N(ca, 4)}  ⇒  \\c{a}{α} ${eq(s1.al)} \\c{a}{\\b{${N(s1.al)}°}}`, 2, { gap: 8 });
+          add(`③ cos \\c{a}{α} = \\f{\\c{b}{b}² + \\c{c}{c}² − \\c{a}{a}²}{2\\c{b}{b}\\c{c}{c}} ${eq(ca, 4)} ${N(ca, 4)}`, 2, { gap: 4 });
+          add(`\\c{a}{α} = cos^{−1}(${N(ca, 4)}) ${eq(s1.al)} \\c{a}{\\b{${N(s1.al)}°}}`, 2, { gap: 8 });
           add(`④ \\c{b}{β} = 180° − α − γ ${eq(s1.be)} \\c{b}{\\b{${N(s1.be)}°}}`, 3);
         } else if (kc === 'wsw') {
           add(`① \\c{c}{γ} = 180° − ${N(G.al, 1)}° − ${N(G.be, 1)}° = \\c{c}{\\b{${N(s1.ga, 1)}°}}`, 0, { gap: 8 });
-          add(`② \\f{\\c{a}{a}}{sin \\c{a}{α}} = \\f{\\c{c}{c}}{sin \\c{c}{γ}}  ⇒  \\c{a}{a} = \\f{${n(G.c)} · sin ${N(G.al, 1)}°}{sin ${N(s1.ga, 1)}°} ${eq(s1.a, 3)} \\c{a}{\\b{${N(s1.a, 3)} cm}}`, 1, { gap: 8 });
+          add(`② \\f{\\c{a}{a}}{sin \\c{a}{α}} = \\f{\\c{c}{c}}{sin \\c{c}{γ}}`, 1, { gap: 4 });
+          add(`\\c{a}{a} = \\f{${n(G.c)} · sin ${N(G.al, 1)}°}{sin ${N(s1.ga, 1)}°} ${eq(s1.a, 3)} \\c{a}{\\b{${N(s1.a, 3)} cm}}`, 1, { gap: 8 });
           add(`③ \\c{b}{b} = \\f{${n(G.c)} · sin ${N(G.be, 1)}°}{sin ${N(s1.ga, 1)}°} ${eq(s1.b, 3)} \\c{b}{\\b{${N(s1.b, 3)} cm}}`, 2, { gap: 8 });
           add(`\\c{m}{\\t{${say(L('Probe', 'Check'))}}: 2r = \\f{c}{sin γ} ${eq(G.c / sinD(s1.ga), 3)} ${N(G.c / sinD(s1.ga), 3)} cm}`, 2, { size: ms });
         } else {
           const sg = res.sinG ?? 0;
-          add(`① \\f{sin \\c{c}{γ}}{\\c{c}{c}} = \\f{sin \\c{a}{α}}{\\c{a}{a}}  ⇒  sin \\c{c}{γ} = \\f{${n(G.c)} · sin ${N(G.al, 1)}°}{${n(G.a)}} ${eq(sg, 4)} ${N(sg, 4)}`, 0, { gap: 8 });
+          add(`① \\f{sin \\c{c}{γ}}{\\c{c}{c}} = \\f{sin \\c{a}{α}}{\\c{a}{a}}`, 0, { gap: 4 });
+          add(`sin \\c{c}{γ} = \\f{${n(G.c)} · sin ${N(G.al, 1)}°}{${n(G.a)}} ${eq(sg, 4)} \\b{${N(sg, 4)}}`, 0, { gap: 8 });
           const g1 = res.tris[0]!.ga;
           if (res.tris.length === 2) {
-            add(`② \\c{c}{γ_1} = sin^{−1}(${N(sg, 4)}) ${eq(g1)} ${N(g1)}°,  \\c{r}{γ_2} = 180° − γ_1 ${eq(180 - g1)} ${N(180 - g1)}°`, 1, { gap: 8 });
+            add(`② \\c{c}{γ_1} = sin^{−1}(${N(sg, 4)}) ${eq(g1)} \\b{${N(g1)}°}`, 1, { gap: 4 });
+            add(`\\c{r}{γ_2} = 180° − γ_1 ${eq(180 - g1)} \\b{${N(180 - g1)}°}`, 1, { gap: 8 });
             add(`③ α + γ_2 ${eq(G.al + 180 - g1)} ${N(G.al + 180 - g1)}° < 180° ⇒ \\c{r}{\\b{\\t{${say(L('zwei Dreiecke', 'two triangles'))}}}}`, 2, { gap: 8 });
             const t2 = res.tris[1]!;
             add(`④ \\c{b}{β_1} ${eq(s1.be)} ${N(s1.be)}°,  \\c{b}{β_2} ${eq(t2.be)} ${N(t2.be)}°`, 3, { gap: 8 });
-            add(`⑤ \\c{b}{b} = \\f{a · sin β}{sin α}:  \\c{b}{b_1} ${eq(s1.b)} \\b{${N(s1.b)} cm},  \\c{b}{b_2} ${eq(t2.b)} \\b{${N(t2.b)} cm}`, 4);
+            add(`⑤ \\c{b}{b} = \\f{a · sin β}{sin α}`, 4, { gap: 4 });
+            add(`\\c{b}{b_1} ${eq(s1.b)} \\b{${N(s1.b)} cm},  \\c{b}{b_2} ${eq(t2.b)} \\b{${N(t2.b)} cm}`, 4);
           } else if (sg >= 1 - 1e-9) {
             add(`② sin \\c{c}{γ} = 1  ⇒  \\c{c}{γ = 90°} \\c{m}{(\\t{${say(L('genau eine Lösung', 'exactly one solution'))}})}`, 1, { gap: 8 });
             add(`③ \\c{m}{\\t{${say(L('Der Kreis um B berührt den Schenkel nur.', 'The circle about B only touches the arm.'))}}}`, 2, { size: ms, gap: 8 });
@@ -2437,7 +2467,8 @@ export default defineSimulation({
           const st = (i: number) => storyK(now, i, 5);
           const rows: Row[] = [
             { src: `① \\c{c}{γ} = 180° − ${p.p1}° − ${p.p2}° = \\c{c}{\\b{${N(v.tau, 0)}°}}`, at: st(3), gap: 8 },
-            { src: `② \\f{|AT|}{sin \\c{b}{β}} = \\f{\\c{c}{s}}{sin \\c{c}{γ}}  ⇒  \\c{b}{|AT|} = \\f{${m(p.s, 0)} · sin ${p.p2}°}{sin ${N(v.tau, 0)}°} ${show ? `${eq(v.at, 1)} \\c{b}{\\b{${m(v.at)}}}` : '= ?'}`, at: st(4), gap: 8 },
+            { src: `② \\f{\\c{b}{|AT|}}{sin \\c{b}{β}} = \\f{\\c{c}{s}}{sin \\c{c}{γ}}`, at: st(4), gap: 4 },
+            { src: `\\c{b}{|AT|} = \\f{${m(p.s, 0)} · sin ${p.p2}°}{sin ${N(v.tau, 0)}°} ${show ? `${eq(v.at, 1)} \\c{b}{\\b{${m(v.at)}}}` : '= ?'}`, at: st(4), gap: 8 },
             { src: `③ \\c{a}{|BT|} = \\f{${m(p.s, 0)} · sin ${p.p1}°}{sin ${N(v.tau, 0)}°} ${show ? `${eq(v.bt, 1)} \\c{a}{\\b{${m(v.bt)}}}` : '= ?'}`, at: st(4), gap: 8 },
             { src: `④ \\c{h}{d} = |AT| · sin \\c{a}{α} ${show ? `${eq(v.width, 1)} \\c{h}{\\b{${m(v.width)}}}` : '= ?'}`, at: st(4), gap: 4 },
           ];
@@ -2448,7 +2479,7 @@ export default defineSimulation({
         const rows: Row[] = [
           { src: '\\c{c}{c}² = \\c{a}{a}² + \\c{b}{b}² − 2\\c{a}{a}\\c{b}{b} · cos \\c{c}{γ}', at: st(2), gap: 6, size: fs(14, 13) },
           { src: `\\c{c}{c}² = ${N(p.d2, 0)}² + ${N(p.d1, 0)}² − 2 · ${N(p.d2, 0)} · ${N(p.d1, 0)} · cos ${p.w}°`, at: st(3), gap: 6, size: fs(12.5, 11.5) },
-          { src: show ? `\\c{c}{c}² ${eq(c * c, 0)} ${N(c * c, 0)} \\t{m²}` : '\\c{c}{c}² = ?', at: st(3), gap: 6 },
+          { src: show ? `\\c{c}{c}² ${eq(c * c, 0)} ${grp(c * c)} \\t{m²}` : '\\c{c}{c}² = ?', at: st(3), gap: 6 },
           { src: show ? `\\c{c}{c} ${eq(c, 1)} \\c{c}{\\b{${m(c)}}}` : '\\c{c}{c} = ?', at: st(3) },
         ];
         return formulaCard(R, measure, k, say(L('Rechnung mit dem Kosinussatz', 'Calculation with the law of cosines')), col.h(), rows);
@@ -2466,7 +2497,7 @@ export default defineSimulation({
           ]);
         }
         return textCard(R, measure, k, say(L('Quer über den See', 'Across the lake')), col.c(), [
-          { s: say(L('Mit dem Maßband kommt man nicht über den See. Von C aus lassen sich aber beide Orte anpeilen und die Entfernungen am Ufer entlang messen.', 'You cannot take a tape measure across the lake. From C, however, both places can be sighted and the distances measured along the shore.')) },
+          { s: say(L('Mit dem Maßband kommt man nicht über den See. Von C aus lassen sich aber beide Orte anpeilen und die Entfernungen über Land messen.', 'You cannot take a tape measure across the lake. From C, however, both places can be sighted and the distances measured over land.')) },
           { s: say(L('Zwei Seiten und der eingeschlossene Winkel (SWS) – ein Fall für den Kosinussatz.', 'Two sides and the included angle (SAS) – a case for the law of cosines.')), color: th().muted },
           { s: say(L('Ziehe die Orte A und B.', 'Drag the places A and B.')), color: th().muted },
         ]);

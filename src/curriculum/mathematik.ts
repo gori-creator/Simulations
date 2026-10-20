@@ -530,14 +530,14 @@ export const mathematik: Subject = {
             slug: L('sinussatz-kosinussatz', 'law-of-sines-cosines'),
             title: L('Sinussatz und Kosinussatz', 'Law of sines and law of cosines'),
             summary: L(
-              'Ein Dreieck mit ziehbaren Ecken: Beim Sinussatz sind die drei Quotienten Seite : Sinus des Gegenwinkels gleich dem Umkreisdurchmesser, beim Kosinussatz zeigen Balken, wie c² von a² + b² abweicht. Beweisidee jeweils über eine Höhe.',
-              'A triangle with draggable vertices: for the law of sines the three quotients side : sine of the opposite angle equal the circumcircle diameter, for the law of cosines bars show how c² differs from a² + b². Proof idea via an altitude.',
+              'Allgemeines Dreieck mit ziehbaren Ecken: Seite : Sinus des Gegenwinkels ist immer der Umkreisdurchmesser, der Beweis über die Höhe läuft Zeile für Zeile ab; beim Kosinussatz zeigen Quadrate an den Seiten den Korrekturterm 2ab · cos γ. Dazu ein Löser „Welcher Satz passt?“ (SSS, SWS, WSW, SSW mit zwei Lösungen) und zwei Vermessungen.',
+              'General triangle with draggable vertices: side : sine of the opposite angle always equals the circumcircle diameter, and the proof via the altitude plays line by line; for the law of cosines, squares on the sides show the correction 2ab · cos γ. Plus a solver “Which law fits?” (SSS, SAS, ASA, SSA with two solutions) and two surveying tasks.',
             ),
             grades: [9, 10],
             kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K5'],
             keywords: L(
-              ['Sinussatz', 'Kosinussatz', 'allgemeines Dreieck', 'Trigonometrie', 'Umkreis', 'Höhe', 'Pythagoras', 'Dreiecksberechnung', 'SWS', 'SSS', 'WSW'],
-              ['law of sines', 'law of cosines', 'sine rule', 'cosine rule', 'triangle', 'trigonometry', 'circumcircle', 'altitude', 'Pythagoras'],
+              ['Sinussatz', 'Kosinussatz', 'allgemeines Dreieck', 'Trigonometrie', 'Umkreis', 'Höhe', 'Pythagoras', 'Dreiecksberechnung', 'Flächeninhalt', 'SWS', 'SSS', 'WSW', 'SSW', 'Vermessung'],
+              ['law of sines', 'law of cosines', 'sine rule', 'cosine rule', 'triangle', 'trigonometry', 'circumcircle', 'altitude', 'Pythagoras', 'area', 'ambiguous case', 'surveying'],
             ),
             thumb: 'generic',
           },

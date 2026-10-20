@@ -1,46 +1,93 @@
 ---
-description: "Interactive simulation for year 10: the law of sines and the law of cosines on a triangle with draggable vertices – with the circumcircle, a proof idea via an altitude and bars showing how c² differs from a² + b²."
+description: "Interactive simulation for grade 10: the law of sines and the law of cosines in a general triangle – circumcircle and proof via the altitude, squares on the sides with the correction 2ab · cos γ, a solver for SSS, SAS, ASA and SSA (with two solutions) and two surveying tasks on a map."
 ---
 
 ## What is it about?
 
-**Law of sines:** in every triangle
+In any triangle a side and the angle **opposite** it belong together: $a$ and $\alpha$, $b$ and $\beta$, $c$ and $\gamma$ – in the simulation they share a colour.
 
-$$\frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma} = 2r$$
+**Law of sines:** the ratio of a side to the sine of its opposite angle is the same for all three sides – and equals the diameter $2r$ of the circumcircle:
 
-where $2r$ is the diameter of the circumcircle. Proof idea: the altitude $h_c = b \sin \alpha = a \sin \beta$.
+$$
+\frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma} = 2r
+$$
 
-**Law of cosines:** $c^2 = a^2 + b^2 - 2ab \cos \gamma$. For $\gamma = 90°$ this is Pythagoras; for an acute $\gamma$ something is subtracted, for an obtuse $\gamma$ something is added.
+*Proof idea:* the altitude $h_c$ (foot $F$) splits the triangle into two right triangles, so $h_c = b \cdot \sin \alpha$ and $h_c = a \cdot \sin \beta$. Equate and divide by $\sin \alpha \cdot \sin \beta$.
 
-Use the law of cosines for SAS and SSS, the law of sines for ASA, AAS and SSA.
+**Law of cosines:**
+
+$$
+c^2 = a^2 + b^2 - 2ab \cdot \cos \gamma
+$$
+
+The picture shows squares on the sides. The altitudes divide them into rectangles; the two rectangles at vertex $C$ each have area $ab \cdot \cos \gamma$. For $\gamma = 90°$ they vanish (**Pythagoras**); for an obtuse $\gamma$ they lie outside and are added.
+
+**Area:** $A = \frac12 \cdot a \cdot b \cdot \sin \gamma$.
+
+**Which law?** SSS and SAS → law of cosines; ASA → angle sum, then law of sines; SSA → law of sines, with 0, 1 or 2 solutions (e.g. $\sin \gamma = 0{,}75$ gives $\gamma \approx 48{,}59°$ or $131{,}41°$).
 
 ## Try it
 
-1. [Law of sines](?m=sin): drag the vertices and compare the quotients with the circumcircle.
-2. [Law of cosines](?m=cos): when is $c^2$ smaller or larger than $a^2 + b^2$?
-3. [γ = 90°](?m=cos&ax=2&ay=7&bx=10&by=1&cx=2&cy=1): what becomes of the law of cosines?
+1. [Law of sines](?m=sin): drag the vertices – the three bars always stay as long as $2r$. Press **“Play the proof”**.
+2. [Law of cosines](?m=cos): press **“Sweep γ through 90°”** and watch the orange rectangles at $C$.
+3. [Which law fits?](?m=solve&g=sws&a=7&b=5&ga=60): tap SSS, SAS, ASA and SSA at the top and solve step by step.
+4. [SSA with two solutions](?m=solve&g=ssw&a=4&c=6&al=30): reduce $a$ to $3$ and then to $2$.
+5. Applications: [tree across the river](?m=app&app=tree) and [across the lake](?m=app&app=lake).
 
 ## Tasks
 
-### Task 1: SAS
+### Task 1: Two sides and the included angle
 
-Given $a \approx 7.81\,\text{cm}$, $b \approx 5.83\,\text{cm}$, $\gamma \approx 81.2°$. Find $c$. [Load task](?m=cos&show=0&_hide=1)
+$a = 7\,\text{cm}$, $b = 5\,\text{cm}$, $\gamma = 60°$. Find $c$ and the area. [Load task](?m=solve&g=sws&a=7&b=5&ga=60&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$c^2 \approx 61 + 34 - 14 = 81$, so $c \approx 9\,\text{cm}$. [Show](?m=cos)
+$c^2 = 49 + 25 - 35 = 39$, $c \approx 6{,}24\,\text{cm}$; $A = \frac12 \cdot 7 \cdot 5 \cdot \sin 60° \approx 15{,}16\,\text{cm}^2$. [Show](?m=solve&g=sws&a=7&b=5&ga=60)
 
 </details>
 
-### Task 2: Across the lake
+### Task 2: One side and two angles
 
-From $C$, points $A$ and $B$ are $400\,\text{m}$ and $300\,\text{m}$ away; $\angle ACB = 50°$. How far apart are $A$ and $B$?
+$c = 10\,\text{cm}$, $\alpha = 40°$, $\beta = 60°$. [Load task](?m=solve&g=wsw&c=10&al=40&be=60&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$c^2 = 300^2 + 400^2 - 2 \cdot 300 \cdot 400 \cos 50° \approx 95{,}730$, so $c \approx 309\,\text{m}$.
+$\gamma = 80°$, $a = \frac{10 \cdot \sin 40°}{\sin 80°} \approx 6{,}53\,\text{cm}$, $b \approx 8{,}79\,\text{cm}$, $2r \approx 10{,}15\,\text{cm}$. [Show](?m=solve&g=wsw&c=10&al=40&be=60)
+
+</details>
+
+### Task 3: Angles from three sides
+
+Sides $4$, $5$ and $6\,\text{cm}$. [Load task](?m=solve&g=sss&a=4&b=5&c=6&show=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+$\cos \gamma = \frac{16 + 25 - 36}{40} = 0{,}125$, $\gamma \approx 82{,}82°$; $\cos \alpha = 0{,}75$, $\alpha \approx 41{,}41°$; $\beta \approx 55{,}77°$. [Show](?m=solve&g=sss&a=4&b=5&c=6)
+
+</details>
+
+### Task 4: Two triangles?
+
+$a = 4\,\text{cm}$, $c = 6\,\text{cm}$, $\alpha = 30°$. [Load task](?m=solve&g=ssw&a=4&c=6&al=30&show=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+$\sin \gamma = \frac{6 \cdot 0{,}5}{4} = 0{,}75$, so $\gamma_1 \approx 48{,}59°$ ($b_1 \approx 7{,}84\,\text{cm}$) or $\gamma_2 \approx 131{,}41°$ ($b_2 \approx 2{,}55\,\text{cm}$). Both work. [Show](?m=solve&g=ssw&a=4&c=6&al=30)
+
+</details>
+
+### Task 5: Surveying
+
+Baseline $200\,\text{m}$, angles $70°$ at $A$ and $60°$ at $B$ to a tree $T$. [Load task](?m=app&app=tree&s=200&p1=70&p2=60&show=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+Angle at $T$: $50°$. $|AT| = \frac{200 \cdot \sin 60°}{\sin 50°} \approx 226{,}1\,\text{m}$, $|BT| \approx 245{,}3\,\text{m}$, distance to the baseline $\approx 212{,}5\,\text{m}$. [Show](?m=app&app=tree&s=200&p1=70&p2=60)
 
 </details>
 
@@ -48,5 +95,11 @@ $c^2 = 300^2 + 400^2 - 2 \cdot 300 \cdot 400 \cos 50° \approx 95{,}730$, so $c 
 
 *Just suggestions – you know your class best.*
 
-- Introduce the law of cosines as “Pythagoras with a correction”.
-- **Common stumbling blocks:** pairing a side with an angle that is not opposite to it; forgetting the minus sign; two solutions in the SSA case.
+- Grade 10 (Bavarian Gymnasium, law of sines and cosines); please check the exact curriculum reference.
+- Let students watch the bars first (“what stays the same?”) before playing the proof.
+- Sort cards with given parts (SSS, SAS, ASA, SSA), then solve in the solver with “Show results” off.
+- **Common stumbling blocks:**
+  - pairing a side with an angle that is not opposite to it;
+  - computing $a^2 + b^2 - 2ab$ first and then multiplying by $\cos \gamma$;
+  - missing the second SSA solution $180° - \gamma$;
+  - the calculator set to radians.
