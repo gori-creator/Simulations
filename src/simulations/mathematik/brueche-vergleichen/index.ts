@@ -347,7 +347,8 @@ export default defineSimulation({
     const colOk = () => ctx.theme.series[2]!;
     const colBad = () => ctx.theme.series[1]!;
     const colOp = () => ctx.theme.series[4]!;
-    const name = (n: number, count: number) => denominatorName(n, count, lang);
+    /** Name der Bruchteile; ohne gebräuchlichen Namen „110-tel“ bzw. „pieces of 1/110“. */
+    const name = (n: number, count: number) => denominatorName(n, count, lang) ?? (lang === 'de' ? `${n}-tel` : `${count === 1 ? 'piece' : 'pieces'} of 1/${n}`);
 
     let hits: Hit[] = [];
     let hover: string | null = null;
@@ -715,7 +716,7 @@ export default defineSimulation({
         const wrong = wrongGuesses.has(sign);
         if (shake.id === id) {
           const u = (now - shake.t0) / 450;
-          if (u < 1) x += Math.sin(u * Math.PI * 6) * 5 * (1 - u);
+          if (u < 1 && !reduced) x += Math.sin(u * Math.PI * 6) * 5 * (1 - u);
         }
         const y = cy - bs / 2;
         const hov = hover === id && !wrong;
@@ -921,8 +922,12 @@ export default defineSimulation({
       }
     }
 
-    /** Hervorhebung des Unterschieds zwischen den Streifenenden. */
-    function drawDifference(geo: ReturnType<typeof vgGeo>, units: number): void {
+    /**
+     * Hervorhebung des Unterschieds zwischen den Streifenenden: erst die
+     * schraffierte Fläche (unter den Streifen), dann die Beschriftung (über
+     * den Streifen, damit sie nicht verdeckt wird).
+     */
+    function drawDifference(geo: ReturnType<typeof vgGeo>, units: number, part: 'area' | 'label'): void {
       const a = A();
       const b = B();
       const c = compare(a, b);
@@ -936,21 +941,24 @@ export default defineSimulation({
       const hi = Math.max(xa, xb);
       const top = geo.barA.y - 6;
       const bot = geo.barB.y + geo.barB.h + 6;
-      g.save();
-      g.fillStyle = withAlpha(colOp(), theme.dark ? 0.16 : 0.09);
-      g.fillRect(lo, top, hi - lo, bot - top);
-      g.beginPath();
-      g.rect(lo, top, hi - lo, bot - top);
-      g.clip();
-      g.strokeStyle = withAlpha(colOp(), theme.dark ? 0.35 : 0.25);
-      g.lineWidth = 1;
-      for (let x = lo - (bot - top); x < hi; x += 7) {
+      if (part === 'area') {
+        g.save();
+        g.fillStyle = withAlpha(colOp(), theme.dark ? 0.16 : 0.09);
+        g.fillRect(lo, top, hi - lo, bot - top);
         g.beginPath();
-        g.moveTo(x, bot);
-        g.lineTo(x + (bot - top), top);
-        g.stroke();
+        g.rect(lo, top, hi - lo, bot - top);
+        g.clip();
+        g.strokeStyle = withAlpha(colOp(), theme.dark ? 0.35 : 0.25);
+        g.lineWidth = 1;
+        for (let x = lo - (bot - top); x < hi; x += 7) {
+          g.beginPath();
+          g.moveTo(x, bot);
+          g.lineTo(x + (bot - top), top);
+          g.stroke();
+        }
+        g.restore();
+        return;
       }
-      g.restore();
       // Beschriftung zwischen den Streifen
       const d = reduce(Math.abs(a.z * b.n - b.z * a.n), a.n * b.n);
       const tokens = fill(ctx.t('diff'), { d: fr(d.z, d.n, colOp()) }, { color: colOp(), bold: true });
@@ -998,7 +1006,7 @@ export default defineSimulation({
         if (done) {
           const ax = expand(a, k1);
           const nm = name(ax.n, 2);
-          lines.push({ tokens: nenner ? rich('nowN', { name: nm ?? `${ax.n}-tel` }) : rich('nowZ', { z: ax.z }), color: muted });
+          lines.push({ tokens: nenner ? rich('nowN', { name: nm }) : rich('nowZ', { z: ax.z }), color: muted });
         } else if (already) lines.push({ tokens: [{ t: ctx.t(nenner ? 'sameN' : 'sameZ') }], color: muted });
         else lines.push({ tokens: [{ t: ctx.t(nenner ? 'tipN' : 'tipZ') }], color: muted });
         return lines;
@@ -1011,8 +1019,8 @@ export default defineSimulation({
       const ax = expand(a, k1);
       const bx = expand(b, k2);
       if (nenner) {
-        const na = name(ax.n, ax.z) ?? ctx.t(ax.z === 1 ? 'piece' : 'pieces');
-        const nb = name(bx.n, bx.z) ?? ctx.t(bx.z === 1 ? 'piece' : 'pieces');
+        const na = name(ax.n, ax.z);
+        const nb = name(bx.n, bx.z);
         lines.push({
           tokens: rich('cmpN', {
             x: bold(String(ax.z), colA()),
@@ -1031,8 +1039,8 @@ export default defineSimulation({
       } else {
         if (c === 0) lines.push({ tokens: rich('eqZ', { z: bold(String(ax.z)), a: fa, b: fb }) });
         else {
-          const na = name(ax.n, 2) ?? '';
-          const nb = name(bx.n, 2) ?? '';
+          const na = name(ax.n, 2);
+          const nb = name(bx.n, 2);
           const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
           lines.push({
             tokens: rich('cmpZ', {
@@ -1064,12 +1072,13 @@ export default defineSimulation({
       drawFormula(geo.formula, e, k1, k2, now);
       if (p.form === 'kreis') drawPies(geo, e, k1, k2);
       else {
-        if (revealed) drawDifference(geo, units);
+        if (revealed) drawDifference(geo, units, 'area');
         const hovA = hover?.startsWith('barA') ? Number(hover.split(':')[1]) : -1;
         const hovB = hover?.startsWith('barB') ? Number(hover.split(':')[1]) : -1;
         const count = expanded && (k1 > 1 || k2 > 1) ? clamp((e - 0.75) / 0.25, 0, 1) : 0;
         drawBar({ ...geo.barA, units, n: a.n, z: a.z, k: k1, e, color: colA(), hover: hovA, count });
         drawBar({ ...geo.barB, units, n: b.n, z: b.z, k: k2, e, color: colB(), hover: hovB, count });
+        if (revealed) drawDifference(geo, units, 'label');
         if (p.weg === 'zaehler' && count > 0 && a.z > 0 && b.z > 0) unitPieces(geo, units, k1, k2, count);
         hits.push({ id: 'barA', ...geo.barA, cursor: ctx.locked ? '' : 'pointer' });
         hits.push({ id: 'barB', ...geo.barB, cursor: ctx.locked ? '' : 'pointer' });
@@ -1351,7 +1360,7 @@ export default defineSimulation({
       const y = geo.bracketY;
       const groups = Math.ceil(total / f);
       const shakeU = (now - refuse) / 500;
-      const dx = shakeU < 1 ? Math.sin(shakeU * Math.PI * 6) * 5 * (1 - shakeU) : 0;
+      const dx = shakeU < 1 && !reduced ? Math.sin(shakeU * Math.PI * 6) * 5 * (1 - shakeU) : 0;
       const zBad = p.z % f !== 0;
       const fade = kAnim && kTween.running ? clamp((kTween.t - 0.75) / 0.25, 0, 1) : 1;
       g.save();
@@ -1423,9 +1432,12 @@ export default defineSimulation({
       const units = kzUnits();
       const f0: Fraction = { z: p.z, n: p.n };
       const v = f0.z / f0.n;
-      const rows = 12;
       const titleH = 26;
-      const rh = Math.min(wide ? 24 : 22, (R.h - titleH - 4) / rows);
+      // Zeilen mindestens 13 px hoch; reicht der Platz nicht, weniger Zeilen
+      // (aber mindestens 6 und immer die Zeile des eingestellten Nenners).
+      const room = R.h - titleH - 4;
+      const rows = clamp(Math.max(Math.floor(room / 13), Math.min(f0.n, 12)), 6, 12);
+      const rh = Math.min(wide ? 24 : 22, room / rows);
       const top = R.y + titleH;
       const X = (val: number) => R.x + (val / units) * R.w;
       text(g, ctx.t('wallTitle'), R.x + R.w / 2, R.y + 7, { font: `650 ${wide ? 12 : 11}px ${F()}`, color: theme.muted });
@@ -1497,7 +1509,7 @@ export default defineSimulation({
       g.closePath();
       g.fill();
       // Beschriftung der gleichwertigen Brüche
-      const fs = wide ? 11.5 : 10.5;
+      const fs = Math.min(wide ? 11.5 : 10.5, rh - 3.5);
       for (let r = 1; r <= rows; r++) {
         const fit = fitsRow(f0, r);
         if (fit === null) continue;
@@ -1630,14 +1642,26 @@ export default defineSimulation({
       const count = Math.max(1, cards.length);
       const signW = wide ? 30 : 14;
       const cw = Math.min(wide ? 116 : 76, (W - 2 * pad - (count - 1) * signW) / count);
-      const ch = wide ? (hintOn ? 108 : 94) : hintOn ? 90 : 78;
+      let ch = wide ? (hintOn ? 108 : 94) : hintOn ? 90 : 78;
       const head = wide ? 30 : 40;
       const poolY = head + 8;
-      const orderY = poolY + ch + (wide ? 44 : 36);
-      const lineY = orderY + ch + (wide ? 64 : 56);
+      const msgH = wide ? 52 : 74;
+      // Bei wenig Höhe (z. B. iPad quer) Karten und Abstände stauchen, damit
+      // die Plaketten unter dem Zahlenstrahl nicht in die Rückmeldung ragen.
+      let gap1 = wide ? 44 : 36;
+      let gap2 = wide ? 64 : 56;
+      const avail = H - msgH - 72 - poolY;
+      const need = 2 * ch + gap1 + gap2;
+      if (need > avail) {
+        const s = Math.max(0.6, avail / need);
+        ch = Math.round(ch * s);
+        gap1 = Math.max(28, gap1 * s);
+        gap2 = Math.max(48, gap2 * s);
+      }
+      const orderY = poolY + ch + gap1;
+      const lineY = orderY + ch + gap2;
       const x0 = pad + (wide ? 34 : 18);
       const x1 = W - pad - (wide ? 34 : 22);
-      const msgH = wide ? 52 : 74;
       const msg: Rect = { x: pad + 4, y: H - msgH, w: W - 2 * pad - 8, h: msgH - 4 };
       const rowW = count * cw + (count - 1) * signW;
       const poolX = (i: number) => W / 2 - rowW / 2 + i * (cw + signW);
@@ -1663,7 +1687,7 @@ export default defineSimulation({
       const hov = inPool && hover === `card:${i}`;
       const shakeU = (now - c.shake0) / 480;
       const shaking = shakeU < 1;
-      const dx = shaking ? Math.sin(shakeU * Math.PI * 6) * 6 * (1 - shakeU) : 0;
+      const dx = shaking && !reduced ? Math.sin(shakeU * Math.PI * 6) * 6 * (1 - shakeU) : 0;
       const lift = hov ? 3 : 0;
       const cx = x + dx;
       const cy = y - lift;
@@ -1687,7 +1711,7 @@ export default defineSimulation({
       g.lineWidth = shaking || placedOk || hov ? 2 : 1.3;
       roundRect(g, cx, cy, geo.cw, geo.ch, 12);
       g.stroke();
-      const size = geo.wide ? 27 : 20;
+      const size = Math.min(geo.wide ? 27 : 20, geo.ch * (hintOn ? 0.22 : 0.27));
       const fy = cy + (hintOn ? geo.ch * 0.42 : geo.ch / 2);
       drawFrac(g, cx + geo.cw / 2, fy, String(c.f.z), String(c.f.n), size, placedOk ? theme.text : colA(), F());
       if (hintOn) {
