@@ -12,7 +12,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | Jgst. | ID | Titel | Adresse (DE) |
 |---|---|---|---|---|
 | ☑ | 6–7 | `licht-schatten` | Licht und Schatten | `/de/physik/optik/licht-und-schatten/` |
-| ☐ | 6–8 | `reflexion` | Reflexion am ebenen Spiegel | `/de/physik/optik/reflexion-ebener-spiegel/` |
+| ☑ | 6–8 | `reflexion` | Reflexion am ebenen Spiegel | `/de/physik/optik/reflexion-ebener-spiegel/` |
 | ☐ | 7–8 | `einfacher-stromkreis` | Einfacher Stromkreis | `/de/physik/elektrizitaetslehre/einfacher-stromkreis/` |
 | ☐ | 7–8 | `hebelgesetz` | Hebelgesetz | `/de/physik/mechanik/hebelgesetz/` |
 | ☐ | 7–8 | `hookesches-gesetz` | Hookesches Gesetz | `/de/physik/mechanik/hookesches-gesetz/` |
