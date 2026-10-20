@@ -1,6 +1,6 @@
 # Mängelliste (Durchsicht der Seite durch die Projektleitung, 20.10.2026)
 
-Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. Bearbeitung durch die Projektleitung (Physik-Sitzung) ab 20.10. nachmittags.
+Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. **Stand 20.10.: offen nur noch Punkt 5 (Lehrplan Bayern Physik) und Punkt 6 (Bundesland-Einstellung).**
 
 ## Startseite
 
@@ -27,7 +27,7 @@ Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulation
 **Vermutete Ursache (noch zu prüfen):** Im Lehrplan steht für diese Simulationen `thumb: 'generic'`, oder sie haben keine eigene `thumb.svg`.
 **Ziel:** Jede dieser Simulationen bekommt ein eigenes, zum Thema passendes Vorschaubild im Stil der übrigen Karten.
 
-### 2. Nach dem Klick auf eine Karte landet man am Ende der Seite
+### 2. ✅ Nach dem Klick auf eine Karte landet man am Ende der Seite
 Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten statt oben. Man muss erst nach oben zur Simulation scrollen. Das ist sehr nervig.
 
 **Vermutete Ursache (noch zu prüfen):** Die Scrollposition der Startseite wird übernommen, oder der Fokus bzw. ein Sprungziel auf der Simulationsseite zieht nach unten. Mögliche Auslöser sind zum Beispiel ein `autofocus`, `scrollIntoView` oder `focus()` beim Laden, oder die Wiederherstellung des Zustands.
@@ -66,7 +66,7 @@ Jetzt sind alle Simulationen fertig. Die Zähler sind daher überflüssig, zum B
 
 ## Kopfleiste
 
-### 8. Dunkelmodus geht beim Seitenwechsel verloren bzw. blitzt weiß
+### 8. ✅ Dunkelmodus geht beim Seitenwechsel verloren bzw. blitzt weiß
 Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist die Seite weiß bzw. wieder im hellen Modus.
 
 **Vermutete Ursache (noch zu prüfen):** Die Theme-Wahl wird nicht gespeichert oder erst nach dem ersten Zeichnen angewendet. Dann gibt es weißes Aufblitzen (FOUC) oder einen Rücksprung auf hell.
@@ -74,7 +74,7 @@ Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist di
 
 **Befund 20.10.:** Im echten Build nicht nachvollziehbar. Der Dunkelmodus bleibt nach Kartenklick und nach Klick in der Kopfleiste erhalten; das Farbschema wird schon im `<head>` gesetzt. In der Artifact-Vorschau ist `localStorage` vermutlich gesperrt, deshalb springt es dort zurück.
 
-### 9. Englische Fassung funktioniert nicht
+### 9. ✅ Englische Fassung funktioniert nicht
 Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
 
 **Beobachtung (Projektleitung):** Beim Umschalten auf Englisch erscheint eine Fehlerseite.
@@ -112,7 +112,7 @@ Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahn
 
 ## Bilder
 
-### 10. Vollständige Bilderliste mit sehr genauen Prompts
+### 10. ✅ Vollständige Bilderliste mit sehr genauen Prompts
 Die Projektleitung erzeugt die Bilder selbst mit einem Bildgenerator. Dafür braucht sie **eine einzige, vollständige Liste** aller noch fehlenden Bilder.
 
 **Was auf die Liste gehört:** alles, was in den Simulationen bisher nur gezeichnet wird, sich in der Größe bzw. Form nicht ständig ändert und als Foto bzw. Illustration deutlich hochwertiger aussähe. Beispiele: Gegenstände, Geräte, Figuren, Hintergründe, Oberflächen.
