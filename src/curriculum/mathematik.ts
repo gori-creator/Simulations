@@ -1301,14 +1301,14 @@ export const mathematik: Subject = {
             slug: L('integral-gesamtaenderung', 'integral-total-change'),
             title: L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'),
             summary: L(
-              'Aus der Änderungsrate den Bestand rekonstruieren: Die Fläche unter dem Geschwindigkeitsgraphen ist der Weg, die Fläche unter der Zuflussrate die Änderung der Füllmenge – mit Rechteckstreifen, Animation und negativen Raten.',
-              'Reconstructing an amount from its rate of change: the area under the velocity graph is the distance, the area under the inflow rate the change in volume – with rectangles, animation and negative rates.',
+              'Aus der Änderungsrate den Bestand rekonstruieren: Die Zeit läuft, Auto oder Tank bewegen sich, die Fläche unter der Rate wächst mit dem Bestand – mit Rechtecksummen (links, rechts, Mitte), Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate.',
+              'Reconstructing an amount from its rate of change: time runs, the car or tank moves, the area under the rate grows with the amount – with rectangle sums (left, right, midpoint), the error when doubling, driving forwards and back and a rate you drag yourself.',
             ),
             grades: [13, 13],
             kmk: ['M-L3', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
-              ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Modellieren'],
-              ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'modelling'],
+              ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelsumme', 'zurückgelegter Weg', 'Modellieren'],
+              ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'midpoint sum', 'distance travelled', 'modelling'],
             ),
             thumb: 'generic',
           },
