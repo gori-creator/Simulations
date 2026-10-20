@@ -158,7 +158,7 @@ export default defineSimulation({
   images: { car: 'auto.webp', road: 'strasse.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
-    { key: 'law', label: L('Bewegungsgesetz', 'Equations of motion') },
+    { key: 'law', label: L('Bewegungsgesetz', 'Equations of motion'), spoiler: true },
     { key: 'trip', label: L('Ganze Fahrt', 'Whole trip'), spoiler: true },
     { key: 'brake', label: L('Bremsen bis zum Stillstand', 'Braking to a stop'), spoiler: true },
     { key: 'table', label: L('Abschnitte', 'Sections'), spoiler: true },
