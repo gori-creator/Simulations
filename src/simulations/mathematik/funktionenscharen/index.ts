@@ -129,7 +129,7 @@ const INFO: Record<FamKey, Info> = {
     d1: '2x − 2k',
     d2: '2',
     cond: '2x − 2k = 0  ⇔  x = k',
-    cases: [{ k: 'k ∈ ℝ', res: L('immer ein Tiefpunkt T(k | k − k²), denn f″ₖ = 2 > 0', 'always a minimum T(k, k − k²), since f″ₖ = 2 > 0'), short: L('Tiefpunkt', 'minimum') }],
+    cases: [{ k: 'k ∈ ℝ', res: L('immer ein Tiefpunkt T(k | k − k²), denn f″ₖ = 2 > 0', 'always a minimum at (k, k − k²), since f″ₖ = 2 > 0'), short: L('Tiefpunkt', 'minimum') }],
     loc: ['x_E = k, y_E = k − k²', 'k = x', 'y = k − k² = x − x²', 'y = x − x²'],
     probe: (x) => x,
     gap: null,
@@ -164,8 +164,8 @@ const INFO: Record<FamKey, Info> = {
     d2: '2k − 12x²',
     cond: '2x · (k − 2x²) = 0  ⇔  x = 0 \\t{oder} x² = \\f{k}{2}',
     cases: [
-      { k: 'k ≤ 0', res: L('nur ein Hochpunkt H(0 | 0)', 'only one maximum H(0, 0)'), short: L('ein Hochpunkt', 'one maximum') },
-      { k: 'k > 0', res: L('H(±√(k/2) | k²/4) und T(0 | 0): M-Form', 'H(±√(k/2), k²/4) and T(0, 0): M shape'), short: L('2 H, 1 T', '2 max., 1 min.') },
+      { k: 'k ≤ 0', res: L('nur ein Hochpunkt H(0 | 0)', 'only one maximum at (0, 0)'), short: L('ein Hochpunkt', 'one maximum') },
+      { k: 'k > 0', res: L('H(±√(k/2) | k²/4) und T(0 | 0): M-Form', 'max. at (±√(k/2), k²/4), min. at (0, 0): M shape'), short: L('2 H, 1 T', '2 max., 1 min.') },
     ],
     loc: ['x_E = ±\\r{\\f{k}{2}}, y_E = \\f{k²}{4}', 'x² = \\f{k}{2}  ⇒  k = 2x²', 'y = \\f{k²}{4} = \\f{(2x²)²}{4}', 'y = x^4'],
     probe: (x) => `2 · (${x})²`,
@@ -181,7 +181,7 @@ const INFO: Record<FamKey, Info> = {
     d1: '(x − k + 1) · e^x',
     d2: '(x − k + 2) · e^x',
     cond: 'x − k + 1 = 0  ⇔  x = k − 1',
-    cases: [{ k: 'k ∈ ℝ', res: L('immer ein Tiefpunkt T(k − 1 | −e^(k−1))', 'always a minimum T(k − 1, −e^(k−1))'), short: L('Tiefpunkt', 'minimum') }],
+    cases: [{ k: 'k ∈ ℝ', res: L('immer ein Tiefpunkt T(k − 1 | −e^(k−1))', 'always a minimum at (k − 1, −e^(k−1))'), short: L('Tiefpunkt', 'minimum') }],
     loc: ['x_E = k − 1, y_E = −e^{k − 1}', 'x = k − 1  ⇒  k = x + 1', 'y = −e^{(x + 1) − 1}', 'y = −e^x'],
     probe: (x) => `${x} + 1`,
     gap: null,
@@ -327,7 +327,8 @@ export default defineSimulation({
     const S = (s: string) => (show() ? s : '¿');
     /** englische Fassung der Punktschreibweise in Formeln */
     const P = (src: string) => (lang === 'de' ? src : src.replace(/ \| /g, ', ').replace(/(\d),(\d)/g, '$1.$2'));
-    const kName = (kind: 'max' | 'min' | 'saddle' | 'infl') => (kind === 'max' ? 'H' : kind === 'min' ? 'T' : kind === 'saddle' ? 'TP' : 'W');
+    // im Aufgabenmodus neutral „E“, damit die Art des Punktes nicht verraten wird
+    const kName = (kind: 'max' | 'min' | 'saddle' | 'infl') => (kind === 'infl' ? 'W' : !p.show ? 'E' : kind === 'max' ? 'H' : kind === 'min' ? 'T' : 'TP');
     const kLong = (kind: 'max' | 'min' | 'saddle') => (kind === 'max' ? T2('Hochpunkt', 'maximum') : kind === 'min' ? T2('Tiefpunkt', 'minimum') : T2('Terrassenpunkt', 'terrace point'));
     /** k gerundet auf eine Stelle (wie im Regler) */
     const k1 = (k: number) => Math.round(k * 10) / 10;
@@ -1559,7 +1560,9 @@ export default defineSimulation({
           L('Aus f′ₖ(x) = 0 die x-Koordinate bestimmen, dann durch Einsetzen in fₖ die y-Koordinate.', 'Find the x-coordinate from f′ₖ(x) = 0, then the y-coordinate by substituting into fₖ.'),
           L('Die Gleichung für die x-Koordinate nach k umstellen.', 'Rearrange the equation for the x-coordinate to get k.'),
           L('k in die y-Koordinate einsetzen: Der Parameter verschwindet.', 'Substitute k into the y-coordinate: the parameter disappears.'),
-          L(`Auf dieser Kurve liegen alle ${inf.locOf.de} der Schar.`, `All ${inf.locOf.en} of the family lie on this curve.`),
+          show()
+            ? L(`Auf dieser Kurve liegen alle ${inf.locOf.de} der Schar.`, `All ${inf.locOf.en} of the family lie on this curve.`)
+            : L('Auf dieser Kurve liegen alle Extrempunkte der Schar.', 'All extreme points of the family lie on this curve.'),
         ];
         for (let i = 0; i < dv; i++) {
           if (compact && i < dv - 1) continue;
@@ -2118,6 +2121,9 @@ export default defineSimulation({
           runDir = r.dir;
           KS.jump(r.k);
         }
+        // Regler k in der Seitenleiste mitführen (update greift während des Laufs nicht ein)
+        const v = k1(KS.v);
+        if (v !== p.k) setP({ k: v });
       },
       resetTime() {
         trail = null;
