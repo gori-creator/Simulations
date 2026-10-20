@@ -820,15 +820,21 @@ export default defineSimulation({
       });
       if (!curIn) all.push({ x: cx, cur: true });
       all.sort((p1, p2) => p1.x - p2.x);
-      const bx = xs[best]!;
+      // größter Wert unter allen angezeigten Zeilen – auch die eingeschobene aktuelle Zeile
+      // kann größer sein als jeder Rasterwert (z. B. x = 4 zwischen 2,5 und 5)
+      let bx = xs[best]!;
+      if (!curIn && value(pr.q, cx) > value(pr.q, bx) + 1e-9) bx = cx;
+      const onGrid = xs.includes(bx);
       for (const it of all) {
-        const isMax = Math.abs(it.x - bx) < 1e-9 && xs.includes(it.x);
+        const isMax = Math.abs(it.x - bx) < 1e-9;
         const hl = isMax && it.cur ? 'both' : isMax ? 'max' : it.cur ? 'cur' : undefined;
         rows.push({ key: it.cur && !xs.includes(it.x) ? 'tcur' : `t${it.x}`, kind: 'trow', f: '', cells: cols(it.x), hl });
       }
       const xv = toNumber(completeSquare(pr.q).xS);
       const exactHit = Math.abs(bx - xv) < 1e-9;
-      rows.push({ key: 'thint', kind: 'hint', f: tr(exactHit ? 'tabMaxSym' : P.sol ? 'tabNear' : 'tabMax', { x: withU(N(bx, 2), unitX(s)) }), sep: true });
+      // „symmetrisch“ nur, wenn das Maximum ein Rasterwert ist (dann liegt das Raster symmetrisch dazu)
+      const hintKey = exactHit ? (onGrid ? 'tabMaxSym' : 'tabMax') : P.sol ? 'tabNear' : 'tabMax';
+      rows.push({ key: 'thint', kind: 'hint', f: tr(hintKey, { x: withU(N(bx, 2), unitX(s)) }), sep: true });
       return rows;
     }
 
@@ -1080,7 +1086,8 @@ export default defineSimulation({
       const wallImg = ctx.images.get('wall');
       const wallH = free ? 0 : wallImg ? 22 : 15;
       const barH = r.h > 180 ? 30 : 0;
-      const padL = small ? 74 : 92;
+      // links Platz für die Maßangabe (x an der Mauer, y ohne Mauer), auch mit zwei Nachkommastellen
+      const padL = Math.max(small ? 74 : 92, pillW(`x = ${fU(`${N(half, 0)},75`, 'm')}`, size) + 18);
       const padR = 16;
       const padT = wallH + (free ? 26 : 2);
       const padB = 30 + barH;
@@ -1323,8 +1330,18 @@ export default defineSimulation({
       const lw = pillW(`A = ${fU(N(zA, 2), 'm²')}`, big);
       const fits = rect.h > big * 2.4 && rect.w > lw + 6;
       if (fits) areaLabel(rect.x + rect.w / 2, rect.y + rect.h / 2, zA, free ? 'free' : 'wall', alpha, big);
-      else if (!free) areaLabel(Math.min(field.x + field.w - lw / 2 - 8, rect.x + rect.w + lw / 2 + 14), field.y + wallH + 22, zA, 'wall', alpha, big - 1);
-      else areaLabel(Math.min(field.x + field.w - lw / 2 - 8, rect.x + rect.w + lw / 2 + 16), rect.y + rect.h / 2, zA, 'free', alpha, big - 1);
+      else if (!free) {
+        // rechts neben dem Gehege kein Platz (breit und flach): unter die Maßlinie y, sonst läge die Zahl auf dem Griff
+        const right = rect.x + rect.w + lw + 14 <= field.x + field.w - 8;
+        if (right) areaLabel(rect.x + rect.w + lw / 2 + 14, field.y + wallH + 22, zA, 'wall', alpha, big - 1);
+        else areaLabel(rect.x + rect.w / 2, rect.y + rect.h + 44, zA, 'wall', alpha, big - 1);
+      }
+      else {
+        // rechts kein Platz: über das Gehege, links vom Griff (Ecke oben rechts)
+        const right = rect.x + rect.w + lw + 16 <= field.x + field.w - 8;
+        if (right) areaLabel(rect.x + rect.w + lw / 2 + 16, rect.y + rect.h / 2, zA, 'free', alpha, big - 1);
+        else areaLabel(Math.max(field.x + lw / 2 + 8, Math.min(rect.x + rect.w / 2, rect.x + rect.w - lw / 2 - 16)), Math.max(field.y + 16, rect.y - 20), zA, 'free', alpha, big - 1);
+      }
 
       // Zaun als Streifen (Nebenbedingung)
       if (barH) {
@@ -1378,10 +1395,17 @@ export default defineSimulation({
       const h = Math.max(0, b - (b / a) * x);
       const small = r.w < 420;
       const size = textSize() - (small ? 1 : 0.5);
-      const padL = small ? 82 : 100;
+      // links Platz für die Maßangabe h (rechtsbündig neben der Maßlinie), rechts für „a = … cm“
+      const hLabW = pillW(`h = ${fU(`${N(b, 0)},75`, 'cm')}`, size);
+      g.save();
+      g.font = `600 ${size - 1}px ${th().font}`;
+      const aLabel = `a = ${N(a, 0)} cm`;
+      const aLabW = g.measureText(aLabel).width;
+      g.restore();
+      const padL = Math.max(small ? 82 : 100, hLabW + 24);
       const padB = 38;
       const padT = 16;
-      const padR = 20;
+      const padR = Math.max(20, aLabW + 14);
       const s = Math.max(0.01, Math.min((r.w - padL - padR) / E.w.v, (r.h - padT - padB) / E.h.v));
       const ox = r.x + padL + Math.max(0, (r.w - padL - padR - E.w.v * s) / 2);
       const oy = r.y + r.h - padB;
@@ -1493,7 +1517,7 @@ export default defineSimulation({
       g.fillStyle = th().muted;
       g.textBaseline = 'middle';
       g.textAlign = 'left';
-      g.fillText(`a = ${N(a, 0)} cm`, PA[0] + 8 > r.x + r.w - 70 ? PA[0] - 64 : PA[0] + 8, oy - (PA[0] + 8 > r.x + r.w - 70 ? 12 : 0));
+      g.fillText(aLabel, PA[0] + 8, oy);
       g.textAlign = 'right';
       g.fillText(`b = ${N(b, 0)} cm`, ox - 8, PB[1] + 2);
       g.restore();
@@ -2510,7 +2534,9 @@ export default defineSimulation({
       if (!inDomain(ex, xParam()) && !story) pill(sr.x + sr.w / 2, sr.y + sr.h / 2, ctx.t('edge'), { color: C().warn, border: mixColor(C().warn, th().bg, 0.45), size: textSize() - 1 });
 
       // Graph
-      plot.setRangePadded([G.x0.v, G.x1.v], [-0.1 * G.y1.v, G.y1.v], { left: 52, bottom: 24, top: 30, right: 18 });
+      // schmal: rechts mehr Platz, damit die Achsenbeschriftung „x in …“ nicht über dem rechten Rand des Definitionsbereichs liegt
+      const xExtra = wide() ? 0 : 0.1 * (G.x1.v - G.x0.v);
+      plot.setRangePadded([G.x0.v, G.x1.v + xExtra], [-0.1 * G.y1.v, G.y1.v], { left: 52, bottom: 24, top: 30, right: 18 });
       plot.resize();
       drawGraph(now, d, k);
 

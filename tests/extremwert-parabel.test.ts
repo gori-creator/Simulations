@@ -128,6 +128,31 @@ describe('Modell: Extremwertaufgaben mit Parabeln', () => {
     expect(price[price.length - 1]).toBe(15);
   });
 
+  it('Wertetabelle: Scheitel zwischen zwei Rasterwerten (Freibad 4 €, 600 Gäste, 50 weniger je 1 €)', () => {
+    const pr = problem('price', { ...base, p: 4, n: 600, k: 50 });
+    const xs = tableXs(pr);
+    // Raster 2,5 €: der Scheitel x = 4 ist kein Tabellenwert
+    expect(xs).toEqual([-2.5, 0, 2.5, 5, 7.5, 10]);
+    expect(xs[argMax(pr.q, xs)]).toBe(5);
+    expect(value(pr.q, 5)).toBe(3150);
+    // die eingeschobene aktuelle Zeile x = 4 ist größer als jeder Rasterwert
+    expect(value(pr.q, 4)).toBe(3200);
+    expect(value(pr.q, 4)).toBeGreaterThan(value(pr.q, 5));
+  });
+
+  it('Reglergrenzen: Scheitel bleibt im Bereich der x-Regler', () => {
+    // Extremfälle der Eingaben (L ≤ 100, a ≤ 120, s ≤ 100, p ≥ 2, n ≤ 600, k ≥ 5)
+    expect(toNumber(vertex(problem('wall', { ...base, L: 100 }).q).x)).toBe(25);
+    expect(toNumber(vertex(problem('free', { ...base, L: 100 }).q).x)).toBe(25);
+    expect(toNumber(vertex(problem('tri', { ...base, a: 120, b: 20 }).q).x)).toBe(60);
+    expect(toNumber(vertex(problem('gutter', { ...base, s: 100 }).q).x)).toBe(25);
+    // Preis: größte Erhöhung (600/5 − 2)/2 = 59 € ≤ 60, größte Senkung (50/60 − 30)/2 ≈ −14,6 € ≥ −30
+    expect(toNumber(vertex(problem('price', { ...base, p: 2, n: 600, k: 5 }).q).x)).toBe(59);
+    const down = toNumber(vertex(problem('price', { ...base, p: 30, n: 50, k: 60 }).q).x);
+    expect(down).toBeCloseTo((50 / 60 - 30) / 2, 9);
+    expect(down).toBeGreaterThanOrEqual(-30);
+  });
+
   it('Probier-Folge pendelt um den Scheitel und endet genau dort', () => {
     for (const sit of ['wall', 'free', 'tri', 'price', 'gutter'] as const) {
       const pr = problem(sit, base);
