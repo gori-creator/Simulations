@@ -1,5 +1,5 @@
 import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, type Rect } from '../../../sim-core';
-import { allDifferentSeries, band95, dayOfYear, duplicates, factors, hasMine, hasShared, monthDay, MONTH_LENGTHS, pairs, pApprox, pMine, pShared, randomClass, sharedPairs, smallestN, distinctDays } from './model';
+import { allDifferentSeries, band95, dayOfYear, duplicates, factors, hasMine, hasShared, monthDay, MONTH_LENGTHS, pairs, pApprox, pMine, pShared, randomClass, relation, sharedPairs, smallestN, distinctDays } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
@@ -85,8 +85,7 @@ interface Runner {
  */
 export default defineSimulation({
   id: 'geburtstagsproblem',
-  dragHint: true,
-  layout: { aspect: 1.55, aspectNarrow: 0.56 },
+  layout: { aspect: 1.55, aspectNarrow: 0.5 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -151,8 +150,8 @@ export default defineSimulation({
     { id: 'mine', label: L('Mein Geburtstag', 'My birthday'), values: { q: 'mine', both: true } },
   ],
   strings: {
-    de: { canvas: 'Geburtstagsproblem: links eine Klasse im Jahreskalender (gleiche Tage hervorgehoben), eine Simulation vieler Klassen, die schrittweise Rechnung mit dem Gegenereignis oder alle Paare als Linien; rechts die Wahrscheinlichkeit in Abhängigkeit von der Klassengröße und die Rechnung.' },
-    en: { canvas: 'Birthday problem: on the left a class in a year calendar (shared days highlighted), a simulation of many classes, the step-by-step calculation via the complement, or all pairs as lines; on the right the probability depending on the class size and the calculation.' },
+    de: { canvas: 'Geburtstagsproblem in vier Ansichten. Links: eine Klasse im Jahreskalender (jede Person ein Punkt, gemeinsame Tage mit Ring und „×2“ markiert, mein Geburtstag mit Stern), viele simulierte Klassen als Kacheln (gefüllt: mit gemeinsamem Tag, hell mit Rand: ohne), die schrittweise Rechnung mit dem Gegenereignis (freie Tage schrumpfen) oder alle Paare als Linien zwischen den Personen. Rechts: die Wahrscheinlichkeit in Abhängigkeit von der Klassengröße n mit Markierung bei 50 % bzw. die relative Häufigkeit mit 95-%-Bereich, darunter die Rechnung.' },
+    en: { canvas: 'Birthday problem in four views. Left: one class in a year calendar (each person a dot, shared days marked with a ring and “×2”, my birthday with a star), many simulated classes as tiles (filled: shared day, light with border: none), the step-by-step calculation via the complement (free days shrink) or all pairs as lines between the people. Right: the probability depending on the class size n with a mark at 50 %, or the relative frequency with the 95 % range, and the calculation below.' },
   },
 
   mount(ctx) {
@@ -188,7 +187,11 @@ export default defineSimulation({
       const s = th().series;
       return { any: s[0]!, hit: s[1]!, ok: s[2]!, mine: s[3]!, approx: s[4]!, band: s[5]! };
     };
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+    const pillBg = () => mixColor(th().text, th().bg, 1, 0.94);
+    /** Kartenfläche: im Dunkelmodus eine Spur heller als der Hintergrund. */
+    const cardBg = () => mixColor(th().text, th().bg, th().dark ? 0.955 : 1, 0.97);
+    /** Schrift auf farbig gefüllten Schildern (hell: weiß, dunkel: dunkel auf heller Reihenfarbe). */
+    const onFill = () => th().bg;
 
     /* ---------- Zustand ---------- */
     let rnd = seededRandom((Date.now() ^ 0x5bd1e995) >>> 0);
@@ -407,11 +410,11 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 14;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.96)' : 'rgba(255,255,255,0.97)';
+      g.fillStyle = cardBg();
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.shadowColor = 'transparent';
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = mixColor(th().text, th().bg, th().dark ? 0.84 : 0.9);
       g.lineWidth = 1;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -439,7 +442,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      rich(src, x0 + 9, y + 0.5, size, opts.fill ? '#ffffff' : color, 'left', 750);
+      rich(src, x0 + 9, y + 0.5, size, opts.fill ? onFill() : color, 'left', 750);
       return { x: x0, y: y - h / 2, w, h };
     }
 
@@ -461,6 +464,8 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const pct = (v: number, d = 1) => `${fmt.fixed(v * 100, d)} %`;
     const shownPct = (v: number, d = 1) => (p.curve ? pct(v, d) : '?');
+    /** Anzahl der Paare; bei ausgeblendeten Werten „?“ (Aufgabe „Wie viele Paare?“). */
+    const pairsTxt = (n: number) => (p.curve ? fmt.num(pairs(n), 0) : '?');
     const slotName = (s: number) => {
       const d = days();
       if (d === 12) return MONTHS_LONG[s] ?? '';
@@ -541,13 +546,16 @@ export default defineSimulation({
         const t0 = R.y + top;
         const cw = (R.x + R.w - 12 - left) / 31;
         const chh = (R.y + R.h - bottom - t0) / 12;
+        // flache Zeilen (Handy): kleinere Schrift, notfalls nur jeden zweiten Monat beschriften
+        const mSize = clamp(chh * 0.95, 8, size);
+        const every = chh < 9.5 ? 2 : 1;
         for (let m = 0; m < 12; m++) {
           const y = t0 + m * chh + chh / 2;
-          g.font = fontOf(size, 700);
+          g.font = fontOf(mSize, 700);
           g.fillStyle = th().muted;
           g.textAlign = 'right';
           g.textBaseline = 'middle';
-          g.fillText(MONTHS[m]!, left - 6, y);
+          if (m % every === 0) g.fillText(MONTHS[m]!, left - 6, y);
           g.fillStyle = mixColor(th().text, th().bg, th().dark ? 0.86 : 0.9);
           for (let dd = 1; dd <= MONTH_LENGTHS[m]!; dd++) {
             g.beginPath();
@@ -715,14 +723,14 @@ export default defineSimulation({
         g.fillStyle = hit ? c.hit : c.ok;
         roundRect(g, -w / 2, -12, w, 24, 12);
         g.fill();
-        rich(msg, 0, 0.5, 12, '#ffffff', 'center', 800);
+        rich(msg, 0, 0.5, 12, onFill(), 'center', 800);
         g.restore();
       }
       // Personen und Paare bzw. Schubfachprinzip
       if (cls.length > days()) {
         pill(R.x + R.w - 14, R.y + R.h - 20, tt(`${cls.length} > ${days()}: sicher gleich`, `${cls.length} > ${days()}: surely shared`), c.hit, { align: 'right', size: small ? 10.5 : 11.5 });
       } else if (!small || days() !== 365) {
-        const info = tt(`${cls.length} Personen · ${fmt.num(pairs(cls.length), 0)} Paare`, `${cls.length} people · ${fmt.num(pairs(cls.length), 0)} pairs`);
+        const info = tt(`${cls.length} Personen · ${pairsTxt(cls.length)} Paare`, `${cls.length} people · ${pairsTxt(cls.length)} pairs`);
         rich(info, R.x + R.w - 14, R.y + R.h - 20, 11, th().muted, 'right', 650);
       }
       // Hover-Hinweis
@@ -748,7 +756,7 @@ export default defineSimulation({
       const runs = s?.runs ?? 0;
       const hits = s?.hits ?? 0;
       // Kopfzeile mit Zählern (zählen weich mit)
-      const hTxt = runs ? fmt.num(hS * 100, 1) : '–';
+      const hTxt = runs ? fmt.fixed(hS * 100, 1) : '–';
       const line = q() === 'mine' ? tt(`${hits} von ${runs} Klassen: jemand an meinem ${unitWord(false)}`, `${hits} of ${runs} classes: someone on my ${unitWord(false)}`) : tt(`${hits} von ${runs} Klassen mit gemeinsamem ${unitWord(false)}`, `${hits} of ${runs} classes with a shared ${unitWord(false)}`);
       const fs = fitSize(line, R.w - 28, small ? 11.5 : 12.5, 700);
       rich(line, R.x + 14, R.y + 44, fs, th().text, 'left', 700);
@@ -778,11 +786,24 @@ export default defineSimulation({
         // neue Kacheln springen herein
         const age = i === tiles.length - 1 && !reduced() ? clamp01((now - burst) / 260) : 1;
         const sc = i === tiles.length - 1 ? ease.outBack(age) : 1;
+        // Treffer: voll gefüllt; ohne Treffer: hell mit Rand (nicht nur über Rot/Grün unterscheidbar)
         const col = t ? c.hit : c.ok;
         const sz = (cell - 3) * sc;
-        g.fillStyle = mixColor(col, th().bg, t ? 0.05 : 0.25);
-        roundRect(g, x + cell / 2 - sz / 2, y + cell / 2 - sz / 2, sz, sz, Math.min(4, cell / 4));
-        g.fill();
+        const rr = Math.min(4, cell / 4);
+        if (t) {
+          g.fillStyle = col;
+          roundRect(g, x + cell / 2 - sz / 2, y + cell / 2 - sz / 2, sz, sz, rr);
+          g.fill();
+        } else {
+          const lw = Math.max(1, Math.min(2, cell / 8));
+          g.fillStyle = mixColor(col, th().bg, 0.8);
+          roundRect(g, x + cell / 2 - sz / 2, y + cell / 2 - sz / 2, sz, sz, rr);
+          g.fill();
+          g.strokeStyle = col;
+          g.lineWidth = lw;
+          roundRect(g, x + cell / 2 - sz / 2 + lw / 2, y + cell / 2 - sz / 2 + lw / 2, Math.max(0, sz - lw), Math.max(0, sz - lw), rr);
+          g.stroke();
+        }
       }
       if (!runs) rich(tt('Starte mit „100 Klassen“ oder „1000 Klassen“.', 'Start with “100 classes” or “1000 classes”.'), R.x + R.w / 2, (top + bottom) / 2, small ? 11 : 12, th().muted, 'center', 650);
       if (off > 0) rich(tt(`(die letzten ${tiles.length} von ${runs} Klassen)`, `(the last ${tiles.length} of ${runs} classes)`), R.x + R.w - 14, R.y + 20, 10.5, th().muted, 'right', 600);
@@ -853,8 +874,8 @@ export default defineSimulation({
       const y1 = R.y + R.h - (small ? 42 : 46);
       const y2 = R.y + R.h - (small ? 18 : 20);
       rich(tt(`freie ${unitWord(true)}: ${freeNow} von ${d}`, `free ${unitWord(true)}: ${freeNow} of ${d}`), R.x + 14, y1, small ? 11 : 12, th().muted, 'left', 700);
-      const ptxt = p.curve ? fmt.fixed(prod, 4) : '?';
-      const src = tt(`P(alle ${kInt} verschieden) = ${ptxt}`, `P(all ${kInt} different) = ${ptxt}`);
+      const ptxt = p.curve ? `${relation(prod, 4)} ${fmt.fixed(prod, 4)}` : '= ?';
+      const src = tt(`P(alle ${kInt} verschieden) ${ptxt}`, `P(all ${kInt} different) ${ptxt}`);
       rich(src, R.x + 14, y2, fitSize(src, R.w - 28, small ? 12.5 : 14, 800), c.any, 'left', 800);
       // Fortschrittsbalken der freien Tage
       const bx = R.x + R.w * 0.52;
@@ -896,7 +917,7 @@ export default defineSimulation({
       const mine = q() === 'mine';
       g.save();
       g.globalAlpha *= alpha;
-      rich(mine ? tt(`Ich und ${n} andere: ${n} Paare`, `Me and ${n} others: ${n} pairs`) : tt(`${n} Personen: ${fmt.num(pairs(n), 0)} Paare`, `${n} people: ${fmt.num(pairs(n), 0)} pairs`), R.x + 14, R.y + 20, small ? 13 : 14, th().text, 'left', 800);
+      rich(mine ? tt(`Ich und ${n} andere: ${n} Paare`, `Me and ${n} others: ${n} pairs`) : tt(`${n} Personen: ${pairsTxt(n)} Paare`, `${n} people: ${pairsTxt(n)} pairs`), R.x + 14, R.y + 20, small ? 13 : 14, th().text, 'left', 800);
       const grow = reduced() || intro === null ? 1 : clamp01((now - (intro ?? 0) - 300) / 1200);
       const dups = duplicates(cls);
       const same = (i: number, j: number) => cls[i] !== undefined && cls[i] === cls[j];
@@ -975,7 +996,7 @@ export default defineSimulation({
     /* ---------- Diagramm ---------- */
     function chartInner(R: Rect): Rect {
       const left = 46;
-      const top = 54;
+      const top = mode() === 'calc' ? 74 : 54;
       return { x: R.x + left, y: R.y + top, w: R.w - left - 18, h: R.h - top - 30 };
     }
     function drawChart(R: Rect, alpha: number, now: number, grow: number): void {
@@ -1059,6 +1080,7 @@ export default defineSimulation({
       else drawCurves(A, X, Y, grow);
       g.restore();
       if (!isSim) drawNMarker(R, A, X, Y);
+      if (md === 'calc') drawCalcLegend(A);
       g.restore();
     }
 
@@ -1145,9 +1167,19 @@ export default defineSimulation({
         g.stroke();
         g.restore();
         const leftSide = p.n >= n50 && p.n - n50 < 6;
-        rich(`n = ${n50}`, leftSide ? x - 5 : x + 5, Y(0.5) + 12, baseSize() - 2, q() === 'mine' ? c.mine : c.any, leftSide ? 'right' : 'left', 800);
+        const lab = `n = ${n50}`;
+        const lw = measure(lab, baseSize() - 2, 800).w;
+        const lx = leftSide ? x - 5 - lw : x + 5;
+        g.fillStyle = mixColor(th().text, th().bg, 1, 0.9);
+        roundRect(g, lx - 3, Y(0.5) + 12 - (baseSize() - 2) / 2 - 3, lw + 6, baseSize() - 2 + 6, 4);
+        g.fill();
+        rich(lab, lx, Y(0.5) + 12, baseSize() - 2, q() === 'mine' ? c.mine : c.any, 'left', 800);
       } else if (q() === 'mine' && days() === 365) {
         rich(tt(`über 50 % erst ab n = ${n50}`, `above 50 % only from n = ${n50}`), A.x + A.w - 4, Y(0.5) - 10, baseSize() - 2, c.mine, 'right', 750);
+      }
+      if (showAny && showMine() && xm >= 2) {
+        rich(tt('mind. zwei gleich', 'at least two equal'), A.x + A.w - 4, Y(curveAny[xm]!) + 13, baseSize() - 2, c.any, 'right', 800);
+        rich(tt(`an meinem ${unitWord(false)}`, `on my ${unitWord(false)}`), A.x + A.w - 4, Y(curveMine[xm]!) - (curveMine[xm]! > 0.85 ? -13 : 11), baseSize() - 2, c.mine, 'right', 800);
       }
       if (mode() === 'pairs' && showAny) {
         rich(tt('Näherung über Paare', 'approximation via pairs'), A.x + A.w - 4, Y(0.12), baseSize() - 2, c.approx, 'right', 700);
@@ -1193,7 +1225,7 @@ export default defineSimulation({
       roundRect(g, bx, by, w, hh, hh / 2);
       g.fill();
       g.restore();
-      rich(lab, bx + w / 2, by + hh / 2 + 0.5, baseSize() - 0.5, '#ffffff', 'center', 800);
+      rich(lab, bx + w / 2, by + hh / 2 + 0.5, baseSize() - 0.5, onFill(), 'center', 800);
       if (p.curve && md !== 'calc') {
         g.fillStyle = col;
         g.beginPath();
@@ -1283,19 +1315,28 @@ export default defineSimulation({
         g.fillStyle = mixColor(c.any, th().bg, i === Math.ceil(k) ? 0 : 0.3);
         g.fillRect(x, A.y + A.h - hb, bw, hb);
       }
-      // Legende (mit Hintergrund, oben rechts)
-      const lw = Math.max(measure(tt('alle verschieden', 'all different'), baseSize() - 2, 700).w, measure(tt('mind. zwei gleich', 'at least two equal'), baseSize() - 2, 700).w) + 30;
-      const lx = A.x + A.w - lw;
-      const ly = A.y + 10;
-      g.fillStyle = pillBg();
-      roundRect(g, lx - 6, ly - 10, lw + 4, 38, 8);
-      g.fill();
-      g.fillStyle = c.any;
-      g.fillRect(lx, ly - 5, 10, 10);
-      rich(tt('alle verschieden', 'all different'), lx + 15, ly, baseSize() - 2, th().text, 'left', 700);
-      g.fillStyle = c.hit;
-      g.fillRect(lx, ly + 11, 10, 10);
-      rich(tt('mind. zwei gleich', 'at least two equal'), lx + 15, ly + 16, baseSize() - 2, th().text, 'left', 700);
+    }
+
+    /** Legende der Rechnung: eine Zeile über dem Diagramm (verdeckt keine Säulen). */
+    function drawCalcLegend(A: Rect): void {
+      const g = surface.g;
+      const c = C();
+      const la = tt('alle verschieden', 'all different');
+      const lb = tt('mind. zwei gleich', 'at least two equal');
+      let sz = baseSize() - 2;
+      const width = (z: number) => measure(la, z, 700).w + measure(lb, z, 700).w + 2 * (z + 5) + 14;
+      while (sz > 8.5 && width(sz) > A.w) sz -= 0.5;
+      const y = A.y - 14;
+      let x = A.x + A.w - width(sz);
+      for (const [lab, col] of [
+        [la, c.any],
+        [lb, c.hit],
+      ] as const) {
+        g.fillStyle = col;
+        g.fillRect(x, y - sz / 2, sz, sz);
+        x += sz + 5;
+        x += rich(lab, x, y, sz, th().text, 'left', 700) + 14;
+      }
     }
 
     /* ---------- Rechenkarte ---------- */
@@ -1321,8 +1362,8 @@ export default defineSimulation({
         const s = statNow();
         const P = pOf(n);
         rows.push({ src: tt('relative Häufigkeit h = \\f{Treffer}{Klassen}', 'relative frequency h = \\f{hits}{classes}'), col: th().text });
-        rows.push({ src: s && s.runs ? `h = \\f{${s.hits}}{${s.runs}} ≈ ${fmt.fixed(s.hits / s.runs, 3)}` : tt('h: noch keine Klasse', 'h: no class yet'), col: c.hit });
-        rows.push({ src: `P = ${show ? fmt.fixed(P, 3) : '?'}`, col: c.any });
+        rows.push({ src: s && s.runs ? `h = \\f{${s.hits}}{${s.runs}} ${relation(s.hits / s.runs, 3)} ${fmt.fixed(s.hits / s.runs, 3)}` : tt('h: noch keine Klasse', 'h: no class yet'), col: c.hit });
+        rows.push({ src: show ? `P ${relation(P, 3)} ${fmt.fixed(P, 3)}` : 'P = ?', col: c.any });
         if (s && s.runs && show) {
           const [lo, hi] = band95(P, s.runs);
           rows.push({ src: tt(`95-%-Bereich bei N = ${s.runs}: ${fmt.fixed(lo, 3)} bis ${fmt.fixed(hi, 3)}`, `95 % range for N = ${s.runs}: ${fmt.fixed(lo, 3)} to ${fmt.fixed(hi, 3)}`), col: th().muted });
@@ -1331,12 +1372,12 @@ export default defineSimulation({
         if (q() === 'mine') {
           rows.push({ src: tt(`Paare mit mir: n = ${n}`, `pairs with me: n = ${n}`), col: th().text });
           rows.push({ src: tt(`pro Paar: P(gleich) = \\f{1}{${d}}`, `per pair: P(same) = \\f{1}{${d}}`), col: th().text });
-          rows.push({ src: `P = 1 − (\\f{${d - 1}}{${d}})^{${n}} = ${show ? pct(pMy(n), 2) : '?'}`, col: c.mine });
-          rows.push({ src: tt(`zum Vergleich: ${fmt.num(pairs(n + 1), 0)} Paare in der ganzen Gruppe`, `compare: ${fmt.num(pairs(n + 1), 0)} pairs in the whole group`), col: th().muted });
+          rows.push({ src: `P = 1 − (\\f{${d - 1}}{${d}})^{${n}} ${show ? `≈ ${pct(pMy(n), 2)}` : '= ?'}`, col: c.mine });
+          rows.push({ src: tt(`zum Vergleich: ${pairsTxt(n + 1)} Paare in der ganzen Gruppe`, `compare: ${pairsTxt(n + 1)} pairs in the whole group`), col: th().muted });
         } else {
-          rows.push({ src: tt(`Paare: \\f{n · (n − 1)}{2} = \\f{${n} · ${n - 1}}{2} = ${fmt.num(pairs(n), 0)}`, `pairs: \\f{n · (n − 1)}{2} = \\f{${n} · ${n - 1}}{2} = ${fmt.num(pairs(n), 0)}`), col: th().text });
+          rows.push({ src: tt(`Paare: \\f{n · (n − 1)}{2} = \\f{${n} · ${n - 1}}{2} = ${pairsTxt(n)}`, `pairs: \\f{n · (n − 1)}{2} = \\f{${n} · ${n - 1}}{2} = ${pairsTxt(n)}`), col: th().text });
           rows.push({ src: tt(`pro Paar: P(gleich) = \\f{1}{${d}}`, `per pair: P(same) = \\f{1}{${d}}`), col: th().text });
-          rows.push({ src: tt(`Näherung: 1 − (\\f{${d - 1}}{${d}})^{${fmt.num(pairs(n), 0)}} ≈ ${show ? pct(pApprox(n, d), 1) : '?'}`, `approx.: 1 − (\\f{${d - 1}}{${d}})^{${fmt.num(pairs(n), 0)}} ≈ ${show ? pct(pApprox(n, d), 1) : '?'}`), col: c.approx });
+          rows.push({ src: tt(`Näherung: 1 − (\\f{${d - 1}}{${d}})^{${pairsTxt(n)}} ≈ ${show ? pct(pApprox(n, d), 1) : '?'}`, `approx.: 1 − (\\f{${d - 1}}{${d}})^{${pairsTxt(n)}} ≈ ${show ? pct(pApprox(n, d), 1) : '?'}`), col: c.approx });
           rows.push({ src: tt(`exakt: ${show ? pct(pAny(n), 1) : '?'}`, `exact: ${show ? pct(pAny(n), 1) : '?'}`), col: c.any });
         }
       } else if (q() === 'mine' && md === 'class') {
@@ -1346,7 +1387,7 @@ export default defineSimulation({
       } else {
         rows.push({ src: tt(`P(alle verschieden) = ${prodSrc(n)}`, `P(all different) = ${prodSrc(n)}`), col: th().text });
         const pa = allDifferentSeries(Math.min(n, d + 1), d)[Math.min(n, d + 1)] ?? 0;
-        rows.push({ src: `P(${tt('mind. zwei gleich', 'at least two equal')}) = 1 − ${show ? fmt.fixed(pa, 4) : '?'} ${show ? `= ${pct(1 - pa, 2)}` : ''}`, col: md === 'calc' ? c.hit : c.any });
+        rows.push({ src: `P(${tt('mind. zwei gleich', 'at least two equal')}) ${show ? `${relation(pa, 4)} 1 − ${fmt.fixed(pa, 4)} = ${pct(1 - pa, 2)}` : '= 1 − ?'}`, col: md === 'calc' ? c.hit : c.any });
         if (md === 'calc') {
           const fs = factors(Math.min(n, d), d);
           const kk = Math.min(Math.floor(calcK(now)), fs.length);
@@ -1372,7 +1413,7 @@ export default defineSimulation({
       const dups = duplicates(cls);
       if (q() === 'mine') {
         const k = cls.filter((s) => s === mySlot()).length;
-        return k ? tt(`Diese Klasse: ${k}× an meinem ${unitWord(false)} (${slotName(mySlot())})`, `This class: ${k}× on my ${unitWord(false)} (${slotName(mySlot())})`) : tt(`Diese Klasse: niemand an ${slotName(mySlot())}`, `This class: nobody on ${slotName(mySlot())}`);
+        return k ? tt(`Diese Klasse: ${k}× an meinem ${unitWord(false)} (${slotName(mySlot())})`, `This class: ${k}× on my ${unitWord(false)} (${slotName(mySlot())})`) : tt(`Diese Klasse: niemand ${days() === 12 ? 'im' : 'am'} ${slotName(mySlot())}`, `This class: nobody ${days() === 12 ? 'in' : 'on'} ${slotName(mySlot())}`);
       }
       if (!dups.size) return tt('Diese Klasse: alle verschieden', 'This class: all different');
       const list = [...dups.entries()].slice(0, 3).map(([s, k]) => `${slotName(s)} (${k}×)`);
@@ -1387,7 +1428,8 @@ export default defineSimulation({
       else if (n > d) ctx.readout('p', { html: tt(`<var>n</var> = ${n} > ${d}: <var>P</var> = 1 (Schubfachprinzip)`, `<var>n</var> = ${n} > ${d}: <var>P</var> = 1 (pigeonhole principle)`) });
       else ctx.readout('p', { html: `<var>P</var> = 1 − <span class="frac"><span>${d} · ${d - 1} · … · ${d - n + 1}</span><span>${d}<sup>${n}</sup></span></span> ≈ ${fmt.num(pAny(n) * 100, 2)} %` });
       const s = statNow();
-      ctx.readout('sim', s && s.runs ? tt(`${s.hits} von ${s.runs} Klassen = ${fmt.num((s.hits / s.runs) * 100, 1)} %`, `${s.hits} of ${s.runs} classes = ${fmt.num((s.hits / s.runs) * 100, 1)} %`) : tt('noch keine Klasse simuliert', 'no class simulated yet'));
+      const hRel = s && s.runs ? `${relation((s.hits / s.runs) * 100, 1)} ${fmt.fixed((s.hits / s.runs) * 100, 1)} %` : '';
+      ctx.readout('sim', s && s.runs ? tt(`${s.hits} von ${s.runs} Klassen ${hRel}`, `${s.hits} of ${s.runs} classes ${hRel}`) : tt('noch keine Klasse simuliert', 'no class simulated yet'));
       ctx.readout('class', classLine().replace(/^Diese Klasse: |^This class: /, ''));
     }
     function syncActions(): void {
