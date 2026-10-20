@@ -111,11 +111,13 @@ export default defineSimulation({
       refill: 'Neu füllen',
       fill: 'Füllen',
       countText: '{n} Einheitswürfel',
+      countText1: '1 Einheitswürfel',
       stage_leer: 'leer',
       stage_reihe: '1 Reihe',
       stage_schicht: '1 Schicht',
       stage_voll: 'voll',
       litre: 'Liter',
+      litre1: 'Liter',
     },
     en: {
       canvas: 'Glass cuboid being filled with unit cubes; the view can be rotated',
@@ -130,11 +132,13 @@ export default defineSimulation({
       refill: 'Fill again',
       fill: 'Fill',
       countText: '{n} unit cubes',
+      countText1: '1 unit cube',
       stage_leer: 'empty',
       stage_reihe: '1 row',
       stage_schicht: '1 layer',
       stage_voll: 'full',
       litre: 'litres',
+      litre1: 'litre',
     },
   },
 
@@ -244,14 +248,15 @@ export default defineSimulation({
       const u = unit();
       const n = currentCount();
       const stage = stageOf(n, p.a, p.b, p.c);
-      ctx.readout('count', `${tr('countText', { n })}${stage ? ` (${ctx.t(`stage_${stage}`)})` : ''}`);
+      ctx.readout('count', `${tr(n === 1 ? 'countText1' : 'countText', { n })}${stage ? ` (${ctx.t(`stage_${stage}`)})` : ''}`);
       const v = (x: string) => `<var>${x}</var>`;
       const V = total();
       ctx.readout('volume', {
         html: `${v('V')} = ${v('a')} · ${v('b')} · ${v('c')} = ${p.a}&nbsp;${u} · ${p.b}&nbsp;${u} · ${p.c}&nbsp;${u} = <strong>${big(V)}&nbsp;${u}³</strong>`,
       });
       const c = convertVolume(V, u);
-      const l = ctx.t('litre');
+      // Einzahl nur bei genau 1 (EN „1 litre“, aber „0.5 litres“)
+      const l = ctx.t(c.l === 1 ? 'litre1' : 'litre');
       const parts =
         u === 'cm'
           ? [`${big(V)} cm³`, `${big(c.dm3)} dm³`, `${big(c.l)} ${l}`, `${big(c.ml)} ml`]
@@ -301,12 +306,15 @@ export default defineSimulation({
       const goal = { target: [b / 2, (a - 2.6) / 2, c / 2.1] as Vec3, radius: 0.5 * Math.hypot(a + 2.6, b, c) * (narrow ? 1.05 : 1.0) + 0.6 };
       if (!frame) frame = goal;
       let moving = false;
-      if (now - lastHandle > 350) {
+      if (now - lastHandle <= 350) moving = true;
+      // reduzierte Bewegung: Bildausschnitt springt sofort
+      else if (prefersReducedMotion()) frame = goal;
+      else {
         const k = 1 - Math.exp(-dt / 0.18);
         const next = { target: vec3.lerp(frame.target, goal.target, k), radius: frame.radius + (goal.radius - frame.radius) * k };
         moving = vec3.distance(next.target, goal.target) > 0.01 || Math.abs(next.radius - goal.radius) > 0.01;
         frame = moving ? next : goal;
-      } else moving = true;
+      }
       view.setScene({ target: frame.target, radius: frame.radius, anchor: [narrow ? 0.5 : 0.56, narrow ? 0.6 : 0.54] });
 
       view.begin();
@@ -515,7 +523,7 @@ export default defineSimulation({
       if (n >= a && b > 1) lines.push({ text: tr('row', { a }), color: th.series[3]! });
       if (n >= ab) lines.push({ text: b > 1 ? tr('layer', { a, b, ab }) : tr('row', { a }), color: th.series[0]! });
       if (n >= abc && c > 1) lines.push({ text: tr('layers', { c, ab, abc }), color: th.series[5]! });
-      if (n >= abc) lines.push({ text: `V = ${a} · ${b} · ${c} ${u}³ = ${big(abc)} ${u}³${u === 'dm' ? ` = ${big(abc)} ${ctx.t('litre')}` : ''}`, color: th.text, bold: true });
+      if (n >= abc) lines.push({ text: `V = ${a} · ${b} · ${c} ${u}³ = ${big(abc)} ${u}³${u === 'dm' ? ` = ${big(abc)} ${ctx.t(abc === 1 ? 'litre1' : 'litre')}` : ''}`, color: th.text, bold: true });
       const size = narrow ? 12 : 13;
       const head = `${n}`;
       const headLabel = n === 1 ? ctx.t('cube1') : ctx.t('cubes');
