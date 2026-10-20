@@ -65,7 +65,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 5–5 | `umfang-flaeche` | Umfang und Flächeninhalt von Rechtecken | `/de/mathematik/flaechen-und-koerper/umfang-flaecheninhalt-rechteck/` |
 | ✓ | 5–5 | `winkel-messen` | Winkel schätzen und messen | `/de/mathematik/geometrie/winkel-schaetzen-messen/` |
 | ✓ | 5–5 | `zahlengerade` | Ganze Zahlen an der Zahlengeraden addieren und subtrahieren | `/de/mathematik/zahlen-und-operationen/ganze-zahlen-zahlengerade/` |
-| ☐ | 5–6 | `primfaktoren` | Primfaktorzerlegung und Teilbarkeit | `/de/mathematik/zahlen-und-operationen/primfaktoren-teilbarkeit/` |
+| ✓ | 5–6 | `primfaktoren` | Primfaktorzerlegung und Teilbarkeit | `/de/mathematik/zahlen-und-operationen/primfaktoren-teilbarkeit/` |
 | ☐ | 5–6 | `zehnerpotenzen` | Potenzen, Zehnerpotenzen und Größenordnungen | `/de/mathematik/zahlen-und-operationen/zehnerpotenzen-groessenordnungen/` |
 | ☐ | 5–7 | `termbaum` | Termbaum: die Struktur von Termen | `/de/mathematik/terme-und-gleichungen/termbaum/` |
 | ☐ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |

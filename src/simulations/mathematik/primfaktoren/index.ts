@@ -148,6 +148,12 @@ export default defineSimulation({
       tipOne: '1 ist weder Primzahl noch zusammengesetzt',
       common: 'gemeinsam',
       divCount: '{n} hat {c} Teiler: {list}',
+      altTree: 'Faktorbaum von {n}: {f}',
+      altTreeOpen: 'Faktorbaum von {n}, noch nicht ganz zerlegt',
+      altSieve: 'Sieb des Eratosthenes bis {max}: {count} Primzahlen',
+      altSieveOpen: 'Sieb des Eratosthenes mit den Zahlen von 1 bis {max}',
+      altGgt: 'Mengenbild der Primfaktoren von {a} und {b}: ggT {g}, kgV {k}',
+      altGgtOpen: 'Mengenbild für die Primfaktoren von {a} und {b}',
     },
     en: {
       canvas: 'Factor tree, sieve of Eratosthenes or set diagram of the prime factors of two numbers',
@@ -183,6 +189,12 @@ export default defineSimulation({
       tipOne: '1 is neither prime nor composite',
       common: 'common',
       divCount: '{n} has {c} divisors: {list}',
+      altTree: 'Factor tree of {n}: {f}',
+      altTreeOpen: 'Factor tree of {n}, not yet completely split',
+      altSieve: 'Sieve of Eratosthenes up to {max}: {count} primes',
+      altSieveOpen: 'Sieve of Eratosthenes with the numbers from 1 to {max}',
+      altGgt: 'Set diagram of the prime factors of {a} and {b}: gcd {g}, lcm {k}',
+      altGgtOpen: 'Set diagram for the prime factors of {a} and {b}',
     },
   },
 
@@ -195,7 +207,8 @@ export default defineSimulation({
     const mode = () => p.mode as Mode;
     const isWide = () => surface.width >= 600;
     const dot = ' · ';
-    const onColor = () => (ctx.theme.dark ? '#10161f' : '#ffffff');
+    /** Schrift auf farbigen Flächen: Hintergrundfarbe des Themes. */
+    const onColor = () => ctx.theme.bg;
 
     /** Jede Primzahl hat immer dieselbe Farbe (Baum, Sieb und Mengenbild). */
     function primeColor(q: number): string {
@@ -826,7 +839,7 @@ export default defineSimulation({
       sv.steps.forEach((step, i) => {
         const s = i + 2;
         const active = stage === s && now - stageStart < stepDuration(s);
-        const doneStep = stage > s || stage === fs;
+        const doneStep = stage >= s;
         const ix = R.x + (wide ? 14 : 4 + (i % perRow) * iw);
         const iy = y + Math.floor(i / perRow) * itemH;
         const color = primeColor(step.prime);
@@ -1179,9 +1192,24 @@ export default defineSimulation({
     /** Stand von resultDone() beim letzten Füllen der Ergebnisliste. */
     let readoutDone = false;
 
+    /** Beschreibung der Zeichenfläche für Bildschirmleser (Ergebnis erst, wenn es im Bild steht). */
+    function updateAlt(): void {
+      const m = mode();
+      const done = resultDone();
+      let label: string;
+      if (m === 'baum') {
+        const n = p.n;
+        const f = isPrime(n) ? tr('isPrime', { n }) : `${n} = ${primeFactors(n).join(' · ')}`;
+        label = done ? tr('altTree', { n, f }) : tr('altTreeOpen', { n });
+      } else if (m === 'sieb') label = done ? tr('altSieve', { max: p.max, count: sv.primes.length }) : tr('altSieveOpen', { max: p.max });
+      else label = done ? tr('altGgt', { a: p.a, b: p.b, g: gcd(p.a, p.b), k: lcm(p.a, p.b) }) : tr('altGgtOpen', { a: p.a, b: p.b });
+      surface.canvas.setAttribute('aria-label', label);
+    }
+
     function updateReadouts(): void {
       const m = mode();
       readoutDone = resultDone();
+      updateAlt();
       if (!readoutDone) {
         for (const k of ['factors', 'divisors', 'primes', 'gcd', 'lcm', 'common']) ctx.readout(k, null);
         return;
