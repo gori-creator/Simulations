@@ -286,7 +286,7 @@ export default defineSimulation({
     let lastDrag = -Infinity;
     const dragging = () => drag || performance.now() - lastDrag < 250;
 
-    const trapWanted = () => sgn() !== 0 && find() === 'G' && pr.show && shareRate(sit(), pr.p) > 0;
+    const trapWanted = () => sgn() !== 0 && find() === 'G' && pr.show && shareRate(sit(), pr.p) > 0 && !solve;
 
     /* ---------- Aufteilung ---------- */
     const sm = () => surface.width < 560;
@@ -1313,7 +1313,7 @@ export default defineSimulation({
         const cw = box.w + 16;
         const overlap = !!wRect && wRect.x + wRect.w > chipX - cw / 2 - 6;
         const chipY = overlap ? gm.gPillY : gm.wPillY;
-        if (sk.count === null && al > 0.05) {
+        if (sk.count === null && al > 0.05 && !overlap) {
           // Bezugslinie von der Scheibe zum Kärtchen
           g.save();
           g.globalAlpha *= al * 0.8;
@@ -1661,7 +1661,7 @@ export default defineSimulation({
         const on = i < full;
         const isHover = hoverCell === n * 100 + i && !ctx.locked;
         g.fillStyle = theme.dark ? '#1f2834' : '#eef1f5';
-        if (sg < 0 && n === 0 && !on) g.fillStyle = withAlpha(col.down(), theme.dark ? 0.26 : 0.16);
+        if (sg < 0 && n === 0 && !on && !(solve && find() !== 'G')) g.fillStyle = withAlpha(col.down(), theme.dark ? 0.26 : 0.16);
         roundRect(g, cx, cy, s - gap, s - gap, Math.min(2.5, s * 0.2));
         g.fill();
         if (on) {
@@ -1905,7 +1905,11 @@ export default defineSimulation({
       lastTime = now;
       let anim = false;
       for (const c of allChans()) if (c.step(now, dt)) anim = true;
-      if (solve && now - solve.t0 > solveEnd()) solve = null;
+      if (solve && now - solve.t0 > solveEnd()) {
+        solve = null;
+        if (trapWanted() && !reduced()) TRAP.glide(1, 600, 0, now);
+        else TRAP.jump(trapWanted() ? 1 : 0);
+      }
       if (solve || intro !== null) anim = true;
       if (sceneFade !== null && now - sceneFade > 800) sceneFade = null;
       if (sceneFade !== null || cardFade !== null) anim = true;
@@ -1952,6 +1956,7 @@ export default defineSimulation({
       }
       const target = solveTarget();
       solve = { t0: now, dur3: clamp(target * 55, 2200, 4800) };
+      if (TRAP.goal !== 0) TRAP.glide(0, 400, 0, now);
     }
 
     /* ---------- Zeiger ---------- */
