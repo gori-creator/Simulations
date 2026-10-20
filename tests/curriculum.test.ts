@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allSimulations, getSimulation, readySimulations, SUBJECTS } from '../src/curriculum';
 import { getKmkStandard } from '../src/curriculum/kmk';
-import { STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
+import { getCurriculum, getCurriculumGrade, sameUnitElsewhere, STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
 import { LANGS } from '../src/i18n/config';
 import { allRoutes, routePath } from '../src/lib/routes';
 import { registry } from '../src/simulations/registry';
@@ -158,5 +158,14 @@ describe('Länder-Lehrpläne', () => {
         }
       }
     }
+  });
+
+  it('Doppeljahrgangsstufen verweisen auf die Stufe mit passender Simulation', () => {
+    const hessen = getCurriculum('hessen-gymnasium-mathematik');
+    const unit = (grade: number, code: string) => unitsOf(getCurriculumGrade(hessen.id, grade)).find((u) => u.code === code)!;
+    // Brüche (Simulation für Klasse 6): bei 5 ohne Simulation, Verweis auf 6
+    expect(unit(5, '1.1.3').simulations).toBeUndefined();
+    expect(sameUnitElsewhere(hessen, 5, unit(5, '1.1.3'))).toEqual([6]);
+    expect(sameUnitElsewhere(hessen, 6, unit(6, '1.1.3'))).toEqual([]);
   });
 });

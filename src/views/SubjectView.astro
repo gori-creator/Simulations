@@ -47,15 +47,18 @@ const curricula = curriculaFor(subjectId);
         <section class="lp-entry" aria-labelledby="by-grade">
           <h2 id="by-grade">{t(lang, 'curriculum.byGrade')}</h2>
           <p class="muted">{t(lang, 'curriculum.byGradeLead')}</p>
-          {curricula.map((c) => (
-            <div class="lp-entry__row">
-              <span class="lp-entry__label">
-                {t(lang, 'curriculum.label', { state: c.state[lang], school: c.schoolType[lang] })}
-              </span>
-              <GradeNav lang={lang} curriculum={c} />
-              <a href={href(lang, { kind: 'curriculum', curriculum: c.id })}>{t(lang, 'curriculum.overview')}</a>
-            </div>
-          ))}
+          {/* Mehrere Länder: Zeilen als Tabelle ausgerichtet (Bezeichnung | Jahrgangsstufen | Überblick) */}
+          <div class="lp-entry__rows">
+            {curricula.map((c) => (
+              <div class="lp-entry__row">
+                <span class="lp-entry__label">
+                  {t(lang, 'curriculum.label', { state: c.state[lang], school: c.schoolType[lang] })}
+                </span>
+                <GradeNav lang={lang} curriculum={c} />
+                <a href={href(lang, { kind: 'curriculum', curriculum: c.id })}>{t(lang, 'curriculum.overview')}</a>
+              </div>
+            ))}
+          </div>
         </section>
       )
     }

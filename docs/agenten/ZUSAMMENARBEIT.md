@@ -9,6 +9,17 @@ Zwei Personen arbeiten mit je eigenem Claude Code am Projekt.
 | **Physik** (Gruppen `P…` in `WARTESCHLANGE.md`, `src/curriculum/physik.ts`, `src/simulations/physik/`) | Projektinhaber | `claude/sleepy-goodall-ddchwy` |
 | **Mathematik** (Gruppen `M…`, `src/curriculum/mathematik.ts`, `src/simulations/mathematik/`) | Kollege | eigener Zweig, z. B. `claude/…` oder `mathe/<gruppe>` |
 
+### Mathematik aufgeteilt auf zwei Sitzungen (ab 18.10.2026)
+
+Die restlichen Mathe-Gruppen bauen zwei Claude-Sitzungen parallel, jede auf ihrem eigenen Zweig, jede mit eigenen Pull Requests nach `main`:
+
+| Teil | Gruppen (in dieser Reihenfolge) | Zweig |
+| --- | --- | --- |
+| **Mathe Teil 1** | M16 (boxplot), M25, M17, M02, M13, M08, M18, M26 | `claude/jolly-allen-y0ef9g` |
+| **Mathe Teil 2** | M09, M14, M04, M10, M15, M19, M20, M21, M22 | eigener Zweig, z. B. `mathe/teil-2` |
+
+Wer eine Gruppe beginnt, trägt in `WARTESCHLANGE.md` „läuft (Mathe 1)“ bzw. „läuft (Mathe 2)“ ein. Wer mit seinem Teil fertig ist, nimmt sich offene Gruppen vom Ende des anderen Teils und trägt das vorher ein.
+
 Ausnahme: `diagramme` (Gruppe M16) war beim Wechsel schon in Arbeit und ist auf dem Physik-Zweig fertiggestellt (18.10.).
 
 ## Zweige
