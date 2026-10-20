@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { asFraction, baseValue, discounted, gross, isNice, niceTask, percentRate, percentValue, ruleOfThree, upThenDown } from '../src/simulations/mathematik/prozentstreifen/model';
+import { asFraction, baseValue, discounted, gross, isNice, percentRate, percentValue, ruleOfThree } from '../src/simulations/mathematik/prozentstreifen/model';
 
 describe('Modell: Prozentstreifen', () => {
   it('Prozentwert, Prozentsatz und Grundwert (Lehrbuchwerte)', () => {
@@ -48,24 +48,6 @@ describe('Modell: Prozentstreifen', () => {
         if (p > 0) expect(baseValue(W, p)).toBeCloseTo(G, 9);
         expect(discounted(G, p) + W).toBeCloseTo(G, 9);
       }
-    }
-  });
-  it('Erst +20 %, dann −20 %: 100 € → 120 € → 96 €, insgesamt −4 %', () => {
-    const r = upThenDown(100, 20);
-    expect(r.up).toBe(120);
-    expect(r.down).toBe(96);
-    expect(r.factor).toBeCloseTo(0.96, 12);
-    expect(r.netPct).toBeCloseTo(-4, 12);
-    // +50 % und −50 %: nur noch drei Viertel
-    expect(upThenDown(80, 50).down).toBe(60);
-  });
-  it('Übungswerte sind glatt (Prozentwert mit höchstens einer Nachkommastelle)', () => {
-    let s = 1;
-    const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-    for (let i = 0; i < 100; i++) {
-      const t = niceTask(rnd);
-      expect(Number.isInteger(t.G)).toBe(true);
-      expect(Math.abs(((t.G * t.p) / 100) * 10 - Math.round(((t.G * t.p) / 100) * 10))).toBeLessThan(1e-9);
     }
   });
 });

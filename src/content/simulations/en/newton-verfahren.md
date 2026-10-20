@@ -15,8 +15,6 @@ Near a simple zero the number of correct digits roughly doubles with every step.
 1. [√2](?fn=sq2&x0=1&k=0): press “Next step” several times and watch the green digits.
 2. [Zoom in](?fn=sq2&x0=1&k=3&zoom=1) and [Newton’s example](?fn=cubic&x0=2&k=2).
 3. [The start value matters](?fn=three&x0=0.9&k=4) and [cycle](?fn=cycle&x0=0&k=3).
-4. [Basins of attraction](?fn=three&x0=0.9&k=3&basin=1): which colour is the strip at $x_0 = 0.9$, and at $0.95$?
-5. [Newton vs. bisection](?fn=cos&x0=1&k=4&cmp=1): press “Steps to the end” and compare the correct digits.
 
 ## Tasks
 
@@ -39,17 +37,6 @@ $f(x) = x^3 - 2x + 2$, $x_0 = 0$ gives $1, 0, 1, \ldots$ Explain. [Show](?fn=cyc
 <summary>Show solution</summary>
 
 The tangent at $0$ hits the axis at $1$ and the tangent at $1$ hits it at $0$ again – an endless cycle.
-
-</details>
-
-### Task: How many halvings?
-
-A starting interval of length 1 contains a zero. How many bisection steps are needed for 6 correct decimal places (error $< 0.5 \cdot 10^{-6}$)? [Load task](?fn=cos&x0=1&k=0&cmp=1&_hide=1)
-
-<details>
-<summary>Show solution</summary>
-
-$2^{-(n+1)} < 0.5 \cdot 10^{-6} \iff 2^n > 10^6 \iff n \geq 20$. Newton needs only 3–4 steps from $x_0 = 1$. [Show](?fn=cos&x0=1&k=4&cmp=1)
 
 </details>
 

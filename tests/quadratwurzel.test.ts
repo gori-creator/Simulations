@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { exactAt, heronNext, heronSteps, isPerfectSquare, nestInterval, spiralAngle, spiralVertices } from '../src/simulations/mathematik/quadratwurzel/model';
+import { exactAt, heronNext, heronSteps, isPerfectSquare, nestInterval } from '../src/simulations/mathematik/quadratwurzel/model';
 
 describe('Modell: Quadratwurzel', () => {
   it('Heron für √2 mit x₀ = 2: 1,5; 1,41666…; 1,4142157 …', () => {
@@ -40,21 +40,5 @@ describe('Modell: Quadratwurzel', () => {
     expect(exactAt(25, 0)).toBe(true);
     expect(exactAt(2, 5)).toBe(false);
     expect(nestInterval(49, 2)).toEqual([7, 7.01]);
-  });
-  it('Wurzelspirale: Ecke k im Abstand √k, äußere Kante 1 und senkrecht zum Radius', () => {
-    const v = spiralVertices(16);
-    expect(v).toHaveLength(17);
-    v.forEach(([x, y], i) => expect(Math.hypot(x, y)).toBeCloseTo(Math.sqrt(i + 1), 12));
-    for (let k = 0; k < 16; k++) {
-      const [ax, ay] = v[k]!;
-      const [bx, by] = v[k + 1]!;
-      expect(Math.hypot(bx - ax, by - ay)).toBeCloseTo(1, 12);
-      expect(ax * (bx - ax) + ay * (by - ay)).toBeCloseTo(0, 12);
-    }
-  });
-  it('Wurzelspirale: 16 Dreiecke (bis √17) bleiben knapp unter einer vollen Umdrehung', () => {
-    expect(spiralAngle(16)).toBeCloseTo(351.15, 2);
-    expect(spiralAngle(17)).toBeGreaterThan(360);
-    expect(spiralAngle(1)).toBeCloseTo(45, 12);
   });
 });

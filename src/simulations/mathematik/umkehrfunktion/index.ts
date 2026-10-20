@@ -1,10 +1,9 @@
 import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaStyle } from './formula';
-import { hCount, inverseSlope, makeFn, mirrorPath, partner, type FnKey, type SqDom } from './model';
+import { makeFn, mirrorPath, partner, type FnKey, type SqDom } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 const R0 = 5.5;
 const MIRROR_MS = 2600;
@@ -25,13 +24,6 @@ const STEPS: Record<string, Steps> = {
   cube: { f: 'f(x) = 0,5x³', solve: ['y = 0,5x³', 'x³ = 2y', 'x = \\t{∛}(2y)'], inv: 'f^{−1}(x) = \\t{∛}(2x)', df: 'ℝ', wf: 'ℝ' },
   exp: { f: 'f(x) = e^x', solve: ['y = e^x', 'x = \\t{ln} y'], inv: 'f^{−1}(x) = \\t{ln} x', df: 'ℝ', wf: 'ℝ^+' },
   hyp: { f: 'f(x) = \\f{1}{x}', solve: ['y = \\f{1}{x}', 'x = \\f{1}{y}'], inv: 'f^{−1}(x) = \\f{1}{x}', df: 'ℝ \\ {0}', wf: 'ℝ \\ {0}' },
-  shift: {
-    f: 'f(x) = (x − 2)² + 1 \\t{ für } x ≥ 2',
-    solve: ['y = (x − 2)² + 1', 'y − 1 = (x − 2)²', 'x − 2 = \\r{y − 1} \\t{ (da } x ≥ 2\\t{)}', 'x = 2 + \\r{y − 1}'],
-    inv: 'f^{−1}(x) = 2 + \\r{x − 1}',
-    df: '[2; ∞[',
-    wf: '[1; ∞[',
-  },
 };
 
 /**
@@ -57,7 +49,6 @@ export default defineSimulation({
         { value: 'cube', label: L('f(x) = 0,5x³', 'f(x) = 0.5x³') },
         { value: 'exp', label: L('f(x) = eˣ (ln-Funktion)', 'f(x) = eˣ (natural log)') },
         { value: 'hyp', label: L('f(x) = 1/x', 'f(x) = 1/x') },
-        { value: 'shift', label: L('f(x) = (x − 2)² + 1, x ≥ 2', 'f(x) = (x − 2)² + 1, x ≥ 2') },
       ],
       default: 'sq',
     },
@@ -75,9 +66,6 @@ export default defineSimulation({
     },
     { key: 'x', type: 'number', label: L('Punkt P: x', 'Point P: x'), min: -4, max: 4, step: 0.1, default: 1.5, help: L('Auch P auf dem Graphen ziehen.', 'You can also drag P along the graph.') },
     { key: 'inv', type: 'boolean', group: 'view', label: L('Graph von f⁻¹ zeigen', 'Show the graph of f⁻¹'), default: true },
-    { key: 'hl', type: 'boolean', group: 'view', label: L('Waagrechtentest', 'Horizontal line test'), help: L('Eine waagrechte Gerade darf den Graphen höchstens einmal schneiden.', 'A horizontal line may cut the graph at most once.'), default: false },
-    { key: 'c', type: 'number', group: 'view', label: L('Waagrechte Gerade y = c', 'Horizontal line y = c'), min: -4, max: 4, step: 0.1, default: 2, visibleIf: (v) => v.hl === true },
-    { key: 'tan', type: 'boolean', group: 'view', label: L('Tangenten und Steigungen (f⁻¹)′', 'Tangents and slopes (f⁻¹)′'), default: false },
     { key: 'show', type: 'boolean', group: 'view', label: L('Rechenweg zeigen', 'Show the working'), help: L('Aus: Umkehrfunktion selbst bestimmen.', 'Off: find the inverse yourself.'), default: true },
   ],
   actions: [{ id: 'mirror', label: L('An y = x spiegeln', 'Reflect in y = x'), primary: true }],
@@ -90,8 +78,8 @@ export default defineSimulation({
     { id: 'all', label: L('x² auf ganz ℝ: nicht umkehrbar', 'x² on all of ℝ: not invertible'), values: { fn: 'sq', dom: 'all', x: 1.5 } },
     { id: 'neg', label: L('x² für x ≤ 0', 'x² for x ≤ 0'), values: { fn: 'sq', dom: 'neg', x: -1.5 } },
     { id: 'ln', label: L('eˣ und ln x', 'eˣ and ln x'), values: { fn: 'exp', x: 1 } },
-    { id: 'test', label: L('Waagrechtentest bei x²', 'Horizontal line test for x²'), values: { fn: 'sq', dom: 'all', hl: true, c: 2 } },
-    { id: 'shift', label: L('Verschobene Parabel', 'Shifted parabola'), values: { fn: 'shift', x: 3, tan: true } },
+    { id: 'lin', label: L('Lineare Funktion', 'Linear function'), values: { fn: 'lin', x: 2 } },
+    { id: 'hyp', label: L('1/x ist zu sich selbst invers', '1/x is its own inverse'), values: { fn: 'hyp', x: 2 } },
   ],
   strings: {
     de: {
@@ -109,11 +97,6 @@ export default defineSimulation({
       swapSets: 'Definitions- und Wertemenge tauschen die Rollen.',
       mirror: 'Spiegelachse',
       noFunction: 'keine Funktion',
-      hits: '{n} Schnittpunkt(e)',
-      tableT: 'Wertetabelle: x und y tauschen',
-      derivT: 'Steigung der Umkehrfunktion',
-      derivFlat: 'Bei waagrechter Tangente (f′ = 0) ist die Tangente von f⁻¹ senkrecht – f⁻¹ ist dort nicht differenzierbar.',
-      derivNote: 'Spiegeln an y = x vertauscht Δx und Δy – die Steigung wird zum Kehrwert.',
     },
     en: {
       canvas: 'Coordinate system with the mirror line y = x, the graph of f, the graph of the inverse and a draggable point P with its image P′. Next to it the steps for finding the inverse and the domains and ranges.',
@@ -130,11 +113,6 @@ export default defineSimulation({
       swapSets: 'Domain and range swap roles.',
       mirror: 'mirror line',
       noFunction: 'not a function',
-      hits: '{n} intersection(s)',
-      tableT: 'Table of values: swap x and y',
-      derivT: 'Slope of the inverse',
-      derivFlat: 'Where the tangent is horizontal (f′ = 0) the tangent of f⁻¹ is vertical – f⁻¹ is not differentiable there.',
-      derivNote: 'Reflecting in y = x swaps Δx and Δy – the slope becomes its reciprocal.',
     },
   },
 
@@ -161,7 +139,6 @@ export default defineSimulation({
       P: () => th().series[0]!,
       Q: () => th().series[3]!,
       bad: () => th().series[1]!,
-      ok: () => th().series[2]!,
     };
 
     const n = (v: number) => fmt.num(Math.abs(v) < 5e-3 ? 0 : v, 2);
@@ -173,7 +150,6 @@ export default defineSimulation({
       if (key() === 'exp') x = Math.min(x, 1.6);
       if (key() === 'cube') x = clamp(x, -2.2, 2.2);
       if (key() === 'sq') x = clamp(x, -2.3, 2.3);
-      if (key() === 'shift') x = clamp(x, 2, 4.2);
       return x;
     }
 
@@ -201,17 +177,6 @@ export default defineSimulation({
       axis: 'x',
       enabled: () => !ctx.locked && !mirrorT.running,
       color: () => col.P(),
-    });
-
-    plot.addHandle({
-      get: () => [plot.bounds.xMin + 0.7, shownC],
-      set: (_x, y) => {
-        dragging = performance.now();
-        ctx.set({ c: Math.round(clamp(y, -4, 4) * 10) / 10 });
-      },
-      axis: 'y',
-      enabled: () => !ctx.locked && p.hl,
-      color: () => col.bad(),
     });
 
     /* ---------- Ergebnisse ---------- */
@@ -315,7 +280,6 @@ export default defineSimulation({
 
     /* ---------- Zustand ---------- */
     let shownX = xP();
-    let shownC = p.c;
     let lastFrame = performance.now();
     const mirrorT = new Tween(MIRROR_MS, ease.inOutCubic);
     const intro = new Tween(700, ease.outCubic);
@@ -496,88 +460,9 @@ export default defineSimulation({
           const [ax, ay] = plot.toPx(x2, y);
           tag(ax + (x2 < 0 ? -10 : 10), ay - 16, `(${n(x2)} | ${n(y)})`, col.bad(), x2 < 0 ? 'right' : 'left', F(12.5, 11.5));
         }
-        // Tangenten in P und P′: Steigungen m und 1/m
-        if (p.tan) {
-          const fnn = fn();
-          const m = fnn.df(x);
-          const L2 = 1.6;
-          const ux = 1 / Math.hypot(1, m);
-          const uy = m / Math.hypot(1, m);
-          plot.segment([x - L2 * ux, y - L2 * uy], [x + L2 * ux, y + L2 * uy], { color: col.f(), width: 2.2 });
-          // Steigungsdreieck an P (Δx = 1 bzw. kleiner, wenn steil)
-          const dx = Math.min(1, 1.2 / Math.max(1, Math.abs(m)));
-          plot.segment([x, y], [x + dx, y], { color: withAlpha(col.f(), 0.7), width: 1.4, dash: [3, 3] });
-          plot.segment([x + dx, y], [x + dx, y + m * dx], { color: withAlpha(col.f(), 0.7), width: 1.4, dash: [3, 3] });
-          if (invertible() && (p.inv || mirrorT.running)) {
-            const t = mirrorT.running ? mirrorT.value : 1;
-            // gespiegelte Tangente: Endpunkte mitspiegeln
-            const A = mirrorPath([x - L2 * ux, y - L2 * uy], t);
-            const B = mirrorPath([x + L2 * ux, y + L2 * uy], t);
-            plot.segment(A, B, { color: col.inv(), width: 2.2 });
-            const T1 = mirrorPath([x + dx, y], t);
-            const T2 = mirrorPath([x + dx, y + m * dx], t);
-            const Qt = mirrorPath([x, y], t);
-            plot.segment(Qt, T1, { color: withAlpha(col.inv(), 0.7), width: 1.4, dash: [3, 3] });
-            plot.segment(T1, T2, { color: withAlpha(col.inv(), 0.7), width: 1.4, dash: [3, 3] });
-            if (!mirrorT.running) {
-              const [qx, qy] = plot.toPx(y, x);
-              const im = inverseSlope(fnn, x);
-              tag(qx + 12, qy + (x > y ? 20 : -20), im === null ? '\\c{i}{m = ∞}' : `\\c{i}{m = ${n(im)}}`, col.inv(), 'left', F(12, 11));
-            }
-          }
-          const [pxx, pyy] = plot.toPx(x, y);
-          tag(pxx + (x < 0 ? -12 : 12), pyy + (y > x ? 20 : -20), `\\c{f}{m = ${n(m)}}`, col.f(), x < 0 ? 'right' : 'left', F(12, 11));
-        }
         plot.point(x, y, { color: col.P(), radius: 6.5 });
         const [px, py] = plot.toPx(x, y);
         tag(px + (x < 0 ? -10 : 10), py + (y > x ? -16 : 16), `\\c{f}{P(${n(x)} | ${n(y)})}`, col.P(), x < 0 ? 'right' : 'left', F(12.5, 11.5));
-      }
-      // Waagrechtentest: Gerade y = c, Schnittpunkte markieren und zählen
-      if (p.hl) {
-        const fnn = fn();
-        const { xMin: a0, xMax: a1 } = plot.bounds;
-        const cnt = hCount(fnn, shownC, a0, a1);
-        const ok = cnt <= 1;
-        const c = ok ? col.ok() : col.bad();
-        const yc = plot.py(shownC);
-        g.save();
-        g.strokeStyle = c;
-        g.lineWidth = 2.4;
-        g.setLineDash([10, 6]);
-        g.beginPath();
-        g.moveTo(r.x, yc);
-        g.lineTo(r.x + r.w, yc);
-        g.stroke();
-        g.restore();
-        // Schnittpunkte suchen (Vorzeichenwechsel, dann halbieren)
-        const N = 600;
-        let prev: number | null = null;
-        let prevX = 0;
-        for (let i = 0; i <= N; i++) {
-          const xx = Math.max(fnn.lo, a0) + ((Math.min(fnn.hi, a1) - Math.max(fnn.lo, a0)) * i) / N;
-          if (fnn.gap0 && Math.abs(xx) < 1e-9) {
-            prev = null;
-            continue;
-          }
-          const d = fnn.f(xx) - shownC;
-          if (!Number.isFinite(d)) {
-            prev = null;
-            continue;
-          }
-          if (prev !== null && prev * d <= 0 && !(fnn.gap0 && prevX < 0 && xx > 0)) {
-            let lo2 = prevX;
-            let hi2 = xx;
-            for (let j = 0; j < 40; j++) {
-              const mid = (lo2 + hi2) / 2;
-              if ((fnn.f(lo2) - shownC) * (fnn.f(mid) - shownC) <= 0) hi2 = mid;
-              else lo2 = mid;
-            }
-            plot.point((lo2 + hi2) / 2, shownC, { color: c, radius: 6 });
-          }
-          prev = d;
-          prevX = xx;
-        }
-        tag(r.x + r.w - 8, yc - 16, `\\t{${tr('hits', { n: cnt })}}${ok ? ' ✓' : ' ✗'}`, c, 'right', F(12.5, 11.5));
       }
       plot.end();
     }
@@ -619,16 +504,6 @@ export default defineSimulation({
       return h;
     }
 
-    /** Benötigte Höhe der Karte „Umkehrbar?“. */
-    function setsNeed(w: number): number {
-      const pad = F(14, 12);
-      const f = font(600, F(12.5, 11.5));
-      let msg = ctx.t('ok');
-      if (!invertible()) msg = tr('notOk', { a: '−0,00', b: '0,00', y: '0,00' });
-      else if (key() === 'hyp') msg = `${ctx.t('okHyp')} ${ctx.t('self')}`;
-      const rows = wrap(msg, w - 2 * pad, f).length;
-      return 30 + rows * 16 + (invertible() ? 8 + 16 + 2 * F(26, 24) + 22 : 8);
-    }
     function setsCard(R: Rect): void {
       const g = surface.g;
       const theme = th();
@@ -661,87 +536,6 @@ export default defineSimulation({
       if (y < R.y + R.h - 14) text(g, ctx.t('swapSets'), R.x + pad, y + 6, { font: font(600, F(12, 11)), color: theme.muted, align: 'left' });
     }
 
-    /** Wertetabelle von f und – nach dem Spiegeln – von f⁻¹ (Spalten tauschen animiert). */
-    function tableCard(R: Rect): void {
-      const g = surface.g;
-      const theme = th();
-      const pad = F(14, 12);
-      card(R);
-      title(R.x + pad, R.y + 16, ctx.t('tableT'));
-      const fnn = fn();
-      const lo = Math.max(fnn.lo, key() === 'shift' ? 2 : -2);
-      const xs: number[] = [];
-      for (let k = 0; xs.length < 5 && k < 12; k++) {
-        const xv = lo + k * (key() === 'shift' || key() === 'exp' ? 0.5 : 1);
-        if (fnn.gap0 && xv === 0) continue;
-        if (xv > (key() === 'shift' ? 4 : 2) + 1e-9) break;
-        xs.push(xv);
-      }
-      const rowH = F(22, 20);
-      const colW = Math.min(64, (R.w - 2 * pad - 30) / 4);
-      const left = R.x + pad;
-      const right = R.x + R.w / 2 + 10;
-      const top = R.y + 40;
-      const show = invertible() && (p.inv || mirrorT.running);
-      const t = mirrorT.running ? mirrorT.value : show ? 1 : 0;
-      const hf = font(700, F(12.5, 11.5));
-      const cf = font(600, F(13, 12));
-      // Tabelle von f
-      text(g, 'x', left + colW * 0.5, top, { font: `italic ${hf}`, color: theme.muted });
-      text(g, 'f(x)', left + colW * 1.5, top, { font: `italic ${hf}`, color: col.f() });
-      xs.forEach((xv, i) => {
-        const yy = top + rowH * (i + 1);
-        text(g, n(xv), left + colW * 0.5, yy, { font: cf, color: theme.text });
-        text(g, n(fnn.f(xv)), left + colW * 1.5, yy, { font: cf, color: col.f() });
-      });
-      if (!invertible()) return;
-      // Tabelle von f⁻¹: die Werte fliegen herüber und tauschen dabei die Spalten
-      g.save();
-      g.globalAlpha = Math.min(1, t * 1.5);
-      text(g, 'x', right + colW * 0.5, top, { font: `italic ${hf}`, color: theme.muted });
-      text(g, 'f⁻¹(x)', right + colW * 1.5, top, { font: `italic ${hf}`, color: col.inv() });
-      g.restore();
-      if (t <= 0) return;
-      xs.forEach((xv, i) => {
-        const yy = top + rowH * (i + 1);
-        // x-Wert von f wandert in die f⁻¹-Spalte, f(x) in die x-Spalte
-        const ax = lerp(left + colW * 0.5, right + colW * 1.5, t);
-        const bx = lerp(left + colW * 1.5, right + colW * 0.5, t);
-        const arc = Math.sin(t * Math.PI) * 14;
-        text(g, n(xv), ax, yy - arc, { font: cf, color: mixColor(theme.text, col.inv(), t) });
-        text(g, n(fnn.f(xv)), bx, yy + arc, { font: cf, color: theme.text });
-      });
-      g.save();
-      g.globalAlpha = t;
-      text(g, '⇄', (left + colW * 2 + right) / 2, top + rowH * 3, { font: font(700, F(18, 16)), color: theme.muted });
-      g.restore();
-    }
-
-    /** Steigung der Umkehrfunktion: (f⁻¹)′(f(a)) = 1/f′(a). */
-    function derivCard(R: Rect): void {
-      const g = surface.g;
-      const theme = th();
-      const pad = F(14, 12);
-      const maxW = R.w - 2 * pad;
-      card(R, col.inv(), 0.02);
-      title(R.x + pad, R.y + 16, ctx.t('derivT'), col.inv());
-      const fnn = fn();
-      const x = xP();
-      const y = fnn.f(x);
-      const m = fnn.df(x);
-      const im = inverseSlope(fnn, x);
-      let yy = R.y + 30;
-      yy = line(`(f^{−1})′(f(a)) = \\f{1}{f′(a)}`, R.x + pad, yy, maxW, F(15, 13.5)) + 8;
-      if (!invertible()) return;
-      yy = line(`\\c{f}{f′(${n(x)}) = ${n(m)}}  ⇒  \\c{i}{(f^{−1})′(${n(y)}) = ${im === null ? '∞' : `\\f{1}{${n(m)}} = ${n(im)}`}}`, R.x + pad, yy, maxW, F(14, 12.5)) + 8;
-      const f2 = font(600, F(12, 11));
-      for (const row of wrap(im === null ? ctx.t('derivFlat') : ctx.t('derivNote'), maxW, f2)) {
-        if (yy > R.y + R.h - 12) break;
-        text(g, row, R.x + pad, yy + 6, { font: f2, color: im === null ? col.bad() : theme.muted, align: 'left' });
-        yy += 16;
-      }
-    }
-
     /* ---------- Rendern ---------- */
     function render(): void {
       const now = performance.now();
@@ -762,26 +556,12 @@ export default defineSimulation({
       const gap = F(10, 8);
       const h1 = stepsCard({ ...C, h: 0 });
       stepsCard({ x: C.x, y: C.y, w: C.w, h: h1 });
-      const h2 = Math.min(C.h - h1 - gap, setsNeed(C.w));
-      if (C.h - h1 - gap > 80) setsCard({ x: C.x, y: C.y + h1 + gap, w: C.w, h: h2 });
-      const y3 = C.y + h1 + gap + h2 + gap;
-      const h3 = Math.min(C.y + C.h - y3, F(190, 170));
-      if (h3 > 110) {
-        if (p.tan) derivCard({ x: C.x, y: y3, w: C.w, h: h3 });
-        else tableCard({ x: C.x, y: y3, w: C.w, h: h3 });
-      }
-      // waagrechte Gerade gleitet weich
-      if (dragging || reduced || Math.abs(p.c - shownC) < 1e-3) shownC = p.c;
-      else {
-        shownC += (p.c - shownC) * (1 - Math.exp(-dt * 10));
-        moving = true;
-      }
+      if (C.h - h1 - gap > 80) setsCard({ x: C.x, y: C.y + h1 + gap, w: C.w, h: Math.min(C.h - h1 - gap, F(190, 180)) });
       if (moving || dragging || mirrorT.running || intro.running) ctx.requestRender();
     }
 
     return {
       update(changed, source) {
-        if (source === 'init') intro.play(reduced ? 1 : 900);
         if (changed.has('fn') || changed.has('dom')) {
           intro.play(reduced ? 1 : 700);
           if (source === 'input' && Math.abs(xP() - p.x) > 1e-9) ctx.set({ x: Math.round(xP() * 10) / 10 });
@@ -790,7 +570,7 @@ export default defineSimulation({
         ctx.requestRender();
       },
       action(id) {
-        if (ctx.locked || id !== 'mirror') return;
+        if (id !== 'mirror') return;
         mirrorT.play(reduced ? 1 : MIRROR_MS);
         if (!p.inv) ctx.set({ inv: true });
         ctx.requestRender();

@@ -14,8 +14,6 @@ To find $f^{-1}$: solve $y = f(x)$ for $x$, then swap $x$ and $y$. Graphically t
 2. [x² on all of ℝ](?fn=sq&dom=all&x=1.5): why is the reflection not a function?
 3. [eˣ and ln x](?fn=exp&x=1) and [1/x](?fn=hyp&x=2).
 
-**Horizontal line test:** $f$ is invertible exactly when every horizontal line meets the graph at most once ([try it](?fn=sq&dom=all&hl=1&c=2)). **Slope of the inverse:** reflecting swaps $\Delta x$ and $\Delta y$, so $\left(f^{-1}\right)'(f(a)) = \frac{1}{f'(a)}$ ([see it](?fn=exp&x=1&tan=1)).
-
 ## Tasks
 
 ### Task 1: Find the inverse
@@ -37,17 +35,6 @@ Restrict the domain of $x^2$ in two ways so that it becomes invertible.
 <summary>Show solution</summary>
 
 $x \geq 0$: $\sqrt{x}$; $x \leq 0$: $-\sqrt{x}$. [Show](?fn=sq&dom=neg&x=-1.5)
-
-</details>
-
-### Task: Shifted parabola
-
-Find the inverse of $f(x) = (x-2)^2 + 1$, $x \geq 2$. [Load task](?fn=shift&x=3&show=0&_hide=1)
-
-<details>
-<summary>Show solution</summary>
-
-$x = 2 + \sqrt{y - 1}$, so $f^{-1}(x) = 2 + \sqrt{x - 1}$ with domain $[1;\,\infty[$ and range $[2;\,\infty[$. [Show](?fn=shift&x=3)
 
 </details>
 

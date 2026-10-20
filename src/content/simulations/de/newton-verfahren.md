@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die 11. Klasse: das Newton-Verfahren Schritt für Schritt – Tangente anlegen, Schnittpunkt mit der x-Achse als neuer Näherungswert, ziehbarer Startwert, Tabelle der richtigen Stellen, Einzugsbereiche der Nullstellen, Vergleich mit der Intervallhalbierung und Fälle, in denen das Verfahren scheitert."
+description: "Interaktive Simulation für die 11. Klasse: das Newton-Verfahren Schritt für Schritt – Tangente anlegen, Schnittpunkt mit der x-Achse als neuer Näherungswert, ziehbarer Startwert, Tabelle der richtigen Stellen und Fälle, in denen das Verfahren scheitert."
 ---
 
 ## Worum geht es?
@@ -25,10 +25,6 @@ Liegt der Startwert nahe genug an einer einfachen Nullstelle, geht es sehr schne
 - Die Werte können **hin- und herspringen** (Zyklus) oder davonlaufen.
 - Bei mehreren Nullstellen hängt vom Startwert ab, **welche** gefunden wird.
 
-**Einzugsbereiche:** Färbt man jeden möglichen Startwert nach der Nullstelle, bei der das Verfahren landet, entstehen die *Einzugsbereiche*. Nahe einer Nullstelle sind sie ruhig; in der Nähe von Extremstellen (wo die Tangente fast waagrecht ist) wechseln die Farben oft wild – ein winziger Unterschied im Startwert führt zu einer ganz anderen Nullstelle.
-
-**Newton oder Halbieren?** Die **Intervallhalbierung** (Bisektion) halbiert ein Intervall mit Vorzeichenwechsel immer wieder. Sie funktioniert sicher, gewinnt aber pro Schritt nur etwa $\log_{10} 2 \approx 0{,}3$ Dezimalstellen. Das Newton-Verfahren verdoppelt die Stellen ungefähr (**quadratische Konvergenz**) – wenn der Startwert passt.
-
 ## Ausprobieren
 
 1. [√2](?fn=sq2&x0=1&k=0): Drücke mehrmals „Nächster Schritt“ und beobachte die grünen Stellen in der Tabelle.
@@ -37,8 +33,6 @@ Liegt der Startwert nahe genug an einer einfachen Nullstelle, geht es sehr schne
 4. [Newtons Beispiel](?fn=cubic&x0=2&k=2): Isaac Newton rechnete selbst mit $x^3 - 2x - 5$. Wie viele Schritte braucht man für 8 richtige Stellen?
 5. [Startwert entscheidet](?fn=three&x0=0.9&k=4): Zu welcher Nullstelle läuft die Folge? Probiere $x_0 = 0{,}5$.
 6. [Zyklus](?fn=cycle&x0=0&k=3): Warum findet das Verfahren hier keine Nullstelle? Ändere den Startwert.
-7. [Einzugsbereiche](?fn=three&x0=0.9&k=3&basin=1): Welche Farbe hat der Streifen bei $x_0 = 0{,}9$, welche bei $0{,}95$? Wo wechseln die Farben besonders schnell?
-8. [Newton gegen Halbieren](?fn=cos&x0=1&k=4&cmp=1): Drücke „Schritte bis zum Ziel“. Nach wie vielen Schritten hat Newton 12 richtige Stellen – und die Intervallhalbierung?
 
 ## Aufgaben
 
@@ -86,36 +80,13 @@ $f'(0) = 0$: Die Tangente ist waagrecht und schneidet die $x$-Achse nicht. In de
 
 </details>
 
-### Aufgabe 5: Wie viele Halbierungen?
-
-Ein Startintervall der Länge 1 enthält eine Nullstelle. Wie viele Halbierungsschritte braucht man mindestens, damit die Intervallmitte sicher auf 6 Nachkommastellen genau ist (Fehler $< 0{,}5 \cdot 10^{-6}$)? Vergleiche mit Newton bei $\cos x = x$. [Aufgabe laden](?fn=cos&x0=1&k=0&cmp=1&_hide=1)
-
-<details>
-<summary>Lösung anzeigen</summary>
-
-Nach $n$ Halbierungen ist das Intervall $2^{-n}$ lang, der Fehler der Mitte höchstens $2^{-(n+1)}$. $2^{-(n+1)} < 0{,}5 \cdot 10^{-6} \iff 2^{n} > 10^{6} \iff n \geq 20$ (denn $2^{20} \approx 1{,}05 \cdot 10^6$). Newton braucht von $x_0 = 1$ aus nur 3 bis 4 Schritte. [Lösung zeigen](?fn=cos&x0=1&k=4&cmp=1)
-
-</details>
-
-### Aufgabe 6: Empfindlicher Startwert
-
-Bei $f(x) = x^3 - 3x + 1$ führen die Startwerte $0{,}9$ und $0{,}95$ zu verschiedenen Nullstellen. Erkläre mit den Tangenten, warum Startwerte nahe der Extremstelle $x = 1$ so empfindlich sind. [Zeigen](?fn=three&x0=0.95&k=2&basin=1)
-
-<details>
-<summary>Lösung anzeigen</summary>
-
-Bei $x = 1$ ist $f'(1) = 0$. Nahe daran ist die Tangente fast waagrecht, ihr Schnittpunkt mit der $x$-Achse liegt sehr weit weg – und wohin genau, hängt stark vom Startwert ab: Von $0{,}9$ aus landet $x_1$ bei $-0{,}80$ (danach geht es zur Nullstelle $1{,}53$), von $0{,}95$ aus weit links, sodass die Folge zur Nullstelle $-1{,}88$ läuft.
-
-</details>
-
 ## Ideen für den Unterricht
 
 *Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
 - **Einsatz:** Jahrgangsstufe 11 (Anwendungen der Ableitung, Newton-Verfahren), LehrplanPLUS Gymnasium Bayern. Gut als Anwendung der Tangentengleichung.
 - **Herleitung:** Die Lernenden stellen die Tangentengleichung auf und setzen $y = 0$ – so entsteht die Iterationsvorschrift selbst.
-- **Tabellenkalkulation:** Das Verfahren mit einer Tabelle nachrechnen und mit der Simulation vergleichen; anschließend mit dem Bisektionsverfahren (Halbieren) vergleichen – die Ansicht „Vergleich mit Intervallhalbierung“ zeigt das Ergebnis als Diagramm.
-- **Einzugsbereiche als Ausblick:** Die bunten Streifen sind die eindimensionale Version der bekannten Newton-Fraktale; für interessierte Lernende ein schöner Anlass für eine Recherche.
+- **Tabellenkalkulation:** Das Verfahren mit einer Tabelle nachrechnen und mit der Simulation vergleichen; anschließend mit dem Bisektionsverfahren (Halbieren) vergleichen.
 - **Häufige Stolpersteine:**
   - Vorzeichenfehler in $x_n - \frac{f(x_n)}{f'(x_n)}$.
   - Der Taschenrechner steht bei $\cos x$ im Gradmaß statt im Bogenmaß.

@@ -63,27 +63,3 @@ export function exactAt(a: number, k: number): boolean {
   const [lo] = nestInterval(a, k);
   return Math.abs(lo * lo - a) < 1e-12;
 }
-
-/**
- * Wurzelspirale des Theodorus: rechtwinklige Dreiecke mit den Katheten √n
- * und 1 werden aneinandergelegt; nach Pythagoras ist die neue Hypotenuse
- * √(n + 1). Ecke k (k = 1 … n + 1) liegt im Abstand √k vom Mittelpunkt,
- * gedreht um θ_{k−1} = Σ_{i < k} arctan(1/√i).
- */
-export function spiralVertices(n: number): [number, number][] {
-  const out: [number, number][] = [];
-  let theta = 0;
-  for (let k = 1; k <= n + 1; k++) {
-    const r = Math.sqrt(k);
-    out.push([r * Math.cos(theta), r * Math.sin(theta)]);
-    theta += Math.atan(1 / r);
-  }
-  return out;
-}
-
-/** Gesamtwinkel (Grad) der ersten n Dreiecke. */
-export function spiralAngle(n: number): number {
-  let t = 0;
-  for (let i = 1; i <= n; i++) t += Math.atan(1 / Math.sqrt(i));
-  return (t * 180) / Math.PI;
-}

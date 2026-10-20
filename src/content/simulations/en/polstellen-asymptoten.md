@@ -1,5 +1,5 @@
 ---
-description: "Interactive simulation for upper secondary: rational functions built from linear factors – drag the zeros of numerator and denominator and explore domain, poles with and without sign change, removable gaps and horizontal or oblique asymptotes via polynomial division, with a sign strip, a table of values at the pole and a view from afar."
+description: "Interactive simulation for upper secondary: rational functions built from linear factors – drag the zeros of numerator and denominator and explore domain, poles with and without sign change, removable gaps and horizontal or oblique asymptotes via polynomial division."
 ---
 
 ## What is it about?
@@ -15,8 +15,7 @@ For $x \to \pm\infty$ the degrees decide: $m < n$ → $y = 0$; $m = n$ → $y =$
 
 1. [One pole](?zn=1&z1=1&pn=1&p1=-2): drag the green zero and the red marker.
 2. [Removable gap](?zn=2&z1=1&z2=-1&pn=1&p1=1): move the marker away from $x = 1$ and back.
-3. [Oblique asymptote](?zn=2&z1=1&z2=-1&pn=1&p1=2): let the point run along the graph, then switch on the [view from afar](?zn=2&z1=1&z2=-1&pn=1&p1=2&far=1).
-4. [Table at the pole](?zn=1&z1=1&pn=1&p1=-2&tab=1): $f(-2.001) \approx 3001$, $f(-1.999) \approx -2999$ – the values grow without bound.
+3. [Oblique asymptote](?zn=2&z1=1&z2=-1&pn=1&p1=2): let the point run along the graph.
 
 ## Tasks
 

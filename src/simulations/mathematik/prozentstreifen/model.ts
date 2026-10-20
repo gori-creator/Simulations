@@ -71,27 +71,3 @@ export function isNice(x: number, d = 2): boolean {
   const f = 10 ** d;
   return Math.abs(x * f - Math.round(x * f)) < 1e-6;
 }
-
-/**
- * Erst um p % erhöhen, dann um p % senken: Der zweite Prozentsatz bezieht
- * sich auf den neuen, größeren Grundwert. Gesamtfaktor
- * (1 + p/100) · (1 − p/100) = 1 − (p/100)² < 1.
- */
-export function upThenDown(G: number, p: number): { up: number; down: number; factor: number; netPct: number } {
-  const q1 = 1 + p / 100;
-  const q2 = 1 - p / 100;
-  const up = G * q1;
-  const down = up * q2;
-  return { up, down, factor: q1 * q2, netPct: (q1 * q2 - 1) * 100 };
-}
-
-/** „Schöne“ Übungswerte: Grundwert und Prozentsatz, bei denen alle drei Größen glatt sind. */
-export function niceTask(rnd: () => number): { G: number; p: number } {
-  const ps = [5, 10, 12, 15, 20, 25, 30, 40, 50, 60, 75, 80];
-  for (let i = 0; i < 200; i++) {
-    const p = ps[Math.floor(rnd() * ps.length)]!;
-    const G = 20 * (1 + Math.floor(rnd() * 25));
-    if (isNice(percentValue(G, p), 1)) return { G, p };
-  }
-  return { G: 80, p: 25 };
-}

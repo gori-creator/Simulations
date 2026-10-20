@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die 6. und 7. Klasse: Prozentwert, Prozentsatz und Grundwert am Prozentstreifen bestimmen, den Dreisatz Zeile für Zeile verfolgen und Prozente im Alltag anwenden – Rabatt, Mehrwertsteuer, Zinsen und Anteile einer Klasse; dazu „Erst plus, dann minus“ und gewürfelte Übungsaufgaben."
+description: "Interaktive Simulation für die 6. und 7. Klasse: Prozentwert, Prozentsatz und Grundwert am Prozentstreifen bestimmen, den Dreisatz Zeile für Zeile verfolgen und Prozente im Alltag anwenden – Rabatt, Mehrwertsteuer, Zinsen und Anteile einer Klasse."
 ---
 
 ## Worum geht es?
@@ -34,8 +34,6 @@ $$
 4. [Grundwert gesucht](?find=G&G=250&p=12): Von $12\,\%$ über $1\,\%$ zu $100\,\%$.
 5. [Rabatt](?sit=rabatt&G=60&p=30): Welcher Teil des Streifens ist der neue Preis? [Mehrwertsteuer](?sit=mwst&G=200&p=19): Warum ist der Streifen länger als $100\,\%$?
 6. [Klasse](?sit=klasse&find=p&G=28&p=25): Zähle die Kinder. Stelle dann $33\,\%$ ein – warum passt das nicht zu einer Klasse mit $40$ Kindern?
-7. Drücke „Neue Aufgabe“: Die Simulation würfelt glatte Werte und blendet die Lösung aus. Rechne selbst und schalte dann „Lösung zeigen“ ein.
-8. [Erst plus, dann minus](?sit=twice&G=100&p=20): Ein Preis steigt um $20\,\%$ und sinkt dann um $20\,\%$. Ist er wieder bei $100\,€$? Probiere auch [$50\,\%$](?sit=twice&G=80&p=50).
 
 ## Aufgaben
 
@@ -94,17 +92,6 @@ $19\,\%$ von $200\,€$ sind $38\,€$, also $238\,€$. Kürzer: $119\,\%$ von 
 
 </details>
 
-### Aufgabe 6: Erst teurer, dann billiger
-
-Eine Jacke kostet $100\,€$. Der Preis wird um $20\,\%$ erhöht und später um $20\,\%$ gesenkt. Was kostet sie jetzt? [Aufgabe laden](?sit=twice&G=100&p=20&show=0&_hide=1)
-
-<details>
-<summary>Lösung anzeigen</summary>
-
-$100\,€ + 20\,€ = 120\,€$; davon $20\,\%$ sind $24\,€$, also $120\,€ - 24\,€ = 96\,€$. Mit Faktoren: $100 \cdot 1{,}2 \cdot 0{,}8 = 96$. Die Jacke ist insgesamt $4\,\%$ billiger, weil sich die zweite Änderung auf den größeren Grundwert $120\,€$ bezieht. [Lösung zeigen](?sit=twice&G=100&p=20)
-
-</details>
-
 ## Ideen für den Unterricht
 
 *Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
@@ -112,7 +99,6 @@ $100\,€ + 20\,€ = 120\,€$; davon $20\,\%$ sind $24\,€$, also $120\,€ -
 - **Einsatz:** Jahrgangsstufe 6 (Prozentrechnung, Prozent als Bruchteil) und Jahrgangsstufe 7 (Vertiefung mit Grundwert, Prozentwert, Prozentsatz), LehrplanPLUS Gymnasium Bayern. Der Streifen eignet sich als Brücke zwischen Bruch- und Prozentdenken.
 - **Schätzen zuerst:** Mit „Lösung zeigen“ aus schätzen die Lernenden am Streifen, bevor sie rechnen.
 - **Modell:** Prozentsätze in ganzen Prozent; Geldbeträge werden auf Cent gerundet, nicht exakte Werte erscheinen mit „≈“.
-- **Erst plus, dann minus:** Vorher abstimmen lassen („wieder 100 €, mehr oder weniger?“) – die meisten tippen auf „gleich“.
 - **Häufige Stolpersteine:**
   - Grundwert und Prozentwert werden vertauscht („Wovon sind es Prozent?“).
   - Bei Rabatt und Mehrwertsteuer wird der Prozentwert mit dem neuen Preis verwechselt.

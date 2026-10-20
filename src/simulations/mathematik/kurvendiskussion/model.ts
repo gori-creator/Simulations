@@ -124,33 +124,3 @@ export function analyze(f: Poly, lo = -50, hi = 50): Analysis {
     curv: intervals(d2, w),
   };
 }
-
-export type Symmetry = 'even' | 'odd' | 'none';
-
-/**
- * Symmetrie einer ganzrationalen Funktion: nur gerade Exponenten ⇒
- * achsensymmetrisch zur y-Achse, nur ungerade ⇒ punktsymmetrisch zum
- * Ursprung. (Die Nullfunktion zählt als achsensymmetrisch.)
- */
-export function symmetry(p: Poly): Symmetry {
-  const nz = (i: number) => Math.abs(p[i] ?? 0) > 1e-12;
-  const hasEven = p.some((_, i) => i % 2 === 0 && nz(i));
-  const hasOdd = p.some((_, i) => i % 2 === 1 && nz(i));
-  if (!hasOdd) return 'even';
-  if (!hasEven) return 'odd';
-  return 'none';
-}
-
-/** Verhalten für x → −∞ und x → +∞: Vorzeichen des Grenzwerts (±1 für ±∞, 0 bei konstanter Funktion). */
-export function limits(p: Poly): [number, number] {
-  const n = degree(p);
-  if (n <= 0) return [0, 0];
-  const lead = Math.sign(p[n]!);
-  return [n % 2 === 0 ? lead : -lead, lead];
-}
-
-/** Nullstellen von f (Vorzeichenwechsel und Berührstellen). */
-export function zeros(p: Poly, lo = -50, hi = 50): number[] {
-  if (degree(p) <= 0) return [];
-  return realZeros(p, lo, hi);
-}
