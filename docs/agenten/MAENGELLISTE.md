@@ -32,3 +32,11 @@ Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten 
 
 **Vermutete Ursache (noch zu prüfen):** Die Scrollposition der Startseite wird übernommen, oder der Fokus bzw. ein Sprungziel auf der Simulationsseite zieht nach unten. Mögliche Auslöser sind zum Beispiel ein `autofocus`, `scrollIntoView` oder `focus()` beim Laden, oder die Wiederherstellung des Zustands.
 **Ziel:** Jede Simulationsseite öffnet oben, mit der Simulation sofort im Blick.
+
+## Simulationsseiten
+
+### 3. Beschreibungstext unter der Überschrift ist oft schwer verständlich
+Der kurze Text direkt unter der Überschrift einer Simulation ist oft nicht verständlich genug.
+
+**Vermutete Quelle (noch zu prüfen):** das Feld `summary` im Lehrplan (`src/curriculum/*.ts`), das vermutlich auch auf den Karten erscheint.
+**Ziel:** Bei allen Simulationen einfacher formulieren: kurze Sätze, Alltagssprache, Fachbegriffe nur, wo nötig, und für die jeweilige Klassenstufe verständlich. DE und EN gleichermaßen.
