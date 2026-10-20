@@ -76,8 +76,6 @@ Exakt: $\frac{\ln 2}{\ln 1{,}02} \approx 35{,}0$, $\frac{\ln 2}{\ln 1{,}05} \app
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 10 (Exponentialfunktionen, exponentielles Wachstum, Logarithmus).
 - **Zerfall:** Jeder der 400 Kerne zerfällt zu einem zufälligen Zeitpunkt; im Mittel folgt die Anzahl der Exponentialfunktion. So wird sichtbar, dass Zerfall ein Zufallsprozess ist.
 - **Logarithmische Achse:** Exponentielle Funktionen erscheinen als Geraden – eine gute Vorbereitung auf den Logarithmus.

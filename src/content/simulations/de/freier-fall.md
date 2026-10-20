@@ -102,8 +102,6 @@ Auf beide wirkt die Gewichtskraft; ohne Luft beschleunigen beide mit $g$ – una
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Gleichmäßig beschleunigte Bewegung und Fallgesetze (Klasse 9/10), historischer Bezug zu Galilei, Anwendung im Verkehr (Reaktionszeit). Die drei Experimente lassen sich einzeln über Links mit `mode=…` aufrufen.
 - **Modell:** Im Fallturm wird ohne Luftwiderstand gerechnet. In der Fallröhre wird der Luftwiderstand als proportional zu $v^2$ angenommen, mit Endgeschwindigkeiten von etwa $75\,\tfrac{\text{m}}{\text{s}}$ (Stahlkugel, Ø $3\,\text{cm}$) und $0{,}6\,\tfrac{\text{m}}{\text{s}}$ (Feder) – das sind Näherungswerte. Das Schaukeln der Feder ist nur angedeutet. Jupiter hat keine feste Oberfläche; der Wert $24{,}79\,\tfrac{\text{m}}{\text{s}^2}$ gilt in Höhe der Wolkenobergrenze – der Fallturm dort ist ein Gedankenexperiment.
 - **Reaktionstest:** Das Lineal fällt nach einer zufälligen Wartezeit (1,2 bis 3,5 s). Bildschirm und Eingabegerät verzögern um einige Hundertstelsekunden; die gemessenen Zeiten liegen daher meist etwas über denen mit einem echten Lineal. Ein Vergleich mit einem echten Lineal (Partnerarbeit) bietet sich an – mit eingeschalteter ms-Skala wird das Lineal zum „Reaktionszeit-Lineal“.

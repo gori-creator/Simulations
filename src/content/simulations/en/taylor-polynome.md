@@ -64,7 +64,5 @@ $1 - \frac12 + \frac13 - \frac14 + \frac15 \approx 0.783333$, while $\ln 2 \appr
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Start with the question “How does a calculator compute $\sin 0.5$?”; continue from the tangent to $T_2$ with the matching-derivatives view; link to the pendulum.
 - **Common stumbling blocks:** forgetting $k!$; writing $x^k$ instead of $(x-a)^k$; expecting more terms to help outside the interval of convergence; confusing the Lagrange bound with the true error.

@@ -61,8 +61,6 @@ $\sin\alpha_k = 0.3 \cdot k$: $\alpha_1 \approx 17.5°$, $\alpha_2 \approx 36.9�
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** upper secondary, interference of mechanical waves, as a bridge to the double slit; a good companion to a real ripple tank, since here everything can be paused, slowed down and measured. With `val=0` the values in the picture are hidden for measuring tasks.
 - **Model:** equal amplitudes, no damping, ideal point sources.
 - **Common stumbling blocks:**

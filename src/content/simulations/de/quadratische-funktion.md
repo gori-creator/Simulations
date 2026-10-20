@@ -106,8 +106,6 @@ Der Scheitelpunkt $S(5 \mid 6)$ ist der höchste Punkt: 6 m Höhe nach 5 m. Land
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Einführung der Scheitelpunktform (Klasse 9), Zusammenhang der Darstellungsformen, Vorbereitung der Lösungsformel.
 - **Häufige Stolpersteine:**
   - Das Vorzeichen von $d$ wird falsch gedeutet: $(x + 2)^2$ verschiebt nach **links**.

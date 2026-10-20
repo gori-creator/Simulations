@@ -80,8 +80,6 @@ Maximum at $t = 20$: $V = 30 + 30 + 20 = 80$ L. Minimum at $t = 37.5$: $V = 80 -
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Year 13 (reconstructing an amount from its rate of change); link to the $t$-$v$ diagram in mechanics.
 - Use units as a check: rate times time always gives the unit of the amount.
 - Pair work: one student drags a rate and gives $V(0)$, the other sketches the amount – then reveal.

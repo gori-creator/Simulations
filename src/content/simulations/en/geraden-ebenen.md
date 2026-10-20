@@ -56,8 +56,6 @@ $\overrightarrow{S_1S_2} \times \overrightarrow{S_1S_3} = (-6, 4, 0)^T \times (-
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** upper secondary analytic geometry (grade 12/13), introducing parametric forms or practising intercepts.
 - **Parameter as time:** $X$ travels through space with velocity $\vec u$ – this explains why $t$ may be negative.
 - **Common stumbling blocks:**

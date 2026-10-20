@@ -72,8 +72,6 @@ The points are $(-5 \mid 0)$, $(0 \mid 5)$ and $(5 \mid 0)$, which give $f(x) = 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Year 9, quadratic functions combined with systems of linear equations. Good for consolidation and modelling.
 - Points snap to a 0.5 grid, so the working stays exact. Non-terminating results are shown as reduced fractions.
 - Common mistakes: treating $x$, $y$ as the unknowns, sign errors when squaring negative numbers, and believing that three points always determine a parabola.

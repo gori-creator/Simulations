@@ -79,8 +79,6 @@ $\frac{1}{6} = 0{,}1\overline{6}$ und $\frac{5}{6} = 0{,}8\overline{3}$ – vor 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
 - **Bedienung:** Stücke können direkt angetippt werden – gut am Smartboard. Die ausgewählten Stücke werden herausgezogen.
 - **Häufige Stolpersteine:**

@@ -59,8 +59,6 @@ The total is $120\,\%$, but a whole is $100\,\%$. Someone divided by $20$ instea
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Year 6, reading and judging charts, shares as percentages and as angles. The class could collect its own data and enter it with the sliders.
 - **Detective mode** may work well in pairs; individual cases can be linked directly.
 - **Common stumbling blocks:**

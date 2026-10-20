@@ -45,7 +45,5 @@ $\mu = 7$, $\sigma = \sqrt{2.1} \approx 1.45$. [Show in the simulation](?n=10&p=
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Grade 12 (Bernoulli trials, binomial distribution); qualitatively earlier.
 - **Common stumbling blocks:** "the ball is steered to the middle" – there are just more paths; bin and path are confused.

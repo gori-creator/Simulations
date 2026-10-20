@@ -56,8 +56,6 @@ $35\,000 = 3.5 \cdot 10^4$ and $1\,270\,000 = 1.27 \cdot 10^6$. [Show in the sim
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The journey works well as a whole-class starter; the cube models show that “exponent + 1” means “times the base”. With results hidden, pupils can estimate sizes from the grid first.
 - Objects are drawn to scale; only the airliner and the space station are enlarged symbols.
 - **Common stumbling blocks:** $10^3$ calculated as $10 \cdot 3$; mixing up $2^5$ and $5^2$; thinking $10^0 = 0$; writing $35 \cdot 10^3$ instead of $3.5 \cdot 10^4$.

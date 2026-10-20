@@ -63,8 +63,6 @@ $n = \frac{pV}{RT} = \frac{150 \cdot 20}{8.314 \cdot 300.15}\,\text{mol} \approx
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use it alongside real experiments with a gas syringe, a pressure gauge or a gas thermometer; let students record and plot the data themselves first.
 - Ask for predictions: “What happens to the pressure if we halve the volume?”, “How large is the volume at $100\,°\text{C}$?”
 - **Common stumbling blocks:** calculating with Celsius instead of kelvin; confusing gauge pressure with absolute pressure; thinking the gas “disappears” at $-273\,°\text{C}$ (real gases liquefy first); taking the isotherm for a straight line.

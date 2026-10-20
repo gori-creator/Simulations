@@ -69,8 +69,6 @@ $q$ changes sign from $+$ to $-$ at $t = 7$: $V(7) = \frac{109}{3} \approx 36.33
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use the views as a sequence: transfer the slope → slope field → features → area pieces → reverse → own sketch. In the task view the card only gives hints until the solution is revealed.
 - Combine with the derivative and fundamental theorem simulations.
 - **Common stumbling blocks:** confusing maxima of $f$ and $F$; forgetting the constant of integration; reading a zero without sign change as an extremum; setting $C = y_0$ although $F_0(x_0) \neq 0$.

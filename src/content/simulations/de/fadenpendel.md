@@ -82,8 +82,6 @@ Höhenunterschied $h = l(1 - \cos 20^\circ) \approx 0{,}060\,\text{m}$. Aus $m g
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Mechanische Schwingungen (Oberstufe) sowie Energieerhaltung. Die Simulation rechnet die exakte Bewegungsgleichung $\ddot\varphi = -\tfrac{g}{l}\sin\varphi - \gamma\dot\varphi$ numerisch; die Kleinwinkelnäherung ($\sin\varphi \approx \varphi$) kann als zweites, durchscheinendes Pendel eingeblendet werden.
 - **Messung:** Die gemessene Periodendauer ergibt sich aus aufeinanderfolgenden Nulldurchgängen in gleicher Richtung (gestrichelte Linien im Diagramm).
 - **Häufige Stolpersteine:**

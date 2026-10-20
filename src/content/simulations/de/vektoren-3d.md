@@ -96,8 +96,6 @@ $S = \tfrac13 (3 \mid 3 \mid 3) = (1 \mid 1 \mid 1)$; $M_a(0 \mid 1{,}5 \mid 1{,
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium).
 - **Zufallsweg als Experiment:** Erst schätzen lassen, wie weit man nach $100$ Schritten kommt, dann simulieren; das sortierte Bild zeigt das Kommutativgesetz.
 - **Häufige Stolpersteine:**

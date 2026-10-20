@@ -55,7 +55,5 @@ $1.75$, $3.75$, $2.625$ and $2.75$; exact value $\frac83 \approx 2.667$. [Show](
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The views follow a possible lesson sequence: integral function → derivative (idea of proof) → evaluation → curve sketching of $I_a$ → Riemann sums. The applications connect integrals with units (kW · h = kWh).
 - **Common stumbling blocks:** confusing the integral with the area when $f$ changes sign; equating integral functions with all antiderivatives; swapping $F(b) - F(a)$; forgetting that the theorem needs continuity (at a jump $I$ has a kink).

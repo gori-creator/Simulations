@@ -128,8 +128,6 @@ $V(b) = \pi \int_1^b \tfrac{1}{x^2} \, dx = \pi\left(1 - \tfrac{1}{b}\right)$, f
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 13, Integralrechnung (Anwendungen des Integrals) – Zuordnung als Entwurf, bitte gegen den aktuellen LehrplanPLUS prüfen; Rotationskörper sind je nach Lehrplanfassung Vertiefung bzw. Ausblick. Geeignet als Einstieg (Drehen der Fläche), zur Herleitung der Formel über die Scheibensumme und zur Kontrolle bekannter Körperformeln aus Jahrgangsstufe 10.
 - **Modell:** Die Scheiben sind Zylinder der Dicke $\Delta x$; als Radius dienen wahlweise der Funktionswert in der Streifenmitte, der kleinste oder der größte Wert im Streifen. Die Seitenansicht zeigt den Graphen mit den zugehörigen Rechtecken und ihr Spiegelbild (Längsschnitt). Grenzen außerhalb des Definitionsbereichs werden angepasst (z. B. höchstens $\pi$ beim Sinus).
 - **Häufige Stolpersteine:**

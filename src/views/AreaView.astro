@@ -88,6 +88,6 @@ const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }))
       })
     }
 
-    <p class="note" style="margin-top:40px">{t(lang, 'area.plannedHint')}</p>
+    {progress.ready < progress.total && <p class="note" style="margin-top:40px">{t(lang, 'area.plannedHint')}</p>}
   </div>
 </BaseLayout>

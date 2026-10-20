@@ -75,8 +75,6 @@ Die **relative** Abweichung wird typischerweise immer kleiner. Die **absolute** 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 8 (Laplace-Experimente: relative Häufigkeit und empirisches Gesetz der großen Zahlen); in anderen Ländern teils schon ab Klasse 6. Der Reißnagel ist das klassische Beispiel für eine Wahrscheinlichkeit, die man nur experimentell bestimmen kann.
 - **Bilder:** Würfel, Münze und Reißnagel werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).
 - **Häufige Stolpersteine:**

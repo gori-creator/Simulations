@@ -70,8 +70,6 @@ $d = \frac{3}{\sqrt 3} = \sqrt 3 \approx 1.73$. [Show in the simulation](?mode=p
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students predict the path through the decision tree before playing the animation; each question is one step of the calculation.
 - The edge-on views show why distances and angles appear in true size when looking parallel to a plane.
 - **Common stumbling blocks:**

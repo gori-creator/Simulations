@@ -116,8 +116,6 @@ Mit nur 3 Ziffern ist nach drei Stellen keine Ziffer mehr übrig: $3 \cdot 2 \cd
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5 (Lernbereich „Multiplikation und Division“: Zählprinzip mit Baumdiagrammen) als Einstieg, etwa mit den Outfits; in Jahrgangsstufe 8 (Laplace-Experimente) zur Wiederholung, wenn Anzahlen günstiger und möglicher Ergebnisse gezählt werden.
 - **Einstieg ohne Formel:** Die Klasse könnte zuerst selbst Outfits aufschreiben und dabei Doppelte oder Lücken entdecken; das Ablaufen aller Pfade und die Tabelle zeigen dann zwei Wege, systematisch zu zählen.
 - **Darstellung:** Bei vielen Pfaden wird nur der Anfang des Baums ganz gezeichnet; zugeklappte Äste tragen die Zahl der Pfade dahinter. Das kann ein Anlass sein zu besprechen, warum man ab einer gewissen Größe rechnet statt zeichnet.

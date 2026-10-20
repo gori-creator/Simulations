@@ -110,8 +110,6 @@ $v_S = 0{,}25\,\tfrac{\text{m}}{\text{s}}$, also $v_1' = 0{,}25 - 0{,}5 \cdot (0
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Impuls und Impulserhaltung in der Mechanik der Jahrgangsstufen 10/11 (am bayerischen Gymnasium im Rahmen der Newton’schen Mechanik; Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Geeignet als Ersatz oder Vorbereitung für den Versuch an der Luftkissenbahn, zum Üben der Stoßformeln und zum Vergleich von Impuls- und Energieerhaltung.
 - **Vorhersagen lassen:** Die Bilanz „nachher“ erscheint erst im Moment des Stoßes. Mit `_hide=1` (Aufgabenlinks) sind die berechneten Ergebnisse verdeckt.
 - **Modell:** gerader, zentraler Stoß ohne Reibung; die Stoßdauer wird vernachlässigt (Geschwindigkeiten springen). Die Startorte wählt die Simulation so, dass die Bewegung gut auf die $1{,}6\,\text{m}$ lange Bahn passt. Massen bis $2\,\text{kg}$ werden als Massestücke auf dem Gleiter dargestellt.

@@ -103,8 +103,6 @@ $\frac{a_0}{2} = \frac{2}{\pi} \approx 0{,}637$; da $|\sin x|$ die Periode $\pi$
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Analysis bzw. Mathematik für Ingenieure im Studium; als Ausblick auch in einem Seminar der Oberstufe (Akustik, Signalverarbeitung). Die Zeiger-Ansicht knüpft an die Zeigerdarstellung harmonischer Schwingungen aus der Physik an.
 - **Ablauf-Vorschlag:** Mit „Aufbau abspielen“ einsteigen, dann in der gestapelten Ansicht an einer Stelle von Hand addieren; mit „Werte im Bild“ aus (`info=0`) eignen sich die Bilder als Rechenaufgaben. Klangfarben (Klarinette, Geige, Flöte), Netzteil und Pulsweitenmodulation verbinden Mathematik mit Physik, Elektrotechnik und Informatik (Kompression, MP3).
 - **Häufige Stolpersteine:**

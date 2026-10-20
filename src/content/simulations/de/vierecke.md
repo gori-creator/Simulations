@@ -95,8 +95,6 @@ Im Rechteck sind $a$ und $c$ parallel, es ist also ein Trapez. Außerdem ist die
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 (besondere Vierecke erkennen und beschreiben) und Jahrgangsstufe 7, Lernbereich 2.1 (achsen- und punktsymmetrische Vierecke, Ordnen im Haus der Vierecke) im LehrplanPLUS Gymnasium Bayern. Geeignet zur Erarbeitung am Whiteboard, für Partnerarbeit (einer baut, der andere ordnet ein) und zur Übung in den beiden Aufgabenmodi.
 - **Definitionen:** Die Simulation verwendet die inklusiven, symmetriebasierten Definitionen (ein Quadrat ist auch ein Rechteck, ein Parallelogramm auch ein Trapez). Ein gleichschenkliges Trapez ist hier ein achsensymmetrisches Trapez; schiefe Parallelogramme gehören deshalb nicht dazu. Nicht konvexe Drachenvierecke („Pfeilform“) zählen als Drachenvierecke, weil sie zu einer Diagonalen symmetrisch sind – manche Schulbücher betrachten nur konvexe. Bitte mit dem eingeführten Buch abgleichen.
 - **Modell:** Die Ecken liegen auf Gitterpunkten; parallel, senkrecht, gleich lang und symmetrisch werden deshalb exakt (ohne Rundung) erkannt. Überschlagene Vierecke und Vierecke mit drei Ecken auf einer Geraden lässt die Simulation nicht zu.

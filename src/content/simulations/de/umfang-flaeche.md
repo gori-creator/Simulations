@@ -107,8 +107,6 @@ Umfang: $8 + 2 + 3 + 4 + 5 + 6 = 28$, also $U = 28\,\text{cm} = 2 \cdot (8\,\tex
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich „Größen und ihre Einheiten“, Abschnitt Flächeninhalt (LehrplanPLUS Bayern, Gymnasium). Geeignet zur Einführung (Auslegen, Ameise), zum Üben (Aufgabenlinks mit `show=0&_hide=1`) und zur Vertiefung (Vergleiche, L-Form).
 - **Modell:** Seitenlängen sind ganze Zentimeter ($a \le 10$, $b \le 6$). Das Rechenpapier zeigt ganze Zentimeter kräftig und halbe fein – wie im Heft, wo ein Kästchen $5\,\text{mm}$ breit ist. Ein Zentimeterquadrat besteht dort aus **vier** Kästchen. Auf dem Bildschirm ist „1 cm“ natürlich nicht wirklich 1 cm lang.
 - **Darstellungen:** Länge $a$ (waagerecht) und Breite $b$ (senkrecht) haben in Bild, Formeln und Faden dieselbe Farbe. Der Faden zerfällt in zwei Stücke der Länge $a + b$ und begründet so $U = 2 \cdot (a + b)$.

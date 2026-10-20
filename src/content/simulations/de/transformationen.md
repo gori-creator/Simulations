@@ -113,8 +113,6 @@ b) Waagrechte Asymptote $y = 3$ (wegen $d = 3$). Nullstelle: $2^{x - 1} = 3 \Rig
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 11, Lernbereich „Spezielle Eigenschaften von Funktionen“ (LehrplanPLUS Gymnasium Bayern): Verschieben, Strecken und Spiegeln von Graphen, angewandt auf bekannte Funktionstypen. Welche Grundfunktionen dort im Einzelnen vorkommen, bitte am Lehrplan prüfen.
 - **Schrittfolge an der Tafel:** Die Zeitleiste lässt sich nach jedem Schritt anhalten. So kann die Klasse vorher vermuten, wohin der Graph als Nächstes wandert, und die Vermutung dann prüfen.
 - **Term erraten:** Mit „Term und Wirkung zeigen“ aus erscheint nur der Graph; „Neue Aufgabe“ würfelt neue, eindeutig ablesbare Werte, „Term aufdecken“ löst auf und spielt die Schrittfolge ab. Gut geeignet für Partnerarbeit.

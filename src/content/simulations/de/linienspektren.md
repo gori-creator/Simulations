@@ -107,8 +107,6 @@ Es braucht mindestens $13{,}6\,\text{eV}$: $\lambda \le \frac{1240\,\text{eV}\cd
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Thema Atomhülle und Quantenphysik (Energieniveaus, Linienspektren, Bohrsches Modell); die genaue Einordnung bitte am Lehrplan prüfen. Gut als Ergänzung zur Beobachtung von Spektralröhren mit dem Handspektroskop: Erst das reale Spektrum ansehen, dann in der Simulation den Ursprung jeder Linie suchen.
 - **Möglicher Ablauf:** zuerst nur Wasserstoff und die Balmer-Linien, Rechnung $\Delta E = h \cdot f$ von Hand; danach „Gas leuchtet“ und die anderen Elemente als Fingerabdruck; zum Schluss Absorption und Fraunhofer-Linien. Mit „Werte im Bild anzeigen“ aus (`val=0`) lassen sich Rechenaufgaben stellen.
 - **Modell:** Die Bahnen im Atombild sind eine Veranschaulichung der Niveaus, keine maßstäblichen Elektronenbahnen. Die Helligkeit der Linien ist ein grober Richtwert. Bei der Absorption sind in einem kalten Gas fast alle Atome im Grundzustand; Balmer-Linien sieht man in Absorption z. B. in heißen Sternatmosphären.

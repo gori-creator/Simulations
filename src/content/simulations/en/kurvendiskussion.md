@@ -42,8 +42,6 @@ $f(2) = 2$, $f'(2) = 9$, so $t(x) = 9x - 16$. [Show](?q=0&a=1&b=0&c=-3&d=0&st=1&
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Switch “Show the results” off, let students work out each step first and then reveal.
 - Hide the graphs of $f'$ and $f''$, let students sketch them, then show them again.
 - **Common stumbling blocks:** treating $f'(x_0) = 0$ as sufficient; concluding “no extremum” from $f''(x_0) = 0$; forgetting the $y$-coordinate of a point.

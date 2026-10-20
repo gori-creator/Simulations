@@ -61,8 +61,6 @@ $E = U / d = 10\,000\,\frac{\text{V}}{\text{m}}$, $F = 10\,\mu\text{N}$. [Show i
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Compare with field patterns from semolina in oil.
 - **Common stumbling blocks:**
   - “Field lines are paths of charges.” – They show the force direction.

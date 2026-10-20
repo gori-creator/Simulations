@@ -68,8 +68,6 @@ Angle at $T$: $50°$. $|AT| = \frac{200 \cdot \sin 60°}{\sin 50°} \approx 226{
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Grade 10 (Bavarian Gymnasium, law of sines and cosines; please check the exact curriculum reference). Let students watch the bars first (“what stays the same?”) before playing the proof.
 - Sort cards with given parts (SSS, SAS, ASA, SSA), then solve in the solver with “Show results” off.
 - **Common stumbling blocks:**

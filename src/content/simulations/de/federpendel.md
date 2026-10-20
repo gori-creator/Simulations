@@ -128,8 +128,6 @@ Bei $\tfrac14 T$ im oberen Umkehrpunkt ($y = 8\,\text{cm}$), bei $\tfrac12 T$ wi
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Mechanische Schwingungen in der Oberstufe bzw. dort, wo der Lehrplan harmonische Schwingungen vorsieht: Einstieg (Beobachten, Zeigerdiagramm), Erarbeitung von $T = 2\pi\sqrt{m/D}$ durch Messen mit der Stoppuhr und Vergleichspendel, Vertiefung (Phasenbeziehungen von $y$, $v$, $a$ mit der Zeitmarke; Energie; Dämpfung).
 - **Modell:** Ideale, masselose Feder, für die das Hookesche Gesetz auch beim Stauchen gilt. Die Elongation $y$ ist **nach oben positiv**. Die Dämpfung ist geschwindigkeitsproportional ($m\ddot y = -Dy - 2m\delta\dot y$); die Bewegung wird mit dem Runge-Kutta-Verfahren (Schrittweite $1\,\text{ms}$) berechnet. Spann- und Lageenergie werden in der Einstellung „½·D·y²“ zusammengefasst; die dritte Einstellung zeigt sie getrennt (Bezugsniveau der Lageenergie: unterer Umkehrpunkt).
 - **Vergleichspendel:** Die beiden Pendel sind so aufgehängt, dass ihre Ruhelagen auf gleicher Höhe liegen; sie starten mit gleicher Amplitude und gleichem Nullphasenwinkel.

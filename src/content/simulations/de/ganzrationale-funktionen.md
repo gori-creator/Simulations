@@ -118,8 +118,6 @@ a) Falsch: höchstens vier. $f(x) = 0{,}5 \cdot (x - 1)^4$ hat nur die Nullstell
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich „Ganzrationale Funktionen“ im LehrplanPLUS Gymnasium Bayern (Nullstellen mit Vielfachheit, Randverhalten); in Jahrgangsstufe 11 zur Wiederholung vor der Kurvendiskussion. Ob Vorzeichentabellen mit einer Zeile pro Faktor dort üblich sind, bitte am Lehrplan und im eingeführten Schulbuch prüfen.
 - **Term erraten:** Mit „Term und Eigenschaften zeigen“ aus erscheint nur der Graph. Paare können sich gegenseitig Graphen einstellen und den Term bestimmen lassen; „Term aufdecken“ löst auf.
 - **Von der Lupe zur Fernsicht:** Die Lupe zeigt, warum der Graph an einer Nullstelle schneidet oder berührt (er verhält sich dort wie eine Potenz $c \cdot (x - x_0)^m$), der Blick aus der Ferne, warum nur $a x^n$ das Randverhalten bestimmt. Beides lässt sich gut nacheinander besprechen.

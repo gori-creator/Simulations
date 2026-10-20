@@ -61,8 +61,6 @@ $\tan \alpha = 0.06$, $\alpha \approx 3.43°$ (not $6°$!); $l = 0.5\,\text{m} :
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students discover the constant ratio with the growing triangles before naming sine, cosine and tangent.
 - With “Show results” off (`show=0`) every topic becomes an exercise: unknowns appear as “?”.
 - **Common stumbling blocks:**

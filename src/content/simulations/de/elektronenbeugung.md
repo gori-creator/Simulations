@@ -116,8 +116,6 @@ Die Bragg-Bedingung $\sin\theta = \frac{\lambda}{2d}$ ist nur für $\lambda \le 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Thema Quantenobjekte und Welle-Teilchen-Dualismus; die genaue Einordnung bitte am Lehrplan prüfen. Gut als Vor- oder Nachbereitung des Realexperiments mit der Elektronenbeugungsröhre: Hier lässt sich in Ruhe messen, auch ohne Hochspannung im Raum.
 - **Möglicher Ablauf:** erst das Ringmuster beobachten und die Wellenhypothese diskutieren, dann $\lambda = \frac{h}{p}$ herleiten, mit dem Messkreis Radien ablesen und schließlich über die Linearisierung den Netzebenenabstand bestimmen. Mit „Werte im Bild anzeigen“ aus (`val=0`) werden die Ergebnisse verdeckt.
 - **Modell:** ebener Schirm, nur die beiden Hauptringe, Messwerte mit etwa $1{,}5\,\%$ Ablesefehler. Ein Teil der Elektronen geht ungebeugt durch (heller Fleck in der Mitte).

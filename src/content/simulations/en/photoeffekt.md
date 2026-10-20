@@ -59,8 +59,6 @@ $3.10\,\text{eV} < 4.34\,\text{eV}$; zinc needs $\lambda < 286\,\text{nm}$ (UV).
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Collect the three surprising observations first, then compare with the wave model.
 - **Common stumbling blocks:**
   - “Brighter light makes faster electrons.” – More light means more photons, not more energetic ones.

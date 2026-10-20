@@ -112,8 +112,6 @@ Für die Phase gilt $\tan \Delta\varphi = \frac{2\delta\,\omega_E}{\omega_0^2 - 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Erzwungene Schwingungen und Resonanz in der Oberstufe, vor allem als Ergänzung oder Ersatz für den Versuch mit dem echten Pohlschen Rad: Einschwingen beobachten, eine Messreihe der Resonanzkurve in kurzer Zeit aufnehmen, Einfluss der Dämpfung untersuchen, Phasenverschiebung im Zeigerdiagramm sichtbar machen.
 - **Modell:** Bewegungsgleichung $\ddot\varphi = -\omega_0^2\,(\varphi - \varphi_E(t)) - 2\delta\,\dot\varphi$ mit geschwindigkeitsproportionaler Dämpfung (Wirbelstrombremse), gelöst mit dem Runge-Kutta-Verfahren. Eigenfrequenz fest $f_0 = 0{,}5\,\text{Hz}$. Die Amplitude kann bei sehr kleinem $\delta$ unrealistisch groß werden, deshalb gibt es die Belastungsgrenze $120°$.
 - **Messreihe:** „Resonanzkurve aufnehmen“ springt bei jeder Frequenz über das Einschwingen hinweg (Hinweis „Zeitsprung“) und misst dann Amplitude und Phasenverschiebung. Messpunkte und theoretische Kurve lassen sich vergleichen; die Theorie kann man ausblenden.

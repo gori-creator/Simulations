@@ -121,8 +121,6 @@ Tim rechnet: $-3^2 = 9$ und $20 - 8 - 2 = 20 - 6 = 14$. Erkläre seine Fehler mi
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 5 (LB 1.2 und 3.2: Struktur von Termen, „Punkt vor Strich“), Jahrgangsstufe 6 (LB 1.5: Termstrukturen mit rationalen Zahlen) und Jahrgangsstufe 7 (LB 1.1: Terme mit Variablen, Termwerte, Termstrukturen benennen).
 - **Eingabe:** Malpunkt als `*` oder `·`, Division mit `:`, Potenzen mit `^` oder `²`, Klammern `( )` und `[ ]`. Ein Schrägstrich zwischen zwei ganzen Zahlen (`3/4`) steht für einen **Bruch** (eine Zahl), sonst für eine Division. Erlaubte Variablen: $a, b, c, n, x, y, z$. Eigene Terme lassen sich über **Teilen** als Link oder QR-Code weitergeben.
 - **Darstellung:** Wie in vielen Schulbüchern stehen die Zahlen oben und das Ergebnis unten; unter „Anzeige“ lässt sich der Baum umdrehen. Die Rechenarten sind farbig unterschieden (Strich blau, Punkt grün, Potenz orange).

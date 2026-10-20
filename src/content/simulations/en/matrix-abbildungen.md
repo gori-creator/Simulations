@@ -65,8 +65,6 @@ $0.9p + 0.2q = p$ gives $p = 2q$; with $p + q = 1$: $p = \frac{2}{3}$, $q = \fra
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students build rotations, reflections and shears by dragging, then write down the matrices and compare with the standard forms.
 - Switch “Show values” off: compute determinant, product, inverse or eigenvalues first, then check in the picture.
 - **Common stumbling blocks:** swapping rows and columns; thinking $A$ acts first in $AB$; ignoring the sign of the determinant; believing eigenvectors stay unchanged (they may be stretched or flipped).

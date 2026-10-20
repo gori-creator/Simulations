@@ -61,8 +61,6 @@ Temperature measures the mean kinetic energy of the particles, which does not ch
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use it alongside the real experiment “melting ice and boiling water” with thermometer and stopwatch; let students predict the graph first.
 - Following single particles in ice, water and steam is a good starting point for describing the three states.
 - **Common stumbling blocks:**

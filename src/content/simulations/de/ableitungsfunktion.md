@@ -103,8 +103,6 @@ Falsch. Ein Hochpunkt von $f'$ bedeutet: $f$ steigt dort am stärksten – $f$ h
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 11 (lokales und globales Differenzieren, Ableitungsfunktion, Monotonie und Extremstellen) und 12 (Ableitung von Sinus und Kosinus, Produkt- und Kettenregel) im LehrplanPLUS Gymnasium Bayern – die genaue Zuordnung der Regeln bitte am Lehrplan prüfen. Die Ansichten passen als Abfolge: Sekante → Tangente, Tangente läuft, Merkmale, eigene Skizze, Regeln.
 - **Vorhersagen:** Mit „Terme und Werte zeigen“ aus skizzieren die Lernenden $f'$ zuerst auf Papier, dann prüfen sie mit der Spur oder im Aufgabenmodus „f′ skizzieren“, der für jeden Punkt rückmeldet, ob er passt.
 - **Differenzierbarkeit:** Das Diagramm „Differenzenquotient über h“ zeigt Grenzwerte als Bild: Bei glatten Funktionen laufen linker und rechter Ast auf denselben Punkt zu, bei $|x|$ nicht.

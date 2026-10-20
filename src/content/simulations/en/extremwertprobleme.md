@@ -28,7 +28,5 @@ $x = 4$ cm, $V = 1024$ cm³. [Show](?prob=box&a=24&b=24&x=4)
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Fold boxes from A4 paper first.
 - **Common stumbling blocks:** not using the constraint; ignoring the domain and boundary values.

@@ -61,8 +61,6 @@ The total momentum must be zero: $v_2 = -0.25\,\tfrac{\text{m}}{\text{s}}$. All 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** momentum and its conservation (grades 10/11), as a substitute for or preparation of the air-track experiment.
 - **Model:** central, frictionless collision of negligible duration; the "after" balance only appears at the moment of collision, so students can predict first.
 - **Common stumbling blocks:** "Momentum is lost in an inelastic collision" – momentum is always conserved; only kinetic energy is converted.

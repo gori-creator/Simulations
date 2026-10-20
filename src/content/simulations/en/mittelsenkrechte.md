@@ -57,8 +57,6 @@ At the circumcentre $U \approx (8.6|5.5)$, the intersection of the perpendicular
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** year 7 (Bavaria: Lernbereich 2.1, symmetric figures and basic constructions). Good for discovering loci, for demonstrating the constructions on a projector and for practice. The circumcircle is an outlook.
 - **Model:** squared paper with $0.5\,\text{cm}$ per square; $P$ snaps to grid points and onto the bisector when close. Rounded lengths are shown with “≈”.
 - **Common stumbling blocks:** any perpendicular to $AB$ is taken for the bisector; the compasses are changed between the two arcs; distances to an arm are measured at a slant; the circumcentre is thought to lie always inside the triangle.

@@ -64,8 +64,6 @@ $r \sim \frac{1}{\sqrt{U}}$: smaller by a factor $\sqrt{2}$, $r_1 \approx 8.7\,\
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use it before or after the real experiment with the tube: here you can measure calmly without high voltage.
 - With `val=0` the values in the picture are hidden for measuring exercises.
 - **Common stumbling blocks:**

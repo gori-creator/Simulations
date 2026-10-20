@@ -58,8 +58,6 @@ a) $f'(1) = 3 - 3 = 0$: the tangent is horizontal and never meets the $x$-axis. 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Year 11, applications of differential calculus (tangent equation, zeros of polynomials).
 - Let students label the slope triangle with values hidden (`show=0`) and derive the formula themselves; for $x^2 - 2$ they rediscover Heron’s method.
 - Rebuild the method in a spreadsheet and race it against bisection.

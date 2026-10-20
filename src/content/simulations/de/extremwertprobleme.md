@@ -62,8 +62,6 @@ $A(u) = 3u e^{-0{,}5u}$, $A'(u) = 3e^{-0{,}5u}(1 - 0{,}5u) = 0 \Rightarrow u = 2
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 13 (Extremwertprobleme mit verknüpften Funktionen), LehrplanPLUS Gymnasium Bayern; die Schachtel auch schon in Jahrgangsstufe 11.
 - **Basteln:** Schachteln aus DIN-A4-Papier mit verschiedenen $x$ falten und das Volumen messen, bevor gerechnet wird.
 - **Modellkritik:** Warum sind echte Dosen nicht optimal? (Falz, Stabilität, Handhabung, Werbefläche.)

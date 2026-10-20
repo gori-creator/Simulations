@@ -63,8 +63,6 @@ New prevalence $p_2 \approx 9.17\,\%$, then $\frac{p_2 \cdot 0.9}{p_2 \cdot 0.9 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** conditional probability and Bayes’ theorem (upper secondary). Two-way tables are covered in more depth in [Two-way tables and Venn diagrams](../two-way-table-venn-diagram/), path rules in [Multi-stage experiments](../tree-diagram-path-rules/).
 - **Start with an estimate:** let students guess $P(D \mid +)$ before revealing it.
 - **Common stumbling blocks:**

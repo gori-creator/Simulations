@@ -63,8 +63,6 @@ From B to C you go 2 squares right and 6 up, so D lies 2 right and 6 up from A. 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Grades 5 and 7: describing special quadrilaterals and ordering them by symmetry. Corners snap to grid points, so all properties are detected exactly; crossed quadrilaterals are not allowed.
 - Inclusive definitions; an isosceles trapezium is an axially symmetric trapezium, and non-convex kites count as kites. Check against your textbook.
 - Common stumbling blocks: “a square is not a rectangle”, “a square standing on a corner is a rhombus, not a square”, “a diagonal of a parallelogram is a line of symmetry”.

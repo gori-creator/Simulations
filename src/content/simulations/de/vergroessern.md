@@ -108,8 +108,6 @@ $O : V = \frac{6a^2}{a^3} = \frac{6}{a}$, also $6$, $3$ und $2$. Zerteilt man de
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 9, Ähnlichkeit und zentrische Streckung (LehrplanPLUS Gymnasium Bayern; die genaue Einordnung bitte am Lehrplan prüfen). Die Animation „Kopien auslegen“ eignet sich als Einstieg, bevor die Regel $k$, $k^2$, $k^3$ formuliert wird – etwa mit einer Schätzung vorab: „Wie viele kleine Würfel brauche ich?“ Steckwürfel helfen beim Nachbauen.
 - **Aufgaben aus dem Bild:** Mit „Ergebnisse zeigen“ aus (`show=0`) erscheinen die gesuchten Werte als „?“, bis die Animation gelaufen ist.
 - **Anwendungen:** Pizza (Preis pro Fläche), Modellbau (Lack $\cdot \frac{1}{100}$, Masse bei gleichem Material $\cdot \frac{1}{1000}$ im Maßstab $1 : 10$) und das Verhältnis von Oberfläche zu Volumen (Wärmeverlust bei Tieren, Puderzucker, Holzspäne) bieten Anlässe zum Modellieren.

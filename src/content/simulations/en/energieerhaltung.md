@@ -60,8 +60,6 @@ At the top $m g \leq m v^2/r$, so $v^2 \geq g r$. Energy: $m g h_0 = m g \cdot 2
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** conservation of energy (grades 9/10); the loop as an extension on circular motion. The discovery task works well in groups, first without, then with friction (with $\mu = 0.02$ about $17\,\text{m}$ are needed).
 - **Model:** point mass on the rail, friction proportional to the normal force, $g = 9.81\,\tfrac{\text{m}}{\text{s}^2}$; the car is drawn larger than to scale.
 - **Common stumbling blocks:**

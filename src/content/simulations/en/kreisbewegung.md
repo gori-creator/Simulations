@@ -45,8 +45,6 @@ Dry: $v_{\max} \approx 19.8\,\tfrac{\text{m}}{\text{s}} \approx 71\,\tfrac{\text
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** circular motion and centripetal force (grades 10/11), from the "cut the string" experiment to cornering safety.
 - **Model:** frictionless horizontal table; the bend is not drawn to scale; when skidding, the car is assumed to keep its speed with maximum static friction.
 - **Common stumbling blocks:** "A centrifugal force pushes the ball outwards" – without the string the ball moves along the tangent, not radially outwards.

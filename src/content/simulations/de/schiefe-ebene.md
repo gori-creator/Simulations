@@ -112,8 +112,6 @@ $F_Z = F_H + \mu_G \cdot F_N = 3{,}36\,\text{N} + 0{,}3 \cdot 9{,}22\,\text{N} \
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Kraftzerlegung an der schiefen Ebene (zeichnerisch über das Kräftedreieck, mit $h/l$ oder trigonometrisch), Reibung und Grenzwinkel, schiefe Ebene als Kraftwandler (Klasse 8–10); die Bewegungsgleichung $a = g(\sin\alpha - \mu_G\cos\alpha)$ eher ab Klasse 10.
 - **Bezeichnungen:** Die Komponente der Gewichtskraft senkrecht zur Ebene heißt hier Normalkraft $F_N$. Manche Lehrwerke unterscheiden davon die gleich große Kraft der Unterlage auf den Körper.
 - **Modell:** Ebene $1\,\text{m}$ lang, $g = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Die Reibungszahlen der Materialpaare sind **Richtwerte**; reale Werte hängen stark von Oberfläche, Feuchtigkeit und Sauberkeit ab. Der Wagen hat eine sehr kleine Rollreibung ($0{,}005$). Vor dem Loslassen hält die Hand den Körper; deshalb ist die angezeigte Haftreibung höchstens $F_{R,\max}$. Am unteren Ende hält ein Anschlag den Körper.

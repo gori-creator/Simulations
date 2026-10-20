@@ -53,8 +53,6 @@ No (unless it is a rhombus). But a parallelogram has point symmetry about the in
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Grade 7: properties of reflections, constructing images with a set square, recognising symmetry. All points snap to the grid (one square $= 0.5\,\text{cm}$).
 - Switch off “Show the image” for construction tasks. Wrong attempts in “find the symmetry” show the non-matching image in red.
 - Common stumbling blocks: reflecting “horizontally” instead of perpendicular to a slanted axis; “a diagonal of a parallelogram is a line of symmetry”; “a reflection in a point reverses the orientation”.
