@@ -1032,7 +1032,7 @@ export default defineSimulation({
           row(tt('Abstand d(M, E)', 'Distance d(M, E)'), q(`|${n1(nm)} − ${paren(cNow)}| / ${lnTxt} = ${n1(dNow)}`));
           const cut = spherePlane(m, r, n, cNow)!;
           const vs = cut.kind === 'circle' ? '<' : cut.kind === 'tangent' ? '=' : '>';
-          const verdict = cut.kind === 'circle' ? tt('Schnittkreis', 'circle of intersection') : cut.kind === 'tangent' ? tt('Berührpunkt', 'point of contact') : tt('kein gemeinsamer Punkt', 'no common point');
+          const verdict = cut.kind === 'circle' ? (cut.d < 1e-9 ? tt('Großkreis (E geht durch M)', 'great circle (E passes through M)') : tt('Schnittkreis', 'circle of intersection')) : cut.kind === 'tangent' ? tt('Berührpunkt', 'point of contact') : tt('kein gemeinsamer Punkt', 'no common point');
           row(res ? `d ${vs} r = ${n1(r)}` : 'd ? r', q(verdict), cut.kind === 'none' ? theme.muted : CS());
           if (cut.kind === 'circle') {
             row(tt('Mittelpunkt M′', 'Centre M′'), q(ptA(cut.foot).trim()), CS());
@@ -1138,7 +1138,9 @@ export default defineSimulation({
         ctx.readout(
           'res',
           cut.kind === 'circle'
-            ? tt(`d < r: Schnittkreis mit M′${ptA(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`, `d < r: circle with centre M′${ptA(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`)
+            ? cut.d < 1e-9
+              ? tt(`d = 0: E geht durch M, Großkreis mit ρ = r = ${n1(r)}`, `d = 0: E passes through M, great circle with ρ = r = ${n1(r)}`)
+              : tt(`d < r: Schnittkreis mit M′${ptA(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`, `d < r: circle with centre M′${ptA(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`)
             : cut.kind === 'tangent'
               ? tt(`d = r: E berührt K in ${pt(cut.foot)}`, `d = r: E touches K at ${pt(cut.foot)}`)
               : tt('d > r: E und K haben keinen gemeinsamen Punkt', 'd > r: E and K have no common point'),

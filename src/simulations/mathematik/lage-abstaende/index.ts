@@ -1268,7 +1268,10 @@ export default defineSimulation({
           } else if (r.kind === 'skew') {
             const nn = cross(u, v);
             row(tt('Abstand d', 'Distance d'), q(`${frac(Math.abs(dot(sub(b, a), nn)))} / ${rt(nn)} ${eqv(r.distance)}`), CR());
-            if (wide) row('F₁ / F₂', q(`${pt(r.footG)} / ${pt(r.footH)}`));
+            if (wide) {
+              row(tt('Lotfußpunkt F₁ auf g', 'Foot F₁ on g'), q(pt(r.footG)));
+              row(tt('Lotfußpunkt F₂ auf h', 'Foot F₂ on h'), q(pt(r.footH)));
+            }
             row(tt('Winkel der Richtungen', 'Angle of directions'), q(deg(r.angleDeg)), CW());
           } else if (r.kind === 'parallel' || r.kind === 'identical') {
             const kf = dot(v, u) / dot(u, u);

@@ -1549,6 +1549,12 @@ export class View3D implements PointerTarget {
     g.font = `500 12px ${theme.font}`;
     const x = r.x + 12;
     const y = r.y + r.h - 14;
+    // Hinterlegung, damit der Hinweis Achsenbeschriftungen nicht überdeckt (schmale Bühne)
+    g.globalAlpha = 0.88;
+    g.fillStyle = theme.bg;
+    g.beginPath();
+    g.roundRect(x - 6, y - 10, 30 + g.measureText(text).width, 20, 10);
+    g.fill();
     g.globalAlpha = 0.85;
     // kleines Dreh-Symbol
     g.strokeStyle = theme.muted;
