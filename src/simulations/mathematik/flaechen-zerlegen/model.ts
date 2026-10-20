@@ -238,11 +238,14 @@ export function doubled(kind: Kind, d: Dims): { G: number; h: number; s: number 
 /* ------------------------------------------------------------------ */
 
 /**
- * Lage des Rechtecks G × h nach dem Verschieben: Es beginnt bei x0 mit
- * 0 ≤ x0 < G (x0 = s − m·G), überdeckt also einen Teil der Grundseite.
+ * Lage des Rechtecks G × h nach dem Verschieben: Es beginnt bei x0 = s − m·G
+ * und überdeckt einen Teil der Grundseite. Bei s ≥ 0 ist 0 ≤ x0 < G, bei
+ * s < 0 gespiegelt −G < x0 ≤ 0. So bleibt bei schwacher Neigung das große
+ * Teil liegen und nur das abgeschnittene Dreieck wird verschoben – auch bei
+ * Neigung nach links.
  */
 export function targetRect(G: number, h: number, s: number): { x0: number; w: number; h: number } {
-  const m = Math.floor(s / G + 1e-12);
+  const m = s >= 0 ? Math.floor(s / G + 1e-12) : Math.ceil(s / G - 1e-12);
   const x0 = s - m * G;
   return { x0: Math.abs(x0) < 1e-12 ? 0 : x0, w: G, h };
 }

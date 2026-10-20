@@ -37,7 +37,7 @@ In der Simulation ist ein Kästchen $1\,\text{cm}$ breit, also $1\,\text{cm}^2$ 
 1. Drücke bei [diesem Parallelogramm](?g=6&h=4&s=2) „Zerlegen und verschieben“. Welches Teil wandert wohin? Warum passt es genau?
 2. Lass danach die Kästchen zählen. Stimmt die Anzahl mit $g \cdot h$ überein?
 3. Zerlege ein [stark geneigtes Parallelogramm](?g=3&h=4&s=7). Wo liegt der Fußpunkt der Höhe? In wie viele Teile wird es zerlegt?
-4. Verdopple das [Dreieck](?fig=tri) und lege das Parallelogramm danach zum Rechteck um. Welche Kästchen gehören zum Dreieck, welche zur Kopie?
+4. Verdopple das [Dreieck](?fig=tri) und lege das Parallelogramm danach zum Rechteck um. Lass die Kästchen zählen: Welche gehören zum Dreieck, welche zur Kopie – und was ist mit den zerschnittenen?
 5. Drücke beim [Dreieck](?fig=tri&sch=1) „Spitze verschieben“ oder ziehe die Spitze $C$ selbst. Was ändert sich an der Form, was am Flächeninhalt?
 6. Vergleiche beim [Trapez](?fig=trap) beide Wege: [Kopie drehen](?fig=trap&sz=erg) und [in zwei Dreiecke zerlegen](?fig=trap&sz=drei). Führen sie zum selben Ergebnis?
 7. Stelle beim Trapez [c = 0 cm](?fig=trap&c=0) und [c = a](?fig=trap&a=5&c=5) ein. Welche Figuren entstehen, und was wird aus der Formel?
@@ -90,7 +90,7 @@ Formel: $A = (9 + 5) \cdot 4 : 2\,\text{cm}^2 = 28\,\text{cm}^2$. Zwei Dreiecke:
 
 ### Aufgabe 5: Gleich groß, verschieden geformt
 
-Finde Parallelogramme mit ganzzahligen Seiten (in cm) und dem Flächeninhalt $24\,\text{cm}^2$ (Grundseite höchstens $10\,\text{cm}$, Höhe höchstens $8\,\text{cm}$). Wie viele verschiedene Parallelogramme gibt es, wenn man auch den Versatz ändern darf?
+Finde Parallelogramme mit ganzzahliger Grundseite und Höhe (in cm) und dem Flächeninhalt $24\,\text{cm}^2$ (Grundseite höchstens $10\,\text{cm}$, Höhe höchstens $8\,\text{cm}$). Wie viele verschiedene Parallelogramme gibt es, wenn man auch den Versatz ändern darf?
 
 <details>
 <summary>Lösung anzeigen</summary>

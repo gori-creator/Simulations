@@ -76,7 +76,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 6–6 | `brueche-vergleichen` | Brüche erweitern, kürzen und vergleichen | `/de/mathematik/zahlen-und-operationen/brueche-erweitern-kuerzen-vergleichen/` |
 | ✓ | 6–6 | `dezimalbrueche` | Endliche und periodische Dezimalbrüche | `/de/mathematik/zahlen-und-operationen/endliche-periodische-dezimalbrueche/` |
 | ✓ | 6–6 | `diagramme` | Diagramme lesen und kritisch prüfen | `/de/mathematik/daten-und-zufall/diagramme-lesen-und-pruefen/` |
-| ☐ | 6–6 | `flaechen-zerlegen` | Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen | `/de/mathematik/flaechen-und-koerper/flaechen-zerlegen-ergaenzen/` |
+| ✓ | 6–6 | `flaechen-zerlegen` | Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen | `/de/mathematik/flaechen-und-koerper/flaechen-zerlegen-ergaenzen/` |
 | ☐ | 6–6 | `quader-volumen` | Volumen von Quadern mit Einheitswürfeln | `/de/mathematik/flaechen-und-koerper/quader-volumen/` |
 | ☐ | 6–7 | `prozentstreifen` | Prozentstreifen | `/de/mathematik/zahlen-und-operationen/prozentstreifen/` |
 | ☐ | 6–8 | `proportional` | Direkte und indirekte Proportionalität | `/de/mathematik/funktionen/direkte-indirekte-proportionalitaet/` |

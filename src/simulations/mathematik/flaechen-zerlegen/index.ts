@@ -1105,7 +1105,13 @@ export default defineSimulation({
         g.restore();
         g.restore();
         sideLabel(0, d.g, 0, `a = ${cm(d.g)}`, cG(), 1, la);
-        if (d.c > 0.05) sideLabel(d.s, d.s + d.c, d.h, `c = ${cm(d.c)}`, cC(), -1, la, dy);
+        if (d.c > 0.05) {
+          // Seite c gehört zum verschobenen Dreieck BCD: mit ihm versetzen
+          g.save();
+          g.translate(dx, dy);
+          sideLabel(d.s, d.s + d.c, d.h, `c = ${cm(d.c)}`, cC(), -1, la);
+          g.restore();
+        }
         if (areaKnown()) {
           const c1 = t1.reduce((s, q) => [s[0] + q[0] / 3, s[1] + q[1] / 3] as Pt, [0, 0] as Pt);
           const c2 = t2.reduce((s, q) => [s[0] + q[0] / 3, s[1] + q[1] / 3] as Pt, [0, 0] as Pt);
@@ -1477,7 +1483,7 @@ export default defineSimulation({
       const items: Item[] = [{ kind: 'title', text: T('Kontrolle', 'Check') }];
       if (countAt >= 0 && (counting() || counted)) {
         if (k === 'para') items.push({ kind: 'note', text: T(`${n} Kästchen à 1 cm² – genau g · h = ${num(d.g)} · ${num(d.h)}.`, `${n} squares of 1 cm² – exactly g · h = ${num(d.g)} · ${num(d.h)}.`), color: ctx.theme.text });
-        else items.push({ kind: 'note', text: T(`Das Rechteck hat ${n} Kästchen, ${k === 'tri' ? 'das Dreieck' : 'das Trapez'} die Hälfte: ${num(n / 2)} cm². Blaue Kästchen: ${k === 'tri' ? 'Dreieck' : 'Trapez'}, grüne: Kopie.`, `The rectangle has ${n} squares, the ${k === 'tri' ? 'triangle' : 'trapezium'} half of it: ${num(n / 2)} cm². Blue squares: original, green: copy.`), color: ctx.theme.text });
+        else items.push({ kind: 'note', text: T(`Das Rechteck hat ${n} Kästchen, ${k === 'tri' ? 'das Dreieck' : 'das Trapez'} die Hälfte: ${num(n / 2)} cm². Blau: ${k === 'tri' ? 'Dreieck' : 'Trapez'}, grün: Kopie – zerschnittene Kästchen gehören zu beiden.`, `The rectangle has ${n} squares, the ${k === 'tri' ? 'triangle' : 'trapezium'} half of it: ${num(n / 2)} cm². Blue: ${k === 'tri' ? 'triangle' : 'trapezium'}, green: copy – cut squares belong to both.`), color: ctx.theme.text });
       } else if (p.sch || sweep) {
         items.push({ kind: 'note', text: T('Ziehe eine obere Ecke: Die Figur wird schief, aber Grundseite und Höhe bleiben – die Zahl bleibt stehen.', 'Drag a top corner: the shape leans, but base and height stay – so does the number.'), color: ctx.theme.text });
       } else items.push({ kind: 'note', text: T('„Kästchen zählen“ legt das Rechteck mit Einheitsquadraten aus und zählt nach.', '“Count the squares” tiles the rectangle with unit squares and counts them.') });
