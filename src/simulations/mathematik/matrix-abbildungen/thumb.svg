@@ -1,8 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M40 150 L300 150 M80 170 L80 10" stroke-width="2" stroke-opacity="0.35"/>
-  <path d="M80 150 L130 150 L130 100 L80 100 Z" stroke-width="2" stroke-dasharray="5 5" stroke-opacity="0.5"/>
-  <path d="M80 150 L180 150 L230 100 L130 100 Z" fill="currentColor" fill-opacity="0.2" stroke-width="3"/>
-  <path d="M80 150 L180 150" stroke-width="5"/>
-  <path d="M80 150 L130 100" stroke-width="5" stroke-opacity="0.6"/>
-  <path d="M40 190 L260 -30" stroke-width="2" stroke-dasharray="8 6" stroke-opacity="0.5"/>
+  <path d="M40 140 L120 140 L120 60 L40 60 Z" fill="currentColor" fill-opacity="0.08" stroke-width="2" stroke-dasharray="5 5" stroke-opacity="0.5"/>
+  <path d="M80 140 L80 60 M40 100 L120 100" stroke-width="1.5" stroke-dasharray="5 5" stroke-opacity="0.4"/>
+  <path d="M40 140 L80 140 M70 134 L80 140 L70 146" stroke-width="4" stroke-opacity="0.6"/>
+  <path d="M40 140 L40 100 M34 110 L40 100 L46 110" stroke-width="4" stroke-opacity="0.6"/>
+  <path d="M134 92 Q153 74 172 92 M163 88 L172 92 L171 82" stroke-width="3" stroke-opacity="0.7"/>
+  <path d="M178 156 L278 132 L314 48 L214 72 Z" fill="currentColor" fill-opacity="0.2" stroke-width="3"/>
+  <path d="M228 144 L264 60 M196 114 L296 90" stroke-width="2" stroke-opacity="0.45"/>
+  <path d="M178 156 L228 144 M219.7 152.1 L228 144 L216.9 140.5" stroke-width="5"/>
+  <path d="M178 156 L196 114 M197.6 125.6 L196 114 L186.5 120.8" stroke-width="5"/>
+  <circle cx="40" cy="140" r="4.5" fill="currentColor" stroke="none"/>
+  <circle cx="178" cy="156" r="5" fill="currentColor" stroke="none"/>
 </svg>
