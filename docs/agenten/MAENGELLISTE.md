@@ -4,7 +4,7 @@ Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der 
 
 ## Startseite
 
-### 1. (vergeben, siehe `docs/agenten/AUFTRAG-VORSCHAUBILDER.md`) Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
+### 1. ✅ Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
 Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulationen erscheint stattdessen eine schwarze Fläche. Das wirkt zufällig und unschön:
 
 - Sinus, Kosinus, Tangens im rechtwinkligen Dreieck (`sin-cos-tan-dreieck`)
@@ -26,6 +26,8 @@ Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulation
 
 **Vermutete Ursache (noch zu prüfen):** Im Lehrplan steht für diese Simulationen `thumb: 'generic'`, oder sie haben keine eigene `thumb.svg`.
 **Ziel:** Jede dieser Simulationen bekommt ein eigenes, zum Thema passendes Vorschaubild im Stil der übrigen Karten.
+
+**Befund 20.10. (Auftrag `AUFTRAG-VORSCHAUBILDER.md`):** Die vermutete Ursache traf nicht zu. Alle 16 haben eine eigene `thumb.svg`, aber ihre Darstellungsattribute (`fill="none"`, `stroke="currentColor"` …) stehen am Wurzel-`<svg>`. `SimThumb.astro` hat dieses Starttag beim Einbetten komplett entfernt; ohne `fill="none"` füllt der Browser alle Pfade schwarz. Behoben in `src/lib/thumb.ts` (`extractThumb`): Die Attribute der Wurzel werden in ein `<g>` übernommen, Dateiattribute wie `viewBox` und `xmlns` entfallen. Neuer Test `tests/thumbs.test.ts` (Format, nur `currentColor`, keine ungefüllten Formen, Einbettung über `extractThumb`). Sichtprüfung aller 129 Karten auf Startseite, Fachseiten und Katalog (1360 px hell/dunkel, 390 px): keine schwarze Karte mehr. Neu gezeichnet: `stammfunktion-grafisch` und `matrix-abbildungen`. Simulationen mit `thumb: 'generic'` ohne eigene `thumb.svg`: keine.
 
 ### 2. Nach dem Klick auf eine Karte landet man am Ende der Seite
 Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten statt oben. Man muss erst nach oben zur Simulation scrollen. Das ist sehr nervig.
