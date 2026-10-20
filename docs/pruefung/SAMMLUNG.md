@@ -9,6 +9,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | licht-schatten | `src/curriculum/physik.ts` (summary EN) | Im englischen Text „full shadow and half shadow“ durch „umbra and penumbra“ ersetzen, wie in der Simulation und im Lernmaterial | offen |
 | reflexion | `src/sim-core/` (Zeichenfläche) | Die Bilder im Winkelspiegel lassen sich nur mit Maus oder Finger antippen. Allgemeine Tastaturbedienung für antippbare Objekte auf der Zeichenfläche ergänzen, z. B. Pfeiltasten wechseln die Auswahl und Enter wählt aus. | offen |
 | hebelgesetz | `src/sim-core/draw.ts` | Gemeinsamer Helfer für Text mit tiefgestelltem Index auf der Zeichenfläche. Bisher baut jede Simulation ihren eigenen (`richDraw` in hebelgesetz, `richText` in energieerhaltung, `arrow` in hookesches-gesetz). | offen |
+| teilchenmodell | `src/sim-core/format.ts` bzw. Ergebnis-Ausgabe im Host | Geschütztes Leerzeichen zwischen Zahl und Einheit allgemein setzen, damit die Zeile nicht vor „m/s“ oder „°C“ umbricht. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -24,3 +25,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | hebelgesetz | Bei der Wippe heißt es „Der Hebel kippt …“. | Bei der Wippe „Die Wippe kippt …“ schreiben (kleine Textänderung). | – |
 | hookesches-gesetz | Das Modell fürs Überdehnen ist stark vereinfacht: Grenze bei 25 cm, danach halbe Federhärte. | Für Jgst. 7/8 so lassen; das Lernmaterial sagt bereits, dass es ein vereinfachtes Modell ist (beim Abgleich prüfen). | – |
 | hookesches-gesetz | Die automatische Messreihe trägt den Nullpunkt (0 \| 0) in die Tabelle ein. | Lassen: Der Nullpunkt ist ein echter Messpunkt und zeigt die Ursprungsgerade. | – |
+| teilchenmodell | Beim schnellen Schmelzen (1000 W) zeigt das Histogramm kurz Ø 640 m/s statt 570 m/s. Das widerspricht leicht der Aussage „die Energie macht die Teilchen nicht schneller“. | Thermostat beim Wechsel des Zustands straffer einstellen (kleine Änderung in der Simulation, beim nächsten Durchgang). | – |
+| teilchenmodell | Das Ergebnis „Temperatur und Teilchenbewegung“ ist jetzt `spoiler`. | So lassen: Verdeckt wird es nur im Aufgabenmodus bzw. mit dem Schalter „Ergebnisse“. | – |
