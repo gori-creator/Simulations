@@ -919,7 +919,7 @@ export default defineSimulation({
         grad.addColorStop(pc.hiEnd === 'open' ? 0.82 : 1, withAlpha(color, 0.8));
         grad.addColorStop(1, c1);
         g.strokeStyle = grad;
-        g.lineWidth = 6;
+        g.lineWidth = t > 0 ? 3.5 : 6;
         g.beginPath();
         g.moveTo(a[0], a[1]);
         g.lineTo(b[0], b[1]);
@@ -1243,7 +1243,8 @@ export default defineSimulation({
       const la = alpha * F.k.labels;
       const cdx = cnt('dx', Math.abs(dx));
       const cdy = cnt('dy', Math.abs(m * dx));
-      if (!flat) {
+      // auf schmalen Bildschirmen stehen die Kathetenlängen nur in der Karte
+      if (!flat && !sm()) {
         const Cp = pxw(tri.C);
         const Pp = pxw(tri.P);
         const Qp = pxw(tri.Q);
@@ -1253,7 +1254,8 @@ export default defineSimulation({
       const cm = cnt('mf', m);
       const pp = plot.toPx(a, b);
       const left = pp[0] > r.x + r.w * 0.5;
-      fpill(pp[0] + (left ? -16 : 16), pp[1] + (b > a ? 34 : -34), `\\c{f}{m = f′(${N(cnt('a', a))}) ${eq(m)} ${NS(cm)}}`, { align: left ? 'right' : 'left', size: sz, alpha: la, border: withAlpha(col.f(), 0.55), bounds: r });
+      // auf schmalen Bildschirmen stehen die Steigungen nur in der Karte
+      if (!sm()) fpill(pp[0] + (left ? -16 : 16), pp[1] + (b > a ? 34 : -34), `\\c{f}{m = f′(${N(cnt('a', a))}) ${eq(m)} ${NS(cm)}}`, { align: left ? 'right' : 'left', size: sz, alpha: la, border: withAlpha(col.f(), 0.55), bounds: r });
       // gespiegelt: Tangente an f⁻¹ in P′, Katheten getauscht
       const ia = alpha * invAlpha;
       if (ia <= 0.01) return;
@@ -1274,7 +1276,7 @@ export default defineSimulation({
       g.restore();
       const mapM = (w: P2): P2 => plot.toPx(w[1], w[0]);
       if (!flat) drawTriangle(tri, col.D(), col.W(), ia, mapM);
-      if (!flat) {
+      if (!flat && !sm()) {
         const Cp = mapM(tri.C);
         const Pp = mapM(tri.P);
         const Qp = mapM(tri.Q);
@@ -1284,7 +1286,9 @@ export default defineSimulation({
       }
       const left2 = qp[0] > r.x + r.w * 0.5;
       const src = flat ? `\\c{b}{\\t{${T('senkrechte Tangente', 'vertical tangent')}}}` : `\\c{i}{m′ = \\f{1}{${NS(cm)}} ${show() ? `${eq(1 / m)} ${N(cnt('mi', 1 / m))}` : '= ?'}}`;
-      fpill(qp[0] + (left2 ? -16 : 16), qp[1] + (a > b ? 34 : -34), src, { align: left2 ? 'right' : 'left', size: sz, alpha: ia * F.k.labels, border: withAlpha(c2, 0.55), bounds: r });
+      // P′ nahe bei P: auf die andere Seite als die Steigung von f
+      const downQ = Math.hypot(qp[0] - pp[0], qp[1] - pp[1]) < 70 ? !(b > a) : a > b;
+      if (!sm() || flat) fpill(qp[0] + (left2 ? -16 : 16), qp[1] + (downQ ? 34 : -34), src, { align: left2 ? 'right' : 'left', size: sz, alpha: ia * F.k.labels, border: withAlpha(c2, 0.55), bounds: r });
     }
     /** Tangente und Steigungsdreieck klappen beim Umklappen mit. */
     function drawTangentFold(F: Frame, te: number, alpha: number): void {
@@ -1623,7 +1627,7 @@ export default defineSimulation({
         }
         rows.push({ src: `\\c{D}{D_f = ${s.D}}    \\c{W}{W_f = ${s.W}}`, size: fs(13.5, 12.5) });
         rows.push({ src: `\\c{W}{D_{f^{−1}} = ${S(s.W)}}    \\c{D}{W_{f^{−1}} = ${S(s.D)}}`, size: fs(13.5, 12.5) });
-        rows.push(note('Keine Einschränkung nötig: f ist auf ganz D_f umkehrbar.', 'No restriction needed: f is invertible on all of its domain.'));
+        rows.push(note('Keine Einschränkung nötig: f ist auf der ganzen Definitionsmenge umkehrbar.', 'No restriction needed: f is invertible on all of its domain.'));
         return formulaCard(R, measure, F.k, T('Definitions- und Wertemenge', 'Domain and range'), col.D(), rows);
       };
     }

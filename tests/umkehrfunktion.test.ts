@@ -11,6 +11,7 @@ import {
   levelHits,
   localize,
   makeFn,
+  monoPieces,
   mirror,
   mirrorPath,
   partner,
@@ -269,6 +270,22 @@ describe('Modell: Definitions- und Wertemengen, Tabelle, Rechenweg', () => {
     expect(clampA(makeFn('sq', 'pos'), -1)).toBe(0);
     // sin(2,6) liegt auf dem fallenden Ast
     expect(inDomain(makeFn('sin', 'neg'), startA('sin', 'neg'))).toBe(true);
+  });
+});
+
+describe('Modell: Monotonie', () => {
+  it('x² zerfällt in einen fallenden und einen steigenden Ast; 0,5x³ bleibt ein steigendes Stück', () => {
+    const sq = monoPieces(makeFn('sq', 'pos'), -3, 5);
+    expect(sq.map((q) => [q.lo, q.hi, q.dir, q.used])).toEqual([
+      [-3, 0, 'dec', false],
+      [0, 5, 'inc', true],
+    ]);
+    expect(monoPieces(makeFn('cube'), -4, 4)).toEqual([{ lo: -4, hi: 4, dir: 'inc', used: true }]);
+    expect(monoPieces(makeFn('hyp'), -4, 4).map((q) => q.dir)).toEqual(['dec', 'dec']);
+    const sin = monoPieces(makeFn('sin', 'pos'), -2.4, 2.4);
+    expect(sin.map((q) => q.dir)).toEqual(['dec', 'inc', 'dec']);
+    expect(sin.map((q) => q.used)).toEqual([false, true, false]);
+    expect(sin[1]!.lo).toBeCloseTo(-Math.PI / 2, 14);
   });
 });
 

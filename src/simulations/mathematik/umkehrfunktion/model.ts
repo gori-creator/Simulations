@@ -490,6 +490,40 @@ export function stepsOf(key: FnKey, dom: DomKey, lang: Lang): Steps {
   return { f: L(s.f), solve: s.solve.map((r) => ({ src: L(r.src), ...(r.note ? { note: L(r.note) } : {}) })), inv: L(s.inv), D: L(s.D), W: L(s.W), d: L(s.d), dinv: L(s.dinv) };
 }
 
+/* ---------------- Monotonie ---------------- */
+
+export interface MonoPiece {
+  lo: number;
+  hi: number;
+  dir: 'inc' | 'dec';
+  /** Teil liegt in der (eingeschränkten) Definitionsmenge */
+  used: boolean;
+}
+
+/**
+ * Streng monotone Teilstücke des Terms auf [lo; hi] (größtmögliche
+ * Definitionsmenge, zerlegt an Extremstellen und Definitionslücken).
+ * 0,5x³ bleibt ein Stück: f′(0) = 0, aber kein Vorzeichenwechsel von f′.
+ */
+export function monoPieces(fn: Fn, lo: number, hi: number): MonoPiece[] {
+  const cuts: number[] = [];
+  if (fn.key === 'sq' || fn.key === 'hyp') cuts.push(0);
+  if (fn.key === 'sin') {
+    const k0 = Math.floor((lo - Math.PI / 2) / Math.PI);
+    const k1 = Math.ceil((hi - Math.PI / 2) / Math.PI);
+    for (let k = k0; k <= k1; k++) cuts.push(Math.PI / 2 + k * Math.PI);
+  }
+  const pts = [lo, ...cuts.filter((c) => c > lo && c < hi).sort((u, v) => u - v), hi];
+  const out: MonoPiece[] = [];
+  for (let i = 0; i + 1 < pts.length; i++) {
+    const l = pts[i]!;
+    const r = pts[i + 1]!;
+    const m = (l + r) / 2;
+    out.push({ lo: l, hi: r, dir: fn.df(m) >= 0 ? 'inc' : 'dec', used: inDomain(fn, m) });
+  }
+  return out;
+}
+
 /* ---------------- Abtasten der Graphen ---------------- */
 
 /**
