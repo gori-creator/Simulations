@@ -282,7 +282,8 @@ export default defineSimulation({
       ctx.readout('term', term);
       const rw = rewrite(a, op(), b);
       ctx.readout('rule', rw ? `${term} = ${rw}. ${tr(op() === 'minus' ? 'ruleMinus' : 'rulePlus')}` : null);
-      ctx.readout('result', `${term} = ${num(result())}`);
+      // Ergebnis erst nach „Los!“ (bzw. sofort, wenn „Ergebnis sofort zeigen“ an ist)
+      ctx.readout('result', revealed ? `${term} = ${num(result())}` : null);
       const sc = scene();
       if (sc === 'gerade' || sc === 'konto') {
         const [s1, s2, s3] = steps();

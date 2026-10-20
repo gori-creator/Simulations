@@ -1882,9 +1882,15 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
+    /** Stand von areaKnown()/perKnown() beim letzten Füllen der Ergebnisliste. */
+    let readoutKnown = '';
+    const knownKey = () => `${areaKnown()}|${perKnown()}`;
+
     function updateReadouts(): void {
       const f = fig();
       const m = mode();
+      // Flächeninhalt und Umfang erst, wenn sie auch im Bild stehen („Ergebnisse im Bild zeigen“ oder nach Auslegen bzw. Ameise)
+      readoutKnown = knownKey();
       const vA = '<var>a</var>';
       const vB = '<var>b</var>';
       if (m === 'lform' && f.isL) {
@@ -1893,10 +1899,10 @@ export default defineSimulation({
         const A = lArea(f.a, f.b, f.c, f.d);
         if (z === 'waag' || z === 'senk') {
           const [q1, q2] = lDecomposition(f.a, f.b, f.c, f.d, z).parts as [Box, Box];
-          ctx.readout('area', { html: `<var>A</var> = ${cm(q1.w)} · ${cm(q1.h)} + ${cm(q2.w)} · ${cm(q2.h)} = ${cm2(q1.w * q1.h)} + ${cm2(q2.w * q2.h)} = <strong>${cm2(A)}</strong>` });
-        } else ctx.readout('area', { html: `<var>A</var> = ${cm(f.a)} · ${cm(f.b)} − ${cm(f.c)} · ${cm(f.d)} = ${cm2(f.a * f.b)} − ${cm2(f.c * f.d)} = <strong>${cm2(A)}</strong>` });
+          ctx.readout('area', !areaKnown() ? null : { html: `<var>A</var> = ${cm(q1.w)} · ${cm(q1.h)} + ${cm(q2.w)} · ${cm(q2.h)} = ${cm2(q1.w * q1.h)} + ${cm2(q2.w * q2.h)} = <strong>${cm2(A)}</strong>` });
+        } else ctx.readout('area', !areaKnown() ? null : { html: `<var>A</var> = ${cm(f.a)} · ${cm(f.b)} − ${cm(f.c)} · ${cm(f.d)} = ${cm2(f.a * f.b)} − ${cm2(f.c * f.d)} = <strong>${cm2(A)}</strong>` });
         const sides = lSides(f.a, f.b, f.c, f.d);
-        ctx.readout('per', { html: `<var>${SU}</var> = ${sides.map((l) => n0(l)).join(' cm + ')} cm = <strong>${cm(lPerimeter(f.a, f.b, f.c, f.d))}</strong> = 2 · (${cm(f.a)} + ${cm(f.b)})` });
+        ctx.readout('per', !perKnown() ? null : { html: `<var>${SU}</var> = ${sides.map((l) => n0(l)).join(' cm + ')} cm = <strong>${cm(lPerimeter(f.a, f.b, f.c, f.d))}</strong> = 2 · (${cm(f.a)} + ${cm(f.b)})` });
         ctx.readout('best', null);
         ctx.readout('list', null);
         return;
@@ -1905,8 +1911,8 @@ export default defineSimulation({
       else if (m === 'gleichU') ctx.readout('fig', T(`Rechteck mit a = ${cm(f.a)} und b = ${cm(f.b)} (U = ${cm(p.u)} fest)`, `Rectangle with a = ${cm(f.a)} and b = ${cm(f.b)} (P = ${cm(p.u)} fixed)`));
       else if (m === 'gleichA') ctx.readout('fig', T(`Rechteck mit a = ${cm(f.a)} und b = ${cm(f.b)} (A = ${cm2(p.fa)} fest)`, `Rectangle with a = ${cm(f.a)} and b = ${cm(f.b)} (A = ${cm2(p.fa)} fixed)`));
       else ctx.readout('fig', f.a === f.b ? T(`Quadrat mit a = b = ${cm(f.a)}`, `Square with a = b = ${cm(f.a)}`) : T(`Rechteck mit a = ${cm(f.a)} und b = ${cm(f.b)}`, `Rectangle with a = ${cm(f.a)} and b = ${cm(f.b)}`));
-      ctx.readout('area', { html: `<var>A</var> = ${vA} · ${vB} = ${cm(f.a)} · ${cm(f.b)} = <strong>${cm2(rectArea(f.a, f.b))}</strong>` });
-      ctx.readout('per', { html: `<var>${SU}</var> = 2 · ${vA} + 2 · ${vB} = 2 · ${cm(f.a)} + 2 · ${cm(f.b)} = <strong>${cm(rectPerimeter(f.a, f.b))}</strong>` });
+      ctx.readout('area', !areaKnown() ? null : { html: `<var>A</var> = ${vA} · ${vB} = ${cm(f.a)} · ${cm(f.b)} = <strong>${cm2(rectArea(f.a, f.b))}</strong>` });
+      ctx.readout('per', !perKnown() ? null : { html: `<var>${SU}</var> = 2 · ${vA} + 2 · ${vB} = 2 · ${cm(f.a)} + 2 · ${cm(f.b)} = <strong>${cm(rectPerimeter(f.a, f.b))}</strong>` });
       if (m === 'gleichU' || m === 'gleichA') {
         const list = candidates();
         const isU = m === 'gleichU';
@@ -2116,6 +2122,8 @@ export default defineSimulation({
         pop.play();
       }
       if (walkAnim && walkState(now).done) finishWalk();
+      // Ergebnisliste nachziehen, sobald Flächeninhalt oder Umfang im Bild bekannt werden
+      if (knownKey() !== readoutKnown) updateReadouts();
 
       hits = [];
       surface.begin();

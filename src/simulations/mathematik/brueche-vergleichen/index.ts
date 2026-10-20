@@ -1949,6 +1949,11 @@ export default defineSimulation({
         const c = compare(a, b);
         const sign = relationSign(c).replace('<', '&lt;').replace('>', '&gt;');
         ctx.readout('fracs', { html: `${frac(a.z, a.n)} ${ctx.t('and')} ${frac(b.z, b.n)}` });
+        if (!revealed) {
+          // Lösung erst nach dem eigenen Tipp auf <, = oder > (bzw. sofort, wenn „Vergleichszeichen sofort zeigen“ an ist)
+          for (const k of ['common', 'compare', 'decimal']) ctx.readout(k, null);
+          return;
+        }
         const { k1, k2, ok } = factors();
         if (p.weg === 'zaehler') {
           ctx.readout(

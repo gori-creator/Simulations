@@ -2489,6 +2489,9 @@ export default defineSimulation({
       const m = mode();
       const all = ['grid', 'obj', 'units', 'prod', 'val', 'parts', 'sci', 'shift', 'check'];
       const shown = new Set<string>();
+      // Ergebnisse erst, wenn sie auch im Bild stehen („Ergebnisse im Bild zeigen“ oder nach der Aktion)
+      const powOpen = p.show || powRevealed;
+      const sciOpen = p.show || sciRevealed;
       if (m === 'zoom') {
         const f = floorExp(p.e);
         const pl = powerLength(f);
@@ -2500,7 +2503,8 @@ export default defineSimulation({
         const sciH = `${s.mantissa === 1 ? '' : `${formatNumber(s.mantissa, lang, { decimals: 2 })} · `}10${supH(s.exponent)} m`;
         ctx.readout('obj', { html: `${T(ot.name)} (${T(ot.what)}): ${sizeText({ ...o })} ≈ ${sciH}` });
         ctx.readout('units', `${main} = ${conversions(f).join(' = ')}`);
-        shown.add('grid').add('obj').add('units');
+        shown.add('grid').add('units');
+        if (p.show) shown.add('obj');
       } else if (m === 'pow') {
         const b = p.b;
         const n = p.n;
@@ -2509,13 +2513,14 @@ export default defineSimulation({
         const v = power(b, n);
         ctx.readout('val', b === 10 ? `${gd(v)} (${powerOfTenName(n, lang)}, ${trailingZeros(v)} ${trailingZeros(v) === 1 ? tt('Null', 'zero') : tt('Nullen', 'zeros')})` : gd(v));
         ctx.readout('parts', `${tt('Grundzahl', 'Base')} ${b} · ${tt('Hochzahl', 'Exponent')} ${n}`);
-        shown.add('prod').add('val').add('parts');
+        shown.add('prod').add('parts');
+        if (powOpen) shown.add('val');
       } else {
         const d = parseDecimal(p.z);
         if (!d || isZero(d)) {
           ctx.readout('sci', !d ? tt('Keine gültige Zahl', 'Not a valid number') : tt('0 geht nicht', '0 is not possible'));
           shown.add('sci');
-        } else {
+        } else if (sciOpen) {
           const s = toScientific(d)!;
           const c = commaShift(d)!;
           const hops = c.from - c.to;
@@ -2582,6 +2587,7 @@ export default defineSimulation({
           if (h.id === 'digits') {
             sciRevealed = true;
             sciStart = performance.now() + 150;
+            updateReadouts();
             ctx.requestRender();
             return true;
           }
@@ -2705,6 +2711,7 @@ export default defineSimulation({
           sciRevealed = true;
           sciStart = now + 200;
         }
+        updateReadouts();
         ctx.requestRender();
       },
 
