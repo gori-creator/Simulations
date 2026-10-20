@@ -116,7 +116,7 @@ Jedes Gerät erhält so die volle Netzspannung, lässt sich unabhängig ein- und
 - **Modell:** ideale Spannungsquelle, ideale Messgeräte, Leitungen ohne Widerstand. Die Glühlampen werden – wie meist im Unterricht – als feste Widerstände von $12\,\Omega$ ($6\,\text{V}$; $0{,}5\,\text{A}$) behandelt. Echte Glühlampen haben kalt einen kleineren Widerstand (siehe Simulation zum ohmschen Gesetz); die Helligkeitsunterschiede wären in Wirklichkeit etwas geringer. Die Helligkeit ergibt sich aus der Leistung über die Temperatur der Wendel; ab $9\,\text{V}$ an einer Lampe brennt sie durch.
 - **Strom-Animation:** Die Punkte haben überall denselben Abstand (gleiche Elektronendichte im Metall), ihre Geschwindigkeit ist proportional zur Stromstärke. An den Verzweigungen sieht man so, wie sich der Strom aufteilt und wieder vereinigt.
 - **Häufige Stolpersteine:**
-  - „Der Strom wird von Lampe zu Lampe verbraucht – die erste Lampe in Reihe leuchtet am hellsten.“
+  - „Der Strom wird von Lampe zu Lampe verbraucht – die erste Lampe in Reihe leuchtet am hellsten.“ – Die Stromstärke ist überall gleich, gleiche Lampen leuchten gleich hell.
   - „Die Batterie liefert immer denselben Strom.“ – In der Parallelschaltung fließt mehr Strom als in der Reihenschaltung.
   - „Mehr Lampen bedeuten immer mehr Widerstand.“ – Das gilt nur in Reihe; parallel sinkt der Ersatzwiderstand.
   - „An einer herausgedrehten Lampe liegt keine Spannung.“ – In der Reihenschaltung liegt an der Unterbrechung die volle Spannung.

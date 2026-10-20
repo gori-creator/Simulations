@@ -10,7 +10,7 @@ $$
 F_G = m \cdot g \qquad g = 9{,}81\,\tfrac{\text{N}}{\text{kg}}
 $$
 
-Ein Massestück von $100\,\text{g}$ wiegt also knapp $1\,\text{N}$. Die Feder wird länger, bis ihre **Federkraft** genauso groß ist wie die Gewichtskraft – dann hängt sie ruhig.
+Auf ein Massestück von $100\,\text{g}$ wirkt also eine Gewichtskraft von knapp $1\,\text{N}$. Die Feder wird länger, bis ihre **Federkraft** genauso groß ist wie die Gewichtskraft – dann hängt sie ruhig.
 
 **Hookesches Gesetz:** Bei einer Schraubenfeder ist die **Verlängerung** $s$ proportional zur Kraft $F$:
 
@@ -107,7 +107,7 @@ Oberhalb der Elastizitätsgrenze wird die Feder bleibend verformt. Danach zeigt 
 
 - **Einsatz:** Kraft und Verformung, Gewichtskraft, Hookesches Gesetz und Federkraftmesser (Klasse 7/8). Hintereinander- und Nebeneinanderschaltung eignen sich als Vertiefung. Die Simulation nennt die Größe $D$ **Federhärte**; andere Lehrwerke sagen Federkonstante und schreiben die Verlängerung als $\Delta l$.
 - **Messen wie im Experiment:** Ein Messwert wird erst eingetragen, wenn die Feder ruhig hängt. Mit `fit=0` wird die Ursprungsgerade ausgeblendet, sodass die Lernenden sie selbst einzeichnen. Die Messtabelle steht bei den Ergebnissen.
-- **Modell:** Die Masse der Feder wird vernachlässigt; das Nachschwingen ist gedämpft (Dämpfung frei gewählt, nur qualitativ). Die Elastizitätsgrenze ist stark vereinfacht: Bis $25\,\text{cm}$ Verlängerung bleibt eine neue Feder elastisch, darüber gibt sie leichter nach (halbe Federhärte) und bleibt nach dem Entlasten länger. Echte Federn verhalten sich je nach Material unterschiedlich. Bei den nebeneinander hängenden Federn hängt die Last so, dass die Querstange waagerecht bleibt.
+- **Modell:** Die Masse der Feder wird vernachlässigt; das Nachschwingen ist gedämpft (Dämpfung frei gewählt, nur qualitativ). Die Elastizitätsgrenze ist stark vereinfacht: Bis $25\,\text{cm}$ Verlängerung bleibt eine neue Feder elastisch, darüber gibt sie leichter nach (halbe Federhärte) und bleibt nach dem Entlasten länger. Echte Federn verhalten sich je nach Material unterschiedlich. Bei den nebeneinander hängenden Federn hängt die Last so, dass die Querstange waagerecht bleibt. Die Simulation rechnet mit $g = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Wer im Unterricht mit $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ rechnet, erhält etwa $2\,\%$ größere Kräfte und damit auch eine etwa $2\,\%$ größere Federhärte.
 - **Häufige Stolpersteine:**
   - „Die **Länge** der Feder ist proportional zur Kraft.“ – proportional ist die **Verlängerung**.
   - „Masse und Gewichtskraft sind dasselbe.“ – $m$ in kg, $F_G$ in N.

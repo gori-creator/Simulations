@@ -206,8 +206,9 @@ export default defineSimulation({
     { key: 'law', label: L('Ohmsches Gesetz', 'Ohm’s law') },
     { key: 'wire', label: L('Widerstand des Drahtes', 'Resistance of the wire'), spoiler: true },
     { key: 'fit', label: L('Auswertung der Messreihe', 'Analysis of the series'), spoiler: true },
-    { key: 'table', label: L('Messtabelle', 'Table of measurements') },
-    { key: 'limit', label: L('Netzgerät', 'Power supply') },
+    // Die Spalte U / I beantwortet die Aufgaben zum Widerstand sofort.
+    { key: 'table', label: L('Messtabelle', 'Table of measurements'), spoiler: true },
+    { key: 'limit', label: L('Netzgerät', 'Power supply'), spoiler: true },
   ],
   presets: [
     { id: 'start', label: L('Widerstand 47 Ω', 'Resistor 47 Ω'), values: {} },
@@ -291,8 +292,14 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const g = surface.g;
-    const tr = (key: string, vars: Record<string, string> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
-    const narrow = () => surface.width < 640;
+    /** Text mit Platzhaltern; zwischen Zahl und Einheit ein geschütztes Leerzeichen (kein Umbruch in den Ergebnissen). */
+    const tr = (key: string, vars: Record<string, string> = {}) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:°C|mm²|mm|Ω|V|A|m)(?![\p{L}\d]))/gu, '$1\u00a0');
+    /** Untereinander nur auf schmalen, eher hohen Bühnen; flache Tablet-Bühnen bleiben nebeneinander. */
+    const narrow = () => surface.width < 640 && surface.width < surface.height * 1.3;
     const axes = () => p.axes as Axes;
     const reduced = prefersReducedMotion();
 
@@ -385,7 +392,7 @@ export default defineSimulation({
       const kind = p.part as PartKind;
       if (op.U > 1e-6 && op.R !== null) {
         const frac = (a: string, b: string) => `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
-        ctx.readout('R', { html: `<var>R</var> = ${frac('<var>U</var>', '<var>I</var>')} = ${frac(`${fmt.fixed(op.U, 2)} V`, `${fmtI(op.I)} A`)} ≈ <strong>${fmt.num(op.R, op.R < 10 ? 2 : 1)} Ω</strong>` });
+        ctx.readout('R', { html: `<var>R</var> = ${frac('<var>U</var>', '<var>I</var>')} = ${frac(`${fmt.fixed(op.U, 2)}\u00a0V`, `${fmtI(op.I)}\u00a0A`)} ≈ <strong>${fmt.num(op.R, op.R < 10 ? 2 : 1)}\u00a0Ω</strong>` });
       } else ctx.readout('R', null);
       ctx.readout('law', ctx.t(kind === 'lamp' ? 'rOhm' : kind === 'wire' ? 'rWire' : 'rRes'));
       if (kind === 'wire') {
@@ -394,9 +401,11 @@ export default defineSimulation({
         ctx.readout('wire', tr('wireText', { l: fmt.num(p.l, 1), A: fmt.num(p.A, 2), R: fmt.num(R, R < 1 ? 3 : 2), d: fmt.num(d, 2) }));
       } else ctx.readout('wire', null);
 
-      const sr = series.find((q) => q.key === seriesFor().key)!;
-      const idx = series.indexOf(sr);
-      const mine = points.filter((q) => q.series === idx).sort((a, b) => a.U - b.U);
+      // Nur nachsehen, nicht anlegen: Sonst würde schon das Verstellen eines
+      // Reglers neue (leere) Messreihen erzeugen und ab der siebten die älteste
+      // Messreihe mit ihren Messwerten verwerfen.
+      const idx = series.findIndex((q) => q.key === currentKey());
+      const mine = idx < 0 ? [] : points.filter((q) => q.series === idx).sort((a, b) => a.U - b.U);
       if (kind === 'lamp') {
         if (mine.length >= 2) {
           const last = mine[mine.length - 1]!;
@@ -645,8 +654,10 @@ export default defineSimulation({
       const range = n.range;
       const mA = kind === 'A' && range < 1;
       const scaleMax = mA ? range * 1000 : range;
-      const major = scaleMax === 3 || scaleMax === 300 ? scaleMax / 3 : scaleMax === 30 ? 5 : scaleMax / 5;
-      const minor = scaleMax === 3 || scaleMax === 300 ? major / 10 : scaleMax === 30 ? 1 : major / 4;
+      // Bereiche 1 V und 100 mA: Hauptstriche bei 0, Mitte und Ende (sonst drängen sich die Zahlen im runden Zifferblatt)
+      const halves = scaleMax === 1 || scaleMax === 100;
+      const major = scaleMax === 3 || scaleMax === 300 ? scaleMax / 3 : scaleMax === 30 ? 5 : halves ? scaleMax / 2 : scaleMax / 5;
+      const minor = scaleMax === 3 || scaleMax === 300 || halves ? major / 10 : scaleMax === 30 ? 1 : major / 4;
       const ink = '#2a2a2a';
       g.save();
       g.beginPath();
@@ -1381,8 +1392,14 @@ export default defineSimulation({
         g.closePath();
         g.fill();
       }
-      text(g, `l = ${fmt.num(p.l, 1)} m`, (x0 + xl) / 2 + (xl - x0 < 50 * s ? 30 * s : 0), ay - 9 * s, { font: `700 ${Math.max(10, Math.round(11 * s))}px ${theme.font}`, color: theme.series[3]! });
-      text(g, `A = ${fmt.num(p.A, 2)} mm²`, x0 + 2 * s, y + 46 * s, { font: `600 ${Math.max(10, Math.round(10.5 * s))}px ${theme.font}`, color: theme.muted, align: 'left' });
+      // Bei kurzem Draht laufen die Kabel zur Klemme links über die Leiste: Beschriftungen dann rechts.
+      const short = xl - x0 < 90 * s;
+      const lFont = `700 ${Math.max(10, Math.round(11 * s))}px ${theme.font}`;
+      if (short) text(g, `l = ${fmt.num(p.l, 1)} m`, x1, ay - 9 * s, { font: lFont, color: theme.series[3]!, align: 'right' });
+      else text(g, `l = ${fmt.num(p.l, 1)} m`, (x0 + xl) / 2, ay - 9 * s, { font: lFont, color: theme.series[3]! });
+      const aFont = { font: `600 ${Math.max(10, Math.round(10.5 * s))}px ${theme.font}`, color: theme.muted };
+      if (short) text(g, `A = ${fmt.num(p.A, 2)} mm²`, x1 + 6 * s, y + 46 * s, { ...aFont, align: 'right' });
+      else text(g, `A = ${fmt.num(p.A, 2)} mm²`, x0 + 2 * s, y + 46 * s, { ...aFont, align: 'left' });
     }
 
     function drawTerminals(Gx: Geo): void {

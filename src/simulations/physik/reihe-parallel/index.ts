@@ -447,7 +447,7 @@ export default defineSimulation({
   ],
   actions: [{ id: 'fix', label: L('Neue Lampen einsetzen', 'Insert new bulbs'), visibleIf: (v) => v.kind === 'lamp' }],
   readouts: [
-    { key: 'state', label: L('Beobachtung', 'Observation') },
+    { key: 'state', label: L('Beobachtung', 'Observation'), spoiler: true },
     { key: 'meters', label: L('Messgeräte zeigen', 'The meters show') },
     { key: 'rules', label: L('Gesetzmäßigkeiten', 'Rules') },
     { key: 'R', label: L('Ersatzwiderstand', 'Equivalent resistance'), spoiler: true },
@@ -491,6 +491,7 @@ export default defineSimulation({
       whyOut: 'herausgedreht',
       whyBurnt: 'durchgebrannt',
       burntNote: 'Eine Lampe ist durchgebrannt: An ihr lagen mehr als 9 V, ihre Nennspannung ist 6 V.',
+      burntNote2: 'Mehrere Lampen sind durchgebrannt: An ihnen lagen mehr als 9 V, ihre Nennspannung ist 6 V.',
       seriesR: 'Reihenschaltung: Durch alle Widerstände fließt derselbe Strom. Die Spannung teilt sich im Verhältnis der Widerstände auf: Am größten Widerstand liegt die größte Spannung.',
       parallelR: 'Parallelschaltung: An allen Widerständen liegt dieselbe Spannung. Durch den kleinsten Widerstand fließt der größte Strom.',
       mixedR: 'Gemischte Schaltung: R₁ liegt in Reihe mit der Parallelschaltung aus R₂ und R₃.',
@@ -524,6 +525,7 @@ export default defineSimulation({
       whyOut: 'unscrewed',
       whyBurnt: 'blown',
       burntNote: 'A bulb has blown: it had more than 9 V across it; its rated voltage is 6 V.',
+      burntNote2: 'Several bulbs have blown: they had more than 9 V across them; their rated voltage is 6 V.',
       seriesR: 'Series circuit: the same current flows through all resistors. The voltage is shared in the ratio of the resistances: the largest resistor gets the largest voltage.',
       parallelR: 'Parallel circuit: all resistors have the same voltage. The smallest resistor carries the largest current.',
       mixedR: 'Mixed circuit: R₁ is in series with R₂ and R₃ in parallel.',
@@ -535,8 +537,14 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const g = surface.g;
-    const tr = (key: string, vars: Record<string, string> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
-    const narrow = () => surface.width < 640;
+    // Zahl und Einheit nicht trennen: geschütztes Leerzeichen (lokal wie in teilchenmodell)
+    const tr = (key: string, vars: Record<string, string> = {}) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:V|A|Ω|W)(?![\p{L}]))/gu, '$1\u00a0');
+    // schmal nur bei hoher Bühne (Handy); iPad quer (≈ 620 × 390 px) nebeneinander wie am Laptop
+    const narrow = () => surface.width < 640 && surface.width < surface.height * 1.3;
     const circ = () => p.circ as Circuit;
     const lamps = () => p.kind === 'lamp';
     const count = () => partCount(circ(), p.n);
@@ -595,7 +603,8 @@ export default defineSimulation({
         else if (open[0]) state = tr('mixedOut1', { why: why(0) });
         else if (offs.length === 2) state = ctx.t('mixedOutBoth');
         else state = tr('mixedOutBranch', { i: String(offs[0]! + 1), j: offs[0] === 1 ? '3' : '2', why: why(offs[0]!) });
-        if (burnt.slice(0, count()).some(Boolean)) state += ` ${ctx.t('burntNote')}`;
+        const nBurnt = burnt.slice(0, count()).filter(Boolean).length;
+        if (nBurnt) state += ` ${ctx.t(nBurnt > 1 ? 'burntNote2' : 'burntNote')}`;
       }
       ctx.readout('state', state);
       // Messgeräte
@@ -641,7 +650,7 @@ export default defineSimulation({
         });
       // Ersatzwiderstand
       const Rs = resistances();
-      const ohm = (r: number) => `${fmt.num(r, r < 10 ? 2 : 1)} Ω`;
+      const ohm = (r: number) => `${fmt.num(r, r < 10 ? 2 : 1)}\u00a0Ω`;
       if (!Number.isFinite(res.R)) ctx.readout('R', ctx.lang === 'de' ? 'Stromkreis unterbrochen – kein Strom' : 'Circuit broken – no current');
       else if (open.some(Boolean)) ctx.readout('R', { html: `<var>R</var> = <span class="frac"><span><var>U</var></span><span><var>I</var></span></span> = <strong>${ohm(res.R)}</strong>` });
       else if (c === 'series') ctx.readout('R', { html: `<var>R</var> = ${Rs.map(ohm).join(' + ')} = <strong>${ohm(res.R)}</strong>` });
@@ -1361,7 +1370,7 @@ export default defineSimulation({
             const I = slotCurrent(sl.measure, res);
             meterSymbol([x, y], rm, 'A', meter, theme.series[3]!);
             const size = narrow() ? 11 : 12;
-            const label = `${fI(I)} A`;
+            const label = `${fI(I)}\u00a0A`;
             if (sl.dir === 'h') tag(x, y < oy + DH * s * 0.5 ? y - rm - 15 : y + rm + 15, label, theme.series[3]!, 'center', size);
             else if (narrow() && circ() !== 'series') tag(x, y - rm - 13, label, theme.series[3]!, 'center', size);
             else tag(x < w * 0.6 ? x + rm + 6 : x - rm - 6, y, label, theme.series[3]!, x < w * 0.6 ? 'left' : 'right', size);
@@ -1421,9 +1430,10 @@ export default defineSimulation({
             g.restore();
             meterSymbol(vc, rm, 'V', meter, color);
             const size = narrow() ? 11 : 12;
-            const label = `${fU(tg.U)} V`;
+            const label = `${fU(tg.U)}\u00a0V`;
             if (pp[1] !== 0) tag(vc[0], vc[1] + pp[1] * (rm + 15), label, color, 'center', size);
-            else if (narrow()) tag(vc[0], vc[1] + rm + 14, label, color, 'center', size);
+            // gemischt: rechts daneben steht Lampe 3 → Anzeige darunter
+            else if (narrow() || circ() === 'mixed') tag(vc[0], vc[1] + rm + 14, label, color, 'center', size);
             else tag(vc[0] + rm + 6, vc[1], label, color, 'left', size);
             hits.push({ id: `volt:${tg.key}`, x: vc[0], y: vc[1], r: rm + 6 });
           } else if (p.marks && !ctx.locked) {
@@ -1524,7 +1534,8 @@ export default defineSimulation({
       text(g, label, x, y, { font: `700 ${size}px ${theme.font}`, color: theme.muted, align: comp.dir === 'h' ? 'center' : 'left' });
       if (lamps() && (burnt[i] || removed(i))) {
         const note = ctx.t(burnt[i] ? 'burnt' : 'out');
-        const ny = comp.dir === 'h' ? y + size + 2 : c[1] + R + 12 * s;
+        // schmal: unter die Anzeige des Spannungsmessers am Nachbarzweig rücken
+        const ny = comp.dir === 'h' ? y + size + 2 : c[1] + R + (narrow() ? 30 : 12) * s;
         const nx = comp.dir === 'h' ? x : c[0];
         tag(nx, ny, note, burnt[i] ? theme.series[1]! : theme.muted, 'center', Math.max(10, size - 2));
       }

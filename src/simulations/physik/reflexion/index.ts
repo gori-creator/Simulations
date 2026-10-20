@@ -158,6 +158,7 @@ export default defineSimulation({
       normal: 'Lot',
       mirror: 'Spiegel',
       backHit: 'Das Licht trifft die Rückseite des Spiegels.',
+      grazeHit: 'Das Licht streift genau an der Spiegelfläche entlang (α = 90°).',
       tableTitle: 'Messreihe',
       colNo: 'Nr.',
       emptyTable: 'Drücke „Messwert aufnehmen“, um Einfalls- und Reflexionswinkel einzutragen.',
@@ -214,6 +215,7 @@ export default defineSimulation({
       normal: 'normal',
       mirror: 'Mirror',
       backHit: 'The light hits the back of the mirror.',
+      grazeHit: 'The light just grazes along the mirror surface (α = 90°).',
       tableTitle: 'Measurements',
       colNo: 'No.',
       emptyTable: 'Press “Record measurement” to add the angles of incidence and reflection.',
@@ -408,6 +410,8 @@ export default defineSimulation({
     const alphaNow = () => incidence(laser, p.tilt);
     const laserLen = () => (narrow() ? 38 : 64);
     const front = () => hitsFront(laser, p.tilt);
+    /** Meldung, wenn nichts reflektiert wird: streifend (α = ±90°) oder Rückseite. */
+    const backKey = () => (Math.abs(Math.abs(alphaNow()) - 90) < 1e-9 ? 'grazeHit' : 'backHit');
 
     /** Lage eines Punktes zwischen den Spiegeln (Abstand r, Anteil f des Winkels vom linken Spiegel aus). */
     function wedgePoint(r: number, f: number, w = wedge): V2 {
@@ -595,7 +599,7 @@ export default defineSimulation({
           ctx.readout('angles', tr('anglesText', { a: deg0(a), b: deg0(a) }));
           ctx.readout('glance', tr('glanceText', { g: fmt.num(glancingAngle(a), 0) }) + (p.tilt !== 0 ? ` · ${tr('turnText', { t: fmt.num(Math.abs(p.tilt), 0), t2: fmt.num(2 * Math.abs(p.tilt), 0) })}` : ''));
         } else {
-          ctx.readout('angles', ctx.t('backHit'));
+          ctx.readout('angles', ctx.t(backKey()));
           ctx.readout('glance', null);
         }
         ctx.readout('law', ctx.t('lawText'));
@@ -982,7 +986,7 @@ export default defineSimulation({
       for (const t of tags) pill(t.txt, t.x, t.y, t.color, { size });
       drawLaser(lx, ly, Math.atan2(cy - ly, cx - lx));
       lawPlot.end();
-      if (!hit) pill(ctx.t('backHit'), disc.x + disc.w / 2, disc.y + 22, theme.series[1]!, { size: small ? 11 : 12, solid: true });
+      if (!hit) pill(ctx.t(backKey()), disc.x + disc.w / 2, disc.y + 22, theme.series[1]!, { size: small ? 11 : 12, solid: true });
       drawTableCard(cr);
     }
 
@@ -1907,9 +1911,9 @@ export default defineSimulation({
       if (perColMax * cols < n) text(g, '…', r.x + r.w / 2, y + perColMax * rowH + 2, { font: rowFont, color: theme.muted });
       const hintY = y + Math.min(perCol, perColMax) * rowH + 10;
       const hintFont = `500 ${small ? 11 : 12}px ${theme.font}`;
-      wrap(ctx.t('tapHint'), r.w - 32, hintFont).forEach((ln, k) => {
-        if (hintY + k * lh < bottom - 4) text(g, ln, x, hintY + k * lh, { font: hintFont, color: theme.muted, align: 'left' });
-      });
+      // Hinweis nur ganz zeigen – ein halber Satz wäre verwirrend
+      const hintLines = wrap(ctx.t('tapHint'), r.w - 32, hintFont);
+      if (hintY + (hintLines.length - 1) * lh < bottom - 4) hintLines.forEach((ln, k) => text(g, ln, x, hintY + k * lh, { font: hintFont, color: theme.muted, align: 'left' }));
       // Diagramm: Anzahl der Bilder bei anderen Winkeln
       if (lay.chart) {
         text(g, ctx.t('chartTitle'), x, lay.chart.y - 6, { font: `700 12px ${theme.font}`, color: theme.text, align: 'left' });

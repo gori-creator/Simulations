@@ -152,7 +152,7 @@ export default defineSimulation({
   actions: [{ id: 'drop', label: L('Tinte eintropfen', 'Add a drop of ink'), primary: true, visibleIf: (v) => v.mode === 'diff' }],
   readouts: [
     { key: 'phase', label: L('Aggregatzustand', 'State of matter') },
-    { key: 'temp', label: L('Temperatur und Teilchenbewegung', 'Temperature and particle motion') },
+    { key: 'temp', label: L('Temperatur und Teilchenbewegung', 'Temperature and particle motion'), spoiler: true },
     { key: 'latent', label: L('Energie für die Übergänge', 'Energy for the changes of state'), spoiler: true },
     { key: 'mix', label: L('Durchmischung', 'Mixing') },
     { key: 'why', label: L('Warum schneller?', 'Why faster?'), spoiler: true },
@@ -220,10 +220,11 @@ export default defineSimulation({
       whatOut: 'wird frei, weil neue Bindungen entstehen',
       whatOff: 'steckt in den Bindungen, nicht in der Bewegung',
       temp:
-        '<var>T</var> = <var>ϑ</var> + 273 K = {th} + 273 K = <strong>{T} K</strong><br>Mittlere Bewegungsenergie: <var>E</var> = <span class="frac"><span>3</span><span>2</span></span> · <var>k</var> · <var>T</var> ≈ {E} · 10<sup>−21</sup> J · Teilchen im Mittel ≈ <strong>{v} m/s</strong> schnell',
+        '<var>T</var> = <var>ϑ</var> + 273 K = {th} + 273 K = <strong>{T} K</strong><br>Mittlere Bewegungsenergie: <var>E</var> = <span class="frac"><span>3</span><span>2</span></span> · <var>k</var> · <var>T</var> ≈ {E} · 10<sup>−21</sup> J<br>Die Teilchen sind im Mittel ≈ <strong>{v} m/s</strong> schnell.',
       latent:
         'Schmelzen: <var>Q</var> = <var>m</var> · <var>q</var><sub>s</sub> = 0,5 kg · 334 <span class="frac"><span>kJ</span><span>kg</span></span> = {qs} kJ → bei <var>P</var> = {P} W: <var>t</var> = <span class="frac"><span><var>Q</var></span><span><var>P</var></span></span> ≈ {ts} min<br>Verdampfen: <var>Q</var> = <var>m</var> · <var>q</var><sub>v</sub> = 0,5 kg · 2257 <span class="frac"><span>kJ</span><span>kg</span></span> ≈ {qv} kJ → <var>t</var> ≈ {tv} min',
-      nowState: 't = {t} min · ϑ = {th} °C · zugeführte Energie Q = P · t = {q} kJ',
+      nowState: 't = {t} min · ϑ = {th} °C · zugeführte Energie Q = {q} kJ',
+      nowStateCool: 't = {t} min · ϑ = {th} °C · abgegebene Energie Q = {q} kJ',
       nowStateOff: 't = {t} min · ϑ = {th} °C · Platte aus',
       mixText: 'kalt ({tc} °C): <strong>{mc} %</strong> · warm ({tw} °C): <strong>{mw} %</strong>',
       mixNone: 'Noch keine Tinte im Wasser – „Tinte eintropfen“.',
@@ -284,10 +285,11 @@ export default defineSimulation({
       whatOut: 'is released because new bonds form',
       whatOff: 'is stored in the bonds, not in the motion',
       temp:
-        '<var>T</var> = <var>ϑ</var> + 273 K = {th} + 273 K = <strong>{T} K</strong><br>Mean kinetic energy: <var>E</var> = <span class="frac"><span>3</span><span>2</span></span> · <var>k</var> · <var>T</var> ≈ {E} · 10<sup>−21</sup> J · particles move at about <strong>{v} m/s</strong> on average',
+        '<var>T</var> = <var>ϑ</var> + 273 K = {th} + 273 K = <strong>{T} K</strong><br>Mean kinetic energy: <var>E</var> = <span class="frac"><span>3</span><span>2</span></span> · <var>k</var> · <var>T</var> ≈ {E} · 10<sup>−21</sup> J<br>On average the particles move at about <strong>{v} m/s</strong>.',
       latent:
         'Melting: <var>Q</var> = <var>m</var> · <var>L</var><sub>f</sub> = 0.5 kg · 334 <span class="frac"><span>kJ</span><span>kg</span></span> = {qs} kJ → at <var>P</var> = {P} W: <var>t</var> = <span class="frac"><span><var>Q</var></span><span><var>P</var></span></span> ≈ {ts} min<br>Vaporising: <var>Q</var> = <var>m</var> · <var>L</var><sub>v</sub> = 0.5 kg · 2257 <span class="frac"><span>kJ</span><span>kg</span></span> ≈ {qv} kJ → <var>t</var> ≈ {tv} min',
-      nowState: 't = {t} min · ϑ = {th} °C · energy supplied Q = P · t = {q} kJ',
+      nowState: 't = {t} min · ϑ = {th} °C · energy supplied Q = {q} kJ',
+      nowStateCool: 't = {t} min · ϑ = {th} °C · energy given off Q = {q} kJ',
       nowStateOff: 't = {t} min · ϑ = {th} °C · plate off',
       mixText: 'cold ({tc} °C): <strong>{mc} %</strong> · warm ({tw} °C): <strong>{mw} %</strong>',
       mixNone: 'No ink in the water yet – “Add a drop of ink”.',
@@ -302,7 +304,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    // Platzhalter einsetzen; zwischen Zahl und Einheit ein geschütztes Leerzeichen (kein Zeilenumbruch in „580 m/s“)
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:°C|m\/s|K|kJ|kg|W|min|s|J|%)(?![\p{L}]))/gu, '$1\u00a0');
     const n = (v: number, d: number) => fmt.num(v, d);
     const mode = (): Mode => (p.mode === 'diff' ? 'diff' : 'state');
     const blue = () => ctx.theme.series[0]!;
@@ -2409,11 +2416,12 @@ export default defineSimulation({
     function updateNow(): void {
       let s: string;
       if (mode() === 'state') {
-        const q = (p.heat === 'off' ? 0 : 0) + (H - (history[0] ? enthalpy(history[0].th) : H));
+        // Energie seit Beginn des Diagramms (Summe aus Heizen und Kühlen)
+        const q = H - (history[0] ? enthalpy(history[0].th) : H);
         s =
           p.heat === 'off' && Math.abs(q) < 1
             ? tr('nowStateOff', { t: fmt.fixed(simT / 60, 1), th: n(Math.round(st.theta), 0) })
-            : tr('nowState', { t: fmt.fixed(simT / 60, 1), th: n(Math.round(st.theta), 0), q: n(Math.round(q / 1000), 0) });
+            : tr(q < 0 ? 'nowStateCool' : 'nowState', { t: fmt.fixed(simT / 60, 1), th: n(Math.round(st.theta), 0), q: n(Math.round(Math.abs(q) / 1000), 0) });
       } else s = dropped ? tr('nowDiff', { t: fmt.fixed(tD, 1) }) : ctx.t('nowDiffNone');
       if (s !== lastNow) {
         lastNow = s;
