@@ -107,7 +107,7 @@ const PROOF: { head: Txt; src: Txt; tone?: 'bad' | 'ok' }[] = [
   },
   {
     head: L('Widerspruch', 'Contradiction'),
-    src: L('\\c{b}{p und q gerade – der Bruch war nicht gekürzt!}', '\\c{b}{p and q both even – not reduced after all!}'),
+    src: L('\\c{b}{p, q gerade – also nicht gekürzt!}', '\\c{b}{p, q both even – not reduced!}'),
     tone: 'bad',
   },
   {
@@ -936,7 +936,7 @@ export default defineSimulation({
       g.moveTo(B.x, B.y);
       g.lineTo(B.x + B.w, B.y);
       g.stroke();
-      const yl = B.y + 50;
+      const yl = B.y + 54;
       const x0 = B.x + 10;
       const x1 = B.x + B.w - 10;
       const span = 10 ** HL.v;
@@ -973,7 +973,7 @@ export default defineSimulation({
         if (xx < x0 - 1 || xx > x1 + 1) continue;
         g.font = tf;
         const tw = g.measureText(fmt.fixed(v, dec)).width;
-        const clash = !hs && Math.abs(xx - xr0) < tw / 2 + 26;
+        const clash = (!hs && Math.abs(xx - xr0) < tw / 2 + 26) || (hs && Math.round(HN.v) > 0);
         g.strokeStyle = withAlpha(theme.text, 0.7);
         g.lineWidth = 1.3;
         g.beginPath();
@@ -1048,7 +1048,7 @@ export default defineSimulation({
       }
       // Lupe
       const zoom = Math.round(Math.log10(heronLineSpan0() / span));
-      if (zoom >= 1) fpill(B.x + B.w, B.y + 14, `\\c{m}{${up(say(L('Lupe', 'zoom')))} ×10^{${zoom}}}`, { size: fs(11.5, 11), align: 'right', alpha: k.labels * 0.95, bounds: B });
+      if (zoom >= 1) fpill(B.x + B.w, B.y + 12, `\\c{m}{${up(say(L('Lupe', 'zoom')))} ×10^{${zoom}}}`, { size: fs(11.5, 11), align: 'right', alpha: k.labels * 0.95, bounds: B });
       void now;
     }
     const heronLineSpan0 = () => 10 ** heronLine(0).lw;
@@ -1079,7 +1079,7 @@ export default defineSimulation({
       const g0 = surface.g;
       g0.font = `700 ${fs(13, 12)}px ${theme.font}`;
       const rightLab = Math.min(140, g0.measureText(`√${a} ≈ 99,999`).width + 26);
-      const cell = Math.min((area.w - rightLab) / SE.v, (area.h - 30) / SE.v, 44);
+      const cell = Math.min((area.w - rightLab) / SE.v, (area.h - 30) / SE.v, 64);
       const used = SE.v * cell;
       const ox = area.x + Math.max(0, (area.w - rightLab - used) / 2);
       const oy = area.y + 8 + (area.h - 30 + used) / 2 - 4;
@@ -1220,7 +1220,7 @@ export default defineSimulation({
       }
       // Kopfzeile mit Zähler
       label(say(L('a Einheitsquadrate – passt ein Quadrat?', 'a unit squares – do they make a square?')), R.x + pad, R.y + 22, `700 ${fs(13.5, 12)}px ${theme.font}`, theme.text, 'left');
-      fpill(R.x + R.w - pad, R.y + 22, `\\c{a}{A = ${counted}}`, { size: fs(12.5, 11.5), align: 'right', border: withAlpha(col.a(), 0.5), alpha: k.panel });
+      fpill(R.x + R.w - pad, R.y + 22, `\\c{a}{A = ${build ? counted : a}}`, { size: fs(12.5, 11.5), align: 'right', border: withAlpha(col.a(), 0.5), alpha: k.panel });
       if (!perfect && lab > 0.01 && grow > 0.9) {
         const restN = a - kk * kk;
         const [rx0, ry0] = M(kk + 1, restN <= kk + 1 ? Math.min(restN, kk + 1) : kk + 1);
@@ -1445,7 +1445,7 @@ export default defineSimulation({
             const th2 = lo + (j + 1) * sub;
             const tooBig = tl * tl > a;
             const tv = tooBig ? tl : th2;
-            fpill((Z(tl) + Z(th2)) / 2, yZ - 46, `\\c{b}{${Fx(tv, Lv + 1)}² = ${N(tv * tv, 2 * Lv + 2)} ${tooBig ? '>' : '<'} ${a}: ${up(tooBig ? say(L('zu groß', 'too big')) : say(L('zu klein', 'too small')))}}`, { size: fs(12, 11), border: withAlpha(col.bad(), 0.6), alpha: 1 - ease.inCubic(t), bounds: R });
+            fpill((Z(tl) + Z(th2)) / 2, yZ - 64, `\\c{b}{${Fx(tv, Lv + 1)}² = ${N(tv * tv, 2 * Lv + 2)} ${tooBig ? '>' : '<'} ${a}: ${up(tooBig ? say(L('zu groß', 'too big')) : say(L('zu klein', 'too small')))}}`, { size: fs(12, 11), border: withAlpha(col.bad(), 0.6), alpha: 1 - ease.inCubic(t), bounds: R });
           } else wrongTap = null;
         }
         // Grenzen
@@ -1671,7 +1671,7 @@ export default defineSimulation({
       const theme = th();
       const rows = nearMisses(8).slice(1);
       const rh = Math.min(fs(24, 21), (B.h - 46) / rows.length);
-      const cols = [B.x + 6, B.x + B.w * 0.36, B.x + B.w * 0.66, B.x + B.w - 4];
+      const cols = [B.x + 6, B.x + B.w * 0.27, B.x + B.w * 0.7, B.x + B.w - 4];
       label(say(L('Fast-Treffer', 'Near misses')), B.x + 6, B.y + 12, `750 ${fs(12.5, 11.5)}px ${theme.font}`, theme.text, 'left');
       const hy = B.y + 34;
       const hf = `700 ${fs(11.5, 11)}px ${theme.font}`;
@@ -1772,9 +1772,10 @@ export default defineSimulation({
         } else {
           const q0 = list[n - 1]!;
           const q1 = list[n]!;
-          const at = (i: number) => clamp01(animK * 4 - i);
+          const at = (i: number) => clamp01(animK * 7 - i);
           const v1 = hs ? '?' : N(q1.x, 6);
-          rows.push({ src: `\\c{x}{x_${n}} = \\f{\\c{x}{${N(q0.x, 5)}} + \\c{y}{${N(q0.y, 5)}}}{2} ${hs ? '= ?' : `${isEx(q1.x, 6) ? '=' : '≈'} \\c{x}{\\b{${v1}}}`}`, size: fs(13.5, 12.5), at: at(1), hl: col.x() });
+          const h0 = hs && n > 1;
+          rows.push({ src: `\\c{x}{x_${n}} = \\f{\\c{x}{${h0 ? '?' : N(q0.x, 5)}} + \\c{y}{${h0 ? '?' : N(q0.y, 5)}}}{2} ${hs ? '= ?' : `${isEx(q1.x, 6) ? '=' : '≈'} \\c{x}{\\b{${v1}}}`}`, size: fs(13.5, 12.5), at: at(1), hl: col.x() });
           rows.push({ src: `\\c{y}{a : x_${n} = ${a} : ${v1}} ${hs ? '= ?' : `≈ \\c{y}{${N(q1.y, 6)}}`}`, at: at(2) });
           rows.push({ src: `\\c{a}{x_${n} · (a : x_${n}) = ${a}}  \\c{m}{${up(say(L('Fläche bleibt', 'area stays')))}}`, at: at(2.5) });
           const big = fr[0] > 9999999n || fr[1] > 9999999n;
@@ -1877,7 +1878,7 @@ export default defineSimulation({
         ];
         if (perfect) {
           rows.push({ src: `\\c{a}{${kk}² = ${a}}  ⇒  \\c{r}{${rt(a)} = ${hs ? '?' : kk}}`, size: fs(15, 13.5), hl: col.r() });
-          rows.push({ src: `\\c{m}{${up(say(L(`${a} ist eine Quadratzahl – die Kästchen bilden genau ein Quadrat.`, `${a} is a square number – the unit squares make an exact square.`)))}}`, size: fs(12, 11) });
+          rows.push({ src: `\\c{m}{${up(say(L('Quadratzahl – geht genau auf', 'square number – fits exactly')))}}`, size: fs(12, 11) });
         } else {
           rows.push({ src: `\\c{a}{${kk}² = ${kk * kk}} < ${a} < \\c{m}{${(kk + 1) ** 2} = ${kk + 1}²}`, size: fs(14, 13) });
           rows.push({ src: `⇒  ${hs ? '?' : kk} < \\c{r}{${rt(a)}} < ${hs ? '?' : kk + 1}`, size: fs(15, 13.5), hl: col.r() });
