@@ -1591,14 +1591,14 @@ export const mathematik: Subject = {
             slug: L('extremwertprobleme', 'optimisation-problems'),
             title: L('Extremwertprobleme', 'Optimisation problems'),
             summary: L(
-              'Welche Schachtel fasst am meisten, welche Dose braucht am wenigsten Blech? Mit der Ableitung findest du das Optimum.',
-              'Which box holds the most, which can uses the least metal? Use the derivative to find the best solution.',
+              'Welche Schachtel fasst am meisten, welche Dose braucht am wenigsten Blech? An fünf Alltagsproblemen findest du mit der Ableitung das Optimum.',
+              'Which box holds the most, which can uses the least metal? Five everyday problems show how to find the best solution with the derivative.',
             ),
             grades: [13, 13],
             kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
             keywords: L(
-              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte'],
-              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values'],
+              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Strahlensatz', 'Rettungsschwimmer', 'Brechungsgesetz', 'Newton-Verfahren'],
+              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'intercept theorem', 'lifeguard', 'law of refraction', "Newton's method"],
             ),
             thumb: 'generic',
           },
