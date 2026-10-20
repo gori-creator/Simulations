@@ -1,6 +1,6 @@
 # Mängelliste (Durchsicht der Seite durch die Projektleitung, 20.10.2026)
 
-Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. Bearbeitung durch die Projektleitung (Physik-Sitzung) ab 20.10. nachmittags.
+Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. **Stand 20.10.: offen nur noch Punkt 5 (Lehrplan Bayern Physik, läuft); Punkt 6 gebaut, PR folgt.**
 
 ## Startseite
 
@@ -29,7 +29,7 @@ Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulation
 
 **Befund 20.10. (Auftrag `AUFTRAG-VORSCHAUBILDER.md`):** Die vermutete Ursache traf nicht zu. Alle 16 haben eine eigene `thumb.svg`, aber ihre Darstellungsattribute (`fill="none"`, `stroke="currentColor"` …) stehen am Wurzel-`<svg>`. `SimThumb.astro` hat dieses Starttag beim Einbetten komplett entfernt; ohne `fill="none"` füllt der Browser alle Pfade schwarz. Behoben in `src/lib/thumb.ts` (`extractThumb`): Die Attribute der Wurzel werden in ein `<g>` übernommen, Dateiattribute wie `viewBox` und `xmlns` entfallen. Neuer Test `tests/thumbs.test.ts` (Format, nur `currentColor`, keine ungefüllten Formen, Einbettung über `extractThumb`). Sichtprüfung aller 129 Karten auf Startseite, Fachseiten und Katalog (1360 px hell/dunkel, 390 px): keine schwarze Karte mehr. Neu gezeichnet: `stammfunktion-grafisch` und `matrix-abbildungen`. Simulationen mit `thumb: 'generic'` ohne eigene `thumb.svg`: keine.
 
-### 2. Nach dem Klick auf eine Karte landet man am Ende der Seite
+### 2. ✅ Nach dem Klick auf eine Karte landet man am Ende der Seite
 Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten statt oben. Man muss erst nach oben zur Simulation scrollen. Das ist sehr nervig.
 
 **Vermutete Ursache (noch zu prüfen):** Die Scrollposition der Startseite wird übernommen, oder der Fokus bzw. ein Sprungziel auf der Simulationsseite zieht nach unten. Mögliche Auslöser sind zum Beispiel ein `autofocus`, `scrollIntoView` oder `focus()` beim Laden, oder die Wiederherstellung des Zustands.
@@ -68,7 +68,7 @@ Jetzt sind alle Simulationen fertig. Die Zähler sind daher überflüssig, zum B
 
 ## Kopfleiste
 
-### 8. Dunkelmodus geht beim Seitenwechsel verloren bzw. blitzt weiß
+### 8. ✅ Dunkelmodus geht beim Seitenwechsel verloren bzw. blitzt weiß
 Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist die Seite weiß bzw. wieder im hellen Modus.
 
 **Vermutete Ursache (noch zu prüfen):** Die Theme-Wahl wird nicht gespeichert oder erst nach dem ersten Zeichnen angewendet. Dann gibt es weißes Aufblitzen (FOUC) oder einen Rücksprung auf hell.
@@ -76,7 +76,7 @@ Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist di
 
 **Befund 20.10.:** Im echten Build nicht nachvollziehbar. Der Dunkelmodus bleibt nach Kartenklick und nach Klick in der Kopfleiste erhalten; das Farbschema wird schon im `<head>` gesetzt. In der Artifact-Vorschau ist `localStorage` vermutlich gesperrt, deshalb springt es dort zurück.
 
-### 9. Englische Fassung funktioniert nicht
+### 9. ✅ Englische Fassung funktioniert nicht
 Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
 
 **Beobachtung (Projektleitung):** Beim Umschalten auf Englisch erscheint eine Fehlerseite.
@@ -99,7 +99,7 @@ Vorhanden sind (`src/curriculum/lehrplaene/`): Bayern Gymnasium Mathematik, Hess
 
 **Ziel:** `bayern-gymnasium-physik.ts` im selben Aufbau anlegen (Jahrgangsstufe → Lernbereich → Simulations-IDs, Kurzbeschreibungen in eigenen Worten). Unsichere Zuordnungen als Entwurf kennzeichnen.
 
-### 6. Einstellungen mit Bundesland-Auswahl (neue Funktion)
+### 6. ✅ (gebaut 20.10., Zweig `claude/hopeful-bardeen-9cogca`, Abnahme durch die Leitung; PR nach `main` folgt) Einstellungen mit Bundesland-Auswahl (neue Funktion)
 Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahnrad. Dort stellt man sein Bundesland ein.
 
 - **Bundesland gewählt:** Die Simulationen werden nach den Jahrgangsstufen dieses Landes sortiert und gruppiert.
@@ -114,7 +114,7 @@ Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahn
 
 ## Bilder
 
-### 10. Vollständige Bilderliste mit sehr genauen Prompts
+### 10. ✅ Vollständige Bilderliste mit sehr genauen Prompts
 Die Projektleitung erzeugt die Bilder selbst mit einem Bildgenerator. Dafür braucht sie **eine einzige, vollständige Liste** aller noch fehlenden Bilder.
 
 **Was auf die Liste gehört:** alles, was in den Simulationen bisher nur gezeichnet wird, sich in der Größe bzw. Form nicht ständig ändert und als Foto bzw. Illustration deutlich hochwertiger aussähe. Beispiele: Gegenstände, Geräte, Figuren, Hintergründe, Oberflächen.

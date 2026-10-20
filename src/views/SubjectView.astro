@@ -4,12 +4,13 @@ import GradeBadge from '../components/GradeBadge.astro';
 import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
 import SimCard from '../components/SimCard.astro';
-import { GRADE_BANDS, getSubject, progressOf, simulationsOf } from '../curriculum';
+import { GRADE_BANDS, getSimulation, getSubject, progressOf, simulationsOf } from '../curriculum';
 import { curriculaFor } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { curriculumFor, groupByCurriculumGrade, regionGrades, regionsOf } from '../lib/region';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -23,6 +24,14 @@ const sims = simulationsOf({ subject: subjectId });
 const progress = progressOf(sims);
 const ready = sims.filter((s) => s.status === 'ready');
 const curricula = curriculaFor(subjectId);
+
+// Einstellung „Bundesland“: je Land vorgerenderte Ansicht (per CSS über data-region gezeigt)
+const readyIds = ready.map((s) => s.id);
+const regionViews = regionsOf(lang).map((region) => {
+  const curriculum = curriculumFor(subjectId, region.id);
+  return { region, curriculum, grouping: curriculum ? groupByCurriculumGrade(curriculum, readyIds) : undefined };
+});
+const regionsWithView = regionViews.filter((v) => v.curriculum).map((v) => v.region.id);
 ---
 
 <BaseLayout
@@ -64,12 +73,73 @@ const curricula = curriculaFor(subjectId);
     }
 
     {
+      regionViews.map(({ region, curriculum, grouping }) =>
+        curriculum && grouping ? (
+          ready.length > 0 && (
+            <section class="section region-view" style="padding-top:8px" data-region-only={region.id}>
+              <div class="section__head">
+                <h2>{t(lang, 'region.viewTitle', { state: region.name[lang] })}</h2>
+              </div>
+              <p class="muted" style="margin-bottom:20px">
+                {t(lang, 'region.viewLead', { state: region.name[lang], school: curriculum.schoolType[lang] })}{' '}
+                <a href={href(lang, { kind: 'curriculum', curriculum: curriculum.id })}>{t(lang, 'curriculum.overview')}</a>
+              </p>
+              {grouping.groups.map((group) => (
+                <div class="region-grade">
+                  <h3>
+                    <a href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: group.grade })}>
+                      {t(lang, 'region.gradeHeading', { n: group.grade, state: region.name[lang] })}
+                    </a>
+                  </h3>
+                  {group.first.length > 0 && (
+                    <div class="card-grid">
+                      {group.first.map((id) => (
+                        <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
+                      ))}
+                    </div>
+                  )}
+                  {group.again.length > 0 && (
+                    <p class="region-grade__again">
+                      {t(lang, 'region.again')}{' '}
+                      {group.again.map((id, i) => (
+                        <>
+                          {i > 0 && ', '}
+                          <a href={href(lang, { kind: 'simulation', id })}>{getSimulation(id).title[lang]}</a>{' '}
+                          ({t(lang, 'curriculum.gradeShort', { n: regionGrades(id, region.id)[0] ?? group.grade })})
+                        </>
+                      ))}
+                    </p>
+                  )}
+                </div>
+              ))}
+              {grouping.rest.length > 0 && (
+                <div class="region-grade">
+                  <h3>{t(lang, 'region.rest')}</h3>
+                  <p class="muted" style="margin-bottom:12px">{t(lang, 'region.restLead', { state: region.name[lang] })}</p>
+                  <div class="card-grid">
+                    {grouping.rest.map((id) => (
+                      <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+          )
+        ) : (
+          <p class="note" style="margin-top:16px" data-region-only={region.id}>
+            {t(lang, 'region.noCurriculum', { state: region.name[lang] })}
+          </p>
+        ),
+      )
+    }
+
+    {
       ready.length > 0 && (
-        <section class="section" style="padding-top:8px">
+        <section class="section" style="padding-top:8px" data-region-hide={regionsWithView.join(' ') || undefined}>
           <div class="section__head">
             <h2>{t(lang, 'home.featured')}</h2>
           </div>
-          <div class="card-grid">
+          <div class="card-grid" data-region-sort>
             {ready.map((sim) => (
               <SimCard lang={lang} sim={sim} />
             ))}

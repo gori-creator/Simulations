@@ -65,7 +65,7 @@ const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }))
               <span class="badge">{formatGrades(lang, topic.grades)}</span>
             </div>
             {ready.length > 0 && (
-              <div class="card-grid" style="margin-bottom:14px">
+              <div class="card-grid" style="margin-bottom:14px" data-region-sort>
                 {entries
                   .filter((s) => s.status === 'ready')
                   .map((sim) => (
