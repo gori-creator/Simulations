@@ -42,6 +42,8 @@ const MAX_LIVES = 5000;
 const MAX_EMISSIONS = 360;
 /** Schräglage des Zählrohrs (rad, nach rechts oben). */
 const PHI = -0.36;
+/** Anteil der Zerfälle, deren Teilchen gezielt ins Zählrohrfenster fliegen (Nachweiswahrscheinlichkeit, gezeichnet). */
+const EFF = 0.12;
 
 type Mode = 'many' | 'one';
 type Kind = 'a' | 'b' | 'g';
@@ -212,7 +214,7 @@ export default defineSimulation({
       fracs: ['½ N₀', '¼ N₀', '⅛ N₀'].join('|'),
       chartA: 'Aktivität A = λ · N',
       chartAS: 'Aktivität A',
-      axisA: 'A in 1/{u}',
+      axisA: 'A in {u}',
       emptyN: '„Abspielen“ – hier entstehen die Messpunkte.',
       emptyNS: 'Abspielen …',
       done: 'Fast alle Kerne zerfallen – „Neues Präparat“',
@@ -278,7 +280,7 @@ export default defineSimulation({
       fracs: ['½ N₀', '¼ N₀', '⅛ N₀'].join('|'),
       chartA: 'Activity A = λ · N',
       chartAS: 'Activity A',
-      axisA: 'A in 1/{u}',
+      axisA: 'A in {u}',
       emptyN: '“Play” – the data points appear here.',
       emptyNS: 'Play …',
       done: 'Almost all nuclei have decayed – “New sample”',
@@ -366,10 +368,14 @@ export default defineSimulation({
         const ms = n(m, Math.max(0, digits - 1));
         return html ? `${ms} · 10<sup>${e < 0 ? `−${-e}` : e}</sup>` : `${ms} · 10${supText(String(e))}`;
       }
-      const d = clamp(digits - 1 - Math.floor(Math.log10(a)), 0, 6);
-      return group(n(v, d));
+      const e = Math.floor(Math.log10(a));
+      const d = clamp(digits - 1 - e, 0, 6);
+      const q = 10 ** Math.max(0, e - digits + 1);
+      return group(n(Math.round(v / q) * q, d));
     }
-    const unitLabel = (nu: Nuclide) => (nu.unit === 'Ga' ? (de ? '10⁹ a' : '10⁹ a') : nu.unit);
+    const unitLabel = (nu: Nuclide) => (nu.unit === 'Ga' ? '10⁹ a' : nu.unit);
+    /** Kehrwert der Zeiteinheit, z. B. „1/s“ oder „1/(10⁹ a)“. */
+    const perUnit = (nu: Nuclide) => (nu.unit === 'Ga' ? '1/(10⁹ a)' : `1/${nu.unit}`);
     /** Zeit in der Einheit des Nuklids (u in Halbwertszeiten). */
     function timeStr(u: number, nu: Nuclide = nuc()): string {
       const t = u * nu.halfLife;
@@ -437,10 +443,10 @@ export default defineSimulation({
       const gap = sm ? 9 : 13;
       const cos = Math.cos(PHI);
       const sin = Math.sin(PHI);
-      const fromW = (A.w - (gap + len) * cos - tr - 6) / (1 + cos);
+      const fromW = (A.w - (gap + len) * cos - tr * 1.6 - 8) / (1 + cos);
       const fromH = A.h / 2 - 6;
       const dishR = Math.max(40, Math.min(fromW, fromH));
-      const used = dishR + (dishR + gap + len) * cos + tr;
+      const used = dishR + (dishR + gap + len) * cos + tr * 1.6;
       const cx = A.x + Math.max(0, (A.w - used) / 2) + dishR;
       const cy = A.y + A.h / 2;
       const ring = clamp(dishR * 0.07, 6, 12);
@@ -645,6 +651,15 @@ export default defineSimulation({
       }
       return sw + 1.5 + ws;
     }
+    /** Anzahl unter einem Kernsymbol, mit einer kleinen Kugel in der Farbe der Kerne im Bild. */
+    function countLabel(cx: number, y: number, label: string, color: string, ballCol: string, size: number): void {
+      const f = `700 ${Math.max(11, size * 0.55)}px ${ctx.theme.font}`;
+      const w = textW(label, f);
+      const br = Math.max(3.2, size * 0.2);
+      const x0 = cx - (w + 2 * br + 4) / 2;
+      drawBall(ballCol, x0 + br, y, br);
+      text(surface.g, label, x0 + 2 * br + 4, y, { font: f, color, align: 'left' });
+    }
     const zStr = (z: number) => (z < 0 ? `−${-z}` : String(z));
 
     /** Teile der Zerfallsgleichung (Breite messen oder zeichnen). */
@@ -657,12 +672,12 @@ export default defineSimulation({
       const mc = motherCol();
       const dc = theme.dark ? mixColor(daughterCol(), '#ffffff', 0.25) : shade(daughterCol(), -0.25);
       const w1 = nuclideSym(xx, y, String(nu.A), String(nu.Z), nu.symbol, size, mc, draw);
-      if (draw && counts) text(g, counts[0], xx + w1 / 2 + 2, y + size * 1.05, { font: `700 ${Math.max(11, size * 0.55)}px ${theme.font}`, color: mc });
+      if (draw && counts) countLabel(xx + w1 / 2 + 2, y + size * 1.05, counts[0], mc, motherCol(), size);
       xx += w1 + gap;
       if (draw) text(g, '→', xx, y + 1, { font: op, color: theme.text, align: 'left' });
       xx += textW('→', op) + gap;
       const w2 = nuclideSym(xx, y, String(nu.daughter.A), String(nu.daughter.Z), nu.daughter.symbol, size, dc, draw);
-      if (draw && counts) text(g, counts[1], xx + w2 / 2 + 2, y + size * 1.05, { font: `700 ${Math.max(11, size * 0.55)}px ${theme.font}`, color: dc });
+      if (draw && counts) countLabel(xx + w2 / 2 + 2, y + size * 1.05, counts[1], dc, daughterCol(), size);
       xx += w2 + gap;
       if (draw) text(g, '+', xx, y + 1, { font: op, color: theme.text, align: 'left' });
       xx += textW('+', op) + gap;
@@ -700,6 +715,7 @@ export default defineSimulation({
     /* ---------- Zustand: Präparat ---------- */
     let seed = 1;
     let rand = seededRandom(seed);
+    const vis = seededRandom(97);
     let count = p.N0;
     let alive = new Uint8Array(count).fill(1);
     let decayU = new Float32Array(count).fill(-1);
@@ -753,17 +769,26 @@ export default defineSimulation({
     const ny = (G: Geo, i: number) => G.cy + pos[2 * i + 1]! * G.R;
 
     function emit(x: number, y: number, kind: Kind, one: boolean, G: Geo | null, scale: number): void {
-      const a = rand() * TAU;
-      const dx = Math.cos(a);
-      const dy = Math.sin(a);
+      // eigene Zufallsfolge für die Darstellung, damit der Zerfallsverlauf reproduzierbar bleibt
+      let a = vis() * TAU;
       const speed = (kind === 'a' ? 150 : kind === 'b' ? 290 : 420) * scale;
-      const range = kind === 'a' ? (G ? G.dishR * 1.2 : 220 * scale) : 4000;
+      let range = kind === 'a' ? (G ? G.dishR * 1.2 : 220 * scale) : 4000;
       let hit: number | null = null;
       if (G && !one) {
         const [ax, ay, bx, by] = G.win;
-        const d = raySegment(x, y, dx, dy, ax, ay, bx, by);
-        if (d !== null && d <= range) hit = d;
+        // Ein Teil der Teilchen fliegt ins Fenster (im echten Versuch liegt das Zählrohr dicht über dem Präparat)
+        if (vis() < EFF) {
+          const k = vis();
+          a = Math.atan2(ay + (by - ay) * k - y, ax + (bx - ax) * k - x);
+        }
+        const d = raySegment(x, y, Math.cos(a), Math.sin(a), ax, ay, bx, by);
+        if (d !== null) {
+          hit = d;
+          range = Math.max(range, d + 1);
+        }
       }
+      const dx = Math.cos(a);
+      const dy = Math.sin(a);
       if (emissions.length >= MAX_EMISSIONS || prefersReducedMotion()) {
         if (hit !== null) registerPulse();
         return;
@@ -1885,7 +1910,7 @@ export default defineSimulation({
       const title = ctx.t(R.w < 300 ? 'chartAS' : 'chartA');
       text(g, title, R.x + 14, R.y + (sm ? 19 : 22), { font: `700 ${sm ? 12.5 : 13}px ${theme.font}`, color: theme.text, align: 'left' });
       const aNow = lam * N;
-      text(g, `A ≈ ${sig(ease2('aNow', aNow, 8), 3)} / ${unitLabel(nu)}`, R.x + R.w - 14, R.y + (sm ? 19 : 22), { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'right' });
+      text(g, `A ≈ ${sig(ease2('aNow', aNow, 8), 3)} ${perUnit(nu)}`, R.x + R.w - 14, R.y + (sm ? 19 : 22), { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'right' });
       const padL = sm ? 40 : 46;
       const top = R.y + (sm ? 46 : 52);
       const A: Rect = { x: R.x + padL, y: top, w: R.w - padL - (sm ? 14 : 18), h: R.y + R.h - top - (sm ? 26 : 30) };
@@ -1911,7 +1936,7 @@ export default defineSimulation({
       const font = `${fs}px ${theme.font}`;
       for (let v = 0; v < yMax; v += st) if (Y(v) > A.y + 6) text(g, sig(v, 2), A.x - 6, Y(v), { font, color: theme.muted, align: 'right' });
       timeTicks(A, X, xMax, fs, nu);
-      text(g, tr('axisA', { u: unitLabel(nu) }), A.x - padL + 10, A.y - 12, { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'left' });
+      text(g, tr('axisA', { u: perUnit(nu) }), A.x - padL + 10, A.y - 12, { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'left' });
       axesFrame(A);
       const reveal = stage(0.45, 0.8, ease.inOutCubic);
       g.save();
@@ -1953,11 +1978,18 @@ export default defineSimulation({
         }
         g.stroke();
         g.setLineDash([]);
-        const lab = de ? 'λ · N₀ · (½)^(t/T½)' : 'λ · N₀ · (½)^(t/T½)';
         const lf = `600 ${fs}px ${theme.font}`;
-        const lw = textW(lab, lf);
-        const uu = Math.min(xMax * 0.45, 1.3);
-        if (A.w > lw + 60) haloText(lab, clamp(X(uu) + 10, A.x + 4, A.x + A.w - lw - 4), clamp(Y(A0 * 2 ** -uu) - 12, A.y + 8, A.y + A.h - 10), lf, theme.muted, 'left');
+        const l2 = de ? 'Theorie λ · N' : 'theory λ · N';
+        const lx = A.x + A.w - 4 - textW(l2, lf);
+        haloText(l2, lx, A.y + 8, lf, theme.muted, 'left');
+        g.strokeStyle = withAlpha(theme.text, 0.6);
+        g.lineWidth = 2;
+        g.setLineDash([5, 3]);
+        g.beginPath();
+        g.moveTo(lx - 24, A.y + 8);
+        g.lineTo(lx - 6, A.y + 8);
+        g.stroke();
+        g.setLineDash([]);
         g.restore();
       }
       g.restore();
@@ -2032,7 +2064,7 @@ export default defineSimulation({
           g.fill();
         }
       }
-      text(g, '> 5', X(H_BINS * H_W + H_W / 2), A.y + A.h + 11, { font, color: theme.muted });
+      haloText('> 5', X(H_BINS * H_W + H_W / 2), Y(ease2(`hb${H_BINS}`, counts[H_BINS]!, 9)) - 9, `600 ${fs}px ${theme.font}`, theme.muted);
       // erwartete Anzahl
       const theoA = ease2('theoH', p.theo && nObs > 0 ? 1 : 0, 6);
       if (theoA > 0.01) {
@@ -2207,7 +2239,7 @@ export default defineSimulation({
         g.restore();
         const h = survivingShare(done, 1);
         const lab = `${n(Math.round(h * 100), 0)} %`;
-        pill(Math.min(X(1) + 10, A.x + A.w - pillWidth(lab, fs) - 2), Y(h) + 6, lab, motherCol(), 'left', fs);
+        pill(Math.max(A.x + 4, X(1) - pillWidth(lab, fs) - 8), clamp(Y(h) + 8, A.y, A.y + A.h - fs - 14), lab, motherCol(), 'left', fs);
       } else soft.set('survA', 0);
       g.restore();
     }
@@ -2255,7 +2287,7 @@ export default defineSimulation({
       return `<strong>${s(nu)} → ${s(nu.daughter)} + ${part}${nu.gamma ? ' + γ' : ''}</strong>`;
     }
     const nucName = (nu: Nuclide) => `${nu.symbol}-${nu.A}`;
-    const lamStr = (nu: Nuclide, html: boolean) => `${sig(decayConstant(nu.halfLife), 3, html)} 1/${unitLabel(nu)}`;
+    const lamStr = (nu: Nuclide, html: boolean) => `${sig(decayConstant(nu.halfLife), 3, html)} ${perUnit(nu)}`;
 
     let lastKey = '';
     function updateReadouts(force = false): void {
@@ -2281,7 +2313,7 @@ export default defineSimulation({
         now = tr('now', { t: timeStr(uq), u: fx(uq, 2), N: String(N), N0: String(count), pct: fx((100 * N) / count, 1), Nth: n(expectedRemaining(count, uq, 1), 1) });
         const lam = decayConstant(nu.halfLife);
         const bq = (lam / unitSeconds(nu.unit)) * N;
-        act = tr('act', { l: lamStr(nu, true), N: String(N), A: `${sig(lam * N, 3, true)} 1/${unitLabel(nu)}`, Bq: sig(bq, 3, true), k: String(pulses), d: String(count - N) });
+        act = tr('act', { l: lamStr(nu, true), N: String(N), A: `${sig(lam * N, 3, true)} ${perUnit(nu)}`, Bq: sig(bq, 3, true), k: String(pulses), d: String(count - N) });
         if (N === count) age = ctx.t('ageNone');
         else if (N === 0) age = ctx.t('ageAll');
         else {
