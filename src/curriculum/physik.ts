@@ -662,8 +662,41 @@ export const physik: Subject = {
           grades: [12, 14],
           simulations: [
             planned('photoeffekt', L('Photoeffekt', 'Photoelectric effect'), [12, 13]),
-            planned('linienspektren', L('Atommodelle und Linienspektren', 'Atomic models and line spectra'), [12, 13]),
-            planned('elektronenbeugung', L('Elektronenbeugung', 'Electron diffraction'), [12, 14], { uni: true }),
+            {
+              id: 'linienspektren',
+              status: 'ready',
+              slug: L('linienspektren-energieniveaus', 'line-spectra-energy-levels'),
+              title: L('Atommodelle und Linienspektren', 'Atomic models and line spectra'),
+              summary: L(
+                'Ein Elektron springt zwischen den Energieniveaus eines Atoms und sendet dabei ein Photon mit ΔE = h · f aus – oder nimmt eines aus weißem Licht auf. Das Licht fällt durch ein Prisma, auf dem Schirm entsteht das Linienspektrum von Wasserstoff, Helium, Natrium oder Quecksilber, dazu Termschema und Wellenlänge λ = c/f.',
+                'An electron jumps between the energy levels of an atom and emits a photon with ΔE = h · f – or absorbs one from white light. The light passes through a prism and the line spectrum of hydrogen, helium, sodium or mercury appears on the screen, together with the energy level diagram and the wavelength λ = c/f.',
+              ),
+              grades: [12, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
+                ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'elektronenbeugung',
+              status: 'ready',
+              slug: L('elektronenbeugung-graphit', 'electron-diffraction-graphite'),
+              title: L('Elektronenbeugung', 'Electron diffraction'),
+              summary: L(
+                'Elektronen aus einer Glühkathode werden mit der Spannung U beschleunigt und an einer Graphitfolie gebeugt: Auf dem Leuchtschirm entstehen Elektron für Elektron zwei Ringe. Ringradius messen, de-Broglie-Wellenlänge λ = h/(m·v) berechnen, r über U und über 1/√U auftragen und den Netzebenenabstand bestimmen.',
+                'Electrons from a hot cathode are accelerated by the voltage U and diffracted by a graphite foil: two rings build up on the screen electron by electron. Measure the ring radius, calculate the de Broglie wavelength λ = h/(m·v), plot r against U and against 1/√U and determine the lattice spacing.',
+              ),
+              grades: [12, 14],
+              uni: true,
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Superposition', 'P-BK-Mathematisieren', 'P-BK-Zufall'],
+              keywords: L(
+                ['Elektronenbeugung', 'Elektronenbeugungsröhre', 'de-Broglie-Wellenlänge', 'Materiewelle', 'Welle-Teilchen-Dualismus', 'Graphit', 'Bragg-Bedingung', 'Netzebenenabstand', 'Beugungsring', 'Beschleunigungsspannung', 'Impuls', 'Planck-Konstante', 'Leuchtschirm', 'Linearisierung', 'Quantenobjekt'],
+                ['electron diffraction', 'electron diffraction tube', 'de Broglie wavelength', 'matter wave', 'wave–particle duality', 'graphite', 'Bragg condition', 'lattice spacing', 'diffraction ring', 'accelerating voltage', 'momentum', 'Planck constant', 'fluorescent screen', 'linearisation', 'quantum object'],
+              ),
+              thumb: 'generic',
+            },
           ],
         },
       ],
