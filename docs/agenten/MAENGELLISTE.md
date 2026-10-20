@@ -4,7 +4,7 @@ Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der 
 
 ## Startseite
 
-### 1. Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
+### 1. (vergeben, siehe `docs/agenten/AUFTRAG-VORSCHAUBILDER.md`) Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
 Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulationen erscheint stattdessen eine schwarze Fläche. Das wirkt zufällig und unschön:
 
 - Sinus, Kosinus, Tangens im rechtwinkligen Dreieck (`sin-cos-tan-dreieck`)
