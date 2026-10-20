@@ -92,6 +92,8 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 **Formatierung** – `format.ts` (Dezimalkomma, echtes Minuszeichen, Vielfache von π, Punkte als `(1,5 | 2)` bzw. `(1.5, 2)`) und `formula.ts` (Terme wie `0,5x − 2` korrekt zusammensetzen).
 
+- **Zahl und Einheit** bleiben in einer Zeile: Der Host ersetzt in allen Ergebnissen (Text und HTML) das Leerzeichen zwischen Zahl und Einheit automatisch durch ein geschütztes Leerzeichen (`bindUnits`/`bindUnitsHtml`), ebenso bei Reglerwerten mit `unit`. Bestehende Simulationen müssen dafür nichts ändern. Für eigene Texte (z. B. auf der Zeichenfläche) gibt es `ctx.fmt.unit(2.5, 'm/s')` bzw. `withUnit(text, unit)`.
+
 ## 4. Lernmaterial und Formeln
 
 Markdown in `src/content/simulations/<sprache>/<id>.md`. Formeln werden mit `$…$` bzw. `$$…$$` geschrieben und **beim Build** mit KaTeX gesetzt (`tooling/katex-markdown.mjs`) – der Browser lädt dafür kein JavaScript. Lösungen stehen in `<details>`-Blöcken.

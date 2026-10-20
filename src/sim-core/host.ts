@@ -4,7 +4,7 @@ import { registry } from '../simulations/registry';
 import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
-import { Formatter } from './format';
+import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { defaultValues, sanitize, valuesEqual } from './params';
 import { onThemeChange, readTheme, type Theme } from './theme';
@@ -339,8 +339,9 @@ class SimulationHost {
     const text = typeof value === 'string' ? `t:${value}` : `h:${value.html}`;
     if (text === row.last) return;
     row.last = text;
-    if (typeof value === 'string') row.value.textContent = value;
-    else row.value.innerHTML = value.html;
+    // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts)
+    if (typeof value === 'string') row.value.textContent = bindUnits(value);
+    else row.value.innerHTML = bindUnitsHtml(value.html);
   }
 
   /* ---------- Aktionen ---------- */
