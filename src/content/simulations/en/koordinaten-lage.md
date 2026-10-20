@@ -37,7 +37,7 @@ Plot $A(1, 2)$, $B(6, 2)$ and $C(6, 7)$. Which point $D$ completes the square $A
 <details>
 <summary>Show solution</summary>
 
-$D(1, 7)$. Opposite sides are parallel, neighbouring sides are perpendicular. [Show](?mode=lage&ax=1&ay=2&bx=6&by=2&cx=1&cy=7&dx=6&dy=7&geo=1)
+$D(1, 7)$. Opposite sides are parallel, neighbouring sides are perpendicular. [Show](?mode=lage&ax=1&ay=2&bx=6&by=2&cx=6&cy=7&dx=1&dy=7&geo=1)
 
 </details>
 
@@ -52,7 +52,18 @@ Along $g$: 2 right, 1 up. A perpendicular goes 1 right, 2 down: $D(5, 5)$, $D(6,
 
 </details>
 
-### Task 3: Tangents
+### Task 3: Parallel and distance
+
+The line $g$ passes through $A(1, 2)$ and $B(9, 2)$. (a) Draw the parallel $h$ to $g$ through $C(2, 6)$. (b) How far apart are $g$ and $h$? (c) How far is the point $P(5, 7)$ from $g$?
+
+<details>
+<summary>Show solution</summary>
+
+(a) $h$ is horizontal through $C$, e.g. through $D(8, 6)$. (b) $4\,\text{cm}$ (from $y = 2$ to $y = 6$). (c) The perpendicular from $P$ meets $g$ at $F(5, 2)$, so the distance is $5\,\text{cm}$. [Check](?mode=lage&ax=1&ay=2&bx=9&by=2&cx=2&cy=6&dx=8&dy=6&dist=1&px=5&py=7)
+
+</details>
+
+### Task 4: Tangents
 
 A circle has centre $M(5, 4)$ and radius $3\,\text{cm}$. Give two tangents that are parallel to the x-axis.
 
