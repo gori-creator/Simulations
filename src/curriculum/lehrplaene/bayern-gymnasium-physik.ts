@@ -9,7 +9,8 @@ import type { StateCurriculum } from "./types";
  *
  * Aufbereitung und Protokoll: docs/lehrplaene/bayern-gymnasium-physik.{json,md}.
  * Überschriften wie im Lehrplan (außer NT7 1 und 1.1, Entwurf), Kurzbeschreibungen
- * in eigenen Worten. Verbindlich ist der Originaltext.
+ * in eigenen Worten. Simulationen nur, wo ihre Klassenstufe passt. Verbindlich ist
+ * der Originaltext.
  */
 export const bayernGymnasiumPhysik: StateCurriculum = {
   id: "bayern-gymnasium-physik",
@@ -24,8 +25,8 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
       sourceUrl:
         "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/nt_gym",
       note: L(
-        "Physik ist hier Teil des Fachs „Natur und Technik“ (Schwerpunkt Physik, Lernbereich NT7 1). Der Schwerpunkt Informatik (NT7 2) ist nicht aufgenommen. Entwurf: Die Überschriften von NT7 1 und 1.1 fehlten in der Vorlage und sind sinngemäß ergänzt.",
-        "Physics is part of the subject “Natur und Technik” here (physics focus, unit NT7 1). The computer-science focus (NT7 2) is not included. Draft: the headings of NT7 1 and 1.1 were missing in the source and have been added by meaning.",
+        "Physik ist hier Teil des Fachs „Natur und Technik“ (Schwerpunkt Physik, Lernbereich NT7 1). Der Schwerpunkt Informatik (NT7 2) ist nicht aufgenommen.",
+        "Physics is part of the subject “Natur und Technik” here (physics focus, unit NT7 1). The computer-science focus (NT7 2) is not included.",
       ),
       units: [
         {
@@ -118,6 +119,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "kraefteaddition",
                 "schiefe-ebene",
                 "hookesches-gesetz",
+                "hebelgesetz",
               ],
             },
           ],
@@ -206,7 +208,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Temperatur als mittlere Bewegungsenergie der Teilchen, innere Energie, Aggregatzustände sowie Druck, Volumen und Temperatur eines Gases.",
                 "Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas.",
               ),
-              simulations: ["gasgesetze"],
+              simulations: ["gasgesetze", "teilchenmodell"],
             },
             {
               code: "3.2",
@@ -263,6 +265,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer.",
           ),
+          simulations: ["induktion", "lorentzkraft"],
         },
         {
           code: "2",
@@ -682,6 +685,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor.",
                 "Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors.",
               ),
+              simulations: ["radioaktiver-zerfall"],
             },
           ],
         },
@@ -819,6 +823,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor.",
                 "Decay law from a differential equation, half-life and mean lifetime, dating, radiation protection and nuclear reactors.",
               ),
+              simulations: ["radioaktiver-zerfall"],
             },
           ],
         },
