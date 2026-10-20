@@ -1,0 +1,3949 @@
+{
+  "id": "hessen-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "hessen-gymnasium",
+    "en": "hesse-gymnasium"
+  },
+  "state": {
+    "de": "Hessen",
+    "en": "Hesse"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Kerncurriculum Hessen",
+  "grades": [
+    {
+      "grade": 6,
+      "sourceUrl": "http://www.kultusministerium.hessen.de",
+      "note": {
+        "de": "Stufe 1 der Übersicht in Kap. 7.2 („nach ca. der Hälfte des Stundenkontingents“). Der Lehrplan ordnet diese Stufe keiner Jahrgangsstufe zu; Kap. 7.1 bezieht sich auf die Jahrgangsstufen 6/8 und sagt, dass sich dafür keine Kompetenzerwartungen sinnvoll formulieren lassen. Der Eintrag bei Jahrgangsstufe 6, 7 und 8 ist deshalb eine Annahme. Codes: erste Ziffer = Inhaltsfeld (Reihenfolge wie im Lehrplan), zweite = inhaltlicher Schwerpunkt; die Nummerierung stammt nicht aus dem Lehrplan.",
+        "en": "Stage 1 of the overview in ch. 7.2 (“after about half of the allotted teaching time”). The curriculum does not assign this stage to a grade; ch. 7.1 refers to grades 6/8 and says no sensible competence expectations can be formulated for them. Entering it under grades 6, 7 and 8 is therefore an assumption. Codes: first digit = content area (order as in the curriculum), second = content focus; the numbering is not part of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Haus der Naturwissenschaften",
+            "en": "House of the natural sciences"
+          },
+          "summary": {
+            "de": "Wie Naturwissenschaft arbeitet: Körper und ihre Eigenschaften beschreiben, physikalische Größen messen und zwischen Beobachtung und Deutung unterscheiden.",
+            "en": "How science works: describing bodies and their properties, measuring physical quantities and distinguishing observation from interpretation."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Körper und deren Eigenschaften",
+                "en": "Bodies and their properties"
+              },
+              "summary": {
+                "de": "Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.",
+                "en": "Describing and classifying objects by measurable properties."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Physikalische Größen und ihre Messung",
+                "en": "Physical quantities and their measurement"
+              },
+              "summary": {
+                "de": "Größen mit Einheiten messen und Versuche planen und protokollieren.",
+                "en": "Measuring quantities with units and planning and recording experiments."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Erweiterung der Sinne",
+            "en": "Extension of the senses"
+          },
+          "summary": {
+            "de": "Sehen und Hören mit dem Sender-Empfänger-Modell erklären, Schatten und das Verhalten von Licht an Grenzflächen untersuchen sowie Erscheinungen im System Sonne–Erde–Mond deuten.",
+            "en": "Explaining seeing and hearing with the sender–receiver model, investigating shadows and the behaviour of light at boundaries, and interpreting phenomena of the Sun–Earth–Moon system."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung"
+          ],
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Wahrnehmung der Umgebung mit den Sinnesorganen",
+                "en": "Perceiving the surroundings with the sense organs"
+              },
+              "summary": {
+                "de": "Wie Auge und Ohr Licht und Schall wahrnehmen.",
+                "en": "How eye and ear perceive light and sound."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Sender-Empfänger-Modell",
+                "en": "Sender–receiver model"
+              },
+              "summary": {
+                "de": "Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.",
+                "en": "Distinguishing source, propagation and receiver of light or sound."
+              }
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Schatten als Abwesenheit von Licht",
+                "en": "Shadow as the absence of light"
+              },
+              "summary": {
+                "de": "Schattenentstehung mit geradliniger Lichtausbreitung erklären.",
+                "en": "Explaining shadows with the rectilinear propagation of light."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Verhalten von Licht an Grenzflächen",
+                "en": "Behaviour of light at boundaries"
+              },
+              "summary": {
+                "de": "Reflexion und Brechung von Licht experimentell untersuchen.",
+                "en": "Investigating reflection and refraction of light experimentally."
+              },
+              "simulations": [
+                "reflexion",
+                "brechung"
+              ]
+            },
+            {
+              "code": "2.5",
+              "title": {
+                "de": "Astronomische Phänomene durch Konstellationen von Sonne-Erde-Mond",
+                "en": "Astronomical phenomena due to Sun–Earth–Moon constellations"
+              },
+              "summary": {
+                "de": "Mondphasen, Finsternisse u. Ä. mit Modellen erklären.",
+                "en": "Explaining lunar phases, eclipses and similar phenomena with models."
+              }
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energie in Umwelt und Technik",
+            "en": "Energy in the environment and technology"
+          },
+          "summary": {
+            "de": "Ein anschaulicher Energiebegriff: Energie wird transportiert und geht als nutzlose Wärme an die Umgebung (Entwertung); Energiesparen im Haushalt.",
+            "en": "An intuitive concept of energy: energy is transported and dissipated as useless heat to the surroundings; saving energy at home."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Anschaulicher Energiebegriff",
+                "en": "Intuitive concept of energy"
+              },
+              "summary": {
+                "de": "Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.",
+                "en": "Energy as a quantity that occurs in many forms and drives processes."
+              }
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Energietransport",
+                "en": "Energy transport"
+              },
+              "summary": {
+                "de": "Wege, auf denen Energie von einem Ort zum anderen gelangt.",
+                "en": "Ways in which energy gets from one place to another."
+              }
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Energiestrom in die Umgebung als Entwertung von Energie",
+                "en": "Energy flow to the surroundings as degradation of energy"
+              },
+              "summary": {
+                "de": "Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert.",
+                "en": "Understanding that energy does not vanish but becomes less usable."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrizität im Alltag",
+            "en": "Electricity in everyday life"
+          },
+          "summary": {
+            "de": "Elektrischer Strom als Energietransport, Bauteile und Aufbau einfacher Stromkreise, Leiter und Isolatoren sowie sicherer Umgang mit Elektrizität.",
+            "en": "Electric current as energy transport, components and setup of simple circuits, conductors and insulators, and safe handling of electricity."
+          },
+          "simulations": [
+            "einfacher-stromkreis"
+          ],
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "elektrischer Strom als Transportform von Energie",
+                "en": "Electric current as a means of transporting energy"
+              },
+              "summary": {
+                "de": "Mit einem Modell erklären, wie der Stromkreis Energie überträgt.",
+                "en": "Explaining with a model how a circuit transfers energy."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Elemente des elektrischen Stromkreises",
+                "en": "Elements of the electric circuit"
+              },
+              "summary": {
+                "de": "Quelle, Leitung, Schalter und Verbraucher sowie Schaltskizzen.",
+                "en": "Source, wires, switch and load, and circuit diagrams."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "Gefahren beim Umgang mit Elektrizität im Alltag",
+                "en": "Dangers of electricity in everyday life"
+              },
+              "summary": {
+                "de": "Gefahren erkennen und sicheres Verhalten begründen.",
+                "en": "Recognising dangers and justifying safe behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wettererscheinungen und Klima",
+            "en": "Weather phenomena and climate"
+          },
+          "summary": {
+            "de": "Temperatur und ihre Messung, Teilchenmodell der Materie, Aggregatzustände, Wärmeausdehnung und Anomalie des Wassers sowie ein erster Druckbegriff.",
+            "en": "Temperature and its measurement, the particle model of matter, states of matter, thermal expansion and the anomaly of water, and a first idea of pressure."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ],
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Temperatur und deren Messung",
+                "en": "Temperature and its measurement"
+              },
+              "summary": {
+                "de": "Thermometer verstehen und kalibrieren.",
+                "en": "Understanding and calibrating thermometers."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Modelle des Aufbaus der Materie",
+                "en": "Models of the structure of matter"
+              },
+              "summary": {
+                "de": "Stoffe mit einem Teilchenmodell beschreiben.",
+                "en": "Describing substances with a particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Aggregatzustände und deren Übergänge",
+                "en": "States of matter and their transitions"
+              },
+              "summary": {
+                "de": "Schmelzen, Verdampfen usw. mit dem Teilchenmodell erklären.",
+                "en": "Explaining melting, evaporation etc. with the particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.4",
+              "title": {
+                "de": "Stoffe bei Temperaturänderung",
+                "en": "Substances when temperature changes"
+              },
+              "summary": {
+                "de": "Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.",
+                "en": "Investigating the expansion of solids, liquids and gases."
+              }
+            },
+            {
+              "code": "5.5",
+              "title": {
+                "de": "Anomalie des Wassers und seine Bedeutung für das irdische Leben",
+                "en": "Anomaly of water and its importance for life on Earth"
+              },
+              "summary": {
+                "de": "Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.",
+                "en": "Density behaviour of water at 4 °C and consequences for lakes."
+              }
+            },
+            {
+              "code": "5.6",
+              "title": {
+                "de": "Druck als „Gepresstsein“ der Materie",
+                "en": "Pressure as the 'compressed state' of matter"
+              },
+              "summary": {
+                "de": "Anschauliche Vorstellung von Druck.",
+                "en": "An intuitive idea of pressure."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Fortbewegung und Mobilität",
+            "en": "Locomotion and mobility"
+          },
+          "summary": {
+            "de": "Bewegungen mit Weg, Zeit und Geschwindigkeit beschreiben und Geschwindigkeiten messen.",
+            "en": "Describing motion with distance, time and speed and measuring speeds."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ],
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Weg, Zeit und Geschwindigkeit",
+                "en": "Distance, time and speed"
+              },
+              "summary": {
+                "de": "Geschwindigkeiten messen und Bewegungen in Diagrammen darstellen.",
+                "en": "Measuring speeds and representing motion in diagrams."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Technik im Dienst des Menschen",
+            "en": "Technology in the service of people"
+          },
+          "summary": {
+            "de": "Eigenschaften von Magneten, Modell der Elementarmagnete und Magnetfelder.",
+            "en": "Properties of magnets, the model of elementary magnets and magnetic fields."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Magnetismus",
+                "en": "Magnetism"
+              },
+              "summary": {
+                "de": "Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.",
+                "en": "Investigating magnets, drawing field lines and explaining them with elementary magnets."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zukunftssichere Energieversorgung",
+            "en": "Sustainable energy supply"
+          },
+          "summary": {
+            "de": "Regenerative und erschöpfbare Energieträger unterscheiden und Energiekosten im Alltag deuten.",
+            "en": "Distinguishing renewable and finite energy sources and interpreting everyday energy costs."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Unterscheidung zwischen regenerativen und erschöpfbaren Energien",
+                "en": "Distinguishing renewable and finite energy sources"
+              },
+              "summary": {
+                "de": "Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten.",
+                "en": "Classifying energy sources by availability and evaluating one's own behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Physik in der Verantwortung",
+            "en": "Physics and responsibility"
+          },
+          "summary": {
+            "de": "Verantwortung für die Umwelt und die Rolle der Physik bei Natur- und Umweltereignissen.",
+            "en": "Responsibility for the environment and the role of physics in natural and environmental events."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Verantwortung gegenüber der Umwelt",
+                "en": "Responsibility towards the environment"
+              },
+              "summary": {
+                "de": "Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.",
+                "en": "Taking environmental and health aspects into account in experiments and everyday life."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Rolle der Physik bei Umwelt- und Naturereignissen",
+                "en": "Role of physics in environmental and natural events"
+              },
+              "summary": {
+                "de": "Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.",
+                "en": "Extracting physical information from reports on events."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "http://www.kultusministerium.hessen.de",
+      "note": {
+        "de": "Stufe 1 der Übersicht in Kap. 7.2 („nach ca. der Hälfte des Stundenkontingents“). Der Lehrplan ordnet diese Stufe keiner Jahrgangsstufe zu; Kap. 7.1 bezieht sich auf die Jahrgangsstufen 6/8 und sagt, dass sich dafür keine Kompetenzerwartungen sinnvoll formulieren lassen. Der Eintrag bei Jahrgangsstufe 6, 7 und 8 ist deshalb eine Annahme. Codes: erste Ziffer = Inhaltsfeld (Reihenfolge wie im Lehrplan), zweite = inhaltlicher Schwerpunkt; die Nummerierung stammt nicht aus dem Lehrplan.",
+        "en": "Stage 1 of the overview in ch. 7.2 (“after about half of the allotted teaching time”). The curriculum does not assign this stage to a grade; ch. 7.1 refers to grades 6/8 and says no sensible competence expectations can be formulated for them. Entering it under grades 6, 7 and 8 is therefore an assumption. Codes: first digit = content area (order as in the curriculum), second = content focus; the numbering is not part of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Haus der Naturwissenschaften",
+            "en": "House of the natural sciences"
+          },
+          "summary": {
+            "de": "Wie Naturwissenschaft arbeitet: Körper und ihre Eigenschaften beschreiben, physikalische Größen messen und zwischen Beobachtung und Deutung unterscheiden.",
+            "en": "How science works: describing bodies and their properties, measuring physical quantities and distinguishing observation from interpretation."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Körper und deren Eigenschaften",
+                "en": "Bodies and their properties"
+              },
+              "summary": {
+                "de": "Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.",
+                "en": "Describing and classifying objects by measurable properties."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Physikalische Größen und ihre Messung",
+                "en": "Physical quantities and their measurement"
+              },
+              "summary": {
+                "de": "Größen mit Einheiten messen und Versuche planen und protokollieren.",
+                "en": "Measuring quantities with units and planning and recording experiments."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Erweiterung der Sinne",
+            "en": "Extension of the senses"
+          },
+          "summary": {
+            "de": "Sehen und Hören mit dem Sender-Empfänger-Modell erklären, Schatten und das Verhalten von Licht an Grenzflächen untersuchen sowie Erscheinungen im System Sonne–Erde–Mond deuten.",
+            "en": "Explaining seeing and hearing with the sender–receiver model, investigating shadows and the behaviour of light at boundaries, and interpreting phenomena of the Sun–Earth–Moon system."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung"
+          ],
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Wahrnehmung der Umgebung mit den Sinnesorganen",
+                "en": "Perceiving the surroundings with the sense organs"
+              },
+              "summary": {
+                "de": "Wie Auge und Ohr Licht und Schall wahrnehmen.",
+                "en": "How eye and ear perceive light and sound."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Sender-Empfänger-Modell",
+                "en": "Sender–receiver model"
+              },
+              "summary": {
+                "de": "Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.",
+                "en": "Distinguishing source, propagation and receiver of light or sound."
+              }
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Schatten als Abwesenheit von Licht",
+                "en": "Shadow as the absence of light"
+              },
+              "summary": {
+                "de": "Schattenentstehung mit geradliniger Lichtausbreitung erklären.",
+                "en": "Explaining shadows with the rectilinear propagation of light."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Verhalten von Licht an Grenzflächen",
+                "en": "Behaviour of light at boundaries"
+              },
+              "summary": {
+                "de": "Reflexion und Brechung von Licht experimentell untersuchen.",
+                "en": "Investigating reflection and refraction of light experimentally."
+              },
+              "simulations": [
+                "reflexion",
+                "brechung"
+              ]
+            },
+            {
+              "code": "2.5",
+              "title": {
+                "de": "Astronomische Phänomene durch Konstellationen von Sonne-Erde-Mond",
+                "en": "Astronomical phenomena due to Sun–Earth–Moon constellations"
+              },
+              "summary": {
+                "de": "Mondphasen, Finsternisse u. Ä. mit Modellen erklären.",
+                "en": "Explaining lunar phases, eclipses and similar phenomena with models."
+              }
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energie in Umwelt und Technik",
+            "en": "Energy in the environment and technology"
+          },
+          "summary": {
+            "de": "Ein anschaulicher Energiebegriff: Energie wird transportiert und geht als nutzlose Wärme an die Umgebung (Entwertung); Energiesparen im Haushalt.",
+            "en": "An intuitive concept of energy: energy is transported and dissipated as useless heat to the surroundings; saving energy at home."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Anschaulicher Energiebegriff",
+                "en": "Intuitive concept of energy"
+              },
+              "summary": {
+                "de": "Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.",
+                "en": "Energy as a quantity that occurs in many forms and drives processes."
+              }
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Energietransport",
+                "en": "Energy transport"
+              },
+              "summary": {
+                "de": "Wege, auf denen Energie von einem Ort zum anderen gelangt.",
+                "en": "Ways in which energy gets from one place to another."
+              }
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Energiestrom in die Umgebung als Entwertung von Energie",
+                "en": "Energy flow to the surroundings as degradation of energy"
+              },
+              "summary": {
+                "de": "Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert.",
+                "en": "Understanding that energy does not vanish but becomes less usable."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrizität im Alltag",
+            "en": "Electricity in everyday life"
+          },
+          "summary": {
+            "de": "Elektrischer Strom als Energietransport, Bauteile und Aufbau einfacher Stromkreise, Leiter und Isolatoren sowie sicherer Umgang mit Elektrizität.",
+            "en": "Electric current as energy transport, components and setup of simple circuits, conductors and insulators, and safe handling of electricity."
+          },
+          "simulations": [
+            "einfacher-stromkreis"
+          ],
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "elektrischer Strom als Transportform von Energie",
+                "en": "Electric current as a means of transporting energy"
+              },
+              "summary": {
+                "de": "Mit einem Modell erklären, wie der Stromkreis Energie überträgt.",
+                "en": "Explaining with a model how a circuit transfers energy."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Elemente des elektrischen Stromkreises",
+                "en": "Elements of the electric circuit"
+              },
+              "summary": {
+                "de": "Quelle, Leitung, Schalter und Verbraucher sowie Schaltskizzen.",
+                "en": "Source, wires, switch and load, and circuit diagrams."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "Gefahren beim Umgang mit Elektrizität im Alltag",
+                "en": "Dangers of electricity in everyday life"
+              },
+              "summary": {
+                "de": "Gefahren erkennen und sicheres Verhalten begründen.",
+                "en": "Recognising dangers and justifying safe behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wettererscheinungen und Klima",
+            "en": "Weather phenomena and climate"
+          },
+          "summary": {
+            "de": "Temperatur und ihre Messung, Teilchenmodell der Materie, Aggregatzustände, Wärmeausdehnung und Anomalie des Wassers sowie ein erster Druckbegriff.",
+            "en": "Temperature and its measurement, the particle model of matter, states of matter, thermal expansion and the anomaly of water, and a first idea of pressure."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ],
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Temperatur und deren Messung",
+                "en": "Temperature and its measurement"
+              },
+              "summary": {
+                "de": "Thermometer verstehen und kalibrieren.",
+                "en": "Understanding and calibrating thermometers."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Modelle des Aufbaus der Materie",
+                "en": "Models of the structure of matter"
+              },
+              "summary": {
+                "de": "Stoffe mit einem Teilchenmodell beschreiben.",
+                "en": "Describing substances with a particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Aggregatzustände und deren Übergänge",
+                "en": "States of matter and their transitions"
+              },
+              "summary": {
+                "de": "Schmelzen, Verdampfen usw. mit dem Teilchenmodell erklären.",
+                "en": "Explaining melting, evaporation etc. with the particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.4",
+              "title": {
+                "de": "Stoffe bei Temperaturänderung",
+                "en": "Substances when temperature changes"
+              },
+              "summary": {
+                "de": "Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.",
+                "en": "Investigating the expansion of solids, liquids and gases."
+              }
+            },
+            {
+              "code": "5.5",
+              "title": {
+                "de": "Anomalie des Wassers und seine Bedeutung für das irdische Leben",
+                "en": "Anomaly of water and its importance for life on Earth"
+              },
+              "summary": {
+                "de": "Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.",
+                "en": "Density behaviour of water at 4 °C and consequences for lakes."
+              }
+            },
+            {
+              "code": "5.6",
+              "title": {
+                "de": "Druck als „Gepresstsein“ der Materie",
+                "en": "Pressure as the 'compressed state' of matter"
+              },
+              "summary": {
+                "de": "Anschauliche Vorstellung von Druck.",
+                "en": "An intuitive idea of pressure."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Fortbewegung und Mobilität",
+            "en": "Locomotion and mobility"
+          },
+          "summary": {
+            "de": "Bewegungen mit Weg, Zeit und Geschwindigkeit beschreiben und Geschwindigkeiten messen.",
+            "en": "Describing motion with distance, time and speed and measuring speeds."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ],
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Weg, Zeit und Geschwindigkeit",
+                "en": "Distance, time and speed"
+              },
+              "summary": {
+                "de": "Geschwindigkeiten messen und Bewegungen in Diagrammen darstellen.",
+                "en": "Measuring speeds and representing motion in diagrams."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Technik im Dienst des Menschen",
+            "en": "Technology in the service of people"
+          },
+          "summary": {
+            "de": "Eigenschaften von Magneten, Modell der Elementarmagnete und Magnetfelder.",
+            "en": "Properties of magnets, the model of elementary magnets and magnetic fields."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Magnetismus",
+                "en": "Magnetism"
+              },
+              "summary": {
+                "de": "Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.",
+                "en": "Investigating magnets, drawing field lines and explaining them with elementary magnets."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zukunftssichere Energieversorgung",
+            "en": "Sustainable energy supply"
+          },
+          "summary": {
+            "de": "Regenerative und erschöpfbare Energieträger unterscheiden und Energiekosten im Alltag deuten.",
+            "en": "Distinguishing renewable and finite energy sources and interpreting everyday energy costs."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Unterscheidung zwischen regenerativen und erschöpfbaren Energien",
+                "en": "Distinguishing renewable and finite energy sources"
+              },
+              "summary": {
+                "de": "Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten.",
+                "en": "Classifying energy sources by availability and evaluating one's own behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Physik in der Verantwortung",
+            "en": "Physics and responsibility"
+          },
+          "summary": {
+            "de": "Verantwortung für die Umwelt und die Rolle der Physik bei Natur- und Umweltereignissen.",
+            "en": "Responsibility for the environment and the role of physics in natural and environmental events."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Verantwortung gegenüber der Umwelt",
+                "en": "Responsibility towards the environment"
+              },
+              "summary": {
+                "de": "Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.",
+                "en": "Taking environmental and health aspects into account in experiments and everyday life."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Rolle der Physik bei Umwelt- und Naturereignissen",
+                "en": "Role of physics in environmental and natural events"
+              },
+              "summary": {
+                "de": "Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.",
+                "en": "Extracting physical information from reports on events."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "http://www.kultusministerium.hessen.de",
+      "note": {
+        "de": "Stufe 1 der Übersicht in Kap. 7.2 („nach ca. der Hälfte des Stundenkontingents“). Der Lehrplan ordnet diese Stufe keiner Jahrgangsstufe zu; Kap. 7.1 bezieht sich auf die Jahrgangsstufen 6/8 und sagt, dass sich dafür keine Kompetenzerwartungen sinnvoll formulieren lassen. Der Eintrag bei Jahrgangsstufe 6, 7 und 8 ist deshalb eine Annahme. Codes: erste Ziffer = Inhaltsfeld (Reihenfolge wie im Lehrplan), zweite = inhaltlicher Schwerpunkt; die Nummerierung stammt nicht aus dem Lehrplan.",
+        "en": "Stage 1 of the overview in ch. 7.2 (“after about half of the allotted teaching time”). The curriculum does not assign this stage to a grade; ch. 7.1 refers to grades 6/8 and says no sensible competence expectations can be formulated for them. Entering it under grades 6, 7 and 8 is therefore an assumption. Codes: first digit = content area (order as in the curriculum), second = content focus; the numbering is not part of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Haus der Naturwissenschaften",
+            "en": "House of the natural sciences"
+          },
+          "summary": {
+            "de": "Wie Naturwissenschaft arbeitet: Körper und ihre Eigenschaften beschreiben, physikalische Größen messen und zwischen Beobachtung und Deutung unterscheiden.",
+            "en": "How science works: describing bodies and their properties, measuring physical quantities and distinguishing observation from interpretation."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Körper und deren Eigenschaften",
+                "en": "Bodies and their properties"
+              },
+              "summary": {
+                "de": "Gegenstände nach messbaren Eigenschaften beschreiben und ordnen.",
+                "en": "Describing and classifying objects by measurable properties."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Physikalische Größen und ihre Messung",
+                "en": "Physical quantities and their measurement"
+              },
+              "summary": {
+                "de": "Größen mit Einheiten messen und Versuche planen und protokollieren.",
+                "en": "Measuring quantities with units and planning and recording experiments."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Erweiterung der Sinne",
+            "en": "Extension of the senses"
+          },
+          "summary": {
+            "de": "Sehen und Hören mit dem Sender-Empfänger-Modell erklären, Schatten und das Verhalten von Licht an Grenzflächen untersuchen sowie Erscheinungen im System Sonne–Erde–Mond deuten.",
+            "en": "Explaining seeing and hearing with the sender–receiver model, investigating shadows and the behaviour of light at boundaries, and interpreting phenomena of the Sun–Earth–Moon system."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung"
+          ],
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Wahrnehmung der Umgebung mit den Sinnesorganen",
+                "en": "Perceiving the surroundings with the sense organs"
+              },
+              "summary": {
+                "de": "Wie Auge und Ohr Licht und Schall wahrnehmen.",
+                "en": "How eye and ear perceive light and sound."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Sender-Empfänger-Modell",
+                "en": "Sender–receiver model"
+              },
+              "summary": {
+                "de": "Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.",
+                "en": "Distinguishing source, propagation and receiver of light or sound."
+              }
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Schatten als Abwesenheit von Licht",
+                "en": "Shadow as the absence of light"
+              },
+              "summary": {
+                "de": "Schattenentstehung mit geradliniger Lichtausbreitung erklären.",
+                "en": "Explaining shadows with the rectilinear propagation of light."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Verhalten von Licht an Grenzflächen",
+                "en": "Behaviour of light at boundaries"
+              },
+              "summary": {
+                "de": "Reflexion und Brechung von Licht experimentell untersuchen.",
+                "en": "Investigating reflection and refraction of light experimentally."
+              },
+              "simulations": [
+                "reflexion",
+                "brechung"
+              ]
+            },
+            {
+              "code": "2.5",
+              "title": {
+                "de": "Astronomische Phänomene durch Konstellationen von Sonne-Erde-Mond",
+                "en": "Astronomical phenomena due to Sun–Earth–Moon constellations"
+              },
+              "summary": {
+                "de": "Mondphasen, Finsternisse u. Ä. mit Modellen erklären.",
+                "en": "Explaining lunar phases, eclipses and similar phenomena with models."
+              }
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energie in Umwelt und Technik",
+            "en": "Energy in the environment and technology"
+          },
+          "summary": {
+            "de": "Ein anschaulicher Energiebegriff: Energie wird transportiert und geht als nutzlose Wärme an die Umgebung (Entwertung); Energiesparen im Haushalt.",
+            "en": "An intuitive concept of energy: energy is transported and dissipated as useless heat to the surroundings; saving energy at home."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Anschaulicher Energiebegriff",
+                "en": "Intuitive concept of energy"
+              },
+              "summary": {
+                "de": "Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt.",
+                "en": "Energy as a quantity that occurs in many forms and drives processes."
+              }
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Energietransport",
+                "en": "Energy transport"
+              },
+              "summary": {
+                "de": "Wege, auf denen Energie von einem Ort zum anderen gelangt.",
+                "en": "Ways in which energy gets from one place to another."
+              }
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Energiestrom in die Umgebung als Entwertung von Energie",
+                "en": "Energy flow to the surroundings as degradation of energy"
+              },
+              "summary": {
+                "de": "Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert.",
+                "en": "Understanding that energy does not vanish but becomes less usable."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrizität im Alltag",
+            "en": "Electricity in everyday life"
+          },
+          "summary": {
+            "de": "Elektrischer Strom als Energietransport, Bauteile und Aufbau einfacher Stromkreise, Leiter und Isolatoren sowie sicherer Umgang mit Elektrizität.",
+            "en": "Electric current as energy transport, components and setup of simple circuits, conductors and insulators, and safe handling of electricity."
+          },
+          "simulations": [
+            "einfacher-stromkreis"
+          ],
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "elektrischer Strom als Transportform von Energie",
+                "en": "Electric current as a means of transporting energy"
+              },
+              "summary": {
+                "de": "Mit einem Modell erklären, wie der Stromkreis Energie überträgt.",
+                "en": "Explaining with a model how a circuit transfers energy."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Elemente des elektrischen Stromkreises",
+                "en": "Elements of the electric circuit"
+              },
+              "summary": {
+                "de": "Quelle, Leitung, Schalter und Verbraucher sowie Schaltskizzen.",
+                "en": "Source, wires, switch and load, and circuit diagrams."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "Gefahren beim Umgang mit Elektrizität im Alltag",
+                "en": "Dangers of electricity in everyday life"
+              },
+              "summary": {
+                "de": "Gefahren erkennen und sicheres Verhalten begründen.",
+                "en": "Recognising dangers and justifying safe behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wettererscheinungen und Klima",
+            "en": "Weather phenomena and climate"
+          },
+          "summary": {
+            "de": "Temperatur und ihre Messung, Teilchenmodell der Materie, Aggregatzustände, Wärmeausdehnung und Anomalie des Wassers sowie ein erster Druckbegriff.",
+            "en": "Temperature and its measurement, the particle model of matter, states of matter, thermal expansion and the anomaly of water, and a first idea of pressure."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ],
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Temperatur und deren Messung",
+                "en": "Temperature and its measurement"
+              },
+              "summary": {
+                "de": "Thermometer verstehen und kalibrieren.",
+                "en": "Understanding and calibrating thermometers."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Modelle des Aufbaus der Materie",
+                "en": "Models of the structure of matter"
+              },
+              "summary": {
+                "de": "Stoffe mit einem Teilchenmodell beschreiben.",
+                "en": "Describing substances with a particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Aggregatzustände und deren Übergänge",
+                "en": "States of matter and their transitions"
+              },
+              "summary": {
+                "de": "Schmelzen, Verdampfen usw. mit dem Teilchenmodell erklären.",
+                "en": "Explaining melting, evaporation etc. with the particle model."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "5.4",
+              "title": {
+                "de": "Stoffe bei Temperaturänderung",
+                "en": "Substances when temperature changes"
+              },
+              "summary": {
+                "de": "Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen.",
+                "en": "Investigating the expansion of solids, liquids and gases."
+              }
+            },
+            {
+              "code": "5.5",
+              "title": {
+                "de": "Anomalie des Wassers und seine Bedeutung für das irdische Leben",
+                "en": "Anomaly of water and its importance for life on Earth"
+              },
+              "summary": {
+                "de": "Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer.",
+                "en": "Density behaviour of water at 4 °C and consequences for lakes."
+              }
+            },
+            {
+              "code": "5.6",
+              "title": {
+                "de": "Druck als „Gepresstsein“ der Materie",
+                "en": "Pressure as the 'compressed state' of matter"
+              },
+              "summary": {
+                "de": "Anschauliche Vorstellung von Druck.",
+                "en": "An intuitive idea of pressure."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Fortbewegung und Mobilität",
+            "en": "Locomotion and mobility"
+          },
+          "summary": {
+            "de": "Bewegungen mit Weg, Zeit und Geschwindigkeit beschreiben und Geschwindigkeiten messen.",
+            "en": "Describing motion with distance, time and speed and measuring speeds."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ],
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Weg, Zeit und Geschwindigkeit",
+                "en": "Distance, time and speed"
+              },
+              "summary": {
+                "de": "Geschwindigkeiten messen und Bewegungen in Diagrammen darstellen.",
+                "en": "Measuring speeds and representing motion in diagrams."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Technik im Dienst des Menschen",
+            "en": "Technology in the service of people"
+          },
+          "summary": {
+            "de": "Eigenschaften von Magneten, Modell der Elementarmagnete und Magnetfelder.",
+            "en": "Properties of magnets, the model of elementary magnets and magnetic fields."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Magnetismus",
+                "en": "Magnetism"
+              },
+              "summary": {
+                "de": "Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.",
+                "en": "Investigating magnets, drawing field lines and explaining them with elementary magnets."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zukunftssichere Energieversorgung",
+            "en": "Sustainable energy supply"
+          },
+          "summary": {
+            "de": "Regenerative und erschöpfbare Energieträger unterscheiden und Energiekosten im Alltag deuten.",
+            "en": "Distinguishing renewable and finite energy sources and interpreting everyday energy costs."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Unterscheidung zwischen regenerativen und erschöpfbaren Energien",
+                "en": "Distinguishing renewable and finite energy sources"
+              },
+              "summary": {
+                "de": "Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten.",
+                "en": "Classifying energy sources by availability and evaluating one's own behaviour."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Physik in der Verantwortung",
+            "en": "Physics and responsibility"
+          },
+          "summary": {
+            "de": "Verantwortung für die Umwelt und die Rolle der Physik bei Natur- und Umweltereignissen.",
+            "en": "Responsibility for the environment and the role of physics in natural and environmental events."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Verantwortung gegenüber der Umwelt",
+                "en": "Responsibility towards the environment"
+              },
+              "summary": {
+                "de": "Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen.",
+                "en": "Taking environmental and health aspects into account in experiments and everyday life."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Rolle der Physik bei Umwelt- und Naturereignissen",
+                "en": "Role of physics in environmental and natural events"
+              },
+              "summary": {
+                "de": "Physikalische Informationen aus Meldungen zu Ereignissen entnehmen.",
+                "en": "Extracting physical information from reports on events."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "http://www.kultusministerium.hessen.de",
+      "note": {
+        "de": "Stufe 2 der Übersicht in Kap. 7.2: zusätzliche Schwerpunkte bis zum Ende der Jahrgangsstufe 9/10 (Übergang in die Sekundarstufe II); die Inhalte von Stufe 1 werden vorausgesetzt. Doppeljahrgangsstufe 9/10: bei Jahrgangsstufe 9 und 10 gleich eingetragen. Nummerierung nicht aus dem Lehrplan.",
+        "en": "Stage 2 of the overview in ch. 7.2: additional focal points up to the end of grade 9/10 (transition to upper secondary); stage 1 content is assumed. Double grade level 9/10: entered identically for grades 9 and 10. Numbering is not part of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Haus der Naturwissenschaften",
+            "en": "House of the natural sciences"
+          },
+          "summary": {
+            "de": "Physik im Verbund mit Chemie und Biologie einordnen, historische und aktuelle Erkenntniswege kennen und Messgenauigkeit beurteilen.",
+            "en": "Placing physics alongside chemistry and biology, knowing historical and current ways of gaining knowledge, and judging measurement accuracy."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie",
+                "en": "Particularities and commonalities of physics, chemistry and biology"
+              },
+              "summary": {
+                "de": "Arbeitsweisen der drei Naturwissenschaften vergleichen.",
+                "en": "Comparing the methods of the three natural sciences."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Historische und aktuelle Erkenntniswege der Physik",
+                "en": "Historical and current ways of gaining knowledge in physics"
+              },
+              "summary": {
+                "de": "An Beispielen zeigen, wie physikalisches Wissen entsteht; Messfehler einschätzen.",
+                "en": "Showing with examples how physical knowledge arises; estimating measurement errors."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Erweiterung der Sinne",
+            "en": "Extension of the senses"
+          },
+          "summary": {
+            "de": "Ausbreitung von Licht und Schall vergleichen, optische Phänomene erklären und optische Abbildungen (z. B. mit Linsen) erzeugen; Schallgeschwindigkeit bestimmen.",
+            "en": "Comparing the propagation of light and sound, explaining optical phenomena and producing optical images (e.g. with lenses); determining the speed of sound."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen"
+          ],
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Schall, Licht und ihre Ausbreitung",
+                "en": "Sound, light and their propagation"
+              },
+              "summary": {
+                "de": "Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.",
+                "en": "Comparing how light and sound propagate, including the speed of sound."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Optische Phänomene",
+                "en": "Optical phenomena"
+              },
+              "summary": {
+                "de": "Phänomene wie Spiegelbilder, Brechung und Totalreflexion physikalisch erklären.",
+                "en": "Explaining phenomena such as mirror images, refraction and total internal reflection."
+              },
+              "simulations": [
+                "reflexion",
+                "brechung"
+              ]
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Optische Abbildungen",
+                "en": "Optical images"
+              },
+              "summary": {
+                "de": "Bilder mit Linsen und optischen Instrumenten erzeugen und zeichnerisch konstruieren.",
+                "en": "Forming images with lenses and optical instruments and constructing them graphically."
+              },
+              "simulations": [
+                "linsen"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energie in Umwelt und Technik",
+            "en": "Energy in the environment and technology"
+          },
+          "summary": {
+            "de": "Energie wird quantifiziert: Energieformen und Umwandlungsketten, Energieerhaltung und Wirkungsgrade.",
+            "en": "Energy is quantified: forms of energy and conversion chains, conservation of energy and efficiency."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ],
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Energie als quantifizierbare Größe",
+                "en": "Energy as a quantifiable quantity"
+              },
+              "summary": {
+                "de": "Energien berechnen und in Joule angeben.",
+                "en": "Calculating energies and stating them in joules."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Energieformen und ihre Umwandlung",
+                "en": "Forms of energy and their conversion"
+              },
+              "summary": {
+                "de": "Umwandlungsketten aufstellen und Wirkungsgrade bestimmen.",
+                "en": "Setting up conversion chains and determining efficiencies."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Prinzip der Energieerhaltung und dessen Anwendung",
+                "en": "Principle of conservation of energy and its application"
+              },
+              "summary": {
+                "de": "Energieerhaltung nutzen, um Vorgänge vorherzusagen.",
+                "en": "Using conservation of energy to predict processes."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrizität im Alltag",
+            "en": "Electricity in everyday life"
+          },
+          "summary": {
+            "de": "Stromstärke, Spannung und Widerstand quantitativ; komplexere Schaltungen als Systeme; elektrostatische Erscheinungen durch Ladungen erklären.",
+            "en": "Current, voltage and resistance quantitatively; more complex circuits as systems; explaining electrostatic phenomena by charges."
+          },
+          "simulations": [
+            "ohmsches-gesetz",
+            "reihe-parallel"
+          ],
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Einfluss von Widerständen auf die Stärke des elektrischen Stroms",
+                "en": "Influence of resistors on the strength of the electric current"
+              },
+              "summary": {
+                "de": "Zusammenhang von Spannung, Stromstärke und Widerstand untersuchen.",
+                "en": "Investigating the relationship between voltage, current and resistance."
+              },
+              "simulations": [
+                "ohmsches-gesetz"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Stromkreise als Systeme",
+                "en": "Circuits as systems"
+              },
+              "summary": {
+                "de": "Reihen- und Parallelschaltungen als Ganzes betrachten; Strom als Ladung pro Zeit, Spannung als Energie pro Ladung.",
+                "en": "Viewing series and parallel circuits as a whole; current as charge per time, voltage as energy per charge."
+              },
+              "simulations": [
+                "reihe-parallel"
+              ]
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "elektrostatische Phänomene",
+                "en": "Electrostatic phenomena"
+              },
+              "summary": {
+                "de": "Aufladung, Anziehung und Abstoßung mit Ladungen erklären.",
+                "en": "Explaining charging, attraction and repulsion with charges."
+              }
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wettererscheinungen und Klima",
+            "en": "Weather phenomena and climate"
+          },
+          "summary": {
+            "de": "Wärmeübertragung, Druck als Zustandsgröße und Druck- bzw. Temperaturunterschiede als Antrieb von Wetter und Klima; Einfluss des Menschen auf das Klima.",
+            "en": "Heat transfer, pressure as a state variable and differences in pressure and temperature as drivers of weather and climate; human influence on climate."
+          },
+          "simulations": [
+            "gasgesetze"
+          ],
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Übertragung thermischer Energie",
+                "en": "Transfer of thermal energy"
+              },
+              "summary": {
+                "de": "Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.",
+                "en": "Investigating conduction, convection and radiation."
+              }
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Druck als physikalische Zustandsgröße",
+                "en": "Pressure as a physical state variable"
+              },
+              "summary": {
+                "de": "Druck in Abhängigkeit von anderen Größen darstellen.",
+                "en": "Representing pressure as a function of other quantities."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Druck- und Temperaturunterschiede",
+                "en": "Pressure and temperature differences"
+              },
+              "summary": {
+                "de": "Wettererscheinungen als Ausgleich von Unterschieden erklären.",
+                "en": "Explaining weather phenomena as the equalising of differences."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Fortbewegung und Mobilität",
+            "en": "Locomotion and mobility"
+          },
+          "summary": {
+            "de": "Kräfte als Wechselwirkung, Trägheit, Wirkungen von Kräften (Bewegungsänderung, Verformung) und Leistung von Mensch und Technik.",
+            "en": "Forces as interaction, inertia, effects of forces (change of motion, deformation) and power of humans and machines."
+          },
+          "simulations": [
+            "hookesches-gesetz",
+            "kraefteaddition"
+          ],
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Wechselwirkung von Körpern",
+                "en": "Interaction of bodies"
+              },
+              "summary": {
+                "de": "Kräfte treten immer paarweise zwischen zwei Körpern auf.",
+                "en": "Forces always occur in pairs between two bodies."
+              }
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Trägheit eines Körpers",
+                "en": "Inertia of a body"
+              },
+              "summary": {
+                "de": "Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit.",
+                "en": "Inertia as resistance to changes in motion; importance for road safety."
+              }
+            },
+            {
+              "code": "6.3",
+              "title": {
+                "de": "Wirkungen von Kräften",
+                "en": "Effects of forces"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen und verformen Körper; Kräfte darstellen und messen.",
+                "en": "Forces change motion and deform bodies; representing and measuring forces."
+              },
+              "simulations": [
+                "hookesches-gesetz",
+                "kraefteaddition"
+              ]
+            },
+            {
+              "code": "6.4",
+              "title": {
+                "de": "Menschliche und technische Leistungen und deren Vergleich",
+                "en": "Human and technical power and their comparison"
+              },
+              "summary": {
+                "de": "Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen.",
+                "en": "Determining one's own physical power and comparing it with machines."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Technik im Dienst des Menschen",
+            "en": "Technology in the service of people"
+          },
+          "summary": {
+            "de": "Kraftwandler wie Hebel und Rollen, Auftrieb in Flüssigkeiten und Gasen sowie die magnetische Wirkung des Stroms und elektromagnetische Energiewandler.",
+            "en": "Force converters such as levers and pulleys, buoyancy in liquids and gases, and the magnetic effect of current and electromagnetic energy converters."
+          },
+          "simulations": [
+            "hebelgesetz",
+            "schiefe-ebene"
+          ],
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Kraft wandelnde Systeme",
+                "en": "Force-converting systems"
+              },
+              "summary": {
+                "de": "Gesetzmäßigkeiten an Hebel, Rolle und schiefer Ebene untersuchen; Gleichgewicht.",
+                "en": "Investigating laws for levers, pulleys and inclined planes; equilibrium."
+              },
+              "simulations": [
+                "hebelgesetz",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Phänomen Auftrieb",
+                "en": "Phenomenon of buoyancy"
+              },
+              "summary": {
+                "de": "Schwimmen, Schweben und Sinken experimentell untersuchen und erklären.",
+                "en": "Investigating and explaining floating, hovering and sinking."
+              }
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Magnetische Wirkung des elektrischen Stroms",
+                "en": "Magnetic effect of electric current"
+              },
+              "summary": {
+                "de": "Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.",
+                "en": "Understanding electromagnets and electromagnetic energy converters such as motors."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zukunftssichere Energieversorgung",
+            "en": "Sustainable energy supply"
+          },
+          "summary": {
+            "de": "Erzeugung elektrischer Energie in Kraftwerken, Speicherung und Transport (Transformation der Spannung) sowie Versorgungsnetze.",
+            "en": "Generating electrical energy in power plants, storage and transport (voltage transformation), and supply grids."
+          },
+          "simulations": [
+            "induktion"
+          ],
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Umwandlung verschiedener Energieformen in elektrische Energie",
+                "en": "Converting various forms of energy into electrical energy"
+              },
+              "summary": {
+                "de": "Generatoren und andere Wandler erklären.",
+                "en": "Explaining generators and other converters."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Großenergieanlagen",
+                "en": "Large-scale power plants"
+              },
+              "summary": {
+                "de": "Kraftwerkstypen vergleichen.",
+                "en": "Comparing types of power plant."
+              }
+            },
+            {
+              "code": "8.3",
+              "title": {
+                "de": "Speicherung und Transport von Energie",
+                "en": "Storage and transport of energy"
+              },
+              "summary": {
+                "de": "Speicher und Hochspannungsübertragung mit Transformatoren untersuchen.",
+                "en": "Investigating storage and high-voltage transmission with transformers."
+              }
+            },
+            {
+              "code": "8.4",
+              "title": {
+                "de": "Energieversorgungsnetze",
+                "en": "Energy supply grids"
+              },
+              "summary": {
+                "de": "Zentrale und dezentrale Versorgung bewerten.",
+                "en": "Evaluating centralised and decentralised supply."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Physik in der Verantwortung",
+            "en": "Physics and responsibility"
+          },
+          "summary": {
+            "de": "Radioaktiver Zerfall und ionisierende Strahlung: Wirkung, Gefahren, Schutz sowie Chancen und Risiken von Technologien.",
+            "en": "Radioactive decay and ionising radiation: effects, dangers, protection, and opportunities and risks of technologies."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ],
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "radioaktive Zerfallsprozesse",
+                "en": "Radioactive decay processes"
+              },
+              "summary": {
+                "de": "Zerfall mit Atommodellen beschreiben und Zerfallsdaten auswerten.",
+                "en": "Describing decay with atomic models and evaluating decay data."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Auswirkungen verschiedener Strahlungsarten",
+                "en": "Effects of different types of radiation"
+              },
+              "summary": {
+                "de": "Alpha-, Beta- und Gammastrahlung, Gefährdungen und Schutzmaßnahmen.",
+                "en": "Alpha, beta and gamma radiation, hazards and protective measures."
+              }
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Konsequenzen der Nutzung physikalischer Forschungsergebnisse",
+                "en": "Consequences of using the results of physics research"
+              },
+              "summary": {
+                "de": "Chancen und Risiken technologischer Entwicklungen abwägen.",
+                "en": "Weighing opportunities and risks of technological developments."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "http://www.kultusministerium.hessen.de",
+      "note": {
+        "de": "Stufe 2 der Übersicht in Kap. 7.2: zusätzliche Schwerpunkte bis zum Ende der Jahrgangsstufe 9/10 (Übergang in die Sekundarstufe II); die Inhalte von Stufe 1 werden vorausgesetzt. Doppeljahrgangsstufe 9/10: bei Jahrgangsstufe 9 und 10 gleich eingetragen. Nummerierung nicht aus dem Lehrplan.",
+        "en": "Stage 2 of the overview in ch. 7.2: additional focal points up to the end of grade 9/10 (transition to upper secondary); stage 1 content is assumed. Double grade level 9/10: entered identically for grades 9 and 10. Numbering is not part of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Haus der Naturwissenschaften",
+            "en": "House of the natural sciences"
+          },
+          "summary": {
+            "de": "Physik im Verbund mit Chemie und Biologie einordnen, historische und aktuelle Erkenntniswege kennen und Messgenauigkeit beurteilen.",
+            "en": "Placing physics alongside chemistry and biology, knowing historical and current ways of gaining knowledge, and judging measurement accuracy."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie",
+                "en": "Particularities and commonalities of physics, chemistry and biology"
+              },
+              "summary": {
+                "de": "Arbeitsweisen der drei Naturwissenschaften vergleichen.",
+                "en": "Comparing the methods of the three natural sciences."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Historische und aktuelle Erkenntniswege der Physik",
+                "en": "Historical and current ways of gaining knowledge in physics"
+              },
+              "summary": {
+                "de": "An Beispielen zeigen, wie physikalisches Wissen entsteht; Messfehler einschätzen.",
+                "en": "Showing with examples how physical knowledge arises; estimating measurement errors."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Erweiterung der Sinne",
+            "en": "Extension of the senses"
+          },
+          "summary": {
+            "de": "Ausbreitung von Licht und Schall vergleichen, optische Phänomene erklären und optische Abbildungen (z. B. mit Linsen) erzeugen; Schallgeschwindigkeit bestimmen.",
+            "en": "Comparing the propagation of light and sound, explaining optical phenomena and producing optical images (e.g. with lenses); determining the speed of sound."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen"
+          ],
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Schall, Licht und ihre Ausbreitung",
+                "en": "Sound, light and their propagation"
+              },
+              "summary": {
+                "de": "Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.",
+                "en": "Comparing how light and sound propagate, including the speed of sound."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Optische Phänomene",
+                "en": "Optical phenomena"
+              },
+              "summary": {
+                "de": "Phänomene wie Spiegelbilder, Brechung und Totalreflexion physikalisch erklären.",
+                "en": "Explaining phenomena such as mirror images, refraction and total internal reflection."
+              },
+              "simulations": [
+                "reflexion",
+                "brechung"
+              ]
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Optische Abbildungen",
+                "en": "Optical images"
+              },
+              "summary": {
+                "de": "Bilder mit Linsen und optischen Instrumenten erzeugen und zeichnerisch konstruieren.",
+                "en": "Forming images with lenses and optical instruments and constructing them graphically."
+              },
+              "simulations": [
+                "linsen"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energie in Umwelt und Technik",
+            "en": "Energy in the environment and technology"
+          },
+          "summary": {
+            "de": "Energie wird quantifiziert: Energieformen und Umwandlungsketten, Energieerhaltung und Wirkungsgrade.",
+            "en": "Energy is quantified: forms of energy and conversion chains, conservation of energy and efficiency."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ],
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Energie als quantifizierbare Größe",
+                "en": "Energy as a quantifiable quantity"
+              },
+              "summary": {
+                "de": "Energien berechnen und in Joule angeben.",
+                "en": "Calculating energies and stating them in joules."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Energieformen und ihre Umwandlung",
+                "en": "Forms of energy and their conversion"
+              },
+              "summary": {
+                "de": "Umwandlungsketten aufstellen und Wirkungsgrade bestimmen.",
+                "en": "Setting up conversion chains and determining efficiencies."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Prinzip der Energieerhaltung und dessen Anwendung",
+                "en": "Principle of conservation of energy and its application"
+              },
+              "summary": {
+                "de": "Energieerhaltung nutzen, um Vorgänge vorherzusagen.",
+                "en": "Using conservation of energy to predict processes."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrizität im Alltag",
+            "en": "Electricity in everyday life"
+          },
+          "summary": {
+            "de": "Stromstärke, Spannung und Widerstand quantitativ; komplexere Schaltungen als Systeme; elektrostatische Erscheinungen durch Ladungen erklären.",
+            "en": "Current, voltage and resistance quantitatively; more complex circuits as systems; explaining electrostatic phenomena by charges."
+          },
+          "simulations": [
+            "ohmsches-gesetz",
+            "reihe-parallel"
+          ],
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Einfluss von Widerständen auf die Stärke des elektrischen Stroms",
+                "en": "Influence of resistors on the strength of the electric current"
+              },
+              "summary": {
+                "de": "Zusammenhang von Spannung, Stromstärke und Widerstand untersuchen.",
+                "en": "Investigating the relationship between voltage, current and resistance."
+              },
+              "simulations": [
+                "ohmsches-gesetz"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Stromkreise als Systeme",
+                "en": "Circuits as systems"
+              },
+              "summary": {
+                "de": "Reihen- und Parallelschaltungen als Ganzes betrachten; Strom als Ladung pro Zeit, Spannung als Energie pro Ladung.",
+                "en": "Viewing series and parallel circuits as a whole; current as charge per time, voltage as energy per charge."
+              },
+              "simulations": [
+                "reihe-parallel"
+              ]
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "elektrostatische Phänomene",
+                "en": "Electrostatic phenomena"
+              },
+              "summary": {
+                "de": "Aufladung, Anziehung und Abstoßung mit Ladungen erklären.",
+                "en": "Explaining charging, attraction and repulsion with charges."
+              }
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wettererscheinungen und Klima",
+            "en": "Weather phenomena and climate"
+          },
+          "summary": {
+            "de": "Wärmeübertragung, Druck als Zustandsgröße und Druck- bzw. Temperaturunterschiede als Antrieb von Wetter und Klima; Einfluss des Menschen auf das Klima.",
+            "en": "Heat transfer, pressure as a state variable and differences in pressure and temperature as drivers of weather and climate; human influence on climate."
+          },
+          "simulations": [
+            "gasgesetze"
+          ],
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Übertragung thermischer Energie",
+                "en": "Transfer of thermal energy"
+              },
+              "summary": {
+                "de": "Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen.",
+                "en": "Investigating conduction, convection and radiation."
+              }
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Druck als physikalische Zustandsgröße",
+                "en": "Pressure as a physical state variable"
+              },
+              "summary": {
+                "de": "Druck in Abhängigkeit von anderen Größen darstellen.",
+                "en": "Representing pressure as a function of other quantities."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Druck- und Temperaturunterschiede",
+                "en": "Pressure and temperature differences"
+              },
+              "summary": {
+                "de": "Wettererscheinungen als Ausgleich von Unterschieden erklären.",
+                "en": "Explaining weather phenomena as the equalising of differences."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Fortbewegung und Mobilität",
+            "en": "Locomotion and mobility"
+          },
+          "summary": {
+            "de": "Kräfte als Wechselwirkung, Trägheit, Wirkungen von Kräften (Bewegungsänderung, Verformung) und Leistung von Mensch und Technik.",
+            "en": "Forces as interaction, inertia, effects of forces (change of motion, deformation) and power of humans and machines."
+          },
+          "simulations": [
+            "hookesches-gesetz",
+            "kraefteaddition"
+          ],
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Wechselwirkung von Körpern",
+                "en": "Interaction of bodies"
+              },
+              "summary": {
+                "de": "Kräfte treten immer paarweise zwischen zwei Körpern auf.",
+                "en": "Forces always occur in pairs between two bodies."
+              }
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Trägheit eines Körpers",
+                "en": "Inertia of a body"
+              },
+              "summary": {
+                "de": "Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit.",
+                "en": "Inertia as resistance to changes in motion; importance for road safety."
+              }
+            },
+            {
+              "code": "6.3",
+              "title": {
+                "de": "Wirkungen von Kräften",
+                "en": "Effects of forces"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen und verformen Körper; Kräfte darstellen und messen.",
+                "en": "Forces change motion and deform bodies; representing and measuring forces."
+              },
+              "simulations": [
+                "hookesches-gesetz",
+                "kraefteaddition"
+              ]
+            },
+            {
+              "code": "6.4",
+              "title": {
+                "de": "Menschliche und technische Leistungen und deren Vergleich",
+                "en": "Human and technical power and their comparison"
+              },
+              "summary": {
+                "de": "Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen.",
+                "en": "Determining one's own physical power and comparing it with machines."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Technik im Dienst des Menschen",
+            "en": "Technology in the service of people"
+          },
+          "summary": {
+            "de": "Kraftwandler wie Hebel und Rollen, Auftrieb in Flüssigkeiten und Gasen sowie die magnetische Wirkung des Stroms und elektromagnetische Energiewandler.",
+            "en": "Force converters such as levers and pulleys, buoyancy in liquids and gases, and the magnetic effect of current and electromagnetic energy converters."
+          },
+          "simulations": [
+            "hebelgesetz",
+            "schiefe-ebene"
+          ],
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Kraft wandelnde Systeme",
+                "en": "Force-converting systems"
+              },
+              "summary": {
+                "de": "Gesetzmäßigkeiten an Hebel, Rolle und schiefer Ebene untersuchen; Gleichgewicht.",
+                "en": "Investigating laws for levers, pulleys and inclined planes; equilibrium."
+              },
+              "simulations": [
+                "hebelgesetz",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Phänomen Auftrieb",
+                "en": "Phenomenon of buoyancy"
+              },
+              "summary": {
+                "de": "Schwimmen, Schweben und Sinken experimentell untersuchen und erklären.",
+                "en": "Investigating and explaining floating, hovering and sinking."
+              }
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Magnetische Wirkung des elektrischen Stroms",
+                "en": "Magnetic effect of electric current"
+              },
+              "summary": {
+                "de": "Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.",
+                "en": "Understanding electromagnets and electromagnetic energy converters such as motors."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zukunftssichere Energieversorgung",
+            "en": "Sustainable energy supply"
+          },
+          "summary": {
+            "de": "Erzeugung elektrischer Energie in Kraftwerken, Speicherung und Transport (Transformation der Spannung) sowie Versorgungsnetze.",
+            "en": "Generating electrical energy in power plants, storage and transport (voltage transformation), and supply grids."
+          },
+          "simulations": [
+            "induktion"
+          ],
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Umwandlung verschiedener Energieformen in elektrische Energie",
+                "en": "Converting various forms of energy into electrical energy"
+              },
+              "summary": {
+                "de": "Generatoren und andere Wandler erklären.",
+                "en": "Explaining generators and other converters."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Großenergieanlagen",
+                "en": "Large-scale power plants"
+              },
+              "summary": {
+                "de": "Kraftwerkstypen vergleichen.",
+                "en": "Comparing types of power plant."
+              }
+            },
+            {
+              "code": "8.3",
+              "title": {
+                "de": "Speicherung und Transport von Energie",
+                "en": "Storage and transport of energy"
+              },
+              "summary": {
+                "de": "Speicher und Hochspannungsübertragung mit Transformatoren untersuchen.",
+                "en": "Investigating storage and high-voltage transmission with transformers."
+              }
+            },
+            {
+              "code": "8.4",
+              "title": {
+                "de": "Energieversorgungsnetze",
+                "en": "Energy supply grids"
+              },
+              "summary": {
+                "de": "Zentrale und dezentrale Versorgung bewerten.",
+                "en": "Evaluating centralised and decentralised supply."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Physik in der Verantwortung",
+            "en": "Physics and responsibility"
+          },
+          "summary": {
+            "de": "Radioaktiver Zerfall und ionisierende Strahlung: Wirkung, Gefahren, Schutz sowie Chancen und Risiken von Technologien.",
+            "en": "Radioactive decay and ionising radiation: effects, dangers, protection, and opportunities and risks of technologies."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ],
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "radioaktive Zerfallsprozesse",
+                "en": "Radioactive decay processes"
+              },
+              "summary": {
+                "de": "Zerfall mit Atommodellen beschreiben und Zerfallsdaten auswerten.",
+                "en": "Describing decay with atomic models and evaluating decay data."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Auswirkungen verschiedener Strahlungsarten",
+                "en": "Effects of different types of radiation"
+              },
+              "summary": {
+                "de": "Alpha-, Beta- und Gammastrahlung, Gefährdungen und Schutzmaßnahmen.",
+                "en": "Alpha, beta and gamma radiation, hazards and protective measures."
+              }
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Konsequenzen der Nutzung physikalischer Forschungsergebnisse",
+                "en": "Consequences of using the results of physics research"
+              },
+              "summary": {
+                "de": "Chancen und Risiken technologischer Entwicklungen abwägen.",
+                "en": "Weighing opportunities and risks of technological developments."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://kultus.hessen.de",
+      "note": {
+        "de": "Kurshalbjahre E1/E2 „Mechanik“. Verbindlich: Themenfelder E.1–E.3 (mindestens eines davon im zweiten Kurshalbjahr); E.4–E.7 sind nicht verbindlich. Keine Unterscheidung nach Grund-/Leistungskurs in der Einführungsphase. Die Zuordnung zu Jahrgangsstufe 11 ist eine Annahme (G9-Zählung) – der Lehrplan nennt nur Kurshalbjahre. Nummerierung der Unterbereiche (dritte Stelle) nicht aus dem Lehrplan.",
+        "en": "Course half-years E1/E2 “Mechanics”. Mandatory: topic areas E.1–E.3 (at least one of them in the second half-year); E.4–E.7 are optional. No distinction between basic and advanced course in the introductory phase. Assignment to grade 11 is an assumption (G9 counting) – the curriculum only names course half-years. Numbering of sub-areas (third position) is not from the curriculum."
+      },
+      "units": [
+        {
+          "code": "E.1",
+          "title": {
+            "de": "Bewegungen und ihre Beschreibung",
+            "en": "Motion and its description"
+          },
+          "summary": {
+            "de": "[verbindlich] Gleichförmige und gleichmäßig beschleunigte Bewegungen untersuchen, in t-s-, t-v- und t-a-Diagrammen darstellen und durch Bewegungsgesetze beschreiben, z. B. beim freien Fall.",
+            "en": "[mandatory] Investigating uniform and uniformly accelerated motion, representing it in t-s, t-v and t-a diagrams and describing it with equations of motion, e.g. free fall."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "freier-fall"
+          ],
+          "parts": [
+            {
+              "code": "E.1.1",
+              "title": {
+                "de": "Untersuchung von Bewegungen",
+                "en": "Investigation of motion"
+              },
+              "summary": {
+                "de": "Bewegungen messen und Messdaten auswerten.",
+                "en": "Measuring motion and evaluating the data."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "E.1.2",
+              "title": {
+                "de": "t-s-, t-v- und t-a-Diagramme",
+                "en": "t-s, t-v and t-a diagrams"
+              },
+              "summary": {
+                "de": "Bewegungen in Diagrammen darstellen und deuten.",
+                "en": "Representing and interpreting motion in diagrams."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "E.1.3",
+              "title": {
+                "de": "gleichförmige Bewegung",
+                "en": "uniform motion"
+              },
+              "summary": {
+                "de": "Geschwindigkeit definieren und im Versuch messen.",
+                "en": "Defining velocity and measuring it experimentally."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "E.1.4",
+              "title": {
+                "de": "gleichmäßig beschleunigte Bewegung ohne Anfangsgeschwindigkeit und Anfangsort",
+                "en": "uniformly accelerated motion without initial velocity and initial position"
+              },
+              "summary": {
+                "de": "Beschleunigung, Durchschnitts- vs. Momentangeschwindigkeit; freier Fall mit Bestimmung von g.",
+                "en": "Acceleration, average vs. instantaneous velocity; free fall including determining g."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "E.1.5",
+              "title": {
+                "de": "Idealisierung",
+                "en": "Idealisation"
+              },
+              "summary": {
+                "de": "Massepunkt und Vernachlässigung der Reibung als Modellannahmen.",
+                "en": "Point mass and neglect of friction as model assumptions."
+              }
+            },
+            {
+              "code": "E.1.6",
+              "title": {
+                "de": "Zeit-Ort- und Zeit-Geschwindigkeit-Gesetze und deren Zusammenhang",
+                "en": "Time–position and time–velocity laws and their relationship"
+              },
+              "summary": {
+                "de": "Bewegungsgesetze aus Diagrammen herleiten und verknüpfen.",
+                "en": "Deriving and linking the laws of motion from diagrams."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "E.2",
+          "title": {
+            "de": "Newton’sche Axiome und Erhaltungssätze",
+            "en": "Newton's laws and conservation laws"
+          },
+          "summary": {
+            "de": "[verbindlich] Die drei Newton’schen Axiome sowie Energie- und Impulserhaltung, angewandt auf elastische und unelastische Stöße.",
+            "en": "[mandatory] Newton's three laws and conservation of energy and momentum, applied to elastic and inelastic collisions."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "stoesse"
+          ],
+          "parts": [
+            {
+              "code": "E.2.1",
+              "title": {
+                "de": "die drei Newton’schen Axiome",
+                "en": "Newton's three laws"
+              },
+              "summary": {
+                "de": "Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme.",
+                "en": "Law of inertia, F = m·a, action–reaction principle and inertial frames."
+              }
+            },
+            {
+              "code": "E.2.2",
+              "title": {
+                "de": "Energie und Energieerhaltung",
+                "en": "Energy and conservation of energy"
+              },
+              "summary": {
+                "de": "Kinetische und potenzielle Energie, Erhaltung in reibungsfreien abgeschlossenen Systemen.",
+                "en": "Kinetic and potential energy, conservation in frictionless closed systems."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "E.2.3",
+              "title": {
+                "de": "Impuls und Impulserhaltung",
+                "en": "Momentum and conservation of momentum"
+              },
+              "summary": {
+                "de": "Elastische und unelastische Stöße, Rückstoß und Impuls als Erhaltungsgröße.",
+                "en": "Elastic and inelastic collisions, recoil and momentum as a conserved quantity."
+              },
+              "simulations": [
+                "stoesse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "E.3",
+          "title": {
+            "de": "Waagerechter Wurf und Kreisbewegung",
+            "en": "Horizontal projectile motion and circular motion"
+          },
+          "summary": {
+            "de": "[verbindlich] Bewegungen überlagern (waagerechter Wurf) und gleichförmige Kreisbewegungen mit Bahn- und Winkelgeschwindigkeit sowie Zentripetalkraft beschreiben.",
+            "en": "[mandatory] Superposing motions (horizontal projectile) and describing uniform circular motion with linear and angular velocity and centripetal force."
+          },
+          "simulations": [
+            "schiefer-wurf",
+            "kreisbewegung"
+          ],
+          "parts": [
+            {
+              "code": "E.3.1",
+              "title": {
+                "de": "Bezugssysteme, Superpositionsprinzip",
+                "en": "Reference frames, superposition principle"
+              },
+              "summary": {
+                "de": "Waagerechten Wurf als Überlagerung zweier Bewegungen darstellen.",
+                "en": "Representing horizontal projectile motion as a superposition of two motions."
+              },
+              "simulations": [
+                "schiefer-wurf"
+              ]
+            },
+            {
+              "code": "E.3.2",
+              "title": {
+                "de": "Bahn- und Winkelgeschwindigkeit bei Kreisbewegungen",
+                "en": "Linear and angular velocity in circular motion"
+              },
+              "summary": {
+                "de": "Beide Geschwindigkeiten definieren und vergleichen.",
+                "en": "Defining and comparing both velocities."
+              },
+              "simulations": [
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "E.3.3",
+              "title": {
+                "de": "Kreisbewegung",
+                "en": "Circular motion"
+              },
+              "summary": {
+                "de": "Zentripetalkraft als Ursache, z. B. bei Kurvenfahrten; Scheinkräfte.",
+                "en": "Centripetal force as the cause, e.g. when cornering; fictitious forces."
+              },
+              "simulations": [
+                "kreisbewegung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "E.4",
+          "title": {
+            "de": "Weitere Bewegungen",
+            "en": "Further types of motion"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Schiefer Wurf, Bewegungen mit Reibung und numerische Simulation von Bewegungen.",
+            "en": "[optional] Oblique projectile motion, motion with friction and numerical simulation of motion."
+          },
+          "simulations": [
+            "schiefer-wurf"
+          ],
+          "parts": [
+            {
+              "code": "E.4.1",
+              "title": {
+                "de": "schiefer Wurf",
+                "en": "oblique projectile motion"
+              },
+              "summary": {
+                "de": "Flugbahnen bei schrägem Abwurf beschreiben.",
+                "en": "Describing trajectories for oblique launch."
+              },
+              "simulations": [
+                "schiefer-wurf"
+              ]
+            },
+            {
+              "code": "E.4.2",
+              "title": {
+                "de": "Reibung",
+                "en": "Friction"
+              },
+              "summary": {
+                "de": "Bewegung mit Reibung; freier Fall mit Luftwiderstand und Grenzgeschwindigkeit.",
+                "en": "Motion with friction; free fall with air resistance and terminal velocity."
+              }
+            },
+            {
+              "code": "E.4.3",
+              "title": {
+                "de": "numerische Simulation",
+                "en": "numerical simulation"
+              },
+              "summary": {
+                "de": "Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen.",
+                "en": "Calculating motion step by step with difference quotients (e.g. spreadsheet)."
+              }
+            }
+          ]
+        },
+        {
+          "code": "E.5",
+          "title": {
+            "de": "Gravitation",
+            "en": "Gravitation"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Gravitationsfeld und Gravitationsgesetz sowie Planetenbewegung mit den Kepler’schen Gesetzen.",
+            "en": "[optional] Gravitational field and law of gravitation, planetary motion and Kepler's laws."
+          },
+          "simulations": [
+            "planetenbahnen"
+          ],
+          "parts": [
+            {
+              "code": "E.5.1",
+              "title": {
+                "de": "Massenanziehung",
+                "en": "Mass attraction"
+              },
+              "summary": {
+                "de": "Gravitationsfeld, Gravitationsgesetz und Gewichtskraft.",
+                "en": "Gravitational field, law of gravitation and weight."
+              }
+            },
+            {
+              "code": "E.5.2",
+              "title": {
+                "de": "Planetenbewegung",
+                "en": "Planetary motion"
+              },
+              "summary": {
+                "de": "Kepler’sche Gesetze und Entwicklung des astronomischen Weltbilds.",
+                "en": "Kepler's laws and the development of the astronomical world view."
+              },
+              "simulations": [
+                "planetenbahnen"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "E.6",
+          "title": {
+            "de": "Grundlagen der Thermodynamik",
+            "en": "Foundations of thermodynamics"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Innere Energie, reversible und irreversible Vorgänge, Hauptsätze der Thermodynamik und Entropie.",
+            "en": "[optional] Internal energy, reversible and irreversible processes, laws of thermodynamics and entropy."
+          },
+          "parts": [
+            {
+              "code": "E.6.1",
+              "title": {
+                "de": "Wärmeenergie als innere Energie",
+                "en": "Thermal energy as internal energy"
+              },
+              "summary": {
+                "de": "Begriff der inneren Energie und sein historischer Hintergrund.",
+                "en": "Concept of internal energy and its historical background."
+              }
+            },
+            {
+              "code": "E.6.2",
+              "title": {
+                "de": "reversible und irreversible Vorgänge",
+                "en": "reversible and irreversible processes"
+              },
+              "summary": {
+                "de": "Umkehrbare und nicht umkehrbare Prozesse unterscheiden.",
+                "en": "Distinguishing reversible and irreversible processes."
+              }
+            },
+            {
+              "code": "E.6.3",
+              "title": {
+                "de": "erster und zweiter Hauptsatz der Thermodynamik",
+                "en": "first and second law of thermodynamics"
+              },
+              "summary": {
+                "de": "Energieerhaltung und Richtung von Wärmeprozessen.",
+                "en": "Conservation of energy and the direction of heat processes."
+              }
+            },
+            {
+              "code": "E.6.4",
+              "title": {
+                "de": "Entropieerzeugung und Wirkungsgrad",
+                "en": "Entropy generation and efficiency"
+              },
+              "summary": {
+                "de": "Entropie als Maß für die Richtung natürlicher Abläufe; Grenzen des Wirkungsgrads.",
+                "en": "Entropy as a measure of the direction of natural processes; limits of efficiency."
+              }
+            }
+          ]
+        },
+        {
+          "code": "E.7",
+          "title": {
+            "de": "Drehbewegungen",
+            "en": "Rotational motion"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Drehmoment, Drehimpuls als Erhaltungsgröße und Trägheitsmoment an Anwendungsbeispielen.",
+            "en": "[optional] Torque, angular momentum as a conserved quantity and moment of inertia with applications."
+          },
+          "simulations": [
+            "hebelgesetz"
+          ],
+          "parts": [
+            {
+              "code": "E.7.1",
+              "title": {
+                "de": "Drehmoment",
+                "en": "Torque"
+              },
+              "summary": {
+                "de": "Wirkung von Kräften auf drehbare Körper.",
+                "en": "Effect of forces on rotatable bodies."
+              },
+              "simulations": [
+                "hebelgesetz"
+              ]
+            },
+            {
+              "code": "E.7.2",
+              "title": {
+                "de": "Drehimpuls",
+                "en": "Angular momentum"
+              },
+              "summary": {
+                "de": "Drehimpuls als Erhaltungsgröße; Präzession.",
+                "en": "Angular momentum as a conserved quantity; precession."
+              }
+            },
+            {
+              "code": "E.7.3",
+              "title": {
+                "de": "Trägheitsmoment",
+                "en": "Moment of inertia"
+              },
+              "summary": {
+                "de": "Anwendungsbeispiele wie die Pirouette.",
+                "en": "Applications such as a pirouette."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://kultus.hessen.de",
+      "note": {
+        "de": "Kurshalbjahr Q1 „Elektrisches und magnetisches Feld“. Verbindlich: Themenfelder Q1.1 und Q1.2. Die Zuordnung zu Jahrgangsstufe 12 ist eine Annahme (G9-Zählung) – der Lehrplan nennt nur Kurshalbjahre. In der Qualifikationsphase gilt: Unterbereiche ohne Zusatz gehören zum grundlegenden Niveau (Grund- und Leistungskurs), „Nur LK“ markiert das erhöhte Niveau. Nummerierung der Unterbereiche (dritte Stelle) nicht aus dem Lehrplan. | Kurshalbjahr Q2 „Schwingungen, Induktion und mechanische Wellen“. Verbindlich: Themenfelder Q2.1–Q2.3. Die Zuordnung zu Jahrgangsstufe 12 ist eine Annahme (G9-Zählung) – der Lehrplan nennt nur Kurshalbjahre. In der Qualifikationsphase gilt: Unterbereiche ohne Zusatz gehören zum grundlegenden Niveau (Grund- und Leistungskurs), „Nur LK“ markiert das erhöhte Niveau. Nummerierung der Unterbereiche (dritte Stelle) nicht aus dem Lehrplan.",
+        "en": "Course half-year Q1 “Electric and magnetic field”. Mandatory: topic areas Q1.1 and Q1.2. Assignment to grade 12 is an assumption (G9 counting) – the curriculum only names course half-years. In the qualification phase, sub-areas without a label belong to the basic level (basic and advanced course); “advanced course only” marks the higher level. Numbering of sub-areas (third position) is not from the curriculum. | Course half-year Q2 “Oscillations, induction and mechanical waves”. Mandatory: topic areas Q2.1–Q2.3. Assignment to grade 12 is an assumption (G9 counting) – the curriculum only names course half-years. In the qualification phase, sub-areas without a label belong to the basic level (basic and advanced course); “advanced course only” marks the higher level. Numbering of sub-areas (third position) is not from the curriculum."
+      },
+      "units": [
+        {
+          "code": "Q1.1",
+          "title": {
+            "de": "Elektrisches Feld",
+            "en": "Electric field"
+          },
+          "summary": {
+            "de": "[verbindlich] Feldbegriff, Feldlinienbilder und Feldstärke, Kondensator als Energiespeicher mit Auf- und Entladung, Coulomb-Gesetz und Bewegung geladener Teilchen im Feld.",
+            "en": "[mandatory] Field concept, field-line patterns and field strength, capacitor as energy store with charging and discharging, Coulomb's law and motion of charged particles in the field."
+          },
+          "simulations": [
+            "feldlinien",
+            "kondensator"
+          ],
+          "parts": [
+            {
+              "code": "Q1.1.1",
+              "title": {
+                "de": "Begriff des Feldes am Beispiel von elektrischen Feldern",
+                "en": "Concept of a field using electric fields"
+              },
+              "summary": {
+                "de": "Feldlinienbilder (Plattenkondensator, Punktladung, Dipol), Ladungserhaltung und Influenz.",
+                "en": "Field-line patterns (parallel plates, point charge, dipole), charge conservation and induction of charge."
+              },
+              "simulations": [
+                "feldlinien"
+              ]
+            },
+            {
+              "code": "Q1.1.2",
+              "title": {
+                "de": "elektrische Feldstärke",
+                "en": "electric field strength"
+              },
+              "summary": {
+                "de": "Feldstärke definieren; radialsymmetrisches Feld; grafische Superposition.",
+                "en": "Defining field strength; radial field; graphical superposition."
+              },
+              "simulations": [
+                "feldlinien"
+              ]
+            },
+            {
+              "code": "Q1.1.3",
+              "title": {
+                "de": "Kondensator als Energiespeicher: elektrisches Feld, Kapazität, elektrische Energie",
+                "en": "Capacitor as energy store: electric field, capacitance, electrical energy"
+              },
+              "summary": {
+                "de": "Kapazität, Feldenergie und zeitlicher Verlauf beim Laden und Entladen.",
+                "en": "Capacitance, field energy and time behaviour during charging and discharging."
+              },
+              "simulations": [
+                "kondensator"
+              ]
+            },
+            {
+              "code": "Q1.1.4",
+              "title": {
+                "de": "Coulomb’sches Gesetz",
+                "en": "Coulomb's law"
+              },
+              "summary": {
+                "de": "Kraft zwischen Punktladungen.",
+                "en": "Force between point charges."
+              }
+            },
+            {
+              "code": "Q1.1.5",
+              "title": {
+                "de": "Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen (qualitativ), Energiebetrachtung",
+                "en": "Forces on bodies in uniform electric fields, trajectories (qualitative), energy considerations"
+              },
+              "summary": {
+                "de": "Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld.",
+                "en": "Millikan experiment, acceleration of charged particles and deflection across the field."
+              }
+            },
+            {
+              "code": "Q1.1.6",
+              "title": {
+                "de": "Begriff des Feldes am Beispiel von elektrischen Feldern",
+                "en": "Concept of a field using electric fields"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Flächenladungsdichte und quantitative Superposition von Feldern.",
+                "en": "Advanced course only (higher level): Surface charge density and quantitative superposition of fields."
+              },
+              "simulations": [
+                "feldlinien"
+              ]
+            },
+            {
+              "code": "Q1.1.7",
+              "title": {
+                "de": "Kondensator als Energiespeicher: elektrisches Feld, Kapazität, elektrische Energie",
+                "en": "Capacitor as energy store: electric field, capacitance, electrical energy"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Dielektrikum, Herleitungen und Differenzialgleichung der Entladung.",
+                "en": "Advanced course only (higher level): Dielectric, derivations and differential equation of discharge."
+              },
+              "simulations": [
+                "kondensator"
+              ]
+            },
+            {
+              "code": "Q1.1.8",
+              "title": {
+                "de": "Spannung als Potenzialdifferenz",
+                "en": "Voltage as potential difference"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Elektrisches Potenzial und Äquipotenziallinien.",
+                "en": "Advanced course only (higher level): Electric potential and equipotential lines."
+              }
+            },
+            {
+              "code": "Q1.1.9",
+              "title": {
+                "de": "Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung",
+                "en": "Forces on bodies in uniform electric fields, trajectories, energy considerations"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger.",
+                "en": "Advanced course only (higher level): Quantitative deflection (comparison with horizontal projectile), linear accelerator."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q1.2",
+          "title": {
+            "de": "Magnetisches Feld",
+            "en": "Magnetic field"
+          },
+          "summary": {
+            "de": "[verbindlich] Magnetische Feldlinienbilder und Flussdichte, Feld einer langen Spule sowie Lorentzkraft und Kreisbahnen geladener Teilchen (Fadenstrahlrohr, e/m).",
+            "en": "[mandatory] Magnetic field-line patterns and flux density, field of a long solenoid, and Lorentz force and circular paths of charged particles (fine-beam tube, e/m)."
+          },
+          "simulations": [
+            "lorentzkraft"
+          ],
+          "parts": [
+            {
+              "code": "Q1.2.1",
+              "title": {
+                "de": "Begriff des Feldes am Beispiel von magnetischen Feldern",
+                "en": "Concept of a field using magnetic fields"
+              },
+              "summary": {
+                "de": "Feldlinien von Dauermagnet, geradem Leiter und Spule.",
+                "en": "Field lines of permanent magnet, straight wire and solenoid."
+              }
+            },
+            {
+              "code": "Q1.2.2",
+              "title": {
+                "de": "magnetische Flussdichte",
+                "en": "magnetic flux density"
+              },
+              "summary": {
+                "de": "Flussdichte definieren und im Inneren einer langen Spule bestimmen.",
+                "en": "Defining flux density and determining it inside a long solenoid."
+              }
+            },
+            {
+              "code": "Q1.2.3",
+              "title": {
+                "de": "Kräfte auf Körper in homogenen magnetischen Feldern, Bahnformen (qualitativ)",
+                "en": "Forces on bodies in uniform magnetic fields, trajectories (qualitative)"
+              },
+              "summary": {
+                "de": "Lorentzkraft als Zentripetalkraft und Kreisbahn im Fadenstrahlrohr.",
+                "en": "Lorentz force as centripetal force and circular path in the fine-beam tube."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "Q1.2.4",
+              "title": {
+                "de": "quantitative Betrachtung von Bahnformen in homogenen Feldern",
+                "en": "quantitative treatment of trajectories in uniform fields"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Gekreuzte Felder und Geschwindigkeitsfilter.",
+                "en": "Advanced course only (higher level): Crossed fields and velocity filter."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "Q1.2.5",
+              "title": {
+                "de": "Hall-Effekt",
+                "en": "Hall effect"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Spannung quer zum Strom im Magnetfeld erklären.",
+                "en": "Advanced course only (higher level): Explaining the voltage across a conductor in a magnetic field."
+              }
+            },
+            {
+              "code": "Q1.2.6",
+              "title": {
+                "de": "Teilchenbeschleuniger",
+                "en": "Particle accelerators"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Funktionsprinzip z. B. von Zyklotron und Synchrotron.",
+                "en": "Advanced course only (higher level): Working principle of e.g. cyclotron and synchrotron."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q2.1",
+          "title": {
+            "de": "Mechanische Schwingungen",
+            "en": "Mechanical oscillations"
+          },
+          "summary": {
+            "de": "[verbindlich] Harmonische Schwingungen am Feder- und Fadenpendel mit ihren Kenngrößen, Schwingungsgleichung, Energieumwandlung und Dämpfung; im LK erzwungene Schwingungen und Resonanz.",
+            "en": "[mandatory] Harmonic oscillations of spring and simple pendulums with their parameters, equation of motion, energy conversion and damping; in the advanced course forced oscillations and resonance."
+          },
+          "simulations": [
+            "federpendel",
+            "fadenpendel",
+            "resonanz"
+          ],
+          "parts": [
+            {
+              "code": "Q2.1.1",
+              "title": {
+                "de": "mechanische harmonische Schwingungen: charakteristische Größen und ihre Zusammenhänge",
+                "en": "mechanical harmonic oscillations: characteristic quantities and their relationships"
+              },
+              "summary": {
+                "de": "Elongation, Amplitude, Periodendauer, Frequenz und Energie (qualitativ).",
+                "en": "Displacement, amplitude, period, frequency and energy (qualitative)."
+              },
+              "simulations": [
+                "federpendel",
+                "fadenpendel"
+              ]
+            },
+            {
+              "code": "Q2.1.2",
+              "title": {
+                "de": "zeitlicher Verlauf einer harmonischen Schwingung",
+                "en": "time course of a harmonic oscillation"
+              },
+              "summary": {
+                "de": "Lineare Rückstellkraft, Periodendauer von Feder- und Fadenpendel, Schwingungsgleichung.",
+                "en": "Linear restoring force, period of spring and simple pendulum, equation of motion."
+              },
+              "simulations": [
+                "federpendel",
+                "fadenpendel"
+              ]
+            },
+            {
+              "code": "Q2.1.3",
+              "title": {
+                "de": "gedämpfte mechanische Schwingungen",
+                "en": "damped mechanical oscillations"
+              },
+              "summary": {
+                "de": "Abnahme der Amplitude qualitativ beschreiben.",
+                "en": "Describing the decrease in amplitude qualitatively."
+              }
+            },
+            {
+              "code": "Q2.1.4",
+              "title": {
+                "de": "zeitlicher Verlauf einer harmonischen Schwingung",
+                "en": "time course of a harmonic oscillation"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Differenzialgleichung der ungedämpften Schwingung mit Lösungsansatz.",
+                "en": "Advanced course only (higher level): Differential equation of undamped oscillation with trial solution."
+              },
+              "simulations": [
+                "federpendel"
+              ]
+            },
+            {
+              "code": "Q2.1.5",
+              "title": {
+                "de": "gedämpfte Schwingungen",
+                "en": "damped oscillations"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Dämpfungsverläufe (ohne Herleitung) beschreiben.",
+                "en": "Advanced course only (higher level): Describing damping behaviour (without derivation)."
+              }
+            },
+            {
+              "code": "Q2.1.6",
+              "title": {
+                "de": "erzwungene Schwingungen",
+                "en": "forced oscillations"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Eigenfrequenz, Resonanz, Resonanzkurven und Resonanzkatastrophe.",
+                "en": "Advanced course only (higher level): Natural frequency, resonance, resonance curves and resonance disaster."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "Q2.2",
+          "title": {
+            "de": "Induktion und elektromagnetische Schwingungen",
+            "en": "Induction and electromagnetic oscillations"
+          },
+          "summary": {
+            "de": "[verbindlich] Induktion durch Änderung des magnetischen Flusses, Lenz’sche Regel, Selbstinduktion und der elektromagnetische Schwingkreis.",
+            "en": "[mandatory] Induction through change of magnetic flux, Lenz's law, self-induction and the electromagnetic oscillating circuit."
+          },
+          "simulations": [
+            "induktion",
+            "resonanz"
+          ],
+          "parts": [
+            {
+              "code": "Q2.2.1",
+              "title": {
+                "de": "Induktion aufgrund einer zeitlichen Änderung des magnetischen Flusses",
+                "en": "Induction due to a change of magnetic flux over time"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss und Induktionsgesetz mit mittlerer Änderungsrate.",
+                "en": "Magnetic flux and law of induction with average rate of change."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "Q2.2.2",
+              "title": {
+                "de": "Zusammenhang zwischen der Richtung des Induktionsstroms und seiner Wirkung (Lenz’sche Regel)",
+                "en": "Relationship between the direction of the induced current and its effect (Lenz's law)"
+              },
+              "summary": {
+                "de": "Richtung des Induktionsstroms begründen.",
+                "en": "Justifying the direction of the induced current."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "Q2.2.3",
+              "title": {
+                "de": "Selbstinduktion und Induktivität einer langen Spule (phänomenologisch)",
+                "en": "Self-induction and inductance of a long solenoid (phenomenological)"
+              },
+              "summary": {
+                "de": "Selbstinduktion an Spulen beobachten und beschreiben.",
+                "en": "Observing and describing self-induction in coils."
+              }
+            },
+            {
+              "code": "Q2.2.4",
+              "title": {
+                "de": "Beispiel für eine technische Anwendung der Induktion",
+                "en": "Example of a technical application of induction"
+              },
+              "summary": {
+                "de": "Z. B. Generator oder Transformator erklären.",
+                "en": "Explaining e.g. a generator or transformer."
+              }
+            },
+            {
+              "code": "Q2.2.5",
+              "title": {
+                "de": "elektromagnetische harmonische Schwingungen",
+                "en": "electromagnetic harmonic oscillations"
+              },
+              "summary": {
+                "de": "Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung.",
+                "en": "LC circuit: parameters, energy conversion, Thomson's formula."
+              }
+            },
+            {
+              "code": "Q2.2.6",
+              "title": {
+                "de": "Induktion aufgrund einer zeitlichen Änderung des magnetischen Flusses",
+                "en": "Induction due to a change of magnetic flux over time"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Induktionsgesetz in differenzieller Form, auch nichtlineare Fälle.",
+                "en": "Advanced course only (higher level): Law of induction in differential form, including non-linear cases."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "Q2.2.7",
+              "title": {
+                "de": "Selbstinduktion und Induktivität",
+                "en": "Self-induction and inductance"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Ein- und Ausschaltvorgänge, Definition der Induktivität.",
+                "en": "Advanced course only (higher level): Switch-on and switch-off processes, definition of inductance."
+              }
+            },
+            {
+              "code": "Q2.2.8",
+              "title": {
+                "de": "Energie des Feldes einer stromdurchflossenen Spule",
+                "en": "Energy of the field of a current-carrying coil"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Magnetische Feldenergie (ohne Herleitung).",
+                "en": "Advanced course only (higher level): Magnetic field energy (without derivation)."
+              }
+            },
+            {
+              "code": "Q2.2.9",
+              "title": {
+                "de": "Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten",
+                "en": "Comparison of mechanical and electromagnetic oscillations in terms of energy"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Analogien zwischen Pendel und Schwingkreis.",
+                "en": "Advanced course only (higher level): Analogies between pendulum and LC circuit."
+              }
+            },
+            {
+              "code": "Q2.2.10",
+              "title": {
+                "de": "gedämpfte Schwingungen",
+                "en": "damped oscillations"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Dämpfung im Schwingkreis.",
+                "en": "Advanced course only (higher level): Damping in the LC circuit."
+              }
+            },
+            {
+              "code": "Q2.2.11",
+              "title": {
+                "de": "erzwungene Schwingungen, Resonanz (qualitativ)",
+                "en": "forced oscillations, resonance (qualitative)"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Resonanz im elektromagnetischen Schwingkreis.",
+                "en": "Advanced course only (higher level): Resonance in the electromagnetic circuit."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "Q2.3",
+          "title": {
+            "de": "Mechanische Wellen",
+            "en": "Mechanical waves"
+          },
+          "summary": {
+            "de": "[verbindlich] Entstehung und Kenngrößen harmonischer Wellen, Longitudinal- und Transversalwellen, typische Wellenphänomene, Interferenz und stehende Wellen.",
+            "en": "[mandatory] Formation and parameters of harmonic waves, longitudinal and transverse waves, typical wave phenomena, interference and standing waves."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "interferenz",
+            "stehende-wellen"
+          ],
+          "parts": [
+            {
+              "code": "Q2.3.1",
+              "title": {
+                "de": "harmonische Wellen: charakteristische Größen und ihre Zusammenhänge",
+                "en": "harmonic waves: characteristic quantities and their relationships"
+              },
+              "summary": {
+                "de": "Erzeugung, Ausbreitung, Wellenlänge, Frequenz und c = λ·f.",
+                "en": "Generation, propagation, wavelength, frequency and c = λ·f."
+              },
+              "simulations": [
+                "wellen-ausbreitung"
+              ]
+            },
+            {
+              "code": "Q2.3.2",
+              "title": {
+                "de": "Definition einer harmonischen Welle als räumlich und zeitlich periodischer Vorgang",
+                "en": "Definition of a harmonic wave as a process periodic in space and time"
+              },
+              "summary": {
+                "de": "Darstellung im t-y- und x-y-Diagramm, Longitudinal- und Transversalwellen, Polarisation.",
+                "en": "Representation in t-y and x-y diagrams, longitudinal and transverse waves, polarisation."
+              },
+              "simulations": [
+                "wellen-ausbreitung"
+              ]
+            },
+            {
+              "code": "Q2.3.3",
+              "title": {
+                "de": "Brechung, Reflexion, Beugung als charakteristische Wellenphänomene",
+                "en": "Refraction, reflection, diffraction as characteristic wave phenomena"
+              },
+              "summary": {
+                "de": "Wellenphänomene z. B. in der Wellenwanne; Huygens’sches Prinzip.",
+                "en": "Wave phenomena e.g. in a ripple tank; Huygens' principle."
+              }
+            },
+            {
+              "code": "Q2.3.4",
+              "title": {
+                "de": "Überlagerung von Wellen",
+                "en": "Superposition of waves"
+              },
+              "summary": {
+                "de": "Interferenz zweier Erreger, Gangunterschied, Lage von Maxima und Minima.",
+                "en": "Interference of two sources, path difference, positions of maxima and minima."
+              },
+              "simulations": [
+                "interferenz"
+              ]
+            },
+            {
+              "code": "Q2.3.5",
+              "title": {
+                "de": "stehende Wellen",
+                "en": "standing waves"
+              },
+              "summary": {
+                "de": "Eindimensionale stehende Wellen und Wellenlängenbestimmung.",
+                "en": "One-dimensional standing waves and determining the wavelength."
+              },
+              "simulations": [
+                "stehende-wellen"
+              ]
+            },
+            {
+              "code": "Q2.3.6",
+              "title": {
+                "de": "harmonische Wellen: charakteristische Größen und ihre Zusammenhänge",
+                "en": "harmonic waves: characteristic quantities and their relationships"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Wellengleichung für die räumliche und zeitliche Entwicklung.",
+                "en": "Advanced course only (higher level): Wave equation for development in space and time."
+              },
+              "simulations": [
+                "wellen-ausbreitung"
+              ]
+            },
+            {
+              "code": "Q2.3.7",
+              "title": {
+                "de": "Behandlung des Phasensprungs bei Reflexion, festes und loses Ende bei stehenden Wellen",
+                "en": "Phase jump on reflection, fixed and free end for standing waves"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Reflexion am festen und losen Ende.",
+                "en": "Advanced course only (higher level): Reflection at fixed and free ends."
+              },
+              "simulations": [
+                "stehende-wellen"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://kultus.hessen.de",
+      "note": {
+        "de": "Kurshalbjahr Q3 „Elektromagnetische Wellen und Quantenphysik“. Verbindlich: Themenfelder Q3.1–Q3.3. Die Zuordnung zu Jahrgangsstufe 13 ist eine Annahme (G9-Zählung) – der Lehrplan nennt nur Kurshalbjahre. In der Qualifikationsphase gilt: Unterbereiche ohne Zusatz gehören zum grundlegenden Niveau (Grund- und Leistungskurs), „Nur LK“ markiert das erhöhte Niveau. Nummerierung der Unterbereiche (dritte Stelle) nicht aus dem Lehrplan. | Kurshalbjahr Q4 „Struktur von Materie, Raum und Zeit“. Verbindlich: Themenfeld Q4.1; Q4.2–Q4.6 sind nicht verbindlich. Die Zuordnung zu Jahrgangsstufe 13 ist eine Annahme (G9-Zählung) – der Lehrplan nennt nur Kurshalbjahre. In der Qualifikationsphase gilt: Unterbereiche ohne Zusatz gehören zum grundlegenden Niveau (Grund- und Leistungskurs), „Nur LK“ markiert das erhöhte Niveau. Nummerierung der Unterbereiche (dritte Stelle) nicht aus dem Lehrplan.",
+        "en": "Course half-year Q3 “Electromagnetic waves and quantum physics”. Mandatory: topic areas Q3.1–Q3.3. Assignment to grade 13 is an assumption (G9 counting) – the curriculum only names course half-years. In the qualification phase, sub-areas without a label belong to the basic level (basic and advanced course); “advanced course only” marks the higher level. Numbering of sub-areas (third position) is not from the curriculum. | Course half-year Q4 “Structure of matter, space and time”. Mandatory: topic area Q4.1; Q4.2–Q4.6 are optional. Assignment to grade 13 is an assumption (G9 counting) – the curriculum only names course half-years. In the qualification phase, sub-areas without a label belong to the basic level (basic and advanced course); “advanced course only” marks the higher level. Numbering of sub-areas (third position) is not from the curriculum."
+      },
+      "units": [
+        {
+          "code": "Q3.1",
+          "title": {
+            "de": "Elektromagnetische Wellen",
+            "en": "Electromagnetic waves"
+          },
+          "summary": {
+            "de": "[verbindlich] Spektrum elektromagnetischer Wellen, Polarisation und Totalreflexion, Interferenz am Doppelspalt und Gitter sowie stehende elektromagnetische Wellen.",
+            "en": "[mandatory] Spectrum of electromagnetic waves, polarisation and total internal reflection, interference at double slit and grating, and standing electromagnetic waves."
+          },
+          "simulations": [
+            "brechung",
+            "doppelspalt"
+          ],
+          "parts": [
+            {
+              "code": "Q3.1.1",
+              "title": {
+                "de": "Spektrum elektromagnetischer Wellen",
+                "en": "Spectrum of electromagnetic waves"
+              },
+              "summary": {
+                "de": "Frequenzbereiche und technische Anwendungen im Überblick.",
+                "en": "Overview of frequency ranges and technical applications."
+              }
+            },
+            {
+              "code": "Q3.1.2",
+              "title": {
+                "de": "charakteristische Wellenphänomene",
+                "en": "characteristic wave phenomena"
+              },
+              "summary": {
+                "de": "Lineare Polarisation von Licht und Totalreflexion (Glasfaser).",
+                "en": "Linear polarisation of light and total internal reflection (optical fibre)."
+              },
+              "simulations": [
+                "brechung"
+              ]
+            },
+            {
+              "code": "Q3.1.3",
+              "title": {
+                "de": "Überlagerung von elektromagnetischen Wellen",
+                "en": "Superposition of electromagnetic waves"
+              },
+              "summary": {
+                "de": "Doppelspalt und Gitter, Wellenlängenbestimmung, Spektren, stehende Wellen.",
+                "en": "Double slit and grating, wavelength measurement, spectra, standing waves."
+              },
+              "simulations": [
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "Q3.1.4",
+              "title": {
+                "de": "Brechung, Reflexion, Beugung bei elektromagnetischen Wellen",
+                "en": "Refraction, reflection, diffraction of electromagnetic waves"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Brechungsgesetz mit Wellenmodell.",
+                "en": "Advanced course only (higher level): Law of refraction with the wave model."
+              },
+              "simulations": [
+                "brechung"
+              ]
+            },
+            {
+              "code": "Q3.1.5",
+              "title": {
+                "de": "Überlagerung von elektromagnetischen Wellen",
+                "en": "Superposition of electromagnetic waves"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Einzelspalt und Interferometer.",
+                "en": "Advanced course only (higher level): Single slit and interferometer."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q3.2",
+          "title": {
+            "de": "Welle-Teilchen-Dualismus",
+            "en": "Wave–particle duality"
+          },
+          "summary": {
+            "de": "[verbindlich] Fotoeffekt und Photonenenergie, Energie-Masse-Äquivalenz und De-Broglie-Wellen; im LK Elektronenbeugung und Compton-Effekt.",
+            "en": "[mandatory] Photoelectric effect and photon energy, mass–energy equivalence and de Broglie waves; in the advanced course electron diffraction and the Compton effect."
+          },
+          "simulations": [
+            "photoeffekt",
+            "elektronenbeugung"
+          ],
+          "parts": [
+            {
+              "code": "Q3.2.1",
+              "title": {
+                "de": "Zusammenhänge der Größen Energie, Impuls, Frequenz und Wellenlänge zur Beschreibung von Quantenobjekten",
+                "en": "Relationships between energy, momentum, frequency and wavelength for describing quantum objects"
+              },
+              "summary": {
+                "de": "Fotoeffekt mit Gegenfeldmethode, Planck’sches Wirkungsquantum, Photonenimpuls, De-Broglie-Gleichung.",
+                "en": "Photoelectric effect with counter-field method, Planck's constant, photon momentum, de Broglie equation."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "Q3.2.2",
+              "title": {
+                "de": "Elektronenbeugung an Kristallen, Bragg-Bedingung",
+                "en": "Electron diffraction by crystals, Bragg condition"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Beugungsbilder von Elektronen deuten.",
+                "en": "Advanced course only (higher level): Interpreting electron diffraction patterns."
+              },
+              "simulations": [
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "Q3.2.3",
+              "title": {
+                "de": "Compton-Effekt",
+                "en": "Compton effect"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Streuung von Photonen an Elektronen.",
+                "en": "Advanced course only (higher level): Scattering of photons by electrons."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q3.3",
+          "title": {
+            "de": "Atomvorstellungen",
+            "en": "Models of the atom"
+          },
+          "summary": {
+            "de": "[verbindlich] Bohr’sches Atommodell, Energieniveaus des Wasserstoffatoms, Franck-Hertz-Versuch, Emission und Absorption sowie Linienspektren.",
+            "en": "[mandatory] Bohr model, energy levels of hydrogen, Franck–Hertz experiment, emission and absorption, and line spectra."
+          },
+          "simulations": [
+            "linienspektren"
+          ],
+          "parts": [
+            {
+              "code": "Q3.3.1",
+              "title": {
+                "de": "Quantisierung",
+                "en": "Quantisation"
+              },
+              "summary": {
+                "de": "Bohr’sche Postulate, Energieniveaus von Wasserstoff und Franck-Hertz-Versuch.",
+                "en": "Bohr's postulates, energy levels of hydrogen and Franck–Hertz experiment."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "Q3.3.2",
+              "title": {
+                "de": "Emission und Absorption, Zusammenhang zwischen diskretem Spektrum und Energieniveauschema",
+                "en": "Emission and absorption, relationship between discrete spectrum and energy-level diagram"
+              },
+              "summary": {
+                "de": "Linienspektren im Energieniveauschema deuten; Rydberg-Formel.",
+                "en": "Interpreting line spectra in the energy-level diagram; Rydberg formula."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "Q3.3.3",
+              "title": {
+                "de": "Quantisierung",
+                "en": "Quantisation"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Wasserstoffähnliche Atome, Ausblick auf Mehrelektronensysteme und Pauli-Prinzip.",
+                "en": "Advanced course only (higher level): Hydrogen-like atoms, outlook on multi-electron systems and the Pauli principle."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "Q3.3.4",
+              "title": {
+                "de": "Röntgenstrahlung",
+                "en": "X-rays"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz.",
+                "en": "Advanced course only (higher level): Continuous and characteristic X-ray spectrum, X-ray tube, Moseley's law."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.1",
+          "title": {
+            "de": "Quantenobjekte",
+            "en": "Quantum objects"
+          },
+          "summary": {
+            "de": "[verbindlich] Quantenmechanisches Atommodell (Orbitale, Potenzialtopf), Grundaspekte der Quantentheorie am Doppelspalt mit Einzelquanten und quantenphysikalisches Weltbild.",
+            "en": "[mandatory] Quantum-mechanical atomic model (orbitals, potential well), basic aspects of quantum theory using the double slit with single quanta, and the quantum world view."
+          },
+          "parts": [
+            {
+              "code": "Q4.1.1",
+              "title": {
+                "de": "qualitative Betrachtung eines quantenmechanischen Atommodells",
+                "en": "qualitative treatment of a quantum-mechanical atomic model"
+              },
+              "summary": {
+                "de": "Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf.",
+                "en": "Orbitals as probability of presence; electron as standing wave in a potential well."
+              }
+            },
+            {
+              "code": "Q4.1.2",
+              "title": {
+                "de": "grundlegende Aspekte der Quantentheorie: stochastische Vorhersagbarkeit, Interferenz und Superposition, Determiniertheit der Zufallsverteilung, Komplementarität",
+                "en": "basic aspects of quantum theory: stochastic predictability, interference and superposition, determinacy of the random distribution, complementarity"
+              },
+              "summary": {
+                "de": "Doppelspalt mit einzelnen Elektronen und Photonen; Weginformation vs. Interferenz.",
+                "en": "Double slit with single electrons and photons; which-path information vs. interference."
+              }
+            },
+            {
+              "code": "Q4.1.3",
+              "title": {
+                "de": "quantenphysikalisches Weltbild hinsichtlich der Begriffe Realität, Lokalität, Kausalität, Determinismus",
+                "en": "quantum world view regarding reality, locality, causality, determinism"
+              },
+              "summary": {
+                "de": "Grenzen klassischer Begriffe in der Quantenphysik diskutieren.",
+                "en": "Discussing the limits of classical concepts in quantum physics."
+              }
+            },
+            {
+              "code": "Q4.1.4",
+              "title": {
+                "de": "quantitative Betrachtung eines quantenmechanischen Atommodells",
+                "en": "quantitative treatment of a quantum-mechanical atomic model"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Energiewerte und Wellenfunktionen im unendlich tiefen Potenzialtopf.",
+                "en": "Advanced course only (higher level): Energy values and wave functions in the infinitely deep potential well."
+              }
+            },
+            {
+              "code": "Q4.1.5",
+              "title": {
+                "de": "stochastische Deutung mittels des Quadrats der quantenmechanischen Wellenfunktion (qualitativ)",
+                "en": "stochastic interpretation via the square of the wave function (qualitative)"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Betragsquadrat als Wahrscheinlichkeitsmaß; Delayed-choice-Experiment.",
+                "en": "Advanced course only (higher level): Squared magnitude as probability measure; delayed-choice experiment."
+              }
+            },
+            {
+              "code": "Q4.1.6",
+              "title": {
+                "de": "Orts-Impuls-Unbestimmtheit",
+                "en": "Position–momentum uncertainty"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Ort und Impuls können nicht gleichzeitig scharf sein.",
+                "en": "Advanced course only (higher level): Position and momentum cannot both be sharply defined."
+              }
+            },
+            {
+              "code": "Q4.1.7",
+              "title": {
+                "de": "Koinzidenzmethode zum Nachweis einzelner Photonen anhand eines Beispiels",
+                "en": "Coincidence method for detecting single photons using an example"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Unteilbarkeit von Photonen, z. B. am Mach-Zehnder-Interferometer.",
+                "en": "Advanced course only (higher level): Indivisibility of photons, e.g. with a Mach–Zehnder interferometer."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.2",
+          "title": {
+            "de": "Technische Anwendungen der Quantenphysik",
+            "en": "Technical applications of quantum physics"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Funktionsweise des Lasers; im LK Tunneleffekt und Rastertunnelmikroskop.",
+            "en": "[optional] How lasers work; in the advanced course tunnelling and the scanning tunnelling microscope."
+          },
+          "parts": [
+            {
+              "code": "Q4.2.1",
+              "title": {
+                "de": "Laser",
+                "en": "Laser"
+              },
+              "summary": {
+                "de": "Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen.",
+                "en": "Metastable levels, population inversion, stimulated emission, design and applications."
+              }
+            },
+            {
+              "code": "Q4.2.2",
+              "title": {
+                "de": "Rastertunnelmikroskop",
+                "en": "Scanning tunnelling microscope"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Tunneleffekt sowie Aufbau und Anwendungen.",
+                "en": "Advanced course only (higher level): Tunnelling effect, design and applications."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.3",
+          "title": {
+            "de": "Kernphysik",
+            "en": "Nuclear physics"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Radioaktive Strahlung, Zerfallsgesetz und Halbwertszeit, Bindungsenergie, Kernspaltung und -fusion.",
+            "en": "[optional] Radioactive radiation, decay law and half-life, binding energy, nuclear fission and fusion."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ],
+          "parts": [
+            {
+              "code": "Q4.3.1",
+              "title": {
+                "de": "radioaktive Strahlung",
+                "en": "radioactive radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, Nachweis, Wirkung, Anwendungen und Gefahren.",
+                "en": "Types of radiation, detection, effects, applications and dangers."
+              }
+            },
+            {
+              "code": "Q4.3.2",
+              "title": {
+                "de": "Zerfallsgesetze",
+                "en": "Laws of decay"
+              },
+              "summary": {
+                "de": "Aktivität, Halbwertszeit, Zerfallskonstante, C14-Methode.",
+                "en": "Activity, half-life, decay constant, carbon-14 dating."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "Q4.3.3",
+              "title": {
+                "de": "Bindungsenergie",
+                "en": "Binding energy"
+              },
+              "summary": {
+                "de": "Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen.",
+                "en": "Mass defect, binding energy per nucleon, nuclear reactions."
+              }
+            },
+            {
+              "code": "Q4.3.4",
+              "title": {
+                "de": "Zerfallsgesetze",
+                "en": "Laws of decay"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Zerfallsreihen.",
+                "en": "Advanced course only (higher level): Decay chains."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "Q4.3.5",
+              "title": {
+                "de": "Potenzialtopfmodell für Kerne (nur qualitativ)",
+                "en": "Potential-well model for nuclei (qualitative only)"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln.",
+                "en": "Advanced course only (higher level): Separate wells for protons and neutrons; alpha decay by tunnelling."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.4",
+          "title": {
+            "de": "Spezielle Relativitätstheorie",
+            "en": "Special relativity"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Relativitätspostulate, Zeitdilatation und Längenkontraktion mit Minkowski-Diagrammen sowie relativistische Massenzunahme.",
+            "en": "[optional] Postulates of relativity, time dilation and length contraction with Minkowski diagrams, and relativistic mass increase."
+          },
+          "parts": [
+            {
+              "code": "Q4.4.1",
+              "title": {
+                "de": "Relativitätspostulate",
+                "en": "Postulates of relativity"
+              },
+              "summary": {
+                "de": "Relativitätsprinzip, Konstanz von c, Zeitdilatation, Längenkontraktion, Minkowski-Diagramme.",
+                "en": "Principle of relativity, constancy of c, time dilation, length contraction, Minkowski diagrams."
+              }
+            },
+            {
+              "code": "Q4.4.2",
+              "title": {
+                "de": "relativistische Massenzunahme (nur phänomenologisch)",
+                "en": "relativistic mass increase (phenomenological only)"
+              },
+              "summary": {
+                "de": "Phänomen der Massenzunahme bei hohen Geschwindigkeiten.",
+                "en": "The phenomenon of mass increase at high speeds."
+              }
+            },
+            {
+              "code": "Q4.4.3",
+              "title": {
+                "de": "Lorentztransformation und Addition von Geschwindigkeiten",
+                "en": "Lorentz transformation and addition of velocities"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Umrechnung zwischen bewegten Bezugssystemen.",
+                "en": "Advanced course only (higher level): Transforming between moving reference frames."
+              }
+            },
+            {
+              "code": "Q4.4.4",
+              "title": {
+                "de": "Herleitung der relativistischen Massenzunahme",
+                "en": "Derivation of the relativistic mass increase"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Massenzunahme aus Grundprinzipien ableiten.",
+                "en": "Advanced course only (higher level): Deriving the mass increase from basic principles."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.5",
+          "title": {
+            "de": "Festkörperphysik",
+            "en": "Solid-state physics"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Leiter, Halbleiter und Isolatoren im Bändermodell, Dotierung, Diode und Transistor.",
+            "en": "[optional] Conductors, semiconductors and insulators in the band model, doping, diode and transistor."
+          },
+          "parts": [
+            {
+              "code": "Q4.5.1",
+              "title": {
+                "de": "Leiter, Nichtleiter und Halbleiter",
+                "en": "Conductors, non-conductors and semiconductors"
+              },
+              "summary": {
+                "de": "Bändermodell (qualitativ) und Dotierung.",
+                "en": "Band model (qualitative) and doping."
+              }
+            },
+            {
+              "code": "Q4.5.2",
+              "title": {
+                "de": "Diode und Transistor",
+                "en": "Diode and transistor"
+              },
+              "summary": {
+                "de": "p-n-Übergang, Kennlinie, Gleichrichter, Transistor als Schalter.",
+                "en": "p-n junction, characteristic curve, rectifier, transistor as switch."
+              }
+            },
+            {
+              "code": "Q4.5.3",
+              "title": {
+                "de": "quantenphysikalische Erklärung der Energiebänder",
+                "en": "quantum explanation of energy bands"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Fermienergie (qualitativ).",
+                "en": "Advanced course only (higher level): Fermi energy (qualitative)."
+              }
+            },
+            {
+              "code": "Q4.5.4",
+              "title": {
+                "de": "Verstärkerschaltung",
+                "en": "Amplifier circuit"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Transistor als Verstärker im Experiment.",
+                "en": "Advanced course only (higher level): Transistor as amplifier in experiment."
+              }
+            },
+            {
+              "code": "Q4.5.5",
+              "title": {
+                "de": "Supraleitung (nur qualitativ)",
+                "en": "Superconductivity (qualitative only)"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Phänomen der Supraleitung.",
+                "en": "Advanced course only (higher level): The phenomenon of superconductivity."
+              }
+            }
+          ]
+        },
+        {
+          "code": "Q4.6",
+          "title": {
+            "de": "Astrophysik",
+            "en": "Astrophysics"
+          },
+          "summary": {
+            "de": "[nicht verbindlich] Sonnensystem und Himmelsmechanik, Kosmologie mit Rotverschiebung und Urknall sowie Struktur des Universums; im LK Energie der Sonne und Sternentwicklung.",
+            "en": "[optional] Solar system and celestial mechanics, cosmology with redshift and Big Bang, and the structure of the universe; in the advanced course the Sun's energy and stellar evolution."
+          },
+          "simulations": [
+            "planetenbahnen"
+          ],
+          "parts": [
+            {
+              "code": "Q4.6.1",
+              "title": {
+                "de": "unser Sonnensystem",
+                "en": "our solar system"
+              },
+              "summary": {
+                "de": "Sonne, Planeten, Kometen, Gravitationsgesetz, Kepler’sche Gesetze, Gezeiten.",
+                "en": "Sun, planets, comets, law of gravitation, Kepler's laws, tides."
+              },
+              "simulations": [
+                "planetenbahnen"
+              ]
+            },
+            {
+              "code": "Q4.6.2",
+              "title": {
+                "de": "Kosmologie",
+                "en": "Cosmology"
+              },
+              "summary": {
+                "de": "Galaxien, Rotverschiebung und Urknall.",
+                "en": "Galaxies, redshift and Big Bang."
+              }
+            },
+            {
+              "code": "Q4.6.3",
+              "title": {
+                "de": "Struktur des Universums",
+                "en": "Structure of the universe"
+              },
+              "summary": {
+                "de": "Größe und Alter, Hintergrundstrahlung, dunkle Materie und Energie.",
+                "en": "Size and age, background radiation, dark matter and energy."
+              }
+            },
+            {
+              "code": "Q4.6.4",
+              "title": {
+                "de": "Energieumwandlung in der Sonne",
+                "en": "Energy conversion in the Sun"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Proton-Proton-Reaktion und weitere Fusionsprozesse.",
+                "en": "Advanced course only (higher level): Proton–proton chain and other fusion processes."
+              }
+            },
+            {
+              "code": "Q4.6.5",
+              "title": {
+                "de": "Sterntypen, Sternentstehung und -entwicklung",
+                "en": "Star types, star formation and evolution"
+              },
+              "summary": {
+                "de": "Nur LK (erhöhtes Niveau): Hauptreihensterne und Lebenszyklus eines Sterns.",
+                "en": "Advanced course only (higher level): Main-sequence stars and the life cycle of a star."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

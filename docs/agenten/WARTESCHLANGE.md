@@ -12,7 +12,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 ### Korrekturen
 - T01 fertig (13.10.: gleichungen-grafisch, winkel-messen, kreisbewegung, linsen, stoesse, schiefe-ebene; 15.10.: bruchteile, licht-schatten, reflexion – flache Bühne nutzt jetzt das Nebeneinander-Layout) — **Tablet-Breiten** (Fenster 1024 px = iPad quer und 700 px; Bühne dort ca. 620–635 px breit bei Desktop-Seitenverhältnis, Simulationen schalten aber auf ihr Handy-Layout). Prüfung vom 10.10. (Screenshots nur der Bühne) ergab Fehler bei: `linsen` (Konstruktion auf ca. 80 px Höhe gestaucht – schwer), `winkel-messen` (Geodreieck winzig, Karten abgeschnitten), `gleichungen-grafisch` (Lösungskarte unten abgeschnitten), `stoesse` (Diagrammtitel überlappt Energiebalken), `kreisbewegung` (Diagramm F_Z(v) stark gestaucht, Beschriftungen überlappen), `schiefe-ebene` (Kraftpfeil-Beschriftungen überlappen in gestauchter Szene), `bruchteile` (Text „= 0,75 = 75 %“ unten abgeschnitten), `licht-schatten` (Beschriftungen unter der optischen Bank abgeschnitten), `reflexion` (Szene klein). Bereits behoben: `vierecke`, `spiegelung` (Gruppe M07, Commits 9b01368, da0f756). Ansatz wie in `mathematik/vierecke`: Layout nach Breite **und** Höhe wählen bzw. mittlere Aufteilung; danach bei 1360/1024/700/390 prüfen.
 
-- T02 offen (Mathe 1, Entscheidung 19.10.) — **Überarbeitung der ersten sechs Mathe-1-Simulationen** vor dem Pull Request nach `main`: koordinaten-3d, vektoren-3d, skalar-vektorprodukt (M25), baumdiagramm, geburtstagsproblem, vierfeldertafel (M17). Am 18.10. in je 7–12 Minuten gebaut (Prüfschritte ausgelassen, nur 370–810 Zeilen). Vorgehen wie bei Mathe 2: jede einzeln nach `QUALITAETSSICHERUNG.md` neu überarbeiten, Commit „Überarbeitung: <Titel>“. Reihenfolge Mathe 1: M18 fertig, dann T02, dann M26. Siehe Kommentar in Pull Request #3.
+- T02 vergeben an den **Physik-Helfer (lokal, ohne GitHub)**, ab 19.10. abends — **Überarbeitung der ersten sechs Mathe-1-Simulationen** vor dem Pull Request nach `main`: koordinaten-3d, vektoren-3d, skalar-vektorprodukt (M25), baumdiagramm, geburtstagsproblem, vierfeldertafel (M17). Grundlage: Stand des Mathe-1-Zweigs `claude/jolly-allen-y0ef9g` vom 19.10. 19:14 Uhr. Rückgabe als ZIP, Einbau durch die Vertretung der Projektleitung in den Mathe-1-Zweig. **Mathe 1: diese sechs bitte nicht anfassen**, sondern nach M26 bei der Vertretung melden bzw. die nächste offene Aufgabe nehmen.
 - T03 läuft — Überarbeitung aller 26 Mathe-2-Simulationen (Zweig `mathe/teil-2`). Stand 19.10. 18 Uhr: 6 fertig (fourier-reihen, hauptsatz, stammfunktion-grafisch, ableitungsfunktion, matrix-abbildungen, strahlensaetze). Die restlichen 20 sind ab 19.10. aufgeteilt: **Paket A (Mathe 2):** dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional, umkehrfunktion, newton-verfahren. **Paket B (neuer Helfer mit GitHub, eigener Zweig, Pull Request nach `mathe/teil-2`):** ganzrationale-funktionen, transformationen, grenzverhalten, polstellen-asymptoten, kurvendiskussion, funktionenscharen, aenderungsrate, extremwertprobleme, normalverteilung, taylor-polynome.
 
 ### Physik
@@ -24,7 +24,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - P06 fertig — federpendel, resonanz, wellen-ausbreitung
 - P07 fertig — doppler-effekt, interferenz, stehende-wellen (15.10.)
 - P08 läuft (Physik) — teilchenmodell (fertig 18.10.), gasgesetze (fertig 19.10.), radioaktiver-zerfall (in Arbeit beim Projektinhaber)
-- P09 reserviert (Helfer lokal, 2. Gruppe, ab 19.10.) — feldlinien, kondensator, lorentzkraft
+- P09 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — feldlinien, kondensator, lorentzkraft
 - P10 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — induktion, doppelspalt, photoeffekt
 - P11 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — linienspektren, elektronenbeugung
 
@@ -55,6 +55,8 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
 - M25 fertig (Mathe 1, 18.10.) — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
 - M26 fertig (Mathe 1, 19.10.) — geraden-ebenen, lage-abstaende, kugeln (3D)
+- M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
+- M26 läuft (Mathe 1) — geraden-ebenen, lage-abstaende, kugeln (3D)
 
 ## Ideen je Simulation (an Agenten weitergeben)
 
