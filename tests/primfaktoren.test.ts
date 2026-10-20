@@ -131,3 +131,58 @@ describe('Modell: Primfaktoren – Sieb und ggT/kgV', () => {
     }
   });
 });
+
+describe('Modell: Primfaktoren – Sonderfälle und Zusammenhänge', () => {
+  it('kennt 1 und 2 als Sonderfälle und die Reglergrenzen', () => {
+    expect(isPrime(1)).toBe(false);
+    expect(isPrime(0)).toBe(false);
+    // 2 ist die einzige gerade Primzahl
+    for (let n = 4; n <= 999; n += 2) expect(isPrime(n)).toBe(false);
+    expect(primeFactors(2)).toEqual([2]);
+    expect(factorPowers(999)).toEqual([
+      { p: 3, e: 3 },
+      { p: 37, e: 1 },
+    ]);
+    expect(isPrime(997)).toBe(true);
+    expect(divisors(997)).toEqual([1, 997]);
+    expect(splitOf(997, 'mitte')).toBeNull();
+  });
+
+  it('Sieb: erste neu gestrichene Zahl ist p², Abbruch bei p² > max', () => {
+    for (const max of [20, 100, 120, 150]) {
+      const s = sieve(max);
+      for (const step of s.steps) expect(step.crossed[0], `${max}: ${step.prime}`).toBe(step.prime * step.prime);
+      const last = s.steps[s.steps.length - 1]!.prime;
+      const next = s.primes.find((q) => q > last)!;
+      expect(next * next).toBeGreaterThan(max);
+    }
+    expect(sieve(150).primes).toHaveLength(35);
+    expect(sieve(100).steps.map((x) => x.crossed.length)).toEqual([49, 16, 6, 3]);
+  });
+
+  it('ggT · kgV = a · b, teilerfremd heißt ggT = 1', () => {
+    for (let a = 2; a <= 200; a += 7) {
+      for (let b = 2; b <= 200; b += 5) expect(gcd(a, b) * lcm(a, b), `${a}, ${b}`).toBe(a * b);
+    }
+    expect(gcd(24, 36) * lcm(24, 36)).toBe(24 * 36);
+    expect(sharedFactors(8, 15).common).toEqual([]);
+    expect(gcd(200, 199)).toBe(1);
+    expect(lcm(200, 199)).toBe(39800);
+    expect(gcd(60, 84)).toBe(12);
+    expect(lcm(60, 84)).toBe(420);
+    expect(lcm(12, 18)).toBe(36);
+  });
+
+  it('rechnet die Aufgaben aus dem Lernmaterial', () => {
+    const c = Object.fromEntries(divisibilityChecks(852).map((x) => [x.divisor, x.divisible]));
+    expect([c[2], c[3], c[4], c[6], c[9]]).toEqual([true, true, true, true, false]);
+    expect(factorPowers(84)).toEqual([
+      { p: 2, e: 2 },
+      { p: 3, e: 1 },
+      { p: 7, e: 1 },
+    ]);
+    expect(primeFactors(126)).toEqual([2, 3, 3, 7]);
+    expect(primeFactors(500)).toEqual([2, 2, 5, 5, 5]);
+    expect(primeFactors(783)).toEqual([3, 3, 3, 29]);
+  });
+});
