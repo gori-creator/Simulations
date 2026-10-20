@@ -298,6 +298,16 @@ export default defineSimulation({
     const OK = () => ctx.theme.series[2]!;
     const BAD = () => ctx.theme.series[1]!;
     const n2 = (v: number) => fmt.num(Math.abs(v) < 1e-9 ? 0 : v, 2);
+    // Summe n₁ · a₁ + n₂ · a₂ + n₃ · a₃ mit Vorzeichen am Rechenzeichen („− 5 · 2“ statt „+ −5 · 2“)
+    const dotTerms = (n: readonly number[], a: readonly number[]) =>
+      n
+        .map((c, i) => {
+          const ai = a[i]!;
+          const t = `${n2(Math.abs(c))} · ${ai < 0 ? `(${n2(ai)})` : n2(ai)}`;
+          if (i === 0) return c < 0 ? `−${t}` : t;
+          return `${c < 0 ? '−' : '+'} ${t}`;
+        })
+        .join(' ');
     const font = (w: number, s: number) => `${w} ${s}px ${ctx.theme.font}`;
     const mfont = (s: number) => `italic 700 ${s}px ${ctx.theme.mathFont}`;
     const cardBg = () => (ctx.theme.dark ? shade(ctx.theme.bg, 0.06) : '#ffffff');
@@ -1219,7 +1229,7 @@ export default defineSimulation({
       head(0, [T(tt('Normalenvektor', 'Normal vector')), Vk('n'), T('='), Vk('u'), T('×'), Vk('v')], h1);
       y += compact ? 34 : 38;
       const toks: Tok[] = [{ kind: 'col', v: [...u], color: CU() }, { kind: 'txt', s: '×' }, { kind: 'col', v: [...v], color: CV() }, { kind: 'txt', s: '=' }, { kind: 'col', v: show ? [...f.raw] : ['?', '?', '?'], color: CN() }];
-      if (f.factor > 1) toks.push({ kind: 'txt', s: '=' }, { kind: 'txt', s: q(`${f.factor} ·`) }, { kind: 'col', v: show ? [...f.n] : ['?', '?', '?'], color: CN() });
+      if (f.factor !== 1) toks.push({ kind: 'txt', s: '=' }, { kind: 'txt', s: q(`${n2(f.factor)} ·`) }, { kind: 'col', v: show ? [...f.n] : ['?', '?', '?'], color: CN() });
       drawToks(toks, x0 + 4, y, w - 4, wide ? 13 : 12);
       y += compact ? 32 : 36;
       g.globalAlpha = 1;
@@ -1233,7 +1243,7 @@ export default defineSimulation({
       } else y += 22;
       g.globalAlpha = 1;
       // 3: Koordinatenform
-      const dTerms = f.n.map((c, i) => `${n2(c)} · ${a[i]! < 0 ? `(${n2(a[i]!)})` : n2(a[i]!)}`).join(' + ');
+      const dTerms = dotTerms(f.n, a);
       const h3 = compact ? 44 : 50;
       head(2, [T(`${tt('Koordinatenform', 'Coordinate form')}: d =`), Vk('n'), T('·'), Vk('a'), T(`= ${q(n2(f.d))}`)], h3);
       y += 21;
@@ -1272,7 +1282,7 @@ export default defineSimulation({
         const pr = probePlane(f.n, f.d, qq);
         hline(x0, w, y - 8);
         y += 4;
-        const terms = f.n.map((c, i) => `${n2(c)} · ${qq[i]! < 0 ? `(${n2(qq[i]!)})` : n2(qq[i]!)}`).join(' + ');
+        const terms = dotTerms(f.n, qq);
         const two = R.w < 300;
         fitText(`P${pt(qq)}: ${q(`${terms} = ${n2(pr.value)}`)}`, x0, y, two ? w : w * 0.72, 650, 11.5, theme.text);
         if (two) y += 17;
@@ -1302,7 +1312,7 @@ export default defineSimulation({
       const f = planeForms(a, u, v);
       ctx.readout('eq', { html: `E: ${x} = ${pt(a)} + <var>r</var> · ${pt(u)} + <var>s</var> · ${pt(v)}` });
       ctx.readout('pt', mode() === 'param' && f.ok ? `X${pt(planePoint(a, u, v, p.r, p.s))} ${tt('für', 'for')} r = ${fmt.num(p.r, 2)}, s = ${fmt.num(p.s, 2)}` : null);
-      ctx.readout('n', f.ok ? `n = u × v = ${pt(f.raw)}${f.factor > 1 ? ` = ${f.factor} · ${pt(f.n)}` : ''}` : null);
+      ctx.readout('n', f.ok ? `n = u × v = ${pt(f.raw)}${f.factor !== 1 ? ` = ${n2(f.factor)} · ${pt(f.n)}` : ''}` : null);
       ctx.readout('cf', f.ok ? coordinateFormText(f.n, f.d, (z) => fmt.num(z, 2)) : null);
       ctx.readout('trace', f.ok && mode() === 'normal' ? planeIntercepts(f.n, f.d).map((s, i) => (s.kind === 'point' ? `S${'₁₂₃'[i]}${pt(s.p)}` : `S${'₁₂₃'[i]}: ${s.kind === 'contains' ? tt('Achse in E', 'axis in E') : tt('keiner', 'none')}`)).join(' · ') : null);
       const pr = f.ok ? probePlane(f.n, f.d, tQ()) : null;

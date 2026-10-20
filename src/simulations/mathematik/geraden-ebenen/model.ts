@@ -125,14 +125,20 @@ const gcd = (x: number, y: number): number => {
 /**
  * Normalenvektor kürzen: Sind alle Komponenten ganzzahlig, wird durch ihren
  * größten gemeinsamen Teiler geteilt (z. B. (9 | 9 | 9) → (1 | 1 | 1)).
- * `factor` ist der Teiler (1 = nichts gekürzt).
+ * Ist die erste von 0 verschiedene Komponente negativ, wird zusätzlich mit −1
+ * multipliziert, damit die Koordinatenform mit positivem Vorzeichen beginnt
+ * (z. B. (−1 | −5 | −3) → (1 | 5 | 3), Faktor −1).
+ * `factor` ist der Teiler mit Vorzeichen (1 = nichts geändert).
  */
 export function simplifyNormal(n: V3): { n: V3; factor: number } {
+  if (isZero(n)) return { n, factor: 1 };
+  const lead = n.find((x) => Math.abs(x) > EPS)!;
+  const sign = lead < 0 ? -1 : 1;
   const ints = n.every((x) => Math.abs(x - Math.round(x)) < 1e-9);
-  if (!ints || isZero(n)) return { n, factor: 1 };
-  const g = n.map((x) => Math.round(x)).reduce((acc, x) => gcd(acc, x), 0);
-  if (g <= 1) return { n: n.map((x) => Math.round(x)) as unknown as V3, factor: 1 };
-  return { n: n.map((x) => Math.round(x) / g) as unknown as V3, factor: g };
+  const g = ints ? n.map((x) => Math.round(x)).reduce((acc, x) => gcd(acc, x), 0) : 1;
+  const factor = sign * Math.max(1, g);
+  const base = ints ? n.map((x) => Math.round(x)) : n;
+  return { n: base.map((x) => x / factor + 0) as unknown as V3, factor };
 }
 
 export type PlaneForms = { ok: false; reason: 'zero' | 'parallel' } | { ok: true; raw: V3; n: V3; factor: number; d: number };
