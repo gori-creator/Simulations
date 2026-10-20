@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { angleBetween, angleType, dirDiff, dragAngle, idealPose, makeTask, measure, norm, points } from '../src/simulations/mathematik/winkel-messen/model';
+import { angleBetween, angleType, deviation, dirDiff, dragAngle, idealPose, makeTask, measure, norm, points } from '../src/simulations/mathematik/winkel-messen/model';
 import { seededRandom } from '../src/sim-core/anim';
 
 describe('Modell: Winkel – Grundlagen', () => {
@@ -23,6 +23,7 @@ describe('Modell: Winkel – Grundlagen', () => {
     expect(angleType(89)).toBe('spitz');
     expect(angleType(90)).toBe('recht');
     expect(angleType(91)).toBe('stumpf');
+    expect(angleType(179)).toBe('stumpf');
     expect(angleType(180)).toBe('gestreckt');
     expect(angleType(181)).toBe('ueberstumpf');
     expect(angleType(359)).toBe('ueberstumpf');
@@ -75,6 +76,21 @@ describe('Modell: Winkel – Messen mit dem Geodreieck', () => {
     }
   });
 
+  it('behandelt Null-, gestreckten und Vollwinkel sowie die Grenze 181°', () => {
+    const zero = measure('geo', { atS: true, phi: 40 }, 40, 0);
+    expect(zero.ok && zero.reading === 0 && zero.what === 'alpha').toBe(true);
+    const straight = measure('geo', { atS: true, phi: 40 }, 40, 180);
+    expect(straight.ok && straight.reading === 180 && straight.what === 'alpha').toBe(true);
+    // Vollwinkel: am Geodreieck 0° ablesen, α = 360° − 0°
+    const full = measure('geo', { atS: true, phi: idealPose('geo', 40, 360).phi }, 40, 360);
+    expect(full.ok && full.reading === 0 && full.what === 'complement').toBe(true);
+    // 181°: an [SB angelegt, β = 179°, α = 360° − 179°
+    const p181 = idealPose('geo', 0, 181);
+    expect(p181).toEqual({ leg: 'B', phi: 181 });
+    const m181 = measure('geo', { atS: true, phi: p181.phi }, 0, 181);
+    expect(m181.ok && m181.scale === 'outer' && m181.reading === 179 && m181.other === 1 && m181.what === 'complement').toBe(true);
+  });
+
   it('erkennt falsches Anlegen', () => {
     expect(measure('geo', { atS: false, phi: 20 }, 20, 50)).toEqual({ ok: false, reason: 'notAtS' });
     expect(measure('geo', { atS: true, phi: 35 }, 20, 50)).toEqual({ ok: false, reason: 'noEdge' });
@@ -103,7 +119,31 @@ describe('Modell: Winkel – Schätzspiel', () => {
     expect(points(4)).toBe(2);
     expect(points(10)).toBe(2);
     expect(points(-15)).toBe(1);
+    expect(points(20)).toBe(1);
     expect(points(21)).toBe(0);
+    // Abweichung ist der Betrag des Unterschieds, unabhängig von der Richtung
+    expect(deviation(112, 100)).toBe(12);
+    expect(deviation(100, 112)).toBe(12);
+    expect(points(deviation(205, 180))).toBe(0);
+  });
+
+  it('zieht beim Zeichnen ohne Einrasten auf ganze Grad', () => {
+    expect(dragAngle(100, 89.4, 0)).toBe(89);
+    expect(dragAngle(100, 90.2, 0)).toBe(90);
+    expect(dragAngle(350, 362, 0)).toBe(360);
+  });
+
+  it('wählt Aufgaben zufällig, aber mit Abstand zur vorigen', () => {
+    const rand = seededRandom(5);
+    let prev = makeTask(rand, 'schaetzen').target;
+    const seen = new Set<number>();
+    for (let i = 0; i < 100; i++) {
+      const t = makeTask(rand, 'schaetzen', prev);
+      expect(Math.abs(t.target - prev)).toBeGreaterThanOrEqual(15);
+      seen.add(t.target);
+      prev = t.target;
+    }
+    expect(seen.size).toBeGreaterThan(50);
   });
 
   it('erzeugt abwechslungsreiche Aufgaben', () => {

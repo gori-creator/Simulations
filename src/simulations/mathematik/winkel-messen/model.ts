@@ -128,7 +128,8 @@ export function measure(tool: 'geo' | 'voll', pose: ToolPose, a1: number, alpha:
   const reading = scale === 'outer' ? outer : inner;
   const otherVal = scale === 'outer' ? inner : outer;
   // Welcher Winkel ist das? Der vom Kantenschenkel aus über das Geodreieck gemessene.
-  const what: 'alpha' | 'complement' = reading === alpha || (alpha === 360 && reading === 0) ? 'alpha' : 'complement';
+  // Beim Vollwinkel liest man 0° ab – das ist der Ergänzungswinkel: α = 360° − 0° = 360°.
+  const what: 'alpha' | 'complement' = reading === alpha ? 'alpha' : 'complement';
   return { ok: true, edge, scale, reading, other: otherVal, what };
 }
 
