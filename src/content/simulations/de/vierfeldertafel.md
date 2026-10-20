@@ -101,7 +101,7 @@ Erste Stufe: $P(B) = \frac{19}{30}$, $P(\overline{B}) = \frac{11}{30}$. Zweite S
 
 ### Aufgabe 5: Baum umkehren
 
-$P(A) = 0{,}4$, $P_A(B) = 0{,}7$, $P_{\overline{A}}(B) = 0{,}2$. Berechne $P(B)$ und $P_B(A)$. Wie viele von $100$ Personen gehören zu $A \cap B$? [Aufgabe laden](?mode=tree&ctx=abc&num=frac&_hide=1)
+$P(A) = 0{,}4$, $P_A(B) = 0{,}7$, $P_{\overline{A}}(B) = 0{,}2$. Berechne $P(B)$ und $P_B(A)$. Wie viele von $100$ Personen gehören zu $A \cap B$? [Aufgabe laden](?mode=tree&ctx=abc&num=frac&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -112,7 +112,7 @@ $P(B) = 0{,}4 \cdot 0{,}7 + 0{,}6 \cdot 0{,}2 = 0{,}28 + 0{,}12 = 0{,}40$ und $P
 
 ### Aufgabe 6: Unabhängig?
 
-Bei $50$ Personen gilt: $|A \cap B| = 12$, $|A| = 30$, $|B| = 20$. Zeige, dass $P(A \cap B) = P(A) \cdot P(B)$ gilt. Was bedeutet das? [Aufgabe laden](?ctx=abc&c1=12&c2=18&c3=8&c4=12&ev=AB&_hide=1)
+Bei $50$ Personen gilt: $|A \cap B| = 12$, $|A| = 30$, $|B| = 20$. Zeige, dass $P(A \cap B) = P(A) \cdot P(B)$ gilt. Was bedeutet das? [Aufgabe laden](?ctx=abc&c1=12&c2=18&c3=8&c4=12&ev=AB&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -128,7 +128,7 @@ Stelle $P(A) = 0{,}4$ ein und ziehe $P_A(B)$ und $P_{\overline{A}}(B)$ beide auf
 <details>
 <summary>Lösung anzeigen</summary>
 
-$P(A \cap B) = 0{,}4 \cdot 0{,}6 = 0{,}24$ und $P(B) = 0{,}6$, also $P(A) \cdot P(B) = 0{,}24$ – gleich, $A$ und $B$ sind unabhängig. Verschiebt man eine Linie, ändert sich $P(A \cap B)$ anders als $P(A) \cdot P(B)$: Die Ereignisse werden abhängig. [In der Simulation zeigen](?mode=mosaic&ctx=abc&num=frac&pb1=0.6&pb2=0.6)
+$P(A \cap B) = 0{,}4 \cdot 0{,}6 = 0{,}24$ und $P(B) = 0{,}6$, also $P(A) \cdot P(B) = 0{,}24$ – gleich, $A$ und $B$ sind unabhängig. Verschiebst du nur eine Linie, sind beide Werte nicht mehr gleich. Beispiel $P_{\overline{A}}(B) = 0{,}2$: $P(A \cap B) = 0{,}24$ bleibt, aber $P(B) = 0{,}24 + 0{,}6 \cdot 0{,}2 = 0{,}36$ und $P(A) \cdot P(B) = 0{,}144$. Die Ereignisse sind dann abhängig. [In der Simulation zeigen](?mode=mosaic&ctx=abc&num=frac&pb1=0.6&pb2=0.6)
 
 </details>
 
