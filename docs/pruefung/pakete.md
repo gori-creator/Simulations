@@ -16,7 +16,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 7–8 | `einfacher-stromkreis` | Einfacher Stromkreis | `/de/physik/elektrizitaetslehre/einfacher-stromkreis/` |
 | ☑ | 7–8 | `hebelgesetz` | Hebelgesetz | `/de/physik/mechanik/hebelgesetz/` |
 | ☑ | 7–8 | `hookesches-gesetz` | Hookesches Gesetz | `/de/physik/mechanik/hookesches-gesetz/` |
-| ☐ | 7–8 | `teilchenmodell` | Teilchenmodell und Temperatur | `/de/physik/waermelehre/teilchenmodell-temperatur/` |
+| ☑ | 7–8 | `teilchenmodell` | Teilchenmodell und Temperatur | `/de/physik/waermelehre/teilchenmodell-temperatur/` |
 | ☐ | 7–10 | `bewegungsdiagramme` | Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme) | `/de/physik/mechanik/bewegungsdiagramme/` |
 | ☐ | 8–9 | `ohmsches-gesetz` | Ohmsches Gesetz | `/de/physik/elektrizitaetslehre/ohmsches-gesetz/` |
 | ☐ | 8–9 | `reihe-parallel` | Reihen- und Parallelschaltung | `/de/physik/elektrizitaetslehre/reihen-und-parallelschaltung/` |

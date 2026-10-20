@@ -232,3 +232,48 @@ describe('Modell: Teilchenmodell – Diffusion', () => {
     expect(warm).toBeLessThan(cold / 3);
   });
 });
+
+describe('Modell: Teilchenmodell – Werte aus Lernmaterial und Anzeigen', () => {
+  it('Celsius → Kelvin (Aufgabe 1) und absoluter Nullpunkt', () => {
+    expect(kelvin(20)).toBeCloseTo(293.15, 12);
+    expect(kelvin(-20)).toBeCloseTo(253.15, 12);
+    expect(kelvin(100)).toBeCloseTo(373.15, 12);
+    expect(kelvin(-273.15)).toBe(0);
+    // Bewegungsenergie bei 100 °C rund 27 % größer als bei 20 °C (nicht fünfmal so groß)
+    expect(meanKineticEnergy(100) / meanKineticEnergy(20)).toBeCloseTo(1.273, 3);
+    // unter 0 K wird nichts negativ
+    expect(meanSpeed(-300)).toBe(0);
+    expect(meanKineticEnergy(-300)).toBe(0);
+  });
+
+  it('Anzeige „Temperatur und Teilchenbewegung“: 6,07 · 10⁻²¹ J und rund 590 m/s bei 20 °C', () => {
+    expect(meanKineticEnergy(20) * 1e21).toBeCloseTo(6.07, 2);
+    expect(Math.round(meanSpeed(20) / 10) * 10).toBe(590);
+    expect(Math.round(meanSpeed(-20) / 10) * 10).toBe(550);
+    expect(Math.round(meanSpeed(100) / 10) * 10).toBe(660);
+  });
+
+  it('Schmelzen und Verdampfen (Aufgaben 2 und 3): 167 kJ, 1128,5 kJ, 334 s bei 500 W', () => {
+    const { melt, boil } = latentHeats();
+    expect(melt).toBeCloseTo(167000, 6);
+    expect(boil).toBeCloseTo(1128500, 6);
+    expect(melt / 500).toBeCloseTo(334, 9);
+    expect(boil / melt).toBeCloseTo(6.76, 2);
+    // Eis von −20 °C bis zum Sieden bei 1000 W: 21 kJ + 167 kJ + 209,5 kJ → 397,5 s ≈ 6,6 min
+    expect((enthalpy(100) - enthalpy(-20)) / 1000).toBeCloseTo(397.5, 9);
+  });
+
+  it('Phasenübergang genau an den Grenzen: 0 °C fest, 100 °C flüssig, halbe Schmelzwärme = halb geschmolzen', () => {
+    expect(phaseState(enthalpy(0)).phase).toBe('solid');
+    expect(phaseState(enthalpy(100)).phase).toBe('liquid');
+    const half = phaseState(latentHeats().melt / 2);
+    expect(half.theta).toBe(0);
+    expect(half.liquid).toBeCloseTo(0.5, 12);
+  });
+
+  it('Diffusion bei 10 °C und 70 °C: Teilchen tauschen rund 3,9-mal so oft die Plätze', () => {
+    expect(diffusionFactor(70) / diffusionFactor(10)).toBeCloseTo(3.93, 2);
+    expect(Math.round(meanSpeed(10) / 10) * 10).toBe(580);
+    expect(Math.round(meanSpeed(70) / 10) * 10).toBe(640);
+  });
+});
