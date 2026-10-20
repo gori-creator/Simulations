@@ -73,7 +73,15 @@ Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist di
 ### 9. Englische Fassung funktioniert nicht
 Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
 
-**Noch zu prüfen:** Was genau passiert? Möglich sind ein Fehler 404, eine Weiterleitung zurück auf Deutsch oder fehlende bzw. falsche Adressen. Wichtig: Die Slugs sind auf Englisch übersetzt, zum Beispiel `mathematik` → `mathematics` und `analysis` → `calculus`. Der Sprachwechsel muss also auf die passende englische Adresse zeigen und nicht nur `/de/` gegen `/en/` tauschen.
+**Beobachtung (Projektleitung):** Beim Umschalten auf Englisch erscheint eine Fehlerseite.
+**Erster Befund im Code:** Der Sprachschalter in `src/components/Header.astro` nutzt `alternates()` aus `src/lib/routes.ts`. Das berücksichtigt die übersetzten Slugs, zum Beispiel `mathematik` → `mathematics` und `analysis` → `calculus`. Der Code selbst ist also vermutlich richtig.
+
+**Prüfen:**
+- Wie ist die angesehene Fassung entstanden? Eine Vorschau oder ein Artifact enthält wegen der Dateigrenze unter Umständen nur die deutschen Seiten, dann fehlen die englischen schlicht.
+- Stimmt der `base`-Pfad?
+- Gibt es einzelne Seiten, deren englische Adresse nicht gebaut wird?
+
+Dazu den Sprachwechsel auf Startseite, Fachseite, Bereichsseite, Simulationsseite und Infoseite im fertigen Build durchklicken.
 **Ziel:** Der Sprachwechsel führt auf jeder Seite zur entsprechenden englischen Seite, und alle englischen Seiten laden.
 
 ## Lehrpläne und Sortierung
