@@ -164,7 +164,7 @@ export default defineSimulation({
       facesPrism: '2 gleichseitige Dreiecke (Grund- und Deckfläche) und 3 gleiche Rechtecke (Mantel)',
       facesPyramid: '1 Quadrat (Grundfläche) und 4 gleichschenklige Dreiecke (Mantel)',
       facesCylinder: '2 Kreise (Grund- und Deckfläche) und 1 Rechteck (Mantel), dessen Länge der Kreisumfang ist',
-      haFix: 'hₐ muss größer als a/2 sein – gerechnet wird mit hₐ = {h} cm.',
+      haFix: 'hₐ muss mindestens a/2 + 0,5 cm sein, damit die Pyramide eine sichtbare Höhe hat – gerechnet wird mit hₐ = {h} cm.',
     },
     en: {
       canvas: 'Net of a solid folding into the solid in 3D; the view can be rotated',
@@ -193,7 +193,7 @@ export default defineSimulation({
       facesPrism: '2 equilateral triangles (bases) and 3 equal rectangles (lateral surface)',
       facesPyramid: '1 square (base) and 4 isosceles triangles (lateral surface)',
       facesCylinder: '2 circles (bases) and 1 rectangle (lateral surface) whose length is the circumference',
-      haFix: 'hₐ must be greater than a/2 – calculated with hₐ = {h} cm.',
+      haFix: 'hₐ must be at least a/2 + 0.5 cm so that the pyramid has a visible height – calculated with hₐ = {h} cm.',
     },
   },
 
