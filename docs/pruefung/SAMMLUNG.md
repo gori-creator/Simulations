@@ -8,6 +8,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 |---|---|---|---|
 | licht-schatten | `src/curriculum/physik.ts` (summary EN) | Im englischen Text „full shadow and half shadow“ durch „umbra and penumbra“ ersetzen, wie in der Simulation und im Lernmaterial | offen |
 | reflexion | `src/sim-core/` (Zeichenfläche) | Die Bilder im Winkelspiegel lassen sich nur mit Maus oder Finger antippen. Allgemeine Tastaturbedienung für antippbare Objekte auf der Zeichenfläche ergänzen, z. B. Pfeiltasten wechseln die Auswahl und Enter wählt aus. | offen |
+| hebelgesetz | `src/sim-core/draw.ts` | Gemeinsamer Helfer für Text mit tiefgestelltem Index auf der Zeichenfläche. Bisher baut jede Simulation ihren eigenen (`richDraw`, `richText` in energieerhaltung). | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -19,3 +20,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | reflexion | Diagramm „Anzahl der Bilder bei anderen Winkeln“: Ist 360° : φ ungerade, hängt die Zahl von der Lage der Figur ab. Für Jgst. 7 evtl. zu schwer. | Für Jgst. 7 nur die geraden Fälle zeigen, die anderen ausgegraut mit „hängt von der Lage ab“. | – |
 | einfacher-stromkreis | „Batterie verkehrt herum“ und „Lampe defekt“ gibt es nicht. Die defekte Lampe wäre ein gutes Beispiel für einen offenen Stromkreis trotz geschlossenem Schalter. | Als spätere Erweiterung vormerken, nicht in der Prüfrunde. | – |
 | einfacher-stromkreis | Das Schaltzeichen der Klingel hat die Schulbuchform. | Gegen DIN EN 60617 prüfen. Die Schulbuchform ist im Unterricht üblich, darum vorerst so lassen. | – |
+| hebelgesetz | Die Goldene Regel wird in Joule angezeigt („≈ 32,96 J“). Arbeit kommt vermutlich erst in Jgst. 8, und zwei Nachkommastellen wirken zu genau. | Auf eine Nachkommastelle runden; den Bezug zum Lehrplan Bayern beim Abgleich prüfen. | – |
+| hebelgesetz | Bei der Wippe heißt es „Der Hebel kippt …“. | Bei der Wippe „Die Wippe kippt …“ schreiben (kleine Textänderung). | – |
