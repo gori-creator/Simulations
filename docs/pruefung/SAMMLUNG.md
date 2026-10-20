@@ -17,3 +17,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | licht-schatten | Steht der Schirm hinter der Spitze des Kernschattens, zeigt die Formel einen negativen Wert („≈ −20 cm → kein Kernschatten“). | Für Jgst. 6/7 nur „kein Kernschatten“ zeigen und die negative Zahl weglassen. | – |
 | reflexion | Lehrplanbezug Bayern Jgst. 7 „Natur und Technik“ (Entwurf) | Abgleichen, sobald der Lehrplan Bayern Physik vorliegt. | – |
 | reflexion | Diagramm „Anzahl der Bilder bei anderen Winkeln“: Ist 360° : φ ungerade, hängt die Zahl von der Lage der Figur ab. Für Jgst. 7 evtl. zu schwer. | Für Jgst. 7 nur die geraden Fälle zeigen, die anderen ausgegraut mit „hängt von der Lage ab“. | – |
+| einfacher-stromkreis | „Batterie verkehrt herum“ und „Lampe defekt“ gibt es nicht. Die defekte Lampe wäre ein gutes Beispiel für einen offenen Stromkreis trotz geschlossenem Schalter. | Als spätere Erweiterung vormerken, nicht in der Prüfrunde. | – |
+| einfacher-stromkreis | Das Schaltzeichen der Klingel hat die Schulbuchform. | Gegen DIN EN 60617 prüfen. Die Schulbuchform ist im Unterricht üblich, darum vorerst so lassen. | – |
