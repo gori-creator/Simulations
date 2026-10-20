@@ -28,6 +28,8 @@ Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulation
 **Ziel:** Jede dieser Simulationen bekommt ein eigenes, zum Thema passendes Vorschaubild im Stil der übrigen Karten.
 
 ### 2. Nach dem Klick auf eine Karte landet man am Ende der Seite
+**Stand:** vergeben am 20.10. durch die Projektleitung (Bearbeiter siehe Warteschlange). Bitte nicht doppelt bearbeiten.
+
 Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten statt oben. Man muss erst nach oben zur Simulation scrollen. Das ist sehr nervig.
 
 **Vermutete Ursache (noch zu prüfen):** Die Scrollposition der Startseite wird übernommen, oder der Fokus bzw. ein Sprungziel auf der Simulationsseite zieht nach unten. Mögliche Auslöser sind zum Beispiel ein `autofocus`, `scrollIntoView` oder `focus()` beim Laden, oder die Wiederherstellung des Zustands.
