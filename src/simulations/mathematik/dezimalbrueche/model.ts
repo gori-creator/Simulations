@@ -242,12 +242,34 @@ export function plainDecimal(e: Expansion, sep = ','): string {
 }
 
 /**
+ * i-te Nachkommaziffer (1 = Zehntel), bei periodischen Dezimalbrüchen auch
+ * über die berechnete Periode hinaus; bei endlichen hinter dem Ende 0.
+ */
+export function digitAt(e: Expansion, i: number): number {
+  if (i <= e.digits.length) return Number(e.digits[i - 1] ?? 0);
+  if (!e.period) return 0;
+  return Number(e.period[(i - 1 - e.preLength) % e.periodLength]);
+}
+
+/**
+ * Rest r_j nach der j-ten Nachkommastelle, bei periodischen Dezimalbrüchen
+ * auch über die Periode hinaus (die Reste wiederholen sich ab r_repeatOf).
+ */
+export function remainderAt(e: Expansion, j: number): number {
+  const rs = remainders(e);
+  if (j < rs.length) return rs[j]!;
+  if (e.repeatOf < 0) return 0;
+  return rs[e.repeatOf + ((j - e.repeatOf) % e.periodLength)]!;
+}
+
+/**
  * Grenzen der Lupen-Stufe j als Text: links q,d₁…dⱼ, rechts eine Einheit der
  * j-ten Nachkommastelle mehr (mit Übertrag), z. B. 3/7, j = 2 → „0,42“ und „0,43“.
  * Nullen am Ende entfallen („0,5“ statt „0,50“).
  */
 export function levelBounds(e: Expansion, j: number, sep = ','): [string, string] {
-  const left = String(e.integer) + e.digits.slice(0, j).padEnd(j, '0');
+  let left = String(e.integer);
+  for (let i = 1; i <= j; i++) left += String(digitAt(e, i));
   // Um eins erhöhen (Ziffernfolge als ganze Zahl)
   const d = left.split('').map(Number);
   let i = d.length - 1;

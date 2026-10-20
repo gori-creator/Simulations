@@ -1,5 +1,5 @@
 import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { denominatorFactors, levelBounds, longDivision, nextRemainder, placeName, powerOfTen, predict, primeFactors, remainders, type DecimalKind, type Expansion } from './model';
+import { denominatorFactors, digitAt, levelBounds, longDivision, nextRemainder, placeName, powerOfTen, predict, primeFactors, remainderAt, remainders, type DecimalKind, type Expansion } from './model';
 import { drawFrac, drawRich, fill, fr, fracWidth, richHeight, type TextToken, type Token } from './rich';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -147,7 +147,7 @@ export default defineSimulation({
       kreisSoFar: 'Reste bisher: {list} – noch keiner doppelt.',
       kreisRepeat: 'Rest {r} kommt wieder: ein Kreislauf aus {k} Resten – die Periode hat {k} Ziffern.',
       kreisRepeat1: 'Rest {r} kommt sofort wieder: Die Periode hat nur 1 Ziffer.',
-      kreisMax: 'Beim Teilen durch {n} gibt es nur die Reste 1 bis {m} – eine Periode hat höchstens {m} Ziffern.',
+      kreisMax: 'Beim Teilen durch {n} gibt es außer 0 nur die Reste 1 bis {m} – eine Periode hat höchstens {m} Ziffern.',
       kreisEnd: 'Rest 0 erreicht – die Division geht auf.',
       kreisEnd2: 'Bei endlichen Dezimalbrüchen endet der Weg bei 0.',
       kreisGanz: '{z} : {n} geht ohne Rest auf: Rest 0.',
@@ -214,7 +214,7 @@ export default defineSimulation({
       kreisSoFar: 'Remainders so far: {list} – none repeated yet.',
       kreisRepeat: 'Remainder {r} comes back: a cycle of {k} remainders – the period has {k} digits.',
       kreisRepeat1: 'Remainder {r} comes back at once: the period has just 1 digit.',
-      kreisMax: 'When dividing by {n}, only the remainders 1 to {m} are possible – a period has at most {m} digits.',
+      kreisMax: 'When dividing by {n}, the only remainders apart from 0 are 1 to {m} – a period has at most {m} digits.',
       kreisEnd: 'Remainder 0 reached – the division ends.',
       kreisEnd2: 'For terminating decimals the path ends at 0.',
       kreisGanz: '{z} ÷ {n} leaves no remainder: remainder 0.',
@@ -1305,14 +1305,15 @@ export default defineSimulation({
       const mix = revealMix();
       const tot = total();
       const fin = done();
-      let last: number;
-      if (exp.kind === 'ganz') last = 0;
-      else if (fin) last = tot - 1;
-      else last = shown;
       const top = P.y + 34;
       const bottom = P.y + P.h - fh - 16;
       // so viele Stufen, wie bequem Platz haben
       const maxLv = clamp(Math.floor((bottom - top) / 74), 1, wide ? 3 : 2);
+      let last: number;
+      if (exp.kind === 'ganz') last = 0;
+      // Periodisch: mindestens so viele Stufen wie Platz haben, damit man die Wiederholung sieht (1/3: jede Stufe gleich)
+      else if (fin) last = periodic() ? Math.max(tot - 1, maxLv - 1) : tot - 1;
+      else last = shown;
       const first = Math.max(0, last - maxLv + 1);
       const count = last - first + 1;
       const lh = Math.min(wide ? 86 : 80, (bottom - top) / count);
@@ -1320,7 +1321,6 @@ export default defineSimulation({
       const x0 = P.x + 26;
       const x1 = P.x + P.w - 26;
       const X = (t: number) => x0 + (x1 - x0) * t;
-      const rs = remainders(exp);
       const levelY = (j: number) => y0 + (j - first) * lh;
       const levelAlpha = (j: number) => (!fin && j === shown && stepTween.running ? seg(u, 0.3, 0.75) : 1);
       if (first > 0) text(g, '⋮', (x0 + x1) / 2, top - 6, { font: `800 14px ${F()}`, color: T.muted });
@@ -1328,7 +1328,7 @@ export default defineSimulation({
       for (let j = first + 1; j <= last; j++) {
         const la = levelAlpha(j);
         if (la <= 0) continue;
-        const d = exp.steps[j - 1]!.digit;
+        const d = digitAt(exp, j);
         const yu = levelY(j - 1) + 6;
         const yd = levelY(j) - 34;
         const color = fin ? mixColor(colRest(), digitColor(j), mix) : colRest();
@@ -1380,7 +1380,7 @@ export default defineSimulation({
         // Ziffer dieser Stufe (die (j+1)-te Nachkommastelle), falls schon berechnet
         const known = j < shown || (fin && j <= last);
         const terminal = fin && exp.kind === 'endlich' && j === tot - 1;
-        const d = known && exp.kind !== 'ganz' ? exp.steps[j]!.digit : -1;
+        const d = known && exp.kind !== 'ganz' ? digitAt(exp, j + 1) : -1;
         const da = j === shown - 1 && stepTween.running ? seg(u, 0.18, 0.42) : 1;
         const color = fin ? mixColor(colRest(), digitColor(j + 1), mix) : colRest();
         if (d >= 0 && !terminal) {
@@ -1412,7 +1412,7 @@ export default defineSimulation({
         haloText(lb, X(0), y + 19, `700 ${wide ? 11.5 : 11}px ${F()}`, T.text);
         haloText(rb, X(1), y + 19, `700 ${wide ? 11.5 : 11}px ${F()}`, T.text);
         // genaue Lage des Werts: Rest/Nenner
-        const v = (rs[j] ?? 0) / p.n;
+        const v = remainderAt(exp, j) / p.n;
         const vx = X(v);
         if (terminal || exp.kind === 'ganz') {
           const tk = exp.kind === 'ganz' ? 0 : exp.steps[j]!.digit / 10;
