@@ -208,4 +208,47 @@ describe('Modell: Ähnliche Figuren – Länge, Fläche, Volumen', () => {
       expect(boxSurface(d) / boxVolume(d)).toBeCloseTo(boxSurface(BODIES.q) / boxVolume(BODIES.q) / k, 9);
     }
   });
+
+  it('Reglergrenzen k = 0,2 und k = 4: Auslegen ergibt 25 bzw. 16 Kopien (Fläche) und 125 bzw. 64 (Körper)', () => {
+    // beim Verkleinern wird das Original mit 1/k-fach so großen Kopien ausgelegt (m = 1/k)
+    for (const f of ['q', 'r', 'd', 'k'] as FigId[]) {
+      expect(totalFrac(tiling2D(f, 4))).toBeCloseTo(16, 9);
+      expect(totalFrac(tiling2D(f, 5, 0.2))).toBeCloseTo(25, 9);
+    }
+    for (const b of [BODIES.w, BODIES.q]) {
+      expect(totalFrac(tiling3D(b, 4))).toBeCloseTo(64, 9);
+      expect(totalFrac(tiling3D(b, 5))).toBeCloseTo(125, 9);
+    }
+    // Zahlen der Ergebnisanzeige an den Grenzen
+    expect(scaleArea(1, 0.2)).toBeCloseTo(0.04, 12);
+    expect(scaleVolume(1, 0.2)).toBeCloseTo(0.008, 12);
+    expect(reciprocalInt(0.2 ** 2)).toBe(25);
+    expect(reciprocalInt(0.2 ** 3)).toBe(125);
+    expect(scaleVolume(2, 4)).toBe(128);
+  });
+  it('Würfel zerteilen über den ganzen Regler (a = 0,5 … 5): ganze Anzahl, Volumen bleibt, Oberfläche · (a/e)', () => {
+    for (let a = 0.5; a <= 5 + 1e-9; a += 0.5) {
+      const e = splitEdge(a);
+      const s = splitCube(a, e);
+      const per = a / e;
+      expect(Math.abs(per - Math.round(per))).toBeLessThan(1e-9);
+      expect(per).toBeGreaterThanOrEqual(2);
+      expect(s.n * e ** 3).toBeCloseTo(a ** 3, 9);
+      expect(s.O1).toBeCloseTo(per * s.O0, 9);
+    }
+  });
+  it('Pizza an den Reglergrenzen: 10 cm → 40 cm ergibt 16-fache Fläche, gleich groß ergibt 1', () => {
+    expect(pizzaFactor(10, 40)).toBe(16);
+    expect(pizzaFactor(40, 10)).toBe(1 / 16);
+    expect(pizzaFactor(25, 25)).toBe(1);
+    expect(pizzaArea(40) / pizzaArea(10)).toBeCloseTo(16, 12);
+  });
+  it('Rückwärts an den Reglergrenzen: Faktor 64 → k = 4 bzw. 8, Faktor 0,1 → k < 1', () => {
+    expect(kFromFactor(64, 3)).toBeCloseTo(4, 12);
+    expect(kFromFactor(64, 2)).toBe(8);
+    expect(exactRoot(64, 2)).toBe(8);
+    expect(kFromFactor(0.1, 2)).toBeCloseTo(0.3162, 4);
+    expect(kFromFactor(0.1, 3)).toBeCloseTo(0.4642, 4);
+    expect(exactRoot(0.1, 3)).toBeNull();
+  });
 });
