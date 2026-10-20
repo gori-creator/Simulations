@@ -100,8 +100,6 @@ In heißem Wasser bewegen sich die Teilchen schneller und wechseln viel häufige
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 7/8, Wärmelehre (Teilchenmodell, Temperatur, Aggregatzustände); gut als Begleitung zum Realexperiment „Eis schmelzen und Wasser sieden“ mit Thermometer und Stoppuhr. Die Klasse kann zuerst ihr eigenes Messdiagramm skizzieren und dann mit der Simulation vergleichen.
 - **Vorhersagen lassen:** Vor dem Heizen fragen, wie das Temperatur-Zeit-Diagramm aussehen wird. Viele erwarten eine gerade Linie – das Plateau ist dann ein echter Überraschungsmoment.
 - **Ein Teilchen verfolgen:** Die Spuren im Eis (Zittern um einen Platz), im Wasser (Wandern) und im Dampf (gerade Stücke mit Knicken) eignen sich gut zum Beschreiben und Zeichnen.

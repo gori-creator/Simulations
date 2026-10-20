@@ -68,8 +68,6 @@ Domain and range $\mathbb{R} \setminus \{0\}$, symmetric about the origin, incre
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use the family view to collect conjectures and then justify them with $1^n$, $(-1)^n$ and $0^n$.
 - The symmetry animation shows what the conditions $f(-x) = f(x)$ and $f(-x) = -f(x)$ mean.
 - **Common stumbling blocks:**

@@ -116,8 +116,6 @@ Das mittlere Bild entsteht durch **zwei** Spiegelungen (erst an einem, dann am a
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Optik im Anfangsunterricht (Reflexion, Spiegelbild); am bayerischen Gymnasium im Physikunterricht der Jahrgangsstufe 7, Vorbereitung in Natur und Technik (Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Teil 1 eignet sich als Ersatz oder Ergänzung zum Schülerversuch mit der optischen Scheibe, Teil 2 zum Üben der Bildkonstruktion, Teil 3 als Vertiefung.
 - **Optische Scheibe:** Die Scheibe dreht sich mit dem Spiegel, die Skala zeigt also immer den Winkel zum Lot. Die Messwerte sind ideal ($\alpha' = \alpha$); im Realexperiment lohnt sich ein Vergleich mit Messabweichungen. Zeigt der Laser auf die Rückseite, wird nichts reflektiert.
 - **Spiegelbild:** Kerze, Auge und Spiegel lassen sich ziehen. „Konstruktion“ zeigt Lot und Abstände sowie an den Auftreffpunkten Lot und gleiche Winkel. Der Sichtbereich wird mit dem Bild des Auges konstruiert: Alles, was in diesem Bereich steht, sieht das Auge im Spiegel.

@@ -65,8 +65,6 @@ $f_n = n \cdot 100\,\text{Hz}$; at $300\,\text{Hz}$ there are three antinodes. [
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** upper secondary, mechanical waves, after reflection and interference; pairs well with a rope wave, Melde’s experiment and Kundt’s tube.
 - **Applications:** string instruments, flutes and organ pipes; “Play sound” lets students hear the natural frequencies.
 - **Common stumbling blocks:**

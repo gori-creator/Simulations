@@ -56,8 +56,6 @@ The positions of the principal maxima stay the same; they become narrower and br
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Predict here first, then measure with a real laser, double slit and grating.
 - **Common stumbling blocks:**
   - “Larger slit spacing, larger fringe spacing.” – The opposite: $\Delta x \sim \frac{1}{g}$.

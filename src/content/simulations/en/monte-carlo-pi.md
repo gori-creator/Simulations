@@ -46,7 +46,5 @@ Add all hits and all points: $\pi \approx 4 \cdot \frac{k_1 + k_2 + \ldots}{n_1 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Grade 10. Links probability, the area of a circle and the Pythagorean theorem.
 - **Display:** the first $120\,000$ points are drawn; counting continues without limit.

@@ -79,8 +79,6 @@ Schreibe als Produkt: $x^2 + 10x + 25$, $49 - y^2$ und $9a^2 - 12ab + 4b^2$.
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 7 (Bayern: Terme mit Klammern, binomische Formeln). Das Flächenmodell eignet sich als Einstieg und als Begründung, warum der Mischterm $2ab$ entsteht.
 - **Animation:** Der Knopf unter der Bühne zerlegt die Figur bzw. setzt sie wieder zusammen. Bei der dritten Formel wird ein Streifen gedreht und umgelegt – eine anschauliche Begründung für $a^2 - b^2$.
 - **Häufige Stolpersteine:**

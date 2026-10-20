@@ -59,8 +59,6 @@ $b = \frac{8 \cdot 6}{6 - 8}\,\text{cm} = -24\,\text{cm}$: a virtual, upright im
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** lower secondary optics (lenses, image formation, optical instruments).
 - **Model:** thin lens, paraxial rays, refraction at the central plane; construction rays may hit the central plane outside the drawn lens. The drawing scale follows the focal length.
 - **Construction practice:** image and rays can be hidden under “Display”; `_hide=1` hides the results.

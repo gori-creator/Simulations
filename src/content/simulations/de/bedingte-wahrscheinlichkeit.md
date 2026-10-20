@@ -98,8 +98,6 @@ Es muss gelten: falsch positive $\le$ richtig positive, also $0{,}99 \cdot (1 - 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 11 (bedingte Wahrscheinlichkeit, Satz von Bayes) nach LehrplanPLUS Bayern, Gymnasium – die genaue Zuordnung bitte am Lehrplan prüfen. Vierfeldertafel und Baumdiagramm vertieft die Simulation [Vierfeldertafel und Mengendiagramm](../vierfeldertafel-mengendiagramm/), Pfadregeln die Simulation [Mehrstufige Zufallsexperimente](../baumdiagramm-pfadregeln/).
 - **Einstieg mit Schätzung:** Vor dem Aufdecken schätzen lassen, wie wahrscheinlich ein positiv Getesteter krank ist – die Schätzungen liegen erfahrungsgemäß oft weit über $9\,\%$.
 - **Natürliche Häufigkeiten:** Das Symbolbild und der Baum mit Anzahlen machen die Rechnung oft leichter zugänglich als die Formel allein; die Formel von Bayes lässt sich dann aus dem Baum ablesen.

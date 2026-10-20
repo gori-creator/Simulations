@@ -63,8 +63,6 @@ $1.25^4 = 2.4414$; $e - 2.7146 \approx 0.0037$. [Show](?view=limit&ns=19)
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students discover the constant ratio $f' : f$ in the table (difference quotient) before naming $e$; the formula $\ln b \cdot b^x$ needs the chain rule.
 - The compound interest view makes the limit $\left(1 + \frac{1}{n}\right)^n \to e$ visible but does not prove it.
 - **Common stumbling blocks:**

@@ -70,8 +70,6 @@ One pump takes $6 \cdot 10\,\text{h} = 60\,\text{h}$, four pumps $60\,\text{h} :
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Picture, table and graph react together; cover one of them and let students predict what “Double it” will do there.
 - With “Show the solution” off (`show=0`) unknown values appear as “?” – handy for tasks.
 - **Common stumbling blocks:**

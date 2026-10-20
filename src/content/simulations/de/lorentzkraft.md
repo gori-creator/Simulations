@@ -93,8 +93,6 @@ $\frac{e}{m} = \frac{2 \cdot 250\,\text{V}}{(1{,}333 \cdot 10^{-3}\,\text{T})^2 
 
 ## Ideen für den Unterricht
 
-*Nur Vorschläge – Sie kennen Ihre Klasse am besten.*
-
 - Erst qualitativ (Kreis wird kleiner bei mehr Strom, größer bei mehr Spannung), dann die Formel für $r$ herleiten lassen.
 - Die Messreihe von Hand aufnehmen und auswerten, danach mit „Messreihe automatisch“ vergleichen.
 - **Typische Stolpersteine:**

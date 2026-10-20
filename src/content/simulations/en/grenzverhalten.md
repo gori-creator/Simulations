@@ -53,8 +53,6 @@ $f(x) = x^3\left(0.1 - \frac{1}{x^2}\right)$; the bracket tends to $0.1$ and $x^
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Switch off “Show the limit and the asymptote”: students guess the limit from the table, justify it algebraically and then reveal it.
 - ε-game in pairs: one picks ε, the other predicts $x_\varepsilon$ (for $\frac{2x + 1}{x - 1}$: $x_\varepsilon = 1 + \frac{3}{\varepsilon}$).
 - **Common stumbling blocks:**

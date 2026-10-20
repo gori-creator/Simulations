@@ -36,7 +36,7 @@ Unter jeder Simulation finden Sie:
 - eine kurze **Erklärung** des Themas,
 - **Ausprobier-Aufträge** mit Links, die passende Einstellungen direkt laden,
 - **Aufgaben mit Lösungen** zum Aufklappen,
-- **Ideen für den Unterricht** mit häufigen Stolpersteinen und Einsatzmöglichkeiten – als Anregung gedacht, denn Sie kennen Ihre Klasse am besten.
+- **Ideen für den Unterricht** mit häufigen Stolpersteinen und Einsatzmöglichkeiten.
 
 ## Lehrplanbezug
 

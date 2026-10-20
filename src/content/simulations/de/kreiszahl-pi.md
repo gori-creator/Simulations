@@ -78,8 +78,6 @@ Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 8 (Kreis und Zylinder: Kreisumfang, Kreisfläche, Näherungen für π).
 - **Drei Zugänge:** Abrollen (Umfang), Umlegen (Fläche) und Archimedes (Näherung). Alle drei Animationen werden über den Knopf unter der Bühne gestartet.
 - **Häufige Stolpersteine:**

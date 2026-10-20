@@ -60,8 +60,6 @@ $T = \sqrt{1.524^3}$ years $\approx 1.88$ years.
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** gravitation and Kepler’s laws in upper secondary school (grades 11–13), from guessing a law to checking it with the table and the log–log graph.
 - **Model:** point masses, $m \ll M$, only the star’s gravity; leapfrog (Verlet) integration with a fixed time step (energy conserved to better than $10^{-4}$, angular momentum exactly). Star and planet are not to scale. Planet data: rounded mean orbital elements (JPL, E. M. Standish).
 - **Common stumbling blocks:** the Sun is at a focus, not at the centre; real planetary orbits are almost circles; the period does not depend on the planet’s mass; the escape speed does not depend on the direction.

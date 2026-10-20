@@ -64,7 +64,5 @@ $W = \tfrac12 \cdot 10^{-4}\,\text{F} \cdot (10\,\text{V})^2 = 5\,\text{mJ}$. [S
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Compare with a real measurement using a large electrolytic capacitor.
 - **Common stumbling blocks:** “Current flows through the capacitor.” – Only in the leads. “The current keeps its direction when discharging.” – It reverses.

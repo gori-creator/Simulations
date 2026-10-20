@@ -44,7 +44,5 @@ $T \approx 4.94\,\text{s}$. [Show in the simulation](?planet=mond)
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The simulation integrates the exact equation $\ddot\varphi = -\tfrac{g}{l}\sin\varphi - \gamma\dot\varphi$; the small-angle approximation can be shown as a second, translucent pendulum.
 - **Common stumbling blocks:** "A heavier pendulum swings faster."

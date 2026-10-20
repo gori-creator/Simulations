@@ -44,7 +44,5 @@ $0.05x + 10 = 0.11x + 4 \Rightarrow x = 100$: above 100 minutes tariff A is chea
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Equations in slope-intercept form, in general form $ax + by = c$ (including vertical lines) or as a tariff comparison. The simulation calculates exactly with fractions and shows when a graphical reading is only approximate.
 - **Common stumbling blocks:** checking the intersection in one equation only; drawing $ax + by = c$ without rearranging.

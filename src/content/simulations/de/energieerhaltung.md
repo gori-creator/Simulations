@@ -99,8 +99,6 @@ Er kehrt in etwa $13{,}4\,\text{m}$ Höhe um. Es fehlen etwa $1{,}6\,\text{m}$ H
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Energieerhaltung in der Mittelstufe (Jahrgangsstufe 9/10, bitte am Lehrplan prüfen); die Energie-Diagramme bereiten auf Potentialdiagramme vor, der Looping eignet sich als Vertiefung zur Kreisbewegung.
 - **Entdeckungsaufgabe in Gruppen:** Jede Gruppe sucht die Mindesthöhe – erst ohne, dann mit Reibung – und begründet das Ergebnis anschließend mit $v^2 \geq g r$.
 - **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2}$. Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln).

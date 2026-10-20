@@ -38,7 +38,5 @@ $\frac{8}{12} < \frac{9}{12}$, so $\frac{3}{4}$ is more.
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Grade 6 (fractions, equivalent fractions, decimals).
 - **Common stumbling blocks:** "$\frac{6}{8}$ is more than $\frac{3}{4}$ because the numbers are bigger."

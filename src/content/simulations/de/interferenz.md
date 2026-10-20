@@ -117,8 +117,6 @@ $\lambda = d \cdot \sin\alpha_1 = 5\,\text{cm} \cdot 0{,}400 \approx 2{,}0\,\tex
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** In der Oberstufe beim Thema Interferenz mechanischer Wellen, als Vorbereitung auf den Doppelspalt und das Gitter. Gut als Ergänzung zum Realexperiment in der Wellenwanne: Was dort schnell und flüchtig ist, lässt sich hier anhalten, verlangsamen und vermessen. Die Zuordnung zu einer bestimmten Jahrgangsstufe hängt vom Lehrplanstand ab.
 - **Vorschlag für den Ablauf:** zuerst das Momentbild beobachten und die ruhigen Linien finden lassen, dann mit dem Messpunkt die Bedingung $\Delta s = (k + \frac{1}{2}) \cdot \lambda$ selbst entdecken, erst danach das Amplitudenbild und die Hyperbeln zeigen. Mit „Werte im Bild anzeigen“ aus (`val=0`) lassen sich Messaufgaben stellen.
 - **Modell:** gleich große Amplituden, keine Dämpfung, ideale Punktquellen. In der echten Wellenwanne nimmt die Amplitude mit dem Abstand ab; die Knotenlinien sind dann nicht ganz in Ruhe.

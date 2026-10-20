@@ -122,8 +122,6 @@ Spiegeln an $y = x$ vertauscht die Koordinaten: $P'(e^2 \mid 2) \approx (7{,}389
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 12, Lernbereich „Natürliche Exponentialfunktion“ (LehrplanPLUS Bayern, Gymnasium; Zuordnung bitte am Lehrplan prüfen). Die Ansicht „Die besondere Basis“ eignet sich als Einstieg: Die Frage „Gibt es eine Exponentialfunktion, die mit ihrer Ableitung übereinstimmt?“ lässt sich durch Ziehen am Punkt $(1 \mid b)$ erforschen, bevor $e$ benannt wird.
 - **Ableitung von $b^x$:** Die Formel $f'(x) = \ln b \cdot b^x$ setzt die Kettenregel ($b^x = e^{x \ln b}$) voraus. Ohne sie kann man den konstanten Faktor auch rein numerisch entdecken: Die Wertetabelle berechnet $f'$ mit dem Differenzenquotienten.
 - **Zinseszins:** Die Ansicht „e entsteht“ zeigt eine anschauliche Bedeutung von $e$ (stetige Verzinsung). Dass die Folge $\left(1 + \frac{1}{n}\right)^n$ wirklich gegen $e$ konvergiert, wird hier nur sichtbar gemacht, nicht bewiesen.

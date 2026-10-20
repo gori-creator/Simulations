@@ -44,7 +44,7 @@ const de = {
     'Interaktive Simulationen entlang des Lehrplans – für den Unterricht am Beamer, am Tablet oder zum Lernen zu Hause. Kostenlos, ohne Anmeldung und ohne Tracking.',
   'home.ctaCatalog': 'Alle Simulationen ansehen',
   'home.ctaTeachers': 'Infos für Lehrkräfte',
-  'home.featured': 'Schon verfügbar',
+  'home.featured': 'Alle Simulationen',
   'home.subjects': 'Fächer',
   'home.howTitle': 'So einfach im Unterricht',
   'home.how1Title': 'Simulation auswählen',
@@ -142,7 +142,7 @@ const de = {
 
   'catalog.title': 'Alle Simulationen',
   'catalog.lead':
-    'Hier finden Sie alle verfügbaren und geplanten Simulationen. Filtern Sie nach Fach, Klassenstufe oder Stichwort.',
+    'Hier finden Sie alle Simulationen. Filtern Sie nach Fach, Klassenstufe oder Stichwort.',
   'catalog.search': 'Suchen',
   'catalog.searchPlaceholder': 'z. B. Parabel, Pendel, Steigung …',
   'catalog.subject': 'Fach',
@@ -195,7 +195,7 @@ const en: Record<UiKey, string> = {
     'Interactive simulations that follow the curriculum – for the classroom projector, tablets or learning at home. Free, no sign-up and no tracking.',
   'home.ctaCatalog': 'Browse all simulations',
   'home.ctaTeachers': 'Information for teachers',
-  'home.featured': 'Available now',
+  'home.featured': 'All simulations',
   'home.subjects': 'Subjects',
   'home.howTitle': 'Easy to use in class',
   'home.how1Title': 'Choose a simulation',
@@ -292,7 +292,7 @@ const en: Record<UiKey, string> = {
 
   'catalog.title': 'All simulations',
   'catalog.lead':
-    'All available and planned simulations in one place. Filter by subject, grade or keyword.',
+    'All simulations in one place. Filter by subject, grade or keyword.',
   'catalog.search': 'Search',
   'catalog.searchPlaceholder': 'e.g. parabola, pendulum, slope …',
   'catalog.subject': 'Subject',

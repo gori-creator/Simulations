@@ -1,10 +1,10 @@
 # Mängelliste (Durchsicht der Seite durch die Projektleitung, 20.10.2026)
 
-Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. Noch nicht bearbeitet.
+Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. Bearbeitung durch die Projektleitung (Physik-Sitzung) ab 20.10. nachmittags.
 
 ## Startseite
 
-### 1. Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
+### 1. ✅ (behoben, Zweig `fix/vorschaubilder`, laut Projektleitung erledigt) Vorschaubilder: schwarze Platzhalter statt richtiger Bilder (nur Mathematik)
 Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulationen erscheint stattdessen eine schwarze Fläche. Das wirkt zufällig und unschön:
 
 - Sinus, Kosinus, Tangens im rechtwinkligen Dreieck (`sin-cos-tan-dreieck`)
@@ -28,22 +28,22 @@ Die meisten Karten haben ein richtiges Vorschaubild. Bei diesen Mathe-Simulation
 **Ziel:** Jede dieser Simulationen bekommt ein eigenes, zum Thema passendes Vorschaubild im Stil der übrigen Karten.
 
 ### 2. Nach dem Klick auf eine Karte landet man am Ende der Seite
-**Stand:** vergeben am 20.10. durch die Projektleitung (Bearbeiter siehe Warteschlange). Bitte nicht doppelt bearbeiten.
-
 Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten statt oben. Man muss erst nach oben zur Simulation scrollen. Das ist sehr nervig.
 
 **Vermutete Ursache (noch zu prüfen):** Die Scrollposition der Startseite wird übernommen, oder der Fokus bzw. ein Sprungziel auf der Simulationsseite zieht nach unten. Mögliche Auslöser sind zum Beispiel ein `autofocus`, `scrollIntoView` oder `focus()` beim Laden, oder die Wiederherstellung des Zustands.
 **Ziel:** Jede Simulationsseite öffnet oben, mit der Simulation sofort im Blick.
 
+**Befund 20.10. (Projektleitung, Physik-Sitzung):** Im echten Build nicht nachvollziehbar. 16 Karten auf 1360 px und 390 px getestet, jede Seite öffnet oben (scrollY = 0). Ursache ist die Testvorschau: Sie läuft als Artifact in einem Rahmen, und der Rahmen behält beim Seitenwechsel seine Scrollposition. Auf der echten Seite (GitHub Pages) tritt das nicht auf.
+
 ## Simulationsseiten
 
-### 3. Beschreibungstext unter der Überschrift ist oft schwer verständlich
+### 3. ✅ Beschreibungstext unter der Überschrift ist oft schwer verständlich
 Der kurze Text direkt unter der Überschrift einer Simulation ist oft nicht verständlich genug.
 
 **Vermutete Quelle (noch zu prüfen):** das Feld `summary` im Lehrplan (`src/curriculum/*.ts`), das vermutlich auch auf den Karten erscheint.
 **Ziel:** Bei allen Simulationen einfacher formulieren: kurze Sätze, Alltagssprache, Fachbegriffe nur, wo nötig, und für die jeweilige Klassenstufe verständlich. DE und EN gleichermaßen.
 
-### 4. Satz „Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.“ überall streichen
+### 4. ✅ Satz „Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.“ überall streichen
 Der Satz soll überall raus.
 
 **Fundstellen (geprüft):**
@@ -53,7 +53,7 @@ Der Satz soll überall raus.
 
 **Ziel:** Alle Vorkommen in DE und EN entfernen. Außerdem in `docs/NEUE-SIMULATION.md` bzw. der Vorlage nachsehen, damit neue Simulationen den Satz nicht wieder mitbringen.
 
-### 7. Fortschrittsanzeigen „x von y Simulationen verfügbar“ entfernen
+### 7. ✅ Fortschrittsanzeigen „x von y Simulationen verfügbar“ entfernen
 Jetzt sind alle Simulationen fertig. Die Zähler sind daher überflüssig, zum Beispiel „36 / 36 Simulationen“, „93 / 93 Simulationen“ oder auf der Startseite „129 von 129 …“, ebenso die Übersicht unten auf der Startseite, welche Themen wie viele verfügbare Simulationen haben.
 
 **Fundstellen (zum Teil geprüft):** `src/i18n/ui.ts` mit den Schlüsseln `home.progress` („{ready} von {total} geplanten Simulationen verfügbar“), `subject.progress` („{ready} von {total} Simulationen verfügbar“) und `home.featured` („Schon verfügbar“). Außerdem der Text der Gesamtübersicht, der von „verfügbaren und geplanten Simulationen“ spricht. Die zugehörigen Stellen in den Seiten bzw. Views (Startseite, Fachseite, Bereichskarten) sind noch zu suchen.
@@ -72,6 +72,8 @@ Wählt man den Dunkelmodus und klickt danach oben in der Leiste etwas an, ist di
 **Vermutete Ursache (noch zu prüfen):** Die Theme-Wahl wird nicht gespeichert oder erst nach dem ersten Zeichnen angewendet. Dann gibt es weißes Aufblitzen (FOUC) oder einen Rücksprung auf hell.
 **Ziel:** Die gewählte Darstellung bleibt über alle Seitenwechsel erhalten. Sie wird schon im `<head>` vor dem ersten Zeichnen gesetzt (kleines Inline-Skript, Speicherung in `localStorage`), damit nichts weiß aufblitzt.
 
+**Befund 20.10.:** Im echten Build nicht nachvollziehbar. Der Dunkelmodus bleibt nach Kartenklick und nach Klick in der Kopfleiste erhalten; das Farbschema wird schon im `<head>` gesetzt. In der Artifact-Vorschau ist `localStorage` vermutlich gesperrt, deshalb springt es dort zurück.
+
 ### 9. Englische Fassung funktioniert nicht
 Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
 
@@ -85,6 +87,8 @@ Die Umschaltung auf Englisch bzw. die englischen Seiten funktionieren nicht.
 
 Dazu den Sprachwechsel auf Startseite, Fachseite, Bereichsseite, Simulationsseite und Infoseite im fertigen Build durchklicken.
 **Ziel:** Der Sprachwechsel führt auf jeder Seite zur entsprechenden englischen Seite, und alle englischen Seiten laden.
+
+**Befund 20.10.:** Die Vorschau enthielt wegen der Dateigrenze nur die deutschen Seiten. Im echten Build führt der Sprachwechsel auf Start-, Fach-, Bereichs-, Simulations-, Katalog- und Infoseite zur englischen Seite (alle HTTP 200).
 
 ## Lehrpläne und Sortierung
 
@@ -105,3 +109,20 @@ Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahn
 - **Fächer ohne Lehrplan:** Gilt die Auswahl für alle Fächer? Wenn für ein Fach (etwa Chemie) kein Landeslehrplan vorliegt, gilt dort die allgemeine Sortierung.
 - **Wo wirkt die Sortierung:** auf der Startseite, den Fachseiten und den Bereichsseiten.
 - **Statische Seite:** Die Sortierung läuft im Browser per Skript. Ohne Skript bleibt die allgemeine Sortierung stehen.
+
+## Bilder
+
+### 10. Vollständige Bilderliste mit sehr genauen Prompts
+Die Projektleitung erzeugt die Bilder selbst mit einem Bildgenerator. Dafür braucht sie **eine einzige, vollständige Liste** aller noch fehlenden Bilder.
+
+**Was auf die Liste gehört:** alles, was in den Simulationen bisher nur gezeichnet wird, sich in der Größe bzw. Form nicht ständig ändert und als Foto bzw. Illustration deutlich hochwertiger aussähe. Beispiele: Gegenstände, Geräte, Figuren, Hintergründe, Oberflächen.
+
+**Was nicht auf die Liste gehört:** Dinge, die von den Reglern abhängen, zum Beispiel Graphen, Pfeile, Längen oder Winkel. Die bleiben gezeichnet.
+
+**Anforderungen an die Prompts:**
+- **Sehr genau:** Motiv, Blickwinkel, Licht, Hintergrund (freigestellt bzw. transparent oder voll), Bildformat bzw. Seitenverhältnis, Auflösung, Stil passend zu den vorhandenen Bildern.
+- **Keine Dubletten:** Jedes Bild steht genau einmal auf der Liste. Wird ein Bild in mehreren Simulationen gebraucht, steht es einmal da, mit allen Verwendungen.
+- **Abgleich mit dem Bestand:** Vorhandene Bilder in `src/assets/sims/`, `docs/BILDER.md` und `docs/bilder-eingang/` sind geprüft, nichts wird doppelt angefordert.
+- **Benennung:** Für jedes Bild stehen Dateiname und Ablageort fest, damit der Einbau ohne Rückfragen geht.
+
+**Ziel:** eine Datei (Vorschlag: oberer Abschnitt von `docs/BILDER-WUNSCHLISTE.md`), nach Priorität sortiert.

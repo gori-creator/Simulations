@@ -114,8 +114,6 @@ $M = \frac{4\pi^2 a^3}{G\,T^2} = \frac{4\pi^2 \cdot (1{,}496 \cdot 10^{11}\,\tex
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Gravitation und Keplersche Gesetze in der Oberstufe (Jahrgangsstufen 11–13; die Zuordnung zum LehrplanPLUS des bayerischen Gymnasiums ist ein Entwurf, bitte abgleichen), auch zur Wiederholung der Kreisbewegung und der Energieerhaltung. Gut geeignet für eine Erarbeitung in Partnerarbeit: Gesetz vermuten, in der Simulation prüfen, mit der Tabelle bzw. dem doppelt-logarithmischen Diagramm bestätigen.
 - **Modell:** Stern und Planet sind Massenpunkte, $m \ll M$ (der Stern bleibt in Ruhe, streng genommen umlaufen beide den gemeinsamen Schwerpunkt). Es wirkt nur die Gravitation des Sterns, Störungen durch andere Planeten fehlen. Die Bahn wird mit dem Leapfrog-Verfahren (Verlet) mit fester Schrittweite berechnet; die Energie bleibt dabei relativ besser als $10^{-4}$ erhalten, der Drehimpuls bis auf Rundungsfehler exakt. Stern und Planet sind stark vergrößert gezeichnet; ein Umlauf dauert in der Simulation etwa 8 Sekunden. Die gestrichelte Linie ist die exakt berechnete Kegelschnittbahn zum Vergleich.
 - **Daten:** Die Planetenwerte sind gerundete mittlere Bahnelemente (JPL, nach E. M. Standish); die Umlaufdauer folgt aus der mittleren Bewegung. Die kleinen Abweichungen von $\frac{T^2}{a^3}$ (unter 0,2 %) entstehen durch die gegenseitigen Störungen der Planeten und die Masse der Planeten selbst. In anderen Quellen weichen die letzten Stellen leicht ab.

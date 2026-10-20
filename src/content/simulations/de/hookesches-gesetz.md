@@ -105,8 +105,6 @@ Oberhalb der Elastizitätsgrenze wird die Feder bleibend verformt. Danach zeigt 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Kraft und Verformung, Gewichtskraft, Hookesches Gesetz und Federkraftmesser (Klasse 7/8). Hintereinander- und Nebeneinanderschaltung eignen sich als Vertiefung. Die Simulation nennt die Größe $D$ **Federhärte**; andere Lehrwerke sagen Federkonstante und schreiben die Verlängerung als $\Delta l$.
 - **Messen wie im Experiment:** Ein Messwert wird erst eingetragen, wenn die Feder ruhig hängt. Mit `fit=0` wird die Ursprungsgerade ausgeblendet, sodass die Lernenden sie selbst einzeichnen. Die Messtabelle steht bei den Ergebnissen.
 - **Modell:** Die Masse der Feder wird vernachlässigt; das Nachschwingen ist gedämpft (Dämpfung frei gewählt, nur qualitativ). Die Elastizitätsgrenze ist stark vereinfacht: Bis $25\,\text{cm}$ Verlängerung bleibt eine neue Feder elastisch, darüber gibt sie leichter nach (halbe Federhärte) und bleibt nach dem Entlasten länger. Echte Federn verhalten sich je nach Material unterschiedlich. Bei den nebeneinander hängenden Federn hängt die Last so, dass die Querstange waagerecht bleibt.

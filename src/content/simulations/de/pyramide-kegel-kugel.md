@@ -114,8 +114,6 @@ Der Zylinder hat $V = 2\pi r^3 \approx 98{,}17\,\text{cm}^3$. Die Kugel füllt $
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich Körperberechnung (LehrplanPLUS Bayern, Gymnasium; Zuordnung als Entwurf, bitte gegen den aktuellen Lehrplan prüfen). Geeignet als Einstieg (Umschüttversuch), zur Übung (Pythagoras im Körper) und zur Vertiefung (Archimedes).
 - **Modell:** Die Pyramide hat ein regelmäßiges $n$-Eck als Grundfläche, die Spitze liegt senkrecht über dem Mittelpunkt. Beim Umschütten wird das Wasser exakt nach dem Volumen berechnet, gezeichnet ist es nur angenähert.
 - **Typische Fehler:**

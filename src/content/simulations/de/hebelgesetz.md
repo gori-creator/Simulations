@@ -121,8 +121,6 @@ $F_K = 300\,\text{N} \cdot \frac{4}{16} = 75\,\text{N}$. Die Hand bewegt sich vi
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Hebel und Hebelgesetz, Drehmoment, Kraftwandler und Goldene Regel der Mechanik in der Mittelstufe. Die Simulation verwendet die Begriffe Drehmoment, Kraftarm und Lastarm; manche Lehrwerke sprechen nur vom Hebelarm und formulieren das Hebelgesetz ohne den Begriff Drehmoment. Mit „Drehmomente anzeigen“ (`mom=0`) und „Kraftarme bemaßen“ (`arms=0`) lassen sich die Hilfen ausblenden, z. B. für eigene Messreihen.
 - **Bedienung:** Massestücke werden aus dem Kasten auf ein Loch gezogen, Stapel lassen sich verschieben und durch Antippen verkleinern. Am Kraftmesser bestimmt der Ring Zugrichtung und Kraft. Alles ist auch über die Regler einstellbar.
 - **Modell:** Massestücke zu $50\,\text{g}$, $g = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$, Lochabstand $5\,\text{cm}$. Der Hebel ist in seinem Schwerpunkt gelagert, sein Eigengewicht erzeugt kein Drehmoment. Der Zeiger mit kleinem Gegengewicht liegt unter der Achse; dadurch kehrt ein Hebel im Gleichgewicht in die Waagerechte zurück (stabiles Gleichgewicht), sonst kippt er bis zum Anschlag. Sehr kleine Unterschiede (unter $0{,}003\,\text{N}\cdot\text{m}$, etwa durch das Runden der Kraftmesser-Anzeige) werden als Reibung in der Achse behandelt. Der zeitliche Ablauf der Bewegung ist nur qualitativ. Der Kraftmesser hat einen Messbereich von $5\,\text{N}$ und behält beim Kippen seine Zugrichtung.

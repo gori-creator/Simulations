@@ -64,8 +64,6 @@ $8 \cdot 7 \cdot 6 = 336$ and $8! = 40\,320$. [Show in the simulation](?sit=pode
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** introducing the counting principle (around grade 5), revisiting it for Laplace probabilities (around grade 8).
 - Students could first write down outfits by hand and discover duplicates or gaps before using the tree and the table.
 - **Common stumbling blocks:**

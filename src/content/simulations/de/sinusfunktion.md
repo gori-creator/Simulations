@@ -79,8 +79,6 @@ $$f(t) \approx 3{,}8 \cdot \sin\big(0{,}52\,(t - 2{,}7)\big) + 0{,}2$$
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Reihenfolge:** Zuerst die „vertikalen“ Parameter $a$ und $d$, dann $c$, zuletzt $b$ – die Wirkung von $b$ ist für viele am wenigsten intuitiv.
 - **Häufige Stolpersteine:**
   - „Größeres $b$ – längere Periode“: Tatsächlich wird die Periode kürzer.

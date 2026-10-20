@@ -54,7 +54,5 @@ $\vec a \times \vec b = (0, 0, 6)^T$, so $|6c_3| = 12$: $c_3 = \pm 2$, $c_1$, $c
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Searching for perpendicular vectors in “Discover” first leads naturally to the normal form of a plane.
 - **Common stumbling blocks:** writing the dot product as a vector; sign errors in the middle component (check with $(\vec a \times \vec b) \cdot \vec a = 0$); forgetting $\frac12$ or $\frac16$.

@@ -62,8 +62,6 @@ $S\left(\frac{11}{3}\,\middle|\,\frac{7}{3}\right)$. From $H$ to $S$: $\frac{2}{
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** year 7, constructions and loci; medians, altitudes and the Euler line as an extension. Step through the construction on the projector while the class draws along.
 - **Discovery mode:** with `pt=0` point, circle and measurements stay hidden until the class has made its conjecture.
 - **Common stumbling blocks:**

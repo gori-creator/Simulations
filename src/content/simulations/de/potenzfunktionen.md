@@ -107,8 +107,6 @@ $n$ ist gerade und negativ, z. B. $n = -2$: $f(x) = \frac{1}{x^2}$ mit $W = \mat
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 9, Lernbereich „Potenzfunktionen mit natürlichen Exponenten und Erweiterung des Potenzbegriffs“, und Jahrgangsstufe 10, „Ganzrationale Funktionen“ (LehrplanPLUS Bayern, Gymnasium). Die negativen Exponenten knüpfen an die Hyperbel $y = \frac{1}{x}$ aus Jahrgangsstufe 8 an; ob und in welchem Umfang sie im Unterricht vorkommen, bitte am Lehrplan prüfen.
 - **Entdeckend:** Die Familien-Ansicht eignet sich zum Sammeln von Vermutungen („Was haben alle gemeinsam?“), die anschließend mit $1^n$, $(-1)^n$ und $0^n$ begründet werden.
 - **Symmetrie begründen:** Die Animation zeigt, *was* Achsen- und Punktsymmetrie bedeuten; die Begründung $(-x)^n = x^n$ bzw. $(-x)^n = -x^n$ kann daran anschließen.

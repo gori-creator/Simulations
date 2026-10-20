@@ -85,8 +85,6 @@ Es entsteht die Kosinusfunktion: $(\sin x)' = \cos x$. Zum Beispiel ist die Stei
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 11 (Einführung der Ableitung). Die Animation **h → 0** verkleinert $h$ logarithmisch, sodass die Annäherung gleichmäßig sichtbar bleibt.
 - **Tabelle:** Die Annäherungstabelle zeigt die Differenzenquotienten für $h = 1;\ 0{,}1;\ 0{,}01;\ 0{,}001$ – gut geeignet, um den Grenzwertbegriff numerisch vorzubereiten.
 - **h = 0:** Stellt man $h = 0$ ein, ist der Differenzenquotient nicht definiert ($\frac{0}{0}$); die Simulation zeigt dann nur die Tangente. Ein guter Anlass, über den Unterschied zwischen „$h = 0$ einsetzen“ und „Grenzwert für $h \to 0$“ zu sprechen.

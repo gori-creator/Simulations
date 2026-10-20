@@ -109,8 +109,6 @@ $f(x) = x^3\left(0{,}1 - \frac{1}{x^2}\right)$: Die Klammer geht gegen $0{,}1$, 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 11, Grenzwerte im Unendlichen und waagrechte Asymptoten (LehrplanPLUS Gymnasium Bayern; wie weit die ε-Vorstellung dort ausgeführt wird, bitte am Lehrplan prüfen). Der Schlauch ist als anschauliches Bild gedacht, nicht als formale Definition.
 - **Grenzwert finden:** Mit „Grenzwert und Asymptote zeigen“ aus sind Asymptote, Schlauch und Abstände verdeckt. Die Lernenden vermuten den Grenzwert aus Tabelle und Lauf, begründen ihn mit einer Umformung und prüfen dann mit „Grenzwert aufdecken“.
 - **ε-Spiel zu zweit:** Eine Person wählt ein ε, die andere sagt $x_\varepsilon$ voraus (bei $\frac{2x + 1}{x - 1}$ ist $x_\varepsilon = 1 + \frac{3}{\varepsilon}$); die Simulation prüft.

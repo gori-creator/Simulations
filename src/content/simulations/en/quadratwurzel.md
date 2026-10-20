@@ -63,8 +63,6 @@ $1.7^2 = 2.89 < 3 < 3.24 = 1.8^2$ and $1.73^2 = 2.9929 < 3 < 3.0276 = 1.74^2$. [
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Grade 9, topic “square roots” (definition, approximation methods, irrational and real numbers). The squares view suits an introduction, Heron and nested intervals the main phase, the proof a deeper look.
 - With “Show values” off (`show=0`), $\sqrt{a}$ and the approximations appear as “?” in the picture.
 - **Common stumbling blocks:**

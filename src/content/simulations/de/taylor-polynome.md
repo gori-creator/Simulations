@@ -98,8 +98,6 @@ $f^{(k)}(x) = \frac{k!}{(1-x)^{k+1}}$, also $f^{(k)}(0) = k!$ und $c_k = 1$. Die
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Vertiefung in Jahrgangsstufe 13 (z. B. Seminar, Begabtenförderung) und Analysis im ersten Studienjahr. Der Lehrplanbezug ist je nach Land und Kurs verschieden – bitte am Lehrplan prüfen.
 - **Einstieg über den Taschenrechner:** „Wie berechnet ein Rechner $\sin 0{,}5$ oder $e$?“ Die fett markierten Stellen in der Ansicht *Taschenrechner* machen sichtbar, wie schnell die Näherung besser wird.
 - **Von der Tangente zur Schmiegparabel:** Die Ansicht *Ableitungen anpassen* knüpft an die Tangente an. Die Klasse kann vorab vermuten, welche Häkchen bei $T_2$ grün werden.

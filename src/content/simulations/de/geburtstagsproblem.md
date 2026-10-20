@@ -118,8 +118,6 @@ Eher **größer**: Wenn manche Tage häufiger sind, ballen sich die Geburtstage 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich „Zusammengesetzte Zufallsexperimente und stochastische Simulationen“ (LehrplanPLUS Bayern, Gymnasium). Ein Einstieg könnte eine Schätzung vor der Rechnung sein – und vielleicht ein Blick auf die Geburtstage in der eigenen Klasse.
 - **Simulation und Rechnung:** Die Ansicht „Viele Klassen“ macht die überraschende Größe plausibel, die Ansicht „Rechnung“ erklärt sie. Der Trichter zeigt, wie stark relative Häufigkeiten bei $100$ Klassen noch schwanken.
 - **Gleicher Monat** eignet sich zum Nachspielen in der Klasse: Schon bei kleinen Gruppen kommt fast immer ein gemeinsamer Monat heraus.

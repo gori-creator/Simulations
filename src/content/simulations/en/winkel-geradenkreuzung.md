@@ -66,8 +66,6 @@ No: the corresponding angles $\alpha_1$ and $\alpha_2$ differ by $8^\circ$.
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** grade 7, angles in figures, as groundwork for the angle sum of a triangle. The exercise mode shows a short chain of reasons for every tapped angle – students could give their own reasons first and compare.
 - **Common stumbling blocks:**
   - “Corresponding angles are always equal” – only for parallel lines.

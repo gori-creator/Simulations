@@ -68,8 +68,6 @@ Mean $\frac{2}{\pi} \approx 0.637$; only even $k$: $a_2 = -\frac{4}{3\pi} \appro
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Start with “Play the build-up”, then add the values by hand in the stacked view; with “Values in the picture” off (`info=0`) the pictures work as exercises.
 - Link to acoustics (timbre of clarinet, violin, flute) and electronics (rectifier, pulse-width modulation).
 - **Common stumbling blocks:** the constant term is $\frac{a_0}{2}$; expecting the Gibbs overshoot to vanish; a shift changes only the phases, not the amplitudes.

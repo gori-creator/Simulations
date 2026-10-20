@@ -121,8 +121,6 @@ Die Strecke bleibt gleich: Geschwindigkeit mal Fahrzeit ergibt immer $120\,\text
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Proportionale und antiproportionale Zuordnungen mit Dreisatz (je nach Schulart und Bundesland in Jahrgangsstufe 6 oder 7) sowie die Wiederaufnahme in Jahrgangsstufe 8 im LehrplanPLUS Gymnasium Bayern: direkte Proportionalität bei den linearen Funktionen (Lernbereich 2), indirekte Proportionalität bei den Hyperbeln (Lernbereich 3) – bitte am Lehrplan prüfen.
 - **Drei Darstellungen:** Bild, Tabelle und Graph reagieren gleichzeitig. Es kann sich lohnen, eine Darstellung abzudecken und vorhersagen zu lassen, was „Verdoppeln“ dort bewirken wird.
 - **Aufgaben aus dem Bild:** Mit „Lösung zeigen“ aus (`show=0`) erscheinen gesuchte Werte als „?“. Im Test lässt sich erst eine Vermutung antippen und dann prüfen; „Nächste Tabelle“ eignet sich für eine kurze Runde im Plenum.

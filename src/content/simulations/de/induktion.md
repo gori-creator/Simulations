@@ -115,8 +115,6 @@ $\Delta\Phi = 0{,}20\,\text{T} \cdot 20 \cdot 10^{-4}\,\text{m}^2 = 4{,}0 \cdot 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Thema Induktion; die genaue Einordnung bitte am Lehrplan prüfen. Die drei Versuche passen zu den üblichen Freihandversuchen mit Stabmagnet, Leiterschaukel und Handgenerator.
 - **Möglicher Ablauf:** mit dem Magneten qualitativ beginnen (wann gibt es Spannung?), dann mit dem Stab auf Schienen $U = B \cdot l \cdot v$ quantitativ herleiten und zum allgemeinen Induktionsgesetz verallgemeinern, zum Schluss der Generator als Anwendung.
 - **Modell:** Feld des Stabmagneten auf der Spulenachse, dünne Spule; beim Generator homogenes Feld; Selbstinduktion und Rückwirkung auf die Bewegung werden nicht berechnet.

@@ -76,8 +76,6 @@ Das Licht trifft flach (unter großem Einfallswinkel) auf die Wand der Faser. We
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Optik in der Mittelstufe (Brechung, Totalreflexion), vertiefend mit dem Brechungsgesetz.
 - **Optische Scheibe:** Die Darstellung entspricht dem Schulversuch mit Winkelscheibe. Die Helligkeit der Strahlen folgt den Fresnel-Formeln für unpolarisiertes Licht; so sieht man, dass auch bei der Brechung immer ein Teil reflektiert wird und der reflektierte Anteil kurz vor dem Grenzwinkel stark ansteigt.
 - **Häufige Stolpersteine:**

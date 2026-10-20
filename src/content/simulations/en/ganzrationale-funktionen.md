@@ -54,8 +54,6 @@ Signs $+ \mid - \mid - \mid +$: $f(x) < 0$ for $-3 < x < 0$ and $0 < x < 3$, no 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Switch off “Show the term and properties” for a guessing game in pairs; “Reveal the term” resolves it.
 - The magnifier explains crossing and touching locally, the view from far away explains the end behaviour – a nice pair for one lesson.
 - **Common stumbling blocks:** the zero of $(x + 2)$ is $-2$; even multiplicity means touching, not crossing; for the end behaviour both $a$ and the degree matter.

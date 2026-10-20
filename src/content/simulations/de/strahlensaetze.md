@@ -120,8 +120,6 @@ Nein: $\frac63 = 2$, aber $\frac{5{,}6}{4} = 1{,}4$. Für eine Parallele bräuch
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 9, Lernbereich zu Ähnlichkeit, zentrischer Streckung und Strahlensatz (LehrplanPLUS Gymnasium Bayern; genaue Bezeichnung bitte am Lehrplan prüfen). Die Animation „Parallele verschieben“ kann eine Vermutung anregen („Alle Verhältnisse bleiben gleich – aber nur, wenn …“), die Karten sichern sie mit Zahlen.
 - **Negative Streckfaktoren:** Ob die X-Figur über $k < 0$ beschrieben wird, ist im Unterricht unterschiedlich üblich – bitte am Lehrplan prüfen. Der Regler arbeitet deshalb mit dem Verhältnis der Längen.
 - **Draußen messen:** Baum- und Teichaufgabe lassen sich auf dem Schulgelände nachstellen; „Messung durchspielen“ zeigt die Reihenfolge der Schritte. Mit „Ergebnis zeigen“ aus (`show=0`) werden Rechenmodus und Anwendungen zu Übungsaufgaben.

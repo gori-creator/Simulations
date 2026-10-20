@@ -56,8 +56,6 @@ No – each section holds about a quarter of the values. The long whisker only m
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Students could collect their own data (way to school, sleep, long jump) and type it into the “Values” field; comparison mode puts two surveys side by side.
 - The quartiles are computed as medians of the two halves; if your textbook uses another convention, a short note may help.
 - **Common stumbling blocks:** reading the median from the unordered list; taking only one of the two middle values; reading a long whisker as “more values”; treating mean and median as the same.

@@ -56,6 +56,4 @@ $B \approx 1.333\,\text{mT}$, $r = 4.0\,\text{cm}$, $e/m = 2U/(B^2 r^2) \approx 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Common stumbling blocks:** “The Lorentz force speeds the electrons up.” – It only changes the direction. Diameter vs. radius: the marks give the diameter.

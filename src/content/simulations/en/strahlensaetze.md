@@ -73,8 +73,6 @@ No: $6 : 3 = 2$ but $5.6 : 4 = 1.4$. A parallel would need $\overline{ZB'} = 8\,
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use “Slide the parallel” to prompt a conjecture, then let the cards confirm it with numbers. Switch off “Show the result” (`show=0`) to turn the pictures into exercises.
 - The tree and pond tasks can be measured outside with a stick, ranging poles and a tape.
 - **Common stumbling blocks:** using $\overline{AA'}$ instead of $\overline{ZA'}$ in the 2nd theorem; applying the theorems without parallels; adding lengths across $Z$ in the X shape; swapping numerator and denominator; concluding parallelism from $\overline{A'B'} : \overline{AB} = k$.

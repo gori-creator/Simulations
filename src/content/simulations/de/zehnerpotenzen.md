@@ -109,8 +109,6 @@ Das Komma wandert 3 Stellen nach rechts, die Hochzahl ist negativ: $0{,}0042 = 4
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5 (Potenzen und Zehnerpotenzen bei großen Zahlen), Jahrgangsstufe 6 als Wiederholung und für die wissenschaftliche Schreibweise (LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen). Die Reise eignet sich vielleicht als Einstieg am Beamer, die Würfelbauten für das Verständnis von „Hochzahl + 1 heißt mal Grundzahl“.
 - **Schätzen:** Mit ausgeschalteten Ergebnissen könnten die Kinder Größen mithilfe der Kästchen schätzen und anschließend vergleichen.
 - **Modell:** Die Objekte sind maßstäblich gezeichnet, nur Flugzeug und Raumstation sind als Symbole vergrößert. Die Größen sind typische, gerundete Werte.

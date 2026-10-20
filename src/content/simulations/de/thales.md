@@ -90,8 +90,6 @@ Konstruktion: Mittelpunkt von $\overline{MP}$ bestimmen, Thaleskreis über $\ove
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Entdeckend in Jahrgangsstufe 7 (Bayern: Lernbereich zu Dreiecken und besonderen Linien). Die Lernenden formulieren die Vermutung selbst, bevor die Beweisidee eingeblendet wird.
 - **Animation:** Mit **Abspielen** wandert $C$ gleichmäßig über den Kreis. Gut geeignet, um die Konstanz von $\gamma$ trotz wechselnder $\alpha$ und $\beta$ zu betonen.
 - **Häufige Stolpersteine:**

@@ -57,8 +57,6 @@ For $5 - (-3)$ the frog turns around (facing left) and hops $3$ steps backwards 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The simulation links the arrow model and the walking model; for subtraction the arrow of the second number is drawn dashed and flips to the opposite direction.
 - With `show=0` the result and the arrow only appear after **Go!**.
 - **Common stumbling blocks:** “subtracting always makes smaller”; $-3 + (-4) = +7$; “$-5 > -2$ because $5 > 2$”.

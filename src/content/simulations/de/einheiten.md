@@ -111,8 +111,6 @@ Tim hat mit der Umrechnungszahl $10$ wie bei Längen gerechnet. Bei Flächen ist
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5, Größen und Einheiten (Länge, Masse, Zeit; Flächen- und Volumeneinheiten je nach Lehrplanstand später – bitte am Lehrplan prüfen). Die Tafel eignet sich vielleicht am Beamer zum gemeinsamen Vorhersagen: „Wohin wandert das Komma?“
 - **Üben:** Mit ausgeschaltetem Schalter „Ergebnis sofort anzeigen“ oder über **Neue Aufgabe** rechnen die Kinder erst selbst; „Umrechnen“ deckt auf. **Rückweg ⇄** zeigt, dass die Umkehrung wieder zum Ausgangswert führt.
 - **Anschauung:** Lineal, Kästchenquadrat und Würfel könnten mit echten Gegenständen verbunden werden (Lineal, Karopapier, Litermaß, Zentimeterwürfel).

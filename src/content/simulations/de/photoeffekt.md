@@ -99,8 +99,6 @@ Doppelte Intensität heißt doppelt so viele Photonen pro Sekunde, also doppelt 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Thema Quantenobjekte und Photonen; die genaue Einordnung bitte am Lehrplan prüfen. Gut als Ergänzung zum Versuch mit der Fotozelle und der Quecksilberlampe mit Filtern.
 - **Möglicher Ablauf:** zuerst die drei überraschenden Beobachtungen sammeln (Grenzfrequenz, Intensität, Frequenz), dann mit dem Wellenmodell vergleichen, danach die Gegenfeldmethode und zum Schluss die Einstein-Gerade mit der Bestimmung von $h$.
 - **Modell:** Energieverteilung der Elektronen vereinfacht, Kontaktspannungen zwischen Anode und Kathode vernachlässigt. Bei echten Messungen liegt die Gerade deshalb meist etwas verschoben, die Steigung bleibt aber $h$.

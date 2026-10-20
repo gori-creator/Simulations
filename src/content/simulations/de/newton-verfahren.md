@@ -112,8 +112,6 @@ $e_3 \approx \frac{0{,}00245^2}{2{,}828} \approx 2{,}1 \cdot 10^{-6}$; tatsächl
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 11, Anwendungen der Differentialrechnung (Tangentengleichung, Nullstellen ganzrationaler Funktionen) im LehrplanPLUS Gymnasium Bayern – bitte am Lehrplan prüfen. $\cos x = x$ eignet sich als Ausblick.
 - **Herleitung entdecken lassen:** Erst „Nächster Schritt“ mit ausgeschalteten Werten (`show=0`) zeigen, die Lernenden das Steigungsdreieck beschriften lassen und daraus die Formel gewinnen.
 - **Heron und Tabellenkalkulation:** Für $x^2 - 2$ entsteht genau das Heron-Verfahren aus der 9. Klasse. Das Verfahren in einer Tabellenkalkulation nachbauen, mit der Simulation vergleichen und anschließend mit dem Halbierungsverfahren (Bisektion) um die Wette rechnen.

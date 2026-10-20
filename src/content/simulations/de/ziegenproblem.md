@@ -82,8 +82,6 @@ Nein, jetzt ist es tatsächlich $\frac{1}{2}$ zu $\frac{1}{2}$. Mögliche gleich
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 10 (mehrstufige Zufallsexperimente, Simulationen). Gut als Einstieg: Die Klasse stimmt vorher ab, ob sie wechseln würde.
 - **Spielmodus:** Türen können direkt angetippt werden – auch am Smartboard. Im Simulationsmodus laufen tausende Spiele in Sekunden.
 - **Bilder:** Bühne, Türen, Ziege und Auto werden gezeichnet; optional können Bilder ergänzt werden (siehe `docs/BILDER.md`).

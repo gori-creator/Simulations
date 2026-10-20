@@ -63,8 +63,6 @@ $50\,\%$, just like a new one – nuclei do not age. The mean lifetime $\tau = T
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Start with dice: every six “decays” and is removed; then present the simulation as very many dice in very small steps.
 - Let several groups run “New sample” with 100 nuclei and compare $N$ after one half-life: the results scatter, their mean is close to 50.
 - **Common stumbling blocks:** “after two half-lives everything is gone”; “an old nucleus will decay soon”; confusing count rate and activity; taking the half-life as the lifetime of each nucleus.

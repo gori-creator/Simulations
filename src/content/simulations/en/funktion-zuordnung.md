@@ -61,8 +61,6 @@ $D = \mathbb{R}$, range $\{y \mid y \geq -2\}$, since the smallest value is $f(0
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** introducing functions as unique relations, domain and range, the vertical line test.
 - `show=0` hides the colouring and the verdict so that students decide themselves.
 - **Common stumbling blocks:** “two arrows arriving at one element are not allowed”; “a function needs a formula”; “a graph must be connected”; doing the line test horizontally.

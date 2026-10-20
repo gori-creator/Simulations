@@ -51,7 +51,5 @@ $v(t) = -0.15t^2 + 3t$, $v(4) = 9.6$ m/s; $a(t) = -0.3t + 3 = 0$ at $t = 10$ s, 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students predict $f'$ on paper with values hidden, then check with the trace or the sketch task.
 - **Common stumbling blocks:** confusing a maximum of $f$ with a maximum of $f'$; confusing $f(x)$ with $f'(x)$; treating a zero of $f'$ without sign change as an extremum.

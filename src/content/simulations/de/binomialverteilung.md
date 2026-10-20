@@ -99,8 +99,6 @@ Nein. Ohne Zurücklegen ändert sich die Wahrscheinlichkeit für „Mädchen“ 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Stochastik der Oberstufe (Binomialverteilung, Erwartungswert, Standardabweichung, σ-Umgebungen) – die genaue Zuordnung zur Jahrgangsstufe bitte am Lehrplan prüfen. Gut als Ergänzung zum Galtonbrett, das die Entstehung der Verteilung zeigt.
 - **Vom Tafelwerk zum Bild:** Die Treppenansicht macht sichtbar, was in Tabellen der kumulierten Binomialverteilung steht; Werte daraus lassen sich direkt an den Stufen ablesen.
 - **Modellieren:** Vor dem Rechnen gemeinsam prüfen, ob die Voraussetzungen erfüllt sind (zwei Ausgänge, unabhängig, gleiches $p$) – Aufgabe 6 bietet einen Gegenbeispiel-Einstieg.

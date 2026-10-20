@@ -59,8 +59,6 @@ Length $2\pi r \approx 9.42\,\text{cm}$; $O = 2\pi r^2 + 2\pi r h \approx 14.14\
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Suitable for grades 5–8: cuboids and cube nets first, prisms and cylinders later. Ask for predictions before folding; areas and dimensions can be switched off.
 - **Common stumbling blocks:** every arrangement of six squares is a cube net; the cylinder's rectangle has the diameter as its length; the slant height $h_a$ of a pyramid is confused with its height.
 - The cylinder's lateral surface is rolled up from 61 thin strips; the circles are 61-gons with the same circumference.

@@ -62,7 +62,5 @@ $1 - \frac{840}{2401} \approx 65.0\,\%$; certain from $8$ people on. [Show in th
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let the class estimate first, then simulate and calculate.
 - **Common stumbling blocks:** confusing the problem with “someone shares my birthday”; computing $n/365$; adding instead of multiplying the factors.

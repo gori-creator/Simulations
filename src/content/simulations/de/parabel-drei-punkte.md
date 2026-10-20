@@ -120,8 +120,6 @@ Koordinatensystem mit der Mitte auf der $y$-Achse: Punkte $(-5 \mid 0)$, $(0 \mi
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 9, Lernbereich „Quadratische Funktionen“ (LehrplanPLUS Bayern, Gymnasium). Die Simulation verbindet die Parabel mit dem Lösen linearer Gleichungssysteme. Wie weit Systeme mit drei Unbekannten in Jahrgangsstufe 9 verbindlich sind, bitte am eigenen Lehrplan und Lehrwerk prüfen. Gut geeignet zur Vertiefung und zum Modellieren (Wurfbahn, Brückenbogen).
 - **Bedienung:** Die Punkte rasten auf das $0{,}5$er-Gitter ein, damit die Rechnung exakt bleibt. Nicht abbrechende Ergebnisse erscheinen als gekürzter Bruch. Der Term oben links im Bild ist auf zwei Nachkommastellen gerundet.
 - **Rechenweg:** Gezeigt wird das Additionsverfahren mit $\text{II} - \text{I}$ und $\text{III} - \text{I}$. Liegt ein Punkt auf der $y$-Achse, wird $c$ direkt abgelesen. Andere Reihenfolgen sind genauso richtig; ein Vergleich mit Schülerlösungen lohnt sich.

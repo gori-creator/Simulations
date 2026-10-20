@@ -14,6 +14,7 @@ interface Props {
 const { lang } = Astro.props;
 // Fertige Simulationen zuerst, sonst Lehrplan-Reihenfolge
 const sims = [...allSimulations()].sort((a, b) => Number(b.status === 'ready') - Number(a.status === 'ready'));
+const hasPlanned = sims.some((s) => s.status !== 'ready');
 const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
 ---
 
@@ -44,11 +45,15 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
           {GRADE_BANDS.map((b) => <option value={`${b.span[0]}-${b.span[1]}`}>{t(lang, `grades.band.${b.id}`)}</option>)}
         </select>
       </label>
-      <label class="switch" style="min-height:42px">
-        <input class="switch__input" type="checkbox" name="planned" checked />
-        <span class="switch__track" aria-hidden="true"></span>
-        <span class="switch__label">{t(lang, 'catalog.showPlanned')}</span>
-      </label>
+      {
+        hasPlanned && (
+          <label class="switch" style="min-height:42px">
+            <input class="switch__input" type="checkbox" name="planned" checked />
+            <span class="switch__track" aria-hidden="true"></span>
+            <span class="switch__label">{t(lang, 'catalog.showPlanned')}</span>
+          </label>
+        )
+      }
     </form>
 
     <p class="result-count" data-result-count data-template={resultTemplate} aria-live="polite">
@@ -78,7 +83,9 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
     const [from, to] = String(data.get('grade') ?? '')
       .split('-')
       .map(Number);
-    const showPlanned = data.get('planned') !== null;
+    // Ohne Schalter (nichts geplant) alles zeigen
+    const plannedSwitch = form.querySelector('[name="planned"]');
+    const showPlanned = !plannedSwitch || data.get('planned') !== null;
     let visible = 0;
     for (const card of cards) {
       const d = card.dataset;

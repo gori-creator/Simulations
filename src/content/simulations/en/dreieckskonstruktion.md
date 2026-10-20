@@ -63,8 +63,6 @@ The circle around $B$ with radius $4\,\text{cm}$ cuts the arm of $\alpha$ twice:
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** grade 7, congruence and triangle constructions. The simulation can construct step by step on the projector while the class draws along; with `meas=0` the sheet starts blank and measurements stay hidden, so students construct first and compare afterwards.
 - **Common stumbling blocks:**
   - The sketch is skipped or parts are assigned to the wrong side.
