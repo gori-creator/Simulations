@@ -438,11 +438,11 @@ export default defineSimulation({
       return { w: b.w + 14, h: b.asc + b.desc + 8 };
     };
     /** Pill neben einem Punkt: um die halbe Pillgröße in Richtung n verschoben. */
-    function sidePill(mx: number, my: number, n: Px, gap: number, src: string, opts: { color?: string; border?: string; size?: number; alpha?: number; bounds?: Rect } = {}): void {
+    function sidePill(mx: number, my: number, n: Px, gap: number, src: string, opts: { color?: string; border?: string; size?: number; alpha?: number; bounds?: Rect } = {}): Rect {
       const sz = opts.size ?? fs(12.5, 11.5);
       const ps = pillSize(src, sz);
       const off = (Math.abs(n[0]) * ps.w) / 2 + (Math.abs(n[1]) * ps.h) / 2 + gap;
-      fpill(mx + n[0] * off, my + n[1] * off, src, { ...opts, size: sz });
+      return fpill(mx + n[0] * off, my + n[1] * off, src, { ...opts, size: sz });
     }
 
     function dot(x: number, y: number, color: string, r: number, alpha = 1): void {
@@ -947,7 +947,7 @@ export default defineSimulation({
       const L1 = lakePts(p.d1, p.d2, p.w);
       const box = bbox([...L1.tri, ...L1.lake]);
       box[1] -= 0.06 * (box[3] - box[1]);
-      const pad = small ? { l: 18, r: 18, t: 70, b: 40 } : { l: 26, r: 26, t: 80, b: 50 };
+      const pad = small ? { l: 30, r: 30, t: 70, b: 44 } : { l: 44, r: 44, t: 84, b: 54 };
       return fitBox(R, box, pad, 2);
     }
     function retargetViews(now: number, instant: boolean): void {
@@ -1235,7 +1235,8 @@ export default defineSimulation({
             line(pc, qp[1]!, withAlpha(theme.muted, 0.9), 1.5, { dash: [5, 4] });
             line(qp[1]!, qp[2]!, withAlpha(theme.muted, 0.9), 1.5, { dash: [5, 4] });
           }
-          // Beschriftung der Korrekturrechtecke
+          // Beschriftung der Korrekturrechtecke (die zweite nur, wenn sie die erste nicht überdeckt)
+          let first: Rect | null = null;
           for (const q of [fig.corrA, fig.corrB]) {
             const qp = QP(q);
             const w1 = Math.hypot(qp[1]![0] - qp[0]![0], qp[1]![1] - qp[0]![1]);
@@ -1246,7 +1247,13 @@ export default defineSimulation({
             const n: Px = [(qp[3]![0] - qp[0]![0]) / nl, (qp[3]![1] - qp[0]![1]) / nl];
             const v = Math.abs(a * b * cosD(ga));
             const src = q.area < 0 ? `\\c{h}{+ |ab · cos γ|${show ? ` ${eq(v, 1)} ${N(v, 1)}` : ''}}` : `\\c{h}{− ab · cos γ${show ? ` ${eq(v, 1)} ${N(v, 1)}` : ''}}`;
-            sidePill(ex[0], ex[1], n, 5, src, { size: fs(11.5, 11), border: withAlpha(col.h(), 0.6), bounds: R });
+            const sz = fs(11.5, 11);
+            const ps = pillSize(src, sz);
+            const off = (Math.abs(n[0]) * ps.w) / 2 + (Math.abs(n[1]) * ps.h) / 2 + 5;
+            const cx1 = ex[0] + n[0] * off;
+            const cy1 = ex[1] + n[1] * off;
+            if (first && Math.abs(cx1 - (first.x + first.w / 2)) < (ps.w + first.w) / 2 + 4 && Math.abs(cy1 - (first.y + first.h / 2)) < (ps.h + first.h) / 2 + 4) continue;
+            first = fpill(cx1, cy1, src, { size: sz, border: withAlpha(col.h(), 0.6), bounds: { x: R.x, y: R.y + fs(70, 84), w: R.w, h: R.h - fs(70, 84) } });
           }
           g.restore();
         }
@@ -1459,7 +1466,7 @@ export default defineSimulation({
             const key = angKey[i]!;
             const em = given(key) ? 1 : 0.25;
             const src = second && i === 0 ? null : valSrc(i, angs[i]!, true, i > 0 ? idxSuffix : '');
-            outside[i] = cornerAngle(pts, i, sideCol[i]!(), em, src, lab, R, fs(34, 28), second);
+            outside[i] = cornerAngle(pts, i, sideCol[i]!(), em, src, lab, R, fs(34, 28), second && i === 2);
           }
           for (let i = 0; i < 3; i++) {
             if (second && (i === 2 || i === 0)) continue;
@@ -1800,7 +1807,7 @@ export default defineSimulation({
       }
       scaleBar(R, V.s, k.panel);
       g.restore();
-      fpill(R.x + 12, R.y + 30, `\\t{${say(L('Lageplan', 'Map'))}}: \\c{c}{s}, \\c{a}{α}, \\c{b}{β} \\t{${say(L('gemessen', 'measured'))}} ⇒ \\c{c}{γ} = 180° − α − β ⇒ \\c{r}{\\t{${say(L('Sinussatz', 'law of sines'))}}}`, { align: 'left', size: fs(13.5, 12), alpha: k.panel, border: withAlpha(col.r(), 0.55), maxW: R.w - 40 });
+      fpill(R.x + 12, R.y + 30, sm() ? `\\c{c}{s}, \\c{a}{α}, \\c{b}{β} ⇒ \\c{c}{γ} ⇒ \\c{r}{\\t{${say(L('Sinussatz', 'law of sines'))}}}` : `\\t{${say(L('Lageplan', 'Map'))}}: \\c{c}{s}, \\c{a}{α}, \\c{b}{β} \\t{${say(L('gemessen', 'measured'))}} ⇒ \\c{c}{γ} = 180° − α − β ⇒ \\c{r}{\\t{${say(L('Sinussatz', 'law of sines'))}}}`, { align: 'left', size: fs(13.5, 12), alpha: k.panel, border: withAlpha(col.r(), 0.55), maxW: R.w - 40 });
       g.restore();
     }
 
@@ -2196,13 +2203,14 @@ export default defineSimulation({
           const ga = angles(t)[2];
           const corr = 2 * a * b * cosD(ga);
           const kn = p.show;
+          const ex = isExact(a * a, 1) && isExact(b * b, 1) && isExact(corr, 1);
           rows.push({ src: `\\c{c}{c}² = ${N(a)}² + ${N(b)}² − 2 · ${N(a)} · ${N(b)} · cos ${N(ga, 1)}°`, size: fs(13, 12), gap: 6 });
           rows.push({
-            src: kn ? `\\c{c}{c}² ≈ \\c{a}{${N(a * a, 1)}} + \\c{b}{${N(b * b, 1)}} ${Math.abs(corr) < 0.05 ? '−' : corr > 0 ? '−' : '+'} \\c{h}{${N(Math.abs(corr), 1)}} ≈ \\b{${N(c * c, 1)}}` : `\\c{c}{c}² = ?`,
+            src: kn ? `\\c{c}{c}² ${ex ? '=' : '≈'} \\c{a}{${N(a * a, 1)}} + \\c{b}{${N(b * b, 1)}} ${corr >= -0.05 ? '−' : '+'} \\c{h}{${N(Math.abs(corr), 1)}} ${ex ? '=' : '≈'} \\b{${N(c * c, 1)}}` : `\\c{c}{c}² = ?`,
             size: fs(13, 12),
             gap: 6,
           });
-          rows.push({ src: kn ? `\\c{c}{c} ≈ \\r{${N(c * c, 1)}} ≈ \\c{c}{\\b{${N(c)} cm}}` : '\\c{c}{c} = ?', size: fs(13.5, 12.5), gap: 10 });
+          rows.push({ src: kn ? `\\c{c}{c} ${ex ? '=' : '≈'} \\r{${N(c * c, 1)}} ${eq(c)} \\c{c}{\\b{${N(c)} cm}}` : '\\c{c}{c} = ?', size: fs(13.5, 12.5), gap: 10 });
           rows.push({ src: `\\c{m}{\\t{${say(L('Umgestellt (SSS)', 'Rearranged (SSS)'))}}:}  cos \\c{c}{γ} = \\f{\\c{a}{a}² + \\c{b}{b}² − \\c{c}{c}²}{2\\c{a}{a}\\c{b}{b}}`, size: fs(12.5, 11.5), gap: 4 });
         }
         return formulaCard(R, measure, k, say(L('Kosinussatz', 'Law of cosines')), col.h(), rows);
@@ -2435,7 +2443,8 @@ export default defineSimulation({
           if (res.tris.length === 2) {
             add(`② \\c{c}{γ_1} = sin^{−1}(${N(sg, 4)}) ${eq(g1)} \\b{${N(g1)}°}`, 1, { gap: 4 });
             add(`\\c{r}{γ_2} = 180° − γ_1 ${eq(180 - g1)} \\b{${N(180 - g1)}°}`, 1, { gap: 8 });
-            add(`③ α + γ_2 ${eq(G.al + 180 - g1)} ${N(G.al + 180 - g1)}° < 180° ⇒ \\c{r}{\\b{\\t{${say(L('zwei Dreiecke', 'two triangles'))}}}}`, 2, { gap: 8 });
+            add(`③ α + γ_2 ${eq(G.al + 180 - g1)} ${N(G.al + 180 - g1)}° < 180°`, 2, { gap: 4 });
+            add(`⇒ \\c{r}{\\b{\\t{${say(L('zwei Dreiecke', 'two triangles'))}}}}`, 2, { gap: 8 });
             const t2 = res.tris[1]!;
             add(`④ \\c{b}{β_1} ${eq(s1.be)} ${N(s1.be)}°,  \\c{b}{β_2} ${eq(t2.be)} ${N(t2.be)}°`, 3, { gap: 8 });
             add(`⑤ \\c{b}{b} = \\f{a · sin β}{sin α}`, 4, { gap: 4 });
@@ -2466,6 +2475,7 @@ export default defineSimulation({
           const v = survey(p.s, p.p1, p.p2);
           const st = (i: number) => storyK(now, i, 5);
           const rows: Row[] = [
+            { src: `\\c{m}{\\t{${say(L('Gemessen', 'Measured'))}}:}  \\c{c}{s = ${m(p.s, 0)}},  \\c{a}{α = ${p.p1}°},  \\c{b}{β = ${p.p2}°}`, at: st(1), gap: 10, size: fs(13, 12) },
             { src: `① \\c{c}{γ} = 180° − ${p.p1}° − ${p.p2}° = \\c{c}{\\b{${N(v.tau, 0)}°}}`, at: st(3), gap: 8 },
             { src: `② \\f{\\c{b}{|AT|}}{sin \\c{b}{β}} = \\f{\\c{c}{s}}{sin \\c{c}{γ}}`, at: st(4), gap: 4 },
             { src: `\\c{b}{|AT|} = \\f{${m(p.s, 0)} · sin ${p.p2}°}{sin ${N(v.tau, 0)}°} ${show ? `${eq(v.at, 1)} \\c{b}{\\b{${m(v.at)}}}` : '= ?'}`, at: st(4), gap: 8 },
@@ -2477,8 +2487,9 @@ export default defineSimulation({
         const c = lakeDistance(p.d2, p.d1, p.w);
         const st = (i: number) => storyK(now, i, 4);
         const rows: Row[] = [
+          { src: `\\c{m}{\\t{${say(L('Gemessen', 'Measured'))}}:}  \\c{a}{a = ${m(p.d2, 0)}},  \\c{b}{b = ${m(p.d1, 0)}},  \\c{c}{γ = ${p.w}°}`, at: st(1), gap: 10, size: fs(13, 12) },
           { src: '\\c{c}{c}² = \\c{a}{a}² + \\c{b}{b}² − 2\\c{a}{a}\\c{b}{b} · cos \\c{c}{γ}', at: st(2), gap: 6, size: fs(14, 13) },
-          { src: `\\c{c}{c}² = ${N(p.d2, 0)}² + ${N(p.d1, 0)}² − 2 · ${N(p.d2, 0)} · ${N(p.d1, 0)} · cos ${p.w}°`, at: st(3), gap: 6, size: fs(12.5, 11.5) },
+          { src: `\\c{c}{c}² = ${grp(p.d2)}² + ${grp(p.d1)}² − 2 · ${grp(p.d2)} · ${grp(p.d1)} · cos ${p.w}°`, at: st(3), gap: 6, size: fs(12.5, 11.5) },
           { src: show ? `\\c{c}{c}² ${eq(c * c, 0)} ${grp(c * c)} \\t{m²}` : '\\c{c}{c}² = ?', at: st(3), gap: 6 },
           { src: show ? `\\c{c}{c} ${eq(c, 1)} \\c{c}{\\b{${m(c)}}}` : '\\c{c}{c} = ?', at: st(3) },
         ];

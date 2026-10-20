@@ -22,17 +22,14 @@ $$
 
 The picture shows squares on the sides. The altitudes divide them into rectangles; the two rectangles at vertex $C$ each have area $ab \cdot \cos \gamma$. For $\gamma = 90°$ they vanish (**Pythagoras**); for an obtuse $\gamma$ they lie outside and are added.
 
-**Area:** $A = \frac12 \cdot a \cdot b \cdot \sin \gamma$.
-
-**Which law?** SSS and SAS → law of cosines; ASA → angle sum, then law of sines; SSA → law of sines, with 0, 1 or 2 solutions (e.g. $\sin \gamma = 0{,}75$ gives $\gamma \approx 48{,}59°$ or $131{,}41°$).
+**Area:** $A = \frac12 \cdot a \cdot b \cdot \sin \gamma$. **Which law?** SSS and SAS → law of cosines; ASA → angle sum, then law of sines; SSA → law of sines, with 0, 1 or 2 solutions (e.g. $\sin \gamma = 0{,}75$ gives $\gamma \approx 48{,}59°$ or $131{,}41°$).
 
 ## Try it
 
 1. [Law of sines](?m=sin): drag the vertices – the three bars always stay as long as $2r$. Press **“Play the proof”**.
 2. [Law of cosines](?m=cos): press **“Sweep γ through 90°”** and watch the orange rectangles at $C$.
-3. [Which law fits?](?m=solve&g=sws&a=7&b=5&ga=60): tap SSS, SAS, ASA and SSA at the top and solve step by step.
-4. [SSA with two solutions](?m=solve&g=ssw&a=4&c=6&al=30): reduce $a$ to $3$ and then to $2$.
-5. Applications: [tree across the river](?m=app&app=tree) and [across the lake](?m=app&app=lake).
+3. [Which law fits?](?m=solve&g=sws&a=7&b=5&ga=60): tap SSS, SAS, ASA and SSA at the top and solve step by step. For [SSA](?m=solve&g=ssw&a=4&c=6&al=30), reduce $a$ to $3$ and then to $2$.
+4. Applications: [tree across the river](?m=app&app=tree) and [across the lake](?m=app&app=lake).
 
 ## Tasks
 
@@ -47,29 +44,7 @@ $c^2 = 49 + 25 - 35 = 39$, $c \approx 6{,}24\,\text{cm}$; $A = \frac12 \cdot 7 \
 
 </details>
 
-### Task 2: One side and two angles
-
-$c = 10\,\text{cm}$, $\alpha = 40°$, $\beta = 60°$. [Load task](?m=solve&g=wsw&c=10&al=40&be=60&show=0&_hide=1)
-
-<details>
-<summary>Show solution</summary>
-
-$\gamma = 80°$, $a = \frac{10 \cdot \sin 40°}{\sin 80°} \approx 6{,}53\,\text{cm}$, $b \approx 8{,}79\,\text{cm}$, $2r \approx 10{,}15\,\text{cm}$. [Show](?m=solve&g=wsw&c=10&al=40&be=60)
-
-</details>
-
-### Task 3: Angles from three sides
-
-Sides $4$, $5$ and $6\,\text{cm}$. [Load task](?m=solve&g=sss&a=4&b=5&c=6&show=0&_hide=1)
-
-<details>
-<summary>Show solution</summary>
-
-$\cos \gamma = \frac{16 + 25 - 36}{40} = 0{,}125$, $\gamma \approx 82{,}82°$; $\cos \alpha = 0{,}75$, $\alpha \approx 41{,}41°$; $\beta \approx 55{,}77°$. [Show](?m=solve&g=sss&a=4&b=5&c=6)
-
-</details>
-
-### Task 4: Two triangles?
+### Task 2: Two triangles?
 
 $a = 4\,\text{cm}$, $c = 6\,\text{cm}$, $\alpha = 30°$. [Load task](?m=solve&g=ssw&a=4&c=6&al=30&show=0&_hide=1)
 
@@ -80,7 +55,7 @@ $\sin \gamma = \frac{6 \cdot 0{,}5}{4} = 0{,}75$, so $\gamma_1 \approx 48{,}59°
 
 </details>
 
-### Task 5: Surveying
+### Task 3: Surveying
 
 Baseline $200\,\text{m}$, angles $70°$ at $A$ and $60°$ at $B$ to a tree $T$. [Load task](?m=app&app=tree&s=200&p1=70&p2=60&show=0&_hide=1)
 
@@ -95,11 +70,8 @@ Angle at $T$: $50°$. $|AT| = \frac{200 \cdot \sin 60°}{\sin 50°} \approx 226{
 
 *Just suggestions – you know your class best.*
 
-- Grade 10 (Bavarian Gymnasium, law of sines and cosines); please check the exact curriculum reference.
-- Let students watch the bars first (“what stays the same?”) before playing the proof.
+- Grade 10 (Bavarian Gymnasium, law of sines and cosines; please check the exact curriculum reference). Let students watch the bars first (“what stays the same?”) before playing the proof.
 - Sort cards with given parts (SSS, SAS, ASA, SSA), then solve in the solver with “Show results” off.
 - **Common stumbling blocks:**
-  - pairing a side with an angle that is not opposite to it;
-  - computing $a^2 + b^2 - 2ab$ first and then multiplying by $\cos \gamma$;
-  - missing the second SSA solution $180° - \gamma$;
-  - the calculator set to radians.
+  - pairing a side with an angle that is not opposite to it; computing $a^2 + b^2 - 2ab$ first and then multiplying by $\cos \gamma$;
+  - missing the second SSA solution $180° - \gamma$; the calculator set to radians.
