@@ -268,3 +268,64 @@ describe('Modell: Potenzfunktionen – Übergang zwischen Graphen', () => {
     expect(morphValue([{ n: 3, w: 1 }], 1, 0, 4)).toBe(0);
   });
 });
+
+describe('Modell: Potenzfunktionen – Aufgaben und Beispiele aus dem Lernmaterial', () => {
+  it('Aufgabe 1: A(−2 | −4) liegt auf y = 0,5 · x³, B(3 | 13) nicht', () => {
+    expect(power(0.5, 3, -2)).toBe(-4);
+    expect(power(0.5, 3, 3)).toBe(13.5);
+  });
+
+  it('Aufgabe 2: a · 2⁴ = 8 ⇒ a = 0,5, W = ℝ₀⁺', () => {
+    const a = 8 / 2 ** 4;
+    expect(a).toBe(0.5);
+    expect(power(a, 4, 2)).toBe(8);
+    expect(range(a, 4)).toBe('R0+');
+  });
+
+  it('Aufgabe 3: Steckbrief von f(x) = −2 · x⁻³', () => {
+    expect(power(-2, -3, 1)).toBeCloseTo(-2, 12);
+    expect(power(-2, -3, -1)).toBeCloseTo(2, 12);
+    expect(domain(-3)).toBe('R\\0');
+    expect(range(-2, -3)).toBe('R\\0');
+    expect(symmetry(-3)).toBe('point');
+    expect(monotony(-2, -3)).toEqual({ left: 'inc', right: 'inc', whole: false });
+    expect(limits(-2, -3)).toEqual({ negInf: 0, posInf: 0, zeroLeft: '+inf', zeroRight: '-inf' });
+    // Äste im II. und IV. Quadranten
+    expect(power(-2, -3, -0.5)).toBeGreaterThan(0);
+    expect(power(-2, -3, 0.5)).toBeLessThan(0);
+  });
+
+  it('Ausprobieren 6: x³ liegt über x für −1 < x < 0 und x > 1', () => {
+    expect(compareIntervals(1, 1, 3)).toEqual([
+      { from: -Infinity, to: -1, sign: 1 },
+      { from: -1, to: 0, sign: -1 },
+      { from: 0, to: 1, sign: 1 },
+      { from: 1, to: Infinity, sign: -1 },
+    ]);
+  });
+
+  it('Aufgabe 5 und 6: gemeinsame Punkte, gerades negatives n', () => {
+    for (const n of [1, 3, 5])
+      expect(commonPoints(1, n)).toEqual([
+        [-1, -1],
+        [0, 0],
+        [1, 1],
+      ]);
+    expect(commonPoints(1, -3)).toEqual([
+      [-1, -1],
+      [1, 1],
+    ]);
+    expect(range(1, -2)).toBe('R+');
+    expect(symmetry(-2)).toBe('axis');
+    expect(asymptotes(-2).vertical).toBe(0);
+  });
+
+  it('Werte aus den Beispielen (Prüfrunde)', () => {
+    expect(power(1, 3, 1.2)).toBeCloseTo(1.728, 12); // gerundet 1,73 – also „≈“, nicht „=“
+    expect(power(1, -2, 0.5)).toBeCloseTo(4, 12);
+    expect(power(1, 3, 0.5)).toBe(0.125);
+    expect(power(1, 4, 1.5)).toBeCloseTo(5.0625, 12);
+    expect(power(-0.5, 2, 1.5)).toBe(-1.125);
+    expect(power(1.5, 0, 1.5)).toBe(1.5);
+  });
+});
