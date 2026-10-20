@@ -222,7 +222,7 @@ export default defineSimulation({
       noTool: 'Choose a measuring tool to measure the angle.',
       tipNull: 'For a zero angle both arms lie on top of each other.',
       tipSpitz: 'Acute angles are greater than 0° and less than 90°.',
-      tipRecht: 'A right angle measures exactly 90°. It is marked with a small square or a quarter circle with a dot.',
+      tipRecht: 'A right angle measures exactly 90°. It is marked with a quarter circle and a dot.',
       tipStumpf: 'Obtuse angles are greater than 90° and less than 180°.',
       tipGestreckt: 'For a straight angle (180°) the two arms form a straight line.',
       tipUeber: 'Reflex angles lie between 180° and 360°. Measure the other angle β and calculate α = 360° − β.',
@@ -1325,13 +1325,15 @@ export default defineSimulation({
       // Karte 3: Merksatz (Desktop und Seitenspalte bei Tablet quer, wenn Platz ist)
       if (!W && !side()) return;
       const rest = R.y + R.h - y;
-      const tipKey = { null: 'tipNull', spitz: 'tipSpitz', recht: 'tipRecht', stumpf: 'tipStumpf', gestreckt: 'tipGestreckt', ueberstumpf: tool === 'voll' ? 'tipUeberVoll' : 'tipUeber', voll: 'tipVoll' }[t];
+      // Bei verdeckter Größe darf auch der Merksatz die Winkelart nicht verraten: dann nur die Schätzhilfe
+      const tipKey = !p.show ? 'tipEstimate' : { null: 'tipNull', spitz: 'tipSpitz', recht: 'tipRecht', stumpf: 'tipStumpf', gestreckt: 'tipGestreckt', ueberstumpf: tool === 'voll' ? 'tipUeberVoll' : 'tipUeber', voll: 'tipVoll' }[t];
       const nf = `500 12.5px ${theme.font}`;
       const rows = wrap(ctx.t(tipKey), R.w - 2 * pad, nf);
       if (rest < rows.length * 17 + 36) return;
       card({ x: R.x, y, w: R.w, h: rest });
       title(R.x + pad, y + 17, ctx.t('note'));
       textRows(rows, R.x + pad, y + 38, 17, nf, theme.text);
+      if (!p.show) return;
       const est = wrap(ctx.t('tipEstimate'), R.w - 2 * pad, `500 11.5px ${theme.font}`);
       const ey = y + 38 + rows.length * 17 + 6;
       if (ey + est.length * 15 < y + rest - 6) textRows(est, R.x + pad, ey, 15, `500 11.5px ${theme.font}`, theme.muted);
