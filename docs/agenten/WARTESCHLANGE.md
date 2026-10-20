@@ -23,7 +23,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - P05 fertig — stoesse, kreisbewegung, planetenbahnen
 - P06 fertig — federpendel, resonanz, wellen-ausbreitung
 - P07 fertig — doppler-effekt, interferenz, stehende-wellen (15.10.)
-- P08 läuft (Physik) — teilchenmodell (fertig 18.10.), gasgesetze (fertig 19.10.), radioaktiver-zerfall (in Arbeit beim Projektinhaber)
+- P08 fertig (Physik) — teilchenmodell (18.10.), gasgesetze (19.10.), radioaktiver-zerfall (20.10.). Damit sind alle Physik-Simulationen gebaut.
 - P09 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — feldlinien, kondensator, lorentzkraft
 - P10 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — induktion, doppelspalt, photoeffekt
 - P11 fertig (Helfer lokal, Rückgabe 19.10. als ZIP, Abnahme und Einbau 19.10.) — linienspektren, elektronenbeugung
