@@ -475,9 +475,57 @@ export const physik: Subject = {
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
           grades: [11, 13],
           simulations: [
-            planned('feldlinien', L('Feldlinien von Punktladungen', 'Field lines of point charges'), [11, 12]),
-            planned('kondensator', L('Lade- und Entladekurve des Kondensators', 'Charging and discharging a capacitor'), [11, 12], { kmk: ['P-BK-Mathematisieren'] }),
-            planned('lorentzkraft', L('Lorentzkraft und Fadenstrahlrohr', 'Lorentz force and fine-beam tube'), [11, 13]),
+            {
+              id: 'feldlinien',
+              status: 'ready',
+              slug: L('feldlinien-punktladungen', 'field-lines-point-charges'),
+              title: L('Feldlinien von Punktladungen', 'Field lines of point charges'),
+              summary: L(
+                'Bis zu drei Punktladungen frei verschieben und ihre Ladung einstellen: Feldlinien, Äquipotentiallinien und eine Farbkarte der Feldstärke entstehen live. Eine Probeladung misst E, die Kraft F = q · E und das Potential; dazu der Plattenkondensator mit homogenem Feld E = U / d.',
+                'Move up to three point charges freely and set their charge: field lines, equipotential lines and a colour map of the field strength appear live. A test charge measures E, the force F = q · E and the potential; plus the parallel-plate capacitor with its uniform field E = U / d.',
+              ),
+              grades: [11, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['elektrisches Feld', 'Feldlinien', 'Feldstärke', 'Punktladung', 'Coulombsches Gesetz', 'Dipol', 'Äquipotentiallinien', 'Potential', 'Probeladung', 'Plattenkondensator', 'homogenes Feld', 'Superposition'],
+                ['electric field', 'field lines', 'field strength', 'point charge', 'Coulomb’s law', 'dipole', 'equipotential lines', 'potential', 'test charge', 'parallel-plate capacitor', 'uniform field', 'superposition'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'kondensator',
+              status: 'ready',
+              slug: L('kondensator-laden-entladen', 'capacitor-charging-discharging'),
+              title: L('Lade- und Entladekurve des Kondensators', 'Charging and discharging a capacitor'),
+              summary: L(
+                'RC-Kreis mit Umschalter zum Antippen: Der Kondensator lädt sich über den Widerstand auf und entlädt sich wieder, Elektronen fließen sichtbar. Die Diagramme U(t) und I(t) zeigen die Exponentialkurven mit Tangente, Zeitkonstante τ = R · C und Halbwertszeit; dazu Anfangsstrom und Energie W = ½ C U².',
+                'RC circuit with a tappable switch: the capacitor charges through the resistor and discharges again, with visibly moving electrons. The U(t) and I(t) graphs show the exponential curves with tangent, time constant τ = R · C and half-life; plus initial current and energy W = ½ C U².',
+              ),
+              grades: [11, 12],
+              kmk: ['P-BK-Mathematisieren', 'P-S', 'P-E', 'P-BK-Energie'],
+              keywords: L(
+                ['Kondensator', 'Kapazität', 'Laden', 'Entladen', 'RC-Glied', 'Zeitkonstante', 'Halbwertszeit', 'Exponentialfunktion', 'Tangente', 'Ladestrom', 'Energie im Kondensator', 'Widerstand'],
+                ['capacitor', 'capacitance', 'charging', 'discharging', 'RC circuit', 'time constant', 'half-life', 'exponential function', 'tangent', 'charging current', 'energy in a capacitor', 'resistor'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'lorentzkraft',
+              status: 'ready',
+              slug: L('lorentzkraft-fadenstrahlrohr', 'lorentz-force-fine-beam-tube'),
+              title: L('Lorentzkraft und Fadenstrahlrohr', 'Lorentz force and fine-beam tube'),
+              summary: L(
+                'Fadenstrahlrohr in Helmholtzspulen: Beschleunigungsspannung und Spulenstrom einstellen, die leuchtende Kreisbahn der Elektronen an der Messleiter ablesen und aus einer Messreihe die spezifische Ladung e/m bestimmen. Dazu Vektoren v, F und B sowie die Linke-Hand-Regel für Elektronen.',
+                'Fine-beam tube in Helmholtz coils: set the accelerating voltage and the coil current, read the glowing circular path of the electrons on the measuring ladder and determine the specific charge e/m from a series of measurements. Plus the vectors v, F and B and the left-hand rule for electrons.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
+                ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
+              ),
+              thumb: 'generic',
+            },
             {
               id: 'induktion',
               status: 'ready',
