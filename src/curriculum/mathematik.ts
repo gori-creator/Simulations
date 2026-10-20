@@ -161,14 +161,14 @@ export const mathematik: Subject = {
             slug: L('prozentstreifen', 'percentage-bar'),
             title: L('Prozentstreifen', 'Percentage bar'),
             summary: L(
-              'Grundwert, Prozentsatz und Prozentwert am Prozentstreifen: oben Prozente, unten Werte, das Ende des Streifens lässt sich ziehen. Der Dreisatz entsteht Zeile für Zeile; dazu Rabatt, Mehrwertsteuer, Zinsen und der Anteil einer Klasse.',
-              'Base value, rate and percentage on a percentage bar: percent on top, values below, and the end of the bar can be dragged. The rule of three builds up line by line; plus discount, VAT, interest and the share of a class.',
+              'Grundwert, Prozentsatz und Prozentwert am großen Prozentstreifen mit ziehbarem Griff: Die Animation „Dreisatz am Streifen“ teilt in 100 Teile und zählt – auch rückwärts. Dazu Hunderterfeld und Kreis, gezeichnete Alltagssituationen (Rabatt, Preiserhöhung, Kassenbon mit Mehrwertsteuer, Sparbuch, Umfrage) und der Stolperstein beim Zurückrechnen.',
+              'Base value, rate and percentage value on a large percentage bar with a draggable handle: the animation “rule of three on the bar” splits it into 100 parts and counts – also backwards. Plus a hundred square and a circle, drawn everyday situations (discount, price rise, receipt with VAT, savings book, survey) and the classic pitfall when working backwards.',
             ),
             grades: [6, 7],
             kmk: ['M-L1', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
-              ['Prozent', 'Prozentrechnung', 'Prozentstreifen', 'Grundwert', 'Prozentwert', 'Prozentsatz', 'Dreisatz', 'Rabatt', 'Mehrwertsteuer', 'Zinsen', 'Anteil', 'Bruch'],
-              ['percent', 'percentage', 'percentage bar', 'base value', 'rate', 'rule of three', 'discount', 'VAT', 'interest', 'share', 'fraction'],
+              ['Prozent', 'Prozentrechnung', 'Prozentstreifen', 'Grundwert', 'Prozentwert', 'Prozentsatz', 'Dreisatz', 'Hunderterfeld', 'Rabatt', 'Preiserhöhung', 'vermehrter Grundwert', 'verminderter Grundwert', 'Mehrwertsteuer', 'Zinsen', 'Umfrage', 'Anteil', 'Bruch'],
+              ['percent', 'percentage', 'percentage bar', 'base value', 'rate', 'rule of three', 'hundred square', 'discount', 'price increase', 'VAT', 'interest', 'survey', 'share', 'fraction'],
             ),
             thumb: 'generic',
           },
