@@ -1,4 +1,4 @@
-import { area, L, planned, topic } from './helpers';
+import { area, L, topic } from './helpers';
 import type { Subject } from './types';
 
 /**
@@ -171,10 +171,42 @@ export const mathematik: Subject = {
           },
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
-          planned('prozentstreifen', L('Prozentstreifen', 'Percentage bar'), [6, 7]),
+          {
+            id: 'prozentstreifen',
+            status: 'ready',
+            slug: L('prozentstreifen', 'percentage-bar'),
+            title: L('Prozentstreifen', 'Percentage bar'),
+            summary: L(
+              'Grundwert, Prozentsatz und Prozentwert am großen Prozentstreifen mit ziehbarem Griff: Die Animation „Dreisatz am Streifen“ teilt in 100 Teile und zählt – auch rückwärts. Dazu Hunderterfeld und Kreis, gezeichnete Alltagssituationen (Rabatt, Preiserhöhung, Kassenbon mit Mehrwertsteuer, Sparbuch, Umfrage) und der Stolperstein beim Zurückrechnen.',
+              'Base value, rate and percentage value on a large percentage bar with a draggable handle: the animation “rule of three on the bar” splits it into 100 parts and counts – also backwards. Plus a hundred square and a circle, drawn everyday situations (discount, price rise, receipt with VAT, savings book, survey) and the classic pitfall when working backwards.',
+            ),
+            grades: [6, 7],
+            kmk: ['M-L1', 'M-L2', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Prozent', 'Prozentrechnung', 'Prozentstreifen', 'Grundwert', 'Prozentwert', 'Prozentsatz', 'Dreisatz', 'Hunderterfeld', 'Rabatt', 'Preiserhöhung', 'vermehrter Grundwert', 'verminderter Grundwert', 'Mehrwertsteuer', 'Zinsen', 'Umfrage', 'Anteil', 'Bruch'],
+              ['percent', 'percentage', 'percentage bar', 'base value', 'rate', 'rule of three', 'hundred square', 'discount', 'price increase', 'VAT', 'interest', 'survey', 'share', 'fraction'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('reelle-zahlen', L('Wurzeln und reelle Zahlen', 'Roots and real numbers'), [
-          planned('quadratwurzel', L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'), [9, 9]),
+          {
+            id: 'quadratwurzel',
+            status: 'ready',
+            slug: L('quadratwurzel-heron-verfahren', 'square-roots-herons-method'),
+            title: L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'),
+            summary: L(
+              'Ein Rechteck mit dem Flächeninhalt a wird zum Quadrat: Ein Streifen wird abgeschnitten und angelegt, die neue Seite ist der Mittelwert (Heron-Verfahren), die Fläche bleibt. Dazu Einheitsquadrate auf Kästchenpapier, die Intervallschachtelung mit Lupe und Probe durch Quadrieren sowie der Beweis, dass √2 kein Bruch ist.',
+              'A rectangle with area a turns into a square: a strip is cut off and moved, the new side is the mean (Heron’s method) and the area stays the same. Plus unit squares on squared paper, nested intervals with a magnifier and checks by squaring, and the proof that √2 is not a fraction.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert', 'teilweise Wurzelziehen', 'Wurzel 2', 'Widerspruchsbeweis', 'Diagonale', 'Kästchenpapier'],
+              ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square', 'simplifying roots', 'root 2', 'proof by contradiction', 'diagonal'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
@@ -415,7 +447,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
-          planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
+          {
+            id: 'dreieckskonstruktion',
+            status: 'ready',
+            slug: L('dreieckskonstruktion-kongruenzsaetze', 'constructing-triangles-congruence'),
+            title: L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'),
+            summary: L(
+              'Dreiecke aus drei gegebenen Stücken Schritt für Schritt mit Lineal, Geodreieck und Zirkel konstruieren – mit Planfigur und Konstruktionsbeschreibung wie im Heft: SSS, SWS, WSW und SsW. Sonderfälle sichtbar: Lücke bei verletzter Dreiecksungleichung, parallele Schenkel, keine, eine oder zwei Lösungen bei SSW und ähnliche Dreiecke bei WWW.',
+              'Construct triangles from three given parts step by step with ruler, set square and compasses – with a sketch and written construction steps: SSS, SAS, ASA and SsA. Special cases made visible: the gap when the triangle inequality fails, parallel arms, no, one or two solutions for SSA and similar triangles for AAA.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung', 'Kreis', 'Schnittpunkt', 'Winkelsumme', 'ähnlich'],
+              ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique', 'construction steps', 'circle', 'intersection', 'angle sum', 'similar'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'thales',
             status: 'ready',
@@ -433,7 +481,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'thales',
           },
-          planned('besondere-linien', L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'), [7, 8]),
+          {
+            id: 'besondere-linien',
+            status: 'ready',
+            slug: L('besondere-linien-im-dreieck', 'special-lines-in-a-triangle'),
+            title: L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'),
+            summary: L(
+              'Zirkel, Lineal und Geodreieck konstruieren Mittelsenkrechten, Winkelhalbierende, Seitenhalbierende und Höhen – jedes Mal schneiden sich alle drei in einem Punkt. Mit Begründung über gleiche Abstände, Umkreis, Inkreis, Pappdreieck auf der Nadel, Sonderfällen und Euler-Gerade.',
+              'Compasses, ruler and set square construct the perpendicular bisectors, angle bisectors, medians and altitudes – each time all three meet at one point. With reasoning via equal distances, circumcircle, incircle, a card balancing on a pin, special cases and the Euler line.',
+            ),
+            grades: [7, 8],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie', 'Konstruktion', 'Zirkel', 'Geodreieck', 'Thaleskreis'],
+              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus', 'construction', 'compasses', 'set square', 'Thales circle'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
           {
@@ -455,12 +519,76 @@ export const mathematik: Subject = {
           },
         ]),
         topic('aehnlichkeit', L('Ähnlichkeit und Strahlensätze', 'Similarity and intercept theorems'), [
-          planned('strahlensaetze', L('Strahlensätze', 'Intercept theorems'), [9, 9]),
-          planned('vergroessern', L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'), [9, 9]),
+          {
+            id: 'strahlensaetze',
+            status: 'ready',
+            slug: L('strahlensaetze', 'intercept-theorems'),
+            title: L('Strahlensätze', 'Intercept theorems'),
+            summary: L(
+              'Die Parallele von AB nach A′B′ gleiten lassen und an farbigen Maßstäben sehen, dass alle Verhältnisse denselben Faktor k haben – an V- und X-Figur; ohne Parallelen zerfallen sie. Dazu unbekannte Strecken Schritt für Schritt berechnen und zwei gezeichnete Anwendungen: Baumhöhe über den Schatten und Teichbreite.',
+              'Slide the parallel from AB to A′B′ and see on coloured scale bars that all ratios share the same factor k – in the V and X shape; without parallels they fall apart. Plus unknown lengths solved step by step and two drawn applications: a tree’s height from its shadow and the width of a pond.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L4', 'M-L2', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'Verhältnisgleichung', 'Abschnitte', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Teichbreite', 'Umkehrung'],
+              ['intercept theorem', 'V shape', 'X shape', 'parallel lines', 'scale factor', 'ratio', 'proportion', 'similar triangles', 'enlargement', 'tree height', 'shadow', 'pond width', 'converse'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'vergroessern',
+            status: 'ready',
+            slug: L('aehnliche-figuren-vergroessern', 'similar-figures-scaling'),
+            title: L('Ähnliche Figuren: Wie wachsen Fläche und Volumen?', 'Similar figures: how do area and volume grow?'),
+            summary: L(
+              'Strecke, Fläche und drehbarer Körper mit dem Streckfaktor k vergrößern oder verkleinern: Das Bild wird Kopie für Kopie mit dem Original ausgelegt – k, k² und k³ Kopien, bei Bruchteilen mit Randstücken. Dazu ein Wachstumsdiagramm, der Rückwärts-Schluss vom Volumenfaktor auf k und Anwendungen: Pizza, Modellauto, Oberfläche zu Volumen.',
+              'Enlarge or reduce a segment, a plane figure and a rotatable solid with scale factor k: the image is laid out copy by copy with the original – k, k² and k³ copies, with edge pieces for fractions. Plus a growth chart, working backwards from a volume factor to k, and applications: pizza, model car, surface to volume.',
+            ),
+            grades: [9, 9],
+            kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Streckfaktor', 'ähnlich', 'Ähnlichkeit', 'zentrische Streckung', 'Vergrößerung', 'Verkleinerung', 'Flächeninhalt', 'Oberfläche', 'Volumen', 'Einheitswürfel', 'Quadrat', 'Würfel', 'Quader', 'Kubikwurzel', 'Maßstab', 'Pizza', 'Oberfläche zu Volumen'],
+              ['scale factor', 'similar', 'similarity', 'enlargement', 'reduction', 'area', 'surface area', 'volume', 'unit cube', 'square', 'cube', 'cuboid', 'cube root', 'scale', 'pizza', 'surface to volume'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
-          planned('sin-cos-tan-dreieck', L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'), [9, 10]),
-          planned('sinussatz-kosinussatz', L('Sinussatz und Kosinussatz', 'Law of sines and law of cosines'), [9, 10]),
+          {
+            id: 'sin-cos-tan-dreieck',
+            status: 'ready',
+            slug: L('sinus-kosinus-tangens-dreieck', 'sine-cosine-tangent-triangle'),
+            title: L('Sinus, Kosinus und Tangens im rechtwinkligen Dreieck', 'Sine, cosine and tangent in right triangles'),
+            summary: L(
+              'Gegenkathete, Ankathete und Hypotenuse wandern mit dem Bezugswinkel; ähnliche Dreiecke wachsen aus der Ecke und zeigen, warum das Seitenverhältnis nur vom Winkel abhängt. Dazu Einheitskreis mit exakten Werten, Winkel aus zwei Seiten und Anwendungen: Rampe in Prozent, Leiter, Turmhöhe.',
+              'Opposite, adjacent and hypotenuse move with the reference angle; similar triangles grow from the vertex and show why the ratio depends on the angle only. Plus the unit circle with exact values, finding an angle from two sides and applications: ramp gradient, ladder, tower height.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L4', 'M-L3', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Sinus', 'Kosinus', 'Tangens', 'Trigonometrie', 'rechtwinkliges Dreieck', 'Gegenkathete', 'Ankathete', 'Hypotenuse', 'Seitenverhältnis', 'Winkel berechnen', 'ähnliche Dreiecke', 'Einheitskreis', 'besondere Werte', 'Steigung in Prozent', 'Höhenwinkel'],
+              ['sine', 'cosine', 'tangent', 'trigonometry', 'right triangle', 'opposite', 'adjacent', 'hypotenuse', 'ratio', 'angle', 'similar triangles', 'SOH CAH TOA', 'unit circle', 'exact values', 'gradient', 'angle of elevation'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'sinussatz-kosinussatz',
+            status: 'ready',
+            slug: L('sinussatz-kosinussatz', 'law-of-sines-cosines'),
+            title: L('Sinussatz und Kosinussatz', 'Law of sines and law of cosines'),
+            summary: L(
+              'Allgemeines Dreieck mit ziehbaren Ecken: Seite : Sinus des Gegenwinkels ist immer der Umkreisdurchmesser, der Beweis über die Höhe läuft Zeile für Zeile ab; beim Kosinussatz zeigen Quadrate an den Seiten den Korrekturterm 2ab · cos γ. Dazu ein Löser „Welcher Satz passt?“ (SSS, SWS, WSW, SSW mit zwei Lösungen) und zwei Vermessungen.',
+              'General triangle with draggable vertices: side : sine of the opposite angle always equals the circumcircle diameter, and the proof via the altitude plays line by line; for the law of cosines, squares on the sides show the correction 2ab · cos γ. Plus a solver “Which law fits?” (SSS, SAS, ASA, SSA with two solutions) and two surveying tasks.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Sinussatz', 'Kosinussatz', 'allgemeines Dreieck', 'Trigonometrie', 'Umkreis', 'Höhe', 'Pythagoras', 'Dreiecksberechnung', 'Flächeninhalt', 'SWS', 'SSS', 'WSW', 'SSW', 'Vermessung'],
+              ['law of sines', 'law of cosines', 'sine rule', 'cosine rule', 'triangle', 'trigonometry', 'circumcircle', 'altitude', 'Pythagoras', 'area', 'ambiguous case', 'surveying'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
@@ -667,7 +795,23 @@ export const mathematik: Subject = {
       kmk: ['M-L3', 'M-K3', 'M-K4', 'M-K5'],
       topics: [
         topic('funktionsbegriff', L('Funktionsbegriff und Zuordnungen', 'Functions and relationships'), [
-          planned('proportional', L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'), [6, 8], { kmk: ['M-L3', 'M-K3'] }),
+          {
+            id: 'proportional',
+            status: 'ready',
+            slug: L('direkte-indirekte-proportionalitaet', 'direct-and-inverse-proportion'),
+            title: L('Direkte und indirekte Proportionalität', 'Direct and inverse proportion'),
+            summary: L(
+              'Äpfel auf der Waage, Pumpen am Becken, ein Taxi mit Grundgebühr: Bild, Wertetabelle und Graph reagieren gemeinsam, wenn man verdoppelt. Quotientengleich mit Steigungsdreiecken, produktgleich mit Rechtecken gleicher Fläche, Dreisatz Schritt für Schritt und ein Test „Ist das proportional?“.',
+              'Apples on a scale, pumps filling a pool, a taxi with a base fare: picture, table and graph react together when you double. Equal quotients with slope triangles, equal products with rectangles of equal area, the rule of three step by step and a test “Is it proportional?”.',
+            ),
+            grades: [6, 8],
+            kmk: ['M-L3', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['proportional', 'direkt proportional', 'indirekt proportional', 'antiproportional', 'Dreisatz', 'quotientengleich', 'produktgleich', 'Proportionalitätsfaktor', 'Ursprungsgerade', 'Hyperbel', 'Wertetabelle', 'Zuordnung', 'Verdoppeln', 'Grundgebühr'],
+              ['proportional', 'directly proportional', 'inversely proportional', 'rule of three', 'equal quotients', 'equal products', 'constant of proportionality', 'line through the origin', 'hyperbola', 'table of values', 'relation', 'doubling', 'base fare'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'funktion-zuordnung',
             status: 'ready',
@@ -741,7 +885,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('polstellen-asymptoten', L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'), [11, 12]),
+          {
+            id: 'polstellen-asymptoten',
+            status: 'ready',
+            slug: L('polstellen-asymptoten', 'poles-asymptotes'),
+            title: L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'),
+            summary: L(
+              'Zähler-Perlen und Pol-Ringe ziehen: Kürzt sich ein Faktor, wird aus der Polstelle ein Loch. Polstellen mit und ohne Vorzeichenwechsel, waagrechte und schräge Asymptoten mit Polynomdivision Schritt für Schritt, Wertetabelle an der Polstelle und Vorzeichentabelle.',
+              'Drag numerator beads and pole rings: if a factor cancels, the pole turns into a hole. Poles with and without sign change, horizontal and oblique asymptotes with step-by-step polynomial division, a table of values at the pole and a sign chart.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert', 'Kürzen', 'Näherungskurve', 'Vorzeichentabelle'],
+              ['rational function', 'pole', 'asymptote', 'vertical asymptote', 'horizontal asymptote', 'oblique asymptote', 'removable discontinuity', 'polynomial division', 'sign change', 'limit', 'cancelling', 'approximating curve', 'sign chart'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('quadratische-funktionen', L('Quadratische Funktionen', 'Quadratic functions'), [
           {
@@ -905,12 +1065,76 @@ export const mathematik: Subject = {
           },
         ]),
         topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
-          planned('ganzrationale-funktionen', L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'), [10, 11]),
+          {
+            id: 'ganzrationale-funktionen',
+            status: 'ready',
+            slug: L('ganzrationale-funktionen', 'polynomial-functions'),
+            title: L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'),
+            summary: L(
+              'Nullstellen als Perlen ziehen, Vielfachheit antippen und verschmelzen lassen: Der Graph schneidet, berührt oder hat einen Terrassenpunkt. Mit Linearfaktorform und exakter Normalform, Vorzeichentabelle, Lupe an den Nullstellen und dem Blick aus der Ferne auf das Randverhalten.',
+              'Drag zeros as beads, tap to raise their multiplicity and let them merge: the graph crosses, touches or has a terrace point. With factored and exact expanded form, sign chart, a magnifier at the zeros and a view from far away for the end behaviour.',
+            ),
+            grades: [10, 11],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['ganzrationale Funktion', 'Polynom', 'Nullstelle', 'Vielfachheit', 'Linearfaktor', 'Berührpunkt', 'Terrassenpunkt', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Randverhalten', 'Grad', 'Leitkoeffizient', 'Normalform', 'Ausmultiplizieren', 'y-Achsenabschnitt'],
+              ['polynomial function', 'polynomial', 'zero', 'root', 'multiplicity', 'linear factor', 'touching point', 'terrace point', 'sign change', 'sign chart', 'end behaviour', 'degree', 'leading coefficient', 'expanded form', 'y-intercept'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('eigenschaften', L('Eigenschaften von Funktionen', 'Properties of functions'), [
-          planned('transformationen', L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'), [11, 11], { kmk: ['M-L3', 'M-K4'] }),
-          planned('grenzverhalten', L('Grenzverhalten und Asymptoten', 'Limits and asymptotes'), [11, 11]),
-          planned('umkehrfunktion', L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'), [12, 12]),
+          {
+            id: 'transformationen',
+            status: 'ready',
+            slug: L('graphen-verschieben-strecken-spiegeln', 'shifting-stretching-reflecting-graphs'),
+            title: L('Graphen verschieben, strecken und spiegeln', 'Shifting, stretching and reflecting graphs'),
+            summary: L(
+              'Aus einer Grundfunktion f wird g(x) = a · f(b(x − c)) + d: Eine Zeitleiste spielt die vier Schritte strecken, verschieben, strecken, verschieben einzeln ab, Anker- und Formpunkt lassen sich ziehen, markante Punkte wandern mit – für Parabel, Wurzel, Betrag, Hyperbel, Sinus und Exponentialfunktion.',
+              'From a basic function f to g(x) = a · f(b(x − c)) + d: a timeline plays the four steps stretch, shift, stretch, shift one by one, anchor and shape points can be dragged and key points move along – for parabola, square root, absolute value, hyperbola, sine and exponential function.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L3', 'M-K4'],
+            keywords: L(
+              ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote', 'Reihenfolge', 'Definitionsmenge', 'Wertemenge'],
+              ['shift', 'translation', 'stretch', 'compression', 'reflection', 'transformation', 'graph', 'parameter', 'basic function', 'order', 'domain', 'range'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'grenzverhalten',
+            status: 'ready',
+            slug: L('grenzverhalten-asymptoten', 'limits-and-asymptotes'),
+            title: L('Grenzverhalten und Asymptoten', 'Limits and asymptotes'),
+            summary: L(
+              'Wie verhält sich f(x) für x → ±∞? Ein Punkt läuft nach außen, die Ansicht zoomt mit, eine Lupe zeigt den Abstand zur Asymptote und die Wertetabelle füllt sich; ein ziehbarer ε-Schlauch mit der Stelle x_ε macht den Grenzwert anschaulich. Dazu Gradregel und Gegenbeispiele ohne Grenzwert.',
+              'How does f(x) behave as x → ±∞? A point runs outwards, the view zooms out, a magnifier shows the distance to the asymptote and the table fills up; a draggable ε-strip with the position x_ε makes the limit visible. Plus the degree rule and counterexamples without a limit.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L3', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Grenzwert', 'Grenzverhalten', 'Asymptote', 'waagrechte Asymptote', 'unendlich', 'Limes', 'ε-Schlauch', 'ε-Streifen', 'Gradregel', 'Annäherung', 'Wertetabelle', 'gebrochen-rationale Funktion'],
+              ['limit', 'end behaviour', 'asymptote', 'horizontal asymptote', 'infinity', 'epsilon strip', 'approach', 'table of values', 'rational function'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'umkehrfunktion',
+            status: 'ready',
+            slug: L('umkehrfunktion', 'inverse-function'),
+            title: L('Umkehrfunktionen: Spiegeln an y = x', 'Inverse functions: reflecting in y = x'),
+            summary: L(
+              'Der Graph klappt wie eine Folie um y = x, P(a | b) wandert zu P′(b | a), Definitions- und Wertemenge tauschen sichtbar die Rollen. Eine waagrechte Gerade prüft die Umkehrbarkeit (x² einschränken), der Rechenweg läuft Schritt für Schritt, und das gespiegelte Steigungsdreieck zeigt (f⁻¹)′(b) = 1/f′(a) bis zu (ln x)′ = 1/x.',
+              'The graph flips over y = x like a transparency, P(a | b) moves to P′(b | a), and domain and range visibly swap roles. A horizontal line checks invertibility (restricting x²), the working runs step by step, and the reflected slope triangle shows (f⁻¹)′(b) = 1/f′(a), leading to (ln x)′ = 1/x.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'streng monoton', 'Definitionsmenge', 'Wertemenge', 'Ableitung der Umkehrfunktion', 'senkrechte Tangente', 'arcsin'],
+              ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'strictly monotonic', 'domain', 'range', 'derivative of the inverse', 'vertical tangent', 'arcsin'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
@@ -1154,7 +1378,24 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('normalverteilung', L('Normalverteilung', 'Normal distribution'), [13, 13], { uni: true }),
+          {
+            id: 'normalverteilung',
+            status: 'ready',
+            slug: L('normalverteilung', 'normal-distribution'),
+            title: L('Normalverteilung', 'Normal distribution'),
+            summary: L(
+              'Wahrscheinlichkeit als Fläche unter der Glockenkurve: Grenzen ziehen, Φ(b) − Φ(a) ablesen, Sigma-Regeln, Standardisieren als Animation und Eigenschaften der Glocke – dazu die Umkehrung mit der z-Tabelle, zwei Abfüllanlagen im Vergleich, die Näherung der Binomialverteilung und Stichproben.',
+              'Probability as the area under the bell curve: drag the bounds, read Φ(b) − Φ(a), sigma rules, standardising as an animation and properties of the bell – plus quantiles with the z table, two filling machines compared, the binomial approximation and samples.',
+            ),
+            grades: [13, 13],
+            uni: true,
+            kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Normalverteilung', 'Gauß', 'Glockenkurve', 'Dichtefunktion', 'Verteilungsfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Regeln', 'Standardisierung', 'z-Wert', 'Quantil', 'z-Tabelle', 'Wendestelle', 'Toleranz', 'Qualitätskontrolle', 'stetige Zufallsgröße', 'Binomialverteilung', 'Näherung', 'Stetigkeitskorrektur', 'Laplace-Bedingung', 'Stichprobe', 'Histogramm'],
+              ['normal distribution', 'Gaussian', 'bell curve', 'density', 'distribution function', 'mean', 'standard deviation', 'sigma rules', 'z-score', 'quantile', 'z table', 'point of inflection', 'tolerance', 'quality control', 'continuous random variable', 'binomial distribution', 'approximation', 'continuity correction', 'Laplace condition', 'sample', 'histogram'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
@@ -1186,13 +1427,93 @@ export const mathematik: Subject = {
             ),
             thumb: 'secant',
           },
-          planned('newton-verfahren', L('Newton-Verfahren', 'Newton’s method'), [11, 11]),
-          planned('ableitungsfunktion', L('Ableitungsfunktion grafisch', 'The derivative function graphically'), [11, 12]),
-          planned('kurvendiskussion', L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'), [11, 12]),
+          {
+            id: 'newton-verfahren',
+            status: 'ready',
+            slug: L('newton-verfahren', 'newtons-method'),
+            title: L('Newton-Verfahren', 'Newton’s method'),
+            summary: L(
+              'Nullstellen näherungsweise bestimmen: Lot zum Graphen, Tangente, Schnittpunkt als neuer Wert – jeder Schritt animiert, mit Steigungsdreieck als Herleitung, Lupe, Tabelle der richtigen Stellen, Newton = Heron und gestalteten Problemfällen (waagrechte Tangente, Sprung, Zyklus, Einzugsbereiche).',
+              'Approximating zeros: vertical line to the graph, tangent, x-intercept as the next value – every step animated, with the slope triangle behind the formula, a magnifier, a table of correct digits, Newton = Heron and the failure cases (horizontal tangent, jump, cycle, basins of attraction).',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
+              ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'slope triangle', 'derivative', 'starting value', 'quadratic convergence', 'Heron’s method', 'basin of attraction'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'ableitungsfunktion',
+            status: 'ready',
+            slug: L('ableitungsfunktion-grafisch', 'derivative-function-graphically'),
+            title: L('Ableitungsfunktion grafisch', 'The derivative function graphically'),
+            summary: L(
+              'Tangente und Steigungsdreieck zeichnen den Graphen von f′ und f″ als Spur, die Sekante wird für h → 0 zur Tangente (links, rechts, beidseitig, Knick bei |x|). Dazu Merkmale mit Vorzeichentabelle, eine eigene Skizze von f′, Ableitungsregeln als Bild und neun Alltagsbeispiele mit Einheiten.',
+              'Tangent and slope triangle trace the graphs of f′ and f″, the secant becomes the tangent as h → 0 (left, right, symmetric, kink of |x|). Plus features with a sign chart, your own sketch of f′, the rules of differentiation as pictures and nine everyday examples with units.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5', 'M-K3'],
+            keywords: L(
+              ['Ableitung', 'Ableitungsfunktion', 'Tangente', 'Sekante', 'Differenzenquotient', 'Steigungsdreieck', 'grafisches Ableiten', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Sattelpunkt', 'zweite Ableitung', 'Krümmung', 'Differenzierbarkeit', 'Faktorregel', 'Summenregel', 'Potenzregel', 'Produktregel', 'Kettenregel', 'Geschwindigkeit', 'Grenzkosten', 'Sinus', 'Kosinus'],
+              ['derivative', 'derivative function', 'tangent', 'secant', 'difference quotient', 'slope triangle', 'graphical differentiation', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'second derivative', 'curvature', 'differentiability', 'constant multiple rule', 'sum rule', 'power rule', 'product rule', 'chain rule', 'velocity', 'marginal cost', 'sine', 'cosine'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'kurvendiskussion',
+            status: 'ready',
+            slug: L('monotonie-extrem-wendestellen', 'monotonicity-extrema-inflection'),
+            title: L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'),
+            summary: L(
+              'Kurvendiskussion in sieben animierten Schritten: Ableitungen, Symmetrie, Nullstellen, notwendige und hinreichende Bedingung, Hoch-, Tief-, Terrassen- und Wendepunkte, Monotonie und Krümmung – mit Vorzeichentabellen, den Graphen von f′ und f″ darunter und einer ziehbaren Tangente.',
+              'Curve sketching in seven animated steps: derivatives, symmetry, zeros, necessary and sufficient conditions, maxima, minima, terrace and inflection points, monotonicity and curvature – with sign charts, the graphs of f′ and f″ below and a draggable tangent.',
+            ),
+            grades: [11, 12],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
+              ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity', 'symmetry', 'tangent', 'second-derivative test'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
-          planned('funktionenscharen', L('Funktionenscharen', 'Families of functions'), [12, 13]),
-          planned('stammfunktion-grafisch', L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'), [12, 13]),
+          {
+            id: 'funktionenscharen',
+            status: 'ready',
+            slug: L('funktionenscharen', 'families-of-functions'),
+            title: L('Funktionenscharen', 'Families of functions'),
+            summary: L(
+              'Viele Graphen einer Schar f_k auf einen Blick: Lass k laufen und sieh, wie die Extrempunkte auf ihrer Ortskurve gleiten und eine Spur zeichnen. Mit Fallunterscheidung auf dem k-Strahl, Herleitung der Ortskurve in Schritten, gemeinsamen Punkten und Wendepunkten.',
+              'Many graphs of a family f_k at a glance: let k run and watch the extrema glide along their locus, leaving a trace. With the case analysis on a k-axis, the derivation of the locus step by step, common points and points of inflection.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K2'],
+            keywords: L(
+              ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'Wendepunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'e-Funktion', 'ganzrationale Funktion'],
+              ['family of functions', 'family of curves', 'parameter', 'locus', 'extrema', 'points of inflection', 'common point', 'case analysis', 'exponential function', 'polynomial'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'stammfunktion-grafisch',
+            status: 'ready',
+            slug: L('stammfunktion-grafisch', 'antiderivative-graphically'),
+            title: L('Vom Graphen zur Stammfunktion', 'From a graph to its antiderivative'),
+            summary: L(
+              'Grafisch aufleiten: Die Höhe von f wird zur Steigung von F, ein Richtungsfeld zeigt die Schar F + C mit ziehbarem Anfangspunkt, Nullstellen und Extremstellen von f werden zu Extrem- und Wendestellen von F, Flächenstücke zu Höhenänderungen – auch umgekehrt von F nach f, mit eigener Skizze zum Vergleichen und acht Alltagsbeispielen von Kontostand bis CO₂ im Klassenzimmer.',
+              'Integrating graphically: the height of f becomes the slope of F, a slope field shows the family F + C with a draggable initial point, zeros and extrema of f become extrema and inflection points of F, area pieces become changes in height – also in reverse from F to f, with your own sketch to compare and eight everyday examples from a bank balance to CO₂ in the classroom.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Stammfunktion', 'grafisches Aufleiten', 'grafisches Integrieren', 'Integrationskonstante', 'Kurvenschar', 'Richtungsfeld', 'Anfangswertproblem', 'Anfangswert', 'orientierte Fläche', 'Flächenbilanz', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Terrassenpunkt', 'Vorzeichentabelle', 'Änderungsrate', 'Bestand'],
+              ['antiderivative', 'graphical integration', 'constant of integration', 'family of curves', 'slope field', 'initial value problem', 'signed area', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'sign chart', 'rate of change', 'accumulation'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
           {
@@ -1212,8 +1533,41 @@ export const mathematik: Subject = {
             ),
             thumb: 'riemann',
           },
-          planned('hauptsatz', L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'), [12, 13], { uni: true }),
-          planned('aenderungsrate', L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'), [13, 13]),
+          {
+            id: 'hauptsatz',
+            status: 'ready',
+            slug: L('hauptsatz', 'fundamental-theorem'),
+            title: L('Integralfunktion und Hauptsatz', 'Integral function and fundamental theorem'),
+            summary: L(
+              'Die Fläche von a bis x als Funktion von x: Fläche wächst mit, Streifen h → 0 zeigt I′ = f, Rechenweg F(b) − F(a) mit Konstante C, Null-, Extrem- und Wendestellen von I am Graphen von f, Riemann-Summen – mit acht Anwendungen von Weg bis Regenmenge.',
+              'The area from a to x as a function of x: the area grows, a strip h → 0 shows I′ = f, step-by-step F(b) − F(a) with constant C, zeros, extrema and inflection points of I from the graph of f, Riemann sums – with eight applications from distance to rainfall.',
+            ),
+            grades: [12, 13],
+            uni: true,
+            kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K5'],
+            keywords: L(
+              ['Hauptsatz der Differential- und Integralrechnung', 'Integralfunktion', 'Stammfunktion', 'bestimmtes Integral', 'Flächenbilanz', 'untere Grenze', 'Differenzenquotient', 'F(b) − F(a)', 'Riemann-Summe', 'Wendestelle', 'Änderungsrate', 'Bestand', 'Grenzkosten'],
+              ['fundamental theorem of calculus', 'integral function', 'antiderivative', 'definite integral', 'signed area', 'lower limit', 'difference quotient', 'Riemann sum', 'point of inflection', 'rate of change', 'accumulation', 'marginal cost'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'aenderungsrate',
+            status: 'ready',
+            slug: L('integral-gesamtaenderung', 'integral-total-change'),
+            title: L('Integral als Gesamtänderung: von der Geschwindigkeit zum Weg', 'The integral as total change: from velocity to distance'),
+            summary: L(
+              'Aus der Änderungsrate den Bestand rekonstruieren: Die Zeit läuft, Auto oder Tank bewegen sich, die Fläche unter der Rate wächst mit dem Bestand – mit Rechtecksummen (links, rechts, Mitte), Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate.',
+              'Reconstructing an amount from its rate of change: time runs, the car or tank moves, the area under the rate grows with the amount – with rectangle sums (left, right, midpoint), the error when doubling, driving forwards and back and a rate you drag yourself.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L3', 'M-L2', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelsumme', 'zurückgelegter Weg', 'Modellieren'],
+              ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'midpoint sum', 'distance travelled', 'modelling'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'rotationskoerper',
             status: 'ready',
@@ -1231,11 +1585,61 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('extremwertprobleme', L('Extremwertprobleme', 'Optimisation problems'), [13, 13], { kmk: ['M-L3', 'M-K3'] }),
+          {
+            id: 'extremwertprobleme',
+            status: 'ready',
+            slug: L('extremwertprobleme', 'optimisation-problems'),
+            title: L('Extremwertprobleme', 'Optimisation problems'),
+            summary: L(
+              'Schachtel aus Karton, Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion: Bild und Graph der Zielfunktion bewegen sich gemeinsam, der Lösungsweg führt von der Nebenbedingung über die Ableitung zum Optimum.',
+              'Box from a sheet of card, can with the smallest surface, rectangle under an exponential: the picture and the graph of the objective function move together, and the solution leads from the constraint via the derivative to the optimum.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte'],
+              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
-          planned('taylor-polynome', L('Taylorpolynome', 'Taylor polynomials'), [13, 14], { uni: true }),
-          planned('fourier-reihen', L('Fourier-Reihen', 'Fourier series'), [14, 14], { uni: true }),
+          {
+            id: 'taylor-polynome',
+            status: 'ready',
+            slug: L('taylorpolynome', 'taylor-polynomials'),
+            title: L('Taylorpolynome', 'Taylor polynomials'),
+            summary: L(
+              'Polynome schmiegen sich an sin x, cos x, eˣ, ln(1 + x) und 1/(1 − x): Summand für Summand aufbauen, Wert, Steigung und Krümmung bei a abhaken, Fehler mit der Lagrange-Abschätzung vergleichen, den Konvergenzradius erleben, Partialsummen wie im Taschenrechner verfolgen und die Kleinwinkelnäherung am Pendel prüfen.',
+              'Polynomials hug sin x, cos x, eˣ, ln(1 + x) and 1/(1 − x): build them term by term, tick off value, slope and curvature at a, compare the error with the Lagrange bound, experience the radius of convergence, follow partial sums like a calculator and check the small-angle approximation at a pendulum.',
+            ),
+            grades: [13, 14],
+            uni: true,
+            kmk: ['M-L3', 'M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Taylorpolynom', 'Taylorreihe', 'Näherungspolynom', 'Entwicklungsstelle', 'Konvergenzradius', 'Restglied', 'Lagrange-Restglied', 'Fehlerabschätzung', 'Potenzreihe', 'geometrische Reihe', 'Ableitung', 'Fakultät', 'Kleinwinkelnäherung', 'Partialsumme', 'Schmiegparabel', 'Pendel', 'Konvergenzintervall'],
+              ['Taylor polynomial', 'Taylor series', 'approximation', 'centre', 'radius of convergence', 'remainder', 'Lagrange remainder', 'error bound', 'power series', 'geometric series', 'derivative', 'factorial', 'small-angle approximation', 'partial sum', 'osculating parabola', 'pendulum', 'interval of convergence'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'fourier-reihen',
+            status: 'ready',
+            slug: L('fourier-reihen', 'fourier-series'),
+            title: L('Fourier-Reihen', 'Fourier series'),
+            summary: L(
+              'Rechteck, Sägezahn, Dreieck, Trapez, Pulsfolge und gleichgerichteter Sinus entstehen Schwingung für Schwingung aus Sinus und Kosinus – als Partialsumme mit Gibbs-Phänomen, als rotierende Zeiger, gestapelt und im Amplituden-, Phasen- und Energiespektrum; mit Klang und Alltagsbeispielen von Klarinette bis LED-Dimmer.',
+              'Square, sawtooth, triangle, trapezoid, pulse train and rectified sine waves are built up harmonic by harmonic from sines and cosines – as partial sums with the Gibbs phenomenon, as rotating phasors, stacked and in the amplitude, phase and energy spectrum; with sound and everyday examples from clarinet to LED dimmer.',
+            ),
+            grades: [14, 14],
+            uni: true,
+            kmk: ['M-L3', 'M-K4', 'M-K3', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Fourier-Reihe', 'Fourier-Koeffizienten', 'Oberschwingung', 'Harmonische', 'Rechtecksignal', 'Sägezahn', 'Pulsweitenmodulation', 'Gleichrichter', 'Amplitudenspektrum', 'Phasenspektrum', 'Zeigerdiagramm', 'Epizykel', 'Parseval', 'Gibbs-Phänomen', 'Fejér', 'Klangfarbe', 'periodische Funktion', 'Signalverarbeitung'],
+              ['Fourier series', 'Fourier coefficients', 'harmonic', 'overtone', 'square wave', 'sawtooth', 'pulse-width modulation', 'rectifier', 'amplitude spectrum', 'phase spectrum', 'phasor', 'epicycles', 'Parseval', 'Gibbs phenomenon', 'Fejér', 'timbre', 'periodic function', 'signal processing'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),
@@ -1356,7 +1760,24 @@ export const mathematik: Subject = {
           },
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
-          planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true }),
+          {
+            id: 'matrix-abbildungen',
+            status: 'ready',
+            slug: L('matrizen-lineare-abbildungen', 'matrices-linear-maps'),
+            title: L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'),
+            summary: L(
+              'Eine 2×2-Matrix verformt die Ebene: Bilder der Einheitsvektoren ziehen und zusehen, wie sich Gitter und Figur stetig von E zu A verformen. Sechs Ansichten: Abbildung mit Drehung, Spiegelung, Streckung, Scherung, Projektion und Drehstreckung, Verkettung (AB ≠ BA mit Rechenweg), Determinante als orientierter Flächeninhalt, Eigenvektoren mit charakteristischem Polynom, Inverse und Iteration mit Fixvektor – dazu zehn Alltagsbeispiele.',
+              'A 2×2 matrix deforms the plane: drag the images of the unit vectors and watch grid and figure deform continuously from E to A. Six views: maps such as rotation, reflection, scaling, shear, projection and rotation with scaling, composition (AB ≠ BA with working), the determinant as signed area, eigenvectors with the characteristic polynomial, the inverse and iteration with a fixed vector – plus ten everyday examples.',
+            ),
+            grades: [12, 14],
+            uni: true,
+            kmk: ['M-L4', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Matrix', 'lineare Abbildung', 'Determinante', 'Eigenwert', 'Eigenvektor', 'Drehung', 'Spiegelung', 'Scherung', 'Projektion', 'Einheitsvektor', 'lineare Algebra', 'Matrixprodukt', 'Verkettung', 'inverse Matrix', 'charakteristisches Polynom', 'Übergangsmatrix', 'stationäre Verteilung', 'Fixvektor'],
+              ['matrix', 'linear map', 'determinant', 'eigenvalue', 'eigenvector', 'rotation', 'reflection', 'shear', 'projection', 'unit vector', 'linear algebra', 'matrix product', 'composition', 'inverse matrix', 'characteristic polynomial', 'transition matrix', 'stationary distribution', 'fixed vector'],
+            ),
+            thumb: 'generic',
+          },
         ]),
       ],
     }),

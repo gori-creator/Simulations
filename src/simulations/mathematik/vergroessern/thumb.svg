@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M40 150L70 150L70 120L40 120Z M40 120L52 110L82 110L70 120 M70 150L82 140L82 110" fill="currentColor" fill-opacity="0.35" stroke-width="3.5" />
+    <path d="M130 160L230 160L230 60L130 60Z M130 60L170 30L270 30L230 60 M230 160L270 130L270 30" fill="currentColor" fill-opacity="0.12" stroke-width="4.5" />
+    <path d="M180 60L180 160M130 110L230 110M150 45L250 45M230 110L270 80M200 30L160 60M250 30L210 60" stroke-width="2" stroke-opacity="0.45" />
+  </g>
+</svg>

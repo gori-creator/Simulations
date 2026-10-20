@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="40" y="70" width="240" height="44" rx="8" fill="currentColor" fill-opacity="0.08" stroke-width="4" />
+    <rect x="40" y="70" width="144" height="44" rx="8" fill="currentColor" fill-opacity="0.35" stroke-width="0" />
+    <path d="M64 76V108M88 76V108M112 76V108M136 76V108M160 76V108M208 76V108M232 76V108M256 76V108" stroke-width="2" stroke-opacity="0.35" />
+    <rect x="178" y="62" width="12" height="60" rx="6" fill="currentColor" fill-opacity="0.15" stroke-width="4" />
+    <path d="M40 60V54M88 60V56M136 60V56M184 60V54M232 60V56M280 60V54M40 124V130M88 124V128M136 124V128M184 124V128M232 124V128M280 124V130" stroke-width="3" stroke-opacity="0.6" />
+    <path d="M40 40Q40 32 52 32L100 32Q112 32 112 24Q112 32 124 32L172 32Q184 32 184 40" stroke-width="3.5" />
+    <path d="M40 142Q40 150 52 150L148 150Q160 150 160 158Q160 150 172 150L268 150Q280 150 280 142" stroke-width="3" stroke-opacity="0.55" />
+  </g>
+</svg>
