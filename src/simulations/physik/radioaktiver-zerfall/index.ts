@@ -370,7 +370,7 @@ export default defineSimulation({
       }
       const e = Math.floor(Math.log10(a));
       const d = clamp(digits - 1 - e, 0, 6);
-      const q = 10 ** Math.max(0, e - digits + 1);
+      const q = 10 ** (e - digits + 1);
       return group(n(Math.round(v / q) * q, d));
     }
     const unitLabel = (nu: Nuclide) => (nu.unit === 'Ga' ? '10⁹ a' : nu.unit);
