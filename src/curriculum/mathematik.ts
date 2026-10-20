@@ -963,13 +963,13 @@ export const mathematik: Subject = {
             slug: L('grenzverhalten-asymptoten', 'limits-and-asymptotes'),
             title: L('Grenzverhalten und Asymptoten', 'Limits and asymptotes'),
             summary: L(
-              'Wie verhält sich f(x) für x → ±∞? Ein Punkt läuft nach außen, die Ansicht zoomt mit und die Wertetabelle zeigt die Annäherung an die Asymptote; ein ziehbarer ε-Streifen macht den Grenzwert anschaulich. Dazu Gegenbeispiele ohne Grenzwert.',
-              'How does f(x) behave as x → ±∞? A point runs outwards, the view zooms out and a table shows the approach to the asymptote; a draggable ε-strip makes the limit visible. Plus counterexamples without a limit.',
+              'Wie verhält sich f(x) für x → ±∞? Ein Punkt läuft nach außen, die Ansicht zoomt mit, eine Lupe zeigt den Abstand zur Asymptote und die Wertetabelle füllt sich; ein ziehbarer ε-Schlauch mit der Stelle x_ε macht den Grenzwert anschaulich. Dazu Gradregel und Gegenbeispiele ohne Grenzwert.',
+              'How does f(x) behave as x → ±∞? A point runs outwards, the view zooms out, a magnifier shows the distance to the asymptote and the table fills up; a draggable ε-strip with the position x_ε makes the limit visible. Plus the degree rule and counterexamples without a limit.',
             ),
             grades: [11, 11],
             kmk: ['M-L3', 'M-K1', 'M-K4'],
             keywords: L(
-              ['Grenzwert', 'Grenzverhalten', 'Asymptote', 'waagrechte Asymptote', 'unendlich', 'Limes', 'ε-Streifen', 'Annäherung', 'Wertetabelle', 'gebrochen-rationale Funktion'],
+              ['Grenzwert', 'Grenzverhalten', 'Asymptote', 'waagrechte Asymptote', 'unendlich', 'Limes', 'ε-Schlauch', 'ε-Streifen', 'Gradregel', 'Annäherung', 'Wertetabelle', 'gebrochen-rationale Funktion'],
               ['limit', 'end behaviour', 'asymptote', 'horizontal asymptote', 'infinity', 'epsilon strip', 'approach', 'table of values', 'rational function'],
             ),
             thumb: 'generic',
