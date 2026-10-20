@@ -203,3 +203,94 @@ export const CONTEXT_DATA: Record<'pet' | 'club' | 'abc', Cells> = {
   club: [46, 34, 52, 68],
   abc: [12, 18, 8, 22],
 };
+
+/* ------------------------------------------------------------------ */
+/* Wahrscheinlichkeiten aus dem Baum, umgekehrter Baum                 */
+/* ------------------------------------------------------------------ */
+
+/** Zellwahrscheinlichkeiten (A∩B, A∩B̄, Ā∩B, Ā∩B̄) aus P(A), P_A(B) und P_Ā(B) (Pfadregel). */
+export function cellsFromTree(pA: number, pBgA: number, pBgNA: number): [number, number, number, number] {
+  return [pA * pBgA, pA * (1 - pBgA), (1 - pA) * pBgNA, (1 - pA) * (1 - pBgNA)];
+}
+
+/** Umgekehrter Baum: P(B), P_B(A), P_B̄(A) (Summenregel und Formel von Bayes). */
+export function reverseTree(pA: number, pBgA: number, pBgNA: number): { pB: number; pAgB: number; pAgNB: number } {
+  const [ab, anb] = cellsFromTree(pA, pBgA, pBgNA);
+  const pB = pA * pBgA + (1 - pA) * pBgNA;
+  return { pB, pAgB: pB > 0 ? ab / pB : 0, pAgNB: pB < 1 ? anb / (1 - pB) : 0 };
+}
+
+/** Unabhängig genau dann, wenn P_A(B) = P_Ā(B) (dann ist beides gleich P(B)). */
+export const independentTree = (pBgA: number, pBgNA: number, eps = 1e-9): boolean => Math.abs(pBgA - pBgNA) < eps;
+
+/* ------------------------------------------------------------------ */
+/* Tafel ergänzen: Werte aus Zeilen- und Spaltensummen erschließen    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Die neun Werte der Tafel zeilenweise: [A∩B, A∩B̄, |A|, Ā∩B, Ā∩B̄, |Ā|, |B|, |B̄|, N].
+ * Jede Zeile und jede Spalte ist eine Summe: a + b = Summe.
+ */
+export function tableValues(c: Cells): number[] {
+  const t = table(c);
+  return [c[0], c[1], t.A, c[2], c[3], t.nA, t.B, t.nB, t.N];
+}
+
+/** Summenbeziehungen der Tafel als [Summand, Summand, Summe] (Indizes wie `tableValues`). */
+export const SUMS: readonly (readonly [number, number, number])[] = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+];
+
+export interface SolveStep {
+  /** Gesuchter Wert. */
+  target: number;
+  /** Die beiden bekannten Werte, aus denen er folgt. */
+  from: [number, number];
+  /** Summe zweier Werte oder Differenz (erster minus zweiter). */
+  op: '+' | '−';
+}
+
+/** Lässt sich Wert `idx` aus den bekannten Werten direkt erschließen? */
+export function solveStep(known: readonly boolean[], idx: number): SolveStep | null {
+  for (const [a, b, s] of SUMS) {
+    if (idx === s && known[a] && known[b]) return { target: idx, from: [a, b], op: '+' };
+    if (idx === a && known[s] && known[b]) return { target: idx, from: [s, b], op: '−' };
+    if (idx === b && known[s] && known[a]) return { target: idx, from: [s, a], op: '−' };
+  }
+  return null;
+}
+
+/** Reihenfolge, in der sich alle Werte erschließen lassen (leer bzw. unvollständig, wenn nicht lösbar). */
+export function solveAll(known0: readonly boolean[]): SolveStep[] {
+  const known = known0.slice();
+  const steps: SolveStep[] = [];
+  let progress = true;
+  while (progress) {
+    progress = false;
+    for (let i = 0; i < 9; i++) {
+      if (known[i]) continue;
+      const st = solveStep(known, i);
+      if (st) {
+        steps.push(st);
+        known[i] = true;
+        progress = true;
+      }
+    }
+  }
+  return steps;
+}
+
+/** Vorgaben für „Tafel ergänzen“: welche Werte bekannt sind. */
+export const GIVEN_SETS: Record<'g1' | 'g2' | 'g3', number[]> = {
+  /** Schnitt, beide Randsummen von A und B, Gesamtzahl. */
+  g1: [0, 2, 6, 8],
+  /** |A|, A ∩ B̄, Ā ∩ B, Gesamtzahl. */
+  g2: [1, 2, 3, 8],
+  /** die vier inneren Felder. */
+  g3: [0, 1, 3, 4],
+};

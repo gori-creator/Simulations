@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { seededRandom } from '../src/sim-core';
+import { band95, complementProb, emptyAfter, exhaustedColors, splitPaths } from '../src/simulations/mathematik/baumdiagramm/model';
 import { branchRaw, buildTree, drawPath, eventProb, fadd, frac, fval, inEvent, leaves, maxStages, parseSel, pathProb, rawProduct, urnAfter, type Urn } from '../src/simulations/mathematik/baumdiagramm/model';
 
 const U: Urn = { r: 3, b: 4, g: 0 };
@@ -69,5 +71,45 @@ describe('Modell: Baumdiagramm – Urne', () => {
     for (let i = 0; i < N; i++) if (drawPath(U, 2, false, rnd) === 'rr') hits++;
     expect(hits / N).toBeGreaterThan(1 / 7 - 0.02);
     expect(hits / N).toBeLessThan(1 / 7 + 0.02);
+  });
+});
+
+describe('Modell: Baumdiagramm – Prüfwerte und Sonderfälle', () => {
+  const U32: Urn = { r: 3, b: 2, g: 0 };
+  it('3 rote, 2 blaue: P(rot, rot) ohne Zurücklegen 3/10, mit Zurücklegen 9/25', () => {
+    expect(pathProb(U32, 'rr', false)).toEqual({ n: 3, d: 10 });
+    expect(rawProduct([{ n: 3, d: 5 }, { n: 2, d: 4 }])).toEqual({ n: 6, d: 20 });
+    expect(pathProb(U32, 'rr', true)).toEqual({ n: 9, d: 25 });
+    expect(branchRaw(U32, 'r', 'r', false)).toEqual({ n: 2, d: 4 });
+  });
+  it('2. Pfadregel und Gegenereignis', () => {
+    const t = buildTree(U32, 2, false);
+    // gleiche Farbe: 3/10 + 2/5 · 1/4 = 3/10 + 1/10 = 2/5
+    expect(eventProb(t, 'same')).toEqual({ n: 2, d: 5 });
+    expect(complementProb(t, 'same')).toEqual({ n: 3, d: 5 });
+    expect(complementProb(t, 'minR')).toEqual(eventProb(t, 'noR'));
+    expect(eventProb(t, 'noR')).toEqual({ n: 1, d: 10 });
+    const sp = splitPaths(t, 'minR');
+    expect(sp.inside).toEqual(['rr', 'rb', 'br']);
+    expect(sp.outside).toEqual(['bb']);
+  });
+  it('Sonderfall: Farbe aufgebraucht, Urne leer', () => {
+    expect(exhaustedColors({ r: 3, b: 1, g: 0 }, 'b', false)).toEqual(['b']);
+    expect(exhaustedColors({ r: 3, b: 1, g: 0 }, 'b', true)).toEqual([]);
+    expect(emptyAfter({ r: 2, b: 1, g: 0 }, false)).toBe(3);
+    expect(emptyAfter({ r: 2, b: 1, g: 0 }, true)).toBe(Infinity);
+    // 2 blaue, 1 rote, dreimal ohne Zurücklegen: letzte Kugel steht fest
+    const t = buildTree({ r: 1, b: 2, g: 0 }, 3, false);
+    for (const l of leaves(t)) expect(l.prob).toEqual({ n: 1, d: 3 });
+  });
+  it('95-%-Bereich und Simulation mit seededRandom', () => {
+    expect(band95(0.3, 0)).toEqual([0, 1]);
+    const rnd = seededRandom(99);
+    let hits = 0;
+    const N = 5000;
+    for (let i = 0; i < N; i++) if (drawPath(U32, 2, false, rnd) === 'rr') hits++;
+    const [lo, hi] = band95(0.3, N);
+    expect(hits / N).toBeGreaterThan(lo - 0.01);
+    expect(hits / N).toBeLessThan(hi + 0.01);
   });
 });

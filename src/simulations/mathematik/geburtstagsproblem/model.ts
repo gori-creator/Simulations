@@ -84,3 +84,68 @@ export function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
+
+/* ---------- Ergänzungen: Rechnung mit Gegenereignis, Paare, andere Tageszahlen ---------- */
+
+/**
+ * Faktoren der Pfadregel für „alle verschieden“: Person k (1, 2, …) muss einen
+ * der noch freien Tage treffen, also (days − (k − 1)) / days.
+ */
+export function factors(n: number, days = DAYS): number[] {
+  return Array.from({ length: n }, (_, k) => Math.max(0, days - k) / days);
+}
+
+/** P(alle verschieden) für 0, 1, …, n Personen (Index = Personenzahl). */
+export function allDifferentSeries(n: number, days = DAYS): number[] {
+  const out = [1];
+  let prod = 1;
+  for (let k = 0; k < n; k++) {
+    prod *= Math.max(0, days - k) / days;
+    out.push(prod);
+  }
+  return out;
+}
+
+/**
+ * Näherung über die Paare: Jedes der n(n − 1)/2 Paare hat mit Wahrscheinlichkeit
+ * 1/days denselben Tag. Tut man so, als wären die Paare unabhängig:
+ * P ≈ 1 − (1 − 1/days)^(Anzahl der Paare).
+ */
+export function pApprox(n: number, days = DAYS): number {
+  return 1 - (1 - 1 / days) ** pairs(n);
+}
+
+/** Erwartete Anzahl von Paaren mit gleichem Tag: n(n − 1)/2 · 1/days. */
+export const expectedSharedPairs = (n: number, days = DAYS): number => pairs(n) / days;
+
+/** Anzahl der Paare mit gleichem Tag in einer Klasse (ein Tag mit c Personen liefert c(c − 1)/2 Paare). */
+export function sharedPairs(bdays: readonly number[]): number {
+  let s = 0;
+  for (const c of duplicates(bdays).values()) s += pairs(c);
+  return s;
+}
+
+/** Schubfachprinzip: Ab days + 1 Personen ist ein gemeinsamer Tag sicher. */
+export const certainFrom = (days = DAYS): number => days + 1;
+
+/**
+ * Personen nacheinander auf verschiedene Tage setzen (zufällige Reihenfolge ohne Wiederholung,
+ * höchstens `days` Personen) – für die schrittweise Rechnung „alle verschieden“.
+ */
+export function distinctDays(n: number, rnd: () => number, days = DAYS): number[] {
+  const pool = Array.from({ length: days }, (_, i) => i);
+  const out: number[] = [];
+  for (let k = 0; k < Math.min(n, days); k++) {
+    const j = k + Math.floor(rnd() * (days - k));
+    [pool[k], pool[j]] = [pool[j]!, pool[k]!];
+    out.push(pool[k]!);
+  }
+  return out;
+}
+
+/** 95-%-Bereich der relativen Häufigkeit nach N Versuchen: p ± 1,96 · √(p(1 − p)/N). */
+export function band95(p: number, N: number): [number, number] {
+  if (N <= 0) return [0, 1];
+  const h = 1.96 * Math.sqrt((p * (1 - p)) / N);
+  return [Math.max(0, p - h), Math.min(1, p + h)];
+}

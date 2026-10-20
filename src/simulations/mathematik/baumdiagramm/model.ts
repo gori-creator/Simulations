@@ -198,3 +198,38 @@ export function drawPath(u: Urn, stages: number, replace: boolean, rnd: () => nu
 export function maxStages(u: Urn, replace: boolean, cap = 3): number {
   return replace ? cap : Math.max(1, Math.min(cap, urnTotal(u)));
 }
+
+/* ------------------------------------------------------------------ */
+/* Ergänzungen: Sonderfälle, Gegenereignis, Häufigkeiten              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Farben, die an einem Knoten (nach `path`) aufgebraucht sind, obwohl sie
+ * anfangs in der Urne waren – dort endet ein Ast mit Wahrscheinlichkeit 0.
+ */
+export function exhaustedColors(u: Urn, path: string, replace: boolean): Color[] {
+  if (replace) return [];
+  const now = urnAfter(u, path, false);
+  return urnColors(u).filter((c) => now[c] === 0);
+}
+
+/** Nach wie vielen Zügen ist die Urne ohne Zurücklegen leer? (mit Zurücklegen: nie) */
+export const emptyAfter = (u: Urn, replace: boolean): number => (replace ? Infinity : urnTotal(u));
+
+/** Gegenereignis: P(Ē) = 1 − P(E). */
+export function complementProb(t: TreeNode, ev: EventId, sel: readonly string[] = []): Frac {
+  return fsub(ONE, eventProb(t, ev, sel));
+}
+
+/** Pfade eines Ereignisses und seines Gegenereignisses (für „Rechnen über das Gegenereignis“). */
+export function splitPaths(t: TreeNode, ev: EventId, sel: readonly string[] = []): { inside: string[]; outside: string[] } {
+  const all = leaves(t).map((l) => l.path);
+  return { inside: all.filter((p) => inEvent(ev, p, sel)), outside: all.filter((p) => !inEvent(ev, p, sel)) };
+}
+
+/** 95-%-Bereich der relativen Häufigkeit nach N Versuchen. */
+export function band95(p: number, N: number): [number, number] {
+  if (N <= 0) return [0, 1];
+  const h = 1.96 * Math.sqrt((p * (1 - p)) / N);
+  return [Math.max(0, p - h), Math.min(1, p + h)];
+}
