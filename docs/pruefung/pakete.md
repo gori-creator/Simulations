@@ -2,12 +2,12 @@
 
 Stand 20.10.2026. Erzeugt aus `src/curriculum/*.ts` (Jahrgangsstufe = erste Zahl von `grades`).
 
-Insgesamt 127 Simulationen.
-**Ausgenommen (werden noch überarbeitet, später einzeln geprüft):** `fadenpendel`, `brechung`.
+Insgesamt 129 Simulationen.
+**Nachgetragen am 20.10. abends:** `fadenpendel` und `brechung` (Überarbeitung T04 Teil 2 ist in `main`) stehen am Ende von Paket 1.
 
 Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das Protokoll fertig und der PR gemergt ist.
 
-## Paket 1 – Vertretung der Projektleitung (Physik + Mathematik ab Jgst. 13) – 42 Simulationen
+## Paket 1 – Vertretung der Projektleitung (Physik + Mathematik ab Jgst. 13) – 44 Simulationen
 
 | ✓ | Jgst. | ID | Titel | Adresse (DE) |
 |---|---|---|---|---|
@@ -53,6 +53,8 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☐ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
 | ☐ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
 | ☐ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
+| ☐ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
+| ☐ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
 
 ## Paket 2 – Prüf-Agent 2 (Mathematik Jgst. 5–8) – 43 Simulationen
 
