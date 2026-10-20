@@ -191,3 +191,180 @@ export function randomPoint(seed: number, r = 4): P3 {
   if (p.every(isZero)) p = [2, 3, 1];
   return p;
 }
+
+/* ------------------------------------------------------------------ */
+/* Abstand zweier Punkte mit zweimal Pythagoras                       */
+/* ------------------------------------------------------------------ */
+
+/** Differenzen der Koordinaten Q − P. */
+export function deltas(P: P3, Q: P3): P3 {
+  return [Q[0] - P[0], Q[1] - P[1], Q[2] - P[2]];
+}
+
+/**
+ * Abstand in zwei Schritten: erst in der waagerechten Ebene durch P
+ * (d₁₂ = √(Δx₁² + Δx₂²)), dann mit der Höhe (d = √(d₁₂² + Δx₃²)).
+ * `corner` ist der Hilfspunkt H(q₁ | q₂ | p₃) mit dem rechten Winkel.
+ */
+export function distSteps(P: P3, Q: P3): { d12: number; d: number; corner: P3; sq: number } {
+  const [a, b, c] = deltas(P, Q);
+  const d12 = Math.hypot(a, b);
+  return { d12, d: Math.hypot(d12, c), corner: [Q[0], Q[1], P[2]], sq: a * a + b * b + c * c };
+}
+
+/** Flächendiagonale der Grundfläche √(a² + b²). */
+export function faceDiagonal(a: number, b: number): number {
+  return Math.hypot(a, b);
+}
+
+/** Spiegelpunkt nach Wahl: am Ursprung oder an einer Koordinatenebene. */
+export function mirrorOf(p: P3, kind: 'o' | 'e12' | 'e13' | 'e23'): P3 {
+  return mirrors(p)[kind];
+}
+
+/** Stimmen zwei Punkte (bis auf Rundung) überein? Je Koordinate. */
+export function matches(a: P3, b: P3, eps = 1e-6): [boolean, boolean, boolean] {
+  return [Math.abs(a[0] - b[0]) < eps, Math.abs(a[1] - b[1]) < eps, Math.abs(a[2] - b[2]) < eps];
+}
+
+/* ------------------------------------------------------------------ */
+/* Oktanten: Vorzeichen, Punkt hineinspiegeln, Zufallspunkte zählen    */
+/* ------------------------------------------------------------------ */
+
+/** Vorzeichen der Koordinaten im Oktanten n (1–8). */
+export function octantSigns(n: number): [number, number, number] {
+  const q = ((n - 1) % 4) + 1;
+  const sx = q === 1 || q === 4 ? 1 : -1;
+  const sy = q === 1 || q === 2 ? 1 : -1;
+  const sz = n <= 4 ? 1 : -1;
+  return [sx, sy, sz];
+}
+
+/**
+ * Punkt in den Oktanten n bringen: Beträge bleiben, die Vorzeichen werden
+ * angepasst (eine Koordinate 0 wird zu ±1, sonst läge der Punkt auf einer Ebene).
+ */
+export function intoOctant(p: P3, n: number): P3 {
+  const s = octantSigns(n);
+  return [0, 1, 2].map((k) => s[k]! * (isZero(p[k]!) ? 1 : Math.abs(p[k]!))) as unknown as P3;
+}
+
+/** Wie viele Punkte liegen in welchem Oktanten? Index 0 = auf einer Koordinatenebene. */
+export function octantCounts(points: readonly P3[]): number[] {
+  const c = new Array<number>(9).fill(0);
+  for (const q of points) c[octant(q)]!++;
+  return c;
+}
+
+/**
+ * Zufallspunkt auf dem Halbschritt-Gitter im Würfel [−r, r]³ (jede der
+ * 4r + 1 Stufen gleich wahrscheinlich, also auch die 0).
+ */
+export function gridRandom(u: () => number, r = 4): P3 {
+  const n = 4 * r + 1;
+  const c = () => Math.floor(u() * n) / 2 - r;
+  return [c(), c(), c()];
+}
+
+/** Wahrscheinlichkeit, dass ein solcher Gitterpunkt auf keiner Koordinatenebene liegt. */
+export function pInsideOctant(r = 4): number {
+  const n = 4 * r + 1;
+  return ((n - 1) / n) ** 3;
+}
+
+/* ------------------------------------------------------------------ */
+/* Dreitafelprojektion: Grundriss, Aufriss, Seitenriss                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Die drei Risse eines Punktes als ebene Koordinatenpaare:
+ * Grundriss (von oben) (x₁ | x₂), Aufriss (von vorn) (x₂ | x₃),
+ * Seitenriss (von der Seite) (x₁ | x₃).
+ */
+export function risse(p: P3): { grund: [number, number]; auf: [number, number]; seit: [number, number] } {
+  return { grund: [p[0], p[1]], auf: [p[1], p[2]], seit: [p[0], p[2]] };
+}
+
+/**
+ * Punkt aus Grundriss (x₁ | x₂) und Aufriss (x₂ | x₃) zurückgewinnen. Beide
+ * Risse enthalten x₂ – stimmt es nicht überein, passen die Risse nicht
+ * zusammen (null).
+ */
+export function fromRisse(grund: readonly [number, number], auf: readonly [number, number], eps = 1e-9): P3 | null {
+  if (Math.abs(grund[1] - auf[0]) > eps) return null;
+  return [grund[0], grund[1], auf[1]];
+}
+
+/** Welche Risse von p stimmen mit denen von t überein? */
+export function rissMatch(p: P3, t: P3, eps = 1e-6): { grund: boolean; auf: boolean; seit: boolean } {
+  const ok = (a: readonly number[], b: readonly number[]) => Math.abs(a[0]! - b[0]!) < eps && Math.abs(a[1]! - b[1]!) < eps;
+  const rp = risse(p);
+  const rt = risse(t);
+  return { grund: ok(rp.grund, rt.grund), auf: ok(rp.auf, rt.auf), seit: ok(rp.seit, rt.seit) };
+}
+
+/** Einfache Körper für die Risse: Ecken und Kanten. */
+export interface Figure {
+  points: P3[];
+  edges: (readonly [number, number])[];
+  names: string[];
+}
+
+export const FIGURES: Record<'house' | 'pyr', Figure> = {
+  // Haus: Quader 2 × 3 × 2 mit Satteldach (First in x₂-Richtung, Höhe 3), etwas vom Ursprung abgerückt
+  house: {
+    points: [
+      [1, 1, 0],
+      [3, 1, 0],
+      [3, 4, 0],
+      [1, 4, 0],
+      [1, 1, 2],
+      [3, 1, 2],
+      [3, 4, 2],
+      [1, 4, 2],
+      [2, 1, 3],
+      [2, 4, 3],
+    ],
+    edges: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 0],
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [7, 4],
+      [0, 4],
+      [1, 5],
+      [2, 6],
+      [3, 7],
+      [4, 8],
+      [5, 8],
+      [7, 9],
+      [6, 9],
+      [8, 9],
+    ],
+    names: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'S', 'T'],
+  },
+  // quadratische Pyramide mit Grundseite 3 und Spitze S(2,5 | 2,5 | 3)
+  pyr: {
+    points: [
+      [1, 1, 0],
+      [4, 1, 0],
+      [4, 4, 0],
+      [1, 4, 0],
+      [2.5, 2.5, 3],
+    ],
+    edges: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 0],
+      [0, 4],
+      [1, 4],
+      [2, 4],
+      [3, 4],
+    ],
+    names: ['A', 'B', 'C', 'D', 'S'],
+  },
+};

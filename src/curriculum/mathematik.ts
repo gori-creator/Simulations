@@ -1256,8 +1256,8 @@ export const mathematik: Subject = {
             slug: L('raeumliches-koordinatensystem', '3d-coordinate-system'),
             title: L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'),
             summary: L(
-              'Einen Punkt im Raum ziehen und den Koordinatenweg x₁ → x₂ → x₃ verfolgen, Projektionen in die Koordinatenebenen und Quader mit benannten Ecken – drehbar und mit Blick von oben, vorn und von der Seite.',
-              'Drag a point in space and follow its coordinate path x₁ → x₂ → x₃, see projections onto the coordinate planes and cuboids with named corners – rotatable, with views from above, the front and the side.',
+              'Sechs Ansichten: Punkt mit Koordinatenweg, Projektionen und Spiegelpunkt (Koordinatenebenen und Achsen leuchten auf), Quader mit Raumdiagonale, Abstand zweier Punkte mit zweimal Pythagoras, Punkte finden, Grundriss–Aufriss–Seitenriss mit Rätsel und die acht Oktanten mit Zufallspunkten – drehbar und mit Blick von oben, vorn und von der Seite.',
+              'Six views: a point with coordinate path, projections and mirror point (coordinate planes and axes light up), a cuboid with space diagonal, the distance between two points with Pythagoras twice, a find-the-point task, top/front/side views with a riddle and the eight octants with random points – rotatable, with views from above, the front and the side.',
             ),
             grades: [12, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
@@ -1273,8 +1273,8 @@ export const mathematik: Subject = {
             slug: L('vektoren-addieren-vervielfachen', 'adding-and-scaling-vectors'),
             title: L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'),
             summary: L(
-              'Vektorpfeile im Raum mit ziehbaren Spitzen: Spitze an Fuß und Parallelogramm, Gegenvektor und Differenz, Vielfache, Linearkombinationen in einer Ebene und der Verbindungsvektor AB = B − A – mit Rechnung in Spaltenschreibweise.',
-              'Vector arrows in space with draggable tips: tip to tail and the parallelogram, opposite vector and difference, multiples, linear combinations in a plane and the connecting vector AB = B − A – with the calculation in column form.',
+              'Vektorpfeile im Raum mit ziehbaren Spitzen: Spitze an Fuß und Parallelogramm, Gegenvektor und Differenz, Vielfache, Linearkombinationen in einer Ebene und der Verbindungsvektor AB = B − A. Dazu: eine Linearkombination finden (auch „unmöglich“, wenn das Ziel nicht in der Ebene liegt), Vektorzüge im Spat, Länge und Einheitsvektor (ganzzahlige Vektoren der Länge 3 finden), Schwerpunkt und Teilpunkt sowie ein Zufallsweg aus vielen Einheitsschritten – mit Rechnung in Spaltenschreibweise.',
+              'Vector arrows in space with draggable tips: tip to tail and the parallelogram, opposite vector and difference, multiples, linear combinations in a plane and the connecting vector AB = B − A. Plus: finding a linear combination (also “impossible” if the target is not in the plane), vector paths in a parallelepiped, length and unit vector (find integer vectors of length 3), centroid and dividing point, and a random walk of many unit steps – with the calculation in column form.',
             ),
             grades: [12, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
@@ -1290,8 +1290,8 @@ export const mathematik: Subject = {
             slug: L('skalarprodukt-vektorprodukt', 'dot-and-cross-product'),
             title: L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'),
             summary: L(
-              'Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, senkrecht bei a · b = 0; das Vektorprodukt wächst als Normalenvektor aus dem Parallelogramm, das Spatprodukt liefert das Volumen des Spats.',
-              'Two vectors in space: angle and projection from the dot product, perpendicular when a · b = 0; the cross product grows as a normal vector out of the parallelogram, the triple product gives the volume of the parallelepiped.',
+              'Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, b drehen mit cos- und sin-Verlauf, das Vektorprodukt Schritt für Schritt als Normalenvektor mit Parallelogrammfläche, das Spatprodukt als Volumen mit Scherung nach Cavalieri – und Entdeckungsaufgaben, die die ganze Lösungsmenge zeigen.',
+              'Two vectors in space: angle and projection from the dot product, rotating b with the cos and sin curves, the cross product step by step as a normal vector with the parallelogram area, the triple product as a volume with Cavalieri shear – and discovery tasks that reveal the whole solution set.',
             ),
             grades: [12, 12],
             kmk: ['M-L4', 'M-L2', 'M-K4', 'M-K5'],

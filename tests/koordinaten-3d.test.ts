@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { boxCenter, boxCorners, boxSurface, boxVolume, cornersOnPlanes, dist, distOrigin, mirrors, octant, projections, randomPoint, spaceDiagonal, walk, walkAt, where } from '../src/simulations/mathematik/koordinaten-3d/model';
+import { boxCenter, boxCorners, boxSurface, boxVolume, cornersOnPlanes, deltas, dist, distOrigin, distSteps, faceDiagonal, FIGURES, fromRisse, gridRandom, intoOctant, matches, mirrorOf, mirrors, octant, octantCounts, octantSigns, pInsideOctant, projections, randomPoint, risse, rissMatch, spaceDiagonal, walk, walkAt, where } from '../src/simulations/mathematik/koordinaten-3d/model';
 
 describe('Modell: Räumliches Koordinatensystem – Punkte', () => {
   it('Abstand vom Ursprung: P(3 | 4 | 2) → √29', () => {
@@ -79,5 +79,87 @@ describe('Modell: Räumliches Koordinatensystem – Quader', () => {
     const on = cornersOnPlanes(c);
     expect(on.axis).toEqual([0, 1, 3, 4]);
     expect(on.plane).toEqual([0, 1, 2, 3, 4, 5, 7]);
+  });
+});
+
+describe('Modell: Räumliches Koordinatensystem – Ergänzungen', () => {
+  it('Prüfwert: Abstand von (1 | 2 | 2) zum Ursprung = 3', () => {
+    expect(distOrigin([1, 2, 2])).toBeCloseTo(3, 12);
+    const s = distSteps([0, 0, 0], [1, 2, 2]);
+    expect(s.d12).toBeCloseTo(Math.sqrt(5), 12);
+    expect(s.d).toBeCloseTo(3, 12);
+    expect(s.sq).toBe(9);
+    expect(s.corner).toEqual([1, 2, 0]);
+  });
+  it('Prüfwert: Quader (0 | 0 | 0) bis (4 | 3 | 2): Raumdiagonale √29 ≈ 5,39', () => {
+    expect(spaceDiagonal(4, 3, 2)).toBeCloseTo(Math.sqrt(29), 12);
+    expect(spaceDiagonal(4, 3, 2)).toBeCloseTo(5.385, 3);
+    // zweimal Pythagoras: Flächendiagonale 5, dann mit der Höhe 2
+    expect(faceDiagonal(4, 3)).toBeCloseTo(5, 12);
+    expect(Math.hypot(faceDiagonal(4, 3), 2)).toBeCloseTo(Math.sqrt(29), 12);
+    const c = boxCorners([0, 0, 0], 4, 3, 2);
+    expect(c[6]).toEqual([4, 3, 2]);
+    expect(dist(c[0]!, c[6]!)).toBeCloseTo(Math.sqrt(29), 12);
+  });
+  it('Abstand zweier Punkte mit Differenzen', () => {
+    expect(deltas([1, -2, 3], [4, 2, 3])).toEqual([3, 4, 0]);
+    expect(distSteps([1, -2, 3], [4, 2, 3]).d).toBeCloseTo(5, 12);
+    expect(distSteps([3, 4, 2], [-1, 1, -2]).sq).toBe(16 + 9 + 16);
+  });
+  it('Spiegelpunkte und Vergleich', () => {
+    expect(mirrorOf([2, -3, 1], 'o')).toEqual([-2, 3, -1]);
+    expect(mirrorOf([2, -3, 1], 'e12')).toEqual([2, -3, -1]);
+    expect(mirrorOf([2, -3, 1], 'e23')).toEqual([-2, -3, 1]);
+    expect(matches([1, 2, 3], [1, 2, 4])).toEqual([true, true, false]);
+  });
+});
+
+describe('Modell: Oktanten und Risse', () => {
+  it('Vorzeichen der Oktanten passen zu octant()', () => {
+    for (let n = 1; n <= 8; n++) expect(octant(octantSigns(n))).toBe(n);
+    expect(octantSigns(1)).toEqual([1, 1, 1]);
+    expect(octantSigns(7)).toEqual([-1, -1, -1]);
+  });
+  it('Punkt in einen Oktanten bringen', () => {
+    expect(intoOctant([3, 4, 2], 7)).toEqual([-3, -4, -2]);
+    expect(intoOctant([0, -2, 1], 1)).toEqual([1, 2, 1]);
+    expect(octant(intoOctant([0, 0, 0], 6))).toBe(6);
+  });
+  it('Zufallspunkte zählen', () => {
+    const c = octantCounts([
+      [1, 1, 1],
+      [-1, 1, 1],
+      [1, 1, 0],
+      [2, 3, 4],
+    ]);
+    expect(c[0]).toBe(1);
+    expect(c[1]).toBe(2);
+    expect(c[2]).toBe(1);
+    expect(c.reduce((a, b) => a + b, 0)).toBe(4);
+    let s = 1;
+    const u = () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646;
+    const pts = Array.from({ length: 4000 }, () => gridRandom(u));
+    expect(pts.every((q) => q.every((v) => v >= -4 && v <= 4 && Number.isInteger(v * 2)))).toBe(true);
+    const share = 1 - octantCounts(pts)[0]! / pts.length;
+    expect(share).toBeCloseTo(pInsideOctant(), 1);
+    expect(pInsideOctant()).toBeCloseTo((16 / 17) ** 3, 12);
+  });
+  it('Risse und Rückgewinnung', () => {
+    expect(risse([3, 4, 2])).toEqual({ grund: [3, 4], auf: [4, 2], seit: [3, 2] });
+    expect(fromRisse([3, 4], [4, 2])).toEqual([3, 4, 2]);
+    expect(fromRisse([3, 4], [5, 2])).toBeNull();
+    expect(rissMatch([3, 4, 2], [3, 4, -1])).toEqual({ grund: true, auf: false, seit: false });
+    expect(rissMatch([1, 4, 2], [3, 4, 2]).auf).toBe(true);
+  });
+  it('Körper: Kanten verweisen auf vorhandene Ecken', () => {
+    for (const f of Object.values(FIGURES)) {
+      expect(f.names.length).toBe(f.points.length);
+      for (const [i, j] of f.edges) {
+        expect(f.points[i]).toBeDefined();
+        expect(f.points[j]).toBeDefined();
+      }
+    }
+    expect(FIGURES.house.points[9]).toEqual([2, 4, 3]);
+    expect(FIGURES.pyr.points[4]).toEqual([2.5, 2.5, 3]);
   });
 });

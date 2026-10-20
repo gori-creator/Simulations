@@ -1,42 +1,37 @@
 ---
-description: "Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, senkrecht bei a · b = 0; das Vektorprodukt wächst als Normalenvektor aus dem Parallelogramm, das Spatprodukt liefert das Volumen des Spats."
+description: "Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, b drehen mit dem Verlauf von cos und sin, das Vektorprodukt Schritt für Schritt „über Kreuz“ als Normalenvektor mit Parallelogrammfläche, das Spatprodukt als Volumen (mit Scherung nach Cavalieri) – und Entdeckungsaufgaben, bei denen sich die Lösungsmenge zeigt."
 ---
 
 ## Worum geht es?
 
-**Skalarprodukt:** Zwei Vektoren werden komponentenweise multipliziert und die Produkte addiert – das Ergebnis ist eine **Zahl**:
+**Skalarprodukt:** Komponentenweise multiplizieren und addieren – das Ergebnis ist eine **Zahl**: $\vec a \cdot \vec b = a_1 b_1 + a_2 b_2 + a_3 b_3$. Geometrisch gilt $\vec a \cdot \vec b = |\vec a| \cdot |\vec b| \cdot \cos\varphi$ mit dem Winkel $0° \le \varphi \le 180°$, also
 
 $$
-\vec a \cdot \vec b = a_1 b_1 + a_2 b_2 + a_3 b_3, \qquad \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix} \cdot \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix} = 0 + 2 + 0 = 2.
+\cos\varphi = \frac{\vec a \cdot \vec b}{|\vec a| \cdot |\vec b|}, \qquad \text{z. B. } \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} \cdot \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} = 1, \quad \cos\varphi = \frac{1}{1 \cdot \sqrt2} \;\Rightarrow\; \varphi = 45°.
 $$
 
-Geometrisch gilt $\vec a \cdot \vec b = |\vec a| \cdot |\vec b| \cdot \cos\varphi$, wobei $\varphi$ der Winkel zwischen den Pfeilen ist ($0° \le \varphi \le 180°$). Daraus folgt die **Winkelformel**
-
-$$
-\cos\varphi = \frac{\vec a \cdot \vec b}{|\vec a| \cdot |\vec b|}, \qquad \text{z. B. } \cos\varphi = \frac{2}{\sqrt5 \cdot \sqrt5} = 0{,}4 \;\Rightarrow\; \varphi \approx 66{,}4°.
-$$
-
-- $\vec a \cdot \vec b > 0$: spitzer Winkel, $\vec a \cdot \vec b < 0$: stumpfer Winkel.
-- $\vec a \cdot \vec b = 0$: Die Vektoren stehen **senkrecht** (orthogonal) aufeinander.
+- $\vec a \cdot \vec b > 0$: spitzer Winkel, $< 0$: stumpfer Winkel, $= 0$: **senkrecht** (orthogonal).
 - $\frac{\vec a \cdot \vec b}{|\vec a|}$ ist die (vorzeichenbehaftete) Länge der **Projektion** von $\vec b$ auf die Richtung von $\vec a$.
+- **Sonderfälle:** Bei einem Nullvektor gibt es keinen Winkel. Bei parallelen Vektoren ist $\vec a \cdot \vec b = \pm|\vec a| \cdot |\vec b|$.
 
-**Vektorprodukt (Kreuzprodukt):** Das Ergebnis ist ein **Vektor**,
+**Vektorprodukt (Kreuzprodukt):** Das Ergebnis ist ein **Vektor**. Man schreibt $\vec a$ und $\vec b$ nebeneinander, wiederholt die ersten beiden Zeilen darunter und rechnet „über Kreuz“, beginnend in Zeile 2:
 
 $$
-\vec a \times \vec b = \begin{pmatrix} a_2 b_3 - a_3 b_2 \\ a_3 b_1 - a_1 b_3 \\ a_1 b_2 - a_2 b_1 \end{pmatrix}, \qquad \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix} \times \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix} = \begin{pmatrix} 4 \\ -2 \\ 1 \end{pmatrix}.
+\vec a \times \vec b = \begin{pmatrix} a_2 b_3 - a_3 b_2 \\ a_3 b_1 - a_1 b_3 \\ a_1 b_2 - a_2 b_1 \end{pmatrix}, \qquad \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix} \times \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix} = \begin{pmatrix} 12 - 15 \\ 12 - 6 \\ 5 - 8 \end{pmatrix} = \begin{pmatrix} -3 \\ 6 \\ -3 \end{pmatrix}.
 $$
 
-Er steht **senkrecht auf $\vec a$ und $\vec b$** (Normalenvektor), $\vec a$, $\vec b$, $\vec a \times \vec b$ bilden ein Rechtssystem (Rechte-Hand-Regel), und seine Länge ist die **Fläche des Parallelogramms**: $A = |\vec a \times \vec b|$. Das Dreieck mit den Seiten $\vec a$ und $\vec b$ hat die halbe Fläche. Vertauscht man die Reihenfolge, kehrt sich die Richtung um: $\vec b \times \vec a = -(\vec a \times \vec b)$.
+$\vec a \times \vec b$ steht **senkrecht auf $\vec a$ und $\vec b$** (Rechte-Hand-Regel), und seine Länge ist die **Fläche des Parallelogramms**: $|\vec a \times \vec b| = |\vec a| \cdot |\vec b| \cdot \sin\varphi$, hier $\sqrt{9 + 36 + 9} = \sqrt{54} \approx 7{,}35$. Das Dreieck hat die halbe Fläche. Es gilt $\vec b \times \vec a = -(\vec a \times \vec b)$; bei parallelen Vektoren ist $\vec a \times \vec b = \vec o$.
 
-**Spatprodukt:** $(\vec a \times \vec b) \cdot \vec c$. Sein Betrag ist das **Volumen des Spats** (schiefen Prismas mit Parallelogramm-Grundfläche), denn Grundfläche $|\vec a \times \vec b|$ mal Höhe (Projektion von $\vec c$ auf den Normalenvektor). Die dreiseitige Pyramide mit denselben Kanten hat $\frac16$ davon.
+**Spatprodukt:** $|(\vec a \times \vec b) \cdot \vec c|$ ist das **Volumen des Spats**: Grundfläche $G = |\vec a \times \vec b|$ mal Höhe $h$ (Projektion von $\vec c$ auf $\vec a \times \vec b$). Schert man den Spat gerade, bleiben $G$ und $h$ gleich – und damit das Volumen (Prinzip von Cavalieri). Die dreiseitige Pyramide mit den Kanten $\vec a$, $\vec b$, $\vec c$ hat $\frac16$ davon. Ist das Spatprodukt negativ, bilden $\vec a$, $\vec b$, $\vec c$ ein Linkssystem; ist es $0$, liegen sie in einer Ebene.
 
 ## Ausprobieren
 
-1. Ziehe die Spitze von $\vec b$, bis der Winkel genau $90°$ ist. Was zeigt das Skalarprodukt? [Beispiel laden](?b1=-2&b2=1&b3=2)
-2. Mach den Winkel stumpf. Wohin zeigt nun die Projektion von $\vec b$ auf $\vec a$? [Stumpfer Winkel](?b1=-2&b2=-1&b3=2)
-3. Wechsle zum **Vektorprodukt** und drehe die Ansicht: Steht $\vec a \times \vec b$ wirklich senkrecht auf dem Parallelogramm? Tausche dann $\vec a$ und $\vec b$. [Vektorprodukt](?mode=cross)
-4. Mach $\vec b$ parallel zu $\vec a$ (z. B. $\vec b = \begin{pmatrix} 2 \\ 4 \\ 0 \end{pmatrix}$). Was passiert mit Fläche und Normalenvektor? [Parallele Vektoren](?mode=cross&b1=2&b2=4&b3=0)
-5. Im **Spatprodukt**: Ziehe $\vec c$ in die Ebene von $\vec a$ und $\vec b$. Wie groß wird das Volumen? [Spat](?mode=spat)
+1. Ziehe die Spitze von $\vec b$, bis der Winkel $90°$ ist. Was zeigen Skalarprodukt und Balken? [Senkrecht](?b1=-2&b2=1&b3=2)
+2. In **Winkel drehen** läuft $\vec b$ auf einem Halbkreis. Starte „φ von 0° bis 180° drehen“ und beobachte beide Kurven. [Winkel drehen](?mode=angle&a1=1&a2=0&a3=0&b1=1&b2=1&b3=0&phi=45)
+3. Lass im **Vektorprodukt** die Rechnung Schritt für Schritt ablaufen und tippe auf eine Zeile des Schemas. [Über Kreuz](?mode=cross&a1=1&a2=2&a3=3&b1=4&b2=5&b3=6)
+4. Mach $\vec b$ parallel zu $\vec a$. Was passiert mit Fläche und Normalenvektor? [Parallel](?mode=cross&a1=1&a2=2&a3=3&b1=2&b2=4&b3=6)
+5. Schalte im **Spatprodukt** „Spat gerade scheren“ ein. Was bleibt gleich? [Cavalieri](?mode=spat&a1=2&a2=0&a3=0&b1=0&b2=3&b3=0&c1=2&c2=1&c3=2&cav=1)
+6. Unter **Entdecken** suchst du drei Lösungen – danach zeigt sich, wo alle Lösungen liegen. [Entdecken](?mode=find&task=perp&b1=1&b2=1&b3=2)
 
 ## Aufgaben
 
@@ -47,40 +42,51 @@ Berechne den Winkel zwischen $\vec a = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\vec a \cdot \vec b = -2 - 2 + 0 = -4$, $|\vec a| = \sqrt5$, $|\vec b| = 3$. $\cos\varphi = \frac{-4}{3\sqrt5} \approx -0{,}596$, also $\varphi \approx 126{,}6°$ – stumpf, wie das negative Vorzeichen verrät. [In der Simulation zeigen](?b1=-2&b2=-1&b3=2)
+$\vec a \cdot \vec b = -2 - 2 + 0 = -4$, $|\vec a| = \sqrt5$, $|\vec b| = 3$. $\cos\varphi = \frac{-4}{3\sqrt5} \approx -0{,}596$, also $\varphi \approx 126{,}6°$ – stumpf, wie das Minuszeichen verrät. [In der Simulation zeigen](?b1=-2&b2=-1&b3=2)
 
 </details>
 
-### Aufgabe 2: Senkrecht machen
+### Aufgabe 2: Gleich groß
 
-Bestimme $t$ so, dass $\vec a = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$ und $\vec b = \begin{pmatrix} -2 \\ 1 \\ t \end{pmatrix}$ senkrecht aufeinander stehen. Gibt es mehrere Lösungen?
+Für welche Winkel $\varphi$ sind $|\vec a \cdot \vec b|$ und $|\vec a \times \vec b|$ gleich groß? [Aufgabe laden](?mode=angle&a1=1&a2=0&a3=0&b1=1&b2=1&b3=0&phi=20&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\vec a \cdot \vec b = -2 + 2 + 0 \cdot t = 0$ für **jedes** $t$: Alle diese Vektoren sind senkrecht zu $\vec a$, denn $a_3 = 0$. [Beispiel mit t = 2](?b1=-2&b2=1&b3=2)
+$|\cos\varphi| = \sin\varphi$ gilt für $\varphi = 45°$ und $\varphi = 135°$. Beispiel: $\vec a = \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix}$, $\vec b = \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}$: $\vec a \cdot \vec b = 1$ und $\vec a \times \vec b = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix}$ mit Länge $1$. [In der Simulation zeigen](?mode=angle&a1=1&a2=0&a3=0&b1=1&b2=1&b3=0&phi=45)
 
 </details>
 
 ### Aufgabe 3: Normalenvektor und Fläche
 
-Berechne $\vec a \times \vec b$ für $\vec a = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$, $\vec b = \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}$, mache die Probe mit dem Skalarprodukt und gib die Fläche des Dreiecks mit den Seiten $\vec a$, $\vec b$ an. [Aufgabe laden](?mode=cross&show=0&_hide=1)
+Berechne $\vec a \times \vec b$ für $\vec a = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}$, $\vec b = \begin{pmatrix} 4 \\ 5 \\ 6 \end{pmatrix}$, mache die Probe und gib die Fläche des Parallelogramms an. [Aufgabe laden](?mode=cross&a1=1&a2=2&a3=3&b1=4&b2=5&b3=6&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\vec a \times \vec b = \begin{pmatrix} 2 \cdot 2 - 0 \cdot 1 \\ 0 \cdot 0 - 1 \cdot 2 \\ 1 \cdot 1 - 2 \cdot 0 \end{pmatrix} = \begin{pmatrix} 4 \\ -2 \\ 1 \end{pmatrix}$. Probe: $4 - 4 + 0 = 0$ und $0 - 2 + 2 = 0$ ✓. Dreieck: $\frac12\sqrt{16 + 4 + 1} = \frac12\sqrt{21} \approx 2{,}29$. [In der Simulation zeigen](?mode=cross&tri=1)
+$\vec a \times \vec b = \begin{pmatrix} 2 \cdot 6 - 3 \cdot 5 \\ 3 \cdot 4 - 1 \cdot 6 \\ 1 \cdot 5 - 2 \cdot 4 \end{pmatrix} = \begin{pmatrix} -3 \\ 6 \\ -3 \end{pmatrix}$. Probe: $-3 + 12 - 9 = 0$ und $-12 + 30 - 18 = 0$ ✓. Fläche $\sqrt{54} \approx 7{,}35$. [In der Simulation zeigen](?mode=cross&a1=1&a2=2&a3=3&b1=4&b2=5&b3=6)
 
 </details>
 
-### Aufgabe 4: Volumen
+### Aufgabe 4: Volumen und Orientierung
 
-Berechne das Volumen des Spats und der Pyramide, die von $\vec a$, $\vec b$ aus Aufgabe 3 und $\vec c = \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}$ aufgespannt werden. [Aufgabe laden](?mode=spat&show=0&_hide=1)
+Berechne das Spatprodukt für $\vec a = \begin{pmatrix} 1 \\ 2 \\ 0 \end{pmatrix}$, $\vec b = \begin{pmatrix} 0 \\ 1 \\ 2 \end{pmatrix}$ und $\vec c = \begin{pmatrix} -1 \\ 1 \\ -2 \end{pmatrix}$. Wie groß sind die Volumina von Spat und Pyramide? [Aufgabe laden](?mode=spat&c1=-1&c2=1&c3=-2&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$(\vec a \times \vec b) \cdot \vec c = 4 + 2 + 2 = 8$: Spat $V = 8$, Pyramide $V = \frac86 = \frac43 \approx 1{,}33$. [In der Simulation zeigen](?mode=spat&pyr=1)
+$\vec a \times \vec b = \begin{pmatrix} 4 \\ -2 \\ 1 \end{pmatrix}$, $(\vec a \times \vec b) \cdot \vec c = -4 - 2 - 2 = -8$: ein Linkssystem. Spat $V = 8$, Pyramide $V = \frac86 = \frac43 \approx 1{,}33$. [In der Simulation zeigen](?mode=spat&c1=-1&c2=1&c3=-2&pyr=1)
+
+</details>
+
+### Aufgabe 5: Alle Lösungen
+
+Gesucht sind alle $\vec c$, für die der Spat aus $\vec a = \begin{pmatrix} 2 \\ 0 \\ 0 \end{pmatrix}$, $\vec b = \begin{pmatrix} 0 \\ 3 \\ 0 \end{pmatrix}$ und $\vec c$ das Volumen $12$ hat. Finde zuerst drei in der Simulation und beschreibe dann alle. [Aufgabe laden](?mode=find&task=vol&c1=1&c2=1&c3=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\vec a \times \vec b = \begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}$, also $V = |6 c_3| = 12$ genau für $c_3 = 2$ oder $c_3 = -2$; $c_1$ und $c_2$ sind beliebig. Die Spitzen liegen in zwei Ebenen parallel zur $x_1x_2$-Ebene: Grundfläche $6$ mal Höhe $2$. [In der Simulation zeigen](?mode=find&task=vol&c1=1&c2=1&c3=1)
 
 </details>
 
@@ -88,11 +94,11 @@ $(\vec a \times \vec b) \cdot \vec c = 4 + 2 + 2 = 8$: Spat $V = 8$, Pyramide $V
 
 *Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium): Skalarprodukt für Längen und Winkel, Vektorprodukt für Flächen und Volumina.
-- **Entdecken statt Vorgeben:** Eine Möglichkeit ist, zuerst Paare mit $\vec a \cdot \vec b = 0$ zu suchen und erst danach die Winkelformel einzuführen.
-- **Rechte-Hand-Regel:** Mit „a und b tauschen“ lässt sich zeigen, dass das Vektorprodukt nicht kommutativ ist.
+- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium).
+- **Entdecken statt Vorgeben:** Zuerst unter „Entdecken“ senkrechte Vektoren suchen lassen – die Ebene der Lösungen führt direkt zur Normalenform.
+- **cos und sin zusammen:** „Winkel drehen“ zeigt Skalarprodukt (Projektion) und Fläche (Höhe) im selben Bild.
 - **Häufige Stolpersteine:**
   - Das Skalarprodukt wird als Vektor notiert – es ist eine Zahl.
-  - Bei der Kreuzproduktformel werden Indizes oder Vorzeichen der mittleren Komponente vertauscht; die Probe $(\vec a \times \vec b) \cdot \vec a = 0$ hilft.
-  - Der Winkel wird nicht auf $0° \ldots 180°$ bezogen bzw. das Vorzeichen von $\cos\varphi$ wird ignoriert.
-  - Die Dreiecksfläche wird ohne den Faktor $\frac12$, das Pyramidenvolumen ohne $\frac16$ angegeben.
+  - Vorzeichen oder Indizes der mittleren Komponente werden vertauscht; die Probe $(\vec a \times \vec b) \cdot \vec a = 0$ hilft.
+  - Das Vorzeichen von $\cos\varphi$ wird ignoriert; der Winkel liegt immer zwischen $0°$ und $180°$.
+  - Dreiecksfläche ohne $\frac12$, Pyramidenvolumen ohne $\frac16$.
