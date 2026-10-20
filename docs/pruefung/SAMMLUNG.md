@@ -33,3 +33,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | bewegungsdiagramme | Aus dem Stand mit a < 0 fährt das Auto rückwärts los (steht im Hilfetext). | So lassen. Ab Jgst. 9 ist das sinnvoll; das Lernmaterial erklärt es. | – |
 | ohmsches-gesetz | Die Messgeräte wählen ihren Messbereich selbst. „Messbereich überschritten“ und falsche Polung lassen sich nicht vorführen. | So lassen. Als spätere Erweiterung vormerken (Messbereich von Hand wählen). | – |
 | ohmsches-gesetz | Glühlampenmodell (R ~ T^1,2), im Lernmaterial als Modell gekennzeichnet. | So lassen. | – |
+| reihe-parallel | Kurzschluss bzw. „Lampe überbrücken“ ist nicht möglich. Das ist ein häufiger Versuch in Jgst. 8–9 (in Reihe wird die andere Lampe dann heller). | Als Erweiterung vormerken, sinnvoll. | – |
+| reihe-parallel | Bei 2 V glühen die Lampen nur sehr schwach (Modell P ~ T⁴). | So lassen, fachlich plausibel. | – |
