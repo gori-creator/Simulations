@@ -165,7 +165,7 @@ const VERDICTS: Verdict[] = ['dir', 'ind', 'none'];
 export default defineSimulation({
   id: 'proportional',
   dragHint: true,
-  layout: { aspect: 1.2, aspectNarrow: 0.34 },
+  layout: { aspect: 1.05, aspectNarrow: 0.325 },
   groups: [
     { id: 'val', label: L('Werte', 'Values') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -371,7 +371,7 @@ export default defineSimulation({
     const dragging = () => performance.now() - lastDrag < 250;
 
     /* ---------- Aufteilung ---------- */
-    const isWide = () => surface.width >= 640 || surface.width >= surface.height * 1.3;
+    const isWide = () => surface.width >= 640 || surface.width >= surface.height * 0.9;
     const sm = () => surface.width < 560;
     const fs = (big: number, small: number) => (sm() ? small : big);
     const roomy = () => isWide() && surface.height >= 600;
@@ -380,7 +380,7 @@ export default defineSimulation({
       const h = surface.height;
       const gap = 10;
       if (isWide()) {
-        const sh = Math.round(clamp(h * 0.29, 128, 196));
+        const sh = Math.round(clamp(h * 0.24, 128, 180));
         const cw = Math.round(clamp(w * 0.43, 250, 440));
         const lw = w - cw - gap;
         const y1 = sh + gap;
@@ -396,7 +396,7 @@ export default defineSimulation({
       return Math.round(10 + 122 + 10 + Math.min(5, lines) * 13 * 1.32 + 14);
     }
 
-    const plot = new Plot(surface, { x: [0, 10], y: [0, 10], equalAspect: false, pan: false, zoom: false, controls: false, region: () => regions().graph });
+    const plot = new Plot(surface, { x: [0, 10], y: [0, 10], equalAspect: false, pan: false, zoom: false, controls: false, xAxis: { label: '' }, yAxis: { label: '' }, region: () => regions().graph });
 
     /* ---------- Formeln ---------- */
     const palette = (): Record<string, string> => ({ x: col.x(), y: col.y(), k: col.k(), g: col.g(), ok: col.ok(), bad: col.bad(), m: th().muted });
@@ -583,9 +583,12 @@ export default defineSimulation({
     }
 
     /** Senkrechter Bogenpfeil zwischen zwei Zeilen (Dreisatz), side −1 links, 1 rechts. */
-    function sideArrow(x: number, yA: number, yB: number, side: -1 | 1, color: string, text: string, alpha: number): void {
+    function sideArrow(edge: number, yA: number, yB: number, side: -1 | 1, color: string, text: string, alpha: number): void {
       if (alpha <= 0.01) return;
       const g = surface.g;
+      const box = formula(g, text, fstyle(fs(12.5, 11.5), color, 750));
+      // Pfeil so weit innen, dass die Beschriftung zwischen Kartenrand und Pfeil passt
+      const x = side < 0 ? edge + box.w + 16 : edge - box.w - 16;
       g.save();
       g.globalAlpha *= alpha;
       g.strokeStyle = color;
@@ -601,7 +604,6 @@ export default defineSimulation({
       g.lineTo(x - side * 2.5, yB - 5.5);
       g.closePath();
       g.fill();
-      const box = formula(g, text, fstyle(fs(12.5, 11.5), color, 750));
       const tx = side < 0 ? x - 14 - box.w : x + 14;
       box.draw(g, tx, (yA + yB) / 2 + (box.asc - box.desc) / 2);
       g.restore();
@@ -1224,9 +1226,9 @@ export default defineSimulation({
         g.moveTo(x, roadY + roadH + 2);
         g.lineTo(x, roadY + roadH + 8);
         g.stroke();
-        if (v % 2 === 0) label(String(v), x, roadY + roadH + 16, `600 11px ${th().font}`, th().muted);
+        if (v % 2 === 0 && v < (rx1 - rx0 > 200 ? 10 : 8)) label(String(v), x, roadY + roadH + 16, `600 11px ${th().font}`, th().muted);
       }
-      label('km', rx1 + 2, roadY + roadH + 16, `600 11px ${th().font}`, th().muted, 'left');
+      label('10 km', kmX(10) + 4, roadY + roadH + 16, `600 11px ${th().font}`, th().muted, 'right');
       // Startfahne
       const fx = kmX(0);
       g.strokeStyle = th().text;
@@ -1308,7 +1310,7 @@ export default defineSimulation({
         g.fill();
       }
       // Taxameter
-      const mw = Math.min(R.w * 0.66, 190);
+      const mw = Math.min(regions().wide ? R.w * 0.66 : R.w - 4, 190);
       const mh = Math.min(roadY - R.y - 30, 58);
       const mx = R.x + R.w - mw - 2;
       const my = R.y + 2;
@@ -1324,7 +1326,7 @@ export default defineSimulation({
       const lh = (mh - 8) / 3;
       const rows: [string, string, string][] = [
         [say(L('Grundgebühr', 'Base fare')), fmt.fixed(r.b, 2), mixColor(col.bad(), '#ffffff', 0.3)],
-        [`${fmt.fixed(xs, 1)} km · ${fmt.fixed(r.k, 2)}`, fmt.fixed(r.k * xs, 2), mixColor(col.x(), '#ffffff', 0.35)],
+        [`${fmt.num(Math.round(xs * 10) / 10, 1)} km · ${fmt.fixed(r.k, 2)}`, fmt.fixed(r.k * xs, 2), mixColor(col.x(), '#ffffff', 0.35)],
         [say(L('Summe €', 'Total €')), show() ? fmt.fixed(value(r, xs), 2) : '?', mixColor(col.y(), '#ffffff', 0.4)],
       ];
       rows.forEach(([l, v, c], i) => {
@@ -1462,7 +1464,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= alpha;
       label(yl, plot.px(0) + 10, r.y + 13, `650 ${fs(12, 11)}px ${th().font}`, th().muted, 'left', true);
-      label(xl, r.x + r.w - 8, plot.py(0) - 12, `650 ${fs(12, 11)}px ${th().font}`, th().muted, 'right', true);
+      label(xl, r.x + r.w - 16, plot.py(0) - 12, `650 ${fs(12, 11)}px ${th().font}`, th().muted, 'right', true);
       g.restore();
     }
 
@@ -1871,7 +1873,11 @@ export default defineSimulation({
         const head = (v: string, unit: string, y: number, c: string) => {
           const box = formula(g, `\\c{${v}}{\\b{${v}}}`, fstyle(fs(15, 13.5), c, 700));
           box.draw(g, R.x + pad, y + (box.asc - box.desc) / 2);
-          if (unit) label(unit, R.x + pad + box.w + 6, y, `600 ${fs(12, 11)}px ${theme.font}`, theme.muted, 'left');
+          if (unit) {
+            // Einheit nur, wenn sie in die Kopfspalte passt
+            g.font = `600 ${fs(12, 11)}px ${theme.font}`;
+            if (box.w + 6 + g.measureText(unit).width <= hw - 6) label(unit, R.x + pad + box.w + 6, y, `600 ${fs(12, 11)}px ${theme.font}`, theme.muted, 'left');
+          }
         };
         head('x', xUnit, yX, col.x());
         head('y', yUnit, yY, col.y());
@@ -2001,7 +2007,7 @@ export default defineSimulation({
           const cls = classify(TABLES[tab()]);
           const a = ck.verdict;
           if (a > 0.01) {
-            const txt = cls.verdict === 'dir' ? say(L(`alle Quotienten gleich → direkt proportional, k = ${nx(cls.k!)}`, `all quotients equal → directly proportional, k = ${nx(cls.k!)}`)) : cls.verdict === 'ind' ? say(L(`alle Produkte gleich → indirekt proportional, k = ${nx(cls.k!)}`, `all products equal → inversely proportional, k = ${nx(cls.k!)}`)) : say(L('weder Quotienten noch Produkte gleich → weder noch', 'neither quotients nor products equal → neither'));
+            const txt = cls.verdict === 'dir' ? say(L(`→ direkt proportional, k = ${nx(cls.k!)}`, `→ directly proportional, k = ${nx(cls.k!)}`)) : cls.verdict === 'ind' ? say(L(`→ indirekt proportional, k = ${nx(cls.k!)}`, `→ inversely proportional, k = ${nx(cls.k!)}`)) : say(L('→ weder noch (nicht proportional)', '→ neither (not proportional)'));
             g.save();
             g.globalAlpha *= clamp01(a);
             const lines = wrapText(txt, R.w - 2 * pad, vfont);
@@ -2010,7 +2016,7 @@ export default defineSimulation({
           } else label(say(L('Rechne nach: Quotienten und Produkte', 'Work it out: quotients and products')), R.x + pad, vy, vfont, theme.muted, 'left');
         } else if (hide) label(say(L('Sind alle gleich?', 'Are they all equal?')), R.x + pad, vy, vfont, theme.muted, 'left');
         else {
-          const txt = kk === 'dir' ? say(L('alle Quotienten gleich ✓  quotientengleich', 'all quotients equal ✓')) : kk === 'ind' ? say(L('alle Produkte gleich ✓  produktgleich', 'all products equal ✓')) : say(L('Quotienten verschieden ✗  nicht proportional', 'quotients differ ✗  not proportional'));
+          const txt = kk === 'dir' ? say(L('alle gleich ✓ → quotientengleich', 'all equal ✓ → equal quotients')) : kk === 'ind' ? say(L('alle gleich ✓ → produktgleich', 'all equal ✓ → equal products')) : say(L('verschieden ✗ → nicht proportional', 'different ✗ → not proportional'));
           label(txt, R.x + pad, vy, vfont, kk === 'lin' ? col.bad() : col.ok(), 'left');
         }
         return hh;
@@ -2047,7 +2053,16 @@ export default defineSimulation({
         cardTitle(R, kk === 'lin' ? say(L('Vorsicht, Falle!', 'Careful, trap!')) : say(L('Dreisatz', 'Rule of three')), accent, kk === 'lin' ? undefined : `\\c{${kk === 'dir' ? 'ok' : 'k'}}{${up(kk === 'dir' ? say(L('gleiche Richtung', 'same direction')) : say(L('Gegenrichtung', 'opposite direction')))}}`);
         const top = R.y + 40;
         const colEq = R.x + R.w * 0.5;
-        const fz = roomy() ? 16 : fs(15, 13.5);
+        // Schrift so wählen, dass die Zeilen zwischen die Pfeile passen
+        let fz = roomy() ? 16 : fs(15, 13.5);
+        {
+          const r0 = rel();
+          const xsW = [xu(x0P()), xu(1), xu(xP())];
+          const ysW = kk === 'lin' ? [yu(value(r0, x0P()), 'lin', false), yu(naiveGuess(r0, x0P(), xP()), 'lin', false)] : [yu(value(r0, x0P())), yu(r0.k), yu(value(r0, xP()))];
+          const avail = R.w - 2 * (pad + 50);
+          const widest = (z: number) => Math.max(...xsW.map((t) => formula(g, `\\b{${uf(t)}}`, fstyle(z, theme.text, 750)).w), ...ysW.map((t) => formula(g, `\\b{${uf(t)}}`, fstyle(z, theme.text, 750)).w));
+          while (2 * widest(fz) + 32 > avail && fz > 11.5) fz -= 0.5;
+        }
         const cellX = (s: string, cy: number, c: string, a: number) => {
           const b = formula(g, `\\b{${uf(s)}}`, fstyle(fz, c, 750));
           g.save();
@@ -2105,8 +2120,8 @@ export default defineSimulation({
             const a = sk.arr[j]!;
             const lc = col.x();
             const rc = r3.same ? col.y() : col.k();
-            sideArrow(R.x + pad + 14, yA(j), yB(j), -1, lc, `\\c{x}{${opS(r3.left[j]!)}}`, a);
-            sideArrow(R.x + R.w - pad - 14, yA(j), yB(j), 1, rc, `\\c{${r3.same ? 'y' : 'k'}}{${opS(r3.right[j]!)}}`, a);
+            sideArrow(R.x + pad - 2, yA(j), yB(j), -1, lc, `\\c{x}{${opS(r3.left[j]!)}}`, a);
+            sideArrow(R.x + R.w - pad + 2, yA(j), yB(j), 1, rc, `\\c{${r3.same ? 'y' : 'k'}}{${opS(r3.right[j]!)}}`, a);
           }
           // Rechnung in einer Zeile
           const fy = top + rowH * 3 + 8 + formH / 2;
@@ -2146,8 +2161,8 @@ export default defineSimulation({
             }
           }
           const fl = `· ${nx(Math.round(fct * 100) / 100)}`;
-          sideArrow(R.x + pad + 14, top + rowH * 0.5 + 8, top + rowH * 2.5 - 8, -1, col.x(), `\\c{x}{${fl}}`, sk.arr[0]);
-          sideArrow(R.x + R.w - pad - 14, top + rowH * 0.5 + 8, top + rowH * 2.5 - 8, 1, col.bad(), `\\c{bad}{${fl} ?}`, sk.arr[0]);
+          sideArrow(R.x + pad - 2, top + rowH * 0.5 + 8, top + rowH * 2.5 - 8, -1, col.x(), `\\c{x}{${fl}}`, sk.arr[0]);
+          sideArrow(R.x + R.w - pad + 2, top + rowH * 0.5 + 8, top + rowH * 2.5 - 8, 1, col.bad(), `\\c{bad}{${fl} ?}`, sk.arr[0]);
           const mid = top + rowH * 1.5;
           g.save();
           g.globalAlpha *= sk.arr[0];
