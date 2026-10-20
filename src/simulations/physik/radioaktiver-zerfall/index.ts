@@ -104,12 +104,6 @@ interface Flyer {
   y: number;
 }
 
-interface Seg {
-  t: string;
-  c: string;
-  f?: 'v' | 'b' | 'n';
-}
-
 /**
  * Radioaktiver Zerfall: Ein Präparat aus vielen Kernen (von oben gesehen) zerfällt
  * zufällig – jeder zerfallende Kern blitzt auf, sendet ein α- oder β-Teilchen
@@ -2213,7 +2207,6 @@ export default defineSimulation({
         g.restore();
         const h = survivingShare(done, 1);
         const lab = `${n(Math.round(h * 100), 0)} %`;
-        const lf = `700 ${fs}px ${theme.font}`;
         pill(Math.min(X(1) + 10, A.x + A.w - pillWidth(lab, fs) - 2), Y(h) + 6, lab, motherCol(), 'left', fs);
       } else soft.set('survA', 0);
       g.restore();
