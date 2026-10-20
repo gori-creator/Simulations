@@ -618,7 +618,7 @@ Hinweis: Durchsichtige Gegenstände (Lineal, Glasstab) brauchen echte Halbtransp
 
 #### C19 · Zarter Baum (Hintergrund des Faktorbaums) – vorerst nicht erzeugen
 - **Simulationen:** Primfaktoren – Faktorbaum (`mathematik/primfaktoren/index.ts`, Ansicht „Faktorbaum“, `drawTree`)
-- **Datei:** `src/assets/sims/primfaktoren/baum.webp`
+- **Datei:** `src/assets/sims/primfaktoren/baum-zart.webp`
 - **Hintergrund:** transparent · **Format:** 4 : 3, mind. 1600 × 1200 px · **Blick:** Vorderansicht, Stamm unten mittig
 > A delicate stylised tree with a short trunk at the bottom centre and bare thin branches spreading upwards and outwards, very light soft green watercolour style, extremely subtle and pale, no leaves, isolated on a fully transparent background, no ground, no text
 - **Hinweis:** Muss sehr blass sein – der Faktorbaum (Kreise, Linien) liegt darüber und darf nicht untergehen.
