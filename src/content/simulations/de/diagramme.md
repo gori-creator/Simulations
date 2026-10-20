@@ -24,11 +24,11 @@ $$
 \text{Winkel} = \text{Anteil} \cdot 360° = \frac{6}{24} \cdot 360° = 90°.
 $$
 
-Weil der ganze Kreis $360°$ hat, müssen die Winkel zusammen genau $360°$ ergeben – und die Prozentangaben zusammen $100\,\%$. Beim Runden kann eine Summe von $99\,\%$ oder $101\,\%$ entstehen; die Simulation rundet in der Ergebnistabelle so, dass $360°$ bleibt.
+Weil der ganze Kreis $360°$ hat, müssen die Winkel zusammen genau $360°$ ergeben – und die Prozentangaben zusammen $100\,\%$. Beim Runden kann eine Summe von $99\,\%$ oder $101\,\%$ entstehen (z. B. $3 \cdot 33{,}3\,\% = 99{,}9\,\%$). Die Simulation rundet in der Ergebnistabelle so, dass die Winkel zusammen genau $360°$ und die Prozentangaben genau $100\,\%$ ergeben.
 
 **Diagramme können täuschen** – manchmal aus Versehen, manchmal mit Absicht:
 
-- **Abgeschnittene Achse:** Beginnt die Hochachse bei $90$ statt bei $0$, sind die Säulen für $95$ und $100$ Stimmen $5$ und $10$ Einheiten hoch. Sie wirken wie $1 : 2$, obwohl $95 : 100 = 0{,}95 : 1$ ist.
+- **Abgeschnittene Achse:** Beginnt die Hochachse bei $90$ statt bei $0$, sind die Säulen für $95$ und $100$ Stimmen $5$ und $10$ Einheiten hoch. Sie wirken wie $1 : 2$, obwohl $95 : 100 = 0{,}95 : 1$ ist. Soll eine Achse ausnahmsweise nicht bei $0$ beginnen, kennzeichnet man das mit einem **Achsenbruch** (kleine Zickzacklinie an der Achse).
 - **Ungleiche Achsenabstände:** Stehen $0,\ 10,\ 20,\ 50,\ 100,\ 200$ in gleichen Abständen, werden große Werte zusammengestaucht.
 - **Flächen-Piktogramm:** Wird ein Bildchen in Höhe **und** Breite verdoppelt, ist seine Fläche viermal so groß: $2 \cdot 2 = 4$. Das Auge vergleicht Flächen.
 - **Fehlende Einheit:** „23 Grad“ – Celsius oder Fahrenheit? Ohne Überschrift und Einheit lassen sich Zahlen nicht deuten.
