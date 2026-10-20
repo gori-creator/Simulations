@@ -85,6 +85,17 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 **Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`, `subText`/`measureSubText` für Text mit tiefgestelltem Index wie `F_G`, `a_1`, `F_{G,1}` – Ausrichtung links/Mitte/rechts nach der Gesamtbreite, optional mit Rand `halo`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
 
+**Tastaturbedienung antippbarer Objekte** (`key-targets.ts`, optional) – Wer Objekte auf der Zeichenfläche nur per Antippen bedienbar macht (`TapTarget`, `onTap`), meldet sie zusätzlich mit `ctx.setKeyTargets([{ id, label, rect?, disabled?, activate }])`. Dann wird die Bühne per Tab erreichbar (mit Hinweis für Bildschirmleser), Pfeiltasten wechseln die Auswahl (mit Umlauf, gesperrte werden übersprungen), Pos1/Ende springen, Enter/Leertaste ruft `activate()` auf; danach übernimmt der Host Änderungen und zeichnet neu. Die Auswahl erhält einen Rahmen über `rect` (Pixel der Bühne wie bei `Surface`), ihr Name wird per `aria-live` angesagt. Die Liste darf bei jeder Änderung neu gemeldet werden (auch in `render`), die Auswahl bleibt über die `id` erhalten; eine leere Liste schaltet die Bedienung ab. Wer die Auswahl selbst zeichnen will, fragt `ctx.keyFocus` (ID oder `null`). Ohne Aufruf ändert sich nichts.
+
+```ts
+ctx.setKeyTargets(images.map((im, i) => ({
+  id: `img${i}`,
+  label: `${ctx.t('image')} ${i + 1}`, // Text aus `strings`
+  rect: { x: im.x - 20, y: im.y - 20, w: 40, h: 40 },
+  activate: () => select(i),
+})));
+```
+
 **3D-Ansichten** – `view3d.ts` (nur Canvas 2D, kein WebGL). Weltkoordinaten wie im Unterricht: x₁ schräg nach vorn, x₂ nach rechts, x₃ nach oben.
 
 - `View3D` ist wie `Plot` ein Zeigerziel der `Surface` (eigener Bereich über `region`): Drehen per Ziehen (Azimut/Elevation, begrenzt, mit Nachlaufen), Zoom (Pinch, Strg+Mausrad, Schaltflächen), Antippen (`onTap` + `pick()` liefert die `id` der obersten Fläche) und ziehbare 3D-Punkte (`addHandle` in einer Ebene oder entlang einer Geraden). Drehen ist auch bei gesperrten Reglern erlaubt.

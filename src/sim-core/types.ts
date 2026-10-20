@@ -2,6 +2,7 @@ import type { Lang, Localized } from '../i18n/config';
 import type { Clock } from './clock';
 import type { Formatter } from './format';
 import type { ImageStore } from './images';
+import type { KeyTarget } from './key-targets';
 import type { Theme } from './theme';
 
 /* ------------------------------------------------------------------ */
@@ -154,6 +155,15 @@ export interface SimContext<V> {
   readonly hidden: boolean;
   /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
   isHidden(key: string): boolean;
+  /**
+   * Antippbare Objekte für die Tastatur melden (optional). Die Bühne wird dann
+   * per Tab erreichbar, Pfeiltasten wählen, Enter/Leertaste ruft `activate` auf.
+   * Darf bei jeder Änderung (auch in `render`) neu aufgerufen werden; die
+   * Auswahl bleibt über die `id` erhalten. Leere Liste schaltet es ab.
+   */
+  setKeyTargets(targets: readonly KeyTarget[]): void;
+  /** ID des per Tastatur ausgewählten Objekts, solange die Bühne den Fokus hat (sonst `null`). */
+  readonly keyFocus: string | null;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */

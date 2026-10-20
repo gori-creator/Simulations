@@ -6,6 +6,7 @@ import { Controls } from './controls';
 import { exportStagePng } from './export';
 import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
+import { KeyTargetLayer } from './key-targets';
 import { defaultValues, sanitize, valuesEqual } from './params';
 import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
@@ -75,6 +76,8 @@ class SimulationHost {
   private actionButtons = new Map<string, HTMLButtonElement>();
   private readonly stage: HTMLElement;
   private instance: SimInstance | null = null;
+  /** Tastaturbedienung der Zeichenfläche; entsteht erst, wenn die Simulation Objekte meldet. */
+  private keyTargets: KeyTargetLayer | null = null;
   private controls: Controls | null = null;
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
@@ -163,6 +166,17 @@ class SimulationHost {
         return isTaskHidden(host.taskState());
       },
       isHidden: (key) => isReadoutHidden(this.taskState(), key),
+      setKeyTargets: (targets) => {
+        if (!this.keyTargets && !targets.length) return;
+        this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
+          if (activated && this.pending.size) this.flush();
+          this.requestRender();
+        });
+        this.keyTargets.setTargets(targets);
+      },
+      get keyFocus() {
+        return host.keyTargets?.selectedId ?? null;
+      },
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,

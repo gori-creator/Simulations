@@ -21,6 +21,7 @@ export type {
   ValuesOf,
 } from './types';
 export { Surface, TapTarget, type Rect } from './surface';
+export type { KeyTarget } from './key-targets';
 export { Plot, type Handle, type PlotOptions } from './plot';
 export { Clock, FixedStepper } from './clock';
 export { bindUnits, Formatter, formatNumber, formatPiFraction, MINUS, NBSP, withUnit } from './format';
