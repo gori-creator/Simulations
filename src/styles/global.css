@@ -1200,15 +1200,44 @@ sup {
   margin: 0;
 }
 
-.lp-entry__row {
-  display: flex;
-  flex-wrap: wrap;
+/* Mehrere Länder-Lehrpläne untereinander: Spalten bündig ausrichten */
+.lp-entry__rows {
+  display: grid;
+  grid-template-columns: max-content max-content 1fr;
   align-items: center;
-  gap: 10px 16px;
+  gap: 12px 20px;
+  margin-top: 4px;
+}
+
+.lp-entry__row {
+  display: contents;
+}
+
+@media (max-width: 860px) {
+  .lp-entry__rows {
+    display: block;
+  }
+
+  .lp-entry__row {
+    display: grid;
+    gap: 10px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .lp-entry__row:last-child {
+    padding-bottom: 0;
+  }
 }
 
 .lp-entry__label {
   font-weight: 700;
+}
+
+.lp-note {
+  width: fit-content;
+  max-width: 75ch;
+  margin: 4px 0 20px;
 }
 
 .lp-unit {

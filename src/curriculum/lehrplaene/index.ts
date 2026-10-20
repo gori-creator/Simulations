@@ -1,11 +1,20 @@
 import type { SubjectId } from '../types';
 import { bayernGymnasiumMathematik } from './bayern-gymnasium-mathematik';
+import { hessenGymnasiumMathematik } from './hessen-gymnasium-mathematik';
+import { hessenGymnasiumPhysik } from './hessen-gymnasium-physik';
 import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from './types';
 
 export type * from './types';
 
-/** Alle hinterlegten Länder-Lehrpläne. */
-export const STATE_CURRICULA: StateCurriculum[] = [bayernGymnasiumMathematik];
+/**
+ * Alle hinterlegten Länder-Lehrpläne (je Bundesland, Schulart und Fach eine Datei).
+ * Reihenfolge = Reihenfolge auf der Fachseite. Aufbereitete Quelldaten und
+ * Protokolle (Lücken, Unklarheiten) liegen in docs/lehrplaene/.
+ *
+ * - Bayern, Gymnasium: Mathematik (LehrplanPLUS)
+ * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
+ */
+export const STATE_CURRICULA: StateCurriculum[] = [bayernGymnasiumMathematik, hessenGymnasiumMathematik, hessenGymnasiumPhysik];
 
 export function curriculaFor(subject: SubjectId): StateCurriculum[] {
   return STATE_CURRICULA.filter((c) => c.subject === subject);
@@ -36,6 +45,18 @@ export function unitsOf(grade: CurriculumGrade): CurriculumUnit[] {
 /** Alle Simulationen, die in einer Jahrgangsstufe vorkommen (ohne Doppelungen). */
 export function simulationsOfGrade(grade: CurriculumGrade): string[] {
   return [...new Set(unitsOf(grade).flatMap((u) => u.simulations ?? []))];
+}
+
+/**
+ * Jahrgangsstufen, in denen derselbe Lernbereich (gleiche Nummer und Überschrift)
+ * Simulationen hat – z. B. bei Doppeljahrgangsstufen (Hessen 5/6), wenn eine
+ * Simulation nur zu einer der beiden Stufen passt.
+ */
+export function sameUnitElsewhere(curriculum: StateCurriculum, grade: number, unit: CurriculumUnit): number[] {
+  return curriculum.grades
+    .filter((g) => g.grade !== grade)
+    .filter((g) => unitsOf(g).some((u) => u.code === unit.code && u.title.de === unit.title.de && (u.simulations?.length ?? 0) > 0))
+    .map((g) => g.grade);
 }
 
 export interface CurriculumReference {

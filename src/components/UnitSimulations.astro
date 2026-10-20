@@ -8,16 +8,28 @@ import SimCard from './SimCard.astro';
 interface Props {
   lang: Lang;
   ids: string[];
+  /** Hat dieser Lernbereich keine Simulation: Links zu anderen Jahrgangsstufen mit demselben Lernbereich */
+  elsewhere?: { grade: number; href: string }[];
 }
 
-const { lang, ids } = Astro.props;
+const { lang, ids, elsewhere = [] } = Astro.props;
 const sims = ids.map((id) => getSimulation(id));
 const ready = sims.filter((s) => s.status === 'ready');
 const planned = sims.filter((s) => s.status === 'planned');
 ---
 
 {
-  sims.length === 0 ? (
+  sims.length === 0 && elsewhere.length > 0 ? (
+    <p class="muted lp-none">
+      {t(lang, 'curriculum.elsewhere')}{' '}
+      {elsewhere.map((e, i) => (
+        <>
+          {i > 0 && ', '}
+          <a href={e.href}>{t(lang, 'curriculum.grade', { n: e.grade })}</a>
+        </>
+      ))}
+    </p>
+  ) : sims.length === 0 ? (
     <p class="muted lp-none">{t(lang, 'curriculum.noSim')}</p>
   ) : (
     <div class="lp-sims">

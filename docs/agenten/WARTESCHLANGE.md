@@ -2,6 +2,7 @@
 
 Stand der Übergabe: 08.10.2026, 20:30 UTC. Offen ist jede Simulation, die in `src/curriculum/*.ts` noch als `planned(...)` steht (Gegenprobe: `grep -c "planned('" src/curriculum/*.ts`).
 Arbeitsweise: siehe `docs/agenten/UEBERGABE.md`. **Ab 18.10.2026 Aufteilung: Physik (P…) = Projektinhaber, Mathematik (M…) = Kollege – siehe `docs/agenten/ZUSAMMENARBEIT.md`.**
+**Mathe ist zweigeteilt:** Teil 1 = M16 (boxplot), M25, M17, M02, M13, M08, M18, M26; Teil 2 = M09, M14, M04, M10, M15, M19, M20, M21, M22 (Details in `ZUSAMMENARBEIT.md`).
 
 ## Reihenfolge
 P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (fertig) M24 (fertig) | M12 (fertig) | P07 (fertig) | M16 M25 P08 M17 M02 P09 M13 M08 P10 M18 M26 M09 M14 P11 M04 M10 M15 M19 M20 M21 M22
@@ -12,7 +13,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - T01 fertig (13.10.: gleichungen-grafisch, winkel-messen, kreisbewegung, linsen, stoesse, schiefe-ebene; 15.10.: bruchteile, licht-schatten, reflexion – flache Bühne nutzt jetzt das Nebeneinander-Layout) — **Tablet-Breiten** (Fenster 1024 px = iPad quer und 700 px; Bühne dort ca. 620–635 px breit bei Desktop-Seitenverhältnis, Simulationen schalten aber auf ihr Handy-Layout). Prüfung vom 10.10. (Screenshots nur der Bühne) ergab Fehler bei: `linsen` (Konstruktion auf ca. 80 px Höhe gestaucht – schwer), `winkel-messen` (Geodreieck winzig, Karten abgeschnitten), `gleichungen-grafisch` (Lösungskarte unten abgeschnitten), `stoesse` (Diagrammtitel überlappt Energiebalken), `kreisbewegung` (Diagramm F_Z(v) stark gestaucht, Beschriftungen überlappen), `schiefe-ebene` (Kraftpfeil-Beschriftungen überlappen in gestauchter Szene), `bruchteile` (Text „= 0,75 = 75 %“ unten abgeschnitten), `licht-schatten` (Beschriftungen unter der optischen Bank abgeschnitten), `reflexion` (Szene klein). Bereits behoben: `vierecke`, `spiegelung` (Gruppe M07, Commits 9b01368, da0f756). Ansatz wie in `mathematik/vierecke`: Layout nach Breite **und** Höhe wählen bzw. mittlere Aufteilung; danach bei 1360/1024/700/390 prüfen.
 
 - T02 vergeben an den **Physik-Helfer (lokal, ohne GitHub)**, ab 19.10. abends — **Überarbeitung der ersten sechs Mathe-1-Simulationen** vor dem Pull Request nach `main`: koordinaten-3d, vektoren-3d, skalar-vektorprodukt (M25), baumdiagramm, geburtstagsproblem, vierfeldertafel (M17). Grundlage: Stand des Mathe-1-Zweigs `claude/jolly-allen-y0ef9g` vom 19.10. 19:14 Uhr. Rückgabe als ZIP, Einbau durch die Vertretung der Projektleitung in den Mathe-1-Zweig. **Mathe 1: diese sechs bitte nicht anfassen**, sondern nach M26 bei der Vertretung melden bzw. die nächste offene Aufgabe nehmen.
-- T03 läuft — Überarbeitung aller 26 Mathe-2-Simulationen (Zweig `mathe/teil-2`). Stand 19.10. 18 Uhr: 6 fertig (fourier-reihen, hauptsatz, stammfunktion-grafisch, ableitungsfunktion, matrix-abbildungen, strahlensaetze). Paket A Stand 20.10. 06 Uhr: dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional fertig; umkehrfunktion läuft. Die restlichen 20 sind ab 19.10. aufgeteilt: **Paket A (Mathe 2):** dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional, umkehrfunktion, newton-verfahren. **Paket B (neuer Helfer mit GitHub, eigener Zweig, Pull Request nach `mathe/teil-2`):** ganzrationale-funktionen, transformationen, grenzverhalten, polstellen-asymptoten, kurvendiskussion, funktionenscharen, aenderungsrate, extremwertprobleme, normalverteilung, taylor-polynome.
+- T03 läuft — Überarbeitung aller 26 Mathe-2-Simulationen (Zweig `mathe/teil-2`). Stand 19.10. 18 Uhr: 6 fertig (fourier-reihen, hauptsatz, stammfunktion-grafisch, ableitungsfunktion, matrix-abbildungen, strahlensaetze). Paket A Stand 20.10. 06 Uhr: dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional, umkehrfunktion fertig; newton-verfahren läuft. Die restlichen 20 sind ab 19.10. aufgeteilt: **Paket A (Mathe 2):** dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional, umkehrfunktion, newton-verfahren. **Paket B (neuer Helfer mit GitHub, eigener Zweig, Pull Request nach `mathe/teil-2`):** ganzrationale-funktionen, transformationen, grenzverhalten, polstellen-asymptoten, kurvendiskussion, funktionenscharen, aenderungsrate, extremwertprobleme, normalverteilung, taylor-polynome.
 - T03 läuft — Überarbeitung aller 26 Mathe-2-Simulationen (Zweig `mathe/teil-2`). Stand 19.10. 18 Uhr: 6 fertig (fourier-reihen, hauptsatz, stammfunktion-grafisch, ableitungsfunktion, matrix-abbildungen, strahlensaetze). Die restlichen 20 sind ab 19.10. aufgeteilt: **Paket A (Mathe 2):** dreieckskonstruktion, besondere-linien, vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz, prozentstreifen, quadratwurzel, proportional, umkehrfunktion, newton-verfahren. **Paket B (neuer Helfer mit GitHub, eigener Zweig, Pull Request nach `mathe/teil-2`):** ganzrationale-funktionen, transformationen, grenzverhalten, polstellen-asymptoten, kurvendiskussion, funktionenscharen, aenderungsrate, extremwertprobleme, normalverteilung, taylor-polynome. **Umverteilt 19.10., 22 Uhr:** taylor-polynome und normalverteilung übernimmt die Vertretung der Projektleitung (Zweig `claude/hopeful-bardeen-9cogca`, Pull Request nach `mathe/teil-2`); Paket B endet bei extremwertprobleme. Weitere Umverteilungen über Nacht stehen als Kommentar in PR #9 bzw. PR #4. **Umverteilt 19.10., 22:20 Uhr:** newton-verfahren und umkehrfunktion (Ende von Paket A) übernimmt ebenfalls die Vertretung; Paket A endet bei proportional. Stand 22:20 Uhr: Vertretung fertig: taylor-polynome, normalverteilung. **Umverteilt 19.10., 22:35 Uhr:** aenderungsrate und extremwertprobleme (Ende von Paket B) ebenfalls an die Vertretung; Paket B endet bei funktionenscharen. Vertretung fertig bis 22:35 Uhr: taylor-polynome, normalverteilung, newton-verfahren, umkehrfunktion. **Umverteilt 19.10., 23 Uhr:** funktionenscharen und kurvendiskussion (Ende von Paket B) ebenfalls an die Vertretung; Paket B endet bei polstellen-asymptoten. Vertretung fertig bis 23 Uhr: taylor-polynome, normalverteilung, newton-verfahren, umkehrfunktion, aenderungsrate, extremwertprobleme. **Umverteilt 19.10., 23:20 Uhr:** proportional und quadratwurzel (Ende von Paket A) an die Vertretung; Paket A endet bei prozentstreifen. Vertretung fertig bis 23:20 Uhr zusätzlich: funktionenscharen, kurvendiskussion. **Umverteilt 19.10., 23:35 Uhr:** polstellen-asymptoten (Paket B) und prozentstreifen (Paket A) an die Vertretung; Paket A ist nur noch sinussatz-kosinussatz, Paket B nur noch grenzverhalten. Vertretung fertig bis 23:35 Uhr zusätzlich: proportional, quadratwurzel. **20.10., 7:50 Uhr (Entscheidung der Projektleitung):** normalverteilung und taylor-polynome werden von der Vertretung noch einmal gründlich nach QUALITAETSSICHERUNG.md überarbeitet (Bau-Agent im Worktree, ca. 40 Minuten pro Simulation); normalverteilung fertig (20.10., Bau-Agent, Abnahme durch die Leitung); taylor-polynome fertig (20.10., Bau-Agent, Abnahme durch die Leitung). Beide in PR #11.
 
 ### Physik
@@ -30,7 +31,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 
 ### Mathematik
 - M01 fertig — stellenwerte, zahlengerade, primfaktoren
-- M02 offen — zehnerpotenzen, einheiten, massstab
+- M02 fertig (Mathe 1, 19.10.) — zehnerpotenzen, einheiten, massstab
 - M03 fertig — brueche-vergleichen, dezimalbrueche, brueche-rechnen
 - M04 fertig — prozentstreifen, quadratwurzel, proportional (18.10., Mathe 2)
 - M05 fertig — termbaum, waagemodell, lgs-grafisch
@@ -51,8 +52,25 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - M20 fertig — ableitungsfunktion, kurvendiskussion, funktionenscharen (19.10., Mathe 2)
 - M21 fertig — stammfunktion-grafisch, hauptsatz, aenderungsrate (19.10., Mathe 2)
 - M22 fertig — extremwertprobleme, matrix-abbildungen (19.10., Mathe 2)
+- M08 fertig (Mathe 1, 19.10.) — winkel-geradenkreuzung, winkelsumme, flaechen-zerlegen
+- M09 offen — dreieckskonstruktion, besondere-linien, strahlensaetze
+- M10 offen — vergroessern, sin-cos-tan-dreieck, sinussatz-kosinussatz
+- M11 fertig — gleichungen-grafisch, funktion-zuordnung, funktionsplotter
+- M12 fertig — hyperbel, parabel-drei-punkte, extremwert-parabel (15.10.)
+- M13 fertig (Mathe 1, 19.10.) — potenzfunktionen, logarithmus, e-funktion
+- M14 offen — ganzrationale-funktionen, transformationen, grenzverhalten
+- M15 offen — polstellen-asymptoten, umkehrfunktion, newton-verfahren
+- M16 fertig — zaehlprinzip (fertig 18.10.), diagramme (fertig 18.10.), boxplot (fertig 18.10., Mathe 1)
+- M17 fertig (Mathe 1, 18.10.) — baumdiagramm, geburtstagsproblem, vierfeldertafel
+- M18 fertig (Mathe 1, 19.10.) — bedingte-wahrscheinlichkeit, binomialverteilung, signifikanztest
+- M19 offen — normalverteilung, taylor-polynome, fourier-reihen
+- M20 offen — ableitungsfunktion, kurvendiskussion, funktionenscharen
+- M21 offen — stammfunktion-grafisch, hauptsatz, aenderungsrate
+- M22 offen — extremwertprobleme, matrix-abbildungen
 - M23 fertig — koerpernetze, quader-volumen, prisma-zylinder (3D-Kern `src/sim-core/view3d.ts`)
 - M24 fertig — pyramide-kegel-kugel, cavalieri, rotationskoerper (3D)
+- M25 fertig (Mathe 1, 18.10.) — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
+- M26 fertig (Mathe 1, 19.10.) — geraden-ebenen, lage-abstaende, kugeln (3D)
 - M25 offen — koordinaten-3d, vektoren-3d, skalar-vektorprodukt (3D)
 - M26 läuft (Mathe 1) — geraden-ebenen, lage-abstaende, kugeln (3D)
 
