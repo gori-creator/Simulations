@@ -4,9 +4,11 @@ import { registry } from '../simulations/registry';
 import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
-import { Formatter } from './format';
+import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
+import { KeyTargetLayer } from './key-targets';
 import { defaultValues, sanitize, valuesEqual } from './params';
+import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -74,9 +76,13 @@ class SimulationHost {
   private actionButtons = new Map<string, HTMLButtonElement>();
   private readonly stage: HTMLElement;
   private instance: SimInstance | null = null;
+  /** Tastaturbedienung der Zeichenfläche; entsteht erst, wenn die Simulation Objekte meldet. */
+  private keyTargets: KeyTargetLayer | null = null;
   private controls: Controls | null = null;
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
+  /** Zuletzt an die Simulation gemeldeter Stand von `ctx.hidden`. */
+  private lastHidden: boolean | null = null;
   private pending = new Set<string>();
   private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
@@ -117,6 +123,7 @@ class SimulationHost {
     this.applyLock();
 
     this.instance = def.mount(this.createContext());
+    this.lastHidden = isTaskHidden(this.taskState());
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
     this.requestRender();
@@ -154,6 +161,21 @@ class SimulationHost {
       clock: this.clock,
       get images() {
         return host.images;
+      },
+      get hidden() {
+        return isTaskHidden(host.taskState());
+      },
+      isHidden: (key) => isReadoutHidden(this.taskState(), key),
+      setKeyTargets: (targets) => {
+        if (!this.keyTargets && !targets.length) return;
+        this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
+          if (activated && this.pending.size) this.flush();
+          this.requestRender();
+        });
+        this.keyTargets.setTargets(targets);
+      },
+      get keyFocus() {
+        return host.keyTargets?.selectedId ?? null;
       },
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
@@ -318,14 +340,30 @@ class SimulationHost {
    * Schalter `resultsParam` der Simulation („Ergebnisse anzeigen“) aus ist.
    */
   private applyHide(): void {
-    const param = this.def.resultsParam;
-    const off = !!param && this.values[param] === false;
+    const state = this.taskState();
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
-      const hidden = off || (this.flags.hide && !this.revealed.has(key));
+      const hidden = isReadoutHidden(state, key);
       row.value.hidden = hidden;
       row.reveal.hidden = !hidden;
     }
+    // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
+    if (!this.instance) return;
+    const hidden = isTaskHidden(state);
+    if (hidden !== this.lastHidden) {
+      this.lastHidden = hidden;
+      this.instance.hiddenChange?.(hidden);
+    }
+    this.requestRender();
+  }
+
+  private taskState(): TaskModeState {
+    const param = this.def.resultsParam;
+    return {
+      hideFlag: this.flags.hide,
+      resultsOff: !!param && this.values[param] === false,
+      revealed: this.revealed,
+    };
   }
 
   private readout(key: string, value: ReadoutValue): void {
@@ -339,8 +377,9 @@ class SimulationHost {
     const text = typeof value === 'string' ? `t:${value}` : `h:${value.html}`;
     if (text === row.last) return;
     row.last = text;
-    if (typeof value === 'string') row.value.textContent = value;
-    else row.value.innerHTML = value.html;
+    // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts)
+    if (typeof value === 'string') row.value.textContent = bindUnits(value);
+    else row.value.innerHTML = bindUnitsHtml(value.html);
   }
 
   /* ---------- Aktionen ---------- */
@@ -384,7 +423,11 @@ class SimulationHost {
       }
     };
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
-    if (this.def.dragHint) this.query('[data-sim-hint]').hidden = false;
+    if (this.def.hint || this.def.dragHint) {
+      const hint = this.query('[data-sim-hint]');
+      if (this.def.hint) hint.textContent = this.def.hint[this.lang];
+      hint.hidden = false;
+    }
 
     on('play', () => this.clock.toggle());
     on('reset-time', () => {

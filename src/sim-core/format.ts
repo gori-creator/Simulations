@@ -3,6 +3,39 @@ import { LANG_META, type Lang } from '../i18n/config';
 /** Typografisches Minuszeichen (statt Bindestrich). */
 export const MINUS = '−';
 
+/** Geschütztes Leerzeichen: verhindert einen Zeilenumbruch zwischen Zahl und Einheit. */
+export const NBSP = '\u00A0';
+
+/** Hängt eine Einheit mit geschütztem Leerzeichen an: `withUnit('2,5', 'm/s')` → „2,5 m/s“ ohne Umbruch. */
+export function withUnit(value: string, unit: string): string {
+  return unit ? `${value}${NBSP}${unit}` : value;
+}
+
+/**
+ * Ersetzt in einem fertigen Text das Leerzeichen zwischen einer Zahl und einer
+ * folgenden Einheit (z. B. „m/s“, „°C“, „kΩ“, „%“) durch ein geschütztes
+ * Leerzeichen. Der Host wendet das auf alle Ergebnisse an; Simulationen müssen
+ * dafür nichts ändern.
+ *
+ * Als Einheit gilt ein kurzes Wort (höchstens 6 Zeichen) aus Buchstaben bzw.
+ * °, %, ‰, µ, Ω mit optionalen Hochzahlen und „/“, das danach endet. Rechenzeichen
+ * wie „+“, „·“, „|“ oder „=“ bleiben unberührt, ebenso Zahlenfolgen („1 2 3“).
+ */
+export function bindUnits(text: string): string {
+  return text.replace(
+    /([0-9∞π])[ \t]+(?=[A-Za-zÄÖÜäöüµμΩ°%‰][A-Za-zÄÖÜäöüµμΩ°%‰²³¹⁰⁴⁵⁶⁷⁸⁹⁻·/]{0,5}(?![A-Za-zÄÖÜäöüß0-9]))/g,
+    `$1${NBSP}`,
+  );
+}
+
+/** Wie `bindUnits`, aber für HTML: Tags (samt Attributen) bleiben unverändert. */
+export function bindUnitsHtml(html: string): string {
+  return html
+    .split(/(<[^>]*>)/)
+    .map((part) => (part.startsWith('<') ? part : bindUnits(part)))
+    .join('');
+}
+
 const formatters = new Map<string, Intl.NumberFormat>();
 
 function numberFormat(lang: Lang, min: number, max: number): Intl.NumberFormat {
@@ -82,6 +115,11 @@ export class Formatter {
 
   signed(value: number, decimals = 2): string {
     return formatNumber(value, this.lang, { decimals, signed: true });
+  }
+
+  /** Zahl mit Einheit, durch ein geschütztes Leerzeichen verbunden: DE „2,5 m/s“. */
+  unit(value: number, unit: string, decimals = 2): string {
+    return withUnit(this.num(value, decimals), unit);
   }
 
   /** Bogenmaß bevorzugt als Bruchteil von π, sonst Dezimalzahl. */
