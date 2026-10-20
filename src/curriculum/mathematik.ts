@@ -1211,14 +1211,14 @@ export const mathematik: Subject = {
             slug: L('monotonie-extrem-wendestellen', 'monotonicity-extrema-inflection'),
             title: L('Monotonie, Extrem- und Wendestellen', 'Monotonicity, extrema and inflection points'),
             summary: L(
-              'Eine Funktionsuntersuchung Schritt für Schritt: Ableitungen, notwendige und hinreichende Bedingung, Hoch-, Tief- und Terrassenpunkte, Wendepunkte, Monotonie- und Krümmungsintervalle – mit Vorzeichentabelle und frei wählbaren Koeffizienten.',
-              'Investigating a function step by step: derivatives, necessary and sufficient conditions, maxima, minima and terrace points, inflection points, intervals of monotonicity and curvature – with a sign chart and freely chosen coefficients.',
+              'Kurvendiskussion in sieben animierten Schritten: Ableitungen, Symmetrie, Nullstellen, notwendige und hinreichende Bedingung, Hoch-, Tief-, Terrassen- und Wendepunkte, Monotonie und Krümmung – mit Vorzeichentabellen, den Graphen von f′ und f″ darunter und einer ziehbaren Tangente.',
+              'Curve sketching in seven animated steps: derivatives, symmetry, zeros, necessary and sufficient conditions, maxima, minima, terrace and inflection points, monotonicity and curvature – with sign charts, the graphs of f′ and f″ below and a draggable tangent.',
             ),
             grades: [11, 12],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
             keywords: L(
-              ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung'],
-              ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity'],
+              ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
+              ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity', 'symmetry', 'tangent', 'second-derivative test'],
             ),
             thumb: 'generic',
           },
