@@ -94,8 +94,6 @@ Trapez- und Dreiecksflächen: $0$–$10$: $30\,\text{L}$, $10$–$20$: $20\,\tex
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 13, Lernbereich „Flächeninhalt und bestimmtes Integral“ (LehrplanPLUS Gymnasium Bayern, Rekonstruktion eines Bestands aus der Änderungsrate – Details bitte am Lehrplan prüfen). Geeignet als Einstieg (Fläche = Gesamtänderung mit der laufenden Zeit), zum Üben (verdeckte Werte) und zur Vertiefung (Fehlerordnung der Rechtecksummen).
 - **Vom Rechteck zum Integral:** Mit „Rechtecke stapeln“ und „Streifen verdoppeln“ lässt sich der Grenzübergang $n \to \infty$ vorführen; die Fehler-Karte macht ihn messbar.
 - **Einheiten als Kontrolle:** „Rate mal Zeit“ ergibt immer die Einheit des Bestands – eine schöne Probe für eigene Rechnungen.

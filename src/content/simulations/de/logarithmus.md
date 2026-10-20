@@ -113,8 +113,6 @@ $1{,}05^x = 2 \Rightarrow x = \frac{\lg 2}{\lg 1{,}05} = \frac{0{,}30103}{0{,}02
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich „Exponentielles Wachstum und Logarithmus“ (LehrplanPLUS Bayern, Gymnasium): Einführung des Logarithmus über die Frage „$b$ hoch wie viel?“, Exponentialgleichungen, Rechengesetze. Die Logarithmus*funktion* und der natürliche Logarithmus $\ln$ als Umkehrfunktion der $e$-Funktion gehören nach unserem Verständnis in die Oberstufe (Jahrgangsstufe 12) – bitte am Lehrplan prüfen, welche Teile in Ihrer Jahrgangsstufe vorgesehen sind.
 - **Einstieg ohne Formel:** Die Wertetabelle von $2^x$ „rückwärts lesen“ lassen und dann mit der Spiegelung an $y = x$ zum Graphen übergehen.
 - **Rechenschieber:** Die Ansicht „Rechengesetze“ eignet sich, um zu zeigen, warum man vor dem Taschenrechner mit Logarithmentafeln und Rechenschiebern multiplizierte: Aus einer Multiplikation wird eine Addition von Strecken.

@@ -62,8 +62,6 @@ $P(X \ge 1) = 1 - 0.95^{50} \approx 0.9231$; $\mu = 2.5$. [Show in simulation](?
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use it after the Galton board: there the distribution emerges, here you calculate with it.
 - Check the requirements together first (two outcomes, independent, same $p$) – drawing without replacement is a good counterexample.
 - **Common stumbling blocks:**

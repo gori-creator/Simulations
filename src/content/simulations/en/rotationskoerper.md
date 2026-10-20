@@ -58,7 +58,5 @@ $V(b) = \pi\left(1 - \tfrac{1}{b}\right)$, so $V(10) = 0.9\pi \approx 2.83$ and 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Year 13, applications of the integral; links to the volume formulas from year 10. Disc radius: midpoint value, smallest or largest value in each strip.
 - Typical mistakes: forgetting to square $f$ (doubling $f$ multiplies the volume by 4), squaring the integral instead of the integrand, expecting negative volumes for graphs below the axis.

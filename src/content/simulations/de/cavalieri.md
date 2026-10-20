@@ -117,8 +117,6 @@ $V_\text{Stapel} = \pi \cdot 1{,}25\,\text{cm} \cdot (9 + 5{,}0625 + 2{,}25 + 0{
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich Körperberechnung (Pyramide, Kegel, Kugel; Prinzip von Cavalieri) im LehrplanPLUS Bayern, Gymnasium – Zuordnung als Entwurf, bitte gegen den aktuellen Lehrplan prüfen. Geeignet als Einstieg (Münzstapel, Kartenstapel), zur Begründung der Formeln für schiefe Körper und als Höhepunkt zur Herleitung des Kugelvolumens.
 - **Modell:** Die Scheiben umschließen den Körper (Radius am unteren Scheibenrand); der Mittelpunkt jeder Scheibe liegt auf der verschobenen bzw. gebogenen Achse. Die orange Fläche ist der exakte Querschnitt des Körpers. Das Diagramm $A(z)$ zeigt die Scheiben als Balken – ein Ausblick auf den Integralgedanken („Fläche unter der Kurve = Volumen“).
 - **Häufige Stolpersteine:**

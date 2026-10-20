@@ -68,8 +68,6 @@ Area factor $1.5^2 = 2.25$; $2.25$ small pizzas would cost €18, so the large o
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students estimate “How many small cubes do I need?” before running the animation. With “Show the results” off (`show=0`) unknown values appear as “?” until the animation has run.
 - The applications (pizza prices, model scale $1 : 10$, surface-to-volume ratio $6/a$ of a cube and why small animals cool down faster) invite modelling.
 - **Common stumbling blocks:** “double the side – double the area”; expecting $k^2 > k$ for $k < 1$; taking the factor itself as $k$ instead of the root; mixing up the length scale $1 : 10$ with the area scale $1 : 100$.

@@ -107,8 +107,6 @@ b) Nein: $1{,}2 \cdot 0{,}8 = 0{,}96$. Aus $100\,€$ werden $120\,€$ und dann
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 6 (Prozent als Bruchteil, einfache Prozentaufgaben wie Rabatt und Zins) und Jahrgangsstufe 7 (Vertiefung der Prozentrechnung, vermehrter und verminderter Grundwert) im LehrplanPLUS Gymnasium Bayern – die genaue Zuordnung bitte am Lehrplan prüfen.
 - **Schätzen vor dem Rechnen:** Mit „Lösung zeigen“ aus (`show=0`) erscheint die gesuchte Größe als „?“. Die Lernenden schätzen am Streifen, rechnen und prüfen mit der Animation. „Neue Aufgabe“ liefert dazu glatte Zahlen – vielleicht für eine Übungsphase in Partnerarbeit.
 - **Drei Darstellungen verbinden:** Streifen, Hunderterfeld und Kreis zeigen denselben Anteil – eine Brücke vom Bruch ($\frac34$) über die Dezimalzahl ($0{,}75$) zum Prozent ($75\,\%$).

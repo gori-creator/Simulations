@@ -70,8 +70,6 @@ $(8 + 4) \cdot h : 2 = 30$, so $6h = 30$ and $h = 5\,\text{cm}$. [Show](?fig=tra
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - A good order: parallelogram → rectangle, then triangle → parallelogram, finally the trapezium in two ways. With “Show the area right away” off, the result only appears after cutting or counting.
 - “Slide the top” shows that only base and height matter – why does the slanted side appear in no formula?
 - **Common stumbling blocks:** taking the slanted side as the height; forgetting “$: 2$” for triangles; a foot of the height outside the base; multiplying $a$ and $c$ instead of adding them.

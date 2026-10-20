@@ -73,8 +73,6 @@ $360^\circ : 40^\circ = 9$ corners; each interior angle is $140^\circ$. [Show](?
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Start with real paper triangles, then compare with the animation; use the parallel proof to show why the experiment always works.
 - Let students fill in the table for $n = 3 \ldots 10$ and find the rule themselves.
 - **Common stumbling blocks:** thinking bigger triangles have a bigger angle sum; drawing diagonals from several corners (more than $n - 2$ triangles); mixing up alternate and corresponding angles; missing the reflex angle in non-convex polygons.

@@ -74,8 +74,6 @@ $\Delta E = 3.40\,\text{eV}$, $\lambda \approx 365\,\text{nm}$ (just in the UV).
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Combine with real spectral tubes and a hand spectroscope: look at the real spectrum first, then find the origin of each line here.
 - With `val=0` the values in the picture are hidden for calculation exercises.
 - **Common stumbling blocks:**

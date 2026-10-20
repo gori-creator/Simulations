@@ -71,8 +71,6 @@ $f(x) = 2x + 5$ and $g(x) = x + 8$. Intersection: $2x + 5 = x + 8 \Rightarrow x 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** introduction in grade 7/8 or revision before quadratic functions. On the projector, let the class predict what will happen before moving a slider.
 - **Common stumbling blocks:** slope and intercept are confused; the slope triangle is drawn "upwards" for negative slopes; the constant function ($m = 0$) is not recognised as linear.
 - **Exercise mode:** **Share → Hide results** creates a link or QR code with the equation, zero and intersection hidden – ideal for reading-off exercises. **Lock controls** prevents accidental changes.

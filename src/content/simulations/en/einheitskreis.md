@@ -52,8 +52,6 @@ $\alpha_1 = 30^\circ$ and, since $\sin(180^\circ - \alpha) = \sin\alpha$, $\alph
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** transition from right-triangle trigonometry to trigonometric functions (grade 10).
 - **On the projector:** run the animation slowly (e.g. 10 °/s) and let the class predict when the sine reaches its maximum.
 - **Next step:** the simulation "General sine function" builds directly on this.

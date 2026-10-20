@@ -55,8 +55,6 @@ $f(x) = 1 \iff x^2 - 2x - 3 = x^2 + 2x - 3 \iff x = 0$, and indeed $f(0) = 1$. Y
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students drag a numerator bead into a pole ring and describe what happens to the term and the graph.
 - With “Show the properties” off, students work out the profile first and then reveal it.
 - **Common stumbling blocks:** calling every zero of the denominator a pole; forgetting that cancelling does not change the domain; believing a graph may never cross its asymptote.

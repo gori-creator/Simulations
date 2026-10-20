@@ -101,8 +101,6 @@ $f_1 = \frac{c}{2L}$ mit $c = \sqrt{F/\mu}$. Für die doppelte Frequenz braucht 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Thema mechanische Wellen, nach Reflexion und Interferenz; die genaue Einordnung hängt vom Lehrplanstand ab. Die drei Themen bauen aufeinander auf und passen gut zu Seilwelle, Melde-Versuch und Kundtschem Rohr im Realexperiment.
 - **Vorschlag für den Ablauf:** zuerst die Entstehung mehrmals ablaufen lassen und vorhersagen lassen, wo die Knoten liegen werden; dann mit $P$ und dem Zeigerdiagramm begründen, warum dort Ruhe herrscht. Mit „Knoten und Bäuche markieren“ aus (`kb=0`) eignen sich die Bilder als Messaufgaben.
 - **Anwendungen:** Gitarre, Geige und Klavier (Saiten), Flöte und Orgelpfeife (Luftsäulen); mit „Ton anhören“ lassen sich die Eigenfrequenzen einer Saite direkt hören.

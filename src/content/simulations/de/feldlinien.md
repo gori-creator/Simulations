@@ -86,8 +86,6 @@ $E = \frac{U}{d} = \frac{1000\,\text{V}}{0{,}10\,\text{m}} = 10\,000\,\frac{\tex
 
 ## Ideen für den Unterricht
 
-*Nur Vorschläge – Sie kennen Ihre Klasse am besten.*
-
 - Mit Grießkörnern in Öl oder Watteflocken zeigen, wie Feldlinienbilder im Experiment aussehen, dann hier vergleichen.
 - Die Vektoraddition zuerst von Hand mit zwei Ladungen zeichnen lassen und mit dem Kasten prüfen.
 - **Typische Stolpersteine:**

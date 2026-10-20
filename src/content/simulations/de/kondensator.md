@@ -96,8 +96,6 @@ $W = \tfrac12 \cdot 10^{-4}\,\text{F} \cdot (10\,\text{V})^2 = 5\,\text{mJ}$. Be
 
 ## Ideen für den Unterricht
 
-*Nur Vorschläge – Sie kennen Ihre Klasse am besten.*
-
 - Den Realversuch mit großem Elko (z. B. 1000 µF, 10 kΩ, Messwerterfassung) aufnehmen und Kurven sowie $\tau$ mit der Simulation vergleichen.
 - Die Tangentenmethode und die Halbwertszeitmethode zur Bestimmung von $\tau$ gegenüberstellen.
 - **Typische Stolpersteine:**

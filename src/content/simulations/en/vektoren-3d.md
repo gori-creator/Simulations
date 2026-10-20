@@ -65,7 +65,5 @@ $S = \frac13 (3, 3, 3) = (1, 1, 1)$. [Show in simulation](?op=tri&a1=3&a2=0&a3=0
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The shifted copy of $\vec b$ shows that a vector is not tied to a place.
 - **Common stumbling blocks:** computing “tail minus tip”; changing only one sign when subtracting; assuming $|\vec a + \vec b| = |\vec a| + |\vec b|$.

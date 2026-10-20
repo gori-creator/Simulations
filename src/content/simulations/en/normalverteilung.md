@@ -69,8 +69,6 @@ $\mu = 50$, $\sigma = 5$: $\Phi(1.1) \approx 0.8643$ (exact $0.8644$; without co
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students estimate an area before dragging; the bar in the $\Phi$ chart explains the subtraction $\Phi(b) - \Phi(a)$.
 - The standardising animation shows why one table for $\Phi$ is enough.
 - **Common stumbling blocks:** reading the height of the curve as a probability; forgetting $1 - \Phi(a)$ for $P(X \geq a)$; looking for $\Phi(z) = 0.05$ instead of $0.95$; forgetting the continuity correction.

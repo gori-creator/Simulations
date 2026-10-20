@@ -101,8 +101,6 @@ Luftlinie: $10\,\text{cm} \cdot 25\,000 = 250\,000\,\text{cm} = 2{,}5\,\text{km}
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich Größen (Länge, Maßstab) im LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen. Die Karte eignet sich vielleicht als gemeinsamer Einstieg am Beamer, die „Neue Messaufgabe“ mit ausgeschaltetem Ergebnis zum Üben in Partnerarbeit.
 - **Verbindung zur echten Karte:** Im Anschluss könnten die Kinder auf einer Wanderkarte der Umgebung den Schulweg messen und umrechnen.
 - **Modell:** Die Landschaft ist erfunden. Häuser und Kartenzeichen sind wie auf echten Karten etwas größer gezeichnet, als sie im Maßstab wären. Gemessen wird die Kartenlänge auf $1\,\text{mm}$ gerundet; gerechnet wird mit diesem gemessenen Wert.

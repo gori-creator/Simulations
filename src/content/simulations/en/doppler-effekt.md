@@ -63,8 +63,6 @@ $\sin\alpha = \frac{1}{2}$, so $\alpha = 30^\circ$. [Show](?vq=680&d=30&bx=0)
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Waves and sound in year 10 or upper secondary. A nice start is the everyday experience of a siren – first with sound and without numbers (`val=0`).
 - **Model:** Air at rest, uniform straight motion; the emission time of the sound arriving now is computed exactly. Vehicle and person are drawn larger than to scale. Sound is off by default and quiet.
 - **Common stumbling blocks:**

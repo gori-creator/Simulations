@@ -61,8 +61,6 @@ $f'(0) = 0$: the horizontal tangent becomes vertical. $f(2) = 4$ and $f'(2) = 6$
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use the views in order: “Invertible?” → “Reflect in y = x” → “Derivative of f⁻¹” leading to $(\ln x)' = \frac{1}{x}$.
 - Draw a graph on a transparency and flip it along $y = x$, then compare with the animation.
 - With `show=0` and `inv=0` the pictures work as exercises.

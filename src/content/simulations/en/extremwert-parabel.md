@@ -65,8 +65,6 @@ $A(x) = x\,(24 - 2x) = -2\,(x - 6)^2 + 72$: sides $6\,\text{cm}$, cross-section 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** grade 9, quadratic functions and modelling; no derivatives needed.
 - **Structure:** quantity to maximise, constraint, objective function, domain, vertex, interpretation – the card shows exactly these steps.
 - **Common mistakes:** sign errors when factoring out a negative number; forgetting the domain; assuming a square is always best (not with a wall).

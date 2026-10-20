@@ -111,8 +111,6 @@ Mit $c = 4\,\text{cm}$ und mit $c = 6{,}4\,\text{cm}$ entstehen zwei Dreiecke mi
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich zu Kongruenz und Dreieckskonstruktionen (LehrplanPLUS Gymnasium Bayern; genaue Bezeichnung bitte am Lehrplan prüfen). Am Beamer kann die Simulation Schritt für Schritt vorkonstruieren, während die Klasse im Heft mitzeichnet; die Zeilen der Konstruktionsbeschreibung lassen sich anschließend gemeinsam vergleichen.
 - **Aufgabenmodus:** Mit „Fehlende Stücke messen“ aus (`meas=0`) beginnt die Konstruktion auf leerem Blatt, Messwerte und Urteil bleiben verdeckt. So konstruieren die Lernenden zuerst selbst und vergleichen dann mit „Nächster Schritt“.
 - **Modell:** Konstruiert wird immer von der Grundseite $[AB]$ aus, $C$ liegt oberhalb; der Schnittpunkt unterhalb liefert ein gespiegeltes, also kongruentes Dreieck. Längen werden auf $0{,}1\,\text{cm}$, Winkel auf $1°$ eingestellt, gemessene Stücke erscheinen mit „≈“.

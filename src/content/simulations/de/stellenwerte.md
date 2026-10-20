@@ -109,8 +109,6 @@ Mia: $71\,499 \approx 71\,500$, danach $71\,500 \approx 72\,000$. Tom: $71\,499 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 5, Lernbereich 1.1 (große Zahlen, Zehnersystem als Stellenwertsystem, Zahlenstrahl, Runden). Die Stellenwerttafel mit Plättchen knüpft an die Darstellung aus der Grundschule an.
 - **Bedienung:** Mit **+** und **−** wird in einer Spalte ein Plättchen gelegt oder weggenommen. Kommt ein zehntes Plättchen dazu, wird automatisch gebündelt, ist eine Spalte leer, wird von links entbündelt – beides animiert und benannt („10 E = 1 Z“). Ein Tipp auf eine Spaltenüberschrift wählt die Rundungsstelle, ein Tipp auf ein Ziffernplättchen zeigt seinen Stellenwert. Die Stecknadel am Zahlenstrahl lässt sich ziehen.
 - **Zahlenstrahl mit Lupe:** Oben ist der Abschnitt der nächsthöheren Stelle in zehn Teile geteilt, unten wird der Teil zwischen den beiden Nachbarzahlen vergrößert. Die Ziffern $0$ bis $9$ unter den Abschnitten zeigen: Die entscheidende Ziffer gibt an, in welchem Zehntel der Strecke die Zahl liegt. So wird die Rundungsregel mit der Lage am Zahlenstrahl begründet.

@@ -104,8 +104,6 @@ Der mittlere Wert muss $10$ sein, die Summe $5 \cdot 20 = 100$. Zum Beispiel $5;
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich „Kenngrößen von Daten“ (LehrplanPLUS Bayern, Gymnasium): Mittelwert und Median vergleichen, Spannweite und Quartile, Boxplots erstellen und deuten. Als Einstieg eignet sich vielleicht das Ziehen eines einzelnen Punktes; „Schritt für Schritt“ kann die Konstruktion an der Tafel begleiten.
 - **Eigene Daten:** Die Klasse könnte selbst Daten erheben (Schulweg, Schlafdauer, Weitsprung) und sie in das Feld „Werte“ eintippen. Im Vergleichsmodus lassen sich zwei Erhebungen nebeneinander betrachten.
 - **Quartile:** Die Simulation bildet die Quartile als Mediane der beiden Hälften (Median bei ungerader Anzahl ausgeschlossen). Falls im Schulbuch eine andere Festlegung steht, kann ein kurzer Hinweis Verwirrung vermeiden.

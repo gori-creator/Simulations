@@ -63,8 +63,6 @@ $\overrightarrow{MB} = (2, 2, 1)$, so $2x_1 + 2x_2 + x_3 = 6 + 8 + 4 = 18$. [Sho
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The equation of a sphere is the distance formula $|\overrightarrow{MX}| = r$ – just like the equation of a circle in the plane.
 - Before sliding the plane, students can predict how $\rho$ depends on $d$.
 - **Common stumbling blocks:** wrong signs in $(x_k - m_k)^2$; comparing with $r$ instead of $r^2$; using $r - d$ instead of $\sqrt{r^2 - d^2}$; forgetting to divide by $|\vec n|$; using $\vec b$ instead of $\vec b - \vec m$ as the normal vector.

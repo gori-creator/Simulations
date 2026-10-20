@@ -72,7 +72,5 @@ $A$: IV, $B$: VII, $C$ lies in the $x_1x_3$ plane – no octant. [Show in simula
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Reading points without rotating first, then discussing why it is ambiguous, can motivate coordinate paths.
 - **Common stumbling blocks:** confusing $x_1$ with the horizontal axis of the plane; ignoring the foot point; setting the wrong coordinate to $0$ in a projection.

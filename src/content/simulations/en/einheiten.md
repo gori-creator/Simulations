@@ -56,7 +56,5 @@ $150 \div 60 = 2$ remainder $30$, so $150\,\text{min} = 2\,\text{h}\;30\,\text{m
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Predict together on the projector: “Where does the point go?” Then tap **Convert**. **New task** and the switch “Show the result right away” support independent practice; **Way back ⇄** shows that converting back gives the starting value.
 - **Common stumbling blocks:** using $10$ instead of $100$ or $1{,}000$ for area and volume; moving only one place between km and m; forgetting the $0$ before the point; reading $2.5\,\text{h}$ as $2\,\text{h}\;50\,\text{min}$.

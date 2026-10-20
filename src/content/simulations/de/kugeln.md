@@ -113,8 +113,6 @@ $d = \frac{|2 - 2 + 6 - 12|}{\sqrt{4 + 1 + 4}} = \frac{6}{3} = 2 < 3$: Schnittkr
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 13, Lernbereich „Geraden und Ebenen im Raum“ (LehrplanPLUS Bayern, Gymnasium), dort die Kugel mit Kugelgleichung, Lage zu Ebenen und Geraden und Tangentialebene – Umfang und Gewichtung bitte am Lehrplan prüfen. Geeignet als Einstieg (Kugel als Punktmenge) und zur Übung.
 - **Verbindung zu Bekanntem:** Die Kugelgleichung ist der räumliche Abstand $|\overrightarrow{MX}|$ – wie die Kreisgleichung in der Ebene. Der Schnittkreis greift den Abstand Punkt–Ebene und den Satz des Pythagoras auf.
 - **Animation als Gesprächsanlass:** Beim Durchschieben der Ebene kann die Klasse vorher vermuten, wie $\rho$ von $d$ abhängt (kein linearer Zusammenhang, sondern ein Viertelkreis).

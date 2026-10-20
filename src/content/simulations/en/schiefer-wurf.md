@@ -57,7 +57,5 @@ $7.063\tan^2\alpha - 18\tan\alpha + 9.063 = 0$ gives $\alpha \approx 34.6^\circ$
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** mechanics, superposition of motions (grade 10/11); the target mode works well as a group challenge.
 - **Common stumbling blocks:** "At the highest point the speed is zero" – only $v_y$ is zero. "45° is always best" – only for $h_0 = 0$ without air.

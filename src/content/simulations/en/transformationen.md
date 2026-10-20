@@ -68,8 +68,6 @@ Asymptotes $x = -1$ and $y = 1$; zero: $\frac{2}{x + 1} = -1 \Rightarrow x = -3$
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Pause the timeline after each step and let the class predict where the graph goes next.
 - Switch off “Show the term and the effects” for a guessing game; “New task” rolls new values, “Reveal the term” plays the steps.
 - **Common stumbling blocks:** $f(x - 2)$ moves **right**; $f(2x)$ is **compressed**; $b$ is not factored out in $f(2x - 4)$; $a < 0$ reflects in the $x$-axis, $b < 0$ in the $y$-axis; $(2x)^2 = 4x^2$, so $a$ and $b$ are not always unique.

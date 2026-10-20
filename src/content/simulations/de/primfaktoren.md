@@ -110,8 +110,6 @@ Eine zusammengesetzte Zahl bis $100$ ist ein Produkt $a \cdot b$ mit $a \le b$. 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 5, Lernbereich 3.1 (Primfaktorzerlegung und Teilbarkeitsregeln). ggT und kgV werden später beim Kürzen und beim Gleichnamigmachen von Brüchen gebraucht (Jahrgangsstufe 6).
 - **Drei Ansichten:** Faktorbaum mit Teilbarkeitsregeln, Sieb des Eratosthenes und ggT/kgV im Mengenbild. Jede Primzahl hat in allen Ansichten dieselbe Farbe.
 - **Schritt für Schritt:** Ist „Ergebnis sofort zeigen“ ausgeschaltet (`show=0`), beginnen Baum, Sieb und Mengenbild leer und werden mit den Knöpfen oder durch Antippen aufgebaut.

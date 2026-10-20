@@ -211,8 +211,6 @@ TODO: Lösung.
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** TODO
 - **Häufige Stolpersteine:** TODO
 `;

@@ -90,8 +90,6 @@ Ein Draht schmilzt bei Überlast nicht durch. Bei einem Kurzschluss würde der S
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Einführung des elektrischen Stromkreises, Schaltzeichen und Schaltpläne, Leiter und Isolatoren, Kurzschluss und Sicherung (Klasse 7/8, je nach Lehrplan auch früher). Aufbau und Schaltplan stehen nebeneinander; beim Überfahren eines Bauteils wird es in beiden Darstellungen markiert. Mit `view=plan` bzw. `view=real` wird nur eine Darstellung gezeigt, mit `flow=none` sieht man – wie im echten Versuch – nur die Wirkungen des Stroms.
 - **Modell:** Flachbatterie $4{,}5\,\text{V}$ mit Innenwiderstand $0{,}7\,\Omega$, Glühlampe $4{,}5\,\text{V}\,/\,0{,}3\,\text{A}$, Motor und Klingel vereinfacht als Widerstände, Sicherung $1\,\text{A}$. Die Geschwindigkeit der Punkte ist nur ein Maß für die Stromstärke; echte Elektronen driften viel langsamer. Was in der Batterie geschieht, wird nicht gezeigt. Die Kurzschlussstromstärke hängt bei echten Batterien von Alter und Bauart ab.
 - **Häufige Stolpersteine:**

@@ -98,8 +98,6 @@ Ohne Luft: $w = \frac{28^2 \cdot \sin 70^\circ}{9{,}81}\,\text{m} \approx 75{,}1
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Mechanik, Superposition von Bewegungen, je nach Lehrplan Jahrgangsstufe 10 oder 11 (bitte am LehrplanPLUS prüfen). Die Zerlegung eignet sich als Einstieg, der Zielwurf als Übung oder Wettbewerb in Gruppen.
 - **Darstellung:** Stroboskop-Punkte und Schatten zeigen, dass die waagerechten Abstände gleich bleiben, die senkrechten nicht. Mit **Zeitlupe** und dem Ziehen im Diagramm lassen sich einzelne Momente besprechen.
 - **Modell:** Massepunkt, konstantes $g$; Luftwiderstand quadratisch in $v$ mit Näherungswerten (Fußball $m = 0{,}43\,\text{kg}$, $d = 22\,\text{cm}$, $c_w \approx 0{,}25$; Tischtennisball $2{,}7\,\text{g}$; Stoßkugel $7{,}26\,\text{kg}$). Auf dem Mond gibt es keine Luft, auf dem Mars ist sie etwa 60-mal dünner.

@@ -73,8 +73,6 @@ $1.05^x = 2 \Rightarrow x = \frac{\lg 2}{\lg 1.05} \approx 14.2$, so in the 15th
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** introducing logarithms as “to the power of what?”, exponential equations and the laws of logarithms (grade 10 in Bavaria); the logarithmic function and $\ln$ as the inverse of $e^x$ come later (upper secondary) – please check your curriculum.
 - **Slide rule:** the laws view shows why multiplication became addition of lengths before calculators existed.
 - **Common stumbling blocks:**

@@ -44,7 +44,5 @@ $\sin\alpha_G = 1/1.52$, so $\alpha_G \approx 41.1^\circ$. [Show total reflectio
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The brightness of the rays follows the Fresnel equations for unpolarised light.
 - **Common stumbling blocks:** angles are measured from the surface instead of the normal.

@@ -46,8 +46,6 @@ The wire has almost no resistance, so the current bypasses the bulb. With nearly
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Set-up and diagram are shown side by side; hovering highlights a component in both. `view=plan`, `view=real` and `flow=none` (effects only) are useful variations.
 - Model: $4.5\,\text{V}$ battery with $0.7\,\Omega$ internal resistance, $4.5\,\text{V}/0.3\,\text{A}$ bulb, motor and bell as resistors, $1\,\text{A}$ fuse. The speed of the dots only indicates the current; real electrons drift far more slowly.
 - **Common stumbling blocks:** current is “used up” in the bulb; electrons come out of the battery; one wire is enough.

@@ -112,8 +112,6 @@ Der vierte Winkel ist $360^\circ - 30^\circ - 40^\circ - 50^\circ = 240^\circ$. 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich „Winkelbetrachtungen an Figuren“ (LehrplanPLUS Gymnasium Bayern): Innenwinkelsumme im Dreieck begründen und auf Vielecke übertragen. Das Abreißen eignet sich als Einstieg (gern parallel mit echten Papierdreiecken), der Beweis mit der Parallelen zur Sicherung, die Vielecke für eine Forschungsphase mit der Tabelle.
 - **Vom Experiment zum Beweis:** Das Abreißen zeigt nur, dass es „passt“ – gemessen ist das nie ganz genau. Der Vergleich beider Wege kann gut zur Frage führen, warum man überhaupt beweist. Die halbe Drehung der Stücke um die Seitenmitten ist übrigens genau die Punktspiegelung, die Wechselwinkel aufeinander abbildet.
 - **Modell:** Die Ecken rasten auf halben Kästchen ein, Winkel werden auf eine Nachkommastelle gerundet und so verteilt, dass die angezeigte Summe stimmt. „Winkelgrößen anzeigen“ aus und `_hide=1` eignen sich für Rechenaufgaben.

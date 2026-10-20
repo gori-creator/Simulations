@@ -119,8 +119,6 @@ $\text{I}\; x + y = 10$, $\text{II}\; x - y = 4$. Die Geraden schneiden sich in 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 8, Lernbereich 6 (Lineare Gleichungssysteme: aufstellen, grafisch und rechnerisch lösen, Lösbarkeit und Lösungsvielfalt). Voraussetzung sind lineare Funktionen (Lernbereich 2).
 - **Darstellungen:** Normalform $y = mx + t$ (Regler und ziehbare Punkte), allgemeine Form $ax + by = c$ mit ganzzahligen Koeffizienten (inklusive senkrechter Geraden; der Punkt auf der $y$-Achse verschiebt die Gerade parallel) und ein Tarifvergleich mit Achsen in Minuten und Euro. Beim Wechsel zwischen Normalform und allgemeiner Form werden die Gleichungen umgerechnet, soweit das mit den Reglern möglich ist.
 - **Exaktheit:** Die Simulation rechnet mit Brüchen. Liegt der Schnittpunkt nicht auf „schönen“ Werten, zeigt sie den abgelesenen Näherungswert und den exakten Wert – ein guter Anlass für die rechnerischen Verfahren. Die Ergebnisse „Rechnerisch (Gleichsetzen)“ und „Probe“ lassen sich mit `_hide=1` verdecken.

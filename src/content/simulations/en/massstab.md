@@ -73,8 +73,6 @@ $2\,\text{cm} : 10 = 0.2\,\text{cm} = 2\,\text{mm}$. [Ladybird at 10 : 1](?mode=
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** grade 5, measures and scale. The “New measuring task” with the result hidden works well for pair practice; afterwards the class could measure their way to school on a real local map.
 - **Model:** the landscape is invented; houses and map symbols are drawn slightly larger than to scale, as on real maps. Map lengths are rounded to 1 mm.
 - **Common stumbling blocks:**

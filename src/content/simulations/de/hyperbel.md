@@ -101,8 +101,6 @@ $a + c = 5$ und $\frac{a}{4} + c = 2$. Subtrahieren: $\frac{3}{4}a = 3$, also $a
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 8, Lernbereich „Elementare gebrochen-rationale Funktionen“ (LehrplanPLUS Bayern, Gymnasium): Einstieg über die indirekte Proportionalität (Rechtecke gleichen Flächeninhalts), danach Einfluss der Parameter, Definitions- und Wertemenge, Asymptoten. Die Schreibweise $\frac{a}{x - b} + c$ entspricht der Scheitelpunktform der Parabel – die Animation „Erst strecken, dann verschieben“ knüpft daran an.
 - **Grenzwertbegriff:** Die Annäherung an die Asymptoten wird nur propädeutisch über Wertetabellen behandelt („kommt beliebig nahe, erreicht aber nicht“); $x \to \infty$ ist hier eine Sprechweise, kein formaler Grenzwert.
 - **Häufige Stolpersteine:**

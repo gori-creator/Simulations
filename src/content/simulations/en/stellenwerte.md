@@ -56,8 +56,6 @@ In steps: $71{,}500$, then $72{,}000$. Directly: $71{,}000$ – which is correct
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The counters in the place value chart connect to primary school; regrouping and exchanging are animated and named. Tap a column heading to set the rounding place, tap a digit card to see its value.
 - The digits $0$–$9$ under the magnified number line show that the deciding digit tells you in which tenth of the interval the number lies.
 - Turn off “Show the rounded number right away” (`show=0`) for prediction tasks.

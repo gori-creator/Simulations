@@ -61,7 +61,5 @@ $P(B) = 0.28 + 0.12 = 0.40$, $P_B(A) = 0.28 / 0.40 = 0.70$. [Show in simulation]
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Two yes/no questions in class quickly give your own table.
 - **Common stumbling blocks:** counting $A \cap B$ twice; reading “or” as “exactly one”; using shares of the total on second-stage branches.

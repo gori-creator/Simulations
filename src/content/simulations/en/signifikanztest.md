@@ -61,8 +61,6 @@ $P(X \le 84) \approx 0.0399$, $P(X \le 85) \approx 0.0726$, so the critical regi
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Use it to introduce the procedure of a one-sided test and to compare both kinds of error; the power curve can serve as an outlook.
 - Drawing many samples with $p_1 = p_0$ makes the type I error rate tangible.
 - **Common stumbling blocks:**

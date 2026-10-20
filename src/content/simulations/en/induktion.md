@@ -58,8 +58,6 @@ A north pole – the coil repels the magnet. Pulling it out gives a south pole, 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Start qualitatively with the magnet, derive $U = B \cdot l \cdot v$ with the rod, finish with the generator.
 - **Common stumbling blocks:**
   - “A strong magnet inside the coil gives a voltage.” – Only a change of flux does.

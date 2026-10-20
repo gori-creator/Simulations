@@ -63,8 +63,6 @@ $€84 \;\hat{=}\; 120\,\%$, $1\,\% \;\hat{=}\; €0.70$, $100\,\% \;\hat{=}\; �
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - With “Show the solution” switched off (`show=0`), the unknown appears as “?” – estimate on the bar first, then calculate and check with the animation. “New task” creates practice problems with friendly numbers.
 - Bar, hundred square and circle show the same share: a bridge from $\frac34$ via $0.75$ to $75\,\%$.
 - **Common stumbling blocks:** mixing up base value and percentage value; confusing the discount with the new price; subtracting the rate from the new value when working backwards; thinking that +20 % and −20 % cancel out; believing rates above 100 % are impossible.

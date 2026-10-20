@@ -65,8 +65,6 @@ The horizontal lines through $(0, 1)$ and $(0, 7)$, touching the circle at $(5, 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** grade 5, introducing the coordinate plane (first quadrant), parallel, perpendicular, distance and tangent; the point game works well as a warm-up.
 - **Model:** all points lie on grid points; one unit is 1 cm. Perpendicular, parallel and tangent are decided exactly; lengths are rounded to millimetres like a ruler reading. The set square is shown at half size.
 - **Common stumbling blocks:** swapping x and y (the game detects this), “perpendicular” meaning “vertical”, measuring a distance along a slanted line instead of at right angles.

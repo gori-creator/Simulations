@@ -53,8 +53,6 @@ $f_k'(x) = e^x(x - k + 1) = 0 \Rightarrow T(k - 1 \mid -e^{k-1})$; locus $y = -e
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Let students guess the locus from the glowing trace before computing it, then reveal the derivation step by step.
 - Mark the cases on a number line first and compare with the k-axis of the simulation.
 - **Common stumbling blocks:** treating $k$ as a variable when differentiating; forgetting the case analysis; dropping $k$ instead of solving for it; dividing by $k_1 - k_2$ without noting $k_1 \neq k_2$.

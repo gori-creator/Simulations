@@ -55,7 +55,5 @@ It becomes $2 \cdot 2 \cdot 2 = 8$ times as large. [5 × 3 × 4](?a=5&b=3&c=4&fi
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The formula grows out of structured counting (row → layer → layers). Switch off the counting aid with `count=0` so that students describe the structure themselves.
 - **Common stumbling blocks:** volume and surface area are confused; the conversion factor 1000 is mixed up with 100 or 10; doubling all edges is expected to double the volume.

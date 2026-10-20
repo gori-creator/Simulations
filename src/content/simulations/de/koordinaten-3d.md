@@ -99,8 +99,6 @@ Keine Koordinate ist $0$ mit Wahrscheinlichkeit $\left(\frac{16}{17}\right)^3 = 
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium), als Einstieg in die analytische Geometrie.
 - **Zweideutigkeit des Schrägbilds:** Punkte ohne Hilfslinien ablesen lassen – die Diskussion motiviert Koordinatenweg, Lot und Risse. Das Risse-Rätsel eignet sich zu zweit.
 - **Häufige Stolpersteine:**

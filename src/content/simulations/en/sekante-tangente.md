@@ -50,7 +50,5 @@ $x = \pm\frac{2}{\sqrt{3}} \approx \pm 1.15$. [Show in the simulation](?fn=cubic
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Grade 11, introducing the derivative. The **h → 0** animation shrinks $h$ logarithmically.
 - **h = 0:** the difference quotient is undefined ($\frac{0}{0}$) – a good moment to discuss "plugging in" versus "taking the limit".

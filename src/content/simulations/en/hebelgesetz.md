@@ -66,8 +66,6 @@ $F_K = 785\,\text{N} \cdot \frac{50}{140} \approx 280\,\text{N}$. With the load 
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - The weights are $50\,\text{g}$ each, $g = 9.81\,\tfrac{\text{N}}{\text{kg}}$, holes $5\,\text{cm}$ apart. A pointer with a small counterweight below the pivot makes a balanced lever return to horizontal; otherwise it tips to the stop. Tiny differences below $0.003\,\text{N}\cdot\text{m}$ are treated as friction in the pivot. The motion is only qualitative.
 - The force needed to lift the bottle cap and to crack the nut are example values. The weights of the wheelbarrow and the tools are neglected.
 - **Common stumbling blocks:** “the heavier side always goes down” (torque matters), “a lever saves work” (it saves force, not work), “for an oblique pull the distance to the point of application counts” (the line of action counts).

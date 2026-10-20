@@ -43,7 +43,5 @@ Now it is $\frac{1}{2}$ : $\frac{1}{2}$ – of the four equally likely cases tha
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - **Use:** Grade 10 (multi-stage experiments, simulation). Let the class vote before playing.
 - **Common stumbling blocks:** "two doors left, so 50 : 50" – the host's choice is not random.

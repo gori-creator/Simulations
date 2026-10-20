@@ -48,7 +48,5 @@ $1 - \left(\frac25\right)^3 = \frac{117}{125} = 93.6\,\%$. [Show in simulation](
 
 ## Ideas for the classroom
 
-*Just suggestions – you know your class best.*
-
 - Drawing a few times from a real urn first and then letting the simulation do the many repetitions can work well.
 - **Common stumbling blocks:** keeping the same probabilities without replacement; adding along a path instead of multiplying; treating $rb$ and $br$ as one outcome.

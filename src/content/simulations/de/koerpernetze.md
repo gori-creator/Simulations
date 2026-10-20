@@ -110,8 +110,6 @@ Eine Fläche hat $150\,\text{cm}^2 : 6 = 25\,\text{cm}^2$, also ist $a = 5\,\tex
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** Bayern Jahrgangsstufe 5 (Lernbereich 4.2: Oberfläche von Quadern, Würfel- und Quadernetze), Jahrgangsstufe 6 (Lernbereich 2.1: Oberflächen einfacher Körper) und Jahrgangsstufe 8 (Lernbereich 7: Netz und Oberfläche von Prisma und Zylinder). Pyramide und Zylinder eignen sich auch als Ausblick.
 - **Raumvorstellung zuerst:** Vor dem Falten kann man Vermutungen sammeln (z. B. mit verdeckten Ergebnissen über „Teilen“). Die gezeigten Flächeninhalte und Maße lassen sich ausschalten.
 - **Häufige Stolpersteine:**

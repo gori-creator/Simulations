@@ -94,8 +94,6 @@ Die Lage der Hauptmaxima bleibt gleich, denn sie hängt nur von $g$ und $\lambda
 
 ## Ideen für den Unterricht
 
-*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*
-
 - **Einsatz:** in der Oberstufe beim Wellenmodell des Lichts; die genaue Einordnung bitte am Lehrplan prüfen. Gut als Vorbereitung auf den Schülerversuch mit Laser, Doppelspalt und Gitter: erst hier vorhersagen, dann real messen.
 - **Möglicher Ablauf:** an die Interferenz in der Wellenwanne anknüpfen, dann die Bedingung $\Delta s = k \cdot \lambda$ für Licht übertragen, mit der Messmarke $\Delta x$ bestimmen und zum Schluss mit dem Gitter die Wellenlänge genau messen. Mit `val=0` werden die Werte im Bild verdeckt.
 - **Modell:** Fraunhofer-Näherung (Schirm weit entfernt), gleiche Spaltbreiten $b = \frac{g}{6}$, ideal monochromatisches Licht.
