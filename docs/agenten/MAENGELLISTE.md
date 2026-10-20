@@ -51,6 +51,17 @@ Der Satz soll überall raus.
 
 **Ziel:** Alle Vorkommen in DE und EN entfernen. Außerdem in `docs/NEUE-SIMULATION.md` bzw. der Vorlage nachsehen, damit neue Simulationen den Satz nicht wieder mitbringen.
 
+### 7. Fortschrittsanzeigen „x von y Simulationen verfügbar“ entfernen
+Jetzt sind alle Simulationen fertig. Die Zähler sind daher überflüssig, zum Beispiel „36 / 36 Simulationen“, „93 / 93 Simulationen“ oder auf der Startseite „129 von 129 …“, ebenso die Übersicht unten auf der Startseite, welche Themen wie viele verfügbare Simulationen haben.
+
+**Fundstellen (zum Teil geprüft):** `src/i18n/ui.ts` mit den Schlüsseln `home.progress` („{ready} von {total} geplanten Simulationen verfügbar“), `subject.progress` („{ready} von {total} Simulationen verfügbar“) und `home.featured` („Schon verfügbar“). Außerdem der Text der Gesamtübersicht, der von „verfügbaren und geplanten Simulationen“ spricht. Die zugehörigen Stellen in den Seiten bzw. Views (Startseite, Fachseite, Bereichskarten) sind noch zu suchen.
+
+**Ziel:**
+- Zähler und Fortschrittsbalken auf der Startseite und den Fachseiten entfernen.
+- Die Übersicht „was ist verfügbar“ unten auf der Startseite entfernen.
+- Texte von „verfügbar/geplant“ auf eine neutrale Form umstellen.
+- Den Status `planned` im Code lassen, damit spätere Fächer wie Chemie wieder geplant werden können. Angezeigt werden soll er aber nur noch, wenn es tatsächlich Geplantes gibt.
+
 ## Lehrpläne und Sortierung
 
 ### 5. Lehrplan Bayern für Physik fehlt
