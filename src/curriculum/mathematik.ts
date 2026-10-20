@@ -795,14 +795,14 @@ export const mathematik: Subject = {
             slug: L('polstellen-asymptoten', 'poles-asymptotes'),
             title: L('Polstellen und Asymptoten gebrochen-rationaler Funktionen', 'Poles and asymptotes of rational functions'),
             summary: L(
-              'Zähler- und Nennernullstellen ziehen und beobachten: Definitionsmenge, Polstellen mit und ohne Vorzeichenwechsel, behebbare Lücken als Loch im Graphen und waagrechte oder schräge Asymptote aus der Polynomdivision.',
-              'Drag the zeros of numerator and denominator and watch: domain, poles with and without sign change, removable gaps as holes in the graph and the horizontal or oblique asymptote from polynomial division.',
+              'Zähler-Perlen und Pol-Ringe ziehen: Kürzt sich ein Faktor, wird aus der Polstelle ein Loch. Polstellen mit und ohne Vorzeichenwechsel, waagrechte und schräge Asymptoten mit Polynomdivision Schritt für Schritt, Wertetabelle an der Polstelle und Vorzeichentabelle.',
+              'Drag numerator beads and pole rings: if a factor cancels, the pole turns into a hole. Poles with and without sign change, horizontal and oblique asymptotes with step-by-step polynomial division, a table of values at the pole and a sign chart.',
             ),
             grades: [11, 12],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
-              ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert'],
-              ['rational function', 'pole', 'asymptote', 'vertical asymptote', 'horizontal asymptote', 'oblique asymptote', 'removable discontinuity', 'polynomial division', 'sign change', 'limit'],
+              ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert', 'Kürzen', 'Näherungskurve', 'Vorzeichentabelle'],
+              ['rational function', 'pole', 'asymptote', 'vertical asymptote', 'horizontal asymptote', 'oblique asymptote', 'removable discontinuity', 'polynomial division', 'sign change', 'limit', 'cancelling', 'approximating curve', 'sign chart'],
             ),
             thumb: 'generic',
           },
