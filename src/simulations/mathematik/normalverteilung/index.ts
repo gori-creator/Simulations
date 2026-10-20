@@ -261,6 +261,7 @@ export default defineSimulation({
     { key: 'bin', label: L('Binomialverteilung und Näherung', 'Binomial and approximation'), spoiler: true },
     { key: 'smp', label: L('Stichprobe', 'Sample') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'std', label: L('Standardnormalverteilung', 'Standard normal distribution'), values: {} },
     { id: 'iq', label: L('IQ über 130', 'IQ above 130'), values: { sit: 'iq', typ: 'ge', ia: 130 } },

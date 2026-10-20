@@ -287,6 +287,7 @@ export default defineSimulation({
     { key: 'vf', label: L('Scheitelform', 'Vertex form'), spoiler: true },
     { key: 'max', label: L('Maximum', 'Maximum'), spoiler: true },
   ],
+  resultsParam: 'sol',
   presets: [
     { id: 'start', label: L('Gehege an der Mauer: 40 m Zaun', 'Enclosure against a wall: 40 m of fence'), values: {} },
     { id: 'free', label: L('Ohne Mauer: das Quadrat gewinnt', 'Without a wall: the square wins'), values: { sit: 'free', x: 4 } },

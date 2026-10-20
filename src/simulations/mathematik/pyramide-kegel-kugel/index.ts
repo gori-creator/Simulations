@@ -199,13 +199,14 @@ export default defineSimulation({
     { id: 'unfold', label: L('Abwickeln', 'Unfold'), primary: true, visibleIf: (v) => v.mode === 'oberflaeche' },
   ],
   readouts: [
-    { key: 'G', label: L('Grundfläche', 'Base area') },
+    { key: 'G', label: L('Grundfläche', 'Base area'), spoiler: true },
     { key: 'side', label: L('Strecken', 'Lengths'), spoiler: true },
     { key: 'V', label: L('Volumen', 'Volume'), spoiler: true },
     { key: 'M', label: L('Mantelfläche', 'Lateral surface'), spoiler: true },
     { key: 'O', label: L('Oberfläche', 'Surface area'), spoiler: true },
     { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
   ],
+  resultsParam: 'calc',
   presets: [
     { id: 'start', label: L('Quadratische Pyramide', 'Square pyramid'), values: {} },
     { id: 'cone', label: L('Kegel r = 3, h = 4', 'Cone r = 3, h = 4'), values: { body: 'kegel' } },

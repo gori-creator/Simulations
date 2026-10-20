@@ -127,6 +127,7 @@ export default defineSimulation({
     { key: 'selected', label: L('Angetippte Fläche', 'Tapped face') },
     { key: 'surface', label: L('Oberflächeninhalt', 'Surface area'), spoiler: true },
   ],
+  resultsParam: 'areas',
   presets: [
     { id: 'start', label: L('Würfel: Kreuz', 'Cube: cross'), values: {} },
     { id: 'wrong', label: L('Ist das ein Würfelnetz?', 'Is this a cube net?'), values: { net: 3 } },

@@ -264,6 +264,7 @@ export default defineSimulation({
     { key: 'freq', label: L('Frequenzen', 'Frequencies') },
     { key: 'now', label: L('Momentan', 'Right now') },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'sq', label: L('Rechteck mit 3 Teilschwingungen', 'Square wave with 3 harmonics'), values: {} },
     { id: 'epi', label: L('Zeiger zeichnen ein Rechteck', 'Phasors draw a square wave'), values: { view: 'epi', n: 7 } },

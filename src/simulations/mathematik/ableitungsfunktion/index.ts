@@ -529,6 +529,7 @@ export default defineSimulation({
     { key: 'rule', label: L('Regel', 'Rule'), spoiler: true },
     { key: 'sit', label: L('Im Alltag', 'In everyday life'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'cub', label: L('Polynom 3. Grades', 'Cubic'), values: {} },
     { id: 'x3', label: L('f(x) = x³ − 3x: Hoch-, Tief- und Wendepunkt', 'f(x) = x³ − 3x: maximum, minimum, inflection'), values: { mode: 'feat', k3: 1, k2: 0, k1: -3, k0: 0, d2: true } },

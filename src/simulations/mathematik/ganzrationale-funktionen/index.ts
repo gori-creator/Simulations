@@ -190,6 +190,7 @@ export default defineSimulation({
     { key: 'yint', label: L('y-Achsenabschnitt', 'y-intercept'), spoiler: true },
     { key: 'local', label: L('Nahe den Nullstellen', 'Near the zeros'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'three', label: L('Drei einfache Nullstellen', 'Three simple zeros'), values: {} },
     { id: 'double', label: L('Doppelte Nullstelle: Berührpunkt', 'Double zero: touching point'), values: { z: 2, x1: -2, m1: 2, x2: 2, m2: 1, a: 0.5 } },

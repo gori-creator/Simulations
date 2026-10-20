@@ -190,6 +190,7 @@ export default defineSimulation({
     { key: 'formula', label: L('Kurz geschrieben', 'In short'), spoiler: true },
     { key: 'sel', label: L('Gewählter Pfad', 'Chosen path') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Outfits: 3 · 4 · 2', 'Outfits: 3 · 4 · 2'), values: {} },
     { id: 'eis', label: L('Eistüte: 3 verschiedene Sorten', 'Cone: 3 different flavours'), values: { sit: 'eis', n: 4, k: 3, rep: false } },

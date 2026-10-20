@@ -195,6 +195,7 @@ export default defineSimulation({
     { key: 'asym', label: L('Asymptote', 'Asymptote'), spoiler: true },
     { key: 'xe', label: L('ε-Schlauch', 'ε-strip'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'rat', label: L('Bruchfunktion → 2', 'Rational function → 2'), values: {} },
     { id: 'rat2', label: L('Annäherung von unten', 'Approach from below'), values: { f: 'rat2', eps: 0.2 } },

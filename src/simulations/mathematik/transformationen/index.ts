@@ -239,6 +239,7 @@ export default defineSimulation({
     { key: 'map', label: L('Punkte', 'Points'), spoiler: true },
     { key: 'prop', label: L('Eigenschaften', 'Properties'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('Verschobene, gestreckte Parabel', 'Shifted, stretched parabola'), values: {} },
     { id: 'sqrt', label: L('Wurzel: Spiegeln an der y-Achse', 'Square root: reflecting in the y-axis'), values: { f: 'sqrt', a: 1, b: -1, c: 2, d: 0 } },

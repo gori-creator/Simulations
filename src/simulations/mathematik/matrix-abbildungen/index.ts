@@ -387,6 +387,7 @@ export default defineSimulation({
     { key: 'inv', label: L('Inverse', 'Inverse'), spoiler: true },
     { key: 'lim', label: L('Langfristig', 'In the long run'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'gen', label: L('Allgemein', 'General'), values: {} },
     { id: 'rot', label: L('Drehung um 90°', 'Rotation by 90°'), values: { typ: 'rot', phi: 90 } },

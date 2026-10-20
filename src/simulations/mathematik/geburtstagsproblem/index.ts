@@ -139,6 +139,7 @@ export default defineSimulation({
     { key: 'sim', label: L('Simulation', 'Simulation') },
     { key: 'class', label: L('Diese Klasse', 'This class') },
   ],
+  resultsParam: 'curve',
   presets: [
     { id: 'start', label: L('Klasse mit 25', 'Class of 25'), values: {} },
     { id: 'n23', label: L('Ab 23 über 50 %', 'From 23 above 50 %'), values: { n: 23 } },

@@ -169,6 +169,7 @@ export default defineSimulation({
     { key: 'an', label: L('Kontostand nach 1 Jahr', 'Balance after 1 year'), spoiler: true },
     { key: 'gap', label: L('Abstand zu e', 'Distance from e'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('Basis 2: f′ liegt unter f', 'Base 2: f′ lies below f'), values: {} },
     { id: 'b3', label: L('Basis 3: f′ liegt über f', 'Base 3: f′ lies above f'), values: { b: 3 } },

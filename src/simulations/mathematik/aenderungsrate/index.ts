@@ -288,6 +288,7 @@ export default defineSimulation({
     { key: 'sum', label: L('Rechtecksumme', 'Rectangle sum'), spoiler: true },
     { key: 'dist', label: L('Insgesamt bewegt (Betrag)', 'Total moved (absolute)'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'car', label: L('Autofahrt: Fläche = Weg', 'Car journey: area = distance'), values: {} },
     { id: 'rect', label: L('Rechtecke: links, rechts, Mitte', 'Rectangles: left, right, midpoint'), values: { sit: 'car', t: 25, n: 5 } },

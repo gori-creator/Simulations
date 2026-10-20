@@ -100,6 +100,7 @@ export default defineSimulation({
     { key: 'read', label: L('Ablesen', 'Reading'), spoiler: true },
     { key: 'score', label: L('Punktestand', 'Score') },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'start', label: L('Spitzer Winkel', 'Acute angle'), values: {} },
     { id: 'stumpf', label: L('Stumpfer Winkel, schräg', 'Obtuse angle, tilted'), values: { alpha: 125, a1: 200 } },

@@ -255,6 +255,7 @@ export default defineSimulation({
     { key: 'r2', label: L('2. Strahlensatz', '2nd intercept theorem') },
     { key: 'res', label: L('Ergebnis', 'Result'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'v', label: L('V-Figur, k = 2', 'V shape, k = 2'), values: {} },
     { id: 'x', label: L('X-Figur: andere Seite von Z', 'X shape: other side of Z'), values: { mode: 'x', a: 4, b: 5, k: 0.75 } },

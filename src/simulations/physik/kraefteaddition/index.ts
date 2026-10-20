@@ -123,6 +123,7 @@ export default defineSimulation({
     { key: 'rope', label: L('Seilkraft', 'Rope force'), spoiler: true },
     { key: 'ratio', label: L('Vergleich', 'Comparison') },
   ],
+  resultsParam: 'res',
   presets: [
     { id: 'start', label: L('3 N und 4 N im rechten Winkel', '3 N and 4 N at right angles'), values: {} },
     { id: 'poly', label: L('Drei Kräfte aneinanderhängen', 'Three forces head to tail'), values: { n3: true, cons: 'poly' } },

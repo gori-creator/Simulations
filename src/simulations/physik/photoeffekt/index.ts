@@ -131,12 +131,13 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
   ],
   readouts: [
-    { key: 'photon', label: L('Photonen', 'Photons') },
+    { key: 'photon', label: L('Photonen', 'Photons'), spoiler: true },
     { key: 'ekin', label: L('Bewegungsenergie der Elektronen', 'Kinetic energy of the electrons'), spoiler: true },
     { key: 'now', label: L('Messgeräte', 'Meters') },
     { key: 'table', label: L('Messtabelle', 'Table of measurements') },
     { key: 'fit', label: L('Auswertung', 'Analysis'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Cäsium, violettes Licht (400 nm)', 'Caesium, violet light (400 nm)'), values: {} },
     { id: 'stop', label: L('Gegenspannung 1,16 V: Strom null', 'Retarding voltage 1.16 V: no current'), values: { U: 1.16 } },

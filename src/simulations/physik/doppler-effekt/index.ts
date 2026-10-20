@@ -120,8 +120,9 @@ export default defineSimulation({
     { key: 'fb', label: L('Frequenz beim Beobachter', 'Frequency at the observer'), spoiler: true },
     { key: 'lam', label: L('Wellenlängen', 'Wavelengths'), spoiler: true },
     { key: 'mach', label: L('Machzahl', 'Mach number'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
+  resultsParam: 'val',
   presets: [
     { id: 'start', label: L('Krankenwagen fährt vorbei', 'An ambulance drives past'), values: {} },
     { id: 'near', label: L('Direkt an der Straße: Sprung', 'Right next to the road: a jump'), values: { d: 6, bx: 20 } },

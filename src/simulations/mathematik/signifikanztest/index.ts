@@ -216,6 +216,7 @@ export default defineSimulation({
     { key: 'dec', label: L('Entscheidung', 'Decision'), spoiler: true },
     { key: 'tally', label: L('Gezogene Stichproben', 'Samples drawn') },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('Medikament: n = 50, p₀ = 0,6', 'Medicine: n = 50, p₀ = 0.6'), values: {} },
     { id: 'coin', label: L('n = 20, p₀ = 0,5, wahres p₁ = 0,7', 'n = 20, p₀ = 0.5, true p₁ = 0.7'), values: { ctx: 'free', n: 20, p0: 0.5, x: 16, p1: 0.7 } },

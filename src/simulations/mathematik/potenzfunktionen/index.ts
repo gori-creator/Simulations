@@ -235,6 +235,7 @@ export default defineSimulation({
     { key: 'cut', label: L('Schnittpunkte', 'Intersection points'), spoiler: true },
     { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
   ],
+  resultsParam: 'info',
   presets: [
     { id: 'start', label: L('Normalparabel y = x²', 'Standard parabola y = x²'), values: {} },
     { id: 'cubic', label: L('Kubische Parabel y = 0,5 · x³', 'Cubic parabola y = 0.5 · x³'), values: { n: 3, a: 0.5, x: 2 } },

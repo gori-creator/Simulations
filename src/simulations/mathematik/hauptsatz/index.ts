@@ -431,6 +431,7 @@ export default defineSimulation({
     { key: 'feat', label: L('Graph von Iₐ', 'Graph of Iₐ'), spoiler: true },
     { key: 'sit', label: L('Anwendung', 'Application'), spoiler: true },
   ],
+  resultsParam: 'show',
   presets: [
     { id: 'par', label: L('Parabel, a = −1', 'Parabola, a = −1'), values: {} },
     { id: 'car', label: L('Auto: aus der Geschwindigkeit den Weg', 'Car: distance from speed'), values: { kind: 'app', app: 'car', a: 0, x: 25 } },
