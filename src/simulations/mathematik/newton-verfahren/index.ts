@@ -118,7 +118,7 @@ type Kind = 'start' | 'how' | 'heron' | 'quad' | 'double' | 'jump' | 'flat' | 'c
 export default defineSimulation({
   id: 'newton-verfahren',
   dragHint: true,
-  layout: { aspect: 1.42, aspectNarrow: 0.42 },
+  layout: { aspect: 1.42, aspectNarrow: 0.38 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1002,7 +1002,7 @@ export default defineSimulation({
         if (x > r.x + r.w * sweep) break;
         const v = vals[i]!;
         const c = basinCol(v);
-        g.fillStyle = withAlpha(c, v < 0 ? (dark ? 0.05 : 0.05) : dark ? 0.08 : 0.085);
+        g.fillStyle = mixColor(c, c, 0, v < 0 ? 0.05 : dark ? 0.08 : 0.085);
         g.fillRect(x, r.y, wpx + 0.6, r.h);
         g.fillStyle = v < 0 ? withAlpha(th().muted, 0.55) : c;
         g.fillRect(x, y0 - 4, wpx + 0.6, 8);
@@ -1221,13 +1221,13 @@ export default defineSimulation({
       lupe.a.follow(on ? 1 : 0, reduced() ? 0 : 0.18);
       // Lage: Ecke mit möglichst wenig Inhalt (mit Zurückhaltung beim Wechseln)
       if (on || lupe.a.v > 0.01) {
-        const score = (qx: number, qy: number) => lupeScore(lupeRectAt(qx, qy), V, goal);
+        const score = (qx: number, qy: number) => lupeScore(lupeRectAt(qx, qy), V, goal) + qy * 0.6;
         const cur = score(lupeCorner[0], lupeCorner[1]);
         let best = lupeCorner;
         let bestS = cur;
         for (const q of [[1, 0], [0, 1], [1, 1], [0, 0]] as [number, number][]) {
           const sc = score(q[0], q[1]);
-          if (sc < bestS * 0.6 - 0.5) {
+          if (sc < bestS * 0.7 - 0.4) {
             best = q;
             bestS = sc;
           }
@@ -1245,16 +1245,48 @@ export default defineSimulation({
       return moving;
     }
 
+    /** Schneidet die Strecke a–b das Rechteck R (mit 6 px Rand)? (Liang-Barsky) */
+    function segHitsRect(a: Pt, b: Pt, R: Rect): boolean {
+      const x0 = R.x - 6;
+      const x1 = R.x + R.w + 6;
+      const y0 = R.y - 6;
+      const y1 = R.y + R.h + 6;
+      const dx = b[0] - a[0];
+      const dy = b[1] - a[1];
+      let t0 = 0;
+      let t1 = 1;
+      const tests: [number, number][] = [
+        [-dx, a[0] - x0],
+        [dx, x1 - a[0]],
+        [-dy, a[1] - y0],
+        [dy, y1 - a[1]],
+      ];
+      for (const [pp, q] of tests) {
+        if (pp === 0) {
+          if (q < 0) return false;
+        } else {
+          const t = q / pp;
+          if (pp < 0) t0 = Math.max(t0, t);
+          else t1 = Math.min(t1, t);
+          if (t0 > t1) return false;
+        }
+      }
+      return true;
+    }
+
     /** Wie viel von Graph, Punkten und Ziel läge unter der Lupe? (kleiner = besser) */
     function lupeScore(R: Rect, V: Shown, goal: { c: number; yc: number } | null): number {
       const r = plot.rect;
       const inside = (x: number, y: number) => x > R.x - 6 && x < R.x + R.w + 6 && y > R.y - 6 && y < R.y + R.h + 6;
       let s = 0;
-      const n = 48;
+      const n = 120;
+      let prev: Pt | null = null;
       for (let i = 0; i <= n; i++) {
         const px = r.x + (r.w * i) / n;
         const x = plot.toWorld(px, 0)[0];
-        if (inside(px, plot.py(V.fn.f(x)))) s += 1;
+        const cur: Pt = [px, clamp(plot.py(V.fn.f(x)), r.y - 50, r.y + r.h + 50)];
+        if (prev && segHitsRect(prev, cur, R)) s += 1;
+        prev = cur;
       }
       for (const x of V.xs) if (inside(plot.px(x), plot.py(0))) s += 4;
       for (const st of V.steps) if (inside(plot.px(st.x), plot.py(st.fx))) s += 3;
@@ -1723,7 +1755,7 @@ export default defineSimulation({
       const step = stepCard(V, now, k, compact);
       const status = statusCard(V, k);
       const basin = p.basin ? basinCard(V, k) : null;
-      const minTable = 44 + 12 + 2 * fs(22, 20) + 34;
+      const minTable = 44 + 12 + 3 * fs(22, 20) + 34;
       shortNotes = false;
       const hs = step(C, true);
       let hst = status(C, true);
