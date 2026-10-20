@@ -1433,14 +1433,14 @@ export const mathematik: Subject = {
             slug: L('newton-verfahren', 'newtons-method'),
             title: L('Newton-Verfahren', 'Newton’s method'),
             summary: L(
-              'Nullstellen näherungsweise bestimmen: Tangente anlegen, Schnittpunkt mit der x-Achse als neuer Wert – Schritt für Schritt animiert, mit ziehbarem Startwert, Tabelle der richtigen Stellen und Gegenbeispielen (waagrechte Tangente, Zyklus).',
-              'Approximating zeros: draw the tangent and use its x-intercept as the next value – animated step by step, with a draggable starting value, a table of correct digits and counterexamples (horizontal tangent, cycle).',
+              'Nullstellen näherungsweise bestimmen: Lot zum Graphen, Tangente, Schnittpunkt als neuer Wert – jeder Schritt animiert, mit Steigungsdreieck als Herleitung, Lupe, Tabelle der richtigen Stellen, Newton = Heron und gestalteten Problemfällen (waagrechte Tangente, Sprung, Zyklus, Einzugsbereiche).',
+              'Approximating zeros: vertical line to the graph, tangent, x-intercept as the next value – every step animated, with the slope triangle behind the formula, a magnifier, a table of correct digits, Newton = Heron and the failure cases (horizontal tangent, jump, cycle, basins of attraction).',
             ),
             grades: [11, 11],
             kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
             keywords: L(
-              ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Ableitung', 'Startwert', 'Konvergenz', 'Wurzel 2'],
-              ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'derivative', 'starting value', 'convergence'],
+              ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
+              ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'slope triangle', 'derivative', 'starting value', 'quadratic convergence', 'Heron’s method', 'basin of attraction'],
             ),
             thumb: 'generic',
           },
