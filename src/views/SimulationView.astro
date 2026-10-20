@@ -6,6 +6,7 @@ import KmkList from '../components/KmkList.astro';
 import SimulationShell from '../components/SimulationShell.astro';
 import { getArea, getSimulation, getSubject, getTopic, readySimulations } from '../curriculum';
 import { referencesFor, unitAnchor } from '../curriculum/lehrplaene';
+import { regionIdOf } from '../lib/region';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -108,8 +109,19 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
           </dl>
         </section>
         {
-          curriculaRefs.map(({ curriculum, refs }) => (
-            <section class="aside-box" style="position:static">
+          curriculaRefs.length > 0 && (
+            <div class="region-stack" data-region-sort>
+              {curriculaRefs.map(({ curriculum, refs }) => {
+                // Gewähltes Bundesland zuerst (CSS order + Skript) und hervorgehoben
+                const region = regionIdOf(curriculum);
+                return (
+            <section
+              class="aside-box"
+              style={`position:static;--ro-${region}:0`}
+              data-region-order={JSON.stringify({ [region]: 0 })}
+              data-region-mark={region}
+            >
+              <span class="badge badge--region" data-region-only={region} style="margin-bottom:8px">{t(lang, 'region.current')}</span>
               <h2>{t(lang, 'curriculum.reference', { state: curriculum.state[lang], school: curriculum.schoolType[lang] })}</h2>
               <ul>
                 {refs.map((r) => (
@@ -121,7 +133,10 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
                 ))}
               </ul>
             </section>
-          ))
+                );
+              })}
+            </div>
+          )
         }
         {
           related.length > 0 && (

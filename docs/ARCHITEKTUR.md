@@ -29,6 +29,16 @@ Lernmaterial (content/*.md) ─────────────────�
 
 Übersichtsseiten, Katalog, Fortschrittsbalken und Navigation werden vollständig aus diesen Daten erzeugt.
 
+**Einstellung „Bundesland“** (Zahnrad in der Kopfleiste, `components/RegionSettings.astro`; Rechenlogik in `lib/region.ts`, Tests in `tests/region.test.ts`):
+
+- Die Auswahl listet jedes Land, für das mindestens ein Lehrplan in `STATE_CURRICULA` steht. Die Länder-ID wird aus `state.de` abgeleitet (`Bayern` → `bayern`, `Baden-Württemberg` → `baden-wuerttemberg`); das optionale Feld `region` im Lehrplan überschreibt sie. Gibt es für ein Land mehrere Lehrpläne desselben Fachs, gilt der erste.
+- Die Wahl steht nur in `localStorage` (Schlüssel `region`, kein Server, keine Cookies). Ein Inline-Skript im `<head>` (BaseLayout) setzt sie vor dem ersten Zeichnen als `data-region` am `<html>`; unbekannte Werte werden ignoriert. Ohne Wahl bleibt alles wie bisher.
+- Zeigen/Verstecken und Sortieren laufen über CSS-Regeln, die BaseLayout zur Bauzeit für alle Länder erzeugt (`regionCss`): `data-region-only="<land>"`, `data-region-hide="<land> …"`, `data-region-mark` und `data-region-sort` (Kinder per `order: var(--ro-<land>)`, ohne Eintrag ans Ende). Ein kleines Skript (`lib/region-client.ts`) zieht die DOM-Reihenfolge nach, damit Tastatur und Bildschirmleser dieselbe Reihenfolge erleben.
+- Fachseite: je Land mit Lehrplan für das Fach eine vorgerenderte Ansicht nach Jahrgangsstufen (Simulation erscheint als Karte in ihrer ersten Stufe, in späteren als Link), darunter „Weitere Simulationen“. Fehlt der Lehrplan für Fach und Land, erscheint ein Hinweis und die allgemeine Sortierung. Startseite, Bereichsseiten und Katalog sortieren die Karten nach der ersten Jahrgangsstufe im Land; Karten zeigen „Bayern: Jgst. 7“. Auf der Simulationsseite steht der Lehrplan des gewählten Landes zuerst und hervorgehoben.
+
+**Neuen Lehrplan nachtragen** (z. B. Bayern Physik): Datei `src/curriculum/lehrplaene/<land>-<schulart>-<fach>.ts` anlegen und in `STATE_CURRICULA` (`lehrplaene/index.ts`) eintragen, dann `npm run verify`.
+Weitere Code-Änderungen sind nicht nötig: Auswahl, Fachseiten-Ansicht, Sortierung, Etiketten und CSS entstehen automatisch.
+
 ## 2. Routen und Mehrsprachigkeit
 
 - Alle Adressen beginnen mit der Sprache: `/de/…` und `/en/…`. `/` leitet zur gemerkten bzw. Browsersprache weiter.
