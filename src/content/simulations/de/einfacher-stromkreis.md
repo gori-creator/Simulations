@@ -24,7 +24,7 @@ Eine Glühlampe leuchtet nur, wenn sie in einem **geschlossenen Stromkreis** lie
 ## Ausprobieren
 
 1. Tippe auf den Schalter. Beobachte die Elektronen: Setzen sie sich erst an der Batterie in Bewegung oder überall gleichzeitig?
-2. Vergleiche Aufbau und Schaltplan. Welches Schaltzeichen gehört zu welchem Bauteil? Fahre mit der Maus über die Bauteile.
+2. Vergleiche Aufbau und Schaltplan. Welches Schaltzeichen gehört zu welchem Bauteil? Fahre mit der Maus über die Bauteile oder tippe sie an.
 3. Ersetze die Lampe durch einen Motor oder eine Klingel. [Motor](?dev=motor&on=1) · [Klingel](?dev=bell&on=1)
 4. Schalte auf die technische Stromrichtung um und vergleiche mit der Bewegung der Elektronen. [Technische Stromrichtung](?on=1&flow=tech)
 5. Tippe auf die lose Leitung, sodass sie über der Lampe liegt. Was passiert mit der Lampe und mit der Stromstärke? [Kurzschluss](?on=1&sc=1)
