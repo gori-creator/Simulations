@@ -249,3 +249,12 @@ export function slabIndexAt(kind: BodyKind, d: Dims, n: number, z: number): numb
   const m = Math.max(1, Math.round(n));
   return Math.max(0, Math.min(m - 1, Math.floor((z / H) * m)));
 }
+
+/**
+ * Ist der Wert auf `decimals` Nachkommastellen genau darstellbar? Dann steht
+ * in der Anzeige „=“, sonst „≈“ (mit Endnullen, z. B. „≈ 113,10“).
+ */
+export function isExactTo(value: number, decimals: number): boolean {
+  const f = value * 10 ** decimals;
+  return Math.abs(f - Math.round(f)) < 1e-9 * Math.max(1, Math.abs(f));
+}
