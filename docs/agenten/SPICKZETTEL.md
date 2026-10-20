@@ -15,6 +15,7 @@ const L = (de: string, en: string) => ({ de, en });
 export default defineSimulation({
   id: '<id>',                      // = Ordnername
   dragHint: true,                  // Hinweis „Punkte ziehen“ unter der Bühne, wenn man ziehen kann
+  hint: L('Tipp: …', 'Tip: …'),    // optional: eigener Tipp unter der Bühne, ersetzt den von dragHint
   animated: true,                  // nur wenn zeitabhängig: Abspielen/Anhalten + tick(dt)
   layout: { aspect: 1.6, aspectNarrow: 0.75 },   // Breite/Höhe; Handy (<640 px) eigenes Verhältnis
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

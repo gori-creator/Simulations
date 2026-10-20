@@ -2,6 +2,7 @@ import type { Lang, Localized } from '../i18n/config';
 import type { Clock } from './clock';
 import type { Formatter } from './format';
 import type { ImageStore } from './images';
+import type { KeyTarget } from './key-targets';
 import type { Theme } from './theme';
 
 /* ------------------------------------------------------------------ */
@@ -144,6 +145,25 @@ export interface SimContext<V> {
   readonly clock: Clock;
   /** Optionale Bilder aus `images` (siehe src/assets/sims/). */
   readonly images: ImageStore;
+  /**
+   * Aufgabenmodus: `true`, solange Lösungen verdeckt sein sollen – also bei
+   * geteiltem Link mit „Ergebnisse verdecken“ (`_hide=1`), bis ein Ergebnis
+   * aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist.
+   * Damit lassen sich Etiketten im Bild gezielt ausblenden. Bei einem Wechsel
+   * zeichnet der Host neu und ruft `hiddenChange` auf.
+   */
+  readonly hidden: boolean;
+  /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
+  isHidden(key: string): boolean;
+  /**
+   * Antippbare Objekte für die Tastatur melden (optional). Die Bühne wird dann
+   * per Tab erreichbar, Pfeiltasten wählen, Enter/Leertaste ruft `activate` auf.
+   * Darf bei jeder Änderung (auch in `render`) neu aufgerufen werden; die
+   * Auswahl bleibt über die `id` erhalten. Leere Liste schaltet es ab.
+   */
+  setKeyTargets(targets: readonly KeyTarget[]): void;
+  /** ID des per Tastatur ausgewählten Objekts, solange die Bühne den Fokus hat (sonst `null`). */
+  readonly keyFocus: string | null;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
@@ -181,6 +201,8 @@ export interface SimInstance {
   resetTime?(): void;
   /** Zoom/Verschiebung der Ansicht zurücksetzen. */
   resetView?(): void;
+  /** `ctx.hidden` hat sich geändert (z. B. Ergebnis aufgedeckt). Neu gezeichnet wird ohnehin. */
+  hiddenChange?(hidden: boolean): void;
   destroy?(): void;
 }
 
@@ -200,6 +222,11 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   animated?: boolean;
   /** Zeigt unter der Bühne den Hinweis, dass Punkte gezogen werden können. */
   dragHint?: boolean;
+  /**
+   * Eigener Tipp unter der Bühne, z. B. „Tippe auf ein Bild …“. Ersetzt den
+   * allgemeinen Hinweis von `dragHint` und wird auch ohne `dragHint` gezeigt.
+   */
+  hint?: Localized;
   layout?: StageLayout;
   /** Zusätzliche Texte der Simulation, abrufbar über `ctx.t(key)`. */
   strings?: Localized<Record<string, string>>;

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { angleBetween, decompose, G, resultant, resultantMagnitude, ropeForce, toVec, type Force, type Vec } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -117,11 +117,11 @@ export default defineSimulation({
   readouts: [
     { key: 'res', label: L('Resultierende', 'Resultant'), spoiler: true },
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
-    { key: 'sum', label: L('Vergleich', 'Comparison') },
+    { key: 'sum', label: L('Vergleich', 'Comparison'), spoiler: true },
     { key: 'parts', label: L('Komponenten', 'Components'), spoiler: true },
     { key: 'fg', label: L('Gewichtskraft', 'Weight') },
     { key: 'rope', label: L('Seilkraft', 'Rope force'), spoiler: true },
-    { key: 'ratio', label: L('Vergleich', 'Comparison') },
+    { key: 'ratio', label: L('Vergleich', 'Comparison'), spoiler: true },
   ],
   resultsParam: 'res',
   presets: [
@@ -167,6 +167,7 @@ export default defineSimulation({
       fgText: 'F_G = m · g = {m} kg · 9,81 N/kg = {F} N',
       ropeText: 'F_S = F_G / (2 · sin α) = {FG} N / (2 · sin {a}°) ≈ {F} N',
       ratioText: 'Jedes Seil zieht mit dem {k}-Fachen der Gewichtskraft.',
+      ratioOne: 'Jedes Seil zieht genau mit der Gewichtskraft.',
       ratioSteep: 'Bei steilen Seilen trägt jedes Seil fast die Hälfte der Gewichtskraft.',
       ratioFlat: 'Je flacher die Seile, desto größer die Seilkraft – ein Seil mit Last lässt sich nie ganz gerade spannen.',
       lampTitle: 'Lampe an zwei Seilen',
@@ -207,6 +208,7 @@ export default defineSimulation({
       fgText: 'F_G = m · g = {m} kg · 9.81 N/kg = {F} N',
       ropeText: 'F_S = F_G / (2 · sin α) = {FG} N / (2 · sin {a}°) ≈ {F} N',
       ratioText: 'Each rope pulls with {k} times the weight.',
+      ratioOne: 'Each rope pulls with exactly the weight.',
       ratioSteep: 'With steep ropes each rope carries almost half of the weight.',
       ratioFlat: 'The flatter the ropes, the larger the rope force – a rope carrying a load can never be pulled completely straight.',
       lampTitle: 'Lamp on two ropes',
@@ -219,7 +221,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    // Platzhalter einsetzen; zwischen Zahl und Einheit ein geschütztes Leerzeichen (kein Zeilenumbruch in „5,0 N“)
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:N\/kg|N|kg)(?![\p{L}]))/gu, '$1\u00a0');
     const subs = (t: string) => ({ html: t.replace(/([F])_([A-Za-z]+(?:,[xy])?)/g, '<var>$1</var><sub>$2</sub>') });
     const mode = () => p.mode as Mode;
     const narrow = () => surface.width < 640;
@@ -307,7 +314,7 @@ export default defineSimulation({
       if (m === 'add') {
         const list = forces();
         const R = resultant(list);
-        ctx.readout('res', subs(R.F < 0.005 ? ctx.t('resZero') : tr('resText', { F: N(R.F), d: fmt.num(R.deg, 0) })));
+        ctx.readout('res', subs(R.F < 0.05 ? ctx.t('resZero') : tr('resText', { F: N(R.F), d: fmt.num(R.deg, 0) })));
         const sum = list.reduce((s, f) => s + f.F, 0);
         if (list.length === 2) {
           const [a, b] = list as [Force, Force];
@@ -329,7 +336,9 @@ export default defineSimulation({
         else {
           const g = angleBetween(p.d1, p.d2);
           if (Math.abs(g - 90) < 0.5) {
-            const gamma = angleBetween(p.w, p.d1);
+            // spitzer Winkel zwischen F und der Geraden von Richtung 1 (dann sind cos und sin positiv)
+            const g1 = angleBetween(p.w, p.d1);
+            const gamma = Math.min(g1, 180 - g1);
             ctx.readout('parts', tr('partsRight', { g: fmt.num(gamma, 0), a: N(Math.abs(d.a)), b: N(Math.abs(d.b)) }));
           } else ctx.readout('parts', tr('partsText', { a: N(Math.abs(d.a)), b: N(Math.abs(d.b)), d1: fmt.num(d.a >= 0 ? p.d1 : p.d1 > 0 ? p.d1 - 180 : p.d1 + 180, 0), d2: fmt.num(d.b >= 0 ? p.d2 : p.d2 > 0 ? p.d2 - 180 : p.d2 + 180, 0) }));
           const s = Math.abs(d.a) + Math.abs(d.b);
@@ -341,7 +350,7 @@ export default defineSimulation({
         ctx.readout('fg', subs(tr('fgText', { m: fmt.num(p.m, 1), F: N(FG) })));
         ctx.readout('rope', subs(tr('ropeText', { FG: N(FG), a: fmt.num(p.a, 0), F: N(FS) })));
         const k = FS / FG;
-        ctx.readout('ratio', `${tr('ratioText', { k: fmt.num(k, 2) })} ${ctx.t(p.a >= 60 ? 'ratioSteep' : 'ratioFlat')}`);
+        ctx.readout('ratio', `${Math.abs(k - 1) < 0.005 ? ctx.t('ratioOne') : tr('ratioText', { k: fmt.num(k, 2) })} ${ctx.t(p.a >= 60 ? 'ratioSteep' : 'ratioFlat')}`);
       }
     }
 
@@ -419,8 +428,7 @@ export default defineSimulation({
     function pill(x0: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12): number {
       const gx = surface.g;
       const theme = ctx.theme;
-      gx.font = `700 ${size}px ${theme.font}`;
-      const w = gx.measureText(label).width + 16;
+      const w = richWidth(label, size) + 16;
       const h = size + 11;
       const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
       gx.save();
@@ -435,24 +443,67 @@ export default defineSimulation({
       gx.lineWidth = 1;
       roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
       gx.stroke();
-      text(gx, label, left + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color });
+      richDraw(label, left + w / 2, y + h / 2 + 0.5, size, 'center', 'middle', null, color);
       return w;
     }
 
-    function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle'): void {
+    /** Formelzeichen mit Index („F_R“, „F_G“) in Teile zerlegen: Index klein und tiefgestellt. */
+    function richParts(str: string): { t: string; sub: boolean }[] {
+      const out: { t: string; sub: boolean }[] = [];
+      const re = /_([A-Za-z]+)/g;
+      let last = 0;
+      let mm: RegExpExecArray | null;
+      while ((mm = re.exec(str))) {
+        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
+        out.push({ t: mm[1]!, sub: true });
+        last = re.lastIndex;
+      }
+      if (last < str.length) out.push({ t: str.slice(last), sub: false });
+      return out;
+    }
+
+    const subSize = (size: number) => Math.round(size * 0.74 * 2) / 2;
+
+    function richWidth(str: string, size: number): number {
       const gx = surface.g;
-      gx.font = `700 ${size}px ${ctx.theme.font}`;
-      const tw = gx.measureText(label).width;
+      return richParts(str).reduce((w, q) => {
+        gx.font = `700 ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
+        return w + gx.measureText(q.t).width;
+      }, 0);
+    }
+
+    /** Text mit tiefgestellten Indizes zeichnen; `halo`: Farbe des Randes (oder null). */
+    function richDraw(str: string, x: number, y: number, size: number, align: CanvasTextAlign, baseline: CanvasTextBaseline, halo: string | null, color: string): void {
+      const gx = surface.g;
+      const list = richParts(str);
+      const total = richWidth(str, size);
+      const start = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
+      gx.textAlign = 'left';
+      gx.textBaseline = baseline;
+      for (const pass of halo ? [0, 1] : [1]) {
+        let cx = start;
+        for (const q of list) {
+          gx.font = `700 ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
+          const yy = y + (q.sub ? size * 0.28 : 0);
+          if (pass === 0) {
+            gx.lineJoin = 'round';
+            gx.lineWidth = 4;
+            gx.strokeStyle = halo!;
+            gx.strokeText(q.t, cx, yy);
+          } else {
+            gx.fillStyle = color;
+            gx.fillText(q.t, cx, yy);
+          }
+          cx += gx.measureText(q.t).width;
+        }
+      }
+    }
+
+    function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle'): void {
+      const tw = richWidth(label, size);
       const left = align === 'left' ? x : align === 'right' ? x - tw : x - tw / 2;
       x += Math.max(0, 4 - left) - Math.max(0, left + tw - (surface.width - 4));
-      gx.textAlign = align;
-      gx.textBaseline = baseline;
-      gx.lineJoin = 'round';
-      gx.lineWidth = 4;
-      gx.strokeStyle = ctx.theme.bg;
-      gx.strokeText(label, x, y);
-      gx.fillStyle = color;
-      gx.fillText(label, x, y);
+      richDraw(label, x, y, size, align, baseline, ctx.theme.bg, color);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width = 4, head = 15, alpha = 1): void {
@@ -729,7 +780,7 @@ export default defineSimulation({
       const kR = phase(t, n === 2 ? (poly ? 0.55 : 0.5) : poly ? 0.7 : 0.73, 1);
       // Beim Aneinanderhängen mit Gegenkraft schließt diese das Krafteck – F_R läge genau darunter.
       const closed = poly && p.eq && !anim;
-      if (showRes && R.F > 1e-6 && !closed) {
+      if (showRes && R.F >= 0.05 && !closed) {
         forceArrow([0, 0], Rv, theme.series[3]!, 5, 1, kR);
         if (kR >= 1 && p.vals) {
           if (poly) midLabel([0, 0], Rv, `F_R = ${N(R.F)} N`, theme.series[3]!, centroid);
@@ -737,7 +788,7 @@ export default defineSimulation({
         }
       }
       // Gegenkraft: hält den Ring im Gleichgewicht, schließt das Krafteck
-      if (p.eq && R.F > 1e-6) {
+      if (p.eq && R.F >= 0.05) {
         const v: Vec = [-R.x, -R.y];
         if (closed) {
           forceArrow([R.x, R.y], v, theme.series[2]!, 4);
@@ -1045,9 +1096,11 @@ export default defineSimulation({
       const at = (A: Pt): Pt => [A[0] + (node[0] - A[0]) * (small ? 0.42 : 0.3), A[1] + (node[1] - A[1]) * (small ? 0.42 : 0.3)];
       const m1 = at(A1);
       const m2 = at(A2);
-      // unterhalb der Seile, also außerhalb des Winkels α
-      pill(m1[0] - sa * off, m1[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'right' : 'center', size);
-      pill(m2[0] + sa * off, m2[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'left' : 'center', size);
+      // unterhalb der Seile, also außerhalb des Winkels α (mit vals=0 verdeckt, z. B. für Aufgaben)
+      if (p.vals) {
+        pill(m1[0] - sa * off, m1[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'right' : 'center', size);
+        pill(m2[0] + sa * off, m2[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'left' : 'center', size);
+      }
       if (FS > SCALE_MAX) pill(cx, groundY - (small ? 30 : 38), ctx.t('over'), theme.series[3]!, 'center', size);
       // Winkel α am rechten Aufhängepunkt
       const ar = small ? 26 : 34;
@@ -1197,15 +1250,20 @@ export default defineSimulation({
       chart.grid({ minor: false });
       chart.axes();
       chart.hline(FG / 2, { color: theme.muted, width: 1.2, dash: [5, 4] });
-      if (!small) chart.text(88, FG / 2, ctx.t('half'), { color: theme.muted, size: 11, weight: '600', align: 'right', baseline: 'bottom', offset: [0, -4] });
       chart.hline(FG, { color: theme.series[1], width: 1.2, dash: [5, 4], alpha: 0.8 });
-      chart.text(72, FG, 'F_G', { color: theme.series[1], size: 11, weight: '600', align: 'right', baseline: 'bottom', offset: [0, -4] });
       chart.fn((x) => (x > 0.5 ? ropeForce(FG, x) : NaN), { color: theme.series[0], width: 2.6, from: 0.5, to: 90 });
       chart.point(30, FG, { color: theme.series[1], radius: 4 });
-      if (!small) chart.text(30, FG, ctx.t('equalFG'), { color: theme.series[1], size: 11, weight: '600', align: 'left', baseline: 'bottom', offset: [9, -6] });
       chart.segment([p.a, 0], [p.a, Math.min(FS, yTop)], { color: theme.series[3], width: 1.4, dash: [4, 4] });
       chart.point(p.a, Math.min(FS, yTop), { color: theme.series[0], radius: 6 });
       chart.end();
+      // Beschriftungen mit tiefgestelltem Index (F_G, F_S) selbst setzen
+      const lab = (x: number, y: number, label: string, color: string, align: CanvasTextAlign, dx: number, dy: number) => {
+        const [px, py] = chart.toPx(x, y);
+        richDraw(label, px + dx, py + dy, 11, align, 'bottom', theme.bg, color);
+      };
+      if (!small) lab(88, FG / 2, ctx.t('half'), theme.muted, 'right', 0, -4);
+      lab(72, FG, 'F_G', theme.series[1]!, 'right', 0, -4);
+      if (!small) lab(30, FG, ctx.t('equalFG'), theme.series[1]!, 'left', 9, -6);
       const r = chart.rect;
       gx.save();
       gx.strokeStyle = theme.grid;
@@ -1213,7 +1271,7 @@ export default defineSimulation({
       roundRect(gx, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 10);
       gx.stroke();
       gx.restore();
-      pill(r.x + r.w - 10, r.y + 8, `F_S = ${N(FS)} N`, theme.series[0]!, 'right', small ? 11 : 12.5);
+      if (p.vals) pill(r.x + r.w - 10, r.y + 8, `F_S = ${N(FS)} N`, theme.series[0]!, 'right', small ? 11 : 12.5);
     }
 
     return {

@@ -10,6 +10,7 @@ import {
   MD,
   meanKineticEnergy,
   meanSpeed,
+  thermostatOptions,
   modelKT,
   ParticleBox,
   phaseState,
@@ -598,6 +599,8 @@ export default defineSimulation({
     let meanV = meanSpeed(p.T);
     let gasFrac = st.gas;
     let pistonH = 0;
+    /** Zeit in s seit dem letzten Zustandswechsel (für den Thermostat). */
+    let sinceTransition = Infinity;
     const stepper = new FixedStepper(1 / 300);
     const limitNote = new Tween(2600, ease.linear);
     let limitText = '';
@@ -781,7 +784,10 @@ export default defineSimulation({
         pistonH = pistonTarget(G);
         box.height = pistonH;
         const b = box;
-        stepper.run(Math.min(dt, 0.05), (h) => b.step(h, { kT, tau: 0.35, shuffle: 0.35 }));
+        // Beim Schmelzen und Sieden regelt der Thermostat straffer (siehe THERMOSTAT im Modell)
+        sinceTransition = st.phase === 'melting' || st.phase === 'boiling' ? 0 : sinceTransition + dt;
+        const thermo = thermostatOptions(st.phase, kT, sinceTransition);
+        stepper.run(Math.min(dt, 0.05), (h) => b.step(h, thermo));
         // Histogramm (gleitender Mittelwert) und mittlere Geschwindigkeit
         const inst = new Float64Array(BINS);
         let sum = 0;

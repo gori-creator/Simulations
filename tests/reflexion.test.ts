@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   dirFromVertical,
+  evenWedges,
   glancingAngle,
   hitsFront,
   imageCountRule,
   incidence,
   inFront,
+  isEvenWedge,
   isReversed,
   lightPath,
   mirrorDir,
@@ -306,5 +308,26 @@ describe('Prüfrunde: Reflexion – Lernmaterial und Sonderfälle', () => {
     expect(inFront([-5, 0.1], 'A', 90)).toBe(false);
     const q = reflectAcross([1, 4], 'A', 90);
     expect(len(q)).toBeCloseTo(Math.hypot(1, 4), 12);
+  });
+});
+
+describe('Winkelspiegel: eindeutige Fälle im Diagramm', () => {
+  it('nur bei 30°, 36°, 45°, 60°, 90° und 180° ist 360° : φ gerade', () => {
+    expect(evenWedges(30, 180)).toEqual([30, 36, 45, 60, 90, 180]);
+    expect(evenWedges(30, 180).map(imageCountRule)).toEqual([11, 9, 7, 5, 3, 1]);
+    for (const w of [40, 72, 120, 100, 50]) expect(isEvenWedge(w)).toBe(false);
+  });
+
+  it('bei geraden Fällen ist die Zahl der Bilder für jede Lage der Figur gleich', () => {
+    for (const w of evenWedges(30, 180)) {
+      for (const f of [0.1, 0.3, 0.5, 0.77, 0.9]) {
+        expect(wedgeImages(w, wedgePoint(5, f, w)).length).toBe(imageCountRule(w));
+      }
+    }
+  });
+
+  it('bei 120° (360° : φ = 3, ungerade) hängt die Zahl von der Lage ab', () => {
+    const counts = new Set([0.1, 0.3, 0.5, 0.7, 0.9].map((f) => wedgeImages(120, wedgePoint(5, f, 120)).length));
+    expect(counts.size).toBeGreaterThan(1);
   });
 });

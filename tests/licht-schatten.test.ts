@@ -12,7 +12,9 @@ import {
   moonPhase,
   moonPosition,
   observerPosition,
+  outerShadowSize,
   pointShadowSize,
+  umbraSize,
   shadowCone,
   shadowOnScreen,
   solarView,
@@ -231,5 +233,23 @@ describe('Prüfrunde: Aufgaben und Grenzfälle der optischen Bank', () => {
     const b = shadowOnScreen({ x: 10, y: 15, r: 0 }, obj, 100).outer;
     expect(a.hi - a.lo).toBeCloseTo(12, 12);
     expect(intersect(a, b)).toBeNull();
+  });
+
+  it('Schirm hinter der Spitze des Kernschattens: keine negative Größe, nur „kein Kernschatten“', () => {
+    // d = 16 cm, G = 4 cm, a = 30 cm, b = 90 cm: Formel ergäbe (4·90 − 16·60)/30 = −20 cm
+    expect(umbraSize(4, 30, 90, 16)).toBeNull();
+    expect(outerShadowSize(4, 30, 90, 16)).toBeCloseTo(44, 12);
+    // genau an der Spitze (Kernschatten 0) ebenfalls kein Kernschatten
+    expect(umbraSize(4, 30, 40, 16)).toBeNull();
+    // Aufgabe 3 (d = 8 cm, G = 10 cm, a = 30 cm, b = 90 cm): Kernschatten 14 cm, außen 46 cm
+    expect(umbraSize(10, 30, 90, 8)).toBeCloseTo(14, 12);
+    expect(outerShadowSize(10, 30, 90, 8)).toBeCloseTo(46, 12);
+    // stimmt mit der Strahlengeometrie überein
+    for (const [G, a, b, d] of [[4, 30, 90, 16], [10, 30, 90, 8], [6, 20, 70, 12], [20, 50, 95, 4]] as const) {
+      const sh = shadowOnScreen({ x: 0, y: 0, r: d / 2 }, { x: a, y: 0, r: G / 2 }, b);
+      const u = umbraSize(G, a, b, d);
+      if (sh.umbra) expect(u).toBeCloseTo(sh.umbra.hi - sh.umbra.lo, 9);
+      else expect(u).toBeNull();
+    }
   });
 });

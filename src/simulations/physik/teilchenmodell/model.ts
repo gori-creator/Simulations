@@ -201,6 +201,40 @@ export function gauss(rand: () => number): number {
   return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
 }
 
+/**
+ * Einstellung des Thermostats im Teilchenbild. Beim Schmelzen und Sieden
+ * werden laufend Teilchen aus dem Gitter gelöst bzw. ins Gas geschickt; dabei
+ * wird Lageenergie frei, die die Teilchen kurzzeitig schneller macht. Damit die
+ * mittlere Geschwindigkeit auf dem Plateau bei der Plateau-Temperatur bleibt
+ * (die zugeführte Energie macht die Teilchen dort nicht schneller), regelt der
+ * Thermostat während eines Zustandswechsels deutlich straffer.
+ */
+export const THERMOSTAT = {
+  /** Zeitkonstante in s außerhalb der Zustandswechsel. */
+  tau: 0.35,
+  /** Zeitkonstante in s während des Schmelzens und Siedens. */
+  tauTransition: 0.04,
+  /** Rate des Neuauslosens (pro Teilchen und s). */
+  shuffle: 0.35,
+  /** Rate des Neuauslosens während des Schmelzens und Siedens (gleicht schnelle und langsame Teilchen an). */
+  shuffleTransition: 2,
+  /**
+   * So lange (in s) bleibt die straffe Regelung nach dem Ende eines Wechsels
+   * noch aktiv: Die letzten Teilchen, die ins Gitter einsortiert werden, geben
+   * dabei Lageenergie ab (sonst kurz Ø > 1000 m/s nach schnellem Erstarren).
+   */
+  hold: 1.5,
+} as const;
+
+/**
+ * Schrittoptionen für den Thermostat bei gegebener Phase. `sinceTransition`
+ * ist die Zeit in s seit dem letzten Zustandswechsel (Plateau).
+ */
+export function thermostatOptions(phase: Phase, kT: number, sinceTransition = Infinity): StepOptions {
+  const transition = phase === 'melting' || phase === 'boiling' || sinceTransition < THERMOSTAT.hold;
+  return { kT, tau: transition ? THERMOSTAT.tauTransition : THERMOSTAT.tau, shuffle: transition ? THERMOSTAT.shuffleTransition : THERMOSTAT.shuffle };
+}
+
 export interface StepOptions {
   /** Ziel-„k·T“ des Thermostats; ohne Angabe: kein Thermostat (Energie bleibt erhalten). */
   kT?: number;

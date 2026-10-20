@@ -570,7 +570,7 @@ export const physik: Subject = {
               title: L('Licht und Schatten', 'Light and shadow'),
               summary: L(
                 'Verschiebe Lampe, Gegenstand und Schirm und sieh, wie Kernschatten und Halbschatten entstehen. Dazu Sonnen- und Mondfinsternis.',
-                'Move the lamp, the object and the screen and see how full shadow and half shadow form. Plus solar and lunar eclipses.',
+                'Move the lamp, the object and the screen and see how umbra and penumbra form. Plus solar and lunar eclipses.',
               ),
               grades: [6, 7],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
