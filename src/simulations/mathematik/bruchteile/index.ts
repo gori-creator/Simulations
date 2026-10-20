@@ -171,8 +171,10 @@ export default defineSimulation({
       ctx.readout('fraction', { html: `${frac(z, n)}${k > 1 ? ` = ${frac(z * k, n * k)}` : ''}${z > n ? ` = ${mixedHtml(z, n)}` : ''}` });
       ctx.readout('reduced', {
         html:
-          red.n === n
-            ? `${frac(z, n)} (${ctx.lang === 'de' ? 'nicht kürzbar' : 'cannot be reduced'})`
+          z === 0
+            ? `${frac(z, n)} = 0`
+            : red.n === n
+            ?`${frac(z, n)} (${ctx.lang === 'de' ? 'nicht kürzbar' : 'cannot be reduced'})`
             : `${frac(z, n)} = ${frac(red.z, red.n)}${red.n === 1 ? ` = ${red.z}` : ''}`,
       });
       ctx.readout('decimal', { html: decimalHtml(z, n) });
