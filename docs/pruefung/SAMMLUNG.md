@@ -37,3 +37,12 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | ohmsches-gesetz | Glühlampenmodell (R ~ T^1,2), im Lernmaterial als Modell gekennzeichnet. | So lassen. || Vorschlag übernommen (Projektleitung, 20.10.) |
 | reihe-parallel | Kurzschluss bzw. „Lampe überbrücken“ ist nicht möglich. Das ist ein häufiger Versuch in Jgst. 8–9 (in Reihe wird die andere Lampe dann heller). | Als Erweiterung vormerken, sinnvoll. || Vorschlag übernommen (Projektleitung, 20.10.) |
 | reihe-parallel | Bei 2 V glühen die Lampen nur sehr schwach (Modell P ~ T⁴). | So lassen, fachlich plausibel. || Vorschlag übernommen (Projektleitung, 20.10.) |
+
+## Nachbesserungen (werden automatisch erledigt)
+
+| Quelle | Was | Stand |
+|---|---|---|
+| kraefteaddition | Der Schalter `vals=0` verdeckt jetzt auch die Federwaagen. Beschriftung anpassen: „Beträge anzeigen (Pfeile und Federwaagen)“, EN entsprechend. | offen |
+| kraefteaddition | Die Beschriftung „Richtung 2“ kann eine Komponentenbeschriftung berühren, wenn deren Spitze am Richtungsgriff liegt. Beschriftung ausweichen lassen. | offen |
+| kraefteaddition | Bei α = 2° liegen die Pfeile am Knoten auf dem Handy eng zusammen. Beschriftungen versetzen. | offen |
+| kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
