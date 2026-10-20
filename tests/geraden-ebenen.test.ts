@@ -160,6 +160,10 @@ describe('Modell: Ebene, Normalenvektor, Koordinatenform', () => {
     expect(simplifyNormal([0, 0, 4])).toEqual({ n: [0, 0, 1], factor: 4 });
     expect(simplifyNormal([2, 3, 6])).toEqual({ n: [2, 3, 6], factor: 1 });
     expect(simplifyNormal([0.5, 1, 1]).factor).toBe(1);
+    // Erste Komponente negativ: Vorzeichen umdrehen, damit die Koordinatenform positiv beginnt
+    expect(simplifyNormal([-1, -5, -3])).toEqual({ n: [1, 5, 3], factor: -1 });
+    expect(simplifyNormal([0, -4, 2])).toEqual({ n: [0, 2, -1], factor: -2 });
+    expect(simplifyNormal([-0.5, 1, 1])).toEqual({ n: [0.5, -1, -1], factor: -1 });
     const f = planeForms([3, 0, 0], [-3, 3, 0], [-3, 0, 3]);
     expect(f.ok && f.raw).toEqual([9, 9, 9]);
     expect(f.ok && f.n).toEqual([1, 1, 1]);
