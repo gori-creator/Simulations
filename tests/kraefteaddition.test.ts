@@ -76,4 +76,52 @@ describe('Modell: Kräfte addieren und zerlegen', () => {
     expect(sagAngle(1, 1)).toBeCloseTo(45, 12);
     expect(sagAngle(2, 0)).toBe(0);
   });
+
+  it('Sonderfälle: Kraft 0, gleich große Kräfte, Gegenkraft', () => {
+    // F₁ = 0: Die Resultierende ist F₂
+    const R0 = resultant([{ F: 0, deg: 0 }, { F: 3, deg: 90 }]);
+    expect(R0.F).toBeCloseTo(3, 12);
+    expect(R0.deg).toBeCloseTo(90, 10);
+    // gleich groß und entgegengesetzt: F_R = 0
+    expect(resultant([{ F: 5, deg: 30 }, { F: 5, deg: -150 }]).F).toBeCloseTo(0, 12);
+    expect(resultantMagnitude(5, 5, 180)).toBeCloseTo(0, 6);
+    // gleich groß unter 60°: F · √3, unter 120°: F
+    expect(resultantMagnitude(4, 4, 60)).toBeCloseTo(4 * Math.sqrt(3), 12);
+    expect(resultantMagnitude(4, 4, 120)).toBeCloseTo(4, 12);
+    // Gegenkraft −F_R hebt die Resultierende auf
+    const R = resultant([{ F: 5, deg: 20 }, { F: 4, deg: 110 }]);
+    expect(resultant([{ F: 5, deg: 20 }, { F: 4, deg: 110 }, { F: R.F, deg: R.deg + 180 }]).F).toBeCloseTo(0, 10);
+    // Kraft schräg nach links oben (150°) waagerecht/senkrecht zerlegen: Beträge F · cos 30° und F · sin 30°
+    const d = decompose({ F: 5, deg: 150 }, 0, 90)!;
+    expect(d.a).toBeCloseTo(-5 * Math.cos(Math.PI / 6), 12);
+    expect(d.b).toBeCloseTo(2.5, 12);
+  });
+
+  it('Aufgaben des Lernmaterials', () => {
+    // A1: 6 N und 8 N senkrecht → 10 N unter 53,1°
+    const A1 = resultant([{ F: 6, deg: 0 }, { F: 8, deg: 90 }]);
+    expect(A1.F).toBeCloseTo(10, 12);
+    expect(A1.deg).toBeCloseTo(53.13, 2);
+    // A2: zwei Schlepper je 5 kN unter ±30° → 2 · 5 · cos 30° ≈ 8,66
+    const A2 = resultant([{ F: 5, deg: 30 }, { F: 5, deg: -30 }]);
+    expect(A2.F).toBeCloseTo(8.660254, 6);
+    expect(A2.deg).toBeCloseTo(0, 10);
+    // A3: Gegenkraft zu 4 N → und 3 N ↑: 5 N bei −143,1°; mit −143° bleibt weniger als 0,05 N übrig
+    const R = resultant([{ F: 4, deg: 0 }, { F: 3, deg: 90 }]);
+    expect(R.F).toBeCloseTo(5, 12);
+    expect(R.deg - 180).toBeCloseTo(-143.13, 2);
+    expect(resultant([{ F: 4, deg: 0 }, { F: 3, deg: 90 }, { F: 5, deg: -143 }]).F).toBeLessThan(0.05);
+    // A4: 8 N unter 30° → 6,93 N vorwärts, 4 N nach oben
+    const A4 = decompose({ F: 8, deg: 30 }, 0, 90)!;
+    expect(A4.a).toBeCloseTo(6.928, 3);
+    expect(A4.b).toBeCloseTo(4, 12);
+    // A5: 2 kg, 10° → F_G = 19,62 N, F_S ≈ 56,5 N
+    const FG = 2 * G;
+    expect(FG).toBeCloseTo(19.62, 10);
+    expect(ropeForce(FG, 10)).toBeCloseTo(56.49, 2);
+    // A6: F_S = F_G bei 30°, bei 5° fast das Sechsfache; Wäscheleine 1,5 kg bleibt im Messbereich 100 N
+    expect(ropeForce(FG, 30) / FG).toBeCloseTo(1, 12);
+    expect(ropeForce(FG, 5) / FG).toBeCloseTo(5.74, 2);
+    expect(ropeForce(1.5 * G, 5)).toBeCloseTo(84.42, 2);
+  });
 });

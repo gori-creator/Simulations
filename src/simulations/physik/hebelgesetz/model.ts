@@ -223,3 +223,14 @@ export function loadTravel(effortTravel: number, loadArm: number, effortArm: num
   if (!(effortArm > 0)) return 0;
   return (effortTravel * loadArm) / effortArm;
 }
+
+/** Arbeit F · s in Joule (Kraft in N, Weg in cm) für die Anzeige der Goldenen Regel. */
+export function workJoule(force: number, travelCm: number): number {
+  return (force * travelCm) / 100;
+}
+
+/** Zustand der Wippe: Gleichgewicht (Unterschied unter 0,25 N·m) oder Kippen zur Seite mit dem größeren Drehmoment. */
+export function seesawState(m1: number, a1: number, m2: number, a2: number): 'eq' | 'left' | 'right' {
+  const d = (m1 * a1 - m2 * a2) * G;
+  return Math.abs(d) < 0.25 ? 'eq' : d > 0 ? 'left' : 'right';
+}

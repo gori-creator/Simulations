@@ -13,7 +13,9 @@ import {
   meterArm,
   meterTorque,
   restAngle,
+  seesawState,
   stepMotion,
+  workJoule,
   type Lever,
   type Load,
   type Meter,
@@ -268,6 +270,9 @@ export default defineSimulation({
       stateEq: 'Gleichgewicht: Die Drehmomente sind gleich groß, der Hebel bleibt waagerecht.',
       stateL: 'Der Hebel kippt nach links: Das linksdrehende Drehmoment ist um {d} N·m größer.',
       stateR: 'Der Hebel kippt nach rechts: Das rechtsdrehende Drehmoment ist um {d} N·m größer.',
+      seesawEq: 'Gleichgewicht: Die Drehmomente sind gleich groß, die Wippe bleibt waagerecht.',
+      seesawL: 'Die Wippe kippt nach links: Das linksdrehende Drehmoment ist um {d} N·m größer.',
+      seesawR: 'Die Wippe kippt nach rechts: Das rechtsdrehende Drehmoment ist um {d} N·m größer.',
       needF: 'Gleichgewicht bei F_K = {F} N (wirksamer Kraftarm a_K = {a} cm)',
       needOver: 'Nötig wären {F} N – mehr als der Messbereich von 5 N. Häng den Kraftmesser weiter außen ein.',
       needNone: 'In dieser Zugrichtung lässt sich der Hebel nicht ins Gleichgewicht bringen.',
@@ -317,6 +322,9 @@ export default defineSimulation({
       stateEq: 'Balanced: the torques are equal, the lever stays horizontal.',
       stateL: 'The lever tips to the left: the anticlockwise torque is larger by {d} N·m.',
       stateR: 'The lever tips to the right: the clockwise torque is larger by {d} N·m.',
+      seesawEq: 'Balanced: the torques are equal, the seesaw stays horizontal.',
+      seesawL: 'The seesaw tips to the left: the anticlockwise torque is larger by {d} N·m.',
+      seesawR: 'The seesaw tips to the right: the clockwise torque is larger by {d} N·m.',
       needF: 'Balanced with F_K = {F} N (effective lever arm a_K = {a} cm)',
       needOver: '{F} N would be needed – more than the 5 N range. Attach the spring balance further out.',
       needNone: 'Pulling in this direction cannot balance the lever.',
@@ -490,7 +498,8 @@ export default defineSimulation({
         ctx.readout('where', tr(a > 2 + 1e-9 ? 'seesawNone' : a < 0.5 - 1e-9 ? 'seesawClose' : 'seesawNeed', { a: fmt.num(a, 2) }));
         for (const key of ['arms', 'effort', 'golden']) ctx.readout(key, null);
         const b = F1 * p.sl - F2 * p.sk;
-        ctx.readout('state', Math.abs(b) < 0.25 ? ctx.t('stateEq') : tr(b > 0 ? 'stateL' : 'stateR', { d: fmt.num(Math.abs(b), 1) }));
+        const st = seesawState(p.sm, p.sl, p.sn, p.sk);
+        ctx.readout('state', st === 'eq' ? ctx.t('seesawEq') : tr(st === 'left' ? 'seesawL' : 'seesawR', { d: fmt.num(Math.abs(b), 1) }));
         return;
       }
       const cm = (v: number) => `${fmt.num(v, 1)} cm`;
@@ -500,7 +509,7 @@ export default defineSimulation({
       const delta = LIFT[obj() as Exclude<Obj, 'seesaw'>];
       const sK = aK * delta;
       const sL = aL * delta;
-      ctx.readout('golden', subs(tr('goldenText', { sK: fmt.num(sK, 1), sL: fmt.num(sL, 1), W: fmt.num((FK * sK) / 100, 2) })));
+      ctx.readout('golden', subs(tr('goldenText', { sK: fmt.num(sK, 1), sL: fmt.num(sL, 1), W: fmt.num(workJoule(FK, sK), 1) })));
     }
 
     function updateReadouts(): void {

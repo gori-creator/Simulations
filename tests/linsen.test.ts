@@ -140,3 +140,58 @@ describe('Modell: Linsen – Schirmbild', () => {
     expect(screenScale(imageDistance(10, 15)!, 15)).toBeCloseTo(scaleRatio(10, 15)!, 12);
   });
 });
+
+describe('Modell: Linsen – Sonderfälle und Aufgaben des Lernmaterials', () => {
+  it('Sonderfälle: g sehr groß ⇒ b → f; g knapp über f ⇒ b sehr groß; g = 2f ⇒ b = 2f, B = −G', () => {
+    expect(imageDistance(10, 1e6)!).toBeCloseTo(10, 3);
+    expect(imageDistance(20, 21)).toBeCloseTo(420, 9); // Reglerwerte f = 20, g = 21
+    expect(imageDistance(20, 40)).toBeCloseTo(40, 12);
+    expect(imageHeight(20, 40, 6)).toBeCloseTo(-6, 12);
+    expect(zoneOf(20, 40)).toBe('twice');
+    // Reglergrenzen: f = 4, g = 50 (stark verkleinert) und f = 20, g = 2 (Lupe)
+    expect(imageDistance(4, 50)).toBeCloseTo(200 / 46, 12);
+    expect(imageDistance(20, 2)).toBeCloseTo(-40 / 18, 12);
+    expect(describeImage(20, 2, 12)).toMatchObject({ kind: 'virtual', upright: true, size: 'larger' });
+  });
+
+  it('Brechkraft: f = 8 cm ⇒ 12,5 dpt, f = 5 cm ⇒ 20 dpt, f = −10 cm ⇒ −10 dpt', () => {
+    expect(power(8)).toBeCloseTo(12.5, 12);
+    expect(power(5)).toBeCloseTo(20, 12);
+    expect(power(-10)).toBeCloseTo(-10, 12);
+  });
+
+  it('Aufgabe 1: f = 10 cm, g = 25 cm, G = 4 cm ⇒ b = 50/3 cm, B = 8/3 cm, reell, umgekehrt, verkleinert', () => {
+    expect(imageDistance(10, 25)).toBeCloseTo(50 / 3, 12);
+    expect(imageHeight(10, 25, 4)).toBeCloseTo(-8 / 3, 12);
+    expect(describeImage(10, 25, 4)).toMatchObject({ kind: 'real', upright: false, size: 'smaller' });
+  });
+
+  it('Aufgabe 2: f = 10 cm, b = 50 cm ⇒ g = 12,5 cm, B = 12 cm bei G = 3 cm', () => {
+    expect(imageDistance(10, 12.5)).toBeCloseTo(50, 12);
+    expect(Math.abs(imageHeight(10, 12.5, 3)!)).toBeCloseTo(12, 12);
+  });
+
+  it('Aufgabe 3: Lupe f = 8 cm, g = 6 cm ⇒ b = −24 cm, B = 12 cm aufrecht', () => {
+    expect(imageDistance(8, 6)).toBeCloseTo(-24, 12);
+    expect(imageHeight(8, 6, 3)).toBeCloseTo(12, 12);
+  });
+
+  it('Aufgabe 4: Kamera f = 5 cm ⇒ b ≈ 5,6 cm (g = 50 cm) bzw. ≈ 6,7 cm (g = 20 cm); die Links zeigen ein scharfes Schirmbild', () => {
+    expect(imageDistance(5, 50)).toBeCloseTo(50 / 9, 12);
+    expect(imageDistance(5, 20)).toBeCloseTo(20 / 3, 12);
+    expect(isSharp(3, 5.5, imageDistance(5, 50))).toBe(true);
+    expect(isSharp(3, 6.5, imageDistance(5, 20))).toBe(true);
+  });
+
+  it('Aufgabe 5: Zerstreuungslinse f = −10 cm, g = 15 cm ⇒ b = −6 cm, B = 2 cm', () => {
+    expect(imageDistance(-10, 15)).toBeCloseTo(-6, 12);
+    expect(imageHeight(-10, 15, 5)).toBeCloseTo(2, 12);
+  });
+
+  it('Ausprobieren 8: kleine Blende (d = 1 cm) macht das Bild bei s = 34 cm scharf, große (d = 6 cm) nicht', () => {
+    const b = imageDistance(10, 15);
+    expect(isSharp(0.5, 34, b)).toBe(true);
+    expect(isSharp(3, 34, b)).toBe(false);
+    expect(20 * blurRadius(3, 25, b)).toBeCloseTo(10, 12); // Startzustand: Unschärfekreis 10 mm
+  });
+});

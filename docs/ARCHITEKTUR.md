@@ -57,7 +57,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 | `params` | Parameter (Zahl, Schalter, Auswahl, Text) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group` und `visibleIf` |
 | `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
 | `presets` | Beispiel-Einstellungen |
-| `animated`, `layout`, `dragHint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), Hinweistext, eigene Texte |
+| `animated`, `layout`, `dragHint`, `hint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), allgemeiner Hinweis „Punkte lassen sich ziehen“ (`dragHint`) bzw. eigener Tipp unter der Bühne (`hint: L('…', '…')`, ersetzt den allgemeinen), eigene Texte |
 | `actions` | Knöpfe unter der Bühne (z. B. „Würfeln“, „Wechseln“), optional mit `visibleIf`; Beschriftung/Aktivierung zur Laufzeit über `ctx.setAction()` |
 | `images` | optionale Bilder aus `src/assets/sims/<id>/` (Liste in `docs/BILDER.md`); fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik |
 | `mount(ctx)` | baut die Simulation auf und gibt `{ update, render, tick?, action?, resetTime?, resetView?, destroy? }` zurück |
@@ -65,6 +65,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 **Host (`host.ts`)** – erzeugt aus den Definitionen automatisch Regler (`controls.ts`), Ergebnisliste, Beispiel-Knöpfe und kümmert sich um:
 
 - **Zustand in der Adresse** (`url-state.ts`): nur abweichende Werte, z. B. `?m=2&b=-1`. Steuerparameter: `_lock=1` (Regler gesperrt), `_hide=1` (Ergebnisse verdeckt). Werte aus Links werden geprüft, gerundet und begrenzt.
+- **Aufgabenmodus im Bild** (`task-mode.ts`): `ctx.hidden` ist `true`, solange Lösungen verdeckt sein sollen – bei `_hide=1`, bis ein `spoiler`-Ergebnis aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist. `ctx.isHidden(key)` sagt das für ein einzelnes Ergebnis. Simulationen blenden damit Etiketten im Bild aus, die eine Aufgabe verraten (`if (!ctx.hidden) pill(…)`). Ändert sich der Zustand, zeichnet der Host neu und ruft optional `hiddenChange(hidden)` der Instanz auf. Vorbild: `physik/bewegungsdiagramme` (Ort und Tacho über der Straße).
 - **Text-Parameter** (`type: 'text'`, z. B. ein Term wie `3 · (x + 2)²`): erscheinen als Eingabefeld, jede Eingabe wird sofort übernommen und wie die anderen Werte in der Adresse gespeichert (`?term=3+%C2%B7+%28x+%2B+2%29`). Der Kern entfernt nur Steuerzeichen und kürzt auf `maxLength` (Standard 80); ob der Text gültig ist, prüft die Simulation selbst und zeigt Fehler verständlich an (Vorbild: `mathematik/termbaum` mit eigenem Parser ohne `eval`).
 - **Teilen**: Link + QR-Code (`qr.ts`, wird erst bei Bedarf geladen), großer QR-Code für den Beamer.
 - **Animation**: `Clock` + `requestAnimationFrame`; `tick(dt)` bekommt Sekunden. Für Physik gibt es `FixedStepper` (feste Zeitschritte) und `rk4` (Runge-Kutta) in `clock.ts`/`numeric.ts`.
@@ -82,7 +83,18 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 - Diagramme mit festem Bereich und Platz für Achsenzahlen: `plot.setRangePadded(x, y, { left, bottom, … })`.
 - Gezeichnet wird im „Immediate Mode“: `render()` zeichnet jedes Mal alles neu.
 
-**Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
+**Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`, `subText`/`measureSubText` für Text mit tiefgestelltem Index wie `F_G`, `a_1`, `F_{G,1}` – Ausrichtung links/Mitte/rechts nach der Gesamtbreite, optional mit Rand `halo`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
+
+**Tastaturbedienung antippbarer Objekte** (`key-targets.ts`, optional) – Wer Objekte auf der Zeichenfläche nur per Antippen bedienbar macht (`TapTarget`, `onTap`), meldet sie zusätzlich mit `ctx.setKeyTargets([{ id, label, rect?, disabled?, activate }])`. Dann wird die Bühne per Tab erreichbar (mit Hinweis für Bildschirmleser), Pfeiltasten wechseln die Auswahl (mit Umlauf, gesperrte werden übersprungen), Pos1/Ende springen, Enter/Leertaste ruft `activate()` auf; danach übernimmt der Host Änderungen und zeichnet neu. Die Auswahl erhält einen Rahmen über `rect` (Pixel der Bühne wie bei `Surface`), ihr Name wird per `aria-live` angesagt. Die Liste darf bei jeder Änderung neu gemeldet werden (auch in `render`), die Auswahl bleibt über die `id` erhalten; eine leere Liste schaltet die Bedienung ab. Wer die Auswahl selbst zeichnen will, fragt `ctx.keyFocus` (ID oder `null`). Ohne Aufruf ändert sich nichts.
+
+```ts
+ctx.setKeyTargets(images.map((im, i) => ({
+  id: `img${i}`,
+  label: `${ctx.t('image')} ${i + 1}`, // Text aus `strings`
+  rect: { x: im.x - 20, y: im.y - 20, w: 40, h: 40 },
+  activate: () => select(i),
+})));
+```
 
 **3D-Ansichten** – `view3d.ts` (nur Canvas 2D, kein WebGL). Weltkoordinaten wie im Unterricht: x₁ schräg nach vorn, x₂ nach rechts, x₃ nach oben.
 
@@ -91,6 +103,8 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 - `Camera3D` rechnet ohne DOM (perspektivisch oder orthografisch, Welt → Bildschirm, Sichtstrahl), `mesh3d` erzeugt Quader, Prisma, Pyramide, Zylinder, Kegel und Kugel, `foldNet` faltet Körpernetze, `vec3` enthält Vektorhilfen.
 
 **Formatierung** – `format.ts` (Dezimalkomma, echtes Minuszeichen, Vielfache von π, Punkte als `(1,5 | 2)` bzw. `(1.5, 2)`) und `formula.ts` (Terme wie `0,5x − 2` korrekt zusammensetzen).
+
+- **Zahl und Einheit** bleiben in einer Zeile: Der Host ersetzt in allen Ergebnissen (Text und HTML) das Leerzeichen zwischen Zahl und Einheit automatisch durch ein geschütztes Leerzeichen (`bindUnits`/`bindUnitsHtml`); Reglerwerte mit `unit` verwenden bereits ein schmales geschütztes Leerzeichen. Bestehende Simulationen müssen dafür nichts ändern. Für eigene Texte (z. B. auf der Zeichenfläche) gibt es `ctx.fmt.unit(2.5, 'm/s')` bzw. `withUnit(text, unit)`.
 
 ## 4. Lernmaterial und Formeln
 

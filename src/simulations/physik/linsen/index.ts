@@ -111,7 +111,7 @@ export default defineSimulation({
     { key: 'eq', label: L('Linsengleichung', 'Lens equation'), spoiler: true },
     { key: 'mag', label: L('Abbildungsmaßstab', 'Magnification'), spoiler: true },
     { key: 'props', label: L('Bild', 'Image'), spoiler: true },
-    { key: 'use', label: L('Anwendung', 'Application') },
+    { key: 'use', label: L('Anwendung', 'Application'), spoiler: true },
     { key: 'sharp', label: L('Schirmbild', 'Screen image'), spoiler: true },
   ],
   resultsParam: 'show',
@@ -160,7 +160,7 @@ export default defineSimulation({
       imgHere: 'hier entsteht das Bild',
       lensSam: 'Sammellinse',
       lensZer: 'Zerstreuungslinse',
-      lensText: '{kind} mit f = {f} cm · Brechkraft D = 1/f = {D} dpt',
+      lensText: '{kind} mit f = {f} cm · Brechkraft D = 1/f {eq} {D} dpt',
       propsReal: 'reell (auf einem Schirm auffangbar), {o}, {s}',
       propsVirtual: 'virtuell (nur beim Blick durch die Linse zu sehen), {o}, {s}',
       propsNone: 'kein Bild – die Strahlen laufen hinter der Linse parallel',
@@ -226,7 +226,7 @@ export default defineSimulation({
       imgHere: 'the image forms here',
       lensSam: 'Converging lens',
       lensZer: 'Diverging lens',
-      lensText: '{kind} with f = {f} cm · power D = 1/f = {D} dpt',
+      lensText: '{kind} with f = {f} cm · power D = 1/f {eq} {D} dpt',
       propsReal: 'real (can be caught on a screen), {o}, {s}',
       propsVirtual: 'virtual (only seen when looking through the lens), {o}, {s}',
       propsNone: 'no image – behind the lens the rays run parallel',
@@ -262,7 +262,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    /** Text mit Platzhaltern; zwischen Zahl und Einheit ein geschütztes Leerzeichen (kein Umbruch „4 | cm“). */
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (cm|mm|dpt)\b/g, '$1\u00a0$2');
     /**
      * Handy hochkant (Fenster ≤ 640 px, Seitenverhältnis `aspectNarrow`): Szene über den Karten.
      * Bei Tablet quer (Fenster 641–700 bzw. 861–1050 px) ist die Zeichenfläche zwar schmaler als
@@ -361,9 +366,10 @@ export default defineSimulation({
       const x0 = -4;
       const x1 = BENCH_LEN + 4;
       const sx = r.w / (x1 - x0);
-      const sy = Math.min(sx * (narrow() ? 1.8 : 1), r.h / 36);
+      // 40 cm Höhe: von den Beschriftungen unter der Schiene (BENCH_TOP − 8) bis über den Schirm (SCREEN_H + 3)
+      const sy = Math.min(sx * (narrow() ? 1.8 : 1), r.h / 40);
       const yh = r.h / sy;
-      const yMin = BENCH_TOP - 8 - Math.max(0, yh - 36) * 0.3;
+      const yMin = BENCH_TOP - 8 - Math.max(0, yh - 40) * 0.3;
       bench.setRange([x0, x1], [yMin, yMin + yh]);
     }
 
@@ -407,7 +413,7 @@ export default defineSimulation({
     });
 
     /* ---------- Ergebnisse ---------- */
-    const cm = (v: number, d = 1) => `${fmt.num(v, d)} cm`;
+    const cm = (v: number, d = 1) => `${fmt.num(v, d)}\u00a0cm`;
     const frac = (a: string, b: string) => `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
     const v = (s: string) => `<var>${s}</var>`;
 
@@ -426,7 +432,7 @@ export default defineSimulation({
       const f = fS();
       const gg = gNow;
       const b = imageDistance(f, gg);
-      ctx.readout('lens', tr('lensText', { kind: ctx.t(f > 0 ? 'lensSam' : 'lensZer'), f: fmt.num(f, 1), D: fmt.num(power(f), 1) }));
+      ctx.readout('lens', tr('lensText', { kind: ctx.t(f > 0 ? 'lensSam' : 'lensZer'), f: fmt.num(f, 1), D: fmt.num(power(f), 1), eq: eqSign(power(f)) }));
       if (b === null) {
         ctx.readout('eq', ctx.t('eqNone'));
         ctx.readout('mag', ctx.t('magNone'));

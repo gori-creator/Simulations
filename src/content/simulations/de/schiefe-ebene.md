@@ -17,6 +17,8 @@ $$
 
 Je steiler die Ebene, desto größer $F_H$ und desto kleiner $F_N$. Bei $\alpha = 30^\circ$ ist die Hangabtriebskraft genau halb so groß wie die Gewichtskraft.
 
+**Steigung in Prozent:** Auf Verkehrsschildern steht die Steigung als Höhenunterschied pro waagerechter Strecke, also $\tan\alpha$. „12 %“ bedeutet $\tan\alpha = 0{,}12$ und damit $\alpha \approx 6{,}8^\circ$.
+
 **Reibung:** Ein Klotz bleibt liegen, solange die **Haftreibungskraft** die Hangabtriebskraft ausgleichen kann. Sie ist höchstens
 
 $$
@@ -101,12 +103,23 @@ $\mu_H = \tan 31^\circ \approx 0{,}60$. Bei $30^\circ$ haftet der Klotz noch, be
 
 ### Aufgabe 6: Hinaufziehen
 
-Mit welcher Kraft muss man den Holzklotz ($m = 1\,\text{kg}$, $\mu_G = 0{,}3$) bei $\alpha = 20^\circ$ ziehen, damit er gleichmäßig hinaufgleitet? Warum braucht man zum Anfahren mehr?
+Mit welcher Kraft muss man den Holzklotz ($m = 1\,\text{kg}$, $\mu_G = 0{,}3$) bei $\alpha = 20^\circ$ ziehen, damit er gleichmäßig hinaufgleitet? Warum braucht man zum Anfahren mehr? [Aufgabe laden](?km=1&fz=3&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
 $F_Z = F_H + \mu_G \cdot F_N = 3{,}36\,\text{N} + 0{,}3 \cdot 9{,}22\,\text{N} \approx 6{,}1\,\text{N}$. Zum Anfahren muss erst die größere Haftreibung überwunden werden: $F_H + \mu_H \cdot F_N \approx 8{,}0\,\text{N}$. [Ausprobieren](?km=1&fz=8.1)
+
+</details>
+
+### Aufgabe 7: Steigung in Prozent
+
+Ein Verkehrsschild warnt vor $12\,\%$ Steigung. Wie groß ist der Neigungswinkel? Welcher Anteil der Gewichtskraft eines Autos wirkt als Hangabtriebskraft?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\tan\alpha = 0{,}12$, also $\alpha \approx 6{,}8^\circ$. Der Anteil ist $\frac{F_H}{F_G} = \sin 6{,}8^\circ \approx 0{,}12$, also etwa $12\,\%$. Bei kleinen Winkeln sind $\sin\alpha$ und $\tan\alpha$ fast gleich. In der Simulation (Wagen, $1\,\text{kg}$, $\alpha = 7^\circ$): $F_H \approx 1{,}20\,\text{N}$ von $9{,}81\,\text{N}$. [Prüfen](?body=cart&a=7)
 
 </details>
 
