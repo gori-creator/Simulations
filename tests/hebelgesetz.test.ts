@@ -14,11 +14,15 @@ import {
   meterTorque,
   PIECE_FORCE,
   restAngle,
+  seesawState,
   stepMotion,
   torqueAt,
+  workJoule,
   type Lever,
   type Motion,
 } from '../src/simulations/physik/hebelgesetz/model';
+import hebelgesetz from '../src/simulations/physik/hebelgesetz/index';
+import { formatNumber } from '../src/sim-core/format';
 
 describe('Modell: Hebelgesetz', () => {
   it('rechnet Massestücke in Gewichtskräfte um (50 g ≈ 0,49 N)', () => {
@@ -161,5 +165,37 @@ describe('Modell: Hebelgesetz', () => {
     expect(M1).toBeCloseTo(588.6, 9);
     expect(30 * G * 1.5).toBeCloseTo(441.45, 9);
     expect(effortForce(40 * G, 150, 200)).toBeCloseTo(30 * G, 9);
+  });
+});
+
+describe('Prüfrunde: Anzeige der Goldenen Regel und der Wippe', () => {
+  it('Goldene Regel: Arbeit mit einer Nachkommastelle (Schubkarre 60 kg, 40 cm / 140 cm)', () => {
+    // F_K = 588,6 N · 40 / 140 ≈ 168,17 N; s_K = 140 cm · 0,14 = 19,6 cm → W ≈ 32,96 J → Anzeige 33 J
+    const FK = effortForce(60 * G, 40, 140);
+    const W = workJoule(FK, 140 * 0.14);
+    expect(W).toBeCloseTo(32.96, 2);
+    expect(formatNumber(W, 'de', { decimals: 1 })).toBe('33');
+    // Nussknacker 300 N, 4 cm / 17 cm, s_K = 17 cm · 0,075 = 1,275 cm → 0,9 J
+    const W2 = workJoule(effortForce(300, 4, 17), 17 * 0.075);
+    expect(W2).toBeCloseTo(0.9, 9);
+    expect(formatNumber(W2, 'de', { decimals: 1 })).toBe('0,9');
+    expect(workJoule(effortForce(60 * G, 40, 140), 19.6)).toBeCloseTo(workJoule(60 * G, loadTravel(19.6, 40, 140)), 9);
+  });
+
+  it('Wippe: 40 kg · 1,5 m gegen 30 kg · 1,5 m kippt nach links, 30 kg bei 2 m ist im Gleichgewicht', () => {
+    expect(seesawState(40, 1.5, 30, 1.5)).toBe('left');
+    expect(seesawState(30, 1.5, 40, 1.5)).toBe('right');
+    expect(seesawState(40, 1.5, 30, 2)).toBe('eq');
+  });
+
+  it('bei der Wippe heißt es „Die Wippe kippt …“, nicht „Der Hebel kippt …“', () => {
+    const de = hebelgesetz.strings!.de!;
+    const en = hebelgesetz.strings!.en!;
+    expect(de.seesawL).toMatch(/^Die Wippe kippt nach links/);
+    expect(de.seesawR).toMatch(/^Die Wippe kippt nach rechts/);
+    expect(de.seesawEq).toContain('die Wippe bleibt waagerecht');
+    expect(en.seesawL).toMatch(/^The seesaw tips to the left/);
+    expect(en.seesawR).toMatch(/^The seesaw tips to the right/);
+    expect(en.seesawEq).toContain('the seesaw stays horizontal');
   });
 });
