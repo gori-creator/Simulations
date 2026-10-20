@@ -198,7 +198,7 @@ export default defineSimulation({
       thDs: 'Δs',
     },
     en: {
-      canvas: 'Car on a road with a measuring tape, below it the distance–time, velocity–time and acceleration–time graphs with a time marker',
+      canvas: 'Car on a road with a measuring tape, below it the position–time, velocity–time and acceleration–time graphs with a time marker',
       ts: 's in m',
       tv: 'v in m/s',
       ta: 'a in m/s²',
@@ -228,7 +228,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    // Zwischen Zahl und Einheit ein geschütztes Leerzeichen, damit die Zeile dort nicht umbricht
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:m\/s²|m\/s|km\/h|m|s)(?![\p{L}]))/gu, '$1\u00a0');
     const mode = () => p.mode as Mode;
     const narrow = () => surface.width < 560;
 
@@ -375,14 +380,16 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
-    const unit = (value: number, decimals: number, u: string) => `${fmt.num(value, decimals)} ${u}`;
+    const unit = (value: number, decimals: number, u: string) => `${fmt.num(value, decimals)}\u00a0${u}`;
+    /** Summand mit Rechenzeichen: „+ 5 m/s“ bzw. „− 5 m/s“ statt „+ −5 m/s“. */
+    const plus = (value: number, decimals: number, u: string) => `${value < 0 ? '−' : '+'} ${unit(Math.abs(value), decimals, u)}`;
     const v_ = (name: string, sub = '') => `<var>${name}</var>${sub}`;
 
     function updateNow(): void {
       const st = stateAt(phases, t);
       ctx.readout(
         'now',
-        tr('now', { t: fmt.fixed(t, 2), s: fmt.num(st.s, 1), v: fmt.num(st.v, 1), kmh: fmt.num(Math.abs(toKmh(st.v)), 0), a: fmt.num(st.a, 2) }),
+        tr('now', { t: fmt.fixed(t, 2), s: fmt.num(st.s, 1), v: fmt.num(st.v, 1), kmh: fmt.num(toKmh(st.v), 0), a: fmt.num(st.a, 2) }),
       );
     }
 
@@ -392,12 +399,16 @@ export default defineSimulation({
       const s0 = unit(p.s0, 0, 'm');
       if (m === 'uni') {
         ctx.readout('law', {
-          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v')} · ${v_('t')} = ${s0} + ${unit(p.v, 1, 'm/s')} · ${v_('t')}<br>${v_('v')} = ${unit(p.v, 1, 'm/s')} = ${ctx.lang === 'de' ? 'konstant' : 'constant'}, ${v_('a')} = 0`,
+          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v')} · ${v_('t')} = ${s0} ${plus(p.v, 1, 'm/s')} · ${v_('t')}<br>${v_('v')} = ${unit(p.v, 1, 'm/s')} = ${ctx.lang === 'de' ? 'konstant' : 'constant'}, ${v_('a')} = 0`,
         });
       } else if (m === 'acc') {
-        const half = fmt.num(p.a / 2, 2);
+        const stop = brakingInfo(p.v0, p.a);
+        const until =
+          stop && stop.time < p.T
+            ? `<br>${ctx.lang === 'de' ? 'Das gilt bis zum Stillstand bei' : 'This holds until the car stops at'} ${v_('t')} = ${unit(stop.time, 2, 's')}${ctx.lang === 'de' ? ', danach' : ', after that'} ${v_('v')} = 0 ${ctx.lang === 'de' ? 'und' : 'and'} ${v_('a')} = 0.`
+            : '';
         ctx.readout('law', {
-          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v', '₀')} · ${v_('t')} + ½ · ${v_('a')} · ${v_('t')}² = ${s0} + ${unit(p.v0, 1, 'm/s')} · ${v_('t')} + ${half} m/s² · ${v_('t')}²<br>${v_('v')}(${v_('t')}) = ${v_('v', '₀')} + ${v_('a')} · ${v_('t')} = ${unit(p.v0, 1, 'm/s')} + ${unit(p.a, 1, 'm/s²')} · ${v_('t')}`,
+          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v', '₀')} · ${v_('t')} + ½ · ${v_('a')} · ${v_('t')}² = ${s0} ${plus(p.v0, 1, 'm/s')} · ${v_('t')} ${plus(p.a / 2, 2, 'm/s²')} · ${v_('t')}²<br>${v_('v')}(${v_('t')}) = ${v_('v', '₀')} + ${v_('a')} · ${v_('t')} = ${unit(p.v0, 1, 'm/s')} ${plus(p.a, 1, 'm/s²')} · ${v_('t')}${until}`,
         });
       } else {
         ctx.readout('law', ctx.t('planLaw'));
@@ -931,7 +942,7 @@ export default defineSimulation({
       const size = small ? 11.5 : 13;
       const tLabel = `t = ${fmt.fixed(t, 1)} s`;
       const sLabel = `s = ${fmt.num(st.s, 1)} m`;
-      const vLabel = small ? `v = ${fmt.num(st.v, 1)} m/s` : `v = ${fmt.num(st.v, 1)} m/s (${fmt.num(Math.abs(toKmh(st.v)), 0)} km/h)`;
+      const vLabel = small ? `v = ${fmt.num(st.v, 1)} m/s` : `v = ${fmt.num(st.v, 1)} m/s (${fmt.num(toKmh(st.v), 0)} km/h)`;
       const w1 = pill(r.x + 8, r.y + 8, tLabel, theme.text, 'left', size);
       pill(r.x + 8 + w1 + 6, r.y + 8, sLabel, theme.series[0]!, 'left', size);
       pill(r.x + r.w - 8, r.y + 8, vLabel, theme.series[3]!, 'right', size);
