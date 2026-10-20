@@ -46,6 +46,13 @@ describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
     expect(new Set(keys).size).toBe(keys.length);
   });
 
+  it('verweist mit resultsParam auf einen booleschen Parameter', () => {
+    if (!def.resultsParam) return;
+    const param = (def.params as readonly ParamDef[]).find((p) => p.key === def.resultsParam);
+    expect(param?.type, def.resultsParam).toBe('boolean');
+    expect((def.readouts ?? []).some((r) => r.spoiler), 'ohne spoiler-Ergebnisse wirkungslos').toBe(true);
+  });
+
   it('hat eindeutige, beschriftete Aktionen', () => {
     const ids = (def.actions ?? []).map((a) => a.id);
     expect(new Set(ids).size).toBe(ids.length);

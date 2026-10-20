@@ -189,6 +189,12 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   params: P;
   groups?: ParamGroup[];
   readouts?: ReadoutDef[];
+  /**
+   * Boolescher Parameter (z. B. `show`), der Lösungen im Bild ein- und ausblendet.
+   * Ist er aus, werden auch die `spoiler`-Ergebnisse unter der Bühne verdeckt;
+   * „Aufdecken“ schaltet ihn wieder ein.
+   */
+  resultsParam?: P[number]['key'];
   presets?: Preset<ValuesOf<P>>[];
   /** Zeigt Abspielen/Anhalten in der Werkzeugleiste. */
   animated?: boolean;
