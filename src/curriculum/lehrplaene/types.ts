@@ -12,7 +12,13 @@ export interface StateCurriculum {
   subject: SubjectId;
   /** URL-Segment unterhalb des Fachs, z. B. /de/mathematik/bayern-gymnasium/. */
   slug: Localized;
+  /** Name des Bundeslands; aus `state.de` entsteht die Länder-ID der Einstellung „Bundesland“ (src/lib/region.ts). */
   state: Localized;
+  /**
+   * Optional: Länder-ID ausdrücklich festlegen (nur Kleinbuchstaben, Ziffern, Bindestrich).
+   * Normalerweise nicht nötig – sie wird aus `state.de` abgeleitet („Baden-Württemberg“ → "baden-wuerttemberg").
+   */
+  region?: string;
   schoolType: Localized;
   /** Name der Quelle, z. B. "LehrplanPLUS". */
   sourceName: string;
