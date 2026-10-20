@@ -245,3 +245,71 @@ describe('Modell: Quadratwurzel – Zahlen', () => {
     }
   });
 });
+
+describe('Modell: Quadratwurzel – Reglergrenzen und Sonderfälle', () => {
+  it('Heron über den ganzen Reglerbereich (a = 1 … 200, x₀ = 1 … 20 in 0,5er-Schritten): endlich, x · (a : x) = a, nie unter √a', () => {
+    for (let a = 1; a <= 200; a++) {
+      const r = Math.sqrt(a);
+      for (let x0 = 1; x0 <= 20; x0 += 0.5) {
+        const list = heronSteps(a, x0, 8);
+        list.forEach((q, i) => {
+          expect(Number.isFinite(q.x) && q.x > 0).toBe(true);
+          expect(q.x * q.y).toBeCloseTo(a, 9);
+          if (i > 0) expect(q.x).toBeGreaterThanOrEqual(r - 1e-12);
+        });
+        // nach 8 Schritten ist √a auch vom ungünstigsten Start (a = 1, x₀ = 20 bzw. a = 200, x₀ = 1) fast erreicht
+        expect(Math.abs(list[8]!.x - r)).toBeLessThan(1e-3);
+      }
+    }
+  });
+
+  it('Start mit der kurzen Seite: x₀ = 1 bei a = 10 – der Streifen kommt von der senkrechten Seite', () => {
+    const c = heronCut(10, 1);
+    expect(c.longIsX).toBe(false);
+    expect(c.long).toBe(10);
+    expect(c.short).toBe(1);
+    expect(c.d).toBe(4.5);
+    expect(c.next).toBe(5.5);
+    expect(c.next).toBe(heronNext(10, 1));
+    // schon ein Quadrat: nichts umzulegen
+    expect(heronCut(9, 3)).toMatchObject({ d: 0, next: 3, corner: 0 });
+  });
+
+  it('Intervallschachtelung für alle a = 1 … 200 und Stufen 0 … 6: Grenzen-Quadrate exakt, Probe endet spätestens nach 10 Versuchen', () => {
+    for (let a = 1; a <= 200; a++) {
+      for (let k = 0; k <= 6; k++) {
+        const [lo, hi] = nestInterval(a, k);
+        const s = 10n ** BigInt(k);
+        const L = BigInt(Math.round(lo * 10 ** k));
+        const A = BigInt(a) * s * s;
+        expect(L * L <= A && A < (L + 1n) * (L + 1n)).toBe(true);
+        // Die Anzeige rechnet lo² und hi² mit Gleitkommazahlen auf 2k Nachkommastellen – das muss exakt bleiben.
+        const exact = (m: bigint) => {
+          const str = (m * m).toString().padStart(2 * k + 1, '0');
+          return k ? `${str.slice(0, -2 * k)}.${str.slice(-2 * k)}` : str;
+        };
+        expect((lo * lo).toFixed(2 * k)).toBe(exact(L));
+        expect((hi * hi).toFixed(2 * k)).toBe(exact(L + 1n));
+        if (k > 0) {
+          const pr = nestProbes(a, k);
+          if (exactAt(a, k - 1)) expect(pr).toEqual([]);
+          else {
+            expect(pr.length).toBeGreaterThan(0);
+            expect(pr.length).toBeLessThanOrEqual(10);
+            expect(pr.at(-1)!.cmp).toBeGreaterThanOrEqual(0);
+            expect(pr.slice(0, -1).every((q) => q.cmp < 0)).toBe(true);
+          }
+        }
+      }
+    }
+  });
+
+  it('kleinster Radikand a = 1: √1 = 1, Quadratzahl, kein Rest', () => {
+    expect(squareFactor(1)).toEqual({ k: 1, m: 1 });
+    expect(isPerfectSquare(1)).toBe(true);
+    expect(squareCells(1)).toEqual([{ i: 0, j: 0, layer: 1, rest: false }]);
+    expect(nestProbes(1, 0)).toEqual([{ t: 1, sq: 1, cmp: 0 }]);
+    expect(matchingDecimals(1, 1)).toBe(12);
+    expect(matchingDecimals(2, Math.SQRT2)).toBe(-1);
+  });
+});
