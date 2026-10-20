@@ -45,4 +45,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | kraefteaddition | Der Schalter `vals=0` verdeckt jetzt auch die Federwaagen. Beschriftung anpassen: „Beträge anzeigen (Pfeile und Federwaagen)“, EN entsprechend. | offen |
 | kraefteaddition | Die Beschriftung „Richtung 2“ kann eine Komponentenbeschriftung berühren, wenn deren Spitze am Richtungsgriff liegt. Beschriftung ausweichen lassen. | offen |
 | kraefteaddition | Bei α = 2° liegen die Pfeile am Knoten auf dem Handy eng zusammen. Beschriftungen versetzen. | offen |
+| linsen | Bei der Zerstreuungslinse stehen „virtuelles Bild“ und „B“ dicht an den gestrichelten Linien. Etwas versetzen. | offen |
+| linsen | Auf dem Handy liegen auf der optischen Bank bei g ≈ 13 cm „F“ und der Kerzenfuß eng beieinander. Beschriftung ausweichen lassen. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
