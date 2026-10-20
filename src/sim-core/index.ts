@@ -27,7 +27,18 @@ export { bindUnits, Formatter, formatNumber, formatPiFraction, MINUS, NBSP, with
 export * as term from './formula';
 export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
-export { drawImageFit, roundRect, softShadow, text, withAlpha } from './draw';
+export {
+  drawImageFit,
+  measureSubText,
+  parseSubText,
+  roundRect,
+  softShadow,
+  subText,
+  text,
+  withAlpha,
+  type SubTextPart,
+  type SubTextStyle,
+} from './draw';
 export { ImageStore, simAssetUrl } from './images';
 export { offscreenCanvas, scaledSprite, tintedSprite, type SpriteOptions, type TintOptions } from './sprites';
 export { drawLabStand, type LabStandOptions } from './lab-stand';

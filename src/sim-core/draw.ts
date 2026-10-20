@@ -62,3 +62,138 @@ export function withAlpha(color: string, alpha: number): string {
   }
   return color;
 }
+
+/* ------------------------------------------------------------------ */
+/* Text mit tiefgestelltem Index                                       */
+/* ------------------------------------------------------------------ */
+
+/** Ein Stück Text, normal oder tiefgestellt. */
+export interface SubTextPart {
+  text: string;
+  sub: boolean;
+}
+
+/**
+ * Zerlegt einen Text mit Indizes in Teile:
+ * - `F_G`, `a_1`, `v_0`, `F_res`: Der Index reicht bis zum nächsten Zeichen,
+ *   das kein Buchstabe und keine Ziffer ist (Leerzeichen, „=“, „,“ …).
+ * - `F_{G,1}`: Geschweifte Klammern für Indizes mit anderen Zeichen.
+ * - `\_` steht für einen echten Unterstrich.
+ */
+export function parseSubText(value: string): SubTextPart[] {
+  const parts: SubTextPart[] = [];
+  const push = (text: string, sub: boolean) => {
+    if (!text) return;
+    const last = parts[parts.length - 1];
+    if (last && last.sub === sub) last.text += text;
+    else parts.push({ text, sub });
+  };
+  let plain = '';
+  let i = 0;
+  while (i < value.length) {
+    const ch = value[i]!;
+    if (ch === '\\' && value[i + 1] === '_') {
+      plain += '_';
+      i += 2;
+      continue;
+    }
+    if (ch === '_') {
+      let sub = '';
+      let end = i + 1;
+      if (value[end] === '{') {
+        const close = value.indexOf('}', end + 1);
+        if (close > end) {
+          sub = value.slice(end + 1, close);
+          end = close + 1;
+        }
+      } else {
+        const match = /^[\p{L}\p{N}]+/u.exec(value.slice(end));
+        if (match) {
+          sub = match[0];
+          end += sub.length;
+        }
+      }
+      if (sub) {
+        push(plain, false);
+        plain = '';
+        push(sub, true);
+        i = end;
+        continue;
+      }
+    }
+    plain += ch;
+    i++;
+  }
+  push(plain, false);
+  return parts;
+}
+
+export interface SubTextStyle {
+  /** Schriftgröße in Pixeln (normaler Text). */
+  size: number;
+  /** Schriftfamilie, z. B. `ctx.theme.font`. */
+  family: string;
+  /** Schriftstärke (Standard 400). */
+  weight?: number | string;
+  color: string;
+  align?: CanvasTextAlign;
+  baseline?: CanvasTextBaseline;
+  /** Farbe eines Randes um die Schrift (bessere Lesbarkeit auf Linien); ohne Angabe kein Rand. */
+  halo?: string;
+  /** Breite des Randes (Standard 3,5). */
+  haloWidth?: number;
+  /** Größe des Index relativ zur Schrift (Standard 0,74). */
+  subScale?: number;
+  /** Absenkung des Index relativ zur Schriftgröße (Standard 0,28). */
+  subShift?: number;
+}
+
+function subFont(style: SubTextStyle, sub: boolean): string {
+  const size = sub ? Math.round(style.size * (style.subScale ?? 0.74) * 2) / 2 : style.size;
+  return `${style.weight ?? 400} ${size}px ${style.family}`;
+}
+
+/** Breite eines Textes mit Indizes (gleiche Schreibweise wie bei `subText`) in Pixeln. */
+export function measureSubText(g: CanvasRenderingContext2D, value: string, style: SubTextStyle): number {
+  let width = 0;
+  for (const part of parseSubText(value)) {
+    g.font = subFont(style, part.sub);
+    width += g.measureText(part.text).width;
+  }
+  return width;
+}
+
+/**
+ * Zeichnet Text mit echtem tiefgestelltem Index, z. B.
+ * `subText(g, 'F_G = 5 N', x, y, { size: 14, family: theme.font, color })`.
+ * `align` bezieht sich auf die Gesamtbreite. Gibt die Breite in Pixeln zurück.
+ */
+export function subText(g: CanvasRenderingContext2D, value: string, x: number, y: number, style: SubTextStyle): number {
+  const parts = parseSubText(value);
+  const total = measureSubText(g, value, style);
+  const align = style.align ?? 'center';
+  const left = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
+  const shift = style.size * (style.subShift ?? 0.28);
+  g.save();
+  g.textAlign = 'left';
+  g.textBaseline = style.baseline ?? 'middle';
+  for (const pass of style.halo ? ['halo', 'fill'] : ['fill']) {
+    let cx = left;
+    for (const part of parts) {
+      g.font = subFont(style, part.sub);
+      const yy = y + (part.sub ? shift : 0);
+      if (pass === 'halo') {
+        g.lineJoin = 'round';
+        g.lineWidth = style.haloWidth ?? 3.5;
+        g.strokeStyle = style.halo!;
+        g.strokeText(part.text, cx, yy);
+      } else {
+        g.fillStyle = style.color;
+        g.fillText(part.text, cx, yy);
+      }
+      cx += g.measureText(part.text).width;
+    }
+  }
+  g.restore();
+  return total;
+}

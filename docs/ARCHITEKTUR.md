@@ -82,7 +82,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 - Diagramme mit festem Bereich und Platz für Achsenzahlen: `plot.setRangePadded(x, y, { left, bottom, … })`.
 - Gezeichnet wird im „Immediate Mode“: `render()` zeichnet jedes Mal alles neu.
 
-**Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
+**Spiele und Experimente ohne Koordinatensystem** – `TapTarget` (antippbare Bereiche, z. B. Türen), `Tween`/`ease` (Übergänge wie Aufklappen oder Umlegen; berücksichtigen „reduzierte Bewegung“), Zeichenhilfen in `draw.ts` (`roundRect`, `drawImageFit`, `softShadow`, `text`, `withAlpha`, `subText`/`measureSubText` für Text mit tiefgestelltem Index wie `F_G`, `a_1`, `F_{G,1}` – Ausrichtung links/Mitte/rechts nach der Gesamtbreite, optional mit Rand `halo`) und `ImageStore` (lädt die optionalen Bilder, `ctx.images.get(key)` liefert `null`, solange ein Bild fehlt).
 
 **3D-Ansichten** – `view3d.ts` (nur Canvas 2D, kein WebGL). Weltkoordinaten wie im Unterricht: x₁ schräg nach vorn, x₂ nach rechts, x₃ nach oben.
 
