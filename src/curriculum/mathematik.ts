@@ -180,14 +180,14 @@ export const mathematik: Subject = {
             slug: L('quadratwurzel-heron-verfahren', 'square-roots-herons-method'),
             title: L('Quadratwurzeln und das Heron-Verfahren', 'Square roots and Heron’s method'),
             summary: L(
-              'Ein Rechteck mit Flächeninhalt a wird Schritt für Schritt zum Quadrat – seine Seite nähert sich √a (Heron-Verfahren). Dazu die Intervallschachtelung mit einer Lupe auf dem Zahlenstrahl und die Frage, warum √2 kein Bruch ist.',
-              'A rectangle with area a becomes a square step by step – its side approaches √a (Heron’s method). Plus nested intervals with a magnifier on the number line and why √2 is not a fraction.',
+              'Ein Rechteck mit dem Flächeninhalt a wird zum Quadrat: Ein Streifen wird abgeschnitten und angelegt, die neue Seite ist der Mittelwert (Heron-Verfahren), die Fläche bleibt. Dazu Einheitsquadrate auf Kästchenpapier, die Intervallschachtelung mit Lupe und Probe durch Quadrieren sowie der Beweis, dass √2 kein Bruch ist.',
+              'A rectangle with area a turns into a square: a strip is cut off and moved, the new side is the mean (Heron’s method) and the area stays the same. Plus unit squares on squared paper, nested intervals with a magnifier and checks by squaring, and the proof that √2 is not a fraction.',
             ),
             grades: [9, 9],
             kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
-              ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert'],
-              ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square'],
+              ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert', 'teilweise Wurzelziehen', 'Wurzel 2', 'Widerspruchsbeweis', 'Diagonale', 'Kästchenpapier'],
+              ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square', 'simplifying roots', 'root 2', 'proof by contradiction', 'diagonal'],
             ),
             thumb: 'generic',
           },
