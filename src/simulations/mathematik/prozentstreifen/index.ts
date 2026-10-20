@@ -108,8 +108,8 @@ const QUESTIONS: Record<Sit, Record<Find, Txt>> = {
     G: L('Bei {p} Zinsen gibt es nach einem Jahr {W}. Wie viel Geld liegt auf dem Sparbuch?', 'At {p} interest, one year brings {W}. How much money is in the account?'),
   },
   klasse: {
-    W: L('In der Klasse sind {G}. {p} kommen mit dem Rad zur Schule. Wie viele Kinder sind das?', 'There are {G} in the class. {p} come to school by bike. How many children is that?'),
-    p: L('Von {G} kommen {W} mit dem Rad zur Schule. Wie viel Prozent sind das?', 'Of {G}, {W} come to school by bike. What percentage is that?'),
+    W: L('In der Klasse sind {G}. {p} davon kommen mit dem Rad zur Schule. Wie viele Kinder sind das?', 'There are {G} in the class. {p} come to school by bike. How many children is that?'),
+    p: L('{G} wurden befragt, {W} davon kommen mit dem Rad zur Schule. Wie viel Prozent sind das?', '{G} were asked; {W} of them come to school by bike. What percentage is that?'),
     G: L('{W} kommen mit dem Rad, das sind {p} der Klasse. Wie viele Kinder sind in der Klasse?', '{W} come by bike, that is {p} of the class. How many children are in the class?'),
   },
 };
@@ -259,6 +259,10 @@ export default defineSimulation({
       if (people()) return `${num(v)} ${Math.abs(v - 1) < 1e-9 ? say(L('Kind', 'child')) : say(L('Kinder', 'children'))}`;
       return num(v);
     }
+    /** Angezeigter (gleitender) Wert: auf Cent gerundet, ohne „≈“. */
+    function valS(v: number): string {
+      return val(money() ? Math.round(v * 100) / 100 : Math.round(v * 1000) / 1000);
+    }
     const pct = (q: number) => (Number.isFinite(q) ? `${fmt.num(q, 2)} %` : '–');
     const hidden = (k: Find) => !pr.show && find() === k;
     const Q = (k: Find, s: string) => (hidden(k) ? '?' : s);
@@ -290,7 +294,7 @@ export default defineSimulation({
     const isPhone = () => surface.width < 560 && surface.height > surface.width * 1.2;
     /** Viel Platz (Desktop): größere Szene und größerer Streifen; sonst kompakt (Tablet, Handy). */
     const roomy = () => !isPhone() && surface.height >= 600;
-    const TRAP_H = () => (roomy() ? 62 : 56);
+    const TRAP_H = () => (roomy() ? 62 : 50);
     function stripBaseH(): number {
       const S = { x: 0, y: 0, w: surface.width, h: 0 };
       return Math.round(geo(S).gPillY + (roomy() ? 22 : 18));
@@ -305,7 +309,7 @@ export default defineSimulation({
       const h = surface.height;
       const phone = isPhone();
       const gap = phone ? 8 : 10;
-      const sceneH = phone ? phoneSceneH() : roomy() ? 150 : 112;
+      const sceneH = phone ? phoneSceneH() : roomy() ? 150 : trapWanted() ? 96 : 112;
       const stripH = Math.round(stripBaseH() + TRAP.v * TRAP_H());
       const scene = { x: 0, y: 0, w, h: sceneH };
       const strip = { x: 0, y: sceneH + gap, w, h: stripH };
@@ -1118,7 +1122,7 @@ export default defineSimulation({
         g.font = fnt;
         if (g.measureText(str).width + 14 < X(b) - X(a)) label(str, (X(a) + X(b)) / 2, y + h / 2 + 0.5, fnt, color);
       };
-      if (sg < 0) {
+      if (sg < 0 && !counting) {
         // Rabatt: neuer Preis (blau) und abgeschnittener Rabatt (rot schraffiert)
         fillSeg(0, qs, col.W());
         const a = Math.max(0, qs);
@@ -1273,19 +1277,21 @@ export default defineSimulation({
       // Grundwert unten
       const gA = sk.on && f === 'G' ? sk.res : 1;
       brace(X(0), X(100), gm.gBraceY, 1, col.G(), lab * Math.max(0.35, gA), sk.on && f === 'G' ? Math.max(0.05, sk.res) : lab);
-      const gName = s === 'rabatt' || s === 'erh' ? say(L('alter Preis', 'old price')) : s === 'mwst' ? say(L('netto', 'net')) : s === 'zins' ? say(L('Kapital', 'capital')) : s === 'klasse' ? say(L('alle', 'all')) : '';
-      const gVal = sk.on && f === 'G' && sk.res < 0.5 ? '?' : Q('G', val(Gs));
+      const gName = sk.on && S.w < 600 ? '' : s === 'rabatt' || s === 'erh' ? say(L('alter Preis', 'old price')) : s === 'mwst' ? say(L('netto', 'net')) : s === 'zins' ? say(L('Kapital', 'capital')) : s === 'klasse' ? say(L('alle', 'all')) : '';
+      const gVal = sk.on && f === 'G' && sk.res < 0.5 ? '?' : Q('G', valS(Gs));
       const gSrc = `\\c{G}{${gName ? `${up(gName)} ` : ''}G = ${gVal}} \\c{m}{≙} \\c{G}{100 %}`;
       fpill(X(50), gm.gPillY, gSrc, { size: pz, border: withAlpha(col.G(), 0.7), alpha: lab * (sk.on && f === 'G' && sk.count !== null && sk.res < 0.99 ? sk.res : 1), bounds, scale: sk.on && f === 'G' ? 0.85 + 0.15 * sk.res : 1 });
       // Prozentwert oben
+      let wRect: Rect | null = null;
       if (qShown > 0.2) {
-        const wName = s === 'rabatt' || s === 'erh' ? say(L('neuer Preis', 'new price')) : s === 'mwst' ? say(L('brutto', 'gross')) : s === 'zins' ? say(L('Zinsen', 'interest')) : s === 'klasse' ? say(L('mit Rad', 'by bike')) : '';
-        const wv = counting ? val(vOf(qs)) : Q('W', val(vOf(QS.v)));
-        const pv = counting ? pct(qs) : Q('p', pct(QS.v));
-        const wSrc = `\\c{W}{${wName ? `${up(wName)} ` : ''}W = ${wv}} \\c{m}{≙} \\c{p}{${pv}}`;
+        const wName = sk.on && S.w < 600 ? '' : s === 'rabatt' || s === 'erh' ? say(L('neuer Preis', 'new price')) : s === 'mwst' ? say(L('brutto', 'gross')) : s === 'zins' ? say(L('Zinsen', 'interest')) : s === 'klasse' ? say(L('mit Rad', 'by bike')) : '';
+        const wv = counting ? valS(vOf(qs)) : Q('W', valS(vOf(QS.v)));
+        const pv = counting ? pct(qs) : Q('p', pct(Math.round(QS.v * 100) / 100));
+        const notWhole = people() && !counting && pr.show && !isNice(pb.W, 0) && Math.abs(QS.v - pb.q) < 1e-6;
+        const wSrc = `\\c{W}{${wName ? `${up(wName)} ` : ''}W = ${wv}} \\c{m}{≙} \\c{p}{${pv}}${notWhole ? ` \\c{bad}{${up(say(L('– keine ganze Zahl!', '– not a whole number!')))}}` : ''}`;
         const wa = sk.on && f !== 'G' ? Math.max(0.3, sk.count === null ? 0.3 : 1) : 1;
         brace(X(0), X(qShown), gm.wBraceY, -1, col.W(), lab * wa, lab);
-        fpill((X(0) + X(qShown)) / 2, gm.wPillY, wSrc, { size: pz, border: withAlpha(col.W(), 0.7), alpha: lab * wa, bounds, scale: sk.on && f !== 'G' && sk.cnt >= 1 ? 0.9 + 0.1 * sk.res : 1 });
+        wRect = fpill((X(0) + X(qShown)) / 2, gm.wPillY, wSrc, { size: pz, border: withAlpha(col.W(), 0.7), alpha: lab * wa, bounds, scale: sk.on && f !== 'G' && sk.cnt >= 1 ? 0.9 + 0.1 * sk.res : 1 });
       }
       // „1 %“ herausgehoben: Scheibe im Streifen und Kärtchen oben rechts mit Bezugslinie
       if (sk.on && sk.one > 0.01) {
@@ -1304,7 +1310,9 @@ export default defineSimulation({
         const csz = roomy() ? 15 : fs(13.5, 12.5);
         const box = formula(g, src, fstyle(csz, th().text, 700));
         const chipX = S.x + S.w - 12 - box.w / 2 - 8;
-        const chipY = gm.wPillY;
+        const cw = box.w + 16;
+        const overlap = !!wRect && wRect.x + wRect.w > chipX - cw / 2 - 6;
+        const chipY = overlap ? gm.gPillY : gm.wPillY;
         if (sk.count === null && al > 0.05) {
           // Bezugslinie von der Scheibe zum Kärtchen
           g.save();
@@ -1430,7 +1438,7 @@ export default defineSimulation({
         const f = find();
         const sk = solveK(now);
         const pad = fs(14, 12);
-        const baseRow = roomy() ? 30 : fs(27, 25);
+        const baseRow = roomy() ? 30 : fs(26, 25);
         const rows = ruleOfThree(f, pb.G, pb.q);
         const show = pr.show;
         // Formelzeilen
@@ -1445,7 +1453,8 @@ export default defineSimulation({
           forms.push(`\\c{p}{p %} = \\f{\\c{W}{W}}{\\c{G}{G}} = \\f{${val(pb.W)}}{${val(pb.G)}} = ${show ? fmt.num(pb.q / 100, 4) : '?'} = \\c{p}{\\b{${Q('p', pct(pb.q))}}}`);
           if (sgV !== 0 && show) forms.push(`\\c{m}{${up(sgV < 0 ? say(L('Rabatt', 'Discount')) : say(L('Erhöhung', 'Increase')))}: ${sgV < 0 ? `100 % − ${qn} %` : `${qn} % − 100 %`} =} \\c{d}{\\b{${pct(pb.p)}}}`);
         } else {
-          if (sgV === 0) forms.push(`\\c{G}{G} = \\c{W}{W} · \\f{100}{\\c{p}{p}} = ${val(pb.W)} · \\f{100}{${qn}} = \\c{G}{\\b{${Q('G', val(pb.G))}}}`);
+          if (!(pb.q > 0)) forms.push(`\\c{bad}{${up(say(L('Bei 0 % ist W immer 0 – G ist nicht bestimmbar.', 'At 0 % W is always 0 – G cannot be found.')))}}`);
+          else if (sgV === 0) forms.push(`\\c{G}{G} = \\c{W}{W} · \\f{100}{\\c{p}{p}} = ${val(pb.W)} · \\f{100}{${qn}} = \\c{G}{\\b{${Q('G', val(pb.G))}}}`);
           else forms.push(`\\c{G}{G} = ${val(pb.W)} : ${fac} = \\c{G}{\\b{${Q('G', val(pb.G))}}}`);
         }
         const boxes = forms.map((src, i) => fit(src, R.w - 2 * pad, i === 0 ? fs(14, 12.5) : fs(12.5, 11.5)));
@@ -1483,7 +1492,7 @@ export default defineSimulation({
             g.fill();
           }
           const ps = unknownCell(i, 'p') ? '?' : pct(pp);
-          const vs = unknownCell(i, 'v') ? '?' : val(vv);
+          const vs = unknownCell(i, 'v') || !Number.isFinite(vv) || (f === 'G' && !(pb.q > 0) && i > 0) ? '?' : val(vv);
           const pb1 = formula(g, `\\c{p}{\\b{${ps}}}`, fstyle(fz, col.p(), 750));
           pb1.draw(g, colEq - 14 - pb1.w, cy + (pb1.asc - pb1.desc) / 2);
           label('≙', colEq, cy, `700 ${fz}px ${theme.font}`, theme.muted);
@@ -1766,11 +1775,13 @@ export default defineSimulation({
           else paras.push({ s: say(L('Tipp: 10 % ist ein Zehntel, 50 % die Hälfte – damit lässt sich gut überschlagen.', 'Tip: 10 % is one tenth, 50 % one half – handy for estimating.')), color: theme.muted });
         } else if (s === 'rabatt') {
           paras.push({ s: show ? say(L(`Bei ${pct(pb.p)} Rabatt zahlt man noch ${pct(pb.q)} des alten Preises: ${val(pb.G)} · ${fac} = ${val(pb.W)}.`, `With ${pct(pb.p)} off you still pay ${pct(pb.q)} of the old price: ${val(pb.G)} · ${fac} = ${val(pb.W)}.`)) : say(L('Bei Rabatt zahlt man 100 % minus den Rabatt-Satz vom alten Preis.', 'With a discount you pay 100 % minus the discount rate of the old price.')) });
-          if (f === 'G') paras.push({ s: say(L(`Zurückrechnen: Der neue Preis entspricht ${pct(pb.q)}, nicht 100 %. Also durch ${fac} teilen – nicht ${pct(pb.p)} aufschlagen!`, `Working back: the new price is ${pct(pb.q)}, not 100 %. So divide by ${fac} – do not add ${pct(pb.p)}!`)), color: col.bad(), weight: 650 });
+          if (f === 'G' && !show) paras.push({ s: say(L('Stolperstein: Der neue Preis entspricht nicht 100 %. Welchem Prozentsatz dann?', 'Pitfall: the new price is not 100 %. Which rate is it then?')), color: col.bad(), weight: 650 });
+          else if (f === 'G') paras.push({ s: say(L(`Zurückrechnen: Der neue Preis entspricht ${pct(pb.q)}, nicht 100 %. Also durch ${fac} teilen – nicht ${pct(pb.p)} aufschlagen!`, `Working back: the new price is ${pct(pb.q)}, not 100 %. So divide by ${fac} – do not add ${pct(pb.p)}!`)), color: col.bad(), weight: 650 });
           else paras.push({ s: say(L('Achtung: Erst +20 %, dann −20 % ergibt nicht den alten Preis: 1,2 · 0,8 = 0,96 – also 4 % weniger.', 'Careful: +20 % and then −20 % does not give the old price: 1.2 · 0.8 = 0.96 – that is 4 % less.')), color: theme.muted });
         } else if (s === 'erh') {
           paras.push({ s: show ? say(L(`Nach +${pct(pb.p)} kostet es ${pct(pb.q)} des alten Preises: ${val(pb.G)} · ${fac} = ${val(pb.W)}. Der Streifen wird länger.`, `After +${pct(pb.p)} it costs ${pct(pb.q)} of the old price: ${val(pb.G)} · ${fac} = ${val(pb.W)}. The bar gets longer.`)) : say(L('Nach einer Erhöhung ist der neue Preis mehr als 100 % des alten Preises.', 'After an increase the new price is more than 100 % of the old price.')) });
-          if (f === 'G') paras.push({ s: say(L(`Stolperstein: ${val(pb.W)} ≙ ${pct(pb.q)} – nicht 100 %! Darum ${val(pb.W)} : ${fac}. Wer ${pct(pb.p)} von ${val(pb.W)} abzieht, rechnet mit dem falschen Grundwert.`, `Pitfall: ${val(pb.W)} ≙ ${pct(pb.q)} – not 100 %! So ${val(pb.W)} : ${fac}. Taking ${pct(pb.p)} off ${val(pb.W)} uses the wrong base value.`)), color: col.bad(), weight: 650 });
+          if (f === 'G' && show) paras.push({ s: say(L(`Stolperstein: ${val(pb.W)} ≙ ${pct(pb.q)} – nicht 100 %! Darum ${val(pb.W)} : ${fac}. Wer ${pct(pb.p)} von ${val(pb.W)} abzieht, rechnet mit dem falschen Grundwert.`, `Pitfall: ${val(pb.W)} ≙ ${pct(pb.q)} – not 100 %! So ${val(pb.W)} : ${fac}. Taking ${pct(pb.p)} off ${val(pb.W)} uses the wrong base value.`)), color: col.bad(), weight: 650 });
+          else if (f === 'G') paras.push({ s: say(L(`Stolperstein: Der neue Preis entspricht nicht 100 %. Welchem Prozentsatz dann?`, `Pitfall: the new price is not 100 %. Which rate is it then?`)), color: col.bad(), weight: 650 });
           else paras.push({ s: say(L('Erst +20 %, dann −20 %: 1,2 · 0,8 = 0,96 – am Ende 4 % weniger als am Anfang.', '+20 % and then −20 %: 1.2 · 0.8 = 0.96 – in the end 4 % less than at the start.')), color: theme.muted });
         } else if (s === 'mwst') {
           paras.push({ s: say(L('In Deutschland beträgt die Mehrwertsteuer meist 19 %, für Lebensmittel und Bücher 7 %. Bruttopreis = Nettopreis · 1,19.', 'In Germany VAT is usually 19 %, for food and books 7 %. Gross price = net price · 1.19.')) });
