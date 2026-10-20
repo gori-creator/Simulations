@@ -1737,6 +1737,16 @@ sup {
   touch-action: none;
 }
 
+/* Tastaturauswahl auf der Zeichenfläche (sim-core/key-targets.ts) */
+.sim__keyfocus {
+  position: absolute;
+  z-index: 2;
+  border: 3px solid var(--focus);
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px var(--plot-bg);
+  pointer-events: none;
+}
+
 .sim-canvas {
   position: absolute;
   inset: 0;

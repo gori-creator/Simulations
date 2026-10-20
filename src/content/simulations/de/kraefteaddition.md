@@ -9,7 +9,7 @@ Eine **Kraft** hat einen Betrag (in Newton), eine Richtung und einen Angriffspun
 Greifen mehrere Kräfte am selben Punkt an, kann man sie durch **eine** Kraft mit derselben Wirkung ersetzen, die **Resultierende** (Ersatzkraft) $F_R$.
 
 - **Gleiche Richtung:** $F_R = F_1 + F_2$.
-- **Entgegengesetzte Richtung:** $F_R = F_1 - F_2$, in Richtung der größeren Kraft.
+- **Entgegengesetzte Richtung:** $F_R$ = größere minus kleinere Kraft, also z. B. $F_R = F_1 - F_2$ für $F_1 > F_2$. $F_R$ zeigt in Richtung der größeren Kraft. Sind beide gleich groß, ist $F_R = 0\,\text{N}$.
 - **Beliebige Richtungen – Kräfteparallelogramm:** Man ergänzt die beiden Kraftpfeile zu einem Parallelogramm. Die Diagonale vom Angriffspunkt aus ist die Resultierende.
 - **Kräfte aneinanderhängen:** Gleichwertig ist es, die Pfeile parallel zu verschieben und Fuß an Spitze zu hängen. $F_R$ reicht vom Anfang des ersten bis zur Spitze des letzten Pfeils. Die Reihenfolge ist egal, so lassen sich auch drei und mehr Kräfte addieren (**Krafteck**).
 
@@ -23,7 +23,7 @@ Allgemein gilt für den Winkel $\gamma$ zwischen den Kräften $F_R^2 = F_1^2 + F
 
 **Kräftegleichgewicht:** Ein Körper ist im Gleichgewicht, wenn die Resultierende aller Kräfte null ist. Die **Gegenkraft**, die zwei Kräften das Gleichgewicht hält, ist genauso groß wie $F_R$, zeigt aber in die Gegenrichtung. Hängt man alle Kräfte aneinander, schließt sich das Krafteck.
 
-**Kraft zerlegen:** Umgekehrt kann man eine Kraft in zwei **Komponenten** entlang vorgegebener Richtungen zerlegen. Dazu zieht man durch die Pfeilspitze Parallelen zu den beiden Richtungen. Für senkrechte Richtungen gilt $F_1 = F \cdot \cos\alpha$ und $F_2 = F \cdot \sin\alpha$. Die Komponenten können zusammen größer sein als die Kraft selbst!
+**Kraft zerlegen:** Umgekehrt kann man eine Kraft in zwei **Komponenten** entlang vorgegebener Richtungen zerlegen. Dazu zieht man durch die Pfeilspitze Parallelen zu den beiden Richtungen. Für senkrechte Richtungen gilt $F_1 = F \cdot \cos\alpha$ und $F_2 = F \cdot \sin\alpha$. Dabei ist $\alpha$ der Winkel zwischen $F$ und Richtung 1. Die Komponenten können zusammen größer sein als die Kraft selbst!
 
 **Lampe an zwei Seilen:** Die beiden Seilkräfte müssen zusammen der Gewichtskraft $F_G$ das Gleichgewicht halten. Laufen beide Seile unter dem Winkel $\alpha$ gegen die Waagerechte, trägt jedes Seil mit seinem senkrechten Anteil die halbe Last:
 
@@ -90,12 +90,12 @@ Vorwärts: $8\,\text{N} \cdot \cos 30^\circ \approx 6{,}9\,\text{N}$, nach oben:
 
 ### Aufgabe 5: Lampe
 
-Eine Lampe mit $m = 2\,\text{kg}$ hängt an zwei Seilen, die $10^\circ$ gegen die Waagerechte geneigt sind. Wie groß ist die Kraft in jedem Seil? [Aufgabe laden](?mode=lamp&a=10&_hide=1)
+Eine Lampe mit $m = 2\,\text{kg}$ hängt an zwei Seilen, die $10^\circ$ gegen die Waagerechte geneigt sind. Wie groß ist die Kraft in jedem Seil? [Aufgabe laden](?mode=lamp&a=10&vals=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$F_G = 2\,\text{kg} \cdot 9{,}81\,\tfrac{\text{N}}{\text{kg}} \approx 19{,}6\,\text{N}$, also $F_S = \frac{19{,}6\,\text{N}}{2 \cdot \sin 10^\circ} \approx 56{,}5\,\text{N}$ – fast das Dreifache der Gewichtskraft.
+$F_G = 2\,\text{kg} \cdot 9{,}81\,\tfrac{\text{N}}{\text{kg}} \approx 19{,}6\,\text{N}$, also $F_S = \frac{19{,}6\,\text{N}}{2 \cdot \sin 10^\circ} \approx 56{,}5\,\text{N}$ – fast das Dreifache der Gewichtskraft. [Lösung zeigen](?mode=lamp&a=10)
 
 </details>
 
@@ -113,7 +113,7 @@ $F_S = F_G$ gilt für $\sin\alpha = \tfrac12$, also $\alpha = 30^\circ$. Je flac
 ## Ideen für den Unterricht
 
 - **Einsatz:** Kraft als gerichtete Größe, Kräfteaddition und -zerlegung, Kräftegleichgewicht (Klasse 8–10). Ohne Trigonometrie lässt sich alles zeichnerisch mit Maßstab lösen; das Karoraster zeigt den Maßstab („1 Kästchen ≙ … N“). Pythagoras, Sinus und Kosinus erscheinen in den Ergebnissen für höhere Klassen.
-- **Aufgabenmodus:** Mit `res=0` werden Parallelogramm, Krafteck und Komponenten ausgeblendet; **Konstruieren** bzw. **Zerlegen** zeigt die Konstruktion Schritt für Schritt. `_hide=1` verdeckt zusätzlich die Zahlenwerte unter den Ergebnissen, `vals=0` die Beträge an den Pfeilen.
+- **Aufgabenmodus:** Mit `res=0` werden Parallelogramm, Krafteck und Komponenten ausgeblendet; **Konstruieren** bzw. **Zerlegen** zeigt die Konstruktion Schritt für Schritt. `_hide=1` verdeckt zusätzlich die Zahlenwerte unter den Ergebnissen, `vals=0` die Beträge an den Pfeilen und die Anzeigen der Federwaagen.
 - **Richtungen** werden als Winkel gegen die Waagerechte nach rechts angegeben (gegen den Uhrzeigersinn positiv, $-180^\circ$ bis $180^\circ$). Beim Ziehen rasten Winkel auf Vielfache von $15^\circ$ und Beträge auf halbe Newton ein.
 - **Modell Lampe/Wäscheleine:** Seile und Federwaagen sind masselos, die Last hängt in der Mitte zwischen gleich hohen Aufhängepunkten. Die Federwaagen haben einen Messbereich von $100\,\text{N}$. Bei sehr steilen Seilen rücken die Aufhängepunkte in der Zeichnung zusammen, damit die Lampe in der Szene bleibt; der Winkel stimmt immer.
 - **Häufige Stolpersteine:**

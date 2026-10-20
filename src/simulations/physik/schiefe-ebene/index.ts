@@ -1,4 +1,4 @@
-import { defineSimulation, FixedStepper, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { holdRange, inclineForces, limitAngle, MATERIALS, pullUpForce, ROLLING, slideAcceleration, slideStep, type InclineForces, type MaterialId, type SlideState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -47,7 +47,10 @@ interface Measurement {
 export default defineSimulation({
   id: 'schiefe-ebene',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh das obere Ende der Ebene (Winkel), den Körper oder den Ring des Kraftmessers.',
+    'Tip: drag the top of the plane (angle), the body or the ring of the spring balance.',
+  ),
   layout: { aspect: 1.5, aspectNarrow: 0.68 },
   images: { block: 'holzklotz.webp', board: 'brett.webp' },
   groups: [
@@ -290,7 +293,7 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
-    const N = (v: number) => fmt.num(v, 2);
+    const N = (v: number) => fmt.fixed(v, 2);
 
     function updateNow(): void {
       ctx.readout('now', tr('nowText', { t: fmt.fixed(t, 2), s: fmt.num((state.s - S_START) * 100, 1), v: fmt.num(Math.abs(state.v), 2) }));
@@ -307,7 +310,7 @@ export default defineSimulation({
         ctx.readout('limit', null);
       } else {
         ctx.readout('fric', subs(tr('fricText', { Fmax: N(f.FRmax), Fs: N(f.FRslide), mh: fmt.num(muH, 2), mg: fmt.num(muG, 2) })));
-        ctx.readout('limit', subs(tr('limitText', { mh: fmt.num(muH, 2), a: fmt.num(limitAngle(muH), 1) })));
+        ctx.readout('limit', subs(tr('limitText', { mh: fmt.num(muH, 2), a: fmt.fixed(limitAngle(muH), 1) })));
       }
       // Was passiert beim Loslassen?
       const P = pull();
@@ -530,8 +533,8 @@ export default defineSimulation({
     function pill(x0: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, solid = false): number {
       const gx = surface.g;
       const theme = ctx.theme;
-      gx.font = `700 ${size}px ${theme.font}`;
-      const w = gx.measureText(label).width + 16;
+      const style = { size, family: theme.font, weight: 700, color: solid ? '#ffffff' : color };
+      const w = measureSubText(gx, label, style) + 16;
       const h = size + 11;
       const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
       gx.save();
@@ -548,27 +551,21 @@ export default defineSimulation({
         roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         gx.stroke();
       }
-      text(gx, label, left + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? '#ffffff' : color });
+      subText(gx, label, left + w / 2, y + h / 2 + 0.5, style);
       return w;
     }
 
     function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle'): void {
+      // mit echtem tiefgestelltem Index (F_G, F_{R,max} …)
       const gx = surface.g;
-      gx.font = `700 ${size}px ${ctx.theme.font}`;
+      const style = { size, family: ctx.theme.font, weight: 700, color, align, baseline, halo: ctx.theme.bg, haloWidth: 4 };
       const m = gx.getTransform();
       if (m.b === 0 && m.c === 0 && m.e === 0 && m.f === 0) {
-        const tw = gx.measureText(label).width;
+        const tw = measureSubText(gx, label, style);
         const left = align === 'left' ? x : align === 'right' ? x - tw : x - tw / 2;
         x += Math.max(0, 4 - left) - Math.max(0, left + tw - (surface.width - 4));
       }
-      gx.textAlign = align;
-      gx.textBaseline = baseline;
-      gx.lineJoin = 'round';
-      gx.lineWidth = 4;
-      gx.strokeStyle = ctx.theme.bg;
-      gx.strokeText(label, x, y);
-      gx.fillStyle = color;
-      gx.fillText(label, x, y);
+      subText(gx, label, x, y, style);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width = 3.4, head = 13, dash: number[] = []): void {
@@ -779,7 +776,14 @@ export default defineSimulation({
         gx.lineTo(hx + 4, T[1]);
         gx.stroke();
         const hcm = PLANE * Math.sin(a) * 100;
-        if (B[1] - T[1] > 18) haloText(`h = ${fmt.num(hcm, 0)} cm`, hx + 6, (B[1] + T[1]) / 2, theme.muted, sm ? 10.5 : 12, 'left');
+        if (B[1] - T[1] > 18) {
+          const hStr = `h = ${fmt.num(hcm, 0)} cm`;
+          const hs = sm ? 10.5 : 12;
+          // passt die Beschriftung rechts nicht mehr in die Szene (flache Ebene, lang), links an die Kante des Keils
+          const hw = measureSubText(gx, hStr, { size: hs, family: theme.font, weight: 700, color: theme.muted });
+          if (hx + 6 + hw <= r.x + r.w - 4) haloText(hStr, hx + 6, (B[1] + T[1]) / 2, theme.muted, hs, 'left');
+          else haloText(hStr, B[0] - 6, (B[1] + T[1]) / 2, theme.muted, hs, 'right');
+        }
         // l entlang der Ebene, nach außen versetzt
         const n: Pt = [-Math.sin(a), -Math.cos(a)];
         const lo = sm ? 30 : 40;
@@ -834,9 +838,12 @@ export default defineSimulation({
       const f = forces();
       const block = p.body === 'block';
       const fr = state.v !== 0 ? f.FRslide : Math.abs(friction);
-      const rows: [string, string, number, string][] = [[theme.series[1]!, 'F_G', f.FG, ctx.t('lgG')]];
-      if (p.parts) rows.push([theme.series[3]!, 'F_H', f.FH, ctx.t('lgH')], [theme.series[0]!, 'F_N', f.FN, ctx.t('lgN')]);
-      if (block) rows.push([theme.series[2]!, 'F_R', fr, ctx.t(state.v !== 0 ? 'lgRs' : 'lgRh')]);
+      // Aufgabenmodus: Beträge, die eine Aufgabe verraten, als „?“
+      const hideParts = ctx.isHidden('parts');
+      const hideFric = ctx.isHidden('fric');
+      const rows: [string, string, number | null, string][] = [[theme.series[1]!, 'F_G', f.FG, ctx.t('lgG')]];
+      if (p.parts) rows.push([theme.series[3]!, 'F_H', hideParts ? null : f.FH, ctx.t('lgH')], [theme.series[0]!, 'F_N', hideParts ? null : f.FN, ctx.t('lgN')]);
+      if (block) rows.push([theme.series[2]!, 'F_R', hideFric ? null : fr, ctx.t(state.v !== 0 ? 'lgRs' : 'lgRh')]);
       if (p.km) rows.push([theme.series[4]!, 'F_Z', p.fz, ctx.t('lgZ')]);
       const rowH = 21;
       const w = 230;
@@ -860,9 +867,9 @@ export default defineSimulation({
         gx.moveTo(x0 + 12, y);
         gx.lineTo(x0 + 28, y);
         gx.stroke();
-        text(gx, sym, x0 + 36, y, { font: `700 12px ${theme.font}`, color, align: 'left' });
+        subText(gx, sym, x0 + 36, y, { size: 12, family: theme.font, weight: 700, color, align: 'left' });
         text(gx, name, x0 + 66, y, { font: `600 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
-        text(gx, `${fmt.num(value, 2)} N`, x0 + w - 10, y, { font: `700 12px ${theme.font}`, color: theme.text, align: 'right' });
+        text(gx, value === null ? '? N' : `${fmt.fixed(value, 2)} N`, x0 + w - 10, y, { font: `700 12px ${theme.font}`, color: theme.text, align: 'right' });
       });
       // Bewegung
       const yl = y0 + 7 + rowH * rows.length + 4;
@@ -1060,7 +1067,7 @@ export default defineSimulation({
       const mid = mg.hook + ext + mg.housing / 2;
       const lx = mg.start[0] + mg.u[0] * mid - Math.sin(a) * 22;
       const ly = mg.start[1] + mg.u[1] * mid - Math.cos(a) * 22;
-      const label = p.fz > METER_RANGE ? `F_Z = ${fmt.num(p.fz, 1)} N (≥ ${METER_RANGE} N)` : `F_Z = ${fmt.num(p.fz, 1)} N`;
+      const label = p.fz > METER_RANGE ? `F_Z = ${fmt.fixed(p.fz, 1)} N (≥ ${METER_RANGE} N)` : `F_Z = ${fmt.fixed(p.fz, 1)} N`;
       pill(lx, ly - 11, label, color, 'center', small() ? 10.5 : 12);
     }
 
@@ -1100,10 +1107,9 @@ export default defineSimulation({
         }
       }
       arrowPx(C[0], C[1], G1[0], G1[1], theme.series[1]!, 3.6, 13);
-      const fgStr = `F_G = ${fmt.num(f.FG, 1)} N`;
+      const fgStr = `F_G = ${fmt.fixed(f.FG, 2)} N`;
       haloText(fgStr, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
-      surface.g.font = `700 ${fs}px ${theme.font}`;
-      const fgW = surface.g.measureText(fgStr).width;
+      const fgW = measureSubText(surface.g, fgStr, { size: fs, family: theme.font, weight: 700, color: theme.series[1]! });
       fgBox = { x: G1[0] - 8 - fgW, y: G1[1] - 4 - fs / 2 - 2, w: fgW, h: fs + 4 };
       // Reibungskraft an der Unterseite (gegen die Bewegung bzw. die Bewegungstendenz)
       if (p.body === 'block') {
@@ -1130,24 +1136,28 @@ export default defineSimulation({
       const gx = chart.begin();
       chart.grid({ minor: false });
       chart.axes();
+      /** Beschriftung im Diagramm mit echtem tiefgestelltem Index (wie `chart.text`, Ausrichtung links als Standard). */
+      const ct = (x: number, y: number, str: string, o: { color: string; size: number; weight: string | number; align?: CanvasTextAlign; baseline?: CanvasTextBaseline; offset?: [number, number] }) =>
+        subText(gx, str, chart.px(x) + (o.offset?.[0] ?? 0), chart.py(y) + (o.offset?.[1] ?? 0), { size: o.size, family: theme.font, weight: o.weight, color: o.color, align: o.align ?? 'left', baseline: o.baseline ?? 'alphabetic', halo: theme.bg, haloWidth: 4 });
       const fn = (a: number) => inclineForces(p.m, a, muH, mu().muG);
       chart.hline(f.FG, { color: theme.series[1], width: 1.4, dash: [6, 4] });
       // schmales Diagramm (Tablet quer): Beschriftungen so setzen, dass sie sich nicht berühren
       const slim = chart.rect.w < 260;
-      if (slim) chart.text(0, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', align: 'left', baseline: 'bottom', offset: [6, -4] });
-      else chart.text(40, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', baseline: 'bottom', offset: [0, -4] });
+      if (slim) ct(0, f.FG, 'F_G', { color: theme.series[1]!, size: 11.5, weight: 700, align: 'left', baseline: 'bottom', offset: [6, -4] });
+      else ct(40, f.FG, 'F_G', { color: theme.series[1]!, size: 11.5, weight: 700, baseline: 'bottom', offset: [0, -4] });
       if (block) {
         const ag = limitAngle(muH);
         chart.fn((a) => fn(a).FRmax, { color: theme.series[2], width: 2.2, dash: [7, 4], from: 0, to: 90 });
-        if (ag < 89) {
+        // Aufgabenmodus: Grenzwinkel nicht verraten
+        if (ag < 89 && !ctx.isHidden('limit')) {
           chart.vline(ag, { color: theme.series[2], width: 1.2, dash: [3, 4], alpha: 0.8 });
-          chart.text(ag, yTop * 0.97, tr('limitLine', { a: fmt.num(ag, 1) }), { color: theme.series[2], size: 11, weight: '600', align: ag > 60 ? 'right' : 'left', baseline: 'top', offset: [ag > 60 ? -4 : 4, 0] });
+          ct(ag, yTop * 0.97, tr('limitLine', { a: fmt.fixed(ag, 1) }), { color: theme.series[2]!, size: 11, weight: '600', align: ag > 60 ? 'right' : 'left', baseline: 'top', offset: [ag > 60 ? -4 : 4, 0] });
         }
       }
       chart.fn((a) => fn(a).FH, { color: theme.series[3], width: 2.6, from: 0, to: 90 });
       chart.fn((a) => fn(a).FN, { color: theme.series[0], width: 2.6, from: 0, to: 90 });
       // Beschriftung der Kurven
-      chart.text(84, fn(84).FH, 'F_H', { color: theme.series[3], size: 12, weight: 'bold', align: 'right', baseline: 'bottom', offset: [0, -6] });
+      ct(84, fn(84).FH, 'F_H', { color: theme.series[3]!, size: 12, weight: 700, align: 'right', baseline: 'bottom', offset: [0, -6] });
       // F_N: im schmalen Diagramm nicht auf den Punkt beim aktuellen Winkel setzen
       let nAt = 8;
       if (slim) {
@@ -1157,8 +1167,10 @@ export default defineSimulation({
         const pxA = chart.px(p.a);
         if (pxA > lx - 14 && pxA < lx + nw + 14) nAt = chart.toWorld(pxA + 16 + nw / 2, 0)[0];
       }
-      chart.text(nAt, fn(nAt).FN, 'F_N', { color: theme.series[0], size: 12, weight: 'bold', baseline: 'top', offset: [2, 8] });
-      if (block) chart.text(58, fn(58).FRmax, 'F_R,max', { color: theme.series[2], size: 11.5, weight: 'bold', align: 'right', baseline: 'top', offset: [-4, 6] });
+      ct(nAt, fn(nAt).FN, 'F_N', { color: theme.series[0]!, size: 12, weight: 700, baseline: 'top', offset: [2, 8] });
+      // bei kleiner Haftreibung (Eis) über der Kurve, sonst läge die Beschriftung auf der α-Achse
+      const lowR = fn(58).FRmax < yTop * 0.12;
+      if (block) ct(58, fn(58).FRmax, 'F_{R,max}', { color: theme.series[2]!, size: 11.5, weight: 700, align: 'right', baseline: lowR ? 'bottom' : 'top', offset: [-4, lowR ? -6 : 6] });
       // aktueller Winkel
       chart.vline(p.a, { color: theme.muted, width: 1.2, dash: [2, 3] });
       chart.point(p.a, f.FH, { color: theme.series[3], radius: 5 });
