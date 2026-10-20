@@ -272,12 +272,15 @@ export default defineSimulation({
       needOver: 'Nötig wären {F} N – mehr als der Messbereich von 5 N. Häng den Kraftmesser weiter außen ein.',
       needNone: 'In dieser Zugrichtung lässt sich der Hebel nicht ins Gleichgewicht bringen.',
       needZero: 'Der Hebel ist schon ohne Kraftmesser im Gleichgewicht (F_K = 0 N).',
+      needAxis: 'Der Kraftmesser hängt an der Drehachse: Kraftarm 0, also kein Drehmoment – egal, wie stark er zieht.',
+      atAxis: 'An der Drehachse ist der Kraftarm 0: Was dort hängt, erzeugt kein Drehmoment.',
       armsText: 'Lastarm a_L = {aL} · Kraftarm a_K = {aK}',
       effortText: 'F_K = F_L · a_L / a_K = {FL} N · {aL} / {aK} ≈ {FK} N',
       goldenText: 'Bewegt sich die Hand um {sK} cm, bewegt sich die Last nur um {sL} cm. F_K · s_K = F_L · s_L ≈ {W} J – was man an Kraft spart, muss man an Weg zusetzen.',
       goldenHint: 'Drücke „Anheben“: Die Hand legt einen viel längeren Weg zurück als die Last.',
       seesawNeed: 'Gleichgewicht, wenn das rechte Kind bei a₂ = {a} m sitzt.',
       seesawNone: 'Rechts ist kein Platz für das Gleichgewicht (a₂ wäre {a} m).',
+      seesawClose: 'Gleichgewicht wäre bei a₂ = {a} m – so nah an der Drehachse kann das rechte Kind nicht sitzen.',
       lift: 'Anheben',
       lower: 'Absenken',
       press: 'Zudrücken',
@@ -318,12 +321,15 @@ export default defineSimulation({
       needOver: '{F} N would be needed – more than the 5 N range. Attach the spring balance further out.',
       needNone: 'Pulling in this direction cannot balance the lever.',
       needZero: 'The lever is already balanced without the spring balance (F_K = 0 N).',
+      needAxis: 'The spring balance is attached at the pivot: lever arm 0, so no torque – however hard it pulls.',
+      atAxis: 'At the pivot the lever arm is 0: anything hanging there produces no torque.',
       armsText: 'Load arm a_L = {aL} · effort arm a_K = {aK}',
       effortText: 'F_K = F_L · a_L / a_K = {FL} N · {aL} / {aK} ≈ {FK} N',
       goldenText: 'When the hand moves {sK} cm, the load moves only {sL} cm. F_K · s_K = F_L · s_L ≈ {W} J – what you save in force you pay for in distance.',
       goldenHint: 'Press “Lift”: the hand travels much further than the load.',
       seesawNeed: 'Balanced when the child on the right sits at a₂ = {a} m.',
       seesawNone: 'There is no balancing position on the right (a₂ would be {a} m).',
+      seesawClose: 'Balance would need a₂ = {a} m – the child on the right cannot sit that close to the pivot.',
       lift: 'Lift',
       lower: 'Lower',
       press: 'Squeeze',
@@ -438,11 +444,13 @@ export default defineSimulation({
       ctx.readout('cw', { html: list(cw, sumCw) });
       const lv = lever();
       const b = balance(lv);
-      if (isBalanced(lv)) ctx.readout('state', ctx.t('stateEq'));
-      else ctx.readout('state', tr(b.net > 0 ? 'stateL' : 'stateR', { d: Nm(Math.abs(b.net)) }));
+      const axisNote = stacks().some((s) => s.n > 0 && s.x === 0) || (m !== null && m.x === 0 && m.F > 0) ? ` ${ctx.t('atAxis')}` : '';
+      if (isBalanced(lv)) ctx.readout('state', ctx.t('stateEq') + axisNote);
+      else ctx.readout('state', tr(b.net > 0 ? 'stateL' : 'stateR', { d: Nm(Math.abs(b.net)) }) + axisNote);
       if (m) {
         const need = balancingForce(lv.loads, m);
-        if (need === null) ctx.readout('need', ctx.t('needNone'));
+        if (m.x === 0) ctx.readout('need', ctx.t('needAxis'));
+        else if (need === null) ctx.readout('need', ctx.t('needNone'));
         else if (need < 0.005) ctx.readout('need', subs(ctx.t('needZero')));
         else if (need > METER_MAX + 1e-9) ctx.readout('need', tr('needOver', { F: fmt.num(need, 2) }));
         else ctx.readout('need', subs(tr('needF', { F: fmt.num(need, 2), a: fmt.num(meterArm(m) * 100, 1) })));
@@ -479,7 +487,7 @@ export default defineSimulation({
         ctx.readout('ccw', { html: `<var>M</var>₁ = <var>F</var>₁ · <var>a</var>₁ = ${fmt.num(F1, 1)} N · ${fmt.num(p.sl, 2)} m = ${fmt.num(F1 * p.sl, 1)} N·m` });
         ctx.readout('cw', { html: `<var>M</var>₂ = <var>F</var>₂ · <var>a</var>₂ = ${fmt.num(F2, 1)} N · ${fmt.num(p.sk, 2)} m = ${fmt.num(F2 * p.sk, 1)} N·m` });
         const a = (p.sm * p.sl) / p.sn;
-        ctx.readout('where', tr(a <= 2 + 1e-9 ? 'seesawNeed' : 'seesawNone', { a: fmt.num(a, 2) }));
+        ctx.readout('where', tr(a > 2 + 1e-9 ? 'seesawNone' : a < 0.5 - 1e-9 ? 'seesawClose' : 'seesawNeed', { a: fmt.num(a, 2) }));
         for (const key of ['arms', 'effort', 'golden']) ctx.readout(key, null);
         const b = F1 * p.sl - F2 * p.sk;
         ctx.readout('state', Math.abs(b) < 0.25 ? ctx.t('stateEq') : tr(b > 0 ? 'stateL' : 'stateR', { d: fmt.num(Math.abs(b), 1) }));
@@ -734,8 +742,7 @@ export default defineSimulation({
     function pill(x0: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, solid = false): number {
       const gx = surface.g;
       const theme = ctx.theme;
-      gx.font = `700 ${size}px ${theme.font}`;
-      const w = gx.measureText(label).width + 16;
+      const w = richWidth(label, size) + 16;
       const h = size + 11;
       const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
       gx.save();
@@ -752,8 +759,60 @@ export default defineSimulation({
         roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         gx.stroke();
       }
-      text(gx, label, left + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? '#ffffff' : color });
+      richDraw(label, left + w / 2, y + h / 2 + 0.5, size, 'center', 'middle', 700, null, solid ? '#ffffff' : color);
       return w;
+    }
+
+    /** Formelzeichen mit Index („F_K“, „a_L“) in Teile zerlegen: Index klein und tiefgestellt. */
+    function richParts(str: string): { t: string; sub: boolean }[] {
+      const out: { t: string; sub: boolean }[] = [];
+      const re = /_([A-Za-z]+)/g;
+      let last = 0;
+      let mm: RegExpExecArray | null;
+      while ((mm = re.exec(str))) {
+        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
+        out.push({ t: mm[1]!, sub: true });
+        last = re.lastIndex;
+      }
+      if (last < str.length) out.push({ t: str.slice(last), sub: false });
+      return out;
+    }
+
+    const subSize = (size: number) => Math.round(size * 0.74 * 2) / 2;
+
+    function richWidth(str: string, size: number, weight = 700): number {
+      const gx = surface.g;
+      return richParts(str).reduce((w, q) => {
+        gx.font = `${weight} ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
+        return w + gx.measureText(q.t).width;
+      }, 0);
+    }
+
+    /** Text mit tiefgestellten Indizes zeichnen; `halo`: Farbe des Randes (oder null). */
+    function richDraw(str: string, x: number, y: number, size: number, align: CanvasTextAlign, baseline: CanvasTextBaseline, weight: number, halo: string | null, color: string): void {
+      const gx = surface.g;
+      const list = richParts(str);
+      const total = richWidth(str, size, weight);
+      const start = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
+      gx.textAlign = 'left';
+      gx.textBaseline = baseline;
+      for (const pass of halo ? [0, 1] : [1]) {
+        let cx = start;
+        for (const q of list) {
+          gx.font = `${weight} ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
+          const yy = y + (q.sub ? size * 0.28 : 0);
+          if (pass === 0) {
+            gx.lineJoin = 'round';
+            gx.lineWidth = 3.5;
+            gx.strokeStyle = halo!;
+            gx.strokeText(q.t, cx, yy);
+          } else {
+            gx.fillStyle = color;
+            gx.fillText(q.t, cx, yy);
+          }
+          cx += gx.measureText(q.t).width;
+        }
+      }
     }
 
     function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle', weight = 700): void {
@@ -762,18 +821,11 @@ export default defineSimulation({
       // nicht über den Rand hinaus (nur ohne Verschiebung/Drehung des Koordinatensystems)
       const m = gx.getTransform();
       if (m.b === 0 && m.c === 0 && m.e === 0 && m.f === 0) {
-        const tw = gx.measureText(label).width;
+        const tw = richWidth(label, size, weight);
         const left = align === 'left' ? x : align === 'right' ? x - tw : x - tw / 2;
         x += Math.max(0, 4 - left) - Math.max(0, left + tw - (surface.width - 4));
       }
-      gx.textAlign = align;
-      gx.textBaseline = baseline;
-      gx.lineJoin = 'round';
-      gx.lineWidth = 3.5;
-      gx.strokeStyle = ctx.theme.bg;
-      gx.strokeText(label, x, y);
-      gx.fillStyle = color;
-      gx.fillText(label, x, y);
+      richDraw(label, x, y, size, align, baseline, weight, ctx.theme.bg, color);
     }
 
     /** Kraftpfeil in Pixeln mit weißem Rand. */
@@ -1006,8 +1058,7 @@ export default defineSimulation({
               gx.stroke();
               gx.setLineDash([]);
               // Beschriftung nicht über die Achse hinweg (sonst überlappen linke und rechte)
-              gx.font = `700 ${small ? 10 : 11.5}px ${theme.font}`;
-              const tw = gx.measureText(it.label).width;
+              const tw = richWidth(it.label, small ? 10 : 11.5);
               const cx = side < 0 ? Math.min(x1 / 2, -8 - tw / 2) : Math.max(x1 / 2, 8 + tw / 2);
               haloText(it.label, cx, y - 2, it.color, small ? 10 : 11.5, 'center', 'bottom');
             });
