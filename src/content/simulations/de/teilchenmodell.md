@@ -16,7 +16,7 @@ $$
 T = \vartheta + 273\,\text{K}, \qquad E_\text{kin} = \tfrac{3}{2}\, k \cdot T \quad (k \approx 1{,}38 \cdot 10^{-23}\,\tfrac{\text{J}}{\text{K}}).
 $$
 
-Bei $\vartheta = -273{,}15\,°\text{C}$ ($T = 0\,\text{K}$, **absoluter Nullpunkt**) würde die Teilchenbewegung aufhören; kälter geht es nicht. Wassermoleküle sind bei $20\,°\text{C}$ im Mittel etwa $590\,\frac{\text{m}}{\text{s}}$ schnell – aber nicht alle gleich schnell: Das **Histogramm** zeigt, wie sich die Geschwindigkeiten verteilen. In der Simulation zeigt die **Farbe** jedes Teilchens seine Geschwindigkeit (blau langsam, rot schnell).
+Bei $\vartheta = -273{,}15\,°\text{C}$ ($T = 0\,\text{K}$, **absoluter Nullpunkt**) würde die Teilchenbewegung aufhören; kälter geht es nicht. Genau gilt $T = \vartheta + 273{,}15\,\text{K}$; zum Rechnen genügt meist $273\,\text{K}$. Wasserteilchen sind bei $20\,°\text{C}$ im Mittel etwa $590\,\frac{\text{m}}{\text{s}}$ schnell – aber nicht alle gleich schnell: Das **Histogramm** zeigt, wie sich die Geschwindigkeiten verteilen. In der Simulation zeigt die **Farbe** jedes Teilchens seine Geschwindigkeit (blau langsam, rot schnell).
 
 **Schmelzen und Sieden:** Wird Eis gleichmäßig geheizt, steigt die Temperatur zunächst. Bei $0\,°\text{C}$ bleibt sie stehen, bis alles geschmolzen ist – die zugeführte Energie wird gebraucht, um die Teilchen aus dem Gitter zu lösen, nicht um sie schneller zu machen. Das Gleiche passiert bei $100\,°\text{C}$ beim Sieden. Im **Temperatur-Zeit-Diagramm** entstehen so waagrechte Abschnitte (Plateaus). Die nötigen Energien für $m = 0{,}5\,\text{kg}$ Wasser:
 

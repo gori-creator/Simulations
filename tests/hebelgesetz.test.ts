@@ -111,4 +111,55 @@ describe('Modell: Hebelgesetz', () => {
     expect(sL).toBeCloseTo((20 * 40) / 140, 12);
     expect(FK * 20).toBeCloseTo(FL * sL, 9);
   });
+
+  it('rechnet die Aufgaben aus dem Lernmaterial nach (Prüfrunde)', () => {
+    // A1: 4 Stück an Stelle 3 links ↔ 3 Stück an Stelle 4 rechts (4 · 15 cm = 3 · 20 cm)
+    expect(isBalanced({ loads: [{ n: 4, x: -3 }, { n: 3, x: 4 }], meter: null })).toBe(true);
+    expect(isBalanced({ loads: [{ n: 4, x: -3 }, { n: 3, x: 3 }], meter: null })).toBe(false);
+    // A2: 6 · 0,4905 N · 0,10 m / 0,40 m = 0,7358 N → Anzeige 0,74 N hält den Hebel (Reibung)
+    const F2 = balancingForce([{ n: 6, x: -2 }], { x: 8, dir: -90 })!;
+    expect(F2).toBeCloseTo(0.73575, 10);
+    expect(isBalanced({ loads: [{ n: 6, x: -2 }], meter: { x: 8, dir: -90, F: 0.74 } })).toBe(true);
+    // A4: wirksamer Kraftarm 0,30 m · sin 60° = 0,2598 m → 0,2943 N·m / 0,2598 m = 1,133 N
+    const F4 = balancingForce([{ n: 3, x: -4 }], { x: 6, dir: -60 })!;
+    expect(meterArm({ x: 6, dir: -60, F: 0 })).toBeCloseTo(0.2598, 4);
+    expect(F4).toBeCloseTo(1.1328, 4);
+    expect(isBalanced({ loads: [{ n: 3, x: -4 }], meter: { x: 6, dir: -60, F: 1.13 } })).toBe(true);
+    // mit der senkrechten Kraft 0,98 N kippt der schräg gezogene Hebel nach links
+    expect(balance({ loads: [{ n: 3, x: -4 }], meter: { x: 6, dir: -60, F: 0.98 } }).net).toBeGreaterThan(AXLE_FRICTION);
+    // A5: 80 kg · 9,81 N/kg = 784,8 N; · 50/140 = 280,3 N; · 30/140 = 168,2 N
+    expect(effortForce(80 * G, 50, 140)).toBeCloseTo(280.29, 2);
+    expect(effortForce(80 * G, 30, 140)).toBeCloseTo(168.17, 2);
+    // A6: Nussknacker 300 N · 4/16 = 75 N, Hand 4 mm bei 1 mm an der Nuss
+    expect(effortForce(300, 4, 16)).toBe(75);
+    expect(loadTravel(4, 4, 16)).toBe(1);
+  });
+
+  it('behandelt Last und Kraftmesser an der Drehachse (Kraftarm 0)', () => {
+    expect(G).toBe(9.81);
+    expect(Math.abs(loadTorque({ n: 8, x: 0 }))).toBe(0);
+    const lever: Lever = { loads: [{ n: 8, x: 0 }], meter: { x: 0, dir: 90, F: 5 } };
+    expect(balance(lever).net).toBe(0);
+    expect(isBalanced(lever)).toBe(true);
+    expect(restAngle(lever)).toBeCloseTo(0, 9);
+    expect(balancingForce([{ n: 2, x: 6 }], { x: 0, dir: 90 })).toBeNull();
+    // keine Massestücke: Kraftmesser muss 0 N aufbringen
+    expect(balancingForce([], { x: 5, dir: 90 })).toBe(0);
+  });
+
+  it('kippt bei den größten Werten bis zum Anschlag, nie darüber', () => {
+    // 8 Stück an Stelle 10 links gegen 5 N nach oben an Stelle 1 rechts: 1,962 + 0,25 N·m linksdrehend
+    const lever: Lever = { loads: [{ n: 8, x: -10 }], meter: { x: 1, dir: 90, F: 5 } };
+    expect(balance(lever).ccw).toBeCloseTo(8 * 0.4905 * 0.5 + 5 * 0.05, 10);
+    expect(restAngle(lever)).toBeCloseTo(MAX_TILT, 9);
+    // 39,24 N wären nötig, um 8 Stück an Stelle 10 mit dem Kraftmesser an Stelle 1 zu halten
+    expect(balancingForce([{ n: 8, x: -10 }], { x: 1, dir: -90 })).toBeCloseTo(39.24, 10);
+  });
+
+  it('Wippe: Gleichgewicht bei m₁ · a₁ = m₂ · a₂ (40 kg · 1,5 m = 30 kg · 2 m)', () => {
+    const M1 = 40 * G * 1.5;
+    expect(M1).toBeCloseTo(588.6, 9);
+    expect(30 * G * 1.5).toBeCloseTo(441.45, 9);
+    expect(effortForce(40 * G, 150, 200)).toBeCloseTo(30 * G, 9);
+  });
 });

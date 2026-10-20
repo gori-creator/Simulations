@@ -5,6 +5,7 @@ import { t } from '../i18n/utils';
 import { href } from '../lib/routes';
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
+import RegionSettings from './RegionSettings.astro';
 import { SITE } from '../config/site';
 
 interface Props {
@@ -63,6 +64,7 @@ const { lang, alternates, section } = Astro.props;
           ))
         }
       </div>
+      <RegionSettings lang={lang} />
       <button class="btn btn--ghost btn--icon" type="button" data-theme-toggle aria-label={t(lang, 'theme.toggle')} title={t(lang, 'theme.toggle')}>
         <Icon name="moon" class="theme-icon theme-icon--moon" />
         <Icon name="sun" class="theme-icon theme-icon--sun" />
