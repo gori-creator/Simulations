@@ -53,6 +53,15 @@ Pro Simulation gibt es **einen Durchgang** mit vier Teilen: Fach, Aufgaben/Texte
    - Danach `npm run verify` mit 0/0/0, alle Tests grün, Build ok.
 7. **Protokoll:** `docs/pruefung/paket-<N>/<id>.md` nach `VORLAGE.md` schreiben und in `pakete.md` den Haken setzen.
 
+### Neue Kern-Helfer (seit 20.10., Details in `docs/ARCHITEKTUR.md`)
+
+Nutze sie statt eigener lokaler Lösungen:
+- **Zahl und Einheit ohne Umbruch:** Bei Ergebnissen setzt der Host das automatisch. In der Zeichenfläche und in eigenen Texten nimmst du `ctx.fmt.unit(value, unit, decimals?)` bzw. `withUnit` oder `NBSP`.
+- **Tiefgestellter Index auf der Zeichenfläche:** `subText(g, 'F_G', x, y, style)` und `measureSubText`.
+- **Aufgabenmodus:** `ctx.hidden` bzw. `ctx.isHidden(key)`. Werte im Bild, die eine Aufgabe verraten, blendest du im Aufgabenmodus aus. Ergebnisse, die eine Aufgabe verraten, markierst du als `spoiler`.
+- **Tastatur für antippbare Objekte:** `ctx.setKeyTargets([...])`. Anschließen, wenn es auf der Zeichenfläche antippbare Objekte gibt, die sonst nicht per Tastatur erreichbar sind.
+- **Eigener Tipp unter der Bühne:** `hint: L('…','…')` in der Definition, wenn der allgemeine Ziehen-Tipp nicht passt.
+
 ### Was du nicht änderst
 
 - **`src/sim-core/`, `src/i18n/ui.ts`, `src/curriculum/*.ts`, Seiten und Layouts:** Was dort nötig wäre, kommt ins Protokoll unter „Für den Kern“. Die Vertretung sammelt und erledigt das.
