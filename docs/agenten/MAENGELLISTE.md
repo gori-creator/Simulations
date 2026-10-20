@@ -50,3 +50,23 @@ Der Satz soll überall raus.
 - Einmal steht er als Halbsatz in einer Aufzählung („… – als Anregung gedacht, denn Sie kennen Ihre Klasse am besten.“). Dort nur den Halbsatz kürzen.
 
 **Ziel:** Alle Vorkommen in DE und EN entfernen. Außerdem in `docs/NEUE-SIMULATION.md` bzw. der Vorlage nachsehen, damit neue Simulationen den Satz nicht wieder mitbringen.
+
+## Lehrpläne und Sortierung
+
+### 5. Lehrplan Bayern für Physik fehlt
+Vorhanden sind (`src/curriculum/lehrplaene/`): Bayern Gymnasium Mathematik, Hessen Gymnasium Mathematik und Hessen Gymnasium Physik. **Es fehlt Bayern Gymnasium Physik.**
+
+**Ziel:** `bayern-gymnasium-physik.ts` im selben Aufbau anlegen (Jahrgangsstufe → Lernbereich → Simulations-IDs, Kurzbeschreibungen in eigenen Worten). Unsichere Zuordnungen als Entwurf kennzeichnen.
+
+### 6. Einstellungen mit Bundesland-Auswahl (neue Funktion)
+Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahnrad. Dort stellt man sein Bundesland ein.
+
+- **Bundesland gewählt:** Die Simulationen werden nach den Jahrgangsstufen dieses Landes sortiert und gruppiert.
+- **Kein Bundesland gewählt (Standard):** Es wird ungefähr sortiert, zum Beispiel nach Klassenstufe und KMK-Bildungsstandards, wie bisher.
+
+**Zu klären bzw. zu beachten:**
+- **Speicherung:** Die Auswahl wird nur lokal im Browser gespeichert (`localStorage`), nichts geht an einen Server. Das ist wichtig für den Datenschutz an Schulen.
+- **Länder ohne Lehrplan:** Was passiert bei einem Land ohne hinterlegten Lehrplan? Vorschlag: In der Auswahl nur Länder mit Lehrplan anbieten, oder Hinweis und Rückfall auf die allgemeine Sortierung.
+- **Fächer ohne Lehrplan:** Gilt die Auswahl für alle Fächer? Wenn für ein Fach (etwa Chemie) kein Landeslehrplan vorliegt, gilt dort die allgemeine Sortierung.
+- **Wo wirkt die Sortierung:** auf der Startseite, den Fachseiten und den Bereichsseiten.
+- **Statische Seite:** Die Sortierung läuft im Browser per Skript. Ohne Skript bleibt die allgemeine Sortierung stehen.
