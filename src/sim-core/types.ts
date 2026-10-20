@@ -222,6 +222,11 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   animated?: boolean;
   /** Zeigt unter der Bühne den Hinweis, dass Punkte gezogen werden können. */
   dragHint?: boolean;
+  /**
+   * Eigener Tipp unter der Bühne, z. B. „Tippe auf ein Bild …“. Ersetzt den
+   * allgemeinen Hinweis von `dragHint` und wird auch ohne `dragHint` gezeigt.
+   */
+  hint?: Localized;
   layout?: StageLayout;
   /** Zusätzliche Texte der Simulation, abrufbar über `ctx.t(key)`. */
   strings?: Localized<Record<string, string>>;

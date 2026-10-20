@@ -13,7 +13,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | hebelgesetz | `src/sim-core/draw.ts` | Gemeinsamer Helfer für Text mit tiefgestelltem Index auf der Zeichenfläche. Bisher baut jede Simulation ihren eigenen (`richDraw` in hebelgesetz, `richText` in energieerhaltung, `arrow` in hookesches-gesetz). | erledigt (Kern) |
 | teilchenmodell | `src/sim-core/format.ts` bzw. Ergebnis-Ausgabe im Host | Geschütztes Leerzeichen zwischen Zahl und Einheit allgemein setzen, damit die Zeile nicht vor „m/s“ oder „°C“ umbricht. | erledigt (Kern) |
 | ohmsches-gesetz | `src/sim-core/` (Host) | Simulationen sollen abfragen können, ob der Aufgabenmodus (`_hide`) aktiv ist, damit sie gezielt einzelne Teile verdecken können statt ganzer Tabellen. | erledigt (Kern) |
-| ohmsches-gesetz | `src/components/SimulationShell.astro` / `ui.ts` | Der Tipp „Die markierten Punkte lassen sich … ziehen“ passt nicht überall. Einen eigenen Tipptext pro Simulation ermöglichen, z. B. ein optionales Feld `hint` in der Definition. | offen |
+| ohmsches-gesetz | `src/components/SimulationShell.astro` / `ui.ts` | Der Tipp „Die markierten Punkte lassen sich … ziehen“ passt nicht überall. Einen eigenen Tipptext pro Simulation ermöglichen, z. B. ein optionales Feld `hint` in der Definition. | erledigt (Kern) |
 
 ## Rückfragen an die Projektleitung
 

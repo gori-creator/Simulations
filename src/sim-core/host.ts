@@ -423,7 +423,11 @@ class SimulationHost {
       }
     };
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
-    if (this.def.dragHint) this.query('[data-sim-hint]').hidden = false;
+    if (this.def.hint || this.def.dragHint) {
+      const hint = this.query('[data-sim-hint]');
+      if (this.def.hint) hint.textContent = this.def.hint[this.lang];
+      hint.hidden = false;
+    }
 
     on('play', () => this.clock.toggle());
     on('reset-time', () => {

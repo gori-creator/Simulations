@@ -57,7 +57,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 | `params` | Parameter (Zahl, Schalter, Auswahl, Text) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group` und `visibleIf` |
 | `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
 | `presets` | Beispiel-Einstellungen |
-| `animated`, `layout`, `dragHint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), Hinweistext, eigene Texte |
+| `animated`, `layout`, `dragHint`, `hint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), allgemeiner Hinweis „Punkte lassen sich ziehen“ (`dragHint`) bzw. eigener Tipp unter der Bühne (`hint: L('…', '…')`, ersetzt den allgemeinen), eigene Texte |
 | `actions` | Knöpfe unter der Bühne (z. B. „Würfeln“, „Wechseln“), optional mit `visibleIf`; Beschriftung/Aktivierung zur Laufzeit über `ctx.setAction()` |
 | `images` | optionale Bilder aus `src/assets/sims/<id>/` (Liste in `docs/BILDER.md`); fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik |
 | `mount(ctx)` | baut die Simulation auf und gibt `{ update, render, tick?, action?, resetTime?, resetView?, destroy? }` zurück |
