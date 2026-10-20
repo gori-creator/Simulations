@@ -550,9 +550,11 @@ export default defineSimulation({
       const g = surface.g;
       const cx = (xa + xb) / 2;
       const cy = y + dir * height * 2;
-      const apex = { x: cx, y: y + dir * height };
-      if (prog <= 0.001 || alpha <= 0.01) return apex;
       const P = (t: number): [number, number] => [(1 - t) * (1 - t) * xa + 2 * (1 - t) * t * cx + t * t * xb, (1 - t) * (1 - t) * y + 2 * (1 - t) * t * cy + t * t * y];
+      // Platz für die Beschriftung: hinter der Mitte, damit verschachtelte Pfeile sich nicht überdecken
+      const [lx, ly] = P(0.68);
+      const apex = { x: lx, y: ly };
+      if (prog <= 0.001 || alpha <= 0.01) return apex;
       g.save();
       g.globalAlpha *= alpha;
       g.strokeStyle = color;
@@ -1087,7 +1089,7 @@ export default defineSimulation({
       const tShown = ys * lvl;
       const hTxt = show() ? `${ny(tShown, 'ind')} h` : '? h';
       label(hTxt, ccx, ccy + cr + 14, `800 ${fs(15, 13)}px ${th().font}`, col.y());
-      if (show() && !isCents(ys) === false && Math.abs(ys - Math.round(ys)) > 1e-9 && R.h > 120 && !filling) label(hm(ys), ccx, ccy + cr + 30, `600 11px ${th().font}`, th().muted);
+      if (show() && Math.abs(ys - Math.round(ys)) > 1e-9 && R.h > 120 && !filling) label(hm(ys), ccx, ccy + cr + 30, `600 11px ${th().font}`, th().muted);
       // Becken
       const px0 = R.x + 2;
       const px1 = ccx - cr - 12;
@@ -1247,7 +1249,8 @@ export default defineSimulation({
       // Auto (Front bei der gefahrenen Strecke)
       const cl = clamp(R.w * 0.2, 40, 64);
       const ch = cl * 0.36;
-      const front = kmX(xs);
+      // Front bei der gefahrenen Strecke, das Auto bleibt aber ganz im Bild
+      const front = Math.max(kmX(xs), R.x + cl + 2);
       const x0 = front - cl;
       const yb = roadY + roadH * 0.45;
       g.save();
@@ -1310,7 +1313,7 @@ export default defineSimulation({
         g.fill();
       }
       // Taxameter
-      const mw = Math.min(regions().wide ? R.w * 0.66 : R.w - 4, 190);
+      const mw = Math.min(R.w - 4, 190);
       const mh = Math.min(roadY - R.y - 30, 58);
       const mx = R.x + R.w - mw - 2;
       const my = R.y + 2;
@@ -1794,7 +1797,7 @@ export default defineSimulation({
       if (rev > 0.3) {
         const vs = say(VERDICT_NAME[cls.verdict]);
         const src = cls.verdict === 'dir' ? `\\c{ok}{${up(vs)}: y = ${nx(cls.k!)} · x}` : cls.verdict === 'ind' ? `\\c{k}{${up(vs)}: y = ${nx(cls.k!)} : x}` : `\\c{bad}{${up(vs)}}`;
-        fpill(plot.rect.x + plot.rect.w * 0.62, plot.rect.y + 22, src, { size: fs(12.5, 11.5), border: verdictCol(cls.verdict), alpha: clamp01((rev - 0.3) / 0.7), bounds: plot.rect });
+        fpill(plot.rect.x + plot.rect.w * 0.62, plot.rect.y + 46, src, { size: fs(12.5, 11.5), border: verdictCol(cls.verdict), alpha: clamp01((rev - 0.3) / 0.7), bounds: plot.rect });
       }
       axisLabels(say(meta.xAxis), say(meta.yAxis), k.labels);
     }
@@ -2141,6 +2144,8 @@ export default defineSimulation({
           const fct = x / x0;
           const wrong = naiveGuess(r, x0, x);
           const right = value(r, x);
+          // gleiche Strecke: der „Dreisatz“ ist dann zufällig richtig
+          const same = Math.abs(wrong - right) < 1e-9;
           const rows: [string, string, string, boolean][] = [
             [xu(x0), yu(y0, 'lin', false), col.y(), false],
             ['', '', '', false],
@@ -2152,8 +2157,8 @@ export default defineSimulation({
             const a = sk.row[i]!;
             cellX(rows[i]![0], cy, col.x(), a);
             eqSign(cy, a);
-            const w = cellY(rows[i]![1], cy, rows[i]![2], a, rows[i]![3] && sk.row[2] > 0.5);
-            if (i === 2 && sk.row[2] > 0.5) {
+            const w = cellY(rows[i]![1], cy, rows[i]![2], a, rows[i]![3] && sk.row[2] > 0.5 && !same);
+            if (i === 2 && sk.row[2] > 0.5 && !same) {
               g.save();
               g.globalAlpha *= sk.row[2];
               label('✗', colEq + 26 + w, cy, `800 ${fz}px ${theme.font}`, col.bad(), 'left');
@@ -2166,7 +2171,16 @@ export default defineSimulation({
           const mid = top + rowH * 1.5;
           g.save();
           g.globalAlpha *= sk.arr[0];
-          label(say(L('doppelt so weit – doppelt so teuer?', 'twice as far – twice the price?')).replace(say(L('doppelt so weit – doppelt so teuer?', 'twice as far – twice the price?')), Math.abs(fct - 2) < 1e-9 ? say(L('doppelt so weit – doppelt so teuer?', 'twice as far – twice the price?')) : say(L('proportional gerechnet?', 'worked out proportionally?'))), colEq, mid, `600 ${fs(12, 11)}px ${theme.font}`, theme.muted);
+          {
+            // Frage in der Mitte; wird gekürzt, wenn sie nicht zwischen die Pfeile passt
+            const midFont = `600 ${fs(12, 11)}px ${theme.font}`;
+            const long = Math.abs(fct - 2) < 1e-9 ? say(L('doppelt so weit – doppelt so teuer?', 'twice as far – twice the price?')) : say(L('proportional gerechnet?', 'worked out proportionally?'));
+            const short = Math.abs(fct - 2) < 1e-9 ? say(L('doppelt so teuer?', 'twice the price?')) : say(L('proportional?', 'proportional?'));
+            g.font = midFont;
+            const room = R.w - 2 * (pad + 62);
+            const q = g.measureText(long).width <= room ? long : g.measureText(short).width <= room ? short : '';
+            if (q) label(q, colEq, mid, midFont, theme.muted);
+          }
           g.restore();
           const fy = top + rowH * 3 + 8 + formH / 2;
           const src = hide
