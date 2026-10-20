@@ -192,3 +192,52 @@ describe('Modell: Haus der Vierecke – Aufgaben', () => {
     }
   });
 });
+
+describe('Modell: Haus der Vierecke – Prüfrunde', () => {
+  it('A(0|0), B(4|0), C(4|3), D(0|3): Rechteck, kein Quadrat; Diagonalen 5 Kästchen (= 2,5 cm)', () => {
+    const a = analyze(Q([0, 0], [4, 0], [4, 3], [0, 3]));
+    expect(a.best).toBe('rechteck');
+    expect(a.classes).not.toContain('quadrat');
+    expect(a.classes).not.toContain('raute');
+    expect(a.diag).toEqual([5, 5]);
+    expect(a.sides).toEqual([4, 3, 4, 3]);
+    expect(a.angles).toEqual([90, 90, 90, 90]);
+  });
+
+  it('A(0|0), B(3|0), C(5|4), D(2|4): Parallelogramm mit α ≈ 63,4°', () => {
+    const a = analyze(Q([0, 0], [3, 0], [5, 4], [2, 4]));
+    expect(a.best).toBe('parallelogramm');
+    expect(a.classes).toEqual(['parallelogramm', 'trapez', 'viereck']);
+    // tan α = 4 : 2
+    expect(a.angles[0]).toBeCloseTo((Math.atan(2) * 180) / Math.PI, 9);
+    expect(a.angles[0] + a.angles[1]).toBeCloseTo(180, 9);
+    expect(a.center).toEqual([2.5, 2]);
+  });
+
+  it('Drachenviereck: zwei Paare gleich langer Nachbarseiten; Grenzfall Raute', () => {
+    // |AB| = |AD| = 5, |CB| = |CD| = √18
+    const kite = analyze(Q([0, 0], [4, -3], [7, 0], [4, 3]));
+    expect(kite.best).toBe('drachen');
+    expect(kite.sideGroups).toEqual([
+      [0, 3],
+      [1, 2],
+    ]);
+    // C weiter nach außen, bis alle vier Seiten gleich lang sind → Raute
+    expect(analyze(Q([0, 0], [4, -3], [8, 0], [4, 3])).best).toBe('raute');
+  });
+
+  it('überschlagene Vierecke werden als ungültig erkannt (auch wenn Seiten parallel sind)', () => {
+    const q = Q([2, 2], [10, 10], [10, 2], [2, 10]);
+    expect(validity(q)).toBe('crossed');
+    expect(analyze(q).valid).toBe('crossed');
+  });
+
+  it('gleichschenkliges Trapez ist kein Parallelogramm, Basiswinkel gleich', () => {
+    const a = analyze(Q([0, 0], [10, 0], [7, 4], [3, 4]));
+    expect(a.best).toBe('gltrapez');
+    expect(a.classes).not.toContain('parallelogramm');
+    expect(a.angles[0]).toBeCloseTo(a.angles[1], 9);
+    expect(a.angles[2]).toBeCloseTo(a.angles[3], 9);
+    expect(a.sides[1]).toBe(5);
+  });
+});

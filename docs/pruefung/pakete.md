@@ -68,7 +68,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 5–6 | `primfaktoren` | Primfaktorzerlegung und Teilbarkeit | `/de/mathematik/zahlen-und-operationen/primfaktoren-teilbarkeit/` |
 | ✓ | 5–6 | `zehnerpotenzen` | Potenzen, Zehnerpotenzen und Größenordnungen | `/de/mathematik/zahlen-und-operationen/zehnerpotenzen-groessenordnungen/` |
 | ✓ | 5–7 | `termbaum` | Termbaum: die Struktur von Termen | `/de/mathematik/terme-und-gleichungen/termbaum/` |
-| ☐ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |
+| ✓ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |
 | ☐ | 5–8 | `koerpernetze` | Netze und Oberflächen von Körpern | `/de/mathematik/flaechen-und-koerper/koerpernetze/` |
 | ☐ | 5–8 | `zaehlprinzip` | Zählprinzip und Baumdiagramm | `/de/mathematik/daten-und-zufall/zaehlprinzip-baumdiagramm/` |
 | ☐ | 6–6 | `bruchteile` | Bruchteile darstellen | `/de/mathematik/zahlen-und-operationen/bruchteile/` |

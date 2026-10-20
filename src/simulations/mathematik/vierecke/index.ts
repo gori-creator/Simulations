@@ -559,7 +559,12 @@ export default defineSimulation({
       return quad.map((q, i) => [morphFrom[i]![0] + (q[0] - morphFrom[i]![0]) * t, morphFrom[i]![1] + (q[1] - morphFrom[i]![1]) * t] as Pt) as unknown as Quad;
     }
 
-    const showClass = () => (mode() === 'einordnen' ? quizDone : p.show);
+    /** Ungültige Lage (z. B. über Zahlenfelder oder einen geteilten Link): überschlagen, Ecken doppelt, drei Ecken auf einer Geraden. */
+    const invalid = () => an.valid !== 'ok';
+    const invalidText = () => ctx.t(an.valid === 'same' ? 'noSame' : an.valid === 'collinear' ? 'noCollinear' : 'noCrossed');
+    /** Gesuchte Art erreicht? Nur bei einem gültigen Viereck. */
+    const isA = (k: QuadClass) => !invalid() && an.classes.includes(k);
+    const showClass = () => !invalid() && (mode() === 'einordnen' ? quizDone : p.show);
 
     /* ---------- Zahlen ---------- */
     /** Länge in cm (1 Kästchen = 0,5 cm), „=“ wenn exakt auf mm, sonst „≈“. */
@@ -570,6 +575,17 @@ export default defineSimulation({
       const cm = an.sides[i]! / 2;
       const v = exact ? fmt.num(cm, 1) : fmt.fixed(cm, 1);
       return `${withSign ? (exact ? '= ' : '≈ ') : exact ? '' : '≈ '}${v} cm`;
+    }
+    /** Länge der Diagonalen e (0) bzw. f (1) in cm, wie lenText. */
+    function diagText2(i: number, withSign = true): string {
+      const [A, B, C, D] = quad;
+      const v = i === 0 ? [C[0] - A[0], C[1] - A[1]] : [D[0] - B[0], D[1] - B[1]];
+      const l2 = v[0]! * v[0]! + v[1]! * v[1]!;
+      const r = Math.round(Math.sqrt(l2));
+      const exact = r * r === l2;
+      const cm = Math.sqrt(l2) / 2;
+      const s = exact ? fmt.num(cm, 1) : fmt.fixed(cm, 1);
+      return `${withSign ? (exact ? '= ' : '≈ ') : exact ? '' : '≈ '}${s} cm`;
     }
     function angleText(i: number, withSign = true): string {
       const a = an.angles[i]!;
@@ -637,7 +653,10 @@ export default defineSimulation({
     function updateReadouts(): void {
       const m = mode();
       const reveal = m !== 'einordnen' || quizDone;
-      if (reveal) {
+      if (invalid()) {
+        ctx.readout('type', invalidText());
+        ctx.readout('props', null);
+      } else if (reveal) {
         const others = an.classes.filter((k) => k !== an.best).map((k) => T(SHORT[k]));
         ctx.readout('type', others.length ? tr('typeRead', { t: T(TITLE[an.best]), list: others.join(', ') }) : T(TITLE[an.best]));
         const props = [parText(), eqText(), `${ctx.t('pRight')}: ${rightText()}`, `${ctx.t('pDiag')}: ${diagText()}`, `${ctx.t('pSym')}: ${symText()}`];
@@ -647,8 +666,9 @@ export default defineSimulation({
         ctx.readout('props', null);
       }
       const sides = SIDE.map((s, i) => `${s} ${lenText(i)}`).join(', ');
-      const angles = ANGLE.map((s, i) => `${s} ${angleText(i)}`).join(', ');
-      ctx.readout('sizes', `${sides}; ${angles}`);
+      const angles = invalid() ? invalidText() : ANGLE.map((s, i) => `${s} ${angleText(i)}`).join(', ');
+      const diags = p.diag ? `; e ${diagText2(0)}, f ${diagText2(1)}` : '';
+      ctx.readout('sizes', `${sides}; ${angles}${diags}`);
       if (m === 'aufgabe') ctx.readout('score', tr('scoreTask', { n: solvedCount }));
       else if (m === 'einordnen') ctx.readout('score', quizTotal ? tr('quizScore', { a: quizFirst, n: quizTotal }) : ctx.t('quizScore0'));
       else ctx.readout('score', null);
@@ -691,7 +711,7 @@ export default defineSimulation({
     }
 
     function answer(k: QuadClass): void {
-      if (quizDone) return;
+      if (quizDone || invalid()) return;
       quizTries++;
       const verdict = k === an.best ? 'right' : an.classes.includes(k) ? 'partial' : 'wrong';
       quizFeedback = { k, verdict };
@@ -973,7 +993,8 @@ export default defineSimulation({
       const sq = shown();
       const P = sq.map((q) => toPx(q));
       const W = wide();
-      const markA = morphTw.running ? clamp((morphTw.t - 0.82) / 0.18, 0, 1) : 1;
+      // bei ungültiger Lage keine Markierungen (Eigenschaften wären sinnlos)
+      const markA = invalid() ? 0 : morphTw.running ? clamp((morphTw.t - 0.82) / 0.18, 0, 1) : 1;
       const special = showClass() && an.best !== 'viereck';
       const ink = theme.text;
 
@@ -1039,8 +1060,8 @@ export default defineSimulation({
             const t = 0.27;
             haloText(nm, x1 + (x2 - x1) * t - uy * 11, y1 + (y2 - y1) * t + ux * 11, `italic 700 ${W ? 15 : 13}px ${theme.mathFont}`, col.diag());
           };
-          nameAt(0, 2, 'e');
-          nameAt(1, 3, 'f');
+          nameAt(0, 2, p.len ? `e ${diagText2(0)}` : 'e');
+          nameAt(1, 3, p.len ? `f ${diagText2(1)}` : 'f');
           if (an.diagCross) {
             const s = toPx(an.diagCross);
             // Halbierung: Striche auf den Hälften
@@ -1212,11 +1233,13 @@ export default defineSimulation({
       }
 
       // Hinweis bei ungültiger Lage
+      // (bei ungültiger Lage aus Zahlenfeldern oder Link bleibt der Hinweis stehen)
       const now = performance.now();
-      if (toast && now < toast.until) {
-        const a = clamp((toast.until - now) / 300, 0, 1);
+      const live = toast && now < toast.until;
+      if (live || invalid()) {
+        const a = live ? clamp((toast!.until - now) / 300, 0, 1) : 1;
         const font = `700 ${W ? 12.5 : 11.5}px ${theme.font}`;
-        const rows = wrap(toast.text, paper.w - 40, font);
+        const rows = wrap(live ? toast!.text : invalidText(), paper.w - 40, font);
         const lh = W ? 17 : 15;
         g.font = font;
         const w = Math.max(...rows.map((r) => g.measureText(r).width)) + 24;
@@ -1233,7 +1256,8 @@ export default defineSimulation({
         g.stroke();
         rows.forEach((row, i) => text(g, row, x + w / 2, y + 7 + lh / 2 + i * lh, { font, color: col.bad() }));
         g.restore();
-      } else toast = null;
+      }
+      if (!live) toast = null;
     }
 
     /* ---------- Zeichnen: Haus der Vierecke ---------- */
@@ -1591,7 +1615,7 @@ export default defineSimulation({
       card(R);
       const pad = 14;
       title(R.x + pad, R.y + 17, ctx.t('props'));
-      const reveal = mode() !== 'einordnen' || quizDone || p.marks;
+      const reveal = !invalid() && (mode() !== 'einordnen' || quizDone || p.marks);
       const rows: ['par' | 'eq' | 'right' | 'diag' | 'sym', string, string, boolean][] = [
         ['par', ctx.t('pPar'), parText(), an.parAC || an.parBD],
         ['eq', ctx.t('pEq'), eqText(), an.sideGroups.length > 0],
@@ -1611,7 +1635,7 @@ export default defineSimulation({
       const layoutRows = (size: number, lh: number) =>
         rows.map(([, , value, on]) => {
           const vf = `${on ? 700 : 500} ${size}px ${theme.font}`;
-          const lines = wrap(reveal ? value : '?', maxW, vf).map((ln) => ln.replace(/\u00a0·$/, ''));
+          const lines = wrap(invalid() ? '–' : reveal ? value : '?', maxW, vf).map((ln) => ln.replace(/\u00a0·$/, ''));
           return { vf, lines, need: Math.max(22, lines.length * lh + 7) };
         });
       let lh = 15;
@@ -1665,8 +1689,9 @@ export default defineSimulation({
         `(${ctx.t('sum')} ${fmt.num(sum, 0)}°)`,
       );
       text(g, sidesRow.str, R.x + pad, y0 + 9, { font: sidesRow.f, color: theme.text, align: 'left' });
-      text(g, angRow.str, R.x + pad, y0 + 29, { font: angRow.f, color: theme.text, align: 'left' });
-      if (!an.convex) {
+      if (invalid()) text(g, invalidText(), R.x + pad, y0 + 29, { font: `700 12px ${theme.font}`, color: col.bad(), align: 'left' });
+      else text(g, angRow.str, R.x + pad, y0 + 29, { font: angRow.f, color: theme.text, align: 'left' });
+      if (!an.convex && !invalid()) {
         // Hinweis bei nicht konvexem Viereck rechts oben (kurz, wenn neben dem Titel kein Platz ist)
         const cf = `600 11px ${theme.font}`;
         g.font = `700 ${wide() ? 12 : 11}px ${theme.font}`;
@@ -1708,8 +1733,8 @@ export default defineSimulation({
       const theme = ctx.theme;
       const W = wide();
       const pad = W ? 14 : 12;
-      const k: QuadClass = sel ?? an.best;
-      const applies = an.classes.includes(k);
+      const k: QuadClass = sel ?? (invalid() ? 'viereck' : an.best);
+      const applies = isA(k);
       const ch = col.house();
       const reveal = showClass();
       card(R, reveal && applies ? ch : undefined, reveal && applies ? 0.05 : 0);
@@ -1725,7 +1750,8 @@ export default defineSimulation({
       y += textRows(dRows, R.x + pad, y + lh / 2, lh, df, theme.text);
       // Status
       const statusRows: { txt: string; color: string; font: string }[] = [];
-      if (reveal) {
+      if (invalid()) statusRows.push({ txt: invalidText(), color: col.bad(), font: `700 ${W ? 12.5 : 12}px ${theme.font}` });
+      else if (reveal) {
         if (applies) statusRows.push({ txt: `✓ ${tr('isIt', { nom: T(NOM[k]) })}`, color: col.ok(), font: `700 ${W ? 12.5 : 12}px ${theme.font}` });
         else {
           const miss = requirements(k, an).filter((r) => !r.ok);
@@ -1790,7 +1816,7 @@ export default defineSimulation({
       const W = wide();
       const pad = W ? 14 : 12;
       const k = goal();
-      const ok = an.classes.includes(k);
+      const ok = isA(k);
       const okC = col.ok();
       card(R, ok ? okC : undefined, ok ? 0.07 : 0);
       title(R.x + pad, R.y + 16, ctx.t('taskTitle'));
@@ -1978,7 +2004,7 @@ export default defineSimulation({
         }
       } else if (ctx.locked) return;
       else if (id === 'example') {
-        const k = sel ?? an.best;
+        const k = sel ?? (invalid() ? 'viereck' : an.best);
         setQuad(randomOf(k, Math.random), true);
       } else if (id === 'new') newBuildTask(true);
       else if (id === 'next') newQuiz();
@@ -2077,7 +2103,7 @@ export default defineSimulation({
         }
         // Viereck bauen: geschafft?
         if (mode() === 'aufgabe') {
-          const ok = an.classes.includes(goal());
+          const ok = isA(goal());
           if (ok && !solved) {
             solved = true;
             if (source === 'sim' || source === 'input') {
