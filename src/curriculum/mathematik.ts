@@ -82,7 +82,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('zehnerpotenzen', L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'), [5, 6]),
+          {
+            id: 'zehnerpotenzen',
+            status: 'ready',
+            slug: L('zehnerpotenzen-groessenordnungen', 'powers-of-ten-orders-of-magnitude'),
+            title: L('Potenzen, Zehnerpotenzen und Größenordnungen', 'Powers, powers of ten and orders of magnitude'),
+            summary: L(
+              'Vom Sandkorn bis zur Erde zoomen: Jede Stufe macht den Ausschnitt 10-mal so groß. Dazu Potenzen als wiederholte Multiplikation mit wachsenden Würfelbauten und die wissenschaftliche Schreibweise mit wanderndem Komma.',
+              'Zoom from a grain of sand to the Earth: every step makes the view 10 times as large. Plus powers as repeated multiplication with growing cube models and scientific notation with a moving decimal point.',
+            ),
+            grades: [5, 6],
+            kmk: ['M-L1', 'M-L2', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
+              ['power', 'power of ten', 'base', 'exponent', 'order of magnitude', 'scale', 'million', 'billion', 'scientific notation', 'standard form', 'units of length', 'kilometre', 'millimetre'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
           {
@@ -363,8 +379,40 @@ export const mathematik: Subject = {
           },
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
-          planned('winkel-geradenkreuzung', L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'), [7, 7]),
-          planned('winkelsumme', L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'), [7, 7], { kmk: ['M-L4', 'M-K1'] }),
+          {
+            id: 'winkel-geradenkreuzung',
+            status: 'ready',
+            slug: L('winkel-an-geradenkreuzungen', 'angles-at-intersecting-lines'),
+            title: L('Winkel an Geradenkreuzungen', 'Angles at intersecting lines'),
+            summary: L(
+              'Geraden drehen und zusehen, wie Scheitelwinkel gleich bleiben und Nebenwinkel sich zu 180° ergänzen. An einer Doppelkreuzung Stufen-, Wechsel- und Nachbarwinkel durch Verschieben und Drehen vergleichen – gleich groß nur bei parallelen Geraden. Dazu Aufgaben zum Begründen.',
+              'Turn the lines and watch vertical angles stay equal and adjacent angles add up to 180°. At a transversal, compare corresponding, alternate and co-interior angles by sliding and turning – equal only for parallel lines. With exercises on giving reasons.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['Scheitelwinkel', 'Nebenwinkel', 'Stufenwinkel', 'Wechselwinkel', 'Nachbarwinkel', 'F-Winkel', 'Z-Winkel', 'E-Winkel', 'Geradenkreuzung', 'Doppelkreuzung', 'parallele Geraden', 'Querlinie', 'Schnittwinkel', 'begründen'],
+              ['vertical angles', 'adjacent angles', 'corresponding angles', 'alternate angles', 'co-interior angles', 'F angles', 'Z angles', 'intersecting lines', 'transversal', 'parallel lines', 'angle of intersection', 'reasoning'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'winkelsumme',
+            status: 'ready',
+            slug: L('innenwinkelsumme', 'angle-sum'),
+            title: L('Innenwinkelsumme in Dreieck und Vieleck', 'Angle sum in triangles and polygons'),
+            summary: L(
+              'Ecken eines Dreiecks abreißen und an einer Geraden zusammenlegen, den Beweis mit der Parallelen und den Wechselwinkeln verfolgen, Vielecke in n − 2 Dreiecke zerlegen und beim Umrunden die Außenwinkel zu 360° aufsummieren.',
+              'Tear off the corners of a triangle and put them together along a line, follow the proof with a parallel and alternate angles, split polygons into n − 2 triangles and add up the exterior angles to 360° while walking around.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L4', 'M-K1', 'M-K6'],
+            keywords: L(
+              ['Innenwinkelsumme', 'Winkelsumme', 'Dreieck', 'Vieleck', 'n-Eck', 'Wechselwinkel', 'Parallele', 'gestreckter Winkel', 'Außenwinkel', 'regelmäßiges Vieleck', 'konvex', 'Beweis'],
+              ['angle sum', 'interior angles', 'triangle', 'polygon', 'n-gon', 'alternate angles', 'parallel', 'straight angle', 'exterior angle', 'regular polygon', 'convex', 'proof'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
           planned('dreieckskonstruktion', L('Kongruenzsätze und Dreieckskonstruktionen', 'Congruence and constructing triangles'), [7, 7]),
@@ -427,8 +475,40 @@ export const mathematik: Subject = {
       kmk: ['M-L2', 'M-L4', 'M-K3'],
       topics: [
         topic('groessen', L('Größen und Einheiten', 'Measures and units'), [
-          planned('einheiten', L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'), [5, 5]),
-          planned('massstab', L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'), [5, 5], { kmk: ['M-L2', 'M-K3'] }),
+          {
+            id: 'einheiten',
+            status: 'ready',
+            slug: L('einheiten-umrechnen-einheitentafel', 'converting-units-chart'),
+            title: L('Einheiten umrechnen mit der Einheitentafel', 'Converting units with a place-value chart'),
+            summary: L(
+              'Eine Größe mit Ziffernkärtchen in die Einheitentafel legen und zusehen, wie beim Umrechnen das Komma wandert und Nullen ergänzt werden. Für Länge, Masse, Fläche, Volumen und Zeit, mit Lineal, Waage, Kästchenquadrat, Würfel und Uhr zur Anschauung.',
+              'Place a quantity in the unit chart with digit cards and watch the decimal point move and zeros appear as you convert. For length, mass, area, volume and time, with ruler, balance, grid square, cube and clock to picture it.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-L1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen'],
+              ['units', 'convert', 'unit conversion chart', 'conversion factor', 'move the decimal point', 'length', 'mass', 'weight', 'time', 'area', 'volume', 'litre', 'millilitre', 'km', 'm', 'cm', 'mm', 'kg', 'g', 'tonne', 'm²', 'cm²', 'are', 'hectare', 'cm³', 'dm³', 'hour', 'minute', 'second', 'measures'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'massstab',
+            status: 'ready',
+            slug: L('massstab-karte-wirklichkeit', 'scale-map-and-reality'),
+            title: L('Maßstab: Karte und Wirklichkeit', 'Scale: map and reality'),
+            summary: L(
+              'Auf einer gezeichneten Landkarte mit dem Lineal Entfernungen messen und über den Maßstab in die Wirklichkeit umrechnen – als Luftlinie oder entlang der Straße. Beim Wechsel des Maßstabs zoomt die Karte; dazu Vergrößerungen mit der Lupe und Rechenaufgaben.',
+              'Measure distances on a drawn map with a ruler and convert them to reality using the scale – as the crow flies or along the roads. Changing the scale zooms the map; plus enlargements with a magnifier and calculation tasks.',
+            ),
+            grades: [5, 5],
+            kmk: ['M-L2', 'M-K3', 'M-L1', 'M-K4'],
+            keywords: L(
+              ['Maßstab', 'Karte', 'Landkarte', 'Wirklichkeit', 'Maßstabszahl', 'Maßstabsleiste', 'Entfernung', 'Luftlinie', 'Wegstrecke', 'Vergrößerung', 'Verkleinerung', 'Lineal', 'Längen', 'Einheiten', 'Kilometer', 'Zentimeter'],
+              ['scale', 'map', 'reality', 'scale factor', 'scale bar', 'distance', 'straight line', 'route', 'enlargement', 'reduction', 'ruler', 'lengths', 'units', 'kilometre', 'centimetre'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
           {
@@ -448,7 +528,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('flaechen-zerlegen', L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'), [6, 6], { kmk: ['M-L2', 'M-K1'] }),
+          {
+            id: 'flaechen-zerlegen',
+            status: 'ready',
+            slug: L('flaechen-zerlegen-ergaenzen', 'area-by-decomposing'),
+            title: L('Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen', 'Parallelogram, triangle and trapezium by decomposing'),
+            summary: L(
+              'Ein Parallelogramm wird entlang der Höhe zerlegt und zum Rechteck umgelegt, Dreieck und Trapez werden mit einer gedrehten Kopie zum Parallelogramm ergänzt. Dazu Kästchen zählen und die Spitze verschieben – die Fläche bleibt.',
+              'A parallelogram is cut along its height and rearranged into a rectangle; triangles and trapeziums are completed to a parallelogram by a rotated copy. Plus counting squares and sliding the top – the area stays the same.',
+            ),
+            grades: [6, 6],
+            kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Flächeninhalt', 'Parallelogramm', 'Dreieck', 'Trapez', 'Grundseite', 'Höhe', 'zerlegen', 'ergänzen', 'verschieben', 'Kopie drehen', 'Scherung', 'Kästchen zählen', 'Flächenformel'],
+              ['area', 'parallelogram', 'triangle', 'trapezium', 'trapezoid', 'base', 'height', 'decompose', 'complete', 'rearrange', 'rotated copy', 'shear', 'counting squares', 'area formula'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
           {
@@ -701,7 +797,23 @@ export const mathematik: Subject = {
           },
         ]),
         topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
-          planned('potenzfunktionen', L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'), [9, 10]),
+          {
+            id: 'potenzfunktionen',
+            status: 'ready',
+            slug: L('potenzfunktionen', 'power-functions'),
+            title: L('Potenzfunktionen y = a · xⁿ', 'Power functions y = a · xⁿ'),
+            summary: L(
+              'Graphen von f(x) = a · xⁿ für ganzzahlige Exponenten von −4 bis 6: Der Graph verwandelt sich weich, Symmetrie wird gespiegelt und gedreht, Steckbrief, Familien mit gemeinsamen Punkten und der Vergleich zweier Potenzfunktionen.',
+              'Graphs of f(x) = a · xⁿ for integer exponents from −4 to 6: the graph morphs smoothly, symmetry is shown by reflecting and rotating, key features, families with common points and a comparison of two power functions.',
+            ),
+            grades: [9, 10],
+            kmk: ['M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Potenzfunktion', 'Exponent', 'Parabel n-ter Ordnung', 'Hyperbel n-ter Ordnung', 'Achsensymmetrie', 'Punktsymmetrie', 'Monotonie', 'Wertemenge', 'Definitionsmenge', 'Asymptote', 'Polstelle', 'gemeinsame Punkte'],
+              ['power function', 'exponent', 'parabola', 'hyperbola', 'even function', 'odd function', 'symmetry', 'monotonicity', 'range', 'domain', 'asymptote', 'pole'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('trigonometrische-funktionen', L('Trigonometrische Funktionen', 'Trigonometric functions'), [
           {
@@ -757,8 +869,40 @@ export const mathematik: Subject = {
             ),
             thumb: 'growth',
           },
-          planned('logarithmus', L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'), [10, 12]),
-          planned('e-funktion', L('Die natürliche Exponentialfunktion', 'The natural exponential function'), [12, 12]),
+          {
+            id: 'logarithmus',
+            status: 'ready',
+            slug: L('logarithmus', 'logarithms'),
+            title: L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'),
+            summary: L(
+              '„b hoch wie viel ergibt y?“ – Graphen von bˣ und log_b x mit animierter Spiegelung an y = x, die Rechengesetze als Pfeile auf einer logarithmischen Skala und Exponentialgleichungen bˣ = c mit Basiswechsel lösen.',
+              '“b to the power of what gives y?” – graphs of bˣ and log_b x with an animated reflection in y = x, the laws of logarithms as arrows on a logarithmic scale, and solving exponential equations bˣ = c with the change of base.',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L1', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Logarithmus', 'Logarithmusfunktion', 'Umkehrfunktion', 'Basis', 'Exponentialgleichung', 'Basiswechsel', 'Produktregel', 'Quotientenregel', 'Potenzregel', 'Zehnerlogarithmus', 'natürlicher Logarithmus', 'lg', 'ln', 'Rechenschieber', 'Spiegelung an y = x'],
+              ['logarithm', 'logarithmic function', 'inverse function', 'base', 'exponential equation', 'change of base', 'product rule', 'quotient rule', 'power rule', 'common logarithm', 'natural logarithm', 'lg', 'ln', 'slide rule', 'reflection in y = x'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'e-funktion',
+            status: 'ready',
+            slug: L('natuerliche-exponentialfunktion', 'natural-exponential-function'),
+            title: L('Die natürliche Exponentialfunktion', 'The natural exponential function'),
+            summary: L(
+              'Warum gerade e? Für y = bˣ ist f′(x) : f(x) = ln b – nur bei b = e ist es 1 und die Graphen von f und f′ fallen zusammen. Dazu die Tangente an y = eˣ mit Steigungsdreieck und (1 + 1/n)ⁿ als Zinseszins.',
+              'Why e? For y = bˣ, f′(x) : f(x) = ln b – only for b = e is it 1, and the graphs of f and f′ coincide. Plus the tangent to y = eˣ with slope triangle and (1 + 1/n)ⁿ as compound interest.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L3', 'M-K5', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['e-Funktion', 'Exponentialfunktion', 'eulersche Zahl', 'e', 'Ableitung', 'Tangente', 'Steigungsdreieck', 'natürlicher Logarithmus', 'ln', 'Umkehrfunktion', 'Zinseszins', 'Grenzwert', 'Stammfunktion'],
+              ['exponential function', 'natural exponential', "Euler's number", 'e', 'derivative', 'tangent', 'slope triangle', 'natural logarithm', 'ln', 'inverse function', 'compound interest', 'limit', 'antiderivative'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
           planned('ganzrationale-funktionen', L('Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten', 'Polynomial functions: zeros, multiplicity and end behaviour'), [10, 11]),
@@ -817,7 +961,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'generic',
           },
-          planned('boxplot', L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'), [7, 7]),
+          {
+            id: 'boxplot',
+            status: 'ready',
+            slug: L('mittelwert-median-boxplot', 'mean-median-box-plot'),
+            title: L('Mittelwert, Median und Boxplot', 'Mean, median and box plots'),
+            summary: L(
+              'Datenpunkte auf dem Zahlenstrahl ziehen oder ergänzen: Rangliste, Median, Quartile, Boxplot und Mittelwert folgen live. Schritt für Schritt entsteht der Boxplot aus der geordneten Liste, im Vergleich stehen zwei Gruppen übereinander.',
+              'Drag or add data points on the number line: ordered list, median, quartiles, box plot and mean follow live. Step by step the box plot grows out of the ordered list; in comparison mode two groups are stacked.',
+            ),
+            grades: [7, 7],
+            kmk: ['M-L5', 'M-K4', 'M-K1', 'M-K6'],
+            keywords: L(
+              ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
+              ['box plot', 'box-and-whisker plot', 'median', 'mean', 'average', 'quartile', 'interquartile range', 'range', 'minimum', 'maximum', 'ordered list', 'outlier', 'summary statistics', 'comparing data'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
           {
@@ -837,7 +997,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'frequency',
           },
-          planned('baumdiagramm', L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'), [8, 10]),
+          {
+            id: 'baumdiagramm',
+            status: 'ready',
+            slug: L('baumdiagramm-pfadregeln', 'tree-diagram-path-rules'),
+            title: L('Mehrstufige Zufallsexperimente und Pfadregeln', 'Multi-stage experiments and path rules'),
+            summary: L(
+              'Kugeln aus einer Urne ziehen – mit oder ohne Zurücklegen. Vier Ansichten: Ziehen mit fliegenden Kugeln, beide Bäume nebeneinander, die Pfadregeln Schritt für Schritt (auch über das Gegenereignis) und eine Simulation, in der sich die relative Häufigkeit der Wahrscheinlichkeit nähert. Aufgebrauchte Farben und die leere Urne werden sichtbar.',
+              'Draw balls from an urn – with or without replacement. Four views: drawing with flying balls, both trees side by side, the path rules step by step (also via the complement) and a simulation in which the relative frequency approaches the probability. Used-up colours and the empty urn become visible.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L5', 'M-K4', 'M-K3', 'M-K2'],
+            keywords: L(
+              ['Baumdiagramm', 'Pfadregel', 'Produktregel', 'Summenregel', 'Urnenmodell', 'mit Zurücklegen', 'ohne Zurücklegen', 'mehrstufiges Zufallsexperiment', 'Ereignis', 'Gegenereignis', 'Simulation', 'relative Häufigkeit'],
+              ['tree diagram', 'path rule', 'product rule', 'sum rule', 'urn model', 'with replacement', 'without replacement', 'multi-stage experiment', 'event', 'complement', 'simulation', 'relative frequency'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'ziegenproblem',
             status: 'ready',
@@ -855,7 +1031,23 @@ export const mathematik: Subject = {
             ),
             thumb: 'doors',
           },
-          planned('geburtstagsproblem', L('Geburtstagsproblem simulieren', 'Simulating the birthday problem'), [10, 10]),
+          {
+            id: 'geburtstagsproblem',
+            status: 'ready',
+            slug: L('geburtstagsproblem', 'birthday-problem'),
+            title: L('Geburtstagsproblem simulieren', 'Simulating the birthday problem'),
+            summary: L(
+              'Vier Ansichten: eine Klasse im Jahreskalender mit leuchtenden gemeinsamen Tagen, 1000 simulierte Klassen mit Häufigkeitskurve im 95-%-Trichter, die Rechnung mit dem Gegenereignis Schritt für Schritt und alle Paare als Linien. Dazu gleicher Monat oder Wochentag und das Schubfachprinzip; ab 23 Personen ist ein gemeinsamer Geburtstag wahrscheinlicher als keiner.',
+              'Four views: one class in a year calendar with shared days lighting up, 1000 simulated classes with a frequency curve inside a 95 % funnel, the complement calculation step by step and all pairs as lines. Plus same month or weekday and the pigeonhole principle; from 23 people on a shared birthday is more likely than none.',
+            ),
+            grades: [10, 10],
+            kmk: ['M-L5', 'M-K3', 'M-K2', 'M-K1'],
+            keywords: L(
+              ['Geburtstagsproblem', 'Geburtstagsparadoxon', 'Gegenereignis', 'Simulation', 'Pfadregel', 'Laplace', 'relative Häufigkeit', 'Wahrscheinlichkeit', '23 Personen', 'Paare', 'Schubfachprinzip', 'Gesetz der großen Zahlen'],
+              ['birthday problem', 'birthday paradox', 'complement', 'simulation', 'path rule', 'Laplace', 'relative frequency', 'probability', '23 people', 'pairs', 'pigeonhole principle', 'law of large numbers'],
+            ),
+            thumb: 'generic',
+          },
           {
             id: 'monte-carlo-pi',
             status: 'ready',
@@ -875,8 +1067,40 @@ export const mathematik: Subject = {
           },
         ]),
         topic('verknuepfte-ereignisse', L('Verknüpfte Ereignisse und bedingte Wahrscheinlichkeit', 'Combined events and conditional probability'), [
-          planned('vierfeldertafel', L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'), [9, 11]),
-          planned('bedingte-wahrscheinlichkeit', L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'), [11, 11], { kmk: ['M-L5', 'M-K3'] }),
+          {
+            id: 'vierfeldertafel',
+            status: 'ready',
+            slug: L('vierfeldertafel-mengendiagramm', 'two-way-table-venn-diagram'),
+            title: L('Vierfeldertafel und Mengendiagramm', 'Two-way tables and Venn diagrams'),
+            summary: L(
+              'Vier Ansichten: Tafel, flächentreues Mengendiagramm und Baum synchron (Felder, Kreisteile und Äste antippen), eine Tafel zum Ergänzen aus Zeilen- und Spaltensummen, Baum und umgekehrter Baum aus P(A), P_A(B) und P_Ā(B) sowie das Einheitsquadrat mit ziehbaren Linien, Unabhängigkeit und ausgelosten Personen.',
+              'Four views: table, area-proportional Venn diagram and tree in sync (tap cells, parts of circles and branches), a table to complete from row and column totals, tree and reversed tree from P(A), P_A(B) and P_Ā(B), and the unit square with draggable lines, independence and randomly drawn people.',
+            ),
+            grades: [9, 11],
+            kmk: ['M-L5', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['Vierfeldertafel', 'Mengendiagramm', 'Venn-Diagramm', 'Schnittmenge', 'Vereinigungsmenge', 'Gegenereignis', 'Additionssatz', 'Baumdiagramm', 'umgekehrter Baum', 'bedingte Wahrscheinlichkeit', 'Unabhängigkeit', 'Randsumme', 'Einheitsquadrat', 'natürliche Häufigkeiten'],
+              ['two-way table', 'contingency table', 'Venn diagram', 'intersection', 'union', 'complement', 'addition rule', 'tree diagram', 'reversed tree', 'conditional probability', 'independence', 'marginal total', 'unit square', 'natural frequencies'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'bedingte-wahrscheinlichkeit',
+            status: 'ready',
+            slug: L('bedingte-wahrscheinlichkeit-medizinische-tests', 'conditional-probability-medical-tests'),
+            title: L('Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests', 'Conditional probability with medical tests'),
+            summary: L(
+              '1000 Personen färben sich nach krank/gesund und nach dem Testergebnis. Nur die positiv Getesteten bleiben übrig – und meist ist nur ein kleiner Teil davon wirklich krank. Mit Baum, umgekehrtem Baum, Formel von Bayes und Zweittest.',
+              '1000 people are coloured by disease status and test result. Only those who tested positive remain – and often only a small part of them really have the disease. With tree, reversed tree, Bayes’ formula and a second test.',
+            ),
+            grades: [11, 11],
+            kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K1'],
+            keywords: L(
+              ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
+              ['conditional probability', 'Bayes’ theorem', 'sensitivity', 'specificity', 'prevalence', 'predictive value', 'false positive', 'false negative', 'base rate fallacy', 'natural frequencies', 'reversed tree', 'medical test', 'rapid test'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
           {
@@ -896,8 +1120,40 @@ export const mathematik: Subject = {
             ),
             thumb: 'galton',
           },
-          planned('binomialverteilung', L('Binomialverteilung', 'Binomial distribution'), [12, 12]),
-          planned('signifikanztest', L('Einseitiger Signifikanztest: Fehler 1. und 2. Art', 'One-sided significance test: type I and II errors'), [12, 12]),
+          {
+            id: 'binomialverteilung',
+            status: 'ready',
+            slug: L('binomialverteilung', 'binomial-distribution'),
+            title: L('Binomialverteilung', 'Binomial distribution'),
+            summary: L(
+              'Histogramm von B(n; p) mit Erwartungswert und σ-Umgebungen: P(X = k), P(X ≤ k), P(X ≥ k) und P(a ≤ X ≤ b) direkt am Histogramm wählen, mit eingesetzten Werten rechnen, Treppenfunktion F(k) und Bernoulli-Ketten simulieren.',
+              'Histogram of B(n; p) with expected value and σ intervals: choose P(X = k), P(X ≤ k), P(X ≥ k) and P(a ≤ X ≤ b) right on the histogram, calculate with the values inserted, see the step function F(k) and simulate Bernoulli chains.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L5', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Binomialverteilung', 'Bernoulli-Kette', 'Bernoulli-Experiment', 'Binomialkoeffizient', 'kumulierte Verteilungsfunktion', 'Treppenfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Umgebung', 'Trefferwahrscheinlichkeit', 'höchstens', 'mindestens'],
+              ['binomial distribution', 'Bernoulli chain', 'Bernoulli trial', 'binomial coefficient', 'cumulative distribution function', 'step function', 'expected value', 'standard deviation', 'sigma interval', 'probability of success', 'at most', 'at least'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'signifikanztest',
+            status: 'ready',
+            slug: L('signifikanztest', 'significance-test'),
+            title: L('Einseitiger Signifikanztest: Fehler 1. und 2. Art', 'One-sided significance test: type I and II errors'),
+            summary: L(
+              'Histogramm unter H₀ mit automatisch bestimmtem Ablehnungsbereich, darunter die Verteilung für ein wahres p₁: Fehler 1. und 2. Art erscheinen als farbige Flächen. Stichproben ziehen, p₁ wandern lassen und an der Gütefunktion die Macht des Tests ablesen.',
+              'Histogram under H₀ with an automatically determined critical region, below it the distribution for a true p₁: type I and type II errors appear as coloured areas. Draw samples, let p₁ move and read off the power of the test from the power curve.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L5', 'M-K1', 'M-K3', 'M-K4'],
+            keywords: L(
+              ['Signifikanztest', 'Hypothesentest', 'Nullhypothese', 'Gegenhypothese', 'Signifikanzniveau', 'Ablehnungsbereich', 'Annahmebereich', 'kritischer Wert', 'Entscheidungsregel', 'Fehler 1. Art', 'Fehler 2. Art', 'Irrtumswahrscheinlichkeit', 'Gütefunktion', 'Binomialverteilung'],
+              ['significance test', 'hypothesis test', 'null hypothesis', 'alternative hypothesis', 'significance level', 'critical region', 'acceptance region', 'critical value', 'decision rule', 'type I error', 'type II error', 'power', 'power curve', 'binomial distribution'],
+            ),
+            thumb: 'generic',
+          },
           planned('normalverteilung', L('Normalverteilung', 'Normal distribution'), [13, 13], { uni: true }),
         ]),
       ],
@@ -994,14 +1250,110 @@ export const mathematik: Subject = {
       kmk: ['M-L4', 'M-K4', 'M-K5'],
       topics: [
         topic('vektoren-raum', L('Vektoren im Raum', 'Vectors in space'), [
-          planned('koordinaten-3d', L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'), [12, 12]),
-          planned('vektoren-3d', L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'), [12, 12]),
-          planned('skalar-vektorprodukt', L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'), [12, 12]),
+          {
+            id: 'koordinaten-3d',
+            status: 'ready',
+            slug: L('raeumliches-koordinatensystem', '3d-coordinate-system'),
+            title: L('Punkte und Körper im räumlichen Koordinatensystem', 'Points and solids in 3D coordinates'),
+            summary: L(
+              'Sechs Ansichten: Punkt mit Koordinatenweg, Projektionen und Spiegelpunkt (Koordinatenebenen und Achsen leuchten auf), Quader mit Raumdiagonale, Abstand zweier Punkte mit zweimal Pythagoras, Punkte finden, Grundriss–Aufriss–Seitenriss mit Rätsel und die acht Oktanten mit Zufallspunkten – drehbar und mit Blick von oben, vorn und von der Seite.',
+              'Six views: a point with coordinate path, projections and mirror point (coordinate planes and axes light up), a cuboid with space diagonal, the distance between two points with Pythagoras twice, a find-the-point task, top/front/side views with a riddle and the eight octants with random points – rotatable, with views from above, the front and the side.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['räumliches Koordinatensystem', 'Koordinaten', 'Punkt im Raum', 'x₁x₂-Ebene', 'Koordinatenebene', 'Oktant', 'Projektion', 'Quader', 'Eckpunkte', 'Raumdiagonale', 'Abstand vom Ursprung', 'Schrägbild'],
+              ['3D coordinate system', 'coordinates', 'point in space', 'coordinate plane', 'octant', 'projection', 'cuboid', 'corners', 'space diagonal', 'distance from the origin'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'vektoren-3d',
+            status: 'ready',
+            slug: L('vektoren-addieren-vervielfachen', 'adding-and-scaling-vectors'),
+            title: L('Vektoren addieren und vervielfachen (3D)', 'Adding and scaling vectors (3D)'),
+            summary: L(
+              'Vektorpfeile im Raum mit ziehbaren Spitzen: Spitze an Fuß und Parallelogramm, Gegenvektor und Differenz, Vielfache, Linearkombinationen in einer Ebene und der Verbindungsvektor AB = B − A. Dazu: eine Linearkombination finden (auch „unmöglich“, wenn das Ziel nicht in der Ebene liegt), Vektorzüge im Spat, Länge und Einheitsvektor (ganzzahlige Vektoren der Länge 3 finden), Schwerpunkt und Teilpunkt sowie ein Zufallsweg aus vielen Einheitsschritten – mit Rechnung in Spaltenschreibweise.',
+              'Vector arrows in space with draggable tips: tip to tail and the parallelogram, opposite vector and difference, multiples, linear combinations in a plane and the connecting vector AB = B − A. Plus: finding a linear combination (also “impossible” if the target is not in the plane), vector paths in a parallelepiped, length and unit vector (find integer vectors of length 3), centroid and dividing point, and a random walk of many unit steps – with the calculation in column form.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Vektor', 'Vektoraddition', 'Vektorsubtraktion', 'Gegenvektor', 'Vielfaches', 'S-Multiplikation', 'Linearkombination', 'Verbindungsvektor', 'Ortsvektor', 'Mittelpunkt', 'Betrag', 'Parallelogramm', 'kollinear'],
+              ['vector', 'vector addition', 'vector subtraction', 'opposite vector', 'scalar multiple', 'linear combination', 'connecting vector', 'position vector', 'midpoint', 'magnitude', 'parallelogram', 'collinear'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'skalar-vektorprodukt',
+            status: 'ready',
+            slug: L('skalarprodukt-vektorprodukt', 'dot-and-cross-product'),
+            title: L('Skalarprodukt und Vektorprodukt', 'Dot product and cross product'),
+            summary: L(
+              'Zwei Vektoren im Raum: Winkel und Projektion über das Skalarprodukt, b drehen mit cos- und sin-Verlauf, das Vektorprodukt Schritt für Schritt als Normalenvektor mit Parallelogrammfläche, das Spatprodukt als Volumen mit Scherung nach Cavalieri – und Entdeckungsaufgaben, die die ganze Lösungsmenge zeigen.',
+              'Two vectors in space: angle and projection from the dot product, rotating b with the cos and sin curves, the cross product step by step as a normal vector with the parallelogram area, the triple product as a volume with Cavalieri shear – and discovery tasks that reveal the whole solution set.',
+            ),
+            grades: [12, 12],
+            kmk: ['M-L4', 'M-L2', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Skalarprodukt', 'Vektorprodukt', 'Kreuzprodukt', 'Spatprodukt', 'Winkel zwischen Vektoren', 'orthogonal', 'senkrecht', 'Projektion', 'Normalenvektor', 'Parallelogrammfläche', 'Dreiecksfläche', 'Spat', 'Volumen', 'Rechte-Hand-Regel'],
+              ['dot product', 'scalar product', 'cross product', 'vector product', 'triple product', 'angle between vectors', 'orthogonal', 'perpendicular', 'projection', 'normal vector', 'area of a parallelogram', 'triangle area', 'parallelepiped', 'volume', 'right-hand rule'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
-          planned('geraden-ebenen', L('Geraden und Ebenen im Raum', 'Lines and planes in space'), [12, 13]),
-          planned('lage-abstaende', L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'), [13, 13]),
-          planned('kugeln', L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'), [13, 13]),
+          {
+            id: 'geraden-ebenen',
+            status: 'ready',
+            slug: L('geraden-ebenen-raum', 'lines-and-planes-in-space'),
+            title: L('Geraden und Ebenen im Raum', 'Lines and planes in space'),
+            summary: L(
+              'Ein Punkt X läuft auf der Geraden x = a + t · u, die Pfeilkette zeigt, wie er entsteht; Spurpunkte und Punktprobe. Ebenen in Parameterform mit Parametergitter, Umrechnung in Normalen- und Koordinatenform Schritt für Schritt, Spurpunkte und Spurdreieck – drehbar in 3D.',
+              'A point X moves along the line x = a + t · u while the arrow chain shows how it arises; trace points and point test. Planes in parametric form with a parameter grid, step-by-step conversion to normal and coordinate form, trace points and trace triangle – rotatable in 3D.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Gerade', 'Geradengleichung', 'Parameterform', 'Stützvektor', 'Richtungsvektor', 'Spurpunkt', 'Punktprobe', 'Ebene', 'Spannvektor', 'Normalenvektor', 'Normalenform', 'Koordinatenform', 'Spurgerade', 'Spurdreieck', 'Achsenabschnitt', 'Vektorprodukt'],
+              ['line', 'equation of a line', 'parametric form', 'position vector', 'direction vector', 'trace point', 'point test', 'plane', 'spanning vector', 'normal vector', 'normal form', 'coordinate form', 'trace line', 'trace triangle', 'intercept', 'cross product'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'lage-abstaende',
+            status: 'ready',
+            slug: L('lagebeziehungen-abstaende', 'relative-positions-distances'),
+            title: L('Lagebeziehungen und Abstände im Raum', 'Relative positions and distances in space'),
+            summary: L(
+              'Zwei Geraden, Gerade und Ebene oder zwei Ebenen im drehbaren 3D-Bild: Ein Entscheidungsbaum führt zu identisch, parallel, schneidend oder windschief, dazu Schnittpunkt, Schnittgerade, Schnittwinkel und Abstände – bis zum animierten Lot mit Hesse-Normalform und Spiegelpunkt.',
+              'Two lines, a line and a plane or two planes in a rotatable 3D picture: a decision tree leads to identical, parallel, intersecting or skew, with point and line of intersection, angles and distances – up to an animated perpendicular with the Hesse normal form and a mirror point.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Lagebeziehung', 'windschief', 'parallel', 'identisch', 'Schnittpunkt', 'Durchstoßpunkt', 'Schnittgerade', 'Schnittwinkel', 'Abstand', 'Hesse-Normalform', 'Lotfußpunkt', 'Lot', 'Spiegelpunkt', 'Normalenvektor', 'Koordinatenform'],
+              ['relative position', 'skew lines', 'parallel', 'identical', 'point of intersection', 'line of intersection', 'angle of intersection', 'distance', 'Hesse normal form', 'foot of the perpendicular', 'perpendicular', 'mirror point', 'normal vector', 'coordinate form'],
+            ),
+            thumb: 'generic',
+          },
+          {
+            id: 'kugeln',
+            status: 'ready',
+            slug: L('kugeln-geraden-ebenen', 'spheres-lines-planes'),
+            title: L('Kugeln, Geraden und Ebenen', 'Spheres, lines and planes'),
+            summary: L(
+              'Eine Glaskugel im Raum: Kugelgleichung und Punktprobe, eine Ebene schneidet im Schnittkreis (ρ² + d² = r²), eine Gerade als Passante, Tangente oder Sekante über die Diskriminante, und die Tangentialebene in einem ziehbaren Kugelpunkt.',
+              'A glass sphere in space: equation of the sphere and point test, a plane cutting a circle of intersection (ρ² + d² = r²), a line as passing line, tangent or secant via the discriminant, and the tangent plane at a draggable point on the sphere.',
+            ),
+            grades: [13, 13],
+            kmk: ['M-L4', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Kugel', 'Kugelgleichung', 'Mittelpunkt', 'Radius', 'Punktprobe', 'Schnittkreis', 'Kugel und Ebene', 'Kugel und Gerade', 'Sekante', 'Tangente', 'Passante', 'Diskriminante', 'Tangentialebene', 'Berührpunkt', 'Abstand Punkt Ebene', 'Großkreis'],
+              ['sphere', 'equation of a sphere', 'centre', 'radius', 'point test', 'circle of intersection', 'sphere and plane', 'sphere and line', 'secant', 'tangent', 'passing line', 'discriminant', 'tangent plane', 'point of contact', 'distance point plane', 'great circle'],
+            ),
+            thumb: 'generic',
+          },
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
           planned('matrix-abbildungen', L('Matrizen als lineare Abbildungen', 'Matrices as linear maps'), [12, 14], { uni: true }),
