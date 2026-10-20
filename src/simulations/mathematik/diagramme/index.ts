@@ -1813,7 +1813,6 @@ export default defineSimulation({
     function trickText(trick: Trick, honest: boolean): string {
       const v = shown.values;
       const cats = tx().long.map((l) => T(l));
-      const iMin = v.indexOf(Math.min(...v));
       const iMax = v.indexOf(Math.max(...v));
       const cutV = effectiveCut(v, shown.cut);
       switch (trick) {
