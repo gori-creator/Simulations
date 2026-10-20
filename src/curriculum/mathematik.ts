@@ -1591,14 +1591,14 @@ export const mathematik: Subject = {
             slug: L('extremwertprobleme', 'optimisation-problems'),
             title: L('Extremwertprobleme', 'Optimisation problems'),
             summary: L(
-              'Schachtel aus Karton, Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion: Bild und Graph der Zielfunktion bewegen sich gemeinsam, der Lösungsweg führt von der Nebenbedingung über die Ableitung zum Optimum.',
-              'Box from a sheet of card, can with the smallest surface, rectangle under an exponential: the picture and the graph of the objective function move together, and the solution leads from the constraint via the derivative to the optimum.',
+              'Schachtel aus Karton (in 3D gefaltet), Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion, Zylinder im Kegel und Rettungsschwimmer: Objekt, Zielfunktion und Ableitung bewegen sich gemeinsam; „Optimum suchen“ führt vom Probieren über Z′ = 0 und den Randvergleich zum Optimum.',
+              'Box folded in 3D from a sheet of card, can with the smallest surface, rectangle under an exponential, cylinder in a cone and lifeguard: object, objective function and derivative move together; “Find the optimum” leads from trying via Z′ = 0 and the boundary check to the optimum.',
             ),
             grades: [13, 13],
             kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
             keywords: L(
-              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte'],
-              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values'],
+              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Strahlensatz', 'Rettungsschwimmer', 'Brechungsgesetz', 'Newton-Verfahren'],
+              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'intercept theorem', 'lifeguard', 'law of refraction', "Newton's method"],
             ),
             thumb: 'generic',
           },
