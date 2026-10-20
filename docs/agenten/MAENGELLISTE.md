@@ -40,3 +40,13 @@ Der kurze Text direkt unter der Überschrift einer Simulation ist oft nicht vers
 
 **Vermutete Quelle (noch zu prüfen):** das Feld `summary` im Lehrplan (`src/curriculum/*.ts`), das vermutlich auch auf den Karten erscheint.
 **Ziel:** Bei allen Simulationen einfacher formulieren: kurze Sätze, Alltagssprache, Fachbegriffe nur, wo nötig, und für die jeweilige Klassenstufe verständlich. DE und EN gleichermaßen.
+
+### 4. Satz „Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.“ überall streichen
+Der Satz soll überall raus.
+
+**Fundstellen (geprüft):**
+- Im Lernmaterial der Simulationen (`src/content/simulations/`) steht er 126-mal als „*Nur als Anregung gedacht – Sie kennen Ihre Klasse am besten.*“ und 3-mal als „*Nur Vorschläge – Sie kennen Ihre Klasse am besten.*“.
+- Auf Englisch steht er 129-mal als „*Just suggestions – you know your class best.*“.
+- Einmal steht er als Halbsatz in einer Aufzählung („… – als Anregung gedacht, denn Sie kennen Ihre Klasse am besten.“). Dort nur den Halbsatz kürzen.
+
+**Ziel:** Alle Vorkommen in DE und EN entfernen. Außerdem in `docs/NEUE-SIMULATION.md` bzw. der Vorlage nachsehen, damit neue Simulationen den Satz nicht wieder mitbringen.
