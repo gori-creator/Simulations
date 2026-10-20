@@ -37,7 +37,7 @@ Klickt man auf die allermeisten Karten, öffnet sich die Simulationsseite unten 
 
 ## Simulationsseiten
 
-### 3. Beschreibungstext unter der Überschrift ist oft schwer verständlich
+### 3. ✅ Beschreibungstext unter der Überschrift ist oft schwer verständlich
 Der kurze Text direkt unter der Überschrift einer Simulation ist oft nicht verständlich genug.
 
 **Vermutete Quelle (noch zu prüfen):** das Feld `summary` im Lehrplan (`src/curriculum/*.ts`), das vermutlich auch auf den Karten erscheint.
