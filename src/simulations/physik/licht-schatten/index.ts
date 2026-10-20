@@ -634,7 +634,7 @@ export default defineSimulation({
           ctx.readout('size', (sh.umbra ? tr('sizeWide', { u: fmt.num(core, 1), o: fmt.num(out, 1) }) : tr('sizeWideNo', { o: fmt.num(out, 1) })) + (out > 2 * SCREEN_H ? ctx.t('larger') : ''));
           ctx.readout('law', {
             html:
-              `${v('S')}<sub>Kern</sub> = ${frac(`${v('G')} · ${v('b')} − ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))} ≈ ${cm(core)}` +
+              `${v('S')}<sub>${lang === 'de' ? 'Kern' : 'umbra'}</sub> =${frac(`${v('G')} · ${v('b')} − ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))} ≈ ${cm(core)}` +
               (core <= 0 ? (lang === 'de' ? ' → kein Kernschatten' : ' → no umbra') : '') +
               `<br>${v('S')}<sub>${lang === 'de' ? 'außen' : 'outer'}</sub> = ${frac(`${v('G')} · ${v('b')} + ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))} ≈ ${cm(out)}`,
           });
