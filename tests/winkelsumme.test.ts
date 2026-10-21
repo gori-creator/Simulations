@@ -279,6 +279,44 @@ describe('Modell: Innenwinkelsumme – Hilfsfunktionen', () => {
     expect(sum(roundToSum([60.0333, 60.0333, 59.9334], 1, 180))).toBeCloseTo(180, 9);
   });
 
+  it('Prüfwerte: Startdreieck A(2|1,5), B(13,5|2,5), C(8|10,5) → 51,3° + 60,5° + 68,2° = 180°', () => {
+    const a = triangleAngles([2, 1.5], [13.5, 2.5], [8, 10.5])!;
+    // α = arctan(9/6) − arctan(1/11,5) ≈ 56,31° − 4,97° = 51,34°
+    expect(a[0]).toBeCloseTo(51.34, 2);
+    expect(a[1]).toBeCloseTo(60.46, 2);
+    expect(roundToSum(a, 1, 180)).toEqual([51.3, 60.5, 68.2]);
+  });
+
+  it('summentreue Rundung, wo einfaches Runden 180,1° ergäbe: C(0|5)', () => {
+    const a = triangleAngles([2, 1.5], [13.5, 2.5], [0, 5])!;
+    const naive = a.map((v) => Math.round(v * 10) / 10);
+    expect(sum(naive)).toBeCloseTo(180.1, 9);
+    const r = roundToSum(a, 1, 180);
+    expect(sum(r)).toBeCloseTo(180, 9);
+    expect(r).toEqual([114.8, 15.4, 49.8]);
+    // ganzzahlig: 59,6° + 60,2° + 60,2° → 60° + 60° + 60°
+    expect(roundToSum([59.6, 60.2, 60.2], 0, 180)).toEqual([60, 60, 60]);
+    // Außenwinkel eines nicht konvexen Vierecks (einer negativ) summieren sich zu 360,0°
+    const e = exteriorAngles([
+      [2, 1],
+      [14, 1],
+      [8, 9],
+      [8, 4.5],
+    ])!;
+    expect(sum(roundToSum(e, 1, 360))).toBeCloseTo(360, 9);
+  });
+
+  it('nicht konvexes Sechseck aus dem Beispiel: Summe 720°, Innenwinkel bei D über 180°', () => {
+    const P = parsePoints('2,1;14,1;14,11;8,6.5;2,11;4,6')!;
+    const a = interiorAngles(P)!;
+    expect(classify(P)).toBe('concave');
+    expect(sum(a)).toBeCloseTo(720, 9);
+    expect(reflexVertices(P)).toEqual([3, 5]);
+    // D(8|6,5): Seiten nach C (+6|+4,5) und E (−6|+4,5); außen liegen 2 · arctan(6 : 4,5) ≈ 106,26°, innen 360° − 106,26° ≈ 253,74°
+    expect(a[3]).toBeCloseTo(360 - 2 * ((Math.atan(6 / 4.5) * 180) / Math.PI), 9);
+    expect(triangulate(P)!.tris).toHaveLength(4);
+  });
+
   it('liest und schreibt Eckenlisten', () => {
     const P = parsePoints('3,2;11,1.5;13.5,6.5')!;
     expect(P).toEqual([
