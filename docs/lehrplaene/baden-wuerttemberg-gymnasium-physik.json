@@ -1,0 +1,1288 @@
+{
+  "id": "baden-wuerttemberg-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "baden-wuerttemberg-gymnasium",
+    "en": "baden-wuerttemberg-gymnasium"
+  },
+  "state": {
+    "de": "Baden-Württemberg",
+    "en": "Baden-Württemberg"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Bildungsplan",
+  "grades": [
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Abschnitt 3.1 gilt für die Doppelklassenstufe 7/8; derselbe Inhalt steht auch bei Klasse 8. Simulationen stehen nur dort, wo ihre Klassenstufe passt. Die Abschnitte „Einführung in die Physik“ (3.1.2–3.1.4) gehören laut Bildungsplan zur Einführung in Klasse 7.",
+        "en": "Section 3.1 covers the double grade 7/8; the same content is also listed under grade 8. Simulations are listed only where their grade range fits. According to the curriculum, the “Introduction to physics” sections (3.1.2–3.1.4) belong to the introduction in grade 7."
+      },
+      "units": [
+        {
+          "code": "3.1.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik",
+            "en": "Ways of thinking and working in physics"
+          },
+          "summary": {
+            "de": "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
+            "en": "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units."
+          }
+        },
+        {
+          "code": "3.1.2",
+          "title": {
+            "de": "Einführung in die Physik: Akustik",
+            "en": "Introduction to physics: acoustics"
+          },
+          "summary": {
+            "de": "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
+            "en": "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise."
+          }
+        },
+        {
+          "code": "3.1.3",
+          "title": {
+            "de": "Einführung in die Physik: Messgeräte entwickeln",
+            "en": "Introduction to physics: developing measuring instruments"
+          },
+          "summary": {
+            "de": "Wasser beim Erwärmen und Abkühlen beobachten, die Celsiusskala verstehen und selbst ein Messgerät mit Skala bauen und beurteilen.",
+            "en": "Observing water as it is heated and cooled, understanding the Celsius scale, and building and judging a measuring device with its own scale."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "3.1.4",
+          "title": {
+            "de": "Einführung in die Physik: Energie effizient nutzen",
+            "en": "Introduction to physics: using energy efficiently"
+          },
+          "summary": {
+            "de": "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
+            "en": "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy."
+          }
+        },
+        {
+          "code": "3.1.5",
+          "title": {
+            "de": "Mechanik: Kinematik",
+            "en": "Mechanics: kinematics"
+          },
+          "summary": {
+            "de": "Bewegungen in Worten und mit s-t-Diagrammen beschreiben, Geschwindigkeit als Strecke pro Zeit berechnen und Folgerungen für den Straßenverkehr ziehen.",
+            "en": "Describing motion in words and with distance–time graphs, calculating speed as distance over time and drawing conclusions for road safety."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ]
+        },
+        {
+          "code": "3.1.6",
+          "title": {
+            "de": "Mechanik: Dynamik",
+            "en": "Mechanics: dynamics"
+          },
+          "summary": {
+            "de": "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
+            "en": "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line."
+          },
+          "simulations": [
+            "hookesches-gesetz",
+            "hebelgesetz"
+          ]
+        },
+        {
+          "code": "3.1.7",
+          "title": {
+            "de": "Optik",
+            "en": "Optics"
+          },
+          "summary": {
+            "de": "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
+            "en": "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion"
+          ]
+        },
+        {
+          "code": "3.1.8",
+          "title": {
+            "de": "Magnetismus",
+            "en": "Magnetism"
+          },
+          "summary": {
+            "de": "Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld.",
+            "en": "Investigating magnets, poles and magnetic fields experimentally and describing them with field lines of bar and horseshoe magnets, including the Earth’s magnetic field."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Abschnitt 3.1 gilt für die Doppelklassenstufe 7/8; derselbe Inhalt steht auch bei Klasse 7. Simulationen stehen nur dort, wo ihre Klassenstufe passt. Die Abschnitte „Einführung in die Physik“ (3.1.2–3.1.4) gehören laut Bildungsplan zur Einführung in Klasse 7.",
+        "en": "Section 3.1 covers the double grade 7/8; the same content is also listed under grade 7. Simulations are listed only where their grade range fits. According to the curriculum, the “Introduction to physics” sections (3.1.2–3.1.4) belong to the introduction in grade 7."
+      },
+      "units": [
+        {
+          "code": "3.1.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik",
+            "en": "Ways of thinking and working in physics"
+          },
+          "summary": {
+            "de": "Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen.",
+            "en": "Distinguishing observation from explanation, testing physical statements with experiments, using models and knowing the SI system of units."
+          }
+        },
+        {
+          "code": "3.1.2",
+          "title": {
+            "de": "Einführung in die Physik: Akustik",
+            "en": "Introduction to physics: acoustics"
+          },
+          "summary": {
+            "de": "Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten.",
+            "en": "Producing, transmitting and hearing sound; linking loudness and pitch to amplitude and frequency of an oscillation, and judging the risk of hearing damage from noise."
+          },
+          "simulations": [
+            "wellen-ausbreitung"
+          ]
+        },
+        {
+          "code": "3.1.3",
+          "title": {
+            "de": "Einführung in die Physik: Messgeräte entwickeln",
+            "en": "Introduction to physics: developing measuring instruments"
+          },
+          "summary": {
+            "de": "Wasser beim Erwärmen und Abkühlen beobachten, die Celsiusskala verstehen und selbst ein Messgerät mit Skala bauen und beurteilen.",
+            "en": "Observing water as it is heated and cooled, understanding the Celsius scale, and building and judging a measuring device with its own scale."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "3.1.4",
+          "title": {
+            "de": "Einführung in die Physik: Energie effizient nutzen",
+            "en": "Introduction to physics: using energy efficiently"
+          },
+          "summary": {
+            "de": "Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten.",
+            "en": "Basic properties of energy and energy chains; investigating conduction, convection and thermal radiation, testing insulating materials and deriving rules for saving energy."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3.1.5",
+          "title": {
+            "de": "Mechanik: Kinematik",
+            "en": "Mechanics: kinematics"
+          },
+          "summary": {
+            "de": "Bewegungen in Worten und mit s-t-Diagrammen beschreiben, Geschwindigkeit als Strecke pro Zeit berechnen und Folgerungen für den Straßenverkehr ziehen.",
+            "en": "Describing motion in words and with distance–time graphs, calculating speed as distance over time and drawing conclusions for road safety."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ]
+        },
+        {
+          "code": "3.1.6",
+          "title": {
+            "de": "Mechanik: Dynamik",
+            "en": "Mechanics: dynamics"
+          },
+          "summary": {
+            "de": "Kräfte ändern Bewegungen und verformen Körper: Trägheit, Hooke’sches Gesetz, Masse und Gewichtskraft sowie Kräftegleichgewicht und resultierende Kraft in einer Richtung.",
+            "en": "Forces change motion and deform bodies: inertia, Hooke’s law, mass and weight, and balanced forces and resultant force along one line."
+          },
+          "simulations": [
+            "hookesches-gesetz",
+            "hebelgesetz"
+          ]
+        },
+        {
+          "code": "3.1.7",
+          "title": {
+            "de": "Optik",
+            "en": "Optics"
+          },
+          "summary": {
+            "de": "Sehen, Lichtausbreitung im Strahlenmodell, Schatten, Mondphasen und Finsternisse; Reflexion, Brechung, Sammellinse und die Zerlegung von weißem Licht im Spektrum.",
+            "en": "Vision, propagation of light in the ray model, shadows, moon phases and eclipses; reflection, refraction, the converging lens and splitting white light into a spectrum."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3.1.8",
+          "title": {
+            "de": "Magnetismus",
+            "en": "Magnetism"
+          },
+          "summary": {
+            "de": "Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld.",
+            "en": "Investigating magnets, poles and magnetic fields experimentally and describing them with field lines of bar and horseshoe magnets, including the Earth’s magnetic field."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Abschnitt 3.2 gilt für die Doppelklassenstufe 9/10; derselbe Inhalt steht auch bei Klasse 10. Simulationen stehen nur dort, wo ihre Klassenstufe passt.",
+        "en": "Section 3.2 covers the double grade 9/10; the same content is also listed under grade 10. Simulations are listed only where their grade range fits."
+      },
+      "units": [
+        {
+          "code": "3.2.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik",
+            "en": "Ways of thinking and working in physics"
+          },
+          "summary": {
+            "de": "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
+            "en": "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system."
+          }
+        },
+        {
+          "code": "3.2.2",
+          "title": {
+            "de": "Energie",
+            "en": "Energy"
+          },
+          "summary": {
+            "de": "Energieformen, Energieübertragung und Energieentwertung; Lageenergie, Leistung und Wirkungsgrad berechnen und sorgsamen Umgang mit Energie bewerten.",
+            "en": "Forms of energy, energy transfer and dissipation; calculating potential energy, power and efficiency and evaluating careful use of energy."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3.2.3",
+          "title": {
+            "de": "Grundgrößen der Elektrizitätslehre",
+            "en": "Basic quantities of electricity"
+          },
+          "summary": {
+            "de": "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
+            "en": "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current."
+          },
+          "simulations": [
+            "reihe-parallel",
+            "einfacher-stromkreis"
+          ]
+        },
+        {
+          "code": "3.2.4",
+          "title": {
+            "de": "Grundlagen der Wärmelehre",
+            "en": "Basics of thermodynamics"
+          },
+          "summary": {
+            "de": "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
+            "en": "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications."
+          },
+          "simulations": [
+            "gasgesetze",
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "3.2.5",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
+            "en": "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply."
+          },
+          "simulations": [
+            "ohmsches-gesetz",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "3.2.6",
+          "title": {
+            "de": "Wärmelehre und Klimaphysik",
+            "en": "Thermodynamics and climate physics"
+          },
+          "summary": {
+            "de": "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
+            "en": "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy."
+          }
+        },
+        {
+          "code": "3.2.7",
+          "title": {
+            "de": "Struktur der Materie",
+            "en": "Structure of matter"
+          },
+          "summary": {
+            "de": "Aufbau des Atoms und Isotope, Radioaktivität mit α-, β- und γ-Strahlung und Halbwertszeit, Kernspaltung und Kernfusion sowie Nutzen, Risiken und Strahlenschutz.",
+            "en": "Structure of the atom and isotopes, radioactivity with alpha, beta and gamma radiation and half-life, nuclear fission and fusion, and benefits, risks and radiation protection."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Abschnitt 3.2 gilt für die Doppelklassenstufe 9/10; derselbe Inhalt steht auch bei Klasse 9. Simulationen stehen nur dort, wo ihre Klassenstufe passt.",
+        "en": "Section 3.2 covers the double grade 9/10; the same content is also listed under grade 9. Simulations are listed only where their grade range fits."
+      },
+      "units": [
+        {
+          "code": "3.2.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik",
+            "en": "Ways of thinking and working in physics"
+          },
+          "summary": {
+            "de": "Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern.",
+            "en": "Distinguishing observation from explanation, testing statements experimentally, using models such as the atomic model and explaining the importance of the SI system."
+          }
+        },
+        {
+          "code": "3.2.2",
+          "title": {
+            "de": "Energie",
+            "en": "Energy"
+          },
+          "summary": {
+            "de": "Energieformen, Energieübertragung und Energieentwertung; Lageenergie, Leistung und Wirkungsgrad berechnen und sorgsamen Umgang mit Energie bewerten.",
+            "en": "Forms of energy, energy transfer and dissipation; calculating potential energy, power and efficiency and evaluating careful use of energy."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3.2.3",
+          "title": {
+            "de": "Grundgrößen der Elektrizitätslehre",
+            "en": "Basic quantities of electricity"
+          },
+          "summary": {
+            "de": "Bauteile und Schaltpläne, Leiter und Nichtleiter, Stromstärke und Spannung messen, Regeln in Reihen- und Parallelschaltung sowie elektrische Leistung, Wirkungen und Gefahren des Stroms.",
+            "en": "Components and circuit diagrams, conductors and insulators, measuring current and voltage, rules in series and parallel circuits, and electrical power, effects and dangers of current."
+          }
+        },
+        {
+          "code": "3.2.4",
+          "title": {
+            "de": "Grundlagen der Wärmelehre",
+            "en": "Basics of thermodynamics"
+          },
+          "summary": {
+            "de": "Wärmeausdehnung und Dichte, Celsius- und Kelvinskala mit absolutem Nullpunkt und die drei Arten des Wärmetransports mit technischen Anwendungen.",
+            "en": "Thermal expansion and density, Celsius and Kelvin scales with absolute zero, and the three types of heat transfer with technical applications."
+          },
+          "simulations": [
+            "gasgesetze"
+          ]
+        },
+        {
+          "code": "3.2.5",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
+            "en": "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "3.2.6",
+          "title": {
+            "de": "Wärmelehre und Klimaphysik",
+            "en": "Thermodynamics and climate physics"
+          },
+          "summary": {
+            "de": "Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen.",
+            "en": "Calculating heating energy with specific heat capacity and evaluating the natural and man-made greenhouse effect, tipping elements and ways of supplying energy."
+          }
+        },
+        {
+          "code": "3.2.7",
+          "title": {
+            "de": "Struktur der Materie",
+            "en": "Structure of matter"
+          },
+          "summary": {
+            "de": "Aufbau des Atoms und Isotope, Radioaktivität mit α-, β- und γ-Strahlung und Halbwertszeit, Kernspaltung und Kernfusion sowie Nutzen, Risiken und Strahlenschutz.",
+            "en": "Structure of the atom and isotopes, radioactivity with alpha, beta and gamma radiation and half-life, nuclear fission and fusion, and benefits, risks and radiation protection."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Klasse 11 ist im G9 eine eigene Stufe vor der Kursstufe.",
+        "en": "In the nine-year Gymnasium, grade 11 is a separate stage before the course phase."
+      },
+      "units": [
+        {
+          "code": "3.3.1",
+          "title": {
+            "de": "Mechanik",
+            "en": "Mechanics"
+          },
+          "summary": {
+            "de": "Bewegungen mit Ort, Geschwindigkeit und Beschleunigung beschreiben, mit Newtons Prinzipien und dem Impuls erklären und mit Energie- und Impulserhaltung berechnen.",
+            "en": "Describing motion with position, velocity and acceleration, explaining it with Newton’s laws and momentum, and calculating it with conservation of energy and momentum."
+          },
+          "parts": [
+            {
+              "code": "3.3.1.1",
+              "title": {
+                "de": "Kinematik",
+                "en": "Kinematics"
+              },
+              "summary": {
+                "de": "Gleichförmige und gleichmäßig beschleunigte Bewegungen mit Gleichungen und s-t-, v-t- und a-t-Diagrammen beschreiben; zusammengesetzte Bewegungen wie den waagerechten Wurf und die gleichförmige Kreisbewegung untersuchen.",
+                "en": "Describing uniform and uniformly accelerated motion with equations and s–t, v–t and a–t graphs; investigating combined motion such as horizontal projection and uniform circular motion."
+              },
+              "simulations": [
+                "schiefer-wurf",
+                "kreisbewegung",
+                "bewegungsdiagramme",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "3.3.1.2",
+              "title": {
+                "de": "Dynamik",
+                "en": "Dynamics"
+              },
+              "summary": {
+                "de": "Kräfte beliebiger Richtung zusammensetzen (z. B. schiefe Ebene), Newton’sche Prinzipien mit F = m·a und Impuls anwenden, Fall mit Luftwiderstand, waagerechten Wurf und Zentripetalkraft erklären.",
+                "en": "Combining forces in any direction (e.g. inclined plane), applying Newton’s laws with F = m·a and momentum, explaining fall with air resistance, horizontal projection and centripetal force."
+              },
+              "simulations": [
+                "kreisbewegung",
+                "schiefer-wurf",
+                "kraefteaddition",
+                "schiefe-ebene",
+                "freier-fall",
+                "planetenbahnen"
+              ]
+            },
+            {
+              "code": "3.3.1.3",
+              "title": {
+                "de": "Erhaltungssätze",
+                "en": "Conservation laws"
+              },
+              "summary": {
+                "de": "Kinetische, potenzielle und Spannenergie berechnen, Energiebilanzen mit dem Energieerhaltungssatz aufstellen und Stöße und Rückstoß mit dem Impulserhaltungssatz rechnen.",
+                "en": "Calculating kinetic, potential and elastic energy, setting up energy balances with conservation of energy, and calculating collisions and recoil with conservation of momentum."
+              },
+              "simulations": [
+                "stoesse",
+                "energieerhaltung"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Kursstufe (Klassen 12/13); derselbe Inhalt steht auch bei Klasse 13. In diesem Eintrag stehen beide Basisfächer (3.4 Schwerpunkt Quantenphysik, 3.5 Schwerpunkt Astrophysik) und das Leistungsfach (3.6, „(nur Leistungsfach)“); die Fassung steht jeweils in der Überschrift.",
+        "en": "Course phase (grades 12/13); the same content is also listed under grade 13. This entry contains both basic courses (3.4 focus on quantum physics, 3.5 focus on astrophysics) and the advanced course (3.6, “advanced course only”); the variant is given in each heading."
+      },
+      "units": [
+        {
+          "code": "3.4.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Ways of thinking and working in physics (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
+            "en": "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant."
+          }
+        },
+        {
+          "code": "3.4.2",
+          "title": {
+            "de": "Elektromagnetische Felder (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Electromagnetic fields (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Kräfte auf Ladungen und Leiter, Kondensator und Spule sowie die elektromagnetische Induktion.",
+            "en": "Electric and magnetic fields, forces on charges and conductors, capacitor and coil, and electromagnetic induction."
+          },
+          "parts": [
+            {
+              "code": "3.4.2.1",
+              "title": {
+                "de": "Elektrische und magnetische Felder",
+                "en": "Electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Feldlinienbilder und Überlagerung von Feldern, elektrische Feldstärke und magnetische Flussdichte, Lorentzkraft und Bahnen geladener Teilchen (qualitativ); Plattenkondensator mit Lade- und Entladekurve und die schlanke Spule.",
+                "en": "Field line patterns and superposition, electric field strength and magnetic flux density, Lorentz force and paths of charged particles (qualitative); the parallel-plate capacitor with charging and discharging curves and the long coil."
+              },
+              "simulations": [
+                "feldlinien",
+                "lorentzkraft",
+                "kondensator"
+              ]
+            },
+            {
+              "code": "3.4.2.2",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktion im bewegten Leiter über die Lorentzkraft erklären, das Induktionsgesetz mit magnetischem Fluss und Lenz’scher Regel untersuchen und Anwendungen wie Generator und Transformator beschreiben.",
+                "en": "Explaining induction in a moving conductor using the Lorentz force, investigating Faraday’s law with magnetic flux and Lenz’s rule, and describing applications such as generator and transformer."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.4.3",
+          "title": {
+            "de": "Schwingungen (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Oscillations (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Schwingungen aufzeichnen und mit Amplitude, Periodendauer und Frequenz beschreiben; harmonische Schwingung mit Sinusfunktion, Federpendel und elektromagnetischer Schwingkreis mit ihren Energieumwandlungen.",
+            "en": "Recording oscillations and describing them by amplitude, period and frequency; harmonic oscillation with the sine function, the spring pendulum and the electromagnetic LC circuit with their energy conversions."
+          },
+          "simulations": [
+            "federpendel"
+          ]
+        },
+        {
+          "code": "3.4.4",
+          "title": {
+            "de": "Wellen (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Waves (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Reflexion, Brechung und Interferenz, stehende Wellen und Huygens’sches Prinzip sowie das elektromagnetische Spektrum im Alltag.",
+            "en": "Wave quantities, longitudinal and transverse waves, diffraction, reflection, refraction and interference, standing waves and Huygens’ principle, and the electromagnetic spectrum in everyday life."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "stehende-wellen",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3.4.5",
+          "title": {
+            "de": "Wellenoptik (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Wave optics (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Licht als elektromagnetische Welle, Grenzen des Strahlenmodells, Interferenzmuster an Doppelspalt und Gitter beschreiben und berechnen und Licht spektral zerlegen.",
+            "en": "Light as an electromagnetic wave, limits of the ray model, describing and calculating interference patterns at double slit and grating, and splitting light into its spectrum."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.4.6",
+          "title": {
+            "de": "Quantenphysik und Materie (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Quantum physics and matter (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Quantenobjekte am Doppelspalt mit Wahrscheinlichkeitsaussagen, Fotoeffekt, Energie und Impuls von Photonen und Materiewellen, Messprozess und Verschränkung; Linienspektren und Energieniveaus des Wasserstoffatoms.",
+            "en": "Quantum objects at the double slit described with probabilities, photoelectric effect, energy and momentum of photons and matter waves, measurement and entanglement; line spectra and energy levels of the hydrogen atom."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.5.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Ways of thinking and working in physics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
+            "en": "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec."
+          }
+        },
+        {
+          "code": "3.5.2",
+          "title": {
+            "de": "Elektromagnetische Felder (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Electromagnetic fields (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Kräfte auf Ladungen und Leiter, Kondensator und Spule sowie die elektromagnetische Induktion.",
+            "en": "Electric and magnetic fields, forces on charges and conductors, capacitor and coil, and electromagnetic induction."
+          },
+          "parts": [
+            {
+              "code": "3.5.2.1",
+              "title": {
+                "de": "Elektrische und magnetische Felder",
+                "en": "Electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Feldlinienbilder und Überlagerung von Feldern, elektrische Feldstärke und magnetische Flussdichte, Lorentzkraft und Bahnen geladener Teilchen (qualitativ); Plattenkondensator mit Lade- und Entladekurve und die schlanke Spule.",
+                "en": "Field line patterns and superposition, electric field strength and magnetic flux density, Lorentz force and paths of charged particles (qualitative); the parallel-plate capacitor with charging and discharging curves and the long coil."
+              },
+              "simulations": [
+                "feldlinien",
+                "lorentzkraft",
+                "kondensator"
+              ]
+            },
+            {
+              "code": "3.5.2.2",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktion im bewegten Leiter über die Lorentzkraft erklären, das Induktionsgesetz mit magnetischem Fluss und Lenz’scher Regel untersuchen und Anwendungen wie Generator und Transformator beschreiben.",
+                "en": "Explaining induction in a moving conductor using the Lorentz force, investigating Faraday’s law with magnetic flux and Lenz’s rule, and describing applications such as generator and transformer."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.5.3",
+          "title": {
+            "de": "Schwingungen (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Oscillations (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Schwingungen aufzeichnen und mit Amplitude, Periodendauer und Frequenz beschreiben; harmonische Schwingung mit Sinusfunktion, Federpendel und elektromagnetischer Schwingkreis mit ihren Energieumwandlungen.",
+            "en": "Recording oscillations and describing them by amplitude, period and frequency; harmonic oscillation with the sine function, the spring pendulum and the electromagnetic LC circuit with their energy conversions."
+          },
+          "simulations": [
+            "federpendel"
+          ]
+        },
+        {
+          "code": "3.5.4",
+          "title": {
+            "de": "Wellen (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Waves (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Interferenz und stehende Wellen, Huygens’sches Prinzip; dazu Doppler-Effekt, elektromagnetisches Spektrum und der Vergleich mit Gravitationswellen.",
+            "en": "Wave quantities, longitudinal and transverse waves, diffraction, interference and standing waves, Huygens’ principle; plus the Doppler effect, the electromagnetic spectrum and a comparison with gravitational waves."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "stehende-wellen",
+            "interferenz",
+            "doppler-effekt"
+          ]
+        },
+        {
+          "code": "3.5.5",
+          "title": {
+            "de": "Wellenoptik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Wave optics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Licht als elektromagnetische Welle, Grenzen des Strahlenmodells, Interferenzmuster an Doppelspalt und Gitter berechnen und Spektren verschiedener Lichtquellen untersuchen.",
+            "en": "Light as an electromagnetic wave, limits of the ray model, calculating interference patterns at double slit and grating, and investigating spectra of different light sources."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.5.6",
+          "title": {
+            "de": "Atom- und Kernphysik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Atomic and nuclear physics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Fotoeffekt und Photonen, de-Broglie-Wellenlänge, Arten von Spektren und Linienspektren als Energieübergänge, Spektralanalyse kosmischer Materie und die Kernfusion in Sternen.",
+            "en": "Photoelectric effect and photons, de Broglie wavelength, types of spectra and line spectra as energy transitions, spectral analysis of cosmic matter and nuclear fusion in stars."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.5.7",
+          "title": {
+            "de": "Astrophysik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Astrophysics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
+            "en": "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets."
+          }
+        },
+        {
+          "code": "3.6.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (nur Leistungsfach)",
+            "en": "Ways of thinking and working in physics (advanced course only)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
+            "en": "Testability of physical statements, models of light and matter and the importance of natural constants."
+          }
+        },
+        {
+          "code": "3.6.2",
+          "title": {
+            "de": "Elektromagnetische Felder (nur Leistungsfach)",
+            "en": "Electromagnetic fields (advanced course only)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder quantitativ, Bewegung geladener Teilchen in Feldern und Induktion einschließlich Selbstinduktion.",
+            "en": "Electric and magnetic fields quantitatively, motion of charged particles in fields and induction including self-induction."
+          },
+          "parts": [
+            {
+              "code": "3.6.2.1",
+              "title": {
+                "de": "Elektrisches Feld",
+                "en": "Electric field"
+              },
+              "summary": {
+                "de": "Coulomb’sches Gesetz, Feldlinien und Superposition, Influenz, Feldstärke, Kapazität und Energie des Plattenkondensators, Lade- und Entladekurven, Potenzial und die quantitative Bewegung geladener Teilchen im Feld.",
+                "en": "Coulomb’s law, field lines and superposition, electrostatic induction, field strength, capacitance and energy of the parallel-plate capacitor, charging and discharging curves, potential, and quantitative motion of charged particles in the field."
+              },
+              "simulations": [
+                "feldlinien",
+                "kondensator"
+              ]
+            },
+            {
+              "code": "3.6.2.2",
+              "title": {
+                "de": "Magnetisches Feld",
+                "en": "Magnetic field"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
+                "en": "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "3.6.2.3",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktionsgesetz erläutern und anwenden, Selbstinduktion beim Ein- und Ausschalten, Induktivität und Energie einer Spule sowie Wirbelströme in der Technik.",
+                "en": "Explaining and applying Faraday’s law, self-induction when switching on and off, inductance and energy of a coil, and eddy currents in technology."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.6.3",
+          "title": {
+            "de": "Schwingungen (nur Leistungsfach)",
+            "en": "Oscillations (advanced course only)"
+          },
+          "summary": {
+            "de": "Harmonische und gedämpfte Schwingungen mathematisch beschreiben, Periodendauer von Feder- und Fadenpendel und Schwingkreis, Vergleich mechanisch–elektromagnetisch und Resonanz.",
+            "en": "Describing harmonic and damped oscillations mathematically, periods of spring and simple pendulum and LC circuit, comparing mechanical and electromagnetic oscillations, and resonance."
+          },
+          "simulations": [
+            "federpendel",
+            "fadenpendel",
+            "resonanz"
+          ]
+        },
+        {
+          "code": "3.6.4",
+          "title": {
+            "de": "Wellen (nur Leistungsfach)",
+            "en": "Waves (advanced course only)"
+          },
+          "summary": {
+            "de": "Wellen mit Kenngrößen und der Wellengleichung beschreiben, stehende Wellen, Überlagerung zweidimensionaler Wellen mit dem Gangunterschied, Huygens’sches Prinzip und elektromagnetisches Spektrum.",
+            "en": "Describing waves with their quantities and the wave equation, standing waves, superposition of two-dimensional waves using path difference, Huygens’ principle and the electromagnetic spectrum."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "stehende-wellen",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3.6.5",
+          "title": {
+            "de": "Wellenoptik (nur Leistungsfach)",
+            "en": "Wave optics (advanced course only)"
+          },
+          "summary": {
+            "de": "Interferenz an Einzelspalt, Doppelspalt und Gitter untersuchen und berechnen, Interferometer wie das Michelson-Interferometer und Grenzen des Strahlenmodells.",
+            "en": "Investigating and calculating interference at single slit, double slit and grating, interferometers such as the Michelson interferometer, and the limits of the ray model."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.6.6",
+          "title": {
+            "de": "Quantenphysik und Materie (nur Leistungsfach)",
+            "en": "Quantum physics and matter (advanced course only)"
+          },
+          "summary": {
+            "de": "Fotoeffekt, Photonen und Materiewellen, Quantenobjekte am Doppelspalt mit Wahrscheinlichkeitsdichte, Unbestimmtheit und Verschränkung; Linienspektren, Röntgenspektrum, Potenzialtopf und Atommodelle mit Pauli-Prinzip.",
+            "en": "Photoelectric effect, photons and matter waves, quantum objects at the double slit with probability density, uncertainty and entanglement; line spectra, X-ray spectrum, the particle in a box and atomic models with the Pauli principle."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.6.7",
+          "title": {
+            "de": "Vertiefendes Themengebiet (nur Leistungsfach)",
+            "en": "In-depth topic (advanced course only)"
+          },
+          "summary": {
+            "de": "Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden.",
+            "en": "Studying one field of physics research in depth (e.g. relativity, laser or particle physics, astrophysics) and applying its typical methods."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.bildungsplaene-bw.de",
+      "note": {
+        "de": "Kursstufe (Klassen 12/13); derselbe Inhalt steht auch bei Klasse 12. In diesem Eintrag stehen beide Basisfächer (3.4 Schwerpunkt Quantenphysik, 3.5 Schwerpunkt Astrophysik) und das Leistungsfach (3.6, „(nur Leistungsfach)“); die Fassung steht jeweils in der Überschrift.",
+        "en": "Course phase (grades 12/13); the same content is also listed under grade 12. This entry contains both basic courses (3.4 focus on quantum physics, 3.5 focus on astrophysics) and the advanced course (3.6, “advanced course only”); the variant is given in each heading."
+      },
+      "units": [
+        {
+          "code": "3.4.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Ways of thinking and working in physics (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten.",
+            "en": "Testability of physical statements by experiment, models of light and matter and the importance of natural constants such as Planck’s constant."
+          }
+        },
+        {
+          "code": "3.4.2",
+          "title": {
+            "de": "Elektromagnetische Felder (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Electromagnetic fields (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Kräfte auf Ladungen und Leiter, Kondensator und Spule sowie die elektromagnetische Induktion.",
+            "en": "Electric and magnetic fields, forces on charges and conductors, capacitor and coil, and electromagnetic induction."
+          },
+          "parts": [
+            {
+              "code": "3.4.2.1",
+              "title": {
+                "de": "Elektrische und magnetische Felder",
+                "en": "Electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Feldlinienbilder und Überlagerung von Feldern, elektrische Feldstärke und magnetische Flussdichte, Lorentzkraft und Bahnen geladener Teilchen (qualitativ); Plattenkondensator mit Lade- und Entladekurve und die schlanke Spule.",
+                "en": "Field line patterns and superposition, electric field strength and magnetic flux density, Lorentz force and paths of charged particles (qualitative); the parallel-plate capacitor with charging and discharging curves and the long coil."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "3.4.2.2",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktion im bewegten Leiter über die Lorentzkraft erklären, das Induktionsgesetz mit magnetischem Fluss und Lenz’scher Regel untersuchen und Anwendungen wie Generator und Transformator beschreiben.",
+                "en": "Explaining induction in a moving conductor using the Lorentz force, investigating Faraday’s law with magnetic flux and Lenz’s rule, and describing applications such as generator and transformer."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.4.3",
+          "title": {
+            "de": "Schwingungen (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Oscillations (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Schwingungen aufzeichnen und mit Amplitude, Periodendauer und Frequenz beschreiben; harmonische Schwingung mit Sinusfunktion, Federpendel und elektromagnetischer Schwingkreis mit ihren Energieumwandlungen.",
+            "en": "Recording oscillations and describing them by amplitude, period and frequency; harmonic oscillation with the sine function, the spring pendulum and the electromagnetic LC circuit with their energy conversions."
+          }
+        },
+        {
+          "code": "3.4.4",
+          "title": {
+            "de": "Wellen (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Waves (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Reflexion, Brechung und Interferenz, stehende Wellen und Huygens’sches Prinzip sowie das elektromagnetische Spektrum im Alltag.",
+            "en": "Wave quantities, longitudinal and transverse waves, diffraction, reflection, refraction and interference, standing waves and Huygens’ principle, and the electromagnetic spectrum in everyday life."
+          },
+          "simulations": [
+            "stehende-wellen",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3.4.5",
+          "title": {
+            "de": "Wellenoptik (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Wave optics (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Licht als elektromagnetische Welle, Grenzen des Strahlenmodells, Interferenzmuster an Doppelspalt und Gitter beschreiben und berechnen und Licht spektral zerlegen.",
+            "en": "Light as an electromagnetic wave, limits of the ray model, describing and calculating interference patterns at double slit and grating, and splitting light into its spectrum."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.4.6",
+          "title": {
+            "de": "Quantenphysik und Materie (Basisfach mit Schwerpunkt Quantenphysik)",
+            "en": "Quantum physics and matter (basic course, focus on quantum physics)"
+          },
+          "summary": {
+            "de": "Quantenobjekte am Doppelspalt mit Wahrscheinlichkeitsaussagen, Fotoeffekt, Energie und Impuls von Photonen und Materiewellen, Messprozess und Verschränkung; Linienspektren und Energieniveaus des Wasserstoffatoms.",
+            "en": "Quantum objects at the double slit described with probabilities, photoelectric effect, energy and momentum of photons and matter waves, measurement and entanglement; line spectra and energy levels of the hydrogen atom."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.5.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Ways of thinking and working in physics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec.",
+            "en": "Testability of physical statements, models of light, matter and the cosmos and the role of natural constants; plus astronomy as an observational science and astronomical units such as light year and parsec."
+          }
+        },
+        {
+          "code": "3.5.2",
+          "title": {
+            "de": "Elektromagnetische Felder (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Electromagnetic fields (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Kräfte auf Ladungen und Leiter, Kondensator und Spule sowie die elektromagnetische Induktion.",
+            "en": "Electric and magnetic fields, forces on charges and conductors, capacitor and coil, and electromagnetic induction."
+          },
+          "parts": [
+            {
+              "code": "3.5.2.1",
+              "title": {
+                "de": "Elektrische und magnetische Felder",
+                "en": "Electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Feldlinienbilder und Überlagerung von Feldern, elektrische Feldstärke und magnetische Flussdichte, Lorentzkraft und Bahnen geladener Teilchen (qualitativ); Plattenkondensator mit Lade- und Entladekurve und die schlanke Spule.",
+                "en": "Field line patterns and superposition, electric field strength and magnetic flux density, Lorentz force and paths of charged particles (qualitative); the parallel-plate capacitor with charging and discharging curves and the long coil."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "3.5.2.2",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktion im bewegten Leiter über die Lorentzkraft erklären, das Induktionsgesetz mit magnetischem Fluss und Lenz’scher Regel untersuchen und Anwendungen wie Generator und Transformator beschreiben.",
+                "en": "Explaining induction in a moving conductor using the Lorentz force, investigating Faraday’s law with magnetic flux and Lenz’s rule, and describing applications such as generator and transformer."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.5.3",
+          "title": {
+            "de": "Schwingungen (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Oscillations (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Schwingungen aufzeichnen und mit Amplitude, Periodendauer und Frequenz beschreiben; harmonische Schwingung mit Sinusfunktion, Federpendel und elektromagnetischer Schwingkreis mit ihren Energieumwandlungen.",
+            "en": "Recording oscillations and describing them by amplitude, period and frequency; harmonic oscillation with the sine function, the spring pendulum and the electromagnetic LC circuit with their energy conversions."
+          }
+        },
+        {
+          "code": "3.5.4",
+          "title": {
+            "de": "Wellen (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Waves (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Kenngrößen von Wellen, Längs- und Querwellen, Beugung, Interferenz und stehende Wellen, Huygens’sches Prinzip; dazu Doppler-Effekt, elektromagnetisches Spektrum und der Vergleich mit Gravitationswellen.",
+            "en": "Wave quantities, longitudinal and transverse waves, diffraction, interference and standing waves, Huygens’ principle; plus the Doppler effect, the electromagnetic spectrum and a comparison with gravitational waves."
+          },
+          "simulations": [
+            "stehende-wellen",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3.5.5",
+          "title": {
+            "de": "Wellenoptik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Wave optics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Licht als elektromagnetische Welle, Grenzen des Strahlenmodells, Interferenzmuster an Doppelspalt und Gitter berechnen und Spektren verschiedener Lichtquellen untersuchen.",
+            "en": "Light as an electromagnetic wave, limits of the ray model, calculating interference patterns at double slit and grating, and investigating spectra of different light sources."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.5.6",
+          "title": {
+            "de": "Atom- und Kernphysik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Atomic and nuclear physics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Fotoeffekt und Photonen, de-Broglie-Wellenlänge, Arten von Spektren und Linienspektren als Energieübergänge, Spektralanalyse kosmischer Materie und die Kernfusion in Sternen.",
+            "en": "Photoelectric effect and photons, de Broglie wavelength, types of spectra and line spectra as energy transitions, spectral analysis of cosmic matter and nuclear fusion in stars."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.5.7",
+          "title": {
+            "de": "Astrophysik (Basisfach mit Schwerpunkt Astrophysik)",
+            "en": "Astrophysics (basic course, focus on astrophysics)"
+          },
+          "summary": {
+            "de": "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
+            "en": "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets."
+          }
+        },
+        {
+          "code": "3.6.1",
+          "title": {
+            "de": "Denk- und Arbeitsweisen der Physik (nur Leistungsfach)",
+            "en": "Ways of thinking and working in physics (advanced course only)"
+          },
+          "summary": {
+            "de": "Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten.",
+            "en": "Testability of physical statements, models of light and matter and the importance of natural constants."
+          }
+        },
+        {
+          "code": "3.6.2",
+          "title": {
+            "de": "Elektromagnetische Felder (nur Leistungsfach)",
+            "en": "Electromagnetic fields (advanced course only)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder quantitativ, Bewegung geladener Teilchen in Feldern und Induktion einschließlich Selbstinduktion.",
+            "en": "Electric and magnetic fields quantitatively, motion of charged particles in fields and induction including self-induction."
+          },
+          "parts": [
+            {
+              "code": "3.6.2.1",
+              "title": {
+                "de": "Elektrisches Feld",
+                "en": "Electric field"
+              },
+              "summary": {
+                "de": "Coulomb’sches Gesetz, Feldlinien und Superposition, Influenz, Feldstärke, Kapazität und Energie des Plattenkondensators, Lade- und Entladekurven, Potenzial und die quantitative Bewegung geladener Teilchen im Feld.",
+                "en": "Coulomb’s law, field lines and superposition, electrostatic induction, field strength, capacitance and energy of the parallel-plate capacitor, charging and discharging curves, potential, and quantitative motion of charged particles in the field."
+              }
+            },
+            {
+              "code": "3.6.2.2",
+              "title": {
+                "de": "Magnetisches Feld",
+                "en": "Magnetic field"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
+                "en": "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "3.6.2.3",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Induktionsgesetz erläutern und anwenden, Selbstinduktion beim Ein- und Ausschalten, Induktivität und Energie einer Spule sowie Wirbelströme in der Technik.",
+                "en": "Explaining and applying Faraday’s law, self-induction when switching on and off, inductance and energy of a coil, and eddy currents in technology."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3.6.3",
+          "title": {
+            "de": "Schwingungen (nur Leistungsfach)",
+            "en": "Oscillations (advanced course only)"
+          },
+          "summary": {
+            "de": "Harmonische und gedämpfte Schwingungen mathematisch beschreiben, Periodendauer von Feder- und Fadenpendel und Schwingkreis, Vergleich mechanisch–elektromagnetisch und Resonanz.",
+            "en": "Describing harmonic and damped oscillations mathematically, periods of spring and simple pendulum and LC circuit, comparing mechanical and electromagnetic oscillations, and resonance."
+          },
+          "simulations": [
+            "resonanz"
+          ]
+        },
+        {
+          "code": "3.6.4",
+          "title": {
+            "de": "Wellen (nur Leistungsfach)",
+            "en": "Waves (advanced course only)"
+          },
+          "summary": {
+            "de": "Wellen mit Kenngrößen und der Wellengleichung beschreiben, stehende Wellen, Überlagerung zweidimensionaler Wellen mit dem Gangunterschied, Huygens’sches Prinzip und elektromagnetisches Spektrum.",
+            "en": "Describing waves with their quantities and the wave equation, standing waves, superposition of two-dimensional waves using path difference, Huygens’ principle and the electromagnetic spectrum."
+          },
+          "simulations": [
+            "stehende-wellen",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3.6.5",
+          "title": {
+            "de": "Wellenoptik (nur Leistungsfach)",
+            "en": "Wave optics (advanced course only)"
+          },
+          "summary": {
+            "de": "Interferenz an Einzelspalt, Doppelspalt und Gitter untersuchen und berechnen, Interferometer wie das Michelson-Interferometer und Grenzen des Strahlenmodells.",
+            "en": "Investigating and calculating interference at single slit, double slit and grating, interferometers such as the Michelson interferometer, and the limits of the ray model."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3.6.6",
+          "title": {
+            "de": "Quantenphysik und Materie (nur Leistungsfach)",
+            "en": "Quantum physics and matter (advanced course only)"
+          },
+          "summary": {
+            "de": "Fotoeffekt, Photonen und Materiewellen, Quantenobjekte am Doppelspalt mit Wahrscheinlichkeitsdichte, Unbestimmtheit und Verschränkung; Linienspektren, Röntgenspektrum, Potenzialtopf und Atommodelle mit Pauli-Prinzip.",
+            "en": "Photoelectric effect, photons and matter waves, quantum objects at the double slit with probability density, uncertainty and entanglement; line spectra, X-ray spectrum, the particle in a box and atomic models with the Pauli principle."
+          },
+          "simulations": [
+            "photoeffekt",
+            "linienspektren",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "3.6.7",
+          "title": {
+            "de": "Vertiefendes Themengebiet (nur Leistungsfach)",
+            "en": "In-depth topic (advanced course only)"
+          },
+          "summary": {
+            "de": "Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden.",
+            "en": "Studying one field of physics research in depth (e.g. relativity, laser or particle physics, astrophysics) and applying its typical methods."
+          }
+        }
+      ]
+    }
+  ]
+}

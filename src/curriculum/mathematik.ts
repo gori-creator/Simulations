@@ -199,7 +199,7 @@ export const mathematik: Subject = {
               'Ein Rechteck wird Schritt für Schritt zum Quadrat mit gleicher Fläche. So findest du die Quadratwurzel und lernst ein altes Näherungsverfahren kennen.',
               'Step by step, a rectangle turns into a square with the same area. This is how you find a square root, using a very old approximation method.',
             ),
-            grades: [9, 9],
+            grades: [8, 9],
             kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert', 'teilweise Wurzelziehen', 'Wurzel 2', 'Widerspruchsbeweis', 'Diagonale', 'Kästchenpapier'],
@@ -384,7 +384,7 @@ export const mathematik: Subject = {
               'Spiegle eine Figur an einer Achse oder an einem Punkt und sieh, wie die Konstruktion entsteht.',
               'Reflect a shape in a line or in a point and watch how the construction works.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Achsenspiegelung', 'Punktspiegelung', 'Spiegelachse', 'Symmetriezentrum', 'achsensymmetrisch', 'punktsymmetrisch', 'Symmetrieachse', 'Umlaufsinn', 'Fixpunkt', 'Fixgerade', 'Lot', 'Drehung um 180°', 'Konstruktion'],
@@ -528,7 +528,7 @@ export const mathematik: Subject = {
               'Verschiebe eine Parallele und sieh, dass alle Streckenverhältnisse gleich bleiben. Damit berechnest du unbekannte Längen, zum Beispiel die Höhe eines Baumes.',
               'Move a parallel line and see that all ratios of lengths stay the same. Use this to calculate unknown lengths, such as the height of a tree.',
             ),
-            grades: [9, 9],
+            grades: [8, 9],
             kmk: ['M-L4', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
               ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'Verhältnisgleichung', 'Abschnitte', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Teichbreite', 'Umkehrung'],
@@ -545,7 +545,7 @@ export const mathematik: Subject = {
               'Vergrößere Strecken, Flächen und Körper. Bei doppelter Länge wird die Fläche viermal und das Volumen achtmal so groß.',
               'Enlarge lengths, areas and solids. Doubling the length makes the area four times and the volume eight times as large.',
             ),
-            grades: [9, 9],
+            grades: [8, 9],
             kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K3', 'M-K4'],
             keywords: L(
               ['Streckfaktor', 'ähnlich', 'Ähnlichkeit', 'zentrische Streckung', 'Vergrößerung', 'Verkleinerung', 'Flächeninhalt', 'Oberfläche', 'Volumen', 'Einheitswürfel', 'Quadrat', 'Würfel', 'Quader', 'Kubikwurzel', 'Maßstab', 'Pizza', 'Oberfläche zu Volumen'],
@@ -701,7 +701,7 @@ export const mathematik: Subject = {
               'Staple Schichten und rolle den Mantel ab. So siehst du, wie man Volumen und Oberfläche von Prisma und Zylinder berechnet.',
               'Stack layers and unroll the curved surface. This shows how to calculate the volume and surface area of prisms and cylinders.',
             ),
-            grades: [8, 8],
+            grades: [8, 9],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Prisma', 'Zylinder', 'Volumen', 'Oberfläche', 'Mantel', 'Grundfläche', 'Netz', 'Abwicklung', 'Vieleck', 'Kreis'],
@@ -773,7 +773,7 @@ export const mathematik: Subject = {
               'Ein Rad rollt ab, und Kreisstücke werden zu einem Rechteck gelegt. So entdeckst du die Zahl π und die Formeln für Umfang und Fläche des Kreises.',
               'A wheel rolls along and pieces of a circle are rearranged into a rectangle. This is how you discover π and the formulas for the circumference and area of a circle.',
             ),
-            grades: [8, 8],
+            grades: [8, 9],
             kmk: ['M-L2', 'M-L4', 'M-K1'],
             keywords: L(
               ['Kreiszahl', 'Pi', 'Kreisumfang', 'Kreisfläche', 'Durchmesser', 'Radius', 'Archimedes', 'Kreissektor'],
@@ -877,7 +877,7 @@ export const mathematik: Subject = {
               'Verschiebe und strecke eine Hyperbel und sieh, wie sie sich ihren Asymptoten nähert.',
               'Shift and stretch a hyperbola and see how it approaches its asymptotes.',
             ),
-            grades: [8, 8],
+            grades: [8, 9],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
               ['Hyperbel', 'Asymptote', 'Polstelle', 'Definitionslücke', 'Definitionsmenge', 'Wertemenge', 'indirekte Proportionalität', 'gebrochen-rationale Funktion', 'Kehrwertfunktion'],
@@ -1093,7 +1093,7 @@ export const mathematik: Subject = {
               'Verschiebe, strecke und spiegle Graphen Schritt für Schritt und sieh, wie sich der Funktionsterm ändert.',
               'Shift, stretch and reflect graphs step by step and see how the function\'s equation changes.',
             ),
-            grades: [11, 11],
+            grades: [10, 11],
             kmk: ['M-L3', 'M-K4'],
             keywords: L(
               ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote', 'Reihenfolge', 'Definitionsmenge', 'Wertemenge'],
@@ -1110,7 +1110,7 @@ export const mathematik: Subject = {
               'Was passiert mit einem Graphen, wenn x sehr groß wird? Ein Punkt läuft nach außen, und eine Lupe zeigt, wie nah er der Asymptote kommt.',
               'What happens to a graph when x gets very large? A point runs outwards and a magnifier shows how close it gets to the asymptote.',
             ),
-            grades: [11, 11],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-K1', 'M-K4'],
             keywords: L(
               ['Grenzwert', 'Grenzverhalten', 'Asymptote', 'waagrechte Asymptote', 'unendlich', 'Limes', 'ε-Schlauch', 'ε-Streifen', 'Gradregel', 'Annäherung', 'Wertetabelle', 'gebrochen-rationale Funktion'],
@@ -1127,7 +1127,7 @@ export const mathematik: Subject = {
               'Spiegle einen Graphen an der Geraden y = x und erhalte die Umkehrfunktion. So siehst du, wann eine Funktion umkehrbar ist.',
               'Reflect a graph in the line y = x to get the inverse function. This shows when a function can be inverted.',
             ),
-            grades: [12, 12],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
               ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'streng monoton', 'Definitionsmenge', 'Wertemenge', 'Ableitung der Umkehrfunktion', 'senkrechte Tangente', 'arcsin'],
@@ -1177,7 +1177,7 @@ export const mathematik: Subject = {
               'Stelle dieselben Daten als Säulen-, Linien-, Kreisdiagramm und mehr dar und entdecke, wie Diagramme täuschen können.',
               'Show the same data as bar, line and pie charts and more, and discover how charts can mislead.',
             ),
-            grades: [6, 6],
+            grades: [6, 7],
             kmk: ['M-L5', 'M-K6', 'M-K4', 'M-K1'],
             keywords: L(
               ['Diagramm', 'Säulendiagramm', 'Balkendiagramm', 'Kreisdiagramm', 'Liniendiagramm', 'Piktogramm', 'Streifendiagramm', 'Strichliste', 'Anteil', 'Prozent', 'Mittelpunktswinkel', 'abgeschnittene Achse', 'Täuschung', 'Daten'],
@@ -1194,7 +1194,7 @@ export const mathematik: Subject = {
               'Ziehe Datenpunkte auf dem Zahlenstrahl und sieh, wie sich Mittelwert, Median und Boxplot sofort verändern.',
               'Drag data points along a number line and see how the mean, the median and the box plot change straight away.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L5', 'M-K4', 'M-K1', 'M-K6'],
             keywords: L(
               ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
@@ -1317,7 +1317,7 @@ export const mathematik: Subject = {
               'Ein medizinischer Test ist positiv, aber wie wahrscheinlich ist man wirklich krank? 1000 Personen zeigen, warum die Antwort oft überrascht.',
               'A medical test is positive, but how likely is it that you are really ill? 1000 people show why the answer is often surprising.',
             ),
-            grades: [11, 11],
+            grades: [10, 11],
             kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K1'],
             keywords: L(
               ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
@@ -1353,7 +1353,7 @@ export const mathematik: Subject = {
               'Das Histogramm der Binomialverteilung: Wähle einen Bereich und lies die Wahrscheinlichkeit direkt ab.',
               'The histogram of the binomial distribution: choose a range and read off the probability directly.',
             ),
-            grades: [12, 12],
+            grades: [11, 12],
             kmk: ['M-L5', 'M-K4', 'M-K5'],
             keywords: L(
               ['Binomialverteilung', 'Bernoulli-Kette', 'Bernoulli-Experiment', 'Binomialkoeffizient', 'kumulierte Verteilungsfunktion', 'Treppenfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Umgebung', 'Trefferwahrscheinlichkeit', 'höchstens', 'mindestens'],
@@ -1436,7 +1436,7 @@ export const mathematik: Subject = {
               'Finde eine Nullstelle näherungsweise mit Tangenten. Jeder Schritt bringt dich näher, aber manchmal geht es auch schief.',
               'Approximate a zero with tangent lines. Each step gets you closer, but sometimes it goes wrong.',
             ),
-            grades: [11, 11],
+            grades: [11, 12],
             kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
             keywords: L(
               ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
@@ -1663,7 +1663,7 @@ export const mathematik: Subject = {
               'Setze Punkte im räumlichen Koordinatensystem, drehe die Ansicht und berechne Abstände mit dem Satz des Pythagoras.',
               'Place points in 3D coordinates, rotate the view and calculate distances with Pythagoras\' theorem.',
             ),
-            grades: [12, 12],
+            grades: [11, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['räumliches Koordinatensystem', 'Koordinaten', 'Punkt im Raum', 'x₁x₂-Ebene', 'Koordinatenebene', 'Oktant', 'Projektion', 'Quader', 'Eckpunkte', 'Raumdiagonale', 'Abstand vom Ursprung', 'Schrägbild'],
@@ -1680,7 +1680,7 @@ export const mathematik: Subject = {
               'Ziehe Vektorpfeile im Raum, addiere sie und vervielfache sie. Die Rechnung steht daneben in Spaltenschreibweise.',
               'Drag vector arrows in space, add them and multiply them by numbers. The calculation is shown alongside in column form.',
             ),
-            grades: [12, 12],
+            grades: [11, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['Vektor', 'Vektoraddition', 'Vektorsubtraktion', 'Gegenvektor', 'Vielfaches', 'S-Multiplikation', 'Linearkombination', 'Verbindungsvektor', 'Ortsvektor', 'Mittelpunkt', 'Betrag', 'Parallelogramm', 'kollinear'],
@@ -1716,7 +1716,7 @@ export const mathematik: Subject = {
               'Ein Punkt läuft auf einer Geraden durch den Raum, eine Ebene wird aufgespannt. Mit den verschiedenen Formen der Gleichungen, drehbar in 3D.',
               'A point moves along a line in space and a plane is spanned. With the different forms of the equations, rotatable in 3D.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['Gerade', 'Geradengleichung', 'Parameterform', 'Stützvektor', 'Richtungsvektor', 'Spurpunkt', 'Punktprobe', 'Ebene', 'Spannvektor', 'Normalenvektor', 'Normalenform', 'Koordinatenform', 'Spurgerade', 'Spurdreieck', 'Achsenabschnitt', 'Vektorprodukt'],
@@ -1733,7 +1733,7 @@ export const mathematik: Subject = {
               'Wie liegen zwei Geraden oder Ebenen zueinander? Schneiden sie sich, sind sie parallel? Dazu Schnittpunkte, Winkel und Abstände in 3D.',
               'How do two lines or planes lie relative to each other? Do they intersect, are they parallel? With intersections, angles and distances in 3D.',
             ),
-            grades: [13, 13],
+            grades: [11, 13],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Lagebeziehung', 'windschief', 'parallel', 'identisch', 'Schnittpunkt', 'Durchstoßpunkt', 'Schnittgerade', 'Schnittwinkel', 'Abstand', 'Hesse-Normalform', 'Lotfußpunkt', 'Lot', 'Spiegelpunkt', 'Normalenvektor', 'Koordinatenform'],

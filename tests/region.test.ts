@@ -20,10 +20,10 @@ import {
 
 /** Erfundener Lehrplan, um zu prüfen, dass neue Dateien ohne Code-Änderung aufgenommen werden. */
 const testCurriculum: StateCurriculum = {
-  id: 'baden-wuerttemberg-gymnasium-physik',
+  id: 'niedersachsen-gymnasium-physik',
   subject: 'physik',
-  slug: L('baden-wuerttemberg-gymnasium', 'baden-wuerttemberg-gymnasium'),
-  state: L('Baden-Württemberg', 'Baden-Württemberg'),
+  slug: L('niedersachsen-gymnasium', 'lower-saxony-gymnasium'),
+  state: L('Niedersachsen', 'Lower Saxony'),
   schoolType: L('Gymnasium', 'Gymnasium'),
   sourceName: 'Test',
   grades: [
@@ -64,11 +64,11 @@ describe('Einstellung Bundesland', () => {
   });
 
   it('stellt Simulationen ohne Eintrag ans Ende, sonst in bisheriger Reihenfolge', () => {
-    const sims = [{ id: 'hebelgesetz' }, { id: 'ohmsches-gesetz' }, { id: 'pythagoras' }, { id: 'doppler-effekt' }, { id: 'freier-fall' }, { id: 'stellenwerte' }];
-    // Nach Jahrgangsstufe in Bayern (Mathematik und Physik); ohne Eintrag (Hebelgesetz, Doppler-Effekt) hinten, Reihenfolge wie vorher.
-    expect(sortForRegion(sims, 'bayern').map((s) => s.id)).toEqual(['stellenwerte', 'ohmsches-gesetz', 'pythagoras', 'freier-fall', 'hebelgesetz', 'doppler-effekt']);
-    expect(regionSortKey('hebelgesetz', 'bayern')).toBe(REGION_ORDER_NONE);
-    expect(regionGrades('hebelgesetz', 'bayern')).toEqual([]);
+    const sims = [{ id: 'doppler-effekt' }, { id: 'ohmsches-gesetz' }, { id: 'pythagoras' }, { id: 'stellenwerte' }];
+    // Nach Jahrgangsstufe in Bayern (Mathematik und Physik); ohne Eintrag (Doppler-Effekt) hinten.
+    expect(sortForRegion(sims, 'bayern').map((s) => s.id)).toEqual(['stellenwerte', 'ohmsches-gesetz', 'pythagoras', 'doppler-effekt']);
+    expect(regionSortKey('doppler-effekt', 'bayern')).toBe(REGION_ORDER_NONE);
+    expect(regionGrades('doppler-effekt', 'bayern')).toEqual([]);
     expect(regionGrades('ohmsches-gesetz', 'bayern')).toEqual([8]);
     // Unbekanntes Land: nichts ändert sich
     expect(sortForRegion(sims, 'atlantis').map((s) => s.id)).toEqual(sims.map((s) => s.id));
@@ -83,12 +83,12 @@ describe('Einstellung Bundesland', () => {
 
   it('nimmt einen neuen Lehrplan automatisch auf', () => {
     const curricula = [...STATE_CURRICULA, testCurriculum];
-    expect(regionIds(curricula)).toContain('baden-wuerttemberg');
-    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen']);
-    expect(curriculumFor('physik', 'baden-wuerttemberg', curricula)?.id).toBe(testCurriculum.id);
-    expect(regionGrades('reflexion', 'baden-wuerttemberg', curricula)).toEqual([7]);
-    expect(regionOrders('ohmsches-gesetz', curricula)['baden-wuerttemberg']).toBe(8000);
-    expect(regionCss(regionIds(curricula))).toContain('[data-region="baden-wuerttemberg"]');
+    expect(regionIds(curricula)).toContain('niedersachsen');
+    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen', 'niedersachsen']);
+    expect(curriculumFor('physik', 'niedersachsen', curricula)?.id).toBe(testCurriculum.id);
+    expect(regionGrades('reflexion', 'niedersachsen', curricula)).toEqual([7]);
+    expect(regionOrders('ohmsches-gesetz', curricula)['niedersachsen']).toBe(8000);
+    expect(regionCss(regionIds(curricula))).toContain('[data-region="niedersachsen"]');
     // Der Bayern-Physik-Lehrplan steht mit dem Mathematik-Lehrplan unter "bayern".
     expect(curriculumFor('physik', 'bayern', curricula)?.id).toBe('bayern-gymnasium-physik');
     expect(regionsOf('de', curricula).find((r) => r.id === 'bayern')?.curricula).toHaveLength(2);

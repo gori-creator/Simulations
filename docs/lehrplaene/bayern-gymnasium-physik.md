@@ -13,18 +13,18 @@ Erstellt nur aus dem eingefügten Lehrplantext (LehrplanPLUS). Kurzbeschreibunge
 | Jahrgangsstufe | Fach | Anzahl Lernbereiche | Anzahl zugeordneter Simulationen |
 | --- | --- | --- | --- |
 | 7 – Natur und Technik (nur physikalische Lernbereiche) | Natur und Technik | 1 | 2 |
-| 8 | Physik | 4 | 9 |
-| 9 | Physik | 4 | 2 |
-| 10 | Physik | 5 | 5 |
+| 8 | Physik | 4 | 11 |
+| 9 | Physik | 4 | 5 |
+| 10 | Physik | 5 | 7 |
 | 11 | Physik | 4 | 10 |
 | 12 – grundlegendes Anforderungsniveau | Physik | 3 | 7 |
-| 12 – grundlegendes Anforderungsniveau, Lehrplanalternative Biophysik | Physik | 4 | 6 |
+| 12 – grundlegendes Anforderungsniveau, Lehrplanalternative Biophysik | Physik | 4 | 7 |
 | 12 – erhöhtes Anforderungsniveau | Physik | 4 | 9 |
-| 13 – grundlegendes Anforderungsniveau | Physik | 4 | 3 |
-| 13 – grundlegendes Anforderungsniveau, Lehrplanalternative Astrophysik | Physik | 5 | 2 |
-| 13 – erhöhtes Anforderungsniveau | Physik | 5 | 4 |
+| 13 – grundlegendes Anforderungsniveau | Physik | 4 | 4 |
+| 13 – grundlegendes Anforderungsniveau, Lehrplanalternative Astrophysik | Physik | 5 | 3 |
+| 13 – erhöhtes Anforderungsniveau | Physik | 5 | 5 |
 
-Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
+Zusammen sind **36 von 36** Simulationen mindestens einmal zugeordnet.
 
 ## Teil B – Lehrplan im Detail
 
@@ -61,7 +61,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Unterbereiche:
   - **3.1 Dynamik zweidimensionaler Bewegungen** (ca. 17 Std.) – Kurz: Geschwindigkeit als Pfeil, Geschwindigkeitsänderung durch eine Kraft, F · Δt = m · Δv als Definition der Kraft; Beschleunigung im eindimensionalen Fall messen. – Simulationen: `bewegungsdiagramme`
     - EN: *Dynamics of two-dimensional motion* – Velocity as an arrow, change of velocity caused by a force, F · Δt = m · Δv as the definition of force; measuring acceleration in one dimension.
-  - **3.2 Kräfte und ihre Wirkungen** (ca. 11 Std.) – Kurz: Masse und Gewichtskraft, Kräfte addieren und an der schiefen Ebene zerlegen, Kräftegleichgewicht und Trägheitssatz sowie Dehnung von Federn mit Hooke’schem Bereich. – Simulationen: `kraefteaddition`, `schiefe-ebene`, `hookesches-gesetz`
+  - **3.2 Kräfte und ihre Wirkungen** (ca. 11 Std.) – Kurz: Masse und Gewichtskraft, Kräfte addieren und an der schiefen Ebene zerlegen, Kräftegleichgewicht und Trägheitssatz sowie Dehnung von Federn mit Hooke’schem Bereich. – Simulationen: `kraefteaddition`, `schiefe-ebene`, `hookesches-gesetz`, `freier-fall`, `hebelgesetz`
     - EN: *Forces and their effects* – Mass and weight, adding forces and resolving them on an inclined plane, equilibrium of forces and the law of inertia, and the stretching of springs with the Hooke region.
 
 ### Ph 8 4 Profilbereich am NTG (nur NTG) (ca. 28 Std.)
@@ -86,12 +86,12 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Titel (EN): Atoms
 - Kurz (DE): Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre.
 - Kurz (EN): Photon model of light, colour and photon energy, emission and absorption spectra explained by the energy-level model, and absorption in the Earth’s atmosphere.
-- Simulationen: –
+- Simulationen: `linienspektren`, `photoeffekt`
 
 ### Ph 9 3 Wärmelehre (ca. 22 Std.)
 - Titel (EN): Thermal physics
 - Unterbereiche:
-  - **3.1 Das Teilchenmodell** (ca. 10 Std.) – Kurz: Temperatur als mittlere Bewegungsenergie der Teilchen, innere Energie, Aggregatzustände sowie Druck, Volumen und Temperatur eines Gases. – Simulationen: `gasgesetze`
+  - **3.1 Das Teilchenmodell** (ca. 10 Std.) – Kurz: Temperatur als mittlere Bewegungsenergie der Teilchen, innere Energie, Aggregatzustände sowie Druck, Volumen und Temperatur eines Gases. – Simulationen: `gasgesetze`, `teilchenmodell`
     - EN: *The particle model* – Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas.
   - **3.2 Thermischer Energietransport und Einflüsse auf unser Klima** (ca. 12 Std.) – Kurz: Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. – Simulationen: –
     - EN: *Thermal energy transport and influences on our climate* – Specific heat capacity, heat as a process quantity, conduction, convection and thermal radiation, and the greenhouse effect and the Earth’s radiation balance.
@@ -110,7 +110,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Titel (EN): Electromagnetism
 - Kurz (DE): Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.
 - Kurz (EN): Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer.
-- Simulationen: –
+- Simulationen: `induktion`, `lorentzkraft`
 
 ### Ph 10 2 Impulserhaltung in der Mechanik (ca. 6 Std.)
 - Titel (EN): Conservation of momentum in mechanics
@@ -204,7 +204,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Titel (EN): The eye (biophysics only)
 - Kurz (DE): Linse-Schirm-Modell und Linsengleichung, Fehlsichtigkeit, Farbsehen sowie Beugung an Spalt und Pupille als Grenze des Auflösungsvermögens.
 - Kurz (EN): Lens–screen model and lens equation, vision defects, colour vision, and diffraction at slits and the pupil as the limit of resolution.
-- Simulationen: `doppelspalt`
+- Simulationen: `doppelspalt`, `linsen`
 
 ### Ph 12 2 Das Ohr (nur Biophysik) (ca. 18 Std.)
 - Titel (EN): The ear (biophysics only)
@@ -281,7 +281,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Unterbereiche:
   - **4.1 Ein einfaches Kernmodell der Quantenphysik** (ca. 12 Std.) – Kurz: Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen. – Simulationen: –
     - EN: *A simple nuclear model of quantum physics* – Binding energy per nucleon, the potential-well model of the nucleus, the origin of the types of radiation, and energy balances in decays and nuclear reactions.
-  - **4.2 Radioaktivität und Kernenergietechnik** (ca. 13 Std.) – Kurz: Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor. – Simulationen: –
+  - **4.2 Radioaktivität und Kernenergietechnik** (ca. 13 Std.) – Kurz: Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor. – Simulationen: `radioaktiver-zerfall`
     - EN: *Radioactivity and nuclear technology* – Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors.
 
 ## Jahrgangsstufe 13 – grundlegendes Anforderungsniveau, Lehrplanalternative Astrophysik   (Quelle: Fachlehrplan Physik 13 (grundlegendes Anforderungsniveau, Astrophysik), https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik/grundlegend-astro)
@@ -310,7 +310,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Titel (EN): Stars (astrophysics only)
 - Kurz (DE): Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.
 - Kurz (EN): Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets.
-- Simulationen: –
+- Simulationen: `doppler-effekt`
 
 ### Ph 13 5 Großstrukturen im Weltall (nur Astrophysik) (ca. 12 Std.)
 - Titel (EN): Large-scale structures in the universe (astrophysics only)
@@ -347,7 +347,7 @@ Zusammen sind **33 von 36** Simulationen mindestens einmal zugeordnet.
 - Unterbereiche:
   - **4.1 Ein einfaches Kernmodell** (ca. 19 Std.) – Kurz: Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte. – Simulationen: –
     - EN: *A simple nuclear model* – Binding energy, potential-well model, origin of the types of radiation, energy and momentum balances, decay chains and the chart of nuclides.
-  - **4.2 Radioaktivität und Kernenergietechnik** (ca. 14 Std.) – Kurz: Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor. – Simulationen: –
+  - **4.2 Radioaktivität und Kernenergietechnik** (ca. 14 Std.) – Kurz: Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor. – Simulationen: `radioaktiver-zerfall`
     - EN: *Radioactivity and nuclear technology* – Decay law from a differential equation, half-life and mean lifetime, dating, radiation protection and nuclear reactors.
 
 ### Ph 13 5 Experimentelles Arbeiten (nur erhöhtes Niveau) (ca. 14 Std.)
@@ -395,22 +395,34 @@ Außerdem ohne Simulation (bewusst kein Vorschlag): 11 – 4.3 Außerunterrichtl
 
 ### Passt inhaltlich, Klassenstufe weicht ab
 
+Auf Wunsch der Projektleitung sind diese Simulationen trotzdem **zugeordnet**, und zwar dort, wo das Thema im bayerischen Lehrplan steht.
+
 | Jgst. | Lernbereich | Simulation | Begründung |
 | --- | --- | --- | --- |
-| 8 | 3.2 Kräfte und ihre Wirkungen | `freier-fall` (Kl. 9–10) | Freier Fall und Fallbeschleunigung stehen hier im Lehrplan, die Simulation ist für Kl. 9–10 eingestuft. |
-| 9 | 2 Atome | `linienspektren` (Kl. 12–13) | Energiestufenmodell, Emissions- und Absorptionsspektren; Simulation eingestuft für Kl. 12–13. |
-| 9 | 2 Atome | `photoeffekt` (Kl. 12–13) | Photonenmodell, Zusammenhang von Farbe und Photonenenergie; Simulation eingestuft für Kl. 12–13 (nur teilweise passend). |
-| 9 | 3.1 Das Teilchenmodell | `teilchenmodell` (Kl. 7–8) | Teilchenbewegung, Temperatur und Aggregatzustände; Simulation eingestuft für Kl. 7–8. |
-| 10 | 1 Elektromagnetismus | `induktion` (Kl. 11–13) | Induktionsspannung und Generator; Simulation eingestuft für Kl. 11–13. |
-| 10 | 1 Elektromagnetismus | `lorentzkraft` (Kl. 11–13) | Lorentzkraft wird hier eingeführt; Simulation (mit Fadenstrahlrohr) eingestuft für Kl. 11–13. |
-| 12 | 1 Das Auge (Biophysik) | `linsen` (Kl. 8–10) | Linse-Schirm-Modell, Linsengleichung und Strahlenverlauf; Simulation eingestuft für Kl. 8–10. |
-| 13 | 4.2 Radioaktivität und Kernenergietechnik (grundlegend und erhöht) | `radioaktiver-zerfall` (Kl. 9–12) | Zerfallsgesetz, Halbwertszeit und Streuung der Zählraten; Simulation eingestuft für Kl. 9–12. |
-| 13 | 4 Sterne (Astrophysik) | `doppler-effekt` (Kl. 10–12) | Dopplereffekt bei Absorptionslinien, Radialgeschwindigkeit; Simulation eingestuft für Kl. 10–12. |
+| 8 | 3.2 Kräfte und ihre Wirkungen | `freier-fall` (Kl. 9–10) | Freier Fall und Fallbeschleunigung stehen hier im Lehrplan. |
+| 9 | 2 Atome | `linienspektren` (Kl. 12–13) | Energiestufenmodell, Emissions- und Absorptionsspektren. |
+| 9 | 2 Atome | `photoeffekt` (Kl. 12–13) | Photonenmodell, Zusammenhang von Farbe und Photonenenergie (passt nur teilweise). |
+| 9 | 3.1 Das Teilchenmodell | `teilchenmodell` (Kl. 7–8) | Teilchenbewegung, Temperatur und Aggregatzustände. |
+| 10 | 1 Elektromagnetismus | `induktion` (Kl. 11–13) | Induktionsspannung und Generator. |
+| 10 | 1 Elektromagnetismus | `lorentzkraft` (Kl. 11–13) | Die Lorentzkraft wird hier eingeführt. |
+| 12 – grundlegendes Anforderungsniveau, Lehrplanalternative Biophysik | 1 Das Auge (nur Biophysik) | `linsen` (Kl. 8–10) | Linse-Schirm-Modell, Linsengleichung und Strahlenverlauf. |
+| 13 – grundlegendes Anforderungsniveau | 4.2 Radioaktivität und Kernenergietechnik | `radioaktiver-zerfall` (Kl. 9–12) | Zerfallsgesetz, Halbwertszeit und Streuung der Zählraten. |
+| 13 – erhöhtes Anforderungsniveau | 4.2 Radioaktivität und Kernenergietechnik | `radioaktiver-zerfall` (Kl. 9–12) | Zerfallsgesetz, Halbwertszeit und Streuung der Zählraten. |
+| 13 – grundlegendes Anforderungsniveau, Lehrplanalternative Astrophysik | 4 Sterne (nur Astrophysik) | `doppler-effekt` (Kl. 10–12) | Dopplereffekt bei Absorptionslinien, Radialgeschwindigkeit. |
 
-Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Klassenstufe weicht ab), `teilchenmodell` (passt zu Ph 9 3.1, Klassenstufe weicht ab) und `hebelgesetz` (im vorliegenden Text kommt kein Lernbereich zu Hebeln vor; Natur und Technik 5 und 6 lagen nicht vor).
+### Ergänzt: Thema kommt im Lehrplan nicht vor
+
+Damit alle Simulationen enthalten sind, steht diese bei einem verwandten Lernbereich. Der Lehrplan selbst verlangt den Inhalt nicht.
+
+| Jgst. | Lernbereich | Simulation | Begründung |
+| --- | --- | --- | --- |
+| 8 | 3.2 Kräfte und ihre Wirkungen | `hebelgesetz` (Kl. 7–8) | Hebel kommen im vorliegenden Lehrplan (Natur und Technik 7, Physik 8–13) nicht vor; Natur und Technik 5/6 lag nicht vor. Steht bei „Kräfte und ihre Wirkungen“, weil es um Kräftegleichgewicht geht. |
+
+Alle 36 Simulationen sind mindestens einmal zugeordnet.
 
 ## Teil E – Unklarheiten
 
+- **Abweichung vom Auftrag (Regel 7), auf Wunsch der Projektleitung:** Alle Simulationen sind enthalten. Passt eine Simulation inhaltlich, steht sie dort, wo das Thema im bayerischen Lehrplan steht, auch wenn ihre Klassenstufe abweicht. `hebelgesetz` steht ohne Grundlage im Lehrplan bei Ph 8 3.2. Beides ist in Teil D einzeln aufgeführt; das JSON selbst kennzeichnet das nicht.
 - Natur und Technik 7: Der eingefügte Text beginnt mitten in Lernbereich NT7 1.1 („Kompetenzerwartungen …“). Die Überschrift von NT7 1, die Überschrift von NT7 1.1, die Stundenrichtwerte von NT7 1 und 1.1, die Einleitung der Jahrgangsstufe und die Internetadresse fehlen. Die Nummern 1.1–1.3 sind aus „NT71.2“, „NT71.3“ abgeleitet; bitte am Original prüfen.
 - Natur und Technik 5 und 6 sowie ein eventuelles Fach „Physik 7“ lagen nicht vor und sind nicht enthalten.
 - Oberstufe: Für die Jahrgangsstufen 12 und 13 gibt es je drei Lehrpläne (grundlegend, eine Lehrplanalternative Biophysik bzw. Astrophysik, erhöht). Im JSON stehen sie als getrennte Einträge mit derselben Zahl in `grade`; die Art steht in `note`. Falls euer Einbau `grade` als eindeutig erwartet, braucht das JSON ein zusätzliches Feld (z. B. `variant`) – das ist im vorgegebenen Format nicht vorgesehen.
@@ -567,7 +579,9 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
               "simulations": [
                 "kraefteaddition",
                 "schiefe-ebene",
-                "hookesches-gesetz"
+                "hookesches-gesetz",
+                "freier-fall",
+                "hebelgesetz"
               ]
             }
           ]
@@ -655,7 +669,11 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
           "summary": {
             "de": "Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre.",
             "en": "Photon model of light, colour and photon energy, emission and absorption spectra explained by the energy-level model, and absorption in the Earth’s atmosphere."
-          }
+          },
+          "simulations": [
+            "linienspektren",
+            "photoeffekt"
+          ]
         },
         {
           "code": "3",
@@ -675,7 +693,8 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
                 "en": "Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas."
               },
               "simulations": [
-                "gasgesetze"
+                "gasgesetze",
+                "teilchenmodell"
               ]
             },
             {
@@ -737,7 +756,11 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
           "summary": {
             "de": "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "en": "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer."
-          }
+          },
+          "simulations": [
+            "induktion",
+            "lorentzkraft"
+          ]
         },
         {
           "code": "2",
@@ -1038,7 +1061,8 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
             "en": "Lens–screen model and lens equation, vision defects, colour vision, and diffraction at slits and the pupil as the limit of resolution."
           },
           "simulations": [
-            "doppelspalt"
+            "doppelspalt",
+            "linsen"
           ]
         },
         {
@@ -1257,7 +1281,10 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
               "summary": {
                 "de": "Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor.",
                 "en": "Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors."
-              }
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
             }
           ]
         }
@@ -1319,7 +1346,10 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
           "summary": {
             "de": "Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.",
             "en": "Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets."
-          }
+          },
+          "simulations": [
+            "doppler-effekt"
+          ]
         },
         {
           "code": "5",
@@ -1430,7 +1460,10 @@ Nicht zugeordnet wurden: `doppler-effekt` (passt nur zu Ph 13 Astrophysik 4, Kla
               "summary": {
                 "de": "Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor.",
                 "en": "Decay law from a differential equation, half-life and mean lifetime, dating, radiation protection and nuclear reactors."
-              }
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
             }
           ]
         },
