@@ -29,7 +29,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 9–13 | `gasgesetze` | Gasgesetze | `/de/physik/waermelehre/gasgesetze/` |
 | ☑ | 10–11 | `kreisbewegung` | Kreisbewegung und Zentripetalkraft | `/de/physik/mechanik/kreisbewegung-zentripetalkraft/` |
 | ☐ | 10–11 | `schiefer-wurf` | Waagerechter und schiefer Wurf | `/de/physik/mechanik/schiefer-wurf/` |
-| ☐ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
+| ☑ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
 | ☐ | 10–12 | `doppler-effekt` | Doppler-Effekt | `/de/physik/schwingungen-und-wellen/doppler-effekt/` |
 | ☐ | 10–12 | `federpendel` | Federpendel | `/de/physik/schwingungen-und-wellen/federpendel/` |
 | ☐ | 10–12 | `wellen-ausbreitung` | Transversal- und Longitudinalwellen | `/de/physik/schwingungen-und-wellen/transversal-longitudinalwellen/` |
