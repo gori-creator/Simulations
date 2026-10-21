@@ -84,7 +84,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 7–7 | `binomische-formeln` | Binomische Formeln am Quadrat | `/de/mathematik/terme-und-gleichungen/binomische-formeln/` |
 | ✓ | 7–7 | `boxplot` | Mittelwert, Median und Boxplot | `/de/mathematik/daten-und-zufall/mittelwert-median-boxplot/` |
 | ✓ | 7–7 | `dreieckskonstruktion` | Kongruenzsätze und Dreieckskonstruktionen | `/de/mathematik/geometrie/dreieckskonstruktion-kongruenzsaetze/` |
-| ☐ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |
+| ✓ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |
 | ☐ | 7–7 | `spiegelung` | Achsen- und Punktspiegelung | `/de/mathematik/geometrie/achsen-und-punktspiegelung/` |
 | ☐ | 7–7 | `thales` | Satz des Thales | `/de/mathematik/geometrie/satz-des-thales/` |
 | ☐ | 7–7 | `waagemodell` | Lineare Gleichungen am Waagemodell | `/de/mathematik/terme-und-gleichungen/waagemodell/` |
