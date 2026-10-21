@@ -81,7 +81,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 6–7 | `prozentstreifen` | Prozentstreifen | `/de/mathematik/zahlen-und-operationen/prozentstreifen/` |
 | ✓ | 6–8 | `proportional` | Direkte und indirekte Proportionalität | `/de/mathematik/funktionen/direkte-indirekte-proportionalitaet/` |
 | ✓ | 6–9 | `gesetz-grosse-zahlen` | Gesetz der großen Zahlen | `/de/mathematik/daten-und-zufall/gesetz-der-grossen-zahlen/` |
-| ☐ | 7–7 | `binomische-formeln` | Binomische Formeln am Quadrat | `/de/mathematik/terme-und-gleichungen/binomische-formeln/` |
+| ✓ | 7–7 | `binomische-formeln` | Binomische Formeln am Quadrat | `/de/mathematik/terme-und-gleichungen/binomische-formeln/` |
 | ☐ | 7–7 | `boxplot` | Mittelwert, Median und Boxplot | `/de/mathematik/daten-und-zufall/mittelwert-median-boxplot/` |
 | ☐ | 7–7 | `dreieckskonstruktion` | Kongruenzsätze und Dreieckskonstruktionen | `/de/mathematik/geometrie/dreieckskonstruktion-kongruenzsaetze/` |
 | ☐ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |

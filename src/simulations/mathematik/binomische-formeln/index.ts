@@ -43,12 +43,14 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Quadrat, das in die Teilflächen einer binomischen Formel zerlegt wird',
+      canvas: 'Flächenmodell der binomischen Formeln: Quadrate und Rechtecke mit den Seitenlängen a und b, die zerlegt oder umgelegt werden',
       split: 'Zerlegen',
       join: 'Zusammensetzen',
       rotate: 'Streifen umlegen',
       back: 'Zurücklegen',
-      needAB: 'Für diese Formel muss a größer als b sein.',
+      needAB: 'Das Flächenmodell braucht a > b.',
+      stillValid: 'Die Formel gilt trotzdem.',
+      needABHint: 'Das Flächenmodell funktioniert hier nur für a > b. Die Formel selbst gilt für alle Zahlen – das zeigt die Rechnung mit Zahlen.',
       hint1: 'Das große Quadrat hat die Seitenlänge a + b. Es besteht aus a², b² und zwei Rechtecken a · b.',
       hint2: 'Von a² werden zwei Streifen a · b abgezogen. Das kleine Quadrat b² wird dabei doppelt abgezogen und muss einmal wieder dazu.',
       hint3: 'Nimm von a² das Quadrat b² weg. Der übrige Streifen lässt sich so umlegen, dass ein Rechteck mit den Seiten a + b und a − b entsteht.',
@@ -56,12 +58,14 @@ export default defineSimulation({
       twice: 'doppelt abgezogen',
     },
     en: {
-      canvas: 'Square divided into the parts of a binomial formula',
+      canvas: 'Area model of the binomial formulas: squares and rectangles with side lengths a and b that are split apart or rearranged',
       split: 'Split apart',
       join: 'Put together',
       rotate: 'Move the strip',
       back: 'Move back',
-      needAB: 'For this formula a must be greater than b.',
+      needAB: 'The area model needs a > b.',
+      stillValid: 'The formula still holds.',
+      needABHint: 'The area model only works for a > b here. The formula itself holds for all numbers – see the calculation with numbers.',
       hint1: 'The large square has side length a + b. It consists of a², b² and two rectangles a · b.',
       hint2: 'Two strips a · b are removed from a². The small square b² is removed twice, so it has to be added back once.',
       hint3: 'Remove the square b² from a². The remaining strip can be moved so that a rectangle with sides a + b and a − b is formed.',
@@ -312,9 +316,10 @@ export default defineSimulation({
           '2': `(${n(p.a)} − ${n(p.b)})² = ${n(e.left)} = ${n(e.terms[0]!)} − ${n(-e.terms[1]!)} + ${n(e.terms[2]!)}`,
           '3': `(${n(p.a)} + ${n(p.b)})(${n(p.a)} − ${n(p.b)}) = ${n(e.left)} = ${n(e.terms[0]!)} − ${n(-e.terms[1]!)}`,
         };
-        const valid = p.formula === '1' || p.a > p.b;
-        ctx.readout('numbers', valid ? nums[p.formula as Formula] : ctx.t('needAB'));
-        ctx.readout('hint', ctx.t(`hint${p.formula}`));
+        // Die Formeln gelten für alle Zahlen; nur das Flächenmodell braucht a > b.
+        const modelOk = p.formula === '1' || p.a > p.b;
+        ctx.readout('numbers', nums[p.formula as Formula]);
+        ctx.readout('hint', ctx.t(modelOk ? `hint${p.formula}` : 'needABHint'));
       },
 
       action(id) {
@@ -333,12 +338,13 @@ export default defineSimulation({
         surface.begin();
         plot.begin();
         if (p.formula !== '1' && p.a <= p.b) {
-          plot.textPx(plot.rect.x + plot.rect.w / 2, plot.rect.y + plot.rect.h / 2, ctx.t('needAB'), {
-            size: 17,
-            color: ctx.theme.muted,
-            align: 'center',
-            baseline: 'middle',
-          });
+          // zweizeilig und mit angepasster Größe, damit nichts abgeschnitten wird (Handy)
+          const size = Math.max(12, Math.min(17, plot.rect.w / 19));
+          const mx = plot.rect.x + plot.rect.w / 2;
+          const my = plot.rect.y + plot.rect.h / 2;
+          const style = { size, color: ctx.theme.muted, align: 'center', baseline: 'middle' } as const;
+          plot.textPx(mx, my - size * 0.75, ctx.t('needAB'), style);
+          plot.textPx(mx, my + size * 0.75, ctx.t('stillValid'), style);
         } else if (p.formula === '1') drawFirst(t);
         else if (p.formula === '2') drawSecond(t);
         else drawThird(t);
