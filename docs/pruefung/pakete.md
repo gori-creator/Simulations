@@ -87,7 +87,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |
 | ✓ | 7–7 | `spiegelung` | Achsen- und Punktspiegelung | `/de/mathematik/geometrie/achsen-und-punktspiegelung/` |
 | ✓ | 7–7 | `thales` | Satz des Thales | `/de/mathematik/geometrie/satz-des-thales/` |
-| ☐ | 7–7 | `waagemodell` | Lineare Gleichungen am Waagemodell | `/de/mathematik/terme-und-gleichungen/waagemodell/` |
+| ✓ | 7–7 | `waagemodell` | Lineare Gleichungen am Waagemodell | `/de/mathematik/terme-und-gleichungen/waagemodell/` |
 | ☐ | 7–7 | `winkel-geradenkreuzung` | Winkel an Geradenkreuzungen | `/de/mathematik/geometrie/winkel-an-geradenkreuzungen/` |
 | ☐ | 7–7 | `winkelsumme` | Innenwinkelsumme in Dreieck und Vieleck | `/de/mathematik/geometrie/innenwinkelsumme/` |
 | ☐ | 7–8 | `besondere-linien` | Umkreis, Inkreis und besondere Linien im Dreieck | `/de/mathematik/geometrie/besondere-linien-im-dreieck/` |
