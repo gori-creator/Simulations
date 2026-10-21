@@ -296,3 +296,45 @@ describe('Modell: Regeln und Skizze', () => {
     expect(flat.grade).toBeLessThan(2);
   });
 });
+
+describe('Prüfrunde: Werte aus Bild, Karten und Lernmaterial', () => {
+  it('Produktregel bei x = 2, Δx = 0,5: Streifen 0,5 + 1,125 + 0,140625 = 1,765625, Δf/Δx ≈ 3,531', () => {
+    const inc = productIncrement(2, 0.5);
+    expect(inc.vdu).toBeCloseTo(0.5, 12);
+    expect(inc.udv).toBeCloseTo(1.125, 12);
+    expect(inc.dudv).toBeCloseTo(0.140625, 12);
+    expect(inc.total).toBeCloseTo(1.765625, 12);
+    expect(inc.total / 0.5).toBeCloseTo(3.53125, 12);
+  });
+  it('Faktor- und Kettenregel der Beispiele: (2 sin x)′(0,5) ≈ 1,755, (sin 2x)′(0,5) = 2 cos 1 ≈ 1,081', () => {
+    const base = mathFn('sin');
+    expect(2 * base.d1(0.5)).toBeCloseTo(1.75517, 5);
+    expect(chainFn(2).d1(0.5)).toBeCloseTo(1.0806, 4);
+  });
+  it('Wanderung bei x = 0: h′(0) = 1000 · e^(−6,25) ≈ 1,93 m/km ≈ 0,19 %', () => {
+    expect(APPS.hike.d1(0)).toBeCloseTo(1000 * Math.exp(-6.25), 12);
+    expect(APPS.hike.d1(0)).toBeCloseTo(1.9305, 4);
+  });
+  it('Badewanne bei t = 5, h = 2: m_s = (V(7) − V(5))/2 ≈ 22,042, V′(5) = 7,5π ≈ 23,562', () => {
+    expect(dqRight(APPS.tank.f, 5, 2)).toBeCloseTo(22.0419, 4);
+    expect(APPS.tank.d1(5)).toBeCloseTo(7.5 * Math.PI, 12);
+  });
+  it('Vorzeichentabelle x³ − 3x: vier Intervalle mit Grenzen −1, 0, 1', () => {
+    const fn = mathFn('cub', { ...DEFAULT_COEFFS, k3: 1, k2: 0, k1: -3, k0: 0 });
+    const t = signTable(fn);
+    expect(t.map((s) => [s.d1, s.d2])).toEqual([
+      [1, -1],
+      [-1, -1],
+      [-1, 1],
+      [1, 1],
+    ]);
+    expect(t[0]!.b).toBeCloseTo(-1, 6);
+    expect(t[1]!.b).toBeCloseTo(0, 6);
+    expect(t[2]!.b).toBeCloseTo(1, 6);
+  });
+  it('1/x: Polstelle bei 0 trennt die Vorzeichentabelle, f′ = −1/x² überall negativ', () => {
+    const t = signTable(mathFn('inv'));
+    expect(t.every((s) => s.d1 === -1)).toBe(true);
+    expect(t.some((s) => Math.abs(s.b) < 1e-9)).toBe(true);
+  });
+});
