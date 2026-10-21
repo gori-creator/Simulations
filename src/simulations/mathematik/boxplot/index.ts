@@ -466,6 +466,13 @@ export default defineSimulation({
     /** Kennwert (eine Stelle mehr, weil Median/Quartile zwischen zwei Werten liegen können). */
     const sText = (v: number) => fmt.num(v, axis.dec + 1);
     const mText = (v: number) => fmt.num(v, Math.max(2, axis.dec + 1));
+    /** „=“, wenn der Mittelwert mit den angezeigten Stellen exakt ist, sonst „≈“. */
+    const meanRel = (v: number) => {
+      const d = Math.max(2, axis.dec + 1);
+      return Math.abs(v - Number(v.toFixed(d))) < 1e-9 ? '=' : '≈';
+    };
+    /** Negative Zahl hinter einem Minuszeichen einklammern: 2 − (−3). */
+    const par = (v: number, f: (x: number) => string) => (v < 0 ? `(${f(v)})` : f(v));
 
     function font(weight: number, size: number): string {
       return `${weight} ${size}px ${ctx.theme.font}`;
@@ -1406,8 +1413,8 @@ export default defineSimulation({
         const w = whiskers(sm, p.out);
         const outTxt = p.out && w.outliers.length ? ` · ${tt('Ausreißer', 'outliers')}: ${w.outliers.map(vText).join('; ')}` : '';
         ctx.readout('five', `Min ${vText(sm.min)} · Q₁ ${sText(sm.q1)} · Me ${sText(sm.med)} · Q₃ ${sText(sm.q3)} · Max ${vText(sm.max)}${outTxt}`);
-        ctx.readout('mean', { html: `<var>x̄</var> = <span class="frac"><span>${fmt.num(sm.sum, axis.dec)}</span><span>${sm.n}</span></span> ≈ ${u(mText(sm.mean))}` });
-        ctx.readout('spread', `${tt('Spannweite', 'Range')} ${vText(sm.max)} − ${vText(sm.min)} = ${u(vText(sm.range))} · ${tt('Quartilsabstand', 'IQR')} ${sText(sm.q3)} − ${sText(sm.q1)} = ${u(sText(sm.iqr))}`);
+        ctx.readout('mean', { html: `<var>x̄</var> = <span class="frac"><span>${fmt.num(sm.sum, axis.dec)}</span><span>${sm.n}</span></span> ${meanRel(sm.mean)} ${u(mText(sm.mean))}` });
+        ctx.readout('spread', `${tt('Spannweite', 'Range')} ${vText(sm.max)} − ${par(sm.min, vText)} = ${u(vText(sm.range))} · ${tt('Quartilsabstand', 'IQR')} ${sText(sm.q3)} − ${par(sm.q1, sText)} = ${u(sText(sm.iqr))}`);
         return;
       }
       const names = [T(tx.groups[0]), T(tx.groups[1])];
@@ -1418,6 +1425,19 @@ export default defineSimulation({
       ctx.readout('five', { html: `<table class="mini-table"><tr><th></th><th>Min</th><th>Q₁</th><th>Me</th><th>Q₃</th><th>Max</th></tr>${rowsH}</table>` });
       ctx.readout('mean', names.map((nm, gi) => `${nm}: ${sums[gi]!.n ? u(mText(sums[gi]!.mean)) : '–'}`).join(' · '));
       ctx.readout('spread', names.map((nm, gi) => `${nm}: ${tt('Spannweite', 'range')} ${sums[gi]!.n ? vText(sums[gi]!.range) : '–'}, ${tt('Quartilsabstand', 'IQR')} ${sums[gi]!.n ? sText(sums[gi]!.iqr) : '–'}`).join(' · '));
+    }
+
+    /** Beschreibung der Zeichenfläche für Bildschirmleser (Kennwerte nur, wenn sie angezeigt werden). */
+    function updateLabel(): void {
+      const tx = TEXTS[cdef().id];
+      const names = mode() === 'cmp' ? [T(tx.groups[0]), T(tx.groups[1])] : [''];
+      const parts = sums.map((sm, gi) => {
+        const head = `${names[gi] ? `${names[gi]}: ` : ''}${sm.n} ${sm.n === 1 ? tt('Wert', 'value') : tt('Werte', 'values')}`;
+        if (!sm.n || !p.show) return head;
+        return `${head}; Min ${vText(sm.min)}, Q₁ ${sText(sm.q1)}, ${tt('Median', 'median')} ${sText(sm.med)}, Q₃ ${sText(sm.q3)}, Max ${vText(sm.max)}, ${tt('Mittelwert', 'mean')} ${mText(sm.mean)}`;
+      });
+      const unitTxt = unit() ? ` (${unit()})` : '';
+      surface.canvas.setAttribute('aria-label', `${ctx.t('canvas')}. ${T(tx.title)}${unitTxt} – ${parts.join('. ')}.`);
     }
 
     function updateActions(): void {
@@ -1569,6 +1589,7 @@ export default defineSimulation({
       geo = surface.width > 0 ? computeGeo() : null;
       if (geo) retarget(snapAll);
       updateReadouts();
+      updateLabel();
       updateActions();
     }
 
@@ -1597,6 +1618,7 @@ export default defineSimulation({
             dots.forEach((list) => list.forEach((d) => d.pop.snap(1)));
           }
           updateReadouts();
+          updateLabel();
           updateActions();
           ctx.requestRender();
           return;

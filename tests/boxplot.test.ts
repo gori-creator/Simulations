@@ -114,6 +114,57 @@ describe('Modell: Boxplot – Kennwerte', () => {
   });
 });
 
+describe('Modell: Boxplot – Prüfwerte (Prüfrunde)', () => {
+  it('Median bei ungerader und gerader Anzahl', () => {
+    expect(median([2, 3, 5, 8, 9])).toBe(5);
+    expect(median([2, 3, 5, 8])).toBe(4);
+    expect(median([9, 2, 8, 3, 5])).toBe(5); // ungeordnete Urliste
+  });
+  it('Quartile 1 … 9: Median der Hälften ohne den Median (Q₁ = 2,5; Q₃ = 7,5)', () => {
+    const s = summarize([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect([s.min, s.q1, s.med, s.q3, s.max]).toEqual([1, 2.5, 5, 7.5, 9]);
+    expect(s.range).toBe(8);
+    expect(s.iqr).toBe(5);
+    expect(s.mean).toBe(5);
+    expect(quartileRanks(9)).toEqual({ q1: [2, 3], med: [5], q3: [7, 8] });
+  });
+  it('Ausreißer 1, 2, 3, 4, 100: Mittelwert 22, Median 3', () => {
+    const s = summarize([1, 2, 3, 4, 100]);
+    expect(s.mean).toBe(22);
+    expect(s.med).toBe(3);
+    expect(s.q1).toBe(1.5);
+    expect(s.q3).toBe(52);
+    // bei nur 5 Werten ist die Box so breit, dass die 1,5-IQR-Regel die 100 nicht kennzeichnet
+    expect(whiskers(s, true).outliers).toEqual([]);
+    // ohne die 100: Mittelwert 2,5, Median 2,5
+    expect(mean([1, 2, 3, 4])).toBe(2.5);
+    expect(median([1, 2, 3, 4])).toBe(2.5);
+  });
+  it('Sonderfälle: drei Werte, alle gleich, negative Werte', () => {
+    const three = summarize([4, 1, 7]);
+    expect([three.q1, three.med, three.q3]).toEqual([1, 4, 7]);
+    const same = summarize([5, 5, 5, 5]);
+    expect([same.min, same.q1, same.med, same.q3, same.max, same.mean, same.range, same.iqr]).toEqual([5, 5, 5, 5, 5, 5, 0, 0]);
+    expect(whiskers(same, true).outliers).toEqual([]);
+    const neg = summarize([-3, -1.5, 0, 2]);
+    expect(neg.q1).toBeCloseTo(-2.25, 12);
+    expect(neg.med).toBeCloseTo(-0.75, 12);
+    expect(neg.q3).toBeCloseTo(1, 12);
+    expect(neg.mean).toBeCloseTo(-0.625, 12);
+    expect(neg.range).toBe(5);
+  });
+  it('Aufgabe 6: 5; 8; 10; 12; 65 hat Median 10 und Mittelwert 20', () => {
+    const s = summarize(parseData('5; 8; 10; 12; 65'));
+    expect(s.med).toBe(10);
+    expect(s.mean).toBe(20);
+  });
+  it('Taschengeld ohne die 90 €: Mittelwert 26,5, Median 25', () => {
+    const v = CONTEXTS.geld.a.filter((x) => x !== 90);
+    expect(mean(v)).toBe(26.5);
+    expect(median(v)).toBe(25);
+  });
+});
+
 describe('Modell: Boxplot – Rangplätze und Zahlenstrahl', () => {
   it('Rangplätze für Median und Quartile', () => {
     expect(medianRanks(15)).toEqual([8]);
