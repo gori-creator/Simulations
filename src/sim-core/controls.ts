@@ -204,11 +204,12 @@ export class Controls {
     range.addEventListener('input', () => commit(Number(range.value)));
     if (text) {
       const input = text;
-      const parse = () => Number(input.value.trim().replace(/−/g, '-').replace(',', '.'));
+      // Leerzeichen (auch schmale, z. B. aus kopierten „125 000“) zählen nicht
+      const parse = () => Number(input.value.replace(/[\s\u00A0\u202F]/g, '').replace(/−/g, '-').replace(',', '.'));
       input.addEventListener('change', () => {
         const value = parse();
         if (Number.isFinite(value)) commit(value);
-        else input.value = this.fmt.num(current, decimals);
+        else input.value = this.fmt.plain(current, decimals);
       });
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
@@ -230,7 +231,8 @@ export class Controls {
         if (Number(range.value) !== n) range.value = String(n);
         const percent = ((n - def.min) / (def.max - def.min)) * 100;
         range.style.setProperty('--fill', `${percent}%`);
-        if (text && document.activeElement !== text) text.value = this.fmt.num(n, decimals);
+        // Eingabefeld ohne Tausendertrennung, damit sich der Wert bearbeiten lässt
+        if (text && document.activeElement !== text) text.value = this.fmt.plain(n, decimals);
         if (output) output.value = this.displayNumber(def, n);
         range.setAttribute('aria-valuetext', this.displayNumber(def, n));
       },

@@ -18,7 +18,7 @@ describe('Runden wie im Unterricht', () => {
   it('rundet nicht über die Grenze hinaus', () => {
     expect(formatNumber(1.0049, 'de', { decimals: 2 })).toBe('1');
     expect(formatNumber(-1.0049, 'de', { decimals: 2 })).toBe(`${MINUS}1`);
-    expect(formatNumber(123456.785, 'de', { decimals: 2 })).toBe('123456,79');
+    expect(formatNumber(123456.785, 'de', { decimals: 2 })).toBe('123\u202F456,79');
   });
 });
 
@@ -48,10 +48,10 @@ describe('Normalisieren vor dem Runden (Gleitkommafehler)', () => {
   });
 
   it('behandelt große und kleine Zahlen', () => {
-    expect(formatNumber(123456789.125, 'de', { decimals: 2 })).toBe('123456789,13');
-    expect(formatNumber(9876543210.5, 'de', { decimals: 0 })).toBe('9876543211');
-    expect(formatNumber(1e20, 'de', { decimals: 2 })).toBe('100000000000000000000');
-    expect(formatNumber(6.02214076e23, 'en', { decimals: 0 })).toBe('602214076000000000000000');
+    expect(formatNumber(123456789.125, 'de', { decimals: 2 })).toBe('123\u202F456\u202F789,13');
+    expect(formatNumber(9876543210.5, 'de', { decimals: 0 })).toBe('9\u202F876\u202F543\u202F211');
+    expect(formatNumber(1e20, 'de', { decimals: 2, grouping: false })).toBe('100000000000000000000');
+    expect(formatNumber(6.02214076e23, 'en', { decimals: 0, grouping: false })).toBe('602214076000000000000000');
     expect(formatNumber(1.5e-7, 'de', { decimals: 9, fixed: true })).toBe('0,000000150');
     expect(formatNumber(2.5e-7, 'de', { decimals: 7 })).toBe('0,0000003');
     expect(formatNumber(1e-20, 'de', { decimals: 2 })).toBe('0');

@@ -359,11 +359,18 @@ class SimulationHost {
     }
     // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
     if (!this.instance) return;
-    const hidden = isTaskHidden(state);
-    if (hidden !== this.lastHidden) {
-      this.lastHidden = hidden;
-      this.instance.hiddenChange?.(hidden);
-    }
+    this.syncTaskHidden();
+    this.requestRender();
+  }
+
+  /** Meldet einen Wechsel von `ctx.hidden` (Auswahl-Zusätze, `hiddenChange`, neu zeichnen). */
+  private syncTaskHidden(): void {
+    if (!this.instance) return;
+    const hidden = isTaskHidden(this.taskState());
+    if (hidden === this.lastHidden) return;
+    this.lastHidden = hidden;
+    this.controls?.setTaskHidden(hidden);
+    this.instance.hiddenChange?.(hidden);
     this.requestRender();
   }
 
@@ -373,17 +380,21 @@ class SimulationHost {
       hideFlag: this.flags.hide,
       resultsOff: !!param && this.values[param] === false,
       revealed: this.revealed,
+      // Nur angezeigte Spoiler zählen: ausgeblendete lassen sich nicht aufdecken
+      spoilers: [...this.readouts].filter(([, row]) => row.spoiler && !row.root.hidden).map(([key]) => key),
     };
   }
 
   private readout(key: string, value: ReadoutValue): void {
     const row = this.readouts.get(key);
     if (!row) return;
-    if (value === null) {
-      row.root.hidden = true;
-      return;
+    const visible = value !== null;
+    if (row.root.hidden === visible) {
+      row.root.hidden = !visible;
+      // Ein Spoiler erscheint oder verschwindet: `ctx.hidden` kann sich ändern
+      if (row.spoiler) this.syncTaskHidden();
     }
-    row.root.hidden = false;
+    if (value === null) return;
     const text = typeof value === 'string' ? `t:${value}` : `h:${value.html}`;
     if (text === row.last) return;
     row.last = text;
