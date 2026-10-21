@@ -8,6 +8,7 @@ import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
 import { defaultValues, sanitize, valuesEqual } from './params';
+import { setSubLabel } from './rich-label';
 import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
@@ -184,7 +185,7 @@ class SimulationHost {
         const button = this.actionButtons.get(id);
         if (!button) return;
         if (state.enabled !== undefined) button.disabled = !state.enabled;
-        if (state.label !== undefined) button.textContent = state.label;
+        if (state.label !== undefined) setSubLabel(button, state.label);
       },
       requestRender: () => this.requestRender(),
     };
@@ -277,7 +278,7 @@ class SimulationHost {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'chip';
-      button.textContent = preset.label[this.lang];
+      setSubLabel(button, preset.label[this.lang]);
       button.addEventListener('click', () => {
         if (this.locked) return;
         this.replaceAll({ ...defaultValues(this.defs), ...(preset.values as ParamValues) });
@@ -307,7 +308,7 @@ class SimulationHost {
       row.className = 'readout';
       row.hidden = true;
       const dt = document.createElement('dt');
-      dt.textContent = def.label[this.lang];
+      setSubLabel(dt, def.label[this.lang]);
       const dd = document.createElement('dd');
       const value = document.createElement('span');
       value.className = 'readout__value';
@@ -392,7 +393,7 @@ class SimulationHost {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = action.primary ? 'btn btn--primary' : 'btn';
-      button.textContent = action.label[this.lang];
+      setSubLabel(button, action.label[this.lang]);
       button.dataset.simAction = action.id;
       button.addEventListener('click', () => {
         this.instance?.action?.(action.id);

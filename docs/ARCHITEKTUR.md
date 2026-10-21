@@ -64,6 +64,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 **Host (`host.ts`)** – erzeugt aus den Definitionen automatisch Regler (`controls.ts`), Ergebnisliste, Beispiel-Knöpfe und kümmert sich um:
 
+- **Beschriftungen mit Index** (`rich-label.ts`): Regler, Schalter, Auswahlen, Gruppentitel, Ergebnisnamen, Beispiel- und Aktionsknöpfe setzen `_` wie `subText` als echten Index (`F_Z`, `μ_H`, `F_{G,1}`; `\_` = Unterstrich). Sichtbar als `<sub>` (sicher maskiert), Bildschirmleser lesen „F Z“. Texte ohne `_` und Hilfetexte (beschreiben teils Eingabe-Schreibweisen wie `log_2`) bleiben reiner Text.
 - **Zustand in der Adresse** (`url-state.ts`): nur abweichende Werte, z. B. `?m=2&b=-1`. Steuerparameter: `_lock=1` (Regler gesperrt), `_hide=1` (Ergebnisse verdeckt). Werte aus Links werden geprüft, gerundet und begrenzt.
 - **Aufgabenmodus im Bild** (`task-mode.ts`): `ctx.hidden` ist `true`, solange Lösungen verdeckt sein sollen – bei `_hide=1`, bis ein `spoiler`-Ergebnis aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist. `ctx.isHidden(key)` sagt das für ein einzelnes Ergebnis. Simulationen blenden damit Etiketten im Bild aus, die eine Aufgabe verraten (`if (!ctx.hidden) pill(…)`). Ändert sich der Zustand, zeichnet der Host neu und ruft optional `hiddenChange(hidden)` der Instanz auf. Vorbild: `physik/bewegungsdiagramme` (Ort und Tacho über der Straße).
 - **Text-Parameter** (`type: 'text'`, z. B. ein Term wie `3 · (x + 2)²`): erscheinen als Eingabefeld, jede Eingabe wird sofort übernommen und wie die anderen Werte in der Adresse gespeichert (`?term=3+%C2%B7+%28x+%2B+2%29`). Der Kern entfernt nur Steuerzeichen und kürzt auf `maxLength` (Standard 80); ob der Text gültig ist, prüft die Simulation selbst und zeigt Fehler verständlich an (Vorbild: `mathematik/termbaum` mit eigenem Parser ohne `eval`).
@@ -77,6 +78,8 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 **Zeichnen** – `Surface` (Canvas, scharf auf hochauflösenden Displays, Größenänderungen, Zeiger-Ereignisse) und `Plot` (Koordinatensystem):
 
 - Gitter, Achsen (auch in Vielfachen von π oder in Grad), Funktionsgraphen mit Erkennung von Sprüngen, Geraden, Strecken, Pfeile, Punkte, Kreise, Bögen, Flächen, Texte.
+- `plot.text`/`plot.textPx` setzen `_` als echten tiefgestellten Index, gleiche Schreibweise wie `subText` (`F_R,max`, `α_G`, `F_{G,1}`; `\_` – im Quelltext `'\\_'` – zeigt einen echten Unterstrich). Texte ohne `_` werden unverändert gezeichnet.
+- Achsbeschriftungen (`xAxis.label`, `yAxis.label`, auch mit Index wie `f_E in Hz`) zeichnet `plot.end()` zuletzt mit hellem Rand. Liegt an der gewohnten Stelle eine Kurve (`fn`, `polyline`, `segment`, `arrow`), ein Punkt (`point`), eine Achsenzahl oder ein `plot.text`, weicht die Beschriftung aus: an der x-Achse zuerst unter die Achse, sonst schrittweise nach oben; an der y-Achse links neben die Achse, sonst nach rechts. Hilfslinien (`line`, `vline`, `hline`) und direkt mit dem Kontext Gezeichnetes zählen nicht. Ist nichts frei, bleibt sie an der gewohnten Stelle.
 - Zoomen (Strg + Mausrad, Pinch, Schaltflächen) und Verschieben.
 - **Ziehbare Punkte** über `plot.addHandle({ get, set, axis?, enabled? })`.
 - Mehrere Koordinatensysteme auf einer Fläche (`region`), z. B. Einheitskreis + Graph.

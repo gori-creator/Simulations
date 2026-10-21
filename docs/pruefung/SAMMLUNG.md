@@ -14,10 +14,16 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | teilchenmodell | `src/sim-core/format.ts` bzw. Ergebnis-Ausgabe im Host | Geschütztes Leerzeichen zwischen Zahl und Einheit allgemein setzen, damit die Zeile nicht vor „m/s“ oder „°C“ umbricht. | erledigt (Kern) |
 | ohmsches-gesetz | `src/sim-core/` (Host) | Simulationen sollen abfragen können, ob der Aufgabenmodus (`_hide`) aktiv ist, damit sie gezielt einzelne Teile verdecken können statt ganzer Tabellen. | erledigt (Kern) |
 | ohmsches-gesetz | `src/components/SimulationShell.astro` / `ui.ts` | Der Tipp „Die markierten Punkte lassen sich … ziehen“ passt nicht überall. Einen eigenen Tipptext pro Simulation ermöglichen, z. B. ein optionales Feld `hint` in der Definition. | erledigt (Kern) |
+<<<<<<< HEAD
 | schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | offen |
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | offen |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | offen |
 | freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest). | offen |
+=======
+| schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | erledigt (Kern) |
+| schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
+| schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
+>>>>>>> worktree-agent-a34ccb996f64c2b30
 
 ## Rückfragen an die Projektleitung
 
@@ -57,4 +63,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | Auf dem Handy ist die Szene klein, weil Platz für 70° freigehalten wird. Den Ausschnitt an den aktuellen Winkel anpassen (mit Übergang). | offen |
 | freier-fall | Auf dem Mond mit Δt = 0,4 s fehlen die Zahlen „1“ und „3“ an der Δs-Leiste, weil die ersten Abschnitte zu kurz sind. Zahlen seitlich versetzt trotzdem zeigen. | offen |
 | freier-fall | Im Reaktionstest berühren die ms-Zahlen am Lineal knapp die Finger. | offen |
+| planetenbahnen | Der Hilfetext zeigt „v_K“ mit Unterstrich (Hilfetexte sind vom Index-Kern bewusst ausgenommen). In der Simulation „v<sub>K</sub>“ bzw. „v_K“ als Unicode schreiben, sobald planetenbahnen geprüft wird. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |

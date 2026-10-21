@@ -1,5 +1,6 @@
 import { t } from '../i18n/utils';
 import { Formatter, formatPiFraction, MINUS } from './format';
+import { parseSubText } from './draw';
 import { clamp } from './numeric';
 import type { PointerTarget, Rect, Surface, SurfacePointer } from './surface';
 import { minorStep, niceStep, piStep, ticksIn } from './ticks';
@@ -90,6 +91,22 @@ export interface Handle {
 
 type Point = readonly [number, number];
 
+/** Mögliche Lage einer Achsbeschriftung (Pixel, Ausrichtung wie im Canvas). */
+interface LabelSpot {
+  x: number;
+  y: number;
+  align: CanvasTextAlign;
+  baseline: CanvasTextBaseline;
+}
+
+interface PendingLabel {
+  label: string;
+  font: (px: number) => string;
+  size: number;
+  width: number;
+  spots: LabelSpot[];
+}
+
 const MIN_ZOOM = 0.05;
 const MAX_ZOOM = 40;
 
@@ -122,6 +139,17 @@ export class Plot implements PointerTarget {
     | { mode: 'pinch'; distance: number; zoom: number; world: [number, number] }
     | null = null;
   private controlsEl: HTMLElement | null = null;
+  /** Im aktuellen Frame gezeichnete Kurven (Pixel, je Linienzug x0, y0, x1, y1, …) – zum Ausweichen der Achsbeschriftung. */
+  private ink: number[][] = [];
+  /** Gezeichnete Punkte als Kreise (x, y, Radius in Pixeln). */
+  private dots: number[] = [];
+  /** Belegte Rechtecke (Achsenzahlen, Texte). */
+  private taken: Rect[] = [];
+  /** Achsbeschriftungen, die erst in `end()` über den Kurven gezeichnet werden. */
+  private pendingLabels: PendingLabel[] = [];
+  private recordInk = true;
+  /** Zwischen `begin()` und `end()`? Nur dann wird für das Ausweichen mitgeschrieben. */
+  private inFrame = false;
   private viewChanged = false;
   private padded: {
     x: readonly [number, number];
@@ -276,6 +304,8 @@ export class Plot implements PointerTarget {
   /** Beginnt das Zeichnen: Bereich ausschneiden und Hintergrund füllen. */
   begin(): CanvasRenderingContext2D {
     const g = this.surface.g;
+    this.clearFrameRecords();
+    this.inFrame = true;
     g.save();
     g.beginPath();
     g.rect(this.r.x, this.r.y, this.r.w, this.r.h);
@@ -287,8 +317,18 @@ export class Plot implements PointerTarget {
 
   /** Beendet das Zeichnen und markiert ziehbare Punkte. */
   end(): void {
+    this.drawAxisLabels();
     this.drawHandles();
     this.surface.g.restore();
+    this.clearFrameRecords();
+    this.inFrame = false;
+  }
+
+  private clearFrameRecords(): void {
+    this.ink = [];
+    this.dots = [];
+    this.taken = [];
+    this.pendingLabels = [];
   }
 
   /* ---------- Gitter und Achsen ---------- */
@@ -409,7 +449,7 @@ export class Plot implements PointerTarget {
           g.lineTo(Math.round(p) + 0.5, axisY + 4);
           g.stroke();
         }
-        this.haloText(this.tickLabel(x, stepX, xOpts), p, labelY, theme.muted);
+        this.haloText(this.tickLabel(x, stepX, xOpts), p, labelY, theme.muted, fontSize);
       }
     }
 
@@ -428,7 +468,7 @@ export class Plot implements PointerTarget {
           g.lineTo(axisX + 4, Math.round(p) + 0.5);
           g.stroke();
         }
-        this.haloText(this.tickLabel(y, stepY, yOpts), labelX, p, theme.muted);
+        this.haloText(this.tickLabel(y, stepY, yOpts), labelX, p, theme.muted, fontSize);
       }
     }
 
@@ -436,29 +476,89 @@ export class Plot implements PointerTarget {
     if (xVisible && yVisible) {
       g.textAlign = 'right';
       g.textBaseline = 'top';
-      this.haloText('0', axisX - 5, axisY + 5, theme.muted);
+      this.haloText('0', axisX - 5, axisY + 5, theme.muted, fontSize);
     }
 
-    // Achsenbeschriftungen: einzelne Variablen kursiv, längere Texte („t in s“) normal
-    const labelFont = (label: string) => (label.length <= 2 ? `italic 15px ${theme.mathFont}` : `600 13px ${theme.font}`);
+    // Achsenbeschriftungen: einzelne Variablen kursiv, längere Texte („t in s“) normal.
+    // Gezeichnet wird erst in `end()`: Liegt dort eine Kurve oder ein Punkt, weicht die
+    // Beschriftung aus (unter die Achse bzw. links neben die Achse, sonst etwas weiter weg).
+    this.pendingLabels = [];
     if (xVisible) {
       const label = xOpts.label ?? 'x';
-      g.font = labelFont(label);
-      g.textAlign = 'right';
-      g.textBaseline = 'bottom';
-      this.haloText(label, r.x + r.w - 6, axisY - 6, theme.text);
+      const x = r.x + r.w - 6;
+      const below = { x, y: axisY + 6, align: 'right' as const, baseline: 'top' as const };
+      const above = (k: number) => ({ x, y: axisY - 6 - k * 4, align: 'right' as const, baseline: 'bottom' as const });
+      this.queueAxisLabel(label, [above(0), below, ...[1, 2, 3, 4, 5, 6, 7, 8].map(above)]);
     }
     if (yVisible) {
       const label = yOpts.label ?? 'y';
-      g.font = labelFont(label);
-      g.textAlign = 'left';
-      g.textBaseline = 'top';
-      this.haloText(label, axisX + 9, r.y + 4, theme.text);
+      const y = r.y + 4;
+      const right = (k: number) => ({ x: axisX + 9 + k * 6, y, align: 'left' as const, baseline: 'top' as const });
+      const left = { x: axisX - 9, y, align: 'right' as const, baseline: 'top' as const };
+      this.queueAxisLabel(label, [right(0), left, ...[1, 2, 3, 4, 5, 6, 7, 8].map(right)]);
     }
   }
 
-  private haloText(text: string, x: number, y: number, color: string): void {
+  /** Merkt eine Achsbeschriftung mit möglichen Lagen (bevorzugte zuerst) für `end()` vor. */
+  private queueAxisLabel(label: string, spots: LabelSpot[]): void {
+    const theme = this.surface.theme;
+    const plain = parseSubText(label).map((part) => part.text).join('');
+    const size = plain.length <= 2 ? 15 : 13;
+    const font = plain.length <= 2 ? (px: number) => `italic ${px}px ${theme.mathFont}` : (px: number) => `600 ${px}px ${theme.font}`;
     const g = this.surface.g;
+    g.save();
+    g.textAlign = 'left';
+    const width = label.includes('_') ? measureRichText(g, label, font, size) : ((g.font = font(size)), g.measureText(label).width);
+    g.restore();
+    this.pendingLabels.push({ label, font, size, width, spots });
+  }
+
+  /** Zeichnet die vorgemerkten Achsbeschriftungen an der ersten freien Stelle. */
+  private drawAxisLabels(): void {
+    const g = this.surface.g;
+    const theme = this.surface.theme;
+    for (const item of this.pendingLabels) {
+      const rects = item.spots.map((spot) => labelRect(spot, item.width, item.size));
+      const inside = (q: Rect) => q.x >= this.r.x && q.y >= this.r.y && q.x + q.w <= this.r.x + this.r.w && q.y + q.h <= this.r.y + this.r.h;
+      let index = rects.findIndex((q, i) => (i === 0 || inside(q)) && !this.isOccupied(q));
+      if (index < 0) index = 0;
+      const spot = item.spots[index]!;
+      g.save();
+      g.globalAlpha = 1;
+      g.setLineDash([]);
+      g.font = item.font(item.size);
+      g.textAlign = spot.align;
+      g.textBaseline = spot.baseline;
+      if (item.label.includes('_')) drawRichText(g, item.label, spot.x, spot.y, { font: item.font, size: item.size, color: theme.text, halo: theme.bg, haloWidth: 3 });
+      else this.haloText(item.label, spot.x, spot.y, theme.text);
+      g.restore();
+      this.taken.push(rects[index]!);
+    }
+    this.pendingLabels = [];
+  }
+
+  /** Liegt im Rechteck (mit kleinem Abstand) eine Kurve, ein Punkt, eine Zahl oder ein Text? */
+  private isOccupied(q: Rect): boolean {
+    const m = 3;
+    const box = { x: q.x - m, y: q.y - m, w: q.w + 2 * m, h: q.h + 2 * m };
+    for (const t of this.taken) if (t.x < box.x + box.w && t.x + t.w > box.x && t.y < box.y + box.h && t.y + t.h > box.y) return true;
+    for (let i = 0; i < this.dots.length; i += 3) {
+      const [cx, cy, rad] = [this.dots[i]!, this.dots[i + 1]!, this.dots[i + 2]!];
+      const dx = Math.max(box.x - cx, 0, cx - box.x - box.w);
+      const dy = Math.max(box.y - cy, 0, cy - box.y - box.h);
+      if (dx * dx + dy * dy < rad * rad) return true;
+    }
+    for (const line of this.ink) {
+      for (let i = 0; i + 3 < line.length; i += 2) {
+        if (segmentHitsRect(line[i]!, line[i + 1]!, line[i + 2]!, line[i + 3]!, box)) return true;
+      }
+    }
+    return false;
+  }
+
+  private haloText(text: string, x: number, y: number, color: string, reserve = 0): void {
+    const g = this.surface.g;
+    if (reserve && this.inFrame) this.taken.push(labelRect({ x, y, align: g.textAlign, baseline: g.textBaseline }, g.measureText(text).width, reserve));
     g.save();
     g.lineWidth = 3;
     g.lineJoin = 'round';
@@ -514,6 +614,7 @@ export class Plot implements PointerTarget {
     g.beginPath();
     let pen = false;
     let lastPy = 0;
+    let trace: number[] = [];
     for (let i = 0; i <= n; i++) {
       const x = from + ((to - from) * i) / n;
       const y = f(x);
@@ -526,9 +627,15 @@ export class Plot implements PointerTarget {
       if (pen && Math.abs(py - lastPy) > this.r.h * 1.5) pen = false;
       if (pen) g.lineTo(px, py);
       else g.moveTo(px, py);
+      if (!pen && trace.length) {
+        if (this.inFrame) this.ink.push(trace);
+        trace = [];
+      }
+      trace.push(px, py);
       pen = true;
       lastPy = py;
     }
+    if (trace.length && this.inFrame) this.ink.push(trace);
     g.stroke();
     this.resetStyle();
   }
@@ -553,6 +660,7 @@ export class Plot implements PointerTarget {
   polyline(points: readonly Point[], style: StrokeStyle = {}): void {
     if (points.length < 2) return;
     const g = this.surface.g;
+    if (this.recordInk && this.inFrame) this.ink.push(points.flatMap(([x, y]) => [this.px(x), this.py(y)]));
     this.applyStroke(style, this.surface.theme.series[0]!);
     g.beginPath();
     points.forEach(([x, y], i) => (i === 0 ? g.moveTo(this.px(x), this.py(y)) : g.lineTo(this.px(x), this.py(y))));
@@ -574,7 +682,10 @@ export class Plot implements PointerTarget {
     const reach = Math.hypot(xMax - xMin, yMax - yMin) + Math.hypot(a[0] - (xMin + xMax) / 2, a[1] - (yMin + yMax) / 2);
     const ux = dx / len;
     const uy = dy / len;
+    // Hilfslinien über den ganzen Bereich zählen nicht als Kurve (Achsbeschriftung weicht ihnen nicht aus).
+    this.recordInk = false;
     this.segment([a[0] - ux * reach, a[1] - uy * reach], [a[0] + ux * reach, a[1] + uy * reach], style);
+    this.recordInk = true;
   }
 
   vline(x: number, style: StrokeStyle = {}): void {
@@ -672,6 +783,7 @@ export class Plot implements PointerTarget {
     const g = this.surface.g;
     const color = style.color ?? this.surface.theme.series[0]!;
     const radius = style.radius ?? 5;
+    if (this.inFrame) this.dots.push(this.px(x), this.py(y), radius + 1);
     g.beginPath();
     g.arc(this.px(x), this.py(y), radius, 0, Math.PI * 2);
     if (style.hollow) {
@@ -689,23 +801,34 @@ export class Plot implements PointerTarget {
     }
   }
 
-  /** Text an einer Weltkoordinate. Minuszeichen werden typografisch korrekt gesetzt. */
+  /**
+   * Text an einer Weltkoordinate. Minuszeichen werden typografisch korrekt gesetzt.
+   * `_` setzt wie bei `subText` einen tiefgestellten Index (`F_R`, `F_{G,1}`);
+   * `\_` (im Quelltext `'\\_'`) steht für einen echten Unterstrich.
+   */
   text(x: number, y: number, text: string, style: TextStyle = {}): void {
     this.textPx(this.px(x), this.py(y), text, style);
   }
 
-  /** Text an einer Pixelposition. */
+  /** Text an einer Pixelposition (Schreibweise wie bei `text`). */
   textPx(px: number, py: number, text: string, style: TextStyle = {}): void {
     const g = this.surface.g;
     const theme = this.surface.theme;
     const size = style.size ?? 14;
     const family = style.math ? theme.mathFont : theme.font;
     const fontStyle = style.math ? 'italic ' : '';
-    g.font = `${fontStyle}${style.weight ?? 'normal'} ${size}px ${family}`;
+    const font = (px: number) => `${fontStyle}${style.weight ?? 'normal'} ${px}px ${family}`;
+    g.font = font(size);
     g.textAlign = style.align ?? 'left';
     g.textBaseline = style.baseline ?? 'alphabetic';
     const [dx, dy] = style.offset ?? [0, 0];
     const content = text.replace(/-(?=[\d.,])/g, MINUS);
+    if (content.includes('_')) {
+      const width = drawRichText(g, content, px + dx, py + dy, { font, size, halo: (style.halo ?? true) ? theme.bg : null, haloWidth: 4, color: style.color ?? theme.text });
+      if (this.inFrame) this.taken.push(labelRect({ x: px + dx, y: py + dy, align: g.textAlign, baseline: g.textBaseline }, width, size));
+      return;
+    }
+    if (this.inFrame) this.taken.push(labelRect({ x: px + dx, y: py + dy, align: g.textAlign, baseline: g.textBaseline }, g.measureText(content).width, size));
     if (style.halo ?? true) {
       g.lineWidth = 4;
       g.lineJoin = 'round';
@@ -901,4 +1024,105 @@ export class Plot implements PointerTarget {
     this.controlsEl.style.top = `${r.y + 8}px`;
     this.controlsEl.style.right = `${right + 8}px`;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Text mit tiefgestelltem Index                                       */
+/* ------------------------------------------------------------------ */
+
+/** Größe und Absenkung des Index wie bei `subText` in `draw.ts`. */
+const SUB_SCALE = 0.74;
+const SUB_SHIFT = 0.28;
+
+/**
+ * Zeichnet Text mit Indizes (`F_R`, `F_{G,1}`, `\_` = Unterstrich) mit der
+ * aktuellen Ausrichtung (`textAlign`, `textBaseline`) des Kontexts.
+ * `font(px)` liefert die Schriftangabe für eine Größe in Pixeln.
+ * Gibt die Gesamtbreite zurück. Der Zustand des Kontexts bleibt erhalten.
+ */
+export function drawRichText(
+  g: CanvasRenderingContext2D,
+  value: string,
+  x: number,
+  y: number,
+  opts: { font: (px: number) => string; size: number; color: string; halo?: string | null; haloWidth?: number },
+): number {
+  const parts = parseSubText(value);
+  const subSize = Math.round(opts.size * SUB_SCALE * 2) / 2;
+  const fontOf = (sub: boolean) => opts.font(sub ? subSize : opts.size);
+  let total = 0;
+  for (const part of parts) {
+    g.font = fontOf(part.sub);
+    total += g.measureText(part.text).width;
+  }
+  const align = g.textAlign;
+  const left = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
+  const shift = opts.size * SUB_SHIFT;
+  g.save();
+  g.textAlign = 'left';
+  for (const pass of opts.halo ? ['halo', 'fill'] : ['fill']) {
+    let cx = left;
+    for (const part of parts) {
+      g.font = fontOf(part.sub);
+      const yy = y + (part.sub ? shift : 0);
+      if (pass === 'halo') {
+        g.lineJoin = 'round';
+        g.lineWidth = opts.haloWidth ?? 4;
+        g.strokeStyle = opts.halo!;
+        g.strokeText(part.text, cx, yy);
+      } else {
+        g.fillStyle = opts.color;
+        g.fillText(part.text, cx, yy);
+      }
+      cx += g.measureText(part.text).width;
+    }
+  }
+  g.restore();
+  return total;
+}
+
+/** Breite eines Textes mit Indizes (wie `drawRichText`). */
+function measureRichText(g: CanvasRenderingContext2D, value: string, font: (px: number) => string, size: number): number {
+  const subSize = Math.round(size * SUB_SCALE * 2) / 2;
+  let total = 0;
+  for (const part of parseSubText(value)) {
+    g.font = font(part.sub ? subSize : size);
+    total += g.measureText(part.text).width;
+  }
+  return total;
+}
+
+/** Ungefähres Rechteck eines Textes der Breite `width` und Schriftgröße `size` an einer Lage. */
+export function labelRect(spot: LabelSpot, width: number, size: number): Rect {
+  const { x, y, align, baseline } = spot;
+  const left = align === 'right' || align === 'end' ? x - width : align === 'center' ? x - width / 2 : x;
+  const top =
+    baseline === 'top' || baseline === 'hanging' ? y : baseline === 'middle' ? y - size / 2 : baseline === 'bottom' || baseline === 'ideographic' ? y - size : y - size * 0.8;
+  return { x: left, y: top, w: width, h: size };
+}
+
+/** Schneidet die Strecke (x1|y1)–(x2|y2) das Rechteck? (Liang-Barsky) */
+export function segmentHitsRect(x1: number, y1: number, x2: number, y2: number, q: Rect): boolean {
+  if (![x1, y1, x2, y2].every(Number.isFinite)) return false;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  let t0 = 0;
+  let t1 = 1;
+  const edges: [number, number][] = [
+    [-dx, x1 - q.x],
+    [dx, q.x + q.w - x1],
+    [-dy, y1 - q.y],
+    [dy, q.y + q.h - y1],
+  ];
+  for (const [p, d] of edges) {
+    if (p === 0) {
+      if (d < 0) return false;
+    } else {
+      const t = d / p;
+      if (p < 0) t0 = Math.max(t0, t);
+      else t1 = Math.min(t1, t);
+      if (t0 > t1) return false;
+    }
+  }
+  return true;
 }

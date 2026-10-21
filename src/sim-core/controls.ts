@@ -1,6 +1,7 @@
 import type { Lang } from '../i18n/config';
 import { Formatter } from './format';
 import { isVisible, stepDecimals } from './params';
+import { plainSubText, setSubLabel } from './rich-label';
 import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
 
 /**
@@ -63,7 +64,7 @@ export class Controls {
         const title = document.createElement('div');
         title.className = 'ctl-group__title';
         title.id = titleId;
-        title.textContent = group.label[lang];
+        setSubLabel(title, group.label[lang]);
         fieldset.setAttribute('role', 'group');
         fieldset.setAttribute('aria-labelledby', titleId);
         fieldset.append(title);
@@ -94,6 +95,7 @@ export class Controls {
     if (!def.help) return null;
     const p = document.createElement('p');
     p.className = 'ctl__help';
+    // Hilfetexte bleiben reiner Text: Sie beschreiben teils Eingabe-Schreibweisen (z. B. „log_2“ im Funktionsplotter).
     p.textContent = def.help[this.options.lang];
     return p;
   }
@@ -115,7 +117,7 @@ export class Controls {
     const label = document.createElement('label');
     label.htmlFor = id;
     label.className = 'ctl__label';
-    label.textContent = def.label[lang];
+    setSubLabel(label, def.label[lang]);
     head.append(label);
 
     const range = document.createElement('input');
@@ -138,7 +140,7 @@ export class Controls {
       text.type = 'text';
       text.inputMode = 'decimal';
       text.className = 'ctl__number';
-      text.setAttribute('aria-label', def.label[lang]);
+      text.setAttribute('aria-label', plainSubText(def.label[lang]));
       text.autocomplete = 'off';
       text.spellcheck = false;
       const wrap = document.createElement('span');
@@ -219,7 +221,7 @@ export class Controls {
     track.setAttribute('aria-hidden', 'true');
     const text = document.createElement('span');
     text.className = 'switch__label';
-    text.textContent = def.label[lang];
+    setSubLabel(text, def.label[lang]);
     label.append(input, track, text);
     root.append(label);
     const help = this.helpText(def);
@@ -248,7 +250,7 @@ export class Controls {
     const label = document.createElement('label');
     label.htmlFor = id;
     label.className = 'ctl__label';
-    label.textContent = def.label[lang];
+    setSubLabel(label, def.label[lang]);
     head.append(label);
     const input = document.createElement('input');
     input.type = 'text';
@@ -285,7 +287,7 @@ export class Controls {
     root.className = 'ctl ctl--choice';
     const legend = document.createElement('legend');
     legend.className = 'ctl__label';
-    legend.textContent = def.label[lang];
+    setSubLabel(legend, def.label[lang]);
     const group = document.createElement('div');
     group.className = 'segmented';
     const inputs: HTMLInputElement[] = [];
@@ -301,7 +303,7 @@ export class Controls {
         if (input.checked) onInput(def.key, option.value);
       });
       const span = document.createElement('span');
-      span.textContent = option.label[lang];
+      setSubLabel(span, option.label[lang]);
       label.append(input, span);
       group.append(label);
       inputs.push(input);
