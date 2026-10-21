@@ -97,10 +97,11 @@ export default defineSimulation({
       max: 0.95,
       step: 0.05,
       default: 0.65,
-      visibleIf: (v) => v.exp === 'tack',
+      // Nur sichtbar, wenn p eingezeichnet wird – sonst verriete der Regler den Wert, der geschätzt werden soll
+      visibleIf: (v) => v.exp === 'tack' && v.showP === true,
     },
     { key: 'showP', type: 'boolean', group: 'view', label: L('Wahrscheinlichkeit p einzeichnen', 'Show probability p'), default: true },
-    { key: 'funnel', type: 'boolean', group: 'view', label: L('Trichter (95 % der Versuchsreihen)', 'Funnel (95 % of runs)'), default: true },
+    { key: 'funnel', type: 'boolean', group: 'view', label: L('Trichter (95 % der Versuchsreihen)', 'Funnel (95 % of runs)'), default: true, visibleIf: (v) => v.showP === true },
     { key: 'logScale', type: 'boolean', group: 'view', label: L('Anzahl n logarithmisch', 'Logarithmic n axis'), default: true },
     { key: 'speed', type: 'number', group: 'anim', label: L('Würfe pro Sekunde', 'Throws per second'), min: 1, max: 500, step: 1, default: 25 },
   ],
@@ -240,19 +241,25 @@ export default defineSimulation({
       fitRange();
     }
 
+    /** „=“, wenn der Wert mit `places` Nachkommastellen genau dargestellt wird (z. B. 17/100 = 0,17), sonst „≈“. */
+    function eq(value: number, places: number): string {
+      const scaled = value * 10 ** places;
+      return Math.abs(scaled - Math.round(scaled)) < 1e-6 ? '=' : '≈';
+    }
+
     function updateReadouts(): void {
       const pv = eventProb();
       const h = n ? k / n : NaN;
       ctx.readout('n', `n = ${fmt.num(n, 0)}`);
       ctx.readout('k', ctx.t('times').replace('{k}', fmt.num(k, 0)).replace('{event}', eventName()));
-      // „=“ nur, wenn der Bruch auf 4 Nachkommastellen genau aufgeht (z. B. 17/100 = 0,17)
-      const rel = Number.isInteger(Math.round(h * 1e8) / 1e4) ? '=' : '≈';
-      ctx.readout('h', n ? `h = ${fmt.num(k, 0)} / ${fmt.num(n, 0)} ${rel} ${fmt.num(h, 4)} = ${fmt.num(h * 100, 2)} %` : '–');
+      ctx.readout('h', n ? `h = ${fmt.num(k, 0)} / ${fmt.num(n, 0)} ${eq(h, 4)} ${fmt.num(h, 4)} = ${fmt.num(h * 100, 2)} %` : '–');
       const pText = experiment() === 'die' ? `1/6 ≈ ${fmt.num(pv, 4)}` : fmt.num(pv, 2);
       ctx.readout('p', p.showP ? `p = ${pText}` : ctx.t('unknown'));
-      ctx.readout('diff', n && p.showP ? `≈ ${fmt.num(Math.abs(h - pv), 4)}` : null);
+      const dh = Math.abs(h - pv);
+      ctx.readout('diff', n && p.showP ? `${eq(dh, 4)} ${fmt.num(dh, 4)}` : null);
       // Absolute Abweichung: wächst typischerweise mit n (etwa wie √n), obwohl |h − p| kleiner wird
-      ctx.readout('absDiff', n && p.showP ? `|${fmt.num(k, 0)} − ${fmt.num(n * pv, 2)}| ≈ ${fmt.num(Math.abs(k - n * pv), 2)}` : null);
+      const dk = Math.abs(k - n * pv);
+      ctx.readout('absDiff', n && p.showP ? `|${fmt.num(k, 0)} − ${fmt.num(n * pv, 2)}| ${eq(dk, 2)} ${fmt.num(dk, 2)}` : null);
     }
 
     /* ---------- Zeichnen ---------- */
@@ -451,7 +458,7 @@ export default defineSimulation({
       const size = Math.min(box.w, box.h) * 0.5;
       if (last < 0) {
         const lines = box.w < 190 ? ctx.t('start').split('\n') : [ctx.t('start').replace('\n', ' ')];
-        lines.forEach((line, i) => text(g, line, cx, cy + (i - (lines.length - 1) / 2) * 18, { font: `600 14px ${ctx.theme.font}`, color: '#ffffff' }));
+        lines.forEach((line, i) => text(g, line, cx, cy + (i - (lines.length - 1) / 2) * 18, { font: `600 ${lines.length > 1 ? 12 : 14}px ${ctx.theme.font}`, color: '#ffffff' }));
         return;
       }
       const t = anim.t;
@@ -516,7 +523,20 @@ export default defineSimulation({
           g.stroke();
           g.setLineDash([]);
         }
-        if (n) text(g, `${fmt.num((rel[i] ?? 0) * 100, 0)} %`, x + w / 2, bottom - h - 9, { font: `600 ${pctSize}px ${theme.font}`, color: theme.text });
+        if (n) {
+          // Hintergrund-Rand, damit die gestrichelte p-Linie die Zahl nicht durchstreicht
+          const pct = `${fmt.num((rel[i] ?? 0) * 100, 0)} %`;
+          g.save();
+          g.font = `600 ${pctSize}px ${theme.font}`;
+          g.textAlign = 'center';
+          g.textBaseline = 'middle';
+          g.lineWidth = 3;
+          g.lineJoin = 'round';
+          g.strokeStyle = theme.bg;
+          g.strokeText(pct, x + w / 2, bottom - h - 9);
+          g.restore();
+          text(g, pct, x + w / 2, bottom - h - 9, { font: `600 ${pctSize}px ${theme.font}`, color: theme.text });
+        }
         text(g, label, x + w / 2, bottom + 14, { font: `${isEvent ? 700 : 500} ${labels.length > 2 ? 13 : 12}px ${theme.font}`, color: isEvent ? theme.series[0]! : theme.muted });
       });
       g.strokeStyle = theme.axis;
