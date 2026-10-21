@@ -1,4 +1,5 @@
 import { parseSubText } from './draw';
+import { bindUnits, bindUnitsHtml } from './format';
 
 /**
  * Beschriftungen der Bedienelemente mit tiefgestelltem Index.
@@ -33,6 +34,17 @@ export function subLabelHtml(value: string): string | null {
   if (!parts.some((part) => part.sub)) return null;
   const visible = parts.map((part) => (part.sub ? `<sub>${escapeHtml(part.text)}</sub>` : escapeHtml(part.text))).join('');
   return `<span aria-hidden="true">${visible}</span><span class="visually-hidden">${escapeHtml(plainSubText(value))}</span>`;
+}
+
+/**
+ * Setzt ein Ergebnis aus reinem Text (`ctx.readout(key, 'F_max = 3 N')`):
+ * Index wie bei den Beschriftungen als `<sub>` mit Lesefassung, Zahl und
+ * Einheit durch ein geschütztes Leerzeichen verbunden (`bindUnits`).
+ */
+export function setSubReadout(element: HTMLElement, value: string): void {
+  const html = subLabelHtml(value);
+  if (html === null) element.textContent = bindUnits(value.replace(/\\_/g, '_'));
+  else element.innerHTML = bindUnitsHtml(html);
 }
 
 /** Setzt die Beschriftung eines Elements, mit Index als `<sub>`. */
