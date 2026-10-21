@@ -19,7 +19,9 @@ lassen sich periodische Vorgänge beschreiben – zum Beispiel Schwingungen, Gez
 | $c$ | Verschiebung in x-Richtung | um $c$ nach rechts ($c > 0$) bzw. links ($c < 0$) |
 | $d$ | Verschiebung in y-Richtung | Mittellinie $y = d$ |
 
-Der **Wertebereich** ist $W = [\,d - |a|\,;\; d + |a|\,]$.
+Die **Wertemenge** ist $W = [\,d - |a|\,;\; d + |a|\,]$.
+
+Die x-Werte sind im **Bogenmaß** angegeben: $\pi$ entspricht $180^\circ$, eine volle Periode des Sinus $2\pi$ entspricht $360^\circ$.
 
 > **Achtung, Schreibweise:** Manche Bücher schreiben $f(x) = a \cdot \sin(bx + c) + d$. Dort ist die Verschiebung in x-Richtung nicht $c$, sondern $-\frac{c}{b}$.
 
@@ -29,15 +31,15 @@ Der **Kosinus** ist ein verschobener Sinus: $\cos(x) = \sin\!\left(x + \frac{\pi
 
 1. Verändere $a$ und $d$. Beide wirken nur in **y-Richtung**. [Amplitude 3](?a=3) [Mittellinie y = 1](?d=1)
 2. Verändere $b$. Wird die Periode bei größerem $b$ länger oder kürzer? [b = 2](?b=2) [b = 0,5](?b=0.5)
-3. Verschiebe den Graphen mit $c$ oder ziehe den roten Punkt. [c = π/4](?cPi=3)
-4. Ziehe den grünen Punkt (Amplitude) und den violetten Punkt (Ende der Periode) direkt im Koordinatensystem.
+3. Verschiebe den Graphen mit $c$ oder ziehe den Punkt $(c \mid d)$ auf der Mittellinie, an dem die Periode beginnt. [c = π/4](?cPi=3)
+4. Ziehe den Hochpunkt (Amplitude) und den hohlen Punkt am Ende der Periode direkt im Koordinatensystem.
 5. Zeige, dass der Kosinus ein verschobener Sinus ist. [Sinus um π/2 nach links](?cPi=-6) – vergleiche mit [der Kosinusfunktion](?base=cos).
 
 ## Aufgaben
 
 ### Aufgabe 1: Parameter ablesen
 
-[Aufgabe laden](?a=2&b=2&cPi=3&d=1&_hide=1) Bestimme Amplitude, Periode, Verschiebungen und die Funktionsgleichung.
+[Aufgabe laden](?a=2&b=2&cPi=3&d=1&info=0&_hide=1) Bestimme Amplitude, Periode, Verschiebungen, Wertemenge und die Funktionsgleichung. Die gestrichelte Kurve ist $y = \sin x$.
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -45,6 +47,8 @@ Der **Kosinus** ist ein verschobener Sinus: $\cos(x) = \sin\!\left(x + \frac{\pi
 Mittellinie $y = 1$, also $d = 1$. Amplitude 2, also $a = 2$. Eine volle Periode ist $\pi$ lang, also $b = \frac{2\pi}{\pi} = 2$. Der Graph startet um $\frac{\pi}{4}$ nach rechts verschoben:
 
 $$f(x) = 2 \sin\!\left(2\left(x - \tfrac{\pi}{4}\right)\right) + 1, \qquad W = [-1;\, 3]$$
+
+Auch jede um ganze Perioden versetzte Verschiebung passt, z. B. $c = \frac{5\pi}{4}$. In der Schreibweise $a \cdot \sin(b(x + c)) + d$ ist $c = -\frac{\pi}{4}$. Unter **Anzeige → Werte und Hilfslinien zeigen** kannst du dein Ergebnis prüfen.
 
 </details>
 
@@ -85,5 +89,6 @@ $$f(t) \approx 3{,}8 \cdot \sin\big(0{,}52\,(t - 2{,}7)\big) + 0{,}2$$
   - Das Vorzeichen von $c$ wird wie bei Parabeln falsch gedeutet.
   - Bei $\sin(bx + c)$ wird $c$ direkt als Verschiebung gelesen.
 - **π-Achse:** Standardmäßig ist die x-Achse in Vielfachen von $\pi$ beschriftet und $c$ rastet in Schritten von $\frac{\pi}{12}$ ein. Für Modellierungsaufgaben lässt sich das unter **Anzeige** abschalten; dann ist $c$ dezimal einstellbar.
+- **Aufgabenmodus:** Schalten Sie **Werte und Hilfslinien zeigen** aus. Dann sind Regler, Hilfslinien und Ergebnisse verdeckt, und die Klasse liest die Parameter am Graphen ab. Über **Teilen** lässt sich ein solcher Zustand als Link weitergeben.
 - **Einstieg:** Die Simulation „Einheitskreis“ zeigt, wie die Sinuskurve aus der Kreisbewegung entsteht.
 - **Schreibweise in Bayern:** Der LehrplanPLUS schreibt $a \cdot \sin(b \cdot (x + c)) + d$. Unter **Anzeige → Schreibweise** lässt sich die Simulation darauf umstellen; ein positives $c$ verschiebt dann nach links.

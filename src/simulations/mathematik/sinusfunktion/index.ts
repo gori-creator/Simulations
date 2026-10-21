@@ -1,15 +1,19 @@
 import { defineSimulation, formatPiFraction, Plot, Surface, term } from '../../../sim-core';
-import { evaluate, firstPeakOffset, period, PI_TWELFTH, range, type SineParams } from './model';
+import { DEFAULT_VIEW, evaluate, firstPeakOffset, fitView, period, PI_TWELFTH, range, type SineParams } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
 const piDisplay = (twelfths: number) => formatPiFraction(twelfths * PI_TWELFTH) ?? '';
+
+/** Werte sichtbar? Im Aufgabenmodus (`info=0`) sind die Regler ausgeblendet, sonst wäre die Lösung ablesbar. */
+const shown = (v: Record<string, unknown>) => v.info !== false;
 
 /**
  * Allgemeine Sinusfunktion f(x) = a · sin(b(x − c)) + d (oder mit Kosinus).
  *
  * Ziehbare Punkte: Verschiebung (c, d), Amplitude (Hochpunkt) und Periodenende.
  * Bei π-Achse wird c in Vielfachen von π/12 eingestellt, sonst dezimal.
+ * Mit `info=0` (Aufgabenmodus) sind Regler, Hilfslinien und Ergebnisse verdeckt.
  */
 export default defineSimulation({
   id: 'sinusfunktion',
@@ -29,8 +33,9 @@ export default defineSimulation({
     {
       key: 'a',
       type: 'number',
-      label: L('Amplitude a', 'Amplitude a'),
+      label: L('Faktor a (Amplitude |a|)', 'Factor a (amplitude |a|)'),
       help: L('a < 0 spiegelt den Graphen an der Mittellinie.', 'a < 0 reflects the graph in the midline.'),
+      visibleIf: shown,
       min: -4,
       max: 4,
       step: 0.1,
@@ -44,6 +49,7 @@ export default defineSimulation({
       max: 4,
       step: 0.01,
       default: 1,
+      visibleIf: shown,
     },
     {
       key: 'cPi',
@@ -54,7 +60,7 @@ export default defineSimulation({
       step: 1,
       default: 0,
       display: (v) => piDisplay(v),
-      visibleIf: (v) => v.piAxis === true,
+      visibleIf: (v) => v.piAxis === true && shown(v),
     },
     {
       key: 'c',
@@ -64,9 +70,9 @@ export default defineSimulation({
       max: 8,
       step: 0.05,
       default: 0,
-      visibleIf: (v) => v.piAxis !== true,
+      visibleIf: (v) => v.piAxis !== true && shown(v),
     },
-    { key: 'd', type: 'number', label: L('Verschiebung in y-Richtung d', 'Vertical shift d'), min: -4, max: 4, step: 0.1, default: 0 },
+    { key: 'd', type: 'number', label: L('Verschiebung in y-Richtung d', 'Vertical shift d'), min: -4, max: 4, step: 0.1, default: 0, visibleIf: shown },
     {
       key: 'notation',
       type: 'choice',
@@ -87,13 +93,25 @@ export default defineSimulation({
     { key: 'period', type: 'boolean', group: 'view', label: L('Periode markieren', 'Mark the period'), default: true },
     { key: 'midline', type: 'boolean', group: 'view', label: L('Mittellinie und Amplitude', 'Midline and amplitude'), default: true },
     { key: 'grid', type: 'boolean', group: 'view', label: L('Gitternetz', 'Grid'), default: true },
+    {
+      key: 'info',
+      type: 'boolean',
+      group: 'view',
+      label: L('Werte und Hilfslinien zeigen', 'Show values and guides'),
+      help: L(
+        'Aus: Aufgabenmodus – Regler, Hilfslinien und Ergebnisse sind verdeckt, die Parameter werden am Graphen abgelesen.',
+        'Off: exercise mode – sliders, guides and results are hidden; read the parameters off the graph.',
+      ),
+      default: true,
+    },
   ],
+  resultsParam: 'info',
   readouts: [
     { key: 'f', label: L('Funktionsgleichung', 'Equation'), spoiler: true },
     { key: 'amplitude', label: L('Amplitude', 'Amplitude'), spoiler: true },
     { key: 'period', label: L('Periode', 'Period'), spoiler: true },
     { key: 'shift', label: L('Verschiebung', 'Shift'), spoiler: true },
-    { key: 'range', label: L('Wertebereich', 'Range'), spoiler: true },
+    { key: 'range', label: L('Wertemenge', 'Range'), spoiler: true },
   ],
   presets: [
     { id: 'base', label: L('Sinusfunktion', 'Sine function'), values: {} },
@@ -105,7 +123,9 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Koordinatensystem mit dem Graphen der allgemeinen Sinusfunktion',
+      canvas:
+        'Koordinatensystem mit dem Graphen von f(x) = a · sin(b(x − c)) + d (durchgezogen) und der Grundfunktion zum Vergleich (gestrichelt). Hilfslinien: Mittellinie y = d, senkrechte Strecke für die Amplitude |a| am Hochpunkt, Klammer für die Periode p. Ziehbare Punkte: Beginn der Periode (c | d), Hochpunkt und Ende der Periode.',
+      rangeSep: ';',
       reflected: 'an der Mittellinie gespiegelt (a < 0)',
       right: 'nach rechts',
       left: 'nach links',
@@ -117,7 +137,9 @@ export default defineSimulation({
       yShift: 'in y-Richtung',
     },
     en: {
-      canvas: 'Coordinate system with the graph of the general sine function',
+      canvas:
+        'Coordinate system with the graph of f(x) = a · sin(b(x − c)) + d (solid) and the base function for comparison (dashed). Guides: midline y = d, vertical segment for the amplitude |a| at the maximum, bracket for the period p. Draggable points: start of the period (c, d), maximum and end of the period.',
+      rangeSep: ',',
       reflected: 'reflected in the midline (a < 0)',
       right: 'to the right',
       left: 'to the left',
@@ -132,10 +154,10 @@ export default defineSimulation({
 
   mount(ctx) {
     const surface = new Surface(ctx, ctx.t('canvas'));
-    const plot = new Plot(surface, { x: [-7, 7], y: [-4.2, 4.2], xAxis: { pi: true } });
+    const plot = new Plot(surface, { x: DEFAULT_VIEW.x, y: DEFAULT_VIEW.y, xAxis: { pi: true } });
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const editable = () => !ctx.locked;
+    const editable = () => !ctx.locked && p.info;
     const colorF = () => ctx.theme.series[0]!;
     const colorShift = () => ctx.theme.series[1]!;
     const colorAmp = () => ctx.theme.series[2]!;
@@ -184,6 +206,11 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
+        // Links, Beispiele und Zurücksetzen: Ausschnitt so wählen, dass die erste Periode sichtbar ist
+        if (source === 'init' || source === 'replace') {
+          const view = fitView(params(), p.period && p.info);
+          plot.setRange(view.x, view.y);
+        }
         if (changed.has('piAxis')) {
           plot.setAxes({ x: { pi: p.piAxis } });
           // Verschiebung beim Umschalten übernehmen – nur bei Bedienung von Hand
@@ -199,13 +226,14 @@ export default defineSimulation({
         ctx.readout('f', { html: formula() });
         ctx.readout('amplitude', `|a| = ${fmt.num(Math.abs(p.a))}${p.a < 0 ? ` – ${ctx.t('reflected')}` : ''}`);
         const per = period(p.b);
-        const perText = p.piAxis ? (formatPiFraction(per) ?? fmt.num(per)) : fmt.num(per);
-        ctx.readout('period', `p = 2π / b = ${perText}${formatPiFraction(per) && p.piAxis ? ` ≈ ${fmt.num(per)}` : ''}`);
+        // 2π/b ist nie eine endliche Dezimalzahl: exakt nur als Bruchteil von π
+        const perPi = p.piAxis ? formatPiFraction(per) : null;
+        ctx.readout('period', `p = 2π / b ${perPi ? `= ${perPi} ≈` : '≈'} ${fmt.num(per)}`);
         const xPart = c === 0 ? `${ctx.t('xShift')}: ${ctx.t('none')}` : `${ctx.t('by')} ${shiftText(c)} ${ctx.t(c > 0 ? 'right' : 'left')}`;
         const yPart = p.d === 0 ? `${ctx.t('yShift')}: ${ctx.t('none')}` : `${ctx.t('by')} ${fmt.num(Math.abs(p.d))} ${ctx.t(p.d > 0 ? 'up' : 'down')}`;
         ctx.readout('shift', `${xPart}; ${yPart}`);
         const [lo, hi] = range(p);
-        ctx.readout('range', `W = [${fmt.num(lo)}; ${fmt.num(hi)}]`);
+        ctx.readout('range', `W = [${fmt.num(lo)}${ctx.t('rangeSep')} ${fmt.num(hi)}]`);
       },
 
       render() {
@@ -222,29 +250,32 @@ export default defineSimulation({
           plot.fn(base, { color: ctx.theme.muted, width: 1.5, dash: [6, 5] });
         }
 
-        if (p.midline) {
+        if (p.midline && p.info) {
           plot.hline(sp.d, { color: colorShift(), width: 1.2, dash: [4, 5], alpha: 0.8 });
           const peakX = c + firstPeakOffset(sp.base, sp.b);
           plot.segment([peakX, sp.d], [peakX, sp.d + sp.a], { color: colorAmp(), width: 2 });
           plot.text(peakX, sp.d + sp.a / 2, `|a| = ${fmt.num(Math.abs(sp.a), 1)}`, { color: colorAmp(), baseline: 'middle', offset: [8, 0], weight: '600', size: 13 });
         }
 
-        if (p.period) {
+        if (p.period && p.info) {
           const y = sp.d - Math.abs(sp.a) - 0.45;
           const color = colorPeriod();
           plot.segment([c, y], [c + per, y], { color, width: 2 });
           plot.segment([c, y - 0.15], [c, y + 0.15], { color, width: 2 });
           plot.segment([c + per, y - 0.15], [c + per, y + 0.15], { color, width: 2 });
           plot.vline(c + per, { color, width: 1, dash: [3, 5], alpha: 0.6 });
-          const label = p.piAxis ? (formatPiFraction(per) ?? fmt.num(per)) : fmt.num(per);
-          plot.text(c + per / 2, y, `p = ${label}`, { color, align: 'center', baseline: 'top', offset: [0, 6], weight: '600', size: 13 });
+          const perPi = p.piAxis ? formatPiFraction(per) : null;
+          const label = perPi ? `p = ${perPi}` : `p ≈ ${fmt.num(per)}`;
+          plot.text(c + per / 2, y, label, { color, align: 'center', baseline: 'top', offset: [0, 6], weight: '600', size: 13 });
         }
 
         plot.fn((x) => evaluate(sp, x), { color: colorF(), width: 3 });
 
-        plot.point(c, sp.d, { color: colorShift(), radius: 5 });
-        plot.point(c + firstPeakOffset(sp.base, sp.b), sp.d + sp.a, { color: colorAmp(), radius: 5 });
-        plot.point(c + per, sp.d, { color: colorPeriod(), radius: 5, hollow: true });
+        if (p.info) {
+          plot.point(c, sp.d, { color: colorShift(), radius: 5 });
+          plot.point(c + firstPeakOffset(sp.base, sp.b), sp.d + sp.a, { color: colorAmp(), radius: 5 });
+          plot.point(c + per, sp.d, { color: colorPeriod(), radius: 5, hollow: true });
+        }
         plot.end();
       },
 
