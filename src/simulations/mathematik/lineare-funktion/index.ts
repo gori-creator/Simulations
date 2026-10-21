@@ -1,12 +1,15 @@
-import { defineSimulation, Plot, radToDeg, Surface, term } from '../../../sim-core';
-import { lineRelation } from './model';
+import { defineSimulation, Plot, Surface, term } from '../../../sim-core';
+import { lineRelation, slopeAngleDeg, zeroOf } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
 /**
- * Lineare Funktion f(x) = m·x + b
+ * Lineare Funktion f(x) = m·x + t
  *
- * Ziehbare Punkte: y-Achsenabschnitt (ändert b) und Spitze des
+ * Bezeichnung wie in Bayern: y-Achsenabschnitt t (englisch c). Der
+ * Parameter-Schlüssel bleibt `b` bzw. `b2`, weil er in geteilten Links steht.
+ *
+ * Ziehbare Punkte: y-Achsenabschnitt (ändert t) und Spitze des
  * Steigungsdreiecks (ändert m). Optional eine zweite Gerade g zum Vergleich
  * (parallel, senkrecht, Schnittpunkt).
  */
@@ -19,8 +22,8 @@ export default defineSimulation({
   ],
   params: [
     { key: 'm', type: 'number', label: L('Steigung m', 'Slope m'), min: -5, max: 5, step: 0.1, default: 0.5 },
-    { key: 'b', type: 'number', label: L('y-Achsenabschnitt b', 'y-intercept b'), min: -8, max: 8, step: 0.1, default: 1 },
-    { key: 'second', type: 'boolean', group: 'g', label: L('Zweite Gerade g(x) = m₂x + b₂', 'Second line g(x) = m₂x + b₂'), default: false },
+    { key: 'b', type: 'number', label: L('y-Achsenabschnitt t', 'y-intercept c'), min: -8, max: 8, step: 0.1, default: 1 },
+    { key: 'second', type: 'boolean', group: 'g', label: L('Zweite Gerade g(x) = m₂x + t₂', 'Second line g(x) = m₂x + c₂'), default: false },
     {
       key: 'm2',
       type: 'number',
@@ -36,7 +39,7 @@ export default defineSimulation({
       key: 'b2',
       type: 'number',
       group: 'g',
-      label: L('y-Achsenabschnitt b₂', 'y-intercept b₂'),
+      label: L('y-Achsenabschnitt t₂', 'y-intercept c₂'),
       min: -8,
       max: 8,
       step: 0.1,
@@ -74,6 +77,7 @@ export default defineSimulation({
       parallel: 'parallel – kein Schnittpunkt (gleiche Steigung)',
       perpendicular: 'senkrecht zueinander (m · m₂ = −1), Schnittpunkt',
       intersect: 'Schnittpunkt',
+      intercept: 't',
     },
     en: {
       canvas: 'Coordinate system with the graph of the linear function',
@@ -86,6 +90,7 @@ export default defineSimulation({
       parallel: 'parallel – no intersection (same slope)',
       perpendicular: 'perpendicular (m · m₂ = −1), intersection',
       intersect: 'Intersection',
+      intercept: 'c',
     },
   },
 
@@ -141,13 +146,13 @@ export default defineSimulation({
       update() {
         ctx.readout('f', { html: lineTerm('f', p.m, p.b) });
         ctx.readout('course', p.m > 0 ? ctx.t('rising') : p.m < 0 ? ctx.t('falling') : ctx.t('constant'));
-        ctx.readout('angle', `α ≈ ${fmt.num(radToDeg(Math.atan(p.m)), 1)}°`);
+        ctx.readout('angle', `α ≈ ${fmt.num(slopeAngleDeg(p.m), 1)}°`);
 
-        if (p.m !== 0) {
-          const x0 = -p.b / p.m;
+        const x0 = zeroOf(p.m, p.b);
+        if (typeof x0 === 'number') {
           ctx.readout('zero', { html: `${term.v('x')}<sub>0</sub> = ${fmt.num(x0)} &nbsp;→&nbsp; N${fmt.point(x0, 0)}` });
         } else {
-          ctx.readout('zero', p.b === 0 ? ctx.t('everywhere') : ctx.t('none'));
+          ctx.readout('zero', x0 === 'all' ? ctx.t('everywhere') : ctx.t('none'));
         }
 
         if (p.second) {
@@ -212,8 +217,8 @@ export default defineSimulation({
           plot.point(1, p.b2 + p.m2, { color: color.g(), radius: 4, hollow: true });
         }
 
-        if (p.zero && p.m !== 0) {
-          const x0 = -p.b / p.m;
+        const x0 = zeroOf(p.m, p.b);
+        if (p.zero && typeof x0 === 'number') {
           plot.point(x0, 0, { color: color.zero(), radius: 5 });
           // Beschriftung auf die Seite, auf der die Gerade nicht verläuft
           const right = p.m < 0;
@@ -221,7 +226,7 @@ export default defineSimulation({
         }
 
         plot.point(0, p.b, { color: color.f(), radius: 6 });
-        plot.text(0, p.b, `b = ${fmt.num(p.b, 1)}`, { color: muted, offset: [-10, -10], align: 'right', size: 13 });
+        plot.text(0, p.b, `${ctx.t('intercept')} = ${fmt.num(p.b, 1)}`, { color: muted, offset: [-10, -10], align: 'right', size: 13 });
         plot.end();
       },
 
