@@ -77,6 +77,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 **Zeichnen** – `Surface` (Canvas, scharf auf hochauflösenden Displays, Größenänderungen, Zeiger-Ereignisse) und `Plot` (Koordinatensystem):
 
 - Gitter, Achsen (auch in Vielfachen von π oder in Grad), Funktionsgraphen mit Erkennung von Sprüngen, Geraden, Strecken, Pfeile, Punkte, Kreise, Bögen, Flächen, Texte.
+- `plot.text`/`plot.textPx` setzen `_` als echten tiefgestellten Index, gleiche Schreibweise wie `subText` (`F_R,max`, `α_G`, `F_{G,1}`; `\_` – im Quelltext `'\\_'` – zeigt einen echten Unterstrich). Texte ohne `_` werden unverändert gezeichnet.
 - Zoomen (Strg + Mausrad, Pinch, Schaltflächen) und Verschieben.
 - **Ziehbare Punkte** über `plot.addHandle({ get, set, axis?, enabled? })`.
 - Mehrere Koordinatensysteme auf einer Fläche (`region`), z. B. Einheitskreis + Graph.

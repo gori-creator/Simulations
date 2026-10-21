@@ -1,5 +1,6 @@
 import { t } from '../i18n/utils';
 import { Formatter, formatPiFraction, MINUS } from './format';
+import { parseSubText } from './draw';
 import { clamp } from './numeric';
 import type { PointerTarget, Rect, Surface, SurfacePointer } from './surface';
 import { minorStep, niceStep, piStep, ticksIn } from './ticks';
@@ -689,23 +690,32 @@ export class Plot implements PointerTarget {
     }
   }
 
-  /** Text an einer Weltkoordinate. Minuszeichen werden typografisch korrekt gesetzt. */
+  /**
+   * Text an einer Weltkoordinate. Minuszeichen werden typografisch korrekt gesetzt.
+   * `_` setzt wie bei `subText` einen tiefgestellten Index (`F_R`, `F_{G,1}`);
+   * `\_` (im Quelltext `'\\_'`) steht für einen echten Unterstrich.
+   */
   text(x: number, y: number, text: string, style: TextStyle = {}): void {
     this.textPx(this.px(x), this.py(y), text, style);
   }
 
-  /** Text an einer Pixelposition. */
+  /** Text an einer Pixelposition (Schreibweise wie bei `text`). */
   textPx(px: number, py: number, text: string, style: TextStyle = {}): void {
     const g = this.surface.g;
     const theme = this.surface.theme;
     const size = style.size ?? 14;
     const family = style.math ? theme.mathFont : theme.font;
     const fontStyle = style.math ? 'italic ' : '';
-    g.font = `${fontStyle}${style.weight ?? 'normal'} ${size}px ${family}`;
+    const font = (px: number) => `${fontStyle}${style.weight ?? 'normal'} ${px}px ${family}`;
+    g.font = font(size);
     g.textAlign = style.align ?? 'left';
     g.textBaseline = style.baseline ?? 'alphabetic';
     const [dx, dy] = style.offset ?? [0, 0];
     const content = text.replace(/-(?=[\d.,])/g, MINUS);
+    if (content.includes('_')) {
+      drawRichText(g, content, px + dx, py + dy, { font, size, halo: (style.halo ?? true) ? theme.bg : null, haloWidth: 4, color: style.color ?? theme.text });
+      return;
+    }
     if (style.halo ?? true) {
       g.lineWidth = 4;
       g.lineJoin = 'round';
@@ -901,4 +911,59 @@ export class Plot implements PointerTarget {
     this.controlsEl.style.top = `${r.y + 8}px`;
     this.controlsEl.style.right = `${right + 8}px`;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Text mit tiefgestelltem Index                                       */
+/* ------------------------------------------------------------------ */
+
+/** Größe und Absenkung des Index wie bei `subText` in `draw.ts`. */
+const SUB_SCALE = 0.74;
+const SUB_SHIFT = 0.28;
+
+/**
+ * Zeichnet Text mit Indizes (`F_R`, `F_{G,1}`, `\_` = Unterstrich) mit der
+ * aktuellen Ausrichtung (`textAlign`, `textBaseline`) des Kontexts.
+ * `font(px)` liefert die Schriftangabe für eine Größe in Pixeln.
+ * Gibt die Gesamtbreite zurück. Der Zustand des Kontexts bleibt erhalten.
+ */
+export function drawRichText(
+  g: CanvasRenderingContext2D,
+  value: string,
+  x: number,
+  y: number,
+  opts: { font: (px: number) => string; size: number; color: string; halo?: string | null; haloWidth?: number },
+): number {
+  const parts = parseSubText(value);
+  const subSize = Math.round(opts.size * SUB_SCALE * 2) / 2;
+  const fontOf = (sub: boolean) => opts.font(sub ? subSize : opts.size);
+  let total = 0;
+  for (const part of parts) {
+    g.font = fontOf(part.sub);
+    total += g.measureText(part.text).width;
+  }
+  const align = g.textAlign;
+  const left = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
+  const shift = opts.size * SUB_SHIFT;
+  g.save();
+  g.textAlign = 'left';
+  for (const pass of opts.halo ? ['halo', 'fill'] : ['fill']) {
+    let cx = left;
+    for (const part of parts) {
+      g.font = fontOf(part.sub);
+      const yy = y + (part.sub ? shift : 0);
+      if (pass === 'halo') {
+        g.lineJoin = 'round';
+        g.lineWidth = opts.haloWidth ?? 4;
+        g.strokeStyle = opts.halo!;
+        g.strokeText(part.text, cx, yy);
+      } else {
+        g.fillStyle = opts.color;
+        g.fillText(part.text, cx, yy);
+      }
+      cx += g.measureText(part.text).width;
+    }
+  }
+  g.restore();
+  return total;
 }
