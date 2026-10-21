@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, Surface, Tween } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, Surface, Tween, withAlpha } from '../../../sim-core';
 import { exactIntegral, FUNCTIONS, strips, sumOf, type FunctionId, type Strip, type SumKind } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -9,7 +9,7 @@ const VIEW: Record<FunctionId, { x: [number, number]; y: [number, number] }> = {
   cubic: { x: [-3.4, 3.4], y: [-4.2, 4.2] },
   exp: { x: [-3.2, 3.6], y: [-0.5, 6.5] },
 };
-const START: Record<FunctionId, [number, number]> = { x2: [0, 2], sqrt: [0, 9], sin: [0, 6.28], cubic: [-2, 3], exp: [-2, 3] };
+const START: Record<FunctionId, [number, number]> = { x2: [0, 2], sqrt: [0, 9], sin: [0, 6.3], cubic: [-2, 3], exp: [-2, 3] };
 
 /**
  * Integral als Flächenbilanz: Die Fläche zwischen Graph und x-Achse wird durch
@@ -60,9 +60,9 @@ export default defineSimulation({
     { id: 'halve', label: L('n halbieren', 'Halve n') },
   ],
   readouts: [
-    { key: 'sum', label: L('Summe', 'Sum') },
+    { key: 'sum', label: L('Summe', 'Sum'), spoiler: true },
     { key: 'exact', label: L('Integral (exakt)', 'Integral (exact)'), spoiler: true },
-    { key: 'table', label: L('Annäherung für wachsendes n', 'Approximation as n grows') },
+    { key: 'table', label: L('Annäherung für wachsendes n', 'Approximation as n grows'), spoiler: true },
   ],
   presets: [
     { id: 'start', label: L('x² von 0 bis 2', 'x² from 0 to 2'), values: {} },
@@ -102,9 +102,13 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const plot = new Plot(surface, { x: VIEW.x2.x, y: VIEW.x2.y, equalAspect: false });
     const def = () => FUNCTIONS[p.fn as FunctionId];
-    const lo = () => Math.min(p.a, p.b);
-    const hi = () => Math.max(p.a, p.b);
     const clampToDomain = (x: number) => Math.min(def().domain[1], Math.max(def().domain[0], x));
+    // Grenzen auf den Definitionsbereich begrenzen (z. B. √x nur für x ≥ 0, auch bei geteilten Links)
+    const ga = () => clampToDomain(p.a);
+    const gb = () => clampToDomain(p.b);
+    const lo = () => Math.min(ga(), gb());
+    const hi = () => Math.max(ga(), gb());
+    const crit = () => def().critical;
 
     // Übergang beim Ändern von n: neue Streifen wachsen aus den alten heraus
     const split = new Tween(700, ease.outCubic);
@@ -124,19 +128,26 @@ export default defineSimulation({
       const f = def().f;
       const a = lo();
       const b = hi();
-      const values = kinds().map((k) => [k, sumOf(strips(f, a, b, p.n, k))] as const);
+      const values = kinds().map((k) => [k, sumOf(strips(f, a, b, p.n, k, crit()))] as const);
       if (p.kind === 'both') {
         const up = values[0]![1];
         const low = values[1]![1];
-        ctx.readout('sum', { html: `<var>U</var><sub>${p.n}</sub> ≈ ${fmt.num(low, 4)} · <var>O</var><sub>${p.n}</sub> ≈ ${fmt.num(up, 4)} · ${ctx.t('diff')} ≈ ${fmt.num(up - low, 4)}` });
+        ctx.readout('sum', { html: `<var>U</var><sub>${p.n}</sub> ≈ ${fmt.num(low, 4)}; <var>O</var><sub>${p.n}</sub> ≈ ${fmt.num(up, 4)}; ${ctx.t('diff')} <var>O</var><sub>${p.n}</sub> − <var>U</var><sub>${p.n}</sub> ≈ ${fmt.num(up - low, 4)}` });
       } else {
         ctx.readout('sum', ctx.t('sumText').replace('{name}', ctx.t(p.kind)).replace('{n}', String(p.n)).replace('{v}', fmt.num(values[0]![1], 4)));
       }
       const exact = exactIntegral(def(), a, b);
-      ctx.readout('exact', { html: `∫<sub>${fmt.num(a, 2)}</sub><sup>${fmt.num(b, 2)}</sup> <var>f</var>(<var>x</var>) d<var>x</var> ≈ <strong>${fmt.num(exact, 4)}</strong>` });
+      const integral = (x0: number, x1: number) => `∫<sub>${fmt.num(x0, 2)}</sub><sup>${fmt.num(x1, 2)}</sup> <var>f</var>(<var>x</var>) d<var>x</var>`;
+      // a > b: Integral mit Vorzeichen (Grenzen vertauschen ändert das Vorzeichen)
+      const swapped = ga() > gb();
+      ctx.readout('exact', {
+        html: swapped
+          ? `${integral(ga(), gb())} = −${integral(a, b)} ≈ <strong>${fmt.num(-exact, 4)}</strong>`
+          : `${integral(a, b)} ≈ <strong>${fmt.num(exact, 4)}</strong>`,
+      });
       const kind = p.kind === 'both' ? (['lower', 'upper'] as SumKind[]) : [p.kind as SumKind];
       const rows = [4, 8, 16, 32, 64, 128]
-        .map((n) => `<tr${n === p.n ? ' class="is-current"' : ''}><td>${n}</td>${kind.map((k) => `<td>${fmt.num(sumOf(strips(f, a, b, n, k)), 4)}</td>`).join('')}</tr>`)
+        .map((n) => `<tr${n === p.n ? ' class="is-current"' : ''}><td>${n}</td>${kind.map((k) => `<td>${fmt.num(sumOf(strips(f, a, b, n, k, crit())), 4)}</td>`).join('')}</tr>`)
         .join('');
       const head = kind.map((k) => `<th>${ctx.t(k)}</th>`).join('');
       ctx.readout('table', { html: `<table class="mini-table"><tr><th><var>n</var></th>${head}</tr>${rows}</table>` });
@@ -144,11 +155,11 @@ export default defineSimulation({
 
     // Grenzen auf der x-Achse ziehen
     const editable = () => !ctx.locked;
-    plot.addHandle({ get: () => [p.a, 0], set: (x) => ctx.set({ a: clampToDomain(x) }), axis: 'x', enabled: editable, color: () => ctx.theme.series[4]! });
-    plot.addHandle({ get: () => [p.b, 0], set: (x) => ctx.set({ b: clampToDomain(x) }), axis: 'x', enabled: editable, color: () => ctx.theme.series[4]! });
+    plot.addHandle({ get: () => [ga(), 0], set: (x) => ctx.set({ a: clampToDomain(x) }), axis: 'x', enabled: editable, color: () => ctx.theme.series[4]! });
+    plot.addHandle({ get: () => [gb(), 0], set: (x) => ctx.set({ b: clampToDomain(x) }), axis: 'x', enabled: editable, color: () => ctx.theme.series[4]! });
 
     function snapshot(): void {
-      previous = strips(def().f, lo(), hi(), p.n, kinds()[0]!);
+      previous = strips(def().f, lo(), hi(), p.n, kinds()[0]!, crit());
       previousKind = String(p.kind);
     }
 
@@ -161,6 +172,10 @@ export default defineSimulation({
             const [a, b] = START[p.fn as FunctionId];
             ctx.set({ a, b });
           }
+        }
+        // Regler außerhalb des Definitionsbereichs (z. B. a < 0 bei √x) auf den Rand setzen
+        if (source === 'input' && (changed.has('a') || changed.has('b')) && (ga() !== p.a || gb() !== p.b)) {
+          ctx.set({ a: ga(), b: gb() });
         }
         if (!changed.has('n')) snapshot();
         updateReadouts();
@@ -193,7 +208,7 @@ export default defineSimulation({
         const t = split.value;
         const anim = split.running && previousKind === String(p.kind);
         kinds().forEach((kind) => {
-          const list = strips(f, a, b, p.n, kind);
+          const list = strips(f, a, b, p.n, kind, crit());
           const outline = kind === 'upper' && p.kind === 'both';
           for (const s of list) {
             let h0 = s.h0;
@@ -218,8 +233,8 @@ export default defineSimulation({
         plot.fn(f, { color: theme.text, width: 3, from: d0, to: d1 });
         // Grenzen
         for (const [x, name] of [
-          [p.a, 'a'],
-          [p.b, 'b'],
+          [ga(), 'a'],
+          [gb(), 'b'],
         ] as const) {
           plot.vline(x, { color: theme.series[4], width: 1.5, dash: [5, 4] });
           plot.text(x, 0, name, { color: theme.series[4], math: true, size: 16, weight: 'bold', offset: [0, 22] });
@@ -228,7 +243,7 @@ export default defineSimulation({
         const label = `f(x) = ${ctx.lang === 'de' ? def().term : def().term.replace(',', '.')}`;
         const g = surface.g;
         g.font = `700 15px ${theme.font}`;
-        g.fillStyle = theme.dark ? 'rgba(15,20,30,0.85)' : 'rgba(255,255,255,0.9)';
+        g.fillStyle = withAlpha(theme.bg, 0.9);
         roundRect(g, r.x + 8, r.y + 8, g.measureText(label).width + 18, 28, 8);
         g.fill();
         plot.textPx(r.x + 17, r.y + 22, label, { color: theme.text, size: 15, weight: 'bold', align: 'left', halo: false });

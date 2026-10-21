@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   approachSide,
   boundThreshold,
@@ -25,6 +25,9 @@ import {
   threshold,
   yWindow,
 } from '../src/simulations/mathematik/grenzverhalten/model';
+
+// Die Rastersuchen sind rechenintensiv; unter Last reicht das Standardlimit von 5 s nicht.
+vi.setConfig({ testTimeout: 30_000 });
 
 describe('Modell: Grenzverhalten', () => {
   it('Grenzwerte und bestimmte Divergenz', () => {

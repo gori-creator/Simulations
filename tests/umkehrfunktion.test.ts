@@ -362,3 +362,16 @@ describe('Modell: Plausibilität über viele Zufallswerte', () => {
     for (const part of parts) for (let i = 1; i < part.length; i++) expect(Math.hypot(part[i]![0] - part[i - 1]![0], part[i]![1] - part[i - 1]![1])).toBeLessThan(0.3);
   });
 });
+
+describe('Befunde Paket 5', () => {
+  it('1/x: linker Ast nur negative, rechter Ast nur positive Funktionswerte', () => {
+    const hyp = makeFn('hyp');
+    for (const x of [-4, -1, -0.25]) expect(hyp.f(x)).toBeLessThan(0);
+    for (const x of [0.25, 1, 4]) expect(hyp.f(x)).toBeGreaterThan(0);
+  });
+  it('Aufgabe 5 und 6: (f⁻¹)′(b) = 1 / f′(a)', () => {
+    expect(invSlopeAt(makeFn('sq', 'pos'), 1.5)).toBeCloseTo(1 / 3, 12);
+    expect(invSlopeAt(makeFn('cube'), 2)).toBeCloseTo(1 / 6, 12);
+    expect(makeFn('cube').df(0)).toBe(0);
+  });
+});

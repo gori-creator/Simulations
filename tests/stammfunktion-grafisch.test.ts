@@ -198,6 +198,9 @@ describe('Anwendungen', () => {
     const C = constantFor(ap, 0, 20);
     expect(anti(ap, C, 1)).toBeCloseTo(55 / 3, 10);
     expect(anti(ap, C, 7)).toBeCloseTo(109 / 3, 10);
+    // Randminimum: V(10) = −1000/6 + 200 − 35 + 20 = 55/3 = V(1)
+    expect(anti(ap, C, 10)).toBeCloseTo(55 / 3, 10);
+    expect(anti(ap, C, 1)).toBeCloseTo(55 / 3, 10);
     const fe = features(ap);
     expect(fe.zeros.map((z) => [Number(z.x.toFixed(6)), z.sign])).toEqual([
       [1, 1],
@@ -205,11 +208,14 @@ describe('Anwendungen', () => {
     ]);
     expect(fe.ext[0]!.x).toBeCloseTo(4, 5);
   });
-  it('Sparkonto: höchster Stand 450 € nach 5 Monaten, nach 12 Monaten −40 €', () => {
+  it('Sparkonto: höchster Stand 450 € nach 5 Monaten, nach 10 Monaten wieder 200 €, nie negativ', () => {
     const ap = APPS.konto;
     const C = constantFor(ap, 0, 200);
+    expect(ap.x).toEqual([0, 10]);
     expect(anti(ap, C, 5)).toBeCloseTo(450, 10);
-    expect(anti(ap, C, 12)).toBeCloseTo(-40, 10);
+    // K(10) = 200 + 1000 − 1000 = 200
+    expect(anti(ap, C, 10)).toBeCloseTo(200, 10);
+    for (let t = 0; t <= 10; t += 0.25) expect(anti(ap, C, t)).toBeGreaterThanOrEqual(200 - 1e-9);
   });
   it('Heißluftballon: Gipfel nach 10 min bei 600/π m, nach 20 min wieder am Boden', () => {
     const ap = APPS.ballon;

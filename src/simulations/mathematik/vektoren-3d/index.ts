@@ -1025,7 +1025,8 @@ export default defineSimulation({
           arrowV(O, cv, theme.text, 2.6, 0.75, [7, 5]);
           sideLabel(O, cv, 'c', theme.text, 1, 0.7, 15);
           const best = bestRS(tA(), tB(), tC());
-          if (best && best.rest > 0.01) {
+          // Lot auf die Ebene nur bei sichtbaren Ergebnissen (verrät sonst Aufgabe 3)
+          if (p.show && best && best.rest > 0.01) {
             const foot = linComb(best.r, a as V3, best.s, b as V3) as Vec3;
             view.segment(cv, foot, { color: theme.muted, width: 1.4, dash: [3, 4] });
             view.point(foot, { color: theme.muted, radius: 3.5, hollow: true });
@@ -1166,6 +1167,9 @@ export default defineSimulation({
         case 'goal': {
           if (collinear(a, b)) return { text: tt('a ∥ b: nur Vielfache auf einer Geraden', 'a ∥ b: only multiples on one line') };
           const best = bestRS(a, b, tC());
+          const hitNow = norm(sub(linComb(p.r, a, p.s, b), tC())) < 1e-6;
+          // Aufgabenmodus: nicht verraten, ob c in der Ebene liegt (Frage immer, solange nicht getroffen)
+          if (!p.show && !hitNow) return { text: tt('Liegt c in der Ebene von a und b?', 'Does c lie in the plane of a and b?') };
           if (best && best.rest > 0.01) return { text: tt(`c liegt nicht in der Ebene – unmöglich (Abstand ${fmt.num(best.rest, 2)})`, `c is not in the plane – impossible (distance ${fmt.num(best.rest, 2)})`) };
           if (norm(sub(linComb(p.r, a, p.s, b), tC())) < 1e-6) return { text: tt('Getroffen!', 'Hit!'), ok: true };
           return null;
@@ -1465,11 +1469,21 @@ export default defineSimulation({
       y += 22;
       if (st.d > 1e-9) {
         const e = unit(a);
-        drawToks([{ kind: 'vec', s: 'a⁰', color: CR() }, { kind: 'txt', s: '=' }, { kind: 'txt', s: `1/${fmt.num(st.d, 2)}` }, { kind: 'txt', s: '·' }, { kind: 'col', v: a, color: CA() }, { kind: 'txt', s: '=' }, { kind: 'col', v: e, color: CR() }], x0, y, w, wide ? 13.5 : 12);
+        // Aufgabenmodus: weder 1/|a| noch die Komponenten von a⁰ zeigen
+        const tail: Tok[] = res ? [{ kind: 'col', v: e, color: CR() }] : [{ kind: 'txt', s: '?' }];
+        drawToks([{ kind: 'vec', s: 'a⁰', color: CR() }, { kind: 'txt', s: '=' }, { kind: 'txt', s: `1/${q(fmt.num(st.d, 2))}` }, { kind: 'txt', s: '·' }, { kind: 'col', v: a, color: CA() }, { kind: 'txt', s: '=' }, ...tail], x0, y, w, wide ? 13.5 : 12);
       } else text(g, tt('Der Nullvektor hat keinen Einheitsvektor.', 'The zero vector has no unit vector.'), x0, y, { font: font(650, 12), color: theme.series[1]!, align: 'left' });
       y += 44;
       // Entdeckungsaufgabe: ganzzahlige Vektoren der Länge 3
-      text(g, tt('Finde 5 ganzzahlige Vektoren mit |a| = 3:', 'Find 5 integer vectors with |a| = 3:'), x0, y, { font: font(650, 11.5), color: theme.muted, align: 'left' });
+      // Überschrift verkleinern, falls sie nicht in die Tafel passt (sonst rechts abgeschnitten)
+      const goalTxt = tt('Finde 5 ganzzahlige Vektoren mit |a| = 3:', 'Find 5 integer vectors with |a| = 3:');
+      let goalSize = 11.5;
+      g.font = font(650, goalSize);
+      while (goalSize > 9 && g.measureText(goalTxt).width > w) {
+        goalSize -= 0.5;
+        g.font = font(650, goalSize);
+      }
+      text(g, goalTxt, x0, y, { font: font(650, goalSize), color: theme.muted, align: 'left' });
       y += 18;
       for (let i = 0; i < GOAL_N; i++) {
         const cx = x0 + 8 + i * 20;

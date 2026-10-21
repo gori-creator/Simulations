@@ -116,7 +116,7 @@ export default defineSimulation({
       key: 'b',
       type: 'number',
       label: L('Basis b', 'Base b'),
-      help: L('Von 1,5 bis 4. Nahe 2,718 rastet die Basis bei e ein. Auch am Punkt (1 | b) ziehen.', 'From 1.5 to 4. Close to 2.718 the base snaps to e. You can also drag the point (1 | b).'),
+      help: L('Von 1,5 bis 4. Nahe 2,718 rastet die Basis bei e ein. Auch am Punkt (1 | b) ziehen.', 'From 1.5 to 4. Close to 2.718 the base snaps to e. You can also drag the point (1, b).'),
       min: B_MIN,
       max: B_MAX,
       step: 0.01,
@@ -160,7 +160,7 @@ export default defineSimulation({
     { key: 'f', label: L('Funktion', 'Function') },
     { key: 'df', label: L('Ableitung', 'Derivative'), spoiler: true },
     { key: 'ratio', label: L('Verhältnis', 'Ratio'), spoiler: true },
-    { key: 'tan0', label: L('Tangente in (0 | 1)', 'Tangent at (0 | 1)'), spoiler: true },
+    { key: 'tan0', label: L('Tangente in (0 | 1)', 'Tangent at (0, 1)'), spoiler: true },
     { key: 'P', label: L('Punkt P', 'Point P') },
     { key: 'm', label: L('Steigung in P', 'Slope at P'), spoiler: true },
     { key: 'tan', label: L('Tangente', 'Tangent'), spoiler: true },
@@ -174,7 +174,7 @@ export default defineSimulation({
     { id: 'start', label: L('Basis 2: f′ liegt unter f', 'Base 2: f′ lies below f'), values: {} },
     { id: 'b3', label: L('Basis 3: f′ liegt über f', 'Base 3: f′ lies above f'), values: { b: 3 } },
     { id: 'be', label: L('Basis e: f′ = f', 'Base e: f′ = f'), values: { b: 2.72 } },
-    { id: 'tan0', label: L('Tangente in (0 | 1): y = x + 1', 'Tangent at (0 | 1): y = x + 1'), values: { view: 'tangent', x0: 0 } },
+    { id: 'tan0', label: L('Tangente in (0 | 1): y = x + 1', 'Tangent at (0, 1): y = x + 1'), values: { view: 'tangent', x0: 0 } },
     { id: 'inv', label: L('Umkehrfunktion ln x', 'Inverse function ln x'), values: { view: 'tangent', x0: 1, inv: true } },
     { id: 'month', label: L('Zinseszins monatlich: n = 12', 'Compound interest monthly: n = 12'), values: { view: 'limit', ns: 8 } },
   ],
@@ -198,6 +198,8 @@ export default defineSimulation({
     const editable = () => !ctx.locked;
     const view = () => p.view as View;
     const hidden = () => !p.info;
+    // Punkt in der Schreibweise der Sprache wie fmt.point: DE (a | b), EN (a, b)
+    const pt = (a: string, b: string) => `(${a}${tt(' | ', ', ')}${b})`;
     const Q = (s: string) => (hidden() ? '?' : s);
 
     /* ---------- Farben ---------- */
@@ -323,10 +325,10 @@ export default defineSimulation({
         const y0 = Math.exp(x0);
         ctx.readout('f', { html: `${fx} = e<sup>${v('x')}</sup>` });
         ctx.readout("P", `P${fmt.point(x0, y0, y0 < 1 ? 4 : 3)}`);
-        ctx.readout('m', { html: `${v('m')} = ${v('f')}′(${fmt.num(x0)}) = e<sup>${fmt.num(x0)}</sup> ≈ ${N3(y0)} = ${v('f')}(${fmt.num(x0)})` });
+        ctx.readout('m', { html: `${v('m')} = ${v('f')}′(${fmt.num(x0)}) = ${v('f')}(${fmt.num(x0)}) = e<sup>${fmt.num(x0)}</sup> ${x0 === 0 ? '=' : '≈'} ${N3(y0)}` });
         const c = y0 * (1 - x0);
         const cTxt = Math.abs(c) < 5e-4 ? '' : ` ${c < 0 ? '−' : '+'} ${N3(Math.abs(c))}`;
-        ctx.readout('tan', { html: `${v('y')} = e<sup>${v('x')}<sub>0</sub></sup> · (${v('x')} − ${v('x')}<sub>0</sub> + 1) ≈ ${N3(y0)} · ${v('x')}${cTxt}` });
+        ctx.readout('tan', { html: `${v('y')} = e<sup>${v('x')}<sub>0</sub></sup> · (${v('x')} − ${v('x')}<sub>0</sub> + 1) ${x0 === 0 ? `= ${v('x')} + 1` : `≈ ${N3(y0)} · ${v('x')}${cTxt}`}` });
         ctx.readout('zero', { html: `${v('x')} = ${v('x')}<sub>0</sub> − 1 = ${fmt.num(tangentZero(x0))}` });
       } else {
         const n = nAt(p.ns);
@@ -634,7 +636,7 @@ export default defineSimulation({
         dot(hx, hy, c.B, 6.5 * ease.outBack(ka));
         g.restore();
       }
-      label(hx - 12, hy - 4, `(1 | ${hidden() && !atE ? 'b' : bTxt(b)})`, c.B, 'right', size - 0.5, k.labels * ka);
+      label(hx - 12, hy - 4, pt('1', hidden() && !atE ? 'b' : bTxt(b)), c.B, 'right', size - 0.5, k.labels * ka);
 
       // Aussage oben bzw. unten
       const top = r.y + 24;
@@ -780,17 +782,17 @@ export default defineSimulation({
       if (ka > 0) {
         const one = plot.py(1);
         dot(plot.px(0), one, th().text, 3.8 * ka);
-        if (Math.abs(x0) > 0.35 || Math.abs(y0 - 1) > 0.5) label(plot.px(0) - 8, one - 11, '(0 | 1)', th().muted, 'right', size - 1.5, ka * k.labels);
+        if (Math.abs(x0) > 0.35 || Math.abs(y0 - 1) > 0.5) label(plot.px(0) - 8, one - 11, pt('0', '1'), th().muted, 'right', size - 1.5, ka * k.labels);
         dot(N[0], N[1], c.tan, 5 * ease.outBack(ka));
-        const nTxt0 = hidden() ? 'N' : `N(${fmt.num(Math.round((x0 - 1) * 100) / 100)} | 0)`;
+        const nTxt0 = hidden() ? 'N' : `N${pt(fmt.num(Math.round((x0 - 1) * 100) / 100), '0')}`;
         label(N[0] - 8, N[1] - 14, nTxt0, c.tan, 'right', size - 1, ka * k.labels);
         label((N[0] + F[0]) / 2, N[1] + 14, '1', c.tan, 'center', size, ka * k.labels);
         // Höhe = f(x₀)
         const hTxt = hidden() ? `f(x_{0})` : `f(x_{0}) ≈ ${fmt.num(y0, 2)}`;
         const tall = F[1] - P[1] > 34;
         if (tall) label(F[0] + 9, (F[1] + P[1]) / 2, hTxt, c.f, 'left', size - 0.5, ka * k.labels);
-        if (tall) label(P[0] - 12, P[1] - 15, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'right', size, ka * k.labels);
-        else label(P[0] + 4, P[1] - 34, hidden() ? 'P' : `P(${fmt.num(Math.round(x0 * 100) / 100)} | ${fmt.num(y0, 2)})`, c.P, 'left', size, ka * k.labels);
+        if (tall) label(P[0] - 12, P[1] - 15, hidden() ? 'P' : `P${pt(fmt.num(Math.round(x0 * 100) / 100), fmt.num(y0, 2))}`, c.P, 'right', size, ka * k.labels);
+        else label(P[0] + 4, P[1] - 34, hidden() ? 'P' : `P${pt(fmt.num(Math.round(x0 * 100) / 100), fmt.num(y0, 2))}`, c.P, 'left', size, ka * k.labels);
       }
 
       // Merksatz-Pille oben links
@@ -1111,12 +1113,12 @@ export default defineSimulation({
         ? [
             { src: `\\c{d}{f′(x)} : \\c{f}{f(x)} = ln ${EU} = 1`, weight: 800 },
             { src: tt('Die Funktion ist ihre eigene Ableitung.', 'The function is its own derivative.'), color: th().muted },
-            { src: tt('Steigung in (0 | 1): genau 1', 'slope at (0 | 1): exactly 1'), bullet: c.tan },
+            { src: tt('Steigung in (0 | 1): genau 1', 'slope at (0, 1): exactly 1'), bullet: c.tan },
           ]
         : [
             { src: `\\c{d}{f′(x)} : \\c{f}{f(x)} = ln ${bS}${hidden() ? '' : ` ≈ ${fmt.num(lb, 3)}`}`, weight: 700 },
             { src: tt(`für jedes x gleich, ${lb < 1 ? 'kleiner' : 'größer'} als 1`, `the same for every x, ${lb < 1 ? 'less' : 'greater'} than 1`), color: th().muted },
-            { src: tt(`Steigung in (0 | 1): \\c{d}{f′(0)} = ln ${bS}`, `slope at (0 | 1): \\c{d}{f′(0)} = ln ${bS}`), bullet: c.tan },
+            { src: tt(`Steigung in (0 | 1): \\c{d}{f′(0)} = ln ${bS}`, `slope at (0, 1): \\c{d}{f′(0)} = ln ${bS}`), bullet: c.tan },
           ];
       cardLines(r, y, lines, size, stagger, change);
       g.restore();
@@ -1214,9 +1216,9 @@ export default defineSimulation({
       const y = cardTitle(r, tt(`Steckbrief von f(x) = ${EU}^{x}`, `Key features of f(x) = ${EU}^{x}`), size);
       const R = '\\t{ℝ}';
       const lines: Line[] = [
-        { src: `D = ${R},   W = ${R}^{+}`, weight: 700 },
+        { src: tt(`D = ${R},   W = ${R}^{+}`, `domain ${R}, range (0, ∞)`), weight: 700 },
         { src: tt('Asymptote: y = 0 (x → −∞)', 'asymptote: y = 0 (x → −∞)') },
-        { src: tt('S_{y}(0 | 1), keine Nullstelle', 'S_{y}(0 | 1), no zero') },
+        { src: tt('S_{y}(0 | 1), keine Nullstelle', 'y-intercept (0, 1), no zero') },
         { src: tt('streng monoton steigend', 'strictly increasing') },
         { src: `\\c{d}{f′(x)} = \\c{f}{${EU}^{x}} = f(x)`, bullet: c.d },
         { src: tt(`Stammfunktion: ${EU}^{x} + C`, `antiderivative: ${EU}^{x} + C`) },

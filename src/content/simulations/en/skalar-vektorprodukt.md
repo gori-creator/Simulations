@@ -4,7 +4,7 @@ description: "Two vectors in space: angle and projection from the dot product, r
 
 ## What is it about?
 
-The **dot product** $\vec a \cdot \vec b = a_1b_1 + a_2b_2 + a_3b_3$ is a number. Since $\vec a \cdot \vec b = |\vec a|\,|\vec b| \cos\varphi$, it gives the angle: $(1, 0, 0)^T \cdot (1, 1, 0)^T = 1$, $\cos\varphi = \frac{1}{\sqrt2}$, $\varphi = 45°$. $\vec a \cdot \vec b = 0$ means perpendicular; $\frac{\vec a \cdot \vec b}{|\vec a|}$ is the length of the projection of $\vec b$ onto $\vec a$.
+The **dot product** $\vec a \cdot \vec b = a_1b_1 + a_2b_2 + a_3b_3$ is a number. Since $\vec a \cdot \vec b = |\vec a|\,|\vec b| \cos\varphi$, it gives the angle: $(1, 0, 0)^T \cdot (1, 1, 0)^T = 1$, $\cos\varphi = \frac{1}{\sqrt2}$, $\varphi = 45°$. $\vec a \cdot \vec b = 0$ means perpendicular; $\frac{\vec a \cdot \vec b}{|\vec a|}$ is the signed length of the projection of $\vec b$ onto $\vec a$.
 
 The **cross product** $\vec a \times \vec b = (a_2b_3 - a_3b_2,\ a_3b_1 - a_1b_3,\ a_1b_2 - a_2b_1)^T$ is perpendicular to $\vec a$ and $\vec b$ (right-hand rule), e.g. $(1, 0, 0)^T \times (0, 1, 0)^T = (0, 0, 1)^T$. Its length $|\vec a|\,|\vec b| \sin\varphi$ is the area of the parallelogram. For parallel vectors it is $\vec o$.
 

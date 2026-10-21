@@ -179,3 +179,26 @@ describe('Modell: viele Zufallswege', () => {
     expect(histogram([0, 0.5, 1, 1.9, 7, 100], 1, 4)).toEqual([2, 2, 0, 2]);
   });
 });
+
+describe('Befunde Paket 5 (Lernmaterial)', () => {
+  it('Aufgabe 1: |a + b| = √27 ≈ 5,20 < |a| + |b| ≈ 7,79', () => {
+    const a = [2, 4, 0] as const;
+    const b = [1, -1, 3] as const;
+    expect(normSq(add(a, b))).toBe(27);
+    expect(norm(add(a, b))).toBeCloseTo(5.196, 3);
+    expect(norm(a) + norm(b)).toBeCloseTo(7.789, 3);
+    expect(norm(add(a, b))).toBeLessThan(norm(a) + norm(b));
+  });
+  it('Aufgabe 3: c = (0 | 0 | 3) liegt nicht in der Ebene von a und b', () => {
+    const best = bestRS([2, 4, 0], [1, -1, 3], [0, 0, 3]);
+    expect(best).not.toBeNull();
+    expect(best!.rest).toBeGreaterThan(0.01);
+    expect(solveLinComb([2, 4, 0], [1, -1, 3], [0, 0, 3])).toBeNull();
+  });
+  it('Aufgabe 4: Einheitsvektor zu (0 | 3 | 4) ist (0 | 0,6 | 0,8)', () => {
+    const e = unit([0, 3, 4]);
+    expect(e[0]).toBeCloseTo(0, 12);
+    expect(e[1]).toBeCloseTo(0.6, 12);
+    expect(e[2]).toBeCloseTo(0.8, 12);
+  });
+});

@@ -12,7 +12,7 @@ $$
 
 Dabei ist $\vec a$ der **Stützvektor** (Ortsvektor von $A$) und $\vec u \ne \vec o$ der **Richtungsvektor**. Jeder Wert von $t$ liefert genau einen Punkt $X$ der Geraden: Man geht vom Ursprung zu $A$ und dann $t$-mal den Pfeil $\vec u$ weiter. Für $g\colon \vec x = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix} + t \cdot \begin{pmatrix} 2 \\ -1 \\ 1 \end{pmatrix}$ und $t = 2$ erhält man $X(5 \mid 0 \mid 5)$.
 
-**Spurpunkte** sind die Punkte, in denen die Gerade eine Koordinatenebene durchstößt. Für die $x_1x_2$-Ebene setzt man $x_3 = 0$: $3 + t = 0$, also $t = -3$ und $S_{12}(-5 \mid 5 \mid 0)$. Ebenso $S_{23}(0 \mid 2{,}5 \mid 2{,}5)$ ($t = -0{,}5$) und $S_{13}(5 \mid 0 \mid 5)$ ($t = 2$). Ist eine Komponente von $\vec u$ null, verläuft $g$ parallel zur zugehörigen Koordinatenebene – dort gibt es keinen Spurpunkt.
+**Spurpunkte** sind die Punkte, in denen die Gerade eine Koordinatenebene durchstößt. Für die $x_1x_2$-Ebene setzt man $x_3 = 0$: $3 + t = 0$, also $t = -3$ und $S_{12}(-5 \mid 5 \mid 0)$. Ebenso $S_{23}(0 \mid 2{,}5 \mid 2{,}5)$ ($t = -0{,}5$) und $S_{13}(5 \mid 0 \mid 5)$ ($t = 2$). Ist z. B. $u_3 = 0$, verläuft $g$ parallel zur $x_1x_2$-Ebene oder liegt in ihr. Dann gibt es mit dieser Ebene keinen Spurpunkt (oder $g$ liegt ganz in ihr).
 
 **Punktprobe:** $P$ liegt auf $g$, wenn die Gleichung $\vec p = \vec a + t \cdot \vec u$ eine Lösung hat – also alle drei Zeilen **dasselbe** $t$ ergeben. Für $P(5 \mid 0 \mid 5)$: $t = 2$, $t = 2$, $t = 2$ ✓. Für $Q(3 \mid 1 \mid 5)$: $t = 1$, $t = 1$, $t = 2$ – also $Q \notin g$.
 
