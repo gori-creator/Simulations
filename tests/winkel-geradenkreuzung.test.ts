@@ -120,6 +120,22 @@ describe('Modell: Winkel an Geradenkreuzungen – Doppelkreuzung', () => {
     expect(relationHolds('a2', 'b2', 50, 58)).toBe(true);
   });
 
+  it('Umkehrung: gilt eine Stufen-, Wechsel- oder Nachbarwinkel-Beziehung, dann g ∥ h', () => {
+    // Für alle ganzzahligen Winkelpaare: Beziehung erfüllt ⇔ parallel
+    for (let w = 1; w <= 179; w++) {
+      for (let v = 1; v <= 179; v++) {
+        const par = isParallel(w, v);
+        expect(relationHolds('a1', 'a2', w, v)).toBe(par); // Stufenwinkel
+        expect(relationHolds('b1', 'd2', w, v)).toBe(par); // Wechselwinkel
+        expect(relationHolds('a1', 'd2', w, v)).toBe(par); // Nachbarwinkel
+      }
+    }
+    // Prüfwert aus dem Lernmaterial: α₁ = 75°, δ₂ = 105° ⇒ α₂ = 75° ⇒ parallel
+    const a2 = 180 - 105;
+    expect(isParallel(75, a2)).toBe(true);
+    expect(doubleAngles(75, a2).d2).toBe(105);
+  });
+
   it('fast parallel: 1° Unterschied reicht, damit sich g und h schneiden', () => {
     expect(isParallel(50, 51)).toBe(false);
     const L = doubleLayout(70, 50, 51, 1);
