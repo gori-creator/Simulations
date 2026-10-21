@@ -541,7 +541,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = withAlpha(mixColor(th().bg, th().text, th().dark ? 0.03 : 0), th().dark ? 0.9 : 0.94);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -737,7 +737,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -750,7 +750,7 @@ export default defineSimulation({
         g.fill();
       }
       g.save();
-      g.strokeStyle = dashed && accent ? withAlpha(accent, 0.55) : theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = dashed && accent ? withAlpha(accent, 0.55) : mixColor(theme.bg, theme.text, theme.dark ? 0.16 : 0.12);
       g.lineWidth = 1.2;
       if (dashed) g.setLineDash([5, 4]);
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
@@ -1124,7 +1124,8 @@ export default defineSimulation({
     function drawPoleLines(k: Intro): void {
       const g = surface.g;
       const r = plot.rect;
-      const aAsy = kAsy.v * k.panel;
+      // verdeckt: ob eine Nennernullstelle Polstelle oder Lücke ist, bleibt offen
+      const aAsy = kAsy.v * k.panel * Math.max(0, 2 * kInfo.v - 1);
       for (const m of marks('p')) {
         const S = Math.max(...m.idx.map((j) => PS[j]!.v * PV[j]!.v));
         if (S <= 0.01 || aAsy <= 0.01) continue;
@@ -1194,11 +1195,11 @@ export default defineSimulation({
     function labelPoles(k: Intro): void {
       const r = plot.rect;
       const a = kAsy.v * k.labels * clamp01(1 - FAR.v * 3);
-      if (a <= 0.01 || p.a === 0) return;
+      if (a <= 0.01 || p.a === 0 || !infoShown()) return;
       for (const q of A.poles) {
         const px = plot.px(q.x);
         if (px < r.x || px > r.x + r.w) continue;
-        const src = infoShown() ? `\\c{p}{x = ${N(q.x, 2)}}` : '\\c{p}{x = ?}';
+        const src = `\\c{p}{x = ${N(q.x, 2)}}`;
         const y = r.y + r.h - 22;
         fpillFree(
           [
@@ -1266,8 +1267,8 @@ export default defineSimulation({
         const s = ease.outBack(clamp01(al));
         dot(px, py, col.f(), fs(6.5, 6) * Math.max(0.2, s), clamp01(al * 1.4), true);
         placed.push({ x: px - 10, y: py - 10, w: 20, h: 20 });
-        if (k.labels > 0.01) {
-          const src = infoShown() ? `\\c{h}{\\t{${T2('Lücke', 'gap')}} (${N(h.x, 2)} | ${N(h.y, 2)})}` : `\\c{h}{\\t{${T2('Lücke', 'gap')}} (? | ?)}`;
+        if (k.labels > 0.01 && infoShown()) {
+          const src = `\\c{h}{\\t{${T2('Lücke', 'gap')}} (${N(h.x, 2)} | ${N(h.y, 2)})}`;
           fpillFree(
             [
               { x: px + 14, y: py - 22, align: 'left' },
@@ -1559,7 +1560,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= far;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = withAlpha(mixColor(th().bg, th().text, th().dark ? 0.03 : 0), th().dark ? 0.9 : 0.94);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -1744,12 +1745,13 @@ export default defineSimulation({
         const maxW = R.w - 2 * pad - 4;
         const size = fs(16, 14);
         const rows: RowSpec[] = [];
-        const pcs = piecesFor(F, true);
+        // verdeckt: kein Durchstreichen und kein gekürzter Term (das ist die Aufgabe)
+        const pcs = piecesFor(F, infoShown());
         const lead = leadSrc(p.a, pcs.num.length > 0);
         rows.push({ box: fracRow('f(x) =', lead, pcs.num, pcs.den, maxW, size), gap: 9 });
         // gekürzt
         const cut = Math.max(0, ...pairs.map((q) => CX[q.pi]!.v));
-        if (pairs.length && p.a !== 0) {
+        if (pairs.length && p.a !== 0 && infoShown()) {
           const zs = F.zeros.filter((_, i) => !zeroCancelled(i));
           const ps = F.poles.filter((_, j) => !isCancelled(j));
           const red = piecesFor({ a: p.a, zeros: zs, poles: ps }, false);
@@ -1799,10 +1801,11 @@ export default defineSimulation({
             hl: undefined,
           });
         }
-        if (A.holes.length)
+        // verdeckt immer alle Zeilen zeigen, sonst verrät ihr Erscheinen das Ergebnis
+        if (A.holes.length || !show)
           items.push({
             label: T2('Behebbare Lücke', 'Removable gap'),
-            srcs: A.holes.map((h) => `\\c{h}{(${N(h.x, 2)} | ${N(h.y, 2)})}  \\c{m}{\\t{${T2('Loch', 'hole')}}}`),
+            srcs: !A.holes.length ? [`\\t{${T2('keine', 'none')}}`] : A.holes.map((h) => `\\c{h}{(${N(h.x, 2)} | ${N(h.y, 2)})}  \\c{m}{\\t{${T2('Loch', 'hole')}}}`),
             hl: col.h(),
           });
         if (p.a !== 0) {
@@ -1817,8 +1820,8 @@ export default defineSimulation({
         }
         if (!compact && p.a !== 0) {
           const y0 = yIntercept(F);
-          items.push({ label: T2('y-Achse', 'y-axis'), srcs: [Number.isFinite(y0) ? `f(0) = ${cN('y0', y0, 3)}` : `\\t{${T2('kein Schnittpunkt (0 ∉ D)', 'no intercept (0 ∉ D)')}}`] });
-          if (sym) items.push({ label: T2('Symmetrie', 'Symmetry'), srcs: [`\\t{${sym === 'odd' ? T2('punktsymmetrisch zum Ursprung', 'point symmetric about O') : T2('achsensymmetrisch zur y-Achse', 'symmetric about the y-axis')}}`] });
+          items.push({ label: T2('y-Achse', 'y-axis'), srcs: [Number.isFinite(y0) ? `f(0) ${eqS(y0, 3)} ${cN('y0', y0, 3)}` : `\\t{${T2('kein Schnittpunkt (0 ∉ D)', 'no intercept (0 ∉ D)')}}`] });
+          if (sym || !show) items.push({ label: T2('Symmetrie', 'Symmetry'), srcs: [`\\t{${!sym ? T2('keine', 'none') : sym === 'odd' ? T2('punktsymmetrisch zum Ursprung', 'point symmetric about O') : T2('achsensymmetrisch zur y-Achse', 'symmetric about the y-axis')}}`] });
         }
         const boxes = items.map((it) => (show ? it.srcs.map((s) => fit(s, vW, vsz, theme.text, 600, 11)) : [phBox('', vsz, Math.min(vW, 84))]));
         const hs = boxes.map((bs) => bs.reduce((s, b) => s + rowH(b) + 3, -3));
@@ -2162,14 +2165,15 @@ export default defineSimulation({
             }
           } else {
             const h = A.holes.find((q) => Math.abs(q.x - spot.x) < 1e-9)!;
-            foot.push(show ? `\\t{lim}_{x → ${N(spot.x, 2)}} f(x) = \\c{h}{${N(h.y, 2)}}   \\c{m}{\\t{${T2('beidseitig', 'from both sides')}}}` : `\\t{lim}_{x → ${N(spot.x, 2)}} f(x) = ?`);
+            foot.push(show ? `\\t{lim}_{x → ${N(spot.x, 2)}} f(x) ${eqS(h.y, 2)} \\c{h}{${N(h.y, 2)}}   \\c{m}{\\t{${T2('beidseitig', 'from both sides')}}}` : `\\t{lim}_{x → ${N(spot.x, 2)}} f(x) = ?`);
           }
         }
         const fb = foot.map((s) => fit(s, R.w - 2 * pad - 4, fs(12.5, 11.5), theme.text, 600, 11));
         const h = 38 + (spot ? rh * (nR + 1) + 8 : 26) + fb.reduce((s, b) => s + rowH(b) + 6, 0) + 8;
         if (measure) return h;
-        const title = !spot ? T2('Wertetabelle', 'Table of values') : spot.kind === 'pole' ? T2(`Annäherung an die Polstelle ${N(spot.x, 2)}`, `Approaching the pole ${N(spot.x, 2)}`) : T2(`Annäherung an die Lücke ${N(spot.x, 2)}`, `Approaching the gap ${N(spot.x, 2)}`);
-        const acc = spot?.kind === 'hole' ? col.h() : col.p();
+        // verdeckt: neutraler Titel, damit er nicht verrät, ob Pol oder Lücke
+        const title = !spot ? T2('Wertetabelle', 'Table of values') : !show ? T2(`Annäherung an x = ${N(spot.x, 2)}`, `Approaching x = ${N(spot.x, 2)}`) : spot.kind === 'pole' ? T2(`Annäherung an die Polstelle ${N(spot.x, 2)}`, `Approaching the pole ${N(spot.x, 2)}`) : T2(`Annäherung an die Lücke ${N(spot.x, 2)}`, `Approaching the gap ${N(spot.x, 2)}`);
+        const acc = spot?.kind === 'hole' && show ? col.h() : col.p();
         card(R, acc);
         cardTitle(R, title, acc);
         const ka = ease.outCubic(k.cards);
@@ -2247,7 +2251,7 @@ export default defineSimulation({
       };
     }
 
-    /** Karte 5: Vorzeichentabelle mit einer Zeile pro Faktor (Zähler grün, Nenner rot). */
+    /** Karte 5: Vorzeichentabelle mit einer Zeile pro Faktor (Zähler grün mit „Z“, Nenner rot mit „N“). */
     function signCard(k: Intro): CardFn {
       return (R, measure, compact) => {
         const g = surface.g;
@@ -2279,7 +2283,9 @@ export default defineSimulation({
           g.restore();
           return h;
         }
-        const labels = [...t.rows.map((rw) => linSrc(rw.x, rw.m)), `a = ${N(p.a, 2)}`, 'f(x)'];
+        const tag = (part: 'num' | 'den') => `\\c{m}{\\t{${part === 'num' ? T2('Z', 'N') : T2('N', 'D')}}}  `;
+        const facSrc = (rw: (typeof t.rows)[number]) => `${tag(rw.part)}\\c{${rw.part === 'num' ? 'z' : 'p'}}{${linSrc(rw.x, rw.m)}}`;
+        const labels = [...t.rows.map(facSrc), `a = ${N(p.a, 2)}`, 'f(x)'];
         const lsz = fs(12.5, 11.5);
         const lw = Math.min(R.w * 0.34, Math.max(...labels.map((s) => wOf(s, lsz, 650))) + 10);
         const avail = R.w - 2 * pad - lw;
@@ -2322,7 +2328,7 @@ export default defineSimulation({
           let s = N(t.xs[c.crit]!, 2);
           g.font = hf;
           if (g.measureText(s).width > c.w + wi * 0.8) s = N(t.xs[c.crit]!, 1);
-          ctext(s, c.x + c.w / 2, y + rh / 2, hf, mk === 'zero' ? col.z() : mk === 'pole' ? col.p() : col.h());
+          ctext(s, c.x + c.w / 2, y + rh / 2, hf, mk === 'zero' ? col.z() : mk === 'pole' || !show ? col.p() : col.h());
         }
         g.strokeStyle = withAlpha(theme.text, 0.2);
         g.lineWidth = 1;
@@ -2337,7 +2343,7 @@ export default defineSimulation({
         t.rows.forEach((rw, i) => {
           g.save();
           g.globalAlpha *= rowAt(i + 1);
-          formula(g, linSrc(rw.x, rw.m), fstyle(lsz, rw.part === 'num' ? col.z() : col.p(), 650)).draw(g, R.x + pad, y + rh / 2 + 4.5);
+          formula(g, facSrc(rw), fstyle(lsz, theme.text, 650)).draw(g, R.x + pad, y + rh / 2 + 4.5);
           for (const c of cols) {
             if (c.iv !== null) ctext(sgnT(rw.signs[c.iv]!), c.x + c.w / 2, y + rh / 2, sgnFont, sgnC(rw.signs[c.iv]!));
             else if (Math.abs(t.xs[c.crit!]! - rw.x) < 1e-9) ctext('0', c.x + c.w / 2, y + rh / 2, `700 ${fs(13, 12)}px ${theme.font}`, rw.part === 'num' ? theme.text : col.p());
@@ -2480,7 +2486,8 @@ export default defineSimulation({
             : T2('keine', 'none'),
         );
       }
-      ctx.readout('holes', A.holes.length ? A.holes.map((h) => fmt.point(h.x, h.y)).join('; ') : null);
+      // Zeile immer zeigen: Sonst verrät ihr Erscheinen bei verdeckten Ergebnissen, dass es eine Lücke gibt.
+      ctx.readout('holes', A.holes.length ? A.holes.map((h) => fmt.point(h.x, h.y)).join('; ') : T2('keine', 'none'));
       const parts: string[] = [];
       if (A.poles.length) parts.push(A.poles.map((q) => `x = ${N(q.x, 2)}`).join('; '));
       if (p.a !== 0) {
