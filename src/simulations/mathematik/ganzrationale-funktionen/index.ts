@@ -34,6 +34,8 @@ const FAR_ZOOM = 20;
 /** Stelle, an der in der Fernansicht f(x) mit a·xⁿ verglichen wird. */
 const FAR_X = 100;
 const X_KEYS = ['x1', 'x2', 'x3'] as const;
+/** Regler für a, Nullstellen und Vielfachheiten nur bei sichtbarem Term (sonst verraten sie die Lösung der Aufgabe „Term erraten“). */
+const termShown = (v: Record<string, unknown>) => v.info === true;
 const M_KEYS = ['m1', 'm2', 'm3'] as const;
 
 type Target = Parameters<Surface['addTarget']>[0];
@@ -136,9 +138,10 @@ export default defineSimulation({
       max: 3,
       step: 0.1,
       default: 0.5,
+      visibleIf: termShown,
       help: L('Auch am Griff rechts auf dem Graphen ziehen. a = 0 ist nicht erlaubt.', 'You can also drag the handle on the right of the graph. a = 0 is not allowed.'),
     },
-    { key: 'z', type: 'number', group: 'zeros', label: L('Anzahl der Linearfaktoren', 'Number of linear factors'), min: 1, max: 3, step: 1, default: 3 },
+    { key: 'z', type: 'number', group: 'zeros', label: L('Anzahl der Linearfaktoren', 'Number of linear factors'), min: 1, max: 3, step: 1, default: 3, visibleIf: termShown },
     {
       key: 'x1',
       type: 'number',
@@ -148,13 +151,14 @@ export default defineSimulation({
       max: 4,
       step: 0.5,
       default: -2,
+      visibleIf: termShown,
       help: L('Die Perlen auf der x-Achse lassen sich ziehen; Antippen erhöht die Vielfachheit.', 'The beads on the x-axis can be dragged; tapping one raises its multiplicity.'),
     },
-    { key: 'm1', type: 'number', group: 'zeros', label: L('Vielfachheit von x₁', 'Multiplicity of x₁'), min: 1, max: 4, step: 1, default: 1 },
-    { key: 'x2', type: 'number', group: 'zeros', label: L('Nullstelle x₂', 'Zero x₂'), min: -4, max: 4, step: 0.5, default: 0.5, visibleIf: (v) => (v.z as number) >= 2 },
-    { key: 'm2', type: 'number', group: 'zeros', label: L('Vielfachheit von x₂', 'Multiplicity of x₂'), min: 1, max: 4, step: 1, default: 1, visibleIf: (v) => (v.z as number) >= 2 },
-    { key: 'x3', type: 'number', group: 'zeros', label: L('Nullstelle x₃', 'Zero x₃'), min: -4, max: 4, step: 0.5, default: 3, visibleIf: (v) => (v.z as number) >= 3 },
-    { key: 'm3', type: 'number', group: 'zeros', label: L('Vielfachheit von x₃', 'Multiplicity of x₃'), min: 1, max: 4, step: 1, default: 1, visibleIf: (v) => (v.z as number) >= 3 },
+    { key: 'm1', type: 'number', group: 'zeros', label: L('Vielfachheit von x₁', 'Multiplicity of x₁'), min: 1, max: 4, step: 1, default: 1, visibleIf: termShown },
+    { key: 'x2', type: 'number', group: 'zeros', label: L('Nullstelle x₂', 'Zero x₂'), min: -4, max: 4, step: 0.5, default: 0.5, visibleIf: (v) => termShown(v) && (v.z as number) >= 2 },
+    { key: 'm2', type: 'number', group: 'zeros', label: L('Vielfachheit von x₂', 'Multiplicity of x₂'), min: 1, max: 4, step: 1, default: 1, visibleIf: (v) => termShown(v) && (v.z as number) >= 2 },
+    { key: 'x3', type: 'number', group: 'zeros', label: L('Nullstelle x₃', 'Zero x₃'), min: -4, max: 4, step: 0.5, default: 3, visibleIf: (v) => termShown(v) && (v.z as number) >= 3 },
+    { key: 'm3', type: 'number', group: 'zeros', label: L('Vielfachheit von x₃', 'Multiplicity of x₃'), min: 1, max: 4, step: 1, default: 1, visibleIf: (v) => termShown(v) && (v.z as number) >= 3 },
     { key: 'sign', type: 'boolean', group: 'view', label: L('Vorzeichenbereiche färben', 'Shade where f is positive/negative'), default: true },
     { key: 'ends', type: 'boolean', group: 'view', label: L('Randverhalten (Pfeile und Karte)', 'End behaviour (arrows and card)'), default: true },
     { key: 'tab', type: 'boolean', group: 'view', label: L('Vorzeichentabelle', 'Sign chart'), default: true },
@@ -163,7 +167,7 @@ export default defineSimulation({
       type: 'boolean',
       group: 'view',
       label: L('Verhalten nahe den Nullstellen (Lupe)', 'Behaviour near the zeros (magnifier)'),
-      help: L('Nahe x₀ verhält sich f wie c · (x − x₀)^m: Gerade, Parabel oder kubische Parabel.', 'Near x₀, f behaves like c · (x − x₀)^m: a line, a parabola or a cubic.'),
+      help: L('Nahe x₀ verhält sich f wie c · (x − x₀)ᵐ: Gerade, Parabel oder kubische Parabel.', 'Near x₀, f behaves like c · (x − x₀)ᵐ: a line, a parabola or a cubic.'),
       default: false,
     },
     { key: 'yi', type: 'boolean', group: 'view', label: L('y-Achsenabschnitt f(0)', 'y-intercept f(0)'), default: false },
@@ -172,7 +176,10 @@ export default defineSimulation({
       type: 'boolean',
       group: 'view',
       label: L('Term und Eigenschaften zeigen', 'Show the term and properties'),
-      help: L('Aus: Aufgabe „Welcher Term passt zum Graphen?“', 'Off: task “Which term fits the graph?”'),
+      help: L(
+        'Aus: Aufgabe „Welcher Term passt zum Graphen?“. Die Regler für a und die Nullstellen sind dann ausgeblendet.',
+        'Off: task “Which term fits the graph?”. The sliders for a and the zeros are then hidden.',
+      ),
       default: true,
     },
   ],
@@ -231,6 +238,10 @@ export default defineSimulation({
       pos: () => th().series[2]!,
       neg: () => th().series[1]!,
       lt: () => mixColor(th().text, th().series[1]!, 0.35),
+      /** Hintergrund der Schilder (leicht durchscheinend) und der Karten, Kartenrand */
+      pillBg: () => mixColor(th().bg, th().text, th().dark ? 0.04 : 0, th().dark ? 0.9 : 0.94),
+      cardBg: () => (th().dark ? mixColor(th().bg, th().text, 0.05) : th().bg),
+      cardBorder: () => th().grid,
     };
 
     /* ---------- Zahlen ---------- */
@@ -521,7 +532,9 @@ export default defineSimulation({
     /** Betrag eines Koeffizienten als Dezimalzahl oder gekürzter Bruch. */
     function coefAbs(r: Rational): string {
       const c = coefForm({ n: Math.abs(r.n), d: r.d });
-      return 'dec' in c ? N(c.dec, c.places) : `\\f{${c.num}}{${c.den}}`;
+      // ab fünf Stellen mit Tausender-Abstand (49 152 statt 49152), wie an der y-Achse
+      const grp = (s: string) => s.replace(/^\d{5,}/, (d) => d.replace(/\B(?=(\d{3})+(?!\d))/g, ' '));
+      return 'dec' in c ? grp(N(c.dec, c.places)) : `\\f{${grp(String(c.num))}}{${grp(String(c.den))}}`;
     }
     /** Glieder eines Polynoms (höchste Potenz zuerst), jeweils mit Vorzeichen. */
     function polyTerms(c: Rational[]): { neg: boolean; body: string }[] {
@@ -661,7 +674,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = col.pillBg();
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -849,7 +862,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = col.cardBg();
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -861,7 +874,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = col.cardBorder();
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -1250,6 +1263,9 @@ export default defineSimulation({
       }
       // Graph von f
       strokePts(sample(fShown, b.xMin, xr), col.f(), fs(3.4, 3), { glow: true });
+      // Schild „f(100) / a·100ⁿ“ der Fernansicht vormerken, damit die Pfeile des Randverhaltens ihm ausweichen
+      const ratioSrc = far > 0.01 ? farRatioSrc(info) : null;
+      if (ratioSrc) placed.push(fpill(r.x + r.w - 12, ratioY(r), ratioSrc, { align: 'right', size: fs(12.5, 11.5), bounds: r, dry: true }));
       // Randverhalten
       drawEnds(kEnds.v * k.labels, info);
       // y-Achsenabschnitt
@@ -1434,7 +1450,6 @@ export default defineSimulation({
       // Fernansicht: Beschriftung und Vergleich bei x = 100
       if (far > 0.01) {
         const n = nShown();
-        const ratio = leadingRatio(rawRoots(), FAR_X);
         if (b.xMax > FAR_X * 1.02) {
           const px = plot.px(FAR_X);
           g.save();
@@ -1450,11 +1465,20 @@ export default defineSimulation({
           const yf = fGoal(FAR_X);
           dot(px, plot.py(yf), col.f(), 5, far);
         }
-        const src = info > 0.5 ? `\\f{f(${FAR_X})}{${leadTerm(aGoal(), n, String(FAR_X))}} ≈ ${N(cnt('ratio', ratio), 4)}` : `\\f{f(${FAR_X})}{a · ${FAR_X}^{n}} ≈ ${N(ratio, 4)}`;
-        fpill(r.x + r.w - 12, r.y + fs(58, 54), src, { align: 'right', size: fs(12.5, 11.5), alpha: far, bounds: r, border: withAlpha(col.lt(), 0.5) });
+        fpill(r.x + r.w - 12, ratioY(r), ratioSrc!, { align: 'right', size: fs(12.5, 11.5), alpha: far, bounds: r, border: withAlpha(col.lt(), 0.5) });
         drawFarLegend(r, far, info > 0.5 ? leadTerm(aGoal(), n, 'x') : 'a · x^{n}');
       }
       plot.end();
+    }
+    /** Höhe des Verhältnis-Schilds: rechts in der Ecke, durch die der Graph das Bild nicht verlässt (sonst läge es auf dem Pfeil). */
+    function ratioY(r: Rect): number {
+      return endBehaviour(A.v, nShown()).right > 0 ? r.y + r.h - fs(34, 30) : r.y + fs(58, 54);
+    }
+    /** Schild der Fernansicht: Verhältnis f(100) / (a · 100ⁿ). */
+    function farRatioSrc(info: number): string {
+      const n = nShown();
+      const ratio = leadingRatio(rawRoots(), FAR_X);
+      return info > 0.5 ? `\\f{f(${FAR_X})}{${leadTerm(aGoal(), n, String(FAR_X))}} ≈ ${N(cnt('ratio', ratio), 4)}` : `\\f{f(${FAR_X})}{a · ${FAR_X}^{n}} ≈ ${N(ratio, 4)}`;
     }
     /** Legende der Fernansicht: Titel, durchgezogen f(x), gestrichelt a·xⁿ. */
     function drawFarLegend(r: Rect, alpha: number, ltSrc: string): void {
@@ -1475,7 +1499,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= alpha;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = col.pillBg();
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -2104,6 +2128,8 @@ export default defineSimulation({
         if (gr.idx.length < 2) continue;
         const before = prevGroups.find((q) => q.idx.length >= gr.idx.length && gr.idx.every((i) => q.idx.includes(i)));
         if (before) continue;
+        // Bei reduzierter Bewegung keine aufsteigende Meldung; der Hinweis steht in der Karte „Funktionsterm“.
+        if (reduced()) continue;
         const parts = gr.idx.map((i) => mGoal(i)).join(' + ');
         pops.push({ x: gr.x, t0: now, src: `\\c{r${Math.min(...gr.idx)}}{${say(L('verschmolzen', 'merged'))}: ${parts} = ${gr.m}}`, color: groupColor(gr) });
       }
