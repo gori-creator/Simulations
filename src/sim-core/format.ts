@@ -61,16 +61,39 @@ export interface NumberOptions {
   signed?: boolean;
 }
 
+/**
+ * Rundet kaufmännisch auf `decimals` Nachkommastellen (5 aufwärts, vom Betrag
+ * her – also −0,875 → −0,88 wie im Unterricht).
+ *
+ * Vorher wird der Betrag auf 12 signifikante Stellen normalisiert: Rechenwerte
+ * wie −0,0625 kommen aus der Gleitkommarechnung oft als −0,0624999999999…
+ * oder 1,005 als 1,00499999999… an und würden sonst „falsch“ abgerundet. Das
+ * Verschieben des Kommas geschieht über die Dezimalschreibweise („…e+2“), damit
+ * dabei kein neuer Darstellungsfehler entsteht. Zahlen mit mehr als 12
+ * angezeigten Stellen werden entsprechend genauer (höchstens 15 Stellen) behandelt,
+ * noch größere bleiben unverändert.
+ * −0 wird zu 0.
+ */
+export function roundHalfUp(value: number, decimals = 2): number {
+  if (!Number.isFinite(value) || value === 0) return value === 0 ? 0 : value;
+  const abs = Math.abs(value);
+  const intDigits = Math.floor(Math.log10(abs)) + 1;
+  // So große Zahlen haben ohnehin keine darstellbaren Nachkommastellen mehr.
+  if (intDigits + decimals > 15) return value;
+  const precision = Math.min(15, Math.max(12, intDigits + decimals));
+  const [mantissa, exponent] = abs.toExponential(precision - 1).split('e');
+  const shifted = Number(`${mantissa}e${Number(exponent) + decimals}`);
+  const rounded = Number(`${Math.round(shifted)}e${-decimals}`);
+  if (rounded === 0) return 0;
+  return value < 0 ? -rounded : rounded;
+}
+
 /** Zahl in der Schreibweise der Sprache: Deutsch "−1,5", Englisch "−1.5". */
 export function formatNumber(value: number, lang: Lang, options: NumberOptions = {}): string {
   if (Number.isNaN(value)) return '–';
   if (!Number.isFinite(value)) return value > 0 ? '∞' : `${MINUS}∞`;
   const decimals = options.decimals ?? 2;
-  const factor = 10 ** decimals;
-  // Kaufmännisch runden (5 aufwärts, vom Betrag her – also −0,875 → −0,88 wie im
-  // Unterricht); der winzige Zuschlag gleicht Darstellungsfehler wie 1,005 · 100 = 100,4999… aus.
-  let rounded = (Math.sign(value) * Math.round(Math.abs(value) * factor * (1 + 4 * Number.EPSILON))) / factor;
-  if (Object.is(rounded, -0) || rounded === 0) rounded = 0;
+  const rounded = roundHalfUp(value, decimals);
   const text = numberFormat(lang, options.fixed ? decimals : 0, decimals).format(Math.abs(rounded));
   if (rounded < 0) return MINUS + text;
   return options.signed && rounded > 0 ? `+${text}` : text;

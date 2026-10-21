@@ -61,4 +61,4 @@ A north pole – the coil repels the magnet. Pulling it out gives a south pole, 
 - Start qualitatively with the magnet, derive $U = B \cdot l \cdot v$ with the rod, finish with the generator.
 - **Common stumbling blocks:**
   - “A strong magnet inside the coil gives a voltage.” – Only a change of flux does.
-  - “The generator voltage is largest when the coil faces the field.” – Then the flux is largest but does not change.
+  - “The generator voltage is largest when the coil area is perpendicular to the field.” – Then the flux is largest but does not change.

@@ -37,6 +37,8 @@ Es gibt nur **einen neuen Account mit GitHub**. Er übernimmt **nur Abschnitt A*
 
 ## Account A: Physik-Rest aus Paket 1 (17 Simulationen)
 
+> **Update 21.10., nachmittags (Projektleitung):** Abschnitt A übernimmt die **Vertretung der Projektleitung** auf dem Zweig `pruefen/paket-1`. Ein neuer GitHub-Account fängt hier **nicht** an. Abschnitt C (ZIP-Pakete 4–6) bleibt beim Hauptmanager.
+
 **Zweig:**
 ```
 git fetch origin

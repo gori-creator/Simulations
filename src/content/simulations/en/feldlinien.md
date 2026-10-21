@@ -10,7 +10,7 @@ $$
 E = k \cdot \frac{|Q|}{r^2}, \qquad k = \frac{1}{4\pi\varepsilon_0} \approx 8.99 \cdot 10^9\,\frac{\text{N}\,\text{m}^2}{\text{C}^2} .
 $$
 
-The fields of several charges add as **vectors** – the “vector addition” box shows the single fields head to tail and their sum in orange.
+The force on a charge $q$ is $F = q \cdot E$: along the field lines for positive $q$, opposite for negative $q$ (e.g. an electron). At the charge itself ($r = 0$) the field is not defined. The fields of several charges add as **vectors** – the “vector addition” box shows the single fields head to tail and their sum in orange.
 
 **Field lines** start at positive and end at negative charges; the field points along them, and dense lines mean a strong field (here 8 lines per nC). **Equipotential lines** (dashed green) join points of equal potential $\varphi = \sum k \cdot Q_i / r_i$ and are perpendicular to the field lines. Between the plates of a **capacitor** the field is uniform with $E = U / d$.
 
@@ -18,7 +18,7 @@ The background colour shows the field strength on a logarithmic scale; the force
 
 ## Try it
 
-1. Drag the test charge around the dipole. [Dipole](?px=0&py=0)
+1. Drag the test charge around the dipole. Which way does the field point on the perpendicular bisector? [Dipole](?px=0&py=0)
 2. Single charge: double the distance from 10 cm to 20 cm. [Single charge](?n=1&x1=0&y1=0&px=10&py=0)
 3. Two equal charges: find the point where the field is zero. [Two equal charges](?q2=1&eq=1&px=0&py=6)
 4. Unequal charges: where do the extra lines go? [+3 nC and −1 nC](?q1=3&q2=-1&px=0&py=8)

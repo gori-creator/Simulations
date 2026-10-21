@@ -13,6 +13,8 @@ const S_MIN = BODY / 2 + 0.02;
 const S_MAX = PLANE - BODY / 2 - 0.012;
 const S_START = 0.42;
 const MAX_ANGLE = 70;
+/** Kleinster Winkel, für den der Ausschnitt bemessen wird (flacher wird die Szene nicht mehr größer). */
+const VIEW_MIN_ANGLE = 15;
 const FZ_MAX = 50;
 /** Ausschlag des Kraftmessers: voller Auszug bei dieser Kraft. */
 const METER_RANGE = 20;
@@ -423,16 +425,46 @@ export default defineSimulation({
     const tablet = () => narrow() && surface.height < surface.width * 0.9;
     /** Feld der Beschriftung von F_G (für das Ausweichen der Winkelbeschriftung bei Tablet quer). */
     let fgBox: Rect | null = null;
+    /**
+     * Winkel, für den der Ausschnitt bemessen ist (in Grad). Folgt dem Neigungswinkel mit weichem
+     * Übergang, damit die Szene bei flachen Ebenen größer wird (vor allem auf dem Handy, wo sonst die
+     * Höhe für 70° freigehalten würde). Der Winkelgriff misst vom festen unteren Ende P0 aus, daher
+     * ändert die Größenänderung beim Ziehen den Winkel nicht (kein Flackern).
+     */
+    let viewA: number | null = null;
+    let viewMs = 0;
+    let viewRunning = false;
+    const viewTarget = () => Math.max(VIEW_MIN_ANGLE, Math.min(MAX_ANGLE, p.a));
+    /** Ausschnitt nachführen; true, solange der Übergang läuft. */
+    function stepView(): boolean {
+      const now = performance.now();
+      // nach einer Pause (kein Übergang) mit einem normalen Bildschritt beginnen, nicht springen
+      const dt = viewRunning ? Math.min(0.1, Math.max(0, (now - viewMs) / 1000)) : 1 / 60;
+      viewMs = now;
+      const target = viewTarget();
+      if (viewA === null || reduced || Math.abs(target - viewA) < 0.05) {
+        viewA = target;
+        viewRunning = false;
+        return false;
+      }
+      viewA += (target - viewA) * (1 - Math.exp(-dt / 0.16));
+      viewRunning = true;
+      return true;
+    }
     function sceneGeo(r: Rect): { P0: Pt; L: number; groundY: number; r: Rect } {
       const sm = small();
       // Tischplatte so hoch, dass die Kraftpfeile darunter Platz haben
       const groundY = r.y + r.h * (sm ? 0.76 : 0.72);
       const left = sm ? 40 : 78;
-      const sinMax = Math.sin((MAX_ANGLE * Math.PI) / 180);
+      const av = ((viewA ?? viewTarget()) * Math.PI) / 180;
+      // über der Ebene Platz für die Längenangabe l (liegt bei flacher Ebene höher über dem oberen Ende)
+      const lo = sm ? 30 : 40;
+      const top = (sm ? 30 : 40) + Math.max(0, lo * (Math.cos(av) - Math.cos((MAX_ANGLE * Math.PI) / 180)));
       // nie negativ (z. B. kurz während einer Größenänderung), sonst scheitert das Zeichnen der Räder
       // rechts Platz für „h = … cm“ (Tablet quer: die Szene endet am Diagramm)
-      const right = sm ? (tablet() ? 76 : 54) : 70;
-      const L = Math.max(1, Math.min(r.w - left - right, (groundY - r.y - (sm ? 30 : 40)) / sinMax));
+      // (Handy: so viel, dass „h = … cm“ rechts neben die Maßlinie passt)
+      const right = sm ? (tablet() ? 76 : Math.max(54, 12 + 6 + measureSubText(surface.g, 'h = 94 cm', { size: 10.5, family: ctx.theme.font, weight: 700, color: ctx.theme.muted }) + 6)) : 70;
+      const L = Math.max(1, Math.min(r.w - left - right, (groundY - r.y - top) / Math.sin(av)));
       return { P0: [r.x + left, groundY], L, groundY, r };
     }
 
@@ -615,6 +647,76 @@ export default defineSimulation({
       gx.restore();
     }
 
+    /* ---------- Freie Plätze für Beschriftungen ---------- */
+    type Box = { x: number; y: number; w: number; h: number };
+    /** Was in der Szene schon steht: Felder (Beschriftungen), Strecken (Pfeile, Maßlinien; mit Breite), Vielecke (Körper). */
+    const obst = { boxes: [] as Box[], segs: [] as { a: Pt; b: Pt; w: number }[], polys: [] as Pt[][], scene: null as Rect | null };
+    function resetObstacles(r: Rect): void {
+      obst.boxes = [];
+      obst.segs = [];
+      obst.polys = [];
+      obst.scene = r;
+    }
+    function labelBox(label: string, x: number, y: number, size: number, align: CanvasTextAlign): Box {
+      const w = measureSubText(surface.g, label, { size, family: ctx.theme.font, weight: 700, color: ctx.theme.text });
+      const left = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
+      // Index unter der Grundlinie mitrechnen
+      return { x: left, y: y - size * 0.62, w, h: size * 1.4 };
+    }
+    function pointInPoly(q: Pt, poly: Pt[]): boolean {
+      let inside = false;
+      for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        const [xi, yi] = poly[i]!;
+        const [xj, yj] = poly[j]!;
+        if (yi > q[1] !== yj > q[1] && q[0] < ((xj - xi) * (q[1] - yi)) / (yj - yi) + xi) inside = !inside;
+      }
+      return inside;
+    }
+    function segHitsBox(a: Pt, b: Pt, x0: number, y0: number, x1: number, y1: number): boolean {
+      const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 2));
+      for (let i = 0; i <= n; i++) {
+        const x = a[0] + ((b[0] - a[0]) * i) / n;
+        const y = a[1] + ((b[1] - a[1]) * i) / n;
+        if (x >= x0 && x <= x1 && y >= y0 && y <= y1) return true;
+      }
+      return false;
+    }
+    /** Anzahl der Kollisionen eines Beschriftungsfeldes (mit Abstand `pad`). */
+    function collisions(b: Box, pad = 3): number {
+      const x0 = b.x - pad;
+      const x1 = b.x + b.w + pad;
+      const y0 = b.y - pad;
+      const y1 = b.y + b.h + pad;
+      let n = 0;
+      for (const o of obst.boxes) if (x0 < o.x + o.w && x1 > o.x && y0 < o.y + o.h && y1 > o.y) n++;
+      for (const sg of obst.segs) if (segHitsBox(sg.a, sg.b, x0 - sg.w / 2, y0 - sg.w / 2, x1 + sg.w / 2, y1 + sg.w / 2)) n++;
+      for (const poly of obst.polys) {
+        let hit = false;
+        for (let i = 0; i < poly.length && !hit; i++) hit = segHitsBox(poly[i]!, poly[(i + 1) % poly.length]!, x0, y0, x1, y1);
+        for (let i = 0; i <= 2 && !hit; i++) hit = pointInPoly([x0 + ((x1 - x0) * i) / 2, (y0 + y1) / 2], poly);
+        if (hit) n++;
+      }
+      const r = obst.scene;
+      if (r && (b.x < r.x + 2 || b.x + b.w > r.x + r.w - 2 || b.y < r.y + 2 || b.y + b.h > r.y + r.h - 2)) n += 2;
+      return n;
+    }
+    /** Beschriftung an die erste freie der Kandidatenstellen setzen (sonst an die mit den wenigsten Kollisionen) und merken. */
+    function placeLabel(label: string, cands: Pt[], color: string, size: number, align: CanvasTextAlign, pad = 3): void {
+      let best: Pt | null = null;
+      let bestN = Infinity;
+      for (const c of cands) {
+        const n = collisions(labelBox(label, c[0], c[1], size, align), pad);
+        if (n < bestN) {
+          best = c;
+          bestN = n;
+          if (n === 0) break;
+        }
+      }
+      if (!best) return;
+      haloText(label, best[0], best[1], color, size, align);
+      obst.boxes.push(labelBox(label, best[0], best[1], size, align));
+    }
+
     /* ---------- Szene ---------- */
     function surfaceStyle(): { top: string; edge: string; label: string } {
       const mat = p.body === 'cart' ? 'wood' : (p.mat as Mat);
@@ -637,6 +739,7 @@ export default defineSimulation({
       const sm = small();
       const g0 = sceneGeo(r);
       geo = g0;
+      resetObstacles(r);
       const a = (p.a * Math.PI) / 180;
       const { P0, L, groundY } = g0;
       const T: Pt = [P0[0] + L * Math.cos(a), P0[1] - L * Math.sin(a)];
@@ -727,9 +830,12 @@ export default defineSimulation({
         gx.translate(P0[0], P0[1]);
         gx.rotate(-a);
         gx.fillStyle = dark ? '#8a929e' : '#4a5361';
-        roundRect(gx, -1, -bh * 0.45, (S_MAX + BODY / 2 > PLANE - 0.02 ? (PLANE - S_MAX - BODY / 2) * L : 4) + 2, bh * 0.45, 1.5);
+        const sw = (S_MAX + BODY / 2 > PLANE - 0.02 ? (PLANE - S_MAX - BODY / 2) * L : 4) + 2;
+        roundRect(gx, -1, -bh * 0.45, sw, bh * 0.45, 1.5);
         gx.fill();
         gx.restore();
+        const loc = (x: number, y: number): Pt => [P0[0] + x * Math.cos(a) + y * Math.sin(a), P0[1] - x * Math.sin(a) + y * Math.cos(a)];
+        obst.polys.push([loc(-1, 0), loc(sw, 0), loc(sw, -bh * 0.45), loc(-1, -bh * 0.45)]);
       }
       // Winkel α
       const ar = sm ? 30 : 42;
@@ -757,7 +863,13 @@ export default defineSimulation({
                   else y = Math.max(groundY + 20, fgBox.y + fgBox.h + size / 2 + 4);
                 }
               }
-              haloText(str, x, y, theme.series[3]!, size, 'left');
+              // Liegt der Körper unten am Anschlag (oder ein Pfeil im Weg), weiter außen auf demselben Strahl
+              // (solange im Keil) bzw. unter dem Tisch ausweichen
+              const cands: Pt[] = [[x, y]];
+              const tw = labelBox(str, 0, 0, size, 'left').w;
+              for (let rad = ar + 38; P0[0] + Math.cos(a / 3) * rad + tw < B[0] - 4; rad += 12) cands.push([P0[0] + Math.cos(a / 3) * rad, P0[1] - Math.sin(a / 3) * rad + 6]);
+              for (let k = 0; k <= 4; k++) cands.push([P0[0] + ar + 10 + k * 16, groundY + (sm ? 22 : 26)]);
+              placeLabel(str, cands, theme.series[3]!, size, 'left', 1);
             }
           : null;
 
@@ -784,6 +896,7 @@ export default defineSimulation({
           if (hx + 6 + hw <= r.x + r.w - 4) haloText(hStr, hx + 6, (B[1] + T[1]) / 2, theme.muted, hs, 'left');
           else haloText(hStr, B[0] - 6, (B[1] + T[1]) / 2, theme.muted, hs, 'right');
         }
+        obst.segs.push({ a: [hx, B[1]], b: [hx, T[1]], w: 8 });
         // l entlang der Ebene, nach außen versetzt
         const n: Pt = [-Math.sin(a), -Math.cos(a)];
         const lo = sm ? 30 : 40;
@@ -799,6 +912,7 @@ export default defineSimulation({
         gx.moveTo(A2[0] - n[0] * 4, A2[1] - n[1] * 4);
         gx.lineTo(A2[0] + n[0] * 4, A2[1] + n[1] * 4);
         gx.stroke();
+        obst.segs.push({ a: A1, b: A2, w: 8 });
         gx.save();
         // Beschriftung im oberen Teil, damit sie nicht mit den Kräften am Körper kollidiert
         gx.translate(A1[0] + (A2[0] - A1[0]) * 0.78 + n[0] * 10, A1[1] + (A2[1] - A1[1]) * 0.78 + n[1] * 10);
@@ -812,8 +926,7 @@ export default defineSimulation({
       // Körper
       drawBody(g0);
       // Kräfte
-      drawForces(g0);
-      angleLabel?.();
+      drawForces(g0, angleLabel);
       // Status
       const label = statusLabel();
       const right = `t = ${fmt.fixed(t, 2)} s · v = ${fmt.num(Math.abs(state.v), 2)} m/s`;
@@ -992,6 +1105,12 @@ export default defineSimulation({
         gx.stroke();
       }
       gx.restore();
+      // Umriss als Hindernis für Beschriftungen (mit Öse bzw. Haken hangaufwärts)
+      {
+        const ext = p.body === 'cart' ? 0 : Math.max(6, bh * 0.3);
+        const loc = (x: number, y: number): Pt => [c[0] + x * Math.cos(a) + y * Math.sin(a), c[1] - x * Math.sin(a) + y * Math.cos(a)];
+        obst.polys.push([loc(-bw / 2, 0), loc(bw / 2 + ext, 0), loc(bw / 2 + ext, -bh), loc(-bw / 2, -bh)]);
+      }
       // Masse auf dem Körper
       const cc = bodyCenter(g0, state.s);
       gx.save();
@@ -1068,21 +1187,25 @@ export default defineSimulation({
       const lx = mg.start[0] + mg.u[0] * mid - Math.sin(a) * 22;
       const ly = mg.start[1] + mg.u[1] * mid - Math.cos(a) * 22;
       const label = p.fz > METER_RANGE ? `F_Z = ${fmt.fixed(p.fz, 1)} N (≥ ${METER_RANGE} N)` : `F_Z = ${fmt.fixed(p.fz, 1)} N`;
-      pill(lx, ly - 11, label, color, 'center', small() ? 10.5 : 12);
+      const pw = pill(lx, ly - 11, label, color, 'center', small() ? 10.5 : 12);
+      obst.boxes.push({ x: lx - pw / 2, y: ly - 11, w: pw, h: (small() ? 10.5 : 12) + 11 });
+      obst.segs.push({ a: mg.start, b: mg.ring, w: mg.width + 4 });
     }
 
-    function drawForces(g0: { P0: Pt; L: number }): void {
+    function drawForces(g0: { P0: Pt; L: number; groundY: number; r: Rect }, angleLabel: (() => void) | null): void {
       const theme = ctx.theme;
       const sm = small();
       const a = (p.a * Math.PI) / 180;
       const f = forces();
       const C = bodyCenter(g0, state.s);
-      const lf = Math.min(g0.L * 0.36, sm ? 86 : 140);
+      // F_G darf unten nicht aus der Szene ragen (Handy: großer Ausschnitt bei flacher Ebene)
+      const lf = Math.min(g0.L * 0.36, sm ? 86 : 140, g0.r.y + g0.r.h - g0.groundY - 2);
       const k = lf / f.FG;
       const down: Pt = [-Math.cos(a), Math.sin(a)];
       const inward: Pt = [Math.sin(a), Math.cos(a)];
       const fs = sm ? 10.5 : 12;
       const G1: Pt = [C[0], C[1] + f.FG * k];
+      const later: (() => void)[] = [];
       // Zerlegung: Rechteck aus F_H und F_N mit F_G als Diagonale
       if (p.parts) {
         const H: Pt = [C[0] + down[0] * f.FH * k, C[1] + down[1] * f.FH * k];
@@ -1091,9 +1214,28 @@ export default defineSimulation({
         dashed(Nn, G1, withAlpha(theme.text, 0.45));
         arrowPx(C[0], C[1], H[0], H[1], theme.series[3]!, 3.2, 12);
         arrowPx(C[0], C[1], Nn[0], Nn[1], theme.series[0]!, 3.2, 12);
-        // neben der Mitte des Pfeils, auf der von der Ebene abgewandten Seite
-        if (f.FH * k > 14) haloText('F_H', (C[0] + H[0]) / 2 - Math.sin(a) * 14 - Math.cos(a) * 4, (C[1] + H[1]) / 2 - Math.cos(a) * 14, theme.series[3]!, fs, 'right');
-        if (f.FN * k > 14) haloText('F_N', Nn[0] + Math.cos(a) * 12 + 4, Nn[1] - Math.sin(a) * 12 + 6, theme.series[0]!, fs, 'left');
+        obst.segs.push({ a: C, b: H, w: 7 }, { a: C, b: Nn, w: 7 });
+        // neben der Mitte des Pfeils, auf der von der Ebene abgewandten Seite; ist dort kein Platz
+        // (Körper unten am Anschlag, Maßlinie l), weiter außen bzw. weiter zur Spitze hin
+        if (f.FH * k > 14) {
+          later.push(() => {
+            const at = (t: number, d: number): Pt => [C[0] + (H[0] - C[0]) * t - Math.sin(a) * d - Math.cos(a) * 4, C[1] + (H[1] - C[1]) * t - Math.cos(a) * d];
+            // zuerst die gewohnte Stelle, dann nah an der Pfeilspitze (davor bzw. darunter), dann weiter außen
+            const cands: Pt[] = [at(0.5, 14), [H[0] - 6, H[1] - 2], [H[0] - 4, H[1] + fs + 2]];
+            for (const t of [0.75, 1, 0.5]) for (const d of [14, 22, 30]) cands.push(at(t, d));
+            // kurzer Pfeil im Körper: vor dem unteren Ende des Körpers
+            const { bw, bh } = bodySize(g0);
+            const cp = contactPoint(g0, state.s);
+            cands.push([cp[0] + down[0] * (bw / 2 + 4) - inward[0] * (bh / 2) - 6, cp[1] + down[1] * (bw / 2 + 4) - inward[1] * (bh / 2)]);
+            placeLabel('F_H', cands, theme.series[3]!, fs, 'right');
+          });
+        }
+        if (f.FN * k > 14) {
+          const nx = Nn[0] + Math.cos(a) * 12 + 4;
+          const ny = Nn[1] - Math.sin(a) * 12 + 6;
+          haloText('F_N', nx, ny, theme.series[0]!, fs, 'left');
+          obst.boxes.push(labelBox('F_N', nx, ny, fs, 'left'));
+        }
         // Winkel α zwischen F_G und F_N
         if (p.a >= 6) {
           const gx = surface.g;
@@ -1103,14 +1245,15 @@ export default defineSimulation({
           gx.beginPath();
           gx.arc(C[0], C[1], rr, Math.PI / 2 - a, Math.PI / 2);
           gx.stroke();
-          haloText('α', C[0] + Math.cos(Math.PI / 2 - a / 2) * (rr + 9), C[1] + Math.sin(Math.PI / 2 - a / 2) * (rr + 9), theme.series[3]!, fs);
+          later.push(() => {
+            const cands: Pt[] = [];
+            for (const d of [9, 14, 20, 27, 35]) cands.push([C[0] + Math.cos(Math.PI / 2 - a / 2) * (rr + d), C[1] + Math.sin(Math.PI / 2 - a / 2) * (rr + d)]);
+            placeLabel('α', cands, theme.series[3]!, fs, 'center');
+          });
         }
       }
       arrowPx(C[0], C[1], G1[0], G1[1], theme.series[1]!, 3.6, 13);
-      const fgStr = `F_G = ${fmt.fixed(f.FG, 2)} N`;
-      haloText(fgStr, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
-      const fgW = measureSubText(surface.g, fgStr, { size: fs, family: theme.font, weight: 700, color: theme.series[1]! });
-      fgBox = { x: G1[0] - 8 - fgW, y: G1[1] - 4 - fs / 2 - 2, w: fgW, h: fs + 4 };
+      obst.segs.push({ a: C, b: G1, w: 7 });
       // Reibungskraft an der Unterseite (gegen die Bewegung bzw. die Bewegungstendenz)
       if (p.body === 'block') {
         const fr = state.v !== 0 ? -Math.sign(state.v) * f.FRslide : friction;
@@ -1119,9 +1262,28 @@ export default defineSimulation({
           const base: Pt = [c[0] - inward[0] * 2, c[1] - inward[1] * 2];
           const tip: Pt = [base[0] + down[0] * fr * k, base[1] + down[1] * fr * k];
           arrowPx(base[0], base[1], tip[0], tip[1], theme.series[2]!, 3.2, 12);
-          haloText('F_R', tip[0] + inward[0] * 14, tip[1] + inward[1] * 14, theme.series[2]!, fs);
+          obst.segs.push({ a: base, b: tip, w: 7 });
+          later.unshift(() => {
+            // unter der Spitze (in der Ebene); sonst vor der Spitze in Pfeilrichtung oder tiefer in der Ebene
+            const dir: Pt = [Math.sign(fr) * down[0], Math.sign(fr) * down[1]];
+            const cands: Pt[] = [[tip[0] + inward[0] * 14, tip[1] + inward[1] * 14]];
+            for (const d of [16, 24]) cands.push([tip[0] + dir[0] * d, tip[1] + dir[1] * d]);
+            for (const d of [22, 30]) cands.push([tip[0] + inward[0] * d, tip[1] + inward[1] * d]);
+            // sehr kurzer Pfeil zwischen F_G und F_N: weiter in Pfeilrichtung, knapp unter der Ebene
+            for (const d of [22, 32, 42]) cands.push([tip[0] + dir[0] * d + inward[0] * 12, tip[1] + dir[1] * d + inward[1] * 12]);
+            for (const d of [12, 20]) cands.push([(base[0] + tip[0]) / 2 + inward[0] * d, (base[1] + tip[1]) / 2 + inward[1] * d]);
+            placeLabel('F_R', cands, theme.series[2]!, fs, 'center');
+          });
         }
       }
+      const fgStr = `F_G = ${fmt.fixed(f.FG, 2)} N`;
+      haloText(fgStr, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
+      const fgW = measureSubText(surface.g, fgStr, { size: fs, family: theme.font, weight: 700, color: theme.series[1]! });
+      fgBox = { x: G1[0] - 8 - fgW, y: G1[1] - 4 - fs / 2 - 2, w: fgW, h: fs + 4 };
+      obst.boxes.push(fgBox);
+      // Winkel an der Ebene zuerst (feste Stelle bevorzugt), dann die Beschriftungen am Körper
+      angleLabel?.();
+      for (const fn of later) fn();
     }
 
     /* ---------- Diagramm ---------- */
@@ -1277,13 +1439,14 @@ export default defineSimulation({
         const reg = regions();
         scene.resize();
         chart.resize();
+        const viewMoving = stepView();
         surface.begin();
         scene.setRange([reg.scene.x, reg.scene.x + reg.scene.w], [-(reg.scene.y + reg.scene.h), -reg.scene.y]);
         scene.begin();
         drawScene(reg.scene);
         scene.end();
         drawChart();
-        if (performance.now() < hintUntil) ctx.requestRender();
+        if (performance.now() < hintUntil || viewMoving) ctx.requestRender();
       },
 
       destroy: () => surface.destroy(),

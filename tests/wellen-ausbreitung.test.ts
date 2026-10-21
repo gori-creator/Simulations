@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   arrivalTime,
   CHAIN_LENGTH,
+  chainResolves,
+  MIN_RESOLVED_WAVELENGTH,
   compressionPositions,
   crestPositions,
   displacement,
@@ -138,5 +140,53 @@ describe('Modell: Transversal- und Longitudinalwellen', () => {
     expect(inPhasePartner(W, 3)).toBeCloseTo(1.5, 12);
     expect(inPhasePartner({ c: 2, f: 0.2 }, 1)).toBeNull();
     expect(particleAt(1.234)).toBeNull();
+  });
+
+  it('Prüfwerte der Prüfrunde (von Hand nachgerechnet)', () => {
+    // Startbild: Nr. 10 (x = 1 m) bei t = 2,8/1,2 s: τ = 1,5 s, φ = 2π · 0,8 · 1,5 = 2,4π
+    const t0 = 2.8 / 1.2;
+    expect(displacement(W, 1, t0) * 100).toBeCloseTo(10 * Math.sin(0.4 * Math.PI), 9); // 9,51 cm
+    expect(particleVelocity(W, 1, t0)).toBeCloseTo(0.1 * 2 * Math.PI * 0.8 * Math.cos(0.4 * Math.PI), 9); // 0,155 m/s
+    // Einzelpuls: Nr. 20 (x = 2 m) bei t = 1,4 + 0,3125 s → y ≈ 2,3 cm, Wellenberg bei x = 1,68 m
+    const P: Wave = { ...W, exc: 'pulse' };
+    expect(displacement(P, 2, 1.7125) * 100).toBeCloseTo(2.28, 2);
+    expect(crestPositions(P, 1.7125)).toEqual([expect.closeTo(1.68, 9)]);
+    // Longitudinal f = 0,6 Hz, ŷ = 12 cm: λ = 2 m, Verdichtungen bei 3,2 m (Front) und 1,2 m
+    const Lw: Wave = { f: 0.6, c: 1.2, amp: 0.12, exc: 'cont' };
+    const t1 = 3.2 / 1.2;
+    expect(wavelength(Lw)).toBeCloseTo(2, 12);
+    expect(displacement(Lw, 1, t1) * 100).toBeCloseTo(12 * Math.sin(0.2 * Math.PI), 9); // 7,05 cm
+    expect(compressionPositions(Lw, t1).map((x) => +x.toFixed(9))).toEqual([3.2, 1.2]);
+    expect(rarefactionPositions(Lw, t1).map((x) => +x.toFixed(9))).toEqual([2.2, 0.2]);
+    // Aufgabe 2: λ = 0,8 m, T = 0,8 s → c = 1 m/s; Aufgabe 3: Nr. 30 nach 2,5 s, Δφ = 4π
+    expect(0.8 * (1 / 0.8)).toBeCloseTo(1, 12);
+    expect(arrivalTime(W, 3)).toBeCloseTo(2.5, 12);
+    expect(phaseDifference(W, 0, 3)).toBeCloseTo(4 * Math.PI, 12);
+    // Aufgabe 7: 1480/440 ≈ 3,36 m
+    expect(wavelength({ c: 1480, f: 440 })).toBeCloseTo(3.364, 3);
+  });
+
+  it('Sonderfälle an den Reglergrenzen: kurze und lange Wellenlänge', () => {
+    // f = 2 Hz, c = 0,2 m/s: λ = 0,1 m = Teilchenabstand → alle Teilchen gleichphasig, Kette löst nicht auf
+    const S: Wave = { f: 2, c: 0.2, amp: 0.1, exc: 'cont' };
+    expect(wavelength(S)).toBeCloseTo(0.1, 12);
+    expect(chainResolves(S)).toBe(false);
+    const t = 12;
+    for (let i = 1; i <= 20; i++) expect(displacement(S, restPosition(i), t)).toBeCloseTo(displacement(S, 0, t), 9);
+    // Grenze genau bei drei Teilchenabständen
+    expect(MIN_RESOLVED_WAVELENGTH).toBeCloseTo(0.3, 12);
+    expect(chainResolves({ f: 2, c: 0.6 })).toBe(true);
+    expect(chainResolves({ f: 2, c: 0.55 })).toBe(false);
+    expect(chainResolves(W)).toBe(true);
+    // f = 0,2 Hz, c = 2 m/s: λ = 10 m > Kette → kein gleichphasiger Partner, T = 5 s
+    const B = { f: 0.2, c: 2 };
+    expect(wavelength(B)).toBeCloseTo(10, 12);
+    expect(period(B)).toBeCloseTo(5, 12);
+    expect(inPhasePartner(B, 1)).toBeNull();
+    // Wellenfront: beim Start (t = 0) in Ruhe, danach x = c · t, am Ende festgehalten
+    expect(frontPosition(W, 0)).toBe(0);
+    expect(displacement(W, 0, 0)).toBe(0);
+    expect(frontPosition(W, 1)).toBeCloseTo(1.2, 12);
+    expect(frontPosition(W, 100)).toBe(CHAIN_LENGTH);
   });
 });
