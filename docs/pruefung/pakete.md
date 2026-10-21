@@ -45,14 +45,14 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☐ | 12–13 | `linienspektren` | Atommodelle und Linienspektren | `/de/physik/atom-kern-und-quantenphysik/linienspektren-energieniveaus/` |
 | ☐ | 12–13 | `photoeffekt` | Photoeffekt | `/de/physik/atom-kern-und-quantenphysik/photoeffekt-gegenfeldmethode/` |
 | ☐ | 12–14 | `elektronenbeugung` | Elektronenbeugung | `/de/physik/atom-kern-und-quantenphysik/elektronenbeugung-graphit/` |
-| ☐ | 13–13 | `aenderungsrate` | Integral als Gesamtänderung: von der Geschwindigkeit zum Weg | `/de/mathematik/analysis/integral-gesamtaenderung/` |
-| ☐ | 13–13 | `extremwertprobleme` | Extremwertprobleme | `/de/mathematik/analysis/extremwertprobleme/` |
-| ☐ | 13–13 | `kugeln` | Kugeln, Geraden und Ebenen | `/de/mathematik/analytische-geometrie/kugeln-geraden-ebenen/` |
-| ☐ | 13–13 | `lage-abstaende` | Lagebeziehungen und Abstände im Raum | `/de/mathematik/analytische-geometrie/lagebeziehungen-abstaende/` |
-| ☐ | 13–13 | `normalverteilung` | Normalverteilung | `/de/mathematik/daten-und-zufall/normalverteilung/` |
-| ☐ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
-| ☐ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
-| ☐ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
+| ☑ | 13–13 | `aenderungsrate` | Integral als Gesamtänderung: von der Geschwindigkeit zum Weg | `/de/mathematik/analysis/integral-gesamtaenderung/` |
+| ☑ | 13–13 | `extremwertprobleme` | Extremwertprobleme | `/de/mathematik/analysis/extremwertprobleme/` |
+| ☑ | 13–13 | `kugeln` | Kugeln, Geraden und Ebenen | `/de/mathematik/analytische-geometrie/kugeln-geraden-ebenen/` |
+| ☑ | 13–13 | `lage-abstaende` | Lagebeziehungen und Abstände im Raum | `/de/mathematik/analytische-geometrie/lagebeziehungen-abstaende/` |
+| ☑ | 13–13 | `normalverteilung` | Normalverteilung | `/de/mathematik/daten-und-zufall/normalverteilung/` |
+| ☑ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
+| ☑ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
+| ☑ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
 | ☐ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
 | ☐ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
 
@@ -96,13 +96,13 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 7–9 | `lineare-funktion` | Lineare Funktion | `/de/mathematik/funktionen/lineare-funktion/` |
 | ✓ | 8–8 | `funktion-zuordnung` | Funktion oder nicht? Zuordnungen und ihre Graphen | `/de/mathematik/funktionen/funktion-oder-nicht/` |
 | ✓ | 8–8 | `hyperbel` | Hyperbeln und ihre Asymptoten | `/de/mathematik/funktionen/hyperbel-asymptoten/` |
-| ☐ | 8–8 | `kreiszahl-pi` | Kreisumfang, Kreisfläche und die Zahl π | `/de/mathematik/flaechen-und-koerper/kreiszahl-pi/` |
-| ☐ | 8–8 | `lgs-grafisch` | Lineare Gleichungssysteme grafisch lösen | `/de/mathematik/terme-und-gleichungen/lgs-grafisch/` |
-| ☐ | 8–8 | `prisma-zylinder` | Prisma und Zylinder: Oberfläche und Volumen | `/de/mathematik/flaechen-und-koerper/prisma-und-zylinder/` |
-| ☐ | 8–9 | `gleichungen-grafisch` | Gleichungen grafisch lösen: Schnittpunkte von Graphen | `/de/mathematik/terme-und-gleichungen/gleichungen-grafisch-loesen/` |
-| ☐ | 8–9 | `pythagoras` | Satz des Pythagoras | `/de/mathematik/geometrie/satz-des-pythagoras/` |
-| ☐ | 8–10 | `baumdiagramm` | Mehrstufige Zufallsexperimente und Pfadregeln | `/de/mathematik/daten-und-zufall/baumdiagramm-pfadregeln/` |
-| ☐ | 8–13 | `funktionsplotter` | Funktionsplotter mit eigenen Termen | `/de/mathematik/funktionen/funktionsplotter/` |
+| ☑ | 8–8 | `kreiszahl-pi` | Kreisumfang, Kreisfläche und die Zahl π | `/de/mathematik/flaechen-und-koerper/kreiszahl-pi/` |
+| ☑ | 8–8 | `lgs-grafisch` | Lineare Gleichungssysteme grafisch lösen | `/de/mathematik/terme-und-gleichungen/lgs-grafisch/` |
+| ☑ | 8–8 | `prisma-zylinder` | Prisma und Zylinder: Oberfläche und Volumen | `/de/mathematik/flaechen-und-koerper/prisma-und-zylinder/` |
+| ☑ | 8–9 | `gleichungen-grafisch` | Gleichungen grafisch lösen: Schnittpunkte von Graphen | `/de/mathematik/terme-und-gleichungen/gleichungen-grafisch-loesen/` |
+| ☑ | 8–9 | `pythagoras` | Satz des Pythagoras | `/de/mathematik/geometrie/satz-des-pythagoras/` |
+| ☑ | 8–10 | `baumdiagramm` | Mehrstufige Zufallsexperimente und Pfadregeln | `/de/mathematik/daten-und-zufall/baumdiagramm-pfadregeln/` |
+| ☑ | 8–13 | `funktionsplotter` | Funktionsplotter mit eigenen Termen | `/de/mathematik/funktionen/funktionsplotter/` |
 
 ## Paket 3 – Prüf-Agent 3 (Mathematik Jgst. 9–12) – 42 Simulationen
 
