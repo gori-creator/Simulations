@@ -1,5 +1,5 @@
 import { defineSimulation, Plot, Surface, term } from '../../../sim-core';
-import { lineRelation, slopeAngleDeg, zeroOf } from './model';
+import { isRounded, lineRelation, slopeAngleDeg, zeroOf } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
@@ -124,6 +124,8 @@ export default defineSimulation({
     });
 
     const fmt = ctx.fmt;
+    /** „=“, wenn der gerundete Wert exakt ist, sonst „≈“ (z. B. x₀ ≈ −1,33 statt = −1,33). */
+    const relSign = (value: number, decimals: number) => (isRounded(value, decimals) ? '≈' : '=');
     const lineTerm = (name: string, m: number, b: number) =>
       term.fnDef(name, term.sum([{ coef: m, body: term.x }, { coef: b, body: '' }], fmt));
 
@@ -146,11 +148,12 @@ export default defineSimulation({
       update() {
         ctx.readout('f', { html: lineTerm('f', p.m, p.b) });
         ctx.readout('course', p.m > 0 ? ctx.t('rising') : p.m < 0 ? ctx.t('falling') : ctx.t('constant'));
-        ctx.readout('angle', `α ≈ ${fmt.num(slopeAngleDeg(p.m), 1)}°`);
+        const alpha = slopeAngleDeg(p.m);
+        ctx.readout('angle', `α ${relSign(alpha, 1)} ${fmt.num(alpha, 1)}°`);
 
         const x0 = zeroOf(p.m, p.b);
         if (typeof x0 === 'number') {
-          ctx.readout('zero', { html: `${term.v('x')}<sub>0</sub> = ${fmt.num(x0)} &nbsp;→&nbsp; N${fmt.point(x0, 0)}` });
+          ctx.readout('zero', { html: `${term.v('x')}<sub>0</sub> ${relSign(x0, 2)} ${fmt.num(x0)} &nbsp;→&nbsp; N${fmt.point(x0, 0)}` });
         } else {
           ctx.readout('zero', x0 === 'all' ? ctx.t('everywhere') : ctx.t('none'));
         }

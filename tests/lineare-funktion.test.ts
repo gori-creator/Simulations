@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { lineRelation, lineThrough, slopeAngleDeg, zeroOf } from '../src/simulations/mathematik/lineare-funktion/model';
+import { isRounded, lineRelation, lineThrough, slopeAngleDeg, zeroOf } from '../src/simulations/mathematik/lineare-funktion/model';
 import { Formatter, term } from '../src/sim-core';
 
 describe('Modell: Lineare Funktion f(x) = m·x + t', () => {
@@ -28,6 +28,14 @@ describe('Modell: Lineare Funktion f(x) = m·x + t', () => {
     expect(ab.t).toBeCloseTo(2, 12);
     // Senkrechte Gerade ist keine Funktion
     expect(lineThrough(3, 1, 3, 5)).toBeNull();
+  });
+
+  it('erkennt gerundete Werte (Anzeige „≈“ statt „=“)', () => {
+    expect(isRounded(-4 / 3, 2)).toBe(true); // x₀ von 1,5x + 2
+    expect(isRounded(6, 2)).toBe(false);
+    expect(isRounded(0.5, 2)).toBe(false);
+    expect(isRounded(slopeAngleDeg(1), 1)).toBe(false); // 45°
+    expect(isRounded(slopeAngleDeg(0.5), 1)).toBe(true); // 26,565…°
   });
 
   it('berechnet den Steigungswinkel', () => {

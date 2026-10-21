@@ -26,6 +26,12 @@ export function zeroOf(m: number, t: number): number | null | 'all' {
   return x0 === 0 ? 0 : x0; // −0 vermeiden
 }
 
+/** true, wenn `value` beim Runden auf `decimals` Nachkommastellen verändert wird (Anzeige dann mit „≈“). */
+export function isRounded(value: number, decimals: number): boolean {
+  const f = 10 ** decimals;
+  return Math.abs(Math.round(value * f) / f - value) > 1e-9;
+}
+
 /** Steigungswinkel α in Grad (−90° < α < 90°) mit tan α = m. */
 export function slopeAngleDeg(m: number): number {
   return (Math.atan(m) * 180) / Math.PI;
