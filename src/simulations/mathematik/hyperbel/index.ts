@@ -558,9 +558,12 @@ export default defineSimulation({
       }
       ctx.readout('D', { html: `${v('D')} = ${R} \\ {${fmt.num(p.b)}}` });
       const z = zero(h);
-      ctx.readout('zero', z === null ? (p.a === 0 ? (de ? 'keine' : 'none') : de ? 'keine – für c = 0 ist die x-Achse Asymptote' : 'none – for c = 0 the x-axis is an asymptote') : { html: `${v('x')}<sub>0</sub> = ${v('b')} − ${frac(v('a'), v('c'))} = ${fmt.num(z)} &nbsp;→&nbsp; N${fmt.point(z, 0)}` });
+      // a = 0 und c = 0: f(x) = 0 – jede Stelle x ≠ b ist Nullstelle
+      const zeroNone = p.a === 0 ? (p.c === 0 ? (de ? 'alle x ≠ b (f(x) = 0)' : 'every x ≠ b (f(x) = 0)') : de ? 'keine' : 'none') : de ? 'keine – für c = 0 ist die x-Achse Asymptote' : 'none – for c = 0 the x-axis is an asymptote';
+      ctx.readout('zero', z === null ? zeroNone : { html: `${v('x')}<sub>0</sub> = ${v('b')} − ${frac(v('a'), v('c'))} = ${fmt.num(z)} &nbsp;→&nbsp; N${fmt.point(z, 0)}` });
       const s = yIntercept(h);
-      ctx.readout('yint', s === null ? (de ? 'keiner – für b = 0 ist die y-Achse Asymptote' : 'none – for b = 0 the y-axis is an asymptote') : { html: `${v('f')}(0) = ${fmt.num(s)} &nbsp;→&nbsp; S<sub>${v('y')}</sub>${fmt.point(0, s)}` });
+      const yintNone = p.a === 0 ? (de ? 'keiner – 0 gehört nicht zu D' : 'none – 0 is not in D') : de ? 'keiner – für b = 0 ist die y-Achse Asymptote' : 'none – for b = 0 the y-axis is an asymptote';
+      ctx.readout('yint', s === null ? yintNone : { html: `${v('f')}(0) = ${fmt.num(s)} &nbsp;→&nbsp; S<sub>${v('y')}</sub>${fmt.point(0, s)}` });
     }
 
     function syncActions(): void {
@@ -761,7 +764,13 @@ export default defineSimulation({
         const col = mixColor(th().muted, th().bg, 0.15);
         for (const s of [1, -1] as const) strokePath(branchPath(base, s, 1), col, 1.6, { dash: [6, 5], alpha: 0.75 * k.labels });
         const [lx, ly] = [plot.px(-0.45), plot.py(-1 / 0.45)];
-        if (lx > r.x + 30 && ly < r.y + r.h - 16 && ly > r.y + 16) label(lx - 6, ly, 'y = \\f{1}{x}', th().muted, 'right', size - 1, 0.9 * k.labels);
+        // nicht in das Rechteck an P schreiben (Rechteck zwischen Z und P)
+        const rx0 = Math.min(zx, plot.px(h.b + h.u)) - 40;
+        const rx1 = Math.max(zx, plot.px(h.b + h.u)) + 8;
+        const ry0 = Math.min(zy, plot.py(h.c + h.a / h.u)) - 14;
+        const ry1 = Math.max(zy, plot.py(h.c + h.a / h.u)) + 14;
+        const inRect = p.rect && isHyp && lx > rx0 && lx < rx1 && ly > ry0 && ly < ry1;
+        if (!inRect && lx > r.x + 30 && ly < r.y + r.h - 16 && ly > r.y + 16) label(lx - 6, ly, 'y = \\f{1}{x}', th().muted, 'right', size - 1, 0.9 * k.labels);
       }
 
       // Schritt-für-Schritt: gestreckter, noch nicht verschobener Graph als Geist
