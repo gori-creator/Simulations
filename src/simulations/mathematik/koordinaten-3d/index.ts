@@ -346,6 +346,10 @@ export default defineSimulation({
     const CD = () => ctx.theme.series[4]!;
     const axisColor = (k: number) => [C1(), C2(), C3()][k]!;
     const n1 = (v: number) => fmt.num(v, 1);
+    // „=“, wenn der auf 2 Stellen gezeigte Wert exakt ist (√25 = 5), sonst „≈“
+    const rel2 = (v: number) => (Math.abs(v * 100 - Math.round(v * 100)) < 1e-9 ? '=' : '≈');
+    // gerundete Werte mit Endnull („≈ 6,40“), exakte ohne („= 5“)
+    const val2 = (v: number) => (rel2(v) === '=' ? fmt.num(v, 2) : fmt.fixed(v, 2));
     const sep = lang === 'de' ? ' | ' : ', ';
     const coordText = (q: P3) => `(${n1(q[0])}${sep}${n1(q[1])}${sep}${n1(q[2])})`;
     const font = (w: number, s: number) => `${w} ${s}px ${ctx.theme.font}`;
@@ -700,7 +704,7 @@ export default defineSimulation({
         if (CG > 0) view.segment(c2, vec3.lerp(c2, g6, CG), { color: C3(), width: 2.6, alpha: da, layer: 'front' });
         if (AG > 0) view.segment(a0, vec3.lerp(a0, g6, AG), { color: CD(), width: 3.4, alpha: da, layer: 'front' });
         if (show && AC > 0.9) view.label(vec3.lerp(a0, c2, 0.55), `√(a² + b²) = ${fmt.num(faceDiagonal(p.a, p.b), 2)}`, { color: CD(), size: 11.5, weight: '700', align: 'center', baseline: 'middle', offset: [0, 12], background: alpha(cardBg(), 0.88), layer: 'front' });
-        if (show && AG > 0.9) view.label(vec3.lerp(a0, g6, 0.5), `d ≈ ${fmt.num(spaceDiagonal(p.a, p.b, p.c), 2)}`, { color: CD(), size: 13, weight: '800', align: 'center', baseline: 'middle', offset: [0, -14], background: alpha(cardBg(), 0.9), layer: 'front' });
+        if (show && AG > 0.9) view.label(vec3.lerp(a0, g6, 0.5), `d ${rel2(spaceDiagonal(p.a, p.b, p.c))} ${val2(spaceDiagonal(p.a, p.b, p.c))}`, { color: CD(), size: 13, weight: '800', align: 'center', baseline: 'middle', offset: [0, -14], background: alpha(cardBg(), 0.9), layer: 'front' });
         if (AG > 0.9) rightAngle(c2, a0, g6, CD(), da);
       }
       // Kantenlängen
@@ -778,7 +782,7 @@ export default defineSimulation({
       if (t5 > 0) {
         view.segment(vP, vec3.lerp(vP, vQ, t5), { color: CD(), width: 4, alpha: A, layer: 'front' });
         if (s5 >= 4.9 && Math.abs(Q0[2] - P0[2]) > 0.05) rightAngle(H, vP, vQ, theme.text, A * 0.8);
-        if (show && t5 > 0.85) view.label(vec3.lerp(vP, vQ, 0.5), `|PQ| ≈ ${fmt.num(distSteps(target(), targetQ()).d, 2)}`, { color: CD(), size: 13.5, weight: '800', align: 'center', baseline: 'middle', offset: [-30, -16], background: alpha(cardBg(), 0.92), layer: 'front' });
+        if (show && t5 > 0.85) view.label(vec3.lerp(vP, vQ, 0.5), `|PQ| ${rel2(distSteps(target(), targetQ()).d)} ${val2(distSteps(target(), targetQ()).d)}`, { color: CD(), size: 13.5, weight: '800', align: 'center', baseline: 'middle', offset: [-30, -16], background: alpha(cardBg(), 0.92), layer: 'front' });
       }
       view.ball(vP, 0.19, { color: CP(), alpha: A });
       view.ball(vQ, 0.19, { color: CQ(), alpha: A });
@@ -877,7 +881,8 @@ export default defineSimulation({
     function drawOct(A: number): void {
       const theme = ctx.theme;
       const E = Math.min(4, hi.at(now) - 0.5);
-      const n = octant(target());
+      // Bei verdeckten Koordinaten (Aufgabenmodus) wird kein Oktant hervorgehoben
+      const n = p.show ? octant(target()) : 0;
       // Oktant von P als zarter Kasten
       if (n > 0) {
         const sg = octantSigns(n);
@@ -1001,7 +1006,7 @@ export default defineSimulation({
         y += lineH;
         const d = distOrigin(q);
         const sq = q[0] ** 2 + q[1] ** 2 + q[2] ** 2;
-        row('|OP|', hide ? '?' : `√${fmt.num(sq, 2)} ≈ ${fmt.num(d, 2)}`, CP());
+        row('|OP|', hide ? '?' : `√${fmt.num(sq, 2)} ${rel2(d)} ${val2(d)}`, CP());
         y += lineH;
         if (wide && y < R.y + R.h - 70) {
           y += 6;
@@ -1025,7 +1030,7 @@ export default defineSimulation({
         const rows: [string, string, string, number][] = [
           ['Δx₁ = q₁ − p₁', n1(d[0]), C1(), 0],
           ['Δx₂ = q₂ − p₂', n1(d[1]), C2(), 1],
-          ['d₁₂ = √(Δx₁² + Δx₂²)', hide ? '?' : `≈ ${fmt.num(st.d12, 2)}`, CD(), 2],
+          ['d₁₂ = √(Δx₁² + Δx₂²)', hide ? '?' : `${rel2(st.d12)} ${val2(st.d12)}`, CD(), 2],
           ['Δx₃ = q₃ − p₃', n1(d[2]), C3(), 3],
         ];
         for (const [lab, val, col, k] of rows) {
@@ -1042,7 +1047,7 @@ export default defineSimulation({
         const fitTxt = g.measureText(`|PQ| = ${sumTxt}`).width < w ? `|PQ| = ${sumTxt}` : '|PQ| = √(Δx₁² + Δx₂² + Δx₃²)';
         text(g, fitTxt, x0, y, { font: font(700, small ? 11 : 12), color: theme.text, align: 'left' });
         y += lineH;
-        text(g, hide ? '= ?' : `= √${fmt.num(st.sq, 2)} ≈ ${fmt.num(st.d, 2)}`, x0, y, { font: font(800, small ? 15 : 17), color: CD(), align: 'left' });
+        text(g, hide ? '= ?' : `= √${fmt.num(st.sq, 2)} ${rel2(st.d)} ${val2(st.d)}`, x0, y, { font: font(800, small ? 15 : 17), color: CD(), align: 'left' });
         g.restore();
         y += lineH + 4;
         if (wide && y < R.y + R.h - 60) drawTip({ x: x0 - 4, y, w: w + 8, h: Math.min(84, R.y + R.h - y - 10) }, tt('Zweimal Pythagoras: erst in der waagerechten Ebene durch P, dann mit dem Höhenunterschied. Ziehe P und Q.', 'Pythagoras twice: first in the horizontal plane through P, then with the difference in height. Drag P and Q.'));
@@ -1105,10 +1110,10 @@ export default defineSimulation({
         if (y + lineH2 * 2 < R.y + R.h) {
           row(tt('Volumen', 'Volume'), hide ? '?' : `${n1(p.a)} · ${n1(p.b)} · ${n1(p.c)} = ${fmt.num(boxVolume(p.a, p.b, p.c), 3)}`, theme.text, y, x0, w);
           y += lineH2;
-          row('AC', hide ? '?' : `√(${n1(p.a)}² + ${n1(p.b)}²) ≈ ${fmt.num(faceDiagonal(p.a, p.b), 2)}`, CD(), y, x0, w);
+          row('AC', hide ? '?' : `√(${n1(p.a)}² + ${n1(p.b)}²) ${rel2(faceDiagonal(p.a, p.b))} ${val2(faceDiagonal(p.a, p.b))}`, CD(), y, x0, w);
           y += lineH2;
           const sq = p.a * p.a + p.b * p.b + p.c * p.c;
-          row(tt('AG (Raumdiag.)', 'AG (space diag.)'), hide ? '?' : `√${fmt.num(sq, 2)} ≈ ${fmt.num(spaceDiagonal(p.a, p.b, p.c), 2)}`, CD(), y, x0, w);
+          row(tt('AG (Raumdiag.)', 'AG (space diag.)'), hide ? '?' : `√${fmt.num(sq, 2)} ${rel2(spaceDiagonal(p.a, p.b, p.c))} ${val2(spaceDiagonal(p.a, p.b, p.c))}`, CD(), y, x0, w);
           y += lineH2;
         }
         if (wide && y < R.y + R.h - 60) drawTip({ x: x0 - 4, y: y + 4, w: w + 8, h: Math.min(90, R.y + R.h - y - 14) }, tt('Tippe auf eine Ecke, um ihre Koordinaten zu sehen. Ziehe A, C oder G.', 'Tap a corner to see its coordinates. Drag A, C or G.'));
@@ -1356,9 +1361,12 @@ export default defineSimulation({
       const x0 = R.x + pad;
       const w = R.w - 2 * pad;
       const q = target();
-      const n = octant(q);
+      // Aufgabenmodus (show = 0): Oktant und Vorzeichen verdeckt, keine Zelle hervorgehoben
+      const hide = !p.show;
+      const n = hide ? 0 : octant(q);
+      const where = hide ? tt('P liegt im Oktanten ?', 'P is in octant ?') : n > 0 ? tt(`P liegt im Oktanten ${ROMAN[n]}`, `P is in octant ${ROMAN[n]}`) : tt('P liegt in keinem Oktanten', 'P is in no octant');
       text(g, tt('Oktanten', 'Octants'), x0, R.y + 20, { font: font(800, 14), color: theme.text, align: 'left' });
-      text(g, n > 0 ? tt(`P liegt in ${ROMAN[n]}`, `P is in ${ROMAN[n]}`) : tt('P liegt in keinem Oktanten', 'P is in no octant'), x0 + w, R.y + 20, { font: font(800, 12), color: n > 0 ? octColor(n) : theme.series[1]!, align: 'right' });
+      text(g, where, x0 + w, R.y + 20, { font: font(800, 12), color: hide ? theme.muted : n > 0 ? octColor(n) : theme.series[1]!, align: 'right' });
       const pts = landed();
       const counts = octantCounts(pts);
       const N = pts.length;
@@ -1406,7 +1414,7 @@ export default defineSimulation({
         text(g, value, x0 + w, y, { font: font(800, 12), color, align: 'right' });
         y += 19;
       };
-      row(tt('Vorzeichen von P', 'Signs of P'), q.map((v) => (Math.abs(v) < 1e-9 ? '0' : v > 0 ? '+' : '−')).join(lang === 'de' ? ' | ' : ', '), n > 0 ? octColor(n) : theme.series[1]!);
+      row(tt('Vorzeichen von P', 'Signs of P'), q.map((v) => (hide ? '?' : Math.abs(v) < 1e-9 ? '0' : v > 0 ? '+' : '−')).join(lang === 'de' ? ' | ' : ', '), hide ? theme.muted : n > 0 ? octColor(n) : theme.series[1]!);
       if (N > 0) {
         row(tt('Zufallspunkte', 'Random points'), `${N}`);
         row(tt('davon auf einer Ebene', 'of which on a plane'), `${counts[0]} (${fmt.num((100 * counts[0]!) / N, 1)} %)`);
@@ -1501,7 +1509,7 @@ export default defineSimulation({
         const st = distSteps(target(), targetQ());
         ctx.readout('coord', `P${coordText(target())} · Q${coordText(targetQ())}`);
         ctx.readout('lage', null);
-        ctx.readout('dist', `|PQ| = √${fmt.num(st.sq, 2)} ≈ ${fmt.num(st.d, 2)}`);
+        ctx.readout('dist', `|PQ| = √${fmt.num(st.sq, 2)} ${rel2(st.d)} ${val2(st.d)}`);
         ctx.readout('corners', null);
         ctx.readout('size', null);
       } else if (mode() === 'point' || mode() === 'find') {
@@ -1509,7 +1517,7 @@ export default defineSimulation({
         const sq = q[0] ** 2 + q[1] ** 2 + q[2] ** 2;
         ctx.readout('coord', `P${coordText(q)}`);
         ctx.readout('lage', whereText(q));
-        ctx.readout('dist', { html: `|OP| = √(${n1(q[0])}² + ${n1(q[1])}² + ${n1(q[2])}²) = √${fmt.num(sq, 2)} ≈ ${fmt.num(distOrigin(q), 2)}`.replace(/\((-[\d,.]+)\)²/g, '($1)²').replace(/ (−[\d,.]+)²/g, ' ($1)²') });
+        ctx.readout('dist', { html: `|OP| = √(${n1(q[0])}² + ${n1(q[1])}² + ${n1(q[2])}²) = √${fmt.num(sq, 2)} ${rel2(distOrigin(q))} ${val2(distOrigin(q))}`.replace(/\((-[\d,.]+)\)²/g, '($1)²').replace(/ (−[\d,.]+)²/g, ' ($1)²') });
         ctx.readout('corners', null);
         ctx.readout('size', null);
       } else {
@@ -1518,7 +1526,7 @@ export default defineSimulation({
         ctx.readout('lage', sel !== null ? whereText(cs[sel]!) : null);
         ctx.readout('dist', null);
         ctx.readout('corners', { html: cs.map((q, i) => `${CORNER_NAMES[i]}${coordText(q)}`).join('<br>') });
-        ctx.readout('size', `V = ${n1(p.a)} · ${n1(p.b)} · ${n1(p.c)} = ${fmt.num(boxVolume(p.a, p.b, p.c), 3)} · d = √(${n1(p.a)}² + ${n1(p.b)}² + ${n1(p.c)}²) = √${fmt.num(p.a * p.a + p.b * p.b + p.c * p.c, 2)} ≈ ${fmt.num(spaceDiagonal(p.a, p.b, p.c), 2)}`);
+        ctx.readout('size', `V = ${n1(p.a)} · ${n1(p.b)} · ${n1(p.c)} = ${fmt.num(boxVolume(p.a, p.b, p.c), 3)} · d = √(${n1(p.a)}² + ${n1(p.b)}² + ${n1(p.c)}²) = √${fmt.num(p.a * p.a + p.b * p.b + p.c * p.c, 2)} ${rel2(spaceDiagonal(p.a, p.b, p.c))} ${val2(spaceDiagonal(p.a, p.b, p.c))}`);
       }
       ctx.setAction('rand', { label: mode() === 'box' ? tt('Neuer Quader', 'New cuboid') : tt('Neuer Punkt', 'New point') });
       ctx.setAction('cam', { label: `${tt('Blick', 'View')}: ${VIEWS[(camIndex + 1) % VIEWS.length]!.name[lang]}` });

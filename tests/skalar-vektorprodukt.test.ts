@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { angleDeg, angleInPlane, contributions, cross, crossScheme, crossTerms, dot, dotAndArea, handedness, hasSolution, norm, orthogonal, parallelogramArea, perpPart, perpUnit, projection, projLength, pyramidVolume, relation, rotateFrom, shearC, spatHeight, spatVolume, TASKS, taskCloseness, taskSolved, taskValue, triangleArea, triple, unit } from '../src/simulations/mathematik/skalar-vektorprodukt/model';
+import { angleDeg, angleInPlane, contributions, cross, crossScheme, crossTerms, dot, dotAndArea, exactTo, normForm, handedness, hasSolution, norm, orthogonal, parallelogramArea, perpPart, perpUnit, projection, projLength, pyramidVolume, relation, rotateFrom, shearC, spatHeight, spatVolume, TASKS, taskCloseness, taskSolved, taskValue, triangleArea, triple, unit } from '../src/simulations/mathematik/skalar-vektorprodukt/model';
 
 describe('Modell: Skalarprodukt', () => {
   it('a · b = a₁b₁ + a₂b₂ + a₃b₃', () => {
@@ -153,5 +153,33 @@ describe('Modell: Entdeckungsaufgaben', () => {
     expect(taskCloseness('perp', [6, 6, 0])).toBe(1);
     expect(hasSolution([[1, 2, 3]], [1, 2, 3])).toBe(true);
     expect(hasSolution([[1, 2, 3]], [1, 2, 3.5])).toBe(false);
+  });
+});
+
+describe('Anzeige: Beträge exakt, als Wurzel oder gerundet', () => {
+  it('normForm unterscheidet Zahl, Wurzel und Näherung', () => {
+    expect(normForm([2, 2, 1])).toEqual({ kind: 'num', value: 3, sq: 9 });
+    expect(normForm([1, 2, 0]).kind).toBe('root'); // √5
+    expect(normForm([1, 2, 0]).sq).toBe(5);
+    expect(normForm([0.5, 0.5, 0]).kind).toBe('root'); // √0,5
+    expect(normForm([1.5, 2, 0]).kind).toBe('num'); // 2,5
+    expect(normForm([0.1, 0.123, 0]).kind).toBe('approx');
+  });
+  it('„=“ nur bei exakt darstellbaren Werten', () => {
+    // cos φ = −4 / (√5 · 3) ≈ −0,596
+    expect(exactTo(-4 / (Math.sqrt(5) * 3), 3)).toBe(false);
+    expect(exactTo(0.5, 3)).toBe(true);
+    expect(exactTo(2.24)).toBe(true);
+    expect(exactTo(Math.sqrt(5))).toBe(false);
+  });
+  it('Aufgabe „Winkel 120°“: jede Lösung bildet mit −a genau 60° (Kegel um −a)', () => {
+    const a = TASKS.angle.a;
+    const minusA = [-a[0], -a[1], -a[2]] as const;
+    // (−1 | 0 | ±1) und (0 | −1 | 1) bilden mit a = (1 | 1 | 0) je 120°
+    for (const b of [[-1, 0, 1], [-1, 0, -1], [0, -1, 1]] as const) {
+      expect(angleDeg(a, b)).toBeCloseTo(120, 9);
+      expect(angleDeg(minusA, b)).toBeCloseTo(60, 9);
+      expect(taskSolved('angle', b)).toBe(true);
+    }
   });
 });

@@ -310,6 +310,8 @@ export default defineSimulation({
     const evSym = (kind: EventKind, s = sel()) =>
       kind === 'eq' ? `P(X = ${s.k})` : kind === 'le' ? `P(X ≤ ${s.k})` : kind === 'ge' ? `P(X ≥ ${s.k})` : `P(${s.a} ≤ X ≤ ${s.b})`;
     const F = (k: number) => (k < 0 ? 0 : k >= nn() ? 1 : cdf[k]!);
+    // ganze Zahl mit echtem Minus (F(−1) bei a = 0 bzw. k = 0)
+    const int = (v: number) => fmt.num(v, 0);
     const pct = (v: number) => `${fmt.num(v * 100, 2)} %`;
 
     const fstyle = (size: number, color = th().text, weight = 600): FormulaStyle => ({ size, font: th().font, mathFont: th().mathFont, color, weight, palette: { ev: C().ev, mu: C().mu, sig: C().sig, m: th().muted, hit: C().hit, freq: C().freq } });
@@ -958,7 +960,7 @@ export default defineSimulation({
         lo = F(s.k - 1);
         hi = 1;
         xAt = s.k - 0.5;
-        src = `P(X ≥ ${s.k}) = 1 − F(${s.k - 1})`;
+        src = `P(X ≥ ${s.k}) = 1 − F(${int(s.k - 1)})`;
       } else if (kind === 'eq') {
         lo = F(s.k - 1);
         hi = F(s.k);
@@ -969,7 +971,7 @@ export default defineSimulation({
         lo = F(s.a - 1);
         hi = F(s.b);
         xAt = s.b + 0.5;
-        src = `F(${s.b}) − F(${s.a - 1})`;
+        src = `F(${s.b}) − F(${int(s.a - 1)})`;
       }
       const px = X(xAt);
       const y1 = Y(lo);
@@ -1051,8 +1053,8 @@ export default defineSimulation({
         const general = 'P(X ≥ k) = 1 − P(X ≤ k − 1) = 1 − F(k − 1)';
         if (k === 0) {
           lines.push('P(X ≥ 0) = 1 − F(−1) = 1 − 0');
-          note = tt('Mindestens 0 Treffer gibt es immer.', 'At least 0 successes always happens.');
-        } else lines.push(`P(X ≥ ${k}) = 1 − F(${k - 1})${show ? ` = 1 − ${prob(F(k - 1))}` : ''}`);
+          note = tt('Mindestens 0 Treffer gibt es immer.', 'There are always at least 0 successes.');
+        } else lines.push(`P(X ≥ ${k}) = 1 − F(${int(k - 1)})${show ? ` = 1 − ${prob(F(k - 1))}` : ''}`);
         return { general, lines, note };
       }
       const general = 'P(a ≤ X ≤ b) = F(b) − F(a − 1)';
@@ -1061,7 +1063,7 @@ export default defineSimulation({
         note = tt(`a > b: Kein k liegt im Bereich – unmögliches Ereignis.`, `a > b: no k lies in the range – impossible event.`);
         return { general, lines, note };
       }
-      lines.push(`P(${s.a} ≤ X ≤ ${s.b}) = F(${s.b}) − F(${s.a - 1})`);
+      lines.push(`P(${s.a} ≤ X ≤ ${s.b}) = F(${s.b}) − F(${int(s.a - 1)})`);
       if (show) lines.push(`= ${prob(F(s.b))} − ${prob(F(s.a - 1))}`);
       if (s.a === 0) note = tt('F(−1) = 0: Weniger als 0 Treffer gibt es nicht.', 'F(−1) = 0: fewer than 0 successes is impossible.');
       return { general, lines, note };
