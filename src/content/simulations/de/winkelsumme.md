@@ -119,5 +119,5 @@ Der vierte Winkel ist $360^\circ - 30^\circ - 40^\circ - 50^\circ = 240^\circ$. 
   - „Größere Dreiecke haben eine größere Winkelsumme.“ – Die Winkelsumme hängt nicht von der Größe ab; das Ziehen der Ecken zeigt das schnell.
   - Bei der Zerlegung werden Diagonalen von mehreren Ecken gezogen; dann entstehen mehr als $n - 2$ Dreiecke, deren Winkel teils im Inneren liegen.
   - Wechselwinkel und Stufenwinkel werden verwechselt – die Z-Figur kann helfen.
-  - Bei nicht konvexen Vielecken wird der überstumpfe Innenwinkel übersehen bzw. sein Ergänzungswinkel gemessen.
+  - Bei nicht konvexen Vielecken wird der überstumpfe Innenwinkel übersehen bzw. statt seiner der Winkel auf der Außenseite ($360^\circ$ minus Innenwinkel) gemessen.
 - **Außenwinkel:** Das Umrunden verbindet sich gut mit Bewegungsspielen auf dem Schulhof oder dem Programmieren einer „Turtle“. Bei einspringenden Ecken dreht man zurück; dort ist der Außenwinkel hier negativ angegeben – das geht über den Lehrplan hinaus und ist als Ausblick gedacht.

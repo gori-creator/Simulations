@@ -349,6 +349,31 @@ export default defineSimulation({
       return roundToSum(a, 1, angleSum(n));
     }
 
+    /**
+     * Gerundete Außenwinkel (Summe 360°); beim regelmäßigen Vieleck alle gleich
+     * 360° : n, damit dort keine Ecke wegen der Rundung abweicht.
+     */
+    function roundedExterior(S: Pt[], e: number[]): number[] {
+      if (isRegular(S)) return e.map(() => regularExterior(S.length));
+      return roundToSum(e, 1, 360);
+    }
+
+    /**
+     * Winkelgrößen für die Beschriftung im Bild: während des Mitzählens die
+     * laufenden Werte, danach dieselben summentreu gerundeten Werte wie in der
+     * Karte und in den Messwerten (sonst z. B. β = 15,5° im Bild, 15,4° in der Karte).
+     */
+    let labelVals: number[] = [];
+    function computeLabelVals(): void {
+      const a = exactAngles();
+      if (!a || disp.length !== a.length) {
+        labelVals = disp;
+        return;
+      }
+      const settled = disp.every((v, i) => Math.abs(v - a[i]!) < 0.005);
+      labelVals = settled ? roundedAngles(a) : disp;
+    }
+
     function updateReadouts(): void {
       const P = target();
       const n = P.length;
@@ -366,7 +391,7 @@ export default defineSimulation({
       const e = exteriorAngles(P);
       if (p.ext && e) {
         if (mode() === 'tri' && a) {
-          const r = roundToSum(e, 1, 360);
+          const r = roundedExterior(P, e);
           const parts = [0, 1, 2].map((i) => `${names[i]}* = ${names[(i + 1) % 3]} + ${names[(i + 2) % 3]} ${eq(e[i]!, r[i]!)} ${deg(r[i]!)}`);
           ctx.readout('ext', `${parts.join('; ')}; α* + β* + γ* = 360°`);
         } else {
@@ -920,7 +945,7 @@ export default defineSimulation({
         const [x, y] = polar(P[i]!, c.mid, d);
         haloText(name, x, y, nf, col);
       } else {
-        const a = disp[i] ?? 0;
+        const a = labelVals[i] ?? 0;
         const label = `${name} = ${deg(a)}`;
         g.font = vf;
         const w = g.measureText(label).width;
@@ -1072,6 +1097,7 @@ export default defineSimulation({
       const col = extColor();
       const wv = walk.v;
       const done = walkState(S).done;
+      const extR = roundedExterior(S, ext);
       for (let i = 0; i < n; i++) {
         const k = introPart(i, n);
         if (k <= 0) continue;
@@ -1090,7 +1116,7 @@ export default defineSimulation({
         wedge(q, rr * k, din, sweep * (wv > 0 ? Math.max(0.0001, reach) : 1), col, 0.16, 2);
         if (p.vals || names) {
           const mid = din + sweep / 2;
-          const label = names ? (p.vals ? `${names[i]} = ${deg(o * sweep)}` : names[i]!) : deg(ext[i]!);
+          const label = names ? (p.vals ? `${names[i]} = ${deg(extR[i]!)}` : names[i]!) : deg(extR[i]!);
           const vf = names && !p.vals ? `italic 700 ${big ? 15 : 13}px ${theme.mathFont}` : `700 ${big ? 12.5 : 11}px ${theme.font}`;
           g.font = vf;
           const w = g.measureText(label).width;
@@ -1349,7 +1375,7 @@ export default defineSimulation({
 
     /** Angezeigter (mitzählender) Innenwinkel im Vieleck. */
     function polyDisp(i: number): number {
-      return disp[i] ?? 0;
+      return labelVals[i] ?? 0;
     }
 
     /* ---------------- Hinweis-Toast ---------------- */
@@ -1519,7 +1545,7 @@ export default defineSimulation({
       if (!a) return;
       const vals = disp.length === 3 ? disp : [0, 0, 0];
       const settled = vals.every((v, i) => Math.abs(v - a[i]!) < 0.005);
-      const r = settled ? roundToSum(a, 1, 180) : vals.map((v) => Math.round(v * 10) / 10);
+      const r = settled ? roundedAngles(a) : vals.map((v) => Math.round(v * 10) / 10);
       const total = settled ? 180 : Math.round(sum(vals) * 10) / 10;
       const names = ['α', 'β', 'γ'];
       const lineFont = `800 ${big ? 15 : 13}px ${theme.font}`;
@@ -1890,6 +1916,7 @@ export default defineSimulation({
       hits = [];
       for (const pr of [tear, proof, split, walk, intro]) pr.step(now);
       const counting = stepDisplay(now);
+      computeLabelVals();
       surface.begin();
       const lay = layout();
       drawPaper();
