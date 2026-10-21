@@ -219,3 +219,16 @@ export function particleAt(x: number): number | null {
   if (i < 0 || i >= PARTICLES) return null;
   return Math.abs(i * SPACING - x) < 1e-6 ? i : null;
 }
+
+/**
+ * Kleinste Wellenlänge, die die Kette noch erkennbar wiedergibt: drei
+ * Teilchenabstände (0,3 m). Darunter sitzen zu wenige Teilchen auf einer
+ * Wellenlänge – bei λ = 0,1 m schwingen sogar alle Teilchen gleichphasig und
+ * die Kette wirkt in Ruhe, obwohl die Welle läuft.
+ */
+export const MIN_RESOLVED_WAVELENGTH = 3 * SPACING;
+
+/** Gibt die Kette die Welle noch erkennbar wieder (λ ≥ 3 Teilchenabstände)? */
+export function chainResolves(w: Pick<Wave, 'c' | 'f'>): boolean {
+  return wavelength(w) >= MIN_RESOLVED_WAVELENGTH - 1e-9;
+}
