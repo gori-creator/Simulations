@@ -242,3 +242,52 @@ describe('Modell: Steckbrief, Tabelle, Basis nahe 1', () => {
     expect(avoidOne(2, 1)).toBe(2);
   });
 });
+
+describe('Lernmaterial: Aufgaben und Beispiele (Prüfrunde)', () => {
+  it('Aufgabe 1: log₂ 32 = 5, log₃ 1/9 = −2, lg 0,001 = −3, log₅ 1 = 0, log₄ 2 = 0,5 (exakt)', () => {
+    expect(log(2, 32)).toBe(5);
+    expect(log(3, 1 / 9)).toBe(-2);
+    expect(lg(0.001)).toBe(-3);
+    expect(log(5, 1)).toBe(0);
+    expect(log(4, 2)).toBeCloseTo(0.5, 12);
+  });
+
+  it('Aufgabe 2 und 3: Eingrenzen und Basiswechsel', () => {
+    expect(bracket(2, 10)).toMatchObject({ lo: 3, hi: 4, powLo: 8, powHi: 16, exact: false });
+    expect(Math.round(solveExponential(2, 10)! * 100) / 100).toBe(3.32);
+    expect(2 ** 3.32).toBeCloseTo(9.99, 2);
+    const cb = changeOfBase(3, 50);
+    expect(cb.num).toBeCloseTo(1.69897, 5);
+    expect(cb.den).toBeCloseTo(0.47712, 5);
+    expect(Math.round(cb.x * 1000) / 1000).toBe(3.561);
+    expect(bracket(3, 50)).toMatchObject({ lo: 3, hi: 4, powLo: 27, powHi: 81 });
+  });
+
+  it('Aufgabe 4: Rechengesetze mit exakten Ergebnissen', () => {
+    expect(productLaw(10, 20, 50).sum).toBe(3);
+    expect(productLaw(10, 20, 50).result).toBe(3);
+    expect(quotientLaw(2, 48, 3).diff).toBe(4);
+    expect(quotientLaw(2, 48, 3).result).toBe(4);
+    expect(powerLaw(3, 9, 4).prod).toBe(8);
+    expect(powerLaw(3, 9, 4).result).toBe(8);
+  });
+
+  it('Aufgabe 5: 0,5ˣ = 8 hat die negative Lösung −3; Eingrenzen bei fallender Potenz', () => {
+    expect(solveExponential(0.5, 8)).toBe(-3);
+    expect(bracket(0.5, 8)).toMatchObject({ lo: -3, exact: true, powLo: 8 });
+    // fallend: b^k ≥ c > b^(k+1)
+    const br = bracket(0.5, 3)!;
+    expect(br.powLo).toBeGreaterThanOrEqual(3);
+    expect(br.powHi).toBeLessThan(3);
+  });
+
+  it('Aufgabe 6: Verdopplungszeit bei 5 % ≈ 14,2 Jahre', () => {
+    expect(solveExponential(1.05, 2)).toBeCloseTo(14.2067, 4);
+  });
+
+  it('Kernfrage-Beispiele: log₂ 8 = 3, 0,3² = 0,09 ⇔ log₀,₃ 0,09 = 2, ln e = 1', () => {
+    expect(log(2, 8)).toBe(3);
+    expect(log(0.3, 0.09)).toBe(2);
+    expect(log(Math.E, Math.E)).toBe(1);
+  });
+});
