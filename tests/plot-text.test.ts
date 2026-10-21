@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Plot } from '../src/sim-core/plot';
+import { Plot, segmentHitsRect } from '../src/sim-core/plot';
 import type { Surface } from '../src/sim-core/surface';
 
 /** Aufgezeichneter Zeichenbefehl der Attrappe. */
@@ -112,5 +112,50 @@ describe('Plot.text mit tiefgestelltem Index', () => {
     calls.length = 0;
     plot.text(0, 0, 'v_0 = -3', { halo: false });
     expect(calls.map((c) => c.text)).toEqual(['v', '0', ' = −3']);
+  });
+});
+
+describe('Achsbeschriftung weicht Kurven aus', () => {
+  /** Zeichnet ein Diagramm 0…90 und liefert die Aufrufe, die die Achsbeschriftungen füllen. */
+  function chart(draw: (plot: Plot) => void) {
+    const { surface, calls } = fakeSurface();
+    const plot = new Plot(surface, { x: [0, 90], y: [0, 10], equalAspect: false, pan: false, zoom: false, controls: false, xAxis: { label: 'α in °' }, yAxis: { label: 'F in N' } });
+    plot.setRangePadded([0, 90], [0, 10], { left: 40, right: 16, top: 30, bottom: 22 });
+    plot.begin();
+    plot.axes();
+    draw(plot);
+    plot.end();
+    const find = (text: string) => calls.find((c) => c.op === 'fill' && c.text === text)!;
+    return { plot, x: find('α in °'), y: find('F in N') };
+  }
+
+  it('bleibt ohne Kurven an der gewohnten Stelle', () => {
+    const { plot, x, y } = chart(() => {});
+    const r = plot.rect;
+    expect(x).toMatchObject({ x: r.x + r.w - 6, y: plot.py(0) - 6, align: 'right' });
+    expect(y).toMatchObject({ x: plot.px(0) + 9, y: r.y + 4, align: 'left' });
+  });
+
+  it('weicht aus, wenn eine Kurve bei x_max auf der Achse endet', () => {
+    const { plot, x } = chart((p) => p.fn((a) => 10 * Math.cos((a * Math.PI) / 180), { from: 0, to: 90 }));
+    expect(x.y).not.toBe(plot.py(0) - 6);
+  });
+
+  it('weicht einem Punkt am Achsenende aus, nicht aber Hilfslinien', () => {
+    const moved = chart((p) => p.point(88, 0.3));
+    expect(moved.x.y).not.toBe(moved.plot.py(0) - 6);
+    const kept = chart((p) => {
+      p.vline(85);
+      p.hline(0.5);
+    });
+    expect(kept.x.y).toBe(kept.plot.py(0) - 6);
+  });
+
+  it('erkennt Schnitte von Strecke und Rechteck', () => {
+    const q = { x: 10, y: 10, w: 20, h: 10 };
+    expect(segmentHitsRect(0, 0, 40, 30, q)).toBe(true);
+    expect(segmentHitsRect(15, 15, 16, 16, q)).toBe(true);
+    expect(segmentHitsRect(0, 0, 40, 0, q)).toBe(false);
+    expect(segmentHitsRect(0, 25, 5, 40, q)).toBe(false);
   });
 });

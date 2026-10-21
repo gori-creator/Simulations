@@ -79,6 +79,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 
 - Gitter, Achsen (auch in Vielfachen von π oder in Grad), Funktionsgraphen mit Erkennung von Sprüngen, Geraden, Strecken, Pfeile, Punkte, Kreise, Bögen, Flächen, Texte.
 - `plot.text`/`plot.textPx` setzen `_` als echten tiefgestellten Index, gleiche Schreibweise wie `subText` (`F_R,max`, `α_G`, `F_{G,1}`; `\_` – im Quelltext `'\\_'` – zeigt einen echten Unterstrich). Texte ohne `_` werden unverändert gezeichnet.
+- Achsbeschriftungen (`xAxis.label`, `yAxis.label`, auch mit Index wie `f_E in Hz`) zeichnet `plot.end()` zuletzt mit hellem Rand. Liegt an der gewohnten Stelle eine Kurve (`fn`, `polyline`, `segment`, `arrow`), ein Punkt (`point`), eine Achsenzahl oder ein `plot.text`, weicht die Beschriftung aus: an der x-Achse zuerst unter die Achse, sonst schrittweise nach oben; an der y-Achse links neben die Achse, sonst nach rechts. Hilfslinien (`line`, `vline`, `hline`) und direkt mit dem Kontext Gezeichnetes zählen nicht. Ist nichts frei, bleibt sie an der gewohnten Stelle.
 - Zoomen (Strg + Mausrad, Pinch, Schaltflächen) und Verschieben.
 - **Ziehbare Punkte** über `plot.addHandle({ get, set, axis?, enabled? })`.
 - Mehrere Koordinatensysteme auf einer Fläche (`region`), z. B. Einheitskreis + Graph.

@@ -14,9 +14,9 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | teilchenmodell | `src/sim-core/format.ts` bzw. Ergebnis-Ausgabe im Host | Geschütztes Leerzeichen zwischen Zahl und Einheit allgemein setzen, damit die Zeile nicht vor „m/s“ oder „°C“ umbricht. | erledigt (Kern) |
 | ohmsches-gesetz | `src/sim-core/` (Host) | Simulationen sollen abfragen können, ob der Aufgabenmodus (`_hide`) aktiv ist, damit sie gezielt einzelne Teile verdecken können statt ganzer Tabellen. | erledigt (Kern) |
 | ohmsches-gesetz | `src/components/SimulationShell.astro` / `ui.ts` | Der Tipp „Die markierten Punkte lassen sich … ziehen“ passt nicht überall. Einen eigenen Tipptext pro Simulation ermöglichen, z. B. ein optionales Feld `hint` in der Definition. | erledigt (Kern) |
-| schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | offen |
-| schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | offen |
-| schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | offen |
+| schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | erledigt (Kern) |
+| schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
+| schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
 
 ## Rückfragen an die Projektleitung
 
