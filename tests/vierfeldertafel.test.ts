@@ -109,3 +109,71 @@ describe('Modell: Baum, umgekehrter Baum und Tafel ergänzen', () => {
     expect(solveAll(two).length).toBeLessThan(7);
   });
 });
+
+describe('Modell: Sonderfälle und Konsistenz', () => {
+  it('leere Tafel: keine Division durch 0', () => {
+    const z: Cells = [0, 0, 0, 0];
+    expect(table(z).N).toBe(0);
+    expect(prob(z, 'A')).toBe(0);
+    expect(condBgivenA(z)).toBe(0);
+    expect(additionRule(z).pAuB).toBe(0);
+    const v = vennGeometry(z, 1000);
+    expect(Number.isFinite(v.rA) && Number.isFinite(v.d)).toBe(true);
+  });
+  it('Aufgabe 3: genau eins = 86 von 200 = 43 %, A ∪ B = 132 von 200', () => {
+    const club: Cells = [46, 34, 52, 68];
+    expect(table(club)).toMatchObject({ A: 80, B: 98, N: 200 });
+    expect(eventCount(club, 'xor')).toBe(86);
+    expect(prob(club, 'xor')).toBeCloseTo(0.43, 12);
+    expect(eventCount(club, 'AuB')).toBe(132);
+  });
+  it('Mengendiagramm: disjunkt bzw. Teilmenge', () => {
+    // A ∩ B leer: Kreise berühren sich höchstens
+    const dis = vennGeometry([0, 5, 5, 10], 1000);
+    expect(dis.d).toBeCloseTo(dis.rA + dis.rB, 9);
+    // A ⊂ B (A ∩ B̄ leer): kleiner Kreis ganz im großen
+    const sub = vennGeometry([5, 0, 5, 10], 1000);
+    expect(sub.d).toBeLessThanOrEqual(sub.rB - sub.rA + 1e-9);
+  });
+  it('Tafel ergänzen: die Rechenschritte ergeben die richtigen Werte', () => {
+    const data: Cells[] = [
+      [10, 4, 9, 7],
+      [46, 34, 52, 68],
+      [0, 3, 0, 9],
+    ];
+    for (const c of data) {
+      const truth = tableValues(c);
+      for (const set of Object.values(GIVEN_SETS)) {
+        const known = Array.from({ length: 9 }, (_, i) => set.includes(i));
+        const v: (number | null)[] = truth.map((x, i) => (known[i] ? x : null));
+        for (const st of solveAll(known)) {
+          const a = v[st.from[0]]!;
+          const b = v[st.from[1]]!;
+          v[st.target] = st.op === '+' ? a + b : a - b;
+        }
+        expect(v).toEqual(truth);
+      }
+    }
+  });
+  it('umgekehrter Baum: Pfadregel in beide Richtungen (Raster der Regler)', () => {
+    for (let a = 0; a <= 100; a += 5)
+      for (let b1 = 0; b1 <= 100; b1 += 10)
+        for (let b2 = 0; b2 <= 100; b2 += 10) {
+          const [pa, pb1, pb2] = [a / 100, b1 / 100, b2 / 100];
+          const r = reverseTree(pa, pb1, pb2);
+          const c = cellsFromTree(pa, pb1, pb2);
+          expect(c[0] + c[2]).toBeCloseTo(r.pB, 12);
+          if (r.pB > 0) expect(r.pB * r.pAgB).toBeCloseTo(c[0], 12);
+          if (r.pB < 1) expect((1 - r.pB) * r.pAgNB).toBeCloseTo(c[1], 12);
+          expect(r.pAgB).toBeGreaterThanOrEqual(0);
+          expect(r.pAgB).toBeLessThanOrEqual(1 + 1e-12);
+        }
+  });
+  it('Unabhängigkeit aus Zähldaten wie im Baum (Aufgabe 6)', () => {
+    const c: Cells = [12, 18, 8, 12];
+    const t = table(c);
+    expect(t).toMatchObject({ A: 30, B: 20, N: 50 });
+    expect(independent(c)).toBe(true);
+    expect(independentTree(c[0] / t.A, c[2] / t.nA)).toBe(true);
+  });
+});

@@ -18,6 +18,8 @@ $$
 P_+(K) = \frac{9}{9 + 89{,}1} \approx 9{,}2\,\%.
 $$
 
+Mit den gerundeten Anzahlen ergibt sich fast dasselbe: $\frac{9}{98} \approx 9{,}2\,\%$. Wer ganze Zahlen ohne Runden möchte, rechnet mit $10\,000$ Personen: $100$ Kranke, davon $90$ positiv; $9900$ Gesunde, davon $891$ positiv; also $\frac{90}{90 + 891} \approx 9{,}2\,\%$.
+
 Allgemein ist das der **Satz von Bayes**:
 
 $$
@@ -32,8 +34,8 @@ Die Zahlen in den Beispielen sind **vereinfacht** und dienen nur der Veranschaul
 
 ## Ausprobieren
 
-1. Sieh dem Ablauf zu: Erst färben sich die Kranken rot, dann zeigt der Test sein Ergebnis. Tippe dann auf „Nur die positiv Getesteten“. Wie viele der orangen und roten Personen sind wirklich krank? [Beispiel laden](?prev=1&se=90&sp=91&pos=1)
-2. Erhöhe die Prävalenz langsam bis $50\,\%$. Wie verändert sich der Vorhersagewert? [Häufige Krankheit](?prev=50&se=90&sp=90&pos=1)
+1. Sieh dem Ablauf zu: Erst färben sich die Kranken rot, dann zeigt der Test sein Ergebnis. Kranke tragen außerdem einen Punkt auf dem Körper. Tippe dann auf „Nur die positiv Getesteten“. Wie viele der positiv Getesteten sind wirklich krank? [Beispiel laden](?prev=1&se=90&sp=91&pos=1)
+2. Erhöhe die Prävalenz langsam bis $50\,\%$. Wie verändert sich der Vorhersagewert? Der Link zeigt den Endzustand mit Sensitivität und Spezifität von je $90\,\%$. [Häufige Krankheit](?prev=50&se=90&sp=90&pos=1)
 3. Stelle die Spezifität auf $100\,\%$. Was passiert mit den falsch positiven? [Spezifität 100 %](?sp=100&pos=1)
 4. Verringere die Sensitivität auf $50\,\%$. Ändert sich der Vorhersagewert stark – und was passiert mit den falsch negativen? [Sensitivität 50 %](?se=50)
 5. Schalte auf den Baum und kehre ihn um. Welche Zahlen bleiben gleich, welche ändern sich? [Baum](?view=tree&dir=fwd)
@@ -70,7 +72,7 @@ Angenommen, $0{,}8\,\%$ der untersuchten Frauen haben Brustkrebs, die Sensitivit
 <details>
 <summary>Lösung anzeigen</summary>
 
-$P_+(K) = \frac{0{,}008 \cdot 0{,}9}{0{,}008 \cdot 0{,}9 + 0{,}992 \cdot 0{,}07} = \frac{0{,}0072}{0{,}07664} \approx 9{,}4\,\%$. In natürlichen Häufigkeiten: $7{,}2$ richtig positive gegen $69{,}4$ falsch positive je $1000$ Frauen (in der Simulation gerundet $7$ und $69$). [In der Simulation zeigen](?prev=0.8&se=90&sp=93&view=tree&dir=rev)
+$P_+(K) = \frac{0{,}008 \cdot 0{,}9}{0{,}008 \cdot 0{,}9 + 0{,}992 \cdot 0{,}07} = \frac{0{,}0072}{0{,}07664} \approx 9{,}4\,\%$. In natürlichen Häufigkeiten: $7{,}2$ richtig positive gegen $69{,}4$ falsch positive je $1000$ Frauen (in der Simulation gerundet $7$ und $69$). Bei $10\,000$ Frauen sind es $72$ richtig positive und $9920 \cdot 0{,}07 = 694{,}4 \approx 694$ falsch positive. [In der Simulation zeigen](?prev=0.8&se=90&sp=93&view=tree&dir=rev)
 
 </details>
 
@@ -98,10 +100,11 @@ Es muss gelten: falsch positive $\le$ richtig positive, also $0{,}99 \cdot (1 - 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 11 (bedingte Wahrscheinlichkeit, Satz von Bayes) nach LehrplanPLUS Bayern, Gymnasium – die genaue Zuordnung bitte am Lehrplan prüfen. Vierfeldertafel und Baumdiagramm vertieft die Simulation [Vierfeldertafel und Mengendiagramm](../vierfeldertafel-mengendiagramm/), Pfadregeln die Simulation [Mehrstufige Zufallsexperimente](../baumdiagramm-pfadregeln/).
+- **Einsatz:** Jahrgangsstufe 11, Lernbereich „Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit“ (LehrplanPLUS Bayern, Gymnasium); medizinische Tests sind dort ein typischer Anwendungsfall. Ob die Formel von Bayes ausdrücklich verlangt ist, bitte am Lehrplan prüfen. Vierfeldertafel und Baumdiagramm vertieft die Simulation [Vierfeldertafel und Mengendiagramm](../vierfeldertafel-mengendiagramm/), Pfadregeln die Simulation [Mehrstufige Zufallsexperimente](../baumdiagramm-pfadregeln/).
 - **Einstieg mit Schätzung:** Vor dem Aufdecken schätzen lassen, wie wahrscheinlich ein positiv Getesteter krank ist – die Schätzungen liegen erfahrungsgemäß oft weit über $9\,\%$.
 - **Natürliche Häufigkeiten:** Das Symbolbild und der Baum mit Anzahlen machen die Rechnung oft leichter zugänglich als die Formel allein; die Formel von Bayes lässt sich dann aus dem Baum ablesen.
-- **Modell/Vereinfachungen:** Prävalenz, Sensitivität und Spezifität als feste Zahlen; beim Zweittest werden die Tests als unabhängig angenommen. Die Anzahlen im Bild sind gerundet (Summe immer $1000$), die Prozentwerte exakt gerechnet.
+- **Für Aufgaben:** Mit „Ergebnisse anzeigen“ aus erscheinen Anzahlen und Vorhersagewerte als „?“. Prävalenz, Sensitivität und Spezifität bleiben sichtbar.
+- **Modell/Vereinfachungen:** Prävalenz, Sensitivität und Spezifität als feste Zahlen; beim Zweittest werden die Tests als unabhängig angenommen. Die Anzahlen im Bild sind gerundet (Summe immer $1000$), die Prozentwerte exakt gerechnet. Es lohnt sich, mit der Klasse zu besprechen, dass ein positives Ergebnis in der Praxis ärztlich abgeklärt wird; die Simulation trifft keine Aussage über einzelne echte Tests.
 - **Häufige Stolpersteine:**
   - Sensitivität $P_K(+)$ und Vorhersagewert $P_+(K)$ werden verwechselt („der Test ist zu $90\,\%$ sicher, also bin ich zu $90\,\%$ krank“).
   - Die Prävalenz (Basisrate) wird übersehen.

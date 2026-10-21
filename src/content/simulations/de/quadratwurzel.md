@@ -126,7 +126,7 @@ $17^2 = 289$, aber $2 \cdot 12^2 = 288$; $99^2 = 9801$, aber $2 \cdot 70^2 = 980
 - **Modell:** Fett sind in der Tabelle die Stellen, die schon mit $\sqrt{a}$ übereinstimmen; die Intervallschachtelung rechnet ganzzahlig, also ohne Rundungsfehler.
 - **Häufige Stolpersteine:**
   - „$\sqrt{2} = 1{,}41$“ – das ist nur eine Näherung; $1{,}41^2 = 1{,}9881$.
-  - Die Grenzen eines Intervalls werden nicht durch Quadrieren geprüft.
+  - Die Grenzen eines Intervalls werden geschätzt, aber nicht durch Quadrieren geprüft.
   - Beim Heron-Verfahren wird die zweite Seite ebenfalls gemittelt statt als $a : x$ neu berechnet – dann stimmt die Fläche nicht mehr.
   - $\sqrt{a + b} = \sqrt{a} + \sqrt{b}$ – gilt nicht (z. B. $\sqrt{9 + 16} = 5 \neq 7$); nur für Produkte gilt $\sqrt{a \cdot b} = \sqrt{a} \cdot \sqrt{b}$.
   - Aus „viele Stellen sehen zufällig aus“ wird auf irrational geschlossen – erst der Beweis zeigt, dass sich nichts wiederholt.

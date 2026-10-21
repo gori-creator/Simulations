@@ -1,5 +1,5 @@
-import { defineSimulation, Plot, roundRect, seededRandom, Surface, text, withAlpha, type Rect } from '../../../sim-core';
-import { characteristicTime, exponential, growthFactor, linearComparison } from './model';
+import { defineSimulation, Plot, prefersReducedMotion, roundRect, seededRandom, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { characteristicTime, displayDecimals, exponential, growthFactor, isExactTo, linearComparison } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 type Scenario = 'seerosen' | 'zinsen' | 'zerfall' | 'frei';
@@ -15,7 +15,8 @@ const DEFAULTS: Record<Scenario, { a: number; p: number; span: number }> = {
 };
 
 function layout(w: number, h: number): { visual: Rect; chart: Rect } {
-  if (w >= 700) {
+  // Quer (Laptop, Tablet): Bild links, Graph rechts; hoch (Handy): untereinander
+  if (w >= 1.2 * h) {
     const vw = Math.min(w * 0.4, h * 1.05);
     return { visual: { x: 0, y: 0, w: vw, h }, chart: { x: vw + 8, y: 8, w: w - vw - 16, h: h - 16 } };
   }
@@ -63,59 +64,81 @@ export default defineSimulation({
   presets: [
     { id: 'lilies', label: L('Seerosen verdoppeln sich täglich', 'Water lilies double daily'), values: {} },
     { id: 'interest', label: L('5 % Zinsen', '5 % interest'), values: { scenario: 'zinsen', a: 1000, p: 5, span: 40, linear: true } },
-    { id: 'decay', label: L('Iod-131 (Halbwertszeit 8 Tage)', 'Iodine-131 (half-life 8 days)'), values: { scenario: 'zerfall', a: 1000, p: -8, span: 40 } },
+    { id: 'decay', label: L('Iod-131 (Halbwertszeit ≈ 8 Tage)', 'Iodine-131 (half-life ≈ 8 days)'), values: { scenario: 'zerfall', a: 1000, p: -8, span: 40 } },
     { id: 'compare', label: L('Exponentiell gegen linear', 'Exponential versus linear'), values: { scenario: 'frei', a: 2, p: 50, span: 10, linear: true } },
     { id: 'log', label: L('Logarithmische Achse', 'Logarithmic axis'), values: { scenario: 'zinsen', a: 1000, p: 5, span: 60, log: true } },
   ],
   strings: {
     de: {
-      canvas: 'Bild des Beispiels und Graph der exponentiellen Funktion',
+      canvas:
+        'Links bzw. oben ein Bild zum Beispiel (Teich mit Seerosen, Münzstapel, Raster aus Atomkernen oder Wertetabelle), daneben der Graph von f(t) = a · bᵗ mit ziehbarem Punkt für den Zeitpunkt t, gestrichelter Treppe für Verdopplungs- bzw. Halbwertszeit und auf Wunsch der gestrichelten Geraden des linearen Wachstums',
       unitT_seerosen: 'Tage',
       unitT_zinsen: 'Jahre',
       unitT_zerfall: 'Tage',
       unitT_frei: 'Schritte',
+      unitT1_seerosen: 'Tag',
+      unitT1_zinsen: 'Jahr',
+      unitT1_zerfall: 'Tag',
+      unitT1_frei: 'Schritt',
       unitY_seerosen: 'm²',
       unitY_zinsen: '€',
       unitY_zerfall: 'Kerne',
       unitY_frei: '',
-      axisT: 't',
+      axisT_seerosen: 't in Tagen',
+      axisT_zinsen: 't in Jahren',
+      axisT_zerfall: 't in Tagen',
+      axisT_frei: 't in Schritten',
+      mul: '·',
       covered: '{v} m² von {k} m² bedeckt ({q} %)',
       full: 'Teich voll',
       coin: '1 Münze = {v} €',
       balance: 'Kontostand: {v} €',
       nuclei: 'noch {v} von {a} Kernen',
-      doubling: 'Verdopplungszeit T_d = ln 2 / ln b ≈ {t} {u}',
-      half: 'Halbwertszeit T_½ = ln 0,5 / ln b ≈ {t} {u}',
+      doubling: 'Verdopplungszeit <var>T</var><sub>d</sub> = log<sub><var>b</var></sub> 2 {r} {t} {u}',
+      half: 'Halbwertszeit <var>T</var><sub>½</sub> = log<sub><var>b</var></sub> 0,5 {r} {t} {u}',
       constant: 'b = 1: keine Änderung',
       factor: 'b = 1 + p/100 = {b} ({p} % pro Schritt)',
-      now: 't = {t} {u}: f(t) ≈ {f} {y}',
-      linearNow: ' · linear: {g} {y}',
+      now: 't = {t} {u}: f(t) {r} {f} {y}',
+      linearNow: ' · linear: g(t) {r} {g} {y}',
+      noDecay: 'p ≥ 0: kein Zerfall',
+      linearLabel: 'linear',
       times2: '· 2',
       half2: ': 2',
       table: 'Wertetabelle',
     },
     en: {
-      canvas: 'Picture of the example and graph of the exponential function',
+      canvas:
+        'On the left or top a picture of the example (pond with water lilies, stack of coins, grid of nuclei or table of values), next to it the graph of f(t) = a · bᵗ with a draggable point for the time t, a dashed staircase for doubling time or half-life and, if selected, the dashed line of linear growth',
       unitT_seerosen: 'days',
       unitT_zinsen: 'years',
       unitT_zerfall: 'days',
       unitT_frei: 'steps',
+      unitT1_seerosen: 'day',
+      unitT1_zinsen: 'year',
+      unitT1_zerfall: 'day',
+      unitT1_frei: 'step',
       unitY_seerosen: 'm²',
       unitY_zinsen: '€',
       unitY_zerfall: 'nuclei',
       unitY_frei: '',
-      axisT: 't',
+      axisT_seerosen: 't in days',
+      axisT_zinsen: 't in years',
+      axisT_zerfall: 't in days',
+      axisT_frei: 't in steps',
+      mul: '×',
       covered: '{v} m² of {k} m² covered ({q} %)',
       full: 'pond full',
       coin: '1 coin = {v} €',
       balance: 'Balance: {v} €',
       nuclei: '{v} of {a} nuclei left',
-      doubling: 'Doubling time T_d = ln 2 / ln b ≈ {t} {u}',
-      half: 'Half-life T_½ = ln 0.5 / ln b ≈ {t} {u}',
+      doubling: 'Doubling time <var>T</var><sub>d</sub> = log<sub><var>b</var></sub> 2 {r} {t} {u}',
+      half: 'Half-life <var>T</var><sub>½</sub> = log<sub><var>b</var></sub> 0.5 {r} {t} {u}',
       constant: 'b = 1: no change',
       factor: 'b = 1 + p/100 = {b} ({p} % per step)',
-      now: 't = {t} {u}: f(t) ≈ {f} {y}',
-      linearNow: ' · linear: {g} {y}',
+      now: 't = {t} {u}: f(t) {r} {f} {y}',
+      linearNow: ' · linear: g(t) {r} {g} {y}',
+      noDecay: 'p ≥ 0: no decay',
+      linearLabel: 'linear',
       times2: '× 2',
       half2: '÷ 2',
       table: 'Table of values',
@@ -138,12 +161,17 @@ export default defineSimulation({
     });
 
     let t = 0;
+    let held = 0; // Wartezeit bis zum nächsten Sprung bei reduzierter Bewegung
     const scenario = () => p.scenario as Scenario;
-    const unitT = () => ctx.t(`unitT_${scenario()}`);
+    /** Zeiteinheit passend zur Zahl (1 Tag, 2 Tage). */
+    const unitFor = (num: string) => ctx.t(`${num === '1' ? 'unitT1' : 'unitT'}_${scenario()}`);
+    /** „=“, wenn der angezeigte Wert exakt ist, sonst „≈“. */
+    const rel = (v: number, decimals: number) => (isExactTo(v, decimals) ? '=' : '≈');
     const unitY = () => ctx.t(`unitY_${scenario()}`);
     const f = (x: number) => exponential(p.a, p.p, x);
     const lin = (x: number) => linearComparison(p.a, p.p, x);
-    const big = (v: number) => (Math.abs(v) >= 1e6 ? fmt.num(v, 0) : fmt.num(v, v < 10 ? 2 : v < 1000 ? 1 : 0));
+    const big = (v: number) => fmt.num(v, displayDecimals(v));
+    const relBig = (v: number) => rel(v, displayDecimals(v));
 
     // Seerosen-Plätze (gleichmäßig verteilt, von einer Stelle aus wachsend)
     const pads = (() => {
@@ -175,10 +203,10 @@ export default defineSimulation({
         const lo = Math.floor(Math.log10(Math.max(1e-6, min)));
         const hi = Math.ceil(Math.log10(Math.max(max, 1e-6)) + 0.05);
         plot.setRangePadded([0, span], [lo, Math.max(hi, lo + 1)], { left: 58, right: 16, top: 16, bottom: 26 });
-        plot.setAxes({ x: { label: `t in ${unitT()}` }, y: { label: unitY() || 'f(t)', minStep: 1, format: (v) => fmt.num(10 ** v, v < 0 ? -v : 0) } });
+        plot.setAxes({ x: { label: ctx.t(`axisT_${scenario()}`) }, y: { label: unitY() || 'f(t)', minStep: 1, format: (v) => fmt.num(10 ** v, v < 0 ? -v : 0) } });
       } else {
         plot.setRangePadded([0, span], [0, max * 1.08], { left: 58, right: 16, top: 16, bottom: 26 });
-        plot.setAxes({ x: { label: `t in ${unitT()}` }, y: { label: unitY() || 'f(t)', format: (v) => big(v) } });
+        plot.setAxes({ x: { label: ctx.t(`axisT_${scenario()}`) }, y: { label: unitY() || 'f(t)', format: (v) => big(v) } });
       }
     }
 
@@ -189,8 +217,18 @@ export default defineSimulation({
       ctx.readout('term', { html: `<var>f</var>(<var>t</var>) = ${fmt.num(p.a, 0)} · ${fmt.num(b, 2)}<sup><var>t</var></sup>` });
       ctx.readout('factor', tr('factor', { b: fmt.num(b, 2), p: fmt.signed(p.p, 0) }));
       const tc = characteristicTime(p.p);
-      ctx.readout('time', Number.isNaN(tc) ? ctx.t('constant') : tr(p.p > 0 ? 'doubling' : 'half', { t: fmt.num(tc, 2), u: unitT() }));
-      ctx.readout('now', tr('now', { t: fmt.num(t, 1), u: unitT(), f: big(f(t)), y: unitY() }) + (p.linear ? tr('linearNow', { g: big(lin(t)), y: unitY() }) : ''));
+      if (Number.isNaN(tc)) ctx.readout('time', ctx.t('constant'));
+      else {
+        // exakt (z. B. 1 bei p = 100 % oder p = −50 %) ohne Endnullen, sonst gerundet auf 2 Stellen
+        const exact = isExactTo(tc, 2);
+        const tcText = exact ? fmt.num(tc, 2) : fmt.fixed(tc, 2);
+        ctx.readout('time', { html: tr(p.p > 0 ? 'doubling' : 'half', { r: exact ? '=' : '≈', t: tcText, u: unitFor(tcText) }) });
+      }
+      const tText = fmt.num(t, 1);
+      ctx.readout(
+        'now',
+        tr('now', { t: tText, u: unitFor(tText), r: relBig(f(t)), f: big(f(t)), y: unitY() }) + (p.linear ? tr('linearNow', { r: relBig(lin(t)), g: big(lin(t)), y: unitY() }) : ''),
+      );
     }
 
     // Zeitpunkt auf dem Graphen ziehen
@@ -298,7 +336,7 @@ export default defineSimulation({
         }
       }
       text(g, tr('coin', { v: fmt.num(value, 0) }), r.x + r.w / 2, r.y + 20, { font: `600 12px ${ctx.theme.font}`, color: ctx.theme.muted });
-      label(r, tr('balance', { v: fmt.num(amount, 2) }));
+      label(r, tr('balance', { v: fmt.fixed(amount, 2) }));
     }
 
     function drawAtoms(r: Rect): void {
@@ -316,7 +354,7 @@ export default defineSimulation({
         if (intact) alive++;
         const x = x0 + (i % cols) * cell + cell / 2;
         const y = y0 + Math.floor(i / cols) * cell + cell / 2;
-        const justNow = !intact && t - tau < 0.6;
+        const justNow = !intact && t - tau < 0.6 && !prefersReducedMotion();
         if (intact) {
           const grad = g.createRadialGradient(x - cell * 0.12, y - cell * 0.12, 1, x, y, cell * 0.42);
           grad.addColorStop(0, '#fff6a8');
@@ -331,7 +369,7 @@ export default defineSimulation({
           g.arc(x, y, cell * 0.22, 0, Math.PI * 2);
           g.fill();
           if (justNow) {
-            g.strokeStyle = `rgba(255,120,60,${1 - (t - tau) / 0.6})`;
+            g.strokeStyle = withAlpha(ctx.theme.series[3]!, 1 - (t - tau) / 0.6);
             g.lineWidth = 2;
             g.beginPath();
             g.arc(x, y, cell * (0.3 + (t - tau)), 0, Math.PI * 2);
@@ -339,7 +377,7 @@ export default defineSimulation({
           }
         }
       }
-      label(r, tr('nuclei', { v: fmt.num((alive / ATOMS) * p.a, 0), a: fmt.num(p.a, 0) }));
+      label(r, b < 1 ? tr('nuclei', { v: fmt.num((alive / ATOMS) * p.a, 0), a: fmt.num(p.a, 0) }) : ctx.t('noDecay'));
     }
 
     function drawTable(r: Rect): void {
@@ -347,8 +385,11 @@ export default defineSimulation({
       const theme = ctx.theme;
       const rows = 7;
       const rowH = Math.min(30, (r.h - 60) / (rows + 1));
-      const x0 = r.x + r.w * 0.12;
-      const colW = r.w * 0.26;
+      // Tabelle genauer als die übrigen Anzeigen, damit „· b“ nachrechenbar bleibt
+      const cell = (v: number) => fmt.num(v, Math.abs(v) < 1e4 ? 2 : 0);
+      const cols = p.linear ? 3 : 2;
+      const colW = Math.min(90, r.w * 0.24);
+      const x0 = r.x + (r.w - cols * colW - 40) / 2;
       const y0 = r.y + 40;
       text(g, ctx.t('table'), r.x + r.w / 2, r.y + 18, { font: `700 13px ${theme.font}`, color: theme.muted });
       const head = ['t', 'f(t)', p.linear ? 'g(t)' : ''];
@@ -360,11 +401,12 @@ export default defineSimulation({
           g.fillStyle = withAlpha(theme.series[3]!, 0.15);
           g.fillRect(x0, y - rowH / 2, colW * (p.linear ? 3 : 2), rowH);
         }
-        text(g, String(k), x0 + colW / 2, y, { font: `600 14px ${theme.font}`, color: theme.text });
-        text(g, big(f(k)), x0 + colW * 1.5, y, { font: `600 14px ${theme.font}`, color: theme.series[0]! });
-        if (p.linear) text(g, big(lin(k)), x0 + colW * 2.5, y, { font: `600 14px ${theme.font}`, color: theme.series[1]! });
+        const font = `600 ${Math.min(14, Math.max(10, rowH - 2))}px ${theme.font}`;
+        text(g, String(k), x0 + colW / 2, y, { font, color: theme.text });
+        text(g, cell(f(k)), x0 + colW * 1.5, y, { font, color: theme.series[0]! });
+        if (p.linear) text(g, cell(lin(k)), x0 + colW * 2.5, y, { font, color: theme.series[1]! });
         if (k < rows - 1) {
-          text(g, `· ${fmt.num(growthFactor(p.p), 2)}`, x0 + colW * 2 + (p.linear ? colW + 10 : 6), y + rowH / 2, { font: `600 12px ${theme.font}`, color: theme.series[0]!, align: 'left' });
+          text(g, `${ctx.t('mul')} ${fmt.num(growthFactor(p.p), 2)}`, x0 + colW * cols + 4, y + rowH / 2, { font: `600 12px ${theme.font}`, color: theme.series[0]!, align: 'left' });
         }
       }
     }
@@ -373,7 +415,7 @@ export default defineSimulation({
       const g = surface.g;
       g.font = `700 13px ${ctx.theme.font}`;
       const w = g.measureText(value).width + 20;
-      g.fillStyle = ctx.theme.dark ? 'rgba(15,20,30,0.85)' : 'rgba(255,255,255,0.92)';
+      g.fillStyle = withAlpha(ctx.theme.bg, 0.9);
       roundRect(g, r.x + (r.w - w) / 2, r.y + r.h - 34, w, 24, 10);
       g.fill();
       text(g, value, r.x + r.w / 2, r.y + r.h - 22, { font: `700 13px ${ctx.theme.font}`, color: ctx.theme.text });
@@ -402,7 +444,12 @@ export default defineSimulation({
           if (k < 4) plot.text((k + 1) * tc, (Y(v0) + Y(v1)) / 2, ctx.t(p.p > 0 ? 'times2' : 'half2'), { color: theme.series[4], size: 12, offset: [6, 0], align: 'left', weight: '600' });
         }
       }
-      if (p.linear) plot.fn((x) => Y(lin(x)), { color: theme.series[1], width: 2.5, from: 0, to: span });
+      if (p.linear) {
+        // lineares Wachstum gestrichelt und beschriftet (nicht nur über die Farbe erkennbar)
+        plot.fn((x) => Y(lin(x)), { color: theme.series[1], width: 2.5, dash: [9, 5], from: 0, to: span });
+        const tEnd = lin(span) > 0 ? span : Math.max(0, -100 / p.p) * 0.85;
+        plot.text(tEnd, Y(lin(tEnd)), ctx.t('linearLabel'), { color: theme.series[1], size: 12, weight: '600', align: 'right', offset: [-6, -10] });
+      }
       plot.fn((x) => Y(f(x)), { color: theme.series[0], width: 3, from: 0, to: span });
       // Werte zu ganzzahligen Zeitpunkten (bei langen Zeiträumen nur jeden 5.)
       const every = span > 15 ? 5 : 1;
@@ -427,7 +474,14 @@ export default defineSimulation({
 
       tick(dt) {
         if (t >= p.span) t = 0;
-        t = Math.min(p.span, t + (dt * p.span) / 10);
+        if (prefersReducedMotion()) {
+          // reduzierte Bewegung: kein Gleiten, sondern Sprünge um ganze Zeitschritte (etwa 10 Sprünge)
+          held += dt;
+          if (held < 1) return;
+          held = 0;
+          const jump = Math.max(1, Math.round(p.span / 10));
+          t = Math.min(p.span, (Math.floor(t / jump + 1e-9) + 1) * jump);
+        } else t = Math.min(p.span, t + (dt * p.span) / 10);
         if (t >= p.span) ctx.clock.pause();
         updateReadouts();
       },
@@ -441,7 +495,7 @@ export default defineSimulation({
         const { visual } = layout(surface.width, surface.height);
         surface.begin();
         const g = surface.g;
-        g.fillStyle = ctx.theme.dark ? 'rgba(255,255,255,0.03)' : 'rgba(16,24,40,0.03)';
+        g.fillStyle = withAlpha(ctx.theme.text, 0.03);
         roundRect(g, visual.x + 6, visual.y + 6, visual.w - 12, visual.h - 12, 14);
         g.fill();
         const inner: Rect = { x: visual.x + 10, y: visual.y + 10, w: visual.w - 20, h: visual.h - 20 };

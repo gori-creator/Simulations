@@ -286,3 +286,46 @@ describe('Kürzen, Vorzeichen und Annäherung', () => {
     expect(yIntercept({ a: 2, zeros: [], poles: [1, 1] })).toBe(2);
   });
 });
+
+describe('Prüfrunde: weitere Sonderfälle', () => {
+  it('(x − 1)(x + 1)/((x − 1)(x + 2)): Loch (1 | 2/3), Pol −2 mit VZW, y = 1, Rest −x + 1', () => {
+    const f: Rational = { a: 1, zeros: [1, -1], poles: [1, -2] };
+    const an = analyze(f);
+    expect(an.holes.length).toBe(1);
+    expect(an.holes[0]!.x).toBe(1);
+    expect(an.holes[0]!.y).toBeCloseTo(2 / 3, 12);
+    expect(an.poles).toEqual([{ x: -2, k: 1, signChange: true }]);
+    expect(an.zeros).toEqual([{ x: -1, k: 1 }]);
+    expect(an.kind).toBe('const');
+    expect(r9(an.asym)).toEqual([1]);
+    // (x² − 1) − (x² + x − 2) = −x + 1
+    expect(r9(an.rest)).toEqual([1, -1]);
+    // f(x) = 1 nur bei x = 1 – das ist die Lücke, also kein Schnittpunkt
+    expect(asymptoteCrossings(f, an)).toEqual([]);
+    expect(yIntercept(f)).toBeCloseTo(0.5, 12);
+  });
+  it('negatives a: −1/(x − 1)² strebt beidseitig gegen −∞, y = 0', () => {
+    const f: Rational = { a: -1, zeros: [], poles: [1, 1] };
+    expect(poleSides(f, 1)).toEqual({ left: -1, right: -1 });
+    expect(signTable(f).result).toEqual([-1, -1]);
+    expect(analyze(f).kind).toBe('zero');
+  });
+  it('Reglergrenzen: −3/(x − 5)³ hat bei 5 einen dreifachen Pol mit VZW (links +∞, rechts −∞)', () => {
+    const f: Rational = { a: -3, zeros: [], poles: [5, 5, 5] };
+    const an = analyze(f);
+    expect(an.poles).toEqual([{ x: 5, k: 3, signChange: true }]);
+    expect(poleSides(f, 5)).toEqual({ left: 1, right: -1 });
+    expect(poleApprox(f, 5)).toEqual({ k: 3, c: -3 });
+    expect(value(f, 4)).toBeCloseTo(3, 12);
+  });
+  it('f(0) muss nicht abbrechen: (x − 1)/(x + 3) hat f(0) = −1/3', () => {
+    expect(yIntercept({ a: 1, zeros: [1], poles: [-3] })).toBeCloseTo(-1 / 3, 12);
+  });
+  it('Lücke auf der x-Achse: (x − 1)²/(x − 1) – keine Nullstelle, Loch (1 | 0), Gerade y = x − 1', () => {
+    const f: Rational = { a: 1, zeros: [1, 1], poles: [1] };
+    const an = analyze(f);
+    expect(an.exact).toBe(true);
+    expect(r9(an.asym)).toEqual([-1, 1]);
+    expect(signTable(f).marks).toEqual(['hole']);
+  });
+});

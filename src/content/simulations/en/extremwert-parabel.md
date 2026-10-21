@@ -23,10 +23,12 @@ The simulation also contains a free-standing enclosure (best shape: a square), a
 ## Try it
 
 1. Drag the handle of the enclosure or the point on the graph. [Load example](?sit=wall&L=40&x=4)
-2. Switch the card to **Table of values**. Where is the largest value? [Load example](?sit=wall&L=40&x=6&card=table)
+2. Switch the card to **Table of values**. For which value in the table is the area largest? What do you notice about the values on either side? [Load example](?sit=wall&L=40&x=6&card=table)
 3. Click **Find the maximum**: first trial and error, then completing the square.
 4. Without a wall the best enclosure is a square. [Load example](?sit=free&L=40&x=4)
-5. Ticket price: sometimes a price cut is better. [Load example](?sit=price&p=12&n=200&k=25&xp=0)
+5. Rectangle in a triangle: drag the corner on the hypotenuse. Compare the largest rectangle with the area of the triangle. [Load example](?sit=tri&a=80&b=60&xt=16)
+6. Ticket price: sometimes a price cut is better. [Load example](?sit=price&p=12&n=200&k=25&xp=0)
+7. Gutter: compare it with the enclosure against a wall. Why is the calculation the same? [Load example](?sit=gutter&s=30&xg=3)
 
 ## Tasks
 
@@ -43,6 +45,28 @@ $A(x) = x\,(60 - 2x) = -2\,(x - 15)^2 + 450$: width $15\,\text{m}$, length $30\,
 
 ### Task 2
 
+A rectangular flower bed has a perimeter of $28\,\text{m}$. Show by completing the square that a square gives the largest area.
+
+<details>
+<summary>Show solution</summary>
+
+$y = 14 - x$, $A(x) = x\,(14 - x) = -(x - 7)^2 + 49$: a square with side $7\,\text{m}$ and $49\,\text{m}^2$. [Show in the simulation](?sit=free&L=28&x=7)
+
+</details>
+
+### Task 3
+
+A right-angled triangular board has legs $a = 100\,\text{cm}$ and $b = 40\,\text{cm}$. A rectangle is cut out with one corner on the hypotenuse. How large can it be? [Load task](?sit=tri&a=100&b=40&xt=20&sol=0&_hide=1)
+
+<details>
+<summary>Show solution</summary>
+
+Intercept theorem: $h = 40 - 0.4x$. $A(x) = x\,(40 - 0.4x) = -0.4\,(x - 50)^2 + 1000$: $x = 50\,\text{cm}$, $h = 20\,\text{cm}$, $A_{\max} = 1000\,\text{cm}^2$ – half of the triangle ($2000\,\text{cm}^2$). [Show in the simulation](?sit=tri&a=100&b=40&xt=50)
+
+</details>
+
+### Task 4
+
 A swimming pool charges €4 and has 600 guests a day. Every €1 more costs 50 guests. Which price gives the largest revenue? [Load task](?sit=price&p=4&n=600&k=50&xp=0&sol=0&_hide=1)
 
 <details>
@@ -52,7 +76,7 @@ $E(x) = (4 + x)(600 - 50x) = -50\,(x - 4)^2 + 3200$: price €8, 400 guests, rev
 
 </details>
 
-### Task 3
+### Task 5
 
 A gutter is bent from a $24\,\text{cm}$ wide strip. How high should the sides be?
 

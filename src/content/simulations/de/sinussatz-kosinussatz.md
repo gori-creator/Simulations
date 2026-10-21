@@ -26,7 +26,13 @@ Für $\gamma < 90°$ ist $\cos \gamma > 0$: Es wird abgezogen, $c^2 < a^2 + b^2$
 
 Umgestellt erhält man einen Winkel aus drei Seiten: $\cos \gamma = \frac{a^2 + b^2 - c^2}{2ab}$. **Flächeninhalt:** Aus $A = \frac12 \cdot c \cdot h_c$ und $h_c = b \cdot \sin \alpha$ folgt $A = \frac12 \cdot b \cdot c \cdot \sin \alpha$, ebenso $A = \frac12 \cdot a \cdot b \cdot \sin \gamma$.
 
-**Welcher Satz passt?** Drei Seiten (SSS) oder zwei Seiten mit dem Winkel dazwischen (SWS): **Kosinussatz**. Eine Seite und zwei Winkel (WSW, zuerst die Winkelsumme) oder zwei Seiten und der Gegenwinkel einer davon (SSW): **Sinussatz**. Beim Fall SSW liefert $\sin \gamma = 0{,}75$ zwei Winkel: $\gamma_1 \approx 48{,}59°$ und $\gamma_2 = 180° - \gamma_1 \approx 131{,}41°$. Beide sind möglich, wenn noch Platz für den dritten Winkel bleibt.
+**Welcher Satz passt?** Drei Seiten (SSS) oder zwei Seiten mit dem Winkel dazwischen (SWS): **Kosinussatz**. Eine Seite und zwei Winkel (WSW, zuerst die Winkelsumme) oder zwei Seiten und der Gegenwinkel einer davon (SSW): **Sinussatz**. **Der Fall SSW:** Gegeben sind $a$, $c$ und der Winkel $\alpha$ gegenüber von $a$. Der Sinussatz liefert $\sin \gamma = \frac{c \cdot \sin \alpha}{a}$. Dann gibt es drei Möglichkeiten:
+
+- $\sin \gamma > 1$: **kein** Dreieck. Der Kreis um $B$ mit Radius $a$ erreicht den freien Schenkel nicht.
+- $\sin \gamma = 1$ oder $a \geq c$: **genau ein** Dreieck. Bei $\sin \gamma = 1$ ist $\gamma = 90°$, der Kreis berührt den Schenkel nur.
+- $\sin \gamma < 1$ und $a < c$: **zwei** Dreiecke. Zum Beispiel liefert $\sin \gamma = 0{,}75$ die Winkel $\gamma_1 \approx 48{,}59°$ und $\gamma_2 = 180° - \gamma_1 \approx 131{,}41°$.
+
+Ist $\alpha$ stumpf, gibt es nur dann ein Dreieck, wenn $a$ die längste Seite ist ($a > c$).
 
 ## Ausprobieren
 

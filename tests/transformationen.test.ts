@@ -397,3 +397,56 @@ describe('Zeitplan mit Stufen ohne Wirkung', () => {
     expect(storyPos(storyTimeOf(1.5, plan), plan)).toBeCloseTo(1.5, 6);
   });
 });
+
+describe('Prüfrunde Paket 3: Definitions- und Wertemengen, Bildpunkte, Reihenfolge', () => {
+  it('Wurzel: D und W je nach Vorzeichen von a und b (Randpunkt (c | d) gehört dazu)', () => {
+    // g(x) = −2 · √(−(x + 1)) + 3: D = ]−∞; −1], W = ]−∞; 3]
+    const t: Trafo = { a: -2, b: -1, c: -1, d: 3 };
+    expect(domainOf('sqrt', t)).toEqual({ kind: 'interval', lo: -Infinity, hi: -1, loIn: false, hiIn: true });
+    expect(rangeOf('sqrt', t)).toEqual({ kind: 'interval', lo: -Infinity, hi: 3, loIn: false, hiIn: true });
+    expect(transformed('sqrt', t, -1)).toBe(3);
+    expect(Number.isNaN(transformed('sqrt', t, -0.9))).toBe(true);
+    // Nullstelle: √(−(x + 1)) = 1,5 ⇒ x = −1 − 2,25 = −3,25
+    expect(zerosIn('sqrt', t)).toEqual([-3.25]);
+    expect(withoutB('sqrt', t)).toBeNull();
+  });
+  it('Exponentialfunktion: Wertemenge offen, die Asymptote y = d gehört nicht dazu', () => {
+    const t: Trafo = { a: -1, b: 1, c: 1, d: 3 };
+    const W = rangeOf('exp', t);
+    expect(W).toEqual({ kind: 'interval', lo: -Infinity, hi: 3, loIn: false, hiIn: false });
+    expect(inSet(W, 3)).toBe(false);
+    expect(inSet(W, 2.999)).toBe(true);
+    expect(asymptotes('exp', t)).toEqual({ y: 3 });
+  });
+  it('Hyperbel: D = ℝ \\ {c}, W = ℝ \\ {d}, auch bei b < 0', () => {
+    const t: Trafo = { a: 1, b: -2, c: 2, d: -1 };
+    expect(domainOf('inv', t)).toEqual({ kind: 'except', x: 2 });
+    expect(rangeOf('inv', t)).toEqual({ kind: 'except', x: -1 });
+    // 1/(−2(x − 2)) − 1 = 0 ⇒ −2(x − 2) = 1 ⇒ x = 1,5
+    expect(zerosIn('inv', t)).toEqual([1.5]);
+    expect(transformed('inv', t, 1.5)).toBeCloseTo(0, 12);
+  });
+  it('Bildpunkt (x/b + c | a·y + d) mit b = 3 und a < 0 liegt auf g', () => {
+    const t: Trafo = { a: -0.5, b: 3, c: -1, d: 2 };
+    const [X, Y] = mapPoint(t, 3, 9);
+    expect(X).toBeCloseTo(0, 12); // 3/3 − 1
+    expect(Y).toBeCloseTo(-2.5, 12); // −0,5 · 9 + 2
+    expect(transformed('sq', t, X)).toBeCloseTo(Y, 12);
+  });
+  it('Vertauschte Reihenfolge: (2x − 4)² ist um 2, nicht um 4 verschoben', () => {
+    const t: Trafo = { a: 1, b: 2, c: 4, d: 0 };
+    const h = swappedResult(t);
+    expect(h.c).toBe(2);
+    const st = stageAffines(toAffine(t), 'swap');
+    expect(st[4]!.h).toBe(2);
+    for (const x of [-1, 0, 1.5, 3]) expect(transformed('sq', h, x)).toBeCloseTo((2 * x - 4) ** 2, 12);
+  });
+  it('Sinus: Nullstellen in einer Periode ab c (Anzeige in der Karte)', () => {
+    // 2 sin(2x) + 1 = 0 ⇒ sin(2x) = −1/2 ⇒ x = 7π/12, 11π/12
+    const t: Trafo = { a: 2, b: 2, c: 0, d: 1 };
+    const z = zerosIn('sin', t, 0, Math.PI - 1e-9) as number[];
+    expect(z).toHaveLength(2);
+    expect(z[0]).toBeCloseTo((7 * Math.PI) / 12, 12);
+    expect(z[1]).toBeCloseTo((11 * Math.PI) / 12, 12);
+  });
+});

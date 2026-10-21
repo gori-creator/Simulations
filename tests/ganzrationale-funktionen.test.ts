@@ -303,3 +303,47 @@ describe('Hilfen für den Bildausschnitt', () => {
     expect(s.mant).toBeCloseTo(-4, 12);
   });
 });
+
+describe('Aufgaben und Links im Lernmaterial (Prüfrunde)', () => {
+  it('Aufgabe 1: −0,4·(x + 3)(x + 0,5)(x − 2,5): Grad 3, f(0) = 1,5, Vorzeichen + | − | + | −', () => {
+    const roots: Root[] = [
+      { x: -3, m: 1 },
+      { x: -0.5, m: 1 },
+      { x: 2.5, m: 1 },
+    ];
+    expect(degree(roots)).toBe(3);
+    expect(yIntercept(-0.4, roots)).toBeCloseTo(1.5, 12);
+    expect(endBehaviour(-0.4, 3)).toEqual({ left: 1, right: -1 });
+    expect(signTable(-0.4, roots).result).toEqual([1, -1, 1, -1]);
+  });
+  it('Aufgabe 5: f(0,1) = 0,2 · 3,1 · 0,01 · (−2,9) = −0,01798; Näherung −1,8 · 0,1² = −0,018', () => {
+    const roots: Root[] = [
+      { x: -3, m: 1 },
+      { x: 0, m: 2 },
+      { x: 3, m: 1 },
+    ];
+    expect(evaluate(0.2, roots, 0.1)).toBeCloseTo(-0.01798, 12);
+    const loc = localApprox(0.2, roots, 1);
+    expect(loc.c).toBeCloseTo(-1.8, 12);
+    expect(loc.c * 0.1 ** 2).toBeCloseTo(-0.018, 12);
+  });
+  it('Ausprobieren 7, Grad 12 mit a = −3: f ist überall außer an den Nullstellen negativ', () => {
+    const roots: Root[] = [
+      { x: -4, m: 4 },
+      { x: 0, m: 4 },
+      { x: 4, m: 4 },
+    ];
+    expect(degree(roots)).toBe(12);
+    expect(signTable(-3, roots).result).toEqual([-1, -1, -1, -1]);
+    expect(endBehaviour(-3, 12)).toEqual({ left: -1, right: -1 });
+  });
+  it('Ausprobieren 7, Grad 9: negativ nur links von −2; f(0) = 0,1 · 2³ · 1 · 9 = 7,2', () => {
+    const roots: Root[] = [
+      { x: -2, m: 3 },
+      { x: 1, m: 4 },
+      { x: 3, m: 2 },
+    ];
+    expect(signTable(0.1, roots).result).toEqual([-1, 1, 1, 1]);
+    expect(yIntercept(0.1, roots)).toBeCloseTo(7.2, 12);
+  });
+});

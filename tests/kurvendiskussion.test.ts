@@ -270,6 +270,47 @@ describe('Modell: Monotonie, Extrem- und Wendestellen', () => {
     expect(a.wCandidates).toEqual([]);
     expect(a.inflections).toEqual([]);
   });
+  it('Prüfwert Startzustand: x³ − 3x in x₀ = −2 hat P(−2 | −2), f′(−2) = 9, t(x) = 9x + 16, f″(−2) = −12', () => {
+    const t = tangentLine(X3_3X, -2);
+    expect(t.y).toBeCloseTo(-2, 12);
+    expect(t.m).toBeCloseTo(9, 12);
+    expect(t.n).toBeCloseTo(16, 12);
+    expect(evalPoly(deriveN(X3_3X, 2), -2)).toBeCloseTo(-12, 12);
+  });
+  it('Aufgabe 5: x³ − 3x² + 2 hat H(0 | 2), T(2 | −2), W(1 | 0), Nullstellen 1 − √3, 1, 1 + √3; Tangente in −1: 9x + 7', () => {
+    const f = [2, 0, -3, 1];
+    const a = analyze(f);
+    expect(a.extrema.map((e) => e.kind)).toEqual(['max', 'min']);
+    expect(a.extrema[0]!.x).toBeCloseTo(0, 9);
+    expect(a.extrema[0]!.y).toBeCloseTo(2, 9);
+    expect(a.extrema[1]!.x).toBeCloseTo(2, 9);
+    expect(a.extrema[1]!.y).toBeCloseTo(-2, 9);
+    expect(a.inflections).toHaveLength(1);
+    expect(a.inflections[0]!.x).toBeCloseTo(1, 9);
+    expect(a.inflections[0]!.y).toBeCloseTo(0, 9);
+    const z = zeros(f);
+    expect(z).toHaveLength(3);
+    expect(z[0]!).toBeCloseTo(1 - Math.sqrt(3), 9);
+    expect(z[1]!).toBeCloseTo(1, 9);
+    expect(z[2]!).toBeCloseTo(1 + Math.sqrt(3), 9);
+    expect(symmetry(f)).toBe('none');
+    const t = tangentLine(f, -1);
+    expect(t.m).toBeCloseTo(9, 12);
+    expect(t.n).toBeCloseTo(7, 12);
+  });
+  it('Ausprobieren 4: x³ + c·x hat nur für c < 0 Extrempunkte; c = 0 gibt einen Terrassenpunkt', () => {
+    for (const c of [-3, -0.1]) expect(analyze([0, c, 0, 1]).extrema.map((e) => e.kind)).toEqual(['max', 'min']);
+    expect(analyze([0, 0, 0, 1]).extrema.map((e) => e.kind)).toEqual(['saddle']);
+    for (const c of [0.1, 3, 6]) expect(analyze([0, c, 0, 1]).candidates).toEqual([]);
+  });
+  it('Aufgabe 4: Krümmung von −0,25x⁴ + x³: rechts | links | rechts mit Grenzen 0 und 2', () => {
+    const a = analyze([0, 0, 0, 1, -0.25]);
+    expect(a.curv.map((c) => c.sign)).toEqual([-1, 1, -1]);
+    expect(a.curv[1]!.from).toBeCloseTo(0, 9);
+    expect(a.curv[1]!.to).toBeCloseTo(2, 9);
+    expect(a.mono.map((m) => m.sign)).toEqual([1, -1]);
+    expect(a.mono[0]!.to).toBeCloseTo(3, 9);
+  });
   it('Plausibilität: Vorzeichentabelle von f′ passt zu den Monotonie-Intervallen und Extrema', () => {
     let seed = 7;
     const rnd = () => {

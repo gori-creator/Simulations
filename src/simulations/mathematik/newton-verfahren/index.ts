@@ -203,11 +203,11 @@ export default defineSimulation({
   strings: {
     de: {
       canvas:
-        'Koordinatensystem mit dem Graphen von f und einem ziehbaren Startwert x₀ auf der x-Achse. Für jeden Schritt des Newton-Verfahrens führt ein Lot zum Graphen, dort wird die Tangente angelegt, und ihr Schnittpunkt mit der x-Achse ist der nächste Näherungswert; ein Steigungsdreieck zeigt f(xₙ) und xₙ − xₙ₊₁. Eine Lupe vergrößert kleine Schritte. Rechts bzw. darunter Karten mit der Rechnung, einer Erklärung zum Verlauf und einer Tabelle der Näherungswerte mit fett gedruckten richtigen Stellen.',
+        'Koordinatensystem mit dem Graphen von f und einem ziehbaren Startwert x₀ auf der x-Achse. Für jeden Schritt des Newton-Verfahrens führt ein Lot zum Graphen, dort wird die Tangente angelegt, und ihr Schnittpunkt mit der x-Achse ist der nächste Näherungswert; ein Steigungsdreieck zeigt f(xₙ) und xₙ − xₙ₊₁. Eine Lupe vergrößert kleine Schritte. Auf Wunsch sind die Einzugsbereiche eingefärbt und unten mit A, B, C (Nullstelle von links) bzw. „–“ (keine Nullstelle) beschriftet. Rechts bzw. darunter Karten mit der Rechnung, einer Erklärung zum Verlauf und einer Tabelle der Näherungswerte mit fett gedruckten richtigen Stellen.',
     },
     en: {
       canvas:
-        'Coordinate system with the graph of f and a draggable starting value x₀ on the x-axis. For each step of Newton’s method a vertical line leads to the graph, the tangent is drawn there, and its x-intercept is the next approximation; a slope triangle shows f(xₙ) and xₙ − xₙ₊₁. A magnifier enlarges small steps. On the right or below, cards with the calculation, an explanation of the behaviour and a table of approximations with the correct digits in bold.',
+        'Coordinate system with the graph of f and a draggable starting value x₀ on the x-axis. For each step of Newton’s method a vertical line leads to the graph, the tangent is drawn there, and its x-intercept is the next approximation; a slope triangle shows f(xₙ) and xₙ − xₙ₊₁. A magnifier enlarges small steps. Optionally the basins of attraction are coloured and labelled A, B, C at the bottom (zeros from the left) or “–” (no zero). On the right or below, cards with the calculation, an explanation of the behaviour and a table of approximations with the correct digits in bold.',
     },
   },
 
@@ -238,6 +238,17 @@ export default defineSimulation({
       /** Scheitern: waagrechte Tangente, Zyklus, Davonlaufen */
       bad: () => th().series[1]!,
     };
+    /* Flächen, Ränder, Schatten und Glanz nur aus dem Theme gemischt */
+    /** Schatten: dunkel aus dem Hintergrund, hell aus der Textfarbe (Deckkraft je Modus). */
+    const shade = (dark: number, light: number) => (th().dark ? mixColor(th().bg, th().bg, 0, dark) : mixColor(th().text, th().text, 0, light));
+    /** Kartenfläche (im Dunkeln etwas heller als der Hintergrund). */
+    const surf = (alpha = 1) => mixColor(th().bg, th().text, th().dark ? 0.045 : 0, alpha);
+    /** Kartenrand. */
+    const edgeLine = () => mixColor(th().bg, th().text, th().dark ? 0.15 : 0.11);
+    /** Pillenhintergrund (leicht durchscheinend). */
+    const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.03 : 0, th().dark ? 0.9 : 0.94);
+    /** Glanzlicht: helle Farbe des Themes. */
+    const shine = () => (th().dark ? th().text : th().bg);
     /** Farben der Einzugsbereiche (je Nullstelle). */
     const basinCol = (i: number) => (i < 0 ? th().muted : [th().series[2]!, th().series[5]!, mixColor(th().series[4]!, th().series[1]!, 0.5)][i % 3]!);
 
@@ -263,15 +274,19 @@ export default defineSimulation({
       if (!Number.isFinite(v)) return '–';
       if (!tiny(v)) return fmt.num(v, d);
       const { m, e } = sciParts(v);
-      return `${fmt.num(m, 1)} · 10^{${e < 0 ? '−' : ''}${Math.abs(e)}}`;
+      return `${fmt.fixed(m, 1)} · 10^{${e < 0 ? '−' : ''}${Math.abs(e)}}`;
     }
     /** Zahl als Text (sehr kleine Werte mit Zehnerpotenz). */
     function numTxt(v: number, d = 4): string {
       if (!Number.isFinite(v)) return '–';
       if (!tiny(v)) return fmt.num(v, d);
       const { m, e } = sciParts(v);
-      return `${fmt.num(m, 1)}·10${supTxt(e)}`;
+      return `${fmt.fixed(m, 1)}·10${supTxt(e)}`;
     }
+    /** Wird v mit d Nachkommastellen (numSrc) genau angezeigt? */
+    const shownExact = (v: number, d: number) => Number.isFinite(v) && !tiny(v) && isExact(v, d);
+    /** Buchstaben der Nullstellen (von links), auch für die Einzugsbereiche. */
+    const rootLetter = (i: number) => (i < 0 ? '–' : 'ABC'[i] ?? '?');
     const hide = () => !p.show;
     const Q = (s: string) => (hide() ? '?' : s);
 
@@ -418,8 +433,8 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
+      g.fillStyle = pillBg();
+      g.shadowColor = shade(0.45, 0.14);
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
       roundRect(g, rr.x, rr.y, rr.w, rr.h, Math.min(11, rr.h / 2));
@@ -457,11 +472,11 @@ export default defineSimulation({
         return;
       }
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.28)';
+      g.shadowColor = shade(0.55, 0.28);
       g.shadowBlur = 5;
       g.shadowOffsetY = 1;
       const grad = g.createRadialGradient(x - r * 0.35, y - r * 0.4, 0.5, x, y, r);
-      grad.addColorStop(0, mixColor(color, '#ffffff', 0.45));
+      grad.addColorStop(0, mixColor(color, shine(), 0.45));
       grad.addColorStop(1, color);
       g.fillStyle = grad;
       g.beginPath();
@@ -500,7 +515,7 @@ export default defineSimulation({
       };
       if (opts.glow) {
         g.save();
-        g.shadowColor = th().dark ? 'rgba(0,0,0,0.65)' : mixColor(color, '#ffffff', 0.4, 0.55);
+        g.shadowColor = th().dark ? shade(0.65, 0) : mixColor(color, shine(), 0.4, 0.55);
         g.shadowBlur = th().dark ? 9 : 7;
         g.shadowOffsetY = 2;
         g.strokeStyle = color;
@@ -515,7 +530,7 @@ export default defineSimulation({
       g.stroke();
       if (opts.glow && width >= 2.5) {
         g.translate(0, -width * 0.22);
-        g.strokeStyle = withAlpha('#ffffff', th().dark ? 0.2 : 0.38);
+        g.strokeStyle = mixColor(shine(), shine(), 0, th().dark ? 0.2 : 0.38);
         g.lineWidth = Math.max(1, width * 0.3);
         path();
         g.stroke();
@@ -554,10 +569,10 @@ export default defineSimulation({
       const g = surface.g;
       const theme = th();
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.5, 0.1);
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = surf();
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -569,7 +584,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = edgeLine();
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -837,7 +852,7 @@ export default defineSimulation({
       const tw = lerp(1.6, 2.8 + big * 0.3, em);
       g.save();
       if (em > 0.5) {
-        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : withAlpha(col.t(), 0.35);
+        g.shadowColor = theme.dark ? shade(0.6, 0) : withAlpha(col.t(), 0.35);
         g.shadowBlur = 6;
       }
       g.strokeStyle = withAlpha(col.t(), lerp(0.5, 1, em));
@@ -1011,6 +1026,27 @@ export default defineSimulation({
         g.fillStyle = v < 0 ? withAlpha(th().muted, 0.55) : c;
         g.fillRect(x, y0 - 4, wpx + 0.6, 8);
       }
+      // Buchstaben je Bereich (nicht nur über die Farbe unterscheidbar): A, B, C wie in der Karte, „–“ ohne Nullstelle
+      const ly = r.y + r.h - 11;
+      g.font = `800 ${fs(12, 11)}px ${th().font}`;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.lineJoin = 'round';
+      let i0 = 0;
+      for (let i = 1; i <= n; i++) {
+        if (i < n && vals[i] === vals[i0]) continue;
+        const xa = r.x + i0 * wpx;
+        const xb = r.x + i * wpx;
+        if (xb - xa >= 16 && (xa + xb) / 2 <= r.x + r.w * sweep) {
+          const v = vals[i0]!;
+          g.strokeStyle = th().bg;
+          g.lineWidth = 3;
+          g.strokeText(rootLetter(v), (xa + xb) / 2, ly);
+          g.fillStyle = v < 0 ? th().muted : basinCol(v);
+          g.fillText(rootLetter(v), (xa + xb) / 2, ly);
+        }
+        i0 = i;
+      }
       g.restore();
     }
 
@@ -1067,6 +1103,22 @@ export default defineSimulation({
           if (x < xa || x > xb) return;
           const c = kBasin.v > 0.5 ? basinCol(j) : col.r();
           dot(plot.px(x), plot.py(0), c, 6, k.labels * 0.95, true);
+          // mit Einzugsbereichen: Buchstabe der Nullstelle wie unten im Bereich und in der Karte
+          if (kBasin.v > 0.5) {
+            const g = surface.g;
+            g.save();
+            g.globalAlpha *= k.labels * kBasin.v;
+            g.font = `800 ${fs(12, 11)}px ${th().font}`;
+            g.textAlign = 'left';
+            g.textBaseline = 'middle';
+            g.lineJoin = 'round';
+            g.strokeStyle = th().bg;
+            g.lineWidth = 3;
+            g.strokeText(rootLetter(j), plot.px(x) + 7, plot.py(0) - 13);
+            g.fillStyle = c;
+            g.fillText(rootLetter(j), plot.px(x) + 7, plot.py(0) - 13);
+            g.restore();
+          }
         });
       }
       // verschwindende Schritte (nach Zurücksetzen oder Wechsel der Funktion)
@@ -1366,7 +1418,7 @@ export default defineSimulation({
       g.setLineDash([]);
       // Fenster
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.2)';
+      g.shadowColor = shade(0.6, 0.2);
       g.shadowBlur = 16;
       g.shadowOffsetY = 4;
       g.fillStyle = theme.bg;
@@ -1512,14 +1564,22 @@ export default defineSimulation({
           const s = V.steps[i]!;
           const u = prog(i, now);
           const x = xv(i, s.x);
-          if (s.next === null) {
-            rows.push({ src: `\\c{x}{x_{${i + 1}}} = ${x} − \\f{\\c{f}{${Q(numSrc(s.fx, 4))}}}{\\c{b}{0}}`, size: fs(15, 13.5), at: ease.outCubic(ph(u, [0.1, 0.4])) });
+          // „=“ nur, wenn alle eingesetzten Zahlen ungerundet dastehen
+          const xExact = i === 0 || shownExact(s.x, 6);
+          if (s.fx === 0 && s.next === s.x) {
+            // schon auf der Nullstelle: nicht durch f′ teilen (dort kann f′ = 0 sein)
+            rows.push({ src: `\\c{f}{f(${x}) = 0}  ⇒  \\c{x}{x_{${i + 1}} = ${x}}`, size: fs(15, 13.5), gap: 8, at: ease.outCubic(ph(u, [0.1, 0.4])) });
+            rows.push({ src: `\\c{r}{${say(L('Nullstelle gefunden', 'zero found'))}}`, size: fs(13, 12), at: ease.outCubic(ph(u, [0.4, 0.7])) });
+          } else if (s.next === null) {
+            const sep0 = hide() || (xExact && shownExact(s.fx, 4)) ? '=' : '≈';
+            rows.push({ src: `\\c{x}{x_{${i + 1}}} ${sep0} ${x} − \\f{\\c{f}{${Q(numSrc(s.fx, 4))}}}{\\c{b}{0}}`, size: fs(15, 13.5), at: ease.outCubic(ph(u, [0.1, 0.4])) });
             rows.push({ src: `\\c{b}{f′(${x}) = 0  ⇒  ${say(L('Division durch 0', 'division by 0'))}}`, size: fs(13, 12), at: ease.outCubic(ph(u, [0.4, 0.7])) });
           } else {
             const fv = u >= PH.lot[1] ? Q(numSrc(s.fx, 6)) : `f(${x})`;
             const dv = u >= PH.tan[1] ? Q(numSrc(s.dfx, 6)) : `f′(${x})`;
-            const resV = `${hide() ? '=' : eqs(s.next, 6)} \\c{x}{${Q(numSrc(s.next, 7))}}`;
-            const sub = `\\c{x}{x_{${i + 1}}} = ${x} − \\f{\\c{f}{${fv}}}{\\c{t}{${dv}}}`;
+            const resV = `${hide() || shownExact(s.next, 7) ? '=' : '≈'} \\c{x}{${Q(numSrc(s.next, 7))}}`;
+            const sep = hide() || (xExact && (u < PH.lot[1] || shownExact(s.fx, 6)) && (u < PH.tan[1] || shownExact(s.dfx, 6))) ? '=' : '≈';
+            const sub = `\\c{x}{x_{${i + 1}}} ${sep} ${x} − \\f{\\c{f}{${fv}}}{\\c{t}{${dv}}}`;
             const full = `${sub}  ${u >= PH.pop[0] ? resV : ''}`;
             const wide = formula(surface.g, `${sub}  ${resV}`, fstyle(fs(15, 13.5))).w <= R.w - 2 * fs(14, 12);
             if (wide) rows.push({ src: full, size: fs(15, 13.5), gap: 10 });
@@ -1595,7 +1655,7 @@ export default defineSimulation({
           return (R, measure) =>
             mixedCard(R, measure, k, say(L('Sprung zu einer anderen Nullstelle', 'Jump to another zero')), col.x(), [
               { src: `\\c{x}{x_0 = ${N(V.x0, 2)}}  →  \\c{r}{x^* ${hide() ? '= ?' : `≈ ${N(r, 4)}`}}`, size: sz, gap: 8 },
-              { src: `\\c{m}{${say(L('nächste Nullstelle wäre', 'nearest zero would be'))}} ${s(N(V.fn.roots[nearestRootIndex(V.fn, V.x0)]!, 4))}`, size: fs(12.5, 11.5), color: th().muted },
+              { src: `\\c{m}{${say(L('nächste Nullstelle wäre', 'nearest zero would be'))}} ${hide() ? '?' : `≈ ${N(V.fn.roots[nearestRootIndex(V.fn, V.x0)]!, 4)}`}`, size: fs(12.5, 11.5), color: th().muted },
             ], say(L('Nahe einem Extrempunkt ist die Tangente fast waagrecht – ihr Schnittpunkt mit der x-Achse liegt weit weg.', 'Near a turning point the tangent is almost horizontal – its x-intercept lies far away.')));
         }
         case 'flat':
@@ -1608,9 +1668,11 @@ export default defineSimulation({
           const vals = V.outcome.kind === 'cycle' && !exact ? V.outcome.values : [V.xs[V.xs.length - 1]!, V.xs[V.xs.length - 2]!];
           const b = vals[0]!;
           const a = vals[1]!;
+          const approx = !isExact(a, 3) || !isExact(b, 3);
+          const cyc = (v: number) => `${approx ? '≈ ' : ''}${N(v, 3)}`;
           return (R, measure) =>
             mixedCard(R, measure, k, say(L('Zyklus', 'Cycle')), col.bad(), [
-              { src: `\\c{x}{${s(N(b, 3))} → ${s(N(a, 3))} → ${s(N(b, 3))} → …}`, size: sz },
+              { src: `\\c{x}{${s(cyc(b))} → ${s(cyc(a))} → ${s(cyc(b))} → …}`, size: sz },
             ], say(L('Die Tangenten schicken sich gegenseitig zurück: Die Folge springt endlos hin und her und findet keine Nullstelle.', 'The tangents send each other back: the sequence jumps back and forth for ever and finds no zero.')));
         }
         case 'far':
@@ -1621,10 +1683,10 @@ export default defineSimulation({
 
     function basinCard(V: Shown, k: Intro): CardFn {
       return (R, measure) => {
-        const parts = V.fn.roots.map((r, j) => `\\c{b${j}}{●} ${hide() ? '?' : N(r, 3)}`);
+        const parts = V.fn.roots.map((r, j) => `\\c{b${j}}{● ${rootLetter(j)}} ${hide() ? '= ?' : `${eqs(r, 3)} ${N(r, 3)}`}`);
         const rows: Row[] = [
           { src: parts.join('    '), size: fs(13, 12), gap: 6 },
-          { src: `\\c{bn}{●} \\c{m}{${say(L('keine Nullstelle (Zyklus, waagrecht, davon)', 'no zero (cycle, horizontal, runs off)'))}}`, size: fs(12, 11) },
+          { src: `\\c{bn}{● –} \\c{m}{${say(L('keine Nullstelle (Zyklus, waagrecht, davon)', 'no zero (cycle, horizontal, runs off)'))}}`, size: fs(12, 11) },
         ];
         return formulaCard(R, measure, k, say(L('Einzugsbereiche: Startwert → Nullstelle', 'Basins: start → zero')), basinCol(0), rows);
       };
@@ -1644,7 +1706,7 @@ export default defineSimulation({
         note = hide()
           ? say(L('Fett: richtige Stellen. Ihre Anzahl verdoppelt sich ungefähr.', 'Bold: correct digits. Their number roughly doubles.'))
           : `${say(L('Richtige Stellen', 'Correct digits'))}: ${digitsChain(V, nIn - 1)}${say(L(' – sie verdoppeln sich ungefähr.', ' – they roughly double.'))}`;
-      } else if (V.kind === 'double' && nIn >= 3) note = say(L('Langsam: Der Fehler halbiert sich nur.', 'Slow: the error is only halved.'));
+      } else if (V.kind === 'double' && nIn >= 3 && V.target !== null && V.xs[nIn - 1] !== V.target) note = say(L('Langsam: Der Fehler halbiert sich nur.', 'Slow: the error is only halved.'));
       else if (V.kind === 'cycle') note = say(L('Die Werte wiederholen sich – kein Fortschritt.', 'The values repeat – no progress.'));
       else if (V.kind === 'flat') note = say(L('Kein weiterer Näherungswert möglich.', 'No further approximation possible.'));
       const noteLines = note ? wrapText(note, R0.w - 2 * pad, noteFont).slice(0, 3) : [];
@@ -1689,7 +1751,8 @@ export default defineSimulation({
       label(say(L('Fehler', 'error')), c3, hy, hf, theme.muted, 'right');
       const bodyTop = hy + 12;
       const bodyBot = R.y + R.h - 8 - noteLines.length * nlh - (noteLines.length ? 6 : 0);
-      const rH = fs(22, 20);
+      // Zeilenhöhe: normal 22 px (schmal 20 px), bei Platzmangel bis 17 px, damit mehr Zeilen sichtbar bleiben
+      const rH = clamp((bodyBot - bodyTop) / Math.max(1, nIn), 17, fs(22, 20));
       const fitRows = Math.max(1, Math.floor((bodyBot - bodyTop) / rH));
       scroll.follow(Math.max(0, nIn - fitRows), reduced() ? 0 : 0.18);
       const off = scroll.v;
@@ -1742,8 +1805,8 @@ export default defineSimulation({
       if (off > 0.3) {
         g.save();
         const grad = g.createLinearGradient(0, bodyTop, 0, bodyTop + 14);
-        grad.addColorStop(0, theme.dark ? 'rgba(21,28,39,1)' : 'rgba(255,255,255,1)');
-        grad.addColorStop(1, theme.dark ? 'rgba(21,28,39,0)' : 'rgba(255,255,255,0)');
+        grad.addColorStop(0, surf(1));
+        grad.addColorStop(1, surf(0));
         g.fillStyle = grad;
         g.fillRect(R.x + 2, bodyTop, R.w - 4, 14);
         g.restore();
@@ -1767,7 +1830,9 @@ export default defineSimulation({
       const step = stepCard(V, now, k, compact);
       const status = statusCard(V, k);
       const basin = p.basin ? basinCard(V, k) : null;
-      const minTable = 44 + 12 + 3 * fs(22, 20) + 34;
+      const minTable = 44 + 12 + clamp(V.xs.length, 2, 3) * fs(22, 20) + 34;
+      /** knappste Tabelle (2 enge Zeilen), bevor die Erklärkarte weichen muss */
+      const tightTable = 44 + 12 + 2 * 17 + 30;
       shortNotes = false;
       const hs = step(C, true);
       let hst = status(C, true);
@@ -1779,7 +1844,7 @@ export default defineSimulation({
         hst = status(C, true);
       }
       if (free() < minTable) hb = 0;
-      if (free() < minTable && V.kind !== 'flat' && V.kind !== 'cycle' && V.kind !== 'far') hst = 0;
+      if (free() < tightTable && V.kind !== 'flat' && V.kind !== 'cycle' && V.kind !== 'far') hst = 0;
       const place = (fn: CardFn, R: Rect, i: number) => {
         g.save();
         const a = clamp01(k.cards * 1.6 - i * 0.25) * clamp01(fadeK * 2.2 - i * 0.35);
@@ -1823,16 +1888,17 @@ export default defineSimulation({
       const xi = (i: number) => `${v('x')}<sub>${i}</sub>`;
       const html = (s: string) => s.replace(/\^\{([^}]*)\}/g, '<sup>$1</sup>').replace(/ · 10<sup>/g, ' · 10<sup>');
       const xn = xs[n]!;
-      ctx.readout('xk', { html: `${xi(n)} ${eqs(xn, 8)} <strong>${html(numSrc(xn, 8))}</strong>` });
+      ctx.readout('xk', { html: `${xi(n)} ${shownExact(xn, 8) ? '=' : '≈'} <strong>${html(numSrc(xn, 8))}</strong>` });
       const fl = fn.f(xn);
-      ctx.readout('fxk', { html: `${v('f')}(${xi(n)}) ${eqs(fl, 8)} ${html(numSrc(fl, 6))}` });
+      ctx.readout('fxk', { html: `${v('f')}(${xi(n)}) ${shownExact(fl, 6) ? '=' : '≈'} ${html(numSrc(fl, 6))}` });
       const last = steps[steps.length - 1];
       if (!last) ctx.readout('rule', { html: `${say(L('Startwert', 'Starting value'))} ${xi(0)} = ${N(p.x0, 2)}` });
+      else if (last.fx === 0 && last.next === last.x) ctx.readout('rule', { html: `${v('f')}(${N(last.x, 4)}) = 0: ${say(L('Nullstelle gefunden', 'zero found'))}` });
       else if (last.next === null) ctx.readout('rule', { html: `${v('f')}′(${N(last.x, 4)}) = 0: ${say(L('waagrechte Tangente, kein neuer Wert', 'horizontal tangent, no new value'))}` });
       else {
         const i = steps.length - 1;
         ctx.readout('rule', {
-          html: `${xi(i + 1)} = ${xi(i)} − <span class="frac"><span>${v('f')}(${xi(i)})</span><span>${v('f')}′(${xi(i)})</span></span> = ${html(numSrc(last.x, 6))} − <span class="frac"><span>${html(numSrc(last.fx, 6))}</span><span>${html(numSrc(last.dfx, 6))}</span></span> ${eqs(last.next, 6)} ${html(numSrc(last.next, 6))}`,
+          html: `${xi(i + 1)} = ${xi(i)} − <span class="frac"><span>${v('f')}(${xi(i)})</span><span>${v('f')}′(${xi(i)})</span></span> ${shownExact(last.x, 6) && shownExact(last.fx, 6) && shownExact(last.dfx, 6) ? '=' : '≈'} ${html(numSrc(last.x, 6))} − <span class="frac"><span>${html(numSrc(last.fx, 6))}</span><span>${html(numSrc(last.dfx, 6))}</span></span> ${shownExact(last.next, 6) ? '=' : '≈'} ${html(numSrc(last.next, 6))}`,
         });
       }
       const o = classify(fn, p.x0);
@@ -1851,7 +1917,7 @@ export default defineSimulation({
       let state = txt[kind];
       if (o.kind === 'root' && (kind === 'heron' || kind === 'quad' || kind === 'double' || kind === 'jump' || kind === 'how')) {
         const speed = fn.mult[o.index]! > 1 ? say(L('langsam: doppelte Nullstelle', 'slowly: double zero')) : say(L('quadratisch', 'quadratically'));
-        state = `${say(L('konvergiert gegen', 'converges to'))} ${v('x')}<sup>*</sup> ≈ ${N(o.root, 8)} (${speed})${kind === 'jump' ? say(L(', nicht die nächstgelegene Nullstelle', ', not the nearest zero')) : ''}`;
+        state = `${say(L('konvergiert gegen', 'converges to'))} ${v('x')}<sup>*</sup> ${eqs(o.root, 8)} ${N(o.root, 8)} (${speed})${kind === 'jump' ? say(L(', nicht die nächstgelegene Nullstelle', ', not the nearest zero')) : ''}`;
       } else if (o.kind === 'cycle' && kind === 'how') state = say(L('wird in einen Zyklus geraten', 'will end up in a cycle'));
       ctx.readout('state', { html: state });
     }
@@ -1860,18 +1926,19 @@ export default defineSimulation({
      * Aktionen und Abspielen
      * ===================================================================== */
     /** Ist kein weiterer sinnvoller Schritt möglich? */
-    function terminal(): boolean {
-      const k = kNow();
+    function terminal(k = kNow()): boolean {
       if (k >= KMAX) return true;
       const steps = iterate(fnNow(), p.x0, k);
       const last = steps[steps.length - 1];
       if (last && (last.next === null || last.status !== 'ok')) return true;
+      // genau auf der Nullstelle angekommen: weitere Schritte ändern nichts
+      if (last && last.next === last.x) return true;
       return false;
     }
     /** Lohnt sich ein weiterer Schritt beim Abspielen? (angekommen oder Zyklus erkannt) */
-    function settled(): boolean {
-      if (terminal()) return true;
-      const xs = sequence(fnNow(), p.x0, kNow());
+    function settled(k = kNow()): boolean {
+      if (terminal(k)) return true;
+      const xs = sequence(fnNow(), p.x0, k);
       const n = xs.length - 1;
       if (n >= 1 && Math.abs(xs[n]! - xs[n - 1]!) <= 1e-11 * Math.max(1, Math.abs(xs[n]!))) return true;
       if (n >= 4 && isCycle(xs)) return true;
@@ -2070,6 +2137,14 @@ export default defineSimulation({
           if (autoplay) stopAuto();
           else {
             if (settled()) ctx.set({ k: 0 });
+            if (reduced()) {
+              // ohne Bewegung: gleich alle sinnvollen Schritte zeigen
+              let k = kNow();
+              while (!settled(k)) k++;
+              ctx.set({ k });
+              updateActions();
+              return;
+            }
             autoplay = true;
             updateActions();
             scheduleAuto();

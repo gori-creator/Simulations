@@ -144,4 +144,55 @@ describe('Modell: Bedingte Wahrscheinlichkeit (medizinische Tests)', () => {
       if (q === 'tp' || q === 'fn') expect(['tp', 'fn']).toContain(roles2[i]);
     });
   });
+  it('Aufgabe 2 (Schnelltest): 5 krank (4 | 1), 995 gesund (20 | 975), PPV = 0,004 / 0,0239 ≈ 16,7 %', () => {
+    const t = setupFromPercent(0.5, 80, 98);
+    expect(naturalCounts(t)).toMatchObject({ sick: 5, tp: 4, fn: 1, healthy: 995, fp: 20, tn: 975 });
+    expect(ppv(t)).toBeCloseTo(0.004 / 0.0239, 12);
+    expect(Math.round(ppv(t) * 1000) / 10).toBe(16.7);
+  });
+
+  it('Aufgabe 3 (Mammographie, vereinfacht): 7,2 gegen 69,4 je 1000, gerundet 7 und 69, PPV ≈ 9,4 %', () => {
+    const t = setupFromPercent(0.8, 90, 93);
+    const e = expectedCounts(t);
+    expect(e.tp).toBeCloseTo(7.2, 10);
+    expect(e.fp).toBeCloseTo(69.44, 10);
+    expect(naturalCounts(t)).toMatchObject({ sick: 8, tp: 7, fn: 1, fp: 69, tn: 923 });
+    expect(ppv(t)).toBeCloseTo(0.0072 / 0.07664, 12);
+    expect(Math.round(ppv(t) * 1000) / 10).toBe(9.4);
+    // je 10 000 Frauen: 72 richtig positive, 694,4 ≈ 694 falsch positive
+    const e10 = expectedCounts(t, 10000);
+    expect(e10.tp).toBeCloseTo(72, 9);
+    expect(e10.fp).toBeCloseTo(694.4, 9);
+  });
+
+  it('Lernmaterial: 10 000 Personen ergeben ganze Zahlen 90 | 10 | 891 | 9009', () => {
+    expect(naturalCounts(BASE, 10000)).toMatchObject({ tp: 90, fn: 10, fp: 891, tn: 9009 });
+    expect(90 / (90 + 891)).toBeCloseTo(ppv(BASE), 12);
+  });
+
+  it('Aufgabe 5: Spezifität mindestens 99,09 %; 99,0 % reicht nicht, 99,1 % ergibt ≈ 50,3 %', () => {
+    const sMin = 1 - 0.009 / 0.99;
+    expect(ppv({ prev: 0.01, se: 0.9, sp: sMin })).toBeCloseTo(0.5, 12);
+    expect(ppv(setupFromPercent(1, 90, 99))).toBeLessThan(0.5);
+    const t = setupFromPercent(1, 90, 99.1);
+    expect(ppv(t)).toBeGreaterThanOrEqual(0.5);
+    expect(Math.round(ppv(t) * 1000) / 10).toBe(50.3);
+  });
+
+  it('Ausprobieren 4: Sensitivität 50 % → 5 richtig positiv, 5 falsch negativ, PPV ≈ 5,3 %', () => {
+    const t = setupFromPercent(1, 50, 91);
+    expect(naturalCounts(t)).toMatchObject({ tp: 5, fn: 5, fp: 89 });
+    expect(Math.round(ppv(t) * 1000) / 10).toBe(5.3);
+  });
+
+  it('Reglergrenzen: Prävalenz 0,1 … 50 %, Sensitivität/Spezifität 50 … 100 % ohne NaN', () => {
+    for (const prev of [0.1, 50]) for (const se of [50, 100]) for (const sp of [50, 100]) {
+      const t = setupFromPercent(prev, se, sp);
+      expect(Number.isFinite(ppv(t))).toBe(true);
+      expect(Number.isFinite(npv(t))).toBe(true);
+      expect(Number.isFinite(ppvAfterTwo(t))).toBe(true);
+      const c = naturalCounts(t);
+      expect(c.tp + c.fn + c.fp + c.tn).toBe(1000);
+    }
+  });
 });

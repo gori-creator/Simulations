@@ -109,7 +109,6 @@ const probMode = (v: Record<string, unknown>) => v.mode === 'tree' || v.mode ===
  */
 export default defineSimulation({
   id: 'vierfeldertafel',
-  dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.5 },
   groups: [
     { id: 'data', label: L('Anzahlen', 'Counts') },
@@ -185,7 +184,7 @@ export default defineSimulation({
       default: 'abs',
     },
     { key: 'nn', type: 'number', group: 'view', label: L('Natürliche Häufigkeiten: von …', 'Natural frequencies: out of …'), help: L('Bei „Anzahlen“: so viele Personen insgesamt.', 'With “counts”: this many people in total.'), min: 10, max: 1000, step: 10, default: 100, visibleIf: (v) => probMode(v) && v.num === 'abs' },
-    { key: 'show', type: 'boolean', group: 'view', label: L('Innere Felder anzeigen', 'Show inner cells'), default: true, help: L('Für Aufgaben ausblenden: Dann sind nur die Randsummen sichtbar.', 'Hide for tasks: then only the totals are visible.'), visibleIf: (v) => v.mode === 'sync' },
+    { key: 'show', type: 'boolean', group: 'view', label: L('Ergebnisse anzeigen', 'Show results'), default: true, help: L('Für Aufgaben ausblenden: In „Alles synchron“ bleiben nur die Randsummen sichtbar, in „Baum umkehren“ nur der gegebene Baum.', 'Hide for tasks: in “All in sync” only the totals stay visible, in “Reverse the tree” only the given tree.'), visibleIf: (v) => v.mode === 'sync' || v.mode === 'tree' },
   ],
   actions: [
     { id: 'reveal', label: L('Nächsten Wert erschließen', 'Work out the next value'), primary: true, visibleIf: (v) => v.mode === 'fill' },
@@ -234,7 +233,7 @@ export default defineSimulation({
       const s = th().series;
       return { A: s[0]!, B: s[3]!, ev: s[4]!, ok: s[2]!, warn: s[1]!, sel: s[5]! };
     };
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+    const pillBg = () => mixColor(th().bg, th().bg, 0, th().dark ? 0.92 : 0.95);
 
     /* ---------- Zustand ---------- */
     const cells = (): Cells => [p.c1, p.c2, p.c3, p.c4];
@@ -278,6 +277,8 @@ export default defineSimulation({
     let seedN = 0;
     const nextRandom = () => seededRandom((Date.now() ^ (0x9e3779b9 * ++seedN)) >>> 0);
     let drag: 'pa' | 'pb1' | 'pb2' | null = null;
+    /** Griffversatz beim Anfassen (Wert minus Zeigerwert), damit die Linie nicht unter den Zeiger springt. */
+    let grabOff = 0;
 
     /* ---------- Aufteilung ---------- */
     const wide = () => surface.width >= 640 || surface.width >= surface.height * 1.3;
@@ -446,11 +447,11 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 14;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.96)' : 'rgba(255,255,255,0.97)';
+      g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.04 : 0, th().dark ? 0.96 : 0.97);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.shadowColor = 'transparent';
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -481,7 +482,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      rich(src, x0 + 9, y + 0.5, size, opts.fill ? '#ffffff' : color, 'left', 750);
+      rich(src, x0 + 9, y + 0.5, size, opts.fill ? th().bg : color, 'left', 750);
       g.restore();
       return { x: x0, y: y - h / 2, w, h };
     }
@@ -510,6 +511,14 @@ export default defineSimulation({
       return fmt.num(Math.round(v * 10000) / 10000, 4);
     }
     const dec = (v: number) => fmt.num(Math.round(v * 10000) / 10000, 4);
+    /** „= 43 %“ bei exaktem Wert, sonst „≈ 52,6 %“ (gerundet mit Endnull). */
+    const pctRel = (k: number, n: number) => {
+      const v = (k / n) * 100;
+      const r = Math.round(v * 10) / 10;
+      return Math.abs(v - r) < 1e-9 ? `= ${fmt.num(r, 1)} %` : `≈ ${fmt.fixed(v, 1)} %`;
+    };
+    /** „= 0,7“ bei exaktem Wert (höchstens 4 Stellen), sonst „≈ 0,4962“. */
+    const decRel = (v: number) => (Math.abs(v * 10000 - Math.round(v * 10000)) < 1e-6 ? `= ${dec(v)}` : `≈ ${fmt.fixed(v, 4)}`);
 
     /* ---------- Vierfeldertafel ---------- */
     interface TableGeo {
@@ -813,10 +822,12 @@ export default defineSimulation({
         g.restore();
         if (grow > 0.9) {
           const lx = a.x + (b.x - a.x) * 0.55;
-          const ly = a.y + (b.y - a.y) * 0.6;
           const fs = fitSize(label, (b.x - a.x) * 0.9, lsize, 750, 8.5);
           const lw = measure(label, fs, 750) + 10;
           const lh = label.includes('\\f') ? fs * 2.3 + 4 : fs + 8;
+          // Abstand zum Knoten mindestens halbe Pillenhöhe, damit sich die beiden Äste eines Knotens nicht überdecken
+          const dy = b.y - a.y;
+          const ly = a.y + Math.sign(dy) * Math.min(Math.abs(dy), Math.max(Math.abs(dy) * 0.6, lh / 2 + 1.5));
           g.save();
           g.fillStyle = pillBg();
           roundRect(g, lx - lw / 2, ly - lh / 2, lw, lh, Math.min(9, lh / 2));
@@ -845,7 +856,7 @@ export default defineSimulation({
         g.arc(pt.x, pt.y, small ? 10 : 11.5, 0, TAU);
         g.fillStyle = col;
         g.fill();
-        rich(name, pt.x, pt.y + 0.5, small ? 10.5 : 11.5, '#ffffff', 'center', 800);
+        rich(name, pt.x, pt.y + 0.5, small ? 10.5 : 11.5, th().bg, 'center', 800);
       };
       g.fillStyle = th().text;
       g.beginPath();
@@ -948,6 +959,9 @@ export default defineSimulation({
       const r = reverseTree(p.pa, p.pb1, p.pb2);
       const rS = reverseTree(paS, pb1S, pb2S);
       const pv = (v: number) => (p.num === 'pct' ? `${fmt.fixed(v * 100, 1)} %` : dec(v));
+      /** Für Aufgaben (Ergebnisse aus): nur der gegebene Baum bleibt sichtbar. */
+      const hid = !p.show;
+      const q = (s: string) => (hid ? '?' : s);
       if (!reversed) {
         return {
           first: ['A', 'Ā'],
@@ -965,7 +979,7 @@ export default defineSimulation({
             [pb2S, 1 - pb2S],
           ],
           leafNames: ['A ∩ B', 'A ∩ B̄', 'Ā ∩ B', 'Ā ∩ B̄'],
-          leafVals: [0, 1, 2, 3].map((k) => valProb(cellsP[k]!)),
+          leafVals: [0, 1, 2, 3].map((k) => q(valProb(cellsP[k]!))),
           leafIdx: [0, 1, 3, 4],
         };
       }
@@ -974,18 +988,24 @@ export default defineSimulation({
         firstCol: c.B,
         second: ['A', 'Ā'],
         secondCol: c.A,
-        firstLab: [pv(r.pB), pv(1 - r.pB)],
+        firstLab: [q(pv(r.pB)), q(pv(1 - r.pB))],
         secondLab: [
-          [pv(r.pAgB), pv(1 - r.pAgB)],
-          [pv(r.pAgNB), pv(1 - r.pAgNB)],
+          [q(pv(r.pAgB)), q(pv(1 - r.pAgB))],
+          [q(pv(r.pAgNB)), q(pv(1 - r.pAgNB))],
         ],
-        firstW: [rS.pB, 1 - rS.pB],
-        secondW: [
-          [rS.pAgB, 1 - rS.pAgB],
-          [rS.pAgNB, 1 - rS.pAgNB],
-        ],
+        // Bei ausgeblendeten Ergebnissen verraten auch die Strichstärken nichts
+        firstW: hid ? [0.5, 0.5] : [rS.pB, 1 - rS.pB],
+        secondW: hid
+          ? [
+              [0.5, 0.5],
+              [0.5, 0.5],
+            ]
+          : [
+              [rS.pAgB, 1 - rS.pAgB],
+              [rS.pAgNB, 1 - rS.pAgNB],
+            ],
         leafNames: ['B ∩ A', 'B ∩ Ā', 'B̄ ∩ A', 'B̄ ∩ Ā'],
-        leafVals: [0, 2, 1, 3].map((k) => valProb(cellsP[k]!)),
+        leafVals: [0, 2, 1, 3].map((k) => q(valProb(cellsP[k]!))),
         leafIdx: [0, 3, 1, 4],
         derived: true,
       };
@@ -1059,7 +1079,7 @@ export default defineSimulation({
           rows.push({ src: p.num === 'abs' ? `= ${t.N} − ${base} = ${t.N - base} ${tt('von', 'of')} ${t.N}` : `= 1 − ${v(base)} = ${v(t.N - base)}`, col: c.ev });
         } else {
           const k = eventCount(cc, e);
-          rows.push({ src: `P(${sym}) = \\f{${k}}{${t.N}}${t.N ? ` ≈ ${fmt.fixed((k / t.N) * 100, 1)} %` : ''}`, col: c.ev });
+          rows.push({ src: `P(${sym}) = \\f{${k}}{${t.N}}${t.N ? ` ${pctRel(k, t.N)}` : ''}`, col: c.ev });
         }
         const cond = t.A > 0 && t.B > 0 ? `P_{A}(B) = \\f{${cc[0]}}{${t.A}}  ·  P_{B}(A) = \\f{${cc[0]}}{${t.B}}` : '';
         if (cond && show) rows.push({ src: cond, col: th().muted });
@@ -1216,7 +1236,7 @@ export default defineSimulation({
       g.globalAlpha *= alpha;
       const sub = p.num === 'abs' ? tt(`von ${p.nn}`, `out of ${p.nn}`) : undefined;
       drawTree(lay.tree!, tt('Baum: erst A', 'Tree: A first'), probTreeSpec(false), k.grow, 1, tt('gegeben', 'given'));
-      drawTable(lay.table!, sub ? tt(`Häufigkeiten ${sub}`, `frequencies ${sub}`) : tt('Vierfeldertafel', 'Two-way table'), { values: probTableValues() });
+      drawTable(lay.table!, sub ? tt(`Häufigkeiten ${sub}`, `frequencies ${sub}`) : tt('Vierfeldertafel', 'Two-way table'), { values: probTableValues(), hidden: (i) => !p.show && ![2, 5, 8].includes(i) });
       const grow2 = reduced() ? 1 : clamp01((k.grow - 0.4) / 0.6);
       drawTree(lay.tree2!, tt('Umgekehrter Baum: erst B', 'Reversed tree: B first'), probTreeSpec(true), grow2, 1, tt('berechnet', 'computed'));
       drawTreeInfo(lay.info!, now);
@@ -1229,6 +1249,12 @@ export default defineSimulation({
       const cp = cellsFromTree(p.pa, p.pb1, p.pb2);
       const d = (v: number) => dec(v);
       const rows: { src: string; col: string }[] = [];
+      if (!p.show) {
+        rows.push({ src: 'P(B) = P(A) · P_{A}(B) + P(Ā) · P_{Ā}(B) = ?', col: c.B });
+        rows.push({ src: 'P_{B}(A) = \\f{P(A ∩ B)}{P(B)} = ?', col: c.ev });
+        drawRows(R, rows, now);
+        return;
+      }
       rows.push({ src: `P(B) = P(A) · P_{A}(B) + P(Ā) · P_{Ā}(B) = ${d(p.pa)} · ${d(p.pb1)} + ${d(1 - p.pa)} · ${d(p.pb2)} = ${d(r.pB)}`, col: c.B });
       const s = sel ?? 0;
       const names: Record<number, [string, string, number, number, string, string, number, number]> = {
@@ -1240,7 +1266,7 @@ export default defineSimulation({
       const n = names[s] ?? names[0]!;
       const val = s === 0 ? cp[0] : s === 1 ? cp[1] : s === 3 ? cp[2] : cp[3];
       rows.push({ src: `P(${n[0]}) = ${n[1]} = ${d(n[2])} · ${d(n[3])} = ${d(val)}`, col: c.ev });
-      rows.push({ src: `${n[5]} = \\f{P(${n[0]})}{${n[4].split(' · ')[0]}} = \\f{${d(val)}}{${d(n[6])}} = ${n[6] > 0 ? d(n[7]) : '–'}`, col: c.ev });
+      rows.push({ src: `${n[5]} = \\f{P(${n[0]})}{${n[4].split(' · ')[0]}} = \\f{${d(val)}}{${d(n[6])}} ${n[6] > 0 ? decRel(n[7]) : '= –'}`, col: c.ev });
       if (independentTree(p.pb1, p.pb2)) rows.push({ src: tt(`P_{A}(B) = P_{Ā}(B) = ${d(p.pb1)}: A und B sind unabhängig`, `P_{A}(B) = P_{Ā}(B) = ${d(p.pb1)}: A and B are independent`), col: c.ok });
       drawRows(R, rows, now);
     }
@@ -1422,10 +1448,10 @@ export default defineSimulation({
       const S = squareGeo(R);
       const r2 = (v: number) => Math.round(clamp01(v) * 100) / 100;
       if (drag === 'pa') {
-        const v = r2((px - S.x) / S.w);
+        const v = r2((px - S.x) / S.w + grabOff);
         if (v !== p.pa) ctx.set({ pa: v });
       } else if (drag === 'pb1' || drag === 'pb2') {
-        let v = r2(1 - (py - S.y) / S.h);
+        let v = r2(1 - (py - S.y) / S.h + grabOff);
         // einrasten, wenn fast auf der Höhe der anderen Linie (Unabhängigkeit)
         const other = drag === 'pb1' ? p.pb2 : p.pb1;
         if (Math.abs(v - other) <= 0.02) v = other;
@@ -1479,6 +1505,8 @@ export default defineSimulation({
         const m = mode();
         if (h.kind === 'drag') {
           drag = h.d;
+          const S = squareGeo(layout('mosaic').square!);
+          grabOff = h.d === 'pa' ? p.pa - (pt.px - S.x) / S.w : p[h.d] - (1 - (pt.py - S.y) / S.h);
           surface.setCursor(h.d === 'pa' ? 'ew-resize' : 'ns-resize');
           ctx.requestRender();
           return true;
@@ -1536,17 +1564,17 @@ export default defineSimulation({
         const cp = cellsFromTree(p.pa, p.pb1, p.pb2);
         ctx.readout('ev', `P(A ∩ B) = ${dec(p.pa)} · ${dec(p.pb1)} = ${dec(cp[0])}`);
         ctx.readout('add', `P(B) = ${dec(p.pa)} · ${dec(p.pb1)} + ${dec(1 - p.pa)} · ${dec(p.pb2)} = ${dec(r.pB)}`);
-        ctx.readout('cond', `P_B(A) = ${dec(cp[0])} / ${dec(r.pB)} = ${r.pB > 0 ? dec(r.pAgB) : '–'}${independentTree(p.pb1, p.pb2) ? tt(' · A und B sind unabhängig', ' · A and B are independent') : ''}`);
+        ctx.readout('cond', `P_B(A) = ${dec(cp[0])} / ${dec(r.pB)} ${r.pB > 0 ? decRel(r.pAgB) : '= –'}${independentTree(p.pb1, p.pb2) ? tt(' · A und B sind unabhängig', ' · A and B are independent') : ''}`);
         return;
       }
       const c = cells();
       const t = table(c);
       const e = ev();
-      const nTxt = (k: number) => `${k}/${t.N} ≈ ${fmt.fixed(t.N ? (k / t.N) * 100 : 0, 1)} %`;
+      const nTxt = (k: number) => (t.N ? `${k}/${t.N} ${pctRel(k, t.N)}` : '–');
       ctx.readout('ev', e === 'none' ? null : `P(${evSym(e)}) = ${nTxt(eventCount(c, e))}`);
-      ctx.readout('add', `P(A ∪ B) = ${t.A}/${t.N} + ${t.B}/${t.N} − ${c[0]}/${t.N} = ${nTxt(t.A + t.B - c[0])}`);
-      const cond = t.A ? `P_A(B) = ${c[0]}/${t.A} ≈ ${fmt.fixed((c[0] / t.A) * 100, 1)} %` : 'P_A(B): –';
-      const condB = t.B ? `P_B(A) = ${c[0]}/${t.B} ≈ ${fmt.fixed((c[0] / t.B) * 100, 1)} %` : 'P_B(A): –';
+      ctx.readout('add', !t.N ? 'P(A ∪ B): –' : `P(A ∪ B) = ${t.A}/${t.N} + ${t.B}/${t.N} − ${c[0]}/${t.N} = ${nTxt(t.A + t.B - c[0])}`);
+      const cond = t.A ? `P_A(B) = ${c[0]}/${t.A} ${pctRel(c[0], t.A)}` : 'P_A(B): –';
+      const condB = t.B ? `P_B(A) = ${c[0]}/${t.B} ${pctRel(c[0], t.B)}` : 'P_B(A): –';
       ctx.readout('cond', `${cond} · ${condB}${independent(c) && t.N ? tt(' · A und B sind unabhängig', ' · A and B are independent') : ''}`);
     }
     function syncActions(): void {

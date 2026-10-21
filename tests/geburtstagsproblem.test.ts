@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seededRandom } from '../src/sim-core';
 import { allDifferentSeries, band95, certainFrom, distinctDays, expectedSharedPairs, factors, pApprox, sharedPairs } from '../src/simulations/mathematik/geburtstagsproblem/model';
-import { dayOfYear, duplicates, hasMine, hasShared, monthDay, mulberry32, pairs, pAllDifferent, pMine, pShared, randomClass, smallestN } from '../src/simulations/mathematik/geburtstagsproblem/model';
+import { dayOfYear, duplicates, hasMine, hasShared, monthDay, mulberry32, pairs, pAllDifferent, pMine, pShared, randomClass, relation, smallestN } from '../src/simulations/mathematik/geburtstagsproblem/model';
 
 describe('Modell: Geburtstagsproblem', () => {
   it('bekannte Werte: 23 → 50,7 %, 25 → 56,9 %, 50 → 97,0 %', () => {
@@ -105,5 +105,63 @@ describe('Modell: Geburtstagsproblem – Ergänzungen', () => {
     const [lo, hi] = band95(pShared(30), 2000);
     expect(hits / 2000).toBeGreaterThan(lo - 0.01);
     expect(hits / 2000).toBeLessThan(hi + 0.01);
+  });
+});
+
+describe('Prüfrunde Paket 3: Lehrbuchwerte, Aufgaben, Sonderfälle', () => {
+  it('Formel 1 − 365!/((365 − n)! · 365ⁿ) als Produkt: n = 22 → 47,6 %, n = 23 → 50,7 %', () => {
+    // 23: 1 − 365 · 364 · … · 343 / 365²³ ≈ 0,507297
+    expect(pShared(22)).toBeCloseTo(0.475695, 6);
+    expect(pShared(23)).toBeCloseTo(0.507297, 6);
+    expect(pShared(22)).toBeLessThan(0.5);
+    expect(pShared(70)).toBeCloseTo(0.99916, 5);
+  });
+  it('Aufgaben im Lernmaterial', () => {
+    // A1: drei Personen ≈ 0,82 %
+    expect(pAllDifferent(3)).toBeCloseTo((364 * 363) / 365 ** 2, 12);
+    expect(pShared(3) * 100).toBeCloseTo(0.82, 2);
+    // A2: n = 28 ≈ 65,4 %, 95-%-Bereich nach 1000 Klassen etwa 0,62 … 0,68
+    expect(pShared(28) * 100).toBeCloseTo(65.45, 1);
+    const [lo, hi] = band95(pShared(28), 1000);
+    expect(lo).toBeGreaterThan(0.62);
+    expect(hi).toBeLessThan(0.69);
+    // A3: 30 Personen, 435 Paare, Näherung ≈ 69,7 %, exakt ≈ 70,6 %
+    expect(pairs(30)).toBe(435);
+    expect(pApprox(30) * 100).toBeCloseTo(69.68, 2);
+    // A4: 25 andere Personen ≈ 6,6 %, 300 Paare in der Klasse
+    expect(pMine(25) * 100).toBeCloseTo(6.63, 2);
+    expect(pairs(25)).toBe(300);
+    // A5: 4 Personen, 7 Wochentage ≈ 65,0 %, sicher ab 8
+    expect(pShared(4, 7) * 100).toBeCloseTo(65.01, 2);
+    expect(pShared(7, 7)).toBeLessThan(1);
+    expect(pShared(8, 7)).toBe(1);
+    expect(certainFrom(7)).toBe(8);
+  });
+  it('Näherung über Paare: n = 23 → ≈ 50,0 % (= „an meinem Geburtstag“ bei 253 anderen)', () => {
+    expect(pApprox(23) * 100).toBeCloseTo(50.05, 2);
+    expect(pMine(253)).toBeCloseTo(pApprox(23), 12);
+    expect(pMine(252)).toBeLessThan(0.5);
+  });
+  it('Sonderfälle: 0 und 1 Person, mehr Personen als Tage, Faktor 0', () => {
+    expect(pShared(0)).toBe(0);
+    expect(pMine(0)).toBe(0);
+    expect(pShared(1, 7)).toBe(0);
+    expect(allDifferentSeries(13, 12)[13]).toBe(0);
+    expect(factors(13, 12)[12]).toBe(0);
+    expect(pairs(0)).toBe(0);
+    expect(pairs(1)).toBe(0);
+    expect(sharedPairs([])).toBe(0);
+    expect(hasShared([])).toBe(false);
+    expect(smallestN(1.01)).toBe(Infinity);
+  });
+  it('Gleichheitszeichen nur bei exakten Werten', () => {
+    expect(relation(47 / 100, 3)).toBe('=');
+    expect(relation(0.529, 3)).toBe('=');
+    expect(relation(50, 1)).toBe('=');
+    expect(relation(1 / 3, 3)).toBe('≈');
+    expect(relation(pShared(23), 3)).toBe('≈');
+    expect(relation(pAllDifferent(23), 4)).toBe('≈');
+    expect(relation(1, 4)).toBe('=');
+    expect(relation(0, 4)).toBe('=');
   });
 });
