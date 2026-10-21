@@ -17,6 +17,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | offen |
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | offen |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | offen |
+| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest). | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -54,4 +55,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | reflexion | Die Bilder im Winkelspiegel per Tastatur bedienbar machen (`ctx.setKeyTargets`, neuer Kern-Helfer). | offen |
 | schiefe-ebene | Liegt der Klotz unten am Anschlag, rücken „α“, „F_H“ und „F_R“ eng an ihn heran. | offen |
 | schiefe-ebene | Auf dem Handy ist die Szene klein, weil Platz für 70° freigehalten wird. Den Ausschnitt an den aktuellen Winkel anpassen (mit Übergang). | offen |
+| freier-fall | Auf dem Mond mit Δt = 0,4 s fehlen die Zahlen „1“ und „3“ an der Δs-Leiste, weil die ersten Abschnitte zu kurz sind. Zahlen seitlich versetzt trotzdem zeigen. | offen |
+| freier-fall | Im Reaktionstest berühren die ms-Zahlen am Lineal knapp die Finger. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
