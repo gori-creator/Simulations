@@ -134,6 +134,7 @@ export default defineSimulation({
       FG: 'F_G = {F} N',
       FF: 'F_Feder = {F} N',
       now: 'm = {m} g · F_G = m · g = {F} N · s = {s} cm',
+      overMark: '* überdehnt (nicht für die Ursprungsgerade verwendet)',
       law: 'F = D · s: Die Verlängerung s ist proportional zur Kraft F (g = 9,81 N/kg).',
       thM: 'm in g',
       thF: 'F in N',
@@ -162,6 +163,7 @@ export default defineSimulation({
       FG: 'F_G = {F} N',
       FF: 'F_spring = {F} N',
       now: 'm = {m} g · F_G = m · g = {F} N · s = {s} cm',
+      overMark: '* overstretched (not used for the line through the origin)',
       law: 'F = D · s: the extension s is proportional to the force F (g = 9.81 N/kg).',
       thM: 'm in g',
       thF: 'F in N',
@@ -271,18 +273,21 @@ export default defineSimulation({
     const cm = (s: number) => fmt.num(s * 100, 1);
 
     function updateNow(): void {
-      ctx.readout('now', tr('now', { m: fmt.num(mass() * 1000, 0), F: fmt.num(force(), 2), s: cm(x) }));
+      // Formelzeichen mit echtem Index statt „F_G“
+      ctx.readout('now', { html: tr('now', { m: fmt.num(mass() * 1000, 0), F: fmt.num(force(), 2), s: cm(x) }).replace(/F_G/g, '<var>F</var><sub>G</sub>') });
     }
 
     function updateReadouts(): void {
       updateNow();
       ctx.readout('law', { html: tr('law', {}).replace('F = D · s', '<var>F</var> = <var>D</var> · <var>s</var>') });
       if (points.length) {
-        const rows = points
-          .slice(-12)
-          .map((q) => `<tr${q.elastic ? '' : ' style="color: var(--series-4)"'}><td>${fmt.num(q.m * 1000, 0)}</td><td>${fmt.num(q.F, 2)}</td><td>${cm(q.s)}</td></tr>`)
+        const shown = points.slice(-12);
+        // Überdehnte Messpunkte nicht nur über die Farbe kennzeichnen, sondern auch mit „*“
+        const rows = shown
+          .map((q) => `<tr${q.elastic ? '' : ' style="color: var(--series-4)"'}><td>${fmt.num(q.m * 1000, 0)}</td><td>${fmt.num(q.F, 2)}</td><td>${cm(q.s)}${q.elastic ? '' : ' *'}</td></tr>`)
           .join('');
-        ctx.readout('table', { html: `<table class="mini-table"><tr><th>${ctx.t('thM')}</th><th>${ctx.t('thF')}</th><th>${ctx.t('thS')}</th></tr>${rows}</table>` });
+        const note = shown.some((q) => !q.elastic) ? `<small style="display: block; margin-top: 4px">${ctx.t('overMark')}</small>` : '';
+        ctx.readout('table', { html: `<table class="mini-table"><tr><th>${ctx.t('thM')}</th><th>${ctx.t('thF')}</th><th>${ctx.t('thS')}</th></tr>${rows}</table>${note}` });
       } else ctx.readout('table', ctx.t('none'));
       const fit = fitThroughOrigin(points.filter((q) => q.elastic && q.s > 1e-6));
       const enough = points.filter((q) => q.elastic && q.s > 1e-6).length >= 2;
@@ -487,10 +492,23 @@ export default defineSimulation({
       gx.lineWidth = 3;
       gx.lineJoin = 'round';
       gx.strokeStyle = theme.bg;
-      const lx = x0 + (side === 'right' ? 8 : -8);
+      // „F_G = …“: Buchstabe, tiefgestellter Index (bis zum Leerzeichen), Rest
+      const m = /^(\S)_(\S+)(.*)$/.exec(label);
+      const parts: [string, number, number][] = m ? [[m[1]!, size, 0], [m[2]!, size * 0.72, size * 0.3], [m[3]!, size, 0]] : [[label, size, 0]];
+      const widthOf = ([t, fs]: [string, number, number]) => {
+        gx.font = `700 ${fs}px ${theme.font}`;
+        return gx.measureText(t).width;
+      };
+      const total = parts.reduce((sum, part) => sum + widthOf(part), 0);
+      let lx = side === 'right' ? x0 + 8 : x0 - 8 - total;
       const ly = (y0 + y1) / 2;
-      gx.strokeText(label, lx, ly);
-      gx.fillText(label, lx, ly);
+      gx.textAlign = 'left';
+      for (const part of parts) {
+        const w = widthOf(part);
+        gx.strokeText(part[0], lx, ly + part[2]);
+        gx.fillText(part[0], lx, ly + part[2]);
+        lx += w;
+      }
     }
 
     function buildGeo(r: Rect): Geo {

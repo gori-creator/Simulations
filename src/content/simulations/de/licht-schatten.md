@@ -13,7 +13,7 @@ Die Grenzen des Schattens findet man mit **Randstrahlen**: Strahlen, die vom Ran
 - **Zwei Lampen:** Jede Lampe erzeugt einen eigenen Schatten. Wo nur eine Lampe verdeckt ist, ist Halbschatten, wo sich beide Schatten überlappen, Kernschatten.
 - **Farbige Lampen:** Eine rote und eine grüne Lampe beleuchten den Schirm zusammen **gelb** (additive Farbmischung). Im Schatten der roten Lampe kommt nur grünes Licht an – der Schatten ist grün, und umgekehrt.
 
-**Schattengröße.** Bei einer punktförmigen Lampe ist der Schatten eine vergrößerte Zentralprojektion des Gegenstands. Mit dem Abstand $a$ von der Lampe zum Gegenstand und dem Abstand $b$ von der Lampe zum Schirm gilt
+**Schattengröße.** Bei einer punktförmigen Lampe ist der Schatten ein vergrößerter Umriss des Gegenstands. Er ist so viel Mal größer als der Gegenstand, wie der Schirm weiter von der Lampe entfernt ist als der Gegenstand. Mit dem Abstand $a$ von der Lampe zum Gegenstand und dem Abstand $b$ von der Lampe zum Schirm gilt
 
 $$
 \frac{S}{G} = \frac{b}{a} \qquad\text{also}\qquad S = G \cdot \frac{b}{a}.

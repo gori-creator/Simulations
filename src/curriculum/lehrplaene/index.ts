@@ -1,5 +1,6 @@
 import type { SubjectId } from '../types';
 import { bayernGymnasiumMathematik } from './bayern-gymnasium-mathematik';
+import { bayernGymnasiumPhysik } from './bayern-gymnasium-physik';
 import { hessenGymnasiumMathematik } from './hessen-gymnasium-mathematik';
 import { hessenGymnasiumPhysik } from './hessen-gymnasium-physik';
 import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from './types';
@@ -11,10 +12,10 @@ export type * from './types';
  * Reihenfolge = Reihenfolge auf der Fachseite. Aufbereitete Quelldaten und
  * Protokolle (Lücken, Unklarheiten) liegen in docs/lehrplaene/.
  *
- * - Bayern, Gymnasium: Mathematik (LehrplanPLUS)
+ * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  */
-export const STATE_CURRICULA: StateCurriculum[] = [bayernGymnasiumMathematik, hessenGymnasiumMathematik, hessenGymnasiumPhysik];
+export const STATE_CURRICULA: StateCurriculum[] = [bayernGymnasiumMathematik, bayernGymnasiumPhysik, hessenGymnasiumMathematik, hessenGymnasiumPhysik];
 
 export function curriculaFor(subject: SubjectId): StateCurriculum[] {
   return STATE_CURRICULA.filter((c) => c.subject === subject);

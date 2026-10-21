@@ -2,24 +2,24 @@
 
 Stand 20.10.2026. Erzeugt aus `src/curriculum/*.ts` (Jahrgangsstufe = erste Zahl von `grades`).
 
-Insgesamt 127 Simulationen.
-**Ausgenommen (werden noch überarbeitet, später einzeln geprüft):** `fadenpendel`, `brechung`.
+Insgesamt 129 Simulationen.
+**Nachgetragen am 20.10. abends:** `fadenpendel` und `brechung` (Überarbeitung T04 Teil 2 ist in `main`) stehen am Ende von Paket 1.
 
 Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das Protokoll fertig und der PR gemergt ist.
 
-## Paket 1 – Vertretung der Projektleitung (Physik + Mathematik ab Jgst. 13) – 42 Simulationen
+## Paket 1 – Vertretung der Projektleitung (Physik + Mathematik ab Jgst. 13) – 44 Simulationen
 
 | ✓ | Jgst. | ID | Titel | Adresse (DE) |
 |---|---|---|---|---|
-| ☐ | 6–7 | `licht-schatten` | Licht und Schatten | `/de/physik/optik/licht-und-schatten/` |
-| ☐ | 6–8 | `reflexion` | Reflexion am ebenen Spiegel | `/de/physik/optik/reflexion-ebener-spiegel/` |
-| ☐ | 7–8 | `einfacher-stromkreis` | Einfacher Stromkreis | `/de/physik/elektrizitaetslehre/einfacher-stromkreis/` |
-| ☐ | 7–8 | `hebelgesetz` | Hebelgesetz | `/de/physik/mechanik/hebelgesetz/` |
-| ☐ | 7–8 | `hookesches-gesetz` | Hookesches Gesetz | `/de/physik/mechanik/hookesches-gesetz/` |
-| ☐ | 7–8 | `teilchenmodell` | Teilchenmodell und Temperatur | `/de/physik/waermelehre/teilchenmodell-temperatur/` |
-| ☐ | 7–10 | `bewegungsdiagramme` | Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme) | `/de/physik/mechanik/bewegungsdiagramme/` |
-| ☐ | 8–9 | `ohmsches-gesetz` | Ohmsches Gesetz | `/de/physik/elektrizitaetslehre/ohmsches-gesetz/` |
-| ☐ | 8–9 | `reihe-parallel` | Reihen- und Parallelschaltung | `/de/physik/elektrizitaetslehre/reihen-und-parallelschaltung/` |
+| ☑ | 6–7 | `licht-schatten` | Licht und Schatten | `/de/physik/optik/licht-und-schatten/` |
+| ☑ | 6–8 | `reflexion` | Reflexion am ebenen Spiegel | `/de/physik/optik/reflexion-ebener-spiegel/` |
+| ☑ | 7–8 | `einfacher-stromkreis` | Einfacher Stromkreis | `/de/physik/elektrizitaetslehre/einfacher-stromkreis/` |
+| ☑ | 7–8 | `hebelgesetz` | Hebelgesetz | `/de/physik/mechanik/hebelgesetz/` |
+| ☑ | 7–8 | `hookesches-gesetz` | Hookesches Gesetz | `/de/physik/mechanik/hookesches-gesetz/` |
+| ☑ | 7–8 | `teilchenmodell` | Teilchenmodell und Temperatur | `/de/physik/waermelehre/teilchenmodell-temperatur/` |
+| ☑ | 7–10 | `bewegungsdiagramme` | Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme) | `/de/physik/mechanik/bewegungsdiagramme/` |
+| ☑ | 8–9 | `ohmsches-gesetz` | Ohmsches Gesetz | `/de/physik/elektrizitaetslehre/ohmsches-gesetz/` |
+| ☑ | 8–9 | `reihe-parallel` | Reihen- und Parallelschaltung | `/de/physik/elektrizitaetslehre/reihen-und-parallelschaltung/` |
 | ☐ | 8–10 | `kraefteaddition` | Kräfte addieren und zerlegen | `/de/physik/mechanik/kraefte-addieren-und-zerlegen/` |
 | ☐ | 8–10 | `linsen` | Linsen und Bildentstehung | `/de/physik/optik/linsen-bildentstehung/` |
 | ☐ | 8–10 | `schiefe-ebene` | Schiefe Ebene | `/de/physik/mechanik/schiefe-ebene/` |
@@ -53,6 +53,8 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☐ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
 | ☐ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
 | ☐ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
+| ☐ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
+| ☐ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
 
 ## Paket 2 – Prüf-Agent 2 (Mathematik Jgst. 5–8) – 43 Simulationen
 
