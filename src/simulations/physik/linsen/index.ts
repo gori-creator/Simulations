@@ -471,6 +471,41 @@ export default defineSimulation({
       g.fillText(str, x, y);
     }
 
+    /** Abstand eines Rechtecks (Mitte cx, cy; Breite w, Höhe h) zu einer Strecke (Pixel, Näherung über Stützpunkte). */
+    function rectSegDist(cx: number, cy: number, w: number, h: number, sg: readonly [number, number, number, number]): number {
+      let best = Infinity;
+      const n = Math.max(2, Math.ceil(Math.hypot(sg[2] - sg[0], sg[3] - sg[1]) / 3));
+      for (let i = 0; i <= n; i++) {
+        const x = sg[0] + ((sg[2] - sg[0]) * i) / n;
+        const y = sg[1] + ((sg[3] - sg[1]) * i) / n;
+        const dx = Math.max(0, Math.abs(x - cx) - w / 2);
+        const dy = Math.max(0, Math.abs(y - cy) - h / 2);
+        best = Math.min(best, Math.hypot(dx, dy));
+      }
+      return best;
+    }
+
+    /**
+     * Freieste Stelle für eine Beschriftung: Unter den Kandidaten (in der Reihenfolge
+     * der Vorliebe) gewinnt der erste mit mindestens 5 px Abstand zu allen Linien und
+     * ohne Überlappung mit `boxes`; sonst unter den ersten `near` Kandidaten der mit
+     * dem größten Abstand (die Beschriftung bleibt so nah am Bild).
+     */
+    function freeSpot(cands: [number, number][], w: number, h: number, segs: readonly (readonly [number, number, number, number])[], boxes: readonly Rect[], yLo: number, yHi: number, near = cands.length): [number, number] {
+      let best: [number, number] = cands[0]!;
+      let bestD = -Infinity;
+      for (let i = 0; i < cands.length; i++) {
+        const [cx, c0] = cands[i]!;
+        const cy = clamp(c0, yLo, yHi);
+        let d = Infinity;
+        for (const sg of segs) d = Math.min(d, rectSegDist(cx, cy, w, h, sg));
+        for (const b of boxes) if (Math.abs(cx - (b.x + b.w / 2)) < (w + b.w) / 2 && Math.abs(cy - (b.y + b.h / 2)) < (h + b.h) / 2) d = -1;
+        if (d >= 5) return [cx, cy];
+        if (i < near && d > bestD) [best, bestD] = [[cx, cy], d];
+      }
+      return best;
+    }
+
     function pill(str: string, x: number, y: number, color: string, opts: { size?: number; solid?: boolean; align?: 'left' | 'center' | 'right' } = {}): number {
       const theme = ctx.theme;
       const size = opts.size ?? 12;
@@ -773,7 +808,8 @@ export default defineSimulation({
       const [, lBot] = P(0, -lensH);
       lensBody(lx, lTop, lBot, lensForm, f, s);
       label(ctx.t(f > 0 ? 'lensSam' : 'lensZer'), lx, lTop - 12, { size: 12, color: theme.muted });
-      // Brennpunkte F und 2F
+      // Brennpunkte F und 2F (Punkte und Beschriftungen merken: Bildbeschriftungen weichen aus)
+      const marks: Rect[] = [];
       const fa = Math.abs(f);
       for (const sgn of [-1, 1]) {
         for (const k of [1, 2]) {
@@ -796,6 +832,7 @@ export default defineSimulation({
           const imgX = p.show && info.b !== null && info.B !== null && info.B < 0 ? P(info.b, 0)[0] : null;
           const clash = imgX !== null && Math.abs(imgX - fx) < 14;
           label(k === 1 ? 'F' : '2F', clash ? fx - 10 : fx, ly + 15, { size: 13, color: theme.text, italic: true, align: clash ? 'right' : 'center' });
+          marks.push({ x: fx - 5, y: ly - 5, w: 10, h: 10 }, { x: (clash ? fx - 30 : fx - 11), y: ly + 6, w: 22, h: 18 });
         }
       }
       const show = p.show;
@@ -805,6 +842,8 @@ export default defineSimulation({
       g.clip();
       // Lichtbündel von der Pfeilspitze
       if (show && p.bun) drawBundle(f, gg, G, info.b);
+      // Gezeichnete Linien (Pixel) – Beschriftungen des virtuellen Bildes weichen ihnen aus
+      const segs: [number, number, number, number][] = [[scene.x, ly, scene.x + scene.w, ly]];
       // Konstruktionsstrahlen
       if (show) {
         const [ox, oy] = P(-gg, G);
@@ -819,9 +858,11 @@ export default defineSimulation({
             const xb = Math.min(info.b, r.id === 'par' && f < 0 ? f : info.b) - 2;
             const [bx, by] = P(xb, rayY(r, xb));
             line(hx, hy, bx, by, col, { width: 1.6, dash: [6, 5], alpha: 0.75 });
+            segs.push([hx, hy, bx, by]);
           }
           line(ox, oy, hx, hy, col, { width: 2.4, arrow: true });
           line(hx, hy, ex, ey, col, { width: 2.4, arrow: true });
+          segs.push([ox, oy, hx, hy], [hx, hy, ex, ey]);
           g.fillStyle = col;
           g.beginPath();
           g.arc(hx, hy, 3, 0, Math.PI * 2);
@@ -832,6 +873,8 @@ export default defineSimulation({
       const [ox0, oy0] = P(-gg, 0);
       const [, oy1] = P(-gg, G);
       bigArrow(ox0, oy0, oy1, theme.series[2]!);
+      segs.push([ox0, oy0, ox0, oy1]);
+      marks.push({ x: ox0 - 26, y: Math.min(oy0, oy1), w: 22, h: Math.abs(oy1 - oy0) });
       if (ox0 > scene.x + 22) label('G', ox0 - 12, (oy0 + oy1) / 2, { size: 14, color: theme.series[2]!, italic: true, align: 'right' });
       else if (ox0 >= scene.x + 2) label('G', ox0 + 12, (oy0 + oy1) / 2, { size: 14, color: theme.series[2]!, italic: true, align: 'left' });
       else pill(`← ${tr('objOut', { g: fmt.num(gg, 1) })}`, scene.x + 8, ly - 26, theme.series[2]!, { size: 11, align: 'left' });
@@ -843,12 +886,32 @@ export default defineSimulation({
         if (inView) {
           bigArrow(ix, iy0, iy1, theme.series[1]!, { dashed: info.kind === 'virtual', alpha: info.kind === 'virtual' ? 0.9 : 1 });
           const right = info.kind === 'real';
-          label('B', ix + (right ? 12 : -12), (iy0 + Math.max(scene.y + 12, Math.min(scene.y + scene.h - 12, iy1))) / 2, { size: 14, color: theme.series[1]!, italic: true, align: right ? 'left' : 'right' });
+          const midY = (iy0 + Math.max(scene.y + 12, Math.min(scene.y + scene.h - 12, iy1))) / 2;
           if (info.kind === 'virtual') {
-            const off = Math.abs(iy1 - iy0) < 34 ? 30 : 14;
-            const ty = clamp(iy1 + (info.B > 0 ? -off : off), scene.y + 12, stripY - 12);
-            label(ctx.t('virt'), ix, ty, { size: 11, color: theme.series[1]!, weight: 600 });
-          }
+            // Virtuelles Bild: „B“ und „virtuelles Bild“ an die freieste Stelle neben dem Bild setzen
+            // (die gestrichelten Verlängerungen laufen alle durch die Bildspitze)
+            const yLo = scene.y + 12;
+            const yHi = stripY - 12;
+            const up = info.B > 0 ? -1 : 1;
+            const h = Math.abs(iy1 - iy0);
+            g.font = `italic 600 15px ${ctx.theme.mathFont}`;
+            const wB = g.measureText('B').width;
+            const candB: [number, number][] = [];
+            // Vorliebe: direkt neben dem Bild, dann unter dem Fußpunkt (jenseits der Achse), dann weiter weg
+            for (const dx of [-14, 14]) for (const fy of [0.5, 0.3, 0.7]) candB.push([ix + dx + (dx < 0 ? -wB / 2 : wB / 2), iy0 + (iy1 - iy0) * fy]);
+            for (const dx of [0, 8, -8]) candB.push([ix + dx, iy0 - up * 15]);
+            const nearB = candB.length;
+            for (const dx of [-24, 24]) for (const fy of [0.5, 0.15, 0.85]) candB.push([ix + dx + (dx < 0 ? -wB / 2 : wB / 2), iy0 + (iy1 - iy0) * fy]);
+            const posB = freeSpot(candB, wB + 4, 18, segs, marks, yLo, yHi, nearB);
+            const boxB: Rect = { x: posB[0] - wB / 2 - 2, y: posB[1] - 9, w: wB + 4, h: 18 };
+            label('B', posB[0], posB[1], { size: 14, color: theme.series[1]!, italic: true });
+            g.font = `600 11px ${ctx.theme.font}`;
+            const wV = g.measureText(ctx.t('virt')).width;
+            const candV: [number, number][] = [];
+            for (const off of [h < 34 ? 30 : 14, 22, 38, 50]) for (const dx of [0, -wV / 3, wV / 3]) candV.push([ix + dx, iy1 + up * off]);
+            const posV = freeSpot(candV, wV + 6, 15, segs, [...marks, boxB], yLo, yHi, 6);
+            label(ctx.t('virt'), posV[0], posV[1], { size: 11, color: theme.series[1]!, weight: 600 });
+          } else label('B', ix + (right ? 12 : -12), midY, { size: 14, color: theme.series[1]!, italic: true, align: right ? 'left' : 'right' });
         } else {
           const str = tr(info.b > 0 ? 'outRight' : 'outLeft', { b: fmt.num(info.b, 0) });
           if (info.b > 0) pill(`${str} →`, scene.x + scene.w - 8, ly + 26, theme.series[1]!, { size: 11, align: 'right' });
@@ -1257,7 +1320,16 @@ export default defineSimulation({
         g.beginPath();
         g.arc(fx, axisY, Math.abs(k) === 1 ? 3 : 2, 0, Math.PI * 2);
         g.fill();
-        text(g, Math.abs(k) === 1 ? 'F' : '2F', fx, axisY + 11, { font: `italic 600 ${small ? 11 : 12}px ${theme.mathFont}`, color: 'rgba(220,228,240,0.8)' });
+        // Beschriftung weicht der Kerze (Körper und Teller) seitlich aus
+        const fs = `italic 600 ${small ? 11 : 12}px ${theme.mathFont}`;
+        const fl = Math.abs(k) === 1 ? 'F' : '2F';
+        g.font = fs;
+        const tw = g.measureText(fl).width;
+        const [cpx] = B(LENS_X - gg, 0);
+        const chw = Math.max(6, 1.8 * sx) * 0.95 + 5;
+        let tx = fx;
+        if (Math.abs(fx - cpx) < chw + tw / 2) tx = fx >= cpx ? cpx + chw + tw / 2 : cpx - chw - tw / 2;
+        text(g, fl, tx, axisY + 11, { font: fs, color: 'rgba(220,228,240,0.8)' });
       }
       const candleX = LENS_X - gg;
       const screenX = LENS_X + sNow;

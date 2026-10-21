@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   balance,
   balancingForce,
@@ -772,56 +772,14 @@ export default defineSimulation({
       return w;
     }
 
-    /** Formelzeichen mit Index („F_K“, „a_L“) in Teile zerlegen: Index klein und tiefgestellt. */
-    function richParts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_([A-Za-z]+)/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
-    const subSize = (size: number) => Math.round(size * 0.74 * 2) / 2;
-
+    /** Breite eines Textes mit Index („F_K“, „a_L“), siehe `measureSubText` im Kern. */
     function richWidth(str: string, size: number, weight = 700): number {
-      const gx = surface.g;
-      return richParts(str).reduce((w, q) => {
-        gx.font = `${weight} ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
-        return w + gx.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, { size, weight, family: ctx.theme.font, color: '' });
     }
 
-    /** Text mit tiefgestellten Indizes zeichnen; `halo`: Farbe des Randes (oder null). */
+    /** Text mit tiefgestellten Indizes zeichnen (Kern-Helfer `subText`); `halo`: Farbe des Randes (oder null). */
     function richDraw(str: string, x: number, y: number, size: number, align: CanvasTextAlign, baseline: CanvasTextBaseline, weight: number, halo: string | null, color: string): void {
-      const gx = surface.g;
-      const list = richParts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
-      gx.textAlign = 'left';
-      gx.textBaseline = baseline;
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          gx.font = `${weight} ${q.sub ? subSize(size) : size}px ${ctx.theme.font}`;
-          const yy = y + (q.sub ? size * 0.28 : 0);
-          if (pass === 0) {
-            gx.lineJoin = 'round';
-            gx.lineWidth = 3.5;
-            gx.strokeStyle = halo!;
-            gx.strokeText(q.t, cx, yy);
-          } else {
-            gx.fillStyle = color;
-            gx.fillText(q.t, cx, yy);
-          }
-          cx += gx.measureText(q.t).width;
-        }
-      }
+      subText(surface.g, str, x, y, { size, weight, family: ctx.theme.font, color, align, baseline, ...(halo ? { halo } : {}) });
     }
 
     function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle', weight = 700): void {
@@ -1207,6 +1165,8 @@ export default defineSimulation({
       gx.save();
       gx.translate(mg.P[0], mg.P[1]);
       gx.rotate(angle);
+      // runde Ecken an Haken und Feder (früher zufällig vom vorher gezeichneten Text übernommen)
+      gx.lineJoin = 'round';
       gx.shadowColor = 'rgba(0,0,0,0.25)';
       gx.shadowBlur = 5;
       gx.shadowOffsetY = 2;
@@ -1354,6 +1314,7 @@ export default defineSimulation({
         const s = 8;
         const sg = t > 0 ? -1 : 1;
         gx.lineWidth = 1.3;
+        gx.lineJoin = 'round';
         gx.beginPath();
         gx.moveTo(Q[0] + nx * s, Q[1] + ny * s);
         gx.lineTo(Q[0] + nx * s + mg.u[0] * s * sg, Q[1] + ny * s + mg.u[1] * s * sg);
