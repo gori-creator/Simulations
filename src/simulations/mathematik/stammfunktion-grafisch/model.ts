@@ -373,8 +373,12 @@ export const APPS: Record<AppKey, App> = {
     y0: 20,
     step: 2,
   },
-  /** Sparkonto: Einzahlungsrate r(t) = 100 − 20t €/Monat, K(0) = 200 €. */
-  konto: { f: (t) => 100 - 20 * t, F: (t) => 100 * t - 10 * t * t, x: [0, 12], nodes: [0, 2, 4, 6, 8, 10, 12], t0: 0, y0: 200, step: 50 },
+  /**
+   * Sparkonto: Einzahlungsrate r(t) = 100 − 20t €/Monat, K(0) = 200 €.
+   * Bereich 0 bis 10 Monate: K(10) = 200 €, das Konto wird nicht negativ
+   * (erst nach 5 + √45 ≈ 11,7 Monaten wäre es leer).
+   */
+  konto: { f: (t) => 100 - 20 * t, F: (t) => 100 * t - 10 * t * t, x: [0, 10], nodes: [0, 2, 4, 5, 6, 8, 10], t0: 0, y0: 200, step: 50 },
   /** Heißluftballon: v(t) = 30·sin(πt/10) m/min, Start am Boden. */
   ballon: { f: (t) => 30 * Math.sin((PI * t) / 10), F: (t) => (-300 / PI) * Math.cos((PI * t) / 10), x: [0, 20], nodes: [0, 4, 7, 10, 13, 16, 20], t0: 0, y0: 0, step: 25 },
   /** Aufzug: Trapezprofil, Etagen 4 m: Erdgeschoss → 16 m → 8 m. */

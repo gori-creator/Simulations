@@ -337,3 +337,22 @@ describe('Modell: Funktionenscharen', () => {
     expect(isNice(-2)).toBe(true);
   });
 });
+
+describe('Befunde Paket 5', () => {
+  it('(x − k) · eˣ: zwei Scharkurven unterscheiden sich überall um (k₂ − k₁) · eˣ ≠ 0', () => {
+    const f = FAMS.expk.f;
+    for (const [k1, k2] of [[-2, 1], [0.5, 3], [-3, -1]] as const)
+      for (const x of [-4, -1, 0, 0.7, 2.5]) {
+        const d = f(k1, x) - f(k2, x);
+        expect(d).toBeCloseTo((k2 - k1) * Math.exp(x), 10);
+        expect(Math.abs(d)).toBeGreaterThan(0);
+      }
+    expect(FAMS.expk.common).toEqual([]);
+  });
+  it('x³ − kx, k = 0: nur ein Terrassenpunkt (0 | 0), kein Extrempunkt', () => {
+    const ex = FAMS.cub.extrema(0);
+    expect(ex).toHaveLength(1);
+    expect(ex[0]!.kind).toBe('saddle');
+    expect(ex.filter((e) => e.kind !== 'saddle')).toHaveLength(0);
+  });
+});

@@ -120,6 +120,7 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
               style={`position:static;--ro-${region}:0`}
               data-region-order={JSON.stringify({ [region]: 0 })}
               data-region-mark={region}
+              data-region-own={region}
             >
               <span class="badge badge--region" data-region-only={region} style="margin-bottom:8px">{t(lang, 'region.current')}</span>
               <h2>{t(lang, 'curriculum.reference', { state: curriculum.state[lang], school: curriculum.schoolType[lang] })}</h2>

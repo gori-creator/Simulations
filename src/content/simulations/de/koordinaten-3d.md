@@ -44,7 +44,7 @@ $P(-2 \mid 3 \mid -1{,}5)$: $2$ nach hinten, $3$ nach rechts, $1{,}5$ nach unten
 
 ### Aufgabe 2: Raumdiagonale
 
-Ein Quader hat die Ecken $(0 \mid 0 \mid 0)$ und $G(4 \mid 3 \mid 2)$. Berechne $\overline{AC}$, die Raumdiagonale $\overline{AG}$ und das Volumen. [Aufgabe laden](?mode=box&x=0&y=0&z=0&a=4&b=3&c=2&show=0&diag=0&_hide=1)
+Ein achsenparalleler Quader $ABCDEFGH$ hat die Ecken $A(0 \mid 0 \mid 0)$ und $G(4 \mid 3 \mid 2)$. Berechne $\overline{AC}$, die Raumdiagonale $\overline{AG}$ und das Volumen. [Aufgabe laden](?mode=box&x=0&y=0&z=0&a=4&b=3&c=2&show=0&diag=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

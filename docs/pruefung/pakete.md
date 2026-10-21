@@ -38,7 +38,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 11–13 | `doppelspalt` | Doppelspalt und Gitter | `/de/physik/optik/doppelspalt-gitter/` |
 | ☑ | 11–13 | `induktion` | Elektromagnetische Induktion | `/de/physik/elektrizitaetslehre/elektromagnetische-induktion/` |
 | ☐ | 11–13 | `interferenz` | Interferenz zweier Kreiswellen | `/de/physik/schwingungen-und-wellen/interferenz-kreiswellen/` |
-| ☐ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
+| ☑ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
 | ☐ | 11–13 | `planetenbahnen` | Planetenbahnen und Keplersche Gesetze | `/de/physik/mechanik/planetenbahnen-keplersche-gesetze/` |
 | ☐ | 11–13 | `resonanz` | Erzwungene Schwingung und Resonanz | `/de/physik/schwingungen-und-wellen/erzwungene-schwingung-resonanz/` |
 | ☐ | 11–13 | `stehende-wellen` | Stehende Wellen | `/de/physik/schwingungen-und-wellen/stehende-wellen/` |
@@ -108,46 +108,46 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 
 | ✓ | Jgst. | ID | Titel | Adresse (DE) |
 |---|---|---|---|---|
-| ☐ | 9–9 | `extremwert-parabel` | Extremwertaufgaben mit Parabeln | `/de/mathematik/funktionen/extremwertaufgaben-parabeln/` |
-| ☐ | 9–9 | `parabel-drei-punkte` | Parabel durch drei Punkte | `/de/mathematik/funktionen/parabel-durch-drei-punkte/` |
-| ☐ | 9–9 | `quadratwurzel` | Quadratwurzeln und das Heron-Verfahren | `/de/mathematik/zahlen-und-operationen/quadratwurzel-heron-verfahren/` |
-| ☐ | 9–9 | `strahlensaetze` | Strahlensätze | `/de/mathematik/geometrie/strahlensaetze/` |
-| ☐ | 9–9 | `vergroessern` | Ähnliche Figuren: Wie wachsen Fläche und Volumen? | `/de/mathematik/geometrie/aehnliche-figuren-vergroessern/` |
-| ☐ | 9–10 | `einheitskreis` | Einheitskreis | `/de/mathematik/funktionen/einheitskreis/` |
-| ☐ | 9–10 | `potenzfunktionen` | Potenzfunktionen y = a · xⁿ | `/de/mathematik/funktionen/potenzfunktionen/` |
-| ☐ | 9–10 | `quadratische-funktion` | Quadratische Funktion | `/de/mathematik/funktionen/quadratische-funktion/` |
-| ☐ | 9–10 | `sin-cos-tan-dreieck` | Sinus, Kosinus und Tangens im rechtwinkligen Dreieck | `/de/mathematik/geometrie/sinus-kosinus-tangens-dreieck/` |
-| ☐ | 9–10 | `sinussatz-kosinussatz` | Sinussatz und Kosinussatz | `/de/mathematik/geometrie/sinussatz-kosinussatz/` |
-| ☐ | 9–11 | `vierfeldertafel` | Vierfeldertafel und Mengendiagramm | `/de/mathematik/daten-und-zufall/vierfeldertafel-mengendiagramm/` |
-| ☐ | 9–12 | `galtonbrett` | Galtonbrett | `/de/mathematik/daten-und-zufall/galtonbrett/` |
-| ☐ | 10–10 | `cavalieri` | Prinzip von Cavalieri | `/de/mathematik/flaechen-und-koerper/prinzip-von-cavalieri/` |
-| ☐ | 10–10 | `exponentielles-wachstum` | Exponentielles Wachstum und Zerfall | `/de/mathematik/funktionen/exponentielles-wachstum/` |
-| ☐ | 10–10 | `geburtstagsproblem` | Geburtstagsproblem simulieren | `/de/mathematik/daten-und-zufall/geburtstagsproblem/` |
-| ☐ | 10–10 | `monte-carlo-pi` | Monte-Carlo-Methode: π mit Zufall bestimmen | `/de/mathematik/daten-und-zufall/monte-carlo-pi/` |
-| ☐ | 10–10 | `pyramide-kegel-kugel` | Pyramide, Kegel und Kugel | `/de/mathematik/flaechen-und-koerper/pyramide-kegel-kugel/` |
-| ☐ | 10–10 | `ziegenproblem` | Ziegenproblem | `/de/mathematik/daten-und-zufall/ziegenproblem/` |
-| ☐ | 10–11 | `ganzrationale-funktionen` | Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten | `/de/mathematik/funktionen/ganzrationale-funktionen/` |
-| ☐ | 10–11 | `sinusfunktion` | Allgemeine Sinusfunktion | `/de/mathematik/funktionen/sinusfunktion/` |
-| ☐ | 10–12 | `logarithmus` | Logarithmus als Umkehrung des Potenzierens | `/de/mathematik/funktionen/logarithmus/` |
-| ☐ | 11–11 | `bedingte-wahrscheinlichkeit` | Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests | `/de/mathematik/daten-und-zufall/bedingte-wahrscheinlichkeit-medizinische-tests/` |
-| ☐ | 11–11 | `grenzverhalten` | Grenzverhalten und Asymptoten | `/de/mathematik/funktionen/grenzverhalten-asymptoten/` |
-| ☐ | 11–11 | `newton-verfahren` | Newton-Verfahren | `/de/mathematik/analysis/newton-verfahren/` |
-| ☐ | 11–11 | `sekante-tangente` | Von der Sekante zur Tangente | `/de/mathematik/analysis/sekante-tangente/` |
-| ☐ | 11–11 | `transformationen` | Graphen verschieben, strecken und spiegeln | `/de/mathematik/funktionen/graphen-verschieben-strecken-spiegeln/` |
-| ☐ | 11–12 | `ableitungsfunktion` | Ableitungsfunktion grafisch | `/de/mathematik/analysis/ableitungsfunktion-grafisch/` |
-| ☐ | 11–12 | `kurvendiskussion` | Monotonie, Extrem- und Wendestellen | `/de/mathematik/analysis/monotonie-extrem-wendestellen/` |
-| ☐ | 11–12 | `polstellen-asymptoten` | Polstellen und Asymptoten gebrochen-rationaler Funktionen | `/de/mathematik/funktionen/polstellen-asymptoten/` |
-| ☐ | 12–12 | `binomialverteilung` | Binomialverteilung | `/de/mathematik/daten-und-zufall/binomialverteilung/` |
-| ☐ | 12–12 | `e-funktion` | Die natürliche Exponentialfunktion | `/de/mathematik/funktionen/natuerliche-exponentialfunktion/` |
-| ☐ | 12–12 | `koordinaten-3d` | Punkte und Körper im räumlichen Koordinatensystem | `/de/mathematik/analytische-geometrie/raeumliches-koordinatensystem/` |
-| ☐ | 12–12 | `signifikanztest` | Einseitiger Signifikanztest: Fehler 1. und 2. Art | `/de/mathematik/daten-und-zufall/signifikanztest/` |
-| ☐ | 12–12 | `skalar-vektorprodukt` | Skalarprodukt und Vektorprodukt | `/de/mathematik/analytische-geometrie/skalarprodukt-vektorprodukt/` |
-| ☐ | 12–12 | `umkehrfunktion` | Umkehrfunktionen: Spiegeln an y = x | `/de/mathematik/funktionen/umkehrfunktion/` |
-| ☐ | 12–12 | `vektoren-3d` | Vektoren addieren und vervielfachen (3D) | `/de/mathematik/analytische-geometrie/vektoren-addieren-vervielfachen/` |
-| ☐ | 12–13 | `funktionenscharen` | Funktionenscharen | `/de/mathematik/analysis/funktionenscharen/` |
-| ☐ | 12–13 | `geraden-ebenen` | Geraden und Ebenen im Raum | `/de/mathematik/analytische-geometrie/geraden-ebenen-raum/` |
-| ☐ | 12–13 | `hauptsatz` | Integralfunktion und Hauptsatz | `/de/mathematik/analysis/hauptsatz/` |
-| ☐ | 12–13 | `ober-untersummen` | Integral als Flächenbilanz (Rechtecksummen) | `/de/mathematik/analysis/ober-und-untersummen/` |
-| ☐ | 12–13 | `stammfunktion-grafisch` | Vom Graphen zur Stammfunktion | `/de/mathematik/analysis/stammfunktion-grafisch/` |
-| ☐ | 12–14 | `matrix-abbildungen` | Matrizen als lineare Abbildungen | `/de/mathematik/analytische-geometrie/matrizen-lineare-abbildungen/` |
+| ☑ | 9–9 | `extremwert-parabel` | Extremwertaufgaben mit Parabeln | `/de/mathematik/funktionen/extremwertaufgaben-parabeln/` |
+| ☑ | 9–9 | `parabel-drei-punkte` | Parabel durch drei Punkte | `/de/mathematik/funktionen/parabel-durch-drei-punkte/` |
+| ☑ | 9–9 | `quadratwurzel` | Quadratwurzeln und das Heron-Verfahren | `/de/mathematik/zahlen-und-operationen/quadratwurzel-heron-verfahren/` |
+| ☑ | 9–9 | `strahlensaetze` | Strahlensätze | `/de/mathematik/geometrie/strahlensaetze/` |
+| ☑ | 9–9 | `vergroessern` | Ähnliche Figuren: Wie wachsen Fläche und Volumen? | `/de/mathematik/geometrie/aehnliche-figuren-vergroessern/` |
+| ☑ | 9–10 | `einheitskreis` | Einheitskreis | `/de/mathematik/funktionen/einheitskreis/` |
+| ☑ | 9–10 | `potenzfunktionen` | Potenzfunktionen y = a · xⁿ | `/de/mathematik/funktionen/potenzfunktionen/` |
+| ☑ | 9–10 | `quadratische-funktion` | Quadratische Funktion | `/de/mathematik/funktionen/quadratische-funktion/` |
+| ☑ | 9–10 | `sin-cos-tan-dreieck` | Sinus, Kosinus und Tangens im rechtwinkligen Dreieck | `/de/mathematik/geometrie/sinus-kosinus-tangens-dreieck/` |
+| ☑ | 9–10 | `sinussatz-kosinussatz` | Sinussatz und Kosinussatz | `/de/mathematik/geometrie/sinussatz-kosinussatz/` |
+| ☑ | 9–11 | `vierfeldertafel` | Vierfeldertafel und Mengendiagramm | `/de/mathematik/daten-und-zufall/vierfeldertafel-mengendiagramm/` |
+| ☑ | 9–12 | `galtonbrett` | Galtonbrett | `/de/mathematik/daten-und-zufall/galtonbrett/` |
+| ☑ | 10–10 | `cavalieri` | Prinzip von Cavalieri | `/de/mathematik/flaechen-und-koerper/prinzip-von-cavalieri/` |
+| ☑ | 10–10 | `exponentielles-wachstum` | Exponentielles Wachstum und Zerfall | `/de/mathematik/funktionen/exponentielles-wachstum/` |
+| ☑ | 10–10 | `geburtstagsproblem` | Geburtstagsproblem simulieren | `/de/mathematik/daten-und-zufall/geburtstagsproblem/` |
+| ☑ | 10–10 | `monte-carlo-pi` | Monte-Carlo-Methode: π mit Zufall bestimmen | `/de/mathematik/daten-und-zufall/monte-carlo-pi/` |
+| ☑ | 10–10 | `pyramide-kegel-kugel` | Pyramide, Kegel und Kugel | `/de/mathematik/flaechen-und-koerper/pyramide-kegel-kugel/` |
+| ☑ | 10–10 | `ziegenproblem` | Ziegenproblem | `/de/mathematik/daten-und-zufall/ziegenproblem/` |
+| ☑ | 10–11 | `ganzrationale-funktionen` | Ganzrationale Funktionen: Nullstellen, Vielfachheit und Randverhalten | `/de/mathematik/funktionen/ganzrationale-funktionen/` |
+| ☑ | 10–11 | `sinusfunktion` | Allgemeine Sinusfunktion | `/de/mathematik/funktionen/sinusfunktion/` |
+| ☑ | 10–12 | `logarithmus` | Logarithmus als Umkehrung des Potenzierens | `/de/mathematik/funktionen/logarithmus/` |
+| ☑ | 11–11 | `bedingte-wahrscheinlichkeit` | Bedingte Wahrscheinlichkeit am Beispiel medizinischer Tests | `/de/mathematik/daten-und-zufall/bedingte-wahrscheinlichkeit-medizinische-tests/` |
+| ☑ | 11–11 | `grenzverhalten` | Grenzverhalten und Asymptoten | `/de/mathematik/funktionen/grenzverhalten-asymptoten/` |
+| ☑ | 11–11 | `newton-verfahren` | Newton-Verfahren | `/de/mathematik/analysis/newton-verfahren/` |
+| ☑ | 11–11 | `sekante-tangente` | Von der Sekante zur Tangente | `/de/mathematik/analysis/sekante-tangente/` |
+| ☑ | 11–11 | `transformationen` | Graphen verschieben, strecken und spiegeln | `/de/mathematik/funktionen/graphen-verschieben-strecken-spiegeln/` |
+| ☑ | 11–12 | `ableitungsfunktion` | Ableitungsfunktion grafisch | `/de/mathematik/analysis/ableitungsfunktion-grafisch/` |
+| ☑ | 11–12 | `kurvendiskussion` | Monotonie, Extrem- und Wendestellen | `/de/mathematik/analysis/monotonie-extrem-wendestellen/` |
+| ☑ | 11–12 | `polstellen-asymptoten` | Polstellen und Asymptoten gebrochen-rationaler Funktionen | `/de/mathematik/funktionen/polstellen-asymptoten/` |
+| ☑ | 12–12 | `binomialverteilung` | Binomialverteilung | `/de/mathematik/daten-und-zufall/binomialverteilung/` |
+| ☑ | 12–12 | `e-funktion` | Die natürliche Exponentialfunktion | `/de/mathematik/funktionen/natuerliche-exponentialfunktion/` |
+| ☑ | 12–12 | `koordinaten-3d` | Punkte und Körper im räumlichen Koordinatensystem | `/de/mathematik/analytische-geometrie/raeumliches-koordinatensystem/` |
+| ☑ | 12–12 | `signifikanztest` | Einseitiger Signifikanztest: Fehler 1. und 2. Art | `/de/mathematik/daten-und-zufall/signifikanztest/` |
+| ☑ | 12–12 | `skalar-vektorprodukt` | Skalarprodukt und Vektorprodukt | `/de/mathematik/analytische-geometrie/skalarprodukt-vektorprodukt/` |
+| ☑ | 12–12 | `umkehrfunktion` | Umkehrfunktionen: Spiegeln an y = x | `/de/mathematik/funktionen/umkehrfunktion/` |
+| ☑ | 12–12 | `vektoren-3d` | Vektoren addieren und vervielfachen (3D) | `/de/mathematik/analytische-geometrie/vektoren-addieren-vervielfachen/` |
+| ☑ | 12–13 | `funktionenscharen` | Funktionenscharen | `/de/mathematik/analysis/funktionenscharen/` |
+| ☑ | 12–13 | `geraden-ebenen` | Geraden und Ebenen im Raum | `/de/mathematik/analytische-geometrie/geraden-ebenen-raum/` |
+| ☑ | 12–13 | `hauptsatz` | Integralfunktion und Hauptsatz | `/de/mathematik/analysis/hauptsatz/` |
+| ☑ | 12–13 | `ober-untersummen` | Integral als Flächenbilanz (Rechtecksummen) | `/de/mathematik/analysis/ober-und-untersummen/` |
+| ☑ | 12–13 | `stammfunktion-grafisch` | Vom Graphen zur Stammfunktion | `/de/mathematik/analysis/stammfunktion-grafisch/` |
+| ☑ | 12–14 | `matrix-abbildungen` | Matrizen als lineare Abbildungen | `/de/mathematik/analytische-geometrie/matrizen-lineare-abbildungen/` |
 

@@ -1,4 +1,5 @@
 import type { SubjectId } from "../types";
+import { badenWuerttembergGymnasiumMathematik } from "./baden-wuerttemberg-gymnasium-mathematik";
 import { badenWuerttembergGymnasiumPhysik } from "./baden-wuerttemberg-gymnasium-physik";
 import { bayernGymnasiumMathematik } from "./bayern-gymnasium-mathematik";
 import { bayernGymnasiumPhysik } from "./bayern-gymnasium-physik";
@@ -18,6 +19,7 @@ export type * from "./types";
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  */
 export const STATE_CURRICULA: StateCurriculum[] = [
+  badenWuerttembergGymnasiumMathematik,
   badenWuerttembergGymnasiumPhysik,
   bayernGymnasiumMathematik,
   bayernGymnasiumPhysik,

@@ -39,7 +39,7 @@ $P(X \ge 15) \approx 0.0207 \le 0.05$ but $P(X \ge 14) \approx 0.0577 > 0.05$, s
 
 ### Task 2: Type II error
 
-In fact the coin is biased with $p = 0.7$. How likely is it that the test misses this? [Load task](?ctx=free&n=20&p0=0.5&x=16&p1=0.7&_hide=1)
+In fact the coin is biased with $p = 0.7$. How likely is it that the test misses this? [Load task](?ctx=free&n=20&p0=0.5&x=16&p1=0.7&info=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>

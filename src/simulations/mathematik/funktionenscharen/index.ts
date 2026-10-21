@@ -112,7 +112,7 @@ const INFO: Record<FamKey, Info> = {
     cond: '3x² − k = 0  ⇔  x² = \\f{k}{3}',
     cases: [
       { k: 'k < 0', res: L('f′ₖ(x) = 3x² − k > 0: streng monoton steigend, keine Extrempunkte', 'f′ₖ(x) = 3x² − k > 0: strictly increasing, no extrema'), short: L('keine Extrema', 'no extrema') },
-      { k: 'k = 0', res: L('f(x) = x³: Terrassenpunkt (0 | 0)', 'f(x) = x³: terrace point (0, 0)'), short: L('Terrassenpunkt (0 | 0)', 'terrace point (0, 0)') },
+      { k: 'k = 0', res: L('f(x) = x³: Terrassenpunkt (0 | 0)', 'f(x) = x³: saddle point (0, 0)'), short: L('Terrassenpunkt (0 | 0)', 'saddle point (0, 0)') },
       { k: 'k > 0', res: L('Hoch- und Tiefpunkt bei x = ±√(k/3)', 'maximum and minimum at x = ±√(k/3)'), short: L('H und T', 'max. and min.') },
     ],
     loc: ['x_E = ±\\r{\\f{k}{3}}, y_E = ∓\\f{2k}{3} · \\r{\\f{k}{3}}', 'x² = \\f{k}{3}  ⇒  k = 3x²', 'y = x³ − k · x = x³ − 3x² · x', 'y = −2x³'],
@@ -329,8 +329,10 @@ export default defineSimulation({
     /** englische Fassung der Punktschreibweise in Formeln */
     const P = (src: string) => (lang === 'de' ? src : src.replace(/ \| /g, ', ').replace(/(\d),(\d)/g, '$1.$2'));
     // im Aufgabenmodus neutral „E“, damit die Art des Punktes nicht verraten wird
-    const kName = (kind: 'max' | 'min' | 'saddle' | 'infl') => (kind === 'infl' ? 'W' : !p.show ? 'E' : kind === 'max' ? 'H' : kind === 'min' ? 'T' : 'TP');
-    const kLong = (kind: 'max' | 'min' | 'saddle') => (kind === 'max' ? T2('Hochpunkt', 'maximum') : kind === 'min' ? T2('Tiefpunkt', 'minimum') : T2('Terrassenpunkt', 'terrace point'));
+    // Kürzel im Bild: DE H, T, TP (Terrassenpunkt), W, E (Extrempunkt, verdeckt); EN Max, Min, SP (saddle point), I, Ext
+    const kName = (kind: 'max' | 'min' | 'saddle' | 'infl') =>
+      kind === 'infl' ? T2('W', 'I') : !p.show ? T2('E', 'Ext') : kind === 'max' ? T2('H', 'Max') : kind === 'min' ? T2('T', 'Min') : T2('TP', 'SP');
+    const kLong = (kind: 'max' | 'min' | 'saddle') => (kind === 'max' ? T2('Hochpunkt', 'maximum') : kind === 'min' ? T2('Tiefpunkt', 'minimum') : T2('Terrassenpunkt', 'saddle point'));
     /** k gerundet auf eine Stelle (wie im Regler) */
     const k1 = (k: number) => Math.round(k * 10) / 10;
 
@@ -1134,7 +1136,7 @@ export default defineSimulation({
           fa.inflections(k).forEach((w, i) => {
             if (!inView(w.x, w.y)) return;
             const [px, py] = [plot.px(w.x), plot.py(w.y)];
-            const src = show() ? `W${P(pt(cN(`wx${i}`, w.x), cN(`wy${i}`, w.y)))}` : 'W(¿)';
+            const src = show() ? `${kName('infl')}${P(pt(cN(`wx${i}`, w.x), cN(`wy${i}`, w.y)))}` : `${kName('infl')}(¿)`;
             const right = w.x >= 0;
             fpillFree(
               [
@@ -1457,7 +1459,7 @@ export default defineSimulation({
         const rows: RowSpec[] = [{ src: C('f', `f_k(x) = ${inf.term}`), size: big }];
         if (!compact) rows.push({ src: `f_k′(x) = ${S(inf.d1)}`, size: fs(13, 12) }, { src: `f_k″(x) = ${S(inf.d2)}`, size: fs(13, 12) });
         rows.push({ src: `\\t{${T2('für', 'for')}} k = ${N(k1(k), 1)}\\t{:}  ${pointsSrc(k)}`, size: fs(13, 12), hl: col.ext() });
-        return formulaCard(R, measure, T2('Funktionenschar', 'Family of functions'), col.f(), rows, stagger(I), `\\t{k ∈ [−3; 3]}`);
+        return formulaCard(R, measure, T2('Funktionenschar', 'Family of functions'), col.f(), rows, stagger(I), `\\t{k ∈ [${T2('−3; 3', '−3, 3')}]}`);
       };
     }
 
@@ -1659,7 +1661,7 @@ export default defineSimulation({
           if (show() && fa.touch && !compact) rows.push(noteRow(T2('Alle Kurven haben dort dieselbe Steigung: Sie berühren sich.', 'All curves have the same slope there: they touch.')));
         } else {
           rows.push({ src: show() ? `\\t{${T2('nie erfüllt, da', 'never true, since')}} e^x > 0` : '¿', size: big, hl: col.com() });
-          if (show() && !compact) rows.push(noteRow(T2('Kein gemeinsamer Punkt: Die Kurven sind gegeneinander verschoben.', 'No common point: the curves are shifted against each other.')));
+          if (show() && !compact) rows.push(noteRow(T2('Kein gemeinsamer Punkt: Zwei Scharkurven unterscheiden sich überall um (k₂ − k₁) · eˣ ≠ 0.', 'No common point: two members always differ by (k₂ − k₁) · eˣ ≠ 0.')));
         }
         return formulaCard(R, measure, fa.common.length && show() ? T2('Gemeinsamer Punkt aller Kurven', 'Point common to all curves') : T2('Gemeinsame Punkte?', 'Common points?'), col.com(), rows, stagger(I));
       };
@@ -1675,7 +1677,7 @@ export default defineSimulation({
         if (!compact) rows.push({ src: `f_k″(x) = ${S(inf.d2)}`, size: fs(13, 12) });
         if (!compact || !inf.wp[1]) rows.push({ src: S(inf.wp[0]), size: big });
         if (inf.wp[1]) {
-          rows.push({ src: `${C('w', S(P(inf.wp[1])))}${fa.wlocus ? '' : `  \\t{${T2('für alle k', 'for all k')}}`}`, size: big, hl: col.wp() });
+          rows.push({ src: `${C('w', S(P(inf.wp[1].replace(/^W/, kName('infl')))))}${fa.wlocus ? '' : `  \\t{${T2('für alle k', 'for all k')}}`}`, size: big, hl: col.wp() });
           if (inf.wp[2]) rows.push({ src: `\\t{${T2('Ortskurve:', 'locus:')}} ${C('w', S(inf.wp[2]))}`, size: big });
           else if (show() && !compact) rows.push(noteRow(T2('Der Wendepunkt bleibt fest – keine Ortskurve.', 'The point of inflection stays put – no locus.')));
           const ws = fa.inflections(k1(shownK()));
@@ -1930,7 +1932,11 @@ export default defineSimulation({
       const k = p.k;
       const ex = fa.extrema(k);
       const none = T2('keine', 'none');
-      ctx.readout('ext', ex.length ? ex.map((e) => `${kLong(e.kind)} ${fmt.point(clean(e.x, 2), clean(e.y, 2))}`).join('; ') : none);
+      // Terrassenpunkte sind keine Extrempunkte: „keine (Terrassenpunkt (0 | 0))“
+      const exTxt = (list: typeof ex) => list.map((e) => `${kLong(e.kind)} ${fmt.point(clean(e.x, 2), clean(e.y, 2))}`).join('; ');
+      const real = ex.filter((e) => e.kind !== 'saddle');
+      const sad = ex.filter((e) => e.kind === 'saddle');
+      ctx.readout('ext', `${real.length ? exTxt(real) : none}${sad.length ? ` (${exTxt(sad)})` : ''}`);
       ctx.readout('loc', `${plain(inf.loc[3])}${inf.gap ? ` (${inf.gap})` : ''}`);
       ctx.readout('com', fa.common.length ? fa.common.map(([x, y]) => fmt.point(x, y)).join('; ') + (fa.touch ? T2(' (Berührpunkt)', ' (curves touch)') : '') : T2('keiner', 'none'));
       if (p.wp) {

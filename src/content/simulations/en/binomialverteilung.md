@@ -40,7 +40,7 @@ $P(X = 5) = \binom{20}{5} \cdot 0.25^5 \cdot 0.75^{15} \approx 0.2023$; $P(X \ge
 
 ### Task 2: 100 coin tosses
 
-Find $\mu$, $\sigma$ and $P(40 \le X \le 60)$. [Load task](?n=100&p=0.5&ev=ab&a=40&b=60&show=0&_hide=1)
+Find $\mu$, $\sigma$ and $P(40 \le X \le 60)$. [Load task](?n=100&p=0.5&ev=ab&a=40&b=60&sig=0&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>

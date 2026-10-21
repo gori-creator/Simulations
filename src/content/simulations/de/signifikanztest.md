@@ -25,7 +25,7 @@ Zwei Fehlentscheidungen sind möglich:
 | $H_0$ wird abgelehnt | **Fehler 1. Art** | richtig |
 | $H_0$ wird nicht abgelehnt | richtig | **Fehler 2. Art** |
 
-Die Wahrscheinlichkeit für den **Fehler 1. Art** ist hier höchstens $P(X \ge 37) \approx 2{,}8\,\%$ – das ist die tatsächliche Irrtumswahrscheinlichkeit, sie liegt immer unter $\alpha$. Für den **Fehler 2. Art** muss man ein wahres $p_1$ aus $H_1$ annehmen. Für $p_1 = 0{,}75$ gilt
+Die Wahrscheinlichkeit für den **Fehler 1. Art** ist hier höchstens $P(X \ge 37) \approx 2{,}8\,\%$ – das ist die tatsächliche Irrtumswahrscheinlichkeit, sie ist nie größer als $\alpha$. Für den **Fehler 2. Art** muss man ein wahres $p_1$ aus $H_1$ annehmen. Für $p_1 = 0{,}75$ gilt
 
 $$
 \beta = P_{0{,}75}(X \le 36) \approx 0{,}363, \qquad 1 - \beta \approx 0{,}637.
@@ -41,7 +41,7 @@ $1 - \beta$ heißt **Macht** (Güte) des Tests. Die **Gütefunktion** zeigt für
 2. Stelle $\alpha$ auf $1\,\%$ und auf $10\,\%$. Wie wandert die Grenze, wie ändern sich die rote und die orange Fläche? [α = 1 %](?alpha=1)
 3. Drücke „p₁ wandern lassen“ und beobachte, wie $\beta$ schrumpft und der Punkt auf der Gütefunktion nach oben läuft.
 4. Setze $p_1 = p_0$. Was zeigt das untere Histogramm jetzt? [Grenzfall](?p1=0.6&x=33)
-5. Erhöhe $n$ auf $200$ (bei gleichem $p_1 = 0{,}68$). Was passiert mit der Macht? [Großes n](?n=200&x=135&p1=0.68)
+5. Stelle $p_1 = 0{,}68$ ein und vergleiche die Macht bei $n = 50$ und $n = 200$. [n = 50](?p1=0.68) · [n = 200](?n=200&x=135&p1=0.68)
 6. Ziehe mit „100 Stichproben“ viele Stichproben mit $p_1 = p_0$: Wie oft wird $H_0$ (fälschlich) abgelehnt? [p₁ = p₀](?p1=0.6&x=33)
 
 ## Aufgaben
@@ -59,7 +59,7 @@ $P(X \ge 15) \approx 0{,}0207 \le 0{,}05$, aber $P(X \ge 14) \approx 0{,}0577 > 
 
 ### Aufgabe 2: Fehler 2. Art
 
-Beim Test aus Aufgabe 1 ist die Münze in Wirklichkeit gezinkt: $p = 0{,}7$. Mit welcher Wahrscheinlichkeit bemerkt der Test das nicht? [Aufgabe laden](?ctx=free&n=20&p0=0.5&x=16&p1=0.7&_hide=1)
+Beim Test aus Aufgabe 1 ist die Münze in Wirklichkeit gezinkt: $p = 0{,}7$. Mit welcher Wahrscheinlichkeit bemerkt der Test das nicht? [Aufgabe laden](?ctx=free&n=20&p0=0.5&x=16&p1=0.7&info=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -75,7 +75,7 @@ Ein Würfel wird $60$-mal geworfen; $X$ ist die Anzahl der Sechsen. Getestet wir
 <details>
 <summary>Lösung anzeigen</summary>
 
-$P(X \ge 16) \approx 0{,}0338 \le 0{,}05$, $P(X \ge 15) \approx 0{,}0648 > 0{,}05$, also $\overline{A} = \{16;\,\dots;\,60\}$. Wegen $18 \in \overline{A}$ wird $H_0$ abgelehnt: Der Würfel ist auf dem $5\,\%$-Niveau signifikant „sechsenlastig“ – bewiesen ist das nicht, ein Irrtum hat höchstens etwa $3{,}4\,\%$ Wahrscheinlichkeit. [In der Simulation zeigen](?ctx=dice&n=60&x=18&p1=0.25)
+$P(X \ge 16) \approx 0{,}0338 \le 0{,}05$, $P(X \ge 15) \approx 0{,}0648 > 0{,}05$, also $\overline{A} = \{16;\,\dots;\,60\}$. Wegen $18 \in \overline{A}$ wird $H_0$ abgelehnt: Der Würfel ist auf dem $5\,\%$-Niveau signifikant „sechsenlastig“ – bewiesen ist das nicht. Wäre der Würfel in Ordnung, würde der Test nur mit höchstens etwa $3{,}4\,\%$ Wahrscheinlichkeit so entscheiden. [In der Simulation zeigen](?ctx=dice&n=60&x=18&p1=0.25)
 
 </details>
 
@@ -92,7 +92,7 @@ Größtes $k$ mit $P(X \le k) \le 0{,}05$: $P(X \le 84) \approx 0{,}0399$, $P(X 
 
 ### Aufgabe 5: Strenger oder sicherer?
 
-Beim Medikamententest ($n = 50$, $p_0 = 0{,}6$, $p_1 = 0{,}75$) wird $\alpha$ von $5\,\%$ auf $1\,\%$ verkleinert. Wie ändern sich Ablehnungsbereich und $\beta$? Begründe, warum man nicht beide Fehler gleichzeitig klein machen kann, ohne $n$ zu vergrößern. [Aufgabe laden](?alpha=1&_hide=1)
+Beim Medikamententest ($n = 50$, $p_0 = 0{,}6$, $p_1 = 0{,}75$) wird $\alpha$ von $5\,\%$ auf $1\,\%$ verkleinert. Wie ändern sich Ablehnungsbereich und $\beta$? Begründe, warum man nicht beide Fehler gleichzeitig klein machen kann, ohne $n$ zu vergrößern. [Aufgabe laden](?alpha=1&info=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -103,9 +103,9 @@ Bei $\alpha = 1\,\%$: $P(X \ge 39) \approx 0{,}0057$, $P(X \ge 38) \approx 0{,}0
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Einseitiger Signifikanztest“ (LehrplanPLUS Bayern, Gymnasium) – Einführung des Vorgehens und Vertiefung zu Fehlern 1. und 2. Art. Die Gütefunktion geht vermutlich über den Lehrplan hinaus und kann als Ausblick dienen; bitte am Lehrplan prüfen.
+- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Einseitiger Signifikanztest“ (LehrplanPLUS Bayern, Gymnasium) – Einführung des Vorgehens und Vertiefung zu Fehlern 1. und 2. Art. Die Gütefunktion kann als Ausblick dienen.
 - **Schreibweise:** Die Simulation verwendet $H_0\colon p \le p_0$ bzw. $p \ge p_0$ und $\overline{A}$ für den Ablehnungsbereich; manche Bücher schreiben $H_0\colon p = p_0$ oder $K$ – die Rechnung ist dieselbe.
-- **Simulation des Fehlers 1. Art:** Mit $p_1 = p_0$ und „100 Stichproben“ lässt sich erleben, dass der Test etwa in $\alpha^\ast \approx 2{,}8\,\%$ der Fälle fälschlich ablehnt.
+- **Simulation des Fehlers 1. Art:** Mit $p_1 = p_0$ und „100 Stichproben“ lässt sich erleben, dass der Test etwa in $2{,}8\,\%$ der Fälle (tatsächliche Irrtumswahrscheinlichkeit $\alpha^\ast$) fälschlich ablehnt.
 - **Häufige Stolpersteine:**
   - „$H_0$ wurde nicht abgelehnt, also ist $H_0$ wahr.“ – Der Test liefert nur keinen ausreichenden Widerspruch.
   - Der kritische Wert wird über $P(X = k) \le \alpha$ statt über die Summe $P(X \ge k)$ bestimmt.

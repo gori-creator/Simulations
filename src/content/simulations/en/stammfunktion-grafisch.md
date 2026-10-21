@@ -25,7 +25,7 @@ All antiderivatives $F_0 + C$ are vertical shifts of each other (a family of cur
 
 ### Task 1: Sketch it yourself
 
-Sketch the antiderivative of $x^2 - 1$ with $F(0) = 0$, then reveal the solution. [Load task](?mode=draw&fn=par)
+Sketch the antiderivative of $x^2 - 1$ with $F(0) = 0$, then reveal the solution. [Load task](?mode=draw&fn=par&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
@@ -58,12 +58,12 @@ $e^0 + C = 3$, so $C = 2$ and $F(x) = e^x + 2$ – not $C = 3$, because $F_0(0) 
 
 ### Task 4: Storage basin
 
-Net inflow $q(t) = -0.5t^2 + 4t - 3.5$ m³/h, $V(0) = 20$ m³. When is the basin fullest? [Load task](?mode=feat&kind=app&app=pool&show=0&_hide=1)
+Net inflow $q(t) = -0.5t^2 + 4t - 3.5$ m³/h, $V(0) = 20$ m³. When is the basin fullest, and when does it hold the least water, for $0 \leq t \leq 10$ h? [Load task](?mode=feat&kind=app&app=pool&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$q$ changes sign from $+$ to $-$ at $t = 7$: $V(7) = \frac{109}{3} \approx 36.33$ m³. Minimum at $t = 1$ ($\approx 18.33$ m³), fastest increase at $t = 4$. [Show](?mode=feat&kind=app&app=pool)
+$q$ changes sign from $+$ to $-$ at $t = 7$: $V(7) = \frac{109}{3} \approx 36.33$ m³. Least water at $t = 1$ h and at the end point $t = 10$ h: $V(1) = V(10) = \frac{55}{3} \approx 18.33$ m³. Fastest increase at $t = 4$. [Show](?mode=feat&kind=app&app=pool)
 
 </details>
 

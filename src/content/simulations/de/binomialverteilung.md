@@ -18,7 +18,7 @@ Meist sind Bereiche gefragt. Mit der **kumulierten Verteilungsfunktion** $F(k) =
 - „mindestens $k$“: $P(X \ge k) = 1 - P(X \le k - 1) = 1 - F(k - 1)$
 - „zwischen $a$ und $b$“: $P(a \le X \le b) = F(b) - F(a - 1)$
 
-Der **Erwartungswert** $\mu = n \cdot p$ ist der Schwerpunkt des Histogramms, die **Standardabweichung** $\sigma = \sqrt{n \cdot p \cdot (1-p)}$ misst die Breite. In der $\sigma$-Umgebung $[\mu - \sigma;\, \mu + \sigma]$ liegt oft etwa $70\,\%$ der Wahrscheinlichkeit, in der $2\sigma$-Umgebung meist rund $95\,\%$ (für nicht zu kleine $\sigma$; die Werte schwanken, weil nur ganze $k$ zählen – in der Simulation werden sie genau angezeigt).
+Der **Erwartungswert** $\mu = n \cdot p$ ist der Schwerpunkt des Histogramms, die **Standardabweichung** $\sigma = \sqrt{n \cdot p \cdot (1-p)}$ misst die Breite. In der $\sigma$-Umgebung $[\mu - \sigma;\, \mu + \sigma]$ liegt oft rund $68\,\%$ der Wahrscheinlichkeit, in der $2\sigma$-Umgebung meist rund $95\,\%$ (für nicht zu kleine $\sigma$; die Werte schwanken, weil nur ganze $k$ zählen – in der Simulation werden sie genau angezeigt).
 
 ## Ausprobieren
 
@@ -66,7 +66,7 @@ $P(X \ge 8) = P(X = 8) + P(X = 9) + P(X = 10) \approx 0{,}3020 + 0{,}2684 + 0{,}
 
 ### Aufgabe 4: 100 Münzwürfe
 
-Eine Münze wird $100$-mal geworfen. Berechne $\mu$, $\sigma$ und $P(40 \le X \le 60)$ für die Anzahl $X$ der Würfe mit „Zahl“. Welche Umgebung von $\mu$ ist das? [Aufgabe laden](?n=100&p=0.5&ev=ab&a=40&b=60&show=0&_hide=1)
+Eine Münze wird $100$-mal geworfen. Berechne $\mu$, $\sigma$ und $P(40 \le X \le 60)$ für die Anzahl $X$ der Würfe mit „Zahl“. Welche Umgebung von $\mu$ ist das? [Aufgabe laden](?n=100&p=0.5&ev=ab&a=40&b=60&sig=0&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -99,7 +99,7 @@ Nein. Ohne Zurücklegen ändert sich die Wahrscheinlichkeit für „Mädchen“ 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Stochastik der Oberstufe (Binomialverteilung, Erwartungswert, Standardabweichung, σ-Umgebungen) – die genaue Zuordnung zur Jahrgangsstufe bitte am Lehrplan prüfen. Gut als Ergänzung zum Galtonbrett, das die Entstehung der Verteilung zeigt.
+- **Einsatz:** Stochastik der Oberstufe (Binomialverteilung, Erwartungswert, Standardabweichung, σ-Umgebungen). Gut als Ergänzung zum Galtonbrett, das die Entstehung der Verteilung zeigt.
 - **Vom Tafelwerk zum Bild:** Die Treppenansicht macht sichtbar, was in Tabellen der kumulierten Binomialverteilung steht; Werte daraus lassen sich direkt an den Stufen ablesen.
 - **Modellieren:** Vor dem Rechnen gemeinsam prüfen, ob die Voraussetzungen erfüllt sind (zwei Ausgänge, unabhängig, gleiches $p$) – Aufgabe 6 bietet einen Gegenbeispiel-Einstieg.
 - **Häufige Stolpersteine:**
