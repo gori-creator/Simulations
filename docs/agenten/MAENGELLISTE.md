@@ -1,6 +1,6 @@
 # Mängelliste (Durchsicht der Seite durch die Projektleitung, 20.10.2026)
 
-Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. **Stand 20.10.: offen nur noch Punkt 5 (Lehrplan Bayern Physik, läuft); Punkt 6 gebaut, PR folgt.**
+Diktiert von der Projektleitung beim Durchgehen der Seite, festgehalten von der Vertretung. **Stand 21.10.: alle Punkte erledigt.**
 
 ## Startseite
 
@@ -94,12 +94,12 @@ Dazu den Sprachwechsel auf Startseite, Fachseite, Bereichsseite, Simulationsseit
 
 ## Lehrpläne und Sortierung
 
-### 5. Lehrplan Bayern für Physik fehlt
+### 5. ✅ Lehrplan Bayern für Physik fehlt (erledigt 21.10.: `src/curriculum/lehrplaene/bayern-gymnasium-physik.ts`)
 Vorhanden sind (`src/curriculum/lehrplaene/`): Bayern Gymnasium Mathematik, Hessen Gymnasium Mathematik und Hessen Gymnasium Physik. **Es fehlt Bayern Gymnasium Physik.**
 
 **Ziel:** `bayern-gymnasium-physik.ts` im selben Aufbau anlegen (Jahrgangsstufe → Lernbereich → Simulations-IDs, Kurzbeschreibungen in eigenen Worten). Unsichere Zuordnungen als Entwurf kennzeichnen.
 
-### 6. ✅ (gebaut 20.10., Zweig `claude/hopeful-bardeen-9cogca`, Abnahme durch die Leitung; PR nach `main` folgt) Einstellungen mit Bundesland-Auswahl (neue Funktion)
+### 6. ✅ (in `main`; seit 21.10. Bundesland nur noch im Zahnrad) Einstellungen mit Bundesland-Auswahl (neue Funktion)
 Oben auf der Seite soll es ein Einstellungs-Element geben, zum Beispiel ein Zahnrad. Dort stellt man sein Bundesland ein.
 
 - **Bundesland gewählt:** Die Simulationen werden nach den Jahrgangsstufen dieses Landes sortiert und gruppiert.
