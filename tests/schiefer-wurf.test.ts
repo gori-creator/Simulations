@@ -224,4 +224,58 @@ describe('Modell: Waagerechter und schiefer Wurf', () => {
     expect(strobeInterval(4)).toBe(0.2);
     expect(strobeInterval(40)).toBe(2);
   });
+  it('Aufgabenwerte aus dem Lernmaterial (Aufgaben 1–6, Ausprobieren 4 und 7)', () => {
+    // A1: 45°, 15 m/s → T = 2,16 s, w = 22,9 m, h = 5,73 m
+    const a1 = vacuumFlight({ v0: 15, angle: 45, h0: 0, g: G });
+    expect(a1.time).toBeCloseTo(2.162, 3);
+    expect(a1.range).toBeCloseTo(22.94, 2);
+    expect(a1.maxHeight).toBeCloseTo(5.734, 3);
+    // A2: 30° und 60° → gleiche Weite, Höhen 2,87 m und 8,60 m, Zeiten 1,53 s und 2,65 s
+    const a30 = vacuumFlight({ v0: 15, angle: 30, h0: 0, g: G });
+    const a60 = vacuumFlight({ v0: 15, angle: 60, h0: 0, g: G });
+    expect(a60.range).toBeCloseTo(a30.range, 10);
+    expect(a60.maxHeight / a30.maxHeight).toBeCloseTo(3, 10);
+    expect(a60.time / a30.time).toBeCloseTo(Math.sqrt(3), 10);
+    expect(a60.maxHeight).toBeCloseTo(8.601, 3);
+    expect(a60.time).toBeCloseTo(2.648, 3);
+    // A4: Ziel (18 m | 2 m), v₀ = 15 m/s → 34,6° und 61,7°; mindestens 14,05 m/s
+    const [flat, steep] = aimAngles(15, 18, 2, G);
+    expect(flat).toBeCloseTo(34.63, 2);
+    expect(steep).toBeCloseTo(61.71, 2);
+    expect(minSpeed(18, 2, G)).toBeCloseTo(14.05, 2);
+    // A5: Fußball 28 m/s, 35° → ohne Luft 75,1 m, mit Luft ≈ 45,7 m, bester Winkel ≈ 41°
+    const k = footballDrag(PLANETS.erde.rho);
+    expect(vacuumRange(28, 35, 0, G)).toBeCloseTo(75.1, 1);
+    expect(rangeWith({ v0: 28, angle: 35, h0: 0, g: G }, k, 0.002)).toBeCloseTo(45.7, 1);
+    expect(optimalAngleWith(28, 0, G, k).angle).toBeCloseTo(41, 0);
+    // A6: Mond, waagerecht aus 20 m mit 10 m/s → T = √(40/1,62) = 4,97 s, w = 49,7 m
+    const a6 = vacuumFlight({ v0: 10, angle: 0, h0: 20, g: PLANETS.mond.g });
+    expect(a6.time).toBeCloseTo(4.969, 3);
+    expect(a6.range).toBeCloseTo(49.69, 2);
+    // Ausprobieren 4: aus 20 m mit 10 m/s liegt das Maximum bei 24,3°
+    expect(optimalAngle(10, 20, G)).toBeCloseTo(24.26, 2);
+    // Ausprobieren 7: Mond 15 m/s, 30° → 120,3 m
+    expect(vacuumRange(15, 30, 0, PLANETS.mond.g)).toBeCloseTo(120.28, 2);
+  });
+
+  it('Reglergrenzen: kleinste/größte Werte und Fallzeit unabhängig von v₀', () => {
+    // v₀ = 1 m/s, α = 80°: T = 2·sin 80°/9,81 = 0,2008 s
+    expect(vacuumFlight({ v0: 1, angle: 80, h0: 0, g: G }).time).toBeCloseTo(0.2008, 4);
+    // v₀ = 40 m/s, α = 45°, h₀ = 40 m, Mond: endlich und größer als ohne Höhe
+    const big = vacuumFlight({ v0: 40, angle: 45, h0: 40, g: PLANETS.mond.g });
+    expect(Number.isFinite(big.range)).toBe(true);
+    expect(big.range).toBeGreaterThan(vacuumRange(40, 45, 0, PLANETS.mond.g));
+    // α = −45° aus 40 m mit 40 m/s: Auftreffen nach 1,175 s
+    expect(vacuumFlight({ v0: 40, angle: -45, h0: 40, g: G }).time).toBeCloseTo(1.175, 3);
+    // senkrecht nach oben vom Turm: Weite 0, Auftreffgeschwindigkeit nach dem Energiesatz
+    const vert = vacuumFlight({ v0: 10, angle: 90, h0: 20, g: G });
+    expect(vert.range).toBe(0);
+    expect(Math.hypot(vert.impact.vx, vert.impact.vy)).toBeCloseTo(Math.sqrt(100 + 2 * G * 20), 10);
+    // waagerechter Wurf: Fallzeit hängt nur von h₀ ab
+    for (const v0 of [1, 10, 40]) expect(vacuumFlight({ v0, angle: 0, h0: 20, g: G }).time).toBeCloseTo(Math.sqrt(40 / G), 12);
+    // v₀ = 0 (nur im Modell): freier Fall bzw. kein Flug, keine Division durch 0
+    expect(vacuumFlight({ v0: 0, angle: 30, h0: 20, g: G }).time).toBeCloseTo(Math.sqrt(40 / G), 12);
+    expect(vacuumFlight({ v0: 0, angle: 30, h0: 0, g: G }).time).toBe(0);
+    expect(heightAt({ v0: 0, angle: 30, h0: 5, g: G }, 0)).toBe(5);
+  });
 });
