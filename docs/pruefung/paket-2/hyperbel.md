@@ -40,6 +40,7 @@ korrigiert (eine Rückfrage offen)
 | `src/simulations/mathematik/hyperbel/index.ts` | Beschriftung „y = 1/x“ nicht mehr im Rechteck an P |
 | `src/content/simulations/de/hyperbel.md` | Ausprobier-Punkt 7 (Lage von Q) präzisiert, Aufgabe 2 Hinweis „nicht an den Reglern“ |
 | `src/content/simulations/en/hyperbel.md` | vollständig an DE angeglichen (alle 7 Ausprobier-Punkte, 5 Aufgaben, Unterrichtsideen) |
+| `index.ts` (Leitung) | Nullstelle zeigt „≈“, wenn gerundet wird (x ≈ 0,33 statt x = 0,33) |
 | `tests/hyperbel.test.ts` | 4 Tests ergänzt (Prüfwerte, Punktsymmetrie, a < 0, a = 0) |
 
 ## 6. Für den Kern (nicht selbst ändern)

@@ -506,6 +506,8 @@ export default defineSimulation({
     /** Parameterwerte (Schritt 0,1) und abgeleitete Werte als Text. */
     const P1 = (v: number) => fmt.num(Math.round(v * 10) / 10, 1);
     const N = (v: number, d = 2) => fmt.num(v, d);
+    /** „=“ bei exakter Anzeige, „≈“ wenn auf 2 Nachkommastellen gerundet wird. */
+    const eq = (v: number) => (Math.abs(v * 100 - Math.round(v * 100)) < 1e-9 ? '=' : '≈');
     const hidden = () => !p.info;
     const Q = (s: string) => (hidden() ? '?' : s);
 
@@ -560,7 +562,7 @@ export default defineSimulation({
       const z = zero(h);
       // a = 0 und c = 0: f(x) = 0 – jede Stelle x ≠ b ist Nullstelle
       const zeroNone = p.a === 0 ? (p.c === 0 ? (de ? 'alle x ≠ b (f(x) = 0)' : 'every x ≠ b (f(x) = 0)') : de ? 'keine' : 'none') : de ? 'keine – für c = 0 ist die x-Achse Asymptote' : 'none – for c = 0 the x-axis is an asymptote';
-      ctx.readout('zero', z === null ? zeroNone : { html: `${v('x')}<sub>0</sub> = ${v('b')} − ${frac(v('a'), v('c'))} = ${fmt.num(z)} &nbsp;→&nbsp; N${fmt.point(z, 0)}` });
+      ctx.readout('zero', z === null ? zeroNone : { html: `${v('x')}<sub>0</sub> = ${v('b')} − ${frac(v('a'), v('c'))} ${eq(z)} ${fmt.num(z)} &nbsp;→&nbsp; N${fmt.point(z, 0)}` });
       const s = yIntercept(h);
       const yintNone = p.a === 0 ? (de ? 'keiner – 0 gehört nicht zu D' : 'none – 0 is not in D') : de ? 'keiner – für b = 0 ist die y-Achse Asymptote' : 'none – for b = 0 the y-axis is an asymptote';
       ctx.readout('yint', s === null ? yintNone : { html: `${v('f')}(0) = ${fmt.num(s)} &nbsp;→&nbsp; S<sub>${v('y')}</sub>${fmt.point(0, s)}` });
@@ -1117,7 +1119,7 @@ export default defineSimulation({
         }
         const hr = { a: Math.round(h.a * 10) / 10, b: Math.round(h.b * 10) / 10, c: Math.round(h.c * 10) / 10 };
         const z = zero(hr);
-        cells.push({ f: `${ctx.t('zero')}: ${hidden() ? '?' : z === null ? ctx.t(two ? 'noZeroS' : 'noZero') : `x = ${N(z)}`}`, swatch: c.pts, muted: !hidden() && z === null });
+        cells.push({ f: `${ctx.t('zero')}: ${hidden() ? '?' : z === null ? ctx.t(two ? 'noZeroS' : 'noZero') : `x ${eq(z)} ${N(z)}`}`, swatch: c.pts, muted: !hidden() && z === null });
         const s = yIntercept(hr);
         cells.push({ f: `${two ? 'S_y' : ctx.t('yint')}: ${hidden() ? '?' : s === null ? ctx.t(two ? 'noYintS' : 'noYint') : `${two ? '' : 'S_y'}(0 | ${N(s)})`}`, swatch: c.pts, muted: !hidden() && s === null });
         cells.push({ f: `${ctx.t('branches')}: ${hidden() ? '?' : ctx.t(h.a > 0 ? 'q13' : 'q24')}`, swatch: c.f, span: true });
