@@ -29,6 +29,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | feldlinien | `docs/ARCHITEKTUR.md` | Hinweis: Ein `hint` als Funktion braucht eine Typangabe am Parameter, sonst gehen die Typen von `ctx.params` verloren. | offen |
 | kondensator | `src/sim-core/task-mode.ts` / Host | Deckt man ein einzelnes Spoiler-Ergebnis auf, wird `ctx.hidden` global falsch, und das ganze Bild zeigt alle Werte. `ctx.hidden` soll erst falsch werden, wenn alle Spoiler aufgedeckt sind (bzw. Simulationen gezielt `ctx.isHidden(key)` nutzen); Verhalten dokumentieren. | offen |
 | doppelspalt | `src/sim-core/format.ts` | Helfer für „n gültige Ziffern“ (`fmt.sig(x, n)`), damit Simulationen nicht eigene `digits()` bauen. | offen |
+| induktion | `scripts/agenten/simshot.cjs` | Das Beispiel im Dateikopf `["focus","[data-sim-root] canvas"]` trifft das Tastaturziel nicht; richtig ist `.sim__stage--keys`. Beispiel korrigieren. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -82,5 +83,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | stoesse | Eigene Index-Helfer `parts`/`richText` auf den Kern-Helfer `subText` umstellen (ohne sichtbare Änderung). | offen |
 | wellen-ausbreitung | Bei λ ≈ 0,3 m kreuzen die gestrichelten Hilfslinien der λ-Klammer die Beschriftung leicht. | offen |
 | kondensator | Eigene Index-Helfer `richText` (`U_[C]`) auf `subText` umstellen; „37 %“ bei τ = 100 s mit t½-Linien dicht beieinander. | offen |
+| induktion | Mit der Maus lässt sich der Magnet bis z = −3 cm ziehen; dort ist die Spannungsspitze wegen der Einwindungs-Näherung zu groß. Ziehbereich auf z ≥ 3 cm begrenzen wie im Automatikbetrieb. Lokale Index-Hilfen auf `subText` umstellen. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
