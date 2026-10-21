@@ -34,9 +34,9 @@ Beispiel: Bei $g(x) = 2\,(x - 1)^2 - 2$ ist $a = 2$, $b = 1$, $c = 1$, $d = -2$.
 ## Ausprobieren
 
 1. [Startbild](?f=sq&a=2&b=1&c=1&d=-2): Drücke „Schritt für Schritt abspielen“. Beobachte, wie der Graph nacheinander gestreckt, verschoben, gestreckt und verschoben wird. Halte an, gehe mit „Schritt zurück“ und „Schritt vor“ oder ziehe den Knopf der Zeitleiste.
-2. Ziehe den grünen **Ankerpunkt**: Er ist das Bild des Ursprungs, also $(c \mid d)$. Ziehe den roten **Formpunkt**: Er ändert $a$ und $b$. Was passiert, wenn du ihn unter den Ankerpunkt oder links an ihm vorbei ziehst?
+2. Ziehe den runden **Ankerpunkt**: Er ist das Bild des Ursprungs, also $(c \mid d)$. Ziehe den rautenförmigen **Formpunkt**: Er ändert $a$ und $b$. Was passiert, wenn du ihn unter den Ankerpunkt oder links an ihm vorbei ziehst?
 3. [Wurzelfunktion mit b = −1](?f=sqrt&a=1&b=-1&c=2&d=0): Spiele die Schrittfolge ab. Wie „klappt“ der Graph an der $y$-Achse um? Warum ist die Definitionsmenge jetzt $x \le 2$?
-4. [Sinusfunktion](?f=sin&a=2&b=2&c=0&d=1): Lies Amplitude, Periode und Mittellinie ab. Verändere $b$ und beobachte die Periode $\frac{2\pi}{b}$.
+4. [Sinusfunktion](?f=sin&a=2&b=2&c=0&d=1): Lies Amplitude, Periode und Mittellinie ab. Verändere $b$ und beobachte die Periode $\frac{2\pi}{\lvert b\rvert}$.
 5. [Hyperbel](?f=inv&a=2&b=1&c=-1&d=1) und [Exponentialfunktion](?f=exp&a=-1&b=1&c=1&d=3): Wie wandern die Asymptoten mit?
 6. [Stolperstein Reihenfolge](?f=sq&a=1&b=2&c=1&d=0&ord=swap): Die Animation verschiebt zuerst und streckt dann. Vergleiche das Ergebnis $h$ mit dem richtigen $g$ (gestrichelt).
 7. Stelle $a = 0$ ein. Was bleibt vom Graphen übrig?
@@ -115,9 +115,9 @@ b) Waagrechte Asymptote $y = 3$ (wegen $d = 3$). Nullstelle: $2^{x - 1} = 3 \Rig
 
 - **Einsatz:** Jahrgangsstufe 11, Lernbereich „Spezielle Eigenschaften von Funktionen“ (LehrplanPLUS Gymnasium Bayern): Verschieben, Strecken und Spiegeln von Graphen, angewandt auf bekannte Funktionstypen. Welche Grundfunktionen dort im Einzelnen vorkommen, bitte am Lehrplan prüfen.
 - **Schrittfolge an der Tafel:** Die Zeitleiste lässt sich nach jedem Schritt anhalten. So kann die Klasse vorher vermuten, wohin der Graph als Nächstes wandert, und die Vermutung dann prüfen.
-- **Term erraten:** Mit „Term und Wirkung zeigen“ aus erscheint nur der Graph; „Neue Aufgabe“ würfelt neue, eindeutig ablesbare Werte, „Term aufdecken“ löst auf und spielt die Schrittfolge ab. Gut geeignet für Partnerarbeit.
+- **Term erraten:** Mit „Term und Wirkung zeigen“ aus erscheint nur der Graph, die Regler für $a$, $b$, $c$ und $d$ sind dann ausgeblendet; „Neue Aufgabe“ würfelt neue, eindeutig ablesbare Werte, „Term aufdecken“ löst auf und spielt die Schrittfolge ab. Gut geeignet für Partnerarbeit.
 - **Gleiche Logik, verschiedene Funktionen:** Dieselben vier Schritte wirken bei Parabel, Wurzel, Hyperbel, Sinus und Exponentialfunktion gleich. Vielleicht lohnt es sich, eine Transformation einzustellen und nur die Grundfunktion zu wechseln.
-- **Modell:** Parameter in Zehnteln, $b = 0$ ist nicht erlaubt. Die gezeigte Schrittfolge ist eine mögliche Reihenfolge; andere Reihenfolgen führen zum Ziel, wenn man die Parameter entsprechend anpasst.
+- **Modell:** Parameter in Zehnteln, $b = 0$ ist nicht erlaubt. Die gezeigte Schrittfolge ist eine mögliche Reihenfolge; andere Reihenfolgen führen zum Ziel, wenn man die Parameter entsprechend anpasst. Ist am Gerät „Bewegung reduzieren“ eingestellt, springt „Schritt für Schritt abspielen“ auf den ersten Schritt; weiter geht es mit „Schritt vor“.
 - **Häufige Stolpersteine:**
   - „$f(x - 2)$ ist nach links verschoben.“ – Das Minus in der Klammer bedeutet eine Verschiebung nach **rechts**.
   - „$f(2x)$ ist in $x$-Richtung gestreckt.“ – Es ist gestaucht, mit dem Faktor $\frac{1}{2}$.
