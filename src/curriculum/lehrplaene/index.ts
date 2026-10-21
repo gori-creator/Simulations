@@ -13,7 +13,7 @@ export type * from "./types";
  * Reihenfolge = Reihenfolge auf der Fachseite. Aufbereitete Quelldaten und
  * Protokolle (Lücken, Unklarheiten) liegen in docs/lehrplaene/.
  *
- * - Baden-Württemberg, Gymnasium: Physik (Bildungsplan, G9)
+ * - Baden-Württemberg, Gymnasium: Mathematik und Physik (Bildungsplan, G9)
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  */
