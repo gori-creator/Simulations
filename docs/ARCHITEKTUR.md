@@ -57,10 +57,17 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 | `params` | Parameter (Zahl, Schalter, Auswahl, Text) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group`, `visibleIf` und Hilfetext `help` (fest oder als Funktion der Werte `(v) => L(…)`, `null` blendet ihn aus; wird bei jeder Änderung aktualisiert) |
 | `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
 | `presets` | Beispiel-Einstellungen |
-| `animated`, `layout`, `dragHint`, `hint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), allgemeiner Hinweis „Punkte lassen sich ziehen“ (`dragHint`) bzw. eigener Tipp unter der Bühne (`hint: L('…', '…')`, ersetzt den allgemeinen; auch als Funktion der Werte, z. B. `hint: (v) => (v.mode === 'test' ? L(…) : null)` – der Host aktualisiert ihn bei jeder Änderung, `null` zeigt den allgemeinen Hinweis bzw. keinen; bei gesperrten Links `_lock=1` erscheint kein Tipp, nach „Entsperren“ wieder), eigene Texte |
+| `animated`, `layout`, `dragHint`, `hint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), allgemeiner Hinweis „Punkte lassen sich ziehen“ (`dragHint`) bzw. eigener Tipp unter der Bühne (`hint: L('…', '…')`, ersetzt den allgemeinen; auch als Funktion der Werte, z. B. `hint: (v: { readonly mode?: unknown }) => (v.mode === 'test' ? L(…) : null)` – der Parameter braucht eine Typangabe, sonst kann TypeScript die Parametertypen nicht mehr aus `params` ableiten und `ctx.params` verliert seine Typen (siehe Hinweis unten); der Host aktualisiert ihn bei jeder Änderung, `null` zeigt den allgemeinen Hinweis bzw. keinen; bei gesperrten Links `_lock=1` erscheint kein Tipp, nach „Entsperren“ wieder), eigene Texte |
 | `actions` | Knöpfe unter der Bühne (z. B. „Würfeln“, „Wechseln“), optional mit `visibleIf`; Beschriftung/Aktivierung zur Laufzeit über `ctx.setAction()` |
 | `images` | optionale Bilder aus `src/assets/sims/<id>/` (Liste in `docs/BILDER.md`); fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik |
 | `mount(ctx)` | baut die Simulation auf und gibt `{ update, render, tick?, action?, resetTime?, resetView?, destroy? }` zurück |
+
+**Hinweis zu `hint` als Funktion:** `defineSimulation` leitet die Typen von `ctx.params` aus `params` ab. Eine Funktion ohne Typangabe am Parameter (`hint: (v) => …`) stört diese Ableitung, dann ist `ctx.params` nur noch untypisiert. Deshalb den Parameter immer mit den benötigten Feldern angeben:
+
+```ts
+hint: (v: { readonly mode?: unknown }) =>
+  v.mode === 'plates' ? L('Ziehe die Probeladung …', 'Drag the test charge …') : null,
+```
 
 **Host (`host.ts`)** – erzeugt aus den Definitionen automatisch Regler (`controls.ts`), Ergebnisliste, Beispiel-Knöpfe und kümmert sich um:
 

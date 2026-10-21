@@ -3,10 +3,10 @@
 // specs.json: [["name", "/de/.../?a=1", 1360, "light"|"dark", [["action","id"],["wait",ms],["play"],["click",x,y],["drag",x1,y1,x2,y2]]], ...]
 // Koordinaten bei click/drag relativ zur Zeichenfläche (canvas) in CSS-Pixeln.
 // Weitere Schritte: ["set","key",wert] (Regler/Schalter/Auswahl bedienen), ["text","Beschriftung"] (Element mit genau diesem Text anklicken), ["sel","css"] (Element per Selektor anklicken).
-// Tastatur: ["focus","css"] fokussiert ein Element (z. B. ["focus","[data-sim-root] canvas"] für die Bühne),
+// Tastatur: ["focus","css"] fokussiert ein Element (z. B. ["focus",".sim__stage--keys"] für die Bühne mit Tastaturbedienung),
 //   ["key","ArrowRight"] drückt eine Taste auf dem gerade fokussierten Element (Playwright-Namen wie
 //   "Enter", "Tab", "Shift+Tab", "Space", "ArrowUp"; optional Anzahl: ["key","ArrowRight",3]).
-//   Beispiel Tastaturprüfung: [["focus","[data-sim-root] canvas"],["key","ArrowRight",2],["key","Enter"]]
+//   Beispiel Tastaturprüfung: [["focus",".sim__stage--keys"],["key","ArrowRight",2],["key","Enter"]]
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs');
 const path = require('path');
