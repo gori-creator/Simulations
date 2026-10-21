@@ -157,7 +157,14 @@ export default defineSimulation({
     },
     { key: 'pos', type: 'boolean', group: 'view', label: L('Nur die positiv Getesteten', 'Only those who tested positive'), default: false },
     { key: 'sort', type: 'boolean', group: 'view', label: L('Personen nach Gruppen sortieren', 'Sort people into groups'), default: false, visibleIf: (v) => v.view === 'icons' },
-    { key: 'show', type: 'boolean', group: 'view', label: L('Vorhersagewerte anzeigen', 'Show predictive values'), default: true, help: L('Für Aufgaben ausblenden: Die Anzahlen bleiben sichtbar.', 'Hide for tasks: the counts stay visible.') },
+    {
+      key: 'show',
+      type: 'boolean',
+      group: 'view',
+      label: L('Ergebnisse anzeigen', 'Show results'),
+      default: true,
+      help: L('Für Aufgaben ausblenden: Anzahlen und Vorhersagewerte erscheinen als „?“. Prävalenz, Sensitivität und Spezifität bleiben sichtbar.', 'Hide for tasks: counts and predictive values appear as “?”. Prevalence, sensitivity and specificity stay visible.'),
+    },
   ],
   actions: [
     { id: 'focus', label: L('Nur die positiv Getesteten', 'Only those who tested positive'), primary: true, visibleIf: (v) => v.view === 'icons' },
@@ -166,7 +173,7 @@ export default defineSimulation({
     { id: 'replay', label: L('Ablauf neu zeigen', 'Replay the process'), visibleIf: (v) => v.view === 'icons' },
   ],
   readouts: [
-    { key: 'groups', label: L('1000 Personen', '1000 people') },
+    { key: 'groups', label: L('1000 Personen', '1000 people'), spoiler: true },
     { key: 'ppv', label: L('Positiver Vorhersagewert', 'Positive predictive value'), spoiler: true },
     { key: 'npv', label: L('Negativer Vorhersagewert', 'Negative predictive value'), spoiler: true },
     { key: 'two', label: L('Zweiter Test', 'Second test'), spoiler: true },
@@ -207,7 +214,7 @@ export default defineSimulation({
     const ACC = () => th().series[4]!;
     const GRAY = () => th().muted;
     const roleColor = (r: Role) => (r === 'tp' || r === 'fn' ? RED() : r === 'fp' ? ORANGE() : GRAY());
-    const cardBg = () => (th().dark ? shade(th().bg, 0.075) : '#ffffff');
+    const cardBg = () => (th().dark ? shade(th().bg, 0.075) : th().bg);
 
     /* ---------------- Zustand ---------------- */
     const setup = (): TestSetup => {
@@ -246,7 +253,7 @@ export default defineSimulation({
         const cw = Math.round(clamp(W * 0.31, 214, 272));
         return { main: { x: 6, y: 6, w: W - cw - 18, h: H - 12 }, col: { x: W - cw - 6, y: 6, w: cw, h: H - 12 } };
       }
-      const mh = Math.round(clamp(H * 0.66, 300, H - 190));
+      const mh = Math.round(clamp(H - 274, 300, H - 190));
       return { main: { x: 4, y: 4, w: W - 8, h: mh }, col: { x: 4, y: mh + 12, w: W - 8, h: H - mh - 16 } };
     }
     const HEAD = 50;
@@ -519,6 +526,15 @@ export default defineSimulation({
         g.fill();
         if (role === 'fn') g.stroke();
       }
+      // Kranke tragen zusätzlich einen Punkt auf dem Körper: krank/gesund ist
+      // so auch ohne Farbunterscheidung (Rot-Grün-Schwäche) erkennbar.
+      if (role === 'tp' || role === 'fn') {
+        const big = size >= 11;
+        g.beginPath();
+        g.arc(size / 2, big ? size * 0.71 : size / 2, Math.max(1, size * (big ? 0.1 : 0.13)), 0, Math.PI * 2);
+        g.fillStyle = role === 'tp' ? th().bg : col;
+        g.fill();
+      }
       sprites.set(key, canvas);
       c = canvas;
       return c;
@@ -528,15 +544,27 @@ export default defineSimulation({
     const pct = (v: number, dec?: number) => {
       if (!Number.isFinite(v)) return '–';
       const x = v * 100;
-      const d = dec ?? (x === 100 || x === 0 ? 0 : x >= 99.9 ? 2 : x >= 1 ? 1 : 2);
-      return `${fmt.num(x, d)} %`;
+      const d = dec ?? pctDigits(x);
+      // geschütztes Leerzeichen: Zahl und % beim Umbrechen nicht trennen
+      return `${fmt.num(x, d)}\u00a0%`;
     };
+    /** Stellen nach dem Komma für `pct` (wie dort). */
+    const pctDigits = (x: number) => (x === 100 || x === 0 ? 0 : x >= 99.9 ? 2 : x >= 1 ? 1 : 2);
+    /** „= 9 %“ bei exaktem, „≈ 9,2 %“ bei gerundetem Prozentwert. */
+    const pctEq = (v: number) => {
+      if (!Number.isFinite(v)) return '= –';
+      const x = v * 100;
+      const d = pctDigits(x);
+      return `${Math.abs(x - Math.round(x * 10 ** d) / 10 ** d) < 1e-9 ? '=' : '≈'} ${pct(v)}`;
+    };
+    /** Stellen für Anteile mit drei geltenden Ziffern (z. B. 0,0009). */
+    const decDigits = (v: number) => clamp(3 - Math.floor(Math.log10(Math.abs(v))) - 1, 1, 6);
     /** Anteil mit sinnvollen Stellen (z. B. 0,0009) für die Bayes-Formel. */
-    const dec = (v: number) => {
-      if (v === 0) return '0';
-      const d = clamp(3 - Math.floor(Math.log10(Math.abs(v))) - 1, 1, 6);
-      return fmt.num(v, d);
-    };
+    const dec = (v: number) => (v === 0 ? '0' : fmt.num(v, decDigits(v)));
+    /** „=“ oder „≈“, je nachdem, ob `dec` die Zahlen rundet. */
+    const decRel = (...vs: number[]) => (vs.every((v) => v === 0 || Math.abs(v - Math.round(v * 10 ** decDigits(v)) / 10 ** decDigits(v)) < 1e-12) ? '=' : '≈');
+    /** Anzahl oder „?“, wenn die Ergebnisse für Aufgaben ausgeblendet sind. */
+    const hn = (n: number) => (p.show ? `${n}` : '?');
     const roleName = (r: Role) =>
       ({
         tp: tt('richtig positiv', 'true positive'),
@@ -597,7 +625,7 @@ export default defineSimulation({
       g.shadowOffsetY = 4;
       roundRect(g, r.x, r.y, r.w, r.h, 14);
       const grad = g.createLinearGradient(0, r.y, 0, r.y + r.h);
-      grad.addColorStop(0, t.dark ? shade(t.bg, 0.075) : '#ffffff');
+      grad.addColorStop(0, t.dark ? shade(t.bg, 0.075) : t.bg);
       grad.addColorStop(1, t.dark ? shade(t.bg, 0.035) : shade(t.bg, -0.018));
       g.fillStyle = grad;
       g.fill();
@@ -620,7 +648,8 @@ export default defineSimulation({
       const prevTxt = pct(setup().prev);
       let sub: string;
       if (st === 'all') sub = tt('Wer ist krank? Wie fällt der Test aus?', 'Who has the disease? What does the test say?');
-      else if (st === 'sick') sub = tt(`${c.sick} davon sind krank (${prevTxt}).`, `${c.sick} of them have the disease (${prevTxt}).`);
+      else if (st === 'sick' && p.show) sub = tt(`${c.sick} davon sind krank (${prevTxt}).`, `${c.sick} of them have the disease (${prevTxt}).`);
+      else if (!p.show) sub = p.n2 ? tt(`Anteil Kranker jetzt ${prevTxt} = Vorhersagewert des 1. Tests`, `Share with the disease now ${prevTxt} = predictive value of test 1`) : tt(`Anteil der Kranken ${prevTxt} · Anzahlen ausgeblendet`, `Share with the disease ${prevTxt} · counts hidden`);
       else if (p.n2) sub = tt(`Anteil Kranker jetzt ${prevTxt} = Vorhersagewert des 1. Tests · ${pos} positiv`, `Share with the disease now ${prevTxt} = predictive value of test 1 · ${pos} positive`);
       else sub = tt(`${sick} krank (${prevTxt}) · ${pos} positiv getestet · ${N - pos} negativ`, `${sick} with the disease (${prevTxt}) · ${pos} tested positive · ${N - pos} negative`);
       const fs = fitFont(title, m.w - 28, 800, wide() ? 14.5 : 13.5, 11);
@@ -715,17 +744,17 @@ export default defineSimulation({
       g.globalAlpha = a;
       // Beschriftungen unter den Gruppen
       const lab = (x: number, w: number, n: number, l1: string, color: string) => {
-        text(g, `${n}`, x + w / 2, fg.base + 17, { font: font(800, 14), color });
+        text(g, hn(n), x + w / 2, fg.base + 17, { font: font(800, 14), color });
         text(g, l1, x + w / 2, fg.base + 32, { font: font(600, 11), color: t.muted });
       };
       lab(fg.xa, Math.max(fg.ka * fg.cell, c.tp === 0 ? 32 : 0), tp, tt('krank', 'ill'), RED());
       lab(fg.xb, Math.max(fg.kb * fg.cell, c.fp === 0 ? 32 : 0), fp, tt('gesund', 'healthy'), ORANGE());
       // Überschrift: x von y
       const h = fg.head;
-      const big = `${tp} ${tt('von', 'of')} ${tp + fp}`;
+      const big = `${hn(tp)} ${tt('von', 'of')} ${hn(tp + fp)}`;
       const bs = fitFont(big, h.w - 20, 800, wide() ? 28 : 24, 16);
       text(g, big, h.x + h.w / 2, h.y + 20, { font: font(800, bs), color: RED() });
-      const ppvTxt = p.show ? ` ≈ ${pct(gPpv.at(now))}` : '';
+      const ppvTxt = p.show ? ` ${pctEq(gPpv.at(now))}` : '';
       const line = tt(`positiv Getesteten sind wirklich krank${ppvTxt}`, `people who tested positive really have the disease${ppvTxt}`);
       const ls = fitFont(line, h.w - 20, 650, 13, 10);
       text(g, line, h.x + h.w / 2, h.y + 46, { font: font(650, ls), color: t.text });
@@ -770,12 +799,12 @@ export default defineSimulation({
         const n = Math.round(gc[role].at(now));
         const maxW = r.x + r.w - tx - 6;
         g.font = font(800, 15);
-        text(g, `${n}`, tx, r.y + r.h / 2 - 8, { font: font(800, 15), color: role === 'tn' ? t.text : shade(roleColor(role), t.dark ? 0.2 : -0.1), align: 'left' });
+        text(g, hn(n), tx, r.y + r.h / 2 - 8, { font: font(800, 15), color: role === 'tn' ? t.text : shade(roleColor(role), t.dark ? 0.2 : -0.1), align: 'left' });
         const l1 = roleName(role);
         const s1 = fitFont(l1, maxW, 700, 11, 9.5);
         text(g, l1, tx, r.y + r.h / 2 + 8, { font: font(700, s1), color: t.muted, align: 'left' });
         g.font = font(800, 15);
-        const nw = g.measureText(`${n}`).width;
+        const nw = g.measureText(hn(n)).width;
         g.font = font(600, 10.5);
         const sh = roleShort(role);
         if (g.measureText(sh).width < maxW - nw - 14) text(g, sh, tx + nw + 8, r.y + r.h / 2 - 7.5, { font: font(600, 10.5), color: t.muted, align: 'left' });
@@ -804,10 +833,14 @@ export default defineSimulation({
       const leafY = [0, 1, 2, 3].map((k) => top + (k + 0.5) * rowH);
       const bh = clamp(rowH * 0.62, 30, 44);
       const W = m.w - 24;
-      const bw: [number, number, number] = [clamp(W * 0.15, 52, 84), clamp(W * 0.2, 70, 110), clamp(W * 0.3, 104, 170)];
+      // schmal (Handy): Kästen kleiner, damit zwischen den Stufen Platz für die Astbeschriftung bleibt
+      const narrow = W < 400;
+      const bw: [number, number, number] = narrow
+        ? [clamp(W * 0.15, 46, 84), clamp(W * 0.2, 60, 110), clamp(W * 0.3, 92, 170)]
+        : [clamp(W * 0.15, 52, 84), clamp(W * 0.2, 70, 110), clamp(W * 0.3, 104, 170)];
       const x0 = m.x + 12 + bw[0] / 2;
       const leafX = m.x + m.w - 12 - bw[2] / 2;
-      const l1x = lerp(x0 + bw[0] / 2, leafX - bw[2] / 2, 0.45);
+      const l1x = lerp(x0 + bw[0] / 2, leafX - bw[2] / 2, narrow ? 0.38 : 0.45);
       return { root: [x0, (leafY[1]! + leafY[2]!) / 2], l1x, l1y: [(leafY[0]! + leafY[1]!) / 2, (leafY[2]! + leafY[3]!) / 2], leafX, leafY, bw, bh, formula: formulaR };
     }
     /** Platz eines Blatts im Vorwärts- (krank zuerst) und im umgekehrten Baum. */
@@ -864,18 +897,20 @@ export default defineSimulation({
       g.lineWidth = width;
       g.stroke();
       // Beschriftung am Ast
-      const lx = lerp(a[0], b[0], ax);
-      const tB = ax;
+      const fsz = wide() ? 11.5 : 10.5;
+      g.font = font(750, fsz);
+      const lw = g.measureText(label).width + (wide() ? 12 : 8);
+      // Beschriftung zwischen den Kästen halten, wenn der Ast kurz ist
+      const lx = clamp(lerp(a[0], b[0], ax), Math.min(a[0], b[0]) + lw / 2, Math.max(Math.min(a[0], b[0]) + lw / 2, Math.max(a[0], b[0]) - lw / 2));
+      const tB = Math.abs(b[0] - a[0]) > 1 ? clamp01((lx - a[0]) / (b[0] - a[0])) : ax;
       const ly = lerp(a[1], b[1], tB * tB * (3 - 2 * tB));
-      g.font = font(750, 11.5);
-      const lw = g.measureText(label).width + 12;
       roundRect(g, lx - lw / 2, ly - 9.5, lw, 19, 9.5);
       g.fillStyle = alpha(cardBg(), 0.96);
       g.fill();
       g.strokeStyle = alpha(glow ? ACC() : color, 0.55);
       g.lineWidth = 1;
       g.stroke();
-      text(g, label, lx, ly + 0.5, { font: font(750, 11.5), color: glow ? ACC() : shade(color, t.dark ? 0.25 : -0.25) });
+      text(g, label, lx, ly + 0.5, { font: font(750, fsz), color: glow ? ACC() : shade(color, t.dark ? 0.25 : -0.25) });
       g.restore();
     }
 
@@ -910,8 +945,9 @@ export default defineSimulation({
         { label: pct(1 - s.prev), w: w(1 - s.prev), col: GRAY() },
       ];
       const firstR = [
-        { label: pct(pPos), w: w(pPos), col: ACC() },
-        { label: pct(1 - pPos), w: w(1 - pPos), col: GRAY() },
+        // ohne Ergebnisse verraten auch die Strichstärken nichts
+        { label: hid(pct(pPos)), w: w(p.show ? pPos : 0.5), col: ACC() },
+        { label: hid(pct(1 - pPos)), w: w(p.show ? 1 - pPos : 0.5), col: GRAY() },
       ];
       ([0, 1] as const).forEach((k) => {
         const fa = 1 - clamp01(f * 2);
@@ -934,7 +970,7 @@ export default defineSimulation({
       const fwdLab: Record<Role, string> = { tp: pct(s.se), fn: pct(1 - s.se), fp: pct(1 - s.sp), tn: pct(s.sp) };
       const revLab: Record<Role, string> = { tp: hid(pct(ppvV)), fp: hid(pct(1 - ppvV)), fn: hid(pct(1 - npvV)), tn: hid(pct(npvV)) };
       const fwdW: Record<Role, number> = { tp: s.se, fn: 1 - s.se, fp: 1 - s.sp, tn: s.sp };
-      const revW: Record<Role, number> = { tp: ppvV, fp: 1 - ppvV, fn: 1 - npvV, tn: npvV };
+      const revW: Record<Role, number> = p.show ? { tp: ppvV, fp: 1 - ppvV, fn: 1 - npvV, tn: npvV } : { tp: 0.5, fp: 0.5, fn: 0.5, tn: 0.5 };
       const grow2 = reduced ? 1 : ease.inOutCubic(clamp01((now - viewT0 - 350) / 700));
       const drawKids = (kids: [Role, Role][], lab: Record<Role, string>, wt: Record<Role, number>, ea: number, rev: boolean) => {
         kids.forEach((pair, k) => {
@@ -963,7 +999,7 @@ export default defineSimulation({
         const col = k === 0 ? (f < 0.5 ? RED() : ACC()) : GRAY();
         const lab = f < 0.5 ? labF[k]! : labR[k]!;
         const la = Math.abs(f - 0.5) * 2;
-        nodeBox(x, y, tg.bw[1], tg.bh, `${cnt}`, lab, col, grow > 0.6 ? 0.35 + 0.65 * la : 0);
+        nodeBox(x, y, tg.bw[1], tg.bh, hn(cnt), lab, col, grow > 0.6 ? 0.35 + 0.65 * la : 0);
       });
       if (grow2 > 0.7) {
         for (const r of ROLES) {
@@ -974,7 +1010,7 @@ export default defineSimulation({
           const is = Math.min(18, tg.bh - 14);
           const icon = tg.bw[2] >= 128;
           const shift = icon ? (is + 4) / 2 : 0;
-          nodeBox(x, y, tg.bw[2], tg.bh, `${n}`, `${roleShort(r)}`, roleColor(r), hoverRole && hoverRole !== r ? 0.45 : 1, emph, shift);
+          nodeBox(x, y, tg.bw[2], tg.bh, hn(n), roleShort(r), roleColor(r), hoverRole && hoverRole !== r ? 0.45 : 1, emph, shift);
           if (icon) g.drawImage(sprite(r, is), x - tg.bw[2] / 2 + 7, y - is / 2, is, is);
         }
       }
@@ -1002,9 +1038,13 @@ export default defineSimulation({
       const gen = `${Pp} = \\f{P(${Kf}) · P_{${Kf}}(+)}{P(${Kf}) · P_{${Kf}}(+) + P(${KBf}) · P_{${KBf}}(+)}`;
       const num1 = s.prev * s.se;
       const den2 = (1 - s.prev) * (1 - s.sp);
-      const res = p.show ? `≈ \\c{a}{\\b{${pct(ppv(s))}}}` : '= ?';
-      const nums = `= \\f{${dec(s.prev)} · ${dec(s.se)}}{${dec(s.prev)} · ${dec(s.se)} + ${dec(1 - s.prev)} · ${dec(1 - s.sp)}} = \\f{${dec(num1)}}{${dec(num1 + den2)}} ${res}`;
-      const freq = `${tt('Häufigkeiten', 'frequencies')}: ${Pp} ≈ \\f{\\c{r}{${c.tp}}}{\\c{r}{${c.tp}} + \\c{o}{${c.fp}}}${p.show ? ` ≈ ${pct(c.pos ? c.tp / c.pos : NaN)}` : ''}`;
+      const pv = ppv(s);
+      const res = p.show ? `${pctEq(pv).slice(0, 1)} \\c{a}{\\b{${pct(pv)}}}` : '= ?';
+      const step = p.show ? `${decRel(num1, num1 + den2)} \\f{${dec(num1)}}{${dec(num1 + den2)}} ` : '';
+      const nums = `= \\f{${dec(s.prev)} · ${dec(s.se)}}{${dec(s.prev)} · ${dec(s.se)} + ${dec(1 - s.prev)} · ${dec(1 - s.sp)}} ${step}${res}`;
+      const freq = p.show
+        ? `${tt('Häufigkeiten', 'frequencies')}: ${Pp} ≈ \\f{\\c{r}{${c.tp}}}{\\c{r}{${c.tp}} + \\c{o}{${c.fp}}} ${pctEq(c.pos ? c.tp / c.pos : NaN)}`
+        : `${tt('Häufigkeiten', 'frequencies')}: ${Pp} ≈ \\f{?}{? + ?}`;
       const boxes = [gen, nums, freq].map((src, k) => fit(src, maxW, k === 2 ? size - 1 : size, k === 2 ? t.muted : t.text, 650, 9));
       const total = boxes.reduce((s2, b) => s2 + b.asc + b.desc, 0);
       // Zeilen gleichmäßig im Kasten verteilen
@@ -1083,7 +1123,7 @@ export default defineSimulation({
         const bs = fitFont(big, w, 800, r.h > 470 ? 40 : 32, 18);
         text(g, big, x, y + bs * 0.55, { font: font(800, bs), color: RED(), align: 'left', baseline: 'middle' });
         y += bs * 1.1 + 4;
-        const sent = tt(`${counts.tp} von ${counts.pos} positiv Getesteten sind krank.`, `${counts.tp} of ${counts.pos} people who tested positive have the disease.`);
+        const sent = tt(`${hn(counts.tp)} von ${hn(counts.pos)} positiv Getesteten sind krank.`, `${hn(counts.tp)} of ${hn(counts.pos)} people who tested positive have the disease.`);
         wrap(sent, w, font(600, 12))
           .slice(0, 2)
           .forEach((l) => {
@@ -1102,7 +1142,7 @@ export default defineSimulation({
         const big = hid(pct(ppvV));
         const bs = fitFont(big, lw, 800, 32, 16);
         text(g, big, x, y + 50, { font: font(800, bs), color: RED(), align: 'left', baseline: 'middle' });
-        const sent = tt(`${counts.tp} von ${counts.pos} positiv Getesteten sind krank.`, `${counts.tp} of ${counts.pos} who tested positive are ill.`);
+        const sent = tt(`${hn(counts.tp)} von ${hn(counts.pos)} positiv Getesteten sind krank.`, `${hn(counts.tp)} of ${hn(counts.pos)} who tested positive are ill.`);
         let yy = y + 76;
         wrap(sent, lw, font(600, 11))
           .slice(0, 3)
@@ -1127,11 +1167,12 @@ export default defineSimulation({
         y = Math.max(y, yy) + 2;
       }
       // Merksatz
-      const rare = counts.fp > counts.tp;
+      const rare = counts.fp > counts.tp && p.show;
       let msg: string;
       if (p.n2) msg = tt(`Merksatz: Ein zweiter positiver Test hebt den Vorhersagewert von ${pct(ppv(b))} auf ${hid(pct(ppvAfterTwo(b)))}.`, `Key idea: a second positive test raises the predictive value from ${pct(ppv(b))} to ${hid(pct(ppvAfterTwo(b)))}.`);
-      else if (counts.fp === 0) msg = tt('Merksatz: Ohne falsch positive Ergebnisse (Spezifität 100 %) ist jeder positiv Getestete krank.', 'Key idea: with no false positives (specificity 100 %), everyone who tests positive is ill.');
-      else if (rare) msg = tt('Merksatz: Ist die Krankheit selten, sind die meisten positiven Ergebnisse falsch positiv – auch bei einem guten Test.', 'Key idea: if the disease is rare, most positive results are false positives – even with a good test.');
+      else if (!p.show) msg = tt('Tipp: Rechne mit natürlichen Häufigkeiten. Wie viele der 1000 Personen sind krank, wie viele davon positiv – und wie viele Gesunde sind positiv?', 'Tip: work with natural frequencies. How many of the 1000 people are ill, how many of them test positive – and how many healthy people test positive?');
+      else if (s.sp >= 1) msg = tt('Merksatz: Ohne falsch positive Ergebnisse (Spezifität 100 %) ist jeder positiv Getestete krank.', 'Key idea: with no false positives (specificity 100 %), everyone who tests positive is ill.');
+      else if (rare) msg = tt('Merksatz: Bei einer seltenen Krankheit können die meisten positiven Ergebnisse falsch positiv sein – auch bei einem guten Test. Hier ist das so.', 'Key idea: if a disease is rare, most positive results can be false positives – even with a good test. That is the case here.');
       else msg = tt('Merksatz: Je häufiger die Krankheit unter den Getesteten ist, desto eher bedeutet „positiv“ auch „krank“.', 'Key idea: the more common the disease among those tested, the more likely “positive” really means “ill”.');
       const mf = font(650, roomy ? 12 : 11.5);
       const lines = wrap(msg, w - 16, mf);
@@ -1194,14 +1235,14 @@ export default defineSimulation({
       );
       const K = KS;
       ctx.readout('ppv', {
-        html: `P<sub>+</sub>(${K}) = ${frac(`${dec(s.prev)} · ${dec(s.se)}`, `${dec(s.prev)} · ${dec(s.se)} + ${dec(1 - s.prev)} · ${dec(1 - s.sp)}`)} ≈ <strong>${pct(ppv(s))}</strong> &nbsp;(${tt('Häufigkeiten', 'frequencies')}: ${frac(`${c.tp}`, `${c.tp} + ${c.fp}`)})`,
+        html: `P<sub>+</sub>(${K}) = ${frac(`${dec(s.prev)} · ${dec(s.se)}`, `${dec(s.prev)} · ${dec(s.se)} + ${dec(1 - s.prev)} · ${dec(1 - s.sp)}`)} ${pctEq(ppv(s)).slice(0, 1)} <strong>${pct(ppv(s))}</strong> &nbsp;(${tt('Häufigkeiten', 'frequencies')}: ${frac(`${c.tp}`, `${c.tp} + ${c.fp}`)})`,
       });
-      ctx.readout('npv', { html: `P<sub>−</sub>(${KB}) = ${frac(`${dec((1 - s.prev) * s.sp)}`, `${dec((1 - s.prev) * s.sp)} + ${dec(s.prev * (1 - s.se))}`)} ≈ <strong>${pct(npv(s))}</strong> &nbsp;(${frac(`${c.tn}`, `${c.tn} + ${c.fn}`)})` });
+      ctx.readout('npv', { html: `P<sub>−</sub>(${KB}) = ${frac(`${dec((1 - s.prev) * s.sp)}`, `${dec((1 - s.prev) * s.sp)} + ${dec(s.prev * (1 - s.se))}`)} ${pctEq(npv(s)).slice(0, 1)} <strong>${pct(npv(s))}</strong> &nbsp;(${frac(`${c.tn}`, `${c.tn} + ${c.fn}`)})` });
       ctx.readout(
         'two',
         p.n2
-          ? tt(`Prävalenz im 2. Test = Vorhersagewert des 1. Tests = ${pct(ppv(b))} → nach zwei positiven Tests ${pct(ppvAfterTwo(b))}`, `Prevalence in the 2nd test = predictive value of the 1st test = ${pct(ppv(b))} → after two positive tests ${pct(ppvAfterTwo(b))}`)
-          : tt(`Nach einem zweiten positiven Test: ${pct(ppvAfterTwo(b))}`, `After a second positive test: ${pct(ppvAfterTwo(b))}`),
+          ? tt(`Prävalenz im 2. Test = Vorhersagewert des 1. Tests ${pctEq(ppv(b))} → nach zwei positiven Tests ${pctEq(ppvAfterTwo(b))}`, `Prevalence in the 2nd test = predictive value of the 1st test ${pctEq(ppv(b))} → after two positive tests ${pctEq(ppvAfterTwo(b))}`)
+          : tt(`Nach einem zweiten positiven Test: P(krank) ${pctEq(ppvAfterTwo(b))}`, `After a second positive test: P(ill) ${pctEq(ppvAfterTwo(b))}`),
       );
     }
 
