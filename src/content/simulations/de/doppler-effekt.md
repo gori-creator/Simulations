@@ -6,7 +6,7 @@ description: "Interaktive Simulation zum Doppler-Effekt – Krankenwagen mit Mar
 
 Fährt ein Krankenwagen mit Martinshorn an dir vorbei, klingt der Ton beim Heranfahren **höher** und beim Wegfahren **tiefer** als im Stand. Das ist der **Doppler-Effekt** (nach Christian Doppler, 1842).
 
-Die Quelle sendet mit der Frequenz $f_Q$ Wellenfronten aus, die sich in der ruhenden Luft mit der **Schallgeschwindigkeit** $c \approx 340\,\tfrac{\text{m}}{\text{s}}$ als Kreise (im Raum: Kugeln) ausbreiten. Jeder Kreis hat seinen Mittelpunkt dort, wo die Quelle beim Aussenden **war**. Fährt die Quelle mit $v_Q$, rückt sie in jeder Periodendauer $T = \frac{1}{f_Q}$ um $v_Q \cdot T$ nach vorn. Deshalb liegen die Wellenfronten **vorn dichter** und **hinten weiter auseinander**:
+Die Quelle sendet mit der Frequenz $f_Q$ Wellenfronten aus, die sich in der ruhenden Luft mit der **Schallgeschwindigkeit** $c \approx 340\,\tfrac{\text{m}}{\text{s}}$ (Luft bei etwa $15\,^\circ\text{C}$; bei $20\,^\circ\text{C}$ sind es $343\,\tfrac{\text{m}}{\text{s}}$) als Kreise (im Raum: Kugeln) ausbreiten. Jeder Kreis hat seinen Mittelpunkt dort, wo die Quelle beim Aussenden **war**. Fährt die Quelle mit $v_Q$, rückt sie in jeder Periodendauer $T = \frac{1}{f_Q}$ um $v_Q \cdot T$ nach vorn. Deshalb liegen die Wellenfronten **vorn dichter** und **hinten weiter auseinander**:
 
 $$
 \lambda_v = \frac{c - v_Q}{f_Q}, \qquad \lambda_h = \frac{c + v_Q}{f_Q}.
@@ -57,7 +57,7 @@ Ein Krankenwagen fährt mit $34\,\tfrac{\text{m}}{\text{s}}$ (gut $120\,\tfrac{\
 <details>
 <summary>Lösung anzeigen</summary>
 
-Heranfahren: $f_B = 440\,\text{Hz} \cdot \frac{340}{340 - 34} \approx 488{,}9\,\text{Hz}$. Wegfahren: $f_B = 440\,\text{Hz} \cdot \frac{340}{340 + 34} = 400\,\text{Hz}$. [In der Simulation zeigen](?d=6&bx=20)
+Heranfahren: $f_B = 440\,\text{Hz} \cdot \frac{340}{340 - 34} \approx 488{,}9\,\text{Hz}$. Wegfahren: $f_B = 440\,\text{Hz} \cdot \frac{340}{340 + 34} = 400\,\text{Hz}$. In der Simulation steht der Beobachter $6\,\text{m}$ neben der Fahrbahn. Der Anteil von $v_Q$ auf der Verbindungslinie ist deshalb etwas kleiner als $34\,\tfrac{\text{m}}{\text{s}}$, und du liest knapp weniger ab (zum Beispiel $488{,}6\,\text{Hz}$). [In der Simulation zeigen](?d=6&bx=20)
 
 </details>
 
@@ -90,7 +90,7 @@ Krankenwagen ($34\,\tfrac{\text{m}}{\text{s}}$) und Radfahrer ($34\,\tfrac{\text
 <details>
 <summary>Lösung anzeigen</summary>
 
-Vorher: $f_B = 440\,\text{Hz} \cdot \frac{340 + 34}{340 - 34} \approx 537{,}8\,\text{Hz}$. Nachher entfernen sich beide: $f_B = 440\,\text{Hz} \cdot \frac{340 - 34}{340 + 34} = 360\,\text{Hz}$. [In der Simulation zeigen](?vb=34&d=6&bx=100)
+Vorher: $f_B = 440\,\text{Hz} \cdot \frac{340 + 34}{340 - 34} \approx 537{,}8\,\text{Hz}$. Nachher entfernen sich beide: $f_B = 440\,\text{Hz} \cdot \frac{340 - 34}{340 + 34} = 360\,\text{Hz}$. Wegen der $6\,\text{m}$ Abstand zur Fahrbahn zeigt die Simulation etwas weniger (zum Beispiel $536{,}4\,\text{Hz}$). [In der Simulation zeigen](?vb=34&d=6&bx=100)
 
 </details>
 
