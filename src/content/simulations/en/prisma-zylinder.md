@@ -7,7 +7,7 @@ description: Interactive 3D simulation of prisms and cylinders – volume V = G 
 A (right) **prism** has two equal, parallel bases and rectangles as its lateral faces; a **cylinder** has a circle as its base.
 
 - **Volume:** cut the solid into layers $1\,\text{cm}$ thick. Each layer has volume $G \cdot 1\,\text{cm}$; a solid $4\,\text{cm}$ high consists of 4 layers: $V = G \cdot h$ (cylinder: $V = \pi r^2 h$).
-- **Surface area:** roll the solid once along the floor. The prints of the lateral faces form a rectangle of length $u$ (perimeter of the base) and width $h$: $M = u \cdot h$ and $O = 2G + M$ (cylinder: $O = 2\pi r^2 + 2\pi r h$).
+- **Surface area:** roll the solid once along the floor. The prints of the lateral faces form a rectangle of length $u$ (perimeter of the base) and width $h$. Lateral area: $M = u \cdot h$; surface area: $O = 2 \cdot G + M$, where $G$ is the base area (cylinder: $O = 2\pi r^2 + 2\pi r h$).
 - **Limit:** a regular $n$-gon gets closer and closer to a circle as $n$ grows – the prism turns into a cylinder.
 
 ## Try it
@@ -42,7 +42,7 @@ $u = 6 \cdot 2\,\text{cm} = 12\,\text{cm}$, $M = u \cdot h = 48\,\text{cm}^2$.
 
 ### Task 3: Almost a cylinder
 
-From how many vertices on does the prism have more than $99\,\%$ of the cylinder's volume?
+What is the smallest number of vertices $n$ for which the prism has more than $99\,\%$ of the cylinder’s volume? Try it in the simulation. [Load task](?n=6&ghost=1&_hide=1)
 
 <details>
 <summary>Show solution</summary>

@@ -4,7 +4,7 @@ description: Interaktive 3D-Simulation zu Prisma und Zylinder – Volumen V = G 
 
 ## Worum geht es?
 
-Ein (gerades) **Prisma** hat zwei gleiche, parallele **Grundflächen** – die Grund- und die Deckfläche – und Rechtecke als Seitenflächen. Beim **Zylinder** ist die Grundfläche ein Kreis. Die Seitenflächen zusammen heißen **Mantel**.
+Ein (gerades) **Prisma** hat zwei deckungsgleiche, parallele Flächen: die **Grundfläche** und die **Deckfläche**. Die Seitenflächen sind Rechtecke. Beim **Zylinder** ist die Grundfläche ein Kreis. Die Seitenflächen zusammen heißen **Mantel**.
 
 **Volumen.** Man denkt sich den Körper in Schichten von $1\,\text{cm}$ Dicke zerlegt. Jede Schicht hat das Volumen $G \cdot 1\,\text{cm}$. Ist der Körper $h = 4\,\text{cm}$ hoch, gibt es 4 solche Schichten, bei $h = 4{,}5\,\text{cm}$ viereinhalb. Also
 
@@ -39,7 +39,7 @@ Die Grundfläche eines Prismas ist ein gleichschenkliges Dreieck mit der Grundse
 
 $G = \tfrac{1}{2} \cdot 4\,\text{cm} \cdot 3\,\text{cm} = 6\,\text{cm}^2$, also $V = G \cdot h = 6\,\text{cm}^2 \cdot 5\,\text{cm} = 30\,\text{cm}^3$.
 
-$u \approx 4\,\text{cm} + 2 \cdot 3{,}6\,\text{cm} = 11{,}2\,\text{cm}$, $M = u \cdot h \approx 56\,\text{cm}^2$ und $O = 2 \cdot G + M \approx 12\,\text{cm}^2 + 56\,\text{cm}^2 = 68\,\text{cm}^2$.
+$u \approx 4\,\text{cm} + 2 \cdot 3{,}6\,\text{cm} \approx 11{,}2\,\text{cm}$, $M = u \cdot h \approx 56\,\text{cm}^2$ und $O = 2 \cdot G + M \approx 12\,\text{cm}^2 + 56\,\text{cm}^2 = 68\,\text{cm}^2$.
 
 </details>
 
@@ -63,7 +63,7 @@ Beim regelmäßigen Sechseck ist jede Seite genau so lang wie der Umkreisradius.
 <details>
 <summary>Lösung anzeigen</summary>
 
-Das Sechseck besteht aus sechs Dreiecken mit dem Winkel $360^\circ : 6 = 60^\circ$ an der Spitze. Die beiden anderen Winkel sind gleich groß, also auch je $60^\circ$ – die Dreiecke sind gleichseitig, die Seite ist so lang wie der Radius.
+Das Sechseck besteht aus sechs Dreiecken mit dem Winkel $360^\circ : 6 = 60^\circ$ an der Spitze. Zwei Seiten jedes Dreiecks sind Umkreisradien. Das Dreieck ist also gleichschenklig, und seine Basiswinkel sind gleich groß: $(180^\circ - 60^\circ) : 2 = 60^\circ$. Es ist gleichseitig, die Sechseckseite ist so lang wie der Radius.
 
 $u = 6 \cdot 2\,\text{cm} = 12\,\text{cm}$, $M = u \cdot h = 12\,\text{cm} \cdot 4\,\text{cm} = 48\,\text{cm}^2$. [Abrollen zeigen](?mode=oberflaeche&roll=100)
 
@@ -96,10 +96,10 @@ Bei $n = 6$ sind es etwa $82{,}7\,\%$, bei $n = 12$ etwa $95{,}5\,\%$. Ab $n = 2
 ## Ideen für den Unterricht
 
 - **Einsatz:** Bayern Jahrgangsstufe 8, Lernbereich 7 (Kreis und Zylinder): Prismen und Zylinder mit Netz, Oberfläche und Volumen. Sinnvoll im Anschluss an die Kreisberechnung (siehe Simulation zur Kreiszahl π).
-- **Zwei Zugänge:** „Schichten stapeln“ begründet $V = G \cdot h$ (anschlussfähig an das Würfelzählen beim Quader), „Abrollen“ begründet $M = u \cdot h$. Die Rechnung im Bild lässt sich ausschalten (`calc=0`).
+- **Zwei Zugänge:** „Schichten stapeln“ begründet $V = G \cdot h$ (anschlussfähig an das Würfelzählen beim Quader), „Abrollen“ begründet $M = u \cdot h$. Die Rechnung im Bild lässt sich unter **Anzeige → Rechnung im Bild** ausschalten (in Links: `calc=0`).
 - **Häufige Stolpersteine:**
   - Mantel und Volumen werden verwechselt ($u \cdot h$ statt $G \cdot h$) – auch bei den Einheiten $\text{cm}^2$ und $\text{cm}^3$.
   - Beim Zylinder wird mit dem Durchmesser statt mit dem Radius gerechnet.
   - Bei der Oberfläche wird nur eine Grundfläche gezählt.
-  - Verdoppelt man den Radius, verdoppelt sich das Volumen – tatsächlich wird es viermal so groß.
+  - Man erwartet, dass sich das Volumen beim doppelten Radius verdoppelt. Tatsächlich wird es viermal so groß.
 - **Zur Darstellung:** Beim Abrollen kippt das Prisma jeweils über eine Kante; der Zylinder rollt ohne zu rutschen, sodass sein Abdruck nach einer vollen Umdrehung genau $2\pi r$ lang ist. Das Dreieck ist gleichschenklig; die Länge der Schenkel wird berechnet und gerundet angezeigt.

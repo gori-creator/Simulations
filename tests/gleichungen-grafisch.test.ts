@@ -194,6 +194,33 @@ describe('Modell: Gleichungen grafisch lösen', () => {
     expect(agreedDigits(1.4140625, 1.4150390625)).toBe(1);
   });
 
+  it('Lernmaterial: Intervallhalbierung bei x² = 3 und x² = 2 (gesicherte Stellen)', () => {
+    /** Schritte, bis `digits` Nachkommastellen sicher sind, und das Intervall dann. */
+    const run = (c: number, digits: number) => {
+      const h = (x: number) => x * x - c;
+      let iv = startInterval(h, Math.sqrt(c), [])!;
+      const seen: Array<[number, number]> = [];
+      let steps = 0;
+      while (agreedDigits(iv.a, iv.b) < digits) {
+        iv = nextInterval(bisectStep(h, iv));
+        seen.push([iv.a, iv.b]);
+        steps++;
+      }
+      return { steps, iv, seen };
+    };
+    // Aufgabe 4: x² = 3, Start [1; 2]. Nach 4 Schritten [1,6875; 1,75] noch nicht sicher (1,7 bzw. 1,8)
+    const r3 = run(3, 1);
+    expect(r3.seen[3]).toEqual([1.6875, 1.75]);
+    expect(agreedDigits(1.6875, 1.75)).toBe(0);
+    expect(r3.seen[4]).toEqual([1.71875, 1.75]);
+    expect(r3.steps).toBe(6);
+    expect(r3.iv).toEqual({ a: 1.71875, b: 1.734375 });
+    // Ideen für den Unterricht: x² = 2, zweite Nachkommastelle (1,41) erst nach 11 Schritten sicher
+    const r2 = run(2, 2);
+    expect(r2.steps).toBe(11);
+    expect(r2.iv).toEqual({ a: 1.4140625, b: 1.41455078125 });
+  });
+
   it('setzt Lösungen für die Probe ein', () => {
     const t = (f: Fn, v: string) => partsText(substParts(termParts(f, 'de'), v));
     expect(t(quad(1, 0, -1), '−1,5')).toBe('(−1,5)² − 1');

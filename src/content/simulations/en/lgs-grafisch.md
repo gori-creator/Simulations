@@ -4,10 +4,10 @@ description: "Interactive simulation for solving systems of linear equations gra
 
 ## What is it about?
 
-Each linear equation in $x$ and $y$ describes a **line**. A pair $(x, y)$ that satisfies **both** equations lies on both lines – it is their **point of intersection**. Graphical method: rearrange both equations to $y = mx + c$, draw both lines, read off the intersection and check it in both equations.
+Each linear equation in $x$ and $y$ describes a **line**. A pair $(x, y)$ that satisfies **both** equations lies on both lines – it is their **point of intersection**. Graphical method: rearrange both equations to $y = mx + t$ (slope $m$, $y$-intercept $t$), draw both lines, read off the intersection and check it in both equations.
 
 - Lines intersect (different slopes): exactly one solution.
-- Parallel, distinct lines (same slope): no solution.
+- Parallel, distinct lines (same slope): no solution, $S = \{\,\}$.
 - Identical lines: infinitely many solutions.
 
 If the intersection does not lie on grid points, it can only be read off approximately – then an algebraic method helps.
@@ -27,7 +27,7 @@ If the intersection does not lie on grid points, it can only be read off approxi
 <details>
 <summary>Show solution</summary>
 
-$(2, 3)$: $2 + 1 = 3$ and $-4 + 7 = 3$.
+$(2, 3)$: $2 + 1 = 3$ and $-4 + 7 = 3$, so $S = \{(2, 3)\}$.
 
 </details>
 
