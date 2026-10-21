@@ -276,16 +276,16 @@ export const physik: Subject = {
               slug: L('fadenpendel', 'simple-pendulum'),
               title: L('Fadenpendel', 'Simple pendulum'),
               summary: L(
-                'Lenke ein Pendel aus, lass es los und miss, wie lange eine Schwingung dauert. Wovon hängt das ab?',
-                'Pull a pendulum aside, let it go and measure how long one swing takes. What does it depend on?',
+                'Lenke ein Pendel aus, lass es los und miss, wie lange eine Schwingung dauert. Wovon hängt das ab? Auch mit großen Winkeln und Dämpfung.',
+                'Pull a pendulum aside, let it go and measure how long one swing takes. What does it depend on? Also with large angles and damping.',
               ),
               grades: [10, 12],
               kmk: ['P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
               keywords: L(
-                ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung'],
-                ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping'],
+                ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung', 'Sekundenpendel', 'Ortsfaktor', 'Fadenkraft', 'Rückstellkraft', 'Phasendiagramm', 'Messreihe'],
+                ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping', 'seconds pendulum', 'gravitational acceleration', 'tension', 'restoring force', 'phase diagram', 'measurement series'],
               ),
-              thumb: 'pendulum',
+              thumb: 'generic',
             },
             {
               id: 'federpendel',
@@ -603,16 +603,16 @@ export const physik: Subject = {
               slug: L('brechung-totalreflexion', 'refraction'),
               title: L('Brechung und Totalreflexion', 'Refraction and total internal reflection'),
               summary: L(
-                'Ein Lichtstrahl knickt beim Übergang in Glas oder Wasser ab. Bei flachem Winkel kann er gar nicht mehr hinaus: Totalreflexion.',
-                'A light ray bends when it passes into glass or water. At a shallow angle it cannot get out at all: total internal reflection.',
+                'Ein Lichtstrahl knickt beim Übergang in Glas oder Wasser ab. Bei flachem Winkel kann er nicht mehr hinaus: Totalreflexion, wie in der Glasfaser.',
+                'A light ray bends when it passes into glass or water. At a shallow angle it cannot get out at all: total internal reflection, as in an optical fibre.',
               ),
               grades: [8, 10],
               kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
               keywords: L(
-                ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter'],
-                ['refraction', 'Snell’s law', 'total internal reflection', 'critical angle', 'refractive index', 'normal', 'angle of incidence'],
+                ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter', 'Lichtleiter', 'Glasfaser', 'Prisma', 'Dispersion', 'Brewster-Winkel', 'scheinbare Hebung', 'Huygens'],
+                ['refraction', 'Snell’s law', 'total internal reflection', 'critical angle', 'refractive index', 'normal', 'angle of incidence', 'optical fibre', 'prism', 'dispersion', 'Brewster angle', 'apparent depth', 'Huygens'],
               ),
-              thumb: 'refraction',
+              thumb: 'generic',
             },
             {
               id: 'linsen',
