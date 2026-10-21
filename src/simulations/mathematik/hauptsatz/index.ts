@@ -104,8 +104,8 @@ interface AppMeta {
   /** Name und Einheit des Bestands */
   I: string;
   uI: Txt;
-  fSrc: string;
-  FSrc: string;
+  fSrc: Txt;
+  FSrc: Txt;
   rate: Txt;
   amount: Txt;
   /** Satz zur Deutung; {a}, {b}, {v} werden ersetzt */
@@ -124,8 +124,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('m/s', 'm/s'),
     I: 's',
     uI: L('m', 'm'),
-    fSrc: 'v(t) = 3t \\c{m}{| 15 | 15 − 3(t − 20)}',
-    FSrc: 's(t) = 1,5t² \\c{m}{| 37,5 + 15(t − 5) | …}',
+    fSrc: L('v(t) = 3t \\c{m}{| 15 | 15 − 3(t − 20)}', 'v(t) = 3t \\c{m}{| 15 | 15 − 3(t − 20)}'),
+    FSrc: L('s(t) = 1,5t² \\c{m}{| 37,5 + 15(t − 5) | …}', 's(t) = 1.5t² \\c{m}{| 37.5 + 15(t − 5) | …}'),
     rate: L('Geschwindigkeit', 'speed'),
     amount: L('zurückgelegter Weg', 'distance travelled'),
     pos: L('Von t = {a} s bis {b} s fährt das Auto {v} m weit.', 'From t = {a} s to {b} s the car travels {v} m.'),
@@ -140,13 +140,13 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('Mio. m³/Monat', 'million m³/month'),
     I: 'V',
     uI: L('Mio. m³', 'million m³'),
-    fSrc: 'q(t) = 3 · \\t{cos}(\\f{π}{6}t)',
-    FSrc: 'V(t) = \\f{18}{π} · \\t{sin}(\\f{π}{6}t)',
+    fSrc: L('q(t) = 3 · \\t{cos}(\\f{π}{6}t)', 'q(t) = 3 · \\t{cos}(\\f{π}{6}t)'),
+    FSrc: L('V(t) = \\f{18}{π} · \\t{sin}(\\f{π}{6}t)', 'V(t) = \\f{18}{π} · \\t{sin}(\\f{π}{6}t)'),
     rate: L('Netto-Zufluss (Zufluss − Abfluss)', 'net inflow (inflow − outflow)'),
     amount: L('Änderung der Wassermenge', 'change in the amount of water'),
     pos: L('Von Monat {a} bis {b} nimmt die Wassermenge um {v} Mio. m³ zu.', 'From month {a} to {b} the amount of water grows by {v} million m³.'),
     neg: L('Von Monat {a} bis {b} nimmt die Wassermenge um {v} Mio. m³ ab.', 'From month {a} to {b} the amount of water falls by {v} million m³.'),
-    note: L('Im Frühjahr fließt mehr zu als ab, im Sommer umgekehrt. Am meisten Wasser ist im See, wenn q das Vorzeichen von + nach − wechselt.', 'In spring more flows in than out, in summer the other way round. The lake is fullest when q changes sign from + to −.'),
+    note: L('In den ersten drei Monaten fließt mehr zu als ab, von Monat 3 bis 9 umgekehrt, danach wieder mehr zu. Am meisten Wasser ist im See, wenn q das Vorzeichen von + nach − wechselt.', 'In the first three months more flows in than out, from month 3 to 9 the other way round, then more flows in again. The lake is fullest when q changes sign from + to −.'),
   },
   solar: {
     title: L('Solaranlage: Leistung → Energie', 'Solar panels: power → energy'),
@@ -156,8 +156,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('kW', 'kW'),
     I: 'E',
     uI: L('kWh', 'kWh'),
-    fSrc: 'P(t) = 4 · \\t{sin}(\\f{π}{12}(t − 6))  \\c{m}{(6 – 18 Uhr)}',
-    FSrc: 'E(t) = \\f{48}{π}(1 − \\t{cos}(\\f{π}{12}(t − 6)))',
+    fSrc: L('P(t) = 4 · \\t{sin}(\\f{π}{12}(t − 6))  \\c{m}{(6 – 18 Uhr)}', 'P(t) = 4 · \\t{sin}(\\f{π}{12}(t − 6))  \\c{m}{(6 a.m. – 6 p.m.)}'),
+    FSrc: L('E(t) = \\f{48}{π}(1 − \\t{cos}(\\f{π}{12}(t − 6)))', 'E(t) = \\f{48}{π}(1 − \\t{cos}(\\f{π}{12}(t − 6)))'),
     rate: L('elektrische Leistung', 'electrical power'),
     amount: L('erzeugte Energie', 'energy produced'),
     pos: L('Zwischen {a} und {b} Uhr erzeugt die Anlage {v} kWh.', 'Between {a} and {b} o’clock the panels produce {v} kWh.'),
@@ -172,8 +172,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('GE/ME', 'MU/unit'),
     I: 'K',
     uI: L('GE', 'MU'),
-    fSrc: 'K′(x) = 0,3x² − 3x + 10',
-    FSrc: 'K_v(x) = 0,1x³ − 1,5x² + 10x',
+    fSrc: L('K′(x) = 0,3x² − 3x + 10', 'K′(x) = 0.3x² − 3x + 10'),
+    FSrc: L('K_v(x) = 0,1x³ − 1,5x² + 10x', 'K_v(x) = 0.1x³ − 1.5x² + 10x'),
     rate: L('Grenzkosten', 'marginal cost'),
     amount: L('variable Kosten', 'variable cost'),
     pos: L('Die Produktion von {a} bis {b} ME verursacht {v} GE variable Kosten.', 'Producing from {a} to {b} units causes {v} MU of variable cost.'),
@@ -188,8 +188,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('Tsd./Jahr', 'thousand/year'),
     I: 'N',
     uI: L('Tsd.', 'thousand'),
-    fSrc: 'r(t) = \\f{6 · \\t{e}^{−0,5(t − 10)}}{(1 + \\t{e}^{−0,5(t − 10)})²}',
-    FSrc: 'N(t) = \\f{12}{1 + \\t{e}^{−0,5(t − 10)}}',
+    fSrc: L('r(t) = \\f{6 · \\t{e}^{−0,5(t − 10)}}{(1 + \\t{e}^{−0,5(t − 10)})²}', 'r(t) = \\f{6 · \\t{e}^{−0.5(t − 10)}}{(1 + \\t{e}^{−0.5(t − 10)})²}'),
+    FSrc: L('N(t) = \\f{12}{1 + \\t{e}^{−0,5(t − 10)}}', 'N(t) = \\f{12}{1 + \\t{e}^{−0.5(t − 10)}}'),
     rate: L('Wachstumsrate', 'growth rate'),
     amount: L('Zuwachs an Einwohnern', 'increase in residents'),
     pos: L('Von Jahr {a} bis {b} ziehen {v} Tausend Menschen zu.', 'From year {a} to {b}, {v} thousand people move in.'),
@@ -204,8 +204,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('mg/h', 'mg/h'),
     I: 'M',
     uI: L('mg', 'mg'),
-    fSrc: 'r(t) = 40t · \\t{e}^{−0,5t}',
-    FSrc: 'M(t) = −80t · \\t{e}^{−0,5t} − 160 · \\t{e}^{−0,5t}',
+    fSrc: L('r(t) = 40t · \\t{e}^{−0,5t}', 'r(t) = 40t · \\t{e}^{−0.5t}'),
+    FSrc: L('M(t) = −80t · \\t{e}^{−0,5t} − 160 · \\t{e}^{−0,5t}', 'M(t) = −80t · \\t{e}^{−0.5t} − 160 · \\t{e}^{−0.5t}'),
     rate: L('Aufnahmerate', 'absorption rate'),
     amount: L('aufgenommene Wirkstoffmenge', 'amount absorbed'),
     pos: L('Von t = {a} h bis {b} h nimmt der Körper {v} mg Wirkstoff auf.', 'From t = {a} h to {b} h the body absorbs {v} mg of the drug.'),
@@ -220,8 +220,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('mm/h', 'mm/h'),
     I: 'R',
     uI: L('mm', 'mm'),
-    fSrc: 'i(t) = 10 · \\t{e}^{−\\f{(t − 3)²}{2}}',
-    FSrc: 'R(t) = 10\\r{\\f{π}{2}} · \\t{erf}(\\f{t − 3}{\\r{2}})',
+    fSrc: L('i(t) = 10 · \\t{e}^{−\\f{(t − 3)²}{2}}', 'i(t) = 10 · \\t{e}^{−\\f{(t − 3)²}{2}}'),
+    FSrc: L('R(t) = 10\\r{\\f{π}{2}} · \\t{erf}(\\f{t − 3}{\\r{2}})', 'R(t) = 10\\r{\\f{π}{2}} · \\t{erf}(\\f{t − 3}{\\r{2}})'),
     rate: L('Regenintensität', 'rain intensity'),
     amount: L('Regenmenge', 'rainfall'),
     pos: L('Zwischen {a} h und {b} h fallen {v} mm Regen, also {v} Liter pro m².', 'Between {a} h and {b} h, {v} mm of rain fall, i.e. {v} litres per m².'),
@@ -236,8 +236,8 @@ const APP_META: Record<AppKey, AppMeta> = {
     uF: L('L/s', 'L/s'),
     I: 'V',
     uI: L('L', 'L'),
-    fSrc: 'v(t) = 0,5 · \\t{sin}(\\f{2π}{5}t)',
-    FSrc: 'V(t) = −\\f{1,25}{π} · \\t{cos}(\\f{2π}{5}t)',
+    fSrc: L('v(t) = 0,5 · \\t{sin}(\\f{2π}{5}t)', 'v(t) = 0.5 · \\t{sin}(\\f{2π}{5}t)'),
+    FSrc: L('V(t) = −\\f{1,25}{π} · \\t{cos}(\\f{2π}{5}t)', 'V(t) = −\\f{1.25}{π} · \\t{cos}(\\f{2π}{5}t)'),
     rate: L('Luftstrom (+ ein, − aus)', 'air flow (+ in, − out)'),
     amount: L('Luft in der Lunge (Änderung)', 'air in the lungs (change)'),
     pos: L('Von {a} s bis {b} s strömen {v} L Luft in die Lunge.', 'From {a} s to {b} s, {v} L of air flow into the lungs.'),
@@ -353,9 +353,9 @@ export default defineSimulation({
       default: 1,
       visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos'),
     },
-    { key: 'sb', type: 'number', group: 'coef', label: L('Frequenz b', 'Frequency b'), min: 0.2, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos') },
+    { key: 'sb', type: 'number', group: 'coef', label: L('Faktor b (Periode 2π/b)', 'Factor b (period 2π/b)'), min: 0.2, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos') },
     { key: 'ea', type: 'number', group: 'coef', label: L('Faktor c', 'Factor c'), help: L('f(x) = c · e^(kx)', 'f(x) = c · e^(kx)'), min: -3, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
-    { key: 'eb', type: 'number', group: 'coef', label: L('Wachstumsfaktor k', 'Growth factor k'), min: -1.5, max: 1.5, step: 0.05, default: 0.5, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
+    { key: 'eb', type: 'number', group: 'coef', label: L('Wachstumskonstante k', 'Growth constant k'), min: -1.5, max: 1.5, step: 0.05, default: 0.5, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
     { key: 'ia', type: 'number', group: 'coef', label: L('Zähler c', 'Numerator c'), help: L('f(x) = c/x für x > 0', 'f(x) = c/x for x > 0'), min: -3, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'inv' },
     { key: 'gm', type: 'number', group: 'coef', label: L('Lage μ (Mitte)', 'Position μ (centre)'), min: -3, max: 3, step: 0.1, default: 0, visibleIf: (v) => v.kind === 'math' && v.fn === 'gauss' },
     { key: 'gs', type: 'number', group: 'coef', label: L('Breite σ', 'Width σ'), min: 0.3, max: 2, step: 0.05, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'gauss' },
@@ -662,9 +662,14 @@ export default defineSimulation({
     const fac = (c: number, tail = ' · ') => (Math.abs(c - 1) < 1e-12 ? '' : Math.abs(c + 1) < 1e-12 ? '−' : `${q(c)}${tail}`);
 
     /** f und eine Stammfunktion F als Formeltext (Kurzschrift aus formula.ts). */
+    /** Stammfunktion bei „Werte zeigen“ aus verdecken (Aufgaben): „F(x) = ?“. */
+    function hideF(F: string): string {
+      return p.show ? F : `${F.split(' = ')[0]} = ?`;
+    }
+
     function fnSrc(): { f: string; F: string; note: string | null; noAnti: boolean } {
       const m = meta();
-      if (m) return { f: m.fSrc, F: m.FSrc, note: appKey() === 'rain' ? say(L('Fehlerfunktion erf (nicht elementar)', 'error function erf (not elementary)')) : null, noAnti: false };
+      if (m) return { f: say(m.fSrc), F: say(m.FSrc), note: appKey() === 'rain' ? say(L('Fehlerfunktion erf (nicht elementar)', 'error function erf (not elementary)')) : null, noAnti: false };
       const c = coefNow();
       switch (fnKey()) {
         case 'lin':
@@ -1630,7 +1635,7 @@ export default defineSimulation({
         }
       }
       const src = fnSrc();
-      fpill(r.x + 10, r.y + 18, `\\c{F}{${src.F}${V.c !== 0 ? ` + C` : ''}}`, { align: 'left', size: fs(13, 12), alpha: k.panel, border: withAlpha(col.F(), 0.5), maxW: r.w - 40 });
+      fpill(r.x + 10, r.y + 18, `\\c{F}{${p.show ? `${src.F}${V.c !== 0 ? ` + C` : ''}` : hideF(src.F)}}`, { align: 'left', size: fs(13, 12), alpha: k.panel, border: withAlpha(col.F(), 0.5), maxW: r.w - 40 });
       if (V.c !== 0 || kf > 0.5) fpill(r.x + r.w - 10, r.y + 18, `C = ${N(V.c, 2)}`, { align: 'right', size: fs(12, 11), alpha: k.labels, color: col.F(), bounds: r });
       plotB.end();
       g.restore();
@@ -1882,7 +1887,7 @@ export default defineSimulation({
         const src = fnSrc();
         const rows: { src: string; color?: string; size?: number }[] = [
           { src: `\\c{f}{${src.f}}`, size: fs(13.5, 12.5) },
-          { src: `\\c{F}{${src.F}}`, size: fs(13.5, 12.5) },
+          { src: `\\c{F}{${hideF(src.F)}}`, size: fs(13.5, 12.5) },
         ];
         if (src.note) rows.push({ src: `\\c{m}{${src.note}}`, size: fs(12, 11), color: th().muted });
         return formulaCard(R, measure, k, say(L('Funktion und Stammfunktion', 'Function and antiderivative')), col.F(), rows);
@@ -1976,7 +1981,7 @@ export default defineSimulation({
         const fsz = fs(13.5, 12.5);
         const rows: { src: string; color?: string; size?: number; gap?: number; at?: number }[] = [
           { src: `\\c{m}{① ${say(L('Stammfunktion bestimmen', 'Find an antiderivative'))}}`, size: fs(12, 11), color: th().muted, at: st[0], gap: 4 },
-          { src: `\\c{F}{${src.F}${cTxt ? ' + C' : ''}}`, size: fsz, at: st[0], gap: 10 },
+          { src: `\\c{F}{${p.show ? `${src.F}${cTxt ? ' + C' : ''}` : hideF(src.F)}}`, size: fsz, at: st[0], gap: 10 },
           { src: `\\c{m}{② ${say(L('Grenzen einsetzen', 'Insert the limits'))}}`, size: fs(12, 11), color: th().muted, at: st[1], gap: 4 },
           { src: `\\c{I}{F(${N(b, 2)})${cTxt} ${eq(Fb + C)} ${s(NV(Fb + C))}}`, size: fsz, at: st[1], gap: 4 },
           { src: `\\c{a}{F(${N(a, 2)})${cTxt} ${eq(Fa + C)} ${s(NV(Fa + C))}}`, size: fsz, at: st[1], gap: 10 },
@@ -2179,14 +2184,14 @@ export default defineSimulation({
       const src = fnSrc();
       const m = meta();
       const v = (s: string) => `<var>${s}</var>`;
-      ctx.readout('fn', { html: `${toHtml(src.f)}<br>${toHtml(src.F)}${src.note ? ` (${src.note})` : ''}` });
+      ctx.readout('fn', { html: `${toHtml(src.f)}<br>${toHtml(hideF(src.F))}${src.note ? ` (${src.note})` : ''}` });
       const iv = integralFn(fn, a, b);
       const u = m ? ` ${say(m.uI)}` : '';
       const dv = m ? m.v : 'x';
       const fN = m ? m.f : 'f';
       ctx.readout('int', { html: `∫<sub>${N(a, 2)}</sub><sup>${N(b, 2)}</sup> ${v(fN)}(${v(dv)}) d${v(dv)} = ${v('F')}(${N(b, 2)}) − ${v('F')}(${N(a, 2)}) = ${NV(fn.F(b))} − ${fn.F(a) < 0 ? `(${NV(fn.F(a))})` : NV(fn.F(a))} ${eq(iv)} <strong>${NV(iv)}${u}</strong>` });
       const parts = areaParts(fn, a, b);
-      ctx.readout('bal', { html: `<var>A</var><sup>+</sup> ≈ ${NV(parts.pos)}, <var>A</var><sup>−</sup> ≈ ${NV(parts.neg)} · ${say(L('Flächeninhalt', 'area'))} ${v('A')}<sup>+</sup> + ${v('A')}<sup>−</sup> ≈ ${NV(parts.area)}${u}` });
+      ctx.readout('bal', { html: `<var>A</var><sup>+</sup> ≈ ${NV(parts.pos)}, <var>A</var><sup>−</sup> ≈ ${NV(parts.neg)}; ${say(L('Flächeninhalt', 'area'))} ${v('A')}<sup>+</sup> + ${v('A')}<sup>−</sup> ≈ ${NV(parts.area)}${u}` });
       if (mode() === 'diff' && b + p.h <= fn.x[1] + 1e-9) {
         const dq = stripMean(fn, b, p.h);
         const fx = fn.f(b);
@@ -2194,12 +2199,12 @@ export default defineSimulation({
       } else ctx.readout('dq', null);
       if (mode() === 'riem') {
         const s = riemann(fn.f, a, b, p.n, rmKind());
-        ctx.readout('riem', { html: `${v('S')}<sub>${p.n}</sub> ≈ <strong>${NV(s)}</strong> · ${say(L('Abweichung', 'error'))} ${fmt.signed(clean(s - iv, 4), 4)}` });
+        ctx.readout('riem', { html: `${v('S')}<sub>${p.n}</sub> ≈ <strong>${NV(s)}</strong>; ${say(L('Abweichung', 'error'))} ${fmt.signed(clean(s - iv, 4), 4)}` });
       } else ctx.readout('riem', null);
       if (mode() === 'graph') {
         const list = (xs: number[]) => (xs.length ? xs.map((x) => N(x, 3)).join('; ') : '–');
         ctx.readout('feat', {
-          html: `${say(L('Extremstellen', 'Extrema'))} (${say(L('Nullstellen von f', 'zeros of f'))}): ${list(feat.zeros.filter((z) => z.sign !== 0).map((z) => z.x))} · ${say(L('Wendestellen', 'Inflection points'))} (${say(L('Extremstellen von f', 'extrema of f'))}): ${list(feat.ext.map((e) => e.x))}`,
+          html: `${say(L('Extremstellen', 'Extrema'))} (${say(L('Nullstellen von f', 'zeros of f'))}): ${list(feat.zeros.filter((z) => z.sign !== 0).map((z) => z.x))}; ${say(L('Wendestellen', 'Inflection points'))} (${say(L('Extremstellen von f', 'extrema of f'))}): ${list(feat.ext.map((e) => e.x))}`,
         });
       } else ctx.readout('feat', null);
       if (m) {
