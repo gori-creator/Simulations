@@ -18,6 +18,7 @@ import {
   subtract,
   suggestedDivisor,
   tiltTarget,
+  valueText,
   weight,
 } from '../src/simulations/mathematik/waagemodell/model';
 import { seededRandom } from '../src/sim-core/anim';
@@ -119,5 +120,81 @@ describe('Waagemodell: Äquivalenzumformungen', () => {
       for (const v of [b, d]) expect(v).toBeLessThanOrEqual(15);
       expect(isSolved(pans(a, b, c, d))).toBe(false);
     }
+  });
+});
+
+describe('Waagemodell: Prüfwerte der Prüfrunde', () => {
+  it('3x + 2 = x + 8 → 2x = 6 → x = 3, Probe 11 = 11', () => {
+    let p = pans(3, 2, 1, 8);
+    p = subtract(p, 1, 0);
+    p = subtract(p, 0, 1);
+    p = subtract(p, 0, 1);
+    expect(equationText(p)).toBe('2x = 6');
+    p = divide(p, suggestedDivisor(p)!);
+    expect(equationText(p)).toBe('x = 3');
+    expect(weight(pans(3, 2, 1, 8).left, 3)).toBe(11);
+    expect(weight(pans(3, 2, 1, 8).right, 3)).toBe(11);
+  });
+
+  it('2x + 5 = 13 → x = 4 und 4x = 2x + 6 → x = 3', () => {
+    expect(solve(pans(2, 5, 0, 13))).toEqual({ kind: 'unique', x: { num: 4, den: 1 } });
+    let p = pans(4, 0, 2, 6);
+    p = subtract(p, 1, 0);
+    p = subtract(p, 1, 0);
+    expect(equationText(p)).toBe('2x = 6');
+    expect(suggestedDivisor(p)).toBe(2);
+    expect(equationText(divide(p, 2))).toBe('x = 3');
+  });
+
+  it('Waage kippt bei einseitiger Änderung und bleibt bei Umformung im Gleichgewicht', () => {
+    const start = pans(3, 2, 1, 8);
+    const w = packageWeight(start);
+    // nur links − 2: rechts schwerer
+    expect(tiltTarget(pans(3, 0, 1, 8), w)).toBeLessThan(0);
+    // nur rechts − x: links schwerer
+    expect(tiltTarget(pans(3, 2, 0, 8), w)).toBeGreaterThan(0);
+    expect(tiltTarget(subtract(start, 1, 2), w)).toBe(0);
+  });
+
+  it('2x = 5: Teilen geht im Modell nicht, x = 2,5', () => {
+    const p = pans(2, 0, 0, 5);
+    expect(suggestedDivisor(p)).toBeNull();
+    expect(modelFit(p)).toBe('ok');
+    const s = solve(p);
+    expect(s.kind === 'unique' && fracText(s.x, 'de')).toBe('5/2 = 2,5');
+    expect(packageWeight(p)).toBe(2.5);
+    expect(tiltTarget(p, 2.5)).toBe(0);
+  });
+
+  it('Sonderfälle: x + 1 = x + 2 (keine Lösung) und 2x + 2 = 2(x + 1) (jede Zahl)', () => {
+    const none = pans(1, 1, 1, 2);
+    expect(modelFit(none)).toBe('none');
+    const afterNone = subtract(none, 1, 0);
+    expect(equationText(afterNone)).toBe('1 = 2');
+    expect(noVariableLeft(afterNone)).toBe(true);
+    expect(tiltTarget(none, packageWeight(none))).toBeLessThan(0);
+    const all = pans(2, 2, 2, 2);
+    expect(modelFit(all)).toBe('all');
+    expect(equationText(subtract(all, 2, 0))).toBe('2 = 2');
+    for (const w of [0.5, 1, 7]) expect(tiltTarget(all, w)).toBe(0);
+  });
+
+  it('Werte ohne Rundungsfehler: Brüche bleiben Brüche', () => {
+    expect(valueText(3, 1, 'de')).toBe('3');
+    expect(valueText(2.5, 2, 'de')).toBe('2,5');
+    expect(valueText(2.5, 2, 'en')).toBe('2.5');
+    expect(valueText(2 / 3, 3, 'de')).toBe('2/3');
+    // 4x = x + 1: x = 1/3, Seitensumme 4/3 – nicht „1,33“
+    const s = solve(pans(4, 0, 1, 1));
+    expect(s).toEqual({ kind: 'unique', x: { num: 1, den: 3 } });
+    expect(valueText(weight(pans(4, 0, 1, 1).left, 1 / 3), 3, 'de')).toBe('4/3');
+    expect(valueText(1.75, 4, 'de')).toBe('1,75');
+    expect(valueText(-2, 1, 'de')).toBe('−2');
+  });
+
+  it('fasst gleichartige Schritte zusammen, aber nicht x und Zahl', () => {
+    expect(opText({ kind: 'sub', x: 0, c: 2 })).toBe('− 2');
+    expect(mergeable({ kind: 'sub', x: 1, c: 0 }, { kind: 'sub', x: 1, c: 0 })).toBe(true);
+    expect(mergeable({ kind: 'sub', x: 1, c: 1 }, { kind: 'sub', x: 0, c: 1 })).toBe(false);
   });
 });

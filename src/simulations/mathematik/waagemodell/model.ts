@@ -208,8 +208,22 @@ export function fracText(f: Frac, lang: 'de' | 'en'): string {
   return `${sign}${n}/${f.den}${decText}`;
 }
 
+/**
+ * Wert v als Text ohne Rundungsfehler: ganze Zahl, abbrechende Dezimalzahl
+ * („2,5“) oder Bruch („2/3“). `den` ist der Nenner der Lösung; Gewichte und
+ * Seitensummen sind Vielfache von 1/den.
+ */
+export function valueText(v: number, den: number, lang: 'de' | 'en'): string {
+  const f = frac(Math.round(v * den), den);
+  const sign = f.num < 0 ? MINUS : '';
+  const n = Math.abs(f.num);
+  if (f.den === 1) return `${sign}${n}`;
+  const t = fracText(f, lang);
+  return t.includes(' = ') ? `${sign}${String(n / f.den).replace('.', lang === 'de' ? ',' : '.')}` : t;
+}
+
 /* ------------------------------------------------------------------ */
-/* Zufällige Aufgaben                                                  */
+/* Zufällige Aufgaben                                                 */
 /* ------------------------------------------------------------------ */
 
 /** Grenzen der Regler. */
