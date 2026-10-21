@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Formatter, formatNumber, groupThousands, MINUS, NBSP, NNBSP } from '../src/sim-core/format';
+import { Formatter, formatNumber, formatSig, groupThousands, MINUS, NBSP, NNBSP } from '../src/sim-core/format';
 
 const de = new Formatter('de');
 const en = new Formatter('en');
@@ -32,9 +32,11 @@ describe('Tausendertrennung (DIN 1333)', () => {
     expect(de.plain(-12500.5, 1)).toBe(`${MINUS}12500,5`);
   });
 
-  it('verträgt sich mit Einheiten und Hilfsfunktionen', () => {
+  it('verträgt sich mit Einheiten, gültigen Ziffern und Hilfsfunktionen', () => {
     expect(de.unit(125000, 'N/C')).toBe(`${g('125', '000')}${NBSP}N/C`);
     expect(de.point(12000, -3)).toBe(`(${g('12', '000')} | ${MINUS}3)`);
+    expect(formatSig(123456, 'de', 3)).toBe(g('123', '000'));
+    expect(en.sigUnit(299792458, 'm/s', 2)).toBe(`${g('300', '000', '000')}${NBSP}m/s`);
     expect(groupThousands('1234')).toBe('1234');
     expect(groupThousands('12345,6789')).toBe(`${g('12', '345')},6789`);
   });

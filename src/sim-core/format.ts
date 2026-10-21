@@ -123,6 +123,42 @@ export function formatNumber(value: number, lang: Lang, options: NumberOptions =
   return options.signed && rounded > 0 ? `+${text}` : text;
 }
 
+/**
+ * Nachkommastellen, mit denen `value` auf `digits` gültige Ziffern gerundet
+ * wird (negativ: Rundung vor dem Komma, z. B. −2 → auf Hunderter). Berücksichtigt,
+ * dass das Runden eine Stelle dazubringen kann (9,996 → 10,0 bei 3 Ziffern).
+ */
+export function sigDecimals(value: number, digits: number): number {
+  const n = Math.max(1, Math.round(digits));
+  if (!Number.isFinite(value) || value === 0) return Math.max(0, n - 1);
+  const decimalsFor = (x: number) => n - 1 - Math.floor(Math.log10(Math.abs(x)));
+  let decimals = decimalsFor(value);
+  const rounded = roundToDecimals(value, decimals);
+  if (rounded !== 0 && decimalsFor(rounded) < decimals) decimals = decimalsFor(rounded);
+  return decimals;
+}
+
+/** Wie `roundHalfUp`, aber auch für negative Stellenzahl (Rundung auf Zehner, Hunderter …). */
+function roundToDecimals(value: number, decimals: number): number {
+  if (decimals >= 0) return roundHalfUp(value, decimals);
+  const factor = 10 ** -decimals;
+  return roundHalfUp(value / factor, 0) * factor;
+}
+
+/**
+ * Zahl mit `digits` gültigen Ziffern (signifikanten Stellen), gerundet wie im
+ * Unterricht über `roundHalfUp`: DE `formatSig(0.012345, 'de', 3)` → „0,0123“,
+ * `formatSig(2.5, 'de', 3)` → „2,50“ (Nullen am Ende zählen mit),
+ * `formatSig(123456, 'de', 3)` → „123 000“. 0 erscheint als „0“. Große und
+ * kleine Zahlen bleiben in Dezimalschreibweise (ohne Zehnerpotenz).
+ */
+export function formatSig(value: number, lang: Lang, digits: number, options: Omit<NumberOptions, 'decimals' | 'fixed'> = {}): string {
+  if (!Number.isFinite(value) || value === 0) return formatNumber(value, lang, options);
+  const decimals = sigDecimals(value, digits);
+  if (decimals >= 0) return formatNumber(value, lang, { ...options, decimals, fixed: true });
+  return formatNumber(roundToDecimals(value, decimals), lang, { ...options, decimals: 0 });
+}
+
 function gcd(a: number, b: number): number {
   return b === 0 ? Math.abs(a) : gcd(b, a % b);
 }
@@ -175,6 +211,16 @@ export class Formatter {
   /** Zahl mit Einheit, durch ein geschütztes Leerzeichen verbunden: DE „2,5 m/s“. */
   unit(value: number, unit: string, decimals = 2): string {
     return withUnit(this.num(value, decimals), unit);
+  }
+
+  /** Zahl mit `digits` gültigen Ziffern: `sig(0.012345, 3)` → „0,0123“, `sig(2.5, 3)` → „2,50“. */
+  sig(value: number, digits = 3): string {
+    return formatSig(value, this.lang, digits);
+  }
+
+  /** Wie `sig`, mit Einheit (geschütztes Leerzeichen): `sigUnit(6.626e-4, 'J', 2)` → „0,00066 J“. */
+  sigUnit(value: number, unit: string, digits = 3): string {
+    return withUnit(this.sig(value, digits), unit);
   }
 
   /** Bogenmaß bevorzugt als Bruchteil von π, sonst Dezimalzahl. */
