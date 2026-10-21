@@ -25,6 +25,8 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefer-wurf | `src/sim-core/plot.ts` | `Plot.axes()` braucht einen Sperrbereich für Achsenzahlen (dort, wo Anzeigen liegen); die Achsbeschriftung „x in m“ soll auch der letzten Achsenzahl ausweichen. | erledigt (Kern): `plot.axes({ blocked: [Rechtecke in Pixeln] })` lässt dort Achsenzahlen weg; Teilstriche der x-Achse zählen beim Ausweichen der Achsbeschriftung, „x in m“ rückt über dem letzten Teilstrich ein Stück nach oben (schiefer-wurf Handy: 4 px). Die lokale Lösung über `yAxis.format` in schiefer-wurf kann auf `blocked` umgestellt werden |
 | stoesse | `src/sim-core/format.ts` | **Rundungsfehler:** `formatNumber` zeigt −0,0625 aus Gleitkommarechnung (−0,06249…) als „−0,062“ statt „−0,063“. Vor dem Runden auf etwa 12 signifikante Stellen runden. Betrifft alle Simulationen. | erledigt (Kern): `roundHalfUp` normalisiert vor dem Runden auf 12 signifikante Stellen; gilt für alle Formatierfunktionen und `formula.ts` (Beispiel t-x zeigt „−0,063“) |
 | stoesse | Host / Shell | Der Tipp unter der Bühne erscheint auch mit `_lock=1`, obwohl man dann nicht ziehen kann. Bei gesperrten Links ausblenden. | erledigt (Kern): bei `_lock=1` ist der Tipp (eigener `hint` wie `dragHint`) verborgen, nach „Entsperren“ erscheint er wieder (`resolveHint`) |
+| feldlinien | `src/sim-core/format.ts` | Tausendertrennung ab 5 Stellen (schmales geschütztes Leerzeichen, DIN 1333: „125 000“), wie im Lernmaterial. Option bzw. Standard prüfen, ohne bestehende Anzeigen zu brechen. | offen |
+| feldlinien | `docs/ARCHITEKTUR.md` | Hinweis: Ein `hint` als Funktion braucht eine Typangabe am Parameter, sonst gehen die Typen von `ctx.params` verloren. | offen |
 
 ## Rückfragen an die Projektleitung
 
