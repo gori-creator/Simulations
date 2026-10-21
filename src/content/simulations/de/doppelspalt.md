@@ -18,13 +18,17 @@ $$
 \Delta x \approx \frac{\lambda \cdot a}{g}.
 $$
 
-Weil $|\sin\alpha| < 1$ sein muss, gibt es nur endlich viele Maxima: Die höchste Ordnung ist das größte $k$ mit $k < \frac{g}{\lambda}$.
+Dunkle Streifen (Minima) liegen beim Doppelspalt genau dazwischen: Dort ist der Gangunterschied ein ungerades Vielfaches der halben Wellenlänge, $\Delta s = (2k + 1) \cdot \frac{\lambda}{2}$, und die beiden Wellen löschen sich aus.
 
-**Mehr Spalte und Gitter:** Mit $N$ Spalten bleiben die Hauptmaxima an denselben Stellen, werden aber **schärfer und heller**; dazwischen liegen $N - 1$ Nullstellen und $N - 2$ schwache **Nebenmaxima**. Ein **Gitter** hat sehr viele Spalte mit kleinem Abstand (z. B. $500$ Striche pro mm, also $g = 2\,\mu\text{m}$): Die Maxima sind scharfe Linien unter großen Winkeln – ideal zum genauen Messen von Wellenlängen.
+Weil $|\sin\alpha| < 1$ sein muss, gibt es nur endlich viele Maxima: Die höchste Ordnung ist das größte $k$ mit $k < \frac{g}{\lambda}$. Ist $\lambda \geq g$, gibt es außer der Mitte gar kein Maximum.
 
-**Einzelspalt:** Auch ein einzelner Spalt der Breite $b$ beugt das Licht. Er erzeugt ein breites helles Mittelmaximum und Minima bei $\sin\alpha = k \cdot \frac{\lambda}{b}$. Diese **Einzelspalt-Hülle** begrenzt auch die Helligkeit der Maxima beim Doppelspalt und Gitter.
+**Mehr Spalte und Gitter:** Mit $N$ Spalten bleiben die Hauptmaxima an denselben Stellen, werden aber **schärfer und heller**; dazwischen liegen $N - 1$ Nullstellen und $N - 2$ schwache **Nebenmaxima**. Ein **Gitter** hat sehr viele Spalte mit kleinem Abstand. Sein Spaltabstand heißt **Gitterkonstante** $g = \frac{1\,\text{mm}}{\text{Strichzahl pro mm}}$, bei $500$ Strichen pro mm also $g = \frac{1\,\text{mm}}{500} = 2\,\mu\text{m}$. Die Maxima sind scharfe Linien unter großen Winkeln – ideal zum genauen Messen von Wellenlängen. Weil die Winkel groß sind, muss man hier mit $\tan$ und $\sin$ rechnen; die Kleinwinkelnäherung ist zu ungenau.
 
-**Zur Darstellung:** Im Aufbau oben sind die Spalte stark vergrößert und der Abstand $a$ ist nicht maßstäblich. Die Spaltbreite ist im Modell $b = \frac{g}{6}$. Das Schirmbild und die Werte in der Tabelle sind dagegen genau berechnet.
+**Einzelspalt:** Auch ein einzelner Spalt der Breite $b$ beugt das Licht. Er erzeugt ein breites helles Mittelmaximum und Minima bei $\sin\alpha = k \cdot \frac{\lambda}{b}$. Diese **Einzelspalt-Hülle** begrenzt auch die Helligkeit der Maxima beim Doppelspalt und Gitter. Fällt ein Hauptmaximum genau auf ein Minimum der Hülle, fehlt es ganz („fehlende Ordnung“).
+
+**Licht und Farbe:** Sichtbares Licht hat Wellenlängen von etwa $380\,\text{nm}$ (violett) bis $780\,\text{nm}$ (rot); der Regler deckt $400$ bis $700\,\text{nm}$ ab. Ein roter Laserpointer hat etwa $650\,\text{nm}$, ein grüner $532\,\text{nm}$. Rotes Licht wird stärker abgelenkt als blaues, die Streifen liegen also weiter auseinander.
+
+**Zur Darstellung:** Im Aufbau oben sind die Spalte stark vergrößert und der Abstand $a$ ist nicht maßstäblich. Die Spaltbreite ist im Modell $b = \frac{g}{6}$; deshalb fehlen die Ordnungen $k = 6, 12, \dots$ Das Schirmbild und die Werte in der Tabelle sind dagegen genau berechnet.
 
 ## Ausprobieren
 
@@ -92,10 +96,32 @@ Die Lage der Hauptmaxima bleibt gleich, denn sie hängt nur von $g$ und $\lambda
 
 </details>
 
+### Aufgabe 6: Erstes Minimum
+
+Wo liegt beim Doppelspalt aus Aufgabe 1 das erste dunkle Minimum neben der Mitte? Begründe mit dem Gangunterschied. [Aufgabe laden](?val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Beim ersten Minimum ist $\Delta s = \frac{\lambda}{2}$, also $\sin\alpha = \frac{\lambda}{2g} = \frac{650\,\text{nm}}{0{,}20\,\text{mm}} = 0{,}00325$. Damit $x \approx a \cdot \sin\alpha = 2{,}0\,\text{m} \cdot 0{,}00325 = 6{,}5\,\text{mm}$, genau in der Mitte zwischen $k = 0$ und $k = 1$. Die Messmarke zeigt dort $0\,\%$ Intensität. [In der Simulation zeigen](?xm=6.5)
+
+</details>
+
+### Aufgabe 7: Wellenlänge mit dem Gitter messen
+
+Ein grüner Laser beleuchtet ein Gitter mit $500$ Strichen pro mm. Auf dem Schirm in $1{,}0\,\text{m}$ Abstand liegt das Maximum 1. Ordnung $27{,}6\,\text{cm}$ neben der Mitte. Bestimme $\lambda$.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\tan\alpha_1 = \frac{27{,}6\,\text{cm}}{100\,\text{cm}} = 0{,}276$, also $\alpha_1 \approx 15{,}43°$ und $\sin\alpha_1 \approx 0{,}266$. Mit $g = 2\,\mu\text{m}$ folgt $\lambda = g \cdot \sin\alpha_1 \approx 2000\,\text{nm} \cdot 0{,}266 \approx 532\,\text{nm}$. Die Kleinwinkelnäherung ($\lambda \approx \frac{g \cdot x}{a}$) ergäbe $552\,\text{nm}$, also fast $4\,\%$ zu viel. [In der Simulation zeigen](?mode=grating&gl=500&lam=532&a=1&xm=276)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** in der Oberstufe beim Wellenmodell des Lichts; die genaue Einordnung bitte am Lehrplan prüfen. Gut als Vorbereitung auf den Schülerversuch mit Laser, Doppelspalt und Gitter: erst hier vorhersagen, dann real messen.
-- **Möglicher Ablauf:** an die Interferenz in der Wellenwanne anknüpfen, dann die Bedingung $\Delta s = k \cdot \lambda$ für Licht übertragen, mit der Messmarke $\Delta x$ bestimmen und zum Schluss mit dem Gitter die Wellenlänge genau messen. Mit `val=0` werden die Werte im Bild verdeckt.
+- **Möglicher Ablauf:** an die Interferenz in der Wellenwanne anknüpfen, dann die Bedingung $\Delta s = k \cdot \lambda$ für Licht übertragen, mit der Messmarke $\Delta x$ bestimmen und zum Schluss mit dem Gitter die Wellenlänge genau messen. Mit dem Schalter „Werte im Bild anzeigen“ lassen sich Winkel und Abstände in der Tabelle verdecken; die Aufgaben-Links tun das automatisch.
 - **Modell:** Fraunhofer-Näherung (Schirm weit entfernt), gleiche Spaltbreiten $b = \frac{g}{6}$, ideal monochromatisches Licht.
 - **Häufige Stolpersteine:**
   - „Größerer Spaltabstand, größere Streifenabstände.“ – Umgekehrt: $\Delta x \sim \frac{1}{g}$.
