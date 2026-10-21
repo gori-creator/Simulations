@@ -152,3 +152,50 @@ describe('Modell: Doppler-Effekt – gezeichnete Wellenfronten', () => {
     expect(ringPeriods(200, 0)).toBe(10);
   });
 });
+
+describe('Modell: Doppler-Effekt – Prüfwerte, Aufgaben und Grenzfälle (Prüfrunde)', () => {
+  it('Aufgabe 1 in der Simulation (d = 6 m, x_B = 20 m, Start bei x = −134 m): 488,6 Hz bei t = 2,95 s', () => {
+    const m: Motion = { f: 440, c: 340, x0: -134, vq: 34, bx: 20, d: 6, vb: 0 };
+    const a = mainArrival(m, 2.95)!;
+    expect(a.vQr).toBeCloseTo(33.83, 2);
+    expect(a.f).toBeCloseTo(488.6, 1);
+    // knapp unter dem Wert direkt auf der Straße
+    expect(a.f).toBeLessThan(movingSource(440, 34));
+  });
+
+  it('Aufgaben 2–6: Wellenlängen, bewegter Beobachter, beide bewegt, Terz, Knall', () => {
+    expect(wavelengthAhead(440, 34)).toBeCloseTo(0.6955, 4);
+    expect(wavelengthBehind(440, 34)).toBeCloseTo(0.85, 12);
+    expect(movingObserver(440, 34)).toBeCloseTo(484, 9);
+    expect(doppler(440, 34, 34)).toBeCloseTo(537.78, 2);
+    expect(doppler(440, -34, -34)).toBeCloseTo(360, 9);
+    // f_v / f_h = (c + v) / (c − v) = 6/5 → v = c · 0,2 / 2,2
+    const v = (340 * 0.2) / 2.2;
+    expect(v).toBeCloseTo(30.9, 1);
+    expect(movingSource(440, v) / movingSource(440, -v)).toBeCloseTo(1.2, 12);
+    expect(v * 3.6).toBeCloseTo(111.3, 1);
+    // Mach 2 in 3 km Höhe: Knall 3000 / tan 30° / 680 s nach dem Überflug
+    expect(3000 / Math.tan(machAngle(680)!) / 680).toBeCloseTo(7.64, 2);
+  });
+
+  it('Grenzfälle v_Q = 0, knapp unter/über c, Reglergrenze 700 m/s', () => {
+    expect(movingSource(440, 0)).toBe(440);
+    expect(movingObserver(440, 0)).toBe(440);
+    expect(wavelengthAhead(440, 339)).toBeCloseTo(1 / 440, 12);
+    expect(C_AIR / wavelengthAhead(440, 339)!).toBeCloseTo(149_600, 6);
+    expect(machNumber(339)).toBeLessThan(1);
+    expect((machAngle(341)! * 180) / Math.PI).toBeCloseTo(85.6, 1);
+    expect((machAngle(700)! * 180) / Math.PI).toBeCloseTo(29.06, 2);
+    // v_Q = c: Formel divergiert; das Modell liefert endliche Werte oder Infinity, nie NaN
+    const m: Motion = { f: 440, c: 340, x0: -134, vq: 340, bx: 40, d: 20, vb: 0 };
+    for (let t = 0; t < 1; t += 0.01) {
+      for (const a of arrivals(m, t)) expect(Number.isNaN(a.f)).toBe(false);
+    }
+    expect(firstArrival(m, 1)).not.toBeNull();
+  });
+
+  it('Reglergrenzen Beobachter: v_B = ±40 m/s auf ruhende Quelle', () => {
+    expect(movingObserver(1000, 40)).toBeCloseTo((1000 * 380) / 340, 9);
+    expect(movingObserver(200, -40)).toBeCloseTo((200 * 300) / 340, 9);
+  });
+});
