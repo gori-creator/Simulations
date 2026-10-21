@@ -96,7 +96,7 @@ const META: Record<Kind, { title: Txt; xAxis: Txt; yAxis: Txt }> = {
 const TAB_META: Record<TabId, { title: Txt; text: Txt; xAxis: Txt; yAxis: Txt; xh: Txt; yh: Txt }> = {
   a: {
     title: L('Eintrittskarten', 'Admission tickets'),
-    text: L('Im Schwimmbad: Anzahl der Karten und Gesamtpreis.', 'At the swimming pool: number of tickets and total price.'),
+    text: L('Anzahl der Karten und Gesamtpreis im Schwimmbad.', 'Number of tickets and total price at the swimming pool.'),
     xAxis: L('Anzahl der Karten', 'number of tickets'),
     yAxis: L('Preis in €', 'price in €'),
     xh: L('Karten', 'tickets'),
@@ -104,7 +104,7 @@ const TAB_META: Record<TabId, { title: Txt; text: Txt; xAxis: Txt; yAxis: Txt; x
   },
   b: {
     title: L('Pizza teilen', 'Sharing pizza'),
-    text: L('24 Pizzastücke werden gerecht verteilt: Personen und Stücke pro Person.', '24 slices of pizza are shared fairly: people and slices per person.'),
+    text: L('24 Pizzastücke werden gerecht verteilt – Personen und Stücke pro Person.', '24 slices of pizza are shared fairly – people and slices per person.'),
     xAxis: L('Anzahl der Personen', 'number of people'),
     yAxis: L('Stücke pro Person', 'slices per person'),
     xh: L('Personen', 'people'),
@@ -112,7 +112,7 @@ const TAB_META: Record<TabId, { title: Txt; text: Txt; xAxis: Txt; yAxis: Txt; x
   },
   c: {
     title: L('Ohne Sachzusammenhang', 'Plain numbers'),
-    text: L('Nur Zahlen: Gehört zum Doppelten das Doppelte?', 'Just numbers: does double go with double?'),
+    text: L('Nur Zahlen. Gehört zum Doppelten das Doppelte?', 'Just numbers. Does double go with double?'),
     xAxis: L('x', 'x'),
     yAxis: L('y', 'y'),
     xh: L('', ''),
@@ -136,7 +136,7 @@ const TAB_META: Record<TabId, { title: Txt; text: Txt; xAxis: Txt; yAxis: Txt; x
   },
   f: {
     title: L('120 km Fahrt', 'A 120 km trip'),
-    text: L('Dieselbe Strecke von 120 km: Geschwindigkeit und Fahrzeit.', 'The same 120 km trip: speed and travel time.'),
+    text: L('Geschwindigkeit und Fahrzeit für dieselbe Strecke von 120 km.', 'Speed and travel time for the same 120 km distance.'),
     xAxis: L('Geschwindigkeit in km/h', 'speed in km/h'),
     yAxis: L('Fahrzeit in h', 'travel time in h'),
     xh: L('km/h', 'km/h'),
@@ -309,6 +309,10 @@ export default defineSimulation({
       if (money(kk)) return Math.abs(r - Math.round(r)) < 1e-9 ? fmt.num(r, 0) : fmt.fixed(r, 2);
       return fmt.num(r, 2);
     }
+    /** Quotient/Produkt: 2 Nachkommastellen, bei kleinen Beträgen (< 0,1) 3, damit z. B. 0,075 und 0,008 unterscheidbar bleiben. */
+    const nq = (v: number) => (Math.abs(v) < 0.1 && v !== 0 ? fmt.num(Math.round(v * 1000) / 1000, 3) : fmt.num(Math.round(v * 100) / 100, 2));
+    /** y-Wert in einer Produkt-/Quotientenkette: „1,33…“, wenn gerundet (sonst stünde 9 · 1,33 = 12). */
+    const nyc = (v: number) => `${ny(v)}${isCents(v) ? '' : '…'}`;
     const eur = (s: string) => (lang === 'de' ? `${s} €` : `€${s}`);
     /** x mit Einheit. */
     function xu(v: number, kk: Kind = kind()): string {
@@ -870,7 +874,8 @@ export default defineSimulation({
       const y = value(r, x);
       const hide = !show();
       const xs = `\\c{x}{x = ${uf(xu(x))}}`;
-      const ys = `\\c{y}{y = ${hide ? '?' : uf(yu(y))}}`;
+      const yv = yu(y);
+      const ys = `\\c{y}{y ${hide ? '= ?' : yv.startsWith('≈ ') ? uf(yv) : `= ${uf(yv)}`}}`;
       if (kk === 'dir') return [{ src: xs, c: col.x(), unknown: false }, { src: ys, c: col.y(), unknown: hide }, { src: `\\c{k}{k = ${hide ? '?' : `${ny(r.k)} €/kg`}}`, c: col.k(), unknown: hide }];
       if (kk === 'ind') return [{ src: xs, c: col.x(), unknown: false }, { src: ys, c: col.y(), unknown: hide }, { src: `\\c{k}{x · y = ${hide ? '?' : uf(`${nx(r.k)} h`)}}`, c: col.k(), unknown: hide }];
       return [{ src: xs, c: col.x(), unknown: false }, { src: ys, c: col.y(), unknown: hide }, { src: `\\c{bad}{${up(say(L('Grundgebühr', 'base fare')))} ${uf(yu(r.b))}}`, c: col.bad(), unknown: false }];
@@ -1664,14 +1669,14 @@ export default defineSimulation({
         const cyp = lerp(plot.py(0), py, 0.25);
         fpill(cxp, cyp, src, { size: fs(12.5, 11.5), border: withAlpha(col.k(), 0.7), alpha: helper, bounds: plot.rect });
       } else if (kk === 'ind' && helper > 0.05) {
-        const src = `\\c{k}{x · y = ${nx(xs)} · ${ny(ys)} = ${fmt.num(Math.round(xs * ys * 100) / 100, 2)}}`;
+        const src = `\\c{k}{x · y = ${nx(xs)} · ${nyc(ys)} = ${fmt.num(Math.round(xs * ys * 100) / 100, 2)}}`;
         const w = px - plot.px(0);
         const h = plot.py(0) - py;
         const cxp = w > 150 ? plot.px(0) + w / 2 : px + 90;
         const cyp = h > 40 ? py + h / 2 : py - 18;
         fpill(cxp, cyp, src, { size: fs(12.5, 11.5), border: withAlpha(col.k(), 0.7), alpha: helper, bounds: plot.rect });
       } else if (kk === 'lin' && helper > 0.05) {
-        const src = `\\c{bad}{y : x = ${ny(ys)} : ${nx(xs)} ≈ ${fmt.num(Math.round((ys / xs) * 100) / 100, 2)}}`;
+        const src = `\\c{bad}{y : x = ${ny(ys)} : ${nx(xs)} ${isCents(ys / xs) ? '=' : '≈'} ${fmt.num(Math.round((ys / xs) * 100) / 100, 2)}}`;
         fpill(px - 70, py + 26, src, { size: fs(12, 11), border: withAlpha(col.bad(), 0.6), alpha: helper, bounds: plot.rect });
       }
       // Achsen-Kärtchen
@@ -1931,7 +1936,7 @@ export default defineSimulation({
             g.save();
             g.translate(cx, y);
             g.scale(app, app);
-            label(fmt.num(Math.round(v * 100) / 100, 2), 0, 0, vf(), c);
+            label(nq(v), 0, 0, vf(), c);
             g.restore();
           });
           g.restore();
@@ -1950,7 +1955,7 @@ export default defineSimulation({
           label(nx(shownX), pX, yX, vf(800), col.x());
           label(hide ? '?' : ny(yv), pX, yY, vf(800), col.y());
           const v = kk === 'ind' ? shownX * yv : yv / shownX;
-          label(hide ? '?' : fmt.num(Math.round(v * 100) / 100, 2), pX, yR0, vf(800), kk === 'lin' ? col.bad() : col.k());
+          label(hide ? '?' : nq(v), pX, yR0, vf(800), kk === 'lin' ? col.bad() : col.k());
         }
         // Prüfzeichen im Test
         if (test) {
@@ -2330,7 +2335,7 @@ export default defineSimulation({
         const cls = classify(pts);
         ctx.readout('rule', cls.verdict === 'dir' ? { html: `${v('y')} = ${nx(cls.k!)} · ${v('x')} – ${say(VERDICT_NAME.dir)}` } : cls.verdict === 'ind' ? { html: `${v('y')} = ${fr(nx(cls.k!), v('x'))} – ${say(VERDICT_NAME.ind)}` } : say(L('keine proportionale Zuordnung (weder noch)', 'not a proportional relation (neither)')));
         ctx.readout('calc', null);
-        ctx.readout('test', { html: `${v('y')} : ${v('x')}: ${cls.quotients.map((q) => fmt.num(Math.round(q * 100) / 100, 2)).join('; ')}<br>${v('x')} · ${v('y')}: ${cls.products.map((q) => fmt.num(Math.round(q * 100) / 100, 2)).join('; ')}` });
+        ctx.readout('test', { html: `${v('y')} : ${v('x')}: ${cls.quotients.map(nq).join('; ')}<br>${v('x')} · ${v('y')}: ${cls.products.map(nq).join('; ')}` });
         ctx.readout('dbl', null);
         return;
       }
@@ -2342,13 +2347,14 @@ export default defineSimulation({
       else if (kk === 'ind') ctx.readout('rule', { html: `${v('y')} = ${fr(nx(r.k), v('x'))} (${v('x')} · ${v('y')} = ${nx(r.k)})` });
       else ctx.readout('rule', { html: `${v('y')} = ${ny(r.k)} · ${v('x')} + ${ny(r.b)} – ${say(L('nicht proportional (Grundgebühr)', 'not proportional (base fare)'))}` });
       const r3 = ruleOfThree(r, x0, x);
-      if (r3) ctx.readout('calc', { html: r3.rows.map(([a, b]) => `${xu(a)} ≙ ${yu(b)}`).join(' → ') });
+      // gerundete Werte: „9 Pumpen ≙ 1,33 h (gerundet)“ statt „≙ ≈ 1,33 h“
+      if (r3) ctx.readout('calc', { html: r3.rows.map(([a, b]) => `${xu(a)} ≙ ${yu(b, kk, false)}${isCents(b) ? '' : ` (${say(L('gerundet', 'rounded'))})`}`).join(' → ') });
       else ctx.readout('calc', { html: `${xu(x0)} ≙ ${yu(value(r, x0))}, ${say(L('aber', 'but'))} ${xu(x)} ≙ <strong>${yu(value(r, x))}</strong> (${say(L('nicht', 'not'))} ${yu(naiveGuess(r, x0, x), 'lin', false)})` });
       const y0 = value(r, x0);
       const y1 = value(r, x);
       if (kk === 'dir') ctx.readout('test', { html: `${v('y')} : ${v('x')} = ${ny(y0)} : ${nx(x0)} = ${ny(y1)} : ${nx(x)} = ${ny(r.k)} – ${say(L('quotientengleich', 'equal quotients'))}` });
-      else if (kk === 'ind') ctx.readout('test', { html: `${v('x')} · ${v('y')} = ${nx(x0)} · ${ny(y0)} = ${nx(x)} · ${ny(y1)} = ${nx(r.k)} – ${say(L('produktgleich', 'equal products'))}` });
-      else ctx.readout('test', { html: `${ny(y0)} : ${nx(x0)} ≈ ${fmt.num(Math.round((y0 / x0) * 100) / 100, 2)}, ${ny(y1)} : ${nx(x)} ≈ ${fmt.num(Math.round((y1 / x) * 100) / 100, 2)} – ${say(L('nicht quotientengleich', 'quotients differ'))}` });
+      else if (kk === 'ind') ctx.readout('test', { html: `${v('x')} · ${v('y')} = ${nx(x0)} · ${nyc(y0)} = ${nx(x)} · ${nyc(y1)} = ${nx(r.k)} – ${say(L('produktgleich', 'equal products'))}` });
+      else ctx.readout('test', { html: `${ny(y0)} : ${nx(x0)} ${isCents(y0 / x0) ? '=' : '≈'} ${fmt.num(Math.round((y0 / x0) * 100) / 100, 2)}, ${ny(y1)} : ${nx(x)} ${isCents(y1 / x) ? '=' : '≈'} ${fmt.num(Math.round((y1 / x) * 100) / 100, 2)} – ${say(L('nicht quotientengleich', 'quotients differ'))}` });
       const { u } = storyBase(kk, x0);
       const sy = scaleY(r, u, 2);
       const opY = kk === 'dir' ? '·2' : kk === 'ind' ? ':2' : `·${fmt.num(Math.round(sy.fy * 100) / 100, 2)}, ${say(L('nicht ·2', 'not ·2'))}`;
