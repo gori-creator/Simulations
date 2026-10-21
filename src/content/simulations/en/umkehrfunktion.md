@@ -6,7 +6,7 @@ description: "Interactive simulation for upper secondary: inverse functions as a
 
 The **inverse function** $f^{-1}$ reverses $f$: from $f(3) = 5$ we get $f^{-1}(5) = 3$. This only works if every value occurs **exactly once** – every horizontal line meets the graph **at most once**. That is certainly the case if $f$ is **strictly monotonic**. $x^2$ on all of $\mathbb{R}$ is not invertible ($f(-2) = f(2) = 4$); restricted to $x \geq 0$ its inverse is $\sqrt{x}$, restricted to $x \leq 0$ it is $-\sqrt{x}$. Monotonicity is sufficient but not necessary: $\frac{1}{x}$ is invertible (it is even its own inverse).
 
-To find $f^{-1}$: solve $y = f(x)$ for $x$, then swap $x$ and $y$. Graphically this is a **reflection in $y = x$**: $P(a \mid b)$ becomes $P'(b \mid a)$, and domain and range swap: $D_{f^{-1}} = W_f$, $W_{f^{-1}} = D_f$. This is how $\ln x$ arises from $e^x$.
+To find $f^{-1}$: solve $y = f(x)$ for $x$, then swap $x$ and $y$. Graphically this is a **reflection in $y = x$**: $P(a \mid b)$ becomes $P'(b \mid a)$, and domain and range swap. Writing $D_f$ for the domain and $R_f$ for the range of $f$: $D_{f^{-1}} = R_f$, $R_{f^{-1}} = D_f$ (German textbooks write $W_f$ for the range, from *Wertemenge*). This is how $\ln x$ arises from $e^x$: $D_f = \mathbb{R}$ and $R_f = \mathbb{R}^+$, so $\ln x$ is defined only for $x > 0$.
 
 Reflecting the tangent swaps the legs of the slope triangle, so for $b = f(a)$ and $f'(a) \neq 0$:
 

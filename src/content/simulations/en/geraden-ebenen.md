@@ -6,7 +6,7 @@ description: "Lines and planes in space: a point moves along the line x = a + t 
 
 A **line** in space is given by a point $A$ and a direction. In **parametric form**: $g\colon \vec x = \vec a + t \cdot \vec u$, where $\vec a$ is the position vector of $A$ and $\vec u \ne \vec o$ the **direction vector**. Every value of $t$ gives exactly one point $X$. For $\vec a = (1, 2, 3)^T$, $\vec u = (2, -1, 1)^T$ and $t = 2$ you get $X(5, 0, 5)$.
 
-- **Trace points** are where the line pierces a coordinate plane, e.g. $x_3 = 0$ gives $t = -3$ and $S_{12}(-5, 5, 0)$. If a component of $\vec u$ is zero, the line is parallel to that coordinate plane.
+- **Trace points** are where the line pierces a coordinate plane, e.g. $x_3 = 0$ gives $t = -3$ and $S_{12}(-5, 5, 0)$. If, say, $u_3 = 0$, the line is parallel to the $x_1x_2$ plane or lies in it, so there is no trace point in that plane (or the whole line lies in it).
 - **Point test:** $P$ lies on $g$ if all three rows of $\vec p = \vec a + t \vec u$ give the **same** $t$.
 - A **plane** needs two non-parallel spanning vectors: $E\colon \vec x = \vec a + r \vec u + s \vec v$.
 - The **normal vector** $\vec n = \vec u \times \vec v$ is perpendicular to the plane. Normal form $\vec n \cdot (\vec x - \vec a) = 0$, coordinate form $n_1x_1 + n_2x_2 + n_3x_3 = d$ with $d = \vec n \cdot \vec a$.

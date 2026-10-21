@@ -224,6 +224,8 @@ export default defineSimulation({
     const dom = () => p.dom as DomKey;
     const show = () => p.show;
     const S = (s: string) => (show() ? s : '?');
+    /** Kürzel der Wertemenge: W_f (DE), R_f für „range“ (EN) */
+    const WS = lang === 'en' ? 'R' : 'W';
 
     /* ---------- Farben ---------- */
     const col = {
@@ -960,12 +962,12 @@ export default defineSimulation({
         const dx = barLabelPos(fn.D);
         if (dx !== null) fpill(plot.px(dx), plot.py(0) + 17, '\\c{D}{D_f}', { size: sz, alpha: la, bounds: r, border: withAlpha(col.D(), 0.55) });
         const wy = barLabelPos(fn.W);
-        if (wy !== null) fpill(plot.px(0) + OFF + 10, plot.py(wy), '\\c{W}{W_f}', { size: sz, align: 'left', alpha: la, bounds: r, border: withAlpha(col.W(), 0.55) });
+        if (wy !== null) fpill(plot.px(0) + OFF + 10, plot.py(wy), `\\c{W}{${WS}_f}`, { size: sz, align: 'left', alpha: la, bounds: r, border: withAlpha(col.W(), 0.55) });
         if (kI > 0.01) {
           const ix = barLabelPos(fn.W);
           if (ix !== null) fpill(plot.px(ix), plot.py(0) - OFF - 15, '\\c{W}{D_{f^{−1}}}', { size: sz, alpha: la * kI, bounds: r, border: withAlpha(col.W(), 0.55) });
           const iy = barLabelPos(fn.D);
-          if (iy !== null) fpill(plot.px(0) - 10, plot.py(iy), '\\c{D}{W_{f^{−1}}}', { size: sz, align: 'right', alpha: la * kI, bounds: r, border: withAlpha(col.D(), 0.55) });
+          if (iy !== null) fpill(plot.px(0) - 10, plot.py(iy), `\\c{D}{${WS}_{f^{−1}}}`, { size: sz, align: 'right', alpha: la * kI, bounds: r, border: withAlpha(col.D(), 0.55) });
         }
         return;
       }
@@ -1249,14 +1251,14 @@ export default defineSimulation({
         const Cp = pxw(tri.C);
         const Pp = pxw(tri.P);
         const Qp = pxw(tri.Q);
-        fpill((Pp[0] + Cp[0]) / 2, Cp[1] + (m * dx > 0 ? 15 : -15), `\\c{D}{${N(cdx)}}`, { size: sz - 0.5, alpha: la, bounds: r });
-        if (Math.abs(Qp[1] - Cp[1]) > 18) fpill(Cp[0] + (dx > 0 ? 10 : -10), (Cp[1] + Qp[1]) / 2, `\\c{W}{${N(cdy)}}`, { align: dx > 0 ? 'left' : 'right', size: sz - 0.5, alpha: la, bounds: r });
+        fpill((Pp[0] + Cp[0]) / 2, Cp[1] + (m * dx > 0 ? 15 : -15), `\\c{D}{${S(N(cdx))}}`, { size: sz - 0.5, alpha: la, bounds: r });
+        if (Math.abs(Qp[1] - Cp[1]) > 18) fpill(Cp[0] + (dx > 0 ? 10 : -10), (Cp[1] + Qp[1]) / 2, `\\c{W}{${S(N(cdy))}}`, { align: dx > 0 ? 'left' : 'right', size: sz - 0.5, alpha: la, bounds: r });
       }
       const cm = cnt('mf', m);
       const pp = plot.toPx(a, b);
       const left = pp[0] > r.x + r.w * 0.5;
       // auf schmalen Bildschirmen stehen die Steigungen nur in der Karte
-      if (!sm()) fpill(pp[0] + (left ? -16 : 16), pp[1] + (b > a ? 34 : -34), `\\c{f}{m = f′(${N(cnt('a', a))}) ${eq(m)} ${NS(cm)}}`, { align: left ? 'right' : 'left', size: sz, alpha: la, border: withAlpha(col.f(), 0.55), bounds: r });
+      if (!sm()) fpill(pp[0] + (left ? -16 : 16), pp[1] + (b > a ? 34 : -34), `\\c{f}{m = f′(${N(cnt('a', a))}) ${show() ? `${eq(m)} ${NS(cm)}` : '= ?'}}`, { align: left ? 'right' : 'left', size: sz, alpha: la, border: withAlpha(col.f(), 0.55), bounds: r });
       // gespiegelt: Tangente an f⁻¹ in P′, Katheten getauscht
       const ia = alpha * invAlpha;
       if (ia <= 0.01) return;
@@ -1282,11 +1284,15 @@ export default defineSimulation({
         const Pp = mapM(tri.P);
         const Qp = mapM(tri.Q);
         // jetzt waagrecht: Δy von f (lila), senkrecht: Δx von f (grün)
-        if (Math.abs(Qp[0] - Cp[0]) > 18) fpill((Cp[0] + Qp[0]) / 2, Cp[1] + (dx > 0 ? -15 : 15), `\\c{W}{${N(cdy)}}`, { size: sz - 0.5, alpha: ia * F.k.labels, bounds: r });
-        fpill(Cp[0] + (m * dx > 0 ? 10 : -10), (Cp[1] + Pp[1]) / 2, `\\c{D}{${N(cdx)}}`, { align: m * dx > 0 ? 'left' : 'right', size: sz - 0.5, alpha: ia * F.k.labels, bounds: r });
+        if (Math.abs(Qp[0] - Cp[0]) > 18) fpill((Cp[0] + Qp[0]) / 2, Cp[1] + (dx > 0 ? -15 : 15), `\\c{W}{${S(N(cdy))}}`, { size: sz - 0.5, alpha: ia * F.k.labels, bounds: r });
+        fpill(Cp[0] + (m * dx > 0 ? 10 : -10), (Cp[1] + Pp[1]) / 2, `\\c{D}{${S(N(cdx))}}`, { align: m * dx > 0 ? 'left' : 'right', size: sz - 0.5, alpha: ia * F.k.labels, bounds: r });
       }
       const left2 = qp[0] > r.x + r.w * 0.5;
-      const src = flat ? `\\c{b}{\\t{${T('senkrechte Tangente', 'vertical tangent')}}}` : `\\c{i}{m′ = \\f{1}{${NS(cm)}} ${show() ? `${eq(1 / m)} ${N(cnt('mi', 1 / m))}` : '= ?'}}`;
+      const src = !show()
+        ? `\\c{i}{m′ = ?}`
+        : flat
+          ? `\\c{b}{\\t{${T('senkrechte Tangente', 'vertical tangent')}}}`
+          : `\\c{i}{m′ = \\f{1}{${NS(cm)}} ${eq(1 / m)} ${N(cnt('mi', 1 / m))}}`;
       // P′ nahe bei P: auf die andere Seite als die Steigung von f
       const downQ = Math.hypot(qp[0] - pp[0], qp[1] - pp[1]) < 70 ? !(b > a) : a > b;
       if (!sm() || flat) fpill(qp[0] + (left2 ? -16 : 16), qp[1] + (downQ ? 34 : -34), src, { align: left2 ? 'right' : 'left', size: sz, alpha: ia * F.k.labels, border: withAlpha(c2, 0.55), bounds: r });
@@ -1439,8 +1445,8 @@ export default defineSimulation({
           rows[rows.length - 1]!.gap = 10;
           rows.push({ src: `\\c{m}{② ${T('x und y tauschen', 'swap x and y')}}`, size: lab, color: th().muted, gap: 4, at: stepAt(F.now, i++) });
           rows.push({ src: `\\b{\\c{i}{${s.inv}}}`, size: fs(15.5, 14), at: stepAt(F.now, i), gap: 10, hl: col.i() });
-          rows.push({ src: `\\c{W}{D_{f^{−1}} = W_f = ${s.W}}`, size: fs(12.5, 11.5), at: stepAt(F.now, i + 1), gap: 4 });
-          rows.push({ src: `\\c{D}{W_{f^{−1}} = D_f = ${s.D}}`, size: fs(12.5, 11.5), at: stepAt(F.now, i + 1) });
+          rows.push({ src: `\\c{W}{D_{f^{−1}} = ${WS}_f = ${s.W}}`, size: fs(12.5, 11.5), at: stepAt(F.now, i + 1), gap: 4 });
+          rows.push({ src: `\\c{D}{${WS}_{f^{−1}} = D_f = ${s.D}}`, size: fs(12.5, 11.5), at: stepAt(F.now, i + 1) });
         } else {
           rows.push({ src: `\\c{b}{${T('keine eindeutige Lösung', 'no unique solution')} ⇒ ${T('nicht umkehrbar', 'not invertible')}}`, size: fs(13, 12), at: stepAt(F.now, i), hl: col.bad(), gap: 8 });
           rows.push(note('Einschränken der Definitionsmenge auf einen streng monotonen Teil hilft (Ansicht „Umkehrbar?“).', 'Restricting the domain to a strictly monotonic part helps (view “Invertible?”).', { at: stepAt(F.now, i + 1) }));
@@ -1585,7 +1591,7 @@ export default defineSimulation({
           'sq:all': L('f fällt für x ≤ 0 und steigt für x ≥ 0: f(−2) = f(2) = 4 ⇒ nicht umkehrbar. Abhilfe: Definitionsmenge einschränken.', 'f decreases for x ≤ 0 and increases for x ≥ 0: f(−2) = f(2) = 4 ⇒ not invertible. Remedy: restrict the domain.'),
           cube: L('f′(0) = 0, aber f′ wechselt dort nicht das Vorzeichen: f ist trotzdem streng monoton steigend ⇒ umkehrbar.', 'f′(0) = 0, but f′ does not change sign there: f is still strictly increasing ⇒ invertible.'),
           exp: L('eˣ ist streng monoton steigend ⇒ umkehrbar; die Umkehrfunktion ist ln x.', 'eˣ is strictly increasing ⇒ invertible; the inverse is ln x.'),
-          hyp: L('Auf jedem Ast streng monoton fallend, auf ganz D aber nicht monoton. Trotzdem umkehrbar: Die Äste haben verschiedene Vorzeichen. Monotonie ist hinreichend, nicht notwendig.', 'Strictly decreasing on each branch, but not monotonic on the whole domain. Still invertible: the branches have different signs. Monotonicity is sufficient, not necessary.'),
+          hyp: L('Auf jedem Ast streng monoton fallend, auf ganz D aber nicht monoton. Trotzdem umkehrbar: Auf dem linken Ast sind alle Funktionswerte negativ, auf dem rechten positiv. Monotonie ist hinreichend, nicht notwendig.', 'Strictly decreasing on each branch, but not monotonic on the whole domain. Still invertible: on the left branch all values are negative, on the right branch all are positive. Monotonicity is sufficient, not necessary.'),
           'sin:pos': L('Auf [−π/2; π/2] streng monoton steigend ⇒ umkehrbar, f⁻¹(x) = arcsin x.', 'On [−π/2, π/2] strictly increasing ⇒ invertible, f⁻¹(x) = arcsin x.'),
           'sin:neg': L('Auf [π/2; 3π/2] streng monoton fallend ⇒ umkehrbar, f⁻¹(x) = π − arcsin x.', 'On [π/2, 3π/2] strictly decreasing ⇒ invertible, f⁻¹(x) = π − arcsin x.'),
           'sin:all': L('sin ist periodisch: Jeder Wert zwischen −1 und 1 kommt unendlich oft vor ⇒ nicht umkehrbar.', 'sin is periodic: every value between −1 and 1 occurs infinitely often ⇒ not invertible.'),
@@ -1620,14 +1626,14 @@ export default defineSimulation({
                 ];
           for (const [d, D, inv] of opts) {
             const on = d === fn.dom;
-            const res = inv ? `f^{−1}(x) = ${on ? S(inv) : inv}` : `\\c{b}{\\t{${T('nicht umkehrbar', 'not invertible')}}}`;
+            const res = inv ? `f^{−1}(x) = ${S(inv)}` : `\\c{b}{\\t{${T('nicht umkehrbar', 'not invertible')}}}`;
             rows.push({ src: `\\c{D}{D = ${lang === 'en' ? D.replace('; ', ', ') : D}}  →  ${inv ? `\\c{i}{${res}}` : res}`, size: fs(13, 12), hl: on ? (inv ? col.D() : col.bad()) : undefined, gap: 9 });
           }
           rows.push(note('Man schränkt auf einen Teil ein, auf dem f streng monoton ist.', 'Restrict to a part on which f is strictly monotonic.'));
           return formulaCard(R, measure, F.k, T('Definitionsmenge einschränken', 'Restricting the domain'), col.D(), rows);
         }
-        rows.push({ src: `\\c{D}{D_f = ${s.D}}    \\c{W}{W_f = ${s.W}}`, size: fs(13.5, 12.5) });
-        rows.push({ src: `\\c{W}{D_{f^{−1}} = ${S(s.W)}}    \\c{D}{W_{f^{−1}} = ${S(s.D)}}`, size: fs(13.5, 12.5) });
+        rows.push({ src: `\\c{D}{D_f = ${s.D}}    \\c{W}{${WS}_f = ${s.W}}`, size: fs(13.5, 12.5) });
+        rows.push({ src: `\\c{W}{D_{f^{−1}} = ${S(s.W)}}    \\c{D}{${WS}_{f^{−1}} = ${S(s.D)}}`, size: fs(13.5, 12.5) });
         rows.push(note('Keine Einschränkung nötig: f ist auf der ganzen Definitionsmenge umkehrbar.', 'No restriction needed: f is invertible on all of its domain.'));
         return formulaCard(R, measure, F.k, T('Definitions- und Wertemenge', 'Domain and range'), col.D(), rows);
       };
@@ -1647,17 +1653,21 @@ export default defineSimulation({
         const cm = NS(cnt('mf', m));
         const rows: RowSpec[] = [
           { src: `\\c{f}{${s.d}}`, size: fs(13.5, 12.5) },
-          { src: `\\c{f}{m = f′(${ca}) ${eq(m)} ${cm}}`, size: fs(13.5, 12.5), gap: 10 },
+          { src: `\\c{f}{m = f′(${ca}) ${show() ? `${eq(m)} ${cm}` : '= ?'}}`, size: fs(13.5, 12.5), gap: 10 },
           { src: `\\b{(f^{−1})′(b) = \\f{1}{f′(a)}}  \\c{m}{${T('mit', 'with')} b = f(a)}`, size: fs(14.5, 13) },
         ];
         if (!ok) {
           rows.push(note('f ist hier nicht umkehrbar – erst die Definitionsmenge einschränken.', 'f is not invertible here – restrict the domain first.', { color: col.bad() }));
+        } else if (!show()) {
+          // Aufgabenmodus: weder Steigung noch Sonderfall „senkrechte Tangente“ verraten
+          rows.push({ src: `\\c{i}{(f^{−1})′(${cb}) = ?}`, size: fs(14, 13), hl: col.i() });
+          rows.push({ src: `\\c{i}{(f^{−1})′(x) = ?}`, size: fs(13.5, 12.5) });
         } else if (flat) {
           rows.push({ src: `\\c{b}{f′(${ca}) = 0  ⇒  ${T('senkrechte Tangente in', 'vertical tangent at')} P′(${cb} | ${ca})}`, size: fs(13, 12), hl: col.bad() });
           rows.push(note('f⁻¹ ist dort nicht differenzierbar (Steigung „unendlich“).', 'f⁻¹ is not differentiable there (slope “infinite”).'));
         } else {
-          rows.push({ src: `\\c{i}{(f^{−1})′(${cb}) = \\f{1}{${cm}}} ${show() ? `${eq(1 / m, 3)} \\b{${N(cnt('mi', 1 / m), 3)}}` : '= ?'}`, size: fs(14, 13), hl: col.i() });
-          rows.push({ src: show() ? `\\c{i}{${s.dinv}}` : `\\c{i}{(f^{−1})′(x) = ?}`, size: fs(13.5, 12.5) });
+          rows.push({ src: `\\c{i}{(f^{−1})′(${cb}) = \\f{1}{${cm}}} ${eq(1 / m, 3)} \\b{${N(cnt('mi', 1 / m), 3)}}`, size: fs(14, 13), hl: col.i() });
+          rows.push({ src: `\\c{i}{${s.dinv}}`, size: fs(13.5, 12.5) });
           if (fn.key === 'exp') rows.push(note('So erhält man die Ableitung des natürlichen Logarithmus: (ln x)′ = 1/x.', 'This gives the derivative of the natural logarithm: (ln x)′ = 1/x.', { color: col.i() }));
           if (fn.key === 'cube' && Math.abs(a) < 0.35) rows.push(note('In der Nähe von 0 wird f sehr flach, f⁻¹ also sehr steil.', 'Near 0, f becomes very flat, so f⁻¹ becomes very steep.'));
         }
@@ -1674,11 +1684,18 @@ export default defineSimulation({
         const dy = Math.abs(m * dx);
         const cdx = N(cnt('dx', dx));
         const cdy = N(cnt('dy', dy));
-        const rows: RowSpec[] = flat
+        // Aufgabenmodus: Kathetenlängen (und den Sonderfall m = 0) nicht verraten
+        const rows: RowSpec[] = !show()
+          ? [
+              { src: `\\c{f}{${T('an', 'at')} P:}  \\c{D}{Δx = ?},  \\c{W}{Δy = ?}`, size: fs(13, 12) },
+              { src: `\\c{i}{${T('an', 'at')} P′:}  \\c{W}{Δx = ?},  \\c{D}{Δy = ?}`, size: fs(13, 12), gap: 10 },
+              { src: `m = \\f{\\c{W}{Δy}}{\\c{D}{Δx}}  \\c{m}{→}  m′ = \\f{\\c{D}{Δx}}{\\c{W}{Δy}}`, size: fs(13.5, 12.5) },
+            ]
+          : flat
           ? [note('Waagrechte Tangente: Die senkrechte Kathete hat die Länge 0. Gespiegelt wird die waagrechte Kathete 0 – Division durch 0, keine Steigung.', 'Horizontal tangent: the vertical leg has length 0. Reflected, the horizontal leg becomes 0 – division by 0, no slope.', { color: th().text })]
           : [
               { src: `\\c{f}{${T('an', 'at')} P:}  \\c{D}{Δx = ${cdx}},  \\c{W}{Δy = ${cdy}}`, size: fs(13, 12) },
-              { src: `\\c{i}{${T('an', 'at')} P′:}  \\c{W}{Δx = ${S(cdy)}},  \\c{D}{Δy = ${S(cdx)}}`, size: fs(13, 12), gap: 10 },
+              { src: `\\c{i}{${T('an', 'at')} P′:}  \\c{W}{Δx = ${cdy}},  \\c{D}{Δy = ${cdx}}`, size: fs(13, 12), gap: 10 },
               { src: `m = \\f{\\c{W}{Δy}}{\\c{D}{Δx}}  \\c{m}{→}  m′ = \\f{\\c{D}{Δx}}{\\c{W}{Δy}} = \\f{1}{m}`, size: fs(13.5, 12.5) },
               note('Beim Spiegeln tauschen die Katheten ihre Rollen: aus der waagrechten wird die senkrechte und umgekehrt.', 'Reflecting swaps the legs: the horizontal one becomes vertical and vice versa.'),
             ];
@@ -1752,8 +1769,8 @@ export default defineSimulation({
       ctx.readout('pts', { html: ok ? `<var>P</var>(${N(a)} | ${N(b)}) ↦ <var>P</var>′(${N(b)} | ${N(a)})` : `<var>P</var>(${N(a)} | ${N(b)})` });
       ctx.readout('sets', {
         html: ok
-          ? `${toHtml(`D_f = ${s.D}`)}, ${toHtml(`W_f = ${s.W}`)} · ${toHtml(`D_{f^{−1}} = ${s.W}`)}, ${toHtml(`W_{f^{−1}} = ${s.D}`)}`
-          : `${toHtml(`D_f = ${s.D}`)}, ${toHtml(`W_f = ${s.W}`)}`,
+          ? `${toHtml(`D_f = ${s.D}`)}, ${toHtml(`${WS}_f = ${s.W}`)} · ${toHtml(`D_{f^{−1}} = ${s.W}`)}, ${toHtml(`${WS}_{f^{−1}} = ${s.D}`)}`
+          : `${toHtml(`D_f = ${s.D}`)}, ${toHtml(`${WS}_f = ${s.W}`)}`,
       });
       if (view() === 'test' || !ok) {
         const pa = partner(fn.key, fn.dom, a);
