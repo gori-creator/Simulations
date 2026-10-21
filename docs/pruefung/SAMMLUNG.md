@@ -28,6 +28,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | feldlinien | `src/sim-core/format.ts` | Tausendertrennung ab 5 Stellen (schmales geschütztes Leerzeichen, DIN 1333: „125 000“), wie im Lernmaterial. Option bzw. Standard prüfen, ohne bestehende Anzeigen zu brechen. | offen |
 | feldlinien | `docs/ARCHITEKTUR.md` | Hinweis: Ein `hint` als Funktion braucht eine Typangabe am Parameter, sonst gehen die Typen von `ctx.params` verloren. | offen |
 | kondensator | `src/sim-core/task-mode.ts` / Host | Deckt man ein einzelnes Spoiler-Ergebnis auf, wird `ctx.hidden` global falsch, und das ganze Bild zeigt alle Werte. `ctx.hidden` soll erst falsch werden, wenn alle Spoiler aufgedeckt sind (bzw. Simulationen gezielt `ctx.isHidden(key)` nutzen); Verhalten dokumentieren. | offen |
+| doppelspalt | `src/sim-core/format.ts` | Helfer für „n gültige Ziffern“ (`fmt.sig(x, n)`), damit Simulationen nicht eigene `digits()` bauen. | offen |
 
 ## Rückfragen an die Projektleitung
 
