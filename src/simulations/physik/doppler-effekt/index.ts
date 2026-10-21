@@ -179,6 +179,7 @@ export default defineSimulation({
       hiddenSub: 'Wert ausgeblendet',
       second: '+ rückwärts: {f} Hz',
       radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
+      radialQ: 'v_[Q,r] = {q} m/s',
       fQ: 'f_[Q]',
       fV: 'f_[v]',
       fH: 'f_[h]',
@@ -202,7 +203,7 @@ export default defineSimulation({
       now: '<var>t</var> = {t} s · Abstand {r} m · <var>f</var><sub>B</sub> = {f} Hz',
       lowWord: 'tiefer',
       highWord: 'höher',
-      nowSilent: 't = {t} s · noch Stille beim Beobachter',
+      nowSilent: '<var>t</var> = {t} s · noch Stille beim Beobachter',
       sndOn: 'Ton anhören',
       sndOff: 'Ton aus',
     },
@@ -247,6 +248,7 @@ export default defineSimulation({
       hiddenSub: 'value hidden',
       second: '+ backwards: {f} Hz',
       radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
+      radialQ: 'v_[Q,r] = {q} m/s',
       fQ: 'f_[Q]',
       fV: 'f_[a]',
       fH: 'f_[b]',
@@ -270,7 +272,7 @@ export default defineSimulation({
       now: '<var>t</var> = {t} s · distance {r} m · <var>f</var><sub>B</sub> = {f} Hz',
       lowWord: 'lower',
       highWord: 'higher',
-      nowSilent: 't = {t} s · still silent at the observer',
+      nowSilent: '<var>t</var> = {t} s · still silent at the observer',
       sndOn: 'Play sound',
       sndOff: 'Sound off',
     },
@@ -613,6 +615,8 @@ export default defineSimulation({
 
     /** Radialkomponente mit 1 Nachkommastelle, genau 0 ohne Stellen (kein „−0,0“). */
     const radial = (v: number) => (Math.abs(v) < 0.05 ? '0' : fmt.fixed(v, 1));
+    /** Machzahl mit 2 Stellen; knapp neben 1 mit 3 Stellen (sonst „Ma = 1,00 < 1“ bei v_Q = 339 m/s). */
+    const maText = (ma: number) => fmt.fixed(ma, Math.abs(ma - 1) < 0.005 && Math.abs(ma - 1) > 1e-6 ? 3 : 2);
 
     /** Farbe einer Frequenz: höher als f_Q blau, tiefer rot. */
     const fColor = (f: number) => {
@@ -912,7 +916,7 @@ export default defineSimulation({
           g.stroke();
           g.setLineDash([]);
           if (show()) {
-            richText(tr('alpha', { a: fmt.fixed((ang * 180) / Math.PI, 1) }), spx - ra - 6, g0.roadY - (g0.sm ? 8 : 9), g0.sm ? 11 : 12, orange(), 'right');
+            richText(tr('alpha', { a: fmt.fixed((ang * 180) / Math.PI, 1) }), Math.min(spx - ra - 6, r.x + r.w - 8), g0.roadY - (g0.sm ? 8 : 9), g0.sm ? 11 : 12, orange(), 'right');
           }
           // Beschriftung längs der oberen Kegellinie
           const q = 0.62;
@@ -1354,7 +1358,7 @@ export default defineSimulation({
         else pill(r.x + 8 + w1 + 8, r.y + 8, tr('slowPill', { k: kTxt }), purple(), 'left', size);
       }
       const ma = ease2('ma', p.vq / C_AIR);
-      pill(r.x + r.w - 8, r.y + 8, tr(sm ? 'machPillS' : 'machPill', { m: fmt.fixed(ma, 2) }), ma > 1.001 ? orange() : theme.text, 'right', size);
+      pill(r.x + r.w - 8, r.y + 8, tr(sm ? 'machPillS' : 'machPill', { m: maText(ma) }), ma > 1.001 ? orange() : theme.text, 'right', size);
       // Fußzeile: Darstellung der Ringe, Maßstab
       const ringTxt = N === 1 ? ctx.t('ringsOne') : tr(sm ? 'ringsS' : 'rings', { n: String(N) });
       pill(r.x + 8, r.y + r.h - size - 19, ringTxt, theme.muted, 'left', size);
@@ -1695,7 +1699,14 @@ export default defineSimulation({
         if (Math.abs(dF) < 0.05) sub(ctx.t('same'), theme.muted);
         else sub(tr(dF > 0 ? 'higher' : 'lower', { d: fmt.fixed(Math.abs(dF), 1) }), fColor(shownF));
         if (rev) sub(tr('second', { f: fmt.fixed(Math.abs(rev.f), 1) }), purple());
-        else if (!flat || R.h > 90) sub(tr('radial', { q: radial(main.vQr), b: radial(main.vBr) }), theme.muted, 600);
+        else if (!flat || R.h > 90) {
+          // Radialkomponenten nur, wenn sie in die Karte passen (Handy: sonst rechts abgeschnitten)
+          const room = R.x + R.w - pad - lx;
+          const full = tr('radial', { q: radial(main.vQr), b: radial(main.vBr) });
+          const short = tr('radialQ', { q: radial(main.vQr) });
+          if (richWidth(full, fs, 600) <= room) sub(full, theme.muted, 600);
+          else if (richWidth(short, fs, 600) <= room) sub(short, theme.muted, 600);
+        }
       }
       // Tonhöhen-Skala
       const gy = flat ? R.y + R.h - pad - 10 : Math.min(R.y + R.h - pad - 18, ly + 14);
@@ -1746,7 +1757,7 @@ export default defineSimulation({
     /* ---------- Ergebnisse ---------- */
     function updateNow(): void {
       const a = mainArrival(model, t);
-      if (!a || !Number.isFinite(a.f)) ctx.readout('now', tr('nowSilent', { t: fmt.fixed(t, 2) }));
+      if (!a || !Number.isFinite(a.f)) ctx.readout('now', { html: tr('nowSilent', { t: fmt.fixed(t, 2) }) });
       else {
         const [ox, oy] = observerPos(model, t);
         const [sx, sy] = sourcePos(model, t);
@@ -1758,14 +1769,14 @@ export default defineSimulation({
       updateLive();
       const lv = wavelengthAhead(p.f, p.vq);
       const lh = wavelengthBehind(p.f, p.vq);
-      let lam = lv !== null ? tr('lamText', { c: n(C_AIR, 0), v: n(p.vq, 0), f: n(p.f, 0), lv: fmt.fixed(lv, 3), fv: fmt.fixed(C_AIR / lv, 1) }) : ctx.t('lamNone');
+      let lam = lv !== null ? tr('lamText', { c: n(C_AIR, 0), v: n(p.vq, 0), f: n(p.f, 0), lv: fmt.fixed(lv, lv < 0.01 ? 5 : lv < 0.1 ? 4 : 3), fv: fmt.fixed(C_AIR / lv, 1) }) : ctx.t('lamNone');
       lam += tr('lamBack', { lh: fmt.fixed(lh, 3), fh: fmt.fixed(C_AIR / lh, 1), l0: fmt.fixed(C_AIR / p.f, 3) });
       ctx.readout('lam', { html: lam });
       const ma = p.vq / C_AIR;
       const ang = machAngle(p.vq);
-      if (ang !== null) ctx.readout('mach', { html: tr('machSuper', { m: fmt.fixed(ma, 2), s: fmt.fixed(C_AIR / p.vq, 3), a: fmt.fixed((ang * 180) / Math.PI, 1) }) });
+      if (ang !== null) ctx.readout('mach', { html: tr('machSuper', { m: maText(ma), s: fmt.fixed(C_AIR / p.vq, 3), a: fmt.fixed((ang * 180) / Math.PI, 1) }) });
       else if (p.vq === C_AIR) ctx.readout('mach', { html: ctx.t('machOne') });
-      else ctx.readout('mach', { html: tr('machSub', { m: fmt.fixed(ma, 2) }) });
+      else ctx.readout('mach', { html: tr('machSub', { m: maText(ma) }) });
       ctx.setAction('go', { enabled: !ctx.locked });
       ctx.setAction('snd', { label: ctx.t(rig ? 'sndOff' : 'sndOn') });
     }
