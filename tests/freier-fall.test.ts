@@ -77,4 +77,54 @@ describe('Modell: freier Fall', () => {
     expect([st.min, st.max]).toEqual([0.15, 0.25]);
     expect(stats([])).toBeNull();
   });
+
+  it('behandelt Sonderfälle und Reglergrenzen', () => {
+    // h = 0: keine Fallzeit, keine Aufprallgeschwindigkeit – auch mit Luftwiderstand
+    expect(fallTime(0, 9.81)).toBe(0);
+    expect(impactSpeed(0, 9.81)).toBe(0);
+    expect(dragFallTime(0, 9.81, TERMINAL.feather)).toBe(0);
+    expect(dragDistance(9.81, TERMINAL.ball, 0)).toBe(0);
+    expect(dragSpeed(9.81, TERMINAL.ball, 0)).toBe(0);
+    // Reglergrenzen: h = 1 m auf dem Jupiter, h = 100 m auf dem Mond
+    expect(fallTime(1, PLANETS.jupiter)).toBeCloseTo(0.284, 3);
+    expect(impactSpeed(1, PLANETS.jupiter)).toBeCloseTo(7.04, 2);
+    expect(fallTime(100, PLANETS.mond)).toBeCloseTo(11.11, 2);
+    expect(impactSpeed(100, 9.81)).toBeCloseTo(44.29, 2);
+    // kleinster Blitzabstand auf dem Jupiter: erster Abstand 3,1 cm
+    expect(strobeGaps(PLANETS.jupiter, 0.05, 1)[0]).toBeCloseTo(0.031, 3);
+    // sehr lange Fallzeit mit Luftwiderstand ohne Überlauf: fast gleichförmig mit v_E
+    const tLong = dragFallTime(1000, 9.81, TERMINAL.feather);
+    expect(Number.isFinite(tLong)).toBe(true);
+    expect(tLong).toBeCloseTo(1000 / TERMINAL.feather + (TERMINAL.feather / 9.81) * Math.LN2, 6);
+  });
+
+  it('bestätigt die Werte der Aufgaben im Lernmaterial', () => {
+    const g = PLANETS.erde;
+    // Aufgabe 1: 20 m → 2,02 s; 19,8 m/s ≈ 71 km/h
+    expect(fallTime(20, g)).toBeCloseTo(2.02, 2);
+    expect(impactSpeed(20, g)).toBeCloseTo(19.8, 1);
+    expect(Math.round(impactSpeed(20, g) * 3.6)).toBe(71);
+    // Aufgabe 2: Δt = 0,4 s → 0,78 m; 2,35 m; 3,92 m; 5,49 m, Zuwachs g·Δt² ≈ 1,57 m
+    const gaps = strobeGaps(g, 0.4, 4);
+    expect(gaps.map((x) => Math.round(x * 100) / 100)).toEqual([0.78, 2.35, 3.92, 5.49]);
+    expect(gaps[1]! - gaps[0]!).toBeCloseTo(g * 0.16, 9);
+    // Aufgabe 3: Mond 4,97 s, etwa 2,5-mal so lange
+    expect(fallTime(20, PLANETS.mond)).toBeCloseTo(4.97, 2);
+    expect(fallTime(20, PLANETS.mond) / fallTime(20, g)).toBeCloseTo(2.46, 2);
+    // Aufgabe 4: 2 s → 19,6 m; Reglerwert 19,5 m ergibt knapp 2 s
+    expect(fallDistance(g, 2)).toBeCloseTo(19.62, 2);
+    expect(fallTime(19.5, g)).toBeCloseTo(1.99, 2);
+    // Aufgabe 5: 18 cm → 0,19 s; Reaktionsweg bei 50 km/h ≈ 2,7 m
+    const rt = reactionTime(0.18, g);
+    expect(rt).toBeCloseTo(0.192, 3);
+    expect((50 / 3.6) * rt).toBeCloseTo(2.66, 2);
+    // Aufgabe 7: Apfel aus 5 m → 9,9 m/s ≈ 36 km/h
+    expect(impactSpeed(5, g)).toBeCloseTo(9.9, 1);
+    expect(Math.round(impactSpeed(5, g) * 3.6)).toBe(36);
+    // Fallröhre: Kugel nach 0,55 s, Feder nach 2,54 s unten
+    expect(dragFallTime(1.5, g, TERMINAL.ball)).toBeCloseTo(0.55, 2);
+    expect(dragFallTime(1.5, g, TERMINAL.feather)).toBeCloseTo(2.54, 2);
+    // Lineal 50 cm: länger als 319 ms gilt als durchgerutscht
+    expect(Math.round(reactionTime(0.5, g) * 1000)).toBe(319);
+  });
 });
