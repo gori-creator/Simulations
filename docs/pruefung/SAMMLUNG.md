@@ -84,5 +84,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | wellen-ausbreitung | Bei λ ≈ 0,3 m kreuzen die gestrichelten Hilfslinien der λ-Klammer die Beschriftung leicht. | offen |
 | kondensator | Eigene Index-Helfer `richText` (`U_[C]`) auf `subText` umstellen; „37 %“ bei τ = 100 s mit t½-Linien dicht beieinander. | offen |
 | induktion | Mit der Maus lässt sich der Magnet bis z = −3 cm ziehen; dort ist die Spannungsspitze wegen der Einwindungs-Näherung zu groß. Ziehbereich auf z ≥ 3 cm begrenzen wie im Automatikbetrieb. Lokale Index-Hilfen auf `subText` umstellen. | offen |
+| doppler-effekt | Bei v_Q = c berührt die Beschriftung „v_Q = 340 m/s“ die gestaute Wellenfront. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
