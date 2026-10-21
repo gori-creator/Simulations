@@ -208,4 +208,53 @@ describe('Modell: Newton-Verfahren', () => {
       }
     }
   });
+
+  it('Lernmaterial: Aufgabenwerte nachgerechnet (Aufgabe 3, 4, 6, Abbruchkriterium)', () => {
+    // Aufgabe 3: x₄ ändert die sechs Nachkommastellen von x₃ nicht mehr
+    const c = sequence(FNS.cubic, 2, 4);
+    expect(c[3]).toBeCloseTo(2.0945515, 7);
+    expect(Math.trunc(c[3]! * 1e6)).toBe(2094551);
+    expect(Math.trunc(c[4]! * 1e6)).toBe(2094551);
+    expect(Math.abs(c[4]! - c[3]!)).toBeLessThan(1e-6);
+    // Aufgabe 4: x₂ und x₃ stimmen in vier Nachkommastellen überein (0,7391)
+    const k = sequence(FNS.cos, 1, 3);
+    expect(k[1]! - 1).toBeCloseTo(-0.2496, 4);
+    expect(k[2]).toBeCloseTo(0.739113, 6);
+    expect(k[3]).toBeCloseTo(0.739085, 6);
+    expect(Math.round(k[2]! * 1e4)).toBe(7391);
+    expect(Math.round(k[3]! * 1e4)).toBe(7391);
+    // Aufgabe 6: e₂ ≈ 0,00245, Schätzung e₃ ≈ 2,1 · 10⁻⁶, tatsächlich 2,12 · 10⁻⁶, danach ≈ 1,6 · 10⁻¹²
+    const e = errors(sequence(FNS.sq2, 1, 3), Math.SQRT2);
+    expect(e[2]).toBeCloseTo(0.00245, 5);
+    expect(e[2]! ** 2 / (2 * Math.SQRT2)).toBeCloseTo(2.1e-6, 7);
+    expect(e[3]).toBeCloseTo(2.12e-6, 8);
+    expect(e[3]! ** 2 / (2 * Math.SQRT2)).toBeCloseTo(1.6e-12, 13);
+    // Doppelte Nullstelle ab x₀ = 2: 1 → 0,56 → 0,30 → 0,16
+    const d = errors(sequence(FNS.dbl, 2, 3), 1).map((v) => Math.round(v * 100) / 100);
+    expect(d).toEqual([1, 0.56, 0.3, 0.16]);
+  });
+
+  it('Sonderfälle: Startwerte an den Reglergrenzen und auf der waagrechten Tangente', () => {
+    // Reglergrenzen −3 und 4: überall endliche Werte oder ein klares Ergebnis
+    for (const key of FN_KEYS) {
+      for (const x0 of [-3, 4]) {
+        const o = classify(FNS[key], x0);
+        expect(['root', 'flat', 'cycle', 'far', 'open']).toContain(o.kind);
+        for (const x of sequence(FNS[key], x0, 10)) expect(Number.isFinite(x)).toBe(true);
+      }
+    }
+    // f′ = 0 bei x³ − 3x + 2 in x = −1 (Hochpunkt): Abbruch
+    expect(newtonStep(FNS.dbl, -1).status).toBe('flat');
+    // x₀ = 1 ist schon die doppelte Nullstelle (f = 0 und f′ = 0): kein Abbruch, die Folge bleibt bei 1
+    const at = newtonStep(FNS.dbl, 1);
+    expect(at.status).toBe('ok');
+    expect(at.next).toBe(1);
+    expect(sequence(FNS.dbl, 1, 3)).toEqual([1, 1, 1, 1]);
+    const oa = classify(FNS.dbl, 1);
+    expect(oa.kind === 'root' && oa.index).toBe(1);
+    expect(newtonStep(FNS.three, -1).status).toBe('flat');
+    // x² − 2 mit negativem Startwert läuft zu −√2
+    const o = classify(FNS.sq2, -1);
+    expect(o.kind === 'root' && o.root).toBeCloseTo(-Math.SQRT2, 12);
+  });
 });
