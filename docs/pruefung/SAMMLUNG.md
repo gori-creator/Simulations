@@ -47,6 +47,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | kraefteaddition | Bei α = 2° liegen die Pfeile am Knoten auf dem Handy eng zusammen. Beschriftungen versetzen. | offen |
 | linsen | Bei der Zerstreuungslinse stehen „virtuelles Bild“ und „B“ dicht an den gestrichelten Linien. Etwas versetzen. | offen |
 | linsen | Auf dem Handy liegen auf der optischen Bank bei g ≈ 13 cm „F“ und der Kerzenfuß eng beieinander. Beschriftung ausweichen lassen. | offen |
-| teilchenmodell | Beim schnellen Abkühlen der Flüssigkeit (100 → 0 °C) hängt die mittlere Geschwindigkeit deutlich nach (z. B. 650 m/s bei 23 °C statt 592 m/s). Regelung auch außerhalb der Plateaus nachziehen. | offen |
+| teilchenmodell | Beim schnellen Abkühlen der Flüssigkeit (100 → 0 °C) hängt die mittlere Geschwindigkeit deutlich nach (z. B. 650 m/s bei 23 °C statt 592 m/s). Regelung auch außerhalb der Plateaus nachziehen. | erledigt: Thermostat mit Vorsteuerung (Geschwindigkeiten skalieren mit √(kT/kT_alt)) und Integralanteil (vorher dauerhaft ≈ +5 % in der Flüssigkeit), Anzeige glättet das Verhältnis zum Sollwert. Browser, 2000 W, 100 → 0 °C: größte Abweichung vorher 14,6 % (z. B. 667 statt 590 m/s bei 23 °C), nachher 1,6 %; Handy 1000 W 3,2 % (Zufallsschwankung). Neue Tests. |
 | reflexion | Die Bilder im Winkelspiegel per Tastatur bedienbar machen (`ctx.setKeyTargets`, neuer Kern-Helfer). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |

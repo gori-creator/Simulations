@@ -224,6 +224,10 @@ export const THERMOSTAT = {
    * dabei Lageenergie ab (sonst kurz Ø > 1000 m/s nach schnellem Erstarren).
    */
   hold: 1.5,
+  /** Zeitkonstante des Integralanteils in s (gleicht die dauernde Aufheizung durch Kräfte und Wände aus). */
+  integral: 0.5,
+  /** Startwert des Integralanteils (typischer Überschuss in der Flüssigkeit, gemessen). */
+  bias: 0.05,
 } as const;
 
 /**
@@ -270,6 +274,10 @@ export class ParticleBox {
   potential = 0;
   /** Weiche Rollenwechsel (false: Kräfte springen, z. B. für Tests). */
   ramp = true;
+  /** Ziel-„k·T“ des letzten Thermostat-Schritts (für die Vorsteuerung bei Temperaturänderung). */
+  private kTRef = NaN;
+  /** Integralanteil des Thermostats (relativer Überschuss der Bewegungsenergie, gemittelt). */
+  private kBias: number = THERMOSTAT.bias;
 
   constructor(
     n: number,
@@ -350,6 +358,7 @@ export class ParticleBox {
       this.vx[i] = gauss(this.rand) * s;
       this.vy[i] = gauss(this.rand) * s;
     }
+    this.kTRef = kT;
     this.computeForces();
   }
 
@@ -553,13 +562,38 @@ export class ParticleBox {
     if (opts.kT !== undefined) this.thermostat(h, opts.kT, opts.tau ?? 0.4, opts.shuffle ?? 0.4);
   }
 
-  /** Berendsen-Thermostat (mittlere Bewegungsenergie = n · kT) und gelegentliches Neuauslosen. */
+  /**
+   * Thermostat: Berendsen-Regelung (mittlere Bewegungsenergie = n · kT) mit
+   * zwei Ergänzungen und gelegentlichem Neuauslosen.
+   * - Vorsteuerung: Ändert sich das Ziel (Heizen, Kühlen, Regler), werden alle
+   *   Geschwindigkeiten sofort im Verhältnis √(kT/kT_alt) mitskaliert. Sonst
+   *   hinkt die mittlere Geschwindigkeit beim schnellen Abkühlen deutlich nach.
+   * - Integralanteil: Kräfte und Wände heizen die Teilchen ständig ein wenig
+   *   auf; die reine Berendsen-Regelung bliebe dann etwa 6 % über dem Ziel.
+   *   Der Integralanteil gleicht diesen dauernden Überschuss aus. Er misst die
+   *   mittlere Geschwindigkeit (die angezeigte Größe) und zählt große,
+   *   kurzzeitige Abweichungen nur begrenzt, damit er nicht überschießt.
+   */
   private thermostat(h: number, kT: number, tau: number, shuffle: number): void {
     const n = this.n;
+    if (Number.isFinite(this.kTRef) && this.kTRef > 1e-12 && kT > 1e-12 && kT !== this.kTRef) {
+      const f = Math.sqrt(kT / this.kTRef);
+      for (let i = 0; i < n; i++) {
+        this.vx[i]! *= f;
+        this.vy[i]! *= f;
+      }
+    }
+    this.kTRef = kT;
     const ke = this.kinetic();
     const target = n * kT;
-    if (ke > 1e-12) {
-      const lam = Math.sqrt(Math.min(1.21, Math.max(0.81, 1 + (h / tau) * (target / ke - 1))));
+    if (ke > 1e-12 && target > 1e-12) {
+      // Abweichung der mittleren Geschwindigkeit (das, was angezeigt wird) vom Sollwert √(π·kT/2)
+      let sum = 0;
+      for (let i = 0; i < n; i++) sum += Math.hypot(this.vx[i]!, this.vy[i]!);
+      const err = 2 * (sum / n / Math.sqrt((Math.PI * kT) / 2) - 1);
+      this.kBias = Math.min(0.3, Math.max(-0.3, this.kBias + (h / THERMOSTAT.integral) * Math.min(0.08, Math.max(-0.08, err))));
+      const goal = target * (1 - this.kBias);
+      const lam = Math.sqrt(Math.min(1.21, Math.max(0.81, 1 + (h / tau) * (goal / ke - 1))));
       for (let i = 0; i < n; i++) {
         this.vx[i]! *= lam;
         this.vy[i]! *= lam;

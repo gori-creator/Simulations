@@ -13,6 +13,7 @@ import {
   modelKT,
   ParticleBox,
   phaseState,
+  SPEED_SCALE,
   SAMPLE_MASS,
   SOLID,
   speedDensity,
@@ -326,5 +327,62 @@ describe('Prüfrunde: Thermostat beim Zustandswechsel', () => {
       expect(box.count(LIQUID)).toBe(60);
       expect(worst).toBeLessThan(0.035);
     }
+  });
+});
+
+describe('Nachbesserung: mittlere Geschwindigkeit folgt der Temperatur', () => {
+  const mean = (box: ParticleBox) => {
+    let sum = 0;
+    for (let i = 0; i < box.n; i++) sum += Math.hypot(box.vx[i]!, box.vy[i]!);
+    return (sum / box.n) * SPEED_SCALE;
+  };
+
+  it('ruhende Flüssigkeit bei 50 °C: Ø im Mittel höchstens 1,5 % neben dem Sollwert (vorher ≈ +3,5 %)', () => {
+    const box = new ParticleBox(60, 14, 16, latticeSites(10, 6, 14), seededRandom(4));
+    const kT = modelKT(50);
+    box.arrange(0, 0, kT);
+    for (let s = 0; s < 1500; s++) box.step(1 / 300, thermostatOptions('liquid', kT, s < 450 ? 0 : Infinity));
+    let m = 0;
+    for (let s = 0; s < 3000; s++) {
+      box.step(1 / 300, thermostatOptions('liquid', kT));
+      m += mean(box) / 3000;
+    }
+    expect(Math.abs(m / meanSpeed(50) - 1)).toBeLessThan(0.015);
+  });
+
+  it('schnelles Abkühlen 100 → 0 °C (2000 W, ≈ 2,6 s im Bild): angezeigtes Ø hinkt nicht nach (vorher bis ≈ +14 %)', () => {
+    // Bei 60 Teilchen schwankt Ø auch bei fester Temperatur um einige Prozent (Zufall).
+    // Geprüft wird deshalb: im Mittel kaum Nachlauf (< 1,5 %) und nie weiter weg als bei
+    // fester Temperatur üblich (< 4,5 %); typisch liegt die Abweichung unter 3 %.
+    let bias = 0;
+    let count = 0;
+    let typical = 0;
+    for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+      const box = new ParticleBox(60, 14, 16, latticeSites(10, 6, 14), seededRandom(seed));
+      box.arrange(0, 0, modelKT(99));
+      let ratio = 1;
+      for (let s = 0; s < 1500; s++) {
+        box.step(1 / 300, thermostatOptions('liquid', modelKT(99), s < 450 ? 0 : Infinity));
+        if (s % 5 === 4) ratio += (mean(box) / meanSpeed(99) - ratio) * (1 - Math.exp(-1.2 / 60));
+      }
+      // wie in der Simulation: 60 Bilder/s, je 5 Schritte, Zeitraffer 40; geglättet wird das Verhältnis zum Sollwert
+      const H1 = enthalpy(1);
+      let H = enthalpy(99);
+      let worst = 0;
+      while (H > H1) {
+        H -= (2000 * 40) / 60;
+        const th = phaseState(H).theta;
+        const kT = modelKT(th);
+        for (let k = 0; k < 5; k++) box.step(1 / 300, thermostatOptions('liquid', kT));
+        ratio += (mean(box) / meanSpeed(th) - ratio) * (1 - Math.exp(-1.2 / 60));
+        worst = Math.max(worst, Math.abs(ratio - 1));
+        bias += ratio - 1;
+        count++;
+      }
+      expect(worst).toBeLessThan(0.045);
+      if (worst < 0.03) typical++;
+    }
+    expect(Math.abs(bias / count)).toBeLessThan(0.015);
+    expect(typical).toBeGreaterThanOrEqual(6);
   });
 });
