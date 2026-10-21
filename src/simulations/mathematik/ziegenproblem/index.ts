@@ -3,6 +3,7 @@ import {
   drawImageFit,
   ease,
   Plot,
+  prefersReducedMotion,
   roundRect,
   softShadow,
   Surface,
@@ -11,7 +12,7 @@ import {
   withAlpha,
   type Rect,
 } from '../../../sim-core';
-import { openedDoors, playRound, remainingDoor, winProbabilities } from './model';
+import { openedDoors, playRound, relationSign, remainingDoor, winProbabilities } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const OPEN_MS = 650;
@@ -70,15 +71,17 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Spielshow mit Türen: Hinter einer steht ein Auto, hinter den anderen Ziegen',
+      canvas:
+        'Spielshow mit nummerierten Türen: Hinter einer steht ein Auto, hinter den anderen Ziegen. Die gewählte Tür ist blau umrandet und mit „Deine Wahl“ beschriftet, die andere geschlossene Tür grün und mit „andere Tür“. Nach der Entscheidung zeigt ein Rahmen mit ✓ (Auto) oder gestricheltem Rahmen mit ✗ (Ziege) das Ergebnis. Im Simulationsmodus: Säulen der Gewinnanteile für Bleiben und Wechseln mit gestrichelter theoretischer Wahrscheinlichkeit und daneben der Verlauf der Gewinnanteile über die Anzahl der Spiele.',
       pick: 'Wähle eine Tür!',
       decide3: 'Hinter Tür {opened} steht eine Ziege. Bleibst du bei Tür {chosen} oder wechselst du zu Tür {other}?',
       decideN: '{count} Türen mit Ziegen sind offen. Bleibst du bei Tür {chosen} oder wechselst du zu Tür {other}?',
-      win: 'Gewonnen – das Auto!',
-      lose: 'Leider eine Ziege.',
+      win: '✓ Gewonnen – das Auto!',
+      lose: '✗ Leider eine Ziege.',
       again: 'Tippe auf eine Tür für ein neues Spiel.',
       door: 'Tür {n}',
       yourChoice: 'Deine Wahl',
+      otherDoor: 'andere Tür',
       firstChoice: 'erste Wahl',
       finalChoice: 'endgültige Wahl',
       stayStat: 'Bleiben: {won} von {played} gewonnen{rate}',
@@ -90,20 +93,22 @@ export default defineSimulation({
       stay: 'Bleiben',
       switch: 'Wechseln',
       rate: 'Gewinnanteil',
-      theory: 'Bleiben: 1/{n} ≈ {stay} %, Wechseln: {m}/{n} ≈ {switch} %',
+      theory: 'Bleiben: 1/{n} {stay}, Wechseln: {m}/{n} {switch}',
       goat: 'Ziege',
       car: 'Auto',
     },
     en: {
-      canvas: 'Game show with doors: a car behind one, goats behind the others',
+      canvas:
+        'Game show with numbered doors: a car behind one, goats behind the others. The chosen door has a blue frame labelled “Your choice”, the other closed door a green frame labelled “other door”. After the decision a frame with ✓ (car) or a dashed frame with ✗ (goat) shows the result. In simulation mode: bars for the share of wins when staying and switching, with the theoretical probability as a dashed line, and next to them the share of wins plotted against the number of games.',
       pick: 'Pick a door!',
       decide3: 'There is a goat behind door {opened}. Do you stay with door {chosen} or switch to door {other}?',
       decideN: '{count} doors with goats are open. Do you stay with door {chosen} or switch to door {other}?',
-      win: 'You win – the car!',
-      lose: 'Sorry, a goat.',
+      win: '✓ You win – the car!',
+      lose: '✗ Sorry, a goat.',
       again: 'Tap a door for a new game.',
       door: 'Door {n}',
       yourChoice: 'Your choice',
+      otherDoor: 'other door',
       firstChoice: 'first choice',
       finalChoice: 'final choice',
       stayStat: 'Stay: won {won} of {played}{rate}',
@@ -115,7 +120,7 @@ export default defineSimulation({
       stay: 'Stay',
       switch: 'Switch',
       rate: 'Share of wins',
-      theory: 'Stay: 1/{n} ≈ {stay} %, switch: {m}/{n} ≈ {switch} %',
+      theory: 'Stay: 1/{n} {stay}, switch: {m}/{n} {switch}',
       goat: 'Goat',
       car: 'Car',
     },
@@ -129,8 +134,10 @@ export default defineSimulation({
       ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
 
     // Diagramm für den Simulationsmodus (rechts bzw. unten)
+    // Nebeneinander, sobald die Bühne breit genug und eher flach ist (Tablet quer/hoch)
+    const isWide = (w: number, h: number): boolean => w >= 480 && w / h > 1.2;
     const chartRegion = (w: number, h: number): Rect =>
-      w >= 640 ? { x: w * 0.4 + 8, y: 12, w: w * 0.6 - 20, h: h - 24 } : { x: 8, y: h * 0.45, w: w - 16, h: h * 0.55 - 12 };
+      isWide(w, h) ? { x: w * 0.4 + 8, y: 12, w: w * 0.6 - 20, h: h - 24 } : { x: 8, y: h * 0.45, w: w - 16, h: h * 0.55 - 12 };
     const plot = new Plot(surface, {
       x: [0, 100],
       y: [-0.04, 1.04],
@@ -237,6 +244,11 @@ export default defineSimulation({
       return played ? ` (${fmt.num((won / played) * 100, 0)} %)` : '';
     }
 
+    /** Wahrscheinlichkeit als „= 25 %“ (exakt) bzw. „≈ 33,3 %“ (gerundet). */
+    function probText(value: number): string {
+      return `${relationSign(value, 1)} ${fmt.num(value * 100, 1)} %`;
+    }
+
     function updateReadouts(): void {
       const parts: string[] = [];
       if (yours.stay.played) parts.push(tr('stayStat', { won: yours.stay.won, played: yours.stay.played, rate: percent(yours.stay.won, yours.stay.played) }));
@@ -246,10 +258,10 @@ export default defineSimulation({
         'sim',
         games === 0
           ? ctx.t('none')
-          : `${tr('games', { n: fmt.num(games, 0) })}: ${ctx.t('stay')} ${fmt.num((stayWins / games) * 100, 1)} %, ${ctx.t('switch')} ${fmt.num((switchWins / games) * 100, 1)} %`,
+          : `${tr('games', { n: fmt.num(games, 0) })}: ${ctx.t('stay')} ${fmt.fixed((stayWins / games) * 100, 1)} %, ${ctx.t('switch')} ${fmt.fixed((switchWins / games) * 100, 1)} %`,
       );
       const th = winProbabilities(p.doors);
-      ctx.readout('theory', tr('theory', { n: p.doors, m: p.doors - 1, stay: fmt.num(th.stay * 100, 1), switch: fmt.num(th.switch * 100, 1) }));
+      ctx.readout('theory', tr('theory', { n: p.doors, m: p.doors - 1, stay: probText(th.stay), switch: probText(th.switch) }));
     }
 
     /* ---------- Geometrie der Türen ---------- */
@@ -260,8 +272,11 @@ export default defineSimulation({
       // Auf schmalen Bildschirmen viele Türen in zwei Reihen
       const cols = w < 600 && n > 4 ? Math.ceil(n / 2) : n;
       const rows = Math.ceil(n / cols);
-      const avail = w * 0.92;
-      const gap = Math.max(8, Math.min(26, (avail / cols) * 0.16));
+      // Rand und Abstand so, dass die Rahmen (10 px um die Tür) nicht abgeschnitten
+      // werden und sich nicht überlappen
+      const avail = w - 2 * Math.max(14, w * 0.04);
+      const pad = framePad(avail / cols);
+      const gap = Math.max(2 * pad + 6, Math.min(30, (avail / cols) * 0.16));
       const rowGap = 40;
       let dw = Math.min(170, (avail - gap * (cols - 1)) / cols);
       let dh = dw * 1.75;
@@ -280,6 +295,11 @@ export default defineSimulation({
         const y = bottom - dh - (rows - 1 - row) * (dh + rowGap);
         return { x: x0 + col * (dw + gap), y, w: dw, h: dh };
       });
+    }
+
+    /** Abstand des Markierungsrahmens von der Tür (kleiner bei kleinen Türen). */
+    function framePad(doorWidth: number): number {
+      return Math.max(5, Math.min(9, doorWidth * 0.09));
     }
 
     new TapTarget(surface, {
@@ -306,7 +326,10 @@ export default defineSimulation({
     /* ---------- Zeichnen ---------- */
     function openness(door: number, now: number): number {
       const t0 = openedAt[door] ?? -1;
-      if (t0 < 0 || now < t0) return 0;
+      if (t0 < 0) return 0;
+      // Reduzierte Bewegung: Türen sind sofort offen, ohne Verzögerung
+      if (prefersReducedMotion()) return 1;
+      if (now < t0) return 0;
       return ease.outCubic(Math.min(1, (now - t0) / OPEN_MS));
     }
 
@@ -449,30 +472,65 @@ export default defineSimulation({
           text(g, String(i + 1), cx, y + r.h * 0.2 + 1, { font: `800 ${Math.max(12, r.w * 0.15)}px ${ctx.theme.font}`, color: '#2b2b2b' });
         }
       }
-      // Markierungen
-      const markColor = i === chosen ? ctx.theme.series[0]! : i === other && phase === 'decide' ? ctx.theme.series[2]! : null;
+      // Markierungen: Farbe UND Beschriftung (nicht nur über die Farbe unterscheidbar)
+      const pad = framePad(r.w);
+      const resultShown = phase === 'done' && i === finalChoice && openness(i, now) > 0.9;
+      const markColor = resultShown ? null : i === chosen ? ctx.theme.series[0]! : i === other && phase === 'decide' ? ctx.theme.series[2]! : null;
       if (markColor) {
         g.save();
         g.strokeStyle = markColor;
-        g.lineWidth = 5;
-        roundRect(g, r.x - 9, y - 9, r.w + 18, r.h + 12, 12);
+        g.lineWidth = pad > 7 ? 5 : 4;
+        roundRect(g, r.x - pad, y - pad, r.w + 2 * pad, r.h + pad + 3, 12);
         g.stroke();
         g.restore();
-        if (i === chosen && phase !== 'done') text(g, ctx.t('yourChoice'), r.x + r.w / 2, y + r.h + 22, { font: `700 13px ${ctx.theme.font}`, color: markColor });
       }
-      if (phase === 'done') {
-        const size = Math.max(10, Math.min(13, r.w * 0.12));
-        if (i === finalChoice) text(g, ctx.t('finalChoice'), r.x + r.w / 2, y + r.h + 22, { font: `700 ${size}px ${ctx.theme.font}`, color: '#ffffff' });
-        else if (i === chosen) text(g, ctx.t('firstChoice'), r.x + r.w / 2, y + r.h + 22, { font: `600 ${size}px ${ctx.theme.font}`, color: 'rgba(255,255,255,0.7)' });
+      let label = '';
+      let weight = 700;
+      let labelColor = '#ffffff';
+      if (phase === 'decide') {
+        if (i === chosen) label = ctx.t('yourChoice');
+        else if (i === other) label = ctx.t('otherDoor');
+      } else if (phase === 'done') {
+        if (i === finalChoice) label = ctx.t('finalChoice');
+        else if (i === chosen) {
+          label = ctx.t('firstChoice');
+          weight = 600;
+          labelColor = 'rgba(255,255,255,0.75)';
+        }
       }
-      if (phase === 'done' && i === finalChoice && openness(i, now) > 0.9) {
+      if (label) doorLabel(label, r.x + r.w / 2, y + r.h + 22, weight, labelColor);
+      if (resultShown) {
+        const won = i === car;
         g.save();
-        g.strokeStyle = i === car ? ctx.theme.series[2]! : ctx.theme.series[1]!;
-        g.lineWidth = 6;
-        roundRect(g, r.x - 10, y - 10, r.w + 20, r.h + 14, 12);
+        g.strokeStyle = won ? ctx.theme.series[2]! : ctx.theme.series[1]!;
+        g.lineWidth = pad > 7 ? 6 : 4;
+        // Niete zusätzlich gestrichelt und mit ✗, Gewinn mit ✓
+        if (!won) g.setLineDash([12, 7]);
+        roundRect(g, r.x - pad, y - pad, r.w + 2 * pad, r.h + pad + 3, 12);
         g.stroke();
         g.restore();
+        const badge = Math.max(11, Math.min(20, r.w * 0.16));
+        g.beginPath();
+        g.arc(r.x + r.w - 2, y + 2, badge, 0, Math.PI * 2);
+        g.fillStyle = won ? ctx.theme.series[2]! : ctx.theme.series[1]!;
+        g.fill();
+        text(g, won ? '✓' : '✗', r.x + r.w - 2, y + 3, { font: `800 ${badge * 1.25}px ${ctx.theme.font}`, color: '#ffffff' });
       }
+    }
+
+    /** Beschriftung unter einer Tür: Schriftgröße passt sich an, nie über den Rand. */
+    function doorLabel(label: string, cx: number, cy: number, weight: number, color: string): void {
+      const g = surface.g;
+      const w = surface.width;
+      let size = 13;
+      g.font = `${weight} ${size}px ${ctx.theme.font}`;
+      const maxW = Math.min(w - 8, Math.max(90, (w / Math.min(p.doors, w < 600 && p.doors > 4 ? Math.ceil(p.doors / 2) : p.doors)) * 1.6));
+      const width = g.measureText(label).width;
+      if (width > maxW) size = Math.max(9, Math.floor((size * maxW) / width));
+      g.font = `${weight} ${size}px ${ctx.theme.font}`;
+      const half = g.measureText(label).width / 2;
+      const x = Math.min(w - 4 - half, Math.max(4 + half, cx));
+      text(g, label, x, cy, { font: g.font, color });
     }
 
     function drawStage(): void {
@@ -550,7 +608,7 @@ export default defineSimulation({
       const theme = ctx.theme;
       const w = surface.width;
       const h = surface.height;
-      const wide = w >= 640;
+      const wide = isWide(w, h);
       const bars: Rect = wide ? { x: 16, y: 16, w: w * 0.4 - 24, h: h - 32 } : { x: 16, y: 12, w: w - 32, h: h * 0.42 };
       const th = winProbabilities(p.doors);
       const values = [games ? stayWins / games : 0, games ? switchWins / games : 0];
@@ -576,7 +634,8 @@ export default defineSimulation({
         g.lineTo(x + bw + 6, ty);
         g.stroke();
         g.setLineDash([]);
-        text(g, games ? `${fmt.num(v * 100, 1)} %` : '–', x + bw / 2, bottom - bh - 12, { font: `800 15px ${theme.font}`, color: theme.text });
+        // Wert über der Säule und über der gestrichelten Linie, damit sie ihn nicht durchstreicht
+        text(g, games ? `${fmt.fixed(v * 100, 1)} %` : '–', x + bw / 2, Math.min(bottom - bh, ty) - 13, { font: `800 15px ${theme.font}`, color: theme.text });
         text(g, labels[i]!, x + bw / 2, bottom + 16, { font: `700 14px ${theme.font}`, color: colorsBar[i]! });
       });
       g.strokeStyle = theme.axis;
@@ -605,6 +664,19 @@ export default defineSimulation({
         plot.polyline(stayPts, { color: theme.series[1], width: 2.5 });
         plot.polyline(switchPts, { color: theme.series[0], width: 2.5 });
       }
+      // Beschriftung der Linien (nicht nur über die Farbe unterscheidbar)
+      const rx = plot.rect.x + plot.rect.w - 6;
+      const m = p.doors - 1;
+      plot.textPx(rx, plot.py(th.switch), `${ctx.t('switch')}: ${m}/${p.doors}`, { color: theme.series[0], weight: 'bold', size: 13, align: 'right', offset: [0, -8] });
+      const below = th.stay > 0.2;
+      plot.textPx(rx, plot.py(th.stay), `${ctx.t('stay')}: 1/${p.doors}`, {
+        color: theme.series[1],
+        weight: 'bold',
+        size: 13,
+        align: 'right',
+        baseline: below ? 'top' : 'alphabetic',
+        offset: [0, below ? 8 : -8],
+      });
       plot.end();
       if (!wide) {
         g.strokeStyle = withAlpha(theme.muted, 0.3);
@@ -681,7 +753,7 @@ export default defineSimulation({
         drawStage();
         doorRects().forEach((r, i) => drawDoor(i, r, now));
         drawMessage(now);
-        const animating = openedAt.some((t0) => t0 >= 0 && now < t0 + OPEN_MS);
+        const animating = !prefersReducedMotion() && openedAt.some((t0) => t0 >= 0 && now < t0 + OPEN_MS);
         if (animating) ctx.requestRender();
       },
 
