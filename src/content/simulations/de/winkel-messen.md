@@ -84,7 +84,7 @@ Wie groß ist der Winkel, den der Minutenzeiger in 10 Minuten überstreicht? Und
 <details>
 <summary>Lösung anzeigen</summary>
 
-In 60 Minuten dreht er sich um $360^\circ$, in einer Minute also um $6^\circ$. 10 Minuten: $60^\circ$ (spitz). 45 Minuten: $270^\circ$ (überstumpf). [270° zeigen](?alpha=270&a1=90)
+In 60 Minuten dreht er sich um $360^\circ$, in einer Minute also um $6^\circ$. 10 Minuten: $60^\circ$ (spitz). 45 Minuten: $270^\circ$ (überstumpf). [270° zeigen](?alpha=270&a1=180) – der Zeiger dreht sich im Uhrzeigersinn von 12 Uhr ($[SB$) bis 9 Uhr ($[SA$).
 
 </details>
 
@@ -104,6 +104,7 @@ $112^\circ$ (etwas mehr als ein rechter Winkel), $38^\circ$ (etwas weniger als d
 - **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 „Geometrische Figuren und Lagebeziehungen“ (LehrplanPLUS Gymnasium Bayern): Winkel bis $360^\circ$ schätzen, messen und zeichnen, Winkelarten. Gut geeignet für die Erarbeitung am Whiteboard (Geodreieck gemeinsam anlegen) und für Einzelarbeit mit dem Schätzspiel.
 - **Bedienung:** Das Geodreieck lässt sich in der Mitte verschieben und an den runden Griffen bzw. den Ecken drehen. In der Nähe des Scheitels und der Schenkel rastet es ein. Mit „Winkelgröße anzeigen“ aus muss die Größe tatsächlich abgelesen werden; die Hervorhebung zeigt dann nur, an welcher Skala.
 - **Modell:** Geodreieck und Kästchen passen zueinander: Die Kante ist 16 cm lang, ein Kästchen 5 mm. Winkel werden auf ganze Grad gerundet. „Zufälliger Winkel“ blendet die Größe aus und legt das Geodreieck zur Seite.
+- **Schätzspiel:** Abwechselnd wird ein Winkel geschätzt oder gezeichnet; Größe und Lage des ersten Schenkels sind zufällig. Punkte gibt es nach der Abweichung vom richtigen Wert: bis $3^\circ$ drei Punkte, bis $10^\circ$ zwei, bis $20^\circ$ einen, darüber keinen. Nach dem Prüfen liegt das Geodreieck zum Nachmessen bereit.
 - **Häufige Stolpersteine:**
   - Ablesen an der falschen Skala (Ergebnis und richtiger Wert ergänzen sich zu $180^\circ$) – eine Plausibilitätsprüfung mit der Winkelart hilft.
   - Längere Schenkel bedeuten einen größeren Winkel. Die Schenkel sind Halbgeraden; ihre gezeichnete Länge spielt keine Rolle.

@@ -92,6 +92,72 @@ describe('Modell: Brüche erweitern, kürzen und vergleichen – Grundlagen', ()
   });
 });
 
+describe('Prüfrunde: Werte aus dem Lernmaterial und dem Prüfauftrag', () => {
+  it('kürzt vollständig mit dem ggT', () => {
+    expect(gcd(18, 24)).toBe(6);
+    expect(reduce(18, 24)).toEqual({ z: 3, n: 4 });
+    expect(reduce(24, 36)).toEqual({ z: 2, n: 3 });
+    expect(reductionSteps({ z: 24, n: 36 })).toEqual([2, 2, 3]);
+    expect(isReduced(3, 4)).toBe(true);
+  });
+
+  it('erweitern und kürzen ändern den Wert nicht', () => {
+    const f = { z: 2, n: 5 };
+    expect(expand(f, 4)).toEqual({ z: 8, n: 20 });
+    expect(compare(expand(f, 4), f)).toBe(0);
+    expect(compare(reduceBy({ z: 12, n: 18 }, 6), { z: 12, n: 18 })).toBe(0);
+    // 6/8 lässt sich nicht mit 4 kürzen (nur der Nenner ist teilbar)
+    expect(reduceObstacle({ z: 6, n: 8 }, 4)).toBe('zaehler');
+  });
+
+  it('vergleicht über den Hauptnenner (kgV)', () => {
+    const cases: [number, number, number, number, number, number, number, -1 | 0 | 1][] = [
+      // z1, n1, z2, n2, Hauptnenner, erweiterter Zähler 1, erweiterter Zähler 2, Ergebnis
+      [2, 3, 3, 4, 12, 8, 9, -1],
+      [5, 8, 3, 5, 40, 25, 24, 1],
+      [4, 6, 6, 9, 18, 12, 12, 0],
+      [3, 4, 5, 6, 12, 9, 10, -1],
+      [2, 3, 3, 5, 15, 10, 9, 1],
+      [7, 12, 5, 8, 24, 14, 15, -1],
+      [3, 8, 2, 5, 40, 15, 16, -1],
+      [7, 4, 5, 3, 12, 21, 20, 1],
+    ];
+    for (const [z1, n1, z2, n2, N, e1, e2, c] of cases) {
+      const a = { z: z1, n: n1 };
+      const b = { z: z2, n: n2 };
+      const cd = commonDenominator(a, b);
+      expect(cd.n).toBe(N);
+      expect(expand(a, cd.k1)).toEqual({ z: e1, n: N });
+      expect(expand(b, cd.k2)).toEqual({ z: e2, n: N });
+      expect(compare(a, b)).toBe(c);
+    }
+  });
+
+  it('vergleicht bei gleichen Zählern über die Größe der Stücke', () => {
+    expect(compare({ z: 3, n: 7 }, { z: 3, n: 8 })).toBe(1);
+    expect(commonNumerator({ z: 3, n: 7 }, { z: 6, n: 11 })).toEqual({ z: 6, k1: 2, k2: 1 });
+    expect(compare({ z: 3, n: 7 }, { z: 6, n: 11 })).toBe(-1);
+  });
+
+  it('ordnet die Brüche aus Aufgabe 6 und findet die gleichwertigen Brüche zu 1/2', () => {
+    const sorted = sortAscending([
+      { z: 3, n: 4 },
+      { z: 2, n: 3 },
+      { z: 5, n: 8 },
+      { z: 7, n: 12 },
+    ]);
+    expect(sorted.map((f) => `${f.z}/${f.n}`)).toEqual(['7/12', '5/8', '2/3', '3/4']);
+    expect(equivalents({ z: 1, n: 2 }, 12).map((f) => `${f.z}/${f.n}`)).toEqual(['1/2', '2/4', '3/6', '4/8', '5/10', '6/12']);
+  });
+
+  it('liefert für ungebräuchliche Nenner keinen Namen (die Anzeige nimmt dann einen Ersatz)', () => {
+    expect(denominatorName(110, 2, 'en')).toBeNull();
+    expect(denominatorName(132, 2, 'en')).toBeNull();
+    expect(denominatorName(110, 2, 'de')).toBeNull();
+    expect(denominatorName(288, 2, 'de')).toBeNull();
+  });
+});
+
 describe('Modell: Namen der Bruchteile', () => {
   it('bildet deutsche Namen richtig', () => {
     expect(denominatorName(2, 3, 'de')).toBe('Halbe');

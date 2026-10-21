@@ -99,3 +99,38 @@ describe('Modell: Hilfsfunktionen', () => {
     expect(mixed(f(3, 1))).toEqual({ whole: 3, rest: f(0, 1) });
   });
 });
+
+describe('Prüfrunde: Werte aus dem Unterricht', () => {
+  it('Division: 3/4 : 1/8 = 6, 2/3 : 4/5 = 10/12 = 5/6, 3 : 1/4 = 12', () => {
+    expect(divide(f(3, 4), f(1, 8)).reduced).toEqual(f(6, 1));
+    expect(measure(f(3, 4), f(1, 8))).toMatchObject({ N: 8, A: 6, C: 1, full: 6, restParts: 0 });
+    const d = divide(f(2, 3), f(4, 5));
+    expect(d.raw).toEqual(f(10, 12));
+    expect(d.reduced).toEqual(f(5, 6));
+    expect(divide(f(3, 1), f(1, 4)).reduced).toEqual(f(12, 1));
+    expect(measure(f(3, 1), f(1, 4))).toMatchObject({ N: 4, A: 12, C: 1, full: 12 });
+  });
+
+  it('Ergebnis größer als 1 mit Rest: 3/4 : 2/3 = 9/8 = 1 1/8', () => {
+    const q = divide(f(3, 4), f(2, 3)).reduced;
+    expect(mixed(q)).toEqual({ whole: 1, rest: f(1, 8) });
+  });
+
+  it('Kürzen vor dem Multiplizieren liefert immer ein vollständig gekürztes Ergebnis', () => {
+    for (let a = 1; a <= 36; a++)
+      for (let b = 1; b <= 12; b++)
+        for (let c = 1; c <= 12; c++)
+          for (let d = 1; d <= 12; d++) {
+            const r = crossCancel(f(a, b), f(c, d)).result;
+            expect(gcd(r.z, r.n)).toBe(1);
+          }
+  });
+
+  it('Kehrwert vom Kehrwert ist der Bruch selbst; Bruch mal Kehrwert ist 1', () => {
+    for (let c = 1; c <= 36; c++)
+      for (let d = 1; d <= 12; d++) {
+        expect(reciprocal(reciprocal(f(c, d)))).toEqual(f(c, d));
+        expect(value(f(c, d)) * value(reciprocal(f(c, d)))).toBeCloseTo(1, 12);
+      }
+  });
+});

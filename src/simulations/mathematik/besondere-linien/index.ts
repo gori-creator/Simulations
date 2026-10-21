@@ -1888,6 +1888,7 @@ export default defineSimulation({
       const P = regions().paper;
       const show = p.pt;
       const balK = balanceState(now);
+      labelsDeferred = false;
       // Dreieck (im Modus Seitenhalbierende als Pappe)
       const card = m === 'sh' && !G.deg;
       if (balK) {
@@ -1972,19 +1973,13 @@ export default defineSimulation({
           g.stroke();
           g.restore();
         }
+        // Liegt gerade Lineal oder Geodreieck auf dem Papier, kommen die Namen (z. B. M_a) erst danach, damit sie nicht verdeckt werden.
+        labelsDeferred = !fast && !balK && !!(st.ruler || st.geo);
         for (const mk of st.marks) {
           if (mk.pop <= 0) continue;
-          const q = toPx(mk.p);
-          dot(q, 2.6 * ease.outBack(clamp01(mk.pop)), col.pencil());
-          if (mk.label && mk.pop > 0.5) {
-            const cen: Px = [(px[0][0] + px[1][0] + px[2][0]) / 3, (px[0][1] + px[1][1] + px[2][1]) / 3];
-            const d = unit(q[0] - cen[0], q[1] - cen[1]);
-            g.save();
-            g.globalAlpha *= clamp01((mk.pop - 0.5) * 2);
-            formulaAt(mk.label, q[0] + d[0] * 16, q[1] + d[1] * 16, fs(12.5, 11.5), th().muted, 650);
-            g.restore();
-          }
+          dot(toPx(mk.p), 2.6 * ease.outBack(clamp01(mk.pop)), col.pencil());
         }
+        if (!labelsDeferred) drawMarkLabels(st);
       }
       // Radius beim Einstellen des Zirkels
       if (st.radius) {
@@ -2150,6 +2145,23 @@ export default defineSimulation({
     }
 
     /** Messhinweis beim Halbieren einer Seite (über dem Lineal). */
+    /** Namen der Konstruktionspunkte (Seitenmitten), außen neben dem Punkt. */
+    let labelsDeferred = false;
+    function drawMarkLabels(st: CState): void {
+      const g = surface.g;
+      const px = geom().t.map(toPx) as [Px, Px, Px];
+      const cen: Px = [(px[0][0] + px[1][0] + px[2][0]) / 3, (px[0][1] + px[1][1] + px[2][1]) / 3];
+      for (const mk of st.marks) {
+        if (!mk.label || mk.pop <= 0.5) continue;
+        const q = toPx(mk.p);
+        const d = unit(q[0] - cen[0], q[1] - cen[1]);
+        g.save();
+        g.globalAlpha *= clamp01((mk.pop - 0.5) * 2);
+        formulaAt(mk.label, q[0] + d[0] * 16, q[1] + d[1] * 16, fs(12.5, 11.5), th().muted, 650);
+        g.restore();
+      }
+    }
+
     function drawNote(st: CState): void {
       const G = geom();
       if (st.note) {
@@ -2171,20 +2183,32 @@ export default defineSimulation({
     function specialPill(G: Geom): { src: string; color: string } | null {
       const m = mode();
       const c = (k: string, s: string) => ({ src: C(k, s), color: famCol(k as Fam) });
-      if (G.eq) return c(m === 'eu' ? 'eu' : m, say(L(`gleichseitig: ${PN.U} = ${PN.W} = ${PN.S} = ${PN.H} – alle Linien sind Symmetrieachsen`, `equilateral: U = I = S = H – every line is a line of symmetry`)));
+      // Schmales Papier (Handy): kurze Fassung, damit das Schild nicht abgeschnitten wird.
+      const P = regions().paper;
+      const narrow = P.w < 480;
+      const T = (long: Txt, short: Txt) => say(narrow ? short : long);
+      if (G.eq) return c(m === 'eu' ? 'eu' : m, T(L(`gleichseitig: ${PN.U} = ${PN.W} = ${PN.S} = ${PN.H} – alle Linien sind Symmetrieachsen`, `equilateral: U = I = S = H – every line is a line of symmetry`), L(`gleichseitig: ${PN.U} = ${PN.W} = ${PN.S} = ${PN.H}`, 'equilateral: U = I = S = H')));
       if (G.kd === 'recht') {
         const v = VN[G.big];
         const [j, k] = others(G.big);
-        if (m === 'ms') return c('ms', say(L(`rechtwinklig bei ${v}: U ist die Mitte der Hypotenuse [${VN[j]}${VN[k]}] (Thaleskreis)`, `right angle at ${v}: U is the midpoint of the hypotenuse ${VN[j]}${VN[k]} (Thales circle)`)));
-        if (m === 'h') return c('h', say(L(`rechtwinklig bei ${v}: H = ${v}, die Katheten sind selbst Höhen`, `right angle at ${v}: H = ${v}, the legs are altitudes themselves`)));
+        if (m === 'ms') return c('ms', T(L(`rechtwinklig bei ${v}: U ist die Mitte der Hypotenuse [${VN[j]}${VN[k]}] (Thaleskreis)`, `right angle at ${v}: U is the midpoint of the hypotenuse ${VN[j]}${VN[k]} (Thales circle)`), L(`rechtwinklig: U = Mitte von [${VN[j]}${VN[k]}]`, `right angle: U = midpoint of ${VN[j]}${VN[k]}`)));
+        if (m === 'h') return c('h', T(L(`rechtwinklig bei ${v}: H = ${v}, die Katheten sind selbst Höhen`, `right angle at ${v}: H = ${v}, the legs are altitudes themselves`), L(`rechtwinklig bei ${v}: H = ${v}`, `right angle at ${v}: H = ${v}`)));
         if (m === 'eu') return c('eu', say(L(`rechtwinklig: H = ${v}, U = Mitte von [${VN[j]}${VN[k]}]`, `right angle: H = ${v}, U = midpoint of ${VN[j]}${VN[k]}`)));
       }
       if (G.kd === 'stumpf') {
-        if (m === 'ms') return c('ms', say(L('stumpfwinklig: U liegt außerhalb des Dreiecks', 'obtuse: U lies outside the triangle')));
-        if (m === 'h') return c('h', say(L('stumpfwinklig: H liegt außerhalb – Seiten und Höhen verlängern', 'obtuse: H lies outside – extend sides and altitudes')));
-        if (m === 'eu') return c('eu', say(L('stumpfwinklig: U und H liegen außerhalb, S immer innen', 'obtuse: U and H lie outside, S always inside')));
+        // Sehr stumpf: Der Punkt liegt so weit weg, dass er nicht mehr auf dem Papier zu sehen ist.
+        const off = (q: Pt | null) => {
+          if (!q) return false;
+          const [x, y] = toPx(q);
+          return x < P.x || x > P.x + P.w || y < P.y || y > P.y + P.h;
+        };
+        if (m === 'ms')
+          return c('ms', off(G.U) ? T(L('stumpfwinklig: U liegt weit außerhalb, nicht mehr im Bild', 'obtuse: U lies far outside, beyond the picture'), L('stumpfwinklig: U nicht mehr im Bild', 'obtuse: U beyond the picture')) : T(L('stumpfwinklig: U liegt außerhalb des Dreiecks', 'obtuse: U lies outside the triangle'), L('stumpfwinklig: U liegt außerhalb', 'obtuse: U lies outside')));
+        if (m === 'h')
+          return c('h', off(G.H) ? T(L('stumpfwinklig: H liegt weit außerhalb, nicht mehr im Bild', 'obtuse: H lies far outside, beyond the picture'), L('stumpfwinklig: H nicht mehr im Bild', 'obtuse: H beyond the picture')) : T(L('stumpfwinklig: H liegt außerhalb – Seiten und Höhen verlängern', 'obtuse: H lies outside – extend sides and altitudes'), L('stumpfwinklig: H liegt außerhalb', 'obtuse: H lies outside')));
+        if (m === 'eu') return c('eu', T(L('stumpfwinklig: U und H liegen außerhalb, S immer innen', 'obtuse: U and H lie outside, S always inside'), L('stumpfwinklig: U und H außerhalb', 'obtuse: U and H outside')));
       }
-      if (G.iso !== null) return { src: C('m', say(L(`gleichschenklig: alle besonderen Punkte liegen auf der Symmetrieachse durch ${VN[G.iso]}`, `isosceles: all special points lie on the line of symmetry through ${VN[G.iso]}`))), color: th().muted };
+      if (G.iso !== null) return { src: C('m', T(L(`gleichschenklig: alle besonderen Punkte liegen auf der Symmetrieachse durch ${VN[G.iso]}`, `isosceles: all special points lie on the line of symmetry through ${VN[G.iso]}`), L('gleichschenklig: Punkte auf der Symmetrieachse', 'isosceles: points on the line of symmetry'))), color: th().muted };
       return null;
     }
 
@@ -2685,7 +2709,7 @@ export default defineSimulation({
             { src: `= ((${n2(t[0][0])} + ${n2(t[1][0])} + ${n2(t[2][0])}) : 3 | (${n2(t[0][1])} + ${n2(t[1][1])} + ${n2(t[2][1])}) : 3) ≈ ${C('sh', ptTxt(G.S))}`, size: small },
             ...(ctx.locked ? [] : [{ src: mu(say(L('Tippe auf die Pappe: Dort steht die Nadel.', 'Tap the card to put the pin there.'))), size: small }]),
           ],
-          bars: IDX.map((i) => ({ name: `s_${SUB[i]}`, parts: parts[i]!, label: `${fmt.num(parts[i]![0], 1)} : ${fmt.num(parts[i]![1], 1)}`, color: col.sh() })),
+          bars: IDX.map((i) => ({ name: `s_${SUB[i]}`, parts: parts[i]!, label: `${fmt.num(parts[i]![0], 2)} : ${fmt.num(parts[i]![1], 2)}`, color: col.sh() })),
         };
       }
       if (m === 'h') {
@@ -3052,6 +3076,7 @@ export default defineSimulation({
         if (st.geo) drawGeo(st.geo);
         if (st.pencil.tip && st.pencil.alpha > 0) drawPencil(toPx(st.pencil.tip), st.pencil.alpha);
         if (st.compass) drawCompass(st.compass);
+        if (labelsDeferred && p.aux) drawMarkLabels(st);
       }
       drawNote(st);
       if (R.inset) {

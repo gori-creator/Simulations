@@ -107,7 +107,7 @@ $\alpha_2 = 180^\circ - \delta_2 = 75^\circ$ (Nebenwinkel). Damit sind die Stufe
 
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich 2.2 „Winkelbetrachtungen an Figuren“ (LehrplanPLUS Gymnasium Bayern): Scheitel-, Neben-, Stufen- und Wechselwinkel als Grundlage für den Beweis der Innenwinkelsumme. Die Animationen eignen sich als gemeinsamer Einstieg am Whiteboard, der Aufgabenmodus für Einzel- oder Partnerarbeit mit mündlichen Begründungen.
 - **Argumentieren:** Der Aufgabenmodus zeigt zu jedem angetippten Winkel eine kurze Begründungskette. Es kann reizvoll sein, die Lernenden zuerst selbst begründen zu lassen und die angezeigte Kette als Vergleich zu nutzen – oft gibt es mehrere richtige Wege.
-- **Begriffe:** Für die E-Figur sind verschiedene Namen üblich (Nachbarwinkel, entgegengesetzte Winkel, E-Winkel). Bitte am eingeführten Schulbuch prüfen, welcher Begriff in Ihrer Klasse verwendet wird.
+- **Begriffe:** Für die E-Figur sind verschiedene Namen üblich (Nachbarwinkel, entgegengesetzte Winkel, E- oder U-Winkel). Manche Schulbücher schreiben $\alpha'$, $\beta'$, … statt $\alpha_2$, $\beta_2$, … Bitte am eingeführten Schulbuch prüfen, welche Begriffe in Ihrer Klasse verwendet werden.
 - **Modell:** Winkel werden auf ganze Grad gerundet; $g \parallel h$ bedeutet hier, dass $s$ beide Geraden unter demselben Winkel schneidet.
 - **Häufige Stolpersteine:**
   - „Stufenwinkel sind immer gleich groß“ – nur, wenn $g$ und $h$ parallel sind. Das Verschieben bei nicht parallelen Geraden macht den Unterschied sichtbar.

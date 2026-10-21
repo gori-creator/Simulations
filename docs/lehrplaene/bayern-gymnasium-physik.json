@@ -141,7 +141,9 @@
               "simulations": [
                 "kraefteaddition",
                 "schiefe-ebene",
-                "hookesches-gesetz"
+                "hookesches-gesetz",
+                "freier-fall",
+                "hebelgesetz"
               ]
             }
           ]
@@ -229,7 +231,11 @@
           "summary": {
             "de": "Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre.",
             "en": "Photon model of light, colour and photon energy, emission and absorption spectra explained by the energy-level model, and absorption in the Earth’s atmosphere."
-          }
+          },
+          "simulations": [
+            "linienspektren",
+            "photoeffekt"
+          ]
         },
         {
           "code": "3",
@@ -249,7 +255,8 @@
                 "en": "Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas."
               },
               "simulations": [
-                "gasgesetze"
+                "gasgesetze",
+                "teilchenmodell"
               ]
             },
             {
@@ -311,7 +318,11 @@
           "summary": {
             "de": "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "en": "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer."
-          }
+          },
+          "simulations": [
+            "induktion",
+            "lorentzkraft"
+          ]
         },
         {
           "code": "2",
@@ -612,7 +623,8 @@
             "en": "Lens–screen model and lens equation, vision defects, colour vision, and diffraction at slits and the pupil as the limit of resolution."
           },
           "simulations": [
-            "doppelspalt"
+            "doppelspalt",
+            "linsen"
           ]
         },
         {
@@ -831,7 +843,10 @@
               "summary": {
                 "de": "Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor.",
                 "en": "Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors."
-              }
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
             }
           ]
         }
@@ -893,7 +908,10 @@
           "summary": {
             "de": "Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.",
             "en": "Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets."
-          }
+          },
+          "simulations": [
+            "doppler-effekt"
+          ]
         },
         {
           "code": "5",
@@ -1004,7 +1022,10 @@
               "summary": {
                 "de": "Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor.",
                 "en": "Decay law from a differential equation, half-life and mean lifetime, dating, radiation protection and nuclear reactors."
-              }
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
             }
           ]
         },

@@ -23,6 +23,8 @@ Jeder Bruch lässt sich auch als **Dezimalzahl** schreiben: $\frac{3}{4} = 0{,}7
 
 Ist der Zähler größer als der Nenner, braucht man mehr als ein Ganzes: $\frac{7}{4} = 1\frac{3}{4}$.
 
+Ein Bruchteil kann sich auch auf eine **Größe** beziehen. $\frac{3}{4}$ von $80$ € heißt: $80$ € in 4 gleiche Teile teilen ($80 : 4 = 20$) und 3 davon nehmen ($3 \cdot 20 = 60$). Also sind $\frac{3}{4}$ von $80$ € genau $60$ €.
+
 ## Ausprobieren
 
 1. Tippe auf die Pizzastücke, um auszuwählen. Welcher Bruch entsteht?
@@ -77,6 +79,32 @@ $\frac{1}{6} = 0{,}1\overline{6}$ und $\frac{5}{6} = 0{,}8\overline{3}$ – vor 
 
 </details>
 
+### Aufgabe 5: Bruchteile von Größen
+
+Berechne: a) $\frac{3}{4}$ von $80$ €, b) $\frac{2}{5}$ von $35$ Schülerinnen und Schülern, c) $\frac{2}{3}$ von $1$ Stunde. Stelle dir dazu das Ganze in der Simulation vor.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+a) $80 : 4 = 20$, $3 \cdot 20 = 60$, also $60$ €. [Pizza in Vierteln](?z=3&n=4)
+
+b) $35 : 5 = 7$, $2 \cdot 7 = 14$, also $14$ Schülerinnen und Schüler. [Strecke in Fünfteln](?z=2&n=5&shape=strecke)
+
+c) $1$ h $= 60$ min, $60 : 3 = 20$, $2 \cdot 20 = 40$, also $40$ min – wie zwei Drittel eines Zifferblatts. [Pizza in Dritteln](?z=2&n=3)
+
+</details>
+
+### Aufgabe 6: Besondere Brüche
+
+Was bedeuten $\frac{0}{4}$, $\frac{4}{4}$ und $\frac{3}{1}$? Stelle sie ein und schreibe sie ohne Bruchstrich.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\frac{0}{4} = 0$: kein Stück genommen. [0/4](?z=0&n=4) $\frac{4}{4} = 1$: alle Stücke, also genau ein Ganzes. [4/4](?z=4&n=4) $\frac{3}{1} = 3$: jedes Ganze bleibt ungeteilt, man nimmt 3 Ganze. [3/1](?z=3&n=1)
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Bayern Jahrgangsstufe 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
@@ -85,4 +113,4 @@ $\frac{1}{6} = 0{,}1\overline{6}$ und $\frac{5}{6} = 0{,}8\overline{3}$ – vor 
   - Teile müssen **gleich groß** sein – sonst ist es kein Bruchteil.
   - „$\frac{6}{8}$ ist mehr als $\frac{3}{4}$, weil die Zahlen größer sind.“ – Das Erweitern zeigt, dass es dieselbe Menge ist.
   - „Ein größerer Nenner bedeutet ein größeres Stück.“
-- **Bilder:** Pizza und Blechkuchen können durch Fotos ergänzt werden (siehe `docs/BILDER.md`).
+- **Bruchteile von Größen:** Die Simulation zeigt Bruchteile eines Ganzen. Für Größen (Geld, Zeit, Anzahlen) lassen Sie das Ganze für die Größe stehen, zum Beispiel die Pizza für $80$ € oder für $1$ Stunde (Aufgabe 5).

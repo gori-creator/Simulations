@@ -41,7 +41,7 @@ Der Graph ist ein Hyperbelast. Die Rechtecke unter den Punkten haben alle den Fl
 2. Drücke „Verdoppeln“: Die Masse wird verdoppelt. Was passiert mit dem Preis auf der Waage, in der Tabelle (Pfeile unten) und im Graphen?
 3. [Pumpen am Becken](?kind=ind&ki=12&x0=3&x=4): Drücke „Verdoppeln“. Wie schnell füllt sich das Becken jetzt? Ziehe dann $P$ und beobachte das Rechteck: Welche Zahl ändert sich nie?
 4. [Sechs Pumpen, zehn Stunden](?kind=ind&ki=60&x0=6&x=4): Starte „Dreisatz Schritt für Schritt“. Warum steht rechts „$\cdot 6$“, wenn links „$: 6$“ steht?
-5. [Taxi-Falle](?kind=lin&kt=2&b=3&x0=5&x=10): Drücke „Verdoppeln“. Wo liegt der rote Punkt „26 €?“ und wo der echte Preis? Was zeigen die gestrichelten Strahlen vom Ursprung?
+5. [Taxi-Falle](?kind=lin&kt=2&b=3&x0=5&x=10): Drücke „Verdoppeln“. Wo liegt der Punkt „26 €?“ und wo der echte Preis? Was zeigen die gestrichelten Strahlen vom Ursprung?
 6. [Test: Pizza teilen](?kind=test&tab=b&show=0): Tippe zuerst auf deine Vermutung, dann auf „Tabelle prüfen“. Mit „Nächste Tabelle“ geht es weiter – auch zu zwei Fallen.
 
 ## Aufgaben

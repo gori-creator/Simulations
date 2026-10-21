@@ -152,6 +152,8 @@ export default defineSimulation({
       value: '{d} {p} = {v}',
       full: 'Mehr als 9 Plättchen: bündeln!',
       rule: '· Die {place}ziffer {d} entscheidet.',
+      desc: 'Stellenwerttafel mit Plättchen für die Zahl {n}. Zahlenstrahl mit Lupe: Runden auf {place}, die Nachbarzahlen sind {lo} und {hi}.',
+      descRounded: ' Gerundet: {n} ≈ {res}.',
     },
     en: {
       canvas: 'Place value chart with counters and digits, the number in words and a number line with a magnifier for rounding',
@@ -164,6 +166,8 @@ export default defineSimulation({
       value: '{d} {p} = {v}',
       full: 'More than 9 counters: regroup!',
       rule: '· The {place} digit {d} decides.',
+      desc: 'Place value chart with counters for the number {n}. Number line with a magnifier: rounding to the nearest {place}, the neighbouring numbers are {lo} and {hi}.',
+      descRounded: ' Rounded: {n} ≈ {res}.',
     },
   },
 
@@ -458,6 +462,11 @@ export default defineSimulation({
       ctx.readout('neighbors', `${groupDigits(nb.lower, lang)} ${and} ${groupDigits(nb.upper, lang)} (${ctx.t('mid')}: ${groupDigits(nb.mid, lang)})`);
       // Gerundete Zahl erst nach „Runden“ (bzw. sofort, wenn „Gerundete Zahl sofort zeigen“ an ist)
       ctx.readout('rounded', revealed ? `${groupDigits(n, lang)} ≈ ${groupDigits(roundTo(n, p.r), lang)}` : null);
+      // Beschreibung der Zeichenfläche für Bildschirmleser (Ergebnis erst nach dem Aufdecken)
+      const desc =
+        tr('desc', { n: groupDigits(n, lang), place: roundingPlaceName(p.r, lang), lo: groupDigits(nb.lower, lang), hi: groupDigits(nb.upper, lang) }) +
+        (revealed ? tr('descRounded', { n: groupDigits(n, lang), res: groupDigits(roundTo(n, p.r), lang) }) : '');
+      surface.canvas.setAttribute('aria-label', desc);
       ctx.setAction('div10', { enabled: n % 10 === 0 && n > 0 && !ctx.locked });
       ctx.setAction('times10', { enabled: n * 10 <= MAX_NUMBER && n > 0 && !ctx.locked });
       ctx.setAction('random', { enabled: !ctx.locked });
@@ -1038,19 +1047,26 @@ export default defineSimulation({
       g.fill();
 
       // Überschrift: Rundungsstelle, entscheidende Ziffer und Ergebnis
-      const titleSize = wide ? clamp(geo.font, 13, 17) : 12.5;
+      let titleSize = wide ? clamp(geo.font, 13, 17) : 12.5;
       const titleY = r.y + (wide ? 19 : 16);
       const title = tr('roundTo', { place: roundingPlaceName(p.r, lang) });
-      text(g, title, r.x + 14, titleY, { font: `700 ${titleSize}px ${theme.font}`, color: theme.text, align: 'left' });
-      g.font = `700 ${titleSize}px ${theme.font}`;
-      const titleW = g.measureText(title).width;
       const shown = revealed && now >= revealAt;
       const res = shown ? gd(rounded) : '?';
       const eq = `${gd(n)} ≈ `;
+      // Überschrift und „≈ Ergebnis“ dürfen sich auf schmalen Geräten nicht überlappen
+      const measure = (size: number) => {
+        g.font = `700 ${size}px ${theme.font}`;
+        const tw = g.measureText(title).width;
+        g.font = `800 ${size + 1}px ${theme.font}`;
+        return { tw, rw: g.measureText(res).width, ew: g.measureText(eq).width, aw: g.measureText('≈ ').width };
+      };
+      let m = measure(titleSize);
+      while (titleSize > 9 && m.tw + m.aw + m.rw + 36 > r.w) m = measure(--titleSize);
+      text(g, title, r.x + 14, titleY, { font: `700 ${titleSize}px ${theme.font}`, color: theme.text, align: 'left' });
+      const titleW = m.tw;
       const eqFont = `800 ${titleSize + 1}px ${theme.font}`;
-      g.font = eqFont;
-      const resW = g.measureText(res).width;
-      const eqW = g.measureText(eq).width;
+      const resW = m.rw;
+      const eqW = m.ew;
       const right = r.x + r.w - 14;
       const showEq = titleW + eqW + resW + 40 < r.w;
       text(g, res, right, titleY, { font: eqFont, color: accent(), align: 'right' });

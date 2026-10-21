@@ -245,8 +245,8 @@ export default defineSimulation({
     { id: 'compare', label: L('x² und x⁴ im Vergleich', 'x² and x⁴ compared'), values: { view: 'compare', n: 2, m: 4 } },
   ],
   strings: {
-    de: { canvas: 'Koordinatensystem mit dem Graphen der Potenzfunktion f(x) = a · xⁿ, daneben ein Steckbrief (Definitions- und Wertemenge, Symmetrie, Monotonie, Verhalten) und eine Wertetabelle. Weitere Ansichten: Familie gleicher Symmetrie mit gemeinsamen Punkten und Vergleich zweier Potenzfunktionen.' },
-    en: { canvas: 'Coordinate system with the graph of the power function f(x) = a · xⁿ, next to it key features (domain, range, symmetry, monotonicity, behaviour) and a table of values. Further views: a family with the same symmetry and its common points, and a comparison of two power functions.' },
+    de: { canvas: 'Koordinatensystem mit dem Graphen der Potenzfunktion f(x) = a · xⁿ. Der ziehbare Punkt Q(1 | a) zeigt den Streckfaktor, der ziehbare Punkt P auf dem Graphen dient zur Punktprobe; die Rechnung steht in einem Feld im Bild. Bei negativem n gestrichelte Asymptoten x = 0 und y = 0. Daneben ein Steckbrief (Definitions- und Wertemenge, Symmetrie, Monotonie, Verhalten im Unendlichen und nahe 0) und eine Wertetabelle. Weitere Ansichten: Familie gleicher Symmetrie mit blassen, beschrifteten Nachbargraphen und den gemeinsamen Punkten sowie der Vergleich zweier Potenzfunktionen f und g mit Schnittpunkten und gefärbter Fläche dazwischen.' },
+    en: { canvas: 'Coordinate system with the graph of the power function f(x) = a · xⁿ. The draggable point Q(1 | a) shows the stretch factor, the draggable point P on the graph is used to check a point; the calculation is shown in a box in the picture. For negative n, dashed asymptotes x = 0 and y = 0. Next to it key features (domain, range, symmetry, monotonicity, behaviour at infinity and near 0) and a table of values. Further views: a family with the same symmetry with faint, labelled neighbouring graphs and the common points, and a comparison of two power functions f and g with intersection points and the shaded area between them.' },
   },
 
   mount(ctx) {
@@ -277,16 +277,29 @@ export default defineSimulation({
       const s = th().series;
       return { P: s[3]!, Q: s[5]!, f: s[0]!, g: s[1]!, cut: s[3]!, sym: s[3]! };
     };
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)');
+    const pillBg = () => mixColor(th().bg, th().text, 0, th().dark ? 0.9 : 0.94);
+    /** Kartenhintergrund und feine Linien aus dem Theme (statt fester Farbwerte). */
+    const cardBg = () => mixColor(th().bg, th().text, th().dark ? 0.04 : 0, th().dark ? 0.96 : 0.97);
+    const hairline = () => mixColor(th().grid, th().bg, th().dark ? 0.15 : 0.35);
 
     /* ---------- Aufteilung ---------- */
 
     const wide = () => surface.width >= 640 || surface.width >= surface.height * 1.3;
+    /** Erst nach dem Aufbau dürfen die Karten vermessen werden. */
+    let cardsReady = false;
     function regions(): { plot: Rect; col: Rect } {
       const w = surface.width;
       const h = surface.height;
       if (!wide()) {
-        const ph = Math.round(h * 0.5);
+        // Handy: Koordinatensystem oben, Karten darunter. Brauchen die Karten
+        // mehr Platz (z. B. Familie mit Hyperbeln), wird das Bild etwas flacher,
+        // damit der Steckbrief nicht abgeschnitten wird.
+        let ph = Math.round(h * 0.5);
+        if (cardsReady) {
+          const sz = textSize() + 0.5;
+          const need = infoHeight(sz, w - 8) + 10 + cardsNeed(sz, view(), true);
+          ph = Math.round(Math.max(h * 0.42, Math.min(h * 0.5, h - 12 - 8 - need)));
+        }
         return { plot: { x: 0, y: 0, w, h: ph }, col: { x: 4, y: ph + 8, w: w - 8, h: h - ph - 12 } };
       }
       const colW = Math.round(Math.min(340, Math.max(232, w * 0.33)));
@@ -298,6 +311,24 @@ export default defineSimulation({
     };
 
     const plot = new Plot(surface, { x: [-3.2, 3.2], y: [-3.2, 3.2], region: () => regions().plot, xAxis: { label: 'x' }, yAxis: { label: 'y' } });
+
+    /**
+     * Sichtbarer Bereich: Liegt P beim Laden (Beispiel, Link) außerhalb von
+     * ±3,2, wird der y-Bereich so erweitert, dass P im Bild ist – z. B.
+     * P(2 | 4) bei y = 0,5 · x³. Beim Ziehen und an den Reglern bleibt der
+     * Maßstab fest, damit nichts unter dem Zeiger wegläuft.
+     */
+    let rangeY = 3.2;
+    function fitRange(): void {
+      let need = 3.2;
+      if (view() === 'single' && p.a !== 0) {
+        const y = Math.abs(power(p.a, p.n, fixX(p.x, p.n)));
+        if (Number.isFinite(y) && y > 2.9) need = Math.min(12, Math.ceil((y + 0.6) * 2) / 2);
+      }
+      if (need === rangeY) return;
+      rangeY = need;
+      plot.setRange([-3.2, 3.2], [-need, need]);
+    }
 
     /* ---------- Zustand ---------- */
 
@@ -456,7 +487,12 @@ export default defineSimulation({
       }
       if (view() === 'family') ctx.readout('common', commonPoints(a, n).map(([x, y]) => fmt.point(x, y)).join(', '));
     }
-    const approxEq = (y: number) => (Math.abs(y * 1000 - Math.round(y * 1000)) < 1e-6 ? '=' : '≈');
+    const approxEq = (y: number, d = 3) => (Math.abs(y * 10 ** d - Math.round(y * 10 ** d)) < 1e-6 ? '=' : '≈');
+    /** Stellen, mit denen N() rundet – damit „=“ nur bei exakt gezeigten Werten steht. */
+    const nDigits = (v: number) => {
+      const r = Math.abs(v);
+      return r !== 0 && r < 0.1 ? 3 : r >= 100 ? 1 : 2;
+    };
 
     /** Vergleich in Worten: auf welchen Intervallen welcher Graph oben liegt. */
     function compareLines(a: number, n: number, m: number): string[] {
@@ -832,7 +868,8 @@ export default defineSimulation({
             const coef = a === 1 ? '' : a === -1 ? '−' : `${P1(a)} · `;
             const src = `P: f(${fmt.num(xr)}) = ${coef}${xb}^{${expTxt(n)}} ${approxEq(yv)} ${fmt.num(yv, 3)}`;
             // oben, wenn beide Enden des Graphen nach unten zeigen, sonst unten
-            const down = shownF(now)(-2.2, -1) < 0 && shownF(now)(2.2) < 0;
+            // (und oben, wenn P selbst am unteren Rand liegt – sonst verdeckt die Rechnung P und Q)
+            const down = (shownF(now)(-2.2, -1) < 0 && shownF(now)(2.2) < 0) || (Number.isFinite(py) && py > r.y + r.h - 64 && py < r.y + r.h);
             pill(r.x + (wide() ? (r.w - 50) / 2 : r.w / 2), down ? r.y + 26 : r.y + r.h - 26, src, { border: c.P, size: size - 0.5, maxW: r.w - 40, alpha: clamp01((k.pts - 0.5) * 2) });
           }
         }
@@ -1054,7 +1091,7 @@ export default defineSimulation({
       else {
         const x = fmt.num(s.x0);
         const y0 = power(A.v, s.n, s.x0);
-        src = axis ? `f(−x) = f(x),  f(−${x}) = f(${x}) ${approxEq(y0)} ${N(y0)}` : `f(−x) = −f(x),  f(−${x}) = −f(${x}) ${approxEq(y0)} ${N(-y0)}`;
+        src = axis ? `f(−x) = f(x),  f(−${x}) = f(${x}) ${approxEq(y0, nDigits(y0))} ${N(y0)}` : `f(−x) = −f(x),  f(−${x}) = −f(${x}) ${approxEq(y0, nDigits(y0))} ${N(-y0)}`;
       }
       pill(cx, y, src, { border: C().sym, size, alpha: k.show * k.fade, maxW });
     }
@@ -1075,6 +1112,20 @@ export default defineSimulation({
         if (mn === MF.target) continue;
         const ms = new Morph(mn);
         drawGraph(ms, now, nColor(mn), 2, k.graph, { alpha: 0.38 * viewFade });
+      }
+      // blasse Graphen beschriften (nicht nur über die Farbe unterscheidbar):
+      // links vom Ursprung, je Exponent an einer eigenen Stelle, damit sich
+      // die Namen nicht gegenseitig verdecken
+      if (!sym) {
+        const at: Record<number, number> = { 6: -0.8, 5: -0.8, 4: -1.15, 3: -1.25, 2: -1.5, 1: -2, 0: -2.3, [-1]: -2.2, [-2]: -1.6, [-3]: -0.72, [-4]: -0.85 };
+        for (const mn of members) {
+          if (mn === MF.target) continue;
+          const xl = at[mn] ?? -1.5;
+          const px = plot.px(xl);
+          const py = plot.py(power(A.v, mn, xl));
+          if (!inside(px, py, 14)) continue;
+          label(px - 6, py, xPow(mn), nColor(mn), 'right', size - 0.5, 0.9 * viewFade * k.labels);
+        }
       }
       drawAsymptotes(MF, now, k);
       drawQGuide(now);
@@ -1269,13 +1320,13 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 14;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.96)' : 'rgba(255,255,255,0.97)';
+      g.fillStyle = cardBg();
       roundRect(g, r.x, r.y, r.w, r.h, 12);
       g.fill();
       g.restore();
       g.save();
       g.globalAlpha = alpha;
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = hairline();
       g.lineWidth = 1;
       roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 12);
       g.stroke();
@@ -1467,6 +1518,11 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Platzbedarf der unteren Karte (Wertetabelle bzw. Familie). */
+    function cardsNeed(s: number, v: View, horizontal: boolean): number {
+      return v === 'family' ? 26 + s * 2 + 12 + 5 * s * 1.5 + 12 : horizontal ? 26 + s * 1.4 + (v === 'compare' ? 3 : 2) * s * 1.8 + 14 : 26 + s * 1.4 + 8 * s * 1.35 + 12;
+    }
+
     function infoHeight(size: number, w: number): number {
       return infoLayout(w, size).height;
     }
@@ -1497,8 +1553,11 @@ export default defineSimulation({
       if (x === 0 && target <= 0) return ND;
       const v = shownF(now, m)(x, x < 0 ? -1 : 1);
       if (!Number.isFinite(v)) return ND;
-      // symmetrisch runden, damit f(−x) und −f(x) gleich aussehen
-      return Q(N((Math.sign(v) * Math.round(Math.abs(v) * 1000)) / 1000));
+      // symmetrisch runden, damit f(−x) und −f(x) gleich aussehen; unter 1 drei
+      // Nachkommastellen (0,5³ = 0,125 nicht als 0,13)
+      const r = Math.abs(v);
+      const d = r < 1 ? 3 : r >= 100 ? 1 : 2;
+      return Q(fmt.num((Math.sign(v) * Math.round(r * 10 ** d)) / 10 ** d, d));
     }
 
     function drawTable(r: Rect, size: number, alpha: number, now: number): void {
@@ -1534,7 +1593,7 @@ export default defineSimulation({
         };
         rowLabel('x', 0, th().muted);
         cols.forEach((cl, j) => rowLabel(cl.name, j + 1, cl.color));
-        g.strokeStyle = th().dark ? '#2c3648' : '#e3e8ef';
+        g.strokeStyle = hairline();
         g.lineWidth = 1;
         g.beginPath();
         g.moveTo(r.x + pad, Math.round(top + lh) + 0.5);
@@ -1569,7 +1628,7 @@ export default defineSimulation({
           const box = fit(hd, colW[j]! - 6, size - 0.5, j === 0 ? th().muted : cols[j - 1]!.color, 700);
           box.draw(g, colX[j]! - box.w, top + lh / 2 + (box.asc - box.desc) / 2);
         });
-        g.strokeStyle = th().dark ? '#2c3648' : '#e3e8ef';
+        g.strokeStyle = hairline();
         g.lineWidth = 1;
         g.beginPath();
         g.moveTo(r.x + pad, Math.round(top + lh) + 0.5);
@@ -1739,7 +1798,7 @@ export default defineSimulation({
       const gap = 10;
       let size = textSize() + 0.5;
       const horizontal = tableHorizontal();
-      const tableNeed = (s: number) => (v === 'family' ? 26 + s * 2 + 12 + 5 * s * 1.5 + 12 : horizontal ? 26 + s * 1.4 + (v === 'compare' ? 3 : 2) * s * 1.8 + 14 : 26 + s * 1.4 + 8 * s * 1.35 + 12);
+      const tableNeed = (s: number) => cardsNeed(s, v, horizontal);
       while (size > 11 && infoHeight(size, col.w) + gap + tableNeed(size) > col.h) size -= 0.5;
       const ih = horizontal && v !== 'family' ? col.h - gap - tableNeed(size) : Math.min(col.h - gap - tableNeed(size), Math.max(infoHeight(size, col.w), (col.h - gap) * 0.5));
       const slide = (1 - k.cards) * 14;
@@ -1786,11 +1845,13 @@ export default defineSimulation({
       return Math.round(Math.max(0.4, Math.min(2.4, x)) * 10) / 10;
     }
 
+    cardsReady = true;
     return {
       update(changed, source) {
         const now = performance.now();
         const instant = reduced() || source === 'init';
         const user = source === 'input' || source === 'replace';
+        if (source === 'init' || source === 'replace' || changed.has('view')) fitRange();
         if (user && (changed.has('n') || changed.has('view') || changed.has('m'))) stopTour();
         if (user && ['n', 'a', 'view', 'm', 'x'].some((key) => changed.has(key))) {
           sym = null;

@@ -166,3 +166,40 @@ describe('Netze der übrigen Körper', () => {
     expect(mid[2]).toBeCloseTo(1, 9);
   });
 });
+
+describe('Prüfrunde: Werte von Hand nachgerechnet', () => {
+  const base = { net: 1, a: 3, b: 2, c: 1.5, h: 4, ha: 4, r: 1.5 };
+
+  it('stimmt mit den Oberflächenformeln überein', () => {
+    // Würfel: O = 6 · 3² = 54
+    expect(surfaceArea('wuerfel', { ...base, a: 3 })).toBe(54);
+    // Quader 4 × 3 × 2: O = 2 · (12 + 8 + 6) = 52
+    expect(surfaceArea('quader', { ...base, a: 4, b: 3, c: 2 })).toBe(52);
+    // Pyramide a = 6, hₐ = 5: O = 36 + 4 · 15 = 96
+    expect(surfaceArea('pyramide', { ...base, a: 6, ha: 5 })).toBe(96);
+    // Zylinder r = 2, h = 5: O = 8π + 20π = 28π ≈ 87,96
+    expect(surfaceArea('zylinder', { ...base, r: 2, h: 5 })).toBeCloseTo(28 * Math.PI, 12);
+    expect(surfaceArea('zylinder', { ...base, r: 2, h: 5 })).toBeCloseTo(87.96, 2);
+    // Prisma (gleichseitiges Dreieck a = 3, h = 4): O = 2G + M = 2 · (√3/4 · 9) + 3 · 12 ≈ 43,79
+    expect(surfaceArea('prisma', { ...base, a: 3, h: 4 })).toBeCloseTo(43.79, 2);
+  });
+
+  it('faltet jedes gültige Würfelnetz genau auf die 8 Würfelecken', () => {
+    const a = 2;
+    const corners: Vec3[] = [];
+    for (const x of [-1, 1]) for (const y of [-1, 1]) for (const z of [0, 2]) corners.push([x, y, z]);
+    for (const cells of CUBE_NETS) {
+      const faces = cubeNet(cells, a);
+      if (!checkCubeNet(faces, a).valid) continue;
+      const pts = foldNet(faces, 1).flat();
+      for (const p of pts) expect(corners.some((c) => vec3.distance(c, p) < 1e-9)).toBe(true);
+      for (const c of corners) expect(pts.filter((p) => vec3.distance(c, p) < 1e-9)).toHaveLength(3);
+    }
+  });
+
+  it('lässt beim Prisma die Dreiecke genau an die Rechteckkanten passen', () => {
+    const folded = foldNet(prismNet(3, 4), 1);
+    const rectPts = [folded[0]!, folded[1]!, folded[2]!].flat();
+    for (const tri of [folded[3]!, folded[4]!]) for (const p of tri) expect(rectPts.some((q) => vec3.distance(p, q) < 1e-9)).toBe(true);
+  });
+});

@@ -1667,11 +1667,12 @@ export default defineSimulation({
     }
 
     /** Tabelle der Fast-Treffer p/q mit p² und 2q². */
-    function drawMisses(B: Rect, k: Intro): void {
+    function drawMisses(B: Rect, k: Intro, count = 7): void {
       const g = surface.g;
       const theme = th();
-      const rows = nearMisses(8).slice(1);
-      const rh = Math.min(fs(24, 21), (B.h - 46) / rows.length);
+      const rows = nearMisses(count + 1).slice(1);
+      // Platz für Kopf (46 px) und Fußzeile (20 px) freihalten
+      const rh = Math.min(fs(24, 21), (B.h - 66) / rows.length);
       const cols = [B.x + 6, B.x + B.w * 0.27, B.x + B.w * 0.7, B.x + B.w - 4];
       label(say(L('Fast-Treffer', 'Near misses')), B.x + 6, B.y + 12, `750 ${fs(12.5, 11.5)}px ${theme.font}`, theme.text, 'left');
       const hy = B.y + 34;
@@ -2067,10 +2068,16 @@ export default defineSimulation({
     }
     function missCardFn(k: Intro): CardFn {
       return (R, measure) => {
-        const h = 46 + 7 * fs(24, 21) + 30;
+        // Volle Tabelle (7 Zeilen); ist unter dem wachsenden Beweis weniger Platz,
+        // rückt sie enger zusammen und zeigt notfalls nur die ersten Fast-Treffer
+        // (mindestens 3/2, 7/5, 17/12), statt ganz zu verschwinden.
+        const full = 82 + 7 * fs(24, 21);
+        const rMin = fs(19, 18);
+        const count = R.h >= full ? 7 : clamp(Math.floor((R.h - 82) / rMin), 0, 7);
+        const h = R.h >= full || count < 3 ? full : 82 + count * rMin;
         if (measure) return h;
         card({ ...R, h }, col.bad());
-        drawMisses({ x: R.x + 8, y: R.y + 8, w: R.w - 16, h: h - 16 }, k);
+        drawMisses({ x: R.x + 8, y: R.y + 8, w: R.w - 16, h: h - 16 }, k, R.h >= full ? 7 : count);
         return h;
       };
     }
@@ -2270,8 +2277,11 @@ export default defineSimulation({
       if (!stepping) {
         set(HN, nOf('heron'), 900);
         const e = heronExtent();
-        set(EW, e.w, 800);
-        set(EH, e.h, 800);
+        // Beim Ziehen der Ecke den Maßstab nicht verkleinern (nur vergrößern, wenn nötig):
+        // sonst wandert die Zeichnung unter dem Finger weg und x₀ läuft davon.
+        const hold = drag === 'x0';
+        set(EW, hold ? Math.max(EW.goal, e.w) : e.w, 800);
+        set(EH, hold ? Math.max(EH.goal, e.h) : e.h, 800);
         const t = heronLine(nOf('heron'));
         set(HL, t.lw, 900);
         set(HC, t.c, 900);
@@ -2285,7 +2295,9 @@ export default defineSimulation({
       // Quadrat
       const a = aInt();
       set(CN, a, 600);
-      set(SE, Math.max(2, floorSqrt(a) + (isPerfectSquare(a) ? 0.6 : 1.4)), 700);
+      const se = Math.max(2, floorSqrt(a) + (isPerfectSquare(a) ? 0.6 : 1.4));
+      // ebenso beim Ziehen der grünen Ecke: Kästchen nur kleiner machen, wenn das Quadrat sonst nicht passt
+      set(SE, drag === 'corner' ? Math.max(SE.goal, se) : se, 700);
     }
 
     function startStep(from: number, to: number, now: number): void {
@@ -2383,8 +2395,11 @@ export default defineSimulation({
         dragTo(pt.px, pt.py);
       },
       pointerUp: () => {
+        const wasDrag = drag !== null;
         drag = null;
         lastDrag = performance.now();
+        // nach dem Loslassen den Maßstab wieder an den Wert anpassen
+        if (wasDrag) retarget(lastDrag, 'input');
         surface.setCursor(hover ? 'grab' : '');
         ctx.requestRender();
       },

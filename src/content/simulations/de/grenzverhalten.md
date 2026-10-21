@@ -37,7 +37,7 @@ Der Graph **darf** die Asymptote schneiden – $\frac{\sin x}{x}$ tut das bei je
 4. [$\frac{\sin x}{x}$](?f=osc&eps=0.1): Der Graph schneidet die Asymptote immer wieder. Gibt es trotzdem einen Grenzwert? Welche Rolle spielen die gestrichelten Kurven $y = \pm\frac{1}{\lvert x\rvert}$?
 5. [$\frac{2^x}{2^x + 1}$](?f=logi&dir=m&eps=0.2): Vergleiche $x \to -\infty$ mit [$x \to +\infty$](?f=logi&dir=p&eps=0.2).
 6. [$x \cdot 2^{-x}$](?f=xexp&eps=0.25): Der Zähler $x$ wächst, trotzdem geht $f(x)$ gegen $0$. Wer „gewinnt“?
-7. [$0{,}1x^3 - x$](?f=poly): Verschiebe den roten Probe-Schlauch nach oben. Gibt es einen Wert $L$, um den der Graph im Schlauch bleibt?
+7. [$0{,}1x^3 - x$](?f=poly): Verschiebe den Probe-Schlauch „L = 3 ?“ nach oben. Gibt es einen Wert $L$, um den der Graph im Schlauch bleibt?
 
 ## Aufgaben
 
@@ -112,9 +112,9 @@ $f(x) = x^3\left(0{,}1 - \frac{1}{x^2}\right)$: Die Klammer geht gegen $0{,}1$, 
 - **Einsatz:** Jahrgangsstufe 11, Grenzwerte im Unendlichen und waagrechte Asymptoten (LehrplanPLUS Gymnasium Bayern; wie weit die ε-Vorstellung dort ausgeführt wird, bitte am Lehrplan prüfen). Der Schlauch ist als anschauliches Bild gedacht, nicht als formale Definition.
 - **Grenzwert finden:** Mit „Grenzwert und Asymptote zeigen“ aus sind Asymptote, Schlauch und Abstände verdeckt. Die Lernenden vermuten den Grenzwert aus Tabelle und Lauf, begründen ihn mit einer Umformung und prüfen dann mit „Grenzwert aufdecken“.
 - **ε-Spiel zu zweit:** Eine Person wählt ein ε, die andere sagt $x_\varepsilon$ voraus (bei $\frac{2x + 1}{x - 1}$ ist $x_\varepsilon = 1 + \frac{3}{\varepsilon}$); die Simulation prüft.
-- **Modell:** $x_\varepsilon$ wird, wo möglich, exakt berechnet, sonst numerisch ($\frac{\sin x}{x}$, $x \cdot 2^{-x}$). Gezeigt wird jeweils die Stelle, ab der die Bedingung für alle weiteren $x$ gilt.
+- **Modell:** $x_\varepsilon$ wird, wo möglich, exakt berechnet, sonst numerisch ($\frac{\sin x}{x}$, $x \cdot 2^{-x}$). Gezeigt wird jeweils die Stelle, ab der die Bedingung für alle weiteren $x$ gilt. Exakte Werte stehen mit „=“, gerundete mit „≈“ (z. B. $x_\varepsilon \approx 8{,}42$ bei $\frac{\sin x}{x}$).
 - **Häufige Stolpersteine:**
   - „Eine Asymptote wird nie geschnitten.“ – Bei $\frac{\sin x}{x}$ schneidet der Graph sie unendlich oft.
   - „$f(x) \to \infty$ ist auch ein Grenzwert.“ – Dann gibt es keinen (endlichen) Grenzwert.
-  - Große Werte im Taschenrechner werden als „genau $L$“ gelesen, obwohl der Abstand nur sehr klein ist – die Lupe zeigt, dass er nie ganz verschwindet.
+  - Für große $x$ zeigt der Taschenrechner oft genau $L$ an (z. B. $2$). Das wird als „$f(x) = L$“ gelesen, obwohl der Abstand nur sehr klein ist – die Lupe zeigt, dass er nie ganz verschwindet.
   - Die Grenzwerte für $+\infty$ und $-\infty$ werden stillschweigend gleichgesetzt.

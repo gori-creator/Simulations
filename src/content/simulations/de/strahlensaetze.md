@@ -24,13 +24,13 @@ Der gemeinsame Wert ist der **Streckfaktor** $k$. Das Dreieck $ZA'B'$ entsteht a
 
 Liegen die Parallelen auf verschiedenen Seiten von $Z$, entsteht die **X-Figur**. Die Strahlensätze gelten dort genauso, man misst immer von $Z$ aus. In der Simulation wird der Streckfaktor dann negativ angezeigt ($k < 0$: „andere Seite von $Z$“); in den Verhältnissen stehen Längen, also $|k|$.
 
-**Ohne Parallelen geht es nicht:** Sind $AB$ und $A'B'$ nicht parallel, sind die Verhältnisse verschieden. Umgekehrt gilt die **Umkehrung des 1. Strahlensatzes:** Ist $\overline{ZA'} : \overline{ZA} = \overline{ZB'} : \overline{ZB}$ (und liegen $A'$, $B'$ beide auf derselben Seite von $Z$), dann ist $AB \parallel A'B'$. Die **Umkehrung des 2. Strahlensatzes gilt nicht**: Es kann einen zweiten Punkt $B''$ geben, für den ebenfalls $\overline{A'B''} : \overline{AB} = k$ ist, obwohl $A'B''$ nicht parallel zu $AB$ ist.
+**Ohne Parallelen geht es nicht:** Sind $AB$ und $A'B'$ nicht parallel, sind die Verhältnisse verschieden. Umgekehrt gilt die **Umkehrung des 1. Strahlensatzes:** Ist $\overline{ZA'} : \overline{ZA} = \overline{ZB'} : \overline{ZB}$ (und liegen $A'$ und $B'$ entweder beide auf derselben Seite von $Z$ wie $A$ und $B$ oder beide auf der anderen), dann ist $AB \parallel A'B'$. Die **Umkehrung des 2. Strahlensatzes gilt nicht**: Es kann einen zweiten Punkt $B''$ geben, für den ebenfalls $\overline{A'B''} : \overline{AB} = k$ ist, obwohl $A'B''$ nicht parallel zu $AB$ ist.
 
 **Rechnen mit einer Unbekannten:** Man stellt eine Verhältnisgleichung auf – am besten mit der Unbekannten $x$ im Zähler – und löst sie durch Multiplizieren, z. B. $\frac{x}{\overline{ZB}} = \frac{\overline{ZA'}}{\overline{ZA}} \Rightarrow x = \frac{\overline{ZA'} \cdot \overline{ZB}}{\overline{ZA}}$.
 
 ## Ausprobieren
 
-1. Drücke **„Parallele verschieben“**: Die Parallele gleitet von $AB$ nach $A'B'$. Beobachte die farbigen Maßstäbe rechts – alle drei Verhältnisse zählen gemeinsam hoch. Was bedeuten die weißen Teilstriche im unteren Balken?
+1. Drücke **„Parallele verschieben“**: Die Parallele gleitet von $AB$ nach $A'B'$. Beobachte die farbigen Maßstäbe rechts – alle drei Verhältnisse zählen gemeinsam hoch. Was bedeuten die Teilstriche in den dicken Balken?
 2. Ziehe $A'$ und drehe den ersten Strahl am Griff außen. Probiere [$k = 0{,}5$](?k=0.5&a=6&b=7), [$k = 1$](?k=1), [einen sehr spitzen](?th=10&k=3&a=8&b=8) und [einen stumpfen Winkel](?th=150&k=0.5&a=5&b=3). Ändern sich die Verhältnisse?
 3. [X-Figur](?mode=x&a=4&b=5&k=0.75): Drücke „Parallele verschieben“ – die Parallele wandert durch $Z$ hindurch auf die andere Seite.
 4. Vergleiche in der Karte „1. Strahlensatz“ die beiden Abschnitte-Balken: Wann liegen die Trennstriche genau übereinander? Lies in der Karte „2. Strahlensatz“ nach, warum man dort nicht mit $\overline{AA'}$ rechnen darf.
@@ -87,7 +87,7 @@ Unbekannte in den Zähler: $\frac{x}{7{,}5\,\text{cm}} = \frac{5\,\text{cm}}{12{
 
 ### Aufgabe 5: Wie hoch ist der Baum?
 
-Ein Stab ist $1{,}5\,\text{m}$ lang und wird so aufgestellt, dass die Spitzen seines Schattens und des Baumschattens zusammenfallen. Der Stab steht $2\,\text{m}$, der Baum $16\,\text{m}$ von der Schattenspitze entfernt. [Aufgabe laden](?mode=baum&ht=12&st=1.5&el=36.87&show=0&_hide=1)
+Ein Stab ist $1{,}5\,\text{m}$ lang und wird so aufgestellt, dass die Spitzen seines Schattens und des Baumschattens zusammenfallen. Der Stab steht $2\,\text{m}$, der Baum $16\,\text{m}$ von der Schattenspitze entfernt. Berechne die Höhe des Baums. [Aufgabe laden](?mode=baum&ht=12&st=1.5&el=36.87&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -114,7 +114,7 @@ Es ist $\overline{ZA} = 3\,\text{cm}$, $\overline{ZA'} = 6\,\text{cm}$, $\overli
 <details>
 <summary>Lösung anzeigen</summary>
 
-Nein: $\frac63 = 2$, aber $\frac{5{,}6}{4} = 1{,}4$. Für eine Parallele bräuchte man $\overline{ZB'} = 8\,\text{cm}$. Das Nachmessen von $\overline{A'B'}$ reicht nicht, weil die Umkehrung des 2. Strahlensatzes nicht gilt: Der Kreis um $A'$ mit Radius $2 \cdot \overline{AB}$ trifft den zweiten Strahl im Allgemeinen zweimal – nur einer der Punkte liefert die Parallele. [Zeigen](?par=0&kb=1.4)
+Nein: $\frac63 = 2$, aber $\frac{5{,}6}{4} = 1{,}4$. Für eine Parallele bräuchte man $\overline{ZB'} = 8\,\text{cm}$. Das Nachmessen von $\overline{A'B'}$ reicht nicht, weil die Umkehrung des 2. Strahlensatzes nicht gilt: Der Kreis um $A'$ mit Radius $2 \cdot \overline{AB}$ kann die Gerade $ZB$ zweimal treffen – nur einer der beiden Punkte liefert die Parallele. [Zeigen](?par=0&kb=1.4)
 
 </details>
 

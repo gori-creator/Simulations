@@ -2421,7 +2421,11 @@ export default defineSimulation({
       }
       void now;
       return {
-        title: `${say(L('Kongruenzsatz', 'Congruence criterion'))} ${congName()}`,
+        // SSW (Winkel gegenüber der kleineren Seite) und WWW sind keine Kongruenzsätze
+        title:
+          cs() === 'www' || (cs() === 'ssw' && !isSsW(p.a, p.c))
+            ? `${congName()}: ${say(L('kein Kongruenzsatz', 'no congruence criterion'))}`
+            : `${say(L('Kongruenzsatz', 'Congruence criterion'))} ${congName()}`,
         accent: reveal ? accent : th().muted,
         right: '',
         rows,

@@ -1,5 +1,5 @@
 import { defineSimulation, degToRad, mod, Plot, radToDeg, Surface, withAlpha } from '../../../sim-core';
-import { angleAt, positionToCircle, type Point } from './model';
+import { angleAt, angleKind, positionToCircle, type AngleKind, type Point } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const R = 3;
@@ -24,7 +24,9 @@ export default defineSimulation({
     { key: 'cy', type: 'number', label: L('y-Koordinate von C', 'y-coordinate of C'), min: -4, max: 4, step: 0.1, default: 1.5, visibleIf: (v) => v.free === true },
     { key: 'proof', type: 'boolean', group: 'view', label: L('Beweisidee: Radius MC einzeichnen', 'Proof idea: draw the radius MC'), default: false },
     { key: 'grid', type: 'boolean', group: 'view', label: L('Gitternetz', 'Grid'), default: false },
+    { key: 'val', type: 'boolean', group: 'view', label: L('Winkelgröße im Bild anzeigen', 'Show the angle size in the picture'), default: true },
   ],
+  resultsParam: 'val',
   readouts: [
     { key: 'gamma', label: L('Winkel γ bei C', 'Angle γ at C'), spoiler: true },
     { key: 'position', label: L('Lage von C', 'Position of C') },
@@ -46,7 +48,7 @@ export default defineSimulation({
       obtuse: 'stumpf (größer als 90°)',
       acute: 'spitz (kleiner als 90°)',
       degenerate: 'kein Dreieck (C liegt auf der Geraden AB)',
-      proofText: 'α + β = {sum}°, also γ = α + β = 90°',
+      proofText: 'γ = α + β und α + β + γ = 180°, also 2γ = 180° und γ = 90°',
       proofFree: 'Die Beweisidee gilt nur, wenn C auf dem Kreis liegt.',
     },
     en: {
@@ -58,7 +60,7 @@ export default defineSimulation({
       obtuse: 'obtuse (greater than 90°)',
       acute: 'acute (less than 90°)',
       degenerate: 'not a triangle (C lies on line AB)',
-      proofText: 'α + β = {sum}°, so γ = α + β = 90°',
+      proofText: 'γ = α + β and α + β + γ = 180°, so 2γ = 180° and γ = 90°',
       proofFree: 'The proof idea only applies when C lies on the circle.',
     },
   },
@@ -89,9 +91,20 @@ export default defineSimulation({
       color: () => ctx.theme.text,
     });
 
-    /** Farbe für den Winkel bei C: grün = 90°, orange = stumpf, blau = spitz. */
-    const angleColor = (gamma: number) =>
-      Math.abs(gamma - 90) < 0.5 ? ctx.theme.series[2]! : gamma > 90 ? ctx.theme.series[3]! : ctx.theme.series[0]!;
+    /**
+     * Farbe für den Winkel bei C: grün = 90°, orange = stumpf, blau = spitz.
+     * Sind die Ergebnisse verdeckt, neutral, damit die Farbe nichts verrät.
+     */
+    const angleColor = (kind: AngleKind) =>
+      !p.val
+        ? ctx.theme.series[4]!
+        : kind === 'degenerate'
+          ? ctx.theme.text
+        : kind === 'right'
+          ? ctx.theme.series[2]!
+          : kind === 'obtuse'
+            ? ctx.theme.series[3]!
+            : ctx.theme.series[0]!;
 
     /** Innenwinkel bei `v` zwischen den Strahlen zu p1 und p2 als Bogen (Radius in Pixeln). */
     function angleArc(v: Point, p1: Point, p2: Point, radius: number, color: string, fill = 0.18): void {
@@ -175,29 +188,26 @@ export default defineSimulation({
         if (changed.has('phi') && Math.abs(p.phi - phi) > 0.6) phi = p.phi;
         const c = pointC();
         const gamma = angleAt(c, A, B);
-        const position = positionToCircle(c, M, R, 1e-3);
-        const kind = !Number.isFinite(gamma) || Math.abs(c[1]) < 1e-9
-          ? 'degenerate'
-          : Math.abs(gamma - 90) < 0.05
-            ? 'right'
-            : gamma > 90
-              ? 'obtuse'
-              : 'acute';
+        // Lage und Winkelart mit derselben (strengen) Toleranz, damit z. B. nicht
+        // „auf dem Thaleskreis“ neben „γ ≈ 89,9° – spitz“ steht.
+        const position = positionToCircle(c, M, R, 1e-9);
+        const kind = angleKind(c, A, B);
         ctx.readout('gamma', kind === 'degenerate' ? ctx.t('degenerate') : `γ ≈ ${fmt.num(gamma, 1)}° – ${ctx.t(kind)}`);
         ctx.readout('position', ctx.t(position));
         if (!p.proof) ctx.readout('proof', null);
+        else if (kind === 'degenerate') ctx.readout('proof', ctx.t('degenerate'));
         else if (position !== 'on') ctx.readout('proof', ctx.t('proofFree'));
         else {
           const alpha = angleAt(A, B, c);
           const beta = angleAt(B, A, c);
-          ctx.readout('proof', `α ≈ ${fmt.num(alpha, 1)}°, β ≈ ${fmt.num(beta, 1)}°; ${ctx.t('proofText').replace('{sum}', fmt.num(alpha + beta, 1))}`);
+          ctx.readout('proof', `α ≈ ${fmt.num(alpha, 1)}°, β ≈ ${fmt.num(beta, 1)}°; ${ctx.t('proofText')}`);
         }
       },
 
       tick(dt) {
         if (p.free) return;
         phi = mod(phi + 30 * dt, 360);
-        // Durch die Gerade AB (0° bzw. 180°) zügig hindurch, dort gibt es kein Dreieck
+        // Bei 0° und 180° liegt C auf A bzw. B – dort zeigt die Anzeige „kein Dreieck“.
         ctx.set({ phi: Math.round(phi) });
       },
 
@@ -210,8 +220,10 @@ export default defineSimulation({
         const c = pointC();
         const theme = ctx.theme;
         const gamma = angleAt(c, A, B);
-        const position = positionToCircle(c, M, R, 1e-3);
-        const color = angleColor(gamma);
+        const position = positionToCircle(c, M, R, 1e-9);
+        const kind = angleKind(c, A, B);
+        const color = angleColor(kind);
+        const showProof = p.proof && position === 'on' && kind !== 'degenerate';
         const centre: Point = [(A[0] + B[0] + c[0]) / 3, (A[1] + B[1] + c[1]) / 3];
 
         surface.begin();
@@ -228,7 +240,7 @@ export default defineSimulation({
         plot.segment(A, B, { color: theme.text, width: 3.5 });
 
         // Beweisidee: zwei gleichschenklige Dreiecke AMC und MBC
-        if (p.proof && position === 'on') {
+        if (showProof) {
           const ca = theme.series[0]!;
           const cb = theme.series[1]!;
           plot.segment(M, c, { color: theme.series[4], width: 2, dash: [6, 5] });
@@ -242,16 +254,22 @@ export default defineSimulation({
         }
 
         // Winkel bei C
-        if (Number.isFinite(gamma) && Math.abs(c[1]) > 1e-9) {
-          if (Math.abs(gamma - 90) < 0.5 && !(p.proof && position === 'on')) rightAngleMark(c, A, B, 18, color);
-          else if (!(p.proof && position === 'on')) angleArc(c, A, B, 28, color);
+        // Rechtwinkelzeichen nur, wenn C wirklich auf dem Kreis liegt (und die
+        // Ergebnisse sichtbar sind); sonst ein Winkelbogen.
+        if (kind !== 'degenerate') {
+          if (!showProof) {
+            if (kind === 'right' && p.val) rightAngleMark(c, A, B, 18, color);
+            else angleArc(c, A, B, 28, color);
+          }
           const dx = centre[0] - c[0];
           const dy = centre[1] - c[1];
           const len = Math.hypot(dx, dy) || 1;
-          plot.textPx(plot.px(c[0]) + (dx / len) * 62, plot.py(c[1]) - (dy / len) * 62, `γ = ${fmt.num(gamma, Math.abs(gamma - 90) < 0.05 ? 0 : 1)}°`, {
+          const label = p.val ? `γ = ${fmt.num(gamma, kind === 'right' ? 0 : 1)}°` : 'γ';
+          plot.textPx(plot.px(c[0]) + (dx / len) * 62, plot.py(c[1]) - (dy / len) * 62, label, {
             color,
             weight: 'bold',
             size: 15,
+            math: !p.val,
             align: 'center',
             baseline: 'middle',
           });

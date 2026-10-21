@@ -38,8 +38,8 @@ Geht man von $F$ noch einmal genauso weit, erhält man den **Spiegelpunkt** $P'$
 1. Lade die windschiefen Geraden und spiele die Animation ab: Der Pfad im Entscheidungsbaum leuchtet. Klicke dann auf „Blick entlang g“ – $g$ schrumpft zu einem Punkt, und die rote Verbindung zeigt den Abstand in wahrer Länge. [Beispiel laden](?mode=ll)
 2. Ziehe die Spitze des Richtungspfeils $\vec v$ so, dass $h$ die Gerade $g$ trifft. Woran erkennst du im Bild, dass es jetzt einen Schnittpunkt gibt?
 3. Bei parallelen Geraden zeigt „Blick senkrecht auf g und h“ zwei parallele Linien mit dem Abstand in wahrer Länge. [Parallele Geraden](?a1=0&a2=0&a3=0&u1=1&u2=2&u3=3&b1=1&b2=0&b3=0&v1=2&v2=4&v3=6)
-4. Fast parallel, aber nicht parallel: Wo liegt hier der Schnittpunkt, und wie groß ist der Winkel? [Sehr kleiner Winkel](?a1=0&a2=0&a3=0&u1=6&u2=0&u3=0&b1=0&b2=1&b3=0&v1=6&v2=0.5&v3=0)
-5. Eine Gerade, die fast parallel zur $x_1x_2$-Ebene verläuft: Der Durchstoßpunkt wandert weit nach außen. Stelle $u_3$ auf $0$ – was sagt jetzt der Entscheidungsbaum? [Gerade fast in der Ebene](?mode=lp&a1=0&a2=0&a3=1&u1=4&u2=0&u3=0.5&n1=0&n2=0&n3=1&c=0)
+4. Fast parallel, aber nicht parallel: Wo liegt hier der Schnittpunkt, und wie groß ist der Winkel? Der Schnittpunkt liegt außerhalb der gezeichneten Achsen – lies ihn in den Ergebnissen ab. [Sehr kleiner Winkel](?a1=0&a2=0&a3=0&u1=6&u2=0&u3=0&b1=0&b2=1&b3=0&v1=6&v2=0.5&v3=0)
+5. Eine Gerade, die fast parallel zur $x_1x_2$-Ebene verläuft: Der Durchstoßpunkt wandert weit nach außen und liegt außerhalb der gezeichneten Achsen – lies ihn in den Ergebnissen ab. Stelle $u_3$ auf $0$ – was sagt jetzt der Entscheidungsbaum? [Gerade fast in der Ebene](?mode=lp&a1=0&a2=0&a3=1&u1=4&u2=0&u3=0.5&n1=0&n2=0&n3=1&c=0)
 6. Zwei Ebenen schneiden sich: Mit „Blick entlang der Schnittgeraden“ erscheinen beide Ebenen als Linien, und der Winkel zwischen ihnen ist der wahre Schnittwinkel. [Schnittgerade](?mode=pp)
 7. Fälle das Lot von $P$ auf $E$ und schalte den Spiegelpunkt ein. Ziehe $P$ dann in die Ebene hinein: Was passiert mit $d$, $F$ und $P'$? [Abstand Punkt – Ebene](?mode=pd&mir=1)
 

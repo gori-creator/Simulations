@@ -687,6 +687,9 @@ export default defineSimulation({
         const w = measure(lab, font(800, fs));
         if (w > xb - xa + 8) continue;
         const [lx, ly] = pt(0.5);
+        // Bogen hinter der Beschriftung ganz abdecken (sonst schaut er durch die Lücke neben „·“)
+        g.fillStyle = cardBg();
+        g.fillRect(lx - w / 2 - 3, ly - 1 - fs * 0.6, w + 6, fs * 1.2);
         halo(lab, lx, ly - 1, font(800, fs), f > 0 ? toC : col);
       }
     }
@@ -984,7 +987,9 @@ export default defineSimulation({
 
       const rr = clamp(C.w / 15, 21, 34);
       const eqSize = small ? 21 : clamp(C.w / 20, 22, 34);
-      const blockH = 26 + 34 + 2 * rr + 34 + 48 + 34 + eqSize + 50;
+      // Abstand der Wert-Schildchen unter den Stationen: schmal tiefer, damit sie die Beschriftung „: 60“ der unteren Bögen nicht verdecken
+      const badgeGap = small ? 26 : 14;
+      const blockH = 26 + 34 + 2 * rr + 34 + 48 + 34 + eqSize + 50 + (badgeGap - 14);
       const top0 = C.y + 34;
       const startY = top0 + Math.max(0, (C.y + C.h - 8 - top0 - blockH) / 2);
       const statusY = startY + 10;
@@ -1110,7 +1115,7 @@ export default defineSimulation({
           const s = `${isApprox ? '≈ ' : ''}${val} ${u.sym}`;
           const fs = fitSize(s, 800, small ? 12.5 : 14, (x1 - x0) / 3 - 8);
           const w = measure(s, font(800, fs)) + 14;
-          const by = cy + rr + 14;
+          const by = cy + rr + badgeGap;
           g.save();
           g.globalAlpha *= appear;
           roundRect(g, x - w / 2, by, w, 26, 8);
@@ -1140,7 +1145,7 @@ export default defineSimulation({
       halo(status, C.x + C.w / 2, statusY, font(750, fitSize(status, 750, small ? 12.5 : 14, C.w - 24)), statusC);
 
       // Gleichung und gemischte Schreibweise
-      const eqY = cy + rr + 14 + 26 + 40 + eqSize / 2;
+      const eqY = cy + rr + badgeGap + 26 + 40 + eqSize / 2;
       drawEquation(st, C, eqY, eqSize, resA);
       const big = st.from.exp >= st.to.exp ? st.from : st.to;
       const inBig = st.from === big ? st.value! : st.conv.result;

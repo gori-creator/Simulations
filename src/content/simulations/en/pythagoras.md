@@ -6,9 +6,9 @@ description: Interactive simulation of the Pythagorean theorem – squares on th
 
 In a **right triangle** the sides next to the right angle are the **legs** $a$ and $b$; the side opposite the right angle is the **hypotenuse** $c$.
 
-> **Pythagorean theorem:** $a^2 + b^2 = c^2$
+> **Pythagorean theorem:** In every right triangle, the areas of the squares on the two legs add up to the area of the square on the hypotenuse: $a^2 + b^2 = c^2$
 
-So $c = \sqrt{a^2 + b^2}$ and $a = \sqrt{c^2 - b^2}$. **Converse:** if $a^2 + b^2 = c^2$, the triangle is right-angled.
+So $c = \sqrt{a^2 + b^2}$ and $a = \sqrt{c^2 - b^2}$. **Converse:** if $a^2 + b^2 = c^2$ in a triangle, the triangle is right-angled, with the right angle opposite $c$.
 
 ### Puzzle proof
 
@@ -16,7 +16,7 @@ Four copies of the triangle are placed in a square with side $a + b$. In the fir
 
 ## Try it
 
-1. Drag the vertices and count the unit squares. [Isosceles](?a=3&b=3)
+1. Drag the two coloured vertices and count the unit squares. [Isosceles](?a=3&b=3)
 2. Switch to the **puzzle proof** and move the triangles. [Puzzle proof](?mode=puzzle)
 
 ## Exercises

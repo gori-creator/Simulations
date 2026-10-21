@@ -72,21 +72,21 @@ export default defineSimulation({
       type: 'choice',
       label: L('Gleichungen', 'Equations'),
       options: [
-        { value: 'normal', label: L('y = mx + t', 'y = mx + c') },
+        { value: 'normal', label: L('y = mx + t', 'y = mx + t') },
         { value: 'general', label: L('ax + by = c', 'ax + by = c') },
         { value: 'tarif', label: L('Handytarife', 'Phone tariffs') },
       ],
       default: 'normal',
     },
     { key: 'm1', type: 'number', group: 'eq1', label: L('Steigung m₁', 'Slope m₁'), min: -5, max: 5, step: 0.25, default: 2, visibleIf: isForm('normal') },
-    { key: 't1', type: 'number', group: 'eq1', label: L('y-Achsenabschnitt t₁', 'y-intercept c₁'), min: -10, max: 10, step: 0.5, default: -1, visibleIf: isForm('normal') },
+    { key: 't1', type: 'number', group: 'eq1', label: L('y-Achsenabschnitt t₁', 'y-intercept t₁'), min: -10, max: 10, step: 0.5, default: -1, visibleIf: isForm('normal') },
     { key: 'a1', type: 'number', group: 'eq1', label: L('a₁ (vor x)', 'a₁ (with x)'), min: -9, max: 9, step: 1, default: 2, visibleIf: isForm('general') },
     { key: 'b1', type: 'number', group: 'eq1', label: L('b₁ (vor y)', 'b₁ (with y)'), min: -9, max: 9, step: 1, default: 1, visibleIf: isForm('general') },
     { key: 'c1', type: 'number', group: 'eq1', label: L('c₁ (rechte Seite)', 'c₁ (right-hand side)'), min: -20, max: 20, step: 1, default: 5, visibleIf: isForm('general') },
     { key: 'g1', type: 'number', group: 'eq1', label: L('Tarif A: Grundgebühr', 'Tariff A: monthly fee'), min: 0, max: 30, step: 0.5, default: 10, unit: '€', visibleIf: isForm('tarif') },
     { key: 'p1', type: 'number', group: 'eq1', label: L('Tarif A: Preis pro Minute', 'Tariff A: price per minute'), min: 0, max: 40, step: 1, default: 5, unit: 'ct', visibleIf: isForm('tarif') },
     { key: 'm2', type: 'number', group: 'eq2', label: L('Steigung m₂', 'Slope m₂'), min: -5, max: 5, step: 0.25, default: -1, visibleIf: isForm('normal') },
-    { key: 't2', type: 'number', group: 'eq2', label: L('y-Achsenabschnitt t₂', 'y-intercept c₂'), min: -10, max: 10, step: 0.5, default: 5, visibleIf: isForm('normal') },
+    { key: 't2', type: 'number', group: 'eq2', label: L('y-Achsenabschnitt t₂', 'y-intercept t₂'), min: -10, max: 10, step: 0.5, default: 5, visibleIf: isForm('normal') },
     { key: 'a2', type: 'number', group: 'eq2', label: L('a₂ (vor x)', 'a₂ (with x)'), min: -9, max: 9, step: 1, default: 1, visibleIf: isForm('general') },
     { key: 'b2', type: 'number', group: 'eq2', label: L('b₂ (vor y)', 'b₂ (with y)'), min: -9, max: 9, step: 1, default: -1, visibleIf: isForm('general') },
     { key: 'c2', type: 'number', group: 'eq2', label: L('c₂ (rechte Seite)', 'c₂ (right-hand side)'), min: -20, max: 20, step: 1, default: 1, visibleIf: isForm('general') },
@@ -94,11 +94,13 @@ export default defineSimulation({
     { key: 'p2', type: 'number', group: 'eq2', label: L('Tarif B: Preis pro Minute', 'Tariff B: price per minute'), min: 0, max: 40, step: 1, default: 11, unit: 'ct', visibleIf: isForm('tarif') },
     { key: 'read', type: 'boolean', group: 'view', label: L('Koordinaten ablesen (Hilfslinien)', 'Read off coordinates (guides)'), default: true },
     { key: 'tri', type: 'boolean', group: 'view', label: L('Steigungsdreiecke', 'Slope triangles'), default: false, visibleIf: (v) => v.form !== 'general' },
+    { key: 'show', type: 'boolean', group: 'view', label: L('Lösung anzeigen', 'Show solution'), default: true },
   ],
   actions: [
     { id: 'probe', label: L('Probe durch Einsetzen', 'Check by substituting'), primary: true },
     { id: 'fit', label: L('Schnittpunkt ins Bild', 'Show the intersection') },
   ],
+  resultsParam: 'show',
   readouts: [
     { key: 'sys', label: L('Gleichungssystem', 'System of equations') },
     { key: 'case', label: L('Lage der Geraden', 'Relative position'), spoiler: true },
@@ -135,7 +137,8 @@ export default defineSimulation({
       axisY: 'Kosten in €',
       tarifA: 'Tarif A',
       tarifB: 'Tarif B',
-      cross: 'Bis {min} min ist Tarif {below} günstiger, ab {min} min Tarif {above}. Bei {min} min kosten beide {cost} €.',
+      cross: 'Unter {min} min ist Tarif {below} günstiger, über {min} min Tarif {above}. Bei {min} min kosten beide {cost} €.',
+      hiddenBanner: 'Lösung verdeckt: Lies den Schnittpunkt selbst ab und mache die Probe.',
       always: 'Tarif {t} ist bei jeder Gesprächszeit günstiger (oder gleich teuer).',
       same: 'Beide Tarife sind gleich.',
       perMin: '{g} € + {p} ct pro min',
@@ -161,7 +164,8 @@ export default defineSimulation({
       axisY: 'cost in €',
       tarifA: 'Tariff A',
       tarifB: 'Tariff B',
-      cross: 'Up to {min} min tariff {below} is cheaper, above {min} min tariff {above}. At {min} min both cost €{cost}.',
+      cross: 'Below {min} min tariff {below} is cheaper, above {min} min tariff {above}. At {min} min both cost €{cost}.',
+      hiddenBanner: 'Solution hidden: read off the point of intersection yourself and check it.',
       always: 'Tariff {t} is cheaper (or equal) for every call time.',
       same: 'Both tariffs are the same.',
       perMin: '€{g} + {p} ct per min',
@@ -319,6 +323,9 @@ export default defineSimulation({
       return { text: `${name}: ${rhs} = ${fracText(y, lang)} ${ok ? '✓' : '✗'}`, ok };
     }
 
+    /** Lösungsmenge: im Deutschen L, im Englischen S. */
+    const solSet = lang === 'de' ? 'L' : 'S';
+
     function updateReadouts(): void {
       const [l1, l2] = lines();
       const names = form() === 'tarif' ? [ctx.t('tarifA'), ctx.t('tarifB')] : ['I', 'II'];
@@ -326,11 +333,11 @@ export default defineSimulation({
       ctx.readout('sys', { html: `${names[0]}: ${htmlEq(eqText(0))}${extra(l1)}<br>${names[1]}: ${htmlEq(eqText(1))}${extra(l2)}` });
       if (sol.kind === 'unique') {
         ctx.readout('case', ctx.t('caseUnique'));
-        ctx.readout('sol', `L = {${pt(sol.x, sol.y)}}`);
+        ctx.readout('sol', `${solSet} = {${pt(sol.x, sol.y)}}`);
         ctx.readout('probe', `${probeLine(0, sol.x, sol.y).text} · ${probeLine(1, sol.x, sol.y).text}`);
       } else {
         ctx.readout('case', sol.kind === 'invalid' ? ctx.t('invalid') : ctx.t(sol.kind === 'parallel' ? 'caseParallel' : 'caseIdentical'));
-        ctx.readout('sol', sol.kind === 'parallel' ? 'L = { }' : sol.kind === 'identical' ? tr('solAll', { eq: normalText(l1, lang) }) : null);
+        ctx.readout('sol', sol.kind === 'parallel' ? `${solSet} = { }` : sol.kind === 'identical' ? tr('solAll', { eq: normalText(l1, lang) }) : null);
         ctx.readout('probe', null);
       }
       // Gleichsetzungsverfahren (beide Gleichungen nach y aufgelöst)
@@ -340,7 +347,7 @@ export default defineSimulation({
         const dm = frac(n1.m.num * n2.m.den - n2.m.num * n1.m.den, n1.m.den * n2.m.den);
         const dt = frac(n2.t.num * n1.t.den - n1.t.num * n2.t.den, n1.t.den * n2.t.den);
         const rhs = (l: Line) => normalText(l, lang).replace(/^y = /, '');
-        const k = dm.num === dm.den ? 'x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
+        const k = dm.num === dm.den ? 'x' : dm.num === -dm.den ? '−x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
         ctx.readout('calc', { html: htmlEq(`${rhs(l1)} = ${rhs(l2)} ⇒ ${k} = ${fracText(dt, lang)} ⇒ x = ${fracText(sol.x, lang)}, y = ${fracText(sol.y, lang)}`) });
       } else ctx.readout('calc', null);
       if (form() === 'tarif') {
@@ -350,7 +357,7 @@ export default defineSimulation({
           ctx.readout('tarif', tr('cross', { min: fmt.num(c.minutes, 1), below, above: below === 'A' ? 'B' : 'A', cost: fmt.fixed(c.cost, 2) }));
         } else ctx.readout('tarif', c.kind === 'same' ? ctx.t('same') : tr('always', { t: c.cheaper === 1 ? 'A' : 'B' }));
       } else ctx.readout('tarif', null);
-      ctx.setAction('probe', { enabled: sol.kind === 'unique' });
+      ctx.setAction('probe', { enabled: sol.kind === 'unique' && !ctx.hidden });
     }
 
     /* ---------- Zeichnen ---------- */
@@ -523,7 +530,11 @@ export default defineSimulation({
       const small = narrow();
       let msg: string;
       let color: string;
-      if (sol.kind === 'unique') {
+      if (ctx.hidden) {
+        // Aufgabenmodus: keine Aussage zur Lösung verraten
+        msg = ctx.t('hiddenBanner');
+        color = theme.series[2]!;
+      } else if (sol.kind === 'unique') {
         const p0 = pt(sol.x, sol.y);
         const ok = exact(sol.x) && exact(sol.y);
         msg = ok ? tr('unique', { p: p0 }) : tr('uniqueApprox', { p: p0, approx: lang === 'de' ? `(${approxText(sol.x, lang)} | ${approxText(sol.y, lang)})` : `(${approxText(sol.x, lang)}, ${approxText(sol.y, lang)})` });
@@ -574,7 +585,7 @@ export default defineSimulation({
     }
 
     function drawProbe(): void {
-      if (!probeOn || sol.kind !== 'unique') return;
+      if (!probeOn || sol.kind !== 'unique' || ctx.hidden) return;
       const g = surface.g;
       const theme = ctx.theme;
       const r = plot.rect;
@@ -713,6 +724,9 @@ export default defineSimulation({
           if (p.read) {
             plot.segment([sx, sy], [sx, 0], { color: green, width: 1.6, dash: [5, 4] });
             plot.segment([sx, sy], [0, sy], { color: green, width: 1.6, dash: [5, 4] });
+          }
+          // Im Aufgabenmodus nur die Hilfslinien, keine Koordinaten
+          if (p.read && !ctx.hidden) {
             const xl = exact(sol.x) ? fracText(sol.x, lang) : `≈ ${approxText(sol.x, lang)}`;
             const yl = exact(sol.y) ? fracText(sol.y, lang) : `≈ ${approxText(sol.y, lang)}`;
             const [ax, ay] = plot.toPx(sx, 0);
@@ -733,7 +747,7 @@ export default defineSimulation({
           g.lineWidth = 2;
           g.strokeStyle = theme.bg;
           g.stroke();
-          const label = exact(sol.x) && exact(sol.y) ? `S${pt(sol.x, sol.y)}` : `S ≈ ${lang === 'de' ? `(${approxText(sol.x, lang)} | ${approxText(sol.y, lang)})` : `(${approxText(sol.x, lang)}, ${approxText(sol.y, lang)})`}`;
+          const label = ctx.hidden ? 'S' : exact(sol.x) && exact(sol.y) ? `S${pt(sol.x, sol.y)}` : `S ≈ ${lang === 'de' ? `(${approxText(sol.x, lang)} | ${approxText(sol.y, lang)})` : `(${approxText(sol.x, lang)}, ${approxText(sol.y, lang)})`}`;
           g.font = `800 14px ${theme.font}`;
           const tw = g.measureText(label).width + 16;
           // Beschriftung in die Ecke, in der keine Gerade verläuft
@@ -761,7 +775,7 @@ export default defineSimulation({
           g.closePath();
           g.fill();
           g.restore();
-          const label = `${ctx.t('outside')}: ${pt(sol.x, sol.y)}`;
+          const label = ctx.hidden ? ctx.t('outside') : `${ctx.t('outside')}: ${pt(sol.x, sol.y)}`;
           g.font = `700 12px ${theme.font}`;
           const tw = g.measureText(label).width + 14;
           const lx = Math.max(r.x + 8, Math.min(r.x + r.w - tw - 8, ex - tw / 2));
@@ -849,6 +863,11 @@ export default defineSimulation({
           fitView(true);
         }
         ctx.requestRender();
+      },
+
+      hiddenChange(hidden) {
+        if (hidden) probeOn = false;
+        updateReadouts();
       },
 
       resetView() {

@@ -204,4 +204,57 @@ describe('Modell: Maßstab – Karte und Wirklichkeit', () => {
         expect(len).toBeGreaterThanOrEqual(Math.hypot(r[0]!.x - r[r.length - 1]!.x, r[0]!.y - r[r.length - 1]!.y) - 1e-6);
       }
   });
+
+  describe('Prüfrunde', () => {
+    it('Prüfwerte: 1 : 25 000, 4 cm → 100 000 cm = 1 km', () => {
+      const r = solve('real', cm(4), 0, 25000)!;
+      expect(r.realUm).toBe(UM.km);
+      expect(unitChain(r.realUm, 'cm').map((c) => c.text('de'))).toEqual(['100 000 cm', '1 000 m', '1 km']);
+    });
+
+    it('Prüfwerte: 1 : 50 000, 3,5 km → 7 cm', () => {
+      const r = solve('map', 0, 3.5 * UM.km, 50000)!;
+      expect(r).toMatchObject({ mapUm: cm(7), exact: true });
+      expect(lengthText(3.5 * UM.km, 'de', 'cm')).toBe('350 000 cm');
+    });
+
+    it('Prüfwerte: 1 : 100, 12 m → 12 cm', () => {
+      expect(solve('map', 0, 12 * UM.m, 100)).toMatchObject({ mapUm: cm(12), exact: true });
+      expect(lengthText(12 * UM.m, 'de', 'cm')).toBe('1 200 cm');
+    });
+
+    it('Prüfwerte: 6 cm ≙ 1,5 km → 1 : 25 000', () => {
+      const r = solve('scale', cm(6), 1.5 * UM.km, 0)!;
+      expect(r).toMatchObject({ n: 25000, exact: true });
+      expect(scaleText({ image: 1, real: r.n }, 'de')).toBe('1 : 25 000');
+    });
+
+    it('Vergrößerung 10 : 1: Ameise 5 mm → 5 cm; Sandkorn 0,4 mm bei 50 : 1 → 2 cm', () => {
+      expect(imageFromReal(5 * UM.mm, enlargement(10))).toEqual({ um: cm(5), exact: true });
+      expect(imageFromReal(400, enlargement(50))).toEqual({ um: cm(2), exact: true });
+      expect(scaleFromLengths(cm(5), 5 * UM.mm)!.scale).toEqual({ image: 10, real: 1 });
+    });
+
+    it('Messwerkzeug: Kartenlänge auf 1 mm gerundet (Rundungsgrenze 0,5 mm)', () => {
+      // 1 : 25 000: 1 mm auf der Karte = 25 m; 12,5 m = 0,5 mm → aufgerundet
+      expect(mapMmFromMetres(12.5, 25000)).toBe(1);
+      expect(mapMmFromMetres(12.4, 25000)).toBe(0);
+      expect(mapMmFromMetres(1425, 25000)).toBe(57); // 5,7 cm
+      expect(realUmFromMapMm(57, 25000)).toBe(1.425 * UM.km);
+    });
+
+    it('Lernmaterial: Aufgabe 2 (Schule → Rathaus, 1 : 5 000) und Aufgabe 6 (Wegstrecke 10,7 cm)', () => {
+      const poi = (id: string) => POIS.find((p) => p.id === id)!;
+      const school = poi('school');
+      const hall = poi('hall');
+      const mm = mapMmFromMetres(Math.hypot(school.x - hall.x, school.y - hall.y), 5000);
+      expect(mm).toBe(100);
+      expect(lengthText(realUmFromMapMm(mm, 5000), 'de')).toBe('500 m');
+      const route = shortestRoute(ROADS, poi('church'), poi('beach'));
+      const pieces = routePiecesMm(route, 25000);
+      expect(pieces.total).toBe(107);
+      expect(realUmFromMapMm(pieces.total, 25000)).toBe(2675 * UM.m);
+      expect(mapMmFromMetres(2500, 25000)).toBe(100);
+    });
+  });
 });

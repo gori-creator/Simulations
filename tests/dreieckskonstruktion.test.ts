@@ -293,3 +293,46 @@ describe('Modell: Dreieckskonstruktion – Plausibilität über Zufallswerte', (
     }
   });
 });
+
+describe('Modell: Dreieckskonstruktion – Prüfrunde Paket 2 (Reglergrenzen, Lernmaterial)', () => {
+  it('SWS am Reglerrand α = 170°: a = √(56,25 − 54·cos 170°) ≈ 10,461, β ≈ 4,3°, γ ≈ 5,7°', () => {
+    const q = pieces(6, one(solveSWS(4.5, 170)));
+    expect(q.a).toBeCloseTo(Math.sqrt(56.25 - 54 * Math.cos((170 * Math.PI) / 180)), 9);
+    expect(q.a).toBeCloseTo(10.461, 3);
+    expect(q.be).toBeCloseTo(4.284, 2);
+    expect(q.ga).toBeCloseTo(5.716, 2);
+  });
+
+  it('SsW-Link c = 6, α = 30°, a = 7: b = 6·cos 30° + √(49 − 9) ≈ 11,521, γ = arcsin(3/7) ≈ 25,38°', () => {
+    const s = solveSSW(6, 7, 30);
+    expect(s.kind).toBe('one');
+    const q = pieces(6, one(s));
+    expect(q.b).toBeCloseTo(6 * Math.cos(Math.PI / 6) + Math.sqrt(40), 9);
+    expect(q.b).toBeCloseTo(11.521, 3);
+    expect(q.ga).toBeCloseTo((Math.asin(3 / 7) * 180) / Math.PI, 6);
+    expect(isSsW(7, 6)).toBe(true);
+  });
+
+  it('Aufgabe 4: γ₁ + γ₂ = 180°, sin γ = c·sin α : a = 0,75', () => {
+    const s = solveSSW(6, 4, 30);
+    if (s.kind !== 'two') throw new Error('zwei Lösungen erwartet');
+    const g1 = pieces(6, s.c).ga;
+    const g2 = pieces(6, s.c2).ga;
+    expect(g1).toBeCloseTo((Math.asin(0.75) * 180) / Math.PI, 6);
+    expect(g1 + g2).toBeCloseTo(180, 6);
+    expect(g1).toBeCloseTo(48.59, 2);
+  });
+
+  it('Reglergrenzen: c = 2 mit a = b = 1 ist flach, c = 10 mit a = b = 12 gleichschenklig (α = β ≈ 65,38°)', () => {
+    expect(solveSSS(1, 1, 2)).toEqual({ kind: 'none', reason: 'flat' });
+    const q = pieces(10, one(solveSSS(12, 12, 10)));
+    expect(q.al).toBeCloseTo(q.be, 9);
+    expect(q.al).toBeCloseTo((Math.acos(5 / 12) * 180) / Math.PI, 9);
+  });
+
+  it('WSW am Reglerrand: α = β = 10° liefert ein flaches, aber gültiges Dreieck; 170° + 10° parallel', () => {
+    const q = pieces(6, one(solveWSW(6, 10, 10)));
+    expect(q.ga).toBeCloseTo(160, 6);
+    expect(solveWSW(6, 170, 10)).toEqual({ kind: 'none', reason: 'parallel' });
+  });
+});

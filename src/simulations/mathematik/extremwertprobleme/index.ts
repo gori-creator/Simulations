@@ -91,8 +91,9 @@ interface Meta {
   /** Name der Variablen und der Zielgröße */
   v: string;
   z: string;
-  ux: string;
-  uz: string;
+  /** Einheiten der Variablen und der Zielgröße (zweisprachig, wo nötig: LE/FE ↔ units) */
+  ux: string | Txt;
+  uz: string | Txt;
   /** Zielgröße in Worten */
   goal: Txt;
   /** Was ist die Variable? */
@@ -104,9 +105,9 @@ interface Meta {
 const META: Record<ProbKey, Meta> = {
   box: { title: L('Schachtel aus Karton', 'Box from a sheet of card'), short: L('Schachtel', 'Box'), v: 'x', z: 'V', ux: 'cm', uz: 'cm³', goal: L('Volumen', 'volume'), vname: L('Seite der ausgeschnittenen Quadrate = Höhe', 'side of the cut-out squares = height'), dz: 1 },
   can: { title: L('Dose mit kleinster Oberfläche', 'Can with the smallest surface'), short: L('Dose', 'Can'), v: 'r', z: 'O', ux: 'cm', uz: 'cm²', goal: L('Oberfläche (Blech)', 'surface area (metal)'), vname: L('Radius der Dose', 'radius of the can'), dz: 1 },
-  rect: { title: L('Rechteck unter einer e-Funktion', 'Rectangle under an exponential'), short: L('Rechteck', 'Rectangle'), v: 'u', z: 'A', ux: 'LE', uz: 'FE', goal: L('Flächeninhalt', 'area'), vname: L('Breite des Rechtecks', 'width of the rectangle'), dz: 3 },
+  rect: { title: L('Rechteck unter einer e-Funktion', 'Rectangle under an exponential'), short: L('Rechteck', 'Rectangle'), v: 'u', z: 'A', ux: L('LE', 'units'), uz: L('FE', 'square units'), goal: L('Flächeninhalt', 'area'), vname: L('Breite des Rechtecks', 'width of the rectangle'), dz: 3 },
   cone: { title: L('Größter Zylinder im Kegel', 'Largest cylinder in a cone'), short: L('Zylinder im Kegel', 'Cylinder in a cone'), v: 'r', z: 'V', ux: 'cm', uz: 'cm³', goal: L('Volumen des Zylinders', 'volume of the cylinder'), vname: L('Radius des Zylinders', 'radius of the cylinder'), dz: 1 },
-  life: { title: L('Rettungsschwimmer: schnellster Weg', 'Lifeguard: fastest route'), short: L('Rettungsschwimmer', 'Lifeguard'), v: 'x', z: 'T', ux: 'm', uz: 's', goal: L('Zeit bis zur Person', 'time to reach the swimmer'), vname: L('Stelle am Ufer, an der er ins Wasser geht', 'point on the shore where he enters the water'), dz: 2 },
+  life: { title: L('Rettungsschwimmer: schnellster Weg', 'Lifeguard: fastest route'), short: L('Rettungsschwimmer', 'Lifeguard'), v: 'x', z: 'T', ux: 'm', uz: 's', goal: L('Zeit bis zur Person', 'time to reach the swimmer'), vname: L('Stelle am Ufer, an der er ins Wasser geht', 'point on the shore where the lifeguard enters the water'), dz: 2 },
 };
 
 /** Startwert der Variablen beim Wechsel des Problems (Regler). */
@@ -248,6 +249,8 @@ export default defineSimulation({
     const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
     const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
     const u = (unit: string) => `\\t{${unit}}`;
+    /** Einheit in der Sprache der Seite */
+    const U = (unit: string | Txt) => (typeof unit === 'string' ? unit : say(unit));
 
     /* ---------- Problem (exakt aus den Reglern) und angezeigt (weich) ---------- */
     const exactParams = (): ProbParams => ({ a: p.a, b: p.b, v: p.v, ch: p.ch, cr: p.cr, v1: p.v1, v2: p.v2 });
@@ -852,14 +855,14 @@ export default defineSimulation({
       const title = narrowTitle ? say(M.short) : say(M.title);
       const src = `\\t{${title}}  \\c{m}{${given}}`;
       const tw = wOf(src, sz);
-      const valSrc = `\\c{z}{${M.z} = ${cN(`sv-${key}`, o.f(x), M.dz)} ${u(M.uz)}}`;
+      const valSrc = `\\c{z}{${M.z} = ${cN(`sv-${key}`, o.f(x), M.dz)} ${u(U(M.uz))}}`;
       const vw = wOf(valSrc, fs(13.5, 12.5)) + 20;
       if (tw + vw + 40 < P.w) fpill(P.x + 10, P.y + 18, src, { align: 'left', size: sz, alpha: k.panel, weight: 650 });
       else {
         fpill(P.x + 10, P.y + 18, `\\t{${say(M.short)}}`, { align: 'left', size: sz, alpha: k.panel, weight: 650 });
         if (key !== 'life') fpill(P.x + 10, P.y + 44, `\\c{m}{${given}}`, { align: 'left', size: 11, alpha: k.panel, weight: 650 });
       }
-      valuePill(P.x + P.w - 10, P.y + 18, valSrc, M.uz, { align: 'right', size: fs(13.5, 12.5), alpha: k.panel, border: withAlpha(col.Z(), 0.5) });
+      valuePill(P.x + P.w - 10, P.y + 18, valSrc, U(M.uz), { align: 'right', size: fs(13.5, 12.5), alpha: k.panel, border: withAlpha(col.Z(), 0.5) });
     }
 
     /* =====================================================================
@@ -1544,7 +1547,7 @@ export default defineSimulation({
       const g = surface.g;
       const theme = th();
       const M = m(key);
-      plot.setAxes({ x: { label: `${M.v} in ${M.ux}` }, y: { label: '' } });
+      plot.setAxes({ x: { label: `${M.v} in ${U(M.ux)}` }, y: { label: '' } });
       plot.setRangePadded([o.lo, o.hi + (o.hi - o.lo) * 0.07], [rng.y0.v, rng.y1.v], PAD());
       plot.resize();
       plot.begin();
@@ -1590,7 +1593,7 @@ export default defineSimulation({
           const px = plot.px(e.x);
           const py = plot.py(e.y);
           dot(px, py, col.cut(), e.kind === 'value' ? 5.5 : 5, showEnds, e.kind !== 'value');
-          if (e.kind === 'value') queue.push({ x: px + (e.x <= o.lo ? 10 : -10), y: [py - 16, py + 18, py - 40], src: `\\c{c}{${edgeLabel(e, M)} ${u(M.uz)}}`, opts: { align: e.x <= o.lo ? 'left' : 'right', size: 11, alpha: showEnds, bounds: inner }, must: false });
+          if (e.kind === 'value') queue.push({ x: px + (e.x <= o.lo ? 10 : -10), y: [py - 16, py + 18, py - 40], src: `\\c{c}{${edgeLabel(e, M)} ${u(U(M.uz))}}`, opts: { align: e.x <= o.lo ? 'left' : 'right', size: 11, alpha: showEnds, bounds: inner }, must: false });
         }
       }
       // Optimum: waagerechte Tangente, Lot, Leuchten
@@ -1656,11 +1659,11 @@ export default defineSimulation({
       dot(px, py, col.x(), hotP ? 8 : 7, k.panel);
       // Wert am Punkt
       const right = px < r.x + r.w * 0.62;
-      const vSrc = `${M.z}(${cN('gx', x, 2)}) = ${cN('gy', yx, M.dz)} ${u(M.uz)}`;
+      const vSrc = `${M.z}(${cN('gx', x, 2)}) = ${cN('gy', yx, M.dz)} ${u(U(M.uz))}`;
       const atOpt = kOpt > 0.5 && Math.abs(x - xo) < (o.hi - o.lo) * 0.004;
       if (ks > 0.5 && !atOpt) queue.splice(kOpt > 0.01 ? 1 : 0, 0, { x: px + (right ? 14 : -14), y: [py - 22, py + 24, py - 48, py + 48], src: vSrc, opts: { align: right ? 'left' : 'right', size: fs(12, 11), bounds: inner, alpha: k.labels * (2 * ks - 1), color: theme.text }, must: true });
       const placed: Rect[] = [fpill(r.x + pad.left + 6, r.y + 17, 'X', { align: 'left', size: fs(12.5, 11.5), dry: true })];
-      placed[0] = { ...placed[0]!, w: wOf(`\\c{z}{${M.z}(${M.v})} \\c{m}{\\t{in ${M.uz} · ${say(M.goal)}}}`, fs(12.5, 11.5)) + 16 };
+      placed[0] = { ...placed[0]!, w: wOf(`\\c{z}{${M.z}(${M.v})} \\c{m}{\\t{in ${U(M.uz)} · ${say(M.goal)}}}`, fs(12.5, 11.5)) + 16 };
       const hit = (a: Rect, b: Rect) => a.x < b.x + b.w + 3 && b.x < a.x + a.w + 3 && a.y < b.y + b.h + 2 && b.y < a.y + a.h + 2;
       for (const L of queue) {
         let best: number | null = null;
@@ -1676,7 +1679,7 @@ export default defineSimulation({
         placed.push(fpill(L.x, best, L.src, L.opts));
       }
       // Titel
-      fpill(r.x + pad.left + 6, r.y + 17, `\\c{z}{${M.z}(${M.v})} \\c{m}{\\t{in ${M.uz} · ${say(M.goal)}}}`, { align: 'left', size: fs(12.5, 11.5), alpha: k.panel, border: withAlpha(col.Z(), 0.5), bounds: r });
+      fpill(r.x + pad.left + 6, r.y + 17, `\\c{z}{${M.z}(${M.v})} \\c{m}{\\t{in ${U(M.uz)} · ${say(M.goal)}}}`, { align: 'left', size: fs(12.5, 11.5), alpha: k.panel, border: withAlpha(col.Z(), 0.5), bounds: r });
       // verdeckt: Zielfunktion erst selbst aufstellen
       if (ks < 0.99) veil(inner, 1 - ks, T2(`Wie sieht ${M.z}(${M.v}) aus?`, `What does ${M.z}(${M.v}) look like?`), T2('Erst die Zielfunktion aufstellen und das Optimum berechnen, dann „Lösung aufdecken“.', 'First set up the objective function and work out the optimum, then “Reveal the solution”.'), inner.h < 120);
       plot.end();
@@ -1819,7 +1822,7 @@ export default defineSimulation({
           push(2, mathRow(`0 < x < ${q(Math.min(a, b) / 2)}`, 2));
           push(3, mathRow(`V′(x) = ${poly([12, -4 * (a + b), a * b], 'x')} = 0`, 3), mathRow(`⇔ ${poly(red, 'x')} = 0`, 3, { extra: red[0] === 12 }), mathRow(`x₁ ${eq(x1)} ${N(x1, 2)},  x₂ ${eq(x2)} ${N(x2, 2)} ${x2 >= Math.min(a, b) / 2 - 1e-9 ? '∉ D' : ''}`, 3));
           push(4, mathRow(`V″(${N(x1, 2)}) ${eq(o.d2(x1), 1)} ${N(o.d2(x1), 1)} < 0  ⇒  \\t{${kindW}}`, 4));
-          push(5, mathRow(`V(0) = V(${q(Math.min(a, b) / 2)}) = 0 < V(${N(xo, 2)})`, 5));
+          push(5, mathRow(`V(x) → 0 \\t{${T2('für', 'for')}} x → 0 \\t{${T2('und', 'and')}} x → ${q(Math.min(a, b) / 2)}`, 5));
           push(6, mathRow(`\\c{o}{\\b{x ${eq(xo)} ${N(xo, 2)} ${u('cm')},  V ${eq(yo, 1)} ${N(yo, 1)} ${u('cm³')}}}`, 6, { hl: col.opt() }));
           break;
         }
@@ -1841,8 +1844,8 @@ export default defineSimulation({
           push(2, mathRow(`u > 0`, 2));
           push(3, mathRow(`A′(u) = 3e^{−${h5}u}(1 − ${h5}u) = 0`, 3), mathRow(`e^{…} ≠ 0  ⇒  u = 2`, 3, { extra: true }));
           push(4, mathRow(`A″(2) = 3e^{−1}(${h5} − 1) ${eq(o.d2(2), 3)} ${N(o.d2(2), 3)} < 0`, 4));
-          push(5, mathRow(`A(0) = 0,  A(u) → 0 \\t{${T2('für', 'for')}} u → ∞`, 5));
-          push(6, mathRow(`\\c{o}{\\b{u = 2,  A(2) = \\f{6}{e} ≈ ${N(yo, 3)} ${u('FE')}}}`, 6, { hl: col.opt() }));
+          push(5, mathRow(`A(u) → 0 \\t{${T2('für', 'for')}} u → 0 \\t{${T2('und', 'and')}} u → ∞`, 5));
+          push(6, mathRow(`\\c{o}{\\b{u = 2,  A(2) = \\f{6}{e} ≈ ${N(yo, 3)} ${u(U(META.rect.uz))}}}`, 6, { hl: col.opt() }));
           break;
         }
         case 'cone': {
@@ -1856,7 +1859,7 @@ export default defineSimulation({
           push(2, mathRow(`0 < r < ${q(R, 1)}`, 2));
           push(3, mathRow(`V′(r) = π(${q(2 * Hc)}r − ${k3Txt}r²) = 0`, 3), mathRow(`⇒  r = \\f{2}{3}R = ${N(xo, 2)}`, 3));
           push(4, mathRow(`V″(${N(xo, 2)}) = −${q(2 * Hc)}π < 0  ⇒  \\t{${kindW}}`, 4));
-          push(5, mathRow(`V(0) = V(${q(R, 1)}) = 0 < V(${N(xo, 2)})`, 5));
+          push(5, mathRow(`V(r) → 0 \\t{${T2('für', 'for')}} r → 0 \\t{${T2('und', 'and')}} r → ${q(R, 1)}`, 5));
           push(6, mathRow(`\\c{o}{\\b{r ${eq(xo)} ${N(xo, 2)} ${u('cm')},  h ${eq(Hc / 3)} ${N(Hc / 3, 2)} ${u('cm')}}}`, 6, { hl: col.opt() }), mathRow(`\\c{o}{\\b{V ${eq(yo, 1)} ${N(yo, 1)} ${u('cm³')}}}  \\c{m}{= \\f{4}{9} V_{${T2('Kegel', 'cone')}}}`, 6, { hl: col.opt() }));
           break;
         }
@@ -1995,10 +1998,10 @@ export default defineSimulation({
         else if (key === 'cone') sub = `π · ${X}² · ${N(coneCylHeight({ R: qp.cr, H: qp.ch }, x), 2)}`;
         else sub = `\\f{${N(Math.hypot(20, x), 2)}}{${q(qp.v1, 1)}} + \\f{${N(Math.hypot(30, 60 - x), 2)}}{${q(qp.v2, 1)}}`;
         const rows: Row[] = [
-          { src: `\\c{x}{${M.v} = ${cN(`nx-${key}`, x, 2)} ${u(M.ux)}}`, kind: 'math', size: fs(13, 12), gap: 2 },
+          { src: `\\c{x}{${M.v} = ${cN(`nx-${key}`, x, 2)} ${u(U(M.ux))}}`, kind: 'math', size: fs(13, 12), gap: 2 },
           { src: say(M.vname), kind: 'text', size: 11, color: th().muted, gap: 7, extra: true },
           { src: `${M.z}(${X}) = ${sub}`, kind: 'math', size: fs(13, 12), secret: true, gap: 5, extra: true },
-          { src: `\\c{z}{\\b{${M.z}(${X}) ${eq(y, M.dz)} ${cN(`ny-${key}`, y, M.dz)} ${u(M.uz)}}}`, kind: 'math', size: fs(14, 13), secret: true, gap: 8 },
+          { src: `\\c{z}{\\b{${M.z}(${X}) ${eq(y, M.dz)} ${cN(`ny-${key}`, y, M.dz)} ${u(U(M.uz))}}}`, kind: 'math', size: fs(14, 13), secret: true, gap: 8 },
         ];
         const ql = quality(o, x);
         const barH = 30;
@@ -2028,7 +2031,13 @@ export default defineSimulation({
               g.textAlign = 'left';
               g.textBaseline = 'middle';
               const pct = Math.round(ql * 1000) / 10;
-              const txt = o.kind === 'max' ? T2(`${N(pct, 1)} % des Maximums`, `${N(pct, 1)} % of the maximum`) : T2(`Optimum ist ${N(pct, 1)} % davon`, `optimum is ${N(pct, 1)} % of this`);
+              // Kurzform für die Karte; der ganze Satz steht in der Ergebnisliste
+              const txt = o.kind === 'max' ? T2(`${N(pct, 1)} % des Maximums`, `${N(pct, 1)} % of the maximum`) : T2(`Optimum: ${N(pct, 1)} % des aktuellen Werts`, `Optimum: ${N(pct, 1)} % of the current value`);
+              let fz = 11;
+              while (fz > 9.5 && g.measureText(txt).width > bw) {
+                fz -= 0.5;
+                g.font = `650 ${fz}px ${theme.font}`;
+              }
               g.fillText(txt, bx, yy + 24);
             } else {
               g.font = `650 11px ${theme.font}`;
@@ -2265,14 +2274,14 @@ export default defineSimulation({
       const y = o.f(x);
       const ql = quality(o, x);
       const pct = N(Math.round(ql * 1000) / 10, 1);
-      ctx.readout('cur', { html: `${v(M.z)}(${N(x, 2)}) ${eq(y, M.dz)} <strong>${N(y, M.dz)} ${M.uz}</strong> · ${o.kind === 'max' ? T2(`${pct} % des Maximums`, `${pct} % of the maximum`) : T2(`Optimum ist ${pct} % davon`, `optimum is ${pct} % of this`)}` });
+      ctx.readout('cur', { html: `${v(M.z)}(${N(x, 2)}) ${eq(y, M.dz)} <strong>${N(y, M.dz)} ${U(M.uz)}</strong> · ${o.kind === 'max' ? T2(`${pct} % des Maximums`, `${pct} % of the maximum`) : T2(`Das Optimum beträgt ${pct} % des aktuellen Werts.`, `The optimum is ${pct} % of the current value.`)}` });
       const yo = o.f(o.opt);
       const kind = o.kind === 'max' ? T2('Maximum', 'maximum') : T2('Minimum', 'minimum');
       let more = '';
       if (key === 'box') more = ` · ${N(p.a - 2 * o.opt, 2)} × ${N(p.b - 2 * o.opt, 2)} × ${N(o.opt, 2)} cm`;
       else if (key === 'can') more = ` · ${v('h')} ${eq(canHeight(p.v, o.opt))} ${N(canHeight(p.v, o.opt), 2)} cm = 2${v('r')}`;
       else if (key === 'cone') more = ` · ${v('h')} ${eq(p.ch / 3)} ${N(p.ch / 3, 2)} cm`;
-      ctx.readout('opt', { html: `${v(M.v)} ${eq(o.opt)} ${N(o.opt, 2)} ${M.ux}: ${v(M.z)} ${eq(yo, M.dz)} <strong>${N(yo, M.dz)} ${M.uz}</strong> (${kind})${more}` });
+      ctx.readout('opt', { html: `${v(M.v)} ${eq(o.opt)} ${N(o.opt, 2)} ${U(M.ux)}: ${v(M.z)} ${eq(yo, M.dz)} <strong>${N(yo, M.dz)} ${U(M.uz)}</strong> (${kind})${more}` });
     }
 
     /* =====================================================================

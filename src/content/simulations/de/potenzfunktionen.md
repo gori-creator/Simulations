@@ -17,7 +17,7 @@ Je nach $n$ unterscheidet man vier Klassen (in der Simulation farbig):
 | Exponent | Graph (für $a = 1$) | Symmetrie | $D$ | $W$ |
 | --- | --- | --- | --- | --- |
 | $n$ gerade, $n > 0$ | Parabel $n$-ter Ordnung, beide Äste oben | zur $y$-Achse | $\mathbb{R}$ | $\mathbb{R}_0^+$ |
-| $n$ ungerade, $n > 0$ | Parabel $n$-ter Ordnung, von links unten nach rechts oben | zum Ursprung | $\mathbb{R}$ | $\mathbb{R}$ |
+| $n$ ungerade, $n > 0$ | Parabel $n$-ter Ordnung (für $n = 1$ Ursprungsgerade), von links unten nach rechts oben | zum Ursprung | $\mathbb{R}$ | $\mathbb{R}$ |
 | $n$ gerade, $n < 0$ | Hyperbel, beide Äste oben | zur $y$-Achse | $\mathbb{R} \setminus \{0\}$ | $\mathbb{R}^+$ |
 | $n$ ungerade, $n < 0$ | Hyperbel, Äste im I. und III. Quadranten | zum Ursprung | $\mathbb{R} \setminus \{0\}$ | $\mathbb{R} \setminus \{0\}$ |
 
@@ -29,11 +29,11 @@ Je nach $n$ unterscheidet man vier Klassen (in der Simulation farbig):
 
 ## Ausprobieren
 
-1. Bewege den Regler für $n$ langsam von $-4$ bis $6$ oder klicke auf **Alle Exponenten durchlaufen**. Der Graph verwandelt sich weich. Bei welchen $n$ ändert sich die Farbe (die Klasse)?
+1. Bewege den Regler für $n$ langsam von $-4$ bis $6$ oder klicke auf **Alle Exponenten durchlaufen**. Der Graph verwandelt sich weich. Bei welchen $n$ ändert sich die Klasse? Achte auf die Farbe und auf das Schild oben rechts im Steckbrief.
 2. Klicke bei $n = 3$ auf **Symmetrie zeigen**: Der rechte Teil wird um $180°$ um den Ursprung gedreht. Probiere dasselbe bei $n = 4$. [Beispiel laden](?n=3&x=1.2)
 3. Ziehe den Punkt $Q(1 \mid a)$ nach oben und unten. Was passiert für $a < 0$ mit Wertemenge und Monotonie? [Beispiel laden](?n=2&a=-0.5)
-4. Ziehe $P$ am Graphen entlang und vergleiche die Rechnung unten im Bild mit der Wertetabelle.
-5. Wähle die Ansicht **Familie** und tippe auf die einzelnen Exponenten. Welche Punkte bleiben immer gleich? [Gerade Exponenten](?view=family&n=4) · [Ungerade Exponenten](?view=family&n=3)
+4. Ziehe $P$ am Graphen entlang und vergleiche die Rechnung im Bild mit der Wertetabelle. An den Stellen der Tabelle ist die passende Zeile markiert.
+5. Wähle die Ansicht **Familie** und tippe auf die einzelnen Exponenten. Die anderen Graphen der Familie sind blass und mit ihrem Exponenten beschriftet. Welche Punkte bleiben immer gleich? [Gerade Exponenten](?view=family&n=4) · [Ungerade Exponenten](?view=family&n=3)
 6. Vergleiche $x$ und $x^3$ und lass die senkrechte Linie mit **Vergleich von links nach rechts** durchfahren. Wo liegt $x^3$ oberhalb von $x$? [Beispiel laden](?view=compare&n=1&m=3)
 7. Stelle $n = -1$ und $n = -2$ ein. Wie verhalten sich die Funktionswerte nahe $0$ links und rechts? [Beispiel laden](?n=-1&x=0.5)
 

@@ -87,7 +87,7 @@ const CHIPS: { id: string; b: number | 'e' }[] = [
 export default defineSimulation({
   id: 'logarithmus',
   dragHint: true,
-  layout: { aspect: 1.55, aspectNarrow: 0.5 },
+  layout: { aspect: 1.55, aspectNarrow: 0.44 },
   groups: [
     { id: 'base', label: L('Basis', 'Base') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -216,8 +216,8 @@ export default defineSimulation({
     { id: 'solve3', label: L('Gleichung 3ˣ = 50', 'Equation 3ˣ = 50'), values: { view: 'solve', b: 3, c: 50 } },
   ],
   strings: {
-    de: { canvas: 'Koordinatensystem mit den Graphen von y = bˣ und y = log_b x, die an der Geraden y = x gespiegelt sind, daneben ein Steckbrief und eine Wertetabelle. Weitere Ansichten: Rechengesetze als Pfeile auf einer logarithmischen Skala und das grafische und rechnerische Lösen der Gleichung bˣ = c.' },
-    en: { canvas: 'Coordinate system with the graphs of y = bˣ and y = log_b x, reflected in the line y = x, next to it key features and a table of values. Further views: the laws of logarithms as arrows on a logarithmic scale, and solving the equation bˣ = c graphically and by calculation.' },
+    de: { canvas: "Koordinatensystem mit dem Graphen von y = bˣ (blau) und seinem Spiegelbild y = log_b x (rot) an der gestrichelten Geraden y = x; beide Graphen sind beschriftet. Der ziehbare Punkt P(x | bˣ) und sein Spiegelpunkt P'(bˣ | x) sind durch ein Lot auf y = x verbunden, der Punkt B(1 | b) legt die Basis fest. Rechts Basen zum Antippen, ein Steckbrief und eine Wertetabelle. Weitere Ansichten: Rechengesetze als aneinandergelegte Pfeile auf einer logarithmischen Skala (wie beim Rechenschieber) und das grafische und rechnerische Lösen der Gleichung bˣ = c mit Eingrenzen und Basiswechsel." },
+    en: { canvas: "Coordinate system with the graph of y = bˣ (blue) and its reflection y = log_b x (red) in the dashed line y = x; both graphs are labelled. The draggable point P(x | bˣ) and its mirror point P'(bˣ | x) are joined by a perpendicular to y = x, and the point B(1 | b) sets the base. On the right: bases to tap, key features and a table of values. Further views: the laws of logarithms as arrows placed end to end on a logarithmic scale (like a slide rule), and solving the equation bˣ = c graphically and by calculation, with narrowing down and change of base." },
   },
 
   mount(ctx) {
@@ -239,7 +239,9 @@ export default defineSimulation({
       const s = th().series;
       return { exp: s[0]!, log: s[1]!, P: s[3]!, B: s[5]!, a1: s[0]!, a2: s[4]!, res: s[2]!, c: s[3]!, x: s[2]!, diag: mixColor(th().muted, th().text, 0.25) };
     };
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+    /** Schattenfarbe aus dem Theme (dunkel: Hintergrund, hell: Textfarbe), mit Deckkraft. */
+    const shade = (dark: number, light: number) => (th().dark ? mixColor(th().bg, th().bg, 0, dark) : mixColor(th().text, th().text, 0, light));
+    const pillBg = () => mixColor(th().bg, th().bg, 0, th().dark ? 0.92 : 0.95);
 
     /* ---------- Aufteilung ---------- */
 
@@ -248,7 +250,7 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       if (!wide()) {
-        const ph = Math.round(h * 0.5);
+        const ph = Math.round(h * 0.47);
         return { plot: { x: 0, y: 0, w, h: ph }, col: { x: 4, y: ph + 8, w: w - 8, h: h - ph - 12 } };
       }
       const colW = Math.round(Math.min(340, Math.max(236, w * 0.33)));
@@ -293,6 +295,8 @@ export default defineSimulation({
     let frameReady = false;
     let rulerReady = false;
     let mir: number | null = null;
+    /** Reduzierte Bewegung: Endbild der Spiegelung bleibt stehen (bis zur nächsten Änderung oder zum nächsten Klick). */
+    let mirStatic = false;
     let build: number | null = null;
     let sol: number | null = null;
     let intro: number | null = reduced() ? null : performance.now();
@@ -316,7 +320,7 @@ export default defineSimulation({
     const eqs = (v: number, d: number) => (exactTo(v, d) ? '=' : '≈');
     const rnd = (v: number, d: number) => Math.round(v * 10 ** d) / 10 ** d;
     /** Logarithmen: bis zu 4 Nachkommastellen. */
-    const N4 = (v: number) => fmt.num(rnd(v, 4) + 0, 4);
+    const N4 = (v: number) => (exactTo(v, 4) ? fmt.num(rnd(v, 4) + 0, 4) : fmt.fixed(v, 4));
     /** Werte wie bˣ: etwa 4 gültige Ziffern. */
     function NV(v: number): string {
       const a = Math.abs(v);
@@ -333,13 +337,19 @@ export default defineSimulation({
     const settled = () => Math.abs(bNow() - baseOf()) < 0.003 * Math.max(1, baseOf());
     const bNum = () => (settled() ? fmt.num(p.b) : fmt.num(rnd(bNow(), 2)));
     const bTxt = () => (p.e && settled() ? '\\t{e}' : bNum());
-    /** Name des Logarithmus: ln, log₁₀ oder log_b. */
-    const logName = () => (p.e && settled() ? 'ln' : `log_{${bNum()}}`);
+    /** Name des Logarithmus: ln, lg (Basis 10) oder log_b. */
+    const logName = () => (p.e && settled() ? 'ln' : !p.e && p.b === 10 && settled() ? 'lg' : `log_{${bNum()}}`);
     /** Potenz b^x als Formel; Basis mit Komma wird nicht geklammert (wie im Schulbuch: 0,5ˣ). */
     const powSrc = (xs: string) => `${bTxt()}^{${xs}}`;
     const num = (v: number) => fmt.num(v);
     /** Zahl in einer Formel: negative Zahlen in Klammern, wenn sie als Faktor stehen. */
     const par = (s: string) => (s.startsWith('−') ? `(${s})` : s);
+
+    /** Zähler/Nenner beim Basiswechsel: ganze Zahlen ohne, sonst mit 4 Nachkommastellen (Endnullen). */
+    const F4 = (v: number) => (Number.isInteger(v) ? num(v) : fmt.fixed(v, 4));
+    const eqF = (a: number, b: number) => (exactTo(a, 4) && exactTo(b, 4) ? '=' : '≈');
+    /** Zweites Zeichen in „≈ a + b … c“: „=“, wenn die gezeigten Rundungen genau das (exakte) Ergebnis ergeben. */
+    const eqSum = (shown: number, exact: number) => (exactTo(exact, 4) && Math.abs(shown - exact) < 1e-9 ? '=' : '≈');
 
     /* ---------- Ergebnisse (Text) ---------- */
 
@@ -348,7 +358,7 @@ export default defineSimulation({
       const b = baseOf();
       const bH = p.e ? 'e' : fmt.num(p.b);
       const v = (s: string) => `<var>${s}</var>`;
-      const lname = p.e ? 'ln' : `log<sub>${bH}</sub>`;
+      const lname = p.e ? 'ln' : p.b === 10 ? 'lg' : `log<sub>${bH}</sub>`;
       const frac = (n: string, d: string) => `<span class="frac"><span>${n}</span><span>${d}</span></span>`;
       if (view() === 'inverse') {
         const x = p.x;
@@ -364,15 +374,15 @@ export default defineSimulation({
         if (law() === 'prod') {
           const r = productLaw(b, u, w);
           ctx.readout('law', { html: `${lname}(${v('u')} · ${v('v')}) = ${lname} ${v('u')} + ${lname} ${v('v')}` });
-          ctx.readout('calc', { html: `${lname}(${num(u)} · ${num(w)}) = ${lname} ${num(u)} + ${lname} ${num(w)} ${eqs(r.lu, 4)} ${N4(r.lu)} + ${N4(r.lv)} ${eqs(r.sum, 4)} ${N4(r.sum)} = ${lname} ${NV(r.value)}` });
+          ctx.readout('calc', { html: `${lname}(${num(u)} · ${num(w)}) = ${lname} ${num(u)} + ${lname} ${num(w)} ${eqF(r.lu, r.lv)} ${N4(r.lu)} + ${N4(r.lv)} ${eqF(r.lu, r.lv) === '=' ? eqs(r.sum, 4) : eqSum(rnd(r.lu, 4) + rnd(r.lv, 4), r.sum)} ${N4(r.sum)} = ${lname} ${NV(r.value)}` });
         } else if (law() === 'quot') {
           const r = quotientLaw(b, u, w);
           ctx.readout('law', { html: `${lname} ${frac(v('u'), v('v'))} = ${lname} ${v('u')} − ${lname} ${v('v')}` });
-          ctx.readout('calc', { html: `${lname} ${frac(num(u), num(w))} = ${lname} ${num(u)} − ${lname} ${num(w)} ${eqs(r.lu, 4)} ${N4(r.lu)} − ${N4(r.lv)} ${eqs(r.diff, 4)} ${N4(r.diff)} = ${lname} ${NV(r.value)}` });
+          ctx.readout('calc', { html: `${lname} ${frac(num(u), num(w))} = ${lname} ${num(u)} − ${lname} ${num(w)} ${eqF(r.lu, r.lv)} ${N4(r.lu)} − ${N4(r.lv)} ${eqF(r.lu, r.lv) === '=' ? eqs(r.diff, 4) : eqSum(rnd(r.lu, 4) - rnd(r.lv, 4), r.diff)} ${N4(r.diff)} = ${lname} ${NV(r.value)}` });
         } else {
           const r = powerLaw(b, u, p.r);
           ctx.readout('law', { html: `${lname}(${v('u')}<sup>${v('r')}</sup>) = ${v('r')} · ${lname} ${v('u')}` });
-          ctx.readout('calc', { html: `${lname}(${num(u)}<sup>${num(p.r)}</sup>) = ${par(num(p.r))} · ${lname} ${num(u)} ${eqs(r.lu, 4)} ${par(num(p.r))} · ${N4(r.lu)} ${eqs(r.prod, 4)} ${N4(r.prod)}` });
+          ctx.readout('calc', { html: `${lname}(${num(u)}<sup>${num(p.r)}</sup>) = ${par(num(p.r))} · ${lname} ${num(u)} ${eqs(r.lu, 4)} ${par(num(p.r))} · ${N4(r.lu)} ${exactTo(r.lu, 4) ? eqs(r.prod, 4) : eqSum(p.r * rnd(r.lu, 4), r.prod)} ${N4(r.prod)}` });
         }
         return;
       }
@@ -385,7 +395,7 @@ export default defineSimulation({
         ? `${v('x')} = ln ${num(c)} ${eqs(x, 4)} ${N4(x)}`
         : p.b === 10
           ? `${v('x')} = lg ${num(c)} ${eqs(x, 4)} ${N4(x)}`
-          : `${v('x')} = ${lname} ${num(c)} = ${frac(lgTxt(num(c)), lgTxt(bH))} ${eqs(x, 4)} ${frac(N4(cb.num), N4(cb.den))} ${eqs(x, 4)} ${N4(x)}`;
+          : `${v('x')} = ${lname} ${num(c)} = ${frac(lgTxt(num(c)), lgTxt(bH))} ${eqF(cb.num, cb.den)} ${frac(F4(cb.num), F4(cb.den))} ${eqF(cb.num, cb.den) === '=' ? eqs(x, 4) : '≈'} ${N4(x)}`;
       ctx.readout('sol', { html: solHtml });
       const back = pow(b, rnd(x, 4));
       ctx.readout('check', { html: `${bH}<sup>${N4(x)}</sup> ${eqV(back)} ${NV(back)}` });
@@ -430,7 +440,7 @@ export default defineSimulation({
       g.globalAlpha = opts.alpha ?? 1;
       g.save();
       g.fillStyle = pillBg();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
+      g.shadowColor = shade(0.45, 0.14);
       g.shadowBlur = 10;
       g.shadowOffsetY = 2;
       roundRect(g, rr.x, rr.y, rr.w, rr.h, 11);
@@ -488,7 +498,7 @@ export default defineSimulation({
       g.lineCap = 'round';
       if (opts.dash) g.setLineDash(opts.dash);
       if (opts.glow) {
-        g.shadowColor = th().dark ? mixColor(color, '#000000', 0, 0.6) : mixColor(color, '#ffffff', 0, 0.4);
+        g.shadowColor = mixColor(color, color, 0, th().dark ? 0.6 : 0.4);
         g.shadowBlur = th().dark ? 10 : 7;
       }
       g.beginPath();
@@ -517,7 +527,7 @@ export default defineSimulation({
       if (r <= 0.2) return;
       const g = surface.g;
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.25)';
+      g.shadowColor = shade(0.5, 0.25);
       g.shadowBlur = 5;
       g.shadowOffsetY = 1;
       g.fillStyle = hollow ? th().bg : color;
@@ -589,7 +599,13 @@ export default defineSimulation({
       const small = c < 1.2;
       const lo = small ? Math.min(-0.4, xs - 1.3) : Math.min(-1.5, xs - 1.3);
       const hi = small ? Math.max(0.4, xs + 1.3) : Math.max(2.5, xs + 1.3);
-      const top = small ? c * 1.9 : Math.max(c * 1.32, 2.4);
+      let top = small ? c * 1.9 : Math.max(c * 1.32, 2.4);
+      // obere Potenz der Eingrenzung (z. B. 2⁴ = 16 bei 2ˣ = 10) mit ins Bild nehmen, wenn sie nicht zu weit weg ist
+      const br = bracket(b, c);
+      if (br && !small && !br.exact) {
+        const upper = Math.max(br.powLo, br.powHi);
+        if (upper <= c * 2.5) top = Math.max(top, upper * 1.1);
+      }
       const r = regions().plot;
       const bottom = -top * (34 / Math.max(120, r.h));
       // links Platz für die Zahlen an der y-Achse (in Pixeln gerechnet)
@@ -686,6 +702,7 @@ export default defineSimulation({
     /* ---------- Ansicht „Umkehrung“ ---------- */
 
     function mirState(now: number): { show: number; move: number; hold: number; fade: number } {
+      if (mirStatic) return { show: 1, move: 1, hold: 1, fade: 1 };
       const t = now - mir!;
       return {
         show: ease.outCubic(clamp01(t / MIR.show)),
@@ -888,7 +905,7 @@ export default defineSimulation({
       if (!ms) pts.push(P, P2);
       for (const q of pts) if (inside(q[0], q[1])) placed.push(dotBox(q[0], q[1]));
 
-      const showBguide = clamp01(1 - (now - lastB - 900) / 500);
+      const showBguide = reduced() ? 0 : clamp01(1 - (now - lastB - 900) / 500);
       if (showBguide > 0) {
         const g = surface.g;
         g.save();
@@ -1316,7 +1333,7 @@ export default defineSimulation({
       const rect: Rect = { x: x0 - 12, y: ry, w: x1 - x0 + 24, h: rh };
       // Lineal mit Schatten und zwei Hälften: oben die Zahlen y, unten die Logarithmen
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.16)';
+      g.shadowColor = shade(0.55, 0.16);
       g.shadowBlur = 16;
       g.shadowOffsetY = 4;
       g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.07 : 0.025);
@@ -1333,7 +1350,7 @@ export default defineSimulation({
       grad.addColorStop(1, mixColor(th().bg, c.log, 0, th().dark ? 0.06 : 0.03));
       g.fillStyle = grad;
       g.fillRect(rect.x, rect.y, rect.w, rect.h);
-      g.strokeStyle = th().dark ? '#3a4558' : '#d5dbe4';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       g.beginPath();
       g.moveTo(rect.x, Math.round(ry + rh / 2) + 0.5);
@@ -1444,8 +1461,10 @@ export default defineSimulation({
 
       // Potenzschreibweise: die Logarithmen sind die Hochzahlen
       {
-        const ex = (v: number) => num(rnd(v, 2));
+        const ex = (v: number) => (exactTo(v, 2) ? num(rnd(v, 2) + 0) : fmt.fixed(v, 2));
         const approx = (vals: number[]) => (vals.every((q) => exactTo(q, 2)) ? '=' : '≈');
+        /** Hochzahlen der gerundeten Potenzen ergeben genau die gezeigte Hochzahl des Ergebnisses? */
+        const same = (shown: number, res: number) => (Math.abs(shown - rnd(res, 2)) < 1e-9 ? '=' : '≈');
         const bb = baseOf();
         const u0 = p.u;
         const v0 = p.v;
@@ -1456,16 +1475,16 @@ export default defineSimulation({
         if (law() === 'prod') {
           const q = productLaw(bb, u0, v0);
           const a = approx([q.lu, q.lv]);
-          src = `\\c{a}{${us}} · \\c{v}{${vs}} ${a} \\c{a}{${P(ex(q.lu))}} · \\c{v}{${P(ex(q.lv))}} ${a} \\c{r}{${P(Q(ex(q.sum)))}} ${eqV(q.value)} \\c{r}{${Q(NV(q.value))}}`;
+          src = `\\c{a}{${us}} · \\c{v}{${vs}} ${a} \\c{a}{${P(ex(q.lu))}} · \\c{v}{${P(ex(q.lv))}} ${same(rnd(q.lu, 2) + rnd(q.lv, 2), q.sum)} \\c{r}{${P(Q(ex(q.sum)))}} ${exactTo(q.sum, 2) ? eqV(q.value) : '≈'} \\c{r}{${Q(NV(q.value))}}`;
         } else if (law() === 'quot') {
           const q = quotientLaw(bb, u0, v0);
           const a = approx([q.lu, q.lv]);
-          src = `\\c{a}{${us}} : \\c{v}{${vs}} ${a} \\c{a}{${P(ex(q.lu))}} : \\c{v}{${P(ex(q.lv))}} ${a} \\c{r}{${P(Q(ex(q.diff)))}} ${eqV(q.value)} \\c{r}{${Q(NV(q.value))}}`;
+          src = `\\c{a}{${us}} : \\c{v}{${vs}} ${a} \\c{a}{${P(ex(q.lu))}} : \\c{v}{${P(ex(q.lv))}} ${same(rnd(q.lu, 2) - rnd(q.lv, 2), q.diff)} \\c{r}{${P(Q(ex(q.diff)))}} ${exactTo(q.diff, 2) ? eqV(q.value) : '≈'} \\c{r}{${Q(NV(q.value))}}`;
         } else {
           const q = powerLaw(bb, u0, p.r);
           const a = approx([q.lu]);
           const rs = num(p.r);
-          src = `\\c{a}{${par(us)}}^{${rs}} ${a} (\\c{a}{${P(ex(q.lu))}})^{${rs}} ${a} \\c{r}{${P(Q(ex(q.prod)))}} ${eqV(q.value)} \\c{r}{${Q(NV(q.value))}}`;
+          src = `\\c{a}{${par(us)}}^{${rs}} ${a} (\\c{a}{${P(ex(q.lu))}})^{${rs}} ${same(p.r * rnd(q.lu, 2), q.prod)} \\c{r}{${P(Q(ex(q.prod)))}} ${exactTo(q.prod, 2) ? eqV(q.value) : '≈'} \\c{r}{${Q(NV(q.value))}}`;
         }
         const topLane = law() === 'quot' ? 2 : 1;
         const yTop = laneY(topLane) - 40;
@@ -1509,7 +1528,7 @@ export default defineSimulation({
         g.strokeStyle = sg.color;
         g.lineWidth = width;
         g.lineCap = 'round';
-        g.shadowColor = th().dark ? 'rgba(0,0,0,0.5)' : mixColor(sg.color, '#ffffff', 0, 0.5);
+        g.shadowColor = th().dark ? shade(0.5, 0) : mixColor(sg.color, sg.color, 0, 0.5);
         g.shadowBlur = 6;
         g.beginPath();
         g.moveTo(a0, y);
@@ -1608,16 +1627,16 @@ export default defineSimulation({
       const g = surface.g;
       g.save();
       g.globalAlpha = alpha;
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.45, 0.1);
       g.shadowBlur = 14;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.96)' : 'rgba(255,255,255,0.97)';
+      g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.04 : 0, th().dark ? 0.96 : 0.97);
       roundRect(g, r.x, r.y, r.w, r.h, 12);
       g.fill();
       g.restore();
       g.save();
       g.globalAlpha = alpha;
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 12);
       g.stroke();
@@ -1675,8 +1694,8 @@ export default defineSimulation({
         if (law() === 'prod') {
           const q = productLaw(b, u, v);
           const s1 = exactTo(q.lu, 4) && exactTo(q.lv, 4) ? '=' : '≈';
-          items.push({ value: `${s1} ${H(nb(`${N4(q.lu)} + ${N4(q.lv)}`))} ${s1 === '=' ? eqs(q.sum, 4) : '≈'} ${H(N4(q.sum))}` });
-          items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.sum))} ${eqV(q.value)} ${NV(q.value)}`)} = ${nb(`${us} · ${vs}`)}`), swatch: c.res });
+          items.push({ value: `${s1} ${H(nb(`${N4(q.lu)} + ${N4(q.lv)}`))} ${s1 === '=' ? eqs(q.sum, 4) : eqSum(rnd(q.lu, 4) + rnd(q.lv, 4), q.sum)} ${H(N4(q.sum))}` });
+          items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.sum))} ${exactTo(q.sum, 4) ? eqV(q.value) : '≈'} ${NV(q.value)}`)} = ${nb(`${us} · ${vs}`)}`), swatch: c.res });
           items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`${bs}^{m} · ${bs}^{n} = ${bs}^{m + n}`)}: ${tt('Beim Multiplizieren addieren sich die Hochzahlen.', 'when multiplying, the exponents add up.')}`, muted: true });
           items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „mal“ wird „plus“: Der Logarithmus macht aus Punktrechnung Strichrechnung.', '“times” becomes “plus”: logarithms turn multiplication into addition.'), muted: true });
           return { title: tt('Produktregel', 'Product rule'), chip: null, chipColor: c.res, head: `${lname}(${us} · ${vs}) = \\c{a}{${lname} ${us}} + \\c{v}{${lname} ${vs}}`, headColor: th().text, items };
@@ -1684,8 +1703,8 @@ export default defineSimulation({
         if (law() === 'quot') {
           const q = quotientLaw(b, u, v);
           const s1 = exactTo(q.lu, 4) && exactTo(q.lv, 4) ? '=' : '≈';
-          items.push({ value: `${s1} ${H(nb(`${N4(q.lu)} − ${N4(q.lv)}`))} ${s1 === '=' ? eqs(q.diff, 4) : '≈'} ${H(N4(q.diff))}` });
-          items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.diff))} ${eqV(q.value)} ${NV(q.value)}`)} = ${nb(`${us} : ${vs}`)}`), swatch: c.res });
+          items.push({ value: `${s1} ${H(nb(`${N4(q.lu)} − ${N4(q.lv)}`))} ${s1 === '=' ? eqs(q.diff, 4) : eqSum(rnd(q.lu, 4) - rnd(q.lv, 4), q.diff)} ${H(N4(q.diff))}` });
+          items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.diff))} ${exactTo(q.diff, 4) ? eqV(q.value) : '≈'} ${NV(q.value)}`)} = ${nb(`${us} : ${vs}`)}`), swatch: c.res });
           items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`${bs}^{m} : ${bs}^{n} = ${bs}^{m − n}`)}: ${tt('Beim Dividieren subtrahieren sich die Hochzahlen.', 'when dividing, the exponents are subtracted.')}`, muted: true });
           items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „geteilt“ wird „minus“.', '“divided by” becomes “minus”.'), muted: true });
           return { title: tt('Quotientenregel', 'Quotient rule'), chip: null, chipColor: c.res, head: `${lname} \\f{${us}}{${vs}} = \\c{a}{${lname} ${us}} − \\c{v}{${lname} ${vs}}`, headColor: th().text, items };
@@ -1693,8 +1712,8 @@ export default defineSimulation({
         const q = powerLaw(b, u, p.r);
         const rs = num(p.r);
         const s1 = exactTo(q.lu, 4) ? '=' : '≈';
-        items.push({ value: `${s1} ${H(nb(`${par(rs)} · ${N4(q.lu)}`))} ${s1 === '=' ? eqs(q.prod, 4) : '≈'} ${H(N4(q.prod))}` });
-        items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.prod))} ${eqV(q.value)} ${NV(q.value)}`)} = ${nb(`${par(us)}^{${rs}}`)}`), swatch: c.res });
+        items.push({ value: `${s1} ${H(nb(`${par(rs)} · ${N4(q.lu)}`))} ${s1 === '=' ? eqs(q.prod, 4) : eqSum(p.r * rnd(q.lu, 4), q.prod)} ${H(N4(q.prod))}` });
+        items.push({ label: tt('Probe', 'Check'), value: H(`${nb(`${powSrc(N4(q.prod))} ${exactTo(q.prod, 4) ? eqV(q.value) : '≈'} ${NV(q.value)}`)} = ${nb(`${par(us)}^{${rs}}`)}`), swatch: c.res });
         items.push({ label: tt('Begründung', 'Reason'), value: `${nb(`(${bs}^{m})^{r} = ${bs}^{r · m}`)}: ${tt('Beim Potenzieren multipliziert sich die Hochzahl.', 'raising to the power r multiplies the exponent by r.')}`, muted: true });
         items.push({ label: tt('Merke', 'Remember'), value: tt('Aus „hoch r“ wird „r mal“.', '“to the power r” becomes “r times”.'), muted: true });
         return { title: tt('Potenzregel', 'Power rule'), chip: null, chipColor: c.res, head: `${lname}(${us}^{${rs}}) = ${par(rs)} · \\c{a}{${lname} ${us}}`, headColor: th().text, items };
@@ -1713,8 +1732,7 @@ export default defineSimulation({
       items.push({ label: tt('Logarithmieren', 'Take logs'), value: Q(nb(`x = ${lname} ${cS}`)), swatch: c.x });
       if (!p.e && p.b !== 10) {
         const cb = changeOfBase(b, p.c);
-        const F4 = (v: number) => (Number.isInteger(v) ? num(v) : fmt.fixed(v, 4));
-        const s1 = exactTo(cb.num, 4) && exactTo(cb.den, 4) ? '=' : '≈';
+        const s1 = eqF(cb.num, cb.den);
         items.push({ label: tt('Basiswechsel', 'Change of base'), value: Q(`${nb(`x = \\f{lg ${cS}}{lg ${bs}}`)} ${nb(`${s1} \\f{${F4(cb.num)}}{${F4(cb.den)}}`)} ${nb(`${s1 === '=' ? eqs(x, 4) : '≈'} \\b{${N4(x)}}`)}`), swatch: c.x });
       } else items.push({ label: tt('Taschenrechner', 'Calculator'), value: Q(`${nb(`x = ${lname} ${cS}`)} ${eqs(x, 4)} \\b{${N4(x)}}`), swatch: c.x });
       const back = pow(b, rnd(x, 4));
@@ -1872,7 +1890,7 @@ export default defineSimulation({
       };
       rowLabel('x', 0, c.log);
       rowLabel(`y = ${powSrc('x')}`, 1, c.exp);
-      g.strokeStyle = th().dark ? '#2c3648' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       g.beginPath();
       g.moveTo(r.x + pad, Math.round(top + lh) + 0.5);
@@ -2011,10 +2029,11 @@ export default defineSimulation({
       lastTime = now;
       let anim = false;
       for (const ch of [LB, X, U, V, RR, Cc]) anim = ch.step(now, dt) || anim;
-      if (mir !== null) {
+      if (mir !== null && !mirStatic) {
         if (now - mir >= MIR_END) mir = null;
         else anim = true;
       }
+      if (mir === null) mirStatic = false;
       if (build !== null) {
         const dur = law() === 'pow' ? Math.ceil(Math.abs(p.r)) * 420 + 900 : 2200;
         if (now - build >= dur) build = null;
@@ -2027,7 +2046,7 @@ export default defineSimulation({
       if (now - cardT0 < 600) anim = true;
       const viewFade = reduced() ? 1 : ease.outCubic(clamp01((now - viewT0) / 600));
       if (viewFade < 1) anim = true;
-      if (now - lastB < 1500) anim = true;
+      if (now - lastB < 1500 && !reduced()) anim = true;
 
       let k: K = { graph: 1, logG: 1, labels: 1, pts: 1, cards: 1, stagger: 1 };
       if (intro !== null) {
@@ -2053,11 +2072,11 @@ export default defineSimulation({
       g.fillRect(0, 0, surface.width, surface.height);
       plot.resize();
       const v = view();
-      if (stepFrame(now, dt, false)) anim = true;
+      if (stepFrame(now, dt, reduced())) anim = true;
       if (v === 'laws') {
         // Skala folgt (außer beim Ziehen eines Pfeilendes)
         const [a, b] = rulerTarget();
-        if (!rulerReady) {
+        if (!rulerReady || reduced()) {
           S0.jump(a);
           S1.jump(b);
           rulerReady = true;
@@ -2153,7 +2172,19 @@ export default defineSimulation({
         if (ctx.locked) return;
         const now = performance.now();
         if (id === 'mirror') {
-          mir = reduced() ? now - MIR.show - MIR.move : now;
+          if (reduced()) {
+            // ohne Bewegung: Endbild sofort und stehend; ein zweiter Klick blendet es wieder aus
+            if (mirStatic) {
+              mir = null;
+              mirStatic = false;
+            } else {
+              mir = now - MIR.show - MIR.move - 500;
+              mirStatic = true;
+            }
+          } else {
+            mir = now;
+            mirStatic = false;
+          }
         } else if (id === 'build') {
           build = reduced() ? null : now;
         } else if (id === 'solve') {

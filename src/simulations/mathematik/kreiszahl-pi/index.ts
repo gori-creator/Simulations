@@ -48,7 +48,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Kreis, dessen Umfang abgerollt bzw. dessen Fläche umgelegt wird',
+      canvas: 'Kreis, dessen Umfang abgerollt, dessen Fläche umgelegt oder der zwischen zwei Vielecke eingeschlossen wird',
       roll: 'Abrollen',
       back: 'Zurück',
       arrange: 'Umlegen',
@@ -59,7 +59,7 @@ export default defineSimulation({
       circumscribed: 'umbeschrieben',
     },
     en: {
-      canvas: 'A circle whose circumference is rolled out or whose area is rearranged',
+      canvas: 'A circle whose circumference is rolled out, whose area is rearranged or which is trapped between two polygons',
       roll: 'Roll',
       back: 'Back',
       arrange: 'Rearrange',
@@ -109,9 +109,11 @@ export default defineSimulation({
     function updateReadouts(): void {
       const rr = r();
       if (p.mode === 'umfang') {
-        ctx.readout('formula', { html: `<var>U</var> = π · <var>d</var> = 2π · <var>r</var>` });
-        ctx.readout('value', `U = π · ${fmt.num(p.d, 1)} cm ≈ ${fmt.num(Math.PI * p.d, 3)} cm`);
-        ctx.readout('approx', `U : d = π ≈ 3,14159… (${ctx.lang === 'de' ? 'etwas mehr als 3 Durchmesser' : 'a little more than 3 diameters'})`.replace('3,14159', fmt.num(Math.PI, 5)));
+        // Im Englischen heißt der Umfang C (circumference), im Deutschen U.
+        const U = ctx.lang === 'de' ? 'U' : 'C';
+        ctx.readout('formula', { html: `<var>${U}</var> = π · <var>d</var> = 2π · <var>r</var>` });
+        ctx.readout('value', `${U} = π · ${fmt.num(p.d, 1)} cm ≈ ${fmt.num(Math.PI * p.d, 3)} cm`);
+        ctx.readout('approx', `${U} : d = π ≈ ${fmt.num(Math.PI, 5)}… (${ctx.lang === 'de' ? 'etwas mehr als 3 Durchmesser' : 'a little more than 3 diameters'})`);
       } else if (p.mode === 'flaeche') {
         ctx.readout('formula', { html: `<var>A</var> = π · <var>r</var>²` });
         ctx.readout('value', `A = π · (${fmt.num(rr, 2)} cm)² ≈ ${fmt.num(Math.PI * rr * rr, 3)} cm²`);

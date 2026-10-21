@@ -71,16 +71,16 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Einheitskreis mit Punkt P und daneben die Graphen von Sinus und Kosinus',
+      canvas:
+        'Links der Einheitskreis mit dem Punkt P (cos α | sin α), dem Winkel α und den Strecken für Sinus, Kosinus und auf Wunsch Tangens; rechts bzw. darunter die Graphen von Sinus, Kosinus und Tangens über dem Winkel α mit einer gestrichelten Linie beim aktuellen Winkel',
       undefined: 'nicht definiert (cos α = 0)',
       onAxis: 'Punkt liegt auf einer Achse',
-      quadrant: 'Quadrant',
     },
     en: {
-      canvas: 'Unit circle with point P and the graphs of sine and cosine next to it',
+      canvas:
+        'On the left the unit circle with point P (cos α, sin α), the angle α and the segments for sine, cosine and optionally tangent; on the right or below, the graphs of sine, cosine and tangent over the angle α with a dashed line at the current angle',
       undefined: 'undefined (cos α = 0)',
-      onAxis: 'the point lies on an axis',
-      quadrant: 'quadrant',
+      onAxis: 'The point lies on an axis',
     },
   },
 
@@ -135,18 +135,21 @@ export default defineSimulation({
     graph.addHandle({
       get: () => {
         const r = degToRad(phi);
-        return [r, p.sin || !p.cos ? Math.sin(r) : Math.cos(r)];
+        /* Griff auf der sichtbaren Kurve; ohne Sinus und Kosinus auf der α-Achse */
+        return [r, p.sin ? Math.sin(r) : p.cos ? Math.cos(r) : 0];
       },
       set: (x) => setAngle(radToDeg(Math.min(TAU, Math.max(0, x)))),
       axis: 'x',
       enabled: editable,
-      color: () => (p.sin || !p.cos ? color.sin() : color.cos()),
+      color: () => (p.sin ? color.sin() : p.cos ? color.cos() : ctx.theme.text),
     });
 
     function trigText(fn: 'sin' | 'cos' | 'tan', deg: number, value: number): string {
       const exact = exactTrig(deg, fn);
       if (exact === '0' || exact === '1' || exact === '−1') return `${fn} α = ${exact}`;
-      if (exact) return `${fn} α = ${exact} ≈ ${fmt.num(value, 3)}`;
+      /* „=“, wenn die Dezimalzahl exakt ist (1/2 = 0,5), sonst „≈“ (√3/2 ≈ 0,866) */
+      const rel = Math.abs(value * 1000 - Math.round(value * 1000)) < 1e-6 ? '=' : '≈';
+      if (exact) return `${fn} α = ${exact} ${rel} ${fmt.num(value, 3)}`;
       return `${fn} α ≈ ${fmt.num(value, 3)}`;
     }
 
@@ -181,7 +184,9 @@ export default defineSimulation({
         const sign = (v: number) => (v > 0 ? '> 0' : '< 0');
         ctx.readout(
           'quadrant',
-          q === 0 ? ctx.t('onAxis') : `${ROMAN[q]}. ${ctx.t('quadrant')} (sin α ${sign(s)}, cos α ${sign(c)})`,
+          q === 0
+            ? ctx.t('onAxis')
+            : `${ctx.lang === 'de' ? `${ROMAN[q]}. Quadrant` : `Quadrant ${ROMAN[q]}`} (sin α ${sign(s)}, cos α ${sign(c)})`,
         );
         ctx.readout('pyth', `sin²α + cos²α = ${fmt.num(s * s, 3)} + ${fmt.num(c * c, 3)} = 1`);
       },
@@ -226,7 +231,8 @@ export default defineSimulation({
           circle.vline(1, { color: color.tan(), width: 1, dash: [3, 5], alpha: 0.6 });
           circle.segment([0, 0], [1, t], { color: color.tan(), width: 1.5, dash: [5, 5] });
           circle.segment([1, 0], [1, t], { color: color.tan(), width: 4 });
-          circle.text(1, t / 2, 'tan α', { color: color.tan(), baseline: 'middle', offset: [8, 0], weight: '600', size: 13 });
+          /* Beschriftung im sichtbaren Bereich halten (bei α nahe 90° ist die Strecke länger als das Bild) */
+          circle.text(1, Math.max(-1.15, Math.min(1.15, t / 2)), 'tan α', { color: color.tan(), baseline: 'middle', offset: [8, 0], weight: '600', size: 13 });
         }
         if (p.cos) {
           circle.segment([0, 0], [c, 0], { color: color.cos(), width: 4 });
@@ -256,6 +262,11 @@ export default defineSimulation({
           graph.fn(f, { color: col, width: 3, from: 0, to: rad });
           if (name !== 'tan' || tanDefined(phi)) graph.point(rad, f(rad), { color: col, radius: 5 });
         }
+        /* Kurvennamen, damit die Graphen nicht nur über die Farbe unterscheidbar sind */
+        const curveLabel = { weight: '600', size: 13 } as const;
+        if (p.sin) graph.text(Math.PI / 2, 1, 'sin α', { ...curveLabel, color: color.sin(), align: 'center', baseline: 'bottom', offset: [0, -8] });
+        if (p.cos) graph.text(Math.PI, -1, 'cos α', { ...curveLabel, color: color.cos(), align: 'center', baseline: 'top', offset: [0, 8] });
+        if (p.tan) graph.text((5 * Math.PI) / 4, 1, 'tan α', { ...curveLabel, color: color.tan(), align: 'left', baseline: 'middle', offset: [10, 0] });
         graph.end();
 
         /* ---- Verbindungslinie und Trennlinie (nur nebeneinander) ---- */

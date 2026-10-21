@@ -96,6 +96,39 @@ describe('Modell: Funktion oder nicht?', () => {
     expect(curveYs('scurve', 0).map((v) => Math.round(v * 1e9) / 1e9)).toEqual([-2.828427125, 0, 2.828427125]);
   });
 
+  it('genau ein Pfeil: fehlender Pfeil ⇒ keine Funktion, gemeinsames Ziel erlaubt (Prüfrunde)', () => {
+    const m = exampleMapping('lin');
+    // Pfeil von 3 entfernen: 3 hat keinen Partner ⇒ keine Funktion
+    const ohne = { ...m, arrows: toggleArrow(m.arrows, 3, 3) };
+    const a = analyze(ohne);
+    expect(a.isFunction).toBe(false);
+    expect(a.missing).toEqual([3]);
+    expect(a.multi).toEqual([]);
+    // Zwei Elemente auf dasselbe Ziel (0 ↦ 1 und 1 ↦ 1, 2 ↦ 5, 3 ↦ 7) bleibt eine Funktion
+    const gleich = { ...m, arrows: toggleArrow(toggleArrow(m.arrows, 1, 1), 1, 0) };
+    const b = analyze(gleich);
+    expect(b.isFunction).toBe(true);
+    expect(b.shared).toEqual([0]);
+    // Wertemenge: nur getroffene Elemente {1; 5; 7}
+    expect(b.range.map((j) => m.b[j]!.value)).toEqual([1, 5, 7]);
+  });
+
+  it('nachgerechnete Werte am Linientest (Prüfrunde)', () => {
+    // Kreis x² + y² = 9 bei x = 1: y = ±√8 ≈ ±2,83
+    expect(curveYs('circle', 1)).toEqual([-Math.sqrt(8), Math.sqrt(8)]);
+    // Liegende Parabel x = 0,5y² − 2 bei x = 2: y² = 8
+    expect(curveYs('sideways', 2)).toEqual([-Math.sqrt(8), Math.sqrt(8)]);
+    expect(curveYs('sideways', -3)).toEqual([]);
+    // Parabel 0,5x² − 2 bei x = 1: −1,5
+    expect(curveYs('parab', 1)).toEqual([-1.5]);
+    // Treppe ⌊x⌋: an der Sprungstelle genau ein Wert (voller Punkt oben), auch negativ
+    expect(curveYs('step', -1)).toEqual([-1]);
+    expect(curveYs('step', -0.5)).toEqual([-1]);
+    // Halbkreis an den Rändern von D = [−3; 3]
+    expect(curveYs('semi', -3)).toEqual([0]);
+    expect(curveYs('semi', 3)).toEqual([0]);
+  });
+
   it('passt zur Einstufung als Funktionsgraph', () => {
     for (const id of CURVES) {
       const counts = countProfile(id, -6.5, 6.5, 520);

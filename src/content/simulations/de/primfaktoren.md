@@ -4,7 +4,7 @@ description: Interaktive Simulation zu Primzahlen – Faktorbäume wachsen lasse
 
 ## Worum geht es?
 
-Eine **Primzahl** ist eine natürliche Zahl, die genau **zwei Teiler** hat: $1$ und sich selbst. $2, 3, 5, 7, 11, 13, \ldots$ sind Primzahlen. Die $1$ ist keine Primzahl, denn sie hat nur einen Teiler. Zahlen mit mehr als zwei Teilern heißen **zusammengesetzt**.
+Eine **Primzahl** ist eine natürliche Zahl, die genau **zwei Teiler** hat: $1$ und sich selbst. $2, 3, 5, 7, 11, 13, \ldots$ sind Primzahlen. Die $1$ ist keine Primzahl, denn sie hat nur einen Teiler. Die $2$ ist die einzige gerade Primzahl. Zahlen mit mehr als zwei Teilern heißen **zusammengesetzt**.
 
 **Primfaktorzerlegung:** Jede natürliche Zahl größer als $1$ lässt sich als Produkt von Primzahlen schreiben. Im **Faktorbaum** zerlegt man so lange, bis nur noch Primzahlen übrig sind:
 
@@ -21,7 +21,7 @@ Wie man den Baum auch beginnt – am Ende stehen immer **dieselben Primfaktoren*
 - durch $3$ oder $9$: Man prüft die **Quersumme**, z. B. $3 + 6 + 0 = 9$.
 - durch $6$: Die Zahl ist durch $2$ **und** durch $3$ teilbar.
 
-**Sieb des Eratosthenes:** Man streicht die $1$. Die kleinste nicht gestrichene Zahl ist eine Primzahl; man umkreist sie und streicht alle ihre Vielfachen. Bis $100$ genügen $2, 3, 5$ und $7$, denn schon $11 \cdot 11 = 121$ ist größer als $100$.
+**Sieb des Eratosthenes:** Man streicht die $1$. Die kleinste nicht gestrichene Zahl ist eine Primzahl; man umkreist sie und streicht alle ihre Vielfachen. Bei einer Primzahl $p$ ist $p \cdot p$ das erste neu gestrichene Vielfache, z. B. $49$ bei der $7$ – kleinere Vielfache sind schon gestrichen. Bis $100$ genügen $2, 3, 5$ und $7$, denn schon $11 \cdot 11 = 121$ ist größer als $100$.
 
 **ggT und kgV:** Der größte gemeinsame Teiler ist das Produkt der **gemeinsamen** Primfaktoren, das kleinste gemeinsame Vielfache das Produkt **aller** Primfaktoren, wobei gemeinsame nur einmal gezählt werden. Mit $24 = 2 \cdot 2 \cdot 2 \cdot 3$ und $36 = 2 \cdot 2 \cdot 3 \cdot 3$:
 
@@ -35,7 +35,7 @@ $$
 2. Drücke mehrmals **Anderer Baum**. Was ändert sich, was bleibt immer gleich?
 3. Spalte immer den [kleinsten Primfaktor ab](?split=klein). Wie sieht der Baum jetzt aus?
 4. Zerlege [512](?n=512&split=klein) und schreibe das Ergebnis als Potenz.
-5. Tippe im Baum auf eine Zahl: Rechts siehst du, durch welche Zahlen sie teilbar ist. Probiere [783](?n=783) – die Quersumme verrät viel.
+5. Tippe im Baum auf eine Zahl: Daneben (auf dem Handy darunter) siehst du, durch welche Zahlen sie teilbar ist. Probiere [783](?n=783) – die Quersumme verrät viel.
 6. Führe das [Sieb bis 100](?mode=sieb&show=0) mit **Nächste Primzahl** durch. Tippe auf eine gestrichene Zahl: Welche Primzahl hat sie gestrichen?
 7. Ordne die Zahlen in [6 Spalten](?mode=sieb&cols=6&max=120) an. In welchen Spalten stehen die Primzahlen ab $5$? Warum?
 8. Bestimme ggT und kgV von [24 und 36](?mode=ggt&show=0) mit **Faktoren zuordnen**. Was passiert bei [8 und 15](?mode=ggt&a=8&b=15)?

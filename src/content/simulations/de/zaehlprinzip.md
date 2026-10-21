@@ -37,7 +37,7 @@ $$
 ## Ausprobieren
 
 1. Schau zu, wie der Baum für die Outfits wächst. Tippe auf eine Hose: Wie viele Outfits beginnen mit ihr? Warum ist das $4 \cdot 2$? [Outfits](?sit=outfit&a=3&b=4&c=2)
-2. Nimm eine vierte Mütze hinzu. Wie viele neue Äste entstehen, wie viele neue Outfits? [Eine Mütze mehr](?sit=outfit&c=3)
+2. Nimm eine dritte Mütze hinzu. Wie viele neue Äste entstehen, wie viele neue Outfits? [Eine Mütze mehr](?sit=outfit&c=3)
 3. Lass mit **Alle Pfade ablaufen** jeden Pfad nacheinander aufleuchten. Wird ein Outfit doppelt gezählt? Fehlt eins?
 4. Schalte bei der Eistüte **mit Wiederholung** aus und wieder ein. Welche Äste verschwinden, und warum hat jede Stufe danach eine Möglichkeit weniger? [Eistüte](?sit=eis&n=4&k=3&rep=1)
 5. Beim Zahlenschloss wird der Baum riesig. Wie viele Pfade stehen hinter einem zugeklappten Ast? Prüfe mit dem Zählprinzip. [Zahlenschloss](?sit=pin&z=10&s=4)
@@ -75,7 +75,7 @@ In der Eisdiele gibt es 6 Sorten. Tim möchte 3 Kugeln übereinander, alle versc
 <details>
 <summary>Lösung anzeigen</summary>
 
-Ohne Wiederholung: $6 \cdot 5 \cdot 4 = 120$. Mit Wiederholung: $6^3 = 216$. Der Unterschied von 96 Eistüten sind genau die, in denen mindestens eine Sorte doppelt vorkommt. [In der Simulation zeigen](?sit=eis&n=6&k=3&rep=0)
+Ohne Wiederholung: $6 \cdot 5 \cdot 4 = 120$. Mit Wiederholung: $6^3 = 216$. Die $216 - 120 = 96$ zusätzlichen Eistüten sind genau die, in denen mindestens eine Sorte mehrfach vorkommt. [In der Simulation zeigen](?sit=eis&n=6&k=3&rep=0)
 
 </details>
 

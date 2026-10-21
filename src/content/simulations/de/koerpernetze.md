@@ -26,7 +26,7 @@ Beim Zylinder ist der Mantel ein Rechteck, dessen eine Seite so lang ist wie der
 2. Ist Netz Nr. 3 ein Würfelnetz? Überlege zuerst, dann falte. [Netz Nr. 3 laden](?net=3&pairs=0)
 3. Schalte **Gegenüberliegende Flächen gleich färben** ein und blättere durch die Netze. Liegen zwei gleich gefärbte Flächen jemals nebeneinander?
 4. Tippe auf eine Fläche: Unter „Angetippte Fläche“ steht ihr Flächeninhalt; beim Würfel und Quader wird die gegenüberliegende Fläche gestrichelt markiert.
-5. Rolle den Zylindermantel langsam mit dem Regler **Faltung** auf. Die rote Kante wickelt sich genau einmal um den Grundkreis. [Zylinder halb gerollt](?body=zylinder&f=55)
+5. Rolle den Zylindermantel langsam mit dem Regler **Faltung** auf. Die farbig hervorgehobene Kante $u = 2\pi r$ wickelt sich genau einmal um den Grundkreis. [Zylinder halb gerollt](?body=zylinder&f=55)
 6. Verändere bei der Pyramide die Höhe $h_a$ der Seitendreiecke. Wie verändert sich die Spitze? [Pyramide](?body=pyramide&a=3&ha=4&f=100)
 
 ## Aufgaben
@@ -116,5 +116,5 @@ Eine Fläche hat $150\,\text{cm}^2 : 6 = 25\,\text{cm}^2$, also ist $a = 5\,\tex
   - „Jedes Netz aus sechs Quadraten ist ein Würfelnetz.“ – Die Netze 3, 7, 10 und 13 zeigen das Gegenteil.
   - Gegenüberliegende Flächen werden im Netz nebeneinander gesucht.
   - Beim Zylinder wird als Länge des Mantelrechtecks der Durchmesser statt des Umfangs angenommen.
-  - Bei der Pyramide werden die Höhe $h_a$ der Seitendreiecke und die Körperhöhe $h$ verwechselt; es gilt $h = \sqrt{h_a^2 - \left(\tfrac{a}{2}\right)^2}$ (Satz des Pythagoras, ab Jahrgangsstufe 9). Damit sich die Pyramide schließt, muss $h_a > \tfrac{a}{2}$ sein.
+  - Bei der Pyramide werden die Höhe $h_a$ der Seitendreiecke und die Körperhöhe $h$ verwechselt; es gilt $h = \sqrt{h_a^2 - \left(\tfrac{a}{2}\right)^2}$ (Satz des Pythagoras, ab Jahrgangsstufe 9). Damit sich die Pyramide schließt, muss $h_a > \tfrac{a}{2}$ sein; die Simulation verlangt $h_a \ge \tfrac{a}{2} + 0{,}5\,\text{cm}$ und passt $h_a$ sonst an.
 - **Zur Darstellung:** Der Zylindermantel wird aus 61 schmalen Streifen aufgerollt, die Kreise sind 61-Ecke mit demselben Umfang; der Unterschied zum echten Kreis ist kleiner als ein Promille. Das Prisma hat ein gleichseitiges Dreieck als Grundfläche.

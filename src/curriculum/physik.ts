@@ -43,7 +43,7 @@ export const physik: Subject = {
                 'Ein Auto fährt gleichmäßig oder wird schneller. Dabei entstehen live die Diagramme für Weg, Geschwindigkeit und Beschleunigung.',
                 'A car drives at a steady speed or speeds up. The graphs for distance, speed and acceleration are drawn live.',
               ),
-              grades: [7, 10],
+              grades: [7, 11],
               kmk: ['P-E', 'P-K', 'P-S'],
               keywords: L(
                 ['Bewegung', 'gleichförmige Bewegung', 'beschleunigte Bewegung', 't-s-Diagramm', 't-v-Diagramm', 't-a-Diagramm', 'Zeit-Ort-Diagramm', 'Geschwindigkeit', 'Beschleunigung', 'Bremsweg', 'Durchschnittsgeschwindigkeit', 'Steigungsdreieck'],
@@ -60,7 +60,7 @@ export const physik: Subject = {
                 'Lass eine Kugel auf Erde, Mond oder Mars fallen und sieh, wie sie immer schneller wird. Dazu Kugel und Feder mit und ohne Luft.',
                 'Drop a ball on Earth, the Moon or Mars and see how it gets faster and faster. Plus a ball and a feather with and without air.',
               ),
-              grades: [9, 10],
+              grades: [9, 11],
               kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['freier Fall', 'Fallbeschleunigung', 'Ortsfaktor', 'Fallröhre', 'Vakuum', 'Luftwiderstand', 'Stroboskop', 'Fallgesetz', 'Reaktionszeit', 'Lineal', 'gleichmäßig beschleunigte Bewegung'],
@@ -118,7 +118,7 @@ export const physik: Subject = {
                 'Zwei Kräfte ziehen an einem Punkt. Mit dem Kräfteparallelogramm findest du die Gesamtkraft oder zerlegst eine Kraft in zwei.',
                 'Two forces pull on one point. Use the parallelogram of forces to find the total force or to split a force into two.',
               ),
-              grades: [8, 10],
+              grades: [8, 11],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
               keywords: L(
                 ['Kraft', 'Vektor', 'Kräfteaddition', 'Kräftezerlegung', 'Kräfteparallelogramm', 'Kräftepolygon', 'Krafteck', 'Resultierende', 'Komponenten', 'Gleichgewicht', 'Gegenkraft', 'Seilkraft', 'Federwaage', 'Wäscheleine', 'Lampe'],
@@ -135,7 +135,7 @@ export const physik: Subject = {
                 'Ein Klotz liegt auf einer schrägen Ebene. Ab welchem Winkel rutscht er? Die Gewichtskraft wird dazu in zwei Teile zerlegt.',
                 'A block sits on a slope. At what angle does it start to slide? The weight is split into two parts to find out.',
               ),
-              grades: [8, 10],
+              grades: [8, 11],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Superposition'],
               keywords: L(
                 ['schiefe Ebene', 'Hangabtriebskraft', 'Normalkraft', 'Gewichtskraft', 'Kräftezerlegung', 'Reibung', 'Haftreibung', 'Gleitreibung', 'Reibungszahl', 'Grenzwinkel', 'Kraftmesser', 'Kraftwandler', 'Goldene Regel der Mechanik'],
@@ -159,7 +159,7 @@ export const physik: Subject = {
                 'Ein Wagen fährt Achterbahn: Energie-Säulen zeigen, wie sich Lageenergie und Bewegungsenergie ineinander umwandeln.',
                 'A car rides a roller coaster: energy bars show how potential and kinetic energy turn into each other.',
               ),
-              grades: [9, 10],
+              grades: [9, 11],
               kmk: ['P-BK-Energie', 'P-S', 'P-E'],
               keywords: L(
                 ['Energieerhaltung', 'Lageenergie', 'Bewegungsenergie', 'Höhenenergie', 'kinetische Energie', 'Reibung', 'Reibungswärme', 'innere Energie', 'Achterbahn', 'Looping', 'Zentripetalkraft', 'Energieumwandlung', 'Energiediagramm', 'Umkehrpunkt'],
@@ -426,7 +426,7 @@ export const physik: Subject = {
                 'Baue einen Stromkreis aus Batterie, Schalter und Lampe, als Aufbau und als Schaltplan. Ist der Kreis geschlossen, leuchtet die Lampe.',
                 'Build a circuit with a battery, a switch and a lamp, as a set-up and as a circuit diagram. When the circuit is closed, the lamp lights up.',
               ),
-              grades: [7, 8],
+              grades: [7, 9],
               kmk: ['P-S', 'P-E', 'P-K', 'P-BK-System'],
               keywords: L(
                 ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
@@ -473,8 +473,42 @@ export const physik: Subject = {
         {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [11, 13],
+          grades: [10, 13],
           simulations: [
+            {
+              id: 'lorentzkraft',
+              status: 'ready',
+              slug: L('lorentzkraft-fadenstrahlrohr', 'lorentz-force-fine-beam-tube'),
+              title: L('Lorentzkraft und Fadenstrahlrohr', 'Lorentz force and fine-beam tube'),
+              summary: L(
+                'Elektronen fliegen in einem Magnetfeld auf einer leuchtenden Kreisbahn. Aus dem Radius bestimmst du eine Eigenschaft des Elektrons.',
+                'Electrons fly along a glowing circular path in a magnetic field. From the radius you determine a property of the electron.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
+                ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
+              ),
+              thumb: 'generic',
+            },
+            {
+              id: 'induktion',
+              status: 'ready',
+              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
+              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
+              summary: L(
+                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
+                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
+              ),
+              grades: [10, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
+                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
+              ),
+              thumb: 'generic',
+            },
             {
               id: 'feldlinien',
               status: 'ready',
@@ -506,40 +540,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Kondensator', 'Kapazität', 'Laden', 'Entladen', 'RC-Glied', 'Zeitkonstante', 'Halbwertszeit', 'Exponentialfunktion', 'Tangente', 'Ladestrom', 'Energie im Kondensator', 'Widerstand'],
                 ['capacitor', 'capacitance', 'charging', 'discharging', 'RC circuit', 'time constant', 'half-life', 'exponential function', 'tangent', 'charging current', 'energy in a capacitor', 'resistor'],
-              ),
-              thumb: 'generic',
-            },
-            {
-              id: 'lorentzkraft',
-              status: 'ready',
-              slug: L('lorentzkraft-fadenstrahlrohr', 'lorentz-force-fine-beam-tube'),
-              title: L('Lorentzkraft und Fadenstrahlrohr', 'Lorentz force and fine-beam tube'),
-              summary: L(
-                'Elektronen fliegen in einem Magnetfeld auf einer leuchtenden Kreisbahn. Aus dem Radius bestimmst du eine Eigenschaft des Elektrons.',
-                'Electrons fly along a glowing circular path in a magnetic field. From the radius you determine a property of the electron.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
-                ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
-              ),
-              thumb: 'generic',
-            },
-            {
-              id: 'induktion',
-              status: 'ready',
-              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
-              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
-              summary: L(
-                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
-                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
-              ),
-              grades: [11, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
-                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
               ),
               thumb: 'generic',
             },
@@ -684,7 +684,7 @@ export const physik: Subject = {
                 'Heize Eis zu Wasser und Dampf und sieh, wie sich die Teilchen dabei bewegen. Dazu ein Diagramm der Temperatur.',
                 'Heat ice into water and steam and see how the particles move. With a graph of the temperature.',
               ),
-              grades: [7, 8],
+              grades: [7, 9],
               kmk: ['P-BK-Materie', 'P-BK-Energie', 'P-S'],
               keywords: L(
                 ['Teilchenmodell', 'Temperatur', 'Aggregatzustand', 'fest', 'flüssig', 'gasförmig', 'Schmelzen', 'Sieden', 'Erstarren', 'Kondensieren', 'Schmelztemperatur', 'Siedetemperatur', 'Schmelzwärme', 'Verdampfungswärme', 'Kelvin', 'absoluter Nullpunkt', 'Bewegungsenergie', 'Diffusion', 'Brownsche Bewegung'],
@@ -746,7 +746,7 @@ export const physik: Subject = {
                 'Viele Atomkerne zerfallen zufällig, und ein Zählrohr knackt. Trotzdem ist nach jeder Halbwertszeit ungefähr die Hälfte übrig.',
                 'Many nuclei decay at random and a Geiger counter clicks. Even so, after each half-life almost exactly half are left.',
               ),
-              grades: [9, 12],
+              grades: [9, 13],
               kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren', 'P-BK-Materie'],
               keywords: L(
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],

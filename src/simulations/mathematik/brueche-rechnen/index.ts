@@ -96,6 +96,7 @@ export default defineSimulation({
       vonLine: '{x} von {y} ist {r}.',
       timesLine: '{x}-mal {y} ist {r}.',
       cellsLine: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt sind {a} · {c} = {ac} Felder.',
+      cellsOne: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt ist {a} · {c} = {ac} Feld.',
       cellsMany: 'Ein Ganzes hat {b} · {d} = {bd} Felder, gefärbt sind {a} · {c} = {ac} Felder – mehr als ein Ganzes.',
       rule: 'Zähler mal Zähler, Nenner mal Nenner.',
       smaller: '{x} ist kleiner als 1 – das Ergebnis ist kleiner als {y}.',
@@ -113,8 +114,12 @@ export default defineSimulation({
       rowRecip: 'Mit dem Kehrwert',
       fitsMany: '{c} passt {k}-mal ganz in {a}, dazu noch {r} des Streifens.',
       fitsExact: '{c} passt genau {k}-mal in {a}.',
+      fitsManyOne: '{c} passt einmal ganz in {a}, dazu noch {r} des Streifens.',
+      fitsExactOne: '{c} passt genau einmal in {a}.',
       fitsNone: '{c} passt nicht ganz in {a} – nur {r} des Streifens.',
-      pieces: '{a} sind {A} {name}, {c} sind {C} {name}. Also {A} : {C}.',
+      pieces: '{a} {va} {A} {nameA}, {c} {vc} {C} {nameC}. Also {A} : {C}.',
+      isOne: 'ist',
+      isMany: 'sind',
       piecesSame: 'Gleich große Stücke: {A} : {C}.',
       kwText: 'In 1 passt {c} genau {r}-mal. In {a} passt es {a}-mal so oft: {a} · {r}.',
       times: '-mal',
@@ -128,6 +133,7 @@ export default defineSimulation({
       vonLine: '{x} of {y} is {r}.',
       timesLine: '{x} times {y} is {r}.',
       cellsLine: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cells are shaded.',
+      cellsOne: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cell is shaded.',
       cellsMany: 'One whole has {b} · {d} = {bd} cells, {a} · {c} = {ac} cells are shaded – more than one whole.',
       rule: 'Numerator times numerator, denominator times denominator.',
       smaller: '{x} is less than 1 – the result is less than {y}.',
@@ -145,8 +151,12 @@ export default defineSimulation({
       rowRecip: 'With the reciprocal',
       fitsMany: '{c} fits {k} times into {a}, plus {r} of the strip.',
       fitsExact: '{c} fits exactly {k} times into {a}.',
+      fitsManyOne: '{c} fits once into {a}, plus {r} of the strip.',
+      fitsExactOne: '{c} fits exactly once into {a}.',
       fitsNone: '{c} does not fit into {a} completely – only {r} of the strip.',
-      pieces: '{a} is {A} {name}, {c} is {C} {name}. So {A} ÷ {C}.',
+      pieces: '{a} {va} {A} {nameA}, {c} {vc} {C} {nameC}. So {A} ÷ {C}.',
+      isOne: 'is',
+      isMany: 'is',
       piecesSame: 'Pieces of equal size: {A} ÷ {C}.',
       kwText: '{c} fits into 1 exactly {r} times. Into {a} it fits {a} times as often: {a} · {r}.',
       times: ' times',
@@ -355,7 +365,7 @@ export default defineSimulation({
       // „von“ passt für Anteile (kleiner als 1), sonst „-mal“
       lines.push({ tokens: rich(compare(x, { z: 1, n: 1 }) < 0 ? 'vonLine' : 'timesLine', { x: fx, y: fy, r: fres }) });
       const vars = { b: bold(String(x.n), colA()), d: bold(String(y.n), colB()), bd: bold(String(pr.raw.n)), a: bold(String(x.z), colA()), c: bold(String(y.z), colB()), ac: bold(String(pr.raw.z), colP()) };
-      lines.push({ tokens: rich(pr.raw.z > pr.raw.n ? 'cellsMany' : 'cellsLine', vars) });
+      lines.push({ tokens: rich(pr.raw.z > pr.raw.n ? 'cellsMany' : pr.raw.z === 1 ? 'cellsOne' : 'cellsLine', vars) });
       const c1 = compare(x, { z: 1, n: 1 });
       lines.push({ tokens: rich(c1 < 0 ? 'smaller' : c1 > 0 ? 'larger' : 'equalOne', { x: fx, y: fy }), color: T.muted });
       if (p.kurz) {
@@ -396,7 +406,7 @@ export default defineSimulation({
       items.push({ k: 'frac', z: `${x.z} · ${y.z}`, n: `${x.n} · ${y.n}`, color: T.text });
       items.push(op('='), fItem(pr.raw, colP()));
       const r = reduce(pr.raw);
-      if (r.z !== pr.raw.z || r.n === 1 || r.z > r.n) {
+      if (pr.raw.n !== 1 && (r.z !== pr.raw.z || r.n === 1 || r.z > r.n)) {
         if (r.n === 1 || r.z !== pr.raw.z) items.push(op('='), ...resultItems(pr.raw, colP()));
         else items.push(op('='), ...resultItems(pr.raw, colP()).slice(2));
       }
@@ -765,7 +775,8 @@ export default defineSimulation({
       const r2: FItem[] = [fItem(x, colA()), op(ds), fItem(y, colB()), op('='), fItem(x, colA()), op('·'), fItem(dv.viaReciprocal, colB()), op('=')];
       r2.push({ k: 'frac', z: `${x.z} · ${y.n}`, n: `${x.n} · ${y.z}`, color: ctx.theme.text }, op('='));
       const red = reduce(dv.raw);
-      if (red.z !== dv.raw.z && red.n !== 1) r2.push(fItem(dv.raw, colP()), op('='));
+      // ungekürztes Zwischenergebnis zeigen, wenn es sich noch kürzen lässt (auch 24/4 = 6)
+      if (red.z !== dv.raw.z) r2.push(fItem(dv.raw, colP()), op('='));
       r2.push(...resultItems(dv.raw, colP()));
       return [
         { label: ctx.t('rowCommon'), items: r1 },
@@ -778,7 +789,9 @@ export default defineSimulation({
       card(R);
       const rows = durchRows();
       if (wide) {
-        const lw = 130;
+        // Platz für die längste Zeilenbeschriftung (EN „COMMON DENOMINATOR“ ist breiter als 130 px)
+        g.font = `800 11px ${F()}`;
+        const lw = Math.max(130, ...rows.map((row) => g.measureText(row.label.toUpperCase()).width + 22));
         rows.forEach((row, i) => {
           const cy = R.y + 33 + i * 58;
           smallCaps(row.label, R.x + 16, cy);
@@ -1007,28 +1020,46 @@ export default defineSimulation({
       const fres = frT(m.restOfStrip.z, m.restOfStrip.n, colB());
       const first =
         m.restParts === 0
-          ? rich('fitsExact', { c: fc, a: fa, k: bold(String(m.full), colP()) })
+          ? rich(m.full === 1 ? 'fitsExactOne' : 'fitsExact', { c: fc, a: fa, k: bold(String(m.full), colP()) })
           : m.full === 0
             ? rich('fitsNone', { c: fc, a: fa, r: fres })
-            : rich('fitsMany', { c: fc, a: fa, k: bold(String(m.full), colP()), r: fres });
-      const name = denomName(m.N);
+            : rich(m.full === 1 ? 'fitsManyOne' : 'fitsMany', { c: fc, a: fa, k: bold(String(m.full), colP()), r: fres });
       const second =
         x.n === m.N && y.n === m.N
           ? rich('piecesSame', { A: bold(String(m.A), colA()), C: bold(String(m.C), colB()) })
-          : rich('pieces', { a: fa, c: fc, A: bold(String(m.A), colA()), C: bold(String(m.C), colB()), name: bold(name, colP()) });
+          : rich('pieces', {
+              a: fa,
+              c: fc,
+              A: bold(String(m.A), colA()),
+              C: bold(String(m.C), colB()),
+              va: ctx.t(m.A === 1 ? 'isOne' : 'isMany'),
+              vc: ctx.t(m.C === 1 ? 'isOne' : 'isMany'),
+              nameA: bold(denomName(m.N, m.A), colP()),
+              nameC: bold(denomName(m.N, m.C), colP()),
+            });
       return [{ tokens: first }, { tokens: second, color: ctx.theme.muted }];
     }
 
-    /** Name der Bruchteile (Zwölftel, twelfths …), sonst „N-tel“. */
-    function denomName(n: number): string {
+    /** Name der Bruchteile (Zwölftel, twelfths …) passend zur Anzahl; ab 20 „20stel“ bzw. „21sts“. */
+    function denomName(n: number, count: number): string {
       if (lang === 'de') {
-        const w = ['', 'Ganze', 'Halbe', 'Drittel', 'Viertel', 'Fünftel', 'Sechstel', 'Siebtel', 'Achtel', 'Neuntel', 'Zehntel', 'Elftel', 'Zwölftel'];
+        if (n === 1) return count === 1 ? 'Ganzes' : 'Ganze';
+        if (n === 2) return count === 1 ? 'Halbes' : 'Halbe';
+        const w = ['', '', '', 'Drittel', 'Viertel', 'Fünftel', 'Sechstel', 'Siebtel', 'Achtel', 'Neuntel', 'Zehntel', 'Elftel', 'Zwölftel'];
         if (n < w.length) return w[n]!;
-        if (n < 20) return `${['', '', '', 'Drei', 'Vier', 'Fünf', 'Sechs', 'Sieb', 'Acht', 'Neun'][n - 10] ?? ''}zehntel`;
-        return `${n}-tel`;
+        if (n < 20) return `${['', '', '', 'Drei', 'Vier', 'Fünf', 'Sech', 'Sieb', 'Acht', 'Neun'][n - 10] ?? ''}zehntel`;
+        return `${n}stel`;
       }
-      const e = ['', 'wholes', 'halves', 'thirds', 'quarters', 'fifths', 'sixths', 'sevenths', 'eighths', 'ninths', 'tenths', 'elevenths', 'twelfths'];
-      return n < e.length ? e[n]! : `${n}ths`;
+      const e = ['', 'whole', 'half', 'third', 'quarter', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
+      let one: string;
+      if (n < e.length) one = e[n]!;
+      else {
+        const t = n % 100;
+        const suf = t >= 11 && t <= 13 ? 'th' : n % 10 === 1 ? 'st' : n % 10 === 2 ? 'nd' : n % 10 === 3 ? 'rd' : 'th';
+        one = `${n}${suf}`;
+      }
+      if (count === 1) return one;
+      return n === 2 ? 'halves' : `${one}s`;
     }
 
     /** Kehrwert-Szene: Wie oft passt der Divisor in 1? */
@@ -1138,8 +1169,10 @@ export default defineSimulation({
       if (mode() === 'mal') {
         const pr = multiply(x, y);
         const r = reduce(pr.raw);
-        const parts = [`${fracH(x)} · ${fracH(y)}`, frac(pr.raw.z, pr.raw.n)];
-        if (r.n === 1) parts.push(String(r.z));
+        const parts = [`${fracH(x)} · ${fracH(y)}`, fracH(pr.raw)];
+        if (r.n === 1) {
+          if (pr.raw.n !== 1) parts.push(String(r.z));
+        }
         else {
           if (r.z !== pr.raw.z) parts.push(frac(r.z, r.n));
           if (r.z > r.n) {
@@ -1148,7 +1181,7 @@ export default defineSimulation({
           }
         }
         ctx.readout('prod', { html: parts.join(' = ') });
-        ctx.readout('cells', lang === 'de' ? `${pr.cells} Felder; ein Ganzes hat ${pr.cellsPerWhole} Felder` : `${pr.cells} cells; one whole has ${pr.cellsPerWhole} cells`);
+        ctx.readout('cells', lang === 'de' ? `${pr.cells} ${pr.cells === 1 ? 'Feld' : 'Felder'}; ein Ganzes hat ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'Feld' : 'Felder'}` : `${pr.cells} ${pr.cells === 1 ? 'cell' : 'cells'}; one whole has ${pr.cellsPerWhole} ${pr.cellsPerWhole === 1 ? 'cell' : 'cells'}`);
         ctx.readout('quot', null);
         ctx.readout('common', null);
         ctx.readout('recip', null);
@@ -1157,7 +1190,7 @@ export default defineSimulation({
         const dv = divide(x, y);
         ctx.readout('prod', null);
         ctx.readout('cells', null);
-        ctx.readout('quot', { html: `${fracH(x)} ${ds} ${fracH(y)} = ${fracH(x)} · ${fracH(dv.viaReciprocal)} = ${fracR(dv.raw)}` });
+        ctx.readout('quot', { html: `${fracH(x)} ${ds} ${fracH(y)} = ${fracH(x)} · ${fracH(dv.viaReciprocal)} = ${dv.reduced.z !== dv.raw.z ? `${fracH(dv.raw)} = ` : ''}${fracR(dv.raw)}` });
         ctx.readout('common', { html: `${frac(m.A, m.N)} ${ds} ${frac(m.C, m.N)} = ${m.A} ${ds} ${m.C}` });
         ctx.readout('recip', { html: `${fracH(y)} → ${fracH(dv.viaReciprocal)}` });
       }

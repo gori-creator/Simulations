@@ -7,7 +7,11 @@ description: "Interaktive Simulation für die 9. und 10. Klasse: Sinus, Kosinus 
 In einem rechtwinkligen Dreieck heißt die Seite gegenüber dem rechten Winkel **Hypotenuse**, die beiden anderen Seiten sind die **Katheten**. Von einem spitzen Winkel aus gesehen liegt eine Kathete am Winkel an (**Ankathete**), die andere liegt ihm gegenüber (**Gegenkathete**). Für den Winkel $\alpha$ gilt:
 
 $$
-\sin \alpha = \frac{\text{Gegenkathete}}{\text{Hypotenuse}}, \qquad \cos \alpha = \frac{\text{Ankathete}}{\text{Hypotenuse}}, \qquad \tan \alpha = \frac{\text{Gegenkathete}}{\text{Ankathete}}
+\begin{gathered}
+\sin \alpha = \frac{\text{Gegenkathete}}{\text{Hypotenuse}} \\[4pt]
+\cos \alpha = \frac{\text{Ankathete}}{\text{Hypotenuse}} \\[4pt]
+\tan \alpha = \frac{\text{Gegenkathete}}{\text{Ankathete}}
+\end{gathered}
 $$
 
 Im Dreieck $ABC$ mit rechtem Winkel bei $C$ ist für $\alpha$ (bei $A$) also $\sin \alpha = \frac{a}{c}$, $\cos \alpha = \frac{b}{c}$ und $\tan \alpha = \frac{a}{b}$.
@@ -33,7 +37,7 @@ $$
 3. Tippe auf den Winkelbogen bei $B$ oder drücke „Bezugswinkel wechseln“. Beobachte, wohin die Namen „Gegenkathete“ und „Ankathete“ wandern. [Bezugswinkel β](?ref=b&al=35&c=8)
 4. Stelle [Tangens](?f=tan&al=45&c=7) ein. Warum ist $\tan 45° = 1$? Was passiert mit $\tan \alpha$ bei [85°](?f=tan&al=85&c=10)?
 5. [Einheitskreis](?mode=unit&al=30): Drücke „Winkel durchlaufen“ und beobachte die Tabelle der besonderen Werte. Wann ist $\sin \alpha = \cos \alpha$?
-6. [Winkel berechnen](?mode=inv&f=sin&go=3&hy=5): Lass dir die Lösung Schritt für Schritt zeigen. Was passiert, wenn die [Gegenkathete länger als die Hypotenuse](?mode=inv&f=sin&go=6&hy=5) ist?
+6. [Winkel berechnen](?mode=inv&f=sin&go=3&hy=5): Lass dir die Lösung Schritt für Schritt zeigen. Was passiert, wenn die Gegenkathete länger als die Hypotenuse ist? [Sonderfall](?mode=inv&f=sin&go=6&hy=5)
 7. Anwendungen: [Rampe](?mode=app&app=ramp&pc=6&rh=0.5), [Leiter](?mode=app&app=ladder&ll=4&al=70), [Turm](?mode=app&app=tower&d=50&al=32). Drücke „Rechnung durchspielen“ und ziehe die Punkte im Bild.
 
 ## Aufgaben
@@ -111,7 +115,7 @@ a) „$\sin \alpha$ kann nie größer als $1$ sein, $\tan \alpha$ aber schon.“
 <details>
 <summary>Lösung anzeigen</summary>
 
-a) Die Hypotenuse ist die längste Seite, also ist $\frac{\text{Gegenkathete}}{\text{Hypotenuse}} < 1$. Beim Tangens steht die Ankathete im Nenner; ab $45°$ ist die Gegenkathete länger, dann ist $\tan \alpha > 1$. [Sonderfall zeigen](?mode=inv&f=sin&go=6&hy=5)
+a) Die Hypotenuse ist die längste Seite, also ist $\frac{\text{Gegenkathete}}{\text{Hypotenuse}} < 1$. Beim Tangens steht die Ankathete im Nenner; für $\alpha > 45°$ ist die Gegenkathete länger als die Ankathete, dann ist $\tan \alpha > 1$. [Sonderfall zeigen](?mode=inv&f=sin&go=6&hy=5)
 
 b) Nach Pythagoras ist $a^2 + b^2 = c^2$. Teilt man durch $c^2$, folgt $\left(\frac{a}{c}\right)^2 + \left(\frac{b}{c}\right)^2 = 1$. [Am Einheitskreis zeigen](?mode=unit&al=35)
 

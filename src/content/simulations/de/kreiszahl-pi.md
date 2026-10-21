@@ -39,7 +39,7 @@ Ein Fahrradreifen hat einen Durchmesser von $70\,\text{cm}$. Wie weit kommt man 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$U = \pi \cdot 70\,\text{cm} \approx 220\,\text{cm} = 2{,}2\,\text{m}$. Für $1000\,\text{m}$ braucht man $1000 : 2{,}199 \approx 455$ Umdrehungen.
+$U = \pi \cdot 70\,\text{cm} \approx 219{,}9\,\text{cm} \approx 2{,}2\,\text{m}$. Für $1000\,\text{m}$ braucht man $1000\,\text{m} : 2{,}199\,\text{m} \approx 454{,}7$, also etwa $455$ Umdrehungen.
 
 </details>
 
@@ -67,12 +67,12 @@ Je schmaler die Sektoren, desto gerader werden die Bögen an Ober- und Unterkant
 
 ### Aufgabe 4: Wie Archimedes
 
-Beim Sechseck gilt $3 < \pi < 3{,}46$. Erkläre, warum das einbeschriebene Sechseck genau den Umfang $3d$ hat.
+Beim Sechseck gilt $3 < \pi < 3{,}4641$ (die Simulation zeigt diese Werte). Erkläre, warum das einbeschriebene Sechseck genau den Umfang $3d$ hat.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der Seitenlänge $r$. Sein Umfang ist $6r = 3d$. Da der Kreis außen herum etwas länger ist, gilt $\pi > 3$. [Sechseck zeigen](?mode=archimedes)
+Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der Seitenlänge $r$. Sein Umfang ist $6r = 3d$. Jeder Kreisbogen zwischen zwei Ecken ist länger als die Sechseckseite darunter. Also ist der Kreisumfang größer als $3d$, und es gilt $\pi > 3$. [Sechseck zeigen](?mode=archimedes)
 
 </details>
 
@@ -83,4 +83,3 @@ Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der 
 - **Häufige Stolpersteine:**
   - Umfang und Fläche werden verwechselt; $\pi r^2$ und $2\pi r$ werden vertauscht.
   - „π ist genau 3,14.“
-- **Bilder:** Rad und Pizza können durch Fotos ergänzt werden (siehe `docs/BILDER.md`).

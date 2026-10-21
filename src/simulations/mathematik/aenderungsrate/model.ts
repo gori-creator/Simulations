@@ -239,9 +239,11 @@ export function monotony(s: Situation, a: number, b: number, steps = 400): 'inc'
 export function signedAreas(s: Situation, t: number, steps = 2000): { pos: number; neg: number } {
   if (t <= 0) return { pos: 0, neg: 0 };
   if (s.abs) {
-    // exakt: ∫ r = pos + neg und ∫ |r| = pos − neg
-    const c = s.change(t);
-    const a = s.abs(t);
+    // exakt: ∫ r = pos + neg und ∫ |r| = pos − neg; wie bei distance()
+    // nur bis zum Ende T des Zeitraums (dahinter ist die Situation zu Ende)
+    const tc = Math.min(t, s.T);
+    const c = s.change(tc);
+    const a = s.abs(tc);
     const pos = (a + c) / 2;
     const neg = (c - a) / 2;
     return { pos: Math.abs(pos) < 1e-12 ? 0 : pos, neg: Math.abs(neg) < 1e-12 ? 0 : neg };

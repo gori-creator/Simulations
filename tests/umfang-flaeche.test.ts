@@ -208,3 +208,48 @@ describe('Modell: gleicher Umfang, gleicher Flächeninhalt', () => {
     expect(niceStep(144, 6)).toBe(50);
   });
 });
+
+describe('Prüfwerte und Aufgaben aus dem Lernmaterial', () => {
+  it('Prüfwert a = 7 cm, b = 3 cm: A = 21 cm², U = 20 cm, 21 Einheitsquadrate', () => {
+    expect(rectArea(7, 3)).toBe(21);
+    expect(rectPerimeter(7, 3)).toBe(20);
+    expect(unitCells(rectPolygon(7, 3))).toHaveLength(21);
+  });
+
+  it('gleicher Umfang U = 20 cm: Quadrat 5 × 5 mit 25 cm² am größten, 9 × 1 nur 9 cm²', () => {
+    const list = rectsWithPerimeter(20);
+    expect(list).toHaveLength(9);
+    expect(list.map(([a, b]) => a * b)).toEqual([9, 16, 21, 24, 25, 24, 21, 16, 9]);
+    expect(maxAreaRects(20)).toEqual([[5, 5]]);
+    expect(rectArea(9, 1)).toBe(9);
+  });
+
+  it('gleicher Flächeninhalt: A = 12 cm² → U = 26, 16, 14 cm; A = 24 cm² → 4 × 6 mit 20 cm', () => {
+    expect([rectPerimeter(1, 12), rectPerimeter(2, 6), rectPerimeter(3, 4)]).toEqual([26, 16, 14]);
+    expect(minPerimeterRects(24)).toEqual([
+      [4, 6],
+      [6, 4],
+    ]);
+    expect(rectPerimeter(4, 6)).toBe(20);
+    // A = 1 cm²: nur das Quadrat 1 × 1
+    expect(rectsWithArea(1)).toEqual([[1, 1]]);
+  });
+
+  it('Aufgaben 1, 2 und 4', () => {
+    expect([rectArea(8, 3), rectPerimeter(8, 3)]).toEqual([24, 22]);
+    expect([rectArea(5, 5), rectPerimeter(5, 5)]).toEqual([25, 20]);
+    expect([18 / 6, rectPerimeter(6, 3)]).toEqual([3, 18]);
+    expect(maxAreaRects(24)).toEqual([[6, 6]]);
+    expect([rectArea(5, 7), rectArea(1, 11)]).toEqual([35, 11]);
+  });
+
+  it('Aufgabe 5: L-Form 8 × 6 ohne 3 × 4 → A = 36 cm², U = 28 cm', () => {
+    expect(lArea(8, 6, 3, 4)).toBe(36);
+    expect(decompositionArea(lDecomposition(8, 6, 3, 4, 'waag'))).toBe(36);
+    expect(lDecomposition(8, 6, 3, 4, 'waag').parts.map((q) => q.w * q.h)).toEqual([16, 20]);
+    expect(decompositionArea(lDecomposition(8, 6, 3, 4, 'erg'))).toBe(36);
+    expect(lSides(8, 6, 3, 4)).toEqual([8, 2, 3, 4, 5, 6]);
+    expect(lPerimeter(8, 6, 3, 4)).toBe(28);
+    expect(unitCells(lPolygon(8, 6, 3, 4))).toHaveLength(36);
+  });
+});
