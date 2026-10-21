@@ -98,6 +98,8 @@ export default defineSimulation({
     const angleColor = (kind: AngleKind) =>
       !p.val
         ? ctx.theme.series[4]!
+        : kind === 'degenerate'
+          ? ctx.theme.text
         : kind === 'right'
           ? ctx.theme.series[2]!
           : kind === 'obtuse'
