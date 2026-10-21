@@ -18,6 +18,8 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
 | freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest). | offen |
+| radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | offen |
+| radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -58,4 +60,5 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | freier-fall | Auf dem Mond mit Δt = 0,4 s fehlen die Zahlen „1“ und „3“ an der Δs-Leiste, weil die ersten Abschnitte zu kurz sind. Zahlen seitlich versetzt trotzdem zeigen. | offen |
 | freier-fall | Im Reaktionstest berühren die ms-Zahlen am Lineal knapp die Finger. | offen |
 | planetenbahnen | Der Hilfetext zeigt „v_K“ mit Unterstrich (Hilfetexte sind vom Index-Kern bewusst ausgenommen). In der Simulation „v<sub>K</sub>“ bzw. „v_K“ als Unicode schreiben, sobald planetenbahnen geprüft wird. | offen |
+| radioaktiver-zerfall | Die EN-Zählrate „≈ 4.9/10⁹ a“ ist knapp formuliert; ausschreiben, z. B. „≈ 4.9 per 10⁹ years“. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
