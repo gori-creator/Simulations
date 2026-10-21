@@ -46,7 +46,7 @@ Berechne für $\vec a = \begin{pmatrix} 2 \\ 4 \\ 0 \end{pmatrix}$, $\vec b = \b
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\vec a + \vec b = \begin{pmatrix} 3 \\ 3 \\ 3 \end{pmatrix}$, $\vec a - \vec b = \begin{pmatrix} 1 \\ 5 \\ -3 \end{pmatrix}$, $|\vec a + \vec b| = \sqrt{27} \approx 5{,}20$. Zur Kontrolle: $\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix} + \begin{pmatrix} 2 \\ -1 \\ 0 \end{pmatrix} = \begin{pmatrix} 3 \\ 1 \\ 3 \end{pmatrix}$ und $\left|\begin{pmatrix} 2 \\ 3 \\ 6 \end{pmatrix}\right| = \sqrt{49} = 7$. [In der Simulation zeigen](?op=add)
+$\vec a + \vec b = \begin{pmatrix} 3 \\ 3 \\ 3 \end{pmatrix}$, $\vec a - \vec b = \begin{pmatrix} 1 \\ 5 \\ -3 \end{pmatrix}$, $|\vec a + \vec b| = \sqrt{27} \approx 5{,}20$. Zur Kontrolle: $|\vec a + \vec b| = \sqrt{27} \approx 5{,}20 < |\vec a| + |\vec b| = \sqrt{20} + \sqrt{11} \approx 7{,}79$ – die Längen addieren sich nicht. [In der Simulation zeigen](?op=add)
 
 </details>
 
@@ -63,7 +63,7 @@ $\overrightarrow{AB} = \begin{pmatrix} -4 \\ 4 \\ 2 \end{pmatrix}$, $\overline{A
 
 ### Aufgabe 3: Geht es oder nicht?
 
-Lässt sich $\vec c = \begin{pmatrix} 0 \\ 0 \\ 3 \end{pmatrix}$ als Linearkombination von $\vec a = \begin{pmatrix} 2 \\ 4 \\ 0 \end{pmatrix}$ und $\vec b = \begin{pmatrix} 1 \\ -1 \\ 3 \end{pmatrix}$ schreiben? [Aufgabe laden](?op=goal&c1=0&c2=0&c3=3&r=0.5&s=0.5&_hide=1)
+Lässt sich $\vec c = \begin{pmatrix} 0 \\ 0 \\ 3 \end{pmatrix}$ als Linearkombination von $\vec a = \begin{pmatrix} 2 \\ 4 \\ 0 \end{pmatrix}$ und $\vec b = \begin{pmatrix} 1 \\ -1 \\ 3 \end{pmatrix}$ schreiben? [Aufgabe laden](?op=goal&c1=0&c2=0&c3=3&r=0.5&s=0.5&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

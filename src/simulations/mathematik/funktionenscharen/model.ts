@@ -218,7 +218,7 @@ export const FAMS: Record<FamKey, Family> = {
     ],
   },
   // (x − k) · eˣ: Tiefpunkt (k − 1 | −e^(k−1)), Wendepunkt (k − 2 | −2e^(k−2)),
-  // keine gemeinsamen Punkte – alle Kurven sind gegeneinander verschoben
+  // keine gemeinsamen Punkte – zwei Scharkurven unterscheiden sich überall um (k₂ − k₁) · eˣ ≠ 0
   expk: {
     f: (k, x) => (x - k) * Math.exp(x),
     d1: (k, x) => (x - k + 1) * Math.exp(x),
