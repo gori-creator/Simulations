@@ -464,7 +464,7 @@ export default defineSimulation({
     /** Datenwert (Genauigkeit der Daten). */
     const vText = (v: number) => (axis.dec > 0 ? fmt.fixed(v, axis.dec) : fmt.num(v, 0));
     /** Kennwert (eine Stelle mehr, weil Median/Quartile zwischen zwei Werten liegen können). */
-    const sText = (v: number) => fmt.num(v, axis.dec + 1);
+    const sText = (v: number) => (Math.abs(v * 10 ** axis.dec - Math.round(v * 10 ** axis.dec)) < 1e-9 ? vText(v) : fmt.num(v, axis.dec + 1));
     const mText = (v: number) => fmt.num(v, Math.max(2, axis.dec + 1));
     /** „=“, wenn der Mittelwert mit den angezeigten Stellen exakt ist, sonst „≈“. */
     const meanRel = (v: number) => {

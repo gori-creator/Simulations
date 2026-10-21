@@ -16,17 +16,17 @@ Für die Punkte der Klasse 7a sind das $\bar{x} = \frac{295}{15} \approx 19{,}67
 
 **Median** (Zentralwert): Die Werte der Größe nach ordnen (**Rangliste**). Der Median steht genau in der Mitte. Bei $n = 15$ Werten ist es der $8.$ Wert. Bei gerader Anzahl gibt es zwei mittlere Werte; der Median ist ihr Mittelwert, bei $n = 12$ also $\frac{6.\text{ Wert} + 7.\text{ Wert}}{2}$. Mindestens die Hälfte der Werte ist kleiner oder gleich dem Median, mindestens die Hälfte größer oder gleich.
 
-**Quartile:** Der Median teilt die geordnete Liste in eine untere und eine obere Hälfte (bei ungerader Anzahl gehört der Median selbst zu keiner Hälfte). Das **untere Quartil** $Q_1$ ist der Median der unteren Hälfte, das **obere Quartil** $Q_3$ der Median der oberen Hälfte. In manchen Schulbüchern und Programmen werden die Quartile etwas anders festgelegt – bei kleinen Datensätzen können die Werte dann leicht abweichen.
+**Quartile:** Der Median teilt die geordnete Liste in eine untere und eine obere Hälfte (bei ungerader Anzahl gehört der Median selbst zu keiner Hälfte). Das **untere Quartil** $Q_1$ ist der Median der unteren Hälfte, das **obere Quartil** $Q_3$ der Median der oberen Hälfte. Beispiel: Bei $1;\ 2;\ \ldots;\ 9$ ist der Median $5$ und die untere Hälfte $1;\ 2;\ 3;\ 4$. Also ist $Q_1 = \frac{2 + 3}{2} = 2{,}5$ und $Q_3 = \frac{7 + 8}{2} = 7{,}5$. In manchen Schulbüchern und Programmen werden die Quartile etwas anders festgelegt – bei kleinen Datensätzen können die Werte dann leicht abweichen.
 
 **Streuung:** Die **Spannweite** ist $\text{Maximum} - \text{Minimum}$, der **Quartilsabstand** ist $Q_3 - Q_1$.
 
 Der **Boxplot** zeigt die fünf Kennwerte Minimum, $Q_1$, Median, $Q_3$ und Maximum auf einen Blick: Die **Box** reicht von $Q_1$ bis $Q_3$, der Strich in der Box ist der Median, die **Antennen** (Whisker) reichen bis zum Minimum und Maximum. Box und Antennen teilen die Daten grob in **vier Viertel** – in der Box liegt etwa die mittlere Hälfte der Werte.
 
-**Ausreißer:** Oft kennzeichnet man Werte, die mehr als das $1{,}5$-Fache des Quartilsabstands außerhalb der Box liegen, als Ausreißer. Die Antennen enden dann beim letzten Wert davor. Ein einziger Ausreißer kann den Mittelwert deutlich verschieben – den Median kaum.
+**Ausreißer:** Oft kennzeichnet man Werte, die mehr als das $1{,}5$-Fache des Quartilsabstands außerhalb der Box liegen, als Ausreißer. Die Antennen enden dann beim letzten Wert davor. Ein einziger Ausreißer kann den Mittelwert deutlich verschieben – den Median kaum: Bei $1;\ 2;\ 3;\ 4;\ 100$ ist $\bar{x} = \frac{110}{5} = 22$, der Median aber $3$.
 
 ## Ausprobieren
 
-1. Ziehe den höchsten Punkt ganz nach rechts. Was passiert mit dem Mittelwert, was mit dem Median? [Beispiel laden](?ctx=test)
+1. Ziehe den Punkt mit dem größten Wert ganz nach rechts. Was passiert mit dem Mittelwert, was mit dem Median? [Beispiel laden](?ctx=test)
 2. Klicke auf **Schritt für Schritt** und verfolge, wie der Boxplot aus der geordneten Liste entsteht.
 3. Beim Taschengeld bekommt ein Kind $90\,€$. Warum liegt der Mittelwert über fast allen anderen Werten? Schalte die Ausreißer-Kennzeichnung an und aus. [Taschengeld](?ctx=geld&out=1)
 4. Beim Weitsprung gibt es $12$ Werte. Wo steht der Median in der geordneten Liste? Füge durch Antippen des Zahlenstrahls einen 13. Wert hinzu – was ändert sich? [Weitsprung](?ctx=sprung)
@@ -106,7 +106,8 @@ Der mittlere Wert muss $10$ sein, die Summe $5 \cdot 20 = 100$. Zum Beispiel $5;
 
 - **Einsatz:** Jahrgangsstufe 7, Lernbereich „Kenngrößen von Daten“ (LehrplanPLUS Bayern, Gymnasium): Mittelwert und Median vergleichen, Spannweite und Quartile, Boxplots erstellen und deuten. Als Einstieg eignet sich vielleicht das Ziehen eines einzelnen Punktes; „Schritt für Schritt“ kann die Konstruktion an der Tafel begleiten.
 - **Eigene Daten:** Die Klasse könnte selbst Daten erheben (Schulweg, Schlafdauer, Weitsprung) und sie in das Feld „Werte“ eintippen. Im Vergleichsmodus lassen sich zwei Erhebungen nebeneinander betrachten.
-- **Quartile:** Die Simulation bildet die Quartile als Mediane der beiden Hälften (Median bei ungerader Anzahl ausgeschlossen). Falls im Schulbuch eine andere Festlegung steht, kann ein kurzer Hinweis Verwirrung vermeiden.
+- **Quartile:** Die Simulation bildet die Quartile als Mediane der beiden Hälften (Median bei ungerader Anzahl ausgeschlossen). Eine andere verbreitete Festlegung nimmt als $Q_1$ den kleinsten Wert, bis zu dem mindestens ein Viertel der Werte reicht (bei $1;\ \ldots;\ 9$ also $3$ statt $2{,}5$). Falls im Schulbuch eine andere Festlegung steht, kann ein kurzer Hinweis Verwirrung vermeiden.
+- **Ausreißer bei wenigen Werten:** Bei $1;\ 2;\ 3;\ 4;\ 100$ ist die Box sehr breit ($Q_1 = 1{,}5$, $Q_3 = 52$). Die $1{,}5$-Regel kennzeichnet die $100$ deshalb nicht als Ausreißer – den Mittelwert verschiebt sie trotzdem stark. [Ausprobieren](?ctx=own&d=1%3B2%3B3%3B4%3B100&out=1)
 - **Häufige Stolpersteine:**
   - Der Median wird aus der **ungeordneten** Urliste abgelesen.
   - Bei gerader Anzahl wird nur einer der beiden mittleren Werte genommen.
