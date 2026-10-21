@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die 13. Klasse: das Integral als Gesamtänderung – aus der Geschwindigkeit den Weg, aus der Zuflussrate die Füllmenge rekonstruieren, mit laufender Zeit, Rechtecksummen (links, rechts, Mitte), gestapelten Streifen, Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate."
+description: "Interaktive Simulation für die Jahrgangsstufe 13: das Integral als Gesamtänderung – aus der Geschwindigkeit den Weg, aus der Zuflussrate die Füllmenge rekonstruieren, mit laufender Zeit, Rechtecksummen (links, rechts, Mitte), gestapelten Streifen, Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate."
 ---
 
 ## Worum geht es?
@@ -83,7 +83,7 @@ Fehler $10\,\text{L}$, dann $5\,\text{L}$, dann $2{,}5\,\text{L}$. Bei einer ger
 
 ### Aufgabe 6: Maximum und Minimum
 
-Die Zuflussrate verläuft geradlinig durch $(0 \mid 2)$, $(10 \mid 4)$, $(20 \mid 0)$, $(30 \mid -3)$ und $(40 \mid 1)$ (Zeit in min, Rate in L/min); am Anfang sind $30\,\text{L}$ im Tank. Wann ist der Tank am vollsten, wann zwischendurch am leersten? Wie viel ist am Ende drin? [Aufgabe laden](?sit=own&t=40&v0=30&show=0&_hide=1)
+Die Zuflussrate verläuft stückweise linear (als Streckenzug) durch $(0 \mid 2)$, $(10 \mid 4)$, $(20 \mid 0)$, $(30 \mid -3)$ und $(40 \mid 1)$ (Zeit in min, Rate in L/min); am Anfang sind $30\,\text{L}$ im Tank. Wann ist der Tank am vollsten, wann zwischendurch am leersten? Wie viel ist am Ende drin? [Aufgabe laden](?sit=own&t=40&v0=30&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

@@ -347,6 +347,8 @@ export default defineSimulation({
     };
     const isExact = (v: number, d = 1) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
     const eq = (v: number, d = 1) => (isExact(v, d) ? '=' : '≈');
+    /** Vorzeichen ohne Leerzeichen für die Ergebnisliste; der Wert 0 erscheint nur als „0“ (ohne „±“) */
+    const Sr = (v: number, d = 1) => (clean(v, d) === 0 ? '0' : S(v, d).replace(' ', ''));
 
     /* ---------- Situation (exakt aus den Reglern) ---------- */
     let ownKey = '';
@@ -2412,11 +2414,11 @@ export default defineSimulation({
       const c = s.change(t);
       const v = (x: string) => `<var>${x}</var>`;
       const tt = N(t, 1);
-      ctx.readout('chg', { html: `Δ${v(m.b)} = ∫<sub>0</sub><sup>${tt}</sup> ${v(m.r)}(${v('u')}) d${v('u')} = <strong>${S(c, 1).replace('+ ', '+').replace('− ', '−')} ${m.bu}</strong>` });
-      ctx.readout('stock', { html: `${v(m.b)}(${tt}) = ${v(m.b)}(0) + Δ${v(m.b)} = ${N(b0, 1)} ${m.bu} ${S(c, 1)} ${m.bu} = <strong>${N(b0 + c, 1)} ${m.bu}</strong>` });
+      ctx.readout('chg', { html: `Δ${v(m.b)} = ∫<sub>0</sub><sup>${tt}</sup> ${v(m.r)}(${v('u')}) d${v('u')} = <strong>${Sr(c, 1)} ${m.bu}</strong>` });
+      ctx.readout('stock', { html: `${v(m.b)}(${tt}) = ${v(m.b)}(0) + Δ${v(m.b)} = ${N(b0, 1)} ${m.bu} ${clean(c, 1) === 0 ? '+ 0' : S(c, 1)} ${m.bu} = <strong>${N(b0 + c, 1)} ${m.bu}</strong>` });
       if (p.n > 0) {
         const sum = riemannSum(s, t, p.n, rule());
-        ctx.readout('sum', { html: `${v('S')}<sub>${p.n}</sub> (${say(RULE_NAME[rule()])}) ≈ <strong>${N(sum, 2)} ${m.bu}</strong> · ${T2('Fehler', 'error')} ${S(sum - c, 2).replace(' ', '')} ${m.bu}` });
+        ctx.readout('sum', { html: `${v('S')}<sub>${p.n}</sub> (${say(RULE_NAME[rule()])}) ${eq(sum, 2)} <strong>${N(sum, 2)} ${m.bu}</strong>; ${T2('Fehler', 'error')} ${Sr(sum - c, 2)} ${m.bu}` });
       } else ctx.readout('sum', null);
       const a = signedAreas(s, t);
       if (a.neg < -1e-6) ctx.readout('dist', { html: `∫<sub>0</sub><sup>${tt}</sup> |${v(m.r)}(${v('u')})| d${v('u')} = <strong>${N(distance(s, t), 1)} ${m.bu}</strong> – ${say(m.absName)}` });

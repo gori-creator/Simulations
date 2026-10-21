@@ -191,6 +191,17 @@ describe('Modell: Zu- und Abfluss, Extremstellen, eigene Rate', () => {
     expect(signedAreas(SITS.car, 60).neg).toBe(0);
     expect(signedAreas(SITS.car, 0)).toEqual({ pos: 0, neg: 0 });
   });
+  it('Flächenanteile wie distance() nur bis zum Ende T (Aufgabe 3: +40 L und −10 L)', () => {
+    const a30 = signedAreas(SITS.tank, 30);
+    expect(a30.pos).toBeCloseTo(40, 12);
+    expect(a30.neg).toBeCloseTo(-10, 12);
+    // hinter T = 40 min wird nichts mehr dazugezählt (vorher −90 L statt −40 L)
+    const a50 = signedAreas(SITS.tank, 50);
+    expect(a50.pos).toBeCloseTo(40, 12);
+    expect(a50.neg).toBeCloseTo(-40, 12);
+    expect(a50.pos - a50.neg).toBeCloseTo(distance(SITS.tank, 50), 12);
+    expect(signedAreas(SITS.back, 99)).toEqual(signedAreas(SITS.back, 40));
+  });
   it('Vorzeichenwechsel der Rate: Extremstellen des Bestands', () => {
     const tank = signChanges(SITS.tank);
     expect(tank).toHaveLength(1);
