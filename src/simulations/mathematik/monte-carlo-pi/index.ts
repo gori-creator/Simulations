@@ -1,5 +1,5 @@
-import { defineSimulation, drawImageFit, ease, Plot, roundRect, softShadow, Surface, text, type Rect } from '../../../sim-core';
-import { estimatePi, insideQuarterCircle, piFunnel } from './model';
+import { defineSimulation, drawImageFit, ease, Plot, prefersReducedMotion, roundRect, softShadow, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { estimateIsExact, estimatePi, insideQuarterCircle, piFunnel } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** So viele Punkte werden gespeichert und gezeichnet; darüber wird nur gezählt. */
@@ -8,7 +8,8 @@ const MAX_HISTORY = 500_000;
 const RING_MS = 700;
 
 function layout(w: number, h: number): { field: Rect; chart: Rect } {
-  if (w >= 700) {
+  // Nebeneinander, sobald die Bühne breit genug oder deutlich breiter als hoch ist (iPad, Laptop)
+  if (w >= 700 || w > h * 1.25) {
     const side = Math.min(h - 40, w * 0.46);
     return {
       field: { x: 24, y: (h - side) / 2, w: side, h: side },
@@ -46,7 +47,7 @@ export default defineSimulation({
       ],
       default: 'quarter',
     },
-    { key: 'funnel', type: 'boolean', group: 'view', label: L('Trichter (95 % der Versuchsreihen)', 'Funnel (95 % of runs)'), default: true },
+    { key: 'funnel', type: 'boolean', group: 'view', label: L('Trichter (95 % der Schätzwerte)', 'Funnel (95 % of estimates)'), default: true },
     { key: 'logScale', type: 'boolean', group: 'view', label: L('Anzahl n logarithmisch', 'Logarithmic n axis'), default: true },
     { key: 'speed', type: 'number', group: 'anim', label: L('Punkte pro Sekunde', 'Points per second'), min: 1, max: 2000, step: 1, default: 40 },
   ],
@@ -74,7 +75,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Zufallspunkte in einem Quadrat mit Kreis und Diagramm des Schätzwerts für π',
+      canvas: 'Ein Quadrat mit (Viertel-)Kreis: Zufallspunkte im Kreis als runde Punkte, außerhalb als kleine Quadrate, dazu Zähler. Daneben bzw. darunter ein Diagramm: Schätzwert 4 · k/n über der Anzahl n, gestrichelte Linie bei π und Trichter mit 95 % der Schätzwerte.',
       inside: 'im Kreis',
       outside: 'außerhalb',
       ratio: 'Kreisfläche : Quadratfläche = π : 4',
@@ -83,7 +84,7 @@ export default defineSimulation({
       drawn: 'gezeichnet: die ersten {n} Punkte',
     },
     en: {
-      canvas: 'Random points in a square with a circle and a chart of the estimate for π',
+      canvas: 'A square with a (quarter) circle; random points inside the circle as round dots, outside as small squares, with counters. Next to or below it, a chart of the estimate 4 · k/n against the number n, a dashed line at π and a funnel containing 95 % of the estimates.',
       inside: 'inside',
       outside: 'outside',
       ratio: 'circle area : square area = π : 4',
@@ -198,12 +199,21 @@ export default defineSimulation({
 
     function updateReadouts(): void {
       ctx.readout('n', fmt.num(n, 0));
-      ctx.readout('k', n ? `${fmt.num(k, 0)} (${fmt.num((k / n) * 100, 1)} %)` : '0');
+      // Anteil in Prozent: „=“-Fall ohne Zeichen, gerundeter Wert mit „≈“ und Endnull
+      const shareExact = n > 0 && (k * 1000) % n === 0;
+      ctx.readout('k', n ? `${fmt.num(k, 0)} (${shareExact ? fmt.num((k / n) * 100, 1) : `≈ ${fmt.fixed((k / n) * 100, 1)}`} %)` : '0');
       ctx.readout(
         'estimate',
-        n ? { html: `π ≈ 4 · <span class="frac"><span>${fmt.num(k, 0)}</span><span>${fmt.num(n, 0)}</span></span> = <strong>${fmt.num(estimatePi(k, n), 4)}</strong>` } : ctx.t('start'),
+        n
+          ? {
+              html: `π ≈ 4 · <span class="frac"><span>${fmt.num(k, 0)}</span><span>${fmt.num(n, 0)}</span></span> ${
+                estimateIsExact(k, n, 4) ? `= <strong>${fmt.num(estimatePi(k, n), 4)}</strong>` : `≈ <strong>${fmt.fixed(estimatePi(k, n), 4)}</strong>`
+              }`,
+            }
+          : ctx.t('start'),
       );
-      ctx.readout('error', n ? `${fmt.num(Math.abs(estimatePi(k, n) - Math.PI), 4)} (π = ${fmt.num(Math.PI, 5)}…)` : '–');
+      // π ist irrational: die Abweichung ist immer gerundet
+      ctx.readout('error', n ? `≈ ${fmt.fixed(Math.abs(estimatePi(k, n) - Math.PI), 4)} (π = ${fmt.num(Math.PI, 5)}…)` : '–');
     }
 
     function insideAt(i: number): boolean {
@@ -238,8 +248,11 @@ export default defineSimulation({
           if (insideAt(i) !== (pass === 0)) continue;
           const px = xs[i]! * field.w;
           const py = (1 - ys[i]!) * field.h;
-          lg.moveTo(px + r, py);
-          lg.arc(px, py, r, 0, Math.PI * 2);
+          // Treffer als Kreis, Nicht-Treffer als Quadrat (nicht nur über die Farbe unterscheidbar)
+          if (pass === 0) {
+            lg.moveTo(px + r, py);
+            lg.arc(px, py, r, 0, Math.PI * 2);
+          } else lg.rect(px - r * 0.9, py - r * 0.9, r * 1.8, r * 1.8);
         }
         lg.fill();
       }
@@ -253,7 +266,7 @@ export default defineSimulation({
       // Blatt mit Schatten
       g.save();
       softShadow(g, theme.dark, 20, 6);
-      g.fillStyle = theme.dark ? '#1c2230' : '#fffdf8';
+      g.fillStyle = theme.bg;
       g.fillRect(x, y, w, h);
       g.restore();
       const paper = ctx.images.get('paper');
@@ -274,7 +287,7 @@ export default defineSimulation({
       g.beginPath();
       g.moveTo(cx, cy);
       g.arc(cx, cy, radius, 0, Math.PI * 2);
-      g.fillStyle = theme.dark ? 'rgba(77,141,255,0.10)' : 'rgba(37,99,235,0.07)';
+      g.fillStyle = withAlpha(theme.series[0]!, theme.dark ? 0.1 : 0.07);
       g.fill();
       g.restore();
 
@@ -300,7 +313,9 @@ export default defineSimulation({
         g.restore();
         g.fillStyle = color;
         g.beginPath();
-        g.arc(px, py, r * (1 + 1.6 * (1 - ease.outBack(Math.min(1, age * 2)))), 0, Math.PI * 2);
+        const rr = r * (1 + 1.6 * (1 - ease.outBack(Math.min(1, age * 2))));
+        if (ring.inside) g.arc(px, py, rr, 0, Math.PI * 2);
+        else g.rect(px - rr * 0.9, py - rr * 0.9, rr * 1.8, rr * 1.8);
         g.fill();
       }
       while (rings.length && now > rings[0]!.t + RING_MS * 1.2) rings.shift();
@@ -327,7 +342,7 @@ export default defineSimulation({
         const badgeFont = `700 14px ${theme.font}`;
         g.font = badgeFont;
         const tw = g.measureText(label).width + 14;
-        g.fillStyle = theme.dark ? 'rgba(15,20,30,0.85)' : 'rgba(255,255,255,0.9)';
+        g.fillStyle = withAlpha(theme.bg, 0.9);
         roundRect(g, bx - tw / 2, by - 11, tw, 22, 8);
         g.fill();
         text(g, label, bx, by + 1, { font: badgeFont, color: theme.series[2]! });
@@ -360,22 +375,32 @@ export default defineSimulation({
       text(g, ctx.t('ratio'), x + w / 2, y - 14, { font: `600 13px ${theme.font}`, color: theme.muted });
 
       // Zähler
-      const chip = (label: string, value: string, color: string, cx2: number) => {
-        const fontChip = `700 13px ${theme.font}`;
+      const fontChip = `700 13px ${theme.font}`;
+      const chipWidth = (label: string) => {
         g.font = fontChip;
-        const tw = g.measureText(`${value} ${label}`).width + 26;
-        g.fillStyle = theme.dark ? 'rgba(15,20,30,0.85)' : 'rgba(255,255,255,0.92)';
-        roundRect(g, cx2 - tw / 2, y + h - 34, tw, 24, 12);
+        return g.measureText(label).width + 26;
+      };
+      const chip = (label: string, color: string, square: boolean, left: number, top: number) => {
+        const tw = chipWidth(label);
+        g.fillStyle = withAlpha(theme.bg, 0.92);
+        roundRect(g, left, top, tw, 24, 12);
         g.fill();
         g.fillStyle = color;
         g.beginPath();
-        g.arc(cx2 - tw / 2 + 12, y + h - 22, 4.5, 0, Math.PI * 2);
+        if (square) g.rect(left + 8, top + 8, 8, 8);
+        else g.arc(left + 12, top + 12, 4.5, 0, Math.PI * 2);
         g.fill();
-        text(g, `${value} ${label}`, cx2 + 6, y + h - 22, { font: fontChip, color: theme.text });
+        text(g, label, left + tw / 2 + 6, top + 12, { font: fontChip, color: theme.text });
       };
       if (n > 0) {
-        chip(ctx.t('inside'), fmt.num(k, 0), theme.series[0]!, x + w * 0.27);
-        chip(ctx.t('outside'), fmt.num(n - k, 0), theme.series[1]!, x + w * 0.73);
+        const inLabel = `${fmt.num(k, 0)} ${ctx.t('inside')}`;
+        const outLabel = `${fmt.num(n - k, 0)} ${ctx.t('outside')}`;
+        const wIn = chipWidth(inLabel);
+        const wOut = chipWidth(outLabel);
+        // Nebeneinander, wenn Platz ist; sonst übereinander (kleines Feld)
+        const side = wIn + wOut + 24 <= w;
+        chip(inLabel, theme.series[0]!, false, x + 8, y + h - 34);
+        chip(outLabel, theme.series[1]!, true, side ? x + w - 8 - wOut : x + 8, side ? y + h - 34 : y + h - 62);
       }
       if (stored < n) text(g, ctx.t('drawn').replace('{n}', fmt.num(stored, 0)), x + w / 2, y + h + 30, { font: `500 11px ${theme.font}`, color: theme.muted });
     }
@@ -417,7 +442,14 @@ export default defineSimulation({
         plot.text(toX(n), estimatePi(k, n), fmt.num(estimatePi(k, n), 3), { color: theme.series[0], align: 'right', offset: [-10, -12], weight: 'bold', size: 13 });
       } else {
         const r = plot.rect;
-        plot.textPx(r.x + r.w / 2, r.y + r.h * 0.25, ctx.t('start'), { color: theme.muted, size: 14 });
+        // Hinweis bei schmalem Diagramm auf zwei Zeilen umbrechen
+        const hint = ctx.t('start');
+        surface.g.font = `14px ${theme.font}`;
+        const words = hint.split(' ');
+        const lines = surface.g.measureText(hint).width > r.w - 24 && words.length > 1
+          ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')]
+          : [hint];
+        lines.forEach((line, i) => plot.textPx(r.x + r.w / 2, (plot.py(3.5) + plot.py(Math.PI)) / 2 + (i - (lines.length - 1) / 2) * 18, line, { color: theme.muted, size: 14, align: 'center' }));
       }
       plot.end();
     }
@@ -438,7 +470,10 @@ export default defineSimulation({
           updateReadouts();
           return;
         }
-        if (id === 'one') addPoints(1, true);
+        const count = id === 'one' ? 1 : id === 'ten' ? 10 : id === 'hundred' ? 100 : 1000;
+        // Reduzierte Bewegung: Punkte sofort, ohne Ring und ohne Nacheinander
+        if (prefersReducedMotion()) addPoints(count, false);
+        else if (id === 'one') addPoints(1, true);
         else if (id === 'ten') enqueue(10, 600);
         else if (id === 'hundred') enqueue(100, 900);
         else enqueue(1000, 1200);
@@ -448,7 +483,7 @@ export default defineSimulation({
         carry += dt * p.speed;
         const m = Math.min(20_000, Math.floor(carry));
         carry -= m;
-        if (m > 0) addPoints(m, p.speed <= 120);
+        if (m > 0) addPoints(m, p.speed <= 120 && !prefersReducedMotion());
       },
 
       resetTime() {
