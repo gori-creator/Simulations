@@ -1,4 +1,4 @@
-import { MINUS, type Formatter } from './format';
+import { MINUS, roundHalfUp, type Formatter } from './format';
 
 /**
  * Kleine Bausteine, um Funktionsterme als HTML zu schreiben, z. B.
@@ -40,7 +40,7 @@ function isOne(value: number): boolean {
 export function sum(terms: Term[], fmt: Formatter, decimals = 2): string {
   const parts: string[] = [];
   for (const term of terms) {
-    const rounded = Number(term.coef.toFixed(decimals));
+    const rounded = roundHalfUp(term.coef, decimals);
     if (rounded === 0) continue;
     const negative = rounded < 0;
     const magnitude = term.coefText ?? fmt.num(Math.abs(rounded), decimals);

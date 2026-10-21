@@ -4,11 +4,11 @@ import { registry } from '../simulations/registry';
 import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
-import { bindUnits, bindUnitsHtml, Formatter } from './format';
+import { bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
-import { defaultValues, resolveText, sanitize, valuesEqual } from './params';
-import { setSubLabel } from './rich-label';
+import { defaultValues, resolveHint, sanitize, valuesEqual } from './params';
+import { setSubLabel, setSubReadout } from './rich-label';
 import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
@@ -300,6 +300,7 @@ class SimulationHost {
     const banner = this.root.querySelector<HTMLElement>('[data-sim-lock]');
     if (banner) banner.hidden = !this.locked;
     for (const chip of this.root.querySelectorAll<HTMLButtonElement>('[data-sim-preset-list] .chip')) chip.disabled = this.locked;
+    this.syncHint();
     this.requestRender();
   }
 
@@ -386,8 +387,9 @@ class SimulationHost {
     const text = typeof value === 'string' ? `t:${value}` : `h:${value.html}`;
     if (text === row.last) return;
     row.last = text;
-    // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts)
-    if (typeof value === 'string') row.value.textContent = bindUnits(value);
+    // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts);
+    // reiner Text setzt „_“ wie die Beschriftungen als Index („F_max“)
+    if (typeof value === 'string') setSubReadout(row.value, value);
     else row.value.innerHTML = bindUnitsHtml(value.html);
   }
 
@@ -417,13 +419,14 @@ class SimulationHost {
 
   /**
    * Tipp unter der Bühne: eigener `hint` (fest oder abhängig von den Werten),
-   * sonst der allgemeine Hinweis von `dragHint`, sonst keiner.
+   * sonst der allgemeine Hinweis von `dragHint`, sonst keiner; bei gesperrten
+   * Links (`_lock=1`) gar keiner.
    */
   private syncHint(): void {
     const el = this.hintEl;
     if (!el) return;
-    const text = resolveText(this.def.hint, this.values, this.lang) ?? (this.def.dragHint ? this.dragHintText : '');
-    if (el.textContent !== text) el.textContent = text;
+    const text = resolveHint(this.def, this.values, this.lang, this.dragHintText, this.locked);
+    if (text && el.textContent !== text) el.textContent = text;
     el.hidden = !text;
   }
 

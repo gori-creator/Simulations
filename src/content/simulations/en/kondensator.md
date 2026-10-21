@@ -31,7 +31,7 @@ The dots are electrons, moving against the conventional current (red arrow) with
 
 ### Task 1: Time constant
 
-$C = 100\,\mu\text{F}$, $R = 10\,\text{k}\Omega$, $U_0 = 10\,\text{V}$. Find $\tau$, $I_0$ and $U_C(\tau)$. [Load task](?val=0&_hide=1)
+$C = 100\,\mu\text{F}$, $R = 10\,\text{k}\Omega$, $U_0 = 10\,\text{V}$. Find $\tau$, $I_0$ and $U_C(\tau)$. [Load task](?tan=0&val=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
