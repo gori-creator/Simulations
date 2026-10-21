@@ -208,11 +208,11 @@ export default defineSimulation({
   strings: {
     de: {
       canvas:
-        'Großes Koordinatensystem mit dem Graphen einer Funktion, ihrer waagrechten Asymptote y = L und dem ε-Schlauch um die Asymptote als leuchtendes Band. Eine senkrechte Marke zeigt die Stelle x_ε, ab der der Graph im Schlauch bleibt; dieser Teil ist grün, Stellen außerhalb davor sind rot. Ein Punkt P läuft auf dem Graphen nach außen, die Ansicht zoomt mit, ein Maßpfeil und eine Lupe zeigen den Abstand zur Asymptote. Unter dem Bild eine Zeitleiste mit logarithmischer x-Achse. Daneben Karten mit Term und Umformung, Grenzwert, Rechnung für x_ε, Wertetabelle und Gradregel. Ohne Grenzwert ein Probe-Schlauch, den der Graph verlässt.',
+        'Großes Koordinatensystem mit dem Graphen einer Funktion, ihrer waagrechten Asymptote y = L und dem ε-Schlauch um die Asymptote als leuchtendes Band. Eine senkrechte Marke zeigt die Stelle x_ε, ab der der Graph im Schlauch bleibt; dieser Teil ist grün, Stücke außerhalb des Schlauchs davor sind rot mit gepunkteter Mittellinie. Ein Punkt P läuft auf dem Graphen nach außen, die Ansicht zoomt mit, ein Maßpfeil und eine Lupe zeigen den Abstand zur Asymptote, eine Beschriftung nennt den Abstand mit „< ε“ oder „≥ ε“. Unter dem Bild eine Zeitleiste mit logarithmischer x-Achse und dem Abstand als Kurve unter bzw. über der ε-Linie. Daneben Karten mit Term und Umformung, Grenzwert, Rechnung für x_ε, Wertetabelle und Gradregel (bei sin(x)/x Einschachteln mit den gestrichelten Kurven y = ±1/|x|, bei Exponentialfunktionen ein Vergleich). Ohne Grenzwert ein verschiebbarer Probe-Schlauch um einen vermuteten Wert L, den der Graph an einer mit × markierten Stelle für immer verlässt, und Schranken, die f(x) überschreitet.',
     },
     en: {
       canvas:
-        'Large coordinate system with the graph of a function, its horizontal asymptote y = L and the ε-strip around the asymptote as a glowing band. A vertical marker shows the position x_ε beyond which the graph stays in the strip; that part is green, points outside before it are red. A point P runs outwards along the graph while the view zooms out; a dimension arrow and a magnifier show the distance to the asymptote. Below the picture a timeline with a logarithmic x-axis. Next to it cards with the term and its rewriting, the limit, the working for x_ε, a table of values and the degree rule. Without a limit a trial strip that the graph leaves.',
+        'Large coordinate system with the graph of a function, its horizontal asymptote y = L and the ε-strip around the asymptote as a glowing band. A vertical marker shows the position x_ε beyond which the graph stays in the strip; that part is green; pieces outside the strip before it are red with a dotted centre line. A point P runs outwards along the graph while the view zooms out; a dimension arrow and a magnifier show the distance to the asymptote, and a label gives the distance with “< ε” or “≥ ε”. Below the picture a timeline with a logarithmic x-axis and the distance as a curve below or above the ε-line. Next to it cards with the term and its rewriting, the limit, the working for x_ε, a table of values and the degree rule (for sin(x)/x squeezing between the dashed curves y = ±1/|x|, for exponential functions a comparison). Without a limit a movable trial strip around a guessed value L, which the graph leaves for good at a point marked ×, and bounds that f(x) exceeds.',
     },
   },
 
@@ -241,12 +241,25 @@ export default defineSimulation({
       P: () => th().series[3]!,
       env: () => th().series[5]!,
     };
+    /* Flächen, Linien, Schatten und Glanz nur aus dem Theme gemischt */
+    /** Schatten: dunkel aus dem Hintergrund, hell aus der Textfarbe. */
+    const shade = (dark: number, light: number) => (th().dark ? mixColor(th().bg, th().bg, 0, dark) : mixColor(th().text, th().text, 0, light));
+    /** Kartenfläche (im Dunkeln etwas heller als der Hintergrund). */
+    const surf = (lift = 0.045) => (th().dark ? mixColor(th().bg, th().text, lift) : th().bg);
+    /** Kartenrand. */
+    const edgeLine = () => mixColor(th().bg, th().text, th().dark ? 0.15 : 0.11);
+    /** Pillenhintergrund (leicht durchscheinend). */
+    const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.03 : 0, th().dark ? 0.9 : 0.94);
+    /** Glanzlicht: helle Farbe des Themes. */
+    const shine = () => (th().dark ? th().text : th().bg);
 
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => (Number.isFinite(v) ? fmt.num(clean(v, d), d) : '–');
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-7 * Math.max(1, Math.abs(v * 10 ** d));
+    const isExact = (v: number, d = 2, tol = 1e-7) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < tol * Math.max(1, Math.abs(v * 10 ** d));
     const eqS = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    /** Gerundete Werte mit Endnullen (2,0030), exakte ohne (2; 0,25). */
+    const NX = (v: number, d = 2) => (!Number.isFinite(v) ? '–' : isExact(v, d, 1e-9) ? N(v, d) : fmt.fixed(clean(v, d), d));
     const group3 = (s: string) => {
       const neg = s.startsWith('−');
       const body = neg ? s.slice(1) : s;
@@ -260,11 +273,11 @@ export default defineSimulation({
       const a = Math.abs(v);
       if (a >= 1e7) {
         const { mant, exp } = sciSplit(v);
-        return `${N(mant, 2)} · 10${supNum(exp)}`;
+        return `${NX(mant, 2)} · 10${supNum(exp)}`;
       }
       if (a >= 1e4) return group3(N(Math.round(v), 0));
-      if (a >= 1000) return N(v, Math.min(d, 1));
-      return N(v, d);
+      if (a >= 1000) return NX(v, Math.min(d, 1));
+      return NX(v, d);
     }
     /** Kleine Abstände: bis 0,001 mit vier Nachkommastellen, darunter als Zehnerpotenz. */
     function small(v: number): string {
@@ -272,17 +285,18 @@ export default defineSimulation({
       const a = Math.abs(v);
       if (a === 0) return '0';
       if (a >= 1e4) return big(v);
-      if (a >= 0.001) return N(v, 4);
+      if (a >= 0.001) return NX(v, 4);
       const { mant, exp } = sciSplit(v);
-      return `${N(mant, 2)} · 10${supNum(exp)}`;
+      return `${NX(mant, 2)} · 10${supNum(exp)}`;
     }
     /** Funktionswert für Tabelle und Beschriftung. */
-    const val = (v: number) => (Math.abs(v) >= 1e4 ? big(v) : Math.abs(v) >= 1e-3 || v === 0 ? N(v, 4) : small(v));
+    const val = (v: number) => (Math.abs(v) >= 1e4 ? big(v) : Math.abs(v) >= 1e-3 || v === 0 ? NX(v, 4) : small(v));
     const xLab = (x: number) => big(x, 2);
     /** Funktionswert nahe am Grenzwert: so viele Stellen, dass er nicht wie genau L aussieht. */
     const valNear = (v: number) => {
       const dd = conv() ? Math.abs(v - Lim()) : NaN;
-      return Number.isFinite(dd) && dd > 0 && dd < 5e-4 && Math.abs(v) < 1e4 ? N(v, clamp(Math.ceil(-Math.log10(dd)) + 1, 4, 8)) : val(v);
+      // nur bei Grenzwerten ≠ 0; Werte nahe 0 stehen als Zehnerpotenz da (wie in der Abstandsspalte)
+      return Number.isFinite(dd) && dd > 0 && dd < 5e-5 && Math.abs(v) >= 1e-3 && Math.abs(v) < 1e4 ? NX(v, clamp(Math.ceil(-Math.log10(dd)) + 1, 4, 8)) : val(v);
     };
     const dS = () => (dir() > 0 ? '+' : '−');
     const rel = () => (dir() > 0 ? '>' : '<');
@@ -398,10 +412,30 @@ export default defineSimulation({
       return e.c.v;
     }
     /** gezählte, formatierte Zahl; am Ziel exakt */
-    const cN = (id: string, v: number, d = 2) => {
+    const cN = (id: string, v: number, d = 2, fx: (v: number, d: number) => string = N) => {
       const s = cnt(id, v);
-      return Math.abs(s - v) < 1e-9 * Math.max(1, Math.abs(v)) ? N(v, d) : N(s, d);
+      // während des Zählens ohne Endnullen, damit nichts springt („6,87“ → „7“)
+      return Math.abs(s - v) < 1e-9 * Math.max(1, Math.abs(v)) ? fx(v, d) : N(s, d);
     };
+    /**
+     * x_ε exakt (=) oder gerundet (≈)? Numerisch bestimmte Stellen gelten als
+     * exakt, wenn dort genau |f(x) − L| = ε gilt (z. B. x · 2⁻ˣ, ε = 0,25: x_ε = 4).
+     */
+    function xeExact(xe: number): boolean {
+      if (!isExact(xe, 4)) return false;
+      if (!Number.isNaN(exactThreshold(key(), dir(), p.eps))) return true;
+      return Math.abs(Math.abs(fn(Math.round(xe)) - Lim()) - p.eps) < 1e-12;
+    }
+    /**
+     * Bedingung „für alle x > x_ε“: exakt mit der Zahl, sonst über x_ε selbst –
+     * „x > 8,42“ wäre bei x_ε ≈ 8,4232 knapp falsch.
+     */
+    function xeCond(xe: number, html = false): string {
+      const r = html ? (dir() > 0 ? '&gt;' : '&lt;') : rel();
+      const x = html ? '<var>x</var>' : 'x';
+      if (xeExact(xe)) return `${x} ${r} ${N(xe, 2)}`;
+      return `${x} ${r} ${html ? '<var>x</var><sub>ε</sub>' : 'x_ε'} ≈ ${NX(xe, 2)}`;
+    }
 
     /* ---------- Aufteilung (nach Breite UND Höhe) ---------- */
     const isWide = () => surface.width >= 640 || surface.width >= surface.height * 1.15;
@@ -615,8 +649,8 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = opts.fill ?? (th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)');
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
+      g.fillStyle = opts.fill ?? pillBg();
+      g.shadowColor = shade(0.45, 0.14);
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
       roundRect(g, rr.x, rr.y, rr.w, rr.h, Math.min(11, rr.h / 2));
@@ -662,11 +696,11 @@ export default defineSimulation({
         return;
       }
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.28)';
+      g.shadowColor = shade(0.55, 0.28);
       g.shadowBlur = 5;
       g.shadowOffsetY = 1;
       const grad = g.createRadialGradient(x - r * 0.35, y - r * 0.4, 0.5, x, y, r);
-      grad.addColorStop(0, mixColor(color, '#ffffff', 0.45));
+      grad.addColorStop(0, mixColor(color, shine(), 0.45));
       grad.addColorStop(1, color);
       g.fillStyle = grad;
       g.beginPath();
@@ -710,10 +744,10 @@ export default defineSimulation({
       const g = surface.g;
       const theme = th();
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.5, 0.1);
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = surf();
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -726,7 +760,7 @@ export default defineSimulation({
         g.fill();
       }
       g.save();
-      g.strokeStyle = dashed && accent ? withAlpha(accent, 0.55) : theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = dashed && accent ? withAlpha(accent, 0.55) : edgeLine();
       g.lineWidth = 1.2;
       if (dashed) g.setLineDash([5, 4]);
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
@@ -885,7 +919,7 @@ export default defineSimulation({
       };
       if (opts.glow) {
         g.save();
-        g.shadowColor = th().dark ? 'rgba(0,0,0,0.65)' : mixColor(color, '#ffffff', 0.4, 0.55);
+        g.shadowColor = th().dark ? shade(0.65, 0) : mixColor(color, th().bg, 0.4, 0.55);
         g.shadowBlur = th().dark ? 9 : 7;
         g.shadowOffsetY = 2;
         g.strokeStyle = color;
@@ -900,7 +934,7 @@ export default defineSimulation({
       g.stroke();
       if (opts.glow && width >= 2.5) {
         g.translate(0, -width * 0.22);
-        g.strokeStyle = withAlpha('#ffffff', th().dark ? 0.2 : 0.38);
+        g.strokeStyle = mixColor(shine(), shine(), 0, th().dark ? 0.2 : 0.38);
         g.lineWidth = Math.max(1, width * 0.3);
         path();
         g.stroke();
@@ -996,7 +1030,7 @@ export default defineSimulation({
         const gx = handleX();
         for (const y of [top, bot]) {
           g.save();
-          g.fillStyle = theme.dark ? '#1c2533' : '#ffffff';
+          g.fillStyle = surf(0.08);
           g.strokeStyle = withAlpha(edge, hl ? 1 : 0.8);
           g.lineWidth = 1.5;
           roundRect(g, gx - 13, y - 6, 26, 12, 6);
@@ -1161,6 +1195,8 @@ export default defineSimulation({
           const outSeg = (q: Pt, s: Pt) => d * q.x > 0 && d * s.x > 0 && d * q.x < d * xe && d * s.x < d * xe && Math.abs(q.v - mid) >= e && Math.abs(s.v - mid) >= e;
           strokePieces(pcs, col.ok(), w, { keep: okSeg, alpha: ka * kConv.v * kXe.v });
           strokePieces(pcs, col.out(), w, { keep: outSeg, alpha: ka * kConv.v * kXe.v });
+          // nicht nur über die Farbe: Stücke außerhalb tragen eine gepunktete Mittellinie
+          strokePieces(pcs, th().bg, 1.4, { keep: outSeg, dash: [1.5, 4.5], alpha: ka * kConv.v * kXe.v });
         }
         if (kConv.v < 0.99) {
           const xl = XL.v;
@@ -1168,6 +1204,7 @@ export default defineSimulation({
           const outSeg = (q: Pt, s: Pt) => has && d * q.x >= d * xl && d * s.x >= d * xl;
           const inSeg = (q: Pt, s: Pt) => d * q.x > 0 && d * s.x > 0 && Math.abs(q.v - mid) < e && Math.abs(s.v - mid) < e;
           strokePieces(pcs, col.out(), w, { keep: outSeg, alpha: ka * (1 - kConv.v) });
+          strokePieces(pcs, th().bg, 1.4, { keep: outSeg, dash: [1.5, 4.5], alpha: ka * (1 - kConv.v) });
           strokePieces(pcs, col.ok(), w, { keep: inSeg, alpha: ka * (1 - kConv.v) * 0.9 });
         }
       }
@@ -1179,7 +1216,7 @@ export default defineSimulation({
           const far = d > 0 ? b.xMax : b.xMin;
           const xc = lerp(xe, far, ease.outCubic(clamp01(t)));
           const wdt = Math.abs(far - xe) * 0.12 + 1e-9;
-          strokePieces(pcs, mixColor(col.ok(), '#ffffff', 0.35), fs(7, 6), { keep: between(Math.min(xc - wdt, xc + wdt), Math.max(xc - wdt, xc + wdt)), alpha: (1 - t) * 0.8, glow: true });
+          strokePieces(pcs, mixColor(col.ok(), shine(), 0.35), fs(7, 6), { keep: between(Math.min(xc - wdt, xc + wdt), Math.max(xc - wdt, xc + wdt)), alpha: (1 - t) * 0.8, glow: true });
         }
       }
     }
@@ -1227,7 +1264,7 @@ export default defineSimulation({
           }
           placed.push({ x: px - 3, y: r.y, w: 6, h: r.h });
           const xe = xEps();
-          const src = `\\c{ok}{x_ε ${eqS(xe, 2)} ${cN('xe', xe, 2)}}`;
+          const src = `\\c{ok}{x_ε ${xeExact(xe) ? '=' : '≈'} ${cN('xe', xe, 2, NX)}}`;
           fpillFree(
             [
               { x: px + d * 8, y: r.y + r.h - 34, align: d > 0 ? 'left' : 'right' },
@@ -1248,7 +1285,7 @@ export default defineSimulation({
           const px = clamp(plot.px(XE.v), r.x, r.x + r.w);
           const xe = xEps();
           const msg = Number.isFinite(xe)
-            ? `\\c{ok}{✓ \\t{${T2('ab', 'for')}} x ${rel()} ${N(xe, 2)} \\t{${T2('bleibt der Graph im Schlauch', 'the graph stays in the strip')}}}`
+            ? `\\c{ok}{✓ \\t{${T2('Für', 'For')}} ${xeCond(xe)} \\t{${T2('bleibt der Graph im Schlauch', 'the graph stays in the strip')}}}`
             : `\\c{ok}{✓ \\t{${T2('Der ganze Graph liegt im Schlauch', 'The whole graph lies in the strip')}}}`;
           const yy = (bp.top < r.y + r.h / 2 ? bp.bot + 34 : bp.top - 34) + (1 - s) * 10;
           fpill(px + d * 40, yy, msg, { align: d > 0 ? 'left' : 'right', size: fs(12.5, 11.5), alpha: al, bounds: r, border: withAlpha(col.ok(), 0.7) });
@@ -1284,7 +1321,7 @@ export default defineSimulation({
                 { x: px - d * 12, y: py - 22, align: d > 0 ? 'right' : 'left' },
                 { x: px + d * 12, y: py - 24, align: d > 0 ? 'left' : 'right' },
               ],
-              `\\c{out}{\\t{${T2('verlässt den Schlauch', 'leaves the strip')}}: x ≈ ${cN('xl', xl, 2)}}`,
+              `\\c{out}{\\t{${T2('verlässt den Schlauch', 'leaves the strip')}}: x ≈ ${cN('xl', xl, 2, NX)}}`,
               { size: fs(12, 11), alpha: ad, bounds: r, border: withAlpha(col.out(), 0.6) },
             );
           }
@@ -1393,7 +1430,7 @@ export default defineSimulation({
       const dist = Math.abs(yv - BM.goal);
       const ok = dist < p.eps;
       const lines: string[] = [`\\c{P}{P(${xLab(P.x)} | ${valNear(yv)})}`];
-      if (showD > 0.5) lines.push(`\\c{${p.band ? (ok ? 'ok' : 'out') : 'P'}}{|f(x) − ${N(BM.goal, 2)}| ${dist === 0 ? '=' : '≈'} ${small(cnt('pd', dist))}}`);
+      if (showD > 0.5) lines.push(`\\c{${p.band ? (ok ? 'ok' : 'out') : 'P'}}{|f(x) − ${N(BM.goal, 2)}| ${dist === 0 ? '=' : '≈'} ${small(cnt('pd', dist))}${p.band ? (ok ? ' < ε' : ' ≥ ε') : ''}}`);
       const above = py < ly;
       const sz = fs(12.5, 11.5);
       const yA = above ? py - 22 : py + 22;
@@ -1481,7 +1518,7 @@ export default defineSimulation({
       g.restore();
       // Glas
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.22)';
+      g.shadowColor = shade(0.6, 0.22);
       g.shadowBlur = 14;
       g.shadowOffsetY = 4;
       g.fillStyle = th().bg;
@@ -1530,8 +1567,8 @@ export default defineSimulation({
       arrowPx(cx, cy, cx, pY, col.P(), 2, 6, true);
       dot(cx, pY, col.P(), 4.5, 1);
       const gl = g.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-      gl.addColorStop(0, withAlpha('#ffffff', th().dark ? 0.1 : 0.35));
-      gl.addColorStop(0.45, withAlpha('#ffffff', 0));
+      gl.addColorStop(0, mixColor(shine(), shine(), 0, th().dark ? 0.1 : 0.35));
+      gl.addColorStop(0.45, mixColor(shine(), shine(), 0, 0));
       g.fillStyle = gl;
       g.fillRect(cx - R, cy - R, 2 * R, 2 * R);
       g.restore();
@@ -1572,7 +1609,7 @@ export default defineSimulation({
       if (kInfo.v > 0.5 && conv()) {
         const dist = Math.abs(v - Lim());
         const inside = dist < p.eps;
-        src += `   \\c{${p.band ? (inside ? 'ok' : 'out') : 'm'}}{|f(x) − ${N(Lim(), 2)}| ≈ ${small(dist)}}`;
+        src += `   \\c{${p.band ? (inside ? 'ok' : 'out') : 'm'}}{|f(x) − ${N(Lim(), 2)}| ≈ ${small(dist)}${p.band ? (inside ? ' < ε' : ' ≥ ε') : ''}}`;
       }
       const right = px < r.x + r.w * 0.55;
       fpill(px + (right ? 12 : -12), clamp(py, r.y + 30, r.y + r.h - 18) - 22, src, { align: right ? 'left' : 'right', size: fs(12, 11), bounds: r, border: withAlpha(col.f(), 0.5) });
@@ -1642,14 +1679,14 @@ export default defineSimulation({
       g.globalAlpha *= k.panel;
       // Hintergrund
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.45, 0.1);
       g.shadowBlur = 10;
       g.shadowOffsetY = 2;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = surf();
       roundRect(g, G.box.x, G.box.y, G.box.w, G.box.h, 16);
       g.fill();
       g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = edgeLine();
       g.lineWidth = 1.2;
       roundRect(g, G.box.x + 0.5, G.box.y + 0.5, G.box.w - 1, G.box.h - 1, 16);
       g.stroke();
@@ -1658,18 +1695,18 @@ export default defineSimulation({
       const hp = hover?.id === 'play';
       const pc = col.P();
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : withAlpha(pc, 0.4);
+      g.shadowColor = th().dark ? shade(0.5, 0) : withAlpha(pc, 0.4);
       g.shadowBlur = hp ? 10 : 6;
       g.shadowOffsetY = 1.5;
       const grad = g.createLinearGradient(0, G.play.y - G.play.r, 0, G.play.y + G.play.r);
-      grad.addColorStop(0, mixColor(pc, '#ffffff', hp ? 0.3 : 0.18));
+      grad.addColorStop(0, mixColor(pc, shine(), hp ? 0.3 : 0.18));
       grad.addColorStop(1, pc);
       g.fillStyle = grad;
       g.beginPath();
       g.arc(G.play.x, G.play.y, G.play.r * (hp ? 1.06 : 1), 0, TAU);
       g.fill();
       g.restore();
-      g.fillStyle = '#ffffff';
+      g.fillStyle = shine();
       if (playing) {
         g.fillRect(G.play.x - 5, G.play.y - 6, 3.5, 12);
         g.fillRect(G.play.x + 1.5, G.play.y - 6, 3.5, 12);
@@ -1804,7 +1841,7 @@ export default defineSimulation({
         const hl = hover?.id === `n${i}`;
         const rr = (hl ? 6.2 : 5.2) * (reached ? 1 : 0.9);
         g.save();
-        g.fillStyle = reached ? col.P() : theme.dark ? '#1c2533' : '#ffffff';
+        g.fillStyle = reached ? col.P() : surf(0.08);
         g.strokeStyle = reached ? theme.bg : withAlpha(col.P(), 0.8);
         g.lineWidth = 1.8;
         g.beginPath();
@@ -1821,9 +1858,9 @@ export default defineSimulation({
       // Regler-Knopf an der Stelle von P
       const kx = X(sP);
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.3)';
+      g.shadowColor = shade(0.5, 0.3);
       g.shadowBlur = 5;
-      g.fillStyle = theme.dark ? '#e6edf6' : '#ffffff';
+      g.fillStyle = shine();
       g.beginPath();
       g.arc(kx, G.ty, 7.5, 0, TAU);
       g.fill();
@@ -1911,7 +1948,12 @@ export default defineSimulation({
                 : side === 'below'
                   ? T2(`Waagrechte Asymptote y = ${N(Lim(), 2)}; der Graph nähert sich von unten (f(x) < ${N(Lim(), 2)}).`, `Horizontal asymptote y = ${N(Lim(), 2)}; the graph approaches from below (f(x) < ${N(Lim(), 2)}).`)
                   : T2(`Waagrechte Asymptote y = ${N(Lim(), 2)}. Der Graph schwingt um sie herum und schneidet sie immer wieder – das darf er.`, `Horizontal asymptote y = ${N(Lim(), 2)}. The graph oscillates around it and crosses it again and again – that is allowed.`);
-            rows.push(noteRow(sideTxt, fs(12, 11), th().text));
+            // knapp: kurze Fassung, damit auch die vierte Karte Platz hat (iPad quer)
+            const sideShort =
+              side === 'both'
+                ? T2(`Asymptote y = ${N(Lim(), 2)}; der Graph schneidet sie.`, `Asymptote y = ${N(Lim(), 2)}; the graph crosses it.`)
+                : T2(`Asymptote y = ${N(Lim(), 2)}, Annäherung von ${side === 'above' ? 'oben' : 'unten'}.`, `Asymptote y = ${N(Lim(), 2)}, approach from ${side === 'above' ? 'above' : 'below'}.`);
+            rows.push(noteRow(compact ? sideShort : sideTxt, fs(12, 11), th().text));
           } else {
             rows.push({ src: `\\c{out}{f(x) → ${Lim() > 0 ? '+' : '−'}∞}  \\t{${T2('für', 'as')}}  x → ${dS()}∞`, size: fs(16, 14.5), weight: 700, gap: 6, hl: col.out() });
             if (!compact) rows.push({ src: whySrc(kk, d), size: fs(12.5, 11.5), gap: 7 });
@@ -1930,7 +1972,7 @@ export default defineSimulation({
     function epsCard(k: Intro): CardFn {
       return (R, measure, compact) => {
         if (!infoShown()) {
-          const rows = [noteRow(T2('Der ε-Schlauch und die Stelle x_ε erscheinen, wenn der Grenzwert aufgedeckt ist.', 'The ε-strip and the position x_ε appear once the limit is revealed.'), fs(12.5, 11.5))];
+          const rows = [noteRow(T2('Der ε-Schlauch und die Stelle, ab der der Graph darin bleibt, erscheinen, wenn der Grenzwert aufgedeckt ist.', 'The ε-strip and the position from which the graph stays inside appear once the limit is revealed.'), fs(12.5, 11.5))];
           return formulaCard(R, measure, k, T2('ε-Schlauch', 'ε-strip'), th().muted, rows, '\\c{m}{?}', infoAlpha(), true);
         }
         const kk = key();
@@ -1941,35 +1983,34 @@ export default defineSimulation({
           const Ls = N(Lim(), 2);
           const xe = xEps();
           const steps: string[] = [];
-          let numeric = false;
+          /** „= 2,5“ bei exakten, „≈ 8,57“ bei gerundeten Zwischenwerten */
+          const eqv = (v: number) => `${eqS(v, 2)} ${NX(v, 2)}`;
           switch (kk) {
             case 'inv':
-              steps.push(`|f(x) − 1| = \\f{1}{|x|} < ${E}`, `⇔  |x| > \\f{1}{${E}} = ${N(1 / p.eps, 2)}`);
+              steps.push(`|f(x) − 1| = \\f{1}{|x|} < ${E}`, `⇔  |x| > \\f{1}{${E}} ${eqv(1 / p.eps)}`);
               break;
             case 'rat':
-              if (d > 0) steps.push(`|f(x) − 2| = \\f{3}{x − 1} < ${E}  \\c{m}{(x > 1)}`, `⇔  x − 1 > \\f{3}{${E}} = ${N(3 / p.eps, 2)}`);
-              else steps.push(`|f(x) − 2| = \\f{3}{1 − x} < ${E}  \\c{m}{(x < 1)}`, `⇔  1 − x > \\f{3}{${E}} = ${N(3 / p.eps, 2)}`);
+              if (d > 0) steps.push(`|f(x) − 2| = \\f{3}{x − 1} < ${E}  \\c{m}{(x > 1)}`, `⇔  x − 1 > \\f{3}{${E}} ${eqv(3 / p.eps)}`);
+              else steps.push(`|f(x) − 2| = \\f{3}{1 − x} < ${E}  \\c{m}{(x < 1)}`, `⇔  1 − x > \\f{3}{${E}} ${eqv(3 / p.eps)}`);
               break;
             case 'rat2':
-              steps.push(`|f(x) − 3| = \\f{2}{x^2 + 1} < ${E}`, `⇔  x^2 + 1 > \\f{2}{${E}} = ${N(2 / p.eps, 2)}`, `⇔  |x| > \\r{${N(2 / p.eps - 1, 2)}}`);
+              steps.push(`|f(x) − 3| = \\f{2}{x^2 + 1} < ${E}`, `⇔  x^2 + 1 > \\f{2}{${E}} ${eqv(2 / p.eps)}`, isExact(2 / p.eps - 1, 2) ? `⇔  |x| > \\r{${N(2 / p.eps - 1, 2)}}` : `⇔  |x| > \\r{\\f{2}{${E}} − 1}`);
               break;
             case 'low':
               steps.push(`|f(x)| = \\f{2|x|}{x^2 + 1} < ${E}`, `⇔  ${E}x^2 − 2|x| + ${E} > 0`, `⇔  |x| > \\f{1 + \\r{1 − ${E}^2}}{${E}}`);
               break;
             case 'osc':
-              steps.push(`|f(x)| ≤ \\f{1}{|x|} < ${E}  ⇔  |x| > ${N(boundThreshold(p.eps), 2)}`, `\\c{m}{\\t{${T2('sicher ab', 'certainly from')}} |x| = ${N(boundThreshold(p.eps), 2)}, \\t{${T2('genau: numerisch', 'exactly: numerically')}}}`);
-              numeric = true;
+              steps.push(`|f(x)| ≤ \\f{1}{|x|} < ${E}  ⇔  |x| > \\f{1}{${E}} ${eqv(boundThreshold(p.eps))}`, `\\c{m}{\\t{${T2('sicher für', 'certainly for')}} |x| > ${NX(boundThreshold(p.eps), 2)}, \\t{${T2('genau: numerisch', 'exactly: numerically')}}}`);
               break;
             case 'exp':
               steps.push(`|f(x) − 0| = 2^x < ${E}`, `⇔  x < \\t{log}_2 ${E}`);
               break;
             case 'xexp':
               steps.push(`|f(x)| = \\f{x}{2^x} < ${E}`, `\\c{m}{\\t{${T2('nicht nach x auflösbar – numerisch gelöst', 'cannot be solved for x – solved numerically')}}}`);
-              numeric = true;
               break;
             case 'logi':
-              if (d > 0) steps.push(`|f(x) − 1| = \\f{1}{2^x + 1} < ${E}`, `⇔  2^x > \\f{1}{${E}} − 1 = ${N(1 / p.eps - 1, 2)}`, `⇔  x > \\t{log}_2 ${N(1 / p.eps - 1, 2)}`);
-              else steps.push(`|f(x) − 0| = \\f{2^x}{2^x + 1} < ${E}`, `⇔  2^x < \\f{${E}}{1 − ${E}} = ${N(p.eps / (1 - p.eps), 2)}`, `⇔  x < \\t{log}_2 ${N(p.eps / (1 - p.eps), 2)}`);
+              if (d > 0) steps.push(`|f(x) − 1| = \\f{1}{2^x + 1} < ${E}`, `⇔  2^x > \\f{1}{${E}} − 1 ${eqv(1 / p.eps - 1)}`, isExact(1 / p.eps - 1, 2) ? `⇔  x > \\t{log}_2 ${N(1 / p.eps - 1, 2)}` : `⇔  x > \\t{log}_2 (\\f{1}{${E}} − 1)`);
+              else steps.push(`|f(x) − 0| = \\f{2^x}{2^x + 1} < ${E}`, `⇔  2^x < \\f{${E}}{1 − ${E}} ${eqv(p.eps / (1 - p.eps))}`, isExact(p.eps / (1 - p.eps), 2) ? `⇔  x < \\t{log}_2 ${N(p.eps / (1 - p.eps), 2)}` : `⇔  x < \\t{log}_2 \\f{${E}}{1 − ${E}}`);
               break;
             default:
               break;
@@ -1981,18 +2022,13 @@ export default defineSimulation({
           if (allX) {
             rows.push({ src: `\\c{ok}{\\t{${T2('gilt für alle x', 'holds for all x')}}}`, size: fs(14.5, 13.5), weight: 700, hl: col.ok(), gap: 7 });
           } else {
-            const exactShown = (!numeric && isExact(xe, 4)) || (isExact(xe, 4) && Math.abs(Math.abs(fn(Math.round(xe)) - Lim()) - p.eps) < 1e-12);
-            rows.push({ src: `\\c{ok}{x_ε ${exactShown ? '=' : '≈'} ${cN('xe2', xe, 2)}}`, size: fs(15, 14), weight: 750, hl: col.ok(), gap: 7 });
-            if (!compact)
-              rows.push(
-                noteRow(
-                  T2(`Für alle x ${rel()} ${N(xe, 2)} gilt |f(x) − ${Ls}| < ${E}: Der Graph bleibt im Schlauch. Je kleiner ε, desto weiter draußen liegt x_ε.`, `For all x ${rel()} ${N(xe, 2)}: |f(x) − ${Ls}| < ${E}, the graph stays in the strip. The smaller ε, the further out x_ε lies.`),
-                  fs(12, 11),
-                  th().text,
-                ),
-              );
+            rows.push({ src: `\\c{ok}{x_ε ${xeExact(xe) ? '=' : '≈'} ${cN('xe2', xe, 2, NX)}}`, size: fs(15, 14), weight: 750, hl: col.ok(), gap: 7 });
+            if (!compact) {
+              rows.push({ src: `\\t{${T2('Für alle', 'For all')}} ${xeCond(xe)}:  |f(x) − ${Ls}| < ${E}`, size: fs(12.5, 11.5), gap: 5 });
+              rows.push(noteRow(T2('Der Graph bleibt dort im Schlauch. Je kleiner ε, desto weiter draußen liegt diese Stelle.', 'There the graph stays in the strip. The smaller ε, the further out this position lies.'), fs(12, 11), th().text));
+            }
           }
-          if (kk === 'osc' && !compact) rows.push(noteRow(T2('Vor x_ε gibt es noch Ausschläge, die aus dem Schlauch ragen (rot).', 'Before x_ε there are still bumps that stick out of the strip (red).')));
+          if (kk === 'osc' && !compact) rows.push(noteRow(T2('Vor dieser Stelle gibt es noch Ausschläge, die aus dem Schlauch ragen (rot gepunktet).', 'Before this position there are still bumps that stick out of the strip (red, dotted).')));
           return formulaCard(R, measure, k, T2('ε-Schlauch', 'ε-strip'), col.ok(), rows, `\\c{L}{ε = ${E}}`, infoAlpha());
         }
         // ohne Grenzwert: Probe-Schlauch und Schranken
@@ -2001,7 +2037,7 @@ export default defineSimulation({
         rows.push({ src: `\\t{${T2('Vermutung', 'Guess')}}: \\c{out}{L = ${c}} ?   ${N(p.c - p.eps, 2)} < y < ${N(p.c + p.eps, 2)}`, size: fs(13, 12), gap: 7 });
         rows.push(
           Number.isFinite(xl)
-            ? { src: `\\c{out}{\\t{${T2('ab', 'from')}} x ≈ ${cN('xl2', xl, 2)}: \\t{${T2('für immer außerhalb', 'outside for good')}}}`, size: fs(13.5, 12.5), weight: 700, hl: col.out(), gap: 8 }
+            ? { src: `\\c{out}{\\t{${T2('ab', 'from')}} x ≈ ${cN('xl2', xl, 2, NX)}: \\t{${T2('für immer außerhalb', 'outside for good')}}}`, size: fs(13.5, 12.5), weight: 700, hl: col.out(), gap: 8 }
             : { src: `\\c{out}{\\t{${T2(`für x ${d > 0 ? '> 0' : '< 0'} nie im Schlauch`, `never in the strip for x ${d > 0 ? '> 0' : '< 0'}`)}}}`, size: fs(13.5, 12.5), weight: 700, hl: col.out(), gap: 8 },
         );
         if (!compact) {
@@ -2118,11 +2154,23 @@ export default defineSimulation({
           const theme = th();
           const pad = fs(14, 12);
           const rsz = fs(12.5, 11.5);
-          const rules = [`\\t{Grad Z < Grad N}:  f(x) → 0`, `\\t{Grad Z = Grad N}:  f(x) → \\f{a_Z}{a_N}`, `\\t{Grad Z > Grad N}:  f(x) → ±∞`].map((s) =>
+          const allRules = [`\\t{Grad Z < Grad N}:  f(x) → 0`, `\\t{Grad Z = Grad N}:  f(x) → \\f{a_Z}{a_N}`, `\\t{Grad Z > Grad N}:  f(x) → ±∞`].map((s) =>
             lang === 'de' ? s : s.replace(/Grad Z/g, 'deg Z').replace(/Grad N/g, 'deg N'),
           );
+          // knapp (z. B. iPad hoch): nur der zutreffende Fall, damit die Karte noch Platz hat
+          const caseIdx = di.case === 'lt' ? 0 : di.case === 'eq' ? 1 : 2;
+          const only = compact && show;
+          // knapp: Fall und Ergebnis in einer Zeile, ohne die Zeile mit Zähler und Nenner
+          const lab = allRules[caseIdx]!.split(':')[0]!;
+          const onlyRule =
+            di.case === 'eq'
+              ? `${lab}:  f(x) → \\f{${N(di.zLead, 2)}}{${N(di.nLead, 2)}} = \\c{L}{${N(di.zLead / di.nLead, 2)}}`
+              : di.case === 'lt'
+                ? `${lab}:  f(x) → \\c{L}{0}`
+                : `${lab}:  f(x) → \\c{out}{${Lim() > 0 ? '+' : '−'}∞}`;
+          const rules = only ? [onlyRule] : allRules;
           const boxes = rules.map((s) => fit(s, R.w - 2 * pad - 8, rsz, theme.text, 600, 11));
-          const rhs = boxes.map((b) => Math.max(rowH(b) + 8, fs(26, 24)));
+          const rhs = boxes.map((b) => (only ? rowH(b) + 8 : Math.max(rowH(b) + 8, fs(26, 24))));
           const pair = RATIO_SRC[kk];
           const zs = pair ? pair[0] : `${N(0.1, 1)}x^3 − x`;
           const ns = pair ? pair[1] : '1';
@@ -2137,7 +2185,7 @@ export default defineSimulation({
           const note = T2('Z: Zähler, N: Nenner, a: Leitkoeffizienten.', 'Z: numerator, N: denominator, a: leading coefficients.');
           const nf = `550 ${fs(11.5, 11)}px ${theme.font}`;
           const nl = compact ? [] : wrapText(note, R.w - 2 * pad, nf);
-          const h = 38 + rhs.reduce((s, v) => s + v, 0) + 6 + rowH(cb) + 8 + nl.length * fs(11.5, 11) * 1.32 + 8;
+          const h = 38 + rhs.reduce((s, v) => s + v, 0) + (only ? 0 : 6 + rowH(cb) + 8) + nl.length * fs(11.5, 11) * 1.32 + 8;
           if (measure) return h;
           card(R, col.L());
           cardTitle(R, T2('Zählergrad und Nennergrad', 'Degrees of numerator and denominator'), col.L(), show ? `\\c{L}{Z: ${di.zDeg},  N: ${di.nDeg}}` : undefined);
@@ -2151,10 +2199,12 @@ export default defineSimulation({
             y += v;
           }
           if (show) {
-            const i0 = Math.floor(clamp(kCase.v, 0, 2));
-            const t = clamp(kCase.v, 0, 2) - i0;
-            const hy = lerp(ys[i0]!, ys[Math.min(2, i0 + 1)]!, t);
-            const hh = lerp(rhs[i0]!, rhs[Math.min(2, i0 + 1)]!, t);
+            const last = rules.length - 1;
+            const kc = only ? 0 : clamp(kCase.v, 0, last);
+            const i0 = Math.floor(kc);
+            const t = kc - i0;
+            const hy = lerp(ys[i0]!, ys[Math.min(last, i0 + 1)]!, t);
+            const hh = lerp(rhs[i0]!, rhs[Math.min(last, i0 + 1)]!, t);
             g.fillStyle = withAlpha(col.L(), theme.dark ? 0.22 : 0.12);
             roundRect(g, R.x + pad - 6, hy - 1, R.w - 2 * pad + 12, hh - 4, 8);
             g.fill();
@@ -2170,7 +2220,7 @@ export default defineSimulation({
             g.restore();
           });
           y += 4;
-          cb.draw(g, R.x + pad, y + cb.asc);
+          if (!only) cb.draw(g, R.x + pad, y + cb.asc);
           y += rowH(cb) + 8;
           g.font = nf;
           g.fillStyle = theme.muted;
@@ -2187,7 +2237,7 @@ export default defineSimulation({
           title = T2('Einschachteln', 'Squeezing');
           if (show) {
             rows.push({ src: '\\c{e}{−\\f{1}{|x|}} ≤ \\f{\\t{sin} x}{x} ≤ \\c{e}{\\f{1}{|x|}}', size: fs(13.5, 12.5), gap: 8 });
-            rows.push({ src: '\\c{e}{\\f{1}{|x|}} → 0   ⇒   f(x) → \\c{L}{0}', size: fs(13, 12), gap: 8 });
+            if (!compact) rows.push({ src: '\\c{e}{\\f{1}{|x|}} → 0   ⇒   f(x) → \\c{L}{0}', size: fs(13, 12), gap: 8 });
             if (!compact) rows.push(noteRow(T2('Der Graph liegt zwischen den gestrichelten Kurven y = ±1/|x| und schneidet die Asymptote y = 0 bei x = kπ – unendlich oft.', 'The graph lies between the dashed curves y = ±1/|x| and crosses the asymptote y = 0 at x = kπ – infinitely often.')));
           } else rows.push(noteRow(T2('Tipp: Wie groß kann |sin x| höchstens werden?', 'Hint: how large can |sin x| be at most?'), fs(12.5, 11.5)));
         } else {
@@ -2207,7 +2257,9 @@ export default defineSimulation({
             if (!compact) rows.push(noteRow(T2('Zwei verschiedene waagrechte Asymptoten: y = 1 rechts und y = 0 links.', 'Two different horizontal asymptotes: y = 1 on the right and y = 0 on the left.')));
           }
         }
-        return formulaCard(R, measure, k, title, kk === 'osc' ? col.env() : col.L(), rows, undefined, infoAlpha());
+        // knapp: nur die Zeile zur gewählten Richtung (hervorgehoben), damit die Karte auf das iPad passt
+        const shown = compact && rows.some((r) => r.hl) ? rows.filter((r) => r.hl) : rows;
+        return formulaCard(R, measure, k, title, kk === 'osc' ? col.env() : col.L(), shown, undefined, infoAlpha());
       };
     }
 
@@ -2274,7 +2326,7 @@ export default defineSimulation({
         ctx.readout(
           'xe',
           Number.isFinite(xe)
-            ? { html: `ε = ${N(p.eps, 2)}: |<var>f</var>(<var>x</var>) − ${Ls}| &lt; ${N(p.eps, 2)} ${T2('für alle', 'for all')} <var>x</var> ${rel() === '>' ? '&gt;' : '&lt;'} ${N(xe, 2)}` }
+            ? { html: `ε = ${N(p.eps, 2)}: |<var>f</var>(<var>x</var>) − ${Ls}| &lt; ${N(p.eps, 2)} ${T2('für alle', 'for all')} ${xeCond(xe, true)}` }
             : { html: `ε = ${N(p.eps, 2)}: ${T2('für alle', 'for all')} <var>x</var>` },
         );
       } else {
@@ -2284,7 +2336,7 @@ export default defineSimulation({
         ctx.readout(
           'xe',
           Number.isFinite(xl)
-            ? T2(`Probe-Schlauch um ${N(p.c, 1)} (ε = ${N(p.eps, 2)}): für immer verlassen ab x ≈ ${N(xl, 2)}`, `Trial strip around ${N(p.c, 1)} (ε = ${N(p.eps, 2)}): left for good from x ≈ ${N(xl, 2)}`)
+            ? T2(`Probe-Schlauch um ${N(p.c, 1)} (ε = ${N(p.eps, 2)}): für immer verlassen ab x ≈ ${NX(xl, 2)}`, `Trial strip around ${N(p.c, 1)} (ε = ${N(p.eps, 2)}): left for good from x ≈ ${NX(xl, 2)}`)
             : T2(`Probe-Schlauch um ${N(p.c, 1)}: auf dieser Seite nie getroffen`, `Trial strip around ${N(p.c, 1)}: never reached on this side`),
         );
       }
