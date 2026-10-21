@@ -193,6 +193,10 @@ export function sigma(kind: SmoothKey, k: number, N: number): number {
   if (k > N) return 0;
   if (kind === 'fejer') return 1 - k / (N + 1);
   if (kind === 'lanczos') {
+    // Konvention σₖ = sinc(πk/(N + 1)) (in der Literatur auch sinc(πk/N)): Mit N + 1 im
+    // Nenner verschwindet erst das nächste, nicht mehr berücksichtigte Glied (σ_{N+1} = 0).
+    // So trägt das höchste Glied k = N noch bei – passend zu Fejér, das ebenfalls
+    // 1 − k/(N + 1) verwendet –, und für N = 1 bleibt S₁ nicht null.
     const u = (PI * k) / (N + 1);
     return Math.sin(u) / u;
   }
@@ -327,6 +331,8 @@ export interface Features {
   evenOnly: boolean;
   /** Abfall der Amplituden: 1 (Sprünge), 2 (Knicke), 0 (endlich viele Glieder) */
   decay: 0 | 1 | 2;
+  /** höchste Ordnung k ≤ K mit cₖ ≠ 0 (0, wenn alle Glieder verschwinden); bei endlich vielen Gliedern ist S_N ab N = top exakt */
+  top: number;
 }
 
 /** Symmetrien aus den Koeffizienten ablesen (bis K), Abfall aus der Signalart. */
@@ -337,14 +343,16 @@ export function features(spec: SeriesSpec, K = 24): Features {
   let anyB = false;
   let anyEven = false;
   let anyOdd = false;
+  let top = 0;
   for (let k = 1; k <= K; k++) {
     const nz = Math.hypot(co.a[k]!, co.b[k]!) > eps;
     if (Math.abs(co.a[k]!) > eps) anyA = true;
     if (Math.abs(co.b[k]!) > eps) anyB = true;
     if (nz && k % 2 === 0) anyEven = true;
     if (nz && k % 2 === 1) anyOdd = true;
+    if (nz) top = k;
   }
   const dc = Math.abs(co.mean) > eps;
   const decay: 0 | 1 | 2 = spec.sig === 'own' ? 0 : jumpHeight(spec.sig) > 0 ? 1 : 2;
-  return { even: !anyB, odd: !anyA && !dc, halfWave: !anyEven && !dc, evenOnly: !anyOdd, decay };
+  return { even: !anyB, odd: !anyA && !dc, halfWave: !anyEven && !dc, evenOnly: !anyOdd, decay, top };
 }

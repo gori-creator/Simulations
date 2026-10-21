@@ -149,7 +149,7 @@ export default defineSimulation({
     {
       key: 'n',
       type: 'number',
-      label: L('Anzahl Teilschwingungen N', 'Number of harmonics N'),
+      label: L('Höchste Ordnung N', 'Highest order N'),
       help: L('Ordnung der höchsten Teilschwingung in der Partialsumme. Im Spektrum kann man auch einen Balken antippen.', 'Order of the highest harmonic in the partial sum. In the spectrum you can also tap a bar.'),
       min: 1,
       max: NMAX,
@@ -187,7 +187,7 @@ export default defineSimulation({
       type: 'number',
       group: 'sig',
       label: L('Flankenanteil w', 'Edge share w'),
-      help: L('Breite der schrägen Flanken: w → 0 ergibt das Rechteck, w = 100 % das Dreieck.', 'Width of the sloped edges: w → 0 gives the square wave, w = 100 % the triangle.'),
+      help: L('Breite der schrägen Flanken: w → 0 ergibt das Rechteck, w = 100 % ein (um 90° verschobenes) Dreieck.', 'Width of the sloped edges: w → 0 gives the square wave, w = 100 % a triangle (shifted by 90°).'),
       min: 5,
       max: 100,
       step: 5,
@@ -266,13 +266,13 @@ export default defineSimulation({
   ],
   resultsParam: 'info',
   presets: [
-    { id: 'sq', label: L('Rechteck mit 3 Teilschwingungen', 'Square wave with 3 harmonics'), values: {} },
+    { id: 'sq', label: L('Rechteck bis k = 3', 'Square wave up to k = 3'), values: {} },
     { id: 'epi', label: L('Zeiger zeichnen ein Rechteck', 'Phasors draw a square wave'), values: { view: 'epi', n: 7 } },
     { id: 'gibbs', label: L('Gibbs-Phänomen', 'Gibbs phenomenon'), values: { sig: 'sq', n: 30, x: 0.1 } },
     { id: 'fejer', label: L('Glättung nach Fejér gegen Gibbs', 'Fejér smoothing against Gibbs'), values: { sig: 'sq', n: 30, x: 0.1, sm: 'fejer' } },
     { id: 'saw', label: L('Sägezahn', 'Sawtooth'), values: { sig: 'saw', n: 6 } },
     { id: 'tri', label: L('Dreieck: schnelle Konvergenz', 'Triangle: fast convergence'), values: { sig: 'tri', n: 3 } },
-    { id: 'clar', label: L('Klarinette: fast nur ungerade Obertöne', 'Clarinet: almost only odd overtones'), values: { view: 'spec', sig: 'sq', n: 11, f0: 147 } },
+    { id: 'clar', label: L('Klarinette: fast nur ungeradzahlige Teiltöne (k = 1, 3, 5, …)', 'Clarinet: almost only odd harmonics (k = 1, 3, 5, …)'), values: { view: 'spec', sig: 'sq', n: 11, f0: 147 } },
     { id: 'violin', label: L('Geige: Sägezahn mit allen Obertönen', 'Violin: sawtooth with all overtones'), values: { view: 'stack', sig: 'saw', n: 8, f0: 440, x: 2 } },
     { id: 'flute', label: L('Flöte: fast reiner Sinus', 'Flute: almost a pure sine'), values: { view: 'spec', sig: 'tri', n: 5, f0: 523 } },
     { id: 'synth', label: L('Synthesizer: eigener Klang aus Zeigern', 'Synthesizer: own sound from phasors'), values: { view: 'epi', sig: 'own', n: 8, c1: 1, c2: 0.5, c3: 0.35, c4: 0.25, c5: 0, c6: 0, c7: 0, c8: 0 } },
@@ -661,7 +661,8 @@ export default defineSimulation({
     /** Zusatz zur Reihe (Parameter der Form). */
     function seriesNote(): string | null {
       const s = sig();
-      if (s === 'pulse') return `d = ${n(p.d / 100, 2)}${say(L(', nur cos-Glieder', ', cosine terms only'))}`;
+      // nur ohne Phasenverschiebung ist der Puls gerade (reine Kosinusreihe)
+      if (s === 'pulse') return `d = ${n(p.d / 100, 2)}${p.ph === 0 ? say(L(', nur cos-Glieder', ', cosine terms only')) : ''}`;
       if (s === 'trap') return `α = \\f{w · π}{2} = ${n((p.w / 100) * (PI / 2), 3)}${say(L(', k ungerade', ', k odd'))}`;
       return null;
     }
@@ -1850,7 +1851,9 @@ export default defineSimulation({
       if (Math.abs(coT.mean) > 1e-9) rows.push({ src: `${say(L('Gleichanteil', 'DC part'))} \\f{a_0}{2} = ${Q(n(coT.mean, 3))}`, color: theme.text });
       if (fe.decay === 1) rows.push({ src: say(L('Sprünge → Â_k ∼ \\f{1}{k}, Gibbs ≈ 9 %', 'jumps → Â_k ∼ \\f{1}{k}, Gibbs ≈ 9 %')), color: col.x() });
       else if (fe.decay === 2) rows.push({ src: say(L('nur Knicke → Â_k ∼ \\f{1}{k²}, schnelle Konvergenz', 'kinks only → Â_k ∼ \\f{1}{k²}, fast convergence')), color: th().series[2]! });
-      else rows.push({ src: say(L('endlich viele Glieder → exakt ab N = 8', 'finitely many terms → exact from N = 8')), color: th().series[2]! });
+      // endlich viele Glieder: exakt ab der höchsten Ordnung mit cₖ ≠ 0
+      else if (fe.top === 0) rows.push({ src: say(L('alle cₖ = 0 → S_N = 0 für jedes N', 'all cₖ = 0 → S_N = 0 for every N')), color: th().series[2]! });
+      else rows.push({ src: say(L(`endlich viele Glieder → exakt ab N = ${fe.top}`, `finitely many terms → exact from N = ${fe.top}`)), color: th().series[2]! });
       // Zeilen, die nicht passen, am Pfeil umbrechen
       const maxW = R.w - 2 * pad - 16;
       const fsz = fs(12.5, 11.5);
@@ -1858,7 +1861,10 @@ export default defineSimulation({
         const whole = formula(g, r.src, fstyle(fsz, theme.text, 600));
         if (whole.w <= maxW || !r.src.includes(' → ')) return [whole.w <= maxW ? whole : fit(r.src, maxW, fsz, theme.text, 600)];
         const [a, b] = r.src.split(' → ');
-        return [fit(a!, maxW, fsz, theme.text, 600), fit(`→ ${b}`, maxW - 8, fsz, theme.muted, 600)];
+        let second = fit(`→ ${b}`, maxW - 8, fsz, theme.muted, 600);
+        // sehr schmale Karte (Handy): Klammerzusatz wie „(a_k = 0)“ weglassen statt abschneiden
+        if (second.w > maxW - 8 && b!.includes(' (')) second = fit(`→ ${b!.slice(0, b!.indexOf(' ('))}`, maxW - 8, fsz, theme.muted, 600);
+        return [fit(a!, maxW, fsz, theme.text, 600), second];
       });
       const lineH = (b: FormulaBox) => Math.max(b.asc + b.desc, 14);
       const h = 34 + boxes.reduce((s, bs) => s + bs.reduce((t, b) => t + lineH(b) + 2, 0) + 6, 0) + 4;
@@ -2043,13 +2049,18 @@ export default defineSimulation({
         half: `${v('f')}(${v('x')}) = ${frac('1', 'π')} + ${frac('1', '2')} sin ${v('x')} − ${frac('2', 'π')}(${frac('1', '3')} cos 2${v('x')} + ${frac('1', '15')} cos 4${v('x')} + …)`,
         full: `${v('f')}(${v('x')}) = ${frac('2', 'π')} − ${frac('4', 'π')}(${frac('1', '3')} cos 2${v('x')} + ${frac('1', '15')} cos 4${v('x')} + ${frac('1', '35')} cos 6${v('x')} + …)`,
         own: `${v('f')}(${v('x')}) = ${own()
-          .map((c, i) => (Math.abs(c) < 1e-9 ? '' : `${c < 0 ? '− ' : '+ '}${n(Math.abs(c), 2)} sin ${i === 0 ? '' : i + 1}${v('x')}`))
+          .map((c, i) => {
+            if (Math.abs(c) < 1e-9) return '';
+            // Koeffizient 1 nicht hinschreiben: „sin x“ statt „1 sin x“
+            const mag = n(Math.abs(c), 2);
+            return `${c < 0 ? '− ' : '+ '}${mag === '1' ? '' : mag + ' '}sin ${i === 0 ? '' : i + 1}${v('x')}`;
+          })
           .filter(Boolean)
           .join(' ')
           .replace(/^\+ /, '') || '0'}`,
       };
       let main = html[s];
-      if (p.amp !== 1 || p.ph !== 0) main += `<br>${v('g')}(${v('x')}) = ${p.amp !== 1 ? n(p.amp, 1) + ' · ' : ''}${v('f')}(${v('x')}${p.ph !== 0 ? ` ${p.ph > 0 ? '−' : '+'} ${Math.abs(p.ph)}°` : ''})`;
+      if (p.amp !== 1 || p.ph !== 0) main += `<br>${v('g')}(${v('x')}) = ${p.amp !== 1 ? n(p.amp, 1) + ' · ' : ''}${v('f')}(${v('x')}${p.ph !== 0 ? ` ${p.ph > 0 ? '−' : '+'} ${piText(Math.abs(p.ph) * DEG)}` : ''})`;
       ctx.readout('series', { html: main });
       // Koeffiziententabelle
       const rows: string[] = [];

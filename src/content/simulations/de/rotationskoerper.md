@@ -22,7 +22,7 @@ $$
 V_n = \sum_{i=1}^{n} \pi \, r_i^2 \cdot \Delta x
 $$
 
-ist eine Näherung für das Volumen. Nimmt man als Radius den kleinsten Funktionswert im Streifen (innere Scheiben), liegt die Summe unter dem Volumen, mit dem größten Wert (äußere Scheiben) darüber – wie bei Unter- und Obersumme. Für $n \to \infty$ streben beide gegen denselben Grenzwert, das Integral:
+ist eine Näherung für das Volumen. Nimmt man als Radius den kleinsten Wert von $|f(x)|$ im Streifen (innere Scheiben), liegt die Summe unter dem Volumen, mit dem größten Wert von $|f(x)|$ (äußere Scheiben) darüber – wie bei Unter- und Obersumme. Für $n \to \infty$ streben beide gegen denselben Grenzwert, das Integral:
 
 $$
 V = \pi \int_a^b \big(f(x)\big)^2 \, dx .
@@ -41,9 +41,9 @@ Für den Sinusbogen oder das „Horn“ zu $f(x) = \tfrac{1}{x}$ gibt es keine F
 
 1. Wähle „Rotieren lassen“ und beobachte, wie die grüne Fläche den Körper überstreicht. Stelle den Drehwinkel $\varphi$ auf $90°$ und auf $270°$: Welche Teile der Kugel siehst du? [Viertel gedreht](?phi=90)
 2. Verschiebe den orangen Querschnitt an der Stelle $x$. Wo ist $A(x)$ am größten, wo ist $A(x) = 0$? [Kugel mit Querschnitt](?xs=1.5)
-3. Zerlege den Kegel in 4 Scheiben und vergleiche „kleinster Wert (innen)“ mit „größter Wert (außen)“. Verdopple $n$ mehrmals. [Kegel in 4 Scheiben](?fn=kegel&m=1&a=0&b=4&n=4&pt=lower&sep=1)
+3. Zerlege den Kegel in 4 Scheiben und vergleiche „kleinster Radius (innen)“ mit „größter Radius (außen)“. Verdopple $n$ mehrmals. [Kegel in 4 Scheiben](?fn=kegel&m=1&a=0&b=4&n=4&pt=lower&sep=1)
 4. Ziehe die Scheiben des Paraboloids auseinander und wieder zusammen. Warum stimmt hier schon die Mittelpunktsumme mit 8 Scheiben exakt? [Paraboloid](?fn=para&k=1&a=0&b=4&n=8&sep=1)
-5. Ziehe am grünen Griff in der Seitenansicht: Wie ändert sich das Volumen, wenn man $f$ verdoppelt? [Kegelstumpf](?fn=stumpf&m=0.5&c=1&a=0&b=4)
+5. Ziehe am grünen Griff in der Seitenansicht, bis $m$ doppelt so groß ist ($m = 1$): Dann ist auch $f$ verdoppelt. Wie ändert sich das Volumen? [Kegel](?fn=kegel&m=0.5&a=0&b=4)
 6. Gabriels Horn: Schiebe $b$ immer weiter nach rechts. Wächst das Volumen über alle Grenzen? [Horn](?fn=horn&k=1&a=1&b=10)
 
 ## Aufgaben

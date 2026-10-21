@@ -4,11 +4,11 @@ description: "Interactive simulation for upper secondary: the normal distributio
 
 ## What is it about?
 
-For a normally distributed random variable $X \sim N(\mu;\,\sigma^2)$, the probability $P(a \leq X \leq b)$ is the **area under the bell curve** between $a$ and $b$, and equals $\Phi(b) - \Phi(a)$ with the distribution function $\Phi(x) = P(X \leq x)$. A single value has probability $P(X = a) = 0$.
+For a normally distributed random variable $X \sim N(\mu;\,\sigma^2)$, the probability $P(a \leq X \leq b)$ is the **area under the bell curve** between $a$ and $b$, and equals $F(b) - F(a)$ with the distribution function $F(x) = P(X \leq x)$; for $N(0;\,1)$ it is called $\Phi$, and $F(x) = \Phi\left(\frac{x - \mu}{\sigma}\right)$. A single value has probability $P(X = a) = 0$.
 
 **The bell:** symmetric about $\mu$, maximum $\frac{1}{\sigma\sqrt{2\pi}}$ at $\mu$, points of inflection at $\mu \pm \sigma$ (their tangents meet the $x$ axis at $\mu \pm 2\sigma$), total area $1$. **Sigma rules:** about $68.3\,\%$, $95.4\,\%$ and $99.7\,\%$ within $\mu \pm \sigma$, $\pm 2\sigma$, $\pm 3\sigma$.
 
-**Standardising** with $z = \frac{x - \mu}{\sigma}$ shifts and squeezes the bell into $N(0;\,1)$ – the marked area stays the same. **Backwards (quantiles):** from $P(X \geq x) = 5\,\%$ we get $\Phi(z) = 0.95$, $z \approx 1.645$ and $x = \mu + z\sigma$.
+**Standardising** with $z = \frac{x - \mu}{\sigma}$ shifts the bell by $\mu$ and scales it by the factor $\frac{1}{\sigma}$ into $N(0;\,1)$ – the marked area stays the same. **Backwards (quantiles):** from $P(X \geq x) = 5\,\%$ we get $\Phi(z) = 0.95$, $z \approx 1.645$ and $x = \mu + z\sigma$.
 
 **Approximating the binomial:** $P(X \leq k) \approx \Phi\left(\frac{k + 0.5 - \mu}{\sigma}\right)$ with $\mu = np$, $\sigma = \sqrt{np(1-p)}$; rule of thumb (Laplace condition): $\sigma > 3$.
 
@@ -69,6 +69,6 @@ $\mu = 50$, $\sigma = 5$: $\Phi(1.1) \approx 0.8643$ (exact $0.8644$; without co
 
 ## Ideas for the classroom
 
-- Let students estimate an area before dragging; the bar in the $\Phi$ chart explains the subtraction $\Phi(b) - \Phi(a)$.
+- Let students estimate an area before dragging; the bar in the chart of the distribution function explains the subtraction $F(b) - F(a)$.
 - The standardising animation shows why one table for $\Phi$ is enough.
-- **Common stumbling blocks:** reading the height of the curve as a probability; forgetting $1 - \Phi(a)$ for $P(X \geq a)$; looking for $\Phi(z) = 0.05$ instead of $0.95$; forgetting the continuity correction.
+- **Common stumbling blocks:** reading the height of the curve as a probability; forgetting $1 - F(a)$ for $P(X \geq a)$; looking for $\Phi(z) = 0.05$ instead of $0.95$; forgetting the continuity correction.

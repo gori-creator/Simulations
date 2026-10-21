@@ -37,7 +37,7 @@ Berechne $T_4(1)$ für $f(x) = e^x$ und $a = 0$. Wie groß ist der Fehler, und w
 <details>
 <summary>Lösung anzeigen</summary>
 
-$T_4(1) = 1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24} = \frac{65}{24} \approx 2{,}708333$; Fehler $e - \frac{65}{24} \approx 0{,}009948$. Lagrange mit $M = e^1$: $|R_4(1)| \le \frac{e}{5!} \approx 0{,}022652$ – die Schranke stimmt, ist aber gut doppelt so groß. Für 6 Stellen muss $|R_n(1)| < 5 \cdot 10^{-7}$ sein: Bei $T_8$ ist der Fehler noch $\approx 3{,}1 \cdot 10^{-6}$, bei $T_9$ nur $\approx 3{,}0 \cdot 10^{-7}$. Also $n = 9$ mit $T_9(1) \approx 2{,}718282$. [Lösung zeigen](?view=calc&fn=exp&n=9&a=0&x=1)
+$T_4(1) = 1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24} = \frac{65}{24} \approx 2{,}708333$; Fehler $e - \frac{65}{24} \approx 0{,}009948$. Lagrange mit $M = e^1$: $|R_4(1)| \le \frac{e}{5!} \approx 0{,}022652$ – die Schranke stimmt, ist aber gut doppelt so groß. Für 6 Stellen muss $|R_n(1)| < 5 \cdot 10^{-7}$ sein: Bei $T_8$ ist der Fehler noch $\approx 3{,}1 \cdot 10^{-6}$, bei $T_9$ nur $\approx 3{,}0 \cdot 10^{-7}$. Also Grad $n = 9$, das sind $10$ Summanden, mit $T_9(1) \approx 2{,}718282$. [Lösung zeigen](?view=calc&fn=exp&n=9&a=0&x=1)
 
 </details>
 
