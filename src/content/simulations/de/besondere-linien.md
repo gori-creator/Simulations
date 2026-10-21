@@ -111,9 +111,9 @@ In welchen Dreiecken fallen $U$ und $W$ zusammen? Und in welchen liegen alle vie
 <details>
 <summary>Lösung anzeigen</summary>
 
-Fallen $U$ und $W$ zusammen, ist jede Mittelsenkrechte zugleich Winkelhalbierende; dann sind je zwei Seiten gleich lang – das Dreieck ist **gleichseitig**, und sogar $U$, $W$, $S$ und $H$ fallen zusammen. [Zeigen](?m=eu&ax=4&ay=2&bx=12&by=2&cx=8&cy=8.9)
+Fallen $U$ und $W$ zusammen, ist dieser Punkt von den Ecken $r$ und von den Seiten $\rho$ entfernt. Das Lot von ihm auf eine Seite trifft deren Mitte (er liegt ja auf der Mittelsenkrechten). So entstehen sechs rechtwinklige Dreiecke wie $U M_c A$, jedes mit der Hypotenuse $r$ und einer Kathete $\rho$. Nach dem Kongruenzsatz SsW sind sie alle kongruent, also sind alle halben Seiten gleich lang: Das Dreieck ist **gleichseitig**, und sogar $U$, $W$, $S$ und $H$ fallen zusammen. [Zeigen](?m=eu&ax=4&ay=2&bx=12&by=2&cx=8&cy=8.9)
 
-Alle vier Punkte liegen auf einer Geraden, wenn das Dreieck **gleichschenklig** ist: Dann ist die Symmetrieachse zugleich Mittelsenkrechte, Winkelhalbierende, Seitenhalbierende und Höhe. [Zeigen](?m=eu&ax=3&ay=2&bx=11&by=2&cx=7&cy=9)
+Alle vier Punkte liegen auf einer Geraden, wenn das Dreieck **gleichschenklig** ist: Dann ist die Symmetrieachse zugleich Mittelsenkrechte, Winkelhalbierende, Seitenhalbierende und Höhe. (Umgekehrt gilt auch: Liegt $W$ auf der Euler-Geraden, ist das Dreieck gleichschenklig – der Beweis ist aber deutlich schwerer.) [Zeigen](?m=eu&ax=3&ay=2&bx=11&by=2&cx=7&cy=9)
 
 </details>
 
