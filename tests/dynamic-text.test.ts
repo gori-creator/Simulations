@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { L } from '../src/curriculum/helpers';
-import { resolveText } from '../src/sim-core/params';
+import { resolveHint, resolveText } from '../src/sim-core/params';
 import { defineSimulation, type DynamicText } from '../src/sim-core';
 
 describe('Tipp (`hint`) und Hilfetexte (`help`) abhängig von den Werten', () => {
@@ -46,5 +46,22 @@ describe('Tipp (`hint`) und Hilfetexte (`help`) abhängig von den Werten', () =>
     expect(resolveText(def.hint, { mode: 'b', n: 2 }, 'de')).toBe('Modus B');
     expect(resolveText(def.hint, { mode: 'a', n: 2 }, 'de')).toBeNull();
     expect(resolveText(def.params[1].help, { mode: 'a', n: 7 }, 'en')).toBe('n = 7');
+  });
+});
+
+describe('Tipp unter der Bühne bei gesperrten Links', () => {
+  const drag = 'Die markierten Punkte lassen sich ziehen.';
+
+  it('zeigt eigenen Tipp, sonst den Ziehen-Hinweis, sonst keinen', () => {
+    expect(resolveHint({ hint: L('Tipp', 'Tip') }, {}, 'de', drag, false)).toBe('Tipp');
+    expect(resolveHint({ dragHint: true }, {}, 'de', drag, false)).toBe(drag);
+    expect(resolveHint({ hint: () => null, dragHint: true }, {}, 'de', drag, false)).toBe(drag);
+    expect(resolveHint({}, {}, 'de', drag, false)).toBe('');
+  });
+
+  it('blendet jeden Tipp bei `_lock=1` aus', () => {
+    expect(resolveHint({ hint: L('Tipp', 'Tip') }, {}, 'de', drag, true)).toBe('');
+    expect(resolveHint({ dragHint: true }, {}, 'de', drag, true)).toBe('');
+    expect(resolveHint({ hint: () => L('Tipp', 'Tip'), dragHint: true }, {}, 'en', drag, true)).toBe('');
   });
 });

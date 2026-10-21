@@ -45,7 +45,7 @@ Ein guter Auftrag ist konkret. Er enthält immer:
 - Exakte Werte, wo die Schule exakt rechnet (Brüche gekürzt, π, Wurzeln). Rundung erst in der Anzeige.
 
 ### 4.2 Screenshot-Runden
-Werkzeug: `node scripts/agenten/simshot.cjs <port> <ordner> <spec.json>` (Bedienung im Kopf der Datei). Bilder mit Python/PIL zu **Bögen** zusammensetzen und jeden Bogen ansehen.
+Werkzeug: `node scripts/agenten/simshot.cjs <port> <ordner> <spec.json>` (Bedienung im Kopf der Datei; Tastaturbedienung mit `["focus","css"]` und `["key","ArrowRight"]`). Bilder mit Python/PIL zu **Bögen** zusammensetzen und jeden Bogen ansehen.
 
 Pflicht-Ansichten in **jeder** Runde:
 

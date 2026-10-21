@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Plot, segmentHitsRect } from '../src/sim-core/plot';
+import { Plot, rectsOverlap, segmentHitsRect } from '../src/sim-core/plot';
 import type { Surface } from '../src/sim-core/surface';
 
 /** Aufgezeichneter Zeichenbefehl der Attrappe. */
@@ -151,11 +151,66 @@ describe('Achsbeschriftung weicht Kurven aus', () => {
     expect(kept.x.y).toBe(kept.plot.py(0) - 6);
   });
 
+  it('weicht einem Teilstrich unter der Beschriftung aus (letzte Achsenzahl)', () => {
+    // x von 0 bis 21: der Teilstrich bei 20 liegt unter „x in m“ am Achsenende
+    const { surface, calls } = fakeSurface();
+    const plot = new Plot(surface, { x: [0, 21], y: [0, 10], equalAspect: false, pan: false, zoom: false, controls: false, xAxis: { label: 'x in m' } });
+    plot.setRangePadded([0, 21], [0, 10], { left: 40, right: 16, top: 30, bottom: 22 });
+    plot.begin();
+    plot.axes();
+    plot.end();
+    const r = plot.rect;
+    const label = calls.find((c) => c.op === 'fill' && c.text === 'x in m')!;
+    const width = 'x in m'.length * 13 * 0.5;
+    const ticks = calls.filter((c) => c.op === 'fill' && c.align === 'center' && /^\d+$/.test(c.text)).map((c) => c.x);
+    // Voraussetzung: ein Teilstrich liegt waagerecht unter der gewohnten Stelle
+    expect(ticks.some((p) => p > r.x + r.w - 6 - width - 3 && p < r.x + r.w - 3)).toBe(true);
+    expect(label.y).toBeLessThan(plot.py(0) - 6);
+    // die Achsenzahlen bleiben alle stehen
+    expect(ticks.map((p) => Math.round(p))).toContain(Math.round(plot.px(20)));
+  });
+
   it('erkennt Schnitte von Strecke und Rechteck', () => {
     const q = { x: 10, y: 10, w: 20, h: 10 };
     expect(segmentHitsRect(0, 0, 40, 30, q)).toBe(true);
     expect(segmentHitsRect(15, 15, 16, 16, q)).toBe(true);
     expect(segmentHitsRect(0, 0, 40, 0, q)).toBe(false);
     expect(segmentHitsRect(0, 25, 5, 40, q)).toBe(false);
+    expect(rectsOverlap(q, { x: 29, y: 19, w: 5, h: 5 })).toBe(true);
+    expect(rectsOverlap(q, { x: 30, y: 10, w: 5, h: 5 })).toBe(false);
+  });
+});
+
+describe('Sperrbereiche für Achsenzahlen', () => {
+  function draw(blocked?: { x: number; y: number; w: number; h: number }[]) {
+    const { surface, calls } = fakeSurface();
+    const plot = new Plot(surface, { x: [-5, 5], y: [-5, 5], equalAspect: false, pan: false, zoom: false, controls: false });
+    plot.setRange([-5, 5], [-5, 5]);
+    plot.begin();
+    plot.axes(blocked ? { blocked } : undefined);
+    plot.end();
+    const numbers = calls.filter((c) => c.op === 'fill' && /^[−\d]/.test(c.text)).map((c) => `${c.text}@${Math.round(c.x)},${Math.round(c.y)}`);
+    return { plot, numbers };
+  }
+
+  it('zeichnet ohne Sperrbereich wie bisher', () => {
+    expect(draw().numbers).toEqual(draw([]).numbers);
+  });
+
+  it('lässt Zahlen im Sperrbereich weg, die anderen bleiben', () => {
+    const all = draw();
+    const { plot } = all;
+    // Bereich oben links neben der y-Achse: dort fallen nur die y-Zahlen über 2,5 weg
+    const block = { x: plot.px(0) - 40, y: plot.py(5), w: 38, h: plot.py(2.5) - plot.py(5) };
+    const some = draw([block]).numbers;
+    const gone = all.numbers.filter((n) => !some.includes(n));
+    const yNumbers = all.numbers.filter((n) => Number(n.split('@')[0]) > 2.5 && n.includes(`@${Math.round(plot.px(0) - 6)},`));
+    expect(gone.length).toBeGreaterThan(0);
+    expect(gone).toEqual(yNumbers);
+    expect(some.length).toBe(all.numbers.length - gone.length);
+    // x-Zahlen sperren (unterhalb der Achse rechts)
+    const xs = draw([{ x: plot.px(2.5), y: plot.py(0), w: 200, h: 30 }]).numbers;
+    expect(xs.some((n) => n.startsWith('3@'))).toBe(false);
+    expect(xs.some((n) => n.startsWith('2@'))).toBe(true);
   });
 });
