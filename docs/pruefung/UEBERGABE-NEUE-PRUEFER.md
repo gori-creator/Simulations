@@ -16,7 +16,7 @@ Verfasst von der Projektleitung. Die bisherigen Prüfer haben ihr Nutzungslimit 
 
 1. Lies zuerst `CLAUDE.md`, `docs/agenten/QUALITAETSSICHERUNG.md`, `docs/pruefung/BRIEFING-PRUEFER.md` (die Arbeitsweise pro Simulation gilt unverändert), `docs/pruefung/PLAN.md` und `docs/pruefung/VORLAGE.md`.
 2. **Sieh dir 2 fertige Protokolle deines Pakets an**, damit Tiefe und Stil gleich bleiben (z. B. die beiden zuletzt geschriebenen in `docs/pruefung/paket-<N>/`).
-3. **Zweig:** Lege deinen eigenen Zweig vom bisherigen Paket-Zweig an und hole `main` dazu (Befehl steht in deinem Abschnitt). Push nur auf deinen Zweig.
+3. **Zweig:** Alle bisherigen Prüfungen sind seit dem 21.10. mittags in `main` (PR #32). Lege deinen eigenen Zweig von `main` an (Befehl in deinem Abschnitt). Push nur auf deinen Zweig.
 4. **Reihenfolge:** wie in deiner Liste, von oben nach unten.
 5. **Pro Simulation:** Prüfbogen, Fach (mindestens 3 Werte von Hand nachrechnen, ins Protokoll), Aufgaben und Texte (jede Aufgabe selbst rechnen, jedes Beispiel laden), Geräte, Barrierefreiheit, Fehler beheben, `npm run verify` mit 0/0/0, Protokoll schreiben, Haken in `docs/pruefung/pakete.md`.
 6. **Nicht ändern:** `src/sim-core/`, `src/i18n/ui.ts`, `src/curriculum/*.ts`, Seiten und Layouts. Was dort nötig wäre, kommt ins Protokoll unter „Für den Kern“.
@@ -34,8 +34,7 @@ Verfasst von der Projektleitung. Die bisherigen Prüfer haben ihr Nutzungslimit 
 **Zweig:**
 ```
 git fetch origin
-git checkout -b pruefung/paket-1-physik origin/pruefen/paket-1
-git merge origin/main
+git checkout -b pruefung/paket-1-physik origin/main
 ```
 **Port:** 4540 · **Protokolle:** `docs/pruefung/paket-1/<id>.md`
 
@@ -64,8 +63,7 @@ git merge origin/main
 **Zweig:**
 ```
 git fetch origin
-git checkout -b pruefung/paket-2-rest origin/pruefung/paket-2
-git merge origin/main
+git checkout -b pruefung/paket-2-rest origin/main
 ```
 **Port:** 4550 · **Protokolle:** Paket-2-Simulationen nach `docs/pruefung/paket-2/<id>.md`, die übrigen nach `docs/pruefung/paket-1/<id>.md`
 
@@ -95,8 +93,7 @@ Aus Paket 1 (Mathematik ab Jgst. 13):
 **Zweig:**
 ```
 git fetch origin
-git checkout -b pruefung/paket-3-rest origin/pruefung/paket-3-teil-4
-git merge origin/main
+git checkout -b pruefung/paket-3-rest origin/main
 ```
 **Port:** 4560 · **Protokolle:** `docs/pruefung/paket-3/<id>.md`
 
@@ -114,7 +111,7 @@ git merge origin/main
 12. `stammfunktion-grafisch`
 13. `matrix-abbildungen`
 
-**Hinweis:** Prüfer 3 hatte bei `polstellen-asymptoten` aufgehört (Zweig `pruefung/paket-3-teil-4`, noch ohne PR). Falls dort eine halbfertige Simulation liegt, zuerst sie abschließen.
+**Hinweis:** Prüfer 3 hat zuletzt `polstellen-asymptoten` abgeschlossen; alles davor ist in `main`.
 
 ---
 
