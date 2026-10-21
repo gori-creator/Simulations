@@ -214,4 +214,20 @@ describe('Modell: Amplitude, Phasenverschiebung, Glättung', () => {
     expect(features({ sig: 'saw', A: 1, phi: 0 })).toMatchObject({ odd: true, halfWave: false });
     expect(features({ sig: 'pulse', A: 1, phi: 0, shape: { d: 0.5 } })).toMatchObject({ even: true, odd: false, halfWave: false });
   });
+  it('eigener Klang: exakt ab der höchsten Ordnung mit cₖ ≠ 0', () => {
+    // Synthesizer-Beispiel c₁ … c₄ ≠ 0, Rest 0 → S_N exakt ab N = 4 (nicht fest 8)
+    const synth: SeriesSpec = { sig: 'own', A: 1, phi: 0, shape: { c: [1, 0.5, 0.35, 0.25, 0, 0, 0, 0] } };
+    expect(features(synth)).toMatchObject({ decay: 0, top: 4 });
+    expect(Math.abs(partial('own', 4, 1.3, synth.shape) - targetOf(synth, 1.3))).toBeLessThan(1e-12);
+    expect(Math.abs(partial('own', 3, 1.3, synth.shape) - targetOf(synth, 1.3))).toBeGreaterThan(1e-3);
+    // nur c₇ ≠ 0 (auch mit Lücken und negativem Vorzeichen) → 7; alle 0 → 0
+    expect(features({ sig: 'own', A: 1, phi: 0, shape: { c: [0, 0, 0, 0, 0, 0, -0.4, 0] } }).top).toBe(7);
+    expect(features({ sig: 'own', A: 1, phi: 0, shape: { c: [0, 0, 0, 0, 0, 0, 0, 0] } }).top).toBe(0);
+    // Phasenverschiebung ändert die höchste Ordnung nicht
+    expect(features({ ...synth, phi: Math.PI / 3 }).top).toBe(4);
+  });
+  it('Lanczos: σₖ = sinc(πk/(N + 1)), höchstes Glied trägt noch bei', () => {
+    expect(sigma('lanczos', 1, 1)).toBeCloseTo(Math.sin(Math.PI / 2) / (Math.PI / 2), 14);
+    expect(sigma('lanczos', 5, 5)).toBeGreaterThan(0);
+  });
 });

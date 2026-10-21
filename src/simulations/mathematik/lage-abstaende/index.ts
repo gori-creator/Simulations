@@ -1404,7 +1404,7 @@ export default defineSimulation({
           };
           ctx.readout('lage', lage[r.kind]!);
           if (r.kind === 'intersect') {
-            ctx.readout('calc', `n · u = ${n1(r.nu)} ≠ 0; ${n1(dot(n, a))} + ${n1(r.nu)} · t = ${n1(p.c)} ⇒ t = ${frac(r.t)}`);
+            ctx.readout('calc', `n · u = ${n1(r.nu)} ≠ 0; ${n1(dot(n, a))} ${r.nu < 0 ? '−' : '+'} ${n1(Math.abs(r.nu))} · t = ${n1(p.c)} ⇒ t = ${frac(r.t)}`);
             ctx.readout('res', `D${pt(r.point!)}, sin φ = ${n1(Math.abs(r.nu))} / (${rt(n)} · ${rt(u)}), φ ≈ ${deg(r.angleDeg)}`);
           } else if (r.kind === 'invalid') {
             ctx.readout('calc', null);

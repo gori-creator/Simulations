@@ -8,13 +8,13 @@ Jede (hinreichend gutartige) $2\pi$-periodische Funktion lässt sich als Summe v
 
 $$f(x) \approx \frac{a_0}{2} + \sum_{k=1}^{N} \bigl(a_k \cos kx + b_k \sin kx\bigr), \qquad a_k = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\cos kx\,dx, \quad b_k = \frac{1}{\pi}\int_{-\pi}^{\pi} f(x)\sin kx\,dx.$$
 
-Die Schwingung mit $k = 1$ heißt **Grundschwingung**, die übrigen sind **Oberschwingungen** (Harmonische). Die Summe der ersten $N$ Glieder ist die **Partialsumme** $S_N$. Fasst man $a_k \cos kx + b_k \sin kx = \hat A_k \sin(kx + \varphi_k)$ zusammen, erhält man das **Amplitudenspektrum** $\hat A_k = \sqrt{a_k^2 + b_k^2}$ und das **Phasenspektrum** $\varphi_k$. *Beispiel Rechteck:* $f(x) = \frac{4}{\pi}\left(\sin x + \frac{1}{3}\sin 3x + \frac{1}{5}\sin 5x + \ldots\right)$ – nur ungerade $k$, Amplituden wie $\frac{1}{k}$.
+Die Schwingung mit $k = 1$ heißt **Grundschwingung**, die übrigen sind **Oberschwingungen**; alle zusammen heißen **Harmonische**. Die Summe der ersten $N$ Glieder ist die **Partialsumme** $S_N$. Fasst man $a_k \cos kx + b_k \sin kx = \hat A_k \sin(kx + \varphi_k)$ zusammen, erhält man das **Amplitudenspektrum** $\hat A_k = \sqrt{a_k^2 + b_k^2}$ und das **Phasenspektrum** $\varphi_k$. *Beispiel Rechteck:* $f(x) = \frac{4}{\pi}\left(\sin x + \frac{1}{3}\sin 3x + \frac{1}{5}\sin 5x + \ldots\right)$ – nur ungerade $k$, Amplituden wie $\frac{1}{k}$.
 
 **Zeiger:** Jedes Glied ist ein Zeiger der Länge $\hat A_k$, der sich $k$-mal so schnell dreht wie die Grundschwingung. Hängt man die Zeiger aneinander, zeichnet die Höhe der Spitze genau $S_N$ – das zeigt die Ansicht „Zeiger (Epizykel)“.
 
 **Symmetrie:** Ungerade Funktionen (Rechteck, Sägezahn) haben nur Sinusglieder, gerade (Dreieck, Pulsfolge, Zweiweg) nur Kosinusglieder. Gilt $f(x + \pi) = -f(x)$, fehlen alle geraden $k$. **Glatt oder sprunghaft?** Bei Sprüngen fallen die Amplituden nur wie $\frac{1}{k}$, bei Knicken wie $\frac{1}{k^2}$ – die Reihe konvergiert dann viel schneller.
 
-**Gibbs-Phänomen:** An einer Sprungstelle schießt $S_N$ über – beim Rechteck auf etwa $1{,}179$ statt $1$, also um rund $9\,\%$ der Sprunghöhe $2$. Mit wachsendem $N$ wird der Überschwinger schmaler, aber nicht niedriger. Glättungsfaktoren $\sigma_k$ (Fejér: $\sigma_k = 1 - \frac{k}{N+1}$) dämpfen die hohen Glieder und beseitigen ihn.
+**Gibbs-Phänomen:** An einer Sprungstelle schießt $S_N$ über – beim Rechteck auf etwa $1{,}179$ statt $1$, also um rund $9\,\%$ der Sprunghöhe $2$. Mit wachsendem $N$ wird der Überschwinger schmaler, aber nicht niedriger. Glättungsfaktoren $\sigma_k$ (Fejér: $\sigma_k = 1 - \frac{k}{N+1}$) dämpfen die hohen Glieder: Fejér beseitigt das Überschwingen, Lanczos ($\sigma_k = \frac{\sin u}{u}$ mit $u = \frac{\pi k}{N+1}$) verringert es stark.
 
 **Parseval:** Die mittlere Leistung verteilt sich auf die Glieder:
 
