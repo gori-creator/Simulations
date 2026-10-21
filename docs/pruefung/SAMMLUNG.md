@@ -31,6 +31,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | doppelspalt | `src/sim-core/format.ts` | Helfer für „n gültige Ziffern“ (`fmt.sig(x, n)`), damit Simulationen nicht eigene `digits()` bauen. | erledigt (Kern): `ctx.fmt.sig(x, n)` und `ctx.fmt.sigUnit(x, einheit, n)` (sowie `formatSig`, `sigDecimals`), Rundung über `roundHalfUp`, Nullen am Ende zählen mit („2,50“), Übertrag beachtet (9,996 → „10,0“) |
 | induktion | `scripts/agenten/simshot.cjs` | Das Beispiel im Dateikopf `["focus","[data-sim-root] canvas"]` trifft das Tastaturziel nicht; richtig ist `.sim__stage--keys`. Beispiel korrigieren. | erledigt (Kern): Dateikopf nennt `["focus",".sim__stage--keys"]` |
 | federpendel | `src/sim-core/types.ts` | Hinweis in `types.ts`/Doku: `resultsParam` auf aus verdeckt ALLE `spoiler`-Ergebnisse; ggf. Option, einzelne Ergebnisse auszunehmen. | offen |
+| Kern 5 | `src/sim-core/controls.ts` | Nach Verlassen eines Regler-Eingabefelds bleibt getippter Text wie „25 000“ stehen und wird nicht neu formatiert. Beim Verlassen auf die Anzeigeform zurücksetzen. | offen |
 
 ## Rückfragen an die Projektleitung
 
