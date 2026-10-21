@@ -4,7 +4,7 @@ Verfasst von der Projektleitung. Die bisherigen Prüfer haben ihr Nutzungslimit 
 
 ## Aufteilung (gilt ab 21.10. nachmittags)
 
-Es gibt nur **einen neuen Account mit GitHub**. Er übernimmt **Abschnitt A und danach Abschnitt C** (30 Simulationen), in dieser Reihenfolge, mit zwei Zweigen und Pull Requests wie dort beschrieben.
+Es gibt nur **einen neuen Account mit GitHub**. Er übernimmt **nur Abschnitt A** (17 Physik-Simulationen). **Update 21.10., 14 Uhr:** Abschnitt C geht ebenfalls an den Prüfer ohne GitHub (ZIP-Pakete 4–6); der GitHub-Account fasst C nicht an.
 
 **Abschnitt B** (15 Simulationen) prüft ein **Account ohne GitHub** fachlich und textlich (Rechenlogik, Aufgaben, Texte DE/EN) anhand von ZIP-Paketen; Auftrag: `docs/agenten/PROMPT-PRUEFER-OHNE-GITHUB.md`. Die Projektleitung setzt die Befunde um, macht Geräte- und Barrierefreiheitsprüfung, schreibt die Protokolle und gibt ab. Der GitHub-Account fasst Abschnitt B nicht an.
 
