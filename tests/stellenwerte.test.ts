@@ -68,6 +68,32 @@ describe('Modell: Stellenwerte – Runden', () => {
     expect(roundTo(95, 1)).toBe(100);
   });
 
+  it('Prüfrunde: Übertrag 3 996 → 4 000, Grenzfälle 45 499 / 45 500, Aufgaben', () => {
+    expect(roundTo(3996, 1)).toBe(4000);
+    expect(roundingNeighbors(3996, 1)).toEqual({ lower: 3990, upper: 4000, mid: 3995 });
+    expect(roundTo(45499, 3)).toBe(45000);
+    expect(roundTo(45500, 3)).toBe(46000);
+    expect(decidingDigit(45499, 3)).toBe(4);
+    expect(decidingDigit(45500, 3)).toBe(5);
+    // Aufgabe 3: 6 849 513 auf T, ZT, Mio
+    expect([3, 4, 6].map((r) => roundTo(6849513, r))).toEqual([6850000, 6850000, 7000000]);
+    // Aufgabe 5: genau 3 450 bis 3 549 ergeben 3 500
+    expect(roundTo(3449, 2)).toBe(3400);
+    expect(roundTo(3450, 2)).toBe(3500);
+    expect(roundTo(3549, 2)).toBe(3500);
+    expect(roundTo(3550, 2)).toBe(3600);
+    // Aufgabe 6: schrittweises Runden ist falsch
+    expect(roundTo(71499, 3)).toBe(71000);
+    expect(roundTo(roundTo(71499, 2), 3)).toBe(72000);
+    // 1 Million in Dreiergruppen mit schmalem Leerzeichen
+    expect(groupDigits(1000000, 'de')).toBe('1 000 000');
+  });
+
+  it('Zahlwörter der Aufgaben', () => {
+    expect(numberWords(30408015, 'de')).toBe('dreißig Millionen vierhundertachttausendfünfzehn');
+    expect(numberWords(30408015, 'en')).toBe('thirty million four hundred and eight thousand and fifteen');
+  });
+
   it('rundet kleine Zahlen auf hohe Stellen zu 0', () => {
     expect(roundTo(347, 5)).toBe(0);
     expect(roundTo(0, 3)).toBe(0);

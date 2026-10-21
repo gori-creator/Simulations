@@ -23,7 +23,7 @@ Dazu gehören $1\,\text{a} = 100\,\text{m}^2$ (ein Quadrat mit $10\,\text{m}$ Se
 
 **Die Einheitentafel:** Jede Spalte ist eine Stelle. Die Einerstelle (E) der Maßzahl kommt in die Spalte der Einheit, das Komma steht rechts davon. Will man in eine andere Einheit umrechnen, setzt man das Komma rechts neben die E-Spalte der neuen Einheit:
 
-- In eine **kleinere** Einheit wandert das Komma **nach rechts**, die Maßzahl wird größer: $250\,\text{cm} = 2{,}5\,\text{m}$ liest man rückwärts als $2{,}5\,\text{m} = 250\,\text{cm}$.
+- In eine **kleinere** Einheit wandert das Komma **nach rechts**, die Maßzahl wird größer: $2{,}5\,\text{m} = 250\,\text{cm}$.
 - In eine **größere** Einheit wandert das Komma **nach links**, die Maßzahl wird kleiner: $45\,\text{g} = 0{,}045\,\text{kg}$.
 - Leere Spalten zwischen Ziffern und Komma füllt man mit **Nullen** auf (in der Simulation blass), überflüssige Nullen am Anfang oder Ende fallen weg.
 
@@ -111,9 +111,9 @@ Tim hat mit der Umrechnungszahl $10$ wie bei Längen gerechnet. Bei Flächen ist
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5, Größen und Einheiten (Länge, Masse, Zeit; Flächen- und Volumeneinheiten je nach Lehrplanstand später – bitte am Lehrplan prüfen). Die Tafel eignet sich vielleicht am Beamer zum gemeinsamen Vorhersagen: „Wohin wandert das Komma?“
+- **Einsatz:** Jahrgangsstufe 5, Größen und Einheiten (Länge, Masse, Zeit; Flächen- und Volumeneinheiten je nach Lehrplanstand später – bitte am Lehrplan prüfen). Am Beamer eignet sich die Tafel zum gemeinsamen Vorhersagen: „Wohin wandert das Komma?“
 - **Üben:** Mit ausgeschaltetem Schalter „Ergebnis sofort anzeigen“ oder über **Neue Aufgabe** rechnen die Kinder erst selbst; „Umrechnen“ deckt auf. **Rückweg ⇄** zeigt, dass die Umkehrung wieder zum Ausgangswert führt.
-- **Anschauung:** Lineal, Kästchenquadrat und Würfel könnten mit echten Gegenständen verbunden werden (Lineal, Karopapier, Litermaß, Zentimeterwürfel).
+- **Anschauung:** Verbinden Sie Lineal, Kästchenquadrat und Würfel mit echten Gegenständen (Lineal, Karopapier, Litermaß, Zentimeterwürfel).
 - **Häufige Stolpersteine:**
   - Bei Flächen und Volumen wird mit $10$ statt $100$ bzw. $1\,000$ gerechnet.
   - Zwischen km und m wird nur eine Stelle verschoben statt drei.

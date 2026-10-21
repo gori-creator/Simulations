@@ -60,42 +60,42 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 
 | ✓ | Jgst. | ID | Titel | Adresse (DE) |
 |---|---|---|---|---|
-| ☐ | 5–5 | `einheiten` | Einheiten umrechnen mit der Einheitentafel | `/de/mathematik/flaechen-und-koerper/einheiten-umrechnen-einheitentafel/` |
-| ☐ | 5–5 | `koordinaten-lage` | Punkte, Geraden und Kreise: Lagebeziehungen | `/de/mathematik/geometrie/koordinatensystem-lagebeziehungen/` |
-| ☐ | 5–5 | `massstab` | Maßstab: Karte und Wirklichkeit | `/de/mathematik/flaechen-und-koerper/massstab-karte-wirklichkeit/` |
-| ☐ | 5–5 | `stellenwerte` | Stellenwertsystem und Runden | `/de/mathematik/zahlen-und-operationen/stellenwerte-runden/` |
-| ☐ | 5–5 | `umfang-flaeche` | Umfang und Flächeninhalt von Rechtecken | `/de/mathematik/flaechen-und-koerper/umfang-flaecheninhalt-rechteck/` |
-| ☐ | 5–5 | `winkel-messen` | Winkel schätzen und messen | `/de/mathematik/geometrie/winkel-schaetzen-messen/` |
-| ☐ | 5–5 | `zahlengerade` | Ganze Zahlen an der Zahlengeraden addieren und subtrahieren | `/de/mathematik/zahlen-und-operationen/ganze-zahlen-zahlengerade/` |
-| ☐ | 5–6 | `primfaktoren` | Primfaktorzerlegung und Teilbarkeit | `/de/mathematik/zahlen-und-operationen/primfaktoren-teilbarkeit/` |
-| ☐ | 5–6 | `zehnerpotenzen` | Potenzen, Zehnerpotenzen und Größenordnungen | `/de/mathematik/zahlen-und-operationen/zehnerpotenzen-groessenordnungen/` |
-| ☐ | 5–7 | `termbaum` | Termbaum: die Struktur von Termen | `/de/mathematik/terme-und-gleichungen/termbaum/` |
-| ☐ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |
-| ☐ | 5–8 | `koerpernetze` | Netze und Oberflächen von Körpern | `/de/mathematik/flaechen-und-koerper/koerpernetze/` |
-| ☐ | 5–8 | `zaehlprinzip` | Zählprinzip und Baumdiagramm | `/de/mathematik/daten-und-zufall/zaehlprinzip-baumdiagramm/` |
-| ☐ | 6–6 | `bruchteile` | Bruchteile darstellen | `/de/mathematik/zahlen-und-operationen/bruchteile/` |
-| ☐ | 6–6 | `brueche-rechnen` | Brüche multiplizieren und dividieren am Rechteckmodell | `/de/mathematik/zahlen-und-operationen/brueche-multiplizieren-dividieren/` |
-| ☐ | 6–6 | `brueche-vergleichen` | Brüche erweitern, kürzen und vergleichen | `/de/mathematik/zahlen-und-operationen/brueche-erweitern-kuerzen-vergleichen/` |
-| ☐ | 6–6 | `dezimalbrueche` | Endliche und periodische Dezimalbrüche | `/de/mathematik/zahlen-und-operationen/endliche-periodische-dezimalbrueche/` |
-| ☐ | 6–6 | `diagramme` | Diagramme lesen und kritisch prüfen | `/de/mathematik/daten-und-zufall/diagramme-lesen-und-pruefen/` |
-| ☐ | 6–6 | `flaechen-zerlegen` | Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen | `/de/mathematik/flaechen-und-koerper/flaechen-zerlegen-ergaenzen/` |
-| ☐ | 6–6 | `quader-volumen` | Volumen von Quadern mit Einheitswürfeln | `/de/mathematik/flaechen-und-koerper/quader-volumen/` |
-| ☐ | 6–7 | `prozentstreifen` | Prozentstreifen | `/de/mathematik/zahlen-und-operationen/prozentstreifen/` |
-| ☐ | 6–8 | `proportional` | Direkte und indirekte Proportionalität | `/de/mathematik/funktionen/direkte-indirekte-proportionalitaet/` |
-| ☐ | 6–9 | `gesetz-grosse-zahlen` | Gesetz der großen Zahlen | `/de/mathematik/daten-und-zufall/gesetz-der-grossen-zahlen/` |
-| ☐ | 7–7 | `binomische-formeln` | Binomische Formeln am Quadrat | `/de/mathematik/terme-und-gleichungen/binomische-formeln/` |
-| ☐ | 7–7 | `boxplot` | Mittelwert, Median und Boxplot | `/de/mathematik/daten-und-zufall/mittelwert-median-boxplot/` |
-| ☐ | 7–7 | `dreieckskonstruktion` | Kongruenzsätze und Dreieckskonstruktionen | `/de/mathematik/geometrie/dreieckskonstruktion-kongruenzsaetze/` |
-| ☐ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |
-| ☐ | 7–7 | `spiegelung` | Achsen- und Punktspiegelung | `/de/mathematik/geometrie/achsen-und-punktspiegelung/` |
-| ☐ | 7–7 | `thales` | Satz des Thales | `/de/mathematik/geometrie/satz-des-thales/` |
-| ☐ | 7–7 | `waagemodell` | Lineare Gleichungen am Waagemodell | `/de/mathematik/terme-und-gleichungen/waagemodell/` |
-| ☐ | 7–7 | `winkel-geradenkreuzung` | Winkel an Geradenkreuzungen | `/de/mathematik/geometrie/winkel-an-geradenkreuzungen/` |
-| ☐ | 7–7 | `winkelsumme` | Innenwinkelsumme in Dreieck und Vieleck | `/de/mathematik/geometrie/innenwinkelsumme/` |
-| ☐ | 7–8 | `besondere-linien` | Umkreis, Inkreis und besondere Linien im Dreieck | `/de/mathematik/geometrie/besondere-linien-im-dreieck/` |
-| ☐ | 7–9 | `lineare-funktion` | Lineare Funktion | `/de/mathematik/funktionen/lineare-funktion/` |
-| ☐ | 8–8 | `funktion-zuordnung` | Funktion oder nicht? Zuordnungen und ihre Graphen | `/de/mathematik/funktionen/funktion-oder-nicht/` |
-| ☐ | 8–8 | `hyperbel` | Hyperbeln und ihre Asymptoten | `/de/mathematik/funktionen/hyperbel-asymptoten/` |
+| ✓ | 5–5 | `einheiten` | Einheiten umrechnen mit der Einheitentafel | `/de/mathematik/flaechen-und-koerper/einheiten-umrechnen-einheitentafel/` |
+| ✓ | 5–5 | `koordinaten-lage` | Punkte, Geraden und Kreise: Lagebeziehungen | `/de/mathematik/geometrie/koordinatensystem-lagebeziehungen/` |
+| ✓ | 5–5 | `massstab` | Maßstab: Karte und Wirklichkeit | `/de/mathematik/flaechen-und-koerper/massstab-karte-wirklichkeit/` |
+| ✓ | 5–5 | `stellenwerte` | Stellenwertsystem und Runden | `/de/mathematik/zahlen-und-operationen/stellenwerte-runden/` |
+| ✓ | 5–5 | `umfang-flaeche` | Umfang und Flächeninhalt von Rechtecken | `/de/mathematik/flaechen-und-koerper/umfang-flaecheninhalt-rechteck/` |
+| ✓ | 5–5 | `winkel-messen` | Winkel schätzen und messen | `/de/mathematik/geometrie/winkel-schaetzen-messen/` |
+| ✓ | 5–5 | `zahlengerade` | Ganze Zahlen an der Zahlengeraden addieren und subtrahieren | `/de/mathematik/zahlen-und-operationen/ganze-zahlen-zahlengerade/` |
+| ✓ | 5–6 | `primfaktoren` | Primfaktorzerlegung und Teilbarkeit | `/de/mathematik/zahlen-und-operationen/primfaktoren-teilbarkeit/` |
+| ✓ | 5–6 | `zehnerpotenzen` | Potenzen, Zehnerpotenzen und Größenordnungen | `/de/mathematik/zahlen-und-operationen/zehnerpotenzen-groessenordnungen/` |
+| ✓ | 5–7 | `termbaum` | Termbaum: die Struktur von Termen | `/de/mathematik/terme-und-gleichungen/termbaum/` |
+| ✓ | 5–7 | `vierecke` | Das Haus der Vierecke | `/de/mathematik/geometrie/haus-der-vierecke/` |
+| ✓ | 5–8 | `koerpernetze` | Netze und Oberflächen von Körpern | `/de/mathematik/flaechen-und-koerper/koerpernetze/` |
+| ✓ | 5–8 | `zaehlprinzip` | Zählprinzip und Baumdiagramm | `/de/mathematik/daten-und-zufall/zaehlprinzip-baumdiagramm/` |
+| ✓ | 6–6 | `bruchteile` | Bruchteile darstellen | `/de/mathematik/zahlen-und-operationen/bruchteile/` |
+| ✓ | 6–6 | `brueche-rechnen` | Brüche multiplizieren und dividieren am Rechteckmodell | `/de/mathematik/zahlen-und-operationen/brueche-multiplizieren-dividieren/` |
+| ✓ | 6–6 | `brueche-vergleichen` | Brüche erweitern, kürzen und vergleichen | `/de/mathematik/zahlen-und-operationen/brueche-erweitern-kuerzen-vergleichen/` |
+| ✓ | 6–6 | `dezimalbrueche` | Endliche und periodische Dezimalbrüche | `/de/mathematik/zahlen-und-operationen/endliche-periodische-dezimalbrueche/` |
+| ✓ | 6–6 | `diagramme` | Diagramme lesen und kritisch prüfen | `/de/mathematik/daten-und-zufall/diagramme-lesen-und-pruefen/` |
+| ✓ | 6–6 | `flaechen-zerlegen` | Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen | `/de/mathematik/flaechen-und-koerper/flaechen-zerlegen-ergaenzen/` |
+| ✓ | 6–6 | `quader-volumen` | Volumen von Quadern mit Einheitswürfeln | `/de/mathematik/flaechen-und-koerper/quader-volumen/` |
+| ✓ | 6–7 | `prozentstreifen` | Prozentstreifen | `/de/mathematik/zahlen-und-operationen/prozentstreifen/` |
+| ✓ | 6–8 | `proportional` | Direkte und indirekte Proportionalität | `/de/mathematik/funktionen/direkte-indirekte-proportionalitaet/` |
+| ✓ | 6–9 | `gesetz-grosse-zahlen` | Gesetz der großen Zahlen | `/de/mathematik/daten-und-zufall/gesetz-der-grossen-zahlen/` |
+| ✓ | 7–7 | `binomische-formeln` | Binomische Formeln am Quadrat | `/de/mathematik/terme-und-gleichungen/binomische-formeln/` |
+| ✓ | 7–7 | `boxplot` | Mittelwert, Median und Boxplot | `/de/mathematik/daten-und-zufall/mittelwert-median-boxplot/` |
+| ✓ | 7–7 | `dreieckskonstruktion` | Kongruenzsätze und Dreieckskonstruktionen | `/de/mathematik/geometrie/dreieckskonstruktion-kongruenzsaetze/` |
+| ✓ | 7–7 | `mittelsenkrechte` | Mittelsenkrechte und Winkelhalbierende | `/de/mathematik/geometrie/mittelsenkrechte-winkelhalbierende/` |
+| ✓ | 7–7 | `spiegelung` | Achsen- und Punktspiegelung | `/de/mathematik/geometrie/achsen-und-punktspiegelung/` |
+| ✓ | 7–7 | `thales` | Satz des Thales | `/de/mathematik/geometrie/satz-des-thales/` |
+| ✓ | 7–7 | `waagemodell` | Lineare Gleichungen am Waagemodell | `/de/mathematik/terme-und-gleichungen/waagemodell/` |
+| ✓ | 7–7 | `winkel-geradenkreuzung` | Winkel an Geradenkreuzungen | `/de/mathematik/geometrie/winkel-an-geradenkreuzungen/` |
+| ✓ | 7–7 | `winkelsumme` | Innenwinkelsumme in Dreieck und Vieleck | `/de/mathematik/geometrie/innenwinkelsumme/` |
+| ✓ | 7–8 | `besondere-linien` | Umkreis, Inkreis und besondere Linien im Dreieck | `/de/mathematik/geometrie/besondere-linien-im-dreieck/` |
+| ✓ | 7–9 | `lineare-funktion` | Lineare Funktion | `/de/mathematik/funktionen/lineare-funktion/` |
+| ✓ | 8–8 | `funktion-zuordnung` | Funktion oder nicht? Zuordnungen und ihre Graphen | `/de/mathematik/funktionen/funktion-oder-nicht/` |
+| ✓ | 8–8 | `hyperbel` | Hyperbeln und ihre Asymptoten | `/de/mathematik/funktionen/hyperbel-asymptoten/` |
 | ☐ | 8–8 | `kreiszahl-pi` | Kreisumfang, Kreisfläche und die Zahl π | `/de/mathematik/flaechen-und-koerper/kreiszahl-pi/` |
 | ☐ | 8–8 | `lgs-grafisch` | Lineare Gleichungssysteme grafisch lösen | `/de/mathematik/terme-und-gleichungen/lgs-grafisch/` |
 | ☐ | 8–8 | `prisma-zylinder` | Prisma und Zylinder: Oberfläche und Volumen | `/de/mathematik/flaechen-und-koerper/prisma-und-zylinder/` |

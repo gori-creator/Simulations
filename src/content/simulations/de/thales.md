@@ -90,10 +90,11 @@ Konstruktion: Mittelpunkt von $\overline{MP}$ bestimmen, Thaleskreis über $\ove
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Entdeckend in Jahrgangsstufe 7 (Bayern: Lernbereich zu Dreiecken und besonderen Linien). Die Lernenden formulieren die Vermutung selbst, bevor die Beweisidee eingeblendet wird.
+- **Einsatz:** Entdeckend in Jahrgangsstufe 7 (Bayern: Lernbereich zu Kongruenz und besonderen Dreiecken, dort auch die Tangentenkonstruktion aus Aufgabe 4). Die Lernenden formulieren die Vermutung selbst, bevor Sie die Beweisidee einblenden.
 - **Animation:** Mit **Abspielen** wandert $C$ gleichmäßig über den Kreis. Gut geeignet, um die Konstanz von $\gamma$ trotz wechselnder $\alpha$ und $\beta$ zu betonen.
 - **Häufige Stolpersteine:**
   - „Der rechte Winkel liegt bei $M$.“ – Der rechte Winkel liegt immer gegenüber dem Durchmesser, also bei $C$.
   - Satz und Umkehrung werden nicht unterschieden. Der Modus **C frei verschieben** macht die Umkehrung erfahrbar.
   - In der Lage unterhalb von $\overline{AB}$ wird der Winkel nicht wiedererkannt – auch dort gilt der Satz.
-- **Aufgabenmodus:** Mit **Teilen → Ergebnisse verdecken** sind der Winkel und die Beweisidee verdeckt; so lässt sich erst vermuten, dann kontrollieren.
+- **Aufgabenmodus:** Mit **Teilen → Ergebnisse verdecken** sind die Winkelgröße (auch im Bild) und die Beweisidee verdeckt; so lässt sich erst vermuten, dann kontrollieren. Im Unterricht blenden Sie die Winkelgröße im Bild mit **Winkelgröße im Bild anzeigen** aus und ein.
+- **Hinweis zum freien Verschieben:** $C$ springt in Schritten von $0{,}1$. „Auf dem Thaleskreis“ und $\gamma = 90^\circ$ erscheinen nur, wenn $C$ genau auf dem Kreis liegt, z. B. bei $C(0|3)$, $C(1{,}8|2{,}4)$ oder $C(2{,}4|1{,}8)$. Schon knapp daneben ist $\gamma$ etwas größer oder kleiner als $90^\circ$, z. B. $C(0{,}3|3)$: $\gamma \approx 89{,}7^\circ$.

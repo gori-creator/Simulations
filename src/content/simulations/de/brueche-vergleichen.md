@@ -39,7 +39,7 @@ Am Zahlenstrahl liegt der kleinere Bruch weiter links.
 4. Bei [4/9 und 6/11](?z1=4&n1=9&z2=6&n2=11&weg=zaehler) wäre der Hauptnenner 99. Mit **Zähler angleichen** geht es leichter. Welche Stücke sind größer?
 5. Unechte Brüche als Kreise: [7/4 und 5/3](?z1=7&n1=4&z2=5&n2=3&form=kreis). Wie viele Ganze sind es jeweils?
 6. Sind [6/8 und 9/12](?z1=6&n1=8&z2=9&n2=12) gleich groß? Was zeigt der Zahlenstrahl?
-7. Kürze [12/18](?mode=kuerzen&z=12&n=18&f=2) Schritt für Schritt mit 2 und dann mit 3. Stelle danach den Regler auf 4: Warum geht Kürzen mit 4 nicht? Achte auf die Klammern unter dem Streifen.
+7. Lade [12/18](?mode=kuerzen&z=12&n=18&f=2) und stelle den Regler auf 4: Warum geht Kürzen mit 4 nicht? Achte auf die Klammern unter dem Streifen. Kürze dann Schritt für Schritt mit 2 und mit 3.
 8. Tippe in der Bruchwand auf ein Feld, um diesen Bruch zu wählen. Welche Brüche sind gleich [einhalb](?mode=kuerzen&z=1&n=2&f=2)?
 9. Spiele [Brüche ordnen](?mode=ordnen&stufe=leicht) und steigere dich bis [schwer](?mode=ordnen&stufe=schwer&anz=5).
 

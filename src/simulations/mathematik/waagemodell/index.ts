@@ -19,6 +19,7 @@ import {
   subtract,
   suggestedDivisor,
   tiltTarget,
+  valueText,
   weight,
   type Op,
   type Pans,
@@ -146,6 +147,7 @@ export default defineSimulation({
       zero: 'Die Lösung wäre x = 0 – Päckchen ohne Gewicht gibt es nicht. Grenze des Waagemodells!',
       noneStart: 'Links und rechts liegen gleich viele Päckchen, aber verschieden viele Gewichtsstücke: Die Waage kann nie im Gleichgewicht sein.',
       opened: 'Jedes Päckchen wiegt {x}. Probe in der Ausgangsgleichung: links {l}, rechts {r}.',
+      openedAll: 'Hier wiegt jedes Päckchen {x} – mit jedem anderen Gewicht wäre die Waage genauso im Gleichgewicht. Links {l}, rechts {r}.',
       left: 'links',
       right: 'rechts',
       balanced: 'im Gleichgewicht',
@@ -181,6 +183,7 @@ export default defineSimulation({
       zero: 'The solution would be x = 0 – boxes without weight do not exist. Limit of the balance model!',
       noneStart: 'Both pans hold the same number of boxes but different numbers of weights: the balance can never be level.',
       opened: 'Each box weighs {x}. Check in the original equation: left {l}, right {r}.',
+      openedAll: 'Here each box weighs {x} – with any other weight the balance would be level as well. Left {l}, right {r}.',
       left: 'left',
       right: 'right',
       balanced: 'level',
@@ -419,7 +422,7 @@ export default defineSimulation({
         const x = w();
         const l = weight(start.left, x);
         const r = weight(start.right, x);
-        status = { text: tr('opened', { x: num(x), l: probeText(start.left, x), r: probeText(start.right, x) }), tone: Math.abs(l - r) < 1e-9 ? 'ok' : 'warn' };
+        status = { text: tr(fit() === 'all' ? 'openedAll' : 'opened', { x: num(x), l: probeText(start.left, x), r: probeText(start.right, x) }), tone: Math.abs(l - r) < 1e-9 ? 'ok' : 'warn' };
       } else status = null;
       refresh();
     }
@@ -430,7 +433,12 @@ export default defineSimulation({
       const t = fracText(f, lang);
       return t.includes(' = ') ? t.split(' = ')[1]! : t;
     }
-    const num = (v: number) => ctx.fmt.num(v, 2);
+    /** Nenner der Lösung: Gewichte und Summen sind Vielfache davon (Brüche wie 2/3 nicht runden). */
+    const solDen = () => {
+      const s = solve(start);
+      return s.kind === 'unique' ? s.x.den : 1;
+    };
+    const num = (v: number) => valueText(v, solDen(), lang);
     function probeText(s: Side, x: number): string {
       const parts: string[] = [];
       if (s.x > 0) parts.push(s.x === 1 ? num(x) : `${s.x} · ${num(x)}`);
@@ -741,7 +749,7 @@ export default defineSimulation({
             drawWeight(x0 + 3 + (col + 0.5) * cw, by - 3 - row * ch, s * 0.9, s, false, false);
           }
         } else {
-          text(g, ctx.fmt.num(x, 2), cx, y0 + bh / 2, { font: `800 ${bh * 0.42}px ${theme.font}`, color: theme.dark ? '#f4d79b' : '#7a4d14' });
+          text(g, num(x), cx, y0 + bh / 2, { font: `800 ${bh * 0.42}px ${theme.font}`, color: theme.dark ? '#f4d79b' : '#7a4d14' });
         }
       }
       if (hover) {
@@ -753,12 +761,12 @@ export default defineSimulation({
       g.restore();
       if (showInside && tag) {
         // Schildchen mit dem Gewicht eines Päckchens (eines je Schale)
-        const label = `x = ${ctx.fmt.num(w(), 2)}`;
+        const label = `x = ${num(w())}`;
         const fs = Math.max(10, bh * 0.3);
         g.font = `800 ${fs}px ${theme.font}`;
         const tw = g.measureText(label).width + 10;
         const ty = y0 - fs * 0.9;
-        g.fillStyle = theme.dark ? '#18202c' : '#ffffff';
+        g.fillStyle = theme.bg;
         roundRect(g, cx - tw / 2, ty - fs * 0.7, tw, fs * 1.4, fs * 0.7);
         g.fill();
         g.strokeStyle = theme.series[2]!;
@@ -1181,7 +1189,7 @@ export default defineSimulation({
       const relColor = rel === '=' ? theme.series[2]! : theme.series[1]!;
       if (p.labels) {
         const fs = small ? 15 : 20;
-        const ink = theme.dark ? '#f4f6fa' : '#1b2330';
+        const ink = theme.text;
         const cardY = gg.floorY + (r.y + r.h - gg.floorY) / 2;
         for (const [side, px] of [
           [current.left, gg.pivotX - gg.arm],
@@ -1193,7 +1201,7 @@ export default defineSimulation({
             g.font = q.italic ? `italic ${fs * 1.12}px ${theme.mathFont}` : `600 ${fs}px ${theme.font}`;
             return sum + g.measureText(q.s).width;
           }, 0);
-          g.fillStyle = theme.dark ? 'rgba(16,22,31,0.82)' : 'rgba(255,255,255,0.88)';
+          g.fillStyle = withAlpha(theme.bg, 0.86);
           roundRect(g, px - tw / 2 - 10, cardY - fs * 0.78, tw + 20, fs * 1.56, 8);
           g.fill();
           drawTokens(toks, px, cardY, fs, ink, 'center');
@@ -1203,7 +1211,7 @@ export default defineSimulation({
         g.save();
         g.shadowColor = 'rgba(0,0,0,0.25)';
         g.shadowBlur = 6;
-        g.fillStyle = theme.dark ? '#18202c' : '#ffffff';
+        g.fillStyle = theme.bg;
         g.beginPath();
         g.arc(gg.pivotX, cardY, rr, 0, Math.PI * 2);
         g.fill();
@@ -1251,7 +1259,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
-      g.fillStyle = theme.dark ? '#18202c' : '#ffffff';
+      g.fillStyle = theme.bg;
       roundRect(g, x, y, bw, bh, 10);
       g.fill();
       g.shadowColor = 'transparent';
@@ -1357,8 +1365,8 @@ export default defineSimulation({
         // Probe in der Ausgangsgleichung
         const x = w();
         const y = top + (shown.length + (solvedNow ? 1 : 0)) * lh + lh / 2;
-        const l = ctx.fmt.num(weight(start.left, x), 2);
-        const rr = ctx.fmt.num(weight(start.right, x), 2);
+        const l = num(weight(start.left, x));
+        const rr = num(weight(start.right, x));
         const ok = Math.abs(weight(start.left, x) - weight(start.right, x)) < 1e-9;
         text(g, `${lang === 'de' ? 'Probe' : 'Check'}: ${l} = ${rr} ${ok ? '✓' : '✗'}`, eqX, y, { font: `700 ${fs * 0.9}px ${theme.font}`, color: ok ? theme.series[2]! : theme.series[1]! });
       }

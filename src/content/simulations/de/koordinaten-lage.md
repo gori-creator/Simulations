@@ -56,7 +56,7 @@ Trage $A(1 \mid 2)$, $B(6 \mid 2)$ und $C(6 \mid 7)$ in ein Koordinatensystem ei
 <details>
 <summary>Lösung anzeigen</summary>
 
-$D(1 \mid 7)$. Gegenüberliegende Seiten sind parallel: $[AB] \parallel [DC]$ und $[BC] \parallel [AD]$. Benachbarte Seiten sind senkrecht zueinander, z. B. $[AB] \perp [BC]$. [In der Simulation zeigen](?mode=lage&ax=1&ay=2&bx=6&by=2&cx=1&cy=7&dx=6&dy=7&geo=1)
+$D(1 \mid 7)$. Gegenüberliegende Seiten sind parallel: $[AB] \parallel [DC]$ und $[BC] \parallel [AD]$. Benachbarte Seiten sind senkrecht zueinander, z. B. $[AB] \perp [BC]$. [In der Simulation zeigen](?mode=lage&ax=1&ay=2&bx=6&by=2&cx=6&cy=7&dx=1&dy=7&geo=1)
 
 </details>
 
@@ -127,6 +127,6 @@ Zwölf: Vier davon erreicht man mit „5 nach rechts, links, oben oder unten“,
   - x- und y-Koordinate werden vertauscht – das Spiel erkennt diesen Fehler und gibt gezielt Rückmeldung („erst nach rechts, dann nach oben“).
   - „Senkrecht“ wird mit „lotrecht/hochkant“ verwechselt. In der Mathematik ist „senkrecht“ immer eine Beziehung **zwischen zwei** Geraden; auch schräge Geraden können senkrecht zueinander sein.
   - Parallel heißt nicht „gleich lang“ oder „waagerecht“; Geraden haben keine Länge.
-  - Der Abstand wird nicht senkrecht, sondern entlang irgendeiner Verbindung gemessen.
+  - Der Abstand wird schräg gemessen statt senkrecht (entlang des Lots).
 - **Schreibweise:** Punkte mit senkrechtem Strich $P(3 \mid 5)$, Strecke $[AB]$, Halbgerade $[AB$, Gerade $AB$, Streckenlänge $\overline{AB}$ – wie in bayerischen Schulbüchern üblich.
 - **Punkte-Spiel:** Es funktioniert auch in gesperrten Links (`_lock=1`). Die Ergebnisse „Lage“ und „Abstand“ lassen sich mit `_hide=1` verdecken; in der Zeichnung bleiben sie sichtbar.

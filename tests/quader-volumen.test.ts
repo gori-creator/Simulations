@@ -60,3 +60,43 @@ describe('Quader-Volumen', () => {
     expect(convertVolume(2, 'm')).toMatchObject({ dm3: 2000, l: 2000 });
   });
 });
+
+describe('Quader-Volumen: Prüfrunde, Werte von Hand nachgerechnet', () => {
+  it('4 × 3 × 2: 4 pro Reihe, 12 pro Schicht, 24 cm³', () => {
+    expect(stageCount('reihe', 4, 3, 2)).toBe(4);
+    expect(stageCount('schicht', 4, 3, 2)).toBe(12);
+    expect(volume(4, 3, 2)).toBe(24);
+    expect(fillPlan(4, 3, 2, 0, 24).filter((i) => i.kind === 'layer')).toHaveLength(1);
+  });
+
+  it('Würfel: V = a³', () => {
+    expect(volume(3, 3, 3)).toBe(27);
+    expect(volume(10, 10, 10)).toBe(1000);
+    expect(convertVolume(1000, 'cm')).toMatchObject({ dm3: 1, l: 1, ml: 1000 });
+  });
+
+  it('Grenzen: kleinster und größter Quader', () => {
+    expect(stageOf(1, 1, 1, 1)).toBe('voll');
+    expect(stageOf(0, 1, 1, 1)).toBe('leer');
+    const seen = new Set<string>();
+    for (let k = 0; k < 1000; k++) {
+      const { col, row, layer } = cubeCell(k, 10, 10);
+      expect(col < 10 && row < 10 && layer < 10).toBe(true);
+      seen.add(`${col},${row},${layer}`);
+    }
+    expect(seen.size).toBe(1000);
+    expect(convertVolume(1000, 'm')).toMatchObject({ dm3: 1_000_000, l: 1_000_000 });
+  });
+
+  it('24 Würfel: genau vier Quader mit ganzzahligen Kanten bis 10 (Aufgabe 2)', () => {
+    const found: string[] = [];
+    for (let a = 1; a <= 10; a++) for (let b = a; b <= 10; b++) for (let c = b; c <= 10; c++) if (volume(a, b, c) === 24) found.push(`${a}·${b}·${c}`);
+    expect(found).toEqual(['1·3·8', '1·4·6', '2·2·6', '2·3·4']);
+  });
+
+  it('Aufgaben: 6 × 4 × 3 = 72, Aquarium 72 l, Verdoppeln ×8', () => {
+    expect(volume(6, 4, 3)).toBe(72);
+    expect(convertVolume(volume(6, 3, 4), 'dm').l).toBe(72);
+    expect(volume(10, 6, 8) / volume(5, 3, 4)).toBe(8);
+  });
+});

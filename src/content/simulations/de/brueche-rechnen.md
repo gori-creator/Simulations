@@ -104,7 +104,22 @@ Gleichnamig: $\frac{5}{6} : \frac{4}{6} = 5 : 4 = \frac{5}{4} = 1\frac{1}{4}$. M
 
 </details>
 
-### Aufgabe 6: Größer durch Teilen? (Knobelaufgabe)
+### Aufgabe 6: Wie oft passt es hinein?
+
+Berechne a) $\frac{3}{4} : \frac{1}{8}$ b) $\frac{2}{3} : \frac{4}{5}$ c) $3 : \frac{1}{4}$. Ist das Ergebnis größer oder kleiner als $1$? [Aufgabe a laden](?mode=durch&z1=3&n1=4&z2=1&n2=8&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+a) $\frac{3}{4} = \frac{6}{8}$, also $6 : 1 = 6$. Das Achtel passt genau $6$-mal hinein. [Zeigen](?mode=durch&z1=3&n1=4&z2=1&n2=8)
+
+b) $\frac{2}{3} \cdot \frac{5}{4} = \frac{10}{12} = \frac{5}{6}$. Das Ergebnis ist kleiner als $1$: $\frac{4}{5}$ passt nicht ganz hinein, nur $\frac{5}{6}$ des Streifens. [Zeigen](?mode=durch&z1=2&n1=3&z2=4&n2=5)
+
+c) $3 \cdot 4 = 12$. In jedes Ganze passt $\frac{1}{4}$ viermal, in $3$ Ganze also $12$-mal. [Zeigen](?mode=durch&z1=3&n1=1&z2=1&n2=4)
+
+</details>
+
+### Aufgabe 7: Größer durch Teilen? (Knobelaufgabe)
 
 Begründe, warum $\frac{3}{4} : \frac{1}{2}$ größer ist als $\frac{3}{4}$. Für welche Divisoren wird das Ergebnis kleiner als der Dividend?
 
@@ -118,7 +133,7 @@ $\frac{1}{2}$ passt mehr als einmal in $\frac{3}{4}$, nämlich $\frac{3}{4} \cdo
 ## Ideen für den Unterricht
 
 - **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.4 „Multiplikation und Division rationaler Zahlen“ (LehrplanPLUS Bayern, Gymnasium): tragfähige Vorstellungen „Anteil von“ (Rechteckmodell) und „Aufteilen/Messen“ (Division). Zur Erarbeitung im Unterricht und zur Übung; die Vorstellung des Erweiterns und Gleichnamigmachens aus „Brüche erweitern, kürzen und vergleichen“ wird beim Dividieren genutzt.
-- **Modell:** Faktoren bis $3$ (also bis zu $3 \times 3$ Ganze im Bild) und Nenner bis $12$. Die Griffe am Rand rasten in Schritten von $\frac{1}{b}$ bzw. $\frac{1}{d}$ ein. Mit „Aufbauen“ entsteht das Bild schrittweise: erst der eine Faktor, dann der andere, dann die Überlappung mit durchnummerierten Feldern.
+- **Modell:** Faktoren bis $3$ (also bis zu $3 \times 3$ Ganze im Bild) und Nenner bis $12$. Zähler sind mindestens $1$, eine Division durch $0$ kommt also nicht vor. Die Griffe am Rand rasten in Schritten von $\frac{1}{b}$ bzw. $\frac{1}{d}$ ein. Mit „Aufbauen“ entsteht das Bild schrittweise: erst der eine Faktor, dann der andere, dann die Überlappung mit durchnummerierten Feldern.
 - **Division:** Die Simulation nutzt die Vorstellung des **Aufteilens (Messens)**: „Wie oft passt …?“. Ist der Divisor eine natürliche Zahl, liegt die Vorstellung des **Verteilens** näher: $\frac{3}{4} : 3$ heißt „$\frac{3}{4}$ auf $3$ Personen verteilen“, also $\frac{1}{4}$ für jede. Beide Vorstellungen führen auf $\frac{3}{4} \cdot \frac{1}{3}$.
 - **Häufige Stolpersteine:**
   - „Mal macht größer, geteilt macht kleiner.“ – Das gilt nur für Faktoren bzw. Divisoren größer als $1$.

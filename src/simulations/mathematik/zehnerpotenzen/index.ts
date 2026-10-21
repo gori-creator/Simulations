@@ -58,7 +58,7 @@ interface ObjText {
 }
 
 const OBJ_TEXT: Record<ObjId, ObjText> = {
-  sand: { name: L('Sandkorn', 'Grain of sand'), what: L('Durchmesser', 'diameter'), approx: true, fact: L('So groß wie ein Kästchen auf Millimeterpapier.', 'As big as one square on graph paper.') },
+  sand: { name: L('Sandkorn', 'Grain of sand'), what: L('Durchmesser', 'diameter'), approx: true, fact: L('So groß wie ein Kästchen auf Millimeterpapier.', 'As big as one small square on millimetre graph paper.') },
   bug: { name: L('Marienkäfer', 'Ladybird'), what: L('Länge', 'length'), approx: true, fact: L('Sieben Sandkörner hintereinander sind so lang wie ein Marienkäfer.', 'Seven grains of sand in a row are as long as a ladybird.') },
   apple: { name: L('Apfel', 'Apple'), what: L('Durchmesser', 'diameter'), approx: true, fact: L('Gut zehn Marienkäfer passen nebeneinander über einen Apfel.', 'About ten ladybirds fit side by side across an apple.') },
   child: { name: L('Kind', 'Child'), what: L('Körpergröße', 'height'), approx: true, fact: L('Etwa 18 Äpfel übereinander sind so hoch wie ein Kind der 5. Klasse.', 'About 18 apples stacked up are as tall as a child of eleven.') },
@@ -1512,6 +1512,8 @@ export default defineSimulation({
       g.stroke();
       const fU = font(600, 11);
       const units: Record<number, string> = { [-3]: '1 mm', [-2]: '1 cm', 0: '1 m', 3: '1 km', 6: `${gd(1000)} km` };
+      // Einheiten-Schilder nur, wenn sie nicht am Nachbarn kleben (schmale Handys)
+      let unitRight = -Infinity;
       for (let e = E_MIN; e <= E_MAX; e++) {
         const x = xe(e);
         const cur = Math.abs(e - E) < 0.5;
@@ -1523,7 +1525,14 @@ export default defineSimulation({
         g.stroke();
         powText('10', expText(e), x, ay + 17, 11.5, cur ? theme.text : theme.muted, cur ? shade(accent(), theme.dark ? 0.1 : -0.2) : theme.muted, 'center');
         const u = units[e];
-        if (u) text(g, u, x, ay + 33, { font: fU, color: alpha(theme.muted, 0.9) });
+        if (u) {
+          g.font = fU;
+          const uw = g.measureText(u).width;
+          if (x - uw / 2 > unitRight + 6) {
+            text(g, u, x, ay + 33, { font: fU, color: alpha(theme.muted, 0.9) });
+            unitRight = x + uw / 2;
+          }
+        }
       }
       // Objekte als Punkte
       const near = nearestObject(E);
@@ -1677,7 +1686,8 @@ export default defineSimulation({
         y += 18;
         if (p.show) text(g, `≈ ${sciSizeText(o)}`, x0, y, { font: font(650, 12.5), color: theme.muted, align: 'left' });
         y += 22;
-        const rows = wrap(T(ot.fact), w, font(550, 12.5));
+        // Vergleichssatz nennt Größen (105 m, 10 km …) – beim Schätzen ausblenden
+        const rows = p.show ? wrap(T(ot.fact), w, font(550, 12.5)) : [];
         const tipTop = R.h > 420 ? R.y + R.h - 86 : R.y + R.h - 4;
         for (const r of rows) {
           if (y > tipTop - 8) break;
@@ -1736,7 +1746,7 @@ export default defineSimulation({
           text(g, `≈ ${sciSizeText(o)}`, rx, ry, { font: font(650, 11.5), color: theme.muted, align: 'left' });
           ry += 17;
         }
-        const rows = wrap(T(ot.fact), rw, font(550, 11.5));
+        const rows = p.show ? wrap(T(ot.fact), rw, font(550, 11.5)) : [];
         const maxRows = Math.max(0, Math.floor((R.y + R.h - 10 - ry) / 15));
         rows.slice(0, maxRows).forEach((r, i) => text(g, r, rx, ry + i * 15, { font: font(550, 11.5), color: theme.text, align: 'left' }));
       }
@@ -2188,7 +2198,7 @@ export default defineSimulation({
 
     const SCI_EXAMPLES: { z: string; label: Loc }[] = [
       { z: '12742000', label: L('Erde (Durchmesser in m)', 'Earth (diameter in m)') },
-      { z: '300000', label: L('Licht pro Sekunde (in km)', 'Light per second (in km)') },
+      { z: '300000', label: L('Licht in 1 s (rund, in km)', 'Light in 1 s (approx., in km)') },
       { z: '0,001', label: L('Sandkorn (in m)', 'Grain of sand (in m)') },
     ];
 

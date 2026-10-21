@@ -148,6 +148,20 @@ describe('Modell: Prozentstreifen', () => {
     expect(gridFill(-3)).toEqual({ full: 0, part: 0 });
   });
 
+  it('Prozentsatz gesucht bei Änderungen: W : G ist der Satz des neuen Preises, der Änderungssatz ist der Abstand zu 100 %', () => {
+    // 60 € → 48 €: 48 : 60 = 0,8 = 80 %, also 20 % Rabatt
+    const r = problem('rabatt', 'p', 60, 20);
+    expect(r.W).toBeCloseTo(48, 12);
+    expect(r.result).toBeCloseTo(80, 12);
+    expect(100 - r.result).toBeCloseTo(r.p, 12);
+    // 50 € netto → 59,50 € brutto: 119 %, also 19 % Mehrwertsteuer
+    const m = problem('mwst', 'p', 50, 19);
+    expect(m.result).toBeCloseTo(119, 12);
+    expect(m.result - 100).toBeCloseTo(19, 12);
+    // 84 € nach +20 %: zurück 84 : 1,2 = 70 €
+    expect(problem('erh', 'G', 70, 20).W / factorOf('erh', 20)).toBeCloseTo(70, 12);
+  });
+
   it('Sonderfälle: 0 %, Grundwert 0, Rabatt 100 %', () => {
     expect(Number.isNaN(baseValue(5, 0))).toBe(true);
     expect(Number.isNaN(percentRate(0, 5))).toBe(true);

@@ -587,7 +587,7 @@ export default defineSimulation({
       g.stroke();
       // Rechter Winkel: Punkt im Winkelfeld
       if (s.value === 90 && u >= 1) {
-        const [dx, dy] = pol(s.V, s.from + 45, r * 0.5);
+        const [dx, dy] = pol(s.V, s.from + 45, r * 0.3);
         g.beginPath();
         g.arc(dx, dy, 3, 0, Math.PI * 2);
         g.fillStyle = s.color;
@@ -853,6 +853,8 @@ export default defineSimulation({
     }
 
     /* ---------- Doppelkreuzung ---------- */
+    /** Ohne „Alle Winkelgrößen zeigen“ gegeben: α₁, bei g ∦ h zusätzlich α₂ (eigener Regler). */
+    const isGivenD = (id: AngleId) => id === 'a1' || (id === 'a2' && !p.par);
     /** Die beiden hervorgehobenen Winkel (ausgewählter Winkel und sein Partner). */
     function pairD(): [AngleId, AngleId] {
       const rel = p.rel as Rel3;
@@ -1102,7 +1104,8 @@ export default defineSimulation({
         const dim = s.id === px || s.id === py ? 1 : 0.6;
         const raw = s.id[1] === '1' ? gG.at(now) : gH.at(now);
         const val = s.id[0] === 'a' || s.id[0] === 'c' ? raw : 180 - raw;
-        drawSectorLabel(s, a0 * dim, p.vals || s.id === 'a1' ? deg(Math.round(val)) : '?', 1, p.vals || s.id === 'a1' ? s.color : th.muted);
+        const shownD = p.vals || isGivenD(id);
+        drawSectorLabel(s, a0 * dim, shownD ? deg(Math.round(val)) : '?', 1, shownD ? s.color : th.muted);
       });
       for (const h of sc.handles) drawHandle(h, labA);
       g.restore();
@@ -1412,7 +1415,9 @@ export default defineSimulation({
           ...(hv
             ? k === '1'
               ? [{ t: `α₁ = ${vals.a1}°`, c: colOf('a1'), w: 800 }, { t: tt('   übrige: ?', '   others: ?'), c: th.muted, w: 700 }]
-              : [{ t: '?', c: th.muted, w: 800 }]
+              : isGivenD('a2')
+                ? [{ t: `α₂ = ${vals.a2}°`, c: colOf('a2'), w: 800 }, { t: tt('   übrige: ?', '   others: ?'), c: th.muted, w: 700 }]
+                : [{ t: '?', c: th.muted, w: 800 }]
             : [
                 { t: `α${SUB[k]} = γ${SUB[k]} = ${vals[`a${k}` as AngleId]}°`, c: colOf(`a${k}` as AngleId), w: 800 },
                 { t: '   ' },
@@ -1420,12 +1425,18 @@ export default defineSimulation({
               ]),
         ],
       });
-      const status: Item = par
+      // Ohne Werte bei g ∦ h ist „parallel?“ gerade die Frage: kein Urteil vorwegnehmen
+      const open = hv && !p.par;
+      const status: Item = open
+        ? { kind: 'rich', size: sz() - 0.5, segs: [{ t: tt('g ∥ h ?', 'g ∥ h ?'), c: th.muted, w: 800 }] }
+        : par
         ? { kind: 'rich', size: sz() - 0.5, segs: [{ t: tt('g ∥ h  ✓  parallel', 'g ∥ h  ✓  parallel'), c: cOk(), w: 800 }] }
         : { kind: 'rich', size: sz() - 0.5, segs: [{ t: tt(`g ∦ h: Unterschied ${Math.abs(w - v)}°`, `g ∦ h: difference ${Math.abs(w - v)}°`), c: cWarn(), w: 800 }] };
       const c1: CardSpec = { items: [{ kind: 'title', text: tt('Winkel an g und h', 'Angles at g and h') }, row('1', 'g'), row('2', 'h'), status] };
       const supp = rel === 'nachbar';
-      const eq: Item = hv
+      const eq: Item = open
+        ? { kind: 'big', size: bigSz() - 2, segs: [{ t: supp ? `${angleName(x)} + ${angleName(y)} = ?` : `${angleName(x)} = ${angleName(y)} ?`, c: th.muted }] }
+        : hv
         ? { kind: 'big', size: bigSz() - 2, segs: [{ t: supp ? `${angleName(x)} + ${angleName(y)} = ${par ? '180°' : '?'}` : `${angleName(x)} ${par ? '=' : '≠'} ${angleName(y)}`, c: par ? colOf(x) : cWarn() }] }
         : supp
         ? { kind: 'big', size: bigSz() - 2, segs: [{ t: `${angleName(x)} + ${angleName(y)} = `, c: colOf(x) }, { t: `${vals[x] + vals[y]}°`, c: par ? cOk() : cWarn() }] }
@@ -1439,7 +1450,7 @@ export default defineSimulation({
         nachbar: tt('Nachbarwinkel liegen auf derselben Seite von s, beide zwischen g und h oder beide außen (E-Figur).', 'Co-interior angles lie on the same side of s, both between g and h or both outside (C shape).'),
       }[rel];
       const c2: CardSpec = {
-        accent: par ? colOf(x) : cWarn(),
+        accent: open ? th.series[0]! : par ? colOf(x) : cWarn(),
         tint: 0.04,
         items: [
           { kind: 'title', text: tt(`${relName(rel)} (${fig}-Figur)`, `${relName(rel)} (${fig} shape)`) },
@@ -1450,13 +1461,15 @@ export default defineSimulation({
           eq,
           {
             kind: 'note',
-            text: par
+            text: open
+              ? tt('Vergleiche die gegebenen Winkel: Sind g und h parallel?', 'Compare the given angles: are g and h parallel?')
+              : par
               ? supp
                 ? tt('An parallelen Geraden ergänzen sich Nachbarwinkel zu 180°.', 'At parallel lines co-interior angles add up to 180°.')
                 : tt(`An parallelen Geraden sind ${relName(rel)} gleich groß.`, `At parallel lines ${relName(rel)} are equal.`)
               : tt('Nur bei parallelen Geraden gleich – hier sind g und h nicht parallel.', 'Only equal for parallel lines – here g and h are not parallel.'),
-            color: par ? th.muted : cWarn(),
-            weight: par ? 600 : 700,
+            color: par || open ? th.muted : cWarn(),
+            weight: par || open ? 600 : 700,
           },
         ],
       };
@@ -1543,7 +1556,7 @@ export default defineSimulation({
       }
       const gi = p.gi as AngleId;
       ctx.readout('given', tt(`g ∥ h, ${angleName(gi)} = ${p.gv}°`, `g ∥ h, ${angleName(gi)} = ${p.gv}°`));
-      ctx.readout('angles', { html: table(() => true) });
+      ctx.readout('angles', { html: table((id) => id === gi || known.has(id)) });
       ctx.readout('pair', lastTarget && lastSteps.length ? lastSteps.map((st) => stepText(st, vals)).join('; ') : null);
       ctx.readout('prog', tt(`${known.size} von 7 Winkeln aufgedeckt`, `${known.size} of 7 angles revealed`));
     }

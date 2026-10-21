@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   denominatorFactors,
+  digitAt,
   gcd,
   levelBounds,
   longDivision,
@@ -11,6 +12,7 @@ import {
   powerOfTen,
   predict,
   primeFactors,
+  remainderAt,
   remainders,
 } from '../src/simulations/mathematik/dezimalbrueche/model';
 
@@ -184,5 +186,43 @@ describe('Modell: Vorhersage über die Primfaktoren des Nenners', () => {
     expect(placeName(3, 'de')).toBe('Tausendstel');
     expect(placeName(2, 'en')).toBe('hundredths');
     expect(placeName(9, 'de')).toBeNull();
+  });
+});
+
+describe('Modell: Prüfrunde – Standardbeispiele und Sonderfälle', () => {
+  it('Standardbeispiele aus dem Unterricht', () => {
+    expect(plainDecimal(longDivision(7, 20))).toBe('0,35');
+    expect(plainDecimal(longDivision(1, 7))).toBe('0,[142857]');
+    expect(longDivision(1, 7).periodLength).toBe(6);
+    expect(plainDecimal(longDivision(1, 3))).toBe('0,[3]');
+    // 1/6 ist gemischt periodisch: 0,1 mit Periode 6 (nicht 0,[16])
+    expect(longDivision(1, 6)).toMatchObject({ pre: '1', period: '6' });
+    // 3/15 erst kürzen: 1/5 = 0,2 (endlich, obwohl 15 den Faktor 3 hat)
+    expect(plainDecimal(longDivision(3, 15))).toBe('0,2');
+    expect(predict(3, 15)).toMatchObject({ z: 1, n: 5, kind: 'endlich', preLength: 1 });
+    expect(powerOfTen(3, 15)).toMatchObject({ numerator: 2, power: 10 });
+    // unechter Bruch
+    expect(longDivision(7, 4)).toMatchObject({ integer: 1, kind: 'endlich', pre: '75' });
+  });
+
+  it('Zähler 0 ergibt die ganze Zahl 0', () => {
+    expect(longDivision(0, 7)).toMatchObject({ integer: 0, kind: 'ganz', steps: [] });
+    expect(plainDecimal(longDivision(0, 7))).toBe('0');
+    expect(predict(0, 7)).toMatchObject({ kind: 'ganz', n: 1 });
+  });
+
+  it('Ziffern und Reste über die berechnete Periode hinaus (Lupe)', () => {
+    const e = longDivision(1, 3);
+    expect([1, 2, 3, 4].map((i) => digitAt(e, i))).toEqual([3, 3, 3, 3]);
+    expect([0, 1, 2, 3].map((j) => remainderAt(e, j))).toEqual([1, 1, 1, 1]);
+    expect(levelBounds(e, 3)).toEqual(['0,333', '0,334']);
+    const f = longDivision(1, 6);
+    expect([1, 2, 3, 4].map((i) => digitAt(f, i))).toEqual([1, 6, 6, 6]);
+    expect([0, 1, 2, 3].map((j) => remainderAt(f, j))).toEqual([1, 4, 4, 4]);
+    const g = longDivision(3, 7);
+    for (let i = 1; i <= 20; i++) expect(digitAt(g, i)).toBe(Number('428571'[(i - 1) % 6]));
+    // endlich: hinter dem Ende Nullen bzw. Rest 0
+    expect(digitAt(longDivision(3, 8), 5)).toBe(0);
+    expect(remainderAt(longDivision(3, 8), 5)).toBe(0);
   });
 });

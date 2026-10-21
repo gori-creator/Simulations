@@ -1886,11 +1886,36 @@ export default defineSimulation({
     let readoutKnown = '';
     const knownKey = () => `${areaKnown()}|${perKnown()}`;
 
+    /** Beschreibung der Zeichenfläche für Bildschirmleser (Ergebnisse erst, wenn sie auch im Bild stehen). */
+    function describe(f: Fig, m: Mode): string {
+      const res = (A: number, U: number) =>
+        (areaKnown() ? T(` Flächeninhalt ${cm2(A)}.`, ` Area ${cm2(A)}.`) : '') + (perKnown() ? T(` Umfang ${cm(U)}.`, ` Perimeter ${cm(U)}.`) : '');
+      if (m === 'gleichU' || m === 'gleichA') {
+        const fixed = m === 'gleichU' ? T(`gleichem Umfang ${cm(p.u)}`, `the same perimeter ${cm(p.u)}`) : T(`gleichem Flächeninhalt ${cm2(p.fa)}`, `the same area ${cm2(p.fa)}`);
+        return T(
+          `Rechenpapier mit dem Rechteck ${f.a} cm × ${f.b} cm (Flächeninhalt ${cm2(rectArea(f.a, f.b))}, Umfang ${cm(rectPerimeter(f.a, f.b))}) und einem Säulendiagramm aller Rechtecke mit ${fixed}.`,
+          `Squared paper with the rectangle ${f.a} cm × ${f.b} cm (area ${cm2(rectArea(f.a, f.b))}, perimeter ${cm(rectPerimeter(f.a, f.b))}) and a bar chart of all rectangles with ${fixed}.`,
+        );
+      }
+      if (f.isL)
+        return (
+          T(
+            `Rechenpapier mit einer L-Form: Rechteck ${f.a} cm × ${f.b} cm, rechts oben ein Stück ${f.c} cm × ${f.d} cm ausgeschnitten.`,
+            `Squared paper with an L-shape: rectangle ${f.a} cm × ${f.b} cm with a ${f.c} cm × ${f.d} cm piece cut from the top right.`,
+          ) + res(lArea(f.a, f.b, f.c, f.d), lPerimeter(f.a, f.b, f.c, f.d))
+        );
+      return (
+        T(`Rechenpapier mit einem Rechteck ${f.a} cm × ${f.b} cm aus Einheitsquadraten (je 1 cm²).`, `Squared paper with a ${f.a} cm × ${f.b} cm rectangle made of unit squares (1 cm² each).`) +
+        res(rectArea(f.a, f.b), rectPerimeter(f.a, f.b))
+      );
+    }
+
     function updateReadouts(): void {
       const f = fig();
       const m = mode();
       // Flächeninhalt und Umfang erst, wenn sie auch im Bild stehen („Ergebnisse im Bild zeigen“ oder nach Auslegen bzw. Ameise)
       readoutKnown = knownKey();
+      surface.canvas.setAttribute('aria-label', describe(f, m));
       const vA = '<var>a</var>';
       const vB = '<var>b</var>';
       if (m === 'lform' && f.isL) {
@@ -1926,7 +1951,16 @@ export default defineSimulation({
               ? T(`Bei U = ${cm(p.u)} hat das Quadrat ${bestTxt} den größten Flächeninhalt: ${cm2(b0[0] * b0[1])}.`, `For P = ${cm(p.u)} the square ${bestTxt} has the largest area: ${cm2(b0[0] * b0[1])}.`)
               : T(`Bei U = ${cm(p.u)} haben ${bestTxt} den größten Flächeninhalt (${cm2(b0[0] * b0[1])}) – ein Quadrat mit ganzzahligen Seiten gibt es hier nicht.`, `For P = ${cm(p.u)}, ${bestTxt} have the largest area (${cm2(b0[0] * b0[1])}) – there is no square with whole-number sides.`),
           );
-        else {
+        else if (list.length <= 2) {
+          // nur eine Form (A = 1 oder Primzahl): kein Vergleich „kleinster/größter Umfang“
+          const one = list[0]!;
+          const turned = list.length === 2 ? T(` (gedreht ${one[1]} cm × ${one[0]} cm)`, ` (turned: ${one[1]} cm × ${one[0]} cm)`) : '';
+          const why = list.length === 2 ? T(` ${p.fa} ist eine Primzahl.`, ` ${p.fa} is a prime number.`) : '';
+          ctx.readout(
+            'best',
+            T(`Bei A = ${cm2(p.fa)} gibt es nur ein Rechteck mit ganzzahligen Seiten: ${one[0]} cm × ${one[1]} cm${turned} mit U = ${cm(rectPerimeter(one[0], one[1]))}.${why}`, `For A = ${cm2(p.fa)} there is only one rectangle with whole-number sides: ${one[0]} cm × ${one[1]} cm${turned} with P = ${cm(rectPerimeter(one[0], one[1]))}.${why}`),
+          );
+        } else {
           const first = list[0]!;
           ctx.readout(
             'best',

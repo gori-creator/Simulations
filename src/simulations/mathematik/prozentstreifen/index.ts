@@ -265,7 +265,10 @@ export default defineSimulation({
       return val(money() ? Math.round(v * 100) / 100 : Math.round(v * 1000) / 1000);
     }
     const pct = (q: number) => (Number.isFinite(q) ? `${fmt.num(q, 2)} %` : '–');
-    const hidden = (k: Find) => !pr.show && find() === k;
+    /** Grundwert nicht bestimmbar: gesucht, aber Prozentsatz des Prozentwerts 0 % (W ist dann immer 0). */
+    const gUndef = () => find() === 'G' && !(shareRate(sit(), pr.p) > 0);
+    /** Gesuchte Größe verdeckt (Lösung aus) – der unbestimmbare Grundwert immer. */
+    const hidden = (k: Find) => (!pr.show && find() === k) || (k === 'G' && gUndef());
     const Q = (k: Find, s: string) => (hidden(k) ? '?' : s);
 
     /* ---------- angezeigter Zustand ---------- */
@@ -1451,7 +1454,8 @@ export default defineSimulation({
           if (sgV === 0) forms.push(`\\c{W}{W} = \\c{G}{G} · \\f{\\c{p}{p}}{100} = ${val(pb.G)} · \\f{${qn}}{100} = \\c{W}{\\b{${Q('W', val(pb.W))}}}`);
           else forms.push(`\\c{W}{W} = ${val(pb.G)} · \\f{${qn}}{100} = ${val(pb.G)} · ${fac} = \\c{W}{\\b{${Q('W', val(pb.W))}}}`);
         } else if (f === 'p') {
-          forms.push(`\\c{p}{p %} = \\f{\\c{W}{W}}{\\c{G}{G}} = \\f{${val(pb.W)}}{${val(pb.G)}} = ${show ? fmt.num(pb.q / 100, 4) : '?'} = \\c{p}{\\b{${Q('p', pct(pb.q))}}}`);
+          // Bei Änderungen ist p der Änderungssatz; W : G liefert den Prozentsatz des neuen Preises.
+          forms.push(`${sgV === 0 ? '\\c{p}{p %} = ' : ''}\\f{\\c{W}{W}}{\\c{G}{G}} = \\f{${val(pb.W)}}{${val(pb.G)}} = ${show ? fmt.num(pb.q / 100, 4) : '?'} = \\c{p}{\\b{${Q('p', pct(pb.q))}}}`);
           if (sgV !== 0 && show) forms.push(`\\c{m}{${up(sgV < 0 ? say(L('Rabatt', 'Discount')) : say(L('Erhöhung', 'Increase')))}: ${sgV < 0 ? `100 % − ${qn} %` : `${qn} % − 100 %`} =} \\c{d}{\\b{${pct(pb.p)}}}`);
         } else {
           if (!(pb.q > 0)) forms.push(`\\c{bad}{${up(say(L('Bei 0 % ist W immer 0 – G ist nicht bestimmbar.', 'At 0 % W is always 0 – G cannot be found.')))}}`);
@@ -1789,11 +1793,11 @@ export default defineSimulation({
           if (f === 'G') paras.push({ s: say(L(`Der Bruttopreis entspricht ${pct(pb.q)}. Nettopreis = Bruttopreis : ${fac}.`, `The gross price corresponds to ${pct(pb.q)}. Net price = gross price : ${fac}.`)), color: col.bad(), weight: 650 });
         } else if (s === 'zins') {
           paras.push({ s: say(L('Zinsen für ein Jahr: Zinsen = Kapital · p/100. Der Zinssatz ist der Prozentsatz, das Kapital der Grundwert.', 'Interest for one year: interest = capital · p/100. The interest rate is the rate, the capital is the base value.')) });
-          if (show) paras.push({ s: say(L(`Nach einem Jahr: ${val(pb.G)} + ${val(pb.W)} = ${val(pb.G + pb.W)}.`, `After one year: ${val(pb.G)} + ${val(pb.W)} = ${val(pb.G + pb.W)}.`)), color: col.W(), weight: 650 });
+          if (show && !hidden('G')) paras.push({ s: say(L(`Nach einem Jahr: ${val(pb.G)} + ${val(pb.W)} = ${val(pb.G + pb.W)}.`, `After one year: ${val(pb.G)} + ${val(pb.W)} = ${val(pb.G + pb.W)}.`)), color: col.W(), weight: 650 });
         } else {
           paras.push({ s: say(L('Anteil in Prozent = Anzahl : Gesamtzahl. Bei Personen muss der Prozentwert eine ganze Zahl sein.', 'Share in percent = number : total. For people the percentage value must be a whole number.')) });
           if (!isNice(pb.W, 0)) paras.push({ s: say(L(`${val(pb.W)} ist keine ganze Zahl – so viele Kinder gibt es nicht. Wähle einen anderen Prozentsatz.`, `${val(pb.W)} is not a whole number – that cannot be. Choose another rate.`)), color: col.bad(), weight: 650 });
-          else if (show) paras.push({ s: say(L(`Ohne Rad: ${val(pb.G - pb.W)} (${pct(100 - pb.q)}).`, `Not by bike: ${val(pb.G - pb.W)} (${pct(100 - pb.q)}).`)), color: theme.muted });
+          else if (show && !hidden('G')) paras.push({ s: say(L(`Ohne Rad: ${val(pb.G - pb.W)} (${pct(100 - pb.q)}).`, `Not by bike: ${val(pb.G - pb.W)} (${pct(100 - pb.q)}).`)), color: theme.muted });
         }
         const blocks = paras.map((pp) => ({ lines: wrapText(pp.s, R.w - 2 * pad, `${pp.weight ?? 500} ${size}px ${theme.font}`), pp }));
         const hh = 40 + blocks.reduce((sum, b) => sum + b.lines.length * lh + 6, 0) + 6;
@@ -1884,9 +1888,10 @@ export default defineSimulation({
       else if (f === 'p') ctx.readout('giv', { html: `<var>G</var> = ${vG}, <var>W</var> = ${vW}` });
       else ctx.readout('giv', { html: `<var>W</var> = ${vW}, ${sg === 0 ? `<var>p</var> = ${pct(pb.p)}` : `${sg < 0 ? '−' : '+'}${pct(pb.p)} ⇒ ${qn} %`}` });
       const rows = ruleOfThree(f, pb.G, pb.q);
-      ctx.readout('calc', { html: rows.map(([pp, vv]) => `${pct(pp)} ≙ ${val(vv)}`).join(' → ') });
+      const gNone = f === 'G' && !(pb.q > 0);
+      ctx.readout('calc', { html: rows.map(([pp, vv], i) => `${pct(pp)} ≙ ${gNone && i > 0 ? '?' : val(vv)}`).join(' → ') });
       if (f === 'W') ctx.readout('res', { html: `<var>W</var> = ${vG} · ${fr(qn, '100')} = <strong>${vW}</strong>` });
-      else if (f === 'p') ctx.readout('res', { html: `<var>p</var> % = ${fr(vW, vG)} = ${fmt.num(pb.q / 100, 4)} = <strong>${pct(pb.q)}</strong>${sg !== 0 ? ` ⇒ ${sg < 0 ? say(L('Rabatt', 'discount')) : say(L('Erhöhung', 'increase'))} <strong>${pct(pb.p)}</strong>` : ''}` });
+      else if (f === 'p') ctx.readout('res', { html: `${sg === 0 ? '<var>p</var> %' : `<var>W</var> : <var>G</var>`} = ${fr(vW, vG)} = ${fmt.num(pb.q / 100, 4)} = <strong>${pct(pb.q)}</strong>${sg !== 0 ? ` ⇒ ${sg < 0 ? say(L('Rabatt', 'discount')) : say(L('Erhöhung', 'increase'))} <strong>${pct(pb.p)}</strong>` : ''}` });
       else ctx.readout('res', Number.isFinite(pb.result) ? { html: `<var>G</var> = ${vW} · ${fr('100', qn)} = ${vW} : ${fac} = <strong>${vG}</strong>` } : say(L('Bei 0 % lässt sich der Grundwert nicht bestimmen.', 'At 0 % the base value cannot be found.')));
       let extra: string | null = null;
       if (s === 'rabatt') extra = say(L(`Rabatt ${val(pb.D)}, neuer Preis ${vW}`, `Discount ${val(pb.D)}, new price ${vW}`));
@@ -1894,7 +1899,7 @@ export default defineSimulation({
       else if (s === 'mwst') extra = say(L(`Mehrwertsteuer ${val(pb.D)}, Bruttopreis ${vW}`, `VAT ${val(pb.D)}, gross price ${vW}`));
       else if (s === 'zins') extra = say(L(`Zinsen ${vW}, Kontostand nach einem Jahr ${val(pb.G + pb.W)}`, `Interest ${vW}, balance after one year ${val(pb.G + pb.W)}`));
       else if (s === 'klasse') extra = isNice(pb.W, 0) ? say(L(`Mit dem Rad: ${vW}, ohne Rad: ${val(pb.G - pb.W)}`, `By bike: ${vW}, not by bike: ${val(pb.G - pb.W)}`)) : say(L(`${vW} – keine ganze Zahl, bei Kindern nicht möglich`, `${vW} – not a whole number, impossible for children`));
-      ctx.readout('extra', extra);
+      ctx.readout('extra', gNone ? null : extra);
       const [n0, d0] = asFraction(pb.q);
       ctx.readout('frac', { html: `${pct(pb.q)} = ${fr(qn, '100')}${d0 !== 100 ? ` = ${fr(String(n0), String(d0))}` : ''} = ${fmt.num(pb.q / 100, 4)}` });
     }

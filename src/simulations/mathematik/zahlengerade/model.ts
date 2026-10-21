@@ -125,7 +125,7 @@ const DE: Record<Exclude<Scene, 'gerade'>, Words> = {
     change: (op, b) => {
       const d = change(op, b);
       if (d === 0) return 'Die Temperatur bleibt gleich.';
-      return `Es wird ${Math.abs(d)} °C ${d > 0 ? 'wärmer' : 'kälter'}.`;
+      return `Es wird um ${Math.abs(d)} °C ${d > 0 ? 'wärmer' : 'kälter'}.`;
     },
     result: (r) => `Jetzt ist es ${num(r)} °C.`,
   },

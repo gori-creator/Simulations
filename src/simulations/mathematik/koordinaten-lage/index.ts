@@ -228,7 +228,8 @@ export default defineSimulation({
       klPassante: 'Passante: Abstand {d} > r – kein gemeinsamer Punkt',
       klTangente: 'Tangente: Abstand = r = {r} – genau ein gemeinsamer Punkt T{t}',
       klSekante: 'Sekante: Abstand {d} < r – zwei gemeinsame Punkte',
-      equalPts: 'A und B müssen verschieden sein.',
+      equalPts: 'A und B müssen verschieden sein. Ändere die Koordinaten eines der beiden Punkte.',
+      equalPtsCD: 'C und D müssen verschieden sein. Ändere die Koordinaten eines der beiden Punkte.',
     },
     en: {
       canvas: 'Coordinate plane (first quadrant) with points, lines and circles, with an explanation of their relative position',
@@ -324,7 +325,8 @@ export default defineSimulation({
       klPassante: 'Passant: distance {d} > r – no common point',
       klTangente: 'Tangent: distance = r = {r} – exactly one common point T{t}',
       klSekante: 'Secant: distance {d} < r – two common points',
-      equalPts: 'A and B must be different.',
+      equalPts: 'A and B must be different. Change the coordinates of one of the two points.',
+      equalPtsCD: 'C and D must be different. Change the coordinates of one of the two points.',
     },
   },
 
@@ -364,7 +366,20 @@ export default defineSimulation({
     const onColor = () => (ctx.theme.dark ? '#10161f' : '#ffffff');
 
     /* ---------- Aufteilung der Bühne ---------- */
-    const wide = () => surface.width >= 640;
+    // Breites Format auch bei querliegender Bühne knapp unter 640 px (z. B. iPad quer mit Seitenleiste)
+    const wide = () => surface.width >= 640 || (surface.width >= 560 && surface.width >= surface.height * 1.45);
+
+    /**
+     * Zusammenfallende Punkte (A = B bzw. C = D) sind über die Regler oder einen
+     * geteilten Link erreichbar. Dann gibt es keine Linie: Hinweis statt Rechnung.
+     */
+    function degenerate(): 'equalPts' | 'equalPtsCD' | null {
+      const m = mode();
+      if (m === 'spiel') return null;
+      if (samePoint(A(), B())) return 'equalPts';
+      if (m === 'lage' && samePoint(C(), D())) return 'equalPtsCD';
+      return null;
+    }
 
     function layout(): { plot: Rect; panel: Rect } {
       const W = surface.width;
@@ -566,6 +581,17 @@ export default defineSimulation({
       if (m === 'lage' && p.dist) list.push(`P${ptText(P())}`);
       if (m === 'kreis') list.push(`M${ptText(M())}`);
       ctx.readout('pts', list.join(', '));
+      const deg = degenerate();
+      if (deg) {
+        ctx.readout('fig', ctx.t(deg));
+        ctx.readout('rel', null);
+        ctx.readout('dist', null);
+        if (m === 'lage') {
+          ctx.setAction('perp', { enabled: false });
+          ctx.setAction('para', { enabled: false });
+        }
+        return;
+      }
       if (m === 'punkte') {
         const k = kind();
         ctx.readout('fig', k === 'strecke' ? tr('figStrecke', { l: lenShort(distance(A(), B())) }) : ctx.t(k === 'strahl' ? 'figStrahl' : 'figGerade'));
@@ -1624,7 +1650,12 @@ export default defineSimulation({
           g.lineTo(R.x + pad + 2, yy + 4.5);
           g.stroke();
         });
-        text(g, ctx.t('readHint'), R.x + pad, y + h1 - 12, { font: `500 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
+        // Hinweis notfalls verkleinern, damit er in schmalen Karten nicht übersteht
+        let hs = 11.5;
+        g.font = `500 ${hs}px ${theme.font}`;
+        const hw = g.measureText(ctx.t('readHint')).width;
+        if (hw > R.w - 2 * pad) hs = Math.max(9, (hs * (R.w - 2 * pad)) / hw);
+        text(g, ctx.t('readHint'), R.x + pad, y + h1 - 12, { font: `500 ${hs}px ${theme.font}`, color: theme.muted, align: 'left' });
       } else {
         const label = `A${ptText(A())}     B${ptText(B())}`;
         text(g, label, R.x + R.w / 2, y + 19, { font: `700 15px ${theme.font}`, color: cg });
@@ -1679,10 +1710,23 @@ export default defineSimulation({
       const k = kind();
       const font = `500 ${W ? 13 : 12}px ${theme.font}`;
       const lh = W ? 18 : 15.5;
-      const rows = wrap(ctx.t(k === 'strecke' ? 'tStrecke' : k === 'strahl' ? 'tStrahl' : 'tGerade'), R.w - 2 * pad, font);
-      let yy = y + pad + 6;
-      yy += textRows(rows, R.x + pad, yy, lh, font, theme.text);
       const bottom = y + h3;
+      const lenY = bottom - (W ? (p.ruler && k === 'strecke' ? 40 : 26) : 16);
+      // Erklärung nur so weit, dass sie die Längenzeile darunter nicht überdeckt
+      const expl = ctx.t(k === 'strecke' ? 'tStrecke' : k === 'strahl' ? 'tStrahl' : 'tGerade');
+      let yy = y + pad + 6;
+      const room = lenY - (W ? 20 : 15) - yy;
+      let eFont = font;
+      let eLh = lh;
+      let rows = wrap(expl, R.w - 2 * pad, eFont);
+      if ((rows.length - 1) * eLh > room) {
+        // etwas kleiner versuchen, sonst weglassen (nie abgeschnitten)
+        eFont = `500 ${W ? 11.5 : 11}px ${theme.font}`;
+        eLh = W ? 15 : 14;
+        rows = wrap(expl, R.w - 2 * pad, eFont);
+        if ((rows.length - 1) * eLh > room) rows = [];
+      }
+      yy += textRows(rows, R.x + pad, yy, eLh, eFont, theme.text);
       if (W) {
         // Schreibweise
         const ny = yy + 14;
@@ -1695,7 +1739,6 @@ export default defineSimulation({
           textRows(noteRows, R.x + pad, ny + 22, 15, `500 11.5px ${theme.font}`, theme.muted);
         }
       }
-      const lenY = bottom - (W ? (p.ruler && k === 'strecke' ? 40 : 26) : 16);
       if (k === 'strecke') {
         const len = distance(A(), B());
         // Länge der Strecke: in Bayern als AB mit Strich darüber geschrieben
@@ -1770,13 +1813,18 @@ export default defineSimulation({
       const avail = R.y + R.h - y;
       const distH = p.dist ? (W ? 92 : 50) : W ? 46 : 38;
       if (W) {
-        const rows = p.geo ? wrap(geoText, R.w - 2 * pad, font) : [];
-        const h2 = Math.min(avail - distH - 10, p.geo ? 30 + rows.length * lh + 12 + 40 : 92);
+        const howFont = `500 12px ${theme.font}`;
+        const rows = p.geo ? wrap(geoText, R.w - 2 * pad, font) : wrap(ctx.t('geoHow'), R.w - 2 * pad, howFont);
+        const rowH = p.geo ? lh : 16;
+        const bh = 30;
+        const maxH = avail - distH - 10;
+        // Text nur so weit zeigen, wie er über dem Knopf Platz hat (nie überlappen)
+        const fit = Math.max(0, Math.floor((maxH - 30 - bh - 18) / rowH));
+        const shown = rows.slice(0, p.geo ? rows.length : fit < rows.length ? 0 : rows.length);
+        const h2 = Math.min(maxH, 30 + shown.length * rowH + 8 + bh + 10);
         card({ x: R.x, y, w: R.w, h: h2 });
         title(R.x + pad, y + 16, ctx.t('geoTitle'));
-        if (p.geo) textRows(rows, R.x + pad, y + 36, lh, font, theme.text);
-        else textRows(wrap(ctx.t('geoHow'), R.w - 2 * pad, `500 12px ${theme.font}`), R.x + pad, y + 36, 16, `500 12px ${theme.font}`, theme.muted);
-        const bh = 30;
+        textRows(shown, R.x + pad, y + 28 + rowH / 2, rowH, p.geo ? font : howFont, p.geo ? theme.text : theme.muted);
         button({ x: R.x + pad, y: y + h2 - bh - 10, w: R.w - 2 * pad, h: bh }, ctx.t(p.geo ? 'geoRemove' : 'geoOff'), 'geo', col.g(), !p.geo);
         y += h2 + 10;
       } else {
@@ -1986,7 +2034,12 @@ export default defineSimulation({
         title(R.x + pad, y + 17, tr('task', { n: taskNo }));
         yy += 40;
       } else yy += 13;
-      text(g, ctx.t(isRead ? 'readTask' : 'setTask'), R.x + pad, yy, { font: `700 ${W ? 15 : 13}px ${theme.font}`, color: theme.text, align: 'left' });
+      // Frage notfalls verkleinern, damit sie in die Karte passt
+      let qs = W ? 15 : 13;
+      g.font = `700 ${qs}px ${theme.font}`;
+      const qw = g.measureText(ctx.t(isRead ? 'readTask' : 'setTask')).width;
+      if (qw > R.w - 2 * pad) qs = Math.max(10, (qs * (R.w - 2 * pad)) / qw);
+      text(g, ctx.t(isRead ? 'readTask' : 'setTask'), R.x + pad, yy, { font: `700 ${qs}px ${theme.font}`, color: theme.text, align: 'left' });
       yy += W ? 36 : 25;
       const known = !isRead || !!answer;
       const sep = lang === 'de' ? ' | ' : ', ';
@@ -2015,7 +2068,12 @@ export default defineSimulation({
         [ctx.t('chipX'), col.x()],
         [ctx.t('chipY'), col.y()],
       ];
-      const cf = `700 ${W ? 12 : 11}px ${theme.font}`;
+      let cfs = W ? 12 : 11;
+      g.font = `700 ${cfs}px ${theme.font}`;
+      // beide Schilder nebeneinander in die Karte einpassen
+      const chipsW = chips.reduce((sum, [str]) => sum + g.measureText(str).width + 16, 6);
+      if (chipsW > R.w - 2 * pad) cfs = Math.max(9, cfs * ((R.w - 2 * pad - 38) / (chipsW - 38)));
+      const cf = `700 ${cfs}px ${theme.font}`;
       g.font = cf;
       let cx = R.x + pad;
       const ch = W ? 22 : 19;
@@ -2127,7 +2185,16 @@ export default defineSimulation({
         g.beginPath();
         const grow = i === last.length - 1 && answerPop.running ? answerPop.value : 1;
         g.arc(cx, y, (v === undefined ? 4 : 6) * (v === undefined ? 1 : grow), 0, Math.PI * 2);
-        g.fillStyle = v === undefined ? withAlpha(ctx.theme.text, 0.12) : v ? col.ok() : col.bad();
+        if (v === false) {
+          // falsch: Ring statt voller Punkt – nicht nur über Rot/Grün unterscheidbar
+          g.strokeStyle = col.bad();
+          g.lineWidth = 2.6;
+          g.beginPath();
+          g.arc(cx, y, 4.8 * grow, 0, Math.PI * 2);
+          g.stroke();
+          continue;
+        }
+        g.fillStyle = v === undefined ? withAlpha(ctx.theme.text, 0.12) : col.ok();
         g.fill();
       }
     }
@@ -2174,6 +2241,41 @@ export default defineSimulation({
       },
     });
 
+    /** Nur die Punkte (und ggf. den Kreis) zeichnen, wenn zwei Punkte zusammenfallen. */
+    function drawDegenerate(): void {
+      const m = mode();
+      if (m === 'kreis') {
+        plot.circle(p.mx, p.my, p.r, { stroke: col.k(), width: 3 });
+        crossMark(M(), col.k());
+        pointLabel(M(), 'M', col.k(), [-1, -1]);
+      }
+      const pts: [Pt, string, string][] = [
+        [A(), 'A', col.g()],
+        [B(), 'B', col.g()],
+      ];
+      if (m === 'lage') pts.push([C(), 'C', col.h()], [D(), 'D', col.h()]);
+      for (const [q, , c] of pts) crossMark(q, c);
+      // zusammenfallende Punkte gemeinsam beschriften, z. B. „A = B(8 | 5)“
+      const done = new Set<number>();
+      pts.forEach(([q, name, c], i) => {
+        if (done.has(i)) return;
+        const same = pts.map((o, j) => (j > i && samePoint(o[0], q) ? j : -1)).filter((j) => j >= 0);
+        same.forEach((j) => done.add(j));
+        pointLabel(q, [name, ...same.map((j) => pts[j]![1])].join(' = '), c, [1, -1]);
+      });
+    }
+
+    function panelDegenerate(R: Rect, key: 'equalPts' | 'equalPtsCD'): void {
+      const W = wide();
+      const pad = W ? 14 : 10;
+      const font = `600 ${W ? 14 : 12.5}px ${ctx.theme.font}`;
+      const lh = W ? 20 : 17;
+      const rows = wrap(ctx.t(key), R.w - 2 * pad, font);
+      const h = Math.min(R.h, rows.length * lh + 2 * pad);
+      card({ x: R.x, y: R.y, w: R.w, h }, col.warn(), 0.08);
+      textRows(rows, R.x + pad, R.y + pad + lh / 2, lh, font, ctx.theme.text);
+    }
+
     /* ---------- Zeichnen ---------- */
     function render(): void {
       const now = performance.now();
@@ -2200,7 +2302,9 @@ export default defineSimulation({
       drawPaper();
       drawAxes();
       const m = mode();
-      if (m === 'punkte') drawPunkte();
+      const deg = degenerate();
+      if (deg) drawDegenerate();
+      else if (m === 'punkte') drawPunkte();
       else if (m === 'lage') drawLage();
       else if (m === 'kreis') drawKreis();
       else drawSpiel(now);
@@ -2210,7 +2314,8 @@ export default defineSimulation({
       g.lineWidth = 1;
       roundRect(g, pr.x + 0.5, pr.y + 0.5, pr.w - 1, pr.h - 1, 10);
       g.stroke();
-      drawPanel(lay.panel);
+      if (deg) panelDegenerate(lay.panel, deg);
+      else drawPanel(lay.panel);
       const anim = burst.running || taskPop.running || kindTw.running || rulerTw.running || geoTw.running || relPop.running || distTw.running || pathTw.running || answerPop.running || shake.running;
       if (anim || (m === 'spiel' && task.kind === 'read' && !answer && !reduced)) ctx.requestRender();
     }
@@ -2262,7 +2367,9 @@ export default defineSimulation({
 
       render() {
         render();
-        lastShown = shownRange();
+        const s = shownRange();
+        // bei A = B ist die Gerade unbestimmt (unendlicher Bereich) – dann nicht merken
+        if (Number.isFinite(s[0]) && Number.isFinite(s[1])) lastShown = s;
       },
       destroy: () => surface.destroy(),
     };

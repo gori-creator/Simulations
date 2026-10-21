@@ -202,3 +202,66 @@ describe('Modell: Ausblick Umkreis', () => {
     expect(collinear([0, 0], [2, 2], [4, 4])).toBe(true);
   });
 });
+
+describe('Prüfrunde Paket 2: nachgerechnete Werte und Sonderfälle', () => {
+  it('A(1|1), B(7|1): Mittelsenkrechte x = 4 durch M(4|1)', () => {
+    const { m, d } = perpBisector([1, 1], [7, 1]);
+    expect(m).toEqual([4, 1]);
+    expect(Math.abs(d[0])).toBeCloseTo(0, 12);
+    expect(Math.abs(d[1])).toBeCloseTo(1, 12);
+    for (const y of [-3, 0, 5, 14]) expect(closer([4, y], [1, 1], [7, 1])).toBe('equal');
+    expect(closer([3, 5], [1, 1], [7, 1])).toBe('A');
+  });
+
+  it('A(0|0), B(4|4): Mittelsenkrechte y = −x + 4', () => {
+    const { m, d } = perpBisector([0, 0], [4, 4]);
+    expect(m).toEqual([2, 2]);
+    expect(d[1] / d[0]).toBeCloseTo(-1, 12); // Steigung −1
+    expect(latticeOnBisector([0, 0], [4, 4])).toEqual([
+      [0, 4],
+      [1, 3],
+      [2, 2],
+      [3, 1],
+      [4, 0],
+    ]);
+  });
+
+  it('Winkel 60°: Halbierende bei 30°, Punkte darauf mit gleich langen Loten', () => {
+    const an: Angle = { s: [0, 0], th1: 0, al: 60 };
+    expect(bisectorDir(an)).toBe(30);
+    // P = (√3 | 1) liegt bei 30° und hat zu beiden Schenkeln den Abstand 1
+    const [d1, d2] = armDistances([Math.sqrt(3), 1], an);
+    expect(d1).toBeCloseTo(1, 12);
+    expect(d2).toBeCloseTo(1, 12);
+  });
+
+  it('Zirkelradius: nur bei r > |AB|/2 zwei Schnittpunkte, bei r = |AB|/2 nur M', () => {
+    const A: Pt = [0, 0];
+    const B: Pt = [12, 0]; // 6 cm
+    expect(circleIntersections(A, 5, B, 5)).toEqual([]); // 2,5 cm: zu klein (Aufgabe 2)
+    expect(circleIntersections(A, 6, B, 6)).toEqual([[6, 0]]); // 3 cm: Bögen berühren sich in M
+    const s = circleIntersections(A, 8, B, 8); // 4 cm
+    expect(s).toHaveLength(2);
+    for (const q of s) expect(q[0]).toBeCloseTo(6, 12);
+    // kleinster Faktor der Simulation: Radius immer größer als die halbe Strecke
+    const c = constructBisector(A, B, 0.56);
+    expect(c.r).toBeCloseTo(6.72, 12);
+    expect(dist(c.s1, A)).toBeCloseTo(dist(c.s2, B), 12);
+  });
+
+  it('Aufgaben 1, 4 und 6 des Lernmaterials', () => {
+    // Aufgabe 1: |PA| = |PB| = 5 Kästchen = 2,5 cm; Q ist näher an B
+    expect(dist([7, 9], [4, 5])).toBe(5);
+    expect(dist([7, 9], [12, 9])).toBe(5);
+    expect(closer([9, 6], [4, 5], [12, 9])).toBe('B');
+    // Aufgabe 4: |TA| = |TB| ≈ 8,728 Kästchen ≈ 4,4 cm
+    const mt = meetingPoint([4, 9], [15, 12], [0, 3], [20, 5]);
+    if (mt.kind !== 'point') throw new Error('kein Treffpunkt');
+    expect(dist(mt.t, [4, 9]) / 2).toBeCloseTo(4.364, 3);
+    // Aufgabe 6: U = (94,5/11 | 60/11) ≈ (8,6 | 5,5), r ≈ 3,3 cm
+    const u = circumcenter([3, 2], [15, 4], [8, 12])!;
+    expect(u[0]).toBeCloseTo(94.5 / 11, 10);
+    expect(u[1]).toBeCloseTo(60 / 11, 10);
+    expect(dist(u, [3, 2]) / 2).toBeCloseTo(3.286, 3);
+  });
+});

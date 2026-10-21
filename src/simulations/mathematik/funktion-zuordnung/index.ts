@@ -151,7 +151,7 @@ export default defineSimulation({
       lineMany: 'Der Stelle {x} wären {n} Werte zugeordnet.',
       graphFn: 'Funktionsgraph',
       graphNo: 'Kein Funktionsgraph',
-      graphFnText: 'Jede senkrechte Gerade schneidet den Graphen höchstens einmal: Jedem x ist höchstens ein y zugeordnet.',
+      graphFnText: 'Jede senkrechte Gerade schneidet den Graphen höchstens einmal: Jedem x aus D ist genau ein y zugeordnet.',
       graphNoText: 'Die Gerade x = {x} schneidet ihn {times}: {pts}. Einem x wären mehrere y zugeordnet.',
       times2: 'zweimal',
       times3: 'dreimal',
@@ -211,7 +211,7 @@ export default defineSimulation({
       lineMany: '{n} values would be assigned to {x}.',
       graphFn: 'Graph of a function',
       graphNo: 'Not the graph of a function',
-      graphFnText: 'Every vertical line meets the graph at most once: each x is assigned at most one y.',
+      graphFnText: 'Every vertical line meets the graph at most once: each x in D is assigned exactly one y.',
       graphNoText: 'The line x = {x} meets it {times}: {pts}. One x would get several y.',
       times2: 'twice',
       times3: 'three times',
@@ -1525,7 +1525,8 @@ export default defineSimulation({
         ctx.readout('line', null);
         const v = verdictLines();
         ctx.readout('verdict', `${v.title}: ${v.lines.join(' ')}`);
-        ctx.readout('dw', dwText());
+        // In der Ergebnisliste fallen Leerzeichen zusammen: D und W mit Komma trennen
+        ctx.readout('dw', dwText()?.replace(/ {2,}/, ', ') ?? null);
       } else {
         const id = cur();
         ctx.readout('rule', { html: varHtml(ctx.t(`eq_${id}`) + (id === 'step' ? ` (${ctx.t('note_step').replace(/^⌊x⌋: /, '')})` : '')) });

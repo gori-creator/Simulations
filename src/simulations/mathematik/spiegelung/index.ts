@@ -224,6 +224,8 @@ export default defineSimulation({
       next: 'Nächste Figur',
       solution: 'Lösung',
       invalid: 'So wäre die Figur keine richtige Figur mehr.',
+      invalidNow: 'Die Ecken liegen auf einer Geraden oder doppelt – das ist keine richtige Figur.',
+      offPaper: 'Das Bild liegt zum Teil außerhalb des Karopapiers.',
       distRead: '{p}: {d}',
       keepRead: '|AB| = |A′B′| {l}, Winkel bei {at}: {w}',
       orientRead: '{o}: {d1}; {i}: {d2} ({r})',
@@ -292,6 +294,8 @@ export default defineSimulation({
       next: 'Next figure',
       solution: 'Solution',
       invalid: 'That would no longer be a proper figure.',
+      invalidNow: 'The corners lie on one line or coincide – that is not a proper figure.',
+      offPaper: 'Part of the image lies outside the squared paper.',
       distRead: '{p}: {d}',
       keepRead: '|AB| = |A′B′| {l}, angle at {at}: {w}',
       orientRead: '{o}: {d1}; {i}: {d2} ({r})',
@@ -467,6 +471,11 @@ export default defineSimulation({
       ctx.readout('dist', `${ctx.t(m === 'punkt' ? 'distPoint' : 'distAxis')}: ${d.join(', ')}`);
       const ka = keyAngle(pts);
       ctx.readout('keep', tr('keepRead', { l: eqcm(dist(pts[0]!, pts[1]!)), at: ka.at, w: deg(ka.value) }));
+      if (!shapeValid(shape(), pts)) {
+        ctx.readout('orient', ctx.t('invalidNow'));
+        ctx.setAction('go', { label: ctx.t(m === 'punkt' ? 'goPoint' : 'goAxis'), enabled: !anim.running });
+        return;
+      }
       const op = orientedPoints(shape(), pts);
       const o1 = orientation(op);
       const o2 = orientation(op.map(mapPt));
@@ -1269,31 +1278,51 @@ export default defineSimulation({
     }
 
     function drawToast(): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const { paper } = layout();
       const now = performance.now();
       if (!toast || now >= toast.until) {
         toast = null;
+        drawNotice();
         return;
       }
-      const a = clamp((toast.until - now) / 300, 0, 1);
+      noteBox(toast.text, clamp((toast.until - now) / 300, 0, 1));
+    }
+
+    /** Hinweisfeld oben auf dem Papier (Text wird bei Bedarf umbrochen). */
+    function noteBox(str: string, alpha = 1): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      const { paper } = layout();
       const font = `700 ${wide() ? 12.5 : 11.5}px ${theme.font}`;
+      const rows = wrap(str, paper.w - 48, font);
       g.font = font;
-      const w = g.measureText(toast.text).width + 24;
-      const h = wide() ? 28 : 26;
+      const w = Math.max(...rows.map((r) => g.measureText(r).width)) + 24;
+      const lh = wide() ? 17 : 15;
+      const h = (wide() ? 28 : 26) + (rows.length - 1) * lh;
       const x = paper.x + (paper.w - w) / 2;
       const y = paper.y + 10;
       g.save();
-      g.globalAlpha = a;
+      g.globalAlpha = alpha;
       g.fillStyle = theme.dark ? '#2a1620' : '#fff1f4';
       roundRect(g, x, y, w, h, 10);
       g.fill();
       g.strokeStyle = withAlpha(col.bad(), 0.7);
       g.lineWidth = 1.3;
       g.stroke();
-      text(g, toast.text, x + w / 2, y + h / 2 + 0.5, { font, color: col.bad() });
+      rows.forEach((r, i) => text(g, r, x + w / 2, y + (wide() ? 14 : 13) + 0.5 + i * lh, { font, color: col.bad() }));
       g.restore();
+    }
+
+    /** Dauerhafte Hinweise: entartete Figur, Bild außerhalb des Papiers. */
+    function drawNotice(): void {
+      if (mode() === 'symmetrie' || anim.running) return;
+      const pts = figPts();
+      if (!shapeValid(shape(), pts)) {
+        noteBox(ctx.t('invalidNow'));
+        return;
+      }
+      if (!p.show) return;
+      const out = pts.map(mapPt).some((q) => q[0] < -0.05 || q[0] > GRID_W + 0.05 || q[1] < -0.05 || q[1] > GRID_H + 0.05);
+      if (out) noteBox(ctx.t('offPaper'));
     }
 
     /* ---------- Karten ---------- */
@@ -1372,7 +1401,9 @@ export default defineSimulation({
       const o1 = orientation(op);
       const o2 = orientation(op.map(mapPt));
       const nm = shape() === 'fahne' ? 'BCM' : names.join('');
-      rows.push({ label: ctx.t('orientT'), value: ctx.t(o1 === o2 ? 'same' : 'reversed'), ok: o1 === o2, sub: `${nm}: ${ctx.t(o1 > 0 ? 'ccw' : 'cw')} · ${nm.split('').map((n) => n + PRIME).join('')}: ${ctx.t(o2 > 0 ? 'ccw' : 'cw')}` });
+      // Entartete Figur (nur über Regler oder Link erreichbar): kein Umlaufsinn
+      if (o1 === 0) rows.push({ label: ctx.t('orientT'), value: '–', ok: false, sub: ctx.t('invalidNow') });
+      else rows.push({ label: ctx.t('orientT'), value: ctx.t(o1 === o2 ? 'same' : 'reversed'), ok: o1 === o2, sub: `${nm}: ${ctx.t(o1 > 0 ? 'ccw' : 'cw')} · ${nm.split('').map((n) => n + PRIME).join('')}: ${ctx.t(o2 > 0 ? 'ccw' : 'cw')}` });
       if (isPoint) rows.push({ label: ctx.t(W ? 'parallel' : 'parallelShort'), value: `AB ∥ A${PRIME}B${PRIME}`, ok: true });
       const f = `600 ${W ? 12 : 11.5}px ${theme.font}`;
       const vf = `700 ${W ? 13 : 12}px ${theme.font}`;
@@ -1853,11 +1884,41 @@ export default defineSimulation({
       wheel: () => false,
     });
 
+    /** Zuletzt gültige Lage von P und Q (zum Auseinanderrücken). */
+    const prevPQ: { p: Pt; q: Pt } = { p: P(), q: Q() };
+    /**
+     * Fallen P und Q über Regler oder Link zusammen, gäbe es keine Achse.
+     * Dann rückt der zuletzt bewegte Punkt ein Kästchen in seiner Bewegungsrichtung weiter.
+     */
+    function separatePQ(changed: ReadonlySet<string>): boolean {
+      const a = P();
+      const b = Q();
+      if (a[0] !== b[0] || a[1] !== b[1]) return false;
+      const movedP = (changed.has('px') || changed.has('py')) && !changed.has('qx') && !changed.has('qy');
+      const id = movedP ? 'p' : 'q';
+      const before = prevPQ[id];
+      let dx = Math.sign(a[0] - before[0]);
+      let dy = Math.sign(a[1] - before[1]);
+      if (!dx && !dy) dy = 1;
+      let nx = a[0] + dx;
+      let ny = a[1] + dy;
+      if (nx < 0 || nx > GRID_W || ny < 0 || ny > GRID_H) {
+        nx = a[0] - dx;
+        ny = a[1] - dy;
+      }
+      ctx.set({ [`${id}x`]: nx, [`${id}y`]: ny });
+      return true;
+    }
+
     return {
       update(changed, source) {
         if (changed.has('shape') && source === 'input') {
           ctx.set(SHAPE_DEFAULT[shape()]);
           return;
+        }
+        if (!separatePQ(changed)) {
+          prevPQ.p = P();
+          prevPQ.q = Q();
         }
         if (changed.has('fig') || changed.has('rot') || changed.has('mode') || source === 'replace' || source === 'init') resetSym();
         if (changed.has('mode')) anim.finish();
