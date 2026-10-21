@@ -186,3 +186,50 @@ describe('Modell: Sonnen- und Mondfinsternis (schematisch)', () => {
     expect(lunarEclipse(0).kind).toBe('none');
   });
 });
+
+describe('Prüfrunde: Aufgaben und Grenzfälle der optischen Bank', () => {
+  it('Aufgabe 1: a = 20 cm, b = 80 cm, G = 8 cm → S = 32 cm', () => {
+    expect(pointShadowSize(8, 20, 80)).toBeCloseTo(32, 12);
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 0 }, { x: 30, y: 0, r: 4 }, 90);
+    expect(sh.umbra!.hi - sh.umbra!.lo).toBeCloseTo(32, 12);
+  });
+
+  it('Aufgabe 2: Scheibe in der Mitte zwischen Lampe und Schirm → doppelt so großer Schatten', () => {
+    expect(pointShadowSize(10, 40, 80) / 10).toBeCloseTo(2, 12);
+  });
+
+  it('Aufgabe 3: Kernschatten 14 cm, gesamter Schatten 46 cm, Halbschattenring 16 cm breit', () => {
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 4 }, { x: 40, y: 0, r: 5 }, 100);
+    expect(sh.umbra!.hi - sh.umbra!.lo).toBeCloseTo(14, 12);
+    expect(sh.outer.hi - sh.outer.lo).toBeCloseTo(46, 12);
+    expect(sh.outer.hi - sh.umbra!.hi).toBeCloseTo(16, 12);
+  });
+
+  it('Schattengröße hängt nicht von der Höhe von Lampe und Scheibe ab', () => {
+    const a = shadowOnScreen({ x: 10, y: 12, r: 4 }, { x: 40, y: -7, r: 5 }, 100);
+    expect(a.umbra!.hi - a.umbra!.lo).toBeCloseTo(14, 12);
+    expect(a.outer.hi - a.outer.lo).toBeCloseTo(46, 12);
+  });
+
+  it('Reglergrenzen: Lampe sehr nah (a = 3 cm) und sehr fern (a = 95 cm)', () => {
+    // G = 20 cm, a = 3 cm, b = 50 cm → S = 1000/3 ≈ 333,3 cm
+    expect(pointShadowSize(20, 3, 50)).toBeCloseTo(1000 / 3, 9);
+    // G = 2 cm, a = 95 cm, b = 100 cm → S ≈ 2,105 cm (kaum größer als die Scheibe)
+    expect(pointShadowSize(2, 95, 100)).toBeCloseTo(200 / 95, 12);
+  });
+
+  it('großer Leuchtkörper, kleine Scheibe (d = 16 cm, G = 4 cm): kein Kernschatten, Halbschatten 44 cm', () => {
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 8 }, { x: 40, y: 0, r: 2 }, 100);
+    expect(sh.umbra).toBeNull();
+    expect(sh.beyondApex).toBe(true);
+    expect(sh.outer.hi - sh.outer.lo).toBeCloseTo(44, 12);
+  });
+
+  it('zwei Lampen weit auseinander (±15 cm, G = 4 cm): Schatten überlappen nicht', () => {
+    const obj = { x: 40, y: 0, r: 2 };
+    const a = shadowOnScreen({ x: 10, y: -15, r: 0 }, obj, 100).outer;
+    const b = shadowOnScreen({ x: 10, y: 15, r: 0 }, obj, 100).outer;
+    expect(a.hi - a.lo).toBeCloseTo(12, 12);
+    expect(intersect(a, b)).toBeNull();
+  });
+});

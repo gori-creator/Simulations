@@ -336,7 +336,7 @@ export default defineSimulation({
     { id: 'motor', label: L('Elektromotor', 'Electric motor'), values: { dev: 'motor', on: true } },
     { id: 'tech', label: L('Technische Stromrichtung', 'Conventional current'), values: { on: true, flow: 'tech' } },
     { id: 'short', label: L('Kurzschluss', 'Short circuit'), values: { on: true, sc: true } },
-    { id: 'fuse', label: L('Kurzschluss mit Sicherung', 'Short circuit with a fuse'), values: { on: true, fuse: true } },
+    { id: 'fuse', label: L('Stromkreis mit Sicherung', 'Circuit with a fuse'), values: { on: true, fuse: true } },
     { id: 'test', label: L('Leiter oder Nichtleiter?', 'Conductor or insulator?'), values: { mode: 'test', obj: 'clip' } },
   ],
   strings: {
@@ -351,6 +351,7 @@ export default defineSimulation({
       bell: 'Klingel',
       fuse: 'Sicherung',
       fuseBlown: 'Sicherung durchgeschmolzen',
+      fuseBlownShort: 'durchgeschmolzen',
       wire: 'Leitung',
       looseWire: 'Leitung zum Überbrücken',
       gap: 'Prüfstrecke',
@@ -397,7 +398,7 @@ export default defineSimulation({
       testNo: '{obj} ({mat}) ist ein Nichtleiter (Isolator): Der Stromkreis bleibt unterbrochen, die Lampe bleibt dunkel.',
       curNone: 'I = 0 A – kein Strom',
       curOn: 'I ≈ {I} A',
-      curShort: 'I ≈ {I} A – etwa {k}-mal so groß wie mit Lampe!',
+      curShort: 'I ≈ {I} A – etwa {k}-mal so groß wie ohne Kurzschluss!',
       dirE: 'Die Elektronen (blaue Punkte) bewegen sich außerhalb der Batterie vom Minuspol (−) durch Leitungen und Gerät zum Pluspol (+). Sie werden dabei nicht verbraucht.',
       dirTech: 'Technische Stromrichtung (rote Pfeile): außerhalb der Batterie vom Pluspol (+) zum Minuspol (−) – also entgegen der Bewegung der Elektronen.',
       dirNone: 'Wie im echten Versuch: Den Strom selbst sieht man nicht, nur seine Wirkungen (Licht, Wärme, Bewegung, Klang).',
@@ -429,6 +430,7 @@ export default defineSimulation({
       bell: 'Bell',
       fuse: 'Fuse',
       fuseBlown: 'Fuse blown',
+      fuseBlownShort: 'blown',
       wire: 'Wire',
       looseWire: 'Bridging wire',
       gap: 'Test gap',
@@ -475,7 +477,7 @@ export default defineSimulation({
       testNo: '{obj} ({mat}) is an insulator: the circuit stays open and the bulb stays dark.',
       curNone: 'I = 0 A – no current',
       curOn: 'I ≈ {I} A',
-      curShort: 'I ≈ {I} A – about {k} times as large as with the bulb!',
+      curShort: 'I ≈ {I} A – about {k} times as large as without the short circuit!',
       dirE: 'The electrons (blue dots) move outside the battery from the negative terminal (−) through the wires and the device to the positive terminal (+). They are not used up.',
       dirTech: 'Conventional current (red arrows): outside the battery from the positive terminal (+) to the negative terminal (−) – opposite to the motion of the electrons.',
       dirNone: 'As in the real experiment: you cannot see the current itself, only its effects (light, heat, motion, sound).',
@@ -592,8 +594,8 @@ export default defineSimulation({
       else ctx.readout('state', tr('closed', { on: onText }));
 
       if (res.I <= 1e-9) ctx.readout('cur', ctx.t('curNone'));
-      else if (res.short) ctx.readout('cur', tr('curShort', { I: fmt.num(res.I, 1), k: fmt.num(Math.round(res.I / I_REF), 0) }));
-      else ctx.readout('cur', tr('curOn', { I: fmt.num(res.I, 2) }));
+      else if (res.short) ctx.readout('cur', tr('curShort', { I: fmt.num(res.I, 1), k: fmt.num(Math.round(res.I / solveCircuit({ device: device(), closed: true, fuse: p.fuse ? 'ok' : 'none' }).I), 0) }));
+      else ctx.readout('cur', tr('curOn', { I: fmt.fixed(res.I, 2) }));
 
       const moving = res.I > 1e-9;
       const f = flow();
@@ -2421,10 +2423,11 @@ export default defineSimulation({
           g.font = `700 ${sz}px ${theme.font}`;
           const lw0 = g.measureText(ctx.t(d)).width + 16;
           const right = G.devRight + lw0 < r.x + r.w - 6;
-          // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber
+          // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber;
+          // auf schmalen Bildschirmen kurze Sicherungs-Beschriftung, damit sie „Schalter“ nicht verdeckt
           if (right) pill(G.devRight, d === 'lamp' ? G.bulbC[1] - 6 * s : G.devTop + 4 * s, ctx.t(d), theme.muted, 'left', sz);
           else pill(G.dev[0], Math.max(r.y + 4, G.devTop - 26), ctx.t(d), theme.muted, 'center', sz);
-          if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? 'fuseBlown' : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
+          if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? (narrow() ? 'fuseBlownShort' : 'fuseBlown') : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
         }
       }
       if (p.lbl) pill(G.bat[0], G.bat[1] + 39 * s, ctx.t('battery'), theme.muted, 'center', sz);
@@ -2831,10 +2834,18 @@ export default defineSimulation({
       }
       const fs = narrow() ? 11 : 12;
       text(g, ctx.t('legend'), r.x + 14, top, { font: `700 ${fs}px ${theme.font}`, color: theme.muted, align: 'left' });
-      const cols = r.w >= 300 && items.length > 3 ? 2 : 1;
-      const rowH = Math.min(30, (avail - 18) / Math.ceil(items.length / cols));
+      // Platz für die Beschriftung neben dem Zeichen (Zeichen und Abstand: 46 px)
+      g.font = `600 ${fs}px ${theme.font}`;
+      const labelW = Math.max(...items.map(([key]) => g.measureText(ctx.t(key)).width));
+      const rowsFor = (c: number) => Math.min(30, (avail - 18) / Math.ceil(items.length / c));
+      let cols = r.w >= 300 && items.length > 3 ? 2 : 1;
+      // Zwei Spalten nur, wenn die Beschriftungen hineinpassen – sonst lieber eine Spalte
+      if (cols === 2 && labelW > (r.w - 28) / 2 - 46 && rowsFor(1) >= 20) cols = 1;
+      const rowH = rowsFor(cols);
       if (rowH < 20) return;
       const colW = (r.w - 28) / cols;
+      // Notfalls die Schrift verkleinern, damit keine Beschriftung abgeschnitten wird
+      const lfs = Math.max(9, Math.min(fs, (fs * (colW - 46)) / Math.max(1, labelW)));
       g.strokeStyle = ink;
       g.fillStyle = ink;
       g.lineWidth = lw;
@@ -2849,7 +2860,7 @@ export default defineSimulation({
         g.fillStyle = ink;
         g.lineWidth = lw;
         draw(x, y);
-        text(g, ctx.t(key), x + 26, y, { font: `600 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
+        text(g, ctx.t(key), x + 26, y, { font: `600 ${lfs}px ${theme.font}`, color: theme.text, align: 'left' });
       });
     }
 
