@@ -24,6 +24,16 @@ export interface AxisOptions {
   numbers?: boolean;
 }
 
+/** Optionen für `plot.axes()`. */
+export interface AxesOptions {
+  /**
+   * Sperrbereiche in CSS-Pixeln (wie `plot.rect`): Achsenzahlen, die eines
+   * dieser Rechtecke berühren, werden nicht gezeichnet – z. B. unter Anzeigen,
+   * die über dem Koordinatensystem liegen. Teilstriche bleiben.
+   */
+  blocked?: readonly Rect[];
+}
+
 export interface PlotOptions {
   /** Anfangs mindestens sichtbarer Bereich. */
   x: readonly [number, number];
@@ -397,8 +407,15 @@ export class Plot implements PointerTarget {
     return this.fmt.num(value, decimals);
   }
 
-  axes(): void {
+  axes(options: AxesOptions = {}): void {
     const g = this.surface.g;
+    const blocked = options.blocked ?? [];
+    /** Liegt eine Achsenzahl (mit Ausrichtung des Kontexts) in einem Sperrbereich? */
+    const isBlocked = (text: string, x: number, y: number, size: number): boolean => {
+      if (!blocked.length) return false;
+      const q = labelRect({ x, y, align: g.textAlign, baseline: g.textBaseline }, g.measureText(text).width, size);
+      return blocked.some((b) => rectsOverlap(q, b));
+    };
     const theme = this.surface.theme;
     const { xMin, xMax, yMin, yMax } = this.bounds;
     const r = this.r;
@@ -448,8 +465,11 @@ export class Plot implements PointerTarget {
           g.moveTo(Math.round(p) + 0.5, axisY - 4);
           g.lineTo(Math.round(p) + 0.5, axisY + 4);
           g.stroke();
+          // Teilstrich belegt: Die Achsbeschriftung über dem Achsenende weicht ihm (und damit der letzten Zahl) aus.
+          if (this.inFrame) this.taken.push({ x: Math.round(p) - 0.5, y: axisY - 4, w: 2, h: 8 });
         }
-        this.haloText(this.tickLabel(x, stepX, xOpts), p, labelY, theme.muted, fontSize);
+        const text = this.tickLabel(x, stepX, xOpts);
+        if (!isBlocked(text, p, labelY, fontSize)) this.haloText(text, p, labelY, theme.muted, fontSize);
       }
     }
 
@@ -468,7 +488,8 @@ export class Plot implements PointerTarget {
           g.lineTo(axisX + 4, Math.round(p) + 0.5);
           g.stroke();
         }
-        this.haloText(this.tickLabel(y, stepY, yOpts), labelX, p, theme.muted, fontSize);
+        const text = this.tickLabel(y, stepY, yOpts);
+        if (!isBlocked(text, labelX, p, fontSize)) this.haloText(text, labelX, p, theme.muted, fontSize);
       }
     }
 
@@ -476,7 +497,7 @@ export class Plot implements PointerTarget {
     if (xVisible && yVisible) {
       g.textAlign = 'right';
       g.textBaseline = 'top';
-      this.haloText('0', axisX - 5, axisY + 5, theme.muted, fontSize);
+      if (!isBlocked('0', axisX - 5, axisY + 5, fontSize)) this.haloText('0', axisX - 5, axisY + 5, theme.muted, fontSize);
     }
 
     // Achsenbeschriftungen: einzelne Variablen kursiv, längere Texte („t in s“) normal.
@@ -1099,6 +1120,11 @@ export function labelRect(spot: LabelSpot, width: number, size: number): Rect {
   const top =
     baseline === 'top' || baseline === 'hanging' ? y : baseline === 'middle' ? y - size / 2 : baseline === 'bottom' || baseline === 'ideographic' ? y - size : y - size * 0.8;
   return { x: left, y: top, w: width, h: size };
+}
+
+/** Überlappen sich zwei Rechtecke (Berühren der Kanten zählt nicht)? */
+export function rectsOverlap(a: Rect, b: Rect): boolean {
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 }
 
 /** Schneidet die Strecke (x1|y1)–(x2|y2) das Rechteck? (Liang-Barsky) */

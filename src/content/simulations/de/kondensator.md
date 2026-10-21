@@ -4,7 +4,7 @@ description: "Interaktive Simulation zum Laden und Entladen eines Kondensators: 
 
 ## Worum geht es?
 
-Ein **Kondensator** speichert elektrische Ladung: Auf der einen Platte sammeln sich Elektronen, auf der anderen fehlen sie. Die Ladung $Q$ ist proportional zur Spannung, $Q = C \cdot U$, mit der **Kapazität** $C$ (Einheit Farad, $1\,\text{F} = 1\,\frac{\text{C}}{\text{V}}$).
+Ein **Kondensator** speichert elektrische Ladung: Auf der einen Platte sammeln sich Elektronen, auf der anderen fehlen sie. Die Ladung $Q$ ist proportional zur Spannung, $Q = C \cdot U$, mit der **Kapazität** $C$ (Einheit Farad, $1\,\text{F} = 1\,\frac{\text{C}}{\text{V}}$). Ein Farad ist sehr viel; übliche Kondensatoren haben Kapazitäten in µF ($10^{-6}\,\text{F}$), nF ($10^{-9}\,\text{F}$) oder pF ($10^{-12}\,\text{F}$). Wie groß $C$ ist, hängt vom Bau ab, beim Plattenkondensator zum Beispiel $C = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}$.
 
 **Laden (Schalterstellung 1):** Der leere Kondensator wird über einen Widerstand $R$ an die Spannung $U_0$ gelegt. Zu Beginn liegt die ganze Spannung am Widerstand, es fließt der größte Strom
 
@@ -62,7 +62,7 @@ $$
 
 ### Aufgabe 1: Zeitkonstante und Anfangsstrom
 
-Ein Kondensator mit $C = 100\,\mu\text{F}$ wird über $R = 10\,\text{k}\Omega$ an $U_0 = 10\,\text{V}$ geladen. Berechne $\tau$, $I_0$ und die Spannung nach $t = \tau$. [Aufgabe laden](?val=0&_hide=1)
+Ein Kondensator mit $C = 100\,\mu\text{F}$ wird über $R = 10\,\text{k}\Omega$ an $U_0 = 10\,\text{V}$ geladen. Berechne $\tau$, $I_0$ und die Spannung nach $t = \tau$. [Aufgabe laden](?tan=0&val=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -91,6 +91,17 @@ Wie viel Energie speichert der Kondensator ($100\,\mu\text{F}$) bei $10\,\text{V
 <summary>Lösung anzeigen</summary>
 
 $W = \tfrac12 \cdot 10^{-4}\,\text{F} \cdot (10\,\text{V})^2 = 5\,\text{mJ}$. Bei halber Spannung nur ein Viertel: $1{,}25\,\text{mJ}$. [In der Simulation zeigen](?sw=charge)
+
+</details>
+
+### Aufgabe 4: Wann ist der Kondensator voll?
+
+Derselbe Kondensator ($100\,\mu\text{F}$, $10\,\text{k}\Omega$, $10\,\text{V}$) wird geladen. Welche Spannung hat er nach $2\,\tau$ und nach $5\,\tau$? Wie viel Ladung trägt er, wenn er voll ist? [Aufgabe laden](?val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Nach $2\,\tau$: $U_C = 10\,\text{V} \cdot (1 - e^{-2}) \approx 8{,}65\,\text{V}$, also etwa 86 %. Nach $5\,\tau$: $U_C = 10\,\text{V} \cdot (1 - e^{-5}) \approx 9{,}93\,\text{V}$, also über 99 %. Voll geladen: $Q = C \cdot U_0 = 10^{-4}\,\text{F} \cdot 10\,\text{V} = 10^{-3}\,\text{C} = 1\,\text{mC}$. Am Ende des Vorgangs ($t = 5\,\text{s}$) zeigt die Simulation $U_C = 9{,}93\,\text{V}$. [In der Simulation zeigen](?sw=charge)
 
 </details>
 

@@ -34,7 +34,7 @@ Den Fluss kann man auf drei Arten ändern – genau das zeigen die drei Versuche
 
 **Lenzsche Regel:** Das Minuszeichen im Induktionsgesetz bedeutet, dass der Induktionsstrom seiner Ursache entgegenwirkt. Nähert sich ein Nordpol, wird das Spulenende zum Nordpol und stößt den Magneten ab; der Stab auf den Schienen wird durch die Kraft $F = B \cdot I \cdot l$ gebremst. Deshalb muss man Arbeit verrichten – sie kommt als elektrische Energie im Stromkreis an.
 
-**Zur Darstellung:** Der Generator läuft im Bild zehnfach verlangsamt, das Diagramm zeigt aber die echte Zeit. Beim Stab auf Schienen hat der Stromkreis im Modell den Widerstand $R = 2\,\Omega$. Der Messbereich des Spannungsmessers stellt sich selbst ein.
+**Zur Darstellung:** Der Generator läuft im Bild zehnfach verlangsamt, das Diagramm zeigt aber die echte Zeit. Beim Stab auf Schienen hat der Stromkreis im Modell den Widerstand $R = 2\,\Omega$. Der Messbereich des Spannungsmessers stellt sich selbst ein. Magnet und Stab lassen sich auch mit der Tastatur bewegen: Bühne mit der Tabulatortaste auswählen, dann Eingabetaste – der Stab fährt dabei gleichmäßig mit der eingestellten Geschwindigkeit $v$.
 
 ## Ausprobieren
 
@@ -110,6 +110,19 @@ Eine Spule mit $500$ Windungen und $A = 20\,\text{cm}^2$ steht senkrecht zu eine
 <summary>Lösung anzeigen</summary>
 
 $\Delta\Phi = 0{,}20\,\text{T} \cdot 20 \cdot 10^{-4}\,\text{m}^2 = 4{,}0 \cdot 10^{-4}\,\text{Wb}$, $|U| = n \cdot \frac{\Delta\Phi}{\Delta t} = 500 \cdot \frac{4{,}0 \cdot 10^{-4}\,\text{Wb}}{0{,}10\,\text{s}} = 2{,}0\,\text{V}$.
+
+Hier ändert sich die Flussdichte $B$ bei fester Fläche. Beim Stab auf den Schienen ist es umgekehrt: $B$ bleibt gleich, die Fläche $A$ wächst.
+
+</details>
+
+### Aufgabe 7: Stellung der Spule
+
+Der Generator aus Aufgabe 3 dreht sich. Wie groß ist die Spannung in dem Moment, in dem die Flächennormale mit dem Feld den Winkel $\varphi = 30^\circ$ einschließt? Und bei $\varphi = 90^\circ$? [Aufgabe laden](?mode=gen&B=0.1&n=100&A=100&f=5&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$U = \hat U \cdot \sin\varphi$ mit $\hat U \approx 3{,}14\,\text{V}$: Bei $30^\circ$ ist $U \approx 3{,}14\,\text{V} \cdot 0{,}5 \approx 1{,}57\,\text{V}$. Bei $90^\circ$ steht die Spulenfläche parallel zum Feld: Der Fluss ist null, ändert sich aber am schnellsten, also $U = \hat U \approx 3{,}14\,\text{V}$. Im Bild erkennst du die Stellung am Pfeil der Flächennormale und an der Anzeige $\varphi$.
 
 </details>
 

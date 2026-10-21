@@ -1,6 +1,7 @@
 import { clamp, defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   arrivalTime,
+  chainResolves,
   CHAIN_LENGTH,
   compressionPositions,
   displacement,
@@ -93,7 +94,10 @@ interface Geo {
 export default defineSimulation({
   id: 'wellen-ausbreitung',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Ein Teilchen in der Kette oder in der Momentaufnahme antippen (oder ziehen), um es zu markieren. Im y(t)-Diagramm setzt Antippen eine Zeitmarke.',
+    'Tip: tap (or drag) a particle in the chain or in the snapshot to mark it. Tapping the y(t) graph sets a time marker.',
+  ),
   layout: { aspect: 1.12, aspectNarrow: 0.48 },
   images: { ball: 'kugel.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -194,6 +198,8 @@ export default defineSimulation({
       tPill: 't = {t} s',
       fc: 'f = {f} Hz · c = {c} m/s',
       overtake: 'ŷ zu groß für λ',
+      coarse: 'λ zu klein für die Kette',
+      lamQ: 'λ',
       unitM: 'm',
       scrubHint: 'Zeitmarke – Abspielen setzt fort',
       waveText: '<var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>{c} m/s</span><span>{f} Hz</span></span> = <strong>{l} m</strong> · <var>T</var> = <span class="frac"><span>1</span><span><var>f</var></span></span> = {T} s<br>In einer Periodendauer <var>T</var> läuft die Welle genau eine Wellenlänge weiter: <var>c</var> = <var>λ</var> · <var>f</var>.',
@@ -210,6 +216,7 @@ export default defineSimulation({
       markPulse: 'Nr. {i}, Ruhelage <var>x</var> = {x} m. Der Puls erreicht es nach <var>t</var> = <var>x</var>/<var>c</var> = {ta} s und lenkt es einmal aus; danach ruht es wieder an derselben Stelle.',
       warnText: 'Für die Longitudinalwelle ist 2π · <var>ŷ</var>/<var>λ</var> ≈ {s} ≥ 1: Benachbarte Teilchen würden sich überholen. Amplitude verkleinern oder Wellenlänge vergrößern.',
       warnScale: 'Quer zur Kette ist die Transversalwelle {k}-fach überhöht gezeichnet.',
+      warnCoarse: 'Die Wellenlänge <var>λ</var> = {l} m ist kürzer als drei Teilchenabstände (0,3 m). Dann sitzen zu wenige Teilchen auf einer Wellenlänge, und die Kette zeigt die Welle nicht mehr richtig (bei <var>λ</var> = 0,1 m schwingen sogar alle Teilchen im Gleichtakt). Die Kurve in der Momentaufnahme stimmt weiterhin. Frequenz verkleinern oder <var>c</var> vergrößern.',
       now: 't = {t} s · {front} · Nr. {i}: y = {y} cm, v = {v} m/s',
       nowScrub: 'Zeitmarke t = {t} s · {front} · Nr. {i}: y = {y} cm, v = {v} m/s',
       frontAt: 'Front bei x = {x} m',
@@ -246,6 +253,8 @@ export default defineSimulation({
       tPill: 't = {t} s',
       fc: 'f = {f} Hz · c = {c} m/s',
       overtake: 'ŷ too large for λ',
+      coarse: 'λ too small for the chain',
+      lamQ: 'λ',
       unitM: 'm',
       scrubHint: 'time marker – play to continue',
       waveText: '<var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>{c} m/s</span><span>{f} Hz</span></span> = <strong>{l} m</strong> · <var>T</var> = <span class="frac"><span>1</span><span><var>f</var></span></span> = {T} s<br>During one period <var>T</var> the wave travels exactly one wavelength: <var>c</var> = <var>λ</var> · <var>f</var>.',
@@ -262,6 +271,7 @@ export default defineSimulation({
       markPulse: 'No. {i}, rest position <var>x</var> = {x} m. The pulse reaches it after <var>t</var> = <var>x</var>/<var>c</var> = {ta} s and displaces it once; afterwards it rests at the same place again.',
       warnText: 'For the longitudinal wave 2π · <var>ŷ</var>/<var>λ</var> ≈ {s} ≥ 1: neighbouring particles would overtake each other. Reduce the amplitude or increase the wavelength.',
       warnScale: 'Across the chain the transverse wave is drawn {k} times enlarged.',
+      warnCoarse: 'The wavelength <var>λ</var> = {l} m is shorter than three particle spacings (0.3 m). Too few particles lie on one wavelength, so the chain no longer shows the wave properly (at <var>λ</var> = 0.1 m all particles even move in step). The curve in the snapshot is still correct. Lower the frequency or raise <var>c</var>.',
       now: 't = {t} s · {front} · no. {i}: y = {y} cm, v = {v} m/s',
       nowScrub: 'time marker t = {t} s · {front} · no. {i}: y = {y} cm, v = {v} m/s',
       frontAt: 'front at x = {x} m',
@@ -292,6 +302,8 @@ export default defineSimulation({
     const lamOn = () => p.lam && exc() === 'cont';
     const phOn = () => p.ph && exc() === 'cont';
     const xm = () => restPosition(p.pm);
+    /** λ-Beschriftung; im Aufgabenmodus ohne Zahl (Wellenlänge selbst am Maßband messen). */
+    const lamLabel = () => (ctx.isHidden('wave') ? ctx.t('lamQ') : tr('lam', { l: n(wavelength(wave()), 2) }));
 
     /* ---------- Aufteilung der Bühne ---------- */
     function computeLayout(): Layout {
@@ -347,8 +359,8 @@ export default defineSimulation({
       const w = wave();
       const vt = viewT();
       const fx = frontPosition(w, vt);
-      const front = w.c * vt >= CHAIN_LENGTH ? ctx.t('frontEnd') : tr('frontAt', { x: n(fx, 2) });
-      ctx.readout('now', tr(scrub !== null ? 'nowScrub' : 'now', { t: fmt.fixed(vt, 2), front, i: String(p.pm), y: n(displacement(w, xm(), vt) * 100, 1), v: n(particleVelocity(w, xm(), vt), 2) }));
+      const front = w.c * vt >= CHAIN_LENGTH ? ctx.t('frontEnd') : tr('frontAt', { x: fmt.fixed(fx, 2) });
+      ctx.readout('now', tr(scrub !== null ? 'nowScrub' : 'now', { t: fmt.fixed(vt, 2), front, i: String(p.pm), y: fmt.fixed(displacement(w, xm(), vt) * 100, 1), v: fmt.fixed(particleVelocity(w, xm(), vt), 2) }));
     }
 
     function updateReadouts(): void {
@@ -378,6 +390,7 @@ export default defineSimulation({
       const notes: string[] = [];
       const s = maxStrain(w);
       if (showL() && s >= 1) notes.push(tr('warnText', { s: n(s, 2) }));
+      if (!chainResolves(w)) notes.push(tr('warnCoarse', { l: n(lam, 2) }));
       if (geo && showT() && Math.abs(geo.kY / geo.kX - 1) > 0.1) notes.push(tr('warnScale', { k: n(geo.kY / geo.kX, 1) }));
       ctx.readout('warn', notes.length ? { html: notes.join('<br>') } : null);
       ctx.setAction('go', { label: ctx.t(exc() === 'cont' ? 'go' : 'goPulse'), enabled: !ctx.locked });
@@ -941,8 +954,11 @@ export default defineSimulation({
       const topRow = cy - half - (g0.sm ? 7 : 8);
       const botRow = cy + half + (g0.sm ? 7 : 8);
       // Text neben die Marke: Verdichtung oben, Verdünnung unten
-      labelAtShifted(comps, topRow, 'comp', true);
-      labelAtShifted(rares, botRow, 'rare', false);
+      // bei zu kurzer Wellenlänge zeigt die Kette keine Verdichtungen mehr – dann keine Marken (Hinweis steht oben)
+      if (chainResolves(w)) {
+        labelAtShifted(comps, topRow, 'comp', true);
+        labelAtShifted(rares, botRow, 'rare', false);
+      }
       function labelAtShifted(list: number[], y: number, key: string, down: boolean): void {
         let best = -1;
         let bestD = Infinity;
@@ -957,18 +973,25 @@ export default defineSimulation({
         const used: [number, number][] = [];
         // zuerst die Beschriftung nahe der Mitte, dann die übrigen, sofern sie nicht überlappen
         const order = list.map((_, k) => k).sort((a, b) => (a === best ? -1 : b === best ? 1 : a - b));
+        const pxs = list.map((x) => X(g0, x + displacement(w, x, vt)));
+        const labels: { px: number; right: boolean }[] = [];
         for (const k of order) {
-          const x = list[k]!;
-          const px = X(g0, x + displacement(w, x, vt));
-          wedge(px, y + (down ? 1 : -1), 7, withAlpha(theme.text, 0.6), down, !down);
           if (!(roomText || k === best)) continue;
+          const px = pxs[k]!;
           const right = px + 7 + tw < g0.x1 + 16;
           const a = right ? px : px - 7 - tw;
           const b = right ? px + 7 + tw : px;
           if (used.some(([u, v]) => a < v + 6 && u < b + 6)) continue;
           used.push([a, b]);
-          richText(ctx.t(key), right ? px + 7 : px - 7, y, fs, theme.muted, right ? 'left' : 'right', true, 650);
+          labels.push({ px, right });
         }
+        // Marken nicht unter eine Beschriftung zeichnen (nur die eigene Marke am Rand der Beschriftung)
+        pxs.forEach((px) => {
+          const own = labels.some((q) => q.px === px);
+          if (!own && used.some(([u, v]) => px > u - 5 && px < v + 5)) return;
+          wedge(px, y + (down ? 1 : -1), 7, withAlpha(theme.text, 0.6), down, !down);
+        });
+        for (const q of labels) richText(ctx.t(key), q.right ? q.px + 7 : q.px - 7, y, fs, theme.muted, q.right ? 'left' : 'right', true, 650);
       }
       // Verdichtung verfolgen
       if (p.crest) {
@@ -1060,7 +1083,7 @@ export default defineSimulation({
       }
       g.stroke();
       g.setLineDash([]);
-      const label = tr('lam', { l: n(wavelength(w), 2) });
+      const label = lamLabel();
       const fs = g0.sm ? 11 : 12;
       const lw = richWidth(label, fs) + 10;
       const lx = (a + b) / 2;
@@ -1219,8 +1242,9 @@ export default defineSimulation({
       const size = sm ? 11 : 12;
       const w1 = pill(r.x + 8, r.y + 8, tr('tPill', { t: fmt.fixed(vt, 2) }), scrub !== null ? purple() : theme.text, 'left', size);
       const wR = pill(r.x + r.w - 8, r.y + 8, tr('fc', { f: n(p.f, 2), c: n(p.c, 2) }), theme.text, 'right', size);
-      if (showL() && maxStrain(wave()) >= 1) {
-        const label = ctx.t('overtake');
+      const warnKey = !chainResolves(p) ? 'coarse' : showL() && maxStrain(wave()) >= 1 ? 'overtake' : null;
+      if (warnKey) {
+        const label = ctx.t(warnKey);
         const lw = richWidth(label, size) + 16;
         const left = r.x + 8 + w1 + 8;
         const right = r.x + r.w - 8 - wR - 8;
@@ -1350,7 +1374,7 @@ export default defineSimulation({
           const yb = Math.min(ymax * 1.22, plot.toWorld(0, chipBottom + 9)[1]);
           const a = Math.min(xm(), partner);
           const b = Math.max(xm(), partner);
-          const lbl = tr('lam', { l: n(wavelength(w), 2) });
+          const lbl = lamLabel();
           const half = (richWidth(lbl, sm ? 11 : 12) / 2 + 5) / plot.scale.x;
           const mid = (a + b) / 2;
           if (b - a > 2 * half + 0.05) {
@@ -1360,7 +1384,7 @@ export default defineSimulation({
           for (const xx of [a, b]) plot.segment([xx, yb - range * 0.07], [xx, yb + range * 0.07], { color: green(), width: 1.5 });
           for (const xx of [xm(), partner]) plot.segment([xx, yb], [xx, displacement(w, xx, vt) * 100], { color: green(), width: 1, dash: [2, 3], alpha: 0.6 });
           plot.point(partner, displacement(w, partner, vt) * 100, { color: green(), radius: 4.5, hollow: true });
-          plot.textPx(plot.px((a + b) / 2), plot.py(yb), tr('lam', { l: n(wavelength(w), 2) }), { color: green(), size: sm ? 11 : 12, weight: 'bold', align: 'center', baseline: 'middle' });
+          plot.textPx(plot.px((a + b) / 2), plot.py(yb), lbl, { color: green(), size: sm ? 11 : 12, weight: 'bold', align: 'center', baseline: 'middle' });
         }
       }
       if (p.crest) {
@@ -1453,7 +1477,8 @@ export default defineSimulation({
             g.closePath();
             g.fill();
           }
-          const full = tr('dt', { d: n(dt, 2) });
+          // im Aufgabenmodus ohne Zahl: die Laufzeit ist Teil der Lösung (Ergebnis „Markiertes Teilchen“)
+          const full = ctx.isHidden('mark') ? ctx.t('dtS') : tr('dt', { d: n(dt, 2) });
           const fs = sm ? 11 : 12;
           const label = pe - pa > richWidth(full, fs) + 10 ? full : ctx.t('dtS');
           plot.textPx((pa + pe) / 2, pb + 3, label, { color: purple(), size: fs, weight: 'bold', align: 'center', baseline: 'top' });

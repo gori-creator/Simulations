@@ -1,5 +1,5 @@
 import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { currentAt, energy, halfLife, timeConstant, voltageAt } from './model';
+import { currentAt, energy, halfLife, voltageAt } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
@@ -172,12 +172,13 @@ export default defineSimulation({
     /* ---------- Größen in SI ---------- */
     const Rsi = () => p.R * 1e3;
     const Csi = () => p.C * 1e-6;
-    const tau = () => timeConstant(Rsi(), Csi());
+    // kΩ · µF = ms; so gerechnet ist τ exakt (10 kΩ · 100 µF = 1 s statt 0,99999… s)
+    const tau = () => (p.R * p.C) / 1000;
     /** Zeitfenster der Diagramme (≥ 5 τ). */
     const tEnd = () => niceCeil(5 * tau());
 
-    /** Anzahl Dezimalen für Zeiten passend zur Größenordnung. */
-    const tDec = (v: number) => (v >= 10 ? 1 : v >= 1 ? 2 : 3);
+    /** Anzahl Dezimalen für Zeiten: drei geltende Ziffern (100 s, 1,00 s, 0,693 s, 0,00693 s). */
+    const tDec = (v: number) => (v > 0 ? clamp(2 - Math.floor(Math.log10(v * (1 + 1e-9))), 0, 5) : 2);
     /** Strom mit passender Einheit. */
     function fmtI(A: number, withUnit = true): string {
       const a = Math.abs(A);
@@ -643,11 +644,15 @@ export default defineSimulation({
       g.stroke();
       node(xP, yT, wc, sm ? 4 : 4.8);
       richText(ctx.t('c1'), xC - 6, yT - (sm ? 11 : 13), sm ? 10 : 11, ch ? orange() : theme.muted, 'right', 750, haloCol());
-      richText(ctx.t('c2'), xC - 8, y2, sm ? 10 : 11, ch ? theme.muted : orange(), 'right', 750, haloCol());
-      if (!sm && !ctx.locked) richText(`(${ctx.t('tapHint')})`, (xC + xP) / 2, y2 + 16, 10, theme.muted, 'center', 600, haloCol());
+      // „2 Entladen“ links vom Kontakt; reicht der Platz bis zur Leitung der Quelle nicht (Tablet quer, Handy), darunter rechts
+      const c2s = sm ? 10 : 11;
+      const c2Left = xC - 8 - richWidth(ctx.t('c2'), c2s, 750) >= xL + 8;
+      if (c2Left) richText(ctx.t('c2'), xC - 8, y2, c2s, ch ? theme.muted : orange(), 'right', 750, haloCol());
+      else richText(ctx.t('c2'), xC + 7, y2 + (sm ? 12 : 14), c2s, ch ? theme.muted : orange(), 'left', 750, haloCol());
+      if (!sm && !ctx.locked) richText(`(${ctx.t('tapHint')})`, (xC + xP) / 2, y2 + (c2Left ? 16 : 30), 10, theme.muted, 'center', 600, haloCol());
 
       // Messwerte
-      if (p.val) {
+      if (!ctx.hidden) {
         const s = sm ? 10.5 : 12;
         pill(xR - plate - 6, yM + (sm ? 2 : 4), `U_[C] = ${fx(u, 2)} V`, blue(), 'right', s);
         pill((G.resX0 + G.resX1) / 2, yT + G.resH / 2 + 8, `I = ${fmtI(I)}`, red(), 'center', s);
@@ -794,9 +799,10 @@ export default defineSimulation({
         // Anteil nach τ: beim Laden 63 % von U₀, beim Entladen und für I noch 37 % des Anfangswerts
         const pct = kind === 'I' ? vt / v0 : Math.abs(vt) / Math.max(Math.abs(v0), Math.abs(vEnd));
         const showPct = kind === 'I' || Math.abs(Ua) < 1e-9 || Math.abs(Ue) < 1e-9;
-        const lab = `τ = ${fx(tc, tDec(tc))} s`;
+        // im Aufgabenmodus nur „τ“ (der Wert ist Lösung von Aufgabe 1)
+        const lab = ctx.hidden ? 'τ' : `τ = ${fx(tc, tDec(tc))} s`;
         richText(lab, X(tc) + 6, A.y + 9, fs, orange(), 'left', 750, haloCol());
-        if (p.val && showPct && Math.abs(v0 - vEnd) > 1e-12) richText(`${n(Math.round(pct * 100), 0)} %`, X(tc) + 8, Y(vt) + (vt > (yMax + yMin) / 2 ? 12 : -12), fs, orange(), 'left', 750, haloCol());
+        if (!ctx.hidden && showPct && Math.abs(v0 - vEnd) > 1e-12) richText(`${n(Math.round(pct * 100), 0)} %`, X(tc) + 8, Y(vt) + (vt > (yMax + yMin) / 2 ? 12 : -12), fs, orange(), 'left', 750, haloCol());
       }
       // Halbwertszeit
       if (p.half) {
@@ -848,16 +854,17 @@ export default defineSimulation({
       card(R);
       const sm = R.w < 300 || R.h < 150;
       const pad = sm ? 12 : 16;
-      const v = p.val;
+      // im Aufgabenmodus (oder „Werte im Bild“ aus) stehen nur die Ansätze da
+      const v = !ctx.hidden;
       const tc = tau();
       const u = Uc();
       const I = Inow();
       const rows: [string, string][] = [
         [`τ = R · C = ${n(p.R, 0)} kΩ · ${n(p.C, 0)} µF = ${v ? fx(tc, tDec(tc)) : '?'} s`, theme.text],
         [`I_[0] = ΔU / R = ${v ? fmtI((Ue - Ua) / Rsi()) : '?'}`, red()],
-        [`t_[½] = τ · ln 2 = ${v ? fx(halfLife(tc), tDec(tc)) : '?'} s`, purple()],
-        [`U_[C] = ${fx(u, 2)} V   I = ${fmtI(I)}`, blue()],
-        [`W = ½ · C · U_[C]² = ${fmtW(energy(Csi(), u))}`, orange()],
+        [`t_[½] = τ · ln 2 = ${v ? fx(halfLife(tc), tDec(halfLife(tc))) : '?'} s`, purple()],
+        [v ? `U_[C] = ${fx(u, 2)} V   I = ${fmtI(I)}` : 'U_[C] = ? V   I = ?', blue()],
+        [`W = ½ · C · U_[C]² = ${v ? fmtW(energy(Csi(), u)) : '?'}`, orange()],
       ];
       richText(ctx.t('infoTitle'), R.x + pad, R.y + (sm ? 15 : 19), sm ? 11.5 : 13, theme.text, 'left', 750);
       const topY = R.y + (sm ? 27 : 36);
@@ -877,7 +884,7 @@ export default defineSimulation({
       const tc = tau();
       ctx.readout('tau', { html: tr('tau', { R: n(p.R, 0), C: n(p.C, 0), tau: fx(tc, tDec(tc)) }) });
       ctx.readout('I0', { html: tr('I0', { U: fx(p.U, 1), R: n(p.R, 0), I: fmtI(p.U / Rsi()) }) });
-      ctx.readout('half', { html: tr('half', { tau: fx(tc, tDec(tc)), h: fx(halfLife(tc), tDec(tc) + 1) }) });
+      ctx.readout('half', { html: tr('half', { tau: fx(tc, tDec(tc)), h: fx(halfLife(tc), tDec(halfLife(tc))) }) });
       ctx.readout('W', { html: tr('W', { C: n(p.C, 0), U: fx(p.U, 1), W: fmtW(energy(Csi(), p.U)) }) });
     }
 

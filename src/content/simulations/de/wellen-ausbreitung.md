@@ -25,7 +25,7 @@ Die **Frequenz** $f$ legt der Erreger fest, die Ausbreitungsgeschwindigkeit $c$ 
 
 Zwei Teilchen im Abstand $\Delta x$ haben den **Phasenunterschied** $\Delta\varphi = 2\pi \cdot \frac{\Delta x}{\lambda}$. Im Abstand $\lambda$ ist er $2\pi$ (gleichphasig), im Abstand $\frac{\lambda}{2}$ ist er $\pi$ (gegenphasig).
 
-Zwei Diagramme beschreiben die Welle: Die **Momentaufnahme** $y(x)$ zeigt die Auslenkung aller Teilchen zu **einem** Zeitpunkt (daran liest man $\lambda$ ab), der **Zeitverlauf** $y(t)$ zeigt die Bewegung **eines** Teilchens (daran liest man $T$ ab).
+Zwei Diagramme beschreiben die Welle: Die **Momentaufnahme** (auch **Momentbild**) $y(x)$ zeigt die Auslenkung aller Teilchen zu **einem** Zeitpunkt (daran liest man $\lambda$ ab), der **Zeitverlauf** (auch **Zeitbild**) $y(t)$ zeigt die Bewegung **eines** Teilchens (daran liest man $T$ ab).
 
 ## Ausprobieren
 
@@ -34,7 +34,7 @@ Zwei Diagramme beschreiben die Welle: Die **Momentaufnahme** $y(x)$ zeigt die Au
 3. Tippe ein anderes Teilchen an (in der Kette oder in der Momentaufnahme). Wann beginnt es zu schwingen? Vergleiche im $y(t)$-Diagramm mit dem Erreger.
 4. Lies an der grünen Klammer die Wellenlänge ab und prüfe $c = \lambda \cdot f$. Verändere $f$ bei gleichem $c$: Was passiert mit $\lambda$? [Hohe Frequenz](?f=2&c=1.2&amp=5)
 5. Vergleiche Transversal- und Longitudinalwelle. Wo liegen die Verdichtungen im Vergleich zu den Wellenbergen? [Beide im Vergleich](?type=both&crest=1)
-6. Schalte die Zeiger ein. Um welchen Winkel ist der Zeiger von Teilchen zu Teilchen gedreht? [Zeiger](?type=trans&ph=1&f=1&c=1.6&pm=4)
+6. Schalte die Zeiger ein. Sie stehen in gleichen Abständen über der Kette (Abstand $\Delta x$ am Maßband ablesen). Um welchen Winkel ist ein Zeiger gegenüber seinem linken Nachbarn gedreht? Prüfe mit $\Delta\varphi = 2\pi \cdot \frac{\Delta x}{\lambda}$. [Zeiger](?type=trans&ph=1&f=1&c=1.6&pm=4)
 7. Löse einen Einzelpuls aus und halte die Wiedergabe an, wenn er mitten in der Kette ist. Wie lang ist der Puls? [Einzelpuls](?exc=pulse&type=trans&crest=1&pm=20)
 
 ## Aufgaben
@@ -96,12 +96,23 @@ Eine Verdichtung entsteht, wo die Teilchen links davon nach rechts und die recht
 
 ### Aufgabe 6: Schall
 
-Schall breitet sich in Luft mit etwa $340\,\tfrac{\text{m}}{\text{s}}$ als Longitudinalwelle aus. Welche Wellenlänge hat der Kammerton $a'$ ($440\,\text{Hz}$)? Und ein tiefer Ton mit $50\,\text{Hz}$?
+Schall breitet sich in Luft mit etwa $340\,\tfrac{\text{m}}{\text{s}}$ als Longitudinalwelle aus (bei $20\,^\circ\text{C}$ genauer $343\,\tfrac{\text{m}}{\text{s}}$). Welche Wellenlänge hat der Kammerton $a'$ ($440\,\text{Hz}$)? Und ein tiefer Ton mit $50\,\text{Hz}$?
 
 <details>
 <summary>Lösung anzeigen</summary>
 
 $\lambda = \frac{340\,\text{m/s}}{440\,\text{Hz}} \approx 0{,}77\,\text{m}$ und $\lambda = \frac{340\,\text{m/s}}{50\,\text{Hz}} = 6{,}8\,\text{m}$.
+
+</details>
+
+### Aufgabe 7: Gleicher Ton, anderer Wellenträger
+
+Der Kammerton $a'$ ($440\,\text{Hz}$) wird unter Wasser gehört. Dort ist der Schall etwa $1480\,\tfrac{\text{m}}{\text{s}}$ schnell. Welche Größen ändern sich gegenüber Luft, welche nicht? Berechne die Wellenlänge im Wasser.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Die Frequenz bleibt $440\,\text{Hz}$, denn sie legt der Erreger fest. Die Ausbreitungsgeschwindigkeit hängt vom Wellenträger ab, sie ist im Wasser größer. Damit wird auch die Wellenlänge größer: $\lambda = \frac{1480\,\text{m/s}}{440\,\text{Hz}} \approx 3{,}4\,\text{m}$ (in Luft $0{,}77\,\text{m}$). In der Simulation: $c$ vergrößern, $f$ gleich lassen. [Vergleich: c = 0,8 m/s](?f=1&c=0.8&type=trans) und [c = 1,6 m/s](?f=1&c=1.6&type=trans)
 
 </details>
 
@@ -115,3 +126,4 @@ $\lambda = \frac{340\,\text{m/s}}{440\,\text{Hz}} \approx 0{,}77\,\text{m}$ und 
   - „Eine höhere Frequenz macht die Welle schneller.“ – $c$ hängt vom Träger ab; bei höherem $f$ wird $\lambda$ kleiner.
   - „Die Momentaufnahme $y(x)$ und das Diagramm $y(t)$ sind dasselbe.“ – Gleiche Form, aber andere Achse: Abstand der Hochpunkte ist $\lambda$ bzw. $T$; außerdem sind sie gespiegelt (die Welle läuft nach rechts, das zuerst angeregte Teilchen ist links).
   - „Bei der Longitudinalwelle sind die Verdichtungen dort, wo die Teilchen am weitesten ausgelenkt sind.“ – Siehe Aufgabe 5.
+- **Grenzen des Modells:** Die Teilchen haben $10\,\text{cm}$ Abstand. Wird $\lambda$ kürzer als etwa drei Teilchenabstände (z. B. $f = 2\,\text{Hz}$ und $c = 0{,}2\,\tfrac{\text{m}}{\text{s}}$), kann die Kette die Welle nicht mehr erkennbar zeigen; die Simulation weist darauf hin. Die Kurve der Momentaufnahme bleibt richtig.
