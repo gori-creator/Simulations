@@ -17,7 +17,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
-| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest). | offen |
+| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | offen |
 | radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | offen |
 | radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
 
@@ -61,4 +61,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | freier-fall | Im Reaktionstest berühren die ms-Zahlen am Lineal knapp die Finger. | offen |
 | planetenbahnen | Der Hilfetext zeigt „v_K“ mit Unterstrich (Hilfetexte sind vom Index-Kern bewusst ausgenommen). In der Simulation „v<sub>K</sub>“ bzw. „v_K“ als Unicode schreiben, sobald planetenbahnen geprüft wird. | offen |
 | radioaktiver-zerfall | Die EN-Zählrate „≈ 4.9/10⁹ a“ ist knapp formuliert; ausschreiben, z. B. „≈ 4.9 per 10⁹ years“. | offen |
+| gasgesetze | Die Zahl „20“ an der Glasskala wird teils von Teilchen bzw. dem Wasserspiegel überdeckt. | offen |
+| gasgesetze | Der Hinweis „Messwerte aufnehmen …“ liegt im Diagramm auf Gitterlinien; mit Hintergrund zeichnen. | offen |
+| gasgesetze | Während die Temperatur noch angleicht, zeigt die Kopfzeile kurz z. B. „100 °C / 373,07 K“. Anzeige an die gerundete °C-Angabe koppeln. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
