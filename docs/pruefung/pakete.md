@@ -91,7 +91,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 7–7 | `winkel-geradenkreuzung` | Winkel an Geradenkreuzungen | `/de/mathematik/geometrie/winkel-an-geradenkreuzungen/` |
 | ✓ | 7–7 | `winkelsumme` | Innenwinkelsumme in Dreieck und Vieleck | `/de/mathematik/geometrie/innenwinkelsumme/` |
 | ✓ | 7–8 | `besondere-linien` | Umkreis, Inkreis und besondere Linien im Dreieck | `/de/mathematik/geometrie/besondere-linien-im-dreieck/` |
-| ☐ | 7–9 | `lineare-funktion` | Lineare Funktion | `/de/mathematik/funktionen/lineare-funktion/` |
+| ✓ | 7–9 | `lineare-funktion` | Lineare Funktion | `/de/mathematik/funktionen/lineare-funktion/` |
 | ☐ | 8–8 | `funktion-zuordnung` | Funktion oder nicht? Zuordnungen und ihre Graphen | `/de/mathematik/funktionen/funktion-oder-nicht/` |
 | ☐ | 8–8 | `hyperbel` | Hyperbeln und ihre Asymptoten | `/de/mathematik/funktionen/hyperbel-asymptoten/` |
 | ☐ | 8–8 | `kreiszahl-pi` | Kreisumfang, Kreisfläche und die Zahl π | `/de/mathematik/flaechen-und-koerper/kreiszahl-pi/` |
