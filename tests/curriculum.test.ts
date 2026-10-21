@@ -150,7 +150,10 @@ describe('Länder-Lehrpläne', () => {
       const codes = unitsOf(grade).map((u) => u.code);
       expect(new Set(codes).size, `Jgst. ${grade.grade}`).toBe(codes.length);
       for (const unit of grade.units) {
-        for (const part of unit.parts ?? []) expect(part.code.startsWith(`${unit.code}.`), part.code).toBe(true);
+        // Unterbereiche tragen die Nummer des Lernbereichs: „1.2“ zu „1“ (Bayern) oder „3.1.1 (1)–(11)“ zu „3.1.1“ (Baden-Württemberg)
+        for (const part of unit.parts ?? []) {
+          expect(part.code.startsWith(`${unit.code}.`) || part.code.startsWith(`${unit.code} (`), part.code).toBe(true);
+        }
         // Ein Lernbereich hat entweder Unterbereiche oder eigene Simulationen
         if (unit.parts) expect(unit.simulations, unit.code).toBeUndefined();
         for (const u of [unit, ...(unit.parts ?? [])]) {

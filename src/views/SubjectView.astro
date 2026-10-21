@@ -10,7 +10,7 @@ import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { curriculumFor, groupByCurriculumGrade, regionGrades, regionsOf } from '../lib/region';
+import { curriculumFor, groupByCurriculumGrade, regionGrades, regionIdOf, regionsOf } from '../lib/region';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -32,6 +32,7 @@ const regionViews = regionsOf(lang).map((region) => {
   return { region, curriculum, grouping: curriculum ? groupByCurriculumGrade(curriculum, readyIds) : undefined };
 });
 const regionsWithView = regionViews.filter((v) => v.curriculum).map((v) => v.region.id);
+const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v.region.id);
 ---
 
 <BaseLayout
@@ -53,13 +54,14 @@ const regionsWithView = regionViews.filter((v) => v.curriculum).map((v) => v.reg
 
     {
       curricula.length > 0 && (
-        <section class="lp-entry" aria-labelledby="by-grade">
+        <section class="lp-entry" aria-labelledby="by-grade" data-region-hide={regionsWithoutView.join(' ') || undefined}>
           <h2 id="by-grade">{t(lang, 'curriculum.byGrade')}</h2>
           <p class="muted">{t(lang, 'curriculum.byGradeLead')}</p>
-          {/* Mehrere Länder: Zeilen als Tabelle ausgerichtet (Bezeichnung | Jahrgangsstufen | Überblick) */}
+          {/* Das Bundesland wird nur im Zahnrad gewählt; hier erscheint allein dessen Lehrplan */}
+          <p class="note" data-region-unset>{t(lang, 'curriculum.chooseRegion')}</p>
           <div class="lp-entry__rows">
             {curricula.map((c) => (
-              <div class="lp-entry__row">
+              <div class="lp-entry__row" data-region-only={regionIdOf(c)}>
                 <span class="lp-entry__label">
                   {t(lang, 'curriculum.label', { state: c.state[lang], school: c.schoolType[lang] })}
                 </span>
