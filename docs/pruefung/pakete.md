@@ -35,7 +35,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 10–12 | `wellen-ausbreitung` | Transversal- und Longitudinalwellen | `/de/physik/schwingungen-und-wellen/transversal-longitudinalwellen/` |
 | ☑ | 11–12 | `feldlinien` | Feldlinien von Punktladungen | `/de/physik/elektrizitaetslehre/feldlinien-punktladungen/` |
 | ☑ | 11–12 | `kondensator` | Lade- und Entladekurve des Kondensators | `/de/physik/elektrizitaetslehre/kondensator-laden-entladen/` |
-| ☐ | 11–13 | `doppelspalt` | Doppelspalt und Gitter | `/de/physik/optik/doppelspalt-gitter/` |
+| ☑ | 11–13 | `doppelspalt` | Doppelspalt und Gitter | `/de/physik/optik/doppelspalt-gitter/` |
 | ☐ | 11–13 | `induktion` | Elektromagnetische Induktion | `/de/physik/elektrizitaetslehre/elektromagnetische-induktion/` |
 | ☐ | 11–13 | `interferenz` | Interferenz zweier Kreiswellen | `/de/physik/schwingungen-und-wellen/interferenz-kreiswellen/` |
 | ☐ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
