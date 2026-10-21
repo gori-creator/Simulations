@@ -9,6 +9,7 @@ import {
   maxOrder,
   minLines,
   paths,
+  phaseRad,
   phasorSum,
   resultantAmplitude,
   WAVE_SPEED,
@@ -100,5 +101,81 @@ describe('Modell: Interferenz zweier Kreiswellen', () => {
     // vor der Front ist alles in Ruhe, weit dahinter volle Amplitude
     expect(circularWave(3, 7, 2)).toBeCloseTo(0, 12);
     expect(circularWave(3, 1.25, 2)).toBeCloseTo(Math.sin(2 * Math.PI * (3 - 0.625)), 12);
+  });
+});
+
+describe('Interferenz: Prüfwerte, Aufgaben und Sonderfälle (Prüfrunde)', () => {
+  it('360° ist gleichphasig: gleiche Linien und Ordnungen wie 0°', () => {
+    expect(phaseRad(360)).toBe(0);
+    expect(phaseRad(180)).toBeCloseTo(Math.PI, 12);
+    expect(phaseRad(-90)).toBeCloseTo((3 * Math.PI) / 2, 12);
+    expect(maxLines(6, 2, phaseRad(360)).map((l) => l.k)).toEqual([-3, -2, -1, 0, 1, 2, 3]);
+  });
+
+  it('Aufgaben 1, 2 und 4: P = (3 | 8), d = 6 cm', () => {
+    const p = paths(3, 8, 6);
+    expect(p.s1).toBeCloseTo(10, 12);
+    expect(p.s2).toBeCloseTo(8, 12);
+    expect(resultantAmplitude(p.ds, 2)).toBeCloseTo(2, 12);
+    // λ = 1,6 cm: Δs/λ = 1,25 → A = 2 · |cos(1,25π)| = √2
+    expect(resultantAmplitude(p.ds, 1.6)).toBeCloseTo(Math.SQRT2, 12);
+    // gegenphasig: Auslöschung in P, 6 Bauchlinien Δs = ±1, ±3, ±5
+    expect(resultantAmplitude(p.ds, 2, Math.PI)).toBeCloseTo(0, 12);
+    expect(maxLines(6, 2, Math.PI).map((l) => l.ds)).toEqual([-5, -3, -1, 1, 3, 5]);
+  });
+
+  it('Aufgabe 3: d = 7 cm, λ = 2 cm → 7 Bauch-, 8 Knotenlinien (2 auf der Achse)', () => {
+    expect(maxLines(7, 2)).toHaveLength(7);
+    expect(maxOrder(7, 2)).toBe(3);
+    const min = minLines(7, 2);
+    expect(min.map((l) => l.ds)).toEqual([-7, -5, -3, -1, 1, 3, 5, 7]);
+    expect(min.filter((l) => l.axis)).toHaveLength(2);
+  });
+
+  it('Anzahl der Bauchlinien bei Gleichphasigkeit: 2 · ⌊d/λ⌋ + 1', () => {
+    const cases: [number, number][] = [[6, 2], [7, 2], [4, 1.2], [12, 1.5], [14, 1], [0.5, 4], [0.8, 2.4], [5, 2], [4.2, 1.4]];
+    for (const [d, lam] of cases) {
+      expect(maxLines(d, lam)).toHaveLength(2 * maxOrder(d, lam) + 1);
+    }
+  });
+
+  it('Aufgaben 5 und 6: Fernfeldwinkel', () => {
+    const deg = (r: number | null) => ((r ?? NaN) * 180) / Math.PI;
+    expect(deg(farFieldAngle(1.2, 4))).toBeCloseTo(17.46, 2);
+    expect(deg(farFieldAngle(2.4, 4))).toBeCloseTo(36.87, 2);
+    expect(deg(farFieldAngle(3.6, 4))).toBeCloseTo(64.16, 2);
+    expect(farFieldAngle(4.8, 4)).toBeNull();
+    // α₁ = 23,6° bei d = 5 cm → λ ≈ 2,0 cm → f = 10 Hz
+    expect(5 * Math.sin((23.6 * Math.PI) / 180)).toBeCloseTo(2.0, 2);
+    expect(frequency(2)).toBeCloseTo(10, 12);
+  });
+
+  it('Aufgabe 7: 90° Vorsprung von E₂ verschiebt die Mitte zu E₁', () => {
+    const max = maxLines(6, 2, phaseRad(90));
+    expect(max.map((l) => l.ds)).toEqual([-4.5, -2.5, -0.5, 1.5, 3.5, 5.5]);
+    expect(max.find((l) => l.k === 0)!.ds).toBeCloseTo(-0.5, 12);
+  });
+
+  it('Sonderfälle: d < λ/2 gegenphasig, d ≤ 0, Reglergrenzen', () => {
+    // d < λ/2 gegenphasig: nur die Knotenlinie in der Mitte, keine Bauchlinie
+    expect(minLines(0.8, 2.4, Math.PI).map((l) => l.ds)).toEqual([0]);
+    expect(maxLines(0.8, 2.4, Math.PI)).toHaveLength(0);
+    // ohne Abstand keine Linien (kein Absturz)
+    expect(maxLines(0, 2)).toEqual([]);
+    expect(minLines(-1, 2)).toEqual([]);
+    expect(paths(0, 5, 0).ds).toBe(0);
+    // Reglergrenzen: d = 14 cm, λ = 1 cm → 29 Bauch-, 28 Knotenlinien
+    expect(maxLines(14, 1)).toHaveLength(29);
+    expect(minLines(14, 1)).toHaveLength(28);
+    // d = 0,5 cm, λ = 4 cm → nur k = 0
+    expect(maxLines(0.5, 4).map((l) => l.k)).toEqual([0]);
+    expect(minLines(0.5, 4)).toHaveLength(0);
+  });
+
+  it('Startzustand: P = (3 | 10) → Δs = 0,83 λ, A ≈ 1,72 ŷ', () => {
+    const p = paths(3, 10, 6);
+    expect(p.s1).toBeCloseTo(Math.sqrt(136), 12);
+    expect(p.ds / 2).toBeCloseTo(0.831, 3);
+    expect(resultantAmplitude(p.ds, 2)).toBeCloseTo(1.7245, 3);
   });
 });

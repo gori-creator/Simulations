@@ -1,5 +1,5 @@
 import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { classify, farFieldAngle, frequency, frontEnvelope, hyperbola, maxLines, minLines, paths, WAVE_SPEED, type Line } from './model';
+import { classify, farFieldAngle, frequency, frontEnvelope, hyperbola, maxLines, minLines, paths, phaseRad, WAVE_SPEED, type Line } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
@@ -182,9 +182,12 @@ export default defineSimulation({
         '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>20 cm/s</span><span>{l} cm</span></span> = {f} Hz · <var>d</var> = {d} cm = {q} · <var>λ</var><br>Bauchlinien: Δ<var>s</var> = (<var>k</var> − <span class="frac"><span>Δ<var>φ</var></span><span>360°</span></span>) · <var>λ</var> = (<var>k</var> − {s}) · <var>λ</var> mit |Δ<var>s</var>| ≤ <var>d</var> → <strong>{nmax} Bauchlinien</strong>{axis}<br>Knotenlinien: Δ<var>s</var> = (<var>k</var> + ½ − {s}) · <var>λ</var> → <strong>{nmin} Knotenlinien</strong>',
       axisNote: ' (davon {n} auf der Verbindungsachse außerhalb der Erreger)',
       noneMin: '<br>Für <var>d</var> &lt; <var>λ</var>/2 gibt es keine Knotenlinie.',
+      noneMinPh: '<br>Bei diesem Abstand gibt es keine Knotenlinie.',
       farText: 'Weit weg von den Erregern laufen die Hyperbeln auf Geraden durch die Mitte zu: sin <var>α</var><sub><var>k</var></sub> = <span class="frac"><span>Δ<var>s</var><sub><var>k</var></sub></span><span><var>d</var></span></span>{simple}.<br>{list}',
       farSimple: ' = <var>k</var> · <span class="frac"><span><var>λ</var></span><span><var>d</var></span></span> = <var>k</var> · {q}',
       farNone: 'Für <var>λ</var> &gt; <var>d</var> gibt es außer der Mittelsenkrechten keine weitere Bauchlinie.',
+      farNoneAll: 'Bei diesem Abstand und Phasenunterschied gibt es keine Bauchlinie.',
+      farPhNote: ' (Winkel links der Mittelsenkrechten negativ)',
       farItem: '<var>α</var><sub>{k}</sub> = {a}°',
       nowText: 't = {t} s · in P: y₁ = {y1} ŷ, y₂ = {y2} ŷ, y = y₁ + y₂ = {y} ŷ',
     },
@@ -229,9 +232,12 @@ export default defineSimulation({
         '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>20 cm/s</span><span>{l} cm</span></span> = {f} Hz · <var>d</var> = {d} cm = {q} · <var>λ</var><br>Antinodal lines: Δ<var>s</var> = (<var>k</var> − <span class="frac"><span>Δ<var>φ</var></span><span>360°</span></span>) · <var>λ</var> = (<var>k</var> − {s}) · <var>λ</var> with |Δ<var>s</var>| ≤ <var>d</var> → <strong>{nmax} antinodal lines</strong>{axis}<br>Nodal lines: Δ<var>s</var> = (<var>k</var> + ½ − {s}) · <var>λ</var> → <strong>{nmin} nodal lines</strong>',
       axisNote: ' ({n} of them on the line through the sources, outside the sources)',
       noneMin: '<br>For <var>d</var> &lt; <var>λ</var>/2 there is no nodal line.',
+      noneMinPh: '<br>At this distance there is no nodal line.',
       farText: 'Far from the sources the hyperbolas approach straight lines through the centre: sin <var>α</var><sub><var>k</var></sub> = <span class="frac"><span>Δ<var>s</var><sub><var>k</var></sub></span><span><var>d</var></span></span>{simple}.<br>{list}',
       farSimple: ' = <var>k</var> · <span class="frac"><span><var>λ</var></span><span><var>d</var></span></span> = <var>k</var> · {q}',
       farNone: 'For <var>λ</var> &gt; <var>d</var> there is no antinodal line apart from the perpendicular bisector.',
+      farNoneAll: 'At this distance and phase difference there is no antinodal line.',
+      farPhNote: ' (angles left of the perpendicular bisector negative)',
       farItem: '<var>α</var><sub>{k}</sub> = {a}°',
       nowText: 't = {t} s · at P: y₁ = {y1} ŷ, y₂ = {y2} ŷ, y = y₁ + y₂ = {y} ŷ',
     },
@@ -248,7 +254,11 @@ export default defineSimulation({
     const green = () => ctx.theme.series[2]!;
     const orange = () => ctx.theme.series[3]!;
     const teal = () => ctx.theme.series[5]!;
-    const dphi = () => (p.ph * Math.PI) / 180;
+    const dphi = () => phaseRad(p.ph);
+    /** Gleichphasige Erreger (0° oder 360°)? */
+    const inPhase = () => p.ph % 360 === 0;
+    /** Feste Nachkommastellen für Messwerte (gleich breite Anzeige). */
+    const fx = (v: number, d: number) => fmt.fixed(v, d);
 
     /* ---------- Zeit und Wellenfront ---------- */
     /** Perioden seit Beginn (Phase der Erreger) und Radius der Wellenfront in cm. */
@@ -373,7 +383,8 @@ export default defineSimulation({
           if (pass === 0) {
             g.lineWidth = 3.5;
             g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
+            // weiße Schrift auf dem Wasser: dunkler Rand, sonst Rand in Hintergrundfarbe
+            g.strokeStyle = color === '#ffffff' ? 'rgba(4,24,44,0.7)' : theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
             g.strokeText(q.t, cx, yy);
           } else {
             g.fillStyle = color;
@@ -836,7 +847,7 @@ export default defineSimulation({
         g.arc(mx, my, ra, -Math.PI / 2, -Math.PI / 2 + al);
         g.stroke();
         const mid = -Math.PI / 2 + al / 2;
-        const txt = p.val ? tr('alpha', { k: String(first.k), a: n((al * 180) / Math.PI, 1) }) : tr('alphaS', { k: String(first.k) });
+        const txt = !ctx.isHidden('far') ? tr('alpha', { k: String(first.k), a: fx((al * 180) / Math.PI, 1) }) : tr('alphaS', { k: String(first.k) });
         farLabel = { txt, x: mx + Math.cos(mid) * (ra + 10), y: my + Math.sin(mid) * (ra + 10) - 20, a };
       }
       g.restore();
@@ -935,8 +946,9 @@ export default defineSimulation({
         arrowPx((e1[0] + e2[0]) / 2, by, e1[0] + 1, by, '#ffffff', 1.5, 6);
         arrowPx((e1[0] + e2[0]) / 2, by, e2[0] - 1, by, '#ffffff', 1.5, 6);
       }
+      // als Pille, damit Linien durch die Mitte die Beschriftung nicht durchkreuzen
       const dTxt = tr(dl > 70 || !sm ? 'dBar' : 'dBarS', { d: n(v.d, 1) });
-      richText(dTxt, (e1[0] + e2[0]) / 2, by + (sm ? 13 : 15), fsz, '#ffffff', 'center', false, 750);
+      used.push(pill((e1[0] + e2[0]) / 2, by + 4, dTxt, theme.text, 'center', fsz));
       g.restore();
 
       // Wegstrecken und Messpunkt P
@@ -979,7 +991,7 @@ export default defineSimulation({
               ny = -ny;
             }
             const s = idx === 1 ? pth.s1 : pth.s2;
-            const txt = p.val && !sm ? `s_[${idx}] = ${n(s, 2)} cm` : `s_[${idx}]`;
+            const txt = !ctx.isHidden('ds') && !sm ? `s_[${idx}] = ${fx(s, 2)} cm` : `s_[${idx}]`;
             const w = richWidth(txt, fsz) + 16;
             const cxp = clamp(mx + nx * (w / 2 + 6), r.x + 8 + w / 2, r.x + r.w - 8 - w / 2);
             const cyp = clamp(my + ny * 16, r.y + 44, r.y + r.h - 30);
@@ -1029,9 +1041,9 @@ export default defineSimulation({
       const right = P[0] + pr + 34 < r.x + r.w;
       richText(pLab, right ? P[0] + pr + 8 : P[0] - pr - 8, P[1] - pr - 4, sm ? 13 : 14, '#ffffff', right ? 'left' : 'right', false, 800);
       // Gangunterschied direkt an P
-      if (p.val) {
+      if (!ctx.isHidden('ds')) {
         const q = pth.ds / v.lam;
-        const txt = `Δs = ${n(q, 2)} λ`;
+        const txt = `Δs = ${fx(q, 2)} λ`;
         const w = richWidth(txt, fsz) + 16;
         const h = fsz + 11;
         let x0 = right ? P[0] + pr + 10 : P[0] - pr - 10 - w;
@@ -1062,14 +1074,14 @@ export default defineSimulation({
       g.lineTo(bx + bw, byy);
       g.lineTo(bx + bw, byy - 5);
       g.stroke();
-      richText(tr('lamBar', { l: n(v.lam, 1) }), bx + bw + 8, byy - 3, fsz, '#ffffff', 'left', false, 750);
+      richText(tr('lamBar', { l: n(v.lam, 1) }), bx + bw + 8, byy - 3, fsz, '#ffffff', 'left', true, 750);
       if (!sm || p.lines !== 'both') {
         let lx = r.x + r.w - 16;
         const ly = byy - 3;
         const item = (txt: string, max: boolean, a: number) => {
           if (a < 0.02) return;
           g.globalAlpha = ik * a;
-          const tw = richText(txt, lx, ly, fsz, '#ffffff', 'right', false, 650);
+          const tw = richText(txt, lx, ly, fsz, '#ffffff', 'right', true, 650);
           const x1 = lx - tw - 8;
           g.strokeStyle = max ? orange() : 'rgba(240,248,255,0.95)';
           g.lineWidth = max ? 2.8 : 2.1;
@@ -1117,7 +1129,9 @@ export default defineSimulation({
       g.arc(R.x + pad + 5, ty, 5, 0, TAU);
       g.fill();
       const tw = richText(ctx.t('cardTitle'), R.x + pad + 16, ty, fs + 1, theme.text, 'left', false, 750);
-      if (p.val) {
+      const showA = !ctx.isHidden('amp');
+      const showDs = !ctx.isHidden('ds');
+      if (showA) {
         const verdict = kind === 'max' ? ctx.t('vMax') : kind === 'min' ? ctx.t('vMin') : A > 1 ? ctx.t('vUp') : ctx.t('vDown');
         const vs = sm ? 11 : 12;
         const vw = richWidth(verdict, vs) + 16;
@@ -1145,18 +1159,18 @@ export default defineSimulation({
         richText(value, lx + w + 6, ly, fs, theme.text, 'left', false, 600);
         ly += row;
       };
-      rowTxt('s_[1] =', `${n(pth.s1, 2)} cm`, blue());
-      rowTxt('s_[2] =', `${n(pth.s2, 2)} cm`, red());
-      let dsTxt = p.val ? `${n(pth.ds, 2)} cm = ${n(q, 2)} λ` : ctx.t('hidden');
-      if (richWidth(`Δs = ${dsTxt}`, fs, 650) > maxW) dsTxt = p.val ? `${n(q, 2)} λ` : dsTxt;
+      rowTxt('s_[1] =', showDs ? `${fx(pth.s1, 2)} cm` : ctx.t('hidden'), blue());
+      rowTxt('s_[2] =', showDs ? `${fx(pth.s2, 2)} cm` : ctx.t('hidden'), red());
+      let dsTxt = showDs ? `${fx(pth.ds, 2)} cm = ${fx(q, 2)} λ` : ctx.t('hidden');
+      if (richWidth(`Δs = ${dsTxt}`, fs, 650) > maxW) dsTxt = showDs ? `${fx(q, 2)} λ` : dsTxt;
       rowTxt('Δs =', dsTxt, theme.text);
       // Amplitude groß
       const ay = aRow;
       g.font = `800 ${big}px ${theme.font}`;
       g.textAlign = 'left';
       g.textBaseline = 'middle';
-      g.fillStyle = p.val ? vColor : theme.muted;
-      g.fillText(p.val ? `A = ${n(A, 2)} ŷ` : 'A = ?', lx, ay);
+      g.fillStyle = showA ? vColor : theme.muted;
+      g.fillText(showA ? `A = ${fx(A, 2)} ŷ` : 'A = ?', lx, ay);
       // Balken 0 … 2ŷ über die ganze Breite
       if (showBar) {
         const gy = barY;
@@ -1181,7 +1195,7 @@ export default defineSimulation({
           richText(`ŷ (${ctx.t('single')})`, xm, gy + 16, 11, theme.muted, 'center', false, 650);
           richText('2ŷ', gx1, gy + 16, 11, theme.muted, 'right', false, 650);
         }
-        if (p.val) {
+        if (showA) {
           const xa = gx0 + (A / 2) * (gx1 - gx0);
           g.save();
           g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
@@ -1382,44 +1396,45 @@ export default defineSimulation({
       const pth = paths(p.px, p.py, p.d);
       const y1 = waveAt(v, pth.s1, 0, w.n);
       const y2 = waveAt(v, pth.s2, dphi(), w.n);
-      ctx.readout('now', tr('nowText', { t: fmt.fixed(simT, 2), y1: n(y1, 2), y2: n(y2, 2), y: n(y1 + y2, 2) }));
+      ctx.readout('now', tr('nowText', { t: fx(simT, 2), y1: fx(y1, 2), y2: fx(y2, 2), y: fx(y1 + y2, 2) }));
     }
 
     function updateReadouts(): void {
       const pth = paths(p.px, p.py, p.d);
       const q = pth.ds / p.lam;
-      ctx.readout('ds', { html: tr('dsText', { s1: n(pth.s1, 2), s2: n(pth.s2, 2), ds: n(pth.ds, 2), q: n(q, 2) }) });
+      ctx.readout('ds', { html: tr('dsText', { s1: fx(pth.s1, 2), s2: fx(pth.s2, 2), ds: fx(pth.ds, 2), q: fx(q, 2) }) });
       const delta = TAU * q + dphi();
       const A = 2 * Math.abs(Math.cos(delta / 2));
       const kind = classify(A / 2);
       const verdict = ctx.t(kind === 'max' ? 'verdictMax' : kind === 'min' ? 'verdictMin' : A > 1 ? 'verdictUp' : 'verdictDown');
       let deg = (((delta * 180) / Math.PI) % 360 + 360) % 360;
       if (deg > 359.95) deg = 0;
-      ctx.readout('amp', { html: tr('ampText', { deg: n(deg, 1), a: n(A, 2), verdict }) });
+      ctx.readout('amp', { html: tr('ampText', { deg: fx(deg, 1), a: fx(A, 2), verdict }) });
       const mx = maxLines(p.d, p.lam, dphi());
       const mn = minLines(p.d, p.lam, dphi());
       const nAx = mx.filter((l) => l.axis).length;
       const axis = nAx ? tr('axisNote', { n: String(nAx) }) : '';
       const ks = mx.map((l) => l.k);
       const kFmt = (k: number) => (k < 0 ? `−${-k}` : String(k));
-      const base = { l: n(p.lam, 1), f: n(frequency(p.lam), 2), d: n(p.d, 1), q: n(p.d / p.lam, 2), nmax: String(mx.length), nmin: String(mn.length), axis };
+      const base = { l: n(p.lam, 1), f: n(frequency(p.lam), 1), d: n(p.d, 1), q: n(p.d / p.lam, 2), nmax: String(mx.length), nmin: String(mn.length), axis };
       let html =
-        p.ph === 0 || p.ph === 360
+        inPhase()
           ? tr('linesText', { ...base, kmin: kFmt(Math.min(...ks)), kmax: kFmt(Math.max(...ks)) })
           : tr('linesTextPh', { ...base, s: n(p.ph / 360, 3) });
-      if (!mn.length) html += ctx.t('noneMin');
+      if (!mn.length) html += ctx.t(inPhase() ? 'noneMin' : 'noneMinPh');
       ctx.readout('lines', { html });
-      const pos = mx.filter((l) => l.ds > 1e-9).sort((a, b) => a.ds - b.ds);
+      // gleichphasig symmetrisch: nur k > 0; sonst alle Linien mit Vorzeichen (Muster verschoben)
+      const pos = inPhase() ? mx.filter((l) => l.ds > 1e-9).sort((a, b) => a.ds - b.ds) : [...mx].sort((a, b) => a.ds - b.ds);
       const list = pos
-        .slice(0, 4)
+        .slice(0, inPhase() ? 4 : 7)
         .map((l) => {
           const a = farFieldAngle(l.ds, p.d);
-          return a === null ? '' : tr('farItem', { k: kFmt(l.k), a: n((a * 180) / Math.PI, 1) });
+          return a === null ? '' : tr('farItem', { k: kFmt(l.k), a: fx((a * 180) / Math.PI, 1) });
         })
         .filter(Boolean)
         .join(' · ');
-      const simple = p.ph === 0 || p.ph === 360 ? tr('farSimple', { q: n(p.lam / p.d, 3) }) : '';
-      ctx.readout('far', { html: pos.length ? tr('farText', { simple, list }) : ctx.t('farNone') });
+      const simple = inPhase() ? tr('farSimple', { q: n(p.lam / p.d, 3) }) : ctx.t('farPhNote');
+      ctx.readout('far', { html: pos.length ? tr('farText', { simple, list }) : ctx.t(inPhase() ? 'farNone' : 'farNoneAll') });
       ctx.setAction('go', { enabled: !ctx.locked });
       updateNow();
     }
