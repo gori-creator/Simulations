@@ -6,6 +6,12 @@ export const MINUS = '−';
 /** Geschütztes Leerzeichen: verhindert einen Zeilenumbruch zwischen Zahl und Einheit. */
 export const NBSP = '\u00A0';
 
+/**
+ * Schmales geschütztes Leerzeichen (U+202F) als Tausendertrennzeichen:
+ * „125 000“ nach DIN 1333 bzw. Duden (im Englischen nach SI ebenso).
+ */
+export const NNBSP = '\u202F';
+
 /** Hängt eine Einheit mit geschütztem Leerzeichen an: `withUnit('2,5', 'm/s')` → „2,5 m/s“ ohne Umbruch. */
 export function withUnit(value: string, unit: string): string {
   return unit ? `${value}${NBSP}${unit}` : value;
@@ -59,6 +65,23 @@ export interface NumberOptions {
   fixed?: boolean;
   /** Pluszeichen bei positiven Zahlen. */
   signed?: boolean;
+  /**
+   * Tausendertrennung (Standard an): Ab 5 Stellen vor dem Komma werden je drei
+   * Ziffern mit schmalem geschütztem Leerzeichen gruppiert („125 000“,
+   * „−12 500“); vierstellige Zahlen bleiben ungruppiert („1257“). Für Werte in
+   * Eingabefeldern `false`, damit man sie bearbeiten kann (siehe `Formatter.plain`).
+   */
+  grouping?: boolean;
+}
+
+/**
+ * Gruppiert den ganzzahligen Teil einer fertig formatierten Zahl (ohne
+ * Vorzeichen) ab 5 Stellen in Dreiergruppen mit schmalem geschütztem Leerzeichen.
+ */
+export function groupThousands(digits: string): string {
+  const int = /^\d*/.exec(digits)?.[0] ?? '';
+  if (int.length < 5) return digits;
+  return int.replace(/\B(?=(\d{3})+$)/g, NNBSP) + digits.slice(int.length);
 }
 
 /**
@@ -94,7 +117,8 @@ export function formatNumber(value: number, lang: Lang, options: NumberOptions =
   if (!Number.isFinite(value)) return value > 0 ? '∞' : `${MINUS}∞`;
   const decimals = options.decimals ?? 2;
   const rounded = roundHalfUp(value, decimals);
-  const text = numberFormat(lang, options.fixed ? decimals : 0, decimals).format(Math.abs(rounded));
+  const raw = numberFormat(lang, options.fixed ? decimals : 0, decimals).format(Math.abs(rounded));
+  const text = options.grouping === false ? raw : groupThousands(raw);
   if (rounded < 0) return MINUS + text;
   return options.signed && rounded > 0 ? `+${text}` : text;
 }
@@ -138,6 +162,14 @@ export class Formatter {
 
   signed(value: number, decimals = 2): string {
     return formatNumber(value, this.lang, { decimals, signed: true });
+  }
+
+  /**
+   * Zahl ohne Tausendertrennung, z. B. für Eingabefelder („125000“ statt
+   * „125 000“), damit sich der Wert bearbeiten lässt.
+   */
+  plain(value: number, decimals = 2): string {
+    return formatNumber(value, this.lang, { decimals, grouping: false });
   }
 
   /** Zahl mit Einheit, durch ein geschütztes Leerzeichen verbunden: DE „2,5 m/s“. */

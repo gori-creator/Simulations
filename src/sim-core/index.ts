@@ -25,7 +25,7 @@ export { Surface, TapTarget, type Rect } from './surface';
 export type { KeyTarget } from './key-targets';
 export { Plot, type AxesOptions, type Handle, type PlotOptions } from './plot';
 export { Clock, FixedStepper } from './clock';
-export { bindUnits, Formatter, formatNumber, formatPiFraction, MINUS, NBSP, roundHalfUp, withUnit } from './format';
+export { bindUnits, Formatter, formatNumber, formatPiFraction, groupThousands, MINUS, NBSP, NNBSP, roundHalfUp, withUnit } from './format';
 export * as term from './formula';
 export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
