@@ -114,6 +114,23 @@ export function pointShadowSize(objectSize: number, lampToObject: number, lampTo
   return (objectSize * lampToScreen) / lampToObject;
 }
 
+/**
+ * Größe des Kernschattens bei ausgedehnter Lampe (Durchmesser `d`) auf dem
+ * Schirm: S_Kern = (G · b − d · (b − a)) / a. Steht der Schirm hinter der
+ * Spitze des Kernschattenkegels, wird der Wert null oder negativ – dann gibt
+ * es keinen Kernschatten und die Funktion liefert `null` (für Jgst. 6/7 wird
+ * keine negative Größe angezeigt).
+ */
+export function umbraSize(objectSize: number, lampToObject: number, lampToScreen: number, lampDiameter: number): number | null {
+  const s = (objectSize * lampToScreen - lampDiameter * (lampToScreen - lampToObject)) / lampToObject;
+  return s > 1e-9 ? s : null;
+}
+
+/** Größe des gesamten Schattens (mit Halbschatten) bei ausgedehnter Lampe: (G · b + d · (b − a)) / a. */
+export function outerShadowSize(objectSize: number, lampToObject: number, lampToScreen: number, lampDiameter: number): number {
+  return (objectSize * lampToScreen + lampDiameter * (lampToScreen - lampToObject)) / lampToObject;
+}
+
 /** Schnitt zweier Intervalle (oder `null`). */
 export function intersect(a: Interval | null, b: Interval | null): Interval | null {
   if (!a || !b) return null;

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, subText, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dragDistance,
   dragFallTime,
@@ -49,7 +49,10 @@ function niceTop(x: number): number {
 export default defineSimulation({
   id: 'freier-fall',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh die Kugel im Fallturm oder den Punkt im t-s-Diagramm. Beim Reaktionstest fängst du das Lineal durch Tippen, Klick oder mit der Leertaste.',
+    'Tip: drag the ball in the drop tower or the point in the distance–time graph. In the reaction test, catch the ruler with a tap, a click or the space bar.',
+  ),
   layout: { aspect: 1.5, aspectNarrow: 0.56 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -109,7 +112,7 @@ export default defineSimulation({
   ],
   images: { feather: 'feder.webp', ball: 'kugel.webp', ruler: 'lineal.webp' },
   readouts: [
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
     { key: 'law', label: L('Fallgesetze', 'Laws of free fall') },
     { key: 'fall', label: L('Fallzeit und Aufprallgeschwindigkeit', 'Fall time and impact speed'), spoiler: true },
     { key: 'ratio', label: L('Abstände der Stroboskopbilder', 'Gaps between the stroboscope images'), spoiler: true },
@@ -224,7 +227,8 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       const gap = 10;
-      if (!narrow()) {
+      // Nebeneinander auch auf flachen Bühnen (iPad quer), sonst wird alles winzig
+      if (w >= 640 || w >= h * 1.3) {
         const sw = Math.round(Math.min(w * 0.42, h * 0.72));
         const cw = w - sw - gap;
         const ch = (h - gap) / 2;
@@ -276,12 +280,12 @@ export default defineSimulation({
       if (m === 'tower') {
         const tt = Math.min(t, T());
         const v = fallSpeed(g(), tt);
-        ctx.readout('now', tr('nowTower', { t: fmt.fixed(tt, 2), s: fmt.num(fallDistance(g(), tt), 2), v: fmt.num(v, 2), kmh: fmt.num(v * 3.6, 0) }));
+        ctx.readout('now', tr('nowTower', { t: fmt.fixed(tt, 2), s: fmt.fixed(fallDistance(g(), tt), 2), v: fmt.fixed(v, 1), kmh: fmt.num(v * 3.6, 0) }));
       } else if (m === 'tube') {
         const tt = tubeState === 'falling' ? t : 0;
         ctx.readout(
           'now',
-          tr('nowTube', { t: fmt.fixed(tt, 2), sb: fmt.num(tubeS('ball', tt), 2), vb: fmt.num(tubeV('ball', tt), 2), sf: fmt.num(tubeS('feather', tt), 2), vf: fmt.num(tubeV('feather', tt), 2) }),
+          tr('nowTube', { t: fmt.fixed(tt, 2), sb: fmt.fixed(tubeS('ball', tt), 2), vb: fmt.fixed(tubeV('ball', tt), 2), sf: fmt.fixed(tubeS('feather', tt), 2), vf: fmt.fixed(tubeV('feather', tt), 2) }),
         );
       } else ctx.readout('now', null);
     }
@@ -295,12 +299,14 @@ export default defineSimulation({
           html: `<var>s</var> = ½ · <var>g</var> · <var>t</var>²<br><var>v</var> = <var>g</var> · <var>t</var><br><var>a</var> = <var>g</var> = ${gs} m/s² (${planetName()})`,
         });
         const v = impactSpeed(p.h, g());
-        ctx.readout('fall', tr('fallTower', { t: fmt.num(T(), 2), v: fmt.num(v, 1), kmh: fmt.num(v * 3.6, 0) }));
+        ctx.readout('fall', tr('fallTower', { t: fmt.fixed(T(), 2), v: fmt.fixed(v, 1), kmh: fmt.num(v * 3.6, 0) }));
         const n = Math.min(6, Math.floor(T() / p.dt + 1e-9));
         if (n >= 2) {
           const gaps = strobeGaps(g(), p.dt, n);
           const unitGap = gaps[0]!;
-          const meters = gaps.map((x) => fmt.num(x, x < 0.1 ? 3 : 2)).join(' m; ');
+          // alle Abstände mit gleich vielen Nachkommastellen (3, wenn der erste unter 10 cm liegt)
+          const dec = unitGap < 0.1 ? 3 : 2;
+          const meters = gaps.map((x) => fmt.fixed(x, dec)).join(' m; ');
           ctx.readout('ratio', tr('ratio', { gaps: `Δs = ${meters} m`, ratio: gaps.map((x) => fmt.num(x / unitGap, 0)).join(' : ') + ' : …' }));
         } else ctx.readout('ratio', null);
       } else {
@@ -309,7 +315,7 @@ export default defineSimulation({
       if (m === 'tube') {
         ctx.readout('law', tr('lawTube', { vf: fmt.num(TERMINAL.feather, 1) }));
         ctx.readout('fall', null);
-        ctx.readout('arrive', tr('fallTube', { tb: fmt.num(tubeTime('ball'), 2), tf: fmt.num(tubeTime('feather'), 2) }));
+        ctx.readout('arrive', tr('fallTube', { tb: fmt.fixed(tubeTime('ball'), 2), tf: fmt.fixed(tubeTime('feather'), 2) }));
       } else {
         ctx.readout('arrive', null);
       }
@@ -700,6 +706,7 @@ export default defineSimulation({
         const bx = r.x + r.w * (small ? 0.68 : 0.72);
         let prevY = yOf(0);
         let prevLabel = -Infinity;
+        const hideRatio = ctx.isHidden('ratio');
         for (let k = 0; k <= n; k++) {
           const sk = fallDistance(g(), k * dt);
           const y = yOf(sk);
@@ -717,7 +724,8 @@ export default defineSimulation({
             gx.fillStyle = withAlpha(theme.series[0]!, k % 2 ? 0.85 : 0.5);
             gx.fillRect(bx, prevY, 10, Math.max(1, y - prevY));
             const mid = (prevY + y) / 2;
-            if (y - prevY >= 10 && mid - prevLabel >= 13) {
+            // Vielfache verraten im Aufgabenmodus das Verhältnis (Aufgabe 2)
+            if (!hideRatio && y - prevY >= (k === 1 ? 4 : 10) && mid - prevLabel >= 13) {
               text(gx, String(2 * k - 1), bx + 16, mid, { font: `700 ${small ? 11 : 12}px ${theme.font}`, color: '#dbe6ff', align: 'left' });
               prevLabel = mid;
             }
@@ -739,8 +747,10 @@ export default defineSimulation({
       }
       // Anzeigen
       const size = small ? 11.5 : 12.5;
-      pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(tt, 2)} s`, theme.text, 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, `v = ${fmt.num(fallSpeed(g(), tt), 1)} m/s`, theme.series[3]!, 'right', size);
+      // Im Aufgabenmodus verraten Stoppuhr und Tacho Fallzeit und Aufprallgeschwindigkeit
+      const hideVals = ctx.isHidden('fall') && ctx.isHidden('now');
+      pill(r.x + 8, r.y + 8, `t = ${hideVals ? '?' : fmt.fixed(tt, 2)} s`, theme.text, 'left', size);
+      pill(r.x + r.w - 8, r.y + 8, `v = ${hideVals ? '?' : fmt.fixed(fallSpeed(g(), tt), 1)} m/s`, theme.series[3]!, 'right', size);
       gx.restore();
     }
 
@@ -1259,7 +1269,18 @@ export default defineSimulation({
       }
       if (!p.vac) {
         plotV.hline(TERMINAL.feather, { color: green, width: 1, dash: [3, 4], alpha: 0.8 });
-        plotV.text(Te, TERMINAL.feather, `v_E ≈ ${fmt.num(TERMINAL.feather, 1)} m/s`, { color: green, size: 11, weight: '600', align: 'right', baseline: 'bottom', offset: [-4, -4] });
+        // v_E mit echtem tiefgestelltem Index (Plot.text kennt keine Indizes)
+        // in der Mitte über der Linie, damit sie nicht auf der Achsbeschriftung „t in s“ liegt
+        subText(surface.g, `v_E ≈ ${fmt.fixed(TERMINAL.feather, 1)} m/s`, plotV.px(Te * 0.62), plotV.py(TERMINAL.feather) - 5, {
+          size: 11,
+          family: theme.font,
+          weight: 600,
+          color: green,
+          align: 'center',
+          baseline: 'alphabetic',
+          halo: theme.bg,
+          haloWidth: 4,
+        });
       }
       plotV.vline(tt, { color: theme.text, width: 1.5, alpha: 0.35 });
       plotV.end();

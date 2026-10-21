@@ -20,16 +20,16 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 7–10 | `bewegungsdiagramme` | Gleichförmige und beschleunigte Bewegung (t-s- und t-v-Diagramme) | `/de/physik/mechanik/bewegungsdiagramme/` |
 | ☑ | 8–9 | `ohmsches-gesetz` | Ohmsches Gesetz | `/de/physik/elektrizitaetslehre/ohmsches-gesetz/` |
 | ☑ | 8–9 | `reihe-parallel` | Reihen- und Parallelschaltung | `/de/physik/elektrizitaetslehre/reihen-und-parallelschaltung/` |
-| ☐ | 8–10 | `kraefteaddition` | Kräfte addieren und zerlegen | `/de/physik/mechanik/kraefte-addieren-und-zerlegen/` |
-| ☐ | 8–10 | `linsen` | Linsen und Bildentstehung | `/de/physik/optik/linsen-bildentstehung/` |
-| ☐ | 8–10 | `schiefe-ebene` | Schiefe Ebene | `/de/physik/mechanik/schiefe-ebene/` |
-| ☐ | 9–10 | `energieerhaltung` | Energieerhaltung (Achterbahn) | `/de/physik/mechanik/energieerhaltung-achterbahn/` |
-| ☐ | 9–10 | `freier-fall` | Freier Fall | `/de/physik/mechanik/freier-fall/` |
-| ☐ | 9–12 | `radioaktiver-zerfall` | Radioaktiver Zerfall und Halbwertszeit | `/de/physik/atom-kern-und-quantenphysik/radioaktiver-zerfall/` |
-| ☐ | 9–13 | `gasgesetze` | Gasgesetze | `/de/physik/waermelehre/gasgesetze/` |
-| ☐ | 10–11 | `kreisbewegung` | Kreisbewegung und Zentripetalkraft | `/de/physik/mechanik/kreisbewegung-zentripetalkraft/` |
-| ☐ | 10–11 | `schiefer-wurf` | Waagerechter und schiefer Wurf | `/de/physik/mechanik/schiefer-wurf/` |
-| ☐ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
+| ☑ | 8–10 | `kraefteaddition` | Kräfte addieren und zerlegen | `/de/physik/mechanik/kraefte-addieren-und-zerlegen/` |
+| ☑ | 8–10 | `linsen` | Linsen und Bildentstehung | `/de/physik/optik/linsen-bildentstehung/` |
+| ☑ | 8–10 | `schiefe-ebene` | Schiefe Ebene | `/de/physik/mechanik/schiefe-ebene/` |
+| ☑ | 9–10 | `energieerhaltung` | Energieerhaltung (Achterbahn) | `/de/physik/mechanik/energieerhaltung-achterbahn/` |
+| ☑ | 9–10 | `freier-fall` | Freier Fall | `/de/physik/mechanik/freier-fall/` |
+| ☑ | 9–12 | `radioaktiver-zerfall` | Radioaktiver Zerfall und Halbwertszeit | `/de/physik/atom-kern-und-quantenphysik/radioaktiver-zerfall/` |
+| ☑ | 9–13 | `gasgesetze` | Gasgesetze | `/de/physik/waermelehre/gasgesetze/` |
+| ☑ | 10–11 | `kreisbewegung` | Kreisbewegung und Zentripetalkraft | `/de/physik/mechanik/kreisbewegung-zentripetalkraft/` |
+| ☑ | 10–11 | `schiefer-wurf` | Waagerechter und schiefer Wurf | `/de/physik/mechanik/schiefer-wurf/` |
+| ☑ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
 | ☐ | 10–12 | `doppler-effekt` | Doppler-Effekt | `/de/physik/schwingungen-und-wellen/doppler-effekt/` |
 | ☐ | 10–12 | `federpendel` | Federpendel | `/de/physik/schwingungen-und-wellen/federpendel/` |
 | ☐ | 10–12 | `wellen-ausbreitung` | Transversal- und Longitudinalwellen | `/de/physik/schwingungen-und-wellen/transversal-longitudinalwellen/` |

@@ -1,10 +1,12 @@
 import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dirFromVertical,
+  evenWedges,
   glancingAngle,
   hitsFront,
   imageCountRule,
   incidence,
+  isEvenWedge,
   isReversed,
   lightPath,
   mirrorDir,
@@ -201,6 +203,7 @@ export default defineSimulation({
       selSame: ' – nicht seitenverkehrt',
       selHidden: ' Vom Auge aus ist dieses Bild nicht zu sehen (der Lichtweg ginge am Spiegel vorbei).',
       tapHint: 'Tippe auf ein Bild, um seinen Lichtweg zu sehen.',
+      keyImage: 'Spiegelbild {n}: {k} Spiegelung(en), {seq}',
       then: 'dann',
       countCard: 'Bilder',
       mirrorShort: 'Spiegel',
@@ -209,6 +212,7 @@ export default defineSimulation({
       legRev: 'seitenverkehrt',
       legEye: 'vom Auge aus zu sehen',
       chartTitle: 'Anzahl der Bilder bei anderen Winkeln',
+      chartDepends: 'hängt von der Lage ab',
     },
     en: {
       canvas: 'Optical disc with a plane mirror and a laser, a candle in front of a vertical mirror with its image and lines of sight, or two angled mirrors with multiple images',
@@ -258,6 +262,7 @@ export default defineSimulation({
       selSame: ' – not reversed',
       selHidden: ' This image cannot be seen from the eye (the light path would miss the mirror).',
       tapHint: 'Tap an image to see its light path.',
+      keyImage: 'Image {n}: {k} reflection(s), {seq}',
       then: 'then',
       countCard: 'Images',
       mirrorShort: 'Mirror',
@@ -266,6 +271,7 @@ export default defineSimulation({
       legRev: 'reversed',
       legEye: 'visible from the eye',
       chartTitle: 'Number of images at other angles',
+      chartDepends: 'depends on the position',
     },
   },
 
@@ -579,6 +585,35 @@ export default defineSimulation({
       },
     });
 
+    /** Bilder im Winkelspiegel per Tastatur auswählen (Tab auf die Bühne, Pfeiltasten, Enter) – wie Antippen. */
+    function updateKeyTargets(): void {
+      if (mode() !== 'multi') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const list = currentImages();
+      const R = Math.max(14, 1.3 * multiPlot.scale.x);
+      const fig = figure();
+      const eye = eyeW();
+      ctx.setKeyTargets(
+        list.map((img, i) => {
+          const [x, y] = multiPlot.toPx(...imgPos(img));
+          // Spiegelfolge wie in der Liste und im Ergebnis (Lichtweg vom Auge aus, falls sichtbar)
+          const path = lightPath(wedge, fig, img, eye, WEDGE_LEN);
+          const seq = `${ctx.t('mirrorShort')} ${(path ? path.seq : img.seq).map((m) => (m === 'A' ? '1' : '2')).join(' → ')}`;
+          return {
+            id: `img${i}`,
+            label: tr('keyImage', { n: String(i + 1), k: String(img.seq.length), seq }),
+            rect: { x: x - R, y: y - R, w: 2 * R, h: 2 * R },
+            activate: () => {
+              selected = i;
+              updateReadouts();
+            },
+          };
+        }),
+      );
+    }
+
     /* ---------- Ergebnisse ---------- */
     const deg0 = (v: number) => fmt.num(Math.abs(v), 0);
 
@@ -613,8 +648,7 @@ export default defineSimulation({
       } else {
         const list = currentImages();
         const n = list.length;
-        const ratio = 360 / wedge;
-        const even = Math.abs(ratio - Math.round(ratio)) < 1e-6 && Math.round(ratio) % 2 === 0;
+        const even = isEvenWedge(wedge);
         ctx.readout('count', {
           html: `<strong>${n === 1 ? ctx.t('countOne') : tr('countText', { n: String(n) })}</strong> · ${even ? tr('ruleText', { w: fmt.num(wedge, 0), n: fmt.num(imageCountRule(wedge), 0) }) : tr('ruleNot', { w: fmt.num(wedge, 1) })}`,
         });
@@ -1809,6 +1843,9 @@ export default defineSimulation({
     /** Anzahl der Bilder für alle Winkel 30° … 180° bei der aktuellen Lage der Figur (zwischengespeichert). */
     let countSeries: V2[] = [];
     let countKey = '';
+    /** Winkel, bei denen 360° : φ gerade ist – nur dort ist die Zahl der Bilder eindeutig. */
+    const EVEN_WEDGES = evenWedges(30, 180);
+
     function countsOverAngle(): V2[] {
       const key = `${p.r}|${p.f}`;
       if (key !== countKey) {
@@ -1835,8 +1872,7 @@ export default defineSimulation({
       const nw = g.measureText(String(n)).width;
       text(g, n === 1 ? ctx.t('countOne').replace(/^1\s*/, '') : ctx.t('countCard'), x + nw + 8, y + (small ? 4 : 10), { font: `700 ${small ? 14 : 16}px ${theme.font}`, color: theme.text, align: 'left' });
       y += small ? 28 : 44;
-      const ratio = 360 / wedge;
-      const even = Math.abs(ratio - Math.round(ratio)) < 1e-6 && Math.round(ratio) % 2 === 0;
+      const even = isEvenWedge(wedge);
       const ruleStr = even ? tr('ruleText', { w: fmt.num(wedge, 0), n: fmt.num(imageCountRule(wedge), 0) }) : tr('ruleNot', { w: fmt.num(wedge, 1) });
       const ruleFont = even ? `700 ${small ? 12.5 : 14}px ${theme.font}` : `500 ${small ? 11.5 : 12.5}px ${theme.font}`;
       const lh = small ? 15 : 18;
@@ -1924,10 +1960,15 @@ export default defineSimulation({
         g.fillRect(cr.x, cr.y, cr.w, cr.h);
         countPlot.grid();
         countPlot.axes();
-        countPlot.fn((t) => (2 * Math.PI) / t - 1, { color: theme.series[2]!, width: 1.6, dash: [5, 4], from: rad(30), to: Math.PI });
-        countPlot.polyline(countsOverAngle(), { color: theme.series[3]!, width: 2.2 });
-        countPlot.point(rad(wedge), n, { color: theme.series[3]!, radius: 5 });
-        countPlot.text(rad(52), 360 / 52 - 1, '360° : φ − 1', { color: theme.series[2]!, size: 11, align: 'left', offset: [8, -4], halo: true });
+        // Eindeutig ist die Zahl nur, wenn 360° : φ gerade ist (30°, 36°, 45°, 60°, 90°, 180°).
+        // Alles dazwischen hängt von der Lage der Figur ab und wird deshalb nur ausgegraut gezeigt.
+        const grey = withAlpha(theme.muted, 0.5);
+        countPlot.fn((t) => (2 * Math.PI) / t - 1, { color: grey, width: 1.4, dash: [5, 4], from: rad(30), to: Math.PI });
+        countPlot.polyline(countsOverAngle(), { color: withAlpha(theme.muted, 0.38), width: 2 });
+        countPlot.text(rad(52), 360 / 52 - 1, '360° : φ − 1', { color: theme.muted, size: 11, align: 'left', offset: [8, -4], halo: true });
+        countPlot.text(Math.PI, 8.6, ctx.t('chartDepends'), { color: theme.muted, size: 11, align: 'right', offset: [-6, 0], halo: true });
+        for (const w of EVEN_WEDGES) countPlot.point(rad(w), imageCountRule(w), { color: theme.series[3]!, radius: 4 });
+        countPlot.point(rad(wedge), n, even ? { color: theme.series[3]!, radius: 6, hollow: true } : { color: theme.muted, radius: 5 });
         countPlot.end();
       }
     }
@@ -2013,6 +2054,7 @@ export default defineSimulation({
           drawHint();
         } else if (mode() === 'image') drawImageMode();
         else drawMulti();
+        updateKeyTargets();
         if (fade.running) {
           g.fillStyle = withAlpha(ctx.theme.bg, 1 - fade.value);
           g.fillRect(0, 0, surface.width, surface.height);

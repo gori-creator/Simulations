@@ -70,7 +70,10 @@ function niceTop(x: number): number {
 export default defineSimulation({
   id: 'schiefer-wurf',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Pfeilspitze ziehen (v₀ und α), Abwurfpunkt nach oben ziehen (h₀). Nach dem Wurf lässt sich der Ball entlang der Bahn ziehen; in den Diagrammen verschiebt Ziehen die Zeit bzw. den Winkel.',
+    'Tip: drag the arrow tip (v₀ and α) or the launch point upwards (h₀). After the throw you can drag the ball along its path; dragging in the graphs moves the time or the angle.',
+  ),
   layout: { aspect: 1.75, aspectNarrow: 0.72 },
   groups: [
     { id: 'target', label: L('Ziel', 'Target') },
@@ -185,7 +188,7 @@ export default defineSimulation({
     { key: 'opt', label: L('Größte Wurfweite', 'Largest range'), spoiler: true },
     { key: 'cmp', label: L('Mit und ohne Luft', 'With and without air'), spoiler: true },
     { key: 'aim', label: L('Lösung des Zielwurfs', 'Solution for the target'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
   presets: [
     { id: 'start', label: L('Schräger Wurf', 'Oblique throw'), values: {} },
@@ -380,7 +383,9 @@ export default defineSimulation({
     }
 
     /* ---------- Koordinatensysteme ---------- */
-    const scene = new Plot(surface, {
+    /** Unterkante der Anzeigen oben links (inkl. „y in m“) im letzten Bild: darüber keine Achsenzahlen. */
+    let chipBottom = 0;
+    const scene: Plot = new Plot(surface, {
       x: [-2, 30],
       y: [-2, 12],
       pan: false,
@@ -388,7 +393,7 @@ export default defineSimulation({
       controls: false,
       region: () => regions().scene,
       xAxis: { label: 'x in m' },
-      yAxis: { label: '' },
+      yAxis: { label: '', format: (v: number): string => (scene.py(v) < chipBottom ? '' : fmt.num(v, 2)) },
     });
     const charts = [0, 1, 2, 3].map(
       (i) =>
@@ -614,11 +619,16 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Rechenergebnisse mit fester Stellenzahl (Zeiten 2, Strecken 2 bzw. 1 im Bild, Geschwindigkeiten 1). */
+    const f = (v: number, d: number) => fmt.fixed(v, d);
+    /** Aufgabenmodus: Momentanwerte im Bild verdecken, solange „Momentan“ verdeckt ist. */
+    const hideNow = () => ctx.isHidden('now');
+    const q = (v: string) => (hideNow() ? '?' : v);
     const planetName = () => ctx.t(p.planet as string);
 
     function updateNow(): void {
       const s = stateAt(t);
-      ctx.readout('now', tr('now', { t: fmt.fixed(Math.min(t, endMain), 2), x: n(s.x, 2), y: n(Math.max(0, s.y), 2), v: n(speedOf(s), 2) }));
+      ctx.readout('now', tr('now', { t: f(Math.min(t, endMain), 2), x: f(s.x, 2), y: f(Math.max(0, s.y), 2), v: f(speedOf(s), 1) }));
     }
 
     function updateReadouts(): void {
@@ -626,11 +636,11 @@ export default defineSimulation({
       if (main.time <= 0) {
         for (const key of ['time', 'range', 'height', 'impact', 'path', 'super']) ctx.readout(key, key === 'time' ? ctx.t('noFlight') : null);
       } else {
-        ctx.readout('time', { html: launch.h0 === 0 && !samples ? `<var>T</var> = <span class="frac"><span>2 · <var>v</var>₀ · sin <var>α</var></span><span><var>g</var></span></span> ≈ <strong>${n(main.time, 3)} s</strong>` : `<var>T</var> ≈ <strong>${n(main.time, 3)} s</strong>` });
-        ctx.readout('range', { html: launch.h0 === 0 && !samples ? `<var>w</var> = <span class="frac"><span><var>v</var>₀² · sin(2<var>α</var>)</span><span><var>g</var></span></span> ≈ <strong>${n(main.range, 2)} m</strong>` : `<var>w</var> ≈ <strong>${n(main.range, 2)} m</strong>` });
-        ctx.readout('height', { html: !samples && launch.angle > 0 ? `<var>h</var><sub>max</sub> = <var>h</var>₀ + <span class="frac"><span>(<var>v</var>₀ · sin <var>α</var>)²</span><span>2<var>g</var></span></span> ≈ <strong>${n(main.maxHeight, 2)} m</strong>` : `<var>h</var><sub>max</sub> ≈ <strong>${n(main.maxHeight, 2)} m</strong>` });
+        ctx.readout('time', { html: launch.h0 === 0 && !samples ? `<var>T</var> = <span class="frac"><span>2 · <var>v</var>₀ · sin <var>α</var></span><span><var>g</var></span></span> ≈ <strong>${f(main.time, 2)} s</strong>` : `<var>T</var> ≈ <strong>${f(main.time, 2)} s</strong>` });
+        ctx.readout('range', { html: launch.h0 === 0 && !samples ? `<var>w</var> = <span class="frac"><span><var>v</var>₀² · sin(2<var>α</var>)</span><span><var>g</var></span></span> ≈ <strong>${f(main.range, 2)} m</strong>` : `<var>w</var> ≈ <strong>${f(main.range, 2)} m</strong>` });
+        ctx.readout('height', { html: !samples && launch.angle > 0 ? `<var>h</var><sub>max</sub> = <var>h</var>₀ + <span class="frac"><span>(<var>v</var>₀ · sin <var>α</var>)²</span><span>2<var>g</var></span></span> ≈ <strong>${f(main.maxHeight, 2)} m</strong>` : `<var>h</var><sub>max</sub> ≈ <strong>${f(main.maxHeight, 2)} m</strong>` });
         const iv = speedOf(main.impact);
-        ctx.readout('impact', tr('speedAt', { v: n(iv, 2), a: n(-directionOf(main.impact), 0) }));
+        ctx.readout('impact', tr('speedAt', { v: f(iv, 1), a: f(-directionOf(main.impact), 0) }));
         if (samples) ctx.readout('path', null);
         else if (Math.abs(launch.angle) >= 89.5) ctx.readout('path', { html: ctx.t('vert') });
         else {
@@ -646,24 +656,24 @@ export default defineSimulation({
           const vx = launch.v0 * Math.cos(launch.angle * RAD);
           const vy = launch.v0 * Math.sin(launch.angle * RAD);
           const h0 = launch.h0 > 0 ? `${n(launch.h0, 1)} m ` : '';
-          const vyT = Math.abs(vy) < 1e-9 ? '' : `${h0 ? (vy < 0 ? '− ' : '+ ') : vy < 0 ? '−' : ''}${n(Math.abs(vy), 2)} m/s · <var>t</var> `;
-          ctx.readout('super', { html: `${tr('superX', { vx: n(Math.abs(vx) < 1e-9 ? 0 : vx, 2) })}<br>${tr('superY', { h0, vy: vyT, g2: n(launch.g / 2, 3) })}` });
+          const vyT = Math.abs(vy) < 1e-9 ? '' : `${h0 ? (vy < 0 ? '− ' : '+ ') : vy < 0 ? '−' : ''}${f(Math.abs(vy), 2)} m/s · <var>t</var> `;
+          ctx.readout('super', { html: `${tr('superX', { vx: f(Math.abs(vx) < 1e-9 ? 0 : vx, 2) })}<br>${tr('superY', { h0, vy: vyT, g2: n(launch.g / 2, 3) })}` });
         } else ctx.readout('super', null);
       }
       if ((m === 'angles' || m === 'drag') && rangeCurve.vac.length) {
-        let html = tr('optText', { a: n(optVac.angle, 1), w: n(optVac.range, 2) });
-        if (optAir) html += `<br>${tr('optAir', { a: n(optAir.angle, 1), w: n(optAir.range, 2) })}`;
+        let html = tr('optText', { a: f(optVac.angle, 1), w: f(optVac.range, 2) });
+        if (optAir) html += `<br>${tr('optAir', { a: f(optAir.angle, 1), w: f(optAir.range, 2) })}`;
         ctx.readout('opt', { html });
       } else ctx.readout('opt', null);
       if (m === 'drag' && vac.range > 0) {
-        ctx.readout('cmp', tr('cmpText', { w0: n(vac.range, 2), w1: n(main.range, 2), p: n(Math.max(0, (1 - main.range / vac.range) * 100), 0), h0: n(vac.maxHeight, 2), h1: n(main.maxHeight, 2) }));
+        ctx.readout('cmp', tr('cmpText', { w0: f(vac.range, 2), w1: f(main.range, 2), p: f(Math.max(0, (1 - main.range / vac.range) * 100), 0), h0: f(vac.maxHeight, 2), h1: f(main.maxHeight, 2) }));
       } else ctx.readout('cmp', null);
       if (m === 'target') {
         ctx.readout('score', shots ? tr('scoreText', { h: String(hits), n: String(shots) }) : ctx.t('scoreNone'));
-        const sol = solutions.map((s) => n(s.angle, 1));
+        const sol = solutions.map((s) => f(s.angle, 1));
         // Lösung erst, wenn sie auch im Bild steht (nach dem ersten Treffer oder mit „Lösungswinkel zeigen“)
         if (!solved && !p.sol) ctx.readout('aim', null);
-        else ctx.readout('aim', sol.length === 2 ? tr('aimTwo', { a: sol[0]!, b: sol[1]! }) : sol.length === 1 ? tr('aimOne', { a: sol[0]! }) : tr('aimNone', { v: n(launch.v0, 1), m: n(minSpeed(p.tx, p.ty - launch.h0, launch.g), 1) }));
+        else ctx.readout('aim', sol.length === 2 ? tr('aimTwo', { a: sol[0]!, b: sol[1]! }) : sol.length === 1 ? tr('aimOne', { a: sol[0]! }) : tr('aimNone', { v: n(launch.v0, 1), m: f(minSpeed(p.tx, p.ty - launch.h0, launch.g), 1) }));
       } else {
         ctx.readout('score', null);
         ctx.readout('aim', null);
@@ -1295,8 +1305,9 @@ export default defineSimulation({
         g.stroke();
       }
       const small = r.w < 520;
-      richText(`x = ${n(s.x, 1)} m`, clamp(bx, r.x + 40, r.x + r.w - 40), ground + (small ? 16 : 18), small ? 11 : 12, C.x(), 'center');
-      pill(rx - 6, clamp(by - 30, top + 4, ground - 30), `y = ${n(Math.max(0, s.y), 1)} m`, C.y(), 'left', 11);
+      // x-Wert als Etikett auf der Zahlenleiste (verdeckt die Achsenzahlen darunter, statt sie zu überlappen)
+      pill(clamp(bx, r.x + 44, r.x + r.w - 44), ground + 4, `x = ${q(f(s.x, 1))} m`, C.x(), 'center', small ? 11 : 12);
+      pill(rx - 6, clamp(by - 30, top + 4, ground - 30), `y = ${q(f(Math.max(0, s.y), 1))} m`, C.y(), 'left', 11);
     }
 
     /* ---------- Szene: Pfeile ---------- */
@@ -1356,10 +1367,10 @@ export default defineSimulation({
       arrowPx(bx, by, ex, ey, C.v(), 3.2, 11);
       // fällt der Ball, steht vₓ oberhalb und v unterhalb des Pfeils (und umgekehrt)
       const down = ey >= by;
-      if (Math.abs(s.vx * k) > 14) clampedText(`v_{x} = ${n(s.vx, 1)}`, ex + 6, down ? by - 12 : by + 13, fs, C.x(), r, 'left');
-      if (Math.abs(s.vy * k) > 10) clampedText(`v_{y} = ${n(s.vy, 1)}`, bx - 8, (by + ey) / 2, fs, C.y(), r, 'right');
+      if (Math.abs(s.vx * k) > 14) clampedText(`v_{x} = ${q(f(s.vx, 1))} m/s`, ex + 6, down ? by - 12 : by + 13, fs, C.x(), r, 'left');
+      if (Math.abs(s.vy * k) > 10) clampedText(`v_{y} = ${q(f(s.vy, 1))} m/s`, bx - 8, (by + ey) / 2, fs, C.y(), r, 'right');
       else if (Math.abs(s.vy) < 1) clampedText(ctx.t('apex'), bx, by - 24, fs, C.y(), r, 'center');
-      clampedText(`v = ${n(speedOf(s), 1)} m/s`, ex + 8, down ? ey + 14 : ey - 10, fs, C.v(), r, 'left');
+      clampedText(`v = ${q(f(speedOf(s), 1))} m/s`, ex + 8, down ? ey + 14 : ey - 10, fs, C.v(), r, 'left');
     }
 
     /* ---------- Szene: Markierungen und Anzeigen ---------- */
@@ -1386,7 +1397,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(ax, ay, 3.5 * u, 0, Math.PI * 2);
         g.fill();
-        if (mode() !== 'angles') clampedText(`${ctx.t('height')}: ${n(main.maxHeight * u, 2)} m`, ax, ay - 20, fs, theme.text, r, 'center');
+        if (mode() !== 'angles') clampedText(`${ctx.t('height')}: ${ctx.isHidden('height') ? '?' : f(main.maxHeight * u, 2)} m`, ax, ay - 20, fs, theme.text, r, 'center');
       }
       // Wurfweite
       if (main.time > 0 && t >= endMain && !(shot?.result === 'hit')) {
@@ -1407,7 +1418,7 @@ export default defineSimulation({
           g.lineTo(x, y + 7);
           g.stroke();
         }
-        if (main.range > 0.01) clampedText(`${ctx.t('range')}: ${n(main.range * u, 2)} m`, (x0 + x1) / 2, y - 16, fs + 0.5, C.good(), r, 'center');
+        if (main.range > 0.01) clampedText(`${ctx.t('range')}: ${ctx.isHidden('range') ? '?' : f(main.range * u, 2)} m`, (x0 + x1) / 2, y - 16, fs + 0.5, C.good(), r, 'center');
         // Aufprallring
         if (landPop.running) {
           g.strokeStyle = withAlpha(theme.text, 0.6 * (1 - landPop.value));
@@ -1438,10 +1449,10 @@ export default defineSimulation({
       const size = small ? 11 : 12;
       const s = stateAt(t);
       const row = size + 17;
-      const tw = pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(Math.min(t, tEnd()), 2)} s`, theme.text, 'left').w;
+      const tw = pill(r.x + 8, r.y + 8, `t = ${q(f(Math.min(t, tEnd()), 2))} s`, theme.text, 'left').w;
       const gLabel = `${small ? '' : `${planetName()} · `}${tr('g', { g: n(planet().g, 2) })}`;
       pill(r.x + r.w - 8, r.y + 8, gLabel, theme.text, 'right', size);
-      if (!small && mode() !== 'parts') pill(r.x + 8 + tw + 6, r.y + 8, `v = ${n(speedOf(s), 1)} m/s`, C.v(), 'left', size);
+      if (!small && mode() !== 'parts') pill(r.x + 8 + tw + 6, r.y + 8, `v = ${q(f(speedOf(s), 1))} m/s`, C.v(), 'left', size);
       let y = r.y + 8 + row;
       // Legende im Modus „Luftwiderstand“ (bzw. Wurf mit Luft)
       if (mode() === 'drag' || (p.air && mode() === 'throw' && kMain() > 0)) {
@@ -1470,7 +1481,7 @@ export default defineSimulation({
           g.restore();
         }
         if (solved || p.sol) {
-          const label = solutions.length === 2 ? tr('solTwo', { a: n(solutions[0]!.angle, 1), b: n(solutions[1]!.angle, 1) }) : solutions.length === 1 ? tr('solOne', { a: n(solutions[0]!.angle, 1) }) : tr('solNone', { v: n(launch.v0, 1), m: n(minSpeed(p.tx, p.ty - launch.h0, launch.g), 1) });
+          const label = solutions.length === 2 ? tr('solTwo', { a: f(solutions[0]!.angle, 1), b: f(solutions[1]!.angle, 1) }) : solutions.length === 1 ? tr('solOne', { a: f(solutions[0]!.angle, 1) }) : tr('solNone', { v: n(launch.v0, 1), m: f(minSpeed(p.tx, p.ty - launch.h0, launch.g), 1) });
           pill(r.x + 8, y, label, theme.series[4]!, 'left', size);
           y += row;
           if (kMain() > 0) {
@@ -1535,7 +1546,7 @@ export default defineSimulation({
       if (t === 0 && !ctx.clock.playing) drawLaunchArrow(r);
       else if (p.vectors && t < endMain) drawVectors(r, s);
       drawBall(s.x, s.y);
-      drawChips(r);
+      chipBottom = drawChips(r) + 18;
       if (wide() && chartsOf(m).length === 0) drawInfoCard(r, s);
       g.restore();
       scene.end();
@@ -1626,9 +1637,13 @@ export default defineSimulation({
       // Wert an der Zeitmarke
       const v = fn(now);
       const unit = kind === 'x' || kind === 'y' ? 'm' : 'm/s';
-      const px = clamp(plot.px(now) + 8, R.x + 50, R.x + R.w - 70);
-      const py = clamp(plot.py(v) - 12, R.y + 40, R.y + R.h - 30);
-      richText(`${n(v, 1)} ${unit}`, px, py, R.w < 300 ? 11 : 12, color, 'left');
+      const fsV = R.w < 300 ? 11 : 12;
+      const px = clamp(plot.px(now) + 8, R.x + 50, R.x + R.w - 74);
+      // nahe der t-Achse über deren Beschriftung „t in s“ ausweichen
+      const nearAxis = Math.abs(plot.py(v) - plot.py(0)) < 26 && plot.px(now) > R.x + R.w - 120;
+      const py = clamp(nearAxis ? plot.py(0) - 34 : plot.py(v) - 12, R.y + 40, R.y + R.h - 30);
+      // als Etikett mit Hintergrund, damit Kurve, Gitter und „t in s“ den Wert nicht durchkreuzen
+      pill(px, py - (fsV + 11) / 2, `${q(f(v, 1))} ${unit}`, color, 'left', fsV);
       frame(R);
     }
 
@@ -1649,7 +1664,7 @@ export default defineSimulation({
       const mark = (o: { angle: number; range: number }, color: string, row: number) => {
         plot.segment([o.angle, 0], [o.angle, o.range], { color, width: 1.3, dash: [4, 4], alpha: 0.85 });
         plot.point(o.angle, o.range, { color, radius: 4.5, hollow: true });
-        plot.text(o.angle, o.range, tr('best', { a: n(o.angle, 1) }), { color, size: small ? 11 : 12, weight: 'bold', align: o.angle > 60 ? 'right' : 'left', offset: [o.angle > 60 ? -8 : 8, row ? 16 : -8] });
+        plot.text(o.angle, o.range, ctx.isHidden('opt') ? tr('best', { a: '?' }) : tr('best', { a: f(o.angle, 1) }), { color, size: small ? 11 : 12, weight: 'bold', align: o.angle > 60 ? 'right' : 'left', offset: [o.angle > 60 ? -8 : 8, row ? 16 : -8] });
       };
       mark(optVac, C.path(), 0);
       if (optAir) mark(optAir, C.air(), optAir.range > optVac.range * 0.75 ? 1 : 0);
@@ -1667,7 +1682,7 @@ export default defineSimulation({
       plot.vline(a, { color: C.v(), width: 1.4, alpha: 0.5 });
       plot.point(a, cur, { color: C.v(), radius: 6 });
       plot.end();
-      titleChip(R, ctx.t('tRange'), theme.text, `α = ${n(a, 0)}° → ${n(cur, 1)} m`, C.v());
+      titleChip(R, ctx.t('tRange'), theme.text, `α = ${n(a, 0)}° → ${ctx.isHidden('range') ? '?' : f(cur, 1)} m`, C.v());
       frame(R);
     }
 
@@ -1687,7 +1702,9 @@ export default defineSimulation({
       plot.polyline([[0, e0], [vac.time, e0]], { color: C.path(), width: 2.4, dash: [6, 4] });
       plot.polyline(curvePts(eAir, 0, endMain), { color: C.air(), width: 2, dash: [5, 4], alpha: 0.4 });
       if (now > 0) plot.polyline(curvePts(eAir, 0, now, 90), { color: C.air(), width: 3 });
-      timeCursor(plot, eAir(now), C.air());
+      // Zeitlinie läuft bis zum Ende des Vergleichsballs, der Punkt bleibt am Ende der Kurve mit Luft
+      plot.vline(Math.min(t, tEnd()), { color: theme.text, width: 1.4, alpha: 0.35 });
+      plot.point(now, eAir(now), { color: C.air(), radius: 5.5 });
       const lost = e0 - eAir(now);
       plot.end();
       titleChip(R, ctx.t('tEnergy'), theme.text, now > 0 && lost > 0.005 * e0 ? `−${n((lost / e0) * 100, 0)} %` : undefined, C.air());
@@ -1719,10 +1736,10 @@ export default defineSimulation({
       const g = surface.g;
       const rowH = 22;
       const items: [string, string, string][] = [
-        ['t', `${fmt.fixed(Math.min(t, tEnd()), 2)} s`, theme.text],
-        ['v_{x}', `${n(s.vx, 1)} m/s`, C.x()],
-        ['v_{y}', `${n(s.vy, 1)} m/s`, C.y()],
-        ['v', `${n(speedOf(s), 1)} m/s`, C.v()],
+        ['t', `${q(f(Math.min(t, tEnd()), 2))} s`, theme.text],
+        ['v_{x}', `${q(f(s.vx, 1))} m/s`, C.x()],
+        ['v_{y}', `${q(f(s.vy, 1))} m/s`, C.y()],
+        ['v', `${q(f(speedOf(s), 1))} m/s`, C.v()],
       ];
       const w = 156;
       const h = items.length * rowH + 14;
@@ -1756,10 +1773,10 @@ export default defineSimulation({
       const theme = ctx.theme;
       const s = stateAt(t);
       const items: [string, string, string][] = [
-        ['t', `${fmt.fixed(Math.min(t, tEnd()), 2)} s`, theme.text],
-        ['x', `${n(s.x, 1)} m`, C.x()],
-        ['y', `${n(Math.max(0, s.y), 1)} m`, C.y()],
-        ['v', `${n(speedOf(s), 1)} m/s`, C.v()],
+        ['t', `${q(f(Math.min(t, tEnd()), 2))} s`, theme.text],
+        ['x', `${q(f(s.x, 1))} m`, C.x()],
+        ['y', `${q(f(Math.max(0, s.y), 1))} m`, C.y()],
+        ['v', `${q(f(speedOf(s), 1))} m/s`, C.v()],
       ];
       const gap = 8;
       const cols = 2;

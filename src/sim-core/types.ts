@@ -2,6 +2,7 @@ import type { Lang, Localized } from '../i18n/config';
 import type { Clock } from './clock';
 import type { Formatter } from './format';
 import type { ImageStore } from './images';
+import type { KeyTarget } from './key-targets';
 import type { Theme } from './theme';
 
 /* ------------------------------------------------------------------ */
@@ -11,11 +12,24 @@ import type { Theme } from './theme';
 export type ParamValue = number | boolean | string;
 export type ParamValues = Record<string, ParamValue>;
 
+/** Funktionstyp, der sich wie eine Methode verhält (bivariant), damit genau typisierte Definitionen zuweisbar bleiben. */
+type Bivariant<A, R> = { bivarianceHack(arg: A): R }['bivarianceHack'];
+
+/**
+ * Fester Text oder Text abhängig von den aktuellen Parameterwerten,
+ * z. B. `(v) => (v.mode === 'test' ? L('…', '…') : L('…', '…'))`.
+ * Gibt die Funktion `null` zurück, wird der Text ausgeblendet.
+ */
+export type DynamicText<V = ParamValues> = Localized | Bivariant<Readonly<V>, Localized | null>;
+
 interface BaseParam<K extends string> {
   key: K;
   label: Localized;
-  /** Kurzer Erklärtext unter dem Regler. */
-  help?: Localized;
+  /**
+   * Kurzer Erklärtext unter dem Regler. Fester Text oder Funktion der aktuellen
+   * Werte (`(v) => L(…)`, `null` blendet ihn aus); der Host aktualisiert ihn bei jeder Änderung.
+   */
+  help?: DynamicText;
   /** ID einer Gruppe aus `SimulationDefinition.groups`. */
   group?: string;
   /** Nur anzeigen (und in Links speichern), wenn die Bedingung erfüllt ist. */
@@ -45,6 +59,11 @@ export interface BooleanParam<K extends string = string> extends BaseParam<K> {
 export interface ChoiceOption<V extends string = string> {
   value: V;
   label: Localized;
+  /**
+   * Zusatzangabe hinter der Beschriftung in Klammern, z. B. `L('T½ = 55,6 s', 'T½ = 55.6 s')`
+   * → „Rn-220 (T½ = 55,6 s)“. Im Aufgabenmodus (`ctx.hidden`) wird sie weggelassen.
+   */
+  detail?: Localized;
 }
 
 export interface ChoiceParam<K extends string = string, V extends string = string> extends BaseParam<K> {
@@ -144,6 +163,25 @@ export interface SimContext<V> {
   readonly clock: Clock;
   /** Optionale Bilder aus `images` (siehe src/assets/sims/). */
   readonly images: ImageStore;
+  /**
+   * Aufgabenmodus: `true`, solange Lösungen verdeckt sein sollen – also bei
+   * geteiltem Link mit „Ergebnisse verdecken“ (`_hide=1`), bis ein Ergebnis
+   * aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist.
+   * Damit lassen sich Etiketten im Bild gezielt ausblenden. Bei einem Wechsel
+   * zeichnet der Host neu und ruft `hiddenChange` auf.
+   */
+  readonly hidden: boolean;
+  /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
+  isHidden(key: string): boolean;
+  /**
+   * Antippbare Objekte für die Tastatur melden (optional). Die Bühne wird dann
+   * per Tab erreichbar, Pfeiltasten wählen, Enter/Leertaste ruft `activate` auf.
+   * Darf bei jeder Änderung (auch in `render`) neu aufgerufen werden; die
+   * Auswahl bleibt über die `id` erhalten. Leere Liste schaltet es ab.
+   */
+  setKeyTargets(targets: readonly KeyTarget[]): void;
+  /** ID des per Tastatur ausgewählten Objekts, solange die Bühne den Fokus hat (sonst `null`). */
+  readonly keyFocus: string | null;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
@@ -181,6 +219,8 @@ export interface SimInstance {
   resetTime?(): void;
   /** Zoom/Verschiebung der Ansicht zurücksetzen. */
   resetView?(): void;
+  /** `ctx.hidden` hat sich geändert (z. B. Ergebnis aufgedeckt). Neu gezeichnet wird ohnehin. */
+  hiddenChange?(hidden: boolean): void;
   destroy?(): void;
 }
 
@@ -200,6 +240,14 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   animated?: boolean;
   /** Zeigt unter der Bühne den Hinweis, dass Punkte gezogen werden können. */
   dragHint?: boolean;
+  /**
+   * Eigener Tipp unter der Bühne, z. B. „Tippe auf ein Bild …“. Ersetzt den
+   * allgemeinen Hinweis von `dragHint` und wird auch ohne `dragHint` gezeigt.
+   * Auch als Funktion der aktuellen Werte möglich (`(v) => L(…)`, z. B. ein Tipp
+   * je Modus); der Host aktualisiert ihn bei jeder Änderung. Gibt sie `null`
+   * zurück, erscheint der allgemeine Hinweis von `dragHint` bzw. gar keiner.
+   */
+  hint?: DynamicText<ValuesOf<P>>;
   layout?: StageLayout;
   /** Zusätzliche Texte der Simulation, abrufbar über `ctx.t(key)`. */
   strings?: Localized<Record<string, string>>;

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, Plot, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { angleBetween, decompose, G, resultant, resultantMagnitude, ropeForce, toVec, type Force, type Vec } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -108,7 +108,7 @@ export default defineSimulation({
     },
     { key: 'res', type: 'boolean', group: 'view', label: L('Ergebnis zeigen', 'Show the result'), default: true, visibleIf: (v) => v.mode !== 'lamp' },
     { key: 'eq', type: 'boolean', group: 'view', label: L('Gegenkraft (Gleichgewicht)', 'Balancing force (equilibrium)'), default: false, visibleIf: (v) => v.mode === 'add' },
-    { key: 'vals', type: 'boolean', group: 'view', label: L('Beträge an den Pfeilen', 'Values at the arrows'), default: true },
+    { key: 'vals', type: 'boolean', group: 'view', label: L('Beträge anzeigen (Pfeile und Federwaagen)', 'Show magnitudes (arrows and spring scales)'), default: true },
   ],
   actions: [
     { id: 'build', label: L('Konstruieren', 'Construct'), primary: true, visibleIf: (v) => v.mode === 'add' },
@@ -117,11 +117,11 @@ export default defineSimulation({
   readouts: [
     { key: 'res', label: L('Resultierende', 'Resultant'), spoiler: true },
     { key: 'calc', label: L('Rechnung', 'Calculation'), spoiler: true },
-    { key: 'sum', label: L('Vergleich', 'Comparison') },
+    { key: 'sum', label: L('Vergleich', 'Comparison'), spoiler: true },
     { key: 'parts', label: L('Komponenten', 'Components'), spoiler: true },
     { key: 'fg', label: L('Gewichtskraft', 'Weight') },
     { key: 'rope', label: L('Seilkraft', 'Rope force'), spoiler: true },
-    { key: 'ratio', label: L('Vergleich', 'Comparison') },
+    { key: 'ratio', label: L('Vergleich', 'Comparison'), spoiler: true },
   ],
   resultsParam: 'res',
   presets: [
@@ -167,6 +167,7 @@ export default defineSimulation({
       fgText: 'F_G = m · g = {m} kg · 9,81 N/kg = {F} N',
       ropeText: 'F_S = F_G / (2 · sin α) = {FG} N / (2 · sin {a}°) ≈ {F} N',
       ratioText: 'Jedes Seil zieht mit dem {k}-Fachen der Gewichtskraft.',
+      ratioOne: 'Jedes Seil zieht genau mit der Gewichtskraft.',
       ratioSteep: 'Bei steilen Seilen trägt jedes Seil fast die Hälfte der Gewichtskraft.',
       ratioFlat: 'Je flacher die Seile, desto größer die Seilkraft – ein Seil mit Last lässt sich nie ganz gerade spannen.',
       lampTitle: 'Lampe an zwei Seilen',
@@ -207,6 +208,7 @@ export default defineSimulation({
       fgText: 'F_G = m · g = {m} kg · 9.81 N/kg = {F} N',
       ropeText: 'F_S = F_G / (2 · sin α) = {FG} N / (2 · sin {a}°) ≈ {F} N',
       ratioText: 'Each rope pulls with {k} times the weight.',
+      ratioOne: 'Each rope pulls with exactly the weight.',
       ratioSteep: 'With steep ropes each rope carries almost half of the weight.',
       ratioFlat: 'The flatter the ropes, the larger the rope force – a rope carrying a load can never be pulled completely straight.',
       lampTitle: 'Lamp on two ropes',
@@ -219,7 +221,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    // Platzhalter einsetzen; zwischen Zahl und Einheit ein geschütztes Leerzeichen (kein Zeilenumbruch in „5,0 N“)
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:N\/kg|N|kg)(?![\p{L}]))/gu, '$1\u00a0');
     const subs = (t: string) => ({ html: t.replace(/([F])_([A-Za-z]+(?:,[xy])?)/g, '<var>$1</var><sub>$2</sub>') });
     const mode = () => p.mode as Mode;
     const narrow = () => surface.width < 640;
@@ -307,7 +314,7 @@ export default defineSimulation({
       if (m === 'add') {
         const list = forces();
         const R = resultant(list);
-        ctx.readout('res', subs(R.F < 0.005 ? ctx.t('resZero') : tr('resText', { F: N(R.F), d: fmt.num(R.deg, 0) })));
+        ctx.readout('res', subs(R.F < 0.05 ? ctx.t('resZero') : tr('resText', { F: N(R.F), d: fmt.num(R.deg, 0) })));
         const sum = list.reduce((s, f) => s + f.F, 0);
         if (list.length === 2) {
           const [a, b] = list as [Force, Force];
@@ -329,7 +336,9 @@ export default defineSimulation({
         else {
           const g = angleBetween(p.d1, p.d2);
           if (Math.abs(g - 90) < 0.5) {
-            const gamma = angleBetween(p.w, p.d1);
+            // spitzer Winkel zwischen F und der Geraden von Richtung 1 (dann sind cos und sin positiv)
+            const g1 = angleBetween(p.w, p.d1);
+            const gamma = Math.min(g1, 180 - g1);
             ctx.readout('parts', tr('partsRight', { g: fmt.num(gamma, 0), a: N(Math.abs(d.a)), b: N(Math.abs(d.b)) }));
           } else ctx.readout('parts', tr('partsText', { a: N(Math.abs(d.a)), b: N(Math.abs(d.b)), d1: fmt.num(d.a >= 0 ? p.d1 : p.d1 > 0 ? p.d1 - 180 : p.d1 + 180, 0), d2: fmt.num(d.b >= 0 ? p.d2 : p.d2 > 0 ? p.d2 - 180 : p.d2 + 180, 0) }));
           const s = Math.abs(d.a) + Math.abs(d.b);
@@ -341,7 +350,7 @@ export default defineSimulation({
         ctx.readout('fg', subs(tr('fgText', { m: fmt.num(p.m, 1), F: N(FG) })));
         ctx.readout('rope', subs(tr('ropeText', { FG: N(FG), a: fmt.num(p.a, 0), F: N(FS) })));
         const k = FS / FG;
-        ctx.readout('ratio', `${tr('ratioText', { k: fmt.num(k, 2) })} ${ctx.t(p.a >= 60 ? 'ratioSteep' : 'ratioFlat')}`);
+        ctx.readout('ratio', `${Math.abs(k - 1) < 0.005 ? ctx.t('ratioOne') : tr('ratioText', { k: fmt.num(k, 2) })} ${ctx.t(p.a >= 60 ? 'ratioSteep' : 'ratioFlat')}`);
       }
     }
 
@@ -416,11 +425,54 @@ export default defineSimulation({
     });
 
     /* ---------- Zeichenhilfen ---------- */
+    /** Rechteck einer Beschriftung (wie `haloText`, Grundlinie Mitte) in Pixeln. */
+    function textBox(label: string, x: number, y: number, size: number, align: CanvasTextAlign): Rect {
+      const w = richWidth(label, size);
+      const left = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
+      return { x: left - 2, y: y - size / 2 - 2, w: w + 4, h: size + 4 };
+    }
+
+    /** Rechteck einer Pille (wie `pill`) in Pixeln. */
+    function pillBox(x0: number, y: number, label: string, align: 'left' | 'right' | 'center', size = 12): Rect {
+      const w = richWidth(label, size) + 16;
+      const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
+      return { x: left, y, w, h: size + 11 };
+    }
+
+    /** Abstand eines Rechtecks zu einer Strecke (Näherung über Stützpunkte, Pixel). */
+    function boxSegDist(b: Rect, s: readonly [Pt, Pt]): number {
+      const n = Math.max(2, Math.ceil(Math.hypot(s[1][0] - s[0][0], s[1][1] - s[0][1]) / 3));
+      let best = Infinity;
+      for (let i = 0; i <= n; i++) {
+        const x = s[0][0] + ((s[1][0] - s[0][0]) * i) / n;
+        const y = s[0][1] + ((s[1][1] - s[0][1]) * i) / n;
+        best = Math.min(best, Math.hypot(Math.max(0, b.x - x, x - b.x - b.w), Math.max(0, b.y - y, y - b.y - b.h)));
+      }
+      return best;
+    }
+
+    const boxesOverlap = (a: Rect, b: Rect) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+    /**
+     * Beschriftung an die erste freie Stelle setzen (Kandidaten in der Reihenfolge der
+     * Vorliebe): keine Überlappung mit `boxes`, mindestens 3 px Abstand zu `segs`.
+     * Gibt die gewählte Stelle samt Rechteck zurück (sonst die erste).
+     */
+    function freeLabelSpot(label: string, size: number, cands: readonly [number, number, CanvasTextAlign][], boxes: readonly Rect[], segs: readonly (readonly [Pt, Pt])[] = []): { x: number; y: number; align: CanvasTextAlign; box: Rect } {
+      for (const [x, y, align] of cands) {
+        const box = textBox(label, x, y, size, align);
+        if (boxes.some((b) => boxesOverlap(box, b))) continue;
+        if (segs.some((sg) => boxSegDist(box, sg) < 3)) continue;
+        return { x, y, align, box };
+      }
+      const [x, y, align] = cands[0]!;
+      return { x, y, align, box: textBox(label, x, y, size, align) };
+    }
+
     function pill(x0: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12): number {
       const gx = surface.g;
       const theme = ctx.theme;
-      gx.font = `700 ${size}px ${theme.font}`;
-      const w = gx.measureText(label).width + 16;
+      const w = richWidth(label, size) + 16;
       const h = size + 11;
       const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
       gx.save();
@@ -435,24 +487,25 @@ export default defineSimulation({
       gx.lineWidth = 1;
       roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
       gx.stroke();
-      text(gx, label, left + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color });
+      richDraw(label, left + w / 2, y + h / 2 + 0.5, size, 'center', 'middle', null, color);
       return w;
     }
 
+    /** Breite eines Textes mit Index („F_R“, „F_G“), siehe `measureSubText` im Kern. */
+    function richWidth(str: string, size: number): number {
+      return measureSubText(surface.g, str, { size, weight: 700, family: ctx.theme.font, color: '' });
+    }
+
+    /** Text mit tiefgestellten Indizes zeichnen (Kern-Helfer `subText`); `halo`: Farbe des Randes (oder null). */
+    function richDraw(str: string, x: number, y: number, size: number, align: CanvasTextAlign, baseline: CanvasTextBaseline, halo: string | null, color: string): void {
+      subText(surface.g, str, x, y, { size, weight: 700, family: ctx.theme.font, color, align, baseline, ...(halo ? { halo, haloWidth: 4 } : {}) });
+    }
+
     function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle'): void {
-      const gx = surface.g;
-      gx.font = `700 ${size}px ${ctx.theme.font}`;
-      const tw = gx.measureText(label).width;
+      const tw = richWidth(label, size);
       const left = align === 'left' ? x : align === 'right' ? x - tw : x - tw / 2;
       x += Math.max(0, 4 - left) - Math.max(0, left + tw - (surface.width - 4));
-      gx.textAlign = align;
-      gx.textBaseline = baseline;
-      gx.lineJoin = 'round';
-      gx.lineWidth = 4;
-      gx.strokeStyle = ctx.theme.bg;
-      gx.strokeText(label, x, y);
-      gx.fillStyle = color;
-      gx.fillText(label, x, y);
+      richDraw(label, x, y, size, align, baseline, ctx.theme.bg, color);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width = 4, head = 15, alpha = 1): void {
@@ -515,14 +568,20 @@ export default defineSimulation({
     }
 
     /** Beschriftung an der Pfeilspitze, etwas nach außen versetzt. */
-    function tipLabel(from: Vec, v: Vec, label: string, color: string): void {
+    /** Lage der Beschriftung an der Pfeilspitze (Pixel, Ausrichtung, Schriftgröße). */
+    function tipLabelAt(from: Vec, v: Vec): { x: number; y: number; align: CanvasTextAlign; size: number } {
       const len = Math.hypot(v[0], v[1]);
       const [px, py] = vp.toPx(from[0] + v[0], from[1] + v[1]);
       const ux = len > 1e-9 ? v[0] / len : 1;
       const uy = len > 1e-9 ? -v[1] / len : 0;
       const off = narrow() ? 16 : 20;
       const align: CanvasTextAlign = ux > 0.35 ? 'left' : ux < -0.35 ? 'right' : 'center';
-      haloText(label, px + ux * off, py + uy * off, color, narrow() ? 11.5 : 13.5, align);
+      return { x: px + ux * off, y: py + uy * off, align, size: narrow() ? 11.5 : 13.5 };
+    }
+
+    function tipLabel(from: Vec, v: Vec, label: string, color: string): void {
+      const t = tipLabelAt(from, v);
+      haloText(label, t.x, t.y, color, t.size, t.align);
     }
 
     /** Beschriftung neben der Mitte eines Pfeils, auf der vom Punkt `away` abgewandten Seite. */
@@ -729,7 +788,7 @@ export default defineSimulation({
       const kR = phase(t, n === 2 ? (poly ? 0.55 : 0.5) : poly ? 0.7 : 0.73, 1);
       // Beim Aneinanderhängen mit Gegenkraft schließt diese das Krafteck – F_R läge genau darunter.
       const closed = poly && p.eq && !anim;
-      if (showRes && R.F > 1e-6 && !closed) {
+      if (showRes && R.F >= 0.05 && !closed) {
         forceArrow([0, 0], Rv, theme.series[3]!, 5, 1, kR);
         if (kR >= 1 && p.vals) {
           if (poly) midLabel([0, 0], Rv, `F_R = ${N(R.F)} N`, theme.series[3]!, centroid);
@@ -737,7 +796,7 @@ export default defineSimulation({
         }
       }
       // Gegenkraft: hält den Ring im Gleichgewicht, schließt das Krafteck
-      if (p.eq && R.F > 1e-6) {
+      if (p.eq && R.F >= 0.05) {
         const v: Vec = [-R.x, -R.y];
         if (closed) {
           forceArrow([R.x, R.y], v, theme.series[2]!, 4);
@@ -777,6 +836,22 @@ export default defineSimulation({
       const reach = Math.hypot(xMax - xMin, yMax - yMin);
       const c1 = theme.series[0]!;
       const c2 = theme.series[1]!;
+      // Beschriftungen an den Pfeilspitzen (Komponenten und F) vorab bestimmen: Die Namen der
+      // Richtungen weichen ihnen aus, wenn eine Spitze am Richtungsgriff liegt
+      const labelsShown = d !== null && show && phase(t, 0.5, 1) >= 1 && p.vals;
+      const tips: { v: Vec; label: string }[] = [];
+      if (labelsShown && d) {
+        if (Math.abs(d.a) > 0.05) tips.push({ v: A, label: `F₁ = ${N(Math.abs(d.a))} N` });
+        if (Math.abs(d.b) > 0.05) tips.push({ v: B, label: `F₂ = ${N(Math.abs(d.b))} N` });
+      }
+      if (p.vals) tips.push({ v: F, label: `F = ${N(p.f)} N` });
+      const taken: Rect[] = tips.map(({ v, label }) => {
+        const at = tipLabelAt([0, 0], v);
+        return textBox(label, at.x, at.y, at.size, at.align);
+      });
+      const o = vp.toPx(0, 0);
+      const arrowSegs: [Pt, Pt][] = [F, A, B].map((v) => [o, vp.toPx(v[0], v[1])]);
+      const dsize = narrow() ? 10.5 : 11.5;
       for (const [e, c, key] of [
         [e1, c1, 'dir1'],
         [e2, c2, 'dir2'],
@@ -784,7 +859,24 @@ export default defineSimulation({
         dashedPx(vp.toPx(-e[0] * reach, -e[1] * reach), vp.toPx(e[0] * reach, e[1] * reach), withAlpha(c, 0.55), 1.4, [2, 5]);
         const r = view.s * 0.62;
         const [hx, hy] = vp.toPx(e[0] * r, e[1] * r);
-        haloText(ctx.t(key), hx + e[0] * 14, hy - e[1] * 14 - 12, c, narrow() ? 10.5 : 11.5);
+        // Senkrechte zur Richtung in Pixeln (Richtung in Pixeln: (e₀, −e₁)), zuerst die obere Seite
+        const n2: Pt = e[0] <= 0 ? [e[1], e[0]] : [-e[1], -e[0]];
+        const spot = freeLabelSpot(
+          ctx.t(key),
+          dsize,
+          [
+            [hx + e[0] * 14, hy - e[1] * 14 - 12, 'center'],
+            [hx + e[0] * 14, hy - e[1] * 14 + 14, 'center'],
+            [hx + n2[0] * 22, hy + n2[1] * 22, 'center'],
+            [hx - n2[0] * 22, hy - n2[1] * 22, 'center'],
+            [hx - e[0] * 40, hy + e[1] * 40 - 12, 'center'],
+            [hx + e[0] * 50, hy - e[1] * 50 - 12, 'center'],
+          ],
+          taken,
+          arrowSegs,
+        );
+        haloText(ctx.t(key), spot.x, spot.y, c, dsize, spot.align);
+        taken.push(spot.box);
       }
       if (d && show) {
         const sum: Vec = [A[0] + B[0], A[1] + B[1]];
@@ -868,6 +960,7 @@ export default defineSimulation({
       }
       // Feder im Gehäuse
       gx.strokeStyle = withAlpha(ctx.theme.dark ? '#e6eaf0' : '#2a313b', 0.5);
+      gx.lineJoin = 'round';
       gx.beginPath();
       for (let k = 0; k <= 14; k++) {
         const s = start + 4 + (k / 14) * (housing - 8);
@@ -1030,11 +1123,6 @@ export default defineSimulation({
       arrowPx(node[0], node[1], t2[0], t2[1], theme.series[0]!, 3.4, 13);
       arrowPx(node[0], node[1], node[0], node[1] + FG * kPx, theme.series[1]!, 3.6, 13);
       const fs = small ? 11 : 12.5;
-      haloText(`F_G = ${N(FG)} N`, node[0] + 12, node[1] + FG * kPx * 0.75, theme.series[1]!, fs, 'left');
-      if (p.vals) {
-        haloText('F₁', t1[0] + u1[0] * 12 - 6, t1[1] + u1[1] * 12 + 10, theme.series[0]!, fs, 'center');
-        haloText('F₂', t2[0] + u2[0] * 12 + 6, t2[1] + u2[1] * 12 + 10, theme.series[0]!, fs, 'center');
-      }
       // Anzeige der Federwaagen über den Seilen
       const size = small ? 10.5 : 12;
       const label = `${N(FS)} N`;
@@ -1045,21 +1133,82 @@ export default defineSimulation({
       const at = (A: Pt): Pt => [A[0] + (node[0] - A[0]) * (small ? 0.42 : 0.3), A[1] + (node[1] - A[1]) * (small ? 0.42 : 0.3)];
       const m1 = at(A1);
       const m2 = at(A2);
-      // unterhalb der Seile, also außerhalb des Winkels α
-      pill(m1[0] - sa * off, m1[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'right' : 'center', size);
-      pill(m2[0] + sa * off, m2[1] + ca * off - ph / 2, label, meterColor, sa > 0.5 ? 'left' : 'center', size);
+      const pills: [number, number, 'left' | 'right' | 'center'][] = [
+        [m1[0] - sa * off, m1[1] + ca * off - ph / 2, sa > 0.5 ? 'right' : 'center'],
+        [m2[0] + sa * off, m2[1] + ca * off - ph / 2, sa > 0.5 ? 'left' : 'center'],
+      ];
+      // Winkel α am rechten Aufhängepunkt (Lage der Beschriftung vorab, damit die Kraftbeschriftungen ausweichen)
+      const ar = small ? 26 : 34;
+      const mida = Math.PI - (p.a * Math.PI) / 360;
+      const aLabel = `α = ${fmt.num(p.a, 0)}°`;
+      const aSize = small ? 10.5 : 12;
+      const aPos: Pt = p.a < 18 ? [A2[0] - ar - 18, A2[1] - 10] : [A2[0] + Math.cos(mida) * (ar + 10), A2[1] + Math.sin(mida) * (ar + 10) + 8];
+      // Beschriftungen am Knoten: weichen Pillen, α, den anderen Beschriftungen und den Pfeilen aus
+      // (bei kleinem α liegen alle Pfeile fast waagerecht und eng beieinander)
+      const taken: Rect[] = [textBox(aLabel, aPos[0], aPos[1], aSize, 'right')];
+      if (p.vals) for (const [x, y, al] of pills) taken.push(pillBox(x, y, label, al, size));
+      const arrows: [Pt, Pt][] = [
+        [node, t1],
+        [node, t2],
+        [node, [node[0], node[1] + FG * kPx]],
+      ];
+      // Seile mit Federwaagen: Die Namen F₁, F₂ sollen nicht auf den Federwaagen stehen
+      const ropes: [Pt, Pt][] = [
+        [A1, E1],
+        [A2, E2],
+      ];
+      const gLen = FG * kPx;
+      const gLabel = `F_G = ${N(FG)} N`;
+      const gSpot = freeLabelSpot(
+        gLabel,
+        fs,
+        [
+          [node[0] + 12, node[1] + gLen * 0.75, 'left'],
+          [node[0] + 12, node[1] + Math.max(gLen * 0.75, fs + 6), 'left'],
+          [node[0], node[1] + gLen + fs, 'center'],
+          [node[0], node[1] + Math.max(gLen, 10) + fs + 8, 'center'],
+        ],
+        taken,
+        arrows,
+      );
+      haloText(gLabel, gSpot.x, gSpot.y, theme.series[1]!, fs, gSpot.align);
+      taken.push(gSpot.box);
+      if (p.vals) {
+        // F₁ und F₂ symmetrisch: die erste Lage, die für beide frei ist
+        const cands = (tip: Pt, u: Pt, sx: number): [number, number, CanvasTextAlign][] => [
+          [tip[0] + u[0] * 12 + sx * 6, tip[1] + u[1] * 12 + 10, 'center'],
+          [tip[0] + u[0] * 12 + sx * 6, tip[1] + u[1] * 12 - 10, 'center'],
+          [(node[0] + tip[0]) / 2, (node[1] + tip[1]) / 2 + 12, 'center'],
+          [(node[0] + tip[0]) / 2, (node[1] + tip[1]) / 2 - 12, 'center'],
+          [node[0] + (tip[0] - node[0]) * 0.3, (node[1] + tip[1]) / 2 + 14, 'center'],
+        ];
+        const c1s = cands(t1, u1, -1);
+        const c2s = cands(t2, u2, 1);
+        const segs = [...arrows, ...ropes];
+        let pick = 0;
+        for (let k = 0; k < c1s.length; k++) {
+          const b1 = textBox('F₁', c1s[k]![0], c1s[k]![1], fs, 'center');
+          const b2 = textBox('F₂', c2s[k]![0], c2s[k]![1], fs, 'center');
+          const free = (bx: Rect) => !taken.some((o) => boxesOverlap(bx, o)) && !segs.some((sg) => boxSegDist(bx, sg) < 3);
+          if (free(b1) && free(b2) && !boxesOverlap(b1, b2)) {
+            pick = k;
+            break;
+          }
+        }
+        haloText('F₁', c1s[pick]![0], c1s[pick]![1], theme.series[0]!, fs, 'center');
+        haloText('F₂', c2s[pick]![0], c2s[pick]![1], theme.series[0]!, fs, 'center');
+      }
+      // unterhalb der Seile, also außerhalb des Winkels α (mit vals=0 verdeckt, z. B. für Aufgaben)
+      if (p.vals) for (const [x, y, al] of pills) pill(x, y, label, meterColor, al, size);
       if (FS > SCALE_MAX) pill(cx, groundY - (small ? 30 : 38), ctx.t('over'), theme.series[3]!, 'center', size);
       // Winkel α am rechten Aufhängepunkt
-      const ar = small ? 26 : 34;
       gx.strokeStyle = theme.series[3]!;
       gx.lineWidth = 1.6;
       gx.beginPath();
       gx.arc(A2[0], A2[1], ar, Math.PI, Math.PI - (p.a * Math.PI) / 180, true);
       gx.stroke();
       dashedPx([A2[0] - ar - 14, A2[1]], [A2[0] - 2, A2[1]], withAlpha(theme.series[3]!, 0.7), 1.2, [3, 3]);
-      const mida = Math.PI - (p.a * Math.PI) / 360;
-      if (p.a < 18) haloText(`α = ${fmt.num(p.a, 0)}°`, A2[0] - ar - 18, A2[1] - 10, theme.series[3]!, small ? 10.5 : 12, 'right');
-      else haloText(`α = ${fmt.num(p.a, 0)}°`, A2[0] + Math.cos(mida) * (ar + 10), A2[1] + Math.sin(mida) * (ar + 10) + 8, theme.series[3]!, small ? 10.5 : 12, 'right');
+      haloText(aLabel, aPos[0], aPos[1], theme.series[3]!, aSize, 'right');
       if (!small) pill(r.x + 10, line ? r.y + 10 : top + 8, ctx.t(line ? 'lineTitle' : 'lampTitle'), theme.text, 'left', 12.5);
     }
 
@@ -1197,15 +1346,20 @@ export default defineSimulation({
       chart.grid({ minor: false });
       chart.axes();
       chart.hline(FG / 2, { color: theme.muted, width: 1.2, dash: [5, 4] });
-      if (!small) chart.text(88, FG / 2, ctx.t('half'), { color: theme.muted, size: 11, weight: '600', align: 'right', baseline: 'bottom', offset: [0, -4] });
       chart.hline(FG, { color: theme.series[1], width: 1.2, dash: [5, 4], alpha: 0.8 });
-      chart.text(72, FG, 'F_G', { color: theme.series[1], size: 11, weight: '600', align: 'right', baseline: 'bottom', offset: [0, -4] });
       chart.fn((x) => (x > 0.5 ? ropeForce(FG, x) : NaN), { color: theme.series[0], width: 2.6, from: 0.5, to: 90 });
       chart.point(30, FG, { color: theme.series[1], radius: 4 });
-      if (!small) chart.text(30, FG, ctx.t('equalFG'), { color: theme.series[1], size: 11, weight: '600', align: 'left', baseline: 'bottom', offset: [9, -6] });
       chart.segment([p.a, 0], [p.a, Math.min(FS, yTop)], { color: theme.series[3], width: 1.4, dash: [4, 4] });
       chart.point(p.a, Math.min(FS, yTop), { color: theme.series[0], radius: 6 });
       chart.end();
+      // Beschriftungen mit tiefgestelltem Index (F_G, F_S) selbst setzen
+      const lab = (x: number, y: number, label: string, color: string, align: CanvasTextAlign, dx: number, dy: number) => {
+        const [px, py] = chart.toPx(x, y);
+        richDraw(label, px + dx, py + dy, 11, align, 'bottom', theme.bg, color);
+      };
+      if (!small) lab(88, FG / 2, ctx.t('half'), theme.muted, 'right', 0, -4);
+      lab(72, FG, 'F_G', theme.series[1]!, 'right', 0, -4);
+      if (!small) lab(30, FG, ctx.t('equalFG'), theme.series[1]!, 'left', 9, -6);
       const r = chart.rect;
       gx.save();
       gx.strokeStyle = theme.grid;
@@ -1213,7 +1367,7 @@ export default defineSimulation({
       roundRect(gx, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 10);
       gx.stroke();
       gx.restore();
-      pill(r.x + r.w - 10, r.y + 8, `F_S = ${N(FS)} N`, theme.series[0]!, 'right', small ? 11 : 12.5);
+      if (p.vals) pill(r.x + r.w - 10, r.y + 8, `F_S = ${N(FS)} N`, theme.series[0]!, 'right', small ? 11 : 12.5);
     }
 
     return {
