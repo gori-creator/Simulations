@@ -9,7 +9,7 @@ Die Fläche zwischen einem Graphen und der x-Achse lässt sich mit **Rechtecken*
 - **Untersumme** $U_n$: Jedes Rechteck ist so hoch wie der **kleinste** Funktionswert im Streifen.
 - **Obersumme** $O_n$: Jedes Rechteck ist so hoch wie der **größte** Funktionswert im Streifen.
 
-Dann liegt die gesuchte Fläche immer dazwischen: $U_n \leq A \leq O_n$. Mit wachsendem $n$ rücken beide Summen zusammen; ihr gemeinsamer Grenzwert ist das **Integral**:
+Dann liegt das Integral immer dazwischen: $U_n \leq \int_a^b f(x)\,\mathrm{d}x \leq O_n$ (für $f \geq 0$ ist das die Fläche). Mit wachsendem $n$ rücken beide Summen zusammen; ihr gemeinsamer Grenzwert ist das **Integral**:
 
 $$
 \int_a^b f(x)\,\mathrm{d}x = \lim_{n \to \infty} U_n = \lim_{n \to \infty} O_n
@@ -50,7 +50,7 @@ Für steigende Funktionen gilt $O_n - U_n = \Delta x \cdot (f(b) - f(a))$. Wie g
 <details>
 <summary>Lösung anzeigen</summary>
 
-$O_n - U_n = \frac{2}{n} \cdot (4 - 0) = \frac{8}{n} < 0{,}1 \Rightarrow n > 80$. Zum Beispiel $n = 128$: $\frac{8}{128} = 0{,}0625$. [In der Simulation zeigen](?n=128)
+$O_n - U_n = \frac{2}{n} \cdot (4 - 0) = \frac{8}{n} < 0{,}1 \Rightarrow n > 80$, also mindestens $n = 81$. Zum Beispiel $n = 128$: $\frac{8}{128} = 0{,}0625$. [In der Simulation zeigen](?n=128)
 
 </details>
 
@@ -69,7 +69,7 @@ $F(3) - F(-2) = (10{,}125 - 9) - (2 - 4) = 3{,}125$. Teile des Graphen liegen un
 
 - **Einsatz:** Bayern Jahrgangsstufe 13 (erhöhtes Anforderungsniveau: Flächeninhalt und bestimmtes Integral); auch für die Einführung des Integralbegriffs allgemein.
 - **Animation:** Beim Verdoppeln bzw. Halbieren von $n$ wachsen die neuen Rechtecke aus den alten heraus. Die Tabelle zeigt die Summen für $n = 4$ bis $128$.
-- **Hinweis zur Berechnung:** Minimum und Maximum je Streifen werden numerisch bestimmt (dichte Abtastung) – für die hier verwendeten Funktionen ist das sehr genau.
+- **Hinweis zur Berechnung:** Minimum und Maximum je Streifen werden exakt bestimmt: Die Simulation vergleicht die Funktionswerte an den Streifenrändern und an den Stellen mit $f'(x) = 0$ im Streifen.
 - **Häufige Stolpersteine:**
   - Integral und Flächeninhalt werden gleichgesetzt, auch wenn der Graph unter die x-Achse geht.
   - Untersumme = Linkssumme gilt nur für steigende Funktionen.

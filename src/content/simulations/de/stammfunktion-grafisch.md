@@ -41,7 +41,7 @@ Im Alltag ist $f$ oft eine **Änderungsrate** und $F$ ein **Bestand**: Zufluss �
 
 ### Aufgabe 1: Selbst skizzieren
 
-Skizziere die Stammfunktion von $f(x) = x^2 - 1$ mit $F(0) = 0$: Zieh die sieben Punkte, dann „Lösung aufdecken“. [Aufgabe laden](?mode=draw&fn=par)
+Skizziere die Stammfunktion von $f(x) = x^2 - 1$ mit $F(0) = 0$: Zieh die sieben Punkte, dann „Lösung aufdecken“. [Aufgabe laden](?mode=draw&fn=par&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -74,12 +74,12 @@ a) $F(x) = \sin x + C$, $\sin 0 + C = 1 \Rightarrow C = 1$, $F\left(\frac{\pi}{2
 
 ### Aufgabe 4: Regenbecken
 
-Der Netto-Zufluss ist $q(t) = -0{,}5t^2 + 4t - 3{,}5$ (in m³/h), zu Beginn sind $20$ m³ im Becken. Wann ist am wenigsten, wann am meisten Wasser im Becken? Wann nimmt die Wassermenge am schnellsten zu? [Aufgabe laden](?mode=feat&kind=app&app=pool&show=0&_hide=1)
+Der Netto-Zufluss ist $q(t) = -0{,}5t^2 + 4t - 3{,}5$ (in m³/h), zu Beginn sind $20$ m³ im Becken. Wann ist im Zeitraum $0 \leq t \leq 10$ h am wenigsten, wann am meisten Wasser im Becken? Wann nimmt die Wassermenge am schnellsten zu? [Aufgabe laden](?mode=feat&kind=app&app=pool&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$q(t) = -0{,}5(t - 1)(t - 7)$: Nullstellen $1$ ($- \to +$, Minimum) und $7$ ($+ \to -$, Maximum). $V(t) = -\frac{1}{6}t^3 + 2t^2 - 3{,}5t + 20$, also $V(1) = \frac{55}{3} \approx 18{,}33$ m³ und $V(7) = \frac{109}{3} \approx 36{,}33$ m³. Am schnellsten nimmt $V$ zu, wo $q$ am größten ist: bei $t = 4$ h (Wendepunkt von $V$). [Zeigen](?mode=feat&kind=app&app=pool)
+$q(t) = -0{,}5(t - 1)(t - 7)$: Nullstellen $1$ ($- \to +$, Tiefpunkt) und $7$ ($+ \to -$, Hochpunkt). $V(t) = -\frac{1}{6}t^3 + 2t^2 - 3{,}5t + 20$, also $V(7) = \frac{109}{3} \approx 36{,}33$ m³ (am meisten). Am wenigsten Wasser ist bei $t = 1$ h und am Rand $t = 10$ h im Becken, je $\frac{55}{3} \approx 18{,}33$ m³: $V(1) = -\frac{1}{6} + 2 - 3{,}5 + 20 = \frac{55}{3}$ und $V(10) = -\frac{1000}{6} + 200 - 35 + 20 = \frac{55}{3}$. Am schnellsten nimmt $V$ zu, wo $q$ am größten ist: bei $t = 4$ h (Wendepunkt von $V$). [Zeigen](?mode=feat&kind=app&app=pool)
 
 </details>
 

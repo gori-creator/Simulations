@@ -123,6 +123,8 @@ class Chan {
 interface ExMeta {
   title: Txt;
   note: Txt;
+  /** Ergebnis-Satz zur Notiz; erscheint nur bei „Werte zeigen“ (sonst verrät er die Aufgabe) */
+  result?: Txt;
   /** Achsenbeschriftungen (Iteration) */
   ax?: Txt;
   ay?: Txt;
@@ -184,9 +186,10 @@ const EX_META: Record<Exclude<ExKey, 'none'>, ExMeta> = {
   pop: {
     title: L('Tierpopulation: stabil', 'Animal population: stable'),
     note: L(
-      'Jungtiere J und erwachsene Tiere E (in Hundert), jedes Jahr gezählt: Jedes erwachsene Tier bekommt im Schnitt 1 Junges, die Hälfte der Jungtiere wird erwachsen, die Hälfte der Erwachsenen überlebt. J′ = E, E′ = 0,5J + 0,5E. Langfristig gibt es gleich viele Jungtiere und Erwachsene: Fixvektor (1 | 1) zum Eigenwert 1.',
-      'Young animals J and adults E (in hundreds), counted every year: each adult has 1 young on average, half of the young become adults, half of the adults survive. J′ = E, E′ = 0.5J + 0.5E. In the long run there are as many young as adults: fixed vector (1 | 1) for the eigenvalue 1.',
+      'Jungtiere J und erwachsene Tiere E (in Hundert), jedes Jahr gezählt: Jedes erwachsene Tier bekommt im Schnitt 1 Junges, die Hälfte der Jungtiere wird erwachsen, die Hälfte der Erwachsenen überlebt. J′ = E, E′ = 0,5J + 0,5E.',
+      'Young animals J and adults E (in hundreds), counted every year: each adult has 1 young on average, half of the young become adults, half of the adults survive. J′ = E, E′ = 0.5J + 0.5E.',
     ),
+    result: L('Langfristig gibt es gleich viele Jungtiere und Erwachsene: Fixvektor (1 | 1) zum Eigenwert 1.', 'In the long run there are as many young as adults: fixed vector (1 | 1) for the eigenvalue 1.'),
     ax: L('J', 'J'),
     ay: L('E', 'E'),
     vx: 'J',
@@ -195,8 +198,12 @@ const EX_META: Record<Exclude<ExKey, 'none'>, ExMeta> = {
   popg: {
     title: L('Tierpopulation: wachsend', 'Animal population: growing'),
     note: L(
-      'Jetzt bekommt jedes erwachsene Tier 2 Junge: J′ = 2E, E′ = 0,5J + 0,5E. Der größte Eigenwert λ ≈ 1,28 ist der jährliche Wachstumsfaktor (+28 %), das Verhältnis J : E nähert sich 2 : 1,28 ≈ 1,56 : 1.',
-      'Now each adult has 2 young: J′ = 2E, E′ = 0.5J + 0.5E. The largest eigenvalue λ ≈ 1.28 is the yearly growth factor (+28 %), and the ratio J : E approaches 2 : 1.28 ≈ 1.56 : 1.',
+      'Jetzt bekommt jedes erwachsene Tier 2 Junge: J′ = 2E, E′ = 0,5J + 0,5E.',
+      'Now each adult has 2 young: J′ = 2E, E′ = 0.5J + 0.5E.',
+    ),
+    result: L(
+      'Der betragsgrößte Eigenwert λ ≈ 1,28 ist der jährliche Wachstumsfaktor (+28 %), das Verhältnis J : E nähert sich 2 : 1,28 ≈ 1,56 : 1.',
+      'The eigenvalue of largest absolute value, λ ≈ 1.28, is the yearly growth factor (+28 %), and the ratio J : E approaches 2 : 1.28 ≈ 1.56 : 1.',
     ),
     ax: L('J', 'J'),
     ay: L('E', 'E'),
@@ -206,9 +213,10 @@ const EX_META: Record<Exclude<ExKey, 'none'>, ExMeta> = {
   market: {
     title: L('Kundenwanderung zwischen zwei Anbietern', 'Customers switching between two providers'),
     note: L(
-      'Jedes Jahr bleiben 90 % der Kunden von Anbieter P treu und 10 % wechseln zu Q; von Q wechseln 20 % zu P. Jede Spalte der Übergangsmatrix hat die Summe 1. Egal wie es startet: Langfristig hat P 2/3 und Q 1/3 der Kunden.',
-      'Each year 90 % of the customers of provider P stay and 10 % switch to Q; of Q’s customers 20 % switch to P. Every column of the transition matrix adds up to 1. Whatever the start: in the long run P has 2/3 and Q 1/3 of the customers.',
+      'Jedes Jahr bleiben 90 % der Kunden von Anbieter P treu und 10 % wechseln zu Q; von Q wechseln 20 % zu P. Jede Spalte der Übergangsmatrix hat die Summe 1.',
+      'Each year 90 % of the customers of provider P stay and 10 % switch to Q; of Q’s customers 20 % switch to P. Every column of the transition matrix adds up to 1.',
     ),
+    result: L('Egal wie es startet: Langfristig hat P 2/3 und Q 1/3 der Kunden.', 'Whatever the start: in the long run P has 2/3 and Q 1/3 of the customers.'),
     ax: L('p', 'p'),
     ay: L('q', 'q'),
     vx: 'p',
@@ -1898,7 +1906,7 @@ export default defineSimulation({
     function exCard(k: Intro): CardFn | null {
       const m = exMeta();
       if (!m) return null;
-      return (R, measure) => formulaCard(R, measure, k, say(m.title), col.eig(), [{ src: say(m.note), text: true, size: fs(12, 11), color: th().text, weight: 500 }]);
+      return (R, measure) => formulaCard(R, measure, k, say(m.title), col.eig(), [{ src: m.result && show() ? `${say(m.note)} ${say(m.result)}` : say(m.note), text: true, size: fs(12, 11), color: th().text, weight: 500 }]);
     }
 
     function morphCard(k: Intro): CardFn {
@@ -2340,7 +2348,7 @@ export default defineSimulation({
           rows.push({ src: `|λ| = \\r{\\t{det} A} = ${S(N(Math.sqrt(Math.max(0, cp.det)), 2))}`, size: fs(13, 12) });
         } else if (dom) {
           const l = dom.value;
-          rows.push({ src: `\\c{e}{${T2('größter Eigenwert', 'largest eigenvalue')}  λ = ${S(N(l, 3))}}`, size: fs(13.5, 12.5), hl: col.eig() });
+          rows.push({ src: `\\c{e}{${T2('betragsgrößter Eigenwert', 'dominant eigenvalue')}  λ = ${S(N(l, 3))}}`, size: fs(13.5, 12.5), hl: col.eig() });
           rows.push({ src: `\\c{e}{v = ${vecSrc(dom.vector)}}`, size: fs(13, 12) });
           const txt =
             Math.abs(l - 1) < 1e-6
@@ -2420,7 +2428,7 @@ export default defineSimulation({
       const D = describe(A, 1e-6);
       ctx.readout('kind', md === 'pow' ? null : kindText(D, A).name);
       const d0 = det(A);
-      ctx.readout('det', { html: `det <var>A</var> = ${N(d0, 3)}${Math.abs(d0) > 1e-9 ? ` · ${T2('Flächenfaktor', 'area factor')} ${N(Math.abs(d0), 3)}${d0 < 0 ? `, ${T2('Umlaufsinn umgekehrt', 'orientation reversed')}` : ''}` : ` · ${T2('nicht umkehrbar', 'not invertible')}`}` });
+      ctx.readout('det', { html: `det <var>A</var> = ${N(d0, 3)}${Math.abs(d0) > 1e-9 ? `; ${T2('Flächenfaktor', 'area factor')} ${N(Math.abs(d0), 3)}${d0 < 0 ? `, ${T2('Umlaufsinn umgekehrt', 'orientation reversed')}` : ''}` : `; ${T2('nicht umkehrbar', 'not invertible')}`}` });
       const cp = charPoly(A);
       const e = eigen(A);
       ctx.readout('eig', {
@@ -2428,13 +2436,13 @@ export default defineSimulation({
           ? `λ = ${N(A.a, 3)} (${T2('jede Richtung', 'every direction')})`
           : cp.real.length === 0
             ? `λ = ${N(cp.re, 3)} ± ${N(cp.im, 3)}·<var>i</var> (${T2('keine reelle Eigenrichtung', 'no real eigendirection')})`
-            : e.map((qv) => `λ = ${N(qv.value, 3)}: <var>v</var> = (${N(nice(qv.vector)[0], 3)} | ${N(nice(qv.vector)[1], 3)})`).join(' · '),
+            : e.map((qv) => `λ = ${N(qv.value, 3)}: <var>v</var> = (${N(nice(qv.vector)[0], 3)} | ${N(nice(qv.vector)[1], 3)})`).join('; '),
       });
       if (md === 'comp') {
         const ch = chain(A, exactB());
         const P = mul(ch.L, ch.R);
         const Q = mul(ch.R, ch.L);
-        ctx.readout('prod', { html: `${ch.nL}·${ch.nR} = ${matHtml(P)} · ${ch.nR}·${ch.nL} = ${matHtml(Q)}${equal(P, Q) ? '' : ` · ${ch.nL}·${ch.nR} ≠ ${ch.nR}·${ch.nL}`}` });
+        ctx.readout('prod', { html: `${ch.nL}·${ch.nR} = ${matHtml(P)}; ${ch.nR}·${ch.nL} = ${matHtml(Q)}${equal(P, Q) ? '' : `; ${T2('also', 'so')} ${ch.nL}·${ch.nR} ≠ ${ch.nR}·${ch.nL}`}` });
       } else ctx.readout('prod', null);
       if (md === 'inv') {
         const Ai = inverse(A, 1e-9);
@@ -2447,9 +2455,9 @@ export default defineSimulation({
         const base = `<var>x</var><sub>${Math.round(p.n)}</sub> = (${N(xn[0], 3)} | ${N(xn[1], 3)})`;
         ctx.readout('lim', {
           html: st
-            ? `${base} · ${T2('stationäre Verteilung', 'stationary distribution')} (${N(st[0], 4)} | ${N(st[1], 4)})`
+            ? `${base}; ${T2('stationäre Verteilung', 'stationary distribution')} (${N(st[0], 4)} | ${N(st[1], 4)})`
             : dom
-              ? `${base} · λ = ${N(dom.value, 3)}, ${T2('Richtung', 'direction')} (${N(dom.vector[0], 3)} | ${N(dom.vector[1], 3)})`
+              ? `${base}; λ = ${N(dom.value, 3)}, ${T2('Richtung', 'direction')} (${N(dom.vector[0], 3)} | ${N(dom.vector[1], 3)})`
               : base,
         });
       } else ctx.readout('lim', null);

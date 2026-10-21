@@ -8,7 +8,7 @@ A $2 \times 2$ matrix maps $\vec{x}$ to $A\vec{x}$. Its **columns** are the imag
 
 $\det A = ad - bc$ is the **signed area** of the image of the unit square: areas are multiplied by $|\det A|$, a negative sign reverses orientation, and $\det A = 0$ squashes the plane onto a line (not invertible). Otherwise $A^{-1} = \frac{1}{ad - bc}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$.
 
-Eigenvectors satisfy $A\vec{v} = \lambda\vec{v}$; the eigenvalues solve $\lambda^2 - (a + d)\lambda + (ad - bc) = 0$. Rotations have complex eigenvalues. For an iteration $\vec{x}_{n+1} = A\vec{x}_n$ the largest eigenvalue decides the long-term behaviour; for a transition matrix the fixed vector with sum 1 is the stationary distribution.
+Eigenvectors satisfy $A\vec{v} = \lambda\vec{v}$; the eigenvalues solve $\lambda^2 - (a + d)\lambda + (ad - bc) = 0$. Rotations by $\varphi \neq 0°, 180°$ have non-real eigenvalues. For an iteration $\vec{x}_{n+1} = A\vec{x}_n$ the eigenvalue of largest absolute value decides the long-term behaviour; for a transition matrix the fixed vector with sum 1 is the stationary distribution.
 
 ## Try it
 
