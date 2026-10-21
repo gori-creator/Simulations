@@ -20,6 +20,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | offen |
 | radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | offen |
 | radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
+| kreisbewegung | `src/sim-core/` (Host, Ergebnisse) | Ergebnistexte (`ctx.readout` als reiner Text) sollen `_` als Index setzen, z. B. „F_max“, wie Regler-Beschriftungen. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -65,4 +66,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | gasgesetze | Die Zahl „20“ an der Glasskala wird teils von Teilchen bzw. dem Wasserspiegel überdeckt. | offen |
 | gasgesetze | Der Hinweis „Messwerte aufnehmen …“ liegt im Diagramm auf Gitterlinien; mit Hintergrund zeichnen. | offen |
 | gasgesetze | Während die Temperatur noch angleicht, zeigt die Kopfzeile kurz z. B. „100 °C / 373,07 K“. Anzeige an die gerundete °C-Angabe koppeln. | offen |
+| kreisbewegung | Auf dem Handy liegen im Auto-Diagramm „Schnee“ und „Eis“ knapp neben „v in m/s“. | offen |
+| kreisbewegung | „r = 0,8 m“ liegt dicht neben der Beschriftung „F_Z = …“. | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
