@@ -27,6 +27,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | stoesse | Host / Shell | Der Tipp unter der Bühne erscheint auch mit `_lock=1`, obwohl man dann nicht ziehen kann. Bei gesperrten Links ausblenden. | erledigt (Kern): bei `_lock=1` ist der Tipp (eigener `hint` wie `dragHint`) verborgen, nach „Entsperren“ erscheint er wieder (`resolveHint`) |
 | feldlinien | `src/sim-core/format.ts` | Tausendertrennung ab 5 Stellen (schmales geschütztes Leerzeichen, DIN 1333: „125 000“), wie im Lernmaterial. Option bzw. Standard prüfen, ohne bestehende Anzeigen zu brechen. | offen |
 | feldlinien | `docs/ARCHITEKTUR.md` | Hinweis: Ein `hint` als Funktion braucht eine Typangabe am Parameter, sonst gehen die Typen von `ctx.params` verloren. | offen |
+| kondensator | `src/sim-core/task-mode.ts` / Host | Deckt man ein einzelnes Spoiler-Ergebnis auf, wird `ctx.hidden` global falsch, und das ganze Bild zeigt alle Werte. `ctx.hidden` soll erst falsch werden, wenn alle Spoiler aufgedeckt sind (bzw. Simulationen gezielt `ctx.isHidden(key)` nutzen); Verhalten dokumentieren. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -79,5 +80,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefer-wurf | In der schmalen Zerlegungs-Szene (iPad, Handy) liegen Pfeilbeschriftungen teils über den Stroboskop-Punkten; das Etikett „x = …“ deckt die Achsenzahl darunter ab. | offen |
 | stoesse | Eigene Index-Helfer `parts`/`richText` auf den Kern-Helfer `subText` umstellen (ohne sichtbare Änderung). | offen |
 | wellen-ausbreitung | Bei λ ≈ 0,3 m kreuzen die gestrichelten Hilfslinien der λ-Klammer die Beschriftung leicht. | offen |
+| kondensator | Eigene Index-Helfer `richText` (`U_[C]`) auf `subText` umstellen; „37 %“ bei τ = 100 s mit t½-Linien dicht beieinander. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
