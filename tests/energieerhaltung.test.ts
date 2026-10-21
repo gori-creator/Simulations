@@ -23,6 +23,7 @@ import {
   sampleAt,
   simulate,
   speedAtHeight,
+  stepCart,
   type Track,
 } from '../src/simulations/physik/energieerhaltung/model';
 
@@ -194,5 +195,76 @@ describe('Modell: Energieerhaltung (Achterbahn) – numerische Fahrt', () => {
         expect(track.at(st.s).y).toBeLessThanOrEqual(heights[0]! + 0.02);
       }
     }
+  });
+});
+
+describe('Modell: Energieerhaltung (Achterbahn) – Aufgaben, Sonderfälle, Reglergrenzen', () => {
+  it('Aufgabenwerte aus dem Lernmaterial', () => {
+    // A1: v = √(2 · 9,81 · 15) = √294,3 = 17,155 m/s ≈ 17,2 m/s ≈ 62 km/h
+    expect(speedAtHeight(15, 0)!).toBeCloseTo(17.155, 3);
+    expect(Math.round(speedAtHeight(15, 0)! * 3.6)).toBe(62);
+    // A2: E_pot = 78 480 J, in 10 m je die Hälfte (39 240 J), v = 14,0 m/s
+    expect(potentialEnergy(400, 10)).toBeCloseTo(39240, 9);
+    expect(kineticEnergy(400, speedAtHeight(20, 10)!)).toBeCloseTo(39240, 6);
+    // A3: v_oben = 7,67 m/s; aus 14 m Abheben in (28 + 6)/3 = 11,33 m; aus 16 m oben √(2 · 9,81 · 4) = 8,86 m/s
+    expect(liftOffHeight(14)).toBeCloseTo(11.333, 3);
+    expect(loopTopSpeed(16)).toBeCloseTo(8.859, 3);
+    // A5: Tal aus 15 m mit μ = 0,02: Umkehr bei ≈ 13,4 m, W_R ≈ 6,2 kJ, Summe 58,9 kJ
+    const tal = buildTrack('tal');
+    const run = simulate(tal, tal.startAt(15), 0.02, { tMax: 12 });
+    const turn = run.turns[0]!;
+    expect(turn.y).toBeGreaterThan(13.3);
+    expect(turn.y).toBeLessThan(13.5);
+    const at = sampleAt(run, turn.t);
+    const e = energiesAt(tal, at, 400);
+    expect(e.heat / 1000).toBeCloseTo(6.2, 1);
+    expect(e.total / 1000).toBeCloseTo(58.86, 1);
+    // A5 (Zusatz): Looping mit μ = 0,02 braucht etwa 17 m
+    const hf = minStartHeight((h0) => placeStart('looping', h0), 0.02, 'loop')!;
+    expect(hf).toBeGreaterThan(16.5);
+    expect(hf).toBeLessThan(17.5);
+  });
+
+  it('größte Reibung μ = 0,06: der Wagen kommt auf jeder Bahn endgültig zur Ruhe (kein „Zittern“)', () => {
+    for (const [id, h0] of [['huegel', 2], ['huegel', 20], ['tal', 2], ['tal', 26], ['looping', 26]] as const) {
+      const { track, s0 } = placeStart(id, h0);
+      const run = simulate(track, s0, 0.06, { tMax: 90 });
+      expect(run.rest).toBe(true);
+      // am Ende ist alle Energie (bis auf die Lage im Tal) Reibungswärme
+      const last = run.samples[run.samples.length - 1]!;
+      expect(last.v).toBe(0);
+      const e0 = perKg(track, run.samples[0]!);
+      expect(Math.abs(perKg(track, last) - e0) / e0).toBeLessThan(1e-3);
+      // der Stillstand zählt nur einmal als Umkehrpunkt
+      const tail = run.turns.filter((q) => q.t > run.end - 0.5);
+      expect(tail.length).toBeLessThanOrEqual(1);
+    }
+  });
+
+  it('Sonderfälle: Start auf Höhe 0, Start bergauf, Starthöhe über der Bahn', () => {
+    // Start in Höhe 0: keine Geschwindigkeit, keine Energie
+    expect(speedAtHeight(0, 0)).toBe(0);
+    expect(potentialEnergy(400, 0)).toBe(0);
+    // eigene Bahn, die am Start ansteigt (h₀ = 2 m, Punkt 1 in 26 m): der Wagen bleibt am Prellbock
+    // stehen, ohne dass Energie entsteht
+    const { track, s0 } = placeStart('eigen', 2, [2, 26, 14, 3, 10]);
+    const run = simulate(track, s0, 0, { tMax: 5 });
+    expect(run.samples.every((q) => q.v === 0 && q.s === 0 && q.w === 0)).toBe(true);
+    expect(stepCart(track, { s: 0, v: 0, w: 0 }, G, 0, 0.002)).toEqual({ s: 0, v: 0, w: 0 });
+    // Reglergrenze h₀ = 26 m: Looping-Bahn ist 27,5 m hoch, die Starthöhe wird übernommen
+    expect(placeStart('looping', 26).h).toBeCloseTo(26, 6);
+    expect(placeStart('tal', 26).h).toBeCloseTo(26, 6);
+    // kleinste Starthöhe 2 m auf dem Hügel-Parcours: kommt nicht über den Hügel (≈ 11 m)
+    const low = placeStart('huegel', 2);
+    expect(judgeRun(low.track, simulate(low.track, low.s0, 0, { tMax: 10 }), 'hill')).toBe('fail');
+    // ohne Reibung genügt für den Hügel knapp mehr als seine Höhe
+    const hHill = minStartHeight((h0) => placeStart('huegel', h0), 0, 'hill')!;
+    expect(hHill).toBeCloseTo(buildTrack('huegel').crest!.y, 1);
+  });
+
+  it('Masse 100 kg und 800 kg (Reglergrenzen): gleiche Fahrt, Energien im Verhältnis 1 : 8', () => {
+    expect(potentialEnergy(800, 26) / potentialEnergy(100, 26)).toBeCloseTo(8, 12);
+    // h₀ = 26 m, m = 800 kg: E_pot = 800 · 9,81 · 26 = 204 048 J
+    expect(potentialEnergy(800, 26)).toBeCloseTo(204048, 6);
   });
 });

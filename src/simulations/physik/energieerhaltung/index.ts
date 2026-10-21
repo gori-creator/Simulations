@@ -64,7 +64,10 @@ function niceTop(x: number): number {
 export default defineSimulation({
   id: 'energieerhaltung',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh den Wagen vor der Fahrt an der Startrampe, bei der eigenen Bahn auch die Punkte 1–4. Tippe auf die Schiene, um Messpunkte zu setzen, und in die Diagramme, um Zeit oder Starthöhe zu wählen.',
+    'Tip: drag the car along the starting ramp before the ride; on the custom track you can also drag points 1–4. Tap the track to set measuring points, and tap the graphs to choose the time or the starting height.',
+  ),
   layout: { aspect: 1.7, aspectNarrow: 0.6 },
   groups: [
     { id: 'custom', label: L('Eigene Bahn', 'Custom track') },
@@ -217,7 +220,7 @@ export default defineSimulation({
       hTurn: 'Umkehrpunkt wieder genau in h₀ = {h} m',
       hMass: 'Masse ×{f}: v bleibt gleich, alle Energien ×{f}',
       hNear: 'Knapp verfehlt: {d} m zu niedrig',
-      hFlat: 'Der Wagen rollt nicht los: Der Start ist zu flach.',
+      hFlat: 'Der Wagen rollt nicht los: Am Start ist die Bahn zu flach oder steigt an.',
       hTal: 'Wähle Hügel, Looping oder eine eigene Bahn mit Hügel.',
       hLoopTrack: 'Diese Ansicht zeigt den Looping.',
       hPick: 'Stelle h₀ ein und drücke „Losfahren“.',
@@ -232,6 +235,8 @@ export default defineSimulation({
       point: 'Punkt {n}',
       start: 'Start',
       balance: 'E_{pot} + E_{kin} + W_{R} = konstant',
+      keyMark: 'Messpunkt {k} von 9 auf der Schiene, Höhe {h} m{set}',
+      keySet: ' (gesetzt, Enter entfernt ihn)',
     },
     en: {
       canvas: 'Roller coaster with a car, a line at the starting height and, depending on the view, energy bars, energy graphs, forces in the loop or a series of measurements',
@@ -299,7 +304,7 @@ export default defineSimulation({
       hTurn: 'Turning point again exactly at h₀ = {h} m',
       hMass: 'Mass ×{f}: v stays the same, all energies ×{f}',
       hNear: 'Just missed: {d} m too low',
-      hFlat: 'The car does not start rolling: the start is too flat.',
+      hFlat: 'The car does not start rolling: at the start the track is too flat or rises.',
       hTal: 'Choose hills, the loop or a custom track with a hill.',
       hLoopTrack: 'This view shows the loop.',
       hPick: 'Set h₀ and press “Go”.',
@@ -314,6 +319,8 @@ export default defineSimulation({
       point: 'point {n}',
       start: 'start',
       balance: 'E_{pot} + E_{kin} + W_{f} = constant',
+      keyMark: 'measuring point {k} of 9 on the track, height {h} m{set}',
+      keySet: ' (set, Enter removes it)',
     },
   },
 
@@ -323,6 +330,8 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (all: string, k: string) => vars[k] ?? all);
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Messwerte mit fester Stellenzahl (h, v, Energien, Kräfte): „20,0 m“ neben „13,4 m“. */
+    const fx = (v: number, d: number) => fmt.fixed(v, d);
     const mode = () => p.mode as Mode;
     const trackId = () => p.track as TrackId;
     const customHeights = () => [p.h0, p.p1, p.p2, p.p3, p.p4];
@@ -544,9 +553,9 @@ export default defineSimulation({
       const st = now();
       const y = track.at(st.s).y;
       const v = Math.abs(st.v);
-      ctx.readout('motion', tr('motion', { h: n(y, 1), v: n(v, 1), kmh: n(v * 3.6, 0), t: fmt.fixed(t, 1) }));
+      ctx.readout('motion', tr('motion', { h: fx(y, 1), v: fx(v, 1), kmh: n(v * 3.6, 0), t: fmt.fixed(t, 1) }));
       const e = energies(st);
-      const kj = (x: number) => n(x / 1000, 1);
+      const kj = (x: number) => fx(x / 1000, 1);
       ctx.readout('energy', { html: tr('energy', { pot: kj(e.pot), kin: kj(e.kin), heat: kj(e.heat), sum: kj(e.total) }) });
     }
 
@@ -558,14 +567,14 @@ export default defineSimulation({
       const m = mode();
       const dh = Math.max(0, startH - track.minHeight);
       const vmax = speedAtHeight(startH, track.minHeight) ?? 0;
-      ctx.readout('vmax', { html: tr('vmax', { dh: n(dh, 1), v: n(vmax, 2), kmh: n(vmax * 3.6, 0) }) });
+      ctx.readout('vmax', { html: tr('vmax', { dh: n(dh, 1), v: fx(vmax, 1), kmh: n(vmax * 3.6, 0) }) });
       // Looping
       if (trackId() === 'looping') {
         let html = tr('loopText', { vmin: n(loopMinSpeed(), 2), hmin: n(loopMinHeight(), 1), r: n(LOOP_RADIUS, 0) });
         const f = loopTopForces(p.m, startH);
         const lift = liftOffHeight(startH);
-        if (f && f.normal >= 0) html += tr('loopTop', { h: n(startH, 1), v: n(Math.sqrt(2 * G * (startH - 2 * LOOP_RADIUS)), 2), fg: n(f.weight / 1000, 2), fz: n(f.centripetal / 1000, 2), fn: n(f.normal / 1000, 2) });
-        else if (lift !== null) html += tr('loopLift', { h: n(startH, 1), y: n(lift, 2) });
+        if (f && f.normal >= 0) html += tr('loopTop', { h: n(startH, 1), v: fx(Math.sqrt(2 * G * (startH - 2 * LOOP_RADIUS)), 2), fg: fx(f.weight / 1000, 2), fz: fx(f.centripetal / 1000, 2), fn: fx(f.normal / 1000, 2) });
+        else if (lift !== null) html += tr('loopLift', { h: n(startH, 1), y: fx(lift, 2) });
         else html += tr('loopNone', { h: n(startH, 1) });
         if (p.mu > 0 && (m === 'loop' || m === 'task')) {
           const hm = minHeight();
@@ -581,8 +590,8 @@ export default defineSimulation({
             .map((mk, i) => {
               const { y, pass } = markValues(mk.s);
               const e = pass ? energies(pass) : null;
-              const cells = pass && e ? [`${n(Math.abs(pass.v), 2)} m/s`, `${n(e.pot / 1000, 1)} kJ`, `${n(e.kin / 1000, 1)} kJ`] : [ctx.t('notReached'), '–', '–'];
-              return `<tr><td>${i + 1}</td><td>${n(y, 1)} m</td>${cells.map((c) => `<td>${c}</td>`).join('')}</tr>`;
+              const cells = pass && e ? [`${fx(Math.abs(pass.v), 1)} m/s`, `${fx(e.pot / 1000, 1)} kJ`, `${fx(e.kin / 1000, 1)} kJ`] : [ctx.t('notReached'), '–', '–'];
+              return `<tr><td>${i + 1}</td><td>${fx(y, 1)} m</td>${cells.map((c) => `<td>${c}</td>`).join('')}</tr>`;
             })
             .join('');
           ctx.readout('marks', { html: `<table class="mini-table"><tr><th>${ctx.t('thNr')}</th><th><var>h</var></th><th><var>v</var></th><th><var>E</var><sub>pot</sub></th><th><var>E</var><sub>kin</sub></th></tr>${rows}</table>` });
@@ -594,7 +603,7 @@ export default defineSimulation({
         else {
           const rows = [...series]
             .sort((a, b) => a.h0 - b.h0)
-            .map((q) => `<tr><td>${n(q.h0, 1)} m</td><td>${ctx.t(q.ok ? 'ok' : 'fail')}</td><td>${q.v !== null ? `${n(q.v, 2)} m/s` : '–'}</td></tr>`)
+            .map((q) => `<tr><td>${fx(q.h0, 1)} m</td><td>${ctx.t(q.ok ? 'ok' : 'fail')}</td><td>${q.v !== null ? `${fx(q.v, 2)} m/s` : '–'}</td></tr>`)
             .join('');
           ctx.readout('series', { html: `<table class="mini-table"><tr><th><var>h</var>₀</th><th>${ctx.t('thRes')}</th><th>${ctx.t('thV')}</th></tr>${rows}</table>` });
         }
@@ -973,7 +982,7 @@ export default defineSimulation({
       const ey = cy - Math.sin(q.theta) * len;
       arrowPx(cx, cy, ex, ey, C.kin(), 3.2, 11);
       const small = r.w < 520;
-      if (Math.abs(len) > 26) clampedText(tr('speed', { v: n(Math.abs(st.v), 1) }), ex + (len > 0 ? 8 : -8) * Math.sign(Math.cos(q.theta) || 1), ey - 20, small ? 11 : 12, C.kin(), r, len * Math.cos(q.theta) >= 0 ? 'left' : 'right');
+      if (Math.abs(len) > 26) clampedText(tr('speed', { v: fx(Math.abs(st.v), 1) }), ex + (len > 0 ? 8 : -8) * Math.sign(Math.cos(q.theta) || 1), ey - 20, small ? 11 : 12, C.kin(), r, len * Math.cos(q.theta) >= 0 ? 'left' : 'right');
     }
 
     /* ---------- Szene: Starthöhe, Umkehrpunkte, Messpunkte ---------- */
@@ -1002,8 +1011,25 @@ export default defineSimulation({
       }
       g.restore();
       const small = r.w < 520;
-      const lx = mode() === 'loop' || mode() === 'task' ? r.x + r.w * 0.3 : r.x + r.w / 2;
-      clampedText(tr('level', { h: n(startH, 1) }), lx, y - 11, small ? 11 : 12, C.level(), r, 'center');
+      // Looping-Ansichten: rechts neben dem Kreis, damit die Beschriftung die Bahn nicht kreuzt
+      const right = (mode() === 'loop' || mode() === 'task') && track.features.loopStart !== undefined;
+      const label = tr('level', { h: n(startH, 1) });
+      const size = small ? 11 : 12;
+      if (right) {
+        clampedText(label, scene.px(LOOP_RADIUS + 1.2), y - 11, size, C.level(), r, 'left');
+        return;
+      }
+      // Stelle suchen, an der weder Schiene noch Stützpunkt (eigene Bahn) unter der Beschriftung liegt
+      const w = richWidth(label, size) + 8;
+      const sup = (track.features.supports ?? []).map((s) => track.at(s));
+      const free = (cx: number) => {
+        const x0 = clamp(cx - w / 2, r.x + 6, r.x + r.w - w - 6);
+        const hit = (px: number, py: number, pad: number) => px > x0 - pad && px < x0 + w + pad && py > y - 11 - size - pad && py < y - 11 + size * 0.5 + pad;
+        return !track.points.some((q) => hit(scene.px(q.x), scene.py(q.y), 4)) && !sup.some((q) => hit(scene.px(q.x), scene.py(q.y) - 2, 12));
+      };
+      const shares = mode() === 'task' ? [0.3, 0.5, 0.7, 0.18, 0.82] : [0.5, 0.3, 0.7, 0.18, 0.82];
+      const lx = r.x + r.w * (shares.find((f) => free(r.x + r.w * f)) ?? shares[0]!);
+      clampedText(label, lx, y - 11, size, C.level(), r, 'center');
     }
 
     function drawTurns(r: Rect): void {
@@ -1024,7 +1050,7 @@ export default defineSimulation({
         g.fill();
         g.stroke();
         g.restore();
-        if (last && r.w > 360) clampedText(`${ctx.t('turn')} ${n(q.y, 1)} m`, px, py - 50, 11, C.level(), r, 'center', 600);
+        if (last && r.w > 360) clampedText(`${ctx.t('turn')} ${fx(q.y, 1)} m`, px, py - 50, 11, C.level(), r, 'center', 600);
       });
     }
 
@@ -1063,8 +1089,8 @@ export default defineSimulation({
         // Kärtchen mit h und v (auf schmalen Bühnen nur in der Tabelle)
         if (small || u < 0.6) return;
         const { y, pass } = markValues(mk.s);
-        const line1 = `h = ${n(y, 1)} m`;
-        const line2 = pass ? `v = ${n(Math.abs(pass.v), 1)} m/s` : ctx.t('notReached');
+        const line1 = `h = ${fx(y, 1)} m`;
+        const line2 = pass ? `v = ${fx(Math.abs(pass.v), 1)} m/s` : ctx.t('notReached');
         g.font = `600 11.5px ${theme.font}`;
         const w = Math.max(g.measureText(line1).width, g.measureText(line2).width) + 16;
         const h = 36;
@@ -1138,7 +1164,7 @@ export default defineSimulation({
       g.arc(px, py, 7 + 10 * (1 - u), 0, Math.PI * 2);
       g.stroke();
       g.restore();
-      clampedText(`h = ${n(lo.y, 1)} m`, px + 12, py - 12, r.w < 520 ? 11 : 12, C.heat(), r, 'left');
+      clampedText(`h = ${fx(lo.y, 1)} m`, px + 12, py - 12, r.w < 520 ? 11 : 12, C.heat(), r, 'left');
     }
 
     /** Ziel der Aufgabe bzw. höchster Punkt des Loopings mit Geschwindigkeit. */
@@ -1170,7 +1196,7 @@ export default defineSimulation({
       if (m === 'loop') {
         const pass = firstPass(run, target);
         const reached = pass && t >= pass.t && (!run.liftOff || run.liftOff.t > pass.t);
-        const label = reached ? tr('top', { v: n(Math.abs(pass.v), 2) }) : t > 0 && (run.liftOff ? t >= run.liftOff.t : run.turns[0] && t >= run.turns[0].t) ? ctx.t('topNone') : `v_{min} = ${n(loopMinSpeed(), 2)} m/s`;
+        const label = reached ? tr('top', { v: ctx.isHidden('loop') ? '?' : fx(Math.abs(pass.v), 2) }) : t > 0 && (run.liftOff ? t >= run.liftOff.t : run.turns[0] && t >= run.turns[0].t) ? ctx.t('topNone') : `v_{min} = ${fx(loopMinSpeed(), 2)} m/s`;
         clampedText(label, px, py - 42, small ? 11 : 12, reached ? C.good() : ctx.theme.text, r, 'center');
       }
     }
@@ -1195,11 +1221,11 @@ export default defineSimulation({
       // Looping knapp verfehlt
       if (goal === 'loop' && (m === 'loop' || m === 'task') && run.liftOff && t >= run.liftOff.t) {
         const hm = p.mu === 0 ? loopMinHeight() : threshold?.key === thresholdKey() ? threshold.h : null;
-        if (hm !== null && hm - startH > 0 && hm - startH <= 1.5) out.push({ text: tr('hNear', { d: n(hm - startH, 1) }), color: C.heat() });
+        if (hm !== null && hm - startH > 0 && hm - startH <= 1.5 && !ctx.isHidden(m === 'task' ? 'goal' : 'loop')) out.push({ text: tr('hNear', { d: n(hm - startH, 1) }), color: C.heat() });
       }
       // Umkehrpunkt ohne Reibung
       const turn = run.turns.filter((q) => q.t <= t).pop();
-      if (p.mu === 0 && turn && t - turn.t < 2 && !run.liftOff && m !== 'task') out.push({ text: tr('hTurn', { h: n(turn.y, 1) }), color: C.level() });
+      if (p.mu === 0 && turn && t - turn.t < 2 && !run.liftOff && m !== 'task') out.push({ text: tr('hTurn', { h: fx(turn.y, 1) }), color: C.level() });
       if (!out.length && p.mu === 0 && m !== 'task' && st.s >= 0) out.push({ text: ctx.t('hMu0'), color: theme.muted });
       if (m === 'task' && goal && !out.length && t === 0) out.push({ text: goal === 'loop' ? ctx.t('hGoalLoop') : tr('hGoalHill', { y: n(track.crest!.y, 1) }), color: C.good() });
       return out.slice(0, 2);
@@ -1211,7 +1237,7 @@ export default defineSimulation({
       const size = small ? 11 : 12;
       const v = Math.abs(st.v);
       const tw = pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(t, 1)} s`, theme.text, 'left', size).w;
-      pill(r.x + 8 + tw + 6, r.y + 8, `v = ${n(v, 1)} m/s${small ? '' : ` · ${tr('kmh', { v: n(v * 3.6, 0) })}`}`, C.kin(), 'left', size);
+      pill(r.x + 8 + tw + 6, r.y + 8, `v = ${fx(v, 1)} m/s${small ? '' : ` · ${tr('kmh', { v: n(v * 3.6, 0) })}`}`, C.kin(), 'left', size);
       pill(r.x + r.w - 8, r.y + 8, `μ = ${n(p.mu, 3)}`, p.mu > 0 ? C.heat() : theme.text, 'right', size);
       const list = hints(st);
       const row = size + 17;
@@ -1363,7 +1389,7 @@ export default defineSimulation({
           g.fillStyle = grad;
           roundRect(g, x, bottom - h, barW, Math.max(1, h), 4);
           g.fill();
-          text(g, n(value / 1000, 1), x + barW / 2, bottom - h - 10, { font: `700 12px ${theme.font}`, color: theme.text });
+          text(g, fx(value / 1000, 1), x + barW / 2, bottom - h - 10, { font: `700 12px ${theme.font}`, color: theme.text });
           richText(sym, x + barW / 2, bottom + 14, 12.5, color, 'center', false);
           g.font = `600 11px ${theme.font}`;
           if (g.measureText(word).width < slot - 4) text(g, word, x + barW / 2, bottom + 31, { font: `600 11px ${theme.font}`, color: theme.muted });
@@ -1380,7 +1406,7 @@ export default defineSimulation({
         g.strokeStyle = theme.text;
         g.lineWidth = 1.4;
         g.strokeRect(x + 0.5, yTop + 0.5, barW - 1, bottom - yTop);
-        text(g, n(sum / 1000, 1), x + barW / 2, yTop - 10, { font: `700 12px ${theme.font}`, color: theme.text });
+        text(g, fx(sum / 1000, 1), x + barW / 2, yTop - 10, { font: `700 12px ${theme.font}`, color: theme.text });
         text(g, ctx.t('total'), x + barW / 2, bottom + 14, { font: `700 12px ${theme.font}`, color: theme.text });
         g.strokeStyle = theme.axis;
         g.lineWidth = 1;
@@ -1420,7 +1446,7 @@ export default defineSimulation({
             }
             g.restore();
           }
-          text(g, `${n(value / 1000, 1)} kJ`, bx + bw + 6, y + rowH / 2, { font: `${i === 3 ? 700 : 600} 12px ${theme.font}`, color: theme.text, align: 'left' });
+          text(g, `${fx(value / 1000, 1)} kJ`, bx + bw + 6, y + rowH / 2, { font: `${i === 3 ? 700 : 600} 12px ${theme.font}`, color: theme.text, align: 'left' });
         });
         // Bilanz und Tempo unter den Balken
         const yb = y0 + rows.length * rowH + 16;
@@ -1531,7 +1557,7 @@ export default defineSimulation({
       plot.end();
       const small = R.w < 300;
       // Legende rechts im Titel
-      titleChip(R, ctx.t('tEt'), theme.text, small ? undefined : `${ctx.t('total')} = ${n(e.total / 1000, 1)} kJ`, theme.text);
+      titleChip(R, ctx.t('tEt'), theme.text, small ? undefined : `${ctx.t('total')} = ${fx(e.total / 1000, 1)} kJ`, theme.text);
       const lg = [
         ['E_{pot}', C.pot()],
         ['E_{kin}', C.kin()],
@@ -1612,7 +1638,8 @@ export default defineSimulation({
         g.restore();
       }
       const f = loopTopForces(p.m, h0);
-      const right = f ? `h₀ = ${n(h0, 1)} m: ${n(f.centripetal / 1000, 1)} kN ${f.normal >= 0 ? '≥' : '<'} ${n(f.weight / 1000, 1)} kN` : `h₀ = ${n(h0, 1)} m`;
+      // Aufgabenmodus: Kräfte nicht als Zahl verraten (Aufgabe 4)
+      const right = f && !ctx.isHidden('loop') ? `h₀ = ${n(h0, 1)} m: ${fx(f.centripetal / 1000, 1)} kN ${f.normal >= 0 ? '≥' : '<'} ${fx(f.weight / 1000, 1)} kN` : `h₀ = ${n(h0, 1)} m`;
       titleChip(R, ctx.t('tForces'), theme.text, small ? undefined : right, f && f.normal >= 0 ? C.good() : C.heat());
       if (small) richText(right, R.x + 14, R.y + 36, 11, f && f.normal >= 0 ? C.good() : C.heat(), 'left', true, 600);
       frame(R);
@@ -1635,7 +1662,7 @@ export default defineSimulation({
       if (br) plot.polygon([[br.lo, 0], [br.hi, 0], [br.hi, top], [br.lo, top]], { fill: withAlpha(C.good(), 0.18) });
       if (goal === 'loop') {
         plot.hline(loopMinSpeed(), { color: theme.text, width: 1.2, dash: [5, 4], alpha: 0.7 });
-        if (!small) richText(`v_{min} = ${n(loopMinSpeed(), 2)} m/s`, plot.px(0.6), plot.py(loopMinSpeed()) - 10, 11, theme.text, 'left', true, 600);
+        if (!small) richText(`v_{min} = ${fx(loopMinSpeed(), 2)} m/s`, plot.px(0.6), plot.py(loopMinSpeed()) - 10, 11, theme.text, 'left', true, 600);
       }
       // Theorie erst nach dem Eingrenzen
       if (found && goal) {
@@ -1670,8 +1697,10 @@ export default defineSimulation({
       titleChip(R, title, theme.text, small ? undefined : lo, C.good());
       if (!series.length) {
         const cx = R.x + R.w / 2;
-        richText(ctx.t('seriesEmpty'), cx, R.y + R.h * 0.45, fs, theme.muted, 'center', true, 600);
-        richText(ctx.t('seriesHint'), cx, R.y + R.h * 0.45 + 20, fs - 0.5, theme.muted, 'center', true, 500);
+        // über der v_min-Linie, damit sich die Texte nicht überdecken
+        const ty = goal === 'loop' ? Math.max(R.y + 44, (plot.py(top) + plot.py(loopMinSpeed())) / 2 - 10) : R.y + R.h * 0.45;
+        richText(ctx.t('seriesEmpty'), cx, ty, fs, theme.muted, 'center', true, 600);
+        richText(ctx.t('seriesHint'), cx, ty + 20, fs - 0.5, theme.muted, 'center', true, 500);
       }
       // Rückmeldung „Gefunden“
       if (found && br) {
@@ -1866,6 +1895,29 @@ export default defineSimulation({
       wheel: () => false,
     });
 
+    /** Messpunkte per Tastatur: neun gleich verteilte Stellen der Schiene (Tab auf die Bühne, Pfeiltasten, Enter). */
+    function updateKeyTargets(): void {
+      const m = mode();
+      if (ctx.locked || (m !== 'ride' && m !== 'energy')) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      ctx.setKeyTargets(
+        Array.from({ length: 9 }, (_, i) => {
+          const s = (track.length * (i + 1)) / 10;
+          const q = track.at(s);
+          const [px, py] = scene.toPx(q.x, q.y);
+          const isSet = marks.some((mk) => Math.abs(mk.s - s) < 1.5);
+          return {
+            id: `mark${i}`,
+            label: tr('keyMark', { k: String(i + 1), h: fx(q.y, 1), set: isSet ? ctx.t('keySet') : '' }),
+            rect: { x: px - 12, y: py - 12, w: 24, h: 24 },
+            activate: () => toggleMark(s),
+          };
+        }),
+      );
+    }
+
     /* ---------- Ablauf ---------- */
     function resetMotion(): void {
       t = 0;
@@ -1978,6 +2030,7 @@ export default defineSimulation({
           minHeight();
           updateReadouts();
         }
+        updateKeyTargets();
         surface.begin();
         drawScene(reg.scene);
         drawPanels(reg);
