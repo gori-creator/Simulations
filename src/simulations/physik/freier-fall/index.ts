@@ -706,7 +706,14 @@ export default defineSimulation({
         const bx = r.x + r.w * (small ? 0.68 : 0.72);
         let prevY = yOf(0);
         let prevLabel = -Infinity;
+        let prevSide = -Infinity;
         const hideRatio = ctx.isHidden('ratio');
+        const lfs = small ? 11 : 12;
+        // zweite Spalte für zu kurze Abschnitte (z. B. Mond: die ersten Abstände sind nur wenige Pixel lang);
+        // Hinweislinie waagerecht bis hinter die Zahlenspalte, dann schräg zur Zahl
+        const elbowX = bx + 34;
+        const sideX = bx + (small ? 44 : 46);
+        let sideFull = false;
         for (let k = 0; k <= n; k++) {
           const sk = fallDistance(g(), k * dt);
           const y = yOf(sk);
@@ -726,8 +733,26 @@ export default defineSimulation({
             const mid = (prevY + y) / 2;
             // Vielfache verraten im Aufgabenmodus das Verhältnis (Aufgabe 2)
             if (!hideRatio && y - prevY >= (k === 1 ? 4 : 10) && mid - prevLabel >= 13) {
-              text(gx, String(2 * k - 1), bx + 16, mid, { font: `700 ${small ? 11 : 12}px ${theme.font}`, color: '#dbe6ff', align: 'left' });
+              text(gx, String(2 * k - 1), bx + 16, mid, { font: `700 ${lfs}px ${theme.font}`, color: '#dbe6ff', align: 'left' });
               prevLabel = mid;
+            } else if (!hideRatio && !sideFull && y - prevY < (k === 1 ? 4 : 10)) {
+              // Abschnitt zu kurz für eine eindeutige Zahl daneben: seitlich versetzt mit Hinweislinie
+              const ly = Math.max(mid, prevSide + 13);
+              const str = String(2 * k - 1);
+              gx.font = `700 ${lfs}px ${theme.font}`;
+              // reicht der Platz nicht mehr, keine weiteren seitlichen Zahlen (keine Lücken in der Folge 1, 3, 5 …)
+              if (ly - mid > 44 || sideX + gx.measureText(str).width > r.x + r.w - 4) sideFull = true;
+              else {
+                gx.strokeStyle = 'rgba(219,230,255,0.55)';
+                gx.lineWidth = 1;
+                gx.beginPath();
+                gx.moveTo(bx + 12, mid);
+                gx.lineTo(elbowX, mid);
+                gx.lineTo(sideX - 3, ly);
+                gx.stroke();
+                text(gx, str, sideX, ly, { font: `700 ${lfs}px ${theme.font}`, color: '#dbe6ff', align: 'left' });
+                prevSide = ly;
+              }
             }
           }
           prevY = y;
@@ -1006,7 +1031,8 @@ export default defineSimulation({
       roundRect(gx, r.x, r.y, r.w, r.h, 12);
       gx.clip();
 
-      const rw = small ? 58 : 64;
+      // Handy mit Zeitskala etwas breiter, damit ms- und cm-Zahlen nicht aneinanderstoßen
+      const rw = small ? (p.ms ? 66 : 58) : 64;
       const cx = r.x + r.w * 0.5;
       const catchY = r.y + r.h - (small ? 50 : 64);
       const len = catchY - r.y - (small ? 84 : 100);
@@ -1084,13 +1110,17 @@ export default defineSimulation({
         }
         gx.stroke();
         let last = Infinity;
+        // Zahlen direkt neben den Fingern (oben haltend, unten fangend) weglassen; der Strich bleibt
+        const F0 = small ? 13 : 15;
+        const fingers = [catchY - len - 11, catchY];
         for (let ms = stepMs; ms <= tMax; ms += stepMs) {
           const y = yOfCm(fallDistance(g(), ms / 1000) * 100);
           if (last - y < 12) continue;
+          if (fingers.some((fy) => Math.abs(y - fy) < F0 / 2 + 8)) continue;
           last = y;
           text(gx, String(ms), rx + rw - 10, y, { font: `700 9px ${theme.font}`, color: red, align: 'right' });
         }
-        text(gx, 'ms', rx + rw - 4, top - 11, { font: `700 9px ${theme.font}`, color: red, align: 'right' });
+        text(gx, 'ms', rx + rw - 8, top - 11, { font: `700 9px ${theme.font}`, color: red, align: 'right' });
       }
       // Hand oben (hält das Lineal bis zum Loslassen)
       const holding = phase === 'idle' || phase === 'armed' || phase === 'early';
