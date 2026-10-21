@@ -76,5 +76,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | energieerhaltung | Die Starthöhen-Beschriftung steht auf der eigenen Bahn bei manchen Formen nah am Wagen; der Tipp unter der Bühne ist auf dem Handy vier Zeilen lang (kürzen, ggf. je Ansicht über `hint`-Funktion). | offen |
 | schiefer-wurf | In der schmalen Zerlegungs-Szene (iPad, Handy) liegen Pfeilbeschriftungen teils über den Stroboskop-Punkten; das Etikett „x = …“ deckt die Achsenzahl darunter ab. | offen |
 | stoesse | Eigene Index-Helfer `parts`/`richText` auf den Kern-Helfer `subText` umstellen (ohne sichtbare Änderung). | offen |
+| wellen-ausbreitung | Bei λ ≈ 0,3 m kreuzen die gestrichelten Hilfslinien der λ-Klammer die Beschriftung leicht. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
