@@ -43,9 +43,19 @@ export function orbitRadius(U: number, B: number, em = SPECIFIC_CHARGE): number 
   return Math.sqrt((2 * Math.max(0, U)) / em) / B;
 }
 
-/** Lorentzkraft F = q · v · B (v senkrecht zu B) in N. */
-export function lorentzForce(q: number, v: number, B: number): number {
-  return Math.abs(q) * v * B;
+/**
+ * Betrag der Lorentzkraft F = |q| · v · B · sin α in N; α ist der Winkel
+ * zwischen v und B (Standard 90°, wie im Fadenstrahlrohr). Für v parallel zu B
+ * (α = 0) ist F = 0.
+ */
+export function lorentzForce(q: number, v: number, B: number, alpha = Math.PI / 2): number {
+  return Math.abs(q * v * B * Math.sin(alpha));
+}
+
+/** Umlaufzeit T = 2π · m / (e · B) in s – unabhängig von v und U (unendlich ohne Feld). */
+export function orbitPeriod(B: number, em = SPECIFIC_CHARGE): number {
+  if (B <= 0) return Infinity;
+  return (2 * Math.PI) / (em * B);
 }
 
 /** Spezifische Ladung aus einer Messung: e/m = 2 U / (B² r²). */
