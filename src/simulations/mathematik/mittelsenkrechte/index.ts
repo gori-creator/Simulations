@@ -2944,7 +2944,7 @@ export default defineSimulation({
      * Bewegungsrichtung weiter (ohne erkennbare Richtung: der zweite Punkt
      * nach rechts bzw. am Rand nach links).
      */
-    function separate(changed: Set<string>, i1: 'a' | 'g', i2: 'b' | 'h'): void {
+    function separate(changed: ReadonlySet<string>, i1: 'a' | 'g', i2: 'b' | 'h'): void {
       const p1: Pt = [p[`${i1}x`], p[`${i1}y`]];
       const p2: Pt = [p[`${i2}x`], p[`${i2}y`]];
       if (p1[0] !== p2[0] || p1[1] !== p2[1]) return;
