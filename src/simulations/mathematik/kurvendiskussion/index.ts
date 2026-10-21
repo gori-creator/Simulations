@@ -362,7 +362,8 @@ export default defineSimulation({
       const lim = Math.max(rng.rx.goal, 2.5);
       let v = clamp(x, -lim, lim);
       const tolW = 11 / Math.max(1, pl.scale.x);
-      for (const c of A.candidates) {
+      // bei verdeckten Ergebnissen nicht einrasten: das Einrasten verriete die Kandidaten
+      for (const c of p.show ? A.candidates : []) {
         if (Math.abs(v - c) < tolW) {
           if (Math.abs(p.px - c) >= 0.0051 && !reduced()) pulses.push({ x: c, t0: performance.now() });
           v = c;
@@ -546,7 +547,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = withAlpha(mixColor(th().bg, th().text, th().dark ? 0.03 : 0), th().dark ? 0.9 : 0.94);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -745,7 +746,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -757,7 +758,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.16 : 0.12);
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -1261,7 +1262,7 @@ export default defineSimulation({
           g.font = `700 ${fs(11, 11)}px ${theme.font}`;
           if (txt && g.measureText(txt).width >= xb - xa - 8) txt = txt.slice(0, 1);
           if (txt && g.measureText(txt).width < xb - xa - 6) {
-            g.fillStyle = theme.dark ? '#f4f7fb' : '#1b2533';
+            g.fillStyle = theme.text;
             g.textAlign = 'center';
             g.textBaseline = 'middle';
             g.fillText(txt, (xa + xb) / 2, row.y + h / 2 + 0.5);
@@ -1617,7 +1618,7 @@ export default defineSimulation({
             const part = Z.slice(i, i + 2).map((z, j) => {
               const m = zeroOrder(f, z);
               const tag = show() && m >= 2 ? ` \\c{m}{\\t{(${m === 2 ? T2('doppelt', 'double') : T2('dreifach', 'triple')})}}` : '';
-              return `x_${i + j + 1} ${S(xv(z))}${tag}`;
+              return `x_${i + j + 1} ${show() ? xv(z) : '= ¿'}${tag}`;
             });
             rows.push({ src: part.join(';   '), size: big, at: atStory(3, 150 + i * 260 + 250) });
           }
@@ -1632,7 +1633,7 @@ export default defineSimulation({
           rows.push({ src: `${C('d', 'f′(x) = 0  ⇔  ')}${C('d', `${S(polySrc(A.d1))} = 0`)}`, size: big });
           if (!A.candidates.length) rows.push({ src: show() ? `\\t{${T2('keine Lösung: nirgends waagrechte Tangente', 'no solution: nowhere a horizontal tangent')}}` : 'x = ¿', size: big, at: atStory(4, 200) });
           for (let i = 0; i < A.candidates.length; i += 2) {
-            const part = A.candidates.slice(i, i + 2).map((c, j) => `x_${i + j + 1} ${S(xv(c))}`);
+            const part = A.candidates.slice(i, i + 2).map((c, j) => `x_${i + j + 1} ${show() ? xv(c) : '= ¿'}`);
             rows.push({ src: C('x', part.join(';   ')), size: big, at: atStory(4, 150 + i * 300 + 300) });
           }
           note('Das sind nur Kandidaten: Dort ist die Tangente waagrecht. Ob Hoch-, Tief- oder Terrassenpunkt, entscheidet erst Schritt 5.', 'These are only candidates: the tangent is horizontal there. Whether maximum, minimum or terrace point is decided in step 5.');
@@ -1649,7 +1650,7 @@ export default defineSimulation({
             const change = e.kind !== 'saddle';
             const at = atStory(5, 150 + (2 * i + 1) * CELL_MS + 200);
             const vzw = show() ? (change ? `${sgnT(l)} → ${sgnT(r)}` : `${sgnT(l)} → ${sgnT(r)}`) : '¿';
-            rows.push({ src: `${C('x', `x = ${S(N(e.x, 2))}`)}\\t{:}  f′: ${vzw}  ⇒  ${C('x', show() ? `${kindShort(e.kind)}(${N(e.x, 2)} | ${N(e.y, 2)})` : '¿')}`, size: big, at });
+            rows.push({ src: `${C('x', `x ${show() ? xv(e.x) : '= ¿'}`)}\\t{:}  f′: ${vzw}  ⇒  ${C('x', show() ? `${kindShort(e.kind)}(${N(e.x, 2)} | ${N(e.y, 2)})` : '¿')}`, size: big, at });
             // f″-Kriterium als Gegenprobe
             const v = evalPoly(A.d2, e.x);
             const t2 = secondTest(f, e.x);
@@ -1681,7 +1682,7 @@ export default defineSimulation({
             const at = atStory(6, 700 + (2 * i + 1) * CELL_MS + 200);
             const vzw = show() ? (ii.change ? `${sgnT(l)} → ${sgnT(r)}` : `${sgnT(l)} → ${sgnT(r)}`) : '¿';
             const res = show() ? (ii.change ? `W(${N(w, 2)} | ${N(ii.y, 2)})` : `\\t{${T2('kein Wendepunkt', 'no inflection')}}`) : '¿';
-            rows.push({ src: `${C('w', `x = ${S(N(w, 2))}`)}\\t{:}  f″: ${vzw}  ⇒  ${C('w', res)}`, size: big, at });
+            rows.push({ src: `${C('w', `x ${show() ? xv(w) : '= ¿'}`)}\\t{:}  f″: ${vzw}  ⇒  ${C('w', res)}`, size: big, at });
             let extra: string;
             if (!show()) extra = 'f‴(¿) = ¿';
             else if (ii.saddle) extra = `\\t{${T2('Steigung 0: Wendepunkt mit waagrechter Tangente (Terrassenpunkt)', 'slope 0: inflection with horizontal tangent (terrace point)')}}`;
@@ -1702,14 +1703,33 @@ export default defineSimulation({
               .filter((m) => m.sign === s)
               .map((m) => ivSrc(m.from, m.to, closed))
               .join(T2(' und ', ' and '));
+          if (!show()) {
+            // verdeckt: keine Intervallmuster zeigen (sonst stünde schon da, wo f steigt oder fällt)
+            rows.push({ src: `${C('u', `\\t{${T2('streng monoton steigend in', 'strictly increasing on')}} `)}¿`, size: small, at: atStory(7, 300), hl: col.up() });
+            rows.push({ src: `${C('n', `\\t{${T2('streng monoton fallend in', 'strictly decreasing on')}} `)}¿`, size: small, at: atStory(7, 600), hl: col.down() });
+            rows.push({ src: `${C('e', `\\t{${T2('linksgekrümmt in', 'concave up on')}} `)}¿`, size: small, at: atStory(7, 1000) });
+            rows.push({ src: `${C('e', `\\t{${T2('rechtsgekrümmt in', 'concave down on')}} `)}¿`, size: small, at: atStory(7, 1300) });
+            note('Gibt es kein solches Intervall, schreibe „keines“.', 'If there is no such interval, write “none”.');
+            break;
+          }
           const up = group(A.mono, 1, true);
           const down = group(A.mono, -1, true);
-          if (up) rows.push({ src: `${C('u', `\\t{${T2('streng monoton steigend in', 'strictly increasing on')}} `)}${up}`, size: small, at: atStory(7, 300), hl: col.up() });
-          if (down) rows.push({ src: `${C('n', `\\t{${T2('streng monoton fallend in', 'strictly decreasing on')}} `)}${down}`, size: small, at: atStory(7, 600), hl: col.down() });
+          // Zeile „Wort + Intervalle“; passt sie nicht in die Karte, stehen die Intervalle in einer zweiten Zeile
+          const ivRow = (key: string, de: string, en: string, ivs: string, at: number | undefined, hl?: string) => {
+            const head = C(key, `\\t{${T2(de, en)}} `);
+            const room = regions().col.w - 2 * fs(14, 12) - 4;
+            if (fx(`${head}${ivs}`, small).w <= room) rows.push({ src: `${head}${ivs}`, size: small, at, hl });
+            else {
+              rows.push({ src: head, size: small, at, hl, gap: 2 });
+              rows.push({ src: ivs, size: small, at, hl, indent: 10 });
+            }
+          };
+          if (up) ivRow('u', 'streng monoton steigend in', 'strictly increasing on', up, atStory(7, 300), col.up());
+          if (down) ivRow('n', 'streng monoton fallend in', 'strictly decreasing on', down, atStory(7, 600), col.down());
           const left = group(A.curv, 1, false);
           const right = group(A.curv, -1, false);
-          if (left) rows.push({ src: `${C('e', `\\t{${T2('linksgekrümmt in', 'concave up on')}} `)}${left}`, size: small, at: atStory(7, 1000) });
-          if (right) rows.push({ src: `${C('e', `\\t{${T2('rechtsgekrümmt in', 'concave down on')}} `)}${right}`, size: small, at: atStory(7, 1300) });
+          if (left) ivRow('e', 'linksgekrümmt in', 'concave up on', left, atStory(7, 1000));
+          if (right) ivRow('e', 'rechtsgekrümmt in', 'concave down on', right, atStory(7, 1300));
           note('Die Extremstellen dürfen zu beiden angrenzenden Monotonieintervallen gezählt werden.', 'The extrema may be counted in both neighbouring intervals of monotonicity.');
         }
       }
@@ -1762,7 +1782,7 @@ export default defineSimulation({
           const done = k < st;
           const cur = k === st;
           const hov = hoverDot === k && editable();
-          const pop = cur ? 1 + 0.18 * (1 - clamp01((frameNow - stepT0) / 450)) : 1;
+          const pop = cur && !reduced() ? 1 + 0.18 * (1 - clamp01((frameNow - stepT0) / 450)) : 1;
           const r0 = rr * pop * (hov ? 1.12 : 1);
           if (cur) halo(cx, yD, col.f(), r0 * 2.3, 0.8);
           g.save();
@@ -1772,7 +1792,7 @@ export default defineSimulation({
             g.arc(cx, yD, r0, 0, TAU);
             g.fill();
           } else {
-            g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+            g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
             g.strokeStyle = hov ? col.f() : withAlpha(theme.muted, 0.7);
             g.lineWidth = 1.6;
             g.beginPath();
@@ -1783,7 +1803,7 @@ export default defineSimulation({
           g.font = `800 ${Math.round(r0 * 1.15)}px ${theme.font}`;
           g.textAlign = 'center';
           g.textBaseline = 'middle';
-          g.fillStyle = done || cur ? '#ffffff' : theme.muted;
+          g.fillStyle = done || cur ? theme.bg : theme.muted;
           g.fillText(done ? '✓' : String(k), cx, yD + 0.5);
           g.restore();
           dotHits.push({ x: cx, y: yD, r: Math.max(r0, 14), k });
@@ -1792,7 +1812,7 @@ export default defineSimulation({
         const ty = yD + 30;
         g.font = tfont;
         g.save();
-        g.globalAlpha *= ease.outCubic(clamp01((frameNow - stepT0) / 400));
+        if (!reduced()) g.globalAlpha *= ease.outCubic(clamp01((frameNow - stepT0) / 400));
         g.fillStyle = theme.text;
         g.textAlign = 'left';
         g.textBaseline = 'middle';
@@ -1997,7 +2017,7 @@ export default defineSimulation({
           { src: C('f', `P(${N(x, 2)} | ${cN('pc.y', tl.y)})`), size: fs(13, 12) },
           { src: `\\b{${C('t', `m = f′(${N(x, 2)}) ${eqS(tl.m)} ${cN('pc.m', tl.m)}`)}}`, size: fs(14, 13), hl: col.t() },
         ];
-        if (!compact) rows.push({ src: C('t', `t(x) = ${polySrc([Math.round(tl.n * 100) / 100, Math.round(tl.m * 100) / 100])}`), size: fs(13, 12) });
+        if (!compact) rows.push({ src: C('t', `t(x) ${isExact(tl.n) && isExact(tl.m) ? '=' : '≈'} ${polySrc([Math.round(tl.n * 100) / 100, Math.round(tl.m * 100) / 100])}`), size: fs(13, 12) });
         rows.push({ src: `\\t{${state}}`, size: fs(12.5, 11.5), color: stCol, weight: 700 });
         if (!compact) rows.push({ src: C('m', `f″(${N(x, 2)}) ${eqS(dd)} ${cN('pc.dd', dd)}: \\t{${Math.abs(dd) < 1e-9 ? T2('keine Krümmung ablesbar', 'no curvature') : dd > 0 ? T2('Linkskurve', 'concave up') : T2('Rechtskurve', 'concave down')}}`), size: fs(12, 11) });
         return formulaCard(R, measure, T2('Tangente in P', 'Tangent at P'), col.t(), rows, stagger(I));
@@ -2175,14 +2195,14 @@ export default defineSimulation({
       if (story && now - story.t0 > 4600) story = null;
       if (sweep) {
         const x = shownPx(now);
-        for (const c of A.candidates) if ((sweep.last - c) * (x - c) < 0 || (x === c && sweep.last !== c)) pulses.push({ x: c, t0: now });
+        for (const c of p.show ? A.candidates : []) if ((sweep.last - c) * (x - c) < 0 || (x === c && sweep.last !== c)) pulses.push({ x: c, t0: now });
         sweep.last = x;
         if (now - sweep.t0 > SWEEP_MS) {
           sweep = null;
           X.jump(p.px);
         }
       }
-      if (intro !== null || story || sweep || pulses.length || dragging() || now - stepT0 < 1400) anim = true;
+      if (intro !== null || story || sweep || pulses.length || dragging() || (!reduced() && now - stepT0 < 1400)) anim = true;
       const I = introState(now);
       surface.begin();
       const g = surface.g;
