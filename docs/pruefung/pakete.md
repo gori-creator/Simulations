@@ -26,7 +26,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☐ | 9–10 | `energieerhaltung` | Energieerhaltung (Achterbahn) | `/de/physik/mechanik/energieerhaltung-achterbahn/` |
 | ☑ | 9–10 | `freier-fall` | Freier Fall | `/de/physik/mechanik/freier-fall/` |
 | ☑ | 9–12 | `radioaktiver-zerfall` | Radioaktiver Zerfall und Halbwertszeit | `/de/physik/atom-kern-und-quantenphysik/radioaktiver-zerfall/` |
-| ☐ | 9–13 | `gasgesetze` | Gasgesetze | `/de/physik/waermelehre/gasgesetze/` |
+| ☑ | 9–13 | `gasgesetze` | Gasgesetze | `/de/physik/waermelehre/gasgesetze/` |
 | ☐ | 10–11 | `kreisbewegung` | Kreisbewegung und Zentripetalkraft | `/de/physik/mechanik/kreisbewegung-zentripetalkraft/` |
 | ☐ | 10–11 | `schiefer-wurf` | Waagerechter und schiefer Wurf | `/de/physik/mechanik/schiefer-wurf/` |
 | ☐ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
