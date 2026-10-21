@@ -59,4 +59,32 @@ describe('Tastaturbedienung der Zeichenfläche', () => {
     nav.setTargets(targets([], ['a', 'b', 'c']));
     expect(nav.key('ArrowRight')).toBeNull();
   });
+
+  it('wählt bei genau einem Ziel beim Fokussieren gleich aus, so dass ein Enter auslöst', () => {
+    const log: string[] = [];
+    const nav = new KeyTargetNav();
+    nav.setTargets([{ id: 'probe', label: 'Probe', activate: () => log.push('probe') }]);
+    expect(nav.selected).toBeNull();
+    expect(nav.focus()).toBe(true);
+    expect(nav.selected?.id).toBe('probe');
+    expect(nav.key('Enter')).toBe('activate');
+    expect(log).toEqual(['probe']);
+    // erneutes Fokussieren ändert nichts
+    expect(nav.focus()).toBe(false);
+    // gesperrtes einzelnes Ziel wird nicht ausgewählt
+    const other = new KeyTargetNav();
+    other.setTargets([{ id: 'x', label: 'X', disabled: true, activate: () => log.push('x') }]);
+    expect(other.focus()).toBe(false);
+    expect(other.selected).toBeNull();
+  });
+
+  it('lässt bei mehreren Zielen die Auswahl beim Fokussieren unverändert', () => {
+    const log: string[] = [];
+    const nav = new KeyTargetNav();
+    nav.setTargets(targets(log));
+    expect(nav.focus()).toBe(false);
+    expect(nav.selected).toBeNull();
+    expect(nav.key('Enter')).toBe('move');
+    expect(log).toEqual([]);
+  });
 });

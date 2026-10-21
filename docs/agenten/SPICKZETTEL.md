@@ -109,6 +109,7 @@ Schrift: `` `600 13px ${theme.font}` ``, Variablen kursiv: `` `italic 14px ${the
 - `resetView()` der Simulation: `plot.resetView()` weiterreichen, wenn Zoom/Verschieben erlaubt ist.
 
 **TapTarget** (Antippen beliebiger Formen): `new TapTarget(surface, { hit: (px, py) => id | null, onTap: (id) => …, onHover: (id | null) => … })`. Für eigenes Ziehen ohne Plot: Objekt mit `PointerTarget`-Methoden (`contains, pointerDown → true wenn übernommen, pointerMove, pointerUp, hover, wheel → false`) und `surface.addTarget(obj)`; Beispiel: `physik/hebelgesetz`, `physik/hookesches-gesetz`.
+Antippbares zusätzlich für die Tastatur melden: `ctx.setKeyTargets([{ id, label, rect?, disabled?, activate }])` (auch in `render`, Pfeiltasten wählen, Enter löst aus; bei genau einem Ziel ist es beim Fokussieren gleich ausgewählt, ein Enter genügt). Eigene Markierung über `ctx.keyFocus`.
 
 **3D:** `View3D`, `mesh3d`, `foldNet`, `vec3`, `shade`, `Camera3D` aus `src/sim-core/view3d.ts` (Beschreibung in `docs/ARCHITEKTUR.md` „3D-Ansichten“, Vorbilder `mathematik/koerpernetze`, `quader-volumen`, `prisma-zylinder`).
 
