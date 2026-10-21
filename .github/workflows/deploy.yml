@@ -1,6 +1,9 @@
 # Veröffentlicht die Website bei jedem Push auf "main" über GitHub Pages.
 #
 # Einmalig nötig: Repository → Settings → Pages → Source: "GitHub Actions".
+#
+# Solange SITE_LIVE nicht 'true' ist, wird statt der Website nur eine
+# Platzhalterseite veröffentlicht (z. B. bis das Impressum ausgefüllt ist).
 name: Veröffentlichen
 
 on:
@@ -12,6 +15,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
+
+env:
+  SITE_LIVE: 'false'
 
 concurrency:
   group: pages
@@ -38,6 +44,13 @@ jobs:
         env:
           SITE_URL: ${{ steps.pages.outputs.origin }}
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - name: Platzhalter statt Website
+        if: env.SITE_LIVE != 'true'
+        run: |
+          rm -rf dist && mkdir dist
+          printf '%s\n' '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>MINT-Simulationen</title></head><body style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 16px"><h1>MINT-Simulationen</h1><p>Diese Seite ist noch im Aufbau und bald wieder erreichbar.</p><p lang="en">This site is under construction and will be back soon.</p></body></html>' > dist/index.html
+          cp dist/index.html dist/404.html
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

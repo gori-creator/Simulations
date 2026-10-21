@@ -89,6 +89,7 @@ const de = {
 
   'curriculum.byGrade': 'Nach Jahrgangsstufe',
   'curriculum.byGradeLead': 'Alle Lernbereiche einer Jahrgangsstufe mit den passenden Simulationen.',
+  'curriculum.chooseRegion': 'Wählen Sie oben im Zahnrad Ihr Bundesland – dann erscheinen hier die Jahrgangsstufen nach dessen Lehrplan.',
   'curriculum.byTopic': 'Nach Thema',
   'curriculum.overview': 'Alle Jahrgangsstufen im Überblick',
   'curriculum.label': 'Lehrplan {state} · {school}',
@@ -257,6 +258,7 @@ const en: Record<UiKey, string> = {
 
   'curriculum.byGrade': 'By grade',
   'curriculum.byGradeLead': 'All units of a grade with matching simulations.',
+  'curriculum.chooseRegion': 'Choose your federal state via the gear icon at the top – the grades of its curriculum then appear here.',
   'curriculum.byTopic': 'By topic',
   'curriculum.overview': 'All grades at a glance',
   'curriculum.label': '{state} curriculum · {school}',
