@@ -198,3 +198,41 @@ describe('Modell: Gasgesetze – Teilchenbild', () => {
     for (let i = 0; i < box.count; i++) expect(box.y[i]!).toBeLessThanOrEqual(4 - box.radius + 1e-9);
   });
 });
+
+describe('Modell: Gasgesetze – Aufgaben und Reglergrenzen', () => {
+  it('Aufgabenwerte aus dem Lernmaterial', () => {
+    // A1: 1 mol, 100 °C, 101,3 kPa → 30,6 L
+    expect(volume(1, kelvin(100), 101.3)).toBeCloseTo(30.63, 2);
+    // A2: 30 L → 75,7 kPa, 15 L → 151,4 kPa
+    expect(pressure(1, kelvin(0), 30)).toBeCloseTo(75.7, 1);
+    expect(pressure(1, kelvin(0), 15)).toBeCloseTo(151.4, 1);
+    // A3: Link n = 1,2 mol, V = 11,3 L stellt bei 10 °C etwa 250 kPa ein; bei 50 °C ≈ 285 kPa
+    const s = equilibrium('isochor', 1.2, kelvin(10), 11.3, 0);
+    expect(s.p).toBeCloseTo(250, 0);
+    expect(isochoric(s, kelvin(50)).p).toBeCloseTo(285.3, 1);
+    expect(250 * (kelvin(50) / kelvin(10))).toBeCloseTo(285.3, 1);
+    // A5: 20 L, 27 °C, 150 kPa → 1,2 mol
+    expect(amount(150, 20, kelvin(27))).toBeCloseTo(1.202, 3);
+    // A6: 60 mL → 20 mL bei 1013 hPa → 3039 hPa
+    expect(isothermal({ p: 1013, V: 60, T: 293, stop: 0 }, 20).p).toBeCloseTo(3039, 6);
+  });
+
+  it('Reglergrenzen: kleinster und größter Druck passen in den Messbereich des Manometers', () => {
+    // größter Druck: isotherm, n = 2, 250 °C, V = 10 L → ≈ 870 kPa
+    const pMax = pressure(2, kelvin(250), V_MIN);
+    expect(pMax).toBeCloseTo(869.9, 1);
+    expect(gaugeRange('isotherm', 2, kelvin(250), V_MIN, 0)).toBeGreaterThanOrEqual(pMax);
+    // kleinster Druck: n = 0,5, −50 °C, V = 50 L → ≈ 18,6 kPa, endlich und positiv
+    const pMin = pressure(0.5, kelvin(-50), V_MAX);
+    expect(pMin).toBeCloseTo(18.55, 2);
+    expect(rangeFor(pMin)).toBe(100);
+  });
+
+  it('nahe 0 K: Druck und Volumen gehen gegen 0, Teilchen stehen still', () => {
+    expect(pressure(1, 0, 22.4)).toBe(0);
+    expect(volume(1, 0, 100)).toBe(0);
+    expect(modelKT(0)).toBe(0);
+    expect(modelKT(-5)).toBe(0);
+    expect(meanSpeed(0, M_N2)).toBe(0);
+  });
+});

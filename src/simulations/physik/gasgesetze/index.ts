@@ -140,7 +140,10 @@ interface Seg {
 export default defineSimulation({
   id: 'gasgesetze',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Den Kolben am Griff (isotherm) und das Thermometer kannst du mit Maus oder Finger ziehen. Die Reiter über dem Diagramm wechseln die Darstellung.',
+    'Tip: Drag the piston by its handle (isothermal) or the thermometer with the mouse or a finger. The tabs above the graph switch the view.',
+  ),
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -159,7 +162,7 @@ export default defineSimulation({
       key: 'V',
       type: 'number',
       label: L('Volumen V', 'Volume V'),
-      help: L('Oder: den Kolben am Griff ziehen.', 'Or drag the piston by its handle.'),
+      help: L('Im isothermen Versuch auch: den Kolben am Griff ziehen.', 'In the isothermal experiment you can also drag the piston by its handle.'),
       min: V_MIN,
       max: V_MAX,
       step: 0.1,
@@ -212,10 +215,10 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
   ],
   readouts: [
-    { key: 'now', label: L('Zustand', 'State') },
-    { key: 'law', label: L('Gesetz', 'Law') },
-    { key: 'gas', label: L('Allgemeine Gasgleichung', 'Ideal gas law') },
-    { key: 'kin', label: L('Druck im Teilchenbild', 'Pressure in the particle model') },
+    { key: 'now', label: L('Zustand', 'State'), spoiler: true },
+    { key: 'law', label: L('Gesetz', 'Law'), spoiler: true },
+    { key: 'gas', label: L('Allgemeine Gasgleichung', 'Ideal gas law'), spoiler: true },
+    { key: 'kin', label: L('Druck im Teilchenbild', 'Pressure in the particle model'), spoiler: true },
     { key: 'table', label: L('Messtabelle', 'Table of measurements') },
     { key: 'fit', label: L('Auswertung', 'Analysis'), spoiler: true },
   ],
@@ -376,6 +379,15 @@ export default defineSimulation({
     const fitCol = () => ctx.theme.series[3]!;
     const nCol = () => ctx.theme.series[4]!;
     const fixedCol = (m: Mode) => (m === 'isotherm' ? tCol() : m === 'isobar' ? pCol() : vCol());
+    /**
+     * Aufgabenmodus: Die vom Versuch abhängige Größe (p bei isotherm/isochor,
+     * V bei isobar) und daraus berechnete Produkte werden im Bild als „?“
+     * gezeigt – sonst liest man die Lösung der Rechenaufgaben direkt ab.
+     * Manometer, Skala am Glas und Diagrammachsen bleiben (ungenaues Ablesen ist erwünscht).
+     */
+    const hideP = () => ctx.hidden && mode() !== 'isobar';
+    const hideV = () => ctx.hidden && mode() === 'isobar';
+    const qm = (hide: boolean, s: string) => (hide ? '?' : s);
 
     /* ---------- weiche Werte ---------- */
     const soft = new Map<string, number>();
@@ -942,6 +954,8 @@ export default defineSimulation({
         return;
       }
       if (now < autoWait) return;
+      // auf den Zielwert einrasten, damit Tabelle (ϑ und T) und Anzeige zusammenpassen
+      snapState();
       record();
       autoIdx++;
       autoWait = 0;
@@ -1637,11 +1651,11 @@ export default defineSimulation({
       const size = sm ? 12 : 13;
       g.save();
       g.globalAlpha *= ik;
-      const pl = `${fx(pShown, 1)} kPa`;
+      const pl = `${qm(hideP(), fx(pShown, 1))} kPa`;
       const pw = pillWidth(pl, size);
       const px = clamp(G.mx, G.r.x + pw / 2 + 4, G.glassX - pw / 2 - 2);
       pill(px, G.hdrY, pl, pCol(), 'center', size);
-      const kinTxt = kinValid && ctx.clock.playing ? tr(sm ? 'kinShortS' : 'kinShort', { p: n(Math.round(cur.p * kinRatio), 0) }) : '';
+      const kinTxt = kinValid && ctx.clock.playing && !hideP() ? tr(sm ? 'kinShortS' : 'kinShort', { p: n(Math.round(cur.p * kinRatio), 0) }) : '';
       if (kinTxt) {
         const ka = ease2('kinA', 1, 4);
         g.save();
@@ -1693,7 +1707,7 @@ export default defineSimulation({
       drawHeader(G, pShown, celsius(TD), ik);
       // Volumen unter dem Kolben
       const yb = vToY(G, cur.V);
-      const vl = `V = ${fx(cur.V, 1)} L`;
+      const vl = `V = ${qm(hideV(), fx(cur.V, 1))} L`;
       const vs = G.sm ? 11 : 12;
       const vh = vs + 11;
       const vy = clamp(yb + 8, yb + 4, G.iyB - vh - 4);
@@ -1933,7 +1947,7 @@ export default defineSimulation({
           g.lineTo(M.X(s.V) + 0.5, A.y + A.h);
           g.stroke();
           g.setLineDash([]);
-          const lab = tr('pvArea', { c: n(Math.round(s.p * s.V), 0) });
+          const lab = tr('pvArea', { c: qm(ctx.hidden, n(Math.round(s.p * s.V), 0)) });
           g.font = lf;
           const lw = g.measureText(lab).width;
           const w = M.X(s.V) - A.x;
@@ -1985,7 +1999,7 @@ export default defineSimulation({
         const cf = series === 'isotherm' && iso.length >= 2 ? fitOrigin(iso.map((q) => [1 / q.V, q.p] as const)) : null;
         if (cf) {
           strokeFn(M, (u) => cf * u, 0, INV_AXIS, fitCol(), 1.8, [7, 5], 2);
-          const lab = tr('slope', { c: n(Math.round(cf), 0) });
+          const lab = tr('slope', { c: qm(ctx.hidden, n(Math.round(cf), 0)) });
           g.font = lf;
           const lw = g.measureText(lab).width;
           const ux = Math.min(INV_AXIS * 0.62, (M.yMax * 0.82) / cf);
@@ -2038,7 +2052,7 @@ export default defineSimulation({
             g.strokeStyle = theme.bg;
             g.lineWidth = 2;
             g.stroke();
-            const zl = tr('fitZero', { t: n(Math.round(celsius(t0)), 0) });
+            const zl = tr('fitZero', { t: qm(ctx.hidden, n(Math.round(celsius(t0)), 0)) });
             pill(clamp(zx + 6, A.x + 2, A.x + A.w - pillWidth(zl, sm ? 10.5 : 11) - 2), zy - (sm ? 54 : 60), zl, fitCol(), 'left', sm ? 10.5 : 11);
           }
           g.restore();
@@ -2230,11 +2244,11 @@ export default defineSimulation({
         { t: ' · ', c: tx },
         { t: 'V', c: V, f: 'v' },
         { t: ' = ', c: tx, br: true },
-        { t: `${fx(s.p, 1)} kPa`, c: P, f: 'b' },
+        { t: `${qm(hideP(), fx(s.p, 1))} kPa`, c: P, f: 'b' },
         { t: ' · ', c: tx },
-        { t: `${fx(s.V, 1)} L`, c: V, f: 'b' },
+        { t: `${qm(hideV(), fx(s.V, 1))} L`, c: V, f: 'b' },
         { t: ' ≈ ', c: tx, br: true },
-        { t: `${n(Math.round(pv), 0)} J`, c: tx, f: 'b' },
+        { t: `${qm(ctx.hidden, n(Math.round(pv), 0))} J`, c: tx, f: 'b' },
       ];
       const l2: Seg[] = [
         { t: 'n', c: N, f: 'v' },
@@ -2249,7 +2263,7 @@ export default defineSimulation({
         { t: ' · ', c: tx },
         { t: `${fx(s.T, 2)} K`, c: T, f: 'b' },
         { t: ' ≈ ', c: tx, br: true },
-        { t: `${n(Math.round(nD * GAS_R * s.T), 0)} J`, c: tx, f: 'b' },
+        { t: `${qm(ctx.hidden, n(Math.round(nD * GAS_R * s.T), 0))} J`, c: tx, f: 'b' },
       ];
       let l3: Seg[];
       if (m === 'isobar' && s.stop !== 0) l3 = [{ t: ctx.t(s.stop > 0 ? 'stopHi' : 'stopLo'), c: fitCol(), f: 'b' }];
@@ -2271,7 +2285,7 @@ export default defineSimulation({
           { t: isBar ? 'V' : 'p', c: isBar ? V : P, f: 'v', br: true },
           { t: ' / ', c: tx },
           { t: 'T', c: T, f: 'v' },
-          { t: ` ≈ ${fx(val, isBar ? 4 : 3)} ${isBar ? 'L/K' : 'kPa/K'}`, c: tx, f: 'b' },
+          { t: ` ≈ ${qm(ctx.hidden, fx(val, isBar ? 4 : 3))} ${isBar ? 'L/K' : 'kPa/K'}`, c: tx, f: 'b' },
           { t: ` = ${ctx.t('konst')}`, c: mu, br: true },
         ];
       }
