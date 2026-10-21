@@ -25,7 +25,9 @@ $$
 T = \frac{2 v_0 \sin\alpha}{g} \qquad w = \frac{v_0^2 \sin(2\alpha)}{g} \qquad h_{\max} = \frac{v_0^2 \sin^2\alpha}{2g}
 $$
 
-Die größte Wurfweite erreicht man dann bei $\alpha = 45^\circ$. Zwei Winkel, die sich zu $90^\circ$ ergänzen (z. B. $30^\circ$ und $60^\circ$), ergeben dieselbe Weite. Wirft man aus der Höhe $h_0 > 0$, liegt der beste Winkel **unter** $45^\circ$. Beim **waagerechten Wurf** ($\alpha = 0^\circ$) dauert der Flug genauso lange wie ein freier Fall aus $h_0$: $T = \sqrt{2h_0/g}$.
+Die größte Wurfweite erreicht man dann bei $\alpha = 45^\circ$. Zwei Winkel, die sich zu $90^\circ$ ergänzen (z. B. $30^\circ$ und $60^\circ$), ergeben dieselbe Weite. Wirft man aus der Höhe $h_0 > 0$, liegt der beste Winkel **unter** $45^\circ$. Beim **waagerechten Wurf** ($\alpha = 0^\circ$) dauert der Flug genauso lange wie ein freier Fall aus $h_0$: $T = \sqrt{2h_0/g}$. Die Wurfweite ist dann $w = v_0 \cdot \sqrt{2h_0/g}$.
+
+Die **Bahngeschwindigkeit** setzt sich aus den beiden Komponenten zusammen: $v = \sqrt{v_x^2 + v_y^2}$. Ohne Luftwiderstand trifft der Ball mit $v = \sqrt{v_0^2 + 2 g h_0}$ auf – das folgt auch aus dem Energieerhaltungssatz.
 
 ## Ausprobieren
 
@@ -93,6 +95,17 @@ Vergleiche für einen Fußball ($v_0 = 28\,\tfrac{\text{m}}{\text{s}}$, $\alpha 
 <summary>Lösung anzeigen</summary>
 
 Ohne Luft: $w = \frac{28^2 \cdot \sin 70^\circ}{9{,}81}\,\text{m} \approx 75{,}1\,\text{m}$. Mit Luft fliegt der Ball nur etwa $45{,}7\,\text{m}$ weit und weniger hoch; die Bahn ist keine Parabel mehr, der Scheitel liegt weiter hinten, der Ball kommt steiler herunter. Der beste Winkel liegt bei etwa $41^\circ$, also unter $45^\circ$. Die Energie pro Kilogramm $\tfrac12 v^2 + g\,y$ bleibt ohne Luft konstant, mit Luft nimmt sie ab – sie wird in innere Energie der Luft und des Balls umgewandelt.
+
+</details>
+
+### Aufgabe 6: Waagerechter Wurf auf dem Mond
+
+Derselbe Stein wie in Aufgabe 3 wird auf dem Mond ($g = 1{,}62\,\tfrac{\text{m}}{\text{s}^2}$) waagerecht mit $10\,\tfrac{\text{m}}{\text{s}}$ aus $20\,\text{m}$ Höhe geworfen. Berechne Flugzeit, Wurfweite und Aufprallgeschwindigkeit. Um welchen Faktor ist die Wurfweite größer als auf der Erde? [Aufgabe laden](?planet=mond&v0=10&angle=0&h0=20&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$T = \sqrt{2 \cdot 20 / 1{,}62}\,\text{s} \approx 4{,}97\,\text{s}$, $w = 10 \cdot 4{,}97\,\text{m} \approx 49{,}7\,\text{m}$. Beim Aufprall ist $v_y = 1{,}62 \cdot 4{,}97\,\tfrac{\text{m}}{\text{s}} \approx 8{,}05\,\tfrac{\text{m}}{\text{s}}$, also $v = \sqrt{10^2 + 8{,}05^2}\,\tfrac{\text{m}}{\text{s}} \approx 12{,}8\,\tfrac{\text{m}}{\text{s}}$. Die Wurfweite ist um den Faktor $\sqrt{9{,}81/1{,}62} \approx 2{,}46$ größer als auf der Erde ($20{,}2\,\text{m}$).
 
 </details>
 
