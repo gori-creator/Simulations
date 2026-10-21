@@ -290,6 +290,11 @@ export default defineSimulation({
     let geo: NodeGeo[] = [];
     let geoKey = '';
 
+    /**
+     * Dezimalanzeige, wenn der Term Dezimalzahlen enthält oder eine Variable
+     * mit einem Dezimalwert belegt ist (Regler 2,5 → im Baum „2,5“, nicht „5/2“).
+     */
+    const useDecimal = () => !!term && (term.decimal || term.vars.some((v) => !Number.isInteger(p[v])));
     const doneSet = () => new Set(done);
     const subst = (): Partial<Record<VarName, Q>> => Object.fromEntries((term?.vars ?? []).map((v) => [v, fromNumber(p[v])])) as Partial<Record<VarName, Q>>;
     const valueMap = (upto = done.length) => {
@@ -310,7 +315,7 @@ export default defineSimulation({
     const colorOf = (node: TermNode) => (isInner(node) ? classColor(opClass(node)) : node.kind === 'var' ? classColor('var') : classColor('leaf'));
 
     /* ---------- Text-Bausteine ---------- */
-    const numText = (v: Q) => showText(v, term?.decimal ?? false, lang);
+    const numText = (v: Q) => showText(v, useDecimal(), lang);
     const opSymbol = (node: InnerNode) => (node.kind === 'neg' ? '−' : ({ '+': '+', '-': '−', '*': '·', ':': ':', '/': ':', '^': '^' } as const)[node.op]);
 
     /** Rechnung als Text, z. B. „8 · 3 = 24“. */
@@ -518,7 +523,7 @@ export default defineSimulation({
           const part = (n: TermNode, i: 0 | 1) => {
             const k = kindOf(n);
             const sub = k === 'number' || k === 'variable' ? '' : ` <span style="color: var(--muted)">(${KIND_NAMES[k][lang]})</span>`;
-            return `${names[i][lang]}: ${boxHtml(typeset({ ...n, brackets: [] }, { lang, decimal: term!.decimal }))}${sub}`;
+            return `${names[i][lang]}: ${boxHtml(typeset({ ...n, brackets: [] }, { lang, decimal: useDecimal() }))}${sub}`;
           };
           ctx.readout('parts', { html: `${part(root.left, 0)}<br>${part(root.right, 1)}` });
         } else ctx.readout('parts', null);
@@ -526,7 +531,7 @@ export default defineSimulation({
         ctx.readout('words', sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.');
       }
       // Rechenweg
-      const o = { lang, decimal: term.decimal } as const;
+      const o = { lang, decimal: useDecimal() } as const;
       const s = subst();
       const why = (t: string) => ` <small style="color: var(--muted)">(${t})</small>`;
       const lines: string[] = [boxHtml(typeset(root, o))];
@@ -567,7 +572,7 @@ export default defineSimulation({
     }
 
     function html(v: Q): string {
-      const s = show(v, term?.decimal ?? false, lang);
+      const s = show(v, useDecimal(), lang);
       const body = s.kind === 'frac' ? `<span class="frac"><span>${s.num}</span><span>${s.den}</span></span>` : s.text;
       return s.neg ? `−${body}` : body;
     }
@@ -603,7 +608,7 @@ export default defineSimulation({
         auto = false;
         status = { text: tr('fail', { calc: calcText(node), msg: ctx.t(v ? v.error : 'divZero') }), tone: 'error' };
       } else if (explain && expected && expected.id !== node.id) {
-        status = { text: tr('other', { calc: calcText(node), next: termText({ ...expected, brackets: [] }, lang, term.decimal) }), tone: 'warn', color };
+        status = { text: tr('other', { calc: calcText(node), next: termText({ ...expected, brackets: [] }, lang, useDecimal()) }), tone: 'warn', color };
       } else if (!remaining.length) {
         const kind = kindOf(term.root) as Exclude<Kind, 'number' | 'variable'>;
         status = { text: `${tr('step', { k: done.length, reason: ctx.t(reason), calc: calcText(node) })} · ${tr('done', { kind: ctx.t(`art_${kind}`), verb: ctx.t(`verb_${kind}`) })}`, tone: 'ok', color };
@@ -687,7 +692,7 @@ export default defineSimulation({
         geo = [];
         return;
       }
-      const key = `${surface.width}x${surface.height}|${term.nodes.length}|${termText(term.root, lang)}|${p.top}|${lang}|${p.names}`;
+      const key = `${surface.width}x${surface.height}|${term.nodes.length}|${termText(term.root, lang)}|${p.top}|${lang}|${p.names}|${useDecimal()}`;
       if (key === geoKey) return;
       geoKey = key;
       const { tree } = regions();
@@ -805,7 +810,7 @@ export default defineSimulation({
         const missing = children(node).find((c) => isInner(c) && !done.includes(c.id));
         if (missing) {
           shake = { id: node.id, start: performance.now() };
-          status = { text: tr('notReady', { child: termText({ ...missing, brackets: [] }, lang, term.decimal) }), tone: 'warn' };
+          status = { text: tr('notReady', { child: termText({ ...missing, brackets: [] }, lang, useDecimal()) }), tone: 'warn' };
           return;
         }
         auto = false;
@@ -842,7 +847,7 @@ export default defineSimulation({
 
     /** Wert als Pille; Brüche gestapelt. */
     function valuePill(x: number, y: number, v: Q, color: string, size: number, scale = 1, alpha = 1, strong = false): void {
-      const s = show(v, term?.decimal ?? false, lang);
+      const s = show(v, useDecimal(), lang);
       if (s.kind !== 'frac') {
         pill(x, y, s.neg ? `−${s.text}` : s.text, color, size, scale, alpha, strong);
         return;
@@ -881,7 +886,7 @@ export default defineSimulation({
 
     function pillHeight(v: Q | null, size: number): number {
       if (!v) return size * 1.55;
-      return show(v, term?.decimal ?? false, lang).kind === 'frac' ? size * 0.86 * 2.55 : size * 1.55;
+      return show(v, useDecimal(), lang).kind === 'frac' ? size * 0.86 * 2.55 : size * 1.55;
     }
 
     /** Punkt auf der (gebogenen) Kante von a nach b. */
@@ -930,7 +935,7 @@ export default defineSimulation({
         return;
       }
       if (!term) return;
-      const o = { lang, decimal: term.decimal } as const;
+      const o = { lang, decimal: useDecimal() } as const;
       const rects: { node: number; r: Rect }[] = [];
       const size1 = small ? 23 : 32;
       const box1 = typeset(term.root, o);

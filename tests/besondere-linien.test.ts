@@ -327,3 +327,55 @@ describe('Plausibilität über viele Zufallsdreiecke', () => {
     }
   });
 });
+
+describe('Aufgaben im Lernmaterial (Prüfrunde)', () => {
+  it('Aufgabe 1/2: A(2|2), B(10|2), C(2|8): U = (6|5), r = 5, H = A, W = (4|4), ρ = 2', () => {
+    const t: Tri = [
+      [2, 2],
+      [10, 2],
+      [2, 8],
+    ];
+    close(circumcenter(t), 6, 5);
+    expect(circumradius(t)).toBeCloseTo(5, 12);
+    close(orthocenter(t), 2, 2);
+    close(incenter(t), 4, 4);
+    expect(inradius(t)).toBeCloseTo(2, 12);
+  });
+  it('Aufgabe 5: A(1|1), B(7|1), C(3|5): S = (11/3 | 7/3), U = (4|2), H = (3|3), |HS| ≈ 0,94, |SU| ≈ 0,47', () => {
+    const t: Tri = [
+      [1, 1],
+      [7, 1],
+      [3, 5],
+    ];
+    const e = euler(t)!;
+    close(e.s, 11 / 3, 7 / 3);
+    close(e.u, 4, 2);
+    close(e.h, 3, 3);
+    expect(e.hs).toBeCloseTo((2 * Math.SQRT2) / 3, 12);
+    expect(e.su).toBeCloseTo(Math.SQRT2 / 3, 12);
+  });
+  it('Stumpf-Beispiel A(2|2), B(12|2), C(4,5|4,5): H = (4,5|9,5), h_a ≈ 3,16, h_b ≈ 7,07, h_c = 2,5', () => {
+    const t: Tri = [
+      [2, 2],
+      [12, 2],
+      [4.5, 4.5],
+    ];
+    close(orthocenter(t), 4.5, 9.5);
+    const [ha, hb, hc] = altitudes(t);
+    expect(ha).toBeCloseTo(Math.sqrt(10), 12);
+    expect(hb).toBeCloseTo(5 * Math.SQRT2, 12);
+    expect(hc).toBeCloseTo(2.5, 12);
+    expect(kind(t)).toBe('stumpf');
+  });
+  it('entartet (Ecken auf einer Geraden): kein U, kein H, keine Euler-Gerade', () => {
+    const t: Tri = [
+      [2, 2],
+      [6, 4],
+      [10, 6],
+    ];
+    expect(degenerate(t)).toBe(true);
+    expect(circumcenter(t)).toBeNull();
+    expect(orthocenter(t)).toBeNull();
+    expect(euler(t)).toBeNull();
+  });
+});

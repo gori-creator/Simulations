@@ -10,6 +10,7 @@ import {
   MD,
   meanKineticEnergy,
   meanSpeed,
+  thermostatOptions,
   modelKT,
   ParticleBox,
   phaseState,
@@ -595,9 +596,12 @@ export default defineSimulation({
     const fadeOld = new Tween(700, ease.outCubic);
     const histo = new Float64Array(BINS);
     let histoReady = false;
-    let meanV = meanSpeed(p.T);
+    /** Geglättetes Verhältnis Ø (Teilchen) / Ø (Sollwert). */
+    let meanR = 1;
     let gasFrac = st.gas;
     let pistonH = 0;
+    /** Zeit in s seit dem letzten Zustandswechsel (für den Thermostat). */
+    let sinceTransition = Infinity;
     const stepper = new FixedStepper(1 / 300);
     const limitNote = new Tween(2600, ease.linear);
     let limitText = '';
@@ -708,6 +712,8 @@ export default defineSimulation({
       box.height = pistonTarget(G);
       pistonH = box.height;
       box.arrange(Math.round(st.solid * nn), Math.round(st.gas * nn), modelKT(st.theta));
+      // Beim Einsortieren wird Lageenergie frei: kurz straffer regeln (wie nach einem Zustandswechsel)
+      sinceTransition = 0;
       // Nachbarplätze im Gitter (für die gezeichneten Bindungen)
       const pairs: number[] = [];
       for (let a = 0; a < sites.length; a++) {
@@ -781,7 +787,10 @@ export default defineSimulation({
         pistonH = pistonTarget(G);
         box.height = pistonH;
         const b = box;
-        stepper.run(Math.min(dt, 0.05), (h) => b.step(h, { kT, tau: 0.35, shuffle: 0.35 }));
+        // Beim Schmelzen und Sieden regelt der Thermostat straffer (siehe THERMOSTAT im Modell)
+        sinceTransition = st.phase === 'melting' || st.phase === 'boiling' ? 0 : sinceTransition + dt;
+        const thermo = thermostatOptions(st.phase, kT, sinceTransition);
+        stepper.run(Math.min(dt, 0.05), (h) => b.step(h, thermo));
         // Histogramm (gleitender Mittelwert) und mittlere Geschwindigkeit
         const inst = new Float64Array(BINS);
         let sum = 0;
@@ -793,7 +802,10 @@ export default defineSimulation({
         }
         const a = histoReady ? 1 - Math.exp(-dt * 1.6) : 1;
         for (let k = 0; k < BINS; k++) histo[k]! += (inst[k]! - histo[k]!) * a;
-        meanV += (sum / b.n - meanV) * (histoReady ? 1 - Math.exp(-dt * 1.2) : 1);
+        // Geglättet wird das Verhältnis zum Sollwert, nicht der Wert selbst: So folgt
+        // die Anzeige beim schnellen Heizen und Kühlen der Temperatur ohne Nachlauf.
+        const vRef = meanSpeed(st.theta);
+        meanR += (sum / b.n / vRef - meanR) * (histoReady ? 1 - Math.exp(-dt * 1.2) : 1);
         histoReady = true;
         if (tracked >= 0 && tracked < b.n) {
           trail.push([b.x[tracked]!, b.y[tracked]!]);
@@ -1600,7 +1612,7 @@ export default defineSimulation({
       const fs = sm ? 11 : 12;
       const ty = R.y + (sm ? 17 : 20);
       text(g, ctx.t(R.w < 300 ? 'histTitleS' : 'histTitle'), R.x + 14, ty, { font: `700 ${fs + 1}px ${theme.font}`, color: theme.text, align: 'left' });
-      const mv = ease2('meanV', meanV, 4);
+      const mv = ease2('meanR', meanR, 4) * meanSpeed(st.theta);
       const meanLab = tr('mean', { v: n(Math.round(mv / 10) * 10, 0) });
       text(g, meanLab, R.x + R.w - 14, ty, { font: `700 ${fs}px ${theme.font}`, color: theme.text, align: 'right' });
       const A: Rect = { x: R.x + 16, y: R.y + (sm ? 36 : 42), w: R.w - 32, h: R.h - (sm ? 36 : 42) - (sm ? 32 : 36) };

@@ -161,3 +161,32 @@ describe('Modell: Koordinaten und Lagebeziehungen – Punkte-Spiel', () => {
     expect(onAxis).toBeLessThan(120);
   });
 });
+
+describe('Modell: Prüfwerte der Prüfrunde (von Hand nachgerechnet)', () => {
+  it('Längen, Lage Punkt–Kreis und Kreis–Gerade', () => {
+    // (0 | 0) bis (3 | 4): √(9 + 16) = 5, exakt ablesbar
+    expect(distance([0, 0], [3, 4])).toBe(5);
+    expect(isExactLength(5)).toBe(true);
+    // (1 | 1) bis (7 | 5): √52 ≈ 7,21 → gemessen 7,2 cm
+    expect(measured(distance([1, 1], [7, 5]))).toBe(7.2);
+    expect(isExactLength(Math.sqrt(52))).toBe(false);
+    // (2 | 5) liegt auf dem Kreis um (2 | 2) mit r = 3
+    expect(pointCircle([2, 5], [2, 2], 3)).toBe('on');
+    expect(pointCircle([2, 4], [2, 2], 3)).toBe('inside');
+    expect(pointCircle([4, 5], [2, 2], 3)).toBe('outside');
+    // Gerade x = 9 und Kreis um (5 | 4) mit r = 3: Abstand 4 > 3 → Passante
+    const kl = circleLine([5, 4], 3, [9, 0], [9, 8]);
+    expect(kl.kind).toBe('passante');
+    expect(kl.distance).toBe(4);
+    // Abstand von P(9 | 1) zu g = AB mit A(2 | 2), B(8 | 5): 27/√45 ≈ 4,02
+    expect(measured(pointLineDistance([9, 1], [2, 2], [8, 5]))).toBe(4);
+  });
+
+  it('Spiel: Bewertung bei Punkten auf den Achsen', () => {
+    // (0 | 4) mit (4 | 0) verwechselt: vertauscht
+    expect(judge([0, 4], [4, 0])).toBe('swapped');
+    // gleiche Koordinaten können nicht vertauscht sein
+    expect(judge([3, 3], [3, 4])).toBe('near');
+    expect(judge([3, 3], [5, 5])).toBe('wrong');
+  });
+});

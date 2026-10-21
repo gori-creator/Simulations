@@ -37,6 +37,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Werte sichtbar? Im Aufgabenmodus (`info=0`) sind die Regler a, b, c, d ausgeblendet, sonst wäre die Lösung ablesbar. */
+const shown = (v: Record<string, unknown>) => v.info !== false;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 type Key = StepKey;
@@ -175,11 +177,12 @@ export default defineSimulation({
       type: 'number',
       group: 'par',
       label: L('a (Streckung in y-Richtung)', 'a (vertical stretch)'),
-      help: L('a < 0: Spiegelung an der x-Achse. Auch am roten Formpunkt im Bild ziehen.', 'a < 0: reflection in the x-axis. You can also drag the red shape point.'),
+      help: L('a < 0: Spiegelung an der x-Achse. Auch am rautenförmigen Formpunkt im Bild ziehen.', 'a < 0: reflection in the x-axis. You can also drag the diamond-shaped shape point.'),
       min: -3,
       max: 3,
       step: 0.1,
       default: 2,
+      visibleIf: shown,
     },
     {
       key: 'b',
@@ -191,19 +194,21 @@ export default defineSimulation({
       max: 3,
       step: 0.1,
       default: 1,
+      visibleIf: shown,
     },
     {
       key: 'c',
       type: 'number',
       group: 'par',
       label: L('c (Verschiebung in x-Richtung)', 'c (horizontal shift)'),
-      help: L('Auch den grünen Ankerpunkt ziehen.', 'You can also drag the green anchor point.'),
+      help: L('Auch den runden Ankerpunkt (c | d) im Bild ziehen.', 'You can also drag the round anchor point (c, d).'),
       min: -5,
       max: 5,
       step: 0.1,
       default: 1,
+      visibleIf: shown,
     },
-    { key: 'd', type: 'number', group: 'par', label: L('d (Verschiebung in y-Richtung)', 'd (vertical shift)'), min: -5, max: 5, step: 0.1, default: -2 },
+    { key: 'd', type: 'number', group: 'par', label: L('d (Verschiebung in y-Richtung)', 'd (vertical shift)'), min: -5, max: 5, step: 0.1, default: -2, visibleIf: shown },
     {
       key: 'ord',
       type: 'choice',
@@ -252,11 +257,11 @@ export default defineSimulation({
   strings: {
     de: {
       canvas:
-        'Großes Koordinatensystem mit dem Graphen einer Grundfunktion f (blass, gestrichelt) und ihrem Bild g(x) = a · f(b(x − c)) + d (kräftig). Markante Punkte von f sind mit Pfeilen mit ihren Bildpunkten verbunden. Der grüne Ankerpunkt (c | d) verschiebt den Graphen, der rote Formpunkt streckt ihn. Unter dem Bild eine Zeitleiste für die Schrittfolge f → f(bx) → f(b(x − c)) → a·f(b(x − c)) → … + d mit Streckpfeilen, Spiegelachsen und Verschiebungsvektoren. Daneben Karten mit Term, Wirkung der Parameter, Punkttabelle und Eigenschaften von g.',
+        'Großes Koordinatensystem mit dem Graphen einer Grundfunktion f (blass, gestrichelt) und ihrem Bild g(x) = a · f(b(x − c)) + d (kräftig). Markante Punkte von f sind mit Pfeilen mit ihren Bildpunkten verbunden. Der runde Ankerpunkt (c | d) verschiebt den Graphen, der rautenförmige Formpunkt streckt ihn; bei 1/x und 2ˣ sind die Asymptoten gestrichelt eingezeichnet. Nullstellen sind als Ringe auf der x-Achse markiert. Unter dem Bild eine Zeitleiste für die Schrittfolge f → f(bx) → f(b(x − c)) → a·f(b(x − c)) → … + d mit Streckpfeilen, Spiegelachsen und Verschiebungsvektoren. Daneben Karten mit Term, Wirkung der Parameter, Punkttabelle und Eigenschaften von g. Im Aufgabenmodus sind Term, Werte und Hilfen verdeckt.',
     },
     en: {
       canvas:
-        'Large coordinate system with the graph of a basic function f (faint, dashed) and its image g(x) = a · f(b(x − c)) + d (bold). Key points of f are joined to their images by arrows. The green anchor point (c | d) shifts the graph, the red shape point stretches it. Below the picture a timeline for the steps f → f(bx) → f(b(x − c)) → a·f(b(x − c)) → … + d with stretch arrows, mirror lines and shift vectors. Next to it cards with the term, the effect of the parameters, a table of points and properties of g.',
+        'Large coordinate system with the graph of a basic function f (faint, dashed) and its image g(x) = a · f(b(x − c)) + d (bold). Key points of f are joined to their images by arrows. The round anchor point (c, d) shifts the graph, the diamond-shaped shape point stretches it; for 1/x and 2ˣ the asymptotes are dashed. Zeros are marked as rings on the x-axis. Below the picture a timeline for the steps f → f(bx) → f(b(x − c)) → a·f(b(x − c)) → … + d with stretch arrows, mirror lines and shift vectors. Next to it cards with the term, the effect of the parameters, a table of points and properties of g. In task mode the term, the values and the hints are hidden.',
     },
   },
 
@@ -271,6 +276,16 @@ export default defineSimulation({
     const T2 = (de: string, en: string) => (lang === 'de' ? de : en);
     const setP = (vals: Record<string, number | boolean | string>) => ctx.set(vals as never);
     const editable = () => !ctx.locked;
+    /** Schatten: im Dunkeln aus dem Hintergrund, im Hellen aus der Schriftfarbe. */
+    const shade = (dark: number, light: number) => (th().dark ? mixColor(th().bg, th().bg, 0, dark) : mixColor(th().text, th().text, 0, light));
+    /** Kartenfläche (im Dunkeln etwas heller als der Hintergrund). */
+    const surf = (lift = 0.045) => (th().dark ? mixColor(th().bg, th().text, lift) : th().bg);
+    /** Kartenrand. */
+    const edgeLine = () => mixColor(th().bg, th().text, th().dark ? 0.15 : 0.11);
+    /** Pillenhintergrund (leicht durchscheinend). */
+    const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.03 : 0, th().dark ? 0.9 : 0.94);
+    /** Glanzlicht: helle Farbe des Themes. */
+    const shine = () => (th().dark ? th().text : th().bg);
     const kind = () => p.f as Base;
     const order = () => p.ord as Order;
 
@@ -498,7 +513,7 @@ export default defineSimulation({
     function simplerSrc(k: Base, t: Trafo, C: Col): string | null {
       if (near(t.a, 0)) return null;
       const w = withoutB(k, t);
-      if (w && !near(t.b, 1)) return `= ${termSrc(k, w, C, { name: '' })}`;
+      if (w && !near(t.b, 1)) return `${eq(w.a)} ${termSrc(k, w, C, { name: '' })}`;
       if (near(t.b, -1) && !near(t.c, 0)) return `= ${termSrc(k, t, C, { name: '', simple: true })}`;
       return null;
     }
@@ -554,7 +569,7 @@ export default defineSimulation({
       if (order() === 'swap' && key === 'b' && !near(t.b, 1) && !near(t.c, 0)) {
         const e = effectOf('b', t);
         const what = e.kind === 'mirror' ? T2('an der y-Achse gespiegelt', 'reflected in the y-axis') : effectText('b', t);
-        return T2(`${what} – die Verschiebung schrumpft mit auf c/b = ${N(t.c / t.b)}`, `${what} – the shift shrinks with it to c/b = ${N(t.c / t.b)}`);
+        return T2(`${what} – die Verschiebung schrumpft mit auf c/b ${eq(t.c / t.b)} ${N(t.c / t.b)}`, `${what} – the shift shrinks with it to c/b ${eq(t.c / t.b)} ${N(t.c / t.b)}`);
       }
       return effectText(key, t);
     }
@@ -610,8 +625,8 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
+      g.fillStyle = pillBg();
+      g.shadowColor = shade(0.45, 0.14);
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
       roundRect(g, rr.x, rr.y, rr.w, rr.h, Math.min(11, rr.h / 2));
@@ -657,11 +672,11 @@ export default defineSimulation({
         return;
       }
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.28)';
+      g.shadowColor = shade(0.55, 0.28);
       g.shadowBlur = 5;
       g.shadowOffsetY = 1;
       const grad = g.createRadialGradient(x - r * 0.35, y - r * 0.4, 0.5, x, y, r);
-      grad.addColorStop(0, mixColor(color, '#ffffff', 0.45));
+      grad.addColorStop(0, mixColor(color, shine(), 0.45));
       grad.addColorStop(1, color);
       g.fillStyle = grad;
       g.beginPath();
@@ -686,7 +701,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       if (opts.glow) {
-        g.shadowColor = th().dark ? 'rgba(0,0,0,0.6)' : mixColor(color, '#ffffff', 0.35, 0.55);
+        g.shadowColor = th().dark ? shade(0.6, 0) : mixColor(color, shine(), 0.35, 0.55);
         g.shadowBlur = th().dark ? 8 : 6;
         g.shadowOffsetY = 2;
       }
@@ -774,7 +789,7 @@ export default defineSimulation({
       };
       if (opts.glow) {
         g.save();
-        g.shadowColor = th().dark ? 'rgba(0,0,0,0.65)' : mixColor(color, '#ffffff', 0.4, 0.55);
+        g.shadowColor = th().dark ? shade(0.65, 0) : mixColor(color, shine(), 0.4, 0.55);
         g.shadowBlur = th().dark ? 9 : 7;
         g.shadowOffsetY = 2;
         g.strokeStyle = color;
@@ -789,7 +804,7 @@ export default defineSimulation({
       g.stroke();
       if (opts.glow && width >= 2.5 && !opts.dash) {
         g.translate(0, -width * 0.22);
-        g.strokeStyle = withAlpha('#ffffff', th().dark ? 0.18 : 0.36);
+        g.strokeStyle = mixColor(shine(), shine(), 0, th().dark ? 0.18 : 0.36);
         g.lineWidth = Math.max(1, width * 0.3);
         path();
         g.stroke();
@@ -801,10 +816,10 @@ export default defineSimulation({
       const g = surface.g;
       const theme = th();
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.5, 0.1);
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = surf();
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -816,7 +831,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = edgeLine();
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -867,13 +882,13 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= alpha;
       const grad = g.createLinearGradient(0, cy - 10, 0, cy + 10);
-      grad.addColorStop(0, mixColor(color, '#ffffff', 0.18));
+      grad.addColorStop(0, mixColor(color, shine(), 0.18));
       grad.addColorStop(1, color);
       g.fillStyle = grad;
       roundRect(g, x, cy - 10, w, 20, 10);
       g.fill();
       g.font = `italic 700 14px ${th().mathFont}`;
-      g.fillStyle = th().dark ? '#0d1117' : '#ffffff';
+      g.fillStyle = th().bg;
       g.textAlign = 'center';
       g.textBaseline = 'middle';
       g.fillText(label, x + w / 2, cy + 0.5);
@@ -954,7 +969,7 @@ export default defineSimulation({
       if (alpha <= 0.01) return;
       const g = surface.g;
       const r = plot.rect;
-      const pulse = 0.65 + 0.35 * Math.sin(now / 130);
+      const pulse = reduced() ? 0.8 : 0.65 + 0.35 * Math.sin(now / 130);
       g.save();
       g.globalAlpha *= alpha;
       g.strokeStyle = withAlpha(color, 0.22 * pulse);
@@ -1040,7 +1055,7 @@ export default defineSimulation({
           if (len > 20 && (!best || len > best.len) && p1[1] > r.y + 20 && p1[1] < r.y + r.h - 20) best = { len, x: (p0[0] + p1[0]) / 2, y: (p0[1] + p1[1]) / 2 };
         }
         const e = effectOf(key, t);
-        const fac = horizontal ? `· \\f{1}{b} = ${N(e.amount * (t.b < 0 ? -1 : 1), 2)}` : `· a = ${N(t.a, 2)}`;
+        const fac = horizontal ? `· \\f{1}{b} ${eq(1 / t.b)} ${N(1 / t.b, 2)}` : `· a = ${N(t.a, 2)}`;
         const src = `\\c{${key}}{${fac}}`;
         if (e.kind === 'none') return;
         if (best) lab(src, best.x, best.y, horizontal ? -20 : 0);
@@ -1164,11 +1179,11 @@ export default defineSimulation({
       g.globalAlpha *= alpha;
       if (hl) halo(x, y, color, 28, 1);
       g.save();
-      g.shadowColor = th().dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.3)';
+      g.shadowColor = shade(0.55, 0.3);
       g.shadowBlur = 6;
       g.shadowOffsetY = 1.5;
       const grad = g.createLinearGradient(x, y - s, x, y + s);
-      grad.addColorStop(0, mixColor(color, '#ffffff', 0.4));
+      grad.addColorStop(0, mixColor(color, shine(), 0.4));
       grad.addColorStop(1, color);
       g.fillStyle = grad;
       g.beginPath();
@@ -1310,7 +1325,7 @@ export default defineSimulation({
             { x: (aw[0] + ar[0]) / 2, y: aw[1] - 26, align: 'center' },
             { x: (aw[0] + ar[0]) / 2, y: aw[1] + 52, align: 'center' },
           ],
-          `\\c{s}{\\f{c}{b} = ${N(t.c / t.b)}} \\t{${T2('statt', 'instead of')}} \\c{c}{c = ${N(t.c)}}`,
+          `\\c{s}{\\f{c}{b} ${eq(t.c / t.b)} ${N(t.c / t.b)}} \\t{${T2('statt', 'instead of')}} \\c{c}{c = ${N(t.c)}}`,
           { size: fs(12.5, 11.5), alpha: q, bounds: r, border: withAlpha(col.swap(), 0.55) },
         );
       }
@@ -1350,7 +1365,7 @@ export default defineSimulation({
         const tt = result();
         const par = (s: string) => (s.startsWith('−') ? `(${s})` : s);
         const pm = (key: Key, v: number) => `${v < 0 ? '−' : '+'} \\c{${key}}{${N(Math.abs(v))}}`;
-        const src = `${pt(X(u), N(v))} \\t{↦} ${pt(`${par(X(u))} ${T2(":", "/")} \\c{b}{${par(N(tt.b))}} ${pm('c', tt.c)}`, `\\c{a}{${par(N(tt.a))}} · ${par(N(v))} ${pm('d', tt.d)}`)} = \\c{g}{${pt(X(x1), N(y1))}}`;
+        const src = `${pt(X(u), N(v))} \\t{↦} ${pt(`${par(X(u))} ${T2(":", "/")} \\c{b}{${par(N(tt.b))}} ${pm('c', tt.c)}`, `\\c{a}{${par(N(tt.a))}} · ${par(N(v))} ${pm('d', tt.d)}`)} ${(kind() === 'sin' && piSrc(x1)) || isExact(x1) ? eq(y1) : '≈'} \\c{g}{${pt(X(x1), N(y1))}}`;
         const right = q1[0] < r.x + r.w * 0.55;
         fpill(q1[0] + (right ? 14 : -14), clamp(q1[1] - 24, r.y + 20, r.y + r.h - 20), src, { align: right ? 'left' : 'right', size: fs(12, 11), bounds: r, border: withAlpha(col.g(), 0.5) });
       }
@@ -1399,14 +1414,14 @@ export default defineSimulation({
       g.globalAlpha *= a;
       // Hintergrund
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
+      g.shadowColor = shade(0.45, 0.1);
       g.shadowBlur = 10;
       g.shadowOffsetY = 2;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = surf();
       roundRect(g, G.box.x, G.box.y, G.box.w, G.box.h, G.box.h / 2);
       g.fill();
       g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = edgeLine();
       g.lineWidth = 1.2;
       roundRect(g, G.box.x + 0.5, G.box.y + 0.5, G.box.w - 1, G.box.h - 1, G.box.h / 2);
       g.stroke();
@@ -1415,18 +1430,18 @@ export default defineSimulation({
       const hp = hover?.id === 'play';
       const pc = col.g();
       g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : withAlpha(pc, 0.35);
+      g.shadowColor = theme.dark ? shade(0.5, 0) : withAlpha(pc, 0.35);
       g.shadowBlur = hp ? 10 : 6;
       g.shadowOffsetY = 1.5;
       const grad = g.createLinearGradient(0, G.play.y - G.play.r, 0, G.play.y + G.play.r);
-      grad.addColorStop(0, mixColor(pc, '#ffffff', hp ? 0.3 : 0.18));
+      grad.addColorStop(0, mixColor(pc, shine(), hp ? 0.3 : 0.18));
       grad.addColorStop(1, pc);
       g.fillStyle = grad;
       g.beginPath();
       g.arc(G.play.x, G.play.y, G.play.r * (hp ? 1.06 : 1), 0, TAU);
       g.fill();
       g.restore();
-      g.fillStyle = '#ffffff';
+      g.fillStyle = theme.bg;
       if (playing) {
         g.fillRect(G.play.x - 5, G.play.y - 6, 3.5, 12);
         g.fillRect(G.play.x + 1.5, G.play.y - 6, 3.5, 12);
@@ -1472,11 +1487,11 @@ export default defineSimulation({
         const cur = Math.abs(tl - i) < 0.5;
         g.save();
         if (reached) {
-          g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : withAlpha(color, 0.35);
+          g.shadowColor = theme.dark ? shade(0.5, 0) : withAlpha(color, 0.35);
           g.shadowBlur = 5;
           g.shadowOffsetY = 1;
         }
-        g.fillStyle = reached ? color : theme.dark ? '#1c2533' : '#ffffff';
+        g.fillStyle = reached ? color : surf(0.07);
         g.beginPath();
         g.arc(x, G.cy, nr * (hl ? 1.12 : 1), 0, TAU);
         g.fill();
@@ -1487,7 +1502,7 @@ export default defineSimulation({
         g.arc(x, G.cy, nr * (hl ? 1.12 : 1), 0, TAU);
         g.stroke();
         g.font = `italic ${cur ? 800 : 700} ${fs(14, 13)}px ${theme.mathFont}`;
-        g.fillStyle = reached ? (theme.dark ? '#0d1117' : '#ffffff') : color;
+        g.fillStyle = reached ? theme.bg : color;
         g.textAlign = 'center';
         g.textBaseline = 'middle';
         g.fillText(i === 0 ? 'f' : keys[i - 1]!, x, G.cy + 0.5);
@@ -1502,7 +1517,7 @@ export default defineSimulation({
       g.arc(xt, G.cy, nr + 4.5, 0, TAU);
       g.stroke();
       if (!onNode) {
-        g.fillStyle = theme.dark ? '#e6edf6' : '#ffffff';
+        g.fillStyle = theme.dark ? theme.text : theme.bg;
         g.beginPath();
         g.arc(xt, G.cy, 6, 0, TAU);
         g.fill();
@@ -1583,7 +1598,7 @@ export default defineSimulation({
         const rows: RowSpec[] = [];
         const num: Trafo = { a: cv('ta', t.a), b: cv('tb', t.b), c: cv('tc', t.c), d: cv('td', t.d) };
         if (infoShown()) {
-          rows.push({ src: generalSrc(), size: fs(13, 12), color: th().muted, gap: 8 });
+          if (!compact) rows.push({ src: generalSrc(), size: fs(13, 12), color: th().muted, gap: 8 });
           rows.push({ src: termSrc(kd, t, colored, { num }), size: fs(17, 15), weight: 700, gap: 6 });
           const simp = simplerSrc(kd, t, colored);
           if (simp && !compact) rows.push({ src: `\\t{    }${simp}`, size: fs(14, 13), gap: 6 });
@@ -1600,9 +1615,9 @@ export default defineSimulation({
                 : kd === 'abs'
                   ? T2(`Beim Betrag wirkt b wie der Faktor |b| = ${N(Math.abs(t.b))} vor f.`, `For |x|, b acts like the factor |b| = ${N(Math.abs(t.b))} in front of f.`)
                   : kd === 'cub'
-                    ? T2(`Bei x³ wirkt b wie der Faktor b³ = ${N(t.b ** 3)} vor f.`, `For x³, b acts like the factor b³ = ${N(t.b ** 3)} in front of f.`)
+                    ? T2(`Bei x³ wirkt b wie der Faktor b³ ${eq(t.b ** 3)} ${N(t.b ** 3)} vor f.`, `For x³, b acts like the factor b³ ${eq(t.b ** 3)} ${N(t.b ** 3)} in front of f.`)
                     : kd === 'inv'
-                      ? T2(`Bei 1/x wirkt b wie der Faktor 1/b = ${N(1 / t.b)} vor f.`, `For 1/x, b acts like the factor 1/b = ${N(1 / t.b)} in front of f.`)
+                      ? T2(`Bei 1/x wirkt b wie der Faktor 1/b ${eq(1 / t.b)} ${N(1 / t.b)} vor f.`, `For 1/x, b acts like the factor 1/b ${eq(1 / t.b)} ${N(1 / t.b)} in front of f.`)
                       : T2(`Bei √x wirkt b wie der Faktor √b ${eq(Math.sqrt(t.b))} ${N(Math.sqrt(t.b))} vor f.`, `For √x, b acts like the factor √b ${eq(Math.sqrt(t.b))} ${N(Math.sqrt(t.b))} in front of f.`);
             rows.push(noteRow(note));
           }
@@ -1637,7 +1652,7 @@ export default defineSimulation({
             ]
           : stages(t);
         const fRow = termSrc(kd, stageT[0]!, plain, { name: 'f' });
-        rows.push({ src: fRow, size: fs(13, 12), badge: { label: 'f', color: col.f() }, gap: compact ? 6 : 8, hl: eng && hs?.k === -1 ? col.f() : undefined });
+        if (!compact) rows.push({ src: fRow, size: fs(13, 12), badge: { label: 'f', color: col.f() }, gap: compact ? 6 : 8, hl: eng && hs?.k === -1 ? col.f() : undefined });
         keys.forEach((key, i) => {
           const reached = !eng || tl > i + 1e-6;
           const active = eng && hs !== null && hs.k === i && tl < 4 - 1e-6;
@@ -1656,7 +1671,7 @@ export default defineSimulation({
         });
         if (show && swap && !near(t.c, 0) && !near(t.b, 1))
           rows.push({
-            ...noteRow(T2(`Ergebnis h(x) = a · f(bx − c) + d: nur um c/b = ${N(t.c / t.b)} statt um c = ${N(t.c)} verschoben. Für g gilt: erst strecken, dann verschieben.`, `Result h(x) = a · f(bx − c) + d: shifted by only c/b = ${N(t.c / t.b)} instead of c = ${N(t.c)}. For g: first stretch, then shift.`)),
+            ...noteRow(T2(`Ergebnis h(x) = a · f(bx − c) + d: nur um c/b ${eq(t.c / t.b)} ${N(t.c / t.b)} statt um c = ${N(t.c)} verschoben. Für g gilt: erst strecken, dann verschieben.`, `Result h(x) = a · f(bx − c) + d: shifted by only c/b ${eq(t.c / t.b)} ${N(t.c / t.b)} instead of c = ${N(t.c)}. For g: first stretch, then shift.`)),
             color: col.swap(),
           });
         else if (show && swap) rows.push(noteRow(T2('Hier ändert die Reihenfolge nichts, weil b = 1 oder c = 0 ist.', 'Here the order does not matter because b = 1 or c = 0.')));
@@ -1749,7 +1764,7 @@ export default defineSimulation({
           else if (kd === 'cub' || kd === 'inv') rows.push({ src: `\\t{${T2('Symmetriezentrum', 'centre of symmetry')}} Z${P}`, size: sz });
           else if (kd === 'sin') {
             const sd = sineData(t);
-            rows.push({ src: `\\t{${T2('Amplitude', 'amplitude')}} |a| = ${N(sd.amplitude)}   \\t{${T2('Periode', 'period')}} \\f{2π}{|b|} = ${piSrc(sd.period) ?? N(sd.period)}`, size: sz });
+            rows.push({ src: `\\t{${T2('Amplitude', 'amplitude')}} |a| = ${N(sd.amplitude)}   \\t{${T2('Periode', 'period')}} \\f{2π}{|b|} ${piSrc(sd.period) ? '=' : eq(sd.period)} ${piSrc(sd.period) ?? N(sd.period)}`, size: sz });
             rows.push({ src: `\\t{${T2('Mittellinie', 'midline')}} y = ${N(sd.midline)}`, size: sz });
           } else if (kd === 'exp') rows.push({ src: `\\t{${T2('Bild von', 'image of')}} ${pt('0', '1')}: ${pt(X(t.c), N(t.a + t.d))}`, size: sz });
           rows.push({ src: `D_g = ${setSrc(domainOf(kd, t), true)}   W_g = ${setSrc(rangeOf(kd, t), false)}`, size: sz });
@@ -1774,7 +1789,7 @@ export default defineSimulation({
       };
     }
 
-    function drawColumn(C: Rect, k: Intro): void {
+    function drawColumn(C0: Rect, k: Intro): void {
       const g = surface.g;
       const gap = fs(10, 8);
       const list: { id: string; fn: CardFn }[] = [
@@ -1784,14 +1799,33 @@ export default defineSimulation({
         { id: 'props', fn: propsCard(k) },
       ];
       // Höhen messen; reicht der Platz nicht, Karten nacheinander verkürzen (erst Schrittfolge, dann Punkte, Eigenschaften, Term)
-      const room = { x: C.x, y: C.y, w: C.w, h: C.h };
-      const full = list.map((c) => c.fn(room, true, false));
-      const short = list.map((c) => c.fn(room, true, true));
-      const compactSet = new Set<number>();
-      const total = () => list.reduce((s, _, i) => s + (compactSet.has(i) ? short[i]! : full[i]!) + gap, -gap);
-      for (const i of [1, 2, 3, 0]) {
-        if (total() <= C.h + 1) break;
-        if (short[i]! < full[i]!) compactSet.add(i);
+      const measure = (C: Rect) => {
+        const room = { x: C.x, y: C.y, w: C.w, h: C.h };
+        const full = list.map((c) => c.fn(room, true, false));
+        const short = list.map((c) => c.fn(room, true, true));
+        const compactSet = new Set<number>();
+        const total = () => list.reduce((s, _, i) => s + (compactSet.has(i) ? short[i]! : full[i]!) + gap, -gap);
+        for (const i of [1, 2, 3, 0]) {
+          if (total() <= C.h + 1) break;
+          if (short[i]! < full[i]!) compactSet.add(i);
+        }
+        return { full, short, compactSet, total: total() };
+      };
+      // Passen auch die kurzen Karten nicht (z. B. iPad), die Spalte leicht verkleinern (höchstens auf 80 %), damit keine Karte wegfällt
+      let sc = 1;
+      let C: Rect = C0;
+      let m = measure(C);
+      for (let it = 0; it < 3 && m.total > C.h + 1 && sc > 0.8 + 1e-6; it++) {
+        sc = Math.max(0.8, sc * ((C.h - 2) / m.total));
+        C = { x: 0, y: 0, w: C0.w / sc, h: C0.h / sc };
+        m = measure(C);
+      }
+      if (sc < 1) C = { x: 0, y: 0, w: C0.w / sc, h: C0.h / sc };
+      const { full, short, compactSet } = m;
+      g.save();
+      if (sc < 1) {
+        g.translate(C0.x, C0.y);
+        g.scale(sc, sc);
       }
       let y = C.y;
       list.forEach((c, i) => {
@@ -1823,6 +1857,7 @@ export default defineSimulation({
         g.restore();
         y += hh + gap;
       });
+      g.restore();
     }
 
     /* ---------- Ergebnisse ---------- */
@@ -1964,8 +1999,25 @@ export default defineSimulation({
       if (reduced()) kHint.jump(on ? 1 : 0);
       else if (kHint.goal !== (on ? 1 : 0)) kHint.glide(on ? 1 : 0, on ? 300 : 500, 0, now);
     }
-    /** Schrittfolge von vorn abspielen (erst zurückspulen). */
-    function startStory(now: number): void {
+    /**
+     * Reduzierte Bewegung: statt abzuspielen auf eine Stufe springen und stehen
+     * bleiben (`restart`: auf Stufe 1, sonst eine Stufe weiter). Weiter geht es
+     * mit „Schritt vor“ oder der Zeitleiste.
+     */
+    function stepReduced(now: number, restart: boolean): void {
+      const goal = restart || !engaged || TL.goal >= 4 - 1e-6 ? 1 : Math.min(4, Math.floor(TL.goal + 1e-6) + 1);
+      setEngaged(true, now);
+      TL.jump(goal);
+      storyTime = storyTimeOf(goal, plan());
+      // erst nach den übrigen Rückmeldungen der Uhr anhalten
+      if (ctx.clock.playing) queueMicrotask(() => ctx.clock.pause());
+    }
+    /** Schrittfolge von vorn abspielen (erst zurückspulen). `auto`: nicht vom Nutzer ausgelöst. */
+    function startStory(now: number, auto = false): void {
+      if (reduced()) {
+        if (!auto) stepReduced(now, true);
+        return;
+      }
       setEngaged(true, now);
       storyTime = 0;
       if (reduced()) TL.jump(0);
@@ -1993,8 +2045,15 @@ export default defineSimulation({
     ctx.clock.onChange((playing) => {
       const now = performance.now();
       if (playing) {
-        if (ctx.locked) {
-          ctx.clock.pause();
+        // gesperrt oder Aufgabenmodus: nichts abspielen (die Zwischenstufen verrieten die Lösung)
+        if (ctx.locked || !p.info) {
+          queueMicrotask(() => ctx.clock.pause());
+          return;
+        }
+        if (reduced()) {
+          stepReduced(now, false);
+          setLabels();
+          ctx.requestRender();
           return;
         }
         // am Ende (oder ohne laufende Schrittfolge): von vorn
@@ -2147,8 +2206,9 @@ export default defineSimulation({
           return;
         }
         const t = target();
-        // Spiegelung beim Vorzeichenwechsel melden
-        if (source !== 'init' && !taskLoad) {
+        // Spiegelung beim Vorzeichenwechsel melden (nicht bei reduzierter Bewegung: Die Meldung blendet
+        // ein und aus; die Spiegelung steht ohnehin in der Karte „Schritt für Schritt“)
+        if (source !== 'init' && !taskLoad && !reduced()) {
           const sa = Math.sign(t.a);
           const sb = Math.sign(t.b);
           if (sa !== prevSign.a && sa !== 0 && prevSign.a !== 0)
@@ -2186,7 +2246,7 @@ export default defineSimulation({
         }
         // Reihenfolge gewechselt oder Term aufgedeckt: Schrittfolge abspielen
         const revealed = changed.has('info') && p.info && source !== 'init';
-        if (source !== 'init' && editable() && ((changed.has('ord') && (p.ord === 'swap' || source === 'input')) || revealed)) startStory(now);
+        if (source !== 'init' && editable() && ((changed.has('ord') && (p.ord === 'swap' || source === 'input')) || revealed)) startStory(now, true);
         if (changed.has('info') && !p.info) {
           ctx.clock.pause();
           setEngaged(false, now);

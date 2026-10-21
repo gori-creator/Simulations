@@ -36,7 +36,8 @@ Am Rand notiert man, was man auf beiden Seiten tut, z. B. $\mid -x$. Das Ergebni
 4. Teile beide Seiten von [4x + 2 = 2x + 6](?a=4&b=2&c=2&d=6) durch 2. Warum bleibt die Waage im Gleichgewicht?
 5. [Keine Lösung?](?a=2&b=3&c=2&d=5) Nimm auf beiden Seiten alle Päckchen weg. Was bleibt übrig?
 6. [Grenze des Modells](?a=1&b=9&c=3&d=13): Warum kann die Waage hier nie im Gleichgewicht sein?
-7. Drücke **Neue Gleichung** für eine zufällige Aufgabe.
+7. [2x = 5](?a=2&b=0&c=0&d=5): Warum lassen sich die Gewichtsstücke nicht in zwei gleiche Teile teilen? Öffne die Päckchen: Wie schwer ist eines?
+8. Drücke **Neue Gleichung** für eine zufällige Aufgabe.
 
 ## Aufgaben
 
@@ -108,14 +109,14 @@ Löse rechnerisch: (a) $2x + 7 = 4x + 3$ und (b) $x + 6 = 3x + 10$. Welche der b
 
 ### Aufgabe 6: Sonderfälle
 
-Bestimme die Lösungsmenge: (a) $3x + 5 = 3x + 2$, (b) $2x + 4 = 2x + 4$.
+Bestimme die Lösungsmenge: (a) $3x + 5 = 3x + 2$, (b) $2x + 2 = 2(x + 1)$.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
 (a) $\mid -3x$ ergibt $5 = 2$ – falsch, also $L = \{\,\}$. Die [Waage](?a=3&b=5&c=3&d=2) kippt für jedes Päckchengewicht nach links.
 
-(b) $\mid -2x$ ergibt $4 = 4$ – immer wahr, also $L = \mathbb{Q}$.
+(b) Ausmultiplizieren ergibt $2x + 2 = 2x + 2$. $\mid -2x$ ergibt $2 = 2$ – immer wahr, also $L = \mathbb{Q}$. Die [Waage](?a=2&b=2&c=2&d=2) ist für jedes Päckchengewicht im Gleichgewicht. Klammern kann die Waage nicht zeigen, nur die ausmultiplizierte Form.
 
 </details>
 
@@ -124,7 +125,8 @@ Bestimme die Lösungsmenge: (a) $3x + 5 = 3x + 2$, (b) $2x + 4 = 2x + 4$.
 - **Einsatz:** Bayern Jahrgangsstufe 7, Lernbereich 3 (Lineare Gleichungen: Gleichungen aufstellen und durch Äquivalenzumformungen lösen) – als anschaulicher Einstieg, bevor Gleichungen mit negativen Zahlen rein rechnerisch gelöst werden.
 - **Bedienung:** Ein Antippen nimmt einen Gegenstand **nur auf einer Seite** weg – die Waage kippt und die Umformung wird rot markiert. Erst wenn auf der anderen Seite dasselbe weggenommen wird, entsteht eine gültige Zeile (aufeinanderfolgende gleichartige Schritte werden wie im Heft zusammengefasst, z. B. $\mid -2$). Die Knöpfe führen Umformungen auf beiden Seiten aus; „Beide Seiten : n“ schlägt einen passenden Teiler vor und teilt die Schalen sichtbar in gleiche Gruppen.
 - **Geteilte Links** enthalten die Ausgangsgleichung. „Neue Gleichung“ erzeugt Aufgaben mit natürlicher Lösung von 1 bis 6.
-- **Grenzen des Modells** (bewusst thematisieren): keine negativen Zahlen und keine Differenzen wie $3x - 2$, Lösungen nur positiv, Teilen nur, wenn es aufgeht; Addieren und Multiplizieren beider Seiten werden hier nicht angeboten, weil sie zum Lösen solcher Gleichungen nicht nötig sind.
+- **Grenzen des Modells** (bewusst thematisieren): keine negativen Zahlen und keine Differenzen wie $3x - 2$, Lösungen nur positiv, Teilen nur, wenn es aufgeht (bei $2x = 5$ nennt die Simulation $x = 2{,}5$ als rechnerische Lösung). Addieren und Multiplizieren beider Seiten werden hier nicht angeboten, weil sie zum Lösen solcher Gleichungen nicht nötig sind. Sprechen Sie sie trotzdem an: Legt man auf beide Schalen dasselbe, bleibt die Waage ebenfalls im Gleichgewicht.
+- **Bedienung ohne Maus und Finger:** Einzelne Gegenstände lassen sich nur durch Antippen oder Klicken wegnehmen. Mit der Tastatur stehen die Knöpfe für beide Seiten zur Verfügung.
 - **Häufige Stolpersteine:**
   - Es wird nur auf einer Seite umgeformt (genau das zeigt die kippende Waage).
   - Beim Dividieren wird nur ein Teil einer Seite geteilt: $2x + 4 = 10 \mid :2$ ergibt nicht $x + 4 = 5$, sondern $x + 2 = 5$.

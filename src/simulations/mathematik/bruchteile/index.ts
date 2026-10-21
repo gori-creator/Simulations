@@ -59,6 +59,9 @@ export default defineSimulation({
       of: '{z} von {n} gleich großen Teilen',
       wholes: '{w} Ganze und {r}/{n}',
       wholeOne: '1 Ganzes und {r}/{n}',
+      wholesOnly: '{w} Ganze',
+      wholeOnlyOne: '1 Ganzes',
+      period: 'Periode',
       more: 'weitere Ganze sind nicht gezeichnet',
     },
     en: {
@@ -67,6 +70,9 @@ export default defineSimulation({
       of: '{z} of {n} equal parts',
       wholes: '{w} wholes and {r}/{n}',
       wholeOne: '1 whole and {r}/{n}',
+      wholesOnly: '{w} wholes',
+      wholeOnlyOne: '1 whole',
+      period: 'recurring',
       more: 'further wholes are not drawn',
     },
   },
@@ -163,9 +169,16 @@ export default defineSimulation({
       const k = p.k;
       const red = reduce(z, n);
       ctx.readout('fraction', { html: `${frac(z, n)}${k > 1 ? ` = ${frac(z * k, n * k)}` : ''}${z > n ? ` = ${mixedHtml(z, n)}` : ''}` });
-      ctx.readout('reduced', { html: red.n === n ? `${frac(z, n)} (${ctx.lang === 'de' ? 'nicht kürzbar' : 'cannot be reduced'})` : `${frac(z, n)} = ${frac(red.z, red.n)}` });
+      ctx.readout('reduced', {
+        html:
+          z === 0
+            ? `${frac(z, n)} = 0`
+            : red.n === n
+            ?`${frac(z, n)} (${ctx.lang === 'de' ? 'nicht kürzbar' : 'cannot be reduced'})`
+            : `${frac(z, n)} = ${frac(red.z, red.n)}${red.n === 1 ? ` = ${red.z}` : ''}`,
+      });
       ctx.readout('decimal', { html: decimalHtml(z, n) });
-      ctx.readout('percent', `${fmt.num((z / n) * 100, 2)} %`);
+      ctx.readout('percent', `${decimalExpansion(z, n).period ? '≈ ' : ''}${fmt.num((z / n) * 100, 2)} %`);
     }
 
     function frac(z: number, n: number): string {
@@ -412,7 +425,7 @@ export default defineSimulation({
         g.lineTo(x, y + len);
         g.stroke();
         if (whole) text(g, String(j / (n * p.k)), x, y + 24, { font: `700 15px ${theme.font}`, color: theme.text });
-        else if (main && n <= 12 && unit / n > 26) text(g, `${(j / p.k) % n}/${n}`, x, y + 22, { font: `500 11px ${theme.font}`, color: theme.muted });
+        else if (main && n <= 12 && unit / n > 26) text(g, `${j / p.k}/${n}`, x, y + 22, { font: `500 11px ${theme.font}`, color: theme.muted });
       }
       // Markierung bei z/n
       const xz = x0 + (Math.min(p.z, total) * unit) / n;
@@ -458,12 +471,14 @@ export default defineSimulation({
       });
       const lines: string[] = [];
       const m = mixed(z, n);
-      lines.push(z > n ? tr(m.whole === 1 ? 'wholeOne' : 'wholes', { w: m.whole, r: m.rest, n }) : tr('of', { z, n }));
+      const wholeKey = m.rest === 0 ? (m.whole === 1 ? 'wholeOnlyOne' : 'wholesOnly') : m.whole === 1 ? 'wholeOne' : 'wholes';
+      lines.push(z > n ? tr(wholeKey, { w: m.whole, r: m.rest, n }) : tr('of', { z, n }));
       if (p.decimal) {
         const d = decimalExpansion(z, n);
         const sep = ctx.lang === 'de' ? ',' : '.';
         const dec = !d.pre && !d.period ? String(d.integer) : `${d.integer}${sep}${d.pre}${d.period ? `${d.period}…` : ''}`;
-        lines.push(`= ${dec}${d.period ? ` (${ctx.lang === 'de' ? 'Periode' : 'period'} ${d.period})` : ''} = ${fmt.num((z / n) * 100, 1)} %`);
+        // Periodische Brüche: Prozentwert ist gerundet, daher „≈“
+        lines.push(`= ${dec}${d.period ? ` (${ctx.t('period')} ${d.period})` : ''} ${d.period ? '≈' : '='} ${fmt.num((z / n) * 100, 1)} %`);
       }
       // Schrift so wählen, dass jede Zeile in den Bereich passt
       let fs = wide ? 15 : 13;

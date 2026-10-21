@@ -32,7 +32,7 @@ Alle Ziffern rechts der Rundungsstelle werden $0$. Man schreibt $\approx$ („un
 1. Lade die Zahl [999 999](?n=999999&r=5) und tippe bei **E** auf **+**. Beobachte, wie immer zehn Plättchen zu einem Plättchen der nächsten Stelle gebündelt werden.
 2. Lade [1 000](?n=1000&r=1) und tippe bei **E** auf **−**. Woher kommt das Plättchen, wenn die Einerspalte leer ist?
 3. Drücke **· 10** und **: 10**. Was passiert mit den Ziffern in der Stellenwerttafel?
-4. Ziehe die schwarze Stecknadel am unteren Zahlenstrahl langsam über die Mitte. Wann springt der Rundungsbogen auf die andere Seite? Welche Ziffer steht dann unter der Stecknadel?
+4. Ziehe die Stecknadel mit der Zahl am unteren Zahlenstrahl langsam über die Mitte. Wann springt der Rundungsbogen auf die andere Seite? Welche Ziffer steht dann unter der Stecknadel?
 5. Tippe auf verschiedene Spaltenüberschriften der Stellenwerttafel. Wie verändert sich der Ausschnitt in der Lupe?
 6. Die Zahl liegt [genau in der Mitte](?n=4253500&r=3) – was macht die Rundungsregel?
 7. Runde [2 996 481 auf Zehntausender](?n=2996481&r=4). Warum ändern sich beim Aufrunden gleich mehrere Ziffern?

@@ -11,7 +11,9 @@ import {
   moonPhase,
   moonPosition,
   observerPosition,
+  outerShadowSize,
   pointShadowSize,
+  umbraSize,
   rayY,
   shadowOnScreen,
   solarView,
@@ -629,13 +631,14 @@ export default defineSimulation({
         } else {
           const sh = shadowOnScreen(lamp, geo.obj, sx);
           const d = 2 * lamp.r;
-          const core = (G * b - d * (b - a)) / a;
-          const out = (G * b + d * (b - a)) / a;
-          ctx.readout('size', (sh.umbra ? tr('sizeWide', { u: fmt.num(core, 1), o: fmt.num(out, 1) }) : tr('sizeWideNo', { o: fmt.num(out, 1) })) + (out > 2 * SCREEN_H ? ctx.t('larger') : ''));
+          // Hinter der Spitze des Kernschattens: keine (negative) Zahl zeigen, nur „kein Kernschatten“
+          const core = sh.umbra ? umbraSize(G, a, b, d) : null;
+          const out = outerShadowSize(G, a, b, d);
+          ctx.readout('size', (core !== null ? tr('sizeWide', { u: fmt.num(core, 1), o: fmt.num(out, 1) }) : tr('sizeWideNo', { o: fmt.num(out, 1) })) + (out > 2 * SCREEN_H ? ctx.t('larger') : ''));
           ctx.readout('law', {
             html:
-              `${v('S')}<sub>${lang === 'de' ? 'Kern' : 'umbra'}</sub> =${frac(`${v('G')} · ${v('b')} − ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))} ≈ ${cm(core)}` +
-              (core <= 0 ? (lang === 'de' ? ' → kein Kernschatten' : ' → no umbra') : '') +
+              `${v('S')}<sub>${lang === 'de' ? 'Kern' : 'umbra'}</sub> =${frac(`${v('G')} · ${v('b')} − ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))}` +
+              (core !== null ? ` ≈ ${cm(core)}` : lang === 'de' ? ' →&nbsp;kein&nbsp;Kernschatten' : ' →&nbsp;no&nbsp;umbra') +
               `<br>${v('S')}<sub>${lang === 'de' ? 'außen' : 'outer'}</sub> = ${frac(`${v('G')} · ${v('b')} + ${v('d')} · (${v('b')} − ${v('a')})`, v('a'))} ≈ ${cm(out)}`,
           });
           ctx.readout('kind', ctx.t(sh.beyondApex ? 'kindApex' : 'kindWide'));

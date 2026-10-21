@@ -1,5 +1,5 @@
 ---
-description: Interaktive Simulation zur linearen Funktion f(x) = mx + b – mit Steigungsdreieck, Nullstelle, zweiter Geraden und Aufgaben.
+description: Interaktive Simulation zur linearen Funktion f(x) = mx + t – mit Steigungsdreieck, Nullstelle, zweiter Geraden und Aufgaben.
 ---
 
 ## Worum geht es?
@@ -7,12 +7,12 @@ description: Interaktive Simulation zur linearen Funktion f(x) = mx + b – mit 
 Eine **lineare Funktion** hat die Funktionsgleichung
 
 $$
-f(x) = m \cdot x + b
+f(x) = m \cdot x + t
 $$
 
 Ihr Graph ist immer eine **Gerade**.
 
-- Der **y-Achsenabschnitt** $b$ gibt an, wo die Gerade die y-Achse schneidet: im Punkt $(0 \mid b)$.
+- Der **y-Achsenabschnitt** $t$ gibt an, wo die Gerade die y-Achse schneidet: im Punkt $(0 \mid t)$.
 - Die **Steigung** $m$ gibt an, wie steil die Gerade ist: Geht man **1 nach rechts**, so geht es **$m$ nach oben** – bei negativem $m$ nach unten. Genau das zeigt das **Steigungsdreieck**.
 
 Kennt man zwei Punkte $P_1(x_1 \mid y_1)$ und $P_2(x_2 \mid y_2)$ der Geraden, berechnet man die Steigung so:
@@ -21,11 +21,13 @@ $$
 m = \frac{y_2 - y_1}{x_2 - x_1} = \frac{\Delta y}{\Delta x}
 $$
 
-Die **Nullstelle** ist die Stelle, an der die Gerade die x-Achse schneidet. Man findet sie, indem man $f(x) = 0$ setzt: $x_0 = -\frac{b}{m}$ (für $m \neq 0$).
+Die **Nullstelle** ist die Stelle, an der die Gerade die x-Achse schneidet. Man findet sie, indem man $f(x) = 0$ setzt: $x_0 = -\frac{t}{m}$ (für $m \neq 0$). Bei $m = 0$ verläuft die Gerade waagrecht: Für $t \neq 0$ gibt es keine Nullstelle, für $t = 0$ liegt sie auf der x-Achse.
+
+Eine **senkrechte** Gerade ist kein Graph einer Funktion, denn zu einem $x$-Wert gehören dort unendlich viele $y$-Werte. Deshalb kann man sie in der Simulation nicht einstellen.
 
 ## Ausprobieren
 
-1. Verändere nur $b$. Was passiert mit der Geraden – und was bleibt gleich? [Beispiel laden](?m=0.5&b=-3)
+1. Verändere nur $t$. Was passiert mit der Geraden – und was bleibt gleich? [Beispiel laden](?m=0.5&b=-3)
 2. Verändere nur $m$. Beobachte das Steigungsdreieck. Was passiert bei $m = 0$? [Beispiel laden](?m=0&b=2)
 3. Ziehe die markierten Punkte direkt im Koordinatensystem: den Punkt auf der y-Achse und die Spitze des Steigungsdreiecks.
 4. Schalte die zweite Gerade $g$ ein. Wann schneiden sich zwei Geraden nicht? [Parallele Geraden](?m=0.5&b=1&second=1&m2=0.5&b2=-2)
@@ -39,7 +41,7 @@ Die **Nullstelle** ist die Stelle, an der die Gerade die x-Achse schneidet. Man 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Die Gerade schneidet die y-Achse bei 2, also ist $b = 2$. Geht man 1 nach rechts, geht es 1,5 nach unten, also ist $m = -1{,}5$:
+Die Gerade schneidet die y-Achse bei 2, also ist $t = 2$. Geht man 1 nach rechts, geht es 1,5 nach unten, also ist $m = -1{,}5$:
 
 $$f(x) = -1{,}5x + 2$$
 
@@ -54,7 +56,7 @@ Bestimme die Gleichung der Geraden durch $A(-2 \mid -1)$ und $B(2 \mid 5)$. Stel
 
 $$m = \frac{5 - (-1)}{2 - (-2)} = \frac{6}{4} = 1{,}5$$
 
-Einsetzen von $A$: $-1 = 1{,}5 \cdot (-2) + b$, also $b = 2$. Damit ist $f(x) = 1{,}5x + 2$. [In der Simulation zeigen](?m=1.5&b=2)
+Einsetzen von $A$: $-1 = 1{,}5 \cdot (-2) + t$, also $t = 2$. Damit ist $f(x) = 1{,}5x + 2$. [In der Simulation zeigen](?m=1.5&b=2)
 
 </details>
 
@@ -92,14 +94,15 @@ Ein Handytarif kostet 5 € Grundgebühr im Monat und 2 € pro verbrauchtem Gig
 <summary>Lösung anzeigen</summary>
 
 1. $f(x) = 2x + 5$
-2. $f(3) = 11$, also 11 €.
-3. $g(x) = x + 8$. Schnittpunkt: $2x + 5 = x + 8 \Rightarrow x = 3$. Ab mehr als 3 GB ist der zweite Tarif günstiger. [Beide Tarife zeigen](?m=2&b=5&second=1&m2=1&b2=8)
+2. $f(3) = 2 \cdot 3 + 5 = 11$, also 11 €.
+3. $g(x) = x + 8$. Schnittpunkt: $2x + 5 = x + 8 \Rightarrow x = 3$. Bei 3 GB kosten beide Tarife 11 €. Ab mehr als 3 GB ist der zweite Tarif günstiger. [Beide Tarife zeigen](?m=2&b=5&second=1&m2=1&b2=8)
 
 </details>
 
 ## Ideen für den Unterricht
 
 - **Einsatz:** Einführung in Klasse 7/8 oder Wiederholung vor quadratischen Funktionen. Am Beamer bewährt: Die Klasse sagt vorher, was passiert, bevor ein Regler bewegt wird.
+- **Bezeichnung:** Die Simulation schreibt $f(x) = mx + t$ wie im bayerischen Lehrplan. Verwendet Ihr Lehrwerk $b$ oder $n$ für den y-Achsenabschnitt, weisen Sie kurz darauf hin.
 - **Häufige Stolpersteine:**
   - Steigung und y-Achsenabschnitt werden verwechselt.
   - Bei negativer Steigung wird das Steigungsdreieck „nach oben“ gezeichnet.

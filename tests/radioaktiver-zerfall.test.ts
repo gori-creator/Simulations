@@ -179,3 +179,61 @@ describe('Modell: Radioaktiver Zerfall – Geometrie und Anzeige', () => {
     expect(sciParts(1.2097e-4).e).toBe(-4);
   });
 });
+
+describe('Modell: Radioaktiver Zerfall – Prüfrunde (Aufgaben und Sonderfälle)', () => {
+  it('Werte der Aufgaben im Lernmaterial', () => {
+    // A1: I-131, 1000 Kerne, 24 d ≈ 3 T½ → ≈ 125 (genau 1000 · 2^(−24/8,02) ≈ 125,6)
+    expect(expectedRemaining(1000, 3 * 8.02, 8.02)).toBeCloseTo(125, 9);
+    expect(expectedRemaining(1000, 24, 8.02)).toBeCloseTo(125.65, 1);
+    // A2: λ(C-14) ≈ 1,21 · 10⁻⁴ 1/a, A(1000 Kerne) ≈ 0,121 1/a ≈ 3,8 · 10⁻⁹ Bq, etwa alle 8 Jahre ein Zerfall
+    const l = decayConstant(5730);
+    expect(activity(l, 1000)).toBeCloseTo(0.121, 3);
+    expect(1 / activity(l, 1000)).toBeCloseTo(8.27, 2);
+    expect(activity(l, 1000) / (365.25 * 86400) / 1e-9).toBeCloseTo(3.83, 2);
+    // A3: 25 % → 11 460 a; A4: ein Viertel nach 2 · 55,6 s = 111,2 s
+    expect(ageFromFraction(0.25, 5730)).toBeCloseTo(11460, 9);
+    expect(ageFromFraction(0.25, 55.6)).toBeCloseTo(111.2, 9);
+    // A5: Zerfall zwischen 3 und 4 T½ unter der Bedingung „lebt bei 3 T½“: 50 %
+    expect(decayBetween(3, 4) / remainingFraction(3, 1)).toBeCloseTo(0.5, 12);
+    // mittlere Lebensdauer τ = T½ / ln 2 ≈ 1,44 T½
+    expect(meanLifetime(5730)).toBeCloseTo(8267, 0);
+  });
+
+  it('Sonderfälle: t = 0, sehr lange Zeiten, ein einzelner Kern, alle zerfallen', () => {
+    expect(expectedRemaining(500, 0, 55.6)).toBe(500);
+    expect(remainingFraction(0, 1)).toBe(1);
+    expect(remainingFraction(2000, 1)).toBe(0);
+    expect(Number.isFinite(ageFromFraction(1e-300, 1))).toBe(true);
+    // ein Kern: nach dem Zerfall bleibt 0; p = 1 → alle sofort, p = 0 → keiner
+    expect(simulateCounts(1, 1, 3, seededRandom(1))).toEqual([1, 0, 0, 0]);
+    expect(simulateCounts(2, 0, 3, seededRandom(1))).toEqual([2, 2, 2, 2]);
+    // nach 10 T½ (Ende des Versuchs) sind von 2500 Kernen im Mittel nur ≈ 2,4 übrig
+    expect(expectedRemaining(2500, 10, 1)).toBeCloseTo(2.44, 2);
+  });
+
+  it('Schwankung nach einer Halbwertszeit: Standardabweichung ≈ ½ √N₀ (100 → 5, 2500 → 25)', () => {
+    const p = decayProbability(LN2_TEST, 1 / 200);
+    const spread = (N0: number, runs: number, seed: number) => {
+      const rand = seededRandom(seed);
+      const v: number[] = [];
+      for (let r = 0; r < runs; r++) v.push(simulateCounts(N0, p, 200, rand)[200]!);
+      const m = mean(v);
+      return { m, s: Math.sqrt(v.reduce((a, x) => a + (x - m) ** 2, 0) / (v.length - 1)) };
+    };
+    const a = spread(100, 2000, 11);
+    expect(Math.abs(a.m - 50)).toBeLessThan(0.6);
+    expect(Math.abs(a.s - 5)).toBeLessThan(0.4);
+    const b = spread(2500, 300, 12);
+    expect(Math.abs(b.m - 1250)).toBeLessThan(5);
+    expect(Math.abs(b.s - 25)).toBeLessThan(3.5);
+  });
+
+  it('Nuklid-Daten: Halbwertszeiten wie in Tabellen', () => {
+    expect(NUCLIDES.rn220.halfLife).toBe(55.6);
+    expect(NUCLIDES.i131.halfLife).toBe(8.02);
+    expect(NUCLIDES.cs137.halfLife).toBe(30.1);
+    expect(NUCLIDES.c14.halfLife).toBe(5730);
+    expect(NUCLIDES.u238.halfLife).toBe(4.47);
+    expect(NUCLIDES.u238.unit).toBe('Ga');
+  });
+});

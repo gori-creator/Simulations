@@ -6,6 +6,7 @@ import {
   baseExtent,
   bodyHeight,
   buildSlabs,
+  isExactTo,
   isSquare,
   section,
   sphereParts,
@@ -166,7 +167,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Drehbare 3D-Ansicht zweier Scheibenstapel (gerade und schief bzw. Halbkugel und Zylinder ohne Kegel) mit verschiebbarer Schnittebene, daneben die Querschnittsfläche in Abhängigkeit von der Höhe',
+      canvas: 'Drehbare 3D-Ansicht zweier Scheibenstapel (gerade und schief bzw. Halbkugel und Zylinder ohne Kegel) mit verschiebbarer, schraffierter Schnittfläche in beiden Körpern; daneben eine Karte mit Querschnittsflächen und Volumenformeln und das Diagramm der Querschnittsfläche A(z) in Abhängigkeit von der Höhe z',
       zyl1: 'gerader Zylinder',
       zyl2: 'schiefer Zylinder',
       zyl3: 'gebogener Zylinder',
@@ -184,7 +185,7 @@ export default defineSimulation({
       kugel2s: 'Restkörper',
       title: 'Schnitt in Höhe z = {z} cm',
       equal: 'A_1 = A_2 in jeder Höhe ⇒ V_1 = V_2',
-      slices: '{n} Scheiben: V_{Stapel} ≈ {v} cm³',
+      slices: '{n} Scheiben: V_{Stapel} {rel} {v} cm³',
       smooth: 'n → ∞: Stapel = Körper',
       chart: 'Querschnittsfläche A(z)',
       axisA: 'A in cm²',
@@ -195,7 +196,7 @@ export default defineSimulation({
       bars: 'Balken = Scheiben',
     },
     en: {
-      canvas: 'Rotatable 3D view of two stacks of slices (straight and oblique, or hemisphere and cylinder without cone) with a movable cutting plane, next to it the cross-sectional area as a function of height',
+      canvas: 'Rotatable 3D view of two stacks of slices (straight and oblique, or hemisphere and cylinder without cone) with a movable cutting plane and hatched cross-sections in both solids; next to it a card with cross-sectional areas and volume formulas and the chart of the cross-sectional area A(z) as a function of the height z',
       zyl1: 'right cylinder',
       zyl2: 'oblique cylinder',
       zyl3: 'bent cylinder',
@@ -213,7 +214,7 @@ export default defineSimulation({
       kugel2s: 'remaining solid',
       title: 'Cut at height z = {z} cm',
       equal: 'A_1 = A_2 at every height ⇒ V_1 = V_2',
-      slices: '{n} slices: V_{stack} ≈ {v} cm³',
+      slices: '{n} slices: V_{stack} {rel} {v} cm³',
       smooth: 'n → ∞: stack = solid',
       chart: 'Cross-sectional area A(z)',
       axisA: 'A in cm²',
@@ -231,6 +232,8 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (all, k: string) => (k in vars ? String(vars[k]) : all));
     const num = (v: number, d = 2) => fmt.num(v, d);
+    /** Gerundeter Wert: „=“ und ohne Endnullen, wenn exakt; sonst „≈“ mit festen Nachkommastellen. */
+    const val = (v: number, d = 2) => (isExactTo(v, d) ? { rel: '=', text: fmt.num(v, d) } : { rel: '≈', text: fmt.fixed(v, d) });
     const reduced = () => prefersReducedMotion();
     const th = () => ctx.theme;
 
@@ -407,9 +410,9 @@ export default defineSimulation({
       const s = th().series;
       return { b1: s[0]!, b2: s[4]!, sec: s[3]!, plane: s[5]! };
     };
-    const tint = (c: string) => (th().dark ? mixColor(c, '#0b1220', 0.12) : mixColor(c, '#ffffff', 0.1));
+    const tint = (c: string) => mixColor(c, th().bg, th().dark ? 0.12 : 0.1);
     const edgeOf = (c: string, k = 1) => mixColor(c, '#05080f', (th().dark ? 0.5 : 0.42) * k);
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.86)' : 'rgba(255,255,255,0.9)');
+    const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.04 : 0, 0.9);
 
     /** Beleuchtete Farbe für eine Fläche mit Normale n (Weltkoordinaten). */
     function lit(base: string, n: Vec3): string {
@@ -439,11 +442,11 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 14;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.96)' : 'rgba(255,255,255,0.96)';
+      g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.05 : 0, 0.96);
       roundRect(g, r.x, r.y, r.w, r.h, 12);
       g.fill();
       g.restore();
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 12);
       g.stroke();
@@ -1103,7 +1106,10 @@ export default defineSimulation({
             const nameBox = formula(g, nameOf(which), fstyle(size, edgeOf(col, th().dark ? -0.6 : 0.35), 800));
             const lx = Math.max(sc.x + 6, Math.min(sc.x + sc.w - nameBox.w - 6, x - nameBox.w / 2));
             nameBox.draw(g, lx, yy + 24);
-            if (showA && ready && p.calc) pill(lx + nameBox.w / 2, yy + 46, `A_${which} ${A < 1e-6 ? '=' : '≈'} ${num(A)} cm²`, th().text, 'center', size - 0.5, c.sec);
+            if (showA && ready && p.calc) {
+              const Av = val(A);
+              pill(lx + nameBox.w / 2, yy + 46, `A_${which} ${Av.rel} ${Av.text} cm²`, th().text, 'center', size - 0.5, c.sec);
+            }
           },
           'front',
         );
@@ -1127,7 +1133,7 @@ export default defineSimulation({
             g.fill();
             g.restore();
             g.save();
-            g.strokeStyle = '#ffffff';
+            g.strokeStyle = th().bg;
             g.lineWidth = 2.2 * o.gs;
             g.lineCap = 'round';
             g.beginPath();
@@ -1208,22 +1214,24 @@ export default defineSimulation({
 
     function cardLines(): { title: string; lines: CardLine[] } {
       const c = C();
-      const A = num(nums.A.v);
-      const V = num(nums.V.v);
+      const Av = val(nums.A.v);
+      const Vv = val(nums.V.v);
+      const A = Av.text;
       const z = num(nums.z.v, 1);
-      const eqA = nums.A.v < 1e-6 ? '=' : '≈';
+      const eqA = Av.rel;
       /** Zahlenwert nur mit „Rechnung im Bild“ (Aufgabenlinks setzen calc=0). */
       const q = (rel: string, val: string, unit: string) => (p.calc ? ` ${rel} ${val} ${unit}` : '');
       const lines: CardLine[] = [];
       const n = nOf(p.n);
-      const stackLine: CardLine = Number.isFinite(n) ? { f: tr('slices', { n, v: num(nums.S.v) }), muted: true } : { f: ctx.t('smooth'), muted: true };
+      const stackLine: CardLine = Number.isFinite(n) ? { f: tr('slices', { n, rel: val(nums.S.v).rel, v: val(nums.S.v).text }), muted: true } : { f: ctx.t('smooth'), muted: true };
       const nar = narrow();
       if (kind === 'kugel') {
         const de = ctx.lang === 'de';
         lines.push({ f: `A_1 = π(r² − z²)${q(eqA, A, 'cm²')}`, swatch: c.b1 }, { f: `A_2 = πr² − πz²${q(eqA, A, 'cm²')}`, swatch: c.b2 }, { f: ctx.t('equal'), bold: true });
-        if (!narrow()) lines.push({ f: de ? 'V_2 = V_{Zylinder} − V_{Kegel}' : 'V_2 = V_{cylinder} − V_{cone}', muted: true });
-        lines.push({ f: `V_1 = πr³ − \\f{1}{3}πr³ = \\f{2}{3}πr³${q('≈', V, 'cm³')}` });
-        lines.push({ f: `V_{${de ? 'Kugel' : 'sphere'}} = 2 · \\f{2}{3}πr³ = \\f{4}{3}πr³${q('≈', num(2 * nums.V.v), 'cm³')}`, bold: true });
+        if (!narrow()) lines.push({ f: de ? 'V_1 = V_2 = V_{Zylinder} − V_{Kegel}' : 'V_1 = V_2 = V_{cylinder} − V_{cone}', muted: true });
+        const Vk = val(2 * nums.V.v);
+        lines.push({ f: `V_1 = πr³ − \\f{1}{3}πr³ = \\f{2}{3}πr³${q(Vv.rel, Vv.text, 'cm³')}` });
+        lines.push({ f: `V_{${de ? 'Kugel' : 'sphere'}} = 2 · \\f{2}{3}πr³ = \\f{4}{3}πr³${q(Vk.rel, Vk.text, 'cm³')}`, bold: true });
         if (!nar && p.calc) lines.push(stackLine);
         return { title: tr('title', { z }), lines };
       }
@@ -1233,11 +1241,12 @@ export default defineSimulation({
         const sym = kind === 'kegel' ? 'ρ' : 'b';
         const full = kind === 'kegel' ? 'r' : 'a';
         const v = kind === 'kegel' ? section(kind, dimsShown(), 1, zF.v).outer : 2 * section(kind, dimsShown(), 1, zF.v).outer;
-        lines.push({ f: `${sym} = ${full} · \\f{h − z}{h}${q(v < 1e-6 ? '=' : '≈', num(v), 'cm')}`, muted: true });
+        const vv = val(v);
+        lines.push({ f: `${sym} = ${full} · \\f{h − z}{h}${q(vv.rel, vv.text, 'cm')}`, muted: true });
       }
       lines.push({ f: `A_1 = ${fa}${q(eqA, A, 'cm²')}`, swatch: c.b1 }, { f: `A_2 = ${fa}${q(eqA, A, 'cm²')}`, swatch: c.b2 }, { f: ctx.t('equal'), bold: true });
       const Vf: Record<string, string> = { zyl: 'πr² · h', prisma: 'a² · h', kegel: '\\f{1}{3} · πr² · h', pyr: '\\f{1}{3} · a² · h' };
-      lines.push({ f: `V = ${Vf[kind]}${q(kind === 'prisma' && Number.isInteger(volume(kind, dims()) * 100) ? '=' : '≈', V, 'cm³')}`, bold: true });
+      lines.push({ f: `V = ${Vf[kind]}${q(Vv.rel, Vv.text, 'cm³')}`, bold: true });
       if (p.calc) lines.push(stackLine);
       return { title: tr('title', { z }), lines };
     }
@@ -1256,24 +1265,30 @@ export default defineSimulation({
       const four3 = '<span class="frac"><span>4</span><span>3</span></span>';
       const cm = (x: number, dd = 2) => `${num(x, dd)} cm`;
       const de = ctx.lang === 'de';
+      /** „= 16 cm²“ bzw. „≈ 28,27 cm²“ mit fettem Ergebnis. */
+      const res = (x: number, unit: string) => {
+        const r = val(x);
+        return `${r.rel} <strong>${r.text} ${unit}</strong>`;
+      };
       let Ahtml: string;
       if (kind === 'kugel') {
-        Ahtml = `${v('A', '1')} = π(${v('r')}² − ${v('z')}²) = π · ((${cm(d.r)})² − (${cm(z)})²) ≈ <strong>${num(A)} cm²</strong><br>${v('A', '2')} = π${v('r')}² − π${v('z')}² ≈ <strong>${num(A)} cm²</strong>`;
+        Ahtml = `${v('A', '1')} = π(${v('r')}² − ${v('z')}²) = π · ((${cm(d.r)})² − (${cm(z)})²) ${res(A, 'cm²')}<br>${v('A', '2')} = π${v('r')}² − π${v('z')}² ${res(A, 'cm²')}`;
       } else if (kind === 'zyl' || kind === 'prisma') {
         const f = kind === 'zyl' ? `π${v('r')}² = π · (${cm(d.r)})²` : `${v('a')}² = (${cm(d.a)})²`;
-        Ahtml = `${v('A', '1')} = ${v('A', '2')} = ${f} ${kind === 'zyl' ? '≈' : '='} <strong>${num(A)} cm²</strong> (${de ? 'in jeder Höhe' : 'at every height'})`;
+        Ahtml = `${v('A', '1')} = ${v('A', '2')} = ${f} ${res(A, 'cm²')} (${de ? 'in jeder Höhe' : 'at every height'})`;
       } else {
         const sec = section(kind, d, 1, z);
         const len = kind === 'kegel' ? sec.outer : 2 * sec.outer;
         const sym = kind === 'kegel' ? 'ρ' : 'b';
         const full = kind === 'kegel' ? 'r' : 'a';
-        Ahtml = `${v(sym)} = ${v(full)} · (${v('h')} − ${v('z')}) : ${v('h')} ≈ ${cm(len)}, ${v('A', '1')} = ${v('A', '2')} = ${kind === 'kegel' ? `π${v('ρ')}²` : `${v('b')}²`} ≈ <strong>${num(A)} cm²</strong>`;
+        const lv = val(len);
+        Ahtml = `${v(sym)} = ${v(full)} · (${v('h')} − ${v('z')}) : ${v('h')} ${lv.rel} ${lv.text} cm, ${v('A', '1')} = ${v('A', '2')} = ${kind === 'kegel' ? `π${v('ρ')}²` : `${v('b')}²`} ${res(A, 'cm²')}`;
       }
       ctx.readout('A', { html: Ahtml });
       let Vhtml: string;
       if (kind === 'kugel') {
         const sp = sphereParts(d.r);
-        Vhtml = `${v('V', de ? 'Halbkugel' : 'hemisphere')} = ${v('V', de ? 'Zylinder' : 'cylinder')} − ${v('V', de ? 'Kegel' : 'cone')} = π${v('r')}³ − ${third}π${v('r')}³ = ${two3}π${v('r')}³ ≈ <strong>${num(sp.hemisphere)} cm³</strong><br>${v('V', de ? 'Kugel' : 'sphere')} = ${four3}π${v('r')}³ = ${four3} · π · (${cm(d.r)})³ ≈ <strong>${num(sp.sphere)} cm³</strong>`;
+        Vhtml = `${v('V', de ? 'Halbkugel' : 'hemisphere')} = ${v('V', de ? 'Zylinder' : 'cylinder')} − ${v('V', de ? 'Kegel' : 'cone')} = π${v('r')}³ − ${third}π${v('r')}³ = ${two3}π${v('r')}³ ${res(sp.hemisphere, 'cm³')}<br>${v('V', de ? 'Kugel' : 'sphere')} = ${four3}π${v('r')}³ = ${four3} · π · (${cm(d.r)})³ ${res(sp.sphere, 'cm³')}`;
       } else {
         const f: Record<string, string> = {
           zyl: `π${v('r')}² · ${v('h')} = π · (${cm(d.r)})² · ${cm(d.h)}`,
@@ -1281,14 +1296,14 @@ export default defineSimulation({
           kegel: `${third} · π${v('r')}² · ${v('h')} = ${third} · π · (${cm(d.r)})² · ${cm(d.h)}`,
           pyr: `${third} · ${v('a')}² · ${v('h')} = ${third} · (${cm(d.a)})² · ${cm(d.h)}`,
         };
-        Vhtml = `${v('V', '1')} = ${v('V', '2')} = ${f[kind]} ≈ <strong>${num(V)} cm³</strong>`;
+        Vhtml = `${v('V', '1')} = ${v('V', '2')} = ${f[kind]} ${res(V, 'cm³')}`;
       }
       ctx.readout('V', { html: Vhtml });
       if (Number.isFinite(n)) {
         const Vs = stackVolumeFormula(kind, d, n);
         const dev = ((Vs - V) / V) * 100;
         ctx.readout('stack', {
-          html: `${n} ${de ? 'Scheiben der Dicke' : 'slices of thickness'} ${cm(H() / n)}: ${v('V', de ? 'Stapel' : 'stack')} ≈ <strong>${num(Vs)} cm³</strong>${Math.abs(dev) > 0.005 ? ` (${dev > 0 ? '+' : ''}${num(dev, 1)} %)` : ''}`,
+          html: `${n} ${de ? 'Scheiben der Dicke' : 'slices of thickness'} ${v('h')} : ${v('n')} ${val(H() / n).rel} ${val(H() / n).text} cm: ${v('V', de ? 'Stapel' : 'stack')} ${res(Vs, 'cm³')}${Math.abs(dev) > 0.05 ? ` (+${fmt.fixed(dev, 1)} %)` : ''}`,
         });
       } else ctx.readout('stack', { html: de ? 'unendlich viele, unendlich dünne Scheiben: der Stapel ist der Körper' : 'infinitely many, infinitely thin slices: the stack is the solid' });
     }

@@ -235,3 +235,15 @@ export function ranks(values: readonly number[]): number[] {
   order.forEach((o, r) => (out[o.i] = r));
   return out;
 }
+
+/**
+ * Index des kleinsten Werts über 0 (−1, wenn es keinen gibt). Beim
+ * Flächen-Piktogramm wird damit verglichen – ein Wert 0 hat keine Figur.
+ */
+export function minPositiveIndex(values: readonly number[]): number {
+  let best = -1;
+  values.forEach((v, i) => {
+    if (v > 0 && (best < 0 || v < values[best]!)) best = i;
+  });
+  return best;
+}

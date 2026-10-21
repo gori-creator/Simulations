@@ -39,7 +39,7 @@ Die Simulation baut jeden Körper aus $n$ Scheiben der Dicke $\tfrac{h}{n}$. Bei
 
 ## Ausprobieren
 
-1. Ziehe die Schnittebene am orangen Griff nach oben und unten. Vergleiche $A_1$ und $A_2$. [Münzstapel laden](?s=2&z=2)
+1. Ziehe die Schnittebene am Griff mit dem Schild „z = … cm“ nach oben und unten. Vergleiche $A_1$ und $A_2$. [Münzstapel laden](?s=2&z=2)
 2. Schiebe den Stapel am oberen Griff schief und biege ihn am mittleren Griff. Was ändert sich am Volumen? [Gebogener Stapel](?s=1&k=2.5&n=20)
 3. Wähle „Gerade stellen“ und danach „Schief stellen“: Die Scheiben gleiten einzeln. Welche Größen bleiben gleich?
 4. Verschiebe die Spitze eines Kegels. Bleibt die Höhe gleich? Bleibt das Volumen gleich? [Schiefer Kegel](?body=kegel&s=3&n=50)
@@ -118,7 +118,7 @@ $V_\text{Stapel} = \pi \cdot 1{,}25\,\text{cm} \cdot (9 + 5{,}0625 + 2{,}25 + 0{
 ## Ideen für den Unterricht
 
 - **Einsatz:** Jahrgangsstufe 10, Lernbereich Körperberechnung (Pyramide, Kegel, Kugel; Prinzip von Cavalieri) im LehrplanPLUS Bayern, Gymnasium – Zuordnung als Entwurf, bitte gegen den aktuellen Lehrplan prüfen. Geeignet als Einstieg (Münzstapel, Kartenstapel), zur Begründung der Formeln für schiefe Körper und als Höhepunkt zur Herleitung des Kugelvolumens.
-- **Modell:** Die Scheiben umschließen den Körper (Radius am unteren Scheibenrand); der Mittelpunkt jeder Scheibe liegt auf der verschobenen bzw. gebogenen Achse. Die orange Fläche ist der exakte Querschnitt des Körpers. Das Diagramm $A(z)$ zeigt die Scheiben als Balken – ein Ausblick auf den Integralgedanken („Fläche unter der Kurve = Volumen“).
+- **Modell:** Die Scheiben umschließen den Körper (Radius am unteren Scheibenrand); der Mittelpunkt jeder Scheibe liegt auf der verschobenen bzw. gebogenen Achse. Die schraffierte orange Fläche ist der exakte Querschnitt des Körpers. Das Diagramm $A(z)$ zeigt die Scheiben als Balken – ein Ausblick auf den Integralgedanken („Fläche unter der Kurve = Volumen“).
 - **Häufige Stolpersteine:**
   - „Ein schiefer Zylinder hat mehr Volumen, weil er länger ist.“ – Entscheidend ist die senkrechte Höhe, nicht die schräge Mantellinie.
   - „Gleiche Grundfläche und gleiche Höhe genügen.“ – Kegel und Zylinder zeigen: Es kommt auf die Querschnitte **in jeder Höhe** an.

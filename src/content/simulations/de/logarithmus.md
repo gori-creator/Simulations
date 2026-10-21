@@ -29,9 +29,11 @@ $$
 x = \log_b c = \frac{\lg c}{\lg b}, \qquad \text{z. B.}\quad \log_2 10 = \frac{\lg 10}{\lg 2} = \frac{1}{0{,}30103\ldots} \approx 3{,}3219
 $$
 
+Die Simulation schreibt „=“ bei exakten Werten (z. B. $\log_2 8 = 3$) und „≈“ bei gerundeten Werten (z. B. $\lg 20 \approx 1{,}3010$).
+
 ## Ausprobieren
 
-1. Ziehe den Punkt $P$ auf dem blauen Graphen von $y = 2^x$. Sein Spiegelbild $P'$ auf dem roten Graphen hat die Koordinaten vertauscht. Lies an $P'$ ab: $\log_2 4 = 2$, $\log_2 0{,}5 = -1$.
+1. Ziehe den Punkt $P$ auf dem blauen Graphen von $y = 2^x$. Sein Spiegelbild $P'$ auf dem roten Graphen von $y = \log_2 x$ hat die Koordinaten vertauscht. Lies an $P'$ ab: $\log_2 4 = 2$, $\log_2 0{,}5 = -1$.
 2. Klicke auf **An y = x spiegeln**: Der Exponentialgraph klappt um die Gerade $y = x$ und wird zum Logarithmusgraphen. Die Musterpunkte wandern dabei senkrecht zu $y = x$.
 3. Ziehe den Punkt $B(1 \mid b)$ nach unten unter $1$. Was passiert mit beiden Graphen? Warum springt die Basis über die $1$ hinweg? [Beispiel laden](?b=0.5&x=-2)
 4. Tippe im Bild auf die Basen $2$, $e$, $10$ und $0{,}5$. Welche Punkte bleiben immer gleich? [Natürlicher Logarithmus](?e=1&x=1)

@@ -12,6 +12,7 @@ import {
   ruleOfThree,
   scaleY,
   storyBase,
+  TAB_IDS,
   TABLES,
   tableXs,
   value,
@@ -215,5 +216,61 @@ describe('Modell: Plausibilität über viele Zufallswerte', () => {
       expect(classify(xs.map((t) => [t, value(n, t)] as [number, number])).verdict).toBe('ind');
       expect(classify(xs.map((t) => [t, value(l, t)] as [number, number])).verdict).toBe('none');
     }
+  });
+});
+
+describe('Modell: Sonderfälle (Prüfrunde)', () => {
+  it('indirekt bei x = 0 ist nicht definiert; Prüfung ignoriert x = 0 beim Quotienten', () => {
+    expect(value(pumps, 0)).toBeNaN();
+    expect(check([[0, 0], [1, 3], [2, 6]]).quotient).toBe(true);
+    expect(check([])).toEqual({ quotient: false, product: false });
+  });
+
+  it('Reglergrenzen: kleinste und größte Werte bleiben endlich und positiv', () => {
+    const rels: Relation[] = [
+      { kind: 'dir', k: 0.5, b: 0 },
+      { kind: 'dir', k: 5, b: 0 },
+      { kind: 'ind', k: 6, b: 0 },
+      { kind: 'ind', k: 60, b: 0 },
+      { kind: 'lin', k: 0.5, b: 1 },
+      { kind: 'lin', k: 4, b: 6 },
+    ];
+    for (const r of rels) {
+      for (const x of [clampX(r.kind, 0), clampX(r.kind, 12)]) {
+        const y = value(r, x);
+        expect(Number.isFinite(y)).toBe(true);
+        expect(y).toBeGreaterThan(0);
+      }
+    }
+    // 60 h mit einer Pumpe, 12 Pumpen → 5 h; 6 h mit einer Pumpe, 12 Pumpen → 0,5 h
+    expect(value({ kind: 'ind', k: 60, b: 0 }, 12)).toBe(5);
+    expect(value({ kind: 'ind', k: 6, b: 0 }, 12)).toBe(0.5);
+  });
+
+  it('Dreisatz mit x₀ = x führt auf dieselbe Zeile zurück', () => {
+    const r3 = ruleOfThree(apples, 0.5, 0.5)!;
+    expect(r3.rows[0]).toEqual([0.5, 1.25]);
+    expect(r3.rows[1]).toEqual([1, 2.5]);
+    expect(r3.rows[2]).toEqual([0.5, 1.25]);
+  });
+
+  it('120-km-Tabelle: Quotienten sind klein und verschieden (0,075; 0,033…; 0,019; 0,008…)', () => {
+    const f = classify(TABLES.f);
+    expect(f.quotients[0]).toBeCloseTo(0.075, 12);
+    expect(f.quotients[3]).toBeCloseTo(1 / 120, 12);
+    expect(new Set(f.quotients.map((q) => Math.round(q * 1000))).size).toBe(4);
+  });
+
+  it('alle Testtabellen haben genau das vorgesehene Ergebnis', () => {
+    const want = { a: 'dir', b: 'ind', c: 'none', d: 'none', e: 'none', f: 'ind' } as const;
+    for (const id of TAB_IDS) expect(classify(TABLES[id]).verdict).toBe(want[id]);
+  });
+
+  it('Lernmaterial: 120 km bei 50 km/h → 2,4 h, bei 90 km/h → 1 h 20 min; 9 Pumpen → 1 h 20 min; 5 Pumpen → 12 h', () => {
+    const trip: Relation = { kind: 'ind', k: 120, b: 0 };
+    expect(value(trip, 50)).toBeCloseTo(2.4, 12);
+    expect(value(trip, 90) * 60).toBeCloseTo(80, 9);
+    expect(value(pumps, 9) * 60).toBeCloseTo(80, 9);
+    expect(value(pool, 5)).toBe(12);
   });
 });

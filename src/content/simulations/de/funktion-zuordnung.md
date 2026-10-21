@@ -16,9 +16,9 @@ So erkennst du eine Funktion in den drei Darstellungen:
 | --- | --- |
 | Pfeildiagramm | von **jedem** Element links **genau ein** Pfeil ausgeht |
 | Wertetabelle | unter jedem $x$ **genau ein** Wert steht |
-| Graph | über jeder Stelle $x$ **höchstens ein** Punkt liegt |
+| Graph | über jeder Stelle $x$ aus $D$ **genau ein** Punkt liegt (jede senkrechte Gerade trifft ihn **höchstens einmal**) |
 
-**Wichtig:** Dass bei einem Element rechts **mehrere Pfeile ankommen**, ist erlaubt. Bei $x \mapsto x^2$ haben $-2$ und $2$ beide das Quadrat $4$ – trotzdem ist das eine Funktion. Verboten ist nur, dass von einem Element links mehrere Pfeile **ausgehen** (oder gar keiner).
+**Wichtig:** Dass bei einem Element rechts **mehrere Pfeile ankommen**, ist erlaubt. Bei $x \mapsto x^2$ haben $-2$ und $2$ beide das Quadrat $4$ – trotzdem ist das eine Funktion. Verboten ist nur, dass von einem Element links mehrere Pfeile **ausgehen** oder **gar keiner**. Ein Element links ohne Pfeil bedeutet: Auf der Menge links ist die Zuordnung keine Funktion.
 
 **Umkehren:** Dreht man alle Pfeile um, entsteht wieder eine Zuordnung – aber nicht immer eine Funktion. Aus „Zahl $\mapsto$ Quadrat“ wird „Quadratzahl $\mapsto$ Zahl mit diesem Quadrat“: Der $4$ wären $-2$ und $2$ zugeordnet, der $2$ (in den ganzen Zahlen) gar nichts.
 
@@ -41,12 +41,12 @@ So erkennst du eine Funktion in den drei Darstellungen:
 
 ### Aufgabe 1: Funktion oder nicht?
 
-Entscheide und begründe: (a) Schüler $\mapsto$ Körpergröße (heute gemessen), (b) Körpergröße $\mapsto$ Schüler, (c) Zahl $\mapsto$ ihr Doppeltes, (d) Zahl $\mapsto$ ihre Teiler.
+Entscheide und begründe: (a) Schüler $\mapsto$ Körpergröße (heute gemessen), (b) Körpergröße $\mapsto$ Schüler, (c) Zahl $\mapsto$ ihr Doppeltes, (d) Zahl $\mapsto$ ihre Teiler, (e) Person $\mapsto$ Geburtstag, (f) Geburtstag $\mapsto$ Person.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-(a) **Funktion:** Jeder Schüler hat heute genau eine Körpergröße. (b) **Keine Funktion:** Zwei Schüler können gleich groß sein; außerdem gibt es Größen, die niemand hat. (c) **Funktion:** $x \mapsto 2x$. (d) **Keine Funktion:** $6$ hat die Teiler $1$, $2$, $3$ und $6$.
+(a) **Funktion:** Jeder Schüler hat heute genau eine Körpergröße. (b) **Keine Funktion:** Zwei Schüler können gleich groß sein; außerdem gibt es Größen, die niemand hat. (c) **Funktion:** $x \mapsto 2x$. (d) **Keine Funktion:** $6$ hat die Teiler $1$, $2$, $3$ und $6$. (e) **Funktion:** Jede Person hat genau einen Geburtstag. Dass zwei Personen am selben Tag Geburtstag haben, ist erlaubt. (f) **Keine Funktion:** An einem Tag können mehrere Personen Geburtstag haben, an manchen Tagen niemand.
 
 </details>
 
@@ -119,11 +119,22 @@ Wären bei $x = 2$ beide Punkte voll, also $(2 \mid 1)$ und $(2 \mid 2)$, dann w
 
 </details>
 
+### Aufgabe 7: Gerade und Betrag
+
+Skizziere die Graphen und entscheide mit dem Linientest: (a) die Gerade, auf der alle Punkte mit $x = 2$ liegen, (b) die Gerade, auf der alle Punkte mit $y = 2$ liegen, (c) $f(x) = |x|$.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+(a) **Keine Funktion:** Die Gerade ist selbst senkrecht. Die Gerade $x = 2$ des Linientests trifft sie in unendlich vielen Punkten, der Stelle $2$ wären alle Werte zugeordnet. (b) **Funktion:** $x \mapsto 2$. Jedem $x$ ist genau ein Wert zugeordnet, nämlich $2$. (c) **Funktion:** Der Graph ist ein „V“ mit Spitze in $(0 \mid 0)$. Jede senkrechte Gerade trifft ihn genau einmal, z. B. $(-3 \mid 3)$ und $(3 \mid 3)$ liegen nebeneinander, nicht übereinander. $D = \mathbb{R}$, $W = \{y \mid y \geq 0\}$.
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz (Bezug als Entwurf):** Jahrgangsstufe 8, Lernbereich 1 „Funktion und Term“: Funktion als eindeutige Zuordnung, Definitions- und Wertemenge, Graphen. Gut als Einstieg (Alltagszuordnungen im Pfeildiagramm) und zur Sicherung (Linientest, Umkehrung).
 - **Darstellungen:** Pfeildiagramm, Wertetabelle und Graph sind synchron – antippen oder ziehen ändert alle drei. Rot markiert sind Elemente mit mehreren Pfeilen (Zahl) oder ohne Pfeil (?). Mit `show=0` werden Färbung und Urteil ausgeblendet; die Lernenden entscheiden selbst.
-- **Linientest:** Die Leiste unter dem Graphen zeigt, wie viele Schnittpunkte die senkrechte Gerade an jeder besuchten Stelle hat. Bei Funktionsgraphen markiert die Simulation $D$ (türkis, auf der $x$-Achse) und $W$ (lila, auf der $y$-Achse). Der Halbkreis $f(x) = \sqrt{9 - x^2}$ greift der Wurzel aus Jahrgangsstufe 9 vor und kann auch nur als Graph betrachtet werden.
+- **Linientest:** Die Leiste unter dem Graphen zeigt, wie viele Schnittpunkte die senkrechte Gerade an jeder besuchten Stelle hat. Bei Funktionsgraphen markiert die Simulation $D$ (türkis, auf der $x$-Achse) und $W$ (lila, auf der $y$-Achse). Der Halbkreis $f(x) = \sqrt{9 - x^2}$ greift der Wurzel aus Jahrgangsstufe 9 vor und kann auch nur als Graph betrachtet werden. Eine senkrechte Gerade und die Betragsfunktion sind nicht als Graph eingebaut; Aufgabe 7 behandelt sie auf Papier.
 - **Häufige Stolpersteine:**
   - „Wenn zwei Pfeile beim selben Element ankommen, ist es keine Funktion.“ – Es kommt nur auf die ausgehenden Pfeile an.
   - „Eine Funktion braucht eine Formel.“ – Auch Kind $\mapsto$ Geburtsmonat ist eine Funktion.

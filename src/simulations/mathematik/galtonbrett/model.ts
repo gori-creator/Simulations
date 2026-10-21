@@ -33,3 +33,30 @@ export function statsFromCounts(counts: readonly number[]): { total: number; mea
   const variance = counts.reduce((s, c, k) => s + c * (k - mean) ** 2, 0) / total;
   return { total, mean, sd: Math.sqrt(variance) };
 }
+
+/** Lässt `count` Kugeln fallen und zählt sie je Fach (für „1000 sofort“). */
+export function dropBalls(
+  rows: number,
+  p: number,
+  count: number,
+  random: () => number,
+): { counts: number[]; lastPath: number[] | null; lastBin: number } {
+  const counts = Array.from({ length: rows + 1 }, () => 0);
+  let lastPath: number[] | null = null;
+  let lastBin = -1;
+  for (let i = 0; i < count; i++) {
+    lastPath = randomPath(rows, p, random);
+    lastBin = lastPath.reduce((s, v) => s + v, 0);
+    counts[lastBin]!++;
+  }
+  return { counts, lastPath, lastBin };
+}
+
+/**
+ * Ist `value` bei `decimals` Nachkommastellen exakt darstellbar? Dann steht in
+ * der Anzeige „=“, sonst „≈“ (z. B. σ = 2, aber σ ≈ 1,30).
+ */
+export function roundedRelation(value: number, decimals: number): { exact: boolean } {
+  const factor = 10 ** decimals;
+  return { exact: Math.abs(value * factor - Math.round(value * factor)) < 1e-9 * Math.max(1, Math.abs(value * factor)) };
+}

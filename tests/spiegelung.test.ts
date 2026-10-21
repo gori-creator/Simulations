@@ -146,3 +146,73 @@ describe('Modell: Symmetrie erkennen', () => {
     expect(mapsOntoItself(polys, (p) => reflectAcross(p, a!, c!))).toBe(false);
   });
 });
+
+describe('Prüfrunde Paket 2', () => {
+  const close = (p: Pt, q: Pt) => {
+    expect(p[0]).toBeCloseTo(q[0], 12);
+    expect(p[1]).toBeCloseTo(q[1], 12);
+  };
+
+  it('Spiegelung an x = 3: (1|2) → (5|2), an y = x: (1|4) → (4|1)', () => {
+    close(reflectAcross([1, 2], [3, 0], [3, 14]), [5, 2]);
+    close(reflectAcross([1, 4], [0, 0], [14, 14]), [4, 1]);
+  });
+
+  it('schräge Achse (Aufgabe 1): Lotfußpunkt, Bildpunkt, Abstand', () => {
+    // Achse durch (8|1) und (12|13): 3x − y = 23. A(3|6): Lotfuß (9|4), A′ = (15|2), Abstand 20/√10
+    const a: Pt = [8, 1];
+    const b: Pt = [12, 13];
+    close(foot([3, 6], a, b), [9, 4]);
+    close(reflectAcross([3, 6], a, b), [15, 2]);
+    expect(lineDistance([3, 6], a, b)).toBeCloseTo(20 / Math.sqrt(10), 12);
+    // B(7|4): 21 − 4 − 23 = −6 ⇒ B′ = B + 1,2 · (3|−1) = (10,6|2,8)
+    close(reflectAcross([7, 4], a, b), [10.6, 2.8]);
+  });
+
+  it('Punkte auf der Achse und das Zentrum sind Fixpunkte', () => {
+    close(reflectAcross([9, 4], [8, 1], [12, 13]), [9, 4]);
+    expect(reflectPoint([2, 2], [2, 2])).toEqual([2, 2]);
+  });
+
+  it('Punktspiegelung an Z(2|2): (5|3) → (−1|1), Z halbiert [PP′]', () => {
+    const q = reflectPoint([5, 3], [2, 2]);
+    expect(q).toEqual([-1, 1]);
+    expect([(5 + q[0]) / 2, (3 + q[1]) / 2]).toEqual([2, 2]);
+  });
+
+  it('Punktspiegelung = Drehung um 180°', () => {
+    const z: Pt = [10, 7];
+    for (const p of tri) {
+      const dx = p[0] - z[0];
+      const dy = p[1] - z[1];
+      close(reflectPoint(p, z), [z[0] + dx * Math.cos(Math.PI) - dy * Math.sin(Math.PI), z[1] + dx * Math.sin(Math.PI) + dy * Math.cos(Math.PI)]);
+    }
+  });
+
+  it('Sonderfälle: Figur schneidet die Achse, Zentrum in der Figur', () => {
+    const t: Pt[] = [
+      [7, 3],
+      [13, 4],
+      [10, 10],
+    ];
+    const img = t.map((p) => reflectAcross(p, [10, 0], [10, 14]));
+    expect(orientation(img)).toBe(-orientation(t));
+    close(img[2]!, [10, 10]); // C liegt auf s
+    const imgP = t.map((p) => reflectPoint(p, [10, 7]));
+    expect(orientation(imgP)).toBe(orientation(t));
+  });
+
+  it('Aufgabe 2: A(4|3), Z(10|7) → A′(16|11)', () => {
+    expect(reflectPoint([4, 3], [10, 7])).toEqual([16, 11]);
+  });
+
+  it('entartete Figur: kein Umlaufsinn, ungültig', () => {
+    const t: Pt[] = [
+      [2, 2],
+      [4, 4],
+      [6, 6],
+    ];
+    expect(orientation(t)).toBe(0);
+    expect(shapeValid('dreieck', t)).toBe(false);
+  });
+});

@@ -1583,8 +1583,9 @@ export default defineSimulation({
       if (!ctx.locked) {
         // Strecke selbst (zum Verschieben) unter den Griffen
         addHit('line', { x: Math.min(ax, bx) - 4, y: Math.min(ay, by) - 4, w: Math.abs(bx - ax) + 8, h: Math.abs(by - ay) + 8 }, 'move');
-        addHit('h:a', { x: ax - 16, y: ay - 16, w: 32, h: 32 }, 'grab');
-        addHit('h:b', { x: bx - 16, y: by - 16, w: 32, h: 32 }, 'grab');
+        // Griffe mit 44 px Trefferfläche (gut mit dem Finger zu greifen)
+        addHit('h:a', { x: ax - 22, y: ay - 22, w: 44, h: 44 }, 'grab');
+        addHit('h:b', { x: bx - 22, y: by - 22, w: 44, h: 44 }, 'grab');
       }
       void th;
     }
@@ -2256,12 +2257,14 @@ export default defineSimulation({
       const th = ctx.theme;
       const rw = clamp(ppc * 0.9, 22, 34);
       const lead = 10;
+      // rechts etwas mehr Platz, damit „cm“ nicht die letzte Zahl verdeckt
+      const leadR = lead + 14;
       g.save();
       g.globalAlpha *= a;
       g.shadowColor = th.dark ? 'rgba(0,0,0,0.55)' : 'rgba(60,45,10,0.2)';
       g.shadowBlur = 10;
       g.shadowOffsetY = 3;
-      roundRect(g, x0 - lead, y, cmCount * ppc + 2 * lead, rw, 4);
+      roundRect(g, x0 - lead, y, cmCount * ppc + lead + leadR, rw, 4);
       const grad = g.createLinearGradient(0, y, 0, y + rw);
       grad.addColorStop(0, th.dark ? '#7a6a3a' : '#fbefc4');
       grad.addColorStop(1, th.dark ? '#5a4c26' : '#efd486');
@@ -2294,7 +2297,7 @@ export default defineSimulation({
         if (ppc * e >= 18) break;
       }
       for (let c = 0; c <= cmCount; c += every) text(g, String(c), x0 + c * ppc, y + rw * 0.72, { font: nf, color: alpha(ink, 0.9) });
-      text(g, unitLabel, x0 + cmCount * ppc + lead - 2, y + rw * 0.72, { font: font(700, 9.5), color: alpha(ink, 0.65), align: 'right' });
+      text(g, unitLabel, x0 + cmCount * ppc + leadR - 3, y + rw * 0.72, { font: font(700, 9.5), color: alpha(ink, 0.65), align: 'right' });
       g.restore();
     }
 
@@ -2799,19 +2802,21 @@ export default defineSimulation({
       halo(tt('Wirklichkeit', 'Reality'), rr.x + 10, rr.y + 13, font(750, 11.5), th.muted, 'left', 1, th.dark ? shade(th.series[0]!, -0.55) : '#ffffff');
       const fx0 = rr.x + 40;
       const fx1 = rr.x + rr.w - 40;
+      // Fahnen bei niedriger Fläche kürzer, damit sie die Beschriftung nicht verdecken
+      const flagTop = groundY - 4 - clamp(rr.h * 0.66 - 26, 14, 30);
       const flag = (x: number) => {
         g.save();
         g.strokeStyle = th.dark ? '#d0d6de' : '#3b4554';
         g.lineWidth = 2;
         g.beginPath();
         g.moveTo(x, groundY - 4);
-        g.lineTo(x, groundY - 34);
+        g.lineTo(x, flagTop);
         g.stroke();
         g.fillStyle = cReal();
         g.beginPath();
-        g.moveTo(x, groundY - 34);
-        g.lineTo(x + 14, groundY - 29);
-        g.lineTo(x, groundY - 24);
+        g.moveTo(x, flagTop);
+        g.lineTo(x + 14, flagTop + 5);
+        g.lineTo(x, flagTop + 10);
         g.closePath();
         g.fill();
         g.restore();
@@ -2877,7 +2882,8 @@ export default defineSimulation({
         show.add('scale').add('map');
         // Wirklichkeit erst nach „Ergebnis anzeigen“ (bzw. sofort, wenn „Ergebnis sofort anzeigen“ an ist)
         if (revealed) {
-          ctx.readout('real', lt(me.realUm));
+          // Strecke 0: wie in der Karte „0 m“ statt „0 mm“
+          ctx.readout('real', me.realUm === 0 ? lt(0, 'm') : lt(me.realUm));
           const chain = unitChain(me.realUm, 'cm').map((c) => c.text(lang));
           ctx.readout('calc', `${decimalIn(me.mm * UM.mm, 'cm', lang).text} cm · ${gi(n)} = ${chain.join(' = ')}`);
           show.add('real').add('calc');

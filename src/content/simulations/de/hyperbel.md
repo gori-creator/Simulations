@@ -40,7 +40,7 @@ Für $c = 0$ ist die $x$-Achse selbst Asymptote – dann gibt es keine Nullstell
 4. Ziehe das Asymptotenkreuz $Z$. Wie hängen $D$ und $W$ mit $Z$ zusammen?
 5. Wähle bei **Wertetabelle** „x → ±∞“ und lass $P$ nach außen laufen. Um wie viel wird der Abstand zur waagrechten Asymptote kleiner, wenn $x - b$ zehnmal so groß wird? [Beispiel laden](?a=2&b=-1&c=1.5&u=3&lim=inf)
 6. Lass $P$ zur Polstelle laufen. Was passiert mit den Funktionswerten? [Beispiel laden](?a=-2&b=1&c=-1&u=0.5&lim=pole)
-7. Ziehe den grünen Punkt $Q$: Er liegt immer $1$ rechts von $Z$ und $a$ darüber – das Rechteck mit der Breite $1$ hat den Flächeninhalt $a$.
+7. Ziehe den grünen Punkt $Q(b + 1 \mid c + a)$: Er liegt $1$ rechts von $Z$ und um $a$ verschoben (für $a < 0$ also unterhalb). Das Rechteck mit der Breite $1$ hat den Flächeninhalt $|a|$. Liegt $P$ gerade dort, springt $Q$ auf die andere Seite: $Q(b - 1 \mid c - a)$.
 
 ## Aufgaben
 
@@ -57,7 +57,7 @@ $x \cdot y = 12$, also $y = \frac{12}{x}$: $y = 8$; $4$; $2$ (jeweils in cm). Do
 
 ### Aufgabe 2: Term ablesen
 
-[Aufgabe laden](?a=-2&b=2&c=1&u=1&info=0&_hide=1) Lies die Asymptoten ab und bestimme $a$ mit einem Punkt des Graphen. Gib den Funktionsterm, $D$ und $W$ an.
+[Aufgabe laden](?a=-2&b=2&c=1&u=1&info=0&_hide=1) Lies die Asymptoten im Bild ab (nicht an den Reglern) und bestimme $a$ mit einem Punkt des Graphen. Gib den Funktionsterm, $D$ und $W$ an.
 
 <details>
 <summary>Lösung anzeigen</summary>

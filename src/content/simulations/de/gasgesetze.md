@@ -26,6 +26,8 @@ $$
 
 ein (**molares Volumen**).
 
+**Einheiten:** Die Simulation gibt den Druck in Kilopascal an. Es gilt $1\,\text{bar} = 100\,\text{kPa} = 1000\,\text{hPa} = 10^5\,\text{Pa}$; der normale Luftdruck beträgt etwa $1013\,\text{hPa} = 101{,}3\,\text{kPa} \approx 1\,\text{bar}$. Das Volumen steht in Litern: $1\,\text{L} = 1\,\text{dm}^3 = 10^{-3}\,\text{m}^3$. Damit ist $1\,\text{kPa} \cdot 1\,\text{L} = 10^3\,\text{Pa} \cdot 10^{-3}\,\text{m}^3 = 1\,\text{N} \cdot \text{m} = 1\,\text{J}$. Bei Boyle-Mariotte und den Verhältnisgleichungen darf man jede Einheit verwenden, solange sie auf beiden Seiten gleich ist – nur die Temperatur muss immer in Kelvin stehen.
+
 **Linearisierung:** Eine Hyperbel ist schwer als solche zu erkennen. Trägt man $p$ über $\frac{1}{V}$ auf, liegen die Messpunkte einer isothermen Messreihe auf einer **Ursprungsgeraden** mit der Steigung $p \cdot V = n \cdot R \cdot T$.
 
 **Absoluter Nullpunkt:** Misst man bei konstantem Druck das Volumen (oder bei konstantem Volumen den Druck) für mehrere Temperaturen und verlängert die Ausgleichsgerade nach links, trifft sie die Temperaturachse bei etwa $-273\,°\text{C}$. Dort würden Volumen bzw. Druck eines idealen Gases null. Diese Temperatur, $\vartheta = -273{,}15\,°\text{C}$ bzw. $T = 0\,\text{K}$, heißt **absoluter Nullpunkt**; tiefere Temperaturen gibt es nicht. Deshalb gelten die Gasgesetze nur mit der Kelvin-Temperatur.
@@ -39,7 +41,7 @@ ein (**molares Volumen**).
 1. Ziehe den Kolben am Griff nach unten, bis das Volumen halb so groß ist. Was zeigt das Manometer? Was passiert mit dem Rechteck $p \cdot V$ im Diagramm? [Ausgangszustand](?V=22.4)
 2. Starte „Messreihe automatisch“ im isothermen Versuch und wechsle danach zum p-1/V-Diagramm. [Linearisierung](?ch=pinv&V=15)
 3. Erhöhe die Temperatur des Wärmebads. Wie liegt die neue Isotherme im Vergleich zu den alten? [Isotherme bei 100 °C](?T=100)
-4. Wechsle zum isobaren Versuch und heize von $0\,°\text{C}$ auf $100\,°\text{C}$. Um welchen Faktor wächst das Volumen? [Gay-Lussac](?mode=isobar&ch=VT&T=100)
+4. Wechsle zum isobaren Versuch und heize von $0\,°\text{C}$ auf $100\,°\text{C}$. Um welchen Faktor wächst das Volumen? Vergleiche mit $\frac{373{,}15\,\text{K}}{273{,}15\,\text{K}}$. [Gay-Lussac](?mode=isobar&ch=VT&T=100)
 5. Nimm im isobaren oder isochoren Versuch eine automatische Messreihe auf. Wo schneidet die verlängerte Gerade die Temperaturachse? [Amontons](?mode=isochor&ch=pT)
 6. Verdopple die Stoffmenge bei gleichem Volumen und gleicher Temperatur. Zähle die Teilchen und vergleiche den Druck. [Doppelte Teilchenzahl](?n=2)
 7. Was passiert im isobaren Versuch, wenn der Kolben oben anstößt? Gilt dann noch $p = \text{konstant}$? [Anschlag](?mode=isobar&n=2&T=200&p=60&ch=pV)
@@ -53,7 +55,7 @@ Welches Volumen nimmt $1\,\text{mol}$ eines idealen Gases bei $100\,°\text{C}$ 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$V = \frac{n R T}{p} = \frac{1 \cdot 8{,}314 \cdot 373{,}15}{101{,}3}\,\text{L} \approx 30{,}6\,\text{L}$. Ebenso über Gay-Lussac: $22{,}4\,\text{L} \cdot \frac{373{,}15}{273{,}15} \approx 30{,}6\,\text{L}$ – nicht etwa das Hundertfache wie bei „von 0 auf 100“. [In der Simulation zeigen](?mode=isobar&ch=VT&T=100)
+$V = \frac{n R T}{p} = \frac{1 \cdot 8{,}314 \cdot 373{,}15}{101{,}3}\,\text{L} \approx 30{,}6\,\text{L}$. Ebenso über Gay-Lussac: $22{,}4\,\text{L} \cdot \frac{373{,}15\,\text{K}}{273{,}15\,\text{K}} \approx 30{,}6\,\text{L}$. Das Volumen wächst also nur um den Faktor $1{,}37$. Mit Celsius-Werten ($\frac{100}{0}$) ließe sich gar nicht rechnen. [In der Simulation zeigen](?mode=isobar&ch=VT&T=100)
 
 </details>
 
@@ -70,12 +72,12 @@ $p_1 = \frac{n R T}{V_1} = \frac{8{,}314 \cdot 273{,}15}{30}\,\text{kPa} \approx
 
 ### Aufgabe 3: Autoreifen
 
-Ein Reifen hat bei $10\,°\text{C}$ einen (absoluten) Druck von $250\,\text{kPa}$. Nach einer langen Fahrt in der Sonne ist er $50\,°\text{C}$ warm. Das Volumen ändert sich kaum. Wie groß ist der Druck jetzt? [Aufgabe laden](?mode=isochor&ch=pT&T=10&_hide=1)
+Ein Reifen hat bei $10\,°\text{C}$ einen (absoluten) Druck von $250\,\text{kPa}$. Nach einer langen Fahrt in der Sonne ist er $50\,°\text{C}$ warm. Das Volumen ändert sich kaum. Wie groß ist der Druck jetzt? [Aufgabe laden](?mode=isochor&ch=pT&T=10&n=1.2&V=11.3&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Isochor: $\frac{p_2}{T_2} = \frac{p_1}{T_1}$, also $p_2 = 250\,\text{kPa} \cdot \frac{323{,}15\,\text{K}}{283{,}15\,\text{K}} \approx 285\,\text{kPa}$ – rund $14\,\%$ mehr. Mit Celsius-Werten ($\frac{50}{10}$) käme fälschlich das Fünffache heraus. [In der Simulation zeigen](?mode=isochor&ch=pT&T=50)
+Isochor: $\frac{p_2}{T_2} = \frac{p_1}{T_1}$, also $p_2 = 250\,\text{kPa} \cdot \frac{323{,}15\,\text{K}}{283{,}15\,\text{K}} \approx 285\,\text{kPa}$ – rund $14\,\%$ mehr. Mit Celsius-Werten ($\frac{50}{10}$) käme fälschlich das Fünffache heraus. [In der Simulation zeigen](?mode=isochor&ch=pT&T=50&n=1.2&V=11.3)
 
 </details>
 
@@ -98,6 +100,17 @@ In einem Gefäß mit $20\,\text{L}$ herrschen bei $27\,°\text{C}$ $150\,\text{k
 <summary>Lösung anzeigen</summary>
 
 $n = \frac{p V}{R T} = \frac{150 \cdot 20}{8{,}314 \cdot 300{,}15}\,\text{mol} \approx 1{,}2\,\text{mol}$; $N = n \cdot N_\text{A} \approx 1{,}2 \cdot 6{,}02 \cdot 10^{23} \approx 7{,}2 \cdot 10^{23}$. [Prüfen](?n=1.2&T=27&V=20)
+
+</details>
+
+### Aufgabe 6: Spritze zuhalten
+
+Eine Spritze enthält $60\,\text{mL}$ Luft bei $1013\,\text{hPa}$. Du hältst die Öffnung zu und drückst den Kolben langsam (isotherm) auf $20\,\text{mL}$ zusammen. Wie groß ist der Druck jetzt? Gib ihn in hPa, kPa und bar an.
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Boyle-Mariotte: $p_2 = p_1 \cdot \frac{V_1}{V_2} = 1013\,\text{hPa} \cdot \frac{60\,\text{mL}}{20\,\text{mL}} = 3039\,\text{hPa} \approx 304\,\text{kPa} \approx 3{,}0\,\text{bar}$. Das Volumen muss dazu nicht in Liter umgerechnet werden, weil nur das Verhältnis zählt. In der Simulation kannst du dasselbe Verhältnis ausprobieren: Drücke den Kolben von $30\,\text{L}$ auf $10\,\text{L}$ – der Druck verdreifacht sich. [Bei 30 L starten](?V=30)
 
 </details>
 

@@ -272,3 +272,50 @@ describe('Modell: Einheiten – Plausibilität', () => {
     expect(pair('mass', 't', 't')).toBe('t/kg/1000');
   });
 });
+
+describe('Modell: Einheiten – Prüfrunde (Prüfwerte und Aufgaben im Lernmaterial)', () => {
+  it('Prüfwerte der Prüfrunde', () => {
+    expect(conv('len', '3,5', 'km', 'm')).toBe('3500');
+    expect(conv('area', '2,5', 'm2', 'cm2')).toBe('25000');
+    expect(conv('vol', '1,2', 'l', 'cm3')).toBe('1200');
+    expect(conv('vol', '1,2', 'l', 'ml')).toBe('1200');
+    expect(conv('mass', '4,05', 't', 'kg')).toBe('4050');
+    expect(conv('area', '1', 'ha', 'm2')).toBe('10000');
+    expect(conv('area', '1', 'ha', 'a')).toBe('100');
+    expect(conv('area', '1', 'km2', 'm2')).toBe('1000000');
+    expect(conv('area', '1', 'cm2', 'mm2')).toBe('100');
+    expect(conv('vol', '1', 'cm3', 'mm3')).toBe('1000');
+    expect(conv('mass', '1', 'g', 'mg')).toBe('1000');
+    expect(conv('len', '1', 'dm', 'cm')).toBe('10');
+    // Zeit: keine Kommaverschiebung, 2 h 15 min = 135 min = 2,25 h
+    expect(conv('time', '2,25', 'h', 'min')).toBe('135');
+    expect(conv('time', '135', 'min', 'h')).toBe('2.25');
+    expect(conv('time', '1,5', 'h', 'min')).toBe('90');
+    expect(conv('time', '1', 'd', 'min')).toBe('1440');
+  });
+
+  it('4,05 t in kg: die Null zwischen den Ziffern bleibt in der Tafel stehen', () => {
+    const r = tableResult(d('4,05'), 9, 6);
+    expect(r.cells.map((c) => c.digit).join('')).toBe('4050');
+    expect(r.cells.map((c) => c.added)).toEqual([false, false, false, true]);
+    expect(plain(readTable(r.cells, 6))).toBe('4050');
+  });
+
+  it('Aufgaben im Lernmaterial (DE und EN)', () => {
+    expect(conv('len', '4,2', 'km', 'm')).toBe('4200');
+    expect(conv('len', '75', 'cm', 'm')).toBe('0.75');
+    expect(conv('mass', '3,5', 'kg', 'g')).toBe('3500');
+    expect(conv('mass', '250', 'g', 'kg')).toBe('0.25');
+    expect(conv('mass', '1,2', 't', 'kg')).toBe('1200');
+    expect(conv('area', '2,5', 'm2', 'dm2')).toBe('250');
+    expect(conv('area', '4', 'ha', 'm2')).toBe('40000');
+    expect(conv('area', '4', 'ha', 'a')).toBe('400');
+    expect(conv('vol', '1,5', 'l', 'ml')).toBe('1500');
+    expect(conv('vol', '250', 'cm3', 'l')).toBe('0.25');
+    expect(conv('time', '150', 'min', 'h')).toBe('2.5');
+    expect(mixedText(mixedTime(d('150'), 'min', 'h'), 'de')).toBe('2 h 30 min');
+    expect(conv('time', '3', 'h', 's')).toBe('10800');
+    expect(conv('area', '3,5', 'm2', 'dm2')).toBe('350');
+    expect(conv('time', '2', 'd', 's')).toBe('172800');
+  });
+});

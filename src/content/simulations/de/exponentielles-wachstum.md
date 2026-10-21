@@ -12,20 +12,23 @@ $$
 
 - $a$ ist der **Anfangswert**, $b$ der **Wachstumsfaktor**, $p$ die prozentuale Änderung pro Zeitschritt.
 - Für $b > 1$ wächst $f$, für $0 < b < 1$ nimmt $f$ ab (**exponentielle Abnahme**, z. B. radioaktiver Zerfall).
+- Bei einer Abnahme ist $p$ negativ: Eine Abnahme um $8\,\%$ heißt $p = -8$ und $b = 1 - 0{,}08 = 0{,}92$. Der Wachstumsfaktor ist also nicht $0{,}08$.
 
 Beim **linearen Wachstum** kommt dagegen in jedem Zeitschritt **derselbe Summand** dazu. Am Anfang sehen beide ähnlich aus – auf lange Sicht wächst die Exponentialfunktion aber viel schneller.
 
-Die **Verdopplungszeit** (bzw. **Halbwertszeit**) ist bei exponentiellem Wachstum immer gleich:
+Die **Verdopplungszeit** (bzw. **Halbwertszeit**) ist bei exponentiellem Wachstum immer gleich. Aus $b^{T_d} = 2$ bzw. $b^{T_{1/2}} = 0{,}5$ folgt mit dem Logarithmus:
 
 $$
-T_d = \frac{\ln 2}{\ln b} \qquad T_{1/2} = \frac{\ln 0{,}5}{\ln b}
+T_d = \log_b 2 = \frac{\lg 2}{\lg b} \qquad T_{1/2} = \log_b 0{,}5 = \frac{\lg 0{,}5}{\lg b}
 $$
+
+Statt $\lg$ darf man jeden Logarithmus nehmen, z. B. auch $\ln$. Die Simulation zeigt den Wert auf zwei Stellen gerundet („≈“). Nur wenn er exakt ist, steht „=“ (z. B. $T_d = 1$ Tag bei $p = 100$).
 
 ## Ausprobieren
 
-1. Spiele die Seerosen ab. Der Teich ist nach 10 Tagen voll. Wann war er halb voll?
+1. Starte die Seerosen mit „Abspielen“. Der Teich ist nach 10 Tagen voll. Wann war er halb voll?
 2. Vergleiche beim Zinseszins mit dem linearen Wachstum (einfache Zinsen). [5 % Zinsen](?scenario=zinsen&a=1000&p=5&span=40&linear=1)
-3. Beobachte beim radioaktiven Zerfall die einzelnen Kerne. Zerfallen sie gleichmäßig? [Iod-131](?scenario=zerfall&a=1000&p=-8&span=40)
+3. Beobachte beim radioaktiven Zerfall die einzelnen Kerne. Zerfallen sie gleichmäßig? [Iod-131](?scenario=zerfall&a=1000&p=-8&span=40) Mit $p = -8$ ergibt sich $T_{1/2} \approx 8{,}31$ Tage – nahe an den echten gut 8 Tagen.
 4. Schalte die logarithmische y-Achse ein. Was wird aus dem Graphen? [Logarithmisch](?scenario=zinsen&a=1000&p=5&span=60&log=1)
 
 ## Aufgaben
@@ -81,5 +84,6 @@ Exakt: $\frac{\ln 2}{\ln 1{,}02} \approx 35{,}0$, $\frac{\ln 2}{\ln 1{,}05} \app
 - **Logarithmische Achse:** Exponentielle Funktionen erscheinen als Geraden – eine gute Vorbereitung auf den Logarithmus.
 - **Häufige Stolpersteine:**
   - Exponentielles Wachstum wird wie lineares extrapoliert (Seerosen-Rätsel).
-  - „Nach zwei Halbwertszeiten ist alles zerfallen.“
-- **Bilder:** Teich und Seerosen können durch Bilder ergänzt werden (siehe `docs/BILDER.md`).
+  - „Nach zwei Halbwertszeiten ist alles zerfallen.“ Tatsächlich ist dann noch ein Viertel übrig.
+  - Prozentsatz und Wachstumsfaktor werden verwechselt: Bei $8\,\%$ Abnahme ist $b = 0{,}92$, nicht $0{,}08$ oder $1{,}08$. Die Anzeige „Wachstumsfaktor“ zeigt beides nebeneinander.
+- **Wertetabelle:** Im Beispiel „Frei“ steht statt des Bildes eine Wertetabelle. Lassen Sie die Faktoren „· b“ zwischen den Zeilen mit den Differenzen beim linearen Wachstum vergleichen.

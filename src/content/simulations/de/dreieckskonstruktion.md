@@ -36,7 +36,7 @@ Ist dagegen $a \ge c$ (SsW), liegt der zweite Schnittpunkt hinter $A$ auf der Ve
 3. Ziehe am fertigen Dreieck den Punkt $C$ oder $B$. Welche Stücke ändern sich mit? Verkleinere dann $a$ und $b$, bis sich die Kreise nicht mehr schneiden – die rote Maßlinie zeigt die **Lücke**. [Beispiel](?c=6&b=3&a=2)
 4. [SWS](?cs=sws&c=6&b=4.5&al=50): Drehe den Schenkel von $\alpha$ am runden Griff. Gibt es eine Einstellung, bei der kein Dreieck entsteht?
 5. [WSW](?cs=wsw&c=6&al=50&be=60): Stelle $\alpha + \beta$ auf genau [$180°$](?cs=wsw&c=6&al=100&be=80) und dann [mehr](?cs=wsw&c=6&al=110&be=85). Was passiert mit den Schenkeln?
-6. [SSW mit zwei Lösungen](?cs=ssw&c=6&a=4&al=30): Vergleiche $\gamma_1$ und $\gamma_2$ in der Ergebniskarte. Verkleinere $a$ auf [$3\,\text{cm}$](?cs=ssw&c=6&a=3&al=30) und [$2\,\text{cm}$](?cs=ssw&c=6&a=2&al=30), vergrößere es dann über $6\,\text{cm}$ hinaus ([SsW](?cs=ssw&c=5&a=6&al=50)). Wie viele Lösungen gibt es jeweils?
+6. [SSW mit zwei Lösungen](?cs=ssw&c=6&a=4&al=30): Vergleiche $\gamma_1$ und $\gamma_2$ in der Ergebniskarte. Verkleinere $a$ auf [$3\,\text{cm}$](?cs=ssw&c=6&a=3&al=30) und [$2\,\text{cm}$](?cs=ssw&c=6&a=2&al=30), vergrößere es dann über $6\,\text{cm}$ hinaus ([SsW](?cs=ssw&c=6&a=7&al=30)). Wie viele Lösungen gibt es jeweils?
 7. [WWW](?cs=www&c=4&al=50&be=60): Drei Dreiecke mit denselben Winkeln. Sind sie kongruent?
 
 ## Aufgaben

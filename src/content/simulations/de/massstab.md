@@ -20,7 +20,7 @@ Eine Karte mit **kleiner Maßstabszahl** (z. B. $1 : 5\,000$) zeigt einen kleine
 
 Bei sehr kleinen Dingen wird **vergrößert**. Dann steht die größere Zahl vorn: **10 : 1** heißt, $10\,\text{cm}$ im Bild sind $1\,\text{cm}$ in Wirklichkeit. Ein $7\,\text{mm}$ langer Marienkäfer ist im Bild $7\,\text{cm}$ lang; zurück rechnet man $7\,\text{cm} : 10 = 0{,}7\,\text{cm} = 7\,\text{mm}$.
 
-*Hinweis:* Die Zentimeter in der Simulation sind die Zentimeter ihres Lineals – auf dem Bildschirm sind sie je nach Gerät etwas größer oder kleiner als echte Zentimeter. Gemessen wird immer auf $1\,\text{mm}$ genau, so wie mit einem Schullineal.
+*Hinweis:* Die Zentimeter in der Simulation sind die Zentimeter des gezeichneten Lineals – auf dem Bildschirm sind sie je nach Gerät etwas größer oder kleiner als echte Zentimeter. Gemessen wird immer auf $1\,\text{mm}$ genau, so wie mit einem Schullineal.
 
 ## Ausprobieren
 
@@ -79,12 +79,12 @@ $3\,\text{km} = 300\,000\,\text{cm}$; $300\,000\,\text{cm} : 6\,\text{cm} = 50\,
 
 ### Aufgabe 5: Vergrößerung
 
-Eine Ameise ist $5\,\text{mm}$ lang. Wie lang ist sie auf einem Bild im Maßstab $10 : 1$? Und ein Sandkorn mit $0{,}4\,\text{mm}$ Durchmesser im Maßstab $50 : 1$? [Aufgabe laden](?mode=zoom&o=ant&z=10&_hide=1)
+Eine Ameise ist $5\,\text{mm}$ lang. Wie lang ist sie auf einem Bild im Maßstab $10 : 1$? Und ein Sandkorn mit $0{,}4\,\text{mm}$ Durchmesser im Maßstab $50 : 1$? Rechne zuerst selbst – die Ansicht **Vergrößern** zeigt das Ergebnis sofort.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Ameise: $5\,\text{mm} \cdot 10 = 50\,\text{mm} = 5\,\text{cm}$. Sandkorn: $0{,}4\,\text{mm} \cdot 50 = 20\,\text{mm} = 2\,\text{cm}$. [Sandkorn zeigen](?mode=zoom&o=sand&z=50)
+Ameise: $5\,\text{mm} \cdot 10 = 50\,\text{mm} = 5\,\text{cm}$. Sandkorn: $0{,}4\,\text{mm} \cdot 50 = 20\,\text{mm} = 2\,\text{cm}$. [Ameise zeigen](?mode=zoom&o=ant&z=10) · [Sandkorn zeigen](?mode=zoom&o=sand&z=50)
 
 </details>
 
@@ -101,8 +101,8 @@ Luftlinie: $10\,\text{cm} \cdot 25\,000 = 250\,000\,\text{cm} = 2{,}5\,\text{km}
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5, Lernbereich Größen (Länge, Maßstab) im LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen. Die Karte eignet sich vielleicht als gemeinsamer Einstieg am Beamer, die „Neue Messaufgabe“ mit ausgeschaltetem Ergebnis zum Üben in Partnerarbeit.
-- **Verbindung zur echten Karte:** Im Anschluss könnten die Kinder auf einer Wanderkarte der Umgebung den Schulweg messen und umrechnen.
+- **Einsatz:** Jahrgangsstufe 5, Lernbereich Größen (Länge, Maßstab) im LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen. Nutzen Sie die Karte als gemeinsamen Einstieg am Beamer und die „Neue Messaufgabe“ mit ausgeschaltetem Ergebnis zum Üben in Partnerarbeit.
+- **Verbindung zur echten Karte:** Lassen Sie die Kinder im Anschluss auf einer Wanderkarte der Umgebung den Schulweg messen und umrechnen.
 - **Modell:** Die Landschaft ist erfunden. Häuser und Kartenzeichen sind wie auf echten Karten etwas größer gezeichnet, als sie im Maßstab wären. Gemessen wird die Kartenlänge auf $1\,\text{mm}$ gerundet; gerechnet wird mit diesem gemessenen Wert.
 - **Häufige Stolpersteine:**
   - Die Einheit wird vergessen: $4 \cdot 25\,000 = 100\,000$ sind **Zentimeter**, nicht Meter.

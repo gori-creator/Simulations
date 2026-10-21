@@ -98,4 +98,42 @@ describe('Modell: Hyperbeln und ihre Asymptoten', () => {
     expect(distanceTo({ a: 2, b: 0, c: 0 }, 'inf', -4)).toBeCloseTo(0.5, 12);
     expect(distanceTo({ a: 2, b: 0, c: 0 }, 'pole', -0.2)).toBeCloseTo(0.2, 12);
   });
+
+  it('Prüfwerte a = 2, b = 1, c = 3: f(3) = 4, f(0) = 1, Nullstelle 1/3, Asymptoten x = 1, y = 3', () => {
+    const h = { a: 2, b: 1, c: 3 };
+    expect(valueAt(h, 3)).toBeCloseTo(4, 12);
+    expect(valueAt(h, 0)).toBeCloseTo(1, 12);
+    expect(zero(h)).toBeCloseTo(1 / 3, 12);
+    expect(asymptotes(h)).toEqual({ vertical: 1, horizontal: 3 });
+    // y = c wird nie angenommen (W = ℝ \ {c}): f(x) − c = a/(x − b) ≠ 0
+    for (const x of [-100, -1, 0.5, 1.5, 2, 1000]) expect(valueAt(h, x)).not.toBe(3);
+  });
+
+  it('ist punktsymmetrisch zum Asymptotenschnittpunkt Z(b | c)', () => {
+    for (const h of [
+      { a: 2, b: 1, c: 3 },
+      { a: -3, b: -2, c: -1.5 },
+      { a: 0.4, b: 6, c: -5 },
+    ]) {
+      for (const u of [0.1, 0.7, 2, 9]) {
+        expect(valueAt(h, h.b + u) + valueAt(h, h.b - u)).toBeCloseTo(2 * h.c, 10);
+      }
+    }
+  });
+
+  it('a < 0: Äste im II. und IV. Quadranten bezüglich Z', () => {
+    const h = { a: -2, b: 1, c: -1 };
+    // rechts von b unterhalb von c (IV), links oberhalb (II)
+    expect(valueAt(h, 2)).toBeLessThan(h.c);
+    expect(valueAt(h, 0)).toBeGreaterThan(h.c);
+    expect(quadrants(h.a)).toEqual([2, 4]);
+  });
+
+  it('a = 0: keine Hyperbel, sondern y = c mit Lücke bei x = b', () => {
+    const h = { a: 0, b: 2, c: 1 };
+    expect(isHyperbola(h)).toBe(false);
+    expect(valueAt(h, 5)).toBe(1);
+    expect(valueAt(h, 2)).toBeNaN();
+    expect(monotony(0)).toBe('constant');
+  });
 });

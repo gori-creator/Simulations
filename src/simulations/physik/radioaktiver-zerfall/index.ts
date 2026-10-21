@@ -177,12 +177,16 @@ export default defineSimulation({
   ],
   readouts: [
     { key: 'nuc', label: L('Nuklid und Zerfall', 'Nuclide and decay') },
-    { key: 'now', label: L('Momentan', 'Right now') },
-    { key: 'act', label: L('Aktivität und Zählrohr', 'Activity and counter') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
+    { key: 'act', label: L('Aktivität und Zählrohr', 'Activity and counter'), spoiler: true },
     { key: 'age', label: L('Zeit aus dem Restanteil', 'Time from the remaining fraction'), spoiler: true },
     { key: 'single', label: L('Dieser Kern', 'This nucleus') },
     { key: 'stats', label: L('Viele Beobachtungen', 'Many observations'), spoiler: true },
   ],
+  hint: L(
+    'Tipp: Einen Kern antippen und beobachten, wann er zerfällt (Tastatur: Tab bis zur Schale, dann Enter drücken, bis ein Kern markiert ist). Auch „linear“/„log“ und der Lautsprecher am Zähler lassen sich antippen.',
+    'Tip: tap a nucleus and watch when it decays (keyboard: Tab to the dish, then press Enter until a nucleus is marked). “linear”/“log” and the speaker on the counter can be tapped as well.',
+  ),
   presets: [
     { id: 'start', label: L('Radon-220: 500 Kerne', 'Radon-220: 500 nuclei'), values: {} },
     { id: 'few', label: L('Nur 100 Kerne: viel Zufall', 'Only 100 nuclei: lots of chance'), values: { N0: 100 } },
@@ -219,6 +223,9 @@ export default defineSimulation({
       emptyNS: 'Abspielen …',
       done: 'Fast alle Kerne zerfallen – „Neues Präparat“',
       doneS: 'Fast alles zerfallen',
+      allDone: 'Alle Kerne zerfallen – „Neues Präparat“',
+      allDoneS: 'Alle zerfallen',
+      watchKey: 'Einen zufälligen Kern beobachten',
       tapHint: 'Tippe einen Kern an: Wann zerfällt er?',
       tapHintS: 'Kern antippen',
       watching: 'Wann zerfällt er?',
@@ -242,7 +249,7 @@ export default defineSimulation({
       oneHintS: 'Wann zerfällt er? Unvorhersagbar!',
       nextHint: 'Antippen oder „Nächster Kern“',
       meanLab: 'Ø {m} T½',
-      nuc: '{eq}<br>{kind} · Halbwertszeit <var>T</var><sub>½</sub> = <strong>{T}</strong> · Zerfallskonstante <var>λ</var> = <span class="frac"><span>ln 2</span><span><var>T</var><sub>½</sub></span></span> ≈ {l}<br>Zum Vergleich: 1 g {name} enthält etwa {atoms} Kerne und hat die Aktivität <var>A</var> ≈ {spec} Bq.{chain}',
+      nuc: '{eq}<br>{kind} · Halbwertszeit <var>T</var><sub>½</sub> = <strong>{T}</strong> · Zerfallskonstante <var>λ</var> = <span class="frac"><span>ln 2</span><span><var>T</var><sub>½</sub></span></span>{l}<br>Zum Vergleich: 1 g {name} enthält etwa {atoms} Kerne und hat die Aktivität <var>A</var> ≈ {spec} Bq.{chain}',
       chain: '<br>Der Tochterkern {d} ist selbst radioaktiv (Zerfallsreihe) – hier wird nur der erste Zerfall betrachtet.',
       kindA: 'α-Zerfall: Der Kern sendet einen Heliumkern (2 Protonen, 2 Neutronen) aus.',
       kindB: 'β⁻-Zerfall: Im Kern wandelt sich ein Neutron in ein Proton um; ein Elektron (und ein Antineutrino) wird ausgesandt.',
@@ -253,7 +260,8 @@ export default defineSimulation({
       ageC14: '<br>So bestimmt die C-14-Methode das Alter von Holz, Knochen oder Stoff: Lebewesen nehmen bis zu ihrem Tod laufend C-14 auf, danach zerfällt es nur noch.',
       ageNone: 'Noch kein Kern zerfallen.',
       ageAll: 'Alle Kerne sind zerfallen – aus dem Restanteil 0 lässt sich keine Zeit mehr bestimmen.',
-      singleAlive: 'Kern Nr. {k} existiert seit {t} = {u} <var>T</var><sub>½</sub>.<br>Die Wahrscheinlichkeit, dass er in der nächsten Halbwertszeit zerfällt, ist immer <strong>50 %</strong> – egal, wie lange er schon existiert.',
+      singleAlive: 'Kern Nr. {k} existiert seit {t} = {u} <var>T</var><sub>½</sub>.{p}',
+      singleP: '<br>Die Wahrscheinlichkeit, dass er in der nächsten Halbwertszeit zerfällt, ist immer <strong>50 %</strong> – egal, wie lange er schon existiert.',
       singleDec: 'Kern Nr. {k} ist nach <strong>{u} <var>T</var><sub>½</sub></strong> ({t}) zerfallen.',
       stats: '{n} Kerne beobachtet · Mittelwert der Lebensdauer: <strong>{m} <var>T</var><sub>½</sub></strong> (Theorie: <span class="frac"><span>1</span><span>ln 2</span></span> <var>T</var><sub>½</sub> ≈ 1,44 <var>T</var><sub>½</sub>) · Median: {md} <var>T</var><sub>½</sub><br>Vor Ablauf einer Halbwertszeit zerfallen: <strong>{h} %</strong> (Theorie: 50 %)',
       statsNone: 'Noch kein Kern beobachtet – warten oder „100 Kerne auswerten“.',
@@ -285,6 +293,9 @@ export default defineSimulation({
       emptyNS: 'Play …',
       done: 'Almost all nuclei have decayed – “New sample”',
       doneS: 'Almost all decayed',
+      allDone: 'All nuclei have decayed – “New sample”',
+      allDoneS: 'All decayed',
+      watchKey: 'Watch a random nucleus',
       tapHint: 'Tap a nucleus: when will it decay?',
       tapHintS: 'Tap a nucleus',
       watching: 'When will it decay?',
@@ -308,7 +319,7 @@ export default defineSimulation({
       oneHintS: 'When will it decay? Unpredictable!',
       nextHint: 'Tap it or “Next nucleus”',
       meanLab: 'mean {m} T½',
-      nuc: '{eq}<br>{kind} · half-life <var>T</var><sub>½</sub> = <strong>{T}</strong> · decay constant <var>λ</var> = <span class="frac"><span>ln 2</span><span><var>T</var><sub>½</sub></span></span> ≈ {l}<br>For comparison: 1 g of {name} contains about {atoms} nuclei and has the activity <var>A</var> ≈ {spec} Bq.{chain}',
+      nuc: '{eq}<br>{kind} · half-life <var>T</var><sub>½</sub> = <strong>{T}</strong> · decay constant <var>λ</var> = <span class="frac"><span>ln 2</span><span><var>T</var><sub>½</sub></span></span>{l}<br>For comparison: 1 g of {name} contains about {atoms} nuclei and has the activity <var>A</var> ≈ {spec} Bq.{chain}',
       chain: '<br>The daughter nucleus {d} is itself radioactive (decay series) – only the first decay is considered here.',
       kindA: 'Alpha decay: the nucleus emits a helium nucleus (2 protons, 2 neutrons).',
       kindB: 'Beta⁻ decay: inside the nucleus a neutron turns into a proton; an electron (and an antineutrino) is emitted.',
@@ -319,7 +330,8 @@ export default defineSimulation({
       ageC14: '<br>This is how radiocarbon dating finds the age of wood, bone or cloth: living things keep taking in C-14 until they die; after that it only decays.',
       ageNone: 'No nucleus has decayed yet.',
       ageAll: 'All nuclei have decayed – a remaining fraction of 0 no longer gives a time.',
-      singleAlive: 'Nucleus no. {k} has existed for {t} = {u} <var>T</var><sub>½</sub>.<br>The probability that it decays within the next half-life is always <strong>50 %</strong> – no matter how long it has already existed.',
+      singleAlive: 'Nucleus no. {k} has existed for {t} = {u} <var>T</var><sub>½</sub>.{p}',
+      singleP: '<br>The probability that it decays within the next half-life is always <strong>50 %</strong> – no matter how long it has already existed.',
       singleDec: 'Nucleus no. {k} decayed after <strong>{u} <var>T</var><sub>½</sub></strong> ({t}).',
       stats: '{n} nuclei observed · mean lifetime: <strong>{m} <var>T</var><sub>½</sub></strong> (theory: <span class="frac"><span>1</span><span>ln 2</span></span> <var>T</var><sub>½</sub> ≈ 1.44 <var>T</var><sub>½</sub>) · median: {md} <var>T</var><sub>½</sub><br>Decayed within one half-life: <strong>{h} %</strong> (theory: 50 %)',
       statsNone: 'No nucleus observed yet – wait or “Evaluate 100 nuclei”.',
@@ -1023,7 +1035,8 @@ export default defineSimulation({
       const kindLab = ctx.t(nu.kind === 'alpha' ? 'alpha' : 'beta') + (nu.gamma ? ' + γ' : '');
       const kc = nu.kind === 'alpha' ? alphaCol() : betaCol();
       const kSize = sm ? 11 : 12;
-      const rightW = Math.max(pillWidth(kindLab, kSize), textW(tr('halfLife', { t: halfLifeStr(nu) }), `600 ${sm ? 11 : 12}px ${theme.font}`) + 4);
+      const hlText = tr('halfLife', { t: ctx.hidden ? '?' : halfLifeStr(nu) });
+      const rightW = Math.max(pillWidth(kindLab, kSize), textW(hlText, `600 ${sm ? 11 : 12}px ${theme.font}`) + 4);
       const padX = sm ? 10 : 14;
       let size = sm ? 18 : 22;
       const counts: [string, string] | null = mode() === 'many' ? [String(N), String(count - N)] : null;
@@ -1038,8 +1051,8 @@ export default defineSimulation({
       const third = !sm && R.h > 60;
       const ky = R.y + (third ? 8 : 9);
       pill(rx, ky, kindLab, kc, 'right', kSize);
-      text(g, tr('halfLife', { t: halfLifeStr(nu) }), rx - 2, ky + kSize + 11 + (sm ? 10 : 11), { font: `700 ${sm ? 11 : 12}px ${theme.font}`, color: theme.text, align: 'right' });
-      if (third) text(g, tr('lapse', { t: lapseStr(nu) }), rx - 2, ky + kSize + 11 + 26, { font: `600 11px ${theme.font}`, color: theme.muted, align: 'right' });
+      text(g, hlText, rx - 2, ky + kSize + 11 + (sm ? 10 : 11), { font: `700 ${sm ? 11 : 12}px ${theme.font}`, color: theme.text, align: 'right' });
+      if (third && !ctx.hidden) text(g, tr('lapse', { t: lapseStr(nu) }), rx - 2, ky + kSize + 11 + 26, { font: `600 11px ${theme.font}`, color: theme.muted, align: 'right' });
       g.restore();
     }
 
@@ -1358,8 +1371,11 @@ export default defineSimulation({
       const ry = D.y + D.h + (B.y + B.h - D.y - D.h) / 2;
       const fsR = sm ? 10.5 : 11.5;
       let rl = rate;
-      if (textW(rl, `600 ${fsR}px ${theme.font}`) > B.w - 30) rl = rate.replace(/ pro | per /, '/');
-      text(g, rl, B.x + 9, ry, { font: `600 ${fsR}px ${theme.font}`, color: '#d9dee5', align: 'left' });
+      // Platz bis vor den Lautsprecher (B.w − 34) freihalten
+      if (textW(rl, `600 ${fsR}px ${theme.font}`) > B.w - 47) rl = rate.replace(/ pro | per /, '/');
+      const rw = textW(rl, `600 ${fsR}px ${theme.font}`);
+      const fsR2 = rw > B.w - 47 ? Math.max(9, (fsR * (B.w - 47)) / rw) : fsR;
+      text(g, rl, B.x + 9, ry, { font: `600 ${fsR2}px ${theme.font}`, color: '#d9dee5', align: 'left' });
       // Leuchtdiode und Lautsprecher
       const led = clamp(1 - (now - ledMs) / 180, 0, 1);
       if (led > 0) animating = true;
@@ -1444,7 +1460,7 @@ export default defineSimulation({
       if (doneA > 0.01) {
         g.save();
         g.globalAlpha *= doneA;
-        const lab = ctx.t(G.sm ? 'doneS' : 'done');
+        const lab = ctx.t(N === 0 ? (G.sm ? 'allDoneS' : 'allDone') : G.sm ? 'doneS' : 'done');
         const w = pillWidth(lab, fs);
         pill(clamp(G.cx - w / 2, r.x + 4, r.x + r.w - w - 4), G.cy - 12, lab, theme.text, 'left', fs);
         g.restore();
@@ -1775,7 +1791,7 @@ export default defineSimulation({
       }
       timeTicks(A, X, xMax, fs, nu);
       text(g, s > 0.5 ? (de ? 'N (log)' : 'N (log)') : 'N', A.x - padL + 10, A.y - 13, { font: `700 ${fs}px ${theme.font}`, color: motherCol(), align: 'left' });
-      text(g, `t = ${timeStr(u)} = ${fx(u, 2)} T½`, A.x + A.w, A.y - 13, { font: `600 ${fs}px ${theme.font}`, color: theme.muted, align: 'right' });
+      text(g, ctx.hidden ? `t = ${timeStr(u)}` : `t = ${timeStr(u)} = ${fx(u, 2)} T½`, A.x + A.w, A.y - 13, { font: `600 ${fs}px ${theme.font}`, color: theme.muted, align: 'right' });
       axesFrame(A);
       const reveal = stage(0.35, 0.8, ease.inOutCubic);
       g.save();
@@ -1870,8 +1886,13 @@ export default defineSimulation({
       const lf = `600 ${fs}px ${theme.font}`;
       const l2 = ctx.t('theory');
       const l1 = ctx.t('measured');
-      let lx = A.x + A.w - 4 - textW(l2, lf);
-      const ly = A.y + 8;
+      // linear: oben rechts frei; logarithmisch liegen die Messpunkte oben, frei ist dann unten (über den Marken)
+      const logLeg = s > 0.5;
+      const legW = 13 + textW(l1, lf) + (theoA > 0.01 ? 34 + textW(l2, lf) : 0);
+      // rechtsbündig oben bzw. linksbündig unten
+      const right = logLeg ? A.x + 8 + legW : A.x + A.w - 4;
+      let lx = right - textW(l2, lf);
+      const ly = logLeg ? A.y + A.h - 30 : A.y + 8;
       if (theoA > 0.01) {
         g.save();
         g.globalAlpha *= theoA;
@@ -1886,7 +1907,7 @@ export default defineSimulation({
         g.setLineDash([]);
         g.restore();
         lx -= 34 + textW(l1, lf);
-      } else lx = A.x + A.w - 4 - textW(l1, lf);
+      } else lx = right - textW(l1, lf);
       haloText(l1, lx, ly, lf, theme.muted, 'left');
       g.fillStyle = mc;
       g.beginPath();
@@ -1910,7 +1931,7 @@ export default defineSimulation({
       const title = ctx.t(R.w < 300 ? 'chartAS' : 'chartA');
       text(g, title, R.x + 14, R.y + (sm ? 19 : 22), { font: `700 ${sm ? 12.5 : 13}px ${theme.font}`, color: theme.text, align: 'left' });
       const aNow = lam * N;
-      text(g, `A ≈ ${sig(ease2('aNow', aNow, 8), 3)} ${perUnit(nu)}`, R.x + R.w - 14, R.y + (sm ? 19 : 22), { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'right' });
+      text(g, ctx.hidden ? `A ≈ ? ${perUnit(nu)}` : `A ≈ ${sig(ease2('aNow', aNow, 8), 3)} ${perUnit(nu)}`, R.x + R.w - 14, R.y + (sm ? 19 : 22), { font: `700 ${fs}px ${theme.font}`, color: actCol(), align: 'right' });
       const padL = sm ? 40 : 46;
       const top = R.y + (sm ? 46 : 52);
       const A: Rect = { x: R.x + padL, y: top, w: R.w - padL - (sm ? 14 : 18), h: R.y + R.h - top - (sm ? 26 : 30) };
@@ -2296,8 +2317,8 @@ export default defineSimulation({
       const nucHtml = tr('nuc', {
         eq: eqHtml(nu),
         kind,
-        T: halfLifeStr(nu),
-        l: lamStr(nu, true),
+        T: ctx.hidden ? '?' : halfLifeStr(nu),
+        l: ctx.hidden ? '' : ` ≈ ${lamStr(nu, true)}`,
         name: nucName(nu),
         atoms: sig(atomsPerGram(nu), 2, true),
         spec: sig(specificActivity(nu), 2, true),
@@ -2324,10 +2345,10 @@ export default defineSimulation({
       } else {
         const uNow = single.alive ? single.steps * H : single.life;
         const uq = Math.round(uNow * 100) / 100;
-        singleH = single.alive ? tr('singleAlive', { k: String(single.k), t: timeStr(uq), u: fx(uq, 2) }) : tr('singleDec', { k: String(single.k), u: fx(uq, 2), t: timeStr(uq) });
+        singleH = single.alive ? tr('singleAlive', { k: String(single.k), t: timeStr(uq), u: fx(uq, 2), p: ctx.hidden ? '' : ctx.t('singleP') }) : tr('singleDec', { k: String(single.k), u: fx(uq, 2), t: timeStr(uq) });
         stats = statsHtml;
       }
-      const key = [nucHtml, now, act, age, singleH, stats].join('|');
+      const key = [nucHtml, now, act, age, singleH, stats, ctx.hidden].join('|');
       if (!force && key === lastKey) return;
       lastKey = key;
       ctx.readout('nuc', { html: nucHtml });
@@ -2422,6 +2443,42 @@ export default defineSimulation({
       },
       wheel: () => false,
     });
+
+    /* ---------- Tastatur: einen Kern zum Beobachten auswählen ---------- */
+    let keySig = '';
+    function watchRandom(): void {
+      if (N === 0) return;
+      const start = Math.floor(vis() * count);
+      for (let k = 0; k < count; k++) {
+        const i = (start + k) % count;
+        if (alive[i]) {
+          tracked = i;
+          break;
+        }
+      }
+      if (!ctx.clock.playing && !finished && !prefersReducedMotion()) ctx.clock.play();
+    }
+    function updateKeyTargets(): void {
+      const G = lastGeo;
+      const on = mode() === 'many' && !!G;
+      const dis = N === 0 || ctx.locked;
+      const sigNow = on && G ? `${Math.round(G.cx)}|${Math.round(G.cy)}|${Math.round(G.dishR)}|${dis}|${ctx.lang}` : 'off';
+      if (sigNow === keySig) return;
+      keySig = sigNow;
+      if (!on || !G) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      ctx.setKeyTargets([
+        {
+          id: 'watch',
+          label: ctx.t('watchKey'),
+          rect: { x: G.cx - G.dishR, y: G.cy - G.dishR, w: 2 * G.dishR, h: 2 * G.dishR },
+          disabled: dis,
+          activate: watchRandom,
+        },
+      ]);
+    }
 
     /* ---------- Ablauf ---------- */
     const offClock = ctx.clock.onChange(() => {
@@ -2537,6 +2594,7 @@ export default defineSimulation({
           drawFlyers(lay.a);
         }
         void lastHistMap;
+        updateKeyTargets();
         updateReadouts();
         if (animating || intro.running || refill.running) ctx.requestRender();
       },

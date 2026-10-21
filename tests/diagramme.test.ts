@@ -8,6 +8,7 @@ import {
   iconCount,
   largestRemainder,
   lieFactor,
+  minPositiveIndex,
   niceStep,
   percent,
   percentsOf,
@@ -149,5 +150,45 @@ describe('Modell: Diagramme – Strichliste, Piktogramm, Rangfolge', () => {
         expect(Math.abs(v / d.step - Math.round(v / d.step))).toBeLessThan(1e-9);
       }
     }
+  });
+});
+
+describe('Modell: Diagramme – Prüfrunde (nachgerechnete Werte, Sonderfälle)', () => {
+  it('8 von 30 sind 26,7 % und 96°', () => {
+    expect(percent(8, 30)).toBeCloseTo(26.667, 3);
+    expect(exactAngles([8, 22])[0]).toBeCloseTo(96, 12);
+    expect(pieAngles([8, 22])).toEqual([96, 264]);
+  });
+
+  it('Wahl 95, 100, 92 von 287: Winkel 119°, 126°, 115° (Summe 360°), Prozent 33,1/34,8/32,1', () => {
+    expect(exactAngles([95, 100, 92]).map((a) => Math.round(a * 10) / 10)).toEqual([119.2, 125.4, 115.4]);
+    // Abgerundet 119 + 125 + 115 = 359; Reste 0,16 / 0,44 / 0,40 → der übrige Grad geht an Jonas
+    expect(pieAngles([95, 100, 92])).toEqual([119, 126, 115]);
+    expect(roundedPercents([95, 100, 92], 1)).toEqual([33.1, 34.8, 32.1]);
+  });
+
+  it('abgeschnittene Achse ab 40: 52 und 48 wirken wie 12 : 8 = 1,5-fach statt 1,08-fach', () => {
+    expect(perceivedCutRatio(48, 52, 40)).toBeCloseTo(8 / 12, 12);
+    expect(1 / perceivedCutRatio(48, 52, 40)).toBeCloseTo(1.5, 12);
+    expect(1 / realRatio(48, 52)).toBeCloseTo(1.0833, 4);
+    expect(lieFactor(8 / 12, 48 / 52)).toBeCloseTo((48 / 52) / (8 / 12), 12);
+  });
+
+  it('ein Wert 0: Sektor 0°, die übrigen teilen sich 360°', () => {
+    expect(pieAngles([8, 6, 4, 3, 0])).toEqual([137, 103, 69, 51, 0]);
+    expect(total(roundedPercents([8, 6, 4, 3, 0], 1))).toBeCloseTo(100, 9);
+  });
+
+  it('alle Werte 0: keine Winkel, keine Prozent, keine Division durch 0', () => {
+    expect(pieAngles([0, 0, 0, 0, 0])).toEqual([0, 0, 0, 0, 0]);
+    expect(roundedPercents([0, 0, 0])).toEqual([0, 0, 0]);
+    expect(exactAngles([0, 0])).toEqual([0, 0]);
+    expect(effectiveCut([0, 0, 0], 90)).toBe(0);
+  });
+
+  it('Flächen-Piktogramm vergleicht mit dem kleinsten Wert über 0', () => {
+    expect(minPositiveIndex([8, 6, 0, 0, 0])).toBe(1);
+    expect(minPositiveIndex([8, 6, 4, 3, 3])).toBe(3);
+    expect(minPositiveIndex([0, 0])).toBe(-1);
   });
 });

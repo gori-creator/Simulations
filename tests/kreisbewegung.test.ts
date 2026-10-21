@@ -96,4 +96,60 @@ describe('Modell: Kreisbewegung und Zentripetalkraft', () => {
       last = d;
     }
   });
+
+  it('Aufgabenwerte aus dem Lernmaterial (von Hand nachgerechnet)', () => {
+    // A1: v = 2π · 0,8 / 1,2 = 4,19 m/s; a = 21,93 m/s²; F = 4,39 N; f = 0,83 Hz; ω = 5,24 1/s
+    const v = speed(0.8, 1.2);
+    expect(v).toBeCloseTo(4.19, 2);
+    expect(centripetalAcceleration(0.8, v)).toBeCloseTo(21.93, 2);
+    expect(centripetalForce(0.2, 0.8, v)).toBeCloseTo(4.39, 2);
+    expect(angularVelocity(0.8, v)).toBeCloseTo(5.236, 3);
+    // A2: T = 2π · √(0,2 · 0,8 / 30) = 0,459 s; Grenzgeschwindigkeit √120 = 10,95 m/s
+    expect(breakingPeriod(30, 0.2, 0.8)).toBeCloseTo(0.4589, 4);
+    expect(breakingSpeed(30, 0.2, 0.8)).toBeCloseTo(10.954, 3);
+    // A3: trocken 19,8 m/s = 71 km/h, nass 15,7 m/s = 56 km/h
+    expect(maxCornerSpeed(ROADS.dry, 50) * 3.6).toBeCloseTo(71.3, 1);
+    expect(maxCornerSpeed(ROADS.wet, 50)).toBeCloseTo(15.66, 2);
+    expect(maxCornerSpeed(ROADS.wet, 50) * 3.6).toBeCloseTo(56.4, 1);
+    // A5: r_min = 100 / (0,1 · 9,81) = 101,9 m
+    expect(minRadius(ROADS.ice, 10)).toBeCloseTo(101.94, 2);
+    // A6: Schleudern mit 1200 U/min, r = 0,25 m → f = 20 Hz, ω = 125,7 1/s, a = 3948 m/s² ≈ 402 g
+    const T = 60 / 1200;
+    const vw = speed(0.25, T);
+    expect(1 / T).toBeCloseTo(20, 12);
+    expect(angularVelocity(0.25, vw)).toBeCloseTo(125.66, 2);
+    expect(centripetalAcceleration(0.25, vw)).toBeCloseTo(3947.8, 1);
+    expect(centripetalAcceleration(0.25, vw) / G).toBeCloseTo(402.4, 1);
+    // A7: Looping r = 6 m – oben reicht die Gewichtskraft genau als Zentripetalkraft bei v = √(g · r) = 7,67 m/s
+    const vLoop = Math.sqrt(G * 6);
+    expect(vLoop).toBeCloseTo(7.67, 2);
+    expect(centripetalAcceleration(6, vLoop)).toBeCloseTo(G, 12);
+    // Standard-Auto: 1200 kg, 15 m/s, 50 m → a = 4,5 m/s² = 0,46 g, T = 20,9 s
+    expect(centripetalAcceleration(50, 15) / G).toBeCloseTo(0.4587, 4);
+    expect(period(50, 15)).toBeCloseTo(20.944, 3);
+  });
+
+  it('Sonderfälle und Reglergrenzen', () => {
+    // kleinster Radius, größte Umlaufdauer, kleinste Masse: winzige Kraft, aber endlich
+    const vMin = speed(0.2, 3);
+    expect(vMin).toBeCloseTo(0.4189, 4);
+    expect(centripetalForce(0.05, 0.2, vMin)).toBeCloseTo(0.04386, 5);
+    // größter Radius, kleinste Umlaufdauer, größte Masse: 1480 N – jede Schnur (≤ 100 N) reißt
+    const vMax = speed(1.5, 0.2);
+    expect(centripetalForce(1, 1.5, vMax)).toBeCloseTo(1480.4, 1);
+    expect(breakingPeriod(100, 1, 1.5)).toBeGreaterThan(0.2);
+    // Reißgrenze kann außerhalb des Reglers liegen (schwache Schnur, schwere Kugel): T_grenz > 3 s
+    expect(breakingPeriod(5, 1, 1.5)).toBeCloseTo(3.441, 3);
+    // T → groß: v, a, F → 0 (keine Division durch 0)
+    expect(speed(0.8, 1e9)).toBeLessThan(1e-8);
+    expect(centripetalForce(0.2, 0.8, speed(0.8, 1e9))).toBeLessThan(1e-16);
+    // r → klein bei fester Umlaufdauer: F = m · ω² · r → 0; bei fester Geschwindigkeit dagegen F → ∞
+    expect(centripetalForce(0.2, 1e-6, speed(1e-6, 1.2))).toBeLessThan(1e-5);
+    expect(centripetalForce(0.2, 1e-6, 4)).toBeGreaterThan(1e6);
+    // Auto: Reglergrenzen r = 10 m, v = 40 m/s, 2500 kg → 400 kN; v_max = 8,86 m/s
+    expect(centripetalForce(2500, 10, 40)).toBeCloseTo(400000, 6);
+    expect(maxCornerSpeed(ROADS.dry, 10)).toBeCloseTo(8.859, 3);
+    // Eis, kleinste Kurve: v_max = √(0,1 · 9,81 · 10) = 3,13 m/s
+    expect(maxCornerSpeed(ROADS.ice, 10)).toBeCloseTo(3.132, 3);
+  });
 });

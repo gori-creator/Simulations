@@ -13,11 +13,13 @@ Pyramide, Kegel und Kugel sind Körper, bei denen man Volumen und Oberfläche ni
 - **Mantellinie $s$** (Kegel) bzw. **Seitenkante $s$** (Pyramide): Strecke von der Spitze zum Rand der Grundfläche.
 - **Radius $r$**: bei Kegel und Kugel der Abstand zum Mittelpunkt.
 
-Diese Strecken hängen über rechtwinklige Dreiecke zusammen (Satz des Pythagoras):
+Diese Strecken hängen über rechtwinklige Dreiecke zusammen (Satz des Pythagoras). Bei der quadratischen Pyramide mit der Diagonale $d = a\sqrt{2}$ der Grundfläche gilt
 
 $$
-h_a^2 = h^2 + \left(\tfrac{a}{2}\right)^2 \qquad s^2 = h^2 + r^2
+h_a^2 = h^2 + \left(\tfrac{a}{2}\right)^2, \qquad s^2 = h^2 + \left(\tfrac{d}{2}\right)^2 = h_a^2 + \left(\tfrac{a}{2}\right)^2 .
 $$
+
+Beim Kegel gilt für die Mantellinie $s^2 = h^2 + r^2$. Achtung: Die Seitenhöhe $h_a$ und die Seitenkante $s$ sind verschiedene Strecken. $h_a$ trifft die Grundkante in der Mitte und senkrecht, $s$ endet in einer Ecke.
 
 ### Pyramide
 
@@ -68,7 +70,7 @@ $h_a = \sqrt{5^2 + 2^2}\,\text{cm} = \sqrt{29}\,\text{cm} \approx 5{,}39\,\text{
 
 $V = \tfrac{1}{3} \cdot 16\,\text{cm}^2 \cdot 5\,\text{cm} \approx 26{,}67\,\text{cm}^3$
 
-$M = 4 \cdot \tfrac{1}{2} \cdot 4\,\text{cm} \cdot 5{,}39\,\text{cm} \approx 43{,}08\,\text{cm}^2$
+$M = 4 \cdot \tfrac{1}{2} \cdot 4\,\text{cm} \cdot \sqrt{29}\,\text{cm} = 8\sqrt{29}\,\text{cm}^2 \approx 43{,}08\,\text{cm}^2$
 
 $O = 16\,\text{cm}^2 + 43{,}08\,\text{cm}^2 \approx 59{,}08\,\text{cm}^2$
 
@@ -108,7 +110,7 @@ $O = 4\pi \cdot (2{,}5\,\text{cm})^2 = 25\pi\,\text{cm}^2 \approx 78{,}54\,\text
 
 Der Zylinder hat $V = 2\pi r^3 \approx 98{,}17\,\text{cm}^3$. Die Kugel füllt $\tfrac{2}{3} \approx 66{,}7\,\%$ davon.
 
-[In der Simulation zeigen](?body=kugel&mode=volumen&r=2.5&arch=2)
+[In der Simulation zeigen](?body=kugel&r=2.5&cyl=1)
 
 </details>
 

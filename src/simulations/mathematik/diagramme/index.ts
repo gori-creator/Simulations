@@ -4,6 +4,7 @@ import {
   DATASETS,
   effectiveCut,
   iconCount,
+  minPositiveIndex,
   percent,
   percentsOf,
   pieAngles,
@@ -1744,6 +1745,7 @@ export default defineSimulation({
         b.push({ k: 'p', text: T(CHART_INFO[chartNow]), color: theme.muted });
         const w = unsuitable(shown, chartNow);
         if (w === 'parts') b.push({ k: 'badge', text: tt('Passt hier nicht: Temperaturen sind keine Teile eines Ganzen.', 'Not suitable: temperatures are not parts of a whole.'), color: theme.series[3]! });
+        if (whole && tot <= 0) b.push({ k: 'badge', text: tt('Alle Werte sind 0: Es gibt noch kein Ganzes und damit keine Anteile. Stelle mindestens einen Wert größer als 0 ein.', 'All values are 0: there is no whole yet, so there are no shares. Set at least one value above 0.'), color: theme.series[3]! });
         if (w === 'line') b.push({ k: 'badge', text: tt('Vorsicht: Zwischen den Kategorien gibt es kein „Dazwischen“ – die Linie täuscht einen Verlauf vor.', 'Careful: there is no “in between” two categories – the line suggests a trend.'), color: theme.series[3]! });
         b.push({ k: 'gap', h: 6 });
         if (sel !== null && full[sel] !== undefined) {
@@ -1773,7 +1775,7 @@ export default defineSimulation({
         b.push({ k: 'gap', h: 4 });
         if (whole) b.push({ k: 'p', text: `${tt('Gesamt', 'Total')}: ${valueText(tot)}`, color: theme.muted, weight: 700, size: 12 });
         else b.push({ k: 'p', text: `${tt('Mittelwert', 'Mean')}: ${numText(tot / Math.max(1, full.length), 1)} ${tx().sym}`, color: theme.muted, weight: 700, size: 12 });
-        return { key: `r|${chartNow}|${sel}|${shown.data}|${unsuitable(shown, chartNow)}`, blocks: b };
+        return { key: `r|${chartNow}|${sel}|${shown.data}|${unsuitable(shown, chartNow)}|${tot > 0}`, blocks: b };
       }
       const trick = shown.trick!;
       const h = honestG.at(now) > 0.5;
@@ -1804,14 +1806,13 @@ export default defineSimulation({
       b.push({ k: 'p', text: trickText(trick, revealed), color: theme.muted });
       pushMeter(b, trick);
       void cats;
-      return { key: `t|${trick}|${revealed}|${shown.data}`, blocks: b };
+      return { key: `t|${trick}|${revealed}|${shown.data}|${total(shown.values) > 0}`, blocks: b };
     }
 
     /** Erklärtext zu einer Täuschung (mit den aktuellen Zahlen). */
     function trickText(trick: Trick, honest: boolean): string {
       const v = shown.values;
       const cats = tx().long.map((l) => T(l));
-      const iMin = v.indexOf(Math.min(...v));
       const iMax = v.indexOf(Math.max(...v));
       const cutV = effectiveCut(v, shown.cut);
       switch (trick) {
@@ -1823,10 +1824,14 @@ export default defineSimulation({
           return honest
             ? tt('Jetzt bedeuten gleiche Abstände an der Achse auch gleiche Zahlensprünge.', 'Now equal spacing on the axis means equal steps in the numbers.')
             : tt(`Die Marken haben gleiche Abstände, aber die Zahlen springen: ${unevenTicks(Math.max(...v)).map((x) => numText(x)).join(', ')}. Große Werte werden gestaucht.`, `The marks are evenly spaced, but the numbers jump: ${unevenTicks(Math.max(...v)).map((x) => numText(x)).join(', ')}. Large values are squashed.`);
-        case 'area':
-          return honest
-            ? tt('Jedes Bildchen steht für gleich viel – man zählt einfach die Bildchen.', 'Every picture stands for the same amount – just count them.')
-            : tt(`Die Figuren wachsen in Höhe UND Breite. ${cats[iMax]} ist ${fmt.num(v[iMax]! / Math.max(1, v[iMin]!), 1)}-mal so hoch wie ${cats[iMin]}, die Fläche aber ${fmt.num((v[iMax]! / Math.max(1, v[iMin]!)) ** 2, 1)}-mal so groß – und das Auge vergleicht Flächen.`, `The figures grow in height AND width. ${cats[iMax]} is ${fmt.num(v[iMax]! / Math.max(1, v[iMin]!), 1)} times as tall as ${cats[iMin]}, but its area is ${fmt.num((v[iMax]! / Math.max(1, v[iMin]!)) ** 2, 1)} times as large – and our eyes compare areas.`);
+        case 'area': {
+          if (honest) return tt('Jedes Bildchen steht für gleich viel – man zählt einfach die Bildchen.', 'Every picture stands for the same amount – just count them.');
+          // Verglichen wird mit dem kleinsten Wert über 0 (eine 0 hat keine Figur).
+          const iLo = minPositiveIndex(v);
+          if (iLo < 0 || v[iLo]! >= v[iMax]!) return tt('Die Figuren wachsen in Höhe UND Breite – und das Auge vergleicht Flächen.', 'The figures grow in height AND width – and our eyes compare areas.');
+          const q = v[iMax]! / v[iLo]!;
+          return tt(`Die Figuren wachsen in Höhe UND Breite. ${cats[iMax]} ist ${fmt.num(q, 1)}-mal so hoch wie ${cats[iLo]}, die Fläche aber ${fmt.num(q * q, 1)}-mal so groß – und das Auge vergleicht Flächen.`, `The figures grow in height AND width. ${cats[iMax]} is ${fmt.num(q, 1)} times as tall as ${cats[iLo]}, but its area is ${fmt.num(q * q, 1)} times as large – and our eyes compare areas.`);
+        }
         case 'unit':
           return honest
             ? tt(`Mit Überschrift und Einheit ist klar, was gemeint ist: ${T(tx().axis)}.`, `With a title and a unit it is clear what is meant: ${T(tx().axis)}.`)
@@ -1835,6 +1840,7 @@ export default defineSimulation({
               : tt('Überschrift und Einheit fehlen: Was bedeuten die Zahlen – Minuten, Stunden, Personen?', 'Title and unit are missing: what do the numbers mean – minutes, hours, people?');
         default: {
           const tot = total(v);
+          if (tot <= 0) return tt('Alle Werte sind 0: Ohne Daten gibt es kein Ganzes und keinen Kreis. Stelle mindestens einen Wert größer als 0 ein.', 'All values are 0: without data there is no whole and no circle. Set at least one value above 0.');
           return honest
             ? tt(`Richtig gerechnet wird durch die Summe ${numText(tot)}: Zusammen sind es genau 100 % = 360°.`, `The correct base is the total ${numText(tot)}: together exactly 100 % = 360°.`)
             : tt(`Die Prozentangaben ergeben zusammen ${numText(total(percentsOf(v, wrongBase(tot))))} %. Ein ganzer Kreis sind aber genau 100 %. Hier wurde durch ${numText(wrongBase(tot))} statt durch ${numText(tot)} geteilt.`, `The percentages add up to ${numText(total(percentsOf(v, wrongBase(tot))))} %. A whole circle is exactly 100 %. Someone divided by ${numText(wrongBase(tot))} instead of ${numText(tot)}.`);
@@ -1851,11 +1857,13 @@ export default defineSimulation({
       const cats = tx().cats.map((l) => T(l));
       b.push({ k: 'gap', h: 8 });
       if (trick === 'cut' || trick === 'gap' || trick === 'area') {
-        const real = v[iMax]! > 0 ? v[iMin]! / v[iMax]! : 0;
+        // Beim Flächen-Piktogramm mit dem kleinsten Wert über 0 vergleichen (eine 0 hat keine Figur).
+        const iLo = trick === 'area' ? Math.max(0, minPositiveIndex(shown.values)) : iMin;
+        const real = v[iMax]! > 0 ? v[iLo]! / v[iMax]! : 0;
         let seen: number;
         if (trick === 'area') seen = lerp(real, real * real, areaG.at(now));
         else seen = frac(v[iMax]!) > 0 ? clamp(frac(v[iMin]!), 0, 1) / frac(v[iMax]!) : 0;
-        b.push({ k: 'meter', label: tt(`${cats[iMin]} im Vergleich zu ${cats[iMax]}`, `${cats[iMin]} compared with ${cats[iMax]}`), a: seen, b: real });
+        b.push({ k: 'meter', label: tt(`${cats[iLo]} im Vergleich zu ${cats[iMax]}`, `${cats[iLo]} compared with ${cats[iMax]}`), a: seen, b: real });
       } else if (trick === 'sum') {
         const tot = total(v);
         b.push({ k: 'sum', value: lerp(100, total(percentsOf(v, wrongBase(tot))), sumG.at(now)) });
@@ -2102,6 +2110,19 @@ export default defineSimulation({
     }
     let lastBlocks: Block[] = [];
 
+    /** Beschreibung der Zeichenfläche für Bildschirmleser (verrät im Detektiv-Modus die Täuschung nicht). */
+    function describeCanvas(cf: Cfg): void {
+      const t = TEXTS[cf.data];
+      const d = DATASETS[cf.data];
+      const dec = d.step < 1 ? 1 : 0;
+      const val = (x: number) => (t.sym ? `${fmt.num(x, dec)} ${t.sym}` : `${fmt.num(x, dec)} ${x === 1 ? T(t.one) : T(t.many)}`);
+      const list = cf.values.map((x, i) => `${T(t.long[i]!)} ${val(x)}`).join(', ');
+      let s = `${T(CHART_NAMES[cf.chart])}: ${T(t.title)}. ${list}.`;
+      if (cf.trick && p.mode === 'trick') s += ` ${tt('Täuschung', 'Trick')}: ${T(TRICK_NAMES[cf.trick])}${cf.honest ? tt(' (ehrlich dargestellt)', ' (shown honestly)') : ''}.`;
+      if (p.mode === 'detect') s += ` ${tt('Detektiv-Fall', 'Detective case')} ${p.fall}.`;
+      surface.canvas.setAttribute('aria-label', s);
+    }
+
     /* ---------------- Ergebnisse ---------------- */
     function updateReadouts(): void {
       const cf = cfg();
@@ -2112,6 +2133,7 @@ export default defineSimulation({
       const cats = t.long.map((l) => T(l));
       const dec = d.step < 1 ? 1 : 0;
       const unitWord = (x: number) => (t.sym ? `${fmt.num(x, dec)} ${t.sym}` : `${fmt.num(x, dec)} ${x === 1 ? T(t.one) : T(t.many)}`);
+      describeCanvas(cf);
       if (p.mode === 'detect' && !cf.honest) {
         ctx.readout('tbl', null);
         ctx.readout('sum', null);
@@ -2124,7 +2146,7 @@ export default defineSimulation({
       const head = `<tr><th>${T(t.noun)}</th><th>${t.sym ? tt('Wert', 'Value') : tt('Anzahl', 'Count')}</th>${d.whole ? `<th>${tt('Anteil', 'Share')}</th><th>${tt('Winkel', 'Angle')}</th>` : ''}</tr>`;
       const rows = v.map((x, i) => `<tr${sel === i ? ' class="is-current"' : ''}><td>${cats[i]}</td><td>${unitWord(x)}</td>${d.whole ? `<td>${fmt.num(pr[i]!, 1)} %</td><td>${angles[i]}°</td>` : ''}</tr>`).join('');
       ctx.readout('tbl', { html: `<table class="mini-table">${head}${rows}</table>` });
-      ctx.readout('sum', d.whole ? `${unitWord(tot)} = 100 % = 360°` : `${tt('Mittelwert', 'Mean')} ${fmt.num(tot / v.length, 1)} ${t.sym}`);
+      ctx.readout('sum', d.whole ? (tot > 0 ? `${unitWord(tot)} = 100 % = 360°` : `${unitWord(0)} – ${tt('keine Anteile', 'no shares')}`) : `${tt('Mittelwert', 'Mean')} ${fmt.num(tot / v.length, 1)} ${t.sym}`);
       if (sel !== null && v[sel] !== undefined && p.mode === 'read') {
         const x = v[sel]!;
         if (d.whole && tot > 0) {
@@ -2147,10 +2169,13 @@ export default defineSimulation({
           const seen = unevenFraction(v[iMin]!, tk) / Math.max(1e-9, unevenFraction(v[iMax]!, tk));
           ctx.readout('trick', tt(`${nm[iMin]} wirkt wie ${fmt.num(seen * 100, 0)} % von ${nm[iMax]}, echt sind es ${fmt.num(real * 100, 0)} %.`, `${nm[iMin]} looks like ${fmt.num(seen * 100, 0)} % of ${nm[iMax]}, really it is ${fmt.num(real * 100, 0)} %.`));
         } else if (cf.trick === 'area') {
-          ctx.readout('trick', tt(`Höhe ${fmt.num(real * 100, 0)} %, Fläche ${fmt.num(real * real * 100, 0)} % (${nm[iMin]} im Vergleich zu ${nm[iMax]})`, `Height ${fmt.num(real * 100, 0)} %, area ${fmt.num(real * real * 100, 0)} % (${nm[iMin]} compared with ${nm[iMax]})`));
-        } else if (cf.trick === 'sum') {
+          const iLo = Math.max(0, minPositiveIndex(v));
+          const r = v[iMax]! > 0 ? v[iLo]! / v[iMax]! : 0;
+          ctx.readout('trick', tt(`Höhe ${fmt.num(r * 100, 0)} %, Fläche ${fmt.num(r * r * 100, 0)} % (${nm[iLo]} im Vergleich zu ${nm[iMax]})`, `Height ${fmt.num(r * 100, 0)} %, area ${fmt.num(r * r * 100, 0)} % (${nm[iLo]} compared with ${nm[iMax]})`));
+        } else if (cf.trick === 'sum' && tot > 0) {
           ctx.readout('trick', tt(`Summe der falschen Angaben: ${fmt.num(total(percentsOf(v, wrongBase(tot))), 0)} % (geteilt durch ${wrongBase(tot)} statt ${fmt.num(tot, 0)})`, `Sum of the wrong figures: ${fmt.num(total(percentsOf(v, wrongBase(tot))), 0)} % (divided by ${wrongBase(tot)} instead of ${fmt.num(tot, 0)})`));
-        } else ctx.readout('trick', tt('Ohne Überschrift und Einheit sind die Zahlen nicht zu deuten.', 'Without a title and a unit the numbers cannot be interpreted.'));
+        } else if (cf.trick === 'sum') ctx.readout('trick', null);
+        else ctx.readout('trick', tt('Ohne Überschrift und Einheit sind die Zahlen nicht zu deuten.', 'Without a title and a unit the numbers cannot be interpreted.'));
       } else ctx.readout('trick', null);
     }
 

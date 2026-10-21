@@ -109,9 +109,46 @@ describe('Modell: Zahlengerade – Sachsituationen', () => {
   });
 
   it('beschreibt Temperatur und Höhe über die tatsächliche Änderung', () => {
-    expect(story('thermo', 4, 'minus', 9, 'de').change).toBe('Es wird 9 °C kälter.');
-    expect(story('thermo', -3, 'minus', -5, 'de').change).toBe('Es wird 5 °C wärmer.');
+    expect(story('thermo', 4, 'minus', 9, 'de').change).toBe('Es wird um 9 °C kälter.');
+    expect(story('thermo', -3, 'minus', -5, 'de').change).toBe('Es wird um 5 °C wärmer.');
     expect(story('meer', 6, 'plus', -14, 'de').result).toBe('Jetzt ist er 8 m unter dem Meeresspiegel.');
     expect(story('meer', 6, 'plus', -14, 'en').change).toBe('It dives 14 m down.');
+  });
+});
+
+describe('Modell: Zahlengerade – Prüfwerte (Prüfrunde)', () => {
+  it('rechnet die Prüfwerte richtig', () => {
+    expect(compute(-4, 'plus', 7)).toBe(3);
+    expect(compute(2, 'minus', 9)).toBe(-7);
+    expect(compute(-6, 'minus', -2)).toBe(-4);
+    expect(compute(-3, 'minus', -5)).toBe(2);
+    expect(compute(5, 'plus', -8)).toBe(-3);
+  });
+
+  it('Pfeilmodell: positive Änderung nach rechts, negative nach links', () => {
+    expect(walkPlan('plus', 7).dir).toBe(1);
+    expect(walkPlan('plus', -8).dir).toBe(-1);
+    expect(walkPlan('minus', 9).dir).toBe(-1);
+    // −3 − (−5): Subtrahieren der negativen Zahl = Addieren der Gegenzahl → nach rechts
+    expect(walkPlan('minus', -5).dir).toBe(1);
+    expect(change('minus', -5)).toBe(5);
+  });
+
+  it('schreibt Terme mit echtem Minus und Klammern', () => {
+    expect(termText(5, 'plus', -8)).toBe('5 + (−8)');
+    expect(termText(-6, 'minus', -2)).toBe('−6 − (−2)');
+    expect(rewrite(-3, 'minus', -5)).toBe('−3 + 5');
+    expect(rewrite(2, 'minus', 9)).toBe('2 + (−9)');
+    expect(termText(-4, 'plus', 7)).not.toContain('-');
+  });
+
+  it('Sachsituationen: Vorzeichen und Einheiten', () => {
+    expect(story('thermo', 3, 'minus', 5, 'de').result).toBe('Jetzt ist es −2 °C.');
+    expect(story('thermo', 3, 'minus', 5, 'en').result).toBe('Now it is −2 °C.');
+    expect(story('meer', -120, 'plus', 0, 'de').start).toBe('Der Pinguin ist 120 m unter dem Meeresspiegel.');
+    expect(story('meer', 0, 'plus', 0, 'de').result).toBe('Jetzt ist er genau auf Meereshöhe.');
+    expect(story('konto', 10, 'minus', 25, 'de').result).toBe('Neuer Kontostand: −15 €.');
+    expect(story('konto', 10, 'minus', 25, 'en').result).toBe('New balance: −€15.');
+    expect(story('konto', 0, 'plus', 0, 'de').change).toBe('Es wird nichts gebucht.');
   });
 });

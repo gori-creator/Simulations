@@ -349,6 +349,31 @@ export default defineSimulation({
       return roundToSum(a, 1, angleSum(n));
     }
 
+    /**
+     * Gerundete Außenwinkel (Summe 360°); beim regelmäßigen Vieleck alle gleich
+     * 360° : n, damit dort keine Ecke wegen der Rundung abweicht.
+     */
+    function roundedExterior(S: Pt[], e: number[]): number[] {
+      if (isRegular(S)) return e.map(() => regularExterior(S.length));
+      return roundToSum(e, 1, 360);
+    }
+
+    /**
+     * Winkelgrößen für die Beschriftung im Bild: während des Mitzählens die
+     * laufenden Werte, danach dieselben summentreu gerundeten Werte wie in der
+     * Karte und in den Messwerten (sonst z. B. β = 15,5° im Bild, 15,4° in der Karte).
+     */
+    let labelVals: number[] = [];
+    function computeLabelVals(): void {
+      const a = exactAngles();
+      if (!a || disp.length !== a.length) {
+        labelVals = disp;
+        return;
+      }
+      const settled = disp.every((v, i) => Math.abs(v - a[i]!) < 0.005);
+      labelVals = settled ? roundedAngles(a) : disp;
+    }
+
     function updateReadouts(): void {
       const P = target();
       const n = P.length;
@@ -356,7 +381,9 @@ export default defineSimulation({
       const names = mode() === 'tri' ? ['α', 'β', 'γ'] : GREEK.slice(0, n);
       if (a) {
         const r = roundedAngles(a);
-        ctx.readout('angles', names.map((g, i) => `${g} ${eq(a[i]!, r[i]!)} ${deg(r[i]!)}`).join(', '));
+        // Vergleich mit dem angezeigten (gerundeten) Wert; beim regelmäßigen n-Eck mit dem exakten (n − 2) · 180° : n
+        const ref = isRegular(P) ? a.map(() => regularInterior(n)) : a;
+        ctx.readout('angles', names.map((g, i) => `${g} ${eq(ref[i]!, Math.round(r[i]! * 10) / 10)} ${deg(r[i]!)}`).join(', '));
         if (mode() === 'tri') ctx.readout('sum', { html: '<var>α</var> + <var>β</var> + <var>γ</var> = 180°' });
         else ctx.readout('sum', { html: `(<var>n</var> − 2) · 180° = (${n} − 2) · 180° = <strong>${fmt.num(angleSum(n), 0)}°</strong>` });
       } else {
@@ -366,7 +393,7 @@ export default defineSimulation({
       const e = exteriorAngles(P);
       if (p.ext && e) {
         if (mode() === 'tri' && a) {
-          const r = roundToSum(e, 1, 360);
+          const r = roundedExterior(P, e);
           const parts = [0, 1, 2].map((i) => `${names[i]}* = ${names[(i + 1) % 3]} + ${names[(i + 2) % 3]} ${eq(e[i]!, r[i]!)} ${deg(r[i]!)}`);
           ctx.readout('ext', `${parts.join('; ')}; α* + β* + γ* = 360°`);
         } else {
@@ -429,7 +456,8 @@ export default defineSimulation({
     function wrap(str: string, maxW: number, font: string): string[] {
       const g = surface.g;
       g.font = font;
-      str = str.replace(/ ([=+·:]) /g, ' $1 ').replace(/ (°|cm)/g, ' $1');
+      // „(n − 2)“ zusammenhalten; vor Rechenzeichen nicht umbrechen
+      str = str.replace(/ − /g, ' − ').replace(/ ([=+·:]) /g,' $1 ').replace(/ (°|cm)/g, ' $1');
       const rows: string[] = [];
       let cur = '';
       for (const w of str.split(' ')) {
@@ -474,6 +502,34 @@ export default defineSimulation({
       g.font = font;
       const w = g.measureText(str).width;
       haloText(str, clamp(x, paper.x + w / 2 + 4, paper.x + paper.w - w / 2 - 4), clamp(y, paper.y + 10, paper.y + paper.h - 10), font, color);
+    }
+
+    /** Schon gesetzte Winkel-Etiketten (Pixel), damit sich Etiketten nicht überdecken. */
+    let placed: Rect[] = [];
+    /**
+     * Ort für ein Etikett (Breite w, Höhe h) auf dem Strahl von o in Richtung
+     * `dir` ab Abstand d: so weit nach außen geschoben, bis es kein schon
+     * gesetztes Etikett überdeckt (z. B. α und γ bei sehr stumpfen Dreiecken).
+     */
+    function freeSpot(o: XY, dir: number, d: number, w: number, h: number): XY {
+      const { paper } = layout();
+      const box = (k: number): { at: XY; r: Rect } => {
+        const at = polar(o, dir, d + k * 7);
+        const x = clamp(at[0], paper.x + w / 2 + 4, paper.x + paper.w - w / 2 - 4);
+        const y = clamp(at[1], paper.y + 10, paper.y + paper.h - 10);
+        return { at, r: { x: x - w / 2 - 3, y: y - h / 2 - 2, w: w + 6, h: h + 4 } };
+      };
+      const free = (r: Rect) => !placed.some((q) => r.x < q.x + q.w && q.x < r.x + r.w && r.y < q.y + q.h && q.y < r.y + r.h);
+      for (let k = 0; k <= 14; k++) {
+        const b = box(k);
+        if (free(b.r)) {
+          placed.push(b.r);
+          return b.at;
+        }
+      }
+      const b = box(0);
+      placed.push(b.r);
+      return b.at;
     }
 
     /** Kreisbogen um o von Weltrichtung `from` um `sweep` Grad (positiv = gegen den Uhrzeigersinn). */
@@ -920,12 +976,12 @@ export default defineSimulation({
         const [x, y] = polar(P[i]!, c.mid, d);
         haloText(name, x, y, nf, col);
       } else {
-        const a = disp[i] ?? 0;
+        const a = labelVals[i] ?? 0;
         const label = `${name} = ${deg(a)}`;
         g.font = vf;
         const w = g.measureText(label).width;
         const d = Math.max(r + 8, 12 / half) + w * 0.5 * Math.abs(Math.cos(rad(c.mid))) + 9 * Math.abs(Math.sin(rad(c.mid)));
-        const [x, y] = polar(P[i]!, c.mid, d);
+        const [x, y] = freeSpot(P[i]!, c.mid, d, w, big ? 16 : 14);
         labelAt(label, x, y, vf, col);
       }
       g.restore();
@@ -1072,6 +1128,7 @@ export default defineSimulation({
       const col = extColor();
       const wv = walk.v;
       const done = walkState(S).done;
+      const extR = roundedExterior(S, ext);
       for (let i = 0; i < n; i++) {
         const k = introPart(i, n);
         if (k <= 0) continue;
@@ -1090,7 +1147,7 @@ export default defineSimulation({
         wedge(q, rr * k, din, sweep * (wv > 0 ? Math.max(0.0001, reach) : 1), col, 0.16, 2);
         if (p.vals || names) {
           const mid = din + sweep / 2;
-          const label = names ? (p.vals ? `${names[i]} = ${deg(o * sweep)}` : names[i]!) : deg(ext[i]!);
+          const label = names ? (p.vals ? `${names[i]} = ${deg(extR[i]!)}` : names[i]!) : deg(extR[i]!);
           const vf = names && !p.vals ? `italic 700 ${big ? 15 : 13}px ${theme.mathFont}` : `700 ${big ? 12.5 : 11}px ${theme.font}`;
           g.font = vf;
           const w = g.measureText(label).width;
@@ -1271,7 +1328,7 @@ export default defineSimulation({
           g.font = font;
           const w = g.measureText(label).width;
           const d = Math.max(rr + 8, 11 / half) + w * 0.5 * Math.abs(Math.cos(rad(c.mid))) + 7 * Math.abs(Math.sin(rad(c.mid)));
-          const [x, y] = polar(P[i]!, c.mid, d);
+          const [x, y] = freeSpot(P[i]!, c.mid, d, w, big ? 15 : 13);
           g.save();
           // während der Zerlegung stehen die 180° der Dreiecke im Vordergrund
           g.globalAlpha = clamp(k, 0, 1) * (showSplitArcs ? 1 - clamp(sv * 3, 0, 1) : 1);
@@ -1307,7 +1364,8 @@ export default defineSimulation({
             const cy = (la * Q0[1] + lb * Q1[1] + lc * Q2[1]) / ls;
             const area = Math.abs((P[t[1]]![0] - P[t[0]]![0]) * (P[t[2]]![1] - P[t[0]]![1]) - (P[t[2]]![0] - P[t[0]]![0]) * (P[t[1]]![1] - P[t[0]]![1])) / 2;
             // nur, wenn das Etikett in den Inkreis passt
-            if ((2 * area) / ls > (big ? 13 : 11)) {
+            // (in schmalen Dreiecken stünde „180°“ sonst dicht an einer Ecke und sähe wie deren Winkel aus)
+            if ((2 * area) / ls > (big ? 16 : 13)) {
               g.save();
               g.translate(cx, cy);
               g.scale(ka, ka);
@@ -1349,7 +1407,7 @@ export default defineSimulation({
 
     /** Angezeigter (mitzählender) Innenwinkel im Vieleck. */
     function polyDisp(i: number): number {
-      return disp[i] ?? 0;
+      return labelVals[i] ?? 0;
     }
 
     /* ---------------- Hinweis-Toast ---------------- */
@@ -1519,7 +1577,7 @@ export default defineSimulation({
       if (!a) return;
       const vals = disp.length === 3 ? disp : [0, 0, 0];
       const settled = vals.every((v, i) => Math.abs(v - a[i]!) < 0.005);
-      const r = settled ? roundToSum(a, 1, 180) : vals.map((v) => Math.round(v * 10) / 10);
+      const r = settled ? roundedAngles(a) : vals.map((v) => Math.round(v * 10) / 10);
       const total = settled ? 180 : Math.round(sum(vals) * 10) / 10;
       const names = ['α', 'β', 'γ'];
       const lineFont = `800 ${big ? 15 : 13}px ${theme.font}`;
@@ -1888,8 +1946,10 @@ export default defineSimulation({
     function render(): void {
       const now = performance.now();
       hits = [];
+      placed = [];
       for (const pr of [tear, proof, split, walk, intro]) pr.step(now);
       const counting = stepDisplay(now);
+      computeLabelVals();
       surface.begin();
       const lay = layout();
       drawPaper();

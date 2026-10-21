@@ -26,3 +26,16 @@ export function timeToReach(a: number, percent: number, target: number): number 
   if (a <= 0 || target <= 0 || b <= 0 || b === 1) return NaN;
   return Math.log(target / a) / Math.log(b);
 }
+
+/** Ist `value` auf `decimals` Nachkommastellen exakt darstellbar? Dann „=“, sonst „≈“. */
+export function isExactTo(value: number, decimals: number): boolean {
+  const f = value * 10 ** decimals;
+  return Math.abs(f - Math.round(f)) < 1e-9 * Math.max(1, Math.abs(f));
+}
+
+/** Nachkommastellen für Anzeigen: kleine Werte genauer, große ganzzahlig. */
+export function displayDecimals(value: number): number {
+  const v = Math.abs(value);
+  if (v >= 1000) return 0;
+  return v < 10 ? 2 : 1;
+}

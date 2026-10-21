@@ -308,6 +308,20 @@ export function heldByFriction(track: Track, s: number, g: number, mu: number): 
 /** Ein Zeitschritt der Bewegung. */
 export function stepCart(track: Track, state: CartState, g: number, mu: number, h: number): CartState {
   if (mu > 0 && state.v === 0 && heldByFriction(track, state.s, g, mu)) return state;
+  // Ruhe am Prellbock: Zieht die Hangabtriebskraft den Wagen gegen das Bahnende, bleibt er
+  // stehen (sonst entstünde bei jedem Schritt ein wenig „Aufprallenergie“ aus dem Nichts).
+  if (state.v === 0) {
+    const a = -g * Math.sin(track.at(state.s).theta);
+    if ((state.s <= 0 && a <= 0) || (state.s >= track.length && a >= 0)) return state;
+  }
+  // Haftreibung: Kommt der Wagen in diesem Schritt zur Ruhe und hält ihn die Reibung dort,
+  // bleibt er stehen. (RK4 allein „zittert“ hier, weil sign(v) innerhalb des Schritts wechselt.)
+  if (mu > 0 && state.v !== 0 && heldByFriction(track, state.s, g, mu)) {
+    const p = track.at(state.s);
+    const n = Math.abs(g * Math.cos(p.theta) + state.v * state.v * p.kappa);
+    const a = -g * Math.sin(p.theta) - mu * n * Math.sign(state.v);
+    if (Math.sign(a) !== Math.sign(state.v) && Math.abs(state.v) <= Math.abs(a) * h) return { s: state.s, v: 0, w: state.w + 0.5 * state.v * state.v };
+  }
   const f = (_t: number, y: readonly number[]) => {
     const p = track.at(y[0]!);
     const n = Math.abs(g * Math.cos(p.theta) + y[1]! * y[1]! * p.kappa);
@@ -402,7 +416,8 @@ export function simulate(track: Track, s0: number, mu: number, opts: RunOptions 
     } else if (sign === 0 && lastSign !== 0 && mu > 0) {
       run.turns.push({ t, s: st.s, y: track.at(st.s).y });
     }
-    if (sign !== 0) lastSign = sign;
+    // Stillstand nur einmal als Umkehrpunkt zählen (nicht in jedem Schritt der Ruhe)
+    if (sign !== 0 || mu > 0) lastSign = sign;
     // kleine Toleranz: genau an der Grenze (N = 0, z. B. h₀ = 2,5·r) gilt der Wagen als „gerade geschafft“
     if (!run.liftOff && Math.abs(st.v) > 1e-6 && normalAcceleration(track, st.s, st.v, g) < -LIFT_TOL * g) {
       const p = track.at(st.s);

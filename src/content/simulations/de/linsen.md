@@ -60,7 +60,7 @@ $B = G \cdot \frac{b}{g} \approx 4\,\text{cm} \cdot \frac{16{,}7}{25} \approx 2{
 
 ### Aufgabe 2: Der Projektor
 
-Ein Projektor hat ein Objektiv mit $f = 10\,\text{cm}$. Ein $3\,\text{cm}$ großes Bild soll auf einer Leinwand $b = 50\,\text{cm}$ hinter der Linse scharf erscheinen. Wie weit muss das Dia von der Linse entfernt sein, und wie groß wird das Bild? [Aufgabe laden](?f=10&gs=3&show=0&_hide=1)
+Ein Projektor hat ein Objektiv mit $f = 10\,\text{cm}$. Das Bild eines $3\,\text{cm}$ großen Dias soll auf einer Leinwand $b = 50\,\text{cm}$ hinter der Linse scharf erscheinen. Wie weit muss das Dia von der Linse entfernt sein, und wie groß wird das Bild? [Aufgabe laden](?f=10&gs=3&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
