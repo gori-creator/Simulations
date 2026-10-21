@@ -24,13 +24,13 @@ Im Alltag ist $f'$ eine **Änderungsrate**: Weg → Geschwindigkeit → Beschleu
 
 ## Ausprobieren
 
-1. [Tangente läuft](?mode=trace&fn=cub&x=-2.5): Drücke „P durchlaufen lassen“. Vergleiche die senkrechte Seite des Steigungsdreiecks (bei $\Delta x = 1$) mit dem lila Balken im Bild von $f'$.
+1. [Tangente läuft](?mode=trace&fn=cub&x=-2.5): Drücke „P durchlaufen lassen“. Vergleiche die senkrechte Seite des Steigungsdreiecks (bei $\Delta x = 1$) mit dem senkrechten Balken im Bild von $f'$: Er ist genau $f'(x)$ hoch.
 2. [Mit zweiter Ableitung](?mode=trace&fn=cub&x=-2.5&d2=1): Die kleine Tangente an $f'$ hat die Steigung $f''(x)$. Wo ist $f''$ null?
 3. [Parabel](?fn=par&x=-3), [Sinus](?fn=sin&x=-6), [e-Funktion](?fn=exp&x=-3.5&full=1) und [ln x](?fn=ln&x=0.5): Welche bekannte Funktion entsteht jeweils unten?
 4. [Sekante → Tangente](?mode=sek&fn=par&pa=1&pb=0&pc=0&x=1&h=1): Drücke „h gegen 0 gehen lassen“. Wie verändert sich der Punkt im Diagramm des Differenzenquotienten? Stelle auch „links“ und „beidseitig“ ein.
 5. [Knick bei |x|](?mode=sek&fn=abs&x=0&h=1.5&side=l): Warum treffen sich die beiden Äste im unteren Bild bei $h = 0$ nicht?
 6. [Merkmale](?mode=feat&k3=1&k2=0&k1=-3&k0=0&d2=1): Drücke „Merkmale Schritt für Schritt“ und folge den Hilfslinien durch alle drei Bilder. [Sattelpunkt von x³](?mode=feat&k3=1&k2=0&k1=0&k0=0&d2=1): Was ist anders?
-7. Regeln: [Faktorregel](?mode=rule&rule=fak&fn=sin&rk=2&x=0.5), [Summenregel](?mode=rule&rule=sum&x=1), [Potenzregel](?mode=rule&rule=pow&pn=3&x=1&dx=0.5), [Produktregel](?mode=rule&rule=prod&x=2&dx=0.5), [Kettenregel](?mode=rule&rule=chain&rk=2&x=0.5). Verkleinere $\Delta x$ bei der Produktregel: Was passiert mit dem roten Eckstück?
+7. Regeln: [Faktorregel](?mode=rule&rule=fak&fn=sin&rk=2&x=0.5), [Summenregel](?mode=rule&rule=sum&x=1), [Potenzregel](?mode=rule&rule=pow&pn=3&x=1&dx=0.5), [Produktregel](?mode=rule&rule=prod&x=2&dx=0.5), [Kettenregel](?mode=rule&rule=chain&rk=2&x=0.5). Verkleinere $\Delta x$ bei der Produktregel: Was passiert mit dem kleinen Eckstück $\Delta u \cdot \Delta v$?
 8. Alltag: [Auto](?kind=app&app=car&x=0&d2=1), [100-m-Lauf](?kind=app&app=sprint&x=0&d2=1), [Fahrstuhl](?mode=feat&kind=app&app=lift&d2=1), [Hochwurf](?mode=feat&kind=app&app=ball&d2=1), [Temperatur](?kind=app&app=temp&x=0), [Epidemie](?mode=feat&kind=app&app=pop&d2=1), [Kosten](?mode=feat&kind=app&app=cost), [Wanderung](?kind=app&app=hike&x=0), [Badewanne](?mode=sek&kind=app&app=tank&x=5&h=2). Was bedeuten Hochpunkt, Nullstelle von $f'$ und Wendepunkt jeweils?
 
 ## Aufgaben
@@ -103,7 +103,7 @@ Falsch. Ein Hochpunkt von $f'$ bedeutet: $f$ steigt dort am stärksten – $f$ h
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 11 (lokales und globales Differenzieren, Ableitungsfunktion, Monotonie und Extremstellen) und 12 (Ableitung von Sinus und Kosinus, Produkt- und Kettenregel) im LehrplanPLUS Gymnasium Bayern – die genaue Zuordnung der Regeln bitte am Lehrplan prüfen. Die Ansichten passen als Abfolge: Sekante → Tangente, Tangente läuft, Merkmale, eigene Skizze, Regeln.
+- **Einsatz:** LehrplanPLUS Gymnasium Bayern, Jahrgangsstufe 11, Lernbereich 4.1 „Lokales und globales Differenzieren“ (Sekanten- und Tangentensteigung, Ableitungsfunktion) und 4.2 (Monotonie, Extrem- und Wendestellen), sowie Jahrgangsstufe 12, Lernbereich 1 (Ableitung von Sinus und Kosinus grafisch plausibel machen, Produkt- und Kettenregel). In welcher Jahrgangsstufe Faktor-, Summen- und Potenzregel eingeführt werden, bitte am Lehrplan prüfen. Die Ansichten passen als Abfolge: Sekante → Tangente, Tangente läuft, Merkmale, eigene Skizze, Regeln.
 - **Vorhersagen:** Mit „Terme und Werte zeigen“ aus skizzieren die Lernenden $f'$ zuerst auf Papier, dann prüfen sie mit der Spur oder im Aufgabenmodus „f′ skizzieren“, der für jeden Punkt rückmeldet, ob er passt.
 - **Differenzierbarkeit:** Das Diagramm „Differenzenquotient über h“ zeigt Grenzwerte als Bild: Bei glatten Funktionen laufen linker und rechter Ast auf denselben Punkt zu, bei $|x|$ nicht.
 - **Alltagsbezug:** Neun Beispiele mit Einheiten (m/s, m/s², L/min, GE/ME, m/km und Prozent) – gut für die Deutung von Hochpunkten, Nullstellen von $f'$ und Wendepunkten im Sachzusammenhang.
