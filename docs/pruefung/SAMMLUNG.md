@@ -17,7 +17,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
-| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | offen |
+| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | erledigt (Kern): `hint` und `help` dürfen `(v) => L(…)` sein (`null` blendet aus), Host aktualisiert bei jeder Änderung |
 | radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | offen |
 | radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
 

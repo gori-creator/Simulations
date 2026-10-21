@@ -9,6 +9,7 @@ export type {
   ActionDef,
   BooleanParam,
   ChoiceParam,
+  DynamicText,
   NumberParam,
   ParamDef,
   Preset,

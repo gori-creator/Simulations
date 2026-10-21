@@ -1,6 +1,6 @@
 import type { Lang } from '../i18n/config';
 import { Formatter } from './format';
-import { isVisible, stepDecimals } from './params';
+import { isVisible, resolveText, stepDecimals } from './params';
 import { plainSubText, setSubLabel } from './rich-label';
 import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
 
@@ -26,6 +26,8 @@ interface ControlView {
 
 export class Controls {
   private views: ControlView[] = [];
+  /** Hilfetexte, die von den aktuellen Werten abhängen (`help` als Funktion). */
+  private dynamicHelp: { def: ParamDef; element: HTMLElement }[] = [];
   private fmt: Formatter;
 
   constructor(private readonly options: ControlsOptions) {
@@ -39,6 +41,11 @@ export class Controls {
       const value = values[view.def.key];
       if (value !== undefined) view.sync(value);
       view.root.hidden = !isVisible(view.def, values);
+    }
+    for (const { def, element } of this.dynamicHelp) {
+      const text = resolveText(def.help, values, this.options.lang) ?? '';
+      if (element.textContent !== text) element.textContent = text;
+      element.hidden = !text;
     }
     for (const fieldset of this.options.container.querySelectorAll<HTMLElement>('[data-group]')) {
       fieldset.hidden = !fieldset.querySelector('.ctl:not([hidden])');
@@ -95,6 +102,12 @@ export class Controls {
     if (!def.help) return null;
     const p = document.createElement('p');
     p.className = 'ctl__help';
+    if (typeof def.help === 'function') {
+      // Text hängt von den Werten ab: wird in `sync` gesetzt (bis dahin ausgeblendet)
+      p.hidden = true;
+      this.dynamicHelp.push({ def, element: p });
+      return p;
+    }
     // Hilfetexte bleiben reiner Text: Sie beschreiben teils Eingabe-Schreibweisen (z. B. „log_2“ im Funktionsplotter).
     p.textContent = def.help[this.options.lang];
     return p;

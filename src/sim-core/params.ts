@@ -1,4 +1,5 @@
-import type { NumberParam, ParamDef, ParamValue, ParamValues, TextParam } from './types';
+import type { Lang } from '../i18n/config';
+import type { DynamicText, NumberParam, ParamDef, ParamValue, ParamValues, TextParam } from './types';
 
 /** Standard-Höchstlänge für Text-Parameter. */
 export const TEXT_MAX_LENGTH = 80;
@@ -56,4 +57,15 @@ export function isVisible(def: ParamDef, values: ParamValues): boolean {
 export function valuesEqual(a: ParamValue, b: ParamValue): boolean {
   if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b) < 1e-12;
   return a === b;
+}
+
+/**
+ * Text eines `hint`/`help` für die aktuellen Werte: fester Text oder Ergebnis
+ * der Funktion. `null`, wenn kein (oder ein leerer) Text gezeigt werden soll.
+ */
+export function resolveText<V>(text: DynamicText<V> | undefined, values: Readonly<V>, lang: Lang): string | null {
+  if (!text) return null;
+  const localized = typeof text === 'function' ? text(values) : text;
+  const value = localized?.[lang] ?? localized?.de ?? '';
+  return value.trim() ? value : null;
 }
