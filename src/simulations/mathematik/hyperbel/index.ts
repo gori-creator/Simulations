@@ -764,9 +764,9 @@ export default defineSimulation({
         const col = mixColor(th().muted, th().bg, 0.15);
         for (const s of [1, -1] as const) strokePath(branchPath(base, s, 1), col, 1.6, { dash: [6, 5], alpha: 0.75 * k.labels });
         const [lx, ly] = [plot.px(-0.45), plot.py(-1 / 0.45)];
-        // nicht in das Rechteck an P schreiben (Rechteck zwischen Z und P)
-        const rx0 = Math.min(zx, plot.px(h.b + h.u)) - 40;
-        const rx1 = Math.max(zx, plot.px(h.b + h.u)) + 8;
+        // nicht in das Rechteck an P schreiben (Beschriftung steht rechtsbündig links von lx, ca. 45 px breit)
+        const rx0 = Math.min(zx, plot.px(h.b + h.u)) + 6;
+        const rx1 = Math.max(zx, plot.px(h.b + h.u)) + 52;
         const ry0 = Math.min(zy, plot.py(h.c + h.a / h.u)) - 14;
         const ry1 = Math.max(zy, plot.py(h.c + h.a / h.u)) + 14;
         const inRect = p.rect && isHyp && lx > rx0 && lx < rx1 && ly > ry0 && ly < ry1;
