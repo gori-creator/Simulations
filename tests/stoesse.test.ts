@@ -139,4 +139,80 @@ describe('Modell: Elastische und unelastische Stöße', () => {
     expect(balance(run).loss).toBe(0);
     expect(approaching(0.2, 0.2)).toBe(false);
   });
+
+  it('Werte aus dem Lernmaterial (Aufgaben 1–6) und der Prüfung', () => {
+    // A1: Klettband, gleiche Massen → 0,25 m/s, 25 mJ → 12,5 mJ (50 %)
+    let b = balance(planRun(0.2, 0.5, 0.2, 0, 0));
+    expect(b.q1 / 0.2).toBeCloseTo(0.25, 12);
+    expect((b.e1 + b.e2) * 1000).toBeCloseTo(25, 10);
+    expect((b.f1 + b.f2) * 1000).toBeCloseTo(12.5, 10);
+    // A2: elastisch 0,2/0,4 → −0,167 und 0,333 m/s; 2,78 + 22,22 = 25 mJ
+    b = balance(planRun(0.2, 0.5, 0.4, 0, 1));
+    expect(b.f1 * 1000).toBeCloseTo(2.778, 3);
+    expect(b.f2 * 1000).toBeCloseTo(22.222, 3);
+    // A3: Gesamtimpuls 0 bei v₂ = −0,25 m/s → 37,5 mJ in innere Energie
+    b = balance(planRun(0.2, 0.5, 0.4, -0.25, 0));
+    expect(b.loss * 1000).toBeCloseTo(37.5, 10);
+    // A4: 0,05 kg gegen 2 kg → −0,476 und 0,024 m/s; p₂′ ≈ 0,049 kg·m/s; E₂′ ≈ 0,6 mJ
+    const w4 = collide(0.05, 0.5, 2, 0, 1);
+    expect(w4.v1).toBeCloseTo(-0.4756, 4);
+    expect(w4.v2).toBeCloseTo(0.0244, 4);
+    expect(2 * w4.v2).toBeCloseTo(0.0488, 4);
+    expect(kineticEnergy(2, w4.v2) * 1000).toBeCloseTo(0.595, 3);
+    // A5: k = 0,5, gleiche Massen → 0,125 und 0,375 m/s, 37,5 % umgewandelt
+    const w5 = collide(0.2, 0.5, 0.2, 0, 0.5);
+    expect(w5.v1).toBeCloseTo(0.125, 12);
+    expect(w5.v2).toBeCloseTo(0.375, 12);
+    expect(energyLoss(0.2, 0.5, 0.2, 0, 0.5) / kineticEnergy(0.2, 0.5)).toBeCloseTo(0.375, 12);
+    // A6: gleiche Massen gegeneinander, elastisch → Tausch −0,3 und 0,5 m/s
+    const w6 = collide(0.2, 0.5, 0.2, -0.3, 1);
+    expect(w6.v1).toBeCloseTo(-0.3, 12);
+    expect(w6.v2).toBeCloseTo(0.5, 12);
+    // Beispiel t-x: k = 0,5, m₂ = 0,6 kg, v₂ = −0,4 m/s → v_S = −0,175; −0,5125 und −0,0625 m/s; 73 → 27,44 mJ
+    const run = planRun(0.2, 0.5, 0.6, -0.4, 0.5);
+    expect(stateAt(run, 0).vs).toBeCloseTo(-0.175, 12);
+    expect(run.w1).toBeCloseTo(-0.5125, 12);
+    expect(run.w2).toBeCloseTo(-0.0625, 12);
+    b = balance(run);
+    expect((b.e1 + b.e2) * 1000).toBeCloseTo(73, 10);
+    expect((b.f1 + b.f2) * 1000).toBeCloseTo(27.4375, 10);
+  });
+
+  it('Reglergrenzen: Gleiter bleiben auf der Bahn, Bilanz stimmt', () => {
+    const masses = [0.05, 0.2, 2];
+    const speeds = [-1, -0.05, 0, 0.05, 1];
+    for (const m1 of masses)
+      for (const m2 of masses)
+        for (const v1 of speeds)
+          for (const v2 of speeds)
+            for (const k of [0, 0.05, 1]) {
+              const run = planRun(m1, v1, m2, v2, k);
+              expect(Number.isFinite(run.tEnd)).toBe(true);
+              expect(run.tEnd).toBeGreaterThan(0);
+              for (let i = 0; i <= 50; i++) {
+                const s = stateAt(run, (run.tEnd * i) / 50);
+                expect(s.x1 - TRACK.glider / 2).toBeGreaterThanOrEqual(TRACK.margin - 1e-9);
+                expect(s.x2 + TRACK.glider / 2).toBeLessThanOrEqual(TRACK.length - TRACK.margin + 1e-9);
+                expect(s.x2 - s.x1).toBeGreaterThanOrEqual(TRACK.glider - 1e-9);
+              }
+              const b = balance(run);
+              expect(b.q1 + b.q2).toBeCloseTo(b.p1 + b.p2, 12);
+              expect(b.f1 + b.f2 + b.loss).toBeCloseTo(b.e1 + b.e2, 12);
+            }
+  });
+
+  it('Sonderfälle: beide in Ruhe, gleich schnell, schwerer trifft leichten', () => {
+    // beide ruhen bzw. fahren gleich schnell → kein Stoß, keine Division durch 0
+    for (const v of [0, 0.4, -0.4]) {
+      const run = planRun(0.2, v, 0.4, v, 1);
+      expect(run.collides).toBe(false);
+      expect(Number.isFinite(run.x1) && Number.isFinite(run.x2)).toBe(true);
+    }
+    // Schwer (2 kg) trifft leicht (0,05 kg) elastisch: schwerer fährt fast unverändert weiter, leichter mit fast 2·v₁
+    const w = collide(2, 0.5, 0.05, 0, 1);
+    expect(w.v1).toBeCloseTo((1.95 * 0.5) / 2.05, 12);
+    expect(w.v2).toBeCloseTo((2 * 2 * 0.5) / 2.05, 12);
+    expect(w.v2).toBeLessThan(1);
+    expect(w.v2).toBeGreaterThan(0.97);
+  });
 });

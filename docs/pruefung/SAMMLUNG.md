@@ -23,6 +23,8 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | kreisbewegung | `src/sim-core/` (Host, Ergebnisse) | Ergebnistexte (`ctx.readout` als reiner Text) sollen `_` als Index setzen, z. B. „F_max“, wie Regler-Beschriftungen. | offen |
 | energieerhaltung | `scripts/agenten/simshot.cjs` | Tastenschritte wie `["key","ArrowRight"]` erlauben, damit die Tastaturbedienung ohne eigenes Skript geprüft werden kann. | offen |
 | schiefer-wurf | `src/sim-core/plot.ts` | `Plot.axes()` braucht einen Sperrbereich für Achsenzahlen (dort, wo Anzeigen liegen); die Achsbeschriftung „x in m“ soll auch der letzten Achsenzahl ausweichen. | offen |
+| stoesse | `src/sim-core/format.ts` | **Rundungsfehler:** `formatNumber` zeigt −0,0625 aus Gleitkommarechnung (−0,06249…) als „−0,062“ statt „−0,063“. Vor dem Runden auf etwa 12 signifikante Stellen runden. Betrifft alle Simulationen. | offen |
+| stoesse | Host / Shell | Der Tipp unter der Bühne erscheint auch mit `_lock=1`, obwohl man dann nicht ziehen kann. Bei gesperrten Links ausblenden. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -73,5 +75,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | radioaktiver-zerfall | Neue Kern-Funktionen nutzen: Tipp „… Enter drücken, bis ein Kern markiert ist“ anpassen (ein Enter genügt jetzt); Halbwertszeiten in der Nuklid-Auswahl als `detail`, damit sie im Aufgabenmodus verdeckt sind; `hint` je Versuch. | offen |
 | energieerhaltung | Die Starthöhen-Beschriftung steht auf der eigenen Bahn bei manchen Formen nah am Wagen; der Tipp unter der Bühne ist auf dem Handy vier Zeilen lang (kürzen, ggf. je Ansicht über `hint`-Funktion). | offen |
 | schiefer-wurf | In der schmalen Zerlegungs-Szene (iPad, Handy) liegen Pfeilbeschriftungen teils über den Stroboskop-Punkten; das Etikett „x = …“ deckt die Achsenzahl darunter ab. | offen |
+| stoesse | Eigene Index-Helfer `parts`/`richText` auf den Kern-Helfer `subText` umstellen (ohne sichtbare Änderung). | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |

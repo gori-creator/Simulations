@@ -77,7 +77,7 @@ Gleiter 1 prallt zurück. Energie: $\tfrac{1}{2} \cdot 0{,}2 \cdot 0{,}167^2 + \
 
 ### Aufgabe 3: Stillstand nach dem Stoß
 
-Gleiter 1 ($m_1 = 0{,}2\,\text{kg}$) fährt mit $0{,}5\,\tfrac{\text{m}}{\text{s}}$ nach rechts, Gleiter 2 ($m_2 = 0{,}4\,\text{kg}$) kommt ihm entgegen. Beide haben Klettband. Wie schnell muss Gleiter 2 sein, damit beide nach dem Stoß stillstehen? Wohin geht die Energie?
+Gleiter 1 ($m_1 = 0{,}2\,\text{kg}$) fährt mit $0{,}5\,\tfrac{\text{m}}{\text{s}}$ nach rechts, Gleiter 2 ($m_2 = 0{,}4\,\text{kg}$) kommt ihm entgegen. Beide haben Klettband. Wie schnell muss Gleiter 2 sein, damit beide nach dem Stoß stillstehen? Wohin geht die Energie? Prüfe deine Vorhersage, indem du $v_2$ einstellst. [Aufgabe laden](?type=inel&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -108,10 +108,21 @@ $v_S = 0{,}25\,\tfrac{\text{m}}{\text{s}}$, also $v_1' = 0{,}25 - 0{,}5 \cdot (0
 
 </details>
 
+### Aufgabe 6: Gleiche Massen, entgegengesetzt
+
+Zwei Gleiter mit je $0{,}2\,\text{kg}$ fahren aufeinander zu: Gleiter 1 mit $0{,}5\,\tfrac{\text{m}}{\text{s}}$ nach rechts, Gleiter 2 mit $0{,}3\,\tfrac{\text{m}}{\text{s}}$ nach links. Der Stoß ist elastisch. Sage $v_1'$ und $v_2'$ voraus, ohne lange zu rechnen. [Aufgabe laden](?m2=0.2&v2=-0.3&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Bei gleichen Massen tauschen die Gleiter beim elastischen Stoß ihre Geschwindigkeiten: $v_1' = -0{,}3\,\tfrac{\text{m}}{\text{s}}$ (nach links), $v_2' = 0{,}5\,\tfrac{\text{m}}{\text{s}}$ (nach rechts). Mit der Formel: $v_1' = \frac{0 \cdot 0{,}5 + 2 \cdot 0{,}2 \cdot (-0{,}3)}{0{,}4}\,\tfrac{\text{m}}{\text{s}} = -0{,}3\,\tfrac{\text{m}}{\text{s}}$. Probe Impuls: $0{,}2 \cdot 0{,}5 + 0{,}2 \cdot (-0{,}3) = 0{,}04\,\text{kg}\cdot\tfrac{\text{m}}{\text{s}}$ vorher und nachher.
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Impuls und Impulserhaltung in der Mechanik der Jahrgangsstufen 10/11 (am bayerischen Gymnasium im Rahmen der Newton’schen Mechanik; Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Geeignet als Ersatz oder Vorbereitung für den Versuch an der Luftkissenbahn, zum Üben der Stoßformeln und zum Vergleich von Impuls- und Energieerhaltung.
-- **Vorhersagen lassen:** Die Bilanz „nachher“ erscheint erst im Moment des Stoßes. Mit `_hide=1` (Aufgabenlinks) sind die berechneten Ergebnisse verdeckt.
+- **Vorhersagen lassen:** Die Bilanz „nachher“ erscheint erst im Moment des Stoßes. Mit `_hide=1` (Aufgabenlinks) sind die berechneten Ergebnisse verdeckt, ebenso die Zahlen nach dem Stoß an den Pfeilen, am Schwerpunkt und in der Energiebilanz. Pfeile, Balken und Diagramm bleiben sichtbar und erlauben eine grobe Kontrolle der eigenen Rechnung.
 - **Modell:** gerader, zentraler Stoß ohne Reibung; die Stoßdauer wird vernachlässigt (Geschwindigkeiten springen). Die Startorte wählt die Simulation so, dass die Bewegung gut auf die $1{,}6\,\text{m}$ lange Bahn passt. Massen bis $2\,\text{kg}$ werden als Massestücke auf dem Gleiter dargestellt.
 - **Darstellung:** Im t-x-Diagramm zeigen die Bänder die Länge der Gleiter ($0{,}2\,\text{m}$); sie berühren sich genau beim Stoß. Die Linie des Schwerpunkts ist eine Gerade.
 - **Häufige Stolpersteine:**

@@ -85,7 +85,10 @@ function pieces(m: number): number[] {
 export default defineSimulation({
   id: 'stoesse',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh an den Pfeilspitzen über den Gleitern, um v₁ und v₂ zu ändern. Positiv heißt nach rechts, negativ nach links.',
+    'Tip: drag the arrow tips above the gliders to change v₁ and v₂. Positive means to the right, negative to the left.',
+  ),
   layout: { aspect: 1.28, aspectNarrow: 0.5 },
   images: { track: 'bahn.webp' },
   groups: [
@@ -133,7 +136,18 @@ export default defineSimulation({
       unit: 'm/s',
     },
     { key: 'm2', type: 'number', group: 'g2', label: L('Masse m₂', 'Mass m₂'), min: 0.05, max: 2, step: 0.05, default: 0.4, unit: 'kg' },
-    { key: 'v2', type: 'number', group: 'g2', label: L('Geschwindigkeit v₂', 'Velocity v₂'), min: -1, max: 1, step: 0.05, default: 0, unit: 'm/s' },
+    {
+      key: 'v2',
+      type: 'number',
+      group: 'g2',
+      label: L('Geschwindigkeit v₂', 'Velocity v₂'),
+      help: L('Negativ: Gleiter 2 fährt nach links, Gleiter 1 entgegen.', 'Negative: glider 2 moves to the left, towards glider 1.'),
+      min: -1,
+      max: 1,
+      step: 0.05,
+      default: 0,
+      unit: 'm/s',
+    },
     {
       key: 'chart',
       type: 'choice',
@@ -154,7 +168,7 @@ export default defineSimulation({
     { key: 'vs', label: L('Geschwindigkeit des Schwerpunkts', 'Velocity of the centre of mass'), spoiler: true },
     { key: 'after', label: L('Nach dem Stoß', 'After the collision'), spoiler: true },
     { key: 'energy', label: L('Bewegungsenergie', 'Kinetic energy'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
   presets: [
     { id: 'start', label: L('Leicht trifft schwer (elastisch)', 'Light hits heavy (elastic)'), values: {} },
@@ -202,6 +216,7 @@ export default defineSimulation({
       footBefore: 'Erst vorhersagen, dann „Stoß starten“!',
       footAfter: 'Impuls erhalten · {pct} % der Bewegungsenergie in innere Energie umgewandelt',
       footAfterShort: 'Impuls erhalten · {pct} % → innere Energie',
+      footAfterHidden: 'Impuls erhalten · Wie viel Energie wurde umgewandelt?',
       footNone: 'Kein Stoß: Jeder Gleiter behält Impuls und Energie.',
     },
     en: {
@@ -241,6 +256,7 @@ export default defineSimulation({
       footBefore: 'Predict first, then press “Start collision”!',
       footAfter: 'Momentum conserved · {pct} % of the kinetic energy converted into internal energy',
       footAfterShort: 'Momentum conserved · {pct} % → internal energy',
+      footAfterHidden: 'Momentum conserved · how much energy was converted?',
       footNone: 'No collision: each glider keeps its momentum and energy.',
     },
   },
@@ -310,6 +326,10 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const unit = (v: number, d: number, u: string) => `${fmt.num(v, d)} ${u}`;
+    /** Energie in mJ – überall mit derselben Rundung (Bilanz und Ergebnis). */
+    const mJ = (e: number) => fmt.num(e * 1000, 2);
+    /** Anteil der umgewandelten Energie in % – überall mit derselben Rundung. */
+    const pctOf = (loss: number, e0: number) => fmt.num(e0 > 0 ? (loss / e0) * 100 : 0, 1);
     const V = (name: string, sub: string, prime = false) => `<var>${name}</var><sub>${sub}</sub>${prime ? '′' : ''}`;
     const par = (str: string, v: number) => (v < 0 ? `(${str})` : str);
     const frac = (a: string, b: string) => `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
@@ -352,10 +372,10 @@ export default defineSimulation({
         ctx.readout(
           'energy',
           tr('energyText', {
-            e0: fmt.num(e0 * 1000, 2),
-            e1: fmt.num(e1 * 1000, 2),
-            loss: fmt.num(b.loss * 1000, 2),
-            pct: fmt.num(e0 > 0 ? (b.loss / e0) * 100 : 0, 1),
+            e0: mJ(e0),
+            e1: mJ(e1),
+            loss: mJ(b.loss),
+            pct: pctOf(b.loss, e0),
           }),
         );
       }
@@ -935,7 +955,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(sx, sy, rr, 0, Math.PI * 2);
         g.stroke();
-        const lab = `v_{S} = ${fmt.num(s.vs, 2)} m/s`;
+        const lab = `v_{S} = ${ctx.isHidden('vs') ? '?' : fmt.fixed(s.vs, 2)} m/s`;
         const tip = sx + s.vs * G.kv;
         const right = s.vs >= 0;
         const lw = richWidth(lab, small ? 11 : 12);
@@ -982,7 +1002,9 @@ export default defineSimulation({
         const v = which === 1 ? s.v1 : s.v2;
         const color = colorOf(which);
         hArrow(a.x0, a.x1, a.y, color, small ? 3 : 3.5, small ? 9 : 11);
-        const label = `v_{${which}}${prime} = ${fmt.num(v, 2)} m/s`;
+        // Aufgabenmodus: Geschwindigkeiten nach dem Stoß sind die gesuchten Größen
+        const value = s.after && ctx.isHidden('after') ? '?' : fmt.fixed(v, 2);
+        const label = `v_{${which}}${prime} = ${value} m/s`;
         const lw = richWidth(label, small ? 11 : 12.5);
         const mid = (a.x0 + a.x1) / 2;
         const lx = clamp(mid, r.x + lw / 2 + 6, r.x + r.w - lw / 2 - 6);
@@ -1231,6 +1253,8 @@ export default defineSimulation({
       text(g, ctx.t('balE'), R.x + pad, y + head / 2, { font: fontH, color: theme.text, align: 'left' });
       y += head + 6;
       const e0 = b.e1 + b.e2;
+      // Aufgabenmodus: Energiewerte und Prozentangabe sind Lösungen (A1, A3–A5); die Balken bleiben
+      const hideE = ctx.isHidden('energy');
       const EX = (v: number) => x0 + (e0 > 0 ? (v / e0) * (x1 - x0) : 0);
       const barH = clamp(rowE * 0.5, 10, 20);
       const rowsE: [string, number[], boolean][] = [
@@ -1260,10 +1284,9 @@ export default defineSimulation({
           if (xb - xa <= 0.3) return;
           if (j === 2) {
             hatchRect(xa, by, xb - xa, barH, heatColor());
-            const pct = e0 > 0 ? (value / e0) * 100 : 0;
-            const lab = `${fmt.num(pct, 0)} %`;
+            const lab = `${pctOf(value, e0)} %`;
             g.font = `700 ${small ? 10 : 11}px ${theme.font}`;
-            if (xb - xa > g.measureText(lab).width + 8 && u > 0.98) text(g, lab, (xa + xb) / 2, by + barH / 2 + 0.5, { font: g.font, color: theme.dark ? '#ffffff' : '#5c2300' });
+            if (!hideE && xb - xa > g.measureText(lab).width + 8 && u > 0.98) text(g, lab, (xa + xb) / 2, by + barH / 2 + 0.5, { font: g.font, color: theme.dark ? '#ffffff' : '#5c2300' });
           } else {
             const grad = g.createLinearGradient(0, by, 0, by + barH);
             const col = colorOf(j === 0 ? 1 : 2);
@@ -1276,15 +1299,15 @@ export default defineSimulation({
           }
         });
         g.restore();
-        if (u > 0.98) {
+        if (u > 0.98 && !hideE) {
           const sum = list.reduce((s2, v) => s2 + v, 0);
-          text(g, fmt.num(sum * 1000, 1), R.x + R.w - pad, yy + rowE / 2, { font: fontV, color: theme.text, align: 'right' });
+          text(g, mJ(sum), R.x + R.w - pad, yy + rowE / 2, { font: fontV, color: theme.text, align: 'right' });
         }
       });
       if (footH > 0) {
         const fy = y + 2 * rowE + footH / 2 + 4;
-        const pct = fmt.num(e0 > 0 ? (b.loss / e0) * 100 : 0, 0);
-        let msg = !run.collides ? ctx.t('footNone') : done ? tr('footAfter', { pct }) : t === 0 ? ctx.t('footBefore') : '';
+        const pct = pctOf(b.loss, e0);
+        let msg = !run.collides ? ctx.t('footNone') : done ? (hideE ? ctx.t('footAfterHidden') : tr('footAfter', { pct })) : t === 0 ? ctx.t('footBefore') : '';
         const fontF = `600 ${small ? 11 : 12}px ${theme.font}`;
         g.font = fontF;
         if (g.measureText(msg).width > R.w - 2 * pad && done) msg = tr('footAfterShort', { pct });
