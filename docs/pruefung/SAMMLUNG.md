@@ -17,9 +17,9 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/plot.ts` | `Plot.text` soll `_` als tiefgestellten Index setzen wie `subText`. | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/` (Regler) | Regler-Beschriftungen zeigen „F_Z“ und „μ_H“ mit Unterstrich. Index tiefstellen (z. B. per Unicode-Tiefzeichen oder HTML `<sub>`). | erledigt (Kern) |
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
-| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | offen |
-| radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | offen |
-| radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
+| freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | erledigt (Kern): `hint` und `help` dürfen `(v) => L(…)` sein (`null` blendet aus), Host aktualisiert bei jeder Änderung |
+| radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | erledigt (Kern): bei genau einem Ziel ist es beim Fokussieren gleich ausgewählt (`KeyTargetNav.focus()`) |
+| radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | erledigt (Kern): Optionsfeld `detail` (z. B. „Rn-220 (T½ = 55,6 s)“, im Aufgabenmodus „Rn-220“); Simulationen werden einzeln umgestellt |
 | kreisbewegung | `src/sim-core/` (Host, Ergebnisse) | Ergebnistexte (`ctx.readout` als reiner Text) sollen `_` als Index setzen, z. B. „F_max“, wie Regler-Beschriftungen. | offen |
 
 ## Rückfragen an die Projektleitung
@@ -68,4 +68,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | gasgesetze | Während die Temperatur noch angleicht, zeigt die Kopfzeile kurz z. B. „100 °C / 373,07 K“. Anzeige an die gerundete °C-Angabe koppeln. | offen |
 | kreisbewegung | Auf dem Handy liegen im Auto-Diagramm „Schnee“ und „Eis“ knapp neben „v in m/s“. | offen |
 | kreisbewegung | „r = 0,8 m“ liegt dicht neben der Beschriftung „F_Z = …“. | offen |
+| radioaktiver-zerfall | Neue Kern-Funktionen nutzen: Tipp „… Enter drücken, bis ein Kern markiert ist“ anpassen (ein Enter genügt jetzt); Halbwertszeiten in der Nuklid-Auswahl als `detail`, damit sie im Aufgabenmodus verdeckt sind; `hint` je Versuch. | offen |
+| freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |

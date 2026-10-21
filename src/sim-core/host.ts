@@ -7,7 +7,7 @@ import { exportStagePng } from './export';
 import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
-import { defaultValues, sanitize, valuesEqual } from './params';
+import { defaultValues, resolveText, sanitize, valuesEqual } from './params';
 import { setSubLabel } from './rich-label';
 import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
@@ -91,6 +91,9 @@ class SimulationHost {
   private frame = 0;
   private lastTime: number | null = null;
   private urlTimer = 0;
+  /** Tipp unter der Bühne (`hint`/`dragHint`) und der allgemeine Text aus der Hülle. */
+  private hintEl: HTMLElement | null = null;
+  private dragHintText = '';
 
   constructor(
     private readonly root: HTMLElement,
@@ -127,6 +130,7 @@ class SimulationHost {
     this.lastHidden = isTaskHidden(this.taskState());
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
+    this.syncHint();
     this.requestRender();
 
     onThemeChange(() => {
@@ -229,6 +233,7 @@ class SimulationHost {
     this.flushing = false;
     this.applyHide();
     this.controls?.sync(this.values);
+    this.syncHint();
     this.syncActions();
     this.scheduleUrlUpdate();
     this.requestRender();
@@ -266,6 +271,7 @@ class SimulationHost {
       groups: this.def.groups,
       idPrefix: `sim-${this.def.id}`,
       onInput: (key: string, value: ParamValue) => this.set({ [key]: value }, 'input'),
+      taskHidden: isTaskHidden(this.taskState()),
     });
   }
 
@@ -342,6 +348,8 @@ class SimulationHost {
    */
   private applyHide(): void {
     const state = this.taskState();
+    // Zusatzangaben der Auswahl-Optionen (z. B. Halbwertszeiten) im Aufgabenmodus verbergen
+    this.controls?.setTaskHidden(isTaskHidden(state));
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
       const hidden = isReadoutHidden(state, key);
@@ -407,6 +415,18 @@ class SimulationHost {
     this.syncActions();
   }
 
+  /**
+   * Tipp unter der Bühne: eigener `hint` (fest oder abhängig von den Werten),
+   * sonst der allgemeine Hinweis von `dragHint`, sonst keiner.
+   */
+  private syncHint(): void {
+    const el = this.hintEl;
+    if (!el) return;
+    const text = resolveText(this.def.hint, this.values, this.lang) ?? (this.def.dragHint ? this.dragHintText : '');
+    if (el.textContent !== text) el.textContent = text;
+    el.hidden = !text;
+  }
+
   /** Sichtbarkeit der Aktions-Knöpfe an die aktuellen Werte anpassen. */
   private syncActions(): void {
     for (const action of this.def.actions ?? []) {
@@ -425,9 +445,9 @@ class SimulationHost {
     };
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
     if (this.def.hint || this.def.dragHint) {
-      const hint = this.query('[data-sim-hint]');
-      if (this.def.hint) hint.textContent = this.def.hint[this.lang];
-      hint.hidden = false;
+      this.hintEl = this.query('[data-sim-hint]');
+      this.dragHintText = this.hintEl.textContent ?? '';
+      this.syncHint();
     }
 
     on('play', () => this.clock.toggle());

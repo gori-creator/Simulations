@@ -16,12 +16,15 @@ export default defineSimulation({
   id: '<id>',                      // = Ordnername
   dragHint: true,                  // Hinweis „Punkte ziehen“ unter der Bühne, wenn man ziehen kann
   hint: L('Tipp: …', 'Tip: …'),    // optional: eigener Tipp unter der Bühne, ersetzt den von dragHint
+  // auch je Zustand: hint: (v) => (v.mode === 'test' ? L('…', '…') : null),   // null → dragHint-Text bzw. keiner
   animated: true,                  // nur wenn zeitabhängig: Abspielen/Anhalten + tick(dt)
   layout: { aspect: 1.6, aspectNarrow: 0.75 },   // Breite/Höhe; Handy (<640 px) eigenes Verhältnis
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'mode', type: 'choice', label: L('Modus', 'Mode'), options: [{ value: 'a', label: L('…', '…') }], default: 'a' },
-    { key: 'r', type: 'number', label: L('Radius r', 'Radius r'), min: 1, max: 10, step: 0.5, default: 4, unit: 'cm', help: L('…', '…') },
+    // Option mit Zusatzangabe, im Aufgabenmodus verborgen: { value: 'rn', label: L('Rn-220', 'Rn-220'), detail: L('T½ = 55,6 s', 'T½ = 55.6 s') }
+    { key: 'r', type: 'number', label: L('Radius r', 'Radius r'), min: 1, max: 10, step: 0.5, default: 4, unit: 'cm', help: L('…', '…') },   // help auch als (v) => L(…) | null
+
     { key: 'grid', type: 'boolean', group: 'view', label: L('Gitter', 'Grid'), default: true },
     { key: 'term', type: 'text', label: L('Term', 'Expression'), default: '2x+1', maxLength: 40, placeholder: L('z. B. …', 'e.g. …') },
     { key: 'k', type: 'number', label: L('…', '…'), min: 0, max: 5, step: 1, default: 1, visibleIf: (v) => v.mode === 'a' },
@@ -107,6 +110,7 @@ Schrift: `` `600 13px ${theme.font}` ``, Variablen kursiv: `` `italic 14px ${the
 - `resetView()` der Simulation: `plot.resetView()` weiterreichen, wenn Zoom/Verschieben erlaubt ist.
 
 **TapTarget** (Antippen beliebiger Formen): `new TapTarget(surface, { hit: (px, py) => id | null, onTap: (id) => …, onHover: (id | null) => … })`. Für eigenes Ziehen ohne Plot: Objekt mit `PointerTarget`-Methoden (`contains, pointerDown → true wenn übernommen, pointerMove, pointerUp, hover, wheel → false`) und `surface.addTarget(obj)`; Beispiel: `physik/hebelgesetz`, `physik/hookesches-gesetz`.
+Antippbares zusätzlich für die Tastatur melden: `ctx.setKeyTargets([{ id, label, rect?, disabled?, activate }])` (auch in `render`, Pfeiltasten wählen, Enter löst aus; bei genau einem Ziel ist es beim Fokussieren gleich ausgewählt, ein Enter genügt). Eigene Markierung über `ctx.keyFocus`.
 
 **3D:** `View3D`, `mesh3d`, `foldNet`, `vec3`, `shade`, `Camera3D` aus `src/sim-core/view3d.ts` (Beschreibung in `docs/ARCHITEKTUR.md` „3D-Ansichten“, Vorbilder `mathematik/koerpernetze`, `quader-volumen`, `prisma-zylinder`).
 

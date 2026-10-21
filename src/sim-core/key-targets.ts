@@ -8,7 +8,8 @@ import type { Rect } from './surface';
  * wird die Bühne per Tab erreichbar: Pfeiltasten wechseln die Auswahl,
  * Pos1/Ende springen an den Anfang/das Ende, Enter/Leertaste löst aus.
  * Die Auswahl wird mit einem Rahmen markiert und ihr Name per `aria-live`
- * angesagt. Ohne gemeldete Objekte ändert sich nichts.
+ * angesagt. Gibt es genau ein Objekt, ist es beim Fokussieren gleich
+ * ausgewählt (ein Enter genügt). Ohne gemeldete Objekte ändert sich nichts.
  */
 export interface KeyTarget {
   /** Stabile ID (die Auswahl bleibt erhalten, wenn die Liste neu gemeldet wird). */
@@ -46,6 +47,19 @@ export class KeyTargetNav {
     if (current && !current.disabled) return;
     if (this.selectedId === null) return;
     this.selectedId = this.firstEnabledFrom(Math.max(0, oldIndex), 1)?.id ?? null;
+  }
+
+  /**
+   * Beim Fokussieren der Bühne: Gibt es genau ein (aktives) Objekt und ist
+   * noch nichts ausgewählt, wird es gleich ausgewählt, damit ein einziges
+   * Enter auslöst. Bei mehreren Objekten bleibt es beim Pfeiltasten-Wählen.
+   * Gibt zurück, ob sich die Auswahl geändert hat.
+   */
+  focus(): boolean {
+    const only = this.targets.length === 1 ? this.targets[0]! : null;
+    if (!only || only.disabled || this.selectedId === only.id) return false;
+    this.selectedId = only.id;
+    return true;
   }
 
   /**
@@ -129,6 +143,8 @@ export class KeyTargetLayer {
     });
     stage.addEventListener('focus', () => {
       this.focused = true;
+      // Nur ein Objekt: gleich auswählen, damit ein Enter genügt
+      this.nav.focus();
       this.updateRing();
       this.onChange(false);
       // Beim ersten Fokus die aktuelle Auswahl bzw. den Hinweis ansagen
@@ -144,6 +160,8 @@ export class KeyTargetLayer {
   /** Objekte melden (leere Liste: Tastaturbedienung aus). */
   setTargets(targets: readonly KeyTarget[]): void {
     this.nav.setTargets(targets);
+    // Wird die Liste bei fokussierter Bühne auf ein Objekt kürzer: ebenfalls gleich auswählen
+    if (this.focused && this.nav.focus()) this.announce();
     const active = targets.length > 0;
     if (active !== this.active) {
       this.active = active;
