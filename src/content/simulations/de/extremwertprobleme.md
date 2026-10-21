@@ -12,7 +12,7 @@ Bei einem **Extremwertproblem** sucht man den größten oder kleinsten Wert eine
 4. **Notwendige und hinreichende Bedingung:** $Z'(x) = 0$; Vorzeichenwechsel von $Z'$ oder Vorzeichen von $Z''$.
 5. **Ränder vergleichen** (ein Randwert kann besser sein als jedes lokale Extremum!) und das **Ergebnis** im Sachzusammenhang formulieren.
 
-*Schachtel:* Aus einem Karton $30\,\text{cm} \times 20\,\text{cm}$ werden an den Ecken Quadrate der Seitenlänge $x$ ausgeschnitten, dann werden die Ränder hochgeklappt: $V(x) = x(30 - 2x)(20 - 2x) = 4x^3 - 100x^2 + 600x$, $0 < x < 10$. $V'(x) = 12x^2 - 200x + 600 = 0 \iff 3x^2 - 50x + 150 = 0$ liefert $x_1 \approx 3{,}92$ und $x_2 \approx 12{,}74 \notin D$. Mit $V''(3{,}92) < 0$ und $V(0) = V(10) = 0$ ist das Maximum $V \approx 1056{,}3\,\text{cm}^3$.
+*Schachtel:* Aus einem Karton $30\,\text{cm} \times 20\,\text{cm}$ werden an den Ecken Quadrate der Seitenlänge $x$ ausgeschnitten, dann werden die Ränder hochgeklappt: $V(x) = x(30 - 2x)(20 - 2x) = 4x^3 - 100x^2 + 600x$, $0 < x < 10$. $V'(x) = 12x^2 - 200x + 600 = 0 \iff 3x^2 - 50x + 150 = 0$ liefert $x_1 \approx 3{,}92$ und $x_2 \approx 12{,}74 \notin D$. Mit $V''(3{,}92) < 0$ und $V(x) \to 0$ für $x \to 0$ und $x \to 10$ (die Ränder gehören nicht zu $D$) ist das Maximum $V \approx 1056{,}3\,\text{cm}^3$.
 
 *Dose:* Bei festem Volumen $V$ gilt $h = \frac{V}{\pi r^2}$, also $O(r) = 2\pi r^2 + \frac{2V}{r}$. Aus $O'(r) = 4\pi r - \frac{2V}{r^2} = 0$ folgt $r = \sqrt[3]{\frac{V}{2\pi}}$ – und dann ist $h = 2r$: Die beste Dose ist so hoch wie breit. Für $V = 1\,\text{L}$: $r \approx 5{,}42\,\text{cm}$, $h \approx 10{,}84\,\text{cm}$, $O = 6\pi r^2 \approx 553{,}6\,\text{cm}^2$.
 
@@ -56,12 +56,12 @@ $O(r) = 2\pi r^2 + \frac{1000}{r}$, $O'(r) = 4\pi r - \frac{1000}{r^2} = 0 \Righ
 
 ### Aufgabe 3: Rechteck unter der e-Funktion
 
-Ein Rechteck liegt mit zwei Seiten auf den Koordinatenachsen, die vierte Ecke $P(u \mid f(u))$ liegt auf dem Graphen von $f(x) = 3e^{-0{,}5x}$. Für welches $u$ ist der Flächeninhalt maximal? [Aufgabe laden](?prob=rect&x=0.8&show=0&_hide=1)
+Ein Rechteck liegt mit zwei Seiten auf den Koordinatenachsen: Eine Ecke liegt im Ursprung, die gegenüberliegende Ecke $P(u \mid f(u))$ liegt auf dem Graphen von $f(x) = 3e^{-0{,}5x}$. Für welches $u$ ist der Flächeninhalt maximal? [Aufgabe laden](?prob=rect&x=0.8&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$A(u) = 3u\,e^{-0{,}5u}$, $A'(u) = 3e^{-0{,}5u}(1 - 0{,}5u) = 0 \Rightarrow u = 2$, da $e^{-0{,}5u} \neq 0$. $A''(2) = 3e^{-1}(0{,}5 - 1) < 0$. $A(2) = \frac{6}{e} \approx 2{,}21$. Ränder: $A(0) = 0$ und $A(u) \to 0$ für $u \to \infty$. [In der Simulation zeigen](?prob=rect&x=2)
+$A(u) = 3u\,e^{-0{,}5u}$, $A'(u) = 3e^{-0{,}5u}(1 - 0{,}5u) = 0 \Rightarrow u = 2$, da $e^{-0{,}5u} \neq 0$. $A''(2) = 3e^{-1}(0{,}5 - 1) < 0$. $A(2) = \frac{6}{e} \approx 2{,}21$. Ränder: $A(u) \to 0$ für $u \to 0$ und für $u \to \infty$. [In der Simulation zeigen](?prob=rect&x=2)
 
 </details>
 

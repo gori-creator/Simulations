@@ -225,7 +225,7 @@ export default defineSimulation({
       e_varDigit: '„{a}{b}“ ist mehrdeutig: Meintest du {a}^{b} oder {b}{a}?',
       e_unclosed: 'Zur Klammer „{a}“ fehlt die schließende Klammer.',
       e_unexpectedClose: 'Zur Klammer „{a}“ gibt es keine öffnende Klammer.',
-      e_mismatch: 'Die Klammer „{a}“ wird mit „{b}“ geschlossen.',
+      e_mismatch: 'Die Klammer „{a}“ wird mit „{b}“ geschlossen – die Klammern passen nicht zusammen.',
       e_emptyParens: 'In der Klammer steht nichts.',
       e_fnNoArg: 'Nach „{a}“ fehlt das Argument, z. B. {a}(x).',
       e_absUnclosed: 'Der Betragsstrich „|“ wird nicht geschlossen.',
@@ -256,7 +256,7 @@ export default defineSimulation({
       zero: 'x {rel} {x}',
       max: 'max{rel}({x}, {y})',
       min: 'min{rel}({x}, {y})',
-      cross: '{rel}({x}, {y})',
+      cross: 'S{rel}({x}, {y})',
       hole: 'hole ({x}, {y})',
       maxWord: 'maximum',
       minWord: 'minimum',
@@ -286,7 +286,7 @@ export default defineSimulation({
       e_varDigit: '“{a}{b}” is ambiguous: did you mean {a}^{b} or {b}{a}?',
       e_unclosed: 'The bracket “{a}” is never closed.',
       e_unexpectedClose: 'The bracket “{a}” has no opening bracket.',
-      e_mismatch: 'The bracket “{a}” is closed with “{b}”.',
+      e_mismatch: 'The bracket “{a}” is closed with “{b}” – the brackets do not match.',
       e_emptyParens: 'There is nothing inside the brackets.',
       e_fnNoArg: 'The argument is missing after “{a}”, e.g. {a}(x).',
       e_absUnclosed: 'The absolute value bar “|” is never closed.',
@@ -1047,8 +1047,8 @@ export default defineSimulation({
         case 'min':
         case 'cross': {
           const approx = xr || isRounded(m.y);
-          // Englisch: Schnittpunkte ohne Buchstaben (P ist der Spurpunkt)
-          const relStr = lang === 'en' && m.kind === 'cross' ? (approx ? '≈ ' : '') : approx ? ' ≈ ' : lang === 'de' ? '' : ' ';
+          // Schnittpunkte in beiden Sprachen mit „S“ (P ist der Spurpunkt), direkt vor der Klammer
+          const relStr = approx ? ' ≈ ' : lang === 'de' || m.kind === 'cross' ? '' : ' ';
           return tr(m.kind, { rel: relStr, x: xs, y: nf(m.y) });
         }
         case 'hole':
