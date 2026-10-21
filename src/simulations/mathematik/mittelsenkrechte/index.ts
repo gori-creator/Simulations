@@ -2934,7 +2934,34 @@ export default defineSimulation({
       roadS = t === null ? mid : clamp(t + (t > mid ? -5 : 5), r.s0 + 1, r.s1 - 1);
       lastEq = false;
     }
-    resetP();
+    /** Letzte Lage der Punkte, um die Bewegungsrichtung eines Reglers zu kennen. */
+    const prev: Record<'a' | 'b' | 'g' | 'h', Pt> = { a: A(), b: B(), g: G(), h: H() };
+    /**
+     * A und B (bzw. G und H) dürfen nicht zusammenfallen, sonst gibt es keine
+     * Strecke und keine Mittelsenkrechte (bzw. keine Straße). Beim Ziehen
+     * verhindert das setPoint(); über Regler oder einen Link kann es trotzdem
+     * passieren. Dann rückt der zuletzt bewegte Punkt einen Schritt in seiner
+     * Bewegungsrichtung weiter (ohne erkennbare Richtung: der zweite Punkt
+     * nach rechts bzw. am Rand nach links).
+     */
+    function separate(changed: Set<string>, i1: 'a' | 'g', i2: 'b' | 'h'): void {
+      const p1: Pt = [p[`${i1}x`], p[`${i1}y`]];
+      const p2: Pt = [p[`${i2}x`], p[`${i2}y`]];
+      if (p1[0] !== p2[0] || p1[1] !== p2[1]) return;
+      const moved1 = (changed.has(`${i1}x`) || changed.has(`${i1}y`)) && !changed.has(`${i2}x`) && !changed.has(`${i2}y`);
+      const id = moved1 ? i1 : i2;
+      const before = prev[id];
+      let dx = Math.sign(p1[0] - before[0]);
+      let dy = Math.sign(p1[1] - before[1]);
+      if (!dx && !dy) dx = 1;
+      let nx = p1[0] + dx;
+      let ny = p1[1] + dy;
+      if (nx < 0 || nx > GRID_W || ny < 0 || ny > GRID_H) {
+        nx = p1[0] - dx;
+        ny = p1[1] - dy;
+      }
+      ctx.set({ [`${id}x`]: nx, [`${id}y`]: ny });
+    }
 
     return {
       update(changed, source) {
@@ -2943,6 +2970,9 @@ export default defineSimulation({
           if (mode() === 'anw') ctx.set(SCENE_ANW);
           else if (mode() === 'umk') ctx.set(SCENE_UMK);
         }
+        separate(changed, 'a', 'b');
+        separate(changed, 'g', 'h');
+        Object.assign(prev, { a: A(), b: B(), g: G(), h: H() });
         const abChanged = ['ax', 'ay', 'bx', 'by'].some((k) => changed.has(k));
         const angChanged = ['sx', 'sy', 'th', 'al'].some((k) => changed.has(k));
         const roadChanged = ['gx', 'gy', 'hx', 'hy'].some((k) => changed.has(k));
