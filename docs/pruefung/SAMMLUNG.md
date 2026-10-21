@@ -88,5 +88,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | induktion | Mit der Maus lässt sich der Magnet bis z = −3 cm ziehen; dort ist die Spannungsspitze wegen der Einwindungs-Näherung zu groß. Ziehbereich auf z ≥ 3 cm begrenzen wie im Automatikbetrieb. Lokale Index-Hilfen auf `subText` umstellen. | offen |
 | doppler-effekt | Bei v_Q = c berührt die Beschriftung „v_Q = 340 m/s“ die gestaute Wellenfront. | offen |
 | federpendel | Eigene `richText`-Hilfe (`F_[G]`) auf `subText` umstellen; bei sehr harter Feder stehen „F_G“ und „F_res“ dicht nebeneinander. | offen |
+| lorentzkraft | Die mitwandernden Pfeile v und F streifen kurz die Kanone bzw. die Beschriftung „Durchmesser in cm“. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
