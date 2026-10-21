@@ -217,7 +217,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Drehbare 3D-Ansicht von Pyramide, Kegel oder Kugel: Hilfsdreiecke mit dem Satz des Pythagoras, Umschüttversuch mit Wasser, Netz bzw. Kugel aus Pyramiden',
+      canvas: 'Drehbare 3D-Ansicht von Pyramide, Kegel oder Kugel mit beschrifteten Strecken (Höhe h, Seitenhöhe h_a, Seitenkante bzw. Mantellinie s, Radius r): rechtwinklige Hilfsdreiecke für den Satz des Pythagoras, Umschüttversuch mit Wasser und Füllmarken ⅓ und ⅔, Netz mit Kreissektor bzw. Kugel aus Pyramiden; dazu eine Karte mit der Rechnung',
       pyr3: 'Dreieckspyramide',
       pyr4: 'Quadratische Pyramide',
       pyr5: 'Fünfeckspyramide',
@@ -271,7 +271,7 @@ export default defineSimulation({
       askArch: 'Passen Kegel und Halbkugel zusammen hinein?',
     },
     en: {
-      canvas: 'Rotatable 3D view of a pyramid, cone or sphere: helper triangles with Pythagoras’ theorem, pouring water, the net or a sphere made of pyramids',
+      canvas: 'Rotatable 3D view of a pyramid, cone or sphere with labelled lengths (height h, slant height h_a, lateral edge or slant height s, radius r): right helper triangles for Pythagoras’ theorem, pouring water with fill marks ⅓ and ⅔, the net with a circular sector or a sphere made of pyramids; plus a card with the calculation',
       pyr3: 'Triangular pyramid',
       pyr4: 'Square pyramid',
       pyr5: 'Pentagonal pyramid',
@@ -331,9 +331,12 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string | number> = {}) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
-    /** Zahl mit Dezimalkomma; `eq` liefert „=“ oder „≈“ je nach Rundung. */
-    const num = (v: number, d = 2) => fmt.num(v, d);
-    const eq = (v: number, d = 2) => (Math.abs(v - Number(v.toFixed(d))) < 1e-9 ? '=' : '≈');
+    /** Ist der Wert auf d Nachkommastellen exakt (keine Rundung nötig)? */
+    const exact = (v: number, d = 2) => Math.abs(v - Number(v.toFixed(d))) < 1e-9;
+    /** Zahl mit Dezimalkomma: exakte Werte ohne Endnullen, gerundete mit fester Stellenzahl (37,70 statt 37,7). */
+    const num = (v: number, d = 2) => (exact(v, d) ? fmt.num(v, d) : fmt.fixed(v, d));
+    /** „=“ bei exakten, „≈“ bei gerundeten Werten. */
+    const eq = (v: number, d = 2) => (exact(v, d) ? '=' : '≈');
     const cm = (v: number, d = 2) => `${num(v, d)} cm`;
 
     const view = new View3D(surface, { azimuth: 28, elevation: 18, elevationLimits: [-15, 88] });
@@ -375,7 +378,7 @@ export default defineSimulation({
     const waterColor = () => (th().dark ? mixColor(waterBase(), th().bg, 0.12) : mixColor(waterBase(), '#ffffff', 0.3));
     const waterTop = () => (th().dark ? mixColor(waterBase(), '#ffffff', 0.12) : mixColor(waterBase(), '#ffffff', 0.55));
     const streamColor = () => (th().dark ? waterBase() : mixColor(waterBase(), '#ffffff', 0.12));
-    const pillBg = () => (th().dark ? 'rgba(15,20,30,0.82)' : 'rgba(255,255,255,0.88)');
+    const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.04 : 0, 0.88);
 
     /* ---------- Geometrie ---------- */
 
@@ -517,15 +520,15 @@ export default defineSimulation({
             ? `${v('G')} = ${sq(v('a'))} = (${cm(p.a)})² = <strong>${num(pyr.G)} cm²</strong>`
             : `${v('G')} = ${p.n} · ${half} · ${v('a')} · ${v('ρ')} ${eq(q.rho)} ${p.n} · ${half} · ${cm(p.a)} · ${cm(q.rho)} ≈ <strong>${num(pyr.G)} cm²</strong>`;
         ctx.readout('G', { html: G });
-        const rhoTxt = p.n === 4 ? `${v('a')}/2` : v('ρ');
-        const RTxt = p.n === 4 ? `${v('d')}/2` : v('R');
+        const rhoTxt = p.n === 4 ? `(${v('a')}/2)` : v('ρ');
+        const RTxt = p.n === 4 ? `(${v('d')}/2)` : v('R');
         ctx.readout('side', {
           html:
-            `${v('h', 'a')} = √(${sq(v('h'))} + ${sq(`(${rhoTxt})`)}) = √(${num(p.h)}² + ${num(q.rho)}²) cm ${eq(pyr.ha)} <strong>${cm(pyr.ha)}</strong><br>` +
-            `${v('s')} = √(${sq(v('h'))} + ${sq(`(${RTxt})`)}) = √(${num(p.h)}² + ${num(q.R)}²) cm ${eq(pyr.s)} <strong>${cm(pyr.s)}</strong>`,
+            `${v('h', 'a')} = √(${sq(v('h'))} + ${sq(rhoTxt)}) = √(${num(p.h)}² + ${num(q.rho)}²) cm ${eq(pyr.ha)} <strong>${cm(pyr.ha)}</strong><br>` +
+            `${v('s')} = √(${sq(v('h'))} + ${sq(RTxt)}) = √(${num(p.h)}² + ${num(q.R)}²) cm ${eq(pyr.s)} <strong>${cm(pyr.s)}</strong>`,
         });
         ctx.readout('V', { html: `${v('V')} = ${third} · ${v('G')} · ${v('h')} = ${third} · ${num(pyr.G)} cm² · ${cm(p.h)} ${eq(pyr.V)} <strong>${num(pyr.V)} cm³</strong>` });
-        ctx.readout('M', { html: `${v('M')} = ${p.n} · ${half} · ${v('a')} · ${v('h', 'a')} ${eq(pyr.M)} ${p.n} · ${half} · ${cm(p.a)} · ${cm(pyr.ha)} ${eq(pyr.M)} <strong>${num(pyr.M)} cm²</strong>` });
+        ctx.readout('M', { html: `${v('M')} = ${p.n} · ${half} · ${v('a')} · ${v('h', 'a')} ${eq(pyr.ha)} ${p.n} · ${half} · ${cm(p.a)} · ${cm(pyr.ha)} ${eq(pyr.M)} <strong>${num(pyr.M)} cm²</strong>` });
         ctx.readout('O', { html: `${v('O')} = ${v('G')} + ${v('M')} ${eq(pyr.O)} ${num(pyr.G)} cm² + ${num(pyr.M)} cm² ${eq(pyr.O)} <strong>${num(pyr.O)} cm²</strong>` });
         ctx.readout('cmp', { html: `${ctx.t('prism')}: ${v('V')} = ${v('G')} · ${v('h')} ${eq(pyr.G * p.h)} ${num(pyr.G * p.h)} cm³ – ${ctx.t('pyramid')} = ${third} ${ctx.lang === 'de' ? 'davon' : 'of it'}` });
       } else if (body === 'kegel') {
@@ -609,11 +612,11 @@ export default defineSimulation({
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = th().dark ? 'rgba(21,28,39,0.94)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = mixColor(th().bg, th().text, th().dark ? 0.05 : 0, 0.94);
       roundRect(g, r.x, r.y, r.w, r.h, 12);
       g.fill();
       g.restore();
-      g.strokeStyle = th().dark ? '#273142' : '#e3e8ef';
+      g.strokeStyle = th().grid;
       g.lineWidth = 1;
       roundRect(g, r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1, 12);
       g.stroke();
@@ -748,7 +751,8 @@ export default defineSimulation({
       if (!frame) frame = goal;
       let settling = false;
       if (now - lastHandle > 350) {
-        const k = 1 - Math.exp(-dt / 0.2);
+        // bei reduzierter Bewegung springt der Bildausschnitt sofort
+        const k = reduced() ? 1 : 1 - Math.exp(-dt / 0.2);
         frame = { target: vec3.lerp(frame.target, goal.target, k), radius: frame.radius + (goal.radius - frame.radius) * k };
         settling = vec3.distance(frame.target, goal.target) > 0.004 || Math.abs(frame.radius - goal.radius) > 0.004;
       } else settling = true;
@@ -1034,7 +1038,7 @@ export default defineSimulation({
         namedPoint(mids[i]!, 'M', [12, 10]);
       } else if (tri === 's') {
         const i = best(P3, right);
-        const rLabel = p.n === 4 ? (p.calc ? `d/2 ≈ ${cm(pyr.base.R)}` : 'd/2') : p.calc ? `R ≈ ${cm(pyr.base.R)}` : 'R';
+        const rLabel = p.n === 4 ? (p.calc ? `d/2 ${eq(pyr.base.R)} ${cm(pyr.base.R)}` : 'd/2') : p.calc ? `R ${eq(pyr.base.R)} ${cm(pyr.base.R)}` : 'R';
         // Diagonale (bei n = 4) bzw. Umkreisradius gestrichelt
         if (p.n === 4) view.segment(P3[(i + 2) % 4]!, F, { color: c.R, width: 1.6, dash: [5, 4], layer: 'front' });
         helperTriangle(F, S, P3[i]!, { ab: [`h = ${cm(p.h)}`, c.h], ac: [rLabel, c.R], bc: [val('s', pyr.s), c.s] }, t);
@@ -1248,7 +1252,8 @@ export default defineSimulation({
             best = q;
           }
         }
-        view.label(best, m.label, body === 'kugel' ? { color: th().text, size: 15, weight: '700', offset: [0, -11], align: 'center', baseline: 'middle' } : { color: th().text, size: 15, weight: '700', offset: [10, 0], align: 'left', baseline: 'middle' });
+        if (body === 'kugel') flabel(best, m.label, th().text, [0, -13], 'center', 15);
+        else flabel(best, m.label, th().text, [12, 0], 'left', 15);
       }
       // Namen unter den Körpern
       const nameSize = textSize();
@@ -1302,7 +1307,7 @@ export default defineSimulation({
       const baseCol = netTint(c.G);
       const sideCol = netTint(c.M);
       view.shadow(P3, { alpha: 0.16, blur: 20, spread: 1.05 });
-      view.face([...P3].reverse(), { color: baseCol, stroke: edgeOf(baseCol), width: 1.6, cull: false, backShade: 0.1, gloss: 0.1, label: u > 0.9 && p.calc ? { text: narrow() ? `G = ${num(pyr.G)}` : `G ${eq(pyr.G)} ${num(pyr.G)} cm²`, size: textSize() } : undefined });
+      view.face([...P3].reverse(), { color: baseCol, stroke: edgeOf(baseCol), width: 1.6, cull: false, backShade: 0.1, gloss: 0.1, label: u > 0.9 && p.calc ? { text: narrow() ? `G ${eq(pyr.G)} ${num(pyr.G)}` : `G ${eq(pyr.G)} ${num(pyr.G)} cm²`, size: textSize() } : undefined });
       // Seitenflächen klappen nacheinander herunter
       const delta = pyr.faceAngle;
       const stagger = n > 1 ? 0.35 / (n - 1) : 0;
@@ -1604,7 +1609,8 @@ export default defineSimulation({
       if (body === 'pyramide') {
         const lines: CardLine[] = [
           { f: p.n === 4 ? `G = a² = ${num(pyr.G)} cm²` : `G = ${p.n} · \\f{1}{2} · a · ρ ≈ ${num(pyr.G)} cm²`, swatch: tint(th().series[0]!) },
-          { f: `M = ${p.n} · \\f{1}{2} · a · h_a ${eq(pyr.M)} ${p.n} · \\f{1}{2} · ${num(p.a)} cm · ${num(pyr.ha)} cm ${eq(pyr.M)} ${num(pyr.M)} cm²`, swatch: tint(th().series[2]!) },
+          { f: `M = ${p.n} · \\f{1}{2} · a · h_a ${eq(pyr.ha)} ${p.n} · \\f{1}{2} · ${num(p.a)} cm · ${num(pyr.ha)} cm`, swatch: tint(th().series[2]!) },
+          { f: `M ${eq(pyr.M)} ${num(pyr.M)} cm²` },
         ];
         if (done) lines.push({ f: `O = G + M ${eq(pyr.O)} ${num(pyr.O)} cm²`, bold: true });
         drawCard(x, y, maxW, ctx.t(done ? 'netPyr' : 'netPyrOpen'), lines, { size });

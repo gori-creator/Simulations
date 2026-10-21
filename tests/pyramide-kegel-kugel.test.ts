@@ -147,3 +147,57 @@ describe('Modell: Umschüttversuch – Körper abschneiden', () => {
     expect(capacity(b, { offset: [0, 0, 0], tilt: Math.PI / 6, dir: -1 }) / capExact).toBeCloseTo(1, 1);
   });
 });
+
+describe('Lernmaterial und Prüfrunde: nachgerechnete Werte', () => {
+  it('Aufgabe 1: a = 4 cm, h = 5 cm', () => {
+    const p = pyramid(4, 4, 5);
+    expect(p.ha).toBeCloseTo(Math.sqrt(29), 12); // ≈ 5,39 cm
+    expect(p.V).toBeCloseTo(80 / 3, 12); // ≈ 26,67 cm³
+    expect(p.M).toBeCloseTo(8 * Math.sqrt(29), 12); // ≈ 43,08 cm²
+    expect(p.O.toFixed(2)).toBe('59.08');
+  });
+
+  it('Aufgabe 3: Kugel r = 2,5 cm und umgebender Zylinder', () => {
+    const s = sphere(2.5);
+    expect(s.V.toFixed(2)).toBe('65.45');
+    expect(s.O.toFixed(2)).toBe('78.54');
+    expect(s.cylV.toFixed(2)).toBe('98.17');
+    expect(((100 * s.V) / s.cylV).toFixed(1)).toBe('66.7');
+  });
+
+  it('Sechseckspyramide a = 6 cm, h = 4 cm: R = a, Seitenkante s = √52', () => {
+    const p = pyramid(6, 6, 4);
+    expect(p.base.R).toBeCloseTo(6, 12);
+    expect(p.s).toBeCloseTo(Math.sqrt(52), 12); // ≈ 7,21 cm
+    expect(p.base.rho).toBeCloseTo(3 * Math.sqrt(3), 12);
+    expect(p.G).toBeCloseTo(54 * Math.sqrt(3), 12); // ≈ 93,53 cm²
+    expect(p.ha).toBeCloseTo(Math.sqrt(43), 12); // ≈ 6,56 cm
+    expect(p.face).toBeCloseTo(3 * Math.sqrt(43), 12); // ≈ 19,67 cm²
+  });
+
+  it('für alle n und Reglergrenzen: s² = h_a² + (a/2)², s > h_a > h, Gefäßvolumen = ⅓ · G · h', () => {
+    for (let n = 3; n <= 8; n++) {
+      for (const [a, h] of [[1, 1], [8, 10], [1, 10], [8, 1], [6, 4]] as const) {
+        const p = pyramid(n, a, h);
+        expect(p.s ** 2).toBeCloseTo(p.ha ** 2 + (a / 2) ** 2, 9);
+        expect(p.s).toBeGreaterThan(p.ha);
+        expect(p.ha).toBeGreaterThan(h);
+        expect(p.O).toBeCloseTo(p.G + n * 0.5 * a * p.ha, 9);
+        const v = invertedPyramidVessel(polygonPoints(n, p.base.R, 1), h, 1);
+        expect(v.volume).toBeCloseTo(p.V, 9);
+      }
+    }
+  });
+
+  it('Kegel an den Reglergrenzen: Sektorwinkel zwischen 0° und 360°, Sektorfläche = Mantel', () => {
+    for (const [r, h] of [[1, 10], [5, 1], [5, 10], [1, 1]] as const) {
+      const k = cone(r, h);
+      expect(k.sectorDeg).toBeGreaterThan(0);
+      expect(k.sectorDeg).toBeLessThan(360);
+      expect((k.sectorDeg / 360) * Math.PI * k.s ** 2).toBeCloseTo(k.M, 9);
+    }
+    // r = 3, h = 4: α = 216°, V ≈ 37,70 cm³, O ≈ 75,40 cm²
+    expect(cone(3, 4).V.toFixed(2)).toBe('37.70');
+    expect(cone(3, 4).O.toFixed(2)).toBe('75.40');
+  });
+});
