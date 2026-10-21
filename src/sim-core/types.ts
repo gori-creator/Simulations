@@ -59,6 +59,11 @@ export interface BooleanParam<K extends string = string> extends BaseParam<K> {
 export interface ChoiceOption<V extends string = string> {
   value: V;
   label: Localized;
+  /**
+   * Zusatzangabe hinter der Beschriftung in Klammern, z. B. `L('T½ = 55,6 s', 'T½ = 55.6 s')`
+   * → „Rn-220 (T½ = 55,6 s)“. Im Aufgabenmodus (`ctx.hidden`) wird sie weggelassen.
+   */
+  detail?: Localized;
 }
 
 export interface ChoiceParam<K extends string = string, V extends string = string> extends BaseParam<K> {

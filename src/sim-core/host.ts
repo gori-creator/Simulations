@@ -271,6 +271,7 @@ class SimulationHost {
       groups: this.def.groups,
       idPrefix: `sim-${this.def.id}`,
       onInput: (key: string, value: ParamValue) => this.set({ [key]: value }, 'input'),
+      taskHidden: isTaskHidden(this.taskState()),
     });
   }
 
@@ -347,6 +348,8 @@ class SimulationHost {
    */
   private applyHide(): void {
     const state = this.taskState();
+    // Zusatzangaben der Auswahl-Optionen (z. B. Halbwertszeiten) im Aufgabenmodus verbergen
+    this.controls?.setTaskHidden(isTaskHidden(state));
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
       const hidden = isReadoutHidden(state, key);

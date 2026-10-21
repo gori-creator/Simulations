@@ -1,8 +1,8 @@
 import type { Lang } from '../i18n/config';
-import { Formatter } from './format';
+import { bindUnits, Formatter } from './format';
 import { isVisible, resolveText, stepDecimals } from './params';
 import { plainSubText, setSubLabel } from './rich-label';
-import type { ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
+import type { ChoiceOption, ChoiceParam, NumberParam, ParamDef, ParamGroup, ParamValue, ParamValues, TextParam } from './types';
 
 /**
  * Erzeugt aus den Parameter-Definitionen einer Simulation automatisch die
@@ -15,6 +15,18 @@ export interface ControlsOptions {
   groups?: ParamGroup[];
   idPrefix: string;
   onInput: (key: string, value: ParamValue) => void;
+  /** Aufgabenmodus zu Beginn (`ctx.hidden`): verbirgt Zusatzangaben der Auswahl-Optionen. */
+  taskHidden?: boolean;
+}
+
+/**
+ * Beschriftung einer Auswahl-Option: „Rn-220 (T½ = 55,6 s)“, im Aufgabenmodus
+ * ohne die Zusatzangabe `detail` („Rn-220“). Zahl und Einheit bleiben zusammen.
+ */
+export function choiceOptionLabel(option: ChoiceOption, lang: Lang, taskHidden: boolean): string {
+  const label = option.label[lang];
+  const detail = option.detail?.[lang]?.trim();
+  return detail && !taskHidden ? `${label} (${bindUnits(detail)})` : label;
 }
 
 interface ControlView {
@@ -22,6 +34,8 @@ interface ControlView {
   root: HTMLElement;
   sync(value: ParamValue): void;
   setDisabled(disabled: boolean): void;
+  /** Aufgabenmodus an/aus (nur Auswahlen mit Zusatzangaben). */
+  setTaskHidden?(hidden: boolean): void;
 }
 
 export class Controls {
@@ -29,9 +43,11 @@ export class Controls {
   /** Hilfetexte, die von den aktuellen Werten abhängen (`help` als Funktion). */
   private dynamicHelp: { def: ParamDef; element: HTMLElement }[] = [];
   private fmt: Formatter;
+  private taskHidden: boolean;
 
   constructor(private readonly options: ControlsOptions) {
     this.fmt = new Formatter(options.lang);
+    this.taskHidden = options.taskHidden ?? false;
     this.build();
   }
 
@@ -54,6 +70,13 @@ export class Controls {
 
   setDisabled(disabled: boolean): void {
     for (const view of this.views) view.setDisabled(disabled);
+  }
+
+  /** Aufgabenmodus (`ctx.hidden`) an/aus: Zusatzangaben der Auswahl-Optionen verbergen bzw. zeigen. */
+  setTaskHidden(hidden: boolean): void {
+    if (hidden === this.taskHidden) return;
+    this.taskHidden = hidden;
+    for (const view of this.views) view.setTaskHidden?.(hidden);
   }
 
   private build(): void {
@@ -304,6 +327,7 @@ export class Controls {
     const group = document.createElement('div');
     group.className = 'segmented';
     const inputs: HTMLInputElement[] = [];
+    const detailed: { option: ChoiceOption; span: HTMLElement }[] = [];
     for (const option of def.options) {
       const label = document.createElement('label');
       label.className = 'segmented__option';
@@ -316,7 +340,8 @@ export class Controls {
         if (input.checked) onInput(def.key, option.value);
       });
       const span = document.createElement('span');
-      setSubLabel(span, option.label[lang]);
+      setSubLabel(span, choiceOptionLabel(option, lang, this.taskHidden));
+      if (option.detail) detailed.push({ option, span });
       label.append(input, span);
       group.append(label);
       inputs.push(input);
@@ -332,6 +357,9 @@ export class Controls {
       },
       setDisabled: (disabled) => {
         for (const input of inputs) input.disabled = disabled;
+      },
+      setTaskHidden: (hidden) => {
+        for (const { option, span } of detailed) setSubLabel(span, choiceOptionLabel(option, lang, hidden));
       },
     };
   }

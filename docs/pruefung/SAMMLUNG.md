@@ -19,7 +19,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefe-ebene | `src/sim-core/plot.ts` | Die Achsbeschriftung (z. B. „α in °“) liegt auf dem Kurvenende, wenn eine Kurve bei x_max auf 0 fällt. Beschriftung ausweichen lassen. | erledigt (Kern) |
 | freier-fall | `src/sim-core/types.ts`, Host | `hint` soll auch als Funktion der Parameter erlaubt sein (Tipp je Modus, z. B. Reaktionstest; auch gasgesetze und radioaktiver-zerfall). Ebenso `help` an Reglern abhängig vom Zustand. | erledigt (Kern): `hint` und `help` dürfen `(v) => L(…)` sein (`null` blendet aus), Host aktualisiert bei jeder Änderung |
 | radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | erledigt (Kern): bei genau einem Ziel ist es beim Fokussieren gleich ausgewählt (`KeyTargetNav.focus()`) |
-| radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | offen |
+| radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | erledigt (Kern): Optionsfeld `detail` (z. B. „Rn-220 (T½ = 55,6 s)“, im Aufgabenmodus „Rn-220“); Simulationen werden einzeln umgestellt |
 
 ## Rückfragen an die Projektleitung
 
