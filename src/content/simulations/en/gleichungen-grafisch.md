@@ -53,7 +53,7 @@ $D = \mathbb{R} \setminus \{0\}$; the solutions are $-4$ and $1$ (from $x^2 + 3x
 <details>
 <summary>Show solution</summary>
 
-$[1, 2] \to [1.5, 2] \to [1.5, 1.75] \to [1.625, 1.75] \to [1.6875, 1.75]$: every number in this interval rounds to $1.7$, so $x \approx 1.7$ ($\sqrt{3} \approx 1.732$).
+$[1, 2] \to [1.5, 2] \to [1.5, 1.75] \to [1.625, 1.75] \to [1.6875, 1.75]$: not certain yet, since $1.6875$ rounds to $1.7$ but $1.75$ to $1.8$. Two more steps: $\to [1.71875, 1.75] \to [1.71875, 1.734375]$. Now both bounds round to $1.7$, so $x \approx 1.7$ (more precisely $\sqrt{3} \approx 1.732$).
 
 </details>
 

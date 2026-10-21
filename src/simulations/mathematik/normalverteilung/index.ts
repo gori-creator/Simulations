@@ -101,7 +101,7 @@ class Chan {
 /**
  * Normalverteilung in fünf Ansichten:
  * – „Fläche“: Glockenkurve mit ziehbaren Grenzen, Wahrscheinlichkeit als Fläche (die Zahl zählt mit),
- *   darunter Φ mit der Differenz Φ(b) − Φ(a); Sigma-Regeln per Knopf, Sonderfall P(X = a) = 0,
+ *   darunter die Verteilungsfunktion F mit der Differenz F(b) − F(a) (Φ nur für N(0; 1)); Sigma-Regeln per Knopf, Sonderfall P(X = a) = 0,
  *   „Standardisieren“ als Animation (x-Achse wird zur z-Achse, die Fläche bleibt gleich) und
  *   Eigenschaften der Glocke (Hochpunkt, Wendestellen mit Wendetangenten, Gesamtfläche 1).
  * – „Umkehrung“: Wahrscheinlichkeit vorgegeben, Grenze gesucht – die Fläche wird gezogen,
@@ -233,12 +233,12 @@ export default defineSimulation({
       type: 'boolean',
       group: 'view',
       label: L('Standardisiert (z-Achse)', 'Standardised (z axis)'),
-      help: L('Verschiebt und staucht die Glocke zu N(0; 1). Die Fläche bleibt gleich.', 'Shifts and squeezes the bell into N(0; 1). The area stays the same.'),
+      help: L('Verschiebt die Glocke um μ und streckt bzw. staucht sie mit dem Faktor 1/σ zu N(0; 1). Die Fläche bleibt gleich.', 'Shifts the bell by μ and stretches or squeezes it by the factor 1/σ into N(0; 1). The area stays the same.'),
       default: false,
       visibleIf: isMode('area'),
     },
     { key: 'prop', type: 'boolean', group: 'view', label: L('Eigenschaften der Glocke', 'Properties of the bell'), help: L('Hochpunkt, Wendestellen mit Wendetangenten, Gesamtfläche 1.', 'Maximum, points of inflection with tangents, total area 1.'), default: false, visibleIf: isMode('area') },
-    { key: 'cdf', type: 'boolean', group: 'view', label: L('Verteilungsfunktion Φ zeigen', 'Show the distribution function Φ'), default: true, visibleIf: isMode('area') },
+    { key: 'cdf', type: 'boolean', group: 'view', label: L('Verteilungsfunktion F zeigen', 'Show the distribution function F'), default: true, visibleIf: isMode('area') },
     { key: 'show', type: 'boolean', group: 'view', label: L('Wahrscheinlichkeit zeigen', 'Show the probability'), help: L('Aus: Ergebnisse im Bild durch „?“ ersetzt (für Aufgaben).', 'Off: results in the picture replaced by “?” (for tasks).'), default: true, visibleIf: (v) => v.mode !== 'sample' },
   ],
   actions: [
@@ -282,11 +282,11 @@ export default defineSimulation({
   strings: {
     de: {
       canvas:
-        'Glockenkurve der Normalverteilung mit ziehbaren Grenzen a und b; die Fläche darunter ist die Wahrscheinlichkeit, darunter die Verteilungsfunktion Φ. Weitere Ansichten: Grenze zu einer vorgegebenen Wahrscheinlichkeit suchen (z-Tabelle rückwärts), zwei Abfüllanlagen mit Toleranzbereich vergleichen, Binomialverteilung durch die Glocke nähern und Stichproben ziehen. Daneben Karten mit Rechnung, Standardisierung und Sigma-Regeln.',
+        'Glockenkurve der Normalverteilung mit ziehbaren Grenzen a und b; die Fläche darunter ist die Wahrscheinlichkeit, darunter die Verteilungsfunktion F. Weitere Ansichten: Grenze zu einer vorgegebenen Wahrscheinlichkeit suchen (z-Tabelle rückwärts), zwei Abfüllanlagen mit Toleranzbereich vergleichen, Binomialverteilung durch die Glocke nähern und Stichproben ziehen. Daneben Karten mit Rechnung, Standardisierung und Sigma-Regeln.',
     },
     en: {
       canvas:
-        'Bell curve of the normal distribution with draggable bounds a and b; the area under it is the probability, below it the distribution function Φ. Further views: find the bound for a given probability (z table backwards), compare two filling machines with a tolerance range, approximate the binomial distribution by the bell and draw samples. Next to it cards with the calculation, standardisation and sigma rules.',
+        'Bell curve of the normal distribution with draggable bounds a and b; the area under it is the probability, below it the distribution function F. Further views: find the bound for a given probability (z table backwards), compare two filling machines with a tolerance range, approximate the binomial distribution by the bell and draw samples. Next to it cards with the calculation, standardisation and sigma rules.',
     },
   },
 
@@ -899,7 +899,7 @@ export default defineSimulation({
       g.fillStyle = col.cdf();
       g.textAlign = 'left';
       g.textBaseline = 'middle';
-      g.fillText(t > 0.5 ? 'Φ(z) = P(Z ≤ z)' : say(L('Verteilungsfunktion Φ(x) = P(X ≤ x)', 'Distribution function Φ(x) = P(X ≤ x)')), r.x + 8, R.y + 10);
+      g.fillText(t > 0.5 ? 'Φ(z) = P(Z ≤ z)' : say(L('Verteilungsfunktion F(x) = P(X ≤ x)', 'Distribution function F(x) = P(X ≤ x)')), r.x + 8, R.y + 10);
       g.restore();
       const tp = typ();
       const hasA = tp !== 'le';
@@ -915,7 +915,8 @@ export default defineSimulation({
         plotC.segment([rx0, v], [x, v], { color: withAlpha(c, 0.6), width: 1.4, dash: [4, 3] });
         g.restore();
         dot(plotC.px(x), plotC.py(v), c, 4.5, k.labels);
-        if (p.show) fpill(plotC.px(rx0) + 8, plotC.py(v) + (v > 0.82 ? 12 : -12), `Φ(\\c{${name}}{${name}}) ≈ ${p4(v)}`, { align: 'left', size: F(11.5, 10.5), color: c, alpha: k.labels, bounds: r });
+        // standardisiert: Φ(z₁), Φ(z₂); sonst F(a), F(b)
+        if (p.show) fpill(plotC.px(rx0) + 8, plotC.py(v) + (v > 0.82 ? 12 : -12), (t > 0.5 ? `Φ(\\c{${name}}{${!(hasA && hasB) ? 'z' : name === 'a' ? 'z₁' : 'z₂'}})` : `F(\\c{${name}}{${name}})`) + ` ≈ ${p4(v)}`, { align: 'left', size: F(11.5, 10.5), color: c, alpha: k.labels, bounds: r });
       };
       if (hasA) mark(aT, fa, col.a(), 'a');
       if (hasB) mark(bT, fb, col.b(), 'b');
@@ -1148,7 +1149,7 @@ export default defineSimulation({
       g.stroke();
       g.restore();
       dot(kx, plot.py(0), col.b(), F(7, 6.5), k.labels);
-      fpill(kx, r.y + 84, p.cc ? `\\c{b}{k + 0,5 = ${fmt.num(Math.round(shownK) + 0.5, 1)}}` : `\\c{b}{k = ${fmt.num(Math.round(shownK), 0)}}`, { size: F(12.5, 11.5), alpha: k.labels, border: withAlpha(col.b(), 0.6), bounds: r });
+      fpill(kx, r.y + 84, p.cc ? `\\c{b}{k + ${fmt.num(0.5, 1)} = ${fmt.num(Math.round(shownK) + 0.5, 1)}}` : `\\c{b}{k = ${fmt.num(Math.round(shownK), 0)}}`, { size: F(12.5, 11.5), alpha: k.labels, border: withAlpha(col.b(), 0.6), bounds: r });
       // Legende und Laplace-Bedingung
       const ok = laplaceOk(n, p.bp);
       const edge = Math.abs(sigma - 3) < 1e-9;
@@ -1308,10 +1309,10 @@ export default defineSimulation({
         const val = `\\c{A}{${Q(p4(PV.v))}}`;
         const tp = typ();
         if (tp === 'le') {
-          rows.push({ src: `\\c{A}{P(X ≤ \\c{b}{${xn(d.b)}})} = Φ(\\c{b}{${xn(d.b)}})` });
+          rows.push({ src: `\\c{A}{P(X ≤ \\c{b}{${xn(d.b)}})} = F(\\c{b}{${xn(d.b)}})` });
           rows.push({ src: `= Φ(${Q(z(d.b))}) ≈ ${val}`, gap: 10 });
         } else if (tp === 'ge') {
-          rows.push({ src: `\\c{A}{P(X ≥ \\c{a}{${xn(d.a)}})} = 1 − Φ(\\c{a}{${xn(d.a)}})` });
+          rows.push({ src: `\\c{A}{P(X ≥ \\c{a}{${xn(d.a)}})} = 1 − F(\\c{a}{${xn(d.a)}})` });
           rows.push({ src: `= 1 − Φ(${Q(z(d.a))}) ≈ ${val}`, gap: 10 });
         } else if (tp === 'eq') {
           const h1 = d.s * 0.1;
@@ -1323,7 +1324,7 @@ export default defineSimulation({
         } else {
           const lo = Math.min(d.a, d.b);
           const hi = Math.max(d.a, d.b);
-          rows.push({ src: `\\c{A}{P(\\c{a}{${xn(lo)}} ≤ X ≤ \\c{b}{${xn(hi)}})} = Φ(\\c{b}{${xn(hi)}}) − Φ(\\c{a}{${xn(lo)}})` });
+          rows.push({ src: `\\c{A}{P(\\c{a}{${xn(lo)}} ≤ X ≤ \\c{b}{${xn(hi)}})} = F(\\c{b}{${xn(hi)}}) − F(\\c{a}{${xn(lo)}})` });
           rows.push({ src: `≈ ${Q(p4(cdf(hi, d.mu, d.s)))} − ${Q(p4(cdf(lo, d.mu, d.s)))} ≈ ${val}`, gap: 10 });
         }
         if (tp !== 'eq') rows.push({ src: `\\c{m}{\\t{${say(L('Fläche', 'Area'))}} ≈} \\c{A}{\\b{${Q(pct(PV.v))}}}`, size: F(15, 14) });
@@ -1345,7 +1346,9 @@ export default defineSimulation({
           rows.push({ src: zf(Math.min(d.a, d.b), 'a', 'z_1'), gap: 6 });
           rows.push({ src: zf(Math.max(d.a, d.b), 'b', 'z_2') });
         }
-        rows.push({ src: `\\c{m}{\\t{${say(L('Verschieben um μ, stauchen mit σ:', 'Shift by μ, squeeze by σ:'))}}}`, size: F(12, 11), gap: 4 });
+        // zweizeilig, damit der Satz in die schmale Karte passt (| = Zeilenumbruch)
+        for (const line of say(L('Verschieben um μ, mit dem Faktor 1/σ|strecken bzw. stauchen.', 'Shift by μ, scale by the factor 1/σ.')).split('|'))
+          rows.push({ src: `\\c{m}{\\t{${line}}}`, size: F(12, 11), gap: 4 });
         rows.push({ src: `\\c{m}{\\t{${say(L('Die Fläche bleibt gleich groß.', 'The area stays the same.'))}}}`, size: F(12, 11) });
         return formulaCard(R, measure, k, say(L('Standardisieren', 'Standardising')), col.area(), rows, `\\c{A}{${Q(pct(PV.v))}}`);
       };
@@ -1600,17 +1603,18 @@ export default defineSimulation({
         const ap = normalApproxCdf(n, p.bp, kk, p.cc);
         const other = normalApproxCdf(n, p.bp, kk, !p.cc);
         const ok = laplaceOk(n, p.bp);
+        // Lösung von Aufgabe 5: im Aufgabenmodus (show = 0) verdeckt
         const nMin = laplaceMinN(p.bp);
         const zc = (kk + (p.cc ? 0.5 : 0) - mu) / sigma;
         const rows: Row[] = [
           { src: `X \\t{~} \\c{a}{B(${n}; ${fmt.num(p.bp, 2)})}:  μ = n · p = ${fmt.num(mu, 2)}`, gap: 6 },
           { src: `σ = \\r{n · p · (1 − p)} ≈ ${fmt.num(sigma, 3)}`, gap: 10 },
           { src: `\\c{a}{P(X ≤ ${kk})} = ${Q(p4(ex))}   \\c{m}{(\\t{${say(L('exakt', 'exact'))}})}`, gap: 6 },
-          { src: `≈ \\c{f}{Φ(\\f{${p.cc ? `${kk} + 0,5` : String(kk)} − ${fmt.num(mu, 2)}}{${fmt.num(sigma, 3)}})} = Φ(${fmt.num(zc, 2)}) ≈ \\c{A}{${Q(p4(ap))}}`, gap: 8 },
+          { src: `≈ \\c{f}{Φ(\\f{${p.cc ? `${kk} + ${fmt.num(0.5, 1)}` : String(kk)} − ${fmt.num(mu, 2)}}{${fmt.num(sigma, 3)}})} = Φ(${fmt.num(zc, 2)}) ≈ \\c{A}{${Q(p4(ap))}}`, gap: 8 },
           { src: `\\c{m}{\\t{${say(L('Abweichung', 'difference'))}}: ${Q(Math.abs(ex - ap) < 5e-5 ? `< ${fmt.num(0.0001, 4)}` : fmt.num(Math.abs(ex - ap), 4))};  \\t{${p.cc ? say(L('ohne Korrektur', 'without correction')) : say(L('mit Korrektur', 'with correction'))}}: ${Q(p4(other))}}`, size: F(12, 11), gap: 8 },
           ok
             ? { src: `\\c{r}{✓ \\t{${say(L('Laplace-Bedingung σ > 3 erfüllt', 'Laplace condition σ > 3 holds'))}}}`, size: F(12.5, 11.5) }
-            : { src: `\\c{b}{✗ \\t{${say(L(`σ ≤ 3: erst ab n = ${nMin} ist σ > 3`, `σ ≤ 3: only from n = ${nMin} is σ > 3`))}}}`, size: F(12.5, 11.5) },
+            : { src: `\\c{b}{✗ \\t{${say(L(`σ ≤ 3: erst ab n = ${Q(String(nMin))} ist σ > 3`, `σ ≤ 3: only from n = ${Q(String(nMin))} is σ > 3`))}}}`, size: F(12.5, 11.5) },
         ];
         return formulaCard(R, measure, k, say(L('Binomialverteilung und Normalverteilung', 'Binomial and normal distribution')), col.bar(), rows);
       };
@@ -1652,7 +1656,8 @@ export default defineSimulation({
         g.textBaseline = 'top';
         for (const n of [5, 50, 100, 150, 200]) g.fillText(String(n), X(n), bottom + 5);
         const nLap = 9 / (p.bp * (1 - p.bp));
-        if (nLap <= 200) {
+        // Bereich σ > 3 verrät die Lösung von Aufgabe 5 → im Aufgabenmodus (show = 0) weglassen
+        if (nLap <= 200 && p.show) {
           const xl = X(Math.max(5, nLap));
           g.fillStyle = withAlpha(col.rule(), theme.dark ? 0.14 : 0.09);
           g.fillRect(xl, top, x1 - xl, bottom - top);
@@ -1744,7 +1749,7 @@ export default defineSimulation({
       if (typ() === 'eq')
         return textCard(k, say(L('Warum 0?', 'Why 0?')), col.area(), say(L('Bei einer stetigen Zufallsgröße zählt nur Fläche. Über einem einzelnen Punkt liegt keine Fläche – je schmaler das Intervall um a, desto kleiner die Wahrscheinlichkeit.', 'For a continuous random variable only area counts. There is no area above a single point – the narrower the interval around a, the smaller the probability.')));
       const tail = p.cdf
-        ? L(' Ziehe a und b; im Φ-Diagramm wächst Φ(b) − Φ(a) als Balken mit.', ' Drag a and b; in the Φ chart, Φ(b) − Φ(a) grows as a bar.')
+        ? L(' Ziehe a und b; im Diagramm der Verteilungsfunktion wächst F(b) − F(a) als Balken mit.', ' Drag a and b; in the chart of the distribution function, F(b) − F(a) grows as a bar.')
         : L(' Ziehe a und b oder drücke „μ ± σ“.', ' Drag a and b or press “μ ± σ”.');
       return textCard(k, say(L('Ablesen', 'Reading off')), col.area(), say(L('Es zählt die Fläche, nicht die Höhe der Kurve.', 'The area counts, not the height of the curve.')) + say(tail));
     }
@@ -1821,10 +1826,10 @@ export default defineSimulation({
         const tp = typ();
         const z = (x: number) => fmt.num(zScore(x, d.mu, d.s), 2);
         if (tp === 'le') {
-          ctx.readout('p', { html: `P(${v('X')} ≤ ${xUnit(d.b)}) = Φ(${z(d.b)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
+          ctx.readout('p', { html: `P(${v('X')} ≤ ${xUnit(d.b)}) = ${v('F')}(${xn(d.b)}) = Φ(${z(d.b)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
           ctx.readout('z', { html: `${v('z')} = ${z(d.b)}` });
         } else if (tp === 'ge') {
-          ctx.readout('p', { html: `P(${v('X')} ≥ ${xUnit(d.a)}) = 1 − Φ(${z(d.a)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
+          ctx.readout('p', { html: `P(${v('X')} ≥ ${xUnit(d.a)}) = 1 − ${v('F')}(${xn(d.a)}) = 1 − Φ(${z(d.a)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
           ctx.readout('z', { html: `${v('z')} = ${z(d.a)}` });
         } else if (tp === 'eq') {
           ctx.readout('p', { html: `P(${v('X')} = ${xUnit(d.a)}) = <strong>0</strong>` });
@@ -1832,7 +1837,7 @@ export default defineSimulation({
         } else {
           const lo = Math.min(d.a, d.b);
           const hi = Math.max(d.a, d.b);
-          ctx.readout('p', { html: `P(${xn(lo)} ≤ ${v('X')} ≤ ${xUnit(hi)}) = Φ(${z(hi)}) − Φ(${z(lo)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
+          ctx.readout('p', { html: `P(${xn(lo)} ≤ ${v('X')} ≤ ${xUnit(hi)}) = ${v('F')}(${xn(hi)}) − ${v('F')}(${xn(lo)}) = Φ(${z(hi)}) − Φ(${z(lo)}) ≈ <strong>${p4(pv)}</strong> ≈ ${pct(pv)}` });
           ctx.readout('z', { html: `${v('z')}<sub>1</sub> = ${z(lo)}, ${v('z')}<sub>2</sub> = ${z(hi)}` });
         }
       } else if (m === 'quant') {

@@ -4,7 +4,7 @@ description: Interactive simulation on the number π – roll a wheel for the ci
 
 ## What is it about?
 
-For every circle $\pi = \frac{U}{d} \approx 3.14159\ldots$, so $U = \pi d$ and $A = \pi r^2$. Rolling a wheel once covers a little more than three diameters. Cutting a circle into many sectors and rearranging them gives almost a rectangle with height $r$ and width $\pi r$. Archimedes trapped π between polygons: $3\frac{10}{71} < \pi < 3\frac{1}{7}$.
+For every circle the circumference $C$ divided by the diameter $d$ is the same number: $C : d = \pi \approx 3.14159\ldots$, so $C = \pi \cdot d = 2\pi \cdot r$ and $A = \pi r^2$. Rolling a wheel once covers a little more than three diameters. Cutting a circle into many sectors and rearranging them gives almost a rectangle with height $r$ and width $\pi r$. Archimedes trapped π between polygons: $3\frac{10}{71} < \pi < 3\frac{1}{7}$.
 
 ## Try it
 
@@ -21,7 +21,7 @@ A wheel has a diameter of $70\,\text{cm}$. How many turns are needed for $1\,\te
 <details>
 <summary>Show solution</summary>
 
-$U \approx 2.2\,\text{m}$, so about $455$ turns.
+$C = \pi \cdot 70\,\text{cm} \approx 219.9\,\text{cm} \approx 2.2\,\text{m}$, so $1000\,\text{m} : 2.199\,\text{m} \approx 454.7$, about $455$ turns.
 
 </details>
 

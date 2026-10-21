@@ -28,7 +28,7 @@ Das große Quadrat und die vier Dreiecke sind dieselben – also muss die freie 
 
 ## Ausprobieren
 
-1. Ziehe die Eckpunkte des Dreiecks und zähle die Kästchen in den Quadraten. Gilt $a^2 + b^2 = c^2$ immer? [Gleichschenklig](?a=3&b=3)
+1. Ziehe die beiden farbigen Eckpunkte und zähle die Kästchen in den Quadraten. Beim 3-4-5-Dreieck geht das genau. Gilt $a^2 + b^2 = c^2$ auch beim gleichschenkligen Dreieck? [Gleichschenklig](?a=3&b=3)
 2. Wechsle zum **Puzzle-Beweis** und lass die Dreiecke umlegen. Welche Flächen bleiben gleich? [Puzzle-Beweis](?mode=puzzle)
 3. Probiere den Puzzle-Beweis mit einem flachen Dreieck. Funktioniert er immer noch? [Flaches Dreieck](?mode=puzzle&a=1.5&b=5)
 

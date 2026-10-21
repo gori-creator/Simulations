@@ -46,7 +46,7 @@ $$
 
 ### Aufgabe 1: Punktprobe
 
-Gegeben ist die Kugel $K$ mit $M(1 \mid 2 \mid 3)$ und $r = 3$. Gib die Kugelgleichung an und prüfe, ob $P(1 \mid 2 \mid 6)$, $Q(2 \mid 2 \mid 3)$ und $R(5 \mid 2 \mid 3)$ innerhalb, auf oder außerhalb von $K$ liegen. [Aufgabe laden](?p1=1&p2=2&p3=6&show=0&_hide=1)
+Gegeben ist die Kugel $K$ mit $M(1 \mid 2 \mid 3)$ und $r = 3$. Stelle zuerst selbst die Kugelgleichung auf (die Simulation zeigt sie zur Kontrolle) und prüfe dann, ob $P(1 \mid 2 \mid 6)$, $Q(2 \mid 2 \mid 3)$ und $R(5 \mid 2 \mid 3)$ innerhalb, auf oder außerhalb von $K$ liegen. [Aufgabe laden](?p1=1&p2=2&p3=6&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

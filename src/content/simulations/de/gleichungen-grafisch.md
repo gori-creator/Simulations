@@ -19,7 +19,9 @@ Im Beispiel schneiden sich die Graphen in $S_1(-1{,}5 \mid 1{,}25)$ und $S_2(2 \
 
 | Lage der Graphen | Lösungen |
 | --- | --- |
+| schneiden sich in genau einem Punkt | eine Lösung |
 | schneiden sich in zwei Punkten | zwei Lösungen |
+| schneiden sich in drei Punkten | drei Lösungen |
 | berühren sich in einem Punkt (Berührpunkt) | eine Lösung |
 | haben keinen gemeinsamen Punkt | keine Lösung: $L = \{\,\}$ |
 | fallen (teilweise) zusammen | unendlich viele Lösungen |
@@ -82,7 +84,7 @@ Entscheide mithilfe der Graphen, wie viele Lösungen die Gleichung hat: (a) $x^2
 <summary>Lösung anzeigen</summary>
 
 $D = \mathbb{R} \setminus \{0\}$. Hyperbel und Gerade schneiden sich in $(-4 \mid -1)$ und $(1 \mid 4)$, also $L = \{-4;\ 1\}$.
-Rechnerisch: Multiplizieren mit $x$ ergibt $4 = x^2 + 3x$, also $x^2 + 3x - 4 = 0$ bzw. $(x + 4)(x - 1) = 0$. [In der Simulation zeigen](?f=hyp&a1=4&d1=0&e1=0&m2=1&t2=3)
+Rechnerisch: Multiplizieren mit $x$ (erlaubt, da $x \neq 0$) ergibt $4 = x^2 + 3x$, also $x^2 + 3x - 4 = 0$ bzw. $(x + 4)(x - 1) = 0$. Beide Lösungen liegen in $D$. [In der Simulation zeigen](?f=hyp&a1=4&d1=0&e1=0&m2=1&t2=3)
 
 </details>
 
@@ -94,7 +96,8 @@ Rechnerisch: Multiplizieren mit $x$ ergibt $4 = x^2 + 3x$, also $x^2 + 3x - 4 = 
 <summary>Lösung anzeigen</summary>
 
 Mit $h(x) = x^2 - 3$: Start $[1;\ 2]$. $h(1{,}5) < 0 \Rightarrow [1{,}5;\ 2]$; $h(1{,}75) > 0 \Rightarrow [1{,}5;\ 1{,}75]$; $h(1{,}625) < 0 \Rightarrow [1{,}625;\ 1{,}75]$; $h(1{,}6875) < 0 \Rightarrow [1{,}6875;\ 1{,}75]$.
-Alle Zahlen in diesem Intervall runden auf $1{,}7$, also $x \approx 1{,}7$ (genauer $\sqrt{3} \approx 1{,}732$).
+Nach 4 Schritten ist die erste Nachkommastelle noch nicht sicher: $1{,}6875$ rundet auf $1{,}7$, aber $1{,}75$ auf $1{,}8$. Also weiter: $h(1{,}71875) < 0 \Rightarrow [1{,}71875;\ 1{,}75]$; $h(1{,}734375) > 0 \Rightarrow [1{,}71875;\ 1{,}734375]$.
+Nach 6 Schritten runden beide Grenzen auf $1{,}7$, also $x \approx 1{,}7$ (genauer $\sqrt{3} \approx 1{,}732$).
 
 </details>
 
@@ -124,6 +127,7 @@ Die Hyperbel $y = \frac{1}{x}$ nähert sich der $x$-Achse beliebig nahe an, erre
 
 - **Einsatz (Bezug als Entwurf):** Jahrgangsstufe 8, Lernbereich 4 (Bruchgleichungen lösen und als Schnittproblem von Graphen deuten), aufbauend auf dem Funktionsbegriff aus Lernbereich 1; Jahrgangsstufe 9, Lernbereich 2 (quadratische Gleichungen, Schnittpunkte von Parabel und Gerade) und Lernbereich 1 (Näherungswerte für Quadratwurzeln: die Intervallhalbierung ist eine Form der Intervallschachtelung). Geeignet als Einstieg, zum Üben und zum Vergleich grafisch – rechnerisch.
 - **Modell:** Jede Seite ist eine Gerade $mx + t$, Parabel $a(x - d)^2 + e$, Hyperbel $\frac{a}{x - d} + e$ oder ein Betragsgraph $a \cdot |x - d| + e$. Die Simulation rechnet die Lösungen exakt (bei quadratischen Gleichungen mit Wurzeln, z. B. $\frac{1 + \sqrt{5}}{2}$), bei Gleichungen dritten Grades (Hyperbel und Parabel) numerisch. Grundmenge ist $\mathbb{R}$; in Jahrgangsstufe 8 (rationale Zahlen) Beispiele mit rationalen Lösungen wählen.
+- **Gesicherte Stellen:** Bei $x^2 = 2$ meldet die Simulation die zweite Nachkommastelle ($1{,}41$) erst nach 11 Schritten als sicher, obwohl das Intervall schon nach 7 Schritten schmaler als $0{,}01$ ist. Ein guter Anlass zu fragen, warum die Breite allein nicht reicht.
 - **Aufgabenmodus:** `show=0` blendet Schnittpunkte, Lote und Lösungskarte im Bild aus, `_hide=1` verdeckt Anzahl, Lösungsmenge und Probe in den Ergebnissen.
 - **Häufige Stolpersteine:**
   - Als Lösung wird der Schnittpunkt $(2 \mid 3)$ angegeben statt seiner $x$-Koordinate $2$.

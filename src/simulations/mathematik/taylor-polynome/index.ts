@@ -315,6 +315,8 @@ export default defineSimulation({
 
     /* ---------- Zahlen und Terme ---------- */
     const n2 = (v: number) => fmt.num(v, 2);
+    /** Fehlerschranke der Kleinwinkelnäherung (0,01 bzw. 0.01) */
+    const eps001 = fmt.num(0.01, 2);
     /** Zahl kompakt: Dezimalzahl oder Zehnerpotenz-Schreibweise für sehr große/kleine Werte. */
     function small(v: number, dec = 4): string {
       if (!Number.isFinite(v)) return '–';
@@ -1122,7 +1124,7 @@ export default defineSimulation({
       g.restore();
       dot(px, plot.py(phi), col.T(), 4.5, k.labels);
       // Grenzen beschriften (unten, im grünen Bereich bzw. daneben)
-      fpill(x1 + 6, plot.py(0.06) - 4, `\\c{c}{${fmt.num(toDeg(SMALL_ABS), 1)}°: |\\t{sin} φ − φ| = 0,01}`, { align: 'left', size: F(11.5, 11), alpha: k.labels, border: withAlpha(col.conv(), 0.5) });
+      fpill(x1 + 6, plot.py(0.06) - 4, `\\c{c}{${fmt.num(toDeg(SMALL_ABS), 1)}°: |\\t{sin} φ − φ| = ${eps001}}`, { align: 'left', size: F(11.5, 11), alpha: k.labels, border: withAlpha(col.conv(), 0.5) });
       fpill(xr - 6, plot.py(0.06) - 4, `\\c{c}{${fmt.num(toDeg(SMALL_REL), 1)}°: 1 %}`, { align: 'right', size: F(11.5, 11), alpha: k.labels, border: withAlpha(col.conv(), 0.5) });
       // Legende unten rechts (unter der Sinuskurve ist Platz)
       const lx = r.x + r.w - 10;
@@ -1881,7 +1883,7 @@ export default defineSimulation({
           { src: `\\c{f}{\\t{sin} φ ≈ ${fmt.num(Math.sin(phi), 4)}}`, gap: 8 },
           { src: `\\c{x}{φ − \\t{sin} φ ≈ ${Q(fmt.num(e, 4))}}`, gap: 8 },
           { src: `\\c{x}{\\t{${say(L('relativ', 'relative'))}}: \\f{φ − \\t{sin} φ}{\\t{sin} φ} ≈ \\b{${Q(`${fmt.num(rel * 100, 2)} %`)}}}`, gap: 10 },
-          { src: p.show ? (e < 0.01 ? `\\c{c}{✓ |\\t{sin} φ − φ| < 0,01}` : `\\c{x}{✗ |\\t{sin} φ − φ| ≥ 0,01}`) : `\\c{m}{|\\t{sin} φ − φ| < 0,01 ?}`, weight: 700, size: F(13, 12), gap: 6 },
+          { src: p.show ? (e < 0.01 ? `\\c{c}{✓ |\\t{sin} φ − φ| < ${eps001}}` : `\\c{x}{✗ |\\t{sin} φ − φ| ≥ ${eps001}}`) : `\\c{m}{|\\t{sin} φ − φ| < ${eps001} ?}`, weight: 700, size: F(13, 12), gap: 6 },
           { src: p.show ? (ok ? `\\c{c}{✓ \\t{${say(L('relativer Fehler unter 1 %', 'relative error below 1 %'))}}}` : `\\c{x}{✗ \\t{${say(L('relativer Fehler über 1 %', 'relative error above 1 %'))}}}`) : `\\c{m}{\\t{${say(L('relativer Fehler unter 1 %?', 'relative error below 1 %?'))}}}`, weight: 700, size: F(13, 12) },
         ];
         return formulaCard(R, measure, k, say(L('sin φ ≈ φ', 'sin φ ≈ φ')), col.x(), rows, `\\c{T}{${fmt.num(deg, 0)}°}`);
@@ -1891,7 +1893,7 @@ export default defineSimulation({
     function limitsCard(k: Intro): CardFn {
       return (R, measure) => {
         const rows: Row[] = [
-          { src: `|\\t{sin} φ − φ| < 0,01  ⇔  φ < ${fmt.num(SMALL_ABS, 4)} ≈ \\c{c}{${fmt.num(toDeg(SMALL_ABS), 1)}°}`, size: F(13, 12), gap: 8 },
+          { src: `|\\t{sin} φ − φ| < ${eps001}  ⇔  φ < ${fmt.num(SMALL_ABS, 4)} ≈ \\c{c}{${fmt.num(toDeg(SMALL_ABS), 1)}°}`, size: F(13, 12), gap: 8 },
           { src: `\\t{${say(L('relativer Fehler', 'relative error'))}} < 1 %  ⇔  φ < \\c{c}{${fmt.num(toDeg(SMALL_REL), 1)}°}`, size: F(13, 12), gap: 8 },
           { src: `\\t{${say(L('Grund', 'reason'))}}: \\t{sin} φ = φ − \\f{φ^3}{6} + … ⇒ \\t{${say(L('Fehler', 'error'))}} ≈ \\f{φ^3}{6}`, size: F(13, 12), gap: 8 },
           { src: `\\c{m}{\\t{${say(L('Pendel: Mit sin φ ≈ φ gilt T = 2π', 'Pendulum: with sin φ ≈ φ, T = 2π'))}}\\r{\\f{l}{g}}}`, size: F(12.5, 11.5) },
@@ -1909,7 +1911,7 @@ export default defineSimulation({
       const k = key();
       const usesX = v === 'approx' || v === 'conv' || v === 'calc';
       if (usesX && k === 'geo' && Math.abs(p.x - 1) < 1e-9)
-        return { title: L('Polstelle x = 1', 'Pole x = 1'), body: L('Hier ist f nicht definiert. Die Partialsummen 1, 2, 3, … wachsen über alle Grenzen – die geometrische Reihe divergiert.', 'f is not defined here. The partial sums 1, 2, 3, … grow without bound – the geometric series diverges.'), accent: col.x() };
+        return { title: L('Polstelle x = 1', 'Pole x = 1'), body: L('Hier ist f nicht definiert. Die Partialsummen wachsen über alle Grenzen (bei a = 0: 1, 2, 3, …) – die geometrische Reihe divergiert.', 'f is not defined here. The partial sums grow without bound (for a = 0: 1, 2, 3, …) – the geometric series diverges.'), accent: col.x() };
       if (usesX && k === 'geo' && Math.abs(a) < 1e-9 && Math.abs(p.x + 1) < 1e-9)
         return { title: L('Randpunkt x = −1', 'Boundary point x = −1'), body: L('Die Partialsummen springen 1, 0, 1, 0, … hin und her und kommen nicht zur Ruhe, obwohl f(−1) = 0,5 ist.', 'The partial sums jump 1, 0, 1, 0, … back and forth and never settle, although f(−1) = 0.5.'), accent: col.conv() };
       if (usesX && k === 'ln' && convergenceAt(fn(), a, p.x) === 'edge' && p.x > a)
@@ -1919,12 +1921,24 @@ export default defineSimulation({
       if (usesX && convergenceAt(fn(), a, p.x) === 'outside' && v !== 'conv')
         return { title: L('Außerhalb des Konvergenzintervalls', 'Outside the interval of convergence'), body: L('Hier wird der Fehler mit wachsendem n größer, nicht kleiner. Die Ansicht „Konvergenzradius“ zeigt alle Grade übereinander.', 'Here the error grows with n instead of shrinking. The view “Radius of convergence” shows all degrees at once.'), accent: col.x() };
       if (n === 0) return { title: L('Sonderfall n = 0', 'Special case n = 0'), body: L('T₀(x) = f(a) ist eine waagerechte Gerade: Sie übernimmt nur den Funktionswert, noch keine Steigung.', 'T₀(x) = f(a) is a horizontal line: it only takes over the value, no slope yet.'), accent: col.a() };
-      if (sameAsPrevious(fn(), a, n))
+      if (sameAsPrevious(fn(), a, n)) {
+        // Die Regel „alle geraden/ungeraden Ableitungen sind 0“ gilt nur für sin bzw. cos um 0.
+        const atZero = Math.abs(a) < 1e-9;
+        const extra =
+          k === 'sin' && atZero
+            ? L(' Bei sin x um 0 sind alle geraden Ableitungen 0 (sin 0 = 0).', ' For sin x about 0 all even derivatives vanish (sin 0 = 0).')
+            : k === 'cos' && atZero
+              ? L(' Bei cos x um 0 sind alle ungeraden Ableitungen 0 (sin 0 = 0).', ' For cos x about 0 all odd derivatives vanish (sin 0 = 0).')
+              : L('', '');
         return {
           title: L(`Warum ist T${subDigits(n)} = T${subDigits(n - 1)}?`, `Why is T${subDigits(n)} = T${subDigits(n - 1)}?`),
-          body: L(`Die ${n}. Ableitung ist bei a gleich 0, also auch der neue Koeffizient c${subDigits(n)}. Bei sin x um 0 sind alle geraden Ableitungen 0 (sin 0 = 0).`, `The ${n}th derivative is 0 at a, so the new coefficient c${subDigits(n)} is 0, too. For sin x about 0 all even derivatives vanish (sin 0 = 0).`),
+          body: L(
+            `Die ${n}. Ableitung ist an der Stelle a gleich 0, also auch der neue Koeffizient c${subDigits(n)}.${extra.de}`,
+            `The ${n}th derivative is 0 at a, so the new coefficient c${subDigits(n)} is 0, too.${extra.en}`,
+          ),
           accent: col.a(),
         };
+      }
       return null;
     }
 
@@ -2005,7 +2019,7 @@ export default defineSimulation({
       const v = view();
       if (v === 'small') {
         const phi = toRad(p.phi);
-        ctx.readout('small', `φ = ${p.phi}° ≈ ${fmt.num(phi, 4)}: sin φ ≈ ${fmt.num(Math.sin(phi), 4)}, φ − sin φ ≈ ${fmt.num(smallAngleError(phi), 4)} (${fmt.num(smallAngleRelError(phi) * 100, 2)} %)`);
+        ctx.readout('small', `φ = ${p.phi}° ≈ ${fmt.num(phi, 4)} rad: sin φ ≈ ${fmt.num(Math.sin(phi), 4)}, φ − sin φ ≈ ${fmt.num(smallAngleError(phi), 4)} (${fmt.num(smallAngleRelError(phi) * 100, 2)} %)`);
         return;
       }
       const f = fn();
