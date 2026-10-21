@@ -38,6 +38,15 @@ export const WAVE_SPEED = 20;
 
 const TAU = 2 * Math.PI;
 
+/**
+ * Phasenunterschied der Erreger von Grad in Bogenmaß, auf [0, 2π) gebracht:
+ * 360° ist dasselbe wie 0° (sonst verschöbe sich die Zählung der Ordnungen k um 1).
+ */
+export function phaseRad(deg: number): number {
+  const d = ((deg % 360) + 360) % 360;
+  return (d * Math.PI) / 180;
+}
+
 /** Frequenz der Erreger: f = c/λ (Hz, λ in cm). */
 export function frequency(lambda: number, c = WAVE_SPEED): number {
   return c / lambda;
