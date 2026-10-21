@@ -20,8 +20,8 @@ korrigiert (Rechenlogik fehlerfrei; die Winkel im Bild waren anders gerundet als
 - **Neue/ergänzte Tests:** Startdreieck (Prüfwerte, summentreue Rundung), C(0|5) mit Rundungsdifferenz, ganzzahlig 59,6/60,2/60,2 → 60/60/60, Außenwinkel eines nicht konvexen Vierecks summentreu 360°, Beispiel-Sechseck (720°, einspringende Ecken D und F, 253,74°, 4 Dreiecke).
 
 ## 2. Aufgaben und Texte (DE und EN)
-- **Aufgaben selbst gerechnet:** 1: 180° − 48° − 67° = 65° ✓; 2: 180° − 90° − 36,9° = 53,1° ✓; 3: 6 · 180° = 1080°, 1080° : 8 = 135° ✓; 4: 1260° : 180° = 7 = n − 2 → n = 9 ✓; 5: 360° : 40° = 9, 180° − 40° = 140° = 7 · 180° : 9 ✓; 6: 80° · n = 360° → n = 4,5 (gibt es nicht), 360° − 120° = 240° (überstumpf) ✓. EN (4 Aufgaben) gleich ✓.
-- **„Beispiel laden“ / Links geklickt:** alle 6 Beispiele und alle Links (flaches Dreieck, Außenwinkel, Fünfeck, Sechseck, Überkreuzung, Achteck, Neuneck, Aufgabe 2 mit `_hide`) – zeigen den beschriebenen Zustand.
+- **Aufgaben selbst gerechnet:** 1: 180° − 48° − 67° = 65° ✓; 2: 180° − 90° − 36,9° = 53,1° ✓; 3: 6 · 180° = 1080°, 1080° : 8 = 135° ✓; 4: 1260° : 180° = 7 = n − 2 → n = 9 ✓; 5: 360° : 40° = 9, 180° − 40° = 140° = 7 · 180° : 9 ✓; 6: 80° · n = 360° → n = 4,5 (gibt es nicht), 360° − 120° = 240° (überstumpf) ✓. EN war gekürzt (4 Aufgaben) und ist jetzt inhaltlich gleich mit DE (6 Aufgaben, gleiche Lösungen) ✓.
+- **„Beispiel laden“ / Links geklickt:** alle 6 Beispiele und alle Links in DE und EN (gleiche Adressen; flaches Dreieck, Außenwinkel, Fünfeck, Sechseck, Überkreuzung, Achteck, Neuneck, Aufgabe 2 mit `_hide`) – zeigen den beschriebenen Zustand.
 - **Texte korrigiert:** Stolperstein „sein Ergänzungswinkel gemessen“ → „statt seiner der Winkel auf der Außenseite (360° minus Innenwinkel) gemessen“ (eindeutiger).
 
 ## 3. Geräte (Prüfbogen)
@@ -43,13 +43,13 @@ korrigiert (Rechenlogik fehlerfrei; die Winkel im Bild waren anders gerundet als
 | `src/simulations/mathematik/winkelsumme/index.ts` | Winkel-Etiketten weichen einander aus (keine Überdeckung bei sehr stumpfen Dreiecken/engen Vielecken); „(n − 2)“ wird nicht mehr umbrochen; „180°“ nur in genügend breiten Zerlegungsdreiecken |
 | `tests/winkelsumme.test.ts` | 3 neue Tests (Prüfwerte, summentreue Rundung, Beispiel-Sechseck) |
 | `src/content/simulations/de/winkelsumme.md` | Stolperstein überstumpfer Winkel klarer formuliert |
+| `src/content/simulations/en/winkelsumme.md` | an DE angeglichen: Begründung ausführlich, Beispiel γ aus α und β, Tabelle, Außenwinkel, „Try it“ mit 8 Schritten und denselben Links, Aufgabe 2 (rechtwinkliges Dreieck) und 6 (Knobelaufgabe) ergänzt, „Ideas for the classroom“ wie DE |
 
 ## 6. Für den Kern (nicht selbst ändern)
 - keine
 
 ## 7. Rückfragen (fachlich unsicher, nicht stillschweigend geändert)
 - Prüfpunkt „Überschlagen verhindern“: Im Dreieck werden entartete Lagen verhindert. Im Vieleck dürfen sich Seiten beim Ziehen bewusst überkreuzen; die Simulation markiert die Kreuzung, zeigt keine Innenwinkel und erklärt, dass die Formel nur für einfache Vielecke gilt (Lernmaterial verlinkt diesen Fall ausdrücklich). Ich halte das für didaktisch sinnvoll und habe es nicht geändert. Soll das Überschlagen stattdessen verhindert werden?
-- EN-Lernmaterial ist kürzer (ohne Aufgabe 2 „rechtwinkliges Dreieck“ und Knobelaufgabe) – laut Auftrag zulässig.
 
 ## Prüfung
 `npm run verify`: astro check 0/0/0, Tests 3006/3006 grün (129 Dateien), Build ok (364 Seiten).
