@@ -203,6 +203,7 @@ export default defineSimulation({
       selSame: ' – nicht seitenverkehrt',
       selHidden: ' Vom Auge aus ist dieses Bild nicht zu sehen (der Lichtweg ginge am Spiegel vorbei).',
       tapHint: 'Tippe auf ein Bild, um seinen Lichtweg zu sehen.',
+      keyImage: 'Spiegelbild {n}: {k} Spiegelung(en), {seq}',
       then: 'dann',
       countCard: 'Bilder',
       mirrorShort: 'Spiegel',
@@ -261,6 +262,7 @@ export default defineSimulation({
       selSame: ' – not reversed',
       selHidden: ' This image cannot be seen from the eye (the light path would miss the mirror).',
       tapHint: 'Tap an image to see its light path.',
+      keyImage: 'Image {n}: {k} reflection(s), {seq}',
       then: 'then',
       countCard: 'Images',
       mirrorShort: 'Mirror',
@@ -582,6 +584,35 @@ export default defineSimulation({
         hoverImg = id === null ? -1 : Number(id);
       },
     });
+
+    /** Bilder im Winkelspiegel per Tastatur auswählen (Tab auf die Bühne, Pfeiltasten, Enter) – wie Antippen. */
+    function updateKeyTargets(): void {
+      if (mode() !== 'multi') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const list = currentImages();
+      const R = Math.max(14, 1.3 * multiPlot.scale.x);
+      const fig = figure();
+      const eye = eyeW();
+      ctx.setKeyTargets(
+        list.map((img, i) => {
+          const [x, y] = multiPlot.toPx(...imgPos(img));
+          // Spiegelfolge wie in der Liste und im Ergebnis (Lichtweg vom Auge aus, falls sichtbar)
+          const path = lightPath(wedge, fig, img, eye, WEDGE_LEN);
+          const seq = `${ctx.t('mirrorShort')} ${(path ? path.seq : img.seq).map((m) => (m === 'A' ? '1' : '2')).join(' → ')}`;
+          return {
+            id: `img${i}`,
+            label: tr('keyImage', { n: String(i + 1), k: String(img.seq.length), seq }),
+            rect: { x: x - R, y: y - R, w: 2 * R, h: 2 * R },
+            activate: () => {
+              selected = i;
+              updateReadouts();
+            },
+          };
+        }),
+      );
+    }
 
     /* ---------- Ergebnisse ---------- */
     const deg0 = (v: number) => fmt.num(Math.abs(v), 0);
@@ -2023,6 +2054,7 @@ export default defineSimulation({
           drawHint();
         } else if (mode() === 'image') drawImageMode();
         else drawMulti();
+        updateKeyTargets();
         if (fade.running) {
           g.fillStyle = withAlpha(ctx.theme.bg, 1 - fade.value);
           g.fillRect(0, 0, surface.width, surface.height);
