@@ -2,6 +2,12 @@
 
 Verfasst von der Projektleitung. Die bisherigen Prüfer haben ihr Nutzungslimit erreicht. Die restlichen **45 Simulationen** übernehmen neue Accounts. Für jeden Account gibt es unten einen eigenen Abschnitt; **lies nur deinen** und dazu die allgemeinen Regeln.
 
+## Aufteilung (gilt ab 21.10. nachmittags)
+
+Es gibt nur **einen neuen Account mit GitHub**. Er übernimmt **Abschnitt A und danach Abschnitt C** (30 Simulationen), in dieser Reihenfolge, mit zwei Zweigen und Pull Requests wie dort beschrieben.
+
+**Abschnitt B** (15 Simulationen) prüft ein **Account ohne GitHub** fachlich und textlich (Rechenlogik, Aufgaben, Texte DE/EN) anhand von ZIP-Paketen; Auftrag: `docs/agenten/PROMPT-PRUEFER-OHNE-GITHUB.md`. Die Projektleitung setzt die Befunde um, macht Geräte- und Barrierefreiheitsprüfung, schreibt die Protokolle und gibt ab. Der GitHub-Account fasst Abschnitt B nicht an.
+
 ## Stand
 
 | Paket | Prüfer bisher | fertig | offen |
@@ -112,9 +118,3 @@ git checkout -b pruefung/paket-3-rest origin/main
 13. `matrix-abbildungen`
 
 **Hinweis:** Prüfer 3 hat zuletzt `polstellen-asymptoten` abgeschlossen; alles davor ist in `main`.
-
----
-
-## Nur zwei Accounts verfügbar?
-
-Dann übernimmt Account C zusätzlich die Mathe-ab-13-Liste aus Abschnitt B (8 Simulationen, Protokolle nach `paket-1/`), und Account B macht nur die 7 aus Paket 2 und danach Physik ab Nummer 10 aus Abschnitt A, nach Absprache mit A.
