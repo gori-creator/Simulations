@@ -296,4 +296,55 @@ describe('Modell: Grenzverhalten', () => {
     expect(t[4]!.y).toBeCloseTo(2 ** -20, 15);
     expect(t[1]!.d).toBeCloseTo(0.25, 12);
   });
+  /* ---------- Prüfrunde Paket 3 ---------- */
+
+  it('Geschlossene Formen: am Rand gilt genau |f(x_ε) − L| = ε (alle Reglerwerte)', () => {
+    for (const key of ['inv', 'rat', 'rat2', 'low', 'exp', 'logi'] as const) {
+      for (const dir of [1, -1] as const) {
+        if (!hasLimit(key, dir)) continue;
+        const L = limitOf(key, dir);
+        for (let k = 1; k <= 20; k++) {
+          const eps = k / 20;
+          const xe = exactThreshold(key, dir, eps);
+          if (!Number.isFinite(xe)) continue;
+          expect(Math.abs(Math.abs(FUNCS[key].f(xe) - L) - eps)).toBeLessThan(1e-9);
+          // knapp dahinter im Schlauch
+          expect(Math.abs(FUNCS[key].f(xe + dir * 1e-6) - L)).toBeLessThan(eps);
+        }
+      }
+    }
+  });
+
+  it('Werte aus Bild und Lernmaterial (nachgerechnet)', () => {
+    // (2x + 1)/(x − 1), ε = 0,35: x_ε = 1 + 3/0,35 ≈ 9,5714
+    expect(exactThreshold('rat', 1, 0.35)).toBeCloseTo(9.5714, 4);
+    // (3x² + 1)/(x² + 1), ε = 0,15: √(2/0,15 − 1) = √12,33… ≈ 3,5119
+    expect(exactThreshold('rat2', 1, 0.15)).toBeCloseTo(3.5119, 4);
+    // 2ˣ/(2ˣ + 1), ε = 0,15: log₂(1/0,15 − 1) ≈ 2,5025; x → −∞, ε = 0,2: −2
+    expect(exactThreshold('logi', 1, 0.15)).toBeCloseTo(2.5025, 4);
+    expect(exactThreshold('logi', -1, 0.2)).toBeCloseTo(-2, 12);
+    // 2x/(x² + 1), x → −∞, ε = 0,35: −(1 + √(1 − 0,35²))/0,35 ≈ −5,5336
+    expect(exactThreshold('low', -1, 0.35)).toBeCloseTo(-5.5336, 4);
+    // Aufgabe 6: f(11) = 122,1 > 100, Schranke 100 ab x ≈ 10,33
+    expect(FUNCS.poly.f(11)).toBeCloseTo(122.1, 10);
+    expect(exceedPoint('poly', 1, 100)).toBeCloseTo(10.33, 2);
+    // Ausprobieren 3: 1/x + 1 nähert sich für x → −∞ von unten
+    expect(approachSide('inv', -1)).toBe('below');
+    // Tabelle 2ˣ/(2ˣ + 1), x → −∞: f(−2) = 0,2 liegt genau auf dem Rand (ε = 0,2 → nicht im Schlauch)
+    expect(FUNCS.logi.f(-2)).toBeCloseTo(0.2, 14);
+  });
+
+  it('Annäherung von oben/unten für alle Funktionen mit Grenzwert', () => {
+    const want: Record<string, string> = {
+      'inv|1': 'above', 'inv|-1': 'below', 'rat|1': 'above', 'rat|-1': 'below', 'rat2|1': 'below', 'rat2|-1': 'below',
+      'low|1': 'above', 'low|-1': 'below', 'osc|1': 'both', 'osc|-1': 'both', 'exp|-1': 'above', 'xexp|1': 'above',
+      'logi|1': 'below', 'logi|-1': 'above',
+    };
+    for (const key of FN_KEYS)
+      for (const dir of [1, -1] as const) {
+        const side = approachSide(key, dir);
+        if (!hasLimit(key, dir)) expect(side).toBeNull();
+        else expect(side).toBe(want[`${key}|${dir}`]);
+      }
+  });
 });
