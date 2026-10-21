@@ -1,4 +1,4 @@
-import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   elasticLimitForce,
   ELASTIC_LIMIT,
@@ -486,29 +486,8 @@ export default defineSimulation({
       gx.fill();
       const theme = ctx.theme;
       const size = narrow() ? 10.5 : 11.5;
-      gx.font = `700 ${size}px ${theme.font}`;
-      gx.textAlign = side === 'right' ? 'left' : 'right';
-      gx.textBaseline = 'middle';
-      gx.lineWidth = 3;
-      gx.lineJoin = 'round';
-      gx.strokeStyle = theme.bg;
-      // „F_G = …“: Buchstabe, tiefgestellter Index (bis zum Leerzeichen), Rest
-      const m = /^(\S)_(\S+)(.*)$/.exec(label);
-      const parts: [string, number, number][] = m ? [[m[1]!, size, 0], [m[2]!, size * 0.72, size * 0.3], [m[3]!, size, 0]] : [[label, size, 0]];
-      const widthOf = ([t, fs]: [string, number, number]) => {
-        gx.font = `700 ${fs}px ${theme.font}`;
-        return gx.measureText(t).width;
-      };
-      const total = parts.reduce((sum, part) => sum + widthOf(part), 0);
-      let lx = side === 'right' ? x0 + 8 : x0 - 8 - total;
-      const ly = (y0 + y1) / 2;
-      gx.textAlign = 'left';
-      for (const part of parts) {
-        const w = widthOf(part);
-        gx.strokeText(part[0], lx, ly + part[2]);
-        gx.fillText(part[0], lx, ly + part[2]);
-        lx += w;
-      }
+      // „F_G = …“: Buchstabe mit tiefgestelltem Index (Kern-Helfer `subText`)
+      subText(gx, label, side === 'right' ? x0 + 8 : x0 - 8, (y0 + y1) / 2, { size, weight: 700, family: theme.font, color, align: side === 'right' ? 'left' : 'right', halo: theme.bg, haloWidth: 3, subScale: 0.72, subShift: 0.3 });
     }
 
     function buildGeo(r: Rect): Geo {
