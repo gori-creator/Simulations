@@ -30,7 +30,16 @@ export interface Charge {
 
 /** Betrag der Feldstärke einer Punktladung: E = k · |Q| / r². */
 export function pointField(q: number, r: number): number {
+  if (r <= 0) return q === 0 ? 0 : Infinity;
   return (COULOMB_K * Math.abs(q)) / (r * r);
+}
+
+/**
+ * Index der Ladung, auf der der Punkt (x, y) genau sitzt (Abstand < `eps`), sonst −1.
+ * Dort ist die Feldstärke dieser Ladung nicht definiert (r = 0, Division durch 0).
+ */
+export function chargeAt(charges: readonly Charge[], x: number, y: number, eps = 1e-6): number {
+  return charges.findIndex((c) => Math.hypot(x - c.x, y - c.y) < eps);
 }
 
 /** Feldstärke-Vektor am Ort (x, y) als Überlagerung aller Ladungen. */
