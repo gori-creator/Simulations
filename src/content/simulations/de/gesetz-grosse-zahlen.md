@@ -9,7 +9,11 @@ Wirft man einen Würfel $n$-mal und erhält dabei $k$-mal eine Sechs, dann ist
 - $k$ die **absolute Häufigkeit** und
 - $h_n = \dfrac{k}{n}$ die **relative Häufigkeit** der Sechs.
 
-Bei wenigen Würfen schwankt $h_n$ stark. Je öfter man wirft, desto mehr **stabilisiert** sich die relative Häufigkeit – und zwar in der Nähe der **Wahrscheinlichkeit** $p$. Das nennt man das **empirische Gesetz der großen Zahlen**.
+Beispiel: $17$ Sechsen bei $100$ Würfen ergeben $h_{100} = \dfrac{17}{100} = 0{,}17 = 17\,\%$.
+
+Bei wenigen Würfen schwankt $h_n$ stark. Je öfter man wirft, desto mehr **stabilisiert** sich die relative Häufigkeit – und zwar in der Nähe der **Wahrscheinlichkeit** $p$ (Münze: $p = 0{,}5$, Würfel: $p = \frac{1}{6} \approx 0{,}167$). Das nennt man das **empirische Gesetz der großen Zahlen**.
+
+Eine Garantie gibt es dabei nicht: Meistens liegt $h_n$ bei mehr Würfen näher an $p$, aber nicht immer. Auch nach vielen Würfen kann $h_n$ wieder etwas weiter weg sein – große Abweichungen werden nur immer unwahrscheinlicher.
 
 Umgekehrt nutzt man das, um unbekannte Wahrscheinlichkeiten zu **schätzen**: Beim Reißnagel kann man $p$ für „Spitze oben“ nicht ausrechnen – aber nach sehr vielen Würfen ist $h_n$ ein guter Schätzwert für $p$.
 
@@ -42,7 +46,7 @@ Erwartet sind etwa $600 \cdot \frac{1}{6} = 100$ Sechsen. $92$ Sechsen sind **ni
 
 ### Aufgabe 2: Reißnagel schätzen
 
-Wirf den Reißnagel 1000-mal, ohne die Wahrscheinlichkeit einzublenden. Gib einen Schätzwert für $p$ („Spitze oben“) an und vergleiche dann mit dem eingestellten Wert. [Aufgabe laden](?exp=tack&showP=0&pTack=0.6&_hide=1)
+Wirf den Reißnagel 1000-mal, ohne die Wahrscheinlichkeit einzublenden. Gib einen Schätzwert für $p$ („Spitze oben“) an und vergleiche dann mit dem eingestellten Wert (schalte dazu „Wahrscheinlichkeit p einzeichnen“ ein). [Aufgabe laden](?exp=tack&showP=0&pTack=0.6&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -64,19 +68,19 @@ Lena irrt (das ist der sogenannte **Spielerfehlschluss**). Die Würfe sind unabh
 
 ### Aufgabe 4: Absolute und relative Abweichung
 
-Beobachte bei vielen Würfen die Differenz $k - n \cdot p$ (absolute Abweichung) und $h_n - p$ (relative Abweichung). Was fällt auf?
+Beobachte bei vielen Würfen die Abweichung der Anzahl $|k - n \cdot p|$ und die Abweichung der relativen Häufigkeit $|h_n - p|$. Beide stehen unter **Ergebnisse**. Was fällt auf?
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Die **relative** Abweichung wird typischerweise immer kleiner. Die **absolute** Abweichung $k - n \cdot p$ wird dagegen typischerweise sogar größer (etwa proportional zu $\sqrt{n}$). Das Gesetz der großen Zahlen sagt also nicht, dass sich die Anzahlen „ausgleichen“.
+Die Abweichung $|h_n - p|$ wird typischerweise immer kleiner. Die Abweichung der Anzahl $|k - n \cdot p|$ wird dagegen typischerweise sogar größer (etwa wie $\sqrt{n}$). Das Gesetz der großen Zahlen sagt also nicht, dass sich die Anzahlen „ausgleichen“.
 
 </details>
 
 ## Ideen für den Unterricht
 
 - **Einsatz:** Bayern Jahrgangsstufe 8 (Laplace-Experimente: relative Häufigkeit und empirisches Gesetz der großen Zahlen); in anderen Ländern teils schon ab Klasse 6. Der Reißnagel ist das klassische Beispiel für eine Wahrscheinlichkeit, die man nur experimentell bestimmen kann.
-- **Bilder:** Würfel, Münze und Reißnagel werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).
+- **Bilder:** Würfel, Münze, Reißnagel und Tisch werden als Fotos gezeigt; fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik.
 - **Häufige Stolpersteine:**
   - Spielerfehlschluss („jetzt ist die Sechs dran“).
   - „Bei 600 Würfen kommen genau 100 Sechsen.“
