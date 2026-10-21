@@ -3,6 +3,10 @@
 // specs.json: [["name", "/de/.../?a=1", 1360, "light"|"dark", [["action","id"],["wait",ms],["play"],["click",x,y],["drag",x1,y1,x2,y2]]], ...]
 // Koordinaten bei click/drag relativ zur Zeichenfläche (canvas) in CSS-Pixeln.
 // Weitere Schritte: ["set","key",wert] (Regler/Schalter/Auswahl bedienen), ["text","Beschriftung"] (Element mit genau diesem Text anklicken), ["sel","css"] (Element per Selektor anklicken).
+// Tastatur: ["focus","css"] fokussiert ein Element (z. B. ["focus","[data-sim-root] canvas"] für die Bühne),
+//   ["key","ArrowRight"] drückt eine Taste auf dem gerade fokussierten Element (Playwright-Namen wie
+//   "Enter", "Tab", "Shift+Tab", "Space", "ArrowUp"; optional Anzahl: ["key","ArrowRight",3]).
+//   Beispiel Tastaturprüfung: [["focus","[data-sim-root] canvas"],["key","ArrowRight",2],["key","Enter"]]
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs');
 const path = require('path');
@@ -50,6 +54,16 @@ fs.mkdirSync(outDir, { recursive: true });
       } else if (step[0] === 'sel') {
         const b = page.locator(step[1]);
         if (await b.count()) await b.first().click(); else errors.push('no selector ' + step[1]);
+      } else if (step[0] === 'focus') {
+        const b = page.locator(step[1]);
+        if (await b.count()) await b.first().focus(); else errors.push('no selector ' + step[1]);
+      } else if (step[0] === 'key') {
+        const times = Math.max(1, Number(step[2]) || 1);
+        try {
+          for (let i = 0; i < times; i++) { await page.keyboard.press(step[1]); await page.waitForTimeout(60); }
+        } catch (e) {
+          errors.push('bad key ' + step[1]);
+        }
       }
       else if (step[0] === 'click' || step[0] === 'drag') {
         const box = await canvas.boundingBox();
