@@ -21,6 +21,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | radioaktiver-zerfall | `src/sim-core/key-targets.ts` | Bei nur einem Ziel soll `setKeyTargets` dieses beim Fokus gleich auswählen, damit ein Enter genügt. | erledigt (Kern): bei genau einem Ziel ist es beim Fokussieren gleich ausgewählt (`KeyTargetNav.focus()`) |
 | radioaktiver-zerfall | `src/sim-core/` (Auswahl) | Optionen einer `choice`-Auswahl sollen im Aufgabenmodus Zusatzangaben verbergen können (z. B. die Halbwertszeit in der Nuklid-Auswahl). | erledigt (Kern): Optionsfeld `detail` (z. B. „Rn-220 (T½ = 55,6 s)“, im Aufgabenmodus „Rn-220“); Simulationen werden einzeln umgestellt |
 | kreisbewegung | `src/sim-core/` (Host, Ergebnisse) | Ergebnistexte (`ctx.readout` als reiner Text) sollen `_` als Index setzen, z. B. „F_max“, wie Regler-Beschriftungen. | offen |
+| energieerhaltung | `scripts/agenten/simshot.cjs` | Tastenschritte wie `["key","ArrowRight"]` erlauben, damit die Tastaturbedienung ohne eigenes Skript geprüft werden kann. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -69,5 +70,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | kreisbewegung | Auf dem Handy liegen im Auto-Diagramm „Schnee“ und „Eis“ knapp neben „v in m/s“. | offen |
 | kreisbewegung | „r = 0,8 m“ liegt dicht neben der Beschriftung „F_Z = …“. | offen |
 | radioaktiver-zerfall | Neue Kern-Funktionen nutzen: Tipp „… Enter drücken, bis ein Kern markiert ist“ anpassen (ein Enter genügt jetzt); Halbwertszeiten in der Nuklid-Auswahl als `detail`, damit sie im Aufgabenmodus verdeckt sind; `hint` je Versuch. | offen |
+| energieerhaltung | Die Starthöhen-Beschriftung steht auf der eigenen Bahn bei manchen Formen nah am Wagen; der Tipp unter der Bühne ist auf dem Handy vier Zeilen lang (kürzen, ggf. je Ansicht über `hint`-Funktion). | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
