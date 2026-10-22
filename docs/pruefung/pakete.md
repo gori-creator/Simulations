@@ -44,7 +44,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 11–13 | `stehende-wellen` | Stehende Wellen | `/de/physik/schwingungen-und-wellen/stehende-wellen/` |
 | ☑ | 12–13 | `linienspektren` | Atommodelle und Linienspektren | `/de/physik/atom-kern-und-quantenphysik/linienspektren-energieniveaus/` |
 | ☑ | 12–13 | `photoeffekt` | Photoeffekt | `/de/physik/atom-kern-und-quantenphysik/photoeffekt-gegenfeldmethode/` |
-| ☐ | 12–14 | `elektronenbeugung` | Elektronenbeugung | `/de/physik/atom-kern-und-quantenphysik/elektronenbeugung-graphit/` |
+| ☑ | 12–14 | `elektronenbeugung` | Elektronenbeugung | `/de/physik/atom-kern-und-quantenphysik/elektronenbeugung-graphit/` |
 | ☑ | 13–13 | `aenderungsrate` | Integral als Gesamtänderung: von der Geschwindigkeit zum Weg | `/de/mathematik/analysis/integral-gesamtaenderung/` |
 | ☑ | 13–13 | `extremwertprobleme` | Extremwertprobleme | `/de/mathematik/analysis/extremwertprobleme/` |
 | ☑ | 13–13 | `kugeln` | Kugeln, Geraden und Ebenen | `/de/mathematik/analytische-geometrie/kugeln-geraden-ebenen/` |
