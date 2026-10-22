@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Simulationsseite PC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{color:var(--p)}
+button,input{color:inherit;font-family:inherit}
+input::placeholder{color:var(--muted);opacity:1}
+</style>
+</helmet>
+<div style="width: 1280px; height: 980px; box-sizing: border-box; {{vars}} background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden">
+  <header style="height: 68px; display: flex; align-items: center; gap: 28px; padding: 0 56px; border-bottom: 1px solid var(--line); background: var(--surface)">
+    <a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" style="fill: var(--ink)"></rect><path d="M6 20c3-10 6-10 9-4s6 6 9-6" fill="none" style="stroke: var(--inv-fg)" stroke-width="2.4" stroke-linecap="round"></path><circle cx="24" cy="10" r="2.4" style="fill: var(--gold)"></circle></svg>
+      <span style="font-weight: 800; font-size: 17px">MINT-Simulationen</span>
+    </a>
+    <nav aria-label="Hauptnavigation" style="display: flex; gap: 4px; font-size: 15px">
+      <a href="#" style="text-decoration: none; padding: 8px 12px; border-radius: 8px">Mathematik</a>
+      <a href="#" style="text-decoration: none; padding: 8px 12px; border-radius: 8px; background: var(--tint-p); color: var(--p); font-weight: 700">Physik</a>
+      <a href="#" style="text-decoration: none; padding: 8px 12px; border-radius: 8px">Alle Simulationen</a>
+      <a href="#" style="text-decoration: none; padding: 8px 12px; border-radius: 8px">Für Lehrkräfte</a>
+    </nav>
+  </header>
+
+  <section style="padding: 24px 56px 0; display: flex; align-items: end; justify-content: space-between; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <span style="font-size: 13px; color: var(--muted)">Physik › Mechanik</span>
+      <div style="display: flex; align-items: center; gap: 14px">
+        <h1 style="margin: 0; font-size: 40px; letter-spacing: -1.2px; font-weight: 800">Freier Fall</h1>
+        <span style="font-family: ui-monospace, Menlo, monospace; font-size: 12px; letter-spacing: 0.8px; color: var(--p); border: 1px solid var(--line-p); background: var(--tint-p); padding: 4px 8px; border-radius: 6px">KL. 9–11</span>
+      </div>
+      <span style="font-size: 16px; color: var(--text2)">Lass eine Kugel auf Erde, Mond oder Mars fallen und sieh, wie sie immer schneller wird.</span>
+    </div>
+    <div style="display: flex; gap: 8px">
+      <button type="button" style="height: 42px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line2); background: var(--surface); font-size: 14px; font-weight: 650; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>QR und Link</button>
+      <button type="button" style="height: 42px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line2); background: var(--surface); font-size: 14px; font-weight: 650; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8 20h8"></path></svg>Beamer-Modus</button>
+      <button type="button" style="height: 42px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line2); background: var(--surface); font-size: 14px; font-weight: 650; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path></svg>Vollbild</button>
+    </div>
+  </section>
+
+  <section style="padding: 20px 56px 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px">
+    <div style="grid-column: span 8; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column">
+      <div style="display: flex; height: 470px">
+        <svg width="260" height="470" viewBox="0 0 260 470" aria-hidden="true">
+          <rect width="260" height="470" style="fill: var(--stage)"></rect>
+          <path d="M40 40 V430" stroke-width="1.5" style="stroke: var(--axis)"></path>
+          <g stroke-width="1.5" style="stroke: var(--axis)"><path d="M40 40h10M40 117h10M40 194h10M40 271h10M40 348h10M40 425h10"></path></g>
+          <rect x="110" y="24" width="60" height="10" rx="2" style="fill: var(--axis)"></rect>
+          <circle cx="140" cy="150" r="13" style="fill: var(--muted)"></circle>
+          <circle cx="140" cy="60" r="13" fill="none" stroke-opacity="0.25" stroke-width="2" style="stroke: var(--muted)"></circle>
+          <circle cx="140" cy="95" r="13" fill="none" stroke-opacity="0.4" stroke-width="2" style="stroke: var(--muted)"></circle>
+          <rect x="0" y="430" width="260" height="40" style="fill: var(--ground)"></rect>
+        </svg>
+        <div style="flex: 1; display: flex; flex-direction: column; padding: 16px; gap: 12px">
+          <svg width="100%" height="210" viewBox="0 0 500 210" aria-hidden="true">
+            <g style="stroke: var(--soft2)"><path d="M30 40H500M30 100H500M30 160H500M130 0V190M230 0V190M330 0V190M430 0V190"></path></g>
+            <path d="M30 190H500M30 0V190" stroke-width="1.5" style="stroke: var(--axis)"></path>
+            <path d="M30 190 Q 230 185 330 100 T 470 20" fill="none" stroke-width="3" style="stroke: var(--p)"></path>
+            <circle cx="250" cy="160" r="6" fill="#FFFFFF" stroke-width="3" style="stroke: var(--p)"></circle>
+            <text x="38" y="16" font-size="12" font-family="system-ui" style="fill: var(--muted)">s in m</text>
+          </svg>
+          <svg width="100%" height="210" viewBox="0 0 500 210" aria-hidden="true">
+            <g style="stroke: var(--soft2)"><path d="M30 40H500M30 100H500M30 160H500M130 0V190M230 0V190M330 0V190M430 0V190"></path></g>
+            <path d="M30 190H500M30 0V190" stroke-width="1.5" style="stroke: var(--axis)"></path>
+            <path d="M30 190 L 470 30" fill="none" stroke-width="3" style="stroke: var(--m)"></path>
+            <path d="M190 132 L310 132 L310 88" fill="none" stroke-width="2" stroke-dasharray="5 4" style="stroke: var(--v)"></path>
+            <text x="38" y="16" font-size="12" font-family="system-ui" style="fill: var(--muted)">v in m/s</text>
+          </svg>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--soft2); font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: var(--ink); align-items: center">
+        <button type="button" aria-label="Abspielen" style="width: 40px; height: 40px; border-radius: 20px; border: none; background: var(--inv-bg); color: var(--inv-fg); display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"></path></svg></button>
+        <span style="padding: 7px 10px; border-radius: 8px; background: var(--soft)">t = 1,20 s</span>
+        <span style="padding: 7px 10px; border-radius: 8px; background: var(--soft); color: var(--p)">s = 7,06 m</span>
+        <span style="padding: 7px 10px; border-radius: 8px; background: var(--soft); color: var(--m)">v = 11,8 m/s</span>
+        <span style="margin-left: auto; color: var(--muted)">g = 9,81 m/s² · Erde</span>
+      </div>
+    </div>
+
+    <aside style="grid-column: span 4; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 18px">
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted)">BEISPIELE</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px">
+          <button type="button" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid var(--ink); background: var(--inv-bg); color: var(--inv-fg); font-size: 13px; font-weight: 600">Fallturm 20 m</button>
+          <button type="button" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid var(--line2); background: var(--surface); font-size: 13px; font-weight: 600">Auf dem Mond</button>
+          <button type="button" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid var(--line2); background: var(--surface); font-size: 13px; font-weight: 600">Fallröhre</button>
+          <button type="button" style="height: 34px; padding: 0 12px; border-radius: 17px; border: 1px solid var(--line2); background: var(--surface); font-size: 13px; font-weight: 600">Reaktionstest</button>
+        </div>
+      </div>
+      <div style="height: 1px; background: var(--line)"></div>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <span style="font-size: 14px; font-weight: 700">Ort</span>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: var(--soft); border-radius: 10px; padding: 3px">
+          <button type="button" style="height: 34px; border: none; border-radius: 8px; background: var(--surface); font-weight: 700; font-size: 13px; box-shadow: 0 1px 2px rgba(0,0,0,0.08)">Erde</button>
+          <button type="button" style="height: 34px; border: none; border-radius: 8px; background: transparent; font-size: 13px">Mond</button>
+          <button type="button" style="height: 34px; border: none; border-radius: 8px; background: transparent; font-size: 13px">Mars</button>
+          <button type="button" style="height: 34px; border: none; border-radius: 8px; background: transparent; font-size: 13px">Jupiter</button>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 14px; font-weight: 700">Fallhöhe h</span><span style="font-family: ui-monospace, Menlo, monospace; font-size: 14px; border: 1px solid var(--line2); border-radius: 8px; padding: 5px 10px">20 m</span></div>
+        <div style="height: 6px; border-radius: 3px; background: var(--soft2); position: relative"><div style="width: 30%; height: 6px; border-radius: 3px; background: var(--ink)"></div><div style="position: absolute; left: 30%; top: -7px; width: 20px; height: 20px; margin-left: -10px; border-radius: 10px; background: var(--surface); border: 2px solid var(--ink); box-sizing: border-box"></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 14px; font-weight: 700">Blitzabstand Δt</span><span style="font-family: ui-monospace, Menlo, monospace; font-size: 14px; border: 1px solid var(--line2); border-radius: 8px; padding: 5px 10px">0,4 s</span></div>
+        <div style="height: 6px; border-radius: 3px; background: var(--soft2); position: relative"><div style="width: 55%; height: 6px; border-radius: 3px; background: var(--ink)"></div><div style="position: absolute; left: 55%; top: -7px; width: 20px; height: 20px; margin-left: -10px; border-radius: 10px; background: var(--surface); border: 2px solid var(--ink); box-sizing: border-box"></div></div>
+      </div>
+      <label style="display: flex; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 700">Ergebnisse anzeigen
+        <span style="width: 44px; height: 26px; border-radius: 13px; background: var(--ink); position: relative; display: inline-block"><span style="position: absolute; right: 3px; top: 3px; width: 20px; height: 20px; border-radius: 10px; background: var(--surface)"></span></span>
+      </label>
+    </aside>
+  </section>
+
+  <nav aria-label="Lernmaterial" style="margin: 22px 56px 0; display: flex; gap: 4px; border-bottom: 1px solid var(--line)">
+    <a href="#" style="text-decoration: none; padding: 12px 16px; font-weight: 750; border-bottom: 2px solid var(--ink)">Worum geht es?</a>
+    <a href="#" style="text-decoration: none; padding: 12px 16px; color: var(--muted)">Ausprobieren</a>
+    <a href="#" style="text-decoration: none; padding: 12px 16px; color: var(--muted)">Aufgaben <span style="font-family: ui-monospace, Menlo, monospace; font-size: 12px">7</span></a>
+    <a href="#" style="text-decoration: none; padding: 12px 16px; color: var(--muted)">Für Lehrkräfte</a>
+    <a href="#" style="text-decoration: none; padding: 12px 16px; color: var(--muted)">Lehrplanbezug</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["hell","dunkel"],"default":"hell"},"$preview":{"width":1280,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // Farbthema: hell oder dunkel (Tweak „theme“)
+    const dark = (this.props.theme ?? 'hell') === 'dunkel';
+    const T = dark ? {
+      bg: '#0B0C10', surface: '#14161B', ink: '#F1F2F4', 'inv-bg': '#F1F2F4', 'inv-fg': '#0B0C10', 'on-accent': '#0B0C10',
+      line: '#262931', line2: '#363A46', soft: '#1B1E25', soft2: '#23262E', text2: '#D3D6DC', muted: '#AEB3BD',
+      axis: '#767C89', stage: '#101217', 'tint-m': '#161C3A', 'line-m': '#222B55', 'tint-p': '#2A1912', 'line-p': '#40271B',
+      m: '#8DA0FF', p: '#FF8B5E', v: '#B49BFF', ground: '#4A3F31', gold: '#F2A541', shadow: 'none',
+    } : {
+      bg: '#FCFCFD', surface: '#FFFFFF', ink: '#0B0D12', 'inv-bg': '#0B0D12', 'inv-fg': '#FFFFFF', 'on-accent': '#FFFFFF',
+      line: '#EAEAEE', line2: '#DCDCE2', soft: '#F4F4F7', soft2: '#EDEDF1', text2: '#3A3E47', muted: '#5F6470',
+      axis: '#A0A4AD', stage: '#F7F8FA', 'tint-m': '#F0F3FF', 'line-m': '#E0E6FF', 'tint-p': '#FFF3EE', 'line-p': '#FCDDCF',
+      m: '#2F49D1', p: '#B83A14', v: '#6F47C4', ground: '#D9CBB3', gold: '#E8962A',
+      shadow: '0 1px 2px rgba(15,17,22,0.04), 0 8px 24px rgba(15,17,22,0.06)',
+    };
+    const vars = Object.keys(T).map((k) => '--' + k + ': ' + T[k] + ';').join(' ');
+    return { vars };
+  }
+}
+</script>
+</body>
+</html>
