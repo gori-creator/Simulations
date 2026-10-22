@@ -11,6 +11,7 @@ Die Zeilen der Tabelle gehören in die Übersicht von `docs/BILDER.md` (der Test
 | Einfacher Stromkreis | `clamp` | `src/assets/sims/einfacher-stromkreis/krokodilklemme.webp` | 1600 × 310 | transparent |
 | Einfacher Stromkreis | `clip` | `src/assets/sims/einfacher-stromkreis/bueroklammer.webp` | 1600 × 354 | transparent |
 | Einfacher Stromkreis | `coin` | `src/assets/sims/einfacher-stromkreis/muenze.webp` | 1252 × 1251 | transparent |
+| Einfacher Stromkreis | `lead` | `src/assets/sims/einfacher-stromkreis/bleistiftmine.webp` | 1600 × 35 | transparent |
 | Einfacher Stromkreis | `foil` | `src/assets/sims/einfacher-stromkreis/alufolie.webp` | 1600 × 228 | transparent |
 | Einfacher Stromkreis | `wood` | `src/assets/sims/einfacher-stromkreis/holzstab.webp` | 1600 × 121 | transparent |
 | Einfacher Stromkreis | `eraser` | `src/assets/sims/einfacher-stromkreis/radiergummi.webp` | 1600 × 517 | transparent |
@@ -26,9 +27,11 @@ Die Zeilen der Tabelle gehören in die Übersicht von `docs/BILDER.md` (der Test
 | Teilchenmodell | `table` | `src/assets/sims/teilchenmodell/tischkante.webp` | 2172 × 271 | deckend |
 | Linsen | `candle` | `src/assets/sims/linsen/kerze.webp` | 540 × 1352 | transparent |
 | Linsen | `rider` | `src/assets/sims/linsen/reiter.webp` | 1257 × 769 | transparent |
+| Linsen | `rail` | `src/assets/sims/linsen/optische-bank.webp` | 1600 × 107 | transparent |
 | Reflexion | `candle` | `src/assets/sims/reflexion/kerze.webp` | 540 × 1352 | transparent |
 | Reflexion | `table` | `src/assets/sims/reflexion/tischkante.webp` | 2172 × 271 | deckend |
 | Licht und Schatten | `rider` | `src/assets/sims/licht-schatten/reiter.webp` | 1257 × 769 | transparent |
+| Licht und Schatten | `rail` | `src/assets/sims/licht-schatten/optische-bank.webp` | 1600 × 107 | transparent |
 | Elektromagnetische Induktion | `magnet` | `src/assets/sims/induktion/stabmagnet.webp` | 1600 × 233 | transparent |
 | Elektromagnetische Induktion | `coil` | `src/assets/sims/induktion/spule.webp` | 1215 × 742 | transparent |
 | Radioaktiver Zerfall | `tube` | `src/assets/sims/radioaktiver-zerfall/zaehlrohr.webp` | 1600 × 181 | transparent |
@@ -47,7 +50,8 @@ Kopien: `thermometer.webp` aus `zahlengerade/`, `tischkante.webp` aus `stoesse/`
 - **Gasgesetze, Teilchenmodell:** Thermometer: Kopf und Kugel maßstabsgetreu, nur das gleichförmige Röhrenstück in der Länge gestreckt; Kugel in der Farbe der Säule eingefärbt, Säule und Skala gezeichnet. Heizplatte: Enden (mit Drehknopf und Kontrolllampe) maßstabsgetreu, nur das Mittelstück waagerecht gestreckt; Glühen, Reif, Knopfstellung und Lampe gezeichnet darüber. Tischkante: waagerecht abwechselnd gespiegelt gekachelt (das Foto hat einen leichten Helligkeitsverlauf), im Dunkelmodus abgedunkelt. Manometer: Zifferblattmitte genau auf dem Zeigerdrehpunkt, Skala und Zeiger gezeichnet, Gewindestutzen bis zur Leitung; im Dunkelmodus wird das Zifferblatt abgedunkelt (helle Schrift).
 - **Teilchenmodell:** Pipette leer, Spitze auf dem Tropfpunkt, Tinte gezeichnet darüber.
 - **Linsen, Reflexion:** Die gelieferte Kerze ersetzt die alte Datei; die Maße in `CANDLE_IMG` sind an das neue Foto angepasst (vorher wurde das neue Bild mit den alten Ausschnitten verzerrt gezeichnet).
-- **Linsen, Licht und Schatten:** Reiter so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil, farbige Marke gezeichnet.
+- **Linsen, Licht und Schatten:** Reiter so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil, farbige Marke gezeichnet. Profilschiene: Profil so hoch wie die gezeichnete Schiene, die Füße stehen darunter auf dem Tisch; Endstücke maßstabsgetreu, nur das gleichförmige Mittelstück waagerecht gestreckt. Skala und Zahlen auf der dunklen Schiene hell.
+- **Bleistiftmine (Einfacher Stromkreis):** Das Foto ist mit 46 : 1 viel schlanker als die Mine im Aufbau (14 : 1). Dicke wie die Ersatzgrafik, die abgerundeten Enden maßstabsgetreu, nur das gleichförmige Mittelstück in der Länge gestaucht.
 - **Induktion:** Spule hinter dem Magneten, die Wicklung vorn noch einmal halb durchsichtig, damit der Magnet in der Spule sichtbar bleibt; Radius der Spule aus dem Foto (Stromfluss-Punkte, Pol-Anzeige), Leitungen setzen an den Anschlussdrähten an. Magnet in voller Länge, schlanker als die Ersatzgrafik; S/N gezeichnet.
 - **Radioaktiver Zerfall:** Zählrohr: Fenster und Endkappe maßstabsgetreu, das gleichförmige Rohrstück gestaucht (das Foto ist mit 8,8 : 1 schlanker als das Rohr im Aufbau). Zählgerät: Ziffern und Zählrate im leeren Fenster, der rote Knopf leuchtet bei jedem Impuls, Lautsprecher-Schalter mit gezeichnetem Symbol daneben.
 - **Stehende Wellen:** Erreger ohne den Stift des Fotos (der bewegte Stößel bleibt gezeichnet). Umlenkrolle auf dem Drehpunkt, Tischklemme abgeschnitten (es gibt keinen Tisch in der Szene).
@@ -59,8 +63,8 @@ Kopien: `thermometer.webp` aus `zahlengerade/`, `tischkante.webp` aus `stoesse/`
 
 | Datei | Simulation | Grund |
 | --- | --- | --- |
-| `einfacher-stromkreis/bleistiftmine.webp` | Einfacher Stromkreis | Zeigt keine Graphitmine, sondern eine schwarze Profilleiste mit Füßen. Datei aus dem Ordner entfernt (liegt in der Git-Geschichte, Commit 439c45d); die Mine bleibt gezeichnet. |
 | `teilchenmodell/becherglas.webp` | Teilchenmodell (Diffusion) | Falsche Ansicht: leicht von oben, mit dickem, fast deckendem Boden (elliptische Bodenfläche, gut 13 % der Höhe) und deckenden Wänden. Vorn gezeichnet verdeckt der Boden die unterste Teilchenreihe. Datei entfernt (Git-Geschichte). |
-| `linsen/optische-bank.webp`, `licht-schatten/optische-bank.webp` | Linsen, Licht und Schatten | Runder Stab mit grober Körnung statt einer Profilschiene; bei 14–20 px Höhe wirkt er unruhig, die Skala darauf ist schlechter lesbar als auf der gezeichneten Schiene (ausprobiert). Dateien entfernt (Git-Geschichte). |
+
+Hinweis: Bleistiftmine und Profilschiene waren in der Lieferung vertauscht (die schwarze Profilleiste mit Füßen lag als `bleistiftmine.webp` vor, der Rundstab als `optische-bank.webp`). Nach Rückmeldung der Projektleitung sind beide vertauscht eingebaut.
 
 Nicht bearbeitet (kein neues Bild, nur „Vorhandene Bilder mitnutzen“ der Wunschliste): Lampe bei Linienspektren und Photoeffekt, Netzgerät beim Photoeffekt, Messgerät bei der Induktion, Hakengewicht an der Umlenkrolle (Stehende Wellen).

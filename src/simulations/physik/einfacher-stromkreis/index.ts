@@ -241,9 +241,10 @@ export default defineSimulation({
     motor: 'motor.webp',
     bell: 'klingel.webp',
     clamp: 'krokodilklemme.webp',
-    // Gegenstände für den Leitertest (die Bleistiftmine bleibt gezeichnet)
+    // Gegenstände für den Leitertest
     clip: 'bueroklammer.webp',
     coin: 'muenze.webp',
+    lead: 'bleistiftmine.webp',
     foil: 'alufolie.webp',
     wood: 'holzstab.webp',
     eraser: 'radiergummi.webp',
@@ -2150,14 +2151,29 @@ export default defineSimulation({
     /** Höhe relativ zur Länge (zum Einpassen in Kästchen und Schaltplan). */
     const OBJ_THICK: Record<MaterialId, number> = { clip: 0.34, coin: 1, foil: 0.3, lead: 0.07, wood: 0.14, eraser: 0.42, ruler: 0.22, glass: 0.11 };
 
+    /** Breite der abgerundeten Enden im Foto der Bleistiftmine (Bildpixel). */
+    const LEAD_END = 40;
     function drawObject(id: MaterialId, cx: number, cy: number, k: number, alpha = 1): void {
       const len = OBJ_LEN[id] * k;
       const dark = ctx.theme.dark;
       g.save();
       g.globalAlpha = alpha;
       g.translate(cx, cy);
-      const photo = id === 'lead' ? null : ctx.images.get(id);
-      if (photo) {
+      const photo = ctx.images.get(id);
+      if (photo && id === 'lead') {
+        // Mine: das Foto ist viel schlanker (46 : 1) als die Mine im Aufbau (14 : 1). Dicke wie die
+        // Ersatzgrafik, die Enden maßstabsgetreu, nur das gleichförmige Mittelstück wird gestaucht.
+        const h = len * OBJ_THICK.lead;
+        const k = h / photo.height;
+        const e = LEAD_END;
+        const ew = e * k;
+        const piece = (sx: number, sw: number, dx: number, dw: number) => {
+          g.drawImage(scaledSprite(photo, dw, h, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: photo.height } }), dx, -h / 2, dw, h);
+        };
+        piece(e, photo.width - 2 * e, -len / 2 + ew - 0.5, Math.max(1, len - 2 * ew + 1));
+        piece(0, e, -len / 2, ew);
+        piece(photo.width - e, e, len / 2 - ew, ew);
+      } else if (photo) {
         // Foto in voller Länge, Seitenverhältnis bleibt (etwas schlanker als die Ersatzgrafik)
         const h = (len * photo.height) / photo.width;
         g.drawImage(scaledSprite(photo, len, h, surface.dpr), -len / 2, -h / 2, len, h);
