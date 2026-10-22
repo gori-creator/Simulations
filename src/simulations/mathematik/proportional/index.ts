@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, tintedSprite, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   classify,
@@ -166,6 +166,7 @@ export default defineSimulation({
   id: 'proportional',
   dragHint: true,
   layout: { aspect: 1.05, aspectNarrow: 0.325 },
+  images: { apple: 'apfel.webp', taxi: 'taxi.webp' },
   groups: [
     { id: 'val', label: L('Werte', 'Values') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1022,6 +1023,15 @@ export default defineSimulation({
     function drawApple(x: number, y: number, r: number, i: number): void {
       const g = surface.g;
       const green = i % 5 === 3;
+      const appleImg = ctx.images.get('apple');
+      if (appleImg) {
+        // Foto: Apfel (ohne Blatt) etwa 2r breit, Unterkante wie bei der Ersatzgrafik; jeder fünfte grün eingefärbt
+        const w = (2 * r) / 0.92;
+        const h = (w * appleImg.naturalHeight) / appleImg.naturalWidth;
+        const spr = green ? tintedSprite(appleImg, w, h, surface.dpr, th().series[2]!, { amount: 0.75, lift: 0.25 }) : scaledSprite(appleImg, w, h, surface.dpr);
+        g.drawImage(spr, x - w / 2, y + r * 0.95 - h, w, h);
+        return;
+      }
       const grad = g.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
       grad.addColorStop(0, green ? '#d4ec7a' : '#ff8a73');
       grad.addColorStop(0.55, green ? '#8fbf34' : '#e0402f');
@@ -1259,6 +1269,19 @@ export default defineSimulation({
       const front = Math.max(kmX(xs), R.x + cl + 2);
       const x0 = front - cl;
       const yb = roadY + roadH * 0.45;
+      const taxiImg = ctx.images.get('taxi');
+      if (taxiImg) {
+        // Foto: Länge cl, Reifen auf derselben Linie wie die gezeichneten Räder
+        const th2 = (cl * taxiImg.naturalHeight) / taxiImg.naturalWidth;
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.35)';
+        g.shadowBlur = 5;
+        g.shadowOffsetY = 2;
+        g.drawImage(scaledSprite(taxiImg, cl, th2, surface.dpr), x0, yb + ch * 0.3 - th2, cl, th2);
+        g.restore();
+      }
+      const taxiGA = g.globalAlpha;
+      if (taxiImg) g.globalAlpha = 0;
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.35)';
       g.shadowBlur = 5;
@@ -1318,6 +1341,7 @@ export default defineSimulation({
         g.arc(wx, yb, ch * 0.13, 0, TAU);
         g.fill();
       }
+      g.globalAlpha = taxiGA;
       // Taxameter
       const mw = Math.min(R.w - 4, 190);
       const mh = Math.min(roadY - R.y - 30, 58);

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { angleType, dirDiff, dragAngle, idealPose, makeTask, measure, norm, points, type AngleType, type Leg, type Measurement, type Task, type TaskKind } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -88,6 +88,7 @@ export default defineSimulation({
     { key: 'show', type: 'boolean', group: 'view', label: L('Winkelgröße anzeigen', 'Show the size of the angle'), help: L('Ausgeschaltet muss man die Größe am Messgerät ablesen.', 'When off, read the size from the measuring tool.'), default: true, visibleIf: isMode('messen') },
     { key: 'names', type: 'boolean', group: 'view', label: L('Bezeichnungen S, A, B', 'Labels S, A, B'), default: true },
   ],
+  images: { geo: 'geodreieck.webp' },
   actions: [
     { id: 'place', label: L('Messgerät anlegen', 'Place the tool'), primary: true, visibleIf: (v) => v.mode === 'messen' && v.tool !== 'kein' },
     { id: 'random', label: L('Zufälliger Winkel', 'Random angle'), visibleIf: isMode('messen') },
@@ -850,6 +851,56 @@ export default defineSimulation({
     }
 
     /** Geodreieck (Kantenlänge 16 cm, hier mit Halbkante G) mit cm- und Winkelskalen. */
+    /* ---------- Geodreieck-Foto (optional) ---------- */
+    /** Lage im Foto: Zeichenkante (Bildzeile), Spitze und Griffloch (Anteile der Dreieckshöhe). */
+    const GEO_IMG = { base: 746, apex: 2, holeV: 0.781, holeR: 0.056 };
+    let geoGlass: { src: HTMLImageElement; canvas: HTMLCanvasElement | null } | null = null;
+    /** Foto mit durchsichtigerem Kunststoff (Alpha hoch 6: Fläche ≈ 0,65 → 0,08, Kanten bleiben kräftig); einmal berechnet. */
+    function geoPhoto(): HTMLCanvasElement | null {
+      const img = ctx.images.get('geo');
+      if (!img) return null;
+      if (geoGlass?.src !== img) {
+        let canvas: HTMLCanvasElement | null = document.createElement('canvas');
+        try {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const cg = canvas.getContext('2d')!;
+          cg.drawImage(img, 0, 0);
+          const data = cg.getImageData(0, 0, canvas.width, canvas.height);
+          const px = data.data;
+          for (let i = 3; i < px.length; i += 4) {
+            const a = px[i]! / 255;
+            px[i] = Math.round(255 * a ** 6);
+          }
+          cg.putImageData(data, 0, 0);
+        } catch {
+          canvas = null;
+        }
+        geoGlass = { src: img, canvas };
+      }
+      return geoGlass.canvas;
+    }
+    /** Foto auf das Dreieck legen: p0 links unten, p1 rechts unten (Zeichenkante), p2 Spitze. */
+    function drawGeoPhoto(photo: HTMLCanvasElement, p0: [number, number], p1: [number, number], p2: [number, number]): void {
+      const g = surface.g;
+      const W = photo.width;
+      const hgt = GEO_IMG.base - GEO_IMG.apex;
+      const len = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]);
+      if (len < 4) return;
+      const m = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
+      g.save();
+      // Bildpixel → Bühne: x entlang der Zeichenkante, y von der Spitze zur Kante
+      g.transform((p1[0] - p0[0]) / W, (p1[1] - p0[1]) / W, (m[0]! - p2[0]) / hgt, (m[1]! - p2[1]) / hgt, p0[0], p0[1]);
+      g.drawImage(scaledSprite(photo, len, (photo.height * len) / W, surface.dpr), 0, -GEO_IMG.base, W, photo.height);
+      g.restore();
+    }
+    /** Halbe Breite der Lücke, die eine Parallele in Höhe v (Anteil der Höhe) um das Griffloch lässt (0 = keine). */
+    function geoHoleGap(v: number): number {
+      const r = GEO_IMG.holeR + 0.02;
+      const d = v - GEO_IMG.holeV;
+      return Math.abs(d) < r ? Math.sqrt(r * r - d * d) : 0;
+    }
+
     function drawGeo(): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -872,12 +923,16 @@ export default defineSimulation({
       g.fillStyle = theme.dark ? 'rgba(170,200,240,0.12)' : 'rgba(232,243,255,0.42)';
       g.fill();
       g.restore();
-      g.strokeStyle = withAlpha(theme.text, 0.55);
-      g.lineWidth = 1.4;
-      g.beginPath();
-      tri.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
-      g.closePath();
-      g.stroke();
+      const photo = geoPhoto();
+      if (photo) drawGeoPhoto(photo, tri[0]!, tri[1]!, tri[2]!);
+      else {
+        g.strokeStyle = withAlpha(theme.text, 0.55);
+        g.lineWidth = 1.4;
+        g.beginPath();
+        tri.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+        g.closePath();
+        g.stroke();
+      }
       const ink = withAlpha(theme.text, 0.78);
       const faint = withAlpha(theme.text, theme.dark ? 0.24 : 0.2);
       // Parallelen zur Zeichenkante (außerhalb der Winkelskala)
@@ -888,7 +943,17 @@ export default defineSimulation({
       for (let v = 1 / 16; v < 0.95; v += 1 / 16) {
         const half = 1 - v - 0.03;
         if (half <= 0.02) continue;
-        if (v >= R) {
+        const gap = photo ? geoHoleGap(v) : 0;
+        if (v >= R && gap > 0) {
+          // um das Griffloch des Fotos herum
+          for (const sg of [-1, 1]) {
+            if (half <= gap) continue;
+            const [x0, y0] = P(sg * gap, v);
+            const [x1, y1] = P(sg * half, v);
+            g.moveTo(x0, y0);
+            g.lineTo(x1, y1);
+          }
+        } else if (v >= R) {
           const [x0, y0] = P(-half, v);
           const [x1, y1] = P(half, v);
           g.moveTo(x0, y0);
