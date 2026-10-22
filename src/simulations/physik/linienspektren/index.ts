@@ -221,11 +221,12 @@ export default defineSimulation({
       hint: 'Übergang antippen',
       tapHint: 'Pfeil oder Linie antippen: Übergang wählen',
       levelN: 'Niveau {k}',
+      keyT: 'Übergang {u} → {l}',
       trEm: '<strong>Emission:</strong> Das Elektron springt vom Niveau {lu} (<var>E</var> = {Eu} eV) auf das Niveau {ll} (<var>E</var> = {El} eV). Dabei sendet das Atom genau ein Photon aus.{series}',
       trAbs: '<strong>Absorption:</strong> Ein Photon aus dem weißen Licht hebt das Elektron vom Niveau {ll} (<var>E</var> = {El} eV) auf das Niveau {lu} (<var>E</var> = {Eu} eV). Photonen mit genau dieser Energie fehlen danach im Spektrum.{series}',
       series: ' Der Übergang gehört zur <strong>{s}-Serie</strong> (unteres Niveau <var>n</var> = {n}).',
       photon:
-        '<var>ΔE</var> = <var>E</var><sub>{su}</sub> − <var>E</var><sub>{sl}</sub> = {Eu} eV − ({El} eV) = <strong>{dE} eV</strong> = {dEJ} J<br><var>f</var> = <span class="frac"><span><var>ΔE</var></span><span><var>h</var></span></span> = <span class="frac"><span>{dEJ} J</span><span>6,626 · 10<sup>−34</sup> J · s</span></span> = <strong>{f} Hz</strong><br><var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>3,00 · 10<sup>8</sup> m/s</span><span>{f} Hz</span></span> = <strong>{lam} nm</strong> – {color}',
+        '<var>ΔE</var> = <var>E</var><sub>{su}</sub> − <var>E</var><sub>{sl}</sub> = {Eu} eV − ({El} eV) = <strong>{dE} eV</strong> = {dEJ} J<br><var>f</var> = <span class="frac"><span><var>ΔE</var></span><span><var>h</var></span></span> = <span class="frac"><span>{dEJ} J</span><span>6,626 · 10<sup>−34</sup> J · s</span></span> = <strong>{f} Hz</strong><br><var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>2,998 · 10<sup>8</sup> m/s</span><span>{f} Hz</span></span> = <strong>{lam} nm</strong> – {color}',
       thL: 'λ in nm',
       thC: 'Farbe',
       thT: 'Übergang',
@@ -272,11 +273,12 @@ export default defineSimulation({
       hint: 'tap a transition',
       tapHint: 'Tap an arrow or a line to choose a transition',
       levelN: 'level {k}',
+      keyT: 'transition {u} → {l}',
       trEm: '<strong>Emission:</strong> the electron jumps from level {lu} (<var>E</var> = {Eu} eV) to level {ll} (<var>E</var> = {El} eV). The atom emits exactly one photon.{series}',
       trAbs: '<strong>Absorption:</strong> a photon from the white light lifts the electron from level {ll} (<var>E</var> = {El} eV) to level {lu} (<var>E</var> = {Eu} eV). Photons with exactly this energy are then missing from the spectrum.{series}',
       series: ' The transition belongs to the <strong>{s} series</strong> (lower level <var>n</var> = {n}).',
       photon:
-        '<var>ΔE</var> = <var>E</var><sub>{su}</sub> − <var>E</var><sub>{sl}</sub> = {Eu} eV − ({El} eV) = <strong>{dE} eV</strong> = {dEJ} J<br><var>f</var> = <span class="frac"><span><var>ΔE</var></span><span><var>h</var></span></span> = <span class="frac"><span>{dEJ} J</span><span>6.626 · 10<sup>−34</sup> J · s</span></span> = <strong>{f} Hz</strong><br><var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>3.00 · 10<sup>8</sup> m/s</span><span>{f} Hz</span></span> = <strong>{lam} nm</strong> – {color}',
+        '<var>ΔE</var> = <var>E</var><sub>{su}</sub> − <var>E</var><sub>{sl}</sub> = {Eu} eV − ({El} eV) = <strong>{dE} eV</strong> = {dEJ} J<br><var>f</var> = <span class="frac"><span><var>ΔE</var></span><span><var>h</var></span></span> = <span class="frac"><span>{dEJ} J</span><span>6.626 · 10<sup>−34</sup> J · s</span></span> = <strong>{f} Hz</strong><br><var>λ</var> = <span class="frac"><span><var>c</var></span><span><var>f</var></span></span> = <span class="frac"><span>2.998 · 10<sup>8</sup> m/s</span><span>{f} Hz</span></span> = <strong>{lam} nm</strong> – {color}',
       thL: 'λ in nm',
       thC: 'colour',
       thT: 'transition',
@@ -296,6 +298,8 @@ export default defineSimulation({
     const el = (): ElementData => elementOf(p.el);
     const sel = (): TransitionDef => resolveTransition(el(), p.u, p.l);
     const isAbs = () => p.mode === 'abs';
+    /** Werte im Bild zeigen? Aus bei „Werte im Bild anzeigen“ = aus und im Aufgabenmodus, solange die Rechnung verdeckt ist. */
+    const showVal = () => !ctx.isHidden('photon');
     const lineIndex = (e: ElementData, t: TransitionDef) => e.transitions.findIndex((q) => q.u === t.u && q.l === t.l);
 
     /* ---------- weiche Werte ---------- */
@@ -750,15 +754,23 @@ export default defineSimulation({
     }
 
     /** Zahl in Zehnerpotenz-Schreibweise für die Zeichenfläche: „4,57 · 10^[14]“. */
+    /** Mantisse und Exponent; die Mantisse wird vorher gerundet (9,996 · 10¹⁴ → 1,00 · 10¹⁵). */
+    function sciParts(v: number, d: number): [string, string] {
+      let e = Math.floor(Math.log10(Math.abs(v)));
+      let m = v / 10 ** e;
+      if (Math.abs(Number(m.toFixed(d))) >= 10) {
+        e += 1;
+        m /= 10;
+      }
+      return [fmt.fixed(m, d), e < 0 ? `−${-e}` : String(e)];
+    }
     function sciCanvas(v: number, d = 2): string {
-      const e = Math.floor(Math.log10(Math.abs(v)));
-      const m = v / 10 ** e;
-      return `${fmt.fixed(m, d)} · 10^[${e < 0 ? `−${-e}` : e}]`;
+      const [m, e] = sciParts(v, d);
+      return `${m} · 10^[${e}]`;
     }
     function sciHtml(v: number, d = 2): string {
-      const e = Math.floor(Math.log10(Math.abs(v)));
-      const m = v / 10 ** e;
-      return `${fmt.fixed(m, d)} · 10<sup>${e < 0 ? `−${-e}` : e}</sup>`;
+      const [m, e] = sciParts(v, d);
+      return `${m} · 10<sup>${e}</sup>`;
     }
     /** Bezeichnung eines Niveaus im Text: Wasserstoff „n = 3“, sonst „3p“. */
     const levelName = (e: ElementData, k: number) => e.levels[k - 1]!.label;
@@ -1255,7 +1267,7 @@ export default defineSimulation({
       const lamLab = `λ = ${lamText(ln.lambda)} nm`;
       const lw = richWidth(lamLab, fs) + 16;
       const lx0 = clamp(mk - lw / 2, G.r.x + 6, G.r.x + G.r.w - 6 - lw);
-      const free = (x: number, w: number) => !p.val || x + w / 2 < lx0 - 4 || x - w / 2 > lx0 + lw + 4;
+      const free = (x: number, w: number) => !showVal() || x + w / 2 < lx0 - 4 || x - w / 2 > lx0 + lw + 4;
       for (let lam = 400; lam <= 750; lam += step) {
         const x = specX(G, lam);
         g.strokeStyle = 'rgba(200,210,230,0.5)';
@@ -1276,7 +1288,7 @@ export default defineSimulation({
       if (free(sx1 - G.irW / 2, 20)) g.fillText(ctx.t('ir'), sx1 - G.irW / 2, ty);
       g.restore();
       // λ des gewählten Übergangs unter dem Schirm
-      if (p.val) pill(lx0, sy + sh + (sm ? 9 : 10), lamLab, '#ffffff', 'left', fs, undefined, true);
+      if (showVal()) pill(lx0, sy + sh + (sm ? 9 : 10), lamLab, '#ffffff', 'left', fs, undefined, true);
     }
 
     function drawScene(G: SceneGeo): void {
@@ -1328,9 +1340,9 @@ export default defineSimulation({
     function termGeo(R: Rect, e: ElementData): TermGeo {
       const sm = R.w < 330 || R.h < 230;
       const isH = e.id === 'H';
-      const padL = sm ? 40 : 46;
+      const padL = isH ? (sm ? 48 : 52) : sm ? 40 : 46;
       const padR = isH ? (sm ? 44 : 52) : sm ? 10 : 14;
-      const top = R.y + (sm ? 52 : 62) + (e.columns.length ? (sm ? 12 : 14) : 0);
+      const top = R.y + (sm ? 56 : 62) + (e.columns.length ? (sm ? 12 : 14) : 0);
       const bot = R.y + R.h - (sm ? 20 : 24);
       const A: Rect = { x: R.x + padL, y: top, w: R.w - padL - padR, h: bot - top };
       const Es = e.levels.map((q) => q.E);
@@ -1421,7 +1433,9 @@ export default defineSimulation({
       g.lineTo(A.x - 4.5, A.y - 12);
       g.closePath();
       g.fill();
-      richText(ctx.t('axisE'), R.x + 12, A.y - (e.columns.length ? (sm ? 32 : 36) : sm ? 22 : 24), fs, theme.muted, 'left', 600);
+      // „E in eV“: mit Spaltenköpfen über der Pfeilspitze, sonst rechts neben ihr (sonst schneidet der Pfeil den Text)
+      if (e.columns.length) richText(ctx.t('axisE'), R.x + 12, A.y - (sm ? 32 : 36), fs, theme.muted, 'left', 600);
+      else richText(ctx.t('axisE'), A.x - 2, A.y - 16, fs, theme.muted, 'left', 600);
       // Achsenbruch
       if (T.brk !== null) {
         const yb = A.y + A.h - (sm ? 14 : 17);
@@ -1447,7 +1461,8 @@ export default defineSimulation({
       g.setLineDash([4, 4]);
       g.beginPath();
       g.moveTo(A.x - 8, y0 + 0.5);
-      g.lineTo(R.x + R.w - 10, y0 + 0.5);
+      // nur bis zum Ende der Niveaulinien, damit die Beschriftungen rechts frei bleiben
+      g.lineTo(A.x + A.w, y0 + 0.5);
       g.stroke();
       g.setLineDash([]);
       // Legende in der Zeile von „E in eV“: gestrichelt = Ionisierung (E = 0)
@@ -1574,7 +1589,7 @@ export default defineSimulation({
       }
       // λ am gewählten Pfeil
       const aSel = T.arrows.find((a) => a.idx === selIdx);
-      if (aSel && live && p.val && !intro.running) {
+      if (aSel && live && showVal() && !intro.running) {
         const ln = lineOf(e, t.u, t.l);
         const lab = `${lamText(ln.lambda)} nm`;
         const w = richWidth(lab, fs) + 16;
@@ -1620,6 +1635,16 @@ export default defineSimulation({
         T = drawTermContent(R, e, sel(), u < 0.45 ? 0 : (u - 0.45) / 0.55, levels, true);
       } else T = drawTermContent(R, e, sel(), 1, levels, true);
       lastTerm = T;
+      // Tastatur: Pfeile im Termschema wie Antippen
+      ctx.setKeyTargets(
+        T.arrows.map((a) => ({
+          id: `t${a.t.u}-${a.t.l}`,
+          label: ctx.t('keyT').replace('{u}', levelName(e, a.t.u)).replace('{l}', levelName(e, a.t.l)),
+          rect: { x: Math.min(a.x0, a.x1) - 7, y: Math.min(a.y0, a.y1) - 4, w: Math.abs(a.x1 - a.x0) + 14, h: Math.abs(a.y1 - a.y0) + 8 },
+          disabled: ctx.locked,
+          activate: () => selectLine(a.idx),
+        })),
+      );
       // Elektron im Termschema
       const ea = stage(0.6, 0.3) * (swap.running ? clamp((swap.t - 0.45) / 0.55, 0, 1) : 1);
       if (ea > 0.01) {
@@ -1678,7 +1703,7 @@ export default defineSimulation({
       g.fill();
       g.restore();
       richText(ctx.t('photonTitle'), R.x + pad + 18, ty, sm ? 12 : 13, theme.text, 'left', 750);
-      const chip = p.val ? colorText(lam) : '?';
+      const chip = showVal() ? colorText(lam) : '?';
       const cs = sm ? 10.5 : 11;
       const cw = richWidth(chip, cs) + 16;
       pill(R.x + R.w - pad - cw, ty - (cs + 11) / 2, chip, col, 'left', cs, regionOf(lam) === 'vis' ? col : undefined);
@@ -1691,7 +1716,7 @@ export default defineSimulation({
       const size = clamp(lh * 0.58, 11.5, sm ? 13 : 15);
       const su = levelSub(e, t.u);
       const sl = levelSub(e, t.l);
-      const v = p.val;
+      const v = showVal();
       const hid = '?';
       const r1 = `ΔE = E_[${su}] − E_[${sl}] = ${v ? `${fmt.fixed(dE, 2)} eV` : hid}`;
       const r2 = `f = ΔE / h = ${v ? `${sciCanvas(f, 2)} Hz` : hid}`;
