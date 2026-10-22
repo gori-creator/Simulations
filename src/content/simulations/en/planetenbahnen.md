@@ -43,18 +43,18 @@ $r_P = 1.00\,\text{AU}$, $v_P = 36.0\,\tfrac{\text{km}}{\text{s}}$, $r_A = 2.71\
 <details>
 <summary>Show solution</summary>
 
-$v_A = v_P \frac{r_P}{r_A} \approx 13.3\,\tfrac{\text{km}}{\text{s}}$, $a = \frac{r_P + r_A}{2} \approx 1.86\,\text{AU}$, $e = \frac{r_A - r_P}{r_A + r_P} \approx 0.46$.
+$v_A = v_P \frac{r_P}{r_A} \approx 13.3\,\tfrac{\text{km}}{\text{s}}$, $a = \frac{r_P + r_A}{2} = 1.855\,\text{AU}$, $e = \frac{r_A - r_P}{r_A + r_P} \approx 0.461$ (the simulation uses $r_A = 2.7099\,\text{AU}$ and shows $a \approx 1.85\,\text{AU}$).
 
 </details>
 
 ### Task 3: Mars
 
-Mars has $a = 1.524\,\text{AU}$. Find its period (Earth: $a = 1\,\text{AU}$, $T = 1$ year). [Load task](?panel=k3&r0=1.38&v0=26.51&pl=1&sec=0&num=0&_hide=1)
+Mars has $a = 1.524\,\text{AU}$. Find its period (Earth: $a = 1\,\text{AU}$, $T = 1$ year). [Load task](?r0=1.38&v0=26.51&pl=1&sec=0&num=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$T = \sqrt{1.524^3}$ years $\approx 1.88$ years.
+$T = \sqrt{1.524^3}$ years $\approx 1.88$ years. [Compare with the table](?panel=k3&r0=1.38&v0=26.51&pl=1&sec=0)
 
 </details>
 

@@ -39,7 +39,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 11–13 | `induktion` | Elektromagnetische Induktion | `/de/physik/elektrizitaetslehre/elektromagnetische-induktion/` |
 | ☑ | 11–13 | `interferenz` | Interferenz zweier Kreiswellen | `/de/physik/schwingungen-und-wellen/interferenz-kreiswellen/` |
 | ☑ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
-| ☐ | 11–13 | `planetenbahnen` | Planetenbahnen und Keplersche Gesetze | `/de/physik/mechanik/planetenbahnen-keplersche-gesetze/` |
+| ☑ | 11–13 | `planetenbahnen` | Planetenbahnen und Keplersche Gesetze | `/de/physik/mechanik/planetenbahnen-keplersche-gesetze/` |
 | ☑ | 11–13 | `resonanz` | Erzwungene Schwingung und Resonanz | `/de/physik/schwingungen-und-wellen/erzwungene-schwingung-resonanz/` |
 | ☐ | 11–13 | `stehende-wellen` | Stehende Wellen | `/de/physik/schwingungen-und-wellen/stehende-wellen/` |
 | ☐ | 12–13 | `linienspektren` | Atommodelle und Linienspektren | `/de/physik/atom-kern-und-quantenphysik/linienspektren-energieniveaus/` |
