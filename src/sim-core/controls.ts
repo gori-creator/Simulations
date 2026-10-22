@@ -206,14 +206,24 @@ export class Controls {
       const input = text;
       // Leerzeichen (auch schmale, z. B. aus kopierten „125 000“) zählen nicht
       const parse = () => Number(input.value.replace(/[\s\u00A0\u202F]/g, '').replace(/−/g, '-').replace(',', '.'));
+      // Getippten Text (z. B. „25 000“ oder „2,50“) auf die Anzeigeform des
+      // übernommenen Werts zurücksetzen. Erst nach der Übernahme (Microtask),
+      // damit `current` den gerundeten und begrenzten Wert enthält.
+      const reformat = () =>
+        queueMicrotask(() => {
+          const shown = this.fmt.plain(current, decimals);
+          if (input.value !== shown) input.value = shown;
+        });
       input.addEventListener('change', () => {
         const value = parse();
         if (Number.isFinite(value)) commit(value);
         else input.value = this.fmt.plain(current, decimals);
       });
+      input.addEventListener('blur', reformat);
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           input.dispatchEvent(new Event('change'));
+          reformat();
         } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
           event.preventDefault();
           const factor = event.shiftKey ? 10 : 1;
