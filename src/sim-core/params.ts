@@ -70,6 +70,12 @@ export function resolveText<V>(text: DynamicText<V> | undefined, values: Readonl
   return value.trim() ? value : null;
 }
 
+/** Schlüssel des allgemeinen Tipps in `ui.ts` für `dragHint` (`'knob'`: Drehknöpfe/Schieber). */
+export function dragHintKey(dragHint: boolean | 'knob' | undefined): 'sim.dragHint' | 'sim.dragHintKnob' | null {
+  if (!dragHint) return null;
+  return dragHint === 'knob' ? 'sim.dragHintKnob' : 'sim.dragHint';
+}
+
 /**
  * Tipp unter der Bühne: eigener `hint` (fest oder abhängig von den Werten),
  * sonst der allgemeine Ziehen-Hinweis (`dragHint`), sonst keiner. Bei
@@ -77,7 +83,7 @@ export function resolveText<V>(text: DynamicText<V> | undefined, values: Readonl
  * noch etwas einstellen kann.
  */
 export function resolveHint<V>(
-  def: { hint?: DynamicText<V>; dragHint?: boolean },
+  def: { hint?: DynamicText<V>; dragHint?: boolean | 'knob' },
   values: Readonly<V>,
   lang: Lang,
   dragHintText: string,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { L } from '../src/curriculum/helpers';
-import { resolveHint, resolveText } from '../src/sim-core/params';
+import { dragHintKey, resolveHint, resolveText } from '../src/sim-core/params';
+import { t } from '../src/i18n/utils';
 import { defineSimulation, type DynamicText } from '../src/sim-core';
 
 describe('Tipp (`hint`) und Hilfetexte (`help`) abhängig von den Werten', () => {
@@ -57,6 +58,20 @@ describe('Tipp unter der Bühne bei gesperrten Links', () => {
     expect(resolveHint({ dragHint: true }, {}, 'de', drag, false)).toBe(drag);
     expect(resolveHint({ hint: () => null, dragHint: true }, {}, 'de', drag, false)).toBe(drag);
     expect(resolveHint({}, {}, 'de', drag, false)).toBe('');
+  });
+
+  it('kennt den zweiten allgemeinen Tipp für Drehknöpfe und Schieber', () => {
+    expect(dragHintKey(undefined)).toBeNull();
+    expect(dragHintKey(false)).toBeNull();
+    expect(dragHintKey(true)).toBe('sim.dragHint');
+    expect(dragHintKey('knob')).toBe('sim.dragHintKnob');
+    for (const lang of ['de', 'en'] as const) {
+      const knob = t(lang, 'sim.dragHintKnob');
+      expect(knob).not.toBe(t(lang, 'sim.dragHint'));
+      expect(knob).not.toMatch(/markierten Punkte|highlighted points/);
+    }
+    expect(resolveHint({ dragHint: 'knob' }, {}, 'de', 'Knopf-Tipp', false)).toBe('Knopf-Tipp');
+    expect(resolveHint({ dragHint: 'knob' }, {}, 'de', 'Knopf-Tipp', true)).toBe('');
   });
 
   it('blendet jeden Tipp bei `_lock=1` aus', () => {

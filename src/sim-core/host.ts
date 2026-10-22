@@ -7,7 +7,7 @@ import { exportStagePng } from './export';
 import { bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
-import { defaultValues, resolveHint, sanitize, valuesEqual } from './params';
+import { defaultValues, dragHintKey, resolveHint, sanitize, valuesEqual } from './params';
 import { setSubLabel, setSubReadout } from './rich-label';
 import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
@@ -493,7 +493,9 @@ class SimulationHost {
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
     if (this.def.hint || this.def.dragHint) {
       this.hintEl = this.query('[data-sim-hint]');
-      this.dragHintText = this.hintEl.textContent ?? '';
+      // Allgemeiner Text: „markierte Punkte“ (aus der Hülle) bzw. für Drehknöpfe/Schieber
+      const key = dragHintKey(this.def.dragHint);
+      this.dragHintText = key ? t(this.lang, key) : '';
       this.syncHint();
     }
 

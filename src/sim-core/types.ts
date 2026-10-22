@@ -277,8 +277,12 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   presets?: Preset<ValuesOf<P>>[];
   /** Zeigt Abspielen/Anhalten in der Werkzeugleiste. */
   animated?: boolean;
-  /** Zeigt unter der Bühne den Hinweis, dass Punkte gezogen werden können. */
-  dragHint?: boolean;
+  /**
+   * Allgemeiner Tipp unter der Bühne: `true` – „Die markierten Punkte lassen
+   * sich … ziehen“; `'knob'` – „Drehknöpfe und Schieber im Bild lassen sich …
+   * bewegen“ (für Bedienelemente auf der Bühne statt Punkten).
+   */
+  dragHint?: boolean | 'knob';
   /**
    * Eigener Tipp unter der Bühne, z. B. „Tippe auf ein Bild …“. Ersetzt den
    * allgemeinen Hinweis von `dragHint` und wird auch ohne `dragHint` gezeigt.
