@@ -35,6 +35,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | resonanz | `src/sim-core/` (Text-Darstellung) | Kombinierendes Dach (U+0302) in „φ̂“ rendert verrutscht – in Reglern, Ergebnissen und auf der Zeichenfläche. Lösung prüfen (z. B. Dach per eigener Zeichnung/`<span>` oder vorkomponierte Zeichen). | offen |
 | resonanz | Host | `hint` soll `_` als Index setzen wie Regler; `hiddenChange` soll auch beim Aufdecken einzelner Ergebnisse feuern (bzw. eigener Rückruf `spoilerChange(key)`). | offen |
 | planetenbahnen | Host | `help` soll `_` als Index setzen wie Beschriftungen; Abfrage „nur Aufgabenmodus“ (`_hide=1`) getrennt vom `resultsParam`-Schalter, z. B. `ctx.taskMode`. | offen |
+| photoeffekt | `src/i18n/ui.ts` / Host | Zweiter allgemeiner Tipp zu `dragHint` für Drehknöpfe/Schieber auf der Bühne, der nicht von „markierten Punkten“ spricht. | offen |
 
 ## Rückfragen an die Projektleitung
 
