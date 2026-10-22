@@ -225,6 +225,14 @@ export interface SimInstance {
   resetView?(): void;
   /** `ctx.hidden` hat sich geändert (z. B. Ergebnis aufgedeckt). Neu gezeichnet wird ohnehin. */
   hiddenChange?(hidden: boolean): void;
+  /**
+   * Ein einzelnes `spoiler`-Ergebnis wurde verdeckt bzw. aufgedeckt
+   * (`ctx.isHidden(key)` hat sich geändert): „Aufdecken“, Schalter
+   * `resultsParam`, Link im Lernmaterial. Feuert für jedes betroffene Ergebnis,
+   * auch wenn `ctx.hidden` gleich bleibt (vor `hiddenChange`, nicht beim Start).
+   * Neu gezeichnet wird ohnehin; nützlich z. B. für Übergänge beim Aufdecken.
+   */
+  spoilerChange?(key: string, hidden: boolean): void;
   destroy?(): void;
 }
 

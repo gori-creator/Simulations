@@ -38,3 +38,20 @@ export function isTaskHidden(state: TaskModeState): boolean {
 export function isReadoutHidden(state: TaskModeState, key: string): boolean {
   return state.resultsOff || (state.hideFlag && !state.revealed.has(key));
 }
+
+/**
+ * Welche `spoiler`-Ergebnisse haben ihren Stand (`isReadoutHidden`) seit dem
+ * letzten Aufruf gewechselt? Aktualisiert `last` und liefert die Wechsel in
+ * der Reihenfolge von `keys` (für `spoilerChange(key, hidden)` im Host).
+ * Schlüssel ohne bisherigen Stand werden nur vermerkt, nicht gemeldet.
+ */
+export function spoilerChanges(state: TaskModeState, keys: Iterable<string>, last: Map<string, boolean>): [string, boolean][] {
+  const changes: [string, boolean][] = [];
+  for (const key of keys) {
+    const hidden = isReadoutHidden(state, key);
+    const before = last.get(key);
+    last.set(key, hidden);
+    if (before !== undefined && before !== hidden) changes.push([key, hidden]);
+  }
+  return changes;
+}

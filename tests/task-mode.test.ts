@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isReadoutHidden, isTaskHidden } from '../src/sim-core/task-mode';
+import { isReadoutHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
 
 const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = [], spoilers: string[] = ['trip']) => ({
   hideFlag,
@@ -45,5 +45,27 @@ describe('Aufgabenmodus', () => {
     expect(isTaskHidden(state(true, false, [], []))).toBe(true);
     // Ohne Liste (ältere Aufrufer): aufgedeckt heißt sichtbar
     expect(isTaskHidden({ hideFlag: true, resultsOff: false, revealed: new Set(['trip']) })).toBe(false);
+  });
+});
+
+describe('spoilerChange: Wechsel einzelner Ergebnisse', () => {
+  it('meldet jedes Aufdecken einzeln, auch wenn ctx.hidden gleich bleibt', () => {
+    const keys = ['trip', 'table', 'law'];
+    const last = new Map<string, boolean>();
+    // Start: nur vermerken, nichts melden
+    expect(spoilerChanges(state(true, false, [], keys), keys, last)).toEqual([]);
+    // „trip“ aufgedeckt: ctx.hidden bleibt wahr, trotzdem eine Meldung
+    expect(isTaskHidden(state(true, false, ['trip'], keys))).toBe(true);
+    expect(spoilerChanges(state(true, false, ['trip'], keys), keys, last)).toEqual([['trip', false]]);
+    // unverändert: keine Meldung
+    expect(spoilerChanges(state(true, false, ['trip'], keys), keys, last)).toEqual([]);
+    // Schalter resultsParam aus: alle drei wieder verdeckt, „trip“ wechselt
+    expect(spoilerChanges(state(true, true, ['trip'], keys), keys, last)).toEqual([['trip', true]]);
+    // Link ohne _hide und Schalter an: alle aufgedeckt
+    expect(spoilerChanges(state(false, false, [], keys), keys, last)).toEqual([
+      ['trip', false],
+      ['table', false],
+      ['law', false],
+    ]);
   });
 });

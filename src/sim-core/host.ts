@@ -9,7 +9,7 @@ import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
 import { defaultValues, resolveHint, sanitize, valuesEqual } from './params';
 import { setSubLabel, setSubReadout } from './rich-label';
-import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
+import { isReadoutHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -84,6 +84,8 @@ class SimulationHost {
   private revealed = new Set<string>();
   /** Zuletzt an die Simulation gemeldeter Stand von `ctx.hidden`. */
   private lastHidden: boolean | null = null;
+  /** Zuletzt an die Simulation gemeldeter Stand von `ctx.isHidden(key)` je `spoiler`-Ergebnis. */
+  private lastSpoilerHidden = new Map<string, boolean>();
   private pending = new Set<string>();
   private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
@@ -130,6 +132,7 @@ class SimulationHost {
 
     this.instance = def.mount(this.createContext());
     this.lastHidden = isTaskHidden(this.taskState());
+    spoilerChanges(this.taskState(), this.spoilerKeys(), this.lastSpoilerHidden);
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
     this.syncHint();
@@ -361,8 +364,24 @@ class SimulationHost {
     }
     // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
     if (!this.instance) return;
+    this.syncSpoilers();
     this.syncTaskHidden();
     this.requestRender();
+  }
+
+  /**
+   * Meldet jeden Wechsel von `ctx.isHidden(key)` einzeln über `spoilerChange`
+   * (Aufdecken eines Ergebnisses, Schalter `resultsParam`, Link im Lernmaterial).
+   */
+  private syncSpoilers(): void {
+    for (const [key, hidden] of spoilerChanges(this.taskState(), this.spoilerKeys(), this.lastSpoilerHidden)) {
+      this.instance?.spoilerChange?.(key, hidden);
+    }
+  }
+
+  /** Schlüssel aller `spoiler`-Ergebnisse (auch gerade ausgeblendeter). */
+  private spoilerKeys(): string[] {
+    return [...this.readouts].filter(([, row]) => row.spoiler).map(([key]) => key);
   }
 
   /** Meldet einen Wechsel von `ctx.hidden` (Auswahl-Zusätze, `hiddenChange`, neu zeichnen). */
