@@ -10,7 +10,7 @@ $$
 T_0 = 2\pi \sqrt{\frac{l}{g}}.
 $$
 
-The period depends only on the length and on $g$ – not on the mass. Since $T^2 = \frac{4\pi^2}{g}\, l$, a graph of $T^2$ against $l$ is a straight line through the origin with slope $4\pi^2/g$. For large amplitudes the period gets longer: exactly $T = T_0 / \operatorname{AGM}(1, \cos\tfrac{\varphi_0}{2})$, more than $1\,\%$ above $22.8^\circ$ and $18\,\%$ at $90^\circ$. Above $90^\circ$ a string would go slack, so the simulation uses a rigid rod.
+The period depends only on the length and on $g$ – not on the mass. Since $T^2 = \frac{4\pi^2}{g}\, l$, a graph of $T^2$ against $l$ is a straight line through the origin with slope $4\pi^2/g$. For large amplitudes the period gets longer: up to about $60^\circ$, $T \approx T_0 \,(1 + \varphi_0^2/16)$ with $\varphi_0$ in radians; the simulation itself solves the equation of motion numerically and computes the period exactly as $T = T_0 / \operatorname{AGM}(1, \cos\tfrac{\varphi_0}{2})$, more than $1\,\%$ above $22.8^\circ$ and $18\,\%$ at $90^\circ$. Above $90^\circ$ a string would go slack, so the simulation uses a rigid rod.
 
 ## Try it
 
