@@ -32,12 +32,12 @@ The motion is shown greatly slowed down and enlarged; damping is neglected excep
 
 ### Task 1: Guitar string
 
-$L = 0.65\,\text{m}$, $f_1 = 220\,\text{Hz}$. Find $c$ and the first two overtones. [Load task](?mode=eig&_hide=1)
+$L = 0.65\,\text{m}$, both ends fixed, $c = 286\,\frac{\text{m}}{\text{s}}$. Find wavelength and frequency of the fundamental and the first two overtones. [Load task](?mode=eig&_hide=1)
 
 <details>
 <summary>Show solution</summary>
 
-$\lambda_1 = 2L = 1.3\,\text{m}$, $c = 286\,\frac{\text{m}}{\text{s}}$; $f_2 = 440\,\text{Hz}$, $f_3 = 660\,\text{Hz}$. [Show](?mode=eig&n=3)
+$\lambda_1 = 2L = 1.3\,\text{m}$, $f_1 = \frac{c}{\lambda_1} = 220\,\text{Hz}$; $\lambda_2 = 0.65\,\text{m}$, $f_2 = 440\,\text{Hz}$; $\lambda_3 \approx 0.433\,\text{m}$, $f_3 = 660\,\text{Hz}$. [Show](?mode=eig&n=3)
 
 </details>
 

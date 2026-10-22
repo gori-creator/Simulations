@@ -46,12 +46,12 @@ $f_1$ heißt **Grundfrequenz** (Grundschwingung), $f_2, f_3, \dots$ gehören zu 
 
 ### Aufgabe 1: Gitarrensaite
 
-Eine Gitarrensaite ist $L = 0{,}65\,\text{m}$ lang und hat die Grundfrequenz $f_1 = 220\,\text{Hz}$. Bestimme die Ausbreitungsgeschwindigkeit $c$ und die Frequenzen der ersten beiden Oberschwingungen. [Aufgabe laden](?mode=eig&_hide=1)
+Eine Gitarrensaite ist $L = 0{,}65\,\text{m}$ lang und an beiden Enden fest. Die Wellen laufen auf ihr mit $c = 286\,\frac{\text{m}}{\text{s}}$. Berechne Wellenlänge und Frequenz der Grundschwingung und der ersten beiden Oberschwingungen. [Aufgabe laden](?mode=eig&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Grundschwingung: $L = \frac{\lambda_1}{2}$, also $\lambda_1 = 1{,}3\,\text{m}$ und $c = \lambda_1 \cdot f_1 = 1{,}3\,\text{m} \cdot 220\,\text{Hz} = 286\,\frac{\text{m}}{\text{s}}$. Oberschwingungen: $f_2 = 440\,\text{Hz}$, $f_3 = 660\,\text{Hz}$. [In der Simulation zeigen](?mode=eig&n=3)
+Grundschwingung: $L = \frac{\lambda_1}{2}$, also $\lambda_1 = 2 \cdot 0{,}65\,\text{m} = 1{,}3\,\text{m}$ und $f_1 = \frac{c}{\lambda_1} = \frac{286}{1{,}3}\,\text{Hz} = 220\,\text{Hz}$. Oberschwingungen: $\lambda_2 = 0{,}65\,\text{m}$, $f_2 = 440\,\text{Hz}$; $\lambda_3 = \frac{1{,}3}{3}\,\text{m} \approx 0{,}433\,\text{m}$, $f_3 = 660\,\text{Hz}$. Umgekehrt gilt: Wer $L$ und den Grundton $f_1$ kennt, erhält $c = 2L \cdot f_1$. [In der Simulation zeigen](?mode=eig&n=3)
 
 </details>
 
@@ -96,6 +96,17 @@ Eine Saite klingt zu tief. Wie muss man die Spannkraft ändern, damit der Grundt
 <summary>Lösung anzeigen</summary>
 
 $f_1 = \frac{c}{2L}$ mit $c = \sqrt{F/\mu}$. Für die doppelte Frequenz braucht man das doppelte $c$, also die **vierfache** Spannkraft. Bequemer: die schwingende Länge halbieren (12. Bund bei der Gitarre).
+
+</details>
+
+### Aufgabe 6: Kundtsches Rohr
+
+In einem beidseitig geschlossenen Rohr erzeugt ein Lautsprecher einen Ton mit $f = 2000\,\text{Hz}$. Feiner Korkstaub sammelt sich in Häufchen, die $8{,}5\,\text{cm}$ voneinander entfernt sind. Wo bilden sich die Häufchen, und wie groß ist die Schallgeschwindigkeit? [Aufgabe laden](?mode=eig&med=air&pipe=shut&L=0.51&c=340&n=6&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Der Staub bleibt dort liegen, wo sich die Luftteilchen nicht bewegen, also an den Bewegungsknoten (dort schwankt der Druck am stärksten). Benachbarte Knoten sind $\frac{\lambda}{2}$ voneinander entfernt: $\lambda = 2 \cdot 0{,}085\,\text{m} = 0{,}17\,\text{m}$, also $c = \lambda \cdot f = 0{,}17\,\text{m} \cdot 2000\,\text{Hz} = 340\,\frac{\text{m}}{\text{s}}$. In der Simulation: Rohr mit $L = 0{,}51\,\text{m}$ und $n = 6$, also $f_6 = 6 \cdot \frac{340}{2 \cdot 0{,}51}\,\text{Hz} = 2000\,\text{Hz}$. [In der Simulation zeigen](?mode=eig&med=air&pipe=shut&L=0.51&c=340&n=6)
 
 </details>
 
