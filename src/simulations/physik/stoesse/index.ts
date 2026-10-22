@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, offscreenCanvas, Plot, roundRect, shade, subText, Surface, text, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { balance, planRun, restitution, stateAt, TRACK, type CollisionType, type Run, type RunState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -542,56 +542,31 @@ export default defineSimulation({
       g.fillText(label, x, y);
     }
 
-    /** Text mit tiefgestellten Teilen: „v_{S} = 0,2 m/s“. */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\{([^}]*)\}/g;
-      let last = 0;
-      let m: RegExpExecArray | null;
-      while ((m = re.exec(str))) {
-        if (m.index > last) out.push({ t: str.slice(last, m.index), sub: false });
-        out.push({ t: m[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
+    /**
+     * Text mit tiefgestellten Teilen („v_{S} = 0,2 m/s“) über den Kern-Helfer `subText`. Indexgröße
+     * (ganze Pixel) und Absenkung wie bisher, damit sich das Bild nicht ändert.
+     */
+    function subStyle(size: number, color: string, align: CanvasTextAlign, halo: boolean, weight: number): SubTextStyle {
+      const theme = ctx.theme;
+      return {
+        size,
+        family: theme.font,
+        weight,
+        color,
+        align,
+        baseline: 'middle',
+        halo: halo ? (theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(244,247,251,0.92)') : undefined,
+        subScale: Math.round(size * 0.74) / size,
+        subShift: 0.3,
+      };
     }
 
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', 'left', false, weight));
     }
 
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(244,247,251,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, subStyle(size, color, align, halo, weight));
     }
 
     /* ---------- Zeichnen: Luftkissenbahn ---------- */
