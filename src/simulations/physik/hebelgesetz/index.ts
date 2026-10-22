@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   balance,
   balancingForce,
@@ -63,6 +63,87 @@ const BARROW_R_IMG = BARROW_IMG.r * BARROW_IMG.cmPerPx;
 const BARROW_RAIL_IMG = { x0: 94.3, y0: 46.5, slope: 0.259 };
 const BARROW_RIM_IMG = { x0: -8, y0: 73, slope: 0.0235 };
 
+/**
+ * Hebelstange aus zwei Fotos: `hebel-segment.webp` (1600 × 213 px, ein Loch
+ * bei x = 801, Stange in den Zeilen 2 … 211) wird je Loch einmal
+ * nebeneinandergesetzt – aus der Mitte so breit ausgeschnitten, dass das Loch
+ * rund bleibt. `hebel-ende.webp` (1600 × 325 px, Stange in den Zeilen 1 … 322,
+ * abgerundetes Ende rechts) schließt rechts ab und gespiegelt links.
+ */
+const SEG_IMG = { hx: 801, y0: 2, h: 210 };
+const END_IMG = { w: 1600, y0: 1, h: 322 };
+
+/**
+ * Kraftmesser-Foto `kraftmesser.webp` (1600 × 170 px, Ring links, Haken rechts):
+ * Ringmitte, Rohrdurchmesser und Schnittstellen. Gezeichnet wird nur die Hülse
+ * mit Ring (den Haken und die Skalenstange zeichnet die Simulation); gestaucht
+ * wird allein das gleichförmige Rohrstück zwischen `capEnd` und `tubeCut`.
+ */
+const METER_IMG = { h: 170, cy: 85, ringCx: 86, tube: 155, capEnd: 330, tubeCut: 1350, tubeEnd: 1398 };
+
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar). */
+const TABLE_IMG = { w: 2172, h: 271 };
+
+/**
+ * Flasche `flasche.webp` (882 × 1414 px): Mitte, Unterkante des Kronkorkens im
+ * Foto (darüber wird abgeschnitten, den Korken zeichnet die Simulation, weil er
+ * kippt) und Maßstab (Korken 3,2 cm ≈ 416 px).
+ */
+const BOTTLE_IMG = { w: 882, h: 1414, cx: 443, top: 127, pxPerCm: 130 };
+
+/** Walnuss `walnuss.webp` (1075 × 1173 px, füllt das Bild). */
+const NUT_IMG = { w: 1075, h: 1173 };
+
+/**
+ * Nussknacker-Arm `nussknacker-arm.webp` (1600 × 187 px, Gelenkauge links):
+ * Augenmitte, Innenkante des Stahlschenkels (liegt an der Nuss) und Maßstab
+ * (Griffende bei 21,4 cm wie in der gezeichneten Fassung).
+ */
+const ARM_IMG = { w: 1600, h: 187, eyeX: 92, inner: 152, pxPerCm: 70.5 };
+
+/** Wippengestell `wippe-gestell.webp` (1278 × 965 px): Mitte des Drehlagers, Füße an der Unterkante. */
+const STAND_IMG = { w: 1278, h: 965, cx: 639, cy: 91 };
+
+/** Brett `brett.webp` (677 × 68 px, wie bei der schiefen Ebene). */
+const BOARD_IMG = { w: 677, h: 68 };
+
+type Source = CanvasImageSource & { width: number; height: number };
+
+/**
+ * Kraftmesser-Hülse als Foto in lokalen Koordinaten: Rohrende bei x0,
+ * Ringmitte bei x1, Rohrmitte auf y = 0, Rohrdurchmesser `width`.
+ */
+function drawMeterPhoto(g: CanvasRenderingContext2D, img: Source, x0: number, x1: number, width: number, dpr: number): void {
+  const M = METER_IMG;
+  const s = width / M.tube;
+  const H = M.h * s;
+  const y = -M.cy * s;
+  const ringPart = (M.capEnd - M.ringCx) * s;
+  const endW = (M.tubeEnd - M.tubeCut) * s;
+  const mid = Math.max(1, x1 - ringPart - (x0 + endW));
+  const piece = (cx: number, cw: number, x: number, w: number) =>
+    g.drawImage(scaledSprite(img, w, H, dpr, { flipX: true, crop: { x: cx, y: 0, w: cw, h: M.h } }), x, y, w, H);
+  piece(M.tubeCut, M.tubeEnd - M.tubeCut, x0, endW + 0.5);
+  piece(M.capEnd, M.tubeCut - M.capEnd, x0 + endW, mid + 0.5);
+  piece(0, M.capEnd, x1 - ringPart, M.capEnd * s);
+}
+
+/** Tischkante als Foto: auf Höhe h skaliert und waagerecht gekachelt (im Dunkelmodus abgedunkelt). */
+function drawTablePhoto(g: CanvasRenderingContext2D, img: Source, x: number, y: number, w: number, h: number, dpr: number, dark: boolean): void {
+  const tw = (TABLE_IMG.w * h) / TABLE_IMG.h;
+  g.save();
+  g.beginPath();
+  g.rect(x, y, w, h);
+  g.clip();
+  // abwechselnd gespiegelt, damit die Übergänge nicht auffallen
+  for (let i = 0, tx = x; tx < x + w; i++, tx += tw) g.drawImage(scaledSprite(img, tw, h, dpr, { flipX: i % 2 === 1 }), tx, y, tw + 0.5, h);
+  if (dark) {
+    g.fillStyle = 'rgba(10,14,22,0.38)';
+    g.fillRect(x, y, w, h);
+  }
+  g.restore();
+}
+
 /** Geometrie der Laborszene (für Zeichnen und Zeiger). */
 interface LabGeo {
   w: number;
@@ -93,7 +174,19 @@ export default defineSimulation({
   id: 'hebelgesetz',
   dragHint: true,
   layout: { aspect: 1.45, aspectNarrow: 0.8 },
-  images: { mass: 'gewicht.webp', barrow: 'schubkarre.webp' },
+  images: {
+    mass: 'gewicht.webp',
+    barrow: 'schubkarre.webp',
+    beamSeg: 'hebel-segment.webp',
+    beamEnd: 'hebel-ende.webp',
+    meter: 'kraftmesser.webp',
+    table: 'tischkante.webp',
+    bottle: 'flasche.webp',
+    nut: 'walnuss.webp',
+    nutArm: 'nussknacker-arm.webp',
+    stand: 'wippe-gestell.webp',
+    board: 'brett.webp',
+  },
   groups: [
     { id: 'w1', label: L('Massestücke (1)', 'Weights (1)') },
     { id: 'w2', label: L('Massestücke (2)', 'Weights (2)') },
@@ -872,6 +965,35 @@ export default defineSimulation({
       if (label && h >= 12 && w >= 24) text(gx, label, cx, y + h / 2 + 0.5, { font: `700 ${h >= 15 ? 9.5 : 8.5}px ${ctx.theme.font}`, color: '#3d2a06' });
     }
 
+    /** Hebelstange aus den Fotos, einmal je Größe vorgerendert (oder `null` ohne Fotos). */
+    let beamCache: { key: string; canvas: HTMLCanvasElement; half: number } | null = null;
+    function beamSprite(gg: LabGeo): { canvas: HTMLCanvasElement; half: number } | null {
+      const seg = ctx.images.get('beamSeg');
+      const end = ctx.images.get('beamEnd');
+      if (!seg || !end) return null;
+      const { sp, beamH: bh } = gg;
+      const key = `${sp}|${bh}|${surface.dpr}`;
+      if (beamCache?.key === key) return beamCache;
+      // Endstück: Rest bis zur gezeichneten Länge, mindestens so lang, dass die Rundung passt
+      const endLen = Math.max(bh * 0.9, 0.15 * sp);
+      const inner = (HOLES + 0.5) * sp;
+      const half = inner + endLen;
+      const { canvas, g } = offscreenCanvas(half * 2, bh, surface.dpr);
+      const cw = (SEG_IMG.h * sp) / bh;
+      const crop = { x: SEG_IMG.hx - cw / 2, y: SEG_IMG.y0, w: cw, h: SEG_IMG.h };
+      // abwechselnd gespiegelt (Übergänge passen so immer) und leicht überlappend, damit keine Fugen entstehen
+      for (let k = -HOLES; k <= HOLES; k++) {
+        const tile = scaledSprite(seg, sp, bh, surface.dpr, { crop, flipX: k % 2 !== 0 });
+        g.drawImage(tile, half + (k - 0.5) * sp - 0.3, 0, sp + 0.6, bh);
+      }
+      const ew = (END_IMG.h * endLen) / bh;
+      const endCrop = { x: END_IMG.w - ew, y: END_IMG.y0, w: ew, h: END_IMG.h };
+      g.drawImage(scaledSprite(end, endLen, bh, surface.dpr, { crop: endCrop }), half + inner - 0.3, 0, endLen + 0.3, bh);
+      g.drawImage(scaledSprite(end, endLen, bh, surface.dpr, { crop: endCrop, flipX: true }), 0, 0, endLen + 0.3, bh);
+      beamCache = { key, canvas, half };
+      return beamCache;
+    }
+
     function background(r: Rect, tableY: number): void {
       const gx = surface.g;
       const dark = ctx.theme.dark;
@@ -880,6 +1002,12 @@ export default defineSimulation({
       wall.addColorStop(1, dark ? '#0f1723' : '#e0e6ee');
       gx.fillStyle = wall;
       gx.fillRect(r.x, r.y, r.w, r.h);
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante (oben die helle Kante der Platte)
+        drawTablePhoto(gx, tableImg, r.x, tableY, r.w, r.y + r.h - tableY, surface.dpr, dark);
+        return;
+      }
       const table = gx.createLinearGradient(0, tableY, 0, r.y + r.h);
       table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
       table.addColorStop(1, dark ? '#33281e' : '#9c7349');
@@ -964,28 +1092,37 @@ export default defineSimulation({
       gx.fill();
       // Balken
       const bh = gg.beamH;
+      const beamPhoto = beamSprite(gg);
       gx.save();
       gx.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
       gx.shadowBlur = 8;
       gx.shadowOffsetY = 3;
-      const bar = gx.createLinearGradient(0, -bh / 2, 0, bh / 2);
-      bar.addColorStop(0, '#eef1f5');
-      bar.addColorStop(0.45, '#c3cad3');
-      bar.addColorStop(1, '#7d8794');
-      gx.fillStyle = bar;
-      roundRect(gx, -halfLen, -bh / 2, halfLen * 2, bh, 3);
-      gx.fill();
-      gx.restore();
-      gx.strokeStyle = 'rgba(40,48,60,0.45)';
-      gx.lineWidth = 1;
-      roundRect(gx, -halfLen + 0.5, -bh / 2 + 0.5, halfLen * 2 - 1, bh - 1, 3);
-      gx.stroke();
+      if (beamPhoto) {
+        // Foto: Mittelstücke mit je einem Loch, Endstücke links (gespiegelt) und rechts
+        gx.drawImage(beamPhoto.canvas, -beamPhoto.half, -bh / 2, beamPhoto.half * 2, bh);
+        gx.restore();
+      } else {
+        const bar = gx.createLinearGradient(0, -bh / 2, 0, bh / 2);
+        bar.addColorStop(0, '#eef1f5');
+        bar.addColorStop(0.45, '#c3cad3');
+        bar.addColorStop(1, '#7d8794');
+        gx.fillStyle = bar;
+        roundRect(gx, -halfLen, -bh / 2, halfLen * 2, bh, 3);
+        gx.fill();
+        gx.restore();
+        gx.strokeStyle = 'rgba(40,48,60,0.45)';
+        gx.lineWidth = 1;
+        roundRect(gx, -halfLen + 0.5, -bh / 2 + 0.5, halfLen * 2 - 1, bh - 1, 3);
+        gx.stroke();
+      }
       // Löcher und Zahlen
       for (let k = -HOLES; k <= HOLES; k++) {
-        gx.fillStyle = '#2a313b';
-        gx.beginPath();
-        gx.arc(k * sp, 0, small ? 2.2 : 3, 0, Math.PI * 2);
-        gx.fill();
+        if (!beamPhoto) {
+          gx.fillStyle = '#2a313b';
+          gx.beginPath();
+          gx.arc(k * sp, 0, small ? 2.2 : 3, 0, Math.PI * 2);
+          gx.fill();
+        }
         if (k !== 0 && (!small || k % 2 === 0)) {
           text(gx, String(Math.abs(k)), k * sp, -bh / 2 - (small ? 6 : 8), { font: `600 ${small ? 9 : 10}px ${theme.font}`, color: theme.muted });
         }
@@ -1195,17 +1332,23 @@ export default defineSimulation({
       }
       // Gehäuse
       const h0 = m.hook + ext;
-      const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
-      tube.addColorStop(0, withAlpha(color, 0.55));
-      tube.addColorStop(0.35, withAlpha(color, 0.25));
-      tube.addColorStop(1, withAlpha(color, 0.75));
-      gx.fillStyle = tube;
-      roundRect(gx, h0, -w / 2, m.housing, w, 3);
-      gx.fill();
-      gx.strokeStyle = color;
-      gx.lineWidth = 1.4;
-      roundRect(gx, h0, -w / 2, m.housing, w, 3);
-      gx.stroke();
+      const meterImg = ctx.images.get('meter');
+      if (meterImg) {
+        // Foto: durchsichtige Hülse mit Kappe und Ring
+        drawMeterPhoto(gx, meterImg, h0, h0 + m.housing + m.ring, w, surface.dpr);
+      } else {
+        const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
+        tube.addColorStop(0, withAlpha(color, 0.55));
+        tube.addColorStop(0.35, withAlpha(color, 0.25));
+        tube.addColorStop(1, withAlpha(color, 0.75));
+        gx.fillStyle = tube;
+        roundRect(gx, h0, -w / 2, m.housing, w, 3);
+        gx.fill();
+        gx.strokeStyle = color;
+        gx.lineWidth = 1.4;
+        roundRect(gx, h0, -w / 2, m.housing, w, 3);
+        gx.stroke();
+      }
       // Feder im Gehäuse
       gx.strokeStyle = withAlpha(theme.dark ? '#e6eaf0' : '#2a313b', 0.55);
       gx.lineWidth = 1;
@@ -1226,11 +1369,13 @@ export default defineSimulation({
         gx.arc(rc, 0, m.ring + 8, 0, Math.PI * 2);
         gx.fill();
       }
-      gx.strokeStyle = color;
-      gx.lineWidth = 2.6;
-      gx.beginPath();
-      gx.arc(rc, 0, m.ring, 0, Math.PI * 2);
-      gx.stroke();
+      if (!meterImg) {
+        gx.strokeStyle = color;
+        gx.lineWidth = 2.6;
+        gx.beginPath();
+        gx.arc(rc, 0, m.ring, 0, Math.PI * 2);
+        gx.stroke();
+      }
       gx.restore();
       if (!ctx.locked && !active) {
         gx.fillStyle = withAlpha(color, 0.16);
@@ -1782,14 +1927,29 @@ export default defineSimulation({
       gx.beginPath();
       gx.rect(r.x, r.y, r.w, r.h);
       gx.clip();
-      gx.beginPath();
-      bottle.forEach(([x, y], i) => (i === 0 ? gx.moveTo(dplot.px(x), dplot.py(y)) : gx.lineTo(dplot.px(x), dplot.py(y))));
-      gx.closePath();
-      gx.fillStyle = glass;
-      gx.fill();
-      gx.fillStyle = 'rgba(255,255,255,0.28)';
-      gx.fillRect(dplot.px(-0.9), dplot.py(-1), 0.35 * k, 2.8 * k);
-      gx.fillRect(dplot.px(-2.8), dplot.py(-9.5), 0.5 * k, 30 * k);
+      const bottleImg = ctx.images.get('bottle');
+      if (bottleImg) {
+        // Foto ohne Kronkorken (den zeichnet die Simulation, er kippt beim Öffnen)
+        const B = BOTTLE_IMG;
+        const kk = k / B.pxPerCm;
+        const bw = B.w * kk;
+        const bh = (B.h - B.top) * kk;
+        const bx = dplot.px(0) - B.cx * kk;
+        const by = dplot.py(-0.55);
+        gx.drawImage(scaledSprite(bottleImg, bw, bh, surface.dpr, { crop: { x: 0, y: B.top, w: B.w, h: B.h - B.top } }), bx, by, bw, bh);
+        // gleichförmigen Bauch bis zum unteren Rand verlängern
+        const yb = by + bh - 1;
+        if (yb < r.y + r.h) gx.drawImage(bottleImg, 0, B.h - 12, B.w, 10, bx, yb, bw, r.y + r.h - yb);
+      } else {
+        gx.beginPath();
+        bottle.forEach(([x, y], i) => (i === 0 ? gx.moveTo(dplot.px(x), dplot.py(y)) : gx.lineTo(dplot.px(x), dplot.py(y))));
+        gx.closePath();
+        gx.fillStyle = glass;
+        gx.fill();
+        gx.fillStyle = 'rgba(255,255,255,0.28)';
+        gx.fillRect(dplot.px(-0.9), dplot.py(-1), 0.35 * k, 2.8 * k);
+        gx.fillRect(dplot.px(-2.8), dplot.py(-9.5), 0.5 * k, 30 * k);
+      }
       gx.restore();
       // Kronkorken: kippt mit dem Öffner am Zahn hoch
       const capLift = Math.max(0, lift);
@@ -1909,24 +2069,33 @@ export default defineSimulation({
       // Nuss: berührt den oberen (waagerechten) Schenkel bei x = a_L, Mittelpunkt direkt darunter
       const [nx, ny] = dplot.toPx(p.nl, -NUT_R);
       const nr = NUT_R * k * (crack ? 0.95 : 1);
+      const nutImg = ctx.images.get('nut');
       gx.save();
       gx.shadowColor = 'rgba(0,0,0,0.3)';
       gx.shadowBlur = 5;
-      const ng = gx.createRadialGradient(nx - nr * 0.35, ny - nr * 0.4, nr * 0.1, nx, ny, nr);
-      ng.addColorStop(0, '#d9b07a');
-      ng.addColorStop(0.6, '#a87440');
-      ng.addColorStop(1, '#6b4422');
-      gx.fillStyle = ng;
-      gx.beginPath();
-      gx.arc(nx, ny, nr, 0, Math.PI * 2);
-      gx.fill();
-      gx.restore();
-      gx.strokeStyle = 'rgba(70,40,15,0.55)';
-      gx.lineWidth = 1;
-      for (let i = -2; i <= 2; i++) {
+      if (nutImg) {
+        // Foto: so hoch wie der Nussdurchmesser, berührt oben den Schenkel
+        const nh = 2 * nr;
+        const nw = (NUT_IMG.w * nh) / NUT_IMG.h;
+        gx.drawImage(scaledSprite(nutImg, nw, nh, surface.dpr), nx - nw / 2, ny - nr, nw, nh);
+        gx.restore();
+      } else {
+        const ng = gx.createRadialGradient(nx - nr * 0.35, ny - nr * 0.4, nr * 0.1, nx, ny, nr);
+        ng.addColorStop(0, '#d9b07a');
+        ng.addColorStop(0.6, '#a87440');
+        ng.addColorStop(1, '#6b4422');
+        gx.fillStyle = ng;
         gx.beginPath();
-        gx.ellipse(nx + i * nr * 0.28, ny, nr * 0.18, nr * 0.85, 0, 0, Math.PI * 2);
-        gx.stroke();
+        gx.arc(nx, ny, nr, 0, Math.PI * 2);
+        gx.fill();
+        gx.restore();
+        gx.strokeStyle = 'rgba(70,40,15,0.55)';
+        gx.lineWidth = 1;
+        for (let i = -2; i <= 2; i++) {
+          gx.beginPath();
+          gx.ellipse(nx + i * nr * 0.28, ny, nr * 0.18, nr * 0.85, 0, 0, Math.PI * 2);
+          gx.stroke();
+        }
       }
       if (crack) {
         gx.strokeStyle = '#2b1a0a';
@@ -1944,7 +2113,24 @@ export default defineSimulation({
         { a: -close, out: 1 },
         { a: -2 * theta0 + close, out: -1 },
       ];
+      const armImg = ctx.images.get('nutArm');
       for (const arm of arms) {
+        if (armImg) {
+          // Foto: derselbe Arm zweimal, der untere gespiegelt; Innenkante liegt auf der Schenkellinie
+          const A = ARM_IMG;
+          const kk = k / A.pxPerCm;
+          const [ox, oy] = dplot.toPx(0, 0);
+          gx.save();
+          gx.translate(ox, oy);
+          gx.rotate(-arm.a);
+          if (arm.out < 0) gx.scale(1, -1);
+          gx.shadowColor = 'rgba(0,0,0,0.3)';
+          gx.shadowBlur = 5;
+          gx.shadowOffsetY = 2;
+          gx.drawImage(scaledSprite(armImg, A.w * kk, A.h * kk, surface.dpr), -A.eyeX * kk, -A.inner * kk, A.w * kk, A.h * kk);
+          gx.restore();
+          continue;
+        }
         const u: Pt = [Math.cos(arm.a), Math.sin(arm.a)];
         const n: Pt = [-Math.sin(arm.a) * arm.out, Math.cos(arm.a) * arm.out];
         const pt = (s0: number, off: number): Pt => [dplot.px(u[0] * s0 + n[0] * off), dplot.py(u[1] * s0 + n[1] * off)];
@@ -1981,7 +2167,8 @@ export default defineSimulation({
       jg.addColorStop(1, '#5d6570');
       gx.fillStyle = jg;
       gx.beginPath();
-      gx.arc(hx0, hy0, 1.25 * k, 0, Math.PI * 2);
+      // mit Foto nur der Gelenkstift (die Augen der Arme sind im Bild)
+      gx.arc(hx0, hy0, (armImg ? 0.45 : 1.25) * k, 0, Math.PI * 2);
       gx.fill();
 
       const FL = p.nf;
@@ -2071,21 +2258,29 @@ export default defineSimulation({
       const [c0x, c0y] = dplot.toPx(C[0], C[1]);
       const [b0x, b0y] = dplot.toPx(-0.32, 0);
       const [b1x] = dplot.toPx(0.32, 0);
+      const standImg = ctx.images.get('stand');
       gx.save();
       gx.shadowColor = 'rgba(0,0,0,0.25)';
       gx.shadowBlur = 6;
-      const stand = gx.createLinearGradient(b0x, 0, b1x, 0);
-      stand.addColorStop(0, '#9c3b1f');
-      stand.addColorStop(0.5, '#e0703c');
-      stand.addColorStop(1, '#9c3b1f');
-      gx.fillStyle = stand;
-      gx.beginPath();
-      gx.moveTo(b0x, b0y);
-      gx.lineTo(b1x, b0y);
-      gx.lineTo(c0x + 0.07 * k, c0y);
-      gx.lineTo(c0x - 0.07 * k, c0y);
-      gx.closePath();
-      gx.fill();
+      if (standImg) {
+        // Foto: Drehlager auf der Achse, Füße auf dem Boden
+        const S = STAND_IMG;
+        const kk = (SEESAW_H * k) / (S.h - S.cy);
+        gx.drawImage(scaledSprite(standImg, S.w * kk, S.h * kk, surface.dpr), c0x - S.cx * kk, c0y - S.cy * kk, S.w * kk, S.h * kk);
+      } else {
+        const stand = gx.createLinearGradient(b0x, 0, b1x, 0);
+        stand.addColorStop(0, '#9c3b1f');
+        stand.addColorStop(0.5, '#e0703c');
+        stand.addColorStop(1, '#9c3b1f');
+        gx.fillStyle = stand;
+        gx.beginPath();
+        gx.moveTo(b0x, b0y);
+        gx.lineTo(b1x, b0y);
+        gx.lineTo(c0x + 0.07 * k, c0y);
+        gx.lineTo(c0x - 0.07 * k, c0y);
+        gx.closePath();
+        gx.fill();
+      }
       gx.restore();
       // Brett
       gx.save();
@@ -2094,12 +2289,26 @@ export default defineSimulation({
       gx.shadowColor = 'rgba(0,0,0,0.3)';
       gx.shadowBlur = 6;
       gx.shadowOffsetY = 2;
-      const wood = gx.createLinearGradient(0, -0.1 * k, 0, 0);
-      wood.addColorStop(0, '#e7b77a');
-      wood.addColorStop(1, '#a8723e');
-      gx.fillStyle = wood;
-      roundRect(gx, -SEESAW_HALF * k, -0.09 * k, SEESAW_HALF * 2 * k, 0.09 * k, 3);
-      gx.fill();
+      const boardImg = ctx.images.get('board');
+      if (boardImg) {
+        // Foto: Holzleiste, abwechselnd gespiegelt gekachelt
+        const th = 0.09 * k;
+        const len = SEESAW_HALF * 2 * k;
+        const n = Math.max(1, Math.round(len / (((BOARD_IMG.w * th) / BOARD_IMG.h) * 1.3)));
+        const tw = len / n;
+        gx.fillStyle = '#a8723e';
+        roundRect(gx, -len / 2, -th, len, th, 2);
+        gx.fill();
+        gx.shadowColor = 'transparent';
+        for (let i = 0; i < n; i++) gx.drawImage(scaledSprite(boardImg, tw, th, surface.dpr, { flipX: i % 2 === 1 }), -len / 2 + i * tw, -th, tw + 0.5, th);
+      } else {
+        const wood = gx.createLinearGradient(0, -0.1 * k, 0, 0);
+        wood.addColorStop(0, '#e7b77a');
+        wood.addColorStop(1, '#a8723e');
+        gx.fillStyle = wood;
+        roundRect(gx, -SEESAW_HALF * k, -0.09 * k, SEESAW_HALF * 2 * k, 0.09 * k, 3);
+        gx.fill();
+      }
       gx.restore();
       // Kinder mit Haltegriff vor sich auf dem Brett
       const kids: { s: number; m: number; color: string; facing: 1 | -1 }[] = [

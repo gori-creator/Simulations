@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, shade, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { balance, planRun, restitution, stateAt, TRACK, type CollisionType, type Run, type RunState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -16,6 +16,15 @@ const PHYSICS = ['type', 'k', 'm1', 'v1', 'm2', 'v2'];
  * gestreckt (gekachelt sähe man die Helligkeitsverläufe des Fotos als Muster).
  */
 const TRACK_IMG = { w: 628, h: 54, cap: 8 };
+/**
+ * Gleiter `gleiter.webp` (1600 × 363 px, Seitenansicht, neutral silbern): Der
+ * Reiter mit dem V-Bügel reicht von x = 22 bis 1538, die untere Schiene liegt in
+ * den Zeilen 252 … 355. Endplatte links und Pufferring rechts werden
+ * abgeschnitten – die Puffer zeichnet die Simulation je nach Stoßart.
+ */
+const GLIDER_IMG = { x0: 22, x1: 1538, h: 363, barTop: 252 };
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
 
 /** „Schöne“ Schrittweite (1, 2, 2,5, 5 · 10^k) von mindestens x. */
 function niceStep(x: number): number {
@@ -90,7 +99,7 @@ export default defineSimulation({
     'Tip: drag the arrow tips above the gliders to change v₁ and v₂. Positive means to the right, negative to the left.',
   ),
   layout: { aspect: 1.28, aspectNarrow: 0.5 },
-  images: { track: 'bahn.webp' },
+  images: { track: 'bahn.webp', glider: 'gleiter.webp', piece: 'massestueck.webp', table: 'tischkante.webp' },
   groups: [
     { id: 'g1', label: L('Gleiter 1 (links)', 'Glider 1 (left)') },
     { id: 'g2', label: L('Gleiter 2 (rechts)', 'Glider 2 (right)') },
@@ -618,6 +627,23 @@ export default defineSimulation({
         g.lineTo(r.x + r.w, Math.round(y) + 0.5);
       }
       g.stroke();
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt)
+        const th = r.y + r.h - G.tableTop;
+        const tw = (TABLE_IMG.w * th) / TABLE_IMG.h;
+        g.save();
+        g.beginPath();
+        g.rect(r.x, G.tableTop, r.w, th);
+        g.clip();
+        for (let i = 0, tx = r.x; tx < r.x + r.w; i++, tx += tw) g.drawImage(scaledSprite(tableImg, tw, th, surface.dpr, { flipX: i % 2 === 1 }), tx, G.tableTop, tw + 0.5, th);
+        if (dark) {
+          g.fillStyle = 'rgba(10,14,22,0.38)';
+          g.fillRect(r.x, G.tableTop, r.w, th);
+        }
+        g.restore();
+        return;
+      }
       const table = g.createLinearGradient(0, G.tableTop, 0, r.y + r.h);
       table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
       table.addColorStop(1, dark ? '#33281e' : '#9c7349');
@@ -775,9 +801,16 @@ export default defineSimulation({
       const total = stackHeight(m, G);
       g.fillStyle = ctx.theme.dark ? '#6c7480' : '#8b939e';
       g.fillRect(cx - 1, bottom - total - 3, 2, total + 3);
+      const pieceImg = ctx.images.get('piece');
       for (const q of list) {
         const h = q === 50 ? G.unitPx : q === 10 ? G.unitPx * 0.42 : G.unitPx * 0.24;
         const w = G.len * (q === 50 ? 0.5 : 0.4);
+        if (pieceImg) {
+          // Foto: flache Messingscheibe, je nach Masse unterschiedlich dick (Kante ohne Details)
+          g.drawImage(scaledSprite(pieceImg, w, h, surface.dpr), cx - w / 2, y - h, w, h);
+          y -= h;
+          continue;
+        }
         const brass = g.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
         brass.addColorStop(0, '#8d6a24');
         brass.addColorStop(0.3, '#f0d27a');
@@ -821,7 +854,10 @@ export default defineSimulation({
       // Mit Foto der Bahn (Vierkantprofil, oben flach) schwebt der Gleiter knapp über der Oberkante
       const flatTrack = !!ctx.images.get('track');
       const bottom = flatTrack ? G.trackY - 0.5 : G.trackY + G.ridgeH * 0.75;
-      const top = G.trackY + G.ridgeH * 0.5 - G.gliderH;
+      const gliderImg = ctx.images.get('glider');
+      // Foto: Reiter in Plattenbreite, Höhe aus dem Seitenverhältnis des Fotos
+      const imgH = gliderImg ? (len - bump) * (GLIDER_IMG.h / (GLIDER_IMG.x1 - GLIDER_IMG.x0)) : 0;
+      const top = gliderImg ? bottom - imgH : G.trackY + G.ridgeH * 0.5 - G.gliderH;
       const type = p.type as CollisionType;
       // Platte ist um den Puffer kürzer; der Puffer zeigt zum anderen Gleiter
       const left = cx - len / 2 + (which === 2 ? bump : 0);
@@ -836,18 +872,32 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
       g.shadowBlur = 6;
       g.shadowOffsetY = 2;
-      const plate = g.createLinearGradient(0, top, 0, bottom);
-      plate.addColorStop(0, shade(color, theme.dark ? 0.25 : 0.32));
-      plate.addColorStop(0.5, color);
-      plate.addColorStop(1, shade(color, -0.32));
-      g.fillStyle = plate;
-      roundRect(g, left, top, right - left, bottom - top, 3);
-      g.fill();
+      if (gliderImg) {
+        // Foto, in der Farbe des Gleiters eingefärbt (Glanz bleibt); Gleiter 2 gespiegelt
+        const crop = { x: GLIDER_IMG.x0, y: 0, w: GLIDER_IMG.x1 - GLIDER_IMG.x0, h: GLIDER_IMG.h };
+        const tinted = tintedSprite(gliderImg, right - left, imgH, surface.dpr, color, { crop, flipX: which === 2 });
+        g.drawImage(tinted, left, top, right - left, imgH);
+        // ein zweites Mal multipliziert: kräftigere Farbe auf dem hellen Metall
+        g.shadowColor = 'transparent';
+        g.globalCompositeOperation = 'multiply';
+        g.globalAlpha = 0.6;
+        g.drawImage(tinted, left, top, right - left, imgH);
+      } else {
+        const plate = g.createLinearGradient(0, top, 0, bottom);
+        plate.addColorStop(0, shade(color, theme.dark ? 0.25 : 0.32));
+        plate.addColorStop(0.5, color);
+        plate.addColorStop(1, shade(color, -0.32));
+        g.fillStyle = plate;
+        roundRect(g, left, top, right - left, bottom - top, 3);
+        g.fill();
+      }
       g.restore();
-      g.fillStyle = 'rgba(255,255,255,0.45)';
-      g.fillRect(left + 3, top + 1.5, right - left - 6, 1.2);
-      g.fillStyle = 'rgba(0,0,0,0.22)';
-      g.fillRect(left + 2, bottom - 3, right - left - 4, 1.5);
+      if (!gliderImg) {
+        g.fillStyle = 'rgba(255,255,255,0.45)';
+        g.fillRect(left + 3, top + 1.5, right - left - 6, 1.2);
+        g.fillStyle = 'rgba(0,0,0,0.22)';
+        g.fillRect(left + 2, bottom - 3, right - left - 4, 1.5);
+      }
       // Beschriftung
       const mass = which === 1 ? run.m1 : run.m2;
       const longLabel = `m${which === 1 ? '₁' : '₂'} = ${fmt.num(mass, 2)} kg`;
@@ -856,9 +906,11 @@ export default defineSimulation({
       const level = labelLevel(G);
       const label = level === 0 ? longLabel : level === 1 ? `${fmt.num(mass, 2)} kg` : String(which);
       const labelW = g.measureText(label).width;
-      text(g, label, (left + right) / 2, (top + bottom) / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: '#ffffff' });
+      // Foto: Schrift im Dreieck des Bügels (Textfarbe, steht dort vor der Wand)
+      if (gliderImg) text(g, label, (left + right) / 2, top + imgH * 0.5, { font: `700 ${size - 1}px ${theme.font}`, color: theme.text });
+      else text(g, label, (left + right) / 2, (top + bottom) / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: '#ffffff' });
       // Nieten (nur, wenn neben der Schrift Platz ist)
-      if (labelW + 26 < right - left) {
+      if (!gliderImg && labelW + 26 < right - left) {
         g.fillStyle = 'rgba(255,255,255,0.55)';
         for (const fx of [0.07, 0.93]) {
           g.beginPath();
@@ -869,7 +921,8 @@ export default defineSimulation({
       // Puffer
       const px = which === 1 ? right : left;
       const dir = which === 1 ? 1 : -1;
-      const by0 = top + 2;
+      // mit Foto sitzt der Puffer an der unteren Schiene des Reiters
+      const by0 = gliderImg ? top + (imgH * GLIDER_IMG.barTop) / GLIDER_IMG.h : top + 2;
       const by1 = bottom - 2;
       if (type === 'el') {
         // Federbügel aus Stahl
