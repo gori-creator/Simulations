@@ -34,7 +34,7 @@ Misst man $U_\text{G}$ für verschiedene Frequenzen, liegen die Punkte $(f \mid 
 
 1. Beobachte die Elektronen bei $U = 0$. Stelle dann eine Gegenspannung ein: Was passiert mit langsamen und schnellen Elektronen? [Beispiel laden](?U=0.6)
 2. Drücke „Gegenspannung abgleichen“. Bei welcher Spannung wird der Strom null? [Strom null](?U=1.16)
-3. Verdopple die Intensität. Was ändert sich am Strom, was an $U_\text{G}$? Vergleiche die beiden Kurven im $I$-$U$-Diagramm. [Doppelte Intensität](?P=100&U=0.6)
+3. Verdopple die Intensität von $50\,\%$ auf $100\,\%$. Was ändert sich am Strom, was an $U_\text{G}$? Vergleiche die beiden Kurven im $I$-$U$-Diagramm. [50 %](?P=50&U=0.6) · [100 %](?P=100&U=0.6)
 4. Wähle rotes Licht. Hilft es, die Intensität zu erhöhen? [Rotes Licht](?lam=650&P=100)
 5. Nimm eine Messreihe auf („Messreihe automatisch“) und lies die Steigung der Ausgleichsgeraden ab.
 6. Vergleiche Cäsium mit Zink. Warum braucht man für Zink ultraviolettes Licht? [Zink im UV](?metal=Zn&lam=250)
@@ -48,7 +48,7 @@ Licht der Wellenlänge $400\,\text{nm}$ fällt auf eine Cäsium-Kathode ($W_\tex
 <details>
 <summary>Lösung anzeigen</summary>
 
-$f = \frac{c}{\lambda} = \frac{3{,}00 \cdot 10^8\,\text{m/s}}{400 \cdot 10^{-9}\,\text{m}} = 7{,}49 \cdot 10^{14}\,\text{Hz}$, $E_\text{Ph} = h \cdot f \approx 3{,}10\,\text{eV}$.
+$f = \frac{c}{\lambda} = \frac{3{,}00 \cdot 10^8\,\text{m/s}}{400 \cdot 10^{-9}\,\text{m}} = 7{,}50 \cdot 10^{14}\,\text{Hz}$, $E_\text{Ph} = h \cdot f = 4{,}136 \cdot 10^{-15}\,\text{eV}\cdot\text{s} \cdot 7{,}50 \cdot 10^{14}\,\text{Hz} \approx 3{,}10\,\text{eV}$ (schneller: $E_\text{Ph} = \frac{h \cdot c}{\lambda} = \frac{1240\,\text{eV}\cdot\text{nm}}{400\,\text{nm}} = 3{,}10\,\text{eV}$). Die Simulation rechnet mit $c = 2{,}998 \cdot 10^8\,\text{m/s}$ und zeigt deshalb $7{,}495 \cdot 10^{14}\,\text{Hz}$.
 $E_\text{kin,max} = 3{,}10\,\text{eV} - 1{,}94\,\text{eV} = 1{,}16\,\text{eV}$, also $U_\text{G} = 1{,}16\,\text{V}$. [In der Simulation zeigen](?U=1.16)
 
 </details>
@@ -82,18 +82,18 @@ An Cäsium misst man bei $400\,\text{nm}$ die Gegenspannung $1{,}16\,\text{V}$ u
 <details>
 <summary>Lösung anzeigen</summary>
 
-$f_1 = 7{,}49 \cdot 10^{14}\,\text{Hz}$, $f_2 = 9{,}99 \cdot 10^{14}\,\text{Hz}$. $h = \frac{e \cdot \Delta U}{\Delta f} = \frac{1{,}03\,\text{eV}}{2{,}50 \cdot 10^{14}\,\text{Hz}} \approx 4{,}1 \cdot 10^{-15}\,\text{eV}\cdot\text{s} \approx 6{,}6 \cdot 10^{-34}\,\text{J}\cdot\text{s}$. [In der Simulation prüfen](?lam=300&U=2.19)
+$f_1 = \frac{c}{400\,\text{nm}} = 7{,}50 \cdot 10^{14}\,\text{Hz}$, $f_2 = \frac{c}{300\,\text{nm}} = 10{,}00 \cdot 10^{14}\,\text{Hz}$, $\Delta U = 2{,}19\,\text{V} - 1{,}16\,\text{V} = 1{,}03\,\text{V}$. $h = \frac{e \cdot \Delta U}{\Delta f} = \frac{1{,}03\,\text{eV}}{2{,}50 \cdot 10^{14}\,\text{Hz}} \approx 4{,}1 \cdot 10^{-15}\,\text{eV}\cdot\text{s} \approx 6{,}6 \cdot 10^{-34}\,\text{J}\cdot\text{s}$. [In der Simulation prüfen](?lam=300&U=2.19)
 
 </details>
 
 ### Aufgabe 5: Intensität
 
-Erkläre mit dem Photonenmodell, warum doppelte Intensität den Strom verdoppelt, die Gegenspannung $U_\text{G}$ aber gleich bleibt. [Doppelte Intensität](?P=100&U=0.6)
+Erkläre mit dem Photonenmodell, warum doppelte Intensität den Strom verdoppelt, die Gegenspannung $U_\text{G}$ aber gleich bleibt. [50 %](?P=50&U=0.6) · [100 %](?P=100&U=0.6)
 
 <details>
 <summary>Lösung anzeigen</summary>
 
-Doppelte Intensität heißt doppelt so viele Photonen pro Sekunde, also doppelt so viele ausgelöste Elektronen. Jedes Photon hat aber weiterhin $h \cdot f$, also bleibt $E_\text{kin,max}$ und damit $U_\text{G}$ gleich.
+Doppelte Intensität heißt doppelt so viele Photonen pro Sekunde, also doppelt so viele ausgelöste Elektronen. Jedes Photon hat aber weiterhin $h \cdot f$, also bleibt $E_\text{kin,max}$ und damit $U_\text{G}$ gleich. In der Simulation: bei $U = 0{,}6\,\text{V}$ steigt der Strom von etwa $0{,}48\,\text{nA}$ auf $0{,}97\,\text{nA}$, $U_\text{G} = 1{,}16\,\text{V}$ bleibt.
 
 </details>
 

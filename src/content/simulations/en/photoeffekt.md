@@ -18,7 +18,7 @@ Work functions (rounded textbook values): caesium $1.94\,\text{eV}$, potassium $
 
 1. Watch the electrons at $U = 0$, then increase the retarding voltage. [Load example](?U=0.6)
 2. Press “Adjust the voltage”. [No current](?U=1.16)
-3. Double the intensity. [Twice the intensity](?P=100&U=0.6)
+3. Double the intensity from $50\,\%$ to $100\,\%$: the current doubles, $U_\text{G}$ stays. [50 %](?P=50&U=0.6) · [100 %](?P=100&U=0.6)
 4. Try red light. [Red light](?lam=650&P=100)
 5. Record an automatic series and read off the slope.
 
