@@ -95,5 +95,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | interferenz | iPad quer: Wellenwanne im Seitenlayout recht klein; bei d = 14 cm, λ = 1 cm stehen die k-Beschriftungen sehr dicht (ausdünnen). | offen |
 | resonanz | Nach einem Zeitsprung in die Katastrophe ist das t-φ-Diagramm fast leer; Beschriftung „Rad“ bei sehr kleiner Amplitude nah an der Achse. | offen |
 | planetenbahnen | Bei sehr flachen Ellipsen (Sturz, Halley) liegen Flächennummern und die Beschriftungen „a“/„e“ eng beieinander. | offen |
+| stehende-wellen | An den Reglergrenzen (ν = 45) wirkt das Seil beim Erreger zackig, K-Marken dicht an dicht; feiner abtasten und Marken ausdünnen. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
