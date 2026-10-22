@@ -32,6 +32,8 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | induktion | `scripts/agenten/simshot.cjs` | Das Beispiel im Dateikopf `["focus","[data-sim-root] canvas"]` trifft das Tastaturziel nicht; richtig ist `.sim__stage--keys`. Beispiel korrigieren. | erledigt (Kern): Dateikopf nennt `["focus",".sim__stage--keys"]` |
 | federpendel | `src/sim-core/types.ts` | Hinweis in `types.ts`/Doku: `resultsParam` auf aus verdeckt ALLE `spoiler`-Ergebnisse; ggf. Option, einzelne Ergebnisse auszunehmen. | offen |
 | Kern 5 | `src/sim-core/controls.ts` | Nach Verlassen eines Regler-Eingabefelds bleibt getippter Text wie „25 000“ stehen und wird nicht neu formatiert. Beim Verlassen auf die Anzeigeform zurücksetzen. | offen |
+| resonanz | `src/sim-core/` (Text-Darstellung) | Kombinierendes Dach (U+0302) in „φ̂“ rendert verrutscht – in Reglern, Ergebnissen und auf der Zeichenfläche. Lösung prüfen (z. B. Dach per eigener Zeichnung/`<span>` oder vorkomponierte Zeichen). | offen |
+| resonanz | Host | `hint` soll `_` als Index setzen wie Regler; `hiddenChange` soll auch beim Aufdecken einzelner Ergebnisse feuern (bzw. eigener Rückruf `spoilerChange(key)`). | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -90,5 +92,6 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | federpendel | Eigene `richText`-Hilfe (`F_[G]`) auf `subText` umstellen; bei sehr harter Feder stehen „F_G“ und „F_res“ dicht nebeneinander. | offen |
 | lorentzkraft | Die mitwandernden Pfeile v und F streifen kurz die Kanone bzw. die Beschriftung „Durchmesser in cm“. | offen |
 | interferenz | iPad quer: Wellenwanne im Seitenlayout recht klein; bei d = 14 cm, λ = 1 cm stehen die k-Beschriftungen sehr dicht (ausdünnen). | offen |
+| resonanz | Nach einem Zeitsprung in die Katastrophe ist das t-φ-Diagramm fast leer; Beschriftung „Rad“ bei sehr kleiner Amplitude nah an der Achse. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |
