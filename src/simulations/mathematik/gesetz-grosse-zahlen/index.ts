@@ -114,6 +114,7 @@ export default defineSimulation({
   ],
   images: {
     die: 'wuerfel.webp',
+    dieTop: 'wuerfel-oben.webp',
     table: 'tischplatte.webp',
     coinHead: 'muenze-kopf.webp',
     coinTail: 'muenze-zahl.webp',
@@ -270,16 +271,32 @@ export default defineSimulation({
       g.translate(cx, cy);
       g.rotate(rotation);
       softShadow(g, ctx.theme.dark, 18, 8);
-      roundRect(g, -size / 2, -size / 2, size, size, size * 0.18);
-      const grad = g.createLinearGradient(-size / 2, -size / 2, size / 2, size / 2);
-      grad.addColorStop(0, '#ffffff');
-      grad.addColorStop(1, '#dfe4ec');
-      g.fillStyle = grad;
-      g.fill();
-      g.shadowColor = 'transparent';
-      g.lineWidth = highlight ? 4 : 1.5;
-      g.strokeStyle = highlight ? ctx.theme.series[0]! : '#b9c1cd';
-      g.stroke();
+      const top = ctx.images.get('dieTop');
+      if (top) {
+        // Draufsicht-Foto (leere Oberseite), Seitenverhältnis bleibt; Augen werden darauf gezeichnet
+        const k = size / Math.max(top.width, top.height);
+        const w = top.width * k;
+        const h = top.height * k;
+        g.drawImage(scaledSprite(top, w, h, surface.dpr), -w / 2, -h / 2, w, h);
+        g.shadowColor = 'transparent';
+        if (highlight) {
+          roundRect(g, -size / 2, -size / 2, size, size, size * 0.18);
+          g.lineWidth = 4;
+          g.strokeStyle = ctx.theme.series[0]!;
+          g.stroke();
+        }
+      } else {
+        roundRect(g, -size / 2, -size / 2, size, size, size * 0.18);
+        const grad = g.createLinearGradient(-size / 2, -size / 2, size / 2, size / 2);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(1, '#dfe4ec');
+        g.fillStyle = grad;
+        g.fill();
+        g.shadowColor = 'transparent';
+        g.lineWidth = highlight ? 4 : 1.5;
+        g.strokeStyle = highlight ? ctx.theme.series[0]! : '#b9c1cd';
+        g.stroke();
+      }
       const pip = size * 0.095;
       const o = size * 0.27;
       const spots: Record<number, [number, number][]> = {

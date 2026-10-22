@@ -1,4 +1,4 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, shade, Surface, text, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, shade, Surface, text, type Rect } from '../../../sim-core';
 import { drawIcon, type IconKind, type IconStyle } from './icons';
 import {
   childOptions,
@@ -180,6 +180,7 @@ export default defineSimulation({
     },
     { key: 'show', type: 'boolean', group: 'view', label: L('Anzahl anzeigen', 'Show the number'), default: true },
   ],
+  images: { cone: 'waffel.webp', lock: 'zahlenschloss.webp' },
   actions: [
     { id: 'walk', label: L('Alle Pfade ablaufen', 'Walk all paths'), primary: true },
     { id: 'grow', label: L('Neu wachsen lassen', 'Grow again') },
@@ -1383,13 +1384,61 @@ export default defineSimulation({
           return Math.min(R.h * 0.62, R.w * 0.36);
         case 'eis':
           return Math.min(R.h * 0.55, R.w * 0.3);
-        case 'pin':
+        case 'pin': {
+          const photo = lockPhoto();
+          if (photo) return Math.min(R.w * 0.5, (R.h - 2) * (photo.width / photo.height));
           return Math.min(R.w * 0.5, k * Math.min(R.h * 0.34, 34) + 36);
+        }
         case 'menu':
           return Math.min(R.w * 0.5, R.h * 1.55);
         default:
           return k <= 3 ? Math.min(R.w * 0.46, R.h * 1.35) : Math.min(R.w * 0.55, k * Math.min(R.h * 0.42, 30) + 12);
       }
+    }
+
+    /* Zahlenschloss-Foto: vier leere Rädchen (Mitten in Bildpixeln); nur bei vier Stellen, sonst gezeichnet. */
+    const LOCK_IMG = { wheels: [182, 325, 469, 617], wheelW: 108, wheelY: 802, wheelH: 290 };
+    const lockPhoto = (): HTMLImageElement | null => (counts.length === LOCK_IMG.wheels.length ? ctx.images.get('lock') : null);
+
+    function drawLockPhoto(img: HTMLImageElement, path: number[] | null, R: Rect, now: number): void {
+      const g = surface.g;
+      const theme = ctx.theme;
+      let h = R.h - 2;
+      let w = h * (img.width / img.height);
+      if (w > R.w) {
+        w = R.w;
+        h = w * (img.height / img.width);
+      }
+      const x0 = R.x + (R.w - w) / 2;
+      const y0 = R.y + R.h - h - 1;
+      const s = h / img.height;
+      g.save();
+      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
+      g.shadowBlur = 10;
+      g.shadowOffsetY = 3;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), x0, y0, w, h);
+      g.restore();
+      // Ziffern auf den Messingrädchen (dunkle Gravur, unabhängig vom Farbschema)
+      const ink = '#3a2a0c';
+      const ww = LOCK_IMG.wheelW * s;
+      const wh = LOCK_IMG.wheelH * s;
+      const y = y0 + LOCK_IMG.wheelY * s;
+      LOCK_IMG.wheels.forEach((wx, i) => {
+        const x = x0 + wx * s;
+        const o = path?.[i];
+        const u = o === undefined ? 0 : reduced ? 1 : clamp((now - (itemTime[i] ?? selStart)) / 380, 0, 1);
+        if (o === undefined || u <= 0) text(g, '?', x, y + 1, { font: `800 ${ww * 0.7}px ${theme.font}`, color: alpha(ink, 0.45) });
+        else {
+          // Ziffer rollt von oben herein
+          g.save();
+          g.beginPath();
+          g.rect(x - ww / 2, y - wh / 2, ww, wh);
+          g.clip();
+          const dy = (1 - ease.outBack(u)) * -wh * 0.6;
+          text(g, String(o), x, y + 1 + dy, { font: `800 ${ww * 0.85}px ${theme.font}`, color: ink });
+          g.restore();
+        }
+      });
     }
 
     function drawCombo(path: number[] | null, R: Rect, now: number): void {
@@ -1411,6 +1460,20 @@ export default defineSimulation({
         case 'eis': {
           const S = Math.min(R.w * 0.9, R.h / (1.0 + k * 0.62 + 0.25));
           const coneTop = R.y + R.h - S * 1.0;
+          const cone = ctx.images.get('cone');
+          if (cone) {
+            // Waffel-Foto: Rand knapp über coneTop, Spitze unten, Seitenverhältnis bleibt
+            const h = R.y + R.h - 1 - (coneTop - S * 0.06);
+            const w = h * (cone.width / cone.height);
+            g.save();
+            g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
+            g.shadowBlur = 8;
+            g.shadowOffsetY = 3;
+            g.drawImage(scaledSprite(cone, w, h, surface.dpr), cx - w / 2, coneTop - S * 0.06, w, h);
+            g.restore();
+            for (let i = 0; i < k; i++) comboItem(path, i, cx, coneTop - S * 0.18 - i * S * 0.6, S * 0.86, now);
+            break;
+          }
           // Waffel
           g.save();
           g.beginPath();
@@ -1439,6 +1502,11 @@ export default defineSimulation({
           break;
         }
         case 'pin': {
+          const photo = lockPhoto();
+          if (photo) {
+            drawLockPhoto(photo, path, R, now);
+            break;
+          }
           const cell = Math.min(R.h * 0.34, 34, (R.w - 20) / Math.max(1, k));
           const bw = k * cell + 18;
           const bh = cell + 22;
