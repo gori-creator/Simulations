@@ -92,7 +92,7 @@ interface Geo {
 export default defineSimulation({
   id: 'waagemodell',
   layout: { aspect: 1.5, aspectNarrow: 0.66 },
-  images: { stand: 'waage.webp', pan: 'schale.webp', box: 'paeckchen.webp', weight: 'gewicht.webp' },
+  images: { stand: 'waage.webp', pan: 'schale.webp', box: 'paeckchen.webp', weight: 'gewicht.webp', table: 'tischkante.webp' },
   groups: [
     { id: 'left', label: L('Linke Waagschale', 'Left pan') },
     { id: 'right', label: L('Rechte Waagschale', 'Right pan') },
@@ -937,11 +937,32 @@ export default defineSimulation({
       wall.addColorStop(1, dark ? '#111925' : '#e3e9f0');
       g.fillStyle = wall;
       g.fillRect(r.x, r.y, r.w, r.h);
-      const table = g.createLinearGradient(0, gg.floorY, 0, r.y + r.h);
-      table.addColorStop(0, dark ? '#4a3a2b' : '#c99f70');
-      table.addColorStop(1, dark ? '#30261c' : '#9d7449');
-      g.fillStyle = table;
-      g.fillRect(r.x, gg.floorY, r.w, r.y + r.h - gg.floorY);
+      const tableH = r.y + r.h - gg.floorY;
+      const tablePhoto = ctx.images.get('table');
+      if (tablePhoto && tableH > 1) {
+        // Tischkante aus dem Foto, unverzerrt: mindestens so breit wie die Bühne (unten notfalls
+        // abgeschnitten), sonst waagerecht gekachelt – jede zweite Kachel gespiegelt, damit keine Naht entsteht
+        const ratio = tablePhoto.width / tablePhoto.height;
+        const tw = Math.max(tableH * ratio, Math.min(r.w, tableH * ratio * 1.6));
+        const th = tw / ratio;
+        g.save();
+        g.beginPath();
+        g.rect(r.x, gg.floorY, r.w, tableH);
+        g.clip();
+        for (let x = r.x, i = 0; x < r.x + r.w; x += tw - 0.5, i++) g.drawImage(scaledSprite(tablePhoto, tw, th, surface.dpr, { flipX: i % 2 === 1 }), x, gg.floorY, tw, th);
+        g.restore();
+        // im Dunkelmodus abdunkeln, damit der Tisch nicht heller als die Wand wirkt
+        if (dark) {
+          g.fillStyle = 'rgba(8,12,20,0.45)';
+          g.fillRect(r.x, gg.floorY, r.w, tableH);
+        }
+      } else {
+        const table = g.createLinearGradient(0, gg.floorY, 0, r.y + r.h);
+        table.addColorStop(0, dark ? '#4a3a2b' : '#c99f70');
+        table.addColorStop(1, dark ? '#30261c' : '#9d7449');
+        g.fillStyle = table;
+        g.fillRect(r.x, gg.floorY, r.w, tableH);
+      }
       g.fillStyle = 'rgba(255,255,255,0.22)';
       g.fillRect(r.x, gg.floorY, r.w, 1.5);
 

@@ -14,7 +14,8 @@ Briefing der Projektleitung, Stand 22.10.2026. Der Auftraggeber (Nutzer) gibt di
   - Barrierefreiheit: echte `<button>`/`<a>`, Tastatur, Kontrast ≥ 4,5 : 1, `prefers-reduced-motion` respektieren (Animationen aus bzw. ruhig), automatisch wechselnde Inhalte pausierbar.
   - Simulationen selbst (Canvas-Darstellung in `src/simulations/`, `src/sim-core/`) **nicht** umgestalten – nur die Seiten drumherum.
   - Vor jedem Commit `npm run verify` (Typprüfung, Tests, Build) – 0 Fehler, 0 Warnungen, 0 Hinweise.
-- **Arbeitsweise:** eigener Zweig von `main`, Push nur dorthin, am Ende Pull Request nach `main`. **Nicht selbst mergen** – die Projektleitung nimmt ab.
+- **Arbeitsweise (ohne GitHub):** Du bekommst das Projekt als ZIP (`simulations-projekt.zip`, Stand von `main`). Entpacken, `npm ci`, `npm run dev` für die Vorschau, `npm run verify` vor jeder Abgabe. Lege direkt nach dem Entpacken ein lokales Git an (`git init && git add -A && git commit -m Ausgangsstand`), damit deine Änderungen nachvollziehbar sind.
+- **Abgabe:** als ZIP mit **nur den geänderten und neuen Dateien** in ihrer Ordnerstruktur **und** zusätzlich als Patch (`git diff Ausgangsstand > design.patch`, neue Dateien vorher mit `git add -N .` erfassen), dazu eine kurze Liste, was du geändert hast, und Screenshots. Die Projektleitung prüft und bringt es ins Repository.
 
 ## 2. Wo wir stehen: der Entwurf
 
@@ -29,7 +30,7 @@ Der abgestimmte Entwurf liegt in `docs/design/entwurf-startseite/` (Dateien aus 
 | `Beamer.dc.html` | Beamer-Modus (Idee, abgenommen als Richtung) |
 | `*Dunkel.dc.html` | Dunkelmodus-Fassungen (Thema `dunkel`); die von `Main` passt noch **nicht** zum neuen Stand |
 
-Der Nutzer kann dir den Entwurf auch als Link zeigen.
+Der Nutzer kann dir den Entwurf auch als Link oder Screenshots zeigen.
 
 ### Was der Nutzer gut findet (beibehalten)
 
@@ -66,11 +67,11 @@ Der Nutzer kann dir den Entwurf auch als Link zeigen.
    - Schaufenster mit **echten Simulationen** in vorbereiteten Einstellungen statt Zeichnungen, wo das flüssig läuft (sonst gezeichnete Animation).
    - Beamer-Modus als neue Funktion (Tasten, Esc, Schriftgröße), Texte DE/EN.
    - Vorhandene Logik nicht brechen: Bundesland-Einstellung (`src/lib/region.ts`, nur im Zahnrad), geteilte Links/URL-Zustand, `resultsParam`, QR-Code, Vollbild.
-4. **Prüfen und abgeben:** `npm run verify` grün, Screenshots (z. B. `node scripts/agenten/simshot.cjs`, Kopf der Datei lesen) hell/dunkel, 1360 px und 390 px, PR nach `main` mit Vorher/Nachher.
+4. **Prüfen und abgeben:** `npm run verify` grün, Screenshots hell/dunkel, 1360 px und 390 px (z. B. mit Playwright oder `node scripts/agenten/simshot.cjs`, Kopf der Datei lesen; Pfade darin ggf. anpassen), Abgabe wie in Abschnitt 1 beschrieben, mit Vorher/Nachher.
 
 ## 4. Nicht anfassen
 
-`src/simulations/**`, `src/sim-core/**` (außer reinem Styling über vorhandene CSS-Variablen nach Rücksprache), `src/curriculum/**`, `docs/pruefung/**`, `docs/BILDER-WUNSCHLISTE.md` (in `docs/BILDER.md` nur eigene Einträge für die Design-Bilder ergänzen). Die Physik-Prüfrunde läuft parallel auf `pruefen/paket-1`.
+`src/simulations/**`, `src/sim-core/**` (außer reinem Styling über vorhandene CSS-Variablen nach Rücksprache), `src/curriculum/**`, `docs/pruefung/**`, `docs/BILDER-WUNSCHLISTE.md` (in `docs/BILDER.md` nur eigene Einträge für die Design-Bilder ergänzen). Parallel laufen im Repository andere Arbeiten (Physik-Prüfrunde, Bilder) – deshalb nur die Dateien ändern, die für das Design nötig sind.
 
 ## 5. Bilder für die Szene (Prompts für den Nutzer)
 

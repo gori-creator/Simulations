@@ -1,4 +1,21 @@
-import { clamp, defineSimulation, ease, FixedStepper, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, seededRandom, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import {
+  clamp,
+  defineSimulation,
+  ease,
+  FixedStepper,
+  mixColor,
+  offscreenCanvas,
+  prefersReducedMotion,
+  roundRect,
+  scaledSprite,
+  seededRandom,
+  shade,
+  Surface,
+  text,
+  Tween,
+  withAlpha,
+  type Rect,
+} from '../../../sim-core';
 import {
   atomsPerGram,
   decayBetween,
@@ -119,6 +136,7 @@ export default defineSimulation({
   id: 'radioaktiver-zerfall',
   animated: true,
   layout: { aspect: 1.55, aspectNarrow: 0.48 },
+  images: { tube: 'zaehlrohr.webp', counter: 'zaehlgeraet.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1279,45 +1297,169 @@ export default defineSimulation({
       // Rohr im eigenen Koordinatensystem (x nach außen)
       g.translate(wx, wy);
       g.rotate(Math.atan2(uy, ux));
-      g.save();
-      g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.32)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 5;
-      const body = g.createLinearGradient(0, -tr, 0, tr);
-      body.addColorStop(0, dark ? '#c4ccd6' : '#f3f5f8');
-      body.addColorStop(0.35, dark ? '#8d96a3' : '#c3cad3');
-      body.addColorStop(1, dark ? '#3f4651' : '#6f7884');
-      g.fillStyle = body;
-      roundRect(g, 0, -tr, len, 2 * tr, tr * 0.5);
-      g.fill();
-      g.restore();
-      // Rillen und Endkappe
-      g.fillStyle = dark ? 'rgba(0,0,0,0.3)' : 'rgba(40,50,64,0.22)';
-      for (const x of [len * 0.62, len * 0.66]) g.fillRect(x, -tr, 1.5, 2 * tr);
-      const capG = g.createLinearGradient(0, -tr, 0, tr);
-      capG.addColorStop(0, dark ? '#4a515c' : '#4d5562');
-      capG.addColorStop(1, dark ? '#1c2027' : '#262b33');
-      g.fillStyle = capG;
-      roundRect(g, len - tr * 0.6, -tr * 0.8, tr * 1.2, tr * 1.6, 3);
-      g.fill();
-      // Fenster (Glimmer) vorn
-      const win = g.createLinearGradient(0, -tr, 0, tr);
-      win.addColorStop(0, '#3b3a35');
-      win.addColorStop(1, '#16150f');
-      g.fillStyle = win;
-      roundRect(g, -3, -tr * 0.92, 7, tr * 1.84, 3);
-      g.fill();
+      const photo = ctx.images.get('tube');
+      if (photo) drawTubePhoto(photo, len, tr);
+      else {
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.32)';
+        g.shadowBlur = 12;
+        g.shadowOffsetY = 5;
+        const body = g.createLinearGradient(0, -tr, 0, tr);
+        body.addColorStop(0, dark ? '#c4ccd6' : '#f3f5f8');
+        body.addColorStop(0.35, dark ? '#8d96a3' : '#c3cad3');
+        body.addColorStop(1, dark ? '#3f4651' : '#6f7884');
+        g.fillStyle = body;
+        roundRect(g, 0, -tr, len, 2 * tr, tr * 0.5);
+        g.fill();
+        g.restore();
+        // Rillen und Endkappe
+        g.fillStyle = dark ? 'rgba(0,0,0,0.3)' : 'rgba(40,50,64,0.22)';
+        for (const x of [len * 0.62, len * 0.66]) g.fillRect(x, -tr, 1.5, 2 * tr);
+        const capG = g.createLinearGradient(0, -tr, 0, tr);
+        capG.addColorStop(0, dark ? '#4a515c' : '#4d5562');
+        capG.addColorStop(1, dark ? '#1c2027' : '#262b33');
+        g.fillStyle = capG;
+        roundRect(g, len - tr * 0.6, -tr * 0.8, tr * 1.2, tr * 1.6, 3);
+        g.fill();
+        // Fenster (Glimmer) vorn
+        const win = g.createLinearGradient(0, -tr, 0, tr);
+        win.addColorStop(0, '#3b3a35');
+        win.addColorStop(1, '#16150f');
+        g.fillStyle = win;
+        roundRect(g, -3, -tr * 0.92, 7, tr * 1.84, 3);
+        g.fill();
+      }
       if (flash > 0) {
         g.globalCompositeOperation = dark ? 'lighter' : 'source-over';
         drawGlow(mixColor(actCol(), '#ffffff', 0.35), 0, 0, tr * 2.2, flash * 0.9);
         g.globalCompositeOperation = 'source-over';
       }
-      g.fillStyle = 'rgba(255,255,255,0.4)';
-      g.fillRect(-1.5, -tr * 0.7, 1.4, tr * 0.6);
+      if (!photo) {
+        g.fillStyle = 'rgba(255,255,255,0.4)';
+        g.fillRect(-1.5, -tr * 0.7, 1.4, tr * 0.6);
+      }
       // Beschriftung auf dem Rohr
       const fs = G.sm ? 10.5 : 11.5;
       if (len > textW(ctx.t('tube'), `700 ${fs}px ${ctx.theme.font}`) + 14) text(g, ctx.t('tube'), len * 0.33, 0.5, { font: `700 ${fs}px ${ctx.theme.font}`, color: dark ? '#1a1f26' : '#2c333d' });
       g.restore();
+    }
+
+    /**
+     * Zählrohr-Foto (zaehlrohr.webp, 1600 × 181): Fenster links, Ende des Rohrs vor
+     * der Endkappe, Kappenende (dort beginnt das Kabel) und Höhe des Rohrs (Bildpixel).
+     */
+    const TUBE_SRC = { win: 200, body: 1300, cap: 1440, top: 6, bottom: 174 };
+    /**
+     * Rohr im eigenen Koordinatensystem (Fenster bei x = 0, Kabel bei x = len).
+     * Das Foto ist schlanker als das Rohr im Aufbau: Fenster und Endkappe bleiben
+     * maßstabsgetreu, nur das gleichförmige Mittelstück wird in der Länge gestaucht.
+     */
+    function drawTubePhoto(img: HTMLImageElement, len: number, tr: number): void {
+      const g = surface.g;
+      const T = TUBE_SRC;
+      const k = (2 * tr) / (T.bottom - T.top);
+      const h = img.height * k;
+      const y = -img.height * k * 0.5;
+      const winW = T.win * k;
+      const endW = (img.width - T.body) * k;
+      const endX = len - (T.cap - T.body) * k;
+      const piece = (sx: number, sw: number, dx: number, dw: number) => {
+        if (dw <= 0) return;
+        g.drawImage(scaledSprite(img, dw, h, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: img.height } }), dx, y, dw, h);
+      };
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.32)';
+      g.shadowBlur = 12;
+      g.shadowOffsetY = 5;
+      piece(T.win, T.body - T.win, winW - 0.5, endX - winW + 1);
+      piece(0, T.win, 0, winW);
+      piece(T.body, img.width - T.body, endX, endW);
+      g.restore();
+    }
+
+    /** Zählrate der letzten halben Halbwertszeit als Text (oder „keine“). */
+    function rateText(): string {
+      const nu = nuc();
+      const W = Math.min(0.5, u);
+      if (W > 0.05 && mode() === 'many') {
+        let k = 0;
+        for (let i = pulseU.length - 1; i >= 0 && pulseU[i]! > u - W; i--) k++;
+        const z = k / (W * nu.halfLife);
+        return tr('rate', { z: sig(z, 2), u: unitLabel(nu) });
+      }
+      return ctx.t('rateNone');
+    }
+
+    /**
+     * Zählgerät als Foto: Ziffern und Zählrate stehen im leeren Anzeigefenster,
+     * der rote Knopf leuchtet bei jedem Impuls auf, der Schiebeschalter schaltet
+     * den Lautsprecher (Symbol daneben).
+     */
+    function drawCounterPhoto(img: HTMLImageElement, B: Rect, now: number): void {
+      const g = surface.g;
+      const C = COUNTER_SRC;
+      const sm = lastGeo?.sm ?? false;
+      const k = Math.min(B.w / img.width, B.h / img.height);
+      const w = img.width * k;
+      const h = img.height * k;
+      const x0 = B.x + (B.w - w) / 2;
+      const y0 = B.y + B.h - h;
+      const P = (x: number, y: number): [number, number] => [x0 + x * k, y0 + y * k];
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
+      g.shadowBlur = 14;
+      g.shadowOffsetY = 5;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), x0, y0, w, h);
+      g.restore();
+      // Anzeigefenster: oben die Ziffern, darunter klein die Zählrate
+      const [dx, dy] = P(C.winX0, C.winY0);
+      const D: Rect = { x: dx, y: dy, w: (C.winX1 - C.winX0) * k, h: (C.winY1 - C.winY0) * k };
+      const digits = String(Math.min(99999, pulses)).padStart(sm ? 4 : 5, '0');
+      const dh = D.h * 0.62;
+      const fsD = Math.min(dh * 0.8, (D.w - 10) / (digits.length * 0.62));
+      g.save();
+      g.shadowColor = 'rgba(90,255,160,0.7)';
+      g.shadowBlur = 6;
+      text(g, digits, D.x + D.w / 2, D.y + dh * 0.55, { font: `700 ${fsD}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`, color: '#7dffb5' });
+      g.restore();
+      const rate = rateText();
+      let fsR = Math.min(D.h * 0.24, sm ? 10.5 : 11.5);
+      let rl = rate;
+      if (textW(rl, `600 ${fsR}px ${ctx.theme.font}`) > D.w - 8) rl = rate.replace(/ pro | per /, '/');
+      const rw = textW(rl, `600 ${fsR}px ${ctx.theme.font}`);
+      if (rw > D.w - 8) fsR = Math.max(8, (fsR * (D.w - 8)) / rw);
+      text(g, rl, D.x + D.w / 2, D.y + D.h * 0.8, { font: `600 ${fsR}px ${ctx.theme.font}`, color: 'rgba(125,255,181,0.85)' });
+      // roter Knopf als Impulsanzeige
+      const led = clamp(1 - (now - ledMs) / 180, 0, 1);
+      if (led > 0) {
+        animating = true;
+        const [lx, ly] = P(C.btnX, C.btnY);
+        drawGlow('#ff5050', lx, ly, C.btnR * k * 1.8, led);
+      }
+      // Lautsprecher: Schalter und Symbol rechts daneben
+      const [swx, swy] = P(C.swX, C.swY);
+      const [spx] = P(C.spkX, 0);
+      spkRect = { x: swx - (C.swW / 2) * k, y: swy - (C.swH / 2) * k, w: spx + 8 - (swx - (C.swW / 2) * k), h: C.swH * k };
+      const sx = spx;
+      const ry = swy;
+      g.strokeStyle = p.snd ? '#d9dee5' : 'rgba(217,222,229,0.45)';
+      g.fillStyle = g.strokeStyle;
+      g.lineWidth = 1.4;
+      g.beginPath();
+      g.moveTo(sx - 4, ry - 2.2);
+      g.lineTo(sx - 1.8, ry - 2.2);
+      g.lineTo(sx + 1.5, ry - 5);
+      g.lineTo(sx + 1.5, ry + 5);
+      g.lineTo(sx - 1.8, ry + 2.2);
+      g.lineTo(sx - 4, ry + 2.2);
+      g.closePath();
+      g.fill();
+      if (!p.snd) {
+        g.beginPath();
+        g.moveTo(sx - 5, ry - 6);
+        g.lineTo(sx + 4, ry + 6);
+        g.stroke();
+      }
     }
 
     function drawCounter(G: Geo, ik: number): void {
@@ -1329,6 +1471,12 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= ik;
       g.translate(0, (1 - ik) * 12);
+      const photo = ctx.images.get('counter');
+      if (photo) {
+        drawCounterPhoto(photo, B, now);
+        g.restore();
+        return;
+      }
       g.save();
       g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
       g.shadowBlur = 14;
@@ -1359,15 +1507,7 @@ export default defineSimulation({
       text(g, digits, D.x + D.w / 2, D.y + D.h / 2 + 1, { font: df, color: '#7dffb5' });
       g.restore();
       // Zählrate
-      const nu = nuc();
-      const W = Math.min(0.5, u);
-      let rate = '';
-      if (W > 0.05 && mode() === 'many') {
-        let k = 0;
-        for (let i = pulseU.length - 1; i >= 0 && pulseU[i]! > u - W; i--) k++;
-        const z = k / (W * nu.halfLife);
-        rate = tr('rate', { z: sig(z, 2), u: unitLabel(nu) });
-      } else rate = ctx.t('rateNone');
+      const rate = rateText();
       const ry = D.y + D.h + (B.y + B.h - D.y - D.h) / 2;
       const fsR = sm ? 10.5 : 11.5;
       let rl = rate;
@@ -1408,6 +1548,8 @@ export default defineSimulation({
       g.restore();
     }
     let spkRect: Rect | null = null;
+    /** Zählgerät-Foto: leeres Anzeigefenster, roter Knopf, Schiebeschalter, Platz für das Lautsprechersymbol (Bildpixel). */
+    const COUNTER_SRC = { winX0: 140, winY0: 125, winX1: 1140, winY1: 470, btnX: 395, btnY: 660, btnR: 72, swX: 900, swY: 665, swW: 100, swH: 150, spkX: 1090 };
 
     function drawManyScene(r: Rect, alpha: number): Geo {
       const g = surface.g;

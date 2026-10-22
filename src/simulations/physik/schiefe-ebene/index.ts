@@ -18,18 +18,88 @@ const FZ_MAX = 50;
 const METER_RANGE = 20;
 const MAX_POINTS = 16;
 /**
- * Lage im Foto `holzklotz.webp` (509 × 109 px, Seitenansicht): Klotz von
- * x = 1 bis 446 und y = 1 bis 107, rechts davon die Öse für den Kraftmesser.
- * Der Klotz im Foto ist sehr lang; für die Simulation wird ein Stück aus der
- * Mitte herausgenommen (linkes Ende bis `cutL`, rechtes Ende ab `cutR`, an der
- * Naht `blend` px weich überblendet). Nichts wird gestreckt oder gestaucht.
+ * Klotz-Fotos (Seitenansicht, Öse rechts): Bildgröße, Oberkante und Höhe des
+ * Klotzes und seine rechte Kante (rechts davon die Öse für den Kraftmesser).
+ * Die Klötze im Foto sind sehr lang; für die Simulation wird ein Stück aus der
+ * Mitte herausgenommen, bis der Klotz `BLOCK_ASPECT`-mal so lang wie hoch ist
+ * (an der Naht `BLOCK_BLEND` px weich überblendet). Nichts wird gestreckt.
  */
-const BLOCK_IMG = { w: 509, h: 109, x0: 1, y0: 1, bodyR: 446, bh: 106, cutL: 138, cutR: 330, blend: 16 };
-/** Breite des zusammengesetzten Fotos und des Klotzes darin (Bildpixel). */
-const BLOCK_W = BLOCK_IMG.cutL + (BLOCK_IMG.w - BLOCK_IMG.cutR) - BLOCK_IMG.blend;
-const BLOCK_BW = BLOCK_W - (BLOCK_IMG.w - BLOCK_IMG.bodyR) - BLOCK_IMG.x0;
-/** `brett.webp` (677 × 68 px): Holzleiste, wird als Oberfläche der Ebene gespiegelt aneinandergesetzt. */
-const BOARD_IMG = { w: 677, h: 68 };
+interface BlockImg {
+  w: number;
+  h: number;
+  y0: number;
+  bh: number;
+  bodyR: number;
+}
+type BlockKey = 'block' | 'blockSteel' | 'blockRubber';
+const BLOCK_IMGS: Record<BlockKey, BlockImg> = {
+  block: { w: 1600, h: 410, y0: 2, bh: 404, bodyR: 1510 },
+  blockSteel: { w: 1600, h: 438, y0: 1, bh: 435, bodyR: 1455 },
+  blockRubber: { w: 1600, h: 380, y0: 1, bh: 377, bodyR: 1475 },
+};
+const BLOCK_ASPECT = 2.2;
+const BLOCK_BLEND = 40;
+/** Zusammengesetzter Klotz: Schnittstellen, Gesamtbreite und Breite des Klotzes (Bildpixel). */
+function blockCut(D: BlockImg): { cutL: number; cutR: number; w: number; bw: number } {
+  const bw = BLOCK_ASPECT * D.bh;
+  const cutL = bw / 2 + BLOCK_BLEND / 2;
+  const cutR = D.bodyR - cutL;
+  return { cutL, cutR, w: cutL + (D.w - cutR) - BLOCK_BLEND, bw };
+}
+/**
+ * Experimentierwagen `wagen.webp` (1600 × 249 px, ohne Räder): Wagenkasten bis
+ * x = 1495, Achslöcher bei x = 347 und 1150 (y = 210). Rad `wagen-rad.webp`
+ * (1234 × 1242 px, füllt das Bild, Nabe in der Mitte).
+ */
+const CART_IMG = { w: 1600, h: 249, bodyW: 1495, axles: [347, 1150], axleY: 210 };
+const WHEEL_IMG = { w: 1234, h: 1242 };
+/** Radius der Räder des Fotowagens (Anteil der Wagenlänge). */
+const CART_WHEEL = 0.105;
+/**
+ * Kraftmesser-Foto `kraftmesser.webp` (1600 × 170 px, Ring links, Haken rechts):
+ * Ringmitte, Rohrdurchmesser und Schnittstellen. Gezeichnet wird nur die Hülse
+ * mit Ring (Haken und Skalenstange zeichnet die Simulation); gestaucht wird
+ * allein das gleichförmige Rohrstück zwischen `capEnd` und `tubeCut`.
+ */
+const METER_IMG = { h: 170, cy: 85, ringCx: 86, tube: 155, capEnd: 330, tubeCut: 1350, tubeEnd: 1398 };
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
+
+type Source = CanvasImageSource & { width: number; height: number };
+
+/**
+ * Kraftmesser-Hülse als Foto in lokalen Koordinaten: Rohrende bei x0,
+ * Ringmitte bei x1, Rohrmitte auf y = 0, Rohrdurchmesser `width`.
+ */
+function drawMeterPhoto(g: CanvasRenderingContext2D, img: Source, x0: number, x1: number, width: number, dpr: number): void {
+  const M = METER_IMG;
+  const s = width / M.tube;
+  const H = M.h * s;
+  const y = -M.cy * s;
+  const ringPart = (M.capEnd - M.ringCx) * s;
+  const endW = (M.tubeEnd - M.tubeCut) * s;
+  const mid = Math.max(1, x1 - ringPart - (x0 + endW));
+  const piece = (cx: number, cw: number, x: number, w: number) =>
+    g.drawImage(scaledSprite(img, w, H, dpr, { flipX: true, crop: { x: cx, y: 0, w: cw, h: M.h } }), x, y, w, H);
+  piece(M.tubeCut, M.tubeEnd - M.tubeCut, x0, endW + 0.5);
+  piece(M.capEnd, M.tubeCut - M.capEnd, x0 + endW, mid + 0.5);
+  piece(0, M.capEnd, x1 - ringPart, M.capEnd * s);
+}
+
+/** Tischkante als Foto: auf Höhe h skaliert, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt). */
+function drawTablePhoto(g: CanvasRenderingContext2D, img: Source, x: number, y: number, w: number, h: number, dpr: number, dark: boolean): void {
+  const tw = (TABLE_IMG.w * h) / TABLE_IMG.h;
+  g.save();
+  g.beginPath();
+  g.rect(x, y, w, h);
+  g.clip();
+  for (let i = 0, tx = x; tx < x + w; i++, tx += tw) g.drawImage(scaledSprite(img, tw, h, dpr, { flipX: i % 2 === 1 }), tx, y, tw + 0.5, h);
+  if (dark) {
+    g.fillStyle = 'rgba(10,14,22,0.38)';
+    g.fillRect(x, y, w, h);
+  }
+  g.restore();
+}
 
 interface Measurement {
   a: number;
@@ -52,7 +122,18 @@ export default defineSimulation({
     'Tip: drag the top of the plane (angle), the body or the ring of the spring balance.',
   ),
   layout: { aspect: 1.5, aspectNarrow: 0.68 },
-  images: { block: 'holzklotz.webp', board: 'brett.webp' },
+  images: {
+    block: 'holzklotz.webp',
+    blockSteel: 'klotz-stahl.webp',
+    blockRubber: 'klotz-gummi.webp',
+    board: 'brett.webp',
+    boardSteel: 'brett-stahl.webp',
+    boardIce: 'brett-eis.webp',
+    cart: 'wagen.webp',
+    wheel: 'wagen-rad.webp',
+    meter: 'kraftmesser.webp',
+    table: 'tischkante.webp',
+  },
   groups: [
     { id: 'meter', label: L('Kraftmesser', 'Spring balance') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -443,48 +524,62 @@ export default defineSimulation({
       return [T[0] - Math.cos(a) * g0.L * s, T[1] + Math.sin(a) * g0.L * s];
     }
 
-    /** Holzklotz als Foto (nur bei Holz bzw. eigenen Werten). */
-    const blockPhoto = () => (p.body === 'block' && (p.mat === 'wood' || p.mat === 'custom') ? ctx.images.get('block') : null);
+    /** Klotz als Foto: Holz (auch bei eigenen Werten), Stahl (auch auf Eis) oder Gummi. */
+    function blockPhoto(): { img: HTMLImageElement; key: BlockKey; D: BlockImg } | null {
+      if (p.body !== 'block') return null;
+      const key: BlockKey = p.mat === 'steel' || p.mat === 'ice' ? 'blockSteel' : p.mat === 'rubber' ? 'blockRubber' : 'block';
+      const img = ctx.images.get(key);
+      return img ? { img, key, D: BLOCK_IMGS[key] } : null;
+    }
+    /** Wagen als Foto (Kasten und Rad). */
+    function cartPhoto(): { body: HTMLImageElement; wheel: HTMLImageElement } | null {
+      if (p.body !== 'cart') return null;
+      const body = ctx.images.get('cart');
+      const wheel = ctx.images.get('wheel');
+      return body && wheel ? { body, wheel } : null;
+    }
 
     function bodySize(g0: { L: number }): { bw: number; bh: number } {
       const bw = BODY * g0.L;
       // Foto: Seitenverhältnis des Klotzes aus dem Foto (flacher als die Ersatzgrafik)
-      if (blockPhoto()) return { bw, bh: (bw * BLOCK_IMG.bh) / BLOCK_BW };
+      if (blockPhoto()) return { bw, bh: bw / BLOCK_ASPECT };
+      // Fotowagen: Räder unten, Kasten bis zur Oberkante
+      if (cartPhoto()) return { bw, bh: bw * CART_WHEEL + (CART_IMG.axleY * bw) / CART_IMG.bodyW };
       return { bw, bh: p.body === 'cart' ? bw * 0.5 : bw * 0.58 };
     }
 
-    /** Holzklotz aus dem Foto: beide Enden, in der Mitte weich zusammengesetzt; vorab gerendert. */
+    /** Klotz aus dem Foto: beide Enden, in der Mitte weich zusammengesetzt; vorab gerendert. */
     let blockCache: { key: string; canvas: HTMLCanvasElement } | null = null;
-    function blockSprite(img: HTMLImageElement, k: number): HTMLCanvasElement {
-      const key = `${Math.round(k * 1000)}|${surface.dpr}`;
+    function blockSprite(img: HTMLImageElement, id: BlockKey, D: BlockImg, k: number): HTMLCanvasElement {
+      const key = `${id}|${Math.round(k * 1000)}|${surface.dpr}`;
       if (blockCache?.key === key) return blockCache.canvas;
-      const D = BLOCK_IMG;
-      const w = BLOCK_W * k;
+      const C = blockCut(D);
+      const w = C.w * k;
       const h = D.h * k;
       const { canvas, g } = offscreenCanvas(w, h, surface.dpr);
-      g.drawImage(img, 0, 0, D.cutL, D.h, 0, 0, D.cutL * k, h);
-      const rw = (D.w - D.cutR) * k;
+      g.drawImage(img, 0, 0, C.cutL, D.h, 0, 0, C.cutL * k, h);
+      const rw = (D.w - C.cutR) * k;
       const right = offscreenCanvas(rw, h, surface.dpr);
-      right.g.drawImage(img, D.cutR, 0, D.w - D.cutR, D.h, 0, 0, rw, h);
+      right.g.drawImage(img, C.cutR, 0, D.w - C.cutR, D.h, 0, 0, rw, h);
       right.g.globalCompositeOperation = 'destination-in';
-      const fade = right.g.createLinearGradient(0, 0, D.blend * k, 0);
+      const fade = right.g.createLinearGradient(0, 0, BLOCK_BLEND * k, 0);
       fade.addColorStop(0, 'rgba(0,0,0,0)');
       fade.addColorStop(1, 'rgba(0,0,0,1)');
       right.g.fillStyle = fade;
       right.g.fillRect(0, 0, rw, h);
-      g.drawImage(right.canvas, (D.cutL - D.blend) * k, 0, rw, h);
+      g.drawImage(right.canvas, (C.cutL - BLOCK_BLEND) * k, 0, rw, h);
       blockCache = { key, canvas };
       return canvas;
     }
 
-    /** Holzleiste als Oberfläche: vorab gerendert (gespiegelt aneinandergesetzt, keine Nahtstellen). */
+    /** Oberfläche (Holz, Stahl, Eis) als Foto: vorab gerendert (gespiegelt aneinandergesetzt, keine Nahtstellen). */
     let boardCache: { key: string; canvas: HTMLCanvasElement } | null = null;
-    function boardStrip(img: HTMLImageElement, len: number, thick: number): HTMLCanvasElement {
+    function boardStrip(img: HTMLImageElement, id: string, len: number, thick: number): HTMLCanvasElement {
       const dark = ctx.theme.dark;
-      const key = `${Math.round(len)}|${thick}|${surface.dpr}|${dark ? 1 : 0}`;
+      const key = `${id}|${Math.round(len)}|${thick}|${surface.dpr}|${dark ? 1 : 0}`;
       if (boardCache?.key === key) return boardCache.canvas;
       const { canvas, g } = offscreenCanvas(len, thick, surface.dpr);
-      const natural = (BOARD_IMG.w * thick) / BOARD_IMG.h;
+      const natural = (img.naturalWidth * thick) / img.naturalHeight;
       // Maserung höchstens leicht in Längsrichtung gestreckt
       const n = Math.max(1, Math.round(len / (natural * 1.6)));
       const tw = len / n;
@@ -498,7 +593,7 @@ export default defineSimulation({
       // Kanten: oben Glanz, unten Schattenfuge
       g.fillStyle = 'rgba(255,255,255,0.35)';
       g.fillRect(0, 0, len, 1);
-      g.fillStyle = 'rgba(70,40,10,0.45)';
+      g.fillStyle = id === 'board' ? 'rgba(70,40,10,0.45)' : 'rgba(20,28,40,0.4)';
       g.fillRect(0, thick - 1, len, 1);
       boardCache = { key, canvas };
       return canvas;
@@ -648,20 +743,26 @@ export default defineSimulation({
       gx.fillStyle = wall;
       gx.fillRect(r.x, r.y, r.w, r.h);
       // Labortisch: Platte und Vorderseite
-      const top = gx.createLinearGradient(0, groundY, 0, groundY + 12);
-      top.addColorStop(0, dark ? '#5a4632' : '#d2a877');
-      top.addColorStop(1, dark ? '#4a3a2b' : '#b88a5a');
-      gx.fillStyle = top;
-      gx.fillRect(r.x, groundY, r.w, 12);
-      const front = gx.createLinearGradient(0, groundY + 12, 0, r.y + r.h);
-      front.addColorStop(0, dark ? '#3a2d21' : '#a77b4d');
-      front.addColorStop(1, dark ? '#2a2018' : '#8a6239');
-      gx.fillStyle = front;
-      gx.fillRect(r.x, groundY + 12, r.w, r.y + r.h - groundY - 12);
-      gx.fillStyle = 'rgba(255,255,255,0.25)';
-      gx.fillRect(r.x, groundY, r.w, 1.5);
-      gx.fillStyle = 'rgba(0,0,0,0.18)';
-      gx.fillRect(r.x, groundY + 12, r.w, 2);
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, oben die helle Kante der Platte
+        drawTablePhoto(gx, tableImg, r.x, groundY, r.w, r.y + r.h - groundY, surface.dpr, dark);
+      } else {
+        const top = gx.createLinearGradient(0, groundY, 0, groundY + 12);
+        top.addColorStop(0, dark ? '#5a4632' : '#d2a877');
+        top.addColorStop(1, dark ? '#4a3a2b' : '#b88a5a');
+        gx.fillStyle = top;
+        gx.fillRect(r.x, groundY, r.w, 12);
+        const front = gx.createLinearGradient(0, groundY + 12, 0, r.y + r.h);
+        front.addColorStop(0, dark ? '#3a2d21' : '#a77b4d');
+        front.addColorStop(1, dark ? '#2a2018' : '#8a6239');
+        gx.fillStyle = front;
+        gx.fillRect(r.x, groundY + 12, r.w, r.y + r.h - groundY - 12);
+        gx.fillStyle = 'rgba(255,255,255,0.25)';
+        gx.fillRect(r.x, groundY, r.w, 1.5);
+        gx.fillStyle = 'rgba(0,0,0,0.18)';
+        gx.fillRect(r.x, groundY + 12, r.w, 2);
+      }
 
       // Keil
       const st = surfaceStyle();
@@ -681,14 +782,16 @@ export default defineSimulation({
       gx.fill();
       gx.restore();
       // Oberfläche (Material)
-      const boardImg = st.label === 'wood' ? ctx.images.get('board') : null;
+      // Fotos für Holz, Stahl und Eis (Asphalt bleibt gezeichnet)
+      const boardKey = st.label === 'wood' ? 'board' : st.label === 'steel' ? 'boardSteel' : st.label === 'ice' ? 'boardIce' : null;
+      const boardImg = boardKey ? ctx.images.get(boardKey) : null;
       const thick = boardImg ? (sm ? 6 : 9) : sm ? 4 : 6;
       gx.save();
       if (boardImg) {
         // Foto: Holzleiste entlang der Schräge
         gx.translate(P0[0], P0[1]);
         gx.rotate(-a);
-        gx.drawImage(boardStrip(boardImg, L, thick), 0, 0, L, thick);
+        gx.drawImage(boardStrip(boardImg, boardKey!, L, thick), 0, 0, L, thick);
         gx.restore();
       } else {
         gx.beginPath();
@@ -917,13 +1020,32 @@ export default defineSimulation({
       gx.shadowBlur = 6;
       gx.shadowOffsetY = 2;
       const photo = blockPhoto();
+      const cart = cartPhoto();
       if (photo) {
         // Foto: Klotz füllt bw × bh, die Öse ragt hangaufwärts heraus (dort hängt der Kraftmesser)
-        const k = bw / BLOCK_BW;
+        const { D } = photo;
+        const C = blockCut(D);
+        const k = bw / C.bw;
         gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.3)';
         gx.shadowBlur = 6;
         gx.shadowOffsetY = 2;
-        gx.drawImage(blockSprite(photo, k), -bw / 2 - BLOCK_IMG.x0 * k, -bh - BLOCK_IMG.y0 * k, BLOCK_W * k, BLOCK_IMG.h * k);
+        gx.drawImage(blockSprite(photo.img, photo.key, D, k), -bw / 2, -bh - D.y0 * k, C.w * k, D.h * k);
+      } else if (cart) {
+        // Foto: Wagenkasten, davor die Räder an den Achslöchern (drehen sich mit dem Weg)
+        const k = bw / CART_IMG.bodyW;
+        const wr = bw * CART_WHEEL;
+        const top = -wr - CART_IMG.axleY * k;
+        gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.3)';
+        gx.drawImage(scaledSprite(cart.body, CART_IMG.w * k, CART_IMG.h * k, surface.dpr), -bw / 2, top, CART_IMG.w * k, CART_IMG.h * k);
+        const wheel = scaledSprite(cart.wheel, wr * 2, (wr * 2 * WHEEL_IMG.h) / WHEEL_IMG.w, surface.dpr);
+        const rot = (state.s * g0.L) / wr;
+        for (const ax of CART_IMG.axles) {
+          gx.save();
+          gx.translate(-bw / 2 + ax * k, -wr);
+          gx.rotate(-rot);
+          gx.drawImage(wheel, -wr, -wr, wr * 2, wr * 2);
+          gx.restore();
+        }
       } else if (p.body === 'cart') {
         const wr = bh * 0.32;
         const bodyY = -bh;
@@ -994,10 +1116,12 @@ export default defineSimulation({
       gx.restore();
       // Masse auf dem Körper
       const cc = bodyCenter(g0, state.s);
+      // Fotowagen: Beschriftung mitten auf dem (flacheren) Kasten
+      const cartLift = cart ? bh / 2 - (CART_IMG.h * bw) / CART_IMG.bodyW / 2 : bh * 0.12;
       gx.save();
-      gx.translate(cc[0], cc[1] - (p.body === 'cart' ? bh * 0.12 : 0));
+      gx.translate(cc[0], cc[1] - (p.body === 'cart' && !cart ? bh * 0.12 : 0));
       gx.rotate(-a);
-      text(gx, `${fmt.num(p.m, 1)} kg`, 0, p.body === 'cart' ? -bh * 0.12 : 0, { font: `700 ${small() ? 9.5 : 11}px ${ctx.theme.font}`, color: p.mat === 'rubber' && p.body === 'block' ? '#e6eaf0' : p.body === 'cart' ? '#ffffff' : '#3d2a06' });
+      text(gx, `${fmt.num(p.m, 1)} kg`, 0, p.body === 'cart' ? -cartLift : 0, { font: `700 ${small() ? 9.5 : 11}px ${ctx.theme.font}`, color: p.mat === 'rubber' && p.body === 'block' ? '#e6eaf0' : p.body === 'cart' ? '#ffffff' : '#3d2a06' });
       gx.restore();
     }
 
@@ -1035,17 +1159,24 @@ export default defineSimulation({
         gx.stroke();
       }
       const h0 = mg.hook + ext;
-      const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
-      tube.addColorStop(0, withAlpha(color, 0.55));
-      tube.addColorStop(0.35, withAlpha(color, 0.22));
-      tube.addColorStop(1, withAlpha(color, 0.75));
-      gx.fillStyle = tube;
-      roundRect(gx, h0, -w / 2, mg.housing, w, 3);
-      gx.fill();
-      gx.strokeStyle = color;
-      gx.lineWidth = 1.4;
-      roundRect(gx, h0, -w / 2, mg.housing, w, 3);
-      gx.stroke();
+      const ringR = mg.fixed - mg.hook - mg.housing;
+      const meterImg = ctx.images.get('meter');
+      if (meterImg) {
+        // Foto: durchsichtige Hülse mit Kappe und Ring
+        drawMeterPhoto(gx, meterImg, h0, h0 + mg.housing + ringR, w, surface.dpr);
+      } else {
+        const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
+        tube.addColorStop(0, withAlpha(color, 0.55));
+        tube.addColorStop(0.35, withAlpha(color, 0.22));
+        tube.addColorStop(1, withAlpha(color, 0.75));
+        gx.fillStyle = tube;
+        roundRect(gx, h0, -w / 2, mg.housing, w, 3);
+        gx.fill();
+        gx.strokeStyle = color;
+        gx.lineWidth = 1.4;
+        roundRect(gx, h0, -w / 2, mg.housing, w, 3);
+        gx.stroke();
+      }
       gx.strokeStyle = withAlpha(theme.dark ? '#e6eaf0' : '#2a313b', 0.5);
       gx.lineWidth = 1;
       gx.beginPath();
@@ -1056,11 +1187,13 @@ export default defineSimulation({
         else gx.lineTo(s, yy);
       }
       gx.stroke();
-      gx.strokeStyle = color;
-      gx.lineWidth = 2.6;
-      gx.beginPath();
-      gx.arc(h0 + mg.housing + (mg.fixed - mg.hook - mg.housing), 0, mg.fixed - mg.hook - mg.housing, 0, Math.PI * 2);
-      gx.stroke();
+      if (!meterImg) {
+        gx.strokeStyle = color;
+        gx.lineWidth = 2.6;
+        gx.beginPath();
+        gx.arc(h0 + mg.housing + ringR, 0, ringR, 0, Math.PI * 2);
+        gx.stroke();
+      }
       gx.restore();
       // Anzeige über dem Gehäuse
       const a = (p.a * Math.PI) / 180;
