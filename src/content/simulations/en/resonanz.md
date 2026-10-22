@@ -13,7 +13,7 @@ $$
 \hat\varphi = \hat\varphi_E \cdot \frac{\omega_0^2}{\sqrt{(\omega_0^2 - \omega_E^2)^2 + (2\delta\,\omega_E)^2}} .
 $$
 
-The **resonance curve** $\hat\varphi(f_E)$ peaks near $f_0$; weak damping makes it tall and narrow. The wheel lags behind the driver: $\Delta\varphi \approx 0°$ for slow driving (in phase), $90°$ at $f_E = f_0$, $\approx 180°$ for fast driving (antiphase). With very weak damping the amplitude at resonance, $\hat\varphi \approx \hat\varphi_E\,\omega_0/(2\delta)$, exceeds the load limit of $120°$: a **resonance disaster**.
+The **resonance curve** $\hat\varphi(f_E)$ peaks at $\omega_R = \sqrt{\omega_0^2 - 2\delta^2}$, slightly below $f_0$; weak damping makes it tall and narrow. The wheel lags behind the driver: $\Delta\varphi \approx 0°$ for slow driving (in phase), $90°$ at $f_E = f_0$, $\approx 180°$ for fast driving (antiphase). With very weak damping the amplitude at resonance, $\hat\varphi \approx \hat\varphi_E\,\omega_0/(2\delta)$, exceeds the load limit of $120°$: a **resonance disaster**.
 
 ## Try it
 
