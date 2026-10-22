@@ -1,4 +1,4 @@
-import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   elasticLimitForce,
   ELASTIC_LIMIT,
@@ -15,6 +15,8 @@ import {
 
 const L = (de: string, en: string) => ({ de, en });
 const MAX_PIECES = 10;
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
 /** Dämpfungsgrad beim Nachschwingen (bei der automatischen Messreihe stärker, damit es zügig geht). */
 const DAMPING = 0.12;
 const DAMPING_AUTO = 0.3;
@@ -99,7 +101,7 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
     { id: 'fresh', label: L('Neue Feder einsetzen', 'Fit new springs'), visibleIf: (v) => v.limit === true },
   ],
-  images: { stand: 'stativ.webp' },
+  images: { stand: 'stativ.webp', piece: 'massestueck.webp', table: 'tischkante.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
     { key: 'law', label: L('Hookesches Gesetz', 'Hooke’s law') },
@@ -451,6 +453,13 @@ export default defineSimulation({
 
     function drawPiece(cx: number, y: number, w: number, h: number, label: string | null): void {
       const gx = surface.g;
+      const pieceImg = ctx.images.get('piece');
+      if (pieceImg) {
+        // Foto: flache Schlitzscheibe von der Seite, auf die Höhe des Massestücks gebracht (Kante ohne Details)
+        gx.drawImage(scaledSprite(pieceImg, w, h, surface.dpr), cx - w / 2, y, w, h);
+        if (label && h >= 11 && w >= 26) text(gx, label, cx, y + h / 2 + 0.5, { font: `700 ${h >= 13 ? 9.5 : 8.5}px ${ctx.theme.font}`, color: '#3d2a06' });
+        return;
+      }
       const brass = gx.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
       brass.addColorStop(0, '#8d6a24');
       brass.addColorStop(0.3, '#f0d27a');
@@ -527,13 +536,25 @@ export default defineSimulation({
       wall.addColorStop(1, dark ? '#101824' : '#e1e7ee');
       gx.fillStyle = wall;
       gx.fillRect(r.x, r.y, r.w, r.h);
-      const table = gx.createLinearGradient(0, g0.tableY, 0, r.y + r.h);
-      table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
-      table.addColorStop(1, dark ? '#33281e' : '#9c7349');
-      gx.fillStyle = table;
-      gx.fillRect(r.x, g0.tableY, r.w, r.y + r.h - g0.tableY);
-      gx.fillStyle = 'rgba(255,255,255,0.22)';
-      gx.fillRect(r.x, g0.tableY, r.w, 1.5);
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt)
+        const th = r.y + r.h - g0.tableY;
+        const tw = (TABLE_IMG.w * th) / TABLE_IMG.h;
+        for (let i = 0, tx = r.x; tx < r.x + r.w; i++, tx += tw) gx.drawImage(scaledSprite(tableImg, tw, th, surface.dpr, { flipX: i % 2 === 1 }), tx, g0.tableY, tw + 0.5, th);
+        if (dark) {
+          gx.fillStyle = 'rgba(10,14,22,0.38)';
+          gx.fillRect(r.x, g0.tableY, r.w, th);
+        }
+      } else {
+        const table = gx.createLinearGradient(0, g0.tableY, 0, r.y + r.h);
+        table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
+        table.addColorStop(1, dark ? '#33281e' : '#9c7349');
+        gx.fillStyle = table;
+        gx.fillRect(r.x, g0.tableY, r.w, r.y + r.h - g0.tableY);
+        gx.fillStyle = 'rgba(255,255,255,0.22)';
+        gx.fillRect(r.x, g0.tableY, r.w, 1.5);
+      }
 
       // Stativ
       const metal = (x0: number, w: number) => {

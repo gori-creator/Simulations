@@ -30,6 +30,11 @@ type Pt = [number, number];
 type ChartKind = 'x' | 'y' | 'vx' | 'vy' | 'range' | 'energy';
 
 const FAMILY = [15, 30, 45, 60, 75];
+/**
+ * Zielscheibe `zielscheibe.webp` (918 × 1186 px): Mitte und Radius der Scheibe,
+ * Zeile, ab der nur noch der Pfosten kommt, und dessen Breite.
+ */
+const TARGET_IMG = { w: 918, h: 1186, cx: 459, cy: 459, r: 458, post: 918, postX: [397, 525] } as const;
 const RAD = Math.PI / 180;
 /** Anzahl der Stützpunkte der vorausberechneten Bahn (für das weiche Überblenden). */
 const PREVIEW_N = 140;
@@ -176,6 +181,9 @@ export default defineSimulation({
     mond: 'hintergrund-mond.webp',
     mars: 'hintergrund-mars.webp',
     ball: 'ball.webp',
+    tt: 'tischtennisball.webp',
+    kugel: 'stosskugel.webp',
+    target: 'zielscheibe.webp',
   },
   readouts: [
     { key: 'score', label: L('Zielwurf', 'Target practice') },
@@ -1080,7 +1088,8 @@ export default defineSimulation({
       g.shadowColor = 'rgba(0,0,0,0.35)';
       g.shadowBlur = 6;
       g.shadowOffsetY = 2;
-      const img = kind === 'fb' ? ctx.images.get('ball') : null;
+      // Fotos: Fußball, Tischtennisball, Stoßkugel (drehen sich im Flug)
+      const img = ctx.images.get(kind === 'fb' ? 'ball' : kind);
       if (img) {
         g.translate(px, py);
         g.rotate(spin * 6);
@@ -1202,30 +1211,53 @@ export default defineSimulation({
       const [cx, cy] = scene.toPx(p.tx, p.ty);
       const R = Math.max(6, targetRadius(p.tx) * scene.scale.x);
       const ground = scene.py(0);
-      // Pfahl
-      g.fillStyle = theme.dark ? '#7a5d3f' : '#8d6a45';
-      g.fillRect(cx - 2.5, cy, 5, ground - cy);
-      // Scheibe (schräg von vorn gesehen: schmale Ellipse) mit Ringen
+      // Scheibe schräg von vorn gesehen: schmale Ellipse
       const rx = Math.max(4, R * 0.42);
-      g.save();
-      g.shadowColor = 'rgba(0,0,0,0.3)';
-      g.shadowBlur = 6;
-      g.shadowOffsetX = 2;
-      const rings = ['#ffffff', '#d6336c', '#ffffff', '#d6336c'];
-      rings.forEach((c, i) => {
-        const k = 1 - i * 0.24;
-        g.fillStyle = c;
+      const targetImg = ctx.images.get('target');
+      if (targetImg) {
+        // Foto, in der Breite gestaucht (Schrägblick); nur der gleichförmige Pfosten wird bis zum Boden gestreckt
+        const T = TARGET_IMG;
+        const kx = rx / T.r;
+        const ky = R / T.r;
+        const w = T.w * kx;
+        const postTop = cy + (T.post - T.cy) * ky;
+        if (ground > postTop) {
+          const pc = { x: T.postX[0], y: T.post, w: T.postX[1] - T.postX[0], h: T.h - T.post };
+          const pw = pc.w * kx;
+          g.drawImage(scaledSprite(targetImg, Math.max(1, pw), Math.max(1, ground - postTop), surface.dpr, { crop: pc }), cx + (T.postX[0] - T.cx) * kx, postTop, pw, ground - postTop);
+        }
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.3)';
+        g.shadowBlur = 6;
+        g.shadowOffsetX = 2;
+        const dh = T.post * ky;
+        g.drawImage(scaledSprite(targetImg, w, dh, surface.dpr, { crop: { x: 0, y: 0, w: T.w, h: T.post } }), cx - T.cx * kx, cy - T.cy * ky, w, dh);
+        g.restore();
+      } else {
+        // Pfahl
+        g.fillStyle = theme.dark ? '#7a5d3f' : '#8d6a45';
+        g.fillRect(cx - 2.5, cy, 5, ground - cy);
+        // Scheibe mit Ringen
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.3)';
+        g.shadowBlur = 6;
+        g.shadowOffsetX = 2;
+        const rings = ['#ffffff', '#d6336c', '#ffffff', '#d6336c'];
+        rings.forEach((c, i) => {
+          const k = 1 - i * 0.24;
+          g.fillStyle = c;
+          g.beginPath();
+          g.ellipse(cx, cy, rx * k, R * k, 0, 0, Math.PI * 2);
+          g.fill();
+          if (i === 0) g.shadowColor = 'transparent';
+        });
+        g.restore();
+        g.strokeStyle = 'rgba(0,0,0,0.35)';
+        g.lineWidth = 1;
         g.beginPath();
-        g.ellipse(cx, cy, rx * k, R * k, 0, 0, Math.PI * 2);
-        g.fill();
-        if (i === 0) g.shadowColor = 'transparent';
-      });
-      g.restore();
-      g.strokeStyle = 'rgba(0,0,0,0.35)';
-      g.lineWidth = 1;
-      g.beginPath();
-      g.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
-      g.stroke();
+        g.ellipse(cx, cy, rx, R, 0, 0, Math.PI * 2);
+        g.stroke();
+      }
       // Treffer-Blitz
       if (flash.running && lastResult === 'hit') {
         const u = flash.value;
