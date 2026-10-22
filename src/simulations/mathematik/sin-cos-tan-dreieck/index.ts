@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angleFromSides,
@@ -25,6 +25,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Höhe einer Ziegelreihe (mit Fuge) im Foto ziegelwand.webp, in Pixeln. */
+const BRICK_ROW = 72.4;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 type Px = [number, number];
@@ -139,6 +141,7 @@ export default defineSimulation({
   id: 'sin-cos-tan-dreieck',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
+  images: { wheelchair: 'rollstuhl.webp', bricks: 'ziegelwand.webp' },
   groups: [
     { id: 'fig', label: L('Dreieck', 'Triangle') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1648,6 +1651,22 @@ export default defineSimulation({
       const u = s * 0.62;
       if (u < 14) return;
       const dark = th().dark;
+      const chairImg = ctx.images.get('wheelchair');
+      if (chairImg) {
+        // Foto eines leeren Rollstuhls (etwa 0,95 m hoch), Räder auf der Rampe, mitgedreht
+        const h = s * 0.95;
+        const w = (h * chairImg.naturalWidth) / chairImg.naturalHeight;
+        g.save();
+        g.globalAlpha *= alpha;
+        g.translate(q[0], q[1]);
+        g.rotate(-rad(angDeg));
+        g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
+        g.shadowBlur = 6;
+        g.shadowOffsetY = 2;
+        g.drawImage(scaledSprite(chairImg, w, h, surface.dpr), -w * 0.4, -h, w, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.globalAlpha *= alpha * 0.9;
       g.translate(q[0], q[1]);
@@ -1712,6 +1731,25 @@ export default defineSimulation({
       g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
       const bh = clamp(V.s * 0.075, 5, 14);
       const bw = bh * 2.6;
+      const brickImg = ctx.images.get('bricks');
+      if (brickImg) {
+        // Ziegelfoto als Muster: eine Ziegelreihe (BRICK_ROW px im Bild) so hoch wie bei der Ersatzgrafik, unten an der Bodenlinie ausgerichtet
+        const tile = (brickImg.naturalWidth * bh) / BRICK_ROW;
+        const dpr = surface.dpr;
+        const pat = g.createPattern(scaledSprite(brickImg, tile, tile, dpr), 'repeat');
+        if (pat) {
+          pat.setTransform(new DOMMatrix([1 / dpr, 0, 0, 1 / dpr, wallX, gy]));
+          g.fillStyle = pat;
+          g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
+          // im Dunkelmodus abgedunkelt wie die gezeichnete Wand
+          if (dark) {
+            g.fillStyle = withAlpha(theme.bg, 0.45);
+            g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
+          }
+        }
+      }
+      const brickGA = g.globalAlpha;
+      if (brickImg) g.globalAlpha = 0;
       g.strokeStyle = dark ? 'rgba(20,12,10,0.55)' : 'rgba(255,240,230,0.7)';
       g.lineWidth = 1;
       for (let row = 0, y = gy; y > R.y; row++, y -= bh) {
@@ -1726,6 +1764,7 @@ export default defineSimulation({
           g.stroke();
         }
       }
+      g.globalAlpha = brickGA;
       const shade = g.createLinearGradient(wallX, 0, wallX + 18, 0);
       shade.addColorStop(0, 'rgba(0,0,0,0.28)');
       shade.addColorStop(1, 'rgba(0,0,0,0)');

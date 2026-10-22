@@ -1,10 +1,12 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { drawFrog, drawPenguin, drawPiggy, drawSnowflake, drawSun, groundShadow } from './figures';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { drawFrog, drawPenguin, drawPhotoFigure, drawPiggy, drawSnowflake, drawSun, groundShadow } from './figures';
 import { absolute, change, compute, num, opposite, operand, randomTask, rewrite, story, termText, viewRange, walkPlan, type Lang, type Op, type Scene } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** meer.webp: 1600 × 1600, die Wasseroberfläche liegt in Bildzeile 683 (gemessen). */
-const SEA_IMG = { w: 1600, h: 1600, water: 683 } as const;
+const SEA_IMG = { w: 1024, h: 1024, water: 311 } as const;
+/** Thermometerfoto (Pixel in thermometer.webp): Röhrenmitte, Kugelmitte und -radius, Innenröhre, Schnitte für das Strecken der gleichförmigen Röhre. */
+const THERMO_IMG = { w: 200, h: 1410, cx: 100, bulbY: 1305, bulbR: 100, bore: 22, capEnd: 70, neck: 1150, red: 1192 } as const;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
@@ -47,7 +49,7 @@ export default defineSimulation({
   id: 'zahlengerade',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
-  images: { sea: 'meer.webp' },
+  images: { sea: 'meer.webp', frog: 'frosch.webp', piggy: 'sparschwein.webp', penguin: 'pinguin.webp', thermo: 'thermometer.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -624,7 +626,11 @@ export default defineSimulation({
         g.scale(st.appear, st.appear);
         g.translate(-fx, -y);
       }
-      if (isKonto) drawPiggy(g, fx, y - 1 - lift, lay.figH * 0.95, st.facing, st.phase === 'walk' ? st.pos * Math.PI * 2 : 0);
+      // Fotos (falls geladen), sonst die gezeichneten Figuren; das Sparschwein wippt beim Laufen leicht
+      const figImg = ctx.images.get(isKonto ? 'piggy' : 'frog');
+      if (figImg && isKonto) drawPhotoFigure(g, figImg, fx, y + 1 - lift - (st.phase === 'walk' ? Math.abs(Math.sin(st.pos * Math.PI * 2)) * lay.figH * 0.03 : 0), lay.figH * 0.72, st.facing);
+      else if (figImg) drawPhotoFigure(g, figImg, fx, y + 1 - lift, lay.figH * 0.82, st.facing);
+      else if (isKonto) drawPiggy(g, fx, y - 1 - lift, lay.figH * 0.95, st.facing, st.phase === 'walk' ? st.pos * Math.PI * 2 : 0);
       else drawFrog(g, fx, y - 1 - lift, lay.figH, st.facing, st.phase === 'walk' ? st.hop : 0);
       g.restore();
       hits.push({ id: 'start', x: xa, y });
@@ -874,38 +880,74 @@ export default defineSimulation({
       const nearIcon = Math.abs(y0 - (S.y + 34)) < 28 || Math.abs(y0 - (S.y + S.h - 34)) < 28;
       text(g, ctx.t('freezing'), S.x + S.w - (nearIcon ? 62 : 14), y0 - 9, { font: `600 ${wide ? 11.5 : 10}px ${theme.font}`, color: withAlpha(theme.series[0]!, 0.95), align: 'right' });
 
-      // Glasröhre
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.18)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#1c2533' : '#ffffff';
-      roundRect(g, tx - tw / 2 - 4, top - 18, tw + 8, bulbY - top + 18, (tw + 8) / 2);
-      g.fill();
-      g.beginPath();
-      g.arc(tx, bulbY, bulbR + 4, 0, Math.PI * 2);
-      g.fill();
-      g.restore();
-      g.strokeStyle = withAlpha(theme.text, 0.25);
-      g.lineWidth = 1.5;
-      roundRect(g, tx - tw / 2 - 4, top - 18, tw + 8, bulbY - top + 18, (tw + 8) / 2);
-      g.stroke();
-      // Flüssigkeit
       const liquid = theme.series[1]!;
       const ly = clamp(yOf(st.pos), top - 10, bottom + 10);
-      g.fillStyle = liquid;
-      roundRect(g, tx - tw / 2 + 3, ly, tw - 6, bulbY - ly, (tw - 6) / 2);
-      g.fill();
-      g.beginPath();
-      g.arc(tx, bulbY, bulbR, 0, Math.PI * 2);
-      g.fill();
-      // Glanz
-      g.fillStyle = 'rgba(255,255,255,0.45)';
-      roundRect(g, tx - tw / 2 + 4, top - 10, 3.5, bulbY - top - bulbR, 2);
-      g.fill();
-      g.beginPath();
-      g.arc(tx - bulbR * 0.35, bulbY - bulbR * 0.35, bulbR * 0.22, 0, Math.PI * 2);
-      g.fill();
+      const thermoImg = ctx.images.get('thermo');
+      if (thermoImg) {
+        // Foto der Glasröhre: Kugel auf bulbY, Röhre bis top − 18. Der gleichförmige Mittelteil der Röhre wird
+        // nur in Längsrichtung gestreckt (Kappe oben und Kugel bleiben unverzerrt).
+        const T = THERMO_IMG;
+        const k = (bulbR + 4) / T.bulbR;
+        const x0 = tx - T.cx * k;
+        const w = T.w * k;
+        const yTop = top - 18;
+        const yNeck = bulbY - (T.bulbY - T.neck) * k;
+        const capH = T.capEnd * k;
+        const dpr = surface.dpr;
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.18)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        // im Dunkelmodus etwas gedämpft, damit das helle Glas nicht blendet
+        if (theme.dark) g.globalAlpha = 0.86;
+        g.drawImage(scaledSprite(thermoImg, w, capH, dpr, { crop: { x: 0, y: 0, w: T.w, h: T.capEnd } }), x0, yTop, w, capH);
+        const midH = Math.max(1, yNeck - yTop - capH);
+        g.drawImage(thermoImg, 0, T.capEnd, T.w, T.neck - T.capEnd, x0, yTop + capH, w, midH);
+        // Kugel in der Farbe der Flüssigkeit (Helligkeit und Glanz bleiben aus dem Foto)
+        const lowH = (T.h - T.neck) * k;
+        const region = { x: 0, y: (T.red - T.neck) * k, w, h: lowH };
+        g.drawImage(tintedSprite(thermoImg, w, lowH, dpr, liquid, { crop: { x: 0, y: T.neck, w: T.w, h: T.h - T.neck }, region, lift: 0.35 }), x0, yNeck, w, lowH);
+        g.restore();
+        // Flüssigkeitssäule in der Innenröhre, unten in die Kugel hinein
+        const bw = T.bore * 2 * k;
+        g.fillStyle = liquid;
+        roundRect(g, tx - bw / 2, ly, bw, bulbY - bulbR * 0.6 - ly, bw / 2);
+        g.fill();
+        g.fillStyle = 'rgba(255,255,255,0.35)';
+        roundRect(g, tx - bw / 2 + bw * 0.18, ly + 2, Math.max(1.2, bw * 0.18), Math.max(0, bulbY - bulbR - ly - 2), 1);
+        g.fill();
+      } else {
+        // Glasröhre
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.18)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        g.fillStyle = theme.dark ? '#1c2533' : '#ffffff';
+        roundRect(g, tx - tw / 2 - 4, top - 18, tw + 8, bulbY - top + 18, (tw + 8) / 2);
+        g.fill();
+        g.beginPath();
+        g.arc(tx, bulbY, bulbR + 4, 0, Math.PI * 2);
+        g.fill();
+        g.restore();
+        g.strokeStyle = withAlpha(theme.text, 0.25);
+        g.lineWidth = 1.5;
+        roundRect(g, tx - tw / 2 - 4, top - 18, tw + 8, bulbY - top + 18, (tw + 8) / 2);
+        g.stroke();
+        // Flüssigkeit
+        g.fillStyle = liquid;
+        roundRect(g, tx - tw / 2 + 3, ly, tw - 6, bulbY - ly, (tw - 6) / 2);
+        g.fill();
+        g.beginPath();
+        g.arc(tx, bulbY, bulbR, 0, Math.PI * 2);
+        g.fill();
+        // Glanz
+        g.fillStyle = 'rgba(255,255,255,0.45)';
+        roundRect(g, tx - tw / 2 + 4, top - 10, 3.5, bulbY - top - bulbR, 2);
+        g.fill();
+        g.beginPath();
+        g.arc(tx - bulbR * 0.35, bulbY - bulbR * 0.35, bulbR * 0.22, 0, Math.PI * 2);
+        g.fill();
+      }
       // Skala links
       drawVScale(tx - tw / 2 - 8, yOf, lo, hi, -1, ctx.t('unitC'));
 
@@ -1078,7 +1120,9 @@ export default defineSimulation({
       const angle = lerp(0, swimAngle, ease.inOutCubic(k));
       const px = lerp(standX - s * 0.22, swimX, k);
       const flap = st.phase === 'walk' ? Math.sin(now / 120) * 0.3 : 0.12;
-      drawPenguin(g, px, py + s * 0.48 * k, s, 1, angle, flap);
+      const penguinImg = ctx.images.get('penguin');
+      if (penguinImg) drawPhotoFigure(g, penguinImg, px, py + s * 0.48 * k, s * 0.98, 1, angle);
+      else drawPenguin(g, px, py + s * 0.48 * k, s, 1, angle, flap);
       if (k >= 1) {
         // Luftblasen
         g.strokeStyle = 'rgba(255,255,255,0.7)';

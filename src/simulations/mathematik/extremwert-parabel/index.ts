@@ -445,10 +445,8 @@ export default defineSimulation({
 
     /** Mauer: Rollschicht oben und zwei Ziegelreihen (Bildzeilen 0–50, endet an einer Fuge). */
     const WALL_CROP: Rect = { x: 0, y: 0, w: 677, h: 50 };
-    /** Holz: größtes Rechteck im Inneren des Dreiecksbretts (nur Maserung, keine Kante). */
-    const WOOD_CROP: Rect = { x: 140, y: 185, w: 232, h: 180 };
-    /** Blech: untere Bildhälfte ohne den hellen Lichtfleck oben. */
-    const METAL_CROP: Rect = { x: 0, y: 190, w: 1200, h: 206 };
+    /** Blech: ganzes Foto (gleichmäßig hell, ohne Lichtfleck). */
+    const METAL_CROP: Rect = { x: 0, y: 0, w: 1536, h: 512 };
     const patterns = new Map<string, { key: string; p: CanvasPattern }>();
     /**
      * Gekachelte Fototextur, Kachelbreite tileW CSS-Pixel (Seitenverhältnis wie im Foto);
@@ -1441,7 +1439,12 @@ export default defineSimulation({
         g.lineTo(...PB);
         g.closePath();
         g.clip();
-        drawCover(woodImg, WOOD_CROP, { x: ox, y: oy - b * s, w: a * s, h: b * s });
+        // Foto des Dreiecksbretts (rechter Winkel unten links, Katheten an den Bildrändern): gleichmäßig so groß
+        // skaliert und am rechten Winkel angelegt, dass es das gezeichnete Dreieck ganz enthält – unverzerrt
+        const kw = Math.max((a * s) / woodImg.naturalWidth, (b * s) / woodImg.naturalHeight);
+        const ww = woodImg.naturalWidth * kw;
+        const wh = woodImg.naturalHeight * kw;
+        g.drawImage(scaledSprite(woodImg, ww, wh, surface.dpr), ox, oy - wh, ww, wh);
         // leichte Schattierung wie beim gezeichneten Brett, im Dunkelmodus gedämpft
         const sh = g.createLinearGradient(ox, oy - b * s, ox + a * s, oy);
         sh.addColorStop(0, dark ? 'rgba(20,12,6,0.32)' : 'rgba(255,250,240,0.08)');
