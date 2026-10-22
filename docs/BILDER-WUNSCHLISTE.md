@@ -1,5 +1,21 @@
 # Bilder-Wunschliste
 
+## Stand 22.10.2026: eingebaut
+
+Von den 93 gelieferten Bildern sind **84 eingebaut** (Tabellen in `docs/BILDER.md`, Einbauhinweise je Gruppe in `docs/bilder-einbau/`). **Neu zu erzeugen**, weil sie nicht passen (Dateien teils in `docs/bilder-eingang/<sim>/`, sonst in Commit 439c45d):
+
+| Bild | Grund |
+| --- | --- |
+| A14 Flaschenöffner | Hakenöffner statt Hebelöffner; Drehachse und Lastarm passen nicht zur Rechnung |
+| A12 Eisberg | Seitenverhältnis 1 : 1,44 statt 1 : 2,5 |
+| B14 Becherglas | leichte Aufsicht, Boden und Wände fast deckend |
+| B35 Urne | innen nicht durchsichtig, verdeckt die Kugeln |
+| B42 Leiter | 1 : 4,5 statt 1 : 8 |
+| C2 Oberfläche Gummi | soll Asphalt sein (Materialpaar „Gummi auf Asphalt“) |
+| C9 Fluchtstab | 1 : 27,5 statt 1 : 15, Farbbänder zu schmal |
+| C10 Lupe | milchiges Glas; passt nur bei Maßstab |
+| C14 Sparbuch | Doppelseite mit Falz statt flacher Seite |
+
 ## Noch zu erzeugen (Stand 20.10.2026)
 
 **Zusammenfassung:** 94 Bilder – **14 × A**, **57 × B**, **23 × C** – für **47 Simulationen** (23 Physik, 24 Mathematik). Jedes Bild steht genau einmal da; wird es mehrfach gebraucht, stehen alle Verwendungen beim Bild. Dazu kommen 16 vorhandene Bilder, die weitere Simulationen ohne neues Bild mitnutzen können, und ein Bild aus `docs/bilder-eingang/`, das nur eingebaut werden muss (Abschnitte am Ende).

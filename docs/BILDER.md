@@ -55,7 +55,7 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Licht und Schatten | `moon` | `src/assets/sims/licht-schatten/mond.webp` | 1024 × 1024 | transparent |
 | Planetenbahnen | `sun` | `src/assets/sims/planetenbahnen/sonne.webp` | 1024 × 1024 | transparent |
 | Planetenbahnen | `planet` | `src/assets/sims/planetenbahnen/erde.webp` | 1024 × 1024 | transparent |
-| Bewegungsdiagramme | `car` | `src/assets/sims/bewegungsdiagramme/auto.webp` | 629 × 223 | transparent |
+| Bewegungsdiagramme | `car` | `src/assets/sims/bewegungsdiagramme/auto.webp` | 1600 × 686 | transparent |
 | Bewegungsdiagramme | `road` | `src/assets/sims/bewegungsdiagramme/strasse.webp` | 2400 × 392 | deckend |
 | Freier Fall | `ball` | `src/assets/sims/freier-fall/kugel.webp` | 256 × 256 | transparent |
 | Freier Fall | `ruler` | `src/assets/sims/freier-fall/lineal.webp` | 96 × 1063 | transparent |
@@ -66,7 +66,7 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Hebelgesetz | `mass` | `src/assets/sims/hebelgesetz/gewicht.webp` | 161 × 410 | transparent |
 | Hebelgesetz | `barrow` | `src/assets/sims/hebelgesetz/schubkarre.webp` | 557 × 237 | transparent |
 | Kräfteaddition | `lamp` | `src/assets/sims/kraefteaddition/lampe.webp` | 267 × 447 | transparent |
-| Schiefe Ebene | `block` | `src/assets/sims/schiefe-ebene/holzklotz.webp` | 509 × 109 | transparent |
+| Schiefe Ebene | `block` | `src/assets/sims/schiefe-ebene/holzklotz.webp` | 1600 × 410 | transparent |
 | Schiefe Ebene | `board` | `src/assets/sims/schiefe-ebene/brett.webp` | 677 × 68 | deckend |
 | Stöße | `track` | `src/assets/sims/stoesse/bahn.webp` | 628 × 54 | transparent |
 | Resonanz | `wheel` | `src/assets/sims/resonanz/rad.webp` | 384 × 376 | transparent |
@@ -85,25 +85,134 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Licht und Schatten | `lamp` | `src/assets/sims/licht-schatten/lampe.webp` | 448 × 206 | transparent |
 | Licht und Schatten | `sky` | `src/assets/sims/licht-schatten/sternenhimmel.webp` | 1400 × 1400 | deckend |
 | Planetenbahnen | `sky` | `src/assets/sims/planetenbahnen/sternenhimmel.webp` | 1400 × 1400 | deckend |
-| Reflexion | `candle` | `src/assets/sims/reflexion/kerze.webp` | 144 × 631 | transparent |
+| Reflexion | `candle` | `src/assets/sims/reflexion/kerze.webp` | 540 × 1352 | transparent |
 | Reflexion | `laser` | `src/assets/sims/reflexion/laser.webp` | 700 × 200 | transparent |
-| Linsen | `candle` | `src/assets/sims/linsen/kerze.webp` | 144 × 631 | transparent |
+| Linsen | `candle` | `src/assets/sims/linsen/kerze.webp` | 540 × 1352 | transparent |
 | Linsen | `lens` | `src/assets/sims/linsen/linse.webp` | 97 × 731 | transparent |
 | Doppler-Effekt | `road` | `src/assets/sims/doppler-effekt/strasse.webp` | 1800 × 890 | deckend |
 | Waagemodell | `stand` | `src/assets/sims/waagemodell/waage.webp` | 314 × 332 | transparent |
 | Waagemodell | `pan` | `src/assets/sims/waagemodell/schale.webp` | 199 × 291 | transparent |
 | Waagemodell | `box` | `src/assets/sims/waagemodell/paeckchen.webp` | 291 × 293 | transparent |
 | Waagemodell | `weight` | `src/assets/sims/waagemodell/gewicht.webp` | 284 × 401 | transparent |
-| Ganze Zahlen an der Zahlengerade | `sea` | `src/assets/sims/zahlengerade/meer.webp` | 1600 × 1600 | deckend |
+| Zahlengerade | `sea` | `src/assets/sims/zahlengerade/meer.webp` (ersetzt, schon in BILDER.md) | 1024 × 1024 | deckend |
 | Umfang und Flächeninhalt | `ant` | `src/assets/sims/umfang-flaeche/ameise.webp` | 256 × 221 | transparent |
 | Gesetz der großen Zahlen | `die` | `src/assets/sims/gesetz-grosse-zahlen/wuerfel.webp` | 338 × 312 | transparent |
 | Extremwertaufgaben | `grass` | `src/assets/sims/extremwert-parabel/wiese.webp` | 900 × 900 | deckend |
 | Extremwertaufgaben | `wall` | `src/assets/sims/extremwert-parabel/mauer.webp` | 677 × 118 | deckend |
-| Extremwertaufgaben | `wood` | `src/assets/sims/extremwert-parabel/holzdreieck.webp` | 512 × 383 | transparent |
-| Extremwertaufgaben | `metal` | `src/assets/sims/extremwert-parabel/blech.webp` | 1200 × 396 | deckend |
+| Extremwertaufgaben | `wood` | `src/assets/sims/extremwert-parabel/holzdreieck.webp` (ersetzt, schon in BILDER.md) | 1173 × 1186 | transparent |
+| Extremwertaufgaben | `metal` | `src/assets/sims/extremwert-parabel/blech.webp` (ersetzt, schon in BILDER.md) | 1536 × 512 | deckend |
 | Parabel durch drei Punkte | `ball` | `src/assets/sims/parabel-drei-punkte/ball.webp` | 255 × 256 | transparent |
 | Parabel durch drei Punkte | `river` | `src/assets/sims/parabel-drei-punkte/fluss.webp` | 2400 × 1187 | deckend |
 | LGS grafisch lösen | `phone` | `src/assets/sims/lgs-grafisch/handy.webp` | 265 × 565 | transparent |
+| Einfacher Stromkreis | `clamp` | `src/assets/sims/einfacher-stromkreis/krokodilklemme.webp` | 1600 × 310 | transparent |
+| Einfacher Stromkreis | `clip` | `src/assets/sims/einfacher-stromkreis/bueroklammer.webp` | 1600 × 354 | transparent |
+| Einfacher Stromkreis | `coin` | `src/assets/sims/einfacher-stromkreis/muenze.webp` | 1252 × 1251 | transparent |
+| Einfacher Stromkreis | `lead` | `src/assets/sims/einfacher-stromkreis/bleistiftmine.webp` | 1600 × 35 | transparent |
+| Einfacher Stromkreis | `foil` | `src/assets/sims/einfacher-stromkreis/alufolie.webp` | 1600 × 228 | transparent |
+| Einfacher Stromkreis | `wood` | `src/assets/sims/einfacher-stromkreis/holzstab.webp` | 1600 × 121 | transparent |
+| Einfacher Stromkreis | `eraser` | `src/assets/sims/einfacher-stromkreis/radiergummi.webp` | 1600 × 517 | transparent |
+| Einfacher Stromkreis | `ruler` | `src/assets/sims/einfacher-stromkreis/kunststofflineal.webp` | 1600 × 180 | transparent |
+| Einfacher Stromkreis | `glass` | `src/assets/sims/einfacher-stromkreis/glasstab.webp` | 1600 × 107 | transparent |
+| Gasgesetze | `gauge` | `src/assets/sims/gasgesetze/manometer.webp` | 1011 × 1236 | transparent |
+| Gasgesetze | `thermo` | `src/assets/sims/gasgesetze/thermometer.webp` | 200 × 1410 | transparent |
+| Gasgesetze | `plate` | `src/assets/sims/gasgesetze/heizplatte.webp` | 1600 × 303 | transparent |
+| Gasgesetze | `table` | `src/assets/sims/gasgesetze/tischkante.webp` | 2172 × 271 | deckend |
+| Teilchenmodell | `thermo` | `src/assets/sims/teilchenmodell/thermometer.webp` | 200 × 1410 | transparent |
+| Teilchenmodell | `plate` | `src/assets/sims/teilchenmodell/heizplatte.webp` | 1600 × 303 | transparent |
+| Teilchenmodell | `pipette` | `src/assets/sims/teilchenmodell/pipette.webp` | 216 × 1423 | transparent |
+| Teilchenmodell | `table` | `src/assets/sims/teilchenmodell/tischkante.webp` | 2172 × 271 | deckend |
+| Linsen | `rider` | `src/assets/sims/linsen/reiter.webp` | 1257 × 769 | transparent |
+| Linsen | `rail` | `src/assets/sims/linsen/optische-bank.webp` | 1600 × 107 | transparent |
+| Reflexion | `table` | `src/assets/sims/reflexion/tischkante.webp` | 2172 × 271 | deckend |
+| Licht und Schatten | `rider` | `src/assets/sims/licht-schatten/reiter.webp` | 1257 × 769 | transparent |
+| Licht und Schatten | `rail` | `src/assets/sims/licht-schatten/optische-bank.webp` | 1600 × 107 | transparent |
+| Elektromagnetische Induktion | `magnet` | `src/assets/sims/induktion/stabmagnet.webp` | 1600 × 233 | transparent |
+| Elektromagnetische Induktion | `coil` | `src/assets/sims/induktion/spule.webp` | 1215 × 742 | transparent |
+| Radioaktiver Zerfall | `tube` | `src/assets/sims/radioaktiver-zerfall/zaehlrohr.webp` | 1600 × 181 | transparent |
+| Radioaktiver Zerfall | `counter` | `src/assets/sims/radioaktiver-zerfall/zaehlgeraet.webp` | 1277 × 886 | transparent |
+| Stehende Wellen | `driver` | `src/assets/sims/stehende-wellen/erreger.webp` | 839 × 906 | transparent |
+| Stehende Wellen | `pulley` | `src/assets/sims/stehende-wellen/umlenkrolle.webp` | 491 × 1446 | transparent |
+| Lorentzkraft | `tube` | `src/assets/sims/lorentzkraft/fadenstrahlrohr.webp` | 913 × 1166 | transparent |
+| Photoeffekt | `meter` | `src/assets/sims/photoeffekt/manometer.webp` | 1011 × 1236 | transparent |
+| Linienspektren | `prism` | `src/assets/sims/linienspektren/prisma.webp` | 1244 × 1050 | transparent |
+| Zehnerpotenzen | `sand` | `src/assets/sims/zehnerpotenzen/sandkorn.webp` | 1280 × 973 | transparent |
+| Zehnerpotenzen | `bug` | `src/assets/sims/zehnerpotenzen/marienkaefer.webp` | 1378 × 735 | transparent |
+| Zehnerpotenzen | `apple` | `src/assets/sims/zehnerpotenzen/apfel.webp` | 1051 × 1115 | transparent |
+| Zehnerpotenzen | `house` | `src/assets/sims/zehnerpotenzen/haus.webp` | 1288 × 1092 | transparent |
+| Zehnerpotenzen | `field` | `src/assets/sims/zehnerpotenzen/fussballfeld.webp` | 1600 × 358 | transparent |
+| Zehnerpotenzen | `peak` | `src/assets/sims/zehnerpotenzen/berg.webp` | 1280 × 852 | transparent |
+| Zehnerpotenzen | `plane` | `src/assets/sims/zehnerpotenzen/flugzeug.webp` | 1600 × 442 | transparent |
+| Zehnerpotenzen | `iss` | `src/assets/sims/zehnerpotenzen/raumstation.webp` | 1280 × 606 | transparent |
+| Zehnerpotenzen | `earth` | `src/assets/sims/zehnerpotenzen/erde.webp` | 1000 × 1000 | transparent |
+| Zehnerpotenzen | `cloud` | `src/assets/sims/zehnerpotenzen/wolke.webp` | 1600 × 660 | transparent |
+| Maßstab | `bug` | `src/assets/sims/massstab/marienkaefer-oben.webp` | 1066 × 995 | transparent |
+| Maßstab | `stamp` | `src/assets/sims/massstab/briefmarke.webp` | 921 × 1254 | transparent |
+| Maßstab | `sand` | `src/assets/sims/massstab/sandkorn.webp` | 1280 × 973 | transparent |
+| Maßstab | `lupe` | `src/assets/sims/massstab/lupe.webp` | 1074 × 949 | transparent |
+| Zahlengerade | `frog` | `src/assets/sims/zahlengerade/frosch.webp` | 1045 × 899 | transparent |
+| Zahlengerade | `piggy` | `src/assets/sims/zahlengerade/sparschwein.webp` | 1326 × 979 | transparent |
+| Zahlengerade | `penguin` | `src/assets/sims/zahlengerade/pinguin.webp` | 775 × 1372 | transparent |
+| Zahlengerade | `thermo` | `src/assets/sims/zahlengerade/thermometer.webp` | 200 × 1410 | transparent |
+| Strahlensätze | `tree` | `src/assets/sims/strahlensaetze/baum.webp` | 666 × 1000 | transparent |
+| Strahlensätze | `crown` | `src/assets/sims/strahlensaetze/baumkrone.webp` | 900 × 881 | transparent |
+| Prozentstreifen | `tag` | `src/assets/sims/prozentstreifen/preisschild.webp` | 1600 × 615 | transparent |
+| Prozentstreifen | `receipt` | `src/assets/sims/prozentstreifen/kassenbon.webp` | 754 × 1336 | transparent |
+| Sinus, Kosinus, Tangens | `wheelchair` | `src/assets/sims/sin-cos-tan-dreieck/rollstuhl.webp` | 1279 × 1086 | transparent |
+| Sinus, Kosinus, Tangens | `bricks` | `src/assets/sims/sin-cos-tan-dreieck/ziegelwand.webp` | 1024 × 1024 | deckend |
+| Sinussatz und Kosinussatz | `crown` | `src/assets/sims/sinussatz-kosinussatz/baumkrone.webp` | 900 × 881 | transparent |
+| Integral als Gesamtänderung | `car` | `src/assets/sims/aenderungsrate/auto.webp` | 1600 × 686 | transparent |
+| Integral als Gesamtänderung | `bike` | `src/assets/sims/aenderungsrate/fahrrad.webp` | 1280 × 701 | transparent |
+| Ähnliche Figuren | `car` | `src/assets/sims/vergroessern/auto.webp` | 1600 × 686 | transparent |
+| Ähnliche Figuren | `bucket` | `src/assets/sims/vergroessern/farbeimer.webp` | 1055 × 1226 | transparent |
+| Proportionalität | `apple` | `src/assets/sims/proportional/apfel.webp` | 1051 × 1115 | transparent |
+| Proportionalität | `taxi` | `src/assets/sims/proportional/taxi.webp` | 1600 × 582 | transparent |
+| Mittelsenkrechte und Winkelhalbierende | `compass` | `src/assets/sims/mittelsenkrechte/zirkel-teile.webp` | 459 × 1038 | transparent |
+| Mittelsenkrechte und Winkelhalbierende | `pencil` | `src/assets/sims/mittelsenkrechte/bleistift.webp` | 1600 × 120 | transparent |
+| Besondere Linien im Dreieck | `compass` | `src/assets/sims/besondere-linien/zirkel-teile.webp` | 459 × 1038 | transparent |
+| Besondere Linien im Dreieck | `pencil` | `src/assets/sims/besondere-linien/bleistift.webp` | 1600 × 120 | transparent |
+| Dreieckskonstruktion | `compass` | `src/assets/sims/dreieckskonstruktion/zirkel-teile.webp` | 459 × 1038 | transparent |
+| Dreieckskonstruktion | `pencil` | `src/assets/sims/dreieckskonstruktion/bleistift.webp` | 1600 × 120 | transparent |
+| Zählprinzip | `cone` | `src/assets/sims/zaehlprinzip/waffel.webp` | 679 × 1317 | transparent |
+| Zählprinzip | `lock` | `src/assets/sims/zaehlprinzip/zahlenschloss.webp` | 796 × 1145 | transparent |
+| Waagemodell | `table` | `src/assets/sims/waagemodell/tischkante.webp` | 2172 × 271 | deckend |
+| Einheiten umrechnen | `clock` | `src/assets/sims/einheiten/uhr.webp` | 1234 × 1234 | transparent |
+| Winkel schätzen und messen | `geo` | `src/assets/sims/winkel-messen/geodreieck.webp` | 1482 × 750 | transparent |
+| Koordinatensystem – Lagebeziehungen | `geo` | `src/assets/sims/koordinaten-lage/geodreieck.webp` | 1482 × 750 | transparent |
+| Gesetz der großen Zahlen | `dieTop` | `src/assets/sims/gesetz-grosse-zahlen/wuerfel-oben.webp` | 1041 × 1016 | transparent |
+| Bewegungsdiagramme | `cloud` | `src/assets/sims/bewegungsdiagramme/wolke.webp` | 1600 × 660 | transparent |
+| Freier Fall | `tube` | `src/assets/sims/freier-fall/fallroehre.webp` | 346 × 1454 | transparent |
+| Freier Fall | `gauge` | `src/assets/sims/freier-fall/manometer.webp` | 1011 × 1236 | transparent |
+| Schiefer Wurf | `tt` | `src/assets/sims/schiefer-wurf/tischtennisball.webp` | 255 × 256 | transparent |
+| Schiefer Wurf | `kugel` | `src/assets/sims/schiefer-wurf/stosskugel.webp` | 256 × 255 | transparent |
+| Schiefer Wurf | `target` | `src/assets/sims/schiefer-wurf/zielscheibe.webp` | 918 × 1186 | transparent |
+| Kräfteaddition | `shirt` | `src/assets/sims/kraefteaddition/t-shirt.webp` | 1220 × 1132 | transparent |
+| Kräfteaddition | `meter` | `src/assets/sims/kraefteaddition/kraftmesser.webp` | 1600 × 170 | transparent |
+| Kräfteaddition | `table` | `src/assets/sims/kraefteaddition/tischkante.webp` | 2172 × 271 | deckend |
+| Schiefe Ebene | `blockSteel` | `src/assets/sims/schiefe-ebene/klotz-stahl.webp` | 1600 × 438 | transparent |
+| Schiefe Ebene | `blockRubber` | `src/assets/sims/schiefe-ebene/klotz-gummi.webp` | 1600 × 380 | transparent |
+| Schiefe Ebene | `boardSteel` | `src/assets/sims/schiefe-ebene/brett-stahl.webp` | 2172 × 274 | deckend |
+| Schiefe Ebene | `boardIce` | `src/assets/sims/schiefe-ebene/brett-eis.webp` | 2172 × 392 | deckend |
+| Schiefe Ebene | `cart` | `src/assets/sims/schiefe-ebene/wagen.webp` | 1600 × 249 | transparent |
+| Schiefe Ebene | `wheel` | `src/assets/sims/schiefe-ebene/wagen-rad.webp` | 1234 × 1242 | transparent |
+| Schiefe Ebene | `meter` | `src/assets/sims/schiefe-ebene/kraftmesser.webp` | 1600 × 170 | transparent |
+| Schiefe Ebene | `table` | `src/assets/sims/schiefe-ebene/tischkante.webp` | 2172 × 271 | deckend |
+| Hebelgesetz | `beamSeg` | `src/assets/sims/hebelgesetz/hebel-segment.webp` | 1600 × 213 | transparent |
+| Hebelgesetz | `beamEnd` | `src/assets/sims/hebelgesetz/hebel-ende.webp` | 1600 × 325 | transparent |
+| Hebelgesetz | `meter` | `src/assets/sims/hebelgesetz/kraftmesser.webp` | 1600 × 170 | transparent |
+| Hebelgesetz | `table` | `src/assets/sims/hebelgesetz/tischkante.webp` | 2172 × 271 | deckend |
+| Hebelgesetz | `bottle` | `src/assets/sims/hebelgesetz/flasche.webp` | 882 × 1414 | transparent |
+| Hebelgesetz | `nut` | `src/assets/sims/hebelgesetz/walnuss.webp` | 1075 × 1173 | transparent |
+| Hebelgesetz | `nutArm` | `src/assets/sims/hebelgesetz/nussknacker-arm.webp` | 1600 × 187 | transparent |
+| Hebelgesetz | `stand` | `src/assets/sims/hebelgesetz/wippe-gestell.webp` | 1278 × 965 | transparent |
+| Hebelgesetz | `board` | `src/assets/sims/hebelgesetz/brett.webp` | 677 × 68 | deckend |
+| Hookesches Gesetz | `piece` | `src/assets/sims/hookesches-gesetz/massestueck.webp` | 1600 × 146 | transparent |
+| Hookesches Gesetz | `table` | `src/assets/sims/hookesches-gesetz/tischkante.webp` | 2172 × 271 | deckend |
+| Stöße | `glider` | `src/assets/sims/stoesse/gleiter.webp` | 1600 × 363 | transparent |
+| Stöße | `piece` | `src/assets/sims/stoesse/massestueck.webp` | 1600 × 146 | transparent |
+| Stöße | `table` | `src/assets/sims/stoesse/tischkante.webp` | 2172 × 271 | deckend |
+| Kreisbewegung | `car` | `src/assets/sims/kreisbewegung/auto-oben.webp` | 1600 × 801 | transparent |
+| Kreisbewegung | `asphalt` | `src/assets/sims/kreisbewegung/asphalt.webp` | 1024 × 1024 | deckend |
+| Doppler-Effekt | `ambulance` | `src/assets/sims/doppler-effekt/krankenwagen.webp` | 1600 × 735 | transparent |
 
 ## Ziegenproblem
 
