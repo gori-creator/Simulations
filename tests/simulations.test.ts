@@ -53,6 +53,14 @@ describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
     expect((def.readouts ?? []).some((r) => r.spoiler), 'ohne spoiler-Ergebnisse wirkungslos').toBe(true);
   });
 
+  it('nutzt ignoresResultsParam nur bei spoiler-Ergebnissen mit resultsParam', () => {
+    for (const readout of def.readouts ?? []) {
+      if (!readout.ignoresResultsParam) continue;
+      expect(readout.spoiler, readout.key).toBe(true);
+      expect(def.resultsParam, readout.key).toBeDefined();
+    }
+  });
+
   it('hat eindeutige, beschriftete Aktionen', () => {
     const ids = (def.actions ?? []).map((a) => a.id);
     expect(new Set(ids).size).toBe(ids.length);

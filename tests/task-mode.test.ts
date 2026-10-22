@@ -81,3 +81,17 @@ describe('Nur Aufgabenmodus (ctx.isHiddenByTask)', () => {
     expect(isReadoutTaskHidden(state(true, true), 'shape')).toBe(true);
   });
 });
+
+describe('ignoresResultsParam', () => {
+  it('nimmt einzelne Ergebnisse vom Schalter resultsParam aus, nicht vom Aufgabenmodus', () => {
+    const base = { revealed: new Set<string>(), spoilers: ['T', 'now'], ignoresResultsParam: new Set(['now']) };
+    // Schalter aus: T verdeckt, „now“ nicht
+    expect(isReadoutHidden({ ...base, hideFlag: false, resultsOff: true }, 'T')).toBe(true);
+    expect(isReadoutHidden({ ...base, hideFlag: false, resultsOff: true }, 'now')).toBe(false);
+    // _hide=1: beide verdeckt, bis sie aufgedeckt sind
+    expect(isReadoutHidden({ ...base, hideFlag: true, resultsOff: false }, 'now')).toBe(true);
+    expect(isReadoutHidden({ ...base, hideFlag: true, resultsOff: true, revealed: new Set(['now']) }, 'now')).toBe(false);
+    // ctx.hidden folgt weiter dem Schalter
+    expect(isTaskHidden({ ...base, hideFlag: false, resultsOff: true })).toBe(true);
+  });
+});

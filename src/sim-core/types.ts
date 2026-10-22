@@ -109,8 +109,19 @@ export type ValuesOf<P extends readonly ParamDef[]> = { [D in P[number] as D['ke
 export interface ReadoutDef {
   key: string;
   label: Localized;
-  /** Wird beim Teilen mit „Ergebnisse verdecken“ ausgeblendet (Aufgabenmodus). */
+  /**
+   * Wird beim Teilen mit „Ergebnisse verdecken“ ausgeblendet (Aufgabenmodus).
+   * Achtung: Hat die Simulation einen Schalter `resultsParam`, verdeckt dieser
+   * auf „aus“ ALLE `spoiler`-Ergebnisse – auch solche, die fachlich nichts mit
+   * dem Schalter zu tun haben. Ausnahme per `ignoresResultsParam: true`.
+   */
   spoiler?: boolean;
+  /**
+   * Nur mit `spoiler`: Der Schalter `resultsParam` verdeckt dieses Ergebnis nicht,
+   * nur der Aufgabenmodus (`_hide=1`). „Aufdecken“ schaltet den Schalter dann
+   * auch nicht ein. `ctx.hidden` bleibt davon unberührt (Schalter aus → `true`).
+   */
+  ignoresResultsParam?: boolean;
 }
 
 /** Text (wird escaped) oder vertrauenswürdiges HTML aus dem Simulationscode. `null` blendet die Zeile aus. */
@@ -257,8 +268,10 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   readouts?: ReadoutDef[];
   /**
    * Boolescher Parameter (z. B. `show`), der Lösungen im Bild ein- und ausblendet.
-   * Ist er aus, werden auch die `spoiler`-Ergebnisse unter der Bühne verdeckt;
-   * „Aufdecken“ schaltet ihn wieder ein.
+   * Ist er aus, werden ALLE `spoiler`-Ergebnisse unter der Bühne verdeckt (nicht
+   * nur die zum Schalter passenden) und `ctx.hidden` ist `true`; „Aufdecken“
+   * schaltet ihn wieder ein. Einzelne Ergebnisse nimmt `ignoresResultsParam: true`
+   * in der Ergebnis-Definition aus.
    */
   resultsParam?: P[number]['key'];
   presets?: Preset<ValuesOf<P>>[];

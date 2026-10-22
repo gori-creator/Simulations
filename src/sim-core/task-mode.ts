@@ -16,6 +16,11 @@ export interface TaskModeState {
    * aufdecken; ohne Angabe zählt nur, ob überhaupt etwas aufgedeckt wurde.
    */
   spoilers?: readonly string[];
+  /**
+   * Schlüssel der `spoiler`-Ergebnisse mit `ignoresResultsParam: true`: Der
+   * Schalter `resultsParam` verdeckt sie nicht, nur der Aufgabenmodus.
+   */
+  ignoresResultsParam?: ReadonlySet<string>;
 }
 
 /**
@@ -45,7 +50,8 @@ export function isReadoutTaskHidden(state: TaskModeState, key: string): boolean 
 
 /** Ist ein einzelnes `spoiler`-Ergebnis verdeckt? */
 export function isReadoutHidden(state: TaskModeState, key: string): boolean {
-  return state.resultsOff || (state.hideFlag && !state.revealed.has(key));
+  const byResultsParam = state.resultsOff && !state.ignoresResultsParam?.has(key);
+  return byResultsParam || (state.hideFlag && !state.revealed.has(key));
 }
 
 /**

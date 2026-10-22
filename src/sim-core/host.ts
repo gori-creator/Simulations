@@ -62,6 +62,8 @@ interface ReadoutRow {
   reveal?: HTMLButtonElement;
   last?: string;
   spoiler: boolean;
+  /** `ignoresResultsParam` aus der Definition: Schalter `resultsParam` verdeckt es nicht. */
+  ignoresResultsParam: boolean;
 }
 
 class SimulationHost {
@@ -329,7 +331,7 @@ class SimulationHost {
       const value = document.createElement('span');
       value.className = 'readout__value';
       dd.append(value);
-      const entry: ReadoutRow = { root: row, value, spoiler: !!def.spoiler };
+      const entry: ReadoutRow = { root: row, value, spoiler: !!def.spoiler, ignoresResultsParam: !!def.ignoresResultsParam };
       if (def.spoiler) {
         const reveal = document.createElement('button');
         reveal.type = 'button';
@@ -338,7 +340,8 @@ class SimulationHost {
         reveal.addEventListener('click', () => {
           this.revealed.add(def.key);
           const param = this.def.resultsParam;
-          if (param && this.values[param] === false) this.set({ [param]: true }, 'input');
+          // Ergebnisse mit `ignoresResultsParam` lassen den Schalter, wie er ist
+          if (param && this.values[param] === false && !def.ignoresResultsParam) this.set({ [param]: true }, 'input');
           this.applyHide();
         });
         dd.append(reveal);
@@ -407,6 +410,7 @@ class SimulationHost {
       revealed: this.revealed,
       // Nur angezeigte Spoiler zählen: ausgeblendete lassen sich nicht aufdecken
       spoilers: [...this.readouts].filter(([, row]) => row.spoiler && !row.root.hidden).map(([key]) => key),
+      ignoresResultsParam: new Set([...this.readouts].filter(([, row]) => row.ignoresResultsParam).map(([key]) => key)),
     };
   }
 

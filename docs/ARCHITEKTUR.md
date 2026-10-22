@@ -55,7 +55,7 @@ Der Kern trennt **was eine Simulation zeigt** (in `simulations/…`) von **allem
 | Teil | Aufgabe |
 | --- | --- |
 | `params` | Parameter (Zahl, Schalter, Auswahl, Text) mit Bereich, Schrittweite, Standardwert, Beschriftung, optional `group`, `visibleIf` und Hilfetext `help` (fest oder als Funktion der Werte `(v) => L(…)`, `null` blendet ihn aus; wird bei jeder Änderung aktualisiert) |
-| `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt |
+| `readouts` | Ergebnisfelder; `spoiler: true` wird im Aufgabenmodus verdeckt. **Achtung:** Ein Schalter `resultsParam` („Ergebnisse/Zahlenwerte anzeigen“) verdeckt auf „aus“ **alle** `spoiler`-Ergebnisse, nicht nur die fachlich passenden; einzelne nimmt `ignoresResultsParam: true` aus (dann verdeckt sie nur `_hide=1`, „Aufdecken“ lässt den Schalter aus) |
 | `presets` | Beispiel-Einstellungen |
 | `animated`, `layout`, `dragHint`, `hint`, `strings` | Abspielen-Knopf, Seitenverhältnis (auch eigenes für schmale Bildschirme), allgemeiner Hinweis „Punkte lassen sich ziehen“ (`dragHint`) bzw. eigener Tipp unter der Bühne (`hint: L('…', '…')`, ersetzt den allgemeinen; auch als Funktion der Werte, z. B. `hint: (v: { readonly mode?: unknown }) => (v.mode === 'test' ? L(…) : null)` – der Parameter braucht eine Typangabe, sonst kann TypeScript die Parametertypen nicht mehr aus `params` ableiten und `ctx.params` verliert seine Typen (siehe Hinweis unten); der Host aktualisiert ihn bei jeder Änderung, `null` zeigt den allgemeinen Hinweis bzw. keinen; bei gesperrten Links `_lock=1` erscheint kein Tipp, nach „Entsperren“ wieder), eigene Texte |
 | `actions` | Knöpfe unter der Bühne (z. B. „Würfeln“, „Wechseln“), optional mit `visibleIf`; Beschriftung/Aktivierung zur Laufzeit über `ctx.setAction()` |
