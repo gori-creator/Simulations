@@ -88,7 +88,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | schiefer-wurf | In der schmalen Zerlegungs-Szene (iPad, Handy) liegen Pfeilbeschriftungen teils über den Stroboskop-Punkten; das Etikett „x = …“ deckt die Achsenzahl darunter ab. | offen |
 | stoesse | Eigene Index-Helfer `parts`/`richText` auf den Kern-Helfer `subText` umstellen (ohne sichtbare Änderung). | offen |
 | wellen-ausbreitung | Bei λ ≈ 0,3 m kreuzen die gestrichelten Hilfslinien der λ-Klammer die Beschriftung leicht. | offen |
-| kondensator | Eigene Index-Helfer `richText` (`U_[C]`) auf `subText` umstellen; „37 %“ bei τ = 100 s mit t½-Linien dicht beieinander. | offen |
+| kondensator | Eigene Index-Helfer `richText` (`U_[C]`) auf `subText` umstellen; „37 %“ bei τ = 100 s mit t½-Linien dicht beieinander. | erledigt: Zeichenhilfen nutzen `subText`/`measureSubText`, Schreibweise `U_C`/`t_½` (Standardansicht und alle Beispiele pixelgleich); mit t½-Linien steht „63 %“/„37 %“ rechts neben der Linie bei 2 t½ auf der kurvenfreien Seite, unter „τ = …“ |
 | induktion | Mit der Maus lässt sich der Magnet bis z = −3 cm ziehen; dort ist die Spannungsspitze wegen der Einwindungs-Näherung zu groß. Ziehbereich auf z ≥ 3 cm begrenzen wie im Automatikbetrieb. Lokale Index-Hilfen auf `subText` umstellen. | offen |
 | doppler-effekt | Bei v_Q = c berührt die Beschriftung „v_Q = 340 m/s“ die gestaute Wellenfront. | offen |
 | federpendel | Eigene `richText`-Hilfe (`F_[G]`) auf `subText` umstellen; bei sehr harter Feder stehen „F_G“ und „F_res“ dicht nebeneinander. | offen |
