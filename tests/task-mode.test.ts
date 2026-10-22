@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isReadoutHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
+import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
 
 const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = [], spoilers: string[] = ['trip']) => ({
   hideFlag,
@@ -67,5 +67,17 @@ describe('spoilerChange: Wechsel einzelner Ergebnisse', () => {
       ['table', false],
       ['law', false],
     ]);
+  });
+});
+
+describe('Nur Aufgabenmodus (ctx.isHiddenByTask)', () => {
+  it('trennt _hide=1 vom Schalter resultsParam', () => {
+    // Schalter aus, kein _hide: isHidden ja, nur Aufgabenmodus nein
+    expect(isReadoutHidden(state(false, true), 'shape')).toBe(true);
+    expect(isReadoutTaskHidden(state(false, true), 'shape')).toBe(false);
+    // _hide=1: verdeckt bis zum Aufdecken
+    expect(isReadoutTaskHidden(state(true, false), 'shape')).toBe(true);
+    expect(isReadoutTaskHidden(state(true, false, ['shape']), 'shape')).toBe(false);
+    expect(isReadoutTaskHidden(state(true, true), 'shape')).toBe(true);
   });
 });

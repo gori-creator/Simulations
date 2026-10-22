@@ -178,6 +178,20 @@ export interface SimContext<V> {
   /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
   isHidden(key: string): boolean;
   /**
+   * Nur der Aufgabenmodus: `true`, wenn die Seite mit `_hide=1` geöffnet wurde
+   * (geteilter Link mit „Ergebnisse verdecken“ oder Link im Lernmaterial),
+   * unabhängig vom Schalter `resultsParam` und vom Aufdecken. Für Teile, die nur
+   * in Aufgaben verborgen sein sollen, nicht beim Ausschalten von „Zahlenwerte“.
+   */
+  readonly taskMode: boolean;
+  /**
+   * Ist das `spoiler`-Ergebnis `key` allein wegen des Aufgabenmodus verdeckt
+   * (`_hide=1` und noch nicht aufgedeckt)? Wie `isHidden(key)`, aber ohne den
+   * Schalter `resultsParam`, z. B. für ein Etikett ohne Zahl, das bei
+   * „Zahlenwerte aus“ sichtbar bleiben soll.
+   */
+  isHiddenByTask(key: string): boolean;
+  /**
    * Antippbare Objekte für die Tastatur melden (optional). Die Bühne wird dann
    * per Tab erreichbar, Pfeiltasten wählen, Enter/Leertaste ruft `activate` auf.
    * Darf bei jeder Änderung (auch in `render`) neu aufgerufen werden; die

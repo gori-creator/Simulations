@@ -9,7 +9,7 @@ import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
 import { defaultValues, resolveHint, sanitize, valuesEqual } from './params';
 import { setSubLabel, setSubReadout } from './rich-label';
-import { isReadoutHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
+import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -176,6 +176,10 @@ class SimulationHost {
         return isTaskHidden(host.taskState());
       },
       isHidden: (key) => isReadoutHidden(this.taskState(), key),
+      get taskMode() {
+        return host.flags.hide;
+      },
+      isHiddenByTask: (key) => isReadoutTaskHidden(this.taskState(), key),
       setKeyTargets: (targets) => {
         if (!this.keyTargets && !targets.length) return;
         this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {

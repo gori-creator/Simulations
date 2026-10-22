@@ -34,6 +34,15 @@ export function isTaskHidden(state: TaskModeState): boolean {
   return (state.spoilers ?? []).some((key) => !state.revealed.has(key));
 }
 
+/**
+ * Ist ein einzelnes `spoiler`-Ergebnis allein wegen des Aufgabenmodus
+ * (`_hide=1`) verdeckt, also noch nicht aufgedeckt? Der Schalter `resultsParam`
+ * zählt hier nicht (für `ctx.isHiddenByTask(key)`).
+ */
+export function isReadoutTaskHidden(state: TaskModeState, key: string): boolean {
+  return state.hideFlag && !state.revealed.has(key);
+}
+
 /** Ist ein einzelnes `spoiler`-Ergebnis verdeckt? */
 export function isReadoutHidden(state: TaskModeState, key: string): boolean {
   return state.resultsOff || (state.hideFlag && !state.revealed.has(key));
