@@ -28,6 +28,8 @@ interface BaseParam<K extends string> {
   /**
    * Kurzer Erklärtext unter dem Regler. Fester Text oder Funktion der aktuellen
    * Werte (`(v) => L(…)`, `null` blendet ihn aus); der Host aktualisiert ihn bei jeder Änderung.
+   * `_` setzt einen Index wie in Beschriftungen („v_K“); Wörter wie „log_2“
+   * (zwei oder mehr Kleinbuchstaben vor `_`) bleiben stehen, `\_` = Unterstrich.
    */
   help?: DynamicText;
   /** ID einer Gruppe aus `SimulationDefinition.groups`. */
@@ -248,6 +250,7 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
    * Auch als Funktion der aktuellen Werte möglich (`(v) => L(…)`, z. B. ein Tipp
    * je Modus); der Host aktualisiert ihn bei jeder Änderung. Gibt sie `null`
    * zurück, erscheint der allgemeine Hinweis von `dragHint` bzw. gar keiner.
+   * `_` setzt einen Index wie bei `help` („F_res“; „log_2“ bleibt stehen).
    */
   hint?: DynamicText<ValuesOf<P>>;
   layout?: StageLayout;

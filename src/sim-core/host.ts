@@ -94,6 +94,8 @@ class SimulationHost {
   /** Tipp unter der Bühne (`hint`/`dragHint`) und der allgemeine Text aus der Hülle. */
   private hintEl: HTMLElement | null = null;
   private dragHintText = '';
+  /** Zuletzt gesetzter Tipp-Text (Quelltext mit `_`). */
+  private lastHint = '';
 
   constructor(
     private readonly root: HTMLElement,
@@ -437,7 +439,11 @@ class SimulationHost {
     const el = this.hintEl;
     if (!el) return;
     const text = resolveHint(this.def, this.values, this.lang, this.dragHintText, this.locked);
-    if (text && el.textContent !== text) el.textContent = text;
+    // `_` als Index wie bei den Beschriftungen; Wörter wie „log_2“ bleiben (Option `prose`)
+    if (text && text !== this.lastHint) {
+      this.lastHint = text;
+      setSubLabel(el, text, { prose: true });
+    }
     el.hidden = !text;
   }
 

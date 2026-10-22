@@ -1,4 +1,4 @@
-import { parseSubText } from './draw';
+import { parseSubText, type SubTextOptions } from './draw';
 import { bindUnits, bindUnitsHtml } from './format';
 
 /**
@@ -17,8 +17,8 @@ export function escapeHtml(value: string): string {
 }
 
 /** Lesefassung für Bildschirmleser: Index mit Leerzeichen abgesetzt („F_Z“ → „F Z“). */
-export function plainSubText(value: string): string {
-  return parseSubText(value)
+export function plainSubText(value: string, options: SubTextOptions = {}): string {
+  return parseSubText(value, options)
     .map((part, i, all) => (part.sub ? ` ${part.text}${all[i + 1] && !/^\s/.test(all[i + 1]!.text) ? ' ' : ''}` : part.text))
     .join('');
 }
@@ -28,12 +28,12 @@ export function plainSubText(value: string): string {
  * enthält. Sichtbar ist die Fassung mit `<sub>` (für Bildschirmleser
  * ausgeblendet), vorgelesen wird die Lesefassung aus `plainSubText`.
  */
-export function subLabelHtml(value: string): string | null {
+export function subLabelHtml(value: string, options: SubTextOptions = {}): string | null {
   if (!value.includes('_')) return null;
-  const parts = parseSubText(value);
+  const parts = parseSubText(value, options);
   if (!parts.some((part) => part.sub)) return null;
   const visible = parts.map((part) => (part.sub ? `<sub>${escapeHtml(part.text)}</sub>` : escapeHtml(part.text))).join('');
-  return `<span aria-hidden="true">${visible}</span><span class="visually-hidden">${escapeHtml(plainSubText(value))}</span>`;
+  return `<span aria-hidden="true">${visible}</span><span class="visually-hidden">${escapeHtml(plainSubText(value, options))}</span>`;
 }
 
 /**
@@ -47,9 +47,12 @@ export function setSubReadout(element: HTMLElement, value: string): void {
   else element.innerHTML = bindUnitsHtml(html);
 }
 
-/** Setzt die Beschriftung eines Elements, mit Index als `<sub>`. */
-export function setSubLabel(element: HTMLElement, value: string): void {
-  const html = subLabelHtml(value);
+/**
+ * Setzt die Beschriftung eines Elements, mit Index als `<sub>`. Für Hilfetexte
+ * und Tipps `{ prose: true }` (Wörter wie „log_2“ behalten ihren Unterstrich).
+ */
+export function setSubLabel(element: HTMLElement, value: string, options: SubTextOptions = {}): void {
+  const html = subLabelHtml(value, options);
   if (html === null) element.textContent = value.replace(/\\_/g, '_');
   else element.innerHTML = html;
 }

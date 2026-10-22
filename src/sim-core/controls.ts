@@ -29,6 +29,13 @@ export function choiceOptionLabel(option: ChoiceOption, lang: Lang, taskHidden: 
   return detail && !taskHidden ? `${label} (${bindUnits(detail)})` : label;
 }
 
+/**
+ * Hilfetexte setzen `_` als Index wie die Beschriftungen („v_K“ → v mit
+ * tiefgestelltem K), lassen aber Wörter wie die Eingabe-Schreibweise „log_2“
+ * im Funktionsplotter stehen (siehe `parseSubText`, Option `prose`).
+ */
+const HELP_TEXT = { prose: true } as const;
+
 interface ControlView {
   def: ParamDef;
   root: HTMLElement;
@@ -41,7 +48,7 @@ interface ControlView {
 export class Controls {
   private views: ControlView[] = [];
   /** Hilfetexte, die von den aktuellen Werten abhängen (`help` als Funktion). */
-  private dynamicHelp: { def: ParamDef; element: HTMLElement }[] = [];
+  private dynamicHelp: { def: ParamDef; element: HTMLElement; last: string }[] = [];
   private fmt: Formatter;
   private taskHidden: boolean;
 
@@ -58,10 +65,13 @@ export class Controls {
       if (value !== undefined) view.sync(value);
       view.root.hidden = !isVisible(view.def, values);
     }
-    for (const { def, element } of this.dynamicHelp) {
-      const text = resolveText(def.help, values, this.options.lang) ?? '';
-      if (element.textContent !== text) element.textContent = text;
-      element.hidden = !text;
+    for (const entry of this.dynamicHelp) {
+      const text = resolveText(entry.def.help, values, this.options.lang) ?? '';
+      if (entry.last !== text) {
+        entry.last = text;
+        setSubLabel(entry.element, text, HELP_TEXT);
+      }
+      entry.element.hidden = !text;
     }
     for (const fieldset of this.options.container.querySelectorAll<HTMLElement>('[data-group]')) {
       fieldset.hidden = !fieldset.querySelector('.ctl:not([hidden])');
@@ -128,11 +138,10 @@ export class Controls {
     if (typeof def.help === 'function') {
       // Text hängt von den Werten ab: wird in `sync` gesetzt (bis dahin ausgeblendet)
       p.hidden = true;
-      this.dynamicHelp.push({ def, element: p });
+      this.dynamicHelp.push({ def, element: p, last: '' });
       return p;
     }
-    // Hilfetexte bleiben reiner Text: Sie beschreiben teils Eingabe-Schreibweisen (z. B. „log_2“ im Funktionsplotter).
-    p.textContent = def.help[this.options.lang];
+    setSubLabel(p, def.help[this.options.lang], HELP_TEXT);
     return p;
   }
 

@@ -79,8 +79,19 @@ export interface SubTextPart {
  *   das kein Buchstabe und keine Ziffer ist (Leerzeichen, „=“, „,“ …).
  * - `F_{G,1}`: Geschweifte Klammern für Indizes mit anderen Zeichen.
  * - `\_` steht für einen echten Unterstrich.
+ *
+ * Mit `{ prose: true }` (Hilfetexte und Tipps, die auch Eingabe-Schreibweisen
+ * nennen) bleibt ein `_` außerdem stehen, wenn direkt davor zwei oder mehr
+ * kleine lateinische Buchstaben stehen, also ein Wort wie in „log_2“, „log_b“
+ * oder „snake_case“. Formelzeichen wie „F_Z“, „v_K“, „x_max“, „Δs_1“ oder
+ * „E_pot“ bekommen weiter einen Index.
  */
-export function parseSubText(value: string): SubTextPart[] {
+export interface SubTextOptions {
+  /** Wörter vor `_` (zwei oder mehr Kleinbuchstaben a–z) nicht als Formelzeichen werten. */
+  prose?: boolean;
+}
+
+export function parseSubText(value: string, options: SubTextOptions = {}): SubTextPart[] {
   const parts: SubTextPart[] = [];
   const push = (text: string, sub: boolean) => {
     if (!text) return;
@@ -97,7 +108,7 @@ export function parseSubText(value: string): SubTextPart[] {
       i += 2;
       continue;
     }
-    if (ch === '_') {
+    if (ch === '_' && !(options.prose && /[a-z]{2}$/.test(value.slice(0, i)))) {
       let sub = '';
       let end = i + 1;
       if (value[end] === '{') {
