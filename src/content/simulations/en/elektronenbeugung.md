@@ -12,7 +12,7 @@ $$
 \lambda = \frac{h}{\sqrt{2 \cdot m \cdot e \cdot U}} \approx \frac{1.226\,\text{nm}}{\sqrt{U/\text{V}}}.
 $$
 
-At $U = 4\,\text{kV}$, $\lambda \approx 19.4\,\text{pm}$. Graphite consists of many tiny crystals in all orientations. Lattice planes with spacing $d$ reflect the wave if $2 d \sin\theta = \lambda$ (**Bragg condition**); the beam is deflected by $2\theta$ and forms a ring of radius
+At $U = 4\,\text{kV}$, $\lambda \approx 19.4\,\text{pm}$. Graphite consists of many tiny crystals in all orientations. Lattice planes with spacing $d$ reflect the wave if $2 d \sin\theta = \lambda$ (**Bragg condition**, first order); the beam is deflected by $2\theta$ and forms a ring of radius
 
 $$
 r = L \cdot \tan 2\theta \approx \frac{L \cdot \lambda}{d}

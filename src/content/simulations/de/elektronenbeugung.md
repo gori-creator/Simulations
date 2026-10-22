@@ -23,8 +23,10 @@ Bei $U = 4\,\text{kV}$ ist $\lambda \approx 19{,}4\,\text{pm}$ – viel kleiner 
 Graphit besteht aus vielen winzigen Kristallen, die in alle Richtungen gedreht sind. An parallelen **Netzebenen** mit dem Abstand $d$ verstärken sich die gestreuten Wellen nach der **Bragg-Bedingung**
 
 $$
-2 \cdot d \cdot \sin\theta = \lambda .
+2 \cdot d \cdot \sin\theta = k \cdot \lambda \qquad (k = 1, 2, \ldots).
 $$
+
+Die hellen Ringe auf dem Schirm gehören zur ersten Ordnung $k = 1$; nur sie sind in der Simulation gezeichnet. Ringe höherer Ordnung sind in der Röhre viel schwächer.
 
 Der Strahl wird dabei um $2\theta$ abgelenkt. Weil die Kristalle in allen Richtungen liegen, bilden alle abgelenkten Strahlen einen Kegel – auf dem Schirm im Abstand $L$ einen Ring mit
 
@@ -36,7 +38,7 @@ Graphit hat zwei wichtige Netzebenenabstände: $d_1 = 0{,}213\,\text{nm}$ (inner
 
 **Welle und Teilchen:** Auf dem Schirm kommt jedes Elektron an einem einzelnen Punkt an. Erst viele Elektronen zusammen zeigen das Ringmuster. Die Welle bestimmt nur, *wo* ein Elektron mit welcher Wahrscheinlichkeit auftrifft.
 
-**Zur Darstellung:** Die de-Broglie-Welle im Strahl ist um ein Vielfaches vergrößert gezeichnet; ihre Länge ändert sich aber im richtigen Verhältnis mit $U$. Der Schirm ist hier eben gezeichnet; echte Röhren haben einen gekrümmten Kolben, das ändert die Radien nur wenig. Relativistische Effekte sind bei wenigen kV vernachlässigbar (etwa $0{,}2\,\%$).
+**Zur Darstellung:** Die de-Broglie-Welle im Strahl ist um ein Vielfaches vergrößert gezeichnet; ihre Länge ändert sich aber im richtigen Verhältnis mit $U$. Der Schirm ist hier eben gezeichnet; echte Röhren haben einen gekrümmten Kolben, das ändert die Radien nur wenig. Relativistisch gerechnet wird $\lambda$ nur wenig kleiner: bei $4\,\text{kV}$ um etwa $0{,}2\,\%$, bei $8\,\text{kV}$ um etwa $0{,}4\,\%$. Das liegt weit unter der Messgenauigkeit; die Simulation rechnet deshalb nichtrelativistisch.
 
 ## Ausprobieren
 
@@ -61,7 +63,7 @@ $v = \sqrt{\frac{2 e U}{m}} = \sqrt{\frac{2 \cdot 1{,}602 \cdot 10^{-19}\,\text{
 
 ### Aufgabe 2: Ringradius vorhersagen
 
-Berechne den Bragg-Winkel und den Radius des inneren Rings bei $U = 4{,}0\,\text{kV}$.
+Berechne den Bragg-Winkel und den Radius des inneren Rings bei $U = 4{,}0\,\text{kV}$. [Aufgabe laden](?U=4&val=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -103,7 +105,18 @@ $r \approx \frac{L \lambda}{d} = \frac{L \cdot h}{d \cdot \sqrt{2 m e}} \cdot \f
 
 </details>
 
-### Aufgabe 6: Warum nicht mit Licht?
+### Aufgabe 6: Spannung für einen bestimmten Ring
+
+Welche Spannung braucht man, damit der innere Ring den Radius $r_1 = 10\,\text{mm}$ hat? Rechne mit der Näherung $r \approx \frac{L \cdot \lambda}{d}$. [Aufgabe laden](?U=4&rm=10&val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$\lambda \approx \frac{r_1 \cdot d_1}{L} = \frac{10\,\text{mm} \cdot 0{,}213\,\text{nm}}{135\,\text{mm}} \approx 15{,}8\,\text{pm}$. Aus $\lambda \approx \frac{1{,}226\,\text{nm}}{\sqrt{U/\text{V}}}$ folgt $\sqrt{U/\text{V}} \approx \frac{1226\,\text{pm}}{15{,}8\,\text{pm}} \approx 77{,}7$, also $U \approx 6000\,\text{V} = 6{,}0\,\text{kV}$. Bei $6{,}0\,\text{kV}$ zeigt die Simulation $r_1 = 10{,}1\,\text{mm}$; der Messkreis mit $10\,\text{mm}$ liegt auf dem Ring. [In der Simulation zeigen](?U=6&rm=10)
+
+</details>
+
+### Aufgabe 7: Warum nicht mit Licht?
 
 Grünes Licht hat $\lambda = 530\,\text{nm}$. Warum kann man damit an Graphit keine Beugungsringe erzeugen?
 
