@@ -2,8 +2,14 @@ import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite,
 import { blurRadius, constructionRays, describeImage, imageDistance, isSharp, power, rayThrough, rayY, screenScale, zoneOf, type RayId, type Zone } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-/** Kerze (kerze.webp, 144 × 631): Schnitt unter der Flamme des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
-const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Kerze ohne Flamme (kerze.webp, 540 × 1352): Schnitt unter dem Docht des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 540, h: 1352, top: 57, dome: 66, shaft: 215, foot: 1290 };
+/**
+ * Reiter (reiter.webp, 1257 × 769): Mitte der Stange, rechte Kante des Grundkörpers
+ * (rechts davon die Klemmschraube) und Unterkante des Grundkörpers (darunter die
+ * Klemmbacken an der Schiene).
+ */
+const RIDER_IMG = { w: 1257, h: 769, rod: 452, bodyL: 2, bodyR: 1040, bodyB: 705 };
 /** Sammellinse hochkant (linse.webp, 97 × 731): Mitte der Linse (dickste Stelle) in x. */
 const LENS_IMG = { w: 97, h: 731, cx: 48 };
 type Mode = 'con' | 'bench';
@@ -35,7 +41,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
-  images: { candle: 'kerze.webp', lens: 'linse.webp' },
+  images: { candle: 'kerze.webp', lens: 'linse.webp', rider: 'reiter.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1428,6 +1434,30 @@ export default defineSimulation({
     function rider(x: number, railY: number, sx: number, color: string): void {
       const [px] = bench.toPx(x, 0);
       const w = Math.max(16, 4.5 * sx);
+      const photo = ctx.images.get('rider');
+      if (photo) {
+        // Foto: Grundkörper so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil
+        const R = RIDER_IMG;
+        const k = (w * 1.15) / (R.bodyR - R.bodyL);
+        const pw = R.w * k;
+        const ph = R.h * k;
+        const y0 = railY + 3 - R.bodyB * k;
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.45)';
+        g.shadowBlur = 4;
+        g.shadowOffsetY = 1;
+        g.drawImage(scaledSprite(photo, pw, ph, surface.dpr), px - R.rod * k, y0, pw, ph);
+        g.restore();
+        // Markierung der Stelle auf der Skala
+        g.fillStyle = color;
+        g.beginPath();
+        g.moveTo(px, railY + 3.5);
+        g.lineTo(px - 3.5, railY - 1.5);
+        g.lineTo(px + 3.5, railY - 1.5);
+        g.closePath();
+        g.fill();
+        return;
+      }
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.45)';
       g.shadowBlur = 4;

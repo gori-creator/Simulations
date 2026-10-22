@@ -28,6 +28,12 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/**
+ * Reiter (reiter.webp, 1257 × 769): Mitte der Stange, rechte Kante des Grundkörpers
+ * (rechts davon die Klemmschraube) und Unterkante des Grundkörpers (darunter die
+ * Klemmbacken an der Schiene).
+ */
+const RIDER_IMG = { w: 1257, h: 769, rod: 452, bodyL: 2, bodyR: 1040, bodyB: 705 };
 type Mode = 'lab' | 'space';
 type Src = 'point' | 'wide' | 'two';
 type Lang = 'de' | 'en';
@@ -224,7 +230,7 @@ export default defineSimulation({
     { key: 'names', type: 'boolean', group: 'view', label: L('Kern- und Halbschatten beschriften', 'Label umbra and penumbra'), default: true },
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe (beim Abspielen)', 'Slow motion (when playing)'), default: false },
   ],
-  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp', lamp: 'lampe.webp', sky: 'sternenhimmel.webp' },
+  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp', lamp: 'lampe.webp', sky: 'sternenhimmel.webp', rider: 'reiter.webp' },
   readouts: [
     { key: 'dist', label: L('Abstände', 'Distances') },
     { key: 'size', label: L('Schatten auf dem Schirm', 'Shadow on the screen'), spoiler: true },
@@ -922,16 +928,26 @@ export default defineSimulation({
       const rider = (x: number, color: string) => {
         const [px] = lab.toPx(x, 0);
         const w = Math.max(16, 4.5 * s);
+        const photo = ctx.images.get('rider');
         g.save();
         g.shadowColor = 'rgba(0,0,0,0.45)';
         g.shadowBlur = 4;
         g.shadowOffsetY = 1;
-        const body = g.createLinearGradient(0, yTop - 7, 0, yTop + 2);
-        body.addColorStop(0, '#4b5462');
-        body.addColorStop(1, '#262c35');
-        g.fillStyle = body;
-        roundRect(g, px - w / 2, yTop - 7, w, 9, 2);
-        g.fill();
+        if (photo) {
+          // Foto: Grundkörper so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil
+          const R = RIDER_IMG;
+          const k = (w * 1.15) / (R.bodyR - R.bodyL);
+          const pw = R.w * k;
+          const ph = R.h * k;
+          g.drawImage(scaledSprite(photo, pw, ph, surface.dpr), px - R.rod * k, yTop + 3 - R.bodyB * k, pw, ph);
+        } else {
+          const body = g.createLinearGradient(0, yTop - 7, 0, yTop + 2);
+          body.addColorStop(0, '#4b5462');
+          body.addColorStop(1, '#262c35');
+          g.fillStyle = body;
+          roundRect(g, px - w / 2, yTop - 7, w, 9, 2);
+          g.fill();
+        }
         g.restore();
         g.fillStyle = color;
         g.beginPath();

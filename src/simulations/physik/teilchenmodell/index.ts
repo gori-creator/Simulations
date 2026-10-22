@@ -1,4 +1,22 @@
-import { clamp, defineSimulation, ease, FixedStepper, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, seededRandom, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import {
+  clamp,
+  defineSimulation,
+  ease,
+  FixedStepper,
+  mixColor,
+  offscreenCanvas,
+  prefersReducedMotion,
+  roundRect,
+  scaledSprite,
+  seededRandom,
+  shade,
+  Surface,
+  text,
+  tintedSprite,
+  Tween,
+  withAlpha,
+  type Rect,
+} from '../../../sim-core';
 import {
   diffusionFactor,
   enthalpy,
@@ -97,6 +115,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
+  images: { thermo: 'thermometer.webp', plate: 'heizplatte.webp', pipette: 'pipette.webp', table: 'tischkante.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -557,6 +576,22 @@ export default defineSimulation({
       glow.addColorStop(1, 'rgba(255,255,255,0)');
       g.fillStyle = glow;
       g.fillRect(r.x, r.y, r.w, tableY - r.y);
+      const wood = ctx.images.get('table');
+      if (wood) {
+        // Foto der Tischkante, waagerecht abwechselnd gespiegelt gekachelt (keine Nahtstellen);
+        // ganzzahlige Kachelbreite und 1 px Überlappung, sonst bleibt am Kachelrand ein heller Streifen
+        const tw = Math.round((tableH * wood.width) / wood.height);
+        for (let i = 0, x = r.x; x < r.x + r.w; i++, x += tw) {
+          g.drawImage(scaledSprite(wood, tw + 1, tableH, surface.dpr, { flipX: i % 2 === 1 }), x, tableY, tw + 1, tableH);
+        }
+        if (dark) {
+          g.fillStyle = 'rgba(0,0,0,0.45)';
+          g.fillRect(r.x, tableY, r.w, tableH);
+        }
+        g.fillStyle = 'rgba(255,255,255,0.22)';
+        g.fillRect(r.x, tableY, r.w, 1.5);
+        return tableY;
+      }
       const table = g.createLinearGradient(0, tableY, 0, r.y + r.h);
       table.addColorStop(0, dark ? '#4a3a2b' : '#c9a273');
       table.addColorStop(1, dark ? '#30251b' : '#9f774c');
@@ -923,6 +958,11 @@ export default defineSimulation({
       const pw0 = G.glassW + (G.sm ? 24 : 36);
       const top = G.plateTop;
       const bot = G.tableY;
+      const photo = ctx.images.get('plate');
+      if (photo) {
+        drawPlatePhoto(photo, px0, top, pw0, bot - top, heatVis, G);
+        return;
+      }
       // Gehäuse
       g.save();
       g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.25)';
@@ -1010,6 +1050,91 @@ export default defineSimulation({
       g.beginPath();
       g.arc(lx, ky, G.sm ? 2.5 : 3, 0, TAU);
       g.fill();
+    }
+
+    /**
+     * Heizplatte als Foto. Das Foto ist höher als die flache Platte im Aufbau;
+     * damit nichts verzerrt wird, bleiben die Enden (rechts mit Drehknopf und
+     * Kontrolllampe) maßstabsgetreu, nur das gleichförmige Mittelstück wird
+     * waagerecht gestreckt. Glühen, Knopfstellung und Lampe kommen darüber.
+     */
+    const PLATE_SRC = { top: 16, bottom: 303, left: 300, right: 1250, width: 1600, glass: 50, knobX: 1375, knobY: 180, knobR: 60, ledX: 1497, ledY: 180 };
+    function drawPlatePhoto(img: HTMLImageElement, x: number, top: number, w: number, h: number, heatVis: number, G: StateGeo): void {
+      const g = surface.g;
+      const P = PLATE_SRC;
+      const k = h / (P.bottom - P.top);
+      const lw = P.left * k;
+      const rw = (P.width - P.right) * k;
+      const mw = Math.max(1, w - lw - rw);
+      const piece = (sx: number, sw: number, dx: number, dw: number) => {
+        const crop = { x: sx, y: P.top, w: sw, h: P.bottom - P.top };
+        g.drawImage(scaledSprite(img, dw, h, surface.dpr, { crop }), dx, top, dw, h);
+      };
+      g.save();
+      g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(20,30,45,0.25)';
+      g.shadowBlur = 10;
+      g.shadowOffsetY = 3;
+      piece(0, P.left, x, lw + 0.5);
+      piece(P.left, P.right - P.left, x + lw, mw + 0.5);
+      piece(P.right, P.width - P.right, x + lw + mw, rw);
+      g.restore();
+      const hot = Math.max(0, heatVis);
+      const cold = Math.max(0, -heatVis);
+      // Glaskeramik oben: glüht beim Heizen, wird beim Kühlen bläulich
+      const gh = (P.glass - P.top) * k;
+      if (hot > 0.01 || cold > 0.01) {
+        g.fillStyle = hot > 0 ? `rgba(255,90,31,${0.75 * hot})` : `rgba(150,205,255,${0.6 * cold})`;
+        roundRect(g, x + 20 * k, top + 0.5, w - 40 * k, gh, Math.min(3, gh / 2));
+        g.fill();
+      }
+      if (hot > 0.01) {
+        const gl = g.createRadialGradient(G.cx, top, 4, G.cx, top, G.glassW * 0.8);
+        gl.addColorStop(0, `rgba(255,110,40,${0.42 * hot})`);
+        gl.addColorStop(1, 'rgba(255,110,40,0)');
+        g.fillStyle = gl;
+        g.fillRect(G.cx - G.glassW, top - G.glassW * 0.8, G.glassW * 2, G.glassW * 0.8 + 8);
+      }
+      if (cold > 0.01) {
+        const gl = g.createRadialGradient(G.cx, top, 4, G.cx, top, G.glassW * 0.7);
+        gl.addColorStop(0, `rgba(120,190,255,${0.36 * cold})`);
+        gl.addColorStop(1, 'rgba(120,190,255,0)');
+        g.fillStyle = gl;
+        g.fillRect(G.cx - G.glassW, top - G.glassW * 0.7, G.glassW * 2, G.glassW * 0.7 + 8);
+        // Reifkristalle an der Vorderkante
+        g.strokeStyle = `rgba(255,255,255,${0.85 * cold})`;
+        g.lineWidth = 1;
+        const step = G.sm ? 16 : 20;
+        for (let xx = x + 14; xx < x + lw + mw - 10; xx += step) {
+          const cy = top + gh + 5 + ((xx * 7) % 5) * 0.6;
+          const rr = 2.5 + ((xx * 13) % 3) * 0.6;
+          g.beginPath();
+          for (let q = 0; q < 3; q++) {
+            const a = (q * Math.PI) / 3;
+            g.moveTo(xx - Math.cos(a) * rr, cy - Math.sin(a) * rr);
+            g.lineTo(xx + Math.cos(a) * rr, cy + Math.sin(a) * rr);
+          }
+          g.stroke();
+        }
+      }
+      // Stellung des Drehknopfs und Kontrolllampe
+      const rx = x + lw + mw - P.right * k;
+      const kx = rx + P.knobX * k;
+      const ky = top + (P.knobY - P.top) * k;
+      const kr = P.knobR * k;
+      g.strokeStyle = heatVis > 0.05 ? '#ff8a4c' : heatVis < -0.05 ? '#8fd0ff' : '#c9d1da';
+      g.lineWidth = Math.max(1.2, kr * 0.25);
+      g.lineCap = 'round';
+      const ang = -Math.PI / 2 + heatVis * 1.1;
+      g.beginPath();
+      g.moveTo(kx, ky);
+      g.lineTo(kx + Math.cos(ang) * kr * 0.75, ky + Math.sin(ang) * kr * 0.75);
+      g.stroke();
+      if (Math.abs(heatVis) > 0.05) {
+        g.fillStyle = heatVis > 0 ? `rgba(255,120,50,${0.4 + 0.6 * hot})` : `rgba(110,190,255,${0.4 + 0.6 * cold})`;
+        g.beginPath();
+        g.arc(rx + P.ledX * k, top + (P.ledY - P.top) * k, Math.max(2, 14 * k), 0, TAU);
+        g.fill();
+      }
     }
 
     function drawCylinder(G: StateGeo, front: boolean, ik: number): void {
@@ -1131,6 +1256,34 @@ export default defineSimulation({
       g.restore();
     }
 
+    /**
+     * Thermometer-Foto (Glasröhre ohne Skala, nur die Kugel gefüllt): Mitte der
+     * Röhre, Kugelmitte und -radius, Oberkante der Röhre und Grenzen des
+     * gleichförmigen Röhrenstücks (Bildpixel). Nur dieses Stück wird in der
+     * Länge gestreckt; Kopf und Kugel bleiben maßstabsgetreu.
+     */
+    const THERMO_SRC = { cx: 99.5, bulbY: 1310, bulbR: 100, top: 10, tubeA: 60, tubeB: 1180 };
+    function drawThermoPhoto(img: HTMLImageElement, x: number, top: number, by: number, br: number, color: string): void {
+      const g = surface.g;
+      const T = THERMO_SRC;
+      const k = br / T.bulbR;
+      const w = img.width * k;
+      const x0 = x - T.cx * k;
+      const yA = top + (T.tubeA - T.top) * k;
+      const yB = by - (T.bulbY - T.tubeB) * k;
+      const hBot = (img.height - T.tubeB) * k;
+      const dpr = surface.dpr;
+      const head = { x: 0, y: T.top, w: img.width, h: T.tubeA - T.top };
+      g.drawImage(scaledSprite(img, w, yA - top, dpr, { crop: head }), x0, top, w, yA - top + 0.5);
+      if (yB > yA) {
+        const tube = { x: 0, y: T.tubeA, w: img.width, h: T.tubeB - T.tubeA };
+        g.drawImage(scaledSprite(img, w, yB - yA, dpr, { crop: tube }), x0, yA, w, yB - yA + 0.5);
+      }
+      // Kugel in der Farbe der Säule
+      const bulb = { x: 0, y: T.tubeB, w: img.width, h: img.height - T.tubeB };
+      g.drawImage(tintedSprite(img, w, hBot, dpr, color, { crop: bulb, lift: 0.35 }), x0, yB, w, hBot);
+    }
+
     function drawThermo(G: StateGeo, shown: number, ik: number): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -1149,40 +1302,50 @@ export default defineSimulation({
       roundRect(g, x - br - 6, G.tableY - 5, 2 * br + 12, 5, 2);
       g.fill();
       // Glasröhre mit Kugel
-      g.save();
-      g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.2)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 3;
-      g.fillStyle = dark ? 'rgba(200,220,245,0.16)' : 'rgba(255,255,255,0.9)';
-      g.beginPath();
-      g.moveTo(x - tw / 2, top + tw / 2);
-      g.arc(x, top + tw / 2, tw / 2, Math.PI, 0);
-      g.lineTo(x + tw / 2, by - br * 0.7);
-      g.arc(x, by, br, -Math.PI / 2 + 0.6, Math.PI * 1.5 - 0.6);
-      g.closePath();
-      g.fill();
-      g.restore();
-      g.strokeStyle = dark ? 'rgba(200,220,245,0.45)' : 'rgba(110,130,160,0.55)';
-      g.lineWidth = 1.2;
-      g.stroke();
+      const photo = ctx.images.get('thermo');
+      if (photo) drawThermoPhoto(photo, x, top, by, br, liquid);
+      else {
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.2)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        g.fillStyle = dark ? 'rgba(200,220,245,0.16)' : 'rgba(255,255,255,0.9)';
+        g.beginPath();
+        g.moveTo(x - tw / 2, top + tw / 2);
+        g.arc(x, top + tw / 2, tw / 2, Math.PI, 0);
+        g.lineTo(x + tw / 2, by - br * 0.7);
+        g.arc(x, by, br, -Math.PI / 2 + 0.6, Math.PI * 1.5 - 0.6);
+        g.closePath();
+        g.fill();
+        g.restore();
+        g.strokeStyle = dark ? 'rgba(200,220,245,0.45)' : 'rgba(110,130,160,0.55)';
+        g.lineWidth = 1.2;
+        g.stroke();
+      }
       // Flüssigkeit
       const cap = sm ? 4 : 5;
       const yTop = clamp(thetaToY(G, shown), top + 6, by);
       g.fillStyle = liquid;
-      g.beginPath();
-      g.arc(x, by, br - 3, 0, TAU);
-      g.fill();
-      roundRect(g, x - cap / 2, yTop, cap, by - yTop, cap / 2);
-      g.fill();
-      const hl = g.createRadialGradient(x - br * 0.35, by - br * 0.35, 1, x, by, br);
-      hl.addColorStop(0, 'rgba(255,255,255,0.55)');
-      hl.addColorStop(0.5, 'rgba(255,255,255,0)');
-      g.fillStyle = hl;
-      g.beginPath();
-      g.arc(x, by, br - 3, 0, TAU);
-      g.fill();
-      g.fillStyle = 'rgba(255,255,255,0.5)';
-      g.fillRect(x - tw / 2 + 2.5, top + tw / 2, 1.5, by - br - top - tw / 2);
+      if (photo) {
+        // Säule bis in den Hals der fotografierten Kugel
+        roundRect(g, x - cap / 2, yTop, cap, by - br * 0.6 - yTop, cap / 2);
+        g.fill();
+      } else {
+        g.beginPath();
+        g.arc(x, by, br - 3, 0, TAU);
+        g.fill();
+        roundRect(g, x - cap / 2, yTop, cap, by - yTop, cap / 2);
+        g.fill();
+        const hl = g.createRadialGradient(x - br * 0.35, by - br * 0.35, 1, x, by, br);
+        hl.addColorStop(0, 'rgba(255,255,255,0.55)');
+        hl.addColorStop(0.5, 'rgba(255,255,255,0)');
+        g.fillStyle = hl;
+        g.beginPath();
+        g.arc(x, by, br - 3, 0, TAU);
+        g.fill();
+        g.fillStyle = 'rgba(255,255,255,0.5)';
+        g.fillRect(x - tw / 2 + 2.5, top + tw / 2, 1.5, by - br - top - tw / 2);
+      }
       // Skala
       const lx = x + tw / 2 + 4;
       g.strokeStyle = withAlpha(theme.text, 0.55);
@@ -2160,6 +2323,8 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Pipetten-Foto: Mitte, Glasröhre (oben/unten) und ihre Breite (Bildpixel). */
+    const PIPETTE_SRC = { cx: 107.5, tubeA: 420, tubeB: 1170, tubeW: 129 };
     function drawPipettes(D: DiffGeo): void {
       if (!dropAnim.running) return;
       const g = surface.g;
@@ -2175,32 +2340,49 @@ export default defineSimulation({
         const tw = D.sm ? 6 : 8;
         g.save();
         g.globalAlpha *= a;
-        // Glasröhrchen
-        g.fillStyle = dark ? 'rgba(200,220,245,0.35)' : 'rgba(255,255,255,0.9)';
-        g.strokeStyle = dark ? 'rgba(200,220,245,0.6)' : 'rgba(110,130,160,0.6)';
-        g.lineWidth = 1;
-        g.beginPath();
-        g.moveTo(cx - 1.5, tip);
-        g.lineTo(cx - tw / 2, tip - len * 0.35);
-        g.lineTo(cx - tw / 2, tip - len);
-        g.lineTo(cx + tw / 2, tip - len);
-        g.lineTo(cx + tw / 2, tip - len * 0.35);
-        g.lineTo(cx + 1.5, tip);
-        g.closePath();
-        g.fill();
-        g.stroke();
-        // Tinte im Röhrchen
+        const photo = ctx.images.get('pipette');
         const fill = 1 - clamp((u - 0.25) / 0.2, 0, 1);
-        g.fillStyle = purple();
-        g.fillRect(cx - tw / 2 + 1.5, tip - len * 0.35 - len * 0.3 * fill, tw - 3, len * 0.3 * fill);
-        // Gummihütchen
-        const bulb = g.createLinearGradient(cx - tw, 0, cx + tw, 0);
-        bulb.addColorStop(0, '#8a2b2b');
-        bulb.addColorStop(0.4, '#d65a4a');
-        bulb.addColorStop(1, '#7a2222');
-        g.fillStyle = bulb;
-        roundRect(g, cx - tw * 0.85, tip - len - (D.sm ? 14 : 18), tw * 1.7, D.sm ? 16 : 20, tw * 0.8);
-        g.fill();
+        if (photo) {
+          // Foto (leer): Spitze unten auf dem Tropfpunkt, die Tinte liegt gezeichnet darüber
+          const P = PIPETTE_SRC;
+          const k = (len + (D.sm ? 14 : 18)) / photo.height;
+          const pw = photo.width * k;
+          const ph = photo.height * k;
+          const py = tip - ph;
+          g.drawImage(scaledSprite(photo, pw, ph, surface.dpr), cx - P.cx * k, py, pw, ph);
+          const inkW = P.tubeW * k * 0.62;
+          const inkBot = py + P.tubeB * k;
+          const inkH = (P.tubeB - P.tubeA) * k * 0.45 * fill;
+          g.fillStyle = purple();
+          roundRect(g, cx - inkW / 2, inkBot - inkH, inkW, inkH, Math.min(inkW / 2, inkH / 2));
+          g.fill();
+        } else {
+          // Glasröhrchen
+          g.fillStyle = dark ? 'rgba(200,220,245,0.35)' : 'rgba(255,255,255,0.9)';
+          g.strokeStyle = dark ? 'rgba(200,220,245,0.6)' : 'rgba(110,130,160,0.6)';
+          g.lineWidth = 1;
+          g.beginPath();
+          g.moveTo(cx - 1.5, tip);
+          g.lineTo(cx - tw / 2, tip - len * 0.35);
+          g.lineTo(cx - tw / 2, tip - len);
+          g.lineTo(cx + tw / 2, tip - len);
+          g.lineTo(cx + tw / 2, tip - len * 0.35);
+          g.lineTo(cx + 1.5, tip);
+          g.closePath();
+          g.fill();
+          g.stroke();
+          // Tinte im Röhrchen
+          g.fillStyle = purple();
+          g.fillRect(cx - tw / 2 + 1.5, tip - len * 0.35 - len * 0.3 * fill, tw - 3, len * 0.3 * fill);
+          // Gummihütchen
+          const bulb = g.createLinearGradient(cx - tw, 0, cx + tw, 0);
+          bulb.addColorStop(0, '#8a2b2b');
+          bulb.addColorStop(0.4, '#d65a4a');
+          bulb.addColorStop(1, '#7a2222');
+          g.fillStyle = bulb;
+          roundRect(g, cx - tw * 0.85, tip - len - (D.sm ? 14 : 18), tw * 1.7, D.sm ? 16 : 20, tw * 0.8);
+          g.fill();
+        }
         g.restore();
         // fallender Tropfen
         if (u > 0.3 && u < 0.56) {

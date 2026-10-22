@@ -1,10 +1,16 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { COILS, currentForRadius, E_CHARGE, electronSpeed, fitSpecificCharge, helmholtzField, lorentzForce, orbitRadius, SPECIFIC_CHARGE } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
 /** Innenradius der Glaskugel in cm. */
 const SPHERE = 7.5;
+/**
+ * Fadenstrahlrohr mit Helmholtzspulen (fadenstrahlrohr.webp, 913 × 1166):
+ * Mitte und Radius der Glaskugel (Bildpixel). Die Spulen liegen im Foto etwas
+ * enger um die Kugel als maßstäblich (R = 15 cm).
+ */
+const TUBE_IMG = { cx: 456, cy: 427, r: 303 };
 /** Austrittspunkt der Elektronenkanone (cm, Kugelmitte = Ursprung, y nach oben). */
 const GUN_X = -5;
 /** Marken der Messleiter: Kreisdurchmesser in cm. */
@@ -43,6 +49,7 @@ export default defineSimulation({
   animated: true,
   dragHint: false,
   layout: { aspect: 1.5, aspectNarrow: 0.56 },
+  images: { tube: 'fadenstrahlrohr.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'U', type: 'number', label: L('Beschleunigungsspannung U', 'Accelerating voltage U'), min: 100, max: 300, step: 5, default: 200, unit: 'V' },
@@ -398,56 +405,67 @@ export default defineSimulation({
       const txt = '#e6edf6';
       const mut = 'rgba(214,224,238,0.62)';
 
-      // Helmholtzspulen (Kupferwicklung, von vorn gesehen, dahinter versetzt die zweite)
-      const copper = '#c47a3a';
-      for (const [off, a] of [
-        [0.9, 0.45],
-        [0, 1],
-      ] as const) {
-        const rr = COILS.R * 100 * k;
-        g.save();
-        g.globalAlpha *= a;
-        g.lineWidth = 2.2 * k;
-        const gr = g.createRadialGradient(cx + off * k, cy - off * k, rr - 1.2 * k, cx + off * k, cy - off * k, rr + 1.2 * k);
-        gr.addColorStop(0, mixColor(copper, '#000000', 0.35));
-        gr.addColorStop(0.5, mixColor(copper, '#ffffff', 0.25));
-        gr.addColorStop(1, mixColor(copper, '#000000', 0.4));
-        g.strokeStyle = gr;
-        g.beginPath();
-        g.arc(cx + off * k, cy - off * k, rr, 0, TAU);
-        g.stroke();
-        // Wicklungslinien
-        g.strokeStyle = 'rgba(0,0,0,0.18)';
-        g.lineWidth = 1;
-        for (let i = -2; i <= 2; i++) {
+      const rs = SPHERE * k;
+      const photo = ctx.images.get('tube');
+      if (photo) {
+        // Foto: Spulen, Hals und Sockel; die Kugel genau auf der gezeichneten
+        const kp = rs / TUBE_IMG.r;
+        const w = photo.width * kp;
+        const h = photo.height * kp;
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr), cx - TUBE_IMG.cx * kp, cy - TUBE_IMG.cy * kp, w, h);
+      } else {
+        // Helmholtzspulen (Kupferwicklung, von vorn gesehen, dahinter versetzt die zweite)
+        const copper = '#c47a3a';
+        for (const [off, a] of [
+          [0.9, 0.45],
+          [0, 1],
+        ] as const) {
+          const rr = COILS.R * 100 * k;
+          g.save();
+          g.globalAlpha *= a;
+          g.lineWidth = 2.2 * k;
+          const gr = g.createRadialGradient(cx + off * k, cy - off * k, rr - 1.2 * k, cx + off * k, cy - off * k, rr + 1.2 * k);
+          gr.addColorStop(0, mixColor(copper, '#000000', 0.35));
+          gr.addColorStop(0.5, mixColor(copper, '#ffffff', 0.25));
+          gr.addColorStop(1, mixColor(copper, '#000000', 0.4));
+          g.strokeStyle = gr;
           g.beginPath();
-          g.arc(cx + off * k, cy - off * k, rr + i * 0.4 * k, 0, TAU);
+          g.arc(cx + off * k, cy - off * k, rr, 0, TAU);
           g.stroke();
+          // Wicklungslinien
+          g.strokeStyle = 'rgba(0,0,0,0.18)';
+          g.lineWidth = 1;
+          for (let i = -2; i <= 2; i++) {
+            g.beginPath();
+            g.arc(cx + off * k, cy - off * k, rr + i * 0.4 * k, 0, TAU);
+            g.stroke();
+          }
+          g.restore();
         }
-        g.restore();
+
+        // Hals und Sockel
+        const neckW = 2.6 * k;
+        g.fillStyle = 'rgba(190,210,230,0.16)';
+        g.strokeStyle = 'rgba(200,220,240,0.35)';
+        g.lineWidth = 1.2;
+        roundRect(g, cx - neckW / 2, Y(-SPHERE + 0.6), neckW, 3.2 * k, 4);
+        g.fill();
+        g.stroke();
+        g.fillStyle = '#2b3442';
+        roundRect(g, cx - 2.4 * k, Y(-SPHERE - 2.4), 4.8 * k, 1.6 * k, 4);
+        g.fill();
       }
 
-      // Hals und Sockel
-      const neckW = 2.6 * k;
-      g.fillStyle = 'rgba(190,210,230,0.16)';
-      g.strokeStyle = 'rgba(200,220,240,0.35)';
-      g.lineWidth = 1.2;
-      roundRect(g, cx - neckW / 2, Y(-SPHERE + 0.6), neckW, 3.2 * k, 4);
-      g.fill();
-      g.stroke();
-      g.fillStyle = '#2b3442';
-      roundRect(g, cx - 2.4 * k, Y(-SPHERE - 2.4), 4.8 * k, 1.6 * k, 4);
-      g.fill();
-
-      // Glaskugel mit leichtem Gasleuchten
-      const rs = SPHERE * k;
+      // Glaskugel mit leichtem Gasleuchten (mit Foto: dunkles Innere hinter dem Glas)
       const bg = g.createRadialGradient(cx - rs * 0.3, cy - rs * 0.35, rs * 0.1, cx, cy, rs * 1.05);
       bg.addColorStop(0, 'rgba(40,58,86,0.95)');
       bg.addColorStop(1, 'rgba(10,15,26,0.98)');
       g.fillStyle = bg;
       g.beginPath();
-      g.arc(cx, cy, rs + 0.3 * k, 0, TAU);
+      g.arc(cx, cy, photo ? rs * 0.97 : rs + 0.3 * k, 0, TAU);
+      if (photo) g.globalAlpha *= 0.9;
       g.fill();
+      if (photo) g.globalAlpha /= 0.9;
       g.strokeStyle = 'rgba(200,225,255,0.45)';
       g.lineWidth = 1.6;
       g.stroke();
