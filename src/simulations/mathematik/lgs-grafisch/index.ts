@@ -2,6 +2,7 @@ import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, ro
 import {
   approxText,
   compareTariffs,
+  crossesAtNegativeTime,
   frac,
   fracText,
   fromGeneral,
@@ -137,6 +138,7 @@ export default defineSimulation({
       tarifB: 'Tarif B',
       cross: 'Bis {min} min ist Tarif {below} günstiger, ab {min} min Tarif {above}. Bei {min} min kosten beide {cost} €.',
       always: 'Tarif {t} ist bei jeder Gesprächszeit günstiger (oder gleich teuer).',
+      negTime: 'Der Schnittpunkt liegt bei negativer Zeit und hat im Sachzusammenhang keine Bedeutung – Tarif {t} ist immer günstiger.',
       same: 'Beide Tarife sind gleich.',
       perMin: '{g} € + {p} ct pro min',
       vertical: 'senkrecht – keine Normalform',
@@ -163,6 +165,7 @@ export default defineSimulation({
       tarifB: 'Tariff B',
       cross: 'Up to {min} min tariff {below} is cheaper, above {min} min tariff {above}. At {min} min both cost €{cost}.',
       always: 'Tariff {t} is cheaper (or equal) for every call time.',
+      negTime: 'The intersection lies at a negative time and has no meaning in this context – tariff {t} is always cheaper.',
       same: 'Both tariffs are the same.',
       perMin: '€{g} + {p} ct per min',
       vertical: 'vertical – no slope-intercept form',
@@ -340,7 +343,8 @@ export default defineSimulation({
         const dm = frac(n1.m.num * n2.m.den - n2.m.num * n1.m.den, n1.m.den * n2.m.den);
         const dt = frac(n2.t.num * n1.t.den - n1.t.num * n2.t.den, n1.t.den * n2.t.den);
         const rhs = (l: Line) => normalText(l, lang).replace(/^y = /, '');
-        const k = dm.num === dm.den ? 'x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
+        // Koeffizient 1 bzw. −1 nicht ausschreiben: „x“, „−x“
+        const k = dm.num === dm.den ? 'x' : dm.num === -dm.den ? '−x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
         ctx.readout('calc', { html: htmlEq(`${rhs(l1)} = ${rhs(l2)} ⇒ ${k} = ${fracText(dt, lang)} ⇒ x = ${fracText(sol.x, lang)}, y = ${fracText(sol.y, lang)}`) });
       } else ctx.readout('calc', null);
       if (form() === 'tarif') {
@@ -348,7 +352,12 @@ export default defineSimulation({
         if (c.kind === 'cross') {
           const below = c.cheaperBelow === 1 ? 'A' : 'B';
           ctx.readout('tarif', tr('cross', { min: fmt.num(c.minutes, 1), below, above: below === 'A' ? 'B' : 'A', cost: fmt.fixed(c.cost, 2) }));
-        } else ctx.readout('tarif', c.kind === 'same' ? ctx.t('same') : tr('always', { t: c.cheaper === 1 ? 'A' : 'B' }));
+        } else if (c.kind === 'same') ctx.readout('tarif', ctx.t('same'));
+        else {
+          const t = c.cheaper === 1 ? 'A' : 'B';
+          // Schnittpunkt bei negativer Zeit: mathematisch eine Lösung, im Sachzusammenhang ohne Bedeutung
+          ctx.readout('tarif', crossesAtNegativeTime(p.g1, p.p1, p.g2, p.p2) ? tr('negTime', { t }) : tr('always', { t }));
+        }
       } else ctx.readout('tarif', null);
       ctx.setAction('probe', { enabled: sol.kind === 'unique' });
     }
@@ -585,7 +594,8 @@ export default defineSimulation({
       const w = Math.max(mathWidth(title, fs * 0.92, 700), ...rows.map((q) => mathWidth(q.text, fs))) + 26;
       const h = fs * 1.6 * 3 + 8;
       const x = small ? r.x + 10 : r.x + r.w - w - 54;
-      const y = small ? r.y + r.h - h - 10 : r.y + 10;
+      // Schmal: unten links; beim Tarifvergleich über der x-Achse, damit die Achsenzahlen frei bleiben
+      const y = small ? (form() === 'tarif' ? Math.min(r.y + r.h - h - 10, plot.toPx(0, 0)[1] - h - 8) : r.y + r.h - h - 10) : r.y + 10;
       const t = probeTween.t;
       card(x, y, w, h, theme.series[2]);
       mathText(title, x + 13, y + 4 + fs * 0.8, fs * 0.92, theme.muted, 'left', 700);
@@ -668,7 +678,7 @@ export default defineSimulation({
             ],
             { fill: c, alpha: 0.12, stroke: c, width: 1.5 },
           );
-          const dyText = form() === 'tarif' ? `${fmt.num(m * unit, 2)} €` : fmt.num(m * unit, 2);
+          const dyText = form() === 'tarif' ? `${fmt.fixed(m * unit, 2)} €` : fmt.num(m * unit, 2);
           plot.text(x0 + unit, (y0 + y1) / 2, dyText, { color: c, size: 12, weight: '600', offset: [6, 0], baseline: 'middle' });
           plot.text(x0 + unit / 2, y0, form() === 'tarif' ? `${fmt.num(unit, 0)} min` : '1', { color: c, size: 12, weight: '600', align: 'center', baseline: m >= 0 ? 'top' : 'bottom', offset: [0, m >= 0 ? 4 : -4] });
         });
@@ -829,7 +839,7 @@ export default defineSimulation({
           from = before;
           morph.play();
           pop.play();
-        } else if (sol.kind !== lastSol.kind) pop.play();
+        } else if (sol.kind !== lastSol.kind && !reduced) pop.play();
         if (changed.has('form') || source === 'replace' || source === 'init') {
           viewKey = '';
           probeOn = false;
