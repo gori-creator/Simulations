@@ -100,7 +100,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 8–9 | `gleichungen-grafisch` | Gleichungen grafisch lösen: Schnittpunkte von Graphen | `/de/mathematik/terme-und-gleichungen/gleichungen-grafisch-loesen/` |
 | ☐ | 8–9 | `pythagoras` | Satz des Pythagoras | `/de/mathematik/geometrie/satz-des-pythagoras/` |
 | ☐ | 8–10 | `baumdiagramm` | Mehrstufige Zufallsexperimente und Pfadregeln | `/de/mathematik/daten-und-zufall/baumdiagramm-pfadregeln/` |
-| ☐ | 8–13 | `funktionsplotter` | Funktionsplotter mit eigenen Termen | `/de/mathematik/funktionen/funktionsplotter/` |
+| ✓ | 8–13 | `funktionsplotter` | Funktionsplotter mit eigenen Termen | `/de/mathematik/funktionen/funktionsplotter/` |
 
 ## Paket 3 – Prüf-Agent 3 (Mathematik Jgst. 9–12) – 42 Simulationen
 

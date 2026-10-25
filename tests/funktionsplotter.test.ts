@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   compile,
+  compileRaw,
   derivative,
   findExtrema,
   findHoles,
@@ -288,5 +289,57 @@ describe('Funktionsplotter: besondere Punkte', () => {
     const p = fitRange([fn('1/x')], -4, 4)!;
     expect(p[1] - p[0]).toBeLessThan(20);
     expect(fitRange([fn('sqrt(x)')], -4, -1)).toBeNull();
+  });
+});
+
+describe('Funktionsplotter: Prüfrunde (Eingaben und sehr große Werte)', () => {
+  it('liest Vorzeichen, Potenzen und implizites Mal wie im Unterricht', () => {
+    expect(fn('-x²')(3)).toBe(-9);
+    expect(fn('2^3x')(1)).toBe(8); // 2³ · x
+    expect(fn('1/2x')(4)).toBe(2); // ½ · x
+    expect(fn('1/(2x)')(4)).toBe(0.125);
+    expect(fn('x·−2')(3)).toBe(-6);
+    expect(fn('x(x + 1)')(2)).toBe(6);
+    expect(fn('sin x^2')(2)).toBeCloseTo(Math.sin(4), 15);
+    expect(fn('sin(x)^2')(2)).toBeCloseTo(Math.sin(2) ** 2, 15);
+    expect(fn(',5x')(2)).toBe(1);
+    expect(fn('2,5x')(2)).toBe(5);
+    expect(fn('log_0,5(x)')(4)).toBeCloseTo(-2, 14);
+  });
+
+  it('meldet mehrdeutige oder unzulässige Eingaben', () => {
+    expect(err('2,5,3')).toMatchObject({ code: 'missingOp' });
+    expect(err('1e5')).toMatchObject({ code: 'varDigit' });
+    expect(err('f(x)')).toMatchObject({ code: 'otherVar', a: 'f' });
+    expect(err('sin()')).toMatchObject({ code: 'emptyParens' });
+  });
+
+  it('führt keinen Programmcode aus', () => {
+    expect(err('alert(1)')).toMatchObject({ code: 'unknownName', a: 'alert' });
+    expect(err('constructor')).toMatchObject({ code: 'unknownName' });
+    expect(err('Math.PI')).toMatchObject({ code: 'unknownName' });
+    expect(err('__proto__')).toMatchObject({ code: 'badChar' });
+    expect(err('x;2')).toMatchObject({ code: 'badChar', a: ';' });
+    expect(err('`x`')).toMatchObject({ code: 'badChar' });
+  });
+
+  it('unterscheidet „nicht definiert“ (NaN) von „zu groß“ (Überlauf)', () => {
+    const big = parseTerm('e^(x^2)');
+    if (big.ok !== true) throw new Error('e^(x^2)');
+    expect(compile(big.term.node)(30, ENV)).toBeNaN();
+    expect(compileRaw(big.term.node)(30, ENV)).toBe(Infinity);
+    const root = parseTerm('sqrt(x)');
+    if (root.ok !== true) throw new Error('sqrt');
+    expect(compileRaw(root.term.node)(-1, ENV)).toBeNaN();
+    expect(fn('1/0')(0)).toBeNaN();
+    expect(fn('0/0')(0)).toBeNaN();
+  });
+
+  it('meldet bei sehr steilen stetigen Graphen keine Sprungstellen', () => {
+    const t = traceFunction(fn('e^(x^2)'), -6, 6, -5, 5, 600);
+    expect(t.breaks).toEqual([]);
+    expect(t.segments).toHaveLength(1);
+    // echte Sprünge bleiben erhalten
+    expect(traceFunction(fn('x/|x|'), -2, 2, -2, 2, 401).breaks.map((b) => b.kind)).toEqual(['jump']);
   });
 });

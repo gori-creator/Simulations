@@ -858,6 +858,14 @@ function compileNode(node: Node): Compiled {
   }
 }
 
+/**
+ * Wie `compile`, aber ohne Umwandlung: ±Infinity bedeutet „definiert, aber zu
+ * groß für den Rechner“ (z. B. e^1000), NaN „nicht definiert“.
+ */
+export function compileRaw(node: Node): (x: number, env: Env) => number {
+  return compileNode(node);
+}
+
 /** Übersetzt den Baum in eine Funktion; nicht definierte Stellen liefern NaN. */
 export function compile(node: Node): (x: number, env: Env) => number {
   const c = compileNode(node);
@@ -1006,7 +1014,12 @@ export function locateJump(f: Fn1, a: number, ya: number, b: number, yb: number,
   for (let k = 0; k < 60; k++) {
     if (Math.abs(yb - ya) <= tol * 0.25) return null;
     const m = (a + b) / 2;
-    if (m <= a || m >= b) break;
+    if (m <= a || m >= b) {
+      // Rechengenauigkeit erreicht: Bei sehr steilen, aber stetigen Graphen (e^(x²) bei
+      // x = 6) bleibt ein Unterschied, der im Verhältnis zu den Werten winzig ist – kein Sprung.
+      if (Math.abs(yb - ya) <= 1e-9 * Math.max(Math.abs(ya), Math.abs(yb))) return null;
+      break;
+    }
     const ym = f(m);
     if (!finite(ym)) {
       const L = edgePoint(f, a, m);
