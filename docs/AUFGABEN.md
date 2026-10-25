@@ -9,7 +9,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
 | Prüfrunde Physik abschließen (Abschnitt A, `docs/pruefung/UEBERGABE-NEUE-PRUEFER.md`) | Claude-Agent | 16 von 17 Protokollen auf `pruefen/paket-1`, noch nicht in `main` |
-| Sicherheit und Ladezeit (Abschnitte unten) | Claude-Agent | läuft |
+| Sicherheit und Ladezeit (Abschnitte unten) | Claude-Agent | Pull Request offen (PR #48) |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
 
 ## Erledigt
@@ -43,15 +43,15 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 
 Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das Risiko ist gering.
 
-- [ ] **Pakete aktualisieren:** `npm audit` meldet `undici` (hoch) und `fast-uri` (mittel). Mit `npm audit fix` beheben, prüfen, ob sie nur beim Bauen gebraucht werden, `npm run verify`.
-- [ ] **Content-Security-Policy** als `<meta http-equiv="Content-Security-Policy">` im Layout (`src/layouts/BaseLayout.astro`): nur eigene Skripte, Styles, Bilder und Schriften; keine externen Quellen. Prüfen, dass Inline-Skripte (Bundesland, Dunkelmodus) weiter laufen (Hash oder Nonce).
+- [x] **Pakete aktualisieren** (PR #48, 25.10.): `npm audit` meldet `undici` (hoch) und `fast-uri` (mittel). Mit `npm audit fix` beheben, prüfen, ob sie nur beim Bauen gebraucht werden, `npm run verify`. → Behoben (dazu `zod`); alle drei nur beim Bauen bzw. in der Typprüfung, nicht auf der fertigen Seite.
+- [x] **Content-Security-Policy** (PR #48, 25.10.) als `<meta http-equiv="Content-Security-Policy">` im Layout (`src/layouts/BaseLayout.astro`): nur eigene Skripte, Styles, Bilder und Schriften; keine externen Quellen. Prüfen, dass Inline-Skripte (Bundesland, Dunkelmodus) weiter laufen (Hash oder Nonce). → Über Astro (`security.csp`) mit Prüfsummen; alle 416 Seiten ohne Verstoß.
 - [ ] **GitHub-Konto absichern** (Projektleitung): Zwei-Faktor-Anmeldung; unter Settings → Branches Schutzregel für `main` (nur per Pull Request, Prüfungen müssen grün sein).
 - [ ] Optional: Dependabot für Sicherheitsupdates einschalten (Settings → Code security).
 
 ## Inhalte und Funktionen
 
 - [ ] **9 Bilder neu erzeugen** (Projektleitung mit Bildgenerator, Prompts: `docs/agenten/PROMPT-BILDER-NACHLIEFERUNG.md`; Einbau: `docs/agenten/AUFTRAG-BILDER-NACHLIEFERUNG.md`): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Oberfläche Gummi/Asphalt, Fluchtstab, Lupe, Sparbuch – Gründe in `docs/BILDER-WUNSCHLISTE.md` (Abschnitt „Stand 22.10.2026“). Danach einbauen wie in PR #41.
-- [ ] **Ladezeit für Schulnetze:** Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR.
+- [x] **Ladezeit für Schulnetze** (PR #48, 25.10.): Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR. → Service Worker lädt nicht mehr die ganze Seite vorab (vorher 23 MB je Gerät), Fachseiten halb so groß, 9 Bilder verkleinert, Test für ≤ 300 KB.
 - [ ] **Design einbauen**, sobald der Codex-Agent abgegeben hat: Abgabe prüfen, Patch anwenden, Sichtprüfung hell/dunkel, PC/Handy, PR.
 - [ ] **Chemie:** Plan für die ersten 10 Simulationen (Klasse 7–13, KMK-Bildungsstandards), dann die ersten zwei vollständig bauen (`docs/NEUE-SIMULATION.md`).
 - [ ] **Weitere Bundesländer:** Lehrpläne Mathematik und Physik (Gymnasium) für Nordrhein-Westfalen und Niedersachsen nach dem Muster in `src/curriculum/lehrplaene/`, nur amtliche Quellen, Unsicheres als Entwurf.
