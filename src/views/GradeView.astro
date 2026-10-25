@@ -70,7 +70,7 @@ const elsewhere = (unit: CurriculumUnit) =>
             {unit.title[lang]}
           </h2>
           {unit.summary && <p class="lp-summary">{unit.summary[lang]}</p>}
-          {!unit.parts && <UnitSimulations lang={lang} ids={unit.simulations ?? []} elsewhere={elsewhere(unit)} />}
+          {!unit.parts && <UnitSimulations lang={lang} ids={unit.simulations ?? []} elsewhere={elsewhere(unit)} headingLevel="h3" />}
           {unit.parts?.map((part) => (
             <div class="lp-part" id={unitAnchor(part.code)}>
               <h3>

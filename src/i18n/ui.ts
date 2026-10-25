@@ -17,6 +17,8 @@ const de = {
 
   'lang.label': 'Sprache',
   'theme.toggle': 'Hell/Dunkel umschalten',
+  'theme.toDark': 'Zum dunklen Farbschema wechseln',
+  'theme.toLight': 'Zum hellen Farbschema wechseln',
 
   'settings.label': 'Einstellungen',
   'settings.region': 'Bundesland',
@@ -186,6 +188,8 @@ const en: Record<UiKey, string> = {
 
   'lang.label': 'Language',
   'theme.toggle': 'Toggle light/dark mode',
+  'theme.toDark': 'Switch to dark mode',
+  'theme.toLight': 'Switch to light mode',
 
   'settings.label': 'Settings',
   'settings.region': 'Federal state',

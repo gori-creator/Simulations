@@ -32,7 +32,7 @@ const { lang, alternates, section } = Astro.props;
             href={href(lang, { kind: 'subject', subject: subject.id })}
           >
             {subject.title[lang]}
-            {subject.status === 'planned' && <span class="site-nav__soon">{t(lang, 'nav.soon')}</span>}
+            {subject.status === 'planned' && <span class="site-nav__soon">{' '}{t(lang, 'nav.soon')}</span>}
           </a>
         ))
       }
@@ -57,6 +57,7 @@ const { lang, alternates, section } = Astro.props;
               lang={l}
               aria-current={l === lang ? 'true' : undefined}
               title={LANG_META[l].name}
+              aria-label={`${l} – ${LANG_META[l].name}`}
               data-keep-query
             >
               {l}
@@ -65,7 +66,15 @@ const { lang, alternates, section } = Astro.props;
         }
       </div>
       <RegionSettings lang={lang} />
-      <button class="btn btn--ghost btn--icon" type="button" data-theme-toggle aria-label={t(lang, 'theme.toggle')} title={t(lang, 'theme.toggle')}>
+      <button
+        class="btn btn--ghost btn--icon"
+        type="button"
+        data-theme-toggle
+        data-label-dark={t(lang, 'theme.toDark')}
+        data-label-light={t(lang, 'theme.toLight')}
+        aria-label={t(lang, 'theme.toggle')}
+        title={t(lang, 'theme.toggle')}
+      >
         <Icon name="moon" class="theme-icon theme-icon--moon" />
         <Icon name="sun" class="theme-icon theme-icon--sun" />
       </button>
@@ -111,10 +120,22 @@ const { lang, alternates, section } = Astro.props;
 <script>
   // Hell/Dunkel umschalten und merken
   const root = document.documentElement;
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
+  const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+  const currentTheme = () => root.dataset.theme ?? (darkQuery.matches ? 'dark' : 'light');
+  // Name des Knopfs nennt das Ziel („Zum dunklen Farbschema wechseln“), so kennen Bildschirmleser den Zustand
+  function labelThemeToggle(): void {
+    if (!themeToggle) return;
+    const label = (currentTheme() === 'dark' ? themeToggle.dataset.labelLight : themeToggle.dataset.labelDark) ?? '';
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.title = label;
+  }
+  labelThemeToggle();
+  darkQuery.addEventListener('change', labelThemeToggle);
+  themeToggle?.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
+    labelThemeToggle();
     try {
       localStorage.setItem('theme', next);
     } catch {
@@ -125,9 +146,17 @@ const { lang, alternates, section } = Astro.props;
   // Mobiles Menü
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const nav = document.getElementById('site-nav');
-  toggle?.addEventListener('click', () => {
-    const open = nav?.classList.toggle('is-open') ?? false;
-    toggle.setAttribute('aria-expanded', String(open));
+  function setMenu(open: boolean): void {
+    nav?.classList.toggle('is-open', open);
+    toggle?.setAttribute('aria-expanded', String(open));
+  }
+  toggle?.addEventListener('click', () => setMenu(!nav?.classList.contains('is-open')));
+  // Esc schließt das offene Menü und setzt den Fokus zurück auf den Menüknopf
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !nav?.classList.contains('is-open')) return;
+    const inside = nav.contains(document.activeElement) || document.activeElement === toggle;
+    setMenu(false);
+    if (inside) toggle?.focus();
   });
 
   // Beim Sprachwechsel Einstellungen der Simulation (Query) mitnehmen und Sprache merken
