@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   approxText,
   compareTariffs,
+  crossesAtNegativeTime,
   frac,
   fracText,
   fromGeneral,
@@ -103,6 +104,12 @@ describe('LGS grafisch: Sonderfälle (Prüfrunde)', () => {
     expect(compareTariffs(4, 5, 10, 11).kind).toBe('always');
     // Gleiche Tarife ergeben identische Geraden
     expect(solve(fromTariff(10, 5), fromTariff(10, 5)).kind).toBe('identical');
+    // Schnitt bei −100 min (A 4 € + 5 ct, B 10 € + 11 ct): Hinweis im Sachzusammenhang
+    expect(crossesAtNegativeTime(4, 5, 10, 11)).toBe(true);
+    expect(solve(fromTariff(4, 5), fromTariff(10, 11))).toEqual({ kind: 'unique', x: frac(-100), y: frac(-1) });
+    expect(crossesAtNegativeTime(10, 5, 4, 11)).toBe(false); // Schnitt bei +100 min
+    expect(crossesAtNegativeTime(5, 3, 5, 8)).toBe(false); // Schnitt genau bei 0 min
+    expect(crossesAtNegativeTime(10, 5, 12, 5)).toBe(false); // parallel
     // Minutenpreis 0: waagerechte Gerade
     expect(normalText(fromTariff(12, 0), 'de')).toBe('y = 12');
   });

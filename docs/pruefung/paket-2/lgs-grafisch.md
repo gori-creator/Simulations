@@ -24,7 +24,7 @@ korrigiert
 
 ## 3. Geräte (Prüfbogen)
 - **Handy klein/groß, iPad hoch/quer, Laptop, 1920, Beamer, hell/dunkel:** alle ohne Befund; Beispielkarten auf dem Tablet sichtbar; Beamer gut lesbar.
-- **Überlauf / Überlappungen / abgeschnittene Beschriftungen:** kein Überlauf. Kleinigkeit: Auf dem Handy (360 px) liegt die Probe-Karte im Tarifmodus unten links über den x-Achsen-Zahlen (Inhalt bleibt lesbar, Ergebnis steht zusätzlich unter „Ergebnisse“). Bei sehr großem Ausschnitt (S weit außen) rücken die beiden Ziehpunkte bei x = 0 und x = 1 eng zusammen – nicht geändert.
+- **Überlauf / Überlappungen / abgeschnittene Beschriftungen:** kein Überlauf. Auf dem Handy (360 px) lag die Probe-Karte im Tarifmodus über den x-Achsen-Zahlen → Nachtrag: Karte sitzt bei schmaler Fläche im Tarifmodus jetzt über der x-Achse (vorher/nachher: `handy-tarif-vorher.png` / `shots/handy-tarif.png` im Bogen-Ordner). Bei sehr großem Ausschnitt (S weit außen) rücken die beiden Ziehpunkte bei x = 0 und x = 1 eng zusammen – nicht geändert.
 - **Touch (Ziehen) und Maus:** Ziehpunkte (y-Achsenabschnitt, Steigungspunkt, Verschiebepunkt in allgemeiner Form, Grundgebühr/Minutenpreis) per Code geprüft, rasten auf die Reglerschritte; Hinweis „Tipp: … ziehen“ vorhanden.
 
 ## 4. Barrierefreiheit
@@ -42,12 +42,14 @@ korrigiert
 | `src/content/simulations/en/lgs-grafisch.md` | EN vollständig an DE angeglichen (Einführung, Tabelle, 6 Ausprobier-Punkte, 6 Aufgaben, Unterrichtsideen) |
 | `src/content/simulations/de/lgs-grafisch.md` | `_hide=1`-Hinweis nennt alle verdeckten Ergebnisse |
 | `tests/lgs-grafisch.test.ts` | 3 neue Testfälle (Aufgaben, Tarif-Grenzfälle, Darstellung) |
+| `src/simulations/mathematik/lgs-grafisch/model.ts`, `index.ts` | Nachtrag: `crossesAtNegativeTime()`; Tarifvergleich nennt bei Schnittpunkt bei negativer Zeit einen Hinweis (DE/EN), Test ergänzt |
+| `src/simulations/mathematik/lgs-grafisch/index.ts` | Nachtrag: Probe-Karte auf schmaler Fläche im Tarifmodus über der x-Achse |
 
 ## 6. Für den Kern (nicht selbst ändern)
 - keine
 
 ## 7. Rückfragen (fachlich unsicher, nicht stillschweigend geändert)
-- Tarifmodus mit Schnittpunkt bei negativer Gesprächszeit (z. B. A 4 € + 5 ct, B 10 € + 11 ct): Banner und Lösungsmenge melden mathematisch korrekt „genau eine Lösung S(−100 | −1)“, der Tarifvergleich sagt „Tarif A ist bei jeder Gesprächszeit günstiger“. Soll im Sachkontext ein Hinweis „Schnittpunkt liegt bei negativer Zeit – im Sachzusammenhang ohne Bedeutung“ ergänzt werden? Vorerst unverändert.
+- Tarifmodus mit Schnittpunkt bei negativer Gesprächszeit (z. B. A 4 € + 5 ct, B 10 € + 11 ct): Banner und Lösungsmenge melden mathematisch korrekt „genau eine Lösung S(−100 | −1)“, der Tarifvergleich sagt „Tarif A ist bei jeder Gesprächszeit günstiger“. Soll im Sachkontext ein Hinweis ergänzt werden? **Entschieden (Leitung): ja.** Umgesetzt: „Der Schnittpunkt liegt bei negativer Zeit und hat im Sachzusammenhang keine Bedeutung – Tarif A ist immer günstiger.“ (EN entsprechend), Test in `tests/lgs-grafisch.test.ts`.
 
 ## Prüfung
 `npm run verify`: astro check 0/0/0, Tests 3028/3028 grün (130 Dateien), Build ok.

@@ -2,6 +2,7 @@ import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, ro
 import {
   approxText,
   compareTariffs,
+  crossesAtNegativeTime,
   frac,
   fracText,
   fromGeneral,
@@ -137,6 +138,7 @@ export default defineSimulation({
       tarifB: 'Tarif B',
       cross: 'Bis {min} min ist Tarif {below} günstiger, ab {min} min Tarif {above}. Bei {min} min kosten beide {cost} €.',
       always: 'Tarif {t} ist bei jeder Gesprächszeit günstiger (oder gleich teuer).',
+      negTime: 'Der Schnittpunkt liegt bei negativer Zeit und hat im Sachzusammenhang keine Bedeutung – Tarif {t} ist immer günstiger.',
       same: 'Beide Tarife sind gleich.',
       perMin: '{g} € + {p} ct pro min',
       vertical: 'senkrecht – keine Normalform',
@@ -163,6 +165,7 @@ export default defineSimulation({
       tarifB: 'Tariff B',
       cross: 'Up to {min} min tariff {below} is cheaper, above {min} min tariff {above}. At {min} min both cost €{cost}.',
       always: 'Tariff {t} is cheaper (or equal) for every call time.',
+      negTime: 'The intersection lies at a negative time and has no meaning in this context – tariff {t} is always cheaper.',
       same: 'Both tariffs are the same.',
       perMin: '€{g} + {p} ct per min',
       vertical: 'vertical – no slope-intercept form',
@@ -349,7 +352,12 @@ export default defineSimulation({
         if (c.kind === 'cross') {
           const below = c.cheaperBelow === 1 ? 'A' : 'B';
           ctx.readout('tarif', tr('cross', { min: fmt.num(c.minutes, 1), below, above: below === 'A' ? 'B' : 'A', cost: fmt.fixed(c.cost, 2) }));
-        } else ctx.readout('tarif', c.kind === 'same' ? ctx.t('same') : tr('always', { t: c.cheaper === 1 ? 'A' : 'B' }));
+        } else if (c.kind === 'same') ctx.readout('tarif', ctx.t('same'));
+        else {
+          const t = c.cheaper === 1 ? 'A' : 'B';
+          // Schnittpunkt bei negativer Zeit: mathematisch eine Lösung, im Sachzusammenhang ohne Bedeutung
+          ctx.readout('tarif', crossesAtNegativeTime(p.g1, p.p1, p.g2, p.p2) ? tr('negTime', { t }) : tr('always', { t }));
+        }
       } else ctx.readout('tarif', null);
       ctx.setAction('probe', { enabled: sol.kind === 'unique' });
     }
@@ -586,7 +594,8 @@ export default defineSimulation({
       const w = Math.max(mathWidth(title, fs * 0.92, 700), ...rows.map((q) => mathWidth(q.text, fs))) + 26;
       const h = fs * 1.6 * 3 + 8;
       const x = small ? r.x + 10 : r.x + r.w - w - 54;
-      const y = small ? r.y + r.h - h - 10 : r.y + 10;
+      // Schmal: unten links; beim Tarifvergleich über der x-Achse, damit die Achsenzahlen frei bleiben
+      const y = small ? (form() === 'tarif' ? Math.min(r.y + r.h - h - 10, plot.toPx(0, 0)[1] - h - 8) : r.y + r.h - h - 10) : r.y + 10;
       const t = probeTween.t;
       card(x, y, w, h, theme.series[2]);
       mathText(title, x + 13, y + 4 + fs * 0.8, fs * 0.92, theme.muted, 'left', 700);

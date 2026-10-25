@@ -201,3 +201,11 @@ export function compareTariffs(g1: number, p1: number, g2: number, p2: number): 
   }
   return { kind: 'cross', minutes, cost: g1 + (p1 * minutes) / 100, cheaperBelow: g1 < g2 ? 1 : 2 };
 }
+
+/**
+ * Schneiden sich die Tarifgeraden bei negativer Gesprächszeit?
+ * Mathematisch gibt es dann genau eine Lösung, im Sachzusammenhang hat sie keine Bedeutung.
+ */
+export function crossesAtNegativeTime(g1: number, p1: number, g2: number, p2: number): boolean {
+  return p1 !== p2 && ((g2 - g1) * 100) / (p1 - p2) < 0;
+}
