@@ -1,5 +1,7 @@
 # Fahrplan bis zur Veröffentlichung (Entwurf, Stand 19.10.2026)
 
+> **Aktuelle Aufgabenliste:** `docs/AUFGABEN.md` (Stand 25.10.2026). Dieser Fahrplan ist der ursprüngliche Plan und wird nicht mehr laufend gepflegt.
+
 Grober Plan für alles, was nach dem Bau der Simulationen kommt. Reihenfolge = Vorschlag. Jede Phase kann mit Claude-Agenten erledigt werden. Wo eine Entscheidung der Projektleitung nötig ist, steht **Entscheidung**.
 
 ---
