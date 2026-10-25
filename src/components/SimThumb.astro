@@ -22,13 +22,29 @@ const own = id ? custom[id] : undefined;
 const kind = own ? 'custom' : requested;
 /** Vorschaubilder mit Koordinatenachsen (Funktionen); die übrigen zeigen nur das Gitter. */
 const withAxes = ['line', 'parabola', 'sine', 'unit-circle', 'secant', 'growth', 'riemann', 'generic'].includes(kind);
+/**
+ * Ladezeit: Auf Fach- und Katalogseiten steht dieselbe Karte mehrfach (je
+ * Bundesland). Das Bild wird pro Seite nur beim ersten Mal ausgeschrieben,
+ * danach per <use> wiederverwendet (gleiches Aussehen, currentColor gilt weiter).
+ */
+const key = `thumb-${own ? id : kind}`;
+const seen = ((Astro.locals as { thumbsSeen?: Set<string> }).thumbsSeen ??= new Set<string>());
+const first = !seen.has(key);
+const firstGrid = !seen.has('thumb-grid');
+seen.add(key).add('thumb-grid');
 ---
 
 <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-  <g stroke="currentColor" stroke-opacity="0.12" stroke-width="1">
+  {first ? (
+  <g id={key}>
+  {firstGrid ? (
+  <g id="thumb-grid" stroke="currentColor" stroke-opacity="0.12" stroke-width="1">
     {Array.from({ length: 17 }, (_, i) => <line x1={i * 20} y1="0" x2={i * 20} y2="180" />)}
     {Array.from({ length: 10 }, (_, i) => <line x1="0" y1={i * 20} x2="320" y2={i * 20} />)}
   </g>
+  ) : (
+    <use href="#thumb-grid" />
+  )}
   {
     withAxes && (
       <g stroke="currentColor" stroke-opacity="0.45" stroke-width="2">
@@ -270,4 +286,8 @@ const withAxes = ['line', 'parabola', 'sine', 'unit-circle', 'secant', 'growth',
       </g>
     )
   }
+  </g>
+  ) : (
+    <use href={`#${key}`} />
+  )}
 </svg>

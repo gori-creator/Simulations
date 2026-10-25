@@ -1,11 +1,11 @@
 ---
-import 'katex/dist/katex.min.css';
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE } from '../config/site';
 import { LANGS, type Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
+import { cspHash } from '../lib/csp';
 import { regionCss, regionIds } from '../lib/region';
 import { withBase } from '../lib/routes';
 
@@ -18,9 +18,11 @@ interface Props {
   alternates: Record<Lang, string>;
   /** Aktiver Navigationspunkt. */
   section?: 'mathematik' | 'physik' | 'chemie' | 'catalog' | 'teachers' | 'about';
+  /** Zusätzliche Stylesheets nur für diese Seite (z. B. KaTeX auf Simulationsseiten); stehen vor global.css. */
+  stylesheets?: string[];
 }
 
-const { lang, title, description = SITE.description[lang], alternates, section } = Astro.props;
+const { lang, title, description = SITE.description[lang], alternates, section, stylesheets = [] } = Astro.props;
 const siteName = SITE.name[lang];
 const fullTitle = title ? `${title} – ${siteName}` : siteName;
 const canonical = new URL(alternates[lang], Astro.site).href;
@@ -28,9 +30,19 @@ const base = import.meta.env.BASE_URL;
 const isProd = import.meta.env.PROD;
 // Einstellung „Bundesland“: bekannte Länder und die CSS-Regeln zum Zeigen/Verstecken/Sortieren
 const regions = regionIds();
-const regionStyle = `<style>${regionCss(regions)}</style>`;
+const regionStyle = regionCss(regions);
 // Gewähltes Bundesland vor dem ersten Zeichnen setzen (nur bekannte Länder), verhindert Umspringen.
 const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.stringify(regions)}.includes(r))document.documentElement.dataset.region=r}catch{}`;
+// Farbschema vor dem ersten Zeichnen setzen (verhindert Aufblitzen).
+const themeScript = `try{const t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch{}`;
+// Service Worker für die Offline-Nutzung (nur im fertigen Build).
+const swScript = `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register(${JSON.stringify(base.replace(/\/?$/, '/') + 'sw.js')}).catch(()=>{})})}`;
+// Content-Security-Policy (Regeln in astro.config.mjs): Die Inline-Skripte und
+// der Inline-Style dieser Seite sind nur über ihre Prüfsumme erlaubt.
+Astro.csp?.insertScriptHash(cspHash(themeScript));
+Astro.csp?.insertScriptHash(cspHash(regionScript));
+if (isProd) Astro.csp?.insertScriptHash(cspHash(swScript));
+Astro.csp?.insertStyleHash({ hash: cspHash(regionStyle), kind: 'element' });
 ---
 
 <!doctype html>
@@ -39,6 +51,7 @@ const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.st
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
+    {stylesheets.map((url) => <link rel="stylesheet" href={url} />)}
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={new URL(alternates[l], Astro.site).href} />)}
@@ -54,15 +67,9 @@ const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.st
     <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_GB'} />
     <meta property="og:image" content={new URL(withBase('/icons/icon-512.png'), Astro.site).href} />
     <meta name="generator" content={Astro.generator} />
-    <script is:inline>
-      // Farbschema vor dem ersten Zeichnen setzen (verhindert Aufblitzen).
-      try {
-        const theme = localStorage.getItem('theme');
-        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
-      } catch {}
-    </script>
+    <script is:inline set:html={themeScript} />
     <script is:inline set:html={regionScript} />
-    <Fragment set:html={regionStyle} />
+    <style is:inline set:html={regionStyle} />
   </head>
   <body>
     <a class="skip-link" href="#main">{t(lang, 'nav.skip')}</a>
@@ -71,16 +78,6 @@ const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.st
       <slot />
     </main>
     <Footer lang={lang} />
-    {
-      isProd && (
-        <script is:inline define:vars={{ base }}>
-          if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register(base.replace(/\/?$/, '/') + 'sw.js').catch(() => {});
-            });
-          }
-        </script>
-      )
-    }
+    {isProd && <script is:inline set:html={swScript} />}
   </body>
 </html>
