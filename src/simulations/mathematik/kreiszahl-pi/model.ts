@@ -30,3 +30,25 @@ export function sectorTarget(i: number, n: number, r: number): { apex: [number, 
 export function rearrangedWidth(n: number, r: number): number {
   return n * r * Math.sin(Math.PI / n);
 }
+
+/**
+ * Ausdehnung des umbeschriebenen n-Ecks (eine Ecke oben, Mittelpunkt im Ursprung):
+ * kleinste/größte x- und y-Koordinate der Ecken. Umkreisradius r / cos(π/n).
+ */
+export function outerExtent(n: number, r: number): { xMin: number; xMax: number; yMin: number; yMax: number } {
+  const R = r / Math.cos(Math.PI / n);
+  let xMin = Infinity;
+  let xMax = -Infinity;
+  let yMin = Infinity;
+  let yMax = -Infinity;
+  for (let k = 0; k < n; k++) {
+    const a = Math.PI / 2 + (2 * Math.PI * k) / n;
+    const x = R * Math.cos(a);
+    const y = R * Math.sin(a);
+    xMin = Math.min(xMin, x);
+    xMax = Math.max(xMax, x);
+    yMin = Math.min(yMin, y);
+    yMax = Math.max(yMax, y);
+  }
+  return { xMin, xMax, yMin, yMax };
+}

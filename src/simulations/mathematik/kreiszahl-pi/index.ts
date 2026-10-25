@@ -1,5 +1,5 @@
 import { defineSimulation, ease, Plot, Surface, Tween, withAlpha } from '../../../sim-core';
-import { polygonBounds, rearrangedWidth, sectorTarget } from './model';
+import { outerExtent, polygonBounds, rearrangedWidth, sectorTarget } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 type Point = [number, number];
@@ -48,7 +48,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Kreis, dessen Umfang abgerollt bzw. dessen Fläche umgelegt wird',
+      canvas: 'Kreis: Umfang als abrollendes Rad, Fläche aus umgelegten Sektoren oder π zwischen einbeschriebenem und umbeschriebenem Vieleck',
       roll: 'Abrollen',
       back: 'Zurück',
       arrange: 'Umlegen',
@@ -59,7 +59,7 @@ export default defineSimulation({
       circumscribed: 'umbeschrieben',
     },
     en: {
-      canvas: 'A circle whose circumference is rolled out or whose area is rearranged',
+      canvas: 'Circle: circumference as a rolling wheel, area from rearranged sectors, or π between an inscribed and a circumscribed polygon',
       roll: 'Roll',
       back: 'Back',
       arrange: 'Rearrange',
@@ -96,8 +96,23 @@ export default defineSimulation({
         if (wide()) plot.setRange([-2.7 * rr, width + 0.4 * rr], [-0.9 * rr, 1.6 * rr]);
         else plot.setRange([-0.55 * rr, width + 0.3 * rr], [-0.9 * rr, 3.4 * rr]);
       } else {
-        plot.setRange([-1.35 * rr, 1.35 * rr], [-1.25 * rr, 1.25 * rr]);
+        // Das umbeschriebene Vieleck ragt bei wenigen Ecken (3, 4) weit über den Kreis hinaus.
+        const e = outerExtent(p.m, rr);
+        plot.setRange(
+          [Math.min(-1.35 * rr, e.xMin - 0.1 * rr), Math.max(1.35 * rr, e.xMax + 0.1 * rr)],
+          [Math.min(-1.25 * rr, e.yMin - 0.1 * rr), Math.max(1.25 * rr, e.yMax + 0.1 * rr)],
+        );
       }
+    }
+
+    /** Exaktes Vielfaches von π: „2π“, „0,5625π“, „π“. */
+    function piMultiple(k: number): string {
+      return k === 1 ? 'π' : `${fmt.num(k, 4)}π`;
+    }
+
+    /** Gerundeter Wert mit „≈“, exakter Wert (z. B. 3 beim Sechseck) ohne. */
+    function bound(v: number): string {
+      return Math.abs(v - Math.round(v * 1e4) / 1e4) < 1e-12 ? fmt.num(v, 4) : `≈ ${fmt.fixed(v, 4)}`;
     }
 
     function syncActions(): void {
@@ -109,12 +124,13 @@ export default defineSimulation({
     function updateReadouts(): void {
       const rr = r();
       if (p.mode === 'umfang') {
-        ctx.readout('formula', { html: `<var>U</var> = π · <var>d</var> = 2π · <var>r</var>` });
-        ctx.readout('value', `U = π · ${fmt.num(p.d, 1)} cm ≈ ${fmt.num(Math.PI * p.d, 3)} cm`);
-        ctx.readout('approx', `U : d = π ≈ 3,14159… (${ctx.lang === 'de' ? 'etwas mehr als 3 Durchmesser' : 'a little more than 3 diameters'})`.replace('3,14159', fmt.num(Math.PI, 5)));
+        const U = ctx.lang === 'de' ? 'U' : 'C';
+        ctx.readout('formula', { html: `<var>${U}</var> = π · <var>d</var> = 2π · <var>r</var>` });
+        ctx.readout('value', `${U} = π · ${fmt.num(p.d, 1)} cm = ${piMultiple(p.d)} cm ≈ ${fmt.num(Math.PI * p.d, 3)} cm`);
+        ctx.readout('approx', `${U} : d = π ≈ ${fmt.num(Math.PI, 5)}… (${ctx.lang === 'de' ? 'etwas mehr als 3 Durchmesser' : 'a little more than 3 diameters'})`);
       } else if (p.mode === 'flaeche') {
         ctx.readout('formula', { html: `<var>A</var> = π · <var>r</var>²` });
-        ctx.readout('value', `A = π · (${fmt.num(rr, 2)} cm)² ≈ ${fmt.num(Math.PI * rr * rr, 3)} cm²`);
+        ctx.readout('value', `A = π · (${fmt.num(rr, 2)} cm)² = ${piMultiple(rr * rr)} cm² ≈ ${fmt.num(Math.PI * rr * rr, 3)} cm²`);
         const w = rearrangedWidth(p.n, rr);
         ctx.readout('approx', `${p.n} ${ctx.lang === 'de' ? 'Sektoren: Breite' : 'sectors: width'} ≈ ${fmt.num(w, 4)} cm, π · r ≈ ${fmt.num(Math.PI * rr, 4)} cm`);
       } else {
@@ -150,7 +166,7 @@ export default defineSimulation({
       }
       const y2 = -0.35 * rr - 0.15;
       plot.segment([3 * p.d, y2], [U, y2], { color: theme.series[3], width: 8 });
-      plot.text(3 * p.d + (U - 3 * p.d) / 2, y2, `${fmt.num(Math.PI - 3, 2)} d`, { color: theme.series[3], size: 12, weight: 'bold', offset: [0, 16] });
+      plot.text(3 * p.d + (U - 3 * p.d) / 2, y2, `≈ ${fmt.num(Math.PI - 3, 2)} d`, { color: theme.series[3], size: 12, weight: 'bold', offset: [0, 16] });
       // Rad
       const [cx, cy] = plot.toPx(xc, rr);
       const rp = rr * plot.scale.x;
@@ -298,8 +314,8 @@ export default defineSimulation({
       plot.text(0, rr / 2, 'r', { color: theme.muted, size: 14, math: true, offset: [8, 0], align: 'left' });
       const b = polygonBounds(m);
       const rect = plot.rect;
-      plot.textPx(rect.x + 14, rect.y + 22, `${ctx.t('inscribed')}: ${fmt.num(b.lower, 4)}`, { color: theme.series[0], size: 14, weight: 'bold', align: 'left' });
-      plot.textPx(rect.x + 14, rect.y + 44, `${ctx.t('circumscribed')}: ${fmt.num(b.upper, 4)}`, { color: theme.series[1], size: 14, weight: 'bold', align: 'left' });
+      plot.textPx(rect.x + 14, rect.y + 22, `${ctx.t('inscribed')}: ${bound(b.lower)}`, { color: theme.series[0], size: 14, weight: 'bold', align: 'left' });
+      plot.textPx(rect.x + 14, rect.y + 44, `${ctx.t('circumscribed')}: ${bound(b.upper)}`, { color: theme.series[1], size: 14, weight: 'bold', align: 'left' });
       plot.textPx(rect.x + 14, rect.y + 66, `π ≈ ${fmt.num(Math.PI, 4)}`, { color: theme.text, size: 14, weight: 'bold', align: 'left' });
     }
 
