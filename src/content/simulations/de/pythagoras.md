@@ -56,6 +56,8 @@ Die Hypotenuse ist $c = 10\,\text{cm}$ lang, eine Kathete $a = 6\,\text{cm}$. Wi
 
 $$b = \sqrt{c^2 - a^2} = \sqrt{100 - 36} = \sqrt{64} = 8\,\text{cm}$$
 
+[In der Simulation zeigen](?a=6&b=8)
+
 </details>
 
 ### Aufgabe 3: Leiter an der Wand (Modellieren)
