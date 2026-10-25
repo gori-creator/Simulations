@@ -25,6 +25,14 @@ const RULER = 0.5;
 const MAX_ATTEMPTS = 12;
 /** Mittelstreifen des Fotos lineal.webp (96 × 1063 px) ohne die Teilstriche am Rand. */
 const RULER_IMG = { x: 24, y: 8, w: 48, h: 1047 };
+/**
+ * Fallröhre `fallroehre.webp` (346 × 1454 px): Kappen 242 px breit (Mitte
+ * x = 121), Glas von Zeile 105 bis 1330 (nur dieses gleichförmige Stück wird
+ * gestreckt), Ventilstutzen der unteren Kappe endet bei (346, 1395).
+ */
+const TUBE_IMG = { w: 346, h: 1454, cx: 121, capW: 242, glass0: 105, glass1: 1330, valve: [346, 1395] } as const;
+/** Manometer `manometer.webp` (1011 × 1236 px): Zifferblatt mit Ring (Mitte, Außenradius); der Stutzen darunter wird abgeschnitten. */
+const GAUGE_IMG = { crop: { x: 0, y: 0, w: 1011, h: 1006 }, cx: 505, cy: 500, r: 503 };
 
 /** Kleinste „schöne“ Schrittweite (1, 2, 5 · 10^k) ≥ x. */
 function niceStep(x: number): number {
@@ -110,7 +118,7 @@ export default defineSimulation({
     { id: 'catch', label: L('Fangen!', 'Catch!'), visibleIf: (v) => v.mode === 'ruler' },
     { id: 'clear', label: L('Messreihe löschen', 'Clear results'), visibleIf: (v) => v.mode === 'ruler' },
   ],
-  images: { feather: 'feder.webp', ball: 'kugel.webp', ruler: 'lineal.webp' },
+  images: { feather: 'feder.webp', ball: 'kugel.webp', ruler: 'lineal.webp', tube: 'fallroehre.webp', gauge: 'manometer.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
     { key: 'law', label: L('Fallgesetze', 'Laws of free fall') },
@@ -814,6 +822,9 @@ export default defineSimulation({
       const R = small ? 7 : 8;
       const featherLen = tw * 0.6;
       const pxPer = (inner1 - inner0 - 2 * R) / TUBE;
+      const tubeImg = ctx.images.get('tube');
+      // Foto der Röhre: Maßstab so, dass die Kappe so breit ist wie die gezeichnete
+      const ts = (tw + 10) / TUBE_IMG.capW;
       // Skala links der Röhre (s nach unten ab der Startlage oben)
       verticalScale(cx - tw / 2 - 10, inner0 + R, inner0 + R + TUBE * pxPer, TUBE, theme.muted, ctx.t('scale'), -1);
 
@@ -825,8 +836,16 @@ export default defineSimulation({
       gx.lineWidth = 5;
       gx.lineCap = 'round';
       gx.beginPath();
-      gx.moveTo(cx + 8, bottom + 4);
-      gx.bezierCurveTo(cx + 10, tableY - 4, pumpX - 30, tableY - 4, pumpX, pumpY + 30);
+      if (tubeImg) {
+        // Schlauch am Ventil der unteren Kappe (Foto)
+        const vx = cx + (TUBE_IMG.valve[0] - TUBE_IMG.cx) * ts;
+        const vy = inner1 + (TUBE_IMG.valve[1] - TUBE_IMG.glass1) * ts;
+        gx.moveTo(vx - 2, vy);
+        gx.bezierCurveTo(vx + 20, vy, pumpX - 30, tableY - 4, pumpX, pumpY + 30);
+      } else {
+        gx.moveTo(cx + 8, bottom + 4);
+        gx.bezierCurveTo(cx + 10, tableY - 4, pumpX - 30, tableY - 4, pumpX, pumpY + 30);
+      }
       gx.stroke();
       const pumpGrad = gx.createLinearGradient(0, pumpY, 0, pumpY + 44);
       pumpGrad.addColorStop(0, dark ? '#4a5568' : '#8d99a8');
@@ -836,15 +855,25 @@ export default defineSimulation({
       gx.fill();
       const mx = pumpX + (small ? 28 : 32);
       const my = pumpY + 20;
-      gx.fillStyle = '#f5f7fa';
-      gx.beginPath();
-      gx.arc(mx, my, 13, 0, Math.PI * 2);
-      gx.fill();
-      gx.strokeStyle = '#2b3240';
-      gx.lineWidth = 1.5;
-      gx.beginPath();
-      gx.arc(mx, my, 13, 0, Math.PI * 2);
-      gx.stroke();
+      const gaugeImg = ctx.images.get('gauge');
+      if (gaugeImg) {
+        // Foto: leeres Zifferblatt mit Chromring (ohne Anschlussstutzen), Zeiger darüber
+        const G = GAUGE_IMG;
+        const gk = 15 / G.r;
+        const gw = G.crop.w * gk;
+        const gh = G.crop.h * gk;
+        gx.drawImage(scaledSprite(gaugeImg, gw, gh, surface.dpr, { crop: G.crop }), mx - G.cx * gk, my - G.cy * gk, gw, gh);
+      } else {
+        gx.fillStyle = '#f5f7fa';
+        gx.beginPath();
+        gx.arc(mx, my, 13, 0, Math.PI * 2);
+        gx.fill();
+        gx.strokeStyle = '#2b3240';
+        gx.lineWidth = 1.5;
+        gx.beginPath();
+        gx.arc(mx, my, 13, 0, Math.PI * 2);
+        gx.stroke();
+      }
       const needle = Math.PI * (0.8 + 1.4 * (1 - vacNow));
       gx.strokeStyle = '#d6332c';
       gx.lineWidth = 2;
@@ -862,8 +891,20 @@ export default defineSimulation({
       gx.rotate(angle);
       gx.translate(-cx, -midY);
       // Glas
-      gx.fillStyle = dark ? 'rgba(170,210,255,0.08)' : 'rgba(170,210,255,0.22)';
-      gx.fillRect(cx - tw / 2, inner0, tw, inner1 - inner0);
+      if (tubeImg) {
+        // Foto hinter Kugel und Feder (die bleiben so gut sichtbar): Kappen unverzerrt, nur das gleichförmige Glas gestreckt
+        const T = TUBE_IMG;
+        const x0 = cx - T.cx * ts;
+        const w = T.w * ts;
+        const topH = T.glass0 * ts;
+        const botH = (T.h - T.glass1) * ts;
+        gx.drawImage(scaledSprite(tubeImg, w, topH, surface.dpr, { crop: { x: 0, y: 0, w: T.w, h: T.glass0 } }), x0, inner0 - topH, w, topH);
+        gx.drawImage(scaledSprite(tubeImg, w, Math.max(1, inner1 - inner0), surface.dpr, { crop: { x: 0, y: T.glass0, w: T.w, h: T.glass1 - T.glass0 } }), x0, inner0 - 0.3, w, inner1 - inner0 + 0.6);
+        gx.drawImage(scaledSprite(tubeImg, w, botH, surface.dpr, { crop: { x: 0, y: T.glass1, w: T.w, h: T.h - T.glass1 } }), x0, inner1, w, botH);
+      } else {
+        gx.fillStyle = dark ? 'rgba(170,210,255,0.08)' : 'rgba(170,210,255,0.22)';
+        gx.fillRect(cx - tw / 2, inner0, tw, inner1 - inner0);
+      }
       // Luftteilchen
       if (vacNow < 1) {
         const time = performance.now() / 1000;
@@ -910,39 +951,43 @@ export default defineSimulation({
         const tilt = flutter * Math.sin(t * 5.2 + 0.9) * 0.35;
         drawFeather(featherX + sway, Math.min(yBall(sf), inner1 - 3), featherLen, tilt + (side > 0 ? 0 : Math.PI));
       }
-      // Glanzlichter und Rand
-      const shine = gx.createLinearGradient(cx - tw / 2, 0, cx + tw / 2, 0);
-      shine.addColorStop(0, 'rgba(255,255,255,0.55)');
-      shine.addColorStop(0.18, 'rgba(255,255,255,0.05)');
-      shine.addColorStop(0.75, 'rgba(255,255,255,0)');
-      shine.addColorStop(0.9, 'rgba(255,255,255,0.35)');
-      shine.addColorStop(1, 'rgba(255,255,255,0.08)');
-      gx.fillStyle = shine;
-      gx.fillRect(cx - tw / 2, inner0, tw, inner1 - inner0);
-      gx.strokeStyle = dark ? 'rgba(200,220,255,0.55)' : 'rgba(60,90,120,0.55)';
-      gx.lineWidth = 1.5;
-      gx.strokeRect(cx - tw / 2, inner0, tw, inner1 - inner0);
-      // Endkappen
-      for (const [y, h] of [
-        [top, capH],
-        [bottom - capH, capH],
-      ] as const) {
-        const cap = gx.createLinearGradient(cx - tw / 2 - 5, 0, cx + tw / 2 + 5, 0);
-        cap.addColorStop(0, '#6c7480');
-        cap.addColorStop(0.4, '#c9ced6');
-        cap.addColorStop(1, '#5d6570');
-        gx.fillStyle = cap;
-        roundRect(gx, cx - tw / 2 - 5, y, tw + 10, h, 3);
-        gx.fill();
+      if (tubeImg) {
+        gx.restore();
+      } else {
+        // Glanzlichter und Rand
+        const shine = gx.createLinearGradient(cx - tw / 2, 0, cx + tw / 2, 0);
+        shine.addColorStop(0, 'rgba(255,255,255,0.55)');
+        shine.addColorStop(0.18, 'rgba(255,255,255,0.05)');
+        shine.addColorStop(0.75, 'rgba(255,255,255,0)');
+        shine.addColorStop(0.9, 'rgba(255,255,255,0.35)');
+        shine.addColorStop(1, 'rgba(255,255,255,0.08)');
+        gx.fillStyle = shine;
+        gx.fillRect(cx - tw / 2, inner0, tw, inner1 - inner0);
+        gx.strokeStyle = dark ? 'rgba(200,220,255,0.55)' : 'rgba(60,90,120,0.55)';
+        gx.lineWidth = 1.5;
+        gx.strokeRect(cx - tw / 2, inner0, tw, inner1 - inner0);
+        // Endkappen
+        for (const [y, h] of [
+          [top, capH],
+          [bottom - capH, capH],
+        ] as const) {
+          const cap = gx.createLinearGradient(cx - tw / 2 - 5, 0, cx + tw / 2 + 5, 0);
+          cap.addColorStop(0, '#6c7480');
+          cap.addColorStop(0.4, '#c9ced6');
+          cap.addColorStop(1, '#5d6570');
+          gx.fillStyle = cap;
+          roundRect(gx, cx - tw / 2 - 5, y, tw + 10, h, 3);
+          gx.fill();
+        }
+        gx.fillStyle = '#5d6570';
+        gx.fillRect(cx - 4, bottom, 8, 6);
+        gx.restore();
       }
-      gx.fillStyle = '#5d6570';
-      gx.fillRect(cx - 4, bottom, 8, 6);
-      gx.restore();
 
-      // Beschriftungen
+      // Beschriftungen (mit Foto über der höheren Kappe)
       const label = (x: number, y: number, s: string, color: string, align: CanvasTextAlign) =>
         text(gx, s, x, y, { font: `700 ${small ? 11 : 12}px ${theme.font}`, color, align });
-      const lblY = top - 14;
+      const lblY = tubeImg ? inner0 - TUBE_IMG.glass0 * ts - 9 : top - 14;
       if (!flip.running) {
         label(cx - side * 4, lblY, ctx.t('ball'), theme.series[0]!, side > 0 ? 'right' : 'left');
         label(cx + side * 4, lblY, ctx.t('feather'), theme.series[2]!, side > 0 ? 'left' : 'right');

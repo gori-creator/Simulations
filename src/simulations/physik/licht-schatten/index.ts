@@ -28,6 +28,18 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/**
+ * Profilschiene der optischen Bank (optische-bank.webp, 1600 × 107): Unterkante des
+ * Profils (darunter die Füße) und Breite der Endstücke mit den Füßen (Bildpixel).
+ * Die Endstücke bleiben maßstabsgetreu, nur das gleichförmige Mittelstück wird gestreckt.
+ */
+const RAIL_IMG = { w: 1600, h: 107, profile: 85, end: 120 };
+/**
+ * Reiter (reiter.webp, 1257 × 769): Mitte der Stange, rechte Kante des Grundkörpers
+ * (rechts davon die Klemmschraube) und Unterkante des Grundkörpers (darunter die
+ * Klemmbacken an der Schiene).
+ */
+const RIDER_IMG = { w: 1257, h: 769, rod: 452, bodyL: 2, bodyR: 1040, bodyB: 705 };
 type Mode = 'lab' | 'space';
 type Src = 'point' | 'wide' | 'two';
 type Lang = 'de' | 'en';
@@ -224,7 +236,7 @@ export default defineSimulation({
     { key: 'names', type: 'boolean', group: 'view', label: L('Kern- und Halbschatten beschriften', 'Label umbra and penumbra'), default: true },
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe (beim Abspielen)', 'Slow motion (when playing)'), default: false },
   ],
-  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp', lamp: 'lampe.webp', sky: 'sternenhimmel.webp' },
+  images: { sun: 'sonne.webp', earth: 'erde.webp', moon: 'mond.webp', lamp: 'lampe.webp', sky: 'sternenhimmel.webp', rider: 'reiter.webp', rail: 'optische-bank.webp' },
   readouts: [
     { key: 'dist', label: L('Abstände', 'Distances') },
     { key: 'size', label: L('Schatten auf dem Schirm', 'Shadow on the screen'), spoiler: true },
@@ -890,21 +902,26 @@ export default defineSimulation({
       // Schiene der optischen Bank
       const [x0] = lab.toPx(-2.5, 0);
       const [x1] = lab.toPx(104, 0);
-      g.save();
-      g.shadowColor = 'rgba(0,0,0,0.5)';
-      g.shadowBlur = 8;
-      g.shadowOffsetY = 3;
-      const rail = g.createLinearGradient(0, yTop, 0, yTop + railH);
-      rail.addColorStop(0, '#c9d0da');
-      rail.addColorStop(0.18, '#9aa3b0');
-      rail.addColorStop(1, '#5d6673');
-      g.fillStyle = rail;
-      roundRect(g, x0, yTop, x1 - x0, railH, 3);
-      g.fill();
-      g.restore();
+      const railPhoto = ctx.images.get('rail');
+      if (railPhoto) drawRailPhoto(railPhoto, x0, yTop, x1 - x0, railH);
+      else {
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.5)';
+        g.shadowBlur = 8;
+        g.shadowOffsetY = 3;
+        const rail = g.createLinearGradient(0, yTop, 0, yTop + railH);
+        rail.addColorStop(0, '#c9d0da');
+        rail.addColorStop(0.18, '#9aa3b0');
+        rail.addColorStop(1, '#5d6673');
+        g.fillStyle = rail;
+        roundRect(g, x0, yTop, x1 - x0, railH, 3);
+        g.fill();
+        g.restore();
+      }
       // Zentimeterskala
       const small = narrow();
-      g.strokeStyle = 'rgba(20,24,32,0.75)';
+      // auf der dunklen Profilschiene hell, auf der gezeichneten dunkel
+      g.strokeStyle = railPhoto ? 'rgba(235,240,248,0.8)' : 'rgba(20,24,32,0.75)';
       for (let c = 0; c <= 100; c++) {
         const [x] = lab.toPx(c, 0);
         const len = c % 10 === 0 ? railH * 0.42 : c % 5 === 0 ? railH * 0.3 : railH * 0.16;
@@ -915,23 +932,33 @@ export default defineSimulation({
         g.lineTo(x, yTop + 1 + len);
         g.stroke();
         if (c % (small ? 20 : 10) === 0) {
-          text(g, String(c), x, yTop + railH * 0.72, { font: `600 ${small ? 9.5 : 10}px ${ctx.theme.font}`, color: '#1b2230' });
+          text(g, String(c), x, yTop + railH * 0.72, { font: `600 ${small ? 9.5 : 10}px ${ctx.theme.font}`, color: railPhoto ? 'rgba(235,240,248,0.92)' : '#1b2230' });
         }
       }
       // Reiter (Halter) mit Marke an der genauen Stelle
       const rider = (x: number, color: string) => {
         const [px] = lab.toPx(x, 0);
         const w = Math.max(16, 4.5 * s);
+        const photo = ctx.images.get('rider');
         g.save();
         g.shadowColor = 'rgba(0,0,0,0.45)';
         g.shadowBlur = 4;
         g.shadowOffsetY = 1;
-        const body = g.createLinearGradient(0, yTop - 7, 0, yTop + 2);
-        body.addColorStop(0, '#4b5462');
-        body.addColorStop(1, '#262c35');
-        g.fillStyle = body;
-        roundRect(g, px - w / 2, yTop - 7, w, 9, 2);
-        g.fill();
+        if (photo) {
+          // Foto: Grundkörper so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil
+          const R = RIDER_IMG;
+          const k = (w * 1.15) / (R.bodyR - R.bodyL);
+          const pw = R.w * k;
+          const ph = R.h * k;
+          g.drawImage(scaledSprite(photo, pw, ph, surface.dpr), px - R.rod * k, yTop + 3 - R.bodyB * k, pw, ph);
+        } else {
+          const body = g.createLinearGradient(0, yTop - 7, 0, yTop + 2);
+          body.addColorStop(0, '#4b5462');
+          body.addColorStop(1, '#262c35');
+          g.fillStyle = body;
+          roundRect(g, px - w / 2, yTop - 7, w, 9, 2);
+          g.fill();
+        }
         g.restore();
         g.fillStyle = color;
         g.beginPath();
@@ -945,6 +972,25 @@ export default defineSimulation({
       geo.lamps.forEach((l) => rider(l.x, theme.series[3]!));
       rider(geo.obj.x, theme.series[0]!);
       rider(geo.sx + SCREEN_T / 2, theme.series[5]!);
+    }
+
+    /** Profilschiene als Foto: Profil von `y` bis `y + h`, die Füße stehen darunter auf dem Tisch. */
+    function drawRailPhoto(img: HTMLImageElement, x: number, y: number, w: number, h: number): void {
+      const R = RAIL_IMG;
+      const k = h / R.profile;
+      const ew = R.end * k;
+      const ph = R.h * k;
+      const piece = (sx: number, sw: number, dx: number, dw: number) => {
+        g.drawImage(scaledSprite(img, dw, ph, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: R.h } }), dx, y, dw, ph);
+      };
+      g.save();
+      g.shadowColor = 'rgba(0,0,0,0.5)';
+      g.shadowBlur = 8;
+      g.shadowOffsetY = 3;
+      piece(R.end, R.w - 2 * R.end, x + ew - 0.5, Math.max(1, w - 2 * ew + 1));
+      piece(0, R.end, x, ew);
+      piece(R.w - R.end, R.end, x + w - ew, ew);
+      g.restore();
     }
 
     /** Stativstange von der Bank bis zur Unterkante eines Bauteils. */

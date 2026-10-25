@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   cascade,
   colorNameOf,
@@ -113,6 +113,7 @@ export default defineSimulation({
   animated: true,
   dragHint: false,
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
+  images: { prism: 'prisma.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -908,6 +909,8 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Glasprisma (prisma.webp, 1244 × 1050): linke und rechte Ecke, Spitze (x) und Grundseite (y) in Bildpixeln. */
+    const PRISM_IMG = { x0: 2, x1: 1241, apex: 623, bottom: 1046 };
     function drawPrism(G: SceneGeo, a: number): void {
       const g = surface.g;
       const { px, py, ps } = G;
@@ -918,27 +921,37 @@ export default defineSimulation({
         [px - ps * 0.87, py + ps * 0.5],
         [px + ps * 0.87, py + ps * 0.5],
       ];
-      const pg = g.createLinearGradient(px - ps, py - ps, px + ps, py + ps);
-      pg.addColorStop(0, 'rgba(210,230,255,0.42)');
-      pg.addColorStop(0.5, 'rgba(160,190,230,0.16)');
-      pg.addColorStop(1, 'rgba(220,235,255,0.32)');
-      g.fillStyle = pg;
-      g.beginPath();
-      g.moveTo(pts[0]![0], pts[0]![1]);
-      g.lineTo(pts[1]![0], pts[1]![1]);
-      g.lineTo(pts[2]![0], pts[2]![1]);
-      g.closePath();
-      g.fill();
-      g.strokeStyle = 'rgba(225,238,255,0.75)';
-      g.lineWidth = 1.4;
-      g.lineJoin = 'round';
-      g.stroke();
-      g.strokeStyle = 'rgba(255,255,255,0.5)';
-      g.lineWidth = 1;
-      g.beginPath();
-      g.moveTo(px - ps * 0.12, py - ps * 0.72);
-      g.lineTo(px - ps * 0.55, py + ps * 0.1);
-      g.stroke();
+      const photo = ctx.images.get('prism');
+      if (photo) {
+        // Foto (gleichseitig, Spitze oben): Grundseite und Breite genau wie das gezeichnete Dreieck
+        const P = PRISM_IMG;
+        const k = (2 * 0.87 * ps) / (P.x1 - P.x0);
+        const w = photo.width * k;
+        const h = photo.height * k;
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr), px - P.apex * k, py + 0.5 * ps - P.bottom * k, w, h);
+      } else {
+        const pg = g.createLinearGradient(px - ps, py - ps, px + ps, py + ps);
+        pg.addColorStop(0, 'rgba(210,230,255,0.42)');
+        pg.addColorStop(0.5, 'rgba(160,190,230,0.16)');
+        pg.addColorStop(1, 'rgba(220,235,255,0.32)');
+        g.fillStyle = pg;
+        g.beginPath();
+        g.moveTo(pts[0]![0], pts[0]![1]);
+        g.lineTo(pts[1]![0], pts[1]![1]);
+        g.lineTo(pts[2]![0], pts[2]![1]);
+        g.closePath();
+        g.fill();
+        g.strokeStyle = 'rgba(225,238,255,0.75)';
+        g.lineWidth = 1.4;
+        g.lineJoin = 'round';
+        g.stroke();
+        g.strokeStyle = 'rgba(255,255,255,0.5)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(px - ps * 0.12, py - ps * 0.72);
+        g.lineTo(px - ps * 0.55, py + ps * 0.1);
+        g.stroke();
+      }
       g.restore();
     }
 

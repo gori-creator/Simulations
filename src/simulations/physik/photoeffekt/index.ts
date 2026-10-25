@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   emits,
   fitLine,
@@ -103,6 +103,7 @@ export default defineSimulation({
   animated: true,
   hint: L('Tipp: Am Drehknopf der Spannungsquelle lässt sich die Gegenspannung mit Maus oder Finger einstellen.', 'Tip: turn the knob of the power supply with the mouse or a finger to set the retarding voltage.'),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
+  images: { meter: 'manometer.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -933,33 +934,53 @@ export default defineSimulation({
     }
 
     /** Strommesser (nA) mit Zeiger. */
+    /** Zeigerinstrument (manometer.webp, 1011 × 1236): Mitte und Außenradius, Radius des Zifferblatts, Schnitt unter dem Gehäuse (Bildpixel). */
+    const METER_IMG = { cx: 505, cy: 505, r: 503, face: 395, cut: 1008 };
     function drawAmmeter(G: Geo, ik: number): void {
       const g = surface.g;
       const theme = ctx.theme;
       const { mx, my, mr, sm } = G;
       g.save();
       g.globalAlpha *= ik;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.28)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 4;
-      const bez = g.createLinearGradient(mx - mr, my - mr, mx + mr, my + mr);
-      bez.addColorStop(0, theme.dark ? '#d3d9e1' : '#f4f6f8');
-      bez.addColorStop(0.5, theme.dark ? '#7d8693' : '#a8b1bc');
-      bez.addColorStop(1, theme.dark ? '#3e4550' : '#68717d');
-      g.fillStyle = bez;
-      g.beginPath();
-      g.arc(mx, my, mr, 0, TAU);
-      g.fill();
-      g.restore();
-      const fr = mr * 0.86;
-      const face = g.createRadialGradient(mx - fr * 0.3, my - fr * 0.35, fr * 0.1, mx, my, fr);
-      face.addColorStop(0, '#fffdf6');
-      face.addColorStop(1, '#efe9d8');
-      g.fillStyle = face;
-      g.beginPath();
-      g.arc(mx, my, fr, 0, TAU);
-      g.fill();
+      // Gehäuse (Foto des runden Zeigerinstruments; Mitte des Zifferblatts genau auf dem Drehpunkt,
+      // der Gewindestutzen unten ist abgeschnitten)
+      const photo = ctx.images.get('meter');
+      let fr: number;
+      if (photo) {
+        const M = METER_IMG;
+        const k = mr / M.r;
+        const w = photo.width * k;
+        const h = M.cut * k;
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.28)';
+        g.shadowBlur = 12;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr, { crop: { x: 0, y: 0, w: photo.width, h: M.cut } }), mx - M.cx * k, my - M.cy * k, w, h);
+        g.restore();
+        fr = M.face * k;
+      } else {
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.28)';
+        g.shadowBlur = 12;
+        g.shadowOffsetY = 4;
+        const bez = g.createLinearGradient(mx - mr, my - mr, mx + mr, my + mr);
+        bez.addColorStop(0, theme.dark ? '#d3d9e1' : '#f4f6f8');
+        bez.addColorStop(0.5, theme.dark ? '#7d8693' : '#a8b1bc');
+        bez.addColorStop(1, theme.dark ? '#3e4550' : '#68717d');
+        g.fillStyle = bez;
+        g.beginPath();
+        g.arc(mx, my, mr, 0, TAU);
+        g.fill();
+        g.restore();
+        fr = mr * 0.86;
+        const face = g.createRadialGradient(mx - fr * 0.3, my - fr * 0.35, fr * 0.1, mx, my, fr);
+        face.addColorStop(0, '#fffdf6');
+        face.addColorStop(1, '#efe9d8');
+        g.fillStyle = face;
+        g.beginPath();
+        g.arc(mx, my, fr, 0, TAU);
+        g.fill();
+      }
       const a0 = Math.PI * 0.8;
       const span = Math.PI * 1.4;
       const ink = '#2a2a2a';

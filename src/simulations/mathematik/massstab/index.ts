@@ -65,6 +65,8 @@ type Mode = 'map' | 'zoom' | 'calc';
 /* ------------------------------------------------------------------ */
 
 const scaleLabel = (n: number) => L(`1 : ${groupDigits(String(n), 'de')}`, `1 : ${groupDigits(String(n), 'en')}`);
+/** Lupenfoto: Mitte des Glases und Außenradius des Rahmens (Pixel im Bild lupe.webp). */
+const LUPE_IMG = { cx: 333, cy: 330, r: 332 };
 const isMap = (v: Record<string, unknown>) => v.mode === 'map';
 
 const OBJ_TEXT: Record<ObjId, { name: Loc; what: Loc; approx: boolean }> = {
@@ -94,6 +96,7 @@ export default defineSimulation({
   id: 'massstab',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
+  images: { bug: 'marienkaefer-oben.webp', stamp: 'briefmarke.webp', sand: 'sandkorn.webp', lupe: 'lupe.webp' },
   groups: [{ id: 'pts', label: L('Messstrecke (Lage in m, von der Nordwestecke aus)', 'Measured line (position in m from the north-west corner)') }],
   params: [
     {
@@ -2025,6 +2028,21 @@ export default defineSimulation({
       g.shadowColor = dk ? 'rgba(0,0,0,0.5)' : 'rgba(40,30,20,0.25)';
       g.shadowBlur = Math.min(14, s * 0.06);
       g.shadowOffsetY = Math.min(5, s * 0.02);
+      // Foto statt Ersatzgrafik: gemessene Länge s = Körperlänge (Käfer), Breite (Briefmarke) bzw. Durchmesser (Sandkorn)
+      const photoKey = id === 'bug' ? 'bug' : id === 'stamp' ? 'stamp' : id === 'sand' ? 'sand' : null;
+      const img = photoKey ? ctx.images.get(photoKey) : null;
+      if (img) {
+        // Käfer: Kopf bis Hinterende ≈ 88 % der Bildbreite (Beine ragen etwas hinaus), Körper leicht links der Bildmitte
+        const w = id === 'bug' ? s / 0.88 : s;
+        const h = (w * img.naturalHeight) / img.naturalWidth;
+        const x0 = id === 'bug' ? -s / 2 - w * 0.012 : -w / 2;
+        g.imageSmoothingEnabled = true;
+        g.imageSmoothingQuality = 'high';
+        // Briefmarke (hochkant 1 : 1,36) etwas tiefer, damit sie oben nicht an den Rand des Bildfelds stößt
+        g.drawImage(img, x0, -h / 2 + (id === 'stamp' ? s * 0.06 : 0), w, h);
+        g.restore();
+        return;
+      }
       if (id === 'bug') {
         // Beine und Fühler
         g.shadowColor = 'transparent';
@@ -2453,26 +2471,39 @@ export default defineSimulation({
       }
       g.stroke();
       g.restore();
-      g.save();
-      g.beginPath();
-      g.arc(ox, oy, lr, 0, Math.PI * 2);
-      const glass = g.createRadialGradient(ox - lr * 0.35, oy - lr * 0.4, lr * 0.1, ox, oy, lr);
-      glass.addColorStop(0, 'rgba(255,255,255,0.45)');
-      glass.addColorStop(0.7, alpha(th.series[5]!, 0.08));
-      glass.addColorStop(1, alpha(th.series[5]!, 0.2));
-      g.fillStyle = glass;
-      g.fill();
-      g.lineWidth = 4;
-      g.strokeStyle = th.dark ? '#8b95a5' : '#4a5260';
-      g.stroke();
-      g.lineCap = 'round';
-      g.lineWidth = 6;
-      g.beginPath();
-      g.moveTo(ox + lr * 0.72, oy + lr * 0.72);
-      g.lineTo(ox + lr * 1.5, oy + lr * 1.5);
-      g.strokeStyle = th.dark ? '#6b5236' : '#5a3d22';
-      g.stroke();
-      g.restore();
+      const lupeImg = ctx.images.get('lupe');
+      if (lupeImg) {
+        // Foto der Lupe: Glasmitte (333 | 330 px), Außenradius des Rahmens 332 px im Bild
+        const k = (lr + 3) / LUPE_IMG.r;
+        g.save();
+        g.shadowColor = th.dark ? 'rgba(0,0,0,0.5)' : 'rgba(40,30,20,0.25)';
+        g.shadowBlur = 8;
+        g.shadowOffsetY = 3;
+        g.imageSmoothingQuality = 'high';
+        g.drawImage(lupeImg, ox - LUPE_IMG.cx * k, oy - LUPE_IMG.cy * k, lupeImg.naturalWidth * k, lupeImg.naturalHeight * k);
+        g.restore();
+      } else {
+        g.save();
+        g.beginPath();
+        g.arc(ox, oy, lr, 0, Math.PI * 2);
+        const glass =g.createRadialGradient(ox - lr * 0.35, oy - lr * 0.4, lr * 0.1, ox, oy, lr);
+        glass.addColorStop(0, 'rgba(255,255,255,0.45)');
+        glass.addColorStop(0.7, alpha(th.series[5]!, 0.08));
+        glass.addColorStop(1, alpha(th.series[5]!, 0.2));
+        g.fillStyle = glass;
+        g.fill();
+        g.lineWidth = 4;
+        g.strokeStyle = th.dark ? '#8b95a5' : '#4a5260';
+        g.stroke();
+        g.lineCap = 'round';
+        g.lineWidth = 6;
+        g.beginPath();
+        g.moveTo(ox + lr * 0.72, oy + lr * 0.72);
+        g.lineTo(ox + lr * 1.5, oy + lr * 1.5);
+        g.strokeStyle = th.dark ? '#6b5236' : '#5a3d22';
+        g.stroke();
+        g.restore();
+      }
 
       // Bild (vergrößert)
       g.save();
@@ -2491,7 +2522,7 @@ export default defineSimulation({
       halo(`${tt('Bild im Maßstab', 'Picture at scale')} ${z} : 1`, M.x + 10, M.y + 14, font(750, 12), cScale(), 'left');
       // Maßpfeil und Lineal unter dem Bild
       const rx0 = icx - imgPx / 2;
-      const rulerY = Math.min(M.y + M.h - clamp(ppc * 0.9, 22, 34) - 8, icy + imgPx * (id === 'stamp' ? 0.6 : 0.45) + 50);
+      const rulerY = Math.min(M.y + M.h - clamp(ppc * 0.9, 22, 34) - 8, icy + imgPx * (id === 'stamp' ? (ctx.images.get('stamp') ? 0.74 : 0.6) : 0.45) + 50);
       const imgCm = (o.lengthUm * zd) / UM.cm;
       const cmCount = Math.max(1, Math.ceil(imgCm - 1e-6));
       hRuler(rx0, rulerY, cmCount, ppc, 1);

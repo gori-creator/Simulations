@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, withUnit, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, withUnit, type Rect } from '../../../sim-core';
 import {
   arrivals,
   C_AIR,
@@ -20,6 +20,12 @@ import {
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
+/**
+ * Krankenwagen von oben `krankenwagen.webp` (1600 × 735 px, Front rechts):
+ * Blaulichtbalken von x = 1011 bis 1084, obere Hälfte y = 140 … 298, untere
+ * y = 428 … 580; `barX` = Lage des Balkens als Anteil der Länge ab der Mitte.
+ */
+const AMB_IMG = { w: 1600, h: 735, bar: [1011, 1084], barTop: [140, 298], barBottom: [428, 580], barX: 0.154 } as const;
 /** Ab dieser Geschwindigkeit wird statt des Krankenwagens ein Flugzeug gezeichnet (m/s). */
 const JET_FROM = 60;
 /** Angestrebte Dauer einer Vorbeifahrt in echten Sekunden (daraus folgt die automatische Zeitlupe). */
@@ -69,7 +75,7 @@ export default defineSimulation({
   animated: true,
   hint: L('Tipp: Den Beobachter (grün) im Bild mit Maus oder Finger ziehen – das ändert Abstand und Standort.', 'Tip: drag the observer (green) in the picture with the mouse or a finger – this changes the distance and position.'),
   layout: { aspect: 1.25, aspectNarrow: 0.56 },
-  images: { road: 'strasse.webp' },
+  images: { road: 'strasse.webp', ambulance: 'krankenwagen.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'f', type: 'number', label: L('Frequenz der Quelle f_Q', 'Source frequency f_Q'), min: 200, max: 1000, step: 10, default: 440, unit: 'Hz' },
@@ -1021,11 +1027,12 @@ export default defineSimulation({
       g.translate(x, y);
       // Blaulicht-Schein auf der Straße
       const on = prefersReducedMotion() ? 0.6 : 0.5 + 0.5 * Math.sin(blink * TAU * 2.2);
+      const photo = ctx.images.get('ambulance');
       for (const [side, k] of [
         [-1, on],
         [1, 1 - on],
       ] as const) {
-        const gx = len * 0.1;
+        const gx = len * (photo ? AMB_IMG.barX : 0.1);
         const gy = side * wd * 0.22;
         const rg = g.createRadialGradient(gx, gy, 1, gx, gy, wd * 2.1);
         rg.addColorStop(0, `rgba(80,140,255,${0.42 * k})`);
@@ -1034,6 +1041,29 @@ export default defineSimulation({
         g.beginPath();
         g.arc(gx, gy, wd * 2.1, 0, TAU);
         g.fill();
+      }
+      if (photo) {
+        // Foto von oben (Front rechts); darüber blinken die beiden Hälften des Blaulichtbalkens
+        const h = (len * AMB_IMG.h) / AMB_IMG.w;
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.65)' : 'rgba(20,30,45,0.38)';
+        g.shadowBlur = 10;
+        g.shadowOffsetX = 2;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(photo, len, h, surface.dpr), -len / 2, -h / 2, len, h);
+        g.restore();
+        const k = len / AMB_IMG.w;
+        for (const [half, a] of [
+          [AMB_IMG.barTop, on],
+          [AMB_IMG.barBottom, 1 - on],
+        ] as const) {
+          const [y0, y1] = half;
+          g.fillStyle = `rgba(170,205,255,${0.75 * a})`;
+          roundRect(g, (AMB_IMG.bar[0] - AMB_IMG.w / 2) * k, (y0 - AMB_IMG.h / 2) * k, (AMB_IMG.bar[1] - AMB_IMG.bar[0]) * k, (y1 - y0) * k, 2);
+          g.fill();
+        }
+        g.restore();
+        return;
       }
       // Karosserie mit weichem Schatten (Licht von links oben)
       g.save();

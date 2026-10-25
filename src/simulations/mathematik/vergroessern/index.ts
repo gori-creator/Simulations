@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mesh3d, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, ease, mesh3d, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   BODIES,
@@ -122,6 +122,7 @@ export default defineSimulation({
   id: 'vergroessern',
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.38 },
+  images: { car: 'auto.webp', bucket: 'farbeimer.webp' },
   groups: [
     { id: 'fig', label: L('Figur und Körper', 'Figure and solid') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -2143,6 +2144,52 @@ export default defineSimulation({
     }
 
     /* ---------- Modellauto ---------- */
+    let redCar: { src: HTMLImageElement; c: HTMLCanvasElement } | null = null;
+    /**
+     * Autofoto mit rotem statt blauem Lack – passend zur Ersatzgrafik und zum Streifen des Farbeimers.
+     * Nur kräftig blaue Pixel bekommen einen anderen Farbton (Drehung wie CSS hue-rotate);
+     * Reifen, Felgen, Scheiben und Lichter bleiben, Helligkeit und Glanz ebenso.
+     */
+    function carPhoto(): HTMLCanvasElement | null {
+      const img = ctx.images.get('car');
+      if (!img) return null;
+      if (redCar?.src === img) return redCar.c;
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+      const { canvas, g: o } = offscreenCanvas(w, h, 1);
+      o.drawImage(img, 0, 0, w, h);
+      try {
+        const d = o.getImageData(0, 0, w, h);
+        const px = d.data;
+        const t = (138 * Math.PI) / 180;
+        const c = Math.cos(t);
+        const sn = Math.sin(t);
+        const m = [
+          0.213 + 0.787 * c - 0.213 * sn, 0.715 - 0.715 * c - 0.715 * sn, 0.072 - 0.072 * c + 0.928 * sn,
+          0.213 - 0.213 * c + 0.143 * sn, 0.715 + 0.285 * c + 0.14 * sn, 0.072 - 0.072 * c - 0.283 * sn,
+          0.213 - 0.213 * c - 0.787 * sn, 0.715 - 0.715 * c + 0.715 * sn, 0.072 + 0.928 * c + 0.072 * sn,
+        ] as const;
+        for (let i = 0; i < px.length; i += 4) {
+          const r = px[i]!;
+          const gg = px[i + 1]!;
+          const b = px[i + 2]!;
+          if (px[i + 3] === 0 || b <= r) continue;
+          const mx = Math.max(r, gg, b);
+          const sat = mx > 0 ? (mx - Math.min(r, gg, b)) / mx : 0;
+          const f = clamp01((sat - 0.25) / 0.2);
+          if (f <= 0) continue;
+          px[i] = r + (m[0] * r + m[1] * gg + m[2] * b - r) * f;
+          px[i + 1] = gg + (m[3] * r + m[4] * gg + m[5] * b - gg) * f;
+          px[i + 2] = b + (m[6] * r + m[7] * gg + m[8] * b - b) * f;
+        }
+        o.putImageData(d, 0, 0);
+      } catch {
+        // Pixel nicht lesbar: Foto unverändert verwenden
+      }
+      redCar = { src: img, c: canvas };
+      return canvas;
+    }
+
     function drawCar(x: number, yG: number, len: number, alpha = 1, detail = true): void {
       const g = surface.g;
       const dark = th().dark;
@@ -2151,6 +2198,19 @@ export default defineSimulation({
       const wr = len * 0.085;
       g.save();
       g.globalAlpha *= alpha;
+      const photo = carPhoto();
+      if (photo) {
+        // Foto: Länge Stoßstange bis Stoßstange = len, Reifen auf der Bodenlinie
+        const ph = (len * photo.height) / photo.width;
+        g.fillStyle = dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)';
+        g.beginPath();
+        g.ellipse(x + len / 2, yG + 1, len * 0.47, Math.max(1, len * 0.025), 0, 0, TAU);
+        g.fill();
+        // Reifen-Unterkante liegt bei 684 von 686 Bildzeilen
+        g.drawImage(scaledSprite(photo, len, ph, surface.dpr), x, yG - ph * (684 / 686), len, ph);
+        g.restore();
+        return;
+      }
       // Schatten
       g.fillStyle = dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)';
       g.beginPath();
@@ -2256,6 +2316,15 @@ export default defineSimulation({
       // Farbeimer
       g.save();
       g.globalAlpha *= k.panel;
+      const bucketImg = ctx.images.get('bucket');
+      if (bucketImg) {
+        // Foto des Farbeimers (roter Streifen = Lackfarbe), etwas breiter als die Ersatzgrafik, unten bündig
+        const bw = can.w * 1.12;
+        const bh = (bw * bucketImg.naturalHeight) / bucketImg.naturalWidth;
+        g.drawImage(scaledSprite(bucketImg, bw, bh, surface.dpr), can.x + can.w / 2 - bw / 2, can.y + can.h - bh, bw, bh);
+      }
+      const bucketGA = g.globalAlpha;
+      if (bucketImg) g.globalAlpha = 0;
       const cg = g.createLinearGradient(can.x, 0, can.x + can.w, 0);
       cg.addColorStop(0, theme.dark ? '#5d6675' : '#c7cdd6');
       cg.addColorStop(0.5, theme.dark ? '#8a93a3' : '#eef1f5');
@@ -2274,6 +2343,7 @@ export default defineSimulation({
       g.beginPath();
       g.arc(can.x + can.w / 2, can.y + 6, can.w * 0.42, Math.PI, 0);
       g.stroke();
+      g.globalAlpha = bucketGA;
       g.restore();
       const cl = wrapText(say(L('Lack für 1 Auto', 'Paint for 1 car')), can.w + 30, `600 ${fs(11.5, 11)}px ${theme.font}`);
       g.font = `600 ${fs(11.5, 11)}px ${theme.font}`;
