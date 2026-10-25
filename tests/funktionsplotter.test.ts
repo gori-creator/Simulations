@@ -342,4 +342,36 @@ describe('Funktionsplotter: Prüfrunde (Eingaben und sehr große Werte)', () => 
     // echte Sprünge bleiben erhalten
     expect(traceFunction(fn('x/|x|'), -2, 2, -2, 2, 401).breaks.map((b) => b.kind)).toEqual(['jump']);
   });
+
+  it('behandelt 0⁰ wie der Termbaum als nicht definiert (Entscheidung der Leitung)', () => {
+    expect(fn('x^0')(0)).toBeNaN();
+    expect(fn('x^0')(2)).toBe(1);
+    expect(fn('0^x')(0)).toBeNaN();
+    expect(fn('0^x')(2)).toBe(0);
+    expect(fn('0^x')(-1)).toBeNaN();
+    expect(fn('x²')(0)).toBe(0);
+    expect(findHoles(fn('x^0'), -2, 2)).toEqual([{ x: 0, y: 1 }]);
+    // Voreinstellung und Beispiele unverändert
+    expect(findZeros(fn('x^2 - 2'), -6, 6).roots).toHaveLength(2);
+    expect(findExtrema(fn('x^2 - 2'), -6, 6)).toEqual([{ x: 0, y: -2, kind: 'min' }]);
+    expect(findZeros(fn('a x^2', { a: 0.5, b: 1 }), -6, 6).roots).toEqual([{ x: 0, touch: true }]);
+    expect(findIntersections(fn('x^2'), fn('2^x'), -3, 5).points).toHaveLength(3);
+    expect(findExtrema(fn('x^3 - 3x'), -4, 4)).toHaveLength(2);
+  });
+
+  it('erlaubt ein Vorzeichen direkt nach √ (Entscheidung der Leitung)', () => {
+    expect(fn('√-4')(0)).toBeNaN();
+    expect(text('√-4')).toBe('√(−4)');
+    expect(fn('√-x')(-9)).toBe(3);
+    expect(fn('√-x')(1)).toBeNaN();
+    expect(fn('√-x^2')(0) === 0).toBe(true);
+    expect(fn('√-x^2')(1)).toBeNaN();
+    expect(fn('√+x')(4)).toBe(2);
+    expect(fn('2√x')(4)).toBe(4);
+    expect(fn('√4x')(4)).toBe(8);
+    expect(fn('x − √x')(4)).toBe(2);
+    expect(err('√')).toMatchObject({ code: 'fnNoArg' });
+    expect(err('√-')).toMatchObject({ code: 'expectOperand' });
+    expect(err('√*x')).toMatchObject({ code: 'fnNoArg' });
+  });
 });

@@ -610,9 +610,17 @@ class Parser {
       case 'root': {
         this.i++;
         const nt = this.peek();
-        if (!nt || nt.t === 'op' || nt.t === 'close' || (nt.t === 'bar' && this.absDepth > 0)) fail('fnNoArg', t.pos, t.end, '√');
+        const signed = this.isOp(nt, '+', '-');
+        if (!nt || (nt.t === 'op' && !signed) || nt.t === 'close' || (nt.t === 'bar' && this.absDepth > 0)) fail('fnNoArg', t.pos, t.end, '√');
         this.enter();
-        const arg = this.power();
+        let arg: Node;
+        if (signed) {
+          // Vorzeichen direkt nach √: √-4 wie √(−4), √-x² wie √(−x²)
+          this.i++;
+          if (!this.peek()) fail('expectOperand', nt!.pos, nt!.end, symbol(nt));
+          const inner = this.power();
+          arg = this.isOp(nt, '-') ? { k: 'neg', arg: inner, br: null } : inner;
+        } else arg = this.power();
         this.depth--;
         return { k: 'call', fn: 'sqrt', arg, sym: true, bare: arg.br === null, br: null };
       }
@@ -770,9 +778,9 @@ type Compiled = (x: number, env: Env) => number;
 
 const LOG10 = Math.LN10;
 
-/** Potenz wie in der Schule: negative Basis nur mit ganzzahligem Exponenten, 0 hoch negativ undefiniert. */
+/** Potenz wie in der Schule: negative Basis nur mit ganzzahligem Exponenten, 0 hoch negativ und 0⁰ undefiniert (wie im Termbaum). */
 export function power(u: number, v: number): number {
-  if (u === 0 && v < 0) return NaN;
+  if (u === 0 && v <= 0) return NaN;
   if (u < 0 && !Number.isInteger(v)) return NaN;
   return Math.pow(u, v);
 }

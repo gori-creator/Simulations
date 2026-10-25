@@ -48,8 +48,8 @@ korrigiert
 - In der Ergebnisleiste läuft auf dem Handy eine lange Spurzeile (mehrere Funktionen) über den rechten Rand hinaus statt umzubrechen (Ergebnis-Kacheln des Kerns).
 
 ## 7. Rückfragen (fachlich unsicher, nicht stillschweigend geändert)
-- $0^0$: Die Simulation rechnet `x^0` und `0^x` an der Stelle 0 mit dem Wert 1 (wie `Math.pow`, GeoGebra). `termbaum` behandelt $0^0$ als „nicht definiert“. Soll der Plotter dort eine Lücke zeigen (dann hätte $x^0$ ein Loch bei $(0 \mid 1)$)?
-- `√-4` ergibt die Meldung „Nach „√“ fehlt das Argument“, `√(-4)` dagegen „nicht definiert“. Soll ein Vorzeichen direkt nach √ erlaubt werden?
+- **Entschieden (Leitung):** $0^0$ wie im `termbaum` als nicht definiert. Umgesetzt in `power()`: nur genau Basis 0 und Exponent 0, also `x^0` = 1 für $x \neq 0$, `0^x` = 0 für $x > 0$. `x^0` zeigt jetzt ein Loch bei $(0 \mid 1)$. Nullstellen, Extrema und Schnittpunkte der Voreinstellung und der Beispiele sind unverändert (Test). Hinweis im Lernmaterial DE und EN ergänzt.
+- **Entschieden (Leitung):** Vorzeichen direkt nach √ erlaubt: `√-4` wie √(−4) → nicht definiert, `√-x` = √(−x), `√-x^2` = √(−x²). Bestehende Fälle (`√x`, `√4x`, `2√x`, `√(x + 7)`) unverändert, `√`, `√-` und `√*x` bleiben Fehler (Test).
 
 ## Prüfung
-`npm run verify`: astro check 0/0/0, Tests 3045/3045 grün, Build ok.
+`npm run verify`: astro check 0/0/0, Tests 3047/3047 grün, Build ok.
