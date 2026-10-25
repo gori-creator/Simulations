@@ -97,7 +97,7 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ✓ | 8–8 | `kreiszahl-pi` | Kreisumfang, Kreisfläche und die Zahl π | `/de/mathematik/flaechen-und-koerper/kreiszahl-pi/` |
 | ☐ | 8–8 | `lgs-grafisch` | Lineare Gleichungssysteme grafisch lösen | `/de/mathematik/terme-und-gleichungen/lgs-grafisch/` |
 | ☐ | 8–8 | `prisma-zylinder` | Prisma und Zylinder: Oberfläche und Volumen | `/de/mathematik/flaechen-und-koerper/prisma-und-zylinder/` |
-| ☐ | 8–9 | `gleichungen-grafisch` | Gleichungen grafisch lösen: Schnittpunkte von Graphen | `/de/mathematik/terme-und-gleichungen/gleichungen-grafisch-loesen/` |
+| ✓ | 8–9 | `gleichungen-grafisch` | Gleichungen grafisch lösen: Schnittpunkte von Graphen | `/de/mathematik/terme-und-gleichungen/gleichungen-grafisch-loesen/` |
 | ☐ | 8–9 | `pythagoras` | Satz des Pythagoras | `/de/mathematik/geometrie/satz-des-pythagoras/` |
 | ☐ | 8–10 | `baumdiagramm` | Mehrstufige Zufallsexperimente und Pfadregeln | `/de/mathematik/daten-und-zufall/baumdiagramm-pfadregeln/` |
 | ☐ | 8–13 | `funktionsplotter` | Funktionsplotter mit eigenen Termen | `/de/mathematik/funktionen/funktionsplotter/` |

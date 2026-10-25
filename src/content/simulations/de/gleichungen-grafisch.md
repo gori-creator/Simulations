@@ -88,13 +88,14 @@ Rechnerisch: Multiplizieren mit $x$ ergibt $4 = x^2 + 3x$, also $x^2 + 3x - 4 = 
 
 ### Aufgabe 4: Eine Wurzel einschließen
 
-[Aufgabe laden](?e1=0&m2=0&t2=3&_hide=1) Die Gleichung $x^2 = 3$ hat eine positive Lösung. Schließe sie mit Intervallhalbierung ein, bis die erste Nachkommastelle sicher ist.
+[Aufgabe laden](?e1=0&m2=0&t2=3&show=0&_hide=1) Die Gleichung $x^2 = 3$ hat eine positive Lösung. Schließe sie mit Intervallhalbierung ein, bis die erste Nachkommastelle sicher ist.
 
 <details>
 <summary>Lösung anzeigen</summary>
 
 Mit $h(x) = x^2 - 3$: Start $[1;\ 2]$. $h(1{,}5) < 0 \Rightarrow [1{,}5;\ 2]$; $h(1{,}75) > 0 \Rightarrow [1{,}5;\ 1{,}75]$; $h(1{,}625) < 0 \Rightarrow [1{,}625;\ 1{,}75]$; $h(1{,}6875) < 0 \Rightarrow [1{,}6875;\ 1{,}75]$.
-Alle Zahlen in diesem Intervall runden auf $1{,}7$, also $x \approx 1{,}7$ (genauer $\sqrt{3} \approx 1{,}732$).
+Noch nicht sicher: $1{,}6875$ rundet auf $1{,}7$, aber $1{,}75$ auf $1{,}8$. Weiter: $h(1{,}71875) < 0 \Rightarrow [1{,}71875;\ 1{,}75]$; $h(1{,}734375) > 0 \Rightarrow [1{,}71875;\ 1{,}734375]$.
+Nach 6 Schritten runden alle Zahlen in diesem Intervall auf $1{,}7$, also $x \approx 1{,}7$ (genauer $\sqrt{3} \approx 1{,}732$). Die Simulation zeigt dann „Sicher: x₂ ≈ 1,7“.
 
 </details>
 

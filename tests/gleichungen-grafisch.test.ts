@@ -208,3 +208,61 @@ describe('Modell: Gleichungen grafisch lösen', () => {
     expect(rootText(s.roots[0]!, 'de')).toBe('−1');
   });
 });
+
+describe('Lernmaterial: Aufgaben und Beispiele', () => {
+  it('löst die Aufgaben 1–3, 5 und 6 wie im Lernmaterial', () => {
+    // A1: x² − 4 = x + 2  ⇒  L = {−2; 3}, Schnittpunkte (−2|0) und (3|5)
+    const a1 = solveEquation(quad(1, 0, -4), lin(1, 2));
+    expect(a1.roots.map((r) => [r.x, r.y])).toEqual([
+      [-2, 0],
+      [3, 5],
+    ]);
+    // A2: (a) keine, (b) Berührpunkt (2|4), (c) L = {−2; 2}
+    expect(caseOf(solveEquation(quad(1, 0, 1), lin(1, 0)))).toBe('none');
+    const a2b = solveEquation(quad(1, 0, 0), lin(4, -4));
+    expect(caseOf(a2b)).toBe('touch');
+    expect(a2b.roots[0]).toMatchObject({ x: 2, y: 4 });
+    expect(xs(quad(0.5, 0, 0), lin(0, 2))).toEqual([-2, 2]);
+    // A3: 4/x = x + 3  ⇒  D = ℝ \ {0}, L = {−4; 1}
+    const a3 = solveEquation(hyp(4, 0, 0), lin(1, 3));
+    expect(a3.gaps).toEqual([0]);
+    expect(a3.roots.map((r) => r.x)).toEqual([-4, 1]);
+    // A5: |x + 2| = 3  ⇒  L = {−5; 1}
+    expect(xs(abs(1, -2, 0), lin(0, 3))).toEqual([-5, 1]);
+    // A6: 1/x = 0 hat keine Lösung
+    expect(caseOf(solveEquation(hyp(1, 0, 0), lin(0, 0)))).toBe('none');
+  });
+
+  it('löst die Ausprobier-Beispiele wie im Lernmaterial', () => {
+    expect(xs(quad(1, 0, -1), lin(0.5, 2))).toEqual([-1.5, 2]);
+    expect(xs(hyp(2, 1, 0), lin(1, 0))).toEqual([-1, 2]);
+    expect(xs(abs(1, 1, 0), lin(0.5, 1))).toEqual([0, 4]);
+    // |x − 1| = −x + 1: Graphen fallen für x ≤ 1 zusammen
+    const ab = solveEquation(abs(1, 1, 0), lin(-1, 1));
+    expect(caseOf(ab)).toBe('infinite');
+    expect(ab.spans).toEqual([{ from: -Infinity, to: 1, fromIn: false, toIn: true }]);
+    // 1/x = x² − 2: −1 exakt, (1 ± √5)/2 nur ungefähr
+    const cub = solveEquation(hyp(1, 0, 0), quad(1, 0, -2));
+    expect(cub.roots.map((r) => rootText(r, 'de'))).toEqual(['−1', '≈ −0,62', '≈ 1,62']);
+    // Scheinlösung: 1/(x − 1) + 1 = 1/(x − 1) hat keine Lösung
+    expect(caseOf(solveEquation(hyp(1, 1, 1), hyp(1, 1, 0)))).toBe('none');
+  });
+
+  it('Aufgabe 4: bei x² = 3 ist die erste Nachkommastelle erst nach 6 Schritten sicher', () => {
+    const f = quad(1, 0, 0);
+    const g = lin(0, 3);
+    const h = (x: number) => evalFn(f, x) - evalFn(g, x);
+    let iv = startInterval(h, Math.sqrt(3), [])!;
+    expect(iv).toEqual({ a: 1, b: 2 });
+    const seen: [number, number][] = [];
+    for (let i = 0; i < 6; i++) {
+      iv = nextInterval(bisectStep(h, iv));
+      seen.push([iv.a, iv.b]);
+    }
+    expect(seen[3]).toEqual([1.6875, 1.75]);
+    // 1,75 rundet auf 1,8: nach 4 Schritten noch nicht sicher
+    expect(agreedDigits(...seen[3]!)).toBe(0);
+    expect(seen[5]).toEqual([1.71875, 1.734375]);
+    expect(agreedDigits(...seen[5]!)).toBe(1);
+  });
+});
