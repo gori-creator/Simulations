@@ -24,7 +24,7 @@ export default defineSimulation({
       ],
       default: 'umfang',
     },
-    { key: 'd', type: 'number', label: L('Durchmesser d', 'Diameter d'), min: 1, max: 4, step: 0.5, default: 2, unit: 'cm' },
+    { key: 'd', type: 'number', label: L('Durchmesser d', 'Diameter d'), min: 1, max: 10, step: 0.5, default: 2, unit: 'cm' },
     { key: 'n', type: 'number', label: L('Anzahl der Sektoren', 'Number of sectors'), min: 4, max: 48, step: 2, default: 12, visibleIf: (v) => v.mode === 'flaeche' },
     { key: 'm', type: 'number', label: L('Eckenzahl der Vielecke', 'Number of polygon corners'), min: 3, max: 96, step: 1, default: 6, visibleIf: (v) => v.mode === 'archimedes' },
   ],

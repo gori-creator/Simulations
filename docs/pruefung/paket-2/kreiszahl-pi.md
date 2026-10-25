@@ -12,7 +12,7 @@ korrigiert
   3. Archimedes: m = 6 → 6 · sin 30° = 3, 6 · tan 30° = 2√3 ≈ 3,4641 ✓; m = 96 → 96 · sin 1,875° ≈ 3,14103, 96 · tan 1,875° ≈ 3,14271, also 3,1410 < π < 3,1427 ✓; m = 3 → 3 · sin 60° ≈ 2,5981, 3 · tan 60° = 3√3 ≈ 5,1962 ✓.
   4. Prüfwerte Lernmaterial: r = 3 cm → U = 6π ≈ 18,85 cm, A = 9π ≈ 28,27 cm²; d = 10 cm → U = 10π ≈ 31,42 cm (als Test abgesichert).
   5. Abrollen: Strecke = π · d; unter dem Boden 3 · d plus Rest (π − 3) · d ≈ 0,14 d ✓.
-- **Sonderfälle:** d nur 1–4 cm (kein 0/negativ möglich); n = 4 und 48, m = 3 und 96 angesehen. Fehler: bei m = 3 und m = 4 ragte das umbeschriebene Vieleck aus dem Bild (Ausschnitt war fest ±1,35 r) → behoben (Ausschnitt richtet sich nach dem Vieleck). Verdoppeln über 96 ist gesperrt ✓.
+- **Sonderfälle:** d von 1 bis 10 cm (kein 0/negativ möglich); n = 4 und 48, m = 3 und 96 angesehen. Fehler: bei m = 3 und m = 4 ragte das umbeschriebene Vieleck aus dem Bild (Ausschnitt war fest ±1,35 r) → behoben (Ausschnitt richtet sich nach dem Vieleck). Verdoppeln über 96 ist gesperrt ✓.
 - **Einheiten, Rundung, ≈/=:** Anzeige „Mit Zahlen“ zeigt jetzt zusätzlich das exakte Vielfache von π („= 2π cm ≈ 6,283 cm“). Beschriftung „0,14 d“ war gerundet ohne „≈“ → „≈ 0,14 d“. Schranken im Bild: m = 96 zeigte „3,141“ (abgeschnittene Null) → „≈ 3,1410“; exakte Werte (3 beim Sechseck, 4 beim Quadrat) ohne „≈“. Alle gerundeten Schranken (4 und 5 Stellen) schließen π für m = 3…96 weiterhin ein (Test).
 - **Begriffe:** EN-Anzeige hieß „U“, die EN-Beschriftung im Bild „C“ → EN-Anzeige jetzt durchgehend „C“.
 - **Neue Tests:** `tests/kreiszahl-pi.test.ts` (Prüfwerte, Archimedes 6/96, gerundete Schranken für alle m, Breite der umgelegten Sektoren, Ausdehnung des umbeschriebenen Vielecks).
@@ -47,7 +47,7 @@ korrigiert
 - keine
 
 ## 7. Rückfragen (fachlich unsicher, nicht stillschweigend geändert)
-- Durchmesser-Regler nur 1–4 cm: Die Prüfwerte (r = 3 cm, d = 10 cm) lassen sich in der Simulation nicht einstellen. Reglerbereich erweitern? (Nicht geändert, da die Darstellung dafür ausgelegt ist.)
+- ~~Durchmesser-Regler nur 1–4 cm~~ – entschieden: Bereich auf 1–10 cm erweitert, damit die Prüfwerte (r = 3 cm, d = 10 cm) einstellbar sind. Darstellung bei d = 10 cm in allen drei Themen angesehen (Ausschnitt skaliert mit), Schlüssel `d` unverändert.
 
 ## Prüfung
 `npm run verify`: astro check 0/0/0, Tests 3030/3030 grün (131 Dateien), Build ok.
