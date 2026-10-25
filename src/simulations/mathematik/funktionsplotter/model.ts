@@ -610,9 +610,17 @@ class Parser {
       case 'root': {
         this.i++;
         const nt = this.peek();
-        if (!nt || nt.t === 'op' || nt.t === 'close' || (nt.t === 'bar' && this.absDepth > 0)) fail('fnNoArg', t.pos, t.end, '√');
+        const signed = this.isOp(nt, '+', '-');
+        if (!nt || (nt.t === 'op' && !signed) || nt.t === 'close' || (nt.t === 'bar' && this.absDepth > 0)) fail('fnNoArg', t.pos, t.end, '√');
         this.enter();
-        const arg = this.power();
+        let arg: Node;
+        if (signed) {
+          // Vorzeichen direkt nach √: √-4 wie √(−4), √-x² wie √(−x²)
+          this.i++;
+          if (!this.peek()) fail('expectOperand', nt!.pos, nt!.end, symbol(nt));
+          const inner = this.power();
+          arg = this.isOp(nt, '-') ? { k: 'neg', arg: inner, br: null } : inner;
+        } else arg = this.power();
         this.depth--;
         return { k: 'call', fn: 'sqrt', arg, sym: true, bare: arg.br === null, br: null };
       }
@@ -770,9 +778,9 @@ type Compiled = (x: number, env: Env) => number;
 
 const LOG10 = Math.LN10;
 
-/** Potenz wie in der Schule: negative Basis nur mit ganzzahligem Exponenten, 0 hoch negativ undefiniert. */
+/** Potenz wie in der Schule: negative Basis nur mit ganzzahligem Exponenten, 0 hoch negativ und 0⁰ undefiniert (wie im Termbaum). */
 export function power(u: number, v: number): number {
-  if (u === 0 && v < 0) return NaN;
+  if (u === 0 && v <= 0) return NaN;
   if (u < 0 && !Number.isInteger(v)) return NaN;
   return Math.pow(u, v);
 }
@@ -856,6 +864,14 @@ function compileNode(node: Node): Compiled {
       return p ? (x, env) => power(f(a(x, env)), p(x, env)) : (x, env) => f(a(x, env));
     }
   }
+}
+
+/**
+ * Wie `compile`, aber ohne Umwandlung: ±Infinity bedeutet „definiert, aber zu
+ * groß für den Rechner“ (z. B. e^1000), NaN „nicht definiert“.
+ */
+export function compileRaw(node: Node): (x: number, env: Env) => number {
+  return compileNode(node);
 }
 
 /** Übersetzt den Baum in eine Funktion; nicht definierte Stellen liefern NaN. */
@@ -1006,7 +1022,12 @@ export function locateJump(f: Fn1, a: number, ya: number, b: number, yb: number,
   for (let k = 0; k < 60; k++) {
     if (Math.abs(yb - ya) <= tol * 0.25) return null;
     const m = (a + b) / 2;
-    if (m <= a || m >= b) break;
+    if (m <= a || m >= b) {
+      // Rechengenauigkeit erreicht: Bei sehr steilen, aber stetigen Graphen (e^(x²) bei
+      // x = 6) bleibt ein Unterschied, der im Verhältnis zu den Werten winzig ist – kein Sprung.
+      if (Math.abs(yb - ya) <= 1e-9 * Math.max(Math.abs(ya), Math.abs(yb))) return null;
+      break;
+    }
     const ym = f(m);
     if (!finite(ym)) {
       const L = edgePoint(f, a, m);

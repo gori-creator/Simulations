@@ -1,6 +1,7 @@
 import { clamp, defineSimulation, ease, formatPiFraction, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   compile,
+  compileRaw,
   derivative,
   findExtrema,
   findHoles,
@@ -51,6 +52,8 @@ interface SlotState {
   fn: Fn1 | null;
   /** Rohfunktion mit Parametern (für die Schar). */
   raw: ((x: number, env: Env) => number) | null;
+  /** Wie raw, aber ±Infinity bei Überlauf (zu groß statt nicht definiert). */
+  rawInf: ((x: number, env: Env) => number) | null;
   /** Letzter gültiger Term (wird bei Tippfehlern blass weiter gezeigt). */
   stale: Fn1 | null;
   /** Überblenden vom alten zum neuen Graphen. */
@@ -185,6 +188,8 @@ export default defineSimulation({
       allErrorsN: 'Die Terme enthalten noch Fehler – siehe rechts.',
       allErrorsNNarrow: 'Die Terme enthalten noch Fehler – siehe unten.',
       undefinedAt: '{f}({x}) ist nicht definiert.',
+      tooBigAt: 'Der Betrag von {f}({x}) ist zu groß für den Rechner.',
+      tooBigCell: 'zu groß',
       outside: 'Der Spurpunkt liegt außerhalb des Ausschnitts.',
       traceOff: 'Spur ausgeschaltet',
       traceNone: 'Für {f} ist noch kein gültiger Term eingegeben.',
@@ -246,6 +251,8 @@ export default defineSimulation({
       allErrorsN: 'The expressions still contain mistakes – see the right.',
       allErrorsNNarrow: 'The expressions still contain mistakes – see below.',
       undefinedAt: '{f}({x}) is not defined.',
+      tooBigAt: 'The absolute value of {f}({x}) is too large for the computer.',
+      tooBigCell: 'too large',
       outside: 'The traced point is outside the window.',
       traceOff: 'Trace switched off',
       traceNone: 'There is no valid expression for {f} yet.',
@@ -314,8 +321,42 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     /** Runden wie in der Schule (bei 5 vom Nullpunkt weg). */
     const round = (v: number, d = 2) => (Math.sign(v) * Math.round(Math.abs(v) * 10 ** d + 1e-9)) / 10 ** d;
-    const nf = (v: number, d = 2) => fmt.num(round(v, d), d);
-    const isRounded = (v: number, d = 2) => Math.abs(round(v, d) - v) > 1e-9 * Math.max(1, Math.abs(v));
+    /** Ab dieser Größe in Zehnerpotenz-Schreibweise (sonst sprengen die Ziffern Tabelle und Karten). */
+    const BIG = 1e9;
+    const SUPS = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+    /** Zerlegung v = m · 10^e mit 1 ≤ |m| < 10, m auf 2 Nachkommastellen gerundet. */
+    const sci = (v: number): [number, number] => {
+      let e = Math.floor(Math.log10(Math.abs(v)));
+      let m = round(v / 10 ** e, 2);
+      if (Math.abs(m) >= 10) {
+        e++;
+        m = round(v / 10 ** e, 2);
+      }
+      return [m, e];
+    };
+    const nf = (v: number, d = 2) => {
+      if (Number.isFinite(v) && Math.abs(v) >= BIG) {
+        const [m, e] = sci(v);
+        return `${fmt.num(m, 2)} · 10${String(e).replace(/[0-9]/g, (c) => SUPS[Number(c)]!)}`;
+      }
+      return fmt.num(round(v, d), d);
+    };
+    const isRounded = (v: number, d = 2) => {
+      if (Math.abs(v) >= BIG) {
+        const [m, e] = sci(v);
+        return Math.abs(m * 10 ** e - v) > 1e-12 * Math.abs(v);
+      }
+      return Math.abs(round(v, d) - v) > 1e-9 * Math.max(1, Math.abs(v));
+    };
+    /** Wert von s an der Stelle x nicht berechenbar: zu groß (Überlauf) statt nicht definiert? */
+    const tooBig = (s: Slot, x: number) => {
+      const r = state[s].rawInf;
+      if (!r) return false;
+      const v = r(x, env());
+      return !Number.isNaN(v) && !Number.isFinite(v);
+    };
+    /** Satz für eine Stelle ohne Wert: „f(2) ist nicht definiert.“ oder „… zu groß …“. */
+    const noValue = (s: Slot, x: number) => tr(tooBig(s, x) ? 'tooBigAt' : 'undefinedAt', { f: s, x: nf(x) });
     const rel = (...vs: number[]) => (vs.some((v) => isRounded(v)) ? '≈' : '=');
     /** x-Wert, bei Winkelfunktionen als Vielfaches von π, wenn das passt. */
     const xNice = (x: number, trig: boolean) => {
@@ -334,7 +375,7 @@ export default defineSimulation({
     };
 
     function blankSlot(): SlotState {
-      return { src: '', res: { ok: 'empty' }, fn: null, raw: null, stale: null, morph: null, version: 0, trig: false };
+      return { src: '', res: { ok: 'empty' }, fn: null, raw: null, rawInf: null, stale: null, morph: null, version: 0, trig: false };
     }
 
     /** Liest die Terme neu ein; `animate`: alter Graph fließt in den neuen über. */
@@ -351,6 +392,7 @@ export default defineSimulation({
         any = true;
         if (st.res.ok === true) {
           st.raw = compile(st.res.term.node);
+          st.rawInf = compileRaw(st.res.term.node);
           st.trig = st.res.term.trig;
           st.stale = null;
         } else {
@@ -358,6 +400,7 @@ export default defineSimulation({
           if (st.res.ok === false && st.raw) st.stale = shown(s);
           if (st.res.ok === 'empty') st.stale = null;
           st.raw = null;
+          st.rawInf = null;
           st.trig = false;
         }
         bindSlot(s);
@@ -1257,7 +1300,7 @@ export default defineSimulation({
         g.lineWidth = 2.4;
         g.strokeStyle = c;
         g.stroke();
-        tag(clamp(px, r.x + 70, r.x + r.w - 70), clamp(ax - 22, r.y + 14, r.y + r.h - 14), tr('undefinedAt', { f: s, x: nf(x) }), c, 'center', 11);
+        tag(clamp(px, r.x + 70, r.x + r.w - 70), clamp(ax - 22, r.y + 14, r.y + r.h - 14), noValue(s, x), c, 'center', 11);
         return;
       }
       const py = plot.py(y);
@@ -1619,12 +1662,12 @@ export default defineSimulation({
         const named = traceMarker && traceMarker.kind !== 'hole' && traceMarker.kind !== 'zero';
         const line = named ? markerText(traceMarker!) : `P${rel(x, y) === '≈' ? ' ≈ ' : ''}(${nf(x)}${sep}${nf(y)})`;
         bs.push({ h: fs * 1.6, draw: (xx, yy) => text(surface.g, line, xx, yy + fs * 0.8, { font: `750 ${fs}px ${theme.font}`, color: c, align: 'left' }) });
-      } else bs.push(noteBlock(tr('undefinedAt', { f: s, x: nf(x) }), w, c, fs - 2, 700));
+      } else bs.push(noteBlock(noValue(s, x), w, c, fs - 2, 700));
       // Werte der anderen Funktionen an derselben Stelle
       const others = SLOTS.filter((o) => o !== s && state[o].fn);
       for (const o of others) {
         const v = state[o].fn!(x);
-        const str = Number.isFinite(v) ? `${o}(${nf(x)}) ${rel(x, v)} ${nf(v)}` : tr('undefinedAt', { f: o, x: nf(x) });
+        const str = Number.isFinite(v) ? `${o}(${nf(x)}) ${rel(x, v)} ${nf(v)}` : noValue(o, x);
         bs.push(noteBlock(str, w, colOf(o), narrow() ? 12 : 12.5, 650));
       }
       if (p.tg && Number.isFinite(y)) {
@@ -1650,8 +1693,11 @@ export default defineSimulation({
       const avail = maxH - pad * 2 - (bs[0]!.h + rh) + 4;
       const nRows = Math.max(1, Math.min(14, Math.floor(avail / rh)));
       const xs = Array.from({ length: nRows }, (_, i) => p.x0 + i * p.dx);
-      const cell = (v: number) => (Number.isFinite(v) ? nf(v) : ctx.t('notDef'));
-      const values = xs.map((x) => cols.map((s) => cell(state[s].fn!(x))));
+      const cell = (s: Slot, x: number) => {
+        const v = state[s].fn!(x);
+        return Number.isFinite(v) ? nf(v) : tooBig(s, x) ? ctx.t('tooBigCell') : ctx.t('notDef');
+      };
+      const values = xs.map((x) => cols.map((s) => cell(s, x)));
       const fontB = `750 ${fs}px ${theme.font}`;
       const font = `600 ${fs}px ${theme.font}`;
       // Spalten: x und je Funktion, rechtsbündig
@@ -1791,7 +1837,7 @@ export default defineSimulation({
           const cur = traceSlot() !== null && Math.abs(x - traceX) < 1e-9;
           return `<tr${cur ? ' class="is-current"' : ''}><td>${esc(nf(x))}</td>${cols.map((s) => {
             const v = state[s].fn!(x);
-            return `<td>${Number.isFinite(v) ? esc(nf(v)) : '–'}</td>`;
+            return `<td>${Number.isFinite(v) ? esc(nf(v)) : tooBig(s, x) ? esc(ctx.t('tooBigCell')) : '–'}</td>`;
           }).join('')}</tr>`;
         }).join('');
         ctx.readout('table', { html: `<table class="mini-table">${head}${body}</table>` });
@@ -1802,7 +1848,7 @@ export default defineSimulation({
       else {
         const parts = SLOTS.filter((s) => state[s].fn).map((s) => {
           const v = state[s].fn!(t.x);
-          const body = Number.isFinite(v) ? `${s}(${nf(t.x)}) ${rel(t.x, v)} ${nf(v)}` : tr('undefinedAt', { f: s, x: nf(t.x) });
+          const body = Number.isFinite(v) ? `${s}(${nf(t.x)}) ${rel(t.x, v)} ${nf(v)}` : noValue(s, t.x);
           return span(s, s === t.slot ? `<strong>${esc(body)}</strong>` : esc(body));
         });
         if (p.tg && Number.isFinite(t.y)) {
