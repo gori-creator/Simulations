@@ -148,6 +148,8 @@ export default defineSimulation({
     const cm = (v: number, d = 2) => `${fmt.num(v, d)} cm`;
     const cm2 = (v: number, d = 2) => `${fmt.num(v, d)} cm²`;
     const cm3 = (v: number, d = 2) => `${fmt.num(v, d)} cm³`;
+    /** „=“, wenn alle Werte mit d Nachkommastellen exakt angezeigt werden, sonst „≈“. */
+    const eq = (values: number[], d = 2) => (values.every((x) => Math.abs(x * 10 ** d - Math.round(x * 10 ** d)) < 1e-6) ? '=' : '≈');
 
     const VIEWS = { volumen: { azimuth: 30, elevation: 22 }, oberflaeche: { azimuth: 22, elevation: 38 } } as const;
     const view = new View3D(surface, { ...VIEWS.volumen, elevationLimits: [-20, 88] });
@@ -179,26 +181,29 @@ export default defineSimulation({
       let gHtml = '';
       let uHtml = '';
       if (p.base === 'dreieck') {
-        gHtml = `${v('G')} = ½ · ${v('g')} · ${v('h')}<sub>g</sub> = ½ · ${cm(p.g)} · ${cm(p.hg)} = <strong>${cm2(base.area)}</strong>`;
-        uHtml = `${v('u')} = ${cm(p.g)} + 2 · ${cm(base.sides[1]!)} ≈ <strong>${cm(base.perimeter)}</strong>`;
+        gHtml = `${v('G')} = ½ · ${v('g')} · ${v('h')}<sub>g</sub> = ½ · ${cm(p.g)} · ${cm(p.hg)} ${eq([base.area])} <strong>${cm2(base.area)}</strong>`;
+        const leg = base.sides[1]!;
+        uHtml = `${v('u')} ${eq([leg])} ${cm(p.g)} + 2 · ${cm(leg)} ${eq([leg, base.perimeter])} <strong>${cm(base.perimeter)}</strong>`;
       } else if (p.base === 'neck') {
         const q = regularPolygon(p.n, p.r);
-        gHtml = `${v('G')} = ${p.n} · ½ · ${v('s')} · ${v('ρ')} ≈ ${p.n} · ½ · ${cm(q.side)} · ${cm(q.apothem)} ≈ <strong>${cm2(base.area)}</strong>`;
-        uHtml = `${v('u')} = ${p.n} · ${v('s')} ≈ ${p.n} · ${cm(q.side)} ≈ <strong>${cm(base.perimeter)}</strong>`;
+        gHtml = `${v('G')} = ${p.n} · ½ · ${v('s')} · ${v('ρ')} ${eq([q.side, q.apothem])} ${p.n} · ½ · ${cm(q.side)} · ${cm(q.apothem)} ${eq([q.side, q.apothem, base.area])} <strong>${cm2(base.area)}</strong>`;
+        uHtml = `${v('u')} = ${p.n} · ${v('s')} ${eq([q.side])} ${p.n} · ${cm(q.side)} ${eq([q.side, base.perimeter])} <strong>${cm(base.perimeter)}</strong>`;
       } else {
         gHtml = `${v('G')} = π · ${v('r')}² = π · (${cm(p.r)})² ≈ <strong>${cm2(base.area)}</strong>`;
         uHtml = `${v('u')} = 2π · ${v('r')} ≈ <strong>${cm(base.perimeter)}</strong>`;
       }
       ctx.readout('G', { html: gHtml });
       ctx.readout('u', { html: uHtml });
-      ctx.readout('V', { html: `${v('V')} = ${v('G')} · ${v('h')} ≈ ${cm2(base.area)} · ${cm(p.h)} ≈ <strong>${cm3(s.volume)}</strong>` });
+      const eG = eq([base.area]);
+      const eGu = eq([base.area, base.perimeter]);
+      ctx.readout('V', { html: `${v('V')} = ${v('G')} · ${v('h')} ${eG} ${cm2(base.area)} · ${cm(p.h)} ${eq([base.area, s.volume])} <strong>${cm3(s.volume)}</strong>` });
       ctx.readout('O', {
-        html: `${v('O')} = 2 · ${v('G')} + ${v('u')} · ${v('h')} ≈ 2 · ${cm2(base.area)} + ${cm(base.perimeter)} · ${cm(p.h)} ≈ <strong>${cm2(s.surface)}</strong>`,
+        html: `${v('O')} = 2 · ${v('G')} + ${v('u')} · ${v('h')} ${eGu} 2 · ${cm2(base.area)} + ${cm(base.perimeter)} · ${cm(p.h)} ${eq([base.area, base.perimeter, s.surface])} <strong>${cm2(s.surface)}</strong>`,
       });
       if (p.base === 'neck') {
         const cyl = solid(circleBase(p.r), p.h);
         ctx.readout('cmp', {
-          html: `${v('V')}<sub>${ctx.lang === 'de' ? 'Zyl' : 'cyl'}</sub> = π${v('r')}²${v('h')} ≈ ${cm3(cyl.volume)} · ${tr('percent', { p: fmt.num((100 * s.volume) / cyl.volume, 1) })}`,
+          html: `${v('V')}<sub>${ctx.lang === 'de' ? 'Zyl' : 'cyl'}</sub> = π${v('r')}²${v('h')} ≈ ${cm3(cyl.volume)} · ${tr('percent', { p: fmt.num((100 * s.volume) / cyl.volume, 2) })}`,
         });
       } else ctx.readout('cmp', null);
     }
@@ -306,7 +311,7 @@ export default defineSimulation({
           gloss: smoothEdges ? 0.3 : 0.16,
           face: (f) =>
             f === 1 && top && !stackAnim && p.calc
-              ? { label: { text: `G ≈ ${cm2(base.area, 2)}`, size: surface.width < 560 ? 11 : 13 } }
+              ? { label: { text: `G ${eq([base.area])} ${cm2(base.area, 2)}`, size: surface.width < 560 ? 11 : 13 } }
               : undefined,
         });
       });
@@ -430,7 +435,7 @@ export default defineSimulation({
       }
       const complete = printed >= P - 1e-6;
       if (complete && fold > 0.98 && p.calc) {
-        view.label(toWorld(P / 2, 0, 0), `M ≈ ${cm2(P * p.h, 2)}`, { color: th.text, size: 13, weight: '700', align: 'center', baseline: 'middle', background: th.dark ? 'rgba(15,20,30,0.78)' : 'rgba(255,255,255,0.85)' });
+        view.label(toWorld(P / 2, 0, 0), `M ${eq([P * p.h])} ${cm2(P * p.h, 2)}`, { color: th.text, size: 13, weight: '700', align: 'center', baseline: 'middle', background: th.dark ? 'rgba(15,20,30,0.78)' : 'rgba(255,255,255,0.85)' });
       }
 
       // rollender Körper (blendet am Ende aus)
@@ -478,14 +483,14 @@ export default defineSimulation({
             stroke: edgeOf(baseColor),
             width: 1.4,
             gloss: 0.15,
-            label: fold > 0.98 && p.calc ? { text: `G ≈ ${cm2(base.area, 2)}`, size: surface.width < 560 ? 11 : 12 } : undefined,
+            label: fold > 0.98 && p.calc ? { text: `G ${eq([base.area])} ${cm2(base.area, 2)}`, size: surface.width < 560 ? 11 : 12 } : undefined,
           });
         }
       }
 
       // Maße am Abdruck: Länge (abgerollt bzw. u) und Höhe h
       if (printed > 0.2) {
-        const label = complete ? `u ≈ ${cm(P, 2)}` : `${ctx.t('rolled')}: ${cm(printed, 1)}`;
+        const label = complete ? `u ${eq([P])} ${cm(P, 2)}` : `${ctx.t('rolled')}: ${cm(printed, 1)}`;
         const a = toWorld(0, 0, H + 0.35);
         const b = toWorld(printed, 0, H + 0.35);
         view.segment(a, b, { color: th.series[1], width: 2.2, layer: 'back' });
@@ -512,9 +517,9 @@ export default defineSimulation({
         const count = stackAnim ? shown : parts.length;
         const layersText = fmt.num(Math.min(count, p.h), 1);
         head = count === 1 ? ctx.t('layers1') : tr('layersN', { n: layersText });
-        lines.push({ text: `${ctx.t('baseArea')} ≈ ${cm2(base.area)}`, color: th.series[0]! });
-        if (count >= 1) lines.push({ text: `${ctx.t('oneLayer')} ≈ ${cm3(base.area)}`, color: th.series[5]! });
-        if (count >= parts.length) lines.push({ text: `${tr('allLayers', { n: fmt.num(p.h, 1) })} ≈ ${cm3(sld.volume)}`, bold: true });
+        lines.push({ text: `${ctx.t('baseArea')} ${eq([base.area])} ${cm2(base.area)}`, color: th.series[0]! });
+        if (count >= 1) lines.push({ text: `${ctx.t('oneLayer')} ${eq([base.area])} ${cm3(base.area)}`, color: th.series[5]! });
+        if (count >= parts.length) lines.push({ text: `${tr('allLayers', { n: fmt.num(p.h, 1) })} ${eq([sld.volume])} ${cm3(sld.volume)}`, bold: true });
         if (p.ghost && p.base === 'neck') lines.push({ text: `${ctx.t('cylinder')} ≈ ${cm3(Math.PI * p.r * p.r * p.h)}`, color: th.series[4]! });
       } else {
         const theta = 2 * Math.PI * smooth(clamp01(rollShown / ROLL_END));
@@ -522,21 +527,27 @@ export default defineSimulation({
         const complete = printed >= base.perimeter - 1e-6;
         const folded = rollShown >= 0.999;
         head = folded ? ctx.t('net') : `${ctx.t('rolled')}: ${cm(rollShown > 0 ? printed : 0, 1)}`;
-        if (complete) lines.push({ text: `${ctx.t('mantle')} ≈ ${cm(base.perimeter)} · ${cm(p.h, 1)} ≈ ${cm2(sld.mantle)}`, color: th.series[0]! });
-        if (folded) lines.push({ text: `${ctx.t('bases')} ≈ ${cm2(2 * base.area)}`, color: th.series[3]! });
-        if (folded) lines.push({ text: `${ctx.t('surface')} ≈ ${cm2(sld.surface)}`, bold: true });
+        if (complete) lines.push({ text: `${ctx.t('mantle')} ${eq([base.perimeter])} ${cm(base.perimeter)} · ${cm(p.h, 1)} ${eq([base.perimeter, sld.mantle])} ${cm2(sld.mantle)}`, color: th.series[0]! });
+        if (folded) lines.push({ text: `${ctx.t('bases')} ${eq([2 * base.area])} ${cm2(2 * base.area)}`, color: th.series[3]! });
+        if (folded) lines.push({ text: `${ctx.t('surface')} ${eq([sld.surface])} ${cm2(sld.surface)}`, bold: true });
       }
-      const size = narrow ? 12 : 13;
+      // rechts bleibt Platz für die Zoom-Knöpfe; passt die Rechnung nicht, wird die Schrift kleiner
+      const maxW = surface.width - 66;
+      let size = narrow ? 12 : 13;
       g.save();
       let w = 0;
-      for (const line of lines) {
-        g.font = `${line.bold ? 800 : 600} ${size}px ${th.font}`;
-        w = Math.max(w, g.measureText(line.text).width + (line.bold ? 0 : 16));
+      for (; ; size--) {
+        w = 0;
+        for (const line of lines) {
+          g.font = `${line.bold ? 800 : 600} ${size}px ${th.font}`;
+          w = Math.max(w, g.measureText(line.text).width + (line.bold ? 0 : 16));
+        }
+        if (w + 30 <= maxW || size <= 9) break;
       }
       g.font = `800 ${narrow ? 17 : 19}px ${th.font}`;
       w = Math.max(w, g.measureText(head).width);
       const lineH = size + 9;
-      const boxW = Math.min(surface.width - 20, w + 30);
+      const boxW = Math.min(maxW, w + 30);
       const boxH = (narrow ? 38 : 42) + lines.length * lineH;
       g.fillStyle = th.dark ? 'rgba(15,20,30,0.84)' : 'rgba(255,255,255,0.9)';
       roundRect(g, 10, 10, boxW, boxH, 12);
