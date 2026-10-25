@@ -9,8 +9,25 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
 | Prüfrunde Physik abschließen (Abschnitt A, `docs/pruefung/UEBERGABE-NEUE-PRUEFER.md`) | Claude-Agent | 16 von 17 Protokollen auf `pruefen/paket-1`, noch nicht in `main` |
-| Barrierefreiheit der Seite (Tastatur, Bildschirmleser, Kontraste, Zoom, reduzierte Bewegung) | Claude-Agent | läuft |
+| Sicherheit und Ladezeit (Abschnitte unten) | Claude-Agent | läuft |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
+
+## Erledigt
+
+- [x] **Barrierefreiheit der Seiten** (PR #44, 25.10.): 19 Seiten hell/dunkel geprüft (axe, Tastatur, Zoom, reduzierte Bewegung), 10 Funde behoben.
+
+## Barrierefreiheit in den Simulationen (Folgeaufgabe aus PR #44)
+
+Betrifft `src/sim-core/` und einzelne Simulationen; Details in der Beschreibung von PR #44 („Nur aufgelistet“).
+
+- [ ] Pro Simulation prüfen, ob alle ziehbaren Punkte als Tastatur-Ziel angemeldet sind (`key-targets.ts`).
+- [ ] Namen der Zeichenflächen (`surface.ts`) beschreibend machen statt allgemein.
+- [ ] Messwerte: nach Loslassen bzw. Tastatur-Änderung höflich vorlesen (statt `aria-live="off"`).
+- [ ] `dragHint` mit aktuellen Werten statt festem Text.
+- [ ] Klären, ob `_hide=1` auch die zugehörigen Regler ausblenden soll (Prüfungs-Links).
+- [ ] `fmt.approx` im Kern ergänzen; Simulationen, die „≈“ selbst bauen, darauf umstellen.
+- [ ] Prüfbogen: reduzierte Bewegung auch nach „Start“ prüfen.
+- [ ] Fest eingetragene Farben in Simulationen auf `ctx.theme` umstellen bzw. Kontrast im Dunkelmodus prüfen.
 
 ## Rechtliches (vor der echten Veröffentlichung)
 
