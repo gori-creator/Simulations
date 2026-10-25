@@ -113,3 +113,41 @@ describe('Modell: Baumdiagramm – Prüfwerte und Sonderfälle', () => {
     expect(hits / N).toBeLessThan(hi + 0.01);
   });
 });
+
+describe('Modell: Baumdiagramm – Aufgaben aus dem Lernmaterial', () => {
+  const U32: Urn = { r: 3, b: 2, g: 0 };
+  it('Aufgabe 1: vier Pfade 3/10, 3/10, 3/10, 1/10', () => {
+    const t = buildTree(U32, 2, false);
+    expect(leaves(t).map((l) => [l.path, l.prob])).toEqual([
+      ['rr', { n: 3, d: 10 }],
+      ['rb', { n: 3, d: 10 }],
+      ['br', { n: 3, d: 10 }],
+      ['bb', { n: 1, d: 10 }],
+    ]);
+  });
+  it('Aufgabe 2: gleiche Farbe ohne 2/5, mit Zurücklegen 9/25 + 4/25 = 13/25', () => {
+    expect(eventProb(buildTree(U32, 2, false), 'same')).toEqual({ n: 2, d: 5 });
+    expect(eventProb(buildTree(U32, 2, true), 'same')).toEqual({ n: 13, d: 25 });
+  });
+  it('Aufgabe 3: dreimal mit Zurücklegen, mindestens eine rote = 1 − 8/125 = 117/125 (7 Pfade)', () => {
+    const t = buildTree(U32, 3, true);
+    expect(eventProb(t, 'minR')).toEqual({ n: 117, d: 125 });
+    expect(complementProb(t, 'minR')).toEqual({ n: 8, d: 125 });
+    expect(splitPaths(t, 'minR').inside).toHaveLength(7);
+  });
+  it('Aufgabe 4: dreimal ohne Zurücklegen, mindestens eine rote ist sicher (Ast 0/3)', () => {
+    const t = buildTree(U32, 3, false);
+    expect(eventProb(t, 'minR')).toEqual({ n: 1, d: 1 });
+    expect(exhaustedColors(U32, 'bb', false)).toEqual(['b']);
+    expect(urnAfter(U32, 'bb', false)).toEqual({ r: 3, b: 0, g: 0 });
+  });
+  it('Aufgabe 6: blaue Kugel zuletzt, P(rrb) = 2/3 · 1/2 · 1 = 1/3', () => {
+    expect(pathProb({ r: 2, b: 1, g: 0 }, 'rrb', false)).toEqual({ n: 1, d: 3 });
+  });
+  it('Randfälle: leere Urne, eine Kugel, nur eine Farbe, Nenner 0', () => {
+    expect(leaves(buildTree({ r: 0, b: 0, g: 0 }, 2, false)).map((l) => l.path)).toEqual(['']);
+    expect(maxStages({ r: 1, b: 0, g: 0 }, false)).toBe(1);
+    expect(eventProb(buildTree({ r: 4, b: 0, g: 0 }, 2, false), 'same')).toEqual({ n: 1, d: 1 });
+    expect(frac(3, 0)).toEqual({ n: 0, d: 1 });
+  });
+});

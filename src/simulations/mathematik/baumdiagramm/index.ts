@@ -611,7 +611,9 @@ export default defineSimulation({
       y += 26;
       if (evId() !== 'none' && drawn.length) {
         const hits = drawn.filter((d) => inEv(d)).length;
-        rich(`${tt('Ereignis', 'event')}: ${hits} = ${fmt.fixed((hits / drawn.length) * 100, 1)} %`, R.x + 14, y, 12, EV(), 'left', 700);
+        // „37-mal (37,0 %)“ statt „37 = 37,0 %“: Anzahl und relative Häufigkeit sind nicht gleich
+        const hitTxt = `${tt('Ereignis', 'event')}: ${fmt.num(hits, 0)}${tt('-mal', ' times')} (${fmt.fixed((hits / drawn.length) * 100, 1)} %)`;
+        rich(hitTxt, R.x + 14, y, fitSize(hitTxt, R.w - 28, 12, 700), EV(), 'left', 700);
       } else if (!drawn.length) {
         const txt = tt('Neben jedem Ergebnis wächst ein Balken mit der relativen Häufigkeit.', 'A bar with the relative frequency grows next to each outcome.');
         wrap(txt, R.w - 28, 11.5).slice(0, Math.max(0, Math.floor((R.y + R.h - 8 - y) / 15) + 1)).forEach((l, i) => rich(l, R.x + 14, y + i * 15, 11.5, th().muted, 'left', 550));
