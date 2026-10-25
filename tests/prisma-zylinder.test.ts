@@ -104,3 +104,39 @@ describe('Abrollen', () => {
     expect(c.center).toEqual([2 * Math.PI, 2]);
   });
 });
+
+describe('Werte aus dem Lernmaterial', () => {
+  it('Aufgabe 1: Dreiecksprisma g = 4, h_g = 3, h = 5', () => {
+    const s = solid(triangleBase(4, 3), 5);
+    expect(s.volume).toBe(30);
+    expect(s.base.sides[1]).toBeCloseTo(3.606, 3);
+    expect(s.base.perimeter).toBeCloseTo(11.21, 2);
+    expect(s.mantle).toBeCloseTo(56.06, 2);
+    expect(s.surface).toBeCloseTo(68.06, 2);
+  });
+
+  it('Aufgabe 2 und 3: Zylinder und Sechseckprisma mit r = 2, h = 4', () => {
+    const c = solid(circleBase(2), 4);
+    expect(c.volume).toBeCloseTo(16 * Math.PI, 12);
+    expect(c.surface).toBeCloseTo(24 * Math.PI, 12);
+    const hex = solid(polygonBase(6, 2), 4);
+    // Sechseck: Seite = Umkreisradius, also u = 12 cm und M = 48 cm²
+    expect(hex.base.sides[0]).toBeCloseTo(2, 12);
+    expect(hex.mantle).toBeCloseTo(48, 12);
+    expect(hex.volume).toBeCloseTo(41.57, 2);
+    expect(hex.surface).toBeCloseTo(68.78, 2);
+  });
+
+  it('Aufgabe 4: Getränkedose d = 7 cm, h = 11 cm', () => {
+    const can = solid(circleBase(3.5), 11);
+    expect(can.mantle).toBeCloseTo(241.9, 1);
+    expect(can.volume).toBeCloseTo(423.3, 1);
+    expect(can.volume).toBeLessThan(500);
+  });
+
+  it('Aufgabe 5: Anteil am Zylindervolumen auf zwei Nachkommastellen', () => {
+    const percent = (n: number) => (100 * regularPolygon(n, 1).area) / Math.PI;
+    expect(percent(25)).toBeCloseTo(98.95, 2);
+    expect(percent(26)).toBeCloseTo(99.03, 2);
+  });
+});
