@@ -340,7 +340,8 @@ export default defineSimulation({
         const dm = frac(n1.m.num * n2.m.den - n2.m.num * n1.m.den, n1.m.den * n2.m.den);
         const dt = frac(n2.t.num * n1.t.den - n1.t.num * n2.t.den, n1.t.den * n2.t.den);
         const rhs = (l: Line) => normalText(l, lang).replace(/^y = /, '');
-        const k = dm.num === dm.den ? 'x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
+        // Koeffizient 1 bzw. −1 nicht ausschreiben: „x“, „−x“
+        const k = dm.num === dm.den ? 'x' : dm.num === -dm.den ? '−x' : `${fracText(dm, lang)}${exact(dm) ? '' : ' '}x`;
         ctx.readout('calc', { html: htmlEq(`${rhs(l1)} = ${rhs(l2)} ⇒ ${k} = ${fracText(dt, lang)} ⇒ x = ${fracText(sol.x, lang)}, y = ${fracText(sol.y, lang)}`) });
       } else ctx.readout('calc', null);
       if (form() === 'tarif') {
@@ -668,7 +669,7 @@ export default defineSimulation({
             ],
             { fill: c, alpha: 0.12, stroke: c, width: 1.5 },
           );
-          const dyText = form() === 'tarif' ? `${fmt.num(m * unit, 2)} €` : fmt.num(m * unit, 2);
+          const dyText = form() === 'tarif' ? `${fmt.fixed(m * unit, 2)} €` : fmt.num(m * unit, 2);
           plot.text(x0 + unit, (y0 + y1) / 2, dyText, { color: c, size: 12, weight: '600', offset: [6, 0], baseline: 'middle' });
           plot.text(x0 + unit / 2, y0, form() === 'tarif' ? `${fmt.num(unit, 0)} min` : '1', { color: c, size: 12, weight: '600', align: 'center', baseline: m >= 0 ? 'top' : 'bottom', offset: [0, m >= 0 ? 4 : -4] });
         });
@@ -829,7 +830,7 @@ export default defineSimulation({
           from = before;
           morph.play();
           pop.play();
-        } else if (sol.kind !== lastSol.kind) pop.play();
+        } else if (sol.kind !== lastSol.kind && !reduced) pop.play();
         if (changed.has('form') || source === 'replace' || source === 'init') {
           viewKey = '';
           probeOn = false;
