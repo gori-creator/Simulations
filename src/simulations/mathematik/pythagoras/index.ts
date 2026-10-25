@@ -23,9 +23,9 @@ export default defineSimulation({
       ],
       default: 'squares',
     },
-    { key: 'a', type: 'number', label: L('Kathete a', 'Leg a'), min: 1, max: 6, step: 0.5, default: 3 },
-    { key: 'b', type: 'number', label: L('Kathete b', 'Leg b'), min: 1, max: 6, step: 0.5, default: 4 },
-    { key: 'grid', type: 'boolean', group: 'view', label: L('Kästchen zum Abzählen', 'Unit squares for counting'), default: true },
+    { key: 'a', type: 'number', label: L('Kathete a', 'Leg a'), min: 1, max: 8, step: 0.5, default: 3 },
+    { key: 'b', type: 'number', label: L('Kathete b', 'Leg b'), min: 1, max: 8, step: 0.5, default: 4 },
+    { key: 'grid', type: 'boolean', group: 'view', label: L('Kästchen zum Abzählen', 'Unit squares for counting'), default: true, visibleIf: (v) => v.mode === 'squares' },
     { key: 'numbers', type: 'boolean', group: 'view', label: L('Flächeninhalte anzeigen', 'Show areas'), default: true },
   ],
   actions: [{ id: 'move', label: L('Dreiecke umlegen', 'Rearrange triangles'), primary: true, visibleIf: (v) => v.mode === 'puzzle' }],
@@ -49,7 +49,10 @@ export default defineSimulation({
       proofSquares: 'Die beiden Kathetenquadrate haben zusammen denselben Flächeninhalt wie das Hypotenusenquadrat.',
       proofPuzzle:
         'In beiden Anordnungen liegen im Quadrat mit der Seite a + b dieselben vier Dreiecke. Die freie Fläche ist also gleich groß: c² = a² + b².',
-      hyp: 'Hypotenuse',
+      descSquares: 'Rechtwinkliges Dreieck mit den Katheten a = {a} und b = {b}. Über den drei Seiten stehen die Quadrate a², b² und c².',
+      descPuzzle: 'Puzzle-Beweis: Quadrat mit der Seite a + b = {s}, darin vier gleiche rechtwinklige Dreiecke mit den Katheten {a} und {b}.',
+      descFreeC: 'Frei bleibt das Quadrat c² in der Mitte.',
+      descFreeAB: 'Frei bleiben die Quadrate a² und b².',
     },
     en: {
       canvas: 'Right triangle with squares on its three sides',
@@ -58,7 +61,10 @@ export default defineSimulation({
       proofSquares: 'Together, the two squares on the legs have the same area as the square on the hypotenuse.',
       proofPuzzle:
         'Both arrangements place the same four triangles inside the square with side a + b. So the uncovered areas are equal: c² = a² + b².',
-      hyp: 'hypotenuse',
+      descSquares: 'Right triangle with legs a = {a} and b = {b}. The squares a², b² and c² stand on its three sides.',
+      descPuzzle: 'Puzzle proof: square with side a + b = {s} containing four identical right triangles with legs {a} and {b}.',
+      descFreeC: 'The square c² in the middle is uncovered.',
+      descFreeAB: 'The squares a² and b² are uncovered.',
     },
   },
 
@@ -75,7 +81,23 @@ export default defineSimulation({
     const progress = () => startP + (targetP - startP) * tween.value;
     const colors = () => ({ a: ctx.theme.series[0]!, b: ctx.theme.series[1]!, c: ctx.theme.series[4]!, tri: ctx.theme.series[3]! });
 
+    // Während des Ziehens bleibt der Ausschnitt fest; sonst wächst er mit der
+    // Figur mit und die Ecke läuft dem Zeiger davon. Beim Loslassen neu einpassen.
+    let pointerDown = false;
+    const onPointerDown = () => {
+      pointerDown = true;
+    };
+    const onPointerUp = () => {
+      if (!pointerDown) return;
+      pointerDown = false;
+      ctx.requestRender();
+    };
+    surface.canvas.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
+
     function fitRange(): void {
+      if (pointerDown && p.mode === 'squares') return;
       const key = `${p.mode}:${p.a}:${p.b}`;
       if (key === rangeKey) return;
       rangeKey = key;
@@ -142,7 +164,8 @@ export default defineSimulation({
       plot.point(s / 2, s / 2, { color: ctx.theme.text, radius: 2 });
       plot.text(b / 2, 0, 'b', { math: true, size: 18, color: col.b, align: 'center', baseline: 'bottom', offset: [0, -6], weight: 'bold' });
       plot.text(0, a / 2, 'a', { math: true, size: 18, color: col.a, align: 'left', baseline: 'middle', offset: [8, 0], weight: 'bold' });
-      plot.text(b / 2, a / 2, 'c', { math: true, size: 18, color: col.c, align: 'right', baseline: 'top', offset: [-6, 6], weight: 'bold' });
+      // c außen an der Hypotenuse (im Hypotenusenquadrat), damit es bei flachen Dreiecken nicht mit b kollidiert
+      plot.text(b / 2, a / 2, 'c', { math: true, size: 18, color: col.c, align: 'center', baseline: 'middle', offset: [(a / c) * 14, (-b / c) * 14], weight: 'bold' });
       plot.point(b, 0, { color: col.b, radius: 5 });
       plot.point(0, a, { color: col.a, radius: 5 });
     }
@@ -236,6 +259,14 @@ export default defineSimulation({
       ctx.setAction('move', { label: ctx.t(targetP > 0.5 ? 'back' : 'move') });
     }
 
+    /** Beschreibung der Zeichenfläche für Bildschirmleser (folgt Darstellung und Werten). */
+    function updateDescription(): void {
+      const fill = (key: string) =>
+        ctx.t(key).replace('{a}', fmt.num(p.a)).replace('{b}', fmt.num(p.b)).replace('{s}', fmt.num(p.a + p.b));
+      const desc = p.mode === 'puzzle' ? `${fill('descPuzzle')} ${ctx.t(targetP > 0.5 ? 'descFreeAB' : 'descFreeC')}` : fill('descSquares');
+      surface.canvas.setAttribute('aria-label', desc);
+    }
+
     return {
       update(changed) {
         if (changed.has('mode')) {
@@ -251,6 +282,7 @@ export default defineSimulation({
         ctx.readout('sides', `a = ${fmt.num(a)}, b = ${fmt.num(b)}, c ${exact ? '=' : '≈'} ${fmt.num(c, 3)}`);
         ctx.readout('areas', `a² + b² = ${fmt.num(a * a)} + ${fmt.num(b * b)} = ${fmt.num(a * a + b * b)} = c²`);
         ctx.readout('proof', ctx.t(p.mode === 'puzzle' ? 'proofPuzzle' : 'proofSquares'));
+        updateDescription();
       },
 
       action(id) {
@@ -259,6 +291,7 @@ export default defineSimulation({
         targetP = targetP > 0.5 ? 0 : 1;
         tween.play(Math.max(200, 2200 * Math.abs(targetP - startP)));
         updateAction();
+        updateDescription();
       },
 
       render() {
@@ -271,7 +304,11 @@ export default defineSimulation({
         if (tween.running) ctx.requestRender();
       },
 
-      destroy: () => surface.destroy(),
+      destroy() {
+        window.removeEventListener('pointerup', onPointerUp);
+        window.removeEventListener('pointercancel', onPointerUp);
+        surface.destroy();
+      },
     };
   },
 });
