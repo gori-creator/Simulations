@@ -33,7 +33,7 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 
 ## Inhalte und Funktionen
 
-- [ ] **9 Bilder neu erzeugen** (Projektleitung mit Bildgenerator): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Oberfläche Gummi/Asphalt, Fluchtstab, Lupe, Sparbuch – Gründe in `docs/BILDER-WUNSCHLISTE.md` (Abschnitt „Stand 22.10.2026“). Danach einbauen wie in PR #41.
+- [ ] **9 Bilder neu erzeugen** (Projektleitung mit Bildgenerator, Prompts: `docs/agenten/PROMPT-BILDER-NACHLIEFERUNG.md`; Einbau: `docs/agenten/AUFTRAG-BILDER-NACHLIEFERUNG.md`): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Oberfläche Gummi/Asphalt, Fluchtstab, Lupe, Sparbuch – Gründe in `docs/BILDER-WUNSCHLISTE.md` (Abschnitt „Stand 22.10.2026“). Danach einbauen wie in PR #41.
 - [ ] **Ladezeit für Schulnetze:** Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR.
 - [ ] **Design einbauen**, sobald der Codex-Agent abgegeben hat: Abgabe prüfen, Patch anwenden, Sichtprüfung hell/dunkel, PC/Handy, PR.
 - [ ] **Chemie:** Plan für die ersten 10 Simulationen (Klasse 7–13, KMK-Bildungsstandards), dann die ersten zwei vollständig bauen (`docs/NEUE-SIMULATION.md`).
