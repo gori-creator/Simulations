@@ -11,9 +11,17 @@ title: Privacy policy
 - **No tracking**, no analytics and no advertising.
 - **No external content** (no fonts, scripts or images from third-party servers).
 
-## Hosting
+## Hosting and server logs
 
-When you visit the site, your browser transmits technically necessary data (e.g. IP address, time, requested address, browser type) to the server hosting the site. [Details of the hosting provider to be added.]
+This website is hosted on **GitHub Pages**, provided by GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.
+
+When you visit the site, your browser transmits technically necessary data to GitHub's servers, in particular your **IP address**, date and time, the requested address and details of your browser and operating system. GitHub stores the IP address in server logs in order to deliver the site and to keep the service secure (e.g. to fend off attacks). We have no access to these logs and do not analyse them. GitHub determines how long the data is kept.
+
+**Legal basis:** Art. 6(1)(f) GDPR. Our legitimate interest is to provide the website securely, reliably and free of charge.
+
+**Transfer to the USA:** Data may be transferred to the USA. The transfer is based on the European Commission's adequacy decision for the **EU-U.S. Data Privacy Framework** (Art. 45 GDPR), insofar as GitHub is certified under it, and otherwise on the Commission's standard contractual clauses (Art. 46(2)(c) GDPR).
+
+For more information, see GitHub's privacy statement: [docs.github.com](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement).
 
 ## Storage in your browser
 
