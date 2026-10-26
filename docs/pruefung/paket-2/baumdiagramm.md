@@ -94,3 +94,9 @@ korrigiert (EN-Lernmaterial an DE angeglichen, Anzeige in der Simulation präzis
 
 ### Prüfung
 `npm run verify`: astro check 0/0/0, Tests 3043/3043 grün (baumdiagramm 20/20), Build ok.
+
+### Nachtrag: Kugeln ohne Farbe unterscheidbar
+- Offener Punkt aus 4. (Rot/Grün nur über die Farbe) **erledigt**: Jede Kugel trägt ihren Buchstaben **r/b/g** (wie in den Ergebnistexten und im Feld „Gewählte Pfade“, DE und EN gleich), fett, mittig, in der Hintergrundfarbe des Themes (hell auf den kräftigen Kugeln, dunkel auf den hellen Kugeln im Dunkelmodus). Gilt überall: Urne, gezogene Kugeln (Ablage und Flug), Knoten im Baum, kleine Kugeln an den Ergebnissen, Vergleichs- und Simulationsansicht.
+- Einheitliche Regel statt Muster-Ersatz: ruhende Kugeln sind nie kleiner als 7 px Radius (Knoten und Ergebnis-Kugeln entsprechend vergrößert), der Buchstabe hat mindestens 8,5 px. Nur beim kurzen Aufploppen/Flug blendet er mit der Größe ein.
+- Aufgebrauchte Farbe (gestrichelter 0-Ast): am Ende ein gestrichelter leerer Kreis mit Buchstaben vor „0/…“.
+- Alt-Text nennt die Buchstaben. In Graustufen (hell und dunkel) geprüft: alle Kugelsorten klar unterscheidbar.

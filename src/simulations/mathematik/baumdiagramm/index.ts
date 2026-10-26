@@ -32,6 +32,8 @@ const L = (de: string, en: string) => ({ de, en });
 const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const TAU = Math.PI * 2;
+/** Mindestradius (px), ab dem eine Kugel ihren Buchstaben trägt; ruhende Kugeln sind nie kleiner. */
+const LETTER_R = 7;
 
 type Mode = 'draw' | 'compare' | 'rules' | 'sim';
 
@@ -180,8 +182,8 @@ export default defineSimulation({
     { id: 'small', label: L('Urne wird leer: 2 rote, 1 blaue', 'Urn runs empty: 2 red, 1 blue'), values: { r: 2, b: 1, n: 3 } },
   ],
   strings: {
-    de: { canvas: 'Urne mit roten, blauen und grünen Kugeln und Baumdiagramm mit Wahrscheinlichkeiten an den Ästen: Ziehen mit fliegenden Kugeln, Vergleich mit und ohne Zurücklegen, Pfadregeln Schritt für Schritt oder Simulation vieler Ziehungen. Pfade lassen sich antippen.' },
-    en: { canvas: 'Urn with red, blue and green balls and a tree diagram with probabilities on the branches: drawing with flying balls, comparison with and without replacement, path rules step by step or a simulation of many draws. Paths can be tapped.' },
+    de: { canvas: 'Urne mit roten, blauen und grünen Kugeln (mit den Buchstaben r, b, g beschriftet) und Baumdiagramm mit Wahrscheinlichkeiten an den Ästen: Ziehen mit fliegenden Kugeln, Vergleich mit und ohne Zurücklegen, Pfadregeln Schritt für Schritt oder Simulation vieler Ziehungen. Pfade lassen sich antippen.' },
+    en: { canvas: 'Urn with red, blue and green balls (labelled with the letters r, b, g) and a tree diagram with probabilities on the branches: drawing with flying balls, comparison with and without replacement, path rules step by step or a simulation of many draws. Paths can be tapped.' },
   },
 
   mount(ctx) {
@@ -411,7 +413,12 @@ export default defineSimulation({
       g.restore();
       return { x: x0, y: y - h / 2, w, h };
     }
-    /** Glänzende Kugel. */
+    /**
+     * Glänzende Kugel mit Buchstaben (r/b/g wie in den Ergebnistexten), damit
+     * die Farben auch ohne Farbsehen unterscheidbar sind. Einheitliche Regel:
+     * Jede ruhende Kugel ist mindestens LETTER_R groß und trägt den Buchstaben;
+     * nur beim Aufploppen und im Flug (kurz kleiner) blendet er mit der Größe ein.
+     */
     function ball(x: number, y: number, r: number, c: Color, a = 1): void {
       if (r <= 0.3) return;
       const g = surface.g;
@@ -429,6 +436,25 @@ export default defineSimulation({
       g.arc(x, y, r, 0, TAU);
       g.fillStyle = grad;
       g.fill();
+      g.shadowColor = 'transparent';
+      const la = clamp01((r - LETTER_R + 1.5) / 1.5);
+      // Kontrastfarbe aus dem Theme: hell auf den kräftigen Kugeln (hell), dunkel auf den hellen (dunkel)
+      if (la > 0) ballLetter(x, y, r, c, th().bg, la);
+      g.restore();
+    }
+    /** Buchstabe der Farbe, optisch mittig in einem Kreis vom Radius r. */
+    function ballLetter(x: number, y: number, r: number, c: Color, ink: string, a = 1): void {
+      const g = surface.g;
+      g.save();
+      g.globalAlpha *= a;
+      g.font = fontOf(Math.max(8.5, Math.min(r * 1.2, 17)), 800);
+      g.textAlign = 'center';
+      g.textBaseline = 'alphabetic';
+      const m = g.measureText(c);
+      // Ober- und Unterlängen (b, g) ausgleichen
+      const dy = (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+      g.fillStyle = ink;
+      g.fillText(c, x, y + dy);
       g.restore();
     }
 
@@ -781,10 +807,22 @@ export default defineSimulation({
         g.quadraticCurveTo(a.x + (ex - a.x) * 0.4, ey, ex, ey);
         g.stroke();
         g.restore();
-        if (p.show) rich(p.num === 'frac' ? `0/${gh.d}` : '0', ex + 4, ey, 10, mixColor(ballColor(gh.color), th().text, 0.4), 'left', 750);
+        // leerer Platz mit Buchstaben: welche Farbe aufgebraucht ist, auch ohne Farbsehen
+        const ink = mixColor(ballColor(gh.color), th().text, 0.4);
+        const gx = ex + LETTER_R + 1;
+        g.save();
+        g.setLineDash([2.5, 2]);
+        g.strokeStyle = mixColor(ballColor(gh.color), th().bg, 0.3);
+        g.lineWidth = 1.2;
+        g.beginPath();
+        g.arc(gx, ey, LETTER_R + 0.5, 0, TAU);
+        g.stroke();
+        g.restore();
+        ballLetter(gx, ey, LETTER_R + 0.5, gh.color, ink);
+        if (p.show) rich(p.num === 'frac' ? `0/${gh.d}` : '0', gx + LETTER_R + 5, ey, 10, ink, 'left', 750);
       }
       // Knoten
-      const nodeR = clamp(tg.rowH * 0.26, 5, 11);
+      const nodeR = clamp(tg.rowH * 0.26, LETTER_R, 11);
       for (const n of tg.nodes) {
         if (!n.parent) {
           g.fillStyle = th().text;
@@ -820,9 +858,9 @@ export default defineSimulation({
           }
           g.restore();
         }
-        const br = clamp(h * 0.24, 3.5, 6.5);
-        row.path.split('').forEach((c, i) => ball(x + br + i * br * 2.3, row.y, br, c as Color));
-        const px = x + br * 2.3 * row.path.length + 6;
+        const br = clamp(h * 0.27, LETTER_R, 8);
+        row.path.split('').forEach((c, i) => ball(x + br + i * br * 2.2, row.y, br, c as Color));
+        const px = x + br * 2.2 * row.path.length + 6;
         const fs = narrow || tg.rowH < 20 ? 10.5 : 12;
         const prob = p.show ? numText(leaf.prob, true, stack) : '?';
         rich(prob, px, row.y + 0.5, fitSize(prob, Math.max(30, x + w - px - (o.bars && total ? 60 : 4)), fs, 800, 8.5), isEv ? EV() : th().text, 'left', 800);
