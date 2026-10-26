@@ -223,7 +223,12 @@ async function main() {
         const { png, errors } = await shoot(browser, port, job.url, job.scheme);
         if (errors.length) failures.push({ name: job.name, problem: `Fehler auf der Seite: ${errors.join(' | ')}` });
         if (renew) {
-          await writeFile(file, png);
+          // Nur überschreiben, wenn sich wirklich etwas geändert hat: Rundungsrauschen
+          // (±1–2 in einzelnen Pixeln, z. B. in Fotos) erzeugt sonst unnötige Commits.
+          const same =
+            existsSync(file) &&
+            compareImages(decodePng(await readFile(file)), decodePng(png), { channel: 2, share: 0 }).ok;
+          if (!same) await writeFile(file, png);
         } else if (!existsSync(file)) {
           await writeFile(path.join(RESULT_DIR, 'neu', `${job.name}.png`), png);
           failures.push({ name: job.name, problem: 'Referenzbild fehlt' });
