@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          # immer die neueste 22er-Version (Pakete verlangen teils eine bestimmte Mindestversion)
+          check-latest: true
           cache: npm
       - run: npm ci
       - name: Typprüfung

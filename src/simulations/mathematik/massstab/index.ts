@@ -181,6 +181,7 @@ export default defineSimulation({
       default: true,
       help: L('Ausgeschaltet erst selbst rechnen, dann „Ergebnis anzeigen“ antippen.', 'When off, work it out first, then tap “Show result”.'),
       visibleIf: (v) => v.mode !== 'zoom',
+      spoiler: true,
     },
   ],
   actions: [

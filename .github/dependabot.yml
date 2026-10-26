@@ -8,6 +8,13 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # TypeScript muss zur Astro-Typprüfung passen, die Node-Typen zur verwendeten Node-Version (22):
+      # große Versionssprünge nur bewusst von Hand
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+      - dependency-name: '@types/node'
+        update-types: [version-update:semver-major]
     groups:
       # kleine Updates gebündelt, damit nicht jede Woche viele Pull Requests kommen
       kleine-updates:

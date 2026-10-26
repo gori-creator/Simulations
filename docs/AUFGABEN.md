@@ -24,7 +24,7 @@ Betrifft `src/sim-core/` und einzelne Simulationen; Details in der Beschreibung 
 - [x] Namen der Zeichenflächen (`surface.ts`) beschreibend machen statt allgemein. Fast alle waren schon beschreibend; die vier kürzesten ergänzt.
 - [x] Messwerte: nach Loslassen bzw. Tastatur-Änderung höflich vorlesen (statt `aria-live="off"`). Geänderte Ergebnisse werden angesagt; neu `ctx.announce()`.
 - [x] `dragHint` mit aktuellen Werten statt festem Text (unsichtbarer Zusatz mit den Regler-Werten).
-- [x] Klären, ob `_hide=1` auch die zugehörigen Regler ausblenden soll (Prüfungs-Links). Empfehlung im PR: nicht alle Regler, nur als `spoiler` gekennzeichnete; Entscheidung der Projektleitung steht aus.
+- [x] Klären, ob `_hide=1` auch die zugehörigen Regler ausblenden soll (Prüfungs-Links). Umgesetzt nach der Empfehlung aus #50: Ausgeblendet werden nur Regler mit `spoiler: true` und der Schalter `resultsParam` (75 Simulationen), bis alles aufgedeckt ist. Gekennzeichnet sind Einheiten, Maßstab, Zahlengerade und Schiefer Wurf.
 - [x] `fmt.approx` im Kern ergänzen; Simulationen, die „≈“ selbst bauen, darauf umstellen (`fmt.isExact`, `fmt.rel`, `fmt.approx`; 18 Simulationen).
 - [x] Prüfbogen: reduzierte Bewegung auch nach „Start“ prüfen (auch nach Aktionsknöpfen).
 - [x] Fest eingetragene Farben in Simulationen auf `ctx.theme` umstellen bzw. Kontrast im Dunkelmodus prüfen. Kontrast gemessen; Schrift auf Farbflächen über `textOn()` (rund 30 Simulationen). Materialfarben (Kupfer, Holz …) bewusst unverändert, damit das Aussehen gleich bleibt.
@@ -37,7 +37,7 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 - [ ] **Impressum** (`src/content/pages/{de,en}/imprint.md`): Platzhalter durch echte Angaben ersetzen (Name, Anschrift, E-Mail der verantwortlichen Person; bei Minderjährigen eher Elternteil oder Schule). **Angaben kommen von der Projektleitung.**
 - [ ] **Datenschutzerklärung** (`src/content/pages/{de,en}/privacy.md`): verantwortliche Stelle eintragen; Abschnitt „Hosting“ für GitHub Pages ausformulieren (GitHub Inc., USA; IP-Adresse in Server-Protokollen; Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO; Drittlandübermittlung/Data Privacy Framework). Hinweis „Vorlage“ erst entfernen, wenn alles geprüft ist. → Abschnitt „Hosting“ ausformuliert (PR #49, 25.10., Entwurf, rechtliche Prüfung offen); verantwortliche Stelle trägt die Projektleitung ein.
 - [ ] **Lizenz** festlegen und als `LICENSE` ablegen. Vorschlag: MIT für den Code, CC BY 4.0 für Texte und Bilder, damit Lehrkräfte Material weitergeben und anpassen dürfen. **Entscheidung der Projektleitung.**
-- [x] **Bildrechte** dokumentieren (26.10., Entwurf in `docs/BILDER.md`, Abschnitt „Herkunft und Rechte“; offen für die Projektleitung: festhalten, welcher Bildgenerator verwendet wurde, und dessen Bedingungen prüfen): Bilder sind selbst mit KI erzeugt (Prompts in `docs/BILDER.md`/`docs/BILDER-WUNSCHLISTE.md`); keine Marken, keine Logos. Vorbild-Bilder fremder Designer nicht ins Repository legen.
+- [x] **Bildrechte** dokumentieren: `docs/BILDRECHTE.md` (alle 218 Bilder angesehen, Prompts zu jedem Bild, fremde Bestandteile mit Lizenz). Offen für die Projektleitung: verwendeten Generator und dessen Bedingungen eintragen, Hinweis „mit KI erzeugt“ ja/nein, Lizenzhinweise KaTeX/qrcode-generator.
 - [ ] Bis Impressum und Datenschutz fertig sind, ggf. wieder `SITE_LIVE: 'false'` in `.github/workflows/deploy.yml` (zeigt nur eine Platzhalterseite).
 
 ## Sicherheit

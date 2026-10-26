@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
+import { hidesSpoilerControls, isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
 
 const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = [], spoilers: string[] = ['trip']) => ({
   hideFlag,
@@ -93,5 +93,18 @@ describe('ignoresResultsParam', () => {
     expect(isReadoutHidden({ ...base, hideFlag: true, resultsOff: true, revealed: new Set(['now']) }, 'now')).toBe(false);
     // ctx.hidden folgt weiter dem Schalter
     expect(isTaskHidden({ ...base, hideFlag: false, resultsOff: true })).toBe(true);
+  });
+
+  it('blendet Regler, die die Lösung verraten, nur im Aufgabenmodus aus', () => {
+    // _hide=1: ausgeblendet, bis alle angezeigten Spoiler aufgedeckt sind
+    expect(hidesSpoilerControls(state(true, false))).toBe(true);
+    expect(hidesSpoilerControls(state(true, false, ['trip'], ['trip', 'table']))).toBe(true);
+    expect(hidesSpoilerControls(state(true, false, ['trip', 'table'], ['trip', 'table']))).toBe(false);
+    // Der Schalter resultsParam allein blendet nichts aus (sonst ließe er sich nicht wieder einschalten)
+    expect(hidesSpoilerControls(state(false, true))).toBe(false);
+    expect(hidesSpoilerControls(state(false, false))).toBe(false);
+    // Nach dem Aufdecken wieder da, auch wenn der Schalter resultsParam noch aus ist
+    expect(hidesSpoilerControls(state(true, true, ['trip']))).toBe(false);
+    expect(hidesSpoilerControls(state(true, true))).toBe(true);
   });
 });

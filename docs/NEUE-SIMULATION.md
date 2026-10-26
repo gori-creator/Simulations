@@ -134,6 +134,7 @@ Nach dem Push melden die **Bildtests** in GitHub „Referenzbild fehlt“. Wenn 
 - [ ] Simulation funktioniert mit Maus, Touch und Tastatur (Regler)
 - [ ] Hell- und Dunkelmodus geprüft
 - [ ] Geteilter Link stellt den Zustand exakt wieder her (auch mit `_lock`/`_hide`)
+- [ ] Mit `_hide=1` verrät kein sichtbarer Regler die Lösung (sonst `spoiler: true` am Parameter bzw. `resultsParam`)
 - [ ] Rechenlogik getestet
 - [ ] Bilder (falls verwendet) in `docs/BILDER.md` mit Prompt eingetragen; Ersatzgrafik sieht ordentlich aus
 - [ ] Lernmaterial (DE) mit Aufgaben und Lösungen; Englisch optional
