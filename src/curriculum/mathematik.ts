@@ -272,7 +272,7 @@ export const mathematik: Subject = {
               'Zwei Gleichungen sind zwei Geraden. Ihr Schnittpunkt ist die Lösung, die du ablesen und durch Einsetzen prüfen kannst.',
               'Two equations are two lines. Their point of intersection is the solution, which you can read off and check.',
             ),
-            grades: [8, 8],
+            grades: [8, 10],
             kmk: ['M-L3', 'M-K4', 'M-K3', 'M-K5'],
             keywords: L(
               ['lineares Gleichungssystem', 'LGS', 'Schnittpunkt', 'grafisches Lösungsverfahren', 'Gerade', 'parallel', 'identisch', 'Lösungsmenge', 'Probe', 'Gleichsetzungsverfahren', 'Tarifvergleich'],
@@ -636,7 +636,7 @@ export const mathematik: Subject = {
               'Zerlege Parallelogramm, Dreieck und Trapez und setze sie neu zusammen. So findest du ihre Flächenformeln.',
               'Cut up a parallelogram, a triangle and a trapezium and put the pieces together again. This is how you find their area formulas.',
             ),
-            grades: [6, 6],
+            grades: [6, 8],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Flächeninhalt', 'Parallelogramm', 'Dreieck', 'Trapez', 'Grundseite', 'Höhe', 'zerlegen', 'ergänzen', 'verschieben', 'Kopie drehen', 'Scherung', 'Kästchen zählen', 'Flächenformel'],
@@ -1211,7 +1211,7 @@ export const mathematik: Subject = {
               'Wie wahrscheinlich ist es, dass zwei in der Klasse am selben Tag Geburtstag haben? Schon ab 23 Personen ist es wahrscheinlicher als nicht.',
               'How likely is it that two people in a class share a birthday? From just 23 people on, it is more likely than not.',
             ),
-            grades: [10, 10],
+            grades: [10, 13],
             kmk: ['M-L5', 'M-K3', 'M-K2', 'M-K1'],
             keywords: L(
               ['Geburtstagsproblem', 'Geburtstagsparadoxon', 'Gegenereignis', 'Simulation', 'Pfadregel', 'Laplace', 'relative Häufigkeit', 'Wahrscheinlichkeit', '23 Personen', 'Paare', 'Schubfachprinzip', 'Gesetz der großen Zahlen'],
@@ -1246,7 +1246,7 @@ export const mathematik: Subject = {
               'Vierfeldertafel, Mengendiagramm und Baumdiagramm zeigen dieselben Daten und hängen zusammen. Wer eins verändert, sieht die anderen mitlaufen.',
               'A two-way table, a Venn diagram and a tree diagram show the same data and are linked. Change one and the others follow.',
             ),
-            grades: [9, 11],
+            grades: [9, 13],
             kmk: ['M-L5', 'M-K4', 'M-K1'],
             keywords: L(
               ['Vierfeldertafel', 'Mengendiagramm', 'Venn-Diagramm', 'Schnittmenge', 'Vereinigungsmenge', 'Gegenereignis', 'Additionssatz', 'Baumdiagramm', 'umgekehrter Baum', 'bedingte Wahrscheinlichkeit', 'Unabhängigkeit', 'Randsumme', 'Einheitsquadrat', 'natürliche Häufigkeiten'],
@@ -1262,7 +1262,7 @@ export const mathematik: Subject = {
               'Ein medizinischer Test ist positiv, aber wie wahrscheinlich ist man wirklich krank? 1000 Personen zeigen, warum die Antwort oft überrascht.',
               'A medical test is positive, but how likely is it that you are really ill? 1000 people show why the answer is often surprising.',
             ),
-            grades: [10, 11],
+            grades: [10, 13],
             kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K1'],
             keywords: L(
               ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
@@ -1297,7 +1297,7 @@ export const mathematik: Subject = {
               'Das Histogramm der Binomialverteilung: Wähle einen Bereich und lies die Wahrscheinlichkeit direkt ab.',
               'The histogram of the binomial distribution: choose a range and read off the probability directly.',
             ),
-            grades: [11, 12],
+            grades: [11, 13],
             kmk: ['M-L5', 'M-K4', 'M-K5'],
             keywords: L(
               ['Binomialverteilung', 'Bernoulli-Kette', 'Bernoulli-Experiment', 'Binomialkoeffizient', 'kumulierte Verteilungsfunktion', 'Treppenfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Umgebung', 'Trefferwahrscheinlichkeit', 'höchstens', 'mindestens'],
@@ -1313,7 +1313,7 @@ export const mathematik: Subject = {
               'Ein Test entscheidet zwischen zwei Vermutungen. Farbige Flächen zeigen, wie oft er sich irren kann.',
               'A test decides between two hypotheses. Coloured areas show how often it can be wrong.',
             ),
-            grades: [12, 12],
+            grades: [12, 13],
             kmk: ['M-L5', 'M-K1', 'M-K3', 'M-K4'],
             keywords: L(
               ['Signifikanztest', 'Hypothesentest', 'Nullhypothese', 'Gegenhypothese', 'Signifikanzniveau', 'Ablehnungsbereich', 'Annahmebereich', 'kritischer Wert', 'Entscheidungsregel', 'Fehler 1. Art', 'Fehler 2. Art', 'Irrtumswahrscheinlichkeit', 'Gütefunktion', 'Binomialverteilung'],
@@ -1416,6 +1416,22 @@ export const mathematik: Subject = {
               ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity', 'symmetry', 'tangent', 'second-derivative test'],
             ),
           },
+          {
+            id: 'extremwertprobleme',
+            status: 'ready',
+            slug: L('extremwertprobleme', 'optimisation-problems'),
+            title: L('Extremwertprobleme', 'Optimisation problems'),
+            summary: L(
+              'Welche Schachtel fasst am meisten, welche Dose braucht am wenigsten Blech? An fünf Alltagsproblemen findest du mit der Ableitung das Optimum.',
+              'Which box holds the most, which can uses the least metal? Five everyday problems show how to find the best solution with the derivative.',
+            ),
+            grades: [11, 13],
+            kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
+            keywords: L(
+              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Strahlensatz', 'Rettungsschwimmer', 'Brechungsgesetz', 'Newton-Verfahren'],
+              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'intercept theorem', 'lifeguard', 'law of refraction', "Newton's method"],
+            ),
+          },
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
           {
@@ -1495,7 +1511,7 @@ export const mathematik: Subject = {
               'Aus der Geschwindigkeit eines Autos wird der zurückgelegte Weg: Die Fläche unter der Kurve zeigt die Gesamtänderung.',
               'From the speed of a car you get the distance travelled: the area under the curve shows the total change.',
             ),
-            grades: [13, 13],
+            grades: [12, 13],
             kmk: ['M-L3', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
               ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelsumme', 'zurückgelegter Weg', 'Modellieren'],
@@ -1511,27 +1527,11 @@ export const mathematik: Subject = {
               'Die Fläche unter einem Graphen dreht sich um die x-Achse und wird zu einem Körper. Sein Volumen wird mit Scheiben berechnet.',
               'The area under a graph rotates about the x-axis and becomes a solid. Its volume is calculated with thin discs.',
             ),
-            grades: [13, 13],
+            grades: [12, 13],
             kmk: ['M-L2', 'M-L3', 'M-L4', 'M-K4'],
             keywords: L(
               ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],
               ['solid of revolution', 'volume of revolution', 'integral', 'disc method', 'cross-section', 'sphere', 'cone', 'paraboloid', 'Gabriel’s horn', 'volume'],
-            ),
-          },
-          {
-            id: 'extremwertprobleme',
-            status: 'ready',
-            slug: L('extremwertprobleme', 'optimisation-problems'),
-            title: L('Extremwertprobleme', 'Optimisation problems'),
-            summary: L(
-              'Welche Schachtel fasst am meisten, welche Dose braucht am wenigsten Blech? An fünf Alltagsproblemen findest du mit der Ableitung das Optimum.',
-              'Which box holds the most, which can uses the least metal? Five everyday problems show how to find the best solution with the derivative.',
-            ),
-            grades: [13, 13],
-            kmk: ['M-L3', 'M-K3', 'M-K2', 'M-K5'],
-            keywords: L(
-              ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Strahlensatz', 'Rettungsschwimmer', 'Brechungsgesetz', 'Newton-Verfahren'],
-              ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'intercept theorem', 'lifeguard', 'law of refraction', "Newton's method"],
             ),
           },
         ]),
@@ -1562,7 +1562,7 @@ export const mathematik: Subject = {
               'Rechteck, Sägezahn und andere Formen entstehen aus vielen Sinusschwingungen. Auf Wunsch kannst du sie auch anhören.',
               'Square, sawtooth and other waves are built from many sine waves. You can also listen to them.',
             ),
-            grades: [14, 14],
+            grades: [13, 14],
             uni: true,
             kmk: ['M-L3', 'M-K4', 'M-K3', 'M-K5', 'M-K1'],
             keywords: L(

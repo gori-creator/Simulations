@@ -476,7 +476,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Feldlinien und Feldstärke, Überlagerung von Feldern, Kondensator mit Lade- und Entladekurve, Potential sowie geladene Teilchen in elektrischen und magnetischen Feldern.",
             "Field lines and field strength, superposition of fields, the capacitor with charging and discharging curves, potential, and charged particles in electric and magnetic fields.",
           ),
-          simulations: ["feldlinien", "kondensator", "lorentzkraft"],
+          simulations: ["feldlinien", "kondensator", "lorentzkraft", "doppelspalt"],
         },
         {
           code: "2",
@@ -488,7 +488,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Induktionsgesetz und Wechselspannung, Selbstinduktion, technische Anwendungen sowie der elektromagnetische Schwingkreis im Vergleich zum Federpendel.",
             "Law of induction and alternating voltage, self-induction, technical applications, and the electromagnetic LC circuit compared with the spring pendulum.",
           ),
-          simulations: ["induktion"],
+          simulations: ["induktion", "interferenz", "resonanz", "federpendel"],
         },
         {
           code: "3",
@@ -497,7 +497,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Wellen eines Dipols, Polarisation, Interferenz am Doppelspalt und Gitter, stehende Wellen, Wellenlängen von LED-Licht, Röntgenbremsstrahlung und das elektromagnetische Spektrum.",
             "Waves from a dipole, polarisation, interference at double slits and gratings, standing waves, wavelengths of LED light, X-ray bremsstrahlung and the electromagnetic spectrum.",
           ),
-          simulations: ["doppelspalt", "interferenz", "stehende-wellen"],
+          simulations: ["doppelspalt", "interferenz", "stehende-wellen", "feldlinien", "lorentzkraft"],
         },
         {
           code: "B1",
@@ -622,7 +622,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Elektronenbeugung und de-Broglie-Wellenlänge, Doppelspaltversuch mit Elektronen und Photonen in der Simulation sowie Energie und Impuls von Photonen.",
                 "Electron diffraction and de Broglie wavelength, the double-slit experiment with electrons and photons in simulation, and energy and momentum of photons.",
               ),
-              simulations: ["elektronenbeugung", "doppelspalt"],
+              simulations: ["elektronenbeugung", "doppelspalt", "photoeffekt"],
             },
             {
               code: "1.2",
@@ -647,7 +647,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Potentialtopf mit diskreten Energieniveaus, Orbitale und Energiewerte des Wasserstoffatoms, Emission und Absorption von Licht sowie der Franck-Hertz-Versuch.",
             "The potential well with discrete energy levels, orbitals and energy values of the hydrogen atom, emission and absorption of light, and the Franck–Hertz experiment.",
           ),
-          simulations: ["linienspektren"],
+          simulations: ["linienspektren", "planetenbahnen"],
         },
         {
           code: "3",
@@ -659,6 +659,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Methoden wie Streu- und Kollisionsexperimente sowie Grundaussagen des Standardmodells, selbstständig recherchiert und präsentiert.",
             "Methods such as scattering and collision experiments and the basic statements of the Standard Model, researched and presented independently.",
           ),
+          simulations: ["linienspektren"],
         },
         {
           code: "4",
