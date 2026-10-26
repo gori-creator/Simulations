@@ -687,6 +687,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Symmetrieachsen und Drehsymmetrie bei Grundfiguren erkennen und erzeugen.',
                 'Recognising and creating lines of symmetry and rotational symmetry in basic figures.',
               ),
+              simulations: ['spiegelung'],
             },
             {
               code: '2.1.4',
@@ -758,6 +759,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Figuren drehen, spiegeln und verschieben und die Ergebnisse vergleichen.',
                 'Rotating, reflecting and translating figures and comparing the results.',
               ),
+              simulations: ['spiegelung'],
             },
           ],
         },
@@ -922,6 +924,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Häufigkeiten, Mittelwert, Median und Spannweite bestimmen und deuten.',
                 'Determining and interpreting frequencies, mean, median and range.',
               ),
+              simulations: ['boxplot'],
             },
             {
               code: '5.1.3',
@@ -1230,6 +1233,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.1',
               title: L('Zusammengesetzte Figuren', 'Composite figures'),
               summary: L('Flächen in bekannte Teilfiguren zerlegen bzw. ergänzen.', 'Dissecting or completing areas into known component figures.'),
+              simulations: ['flaechen-zerlegen'],
             },
             {
               code: '3.1.2',
@@ -1265,6 +1269,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Flächenformeln durch Zerlegen und Ergänzen herleiten; Kreisumfang und -fläche mit π.',
                 'Deriving area formulas by dissection and completion; circumference and area of the circle with π.',
               ),
+              simulations: ['flaechen-zerlegen'],
             },
             {
               code: '3.2.2',
@@ -1361,7 +1366,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Passende Diagrammart wählen, erstellen und kritisch lesen.',
                 'Choosing, creating and critically reading a suitable type of diagram.',
               ),
-              simulations: ['boxplot'],
+              simulations: ['boxplot', 'diagramme'],
             },
             {
               code: '5.1.2',
@@ -1439,7 +1444,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Irrationale Zahlen wie Quadratwurzeln und π kennenlernen und näherungsweise bestimmen.',
                 'Getting to know irrational numbers such as square roots and π and approximating them.',
               ),
-              simulations: ['kreiszahl-pi'],
+              simulations: ['kreiszahl-pi', 'quadratwurzel'],
             },
             {
               code: '1.1.3',
@@ -1649,6 +1654,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Figuren maßstäblich vergrößern/verkleinern und Streckenverhältnisse berechnen.',
                 'Enlarging/reducing figures to scale and calculating ratios of segments.',
               ),
+              simulations: ['strahlensaetze', 'vergroessern'],
             },
           ],
         },
@@ -1664,6 +1670,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '3.1.1',
               title: L('Zusammengesetzte Figuren', 'Composite figures'),
               summary: L('Flächen in bekannte Teilfiguren zerlegen bzw. ergänzen.', 'Dissecting or completing areas into known component figures.'),
+              simulations: ['flaechen-zerlegen'],
             },
             {
               code: '3.1.2',
@@ -1698,7 +1705,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Flächenformeln durch Zerlegen und Ergänzen herleiten; Kreisumfang und -fläche mit π.',
                 'Deriving area formulas by dissection and completion; circumference and area of the circle with π.',
               ),
-              simulations: ['kreiszahl-pi'],
+              simulations: ['kreiszahl-pi', 'flaechen-zerlegen'],
             },
             {
               code: '3.2.2',
@@ -1944,6 +1951,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Formeln für Volumen und Oberfläche anwenden und vergleichen.',
                 'Applying and comparing formulas for volume and surface area.',
               ),
+              simulations: ['prisma-zylinder'],
             },
           ],
         },
@@ -1992,7 +2000,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '4.2.1',
               title: L('Lösen von quadratischen Gleichungen', 'Solving quadratic equations'),
               summary: L('Quadratische Gleichungen rechnerisch und grafisch lösen.', 'Solving quadratic equations algebraically and graphically.'),
-              simulations: ['quadratische-funktion', 'gleichungen-grafisch'],
+              simulations: ['quadratische-funktion', 'gleichungen-grafisch', 'extremwert-parabel'],
             },
             {
               code: '4.2.2',
@@ -2001,6 +2009,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Systeme aus zwei Gleichungen rechnerisch und als Geradenschnitt lösen.',
                 'Solving systems of two equations algebraically and as intersecting lines.',
               ),
+              simulations: ['lgs-grafisch'],
             },
             {
               code: '4.2.3',
@@ -2219,6 +2228,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Systeme aus zwei Gleichungen rechnerisch und als Geradenschnitt lösen.',
                 'Solving systems of two equations algebraically and as intersecting lines.',
               ),
+              simulations: ['lgs-grafisch'],
             },
             {
               code: '4.2.3',
@@ -2405,6 +2415,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Inner- und außermathematische Optimierungsaufgaben mit der Ableitung lösen.',
                 'Solving optimisation problems inside and outside mathematics with the derivative.',
               ),
+              simulations: ['extremwertprobleme'],
             },
           ],
         },
@@ -2562,7 +2573,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Aus Änderungsrate und Anfangswert den Bestand rekonstruieren; Integral als Produktsumme.',
                 'Reconstructing a total from rate of change and initial value; integral as a sum of products.',
               ),
-              simulations: ['ober-untersummen'],
+              simulations: ['ober-untersummen', 'aenderungsrate'],
             },
             {
               code: 'Q1.1.2',
@@ -2631,6 +2642,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Rekonstruierter Bestand, mittlerer Bestand und mittlere Änderungsrate.',
                 'Reconstructed total, mean value and average rate of change.',
               ),
+              simulations: ['aenderungsrate'],
             },
             {
               code: 'Q1.2.3',
@@ -2647,6 +2659,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Volumenformel begründen und Volumina von Rotationskörpern um die x-Achse berechnen.',
                 'Justifying the volume formula and calculating volumes of solids of revolution about the x-axis.',
               ),
+              simulations: ['rotationskoerper'],
             },
             {
               code: 'Q1.2.5',
@@ -2798,7 +2811,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q2.1.1',
               title: L('Einfache gebrochen rationale und einfache Wurzelfunktionen', 'Simple rational functions and simple root functions'),
               summary: L('Eigenschaften und Ableitungen von f(x) = 1/xⁿ und f(x) = √x.', 'Properties and derivatives of f(x) = 1/xⁿ and f(x) = √x.'),
-              simulations: ['polstellen-asymptoten'],
+              simulations: ['polstellen-asymptoten', 'grenzverhalten'],
             },
             {
               code: 'Q2.1.2',
@@ -2926,7 +2939,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Schneiden, parallel, identisch oder windschief; Schnittpunkt und Schnittwinkel.',
                 'Intersecting, parallel, identical or skew; intersection point and angle.',
               ),
-              simulations: ['geraden-ebenen'],
+              simulations: ['geraden-ebenen', 'lage-abstaende'],
             },
             {
               code: 'Q2.3.4',
@@ -2959,7 +2972,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Formen umwandeln; Lage von Gerade und Ebene und Durchstoßpunkte bestimmen.',
                 'Converting forms; determining the position of a line relative to a plane and intersection points.',
               ),
-              simulations: ['geraden-ebenen'],
+              simulations: ['geraden-ebenen', 'lage-abstaende'],
             },
             {
               code: 'Q2.3.8',
@@ -2984,6 +2997,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Punkt an Ebene spiegeln; Lotfußpunktverfahren für den Abstand Punkt–Ebene.',
                 'Reflecting a point in a plane; foot-of-perpendicular method for point–plane distance.',
               ),
+              simulations: ['lage-abstaende'],
             },
             {
               code: 'Q2.3.11',
@@ -3009,6 +3023,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Lage zweier Ebenen, Schnittgeraden, Abstände zwischen Punkten, Geraden und Ebenen, allgemeine Spiegelungen.',
                 'Position of two planes, lines of intersection, distances between points, lines and planes, general reflections.',
               ),
+              simulations: ['lage-abstaende'],
             },
             {
               code: 'Q2.3.14',
@@ -3189,6 +3204,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Und-, Oder- und Gegenereignis, Mengendarstellung, auch mit Vierfeldertafel.',
                 'And, or and complementary events, set notation, also with a two-way table.',
               ),
+              simulations: ['vierfeldertafel'],
             },
             {
               code: 'Q3.1.5',
@@ -3197,6 +3213,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Bedingte Wahrscheinlichkeiten in Baumdiagrammen und Mehrfeldertafeln; stochastische Unabhängigkeit.',
                 'Conditional probabilities in tree diagrams and contingency tables; stochastic independence.',
               ),
+              simulations: ['bedingte-wahrscheinlichkeit', 'vierfeldertafel'],
             },
             {
               code: 'Q3.1.6',
@@ -3216,6 +3233,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Urnenmodelle mit und ohne Zurücklegen (z. B. Lotto) vergleichen.',
                 'Comparing urn models with and without replacement (e.g. lottery).',
               ),
+              simulations: ['geburtstagsproblem'],
             },
           ],
         },
@@ -3242,6 +3260,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Formel von Bernoulli begründen und in Sachkontexten anwenden; Modellgrenzen.',
                 'Justifying Bernoulli\'s formula and applying it in context; limits of the model.',
               ),
+              simulations: ['binomialverteilung'],
             },
             {
               code: 'Q3.2.3',
@@ -3250,6 +3269,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Kenngrößen, Histogramme und kumulierte Wahrscheinlichkeiten, auch inverse Fragestellungen.',
                 'Parameters, histograms and cumulative probabilities, including inverse problems.',
               ),
+              simulations: ['binomialverteilung'],
             },
             {
               code: 'Q3.2.4',
@@ -3295,6 +3315,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Hypothesen festlegen, Ablehnungsbereich bestimmen, Fehler 1. und 2. Art berechnen.',
                 'Setting hypotheses, finding the rejection region, calculating type I and II errors.',
               ),
+              simulations: ['signifikanztest'],
             },
             {
               code: 'Q3.3.2',
@@ -3507,6 +3528,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Strategien für Hypothesen und kritische Werte; Einfluss von n auf die Operationscharakteristik.',
                 'Strategies for hypotheses and critical values; influence of n on the operating characteristic.',
               ),
+              simulations: ['signifikanztest'],
             },
           ],
         },

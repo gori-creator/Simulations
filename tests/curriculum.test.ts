@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allSimulations, getSimulation, readySimulations, SUBJECTS } from '../src/curriculum';
 import { getKmkStandard } from '../src/curriculum/kmk';
-import { getCurriculum, getCurriculumGrade, sameUnitElsewhere, STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
+import { getCurriculum, getCurriculumGrade, sameUnitElsewhere, simulationsOfGrade, STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
 import { LANGS } from '../src/i18n/config';
 import { allRoutes, routePath } from '../src/lib/routes';
 import { registry } from '../src/simulations/registry';
@@ -169,6 +169,44 @@ describe('Länder-Lehrpläne', () => {
         }
       }
     }
+  });
+
+  /**
+   * Fertige Simulationen ohne Platz in einem Länder-Lehrplan, mit Grund. Alle
+   * anderen müssen bei mindestens einer Jahrgangsstufe stehen – sonst findet man
+   * sie nach Wahl des Bundeslands bei keinem Jahrgang.
+   */
+  const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
+    'bayern-gymnasium-mathematik': {
+      'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
+      'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
+      'matrix-abbildungen': 'Matrizen nicht im LehrplanPLUS',
+    },
+    'bayern-gymnasium-physik': {
+      'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
+    },
+    'hessen-gymnasium-mathematik': {
+      'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
+      ziegenproblem: 'kein passender Schwerpunkt',
+      'monte-carlo-pi': 'kein passender Schwerpunkt',
+      kugeln: 'kein passender Schwerpunkt',
+      'taylor-polynome': 'nicht im Kerncurriculum (Hochschule)',
+      'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
+    },
+    'hessen-gymnasium-physik': {
+      'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
+    },
+  };
+
+  it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s ordnet jede fertige Simulation einem Jahrgang zu (oder begründet die Ausnahme)', (id, curriculum) => {
+    const used = new Set(curriculum.grades.flatMap((g) => simulationsOfGrade(g)));
+    const except = NOT_IN_CURRICULUM[id] ?? {};
+    const missing = readySimulations()
+      .filter((s) => s.subject === curriculum.subject && !used.has(s.id) && !(s.id in except))
+      .map((s) => s.id);
+    expect(missing, 'fehlen im Länder-Lehrplan (zuordnen oder in NOT_IN_CURRICULUM begründen)').toEqual([]);
+    // Ausnahmen, die inzwischen zugeordnet sind, aus der Liste nehmen
+    for (const simId of Object.keys(except)) expect(used.has(simId), `${simId} ist zugeordnet – Ausnahme streichen`).toBe(false);
   });
 
   it('Doppeljahrgangsstufen verweisen auf die Stufe mit passender Simulation', () => {

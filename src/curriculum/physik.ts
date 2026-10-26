@@ -82,7 +82,7 @@ export const physik: Subject = {
                 'Hänge Gewichte an eine Feder und miss, wie weit sie sich dehnt. Doppelte Kraft heißt doppelte Dehnung.',
                 'Hang weights on a spring and measure how far it stretches. Double the force means double the stretch.',
               ),
-              grades: [7, 8],
+              grades: [7, 10],
               kmk: ['P-E', 'P-S', 'P-K', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['Hookesches Gesetz', 'Feder', 'Federhärte', 'Federkonstante', 'Verlängerung', 'Kraft', 'Gewichtskraft', 'Proportionalität', 'Ursprungsgerade', 'Elastizitätsgrenze', 'Kraftmesser', 'Reihenschaltung', 'Parallelschaltung'],
@@ -98,7 +98,7 @@ export const physik: Subject = {
                 'Hänge Gewichte an einen Hebel und bring ihn ins Gleichgewicht. Dazu Hebel aus dem Alltag wie Schubkarre und Flaschenöffner.',
                 'Hang weights on a lever and balance it. With everyday levers such as a wheelbarrow and a bottle opener.',
               ),
-              grades: [7, 8],
+              grades: [7, 11],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie'],
               keywords: L(
                 ['Hebel', 'Hebelgesetz', 'Drehmoment', 'Kraftarm', 'Lastarm', 'Drehachse', 'einseitiger Hebel', 'zweiseitiger Hebel', 'Gleichgewicht', 'Kraftmesser', 'Schubkarre', 'Nussknacker', 'Flaschenöffner', 'Wippe', 'Goldene Regel der Mechanik', 'Kraftwandler'],

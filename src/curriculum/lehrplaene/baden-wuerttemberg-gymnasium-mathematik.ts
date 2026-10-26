@@ -2080,7 +2080,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Verkettungen bilden und erkennen, Quotienten bekannter Funktionen auf Asymptoten und Nullstellen untersuchen und Summen, Produkte und Verkettungen analysieren.",
                 "Forming and recognising compositions, investigating quotients of known functions for asymptotes and zeros, and analysing sums, products and compositions.",
               ),
-              simulations: ["funktionsplotter"],
+              simulations: ["funktionsplotter", "fourier-reihen"],
             },
             {
               code: "3.5.4 (12)–(14)",

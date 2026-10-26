@@ -1072,7 +1072,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Kräfte ändern Bewegungen und verformen Körper; Kräfte darstellen und messen.',
                 'Forces change motion and deform bodies; representing and measuring forces.',
               ),
-              simulations: ['kraefteaddition'],
+              simulations: ['kraefteaddition', 'hookesches-gesetz'],
             },
             {
               code: '6.4',
@@ -1099,7 +1099,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Gesetzmäßigkeiten an Hebel, Rolle und schiefer Ebene untersuchen; Gleichgewicht.',
                 'Investigating laws for levers, pulleys and inclined planes; equilibrium.',
               ),
-              simulations: ['schiefe-ebene'],
+              simulations: ['schiefe-ebene', 'hebelgesetz'],
             },
             {
               code: '7.2',
@@ -1375,7 +1375,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Kräfte ändern Bewegungen und verformen Körper; Kräfte darstellen und messen.',
                 'Forces change motion and deform bodies; representing and measuring forces.',
               ),
-              simulations: ['kraefteaddition'],
+              simulations: ['kraefteaddition', 'hookesches-gesetz'],
             },
             {
               code: '6.4',
@@ -1402,7 +1402,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Gesetzmäßigkeiten an Hebel, Rolle und schiefer Ebene untersuchen; Gleichgewicht.',
                 'Investigating laws for levers, pulleys and inclined planes; equilibrium.',
               ),
-              simulations: ['schiefe-ebene'],
+              simulations: ['schiefe-ebene', 'hebelgesetz'],
             },
             {
               code: '7.2',
@@ -1434,6 +1434,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '8.1',
               title: L('Umwandlung verschiedener Energieformen in elektrische Energie', 'Converting various forms of energy into electrical energy'),
               summary: L('Generatoren und andere Wandler erklären.', 'Explaining generators and other converters.'),
+              simulations: ['induktion'],
             },
             {
               code: '8.2',
@@ -1509,16 +1510,19 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'E.1.1',
               title: L('Untersuchung von Bewegungen', 'Investigation of motion'),
               summary: L('Bewegungen messen und Messdaten auswerten.', 'Measuring motion and evaluating the data.'),
+              simulations: ['bewegungsdiagramme'],
             },
             {
               code: 'E.1.2',
               title: L('t-s-, t-v- und t-a-Diagramme', 't-s, t-v and t-a diagrams'),
               summary: L('Bewegungen in Diagrammen darstellen und deuten.', 'Representing and interpreting motion in diagrams.'),
+              simulations: ['bewegungsdiagramme'],
             },
             {
               code: 'E.1.3',
               title: L('Gleichförmige Bewegung', 'Uniform motion'),
               summary: L('Geschwindigkeit definieren und im Versuch messen.', 'Defining velocity and measuring it experimentally.'),
+              simulations: ['bewegungsdiagramme'],
             },
             {
               code: 'E.1.4',
@@ -1530,6 +1534,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Beschleunigung, Durchschnitts- vs. Momentangeschwindigkeit; freier Fall mit Bestimmung von g.',
                 'Acceleration, average vs. instantaneous velocity; free fall including determining g.',
               ),
+              simulations: ['bewegungsdiagramme', 'freier-fall'],
             },
             {
               code: 'E.1.5',
@@ -1546,6 +1551,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Time–position and time–velocity laws and their relationship',
               ),
               summary: L('Bewegungsgesetze aus Diagrammen herleiten und verknüpfen.', 'Deriving and linking the laws of motion from diagrams.'),
+              simulations: ['bewegungsdiagramme'],
             },
           ],
         },
@@ -1572,6 +1578,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Kinetische und potenzielle Energie, Erhaltung in reibungsfreien abgeschlossenen Systemen.',
                 'Kinetic and potential energy, conservation in frictionless closed systems.',
               ),
+              simulations: ['energieerhaltung'],
             },
             {
               code: 'E.2.3',
@@ -1722,6 +1729,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'E.7.1',
               title: L('Drehmoment', 'Torque'),
               summary: L('Wirkung von Kräften auf drehbare Körper.', 'Effect of forces on rotatable bodies.'),
+              simulations: ['hebelgesetz'],
             },
             {
               code: 'E.7.2',
@@ -2385,6 +2393,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.3.2',
               title: L('Zerfallsgesetze', 'Laws of decay'),
               summary: L('Aktivität, Halbwertszeit, Zerfallskonstante, C14-Methode.', 'Activity, half-life, decay constant, carbon-14 dating.'),
+              simulations: ['radioaktiver-zerfall'],
             },
             {
               code: 'Q4.3.3',
@@ -2395,6 +2404,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.3.4',
               title: L('Zerfallsgesetze (nur LK)', 'Laws of decay (advanced course only)'),
               summary: L('Zerfallsreihen.', 'Decay chains.'),
+              simulations: ['radioaktiver-zerfall'],
             },
             {
               code: 'Q4.3.5',
