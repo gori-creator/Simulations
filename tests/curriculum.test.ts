@@ -196,6 +196,19 @@ describe('Länder-Lehrpläne', () => {
     'hessen-gymnasium-physik': {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
+    'nordrhein-westfalen-gymnasium-mathematik': {
+      'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md)',
+      'newton-verfahren': 'Newton-Verfahren nicht im Kernlehrplan',
+      'monte-carlo-pi': 'kein passender Schwerpunkt',
+      signifikanztest: 'Hypothesentests nicht im Kernlehrplan (nur Prognose- und Konfidenzintervalle)',
+      kugeln: 'Kugeln nicht im Kernlehrplan der Oberstufe',
+      'taylor-polynome': 'nicht im Kernlehrplan (Hochschule)',
+      'fourier-reihen': 'nicht im Kernlehrplan (Hochschule)',
+      'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
+    },
+    'nordrhein-westfalen-gymnasium-physik': {
+      'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
+    },
   };
 
   it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s ordnet jede fertige Simulation einem Jahrgang zu (oder begründet die Ausnahme)', (id, curriculum) => {

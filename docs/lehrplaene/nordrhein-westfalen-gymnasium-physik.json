@@ -1,0 +1,2713 @@
+{
+  "id": "nordrhein-westfalen-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "nordrhein-westfalen-gymnasium",
+    "en": "north-rhine-westphalia-gymnasium"
+  },
+  "state": {
+    "de": "Nordrhein-Westfalen",
+    "en": "North Rhine-Westphalia"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Kernlehrplan",
+  "grades": [
+    {
+      "grade": 5,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder sind im Lehrplan nummeriert, die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. The content areas are numbered in the curriculum; the numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Temperatur und Wärme",
+            "en": "Temperature and heat"
+          },
+          "summary": {
+            "de": "Temperatur messen und von Wärme unterscheiden, Wärme wandert auf drei Wegen, Stoffe dehnen sich aus und wechseln den Aggregatzustand – erklärt mit einem einfachen Teilchenmodell.",
+            "en": "Measuring temperature and telling it apart from heat, three ways heat travels, materials expand and change state – explained with a simple particle model."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Thermische Energie",
+                "en": "Thermal energy"
+              },
+              "summary": {
+                "de": "Wärme, Temperatur und Temperaturmessung, die Celsiusskala.",
+                "en": "Heat, temperature and measuring temperature, the Celsius scale."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Wärmetransport",
+                "en": "Heat transfer"
+              },
+              "summary": {
+                "de": "Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung.",
+                "en": "Convection, conduction and radiation, temperature equalisation and insulation."
+              }
+            },
+            {
+              "code": "1.3",
+              "title": {
+                "de": "Wirkungen von Wärme",
+                "en": "Effects of heat"
+              },
+              "summary": {
+                "de": "Aggregatzustände und ihre Übergänge sowie Wärmeausdehnung, gedeutet mit Teilchen; die Anomalie des Wassers.",
+                "en": "States of matter and changes of state as well as thermal expansion, interpreted with particles; the anomaly of water."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Elektrischer Strom und Magnetismus",
+            "en": "Electric current and magnetism"
+          },
+          "summary": {
+            "de": "Einfache Stromkreise planen, aufbauen und als Schaltplan zeichnen, Wirkungen des Stroms und Sicherheit sowie Magnete, Magnetfelder und das Erdmagnetfeld.",
+            "en": "Planning and building simple circuits and drawing circuit diagrams, effects of current and safety, as well as magnets, magnetic fields and the Earth’s magnetic field."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Stromkreise und Schaltungen",
+                "en": "Circuits and connections"
+              },
+              "summary": {
+                "de": "Spannungsquellen, Leiter und Nichtleiter, Reihen-, Parallel-, UND- und ODER-Schaltung, Elektronen als Ladungsträger im Leiter.",
+                "en": "Voltage sources, conductors and insulators, series, parallel, AND and OR circuits, electrons as charge carriers in a conductor."
+              }
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Wirkungen des elektrischen Stroms",
+                "en": "Effects of electric current"
+              },
+              "summary": {
+                "de": "Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität.",
+                "en": "Heating, lighting and magnetic effects, fuses and dangers of electricity."
+              }
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Magnetische Kräfte und Felder",
+                "en": "Magnetic forces and fields"
+              },
+              "summary": {
+                "de": "Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass.",
+                "en": "Attraction and repulsion, magnetic poles, field-line patterns, the Earth’s magnetic field and the compass."
+              }
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Magnetisierung",
+                "en": "Magnetisation"
+              },
+              "summary": {
+                "de": "Magnetisierbare Stoffe und das Modell der Elementarmagnete.",
+                "en": "Magnetisable materials and the model of elementary magnets."
+              }
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Schall",
+            "en": "Sound"
+          },
+          "summary": {
+            "de": "Schall entsteht durch Schwingungen, breitet sich in Stoffen aus und wird reflektiert oder absorbiert; Tonhöhe, Lautstärke, Ultraschall und Lärmschutz.",
+            "en": "Sound is produced by vibrations, travels through materials and is reflected or absorbed; pitch, loudness, ultrasound and noise protection."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Schwingungen und Schallwellen",
+                "en": "Vibrations and sound waves"
+              },
+              "summary": {
+                "de": "Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion.",
+                "en": "Pitch and loudness, sound propagation in the particle model, absorption and reflection."
+              }
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Schallquellen und Schallempfänger",
+                "en": "Sound sources and receivers"
+              },
+              "summary": {
+                "de": "Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz.",
+                "en": "Sender–receiver model, ultrasound in nature, medicine and technology, noise and noise protection."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Licht",
+            "en": "Light"
+          },
+          "summary": {
+            "de": "Licht breitet sich geradlinig aus; Sehen, Schatten und die Lochkamera mit dem Strahlenmodell erklären; wie Oberflächen Licht streuen, spiegeln oder verschlucken.",
+            "en": "Light travels in straight lines; explaining vision, shadows and the pinhole camera with the ray model; how surfaces scatter, reflect or absorb light."
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Ausbreitung von Licht",
+                "en": "Propagation of light"
+              },
+              "summary": {
+                "de": "Lichtquellen und Lichtempfänger, das Modell des Lichtstrahls und Abbildungen mit der Lochkamera.",
+                "en": "Light sources and receivers, the light-ray model and images formed by a pinhole camera."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Sichtbarkeit und die Erscheinung von Gegenständen",
+                "en": "Visibility and appearance of objects"
+              },
+              "summary": {
+                "de": "Streuung, Reflexion, Transmission und Absorption an Oberflächen sowie Kern- und Halbschatten.",
+                "en": "Scattering, reflection, transmission and absorption at surfaces, as well as umbra and penumbra."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 6,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder sind im Lehrplan nummeriert, die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. The content areas are numbered in the curriculum; the numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Temperatur und Wärme",
+            "en": "Temperature and heat"
+          },
+          "summary": {
+            "de": "Temperatur messen und von Wärme unterscheiden, Wärme wandert auf drei Wegen, Stoffe dehnen sich aus und wechseln den Aggregatzustand – erklärt mit einem einfachen Teilchenmodell.",
+            "en": "Measuring temperature and telling it apart from heat, three ways heat travels, materials expand and change state – explained with a simple particle model."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Thermische Energie",
+                "en": "Thermal energy"
+              },
+              "summary": {
+                "de": "Wärme, Temperatur und Temperaturmessung, die Celsiusskala.",
+                "en": "Heat, temperature and measuring temperature, the Celsius scale."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Wärmetransport",
+                "en": "Heat transfer"
+              },
+              "summary": {
+                "de": "Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung.",
+                "en": "Convection, conduction and radiation, temperature equalisation and insulation."
+              }
+            },
+            {
+              "code": "1.3",
+              "title": {
+                "de": "Wirkungen von Wärme",
+                "en": "Effects of heat"
+              },
+              "summary": {
+                "de": "Aggregatzustände und ihre Übergänge sowie Wärmeausdehnung, gedeutet mit Teilchen; die Anomalie des Wassers.",
+                "en": "States of matter and changes of state as well as thermal expansion, interpreted with particles; the anomaly of water."
+              },
+              "simulations": [
+                "teilchenmodell"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Elektrischer Strom und Magnetismus",
+            "en": "Electric current and magnetism"
+          },
+          "summary": {
+            "de": "Einfache Stromkreise planen, aufbauen und als Schaltplan zeichnen, Wirkungen des Stroms und Sicherheit sowie Magnete, Magnetfelder und das Erdmagnetfeld.",
+            "en": "Planning and building simple circuits and drawing circuit diagrams, effects of current and safety, as well as magnets, magnetic fields and the Earth’s magnetic field."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Stromkreise und Schaltungen",
+                "en": "Circuits and connections"
+              },
+              "summary": {
+                "de": "Spannungsquellen, Leiter und Nichtleiter, Reihen-, Parallel-, UND- und ODER-Schaltung, Elektronen als Ladungsträger im Leiter.",
+                "en": "Voltage sources, conductors and insulators, series, parallel, AND and OR circuits, electrons as charge carriers in a conductor."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Wirkungen des elektrischen Stroms",
+                "en": "Effects of electric current"
+              },
+              "summary": {
+                "de": "Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität.",
+                "en": "Heating, lighting and magnetic effects, fuses and dangers of electricity."
+              }
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Magnetische Kräfte und Felder",
+                "en": "Magnetic forces and fields"
+              },
+              "summary": {
+                "de": "Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass.",
+                "en": "Attraction and repulsion, magnetic poles, field-line patterns, the Earth’s magnetic field and the compass."
+              }
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Magnetisierung",
+                "en": "Magnetisation"
+              },
+              "summary": {
+                "de": "Magnetisierbare Stoffe und das Modell der Elementarmagnete.",
+                "en": "Magnetisable materials and the model of elementary magnets."
+              }
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Schall",
+            "en": "Sound"
+          },
+          "summary": {
+            "de": "Schall entsteht durch Schwingungen, breitet sich in Stoffen aus und wird reflektiert oder absorbiert; Tonhöhe, Lautstärke, Ultraschall und Lärmschutz.",
+            "en": "Sound is produced by vibrations, travels through materials and is reflected or absorbed; pitch, loudness, ultrasound and noise protection."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Schwingungen und Schallwellen",
+                "en": "Vibrations and sound waves"
+              },
+              "summary": {
+                "de": "Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion.",
+                "en": "Pitch and loudness, sound propagation in the particle model, absorption and reflection."
+              }
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Schallquellen und Schallempfänger",
+                "en": "Sound sources and receivers"
+              },
+              "summary": {
+                "de": "Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz.",
+                "en": "Sender–receiver model, ultrasound in nature, medicine and technology, noise and noise protection."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Licht",
+            "en": "Light"
+          },
+          "summary": {
+            "de": "Licht breitet sich geradlinig aus; Sehen, Schatten und die Lochkamera mit dem Strahlenmodell erklären; wie Oberflächen Licht streuen, spiegeln oder verschlucken.",
+            "en": "Light travels in straight lines; explaining vision, shadows and the pinhole camera with the ray model; how surfaces scatter, reflect or absorb light."
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Ausbreitung von Licht",
+                "en": "Propagation of light"
+              },
+              "summary": {
+                "de": "Lichtquellen und Lichtempfänger, das Modell des Lichtstrahls und Abbildungen mit der Lochkamera.",
+                "en": "Light sources and receivers, the light-ray model and images formed by a pinhole camera."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Sichtbarkeit und die Erscheinung von Gegenständen",
+                "en": "Visibility and appearance of objects"
+              },
+              "summary": {
+                "de": "Streuung, Reflexion, Transmission und Absorption an Oberflächen sowie Kern- und Halbschatten.",
+                "en": "Scattering, reflection, transmission and absorption at surfaces, as well as umbra and penumbra."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich, und jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10, and each simulation is listed under the grades it is designed for. The numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "5",
+          "title": {
+            "de": "Optische Instrumente",
+            "en": "Optical instruments"
+          },
+          "summary": {
+            "de": "Spiegelbilder mit dem Reflexionsgesetz, Brechung und Totalreflexion, Bilder an Sammellinsen, Auge und optische Geräte sowie Spektrum und Farbmischung.",
+            "en": "Mirror images with the law of reflection, refraction and total internal reflection, images formed by converging lenses, the eye and optical devices, as well as the spectrum and colour mixing."
+          },
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Spiegelungen",
+                "en": "Reflections"
+              },
+              "summary": {
+                "de": "Reflexionsgesetz und Bildentstehung am ebenen Spiegel.",
+                "en": "Law of reflection and image formation in a plane mirror."
+              },
+              "simulations": [
+                "reflexion"
+              ]
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Lichtbrechung",
+                "en": "Refraction of light"
+              },
+              "summary": {
+                "de": "Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten.",
+                "en": "Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments."
+              }
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Licht und Farben",
+                "en": "Light and colours"
+              },
+              "summary": {
+                "de": "Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK).",
+                "en": "Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK)."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Sterne und Weltall",
+            "en": "Stars and the universe"
+          },
+          "summary": {
+            "de": "Mondphasen, Finsternisse und Jahreszeiten modellhaft erklären, Planeten und andere Himmelskörper, Lichtjahr, Gravitation und die Entwicklung von Sternen.",
+            "en": "Explaining lunar phases, eclipses and seasons with models, planets and other celestial bodies, the light year, gravity and the life cycle of stars."
+          },
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Sonnensystem",
+                "en": "Solar system"
+              },
+              "summary": {
+                "de": "Mondphasen, Mond- und Sonnenfinsternisse, Jahreszeiten und Planeten.",
+                "en": "Lunar phases, lunar and solar eclipses, seasons and planets."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Universum",
+                "en": "Universe"
+              },
+              "summary": {
+                "de": "Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung.",
+                "en": "Celestial objects, distances in light years and typical stages of stellar evolution."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Bewegung, Kraft und Energie",
+            "en": "Motion, force and energy"
+          },
+          "summary": {
+            "de": "Bewegungen mit Geschwindigkeit und Beschleunigung beschreiben, Kräfte als Pfeile addieren, einfache Maschinen mit der Goldenen Regel, Energieformen, Energieerhaltung und Leistung.",
+            "en": "Describing motion with velocity and acceleration, adding forces as arrows, simple machines and the golden rule of mechanics, forms of energy, conservation of energy and power."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Bewegungen",
+                "en": "Motion"
+              },
+              "summary": {
+                "de": "Mittlere und momentane Geschwindigkeit, Beschleunigung und Orts-Zeit-Diagramme.",
+                "en": "Average and instantaneous velocity, acceleration and position–time graphs."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Kraft",
+                "en": "Force"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen oder verformen Körper; Kraft und Gegenkraft, Gewichtskraft und Masse, Kräfteaddition und Reibung.",
+                "en": "Forces change motion or deform bodies; action and reaction, weight and mass, adding forces and friction."
+              },
+              "simulations": [
+                "hookesches-gesetz"
+              ]
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Goldene Regel der Mechanik",
+                "en": "Golden rule of mechanics"
+              },
+              "summary": {
+                "de": "Einfache Maschinen wandeln Kräfte; was an Kraft gespart wird, muss an Weg zugelegt werden.",
+                "en": "Simple machines change forces; what is saved in force must be added in distance."
+              },
+              "simulations": [
+                "hebelgesetz"
+              ]
+            },
+            {
+              "code": "7.4",
+              "title": {
+                "de": "Energieformen",
+                "en": "Forms of energy"
+              },
+              "summary": {
+                "de": "Lageenergie, Bewegungsenergie und Spannenergie.",
+                "en": "Potential energy, kinetic energy and elastic energy."
+              }
+            },
+            {
+              "code": "7.5",
+              "title": {
+                "de": "Energieumwandlung",
+                "en": "Energy conversion"
+              },
+              "summary": {
+                "de": "Energieumwandlungsketten, Energieerhaltung und Leistung, auch im Vergleich mit der eigenen Körperleistung.",
+                "en": "Chains of energy conversion, conservation of energy and power, also compared with one’s own physical power."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Druck und Auftrieb",
+            "en": "Pressure and buoyancy"
+          },
+          "summary": {
+            "de": "Druck und Dichte in Flüssigkeiten und Gasen im Teilchenmodell, Schweredruck, Luftdruck und Auftrieb nach Archimedes.",
+            "en": "Pressure and density in liquids and gases in the particle model, hydrostatic pressure, air pressure and buoyancy according to Archimedes."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Druck in Flüssigkeiten und Gasen",
+                "en": "Pressure in liquids and gases"
+              },
+              "summary": {
+                "de": "Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.",
+                "en": "Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions."
+              }
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Druckmessung",
+                "en": "Measuring pressure"
+              },
+              "summary": {
+                "de": "Druck und Kraftwirkungen, Druck in Pascal angeben und messen.",
+                "en": "Pressure and the effects of force, stating and measuring pressure in pascals."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Elektrizität",
+            "en": "Electricity"
+          },
+          "summary": {
+            "de": "Ladungen und elektrische Felder, Spannung, Stromstärke und Widerstand in Reihen- und Parallelschaltungen, Sicherheit im Haushalt sowie elektrische Energie, Leistung und Kosten.",
+            "en": "Charges and electric fields, voltage, current and resistance in series and parallel circuits, safety at home, and electrical energy, power and costs."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Elektrostatik",
+                "en": "Electrostatics"
+              },
+              "summary": {
+                "de": "Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung.",
+                "en": "Electric charges and fields, the electroscope, voltage from separating charges."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Elektrische Stromkreise",
+                "en": "Electric circuits"
+              },
+              "summary": {
+                "de": "Elektronen-Atomrumpf-Modell, Strom als Ladungstransport, Widerstand und Ohmsches Gesetz, Reihen- und Parallelschaltung, Sicherheitsvorrichtungen.",
+                "en": "Electron–ion-core model, current as transport of charge, resistance and Ohm’s law, series and parallel circuits, safety devices."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Elektrische Energie und Leistung",
+                "en": "Electrical energy and power"
+              },
+              "summary": {
+                "de": "Energie und Leistung elektrischer Geräte berechnen und Energiekosten ermitteln.",
+                "en": "Calculating the energy and power of electrical appliances and working out energy costs."
+              }
+            }
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Ionisierende Strahlung und Kernenergie",
+            "en": "Ionising radiation and nuclear energy"
+          },
+          "summary": {
+            "de": "Atomaufbau, Alpha-, Beta-, Gamma- und Röntgenstrahlung, Zerfall und Halbwertszeit, Wirkung und Schutz sowie Kernspaltung, Kernfusion und Kernkraftwerke.",
+            "en": "Atomic structure, alpha, beta, gamma and X-radiation, decay and half-life, effects and protection, as well as nuclear fission, fusion and nuclear power plants."
+          },
+          "parts": [
+            {
+              "code": "10.1",
+              "title": {
+                "de": "Atomaufbau und ionisierende Strahlung",
+                "en": "Atomic structure and ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, Ablenkung geladener Teilchen im Magnetfeld (qualitativ), radioaktiver Zerfall als Zufallsprozess und Halbwertszeit.",
+                "en": "Types of radiation, deflection of charged particles in a magnetic field (qualitative), radioactive decay as a random process and half-life."
+              }
+            },
+            {
+              "code": "10.2",
+              "title": {
+                "de": "Wechselwirkung von Strahlung mit Materie",
+                "en": "Interaction of radiation with matter"
+              },
+              "summary": {
+                "de": "Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz.",
+                "en": "Detection and absorption of radiation, biological effects, medicine and radiation protection."
+              }
+            },
+            {
+              "code": "10.3",
+              "title": {
+                "de": "Kernenergie",
+                "en": "Nuclear energy"
+              },
+              "summary": {
+                "de": "Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung.",
+                "en": "Nuclear fission, nuclear fusion, nuclear power plants and final disposal."
+              }
+            }
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Energieversorgung",
+            "en": "Energy supply"
+          },
+          "summary": {
+            "de": "Induktion in Generator und Transformator, Elektromotor, Wechselspannung, Kraftwerke und erneuerbare Energien, Übertragung, Wirkungsgrad und Nachhaltigkeit.",
+            "en": "Induction in generators and transformers, electric motors, alternating voltage, power stations and renewable energy, transmission, efficiency and sustainability."
+          },
+          "parts": [
+            {
+              "code": "11.1",
+              "title": {
+                "de": "Induktion und Elektromagnetismus",
+                "en": "Induction and electromagnetism"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.",
+                "en": "Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers."
+              }
+            },
+            {
+              "code": "11.2",
+              "title": {
+                "de": "Bereitstellung und Nutzung von Energie",
+                "en": "Providing and using energy"
+              },
+              "summary": {
+                "de": "Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit.",
+                "en": "Power stations and renewable plants, high-voltage transmission, energy dissipation, efficiency, storage and sustainability."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich, und jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10, and each simulation is listed under the grades it is designed for. The numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "5",
+          "title": {
+            "de": "Optische Instrumente",
+            "en": "Optical instruments"
+          },
+          "summary": {
+            "de": "Spiegelbilder mit dem Reflexionsgesetz, Brechung und Totalreflexion, Bilder an Sammellinsen, Auge und optische Geräte sowie Spektrum und Farbmischung.",
+            "en": "Mirror images with the law of reflection, refraction and total internal reflection, images formed by converging lenses, the eye and optical devices, as well as the spectrum and colour mixing."
+          },
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Spiegelungen",
+                "en": "Reflections"
+              },
+              "summary": {
+                "de": "Reflexionsgesetz und Bildentstehung am ebenen Spiegel.",
+                "en": "Law of reflection and image formation in a plane mirror."
+              },
+              "simulations": [
+                "reflexion"
+              ]
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Lichtbrechung",
+                "en": "Refraction of light"
+              },
+              "summary": {
+                "de": "Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten.",
+                "en": "Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments."
+              },
+              "simulations": [
+                "brechung",
+                "linsen"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Licht und Farben",
+                "en": "Light and colours"
+              },
+              "summary": {
+                "de": "Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK).",
+                "en": "Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK)."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Sterne und Weltall",
+            "en": "Stars and the universe"
+          },
+          "summary": {
+            "de": "Mondphasen, Finsternisse und Jahreszeiten modellhaft erklären, Planeten und andere Himmelskörper, Lichtjahr, Gravitation und die Entwicklung von Sternen.",
+            "en": "Explaining lunar phases, eclipses and seasons with models, planets and other celestial bodies, the light year, gravity and the life cycle of stars."
+          },
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Sonnensystem",
+                "en": "Solar system"
+              },
+              "summary": {
+                "de": "Mondphasen, Mond- und Sonnenfinsternisse, Jahreszeiten und Planeten.",
+                "en": "Lunar phases, lunar and solar eclipses, seasons and planets."
+              }
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Universum",
+                "en": "Universe"
+              },
+              "summary": {
+                "de": "Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung.",
+                "en": "Celestial objects, distances in light years and typical stages of stellar evolution."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Bewegung, Kraft und Energie",
+            "en": "Motion, force and energy"
+          },
+          "summary": {
+            "de": "Bewegungen mit Geschwindigkeit und Beschleunigung beschreiben, Kräfte als Pfeile addieren, einfache Maschinen mit der Goldenen Regel, Energieformen, Energieerhaltung und Leistung.",
+            "en": "Describing motion with velocity and acceleration, adding forces as arrows, simple machines and the golden rule of mechanics, forms of energy, conservation of energy and power."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Bewegungen",
+                "en": "Motion"
+              },
+              "summary": {
+                "de": "Mittlere und momentane Geschwindigkeit, Beschleunigung und Orts-Zeit-Diagramme.",
+                "en": "Average and instantaneous velocity, acceleration and position–time graphs."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Kraft",
+                "en": "Force"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen oder verformen Körper; Kraft und Gegenkraft, Gewichtskraft und Masse, Kräfteaddition und Reibung.",
+                "en": "Forces change motion or deform bodies; action and reaction, weight and mass, adding forces and friction."
+              },
+              "simulations": [
+                "hookesches-gesetz",
+                "kraefteaddition",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Goldene Regel der Mechanik",
+                "en": "Golden rule of mechanics"
+              },
+              "summary": {
+                "de": "Einfache Maschinen wandeln Kräfte; was an Kraft gespart wird, muss an Weg zugelegt werden.",
+                "en": "Simple machines change forces; what is saved in force must be added in distance."
+              },
+              "simulations": [
+                "hebelgesetz",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.4",
+              "title": {
+                "de": "Energieformen",
+                "en": "Forms of energy"
+              },
+              "summary": {
+                "de": "Lageenergie, Bewegungsenergie und Spannenergie.",
+                "en": "Potential energy, kinetic energy and elastic energy."
+              }
+            },
+            {
+              "code": "7.5",
+              "title": {
+                "de": "Energieumwandlung",
+                "en": "Energy conversion"
+              },
+              "summary": {
+                "de": "Energieumwandlungsketten, Energieerhaltung und Leistung, auch im Vergleich mit der eigenen Körperleistung.",
+                "en": "Chains of energy conversion, conservation of energy and power, also compared with one’s own physical power."
+              }
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Druck und Auftrieb",
+            "en": "Pressure and buoyancy"
+          },
+          "summary": {
+            "de": "Druck und Dichte in Flüssigkeiten und Gasen im Teilchenmodell, Schweredruck, Luftdruck und Auftrieb nach Archimedes.",
+            "en": "Pressure and density in liquids and gases in the particle model, hydrostatic pressure, air pressure and buoyancy according to Archimedes."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Druck in Flüssigkeiten und Gasen",
+                "en": "Pressure in liquids and gases"
+              },
+              "summary": {
+                "de": "Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.",
+                "en": "Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions."
+              }
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Druckmessung",
+                "en": "Measuring pressure"
+              },
+              "summary": {
+                "de": "Druck und Kraftwirkungen, Druck in Pascal angeben und messen.",
+                "en": "Pressure and the effects of force, stating and measuring pressure in pascals."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Elektrizität",
+            "en": "Electricity"
+          },
+          "summary": {
+            "de": "Ladungen und elektrische Felder, Spannung, Stromstärke und Widerstand in Reihen- und Parallelschaltungen, Sicherheit im Haushalt sowie elektrische Energie, Leistung und Kosten.",
+            "en": "Charges and electric fields, voltage, current and resistance in series and parallel circuits, safety at home, and electrical energy, power and costs."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Elektrostatik",
+                "en": "Electrostatics"
+              },
+              "summary": {
+                "de": "Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung.",
+                "en": "Electric charges and fields, the electroscope, voltage from separating charges."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Elektrische Stromkreise",
+                "en": "Electric circuits"
+              },
+              "summary": {
+                "de": "Elektronen-Atomrumpf-Modell, Strom als Ladungstransport, Widerstand und Ohmsches Gesetz, Reihen- und Parallelschaltung, Sicherheitsvorrichtungen.",
+                "en": "Electron–ion-core model, current as transport of charge, resistance and Ohm’s law, series and parallel circuits, safety devices."
+              },
+              "simulations": [
+                "einfacher-stromkreis",
+                "ohmsches-gesetz",
+                "reihe-parallel"
+              ]
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Elektrische Energie und Leistung",
+                "en": "Electrical energy and power"
+              },
+              "summary": {
+                "de": "Energie und Leistung elektrischer Geräte berechnen und Energiekosten ermitteln.",
+                "en": "Calculating the energy and power of electrical appliances and working out energy costs."
+              }
+            }
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Ionisierende Strahlung und Kernenergie",
+            "en": "Ionising radiation and nuclear energy"
+          },
+          "summary": {
+            "de": "Atomaufbau, Alpha-, Beta-, Gamma- und Röntgenstrahlung, Zerfall und Halbwertszeit, Wirkung und Schutz sowie Kernspaltung, Kernfusion und Kernkraftwerke.",
+            "en": "Atomic structure, alpha, beta, gamma and X-radiation, decay and half-life, effects and protection, as well as nuclear fission, fusion and nuclear power plants."
+          },
+          "parts": [
+            {
+              "code": "10.1",
+              "title": {
+                "de": "Atomaufbau und ionisierende Strahlung",
+                "en": "Atomic structure and ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, Ablenkung geladener Teilchen im Magnetfeld (qualitativ), radioaktiver Zerfall als Zufallsprozess und Halbwertszeit.",
+                "en": "Types of radiation, deflection of charged particles in a magnetic field (qualitative), radioactive decay as a random process and half-life."
+              }
+            },
+            {
+              "code": "10.2",
+              "title": {
+                "de": "Wechselwirkung von Strahlung mit Materie",
+                "en": "Interaction of radiation with matter"
+              },
+              "summary": {
+                "de": "Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz.",
+                "en": "Detection and absorption of radiation, biological effects, medicine and radiation protection."
+              }
+            },
+            {
+              "code": "10.3",
+              "title": {
+                "de": "Kernenergie",
+                "en": "Nuclear energy"
+              },
+              "summary": {
+                "de": "Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung.",
+                "en": "Nuclear fission, nuclear fusion, nuclear power plants and final disposal."
+              }
+            }
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Energieversorgung",
+            "en": "Energy supply"
+          },
+          "summary": {
+            "de": "Induktion in Generator und Transformator, Elektromotor, Wechselspannung, Kraftwerke und erneuerbare Energien, Übertragung, Wirkungsgrad und Nachhaltigkeit.",
+            "en": "Induction in generators and transformers, electric motors, alternating voltage, power stations and renewable energy, transmission, efficiency and sustainability."
+          },
+          "parts": [
+            {
+              "code": "11.1",
+              "title": {
+                "de": "Induktion und Elektromagnetismus",
+                "en": "Induction and electromagnetism"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.",
+                "en": "Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers."
+              }
+            },
+            {
+              "code": "11.2",
+              "title": {
+                "de": "Bereitstellung und Nutzung von Energie",
+                "en": "Providing and using energy"
+              },
+              "summary": {
+                "de": "Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit.",
+                "en": "Power stations and renewable plants, high-voltage transmission, energy dissipation, efficiency, storage and sustainability."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich, und jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10, and each simulation is listed under the grades it is designed for. The numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "5",
+          "title": {
+            "de": "Optische Instrumente",
+            "en": "Optical instruments"
+          },
+          "summary": {
+            "de": "Spiegelbilder mit dem Reflexionsgesetz, Brechung und Totalreflexion, Bilder an Sammellinsen, Auge und optische Geräte sowie Spektrum und Farbmischung.",
+            "en": "Mirror images with the law of reflection, refraction and total internal reflection, images formed by converging lenses, the eye and optical devices, as well as the spectrum and colour mixing."
+          },
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Spiegelungen",
+                "en": "Reflections"
+              },
+              "summary": {
+                "de": "Reflexionsgesetz und Bildentstehung am ebenen Spiegel.",
+                "en": "Law of reflection and image formation in a plane mirror."
+              }
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Lichtbrechung",
+                "en": "Refraction of light"
+              },
+              "summary": {
+                "de": "Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten.",
+                "en": "Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments."
+              },
+              "simulations": [
+                "brechung",
+                "linsen"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Licht und Farben",
+                "en": "Light and colours"
+              },
+              "summary": {
+                "de": "Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK).",
+                "en": "Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK)."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Sterne und Weltall",
+            "en": "Stars and the universe"
+          },
+          "summary": {
+            "de": "Mondphasen, Finsternisse und Jahreszeiten modellhaft erklären, Planeten und andere Himmelskörper, Lichtjahr, Gravitation und die Entwicklung von Sternen.",
+            "en": "Explaining lunar phases, eclipses and seasons with models, planets and other celestial bodies, the light year, gravity and the life cycle of stars."
+          },
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Sonnensystem",
+                "en": "Solar system"
+              },
+              "summary": {
+                "de": "Mondphasen, Mond- und Sonnenfinsternisse, Jahreszeiten und Planeten.",
+                "en": "Lunar phases, lunar and solar eclipses, seasons and planets."
+              }
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Universum",
+                "en": "Universe"
+              },
+              "summary": {
+                "de": "Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung.",
+                "en": "Celestial objects, distances in light years and typical stages of stellar evolution."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Bewegung, Kraft und Energie",
+            "en": "Motion, force and energy"
+          },
+          "summary": {
+            "de": "Bewegungen mit Geschwindigkeit und Beschleunigung beschreiben, Kräfte als Pfeile addieren, einfache Maschinen mit der Goldenen Regel, Energieformen, Energieerhaltung und Leistung.",
+            "en": "Describing motion with velocity and acceleration, adding forces as arrows, simple machines and the golden rule of mechanics, forms of energy, conservation of energy and power."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Bewegungen",
+                "en": "Motion"
+              },
+              "summary": {
+                "de": "Mittlere und momentane Geschwindigkeit, Beschleunigung und Orts-Zeit-Diagramme.",
+                "en": "Average and instantaneous velocity, acceleration and position–time graphs."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Kraft",
+                "en": "Force"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen oder verformen Körper; Kraft und Gegenkraft, Gewichtskraft und Masse, Kräfteaddition und Reibung.",
+                "en": "Forces change motion or deform bodies; action and reaction, weight and mass, adding forces and friction."
+              },
+              "simulations": [
+                "hookesches-gesetz",
+                "kraefteaddition",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Goldene Regel der Mechanik",
+                "en": "Golden rule of mechanics"
+              },
+              "summary": {
+                "de": "Einfache Maschinen wandeln Kräfte; was an Kraft gespart wird, muss an Weg zugelegt werden.",
+                "en": "Simple machines change forces; what is saved in force must be added in distance."
+              },
+              "simulations": [
+                "hebelgesetz",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.4",
+              "title": {
+                "de": "Energieformen",
+                "en": "Forms of energy"
+              },
+              "summary": {
+                "de": "Lageenergie, Bewegungsenergie und Spannenergie.",
+                "en": "Potential energy, kinetic energy and elastic energy."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "7.5",
+              "title": {
+                "de": "Energieumwandlung",
+                "en": "Energy conversion"
+              },
+              "summary": {
+                "de": "Energieumwandlungsketten, Energieerhaltung und Leistung, auch im Vergleich mit der eigenen Körperleistung.",
+                "en": "Chains of energy conversion, conservation of energy and power, also compared with one’s own physical power."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Druck und Auftrieb",
+            "en": "Pressure and buoyancy"
+          },
+          "summary": {
+            "de": "Druck und Dichte in Flüssigkeiten und Gasen im Teilchenmodell, Schweredruck, Luftdruck und Auftrieb nach Archimedes.",
+            "en": "Pressure and density in liquids and gases in the particle model, hydrostatic pressure, air pressure and buoyancy according to Archimedes."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Druck in Flüssigkeiten und Gasen",
+                "en": "Pressure in liquids and gases"
+              },
+              "summary": {
+                "de": "Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.",
+                "en": "Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Druckmessung",
+                "en": "Measuring pressure"
+              },
+              "summary": {
+                "de": "Druck und Kraftwirkungen, Druck in Pascal angeben und messen.",
+                "en": "Pressure and the effects of force, stating and measuring pressure in pascals."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Elektrizität",
+            "en": "Electricity"
+          },
+          "summary": {
+            "de": "Ladungen und elektrische Felder, Spannung, Stromstärke und Widerstand in Reihen- und Parallelschaltungen, Sicherheit im Haushalt sowie elektrische Energie, Leistung und Kosten.",
+            "en": "Charges and electric fields, voltage, current and resistance in series and parallel circuits, safety at home, and electrical energy, power and costs."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Elektrostatik",
+                "en": "Electrostatics"
+              },
+              "summary": {
+                "de": "Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung.",
+                "en": "Electric charges and fields, the electroscope, voltage from separating charges."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Elektrische Stromkreise",
+                "en": "Electric circuits"
+              },
+              "summary": {
+                "de": "Elektronen-Atomrumpf-Modell, Strom als Ladungstransport, Widerstand und Ohmsches Gesetz, Reihen- und Parallelschaltung, Sicherheitsvorrichtungen.",
+                "en": "Electron–ion-core model, current as transport of charge, resistance and Ohm’s law, series and parallel circuits, safety devices."
+              },
+              "simulations": [
+                "einfacher-stromkreis",
+                "ohmsches-gesetz",
+                "reihe-parallel"
+              ]
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Elektrische Energie und Leistung",
+                "en": "Electrical energy and power"
+              },
+              "summary": {
+                "de": "Energie und Leistung elektrischer Geräte berechnen und Energiekosten ermitteln.",
+                "en": "Calculating the energy and power of electrical appliances and working out energy costs."
+              }
+            }
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Ionisierende Strahlung und Kernenergie",
+            "en": "Ionising radiation and nuclear energy"
+          },
+          "summary": {
+            "de": "Atomaufbau, Alpha-, Beta-, Gamma- und Röntgenstrahlung, Zerfall und Halbwertszeit, Wirkung und Schutz sowie Kernspaltung, Kernfusion und Kernkraftwerke.",
+            "en": "Atomic structure, alpha, beta, gamma and X-radiation, decay and half-life, effects and protection, as well as nuclear fission, fusion and nuclear power plants."
+          },
+          "parts": [
+            {
+              "code": "10.1",
+              "title": {
+                "de": "Atomaufbau und ionisierende Strahlung",
+                "en": "Atomic structure and ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, Ablenkung geladener Teilchen im Magnetfeld (qualitativ), radioaktiver Zerfall als Zufallsprozess und Halbwertszeit.",
+                "en": "Types of radiation, deflection of charged particles in a magnetic field (qualitative), radioactive decay as a random process and half-life."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "10.2",
+              "title": {
+                "de": "Wechselwirkung von Strahlung mit Materie",
+                "en": "Interaction of radiation with matter"
+              },
+              "summary": {
+                "de": "Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz.",
+                "en": "Detection and absorption of radiation, biological effects, medicine and radiation protection."
+              }
+            },
+            {
+              "code": "10.3",
+              "title": {
+                "de": "Kernenergie",
+                "en": "Nuclear energy"
+              },
+              "summary": {
+                "de": "Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung.",
+                "en": "Nuclear fission, nuclear fusion, nuclear power plants and final disposal."
+              }
+            }
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Energieversorgung",
+            "en": "Energy supply"
+          },
+          "summary": {
+            "de": "Induktion in Generator und Transformator, Elektromotor, Wechselspannung, Kraftwerke und erneuerbare Energien, Übertragung, Wirkungsgrad und Nachhaltigkeit.",
+            "en": "Induction in generators and transformers, electric motors, alternating voltage, power stations and renewable energy, transmission, efficiency and sustainability."
+          },
+          "parts": [
+            {
+              "code": "11.1",
+              "title": {
+                "de": "Induktion und Elektromagnetismus",
+                "en": "Induction and electromagnetism"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.",
+                "en": "Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers."
+              }
+            },
+            {
+              "code": "11.2",
+              "title": {
+                "de": "Bereitstellung und Nutzung von Energie",
+                "en": "Providing and using energy"
+              },
+              "summary": {
+                "de": "Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit.",
+                "en": "Power stations and renewable plants, high-voltage transmission, energy dissipation, efficiency, storage and sustainability."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich, und jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern der Schwerpunkte sind von uns vergeben.",
+        "en": "By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10, and each simulation is listed under the grades it is designed for. The numbers of the focal points are our own."
+      },
+      "units": [
+        {
+          "code": "5",
+          "title": {
+            "de": "Optische Instrumente",
+            "en": "Optical instruments"
+          },
+          "summary": {
+            "de": "Spiegelbilder mit dem Reflexionsgesetz, Brechung und Totalreflexion, Bilder an Sammellinsen, Auge und optische Geräte sowie Spektrum und Farbmischung.",
+            "en": "Mirror images with the law of reflection, refraction and total internal reflection, images formed by converging lenses, the eye and optical devices, as well as the spectrum and colour mixing."
+          },
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Spiegelungen",
+                "en": "Reflections"
+              },
+              "summary": {
+                "de": "Reflexionsgesetz und Bildentstehung am ebenen Spiegel.",
+                "en": "Law of reflection and image formation in a plane mirror."
+              }
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Lichtbrechung",
+                "en": "Refraction of light"
+              },
+              "summary": {
+                "de": "Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten.",
+                "en": "Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments."
+              },
+              "simulations": [
+                "brechung",
+                "linsen"
+              ]
+            },
+            {
+              "code": "5.3",
+              "title": {
+                "de": "Licht und Farben",
+                "en": "Light and colours"
+              },
+              "summary": {
+                "de": "Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK).",
+                "en": "Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK)."
+              }
+            }
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Sterne und Weltall",
+            "en": "Stars and the universe"
+          },
+          "summary": {
+            "de": "Mondphasen, Finsternisse und Jahreszeiten modellhaft erklären, Planeten und andere Himmelskörper, Lichtjahr, Gravitation und die Entwicklung von Sternen.",
+            "en": "Explaining lunar phases, eclipses and seasons with models, planets and other celestial bodies, the light year, gravity and the life cycle of stars."
+          },
+          "parts": [
+            {
+              "code": "6.1",
+              "title": {
+                "de": "Sonnensystem",
+                "en": "Solar system"
+              },
+              "summary": {
+                "de": "Mondphasen, Mond- und Sonnenfinsternisse, Jahreszeiten und Planeten.",
+                "en": "Lunar phases, lunar and solar eclipses, seasons and planets."
+              }
+            },
+            {
+              "code": "6.2",
+              "title": {
+                "de": "Universum",
+                "en": "Universe"
+              },
+              "summary": {
+                "de": "Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung.",
+                "en": "Celestial objects, distances in light years and typical stages of stellar evolution."
+              }
+            }
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Bewegung, Kraft und Energie",
+            "en": "Motion, force and energy"
+          },
+          "summary": {
+            "de": "Bewegungen mit Geschwindigkeit und Beschleunigung beschreiben, Kräfte als Pfeile addieren, einfache Maschinen mit der Goldenen Regel, Energieformen, Energieerhaltung und Leistung.",
+            "en": "Describing motion with velocity and acceleration, adding forces as arrows, simple machines and the golden rule of mechanics, forms of energy, conservation of energy and power."
+          },
+          "parts": [
+            {
+              "code": "7.1",
+              "title": {
+                "de": "Bewegungen",
+                "en": "Motion"
+              },
+              "summary": {
+                "de": "Mittlere und momentane Geschwindigkeit, Beschleunigung und Orts-Zeit-Diagramme.",
+                "en": "Average and instantaneous velocity, acceleration and position–time graphs."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "7.2",
+              "title": {
+                "de": "Kraft",
+                "en": "Force"
+              },
+              "summary": {
+                "de": "Kräfte ändern Bewegungen oder verformen Körper; Kraft und Gegenkraft, Gewichtskraft und Masse, Kräfteaddition und Reibung.",
+                "en": "Forces change motion or deform bodies; action and reaction, weight and mass, adding forces and friction."
+              },
+              "simulations": [
+                "hookesches-gesetz",
+                "kraefteaddition",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.3",
+              "title": {
+                "de": "Goldene Regel der Mechanik",
+                "en": "Golden rule of mechanics"
+              },
+              "summary": {
+                "de": "Einfache Maschinen wandeln Kräfte; was an Kraft gespart wird, muss an Weg zugelegt werden.",
+                "en": "Simple machines change forces; what is saved in force must be added in distance."
+              },
+              "simulations": [
+                "hebelgesetz",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "7.4",
+              "title": {
+                "de": "Energieformen",
+                "en": "Forms of energy"
+              },
+              "summary": {
+                "de": "Lageenergie, Bewegungsenergie und Spannenergie.",
+                "en": "Potential energy, kinetic energy and elastic energy."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "7.5",
+              "title": {
+                "de": "Energieumwandlung",
+                "en": "Energy conversion"
+              },
+              "summary": {
+                "de": "Energieumwandlungsketten, Energieerhaltung und Leistung, auch im Vergleich mit der eigenen Körperleistung.",
+                "en": "Chains of energy conversion, conservation of energy and power, also compared with one’s own physical power."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Druck und Auftrieb",
+            "en": "Pressure and buoyancy"
+          },
+          "summary": {
+            "de": "Druck und Dichte in Flüssigkeiten und Gasen im Teilchenmodell, Schweredruck, Luftdruck und Auftrieb nach Archimedes.",
+            "en": "Pressure and density in liquids and gases in the particle model, hydrostatic pressure, air pressure and buoyancy according to Archimedes."
+          },
+          "parts": [
+            {
+              "code": "8.1",
+              "title": {
+                "de": "Druck in Flüssigkeiten und Gasen",
+                "en": "Pressure in liquids and gases"
+              },
+              "summary": {
+                "de": "Dichte, Schweredruck, Auftrieb und Archimedisches Prinzip, Luftdruck; Druck als Folge von Teilchenstößen.",
+                "en": "Density, hydrostatic pressure, buoyancy and Archimedes’ principle, air pressure; pressure as a result of particle collisions."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "8.2",
+              "title": {
+                "de": "Druckmessung",
+                "en": "Measuring pressure"
+              },
+              "summary": {
+                "de": "Druck und Kraftwirkungen, Druck in Pascal angeben und messen.",
+                "en": "Pressure and the effects of force, stating and measuring pressure in pascals."
+              }
+            }
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Elektrizität",
+            "en": "Electricity"
+          },
+          "summary": {
+            "de": "Ladungen und elektrische Felder, Spannung, Stromstärke und Widerstand in Reihen- und Parallelschaltungen, Sicherheit im Haushalt sowie elektrische Energie, Leistung und Kosten.",
+            "en": "Charges and electric fields, voltage, current and resistance in series and parallel circuits, safety at home, and electrical energy, power and costs."
+          },
+          "parts": [
+            {
+              "code": "9.1",
+              "title": {
+                "de": "Elektrostatik",
+                "en": "Electrostatics"
+              },
+              "summary": {
+                "de": "Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung.",
+                "en": "Electric charges and fields, the electroscope, voltage from separating charges."
+              }
+            },
+            {
+              "code": "9.2",
+              "title": {
+                "de": "Elektrische Stromkreise",
+                "en": "Electric circuits"
+              },
+              "summary": {
+                "de": "Elektronen-Atomrumpf-Modell, Strom als Ladungstransport, Widerstand und Ohmsches Gesetz, Reihen- und Parallelschaltung, Sicherheitsvorrichtungen.",
+                "en": "Electron–ion-core model, current as transport of charge, resistance and Ohm’s law, series and parallel circuits, safety devices."
+              }
+            },
+            {
+              "code": "9.3",
+              "title": {
+                "de": "Elektrische Energie und Leistung",
+                "en": "Electrical energy and power"
+              },
+              "summary": {
+                "de": "Energie und Leistung elektrischer Geräte berechnen und Energiekosten ermitteln.",
+                "en": "Calculating the energy and power of electrical appliances and working out energy costs."
+              }
+            }
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Ionisierende Strahlung und Kernenergie",
+            "en": "Ionising radiation and nuclear energy"
+          },
+          "summary": {
+            "de": "Atomaufbau, Alpha-, Beta-, Gamma- und Röntgenstrahlung, Zerfall und Halbwertszeit, Wirkung und Schutz sowie Kernspaltung, Kernfusion und Kernkraftwerke.",
+            "en": "Atomic structure, alpha, beta, gamma and X-radiation, decay and half-life, effects and protection, as well as nuclear fission, fusion and nuclear power plants."
+          },
+          "parts": [
+            {
+              "code": "10.1",
+              "title": {
+                "de": "Atomaufbau und ionisierende Strahlung",
+                "en": "Atomic structure and ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, Ablenkung geladener Teilchen im Magnetfeld (qualitativ), radioaktiver Zerfall als Zufallsprozess und Halbwertszeit.",
+                "en": "Types of radiation, deflection of charged particles in a magnetic field (qualitative), radioactive decay as a random process and half-life."
+              },
+              "simulations": [
+                "radioaktiver-zerfall",
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "10.2",
+              "title": {
+                "de": "Wechselwirkung von Strahlung mit Materie",
+                "en": "Interaction of radiation with matter"
+              },
+              "summary": {
+                "de": "Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz.",
+                "en": "Detection and absorption of radiation, biological effects, medicine and radiation protection."
+              }
+            },
+            {
+              "code": "10.3",
+              "title": {
+                "de": "Kernenergie",
+                "en": "Nuclear energy"
+              },
+              "summary": {
+                "de": "Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung.",
+                "en": "Nuclear fission, nuclear fusion, nuclear power plants and final disposal."
+              }
+            }
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Energieversorgung",
+            "en": "Energy supply"
+          },
+          "summary": {
+            "de": "Induktion in Generator und Transformator, Elektromotor, Wechselspannung, Kraftwerke und erneuerbare Energien, Übertragung, Wirkungsgrad und Nachhaltigkeit.",
+            "en": "Induction in generators and transformers, electric motors, alternating voltage, power stations and renewable energy, transmission, efficiency and sustainability."
+          },
+          "parts": [
+            {
+              "code": "11.1",
+              "title": {
+                "de": "Induktion und Elektromagnetismus",
+                "en": "Induction and electromagnetism"
+              },
+              "summary": {
+                "de": "Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.",
+                "en": "Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "11.2",
+              "title": {
+                "de": "Bereitstellung und Nutzung von Energie",
+                "en": "Providing and using energy"
+              },
+              "summary": {
+                "de": "Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit.",
+                "en": "Power stations and renewable plants, high-voltage transmission, energy dissipation, efficiency, storage and sustainability."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Einführungsphase der gymnasialen Oberstufe (G9: Jahrgangsstufe 11). Die Inhaltsfelder sind im Lehrplan nicht nummeriert; die Codes sind von uns vergeben. Kernlehrplan Sekundarstufe II von 2026, in Kraft ab 1. August 2027 beginnend mit der Einführungsphase; der Kernlehrplan von 2022 läuft aus und ist hier nicht abgebildet.",
+        "en": "Introductory phase of upper secondary (G9: grade 11). The content areas are not numbered in the curriculum; the codes are our own. Core curriculum for upper secondary of 2026, in force from 1 August 2027, starting with the introductory phase; the 2022 core curriculum is being phased out and is not shown here."
+      },
+      "units": [
+        {
+          "code": "EF-1",
+          "title": {
+            "de": "Grundlagen der Mechanik",
+            "en": "Foundations of mechanics"
+          },
+          "summary": {
+            "de": "Bewegungen mit Diagrammen und Gleichungen beschreiben, mit den Newton’schen Gesetzen und Kräften erklären und mit Energie- und Impulserhaltung bilanzieren.",
+            "en": "Describing motion with graphs and equations, explaining it with Newton’s laws and forces, and accounting for it with conservation of energy and momentum."
+          },
+          "parts": [
+            {
+              "code": "EF-1.1",
+              "title": {
+                "de": "Kinematik",
+                "en": "Kinematics"
+              },
+              "summary": {
+                "de": "Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, waagerechter Wurf und vektorielle Größen.",
+                "en": "Uniform and uniformly accelerated motion, free fall, horizontal projection and vector quantities."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall",
+                "schiefer-wurf"
+              ]
+            },
+            {
+              "code": "EF-1.2",
+              "title": {
+                "de": "Dynamik",
+                "en": "Dynamics"
+              },
+              "summary": {
+                "de": "Newton’sche Gesetze, beschleunigende Kräfte, Kräftegleichgewicht mit Komponentenzerlegung und Reibung.",
+                "en": "Newton’s laws, accelerating forces, equilibrium of forces using components, and friction."
+              },
+              "simulations": [
+                "kraefteaddition",
+                "schiefe-ebene"
+              ]
+            },
+            {
+              "code": "EF-1.3",
+              "title": {
+                "de": "Erhaltungssätze",
+                "en": "Conservation laws"
+              },
+              "summary": {
+                "de": "Impuls und mechanische Energie (Lage-, Bewegungs-, Spannenergie), Energiebilanzen und eindimensionale Stöße.",
+                "en": "Momentum and mechanical energy (potential, kinetic, elastic), energy balances and one-dimensional collisions."
+              },
+              "simulations": [
+                "energieerhaltung",
+                "stoesse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "EF-2",
+          "title": {
+            "de": "Kreisbewegung, Gravitation und physikalische Weltbilder",
+            "en": "Circular motion, gravitation and physical world views"
+          },
+          "summary": {
+            "de": "Kreisbewegung und Zentripetalkraft, Newtons Gravitationsgesetz und die Kepler’schen Gesetze sowie der Weg vom geozentrischen Weltbild zur speziellen Relativitätstheorie.",
+            "en": "Circular motion and centripetal force, Newton’s law of gravitation and Kepler’s laws, and the path from the geocentric world view to special relativity."
+          },
+          "parts": [
+            {
+              "code": "EF-2.1",
+              "title": {
+                "de": "Kreisbewegung",
+                "en": "Circular motion"
+              },
+              "summary": {
+                "de": "Gleichförmige Kreisbewegung und Zentripetalkraft, auch quantitativ.",
+                "en": "Uniform circular motion and centripetal force, also quantitatively."
+              },
+              "simulations": [
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "EF-2.2",
+              "title": {
+                "de": "Gravitation",
+                "en": "Gravitation"
+              },
+              "summary": {
+                "de": "Schwerkraft, Newton’sches Gravitationsgesetz, Kepler’sche Gesetze und Gravitationsfeld.",
+                "en": "Gravity, Newton’s law of gravitation, Kepler’s laws and the gravitational field."
+              },
+              "simulations": [
+                "planetenbahnen"
+              ]
+            },
+            {
+              "code": "EF-2.3",
+              "title": {
+                "de": "Wandel physikalischer Weltbilder",
+                "en": "Changing physical world views"
+              },
+              "summary": {
+                "de": "Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr.",
+                "en": "Geocentric and heliocentric world views, basic principles of special relativity and time dilation with the light clock."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Qualifikationsphase (G9: Jahrgangsstufen 12 und 13). Der Kernlehrplan nennt Inhaltsfelder für den Grundkurs (GK) und eigene für den Leistungskurs (LK), aber keine Verteilung auf Halbjahre; die Lernbereiche stehen deshalb bei 12 und 13 gleich. Die Codes sind von uns vergeben. Kernlehrplan Sekundarstufe II von 2026 (aufsteigend in Kraft ab 1. August 2027 mit der Einführungsphase).",
+        "en": "Qualification phase (G9: grades 12 and 13). The core curriculum lists content areas for the basic course (GK) and separate ones for the advanced course (LK), but does not distribute them over half-years; the units are therefore the same for grades 12 and 13. The codes are our own. Core curriculum for upper secondary of 2026 (phased in from 1 August 2027, starting with the introductory phase)."
+      },
+      "units": [
+        {
+          "code": "GK-1",
+          "title": {
+            "de": "Klassische Wellen und geladene Teilchen in Feldern (Grundkurs)",
+            "en": "Classical waves and charged particles in fields (basic course)"
+          },
+          "summary": {
+            "de": "Federpendel, harmonische Schwingungen und Wellen mit Huygens, Interferenz und stehenden Wellen; elektrische und magnetische Felder und die Bahn von Elektronen im Fadenstrahlrohr.",
+            "en": "Spring pendulum, harmonic oscillations and waves with Huygens, interference and standing waves; electric and magnetic fields and the path of electrons in the fine-beam tube."
+          },
+          "parts": [
+            {
+              "code": "GK-1.1",
+              "title": {
+                "de": "Klassische Wellen",
+                "en": "Classical waves"
+              },
+              "summary": {
+                "de": "Federpendel, harmonische Schwingungen und Wellen, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Superposition, stehende Wellen, Polarisation sowie Doppelspalt und Gitter mit Licht.",
+                "en": "Spring pendulum, harmonic oscillations and waves, Huygens’ principle, reflection, refraction, diffraction, superposition, standing waves, polarisation, and double slit and grating with light."
+              },
+              "simulations": [
+                "federpendel",
+                "wellen-ausbreitung",
+                "interferenz",
+                "stehende-wellen",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GK-1.2",
+              "title": {
+                "de": "Teilchen in Feldern",
+                "en": "Particles in fields"
+              },
+              "summary": {
+                "de": "Elektrische und magnetische Felder, Feldstärke, Spannung und Flussdichte, Feldlinienbilder, Millikan-Versuch und Bahnformen geladener Teilchen in homogenen Feldern.",
+                "en": "Electric and magnetic fields, field strength, voltage and flux density, field-line patterns, the Millikan experiment and paths of charged particles in uniform fields."
+              },
+              "simulations": [
+                "feldlinien",
+                "lorentzkraft"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GK-2",
+          "title": {
+            "de": "Quantenobjekte (Grundkurs)",
+            "en": "Quantum objects (basic course)"
+          },
+          "summary": {
+            "de": "Licht hat Teilchen-, Elektronen haben Welleneigenschaften: Photoeffekt, De-Broglie-Wellenlänge, Interferenz von Elektronen und die Deutung von Quantenobjekten.",
+            "en": "Light has particle properties and electrons have wave properties: photoelectric effect, de Broglie wavelength, electron interference and the interpretation of quantum objects."
+          },
+          "parts": [
+            {
+              "code": "GK-2.1",
+              "title": {
+                "de": "Teilchenaspekte von Photonen",
+                "en": "Particle aspects of photons"
+              },
+              "summary": {
+                "de": "Energiequantelung von Licht und Photoeffekt.",
+                "en": "Quantisation of light energy and the photoelectric effect."
+              },
+              "simulations": [
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "GK-2.2",
+              "title": {
+                "de": "Wellenaspekt von Elektronen",
+                "en": "Wave aspect of electrons"
+              },
+              "summary": {
+                "de": "De-Broglie-Wellenlänge und Interferenz von Elektronen.",
+                "en": "De Broglie wavelength and interference of electrons."
+              },
+              "simulations": [
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "GK-2.3",
+              "title": {
+                "de": "Photon und Elektron als Quantenobjekte",
+                "en": "Photon and electron as quantum objects"
+              },
+              "summary": {
+                "de": "Wellen- und Teilchenmodell, Wahrscheinlichkeitsdeutung, „Welcher-Weg“-Information und Kopenhagener Deutung.",
+                "en": "Wave and particle models, probability interpretation, which-way information and the Copenhagen interpretation."
+              }
+            }
+          ]
+        },
+        {
+          "code": "GK-3",
+          "title": {
+            "de": "Elektrodynamik und Energieübertragung (Grundkurs)",
+            "en": "Electrodynamics and energy transmission (basic course)"
+          },
+          "summary": {
+            "de": "Induktionsgesetz, Generator und Transformator, Fernübertragung von Energie, Kondensator laden und entladen sowie die elektromagnetische Schwingung.",
+            "en": "Law of induction, generator and transformer, long-distance transmission of energy, charging and discharging a capacitor, and electromagnetic oscillation."
+          },
+          "parts": [
+            {
+              "code": "GK-3.1",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, elektromagnetische Induktion und Induktionsgesetz, Wechselspannung, Auf- und Entladung des Kondensators.",
+                "en": "Magnetic flux, electromagnetic induction and the law of induction, alternating voltage, charging and discharging a capacitor."
+              },
+              "simulations": [
+                "induktion",
+                "kondensator"
+              ]
+            },
+            {
+              "code": "GK-3.2",
+              "title": {
+                "de": "Energieübertragung",
+                "en": "Energy transmission"
+              },
+              "summary": {
+                "de": "Generator und Transformator, Freileitungen und die elektromagnetische Schwingung.",
+                "en": "Generator and transformer, overhead power lines and electromagnetic oscillation."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GK-4",
+          "title": {
+            "de": "Strahlung und Materie (Grundkurs)",
+            "en": "Radiation and matter (basic course)"
+          },
+          "summary": {
+            "de": "Elektromagnetisches Spektrum und ionisierende Strahlung, Linienspektren und Energieniveaus der Atomhülle sowie Kernumwandlungen, Zerfallsgesetz, Kernspaltung und Kernfusion.",
+            "en": "Electromagnetic spectrum and ionising radiation, line spectra and energy levels of the atomic shell, as well as nuclear transformations, the decay law, fission and fusion."
+          },
+          "parts": [
+            {
+              "code": "GK-4.1",
+              "title": {
+                "de": "Strahlung",
+                "en": "Radiation"
+              },
+              "summary": {
+                "de": "Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen.",
+                "en": "Spectrum of electromagnetic radiation, ionising radiation, the Geiger–Müller counter and biological effects."
+              }
+            },
+            {
+              "code": "GK-4.2",
+              "title": {
+                "de": "Atomphysik",
+                "en": "Atomic physics"
+              },
+              "summary": {
+                "de": "Linienspektren, Energieniveauschema, Franck-Hertz-Versuch, Kern-Hülle-Modell und Röntgenstrahlung.",
+                "en": "Line spectra, energy level diagrams, the Franck–Hertz experiment, the nuclear model of the atom and X-rays."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "GK-4.3",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Nukleonen, Zerfallsprozesse und Kernumwandlungen, Zerfallsgesetz und Halbwertszeit, Kernspaltung und -fusion.",
+                "en": "Nucleons, decay processes and nuclear transformations, the decay law and half-life, fission and fusion."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-1",
+          "title": {
+            "de": "Ladungen, Felder und Induktion (Leistungskurs)",
+            "en": "Charges, fields and induction (advanced course)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder mit Coulomb’schem Gesetz, Potential und Kondensator, Bahnen geladener Teilchen in Feldern sowie Induktion und Selbstinduktion.",
+            "en": "Electric and magnetic fields with Coulomb’s law, potential and capacitors, paths of charged particles in fields, as well as induction and self-induction."
+          },
+          "parts": [
+            {
+              "code": "LK-1.1",
+              "title": {
+                "de": "Elektrische Ladungen und Felder",
+                "en": "Electric charges and fields"
+              },
+              "summary": {
+                "de": "Ladungen, Feldstärke, Coulomb’sches Gesetz, Potential und Spannung, Kondensator und Kapazität mit Lade- und Entladekurven; magnetische Flussdichte.",
+                "en": "Charges, field strength, Coulomb’s law, potential and voltage, capacitor and capacitance with charging and discharging curves; magnetic flux density."
+              },
+              "simulations": [
+                "feldlinien",
+                "kondensator"
+              ]
+            },
+            {
+              "code": "LK-1.2",
+              "title": {
+                "de": "Bewegungen in Feldern",
+                "en": "Motion in fields"
+              },
+              "summary": {
+                "de": "Geladene Teilchen in elektrischen Längs- und Querfeldern, Lorentzkraft und gekreuzte Felder.",
+                "en": "Charged particles in longitudinal and transverse electric fields, the Lorentz force and crossed fields."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LK-1.3",
+              "title": {
+                "de": "Elektromagnetische Induktion",
+                "en": "Electromagnetic induction"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, Induktionsgesetz, Lenz’sche Regel, Selbstinduktion und Induktivität.",
+                "en": "Magnetic flux, the law of induction, Lenz’s law, self-induction and inductance."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-2",
+          "title": {
+            "de": "Schwingende Systeme und Wellen (Leistungskurs)",
+            "en": "Oscillating systems and waves (advanced course)"
+          },
+          "summary": {
+            "de": "Mechanische und elektromagnetische Schwingungen mit Differentialgleichungen, Dämpfung und Resonanz, Wellenphänomene, Interferenz an Spalt und Gitter, Michelson-Interferometer und Hertz’scher Dipol.",
+            "en": "Mechanical and electromagnetic oscillations with differential equations, damping and resonance, wave phenomena, interference at slits and gratings, the Michelson interferometer and the Hertzian dipole."
+          },
+          "parts": [
+            {
+              "code": "LK-2.1",
+              "title": {
+                "de": "Schwingungen und Wellen",
+                "en": "Oscillations and waves"
+              },
+              "summary": {
+                "de": "Harmonische Schwingungen und ihre Kenngrößen, Wellengleichung, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Polarisation, Superposition und Michelson-Interferometer.",
+                "en": "Harmonic oscillations and their parameters, the wave equation, Huygens’ principle, reflection, refraction, diffraction, polarisation, superposition and the Michelson interferometer."
+              },
+              "simulations": [
+                "wellen-ausbreitung",
+                "interferenz",
+                "stehende-wellen",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LK-2.2",
+              "title": {
+                "de": "Schwingende Systeme",
+                "en": "Oscillating systems"
+              },
+              "summary": {
+                "de": "Federpendel, Fadenpendel, gedämpfte und erzwungene Schwingungen und Resonanz, Schwingkreis und Hertz’scher Dipol.",
+                "en": "Spring and simple pendulum, damped and forced oscillations and resonance, the LC circuit and the Hertzian dipole."
+              },
+              "simulations": [
+                "federpendel",
+                "fadenpendel",
+                "resonanz"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-3",
+          "title": {
+            "de": "Quantenphysik (Leistungskurs)",
+            "en": "Quantum physics (advanced course)"
+          },
+          "summary": {
+            "de": "Photoeffekt und Planck’sches Wirkungsquantum, Bremsstrahlung, Bragg-Reflexion und Elektronenbeugung, Wellenfunktion, Delayed-Choice-Experiment und Unbestimmtheitsrelation.",
+            "en": "Photoelectric effect and Planck’s constant, bremsstrahlung, Bragg reflection and electron diffraction, the wave function, the delayed-choice experiment and the uncertainty principle."
+          },
+          "parts": [
+            {
+              "code": "LK-3.1",
+              "title": {
+                "de": "Teilchenaspekte von Photonen",
+                "en": "Particle aspects of photons"
+              },
+              "summary": {
+                "de": "Energiequantelung von Licht, Photoeffekt und Bremsstrahlung.",
+                "en": "Quantisation of light energy, the photoelectric effect and bremsstrahlung."
+              },
+              "simulations": [
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "LK-3.2",
+              "title": {
+                "de": "Photonen und Elektronen als Quantenobjekte",
+                "en": "Photons and electrons as quantum objects"
+              },
+              "summary": {
+                "de": "Doppelspaltexperiment, Bragg-Reflexion, Elektronenbeugung, Wahrscheinlichkeitsdeutung, Delayed-Choice-Experiment und Kopenhagener Deutung.",
+                "en": "Double-slit experiment, Bragg reflection, electron diffraction, probability interpretation, the delayed-choice experiment and the Copenhagen interpretation."
+              },
+              "simulations": [
+                "elektronenbeugung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-4",
+          "title": {
+            "de": "Atom- und Kernphysik (Leistungskurs)",
+            "en": "Atomic and nuclear physics (advanced course)"
+          },
+          "summary": {
+            "de": "Atommodelle bis zum Potentialtopf, Energieniveaus und Röntgenstrahlung, Arten und Nachweis ionisierender Strahlung, Zerfallsgesetz und Altersbestimmung sowie Kernspaltung und Kernfusion.",
+            "en": "Atomic models up to the potential well, energy levels and X-rays, types and detection of ionising radiation, the decay law and dating, as well as nuclear fission and fusion."
+          },
+          "parts": [
+            {
+              "code": "LK-4.1",
+              "title": {
+                "de": "Atomaufbau",
+                "en": "Atomic structure"
+              },
+              "summary": {
+                "de": "Atommodelle, eindimensionaler Potentialtopf, Energieniveauschema, Linienspektren, Franck-Hertz-Versuch und Röntgenstrahlung.",
+                "en": "Atomic models, the one-dimensional potential well, energy level diagrams, line spectra, the Franck–Hertz experiment and X-rays."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LK-4.2",
+              "title": {
+                "de": "Ionisierende Strahlung",
+                "en": "Ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption.",
+                "en": "Types of radiation, their detection, properties and absorption."
+              }
+            },
+            {
+              "code": "LK-4.3",
+              "title": {
+                "de": "Radioaktiver Zerfall",
+                "en": "Radioactive decay"
+              },
+              "summary": {
+                "de": "Kernaufbau, Zerfallsreihen, Zerfallsgesetz, Halbwertszeit und Altersbestimmung mit C-14.",
+                "en": "Nuclear structure, decay series, the decay law, half-life and carbon-14 dating."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LK-4.4",
+              "title": {
+                "de": "Kernspaltung und -fusion",
+                "en": "Nuclear fission and fusion"
+              },
+              "summary": {
+                "de": "Bindungsenergien, Massendefekt und Kettenreaktion.",
+                "en": "Binding energies, mass defect and chain reaction."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.schulentwicklung.nrw.de/lehrplaene/",
+      "note": {
+        "de": "Qualifikationsphase (G9: Jahrgangsstufen 12 und 13). Der Kernlehrplan nennt Inhaltsfelder für den Grundkurs (GK) und eigene für den Leistungskurs (LK), aber keine Verteilung auf Halbjahre; die Lernbereiche stehen deshalb bei 12 und 13 gleich. Die Codes sind von uns vergeben. Kernlehrplan Sekundarstufe II von 2026 (aufsteigend in Kraft ab 1. August 2027 mit der Einführungsphase).",
+        "en": "Qualification phase (G9: grades 12 and 13). The core curriculum lists content areas for the basic course (GK) and separate ones for the advanced course (LK), but does not distribute them over half-years; the units are therefore the same for grades 12 and 13. The codes are our own. Core curriculum for upper secondary of 2026 (phased in from 1 August 2027, starting with the introductory phase)."
+      },
+      "units": [
+        {
+          "code": "GK-1",
+          "title": {
+            "de": "Klassische Wellen und geladene Teilchen in Feldern (Grundkurs)",
+            "en": "Classical waves and charged particles in fields (basic course)"
+          },
+          "summary": {
+            "de": "Federpendel, harmonische Schwingungen und Wellen mit Huygens, Interferenz und stehenden Wellen; elektrische und magnetische Felder und die Bahn von Elektronen im Fadenstrahlrohr.",
+            "en": "Spring pendulum, harmonic oscillations and waves with Huygens, interference and standing waves; electric and magnetic fields and the path of electrons in the fine-beam tube."
+          },
+          "parts": [
+            {
+              "code": "GK-1.1",
+              "title": {
+                "de": "Klassische Wellen",
+                "en": "Classical waves"
+              },
+              "summary": {
+                "de": "Federpendel, harmonische Schwingungen und Wellen, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Superposition, stehende Wellen, Polarisation sowie Doppelspalt und Gitter mit Licht.",
+                "en": "Spring pendulum, harmonic oscillations and waves, Huygens’ principle, reflection, refraction, diffraction, superposition, standing waves, polarisation, and double slit and grating with light."
+              },
+              "simulations": [
+                "interferenz",
+                "stehende-wellen",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GK-1.2",
+              "title": {
+                "de": "Teilchen in Feldern",
+                "en": "Particles in fields"
+              },
+              "summary": {
+                "de": "Elektrische und magnetische Felder, Feldstärke, Spannung und Flussdichte, Feldlinienbilder, Millikan-Versuch und Bahnformen geladener Teilchen in homogenen Feldern.",
+                "en": "Electric and magnetic fields, field strength, voltage and flux density, field-line patterns, the Millikan experiment and paths of charged particles in uniform fields."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GK-2",
+          "title": {
+            "de": "Quantenobjekte (Grundkurs)",
+            "en": "Quantum objects (basic course)"
+          },
+          "summary": {
+            "de": "Licht hat Teilchen-, Elektronen haben Welleneigenschaften: Photoeffekt, De-Broglie-Wellenlänge, Interferenz von Elektronen und die Deutung von Quantenobjekten.",
+            "en": "Light has particle properties and electrons have wave properties: photoelectric effect, de Broglie wavelength, electron interference and the interpretation of quantum objects."
+          },
+          "parts": [
+            {
+              "code": "GK-2.1",
+              "title": {
+                "de": "Teilchenaspekte von Photonen",
+                "en": "Particle aspects of photons"
+              },
+              "summary": {
+                "de": "Energiequantelung von Licht und Photoeffekt.",
+                "en": "Quantisation of light energy and the photoelectric effect."
+              },
+              "simulations": [
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "GK-2.2",
+              "title": {
+                "de": "Wellenaspekt von Elektronen",
+                "en": "Wave aspect of electrons"
+              },
+              "summary": {
+                "de": "De-Broglie-Wellenlänge und Interferenz von Elektronen.",
+                "en": "De Broglie wavelength and interference of electrons."
+              },
+              "simulations": [
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "GK-2.3",
+              "title": {
+                "de": "Photon und Elektron als Quantenobjekte",
+                "en": "Photon and electron as quantum objects"
+              },
+              "summary": {
+                "de": "Wellen- und Teilchenmodell, Wahrscheinlichkeitsdeutung, „Welcher-Weg“-Information und Kopenhagener Deutung.",
+                "en": "Wave and particle models, probability interpretation, which-way information and the Copenhagen interpretation."
+              }
+            }
+          ]
+        },
+        {
+          "code": "GK-3",
+          "title": {
+            "de": "Elektrodynamik und Energieübertragung (Grundkurs)",
+            "en": "Electrodynamics and energy transmission (basic course)"
+          },
+          "summary": {
+            "de": "Induktionsgesetz, Generator und Transformator, Fernübertragung von Energie, Kondensator laden und entladen sowie die elektromagnetische Schwingung.",
+            "en": "Law of induction, generator and transformer, long-distance transmission of energy, charging and discharging a capacitor, and electromagnetic oscillation."
+          },
+          "parts": [
+            {
+              "code": "GK-3.1",
+              "title": {
+                "de": "Elektrodynamik",
+                "en": "Electrodynamics"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, elektromagnetische Induktion und Induktionsgesetz, Wechselspannung, Auf- und Entladung des Kondensators.",
+                "en": "Magnetic flux, electromagnetic induction and the law of induction, alternating voltage, charging and discharging a capacitor."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "GK-3.2",
+              "title": {
+                "de": "Energieübertragung",
+                "en": "Energy transmission"
+              },
+              "summary": {
+                "de": "Generator und Transformator, Freileitungen und die elektromagnetische Schwingung.",
+                "en": "Generator and transformer, overhead power lines and electromagnetic oscillation."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GK-4",
+          "title": {
+            "de": "Strahlung und Materie (Grundkurs)",
+            "en": "Radiation and matter (basic course)"
+          },
+          "summary": {
+            "de": "Elektromagnetisches Spektrum und ionisierende Strahlung, Linienspektren und Energieniveaus der Atomhülle sowie Kernumwandlungen, Zerfallsgesetz, Kernspaltung und Kernfusion.",
+            "en": "Electromagnetic spectrum and ionising radiation, line spectra and energy levels of the atomic shell, as well as nuclear transformations, the decay law, fission and fusion."
+          },
+          "parts": [
+            {
+              "code": "GK-4.1",
+              "title": {
+                "de": "Strahlung",
+                "en": "Radiation"
+              },
+              "summary": {
+                "de": "Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen.",
+                "en": "Spectrum of electromagnetic radiation, ionising radiation, the Geiger–Müller counter and biological effects."
+              }
+            },
+            {
+              "code": "GK-4.2",
+              "title": {
+                "de": "Atomphysik",
+                "en": "Atomic physics"
+              },
+              "summary": {
+                "de": "Linienspektren, Energieniveauschema, Franck-Hertz-Versuch, Kern-Hülle-Modell und Röntgenstrahlung.",
+                "en": "Line spectra, energy level diagrams, the Franck–Hertz experiment, the nuclear model of the atom and X-rays."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "GK-4.3",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Nukleonen, Zerfallsprozesse und Kernumwandlungen, Zerfallsgesetz und Halbwertszeit, Kernspaltung und -fusion.",
+                "en": "Nucleons, decay processes and nuclear transformations, the decay law and half-life, fission and fusion."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-1",
+          "title": {
+            "de": "Ladungen, Felder und Induktion (Leistungskurs)",
+            "en": "Charges, fields and induction (advanced course)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder mit Coulomb’schem Gesetz, Potential und Kondensator, Bahnen geladener Teilchen in Feldern sowie Induktion und Selbstinduktion.",
+            "en": "Electric and magnetic fields with Coulomb’s law, potential and capacitors, paths of charged particles in fields, as well as induction and self-induction."
+          },
+          "parts": [
+            {
+              "code": "LK-1.1",
+              "title": {
+                "de": "Elektrische Ladungen und Felder",
+                "en": "Electric charges and fields"
+              },
+              "summary": {
+                "de": "Ladungen, Feldstärke, Coulomb’sches Gesetz, Potential und Spannung, Kondensator und Kapazität mit Lade- und Entladekurven; magnetische Flussdichte.",
+                "en": "Charges, field strength, Coulomb’s law, potential and voltage, capacitor and capacitance with charging and discharging curves; magnetic flux density."
+              }
+            },
+            {
+              "code": "LK-1.2",
+              "title": {
+                "de": "Bewegungen in Feldern",
+                "en": "Motion in fields"
+              },
+              "summary": {
+                "de": "Geladene Teilchen in elektrischen Längs- und Querfeldern, Lorentzkraft und gekreuzte Felder.",
+                "en": "Charged particles in longitudinal and transverse electric fields, the Lorentz force and crossed fields."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LK-1.3",
+              "title": {
+                "de": "Elektromagnetische Induktion",
+                "en": "Electromagnetic induction"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, Induktionsgesetz, Lenz’sche Regel, Selbstinduktion und Induktivität.",
+                "en": "Magnetic flux, the law of induction, Lenz’s law, self-induction and inductance."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-2",
+          "title": {
+            "de": "Schwingende Systeme und Wellen (Leistungskurs)",
+            "en": "Oscillating systems and waves (advanced course)"
+          },
+          "summary": {
+            "de": "Mechanische und elektromagnetische Schwingungen mit Differentialgleichungen, Dämpfung und Resonanz, Wellenphänomene, Interferenz an Spalt und Gitter, Michelson-Interferometer und Hertz’scher Dipol.",
+            "en": "Mechanical and electromagnetic oscillations with differential equations, damping and resonance, wave phenomena, interference at slits and gratings, the Michelson interferometer and the Hertzian dipole."
+          },
+          "parts": [
+            {
+              "code": "LK-2.1",
+              "title": {
+                "de": "Schwingungen und Wellen",
+                "en": "Oscillations and waves"
+              },
+              "summary": {
+                "de": "Harmonische Schwingungen und ihre Kenngrößen, Wellengleichung, Huygens’sches Prinzip, Reflexion, Brechung, Beugung, Polarisation, Superposition und Michelson-Interferometer.",
+                "en": "Harmonic oscillations and their parameters, the wave equation, Huygens’ principle, reflection, refraction, diffraction, polarisation, superposition and the Michelson interferometer."
+              },
+              "simulations": [
+                "interferenz",
+                "stehende-wellen",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LK-2.2",
+              "title": {
+                "de": "Schwingende Systeme",
+                "en": "Oscillating systems"
+              },
+              "summary": {
+                "de": "Federpendel, Fadenpendel, gedämpfte und erzwungene Schwingungen und Resonanz, Schwingkreis und Hertz’scher Dipol.",
+                "en": "Spring and simple pendulum, damped and forced oscillations and resonance, the LC circuit and the Hertzian dipole."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-3",
+          "title": {
+            "de": "Quantenphysik (Leistungskurs)",
+            "en": "Quantum physics (advanced course)"
+          },
+          "summary": {
+            "de": "Photoeffekt und Planck’sches Wirkungsquantum, Bremsstrahlung, Bragg-Reflexion und Elektronenbeugung, Wellenfunktion, Delayed-Choice-Experiment und Unbestimmtheitsrelation.",
+            "en": "Photoelectric effect and Planck’s constant, bremsstrahlung, Bragg reflection and electron diffraction, the wave function, the delayed-choice experiment and the uncertainty principle."
+          },
+          "parts": [
+            {
+              "code": "LK-3.1",
+              "title": {
+                "de": "Teilchenaspekte von Photonen",
+                "en": "Particle aspects of photons"
+              },
+              "summary": {
+                "de": "Energiequantelung von Licht, Photoeffekt und Bremsstrahlung.",
+                "en": "Quantisation of light energy, the photoelectric effect and bremsstrahlung."
+              },
+              "simulations": [
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "LK-3.2",
+              "title": {
+                "de": "Photonen und Elektronen als Quantenobjekte",
+                "en": "Photons and electrons as quantum objects"
+              },
+              "summary": {
+                "de": "Doppelspaltexperiment, Bragg-Reflexion, Elektronenbeugung, Wahrscheinlichkeitsdeutung, Delayed-Choice-Experiment und Kopenhagener Deutung.",
+                "en": "Double-slit experiment, Bragg reflection, electron diffraction, probability interpretation, the delayed-choice experiment and the Copenhagen interpretation."
+              },
+              "simulations": [
+                "elektronenbeugung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LK-4",
+          "title": {
+            "de": "Atom- und Kernphysik (Leistungskurs)",
+            "en": "Atomic and nuclear physics (advanced course)"
+          },
+          "summary": {
+            "de": "Atommodelle bis zum Potentialtopf, Energieniveaus und Röntgenstrahlung, Arten und Nachweis ionisierender Strahlung, Zerfallsgesetz und Altersbestimmung sowie Kernspaltung und Kernfusion.",
+            "en": "Atomic models up to the potential well, energy levels and X-rays, types and detection of ionising radiation, the decay law and dating, as well as nuclear fission and fusion."
+          },
+          "parts": [
+            {
+              "code": "LK-4.1",
+              "title": {
+                "de": "Atomaufbau",
+                "en": "Atomic structure"
+              },
+              "summary": {
+                "de": "Atommodelle, eindimensionaler Potentialtopf, Energieniveauschema, Linienspektren, Franck-Hertz-Versuch und Röntgenstrahlung.",
+                "en": "Atomic models, the one-dimensional potential well, energy level diagrams, line spectra, the Franck–Hertz experiment and X-rays."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LK-4.2",
+              "title": {
+                "de": "Ionisierende Strahlung",
+                "en": "Ionising radiation"
+              },
+              "summary": {
+                "de": "Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption.",
+                "en": "Types of radiation, their detection, properties and absorption."
+              }
+            },
+            {
+              "code": "LK-4.3",
+              "title": {
+                "de": "Radioaktiver Zerfall",
+                "en": "Radioactive decay"
+              },
+              "summary": {
+                "de": "Kernaufbau, Zerfallsreihen, Zerfallsgesetz, Halbwertszeit und Altersbestimmung mit C-14.",
+                "en": "Nuclear structure, decay series, the decay law, half-life and carbon-14 dating."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LK-4.4",
+              "title": {
+                "de": "Kernspaltung und -fusion",
+                "en": "Nuclear fission and fusion"
+              },
+              "summary": {
+                "de": "Bindungsenergien, Massendefekt und Kettenreaktion.",
+                "en": "Binding energies, mass defect and chain reaction."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
