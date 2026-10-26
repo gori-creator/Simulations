@@ -127,5 +127,6 @@ Die Person liest auf dem Handy. Deshalb **deutsch, kurz, ohne Fachjargon**:
 - [ ] Lernmaterial DE und EN, Lösungen nachgerechnet, Links gültig, Ton stimmt
 - [ ] Lehrplan-Eintrag `ready`, `grades` unverändert
 - [ ] `npm run verify` grün (0/0/0, alle Tests, Build)
+- [ ] Bildtests in GitHub grün; gewollte Änderungen im Aussehen per `[bilder erneuern]` übernommen und im Pull Request Bild für Bild angesehen (`docs/BILDTESTS.md`)
 - [ ] `WARTESCHLANGE.md` aktualisiert, nur die eigenen Dateien geändert
 - [ ] Bericht an die Person mit Restpunkten
