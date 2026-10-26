@@ -30,7 +30,7 @@ In `src/curriculum/<fach>.ts` den `planned(...)`-Eintrag durch einen vollständi
   grades: [10, 12],                                 // Klassenstufen; > 13 = Uni
   kmk: ['P-E', 'P-BK-Mathematisieren'],             // IDs aus curriculum/kmk.ts
   keywords: L(['Schwingung', 'Periode'], ['oscillation', 'period']),
-  thumb: 'generic',                                 // Vorschaubild; besser: eigene thumb.svg im Simulationsordner
+  // thumb: 'pendulum',                             // nur ohne eigene thumb.svg im Simulationsordner (die ist besser)
 },
 ```
 
@@ -127,7 +127,7 @@ Die Konsistenztests melden u. a. fehlende Registrierung, fehlendes Lernmaterial,
 
 ## Checkliste
 
-- [ ] Lehrplan-Eintrag auf `ready` mit `slug`, `summary`, `thumb`, `kmk`, `keywords`
+- [ ] Lehrplan-Eintrag auf `ready` mit `slug`, `summary`, `kmk`, `keywords` und eigener `thumb.svg` (sonst `thumb`)
 - [ ] Zuordnung im Länder-Lehrplan (`src/curriculum/lehrplaene/`) geprüft – Klassenstufen müssen passen
 - [ ] Simulation funktioniert mit Maus, Touch und Tastatur (Regler)
 - [ ] Hell- und Dunkelmodus geprüft
