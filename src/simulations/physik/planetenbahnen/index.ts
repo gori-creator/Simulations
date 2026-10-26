@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, roundRect, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, mixColor, Plot, roundRect, seededRandom, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   circularSpeed,
   conicPoint,
@@ -271,9 +271,9 @@ export default defineSimulation({
       enTitle: 'Energie pro kg Planetenmasse',
       enTitleShort: 'Energie pro kg',
       enUnit: 'Werte in 10{k} J/kg',
-      enBound: 'E_[ges] < 0: gebunden – Kreis oder Ellipse',
-      enParabola: 'E_[ges] = 0: Grenzfall Parabel',
-      enFree: 'E_[ges] > 0: Fluchtbahn – Hyperbel',
+      enBound: 'E_ges < 0: gebunden – Kreis oder Ellipse',
+      enParabola: 'E_ges = 0: Grenzfall Parabel',
+      enFree: 'E_ges > 0: Fluchtbahn – Hyperbel',
       enChart: 'Energien über der Zeit',
       axisE: 'E in 10{k} J/kg',
       kindCircle: '<strong>Kreisbahn</strong>: v₀ = <var>v</var><sub>K</sub> = √(<var>G</var> · <var>M</var> / <var>r</var>₀) ≈ {vk} km/s, senkrecht zum Fahrstrahl',
@@ -359,9 +359,9 @@ export default defineSimulation({
       enTitle: 'Energy per kg of planet mass',
       enTitleShort: 'Energy per kg',
       enUnit: 'values in 10{k} J/kg',
-      enBound: 'E_[tot] < 0: bound – circle or ellipse',
-      enParabola: 'E_[tot] = 0: limiting case parabola',
-      enFree: 'E_[tot] > 0: escape orbit – hyperbola',
+      enBound: 'E_tot < 0: bound – circle or ellipse',
+      enParabola: 'E_tot = 0: limiting case parabola',
+      enFree: 'E_tot > 0: escape orbit – hyperbola',
       enChart: 'Energies against time',
       axisE: 'E in 10{k} J/kg',
       kindCircle: '<strong>Circular orbit</strong>: v₀ = <var>v</var><sub>K</sub> = √(<var>G</var> · <var>M</var> / <var>r</var>₀) ≈ {vk} km/s, perpendicular to the radius vector',
@@ -757,52 +757,21 @@ export default defineSimulation({
     surface.canvas.addEventListener('pointercancel', release);
 
     /* ---------- Text ---------- */
-    /** Teile eines Textes mit Tiefstellungen „v_[P]“. */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-    /** Text mit Tiefstellungen; `halo` = Farbe des Hofs oder null. */
     function rich(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo: string | null = HALO, weight = 700): number {
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo } : {}) });
     }
     const panelHalo = () => (ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(255,255,255,0.92)');
 
@@ -1085,6 +1054,7 @@ export default defineSimulation({
       const x1 = x0 + len * s;
       g.strokeStyle = INK_MUTED;
       g.lineWidth = 1.6;
+      g.lineJoin = 'round';
       g.beginPath();
       g.moveTo(x0, y0 - 4);
       g.lineTo(x0, y0);
@@ -1179,11 +1149,13 @@ export default defineSimulation({
         if (len < 44 || chord < 16) continue;
         const label = String(sec.index + 1);
         const w = richWidth(label, size) + 4;
-        for (const f of [0.74, 0.6, 0.86, 0.48]) {
+        // mit etwas Abstand zu anderen Beschriftungen (flache Ellipsen: „a“, „e“, „b“ liegen sonst dicht daneben)
+        const m = small ? 3 : 4;
+        for (const f of [0.74, 0.6, 0.86, 0.48, 0.92, 0.38]) {
           const x = sx + (mx - sx) * f;
           const y = sy + (my - sy) * f;
           const box = { x: x - w / 2, y: y - size / 2 - 2, w, h: size + 4 };
-          if (overlaps(box)) continue;
+          if (overlaps({ x: box.x - m, y: box.y - m, w: box.w + 2 * m, h: box.h + 2 * m })) continue;
           rich(label, x, y, size, secCol(sec.index, 1), 'center', HALO, 700);
           placed.push(box);
           break;
@@ -1321,7 +1293,7 @@ export default defineSimulation({
       g.moveTo(f2x + 5, f2y - 5);
       g.lineTo(f2x - 5, f2y + 5);
       g.stroke();
-      labelAt('F_[2]', f2x, f2y, -onx, -ony, INK, fs, 7);
+      labelAt('F_2', f2x, f2y, -onx, -ony, INK, fs, 7);
       // Perihel und Aphel mit Geschwindigkeiten
       const k = kLive() * s;
       const startAt = (q: Vec) => atIdle && Math.hypot(q[0] - p.r0, q[1]) < 1e-6 * Math.max(1, p.r0);
@@ -1341,12 +1313,17 @@ export default defineSimulation({
         // Läuft der Planet gerade hier vorbei, zeigt sein eigener Pfeil die Geschwindigkeit.
         const near = run.t > 0 && Math.hypot(wx(run.s.x) - qx, wy(run.s.y) - qy) < 70;
         if (isStart || (name === 'P' && o.hitsStar)) continue;
+        // „Perihel“ nicht hinter den Stern, der erst später gezeichnet wird (sehr flache Ellipsen)
+        const R = starRadius();
+        const star = { x: wx(0) - R - 2, y: wy(0) - R - 2, w: 2 * R + 4, h: 2 * R + 4 };
+        if (name === 'P') placed.push(star);
         labelAt(small ? name : word, qx, qy, sux * out, suy * out, geo, fs, 8);
+        if (name === 'P') placed.splice(placed.indexOf(star), 1);
         if (near || !p.vec) continue;
         // Geschwindigkeit im Perihel bzw. Aphel (tangential); vor dem Start nur als Text
         const tx = nx * sign * Math.sign(o.h || 1);
         const ty = -ny * sign * Math.sign(o.h || 1);
-        const vLab = num ? `v_[${name}] = ${n2(v, 1)} km/s` : `v_[${name}]`;
+        const vLab = num ? `v_{${name}} = ${n2(v, 1)} km/s` : `v_{${name}}`;
         if (atIdle) {
           labelAt(vLab, qx, qy, tx, ty, colV(0.95), small ? 10.5 : 11, 10);
         } else {
@@ -1391,12 +1368,12 @@ export default defineSimulation({
         const d = Math.hypot(px - x0, py - y0) || 1;
         labelAt(t, mx, my, -(py - y0) / d, (px - x0) / d, colStr(), fs, 5);
       };
-      lab(f1x, f1y, 'r_[1]');
-      lab(f2x, f2y, 'r_[2]');
+      lab(f1x, f1y, 'r_1');
+      lab(f2x, f2y, 'r_2');
       const r1 = Math.hypot(run.s.x, run.s.y);
       const r2 = Math.hypot(run.s.x - o.focus2[0], run.s.y - o.focus2[1]);
       const r = regions(surface.width, surface.height).scene;
-      const text = shown() ? `r_[1] + r_[2] = ${dist(r1)} + ${dist(r2)} = ${dist(r1 + r2)} ${AE} = 2a` : 'r_[1] + r_[2] = 2a';
+      const text = shown() ? `r_1 + r_2 = ${dist(r1)} + ${dist(r2)} = ${dist(r1 + r2)} ${AE} = 2a` : 'r_1 + r_2 = 2a';
       pill(r.x + r.w / 2, r.y + r.h - (small ? 54 : 60), text, colStr(), 'center', small ? 11 : 12);
     }
 
@@ -1412,8 +1389,8 @@ export default defineSimulation({
       const fs = small ? 10.5 : 11.5;
       // Ringe v_K und v_F um den Startpunkt
       const rings: [number, string, string, string, boolean][] = [
-        [vk, colGeo(snapped === 'vk' ? 0.95 : 0.6), colGeo(), shown() ? `v_[K] = ${n2(vk, 1)} km/s` : 'v_[K]', snapped === 'vk'],
-        [vf, colF(snapped === 'vf' ? 0.95 : 0.6), colF(), shown() ? `v_[F] = ${n2(vf, 1)} km/s` : 'v_[F]', snapped === 'vf'],
+        [vk, colGeo(snapped === 'vk' ? 0.95 : 0.6), colGeo(), shown() ? `v_K = ${n2(vk, 1)} km/s` : 'v_K', snapped === 'vk'],
+        [vf, colF(snapped === 'vf' ? 0.95 : 0.6), colF(), shown() ? `v_F = ${n2(vf, 1)} km/s` : 'v_F', snapped === 'vf'],
       ];
       for (const [v, color, ink, label, hot] of rings) {
         g.strokeStyle = color;
@@ -1465,7 +1442,7 @@ export default defineSimulation({
       const tx = px + Math.cos(a) * p.v0 * k;
       const ty = py - Math.sin(a) * p.v0 * k;
       arrowPx(px, py, tx, ty, colV(), small ? 3.2 : 3.8, small ? 11 : 13);
-      const lab = shown() ? `v_[0] = ${n2(p.v0, 2)} km/s` : 'v_[0]';
+      const lab = shown() ? `v_0 = ${n2(p.v0, 2)} km/s` : 'v_0';
       labelAt(lab, tx, ty, Math.cos(a), -Math.sin(a), colV(), small ? 11.5 : 12.5, 15);
     }
 
@@ -1491,7 +1468,7 @@ export default defineSimulation({
         arrowPx(x, y, x + vx * lenV, y + vy * lenV, colV(), small ? 3 : 3.4, small ? 10 : 12);
         labelAt(shown() ? `v = ${n2(run.v, 1)} km/s` : 'v', x + vx * lenV, y + vy * lenV, vx, vy, colV(), small ? 11 : 12, 6);
       }
-      labelAt('F_[G]', x + ((sx - x) / d) * (R * 0.6 + lenF), y + ((sy - y) / d) * (R * 0.6 + lenF), -(sy - y) / d, (sx - x) / d, colF(), small ? 11 : 12, 6);
+      labelAt('F_G', x + ((sx - x) / d) * (R * 0.6 + lenF), y + ((sy - y) / d) * (R * 0.6 + lenF), -(sy - y) / d, (sx - x) / d, colF(), small ? 11 : 12, 6);
     }
     const toKmsLocal = (v: number) => (v * AU) / YEAR / 1000;
 
@@ -1544,7 +1521,7 @@ export default defineSimulation({
       const R = starRadius();
       drawStar(sx, sy, R);
       placed.push({ x: sx - R - 2, y: sy - R - 2, w: 2 * R + 4, h: 2 * R + 4 });
-      if (p.geo && o.bound && o.kind !== 'circle') labelAt('F_[1]', sx - R * 0.7, sy - R * 0.7, -0.7, -0.7, INK, small ? 11 : 12, 4);
+      if (p.geo && o.bound && o.kind !== 'circle') labelAt('F_1', sx - R * 0.7, sy - R * 0.7, -0.7, -0.7, INK, small ? 11 : 12, 4);
       const atIdle = run.t === 0;
       if (atIdle) drawLaunch();
       const PR = small ? 6.5 : 8;
@@ -1661,6 +1638,9 @@ export default defineSimulation({
         const idx = sec ? sec.index : i;
         if (!sec || !started) {
           g.strokeStyle = withAlpha(theme.muted, 0.35);
+          // kräftig gepunkteter Umriss der noch leeren Flächen
+          g.lineWidth = 3.5;
+          g.lineJoin = 'round';
           g.setLineDash([3, 3]);
           roundRect(g, x + 0.5, Y(expected) + 0.5, bw - 1, base - Y(expected) - 1, 3);
           g.stroke();
@@ -1747,7 +1727,7 @@ export default defineSimulation({
             [tP, 'P', -12],
             [tA, 'A', -12],
           ] as const) {
-            const label = shown() ? `v_[${name}] = ${n2(q.v, 1)}` : `v_[${name}]`;
+            const label = shown() ? `v_{${name}} = ${n2(q.v, 1)}` : `v_{${name}}`;
             const w = richWidth(label, 11.5);
             // nahe der y-Achse (deren Beschriftung) lieber am rechten Ende, wo die Kurve wieder ansteigt
             const px0 = chart.px(q.t * tf);
@@ -1946,9 +1926,9 @@ export default defineSimulation({
       const unit = 10 ** k;
       const en = energies(run.s, p.M);
       const rows: [string, number, string][] = [
-        ['E_[kin]', en.kin, theme.series[0]!],
-        ['E_[pot]', en.pot, theme.series[1]!],
-        [de ? 'E_[ges]' : 'E_[tot]', en.total, theme.series[4]!],
+        ['E_kin', en.kin, theme.series[0]!],
+        ['E_pot', en.pot, theme.series[1]!],
+        [de ? 'E_ges' : 'E_tot', en.total, theme.series[4]!],
       ];
       const labW = small ? 40 : 46;
       const x0 = B.x + labW;

@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, Plot, prefersReducedMotion, roundRect, subText, Surface, text, tintedSprite, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   arrivalTime,
   chainResolves,
@@ -464,56 +464,21 @@ export default defineSimulation({
 
     const X = (g0: Geo, x: number) => g0.x0 + x * g0.kX;
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo: ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)' } : {}) });
     }
 
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
@@ -1384,7 +1349,13 @@ export default defineSimulation({
           for (const xx of [a, b]) plot.segment([xx, yb - range * 0.07], [xx, yb + range * 0.07], { color: green(), width: 1.5 });
           for (const xx of [xm(), partner]) plot.segment([xx, yb], [xx, displacement(w, xx, vt) * 100], { color: green(), width: 1, dash: [2, 3], alpha: 0.6 });
           plot.point(partner, displacement(w, partner, vt) * 100, { color: green(), radius: 4.5, hollow: true });
-          plot.textPx(plot.px((a + b) / 2), plot.py(yb), lbl, { color: green(), size: sm ? 11 : 12, weight: 'bold', align: 'center', baseline: 'middle' });
+          if (b - a > 2 * half + 0.05) plot.textPx(plot.px((a + b) / 2), plot.py(yb), lbl, { color: green(), size: sm ? 11 : 12, weight: 'bold', align: 'center', baseline: 'middle' });
+          else {
+            // Klammer zu schmal (kleines λ): Beschriftung neben die Klammer, sonst kreuzen die Hilfslinien sie
+            const lwPx = richWidth(lbl, sm ? 11 : 12);
+            const right = plot.px(b) + 7 + lwPx <= plot.rect.x + plot.rect.w - 4;
+            plot.textPx(right ? plot.px(b) + 7 : plot.px(a) - 7, plot.py(yb), lbl, { color: green(), size: sm ? 11 : 12, weight: 'bold', align: right ? 'left' : 'right', baseline: 'middle' });
+          }
         }
       }
       if (p.crest) {

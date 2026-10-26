@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, offscreenCanvas, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, subText, Surface, text, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { amplitudeRatio, driveAngle, drivePhase, F0, integrate, OMEGA0, phaseShift, readPhasor, resonanceOmega, step, type Drive, type State } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -179,9 +179,9 @@ export default defineSimulation({
       empty: 'Hier erscheinen die Messpunkte.',
       emptyHint: 'Warte, bis das Rad eingeschwungen ist.',
       f0: 'f₀',
-      fR: 'f_[R]',
-      fE: 'f_[E] = {f} Hz',
-      top: 'f_[E] = {f} Hz · f₀ = 0,50 Hz',
+      fR: 'f_R',
+      fE: 'f_E = {f} Hz',
+      top: 'f_E = {f} Hz · f₀ = 0,50 Hz',
       f0Only: '<var>f</var>₀ = 0,50 Hz (<var>T</var>₀ = 2,00 s)',
       f0Text: '<var>f</var>₀ = 0,50 Hz (<var>T</var>₀ = 2,00 s); Resonanz bei <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
       ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r}-fach)',
@@ -223,9 +223,9 @@ export default defineSimulation({
       empty: 'Your data points will appear here.',
       emptyHint: 'Wait until the wheel has settled.',
       f0: 'f₀',
-      fR: 'f_[R]',
-      fE: 'f_[E] = {f} Hz',
-      top: 'f_[E] = {f} Hz · f₀ = 0.50 Hz',
+      fR: 'f_R',
+      fE: 'f_E = {f} Hz',
+      top: 'f_E = {f} Hz · f₀ = 0.50 Hz',
       f0Only: '<var>f</var>₀ = 0.50 Hz (<var>T</var>₀ = 2.00 s)',
       f0Text: '<var>f</var>₀ = 0.50 Hz (<var>T</var>₀ = 2.00 s); resonance at <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
       ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r} times)',
@@ -365,7 +365,31 @@ export default defineSimulation({
     function skipTransient(silent: boolean): void {
       const d = drive();
       const duration = clamp(7 / p.damp, 12, 240);
-      const res = integrate(d, t, s, duration, 0.002, LIMIT);
+      const H = 0.002;
+      const tStart = t;
+      const sStart: [number, number] = [s[0], s[1]];
+      const res = integrate(d, t, s, duration, H, LIMIT);
+      // Verlauf des letzten Diagrammfensters vor dem Ende nachrechnen (gleiche Schritte wie
+      // `integrate`), damit das t-φ-Diagramm nach dem Sprung nicht leer ist – vor allem, wenn
+      // die Uhr nach einer Resonanzkatastrophe stehen bleibt
+      const W = niceWindow(Math.max(4, 3.2 / p.fE));
+      const from = res.t - W - 0.5;
+      const trace = { t: [] as number[], phi: [] as number[], e: [] as number[] };
+      let tt = tStart;
+      let st: [number, number] = sStart;
+      let next = Math.max(from, tStart);
+      const nSteps = Math.max(1, Math.round(duration / H));
+      for (let i = 0; i < nSteps; i++) {
+        st = step(d, tt, st, H);
+        tt += H;
+        if (tt >= next - 1e-9) {
+          trace.t.push(tt);
+          trace.phi.push(st[0]);
+          trace.e.push(driveAngle(d, tt));
+          next += SAMPLE;
+        }
+        if (Math.abs(st[0]) > LIMIT) break;
+      }
       if (res.exceeded) {
         if (silent) {
           // Messreihe: Punkt über der Belastungsgrenze markieren, Rad anhalten und weitermachen
@@ -386,7 +410,16 @@ export default defineSimulation({
       const ph = readPhasor(d, t, s);
       liveAmp = ph.amp;
       liveShift = ph.shift;
-      hist = { t: [t], phi: [s[0]], e: [driveAngle(d, t)] };
+      if (trace.t.length && !(res.exceeded && silent)) {
+        // letzter Punkt: Zustand nach dem Sprung (bei der Katastrophe am Anschlag)
+        const last = trace.t.length - 1;
+        if (trace.t[last]! < t - 1e-9) {
+          trace.t.push(t);
+          trace.phi.push(s[0]);
+          trace.e.push(driveAngle(d, t));
+        } else trace.phi[last] = s[0];
+        hist = trace;
+      } else hist = { t: [t], phi: [s[0]], e: [driveAngle(d, t)] };
       nextSample = t + SAMPLE;
       stepper.reset();
       jumpNote = { s: duration, until: performance.now() + 2200 };
@@ -457,56 +490,21 @@ export default defineSimulation({
       color: () => eColor(),
     });
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const sz = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${sz}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo: ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)' } : {}) });
     }
 
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
@@ -1095,9 +1093,16 @@ export default defineSimulation({
       g.fill();
       // Beschriftungen an den Spitzen
       const lab = (a: number, len: number, str: string, color: string) => {
-        const lx = cx + (len + 12) * Math.cos(a);
-        const ly = cy - (len + 12) * Math.sin(a);
-        richText(str, clamp(lx, R0.x + 22, R0.x + R0.w - 22), clamp(ly, R0.y + 26, R0.y + R0.h - footer), sm ? 10.5 : 11.5, color, 'center');
+        const fsz = sm ? 10.5 : 11.5;
+        // kurzer Zeiger (kleine Amplitude): Schrift mindestens so weit hinaus, dass sie Mitte und Achse freilässt
+        const hw = richWidth(str, fsz) / 2;
+        const dist = Math.max(len + 12, hw * Math.abs(Math.cos(a)) + (fsz / 2 + 2) * Math.abs(Math.sin(a)) + 10);
+        const lx = cx + dist * Math.cos(a);
+        let ly = cy - dist * Math.sin(a);
+        // kurzer, fast waagerechter Zeiger: Schrift über bzw. unter die Achse statt auf sie
+        const off = fsz / 2 + 4;
+        if (len < R * 0.3 && Math.abs(ly - cy) < off) ly = cy + (Math.sin(a) >= 0 ? -off : off);
+        richText(str, clamp(lx, R0.x + 22, R0.x + R0.w - 22), clamp(ly, R0.y + 26, R0.y + R0.h - footer), fsz, color, 'center');
       };
       lab(aE, lenE, ctx.t('erreger'), eColor());
       if (live) lab(aR, lenR, ctx.t('rad'), radColor());

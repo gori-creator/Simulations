@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { classify, farFieldAngle, frequency, frontEnvelope, hyperbola, maxLines, minLines, paths, phaseRad, WAVE_SPEED, type Line } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -154,9 +154,9 @@ export default defineSimulation({
       kLab: 'k = {k}',
       legMax: 'Bauchlinie',
       legMin: 'Knotenlinie',
-      alpha: 'α_[{k}] = {a}°',
-      alphaS: 'α_[{k}]',
-      farNote: 'sin α_[k] ≈ k · λ/d',
+      alpha: 'α_{{k}} = {a}°',
+      alphaS: 'α_{{k}}',
+      farNote: 'sin α_k ≈ k · λ/d',
       cardTitle: 'Messpunkt P',
       vMax: 'Maximum',
       vMin: 'Minimum',
@@ -204,9 +204,9 @@ export default defineSimulation({
       kLab: 'k = {k}',
       legMax: 'antinodal line',
       legMin: 'nodal line',
-      alpha: 'α_[{k}] = {a}°',
-      alphaS: 'α_[{k}]',
-      farNote: 'sin α_[k] ≈ k · λ/d',
+      alpha: 'α_{{k}} = {a}°',
+      alphaS: 'α_{{k}}',
+      farNote: 'sin α_k ≈ k · λ/d',
       cardTitle: 'Measuring point P',
       vMax: 'maximum',
       vMin: 'minimum',
@@ -302,8 +302,10 @@ export default defineSimulation({
       const h = surface.height;
       const side = w >= 640 || w >= h * 1.3;
       if (side) {
-        const pw = Math.round(clamp(w * 0.33, 228, 330));
-        const tank: Rect = { x: 0, y: 0, w: w - pw - 12, h };
+        // mittlere Breiten (iPad quer): schmalere Seitenspalte, damit die Wanne größer wird
+        const mid = w < 760;
+        const pw = Math.round(mid ? clamp(w * 0.32, 206, 228) : clamp(w * 0.33, 228, 330));
+        const tank: Rect = { x: 0, y: 0, w: w - pw - (mid ? 10 : 12), h };
         const ih = Math.round(Math.min(pw < 300 ? 182 : 204, h * 0.5));
         return { tank, info: { x: w - pw, y: 0, w: pw, h: ih }, chart: { x: w - pw, y: ih + 10, w: pw, h: h - ih - 10 }, side };
       }
@@ -343,57 +345,21 @@ export default defineSimulation({
       return { n: nBase + sweepN * q, R: RBase + sweepN * lam * q };
     }
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            // weiße Schrift auf dem Wasser: dunkler Rand, sonst Rand in Hintergrundfarbe
-            g.strokeStyle = color === '#ffffff' ? 'rgba(4,24,44,0.7)' : theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo: color === '#ffffff' ? 'rgba(4,24,44,0.7)' : ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)' } : {}) });
     }
 
     /** Pille mit Text; gibt das belegte Rechteck zurück. */
@@ -762,10 +728,15 @@ export default defineSimulation({
       }
       const box: Rect = { x: r.x + 14, y: r.y + (sm ? 42 : 48), w: r.w - 28, h: r.h - (sm ? 42 : 48) - 14 };
       const lab = [...lineLabels].sort((a, b) => Number(b.max) - Number(a.max) || Math.abs(a.ln.ds) - Math.abs(b.ln.ds));
+      // Viele Linien (großer Abstand, kleine Wellenlänge): nur jede zweite Ordnung beschriften,
+      // sonst stehen die Schilder dicht an dicht
+      const many = (max: boolean) => lab.filter((it) => it.max === max).length > (sm ? 24 : 18);
+      const thin = { max: many(true), min: many(false) };
       for (const it of lab) {
+        const k = it.ln.k;
+        if ((it.max ? thin.max : thin.min) && Math.abs(k) % 2 === 1) continue;
         const at = labelAnchor(it.polys, box);
         if (!at) continue;
-        const k = it.ln.k;
         const kTxt = k < 0 ? `−${-k}` : String(k);
         const txt = sm ? kTxt : tr('kLab', { k: kTxt });
         const w = richWidth(txt, fsz) + 16;
@@ -991,7 +962,7 @@ export default defineSimulation({
               ny = -ny;
             }
             const s = idx === 1 ? pth.s1 : pth.s2;
-            const txt = !ctx.isHidden('ds') && !sm ? `s_[${idx}] = ${fx(s, 2)} cm` : `s_[${idx}]`;
+            const txt = !ctx.isHidden('ds') && !sm ? `s_{${idx}} = ${fx(s, 2)} cm` : `s_{${idx}}`;
             const w = richWidth(txt, fsz) + 16;
             const cxp = clamp(mx + nx * (w / 2 + 6), r.x + 8 + w / 2, r.x + r.w - 8 - w / 2);
             const cyp = clamp(my + ny * 16, r.y + 44, r.y + r.h - 30);
@@ -1002,8 +973,8 @@ export default defineSimulation({
         g.restore();
       }
 
-      drawSource(e1[0], e1[1], blue(), 'E_[1]', -1, v.n, hover === 'e1' || grab === 'e1', sm, ik);
-      drawSource(e2[0], e2[1], red(), 'E_[2]', 1, v.n + v.ph / TAU, hover === 'e2' || grab === 'e2', sm, ik);
+      drawSource(e1[0], e1[1], blue(), 'E_1', -1, v.n, hover === 'e1' || grab === 'e1', sm, ik);
+      drawSource(e2[0], e2[1], red(), 'E_2', 1, v.n + v.ph / TAU, hover === 'e2' || grab === 'e2', sm, ik);
 
       // Korken als Messpunkt: hebt und senkt sich mit der Überlagerung
       const y1 = waveAt(v, pth.s1, 0, v.n);
@@ -1159,8 +1130,8 @@ export default defineSimulation({
         richText(value, lx + w + 6, ly, fs, theme.text, 'left', false, 600);
         ly += row;
       };
-      rowTxt('s_[1] =', showDs ? `${fx(pth.s1, 2)} cm` : ctx.t('hidden'), blue());
-      rowTxt('s_[2] =', showDs ? `${fx(pth.s2, 2)} cm` : ctx.t('hidden'), red());
+      rowTxt('s_1 =', showDs ? `${fx(pth.s1, 2)} cm` : ctx.t('hidden'), blue());
+      rowTxt('s_2 =', showDs ? `${fx(pth.s2, 2)} cm` : ctx.t('hidden'), red());
       let dsTxt = showDs ? `${fx(pth.ds, 2)} cm = ${fx(q, 2)} λ` : ctx.t('hidden');
       if (richWidth(`Δs = ${dsTxt}`, fs, 650) > maxW) dsTxt = showDs ? `${fx(q, 2)} λ` : dsTxt;
       rowTxt('Δs =', dsTxt, theme.text);
@@ -1282,8 +1253,8 @@ export default defineSimulation({
       let lx = R.x + R.w - 14;
       for (const [lab, col] of [
         ['y', green()],
-        ['y_[2]', red()],
-        ['y_[1]', blue()],
+        ['y_2', red()],
+        ['y_1', blue()],
       ] as const) {
         const w = richText(lab, lx, ty, fs, col, 'right', false, 750);
         g.strokeStyle = col;
