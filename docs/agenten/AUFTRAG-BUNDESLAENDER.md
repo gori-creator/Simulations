@@ -36,7 +36,10 @@ Bisher gibt es Bayern, Baden-Württemberg und Hessen, jeweils Gymnasium, Mathema
 
 ## So gehst du vor
 
-1. **Nur amtliche Quellen.** Das sind der Lehrplan bzw. das Kerncurriculum des Kultusministeriums oder Landesinstituts (z. B. NRW: QUA-LiS / schulentwicklung.nrw.de; Niedersachsen: cuvo.nibis.de). Gilt der aktuelle Lehrplan für G8 oder G9? Gibt es eine gymnasiale Oberstufe mit eigenem Lehrplan? Beides im Protokoll festhalten. Keine Schulbuchverlage, keine Foren.
+1. **Quelle sind die Lehrpläne, die dir die Projektleitung gibt** (PDFs bzw. Dateien des Kultusministeriums oder Landesinstituts). Nur diese verwenden, nicht im Netz nach anderen Fassungen suchen. Keine Schulbuchverlage, keine Foren.
+   - **Vorher prüfen, ob alles da ist:** Sekundarstufe I **und** gymnasiale Oberstufe, je Mathematik und Physik. Fehlt etwas, ist eine Datei unleserlich oder unklar, welche Fassung gilt: **bei der Projektleitung nachfragen**, nicht raten.
+   - Im Protokoll festhalten: Titel, Ausgabe und Stand jeder Datei; ob G8 oder G9; welcher Teil (Sek. I, Oberstufe) aus welcher Datei stammt.
+   - `sourceUrl` je Jahrgangsstufe: der amtliche Link zu genau dieser Datei, wenn er in ihr steht oder die Projektleitung ihn nennt. Sonst die Startseite des Ministeriums bzw. Landesinstituts, mit Vermerk in `ABGABE.md`.
 2. **Gliederung übernehmen:** Jahrgangsstufe → Lernbereich (Inhaltsfeld, Kompetenzbereich …) → Unterbereiche.
    - Überschriften so, wie sie im Lehrplan stehen.
    - Kurzbeschreibungen (`summary`) **in eigenen Worten**, ein bis zwei Sätze, Deutsch und Englisch. Nicht abschreiben.
@@ -45,7 +48,7 @@ Bisher gibt es Bayern, Baden-Württemberg und Hessen, jeweils Gymnasium, Mathema
 4. **Simulationen zuordnen:** Lies die Kurzbeschreibung in `SIMULATIONEN.md` und ordne nur zu, was **wirklich** zum Lernbereich passt, nicht bloß „irgendwie verwandt“. Eine Simulation darf bei mehreren Lernbereichen stehen.
 5. **Ziel: jede Simulation steht bei mindestens einem Jahrgang.** Was im Lehrplan des Landes wirklich nicht vorkommt, kommt auf die Ausnahmeliste, jeweils mit Grund (z. B. „Taylorpolynome: nicht im Kernlehrplan“).
 6. **Klassenstufe passt nicht?** Wird ein Thema im Land in einer Jahrgangsstufe unterrichtet, die außerhalb der `grades` der Simulation liegt (z. B. Binomialverteilung erst in 13), dann **nicht** einfach weglassen. Schreib es in die Liste „Klassenstufen erweitern“ (ID, bisher, neu, Lernbereich, Fundstelle). Die Projektleitung erweitert dann die Klassenstufen.
-7. **Unsicheres kennzeichnen:** In der Notiz der Jahrgangsstufe bzw. im Protokoll „Entwurf, bitte am Lehrplan prüfen“ dazuschreiben. Nichts erfinden: Findest du einen Lehrplan nicht, melde das, statt zu raten.
+7. **Unsicheres kennzeichnen:** In der Notiz der Jahrgangsstufe bzw. im Protokoll „Entwurf, bitte am Lehrplan prüfen“ dazuschreiben. Nichts erfinden: Steht etwas nicht in den gelieferten Lehrplänen, melde das, statt zu raten.
 
 ## Regeln, die die Tests prüfen
 
