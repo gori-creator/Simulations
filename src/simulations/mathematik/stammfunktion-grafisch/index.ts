@@ -1731,7 +1731,7 @@ export default defineSimulation({
           g.font = `700 ${fs(11, 10.5)}px ${theme.font}`;
           if (txt && g.measureText(txt).width < xb - xa - 8) {
             // Dunkelmodus: hell auf der Bandfarbe, sonst dunkle Schrift (Kontrast)
-            g.fillStyle = theme.dark ? textOn(mixColor(color(v), theme.bg, 0.45), theme, '#f4f7fb') : '#1b2533';
+            g.fillStyle = theme.dark ? textOn(color(v), theme, '#f4f7fb') : '#1b2533';
             g.textAlign = 'center';
             g.textBaseline = 'middle';
             g.fillText(txt, (xa + xb) / 2, y + h / 2 + 0.5);

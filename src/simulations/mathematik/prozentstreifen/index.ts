@@ -1182,7 +1182,7 @@ export default defineSimulation({
         g.restore();
         hatch(X(a), y, X(100) - X(a), h, withAlpha(col.down(), 0.55));
         if (k.labels > 0.5 && !counting) {
-          inside(`${say(L('neuer Preis', 'new price'))}`, 0, qs);
+          inside(`${say(L('neuer Preis', 'new price'))}`, 0, qs, textOn(col.W(), theme));
           inside(`−${Q('p', fmt.num(100 - QS.v, 1))} %`, qs, 100, col.down());
         }
         // Schnittlinie
@@ -1210,8 +1210,8 @@ export default defineSimulation({
           g.fillRect(X(100) - 7, y, 7, h);
         }
         if (k.labels > 0.5 && !counting) {
-          inside(s === 'mwst' ? say(L('netto', 'net')) : say(L('alter Preis', 'old price')), 0, 100);
-          inside(`+${Q('p', fmt.num(QS.v - 100, 1))} %`, 100, qs);
+          inside(s === 'mwst' ? say(L('netto', 'net')) : say(L('alter Preis', 'old price')), 0, 100, textOn(col.W(), theme));
+          inside(`+${Q('p', fmt.num(QS.v - 100, 1))} %`, 100, qs, textOn(col.up(), theme));
         }
       } else {
         fillSeg(0, qs, col.W());

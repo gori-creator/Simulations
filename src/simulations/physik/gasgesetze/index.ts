@@ -1990,7 +1990,7 @@ export default defineSimulation({
           roundRect(g, x + 0.75, y + 0.75, w - 1.5, h - 1.5, h / 2);
           g.stroke();
         }
-        const tc = mixColor(theme.text, '#ffffff', on);
+        const tc = mixColor(theme.text, textOn(col, theme), on);
         text(g, lab, x + w / 2, y + h / 2 + 0.5, { font: `${on > 0.5 ? 800 : 700} ${size}px ${theme.font}`, color: tc });
         tabRects.push({ ch, r: { x, y, w, h } });
         x += w + (sm ? 5 : 7);
