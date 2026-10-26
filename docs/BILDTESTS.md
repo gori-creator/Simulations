@@ -14,7 +14,7 @@ Schützt vor ungewollten Änderungen im Aussehen (`docs/FAHRPLAN.md`, Punkt 1.6)
   - Die Uhr der Seite ist angehalten und wird nur in festen Schritten vorgestellt.
   - Der Zufall (`Math.random`) liefert immer dieselbe Folge.
 - **Wann geprüft wird:** Bei **jedem Push** vergleicht GitHub Actions („Bildtests“, `.github/workflows/bildtests.yml`) neue Fotos mit den Referenzbildern.
-  - Die Bildtests sind ein eigener Prüfschritt neben „Prüfen“ und dauern etwa 3–5 Minuten.
+  - Die Bildtests sind ein eigener Prüfschritt neben „Prüfen“ und dauern etwa 3 Minuten (davon 1 Minute Build).
   - `npm run verify` bleibt davon unberührt.
 - **Kleine Abweichungen sind erlaubt** (`scripts/bildtests/vergleich.mjs`):
   - Ein Pixel zählt erst als verschieden, wenn ein Farbkanal um mehr als 32 (von 255) abweicht.
