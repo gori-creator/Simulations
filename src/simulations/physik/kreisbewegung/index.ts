@@ -1028,7 +1028,7 @@ export default defineSimulation({
     }
 
     /** Beschriftung mittig hinter einem Punkt in Richtung (ux, uy) – innerhalb der Szene. */
-    function labelBeyond(str: string, x: number, y: number, ux: number, uy: number, color: string, gap = 9, avoid: Rect[] = []): Rect {
+    function labelBeyond(str: string, x: number, y: number, ux: number, uy: number, color: string, gap = 9, avoid: Rect[] = [], line?: [number, number, number, number]): Rect {
       const small = narrow();
       const size = small ? 11 : 12.5;
       const w = richWidth(str, size);
@@ -1042,11 +1042,25 @@ export default defineSimulation({
         return { x: lx - w / 2, y: ly - h / 2, w, h };
       };
       // Abstand zu anderen Beschriftungen: 6 px seitlich, 5 px oben/unten (vorher 4/2: „F_Z = …“ stand dicht unter „r = …“)
-      const free = (b: Rect) => !avoid.some((a) => b.x < a.x + a.w + 6 && a.x < b.x + b.w + 6 && b.y < a.y + a.h + 5 && a.y < b.y + b.h + 5);
-      // erst direkt hinter der Spitze, dann seitlich daneben (bleibt nah am Pfeil), dann weiter hinaus
+      // … und nie auf dem eigenen Pfeil (langer Pfeil am Rand: die an den Rand geklemmte Beschriftung rutschte auf die Linie)
+      const onLine = (b: Rect) => {
+        if (!line) return false;
+        const [x0, y0, x1, y1] = line;
+        const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 3));
+        for (let i = 0; i <= n; i++) {
+          const px = x0 + ((x1 - x0) * i) / n;
+          const py = y0 + ((y1 - y0) * i) / n;
+          if (px > b.x - 4 && px < b.x + b.w + 4 && py > b.y - 3 && py < b.y + b.h + 3) return true;
+        }
+        return false;
+      };
+      const free = (b: Rect) => !onLine(b) && !avoid.some((a) => b.x < a.x + a.w + 6 && a.x < b.x + b.w + 6 && b.y < a.y + a.h + 5 && a.y < b.y + b.h + 5);
+      // erst direkt hinter der Spitze, dann seitlich daneben (bleibt nah am Pfeil), dann weiter hinaus,
+      // zuletzt seitlich neben dem Pfeil von der Spitze zurück
       const side = Math.abs(ux) * (h / 2 + 8) + Math.abs(uy) * (w / 2 + 16);
       const spots: [number, number][] = [[d0, 0], [d0, -side], [d0, side]];
       for (let k = 1; k < 30; k++) spots.push([d0 + 4 * k, 0]);
+      for (let k = 0; k < 16; k++) spots.push([-12 * k, -side], [-12 * k, side]);
       let box = boxAt(d0 + 4 * 29, 0);
       for (const [da, ds] of spots) {
         const b = boxAt(da, ds);
@@ -1106,10 +1120,10 @@ export default defineSimulation({
         const [sx, sy] = scene.toPx(broken.pos[0], broken.pos[1]);
         const out = Math.hypot(broken.pos[0], broken.pos[1]) || 1;
         vBox = labelBeyond(vText, sx, sy, broken.pos[0] / out, -broken.pos[1] / out, vColor(), 10, dimBox ? [dimBox] : []);
-      } else vBox = labelBeyond(vText, bx + ux * vl, by + uy * vl, ux, uy, vColor(), 9, dimBox ? [dimBox] : []);
+      } else vBox = labelBeyond(vText, bx + ux * vl, by + uy * vl, ux, uy, vColor(), 9, dimBox ? [dimBox] : [], [bx, by, bx + ux * vl, by + uy * vl]);
       const [mx0, my0] = scene.toPx(0, 0);
       const mBox: Rect = { x: mx0 - 6, y: my0 - 6, w: 30, h: 28 };
-      if (dir) labelBeyond(label, fx, fy, dir[0], dir[1], fColor(), 7, dimBox ? [vBox, dimBox, mBox] : [vBox, mBox]);
+      if (dir) labelBeyond(label, fx, fy, dir[0], dir[1], fColor(), 7, dimBox ? [vBox, dimBox, mBox] : [vBox, mBox], [bx, by, fx, fy]);
     }
 
     function drawScene(): void {
