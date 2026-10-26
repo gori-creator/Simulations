@@ -139,7 +139,8 @@ describe('Modell: Radioaktiver Zerfall – Zufall', () => {
     expect(Math.abs(sums[1]! / runs - 500)).toBeLessThan(4);
     expect(Math.abs(sums[2]! / runs - 250)).toBeLessThan(4);
     expect(Math.abs(sums[3]! / runs - 125)).toBeLessThan(4);
-  });
+    // Rechenintensiv (≈ 1 s allein, unter Last im Gesamtlauf deutlich länger): eigenes Zeitlimit
+  }, 30_000);
 
   it('einzelne Kerne: Mittelwert ≈ 1,44 T½, Median ≈ T½, Hälfte vor T½', () => {
     const p = decayProbability(LN2_TEST, 1 / 200);
@@ -226,7 +227,8 @@ describe('Modell: Radioaktiver Zerfall – Prüfrunde (Aufgaben und Sonderfälle
     const b = spread(2500, 300, 12);
     expect(Math.abs(b.m - 1250)).toBeLessThan(5);
     expect(Math.abs(b.s - 25)).toBeLessThan(3.5);
-  });
+    // Rechenintensiv (≈ 2,5 s allein; lief unter Last einmal in das Standardlimit von 5 s)
+  }, 30_000);
 
   it('Nuklid-Daten: Halbwertszeiten wie in Tabellen', () => {
     expect(NUCLIDES.rn220.halfLife).toBe(55.6);

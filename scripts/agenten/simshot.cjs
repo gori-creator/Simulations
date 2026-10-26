@@ -1,8 +1,9 @@
 // Screenshots und Fehlerprüfung für Simulationsseiten.
 // Aufruf: node simshot.cjs <port> <ausgabeordner> <specs.json> [namensfilter...]
-// specs.json: [["name", "/de/.../?a=1", 1360, "light"|"dark", [["action","id"],["wait",ms],["play"],["click",x,y],["drag",x1,y1,x2,y2]]], ...]
+// specs.json: [["name", "/de/.../?a=1", 1360, "light"|"dark", [["action","id"],["wait",ms],["play"],["click",x,y],["drag",x1,y1,x2,y2]], höhe?], ...]
+//   Optional als 6. Wert die Fensterhöhe in Pixeln (Standard 1000), z. B. 768 für ein iPad quer.
 // Koordinaten bei click/drag relativ zur Zeichenfläche (canvas) in CSS-Pixeln.
-// Weitere Schritte: ["set","key",wert] (Regler/Schalter/Auswahl bedienen), ["text","Beschriftung"] (Element mit genau diesem Text anklicken), ["sel","css"] (Element per Selektor anklicken).
+// Weitere Schritte: ["set","key",wert] (Regler/Schalter/Auswahl bedienen), ["text","Beschriftung"] (sichtbares Element mit genau diesem Text anklicken; verborgene wie das „Aufdecken“ eines ausgeblendeten Ergebnisses zählen nicht), ["sel","css"] (Element per Selektor anklicken).
 // Tastatur: ["focus","css"] fokussiert ein Element (z. B. ["focus",".sim__stage--keys"] für die Bühne mit Tastaturbedienung),
 //   ["key","ArrowRight"] drückt eine Taste auf dem gerade fokussierten Element (Playwright-Namen wie
 //   "Enter", "Tab", "Shift+Tab", "Space", "ArrowUp"; optional Anzahl: ["key","ArrowRight",3]).
@@ -15,9 +16,9 @@ const specs = JSON.parse(fs.readFileSync(specFile, 'utf8'));
 fs.mkdirSync(outDir, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
-  for (const [name, url, width, scheme, steps = []] of specs) {
+  for (const [name, url, width, scheme, steps = [], height = 1000] of specs) {
     if (only.length && !only.some((o) => name.startsWith(o))) continue;
-    const ctx = await browser.newContext({ viewport: { width, height: 1000 }, colorScheme: scheme, deviceScaleFactor: 1 });
+    const ctx = await browser.newContext({ viewport: { width, height }, colorScheme: scheme, deviceScaleFactor: 1 });
     const page = await ctx.newPage();
     const errors = [];
     page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
@@ -49,8 +50,9 @@ fs.mkdirSync(outDir, { recursive: true });
         if (!ok) errors.push('no param ' + key);
       } else if (step[0] === 'text') {
         // beliebiges Bedienelement über seine sichtbare Beschriftung anklicken
-        const b = page.getByText(step[1], { exact: true });
-        if (await b.count()) await b.first().click(); else errors.push('no text ' + step[1]);
+        // nur sichtbare Elemente (sonst wartet click auf ein verborgenes bis zur Zeitüberschreitung)
+        const b = page.getByText(step[1], { exact: true }).filter({ visible: true });
+        if (await b.count()) await b.first().click(); else errors.push('no visible text ' + step[1]);
       } else if (step[0] === 'sel') {
         const b = page.locator(step[1]);
         if (await b.count()) await b.first().click(); else errors.push('no selector ' + step[1]);
