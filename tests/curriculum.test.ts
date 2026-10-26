@@ -62,7 +62,15 @@ describe('Fertige Simulationen', () => {
     for (const sim of ready) {
       expect(sim.slug, sim.id).toBeDefined();
       expect(sim.summary, sim.id).toBeDefined();
-      expect(sim.thumb, sim.id).toBeDefined();
+      // Vorschaubild: eigene thumb.svg oder eine Vorlage aus `thumb`
+      const own = existsSync(`src/simulations/${sim.subject}/${sim.id}/thumb.svg`);
+      expect(own || sim.thumb !== undefined, sim.id).toBe(true);
+    }
+  });
+
+  it('setzen bei eigener thumb.svg nicht zusätzlich die Platzhalter-Vorlage', () => {
+    for (const sim of ready) {
+      if (existsSync(`src/simulations/${sim.subject}/${sim.id}/thumb.svg`)) expect(sim.thumb, sim.id).not.toBe('generic');
     }
   });
 

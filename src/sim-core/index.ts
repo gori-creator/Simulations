@@ -39,6 +39,7 @@ export {
   text,
   withAlpha,
   type SubTextPart,
+  type SubTextOptions,
   type SubTextStyle,
 } from './draw';
 export { ImageStore, simAssetUrl } from './images';
