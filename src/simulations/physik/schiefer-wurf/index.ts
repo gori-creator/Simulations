@@ -132,6 +132,7 @@ export default defineSimulation({
       help: L('Nach dem ersten Treffer erscheinen die Lösungen von selbst.', 'After the first hit the solutions appear automatically.'),
       default: false,
       visibleIf: (v) => v.mode === 'target',
+      spoiler: true,
     },
     {
       key: 'planet',
@@ -441,6 +442,8 @@ export default defineSimulation({
     let shots = 0;
     let hits = 0;
     let solved = false;
+    /** Lösungswinkel im Bild: nach einem Treffer oder mit „Lösungswinkel zeigen“ (im Aufgabenmodus erst nach dem Aufdecken). */
+    const solShown = () => solved || (p.sol && !ctx.isHidden('aim'));
     let flying = false;
     let lastResult: ShotResult | null = null;
 
@@ -1572,7 +1575,7 @@ export default defineSimulation({
           pill(0, -14, label, color, 'center', small ? 14 : 17, color);
           g.restore();
         }
-        if (solved || p.sol) {
+        if (solShown()) {
           const label = solutions.length === 2 ? tr('solTwo', { a: f(solutions[0]!.angle, 1), b: f(solutions[1]!.angle, 1) }) : solutions.length === 1 ? tr('solOne', { a: f(solutions[0]!.angle, 1) }) : tr('solNone', { v: n(launch.v0, 1), m: f(minSpeed(p.tx, p.ty - launch.h0, launch.g), 1) });
           pill(r.x + 8, y, label, theme.series[4]!, 'left', size);
           y += row;
@@ -1622,7 +1625,7 @@ export default defineSimulation({
       }
       // Lösungsbahnen beim Zielwurf
       if (m === 'target') {
-        if ((solved || p.sol) && solutions.length) for (const q of solutions) strokePath(q.pts, theme.series[4]!, 2, [2, 5], 0.85);
+        if (solShown() && solutions.length) for (const q of solutions) strokePath(q.pts, theme.series[4]!, 2, [2, 5], 0.85);
         drawTarget(r);
       }
       // Hauptbahn: vorausberechnet (gestrichelt) und zurückgelegt

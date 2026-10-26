@@ -191,6 +191,7 @@ export default defineSimulation({
       label: L('Ergebnis sofort anzeigen', 'Show the result right away'),
       default: true,
       help: L('Ausgeschaltet erst selbst rechnen, dann „Umrechnen“ antippen.', 'When off, work it out first, then tap “Convert”.'),
+      spoiler: true,
     },
   ],
   images: { clock: 'uhr.webp' },

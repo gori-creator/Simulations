@@ -84,6 +84,7 @@ export default defineSimulation({
       label: L('Ergebnis sofort zeigen', 'Show the result right away'),
       help: L('Ausgeschaltet erscheint das Ergebnis erst nach „Los!“.', 'When off, the result only appears after “Go!”.'),
       default: true,
+      spoiler: true,
     },
     { key: 'abs', type: 'boolean', group: 'view', label: L('Betrag und Gegenzahl zeigen', 'Show absolute value and opposite'), default: false },
   ],

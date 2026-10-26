@@ -17,6 +17,8 @@ export interface ControlsOptions {
   onInput: (key: string, value: ParamValue) => void;
   /** Aufgabenmodus zu Beginn (`ctx.hidden`): verbirgt Zusatzangaben der Auswahl-Optionen. */
   taskHidden?: boolean;
+  /** Schlüssel der Regler, die die Lösung verraten (`spoiler`, `resultsParam`). */
+  spoilerKeys?: ReadonlySet<string>;
 }
 
 /**
@@ -51,6 +53,9 @@ export class Controls {
   private dynamicHelp: { def: ParamDef; element: HTMLElement; last: string }[] = [];
   private fmt: Formatter;
   private taskHidden: boolean;
+  /** Regler mit `spoiler` gerade ausgeblendet (Aufgabenmodus)? */
+  private spoilersHidden = false;
+  private lastValues: ParamValues | null = null;
 
   constructor(private readonly options: ControlsOptions) {
     this.fmt = new Formatter(options.lang);
@@ -60,10 +65,11 @@ export class Controls {
 
   /** Werte und Sichtbarkeit aktualisieren. */
   sync(values: ParamValues): void {
+    this.lastValues = values;
     for (const view of this.views) {
       const value = values[view.def.key];
       if (value !== undefined) view.sync(value);
-      view.root.hidden = !isVisible(view.def, values);
+      view.root.hidden = !isVisible(view.def, values) || (this.spoilersHidden && this.isSpoiler(view.def));
     }
     for (const entry of this.dynamicHelp) {
       const text = resolveText(entry.def.help, values, this.options.lang) ?? '';
@@ -87,6 +93,17 @@ export class Controls {
     if (hidden === this.taskHidden) return;
     this.taskHidden = hidden;
     for (const view of this.views) view.setTaskHidden?.(hidden);
+  }
+
+  /** Regler, die die Lösung verraten, aus- bzw. wieder einblenden (Aufgabenmodus). */
+  setSpoilersHidden(hidden: boolean): void {
+    if (hidden === this.spoilersHidden) return;
+    this.spoilersHidden = hidden;
+    if (this.lastValues) this.sync(this.lastValues);
+  }
+
+  private isSpoiler(def: ParamDef): boolean {
+    return !!def.spoiler || !!this.options.spoilerKeys?.has(def.key);
   }
 
   private build(): void {
