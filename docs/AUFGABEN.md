@@ -8,6 +8,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
+| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (ohne GitHub, Abgabe als ZIP) | beginnt mit Nordrhein-Westfalen |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
 
 ## Erledigt
