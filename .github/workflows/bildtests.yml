@@ -1,0 +1,70 @@
+# Bildtests: fotografiert jede Simulation in der Startansicht (hell und dunkel)
+# und vergleicht mit den Referenzbildern in tests/bildtests/referenz/.
+# Eigener Prüfschritt neben „Prüfen“, damit npm run verify schnell bleibt.
+# Anleitung (auch: Referenzbilder bewusst erneuern): docs/BILDTESTS.md
+name: Bildtests
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      erneuern:
+        description: 'Referenzbilder neu erzeugen und auf diesen Zweig committen'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bildtests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bildtests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      # nur zum Committen erneuerter Referenzbilder
+      contents: write
+    # Fester Container: gleiche Browser-Version und gleiche Schriften bei jedem Lauf.
+    # Bei einem Wechsel der Version die Referenzbilder erneuern.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+    env:
+      ERNEUERN: ${{ (github.event_name == 'workflow_dispatch' && inputs.erneuern) || contains(github.event.head_commit.message, '[bilder erneuern]') }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Playwright (passend zum Container)
+        run: npm install --no-save playwright@1.64.1
+      - name: Build
+        run: npm run build
+      - name: Bilder vergleichen
+        if: env.ERNEUERN != 'true'
+        run: node scripts/bildtests.mjs
+      - name: Referenzbilder erneuern
+        if: env.ERNEUERN == 'true'
+        run: |
+          node scripts/bildtests.mjs --erneuern
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A tests/bildtests/referenz
+          if git diff --cached --quiet; then
+            echo 'Referenzbilder unverändert.'
+          else
+            git commit -m 'Referenzbilder erneuert'
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+      - name: Ergebnis hochladen
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: bildtests-ergebnis
+          path: bildtests-ergebnis/
+          retention-days: 14
