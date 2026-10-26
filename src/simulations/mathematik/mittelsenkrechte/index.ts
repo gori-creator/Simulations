@@ -1,4 +1,4 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   armDistances,
   bisectorDir,
@@ -151,6 +151,7 @@ export default defineSimulation({
     { key: 'trace', type: 'boolean', group: 'view', label: L('Spur der gleich weit entfernten Punkte', 'Trace of equidistant points'), default: true, visibleIf: isMode('mittel', 'winkel') },
     { key: 'circ', type: 'boolean', group: 'view', label: L('Umkreis zeigen', 'Show the circumcircle'), default: true, visibleIf: isMode('umk') },
   ],
+  images: { compass: 'zirkel-teile.webp', pencil: 'bleistift.webp' },
   actions: [
     { id: 'next', label: L('Nächster Schritt', 'Next step'), primary: true, visibleIf: isMode('konstr') },
     { id: 'play', label: L('Alles abspielen', 'Play all'), visibleIf: isMode('konstr') },
@@ -1522,6 +1523,58 @@ export default defineSimulation({
       g.stroke();
     }
 
+    /* ---------- Fotos von Zirkel und Bleistift (optional) ---------- */
+    /**
+     * Zirkel-Foto: zwei getrennte, senkrechte Schenkel nebeneinander. Jeder
+     * Schenkel wird um das Gelenk gedreht, bis seine Spitze auf Nadel bzw.
+     * Mine zeigt; Seitenverhältnis bleibt, die Länge folgt der Schenkellänge.
+     * Vom Bleistiftschenkel wird nur der Teil unterhalb der Gelenkmitte
+     * gezeichnet, darüber liegt der Nadelschenkel mit Gelenkscheibe und Griff.
+     */
+    const COMPASS_IMG = { hingeY: 187, tipY: 1036, needle: { x: 0, w: 138, axis: 69 }, pencil: { x: 298, w: 161, axis: 365 } };
+    function compassPhoto(img: HTMLImageElement, hinge: Px, pin: Px, pen: Px, dark: boolean): void {
+      const g = surface.g;
+      const C = COMPASS_IMG;
+      const legPart = (tip: Px, part: { x: number; w: number; axis: number }, y0: number): void => {
+        const len = Math.hypot(tip[0] - hinge[0], tip[1] - hinge[1]);
+        if (len < 2) return;
+        const k = len / (C.tipY - C.hingeY);
+        const w = part.w * k;
+        const h = (img.height - y0) * k;
+        g.save();
+        g.translate(hinge[0], hinge[1]);
+        g.rotate(Math.atan2(tip[1] - hinge[1], tip[0] - hinge[0]) - Math.PI / 2);
+        g.drawImage(scaledSprite(img, w, h, surface.dpr, { crop: { x: part.x, y: y0, w: part.w, h: img.height - y0 } }), -(part.axis - part.x) * k, (y0 - C.hingeY) * k, w, h);
+        g.restore();
+      };
+      g.save();
+      g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.25)';
+      g.shadowBlur = 10;
+      g.shadowOffsetX = 5;
+      g.shadowOffsetY = 7;
+      legPart(pen, C.pencil, C.hingeY);
+      legPart(pin, C.needle, 0);
+      g.restore();
+    }
+
+    /** Bleistift-Foto (waagerecht, Spitze links in halber Höhe), gedreht wie der gezeichnete Stift. */
+    const PENCIL_IMG = { tipY: 62, len: 110 };
+    function pencilPhoto(img: HTMLImageElement, tip: Px, angle: number, dark: boolean): void {
+      const g = surface.g;
+      const len = PENCIL_IMG.len;
+      const k = len / img.width;
+      const h = img.height * k;
+      g.save();
+      g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.25)';
+      g.shadowBlur = 8;
+      g.shadowOffsetX = 5;
+      g.shadowOffsetY = 6;
+      g.translate(tip[0], tip[1]);
+      g.rotate(angle);
+      g.drawImage(scaledSprite(img, len, h, surface.dpr), 0, -PENCIL_IMG.tipY * k, len, h);
+      g.restore();
+    }
+
     function drawCompass(c: Compass): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -1543,6 +1596,12 @@ export default defineSimulation({
       const penTop: Px = [pen[0] + (hinge[0] - pen[0]) * 0.3, pen[1] + (hinge[1] - pen[1]) * 0.3];
       g.save();
       g.globalAlpha = c.alpha;
+      const photo = ctx.images.get('compass');
+      if (photo) {
+        compassPhoto(photo, hinge, pin, pen, theme.dark);
+        g.restore();
+        return;
+      }
       // Schatten auf dem Papier
       g.save();
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.25)';
@@ -1688,6 +1747,12 @@ export default defineSimulation({
       const w = 4.5;
       g.save();
       g.globalAlpha = alpha;
+      const photo = ctx.images.get('pencil');
+      if (photo) {
+        pencilPhoto(photo, tip, -1.0, theme.dark);
+        g.restore();
+        return;
+      }
       g.save();
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.25)';
       g.shadowBlur = 8;

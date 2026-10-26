@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   antinodes,
   DrivenString,
@@ -115,6 +115,7 @@ export default defineSimulation({
         ? L('Tipp: Ziehe in der Resonanzkurve, um die Frequenz des Erregers zu ändern.', 'Tip: drag in the resonance curve to change the driving frequency.')
         : L('Tipp: Ziehe den Punkt P auf dem Seil mit Maus oder Finger.', 'Tip: drag point P along the rope with the mouse or a finger.'),
   layout: { aspect: 1.4, aspectNarrow: 0.54 },
+  images: { driver: 'erreger.webp', pulley: 'umlenkrolle.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -954,6 +955,10 @@ export default defineSimulation({
     }
 
     /** Erreger (Vibrator) links: Gehäuse mit Stößel, der sich auf und ab bewegt. */
+    /** Erreger-Foto (erreger.webp, 839 × 906): Schnitt unter dem Stift und Oberkante des Gehäuses (Bildpixel). */
+    const DRIVER_SRC = { cut: 228, housing: 240 };
+    /** Umlenkrollen-Foto (umlenkrolle.webp, 491 × 1446): Mitte und Radius der Rolle, Schnitt über der Tischklemme (Bildpixel). */
+    const PULLEY_SRC = { cx: 245, cy: 255, r: 244, cut: 945 };
     function drawDriver(x: number, cy: number, y0: number, sm: boolean): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -962,26 +967,29 @@ export default defineSimulation({
       const bh = sm ? 40 : 54;
       const bx = x - bw - (sm ? 8 : 12);
       const by = cy + (sm ? 16 : 22);
-      g.save();
-      g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 4;
-      const body = g.createLinearGradient(bx, by, bx + bw, by + bh);
-      body.addColorStop(0, dark ? '#3d4a5e' : '#5b6b82');
-      body.addColorStop(1, dark ? '#222b38' : '#36435a');
-      g.fillStyle = body;
-      roundRect(g, bx, by, bw, bh, 8);
-      g.fill();
-      g.restore();
-      // Lüftungsschlitze
-      g.strokeStyle = 'rgba(255,255,255,0.18)';
-      g.lineWidth = 2;
-      for (let i = 0; i < 3; i++) {
-        const yy = by + bh * 0.55 + i * 6;
-        g.beginPath();
-        g.moveTo(bx + 9, yy);
-        g.lineTo(bx + bw - 9, yy);
-        g.stroke();
+      const photo = ctx.images.get('driver');
+      if (!photo) {
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 4;
+        const body = g.createLinearGradient(bx, by, bx + bw, by + bh);
+        body.addColorStop(0, dark ? '#3d4a5e' : '#5b6b82');
+        body.addColorStop(1, dark ? '#222b38' : '#36435a');
+        g.fillStyle = body;
+        roundRect(g, bx, by, bw, bh, 8);
+        g.fill();
+        g.restore();
+        // Lüftungsschlitze
+        g.strokeStyle = 'rgba(255,255,255,0.18)';
+        g.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+          const yy = by + bh * 0.55 + i * 6;
+          g.beginPath();
+          g.moveTo(bx + 9, yy);
+          g.lineTo(bx + bw - 9, yy);
+          g.stroke();
+        }
       }
       // Stößel bis zum Seilanfang
       const sx = bx + bw / 2;
@@ -999,7 +1007,23 @@ export default defineSimulation({
       g.beginPath();
       g.arc(sx, cy + y0, 3.6, 0, TAU);
       g.fill();
-      richText(ctx.t('driver'), bx + bw / 2, by + bh + (sm ? 9 : 11), sm ? 11 : 12, theme.muted, 'center', true, 650);
+      // Foto des Gehäuses über dem unteren Ende des Stößels (der eigene Stift des Fotos ist abgeschnitten)
+      let bottom = by + bh;
+      if (photo) {
+        const D = DRIVER_SRC;
+        const k = bw / photo.width;
+        const crop = { x: 0, y: D.cut, w: photo.width, h: photo.height - D.cut };
+        const h = crop.h * k;
+        const y = by - (D.housing - D.cut) * k;
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(photo, bw, h, surface.dpr, { crop }), bx, y, bw, h);
+        g.restore();
+        bottom = y + h;
+      }
+      richText(ctx.t('driver'), bx + bw / 2, bottom + (sm ? 9 : 11), sm ? 11 : 12, theme.muted, 'center', true, 650);
     }
 
     /** Umlenkrolle mit Gewicht rechts (Melde-Versuch). */
@@ -1016,29 +1040,44 @@ export default defineSimulation({
       g.arc(px, py, R, -Math.PI / 2, 0);
       g.lineTo(px + R, py + (sm ? 26 : 40));
       g.stroke();
-      // Halter
-      g.strokeStyle = dark ? '#7d8899' : '#8d99a8';
-      g.lineWidth = 3;
-      g.beginPath();
-      g.moveTo(px, py);
-      g.lineTo(px - R * 0.4, py + R * 2.6);
-      g.stroke();
-      g.save();
-      g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
-      g.shadowBlur = 6;
-      g.shadowOffsetY = 2;
-      const wheel = g.createRadialGradient(px - R * 0.3, py - R * 0.3, 1, px, py, R);
-      wheel.addColorStop(0, dark ? '#b5bfcc' : '#f2f5f8');
-      wheel.addColorStop(1, dark ? '#4c5665' : '#9aa6b4');
-      g.fillStyle = wheel;
-      g.beginPath();
-      g.arc(px, py, R - 1.5, 0, TAU);
-      g.fill();
-      g.restore();
-      g.fillStyle = dark ? '#2b323d' : '#5d6878';
-      g.beginPath();
-      g.arc(px, py, 2.2, 0, TAU);
-      g.fill();
+      const photo = ctx.images.get('pulley');
+      if (photo) {
+        // Foto: Rolle genau auf dem Drehpunkt, die Tischklemme unten abgeschnitten
+        const P = PULLEY_SRC;
+        const k = (R - 1.5) / P.r;
+        const w = photo.width * k;
+        const h = P.cut * k;
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
+        g.shadowBlur = 6;
+        g.shadowOffsetY = 2;
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr, { crop: { x: 0, y: 0, w: photo.width, h: P.cut } }), px - P.cx * k, py - P.cy * k, w, h);
+        g.restore();
+      } else {
+        // Halter
+        g.strokeStyle = dark ? '#7d8899' : '#8d99a8';
+        g.lineWidth = 3;
+        g.beginPath();
+        g.moveTo(px, py);
+        g.lineTo(px - R * 0.4, py + R * 2.6);
+        g.stroke();
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
+        g.shadowBlur = 6;
+        g.shadowOffsetY = 2;
+        const wheel = g.createRadialGradient(px - R * 0.3, py - R * 0.3, 1, px, py, R);
+        wheel.addColorStop(0, dark ? '#b5bfcc' : '#f2f5f8');
+        wheel.addColorStop(1, dark ? '#4c5665' : '#9aa6b4');
+        g.fillStyle = wheel;
+        g.beginPath();
+        g.arc(px, py, R - 1.5, 0, TAU);
+        g.fill();
+        g.restore();
+        g.fillStyle = dark ? '#2b323d' : '#5d6878';
+        g.beginPath();
+        g.arc(px, py, 2.2, 0, TAU);
+        g.fill();
+      }
       // Gewichtsstück
       const wy = py + (sm ? 26 : 40);
       const ww = sm ? 16 : 22;

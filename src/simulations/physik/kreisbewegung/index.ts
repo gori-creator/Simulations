@@ -1,4 +1,4 @@
-import { defineSimulation, ease, measureSubText, Plot, roundRect, shade, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, Plot, roundRect, scaledSprite, shade, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   breakingPeriod,
   breakingSpeed,
@@ -27,6 +27,8 @@ const VIEW_STRING = 1.75;
 const VIEW_CAR = 1.75;
 /** Halbe Fahrbahnbreite in Vielfachen von r (nicht maßstäblich). */
 const ROAD = 0.13;
+/** Auto von oben `auto-oben.webp` (1600 × 801 px, Front rechts, füllt das Bild). */
+const CAR_IMG = { w: 1600, h: 801 };
 /** Startwinkel: unten, Bewegung gegen den Uhrzeigersinn. */
 const PHI0 = -Math.PI / 2;
 const ROAD_ORDER: RoadId[] = ['dry', 'wet', 'snow', 'ice'];
@@ -78,6 +80,7 @@ export default defineSimulation({
     'Drag with the mouse or a finger: the tip of the v arrow (speed), the point in the graph and, on the string, the ball outwards or inwards (radius).',
   ),
   layout: { aspect: 1.6, aspectNarrow: 0.52 },
+  images: { car: 'auto-oben.webp', asphalt: 'asphalt.webp' },
   groups: [
     { id: 'body', label: L('Körper und Bahn', 'Body and path') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -813,6 +816,25 @@ export default defineSimulation({
       g.arc(cx, cy, rIn, 0, Math.PI * 2, true);
       g.fill('evenodd');
       g.restore();
+      const asphaltImg = ctx.images.get('asphalt');
+      if (asphaltImg) {
+        // Foto: Asphalt als Muster im Ring (nass und im Dunkelmodus abgedunkelt; Glätte kommt darüber)
+        const tile = small ? 160 : 220;
+        const pattern = g.createPattern(scaledSprite(asphaltImg, tile, tile, surface.dpr), 'repeat');
+        if (pattern) {
+          pattern.setTransform(new DOMMatrix().scale(1 / surface.dpr));
+          g.fillStyle = pattern;
+          g.beginPath();
+          g.arc(cx, cy, rOut, 0, Math.PI * 2);
+          g.arc(cx, cy, rIn, 0, Math.PI * 2, true);
+          g.fill('evenodd');
+          const shadeA = (dark ? 0.3 : 0) + (p.road === 'wet' ? 0.22 : 0);
+          if (shadeA > 0) {
+            g.fillStyle = `rgba(8,12,18,${shadeA})`;
+            g.fill('evenodd');
+          }
+        }
+      }
       if (col.tint) {
         g.fillStyle = col.tint;
         g.beginPath();
@@ -929,6 +951,18 @@ export default defineSimulation({
       g.save();
       g.translate(x, y);
       g.rotate(-angle);
+      const carImg = ctx.images.get('car');
+      if (carImg) {
+        // Foto: Auto von oben, Front in Fahrtrichtung (Seitenverhältnis des Fotos)
+        const h = (len * CAR_IMG.h) / CAR_IMG.w;
+        g.shadowColor = 'rgba(0,0,0,0.45)';
+        g.shadowBlur = 8;
+        g.shadowOffsetX = 2;
+        g.shadowOffsetY = 3;
+        g.drawImage(scaledSprite(carImg, len, h, surface.dpr), -len / 2, -h / 2, len, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.45)';
       g.shadowBlur = 8;

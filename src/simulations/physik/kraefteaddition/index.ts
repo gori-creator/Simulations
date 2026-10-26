@@ -15,6 +15,42 @@ const NO_REGION: Rect = { x: 0, y: 0, w: 0, h: 0 };
  * beiden Ösen an (`eyeX` = Abstand von der Mitte, `eyeY`), `bulbY` = Glühlampe.
  */
 const LAMP_IMG = { w: 267, h: 447, top: 91, cx: 132.5, eyeX: 31.5, eyeY: 97, bulbY: 280 };
+/**
+ * T-Shirt `t-shirt.webp` (1220 × 1132 px): Mitte und Abstand der beiden
+ * Wäscheklammern (bei x ≈ 290 und 940, Oberkante y ≈ 5) – die Klammern sitzen
+ * auf der Leine.
+ */
+const SHIRT_IMG = { w: 1220, h: 1132, cx: 615, pegX: 325, pegY: 5 };
+/**
+ * Kraftmesser-Foto `kraftmesser.webp` (1600 × 170 px, Ring links, Haken rechts):
+ * Ringmitte, Rohrdurchmesser und Schnittstellen. Gezeichnet wird nur die Hülse
+ * mit Ring (die Skalenstange zeichnet die Simulation); gestaucht wird allein
+ * das gleichförmige Rohrstück zwischen `capEnd` und `tubeCut`.
+ */
+const METER_IMG = { h: 170, cy: 85, ringCx: 86, tube: 155, capEnd: 330, tubeCut: 1350, tubeEnd: 1398 };
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
+
+type Source = CanvasImageSource & { width: number; height: number };
+
+/**
+ * Kraftmesser-Hülse als Foto in lokalen Koordinaten: Rohrende bei x0,
+ * Ringmitte bei x1 (x1 > x0), Rohrmitte auf y = 0, Rohrdurchmesser `width`.
+ */
+function drawMeterPhoto(g: CanvasRenderingContext2D, img: Source, x0: number, x1: number, width: number, dpr: number): void {
+  const M = METER_IMG;
+  const s = width / M.tube;
+  const H = M.h * s;
+  const y = -M.cy * s;
+  const ringPart = (M.capEnd - M.ringCx) * s;
+  const endW = (M.tubeEnd - M.tubeCut) * s;
+  const mid = Math.max(1, x1 - ringPart - (x0 + endW));
+  const piece = (cx: number, cw: number, x: number, w: number) =>
+    g.drawImage(scaledSprite(img, w, H, dpr, { flipX: true, crop: { x: cx, y: 0, w: cw, h: M.h } }), x, y, w, H);
+  piece(M.tubeCut, M.tubeEnd - M.tubeCut, x0, endW + 0.5);
+  piece(M.capEnd, M.tubeCut - M.capEnd, x0 + endW, mid + 0.5);
+  piece(0, M.capEnd, x1 - ringPart, M.capEnd * s);
+}
 
 const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
 /** Teilfortschritt einer Animationsphase von a bis b. */
@@ -42,7 +78,7 @@ export default defineSimulation({
   id: 'kraefteaddition',
   dragHint: true,
   layout: { aspect: 1.45, aspectNarrow: 0.82 },
-  images: { lamp: 'lampe.webp' },
+  images: { lamp: 'lampe.webp', shirt: 't-shirt.webp', meter: 'kraftmesser.webp', table: 'tischkante.webp' },
   groups: [
     { id: 'f3', label: L('Dritte Kraft', 'Third force') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -933,18 +969,28 @@ export default defineSimulation({
       gx.shadowBlur = 4;
       gx.shadowOffsetY = 1.5;
       // Gehäuse
-      const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
-      tube.addColorStop(0, withAlpha(color, 0.6));
-      tube.addColorStop(0.4, withAlpha(color, 0.25));
-      tube.addColorStop(1, withAlpha(color, 0.8));
-      gx.fillStyle = tube;
-      roundRect(gx, start, -w / 2, housing, w, 3);
-      gx.fill();
-      gx.shadowColor = 'transparent';
-      gx.strokeStyle = color;
-      gx.lineWidth = 1.3;
-      roundRect(gx, start, -w / 2, housing, w, 3);
-      gx.stroke();
+      const meterImg = ctx.images.get('meter');
+      if (meterImg) {
+        // Foto: Ring am Seil zur Aufhängung, offenes Rohrende zur Last (gespiegelt gezeichnet)
+        gx.save();
+        gx.scale(-1, 1);
+        drawMeterPhoto(gx, meterImg, -(start + housing), -(start - w * 0.45), w, surface.dpr);
+        gx.restore();
+        gx.shadowColor = 'transparent';
+      } else {
+        const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
+        tube.addColorStop(0, withAlpha(color, 0.6));
+        tube.addColorStop(0.4, withAlpha(color, 0.25));
+        tube.addColorStop(1, withAlpha(color, 0.8));
+        gx.fillStyle = tube;
+        roundRect(gx, start, -w / 2, housing, w, 3);
+        gx.fill();
+        gx.shadowColor = 'transparent';
+        gx.strokeStyle = color;
+        gx.lineWidth = 1.3;
+        roundRect(gx, start, -w / 2, housing, w, 3);
+        gx.stroke();
+      }
       // Skalenstange
       gx.fillStyle = '#fbfbf7';
       gx.fillRect(start + housing, -w * 0.3, ext, w * 0.6);
@@ -1022,6 +1068,22 @@ export default defineSimulation({
         roundRect(gx, cx - tw / 2, floorTop, tw, 8, 3);
         gx.fill();
         gx.restore();
+        const tableImg = ctx.images.get('table');
+        if (tableImg) {
+          // Foto: Tischkante als Platte (abwechselnd gespiegelt gekachelt, im Dunkelmodus abgedunkelt)
+          gx.save();
+          roundRect(gx, cx - tw / 2, floorTop, tw, 8, 3);
+          gx.clip();
+          const tileW = (TABLE_IMG.w * 8) / TABLE_IMG.h;
+          for (let i = 0, tx = cx - tw / 2; tx < cx + tw / 2; i++, tx += tileW) {
+            gx.drawImage(scaledSprite(tableImg, tileW, 8, surface.dpr, { flipX: i % 2 === 1 }), tx, floorTop, tileW + 0.5, 8);
+          }
+          if (dark) {
+            gx.fillStyle = 'rgba(10,14,22,0.38)';
+            gx.fillRect(cx - tw / 2, floorTop, tw, 8);
+          }
+          gx.restore();
+        }
         gx.fillStyle = '#7d5530';
         gx.fillRect(cx - tw / 2 + 12, floorTop + 8, 6, th - 8);
         gx.fillRect(cx + tw / 2 - 18, floorTop + 8, 6, th - 8);
@@ -1087,7 +1149,7 @@ export default defineSimulation({
         gx.fill();
       }
       // Last
-      if (line) drawShirt(node[0], node[1], loadH, small);
+      if (line) drawShirt(node[0], node[1], loadH, small, depth / W);
       else if (lampImg) {
         drawLampPhoto(lampImg, cx, E1[1], lampK);
         // Wirkungslinien der Seilkräfte bis zum Knoten verlängern
@@ -1291,8 +1353,23 @@ export default defineSimulation({
       gx.fill();
     }
 
-    function drawShirt(x: number, y: number, h: number, small: boolean): void {
+    /** T-Shirt am Knoten (x, y); `slope` = Steigung der Leine (für die Klammern des Fotos). */
+    function drawShirt(x: number, y: number, h: number, small: boolean, slope: number): void {
       const gx = surface.g;
+      const shirtImg = ctx.images.get('shirt');
+      if (shirtImg) {
+        // Foto: Die beiden Klammern sitzen auf der Leine, die Mitte des Hemds unter dem Knoten
+        const S = SHIRT_IMG;
+        const k = (h * 1.05) / S.h;
+        const pegY = y - S.pegX * k * slope;
+        gx.save();
+        gx.shadowColor = 'rgba(0,0,0,0.25)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        gx.drawImage(scaledSprite(shirtImg, S.w * k, S.h * k, surface.dpr), x - S.cx * k, pegY - S.pegY * k - 2, S.w * k, S.h * k);
+        gx.restore();
+        return;
+      }
       const w = h * (small ? 0.9 : 0.95);
       const top = y + 4;
       // Klammer

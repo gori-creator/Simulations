@@ -1,4 +1,4 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, shade, Surface, text, type ChoiceParam, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, shade, Surface, text, type ChoiceParam, type Rect } from '../../../sim-core';
 import {
   convert,
   conversionText,
@@ -193,6 +193,7 @@ export default defineSimulation({
       help: L('Ausgeschaltet erst selbst rechnen, dann „Umrechnen“ antippen.', 'When off, work it out first, then tap “Convert”.'),
     },
   ],
+  images: { clock: 'uhr.webp' },
   actions: [
     { id: 'go', label: L('Umrechnen', 'Convert'), primary: true },
     { id: 'task', label: L('Neue Aufgabe', 'New task') },
@@ -1644,39 +1645,53 @@ export default defineSimulation({
       const cx = R.x + R.w / 2;
       const cy = R.y + R.h / 2;
       const e = ease.inOutCubic(u);
-      // Gehäuse
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.2)';
-      g.shadowBlur = 14;
-      g.shadowOffsetY = 4;
-      g.beginPath();
-      g.arc(cx, cy, r + 6, 0, Math.PI * 2);
-      const rim = g.createLinearGradient(0, cy - r, 0, cy + r);
-      rim.addColorStop(0, theme.dark ? '#5b6370' : '#d5dae2');
-      rim.addColorStop(1, theme.dark ? '#2c3139' : '#8f98a6');
-      g.fillStyle = rim;
-      g.fill();
-      g.restore();
-      g.beginPath();
-      g.arc(cx, cy, r, 0, Math.PI * 2);
-      const face = g.createRadialGradient(cx - r * 0.3, cy - r * 0.35, r * 0.1, cx, cy, r);
-      face.addColorStop(0, theme.dark ? shade(theme.bg, 0.22) : '#ffffff');
-      face.addColorStop(1, theme.dark ? shade(theme.bg, 0.12) : '#eef1f5');
-      g.fillStyle = face;
-      g.fill();
+      const photo = ctx.images.get('clock');
+      // Mit Foto ist das Zifferblatt auch im Dunkelmodus weiß: dann dunkle Striche und Zahlen
+      const lightFace = !theme.dark || !!photo;
+      if (photo) {
+        // Wanduhr-Foto: Zifferblatt (92 % des Bildradius) deckt sich mit dem Radius r
+        const d = (2 * r) / 0.92;
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.2)';
+        g.shadowBlur = 14;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(photo, d, d, surface.dpr), cx - d / 2, cy - d / 2, d, d);
+        g.restore();
+      } else {
+        // Gehäuse
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.2)';
+        g.shadowBlur = 14;
+        g.shadowOffsetY = 4;
+        g.beginPath();
+        g.arc(cx, cy, r + 6, 0, Math.PI * 2);
+        const rim = g.createLinearGradient(0, cy - r, 0, cy + r);
+        rim.addColorStop(0, theme.dark ? '#5b6370' : '#d5dae2');
+        rim.addColorStop(1, theme.dark ? '#2c3139' : '#8f98a6');
+        g.fillStyle = rim;
+        g.fill();
+        g.restore();
+        g.beginPath();
+        g.arc(cx, cy, r, 0, Math.PI * 2);
+        const face = g.createRadialGradient(cx - r * 0.3, cy - r * 0.35, r * 0.1, cx, cy, r);
+        face.addColorStop(0, theme.dark ? shade(theme.bg, 0.22) : '#ffffff');
+        face.addColorStop(1, theme.dark ? shade(theme.bg, 0.12) : '#eef1f5');
+        g.fillStyle = face;
+        g.fill();
+      }
       // vergangene Zeit als Sektor
       const laps = pair.big.id === 'd' ? 2 : 1;
       const turn = e * laps;
       const lap = Math.min(laps - 1, Math.floor(turn));
       const frac = turn - lap;
       if (lap > 0) {
-        g.fillStyle = alpha(color, theme.dark ? 0.14 : 0.08);
+        g.fillStyle = alpha(color, lightFace ? 0.08 : 0.14);
         g.beginPath();
         g.arc(cx, cy, r - 3, 0, Math.PI * 2);
         g.fill();
       }
       if (frac > 0.001) {
-        g.fillStyle = alpha(color, (theme.dark ? 0.22 : 0.14) * (u >= 1 && laps === 1 ? 0.6 : 1));
+        g.fillStyle = alpha(color, (lightFace ? 0.14 : 0.22) * (u >= 1 && laps === 1 ? 0.6 : 1));
         g.beginPath();
         g.moveTo(cx, cy);
         g.arc(cx, cy, r - 3, -Math.PI / 2, -Math.PI / 2 + frac * Math.PI * 2);
@@ -1684,7 +1699,7 @@ export default defineSimulation({
         g.fill();
       }
       // Striche und Zahlen
-      const ink = theme.dark ? '#e7ebf2' : '#1f2733';
+      const ink = lightFace ? '#1f2733' : '#e7ebf2';
       for (let i = 0; i < 60; i++) {
         const a = (i / 60) * Math.PI * 2;
         const big = i % 5 === 0;
@@ -1719,16 +1734,21 @@ export default defineSimulation({
       let count = 0;
       if (pair.big.id === 'h') {
         hand((e / 12) * twoPi, r * 0.5, 5, ink);
-        hand(e * twoPi, r * 0.78, 3.5, shade(color, theme.dark ? 0.1 : -0.1));
+        hand(e * twoPi, r * 0.78, 3.5, shade(color, lightFace ? -0.1 : 0.1));
         count = Math.round(e * 60);
       } else if (pair.big.id === 'min') {
         hand((e / 60) * twoPi, r * 0.78, 3.5, ink);
-        hand(e * twoPi, r * 0.85, 2, shade(color, theme.dark ? 0.1 : -0.1));
+        hand(e * twoPi, r * 0.85, 2, shade(color, lightFace ? -0.1 : 0.1));
         count = Math.round(e * 60);
       } else {
-        hand(turn * twoPi, r * 0.55, 5, shade(color, theme.dark ? 0.1 : -0.1));
+        hand(turn * twoPi, r * 0.55, 5, shade(color, lightFace ? -0.1 : 0.1));
         count = Math.round(e * 24);
-        if (u > 0) halo(lap === 0 ? tt('1. Runde: 12 h', '1st lap: 12 h') : tt('2. Runde: 24 h', '2nd lap: 24 h'), cx, cy + r * 0.42, font(700, 11.5), theme.muted);
+        if (u > 0) {
+          const lapText = lap === 0 ? tt('1. Runde: 12 h', '1st lap: 12 h') : tt('2. Runde: 24 h', '2nd lap: 24 h');
+          // auf dem weißen Foto-Zifferblatt ohne dunklen Rand (Dunkelmodus)
+          if (photo && theme.dark) text(g, lapText, cx, cy + r * 0.42, { font: font(700, 11.5), color: '#5b6472' });
+          else halo(lapText, cx, cy + r * 0.42, font(700, 11.5), theme.muted);
+        }
       }
       g.fillStyle = ink;
       g.beginPath();

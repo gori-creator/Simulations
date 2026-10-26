@@ -36,6 +36,8 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | resonanz | Host | `hint` soll `_` als Index setzen wie Regler; `hiddenChange` soll auch beim Aufdecken einzelner Ergebnisse feuern (bzw. eigener Rückruf `spoilerChange(key)`). | offen |
 | planetenbahnen | Host | `help` soll `_` als Index setzen wie Beschriftungen; Abfrage „nur Aufgabenmodus“ (`_hide=1`) getrennt vom `resultsParam`-Schalter, z. B. `ctx.taskMode`. | offen |
 | photoeffekt | `src/i18n/ui.ts` / Host | Zweiter allgemeiner Tipp zu `dragHint` für Drehknöpfe/Schieber auf der Bühne, der nicht von „markierten Punkten“ spricht. | offen |
+| fadenpendel | `src/curriculum/physik.ts`, `scripts/agenten/` | Lehrplan-Einträge `thumb: 'generic'` bei Simulationen mit eigener `thumb.svg` bereinigen (fadenpendel, brechung u. a.); Prüfbogen-Titel maskiert `&` doppelt; `simshot` ohne einstellbare Höhe. Test `radioaktiver-zerfall` lief unter Last einmal in eine Zeitüberschreitung (Zeitlimit prüfen). | offen |
+| brechung | `scripts/agenten/pruefbogen.cjs`, `scripts/agenten/simshot.cjs` | Tab-Reihenfolge im Prüfbogen-JSON endet nach den 12 Elementen der Kopfzeile und erreicht die Simulation nicht; `simshot` `["text",…]` klickt auch verborgene Elemente (z. B. „Aufdecken“ eines ausgeblendeten Ergebnisses) und läuft in eine Zeitüberschreitung – nur sichtbare wählen. | offen |
 
 ## Rückfragen an die Projektleitung
 
@@ -99,5 +101,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | stehende-wellen | An den Reglergrenzen (ν = 45) wirkt das Seil beim Erreger zackig, K-Marken dicht an dicht; feiner abtasten und Marken ausdünnen. | offen |
 | linienspektren | He-Termschema auf dem iPad quer eng; Hinweis „Vakuumwellenlänge“ (He 587,7 statt 587,6 nm in Luft) im Lernmaterial ergänzen. | offen |
 | elektronenbeugung | Die Skalenzahl „10“ auf dem Schirm wird teils vom Pfeil des Messkreises gekreuzt. | offen |
+| fadenpendel | „h = 8,6 cm“ berührt bei etwa 20–25° die Stativstange; bei 90° liegt die Kugel auf dem Stativarm; bei −170° und 2,5 m drängen sich die Kraftbeschriftungen an der Kugel. | offen |
+| brechung | Lokale Index-Helfer `parts`/`richText` (mit Schein und Kürzung) auf `subText` umstellen; im Aufgabenmodus des Prismas „+ ?° … = ?°“ ohne Gradzeichen; auf dem Handy wird der Glasfaser-Hinweis „Zu starke Biegung …“ gekürzt; „41,9° < α_G = 42,2°“ liegt auf dem Faserbogen über den Strahlen. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
 | kraefteaddition | Aufgabe 3 lädt mit sichtbarer Resultierender (als Hilfe gedacht). Entscheidung der Vertretung: so lassen. | entschieden |

@@ -184,6 +184,18 @@ export default defineSimulation({
   id: 'zehnerpotenzen',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.62 },
+  images: {
+    sand: 'sandkorn.webp',
+    bug: 'marienkaefer.webp',
+    apple: 'apfel.webp',
+    house: 'haus.webp',
+    field: 'fussballfeld.webp',
+    peak: 'berg.webp',
+    plane: 'flugzeug.webp',
+    iss: 'raumstation.webp',
+    earth: 'erde.webp',
+    cloud: 'wolke.webp',
+  },
   params: [
     {
       key: 'mode',
@@ -515,6 +527,11 @@ export default defineSimulation({
         const a = clamp((pw - 8) / 30, 0, 1) * (ctx.theme.dark ? 0.4 : 0.95);
         g.save();
         g.globalAlpha = a;
+        // Foto einer Wolke (etwa gleich breit wie die gezeichnete), abwechselnd gespiegelt
+        if (photo('cloud', cx, cy + 0.13 * pw, pw * 0.98, alt > 1800)) {
+          g.restore();
+          continue;
+        }
         const parts: [number, number, number][] = [
           [-0.3, 0.0, 0.17],
           [-0.12, -0.1, 0.22],
@@ -649,6 +666,14 @@ export default defineSimulation({
         }
         g.globalAlpha = 1;
       }
+      // Foto der Erde (Europa und Afrika), erst eingeblendet, wenn die Kugel als Ganzes sichtbar wird
+      const earthImg = ctx.images.get('earth');
+      if (earthImg && ballA > 0.01) {
+        g.globalAlpha = ballA;
+        g.imageSmoothingQuality = 'high';
+        g.drawImage(earthImg, cx - r, cy - r, 2 * r, 2 * r);
+        g.globalAlpha = 1;
+      }
       // Tag und Nacht: rechts unten etwas dunkler
       const night = g.createRadialGradient(cx - r * 0.5, cy - r * 0.6, r * 0.3, cx - r * 0.2, cy - r * 0.2, r * 1.5);
       night.addColorStop(0, 'rgba(0,0,0,0)');
@@ -714,10 +739,35 @@ export default defineSimulation({
       g.fill();
     }
 
+    /**
+     * Foto (falls geladen) unverzerrt zeichnen: Breite `w`, waagerecht mittig bei `x`,
+     * Unterkante bei `bottom`. Liefert das Bildrechteck oder `null` (dann Ersatzgrafik).
+     * Beim Zoomen ändert sich die Größe ständig – deshalb direkt mit hoher Glättung.
+     */
+    function photo(key: string, x: number, bottom: number, w: number, flip = false): Rect | null {
+      const img = ctx.images.get(key);
+      if (!img || w < 2) return null;
+      const h = (w * img.naturalHeight) / img.naturalWidth;
+      const g = surface.g;
+      g.save();
+      g.imageSmoothingEnabled = true;
+      g.imageSmoothingQuality = 'high';
+      if (flip) {
+        g.translate(x, 0);
+        g.scale(-1, 1);
+        g.drawImage(img, -w / 2, bottom - h, w, h);
+      } else g.drawImage(img, x - w / 2, bottom - h, w, h);
+      g.restore();
+      return { x: x - w / 2, y: bottom - h, w, h };
+    }
+
     function drawSand(X: number, Y: number, k: number): Rect {
       const g = surface.g;
       const r = 0.0005 * k;
       shadowEllipse(X, Y, r * 1.1, r * 0.22);
+      // Foto: Korn etwa 1,1 mm breit wie die Ersatzgrafik
+      const ph = photo('sand', X, Y + r * 0.05, r * 2.2);
+      if (ph) return ph;
       const cy = Y - r * 0.86;
       g.beginPath();
       for (let i = 0; i <= 14; i++) {
@@ -759,6 +809,10 @@ export default defineSimulation({
       const g = surface.g;
       const Lb = 0.007 * k;
       shadowEllipse(X, Y, Lb * 0.5, Lb * 0.06);
+      // Foto: Körper (ohne Fühler) etwa 85 % der Bildbreite, Hinterende links bei X − Lb/2
+      const bugW = Lb / 0.85;
+      const ph = photo('bug', X - Lb * 0.5 + bugW / 2, Y + Lb * 0.01, bugW);
+      if (ph) return { x: X - Lb * 0.5, y: ph.y, w: Lb, h: ph.h };
       const legH = Lb * 0.07;
       const bx0 = X - Lb * 0.5;
       const bx1 = X + Lb * 0.28;
@@ -826,6 +880,10 @@ export default defineSimulation({
       const g = surface.g;
       const R = 0.04 * k;
       shadowEllipse(X, Y, R * 0.8, R * 0.12);
+      // Foto: Apfel ohne Blatt etwa 92 % der Bildbreite (Durchmesser 2R), Blatt ragt rechts hinaus
+      const appleW = (2 * R) / 0.92;
+      const ph = photo('apple', X + appleW * 0.02, Y + R * 0.02, appleW);
+      if (ph) return { x: X - R, y: ph.y, w: 2 * R, h: ph.h };
       const cy = Y - R * 0.95;
       g.beginPath();
       g.moveTo(X, cy - 0.72 * R);
@@ -941,6 +999,12 @@ export default defineSimulation({
       const wallH = H * 0.58;
       const dark = ctx.theme.dark;
       shadowEllipse(X, Y, W * 0.6, H * 0.02);
+      // Foto: Firsthöhe = Bildhöhe = 10 m
+      const houseImg = ctx.images.get('house');
+      if (houseImg) {
+        const ph = photo('house', X, Y, (H * houseImg.naturalWidth) / houseImg.naturalHeight);
+        if (ph) return ph;
+      }
       // Schornstein
       g.fillStyle = dark ? '#7b4a3c' : '#9c5a46';
       g.fillRect(X + W * 0.22, Y - H * 0.98, W * 0.1, H * 0.25);
@@ -1013,6 +1077,13 @@ export default defineSimulation({
       const near = Y + D * 1.12;
       const inset = Lf * 0.06;
       const dark = ctx.theme.dark;
+      // Foto: Feld von schräg oben, Länge = Bildbreite, vordere Seitenlinie unten (dort liegt der Maßpfeil)
+      const fieldImg = ctx.images.get('field');
+      if (fieldImg) {
+        const fh = (Lf * fieldImg.naturalHeight) / fieldImg.naturalWidth;
+        const ph = photo('field', X, far - D * 0.1 + fh, Lf);
+        if (ph) return ph;
+      }
       const at = (u: number, w: number) => {
         // u ∈ [0, 1] entlang, w ∈ [0, 1] von hinten nach vorn
         const half = Lf / 2 - inset * (1 - w);
@@ -1105,6 +1176,23 @@ export default defineSimulation({
         [0.5, 0],
       ];
       const P = (q: [number, number]) => [X + q[0] * W, Y - q[1] * H] as const;
+      // Foto: Gipfel oben mittig, Fuß unten – Bildhöhe = 2962 m
+      const peakImg = ctx.images.get('peak');
+      const peakPh = peakImg ? photo('peak', X, Y + 1, (H * peakImg.naturalWidth) / peakImg.naturalHeight) : null;
+      if (peakPh) {
+        if (H > 140) {
+          // Gipfelkreuz wie bei der Ersatzgrafik
+          g.strokeStyle = dark ? '#e7c66a' : '#b8902c';
+          g.lineWidth = 2;
+          g.beginPath();
+          g.moveTo(X, Y - H);
+          g.lineTo(X, Y - H - 12);
+          g.moveTo(X - 4, Y - H - 8.5);
+          g.lineTo(X + 4, Y - H - 8.5);
+          g.stroke();
+        }
+        return { x: peakPh.x, y: Y - H, w: peakPh.w, h: H };
+      }
       g.beginPath();
       ridge.forEach((q, i) => {
         const [x, y] = P(q);
@@ -1177,6 +1265,14 @@ export default defineSimulation({
       g.moveTo(cx - w * 4, cy + w * 0.02);
       g.lineTo(cx - w * 0.4, cy + w * 0.02);
       g.stroke();
+      // Foto: etwas länger als die gezeichnete Form, Rumpf auf Höhe cy
+      const planeImg = ctx.images.get('plane');
+      if (planeImg) {
+        const pw = w * 1.15;
+        const phh = (pw * planeImg.naturalHeight) / planeImg.naturalWidth;
+        const ph = photo('plane', cx, cy + phh * 0.4, pw);
+        if (ph) return ph;
+      }
       const body = ctx.theme.dark ? '#d9dee6' : '#ffffff';
       const edge = ctx.theme.dark ? '#7d8796' : '#7b8494';
       g.fillStyle = body;
@@ -1213,6 +1309,13 @@ export default defineSimulation({
     function drawISS(cx: number, cy: number, s: number): Rect {
       const g = surface.g;
       const w = 46 * s;
+      // Foto: waagerecht, Mitte bei (cx, cy)
+      const issImg = ctx.images.get('iss');
+      if (issImg) {
+        const ih = (w * issImg.naturalHeight) / issImg.naturalWidth;
+        const ph = photo('iss', cx, cy + ih / 2, w);
+        if (ph) return ph;
+      }
       const panel = ctx.theme.dark ? '#3e5f9c' : '#2d5aa6';
       g.strokeStyle = ctx.theme.dark ? '#cfd6e0' : '#9aa3b2';
       g.lineWidth = Math.max(1, 2 * s);

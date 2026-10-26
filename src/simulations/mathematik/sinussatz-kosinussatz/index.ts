@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angles,
@@ -158,6 +158,7 @@ export default defineSimulation({
   id: 'sinussatz-kosinussatz',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
+  images: { crown: 'baumkrone.webp' },
   groups: [
     { id: 'pts', label: L('Ecken (in cm)', 'Vertices (in cm)') },
     { id: 'given', label: L('Gegebene Stücke', 'Given parts') },
@@ -1722,6 +1723,13 @@ export default defineSimulation({
       g.shadowBlur = 8;
       g.shadowOffsetX = 3;
       g.shadowOffsetY = 4;
+      const crownImg = ctx.images.get('crown');
+      if (crownImg) {
+        // Foto der Krone von oben, Mitte = Messpunkt T
+        g.drawImage(scaledSprite(crownImg, 2 * cr, 2 * cr, surface.dpr), pT[0] - cr, pT[1] - cr, 2 * cr, 2 * cr);
+      }
+      const crownGA = g.globalAlpha;
+      if (crownImg) g.globalAlpha = 0;
       const cg = g.createRadialGradient(pT[0] - cr * 0.3, pT[1] - cr * 0.35, 2, pT[0], pT[1], cr);
       cg.addColorStop(0, dark ? '#4f8a45' : '#7cc46a');
       cg.addColorStop(1, dark ? '#2a5a28' : '#3f8a35');
@@ -1737,6 +1745,7 @@ export default defineSimulation({
       }
       g.closePath();
       g.fill();
+      g.globalAlpha = crownGA;
       g.restore();
       // Standlinie wie ein Maßband
       const k0 = st(0);

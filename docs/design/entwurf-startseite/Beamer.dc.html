@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Beamer-Modus</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #FFFFFF; color: #0B0D12; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 72px; display: flex; align-items: center; gap: 16px; padding: 0 28px; border-bottom: 1px solid #EAEAEE">
+    <span style="font-size: 30px; font-weight: 800; letter-spacing: -0.8px">Freier Fall</span>
+    <span style="font-family: ui-monospace, Menlo, monospace; font-size: 14px; color: #B83A14; background: #FFF3EE; border: 1px solid #FCDDCF; padding: 4px 10px; border-radius: 8px">PHYSIK · KL. 9–11</span>
+    <div style="margin-left: auto; display: flex; gap: 10px">
+      <button type="button" style="height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 17px; font-weight: 650">QR-Code</button>
+      <button type="button" style="height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 17px; font-weight: 650">A−</button>
+      <button type="button" style="height: 48px; padding: 0 18px; border-radius: 12px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 17px; font-weight: 650">A+</button>
+      <button type="button" style="height: 48px; padding: 0 18px; border-radius: 12px; border: none; background: #0B0D12; color: #FFFFFF; font-size: 17px; font-weight: 700">Beenden <span style="font-family: ui-monospace, Menlo, monospace; font-size: 13px; opacity: 0.7">Esc</span></button>
+    </div>
+  </header>
+
+  <div style="flex: 1; display: flex; gap: 20px; padding: 20px 28px 0; min-height: 0">
+    <div style="flex: 1; border: 1px solid #EAEAEE; border-radius: 20px; display: flex; overflow: hidden; background: #F7F8FA">
+      <svg width="220" height="520" viewBox="0 0 220 520" aria-hidden="true">
+        <path d="M44 30 V470" stroke="#A0A4AD" stroke-width="2"></path>
+        <g stroke="#A0A4AD" stroke-width="2"><path d="M44 30h14M44 140h14M44 250h14M44 360h14M44 470h14"></path></g>
+        <rect x="90" y="16" width="70" height="12" rx="3" fill="#A0A4AD"></rect>
+        <circle cx="125" cy="70" r="15" fill="none" stroke="#5F6470" stroke-opacity="0.3" stroke-width="2.5"></circle>
+        <circle cx="125" cy="120" r="15" fill="none" stroke="#5F6470" stroke-opacity="0.5" stroke-width="2.5"></circle>
+        <circle cx="125" cy="200" r="16" fill="#3A3E47"></circle>
+        <rect x="0" y="474" width="220" height="46" fill="#D9CBB3"></rect>
+      </svg>
+      <svg width="100%" height="520" viewBox="0 0 700 520" aria-hidden="true">
+        <g stroke="#E6E7EB"><path d="M50 80H700M50 180H700M50 280H700M50 380H700M190 0V470M330 0V470M470 0V470M610 0V470"></path></g>
+        <path d="M50 470H700M50 20V470" stroke="#A0A4AD" stroke-width="2"></path>
+        <path d="M50 470 Q 330 460 470 260 T 680 40" fill="none" stroke="#B83A14" stroke-width="5"></path>
+        <circle cx="360" cy="400" r="10" fill="#FFFFFF" stroke="#B83A14" stroke-width="5"></circle>
+        <text x="60" y="42" fill="#3A3E47" font-size="20" font-family="system-ui">s in m</text>
+        <text x="640" y="500" fill="#3A3E47" font-size="20" font-family="system-ui">t in s</text>
+      </svg>
+    </div>
+    <aside style="width: 330px; display: flex; flex-direction: column; gap: 14px">
+      <div style="border: 1px solid #EAEAEE; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 10px; font-family: ui-monospace, Menlo, monospace">
+        <span style="font-size: 30px; font-weight: 700">t = 1,20 s</span>
+        <span style="font-size: 30px; font-weight: 700; color: #B83A14">s = 7,06 m</span>
+        <span style="font-size: 30px; font-weight: 700; color: #2F49D1">v = 11,8 m/s</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <button type="button" style="height: 54px; border-radius: 14px; border: none; background: #0B0D12; color: #FFFFFF; font-size: 18px; font-weight: 700">Erde</button>
+        <button type="button" style="height: 54px; border-radius: 14px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 18px; font-weight: 650">Mond</button>
+        <button type="button" style="height: 54px; border-radius: 14px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 18px; font-weight: 650">Mars</button>
+        <button type="button" style="height: 54px; border-radius: 14px; border: 1px solid #DCDCE2; background: #FFFFFF; font-size: 18px; font-weight: 650">Jupiter</button>
+      </div>
+      <div style="border: 1px solid #EAEAEE; border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; font-size: 19px; font-weight: 700"><span>Fallhöhe h</span><span style="font-family: ui-monospace, Menlo, monospace">20 m</span></div>
+        <div style="height: 10px; border-radius: 5px; background: #EDEDF1; position: relative"><div style="width: 30%; height: 10px; border-radius: 5px; background: #0B0D12"></div><div style="position: absolute; left: 30%; top: -9px; width: 28px; height: 28px; margin-left: -14px; border-radius: 14px; background: #FFFFFF; border: 3px solid #0B0D12; box-sizing: border-box"></div></div>
+      </div>
+      <button type="button" style="height: 64px; border-radius: 16px; border: none; background: #E8962A; color: #0B0D12; font-size: 22px; font-weight: 800">Start</button>
+    </aside>
+  </div>
+  <footer style="height: 44px; display: flex; align-items: center; gap: 24px; padding: 0 28px; font-size: 15px; color: #5F6470">
+    <span><span style="font-family: ui-monospace, Menlo, monospace; border: 1px solid #DCDCE2; border-radius: 6px; padding: 1px 7px">Leertaste</span> Start und Pause</span>
+    <span><span style="font-family: ui-monospace, Menlo, monospace; border: 1px solid #DCDCE2; border-radius: 6px; padding: 1px 7px">← →</span> Regler</span>
+    <span><span style="font-family: ui-monospace, Menlo, monospace; border: 1px solid #DCDCE2; border-radius: 6px; padding: 1px 7px">R</span> Zurücksetzen</span>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
