@@ -154,11 +154,12 @@ export default defineSimulation({
       type: 'choice',
       label: L('Nuklid', 'Nuclide'),
       options: [
-        { value: 'rn220', label: L('Radon-220 (55,6 s)', 'Radon-220 (55.6 s)') },
-        { value: 'i131', label: L('Iod-131 (8,02 d)', 'Iodine-131 (8.02 d)') },
-        { value: 'cs137', label: L('Cäsium-137 (30,1 a)', 'Caesium-137 (30.1 a)') },
-        { value: 'c14', label: L('Kohlenstoff-14 (5730 a)', 'Carbon-14 (5730 a)') },
-        { value: 'u238', label: L('Uran-238 (4,47 · 10⁹ a)', 'Uranium-238 (4.47 · 10⁹ a)') },
+        // Halbwertszeit als Zusatzangabe: im Aufgabenmodus verdeckt (wie im Ergebnis „Nuklid und Zerfall“)
+        { value: 'rn220', label: L('Radon-220', 'Radon-220'), detail: L('55,6 s', '55.6 s') },
+        { value: 'i131', label: L('Iod-131', 'Iodine-131'), detail: L('8,02 d', '8.02 d') },
+        { value: 'cs137', label: L('Cäsium-137', 'Caesium-137'), detail: L('30,1 a', '30.1 a') },
+        { value: 'c14', label: L('Kohlenstoff-14', 'Carbon-14'), detail: L('5730 a', '5730 a') },
+        { value: 'u238', label: L('Uran-238', 'Uranium-238'), detail: L('4,47 · 10⁹ a', '4.47 · 10⁹ a') },
       ],
       default: 'rn220',
     },
@@ -201,10 +202,17 @@ export default defineSimulation({
     { key: 'single', label: L('Dieser Kern', 'This nucleus') },
     { key: 'stats', label: L('Viele Beobachtungen', 'Many observations'), spoiler: true },
   ],
-  hint: L(
-    'Tipp: Einen Kern antippen und beobachten, wann er zerfällt (Tastatur: Tab bis zur Schale, dann Enter drücken, bis ein Kern markiert ist). Auch „linear“/„log“ und der Lautsprecher am Zähler lassen sich antippen.',
-    'Tip: tap a nucleus and watch when it decays (keyboard: Tab to the dish, then press Enter until a nucleus is marked). “linear”/“log” and the speaker on the counter can be tapped as well.',
-  ),
+  // Tipp je Versuch (Typangabe am Parameter, damit `ctx.params` typisiert bleibt)
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'one'
+      ? L(
+          'Tipp: Ist der Kern zerfallen, startet Antippen des Kerns oder „Nächster Kern“ die nächste Beobachtung; „100 Kerne auswerten“ zeigt schnell die Verteilung der Lebensdauern.',
+          'Tip: once the nucleus has decayed, tap it or use “Next nucleus” to watch the next one; “Evaluate 100 nuclei” quickly shows the distribution of lifetimes.',
+        )
+      : L(
+          'Tipp: Einen Kern antippen und beobachten, wann er zerfällt (Tastatur: Tab bis zur Schale, dann Enter). Auch „linear“/„log“ und der Lautsprecher am Zähler lassen sich antippen.',
+          'Tip: tap a nucleus and watch when it decays (keyboard: Tab to the dish, then Enter). “linear”/“log” and the speaker on the counter can be tapped as well.',
+        ),
   presets: [
     { id: 'start', label: L('Radon-220: 500 Kerne', 'Radon-220: 500 nuclei'), values: {} },
     { id: 'few', label: L('Nur 100 Kerne: viel Zufall', 'Only 100 nuclei: lots of chance'), values: { N0: 100 } },
