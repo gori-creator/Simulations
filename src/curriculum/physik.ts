@@ -49,7 +49,6 @@ export const physik: Subject = {
                 ['Bewegung', 'gleichförmige Bewegung', 'beschleunigte Bewegung', 't-s-Diagramm', 't-v-Diagramm', 't-a-Diagramm', 'Zeit-Ort-Diagramm', 'Geschwindigkeit', 'Beschleunigung', 'Bremsweg', 'Durchschnittsgeschwindigkeit', 'Steigungsdreieck'],
                 ['motion', 'uniform motion', 'accelerated motion', 'distance–time graph', 'velocity–time graph', 'acceleration–time graph', 'velocity', 'acceleration', 'braking distance', 'average velocity', 'slope'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'freier-fall',
@@ -66,7 +65,6 @@ export const physik: Subject = {
                 ['freier Fall', 'Fallbeschleunigung', 'Ortsfaktor', 'Fallröhre', 'Vakuum', 'Luftwiderstand', 'Stroboskop', 'Fallgesetz', 'Reaktionszeit', 'Lineal', 'gleichmäßig beschleunigte Bewegung'],
                 ['free fall', 'gravitational acceleration', 'feather', 'vacuum', 'air resistance', 'stroboscope', 'law of falling bodies', 'reaction time', 'ruler', 'uniformly accelerated motion'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -90,7 +88,6 @@ export const physik: Subject = {
                 ['Hookesches Gesetz', 'Feder', 'Federhärte', 'Federkonstante', 'Verlängerung', 'Kraft', 'Gewichtskraft', 'Proportionalität', 'Ursprungsgerade', 'Elastizitätsgrenze', 'Kraftmesser', 'Reihenschaltung', 'Parallelschaltung'],
                 ['Hooke’s law', 'spring', 'spring constant', 'extension', 'force', 'weight', 'proportionality', 'elastic limit', 'spring balance', 'springs in series', 'springs in parallel'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'hebelgesetz',
@@ -107,7 +104,6 @@ export const physik: Subject = {
                 ['Hebel', 'Hebelgesetz', 'Drehmoment', 'Kraftarm', 'Lastarm', 'Drehachse', 'einseitiger Hebel', 'zweiseitiger Hebel', 'Gleichgewicht', 'Kraftmesser', 'Schubkarre', 'Nussknacker', 'Flaschenöffner', 'Wippe', 'Goldene Regel der Mechanik', 'Kraftwandler'],
                 ['lever', 'law of the lever', 'torque', 'moment', 'effort arm', 'load arm', 'pivot', 'fulcrum', 'equilibrium', 'spring balance', 'wheelbarrow', 'nutcracker', 'bottle opener', 'seesaw', 'golden rule of mechanics'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'kraefteaddition',
@@ -124,7 +120,6 @@ export const physik: Subject = {
                 ['Kraft', 'Vektor', 'Kräfteaddition', 'Kräftezerlegung', 'Kräfteparallelogramm', 'Kräftepolygon', 'Krafteck', 'Resultierende', 'Komponenten', 'Gleichgewicht', 'Gegenkraft', 'Seilkraft', 'Federwaage', 'Wäscheleine', 'Lampe'],
                 ['force', 'vector', 'adding forces', 'resolving forces', 'parallelogram of forces', 'polygon of forces', 'resultant', 'components', 'equilibrium', 'tension', 'spring balance', 'clothesline'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'schiefe-ebene',
@@ -141,7 +136,6 @@ export const physik: Subject = {
                 ['schiefe Ebene', 'Hangabtriebskraft', 'Normalkraft', 'Gewichtskraft', 'Kräftezerlegung', 'Reibung', 'Haftreibung', 'Gleitreibung', 'Reibungszahl', 'Grenzwinkel', 'Kraftmesser', 'Kraftwandler', 'Goldene Regel der Mechanik'],
                 ['inclined plane', 'downhill force', 'normal force', 'weight', 'resolving forces', 'friction', 'static friction', 'kinetic friction', 'coefficient of friction', 'limiting angle', 'spring balance', 'golden rule of mechanics'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -165,7 +159,6 @@ export const physik: Subject = {
                 ['Energieerhaltung', 'Lageenergie', 'Bewegungsenergie', 'Höhenenergie', 'kinetische Energie', 'Reibung', 'Reibungswärme', 'innere Energie', 'Achterbahn', 'Looping', 'Zentripetalkraft', 'Energieumwandlung', 'Energiediagramm', 'Umkehrpunkt'],
                 ['conservation of energy', 'potential energy', 'kinetic energy', 'friction', 'heat', 'internal energy', 'roller coaster', 'loop', 'centripetal force', 'energy conversion', 'energy diagram', 'turning point'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'stoesse',
@@ -182,7 +175,6 @@ export const physik: Subject = {
                 ['Stoß', 'elastischer Stoß', 'unelastischer Stoß', 'teilelastischer Stoß', 'Impuls', 'Impulserhaltung', 'Impulserhaltungssatz', 'Energieerhaltung', 'Bewegungsenergie', 'innere Energie', 'Stoßzahl', 'Schwerpunkt', 'Schwerpunktsgeschwindigkeit', 'Luftkissenbahn', 'Gleiter', 'Klettband'],
                 ['collision', 'elastic collision', 'inelastic collision', 'partially elastic collision', 'momentum', 'conservation of momentum', 'conservation of energy', 'kinetic energy', 'internal energy', 'coefficient of restitution', 'centre of mass', 'air track', 'glider', 'Velcro'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -206,7 +198,6 @@ export const physik: Subject = {
                 ['Wurf', 'schiefer Wurf', 'waagerechter Wurf', 'Wurfparabel', 'Wurfweite', 'Steighöhe', 'Superposition', 'Luftwiderstand', 'Fallbeschleunigung', 'Abwurfwinkel', 'Zielwurf', 'Komplementärwinkel'],
                 ['projectile', 'oblique throw', 'horizontal throw', 'trajectory', 'range', 'maximum height', 'superposition', 'air resistance', 'gravitational acceleration', 'launch angle', 'target', 'complementary angles'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -230,7 +221,6 @@ export const physik: Subject = {
                 ['Kreisbewegung', 'gleichförmige Kreisbewegung', 'Zentripetalkraft', 'Zentripetalbeschleunigung', 'Bahngeschwindigkeit', 'Winkelgeschwindigkeit', 'Umlaufdauer', 'Frequenz', 'Trägheit', 'Tangente', 'Kurvenfahrt', 'Haftreibung', 'Haftreibungszahl', 'Kurvenradius', 'Glatteis'],
                 ['circular motion', 'uniform circular motion', 'centripetal force', 'centripetal acceleration', 'speed', 'angular velocity', 'period', 'frequency', 'inertia', 'tangent', 'cornering', 'static friction', 'coefficient of friction', 'radius of a bend', 'black ice'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'planetenbahnen',
@@ -248,7 +238,6 @@ export const physik: Subject = {
                 ['Keplersche Gesetze', 'Planetenbahn', 'Ellipse', 'Brennpunkt', 'große Halbachse', 'Exzentrizität', 'Perihel', 'Aphel', 'Flächensatz', 'Umlaufdauer', 'Gravitation', 'Gravitationsgesetz', 'Kreisbahngeschwindigkeit', 'Fluchtgeschwindigkeit', 'Hyperbel', 'Drehimpulserhaltung', 'Komet', 'Sonnensystem'],
                 ['Kepler’s laws', 'planetary orbit', 'ellipse', 'focus', 'semi-major axis', 'eccentricity', 'perihelion', 'aphelion', 'law of areas', 'orbital period', 'gravitation', 'law of gravitation', 'circular speed', 'escape velocity', 'hyperbola', 'conservation of angular momentum', 'comet', 'solar system'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -285,7 +274,6 @@ export const physik: Subject = {
                 ['Pendel', 'Fadenpendel', 'Schwingung', 'Periodendauer', 'Frequenz', 'Amplitude', 'Kleinwinkelnäherung', 'harmonische Schwingung', 'Dämpfung', 'Sekundenpendel', 'Ortsfaktor', 'Fadenkraft', 'Rückstellkraft', 'Phasendiagramm', 'Messreihe'],
                 ['pendulum', 'oscillation', 'period', 'frequency', 'amplitude', 'small-angle approximation', 'harmonic motion', 'damping', 'seconds pendulum', 'gravitational acceleration', 'tension', 'restoring force', 'phase diagram', 'measurement series'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'federpendel',
@@ -302,7 +290,6 @@ export const physik: Subject = {
                 ['Federpendel', 'Schwingung', 'harmonische Schwingung', 'Periodendauer', 'Frequenz', 'Kreisfrequenz', 'Amplitude', 'Elongation', 'Phase', 'Nullphasenwinkel', 'Zeigerdiagramm', 'Federhärte', 'Rückstellkraft', 'lineares Kraftgesetz', 'Spannenergie', 'Dämpfung', 'Stoppuhr'],
                 ['spring pendulum', 'mass on a spring', 'oscillation', 'harmonic motion', 'period', 'frequency', 'angular frequency', 'amplitude', 'displacement', 'phase', 'initial phase', 'phasor diagram', 'spring constant', 'restoring force', 'elastic energy', 'damping', 'stopwatch'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'resonanz',
@@ -320,7 +307,6 @@ export const physik: Subject = {
                 ['Resonanz', 'erzwungene Schwingung', 'Pohlsches Rad', 'Drehpendel', 'Erreger', 'Erregerfrequenz', 'Eigenfrequenz', 'Resonanzfrequenz', 'Resonanzkurve', 'Phasenverschiebung', 'Einschwingvorgang', 'Dämpfung', 'Wirbelstrombremse', 'Resonanzkatastrophe', 'Zeigerdiagramm'],
                 ['resonance', 'driven oscillation', 'forced oscillation', 'Pohl’s wheel', 'torsion pendulum', 'driver', 'driving frequency', 'natural frequency', 'resonance frequency', 'resonance curve', 'phase shift', 'transient', 'damping', 'eddy-current brake', 'resonance disaster', 'phasor diagram'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -344,7 +330,6 @@ export const physik: Subject = {
                 ['Welle', 'mechanische Welle', 'Transversalwelle', 'Longitudinalwelle', 'Querwelle', 'Längswelle', 'Wellenlänge', 'Frequenz', 'Ausbreitungsgeschwindigkeit', 'c = λ·f', 'Wellenfront', 'Verdichtung', 'Verdünnung', 'Wellenberg', 'Wellental', 'Phase', 'gleichphasig', 'Zeigerdiagramm', 'gekoppelte Oszillatoren', 'Momentaufnahme', 'Schall'],
                 ['wave', 'mechanical wave', 'transverse wave', 'longitudinal wave', 'wavelength', 'frequency', 'wave speed', 'c = λf', 'wave front', 'compression', 'rarefaction', 'crest', 'trough', 'phase', 'in phase', 'phasor', 'coupled oscillators', 'snapshot', 'sound'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'doppler-effekt',
@@ -361,7 +346,6 @@ export const physik: Subject = {
                 ['Doppler-Effekt', 'Dopplereffekt', 'Schall', 'Frequenz', 'Tonhöhe', 'Wellenlänge', 'Wellenfront', 'Martinshorn', 'Krankenwagen', 'bewegte Quelle', 'bewegter Beobachter', 'Schallgeschwindigkeit', 'Radialgeschwindigkeit', 'Schallmauer', 'Überschall', 'Machscher Kegel', 'Machzahl', 'Überschallknall'],
                 ['Doppler effect', 'sound', 'frequency', 'pitch', 'wavelength', 'wave front', 'siren', 'ambulance', 'moving source', 'moving observer', 'speed of sound', 'radial velocity', 'sound barrier', 'supersonic', 'Mach cone', 'Mach number', 'sonic boom'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'interferenz',
@@ -378,7 +362,6 @@ export const physik: Subject = {
                 ['Interferenz', 'Überlagerung', 'Superposition', 'Kreiswelle', 'Wellenwanne', 'Gangunterschied', 'Phasenunterschied', 'Knotenlinie', 'Bauchlinie', 'Hyperbel', 'Maximum', 'Minimum', 'konstruktive Interferenz', 'destruktive Interferenz', 'Auslöschung', 'Verstärkung', 'Zeigerdiagramm', 'kohärent', 'gegenphasig', 'Doppelspalt', 'Fernfeld'],
                 ['interference', 'superposition', 'circular wave', 'ripple tank', 'path difference', 'phase difference', 'nodal line', 'antinodal line', 'hyperbola', 'maximum', 'minimum', 'constructive interference', 'destructive interference', 'phasor', 'coherent', 'antiphase', 'double slit', 'far field'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'stehende-wellen',
@@ -395,7 +378,6 @@ export const physik: Subject = {
                 ['stehende Welle', 'Reflexion', 'festes Ende', 'loses Ende', 'Phasensprung', 'Knoten', 'Bauch', 'Schwingungsknoten', 'Schwingungsbauch', 'Überlagerung', 'Superposition', 'Eigenschwingung', 'Eigenfrequenz', 'Grundschwingung', 'Oberschwingung', 'Harmonische', 'Saite', 'Gitarre', 'Luftsäule', 'Pfeife', 'gedackte Pfeife', 'offene Pfeife', 'Orgelpfeife', 'Druckknoten', 'Schnelleknoten', 'Resonanz', 'Melde-Versuch', 'Hüllkurve'],
                 ['standing wave', 'stationary wave', 'reflection', 'fixed end', 'free end', 'phase jump', 'node', 'antinode', 'superposition', 'normal mode', 'natural frequency', 'fundamental', 'overtone', 'harmonic', 'string', 'guitar', 'air column', 'pipe', 'stopped pipe', 'open pipe', 'organ pipe', 'pressure node', 'displacement node', 'resonance', 'Melde’s experiment', 'envelope'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -432,7 +414,6 @@ export const physik: Subject = {
                 ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
                 ['electric circuit', 'closed circuit', 'open circuit', 'switch', 'light bulb', 'battery', 'electrons', 'conventional current', 'circuit diagram', 'circuit symbols', 'short circuit', 'fuse', 'conductor', 'insulator'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'ohmsches-gesetz',
@@ -449,7 +430,6 @@ export const physik: Subject = {
                 ['Ohmsches Gesetz', 'Widerstand', 'Kennlinie', 'I-U-Diagramm', 'U-I-Diagramm', 'Stromstärke', 'Spannung', 'Amperemeter', 'Voltmeter', 'Glühlampe', 'Konstantan', 'spezifischer Widerstand', 'Ursprungsgerade', 'Proportionalität'],
                 ['Ohm’s law', 'resistance', 'characteristic', 'current–voltage graph', 'current', 'voltage', 'ammeter', 'voltmeter', 'light bulb', 'constantan', 'resistivity', 'proportionality'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'reihe-parallel',
@@ -466,7 +446,6 @@ export const physik: Subject = {
                 ['Reihenschaltung', 'Parallelschaltung', 'gemischte Schaltung', 'Ersatzwiderstand', 'Gesamtwiderstand', 'Knotenregel', 'Maschenregel', 'Spannungsteiler', 'Stromstärke', 'Spannung', 'Glühlampe', 'Kirchhoff', 'Verzweigung'],
                 ['series circuit', 'parallel circuit', 'mixed circuit', 'equivalent resistance', 'total resistance', 'junction rule', 'loop rule', 'voltage divider', 'current', 'voltage', 'light bulb', 'Kirchhoff'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -490,7 +469,6 @@ export const physik: Subject = {
                 ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
                 ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'induktion',
@@ -507,7 +485,6 @@ export const physik: Subject = {
                 ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
                 ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'feldlinien',
@@ -524,7 +501,6 @@ export const physik: Subject = {
                 ['elektrisches Feld', 'Feldlinien', 'Feldstärke', 'Punktladung', 'Coulombsches Gesetz', 'Dipol', 'Äquipotentiallinien', 'Potential', 'Probeladung', 'Plattenkondensator', 'homogenes Feld', 'Superposition'],
                 ['electric field', 'field lines', 'field strength', 'point charge', 'Coulomb’s law', 'dipole', 'equipotential lines', 'potential', 'test charge', 'parallel-plate capacitor', 'uniform field', 'superposition'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'kondensator',
@@ -541,7 +517,6 @@ export const physik: Subject = {
                 ['Kondensator', 'Kapazität', 'Laden', 'Entladen', 'RC-Glied', 'Zeitkonstante', 'Halbwertszeit', 'Exponentialfunktion', 'Tangente', 'Ladestrom', 'Energie im Kondensator', 'Widerstand'],
                 ['capacitor', 'capacitance', 'charging', 'discharging', 'RC circuit', 'time constant', 'half-life', 'exponential function', 'tangent', 'charging current', 'energy in a capacitor', 'resistor'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -578,7 +553,6 @@ export const physik: Subject = {
                 ['Licht', 'Schatten', 'Kernschatten', 'Halbschatten', 'Randstrahl', 'Lichtquelle', 'punktförmig', 'geradlinige Ausbreitung', 'farbige Schatten', 'Sonnenfinsternis', 'Mondfinsternis', 'Mondphasen'],
                 ['light', 'shadow', 'umbra', 'penumbra', 'edge ray', 'light source', 'point source', 'rectilinear propagation', 'coloured shadows', 'solar eclipse', 'lunar eclipse', 'moon phases'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'reflexion',
@@ -595,7 +569,6 @@ export const physik: Subject = {
                 ['Reflexion', 'Reflexionsgesetz', 'Spiegel', 'Einfallswinkel', 'Reflexionswinkel', 'Lot', 'Spiegelbild', 'virtuelles Bild', 'Sehstrahl', 'Winkelspiegel', 'Mehrfachbilder', 'Kaleidoskop'],
                 ['reflection', 'law of reflection', 'mirror', 'angle of incidence', 'angle of reflection', 'normal', 'mirror image', 'virtual image', 'line of sight', 'angled mirrors', 'multiple images', 'kaleidoscope'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'brechung',
@@ -612,7 +585,6 @@ export const physik: Subject = {
                 ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter', 'Lichtleiter', 'Glasfaser', 'Prisma', 'Dispersion', 'Brewster-Winkel', 'scheinbare Hebung', 'Huygens'],
                 ['refraction', 'Snell’s law', 'total internal reflection', 'critical angle', 'refractive index', 'normal', 'angle of incidence', 'optical fibre', 'prism', 'dispersion', 'Brewster angle', 'apparent depth', 'Huygens'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'linsen',
@@ -629,7 +601,6 @@ export const physik: Subject = {
                 ['Linse', 'Sammellinse', 'Zerstreuungslinse', 'Brennweite', 'Brennpunkt', 'Parallelstrahl', 'Mittelpunktstrahl', 'Brennpunktstrahl', 'Linsengleichung', 'Abbildungsmaßstab', 'reelles Bild', 'virtuelles Bild', 'Lupe', 'Projektor', 'Kamera', 'Auge', 'Blende', 'Schärfentiefe'],
                 ['lens', 'converging lens', 'diverging lens', 'focal length', 'focal point', 'parallel ray', 'central ray', 'focal ray', 'lens equation', 'magnification', 'real image', 'virtual image', 'magnifying glass', 'projector', 'camera', 'eye', 'aperture', 'depth of field'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -653,7 +624,6 @@ export const physik: Subject = {
                 ['Doppelspalt', 'Gitter', 'Mehrfachspalt', 'Einzelspalt', 'Interferenz', 'Beugung', 'Gitterkonstante', 'Gangunterschied', 'Maximum', 'Ordnung', 'Nebenmaximum', 'Laser', 'Wellenlänge', 'Huygens', 'Intensitätsverteilung', 'Wellenmodell des Lichts'],
                 ['double slit', 'grating', 'multiple slit', 'single slit', 'interference', 'diffraction', 'grating constant', 'path difference', 'maximum', 'order', 'secondary maximum', 'laser', 'wavelength', 'Huygens', 'intensity distribution', 'wave model of light'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -690,7 +660,6 @@ export const physik: Subject = {
                 ['Teilchenmodell', 'Temperatur', 'Aggregatzustand', 'fest', 'flüssig', 'gasförmig', 'Schmelzen', 'Sieden', 'Erstarren', 'Kondensieren', 'Schmelztemperatur', 'Siedetemperatur', 'Schmelzwärme', 'Verdampfungswärme', 'Kelvin', 'absoluter Nullpunkt', 'Bewegungsenergie', 'Diffusion', 'Brownsche Bewegung'],
                 ['particle model', 'temperature', 'state of matter', 'solid', 'liquid', 'gas', 'melting', 'boiling', 'freezing', 'condensing', 'melting point', 'boiling point', 'latent heat', 'kelvin', 'absolute zero', 'kinetic energy', 'diffusion'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -715,7 +684,6 @@ export const physik: Subject = {
                 ['Gasgesetze', 'ideales Gas', 'allgemeine Gasgleichung', 'Boyle-Mariotte', 'Gay-Lussac', 'Amontons', 'isotherm', 'isobar', 'isochor', 'Druck', 'Volumen', 'Temperatur', 'Kelvin', 'absoluter Nullpunkt', 'Stoffmenge', 'Gaskonstante', 'Manometer', 'Teilchenmodell', 'Linearisierung', 'Zustandsänderung'],
                 ['gas laws', 'ideal gas', 'ideal gas law', 'Boyle’s law', 'Charles’s law', 'Gay-Lussac', 'Amontons', 'isothermal', 'isobaric', 'isochoric', 'pressure', 'volume', 'temperature', 'kelvin', 'absolute zero', 'amount of substance', 'gas constant', 'pressure gauge', 'particle model', 'linearisation'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -752,7 +720,6 @@ export const physik: Subject = {
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
                 ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
               ),
-              thumb: 'generic',
             },
           ],
         },
@@ -776,7 +743,6 @@ export const physik: Subject = {
                 ['Photoeffekt', 'lichtelektrischer Effekt', 'Fotozelle', 'Gegenfeldmethode', 'Gegenspannung', 'Austrittsarbeit', 'Grenzfrequenz', 'Einstein-Gerade', 'Photon', 'Planck-Konstante', 'Bewegungsenergie', 'Intensität', 'Fotostrom', 'Quantenobjekt'],
                 ['photoelectric effect', 'photocell', 'retarding field method', 'stopping voltage', 'work function', 'threshold frequency', 'Einstein line', 'photon', 'Planck constant', 'kinetic energy', 'intensity', 'photocurrent', 'quantum object'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'linienspektren',
@@ -793,7 +759,6 @@ export const physik: Subject = {
                 ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
                 ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
               ),
-              thumb: 'generic',
             },
             {
               id: 'elektronenbeugung',
@@ -811,7 +776,6 @@ export const physik: Subject = {
                 ['Elektronenbeugung', 'Elektronenbeugungsröhre', 'de-Broglie-Wellenlänge', 'Materiewelle', 'Welle-Teilchen-Dualismus', 'Graphit', 'Bragg-Bedingung', 'Netzebenenabstand', 'Beugungsring', 'Beschleunigungsspannung', 'Impuls', 'Planck-Konstante', 'Leuchtschirm', 'Linearisierung', 'Quantenobjekt'],
                 ['electron diffraction', 'electron diffraction tube', 'de Broglie wavelength', 'matter wave', 'wave–particle duality', 'graphite', 'Bragg condition', 'lattice spacing', 'diffraction ring', 'accelerating voltage', 'momentum', 'Planck constant', 'fluorescent screen', 'linearisation', 'quantum object'],
               ),
-              thumb: 'generic',
             },
           ],
         },

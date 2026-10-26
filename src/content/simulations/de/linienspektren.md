@@ -25,7 +25,7 @@ Alle Sprünge, die auf demselben Niveau enden, bilden eine **Serie**: Lyman ($n 
 
 **Absorption:** Schickt man weißes Licht durch ein kühles Gas, nehmen die Atome genau die Photonen auf, deren Energie für einen Sprung nach oben passt. Im Spektrum fehlen dann dieselben Farben, die das Gas beim Leuchten aussendet: dunkle **Absorptionslinien** im farbigen Band. So hat Fraunhofer die dunklen Linien im Sonnenspektrum entdeckt.
 
-**Zur Darstellung:** Die Bahnen im Atombild sind ein Modell (wie bei Bohr) und nicht maßstäblich. Für Helium, Natrium und Quecksilber stimmt das einfache Bohr-Modell nicht mehr; die Niveaus stammen dort aus Tabellenwerten. Im Termschema stehen sie in Spalten (s, p, d bzw. Singulett und Triplett), weil nur bestimmte Sprünge vorkommen. Wellenlängen stehen im Bild auf ganze nm gerundet, in der Tabelle „Sichtbare Linien“ auf 0,1 nm.
+**Zur Darstellung:** Die Bahnen im Atombild sind ein Modell (wie bei Bohr) und nicht maßstäblich. Für Helium, Natrium und Quecksilber stimmt das einfache Bohr-Modell nicht mehr; die Niveaus stammen dort aus Tabellenwerten. Im Termschema stehen sie in Spalten (s, p, d bzw. Singulett und Triplett), weil nur bestimmte Sprünge vorkommen. Wellenlängen stehen im Bild auf ganze nm gerundet, in der Tabelle „Sichtbare Linien“ auf 0,1 nm. Die Simulation rechnet mit **Vakuumwellenlängen**; Tabellenwerte für Luft sind etwas kleiner, z. B. die gelbe Heliumlinie $587{,}7\,\text{nm}$ (Vakuum) statt $587{,}6\,\text{nm}$ (Luft).
 
 ## Ausprobieren
 

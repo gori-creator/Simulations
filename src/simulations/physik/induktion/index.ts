@@ -1,12 +1,16 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { brakingForce, coilLinkage, COIL_AREA, current, generatorPeak, MAGNET, magnetVoltage, motionalVoltage, rms } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
 /** Widerstand des Stromkreises beim Stab auf Schienen in Ω (Modell). */
 const R_RAIL = 2;
-/** Bereich des Magneten (Abstand Stirnfläche – Spulenmitte) und des Stabs in m. */
-const Z_MIN = -0.03;
+/**
+ * Bereich des Magneten (Abstand Stirnfläche – Spulenmitte) und des Stabs in m.
+ * Nicht näher als 3 cm wie im Automatikbetrieb: Weiter innen überschätzt die
+ * Einwindungs-Näherung der Spule die Spannungsspitze.
+ */
+const Z_MIN = 0.03;
 const Z_MAX = 0.3;
 const X_MIN = 0.06;
 const X_MAX = 0.62;
@@ -347,53 +351,21 @@ export default defineSimulation({
       return { side, scene: { x: 0, y: 0, w, h: sh }, chart: { x: 0, y: sh + 10, w, h: ch }, meter: { x: 0, y: sh + ch + 20, w, h: mh }, info: { x: 0, y: sh + ch + 30 + mh, w, h: rest - mh - 10 } };
     }
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'left'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
     function richText(str: string, x0: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left', weight = 700, halo: string | null = null): number {
-      const g = surface.g;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x0 : align === 'right' ? x0 - total : x0 - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x0, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo } : {}) });
     }
     const haloCol = () => (ctx.theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)');
 
@@ -1207,7 +1179,7 @@ export default defineSimulation({
       let rows: [string, string][];
       if (mode() === 'magnet') {
         rows = [
-          ['U_[ind] = −n · ΔΦ / Δt', theme.text],
+          ['U_ind = −n · ΔΦ / Δt', theme.text],
           [`n = ${n(p.n, 0)}, A ≈ ${fx(COIL_AREA * 1e4, 1)} cm²`, theme.muted],
           [`n · Φ = ${vNow ? fx(coilLinkage(z, p.n) * 1000, 2) : '?'} mWb`, purple()],
           [`U = ${vNow ? fx(U, 3) : '?'} V`, blue()],
@@ -1226,7 +1198,7 @@ export default defineSimulation({
           ['Û = n · B · A · ω', theme.text],
           [`= ${n(p.n, 0)} · ${fx(p.B, 2)} T · ${n(p.A * 1e-4, 4)} m² · ${fx(TAU * p.f, 1)} 1/s`, theme.muted],
           [`= ${v ? volt(Up) : '?'} V`, blue()],
-          [`U_[eff] = Û / √2 = ${v ? volt(rms(Up)) : '?'} V`, orange()],
+          [`U_eff = Û / √2 = ${v ? volt(rms(Up)) : '?'} V`, orange()],
         ];
       }
       const top = R.y + (sm ? 30 : 38);

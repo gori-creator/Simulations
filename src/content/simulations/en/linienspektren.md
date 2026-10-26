@@ -16,7 +16,7 @@ with $h = 6.626 \cdot 10^{-34}\,\text{J}\cdot\text{s}$ and $h \cdot c \approx 12
 
 **Absorption:** white light passing through a cool gas loses exactly the photons whose energy fits a jump upwards – dark lines appear at the same places as the bright emission lines (Fraunhofer lines).
 
-The orbits in the picture are a model and not to scale. For helium, sodium and mercury the levels are taken from tables.
+The orbits in the picture are a model and not to scale. For helium, sodium and mercury the levels are taken from tables. The simulation uses **vacuum wavelengths**; tables for air give slightly smaller values, e.g. the yellow helium line at $587.7\,\text{nm}$ (vacuum) instead of $587.6\,\text{nm}$ (air).
 
 ## Try it
 

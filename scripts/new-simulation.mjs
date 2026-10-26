@@ -14,7 +14,8 @@
  * Die Registry (src/simulations/registry.ts) findet den neuen Ordner automatisch.
  *
  * Danach im Lehrplan (src/curriculum/<fach>.ts) den Eintrag mit dieser ID
- * auf `status: 'ready'` setzen und `slug`, `summary` und `thumb` ergänzen.
+ * auf `status: 'ready'` setzen und `slug` und `summary` ergänzen (Vorschaubild: eigene
+ * `thumb.svg`; `thumb` im Lehrplan nur ohne sie).
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -228,7 +229,7 @@ console.log(`
 
 Nächste Schritte:
  1. ${inCurriculum ? `In src/curriculum/${subject}.ts den Eintrag '${id}'` : `In src/curriculum/${subject}.ts einen Eintrag mit id '${id}' anlegen und`} auf
-    status: 'ready' setzen sowie slug, summary und thumb ergänzen.
+    status: 'ready' setzen sowie slug und summary ergänzen (thumb nur ohne eigene thumb.svg).
  2. npm run dev  →  Simulation entwickeln.
  3. npm run verify  →  Typprüfung, Tests und Build.
 

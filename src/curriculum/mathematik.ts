@@ -46,7 +46,6 @@ export const mathematik: Subject = {
               ['Stellenwerttafel', 'Stellenwert', 'Zehnersystem', 'Bündeln', 'große Zahlen', 'Million', 'Milliarde', 'Zahlwort', 'Runden', 'Zahlenstrahl', 'Nachbarzahl'],
               ['place value chart', 'place value', 'base ten', 'regrouping', 'large numbers', 'million', 'billion', 'number words', 'rounding', 'number line'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'zahlengerade',
@@ -63,7 +62,6 @@ export const mathematik: Subject = {
               ['ganze Zahlen', 'negative Zahlen', 'Zahlengerade', 'Pfeilmodell', 'Laufmodell', 'Gegenzahl', 'Betrag', 'Addition', 'Subtraktion', 'Guthaben', 'Schulden', 'Temperatur', 'Meeresspiegel'],
               ['integers', 'negative numbers', 'number line', 'arrow model', 'opposite', 'absolute value', 'addition', 'subtraction', 'credit', 'debt', 'temperature', 'sea level'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'primfaktoren',
@@ -80,7 +78,6 @@ export const mathematik: Subject = {
               ['Primzahl', 'Primfaktorzerlegung', 'Faktorbaum', 'Teiler', 'Teilbarkeitsregeln', 'Quersumme', 'Sieb des Eratosthenes', 'ggT', 'kgV', 'Potenz', 'teilerfremd'],
               ['prime number', 'prime factorisation', 'factor tree', 'divisor', 'divisibility rules', 'digit sum', 'sieve of Eratosthenes', 'gcd', 'lcm', 'power', 'coprime'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'zehnerpotenzen',
@@ -97,7 +94,6 @@ export const mathematik: Subject = {
               ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
               ['power', 'power of ten', 'base', 'exponent', 'order of magnitude', 'scale', 'million', 'billion', 'scientific notation', 'standard form', 'units of length', 'kilometre', 'millimetre'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('brueche', L('Brüche und Dezimalbrüche', 'Fractions and decimals'), [
@@ -133,7 +129,6 @@ export const mathematik: Subject = {
               ['Bruch', 'erweitern', 'kürzen', 'vergleichen', 'gleichnamig', 'Hauptnenner', 'kgV', 'ggT', 'gleichwertige Brüche', 'Bruchwand', 'Zahlenstrahl', 'ordnen'],
               ['fraction', 'equivalent fractions', 'expand', 'reduce', 'simplify', 'compare', 'common denominator', 'lcm', 'gcd', 'fraction wall', 'number line', 'ordering'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'dezimalbrueche',
@@ -150,7 +145,6 @@ export const mathematik: Subject = {
               ['Dezimalbruch', 'endlich', 'periodisch', 'Periode', 'Vorperiode', 'Periodenstrich', 'schriftliche Division', 'Rest', 'Primfaktoren', 'Nenner', 'Zehnerpotenz', 'Stellenwert'],
               ['decimal', 'terminating decimal', 'repeating decimal', 'recurring decimal', 'period', 'long division', 'remainder', 'prime factors', 'denominator', 'power of ten', 'place value'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'brueche-rechnen',
@@ -167,7 +161,6 @@ export const mathematik: Subject = {
               ['Bruch', 'multiplizieren', 'dividieren', 'Rechteckmodell', 'Flächenmodell', 'von', 'Anteil', 'kürzen', 'über Kreuz kürzen', 'Kehrwert', 'Messen', 'Aufteilen', 'gemeinsamer Nenner'],
               ['fraction', 'multiply', 'divide', 'area model', 'rectangle model', 'of', 'cancel', 'cross-cancel', 'reciprocal', 'measuring', 'quotative division', 'common denominator'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('prozente', L('Prozentrechnung', 'Percentages'), [
@@ -186,7 +179,6 @@ export const mathematik: Subject = {
               ['Prozent', 'Prozentrechnung', 'Prozentstreifen', 'Grundwert', 'Prozentwert', 'Prozentsatz', 'Dreisatz', 'Hunderterfeld', 'Rabatt', 'Preiserhöhung', 'vermehrter Grundwert', 'verminderter Grundwert', 'Mehrwertsteuer', 'Zinsen', 'Umfrage', 'Anteil', 'Bruch'],
               ['percent', 'percentage', 'percentage bar', 'base value', 'rate', 'rule of three', 'hundred square', 'discount', 'price increase', 'VAT', 'interest', 'survey', 'share', 'fraction'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('reelle-zahlen', L('Wurzeln und reelle Zahlen', 'Roots and real numbers'), [
@@ -205,7 +197,6 @@ export const mathematik: Subject = {
               ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert', 'teilweise Wurzelziehen', 'Wurzel 2', 'Widerspruchsbeweis', 'Diagonale', 'Kästchenpapier'],
               ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square', 'simplifying roots', 'root 2', 'proof by contradiction', 'diagonal'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -236,7 +227,6 @@ export const mathematik: Subject = {
               ['Termbaum', 'Rechenbaum', 'Rechenreihenfolge', 'Punkt vor Strich', 'Klammer', 'Potenz', 'Termart', 'Summe', 'Differenz', 'Produkt', 'Quotient', 'Termgliederung', 'Variable', 'Termwert'],
               ['expression tree', 'order of operations', 'brackets', 'power', 'sum', 'difference', 'product', 'quotient', 'variable', 'evaluate', 'BODMAS', 'PEMDAS'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'binomische-formeln',
@@ -272,7 +262,6 @@ export const mathematik: Subject = {
               ['Gleichung', 'lineare Gleichung', 'Waagemodell', 'Balkenwaage', 'Äquivalenzumformung', 'Lösungsmenge', 'Probe', 'Variable', 'Gleichgewicht', 'Umformung'],
               ['equation', 'linear equation', 'balance model', 'equivalent transformation', 'solution set', 'check', 'variable', 'solving equations'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'lgs-grafisch',
@@ -289,7 +278,6 @@ export const mathematik: Subject = {
               ['lineares Gleichungssystem', 'LGS', 'Schnittpunkt', 'grafisches Lösungsverfahren', 'Gerade', 'parallel', 'identisch', 'Lösungsmenge', 'Probe', 'Gleichsetzungsverfahren', 'Tarifvergleich'],
               ['system of linear equations', 'simultaneous equations', 'intersection', 'graphical method', 'line', 'parallel', 'coincident', 'solution set', 'check', 'tariff comparison'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'gleichungen-grafisch',
@@ -306,7 +294,6 @@ export const mathematik: Subject = {
               ['Gleichung', 'grafisches Lösen', 'Schnittpunkt', 'Schnittstelle', 'Lösungsmenge', 'Bruchgleichung', 'quadratische Gleichung', 'Betragsgleichung', 'Differenzfunktion', 'Nullstelle', 'Berührpunkt', 'Intervallhalbierung', 'Intervallschachtelung', 'Näherung', 'Definitionsmenge'],
               ['equation', 'solving graphically', 'intersection', 'solution set', 'fractional equation', 'quadratic equation', 'absolute value equation', 'difference function', 'zero', 'root', 'touching point', 'bisection', 'nested intervals', 'approximation', 'domain'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -337,7 +324,6 @@ export const mathematik: Subject = {
               ['Koordinatensystem', 'Punkt', 'Strecke', 'Halbgerade', 'Gerade', 'parallel', 'senkrecht', 'Abstand', 'Lot', 'Geodreieck', 'Kreis', 'Radius', 'Durchmesser', 'Tangente', 'Sekante', 'Passante'],
               ['coordinate plane', 'point', 'segment', 'ray', 'line', 'parallel', 'perpendicular', 'distance', 'set square', 'circle', 'radius', 'diameter', 'tangent', 'secant'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'winkel-messen',
@@ -354,7 +340,6 @@ export const mathematik: Subject = {
               ['Winkel', 'Scheitel', 'Schenkel', 'Geodreieck', 'Winkelmesser', 'spitzer Winkel', 'rechter Winkel', 'stumpfer Winkel', 'gestreckter Winkel', 'überstumpfer Winkel', 'Vollwinkel', 'Grad', 'schätzen'],
               ['angle', 'vertex', 'arm', 'set square', 'protractor', 'acute angle', 'right angle', 'obtuse angle', 'straight angle', 'reflex angle', 'full angle', 'degree', 'estimate'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'vierecke',
@@ -371,7 +356,6 @@ export const mathematik: Subject = {
               ['Viereck', 'Haus der Vierecke', 'Quadrat', 'Rechteck', 'Raute', 'Parallelogramm', 'Trapez', 'gleichschenkliges Trapez', 'Drachenviereck', 'parallel', 'Symmetrieachse', 'punktsymmetrisch', 'Diagonale', 'Eigenschaften'],
               ['quadrilateral', 'square', 'rectangle', 'rhombus', 'parallelogram', 'trapezium', 'trapezoid', 'isosceles trapezium', 'kite', 'parallel', 'line of symmetry', 'point symmetry', 'diagonal', 'properties'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('symmetrie', L('Symmetrie und Konstruktionen', 'Symmetry and constructions'), [
@@ -390,7 +374,6 @@ export const mathematik: Subject = {
               ['Achsenspiegelung', 'Punktspiegelung', 'Spiegelachse', 'Symmetriezentrum', 'achsensymmetrisch', 'punktsymmetrisch', 'Symmetrieachse', 'Umlaufsinn', 'Fixpunkt', 'Fixgerade', 'Lot', 'Drehung um 180°', 'Konstruktion'],
               ['reflection', 'line of symmetry', 'point symmetry', 'centre of symmetry', 'mirror line', 'orientation', 'fixed point', 'fixed line', 'half turn', 'construction'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'mittelsenkrechte',
@@ -407,7 +390,6 @@ export const mathematik: Subject = {
               ['Mittelsenkrechte', 'Winkelhalbierende', 'Ortslinie', 'Abstand', 'gleich weit entfernt', 'Mittelpunkt', 'Lot', 'Zirkel', 'Lineal', 'Konstruktion', 'Grundkonstruktion', 'Umkreis', 'Umkreismittelpunkt', 'Drachenviereck'],
               ['perpendicular bisector', 'angle bisector', 'locus', 'distance', 'equidistant', 'midpoint', 'perpendicular', 'compasses', 'ruler', 'construction', 'circumcircle', 'circumcentre', 'kite'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('winkel', L('Winkel an Figuren', 'Angles in figures'), [
@@ -426,7 +408,6 @@ export const mathematik: Subject = {
               ['Scheitelwinkel', 'Nebenwinkel', 'Stufenwinkel', 'Wechselwinkel', 'Nachbarwinkel', 'F-Winkel', 'Z-Winkel', 'E-Winkel', 'Geradenkreuzung', 'Doppelkreuzung', 'parallele Geraden', 'Querlinie', 'Schnittwinkel', 'begründen'],
               ['vertical angles', 'adjacent angles', 'corresponding angles', 'alternate angles', 'co-interior angles', 'F angles', 'Z angles', 'intersecting lines', 'transversal', 'parallel lines', 'angle of intersection', 'reasoning'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'winkelsumme',
@@ -443,7 +424,6 @@ export const mathematik: Subject = {
               ['Innenwinkelsumme', 'Winkelsumme', 'Dreieck', 'Vieleck', 'n-Eck', 'Wechselwinkel', 'Parallele', 'gestreckter Winkel', 'Außenwinkel', 'regelmäßiges Vieleck', 'konvex', 'Beweis'],
               ['angle sum', 'interior angles', 'triangle', 'polygon', 'n-gon', 'alternate angles', 'parallel', 'straight angle', 'exterior angle', 'regular polygon', 'convex', 'proof'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('dreiecke', L('Dreiecke', 'Triangles'), [
@@ -462,7 +442,6 @@ export const mathematik: Subject = {
               ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung', 'Kreis', 'Schnittpunkt', 'Winkelsumme', 'ähnlich'],
               ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique', 'construction steps', 'circle', 'intersection', 'angle sum', 'similar'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'thales',
@@ -496,7 +475,6 @@ export const mathematik: Subject = {
               ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie', 'Konstruktion', 'Zirkel', 'Geodreieck', 'Thaleskreis'],
               ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus', 'construction', 'compasses', 'set square', 'Thales circle'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
@@ -534,7 +512,6 @@ export const mathematik: Subject = {
               ['Strahlensatz', 'Strahlensätze', 'V-Figur', 'X-Figur', 'Parallelen', 'Streckfaktor', 'Verhältnis', 'Verhältnisgleichung', 'Abschnitte', 'ähnliche Dreiecke', 'zentrische Streckung', 'Baumhöhe', 'Schatten', 'Teichbreite', 'Umkehrung'],
               ['intercept theorem', 'V shape', 'X shape', 'parallel lines', 'scale factor', 'ratio', 'proportion', 'similar triangles', 'enlargement', 'tree height', 'shadow', 'pond width', 'converse'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'vergroessern',
@@ -551,7 +528,6 @@ export const mathematik: Subject = {
               ['Streckfaktor', 'ähnlich', 'Ähnlichkeit', 'zentrische Streckung', 'Vergrößerung', 'Verkleinerung', 'Flächeninhalt', 'Oberfläche', 'Volumen', 'Einheitswürfel', 'Quadrat', 'Würfel', 'Quader', 'Kubikwurzel', 'Maßstab', 'Pizza', 'Oberfläche zu Volumen'],
               ['scale factor', 'similar', 'similarity', 'enlargement', 'reduction', 'area', 'surface area', 'volume', 'unit cube', 'square', 'cube', 'cuboid', 'cube root', 'scale', 'pizza', 'surface to volume'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('trigonometrie-dreieck', L('Trigonometrie im Dreieck', 'Trigonometry in triangles'), [
@@ -570,7 +546,6 @@ export const mathematik: Subject = {
               ['Sinus', 'Kosinus', 'Tangens', 'Trigonometrie', 'rechtwinkliges Dreieck', 'Gegenkathete', 'Ankathete', 'Hypotenuse', 'Seitenverhältnis', 'Winkel berechnen', 'ähnliche Dreiecke', 'Einheitskreis', 'besondere Werte', 'Steigung in Prozent', 'Höhenwinkel'],
               ['sine', 'cosine', 'tangent', 'trigonometry', 'right triangle', 'opposite', 'adjacent', 'hypotenuse', 'ratio', 'angle', 'similar triangles', 'SOH CAH TOA', 'unit circle', 'exact values', 'gradient', 'angle of elevation'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'sinussatz-kosinussatz',
@@ -587,7 +562,6 @@ export const mathematik: Subject = {
               ['Sinussatz', 'Kosinussatz', 'allgemeines Dreieck', 'Trigonometrie', 'Umkreis', 'Höhe', 'Pythagoras', 'Dreiecksberechnung', 'Flächeninhalt', 'SWS', 'SSS', 'WSW', 'SSW', 'Vermessung'],
               ['law of sines', 'law of cosines', 'sine rule', 'cosine rule', 'triangle', 'trigonometry', 'circumcircle', 'altitude', 'Pythagoras', 'area', 'ambiguous case', 'surveying'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -618,7 +592,6 @@ export const mathematik: Subject = {
               ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen'],
               ['units', 'convert', 'unit conversion chart', 'conversion factor', 'move the decimal point', 'length', 'mass', 'weight', 'time', 'area', 'volume', 'litre', 'millilitre', 'km', 'm', 'cm', 'mm', 'kg', 'g', 'tonne', 'm²', 'cm²', 'are', 'hectare', 'cm³', 'dm³', 'hour', 'minute', 'second', 'measures'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'massstab',
@@ -635,7 +608,6 @@ export const mathematik: Subject = {
               ['Maßstab', 'Karte', 'Landkarte', 'Wirklichkeit', 'Maßstabszahl', 'Maßstabsleiste', 'Entfernung', 'Luftlinie', 'Wegstrecke', 'Vergrößerung', 'Verkleinerung', 'Lineal', 'Längen', 'Einheiten', 'Kilometer', 'Zentimeter'],
               ['scale', 'map', 'reality', 'scale factor', 'scale bar', 'distance', 'straight line', 'route', 'enlargement', 'reduction', 'ruler', 'lengths', 'units', 'kilometre', 'centimetre'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('flaecheninhalt', L('Flächeninhalt', 'Area'), [
@@ -654,7 +626,6 @@ export const mathematik: Subject = {
               ['Umfang', 'Flächeninhalt', 'Rechteck', 'Quadrat', 'Einheitsquadrat', 'Quadratzentimeter', 'cm²', 'Länge', 'Breite', 'Rechenpapier', 'zerlegen', 'ergänzen', 'L-Form', 'zusammengesetzte Figur'],
               ['perimeter', 'area', 'rectangle', 'square', 'unit square', 'square centimetre', 'cm²', 'length', 'width', 'squared paper', 'decompose', 'complete', 'L-shape', 'composite shape'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'flaechen-zerlegen',
@@ -671,7 +642,6 @@ export const mathematik: Subject = {
               ['Flächeninhalt', 'Parallelogramm', 'Dreieck', 'Trapez', 'Grundseite', 'Höhe', 'zerlegen', 'ergänzen', 'verschieben', 'Kopie drehen', 'Scherung', 'Kästchen zählen', 'Flächenformel'],
               ['area', 'parallelogram', 'triangle', 'trapezium', 'trapezoid', 'base', 'height', 'decompose', 'complete', 'rearrange', 'rotated copy', 'shear', 'counting squares', 'area formula'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('koerper', L('Körper und Oberflächen', 'Solids and surface area'), [
@@ -690,7 +660,6 @@ export const mathematik: Subject = {
               ['Körpernetz', 'Würfelnetz', 'Würfel', 'Quader', 'Prisma', 'Pyramide', 'Zylinder', 'Oberfläche', 'Mantel', 'Raumvorstellung', 'falten', 'Spielwürfel'],
               ['net', 'cube net', 'cube', 'cuboid', 'prism', 'pyramid', 'cylinder', 'surface area', 'lateral surface', 'spatial reasoning', 'folding', 'dice'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'prisma-zylinder',
@@ -707,7 +676,6 @@ export const mathematik: Subject = {
               ['Prisma', 'Zylinder', 'Volumen', 'Oberfläche', 'Mantel', 'Grundfläche', 'Netz', 'Abwicklung', 'Vieleck', 'Kreis'],
               ['prism', 'cylinder', 'volume', 'surface area', 'lateral surface', 'base area', 'net', 'development', 'polygon', 'circle'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'pyramide-kegel-kugel',
@@ -724,7 +692,6 @@ export const mathematik: Subject = {
               ['Pyramide', 'Kegel', 'Kugel', 'Volumen', 'Oberfläche', 'Mantel', 'Seitenhöhe', 'Seitenkante', 'Mantellinie', 'Satz des Pythagoras', 'Kreissektor', 'Umschüttversuch', 'Archimedes', 'Halbkugel', 'Netz'],
               ['pyramid', 'cone', 'sphere', 'volume', 'surface area', 'lateral surface', 'slant height', 'lateral edge', 'Pythagorean theorem', 'circular sector', 'pouring experiment', 'Archimedes', 'hemisphere', 'net'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'cavalieri',
@@ -741,7 +708,6 @@ export const mathematik: Subject = {
               ['Cavalieri', 'Prinzip von Cavalieri', 'Querschnitt', 'Schnittfläche', 'Volumen', 'schiefer Zylinder', 'schiefes Prisma', 'schiefe Pyramide', 'schiefer Kegel', 'Kugelvolumen', 'Halbkugel', 'Münzstapel', 'Scheiben', 'Grenzwert'],
               ['Cavalieri', 'Cavalieri’s principle', 'cross-section', 'volume', 'oblique cylinder', 'oblique prism', 'oblique pyramid', 'oblique cone', 'volume of a sphere', 'hemisphere', 'stack of coins', 'slices', 'limit'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('volumen', L('Volumen', 'Volume'), [
@@ -760,7 +726,6 @@ export const mathematik: Subject = {
               ['Volumen', 'Rauminhalt', 'Quader', 'Würfel', 'Einheitswürfel', 'Kubikzentimeter', 'Liter', 'Volumeneinheiten', 'Schicht', 'Reihe'],
               ['volume', 'cuboid', 'cube', 'unit cube', 'cubic centimetre', 'litre', 'units of volume', 'layer', 'row'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('kreis', L('Kreis', 'Circle'), [
@@ -810,7 +775,6 @@ export const mathematik: Subject = {
               ['proportional', 'direkt proportional', 'indirekt proportional', 'antiproportional', 'Dreisatz', 'quotientengleich', 'produktgleich', 'Proportionalitätsfaktor', 'Ursprungsgerade', 'Hyperbel', 'Wertetabelle', 'Zuordnung', 'Verdoppeln', 'Grundgebühr'],
               ['proportional', 'directly proportional', 'inversely proportional', 'rule of three', 'equal quotients', 'equal products', 'constant of proportionality', 'line through the origin', 'hyperbola', 'table of values', 'relation', 'doubling', 'base fare'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'funktion-zuordnung',
@@ -827,7 +791,6 @@ export const mathematik: Subject = {
               ['Funktion', 'Zuordnung', 'eindeutig', 'Pfeildiagramm', 'Wertetabelle', 'Graph', 'senkrechter Linientest', 'Vertikalentest', 'Definitionsmenge', 'Wertemenge', 'Funktionsgraph', 'Umkehrung', 'Kreis', 'Treppenfunktion'],
               ['function', 'relation', 'mapping', 'unique', 'arrow diagram', 'table of values', 'graph', 'vertical line test', 'domain', 'range', 'inverse', 'circle', 'step function'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'funktionsplotter',
@@ -845,7 +808,6 @@ export const mathematik: Subject = {
               ['Funktionsplotter', 'Funktionenplotter', 'Graph zeichnen', 'Term', 'Wertetabelle', 'Spur', 'Nullstelle', 'Schnittpunkt', 'Hochpunkt', 'Tiefpunkt', 'Extrempunkt', 'Polstelle', 'Definitionslücke', 'Asymptote', 'Funktionenschar', 'Parameter', 'Tangente', 'Sinus', 'Exponentialfunktion', 'Logarithmus', 'gebrochen-rational', 'ganzrational'],
               ['function plotter', 'graphing', 'expression', 'table of values', 'trace', 'zero', 'root', 'intersection', 'maximum', 'minimum', 'turning point', 'pole', 'asymptote', 'family of functions', 'parameter', 'tangent', 'sine', 'exponential', 'logarithm', 'rational function', 'polynomial'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('lineare-funktionen', L('Lineare Funktionen', 'Linear functions'), [
@@ -883,7 +845,6 @@ export const mathematik: Subject = {
               ['Hyperbel', 'Asymptote', 'Polstelle', 'Definitionslücke', 'Definitionsmenge', 'Wertemenge', 'indirekte Proportionalität', 'gebrochen-rationale Funktion', 'Kehrwertfunktion'],
               ['hyperbola', 'asymptote', 'pole', 'domain', 'range', 'inverse proportion', 'rational function', 'reciprocal function'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'polstellen-asymptoten',
@@ -900,7 +861,6 @@ export const mathematik: Subject = {
               ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert', 'Kürzen', 'Näherungskurve', 'Vorzeichentabelle'],
               ['rational function', 'pole', 'asymptote', 'vertical asymptote', 'horizontal asymptote', 'oblique asymptote', 'removable discontinuity', 'polynomial division', 'sign change', 'limit', 'cancelling', 'approximating curve', 'sign chart'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('quadratische-funktionen', L('Quadratische Funktionen', 'Quadratic functions'), [
@@ -936,7 +896,6 @@ export const mathematik: Subject = {
               ['Parabel', 'drei Punkte', 'lineares Gleichungssystem', 'Additionsverfahren', 'Einsetzen', 'Scheitelform', 'Nullstellenform', 'quadratische Funktion', 'Funktionsterm bestimmen'],
               ['parabola', 'three points', 'system of linear equations', 'elimination', 'substitution', 'vertex form', 'factored form', 'quadratic function', 'curve fitting'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'extremwert-parabel',
@@ -953,7 +912,6 @@ export const mathematik: Subject = {
               ['Extremwertaufgabe', 'Maximum', 'Scheitelpunkt', 'quadratische Ergänzung', 'Scheitelform', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Optimierung', 'Erlös'],
               ['optimisation problem', 'maximum', 'vertex', 'completing the square', 'vertex form', 'objective function', 'constraint', 'domain', 'optimization', 'revenue'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('potenzfunktionen', L('Potenzfunktionen', 'Power functions'), [
@@ -972,7 +930,6 @@ export const mathematik: Subject = {
               ['Potenzfunktion', 'Exponent', 'Parabel n-ter Ordnung', 'Hyperbel n-ter Ordnung', 'Achsensymmetrie', 'Punktsymmetrie', 'Monotonie', 'Wertemenge', 'Definitionsmenge', 'Asymptote', 'Polstelle', 'gemeinsame Punkte'],
               ['power function', 'exponent', 'parabola', 'hyperbola', 'even function', 'odd function', 'symmetry', 'monotonicity', 'range', 'domain', 'asymptote', 'pole'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('trigonometrische-funktionen', L('Trigonometrische Funktionen', 'Trigonometric functions'), [
@@ -1044,7 +1001,6 @@ export const mathematik: Subject = {
               ['Logarithmus', 'Logarithmusfunktion', 'Umkehrfunktion', 'Basis', 'Exponentialgleichung', 'Basiswechsel', 'Produktregel', 'Quotientenregel', 'Potenzregel', 'Zehnerlogarithmus', 'natürlicher Logarithmus', 'lg', 'ln', 'Rechenschieber', 'Spiegelung an y = x'],
               ['logarithm', 'logarithmic function', 'inverse function', 'base', 'exponential equation', 'change of base', 'product rule', 'quotient rule', 'power rule', 'common logarithm', 'natural logarithm', 'lg', 'ln', 'slide rule', 'reflection in y = x'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'e-funktion',
@@ -1061,7 +1017,6 @@ export const mathematik: Subject = {
               ['e-Funktion', 'Exponentialfunktion', 'eulersche Zahl', 'e', 'Ableitung', 'Tangente', 'Steigungsdreieck', 'natürlicher Logarithmus', 'ln', 'Umkehrfunktion', 'Zinseszins', 'Grenzwert', 'Stammfunktion'],
               ['exponential function', 'natural exponential', "Euler's number", 'e', 'derivative', 'tangent', 'slope triangle', 'natural logarithm', 'ln', 'inverse function', 'compound interest', 'limit', 'antiderivative'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('ganzrationale', L('Ganzrationale Funktionen', 'Polynomial functions'), [
@@ -1080,7 +1035,6 @@ export const mathematik: Subject = {
               ['ganzrationale Funktion', 'Polynom', 'Nullstelle', 'Vielfachheit', 'Linearfaktor', 'Berührpunkt', 'Terrassenpunkt', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Randverhalten', 'Grad', 'Leitkoeffizient', 'Normalform', 'Ausmultiplizieren', 'y-Achsenabschnitt'],
               ['polynomial function', 'polynomial', 'zero', 'root', 'multiplicity', 'linear factor', 'touching point', 'terrace point', 'sign change', 'sign chart', 'end behaviour', 'degree', 'leading coefficient', 'expanded form', 'y-intercept'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('eigenschaften', L('Eigenschaften von Funktionen', 'Properties of functions'), [
@@ -1099,7 +1053,6 @@ export const mathematik: Subject = {
               ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote', 'Reihenfolge', 'Definitionsmenge', 'Wertemenge'],
               ['shift', 'translation', 'stretch', 'compression', 'reflection', 'transformation', 'graph', 'parameter', 'basic function', 'order', 'domain', 'range'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'grenzverhalten',
@@ -1116,7 +1069,6 @@ export const mathematik: Subject = {
               ['Grenzwert', 'Grenzverhalten', 'Asymptote', 'waagrechte Asymptote', 'unendlich', 'Limes', 'ε-Schlauch', 'ε-Streifen', 'Gradregel', 'Annäherung', 'Wertetabelle', 'gebrochen-rationale Funktion'],
               ['limit', 'end behaviour', 'asymptote', 'horizontal asymptote', 'infinity', 'epsilon strip', 'approach', 'table of values', 'rational function'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'umkehrfunktion',
@@ -1133,7 +1085,6 @@ export const mathematik: Subject = {
               ['Umkehrfunktion', 'umkehrbar', 'Spiegelung', 'Winkelhalbierende', 'y = x', 'Wurzelfunktion', 'Logarithmus', 'ln', 'Monotonie', 'streng monoton', 'Definitionsmenge', 'Wertemenge', 'Ableitung der Umkehrfunktion', 'senkrechte Tangente', 'arcsin'],
               ['inverse function', 'invertible', 'reflection', 'y = x', 'square root', 'logarithm', 'ln', 'monotonic', 'strictly monotonic', 'domain', 'range', 'derivative of the inverse', 'vertical tangent', 'arcsin'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -1164,7 +1115,6 @@ export const mathematik: Subject = {
               ['Zählprinzip', 'Produktregel', 'Baumdiagramm', 'Kombinatorik', 'systematisches Abzählen', 'mit Wiederholung', 'ohne Wiederholung', 'Fakultät', 'Reihenfolge', 'PIN'],
               ['counting principle', 'product rule', 'tree diagram', 'combinatorics', 'systematic counting', 'with repetition', 'without repetition', 'factorial', 'order', 'PIN'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('daten', L('Daten auswerten', 'Analysing data'), [
@@ -1183,7 +1133,6 @@ export const mathematik: Subject = {
               ['Diagramm', 'Säulendiagramm', 'Balkendiagramm', 'Kreisdiagramm', 'Liniendiagramm', 'Piktogramm', 'Streifendiagramm', 'Strichliste', 'Anteil', 'Prozent', 'Mittelpunktswinkel', 'abgeschnittene Achse', 'Täuschung', 'Daten'],
               ['chart', 'column chart', 'bar chart', 'pie chart', 'line chart', 'pictogram', 'strip chart', 'tally chart', 'share', 'percent', 'central angle', 'truncated axis', 'misleading graphs', 'data'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'boxplot',
@@ -1200,7 +1149,6 @@ export const mathematik: Subject = {
               ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
               ['box plot', 'box-and-whisker plot', 'median', 'mean', 'average', 'quartile', 'interquartile range', 'range', 'minimum', 'maximum', 'ordered list', 'outlier', 'summary statistics', 'comparing data'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('wahrscheinlichkeit', L('Wahrscheinlichkeit', 'Probability'), [
@@ -1236,7 +1184,6 @@ export const mathematik: Subject = {
               ['Baumdiagramm', 'Pfadregel', 'Produktregel', 'Summenregel', 'Urnenmodell', 'mit Zurücklegen', 'ohne Zurücklegen', 'mehrstufiges Zufallsexperiment', 'Ereignis', 'Gegenereignis', 'Simulation', 'relative Häufigkeit'],
               ['tree diagram', 'path rule', 'product rule', 'sum rule', 'urn model', 'with replacement', 'without replacement', 'multi-stage experiment', 'event', 'complement', 'simulation', 'relative frequency'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'ziegenproblem',
@@ -1270,7 +1217,6 @@ export const mathematik: Subject = {
               ['Geburtstagsproblem', 'Geburtstagsparadoxon', 'Gegenereignis', 'Simulation', 'Pfadregel', 'Laplace', 'relative Häufigkeit', 'Wahrscheinlichkeit', '23 Personen', 'Paare', 'Schubfachprinzip', 'Gesetz der großen Zahlen'],
               ['birthday problem', 'birthday paradox', 'complement', 'simulation', 'path rule', 'Laplace', 'relative frequency', 'probability', '23 people', 'pairs', 'pigeonhole principle', 'law of large numbers'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'monte-carlo-pi',
@@ -1306,7 +1252,6 @@ export const mathematik: Subject = {
               ['Vierfeldertafel', 'Mengendiagramm', 'Venn-Diagramm', 'Schnittmenge', 'Vereinigungsmenge', 'Gegenereignis', 'Additionssatz', 'Baumdiagramm', 'umgekehrter Baum', 'bedingte Wahrscheinlichkeit', 'Unabhängigkeit', 'Randsumme', 'Einheitsquadrat', 'natürliche Häufigkeiten'],
               ['two-way table', 'contingency table', 'Venn diagram', 'intersection', 'union', 'complement', 'addition rule', 'tree diagram', 'reversed tree', 'conditional probability', 'independence', 'marginal total', 'unit square', 'natural frequencies'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'bedingte-wahrscheinlichkeit',
@@ -1323,7 +1268,6 @@ export const mathematik: Subject = {
               ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
               ['conditional probability', 'Bayes’ theorem', 'sensitivity', 'specificity', 'prevalence', 'predictive value', 'false positive', 'false negative', 'base rate fallacy', 'natural frequencies', 'reversed tree', 'medical test', 'rapid test'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('verteilungen', L('Wahrscheinlichkeitsverteilungen und Testen', 'Probability distributions and testing'), [
@@ -1359,7 +1303,6 @@ export const mathematik: Subject = {
               ['Binomialverteilung', 'Bernoulli-Kette', 'Bernoulli-Experiment', 'Binomialkoeffizient', 'kumulierte Verteilungsfunktion', 'Treppenfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Umgebung', 'Trefferwahrscheinlichkeit', 'höchstens', 'mindestens'],
               ['binomial distribution', 'Bernoulli chain', 'Bernoulli trial', 'binomial coefficient', 'cumulative distribution function', 'step function', 'expected value', 'standard deviation', 'sigma interval', 'probability of success', 'at most', 'at least'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'signifikanztest',
@@ -1376,7 +1319,6 @@ export const mathematik: Subject = {
               ['Signifikanztest', 'Hypothesentest', 'Nullhypothese', 'Gegenhypothese', 'Signifikanzniveau', 'Ablehnungsbereich', 'Annahmebereich', 'kritischer Wert', 'Entscheidungsregel', 'Fehler 1. Art', 'Fehler 2. Art', 'Irrtumswahrscheinlichkeit', 'Gütefunktion', 'Binomialverteilung'],
               ['significance test', 'hypothesis test', 'null hypothesis', 'alternative hypothesis', 'significance level', 'critical region', 'acceptance region', 'critical value', 'decision rule', 'type I error', 'type II error', 'power', 'power curve', 'binomial distribution'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'normalverteilung',
@@ -1394,7 +1336,6 @@ export const mathematik: Subject = {
               ['Normalverteilung', 'Gauß', 'Glockenkurve', 'Dichtefunktion', 'Verteilungsfunktion', 'Erwartungswert', 'Standardabweichung', 'Sigma-Regeln', 'Standardisierung', 'z-Wert', 'Quantil', 'z-Tabelle', 'Wendestelle', 'Toleranz', 'Qualitätskontrolle', 'stetige Zufallsgröße', 'Binomialverteilung', 'Näherung', 'Stetigkeitskorrektur', 'Laplace-Bedingung', 'Stichprobe', 'Histogramm'],
               ['normal distribution', 'Gaussian', 'bell curve', 'density', 'distribution function', 'mean', 'standard deviation', 'sigma rules', 'z-score', 'quantile', 'z table', 'point of inflection', 'tolerance', 'quality control', 'continuous random variable', 'binomial distribution', 'approximation', 'continuity correction', 'Laplace condition', 'sample', 'histogram'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -1442,7 +1383,6 @@ export const mathematik: Subject = {
               ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
               ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'slope triangle', 'derivative', 'starting value', 'quadratic convergence', 'Heron’s method', 'basin of attraction'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'ableitungsfunktion',
@@ -1459,7 +1399,6 @@ export const mathematik: Subject = {
               ['Ableitung', 'Ableitungsfunktion', 'Tangente', 'Sekante', 'Differenzenquotient', 'Steigungsdreieck', 'grafisches Ableiten', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Sattelpunkt', 'zweite Ableitung', 'Krümmung', 'Differenzierbarkeit', 'Faktorregel', 'Summenregel', 'Potenzregel', 'Produktregel', 'Kettenregel', 'Geschwindigkeit', 'Grenzkosten', 'Sinus', 'Kosinus'],
               ['derivative', 'derivative function', 'tangent', 'secant', 'difference quotient', 'slope triangle', 'graphical differentiation', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'second derivative', 'curvature', 'differentiability', 'constant multiple rule', 'sum rule', 'power rule', 'product rule', 'chain rule', 'velocity', 'marginal cost', 'sine', 'cosine'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'kurvendiskussion',
@@ -1476,7 +1415,6 @@ export const mathematik: Subject = {
               ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
               ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity', 'symmetry', 'tangent', 'second-derivative test'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('funktionsuntersuchung', L('Funktionenscharen und Stammfunktionen', 'Families of functions and antiderivatives'), [
@@ -1495,7 +1433,6 @@ export const mathematik: Subject = {
               ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'Wendepunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'e-Funktion', 'ganzrationale Funktion'],
               ['family of functions', 'family of curves', 'parameter', 'locus', 'extrema', 'points of inflection', 'common point', 'case analysis', 'exponential function', 'polynomial'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'stammfunktion-grafisch',
@@ -1512,7 +1449,6 @@ export const mathematik: Subject = {
               ['Stammfunktion', 'grafisches Aufleiten', 'grafisches Integrieren', 'Integrationskonstante', 'Kurvenschar', 'Richtungsfeld', 'Anfangswertproblem', 'Anfangswert', 'orientierte Fläche', 'Flächenbilanz', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Terrassenpunkt', 'Vorzeichentabelle', 'Änderungsrate', 'Bestand'],
               ['antiderivative', 'graphical integration', 'constant of integration', 'family of curves', 'slope field', 'initial value problem', 'signed area', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'sign chart', 'rate of change', 'accumulation'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('integralrechnung', L('Integralrechnung', 'Integral calculus'), [
@@ -1549,7 +1485,6 @@ export const mathematik: Subject = {
               ['Hauptsatz der Differential- und Integralrechnung', 'Integralfunktion', 'Stammfunktion', 'bestimmtes Integral', 'Flächenbilanz', 'untere Grenze', 'Differenzenquotient', 'F(b) − F(a)', 'Riemann-Summe', 'Wendestelle', 'Änderungsrate', 'Bestand', 'Grenzkosten'],
               ['fundamental theorem of calculus', 'integral function', 'antiderivative', 'definite integral', 'signed area', 'lower limit', 'difference quotient', 'Riemann sum', 'point of inflection', 'rate of change', 'accumulation', 'marginal cost'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'aenderungsrate',
@@ -1566,7 +1501,6 @@ export const mathematik: Subject = {
               ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelsumme', 'zurückgelegter Weg', 'Modellieren'],
               ['integral', 'rate of change', 'total change', 'reconstruction', 'amount', 'velocity', 'distance', 'inflow', 'Riemann sum', 'midpoint sum', 'distance travelled', 'modelling'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'rotationskoerper',
@@ -1583,7 +1517,6 @@ export const mathematik: Subject = {
               ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],
               ['solid of revolution', 'volume of revolution', 'integral', 'disc method', 'cross-section', 'sphere', 'cone', 'paraboloid', 'Gabriel’s horn', 'volume'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'extremwertprobleme',
@@ -1600,7 +1533,6 @@ export const mathematik: Subject = {
               ['Extremwertproblem', 'Optimierung', 'Zielfunktion', 'Nebenbedingung', 'Definitionsbereich', 'Ableitung', 'Schachtel', 'Dose', 'Oberfläche', 'Volumen', 'Randwerte', 'Kegel', 'Strahlensatz', 'Rettungsschwimmer', 'Brechungsgesetz', 'Newton-Verfahren'],
               ['optimisation', 'optimization', 'objective function', 'constraint', 'domain', 'derivative', 'box', 'can', 'surface area', 'volume', 'boundary values', 'cone', 'intercept theorem', 'lifeguard', 'law of refraction', "Newton's method"],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('weiterfuehrend', L('Weiterführend (Hochschule)', 'Further topics (university)'), [
@@ -1620,7 +1552,6 @@ export const mathematik: Subject = {
               ['Taylorpolynom', 'Taylorreihe', 'Näherungspolynom', 'Entwicklungsstelle', 'Konvergenzradius', 'Restglied', 'Lagrange-Restglied', 'Fehlerabschätzung', 'Potenzreihe', 'geometrische Reihe', 'Ableitung', 'Fakultät', 'Kleinwinkelnäherung', 'Partialsumme', 'Schmiegparabel', 'Pendel', 'Konvergenzintervall'],
               ['Taylor polynomial', 'Taylor series', 'approximation', 'centre', 'radius of convergence', 'remainder', 'Lagrange remainder', 'error bound', 'power series', 'geometric series', 'derivative', 'factorial', 'small-angle approximation', 'partial sum', 'osculating parabola', 'pendulum', 'interval of convergence'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'fourier-reihen',
@@ -1638,7 +1569,6 @@ export const mathematik: Subject = {
               ['Fourier-Reihe', 'Fourier-Koeffizienten', 'Oberschwingung', 'Harmonische', 'Rechtecksignal', 'Sägezahn', 'Pulsweitenmodulation', 'Gleichrichter', 'Amplitudenspektrum', 'Phasenspektrum', 'Zeigerdiagramm', 'Epizykel', 'Parseval', 'Gibbs-Phänomen', 'Fejér', 'Klangfarbe', 'periodische Funktion', 'Signalverarbeitung'],
               ['Fourier series', 'Fourier coefficients', 'harmonic', 'overtone', 'square wave', 'sawtooth', 'pulse-width modulation', 'rectifier', 'amplitude spectrum', 'phase spectrum', 'phasor', 'epicycles', 'Parseval', 'Gibbs phenomenon', 'Fejér', 'timbre', 'periodic function', 'signal processing'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],
@@ -1669,7 +1599,6 @@ export const mathematik: Subject = {
               ['räumliches Koordinatensystem', 'Koordinaten', 'Punkt im Raum', 'x₁x₂-Ebene', 'Koordinatenebene', 'Oktant', 'Projektion', 'Quader', 'Eckpunkte', 'Raumdiagonale', 'Abstand vom Ursprung', 'Schrägbild'],
               ['3D coordinate system', 'coordinates', 'point in space', 'coordinate plane', 'octant', 'projection', 'cuboid', 'corners', 'space diagonal', 'distance from the origin'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'vektoren-3d',
@@ -1686,7 +1615,6 @@ export const mathematik: Subject = {
               ['Vektor', 'Vektoraddition', 'Vektorsubtraktion', 'Gegenvektor', 'Vielfaches', 'S-Multiplikation', 'Linearkombination', 'Verbindungsvektor', 'Ortsvektor', 'Mittelpunkt', 'Betrag', 'Parallelogramm', 'kollinear'],
               ['vector', 'vector addition', 'vector subtraction', 'opposite vector', 'scalar multiple', 'linear combination', 'connecting vector', 'position vector', 'midpoint', 'magnitude', 'parallelogram', 'collinear'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'skalar-vektorprodukt',
@@ -1703,7 +1631,6 @@ export const mathematik: Subject = {
               ['Skalarprodukt', 'Vektorprodukt', 'Kreuzprodukt', 'Spatprodukt', 'Winkel zwischen Vektoren', 'orthogonal', 'senkrecht', 'Projektion', 'Normalenvektor', 'Parallelogrammfläche', 'Dreiecksfläche', 'Spat', 'Volumen', 'Rechte-Hand-Regel'],
               ['dot product', 'scalar product', 'cross product', 'vector product', 'triple product', 'angle between vectors', 'orthogonal', 'perpendicular', 'projection', 'normal vector', 'area of a parallelogram', 'triangle area', 'parallelepiped', 'volume', 'right-hand rule'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
@@ -1722,7 +1649,6 @@ export const mathematik: Subject = {
               ['Gerade', 'Geradengleichung', 'Parameterform', 'Stützvektor', 'Richtungsvektor', 'Spurpunkt', 'Punktprobe', 'Ebene', 'Spannvektor', 'Normalenvektor', 'Normalenform', 'Koordinatenform', 'Spurgerade', 'Spurdreieck', 'Achsenabschnitt', 'Vektorprodukt'],
               ['line', 'equation of a line', 'parametric form', 'position vector', 'direction vector', 'trace point', 'point test', 'plane', 'spanning vector', 'normal vector', 'normal form', 'coordinate form', 'trace line', 'trace triangle', 'intercept', 'cross product'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'lage-abstaende',
@@ -1739,7 +1665,6 @@ export const mathematik: Subject = {
               ['Lagebeziehung', 'windschief', 'parallel', 'identisch', 'Schnittpunkt', 'Durchstoßpunkt', 'Schnittgerade', 'Schnittwinkel', 'Abstand', 'Hesse-Normalform', 'Lotfußpunkt', 'Lot', 'Spiegelpunkt', 'Normalenvektor', 'Koordinatenform'],
               ['relative position', 'skew lines', 'parallel', 'identical', 'point of intersection', 'line of intersection', 'angle of intersection', 'distance', 'Hesse normal form', 'foot of the perpendicular', 'perpendicular', 'mirror point', 'normal vector', 'coordinate form'],
             ),
-            thumb: 'generic',
           },
           {
             id: 'kugeln',
@@ -1756,7 +1681,6 @@ export const mathematik: Subject = {
               ['Kugel', 'Kugelgleichung', 'Mittelpunkt', 'Radius', 'Punktprobe', 'Schnittkreis', 'Kugel und Ebene', 'Kugel und Gerade', 'Sekante', 'Tangente', 'Passante', 'Diskriminante', 'Tangentialebene', 'Berührpunkt', 'Abstand Punkt Ebene', 'Großkreis'],
               ['sphere', 'equation of a sphere', 'centre', 'radius', 'point test', 'circle of intersection', 'sphere and plane', 'sphere and line', 'secant', 'tangent', 'passing line', 'discriminant', 'tangent plane', 'point of contact', 'distance point plane', 'great circle'],
             ),
-            thumb: 'generic',
           },
         ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
@@ -1776,7 +1700,6 @@ export const mathematik: Subject = {
               ['Matrix', 'lineare Abbildung', 'Determinante', 'Eigenwert', 'Eigenvektor', 'Drehung', 'Spiegelung', 'Scherung', 'Projektion', 'Einheitsvektor', 'lineare Algebra', 'Matrixprodukt', 'Verkettung', 'inverse Matrix', 'charakteristisches Polynom', 'Übergangsmatrix', 'stationäre Verteilung', 'Fixvektor'],
               ['matrix', 'linear map', 'determinant', 'eigenvalue', 'eigenvector', 'rotation', 'reflection', 'shear', 'projection', 'unit vector', 'linear algebra', 'matrix product', 'composition', 'inverse matrix', 'characteristic polynomial', 'transition matrix', 'stationary distribution', 'fixed vector'],
             ),
-            thumb: 'generic',
           },
         ]),
       ],

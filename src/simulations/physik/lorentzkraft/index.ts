@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { COILS, currentForRadius, E_CHARGE, electronSpeed, fitSpecificCharge, helmholtzField, lorentzForce, orbitRadius, SPECIFIC_CHARGE } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -264,50 +264,71 @@ export default defineSimulation({
     }
 
     /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; k: 0 | 1 | 2 }[] {
-      const out: { t: string; k: 0 | 1 | 2 }[] = [];
-      const re = /_\[([^\]]*)\]|\^(−?\d+)/g;
+    /*
+     * Text mit tiefgestelltem Index über den Kern-Helfer `subText` (`I_H`, `μ_0`), dazu Hochzahlen
+     * „10^−3“ (die zeichnet der Kern nicht). Index- und Hochzahlgröße wie bisher auf ganze Pixel gerundet.
+     */
+    const subStyle = (size: number, color: string, weight: number): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align: 'left',
+      subScale: Math.round(size * 0.72) / size,
+      subShift: 0.3,
+    });
+    /** Zerlegt in Textstücke (mit Index) und Hochzahlen. */
+    function pieces(str: string): { t: string; sup: boolean }[] {
+      const out: { t: string; sup: boolean }[] = [];
+      const re = /\^(−?\d+)/g;
       let last = 0;
       let mm: RegExpExecArray | null;
       while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), k: 0 });
-        if (mm[1] !== undefined) out.push({ t: mm[1], k: 1 });
-        else out.push({ t: mm[2]!, k: 2 });
+        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sup: false });
+        out.push({ t: mm[1]!, sup: true });
         last = re.lastIndex;
       }
-      if (last < str.length) out.push({ t: str.slice(last), k: 0 });
+      if (last < str.length) out.push({ t: str.slice(last), sup: false });
       return out;
     }
+    const supFont = (size: number, weight: number) => `${weight} ${Math.round(size * 0.72)}px ${ctx.theme.font}`;
     function richWidth(str: string, size: number, weight = 700): number {
       const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.k ? Math.round(size * 0.72) : size}px ${ctx.theme.font}`;
+      return pieces(str).reduce((w, q) => {
+        if (!q.sup) return w + measureSubText(g, q.t, subStyle(size, '', weight));
+        g.font = supFont(size, weight);
         return w + g.measureText(q.t).width;
       }, 0);
     }
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left', weight = 700, halo: string | null = null): number {
       const g = surface.g;
-      const list = parts(str);
+      const list = pieces(str);
       const total = richWidth(str, size, weight);
       const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
+      // erst alle Ränder, dann die Schrift (sonst überdeckt ein Rand die vorige Schrift)
+      for (const pass of halo ? ['halo', 'fill'] : ['fill']) {
         let cx = start;
         for (const q of list) {
-          const s = q.k ? Math.round(size * 0.72) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.k === 1 ? size * 0.3 : q.k === 2 ? -size * 0.36 : 0);
-          if (pass === 0) {
+          if (!q.sup) {
+            const st = subStyle(size, pass === 'halo' ? 'rgba(0,0,0,0)' : color, weight);
+            cx += subText(g, q.t, cx, y, pass === 'halo' ? { ...st, halo: halo! } : st);
+            continue;
+          }
+          g.save();
+          g.font = supFont(size, weight);
+          g.textAlign = 'left';
+          g.textBaseline = 'middle';
+          if (pass === 'halo') {
             g.lineWidth = 3.5;
             g.lineJoin = 'round';
             g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
+            g.strokeText(q.t, cx, y - size * 0.36);
           } else {
             g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
+            g.fillText(q.t, cx, y - size * 0.36);
           }
           cx += g.measureText(q.t).width;
+          g.restore();
         }
       }
       return total;
@@ -644,7 +665,30 @@ export default defineSimulation({
       if (vecA > 0.02 && total > 0) {
         g.save();
         g.globalAlpha *= vecA;
-        const sE = hit ? Math.min(total * 0.35, 3) : ((phase * 0.9) % 1) * total;
+        // Das Elektron mit den Pfeilen läuft nur durch den Teil der Bahn, der mindestens 1,5 cm über
+        // Kanone und Leiter liegt (sonst streifen v und F die Kanone bzw. „Durchmesser in cm“);
+        // an den Enden blendet es kurz aus und ein
+        let s0 = 0;
+        let s1 = total;
+        if (!hit) {
+          const N = 120;
+          let first = -1;
+          let last = -1;
+          for (let i = 0; i <= N; i++) {
+            if (at((i / N) * total)[1] >= 1.5) {
+              if (first < 0) first = i;
+              last = i;
+            }
+          }
+          if (first >= 0 && last > first) {
+            s0 = (first / N) * total;
+            s1 = (last / N) * total;
+          }
+        }
+        // Start bei einem Viertel des Wegs: im Stand (vor dem Abspielen) gut sichtbar
+        const frac = (phase * 0.9 + 0.25) % 1;
+        if (!hit) g.globalAlpha *= clamp(Math.min(frac, 1 - frac) / 0.06, 0, 1);
+        const sE = hit ? Math.min(total * 0.35, 3) : s0 + frac * (s1 - s0);
         const [x, y, tx, ty] = at(sE);
         const ex = X(x);
         const ey = Y(y);
@@ -766,7 +810,7 @@ export default defineSimulation({
       const vel = electronSpeed(p.U);
       const r = rNow();
       const rows: [string, string][] = [
-        [`B = ${fx(0.716, 3)} · μ_[0] · n · I / R = ${v ? fx(B * 1e3, 3) : '?'} mT`, blue()],
+        [`B = ${fx(0.716, 3)} · μ_0 · n · I / R = ${v ? fx(B * 1e3, 3) : '?'} mT`, blue()],
         [`v = √(2 · e/m · U) = ${v ? sci(vel, 3) : '?'} m/s`, green()],
         [Number.isFinite(r) ? `r = v / (e/m · B) = ${v ? fx(r, 2) : '?'} cm` : `r → ∞ (B = 0)`, theme.text],
         [`F = e · v · B = ${v ? sci(lorentzForce(E_CHARGE, vel, B), 3) : '?'} N`, orange()],

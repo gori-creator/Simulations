@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, seededRandom, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   braggAngle,
   D1,
@@ -183,10 +183,10 @@ export default defineSimulation({
       front: 'Leuchtschirm von vorn',
       frontS: 'Schirm von vorn',
       dist: 'L = 13,5 cm',
-      ring1: 'r_[1] = {r} mm',
-      ring2: 'r_[2] = {r} mm',
-      ring1S: 'r_[1]',
-      ring2S: 'r_[2]',
+      ring1: 'r_1 = {r} mm',
+      ring2: 'r_2 = {r} mm',
+      ring1S: 'r_1',
+      ring2S: 'r_2',
       measLab: 'r = {r} mm',
       fits1: 'passt zu Ring 1',
       fits2: 'passt zu Ring 2',
@@ -231,10 +231,10 @@ export default defineSimulation({
       front: 'Screen seen from the front',
       frontS: 'Screen (front)',
       dist: 'L = 13.5 cm',
-      ring1: 'r_[1] = {r} mm',
-      ring2: 'r_[2] = {r} mm',
-      ring1S: 'r_[1]',
-      ring2S: 'r_[2]',
+      ring1: 'r_1 = {r} mm',
+      ring2: 'r_2 = {r} mm',
+      ring1S: 'r_1',
+      ring2S: 'r_2',
       measLab: 'r = {r} mm',
       fits1: 'matches ring 1',
       fits2: 'matches ring 2',
@@ -437,53 +437,21 @@ export default defineSimulation({
       ctx.set({ U: AUTO_U[autoIdx]! });
     }
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'left'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left', weight = 700, halo: string | null = null): number {
-      const g = surface.g;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo } : {}) });
     }
     const haloCol = () => (ctx.theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)');
 
@@ -572,6 +540,7 @@ export default defineSimulation({
       g.font = `${weight} ${Math.round(size * 0.7)}px ${ctx.theme.font}`;
       g.fillStyle = color;
       g.textAlign = 'left';
+      g.textBaseline = 'middle';
       g.fillText(exp, x + w, y - size * 0.38);
       w += g.measureText(exp).width + 1;
       w += richText(tail, x + w, y, size, color, 'left', weight);
@@ -955,16 +924,25 @@ export default defineSimulation({
       g.moveTo(cx - 40 * k, cy + 0.5);
       g.lineTo(cx + 40 * k, cy + 0.5);
       g.stroke();
-      const sf = `600 ${sm ? 9.5 : 10}px ${theme.font}`;
-      g.font = sf;
-      g.fillStyle = 'rgba(200,230,215,0.65)';
-      g.textAlign = 'center';
-      g.textBaseline = 'top';
-      for (let mm = 10; mm <= 40; mm += 10) {
-        if (sm && mm % 20) continue;
-        g.fillText(String(mm), cx + mm * k, cy + 7);
-      }
       g.restore();
+      // Zahlen der mm-Skala erst nach Messkreis und Pfeil (siehe unten), mit Rand in Schirmfarbe,
+      // damit Kreis oder Pfeil sie nicht durchkreuzen
+      const scaleNumbers = () => {
+        g.save();
+        g.font = `600 ${sm ? 9.5 : 10}px ${theme.font}`;
+        g.textAlign = 'center';
+        g.textBaseline = 'top';
+        g.lineJoin = 'round';
+        g.lineWidth = 3;
+        g.strokeStyle = 'rgba(6,14,11,0.85)';
+        g.fillStyle = 'rgba(200,230,215,0.65)';
+        for (let mm = 10; mm <= 40; mm += 10) {
+          if (sm && mm % 20) continue;
+          g.strokeText(String(mm), cx + mm * k, cy + 7);
+          g.fillText(String(mm), cx + mm * k, cy + 7);
+        }
+        g.restore();
+      };
       // Ringbeschriftungen (links unten außen); im Aufgabenmodus verdeckt, solange „Ringe“ verdeckt ist
       if (!ctx.isHidden('ring')) {
         const fs = sm ? 10.5 : 11.5;
@@ -1032,6 +1010,7 @@ export default defineSimulation({
         g.restore();
         measHandle = { x: hx, y: hy };
       } else measHandle = null;
+      scaleNumbers();
       g.restore();
     }
     let measHandle: { x: number; y: number } | null = null;
@@ -1296,8 +1275,8 @@ export default defineSimulation({
         [`e · U = ½ · m · v²`, theme.muted],
         [`v = √(2 · e · U / m) = ${valLam ? `${sciCanvas(v, 2)} m/s` : '?'}`, theme.text],
         [`λ = h / (m · v) = ${valLam ? `${fx(lam, 1)} pm` : '?'}`, mixColor(blue(), theme.text, theme.dark ? 0.1 : 0.2)],
-        [`r_[1] = L · tan 2θ_[1] = ${valRing ? `${fx(r1Of(U), 1)} mm` : '?'}`, c1()],
-        [`r_[2] = L · tan 2θ_[2] = ${valRing ? `${fx(r2Of(U), 1)} mm` : '?'}`, c2()],
+        [`r_1 = L · tan 2θ_1 = ${valRing ? `${fx(r1Of(U), 1)} mm` : '?'}`, c1()],
+        [`r_2 = L · tan 2θ_2 = ${valRing ? `${fx(r2Of(U), 1)} mm` : '?'}`, c2()],
       ];
       if (R.h > 175) rows.splice(3, 0, [`2 · d · sin θ = λ`, theme.muted]);
       const top = ty + (sm ? 14 : 18);

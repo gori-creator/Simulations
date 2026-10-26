@@ -1,6 +1,6 @@
 import { t } from '../i18n/utils';
 import { Formatter, formatPiFraction, MINUS } from './format';
-import { parseSubText } from './draw';
+import { drawHatText, hasRichText, measureHatText, parseSubText } from './draw';
 import { clamp } from './numeric';
 import type { PointerTarget, Rect, Surface, SurfacePointer } from './surface';
 import { minorStep, niceStep, piStep, ticksIn } from './ticks';
@@ -543,7 +543,7 @@ export class Plot implements PointerTarget {
     const g = this.surface.g;
     g.save();
     g.textAlign = 'left';
-    const width = label.includes('_') ? measureRichText(g, label, font, size) : ((g.font = font(size)), g.measureText(label).width);
+    const width = hasRichText(label) ? measureRichText(g, label, font, size) : ((g.font = font(size)), g.measureText(label).width);
     g.restore();
     this.pendingLabels.push({ label, font, size, width, spots });
   }
@@ -564,7 +564,7 @@ export class Plot implements PointerTarget {
       g.font = item.font(item.size);
       g.textAlign = spot.align;
       g.textBaseline = spot.baseline;
-      if (item.label.includes('_')) drawRichText(g, item.label, spot.x, spot.y, { font: item.font, size: item.size, color: theme.text, halo: theme.bg, haloWidth: 3 });
+      if (hasRichText(item.label)) drawRichText(g, item.label, spot.x, spot.y, { font: item.font, size: item.size, color: theme.text, halo: theme.bg, haloWidth: 3 });
       else this.haloText(item.label, spot.x, spot.y, theme.text);
       g.restore();
       this.taken.push(rects[index]!);
@@ -858,7 +858,7 @@ export class Plot implements PointerTarget {
     g.textBaseline = style.baseline ?? 'alphabetic';
     const [dx, dy] = style.offset ?? [0, 0];
     const content = text.replace(/-(?=[\d.,])/g, MINUS);
-    if (content.includes('_')) {
+    if (hasRichText(content)) {
       const width = drawRichText(g, content, px + dx, py + dy, { font, size, halo: (style.halo ?? true) ? theme.bg : null, haloWidth: 4, color: style.color ?? theme.text });
       if (this.inFrame) this.taken.push(labelRect({ x: px + dx, y: py + dy, align: g.textAlign, baseline: g.textBaseline }, width, size));
       return;
@@ -1088,7 +1088,7 @@ export function drawRichText(
   let total = 0;
   for (const part of parts) {
     g.font = fontOf(part.sub);
-    total += g.measureText(part.text).width;
+    total += measureHatText(g, part.text);
   }
   const align = g.textAlign;
   const left = align === 'left' || align === 'start' ? x : align === 'right' || align === 'end' ? x - total : x - total / 2;
@@ -1104,12 +1104,11 @@ export function drawRichText(
         g.lineJoin = 'round';
         g.lineWidth = opts.haloWidth ?? 4;
         g.strokeStyle = opts.halo!;
-        g.strokeText(part.text, cx, yy);
       } else {
         g.fillStyle = opts.color;
-        g.fillText(part.text, cx, yy);
       }
-      cx += g.measureText(part.text).width;
+      // Zeichen mit Dach („φ̂“) setzt drawHatText selbst
+      cx += drawHatText(g, part.text, cx, yy, pass === 'halo' ? 'halo' : 'fill');
     }
   }
   g.restore();
@@ -1122,7 +1121,7 @@ function measureRichText(g: CanvasRenderingContext2D, value: string, font: (px: 
   let total = 0;
   for (const part of parseSubText(value)) {
     g.font = font(part.sub ? subSize : size);
-    total += g.measureText(part.text).width;
+    total += measureHatText(g, part.text);
   }
   return total;
 }

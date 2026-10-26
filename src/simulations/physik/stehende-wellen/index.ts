@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   antinodes,
   DrivenString,
@@ -254,9 +254,9 @@ export default defineSimulation({
         'Seil bzw. Luftsäule mit stehender Welle: hinlaufende (blau) und reflektierte Welle (rot) überlagern sich zur stehenden Welle (grün) mit Knoten K und Bäuchen B und Hüllkurve; Eigenschwingungen mit festen und losen Enden bzw. offenen und geschlossenen Rohrenden; Erreger mit einstellbarer Frequenz und Resonanzkurve; darunter Karten mit Formeln, Zeigerdiagramm, Eigenfrequenzen und Diagrammen',
       hdrEnt: 'f = {f} Hz · λ = {l} m',
       hdrEntS: 'λ = {l} m',
-      hdrEig: 'f_[{n}] = {f} Hz · λ_[{n}] = {l} m',
-      hdrEigS: 'f_[{n}] = {f} Hz',
-      hdrRes: 'f = {f} Hz · f_[1] = {f1} Hz',
+      hdrEig: 'f_{{n}} = {f} Hz · λ_{{n}} = {l} m',
+      hdrEigS: 'f_{{n}} = {f} Hz',
+      hdrRes: 'f = {f} Hz · f_1 = {f1} Hz',
       hdrResS: 'f = {f} Hz',
       slowPill: 'im Bild {k}× langsamer',
       slowPillS: '{k}× langsamer',
@@ -293,29 +293,29 @@ export default defineSimulation({
       now: 'jetzt',
       titleFund: 'Grundschwingung',
       titleOver: '{k}. Oberschwingung',
-      harmPill: 'f_[{n}] = {h} · f_[1]',
-      harmPill1: 'f_[1]',
+      harmPill: 'f_{{n}} = {h} · f_1',
+      harmPill1: 'f_1',
       lawEq: 'L = {n} · λ/2',
       lawUneq: 'L = {h} · λ/4',
-      lamRow: 'λ_[{n}] = {l} m',
-      fRow: 'f_[{n}] = c/λ_[{n}] = {f} Hz',
-      fRowS: 'f_[{n}] = {f} Hz',
+      lamRow: 'λ_{{n}} = {l} m',
+      fRow: 'f_{{n}} = c/λ_{{n}} = {f} Hz',
+      fRowS: 'f_{{n}} = {f} Hz',
       countRow: '{k} Knoten · {b} Bäuche',
       countRow1: '{k} Knoten · 1 Bauch',
-      genEq: 'allgemein: f_[n] = n · c/(2L)',
-      genUneq: 'allgemein: f_[n] = (2n − 1) · c/(4L)',
+      genEq: 'allgemein: f_n = n · c/(2L)',
+      genUneq: 'allgemein: f_n = (2n − 1) · c/(4L)',
       countAir: 'Bewegung: {k} K, {b} B · Druck umgekehrt',
       countAirS: 'Bewegung: {k} K, {b} B',
       ladder: 'Eigenfrequenzen',
       ladderTap: 'antippen',
-      allMult: 'alle Vielfachen von f_[1]',
-      oddOnly: 'nur ungerade Vielfache von f_[1]',
+      allMult: 'alle Vielfachen von f_1',
+      oddOnly: 'nur ungerade Vielfache von f_1',
       cardRes: 'Seil am Erreger',
       resYes: 'Resonanz',
       resNo: 'keine Resonanz',
       fNow: 'f = {f} Hz',
-      fNext: 'nächste Eigenfrequenz: f_[{n}] = {f} Hz',
-      fNextS: 'f_[{n}] = {f} Hz',
+      fNext: 'nächste Eigenfrequenz: f_{{n}} = {f} Hz',
+      fNextS: 'f_{{n}} = {f} Hz',
       ampBig: 'Ŷ = {a} · a',
       ampSub: 'größte Auslenkung, a = Erreger',
       chartRes: 'Resonanzkurve',
@@ -364,9 +364,9 @@ export default defineSimulation({
         'Rope or air column with a standing wave: the incident (blue) and reflected wave (red) superpose to form the standing wave (green) with nodes N, antinodes A and envelope; normal modes with fixed and free ends or open and closed pipe ends; a driver with adjustable frequency and a resonance curve; below, cards with formulas, phasor diagram, natural frequencies and graphs',
       hdrEnt: 'f = {f} Hz · λ = {l} m',
       hdrEntS: 'λ = {l} m',
-      hdrEig: 'f_[{n}] = {f} Hz · λ_[{n}] = {l} m',
-      hdrEigS: 'f_[{n}] = {f} Hz',
-      hdrRes: 'f = {f} Hz · f_[1] = {f1} Hz',
+      hdrEig: 'f_{{n}} = {f} Hz · λ_{{n}} = {l} m',
+      hdrEigS: 'f_{{n}} = {f} Hz',
+      hdrRes: 'f = {f} Hz · f_1 = {f1} Hz',
       hdrResS: 'f = {f} Hz',
       slowPill: '{k}× slower in the picture',
       slowPillS: '{k}× slower',
@@ -403,29 +403,29 @@ export default defineSimulation({
       now: 'now',
       titleFund: 'Fundamental',
       titleOver: 'Overtone {k}',
-      harmPill: 'f_[{n}] = {h} · f_[1]',
-      harmPill1: 'f_[1]',
+      harmPill: 'f_{{n}} = {h} · f_1',
+      harmPill1: 'f_1',
       lawEq: 'L = {n} · λ/2',
       lawUneq: 'L = {h} · λ/4',
-      lamRow: 'λ_[{n}] = {l} m',
-      fRow: 'f_[{n}] = c/λ_[{n}] = {f} Hz',
-      fRowS: 'f_[{n}] = {f} Hz',
+      lamRow: 'λ_{{n}} = {l} m',
+      fRow: 'f_{{n}} = c/λ_{{n}} = {f} Hz',
+      fRowS: 'f_{{n}} = {f} Hz',
       countRow: '{k} nodes · {b} antinodes',
       countRow1: '{k} nodes · 1 antinode',
-      genEq: 'in general: f_[n] = n · c/(2L)',
-      genUneq: 'in general: f_[n] = (2n − 1) · c/(4L)',
+      genEq: 'in general: f_n = n · c/(2L)',
+      genUneq: 'in general: f_n = (2n − 1) · c/(4L)',
       countAir: 'motion: {k} N, {b} A · pressure reversed',
       countAirS: 'motion: {k} N, {b} A',
       ladder: 'Natural frequencies',
       ladderTap: 'tap to choose',
-      allMult: 'all multiples of f_[1]',
-      oddOnly: 'odd multiples of f_[1] only',
+      allMult: 'all multiples of f_1',
+      oddOnly: 'odd multiples of f_1 only',
       cardRes: 'Rope on the driver',
       resYes: 'resonance',
       resNo: 'no resonance',
       fNow: 'f = {f} Hz',
-      fNext: 'nearest natural frequency: f_[{n}] = {f} Hz',
-      fNextS: 'f_[{n}] = {f} Hz',
+      fNext: 'nearest natural frequency: f_{{n}} = {f} Hz',
+      fNextS: 'f_{{n}} = {f} Hz',
       ampBig: 'Ŷ = {a} · a',
       ampSub: 'largest displacement, a = driver',
       chartRes: 'Resonance curve',
@@ -653,56 +653,21 @@ export default defineSimulation({
       return { r, sm, x0, x1, cy, H, topRow, kRow, brRow, rulerY, rulerH };
     }
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo: ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)' } : {}) });
     }
 
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): Rect {
@@ -1171,6 +1136,9 @@ export default defineSimulation({
       for (let i = 1; i < nx.length; i++) gap = Math.min(gap, nx[i]! - nx[i - 1]!);
       const letters = gap >= 24;
       if (gap < 9) return;
+      // dicht an dicht (hohe Ordnung): kleinere, dünnere Ringe – jeder Knoten bleibt markiert,
+      // damit der Abstand λ/2 ablesbar bleibt
+      const dense = gap < 18;
       for (const m of marks) {
         if (m.a < 0.01) continue;
         const s = ease.outBack(clamp(m.a, 0, 1));
@@ -1180,9 +1148,9 @@ export default defineSimulation({
           if (rings) {
             g.fillStyle = theme.bg;
             g.strokeStyle = color;
-            g.lineWidth = 2;
+            g.lineWidth = dense ? 1.4 : 2;
             g.beginPath();
-            g.arc(m.x, axisY, 4.6 * s, 0, TAU);
+            g.arc(m.x, axisY, (dense ? 2.8 : 4.6) * s, 0, TAU);
             g.fill();
             g.stroke();
           }
@@ -1749,6 +1717,10 @@ export default defineSimulation({
       envelope(xs, ea, g0.cy, green(), aEnv, g0.H);
       // Knoten/Bäuche der nächsten Eigenschwingung, je nach Stärke der Resonanz
       const nu = nuEnt();
+      // hohe Ordnung (ν bis 45): weniger als 10 Seilpunkte je halber Welle – zwischen den Punkten
+      // glatt (Catmull-Rom) feiner zeichnen, sonst wirkt das Seil zackig
+      const sub = rope.n / Math.max(1, nu) < 10 ? 4 : 1;
+      const line = sub > 1 ? smoothRope(pts, sub) : pts;
       const ord = nearestOrder(nu);
       const strength = ease2('resS', clamp((Math.min(ampLive, steadyAmp(nu)) - 2.5) / 4, 0, 1), 4);
       if (strength > 0.01) {
@@ -1761,9 +1733,32 @@ export default defineSimulation({
         bracket(X(0), X(1 / ord), g0.brRow, lamLbl('lam2', lam / 2), theme.text, g0.sm, strength * aKb);
       }
       drawPulley(g0.x1, g0.cy, g0.sm);
-      strokeRope(pts, green(), g0.sm ? 3.2 : 4, true);
+      strokeRope(line, green(), g0.sm ? 3.2 : 4, true);
       drawDriver(g0.x0, g0.cy, -rope.y[0]! * amp, g0.sm);
       drawRuler(g0, Ls, false, ik);
+    }
+
+    /** Punkte mit gleichem x-Abstand: je Abschnitt `sub` Zwischenpunkte auf einer Catmull-Rom-Kurve. */
+    function smoothRope(pts: [number, number][], sub: number): [number, number][] {
+      const out: [number, number][] = [];
+      const n = pts.length;
+      for (let i = 0; i < n - 1; i++) {
+        const p0 = pts[Math.max(0, i - 1)]![1];
+        const p1 = pts[i]![1];
+        const p2 = pts[i + 1]![1];
+        const p3 = pts[Math.min(n - 1, i + 2)]![1];
+        const x1 = pts[i]![0];
+        const x2 = pts[i + 1]![0];
+        for (let k = 0; k < sub; k++) {
+          const t = k / sub;
+          const t2 = t * t;
+          const t3 = t2 * t;
+          const y = 0.5 * (2 * p1 + (p2 - p0) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (3 * p1 - p0 - 3 * p2 + p3) * t3);
+          out.push([x1 + (x2 - x1) * t, y]);
+        }
+      }
+      out.push(pts[n - 1]!);
+      return out;
     }
 
     /* ---------- Kopfzeile der Szene ---------- */
@@ -1948,8 +1943,8 @@ export default defineSimulation({
       let lx = R.x + R.w - 14;
       for (const [lab, col] of [
         ['y', green()],
-        [ctx.lang === 'de' ? 'y_[r]' : 'y_[r]', red()],
-        [ctx.lang === 'de' ? 'y_[h]' : 'y_[i]', blue()],
+        [ctx.lang === 'de' ? 'y_r' : 'y_r', red()],
+        [ctx.lang === 'de' ? 'y_h' : 'y_i', blue()],
       ] as const) {
         if (lx - richWidth(lab, fs) - 18 < R.x + 14 + tw + 10) break;
         const w = richText(lab, lx, ty, fs, col, 'right', false, 750);
@@ -2194,7 +2189,7 @@ export default defineSimulation({
         g.fill();
         g.restore();
         // Beschriftung: f_k unten, Wert oben (Wert nur, wenn Platz)
-        richText(`f_[${k}]`, x, ay + (sm ? 12 : 14), fs, sel ? green() : theme.muted, 'center', false, sel ? 800 : 650);
+        richText(`f_{${k}}`, x, ay + (sm ? 12 : 14), fs, sel ? green() : theme.muted, 'center', false, sel ? 800 : 650);
         const gap = Xf(harmonic(cfg.bc, 2)) - Xf(harmonic(cfg.bc, 1));
         const val = hideF() ? '?' : fHz(f1 * h);
         if (sel || (!hideF() && gap > richWidth(val + ' Hz', fs) + 6)) richText(sel ? `${val} Hz` : val, x, top - (sm ? 11 : 13), fs, sel ? green() : theme.muted, 'center', true, sel ? 800 : 600);
@@ -2343,7 +2338,7 @@ export default defineSimulation({
         g.lineTo(Math.round(x) + 0.5, A.y + A.h);
         g.stroke();
         g.setLineDash([]);
-        richText(`f_[${k}]`, x, A.y + A.h + (sm ? 11 : 13), fs, theme.muted, 'center', false, 650);
+        richText(`f_{${k}}`, x, A.y + A.h + (sm ? 11 : 13), fs, theme.muted, 'center', false, 650);
       }
       richText('f', A.x + A.w, A.y + A.h + (sm ? 11 : 13), fs, theme.muted, 'right', false, 650);
       // Kurve mit Fläche

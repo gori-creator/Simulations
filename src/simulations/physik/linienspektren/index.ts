@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, subText, Surface, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   cascade,
   colorNameOf,
@@ -360,7 +360,9 @@ export default defineSimulation({
       const h = surface.height;
       const side = w >= 640 || w >= h * 1.3;
       if (side) {
-        const pw = Math.round(clamp(w * 0.36, 250, 390));
+        // Termschema mit sechs Spalten (He, Hg) auf mittleren Breiten (iPad quer) etwas breiter
+        const wide = el().columns.length >= 6 && w < 760;
+        const pw = Math.round(wide ? clamp(w * 0.46, 250, 300) : clamp(w * 0.36, 250, 390));
         const th = Math.round((h - 10) * 0.62);
         return { side, scene: { x: 0, y: 0, w: w - pw - 12, h }, term: { x: w - pw, y: 0, w: pw, h: th }, info: { x: w - pw, y: th + 10, w: pw, h: h - th - 10 } };
       }
@@ -636,53 +638,71 @@ export default defineSimulation({
     }
 
     /* ---------- Zeichenhilfen ---------- */
-    interface Part {
-      t: string;
-      k: 0 | 1 | 2;
-    }
-    function parts(str: string): Part[] {
-      const out: Part[] = [];
-      const re = /([_^])\[([^\]]*)\]/g;
+    /*
+     * Text mit tiefgestelltem Index über den Kern-Helfer `subText` (`E_1`), dazu Hochzahlen
+     * „10^[14]“, „e^[−]“ (die zeichnet der Kern nicht). Größen wie bisher auf ganze Pixel gerundet.
+     */
+    const subStyle = (size: number, color: string, weight: number): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align: 'left',
+      subScale: Math.round(size * 0.72) / size,
+      subShift: 0.3,
+    });
+    /** Zerlegt in Textstücke (mit Index) und Hochzahlen. */
+    function pieces(str: string): { t: string; sup: boolean }[] {
+      const out: { t: string; sup: boolean }[] = [];
+      const re = /\^\[([^\]]*)\]/g;
       let last = 0;
       let mm: RegExpExecArray | null;
       while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), k: 0 });
-        out.push({ t: mm[2]!, k: mm[1] === '_' ? 1 : 2 });
+        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sup: false });
+        out.push({ t: mm[1]!, sup: true });
         last = re.lastIndex;
       }
-      if (last < str.length) out.push({ t: str.slice(last), k: 0 });
+      if (last < str.length) out.push({ t: str.slice(last), sup: false });
       return out;
     }
+    const supFont = (size: number, weight: number) => `${weight} ${Math.round(size * 0.72)}px ${ctx.theme.font}`;
     function richWidth(str: string, size: number, weight = 700): number {
       const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.k ? Math.round(size * 0.72) : size}px ${ctx.theme.font}`;
+      return pieces(str).reduce((w, q) => {
+        if (!q.sup) return w + measureSubText(g, q.t, subStyle(size, '', weight));
+        g.font = supFont(size, weight);
         return w + g.measureText(q.t).width;
       }, 0);
     }
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left', weight = 700, halo: string | null = null): number {
       const g = surface.g;
-      const list = parts(str);
+      const list = pieces(str);
       const total = richWidth(str, size, weight);
       const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
+      // erst alle Ränder, dann die Schrift (sonst überdeckt ein Rand die vorige Schrift)
+      for (const pass of halo ? ['halo', 'fill'] : ['fill']) {
         let cx = start;
         for (const q of list) {
-          const s = q.k ? Math.round(size * 0.72) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.k === 1 ? size * 0.3 : q.k === 2 ? -size * 0.36 : 0);
-          if (pass === 0) {
+          if (!q.sup) {
+            const st = subStyle(size, pass === 'halo' ? 'rgba(0,0,0,0)' : color, weight);
+            cx += subText(g, q.t, cx, y, pass === 'halo' ? { ...st, halo: halo! } : st);
+            continue;
+          }
+          g.save();
+          g.font = supFont(size, weight);
+          g.textAlign = 'left';
+          g.textBaseline = 'middle';
+          if (pass === 'halo') {
             g.lineWidth = 3.5;
             g.lineJoin = 'round';
             g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
+            g.strokeText(q.t, cx, y - size * 0.36);
           } else {
             g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
+            g.fillText(q.t, cx, y - size * 0.36);
           }
           cx += g.measureText(q.t).width;
+          g.restore();
         }
       }
       return total;
@@ -1731,7 +1751,7 @@ export default defineSimulation({
       const sl = levelSub(e, t.l);
       const v = showVal();
       const hid = '?';
-      const r1 = `ΔE = E_[${su}] − E_[${sl}] = ${v ? `${fmt.fixed(dE, 2)} eV` : hid}`;
+      const r1 = `ΔE = E_{${su}} − E_{${sl}} = ${v ? `${fmt.fixed(dE, 2)} eV` : hid}`;
       const r2 = `f = ΔE / h = ${v ? `${sciCanvas(f, 2)} Hz` : hid}`;
       const r3 = `λ = c / f = ${v ? `${lamText(lam)} nm` : hid}`;
       let y = top + lh / 2;

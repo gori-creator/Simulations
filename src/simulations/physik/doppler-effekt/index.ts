@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, withUnit, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, withUnit, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   arrivals,
   C_AIR,
@@ -148,8 +148,8 @@ export default defineSimulation({
       canvas:
         'Draufsicht auf eine Straße: Ein Krankenwagen mit Blaulicht fährt vorbei und sendet kreisförmige Wellenfronten aus, die vorn dichter und hinten weiter auseinander liegen; ein ziehbarer Beobachter am Straßenrand; darunter der Verlauf der gehörten Frequenz f_B(t) und eine Anzeige der Frequenz beim Beobachter',
       axisT: 't in s',
-      chipF: 'gehörte Frequenz f_[B] in Hz',
-      chipFS: 'f_[B] in Hz',
+      chipF: 'gehörte Frequenz f_B in Hz',
+      chipFS: 'f_B in Hz',
       tPill: 't = {t} s',
       slowPill: 'Zeitlupe: {k}× langsamer',
       slowPillS: '{k}× langsamer',
@@ -158,16 +158,16 @@ export default defineSimulation({
       rings: 'Ringe: nur jede {n}. Wellenfront',
       ringsOne: 'Ringe: jede Wellenfront',
       ringsS: 'jede {n}. Front',
-      lamV: '{n} λ_[v]',
-      lamVv: '{n} λ_[v] = {l} m',
-      lamH: '{n} λ_[h]',
-      lamHv: '{n} λ_[h] = {l} m',
-      lam1V: 'λ_[v]',
-      lam1Vv: 'λ_[v] = {l} m',
-      lam1H: 'λ_[h]',
-      lam1Hv: 'λ_[h] = {l} m',
-      vQ: 'v_[Q] = {v} m/s',
-      vB: 'v_[B] = {v} m/s',
+      lamV: '{n} λ_v',
+      lamVv: '{n} λ_v = {l} m',
+      lamH: '{n} λ_h',
+      lamHv: '{n} λ_h = {l} m',
+      lam1V: 'λ_v',
+      lam1Vv: 'λ_v = {l} m',
+      lam1H: 'λ_h',
+      lam1Hv: 'λ_h = {l} m',
+      vQ: 'v_Q = {v} m/s',
+      vB: 'v_B = {v} m/s',
       observer: 'Beobachter',
       cone: 'Machscher Kegel',
       alpha: 'α = {a}°',
@@ -178,17 +178,17 @@ export default defineSimulation({
       silent: 'Stille',
       silentSub: 'Der Schall ist noch unterwegs.',
       silentSubS: 'Die Quelle ist schneller als ihr Schall.',
-      higher: '+{d} Hz · höher als f_[Q]',
-      lower: '−{d} Hz · tiefer als f_[Q]',
-      same: 'genau f_[Q]',
+      higher: '+{d} Hz · höher als f_Q',
+      lower: '−{d} Hz · tiefer als f_Q',
+      same: 'genau f_Q',
       hidden: '? Hz',
       hiddenSub: 'Wert ausgeblendet',
       second: '+ rückwärts: {f} Hz',
-      radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
-      radialQ: 'v_[Q,r] = {q} m/s',
-      fQ: 'f_[Q]',
-      fV: 'f_[v]',
-      fH: 'f_[h]',
+      radial: 'v_{Q,r} = {q} m/s · v_{B,r} = {b} m/s',
+      radialQ: 'v_{Q,r} = {q} m/s',
+      fQ: 'f_Q',
+      fV: 'f_v',
+      fH: 'f_h',
       silence: 'Stille',
       boomShort: 'Knall',
       rev: 'rückwärts',
@@ -217,8 +217,8 @@ export default defineSimulation({
       canvas:
         'Top view of a road: an ambulance with flashing blue lights drives past and sends out circular wave fronts that are closer together ahead and further apart behind; a draggable observer at the roadside; below it the graph of the frequency heard, f_B(t), and a display of the frequency at the observer',
       axisT: 't in s',
-      chipF: 'frequency heard f_[B] in Hz',
-      chipFS: 'f_[B] in Hz',
+      chipF: 'frequency heard f_B in Hz',
+      chipFS: 'f_B in Hz',
       tPill: 't = {t} s',
       slowPill: 'slow motion: {k}× slower',
       slowPillS: '{k}× slower',
@@ -227,16 +227,16 @@ export default defineSimulation({
       rings: 'rings: only every {n}th wave front',
       ringsOne: 'rings: every wave front',
       ringsS: 'every {n}th front',
-      lamV: '{n} λ_[a]',
-      lamVv: '{n} λ_[a] = {l} m',
-      lamH: '{n} λ_[b]',
-      lamHv: '{n} λ_[b] = {l} m',
-      lam1V: 'λ_[a]',
-      lam1Vv: 'λ_[a] = {l} m',
-      lam1H: 'λ_[b]',
-      lam1Hv: 'λ_[b] = {l} m',
-      vQ: 'v_[Q] = {v} m/s',
-      vB: 'v_[B] = {v} m/s',
+      lamV: '{n} λ_a',
+      lamVv: '{n} λ_a = {l} m',
+      lamH: '{n} λ_b',
+      lamHv: '{n} λ_b = {l} m',
+      lam1V: 'λ_a',
+      lam1Vv: 'λ_a = {l} m',
+      lam1H: 'λ_b',
+      lam1Hv: 'λ_b = {l} m',
+      vQ: 'v_Q = {v} m/s',
+      vB: 'v_B = {v} m/s',
       observer: 'observer',
       cone: 'Mach cone',
       alpha: 'α = {a}°',
@@ -247,17 +247,17 @@ export default defineSimulation({
       silent: 'Silence',
       silentSub: 'The sound is still on its way.',
       silentSubS: 'The source is faster than its sound.',
-      higher: '+{d} Hz · higher than f_[Q]',
-      lower: '−{d} Hz · lower than f_[Q]',
-      same: 'exactly f_[Q]',
+      higher: '+{d} Hz · higher than f_Q',
+      lower: '−{d} Hz · lower than f_Q',
+      same: 'exactly f_Q',
       hidden: '? Hz',
       hiddenSub: 'value hidden',
       second: '+ backwards: {f} Hz',
-      radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
-      radialQ: 'v_[Q,r] = {q} m/s',
-      fQ: 'f_[Q]',
-      fV: 'f_[a]',
-      fH: 'f_[b]',
+      radial: 'v_{Q,r} = {q} m/s · v_{B,r} = {b} m/s',
+      radialQ: 'v_{Q,r} = {q} m/s',
+      fQ: 'f_Q',
+      fV: 'f_a',
+      fH: 'f_b',
       silence: 'silence',
       boomShort: 'boom',
       rev: 'backwards',
@@ -503,56 +503,21 @@ export default defineSimulation({
     /** Lage des Beobachters im Bild (auf schmalen Bildschirmen mindestens neben der Fahrbahn). */
     const PY = (g0: SceneGeo, y: number) => g0.roadY + Math.max(y * g0.k, y > 0 ? g0.rh + 10 : 0);
 
-    /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'center'): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
-
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, { ...subStyle(size, color, weight, align), ...(halo ? { halo: ctx.theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)' } : {}) });
     }
 
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
@@ -1320,7 +1285,13 @@ export default defineSimulation({
         const vl = tr('vQ', { v: n(vqShown, 0) });
         const vw = richWidth(vl, sm ? 11 : 12) / 2 + 6;
         const vy = sm ? src[1] + g0.rh + 10 + lenJ * 0.25 * jet : src[1] - 28 - lenJ * 0.3 * jet;
-        richText(vl, clamp(src[0], r.x + vw, r.x + r.w - vw), vy, sm ? 11 : 12, theme.text, 'center');
+        if (vqShown >= 0.97 * C_AIR) {
+          // ab etwa Schallgeschwindigkeit stauen sich die Wellenfronten an der Quelle: Beschriftung
+          // vor die Quelle (dort ist noch keine Welle), sonst berührt sie die gestaute Front
+          // (auf dem Handy über der Straße: darunter stehen Beobachter, Frequenz und „Schallmauer“)
+          const vx = Math.min(src[0] + 12, r.x + r.w - 2 * vw);
+          richText(vl, Math.max(r.x + 6, vx), src[1] - (sm ? 22 : 28) - lenJ * 0.3 * jet, sm ? 11 : 12, theme.text, 'left');
+        } else richText(vl, clamp(src[0], r.x + vw, r.x + r.w - vw), vy, sm ? 11 : 12, theme.text, 'center');
         g.restore();
       }
 
