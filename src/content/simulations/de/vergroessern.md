@@ -32,7 +32,7 @@ Das gilt für **jede** Fläche, also auch für die **Oberfläche** eines Körper
 4. [k = 1,5 mit Quader](?k=1.5&fig=r&obj=q): Welche Bruchstücke entstehen am Rand? Warum sind es zusammen genau $2{,}25$ bzw. $3{,}375$ Kopien?
 5. [k = 0,5](?k=0.5): Jetzt wird das Original mit Bildern ausgelegt. Wie viele passen hinein? Und beim [Kreis mit k = 2](?k=2&fig=k)?
 6. [Rückwärts](?mode=back&dim=v&f=27): Das Volumen ist 27-mal so groß. Drücke „k suchen“. Ändere dann auf [Flächenfaktor 2](?mode=back&dim=a&f=2).
-7. Anwendungen: [Pizza](?mode=pizza&d1=20&d2=30), [Modellauto](?mode=modell&m=10), [Oberfläche und Volumen](?mode=ov&a=2) – drücke jeweils die Aktion unter der Zeichenfläche.
+7. Anwendungen: [Pizza](?mode=pizza&d1=20&d2=30), [Modellauto](?mode=modell&m=10), [Oberfläche und Volumen](?mode=ov&a=2) – drücke jeweils den Knopf unter der Zeichenfläche.
 
 ## Aufgaben
 

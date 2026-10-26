@@ -163,7 +163,7 @@ const APP_META: Record<AppKey, AppMeta> = {
     FSrc: L('\\i{0}{t} v(u) du', '\\i{0}{t} v(u) du'),
     rate: L('Geschwindigkeit (negativ: abwärts)', 'velocity (negative: downwards)'),
     amount: L('Höhe der Kabine', 'height of the car'),
-    note: L('Ein Stockwerk ist 4 m hoch. Die Fläche unter v ist die zurückgelegte Höhe.', 'One floor is 4 m high. The area under v is the change in height.'),
+    note: L('Ein Stockwerk ist 4 m hoch. Die Fläche unter v ist die Höhenänderung (abwärts negativ).', 'One floor is 4 m high. The area under v is the change in height (negative downwards).'),
   },
   heat: {
     title: L('Zimmer heizen: Temperaturänderung → Temperatur', 'Heating a room: rate of change → temperature'),
@@ -205,7 +205,7 @@ const APP_META: Record<AppKey, AppMeta> = {
     FSrc: L('−\\f{1000}{π} · \\t{cos}(\\f{π}{10}(t − 7))', '−\\f{1000}{π} · \\t{cos}(\\f{π}{10}(t − 7))'),
     rate: L('Einfahrten minus Ausfahrten pro Stunde', 'arrivals minus departures per hour'),
     amount: L('belegte Plätze', 'occupied spaces'),
-    note: L('Um 6 Uhr stehen 40 Autos im Parkhaus. Vormittags fahren mehr ein als aus, nachmittags umgekehrt.', 'At 6 o’clock there are 40 cars in the car park. In the morning more arrive than leave, in the afternoon the other way round.'),
+    note: L('Um 6 Uhr stehen 40 Autos im Parkhaus. Zwischen 7 und 17 Uhr fahren mehr Autos ein als aus, davor und danach umgekehrt.', 'At 6 a.m. there are 40 cars in the car park. Between 7 a.m. and 5 p.m. more cars arrive than leave, before and after that the other way round.'),
   },
   co2: {
     title: L('Klassenzimmer: CO₂-Änderung → CO₂-Gehalt', 'Classroom: change of CO₂ → CO₂ level'),
@@ -326,9 +326,9 @@ export default defineSimulation({
       default: 1,
       visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos'),
     },
-    { key: 'sb', type: 'number', group: 'coef', label: L('Frequenz b', 'Frequency b'), min: 0.2, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos') },
+    { key: 'sb', type: 'number', group: 'coef', label: L('Faktor b (Periode 2π/b)', 'Factor b (period 2π/b)'), min: 0.2, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && (v.fn === 'sin' || v.fn === 'cos') },
     { key: 'ea', type: 'number', group: 'coef', label: L('Faktor c', 'Factor c'), help: L('f(x) = c · e^(kx)', 'f(x) = c · e^(kx)'), min: -3, max: 3, step: 0.1, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
-    { key: 'eb', type: 'number', group: 'coef', label: L('Wachstumsfaktor k', 'Growth factor k'), min: -1.5, max: 1.5, step: 0.05, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
+    { key: 'eb', type: 'number', group: 'coef', label: L('Wachstumskonstante k', 'Growth constant k'), min: -1.5, max: 1.5, step: 0.05, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'exp' },
     { key: 'gs', type: 'number', group: 'coef', label: L('Breite σ', 'Width σ'), help: L('Streckt die Glocke in x-Richtung.', 'Stretches the bell in x-direction.'), min: 0.4, max: 2, step: 0.05, default: 1, visibleIf: (v) => v.kind === 'math' && (v.fn === 'gauss' || v.fn === 'bell') },
     { key: 's1', type: 'number', group: 'coef', label: L('Wert links', 'Value on the left'), min: -3, max: 3, step: 0.5, default: 1, visibleIf: (v) => v.kind === 'math' && v.fn === 'step' },
     { key: 's2', type: 'number', group: 'coef', label: L('Wert in der Mitte', 'Value in the middle'), min: -3, max: 3, step: 0.5, default: -1, visibleIf: (v) => v.kind === 'math' && v.fn === 'step' },
@@ -824,6 +824,14 @@ export default defineSimulation({
       }
     }
     /** „f(x) = …“ und „F(x) = … + C“. */
+    /**
+     * Stammfunktion verdecken: bei „Werte zeigen“ aus (Aufgaben) und in der
+     * Ansicht „Aufgabe: F skizzieren“, solange die Lösung nicht aufgedeckt ist.
+     */
+    function antiHidden(): boolean {
+      return mode() === 'draw' ? !p.sol : !p.show;
+    }
+
     function fullSrc(C: number | null): { f: string; F: string } {
       const s = fnSrc();
       const nm = names();
@@ -1548,7 +1556,7 @@ export default defineSimulation({
       // Legende
       const C = V.C;
       const Cv = cnt('leg.C', C);
-      const leg = w('draw') > 0.5 && kSol.v < 0.5 ? `\\c{F}{${names().F}(${names().v}) = ?}` : `\\c{F}{${fullSrc(null).F}}`;
+      const leg = (w('draw') > 0.5 && kSol.v < 0.5) || (mode() !== 'draw' && !p.show) ? `\\c{F}{${names().F}(${names().v}) = ?}` : `\\c{F}{${fullSrc(null).F}}`;
       const l2 = legendLeft(plotB, an.F, pillW(leg, fs(13, 12)));
       const lr = fpill(l2, r.y + 18, leg, { align: 'left', size: fs(13, 12), alpha: k.panel, border: withAlpha(col.F(), 0.5), maxW: Math.max(120, r.x + r.w * 0.66 - l2) });
       const showC = !(w('draw') > 0.5 && kSol.v < 0.5);
@@ -1949,7 +1957,7 @@ export default defineSimulation({
         const nm = names();
         const rows: RowSpec[] = [
           { src: mode() === 'back' && !p.full ? `\\c{f}{${nm.f}(${nm.v}) = ?}` : `\\c{f}{${src.f}}`, size: fs(13.5, 12.5) },
-          { src: `\\c{F}{${src.F}}`, size: fs(13.5, 12.5) },
+          { src: `\\c{F}{${antiHidden() ? `${nm.F}(${nm.v}) = ?` : src.F}}`, size: fs(13.5, 12.5) },
           { src: `\\c{m}{${nm.F}′(${nm.v}) = ${nm.f}(${nm.v}),  C ∈ ℝ}`, size: fs(12, 11), color: th().muted },
         ];
         if (s.note) rows.push({ src: `\\c{m}{${s.note}}`, size: fs(12, 11), color: th().muted });
@@ -2078,8 +2086,11 @@ export default defineSimulation({
         g.fillText(g.measureText(kw).width < cols[3]! - cols[2]! - 14 ? kw : '∪ / ∩', cols[3]!, hy);
         const sk = stepsK(now);
         const iv = (s: SignInterval) => {
-          const lo = s.a <= V.fn.x[0] + 1e-9 ? `${N(s.a, 1)}` : N(s.a, 2);
-          const hi = N(s.b, 2);
+          // Bei „Werte zeigen“ aus verraten die inneren Grenzen die Lösung (Nullstellen von f)
+          const loEdge = s.a <= V.fn.x[0] + 1e-9;
+          const hiEdge = s.b >= V.fn.x[1] - 1e-9;
+          const lo = loEdge ? `${N(s.a, 1)}` : p.show ? N(s.a, 2) : '?';
+          const hi = hiEdge || p.show ? N(s.b, 2) : '?';
           return lang === 'de' ? `]${lo}; ${hi}[` : `(${lo}, ${hi})`;
         };
         const xNow = mode() === 'trace' || mode() === 'back' ? V.x : NaN;
@@ -2301,7 +2312,9 @@ export default defineSimulation({
         const sentence =
           md === 'trace' || md === 'back'
             ? say(L(`Bei ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ≈ ${p.show ? NV(fv) : '?'} ${say(m.uF)}, ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`, `At ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ≈ ${p.show ? NV(fv) : '?'} ${say(m.uF)}, ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`))
-            : say(L(`Am Ende (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`, `At the end (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`));
+            : md === 'feld'
+              ? say(L(`Start (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} = ${NV(Fv)} ${say(m.uI)}.`, `Start (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} = ${NV(Fv)} ${say(m.uI)}.`))
+              : say(L(`Am Ende (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`, `At the end (${m.v} = ${N(xAt, 2)} ${say(m.uX)}): ${m.F} ≈ ${p.show ? NV(Fv) : '?'} ${say(m.uI)}.`));
         const meas = (draw: boolean, y0: number) => {
           let y = y0;
           y += textBlock(R, y, rate, col.f(), sz, draw, 650) + 2;
@@ -2411,16 +2424,22 @@ export default defineSimulation({
       const m = meta();
       const u = m ? ` ${nm.uI}` : '';
       const v = (t: string) => `<var>${t}</var>`;
-      ctx.readout('fn', { html: `${toHtml(src.f)}<br>${toHtml(src.F)}${s.note ? ` (${s.note})` : ''}` });
+      const hideF = antiHidden();
+      const Fq = `${v(nm.F)}(${v(nm.v)}) = ?`;
+      ctx.readout('fn', { html: `${toHtml(src.f)}<br>${hideF ? Fq : toHtml(src.F)}${s.note ? ` (${s.note})` : ''}` });
       const F0 = fn.F(st.x0);
+      // Im Skizziermodus vor dem Aufdecken nur den Anfangswert nennen
       ctx.readout('ivp', {
-        html: `${v(nm.F)}(${N(st.x0, 2)}) = ${NV(st.y0)}${u} ⇒ ${v('C')} = ${NV(st.y0)} − ${F0 < 0 ? `(${NV(F0)})` : NV(F0)} ${eq(C)} <strong>${NV(C)}</strong> · ${toHtml(fullSrc(C).F)}`,
+        html:
+          mode() === 'draw' && !p.sol
+            ? `${v(nm.F)}(${N(st.x0, 2)}) = ${NV(st.y0)}${u}; ${v('C')} = ?; ${Fq}`
+            : `${v(nm.F)}(${N(st.x0, 2)}) = ${NV(st.y0)}${u} ⇒ ${v('C')} = ${NV(st.y0)} − ${F0 < 0 ? `(${NV(F0)})` : NV(F0)} ${eq(C)} <strong>${NV(C)}</strong>; ${toHtml(fullSrc(C).F)}`,
       });
       const md = mode();
       if (md === 'trace' || md === 'back') {
         const x = lim(p.x);
         const fv = fn.f(x);
-        ctx.readout('at', { html: `${v(nm.f)}(${N(x, 2)}) ${eq(fv)} ${NV(fv)}${m ? ` ${nm.uF}` : ''} = ${say(L('Steigung von', 'slope of'))} ${v(nm.F)} · ${v(nm.F)}(${N(x, 2)}) ${eq(fn.F(x) + C)} ${NV(fn.F(x) + C)}${u}` });
+        ctx.readout('at', { html: `${v(nm.f)}(${N(x, 2)}) ${eq(fv)} ${NV(fv)}${m ? ` ${nm.uF}` : ''} = ${say(L('Steigung von', 'slope of'))} ${v(nm.F)} ${say(L('an der Stelle', 'at'))} ${N(x, 2)}; ${v(nm.F)}(${N(x, 2)}) ${eq(fn.F(x) + C)} ${NV(fn.F(x) + C)}${u}` });
       } else ctx.readout('at', null);
       if (md === 'feat' || md === 'back' || md === 'trace') {
         const list = (xs: number[]) => (xs.length ? xs.map((x) => N(x, 3)).join('; ') : '–');
@@ -2428,13 +2447,13 @@ export default defineSimulation({
         const tp = feat.zeros.filter((z) => z.sign > 0).map((z) => z.x);
         const tr = feat.zeros.filter((z) => z.sign === 0).map((z) => z.x);
         ctx.readout('feat', {
-          html: `${say(L('Hochstellen', 'Maxima'))}: ${list(hp)} · ${say(L('Tiefstellen', 'Minima'))}: ${list(tp)}${tr.length ? ` · ${say(L('Terrassenstellen', 'Saddle points'))}: ${list(tr)}` : ''} · ${say(L('Wendestellen', 'Inflection points'))}: ${list(feat.ext.map((e) => e.x))}`,
+          html: `${say(L('Hochstellen', 'Maxima'))}: ${list(hp)}; ${say(L('Tiefstellen', 'Minima'))}: ${list(tp)}${tr.length ? `; ${say(L('Terrassenstellen', 'Saddle points'))}: ${list(tr)}` : ''}; ${say(L('Wendestellen', 'Inflection points'))}: ${list(feat.ext.map((e) => e.x))}`,
         });
       } else ctx.readout('feat', null);
       if (md === 'area') {
         const parts = pcs.map((pc) => `[${N(pc.a, 2)}; ${N(pc.b, 2)}]: ${fmt.signed(clean(pc.area, 3), 3)}`);
         const tot = pcs.reduce((sum, pc) => sum + pc.area, 0);
-        ctx.readout('area', { html: `${parts.join(' · ')} → ${say(L('Summe', 'sum'))} ${fmt.signed(clean(tot, 3), 3)}${u}` });
+        ctx.readout('area', { html: `${parts.join('; ')} → ${say(L('Summe', 'sum'))} ${fmt.signed(clean(tot, 3), 3)}${u}` });
       } else ctx.readout('area', null);
       if (md === 'draw' && rating) {
         const grades = [L('noch weit weg', 'still far off'), L('ungefähr', 'roughly'), L('gut', 'good'), L('sehr gut', 'very good')];
@@ -2447,8 +2466,8 @@ export default defineSimulation({
       if (m) {
         const D = fn.x;
         const fe = feat.zeros.filter((z) => z.sign !== 0);
-        const best = fe.length ? fe.map((z) => `${z.sign < 0 ? say(L('Maximum', 'maximum')) : say(L('Minimum', 'minimum'))} ${say(L('bei', 'at'))} ${m.v} ≈ ${N(z.x, 2)} ${say(m.uX)}: ${NV(fn.F(z.x) + C)}${u}`).join(' · ') : say(L('kein Extremum im Bereich', 'no extremum in the range'));
-        ctx.readout('sit', { html: `${say(m.amount)}: ${say(L('Start', 'start'))} ${NV(st.y0)}${u}, ${say(L('Ende', 'end'))} (${m.v} = ${N(D[1], 2)} ${say(m.uX)}) ${NV(fn.F(D[1]) + C)}${u} · ${best}` });
+        const best = fe.length ? fe.map((z) => `${z.sign < 0 ? say(L('Maximum', 'maximum')) : say(L('Minimum', 'minimum'))} ${say(L('bei', 'at'))} ${m.v} ≈ ${N(z.x, 2)} ${say(m.uX)}: ${NV(fn.F(z.x) + C)}${u}`).join('; ') : say(L('kein Extremum im Bereich', 'no extremum in the range'));
+        ctx.readout('sit', { html: `${say(m.amount)}: ${say(L('Start', 'start'))} ${NV(st.y0)}${u}, ${say(L('Ende', 'end'))} (${m.v} = ${N(D[1], 2)} ${say(m.uX)}) ${NV(fn.F(D[1]) + C)}${u}; ${best}` });
       } else ctx.readout('sit', null);
     }
 
@@ -2675,7 +2694,8 @@ export default defineSimulation({
           if (!reduced() && pcs.length) stack = { t0: now, slot: 1100, n: pcs.length };
         } else if (id === 'reveal') {
           if (!reduced()) reveal = { t0: now, dur: 1700 };
-          setP({ sol: true });
+          // Lösung aufdecken zeigt auch die Werte im Bild (Aufgabenlink mit show=0)
+          setP({ sol: true, show: true });
         } else if (id === 'reset') {
           flatSketch();
         }

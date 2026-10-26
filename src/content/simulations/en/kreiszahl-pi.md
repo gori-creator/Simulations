@@ -83,7 +83,7 @@ For the hexagon, $3 < \pi < 2\sqrt{3} \approx 3.464$. Explain why the inscribed 
 <details>
 <summary>Show solution</summary>
 
-The inscribed hexagon consists of six equilateral triangles with side length $r$. Its perimeter is $6r = 3d$. Since the circle around it is a little longer, $\pi > 3$. [Show hexagon](?mode=archimedes)
+The inscribed hexagon consists of six equilateral triangles with side length $r$. Its perimeter is $6r = 3d$. Each circular arc between two vertices is longer than the hexagon side below it. So the circumference is greater than $3d$, and $\pi > 3$. [Show hexagon](?mode=archimedes)
 
 </details>
 
@@ -94,4 +94,3 @@ The inscribed hexagon consists of six equilateral triangles with side length $r$
 - **Common pitfalls:**
   - Circumference and area are mixed up; $\pi r^2$ and $2\pi r$ are swapped.
   - "π is exactly 3.14."
-- **Images:** The wheel and the pizza can be supplemented by photos (see `docs/BILDER.md`).

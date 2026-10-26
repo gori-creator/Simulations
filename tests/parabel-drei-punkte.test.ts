@@ -178,4 +178,53 @@ describe('Modell: Parabel durch drei Punkte', () => {
     expect(rootsWay(P(-1, 0, 3, 0, 1, 0))).toBeNull();
     expect(rootsWay(P(-1, 0, 3, 1, 1, 4))).toBeNull();
   });
+
+  it('Prüfrunde: Standardpunkte und Scheitel S(1 | 3,5)', () => {
+    const f = fitParabola(P(-1, 1.5, 2, 3, 4, -1));
+    const s = vertexOf(f.a, f.b, f.c)!;
+    same(s.x, 1);
+    same(s.y, 7, 2);
+  });
+
+  it('Prüfrunde: nicht abbrechender Scheitel bleibt exakt (4/3 | 49/15)', () => {
+    // P₁(−1|0), P₂(2|3), P₃(4|−1): a = −3/5, b = 8/5, c = 11/5
+    const f = fitParabola(P(-1, 0, 2, 3, 4, -1));
+    same(f.a, -3, 5);
+    same(f.b, 8, 5);
+    same(f.c, 11, 5);
+    const s = vertexOf(f.a, f.b, f.c)!;
+    same(s.x, 4, 3);
+    same(s.y, 49, 15);
+    expect(decimals(s.x)).toBeNull();
+  });
+
+  it('Prüfrunde: drei zusammenfallende Punkte und Nullstelle im Ursprung', () => {
+    expect(degenerate(P(2, 1, 2, 1, 2, 1))).toEqual({ kind: 'samePoint', pair: [0, 1] });
+    same(pairDifference(P(2, 1, 2, 1, 2, 1), [0, 1]), 0);
+    // Nullstellen 0 und 4, Punkt (2 | 4): y = a·x·(x − 4), 4 = −4a
+    const w = rootsWay(P(0, 0, 4, 0, 2, 4))!;
+    same(w.a, -1);
+    same(w.b, 4);
+    same(w.c, 0);
+  });
+
+  it('Prüfrunde: Reglergrenzen (±6, 0,5er-Schritte) bleiben exakt und ganzzahlig darstellbar', () => {
+    const vals = [-6, -5.5, -0.5, 0.5, 5.5, 6];
+    for (const x1 of vals)
+      for (const x2 of vals)
+        for (const x3 of [-6, 0, 5.5]) {
+          const pts = P(x1, -6, x2, 6, x3, -5.5);
+          const f = fitParabola(pts);
+          if (f.kind === 'sameX' || f.kind === 'samePoint') continue;
+          for (const q of [f.a, f.b, f.c]) {
+            expect(Number.isSafeInteger(q.n)).toBe(true);
+            expect(Number.isSafeInteger(q.d)).toBe(true);
+          }
+          const d = derive(pts)!;
+          expect(d.a).toEqual(f.a);
+          expect(d.b).toEqual(f.b);
+          expect(d.c).toEqual(f.c);
+          for (const p of pts) expect(toNumber(f.a) * p.x * p.x + toNumber(f.b) * p.x + toNumber(f.c)).toBeCloseTo(p.y, 9);
+        }
+  });
 });

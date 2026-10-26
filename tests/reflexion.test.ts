@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   dirFromVertical,
+  evenWedges,
   glancingAngle,
   hitsFront,
   imageCountRule,
   incidence,
   inFront,
+  isEvenWedge,
   isReversed,
   lightPath,
   mirrorDir,
@@ -218,5 +220,114 @@ describe('Modell: Reflexion – Winkelspiegel', () => {
     const eye = wedgePoint(8.4, 0.62, w);
     const one = wedgeImages(w, p).find((i) => i.seq.join('') === 'A')!;
     expect(lightPath(w, p, one, eye, 1)).toBeNull();
+  });
+});
+
+describe('Prüfrunde: Reflexion – Lernmaterial und Sonderfälle', () => {
+  it('Aufgabe 1: 25° zur Spiegelfläche → α = α′ = 65°, Strahlen schließen 130° ein', () => {
+    const alpha = incidence(65, 0);
+    expect(alpha).toBe(65);
+    expect(glancingAngle(alpha)).toBe(25);
+    expect(Math.abs(alpha) + Math.abs(reflectedAngle(65, 0))).toBe(130);
+  });
+
+  it('Aufgabe 2: Spiegel um 10° gedreht → α = 20°, reflektierter Strahl dreht sich um 20°', () => {
+    expect(incidence(30, 10)).toBe(20);
+    expect(reflectedAngle(30, 0)).toBe(-30);
+    expect(reflectedAngle(30, 10)).toBe(-10);
+    expect(reflectedAngle(30, 10) - reflectedAngle(30, 0)).toBe(20);
+  });
+
+  it('Ausprobieren: Spiegel um 15° gedreht (la = 40) → α = 25°, Strahl dreht um 30°', () => {
+    expect(incidence(40, 15)).toBe(25);
+    expect(reflectedAngle(40, 15) - reflectedAngle(40, 0)).toBe(30);
+  });
+
+  it('senkrechter Einfall: α = 0°, das Licht läuft in sich zurück', () => {
+    expect(incidence(0, 0)).toBe(0);
+    expect(reflectedAngle(0, 0)).toBe(0);
+    expect(glancingAngle(0)).toBe(90);
+    const r = reflectVector([0, -1], [0, 1]);
+    expect(r[0]).toBeCloseTo(0, 12);
+    expect(r[1]).toBeCloseTo(1, 12);
+  });
+
+  it('streifender Einfall: 85° trifft noch, ab 90° nicht mehr (Rückseite)', () => {
+    expect(hitsFront(85, 0)).toBe(true);
+    expect(glancingAngle(incidence(85, 0))).toBe(5);
+    expect(hitsFront(-45, 45)).toBe(false); // α = −90°
+    expect(hitsFront(70, -30)).toBe(false); // Beispiel „Laser hinter dem Spiegel“: α = 100°
+  });
+
+  it('Grundeinstellung Spiegelbild: nötiger Teil von 10,7 cm bis 22,7 cm', () => {
+    // g = 25, h = 18, Auge 50 cm vor dem Spiegel in 32 cm Höhe: Faktor 50 / 75 = 2/3
+    const [lo, hi] = neededMirror([-25, 0], [-25, 18], [-50, 32]);
+    expect(lo).toBeCloseTo(32 - (32 * 2) / 3, 9); // 10,67
+    expect(hi).toBeCloseTo(32 - (14 * 2) / 3, 9); // 22,67
+    expect(hi - lo).toBeCloseTo(12, 9); // h · e / (e + g) = 18 · 50 / 75
+  });
+
+  it('Aufgabe 4 (Modell): Auge über der Kerze → Spiegel von 20 cm bis 35 cm, auch weiter weg', () => {
+    for (const d of [30, 40]) {
+      const [lo, hi] = neededMirror([-d, 0], [-d, 30], [-d, 40]);
+      expect(lo).toBeCloseTo(20, 9);
+      expect(hi).toBeCloseTo(35, 9);
+    }
+    // Tom: 1,70 m groß, Augen in 1,60 m
+    const [lo, hi] = neededMirror([-1, 0], [-1, 1.7], [-1, 1.6]);
+    expect(lo).toBeCloseTo(0.8, 9);
+    expect(hi).toBeCloseTo(1.65, 9);
+  });
+
+  it('Beispiel „Zu kleiner Spiegel“: Auge sieht nur einen Teil der Kerze', () => {
+    // Grundwerte g = 25, h = 18, Auge (ex = 42, ey = 32), Spiegel von 14 cm bis 24 cm
+    const eye: V2 = [-42, 32];
+    expect(seesInMirror([-25, 0], eye, 14, 24)).toBe(false); // Fuß: y = 32 − 32 · 42/67 ≈ 11,9
+    expect(seesInMirror([-25, 18], eye, 14, 24)).toBe(true); // Flamme: y = 32 − 14 · 42/67 ≈ 23,2
+  });
+
+  it('Gegenstand hinter dem Spiegel wird nicht gesehen', () => {
+    expect(seesInMirror([5, 10], [-30, 20], 0, 50)).toBe(false);
+  });
+
+  it('Aufgabe 5: 45° → 7 Bilder, 60° → 5 Bilder (auch für die Figurlage aus dem Link)', () => {
+    expect(imageCountRule(45)).toBe(7);
+    expect(wedgeImages(45, wedgePoint(5, 0.36, 45))).toHaveLength(7);
+    expect(imageCountRule(60)).toBe(5);
+    expect(wedgeImages(60, wedgePoint(4.5, 0.5, 60))).toHaveLength(5);
+  });
+
+  it('Aufgabe 6: bei 90° ist das Bild nach zwei Spiegelungen nicht seitenverkehrt', () => {
+    const imgs = wedgeImages(90, wedgePoint(5, 0.36, 90));
+    expect(imgs).toHaveLength(3);
+    expect(imgs.filter((i) => i.seq.length === 2).every((i) => !isReversed(i))).toBe(true);
+    expect(imgs.filter((i) => i.seq.length === 1).every((i) => isReversed(i))).toBe(true);
+  });
+
+  it('Punkt hinter Spiegel 1 liegt nicht davor; Spiegelung erhält den Abstand zum Scharnier', () => {
+    expect(inFront([-5, 0.1], 'A', 90)).toBe(false);
+    const q = reflectAcross([1, 4], 'A', 90);
+    expect(len(q)).toBeCloseTo(Math.hypot(1, 4), 12);
+  });
+});
+
+describe('Winkelspiegel: eindeutige Fälle im Diagramm', () => {
+  it('nur bei 30°, 36°, 45°, 60°, 90° und 180° ist 360° : φ gerade', () => {
+    expect(evenWedges(30, 180)).toEqual([30, 36, 45, 60, 90, 180]);
+    expect(evenWedges(30, 180).map(imageCountRule)).toEqual([11, 9, 7, 5, 3, 1]);
+    for (const w of [40, 72, 120, 100, 50]) expect(isEvenWedge(w)).toBe(false);
+  });
+
+  it('bei geraden Fällen ist die Zahl der Bilder für jede Lage der Figur gleich', () => {
+    for (const w of evenWedges(30, 180)) {
+      for (const f of [0.1, 0.3, 0.5, 0.77, 0.9]) {
+        expect(wedgeImages(w, wedgePoint(5, f, w)).length).toBe(imageCountRule(w));
+      }
+    }
+  });
+
+  it('bei 120° (360° : φ = 3, ungerade) hängt die Zahl von der Lage ab', () => {
+    const counts = new Set([0.1, 0.3, 0.5, 0.7, 0.9].map((f) => wedgeImages(120, wedgePoint(5, f, 120)).length));
+    expect(counts.size).toBeGreaterThan(1);
   });
 });

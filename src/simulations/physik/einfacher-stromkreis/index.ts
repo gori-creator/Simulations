@@ -9,6 +9,7 @@ import {
   roundRect,
   scaledSprite,
   Surface,
+  tintedSprite,
   TapTarget,
   text,
   Tween,
@@ -233,7 +234,23 @@ function flowSpeed(I: number): number {
 export default defineSimulation({
   id: 'einfacher-stromkreis',
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
-  images: { battery: 'batterie.webp', bulb: 'gluehlampe.webp', switch: 'schalter.webp', motor: 'motor.webp', bell: 'klingel.webp' },
+  images: {
+    battery: 'batterie.webp',
+    bulb: 'gluehlampe.webp',
+    switch: 'schalter.webp',
+    motor: 'motor.webp',
+    bell: 'klingel.webp',
+    clamp: 'krokodilklemme.webp',
+    // Gegenstände für den Leitertest
+    clip: 'bueroklammer.webp',
+    coin: 'muenze.webp',
+    lead: 'bleistiftmine.webp',
+    foil: 'alufolie.webp',
+    wood: 'holzstab.webp',
+    eraser: 'radiergummi.webp',
+    ruler: 'kunststofflineal.webp',
+    glass: 'glasstab.webp',
+  },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -336,7 +353,7 @@ export default defineSimulation({
     { id: 'motor', label: L('Elektromotor', 'Electric motor'), values: { dev: 'motor', on: true } },
     { id: 'tech', label: L('Technische Stromrichtung', 'Conventional current'), values: { on: true, flow: 'tech' } },
     { id: 'short', label: L('Kurzschluss', 'Short circuit'), values: { on: true, sc: true } },
-    { id: 'fuse', label: L('Kurzschluss mit Sicherung', 'Short circuit with a fuse'), values: { on: true, fuse: true } },
+    { id: 'fuse', label: L('Stromkreis mit Sicherung', 'Circuit with a fuse'), values: { on: true, fuse: true } },
     { id: 'test', label: L('Leiter oder Nichtleiter?', 'Conductor or insulator?'), values: { mode: 'test', obj: 'clip' } },
   ],
   strings: {
@@ -351,6 +368,7 @@ export default defineSimulation({
       bell: 'Klingel',
       fuse: 'Sicherung',
       fuseBlown: 'Sicherung durchgeschmolzen',
+      fuseBlownShort: 'durchgeschmolzen',
       wire: 'Leitung',
       looseWire: 'Leitung zum Überbrücken',
       gap: 'Prüfstrecke',
@@ -397,7 +415,7 @@ export default defineSimulation({
       testNo: '{obj} ({mat}) ist ein Nichtleiter (Isolator): Der Stromkreis bleibt unterbrochen, die Lampe bleibt dunkel.',
       curNone: 'I = 0 A – kein Strom',
       curOn: 'I ≈ {I} A',
-      curShort: 'I ≈ {I} A – etwa {k}-mal so groß wie mit Lampe!',
+      curShort: 'I ≈ {I} A – etwa {k}-mal so groß wie ohne Kurzschluss!',
       dirE: 'Die Elektronen (blaue Punkte) bewegen sich außerhalb der Batterie vom Minuspol (−) durch Leitungen und Gerät zum Pluspol (+). Sie werden dabei nicht verbraucht.',
       dirTech: 'Technische Stromrichtung (rote Pfeile): außerhalb der Batterie vom Pluspol (+) zum Minuspol (−) – also entgegen der Bewegung der Elektronen.',
       dirNone: 'Wie im echten Versuch: Den Strom selbst sieht man nicht, nur seine Wirkungen (Licht, Wärme, Bewegung, Klang).',
@@ -429,6 +447,7 @@ export default defineSimulation({
       bell: 'Bell',
       fuse: 'Fuse',
       fuseBlown: 'Fuse blown',
+      fuseBlownShort: 'blown',
       wire: 'Wire',
       looseWire: 'Bridging wire',
       gap: 'Test gap',
@@ -475,7 +494,7 @@ export default defineSimulation({
       testNo: '{obj} ({mat}) is an insulator: the circuit stays open and the bulb stays dark.',
       curNone: 'I = 0 A – no current',
       curOn: 'I ≈ {I} A',
-      curShort: 'I ≈ {I} A – about {k} times as large as with the bulb!',
+      curShort: 'I ≈ {I} A – about {k} times as large as without the short circuit!',
       dirE: 'The electrons (blue dots) move outside the battery from the negative terminal (−) through the wires and the device to the positive terminal (+). They are not used up.',
       dirTech: 'Conventional current (red arrows): outside the battery from the positive terminal (+) to the negative terminal (−) – opposite to the motion of the electrons.',
       dirNone: 'As in the real experiment: you cannot see the current itself, only its effects (light, heat, motion, sound).',
@@ -592,8 +611,8 @@ export default defineSimulation({
       else ctx.readout('state', tr('closed', { on: onText }));
 
       if (res.I <= 1e-9) ctx.readout('cur', ctx.t('curNone'));
-      else if (res.short) ctx.readout('cur', tr('curShort', { I: fmt.num(res.I, 1), k: fmt.num(Math.round(res.I / I_REF), 0) }));
-      else ctx.readout('cur', tr('curOn', { I: fmt.num(res.I, 2) }));
+      else if (res.short) ctx.readout('cur', tr('curShort', { I: fmt.num(res.I, 1), k: fmt.num(Math.round(res.I / solveCircuit({ device: device(), closed: true, fuse: p.fuse ? 'ok' : 'none' }).I), 0) }));
+      else ctx.readout('cur', tr('curOn', { I: fmt.fixed(res.I, 2) }));
 
       const moving = res.I > 1e-9;
       const f = flow();
@@ -2022,6 +2041,44 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Anteil der Kunststoffhülle an der Länge des Klemmen-Fotos (Rest: Metallbacken). */
+    const CLAMP_SLEEVE = 0.56;
+    /** Helligkeit der grauen Hülle im Foto (0 … 1). */
+    const CLAMP_SLEEVE_LUMA = 0.59;
+    const clampCache = new Map<string, HTMLCanvasElement>();
+
+    /**
+     * Foto der Krokodilklemme mit eingefärbter Hülle: Farbton aus `color`, die
+     * Helligkeit wird zusätzlich auf die der Farbe abgesenkt (sonst wirkt eine
+     * schwarze Klemme hellgrau).
+     */
+    function clampSprite(img: HTMLImageElement, w: number, h: number, color: string): HTMLCanvasElement {
+      const key = `${color}|${Math.round(w * 2)}|${Math.round(h * 2)}|${surface.dpr}`;
+      const hit = clampCache.get(key);
+      if (hit) return hit;
+      if (clampCache.size > 8) clampCache.clear();
+      const region = { x: 0, y: 0, w: w * CLAMP_SLEEVE, h };
+      const tinted = tintedSprite(img, w, h, surface.dpr, color, { region });
+      const { canvas, g: b } = offscreenCanvas(w, h, surface.dpr);
+      b.drawImage(tinted, 0, 0, w, h);
+      const pc = parseInt(color.slice(1), 16);
+      const luma = (0.299 * ((pc >> 16) & 255) + 0.587 * ((pc >> 8) & 255) + 0.114 * (pc & 255)) / 255;
+      const f = Math.round(255 * Math.min(1, luma / CLAMP_SLEEVE_LUMA + 0.08));
+      b.save();
+      b.beginPath();
+      b.rect(region.x, region.y, region.w, region.h);
+      b.clip();
+      b.globalCompositeOperation = 'multiply';
+      b.fillStyle = `rgb(${f},${f},${f})`;
+      b.fillRect(0, 0, w, h);
+      b.restore();
+      b.globalCompositeOperation = 'destination-in';
+      b.drawImage(tinted, 0, 0, w, h);
+      b.globalCompositeOperation = 'source-over';
+      clampCache.set(key, canvas);
+      return canvas;
+    }
+
     function drawClamp(tail: Pt, tip: Pt, color: string, s: number): void {
       const dir = Math.sign(tip[0] - tail[0]) || 1;
       const y = tail[1];
@@ -2030,6 +2087,18 @@ export default defineSimulation({
       g.save();
       g.translate(tail[0], y);
       g.scale(dir, 1);
+      const photo = ctx.images.get('clamp');
+      if (photo) {
+        // Foto: Maul rechts, die gegenüberliegende Klemme entsteht durch das Spiegeln oben
+        const w = L2 * 1.3;
+        const h = (w * photo.height) / photo.width;
+        g.save();
+        shadowOn(5 * s, 2 * s, 0.8);
+        g.drawImage(clampSprite(photo, w, h, color), L2 - w, -h / 2, w, h);
+        g.restore();
+        g.restore();
+        return;
+      }
       // Kunststoffhülle
       g.save();
       shadowOn(5 * s, 2 * s, 0.8);
@@ -2082,13 +2151,33 @@ export default defineSimulation({
     /** Höhe relativ zur Länge (zum Einpassen in Kästchen und Schaltplan). */
     const OBJ_THICK: Record<MaterialId, number> = { clip: 0.34, coin: 1, foil: 0.3, lead: 0.07, wood: 0.14, eraser: 0.42, ruler: 0.22, glass: 0.11 };
 
+    /** Breite der abgerundeten Enden im Foto der Bleistiftmine (Bildpixel). */
+    const LEAD_END = 40;
     function drawObject(id: MaterialId, cx: number, cy: number, k: number, alpha = 1): void {
       const len = OBJ_LEN[id] * k;
       const dark = ctx.theme.dark;
       g.save();
       g.globalAlpha = alpha;
       g.translate(cx, cy);
-      if (id === 'clip') {
+      const photo = ctx.images.get(id);
+      if (photo && id === 'lead') {
+        // Mine: das Foto ist viel schlanker (46 : 1) als die Mine im Aufbau (14 : 1). Dicke wie die
+        // Ersatzgrafik, die Enden maßstabsgetreu, nur das gleichförmige Mittelstück wird gestaucht.
+        const h = len * OBJ_THICK.lead;
+        const k = h / photo.height;
+        const e = LEAD_END;
+        const ew = e * k;
+        const piece = (sx: number, sw: number, dx: number, dw: number) => {
+          g.drawImage(scaledSprite(photo, dw, h, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: photo.height } }), dx, -h / 2, dw, h);
+        };
+        piece(e, photo.width - 2 * e, -len / 2 + ew - 0.5, Math.max(1, len - 2 * ew + 1));
+        piece(0, e, -len / 2, ew);
+        piece(photo.width - e, e, len / 2 - ew, ew);
+      } else if (photo) {
+        // Foto in voller Länge, Seitenverhältnis bleibt (etwas schlanker als die Ersatzgrafik)
+        const h = (len * photo.height) / photo.width;
+        g.drawImage(scaledSprite(photo, len, h, surface.dpr), -len / 2, -h / 2, len, h);
+      } else if (id === 'clip') {
         const H = len * 0.34;
         const t = Math.max(1.2, len * 0.045);
         const y1 = -H / 2;
@@ -2421,10 +2510,11 @@ export default defineSimulation({
           g.font = `700 ${sz}px ${theme.font}`;
           const lw0 = g.measureText(ctx.t(d)).width + 16;
           const right = G.devRight + lw0 < r.x + r.w - 6;
-          // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber
+          // rechts neben dem Gerät oder (auf schmalen Bildschirmen) darüber;
+          // auf schmalen Bildschirmen kurze Sicherungs-Beschriftung, damit sie „Schalter“ nicht verdeckt
           if (right) pill(G.devRight, d === 'lamp' ? G.bulbC[1] - 6 * s : G.devTop + 4 * s, ctx.t(d), theme.muted, 'left', sz);
           else pill(G.dev[0], Math.max(r.y + 4, G.devTop - 26), ctx.t(d), theme.muted, 'center', sz);
-          if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? 'fuseBlown' : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
+          if (p.fuse) pill(G.fuse[0] - 16 * s, G.fuse[1] - 11,  ctx.t(fuseBlown ? (narrow() ? 'fuseBlownShort' : 'fuseBlown') : 'fuse'), fuseBlown ? theme.series[1]! : theme.muted, 'right', sz);
         }
       }
       if (p.lbl) pill(G.bat[0], G.bat[1] + 39 * s, ctx.t('battery'), theme.muted, 'center', sz);
@@ -2831,10 +2921,18 @@ export default defineSimulation({
       }
       const fs = narrow() ? 11 : 12;
       text(g, ctx.t('legend'), r.x + 14, top, { font: `700 ${fs}px ${theme.font}`, color: theme.muted, align: 'left' });
-      const cols = r.w >= 300 && items.length > 3 ? 2 : 1;
-      const rowH = Math.min(30, (avail - 18) / Math.ceil(items.length / cols));
+      // Platz für die Beschriftung neben dem Zeichen (Zeichen und Abstand: 46 px)
+      g.font = `600 ${fs}px ${theme.font}`;
+      const labelW = Math.max(...items.map(([key]) => g.measureText(ctx.t(key)).width));
+      const rowsFor = (c: number) => Math.min(30, (avail - 18) / Math.ceil(items.length / c));
+      let cols = r.w >= 300 && items.length > 3 ? 2 : 1;
+      // Zwei Spalten nur, wenn die Beschriftungen hineinpassen – sonst lieber eine Spalte
+      if (cols === 2 && labelW > (r.w - 28) / 2 - 46 && rowsFor(1) >= 20) cols = 1;
+      const rowH = rowsFor(cols);
       if (rowH < 20) return;
       const colW = (r.w - 28) / cols;
+      // Notfalls die Schrift verkleinern, damit keine Beschriftung abgeschnitten wird
+      const lfs = Math.max(9, Math.min(fs, (fs * (colW - 46)) / Math.max(1, labelW)));
       g.strokeStyle = ink;
       g.fillStyle = ink;
       g.lineWidth = lw;
@@ -2849,7 +2947,7 @@ export default defineSimulation({
         g.fillStyle = ink;
         g.lineWidth = lw;
         draw(x, y);
-        text(g, ctx.t(key), x + 26, y, { font: `600 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
+        text(g, ctx.t(key), x + 26, y, { font: `600 ${lfs}px ${theme.font}`, color: theme.text, align: 'left' });
       });
     }
 

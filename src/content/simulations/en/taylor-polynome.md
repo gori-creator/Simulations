@@ -25,7 +25,7 @@ Find $T_4(1)$ for $e^x$ about $0$, the error and the Lagrange bound. How many te
 <details>
 <summary>Show solution</summary>
 
-$1 + 1 + \frac12 + \frac16 + \frac1{24} = \frac{65}{24} \approx 2.708333$, error $\approx 0.009948$; bound $\frac{e}{5!} \approx 0.022652$. Six decimals need $|R_n(1)| < 5 \cdot 10^{-7}$: $n = 9$, $T_9(1) \approx 2.718282$. [Show](?view=calc&fn=exp&n=9&a=0&x=1)
+$1 + 1 + \frac12 + \frac16 + \frac1{24} = \frac{65}{24} \approx 2.708333$, error $\approx 0.009948$; bound $\frac{e}{5!} \approx 0.022652$. Six decimals need $|R_n(1)| < 5 \cdot 10^{-7}$: degree $n = 9$, i.e. $10$ terms, $T_9(1) \approx 2.718282$. [Show](?view=calc&fn=exp&n=9&a=0&x=1)
 
 </details>
 

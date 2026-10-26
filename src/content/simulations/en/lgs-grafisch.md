@@ -34,7 +34,7 @@ We are looking for all pairs $(x, y)$ that satisfy **both** equations. Each equa
 
 ## Try it
 
-1. Drag the marked points: the $y$-intercept and the tip of the slope triangle. How does the intersection move?
+1. Drag the marked points: the $y$-intercept (at $x = 0$) and the point at $x = 1$. With **Display → Slope triangles** you can see the slope. How does the intersection move?
 2. Press **Check by substituting**.
 3. Show [parallel lines](?m1=0.5&t1=1&m2=0.5&t2=-2). Why is there no point of intersection?
 4. What happens with [2x − y = 1 and −4x + 2y = −2](?form=general&a1=2&b1=-1&c1=1&a2=-4&b2=2&c2=-2)?
@@ -121,9 +121,9 @@ $\text{I}\; x + y = 10$, $\text{II}\; x - y = 4$. The lines intersect at $(7, 3)
 
 - **Use:** Bavaria, Year 8, learning area 6 (systems of linear equations: setting up, solving graphically and algebraically, solvability and number of solutions). Linear functions (learning area 2) are a prerequisite.
 - **Representations:** slope-intercept form $y = mx + c$ (sliders and draggable points), general form $ax + by = c$ with integer coefficients (including vertical lines; the point on the $y$-axis shifts the line parallel to itself) and a tariff comparison with axes in minutes and euros. When switching between slope-intercept form and general form, the equations are converted as far as the sliders allow.
-- **Exactness:** The simulation calculates with fractions. If the intersection does not lie on "nice" values, it shows the approximate reading and the exact value – a good reason for algebraic methods. The results "Relative position", "Solution set", "Algebraically (equating)", "Check" and "Which tariff is cheaper?" can be hidden with `_hide=1`.
+- **Exactness:** The simulation calculates with fractions. If the intersection does not lie on "nice" values, it shows the approximate reading and the exact value – a good reason for algebraic methods. With `_hide=1` the results ("Relative position", "Solution set", "Algebraically (equating)", "Check", "Which tariff is cheaper?") are hidden. The picture then shows no coordinates of the intersection, and the check is disabled. The switch **Display → Show solution** does the same (in links: `show=0`).
 - **Common stumbling blocks:**
   - The intersection is checked in only one equation.
-  - Parallel lines are mistaken for "solution $x = 0$"; for identical lines "no solution" is given.
+  - For parallel lines, calculating leads to a contradiction such as $0 = 3$. This is wrongly read as "$x = 0$". For identical lines "no solution" is given.
   - The equation $ax + by = c$ is drawn without rearranging, e.g. $c$ is taken as the $y$-intercept.
 - **Notation:** solution set $\{(2, 3)\}$; for identical lines all points $(x, y)$ with $y = 2x - 1$.

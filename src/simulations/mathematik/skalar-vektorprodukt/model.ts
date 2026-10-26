@@ -36,6 +36,20 @@ export function angleDeg(a: V3, b: V3): number {
   return (Math.acos(c) * 180) / Math.PI;
 }
 
+/** Wahr, wenn v auf `d` Nachkommastellen genau dargestellt werden kann (dann „=“ statt „≈“). */
+export const exactTo = (v: number, d = 2): boolean => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
+
+/**
+ * Betrag für die Anzeige: als Zahl, wenn er exakt ist (|(2, 2, 1)| = 3),
+ * als Wurzel, wenn das Betragsquadrat exakt ist (|(1, 2, 0)| = √5), sonst gerundet.
+ */
+export function normForm(v: V3): { kind: 'num' | 'root' | 'approx'; value: number; sq: number } {
+  const sq = dot(v, v);
+  const value = Math.sqrt(sq);
+  if (exactTo(value)) return { kind: 'num', value, sq };
+  return { kind: exactTo(sq) ? 'root' : 'approx', value, sq };
+}
+
 export const orthogonal = (a: V3, b: V3, eps = 1e-9): boolean => Math.abs(dot(a, b)) < eps;
 
 /** Senkrechte Projektion von b auf die Richtung von a: (a·b / |a|²) · a. */

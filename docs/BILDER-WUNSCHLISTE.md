@@ -1,5 +1,21 @@
 # Bilder-Wunschliste
 
+## Stand 22.10.2026: eingebaut
+
+Von den 93 gelieferten Bildern sind **84 eingebaut** (Tabellen in `docs/BILDER.md`, Einbauhinweise je Gruppe in `docs/bilder-einbau/`). **Neu zu erzeugen**, weil sie nicht passen (Dateien teils in `docs/bilder-eingang/<sim>/`, sonst in Commit 439c45d):
+
+| Bild | Grund |
+| --- | --- |
+| A14 Flaschenöffner | Hakenöffner statt Hebelöffner; Drehachse und Lastarm passen nicht zur Rechnung |
+| A12 Eisberg | Seitenverhältnis 1 : 1,44 statt 1 : 2,5 |
+| B14 Becherglas | leichte Aufsicht, Boden und Wände fast deckend |
+| B35 Urne | innen nicht durchsichtig, verdeckt die Kugeln |
+| B42 Leiter | 1 : 4,5 statt 1 : 8 |
+| C2 Oberfläche Gummi | soll Asphalt sein (Materialpaar „Gummi auf Asphalt“) |
+| C9 Fluchtstab | 1 : 27,5 statt 1 : 15, Farbbänder zu schmal |
+| C10 Lupe | milchiges Glas; passt nur bei Maßstab |
+| C14 Sparbuch | Doppelseite mit Falz statt flacher Seite |
+
 ## Noch zu erzeugen (Stand 20.10.2026)
 
 **Zusammenfassung:** 94 Bilder – **14 × A**, **57 × B**, **23 × C** – für **47 Simulationen** (23 Physik, 24 Mathematik). Jedes Bild steht genau einmal da; wird es mehrfach gebraucht, stehen alle Verwendungen beim Bild. Dazu kommen 16 vorhandene Bilder, die weitere Simulationen ohne neues Bild mitnutzen können, und ein Bild aus `docs/bilder-eingang/`, das nur eingebaut werden muss (Abschnitte am Ende).
@@ -12,10 +28,15 @@ Grundlage: alle 129 Simulationen im Code (`src/simulations/<fach>/<id>/index.ts`
 2. **Format PNG mit echter Transparenz** (Alpha-Kanal), bei „deckend“ normales PNG. Den Rest (Zuschneiden, WebP, Größe) erledigt der Einbau.
 3. **Dateiname genau wie angegeben** (Spalte „Datei“, ohne Ordner, mit `.png` statt `.webp`), hochladen in den Ordner `incoming/` auf dem Zweig `claude/sleepy-goodall-ddchwy`.
 4. Mindestauflösung einhalten – größer ist immer besser als kleiner. Seitenverhältnis möglichst genau treffen; etwas Rand um freigestellte Gegenstände ist in Ordnung.
+5. **Wenn der Generator nur quadratische Bilder liefert** (z. B. 2048 × 2048 – so waren die bisherigen Lieferungen): kein Problem. Freigestellte Gegenstände werden beim Einbau ausgeschnitten. Wichtig ist nur, dass der Gegenstand **vollständig** im Bild ist und **die längere Bildseite fast ganz ausfüllt** (bei langen, schmalen Dingen also von links bis rechts). Dann am Ende des Prompts ergänzen: `the object spans almost the full width of a square image, empty transparent space above and below`. Bei **deckenden** Hintergründen und Texturen (Asphalt, Holz, Meer, Ziegel …) einfach quadratisch erzeugen; der Einbau schneidet den passenden Streifen heraus.
+6. **Zusammengehörige Bilder** (z. B. A2 Mittel- und Endstück, die Leitertest-Gegenstände B47–B54, die Oberflächen C1–C3) **im selben Chat direkt nacheinander** erzeugen, damit Licht, Maßstab und Stil zusammenpassen.
+7. Nach dem Erzeugen kurz prüfen: exakt von der Seite bzw. von oben? kein Text, keine Skala? Hintergrund wirklich durchsichtig (Schachbrettmuster im Bildbetrachter)? Wenn nicht: neu erzeugen, nicht hochladen.
 
 **Grundregeln für alle Bilder** (stehen auch in jedem Prompt): fotorealistisch, sauber, freundlich, weiches Studiolicht von links oben, keine harten Schatten, **kein Text, keine Zahlen, keine Skalen, keine Logos/Marken, keine Personen, keine Hände**. Alles, was die Simulation selbst einzeichnet (Skalen, Zeiger, Beschriftung, Füllstände, Flüssigkeitssäulen, Kraftpfeile), muss im Bild **fehlen**.
 
 **Typische Fehler der Generatoren** (dann bitte neu erzeugen): leichte Schrägsicht statt exakter Seiten- oder Draufsicht; Fantasie-Schrift oder Logos; Schatten auf dem „transparenten“ Hintergrund; ein weißer statt transparenter Hintergrund; Gegenstand angeschnitten.
+
+**Noch nicht auf der Liste:** Fadenpendel und Brechung werden gerade vom Physik-Helfer überarbeitet (T04 Teil 2); ihre Bilder kommen nach dem Einbau dazu.
 
 **Nicht auf der Liste** (bleibt gezeichnet): alles, was von Reglern abhängt oder sich verformt (Graphen, Pfeile, Federn, Seile, Wellen, Feldlinien, Flüssigkeitsstände, Kolben, geometrische Figuren, 3D-Körper), Personen und Körperteile (Kinder auf der Wippe, Beobachter, Hände beim Lineal-Test, Auge – Regel in `docs/BILDER.md`), sehr kleine Symbole (Piktogramme, Baumdiagramm-Icons, Galton-Nägel) und Karten/Pläne, die die Simulation erzeugt.
 
@@ -30,12 +51,18 @@ Grundlage: alle 129 Simulationen im Code (`src/simulations/<fach>/<id>/index.ts`
 > A small generic compact hatchback car in glossy medium blue, exact orthographic side view with no perspective distortion, the front of the car points to the right, both wheels fully visible as perfect circles with simple five-spoke silver rims, simple friendly rounded shape that does not resemble any real brand or model, no logo, no badge, no license plate, tinted dark windows, no driver, no people, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text, no numbers
 - **Hinweis:** Die Felgen werden ausgeschnitten und gedreht – sie müssen kreisrund sein (keine Schrägsicht, sonst Ellipsen). Kein Markenmodell erkennbar (kein VW-, Toyota-Gesicht o. Ä.).
 
-#### A2 · Hebelstange mit Lochreihe
-- **Simulationen:** Hebelgesetz – Versuch (`physik/hebelgesetz/index.ts:874` `drawLab`)
-- **Datei:** `src/assets/sims/hebelgesetz/hebel.webp`
-- **Hintergrund:** transparent · **Format:** 8 : 1, mind. 2400 × 300 px · **Blick:** exakte Vorderansicht, waagerecht
-> A long straight horizontal laboratory lever bar made of brushed anodised aluminium, flat rectangular profile, a single row of evenly spaced small round holes along the centre line (21 holes, exactly equal spacing, one hole exactly in the middle), slightly rounded ends, exact orthographic front view with no perspective, the bar perfectly horizontal and filling the image width edge to edge, soft even studio light from the upper left, subtle metallic sheen, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no scale marks
-- **Hinweis:** Löcher müssen gleich weit auseinander liegen und genau auf einer Linie – sonst passen die gezeichneten Gewichte nicht in die Löcher. Ungerade Lochzahl, eins genau in der Mitte (Drehachse).
+#### A2 · Hebelstange: Mittelstück mit einem Loch und Endstück (2 Bilder)
+- **Simulationen:** Hebelgesetz – Versuch (`physik/hebelgesetz/index.ts:874` `drawLab`, Balken Zeile 957)
+- **Warum zwei Teile:** Die Simulation zeichnet den Balken etwa 35- bis 48-mal so lang wie hoch (21 Löcher im festen Abstand). Ein einziges Bild in diesem Format liefert kein Generator, und gestreckt würden die Löcher zu Ellipsen. Deshalb wird ein **Mittelstück mit genau einem Loch** 21-mal nebeneinandergesetzt, dazu links und rechts ein **Endstück**.
+- **Dateien:** `src/assets/sims/hebelgesetz/hebel-segment.webp` und `src/assets/sims/hebelgesetz/hebel-ende.webp`
+- **Hintergrund:** transparent · **Format:** Mittelstück 9 : 4, mind. 900 × 400 px; Endstück 3 : 2, mind. 600 × 400 px · **Blick:** exakte Vorderansicht, waagerecht
+
+**Mittelstück:**
+> A short straight section of a laboratory lever bar made of brushed anodised aluminium, flat rectangular profile, exact orthographic front view with no perspective, the bar section is perfectly horizontal and fills the full image width from the left edge to the right edge so that it can be tiled seamlessly side by side, the top and bottom edges are perfectly straight and horizontal, exactly one small round through-hole exactly in the centre of the section, the brushing lines run horizontally and continue at both cut edges, both cut ends are straight vertical cuts without any rounding or end face, soft even studio light from the upper left, subtle metallic sheen, no hard shadows, isolated on a fully transparent background above and below the bar, no shadow, photorealistic, clean educational style, no text, no numbers, no scale marks
+
+**Endstück:**
+> The right end of a laboratory lever bar made of brushed anodised aluminium, flat rectangular profile, exact orthographic front view with no perspective, the bar comes in from the left image edge with a straight vertical cut and ends on the right with a neatly rounded end, no hole, the top and bottom edges perfectly straight and horizontal, same height as a bar section, horizontal brushing lines, soft even studio light from the upper left, subtle metallic sheen, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers
+- **Hinweis:** Beide Bilder mit **gleicher Balkenhöhe** und gleichem Metallton erzeugen (am besten im selben Chat direkt nacheinander). Das Mittelstück muss **links und rechts randlos** sein, sonst sieht man beim Aneinandersetzen Fugen. Das Loch muss genau in der Mitte und kreisrund sein. Das linke Ende entsteht durch Spiegeln des Endstücks.
 
 #### A3 · Gleiter für die Luftkissenbahn
 - **Simulationen:** Elastische und unelastische Stöße (`physik/stoesse/index.ts:794` `drawGlider`)
@@ -49,7 +76,7 @@ Grundlage: alle 129 Simulationen im Code (`src/simulations/<fach>/<id>/index.ts`
 - **Datei:** `src/assets/sims/hookesches-gesetz/massestueck.webp` (Kopie nach `stoesse/`)
 - **Hintergrund:** transparent · **Format:** 4 : 1, mind. 1000 × 250 px · **Blick:** exakte Seitenansicht (Scheibe auf der Kante, flach liegend)
 > A single flat slotted laboratory mass disc made of polished brass, seen exactly from the side with no perspective, so it appears as a thin horizontal rectangle with slightly rounded edges, about four times as wide as high, the slot is not visible from this side, warm golden reflections, soft even studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no engraving
-- **Hinweis:** Keine Gravur „50 g“ (die Masse schreibt die Simulation). Oft kommt ein hohes Hakengewicht oder eine Schrägsicht von oben – beides passt nicht; das gelieferte `hookesches-gesetz/gewicht.webp` ist identisch mit `federpendel/gewicht.webp`.
+- **Hinweis:** Das Bild wird je nach Simulation unterschiedlich dick dargestellt (Hookesches Gesetz etwa 2,7 : 1, Zusatzmassen bei den Stößen 5 : 1 bis 16 : 1) – deshalb eine schlichte Scheibe **ohne Details an der Kante** (keine Fasen, Rillen oder Gravur). Keine Gravur „50 g“ (die Masse schreibt die Simulation). Oft kommt ein hohes Hakengewicht oder eine Schrägsicht von oben – beides passt nicht; das gelieferte `hookesches-gesetz/gewicht.webp` ist identisch mit `federpendel/gewicht.webp`.
 
 #### A5 · Auto von oben
 - **Simulationen:** Kreisbewegung – Auto in der Kurve (`physik/kreisbewegung/index.ts:948` `paintCar`, Szene `drawCarScene` Zeile 801)
@@ -598,16 +625,16 @@ Hinweis: Durchsichtige Gegenstände (Lineal, Glasstab) brauchen echte Halbtransp
 > A full football pitch seen from a low elevated angle of about 15 degrees from the long side, the long side lines perfectly horizontal, striped mown green grass, white pitch markings with centre circle and both penalty areas, two white goals at the left and right ends, no stadium, no stands, no people, isolated on a fully transparent background, photorealistic, clean educational style, no text, no logos, no advertising
 - **Hinweis:** Die Simulation legt den Maßpfeil an die vordere Seitenlinie – die beiden vorderen Eckpunkte müssen klar erkennbar sein.
 
-#### C18 · Tafel Schokolade (volle Auflösung)
+#### C18 · Tafel Schokolade (volle Auflösung) – vorerst nicht erzeugen
 - **Simulationen:** Bruchteile – mögliche vierte Darstellung (`mathematik/bruchteile/index.ts`; bräuchte eigene Teilungslogik, siehe `docs/BILDER.md` „Nicht eingebaute Bilder“)
 - **Datei:** `src/assets/sims/bruchteile/schokolade.webp`
 - **Hintergrund:** deckend · **Format:** 3 : 2, mind. 1500 × 1000 px · **Blick:** exakte Draufsicht
 > A bar of milk chocolate seen exactly from above, 6 by 4 rectangular pieces with deep straight grooves, all pieces exactly equal, unwrapped, no brand, no embossing, evenly lit, the bar fills the entire image edge to edge, photorealistic, no text
 - **Hinweis:** Das gelieferte Bild ist mit 441 × 245 px zu klein. Nur erzeugen, wenn die vierte Darstellung gebaut werden soll.
 
-#### C19 · Zarter Baum (Hintergrund des Faktorbaums)
+#### C19 · Zarter Baum (Hintergrund des Faktorbaums) – vorerst nicht erzeugen
 - **Simulationen:** Primfaktoren – Faktorbaum (`mathematik/primfaktoren/index.ts`, Ansicht „Faktorbaum“, `drawTree`)
-- **Datei:** `src/assets/sims/primfaktoren/baum.webp`
+- **Datei:** `src/assets/sims/primfaktoren/baum-zart.webp`
 - **Hintergrund:** transparent · **Format:** 4 : 3, mind. 1600 × 1200 px · **Blick:** Vorderansicht, Stamm unten mittig
 > A delicate stylised tree with a short trunk at the bottom centre and bare thin branches spreading upwards and outwards, very light soft green watercolour style, extremely subtle and pale, no leaves, isolated on a fully transparent background, no ground, no text
 - **Hinweis:** Muss sehr blass sein – der Faktorbaum (Kreise, Linien) liegt darüber und darf nicht untergehen.

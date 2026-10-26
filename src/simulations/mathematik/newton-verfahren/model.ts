@@ -65,6 +65,8 @@ export const FAR = 1e6;
 export function newtonStep(fn: Fn, x: number): Step {
   const fx = fn.f(x);
   const dfx = fn.df(x);
+  // schon genau auf der Nullstelle (z. B. x₀ = 1 bei (x − 1)² · (x + 2)): kein Abbruch, der Wert bleibt
+  if (fx === 0) return { x, fx, dfx, next: x, status: 'ok' };
   if (Math.abs(dfx) < 1e-12) return { x, fx, dfx, next: null, status: 'flat' };
   const next = x - fx / dfx;
   return { x, fx, dfx, next, status: Math.abs(next) > FAR ? 'far' : 'ok' };

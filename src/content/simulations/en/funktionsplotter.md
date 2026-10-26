@@ -15,11 +15,11 @@ A **function plotter** draws the graph of a function expression. You type up to 
 | `sqrt(x)` or `√x` | $\sqrt{x}$ | |
 | `abs(x-1)` or bars | $\lvert x-1 \rvert$ | |
 | `sin(x)`, `cos x`, `tan(2x)` | $\sin x$, $\cos x$, $\tan 2x$ | Angles in radians |
-| `e^x`, `exp(x)`, `ln(x)`, `lg(x)`, `log_2(x)` | $e^x$, $\ln x$, $\lg x$, $\log_2 x$ | |
+| `e^x`, `exp(x)`, `ln(x)`, `lg(x)`, `log_2(x)` | $e^x$, $e^x$, $\ln x$, $\lg x$, $\log_2 x$ | `exp(x)` is another way of writing $e^x$. |
 | `pi` or `π`, `e` | $\pi \approx 3.14$, $e \approx 2.72$ | Constants |
 | `a`, `b` | parameters | Sliders appear for them. |
 
-The usual **order of operations** applies: powers before multiplication and division before addition and subtraction, otherwise from left to right. So `1/2x` means the same as $\frac{1}{2} \cdot x$ – if you mean $\frac{1}{2x}$, type `1/(2x)`. And `-x^2` is $-x^2$ (square first), not $(-x)^2$.
+The usual **order of operations** applies: powers before multiplication and division before addition and subtraction, otherwise from left to right; only towers of powers are evaluated from the top down: `2^3^2` is $2^{(3^2)} = 2^9$. So `1/2x` means the same as $\frac{1}{2} \cdot x$ – if you mean $\frac{1}{2x}$, type `1/(2x)`. And `-x^2` is $-x^2$ (square first), not $(-x)^2$.
 
 On request, the simulation marks **special points** in the visible window:
 
@@ -72,7 +72,7 @@ The graphs intersect at $(1, 2)$, so $x = 1$. Check: $2^1 = 2$ and $3 - 1 = 2$. 
 
 ### Task 3: What did the plotter understand?
 
-[Load task](?f=1%2F2x&g=1%2F%282x%29&nst=0&sct=0) Lea wants to draw $\frac{1}{2x}$ and types `1/2x`, Tom types `1/(2x)`. Which graph belongs to whom? Who is right?
+[Load task](?f=1%2F2x&g=1%2F%282x%29&nst=0&sct=0&_hide=1) Lea wants to draw $\frac{1}{2x}$ and types `1/2x`, Tom types `1/(2x)`. Which graph belongs to whom? Who is right?
 
 <details>
 <summary>Show solution</summary>
@@ -105,7 +105,7 @@ $f(x) = \frac{x^2 - 4}{x - 2} = \frac{(x - 2)(x + 2)}{x - 2} = x + 2$ for $x \ne
 
 ### Task 6: Tangent (from grade 11)
 
-[Load task](?f=x%5E3%20-%203x&g=&tg=0&tx=2&ext=0&nst=0) For $f(x) = x^3 - 3x$, calculate the slope $f'(2)$ and the equation of the tangent at $x = 2$. Then check with “Tangent at the traced point”. At which points is the tangent horizontal?
+[Load task](?f=x%5E3%20-%203x&g=&tg=0&tx=2&ext=0&nst=0&_hide=1) For $f(x) = x^3 - 3x$, calculate the slope $f'(2)$ and the equation of the tangent at $x = 2$. Then check with “Tangent at the traced point”. At which points is the tangent horizontal?
 
 <details>
 <summary>Show solution</summary>

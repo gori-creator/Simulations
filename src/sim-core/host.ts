@@ -4,9 +4,12 @@ import { registry } from '../simulations/registry';
 import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
-import { Formatter } from './format';
+import { bindUnits, bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
-import { defaultValues, sanitize, valuesEqual } from './params';
+import { KeyTargetLayer } from './key-targets';
+import { defaultValues, resolveText, sanitize, valuesEqual } from './params';
+import { setSubLabel } from './rich-label';
+import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -74,9 +77,13 @@ class SimulationHost {
   private actionButtons = new Map<string, HTMLButtonElement>();
   private readonly stage: HTMLElement;
   private instance: SimInstance | null = null;
+  /** Tastaturbedienung der Zeichenfläche; entsteht erst, wenn die Simulation Objekte meldet. */
+  private keyTargets: KeyTargetLayer | null = null;
   private controls: Controls | null = null;
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
+  /** Zuletzt an die Simulation gemeldeter Stand von `ctx.hidden`. */
+  private lastHidden: boolean | null = null;
   private pending = new Set<string>();
   private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
@@ -84,6 +91,9 @@ class SimulationHost {
   private frame = 0;
   private lastTime: number | null = null;
   private urlTimer = 0;
+  /** Tipp unter der Bühne (`hint`/`dragHint`) und der allgemeine Text aus der Hülle. */
+  private hintEl: HTMLElement | null = null;
+  private dragHintText = '';
 
   constructor(
     private readonly root: HTMLElement,
@@ -117,8 +127,10 @@ class SimulationHost {
     this.applyLock();
 
     this.instance = def.mount(this.createContext());
+    this.lastHidden = isTaskHidden(this.taskState());
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
+    this.syncHint();
     this.requestRender();
 
     onThemeChange(() => {
@@ -155,6 +167,21 @@ class SimulationHost {
       get images() {
         return host.images;
       },
+      get hidden() {
+        return isTaskHidden(host.taskState());
+      },
+      isHidden: (key) => isReadoutHidden(this.taskState(), key),
+      setKeyTargets: (targets) => {
+        if (!this.keyTargets && !targets.length) return;
+        this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
+          if (activated && this.pending.size) this.flush();
+          this.requestRender();
+        });
+        this.keyTargets.setTargets(targets);
+      },
+      get keyFocus() {
+        return host.keyTargets?.selectedId ?? null;
+      },
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,
@@ -162,7 +189,7 @@ class SimulationHost {
         const button = this.actionButtons.get(id);
         if (!button) return;
         if (state.enabled !== undefined) button.disabled = !state.enabled;
-        if (state.label !== undefined) button.textContent = state.label;
+        if (state.label !== undefined) setSubLabel(button, state.label);
       },
       requestRender: () => this.requestRender(),
     };
@@ -206,6 +233,7 @@ class SimulationHost {
     this.flushing = false;
     this.applyHide();
     this.controls?.sync(this.values);
+    this.syncHint();
     this.syncActions();
     this.scheduleUrlUpdate();
     this.requestRender();
@@ -243,6 +271,7 @@ class SimulationHost {
       groups: this.def.groups,
       idPrefix: `sim-${this.def.id}`,
       onInput: (key: string, value: ParamValue) => this.set({ [key]: value }, 'input'),
+      taskHidden: isTaskHidden(this.taskState()),
     });
   }
 
@@ -255,7 +284,7 @@ class SimulationHost {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'chip';
-      button.textContent = preset.label[this.lang];
+      setSubLabel(button, preset.label[this.lang]);
       button.addEventListener('click', () => {
         if (this.locked) return;
         this.replaceAll({ ...defaultValues(this.defs), ...(preset.values as ParamValues) });
@@ -285,7 +314,7 @@ class SimulationHost {
       row.className = 'readout';
       row.hidden = true;
       const dt = document.createElement('dt');
-      dt.textContent = def.label[this.lang];
+      setSubLabel(dt, def.label[this.lang]);
       const dd = document.createElement('dd');
       const value = document.createElement('span');
       value.className = 'readout__value';
@@ -318,14 +347,32 @@ class SimulationHost {
    * Schalter `resultsParam` der Simulation („Ergebnisse anzeigen“) aus ist.
    */
   private applyHide(): void {
-    const param = this.def.resultsParam;
-    const off = !!param && this.values[param] === false;
+    const state = this.taskState();
+    // Zusatzangaben der Auswahl-Optionen (z. B. Halbwertszeiten) im Aufgabenmodus verbergen
+    this.controls?.setTaskHidden(isTaskHidden(state));
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
-      const hidden = off || (this.flags.hide && !this.revealed.has(key));
+      const hidden = isReadoutHidden(state, key);
       row.value.hidden = hidden;
       row.reveal.hidden = !hidden;
     }
+    // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
+    if (!this.instance) return;
+    const hidden = isTaskHidden(state);
+    if (hidden !== this.lastHidden) {
+      this.lastHidden = hidden;
+      this.instance.hiddenChange?.(hidden);
+    }
+    this.requestRender();
+  }
+
+  private taskState(): TaskModeState {
+    const param = this.def.resultsParam;
+    return {
+      hideFlag: this.flags.hide,
+      resultsOff: !!param && this.values[param] === false,
+      revealed: this.revealed,
+    };
   }
 
   private readout(key: string, value: ReadoutValue): void {
@@ -339,8 +386,9 @@ class SimulationHost {
     const text = typeof value === 'string' ? `t:${value}` : `h:${value.html}`;
     if (text === row.last) return;
     row.last = text;
-    if (typeof value === 'string') row.value.textContent = value;
-    else row.value.innerHTML = value.html;
+    // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts)
+    if (typeof value === 'string') row.value.textContent = bindUnits(value);
+    else row.value.innerHTML = bindUnitsHtml(value.html);
   }
 
   /* ---------- Aktionen ---------- */
@@ -353,7 +401,7 @@ class SimulationHost {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = action.primary ? 'btn btn--primary' : 'btn';
-      button.textContent = action.label[this.lang];
+      setSubLabel(button, action.label[this.lang]);
       button.dataset.simAction = action.id;
       button.addEventListener('click', () => {
         this.instance?.action?.(action.id);
@@ -365,6 +413,18 @@ class SimulationHost {
     }
     wrap.hidden = false;
     this.syncActions();
+  }
+
+  /**
+   * Tipp unter der Bühne: eigener `hint` (fest oder abhängig von den Werten),
+   * sonst der allgemeine Hinweis von `dragHint`, sonst keiner.
+   */
+  private syncHint(): void {
+    const el = this.hintEl;
+    if (!el) return;
+    const text = resolveText(this.def.hint, this.values, this.lang) ?? (this.def.dragHint ? this.dragHintText : '');
+    if (el.textContent !== text) el.textContent = text;
+    el.hidden = !text;
   }
 
   /** Sichtbarkeit der Aktions-Knöpfe an die aktuellen Werte anpassen. */
@@ -384,7 +444,11 @@ class SimulationHost {
       }
     };
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
-    if (this.def.dragHint) this.query('[data-sim-hint]').hidden = false;
+    if (this.def.hint || this.def.dragHint) {
+      this.hintEl = this.query('[data-sim-hint]');
+      this.dragHintText = this.hintEl.textContent ?? '';
+      this.syncHint();
+    }
 
     on('play', () => this.clock.toggle());
     on('reset-time', () => {

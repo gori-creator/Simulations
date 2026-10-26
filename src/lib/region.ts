@@ -174,14 +174,20 @@ export function groupByCurriculumGrade(
  * CSS für alle Länder (zur Bauzeit erzeugt, im `<head>`):
  * - `data-region-only="<land>"`: nur bei diesem Land sichtbar,
  * - `data-region-hide="<land> <land>"`: bei diesen Ländern versteckt,
+ * - `data-region-own="<land>"`: versteckt, sobald ein anderes Land gewählt ist,
+ * - `data-region-unset`: nur sichtbar, solange kein Land gewählt ist,
  * - `data-region-sort`: Kinder nach `--ro-<land>` anordnen (ohne Eintrag ans Ende),
  * - `data-region-mark="<land>"`: beim gewählten Land hervorheben.
  */
 export function regionCss(ids: readonly string[] = regionIds()): string {
-  return ids
+  // [data-region-unset]: nur sichtbar, solange kein Bundesland gewählt ist
+  const unset = ':root[data-region] [data-region-unset]{display:none!important}';
+  return unset + ids
     .map((id) =>
       [
         `:root:not([data-region="${id}"]) [data-region-only="${id}"]{display:none!important}`,
+        // [data-region-own]: ausgeblendet, sobald ein anderes Bundesland gewählt ist
+        `:root[data-region]:not([data-region="${id}"]) [data-region-own="${id}"]{display:none!important}`,
         `:root[data-region="${id}"] [data-region-hide~="${id}"]{display:none!important}`,
         `:root[data-region="${id}"] [data-region-sort]>*{order:var(--ro-${id},${REGION_ORDER_NONE})}`,
         `:root[data-region="${id}"] [data-region-mark~="${id}"]{border-color:var(--brand);box-shadow:inset 3px 0 0 var(--brand)}`,

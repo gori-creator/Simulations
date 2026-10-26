@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mesh3d, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, ease, mesh3d, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   BODIES,
@@ -122,6 +122,7 @@ export default defineSimulation({
   id: 'vergroessern',
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.38 },
+  images: { car: 'auto.webp', bucket: 'farbeimer.webp' },
   groups: [
     { id: 'fig', label: L('Figur und Körper', 'Figure and solid') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -304,6 +305,8 @@ export default defineSimulation({
     const M = '\\t{m}';
 
     /* ---------- angezeigter Zustand ---------- */
+    /** Gezeichnete Spannweite in Vielfachen des Originals (stetig in k, beim Verkleinern füllt das Original den Platz). */
+    const spanOf = (k: number) => (k >= 1 ? Math.max(k, 2) : Math.max(1.15, 2 - 1.7 * (1 - k)));
     const K = new Chan(p.k);
     const KB = new Chan(kFromFactor(p.f, dimB()));
     const D1 = new Chan(p.d1);
@@ -314,7 +317,12 @@ export default defineSimulation({
     const BX = new Chan(1);
     const BY = new Chan(1);
     const SPLIT = new Chan(0);
-    const allChans = (): Chan[] => [K, KB, D1, D2, MM, A, YMAX, BX, BY, SPLIT];
+    /** Maßstab von Strecke und Fläche (Spannweite in Einheiten); bleibt beim Ziehen fest, damit der Griff unter dem Zeiger bleibt. */
+    const SPAN = new Chan(spanOf(p.k));
+    /** Größerer Pizzadurchmesser für den Maßstab (beim Ziehen fest). */
+    const pdmOf = () => Math.max(p.d1, p.d2, 16);
+    const PDM = new Chan(pdmOf());
+    const allChans = (): Chan[] => [K, KB, D1, D2, MM, A, YMAX, BX, BY, SPLIT, SPAN, PDM];
 
     let intro: number | null = null;
     let fill: { t0: number; plan: FillPlan } | null = null;
@@ -332,16 +340,18 @@ export default defineSimulation({
     let hits: { id: DragId; x: number; y: number; r: number }[] = [];
     let lastTime = performance.now();
     let lastDrag = -Infinity;
+    /** Letztes Ziehen an einem 3D-Griff (Bildausschnitt bleibt dann fest). */
+    let lastDrag3d = -Infinity;
     const dragging = () => drag !== null || performance.now() - lastDrag < 250;
     const shown = () => p.show || revealed;
 
     /** Geometrie der letzten Zeichnung für das Ziehen */
     const geo = {
-      band: { x0: 0, s: 1, L0: 1 },
-      area: { ax: 0, ay: 0, ux: 1, uy: 0, len1: 1 },
-      fline: { y0: 0, yScale: 1 },
-      pizza: { c1: [0, 0] as Px, c2: [0, 0] as Px, s: 1 },
-      car: { x0: 0, s: 1 },
+      band: { x0: 0, s: 1, L0: 1, xMax: 1 },
+      area: { ax: 0, ay: 0, ux: 1, uy: 0, len1: 1, box: { x: 0, y: 0, w: 1, h: 1 } as Rect },
+      fline: { y0: 0, yScale: 1, fMax: 64 },
+      pizza: { c1: [0, 0] as Px, c2: [0, 0] as Px, s: 1, d1Max: 40, d2Max: 40 },
+      car: { a: 0, lenPx: 1 },
       ov: { x0: 0, y0: 0, sx: 1, sy: 1 },
     };
 
@@ -449,7 +459,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = opts.fill ?? (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+      g.fillStyle = opts.fill ?? mixColor(th().bg, th().bg, 0, th().dark ? 0.92 : 0.95);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 7;
       g.shadowOffsetY = 2;
@@ -560,7 +570,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -572,7 +582,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -585,7 +595,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#121923' : '#fdfdfb';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.02 : 0.006);
       roundRect(g, R.x + 1, R.y + 1, R.w - 2, R.h - 2, 14);
       g.fill();
       g.restore();
@@ -597,7 +607,7 @@ export default defineSimulation({
         roundRect(g, R.x + 1, R.y + 1, R.w - 2, R.h - 2, 14);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, R.x + 1.5, R.y + 1.5, R.w - 3, R.h - 3, 14);
       g.stroke();
@@ -714,8 +724,6 @@ export default defineSimulation({
      * Hauptanimation „Kopien auslegen“
      * ===================================================================== */
     const mOf = (k: number) => Math.max(k, 1 / k);
-    /** Gezeichnete Spannweite in Vielfachen des Originals (stetig in k, beim Verkleinern füllt das Original den Platz). */
-    const spanOf = (k: number) => (k >= 1 ? Math.max(k, 2) : Math.max(1.15, 2 - 1.7 * (1 - k)));
     const cache2 = new Map<string, Piece[]>();
     const cache3 = new Map<string, Block[]>();
     function pieces2(f: FigId, k: number): Piece[] {
@@ -785,8 +793,8 @@ export default defineSimulation({
       const x0 = tr.x + tr.w + fs(18, 12);
       const valW = fs(78, 62);
       const x1 = R.x + R.w - valW;
-      const s = (x1 - x0) / (L0 * spanOf(Kv));
-      geo.band = { x0, s, L0 };
+      const s = (x1 - x0) / (L0 * SPAN.v);
+      geo.band = { x0, s, L0, xMax: R.x + R.w - 10 };
       const yc = R.y + R.h * 0.42;
       const bh = fs(14, 12);
       const unit = big ? L0 : L0 * Kv;
@@ -879,7 +887,8 @@ export default defineSimulation({
       const bottom = R.y + R.h - fs(44, 40);
       const left = R.x + fs(22, 14);
       const right = R.x + R.w - fs(22, 14);
-      const S = spanOf(Kv);
+      // Vergrößern: Maßstab aus SPAN (beim Ziehen fest); Rückwärts: direkt aus k
+      const S = opts.list === 'area' ? SPAN.v : spanOf(Kv);
       const circ = f === 'k';
       // Kreis: Einheitskreis links daneben
       const extraW = circ ? 2 * spec.len * Math.min(1, Math.max(Kv, 1 / 2.4)) + 0.5 : 0;
@@ -978,7 +987,7 @@ export default defineSimulation({
         g.fillStyle = c;
         polyPath(pts);
         g.fill();
-        g.strokeStyle = theme.dark ? 'rgba(10,14,22,0.75)' : 'rgba(255,255,255,0.95)';
+        g.strokeStyle = mixColor(theme.bg, theme.bg, 0, theme.dark ? 0.75 : 0.95);
         g.lineWidth = 1.4;
         g.lineJoin = 'round';
         polyPath(pts);
@@ -1050,7 +1059,7 @@ export default defineSimulation({
           anchor = P([0, 0]);
         }
         const len = Math.hypot(hp[0] - anchor[0], hp[1] - anchor[1]);
-        geo.area = { ax: anchor[0], ay: anchor[1], ux: (hp[0] - anchor[0]) / (len || 1), uy: (hp[1] - anchor[1]) / (len || 1), len1: len / Math.max(Kv, 1e-6) };
+        geo.area = { ax: anchor[0], ay: anchor[1], ux: (hp[0] - anchor[0]) / (len || 1), uy: (hp[1] - anchor[1]) / (len || 1), len1: len / Math.max(Kv, 1e-6), box: { x: R.x + 8, y: R.y + 8, w: R.w - 16, h: R.h - 16 } };
         handleDot(hp, col.area(), 'area', k.panel);
       }
     }
@@ -1122,6 +1131,8 @@ export default defineSimulation({
     /** Bildausschnitt weich nachführen. */
     function frameTo(goal: { target: Vec3; radius: number }, dt: number): boolean {
       if (!frame || reduced()) frame = goal;
+      // beim Ziehen an einem 3D-Griff bleibt der Ausschnitt fest
+      if (performance.now() - lastDrag3d < 250) return false;
       const kk = 1 - Math.exp(-dt / 0.2);
       const next = { target: vec3.lerp(frame.target, goal.target, kk), radius: frame.radius + (goal.radius - frame.radius) * kk };
       const moving = vec3.distance(next.target, goal.target) > 0.003 || Math.abs(next.radius - goal.radius) > 0.003;
@@ -1281,6 +1292,7 @@ export default defineSimulation({
       set: (q) => {
         if (mode() !== 'grow') return;
         lastDrag = performance.now();
+        lastDrag3d = lastDrag;
         const b = BODIES[obj()];
         const t = (q[0] * b[0] + q[1] * b[1] + q[2] * b[2]) / (b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
         ctx.set({ k: clamp(Math.round(t * 10) / 10, 0.2, 4) });
@@ -1299,6 +1311,7 @@ export default defineSimulation({
       set: (q) => {
         if (mode() !== 'grow') return;
         lastDrag = performance.now();
+        lastDrag3d = lastDrag;
         const b = BODIES.q;
         const t = (q[0] * b[0] + q[1] * b[1] + q[2] * b[2]) / (b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
         ctx.set({ k: clamp(Math.round(t * 10) / 10, 0.2, 4) });
@@ -1313,6 +1326,7 @@ export default defineSimulation({
       set: (q) => {
         if (mode() !== 'ov') return;
         lastDrag = performance.now();
+        lastDrag3d = lastDrag;
         const t = (q[0] + q[1] + q[2]) / 3;
         ctx.set({ a: clamp(Math.round(t * 2) / 2, 0.5, 5) });
       },
@@ -1439,7 +1453,7 @@ export default defineSimulation({
       const g = surface.g;
       g.save();
       g.fillStyle = color;
-      g.strokeStyle = th().dark ? '#151c27' : '#ffffff';
+      g.strokeStyle = th().bg;
       g.lineWidth = 2;
       g.beginPath();
       g.arc(q[0], q[1], r, 0, TAU);
@@ -1558,7 +1572,7 @@ export default defineSimulation({
     /** Wachstumsdiagramm: k, k², k³ über k mit laufendem Punkt. */
     function growthCard(k: Intro): CardFn {
       return (R, measure) => {
-        const h = Math.round(clamp(R.w * (isWide() ? 0.6 : 0.58), 150, 236));
+        const h = Math.round(Math.min(clamp(R.w * (isWide() ? 0.6 : 0.58), 150, 236), Math.max(126, growthCap)));
         if (measure) return h;
         const g = surface.g;
         card({ ...R, h }, col.vol());
@@ -1696,7 +1710,7 @@ export default defineSimulation({
           const a = ease.outCubic(clamp01(k.stagger * 7 - i));
           g.save();
           g.globalAlpha *= a;
-          g.fillStyle = hit ? withAlpha(c, 0.22) : th().dark ? 'rgba(255,255,255,0.04)' : 'rgba(16,24,40,0.035)';
+          g.fillStyle = hit ? withAlpha(c, 0.22) : mixColor(th().text, th().text, 0, th().dark ? 0.04 : 0.035);
           roundRect(g, x + 3, y, cw - 6, 46, 9);
           g.fill();
           if (hit || near) {
@@ -1829,17 +1843,56 @@ export default defineSimulation({
       if (m === 'modell') return [modelCard(k), modelInfoCard(k)];
       return [ovCard(k), splitCard(k), animalCard(k)];
     }
+    /** Obergrenze für die Höhe des Wachstumsdiagramms, damit die Karte „Merke“ auch auf Tablet und Laptop Platz hat. */
+    let growthCap = Infinity;
+    /** Wie viele Karten passen in die Spalte (gleiche Verteilung wie beim Zeichnen)? */
+    function cardsThatFit(list: CardFn[], C: Rect, two: boolean, gap: number): number {
+      let n = 0;
+      if (two) {
+        const cw = (C.w - gap) / 2;
+        let yL = C.y;
+        let yR = C.y;
+        for (const fn of list) {
+          const leftCol = yL <= yR;
+          const y = leftCol ? yL : yR;
+          const hh = fn({ x: C.x, y, w: cw, h: C.y + C.h - y }, true);
+          if (hh <= 0 || hh > C.y + C.h - y + 1) continue;
+          n++;
+          if (leftCol) yL += hh + gap;
+          else yR += hh + gap;
+        }
+        return n;
+      }
+      let y = C.y;
+      for (const fn of list) {
+        const hh = fn({ x: C.x, y, w: C.w, h: C.y + C.h - y }, true);
+        if (hh <= 0 || hh > C.y + C.h - y + 1) continue;
+        n++;
+        y += hh + gap;
+      }
+      return n;
+    }
     function drawColumn(C: Rect, now: number, k: Intro): void {
       const g = surface.g;
       const list = cardsFor(now, k);
       const gap = fs(10, 8);
+      const twoCols = !regions().wide && C.w >= 460;
+      // Diagramm notfalls flacher machen, statt die Karte „Merke“ wegzulassen
+      growthCap = Infinity;
+      if (mode() === 'grow' && cardsThatFit(list, C, twoCols, gap) < list.length) {
+        for (let cap = 230; cap >= 126; cap -= 8) {
+          growthCap = cap;
+          if (cardsThatFit(list, C, twoCols, gap) === list.length) break;
+        }
+        if (cardsThatFit(list, C, twoCols, gap) < list.length) growthCap = Infinity;
+      }
       let fadeK = 1;
       if (cardFade !== null) {
         const t = (now - cardFade) / 520;
         if (t >= 1) cardFade = null;
         else fadeK = clamp01(t);
       }
-      const two = !regions().wide && C.w >= 460;
+      const two = twoCols;
       const place = (fn: CardFn, R: Rect, i: number) => {
         const hh = fn(R, true);
         if (hh <= 0 || hh > R.h + 1) return -1;
@@ -1896,7 +1949,7 @@ export default defineSimulation({
       const pad = fs(16, 12);
       const Rp = { x: R.x + pad + 26, y: R.y + 54, w: R.w - 2 * pad - 40, h: R.h - 54 - 34 };
       const ax = axes(Rp, [0, BX.v], [0, BY.v], { xLabel: 'k', yLabel: d === 2 ? `\\c{A}{k²}` : `\\c{V}{k³}`, alpha: k.panel });
-      geo.fline = { y0: ax.Y(0), yScale: Rp.h / BY.v };
+      geo.fline = { y0: ax.Y(0), yScale: Rp.h / BY.v, fMax: BY.v };
       const kk = kFromFactor(f, d);
       const st = solveSteps(now);
       const kb = KB.v;
@@ -1915,7 +1968,7 @@ export default defineSimulation({
       g.restore();
       // laufender Punkt auf der Kurve
       if (kb ** d <= BY.v) chartDot([ax.X(kb), ax.Y(kb ** d)], c, 5.5);
-      if (solve && now - solve.t0 < SOLVE_END) fpill(ax.X(kb) - 10, ax.Y(kb ** d) - 16, `\\c{${key}}{${N(kb, 2)}${d === 2 ? '²' : '³'} ≈ ${N(kb ** d, 1)}}`, { align: 'right', size: fs(11.5, 11), bounds: R });
+      if (solve && now - solve.t0 < SOLVE_END) fpill(ax.X(kb) - 10, ax.Y(kb ** d) - 16, `\\c{${key}}{${N(kb, 2)}${d === 2 ? '²' : '³'} ${isExact(kb, 2) && isExact(kb ** d, 1) ? '=' : '≈'} ${N(kb ** d, 1)}}`, { align: 'right', size: fs(11.5, 11), bounds: R });
       // Beschriftungen
       fpill(Rp.x + 8, yF - 14, `\\c{${key}}{${d === 2 ? say(L('Fläche', 'Area')) : say(L('Volumen', 'Volume'))} · ${N(f, 1)}}`, { align: 'left', size: fs(12, 11), bounds: R });
       if (shown() && vp > 0.5) {
@@ -2022,12 +2075,13 @@ export default defineSimulation({
       const pad = fs(26, 16);
       const top = R.y + 56;
       const bottom = R.y + R.h - fs(70, 62);
-      const dm = Math.max(d1, d2, 16);
+      // Maßstab nach dem größeren Durchmesser; beim Ziehen fest (PDM), damit der Rand unter dem Zeiger bleibt
+      const dm = PDM.v;
       const s = Math.min((R.w - 3 * pad) / (2 * dm), (bottom - top) / dm);
       const base = bottom - (bottom - top - dm * s) * 0.5;
       const c1: Px = [R.x + R.w / 2 - pad / 2 - (dm * s) / 2, base - (d1 * s) / 2];
       const c2: Px = [R.x + R.w / 2 + pad / 2 + (dm * s) / 2, base - (d2 * s) / 2];
-      geo.pizza = { c1, c2, s };
+      geo.pizza = { c1, c2, s, d1Max: (2 * (c1[0] - R.x - 8)) / s, d2Max: (2 * (R.x + R.w - 8 - c2[0])) / s };
       drawPizzaDisc(c1, (d1 * s) / 2);
       drawPizzaDisc(c2, (d2 * s) / 2);
       // Aufteilen: Sektoren der größeren Pizza mit der Fläche der kleineren
@@ -2090,6 +2144,52 @@ export default defineSimulation({
     }
 
     /* ---------- Modellauto ---------- */
+    let redCar: { src: HTMLImageElement; c: HTMLCanvasElement } | null = null;
+    /**
+     * Autofoto mit rotem statt blauem Lack – passend zur Ersatzgrafik und zum Streifen des Farbeimers.
+     * Nur kräftig blaue Pixel bekommen einen anderen Farbton (Drehung wie CSS hue-rotate);
+     * Reifen, Felgen, Scheiben und Lichter bleiben, Helligkeit und Glanz ebenso.
+     */
+    function carPhoto(): HTMLCanvasElement | null {
+      const img = ctx.images.get('car');
+      if (!img) return null;
+      if (redCar?.src === img) return redCar.c;
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+      const { canvas, g: o } = offscreenCanvas(w, h, 1);
+      o.drawImage(img, 0, 0, w, h);
+      try {
+        const d = o.getImageData(0, 0, w, h);
+        const px = d.data;
+        const t = (138 * Math.PI) / 180;
+        const c = Math.cos(t);
+        const sn = Math.sin(t);
+        const m = [
+          0.213 + 0.787 * c - 0.213 * sn, 0.715 - 0.715 * c - 0.715 * sn, 0.072 - 0.072 * c + 0.928 * sn,
+          0.213 - 0.213 * c + 0.143 * sn, 0.715 + 0.285 * c + 0.14 * sn, 0.072 - 0.072 * c - 0.283 * sn,
+          0.213 - 0.213 * c - 0.787 * sn, 0.715 - 0.715 * c + 0.715 * sn, 0.072 + 0.928 * c + 0.072 * sn,
+        ] as const;
+        for (let i = 0; i < px.length; i += 4) {
+          const r = px[i]!;
+          const gg = px[i + 1]!;
+          const b = px[i + 2]!;
+          if (px[i + 3] === 0 || b <= r) continue;
+          const mx = Math.max(r, gg, b);
+          const sat = mx > 0 ? (mx - Math.min(r, gg, b)) / mx : 0;
+          const f = clamp01((sat - 0.25) / 0.2);
+          if (f <= 0) continue;
+          px[i] = r + (m[0] * r + m[1] * gg + m[2] * b - r) * f;
+          px[i + 1] = gg + (m[3] * r + m[4] * gg + m[5] * b - gg) * f;
+          px[i + 2] = b + (m[6] * r + m[7] * gg + m[8] * b - b) * f;
+        }
+        o.putImageData(d, 0, 0);
+      } catch {
+        // Pixel nicht lesbar: Foto unverändert verwenden
+      }
+      redCar = { src: img, c: canvas };
+      return canvas;
+    }
+
     function drawCar(x: number, yG: number, len: number, alpha = 1, detail = true): void {
       const g = surface.g;
       const dark = th().dark;
@@ -2098,6 +2198,19 @@ export default defineSimulation({
       const wr = len * 0.085;
       g.save();
       g.globalAlpha *= alpha;
+      const photo = carPhoto();
+      if (photo) {
+        // Foto: Länge Stoßstange bis Stoßstange = len, Reifen auf der Bodenlinie
+        const ph = (len * photo.height) / photo.width;
+        g.fillStyle = dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)';
+        g.beginPath();
+        g.ellipse(x + len / 2, yG + 1, len * 0.47, Math.max(1, len * 0.025), 0, 0, TAU);
+        g.fill();
+        // Reifen-Unterkante liegt bei 684 von 686 Bildzeilen
+        g.drawImage(scaledSprite(photo, len, ph, surface.dpr), x, yG - ph * (684 / 686), len, ph);
+        g.restore();
+        return;
+      }
       // Schatten
       g.fillStyle = dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)';
       g.beginPath();
@@ -2176,7 +2289,8 @@ export default defineSimulation({
       line([R.x + 10, yG + 1], [R.x + R.w - 10, yG + 1], withAlpha(theme.muted, 0.5), 1.5);
       drawCar(xCar, yG, lenPx);
       const mx = xCar + lenPx + (R.x + R.w - pad - xCar - lenPx) / 2 - (lenPx / m) / 2;
-      geo.car = { x0: mx, s };
+      // Griff bei a + lenPx/(2m): Mitte des freien Platzes rechts vom Auto
+      geo.car = { a: xCar + lenPx + (R.x + R.w - pad - xCar - lenPx) / 2, lenPx };
       drawCar(mx, yG, lenPx / m, 1, true);
       // Lupenkreis um das Modell
       const mr = Math.max(16, (lenPx / m) * 0.7);
@@ -2202,6 +2316,15 @@ export default defineSimulation({
       // Farbeimer
       g.save();
       g.globalAlpha *= k.panel;
+      const bucketImg = ctx.images.get('bucket');
+      if (bucketImg) {
+        // Foto des Farbeimers (roter Streifen = Lackfarbe), etwas breiter als die Ersatzgrafik, unten bündig
+        const bw = can.w * 1.12;
+        const bh = (bw * bucketImg.naturalHeight) / bucketImg.naturalWidth;
+        g.drawImage(scaledSprite(bucketImg, bw, bh, surface.dpr), can.x + can.w / 2 - bw / 2, can.y + can.h - bh, bw, bh);
+      }
+      const bucketGA = g.globalAlpha;
+      if (bucketImg) g.globalAlpha = 0;
       const cg = g.createLinearGradient(can.x, 0, can.x + can.w, 0);
       cg.addColorStop(0, theme.dark ? '#5d6675' : '#c7cdd6');
       cg.addColorStop(0.5, theme.dark ? '#8a93a3' : '#eef1f5');
@@ -2220,6 +2343,7 @@ export default defineSimulation({
       g.beginPath();
       g.arc(can.x + can.w / 2, can.y + 6, can.w * 0.42, Math.PI, 0);
       g.stroke();
+      g.globalAlpha = bucketGA;
       g.restore();
       const cl = wrapText(say(L('Lack für 1 Auto', 'Paint for 1 car')), can.w + 30, `600 ${fs(11.5, 11)}px ${theme.font}`);
       g.font = `600 ${fs(11.5, 11)}px ${theme.font}`;
@@ -2453,9 +2577,15 @@ export default defineSimulation({
       lastTime = now;
       let anim = false;
       YMAX.follow(growYMax(K.goal), 0.25);
-      const bt = backTargets();
-      if (Math.abs(BX.goal - bt.x) > 1e-9) BX.follow(bt.x, 0.25);
-      if (Math.abs(BY.goal - bt.y) > 1e-9) BY.follow(bt.y, 0.25);
+      // Maßstäbe erst nach dem Loslassen neu einpassen (sonst läuft der Griff dem Zeiger davon)
+      if (!dragging()) {
+        const bt = backTargets();
+        if (Math.abs(BX.goal - bt.x) > 1e-9) BX.follow(bt.x, 0.25);
+        if (Math.abs(BY.goal - bt.y) > 1e-9) BY.follow(bt.y, 0.25);
+        const sp = spanOf(K.goal);
+        if (Math.abs(SPAN.goal - sp) > 1e-9) SPAN.follow(sp, reduced() ? 0 : 0.25);
+        if (Math.abs(PDM.goal - pdmOf()) > 1e-9) PDM.follow(pdmOf(), reduced() ? 0 : 0.25);
+      }
       for (const c of allChans()) if (c.step(now, dt)) anim = true;
       if (fill && now - fill.t0 > fill.plan.end) {
         fill = null;
@@ -2536,6 +2666,8 @@ export default defineSimulation({
       else if (!solve) KB.follow(kb, dragging() ? 0.06 : 0.2);
       if (instant) {
         YMAX.jump(growYMax(p.k));
+        SPAN.jump(spanOf(p.k));
+        PDM.jump(pdmOf());
         const bt = backTargets();
         BX.jump(bt.x);
         BY.jump(bt.y);
@@ -2597,24 +2729,25 @@ export default defineSimulation({
       lastDrag = performance.now();
       if (id === 'band') {
         const b = geo.band;
-        const len = (px - b.x0) / b.s / b.L0;
+        const len = (Math.min(px, b.xMax) - b.x0) / b.s / b.L0;
         ctx.set({ k: clamp(r1(len), 0.2, 4) });
       } else if (id === 'area') {
         const a = geo.area;
-        const t = ((px - a.ax) * a.ux + (py - a.ay) * a.uy) / a.len1;
+        const qx = clamp(px, a.box.x, a.box.x + a.box.w);
+        const qy = clamp(py, a.box.y, a.box.y + a.box.h);
+        const t = ((qx - a.ax) * a.ux + (qy - a.ay) * a.uy) / a.len1;
         ctx.set({ k: clamp(r1(t), 0.2, 4) });
       } else if (id === 'fline') {
         const f = (geo.fline.y0 - py) / geo.fline.yScale;
-        ctx.set({ f: clamp(Math.round(f * 10) / 10, 0.1, 64) });
+        ctx.set({ f: clamp(Math.round(Math.min(f, geo.fline.fMax) * 10) / 10, 0.1, 64) });
       } else if (id === 'd1' || id === 'd2') {
         const pz = geo.pizza;
         const c = id === 'd1' ? pz.c1 : pz.c2;
-        const d = (2 * Math.abs(px - c[0])) / pz.s;
+        const d = Math.min((2 * Math.abs(px - c[0])) / pz.s, id === 'd1' ? pz.d1Max : pz.d2Max);
         ctx.set({ [id]: clamp(Math.round(d), 10, 40) });
       } else if (id === 'car') {
         const cr = geo.car;
-        const len = Math.max(1, px - cr.x0);
-        ctx.set({ m: clamp(Math.round((CAR_LEN * cr.s) / len), 2, 20) });
+        ctx.set({ m: clamp(Math.round(cr.lenPx / (2 * Math.max(1, px - cr.a))), 2, 20) });
       } else if (id === 'ov') {
         const o = geo.ov;
         ctx.set({ a: clamp(Math.round(((px - o.x0) / o.sx) * 2) / 2, 0.5, 5) });

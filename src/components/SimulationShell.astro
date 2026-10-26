@@ -25,7 +25,7 @@ const dialogTitleId = `share-title-${simId}`;
         <noscript><p class="sim__status">{t(lang, 'sim.noscript')}</p></noscript>
       </div>
       <div class="sim__actions" data-sim-actions hidden></div>
-      <div class="sim__toolbar" role="toolbar" aria-label={t(lang, 'sim.toolbar')}>
+      <div class="sim__toolbar" role="group" aria-label={t(lang, 'sim.toolbar')}>
         <div class="sim__toolbar-group">
           <div class="sim__toolbar-group" data-sim-anim hidden>
             <button class="btn btn--primary" type="button" data-action="play" aria-pressed="false">
@@ -58,7 +58,7 @@ const dialogTitleId = `share-title-${simId}`;
       <p class="sim__hint" data-sim-hint hidden>{t(lang, 'sim.dragHint')}</p>
     </div>
 
-    <aside class="sim__panel" aria-label={t(lang, 'sim.controls')}>
+    <div class="sim__panel" role="region" aria-label={t(lang, 'sim.controls')}>
       <div class="sim__lock" data-sim-lock hidden>
         <span>{t(lang, 'sim.locked')}</span>
         <button class="btn" type="button" data-action="unlock"><Icon name="lock" size={16} />{t(lang, 'sim.unlock')}</button>
@@ -75,7 +75,7 @@ const dialogTitleId = `share-title-${simId}`;
         <span class="sim__panel-title">{t(lang, 'sim.readouts')}</span>
         <dl class="readouts" data-sim-readouts aria-live="off"></dl>
       </div>
-    </aside>
+    </div>
   </div>
 
   <dialog class="share-dialog" data-sim-share aria-labelledby={dialogTitleId}>

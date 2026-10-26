@@ -17,6 +17,8 @@ const de = {
 
   'lang.label': 'Sprache',
   'theme.toggle': 'Hell/Dunkel umschalten',
+  'theme.toDark': 'Zum dunklen Farbschema wechseln',
+  'theme.toLight': 'Zum hellen Farbschema wechseln',
 
   'settings.label': 'Einstellungen',
   'settings.region': 'Bundesland',
@@ -89,6 +91,7 @@ const de = {
 
   'curriculum.byGrade': 'Nach Jahrgangsstufe',
   'curriculum.byGradeLead': 'Alle Lernbereiche einer Jahrgangsstufe mit den passenden Simulationen.',
+  'curriculum.chooseRegion': 'Wählen Sie oben im Zahnrad Ihr Bundesland – dann erscheinen hier die Jahrgangsstufen nach dessen Lehrplan.',
   'curriculum.byTopic': 'Nach Thema',
   'curriculum.overview': 'Alle Jahrgangsstufen im Überblick',
   'curriculum.label': 'Lehrplan {state} · {school}',
@@ -134,6 +137,7 @@ const de = {
   'sim.reveal': 'Aufdecken',
   'sim.hiddenValue': 'verdeckt',
   'sim.dragHint': 'Tipp: Die markierten Punkte lassen sich mit Maus oder Finger ziehen.',
+  'sim.keyTargets': 'Zeichenfläche: Mit den Pfeiltasten ein Objekt wählen, mit Enter oder Leertaste auslösen.',
 
   'share.title': 'Simulation teilen',
   'share.intro': 'Der Link enthält alle aktuellen Einstellungen. Wer ihn öffnet, sieht genau diese Ansicht.',
@@ -184,6 +188,8 @@ const en: Record<UiKey, string> = {
 
   'lang.label': 'Language',
   'theme.toggle': 'Toggle light/dark mode',
+  'theme.toDark': 'Switch to dark mode',
+  'theme.toLight': 'Switch to light mode',
 
   'settings.label': 'Settings',
   'settings.region': 'Federal state',
@@ -256,6 +262,7 @@ const en: Record<UiKey, string> = {
 
   'curriculum.byGrade': 'By grade',
   'curriculum.byGradeLead': 'All units of a grade with matching simulations.',
+  'curriculum.chooseRegion': 'Choose your federal state via the gear icon at the top – the grades of its curriculum then appear here.',
   'curriculum.byTopic': 'By topic',
   'curriculum.overview': 'All grades at a glance',
   'curriculum.label': '{state} curriculum · {school}',
@@ -300,6 +307,7 @@ const en: Record<UiKey, string> = {
   'sim.reveal': 'Reveal',
   'sim.hiddenValue': 'hidden',
   'sim.dragHint': 'Tip: the highlighted points can be dragged with mouse or finger.',
+  'sim.keyTargets': 'Drawing area: use the arrow keys to choose an object, Enter or Space to activate it.',
 
   'share.title': 'Share simulation',
   'share.intro': 'The link contains all current settings. Anyone who opens it sees exactly this view.',

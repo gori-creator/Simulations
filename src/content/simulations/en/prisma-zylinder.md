@@ -4,7 +4,7 @@ description: Interactive 3D simulation of prisms and cylinders – volume V = G 
 
 ## What is it about?
 
-A (right) **prism** has two equal, parallel **bases** – the bottom and the top face – and rectangles as its lateral faces. For a **cylinder** the base is a circle. Together the lateral faces form the **lateral surface**.
+A (right) **prism** has two congruent, parallel faces: the **base** and the **top face**. The lateral faces are rectangles. For a **cylinder** the base is a circle. Together the lateral faces form the **lateral surface**.
 
 **Volume.** Imagine the solid cut into layers $1\,\text{cm}$ thick. Each layer has the volume $G \cdot 1\,\text{cm}$. If the solid is $h = 4\,\text{cm}$ high, there are 4 such layers; for $h = 4.5\,\text{cm}$ there are four and a half. So
 
@@ -63,7 +63,7 @@ In a regular hexagon every side is exactly as long as the circumradius. Explain 
 <details>
 <summary>Show solution</summary>
 
-The hexagon consists of six triangles with the angle $360^\circ : 6 = 60^\circ$ at the centre. The other two angles are equal, so they are $60^\circ$ each as well – the triangles are equilateral, and the side is as long as the radius.
+The hexagon consists of six triangles with the angle $360^\circ : 6 = 60^\circ$ at the centre. Two sides of each triangle are circumradii. So the triangle is isosceles, and its base angles are equal: $(180^\circ - 60^\circ) : 2 = 60^\circ$. It is equilateral, and the hexagon side is as long as the radius.
 
 $u = 6 \cdot 2\,\text{cm} = 12\,\text{cm}$, $M = u \cdot h = 12\,\text{cm} \cdot 4\,\text{cm} = 48\,\text{cm}^2$. [Show the rolling](?mode=oberflaeche&roll=100)
 
@@ -96,10 +96,10 @@ For $n = 6$ it is about $82.7\,\%$, for $n = 12$ about $95.5\,\%$. From $n = 26$
 ## Ideas for the classroom
 
 - **Use:** Bavaria, grade 8, learning area 7 (circle and cylinder): prisms and cylinders with net, surface area and volume. Best used after working with the circle (see the simulation on the number π).
-- **Two approaches:** “Stack layers” justifies $V = G \cdot h$ (it builds on counting cubes in a cuboid), “Roll out” justifies $M = u \cdot h$. You can switch off the calculation in the picture (`calc=0`).
+- **Two approaches:** “Stack layers” justifies $V = G \cdot h$ (it builds on counting cubes in a cuboid), “Roll out” justifies $M = u \cdot h$. You can switch off the calculation in the picture under **Display → Calculation in the picture** (in links: `calc=0`).
 - **Common stumbling blocks:**
   - Lateral surface and volume are mixed up ($u \cdot h$ instead of $G \cdot h$) – also the units $\text{cm}^2$ and $\text{cm}^3$.
   - For the cylinder, the diameter is used instead of the radius.
   - Only one base is counted for the surface area.
-  - Students expect the volume to double when the radius doubles – in fact it becomes four times as large.
+  - Students expect the volume to double when the radius doubles. In fact it becomes four times as large.
 - **About the display:** When rolling, the prism tips over one edge at a time; the cylinder rolls without slipping, so after one full turn its print is exactly $2\pi r$ long. The triangle is isosceles; the length of the legs is calculated and shown rounded.

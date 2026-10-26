@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, Plot, roundRect, scaledSprite, shade, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   breakingPeriod,
   breakingSpeed,
@@ -27,6 +27,8 @@ const VIEW_STRING = 1.75;
 const VIEW_CAR = 1.75;
 /** Halbe Fahrbahnbreite in Vielfachen von r (nicht maßstäblich). */
 const ROAD = 0.13;
+/** Auto von oben `auto-oben.webp` (1600 × 801 px, Front rechts, füllt das Bild). */
+const CAR_IMG = { w: 1600, h: 801 };
 /** Startwinkel: unten, Bewegung gegen den Uhrzeigersinn. */
 const PHI0 = -Math.PI / 2;
 const ROAD_ORDER: RoadId[] = ['dry', 'wet', 'snow', 'ice'];
@@ -73,7 +75,12 @@ export default defineSimulation({
   id: 'kreisbewegung',
   animated: true,
   dragHint: true,
+  hint: L(
+    'Ziehen mit Maus oder Finger: die Spitze des v-Pfeils (Geschwindigkeit), den Punkt im Diagramm und bei der Schnur die Kugel nach außen oder innen (Radius).',
+    'Drag with the mouse or a finger: the tip of the v arrow (speed), the point in the graph and, on the string, the ball outwards or inwards (radius).',
+  ),
   layout: { aspect: 1.6, aspectNarrow: 0.52 },
+  images: { car: 'auto-oben.webp', asphalt: 'asphalt.webp' },
   groups: [
     { id: 'body', label: L('Körper und Bahn', 'Body and path') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -198,14 +205,14 @@ export default defineSimulation({
       axisR: 'r in m',
       axisN: 'F in N',
       axisKN: 'F in kN',
-      titleV: 'Zentripetalkraft F_[Z] über v',
-      titleR: 'Zentripetalkraft F_[Z] über r',
-      gaugeTitle: 'Zentripetalkraft F_[Z]',
-      need: 'nötig: F_[Z] = m · v² / r = {f}',
+      titleV: 'Zentripetalkraft F_Z über v',
+      titleR: 'Zentripetalkraft F_Z über r',
+      gaugeTitle: 'Zentripetalkraft F_Z',
+      need: 'nötig: F_Z = m · v² / r = {f}',
       limitString: 'Die Schnur hält höchstens {f} aus (Reißkraft).',
-      limitCar: 'Haftreibung höchstens μ · m · g = {f}',
+      limitCar: 'Haftreibung höchstens μ_H · m · g = {f}',
       cut: 'Schnur gerissen',
-      noForce: 'keine Kraft mehr: F_[Z] = 0',
+      noForce: 'keine Kraft mehr: F_Z = 0',
       holds: 'Schnur hält',
       breaks: 'Schnur reißt!',
       grips: 'Auto hält die Spur',
@@ -227,9 +234,10 @@ export default defineSimulation({
       notToScale: 'nicht maßstäblich',
       motionString: 'v = 2π · r / T = 2π · {r} m / {T} s ≈ <strong>{v} m/s</strong><br>f = 1/T ≈ {f} Hz · ω = 2π/T ≈ {w} 1/s',
       motionCar: 'v = <strong>{v} m/s</strong> = {kmh} km/h<br>T = 2π · r / v ≈ {T} s · ω = v/r ≈ {w} 1/s',
-      limitTextString: 'Die Schnur reißt ab v = √(F_max · r / m) ≈ {v} m/s, also bei T < {T} s.',
-      limitTextCar: 'v_max = √(μ · g · r) = √({mu} · 9,81 m/s² · {r} m) ≈ {v} m/s ({kmh} km/h)',
-      now: 't = {t} s · φ = {phi}° · {laps} Umläufe',
+      motionHidden: 'r = {r} m · T = {T} s · f = 1/T ≈ {f} Hz<br>v, a<sub>Z</sub> und F<sub>Z</sub> sind verdeckt.',
+      limitTextString: 'Die Schnur reißt ab <var>v</var> = √(<var>F</var><sub>max</sub> · <var>r</var> / <var>m</var>) ≈ <strong>{v} m/s</strong>, also bei <var>T</var> < <strong>{T} s</strong>.',
+      limitTextCar: '<var>v</var><sub>max</sub> = √(μ<sub>H</sub> · <var>g</var> · <var>r</var>) = √({mu} · 9,81 m/s² · {r} m) ≈ <strong>{v} m/s</strong> ({kmh} km/h)',
+      now: 't = {t} s · φ = {phi}° · Umläufe: {laps}',
       nowBroken: 't = {t} s · Schnur gerissen bei t = {tb} s',
       nowCar: 't = {t} s · Strecke {s} m',
       nowSkid: 't = {t} s · das Auto rutscht',
@@ -240,14 +248,14 @@ export default defineSimulation({
       axisR: 'r in m',
       axisN: 'F in N',
       axisKN: 'F in kN',
-      titleV: 'Centripetal force F_[Z] against v',
-      titleR: 'Centripetal force F_[Z] against r',
-      gaugeTitle: 'Centripetal force F_[Z]',
-      need: 'needed: F_[Z] = m · v² / r = {f}',
+      titleV: 'Centripetal force F_Z against v',
+      titleR: 'Centripetal force F_Z against r',
+      gaugeTitle: 'Centripetal force F_Z',
+      need: 'needed: F_Z = m · v² / r = {f}',
       limitString: 'The string withstands at most {f} (breaking force).',
-      limitCar: 'static friction at most μ · m · g = {f}',
+      limitCar: 'static friction at most μ_H · m · g = {f}',
       cut: 'string broken',
-      noForce: 'no force any more: F_[Z] = 0',
+      noForce: 'no force any more: F_Z = 0',
       holds: 'string holds',
       breaks: 'string breaks!',
       grips: 'car keeps its line',
@@ -269,9 +277,10 @@ export default defineSimulation({
       notToScale: 'not to scale',
       motionString: 'v = 2π · r / T = 2π · {r} m / {T} s ≈ <strong>{v} m/s</strong><br>f = 1/T ≈ {f} Hz · ω = 2π/T ≈ {w} 1/s',
       motionCar: 'v = <strong>{v} m/s</strong> = {kmh} km/h<br>T = 2π · r / v ≈ {T} s · ω = v/r ≈ {w} 1/s',
-      limitTextString: 'The string breaks from v = √(F_max · r / m) ≈ {v} m/s, i.e. for T < {T} s.',
-      limitTextCar: 'v_max = √(μ · g · r) = √({mu} · 9.81 m/s² · {r} m) ≈ {v} m/s ({kmh} km/h)',
-      now: 't = {t} s · φ = {phi}° · {laps} revolutions',
+      motionHidden: 'r = {r} m · T = {T} s · f = 1/T ≈ {f} Hz<br>v, a<sub>Z</sub> and F<sub>Z</sub> are hidden.',
+      limitTextString: 'The string breaks from <var>v</var> = √(<var>F</var><sub>max</sub> · <var>r</var> / <var>m</var>) ≈ <strong>{v} m/s</strong>, i.e. for <var>T</var> < <strong>{T} s</strong>.',
+      limitTextCar: '<var>v</var><sub>max</sub> = √(μ<sub>H</sub> · <var>g</var> · <var>r</var>) = √({mu} · 9.81 m/s² · {r} m) ≈ <strong>{v} m/s</strong> ({kmh} km/h)',
+      now: 't = {t} s · φ = {phi}° · revolutions: {laps}',
       nowBroken: 't = {t} s · string broke at t = {tb} s',
       nowCar: 't = {t} s · distance {s} m',
       nowSkid: 't = {t} s · the car is skidding',
@@ -388,12 +397,14 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Kraft einheitlich gerundet: Schnur in N (unter 1 N mit 3 Stellen), Auto in kN – überall gleich. */
+    const forceText = (F: number): string => (mode() === 'car' ? `${fmt.fixed(F / 1000, 2)} kN` : `${fmt.fixed(F, F < 1 ? 3 : 2)} N`);
     function updateNow(): void {
       if (mode() === 'string') {
         if (broken) ctx.readout('now', tr('nowBroken', { t: fmt.fixed(t, 2), tb: fmt.fixed(broken.t, 2) }));
-        else ctx.readout('now', tr('now', { t: fmt.fixed(t, 2), phi: n((((phi - PHI0) * 180) / Math.PI) % 360, 0), laps: n(Math.floor(swept / (2 * Math.PI) + 1e-9), 0) }));
+        else ctx.readout('now', tr('now', { t: fmt.fixed(t, 2), phi: fmt.fixed((((phi - PHI0) * 180) / Math.PI) % 360, 0), laps: fmt.fixed(Math.floor(swept / (2 * Math.PI) + 1e-9), 0) }));
       } else if (slide) ctx.readout('now', tr('nowSkid', { t: fmt.fixed(t, 2) }));
-      else ctx.readout('now', tr('nowCar', { t: fmt.fixed(t, 2), s: n(p.vc * t, 1) }));
+      else ctx.readout('now', tr('nowCar', { t: fmt.fixed(t, 2), s: fmt.fixed(p.vc * t, 1) }));
     }
 
     function updateReadouts(): void {
@@ -404,20 +415,23 @@ export default defineSimulation({
       const F = force();
       const car = mode() === 'car';
       if (car) {
-        ctx.readout('motion', { html: tr('motionCar', { v: n(v, 1), kmh: n(v * 3.6, 0), T: n(period(r, v), 1), w: n(v / r, 3) }) });
+        ctx.readout('motion', { html: tr('motionCar', { v: fmt.fixed(v, 1), kmh: fmt.fixed(v * 3.6, 0), T: fmt.fixed(period(r, v), 1), w: fmt.fixed(v / r, 2) }) });
+      } else if (ctx.hidden) {
+        // Aufgabenmodus: v ist Teil der Lösung von Aufgabe 1
+        ctx.readout('motion', { html: tr('motionHidden', { r: fmt.fixed(r, 2), T: fmt.fixed(p.T, 2), f: fmt.fixed(1 / p.T, 2) }) });
       } else {
-        ctx.readout('motion', { html: tr('motionString', { r: n(r, 2), T: n(p.T, 2), v: n(v, 2), f: n(1 / p.T, 2), w: n((2 * Math.PI) / p.T, 2) }) });
+        ctx.readout('motion', { html: tr('motionString', { r: fmt.fixed(r, 2), T: fmt.fixed(p.T, 2), v: fmt.fixed(v, 2), f: fmt.fixed(1 / p.T, 2), w: fmt.fixed((2 * Math.PI) / p.T, 2) }) });
       }
-      ctx.readout('az', { html: `<var>a</var><sub>Z</sub> = <span class="frac"><span><var>v</var>²</span><span><var>r</var></span></span> = ω² · <var>r</var> ≈ <strong>${n(a, 2)} m/s²</strong>${car ? ` (${n(a / G, 2)} · <var>g</var>)` : ''}` });
-      const Ftxt = car ? `${n(F / 1000, 2)} kN` : `${n(F, 2)} N`;
+      ctx.readout('az', { html: `<var>a</var><sub>Z</sub> = <span class="frac"><span><var>v</var>²</span><span><var>r</var></span></span> = ω² · <var>r</var> ≈ <strong>${fmt.fixed(a, 2)} m/s²</strong>${car ? ` (${fmt.fixed(a / G, 2)} · <var>g</var>)` : ''}` });
+      const Ftxt = forceText(F);
       ctx.readout('fz', {
-        html: `<var>F</var><sub>Z</sub> = <var>m</var> · <span class="frac"><span><var>v</var>²</span><span><var>r</var></span></span> = ${n(m, 2)} kg · <span class="frac"><span>(${n(v, 2)} m/s)²</span><span>${n(r, 2)} m</span></span> ≈ <strong>${Ftxt}</strong>`,
+        html: `<var>F</var><sub>Z</sub> = <var>m</var> · <span class="frac"><span><var>v</var>²</span><span><var>r</var></span></span> = ${fmt.num(m, 2)} kg · <span class="frac"><span>(${fmt.fixed(v, car ? 1 : 2)} m/s)²</span><span>${fmt.fixed(r, car ? 0 : 2)} m</span></span> ≈ <strong>${Ftxt}</strong>`,
       });
       if (car) {
         const vm = maxCornerSpeed(mu(), r);
-        ctx.readout('limit', tr('limitTextCar', { mu: n(mu(), 1), r: n(r, 0), v: n(vm, 1), kmh: n(vm * 3.6, 0) }));
+        ctx.readout('limit', { html: tr('limitTextCar', { mu: fmt.fixed(mu(), 1), r: fmt.fixed(r, 0), v: fmt.fixed(vm, 1), kmh: fmt.fixed(vm * 3.6, 0) }) });
       } else {
-        ctx.readout('limit', tr('limitTextString', { v: n(breakingSpeed(p.Fr, p.m, p.r), 2), T: n(breakingPeriod(p.Fr, p.m, p.r), 2) }));
+        ctx.readout('limit', { html: tr('limitTextString', { v: fmt.fixed(breakingSpeed(p.Fr, p.m, p.r), 2), T: fmt.fixed(breakingPeriod(p.Fr, p.m, p.r), 2) }) });
       }
       updateNow();
     }
@@ -509,56 +523,23 @@ export default defineSimulation({
       g.stroke();
     }
 
-    /** Text mit tiefgestellten Teilen: „F_[Z] = 4 N“. */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /** Breite eines Textes mit Index (Schreibweise wie `subText`: „F_Z = 4 N“). */
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, { size, family: ctx.theme.font, weight, color: '' });
     }
 
+    /** Text mit echtem tiefgestelltem Index (Kern-Helfer `subText`), optional mit hellem Rand. */
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
       const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, {
+        size,
+        family: theme.font,
+        weight,
+        color,
+        align,
+        baseline: 'middle',
+        halo: halo ? (theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)') : undefined,
+      });
     }
 
     /** Pfeil in Pixeln. */
@@ -835,6 +816,25 @@ export default defineSimulation({
       g.arc(cx, cy, rIn, 0, Math.PI * 2, true);
       g.fill('evenodd');
       g.restore();
+      const asphaltImg = ctx.images.get('asphalt');
+      if (asphaltImg) {
+        // Foto: Asphalt als Muster im Ring (nass und im Dunkelmodus abgedunkelt; Glätte kommt darüber)
+        const tile = small ? 160 : 220;
+        const pattern = g.createPattern(scaledSprite(asphaltImg, tile, tile, surface.dpr), 'repeat');
+        if (pattern) {
+          pattern.setTransform(new DOMMatrix().scale(1 / surface.dpr));
+          g.fillStyle = pattern;
+          g.beginPath();
+          g.arc(cx, cy, rOut, 0, Math.PI * 2);
+          g.arc(cx, cy, rIn, 0, Math.PI * 2, true);
+          g.fill('evenodd');
+          const shadeA = (dark ? 0.3 : 0) + (p.road === 'wet' ? 0.22 : 0);
+          if (shadeA > 0) {
+            g.fillStyle = `rgba(8,12,18,${shadeA})`;
+            g.fill('evenodd');
+          }
+        }
+      }
       if (col.tint) {
         g.fillStyle = col.tint;
         g.beginPath();
@@ -951,6 +951,18 @@ export default defineSimulation({
       g.save();
       g.translate(x, y);
       g.rotate(-angle);
+      const carImg = ctx.images.get('car');
+      if (carImg) {
+        // Foto: Auto von oben, Front in Fahrtrichtung (Seitenverhältnis des Fotos)
+        const h = (len * CAR_IMG.h) / CAR_IMG.w;
+        g.shadowColor = 'rgba(0,0,0,0.45)';
+        g.shadowBlur = 8;
+        g.shadowOffsetX = 2;
+        g.shadowOffsetY = 3;
+        g.drawImage(scaledSprite(carImg, len, h, surface.dpr), -len / 2, -h / 2, len, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.45)';
       g.shadowBlur = 8;
@@ -1043,6 +1055,7 @@ export default defineSimulation({
       const ux = Math.cos(h);
       const uy = -Math.sin(h);
       const car = mode() === 'car';
+      const hid = ctx.hidden;
       // Kraft zum Mittelpunkt bzw. beim Rutschen die größte Haftreibung zum Mittelpunkt des größeren Kreises
       let F = force();
       let label = '';
@@ -1051,12 +1064,12 @@ export default defineSimulation({
       else if (car && slide) {
         F = limit();
         dir = [-Math.cos(h - Math.PI / 2), Math.sin(h - Math.PI / 2)];
-        label = p.vec === 'a' ? `a = μ · g = ${n(F / M(), 2)} m/s²` : `F_[H,max] = ${n(F / 1000, 2)} kN`;
+        label = p.vec === 'a' ? `a = μ_H · g = ${hid ? '?' : fmt.fixed(F / M(), 2)} m/s²` : `F_{H,max} = ${hid ? '?' : fmt.fixed(F / 1000, 2)} kN`;
       } else {
         const [cx, cy] = scene.toPx(0, 0);
         const dist = Math.hypot(cx - bx, cy - by) || 1;
         dir = [(cx - bx) / dist, (cy - by) / dist];
-        label = p.vec === 'a' ? `a_[Z] = ${n(F / M(), car ? 2 : 1)} m/s²` : car ? `F_[Z] = ${n(F / 1000, 2)} kN` : `F_[Z] = ${n(F, 2)} N`;
+        label = p.vec === 'a' ? `a_Z = ${hid ? '?' : fmt.fixed(F / M(), 2)} m/s²` : hid ? `F_Z = ? ${car ? 'kN' : 'N'}` : `F_Z = ${forceText(F)}`;
       }
       let fx = bx;
       let fy = by;
@@ -1071,7 +1084,8 @@ export default defineSimulation({
         arrowPx(x0, y0, fx, fy, fColor(), small ? 3 : 3.5, small ? 10 : 12);
       }
       arrowPx(bx, by, bx + ux * vl, by + uy * vl, vColor(), small ? 3 : 3.5, small ? 10 : 12);
-      const vText = `v = ${n(V(), car ? 1 : 2)} m/s`;
+      // Aufgabenmodus: v der Kugel ist Teil der Lösung (beim Auto ist v vorgegeben)
+      const vText = !car && hid ? 'v = ? m/s' : `v = ${fmt.fixed(V(), car ? 1 : 2)} m/s`;
       let vBox: Rect;
       if (mode() === 'string' && broken) {
         // nach dem Reißen: Beschriftung fest an der Stelle, an der die Schnur riss (nach außen versetzt)
@@ -1099,10 +1113,10 @@ export default defineSimulation({
       const size = small ? 11 : 12;
       const w1 = pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(t, 2)} s`, theme.text, 'left', size);
       if (mode() === 'string') {
-        if (!broken) pill(r.x + 8 + w1 + 6, r.y + 8, tr('laps', { n: n(Math.floor(swept / (2 * Math.PI) + 1e-9), 0) }), theme.muted, 'left', size);
-        pill(r.x + r.w - 8, r.y + 8, small ? `T = ${n(p.T, 2)} s` : `T = ${n(p.T, 2)} s · f = ${n(1 / p.T, 2)} Hz`, theme.text, 'right', size);
+        if (!broken) pill(r.x + 8 + w1 + 6, r.y + 8, tr('laps', { n: fmt.fixed(Math.floor(swept / (2 * Math.PI) + 1e-9), 0) }), theme.muted, 'left', size);
+        pill(r.x + r.w - 8, r.y + 8, small ? `T = ${n(p.T, 2)} s` : `T = ${n(p.T, 2)} s · f = ${fmt.fixed(1 / p.T, 2)} Hz`, theme.text, 'right', size);
       } else {
-        pill(r.x + r.w - 8, r.y + 8, `μ = ${n(mu(), 1)} · ${n(p.vc * 3.6, 0)} km/h`, theme.text, 'right', size);
+        pill(r.x + r.w - 8, r.y + 8, `μ_H = ${fmt.fixed(mu(), 1)} · ${fmt.fixed(p.vc * 3.6, 0)} km/h`, theme.text, 'right', size);
       }
       // Meldungen (zweite Zeile oben)
       const msgY = r.y + (small ? 38 : 42);
@@ -1124,7 +1138,7 @@ export default defineSimulation({
       const F = cut ? 0 : force();
       const lim = limit();
       const over = F > lim * (1 + 1e-9);
-      const unitF = (x: number) => (car ? `${n(x / 1000, 2)} kN` : `${n(x, 2)} N`);
+      const unitF = forceText;
       const pad = small ? 12 : 14;
       richText(ctx.t('gaugeTitle'), R0.x + pad, R0.y + 18, small ? 12 : 13, theme.text, 'left', false);
       // Status
@@ -1171,9 +1185,9 @@ export default defineSimulation({
       g.fillStyle = sc;
       roundRect(g, x0, rowA - 4, 12, 8, 3);
       g.fill();
-      richText(cut ? ctx.t('noForce') : tr('need', { f: unitF(F) }), x0 + 18, rowA, fs, cut ? theme.muted : over ? fColor() : theme.text, 'left', false);
+      richText(cut ? ctx.t('noForce') : tr('need', { f: ctx.hidden ? `? ${car ? 'kN' : 'N'}` : unitF(F) }), x0 + 18, rowA, fs, cut ? theme.muted : over ? fColor() : theme.text, 'left', false);
       mark(x0 + 6, rowB - 6, rowB + 6);
-      richText(tr(car ? 'limitCar' : 'limitString', { f: unitF(lim) }), x0 + 18, rowB, fs, theme.muted, 'left', false);
+      richText(tr(car ? 'limitCar' : 'limitString', { f: car ? unitF(lim) : `${n(lim, 0)} N` }), x0 + 18, rowB, fs, theme.muted, 'left', false);
     }
 
     /* ---------- Diagramm ---------- */
@@ -1230,9 +1244,10 @@ export default defineSimulation({
         chart.fn((x) => Math.min(clip, (m * x * x) / r / k), { color: fColor(), width: 3, from: 0, to: xMax });
         // Grenzgeschwindigkeit
         const vb = car ? maxCornerSpeed(mu(), r) : breakingSpeed(p.Fr, p.m, p.r);
-        if (vb <= xMax) {
+        // Grenzmarke im Aufgabenmodus ausgeblendet (Lösung von Aufgabe 2 und 3)
+        if (vb <= xMax && !ctx.hidden) {
           chart.segment([vb, 0], [vb, lim], { color: theme.muted, width: 1.4, dash: [4, 4] });
-          if (car) chart.text(vb, 0, 'vₘₐₓ', { color: theme.muted, size: 11, weight: '600', align: 'center', baseline: 'bottom', offset: [0, -4] });
+          if (car) chart.text(vb, 0, 'v_max', { color: theme.muted, size: 11, weight: '600', align: 'center', baseline: 'bottom', offset: [0, -4] });
         }
       } else {
         // F_Z(r) bei fester Geschwindigkeit (Hyperbel)
@@ -1248,9 +1263,9 @@ export default defineSimulation({
           chart.text(xh2, (m * v * v) / xh2, ctx.t('fixV'), { color: fColor(), size: 11.5, weight: 'bold', align: 'left', baseline: 'bottom', offset: [4, -4] });
         } else {
           const rmin = minRadius(mu(), v);
-          if (rmin <= xMax) {
+          if (rmin <= xMax && !ctx.hidden) {
             chart.segment([rmin, 0], [rmin, lim], { color: theme.muted, width: 1.4, dash: [4, 4] });
-            chart.text(rmin, 0, 'rₘᵢₙ', { color: theme.muted, size: 11, weight: '600', align: 'center', baseline: 'bottom', offset: [0, -4] });
+            chart.text(rmin, 0, 'r_min', { color: theme.muted, size: 11, weight: '600', align: 'center', baseline: 'bottom', offset: [0, -4] });
           }
         }
       }
@@ -1260,9 +1275,9 @@ export default defineSimulation({
       chart.segment([X, 0], [X, F], { color: fColor(), width: 1.2, dash: [3, 3], alpha: 0.7 });
       chart.segment([0, F], [X, F], { color: fColor(), width: 1.2, dash: [3, 3], alpha: 0.7 });
       chart.point(X, Math.min(F, yMax * 1.02), { color: over ? fColor() : theme.text, radius: 6 });
-      const label = car ? `${n(F, 1)} kN` : `${n(F, 1)} N`;
+      const label = forceText(F * k);
       const right = chart.px(X) < chart.rect.x + chart.rect.w - 80;
-      chart.text(X, Math.min(F, yMax), label, { color: fColor(), size: 12, weight: 'bold', align: right ? 'left' : 'right', baseline: 'top', offset: [right ? 9 : -9, 6] });
+      if (!ctx.hidden) chart.text(X, Math.min(F, yMax), label, { color: fColor(), size: 12, weight: 'bold', align: right ? 'left' : 'right', baseline: 'top', offset: [right ? 9 : -9, 6] });
       chart.end();
     }
 
@@ -1354,6 +1369,10 @@ export default defineSimulation({
           }
         }
         updateNow();
+      },
+
+      hiddenChange() {
+        updateReadouts();
       },
 
       resetTime() {

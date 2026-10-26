@@ -102,4 +102,57 @@ describe('Modell: Einfacher Stromkreis', () => {
       last = glowOf(T);
     }
   });
+
+  // Von Hand nachgerechnet (Prüfrunde): I = U / (R_i + R_Gerät + …)
+  it('liefert die nachgerechneten Stromstärken der Geräte', () => {
+    // Lampe: 4,5 V / (0,7 Ω + 15 Ω) = 0,2866 A → Anzeige „0,29 A“
+    expect(solveCircuit({ device: 'lamp', closed: true }).I).toBeCloseTo(0.2866, 4);
+    // Motor: 4,5 V / 18,7 Ω = 0,2406 A → „0,24 A“
+    expect(solveCircuit({ device: 'motor', closed: true }).I).toBeCloseTo(0.2406, 4);
+    // Klingel: 4,5 V / 22,7 Ω = 0,1982 A → „0,20 A“
+    expect(solveCircuit({ device: 'bell', closed: true }).I).toBeCloseTo(0.1982, 4);
+    // Bleistiftmine: 4,5 V / (0,7 + 6 + 15) Ω = 0,2074 A → „0,21 A“
+    expect(solveCircuit({ device: 'lamp', closed: true, seriesR: MATERIALS.lead.R }).I).toBeCloseTo(0.2074, 4);
+  });
+
+  it('liefert die nachgerechneten Werte beim Kurzschluss', () => {
+    // Lampe ∥ Leitung: 15 · 0,03 / 15,03 = 0,02994 Ω; I = 4,5 / 0,72994 = 6,165 A → „6,2 A“
+    const short = solveCircuit({ device: 'lamp', closed: true, bridge: true });
+    expect(short.I).toBeCloseTo(6.165, 3);
+    // etwa 22-mal so groß wie ohne Kurzschluss (6,165 / 0,2866 = 21,5)
+    expect(Math.round(short.I / solveCircuit({ device: 'lamp', closed: true }).I)).toBe(22);
+    // Motor und Klingel: fast derselbe Kurzschlussstrom, aber größeres Verhältnis (26 bzw. 31)
+    for (const [device, k] of [['motor', 26], ['bell', 31]] as const) {
+      const sc = solveCircuit({ device, closed: true, bridge: true });
+      expect(sc.I, device).toBeCloseTo(6.165, 2);
+      expect(Math.round(sc.I / solveCircuit({ device, closed: true }).I), device).toBe(k);
+    }
+    // Durch die Lampe fließen nur noch etwa 12 mA (0,1846 V / 15 Ω), sie bleibt dunkel
+    expect(short.Idevice).toBeCloseTo(0.0123, 4);
+  });
+
+  it('lässt die Sicherung im normalen Betrieb ganz und schmilzt sie beim Kurzschluss', () => {
+    // mit Sicherung (0,05 Ω): 4,5 / 15,75 = 0,2857 A < 1 A
+    const ok = solveCircuit({ device: 'lamp', closed: true, fuse: 'ok' });
+    expect(ok.I).toBeCloseTo(0.2857, 4);
+    expect(fuseBlows(ok.I)).toBe(false);
+    // Kurzschluss mit Sicherung: 4,5 / (0,7 + 0,05 + 0,02994) = 5,77 A > 1 A
+    const sc = solveCircuit({ device: 'lamp', closed: true, fuse: 'ok', bridge: true });
+    expect(sc.I).toBeCloseTo(5.770, 3);
+    expect(fuseBlows(sc.I)).toBe(true);
+    // offener Schalter: auch mit Überbrückung kein Strom, Sicherung bleibt ganz
+    expect(fuseBlows(solveCircuit({ device: 'lamp', closed: false, fuse: 'ok', bridge: true }).I)).toBe(false);
+  });
+
+  it('bestimmt die Helligkeit der Lampe mit Metall und mit Graphit', () => {
+    // Metall: P = 0,2866² · 15 = 1,232 W (91 % von 1,35 W) → T = 2700 K · 0,9126^¼ ≈ 2639 K
+    const metal = solveCircuit({ device: 'lamp', closed: true });
+    expect(metal.Pdevice / LAMP_P_NOMINAL).toBeCloseTo(0.9126, 3);
+    expect(filamentTemperature(metal.Pdevice, LAMP_P_NOMINAL)).toBeCloseTo(2639, -1);
+    // Graphit: P = 0,2074² · 15 = 0,645 W (48 %) → T ≈ 2245 K, Leuchten ((2245 − 800)/1900)² ≈ 0,58
+    const lead = solveCircuit({ device: 'lamp', closed: true, seriesR: MATERIALS.lead.R });
+    const T = filamentTemperature(lead.Pdevice, LAMP_P_NOMINAL);
+    expect(T).toBeCloseTo(2245, -1);
+    expect(glowOf(T)).toBeCloseTo(0.58, 2);
+  });
 });

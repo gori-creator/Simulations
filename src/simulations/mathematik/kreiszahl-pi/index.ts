@@ -124,6 +124,7 @@ export default defineSimulation({
     function updateReadouts(): void {
       const rr = r();
       if (p.mode === 'umfang') {
+        // Im Englischen heißt der Umfang C (circumference), im Deutschen U.
         const U = ctx.lang === 'de' ? 'U' : 'C';
         ctx.readout('formula', { html: `<var>${U}</var> = π · <var>d</var> = 2π · <var>r</var>` });
         ctx.readout('value', `${U} = π · ${fmt.num(p.d, 1)} cm = ${piMultiple(p.d)} cm ≈ ${fmt.num(Math.PI * p.d, 3)} cm`);

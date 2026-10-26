@@ -16,6 +16,8 @@ $$
 t = \sqrt{\frac{2h}{g}} \qquad v = \sqrt{2\, g\, h}.
 $$
 
+**Umrechnen in km/h:** Eine Stunde hat $3600\,\text{s}$, ein Kilometer $1000\,\text{m}$. Also gilt $1\,\tfrac{\text{m}}{\text{s}} = 3{,}6\,\tfrac{\text{km}}{\text{h}}$: Man multipliziert mit $3{,}6$.
+
 **Stroboskop:** Blitzt eine Lampe in gleichen Zeitabständen $\Delta t$, sieht man die Kugel an mehreren Stellen. Die Abstände wachsen im Verhältnis $1 : 3 : 5 : 7 : \ldots$ – jeder Abstand ist um $g \cdot (\Delta t)^2$ größer als der vorige.
 
 **Masse spielt keine Rolle:** Ohne Luft fallen eine schwere Kugel und eine leichte Feder **gleich schnell**. In Luft bremst der **Luftwiderstand** die Feder stark: Sie erreicht schnell eine kleine **Endgeschwindigkeit** und fällt dann fast gleichförmig. Auf dem Mond (ohne Luft) ließ ein Astronaut 1971 bei der Mission Apollo 15 einen Hammer und eine Feder fallen – beide kamen gleichzeitig unten an.
@@ -27,7 +29,7 @@ $$
 ## Ausprobieren
 
 1. Drücke **Fallen lassen** und betrachte das Stroboskopbild. Lies die Abstände an der blauen Leiste ab: $1 : 3 : 5 : 7 : 9$.
-2. Ziehe die Kugel im Fallturm nach unten und beobachte, wie sich Zeit und Geschwindigkeit ändern.
+2. Ziehe die Kugel im Fallturm (oder den Punkt im $t$-$s$-Diagramm) und beobachte, wie sich Zeit und Geschwindigkeit ändern. Das Dreieck im $t$-$v$-Diagramm zeigt die Steigung $g$, die Fläche unter der Geraden die Fallstrecke.
 3. Wiederhole den Versuch auf dem Mond und auf dem Jupiter. [Auf dem Mond](?planet=mond)
 4. Drehe die **Fallröhre** um – einmal mit Luft, einmal luftleer. [Fallröhre mit Luft](?mode=tube) · [Fallröhre luftleer](?mode=tube&vac=1)
 5. Miss deine **Reaktionszeit**: Drücke Start und fange das Lineal (Tippen, Klick oder Leertaste). Mache mindestens fünf Versuche. [Reaktionstest](?mode=ruler)
@@ -74,7 +76,7 @@ Ein Stein fällt in einen Brunnen und schlägt nach $2\,\text{s}$ auf dem Wasser
 <details>
 <summary>Lösung anzeigen</summary>
 
-$s = \tfrac12 \cdot 9{,}81\,\tfrac{\text{m}}{\text{s}^2} \cdot (2\,\text{s})^2 \approx 19{,}6\,\text{m}$. [In der Simulation prüfen](?h=19.5)
+$s = \tfrac12 \cdot 9{,}81\,\tfrac{\text{m}}{\text{s}^2} \cdot (2\,\text{s})^2 \approx 19{,}6\,\text{m}$. [In der Simulation prüfen](?h=19.5) (nächster Reglerwert $19{,}5\,\text{m}$, Fallzeit $1{,}99\,\text{s}$)
 
 </details>
 
@@ -85,7 +87,7 @@ Jemand fängt das Lineal nach $18\,\text{cm}$. Wie groß ist die Reaktionszeit? 
 <details>
 <summary>Lösung anzeigen</summary>
 
-$t = \sqrt{\frac{2 \cdot 0{,}18\,\text{m}}{9{,}81\,\text{m/s}^2}} \approx 0{,}19\,\text{s}$. Mit $50\,\tfrac{\text{km}}{\text{h}} \approx 13{,}9\,\tfrac{\text{m}}{\text{s}}$ ergibt sich ein Reaktionsweg von etwa $13{,}9 \cdot 0{,}19\,\text{m} \approx 2{,}6\,\text{m}$. Im Straßenverkehr rechnet man mit etwa $1\,\text{s}$ Reaktionszeit, weil man die Gefahr erst erkennen und den Fuß umsetzen muss.
+$t = \sqrt{\frac{2 \cdot 0{,}18\,\text{m}}{9{,}81\,\text{m/s}^2}} \approx 0{,}19\,\text{s}$. Mit $50\,\tfrac{\text{km}}{\text{h}} \approx 13{,}9\,\tfrac{\text{m}}{\text{s}}$ ergibt sich ein Reaktionsweg von etwa $13{,}9\,\tfrac{\text{m}}{\text{s}} \cdot 0{,}192\,\text{s} \approx 2{,}7\,\text{m}$. Im Straßenverkehr rechnet man mit etwa $1\,\text{s}$ Reaktionszeit, weil man die Gefahr erst erkennen und den Fuß umsetzen muss.
 
 </details>
 
@@ -97,6 +99,17 @@ Erkläre, warum die Feder in der Röhre mit Luft viel länger braucht, im luftle
 <summary>Lösung anzeigen</summary>
 
 Auf beide wirkt die Gewichtskraft; ohne Luft beschleunigen beide mit $g$ – unabhängig von der Masse. In Luft wirkt zusätzlich der Luftwiderstand. Er wächst mit der Geschwindigkeit und ist bei der leichten, großflächigen Feder schon bei etwa $0{,}6\,\tfrac{\text{m}}{\text{s}}$ so groß wie ihre Gewichtskraft – danach wird sie nicht mehr schneller. Bei der schweren, kleinen Kugel spielt er auf $1{,}5\,\text{m}$ kaum eine Rolle.
+
+</details>
+
+### Aufgabe 7: Apfel vom Baum
+
+Ein Apfel fällt aus $5\,\text{m}$ Höhe vom Baum. Mit welcher Geschwindigkeit kommt er unten an? Gib sie in $\tfrac{\text{m}}{\text{s}}$ und in $\tfrac{\text{km}}{\text{h}}$ an. [Aufgabe laden](?h=5&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$v = \sqrt{2 \cdot 9{,}81\,\tfrac{\text{m}}{\text{s}^2} \cdot 5\,\text{m}} = \sqrt{98{,}1}\,\tfrac{\text{m}}{\text{s}} \approx 9{,}9\,\tfrac{\text{m}}{\text{s}}$. Mal $3{,}6$: $9{,}9 \cdot 3{,}6 \approx 36\,\tfrac{\text{km}}{\text{h}}$.
 
 </details>
 

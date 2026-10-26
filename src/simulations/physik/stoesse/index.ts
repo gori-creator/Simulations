@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, shade, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { balance, planRun, restitution, stateAt, TRACK, type CollisionType, type Run, type RunState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -16,6 +16,15 @@ const PHYSICS = ['type', 'k', 'm1', 'v1', 'm2', 'v2'];
  * gestreckt (gekachelt sähe man die Helligkeitsverläufe des Fotos als Muster).
  */
 const TRACK_IMG = { w: 628, h: 54, cap: 8 };
+/**
+ * Gleiter `gleiter.webp` (1600 × 363 px, Seitenansicht, neutral silbern): Der
+ * Reiter mit dem V-Bügel reicht von x = 22 bis 1538, die untere Schiene liegt in
+ * den Zeilen 252 … 355. Endplatte links und Pufferring rechts werden
+ * abgeschnitten – die Puffer zeichnet die Simulation je nach Stoßart.
+ */
+const GLIDER_IMG = { x0: 22, x1: 1538, h: 363, barTop: 252 };
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
 
 /** „Schöne“ Schrittweite (1, 2, 2,5, 5 · 10^k) von mindestens x. */
 function niceStep(x: number): number {
@@ -85,9 +94,12 @@ function pieces(m: number): number[] {
 export default defineSimulation({
   id: 'stoesse',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh an den Pfeilspitzen über den Gleitern, um v₁ und v₂ zu ändern. Positiv heißt nach rechts, negativ nach links.',
+    'Tip: drag the arrow tips above the gliders to change v₁ and v₂. Positive means to the right, negative to the left.',
+  ),
   layout: { aspect: 1.28, aspectNarrow: 0.5 },
-  images: { track: 'bahn.webp' },
+  images: { track: 'bahn.webp', glider: 'gleiter.webp', piece: 'massestueck.webp', table: 'tischkante.webp' },
   groups: [
     { id: 'g1', label: L('Gleiter 1 (links)', 'Glider 1 (left)') },
     { id: 'g2', label: L('Gleiter 2 (rechts)', 'Glider 2 (right)') },
@@ -133,7 +145,18 @@ export default defineSimulation({
       unit: 'm/s',
     },
     { key: 'm2', type: 'number', group: 'g2', label: L('Masse m₂', 'Mass m₂'), min: 0.05, max: 2, step: 0.05, default: 0.4, unit: 'kg' },
-    { key: 'v2', type: 'number', group: 'g2', label: L('Geschwindigkeit v₂', 'Velocity v₂'), min: -1, max: 1, step: 0.05, default: 0, unit: 'm/s' },
+    {
+      key: 'v2',
+      type: 'number',
+      group: 'g2',
+      label: L('Geschwindigkeit v₂', 'Velocity v₂'),
+      help: L('Negativ: Gleiter 2 fährt nach links, Gleiter 1 entgegen.', 'Negative: glider 2 moves to the left, towards glider 1.'),
+      min: -1,
+      max: 1,
+      step: 0.05,
+      default: 0,
+      unit: 'm/s',
+    },
     {
       key: 'chart',
       type: 'choice',
@@ -154,7 +177,7 @@ export default defineSimulation({
     { key: 'vs', label: L('Geschwindigkeit des Schwerpunkts', 'Velocity of the centre of mass'), spoiler: true },
     { key: 'after', label: L('Nach dem Stoß', 'After the collision'), spoiler: true },
     { key: 'energy', label: L('Bewegungsenergie', 'Kinetic energy'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
   presets: [
     { id: 'start', label: L('Leicht trifft schwer (elastisch)', 'Light hits heavy (elastic)'), values: {} },
@@ -202,6 +225,7 @@ export default defineSimulation({
       footBefore: 'Erst vorhersagen, dann „Stoß starten“!',
       footAfter: 'Impuls erhalten · {pct} % der Bewegungsenergie in innere Energie umgewandelt',
       footAfterShort: 'Impuls erhalten · {pct} % → innere Energie',
+      footAfterHidden: 'Impuls erhalten · Wie viel Energie wurde umgewandelt?',
       footNone: 'Kein Stoß: Jeder Gleiter behält Impuls und Energie.',
     },
     en: {
@@ -241,6 +265,7 @@ export default defineSimulation({
       footBefore: 'Predict first, then press “Start collision”!',
       footAfter: 'Momentum conserved · {pct} % of the kinetic energy converted into internal energy',
       footAfterShort: 'Momentum conserved · {pct} % → internal energy',
+      footAfterHidden: 'Momentum conserved · how much energy was converted?',
       footNone: 'No collision: each glider keeps its momentum and energy.',
     },
   },
@@ -310,6 +335,10 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const unit = (v: number, d: number, u: string) => `${fmt.num(v, d)} ${u}`;
+    /** Energie in mJ – überall mit derselben Rundung (Bilanz und Ergebnis). */
+    const mJ = (e: number) => fmt.num(e * 1000, 2);
+    /** Anteil der umgewandelten Energie in % – überall mit derselben Rundung. */
+    const pctOf = (loss: number, e0: number) => fmt.num(e0 > 0 ? (loss / e0) * 100 : 0, 1);
     const V = (name: string, sub: string, prime = false) => `<var>${name}</var><sub>${sub}</sub>${prime ? '′' : ''}`;
     const par = (str: string, v: number) => (v < 0 ? `(${str})` : str);
     const frac = (a: string, b: string) => `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
@@ -352,10 +381,10 @@ export default defineSimulation({
         ctx.readout(
           'energy',
           tr('energyText', {
-            e0: fmt.num(e0 * 1000, 2),
-            e1: fmt.num(e1 * 1000, 2),
-            loss: fmt.num(b.loss * 1000, 2),
-            pct: fmt.num(e0 > 0 ? (b.loss / e0) * 100 : 0, 1),
+            e0: mJ(e0),
+            e1: mJ(e1),
+            loss: mJ(b.loss),
+            pct: pctOf(b.loss, e0),
           }),
         );
       }
@@ -598,6 +627,23 @@ export default defineSimulation({
         g.lineTo(r.x + r.w, Math.round(y) + 0.5);
       }
       g.stroke();
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt)
+        const th = r.y + r.h - G.tableTop;
+        const tw = (TABLE_IMG.w * th) / TABLE_IMG.h;
+        g.save();
+        g.beginPath();
+        g.rect(r.x, G.tableTop, r.w, th);
+        g.clip();
+        for (let i = 0, tx = r.x; tx < r.x + r.w; i++, tx += tw) g.drawImage(scaledSprite(tableImg, tw, th, surface.dpr, { flipX: i % 2 === 1 }), tx, G.tableTop, tw + 0.5, th);
+        if (dark) {
+          g.fillStyle = 'rgba(10,14,22,0.38)';
+          g.fillRect(r.x, G.tableTop, r.w, th);
+        }
+        g.restore();
+        return;
+      }
       const table = g.createLinearGradient(0, G.tableTop, 0, r.y + r.h);
       table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
       table.addColorStop(1, dark ? '#33281e' : '#9c7349');
@@ -755,9 +801,16 @@ export default defineSimulation({
       const total = stackHeight(m, G);
       g.fillStyle = ctx.theme.dark ? '#6c7480' : '#8b939e';
       g.fillRect(cx - 1, bottom - total - 3, 2, total + 3);
+      const pieceImg = ctx.images.get('piece');
       for (const q of list) {
         const h = q === 50 ? G.unitPx : q === 10 ? G.unitPx * 0.42 : G.unitPx * 0.24;
         const w = G.len * (q === 50 ? 0.5 : 0.4);
+        if (pieceImg) {
+          // Foto: flache Messingscheibe, je nach Masse unterschiedlich dick (Kante ohne Details)
+          g.drawImage(scaledSprite(pieceImg, w, h, surface.dpr), cx - w / 2, y - h, w, h);
+          y -= h;
+          continue;
+        }
         const brass = g.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
         brass.addColorStop(0, '#8d6a24');
         brass.addColorStop(0.3, '#f0d27a');
@@ -801,7 +854,10 @@ export default defineSimulation({
       // Mit Foto der Bahn (Vierkantprofil, oben flach) schwebt der Gleiter knapp über der Oberkante
       const flatTrack = !!ctx.images.get('track');
       const bottom = flatTrack ? G.trackY - 0.5 : G.trackY + G.ridgeH * 0.75;
-      const top = G.trackY + G.ridgeH * 0.5 - G.gliderH;
+      const gliderImg = ctx.images.get('glider');
+      // Foto: Reiter in Plattenbreite, Höhe aus dem Seitenverhältnis des Fotos
+      const imgH = gliderImg ? (len - bump) * (GLIDER_IMG.h / (GLIDER_IMG.x1 - GLIDER_IMG.x0)) : 0;
+      const top = gliderImg ? bottom - imgH : G.trackY + G.ridgeH * 0.5 - G.gliderH;
       const type = p.type as CollisionType;
       // Platte ist um den Puffer kürzer; der Puffer zeigt zum anderen Gleiter
       const left = cx - len / 2 + (which === 2 ? bump : 0);
@@ -816,18 +872,32 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.22)';
       g.shadowBlur = 6;
       g.shadowOffsetY = 2;
-      const plate = g.createLinearGradient(0, top, 0, bottom);
-      plate.addColorStop(0, shade(color, theme.dark ? 0.25 : 0.32));
-      plate.addColorStop(0.5, color);
-      plate.addColorStop(1, shade(color, -0.32));
-      g.fillStyle = plate;
-      roundRect(g, left, top, right - left, bottom - top, 3);
-      g.fill();
+      if (gliderImg) {
+        // Foto, in der Farbe des Gleiters eingefärbt (Glanz bleibt); Gleiter 2 gespiegelt
+        const crop = { x: GLIDER_IMG.x0, y: 0, w: GLIDER_IMG.x1 - GLIDER_IMG.x0, h: GLIDER_IMG.h };
+        const tinted = tintedSprite(gliderImg, right - left, imgH, surface.dpr, color, { crop, flipX: which === 2 });
+        g.drawImage(tinted, left, top, right - left, imgH);
+        // ein zweites Mal multipliziert: kräftigere Farbe auf dem hellen Metall
+        g.shadowColor = 'transparent';
+        g.globalCompositeOperation = 'multiply';
+        g.globalAlpha = 0.6;
+        g.drawImage(tinted, left, top, right - left, imgH);
+      } else {
+        const plate = g.createLinearGradient(0, top, 0, bottom);
+        plate.addColorStop(0, shade(color, theme.dark ? 0.25 : 0.32));
+        plate.addColorStop(0.5, color);
+        plate.addColorStop(1, shade(color, -0.32));
+        g.fillStyle = plate;
+        roundRect(g, left, top, right - left, bottom - top, 3);
+        g.fill();
+      }
       g.restore();
-      g.fillStyle = 'rgba(255,255,255,0.45)';
-      g.fillRect(left + 3, top + 1.5, right - left - 6, 1.2);
-      g.fillStyle = 'rgba(0,0,0,0.22)';
-      g.fillRect(left + 2, bottom - 3, right - left - 4, 1.5);
+      if (!gliderImg) {
+        g.fillStyle = 'rgba(255,255,255,0.45)';
+        g.fillRect(left + 3, top + 1.5, right - left - 6, 1.2);
+        g.fillStyle = 'rgba(0,0,0,0.22)';
+        g.fillRect(left + 2, bottom - 3, right - left - 4, 1.5);
+      }
       // Beschriftung
       const mass = which === 1 ? run.m1 : run.m2;
       const longLabel = `m${which === 1 ? '₁' : '₂'} = ${fmt.num(mass, 2)} kg`;
@@ -836,9 +906,11 @@ export default defineSimulation({
       const level = labelLevel(G);
       const label = level === 0 ? longLabel : level === 1 ? `${fmt.num(mass, 2)} kg` : String(which);
       const labelW = g.measureText(label).width;
-      text(g, label, (left + right) / 2, (top + bottom) / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: '#ffffff' });
+      // Foto: Schrift im Dreieck des Bügels (Textfarbe, steht dort vor der Wand)
+      if (gliderImg) text(g, label, (left + right) / 2, top + imgH * 0.5, { font: `700 ${size - 1}px ${theme.font}`, color: theme.text });
+      else text(g, label, (left + right) / 2, (top + bottom) / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: '#ffffff' });
       // Nieten (nur, wenn neben der Schrift Platz ist)
-      if (labelW + 26 < right - left) {
+      if (!gliderImg && labelW + 26 < right - left) {
         g.fillStyle = 'rgba(255,255,255,0.55)';
         for (const fx of [0.07, 0.93]) {
           g.beginPath();
@@ -849,7 +921,8 @@ export default defineSimulation({
       // Puffer
       const px = which === 1 ? right : left;
       const dir = which === 1 ? 1 : -1;
-      const by0 = top + 2;
+      // mit Foto sitzt der Puffer an der unteren Schiene des Reiters
+      const by0 = gliderImg ? top + (imgH * GLIDER_IMG.barTop) / GLIDER_IMG.h : top + 2;
       const by1 = bottom - 2;
       if (type === 'el') {
         // Federbügel aus Stahl
@@ -935,7 +1008,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(sx, sy, rr, 0, Math.PI * 2);
         g.stroke();
-        const lab = `v_{S} = ${fmt.num(s.vs, 2)} m/s`;
+        const lab = `v_{S} = ${ctx.isHidden('vs') ? '?' : fmt.fixed(s.vs, 2)} m/s`;
         const tip = sx + s.vs * G.kv;
         const right = s.vs >= 0;
         const lw = richWidth(lab, small ? 11 : 12);
@@ -982,7 +1055,9 @@ export default defineSimulation({
         const v = which === 1 ? s.v1 : s.v2;
         const color = colorOf(which);
         hArrow(a.x0, a.x1, a.y, color, small ? 3 : 3.5, small ? 9 : 11);
-        const label = `v_{${which}}${prime} = ${fmt.num(v, 2)} m/s`;
+        // Aufgabenmodus: Geschwindigkeiten nach dem Stoß sind die gesuchten Größen
+        const value = s.after && ctx.isHidden('after') ? '?' : fmt.fixed(v, 2);
+        const label = `v_{${which}}${prime} = ${value} m/s`;
         const lw = richWidth(label, small ? 11 : 12.5);
         const mid = (a.x0 + a.x1) / 2;
         const lx = clamp(mid, r.x + lw / 2 + 6, r.x + r.w - lw / 2 - 6);
@@ -1231,6 +1306,8 @@ export default defineSimulation({
       text(g, ctx.t('balE'), R.x + pad, y + head / 2, { font: fontH, color: theme.text, align: 'left' });
       y += head + 6;
       const e0 = b.e1 + b.e2;
+      // Aufgabenmodus: Energiewerte und Prozentangabe sind Lösungen (A1, A3–A5); die Balken bleiben
+      const hideE = ctx.isHidden('energy');
       const EX = (v: number) => x0 + (e0 > 0 ? (v / e0) * (x1 - x0) : 0);
       const barH = clamp(rowE * 0.5, 10, 20);
       const rowsE: [string, number[], boolean][] = [
@@ -1260,10 +1337,9 @@ export default defineSimulation({
           if (xb - xa <= 0.3) return;
           if (j === 2) {
             hatchRect(xa, by, xb - xa, barH, heatColor());
-            const pct = e0 > 0 ? (value / e0) * 100 : 0;
-            const lab = `${fmt.num(pct, 0)} %`;
+            const lab = `${pctOf(value, e0)} %`;
             g.font = `700 ${small ? 10 : 11}px ${theme.font}`;
-            if (xb - xa > g.measureText(lab).width + 8 && u > 0.98) text(g, lab, (xa + xb) / 2, by + barH / 2 + 0.5, { font: g.font, color: theme.dark ? '#ffffff' : '#5c2300' });
+            if (!hideE && xb - xa > g.measureText(lab).width + 8 && u > 0.98) text(g, lab, (xa + xb) / 2, by + barH / 2 + 0.5, { font: g.font, color: theme.dark ? '#ffffff' : '#5c2300' });
           } else {
             const grad = g.createLinearGradient(0, by, 0, by + barH);
             const col = colorOf(j === 0 ? 1 : 2);
@@ -1276,15 +1352,15 @@ export default defineSimulation({
           }
         });
         g.restore();
-        if (u > 0.98) {
+        if (u > 0.98 && !hideE) {
           const sum = list.reduce((s2, v) => s2 + v, 0);
-          text(g, fmt.num(sum * 1000, 1), R.x + R.w - pad, yy + rowE / 2, { font: fontV, color: theme.text, align: 'right' });
+          text(g, mJ(sum), R.x + R.w - pad, yy + rowE / 2, { font: fontV, color: theme.text, align: 'right' });
         }
       });
       if (footH > 0) {
         const fy = y + 2 * rowE + footH / 2 + 4;
-        const pct = fmt.num(e0 > 0 ? (b.loss / e0) * 100 : 0, 0);
-        let msg = !run.collides ? ctx.t('footNone') : done ? tr('footAfter', { pct }) : t === 0 ? ctx.t('footBefore') : '';
+        const pct = pctOf(b.loss, e0);
+        let msg = !run.collides ? ctx.t('footNone') : done ? (hideE ? ctx.t('footAfterHidden') : tr('footAfter', { pct })) : t === 0 ? ctx.t('footBefore') : '';
         const fontF = `600 ${small ? 11 : 12}px ${theme.font}`;
         g.font = fontF;
         if (g.measureText(msg).width > R.w - 2 * pad && done) msg = tr('footAfterShort', { pct });

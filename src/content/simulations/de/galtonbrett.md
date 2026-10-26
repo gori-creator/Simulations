@@ -28,7 +28,7 @@ Bei vielen Reihen nähert sich die Form der Verteilung einer **Glockenkurve** (N
 1. Lass einzelne Kugeln fallen und verfolge ihren Weg. Wie hängt das Fach mit der Folge aus L und R zusammen?
 2. Blende das Pascal'sche Dreieck ein. Warum landen in der Mitte mehr Kugeln? [Pascal'sches Dreieck](?n=6&pascal=1&binomial=1)
 3. Stelle $p = 0{,}7$ ein. Wohin verschiebt sich die Verteilung? [Schief](?p=0.7&binomial=1)
-4. Wirf mit 16 Reihen **1000 sofort** und vergleiche mit der Glockenkurve. [16 Reihen](?n=16&normal=1&binomial=1&rate=40)
+4. Wirf mit 16 Reihen **1000 sofort** und vergleiche mit der Glockenkurve. Hier ist $\sigma = 2$, die Laplace-Bedingung ist also nicht erfüllt. Für $p = 0{,}5$ passt die Kurve trotzdem schon gut. [16 Reihen](?n=16&normal=1&binomial=1&rate=40)
 
 ## Aufgaben
 
@@ -83,7 +83,8 @@ Für $p = 0{,}5$ ist jeder Weg gleich wahrscheinlich, und es gibt zu Fach $k$ ge
 ## Ideen für den Unterricht
 
 - **Einsatz:** Bayern Jahrgangsstufe 12 (Bernoulli-Ketten, Binomialverteilung); qualitativ auch früher bei mehrstufigen Zufallsexperimenten. Die Glockenkurve leitet zur Normalverteilung über.
-- **Darstellung:** Solange es passt, werden die Kugeln einzeln gestapelt; bei vielen Kugeln werden die Fächer als Säulen dargestellt. Die roten Markierungen zeigen die erwartete Anzahl $N \cdot P(X = k)$ bei $N$ Kugeln.
+- **Darstellung:** Solange es passt, werden die Kugeln einzeln gestapelt; bei vielen Kugeln werden die Fächer als Säulen dargestellt. Die waagerechten Striche (in der Legende „B(n; p)“) zeigen die erwartete Anzahl $N \cdot P(X = k)$ bei $N$ Kugeln.
+- **Gruppen vergleichen:** Lassen Sie mehrere Gruppen je 100 Kugeln werfen. Jede Gruppe erhält eine etwas andere Verteilung – zusammengelegt kommen die Häufigkeiten der Binomialverteilung immer näher.
 - **Bilder:** Holzbrett und Kugeln werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).
 - **Häufige Stolpersteine:**
   - „Die Kugel wird zur Mitte gelenkt.“ – Es gibt nur mehr Wege dorthin.

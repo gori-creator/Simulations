@@ -22,6 +22,8 @@ $x_1 = 1 - \frac{-1}{2} = 1{,}5$, $\;x_2 = 1{,}5 - \frac{0{,}25}{3} = \frac{17}{
 
 **Wie schnell?** In der Nähe einer einfachen Nullstelle $x^*$ wird der Fehler $e_n = |x_n - x^*|$ in jedem Schritt ungefähr **quadriert**: $e_{n+1} \approx C \cdot e_n^2$ (für $x^2 - 2$ ist $C = \frac{1}{2\sqrt 2} \approx 0{,}354$). Deshalb **verdoppelt sich die Anzahl der richtigen Stellen ungefähr** – in der Tabelle für $\sqrt 2$: $0 \to 2 \to 5 \to 11$. Man spricht von **quadratischer Konvergenz**. Der Grund: Aus der Nähe (Lupe!) sieht der Graph fast aus wie seine Tangente.
 
+**Wann hört man auf?** Man rechnet so lange, bis sich zwei aufeinanderfolgende Näherungswerte in den gewünschten Nachkommastellen nicht mehr unterscheiden, also $|x_{n+1} - x_n|$ klein genug ist (**Abbruchkriterium**). Zur Probe setzt man den Wert in $f$ ein: $f(x_n)$ muss nahe $0$ sein. Die Simulation hält beim Abspielen an, sobald sich nichts mehr ändert.
+
 **Das Verfahren kann scheitern:**
 
 - **Waagrechte Tangente** ($f'(x_n) = 0$): Sie schneidet die $x$-Achse nicht, in der Formel müsste man durch $0$ teilen.
@@ -36,7 +38,7 @@ $x_1 = 1 - \frac{-1}{2} = 1{,}5$, $\;x_2 = 1{,}5 - \frac{0{,}25}{3} = \frac{17}{
 3. Ziehe den Startwert $x_0$ oder tippe auf die $x$-Achse. Was passiert bei $x_0 = 0$, was bei negativen Startwerten?
 4. [Newtons Beispiel](?fn=cubic&x0=2&k=3): Isaac Newton rechnete selbst mit $x^3 - 2x - 5$. Nach wie vielen Schritten stimmen 8 Nachkommastellen? Und bei [cos x = x](?fn=cos&x0=1&k=3), einer Gleichung, die keine Umformung löst?
 5. [Waagrechte Tangente](?fn=three&x0=1&k=1): Warum gibt es hier keinen nächsten Wert? Verschiebe $x_0$ ein kleines Stück.
-6. [Sprung zur anderen Nullstelle](?fn=three&x0=0.95&k=5&basin=1): Der Startwert liegt neben der rechten Nullstelle – gefunden wird die linke. Die Farben auf der $x$-Achse zeigen die **Einzugsbereiche**: wohin jeder Startwert führt.
+6. [Sprung zur anderen Nullstelle](?fn=three&x0=0.95&k=5&basin=1): Der Startwert liegt neben der rechten Nullstelle – gefunden wird die linke. Die Farben auf der $x$-Achse zeigen die **Einzugsbereiche**: wohin jeder Startwert führt. Die Buchstaben A, B, C unten im Bild gehören zu den Nullstellen von links nach rechts, „–“ heißt: keine Nullstelle.
 7. [Zyklus](?fn=cycle&x0=0&k=4): Die Folge springt zwischen $0$ und $1$ hin und her. Welche Startwerte führen zur Nullstelle? Schalte „Einzugsbereiche färben“ ein.
 8. [Doppelte Nullstelle](?fn=dbl&x0=2&k=8): Vergleiche die Tabelle mit der von $\sqrt 2$. Was ist anders?
 
@@ -71,7 +73,7 @@ Bestimme die Nullstelle von $f(x) = x^3 - 2x - 5$ mit $x_0 = 2$ auf sechs Nachko
 <details>
 <summary>Lösung anzeigen</summary>
 
-$f'(x) = 3x^2 - 2$. $f(2) = -1$, $f'(2) = 10$, also $x_1 = 2 + 0{,}1 = 2{,}1$. $f(2{,}1) = 9{,}261 - 4{,}2 - 5 = 0{,}061$, $f'(2{,}1) = 11{,}23$, also $x_2 = 2{,}1 - \frac{0{,}061}{11{,}23} \approx 2{,}094568$. Ein weiterer Schritt liefert $x_3 \approx 2{,}0945515$; die Nullstelle ist $x \approx 2{,}094551$. [Lösung zeigen](?fn=cubic&x0=2&k=3)
+$f'(x) = 3x^2 - 2$. $f(2) = -1$, $f'(2) = 10$, also $x_1 = 2 + 0{,}1 = 2{,}1$. $f(2{,}1) = 9{,}261 - 4{,}2 - 5 = 0{,}061$, $f'(2{,}1) = 11{,}23$, also $x_2 = 2{,}1 - \frac{0{,}061}{11{,}23} \approx 2{,}094568$. Ein weiterer Schritt liefert $x_3 \approx 2{,}0945515$. Auch $x_4$ beginnt mit $2{,}094551$ – die sechs Nachkommastellen ändern sich nicht mehr. Die Nullstelle ist $x \approx 2{,}094551$. [Lösung zeigen](?fn=cubic&x0=2&k=3)
 
 </details>
 
@@ -82,7 +84,7 @@ Bestimme mit dem Newton-Verfahren eine Lösung von $\cos x = x$ auf vier Nachkom
 <details>
 <summary>Lösung anzeigen</summary>
 
-$f(x) = \cos x - x$, $f'(x) = -\sin x - 1$. $f(1) \approx -0{,}4597$, $f'(1) \approx -1{,}8415$, also $x_1 \approx 1 - 0{,}2496 = 0{,}7504$. Weiter $x_2 \approx 0{,}739113$ und $x_3 \approx 0{,}739085$. Ergebnis: $x \approx 0{,}7391$. [Lösung zeigen](?fn=cos&x0=1&k=3)
+$f(x) = \cos x - x$, $f'(x) = -\sin x - 1$. $f(1) \approx -0{,}4597$, $f'(1) \approx -1{,}8415$, also $x_1 \approx 1 - 0{,}2496 = 0{,}7504$. Weiter $x_2 \approx 0{,}739113$ und $x_3 \approx 0{,}739085$. $x_2$ und $x_3$ stimmen in vier Nachkommastellen überein. Ergebnis: $x \approx 0{,}7391$. [Lösung zeigen](?fn=cos&x0=1&k=3)
 
 </details>
 
@@ -112,11 +114,12 @@ $e_3 \approx \frac{0{,}00245^2}{2{,}828} \approx 2{,}1 \cdot 10^{-6}$; tatsächl
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 11, Anwendungen der Differentialrechnung (Tangentengleichung, Nullstellen ganzrationaler Funktionen) im LehrplanPLUS Gymnasium Bayern – bitte am Lehrplan prüfen. $\cos x = x$ eignet sich als Ausblick.
+- **Einsatz:** Jahrgangsstufe 11, Lernbereich „Anwendung der Differentialrechnung bei der Untersuchung ganzrationaler Funktionen“ (LehrplanPLUS Gymnasium Bayern, dort mit dem Newton-Verfahren). Die Tangentengleichung aus dem Lernbereich davor wird gebraucht. $\cos x = x$ eignet sich als Ausblick.
 - **Herleitung entdecken lassen:** Erst „Nächster Schritt“ mit ausgeschalteten Werten (`show=0`) zeigen, die Lernenden das Steigungsdreieck beschriften lassen und daraus die Formel gewinnen.
 - **Heron und Tabellenkalkulation:** Für $x^2 - 2$ entsteht genau das Heron-Verfahren aus der 9. Klasse. Das Verfahren in einer Tabellenkalkulation nachbauen, mit der Simulation vergleichen und anschließend mit dem Halbierungsverfahren (Bisektion) um die Wette rechnen.
 - **Einzugsbereiche:** Mit „Einzugsbereiche färben“ lässt sich untersuchen, warum Startwerte nahe den Extremstellen unberechenbar werden – gut als Projekt oder für Interessierte.
 - **Häufige Stolpersteine:**
   - Vorzeichenfehler: Es heißt $x_n \mathbin{-} \frac{f(x_n)}{f'(x_n)}$; bei negativem $f(x_n)$ oder $f'(x_n)$ hilft eine Klammer.
   - Der Taschenrechner steht bei $\cos x$ im Gradmaß statt im Bogenmaß.
+  - Zu früh aufhören: Erst wenn sich zwei Näherungswerte in den gewünschten Stellen nicht mehr unterscheiden, ist das Ergebnis sicher. Bei einer doppelten Nullstelle ist auch das trügerisch, weil die Werte nur langsam näher rücken.
   - „Das Verfahren klappt immer“ – waagrechte Tangente, Sprung und Zyklus zeigen, wie wichtig der Startwert ist.

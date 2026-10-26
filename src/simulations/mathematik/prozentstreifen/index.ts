@@ -1,8 +1,10 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { asFraction, changeSign, gridFill, isNice, problem, randomTask, ruleOfThree, shareRate, wrongBase, type Find, type Problem, type Sit } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Preisschild-Foto (Pixel in preisschild.webp): Bildbreite/-höhe und Breite des Schilds ohne die Schnur links. */
+const TAG_IMG = { w: 1600, h: 615, body: 1275 } as const;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -128,6 +130,7 @@ export default defineSimulation({
   id: 'prozentstreifen',
   dragHint: true,
   layout: { aspect: 1.2, aspectNarrow: 0.36 },
+  images: { tag: 'preisschild.webp', receipt: 'kassenbon.webp' },
   groups: [
     { id: 'val', label: L('Werte', 'Values') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -616,6 +619,23 @@ export default defineSimulation({
     /* =====================================================================
      * Situationskarte mit gezeichneter Szene
      * ===================================================================== */
+    /** Foto passend skaliert, optional abgedunkelt (nur das Motiv, nicht der durchsichtige Rand); zwischengespeichert. */
+    const photoCache = new Map<string, HTMLCanvasElement>();
+    function photoSprite(img: HTMLImageElement, w: number, h: number, dim: number, crop?: Rect): HTMLCanvasElement {
+      const base = scaledSprite(img, w, h, surface.dpr, crop ? { crop } : {});
+      if (dim <= 0) return base;
+      const key = `${img.src}|${Math.round(w * 2)}|${Math.round(h * 2)}|${dim}|${crop ? `${crop.y},${crop.h}` : ''}`;
+      const hit = photoCache.get(key);
+      if (hit) return hit;
+      if (photoCache.size > 12) photoCache.clear();
+      const { canvas, g: o } = offscreenCanvas(w, h, surface.dpr);
+      o.drawImage(base, 0, 0, w, h);
+      o.globalCompositeOperation = 'source-atop';
+      o.fillStyle = withAlpha(th().bg, dim);
+      o.fillRect(0, 0, w, h);
+      photoCache.set(key, canvas);
+      return canvas;
+    }
     const paperCol = () => (th().dark ? '#232b38' : '#fffdf7');
     const inkCol = () => (th().dark ? '#e6e9ef' : '#2b2f36');
 
@@ -731,14 +751,29 @@ export default defineSimulation({
     function drawTag(R: Rect, pb: Problem): void {
       const g = surface.g;
       const dark = th().dark;
-      const w = Math.min(R.w * 0.86, R.h * 1.55);
-      const h = Math.min(R.h * 0.78, w * 0.66);
-      const cx = R.x + R.w / 2 + 4;
+      const tagImg = ctx.images.get('tag');
+      // Mit Foto: Schild (ohne Schnur) TAG_IMG.body breit, Höhe aus dem Seitenverhältnis; die Schnur ragt links hinaus
+      const T = TAG_IMG;
+      const w = tagImg ? Math.min((R.w * 0.94 * T.body) / T.w, (R.h * 0.8 * T.body) / T.h) : Math.min(R.w * 0.86, R.h * 1.55);
+      const h = tagImg ? (w * T.h) / T.body : Math.min(R.h * 0.78, w * 0.66);
+      const cx = R.x + R.w / 2 + 4 + (tagImg ? (w * (T.w - T.body)) / T.body / 2 : 0);
       const cy = R.y + R.h / 2 + 6;
       g.save();
       g.translate(cx, cy);
       g.rotate(-0.07);
+      if (tagImg) {
+        const k = w / T.body;
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.2)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 3;
+        // im Dunkelmodus deutlich abgedunkelt, damit die hellen Schriftfarben lesbar bleiben
+        g.drawImage(photoSprite(tagImg, T.w * k, h, dark ? 0.62 : 0), -w / 2 - (T.w - T.body) * k, -h / 2, T.w * k, h);
+        g.restore();
+      }
       // Schnur
+      const tagGA = g.globalAlpha;
+      if (tagImg) g.globalAlpha = 0;
       g.strokeStyle = dark ? '#8b7a62' : '#b59a72';
       g.lineWidth = 1.6;
       g.beginPath();
@@ -776,6 +811,7 @@ export default defineSimulation({
       g.fill();
       g.strokeStyle = dark ? '#8b7a62' : '#c7ab7e';
       g.stroke();
+      g.globalAlpha = tagGA;
       // Preise
       const x0 = nx + h * 0.55;
       const fBig = Math.round(clamp(h * 0.3, 15, 26));
@@ -843,16 +879,25 @@ export default defineSimulation({
       g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.18)';
       g.shadowBlur = 9;
       g.shadowOffsetY = 3;
-      g.fillStyle = paperCol();
-      g.beginPath();
-      g.moveTo(x, y);
-      g.lineTo(x + w, y);
       const zz = 7;
-      const n = Math.max(6, Math.round(w / 12));
-      g.lineTo(x + w, y + h - zz);
-      for (let i = n; i >= 0; i--) g.lineTo(x + (w * i) / n, y + h - (i % 2 === 0 ? zz : 0));
-      g.closePath();
-      g.fill();
+      const receiptImg = ctx.images.get('receipt');
+      if (receiptImg) {
+        // Foto: unterer Teil des langen Bons (mit gezacktem Rand) im Seitenverhältnis des Felds ausgeschnitten, unverzerrt
+        const iw = receiptImg.naturalWidth;
+        const ih = receiptImg.naturalHeight;
+        const ch = Math.min(ih, (iw * h) / w);
+        g.drawImage(photoSprite(receiptImg, w, h, dark ? 0.8 : 0, { x: 0, y: ih - ch, w: iw, h: ch }), x, y, w, h);
+      } else {
+        g.fillStyle = paperCol();
+        g.beginPath();
+        g.moveTo(x, y);
+        g.lineTo(x + w, y);
+        const n = Math.max(6, Math.round(w / 12));
+        g.lineTo(x + w, y + h - zz);
+        for (let i = n; i >= 0; i--) g.lineTo(x + (w * i) / n, y + h - (i % 2 === 0 ? zz : 0));
+        g.closePath();
+        g.fill();
+      }
       g.restore();
       const mono = (wt: number, sz: number) => `${wt} ${sz}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
       const fsz = clamp(Math.round(h * 0.11), 10.5, 13);

@@ -609,6 +609,14 @@ export default defineSimulation({
     const NV = (v: number) => N(v, nd(v));
     const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
     const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    /** Gerundeter Wert mit Endnullen (täuscht keine Genauigkeit vor), exakter ohne. */
+    const RD = (v: number, d = 2) => (!Number.isFinite(v) ? '–' : isExact(v, d) ? N(v, d) : fmt.fixed(clean(v, d), d));
+    /** „= 2“ bzw. „≈ 2,10“: Zeichen und Zahl nach Exaktheit des Zielwerts; `shown` ist der (zählende) angezeigte Wert. */
+    const A = (v: number, d = 2, shown = v) => `${eq(v, d)} ${isExact(v, d) ? N(shown, d) : RD(shown, d)}`;
+    /** wie A, Stellen nach Größe */
+    const AV = (v: number, shown = v) => A(v, nd(v), shown);
+    /** negative Zahl beim Einsetzen in Klammern: 2 · (−0,5) */
+    const P0 = (s: string) => (s.startsWith('−') ? `(${s})` : s);
     const show = () => p.show;
     const S = (s: string) => (show() ? s : '?');
 
@@ -1074,7 +1082,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.9)' : 'rgba(255,255,255,0.94)';
+      g.fillStyle = withAlpha(th().bg, th().dark ? 0.9 : 0.94);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 2;
@@ -1261,6 +1269,8 @@ export default defineSimulation({
     }
 
     /** Steigungsdreieck an einer Geraden durch (x | y) mit Steigung m: waagrecht Δx, senkrecht m·Δx. */
+    /** Beschriftungen der Merkmale im oberen Bild (für das Ausweichen des Steigungsdreiecks). */
+    let labelRects: Rect[] = [];
     function slopeTriangle(pl: Plot, x: number, y: number, m: number, dX: number, color: string, alpha: number, labels: { dx?: string; dy?: string } = {}): void {
       if (alpha <= 0.01 || !Number.isFinite(m) || !Number.isFinite(y)) return;
       const g = surface.g;
@@ -1294,7 +1304,18 @@ export default defineSimulation({
       if (labels.dx) fpill((pl.px(x) + pl.px(x2)) / 2, pl.py(y) + (m >= 0 ? 15 : -15), `\\c{m}{${labels.dx}}`, { size: sz, alpha: alpha * 0.92, color: th().muted, bounds: r });
       if (labels.dy && Math.abs(pl.py(y2) - pl.py(y)) > 16) {
         const right = dX > 0 ? pl.px(x2) < r.x + r.w - 120 : pl.px(x2) < r.x + 120;
-        fpill(pl.px(x2) + (right ? 10 : -10), clamp((pl.py(y) + pl.py(y2)) / 2, r.y + 44, r.y + r.h - 14), labels.dy, { align: right ? 'left' : 'right', size: sz, alpha, bounds: r, border: withAlpha(color, 0.55) });
+        const ym = clamp((pl.py(y) + pl.py(y2)) / 2, r.y + 44, r.y + r.h - 14);
+        // nicht über Beschriftungen wie „HP“ oder „WP“: sonst auf die andere Seite oder tiefer
+        const cands: [boolean, number][] = [
+          [right, ym],
+          [!right, ym],
+          [right, clamp(ym + 30, r.y + 44, r.y + r.h - 14)],
+          [right, clamp(ym - 30, r.y + 44, r.y + r.h - 14)],
+        ];
+        const opts = (rt: boolean, a2: number) => ({ align: (rt ? 'left' : 'right') as 'left' | 'right', size: sz, alpha: a2, bounds: r, border: withAlpha(color, 0.55) });
+        const hit = (q: Rect) => labelRects.some((o) => q.x < o.x + o.w && o.x < q.x + q.w && q.y < o.y + o.h && o.y < q.y + q.h);
+        const pick = cands.find(([rt, yy]) => !hit(fpill(pl.px(x2) + (rt ? 10 : -10), yy, labels.dy!, opts(rt, 0)))) ?? cands[0]!;
+        fpill(pl.px(x2) + (pick[0] ? 10 : -10), pick[1], labels.dy, opts(pick[0], alpha));
       }
     }
 
@@ -1305,7 +1326,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -1317,7 +1338,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.16 : 0.12);
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -1651,6 +1672,7 @@ export default defineSimulation({
       }
       // Extrem- und Wendestellen
       const kMk = Math.max(kFeat, (w('trace') + w('draw')) * kMarks.v * k.labels);
+      labelRects = [];
       if (kMk > 0.01) drawFeaturesTop(V, now, kMk, kFeat > 0.5);
       // Tangente mit Steigungsdreieck
       const kt = w('trace') * k.labels;
@@ -1702,7 +1724,7 @@ export default defineSimulation({
           g.font = `700 ${fs(11, 10.5)}px ${theme.font}`;
           if (txt && g.measureText(txt).width >= xb - xa - 8) txt = txt.slice(0, 1);
           if (txt && g.measureText(txt).width < xb - xa - 6) {
-            g.fillStyle = theme.dark ? '#f4f7fb' : '#1b2533';
+            g.fillStyle = theme.text;
             g.textAlign = 'center';
             g.textBaseline = 'middle';
             g.fillText(txt, (xa + xb) / 2, y + h / 2 + 0.5);
@@ -1726,7 +1748,7 @@ export default defineSimulation({
         dot(plot.px(e.x), plot.py(y), color, 5.5 * ease.outBack(clamp01(sk.ext * 1.2)), a);
         const lab = e.kind === 'saddle' ? say(L('SP', 'SP')) : e.kind === 'max' ? say(L('HP', 'max')) : say(L('TP', 'min'));
         const up = e.kind !== 'min';
-        if (!crowded()) fpill(plot.px(e.x), plot.py(y) + (up ? -19 : 19), `\\t{${lab}${e.kink ? say(L(' (Knick)', ' (kink)')) : ''}}`, { size: fs(11.5, 11), alpha: a * 0.95, color, border: withAlpha(color, 0.5), bounds: r });
+        if (!crowded()) labelRects.push(fpill(plot.px(e.x), plot.py(y) + (up ? -19 : 19), `\\t{${lab}${e.kink ? say(L(' (Knick)', ' (kink)')) : ''}}`, { size: fs(11.5, 11), alpha: a * 0.95, color, border: withAlpha(color, 0.5), bounds: r }));
       }
       for (const w of feat.infl) {
         if (w.saddle) continue;
@@ -1734,7 +1756,7 @@ export default defineSimulation({
         const y = V.fn.f(w.x);
         dot(plot.px(w.x), plot.py(y), col.dd(), 5 * ease.outBack(clamp01(sk.infl * 1.2)), a, true);
         const m = V.fn.d1(w.x);
-        if (!crowded()) fpill(plot.px(w.x) + (m >= 0 ? -12 : 12), plot.py(y) - 16, `\\t{${say(L('WP', 'infl.'))}}`, { align: m >= 0 ? 'right' : 'left', size: fs(11.5, 11), alpha: a * 0.95, color: col.dd(), border: withAlpha(col.dd(), 0.5), bounds: r });
+        if (!crowded()) labelRects.push(fpill(plot.px(w.x) + (m >= 0 ? -12 : 12), plot.py(y) - 16, `\\t{${say(L('WP', 'infl.'))}}`, { align: m >= 0 ? 'right' : 'left', size: fs(11.5, 11), alpha: a * 0.95, color: col.dd(), border: withAlpha(col.dd(), 0.5), bounds: r }));
       }
     }
 
@@ -1759,12 +1781,12 @@ export default defineSimulation({
         const mv = cnt('top.m', m);
         slopeTriangle(plot, x, y, m, dir * dX, col.t(), alpha * kTri.v, {
           dx: `Δ${nm.v} = ${N(dX, 2)}`,
-          dy: `\\c{t}{Δy ${show() ? `≈ ${NV(mv * dX)}` : '= ?'}}`,
+          dy: `\\c{t}{Δy ${show() ? AV(m * dX, mv * dX) : '= ?'}}`,
         });
         if (show()) {
           const right = plot.px(x) < r.x + r.w * 0.62;
           const yy = clamp(plot.py(y) + (m > 0 ? 34 : -34), r.y + 48, r.y + r.h - 16);
-          fpill(plot.px(x) + (right ? 14 : -14), yy, `\\c{t}{m ≈ ${NV(mv)}}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha: alpha * (1 - kTri.v * 0.999), bounds: r, border: withAlpha(col.t(), 0.5) });
+          fpill(plot.px(x) + (right ? 14 : -14), yy, `\\c{t}{m ${AV(m, mv)}}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha: alpha * (1 - kTri.v * 0.999), bounds: r, border: withAlpha(col.t(), 0.5) });
         }
       } else {
         fpill(plot.px(x), plot.py(y) - 34, `\\c{n}{${say(L('keine Tangente (Knick)', 'no tangent (kink)'))}}`, { size: fs(11.5, 11), alpha, bounds: r, border: withAlpha(col.neg(), 0.5) });
@@ -1840,7 +1862,7 @@ export default defineSimulation({
           if (Math.abs(plot.px(xb) - plot.px(xa)) > 50) fpill((plot.px(xa) + plot.px(xb)) / 2, plot.py(ya) + (ms >= 0 ? 15 : -15), `\\c{m}{Δ${nm.v} = ${sd === 'c' ? '2h' : 'h'} = ${N(xb - xa, 3)}}`, { size: sz, alpha: ta * 0.92, color: th().muted, bounds: r });
           if (Math.abs(plot.py(yb) - plot.py(ya)) > 18) {
             const right = plot.px(xb) < r.x + r.w - 120;
-            fpill(plot.px(xb) + (right ? 10 : -10), clamp((plot.py(ya) + plot.py(yb)) / 2, r.y + 44, r.y + r.h - 14), `\\c{s}{Δy ${show() ? `≈ ${NV(yb - ya)}` : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: ta, bounds: r, border: withAlpha(col.s(), 0.55) });
+            fpill(plot.px(xb) + (right ? 10 : -10), clamp((plot.py(ya) + plot.py(yb)) / 2, r.y + 44, r.y + r.h - 14), `\\c{s}{Δy ${show() ? AV(yb - ya) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: ta, bounds: r, border: withAlpha(col.s(), 0.55) });
           }
         }
         // Punkte
@@ -1853,7 +1875,7 @@ export default defineSimulation({
         fpill(plot.px(qMain) + (qMain >= x ? 12 : -12), plot.py(fn.f(qMain)) - 18, sd === 'c' ? '\\c{s}{Q_2}' : '\\c{s}{Q}', { align: qMain >= x ? 'left' : 'right', size: fs(12.5, 11.5), alpha: alpha * 0.95, color: col.s(), bounds: r });
         if (sd === 'c') fpill(plot.px(xa) - 12, plot.py(ya) - 18, '\\c{s}{Q_1}', { align: 'right', size: fs(12.5, 11.5), alpha: alpha * 0.95, color: col.s(), bounds: r });
         // Steigung der Sekante (Pille oben rechts)
-        const src = `\\c{s}{m_s ${show() ? `≈ ${NV(msC)}` : '= ?'}}   \\c{t}{m_t ${show() ? (os.differentiable ? `≈ ${NV(cnt('sek.mt', os.right))}` : say(L('existiert nicht', 'does not exist'))) : '= ?'}}`;
+        const src = `\\c{s}{m_s ${show() ? AV(ms, msC) : '= ?'}}   \\c{t}{m_t ${show() ? (os.differentiable ? AV(os.right, cnt('sek.mt', os.right)) : say(L('existiert nicht', 'does not exist'))) : '= ?'}}`;
         fpill(r.x + r.w - 10, r.y + 52, src, { align: 'right', size: fs(12, 11), alpha, bounds: r });
       }
       halo(plot.px(x), plot.py(yP), col.f(), 18, alpha * 0.55);
@@ -1950,7 +1972,7 @@ export default defineSimulation({
         const nm = names();
         const v = cnt('d.pt', d);
         const right = px < r.x + r.w * 0.66;
-        fpill(px + (right ? 14 : -14), clamp(py + (d >= 0 ? -20 : 20), r.y + 48, r.y + r.h - 18), `\\c{d}{(${N(x, 2)} | ${NV(v)})}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha, bounds: r, border: withAlpha(col.d(), 0.5) });
+        fpill(px + (right ? 14 : -14), clamp(py + (d >= 0 ? -20 : 20), r.y + 48, r.y + r.h - 18), `\\c{d}{(${N(x, 2)} | ${RD(v, nd(d))})}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha, bounds: r, border: withAlpha(col.d(), 0.5) });
         void nm;
       }
     }
@@ -2078,7 +2100,7 @@ export default defineSimulation({
           dot(plotDD.px(x), plotDD.py(dd), col.dd(), 5.5, kTr * k.labels);
           if (show()) {
             const right = plotDD.px(x) < r.x + r.w * 0.66;
-            fpill(plotDD.px(x) + (right ? 12 : -12), clamp(plotDD.py(dd) + (dd >= 0 ? -18 : 18), r.y + 44, r.y + r.h - 16), `\\c{D}{${names().dd}(${N(x, 2)}) ≈ ${NV(cnt('dd.pt', dd))}}`, { align: right ? 'left' : 'right', size: fs(11.5, 11), alpha: kTr * k.labels, bounds: r });
+            fpill(plotDD.px(x) + (right ? 12 : -12), clamp(plotDD.py(dd) + (dd >= 0 ? -18 : 18), r.y + 44, r.y + r.h - 16), `\\c{D}{${names().dd}(${N(x, 2)}) ${AV(dd, cnt('dd.pt', dd))}}`, { align: right ? 'left' : 'right', size: fs(11.5, 11), alpha: kTr * k.labels, bounds: r });
           }
         }
       }
@@ -2115,14 +2137,17 @@ export default defineSimulation({
       const rev = k.dReveal;
       // Grenzwert(e)
       const limCol = col.t();
-      g.save();
-      g.globalAlpha *= k.labels;
-      if (os.differentiable) plotD.hline(os.right, { color: withAlpha(limCol, 0.85), width: 1.6, dash: [6, 5] });
-      else {
-        plotD.segment([0, os.right], [H, os.right], { color: withAlpha(limCol, 0.85), width: 1.6, dash: [6, 5] });
-        plotD.segment([-H, os.left], [0, os.left], { color: withAlpha(col.l(), 0.85), width: 1.6, dash: [6, 5] });
+      // ohne Werte nicht zeigen: an der Linie wäre f′(x) direkt abzulesen
+      if (show()) {
+        g.save();
+        g.globalAlpha *= k.labels;
+        if (os.differentiable) plotD.hline(os.right, { color: withAlpha(limCol, 0.85), width: 1.6, dash: [6, 5] });
+        else {
+          plotD.segment([0, os.right], [H, os.right], { color: withAlpha(limCol, 0.85), width: 1.6, dash: [6, 5] });
+          plotD.segment([-H, os.left], [0, os.left], { color: withAlpha(col.l(), 0.85), width: 1.6, dash: [6, 5] });
+        }
+        g.restore();
       }
-      g.restore();
       // beidseitiger Quotient (gerade Funktion von h)
       const kc = kSide.c.v;
       strokePts(sample(plotD, qf.cen, -H * rev, H * rev, [0]), col.c(), kc > 0.5 ? 2.8 : 1.6, { dash: kc > 0.5 ? undefined : [5, 5], alpha: 0.45 + 0.55 * kc, glow: kc > 0.5 });
@@ -2130,8 +2155,10 @@ export default defineSimulation({
       strokePts(sample(plotD, qf.one, -H * rev, -1e-9, []), col.l(), kSide.l.v > 0.5 ? 3 : 2, { glow: kSide.l.v > 0.5, alpha: 0.55 + 0.45 * kSide.l.v });
       strokePts(sample(plotD, qf.one, 1e-9, H * rev, []), col.s(), kSide.r.v > 0.5 ? 3 : 2, { glow: kSide.r.v > 0.5, alpha: 0.55 + 0.45 * kSide.r.v });
       // offene Punkte bei h = 0 (dort ist der Quotient nicht definiert)
-      dot(plotD.px(0), plotD.py(os.right), os.differentiable ? limCol : col.s(), 5.5, k.labels, true);
-      if (!os.differentiable) dot(plotD.px(0), plotD.py(os.left), col.l(), 5.5, k.labels, true);
+      if (show()) {
+        dot(plotD.px(0), plotD.py(os.right), os.differentiable ? limCol : col.s(), 5.5, k.labels, true);
+        if (!os.differentiable) dot(plotD.px(0), plotD.py(os.left), col.l(), 5.5, k.labels, true);
+      }
       // aktueller Punkt
       const h = V.h;
       const hs = sd === 'l' ? -h : h;
@@ -2143,13 +2170,17 @@ export default defineSimulation({
         dot(plotD.px(hs), plotD.py(m), color, 6.5, k.labels);
         const right = plotD.px(hs) < r.x + r.w * 0.62;
         const mv = cnt('q.m', m);
-        fpill(plotD.px(hs) + (right ? 14 : -14), clamp(plotD.py(m) - 22, r.y + 46, r.y + r.h - 18), `\\c{${sd === 'r' ? 's' : sd === 'l' ? 'l' : 'c'}}{h = ${N(h, 3)}: m_s ${show() ? `≈ ${N(mv, 4)}` : '= ?'}}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha: k.labels, bounds: r, border: withAlpha(color, 0.55) });
+        fpill(plotD.px(hs) + (right ? 14 : -14), clamp(plotD.py(m) - 22, r.y + 46, r.y + r.h - 18), `\\c{${sd === 'r' ? 's' : sd === 'l' ? 'l' : 'c'}}{h = ${N(h, 3)}: m_s ${show() ? A(m, 4, mv) : '= ?'}}`, { align: right ? 'left' : 'right', size: fs(12, 11), alpha: k.labels, bounds: r, border: withAlpha(color, 0.55) });
       }
       // Beschriftung des Grenzwerts
       const lab = os.differentiable
         ? `\\c{t}{h → 0:  m_s → ${nm.d}(${N(x, 2)}) ${show() ? `${eq(os.right, 3)} ${N(cnt('q.lim', os.right), 3)}` : '= ?'}}`
         : `\\c{n}{${say(L('links', 'left'))} ${show() ? N(os.left, 2) : '?'} ≠ ${say(L('rechts', 'right'))} ${show() ? N(os.right, 2) : '?'}}`;
-      fpill(r.x + r.w - 10, r.y + 18, lab, { align: 'right', size: fs(12, 11), alpha: k.labels, bounds: r, border: withAlpha(os.differentiable ? limCol : col.neg(), 0.55), maxW: r.w * 0.62 });
+      // nicht über die Beschriftung der m-Achse (die Achse h = 0 liegt in der Mitte)
+      g.font = `600 13px ${theme.font}`;
+      const axR = plotD.px(0) + 9 + g.measureText(meta() ? `m in ${nm.uD}` : 'm').width + 14;
+      const limW = Math.max(120, Math.min(r.w * 0.62, r.x + r.w - 10 - axR));
+      fpill(r.x + r.w - 10, r.y + 18, lab, { align: 'right', size: fs(12, 11), alpha: k.labels, bounds: r, border: withAlpha(os.differentiable ? limCol : col.neg(), 0.55), maxW: limW });
       fpill(r.x + 10, r.y + 18, say(L('Differenzenquotient m_s über h', 'Difference quotient m_s against h')), { align: 'left', size: fs(12.5, 11.5), alpha: k.panel, border: withAlpha(col.s(), 0.5), maxW: r.w * 0.36 });
       void theme;
       plotD.end();
@@ -2161,6 +2192,7 @@ export default defineSimulation({
      * ===================================================================== */
     function drawTopR(V: View, r0: RuleKey, k: Intro, alpha: number): void {
       const g = surface.g;
+      labelRects = [];
       const isProd = r0 === 'prod';
       const an = axisNames();
       plot.setAxes({ x: { label: isProd ? 'u' : r0 === 'fak' ? an.x : 'x' }, y: { label: isProd ? 'v' : r0 === 'fak' ? an.f : 'y' } });
@@ -2185,8 +2217,8 @@ export default defineSimulation({
         const ya = V.fn.f(x);
         const mb = V.base.d1(x);
         const dX = V.dX;
-        slopeTriangle(plot, x, yb, mb, dX, th().muted, la * 0.8, { dy: `\\c{m}{Δy = ${N(mb * dX, 2)}}` });
-        slopeTriangle(plot, x, ya, a * mb, dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy = ${N(a, 2)} · ${N(mb * dX, 2)} ${eq(a * mb * dX)} ${N(a * mb * dX, 2)}}` });
+        slopeTriangle(plot, x, yb, mb, dX, th().muted, la * 0.8, { dy: `\\c{m}{Δy ${show() ? A(mb * dX) : '= ?'}}` });
+        slopeTriangle(plot, x, ya, a * mb, dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy = ${N(a, 2)} · ${show() ? `${P0(RD(mb * dX))} ${A(a * mb * dX)}` : '? = ?'}}` });
         dot(plot.px(x), plot.py(yb), withAlpha(col.f(), 0.8), 5, la);
         dot(plot.px(x), plot.py(ya), col.f(), 6.5, la);
         const fs0 = fullSrc();
@@ -2248,8 +2280,8 @@ export default defineSimulation({
           yh = mid + up * 13;
           yg = mid - up * 13;
         }
-        fpill(plot.px(x + dX) + (right ? 12 : -12), clamp(yg, r.y + 44, r.y + r.h - 14), `\\c{g}{Δg = g′ · 1 = ${N(gm, 2)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
-        fpill(plot.px(x + dX) + (right ? 12 : -12), clamp(yh, r.y + 44, r.y + r.h - 14), `\\c{h}{Δh = h′ · 1 = ${N(hm, 2)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(plot.px(x + dX) + (right ? 12 : -12), clamp(yg, r.y + 44, r.y + r.h - 14), `\\c{g}{Δg = g′ · 1 ${show() ? A(gm) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(plot.px(x + dX) + (right ? 12 : -12), clamp(yh, r.y + 44, r.y + r.h - 14), `\\c{h}{Δh = h′ · 1 ${show() ? A(hm) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
         fpill(r.x + 10, r.y + 18, '\\c{g}{g(x) = 0,25x²}   \\c{h}{h(x) = \\t{sin} x}   \\c{f}{f = g + h}'.replace('0,25', lang === 'de' ? '0,25' : '0.25'), { align: 'left', size: fs(12.5, 11.5), alpha: k.panel, border: withAlpha(col.f(), 0.5), maxW: r.w - 30 });
       } else if (r0 === 'pow') {
         const n = Math.round(p.pn);
@@ -2263,7 +2295,7 @@ export default defineSimulation({
         g.restore();
         const dX = V.dX;
         const dir = x + dX <= V.fn.dom[1] + 1e-9 ? 1 : -1;
-        slopeTriangle(plot, x, y, m, dir * dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy ${eq(m * dX)} ${N(m * dX, 2)}}` });
+        slopeTriangle(plot, x, y, m, dir * dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy ${show() ? A(m * dX) : '= ?'}}` });
         halo(plot.px(x), plot.py(y), col.f(), 18, la * 0.55);
         dot(plot.px(x), plot.py(y), col.f(), 6.5, la);
         fpill(r.x + 10, r.y + 18, `\\c{f}{f(x) = ${n === 0 ? '1 = x^0' : n === 1 ? 'x' : `x^{${n < 0 ? `−${-n}` : n}}`}}`, { align: 'left', size: fs(13, 12), alpha: k.panel, border: withAlpha(col.f(), 0.5) });
@@ -2277,7 +2309,7 @@ export default defineSimulation({
         const m = V.fn.d1(x);
         const dX = V.dX;
         const dir = x + dX <= x1 - 0.05 ? 1 : -1;
-        slopeTriangle(plot, x, y, m, dir * dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy ${eq(m * dX)} ${N(m * dX, 2)}}` });
+        slopeTriangle(plot, x, y, m, dir * dX, col.t(), la, { dx: `Δx = ${N(dX, 2)}`, dy: `\\c{t}{Δy ${show() ? A(m * dX) : '= ?'}}` });
         // gleicher Punkt der äußeren Funktion: u = k·x auf sin u
         const u = kk * x;
         if (u > x0 && u < x1 && Math.abs(kk) > 0.05) {
@@ -2388,7 +2420,7 @@ export default defineSimulation({
           g.restore();
           dot(plotD.px(x), plotD.py(yb), withAlpha(col.d(), 0.8), 5, la);
           dot(plotD.px(x), plotD.py(ya), col.d(), 6.5, la);
-          fpill(plotD.px(x) + 24, (plotD.py(ya) + plotD.py(yb)) / 2, `\\c{t}{· ${N(RK.v, 2)}}`, { align: 'left', size: sz, alpha: la, bounds: r });
+          fpill(plotD.px(x) + 24, (plotD.py(ya) + plotD.py(yb)) / 2, `\\c{t}{· ${P0(N(RK.v, 2))}}`, { align: 'left', size: sz, alpha: la, bounds: r });
         }
         leg = `\\c{d}{y = ${N(RK.v, 2)} · ${names().d}(${names().v})}`;
       } else if (r0 === 'sum') {
@@ -2415,7 +2447,7 @@ export default defineSimulation({
         g.restore();
         dot(px, plotD.py(gm + hm), col.d(), 6.5, la);
         const right = px < r.x + r.w * 0.6;
-        fpill(px + (right ? 14 : -14), clamp(plotD.py(gm + hm) - 18, r.y + 44, r.y + r.h - 16), `\\c{g}{${N(gm, 2)}} + \\c{h}{${N(hm, 2)}} = \\c{d}{${N(gm + hm, 2)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(px + (right ? 14 : -14), clamp(plotD.py(gm + hm) - 18, r.y + 44, r.y + r.h - 16), show() ? `\\c{g}{${RD(gm)}} + \\c{h}{${P0(RD(hm))}} ${A(gm + hm)}` : `\\c{g}{g′} + \\c{h}{h′} = \\c{d}{?}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
         leg = `\\c{g}{g′ = 0,5x}   \\c{h}{h′ = \\t{cos} x}   \\c{d}{f′ = g′ + h′}`.replace('0,5', lang === 'de' ? '0,5' : '0.5');
       } else if (r0 === 'pow') {
         const n = Math.round(p.pn);
@@ -2423,7 +2455,7 @@ export default defineSimulation({
         const d = fn.d1(x);
         dot(plotD.px(x), plotD.py(d), col.d(), 6.5, la);
         const right = plotD.px(x) < r.x + r.w * 0.6;
-        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(d) - 18, r.y + 44, r.y + r.h - 16), `\\c{d}{${n} · ${N(x, 2)}^{${n - 1 < 0 ? `−${1 - n}` : n - 1}} ${eq(d)} ${N(d, 2)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(d) - 18, r.y + 44, r.y + r.h - 16), `\\c{d}{${n} · ${P0(N(x, 2))}^{${n - 1 < 0 ? `−${1 - n}` : n - 1}} ${show() ? A(d) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
         leg = `\\c{d}{f′(x) = ${n === 0 ? '0' : n === 1 ? '1' : `${n} · x^{${n - 1 < 0 ? `−${1 - n}` : n - 1}}`}}`;
       } else if (r0 === 'prod') {
         strokePts(sample(plotD, fn.d1, x0, xr), col.d(), fs(3.2, 2.7), { glow: true });
@@ -2434,8 +2466,8 @@ export default defineSimulation({
         dot(plotD.px(x), plotD.py(d), col.d(), 6.5, la);
         vguide(plotD.px(x), plotD.py(Math.max(d, dqv)), plotD.py(Math.min(d, dqv)), th().muted, la);
         const right = plotD.px(x) < r.x + r.w * 0.6;
-        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(dqv) - 18, r.y + 44, r.y + r.h - 16), `\\c{u}{\\f{Δf}{Δx} ≈ ${N(dqv, 3)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
-        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(d) + 20, r.y + 44, r.y + r.h - 16), `\\c{d}{f′(${N(x, 2)}) = ${N(d, 3)}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(dqv) - 18, r.y + 44, r.y + r.h - 16), `\\c{u}{\\f{Δf}{Δx} ${show() ? A(dqv, 3) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
+        fpill(plotD.px(x) + (right ? 14 : -14), clamp(plotD.py(d) + 20, r.y + 44, r.y + r.h - 16), `\\c{d}{f′(${N(x, 2)}) ${show() ? A(d, 3) : '= ?'}}`, { align: right ? 'left' : 'right', size: sz, alpha: la, bounds: r });
         leg = `\\c{d}{f′ = u′ · v + u · v′}`;
       } else {
         strokePts(sample(plotD, (t) => Math.cos(RK.v * t), x0, xr), withAlpha(col.d(), 0.5), 2, { dash: [7, 5] });
@@ -2494,12 +2526,15 @@ export default defineSimulation({
      * ===================================================================== */
     type CardFn = (R: Rect, measure: boolean) => number;
     /** Zeile einer Karte: Formel (Kurzschrift) oder, mit `text`, umbrechender Fließtext. */
-    type RowSpec = { src: string; color?: string; size?: number; weight?: number; gap?: number; at?: number; hl?: string; text?: boolean };
+    type RowSpec = { src: string; color?: string; size?: number; weight?: number; gap?: number; at?: number; hl?: string; text?: boolean; opt?: boolean };
+    /** Wenig Platz in der Seitenleiste (iPad quer, Laptop): erklärende Hinweise weglassen, damit alle Karten passen. */
+    let compact = false;
     const rowH = (b: FormulaBox) => Math.max(b.asc + b.desc, 15);
 
     /** Karte aus Formel- und Textzeilen (mit gestaffeltem Einblenden und Hervorhebung). */
-    function formulaCard(R: Rect, measure: boolean, k: Intro, title: string, accent: string, rows: RowSpec[], right?: string): number {
+    function formulaCard(R: Rect, measure: boolean, k: Intro, title: string, accent: string, allRows: RowSpec[], right?: string): number {
       const g = surface.g;
+      const rows = compact ? allRows.filter((r) => !r.opt) : allRows;
       const pad = fs(14, 12);
       const maxW = R.w - 2 * pad - 4;
       const items = rows.map((r) => {
@@ -2543,7 +2578,7 @@ export default defineSimulation({
       return h;
     }
     /** Fließtext-Zeile für Karten (gedämpft). */
-    const note = (de: string, en: string, size = fs(12, 11)): RowSpec => ({ src: say(L(de, en)), text: true, size, color: th().muted, gap: 6 });
+    const note = (de: string, en: string, size = fs(12, 11)): RowSpec => ({ src: say(L(de, en)), text: true, size, color: th().muted, gap: 6, opt: true });
 
     /** Fließtext-Zeilen (umbrechend) für Karten. */
     function textBlock(R: Rect, y: number, str: string, color: string, size: number, draw: boolean, weight = 500): number {
@@ -2565,7 +2600,8 @@ export default defineSimulation({
     /** f′(x) bzw. v(t) = s′(t) als Name an einer Stelle. */
     function dAt(x: number): string {
       const nm = names();
-      return meta() ? `${nm.d}(${N(x, 2)}) = ${nm.f}′(${N(x, 2)})` : `${nm.d}(${N(x, 2)})`;
+      // v(t) = s′(t); bei h′, T′, K′ … nicht doppelt („h′(0) = h′(0)“)
+      return meta() && nm.d !== `${nm.f}′` ? `${nm.d}(${N(x, 2)}) = ${nm.f}′(${N(x, 2)})` : `${nm.d}(${N(x, 2)})`;
     }
     /** Zusatz: km/h oder Prozent. */
     function extraOf(v: number): string {
@@ -2610,11 +2646,11 @@ export default defineSimulation({
               : say(L('f′ < 0: f fällt', 'f′ < 0: f decreases'));
         const stCol = !ok ? col.neg() : m > 0 ? col.pos() : m < 0 ? col.neg() : th().muted;
         const rows: RowSpec[] = [
-          { src: `${nm.v} = ${N(x, 2)}${unit(nm.uX)}   \\c{f}{${nm.f}(${N(x, 2)}) ${show() ? `≈ ${NV(fC)}` : '= ?'}${unit(nm.uF)}}`, size: fs(13, 12) },
+          { src: `${nm.v} = ${N(x, 2)}${unit(nm.uX)}   \\c{f}{${nm.f}(${N(x, 2)}) ${show() ? AV(fv, fC) : '= ?'}${unit(nm.uF)}}`, size: fs(13, 12) },
         ];
-        if (kTri.v > 0.5 && ok) rows.push({ src: `\\c{t}{Δ${nm.v} = ${N(dX, 2)},  Δy = m · Δ${nm.v} ${show() ? `≈ ${NV(mC * dX)}` : '= ?'}}`, size: fs(13, 12) });
-        rows.push({ src: `\\b{\\c{d}{${dAt(x)}} = \\c{t}{m} ${ok ? (show() ? `≈ ${NV(mC)}` : '= ?') : '–'}}${unit(nm.uD)}${ok ? extraOf(mC) : ''}`, size: fs(14.5, 13), hl: col.d() });
-        if (kD2.v > 0.5 && Number.isFinite(dd)) rows.push({ src: `\\c{D}{${nm.dd}(${N(x, 2)}) ${show() ? `≈ ${NV(ddC)}` : '= ?'}}${unit(nm.uDD)}  \\c{m}{${say(L('(Steigung von f′)', '(slope of f′)'))}}`, size: fs(13, 12) });
+        if (kTri.v > 0.5 && ok) rows.push({ src: `\\c{t}{Δ${nm.v} = ${N(dX, 2)},  Δy = m · Δ${nm.v} ${show() ? AV(m * dX, mC * dX) : '= ?'}}`, size: fs(13, 12) });
+        rows.push({ src: `\\b{\\c{d}{${dAt(x)}} = \\c{t}{m} ${ok ? (show() ? AV(m, mC) : '= ?') : '–'}}${unit(nm.uD)}${ok ? extraOf(mC) : ''}`, size: fs(14.5, 13), hl: col.d() });
+        if (kD2.v > 0.5 && Number.isFinite(dd)) rows.push({ src: `\\c{D}{${nm.dd}(${N(x, 2)}) ${show() ? AV(dd, ddC) : '= ?'}}${unit(nm.uDD)}  \\c{m}{${say(L('(Steigung von f′)', '(slope of f′)'))}}`, size: fs(13, 12) });
         rows.push({ src: `\\t{${state}}`, size: fs(12.5, 11.5), color: stCol, hl: stCol, weight: 700 });
         return formulaCard(R, measure, k, say(L('An der Stelle P', 'At the point P')), col.t(), rows);
       };
@@ -2666,12 +2702,12 @@ export default defineSimulation({
         };
         const den = sd === 'c' ? N(2 * h, 3) : N(h, 3);
         const dig = clamp(Math.ceil(-Math.log10(Math.max(h, 1e-9))) + 2, 2, 6);
-        const NF = (v: number) => (Math.abs(v) >= 100 ? NV(v) : N(v, dig));
+        const NF = (v: number) => (Math.abs(v) >= 1000 ? NV(v) : RD(v, dig));
         const okQ = Number.isFinite(fa) && Number.isFinite(fb);
         const rows: RowSpec[] = [
           { src: `\\c{s}{${def[sd]}}`, size: fs(14, 13), gap: 10 },
           okQ
-            ? { src: `= \\f{${S(NF(fb))} − ${fa < 0 && show() ? `(${NF(fa)})` : S(NF(fa))}}{${den}} ${show() ? `${eq(ms, 4)} \\b{${N(msC, 4)}}` : '= ?'}`, size: fs(13.5, 12.5), gap: 10 }
+            ? { src: `= \\f{${S(NF(fb))} − ${fa < 0 && show() ? `(${NF(fa)})` : S(NF(fa))}}{${den}} ${show() ? `${eq(ms, 4)} \\b{${isExact(ms, 4) ? N(msC, 4) : RD(msC, 4)}}` : '= ?'}`, size: fs(13.5, 12.5), gap: 10 }
             : { src: `\\c{n}{${say(L('Q außerhalb des Definitionsbereichs', 'Q outside the domain'))}}`, size: fs(12.5, 11.5) },
           {
             src: os.differentiable ? `\\c{t}{m_t = ${nm.d}(${N(x, 2)}) ${show() ? `${eq(os.right, 3)} ${N(cnt('c.dq.t', os.right), 3)}` : '= ?'}}${unit(nm.uD)}` : `\\c{n}{${say(L('keine Tangente: Knick', 'no tangent: kink'))}}`,
@@ -2679,7 +2715,7 @@ export default defineSimulation({
             hl: os.differentiable ? col.t() : col.neg(),
           },
         ];
-        if (okQ && os.differentiable) rows.push({ src: `\\c{m}{${say(L('Abweichung', 'error'))} m_s − m_t ${show() ? `≈ ${fmt.signed(clean(ms - os.right, 4), 4)}` : '= ?'}}`, size: fs(12.5, 11.5), color: th().muted });
+        if (okQ && os.differentiable) rows.push({ src: `\\c{m}{${say(L('Abweichung', 'error'))} m_s − m_t ${show() ? `${eq(ms - os.right, 4)} ${fmt.signed(clean(ms - os.right, 4), 4)}` : '= ?'}}`, size: fs(12.5, 11.5), color: th().muted });
         rows.push(note('h → 0: Q wandert zu P, die Sekante dreht sich in die Tangente.', 'h → 0: Q moves to P, the secant turns into the tangent.'));
         return formulaCard(R, measure, k, say(L('Differenzenquotient', 'Difference quotient')), col.s(), rows, `h = ${N(h, 3)}`);
       };
@@ -2716,7 +2752,7 @@ export default defineSimulation({
         tab.forEach((t, i) => {
           if (Math.abs(Math.log(t.h / V.h)) < Math.abs(Math.log(tab[best]!.h / V.h))) best = i;
         });
-        const val = (v: number) => (!show() ? '?' : Number.isFinite(v) ? fmt.num(clean(v, 4), 4) : '–');
+        const val = (v: number) => (!show() ? '?' : RD(v, 4));
         tab.forEach((t, i) => {
           const y = hy + 20 + i * rH;
           const a = clamp01(k.stagger * (tab.length + 2) - i);
@@ -2765,11 +2801,11 @@ export default defineSimulation({
         const nm = names();
         const x = V.x;
         const rows: RowSpec[] = [
-          { src: `\\c{s}{${say(L('rechts', 'right'))}: \\t{lim}_{h → 0^+} m_s ${show() ? `= ${N(os.right, 3)}` : '= ?'}}`, size: fs(13, 12) },
-          { src: `\\c{l}{${say(L('links', 'left'))}: \\t{lim}_{h → 0^+} \\f{${nm.f}(${nm.v}) − ${nm.f}(${nm.v} − h)}{h} ${show() ? `= ${N(os.left, 3)}` : '= ?'}}`, size: fs(13, 12) },
+          { src: `\\c{s}{${say(L('rechts', 'right'))}: \\t{lim}_{h → 0^+} m_s ${show() ? A(os.right, 3) : '= ?'}}`, size: fs(13, 12) },
+          { src: `\\c{l}{${say(L('links', 'left'))}: \\t{lim}_{h → 0^+} \\f{${nm.f}(${nm.v}) − ${nm.f}(${nm.v} − h)}{h} ${show() ? A(os.left, 3) : '= ?'}}`, size: fs(13, 12) },
         ];
         if (os.differentiable)
-          rows.push({ src: `\\c{p}{✓} ${say(L('gleich: differenzierbar,', 'equal: differentiable,'))} \\c{d}{${nm.d}(${N(x, 2)}) ${show() ? `= ${N(os.right, 3)}` : '= ?'}}`, size: fs(13, 12), hl: col.pos() });
+          rows.push({ src: `\\c{p}{✓} ${say(L('gleich: differenzierbar,', 'equal: differentiable,'))} \\c{d}{${nm.d}(${N(x, 2)}) ${show() ? A(os.right, 3) : '= ?'}}`, size: fs(13, 12), hl: col.pos() });
         else rows.push({ src: say(L('✗ verschieden: Knick – f ist an dieser Stelle nicht differenzierbar', '✗ different: kink – f is not differentiable at this point')), text: true, weight: 700, size: fs(12.5, 11.5), color: col.neg(), hl: col.neg() });
         rows.push(note('Beidseitig ist der Fehler etwa proportional zu h², einseitig zu h – darum nähert der beidseitige Quotient schneller.', 'The symmetric quotient’s error is roughly proportional to h², the one-sided one’s to h – so the symmetric quotient approaches faster.'));
         return formulaCard(R, measure, k, say(L('Grenzwert h → 0', 'Limit h → 0')), col.t(), rows);
@@ -2810,8 +2846,9 @@ export default defineSimulation({
         g.fillText(g.measureText(kw).width < cols[4]! - cols[3]! - 14 ? kw : '∪/∩', cols[4]!, hy);
         const sk = stepsK(now);
         const iv = (s: SignInterval) => {
-          const lo = N(s.a, s.a <= V.fn.dom[0] + 1e-9 ? 1 : 2);
-          const hi = N(s.b, 2);
+          // innere Grenzen sind Extrem- und Wendestellen: ohne Werte verdeckt
+          const lo = s.a <= V.fn.dom[0] + 1e-9 ? N(s.a, 1) : show() ? N(s.a, 2) : '?';
+          const hi = s.b >= V.fn.dom[1] - 1e-9 ? N(s.b, 1) : show() ? N(s.b, 2) : '?';
           return lang === 'de' ? `]${lo}; ${hi}[` : `(${lo}, ${hi})`;
         };
         rows.forEach((s, i) => {
@@ -2865,7 +2902,7 @@ export default defineSimulation({
           const sl = show() ? NV(V.fn.d1(w.x)) : '?';
           rows.push({ src: `\\c{D}{WP(${xv} | ${yv})}  \\c{m}{${nm.dd} = 0 ${say(L('mit VZW', 'with sign change'))}, ${say(L('Steigung', 'slope'))} ${sl}}`, size: fs(12.5, 11.5), at: sk.infl });
         }
-        if (!rows.length) rows.push(note('Keine Extrem- und Wendestellen im Bereich: f ist streng monoton, ohne Krümmungswechsel.', 'No extrema or inflection points in the range: f is strictly monotonic without a change of curvature.'));
+        if (!rows.length) rows.push({ ...note('Keine Extrem- und Wendestellen im Bereich: f ist streng monoton, ohne Krümmungswechsel.', 'No extrema or inflection points in the range: f is strictly monotonic without a change of curvature.'), opt: false });
         const nE = feat.ext.filter((e) => e.kind !== 'saddle').length;
         const nW = feat.infl.length;
         rows.push({ src: `\\c{m}{${nE} ${say(L(nE === 1 ? 'Extremstelle' : 'Extremstellen', nE === 1 ? 'extremum' : 'extrema'))}, ${nW} ${say(L(nW === 1 ? 'Wendestelle' : 'Wendestellen', nW === 1 ? 'inflection point' : 'inflection points'))}}`, size: fs(12, 11), color: th().muted, at: sk.infl });
@@ -2898,7 +2935,7 @@ export default defineSimulation({
         }).length;
         const rows: RowSpec[] = [];
         if (kSol.v < 0.5) {
-          rows.push(note('Zieh die 7 Punkte im unteren Bild auf die Höhe der Steigung von f.', 'Drag the 7 points in the lower picture to the height of the slope of f.'));
+          rows.push({ ...note('Zieh die 7 Punkte im unteren Bild auf die Höhe der Steigung von f.', 'Drag the 7 points in the lower picture to the height of the slope of f.'), opt: false });
           rows.push({ src: `${skZ === want ? '\\c{p}{✓}' : '\\c{n}{✗}'} ${say(L('Vorzeichenwechsel', 'sign changes'))}: ${say(L('deine', 'yours'))} ${skZ}, ${say(L('gesucht', 'wanted'))} ${want}`, size: fs(13, 12) });
           rows.push({ src: `${signOk >= nodes.length - 1 ? '\\c{p}{✓}' : '\\c{n}{✗}'} ${say(L('Vorzeichen stimmt an', 'sign is right at'))} ${signOk} ${say(L('von', 'of'))} ${nodes.length} ${say(L('Stellen', 'points'))}`, size: fs(13, 12) });
           rows.push(note('Tipp: Wo f steigt, liegt f′ über der x-Achse; wo f waagrecht ist, schneidet f′ die Achse.', 'Tip: where f increases, f′ lies above the x-axis; where f is level, f′ crosses the axis.'));
@@ -2942,8 +2979,8 @@ export default defineSimulation({
         const md = mode();
         const xAt = md === 'feat' || md === 'draw' ? NaN : V.x;
         const lines1 = `${m.f}: ${say(m.fName)} ${say(L('in', 'in'))} ${say(m.uF)}`;
-        const lines2 = `${m.d} = ${m.f}′: ${say(m.dName)} ${say(L('in', 'in'))} ${say(m.uD)}`;
-        const lines3 = `${m.dd} = ${m.f}″: ${say(m.ddName)} ${say(L('in', 'in'))} ${say(m.uDD)}`;
+        const lines2 = `${m.d === `${m.f}′` ? m.d : `${m.d} = ${m.f}′`}: ${say(m.dName)} ${say(L('in', 'in'))} ${say(m.uD)}`;
+        const lines3 = `${m.dd === `${m.f}″` ? m.dd : `${m.dd} = ${m.f}″`}: ${say(m.ddName)} ${say(L('in', 'in'))} ${say(m.uDD)}`;
         let sentence = '';
         if (Number.isFinite(xAt)) {
           const fv = cnt('c.app.f', V.fn.f(xAt));
@@ -2951,8 +2988,8 @@ export default defineSimulation({
           const ex = m.extra === 'kmh' ? ` (≈ ${N(dv * 3.6, 1)} km/h)` : m.extra === 'pct' ? ` (≈ ${N(dv / 10, 1)} %)` : '';
           sentence = say(
             L(
-              `Bei ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ≈ ${show() ? NV(fv) : '?'} ${say(m.uF)}, ${m.d} ≈ ${show() ? NV(dv) : '?'} ${say(m.uD)}${show() ? ex : ''}.`,
-              `At ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ≈ ${show() ? NV(fv) : '?'} ${say(m.uF)}, ${m.d} ≈ ${show() ? NV(dv) : '?'} ${say(m.uD)}${show() ? ex : ''}.`,
+              `Bei ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ${show() ? AV(V.fn.f(xAt), fv) : '= ?'} ${say(m.uF)}, ${m.d} ${show() ? AV(V.fn.d1(xAt), dv) : '= ?'} ${say(m.uD)}${show() ? ex : ''}.`,
+              `At ${m.v} = ${N(xAt, 2)} ${say(m.uX)}: ${m.f} ${show() ? AV(V.fn.f(xAt), fv) : '= ?'} ${say(m.uF)}, ${m.d} ${show() ? AV(V.fn.d1(xAt), dv) : '= ?'} ${say(m.uD)}${show() ? ex : ''}.`,
             ),
           );
         }
@@ -2964,7 +3001,7 @@ export default defineSimulation({
           y += textBlock(R, y, lines2, col.d(), sz, draw, 650) + 2;
           y += textBlock(R, y, lines3, col.dd(), sz, draw, 650) + (level > 0 ? 8 : 0);
           if (sentence && level >= 1) y += textBlock(R, y, sentence, th().text, sz + 0.5, draw, 650) + 6;
-          if (level >= 2) y += textBlock(R, y, say(m.note), th().muted, sz - 0.5, draw, 500);
+          if (level >= 2 && show()) y += textBlock(R, y, say(m.note), th().muted, sz - 0.5, draw, 500);
           return y - y0;
         };
         let h = 36 + meas(false, 0) + 10;
@@ -2996,15 +3033,15 @@ export default defineSimulation({
           const fd = V.base.d1(x);
           title = say(L('Faktorregel', 'Constant multiple rule'));
           rows.push({ src: `\\b{(a · f(x))′ = a · f′(x)}`, size: fs(15, 13.5), hl: col.t() });
-          rows.push({ src: `a = ${N(a, 2)},  \\c{d}{f′(${N(x, 2)}) ${S(`≈ ${N(fd, 3)}`)}}`, size: fs(13, 12) });
-          rows.push({ src: `\\c{d}{(a · f)′(${N(x, 2)})} = ${N(a, 2)} · ${S(N(fd, 3))} ${show() ? `≈ \\b{${N(a * fd, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
+          rows.push({ src: `a = ${N(a, 2)},  \\c{d}{f′(${N(x, 2)}) ${show() ? A(fd, 3) : '= ?'}}`, size: fs(13, 12) });
+          rows.push({ src: `\\c{d}{(a · f)′(${N(x, 2)})} = ${N(a, 2)} · ${S(P0(RD(fd, 3)))} ${show() ? `${eq(a * fd, 3)} \\b{${RD(a * fd, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
         } else if (r0 === 'sum') {
           const gm = SUM.dg(x);
           const hm = SUM.dh(x);
           title = say(L('Summenregel', 'Sum rule'));
           rows.push({ src: `\\b{(g + h)′ = g′ + h′}`, size: fs(15, 13.5), hl: col.t() });
           rows.push({ src: `\\c{g}{g′(x) = ${lang === 'de' ? '0,5' : '0.5'}x},  \\c{h}{h′(x) = \\t{cos} x}`, size: fs(13, 12) });
-          rows.push({ src: `x = ${N(x, 2)}:  \\c{g}{${S(N(gm, 3))}} + \\c{h}{${S(N(hm, 3))}} ${show() ? `≈ \\b{\\c{d}{${N(gm + hm, 3)}}}` : '= ?'}`, size: fs(13.5, 12.5) });
+          rows.push({ src: `x = ${N(x, 2)}:  \\c{g}{${S(RD(gm, 3))}} + \\c{h}{${S(P0(RD(hm, 3)))}} ${show() ? `${eq(gm + hm, 3)} \\b{\\c{d}{${RD(gm + hm, 3)}}}` : '= ?'}`, size: fs(13.5, 12.5) });
         } else if (r0 === 'pow') {
           const n = Math.round(p.pn);
           const d = V.fn.d1(x);
@@ -3012,7 +3049,7 @@ export default defineSimulation({
           title = say(L('Potenzregel', 'Power rule'));
           rows.push({ src: `\\b{(x^n)′ = n · x^{n − 1}}`, size: fs(15, 13.5), hl: col.t() });
           rows.push({ src: `n = ${n}:  \\c{d}{f′(x) = ${n === 0 ? '0' : `${n} · x^{${e1}}`}}`, size: fs(13.5, 12.5) });
-          rows.push({ src: `\\c{d}{f′(${N(x, 2)})} ${show() ? `${eq(d)} \\b{${N(d, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
+          rows.push({ src: `\\c{d}{f′(${N(x, 2)})} ${show() ? `${eq(d, 3)} \\b{${RD(d, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
           if (n === 2) rows.push({ src: `\\c{m}{\\f{(x + h)² − x²}{h} = 2x + h → 2x}`, size: fs(12.5, 11.5), color: th().muted });
           else if (n === 3) rows.push({ src: `\\c{m}{\\f{(x + h)³ − x³}{h} = 3x² + 3xh + h² → 3x²}`, size: fs(12.5, 11.5), color: th().muted });
         } else if (r0 === 'prod') {
@@ -3023,15 +3060,18 @@ export default defineSimulation({
           const d = du * v + u * dv;
           title = say(L('Produktregel', 'Product rule'));
           rows.push({ src: `\\b{(u · v)′ = u′ · v + u · v′}`, size: fs(15, 13.5), hl: col.t() });
-          rows.push({ src: `u = ${N(u, 2)},  u′ = ${N(du, 2)},  v = ${N(v, 2)},  v′ = ${N(dv, 2)}`, size: fs(12.5, 11.5) });
-          rows.push({ src: `\\c{d}{f′(${N(x, 2)})} = \\c{u}{${N(du, 2)} · ${N(v, 2)}} + \\c{v}{${N(u, 2)} · ${N(dv, 2)}} ${show() ? `${eq(d)} \\b{${N(d, 3)}}` : '= ?'}`, size: fs(13, 12) });
+          rows.push({ src: `u = ${S(RD(u))},  u′ = ${S(RD(du))},  v = ${S(RD(v))},  v′ = ${S(RD(dv))}`, size: fs(12.5, 11.5) });
+          rows.push({
+            src: show() ? `\\c{d}{f′(${N(x, 2)})} = \\c{u}{${RD(du)} · ${RD(v)}} + \\c{v}{${RD(u)} · ${RD(dv)}} ${eq(d, 3)} \\b{${RD(d, 3)}}` : `\\c{d}{f′(${N(x, 2)})} = \\c{u}{u′ · v} + \\c{v}{u · v′} = ?`,
+            size: fs(13, 12),
+          });
         } else {
           const kk = RK.v;
           const d = V.fn.d1(x);
           title = say(L('Kettenregel', 'Chain rule'));
           rows.push({ src: `\\b{(g(k · x))′ = k · g′(k · x)}`, size: fs(15, 13.5), hl: col.t() });
           rows.push({ src: `g = \\t{sin},  k = ${N(kk, 2)}:  \\c{d}{f′(x) = ${N(kk, 2)} · \\t{cos}(${N(kk, 2)}x)}`, size: fs(13, 12) });
-          rows.push({ src: `\\c{d}{f′(${N(x, 2)})} = ${N(kk, 2)} · ${S(N(Math.cos(kk * x), 3))} ${show() ? `${eq(d)} \\b{${N(d, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
+          rows.push({ src: `\\c{d}{f′(${N(x, 2)})} = ${N(kk, 2)} · ${S(P0(RD(Math.cos(kk * x), 3)))} ${show() ? `${eq(d, 3)} \\b{${RD(d, 3)}}` : '= ?'}`, size: fs(13.5, 12.5) });
         }
         return formulaCard(R, measure, k, title, col.t(), rows);
       };
@@ -3041,7 +3081,7 @@ export default defineSimulation({
     function whyCard(V: View, k: Intro): CardFn {
       return (R, measure) => {
         const r0 = rule();
-        const m = (de: string, en: string): RowSpec => note(de, en, fs(12.5, 11.5));
+        const m = (de: string, en: string): RowSpec => ({ ...note(de, en, fs(12.5, 11.5)), opt: false });
         const rows: RowSpec[] = [];
         if (r0 === 'fak') {
           rows.push(m('Alle Funktionswerte werden mit a multipliziert.', 'All function values are multiplied by a.'));
@@ -3059,7 +3099,7 @@ export default defineSimulation({
           const dX = Math.min(V.dX, 4 - V.x);
           const inc = productIncrement(V.x, Math.max(0, dX));
           rows.push({ src: `Δf = \\c{u}{v · Δu} + \\c{v}{u · Δv} + \\c{n}{Δu · Δv}`, size: fs(13, 12) });
-          rows.push({ src: `\\c{u}{${N(inc.vdu, 3)}} + \\c{v}{${N(inc.udv, 3)}} + \\c{n}{${N(inc.dudv, 3)}} = ${N(inc.total, 3)}`, size: fs(13, 12) });
+          if (show()) rows.push({ src: `\\c{u}{${RD(inc.vdu, 3)}} + \\c{v}{${RD(inc.udv, 3)}} + \\c{n}{${RD(inc.dudv, 3)}} ${A(inc.total, 3)}`, size: fs(13, 12) });
           rows.push(m('Durch Δx teilen: das kleine Eckstück Δu · Δv / Δx geht für Δx → 0 gegen 0.', 'Divide by Δx: the small corner Δu · Δv / Δx tends to 0 as Δx → 0.'));
         } else {
           rows.push(m('sin(k · x) ist sin x, in x-Richtung mit dem Faktor 1/k gestaucht.', 'sin(k · x) is sin x compressed in x-direction by the factor 1/k.'));
@@ -3090,6 +3130,12 @@ export default defineSimulation({
         else fadeK = clamp01(t);
       }
       const two = !regions().wide && C.w >= 420;
+      // passen nicht alle Karten untereinander, die Hinweise weglassen
+      compact = false;
+      if (!two) {
+        const total = list.reduce((sum, fn) => sum + Math.max(0, fn({ ...C, h: 1e6 }, true)) + gap, -gap);
+        compact = total > C.h + 1;
+      }
       const place = (fn: CardFn, R: Rect, i: number) => {
         const hh = fn(R, true);
         if (hh <= 0 || hh > R.h + 1) return -1;
@@ -3142,13 +3188,13 @@ export default defineSimulation({
       if (md === 'trace' || md === 'sek' || md === 'rule') {
         ctx.readout('slope', { html: Number.isFinite(d) ? `${dName(N(x, 2))} ${eq(d, 3)} ${N(d, 3)}${uD}` : say(L('nicht differenzierbar (Knick)', 'not differentiable (kink)')) });
       } else ctx.readout('slope', null);
-      if (md === 'rule') ctx.readout('deriv', null);
+      if (md === 'rule' || (md === 'draw' && !p.sol)) ctx.readout('deriv', null);
       else ctx.readout('deriv', { html: `${toHtml(fullSrc().d)}${fnSrc().note ? ` (${fnSrc().note})` : ''}` });
       if (md === 'sek') {
         const os = oneSided(fn, x);
         const ms = dq(fn.f, x, p.h, side());
         ctx.readout('dq', {
-          html: `${v('m')}<sub>s</sub> ≈ ${N(ms, 4)} (${v('h')} = ${N(p.h, 3)}) → ${os.differentiable ? `${dName(N(x, 2))} = ${N(os.right, 3)}` : say(L(`links ${N(os.left, 3)}, rechts ${N(os.right, 3)}: nicht differenzierbar`, `left ${N(os.left, 3)}, right ${N(os.right, 3)}: not differentiable`))}`,
+          html: `${v('m')}<sub>s</sub> ${eq(ms, 4)} ${RD(ms, 4)} (${v('h')} = ${N(p.h, 3)}) → ${os.differentiable ? `${dName(N(x, 2))} ${eq(os.right, 3)} ${N(os.right, 3)}` : say(L(`links ${N(os.left, 3)}, rechts ${N(os.right, 3)}: nicht differenzierbar`, `left ${N(os.left, 3)}, right ${N(os.right, 3)}: not differentiable`))}`,
         });
       } else ctx.readout('dq', null);
       if (md === 'feat' || md === 'trace') {
@@ -3171,11 +3217,11 @@ export default defineSimulation({
       if (md === 'rule') {
         const r0 = rule();
         const txt: Record<RuleKey, string> = {
-          fak: `(${v('a')} · ${v('f')})′ = ${v('a')} · ${v('f')}′: ${N(p.rk, 2)} · ${N(exactBase().d1(x), 3)} = ${N(d, 3)}`,
-          sum: `(${v('g')} + ${v('h')})′ = ${v('g')}′ + ${v('h')}′: ${N(SUM.dg(x), 3)} + ${N(SUM.dh(x), 3)} = ${N(d, 3)}`,
-          pow: `(${v('x')}<sup>${v('n')}</sup>)′ = ${v('n')} · ${v('x')}<sup>${v('n')} − 1</sup>; ${v('n')} = ${Math.round(p.pn)}: ${v('f')}′(${N(x, 2)}) = ${N(d, 3)}`,
-          prod: `(${v('u')} · ${v('v')})′ = ${v('u')}′${v('v')} + ${v('u')}${v('v')}′ = ${N(PROD.du() * PROD.v(x), 3)} + ${N(PROD.u(x) * PROD.dv(x), 3)} = ${N(d, 3)}`,
-          chain: `(sin(${v('k')}${v('x')}))′ = ${v('k')} · cos(${v('k')}${v('x')}): ${N(p.rk, 2)} · cos(${N(p.rk * x, 3)}) = ${N(d, 3)}`,
+          fak: `(${v('a')} · ${v('f')})′ = ${v('a')} · ${v('f')}′: ${N(p.rk, 2)} · ${P0(N(exactBase().d1(x), 3))} ${eq(d, 3)} ${N(d, 3)}`,
+          sum: `(${v('g')} + ${v('h')})′ = ${v('g')}′ + ${v('h')}′: ${N(SUM.dg(x), 3)} + ${P0(N(SUM.dh(x), 3))} ${eq(d, 3)} ${N(d, 3)}`,
+          pow: `(${v('x')}<sup>${v('n')}</sup>)′ = ${v('n')} · ${v('x')}<sup>${v('n')} − 1</sup>; ${v('n')} = ${Math.round(p.pn)}: ${v('f')}′(${N(x, 2)}) ${eq(d, 3)} ${N(d, 3)}`,
+          prod: `(${v('u')} · ${v('v')})′ = ${v('u')}′${v('v')} + ${v('u')}${v('v')}′ = ${N(PROD.du() * PROD.v(x), 3)} + ${N(PROD.u(x) * PROD.dv(x), 3)} ${eq(d, 3)} ${N(d, 3)}`,
+          chain: `(sin(${v('k')}${v('x')}))′ = ${v('k')} · cos(${v('k')}${v('x')}): ${N(p.rk, 2)} · cos(${N(p.rk * x, 3)}) ${eq(d, 3)} ${N(d, 3)}`,
         };
         ctx.readout('rule', { html: txt[r0] });
       } else ctx.readout('rule', null);
@@ -3183,7 +3229,7 @@ export default defineSimulation({
         const fe = feat;
         const parts: string[] = [];
         for (const e of fe.ext.filter((q) => q.kind !== 'saddle')) parts.push(`${e.kind === 'max' ? say(L('Maximum', 'maximum')) : say(L('Minimum', 'minimum'))} ${say(L('von', 'of'))} ${m.f} ${say(L('bei', 'at'))} ${m.v} ≈ ${N(e.x, 2)} ${say(m.uX)}`);
-        for (const w of fe.infl) parts.push(`${say(L('stärkste Änderung', 'strongest change'))} (${m.d} = ${NV(fn.d1(w.x))} ${say(m.uD)}) ${say(L('bei', 'at'))} ${m.v} ≈ ${N(w.x, 2)} ${say(m.uX)}`);
+        for (const w of fe.infl) parts.push(`${say(L('stärkste Änderung', 'strongest change'))} (${m.d} ${AV(fn.d1(w.x))} ${say(m.uD)}) ${say(L('bei', 'at'))} ${m.v} ≈ ${N(w.x, 2)} ${say(m.uX)}`);
         ctx.readout('sit', { html: parts.length ? parts.join(' · ') : say(L('keine Extrem- und Wendestellen im Bereich', 'no extrema or inflection points in the range')) });
       } else ctx.readout('sit', null);
     }

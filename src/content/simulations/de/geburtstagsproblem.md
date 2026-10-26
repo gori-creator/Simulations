@@ -34,7 +34,7 @@ $$
 
 Erst ab $253$ anderen Personen liegt dieser Wert über $50\,\%$.
 
-**Simulation** (Ansicht „Viele Klassen“): Jede Kachel ist eine ausgeloste Klasse, rot mit, grün ohne gemeinsamen Geburtstag. Die relative Häufigkeit $h = \frac{\text{Treffer}}{\text{Klassen}}$ schwankt anfangs stark und nähert sich dann der Wahrscheinlichkeit $P$ (empirisches Gesetz der großen Zahlen). Der helle Trichter zeigt, wo $h$ nach $N$ Klassen in etwa $95\,\%$ aller Fälle liegt: $P \pm 1{,}96 \cdot \sqrt{\frac{P(1-P)}{N}}$.
+**Simulation** (Ansicht „Viele Klassen“): Jede Kachel ist eine ausgeloste Klasse: gefüllt mit, hell mit Rand ohne gemeinsamen Geburtstag. Die relative Häufigkeit $h = \frac{\text{Treffer}}{\text{Klassen}}$ schwankt anfangs stark und nähert sich dann der Wahrscheinlichkeit $P$ (empirisches Gesetz der großen Zahlen). Der helle Trichter zeigt, wo $h$ nach $N$ Klassen in etwa $95\,\%$ aller Fälle liegt: $P \pm 1{,}96 \cdot \sqrt{\frac{P(1-P)}{N}}$.
 
 **Gleicher Monat, gleicher Wochentag:** Dieselbe Rechnung funktioniert mit $12$ Monaten oder $7$ Wochentagen. Schon bei $5$ Personen haben mit $61{,}8\,\%$ zwei denselben Geburtsmonat. Ab $13$ Personen ist es **sicher**: Es gibt nur $12$ Monate, also müssen sich zwei einen Monat teilen (**Schubfachprinzip**). Im Produkt taucht dann der Faktor $\frac{0}{12}$ auf.
 
@@ -42,7 +42,7 @@ Erst ab $253$ anderen Personen liegt dieser Wert über $50\,\%$.
 
 1. Klicke mehrmals auf **Neue Klasse**. Wie oft findest du einen gemeinsamen Tag? [Eine Klasse](?mode=class&n=25)
 2. Tippe im Kalender auf deinen Geburtstag und vergleiche die beiden Fragen. [Mein Geburtstag](?q=mine&both=1)
-3. Starte **1000 Klassen** und beobachte, wie sich die rote Kurve in den Trichter legt. [Simulation](?mode=sim&n=23)
+3. Starte **1000 Klassen** und beobachte, wie sich die Kurve der relativen Häufigkeit in den Trichter legt. [Simulation](?mode=sim&n=23)
 4. Sieh zu, wie die freien Tage schrumpfen. Ab welcher Person wird $P(\text{alle verschieden})$ kleiner als $0{,}5$? [Rechnung](?mode=calc&n=30)
 5. Tippe in der Paar-Ansicht auf eine Person: Wie viele Paare bildet sie? Wie viele Paare gibt es insgesamt? [Paare](?mode=pairs&n=12)
 6. Schalte in der Paar-Ansicht auf „an meinem Geburtstag“ um. Warum sind es plötzlich viel weniger Linien? [Nur meine Paare](?mode=pairs&q=mine&n=25)
@@ -118,9 +118,10 @@ Eher **größer**: Wenn manche Tage häufiger sind, ballen sich die Geburtstage 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 10, Lernbereich „Zusammengesetzte Zufallsexperimente und stochastische Simulationen“ (LehrplanPLUS Bayern, Gymnasium). Ein Einstieg könnte eine Schätzung vor der Rechnung sein – und vielleicht ein Blick auf die Geburtstage in der eigenen Klasse.
+- **Einsatz:** Jahrgangsstufe 10, Lernbereich „Zusammengesetzte Zufallsexperimente und stochastische Simulationen“ (LehrplanPLUS Bayern, Gymnasium). Lassen Sie vor der Rechnung schätzen – und werfen Sie vielleicht einen Blick auf die Geburtstage in der eigenen Klasse.
 - **Simulation und Rechnung:** Die Ansicht „Viele Klassen“ macht die überraschende Größe plausibel, die Ansicht „Rechnung“ erklärt sie. Der Trichter zeigt, wie stark relative Häufigkeiten bei $100$ Klassen noch schwanken.
 - **Gleicher Monat** eignet sich zum Nachspielen in der Klasse: Schon bei kleinen Gruppen kommt fast immer ein gemeinsamer Monat heraus.
+- **Gruppen vergleichen:** Jedes Gerät lost eigene Klassen aus. Sammeln Sie die Trefferzahlen nach je $100$ Klassen an der Tafel – die Streuung der Gruppen passt gut zum Trichter.
 - **Häufige Stolpersteine:**
   - Das Geburtstagsproblem wird mit „jemand an meinem Geburtstag“ verwechselt.
   - Es wird $\frac{n}{365}$ gerechnet – das ist für große $n$ sogar größer als $1$.

@@ -40,7 +40,7 @@ An jeder Verzweigung ergeben die Äste zusammen $1$, und alle Pfade zusammen ebe
 4. Bei „mindestens eine rote“ hat das Gegenereignis nur einen Pfad – sieh dir an, wie die Rechnung dann aussieht. [Gegenereignis](?mode=rules&ev=minR)
 5. Starte **1000-mal ziehen** und beobachte, wie sich die Kurve in den Trichter legt. [Simulation](?mode=sim&ev=same)
 6. Wähle **selbst antippen** und tippe Pfade an. So kannst du beliebige Ereignisse zusammenstellen. [Selbst wählen](?ev=custom)
-7. Stelle eine kleine Urne mit $2$ roten Kugeln und $1$ blauen Kugel ein und ziehe dreimal. Wo endet ein Ast mit $0$? [Kleine Urne](?r=2&b=1&n=3)
+7. Stelle eine kleine Urne mit $2$ roten Kugeln und einer blauen Kugel ein und ziehe dreimal. Wo endet ein Ast mit $0$? [Kleine Urne](?r=2&b=1&n=3)
 
 ## Aufgaben
 
@@ -79,7 +79,7 @@ Es wird dreimal mit Zurücklegen gezogen. Berechne $P(\text{mindestens eine rote
 
 ### Aufgabe 4: Sicher mindestens eine rote?
 
-Jetzt dreimal **ohne** Zurücklegen. Begründe, warum $P(\text{mindestens eine rote}) = 1$ ist. [Aufgabe laden](?mode=rules&n=3&ev=minR&_hide=1)
+Jetzt dreimal **ohne** Zurücklegen. Begründe, warum $P(\text{mindestens eine rote}) = 1$ ist. [Aufgabe laden](?mode=rules&n=3&ev=minR&show=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -95,7 +95,7 @@ Die Urne enthält $2$ rote, $3$ blaue und $1$ grüne Kugel. Es wird zweimal ohne
 <details>
 <summary>Lösung anzeigen</summary>
 
-Gegenereignis „gleiche Farbe“: $\frac26 \cdot \frac15 + \frac36 \cdot \frac25 = \frac{2}{30} + \frac{6}{30} = \frac{8}{30}$ (zwei grüne gibt es nicht). Also $P = 1 - \frac{8}{30} = \frac{11}{15} \approx 73{,}3\,\%$. [In der Simulation zeigen](?mode=rules&r=2&b=3&g=1&ev=diff)
+Gegenereignis „gleiche Farbe“: $\frac26 \cdot \frac15 + \frac36 \cdot \frac25 = \frac{2}{30} + \frac{6}{30} = \frac{8}{30} = \frac{4}{15}$ (zwei grüne gibt es nicht). Also $P = 1 - \frac{4}{15} = \frac{11}{15} \approx 73{,}3\,\%$. [In der Simulation zeigen](?mode=rules&r=2&b=3&g=1&ev=diff)
 
 </details>
 

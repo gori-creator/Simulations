@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Startseite Handy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{color:var(--m)}
+button,input{color:inherit;font-family:inherit}
+input::placeholder{color:var(--muted);opacity:1}
+@keyframes fall{0%{transform:translateY(0)}100%{transform:translateY(250px)}}
+@keyframes swing{0%,100%{transform:rotate(30deg)}50%{transform:rotate(-30deg)}}
+@keyframes ring{0%{transform:scale(0.05);opacity:0.9}100%{transform:scale(1);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drop{0%{transform:translate(0,0)}20%{transform:translate(-14px,46px)}40%{transform:translate(0,92px)}60%{transform:translate(14px,138px)}80%{transform:translate(0,184px)}100%{transform:translate(-14px,236px)}}
+@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+@keyframes grow{from{transform:scaleY(0.2)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1700px; box-sizing: border-box; {{vars}} background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overflow: hidden">
+  <header style="height: 60px; display: flex; align-items: center; gap: 4px; padding: 0 8px 0 16px; border-bottom: 1px solid var(--line); background: var(--surface)">
+    <svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="8" style="fill: var(--ink)"></rect><path d="M6 20c3-10 6-10 9-4s6 6 9-6" fill="none" style="stroke: var(--inv-fg)" stroke-width="2.4" stroke-linecap="round"></path><circle cx="24" cy="10" r="2.4" style="fill: var(--gold)"></circle></svg>
+    <span style="font-weight: 800; font-size: 16px; margin-left: 6px">MINT-Simulationen</span>
+    <button type="button" aria-label="Suchen" style="margin-left: auto; width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></button>
+    <button type="button" aria-label="Einstellungen" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"></path></svg></button>
+    <button type="button" aria-label="Menü" style="width: 44px; height: 44px; border: none; background: transparent; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+  </header>
+
+  <section style="padding: 28px 16px 0; display: flex; flex-direction: column; gap: 14px">
+    <span style="font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 1px; color: var(--muted)">129 SIMULATIONEN · KLASSE 5 BIS 13</span>
+    <h1 style="margin: 0; font-size: 40px; line-height: 1.0; letter-spacing: -1.3px; font-weight: 800">Verstehen durch Ausprobieren<span style="color: var(--gold)">.</span></h1>
+    <p style="margin: 0; font-size: 18px; line-height: 1.65; color: var(--text2); min-height: 118px" aria-live="polite">
+      {{live.pre}}
+      <span style="display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; border: 1px solid var(--line2); border-radius: 11px; padding: 2px; background: var(--surface); box-shadow: var(--shadow)">
+        <button type="button" aria-label="{{live.downLabel}}" onClick="{{live.down}}" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: var(--soft); font-size: 18px; font-weight: 700">−</button>
+        <span style="font-family: ui-monospace, Menlo, monospace; font-weight: 700; color: var(--ink); min-width: 78px; text-align: center; font-size: 16px">{{live.value}}</span>
+        <button type="button" aria-label="{{live.upLabel}}" onClick="{{live.up}}" style="width: 32px; height: 32px; border: none; border-radius: 8px; background: var(--soft); font-size: 18px; font-weight: 700">+</button>
+      </span>
+      <sc-for list="{{live.parts}}" as="t" hint-placeholder-count="4"><span style="font-weight: {{t.w}}; color: {{t.c}}; font-family: {{t.f}}">{{t.text}}</span></sc-for>
+    </p>
+    <figure style="margin: 0; border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 20px; background: var(--surface); overflow: hidden" aria-roledescription="Karussell" aria-label="Ausgewählte Simulationen">
+      <div style="height: 180px; position: relative; background: var(--stage); border-bottom: 1px solid var(--line); overflow: hidden">
+<div style="position: absolute; left: 0; top: 0; width: 680px; height: 340px; transform: scale(0.526); transform-origin: 0 0">
+        <sc-if value="{{is.fall}}" hint-placeholder-val="{{ true }}">
+          <div style="position: absolute; left: 0; right: 0; bottom: 34px; height: 1px; background: var(--line2)"></div>
+          <div style="position: absolute; left: 34%; top: 36px; width: 22px; height: 22px; margin-left: -11px; border-radius: 11px; background: var(--p); animation: fall {{anim.fall}} cubic-bezier(0.55, 0, 1, 0.45) infinite"></div>
+          <sc-for list="{{strobe}}" as="d" hint-placeholder-count="7"><div style="position: absolute; left: 66%; top: {{d.y}}px; width: 18px; height: 18px; margin-left: -9px; border-radius: 9px; border: 2px solid var(--p); box-sizing: border-box"></div></sc-for>
+          <span style="position: absolute; left: 66%; top: 12px; transform: translateX(-50%); font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: var(--muted)">ALLE 0,1 s</span>
+        </sc-if>
+        <sc-if value="{{is.pendel}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 40%; top: 30px; width: 120px; height: 6px; margin-left: -60px; border-radius: 3px; background: var(--axis)"></div>
+          <div style="position: absolute; left: 40%; top: 34px; width: 2px; height: 230px; transform-origin: 50% 0; animation: swing {{anim.pendel}} ease-in-out infinite; background: var(--ink)">
+            <div style="position: absolute; left: -15px; bottom: -16px; width: 32px; height: 32px; border-radius: 16px; background: var(--m)"></div>
+          </div>
+          <svg width="260" height="200" viewBox="0 0 260 200" style="position: absolute; right: 30px; top: 70px" aria-hidden="true"><path d="M0 100 H260" style="stroke: var(--line2)" stroke-width="1.5"></path><path d="M0 100 C 30 20, 60 20, 90 100 S 150 180, 180 100 S 240 20, 260 60" fill="none" style="stroke: var(--m)" stroke-width="3" stroke-dasharray="900" stroke-dashoffset="900" stroke-linecap="round"></path><path d="M0 100 C 30 20, 60 20, 90 100 S 150 180, 180 100 S 240 20, 260 60" fill="none" style="stroke: var(--m); animation: draw 4.4s linear infinite" stroke-width="3" stroke-dasharray="900"></path></svg>
+        </sc-if>
+        <sc-if value="{{is.doppler}}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{rings}}" as="r" hint-placeholder-count="4"><div style="position: absolute; left: {{r.x}}%; top: 50%; width: 420px; height: 420px; margin-left: -210px; margin-top: -210px; border-radius: 50%; border: 2px solid var(--p); box-sizing: border-box; animation: ring 2.4s linear infinite; animation-delay: {{r.delay}}s"></div></sc-for>
+          <div style="position: absolute; left: 52%; top: 50%; width: 44px; height: 22px; margin-left: -22px; margin-top: -11px; border-radius: 6px; background: var(--ink)"></div>
+          <div style="position: absolute; left: 10%; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 7px; background: var(--m)"></div>
+          <div style="position: absolute; right: 10%; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 7px; background: var(--m)"></div>
+        </sc-if>
+        <sc-if value="{{is.interferenz}}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{rings2}}" as="r" hint-placeholder-count="8"><div style="position: absolute; left: {{r.x}}%; top: 50%; width: 560px; height: 560px; margin-left: -280px; margin-top: -280px; border-radius: 50%; border: 2px solid var(--m); box-sizing: border-box; animation: ring 3s linear infinite; animation-delay: {{r.delay}}s"></div></sc-for>
+          <div style="position: absolute; left: 42%; top: 50%; width: 12px; height: 12px; margin: -6px; border-radius: 6px; background: var(--ink)"></div>
+          <div style="position: absolute; left: 58%; top: 50%; width: 12px; height: 12px; margin: -6px; border-radius: 6px; background: var(--ink)"></div>
+        </sc-if>
+        <sc-if value="{{is.galton}}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{pegs}}" as="p" hint-placeholder-count="15"><div style="position: absolute; left: {{p.x}}px; top: {{p.y}}px; width: 8px; height: 8px; margin: -4px; border-radius: 4px; background: var(--axis)"></div></sc-for>
+          <div style="position: absolute; left: 50%; top: 24px; width: 14px; height: 14px; margin-left: -7px; border-radius: 7px; background: var(--m); animation: drop 1.8s linear infinite"></div>
+          <div style="position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; align-items: flex-end; gap: 4px; height: 70px">
+            <sc-for list="{{galtonBars}}" as="b" hint-placeholder-count="11"><div style="width: {{b.w}}px; height: {{b.h}}px; background: var(--m); opacity: 0.8; border-radius: 4px 4px 0 0; transform-origin: bottom; animation: grow 1.8s ease-out"></div></sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{is.planeten}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; top: 50%; width: 360px; height: 220px; margin-left: -180px; margin-top: -110px; border-radius: 50%; border: 1.5px dashed var(--line2); box-sizing: border-box"></div>
+          <div style="position: absolute; left: 44%; top: 50%; width: 34px; height: 34px; margin: -17px; border-radius: 17px; background: var(--gold)"></div>
+          <div style="position: absolute; left: 50%; top: 50%; width: 360px; height: 220px; margin-left: -180px; margin-top: -110px; transform: scaleY(0.611)">
+            <div style="position: absolute; inset: 0; transform: scaleY(1.636); transform-origin: 50% 50%"></div>
+          </div>
+          <div style="position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin-left: -180px; margin-top: -180px; transform: scaleY(0.611)">
+            <div style="position: absolute; inset: 0; animation: spin {{anim.orbit}} linear infinite">
+              <div style="position: absolute; left: 50%; top: -9px; width: 18px; height: 18px; margin-left: -9px; border-radius: 9px; background: var(--m)"></div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{is.lorentz}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; top: 50%; width: 260px; height: 260px; margin: -130px; border-radius: 50%; background: var(--tint-m); border: 2px solid var(--line-m); box-sizing: border-box"></div>
+          <div style="position: absolute; left: 50%; top: 50%; width: {{anim.lorentzSize}}px; height: {{anim.lorentzSize}}px; transform: translate(-50%, -50%); border-radius: 50%; border: 3px solid var(--m); box-sizing: border-box; opacity: 0.5"></div>
+          <div style="position: absolute; left: 50%; top: 50%; width: {{anim.lorentzSize}}px; height: {{anim.lorentzSize}}px; margin-left: calc({{anim.lorentzSize}}px / -2); margin-top: calc({{anim.lorentzSize}}px / -2); animation: spin 2s linear infinite">
+            <div style="position: absolute; left: 50%; top: -8px; width: 16px; height: 16px; margin-left: -8px; border-radius: 8px; background: var(--m)"></div>
+          </div>
+          <span style="position: absolute; right: 30px; top: 24px; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--muted)">B zeigt aus dem Bild ⊙</span>
+        </sc-if>
+        <sc-if value="{{is.fourier}}" hint-placeholder-val="{{ false }}">
+          <svg width="100%" height="340" viewBox="0 0 680 340" aria-hidden="true">
+            <path d="M40 170 H640" style="stroke: var(--line2)" stroke-width="1.5"></path>
+            <path d="M40 90 H190 V250 H340 V90 H490 V250 H640" fill="none" style="stroke: var(--line2)" stroke-width="2" stroke-dasharray="6 6"></path>
+            <path d="M40 170 C 70 60, 160 60, 190 170 S 310 280, 340 170 S 460 60, 490 170 S 610 280, 640 170" fill="none" style="stroke: var(--p); opacity: 0.45" stroke-width="2.5"></path>
+            <path d="M40 170 C 45 80, 70 92, 100 96 S 160 82, 185 120 L 195 220 C 210 260, 260 245, 290 244 S 330 250, 335 220 L 345 120 C 360 82, 410 96, 440 96 S 480 82, 485 120 L 495 220 C 510 260, 560 245, 590 244 S 630 250, 640 170" fill="none" style="stroke: var(--m); animation: draw 3.6s ease-in-out infinite" stroke-width="3.5" stroke-dasharray="900"></path>
+          </svg>
+        </sc-if>
+        <span style="position: absolute; left: 16px; top: 14px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 1px; background: var(--surface); border: 1px solid var(--line); padding: 4px 8px; border-radius: 8px; color: {{slide.color}}">{{slide.meta}}</span>
+      </div>
+</div>
+      <figcaption style="padding: 14px 14px 14px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px">
+          <span style="font-size: 19px; font-weight: 800; letter-spacing: -0.3px">{{slide.title}}</span>
+          <a href="Simulation.dc.html" style="font-size: 15px; font-weight: 700; text-decoration: none; white-space: nowrap">Öffnen →</a>
+        </div>
+                <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 12px 14px; border-radius: 14px; background: var(--soft)">
+          <label style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; width: 100%; font-size: 14px; font-weight: 650">
+            <span style="white-space: nowrap">{{live.label}}</span>
+            <input type="range" min="{{live.min}}" max="{{live.max}}" step="{{live.step}}" value="{{live.raw}}" onChange="{{live.onRange}}" onInput="{{live.onRange}}" style="flex: 1; accent-color: var(--ink); height: 28px">
+            <span style="font-family: ui-monospace, Menlo, monospace; min-width: 70px; text-align: right">{{live.value}}</span>
+          </label>
+          <sc-if value="{{live.hasSeg}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 650">
+              <span>{{live.segLabel}}</span>
+              <div style="display: flex; background: var(--soft2, var(--line)); border-radius: 10px; padding: 3px; gap: 2px" role="group" aria-label="{{live.segLabel}}">
+                <sc-for list="{{live.seg}}" as="o" hint-placeholder-count="3"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="height: 32px; padding: 0 12px; border: none; border-radius: 8px; background: {{o.bg}}; box-shadow: {{o.sh}}; font-size: 13px; font-weight: {{o.w}}; cursor: pointer">{{o.label}}</button></sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <button type="button" aria-label="Vorherige Simulation" onClick="{{prev}}" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line2); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m15 5-7 7 7 7"></path></svg></button>
+          <button type="button" aria-label="{{pauseLabel}}" onClick="{{togglePause}}" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line2); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800">{{pauseIcon}}</button>
+          <button type="button" aria-label="Nächste Simulation" onClick="{{next}}" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid var(--line2); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m9 5 7 7-7 7"></path></svg></button>
+          <div style="display: flex; gap: 5px; margin-left: 2px" role="group" aria-label="Simulation wählen">
+            <sc-for list="{{dotsNav}}" as="d" hint-placeholder-count="8"><button type="button" aria-label="{{d.label}}" aria-current="{{d.current}}" onClick="{{d.pick}}" style="width: {{d.w}}px; height: 8px; border-radius: 4px; border: none; padding: 0; background: {{d.bg}}; cursor: pointer"></button></sc-for>
+          </div>
+          
+        </div>
+      </figcaption>
+    </figure>
+    <p style="margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted)">129 interaktive Simulationen entlang des Lehrplans. Kostenlos, ohne Anmeldung, ohne Tracking.</p>
+    <a href="#alle" style="display: flex; align-items: center; justify-content: center; height: 50px; border-radius: 12px; background: var(--inv-bg); color: var(--inv-fg); text-decoration: none; font-weight: 700; font-size: 16px">Alle Simulationen</a>
+  </section>
+
+  <section style="padding: 28px 16px 0; display: flex; flex-direction: column; gap: 10px">
+    <a href="#" style="text-decoration: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 18px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 20px; font-weight: 800">Mathematik</span><span style="font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--m)">93 · KL. 5–13</span></a>
+    <a href="#" style="text-decoration: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 18px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 20px; font-weight: 800">Physik</span><span style="font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--p)">36 · KL. 6–13</span></a>
+    <div style="border: 1px dashed var(--line2); border-radius: 18px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: baseline; color: var(--muted)"><span style="font-size: 20px; font-weight: 800">Chemie</span><span style="font-size: 13px">in Vorbereitung</span></div>
+  </section>
+
+  <section id="alle" style="padding: 30px 16px 0; display: flex; flex-direction: column; gap: 14px">
+    <h2 style="margin: 0; font-size: 26px; letter-spacing: -0.6px">Alle Simulationen</h2>
+    <div style="display: flex; gap: 6px; overflow-x: auto" role="group" aria-label="Filter">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="6"><button type="button" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 1px solid {{c.border}}; background: {{c.bg}}; color: {{c.fg}}; font-size: 14px; font-weight: 600; flex-shrink: 0">{{c.label}}</button></sc-for>
+    </div>
+    <sc-for list="{{cards2}}" as="k" hint-placeholder-count="2">
+      <a href="Simulation.dc.html" style="text-decoration: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column">
+        <div style="height: 130px; background-color: {{k.tint}}; background-image: linear-gradient({{k.line}} 1px, transparent 1px), linear-gradient(90deg, {{k.line}} 1px, transparent 1px); background-size: 18px 18px; display: flex; align-items: center; justify-content: center; color: {{k.accent}}">
+          <svg width="120" height="90" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{k.path}}"></path></svg>
+        </div>
+        <div style="padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-family: ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: 0.8px; color: {{k.accent}}">{{k.meta}}</span>
+          <span style="font-size: 17px; font-weight: 750">{{k.title}}</span>
+          <span style="font-size: 14px; line-height: 1.45; color: var(--muted)">{{k.text}}</span>
+        </div>
+      </a>
+    </sc-for>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["hell","dunkel"],"default":"hell"},"$preview":{"width":390,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { i: 0, paused: false, v: { fall: 20, pendel: 1, doppler: 20, interferenz: 2, galton: 10, planeten: 1.5, lorentz: 2, fourier: 5 }, o: { fall: 0, pendel: 0, doppler: 0, interferenz: 1, galton: 0, lorentz: 1, fourier: 0 } };
+  }
+  componentDidMount() {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) this.setState({ paused: true });
+    this.timer = setInterval(() => {
+      if (!this.state.paused) this.setState({ i: (this.state.i + 1) % 8 });
+    }, 6000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+  renderVals() {
+    // Farbthema: hell oder dunkel (Tweak „theme“)
+    const dark = (this.props.theme ?? 'hell') === 'dunkel';
+    const T = dark ? {
+      bg: '#0B0C10', surface: '#14161B', ink: '#F1F2F4', 'inv-bg': '#F1F2F4', 'inv-fg': '#0B0C10',
+      line: '#262931', line2: '#363A46', soft: '#1B1E25', text2: '#D3D6DC', muted: '#AEB3BD', axis: '#767C89', stage: '#101217',
+      soft2: '#23262E', 'tint-m': '#161C3A', 'line-m': '#222B55', 'tint-p': '#2A1912', 'line-p': '#40271B',
+      m: '#8DA0FF', p: '#FF8B5E', gold: '#F2A541', shadow: 'none',
+    } : {
+      bg: '#FCFCFD', surface: '#FFFFFF', ink: '#0B0D12', 'inv-bg': '#0B0D12', 'inv-fg': '#FFFFFF',
+      line: '#EAEAEE', line2: '#DCDCE2', soft: '#F4F4F7', text2: '#3A3E47', muted: '#5F6470', axis: '#A0A4AD', stage: '#F8F9FB',
+      soft2: '#E9E9EE', 'tint-m': '#F0F3FF', 'line-m': '#E0E6FF', 'tint-p': '#FFF3EE', 'line-p': '#FCDDCF',
+      m: '#2F49D1', p: '#B83A14', gold: '#E8962A',
+      shadow: '0 1px 2px rgba(15,17,22,0.04), 0 8px 24px rgba(15,17,22,0.06)',
+    };
+    const vars = Object.keys(T).map((k) => '--' + k + ': ' + T[k] + ';').join(' ');
+
+    // Karussell: die eindrucksvollsten bewegten Simulationen
+    const SLIDES = [
+      { id: 'fall', title: 'Freier Fall', meta: 'PHYSIK · KL. 9–11', color: 'var(--p)', text: 'Ein Ball fällt aus 20 m Höhe – auf der Erde braucht er 2,02 s, auf dem Mond 4,97 s.' },
+      { id: 'pendel', title: 'Fadenpendel', meta: 'PHYSIK · KL. 10–12', color: 'var(--p)', text: 'Die Schwingung zeichnet sich als Sinuskurve – und hängt nur von der Fadenlänge ab.' },
+      { id: 'doppler', title: 'Doppler-Effekt', meta: 'PHYSIK · KL. 10–12', color: 'var(--p)', text: 'Der Krankenwagen fährt los: vorne drängen sich die Wellen, hinten ziehen sie sich auseinander.' },
+      { id: 'interferenz', title: 'Interferenz von Kreiswellen', meta: 'PHYSIK · KL. 11–13', color: 'var(--p)', text: 'Zwei Quellen, ein Muster: Wo Berg auf Berg trifft, verstärkt sich die Welle.' },
+      { id: 'galton', title: 'Galtonbrett', meta: 'MATHE · KL. 9–12', color: 'var(--m)', text: 'Tausend Kugeln, lauter Zufall – und am Ende entsteht die Glockenkurve.' },
+      { id: 'planeten', title: 'Planetenbahnen', meta: 'PHYSIK · KL. 11–13', color: 'var(--p)', text: 'Nah an der Sonne schneller, weit weg langsamer: die keplerschen Gesetze zum Zuschauen.' },
+      { id: 'lorentz', title: 'Lorentzkraft im Fadenstrahlrohr', meta: 'PHYSIK · KL. 10–13', color: 'var(--p)', text: 'Das Magnetfeld zwingt die Elektronen auf eine Kreisbahn – Radius per Regler.' },
+      { id: 'fourier', title: 'Fourier-Reihen', meta: 'MATHE · KL. 13', color: 'var(--m)', text: 'Aus lauter Sinuswellen wird ein Rechteck – Welle für Welle kommt es näher.' },
+    ];
+    const { i, paused } = this.state;
+    const slide = SLIDES[i];
+    const is = {};
+    SLIDES.forEach((s) => { is[s.id] = s.id === slide.id; });
+    const go = (j) => () => this.setState({ i: (j + SLIDES.length) % SLIDES.length });
+
+    // Zeichnungsdaten der Animationen
+    const strobe = [0, 1, 2, 3, 4, 5, 6].map((k) => ({ y: Math.round(36 + 250 * (k / 6) * (k / 6)) }));
+    const rings = [0, 0.6, 1.2, 1.8].map((delay) => ({ x: 52, delay }));
+    const rings2 = [0, 1, 2].flatMap((delay) => [{ x: 42, delay }, { x: 58, delay }]);
+    const pegs = [];
+    for (let r = 0; r < 5; r++) for (let c = 0; c <= r; c++) pegs.push({ x: 340 + (c - r / 2) * 30, y: 60 + r * 44 });
+    const bars = [6, 14, 30, 50, 64, 50, 30, 14, 6];
+
+    const chips = ['Alle', 'Mathematik', 'Physik', 'Klasse 5–7', 'Klasse 8–10', 'Oberstufe'].map((label, k) => ({
+      label, bg: k === 0 ? 'var(--inv-bg)' : 'var(--surface)', fg: k === 0 ? 'var(--inv-fg)' : 'var(--ink)', border: k === 0 ? 'var(--inv-bg)' : 'var(--line2)',
+    }));
+    const m = { tint: 'var(--tint-m)', line: 'var(--line-m)', accent: 'var(--m)' };
+    const p = { tint: 'var(--tint-p)', line: 'var(--line-p)', accent: 'var(--p)' };
+    const cards = [
+      { ...m, meta: 'MATHE · KL. 8–9', title: 'Satz des Pythagoras', text: 'Quadrate über den Seiten – und ein Puzzle, das den Satz beweist.', path: 'M20 75 L20 30 L80 75 Z M20 30 L5 15 M80 75 L100 55' },
+      { ...p, meta: 'PHYSIK · KL. 9–11', title: 'Freier Fall', text: 'Kugel und Feder auf Erde, Mond und Mars – mit und ohne Luft.', path: 'M60 10 V22 M60 34 V46 M60 58 V70 M50 80 H70' },
+      { ...p, meta: 'PHYSIK · KL. 8–10', title: 'Linsen und Bildentstehung', text: 'Gegenstand verschieben, Bild entsteht – reell oder virtuell.', path: 'M60 10 Q 75 45 60 80 Q 45 45 60 10 M5 45 H115 M20 45 V25 M100 45 V60' },
+      { ...m, meta: 'MATHE · KL. 13', title: 'Normalverteilung', text: 'Glockenkurve, σ-Regeln und die Fläche unter der Kurve.', path: 'M5 80 C 35 80, 45 10, 60 10 S 85 80, 115 80 M45 80 V40 M75 80 V40' },
+    ];
+
+    // Satz zum Mitrechnen, passend zur gezeigten Simulation
+    const de = (x, d) => x.toFixed(d).replace('.', ',');
+    const v = this.state.v[slide.id];
+    const plain = (text) => ({ text, w: 400, c: 'inherit', f: 'inherit' });
+    const num = (text) => ({ text, w: 700, c: slide.color, f: 'ui-monospace, Menlo, monospace' });
+    const PLACES = [{ label: 'Erde', g: 9.81, dat: 'der Erde' }, { label: 'Mond', g: 1.62, dat: 'dem Mond' }, { label: 'Mars', g: 3.71, dat: 'dem Mars' }];
+    const binom = (n, k, q) => { if (k < 0 || k > n) return 0; let r = 1; for (let j = 1; j <= k; j++) r = r * (n - k + j) / j; return r * Math.pow(q, k) * Math.pow(1 - q, n - k); };
+    const LIVE = {
+      fall: { step: 5, min: 5, max: 100, fmt: (x) => x + ' m', pre: 'Ein Ball fällt aus', label: 'Höhe',
+        seg: { label: 'Ort', opts: PLACES.map((q) => q.label) },
+        parts: (x, o) => [plain(' Höhe. Auf ' + PLACES[o].dat + ' ist er nach '), num(de(Math.sqrt(2 * x / PLACES[o].g), 2) + ' s'), plain(' unten' + (o ? ', auf der Erde schon nach ' + de(Math.sqrt(2 * x / 9.81), 2) + ' s.' : '.'))] },
+      pendel: { step: 0.25, min: 0.25, max: 3, fmt: (x) => de(x, 2) + ' m', pre: 'Ein Pendel mit', label: 'Fadenlänge',
+        seg: { label: 'Ort', opts: PLACES.map((q) => q.label) },
+        parts: (x, o) => [plain(' Faden braucht auf ' + PLACES[o].dat + ' für eine Schwingung '), num(de(2 * Math.PI * Math.sqrt(x / PLACES[o].g), 2) + ' s'), plain(' – egal, wie schwer die Kugel ist.')] },
+      doppler: { step: 5, min: 5, max: 60, fmt: (x) => x + ' m/s', pre: 'Der Krankenwagen fährt mit', label: 'Geschwindigkeit',
+        seg: { label: 'Ton', opts: ['440 Hz', '880 Hz'] },
+        parts: (x, o) => { const f = o ? 880 : 440; return [plain('. Statt ' + f + ' Hz hörst du vor ihm '), num(Math.round(f * 343 / (343 - x)) + ' Hz'), plain(' und hinter ihm '), num(Math.round(f * 343 / (343 + x)) + ' Hz'), plain('.')]; } },
+      interferenz: { step: 0.5, min: 0.5, max: 5, fmt: (x) => de(x, 1) + ' cm', pre: 'Wellen mit', label: 'Wellenlänge',
+        seg: { label: 'Frequenz', opts: ['2 Hz', '5 Hz', '10 Hz'] },
+        parts: (x, o) => { const f = [2, 5, 10][o]; return [plain(' Wellenlänge und ' + f + ' Hz laufen mit '), num(de(x * f, 1) + ' cm/s'), plain(' – wo Berg auf Berg trifft, verstärkt sich die Welle.')]; } },
+      galton: { step: 2, min: 2, max: 20, fmt: (x) => x + ' Reihen', pre: 'Bei', label: 'Nagelreihen',
+        seg: { label: 'Nach rechts', opts: ['50 %', '30 %'] },
+        parts: (x, o) => { const q = o ? 0.3 : 0.5, c = Math.round(x * q); const pr = binom(x, c - 1, q) + binom(x, c, q) + binom(x, c + 1, q); return [plain(' Nägeln landen '), num(de(pr * 100, 0) + ' %'), plain(' aller Kugeln in den drei Fächern um die Mitte der Verteilung.')]; } },
+      planeten: { step: 0.5, min: 0.5, max: 10, fmt: (x) => de(x, 1) + ' AE', pre: 'Ein Planet im Abstand', label: 'Abstand zur Sonne',
+        parts: (x) => [plain(' von der Sonne braucht '), num(de(Math.pow(x, 1.5), 2) + ' Jahre'), plain(' für eine Runde.')] },
+      lorentz: { step: 0.5, min: 0.5, max: 5, fmt: (x) => de(x, 1) + ' mT', pre: 'Bei', label: 'Magnetfeld',
+        seg: { label: 'Spannung', opts: ['150 V', '200 V', '250 V'] },
+        parts: (x, o) => { const U = [150, 200, 250][o]; return [plain(' Magnetfeld und ' + U + ' V kreisen die Elektronen mit '), num(de(Math.sqrt(2 * U * 5.686e-12) / (x / 1000) * 100, 1) + ' cm'), plain(' Radius.')]; } },
+      fourier: { step: 1, min: 1, max: 20, fmt: (x) => x + (x === 1 ? ' Welle' : ' Wellen'), pre: 'Mit', label: 'Anzahl der Wellen',
+        seg: { label: 'Form', opts: ['Rechteck', 'Dreieck'] },
+        parts: (x, o) => { let e = 0; for (let j = 1; j <= x; j++) { const k = 2 * j - 1; e += o ? 1 / Math.pow(k, 4) : 1 / (k * k); } const pct = o ? e * 96 / Math.pow(Math.PI, 4) : e * 8 / (Math.PI * Math.PI); return [plain(' trifft die Summe schon '), num(de(pct * 100, 1) + ' %'), plain(' der Energie des ' + (o ? 'Dreiecks' : 'Rechtecks') + '.')]; } },
+    }[slide.id];
+    const o = this.state.o[slide.id] ?? 0;
+    const clamp = (x) => Math.round(Math.min(LIVE.max, Math.max(LIVE.min, x)) * 100) / 100;
+    const setV = (x) => () => this.setState({ paused: true, v: { ...this.state.v, [slide.id]: clamp(x) } });
+    const live = {
+      pre: LIVE.pre, value: LIVE.fmt(v), parts: LIVE.parts(v, o),
+      down: setV(v - LIVE.step), up: setV(v + LIVE.step),
+      downLabel: LIVE.label + ' verringern', upLabel: LIVE.label + ' vergrößern',
+      label: LIVE.label, min: LIVE.min, max: LIVE.max, step: LIVE.step, raw: v,
+      fill: Math.round((v - LIVE.min) / (LIVE.max - LIVE.min) * 100),
+      onRange: (e) => this.setState({ paused: true, v: { ...this.state.v, [slide.id]: clamp(Number(e.target.value)) } }),
+      hasSeg: !!LIVE.seg, segLabel: LIVE.seg ? LIVE.seg.label : '',
+      seg: (LIVE.seg ? LIVE.seg.opts : []).map((label, k) => ({
+        label, pressed: k === o ? 'true' : 'false',
+        bg: k === o ? 'var(--surface)' : 'transparent', w: k === o ? 700 : 500, sh: k === o ? 'var(--shadow)' : 'none',
+        pick: () => this.setState({ paused: true, o: { ...this.state.o, [slide.id]: k } }),
+      })),
+    };
+    // Animationen folgen den Einstellungen
+    const g = PLACES[this.state.o.fall ?? 0].g;
+    const anim = {
+      fall: de(Math.min(4, Math.max(0.6, Math.sqrt(2 * this.state.v.fall / g) * 0.8)), 2).replace(',', '.') + 's',
+      pendel: de(Math.min(8, 2 * Math.PI * Math.sqrt(this.state.v.pendel / PLACES[this.state.o.pendel ?? 0].g)), 2).replace(',', '.') + 's',
+      orbit: de(Math.min(20, 3 * Math.pow(this.state.v.planeten, 1.5)), 2).replace(',', '.') + 's',
+      lorentzSize: Math.round(Math.min(300, Math.max(60, 360 / this.state.v.lorentz * Math.sqrt([150, 200, 250][this.state.o.lorentz ?? 1] / 200)))),
+    };
+    const gn = this.state.v.galton, gq = (this.state.o.galton ?? 0) ? 0.3 : 0.5;
+    const pmf = Array.from({ length: gn + 1 }, (_, k) => binom(gn, k, gq));
+    const pmax = Math.max(...pmf);
+    const galtonBars = pmf.map((x) => ({ h: Math.max(2, Math.round(x / pmax * 64)), w: Math.max(6, Math.floor(240 / (gn + 1)) - 3) }));
+
+    return {
+      vars, slide, is, live, anim, galtonBars, cards2: cards.slice(0, 2), strobe, rings, rings2, pegs, bars, chips, cards,
+      prev: go(i - 1), next: go(i + 1),
+      togglePause: () => this.setState({ paused: !paused }),
+      pauseLabel: paused ? 'Automatischen Wechsel fortsetzen' : 'Automatischen Wechsel anhalten',
+      pauseIcon: paused ? '▶' : 'II',
+      counter: String(i + 1).padStart(2, '0') + ' / 08',
+      dotsNav: SLIDES.map((s, j) => ({
+        label: s.title, current: j === i ? 'true' : 'false', w: j === i ? 28 : 8,
+        bg: j === i ? 'var(--ink)' : 'var(--line2)', pick: go(j),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

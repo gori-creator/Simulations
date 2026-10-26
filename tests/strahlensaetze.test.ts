@@ -272,3 +272,55 @@ describe('Modell: Strahlensätze – Anwendungen', () => {
     }
   });
 });
+
+describe('Modell: Strahlensätze – Prüfrunde (Reglergrenzen, Beispiele)', () => {
+  it('Beispiel „Nicht parallel“: |ZA| = 3, |ZB| = 4, 40°, Faktoren 2 und 1,4 → Abweichung ≈ 26,8°', () => {
+    const f = figure(3, 4, 40, 2, 1.4);
+    expect(angleBetween(f)).toBeCloseTo(26.8, 1);
+    const L = lengths(f);
+    expect(L.zb2).toBeCloseTo(5.6, 12);
+    // |A′B′| ≈ 3,99 cm wie in der Anzeige
+    expect(Math.round(L.a2b2 * 100) / 100).toBe(3.99);
+  });
+
+  it('Gegenbeispiel B″: gleicher Abstand von A′ wie B′ = k · B', () => {
+    for (const [a, b, th, k] of [
+      [3, 4, 40, 2],
+      [5, 3, 60, 1.5],
+      [8, 8, 10, 3],
+    ] as [number, number, number, number][]) {
+      const f = figure(a, b, th, k, k);
+      const x2 = counterPointX(a, b, th, k);
+      expect(dist(f.a2, [x2, 0])).toBeCloseTo(dist(f.a2, f.b2), 9);
+    }
+  });
+
+  it('Rechenmodus an den Reglergrenzen (|ZA|, |ZB| = 1 … 8, k = 0,2 … 3, |AB| = 0,5 … 15, V und X)', () => {
+    for (const a of [1, 4.5, 8])
+      for (const b of [1, 4.5, 8])
+        for (const c of [0.5, 2.6, 15])
+          for (const k of [0.2, 1, 3])
+            for (const xf of [false, true]) {
+              const f = taskFigure(a, b, c, k, xf);
+              const [lo, hi] = sideRange(a, b);
+              const ab = dist(f.a, f.b);
+              expect(ab).toBeGreaterThanOrEqual(lo - 1e-9);
+              expect(ab).toBeLessThanOrEqual(hi + 1e-9);
+              for (const ask of Object.keys(TASKS) as Ask[]) {
+                const s = solveTask(ask, f);
+                expect(Number.isFinite(s.x)).toBe(true);
+                expect(s.x).toBeCloseTo(s.exact, 9);
+              }
+            }
+  });
+
+  it('Baumhöhe mit auf Zentimeter gemessenen Schatten: höchstens 0,2 m neben der wahren Höhe', () => {
+    for (let el = 20; el <= 60; el += 0.5)
+      for (const ht of [5, 12, 20])
+        for (const st of [1, 1.5, 2.5]) {
+          const { dStick, dTree } = shadowLengths(ht, st, el);
+          const h = treeHeight(st, measureCm(dStick), measureCm(dTree));
+          expect(Math.abs(h - ht)).toBeLessThanOrEqual(0.2);
+        }
+  });
+});

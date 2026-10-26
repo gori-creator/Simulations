@@ -15,11 +15,11 @@ Ein **Funktionsplotter** zeichnet zu einem Funktionsterm den Graphen. Du gibst b
 | `sqrt(x)` oder `√x` | $\sqrt{x}$ | |
 | `abs(x-1)` oder Betragsstriche | $\lvert x-1 \rvert$ | |
 | `sin(x)`, `cos x`, `tan(2x)` | $\sin x$, $\cos x$, $\tan 2x$ | Winkel im Bogenmaß |
-| `e^x`, `exp(x)`, `ln(x)`, `lg(x)`, `log_2(x)` | $e^x$, $\ln x$, $\lg x$, $\log_2 x$ | |
+| `e^x`, `exp(x)`, `ln(x)`, `lg(x)`, `log_2(x)` | $e^x$, $e^x$, $\ln x$, $\lg x$, $\log_2 x$ | `exp(x)` ist eine andere Schreibweise für $e^x$. |
 | `pi` oder `π`, `e` | $\pi \approx 3{,}14$, $e \approx 2{,}72$ | Konstanten |
 | `a`, `b` | Parameter | Dafür erscheinen Regler. |
 
-Es gelten die üblichen **Rechenregeln**: Potenz vor Punkt vor Strich, sonst von links nach rechts. Deshalb bedeutet `1/2x` dasselbe wie $\frac{1}{2} \cdot x$ – wer $\frac{1}{2x}$ meint, schreibt `1/(2x)`. Und `-x^2` ist $-x^2$ (erst quadrieren), nicht $(-x)^2$.
+Es gelten die üblichen **Rechenregeln**: Potenz vor Punkt vor Strich, sonst von links nach rechts; nur Potenztürme werden von oben nach unten gerechnet: `2^3^2` ist $2^{(3^2)} = 2^9$. Deshalb bedeutet `1/2x` dasselbe wie $\frac{1}{2} \cdot x$ – wer $\frac{1}{2x}$ meint, schreibt `1/(2x)`. Und `-x^2` ist $-x^2$ (erst quadrieren), nicht $(-x)^2$.
 
 Auf Wunsch markiert die Simulation **besondere Punkte** im sichtbaren Ausschnitt:
 
@@ -72,7 +72,7 @@ Die Graphen schneiden sich in $S(1 \mid 2)$, also $x = 1$. Probe: $2^1 = 2$ und 
 
 ### Aufgabe 3: Was hat der Plotter verstanden?
 
-[Aufgabe laden](?f=1%2F2x&g=1%2F%282x%29&nst=0&sct=0) Lea will $\frac{1}{2x}$ zeichnen und tippt `1/2x` ein, Tom tippt `1/(2x)`. Welcher Graph gehört zu wem? Wer hat recht?
+[Aufgabe laden](?f=1%2F2x&g=1%2F%282x%29&nst=0&sct=0&_hide=1) Lea will $\frac{1}{2x}$ zeichnen und tippt `1/2x` ein, Tom tippt `1/(2x)`. Welcher Graph gehört zu wem? Wer hat recht?
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -105,7 +105,7 @@ $f(x) = \frac{x^2 - 4}{x - 2} = \frac{(x - 2)(x + 2)}{x - 2} = x + 2$ für $x \n
 
 ### Aufgabe 6: Tangente (ab Jahrgangsstufe 11)
 
-[Aufgabe laden](?f=x%5E3%20-%203x&g=&tg=0&tx=2&ext=0&nst=0) Berechne für $f(x) = x^3 - 3x$ die Steigung $f'(2)$ und die Gleichung der Tangente bei $x = 2$. Überprüfe anschließend mit „Tangente im Spurpunkt“. An welchen Stellen ist die Tangente waagrecht?
+[Aufgabe laden](?f=x%5E3%20-%203x&g=&tg=0&tx=2&ext=0&nst=0&_hide=1) Berechne für $f(x) = x^3 - 3x$ die Steigung $f'(2)$ und die Gleichung der Tangente bei $x = 2$. Überprüfe anschließend mit „Tangente im Spurpunkt“. An welchen Stellen ist die Tangente waagrecht?
 
 <details>
 <summary>Lösung anzeigen</summary>

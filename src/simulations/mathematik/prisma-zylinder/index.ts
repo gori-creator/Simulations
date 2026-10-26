@@ -57,7 +57,10 @@ export default defineSimulation({
       type: 'number',
       group: 'size',
       label: L('Radius r', 'Radius r'),
-      help: L('Beim n-Eck: Radius des Umkreises.', 'For the n-gon: radius of the circumcircle.'),
+      help: L(
+        'Beim n-Eck: Radius des Umkreises. In der Rechnung ist s die Seitenlänge und ρ der Inkreisradius (Höhe der Teildreiecke).',
+        'For the n-gon: radius of the circumcircle. In the calculation, s is the side length and ρ the radius of the incircle (height of the small triangles).',
+      ),
       min: 1,
       max: 4,
       step: 0.5,
@@ -110,8 +113,10 @@ export default defineSimulation({
       cylinder: 'Zylinder: V = πr² · h',
       rolled: 'abgerollt',
       mantle: 'Mantel: M = u · h',
+      mantleShort: 'Mantel: M = u · h',
       bases: 'Grund- und Deckfläche: 2 · G',
       surface: 'O = 2 · G + M',
+      surfaceShort: 'O = 2 · G + M',
       net: 'Netz',
       start: 'Startfläche',
       stack: 'Schichten stapeln',
@@ -128,9 +133,11 @@ export default defineSimulation({
       allLayers: '{n} layers: V = G · h',
       cylinder: 'Cylinder: V = πr² · h',
       rolled: 'rolled out',
-      mantle: 'Lateral surface: M = u · h',
+      mantle: 'Lateral area: M = u · h (u = perimeter of the base)',
+      mantleShort: 'Lateral: M = u · h',
       bases: 'Two bases: 2 · G',
-      surface: 'O = 2 · G + M',
+      surface: 'Surface area: O = 2 · G + M (G = base area)',
+      surfaceShort: 'Surface area: O = 2 · G + M',
       net: 'Net',
       start: 'starting face',
       stack: 'Stack layers',
@@ -527,9 +534,10 @@ export default defineSimulation({
         const complete = printed >= base.perimeter - 1e-6;
         const folded = rollShown >= 0.999;
         head = folded ? ctx.t('net') : `${ctx.t('rolled')}: ${cm(rollShown > 0 ? printed : 0, 1)}`;
-        if (complete) lines.push({ text: `${ctx.t('mantle')} ${eq([base.perimeter])} ${cm(base.perimeter)} · ${cm(p.h, 1)} ${eq([base.perimeter, sld.mantle])} ${cm2(sld.mantle)}`, color: th.series[0]! });
+        // Schmale Bühne: Erklärung der Formelzeichen weglassen (steht in den Ergebnissen)
+        if (complete) lines.push({ text: `${ctx.t(narrow ? 'mantleShort' : 'mantle')} ${eq([base.perimeter])} ${cm(base.perimeter)} · ${cm(p.h, 1)} ${eq([base.perimeter, sld.mantle])} ${cm2(sld.mantle)}`, color: th.series[0]! });
         if (folded) lines.push({ text: `${ctx.t('bases')} ${eq([2 * base.area])} ${cm2(2 * base.area)}`, color: th.series[3]! });
-        if (folded) lines.push({ text: `${ctx.t('surface')} ${eq([sld.surface])} ${cm2(sld.surface)}`, bold: true });
+        if (folded) lines.push({ text: `${ctx.t(narrow ? 'surfaceShort' : 'surface')} ${eq([sld.surface])} ${cm2(sld.surface)}`, bold: true });
       }
       // rechts bleibt Platz für die Zoom-Knöpfe; passt die Rechnung nicht, wird die Schrift kleiner
       const maxW = surface.width - 66;

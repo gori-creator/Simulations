@@ -37,7 +37,7 @@ export function smallestN(p: number, f: (n: number) => number = pShared, max = 2
 }
 
 /** Anzahl der Paare in einer Gruppe: n · (n − 1) / 2. */
-export const pairs = (n: number): number => (n * (n - 1)) / 2;
+export const pairs = (n: number): number => (n < 2 ? 0 : (n * (n - 1)) / 2);
 
 /** Tag im Jahr (0 … 364) → Monat (0 … 11) und Tag (1 … 31). */
 export function monthDay(dayOfYear: number): { month: number; day: number } {
@@ -148,4 +148,13 @@ export function band95(p: number, N: number): [number, number] {
   if (N <= 0) return [0, 1];
   const h = 1.96 * Math.sqrt((p * (1 - p)) / N);
   return [Math.max(0, p - h), Math.min(1, p + h)];
+}
+
+/**
+ * Zeichen vor einem gerundeten Wert: „=“, wenn die Rundung auf `digits`
+ * Nachkommastellen nichts verändert (z. B. 47/100 = 0,470), sonst „≈“.
+ */
+export function relation(value: number, digits: number): '=' | '≈' {
+  const f = 10 ** digits;
+  return Math.abs(Math.round(value * f) / f - value) < 1e-9 / f ? '=' : '≈';
 }

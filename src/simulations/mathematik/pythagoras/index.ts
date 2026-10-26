@@ -43,7 +43,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Rechtwinkliges Dreieck mit Quadraten über den drei Seiten',
+      canvas: 'Rechtwinkliges Dreieck mit Quadraten über den drei Seiten oder Puzzle-Beweis mit vier Dreiecken im Quadrat mit der Seite a + b',
       move: 'Dreiecke umlegen',
       back: 'Zurücklegen',
       proofSquares: 'Die beiden Kathetenquadrate haben zusammen denselben Flächeninhalt wie das Hypotenusenquadrat.',
@@ -55,7 +55,7 @@ export default defineSimulation({
       descFreeAB: 'Frei bleiben die Quadrate a² und b².',
     },
     en: {
-      canvas: 'Right triangle with squares on its three sides',
+      canvas: 'Right triangle with squares on its three sides, or puzzle proof with four triangles in a square with side a + b',
       move: 'Rearrange triangles',
       back: 'Move back',
       proofSquares: 'Together, the two squares on the legs have the same area as the square on the hypotenuse.',

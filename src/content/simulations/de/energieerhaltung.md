@@ -18,7 +18,7 @@ $$
 
 Die Masse kürzt sich heraus: Ein schwerer und ein leichter Wagen sind an jeder Stelle **gleich schnell**, nur ihre Energien sind verschieden. Ohne Reibung kehrt der Wagen genau in der Starthöhe um; über einen Hügel kommt er nur, wenn der Hügel niedriger als $h_0$ ist.
 
-Mit **Reibung** wird ein Teil der Energie in **innere Energie** (Reibungswärme $W_\text{R}$) umgewandelt. Die Gesamtenergie bleibt erhalten, $E_\text{pot} + E_\text{kin}$ nimmt aber ab:
+Mit **Reibung** wird ein Teil der Energie in **innere Energie** (Reibungswärme $W_\text{R}$) umgewandelt: Schienen und Räder werden ein wenig wärmer. Diese Energie lässt sich kaum wieder nutzen, man spricht von **Energieentwertung**. Die Gesamtenergie bleibt erhalten, $E_\text{pot} + E_\text{kin}$ nimmt aber ab:
 
 $$
 E_\text{pot} + E_\text{kin} + W_\text{R} = m g h_0 = \text{konstant}
@@ -30,7 +30,7 @@ $$
 
 1. Drücke **Losfahren** und beobachte die Energie-Säulen. Was bleibt immer gleich? Ziehe den Wagen vor der Fahrt an eine andere Stelle der Startrampe.
 2. Tippe auf die Schiene, um bis zu vier **Messpunkte** zu setzen. Die Simulation zeigt dort Höhe und Geschwindigkeit, die Tabelle die Energien. Verdopple dann die Masse: Was ändert sich, was nicht? [Doppelte Masse](?track=tal&h0=15&m=800)
-3. Schalte Reibung ein. Wohin verschwindet die Energie? Die zweite, gepunktete Linie zeigt, wie hoch der Wagen noch kommen kann. [Mit Reibung](?mu=0.03)
+3. Schalte Reibung ein. In welche Energieform wird die Energie umgewandelt? Achte auf die Säule $W_\text{R}$. Die zweite, gepunktete Linie zeigt, wie hoch der Wagen noch kommen kann. [Mit Reibung](?mu=0.03)
 4. Öffne die **Energie-Diagramme**. Oben ist die Lageenergie über dem Weg ein „Energieberg“ in Form der Bahn; der Abstand bis zur waagerechten Linie ist die Bewegungsenergie. Unten stapeln sich die Energien über der Zeit – die Oberkante bleibt immer gleich. Tippe ins untere Diagramm, um die Zeit zu verschieben. [Energie-Diagramme](?mode=energy&track=tal&h0=15&mu=0.02)
 5. Baue eine **eigene Bahn**: Ziehe die Punkte 1 bis 4 und den Wagen. Wann schafft er den Hügel bei Punkt 2? [Eigene Bahn](?track=eigen)
 6. Sieh dir die **Kräfte im Looping** an: aus 20 m und aus 13 m Höhe. [Looping aus 20 m](?mode=loop&track=looping&h0=20) · [aus 13 m](?mode=loop&track=looping&h0=13)
@@ -93,7 +93,18 @@ Starte im Tal aus $15\,\text{m}$ mit $\mu = 0{,}02$. Wie hoch kommt der Wagen au
 <details>
 <summary>Lösung anzeigen</summary>
 
-Er kehrt in etwa $13{,}4\,\text{m}$ Höhe um. Es fehlen etwa $1{,}6\,\text{m}$ Höhe, also $W_\text{R} \approx 400 \cdot 9{,}81 \cdot 1{,}59\,\text{J} \approx 6{,}2\,\text{kJ}$. Die Summe aller Energien bleibt $58{,}9\,\text{kJ}$. Mit Reibung braucht der Looping übrigens mehr als $15\,\text{m}$: bei $\mu = 0{,}02$ etwa $17\,\text{m}$. [Messreihe mit Reibung](?mode=task&track=looping&mu=0.02&h0=15)
+Er kehrt in etwa $13{,}4\,\text{m}$ Höhe um. Es fehlen etwa $1{,}6\,\text{m}$ Höhe, also $W_\text{R} \approx 400 \cdot 9{,}81 \cdot 1{,}59\,\text{J} \approx 6{,}2\,\text{kJ}$. Die Summe aller Energien bleibt $400 \cdot 9{,}81 \cdot 15\,\text{J} \approx 58{,}9\,\text{kJ}$. Mit Reibung braucht der Looping übrigens mehr als $15\,\text{m}$: bei $\mu = 0{,}02$ etwa $17\,\text{m}$. [Messreihe mit Reibung](?mode=task&track=looping&mu=0.02&h0=15)
+
+</details>
+
+### Aufgabe 6: Zu niedrig gestartet
+
+Auf der eigenen Bahn liegt der Hügel bei Punkt 2 in $14\,\text{m}$ Höhe. Der Wagen startet ohne Reibung aus $12\,\text{m}$. Wo kehrt er um? Wie schnell ist er im Tal bei Punkt 1 ($2\,\text{m}$)? [Aufgabe laden](?track=eigen&h0=12&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Ohne Reibung kehrt er genau in der Starthöhe um, also in $12\,\text{m}$ Höhe am Hang vor dem Hügel. Den $14\,\text{m}$ hohen Hügel schafft er nicht. Im Tal ist $\Delta h = 12\,\text{m} - 2\,\text{m} = 10\,\text{m}$, also $v = \sqrt{2 \cdot 9{,}81 \cdot 10}\,\tfrac{\text{m}}{\text{s}} \approx 14{,}0\,\tfrac{\text{m}}{\text{s}}$. Danach rollt er zurück zum Start und pendelt hin und her.
 
 </details>
 
@@ -101,7 +112,7 @@ Er kehrt in etwa $13{,}4\,\text{m}$ Höhe um. Es fehlen etwa $1{,}6\,\text{m}$ H
 
 - **Einsatz:** Energieerhaltung in der Mittelstufe (Jahrgangsstufe 9/10, bitte am Lehrplan prüfen); die Energie-Diagramme bereiten auf Potentialdiagramme vor, der Looping eignet sich als Vertiefung zur Kreisbewegung.
 - **Entdeckungsaufgabe in Gruppen:** Jede Gruppe sucht die Mindesthöhe – erst ohne, dann mit Reibung – und begründet das Ergebnis anschließend mit $v^2 \geq g r$.
-- **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2}$. Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln).
+- **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2} = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Wer im Unterricht mit $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ rechnet, erhält etwa $2\,\%$ größere Energien und Kräfte und etwa $1\,\%$ größere Geschwindigkeiten. Energien zeigt die Simulation in Kilojoule ($1\,\text{kJ} = 1000\,\text{J}$). Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln).
 - **Häufige Stolpersteine:**
   - „Schwere Wagen sind schneller.“ – Die Geschwindigkeit hängt nicht von der Masse ab.
   - „Mit Reibung geht Energie verloren.“ – Sie wird in innere Energie umgewandelt, nicht vernichtet.

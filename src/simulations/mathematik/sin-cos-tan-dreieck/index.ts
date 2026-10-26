@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angleFromSides,
@@ -25,6 +25,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Höhe einer Ziegelreihe (mit Fuge) im Foto ziegelwand.webp, in Pixeln. */
+const BRICK_ROW = 72.4;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 type Px = [number, number];
@@ -139,6 +141,7 @@ export default defineSimulation({
   id: 'sin-cos-tan-dreieck',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
+  images: { wheelchair: 'rollstuhl.webp', bricks: 'ziegelwand.webp' },
   groups: [
     { id: 'fig', label: L('Dreieck', 'Triangle') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -247,11 +250,11 @@ export default defineSimulation({
   strings: {
     de: {
       canvas:
-        'Rechtwinkliges Dreieck ABC mit rechtem Winkel bei C auf Karopapier; die Ecke B lässt sich ziehen. Gegenkathete, Ankathete und Hypotenuse zum gewählten Winkel sind farbig benannt. Rechts Karten mit dem Seitenverhältnis, einer Tabelle ähnlicher Dreiecke und den Graphen von sin, cos und tan. Weitere Themen: Einheitskreis, Winkel aus zwei Seiten berechnen und drei Anwendungen (Rampe, Leiter, Turmhöhe).',
+        'Rechtwinkliges Dreieck ABC mit rechtem Winkel bei C auf Karopapier; die Ecke B lässt sich ziehen. Gegenkathete, Ankathete und Hypotenuse zum gewählten Winkel sind farbig benannt. Daneben bzw. darunter Karten mit dem Seitenverhältnis, einer Tabelle ähnlicher Dreiecke und, wenn Platz ist, den beschrifteten Graphen von sin, cos und tan. Weitere Themen: Einheitskreis mit sin, cos und tan als Strecken und einer Tabelle der besonderen Werte, Winkel aus zwei Seiten Schritt für Schritt berechnen (mit dem Sonderfall „kein Dreieck“) und drei gezeichnete Anwendungen (Rampe mit Steigung in Prozent, Leiter an der Wand, Turmhöhe mit Höhenwinkel).',
     },
     en: {
       canvas:
-        'Right triangle ABC with the right angle at C on squared paper; vertex B can be dragged. The opposite side, adjacent side and hypotenuse for the chosen angle are coloured and named. On the right, cards with the ratio of sides, a table of similar triangles and the graphs of sin, cos and tan. Further topics: unit circle, finding an angle from two sides and three applications (ramp, ladder, tower height).',
+        'Right triangle ABC with the right angle at C on squared paper; vertex B can be dragged. The opposite side, adjacent side and hypotenuse for the chosen angle are coloured and named. Beside or below it, cards with the ratio of sides, a table of similar triangles and, if there is room, the labelled graphs of sin, cos and tan. Further topics: unit circle with sin, cos and tan as lengths and a table of special values, finding an angle from two sides step by step (with the special case “no triangle”) and three drawn applications (ramp with a gradient in percent, ladder against a wall, tower height from the angle of elevation).',
     },
   },
 
@@ -286,8 +289,9 @@ export default defineSimulation({
 
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
-    const N = (v: number, d = 2) => fmt.num(clean(v, d), d);
     const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
+    /** Exakte Werte ohne Nullen am Ende (0,5), gerundete mit allen Stellen (tan 35° ≈ 0,700 statt 0,7). */
+    const N = (v: number, d = 2) => (isExact(v, d) ? fmt.num(clean(v, d), d) : fmt.fixed(clean(v, d), d));
     const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
     const M = '\\t{m}';
     const angName = (r: Ref) => (r === 'a' ? 'α' : 'β');
@@ -404,7 +408,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = opts.fill ?? (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+      g.fillStyle = opts.fill ?? mixColor(th().bg, th().bg, 0, th().dark ? 0.92 : 0.95);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 7;
       g.shadowOffsetY = 2;
@@ -547,7 +551,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -559,7 +563,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -617,11 +621,11 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#121923' : '#fdfdfb';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.02 : 0.006);
       roundRect(g, R.x + 1, R.y + 1, R.w - 2, R.h - 2, 14);
       g.fill();
       g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, R.x + 1.5, R.y + 1.5, R.w - 3, R.h - 3, 14);
       g.stroke();
@@ -727,7 +731,7 @@ export default defineSimulation({
       const tx = q[0] + (away[0] / l) * (r + 12);
       const ty = q[1] + (away[1] / l) * (r + 12);
       g.lineWidth = 4;
-      g.strokeStyle = th().dark ? 'rgba(18,25,35,0.9)' : 'rgba(253,253,251,0.95)';
+      g.strokeStyle = mixColor(th().bg, th().bg, 0, th().dark ? 0.9 : 0.95);
       g.lineJoin = 'round';
       g.strokeText(name, tx, ty);
       g.fillStyle = color;
@@ -1075,7 +1079,10 @@ export default defineSimulation({
       const cLen = `\\c{h}{c ${eq(c * kk)} ${N(c * kk)} cm}`;
       const psA = pillSize(aLen, szL);
       fpill(midA[0] + 10 + psA.w / 2, midA[1] - 13, aLen, { size: szL, alpha: lab, bounds: R });
-      fpill(midB[0], midB[1] + 18, bLen, { size: szL, alpha: lab, bounds: R });
+      // sehr kurze Kathete b (α nahe 90°): Längenangabe tiefer, damit die Eckennamen A und C sie nicht verdecken
+      const narrowB = pc[0] - pa[0] < pillSize(bLen, szL).w + 30;
+      const dyB = narrowB ? 34 : 18;
+      fpill(midB[0], midB[1] + dyB, bLen, { size: szL, alpha: lab, bounds: R });
       // c: außen an der Hypotenuse
       const hl = Math.hypot(pb[0] - pa[0], pb[1] - pa[1]) || 1;
       let nC: Px = [(pb[1] - pa[1]) / hl, -(pb[0] - pa[0]) / hl];
@@ -1084,7 +1091,7 @@ export default defineSimulation({
       // Rollen: wandern beim Wechsel des Bezugswinkels um die Ecke C
       const roleSz = fs(12.5, 11.5);
       const anchorA: Px = [midA[0] + 10, midA[1] + 13];
-      const anchorB: Px = [midB[0], midB[1] + 44];
+      const anchorB: Px = [midB[0], midB[1] + dyB + 26];
       const ctrl = (out: number): Px => [pc[0] + out, pc[1] + out * 0.9];
       const bez = (p0: Px, c1: Px, p1: Px, t: number): Px => [
         (1 - t) * (1 - t) * p0[0] + 2 * (1 - t) * t * c1[0] + t * t * p1[0],
@@ -1370,7 +1377,7 @@ export default defineSimulation({
           const v = val(role);
           const key = ROLE_KEY[role];
           if (given(role)) return `\\c{${key}}{\\t{${say(ROLE_NAME[role])}} = ${N(v, 1)} cm}`;
-          return show && st[4]! > 0.5 ? `\\c{m}{${eq(v)} ${N(v)} cm}` : `\\c{m}{\\t{${say(ROLE_NAME[role])}}}`;
+          return show && st[4]! > 0.5 ? `\\c{m}{\\t{${say(ROLE_NAME[role])}} ${eq(v)} ${N(v)} cm}` : `\\c{m}{\\t{${say(ROLE_NAME[role])}}}`;
         };
         const sa = sideSrc(sideRole('a'));
         const psA = pillSize(sa, szL);
@@ -1604,10 +1611,10 @@ export default defineSimulation({
       const h = Math.min(Math.max(hDeg, hPx) + 58, R.h * 0.32);
       g.save();
       g.globalAlpha *= alpha * 0.97;
-      g.fillStyle = theme.dark ? 'rgba(15,20,30,0.82)' : 'rgba(255,255,255,0.86)';
+      g.fillStyle = mixColor(theme.bg, theme.bg, 0, theme.dark ? 0.82 : 0.86);
       roundRect(g, x, y, w, h, 12);
       g.fill();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       roundRect(g, x + 0.5, y + 0.5, w - 1, h - 1, 12);
       g.stroke();
       const o: Px = [x + 16, y + h - 26];
@@ -1644,6 +1651,22 @@ export default defineSimulation({
       const u = s * 0.62;
       if (u < 14) return;
       const dark = th().dark;
+      const chairImg = ctx.images.get('wheelchair');
+      if (chairImg) {
+        // Foto eines leeren Rollstuhls (etwa 0,95 m hoch), Räder auf der Rampe, mitgedreht
+        const h = s * 0.95;
+        const w = (h * chairImg.naturalWidth) / chairImg.naturalHeight;
+        g.save();
+        g.globalAlpha *= alpha;
+        g.translate(q[0], q[1]);
+        g.rotate(-rad(angDeg));
+        g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
+        g.shadowBlur = 6;
+        g.shadowOffsetY = 2;
+        g.drawImage(scaledSprite(chairImg, w, h, surface.dpr), -w * 0.4, -h, w, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.globalAlpha *= alpha * 0.9;
       g.translate(q[0], q[1]);
@@ -1708,6 +1731,25 @@ export default defineSimulation({
       g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
       const bh = clamp(V.s * 0.075, 5, 14);
       const bw = bh * 2.6;
+      const brickImg = ctx.images.get('bricks');
+      if (brickImg) {
+        // Ziegelfoto als Muster: eine Ziegelreihe (BRICK_ROW px im Bild) so hoch wie bei der Ersatzgrafik, unten an der Bodenlinie ausgerichtet
+        const tile = (brickImg.naturalWidth * bh) / BRICK_ROW;
+        const dpr = surface.dpr;
+        const pat = g.createPattern(scaledSprite(brickImg, tile, tile, dpr), 'repeat');
+        if (pat) {
+          pat.setTransform(new DOMMatrix([1 / dpr, 0, 0, 1 / dpr, wallX, gy]));
+          g.fillStyle = pat;
+          g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
+          // im Dunkelmodus abgedunkelt wie die gezeichnete Wand
+          if (dark) {
+            g.fillStyle = withAlpha(theme.bg, 0.45);
+            g.fillRect(wallX, R.y, wx1 - wallX, gy - R.y);
+          }
+        }
+      }
+      const brickGA = g.globalAlpha;
+      if (brickImg) g.globalAlpha = 0;
       g.strokeStyle = dark ? 'rgba(20,12,10,0.55)' : 'rgba(255,240,230,0.7)';
       g.lineWidth = 1;
       for (let row = 0, y = gy; y > R.y; row++, y -= bh) {
@@ -1722,6 +1764,7 @@ export default defineSimulation({
           g.stroke();
         }
       }
+      g.globalAlpha = brickGA;
       const shade = g.createLinearGradient(wallX, 0, wallX + 18, 0);
       shade.addColorStop(0, 'rgba(0,0,0,0.28)');
       shade.addColorStop(1, 'rgba(0,0,0,0)');
@@ -2015,7 +2058,7 @@ export default defineSimulation({
           const b = formula(g, src, fstyle(hs, theme.muted, 700));
           b.draw(g, cols[i]!, yH + (b.asc - b.desc) / 2);
         });
-        g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+        g.strokeStyle = theme.grid;
         g.lineWidth = 1;
         g.beginPath();
         g.moveTo(x0, yH + 11);
@@ -2306,9 +2349,16 @@ export default defineSimulation({
         const r = ref();
         const { num, den } = ratioParts(f);
         const vOf = (role: Role) => (role === 'opp' ? p.go : role === 'adj' ? p.an : p.hy);
+        const sz = fs(13, 12);
+        const givenLbl = `\\c{m}{\\t{${say(L('Gegeben', 'Given'))}}:}`;
+        const sideNum = `${roleSrc(num)} = ${N(vOf(num), 1)} cm`;
+        const sideDen = `${roleSrc(den)} = ${N(vOf(den), 1)} cm`;
+        const oneRow = `${givenLbl}  ${sideNum},  ${sideDen}`;
+        // passt die Zeile nicht in die Karte (Tablet, schmale Spalte), stehen die beiden Seiten untereinander
+        const tooWide = formula(surface.g, oneRow, fstyle(sz, th().text, 600)).w > R.w - 2 * fs(14, 12);
         const rows: Row[] = [
-          { src: `\\c{m}{\\t{${say(L('Gegeben', 'Given'))}}:}  ${roleSrc(num)} = ${N(vOf(num), 1)} cm,  ${roleSrc(den)} = ${N(vOf(den), 1)} cm`, size: fs(13, 12), gap: 8 },
-          { src: `\\c{m}{\\t{${say(L('Gesucht', 'Unknown'))}}:}  \\c{k}{${r === 'a' ? say(L('Winkel α bei A', 'angle α at A')) : say(L('Winkel β bei B', 'angle β at B'))}}`, size: fs(13, 12) },
+          ...(tooWide ? [{ src: `${givenLbl}  ${sideNum}`, size: sz, gap: 4 }, { src: `\\c{m}{\\t{${say(L('und', 'and'))}}}  ${sideDen}`, size: sz, gap: 8 }] : [{ src: oneRow, size: sz, gap: 8 }]),
+          { src: `\\c{m}{\\t{${say(L('Gesucht', 'Unknown'))}}:}  \\c{k}{${r === 'a' ? say(L('Winkel α bei A', 'angle α at A')) : say(L('Winkel β bei B', 'angle β at B'))}}`, size: sz },
         ];
         return formulaCard(R, measure, k, say(L('Aufgabe', 'Task')), col.ang(), rows);
       };
@@ -2353,13 +2403,14 @@ export default defineSimulation({
           { src: `② ${f} \\c{k}{${A}} = \\f{\\c{${ROLE_KEY[num]}}{${N(vOf(num), 1)} cm}}{\\c{${ROLE_KEY[den]}}{${N(vOf(den), 1)} cm}} ${eq(res.value, 4)} ${N(res.value, 4)}`, size: fs(14, 13), at: st[1], gap: 8 },
           { src: `③ \\c{k}{${A}} = ${f}^{−1}(${N(res.value, 4)})`, size: fs(14, 13), at: st[2], gap: 8 },
           { src: `④ \\c{k}{${A} ${eq(res.angle, 2)} \\b{${N(res.angle, 2)}°}}`, size: fs(15, 14), at: st[3], gap: 8 },
-          {
-            src: `\\c{m}{\\t{${say(L('Rest', 'Rest'))}}: ${roleSrc(third)} ${eq(thirdV)} ${N(thirdV)} cm (\\t{Pythagoras}), ${r === 'a' ? 'β' : 'α'} = 90° − ${N(res.angle, 2)}° ${eq(other, 2)} ${N(other, 2)}°}`,
-            size: fs(12, 11),
-            color: th().muted,
-            at: st[4],
-          },
         ];
+        // Rest: dritte Seite und zweiter Winkel; zu breit für die Karte → zwei Zeilen
+        const restSide = `\\c{m}{\\t{${say(L('Rest', 'Remaining'))}}: ${roleSrc(third)} ${eq(thirdV)} ${N(thirdV)} cm (\\t{Pythagoras})`;
+        const restAng = `${r === 'a' ? 'β' : 'α'} = 90° − ${N(res.angle, 2)}° ${eq(other, 2)} ${N(other, 2)}°}`;
+        const restSz = fs(12, 11);
+        const restOne = `${restSide}, ${restAng}`;
+        if (formula(surface.g, restOne, fstyle(restSz, th().muted, 600)).w <= R.w - 2 * fs(14, 12)) rows.push({ src: restOne, size: restSz, color: th().muted, at: st[4] });
+        else rows.push({ src: `${restSide}}`, size: restSz, color: th().muted, at: st[4], gap: 4 }, { src: `\\c{m}{${restAng}`, size: restSz, color: th().muted, at: st[4] });
         return formulaCard(R, measure, k, say(L('Lösung Schritt für Schritt', 'Solution step by step')), col.ang(), rows);
       };
     }
@@ -2432,7 +2483,8 @@ export default defineSimulation({
     function cardsFor(now: number, k: Intro): CardFn[] {
       const m = mode();
       if (m === 'tri') return [ratioCard(now, k), simCard(now, k), graphCard(now, k)];
-      if (m === 'unit') return [unitCard(now, k), relCard(now, k), exactCard(now, k), graphCard(now, k)];
+      // Reihenfolge = Vorrang bei wenig Platz: Die Tabelle der besonderen Werte (im Lernmaterial genannt) vor den Zusammenhängen
+      if (m === 'unit') return [unitCard(now, k), exactCard(now, k), relCard(now, k), graphCard(now, k)];
       if (m === 'inv') return [taskCard(k), stepsCard(now, k), graphCard(now, k)];
       return [appCard(now, k), appInfoCard(k)];
     }

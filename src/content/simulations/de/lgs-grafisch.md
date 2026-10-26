@@ -34,7 +34,7 @@ Gesucht sind alle Zahlenpaare $(x \mid y)$, die **beide** Gleichungen erfüllen.
 
 ## Ausprobieren
 
-1. Ziehe die markierten Punkte: den $y$-Achsenabschnitt und die Spitze des Steigungsdreiecks. Wie wandert der Schnittpunkt?
+1. Ziehe die markierten Punkte: den $y$-Achsenabschnitt (bei $x = 0$) und den Punkt bei $x = 1$. Mit **Anzeige → Steigungsdreiecke** siehst du die Steigung. Wie wandert der Schnittpunkt?
 2. Drücke **Probe durch Einsetzen**.
 3. Stelle [parallele Geraden](?m1=0.5&t1=1&m2=0.5&t2=-2) ein. Warum gibt es keinen Schnittpunkt?
 4. Was passiert bei [2x − y = 1 und −4x + 2y = −2](?form=general&a1=2&b1=-1&c1=1&a2=-4&b2=2&c2=-2)?
@@ -121,9 +121,9 @@ $\text{I}\; x + y = 10$, $\text{II}\; x - y = 4$. Die Geraden schneiden sich in 
 
 - **Einsatz:** Bayern Jahrgangsstufe 8, Lernbereich 6 (Lineare Gleichungssysteme: aufstellen, grafisch und rechnerisch lösen, Lösbarkeit und Lösungsvielfalt). Voraussetzung sind lineare Funktionen (Lernbereich 2).
 - **Darstellungen:** Normalform $y = mx + t$ (Regler und ziehbare Punkte), allgemeine Form $ax + by = c$ mit ganzzahligen Koeffizienten (inklusive senkrechter Geraden; der Punkt auf der $y$-Achse verschiebt die Gerade parallel) und ein Tarifvergleich mit Achsen in Minuten und Euro. Beim Wechsel zwischen Normalform und allgemeiner Form werden die Gleichungen umgerechnet, soweit das mit den Reglern möglich ist.
-- **Exaktheit:** Die Simulation rechnet mit Brüchen. Liegt der Schnittpunkt nicht auf „schönen“ Werten, zeigt sie den abgelesenen Näherungswert und den exakten Wert – ein guter Anlass für die rechnerischen Verfahren. Die Ergebnisse „Lage der Geraden“, „Lösungsmenge“, „Rechnerisch (Gleichsetzen)“, „Probe“ und „Welcher Tarif lohnt sich?“ lassen sich mit `_hide=1` verdecken.
+- **Exaktheit:** Die Simulation rechnet mit Brüchen. Liegt der Schnittpunkt nicht auf „schönen“ Werten, zeigt sie den abgelesenen Näherungswert und den exakten Wert – ein guter Anlass für die rechnerischen Verfahren. Mit `_hide=1` werden die Ergebnisse („Lage der Geraden“, „Lösungsmenge“, „Rechnerisch (Gleichsetzen)“, „Probe“, „Welcher Tarif lohnt sich?“) verdeckt. Im Bild stehen dann keine Koordinaten des Schnittpunkts, und die Probe ist gesperrt. Dasselbe bewirkt der Schalter **Anzeige → Lösung anzeigen** (in Links: `show=0`).
 - **Häufige Stolpersteine:**
   - Der Schnittpunkt wird nur mit einer Gleichung überprüft.
-  - Parallele Geraden werden mit „Lösung $x = 0$“ verwechselt; bei identischen Geraden wird „keine Lösung“ angegeben.
+  - Bei parallelen Geraden führt das Rechnen auf einen Widerspruch wie $0 = 3$. Dieser wird fälschlich als „$x = 0$“ gedeutet. Bei identischen Geraden wird „keine Lösung“ angegeben.
   - Die Gleichung $ax + by = c$ wird ohne Auflösen nach $y$ gezeichnet, z. B. $c$ als $y$-Achsenabschnitt.
 - **Schreibweise:** Lösungsmenge als $L = \{(2 \mid 3)\}$; bei identischen Geraden $L = \{(x \mid y) \mid y = 2x - 1\}$.

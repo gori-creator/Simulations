@@ -1,4 +1,4 @@
-import { defineSimulation, FixedStepper, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { holdRange, inclineForces, limitAngle, MATERIALS, pullUpForce, ROLLING, slideAcceleration, slideStep, type InclineForces, type MaterialId, type SlideState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -18,18 +18,88 @@ const FZ_MAX = 50;
 const METER_RANGE = 20;
 const MAX_POINTS = 16;
 /**
- * Lage im Foto `holzklotz.webp` (509 × 109 px, Seitenansicht): Klotz von
- * x = 1 bis 446 und y = 1 bis 107, rechts davon die Öse für den Kraftmesser.
- * Der Klotz im Foto ist sehr lang; für die Simulation wird ein Stück aus der
- * Mitte herausgenommen (linkes Ende bis `cutL`, rechtes Ende ab `cutR`, an der
- * Naht `blend` px weich überblendet). Nichts wird gestreckt oder gestaucht.
+ * Klotz-Fotos (Seitenansicht, Öse rechts): Bildgröße, Oberkante und Höhe des
+ * Klotzes und seine rechte Kante (rechts davon die Öse für den Kraftmesser).
+ * Die Klötze im Foto sind sehr lang; für die Simulation wird ein Stück aus der
+ * Mitte herausgenommen, bis der Klotz `BLOCK_ASPECT`-mal so lang wie hoch ist
+ * (an der Naht `BLOCK_BLEND` px weich überblendet). Nichts wird gestreckt.
  */
-const BLOCK_IMG = { w: 509, h: 109, x0: 1, y0: 1, bodyR: 446, bh: 106, cutL: 138, cutR: 330, blend: 16 };
-/** Breite des zusammengesetzten Fotos und des Klotzes darin (Bildpixel). */
-const BLOCK_W = BLOCK_IMG.cutL + (BLOCK_IMG.w - BLOCK_IMG.cutR) - BLOCK_IMG.blend;
-const BLOCK_BW = BLOCK_W - (BLOCK_IMG.w - BLOCK_IMG.bodyR) - BLOCK_IMG.x0;
-/** `brett.webp` (677 × 68 px): Holzleiste, wird als Oberfläche der Ebene gespiegelt aneinandergesetzt. */
-const BOARD_IMG = { w: 677, h: 68 };
+interface BlockImg {
+  w: number;
+  h: number;
+  y0: number;
+  bh: number;
+  bodyR: number;
+}
+type BlockKey = 'block' | 'blockSteel' | 'blockRubber';
+const BLOCK_IMGS: Record<BlockKey, BlockImg> = {
+  block: { w: 1600, h: 410, y0: 2, bh: 404, bodyR: 1510 },
+  blockSteel: { w: 1600, h: 438, y0: 1, bh: 435, bodyR: 1455 },
+  blockRubber: { w: 1600, h: 380, y0: 1, bh: 377, bodyR: 1475 },
+};
+const BLOCK_ASPECT = 2.2;
+const BLOCK_BLEND = 40;
+/** Zusammengesetzter Klotz: Schnittstellen, Gesamtbreite und Breite des Klotzes (Bildpixel). */
+function blockCut(D: BlockImg): { cutL: number; cutR: number; w: number; bw: number } {
+  const bw = BLOCK_ASPECT * D.bh;
+  const cutL = bw / 2 + BLOCK_BLEND / 2;
+  const cutR = D.bodyR - cutL;
+  return { cutL, cutR, w: cutL + (D.w - cutR) - BLOCK_BLEND, bw };
+}
+/**
+ * Experimentierwagen `wagen.webp` (1600 × 249 px, ohne Räder): Wagenkasten bis
+ * x = 1495, Achslöcher bei x = 347 und 1150 (y = 210). Rad `wagen-rad.webp`
+ * (1234 × 1242 px, füllt das Bild, Nabe in der Mitte).
+ */
+const CART_IMG = { w: 1600, h: 249, bodyW: 1495, axles: [347, 1150], axleY: 210 };
+const WHEEL_IMG = { w: 1234, h: 1242 };
+/** Radius der Räder des Fotowagens (Anteil der Wagenlänge). */
+const CART_WHEEL = 0.105;
+/**
+ * Kraftmesser-Foto `kraftmesser.webp` (1600 × 170 px, Ring links, Haken rechts):
+ * Ringmitte, Rohrdurchmesser und Schnittstellen. Gezeichnet wird nur die Hülse
+ * mit Ring (Haken und Skalenstange zeichnet die Simulation); gestaucht wird
+ * allein das gleichförmige Rohrstück zwischen `capEnd` und `tubeCut`.
+ */
+const METER_IMG = { h: 170, cy: 85, ringCx: 86, tube: 155, capEnd: 330, tubeCut: 1350, tubeEnd: 1398 };
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
+
+type Source = CanvasImageSource & { width: number; height: number };
+
+/**
+ * Kraftmesser-Hülse als Foto in lokalen Koordinaten: Rohrende bei x0,
+ * Ringmitte bei x1, Rohrmitte auf y = 0, Rohrdurchmesser `width`.
+ */
+function drawMeterPhoto(g: CanvasRenderingContext2D, img: Source, x0: number, x1: number, width: number, dpr: number): void {
+  const M = METER_IMG;
+  const s = width / M.tube;
+  const H = M.h * s;
+  const y = -M.cy * s;
+  const ringPart = (M.capEnd - M.ringCx) * s;
+  const endW = (M.tubeEnd - M.tubeCut) * s;
+  const mid = Math.max(1, x1 - ringPart - (x0 + endW));
+  const piece = (cx: number, cw: number, x: number, w: number) =>
+    g.drawImage(scaledSprite(img, w, H, dpr, { flipX: true, crop: { x: cx, y: 0, w: cw, h: M.h } }), x, y, w, H);
+  piece(M.tubeCut, M.tubeEnd - M.tubeCut, x0, endW + 0.5);
+  piece(M.capEnd, M.tubeCut - M.capEnd, x0 + endW, mid + 0.5);
+  piece(0, M.capEnd, x1 - ringPart, M.capEnd * s);
+}
+
+/** Tischkante als Foto: auf Höhe h skaliert, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt). */
+function drawTablePhoto(g: CanvasRenderingContext2D, img: Source, x: number, y: number, w: number, h: number, dpr: number, dark: boolean): void {
+  const tw = (TABLE_IMG.w * h) / TABLE_IMG.h;
+  g.save();
+  g.beginPath();
+  g.rect(x, y, w, h);
+  g.clip();
+  for (let i = 0, tx = x; tx < x + w; i++, tx += tw) g.drawImage(scaledSprite(img, tw, h, dpr, { flipX: i % 2 === 1 }), tx, y, tw + 0.5, h);
+  if (dark) {
+    g.fillStyle = 'rgba(10,14,22,0.38)';
+    g.fillRect(x, y, w, h);
+  }
+  g.restore();
+}
 
 interface Measurement {
   a: number;
@@ -47,9 +117,23 @@ interface Measurement {
 export default defineSimulation({
   id: 'schiefe-ebene',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Zieh das obere Ende der Ebene (Winkel), den Körper oder den Ring des Kraftmessers.',
+    'Tip: drag the top of the plane (angle), the body or the ring of the spring balance.',
+  ),
   layout: { aspect: 1.5, aspectNarrow: 0.68 },
-  images: { block: 'holzklotz.webp', board: 'brett.webp' },
+  images: {
+    block: 'holzklotz.webp',
+    blockSteel: 'klotz-stahl.webp',
+    blockRubber: 'klotz-gummi.webp',
+    board: 'brett.webp',
+    boardSteel: 'brett-stahl.webp',
+    boardIce: 'brett-eis.webp',
+    cart: 'wagen.webp',
+    wheel: 'wagen-rad.webp',
+    meter: 'kraftmesser.webp',
+    table: 'tischkante.webp',
+  },
   groups: [
     { id: 'meter', label: L('Kraftmesser', 'Spring balance') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -290,7 +374,7 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
-    const N = (v: number) => fmt.num(v, 2);
+    const N = (v: number) => fmt.fixed(v, 2);
 
     function updateNow(): void {
       ctx.readout('now', tr('nowText', { t: fmt.fixed(t, 2), s: fmt.num((state.s - S_START) * 100, 1), v: fmt.num(Math.abs(state.v), 2) }));
@@ -307,7 +391,7 @@ export default defineSimulation({
         ctx.readout('limit', null);
       } else {
         ctx.readout('fric', subs(tr('fricText', { Fmax: N(f.FRmax), Fs: N(f.FRslide), mh: fmt.num(muH, 2), mg: fmt.num(muG, 2) })));
-        ctx.readout('limit', subs(tr('limitText', { mh: fmt.num(muH, 2), a: fmt.num(limitAngle(muH), 1) })));
+        ctx.readout('limit', subs(tr('limitText', { mh: fmt.num(muH, 2), a: fmt.fixed(limitAngle(muH), 1) })));
       }
       // Was passiert beim Loslassen?
       const P = pull();
@@ -440,48 +524,62 @@ export default defineSimulation({
       return [T[0] - Math.cos(a) * g0.L * s, T[1] + Math.sin(a) * g0.L * s];
     }
 
-    /** Holzklotz als Foto (nur bei Holz bzw. eigenen Werten). */
-    const blockPhoto = () => (p.body === 'block' && (p.mat === 'wood' || p.mat === 'custom') ? ctx.images.get('block') : null);
+    /** Klotz als Foto: Holz (auch bei eigenen Werten), Stahl (auch auf Eis) oder Gummi. */
+    function blockPhoto(): { img: HTMLImageElement; key: BlockKey; D: BlockImg } | null {
+      if (p.body !== 'block') return null;
+      const key: BlockKey = p.mat === 'steel' || p.mat === 'ice' ? 'blockSteel' : p.mat === 'rubber' ? 'blockRubber' : 'block';
+      const img = ctx.images.get(key);
+      return img ? { img, key, D: BLOCK_IMGS[key] } : null;
+    }
+    /** Wagen als Foto (Kasten und Rad). */
+    function cartPhoto(): { body: HTMLImageElement; wheel: HTMLImageElement } | null {
+      if (p.body !== 'cart') return null;
+      const body = ctx.images.get('cart');
+      const wheel = ctx.images.get('wheel');
+      return body && wheel ? { body, wheel } : null;
+    }
 
     function bodySize(g0: { L: number }): { bw: number; bh: number } {
       const bw = BODY * g0.L;
       // Foto: Seitenverhältnis des Klotzes aus dem Foto (flacher als die Ersatzgrafik)
-      if (blockPhoto()) return { bw, bh: (bw * BLOCK_IMG.bh) / BLOCK_BW };
+      if (blockPhoto()) return { bw, bh: bw / BLOCK_ASPECT };
+      // Fotowagen: Räder unten, Kasten bis zur Oberkante
+      if (cartPhoto()) return { bw, bh: bw * CART_WHEEL + (CART_IMG.axleY * bw) / CART_IMG.bodyW };
       return { bw, bh: p.body === 'cart' ? bw * 0.5 : bw * 0.58 };
     }
 
-    /** Holzklotz aus dem Foto: beide Enden, in der Mitte weich zusammengesetzt; vorab gerendert. */
+    /** Klotz aus dem Foto: beide Enden, in der Mitte weich zusammengesetzt; vorab gerendert. */
     let blockCache: { key: string; canvas: HTMLCanvasElement } | null = null;
-    function blockSprite(img: HTMLImageElement, k: number): HTMLCanvasElement {
-      const key = `${Math.round(k * 1000)}|${surface.dpr}`;
+    function blockSprite(img: HTMLImageElement, id: BlockKey, D: BlockImg, k: number): HTMLCanvasElement {
+      const key = `${id}|${Math.round(k * 1000)}|${surface.dpr}`;
       if (blockCache?.key === key) return blockCache.canvas;
-      const D = BLOCK_IMG;
-      const w = BLOCK_W * k;
+      const C = blockCut(D);
+      const w = C.w * k;
       const h = D.h * k;
       const { canvas, g } = offscreenCanvas(w, h, surface.dpr);
-      g.drawImage(img, 0, 0, D.cutL, D.h, 0, 0, D.cutL * k, h);
-      const rw = (D.w - D.cutR) * k;
+      g.drawImage(img, 0, 0, C.cutL, D.h, 0, 0, C.cutL * k, h);
+      const rw = (D.w - C.cutR) * k;
       const right = offscreenCanvas(rw, h, surface.dpr);
-      right.g.drawImage(img, D.cutR, 0, D.w - D.cutR, D.h, 0, 0, rw, h);
+      right.g.drawImage(img, C.cutR, 0, D.w - C.cutR, D.h, 0, 0, rw, h);
       right.g.globalCompositeOperation = 'destination-in';
-      const fade = right.g.createLinearGradient(0, 0, D.blend * k, 0);
+      const fade = right.g.createLinearGradient(0, 0, BLOCK_BLEND * k, 0);
       fade.addColorStop(0, 'rgba(0,0,0,0)');
       fade.addColorStop(1, 'rgba(0,0,0,1)');
       right.g.fillStyle = fade;
       right.g.fillRect(0, 0, rw, h);
-      g.drawImage(right.canvas, (D.cutL - D.blend) * k, 0, rw, h);
+      g.drawImage(right.canvas, (C.cutL - BLOCK_BLEND) * k, 0, rw, h);
       blockCache = { key, canvas };
       return canvas;
     }
 
-    /** Holzleiste als Oberfläche: vorab gerendert (gespiegelt aneinandergesetzt, keine Nahtstellen). */
+    /** Oberfläche (Holz, Stahl, Eis) als Foto: vorab gerendert (gespiegelt aneinandergesetzt, keine Nahtstellen). */
     let boardCache: { key: string; canvas: HTMLCanvasElement } | null = null;
-    function boardStrip(img: HTMLImageElement, len: number, thick: number): HTMLCanvasElement {
+    function boardStrip(img: HTMLImageElement, id: string, len: number, thick: number): HTMLCanvasElement {
       const dark = ctx.theme.dark;
-      const key = `${Math.round(len)}|${thick}|${surface.dpr}|${dark ? 1 : 0}`;
+      const key = `${id}|${Math.round(len)}|${thick}|${surface.dpr}|${dark ? 1 : 0}`;
       if (boardCache?.key === key) return boardCache.canvas;
       const { canvas, g } = offscreenCanvas(len, thick, surface.dpr);
-      const natural = (BOARD_IMG.w * thick) / BOARD_IMG.h;
+      const natural = (img.naturalWidth * thick) / img.naturalHeight;
       // Maserung höchstens leicht in Längsrichtung gestreckt
       const n = Math.max(1, Math.round(len / (natural * 1.6)));
       const tw = len / n;
@@ -495,7 +593,7 @@ export default defineSimulation({
       // Kanten: oben Glanz, unten Schattenfuge
       g.fillStyle = 'rgba(255,255,255,0.35)';
       g.fillRect(0, 0, len, 1);
-      g.fillStyle = 'rgba(70,40,10,0.45)';
+      g.fillStyle = id === 'board' ? 'rgba(70,40,10,0.45)' : 'rgba(20,28,40,0.4)';
       g.fillRect(0, thick - 1, len, 1);
       boardCache = { key, canvas };
       return canvas;
@@ -530,8 +628,8 @@ export default defineSimulation({
     function pill(x0: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, solid = false): number {
       const gx = surface.g;
       const theme = ctx.theme;
-      gx.font = `700 ${size}px ${theme.font}`;
-      const w = gx.measureText(label).width + 16;
+      const style = { size, family: theme.font, weight: 700, color: solid ? '#ffffff' : color };
+      const w = measureSubText(gx, label, style) + 16;
       const h = size + 11;
       const left = Math.max(4, Math.min(surface.width - 4 - w, align === 'left' ? x0 : align === 'right' ? x0 - w : x0 - w / 2));
       gx.save();
@@ -548,27 +646,21 @@ export default defineSimulation({
         roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         gx.stroke();
       }
-      text(gx, label, left + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? '#ffffff' : color });
+      subText(gx, label, left + w / 2, y + h / 2 + 0.5, style);
       return w;
     }
 
     function haloText(label: string, x: number, y: number, color: string, size: number, align: CanvasTextAlign = 'center', baseline: CanvasTextBaseline = 'middle'): void {
+      // mit echtem tiefgestelltem Index (F_G, F_{R,max} …)
       const gx = surface.g;
-      gx.font = `700 ${size}px ${ctx.theme.font}`;
+      const style = { size, family: ctx.theme.font, weight: 700, color, align, baseline, halo: ctx.theme.bg, haloWidth: 4 };
       const m = gx.getTransform();
       if (m.b === 0 && m.c === 0 && m.e === 0 && m.f === 0) {
-        const tw = gx.measureText(label).width;
+        const tw = measureSubText(gx, label, style);
         const left = align === 'left' ? x : align === 'right' ? x - tw : x - tw / 2;
         x += Math.max(0, 4 - left) - Math.max(0, left + tw - (surface.width - 4));
       }
-      gx.textAlign = align;
-      gx.textBaseline = baseline;
-      gx.lineJoin = 'round';
-      gx.lineWidth = 4;
-      gx.strokeStyle = ctx.theme.bg;
-      gx.strokeText(label, x, y);
-      gx.fillStyle = color;
-      gx.fillText(label, x, y);
+      subText(gx, label, x, y, style);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width = 3.4, head = 13, dash: number[] = []): void {
@@ -651,20 +743,26 @@ export default defineSimulation({
       gx.fillStyle = wall;
       gx.fillRect(r.x, r.y, r.w, r.h);
       // Labortisch: Platte und Vorderseite
-      const top = gx.createLinearGradient(0, groundY, 0, groundY + 12);
-      top.addColorStop(0, dark ? '#5a4632' : '#d2a877');
-      top.addColorStop(1, dark ? '#4a3a2b' : '#b88a5a');
-      gx.fillStyle = top;
-      gx.fillRect(r.x, groundY, r.w, 12);
-      const front = gx.createLinearGradient(0, groundY + 12, 0, r.y + r.h);
-      front.addColorStop(0, dark ? '#3a2d21' : '#a77b4d');
-      front.addColorStop(1, dark ? '#2a2018' : '#8a6239');
-      gx.fillStyle = front;
-      gx.fillRect(r.x, groundY + 12, r.w, r.y + r.h - groundY - 12);
-      gx.fillStyle = 'rgba(255,255,255,0.25)';
-      gx.fillRect(r.x, groundY, r.w, 1.5);
-      gx.fillStyle = 'rgba(0,0,0,0.18)';
-      gx.fillRect(r.x, groundY + 12, r.w, 2);
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, oben die helle Kante der Platte
+        drawTablePhoto(gx, tableImg, r.x, groundY, r.w, r.y + r.h - groundY, surface.dpr, dark);
+      } else {
+        const top = gx.createLinearGradient(0, groundY, 0, groundY + 12);
+        top.addColorStop(0, dark ? '#5a4632' : '#d2a877');
+        top.addColorStop(1, dark ? '#4a3a2b' : '#b88a5a');
+        gx.fillStyle = top;
+        gx.fillRect(r.x, groundY, r.w, 12);
+        const front = gx.createLinearGradient(0, groundY + 12, 0, r.y + r.h);
+        front.addColorStop(0, dark ? '#3a2d21' : '#a77b4d');
+        front.addColorStop(1, dark ? '#2a2018' : '#8a6239');
+        gx.fillStyle = front;
+        gx.fillRect(r.x, groundY + 12, r.w, r.y + r.h - groundY - 12);
+        gx.fillStyle = 'rgba(255,255,255,0.25)';
+        gx.fillRect(r.x, groundY, r.w, 1.5);
+        gx.fillStyle = 'rgba(0,0,0,0.18)';
+        gx.fillRect(r.x, groundY + 12, r.w, 2);
+      }
 
       // Keil
       const st = surfaceStyle();
@@ -684,14 +782,16 @@ export default defineSimulation({
       gx.fill();
       gx.restore();
       // Oberfläche (Material)
-      const boardImg = st.label === 'wood' ? ctx.images.get('board') : null;
+      // Fotos für Holz, Stahl und Eis (Asphalt bleibt gezeichnet)
+      const boardKey = st.label === 'wood' ? 'board' : st.label === 'steel' ? 'boardSteel' : st.label === 'ice' ? 'boardIce' : null;
+      const boardImg = boardKey ? ctx.images.get(boardKey) : null;
       const thick = boardImg ? (sm ? 6 : 9) : sm ? 4 : 6;
       gx.save();
       if (boardImg) {
         // Foto: Holzleiste entlang der Schräge
         gx.translate(P0[0], P0[1]);
         gx.rotate(-a);
-        gx.drawImage(boardStrip(boardImg, L, thick), 0, 0, L, thick);
+        gx.drawImage(boardStrip(boardImg, boardKey!, L, thick), 0, 0, L, thick);
         gx.restore();
       } else {
         gx.beginPath();
@@ -779,7 +879,14 @@ export default defineSimulation({
         gx.lineTo(hx + 4, T[1]);
         gx.stroke();
         const hcm = PLANE * Math.sin(a) * 100;
-        if (B[1] - T[1] > 18) haloText(`h = ${fmt.num(hcm, 0)} cm`, hx + 6, (B[1] + T[1]) / 2, theme.muted, sm ? 10.5 : 12, 'left');
+        if (B[1] - T[1] > 18) {
+          const hStr = `h = ${fmt.num(hcm, 0)} cm`;
+          const hs = sm ? 10.5 : 12;
+          // passt die Beschriftung rechts nicht mehr in die Szene (flache Ebene, lang), links an die Kante des Keils
+          const hw = measureSubText(gx, hStr, { size: hs, family: theme.font, weight: 700, color: theme.muted });
+          if (hx + 6 + hw <= r.x + r.w - 4) haloText(hStr, hx + 6, (B[1] + T[1]) / 2, theme.muted, hs, 'left');
+          else haloText(hStr, B[0] - 6, (B[1] + T[1]) / 2, theme.muted, hs, 'right');
+        }
         // l entlang der Ebene, nach außen versetzt
         const n: Pt = [-Math.sin(a), -Math.cos(a)];
         const lo = sm ? 30 : 40;
@@ -834,9 +941,12 @@ export default defineSimulation({
       const f = forces();
       const block = p.body === 'block';
       const fr = state.v !== 0 ? f.FRslide : Math.abs(friction);
-      const rows: [string, string, number, string][] = [[theme.series[1]!, 'F_G', f.FG, ctx.t('lgG')]];
-      if (p.parts) rows.push([theme.series[3]!, 'F_H', f.FH, ctx.t('lgH')], [theme.series[0]!, 'F_N', f.FN, ctx.t('lgN')]);
-      if (block) rows.push([theme.series[2]!, 'F_R', fr, ctx.t(state.v !== 0 ? 'lgRs' : 'lgRh')]);
+      // Aufgabenmodus: Beträge, die eine Aufgabe verraten, als „?“
+      const hideParts = ctx.isHidden('parts');
+      const hideFric = ctx.isHidden('fric');
+      const rows: [string, string, number | null, string][] = [[theme.series[1]!, 'F_G', f.FG, ctx.t('lgG')]];
+      if (p.parts) rows.push([theme.series[3]!, 'F_H', hideParts ? null : f.FH, ctx.t('lgH')], [theme.series[0]!, 'F_N', hideParts ? null : f.FN, ctx.t('lgN')]);
+      if (block) rows.push([theme.series[2]!, 'F_R', hideFric ? null : fr, ctx.t(state.v !== 0 ? 'lgRs' : 'lgRh')]);
       if (p.km) rows.push([theme.series[4]!, 'F_Z', p.fz, ctx.t('lgZ')]);
       const rowH = 21;
       const w = 230;
@@ -860,9 +970,9 @@ export default defineSimulation({
         gx.moveTo(x0 + 12, y);
         gx.lineTo(x0 + 28, y);
         gx.stroke();
-        text(gx, sym, x0 + 36, y, { font: `700 12px ${theme.font}`, color, align: 'left' });
+        subText(gx, sym, x0 + 36, y, { size: 12, family: theme.font, weight: 700, color, align: 'left' });
         text(gx, name, x0 + 66, y, { font: `600 11.5px ${theme.font}`, color: theme.muted, align: 'left' });
-        text(gx, `${fmt.num(value, 2)} N`, x0 + w - 10, y, { font: `700 12px ${theme.font}`, color: theme.text, align: 'right' });
+        text(gx, value === null ? '? N' : `${fmt.fixed(value, 2)} N`, x0 + w - 10, y, { font: `700 12px ${theme.font}`, color: theme.text, align: 'right' });
       });
       // Bewegung
       const yl = y0 + 7 + rowH * rows.length + 4;
@@ -910,13 +1020,32 @@ export default defineSimulation({
       gx.shadowBlur = 6;
       gx.shadowOffsetY = 2;
       const photo = blockPhoto();
+      const cart = cartPhoto();
       if (photo) {
         // Foto: Klotz füllt bw × bh, die Öse ragt hangaufwärts heraus (dort hängt der Kraftmesser)
-        const k = bw / BLOCK_BW;
+        const { D } = photo;
+        const C = blockCut(D);
+        const k = bw / C.bw;
         gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.3)';
         gx.shadowBlur = 6;
         gx.shadowOffsetY = 2;
-        gx.drawImage(blockSprite(photo, k), -bw / 2 - BLOCK_IMG.x0 * k, -bh - BLOCK_IMG.y0 * k, BLOCK_W * k, BLOCK_IMG.h * k);
+        gx.drawImage(blockSprite(photo.img, photo.key, D, k), -bw / 2, -bh - D.y0 * k, C.w * k, D.h * k);
+      } else if (cart) {
+        // Foto: Wagenkasten, davor die Räder an den Achslöchern (drehen sich mit dem Weg)
+        const k = bw / CART_IMG.bodyW;
+        const wr = bw * CART_WHEEL;
+        const top = -wr - CART_IMG.axleY * k;
+        gx.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.3)';
+        gx.drawImage(scaledSprite(cart.body, CART_IMG.w * k, CART_IMG.h * k, surface.dpr), -bw / 2, top, CART_IMG.w * k, CART_IMG.h * k);
+        const wheel = scaledSprite(cart.wheel, wr * 2, (wr * 2 * WHEEL_IMG.h) / WHEEL_IMG.w, surface.dpr);
+        const rot = (state.s * g0.L) / wr;
+        for (const ax of CART_IMG.axles) {
+          gx.save();
+          gx.translate(-bw / 2 + ax * k, -wr);
+          gx.rotate(-rot);
+          gx.drawImage(wheel, -wr, -wr, wr * 2, wr * 2);
+          gx.restore();
+        }
       } else if (p.body === 'cart') {
         const wr = bh * 0.32;
         const bodyY = -bh;
@@ -987,10 +1116,12 @@ export default defineSimulation({
       gx.restore();
       // Masse auf dem Körper
       const cc = bodyCenter(g0, state.s);
+      // Fotowagen: Beschriftung mitten auf dem (flacheren) Kasten
+      const cartLift = cart ? bh / 2 - (CART_IMG.h * bw) / CART_IMG.bodyW / 2 : bh * 0.12;
       gx.save();
-      gx.translate(cc[0], cc[1] - (p.body === 'cart' ? bh * 0.12 : 0));
+      gx.translate(cc[0], cc[1] - (p.body === 'cart' && !cart ? bh * 0.12 : 0));
       gx.rotate(-a);
-      text(gx, `${fmt.num(p.m, 1)} kg`, 0, p.body === 'cart' ? -bh * 0.12 : 0, { font: `700 ${small() ? 9.5 : 11}px ${ctx.theme.font}`, color: p.mat === 'rubber' && p.body === 'block' ? '#e6eaf0' : p.body === 'cart' ? '#ffffff' : '#3d2a06' });
+      text(gx, `${fmt.num(p.m, 1)} kg`, 0, p.body === 'cart' ? -cartLift : 0, { font: `700 ${small() ? 9.5 : 11}px ${ctx.theme.font}`, color: p.mat === 'rubber' && p.body === 'block' ? '#e6eaf0' : p.body === 'cart' ? '#ffffff' : '#3d2a06' });
       gx.restore();
     }
 
@@ -1028,17 +1159,24 @@ export default defineSimulation({
         gx.stroke();
       }
       const h0 = mg.hook + ext;
-      const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
-      tube.addColorStop(0, withAlpha(color, 0.55));
-      tube.addColorStop(0.35, withAlpha(color, 0.22));
-      tube.addColorStop(1, withAlpha(color, 0.75));
-      gx.fillStyle = tube;
-      roundRect(gx, h0, -w / 2, mg.housing, w, 3);
-      gx.fill();
-      gx.strokeStyle = color;
-      gx.lineWidth = 1.4;
-      roundRect(gx, h0, -w / 2, mg.housing, w, 3);
-      gx.stroke();
+      const ringR = mg.fixed - mg.hook - mg.housing;
+      const meterImg = ctx.images.get('meter');
+      if (meterImg) {
+        // Foto: durchsichtige Hülse mit Kappe und Ring
+        drawMeterPhoto(gx, meterImg, h0, h0 + mg.housing + ringR, w, surface.dpr);
+      } else {
+        const tube = gx.createLinearGradient(0, -w / 2, 0, w / 2);
+        tube.addColorStop(0, withAlpha(color, 0.55));
+        tube.addColorStop(0.35, withAlpha(color, 0.22));
+        tube.addColorStop(1, withAlpha(color, 0.75));
+        gx.fillStyle = tube;
+        roundRect(gx, h0, -w / 2, mg.housing, w, 3);
+        gx.fill();
+        gx.strokeStyle = color;
+        gx.lineWidth = 1.4;
+        roundRect(gx, h0, -w / 2, mg.housing, w, 3);
+        gx.stroke();
+      }
       gx.strokeStyle = withAlpha(theme.dark ? '#e6eaf0' : '#2a313b', 0.5);
       gx.lineWidth = 1;
       gx.beginPath();
@@ -1049,18 +1187,20 @@ export default defineSimulation({
         else gx.lineTo(s, yy);
       }
       gx.stroke();
-      gx.strokeStyle = color;
-      gx.lineWidth = 2.6;
-      gx.beginPath();
-      gx.arc(h0 + mg.housing + (mg.fixed - mg.hook - mg.housing), 0, mg.fixed - mg.hook - mg.housing, 0, Math.PI * 2);
-      gx.stroke();
+      if (!meterImg) {
+        gx.strokeStyle = color;
+        gx.lineWidth = 2.6;
+        gx.beginPath();
+        gx.arc(h0 + mg.housing + ringR, 0, ringR, 0, Math.PI * 2);
+        gx.stroke();
+      }
       gx.restore();
       // Anzeige über dem Gehäuse
       const a = (p.a * Math.PI) / 180;
       const mid = mg.hook + ext + mg.housing / 2;
       const lx = mg.start[0] + mg.u[0] * mid - Math.sin(a) * 22;
       const ly = mg.start[1] + mg.u[1] * mid - Math.cos(a) * 22;
-      const label = p.fz > METER_RANGE ? `F_Z = ${fmt.num(p.fz, 1)} N (≥ ${METER_RANGE} N)` : `F_Z = ${fmt.num(p.fz, 1)} N`;
+      const label = p.fz > METER_RANGE ? `F_Z = ${fmt.fixed(p.fz, 1)} N (≥ ${METER_RANGE} N)` : `F_Z = ${fmt.fixed(p.fz, 1)} N`;
       pill(lx, ly - 11, label, color, 'center', small() ? 10.5 : 12);
     }
 
@@ -1100,10 +1240,9 @@ export default defineSimulation({
         }
       }
       arrowPx(C[0], C[1], G1[0], G1[1], theme.series[1]!, 3.6, 13);
-      const fgStr = `F_G = ${fmt.num(f.FG, 1)} N`;
+      const fgStr = `F_G = ${fmt.fixed(f.FG, 2)} N`;
       haloText(fgStr, G1[0] - 8, G1[1] - 4, theme.series[1]!, fs, 'right');
-      surface.g.font = `700 ${fs}px ${theme.font}`;
-      const fgW = surface.g.measureText(fgStr).width;
+      const fgW = measureSubText(surface.g, fgStr, { size: fs, family: theme.font, weight: 700, color: theme.series[1]! });
       fgBox = { x: G1[0] - 8 - fgW, y: G1[1] - 4 - fs / 2 - 2, w: fgW, h: fs + 4 };
       // Reibungskraft an der Unterseite (gegen die Bewegung bzw. die Bewegungstendenz)
       if (p.body === 'block') {
@@ -1130,24 +1269,28 @@ export default defineSimulation({
       const gx = chart.begin();
       chart.grid({ minor: false });
       chart.axes();
+      /** Beschriftung im Diagramm mit echtem tiefgestelltem Index (wie `chart.text`, Ausrichtung links als Standard). */
+      const ct = (x: number, y: number, str: string, o: { color: string; size: number; weight: string | number; align?: CanvasTextAlign; baseline?: CanvasTextBaseline; offset?: [number, number] }) =>
+        subText(gx, str, chart.px(x) + (o.offset?.[0] ?? 0), chart.py(y) + (o.offset?.[1] ?? 0), { size: o.size, family: theme.font, weight: o.weight, color: o.color, align: o.align ?? 'left', baseline: o.baseline ?? 'alphabetic', halo: theme.bg, haloWidth: 4 });
       const fn = (a: number) => inclineForces(p.m, a, muH, mu().muG);
       chart.hline(f.FG, { color: theme.series[1], width: 1.4, dash: [6, 4] });
       // schmales Diagramm (Tablet quer): Beschriftungen so setzen, dass sie sich nicht berühren
       const slim = chart.rect.w < 260;
-      if (slim) chart.text(0, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', align: 'left', baseline: 'bottom', offset: [6, -4] });
-      else chart.text(40, f.FG, 'F_G', { color: theme.series[1], size: 11.5, weight: 'bold', baseline: 'bottom', offset: [0, -4] });
+      if (slim) ct(0, f.FG, 'F_G', { color: theme.series[1]!, size: 11.5, weight: 700, align: 'left', baseline: 'bottom', offset: [6, -4] });
+      else ct(40, f.FG, 'F_G', { color: theme.series[1]!, size: 11.5, weight: 700, baseline: 'bottom', offset: [0, -4] });
       if (block) {
         const ag = limitAngle(muH);
         chart.fn((a) => fn(a).FRmax, { color: theme.series[2], width: 2.2, dash: [7, 4], from: 0, to: 90 });
-        if (ag < 89) {
+        // Aufgabenmodus: Grenzwinkel nicht verraten
+        if (ag < 89 && !ctx.isHidden('limit')) {
           chart.vline(ag, { color: theme.series[2], width: 1.2, dash: [3, 4], alpha: 0.8 });
-          chart.text(ag, yTop * 0.97, tr('limitLine', { a: fmt.num(ag, 1) }), { color: theme.series[2], size: 11, weight: '600', align: ag > 60 ? 'right' : 'left', baseline: 'top', offset: [ag > 60 ? -4 : 4, 0] });
+          ct(ag, yTop * 0.97, tr('limitLine', { a: fmt.fixed(ag, 1) }), { color: theme.series[2]!, size: 11, weight: '600', align: ag > 60 ? 'right' : 'left', baseline: 'top', offset: [ag > 60 ? -4 : 4, 0] });
         }
       }
       chart.fn((a) => fn(a).FH, { color: theme.series[3], width: 2.6, from: 0, to: 90 });
       chart.fn((a) => fn(a).FN, { color: theme.series[0], width: 2.6, from: 0, to: 90 });
       // Beschriftung der Kurven
-      chart.text(84, fn(84).FH, 'F_H', { color: theme.series[3], size: 12, weight: 'bold', align: 'right', baseline: 'bottom', offset: [0, -6] });
+      ct(84, fn(84).FH, 'F_H', { color: theme.series[3]!, size: 12, weight: 700, align: 'right', baseline: 'bottom', offset: [0, -6] });
       // F_N: im schmalen Diagramm nicht auf den Punkt beim aktuellen Winkel setzen
       let nAt = 8;
       if (slim) {
@@ -1157,8 +1300,10 @@ export default defineSimulation({
         const pxA = chart.px(p.a);
         if (pxA > lx - 14 && pxA < lx + nw + 14) nAt = chart.toWorld(pxA + 16 + nw / 2, 0)[0];
       }
-      chart.text(nAt, fn(nAt).FN, 'F_N', { color: theme.series[0], size: 12, weight: 'bold', baseline: 'top', offset: [2, 8] });
-      if (block) chart.text(58, fn(58).FRmax, 'F_R,max', { color: theme.series[2], size: 11.5, weight: 'bold', align: 'right', baseline: 'top', offset: [-4, 6] });
+      ct(nAt, fn(nAt).FN, 'F_N', { color: theme.series[0]!, size: 12, weight: 700, baseline: 'top', offset: [2, 8] });
+      // bei kleiner Haftreibung (Eis) über der Kurve, sonst läge die Beschriftung auf der α-Achse
+      const lowR = fn(58).FRmax < yTop * 0.12;
+      if (block) ct(58, fn(58).FRmax, 'F_{R,max}', { color: theme.series[2]!, size: 11.5, weight: 700, align: 'right', baseline: lowR ? 'bottom' : 'top', offset: [-4, lowR ? -6 : 6] });
       // aktueller Winkel
       chart.vline(p.a, { color: theme.muted, width: 1.2, dash: [2, 3] });
       chart.point(p.a, f.FH, { color: theme.series[3], radius: 5 });

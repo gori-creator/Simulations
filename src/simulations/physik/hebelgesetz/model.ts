@@ -167,7 +167,8 @@ export function balancingForce(loads: readonly Load[], meter: Omit<Meter, 'F'>):
   if (Math.abs(lever) < 1e-9) return null;
   const m = loads.reduce((sum, load) => sum + loadTorque(load), 0);
   const F = -m / lever;
-  return F >= 0 ? F : null;
+  // Math.abs: kein „−0“ bei bereits ausgeglichenem Hebel
+  return F >= 0 ? Math.abs(F) : null;
 }
 
 /** Trägheitsmoment des Hebels mit Massestücken (Punktmassen an den Löchern, siehe LOAD_INERTIA_FACTOR). */
@@ -221,4 +222,15 @@ export function effortForce(load: number, loadArm: number, effortArm: number): n
 export function loadTravel(effortTravel: number, loadArm: number, effortArm: number): number {
   if (!(effortArm > 0)) return 0;
   return (effortTravel * loadArm) / effortArm;
+}
+
+/** Arbeit F · s in Joule (Kraft in N, Weg in cm) für die Anzeige der Goldenen Regel. */
+export function workJoule(force: number, travelCm: number): number {
+  return (force * travelCm) / 100;
+}
+
+/** Zustand der Wippe: Gleichgewicht (Unterschied unter 0,25 N·m) oder Kippen zur Seite mit dem größeren Drehmoment. */
+export function seesawState(m1: number, a1: number, m2: number, a2: number): 'eq' | 'left' | 'right' {
+  const d = (m1 * a1 - m2 * a2) * G;
+  return Math.abs(d) < 0.25 ? 'eq' : d > 0 ? 'left' : 'right';
 }

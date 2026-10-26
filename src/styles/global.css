@@ -34,7 +34,8 @@
   --success: #1d7a46;
   --warning-bg: #fff6db;
   --warning-text: #6b4e00;
-  --focus: #f59f00;
+  /* Fokusrahmen: dunkles Orange, damit er auf hellem Grund mindestens 3 : 1 Kontrast hat (WCAG 1.4.11) */
+  --focus: #b45309;
 
   --radius-lg: 20px;
   --radius: 14px;
@@ -85,6 +86,7 @@
     --chemistry: #56d59f;
     --chemistry-soft: #12322a;
     --success: #56d59f;
+    --focus: #f59f00;
     --warning-bg: #3a2f10;
     --warning-text: #ffe08a;
     --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -127,6 +129,7 @@
   --chemistry: #56d59f;
   --chemistry-soft: #12322a;
   --success: #56d59f;
+  --focus: #f59f00;
   --warning-bg: #3a2f10;
   --warning-text: #ffe08a;
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -419,7 +422,8 @@ sup {
 
 .badge--ready {
   background: color-mix(in srgb, var(--success) 14%, transparent);
-  color: var(--success);
+  /* reine Erfolgsfarbe hatte auf dem hellen Grund nur 4,4 : 1 */
+  color: color-mix(in srgb, var(--success) 78%, var(--text));
 }
 
 .badge--subject-mathematik {
@@ -429,7 +433,8 @@ sup {
 
 .badge--subject-physik {
   background: var(--physics-soft);
-  color: var(--physics);
+  /* reine Physikfarbe hatte auf dem hellen Grund nur 4,0 : 1 */
+  color: color-mix(in srgb, var(--physics) 82%, var(--text));
 }
 
 .badge--subject-chemie {
@@ -547,7 +552,7 @@ sup {
 }
 
 .site-nav__soon {
-  margin-left: 4px;
+  margin-left: 2px;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1737,6 +1742,16 @@ sup {
   touch-action: none;
 }
 
+/* Tastaturauswahl auf der Zeichenfläche (sim-core/key-targets.ts) */
+.sim__keyfocus {
+  position: absolute;
+  z-index: 2;
+  border: 3px solid var(--focus);
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px var(--plot-bg);
+  pointer-events: none;
+}
+
 .sim-canvas {
   position: absolute;
   inset: 0;
@@ -2223,7 +2238,7 @@ sup {
   height: 1px;
 }
 
-.segmented__option span {
+.segmented__option > span {
   display: block;
   padding: 6px 10px;
   border-radius: 8px;

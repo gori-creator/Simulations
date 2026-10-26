@@ -1,5 +1,15 @@
 import { defineSimulation, Plot, Surface, term } from '../../../sim-core';
-import { discriminant, generalToVertex, roots, shapeOf, vertexToGeneral, type Coefficients } from './model';
+import {
+  clampVertexForGeneral,
+  discriminant,
+  fitsGeneral,
+  generalToVertex,
+  isRounded,
+  roots,
+  shapeOf,
+  vertexToGeneral,
+  type Coefficients,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 
@@ -85,7 +95,7 @@ export default defineSimulation({
       default: 'minus',
       help: L(
         'Bei „x + d“ (so z. B. im LehrplanPLUS Bayern) verschiebt ein positives d nach links.',
-        'With “x + d”, a positive d shifts the graph to the left.',
+        'With “x + d” (as e.g. in the Bavarian LehrplanPLUS), a positive d shifts the graph to the left.',
       ),
       visibleIf: (v) => v.form === 'scheitel',
     },
@@ -114,7 +124,10 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Koordinatensystem mit dem Graphen der quadratischen Funktion',
+      canvas:
+        'Koordinatensystem mit dem Graphen f der quadratischen Funktion (durchgezogene Parabel). Markiert sind der Scheitelpunkt S und die Nullstellen N1, N2 auf der x-Achse. Zum Vergleich ist die Normalparabel y = x² gestrichelt eingezeichnet, die Symmetrieachse als gestrichelte senkrechte Linie durch S. Der Scheitelpunkt S lässt sich ziehen; der hohle Punkt 1 rechts vom Scheitel lässt sich nach oben und unten ziehen und ändert den Streckfaktor a. Auf Wunsch zeigt ein Dreieck: 1 nach rechts, a nach oben.',
+      rounded: 'gerundet',
+      allZeros: 'jede Zahl x ist Nullstelle (f(x) = 0)',
       noParabola: 'a = 0: keine Parabel, sondern eine lineare Funktion',
       noVertex: 'keiner (a = 0)',
       up: 'nach oben geöffnet',
@@ -130,7 +143,10 @@ export default defineSimulation({
       noFactored: 'nicht möglich (keine reellen Nullstellen)',
     },
     en: {
-      canvas: 'Coordinate system with the graph of the quadratic function',
+      canvas:
+        'Coordinate system with the graph f of the quadratic function (solid parabola). The vertex S and the zeros N1, N2 on the x-axis are marked. For comparison, the standard parabola y = x² is drawn dashed, and the axis of symmetry is a dashed vertical line through S. The vertex S can be dragged; the hollow point 1 to the right of the vertex can be dragged up and down and changes the stretch factor a. Optionally a triangle shows: 1 to the right, a up.',
+      rounded: 'rounded',
+      allZeros: 'every number x is a zero (f(x) = 0)',
       noParabola: 'a = 0: not a parabola but a linear function',
       noVertex: 'none (a = 0)',
       up: 'opens upwards',
@@ -175,7 +191,10 @@ export default defineSimulation({
     function moveVertex(d: number, e: number): void {
       if (p.form === 'scheitel') ctx.set({ d: dFor(d), e });
       else {
-        const { b, c } = vertexToGeneral(p.a, d, e);
+        // b und c haben feste Reglergrenzen: Scheitel auf den darstellbaren Bereich begrenzen,
+        // sonst würde er beim Ziehen an eine andere Stelle springen.
+        const v = clampVertexForGeneral(p.a, d, e);
+        const { b, c } = vertexToGeneral(p.a, v.d, v.e);
         ctx.set({ b, c });
       }
     }
@@ -203,6 +222,7 @@ export default defineSimulation({
         if (a === 0) return;
         if (p.form === 'scheitel') ctx.set({ a });
         else {
+          if (!fitsGeneral(a, v.d, v.e)) return;
           const { b, c } = vertexToGeneral(a, v.d, v.e);
           ctx.set({ a, b, c });
         }
@@ -213,6 +233,26 @@ export default defineSimulation({
     });
 
     const sq = term.sup(2);
+
+    /**
+     * Sichtbarer Bereich: Standard x −8 … 8, y −6 … 8. Beim Laden so erweitert, dass S und der
+     * Punkt (d + 1 | e + a) mit etwas Rand im Bild sind.
+     */
+    let range = '';
+    function fitRange(): void {
+      const v = state().vertex;
+      let x: [number, number] = [-8, 8];
+      let y: [number, number] = [-6, 8];
+      if (v) {
+        const ys = [v.e, v.e + p.a];
+        x = [Math.min(-8, Math.floor(v.d - 1.5)), Math.max(8, Math.ceil(v.d + 2.5))];
+        y = [Math.min(-6, Math.floor(Math.min(...ys) - 1.5)), Math.max(8, Math.ceil(Math.max(...ys) + 1.5))];
+      }
+      const key = `${x}|${y}`;
+      if (key === range) return;
+      range = key;
+      plot.setRange(x, y);
+    }
 
     return {
       update(changed, source) {
@@ -230,17 +270,32 @@ export default defineSimulation({
         // Schreibweise gewechselt: d umdrehen, damit die Parabel bleibt
         if (changed.has('notation') && source === 'input') ctx.set({ d: -p.d });
 
+        // Beim Laden (Start, Link, Beispiel) den y-Bereich so wählen, dass der Scheitel und der
+        // Punkt „1 rechts vom Scheitel“ im Bild sind. Beim Ziehen und an den Reglern bleibt der
+        // Maßstab fest, damit nichts unter dem Zeiger wegläuft.
+        if (source === 'init' || source === 'replace') fitRange();
+
         const s = state();
-        const general = term.fnDef('f', term.polynomial([s.a, s.b, s.c], fmt));
-        ctx.readout('generalForm', { html: general });
+        /** „f(x) = …“ oder „f(x) ≈ …“, wenn eine der Zahlen nur gerundet gezeigt wird. */
+        const def = (rhs: string, ...values: number[]) => {
+          const text = term.fnDef('f', rhs);
+          return values.some((v) => isRounded(v)) ? text.replace(' = ', ' ≈ ') : text;
+        };
+        /** Linearfaktor (x − z); für z = 0 nur x. */
+        const factor = (z: number) => {
+          const inner = term.shifted(z, fmt);
+          return inner === term.x ? term.x : `(${inner})`;
+        };
+        const eq = (v: number) => (isRounded(v) ? '≈' : '=');
+
+        ctx.readout('generalForm', { html: def(term.polynomial([s.a, s.b, s.c], fmt), s.a, s.b, s.c) });
 
         if (s.vertex) {
           const { d, e } = s.vertex;
-          const inner = term.shifted(d, fmt);
-          const square = inner === term.x ? `${term.x}${sq}` : `(${inner})${sq}`;
-          const vertexTerm = term.sum([{ coef: s.a, body: square }, { coef: e, body: '' }], fmt);
-          ctx.readout('vertexForm', { html: term.fnDef('f', vertexTerm) });
-          ctx.readout('vertex', `S${fmt.point(d, e)}`);
+          const vertexTerm = term.sum([{ coef: s.a, body: `${factor(d)}${sq}` }, { coef: e, body: '' }], fmt);
+          ctx.readout('vertexForm', { html: def(vertexTerm, s.a, d, e) });
+          const roundedNote = isRounded(d) || isRounded(e) ? ` (${ctx.t('rounded')})` : '';
+          ctx.readout('vertex', `S${fmt.point(d, e)}${roundedNote}`);
         } else {
           ctx.readout('vertexForm', ctx.t('noParabola'));
           ctx.readout('vertex', ctx.t('noVertex'));
@@ -251,20 +306,21 @@ export default defineSimulation({
         if (s.a === 0) {
           ctx.readout('disc', null);
           ctx.readout('factored', null);
-          ctx.readout('zeros', zs.length ? `x₀ = ${fmt.num(zs[0]!)}` : ctx.t('none'));
+          // f(x) = bx + c; für b = c = 0 ist f die Nullfunktion
+          const allZero = Math.abs(s.b) < 1e-12 && Math.abs(s.c) < 1e-12;
+          ctx.readout('zeros', allZero ? ctx.t('allZeros') : zs.length ? `x₀ ${eq(zs[0]!)} ${fmt.num(zs[0]!)}` : ctx.t('none'));
           ctx.readout('shape', ctx.t('noParabola'));
           return;
         }
         ctx.readout('disc', `${fmt.num(disc)} – ${ctx.t(disc > 1e-9 ? 'positive' : disc < -1e-9 ? 'negative' : 'zero')}`);
         if (zs.length === 2) {
-          ctx.readout('zeros', `x₁ = ${fmt.num(zs[0]!)}, x₂ = ${fmt.num(zs[1]!)}`);
-          const factors = zs.map((z) => `(${term.shifted(z, fmt)})`).join('');
-          const factored = term.sum([{ coef: s.a, body: factors }], fmt);
-          ctx.readout('factored', { html: term.fnDef('f', factored) });
+          ctx.readout('zeros', `x₁ ${eq(zs[0]!)} ${fmt.num(zs[0]!)}, x₂ ${eq(zs[1]!)} ${fmt.num(zs[1]!)}`);
+          const factored = term.sum([{ coef: s.a, body: zs.map(factor).join('') }], fmt);
+          ctx.readout('factored', { html: def(factored, s.a, ...zs) });
         } else if (zs.length === 1) {
-          ctx.readout('zeros', `x₀ = ${fmt.num(zs[0]!)} (${ctx.t('double')})`);
-          const factored = term.sum([{ coef: s.a, body: `(${term.shifted(zs[0]!, fmt)})${sq}` }], fmt);
-          ctx.readout('factored', { html: term.fnDef('f', factored) });
+          ctx.readout('zeros', `x₀ ${eq(zs[0]!)} ${fmt.num(zs[0]!)} (${ctx.t('double')})`);
+          const factored = term.sum([{ coef: s.a, body: `${factor(zs[0]!)}${sq}` }], fmt);
+          ctx.readout('factored', { html: def(factored, s.a, zs[0]!) });
         } else {
           ctx.readout('zeros', ctx.t('none'));
           ctx.readout('factored', ctx.t('noFactored'));
@@ -282,7 +338,13 @@ export default defineSimulation({
         if (p.grid) plot.grid();
         plot.axes();
 
-        if (p.normal) plot.fn((x) => x * x, { color: ctx.theme.muted, width: 1.5, dash: [6, 5] });
+        if (p.normal) {
+          plot.fn((x) => x * x, { color: ctx.theme.muted, width: 1.5, dash: [6, 5] });
+          // Beschriftung am linken Ast, damit die Normalparabel nicht nur über Farbe/Strichart erkennbar ist
+          const { xMin: x0, yMax: y1 } = plot.bounds;
+          const xl = -Math.sqrt(Math.max(0, y1 - 40 / plot.scale.y));
+          if (xl > x0) plot.text(xl, xl * xl, 'y = x²', { color: ctx.theme.muted, align: 'right', baseline: 'middle', offset: [-8, 0], size: 13 });
+        }
         if (p.axis && s.vertex) plot.vline(s.vertex.d, { color: colorVertex(), width: 1.5, dash: [4, 5], alpha: 0.8 });
 
         plot.fn(f, { color: colorF(), width: 3 });
@@ -304,20 +366,21 @@ export default defineSimulation({
           plot.text(d + 1, e + s.a / 2, `a = ${fmt.num(s.a, 1)}`, { color: c, baseline: 'middle', offset: [8, 0], weight: '600' });
         }
 
-        if (p.zeros) {
-          const zs = roots(s);
-          zs.forEach((z, i) => {
-            plot.point(z, 0, { color: colorZero(), radius: 5 });
-            const name = zs.length === 1 ? 'N' : `N${i + 1}`;
-            plot.text(z, 0, name, { color: colorZero(), math: true, size: 15, align: 'center', offset: [0, s.a > 0 ? 20 : -10] });
-          });
-        }
+        // Doppelte Nullstelle: Scheitel liegt auf der x-Achse, N und S fallen zusammen
+        const zs = p.zeros ? roots(s) : [];
+        const touching = zs.length === 1 && !!s.vertex;
+        zs.forEach((z, i) => {
+          plot.point(z, 0, { color: colorZero(), radius: 5 });
+          if (touching) return;
+          const name = zs.length === 1 ? 'N' : `N${i + 1}`;
+          plot.text(z, 0, name, { color: colorZero(), math: true, size: 15, align: 'center', offset: [0, s.a > 0 ? 20 : -10] });
+        });
 
         if (s.vertex) {
           const { d, e } = s.vertex;
           plot.point(d + 1, e + s.a, { color: colorStep(), radius: 4, hollow: true });
           plot.point(d, e, { color: colorVertex(), radius: 6 });
-          plot.text(d, e, 'S', { color: colorVertex(), math: true, size: 17, align: 'center', offset: [0, s.a > 0 ? 24 : -12] });
+          plot.text(d, e, touching ? 'S = N' : 'S', { color: colorVertex(), math: true, size: 17, align: 'center', offset: [0, s.a > 0 ? 24 : -12] });
         }
 
         // Funktionsname am Graphen (dort, wo der rechte Ast den Rand erreicht)

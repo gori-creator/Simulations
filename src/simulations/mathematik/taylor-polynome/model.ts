@@ -262,7 +262,7 @@ export function smallAngleLimit(eps: number): number {
   return bisect((x) => smallAngleError(x) - eps, Math.PI);
 }
 
-/** Größtes φ > 0 mit relativem Fehler < rel (für 1 %: φ ≈ 0,2444 ≈ 14,0°). */
+/** Größtes φ > 0 mit relativem Fehler < rel (für 1 %: φ ≈ 0,2441 ≈ 14,0°). */
 export function smallAngleRelLimit(rel: number): number {
   return bisect((x) => smallAngleRelError(x) - rel, 3);
 }

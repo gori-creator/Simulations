@@ -1,5 +1,5 @@
 ---
-description: "A glass sphere in space: equation of the sphere and point test, circle of intersection with a plane, passing line, tangent or secant via the discriminant, and the tangent plane at a point on the sphere – rotatable, with the calculation alongside."
+description: "A glass sphere in space: equation of the sphere and point test, circle of intersection with a plane, a line that misses the sphere, tangent or secant via the discriminant, and the tangent plane at a point on the sphere – rotatable, with the calculation alongside."
 ---
 
 ## What is it about?
@@ -14,7 +14,7 @@ $$
 
 **Sphere and plane:** compare the distance $d = \frac{|\vec n \cdot \vec m - c|}{|\vec n|}$ of the centre from $E:\ \vec n \cdot \vec x = c$ with $r$. For $d < r$ the plane cuts a circle with centre $M'$ (foot of the perpendicular from $M$) and radius $\rho = \sqrt{r^2 - d^2}$; for $d = r$ it touches the sphere.
 
-**Sphere and line:** substituting $\vec x = \vec a + t\vec u$ gives $At^2 + Bt + C = 0$. The discriminant $D = B^2 - 4AC$ decides: secant ($D > 0$), tangent ($D = 0$) or passing line ($D < 0$).
+**Sphere and line:** substituting $\vec x = \vec a + t\vec u$ gives $At^2 + Bt + C = 0$. The discriminant $D = B^2 - 4AC$ decides: secant ($D > 0$), tangent ($D = 0$) or a line that misses the sphere ($D < 0$, no common point).
 
 **Tangent plane** at $B$ on the sphere: $(\vec x - \vec b) \cdot (\vec b - \vec m) = 0$.
 
@@ -23,7 +23,7 @@ $$
 1. Drag $P$ and watch the point test. [Point on K](?p1=1&p2=2&p3=6)
 2. Choose “Sphere and plane” and tap **Slide the plane through the sphere**. [Load](?mode=plane)
 3. Put the plane through the centre: a great circle with $\rho = r$. [Great circle](?mode=plane&n1=1&n2=1&n3=1&c=6)
-4. Move a vertical line outwards: secant, tangent, passing line. [Tangent](?mode=line&a1=4&a2=2&a3=0&u1=0&u2=0&u3=1) · [Passing line](?mode=line&a1=5&a2=2&a3=0&u1=0&u2=0&u3=1)
+4. Move a vertical line outwards: secant, tangent, line missing the sphere. [Tangent](?mode=line&a1=4&a2=2&a3=0&u1=0&u2=0&u3=1) · [Line missing the sphere](?mode=line&a1=5&a2=2&a3=0&u1=0&u2=0&u3=1)
 5. Drag $B$ over the sphere and watch the tangent plane. [Tangent plane](?mode=tangent)
 
 ## Tasks

@@ -79,7 +79,7 @@ Via the complement “no red”: $1 - \left(\frac25\right)^3 = 1 - \frac{8}{125}
 
 ### Task 4: Certainly at least one red?
 
-Now three draws **without** replacement. Explain why $P(\text{at least one red}) = 1$. [Load task](?mode=rules&n=3&ev=minR&_hide=1)
+Now three draws **without** replacement. Explain why $P(\text{at least one red}) = 1$. [Load task](?mode=rules&n=3&ev=minR&show=0&_hide=1)
 
 <details>
 <summary>Show solution</summary>
@@ -95,7 +95,7 @@ The urn contains $2$ red, $3$ blue and $1$ green ball. Two balls are drawn witho
 <details>
 <summary>Show solution</summary>
 
-Complement “same colour”: $\frac26 \cdot \frac15 + \frac36 \cdot \frac25 = \frac{2}{30} + \frac{6}{30} = \frac{8}{30}$ (two green balls are impossible). So $P = 1 - \frac{8}{30} = \frac{11}{15} \approx 73.3\,\%$. [Show in simulation](?mode=rules&r=2&b=3&g=1&ev=diff)
+Complement “same colour”: $\frac26 \cdot \frac15 + \frac36 \cdot \frac25 = \frac{2}{30} + \frac{6}{30} = \frac{8}{30} = \frac{4}{15}$ (two green balls are impossible). So $P = 1 - \frac{4}{15} = \frac{11}{15} \approx 73.3\,\%$. [Show in simulation](?mode=rules&r=2&b=3&g=1&ev=diff)
 
 </details>
 

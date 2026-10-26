@@ -41,10 +41,12 @@ interface Curves {
 const SAMPLES = 160;
 const CAR_LENGTH = 4.5;
 /**
- * Lage im Foto auto.webp (629 × 223 px, Blick nach links): Länge des Autos,
+ * Lage im Foto auto.webp (1600 × 686 px, Front nach rechts): Länge des Autos,
  * Mitte, Bodenlinie, Radmitten und Radius der Felge (zum Drehen der Räder).
  */
-const CAR_IMG = { w: 629, h: 223, len: 626, cx: 313.5, ground: 220, wheels: [116, 524], wheelY: 172, rim: 40 };
+const CAR_IMG = { w: 1600, h: 686, len: 1592, cx: 801, ground: 684, wheels: [225, 1304], wheelY: 546, rim: 97 };
+/** Wolke `wolke.webp` (1600 × 660 px, freigestellt, weiche Ränder). */
+const CLOUD_IMG = { w: 1600, h: 660 };
 /** Foto strasse.webp (2400 × 392 px): Fahrbahn mit Randlinie oben und Grasstreifen unten. */
 const ROAD_IMG = { w: 2400, h: 392 };
 
@@ -155,10 +157,10 @@ export default defineSimulation({
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
   ],
   actions: [{ id: 'go', label: L('Losfahren', 'Start'), primary: true }],
-  images: { car: 'auto.webp', road: 'strasse.webp' },
+  images: { car: 'auto.webp', road: 'strasse.webp', cloud: 'wolke.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
-    { key: 'law', label: L('Bewegungsgesetz', 'Equations of motion') },
+    { key: 'law', label: L('Bewegungsgesetz', 'Equations of motion'), spoiler: true },
     { key: 'trip', label: L('Ganze Fahrt', 'Whole trip'), spoiler: true },
     { key: 'brake', label: L('Bremsen bis zum Stillstand', 'Braking to a stop'), spoiler: true },
     { key: 'table', label: L('Abschnitte', 'Sections'), spoiler: true },
@@ -198,7 +200,7 @@ export default defineSimulation({
       thDs: 'Δs',
     },
     en: {
-      canvas: 'Car on a road with a measuring tape, below it the distance–time, velocity–time and acceleration–time graphs with a time marker',
+      canvas: 'Car on a road with a measuring tape, below it the position–time, velocity–time and acceleration–time graphs with a time marker',
       ts: 's in m',
       tv: 'v in m/s',
       ta: 'a in m/s²',
@@ -228,7 +230,12 @@ export default defineSimulation({
     const surface = new Surface(ctx, ctx.t('canvas'));
     const p = ctx.params;
     const fmt = ctx.fmt;
-    const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
+    // Zwischen Zahl und Einheit ein geschütztes Leerzeichen, damit die Zeile dort nicht umbricht
+    const tr = (key: string, vars: Record<string, string>) =>
+      ctx
+        .t(key)
+        .replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '')
+        .replace(/(\d) (?=(?:m\/s²|m\/s|km\/h|m|s)(?![\p{L}]))/gu, '$1\u00a0');
     const mode = () => p.mode as Mode;
     const narrow = () => surface.width < 560;
 
@@ -375,14 +382,16 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
-    const unit = (value: number, decimals: number, u: string) => `${fmt.num(value, decimals)} ${u}`;
+    const unit = (value: number, decimals: number, u: string) => `${fmt.num(value, decimals)}\u00a0${u}`;
+    /** Summand mit Rechenzeichen: „+ 5 m/s“ bzw. „− 5 m/s“ statt „+ −5 m/s“. */
+    const plus = (value: number, decimals: number, u: string) => `${value < 0 ? '−' : '+'} ${unit(Math.abs(value), decimals, u)}`;
     const v_ = (name: string, sub = '') => `<var>${name}</var>${sub}`;
 
     function updateNow(): void {
       const st = stateAt(phases, t);
       ctx.readout(
         'now',
-        tr('now', { t: fmt.fixed(t, 2), s: fmt.num(st.s, 1), v: fmt.num(st.v, 1), kmh: fmt.num(Math.abs(toKmh(st.v)), 0), a: fmt.num(st.a, 2) }),
+        tr('now', { t: fmt.fixed(t, 2), s: fmt.num(st.s, 1), v: fmt.num(st.v, 1), kmh: fmt.num(toKmh(st.v), 0), a: fmt.num(st.a, 2) }),
       );
     }
 
@@ -392,12 +401,16 @@ export default defineSimulation({
       const s0 = unit(p.s0, 0, 'm');
       if (m === 'uni') {
         ctx.readout('law', {
-          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v')} · ${v_('t')} = ${s0} + ${unit(p.v, 1, 'm/s')} · ${v_('t')}<br>${v_('v')} = ${unit(p.v, 1, 'm/s')} = ${ctx.lang === 'de' ? 'konstant' : 'constant'}, ${v_('a')} = 0`,
+          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v')} · ${v_('t')} = ${s0} ${plus(p.v, 1, 'm/s')} · ${v_('t')}<br>${v_('v')} = ${unit(p.v, 1, 'm/s')} = ${ctx.lang === 'de' ? 'konstant' : 'constant'}, ${v_('a')} = 0`,
         });
       } else if (m === 'acc') {
-        const half = fmt.num(p.a / 2, 2);
+        const stop = brakingInfo(p.v0, p.a);
+        const until =
+          stop && stop.time < p.T
+            ? `<br>${ctx.lang === 'de' ? 'Das gilt bis zum Stillstand bei' : 'This holds until the car stops at'} ${v_('t')} = ${unit(stop.time, 2, 's')}${ctx.lang === 'de' ? ', danach' : ', after that'} ${v_('v')} = 0 ${ctx.lang === 'de' ? 'und' : 'and'} ${v_('a')} = 0.`
+            : '';
         ctx.readout('law', {
-          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v', '₀')} · ${v_('t')} + ½ · ${v_('a')} · ${v_('t')}² = ${s0} + ${unit(p.v0, 1, 'm/s')} · ${v_('t')} + ${half} m/s² · ${v_('t')}²<br>${v_('v')}(${v_('t')}) = ${v_('v', '₀')} + ${v_('a')} · ${v_('t')} = ${unit(p.v0, 1, 'm/s')} + ${unit(p.a, 1, 'm/s²')} · ${v_('t')}`,
+          html: `${v_('s')}(${v_('t')}) = ${v_('s', '₀')} + ${v_('v', '₀')} · ${v_('t')} + ½ · ${v_('a')} · ${v_('t')}² = ${s0} ${plus(p.v0, 1, 'm/s')} · ${v_('t')} ${plus(p.a / 2, 2, 'm/s²')} · ${v_('t')}²<br>${v_('v')}(${v_('t')}) = ${v_('v', '₀')} + ${v_('a')} · ${v_('t')} = ${unit(p.v0, 1, 'm/s')} ${plus(p.a, 1, 'm/s²')} · ${v_('t')}${until}`,
         });
       } else {
         ctx.readout('law', ctx.t('planLaw'));
@@ -517,15 +530,15 @@ export default defineSimulation({
       }
       const img = ctx.images.get('car');
       if (img) {
-        // Foto (nach rechts gespiegelt); die Felgen werden als eigene Ausschnitte gedreht
+        // Foto (Front nach rechts); die Felgen werden als eigene Ausschnitte gedreht
         const k = len / CAR_IMG.len;
         const w = CAR_IMG.w * k;
         const h = CAR_IMG.h * k;
-        g.drawImage(scaledSprite(img, w, h, surface.dpr, { flipX: true }), -(CAR_IMG.w - CAR_IMG.cx) * k, -CAR_IMG.ground * k, w, h);
+        g.drawImage(scaledSprite(img, w, h, surface.dpr), -CAR_IMG.cx * k, -CAR_IMG.ground * k, w, h);
         if (wheel !== 0) {
           for (const wx of CAR_IMG.wheels) {
             g.save();
-            g.translate((CAR_IMG.cx - wx) * k, (CAR_IMG.wheelY - CAR_IMG.ground) * k);
+            g.translate((wx - CAR_IMG.cx) * k, (CAR_IMG.wheelY - CAR_IMG.ground) * k);
             g.rotate(wheel);
             const d = CAR_IMG.rim * 2 * k;
             g.drawImage(rimSprite(img, wx, d), -d / 2, -d / 2, d, d);
@@ -642,7 +655,7 @@ export default defineSimulation({
     const CAR_MARK_IMG = 0.17;
     const markH = () => (ctx.images.get('car') ? CAR_MARK_IMG : CAR_MARK);
 
-    /** Runder Ausschnitt einer Felge aus dem Foto (gespiegelt wie das Auto), Durchmesser d. */
+    /** Runder Ausschnitt einer Felge aus dem Foto, Durchmesser d. */
     const rims = new Map<string, HTMLCanvasElement>();
     function rimSprite(img: HTMLImageElement, wx: number, d: number): HTMLCanvasElement {
       const key = `${wx}|${Math.round(d * 2)}|${surface.dpr}`;
@@ -653,8 +666,6 @@ export default defineSimulation({
       g.beginPath();
       g.arc(d / 2, d / 2, d / 2, 0, Math.PI * 2);
       g.clip();
-      g.translate(d, 0);
-      g.scale(-1, 1);
       const R = CAR_IMG.rim;
       g.drawImage(img, wx - R, CAR_IMG.wheelY - R, 2 * R, 2 * R, 0, 0, d, d);
       rims.set(key, canvas);
@@ -764,6 +775,7 @@ export default defineSimulation({
       }
       // Wolken
       g.fillStyle = dark ? 'rgba(160,180,210,0.10)' : 'rgba(255,255,255,0.85)';
+      const cloudImg = ctx.images.get('cloud');
       for (const [fx, fy, k] of [
         [0.2, 0.34, 1],
         [0.56, 0.2, 0.8],
@@ -772,6 +784,16 @@ export default defineSimulation({
         const cx = r.x + fx * r.w;
         const cy = r.y + fy * skyH + 8;
         const u = (small ? 9 : 12) * k;
+        if (cloudImg) {
+          // Foto: verschieden groß, die mittlere gespiegelt; nachts nur schwach sichtbar
+          const cw = u * 5.6;
+          const ch = (cw * CLOUD_IMG.h) / CLOUD_IMG.w;
+          g.save();
+          g.globalAlpha = dark ? 0.2 : 0.95;
+          g.drawImage(scaledSprite(cloudImg, cw, ch, surface.dpr, { flipX: k < 1 }), cx - cw / 2, cy + u * 0.9 - ch, cw, ch);
+          g.restore();
+          continue;
+        }
         g.beginPath();
         g.ellipse(cx, cy, u * 2.4, u * 0.9, 0, 0, Math.PI * 2);
         g.ellipse(cx - u * 0.9, cy - u * 0.5, u * 1.1, u, 0, 0, Math.PI * 2);
@@ -874,7 +896,7 @@ export default defineSimulation({
       }
 
       // Stroboskop: Auto in gleichen Zeitabständen
-      const roof = carGround - len * (ctx.images.get('car') ? 0.38 : 0.52);
+      const roof = carGround - len * (ctx.images.get('car') ? 0.42 : 0.52);
       if (p.strobe && !morph.running) {
         const dt = strobeStep();
         let lastLabel = -Infinity;
@@ -931,10 +953,13 @@ export default defineSimulation({
       const size = small ? 11.5 : 13;
       const tLabel = `t = ${fmt.fixed(t, 1)} s`;
       const sLabel = `s = ${fmt.num(st.s, 1)} m`;
-      const vLabel = small ? `v = ${fmt.num(st.v, 1)} m/s` : `v = ${fmt.num(st.v, 1)} m/s (${fmt.num(Math.abs(toKmh(st.v)), 0)} km/h)`;
+      const vLabel = small ? `v = ${fmt.num(st.v, 1)} m/s` : `v = ${fmt.num(st.v, 1)} m/s (${fmt.num(toKmh(st.v), 0)} km/h)`;
       const w1 = pill(r.x + 8, r.y + 8, tLabel, theme.text, 'left', size);
-      pill(r.x + 8 + w1 + 6, r.y + 8, sLabel, theme.series[0]!, 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, vLabel, theme.series[3]!, 'right', size);
+      // Im Aufgabenmodus verraten Ort und Tacho die Lösung (Aufgabe 2: Diagramm ablesen)
+      if (!ctx.hidden) {
+        pill(r.x + 8 + w1 + 6, r.y + 8, sLabel, theme.series[0]!, 'left', size);
+        pill(r.x + r.w - 8, r.y + 8, vLabel, theme.series[3]!, 'right', size);
+      }
       g.restore();
     }
 

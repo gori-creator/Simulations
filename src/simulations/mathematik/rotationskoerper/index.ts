@@ -182,8 +182,8 @@ export default defineSimulation({
       label: L('Radius der Scheiben', 'Radius of the discs'),
       options: [
         { value: 'mid', label: L('f(Mitte)', 'f(midpoint)') },
-        { value: 'lower', label: L('kleinster Wert (innen)', 'smallest value (inside)') },
-        { value: 'upper', label: L('größter Wert (außen)', 'largest value (outside)') },
+        { value: 'lower', label: L('kleinster Radius (innen)', 'smallest radius (inside)') },
+        { value: 'upper', label: L('größter Radius (außen)', 'largest radius (outside)') },
       ],
       default: 'mid',
       visibleIf: (v) => Number(v.n) < N_INF,
@@ -390,7 +390,8 @@ export default defineSimulation({
     }
 
     const N = (v: number, d = 2) => num(v, d);
-    const coef = (v: number) => (Math.abs(v - 1) < 1e-9 ? '' : Math.abs(v + 1) < 1e-9 ? '−' : N(v, 3));
+    // Quadrate wie m² oder k² brauchen 4 Stellen (Schrittweite 0,05 → 0,05² = 0,0025)
+    const coef = (v: number, d = 3) => (Math.abs(v - 1) < 1e-9 ? '' : Math.abs(v + 1) < 1e-9 ? '−' : N(v, d));
     /** Funktionsterm in der Formel-Kurzschrift. */
     function fTerm(s: Shape): string {
       const { r, m, c, k } = s.fp;
@@ -421,15 +422,15 @@ export default defineSimulation({
         case 'zyl':
           return N(r * r, 4);
         case 'kegel':
-          return Math.abs(m) < 1e-9 ? '0' : `${coef(m * m)}x²`;
+          return Math.abs(m) < 1e-9 ? '0' : `${coef(m * m, 4)}x²`;
         case 'stumpf':
           return Math.abs(m) < 1e-9 ? N(c * c, 4) : `(${fTerm(s)})²`;
         case 'kugel':
           return `${N(r * r, 4)} − x²`;
         case 'para':
-          return `${coef(k * k)}x`;
+          return `${coef(k * k, 4)}x`;
         case 'sin':
-          return `${coef(k * k)}${Math.abs(k * k - 1) < 1e-9 ? '' : ' '}sin²x`;
+          return `${coef(k * k, 4)}${Math.abs(k * k - 1) < 1e-9 ? '' : ' '}sin²x`;
         case 'horn':
           return `\\f{${N(k * k, 4)}}{x²}`;
       }

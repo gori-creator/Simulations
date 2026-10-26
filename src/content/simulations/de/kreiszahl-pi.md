@@ -83,7 +83,7 @@ Beim Sechseck gilt $3 < \pi < 2\sqrt{3} \approx 3{,}464$. Erkläre, warum das ei
 <details>
 <summary>Lösung anzeigen</summary>
 
-Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der Seitenlänge $r$. Sein Umfang ist $6r = 3d$. Da der Kreis außen herum etwas länger ist, gilt $\pi > 3$. [Sechseck zeigen](?mode=archimedes)
+Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der Seitenlänge $r$. Sein Umfang ist $6r = 3d$. Jeder Kreisbogen zwischen zwei Ecken ist länger als die Sechseckseite darunter. Also ist der Kreisumfang größer als $3d$, und es gilt $\pi > 3$. [Sechseck zeigen](?mode=archimedes)
 
 </details>
 
@@ -94,4 +94,3 @@ Das einbeschriebene Sechseck besteht aus sechs gleichseitigen Dreiecken mit der 
 - **Häufige Stolpersteine:**
   - Umfang und Fläche werden verwechselt; $\pi r^2$ und $2\pi r$ werden vertauscht.
   - „π ist genau 3,14.“
-- **Bilder:** Rad und Pizza können durch Fotos ergänzt werden (siehe `docs/BILDER.md`).

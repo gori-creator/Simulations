@@ -1,0 +1,1051 @@
+{
+  "id": "bayern-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "bayern-gymnasium",
+    "en": "bavaria-gymnasium"
+  },
+  "state": {
+    "de": "Bayern",
+    "en": "Bavaria"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "LehrplanPLUS",
+  "grades": [
+    {
+      "grade": 7,
+      "note": {
+        "de": "Physik ist hier Teil des Fachs „Natur und Technik“ (Schwerpunkt Physik, Lernbereich NT7 1). Der Schwerpunkt Informatik (NT7 2) ist nicht aufgenommen.",
+        "en": "Physics is part of the subject “Natur und Technik” here (physics focus, unit NT7 1). The computer-science focus (NT7 2) is not included."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "(Überschrift im eingefügten Text nicht enthalten; vermutlich „Schwerpunkt Physik“)",
+            "en": "(heading not contained in the pasted text; presumably “physics focus”)"
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "(Überschrift im eingefügten Text nicht enthalten) – Inhalt: Magnetismus und Dichte",
+                "en": "(heading not contained in the pasted text) – content: magnetism and density"
+              },
+              "summary": {
+                "de": "Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment.",
+                "en": "Properties of permanent magnets, the model of elementary magnets and the Earth’s magnetic field; plus density as a property of a material, measured in an own experiment."
+              }
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Optische Phänomene",
+                "en": "Optical phenomena"
+              },
+              "summary": {
+                "de": "Lichtquellen, Sehvorgang und die Farbe von Gegenständen; geradlinige Lichtausbreitung erklärt Kern-, Halb- und Übergangsschatten sowie Mondphasen und Finsternisse.",
+                "en": "Light sources, how we see and the colour of objects; straight-line propagation of light explains umbra, penumbra and partial shadows as well as moon phases and eclipses."
+              },
+              "simulations": [
+                "licht-schatten"
+              ]
+            },
+            {
+              "code": "1.3",
+              "title": {
+                "de": "Elektrische Stromkreise",
+                "en": "Electric circuits"
+              },
+              "summary": {
+                "de": "Elektrische Ladungen und Reibungselektrizität, Strom als bewegte Ladung, Wärme-, Licht- und Magnetwirkung; einfache Schaltungen wie die Wechselschaltung werden geplant und aufgebaut.",
+                "en": "Electric charges and static electricity, current as moving charge, heating, lighting and magnetic effects; simple circuits such as a two-way switch are planned and built."
+              },
+              "simulations": [
+                "einfacher-stromkreis"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/physik",
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Elektrischer Strom",
+            "en": "Electric current"
+          },
+          "summary": {
+            "de": "Stromstärke, Spannung und Widerstand an einem Modell des Stromkreises; Kennlinien messen, mit R = U/I rechnen und Reihen- und Parallelschaltungen mit bis zu drei Widerständen untersuchen.",
+            "en": "Current, voltage and resistance using a model of the circuit; measuring characteristic curves, calculating with R = U/I and investigating series and parallel circuits with up to three resistors."
+          },
+          "simulations": [
+            "ohmsches-gesetz",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Optik",
+            "en": "Optics"
+          },
+          "summary": {
+            "de": "Reflexionsgesetz und Spiegelbild, Brechung, Bildentstehung an Sammellinsen (reell und virtuell), Auge und Fehlsichtigkeit sowie Totalreflexion mit Lichtleitern.",
+            "en": "Law of reflection and mirror images, refraction, image formation by converging lenses (real and virtual), the eye and vision defects, and total internal reflection with optical fibres."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Mechanik",
+            "en": "Mechanics"
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Dynamik zweidimensionaler Bewegungen",
+                "en": "Dynamics of two-dimensional motion"
+              },
+              "summary": {
+                "de": "Geschwindigkeit als Pfeil, Geschwindigkeitsänderung durch eine Kraft, F · Δt = m · Δv als Definition der Kraft; Beschleunigung im eindimensionalen Fall messen.",
+                "en": "Velocity as an arrow, change of velocity caused by a force, F · Δt = m · Δv as the definition of force; measuring acceleration in one dimension."
+              },
+              "simulations": [
+                "bewegungsdiagramme"
+              ]
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Kräfte und ihre Wirkungen",
+                "en": "Forces and their effects"
+              },
+              "summary": {
+                "de": "Masse und Gewichtskraft, Kräfte addieren und an der schiefen Ebene zerlegen, Kräftegleichgewicht und Trägheitssatz sowie Dehnung von Federn mit Hooke’schem Bereich.",
+                "en": "Mass and weight, adding forces and resolving them on an inclined plane, equilibrium of forces and the law of inertia, and the stretching of springs with the Hooke region."
+              },
+              "simulations": [
+                "kraefteaddition",
+                "schiefe-ebene",
+                "hookesches-gesetz",
+                "freier-fall",
+                "hebelgesetz"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Profilbereich am NTG (nur NTG)",
+            "en": "Profile area at the NTG (science and technology track only)"
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Untersuchungen an Solarzellen und anderen Elektrizitätsquellen",
+                "en": "Investigating solar cells and other sources of electricity"
+              },
+              "summary": {
+                "de": "Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden.",
+                "en": "Measuring solar modules in series and parallel and investigating external influences such as tilt and shade; exploring other sources such as galvanic cells or power supplies."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Vertiefung prozessbezogener Kompetenzen anhand ausgewählter Inhalte",
+                "en": "Deepening process-related skills with selected content"
+              },
+              "summary": {
+                "de": "Wahlthemen zum selbstständigen Experimentieren und Auswerten, etwa Lupe und optische Instrumente, Farbmischung oder Bewegungsanalysen im Sport.",
+                "en": "Optional topics for independent experimenting and evaluating, for example magnifying glasses and optical instruments, colour mixing or motion analysis in sport."
+              },
+              "simulations": [
+                "linsen"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/physik",
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Energie als Erhaltungsgröße",
+            "en": "Energy as a conserved quantity"
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Mechanische Energie",
+                "en": "Mechanical energy"
+              },
+              "summary": {
+                "de": "Höhen-, Bewegungs- und Spannenergie ineinander umwandeln und mit dem Energieerhaltungssatz bilanzieren; Arbeit und Leistung unterscheiden und messen.",
+                "en": "Converting potential, kinetic and elastic energy and balancing them with the conservation of energy; distinguishing and measuring work and power."
+              },
+              "simulations": [
+                "energieerhaltung"
+              ]
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Elektrische Energie",
+                "en": "Electrical energy"
+              },
+              "summary": {
+                "de": "Ladung als Vielfaches der Elementarladung, Spannung als Potentialdifferenz, elektrische Energie und Leistung in Schaltungen sowie der Wirkungsgrad von Geräten.",
+                "en": "Charge as a multiple of the elementary charge, voltage as a potential difference, electrical energy and power in circuits, and the efficiency of devices."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Atome",
+            "en": "Atoms"
+          },
+          "summary": {
+            "de": "Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre.",
+            "en": "Photon model of light, colour and photon energy, emission and absorption spectra explained by the energy-level model, and absorption in the Earth’s atmosphere."
+          },
+          "simulations": [
+            "linienspektren",
+            "photoeffekt"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Wärmelehre",
+            "en": "Thermal physics"
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Das Teilchenmodell",
+                "en": "The particle model"
+              },
+              "summary": {
+                "de": "Temperatur als mittlere Bewegungsenergie der Teilchen, innere Energie, Aggregatzustände sowie Druck, Volumen und Temperatur eines Gases.",
+                "en": "Temperature as the mean kinetic energy of particles, internal energy, states of matter, and the pressure, volume and temperature of a gas."
+              },
+              "simulations": [
+                "gasgesetze",
+                "teilchenmodell"
+              ]
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Thermischer Energietransport und Einflüsse auf unser Klima",
+                "en": "Thermal energy transport and influences on our climate"
+              },
+              "summary": {
+                "de": "Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde.",
+                "en": "Specific heat capacity, heat as a process quantity, conduction, convection and thermal radiation, and the greenhouse effect and the Earth’s radiation balance."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Profilbereich am NTG (nur NTG)",
+            "en": "Profile area at the NTG (science and technology track only)"
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Klima",
+                "en": "Climate"
+              },
+              "summary": {
+                "de": "Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen.",
+                "en": "Further aspects of the climate system such as sea-level rise, feedbacks and tipping points; checking alternative explanations of global warming with physics."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte",
+                "en": "Deepening process-related skills with further selected content"
+              },
+              "summary": {
+                "de": "Wahlthemen wie Energie im Körper, Wärmedämmung, Energieversorgung, Fahrzeugtechnik oder Druck und Auftrieb, selbstständig dokumentiert und präsentiert.",
+                "en": "Optional topics such as energy in the body, insulation, energy supply, vehicle technology or pressure and buoyancy, documented and presented independently."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/physik",
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
+            "en": "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer."
+          },
+          "simulations": [
+            "induktion",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Impulserhaltung in der Mechanik",
+            "en": "Conservation of momentum in mechanics"
+          },
+          "summary": {
+            "de": "Impuls als Erhaltungsgröße, Stöße mit Impuls- und Energieerhaltung berechnen und das Wechselwirkungsgesetz von Kräftepaaren im Gleichgewicht abgrenzen.",
+            "en": "Momentum as a conserved quantity, calculating collisions with conservation of momentum and energy, and distinguishing the law of interaction from forces in equilibrium."
+          },
+          "simulations": [
+            "stoesse"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Bewegungen und ihre Modellierung in der Physik",
+            "en": "Motion and its modelling in physics"
+          },
+          "summary": {
+            "de": "Zeit-Ort- und Zeit-Geschwindigkeit-Diagramme, gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall sowie der waagrechte Wurf in Komponenten.",
+            "en": "Time–position and time–velocity graphs, uniform and uniformly accelerated motion, free fall and the horizontal projectile described in components."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "freier-fall",
+            "schiefer-wurf"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Kernphysik",
+            "en": "Nuclear physics"
+          },
+          "summary": {
+            "de": "Alpha-, Beta- und Gammastrahlung, Aufbau des Kerns bis zu den Quarks, Masse-Energie-Äquivalenz, Halbwertszeit sowie Strahlenwirkung und Strahlenschutz.",
+            "en": "Alpha, beta and gamma radiation, the structure of the nucleus down to quarks, mass–energy equivalence, half-life, and biological effects of radiation and protection."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Profilbereich am NTG (nur NTG)",
+            "en": "Profile area at the NTG (science and technology track only)"
+          },
+          "parts": [
+            {
+              "code": "5.1",
+              "title": {
+                "de": "Halbleiterbauelemente in Experimenten",
+                "en": "Semiconductor components in experiments"
+              },
+              "summary": {
+                "de": "Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären.",
+                "en": "Recording the characteristic curve of a diode, using a transistor as a switch and amplifier, and explaining simple semiconductor circuits with models."
+              }
+            },
+            {
+              "code": "5.2",
+              "title": {
+                "de": "Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte",
+                "en": "Deepening process-related skills with further selected content"
+              },
+              "summary": {
+                "de": "Wahlthemen wie Physik im Sport (optimaler Wurf, Billardstöße), Fliegen, Chaos, Anwendungen der Radioaktivität oder Elektrotechnik.",
+                "en": "Optional topics such as physics in sport (optimal throw, billiard collisions), flight, chaos, applications of radioactivity or electrical engineering."
+              },
+              "simulations": [
+                "schiefer-wurf",
+                "stoesse"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/physik",
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Kreisbewegung",
+            "en": "Circular motion"
+          },
+          "summary": {
+            "de": "Größen der Kreisbewegung, Zentripetalkraft herleiten und experimentell prüfen, Kurvenfahrten im Straßenverkehr und Himmelskörper mit dem Gravitationsgesetz.",
+            "en": "Quantities of circular motion, deriving and testing the centripetal force, cornering in road traffic, and celestial bodies with the law of gravitation."
+          },
+          "simulations": [
+            "kreisbewegung",
+            "planetenbahnen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Schwingungen und Wellen",
+            "en": "Oscillations and waves"
+          },
+          "summary": {
+            "de": "Harmonische Schwingungen am Feder- und Fadenpendel, mechanische Wellen, Beugung, Interferenz und stehende Wellen sowie Licht am Doppelspalt.",
+            "en": "Harmonic oscillations of spring and simple pendulums, mechanical waves, diffraction, interference and standing waves, and light at the double slit."
+          },
+          "simulations": [
+            "fadenpendel",
+            "federpendel",
+            "wellen-ausbreitung",
+            "interferenz",
+            "stehende-wellen",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Eigenverantwortliche Arbeit an physikalischen Themen",
+            "en": "Independent work on physics topics"
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Astronomische Weltbilder",
+                "en": "Astronomical world views"
+              },
+              "summary": {
+                "de": "Vom geozentrischen zum heliozentrischen Weltbild mit den Kepler’schen Gesetzen und ein Blick auf das moderne Bild des Universums.",
+                "en": "From the geocentric to the heliocentric world view with Kepler’s laws, and a look at the modern picture of the universe."
+              },
+              "simulations": [
+                "planetenbahnen"
+              ]
+            },
+            {
+              "code": "3.2",
+              "title": {
+                "de": "Einblick in die spezielle Relativitätstheorie",
+                "en": "Insight into special relativity"
+              },
+              "summary": {
+                "de": "Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld.",
+                "en": "Einstein’s postulates, relativity of simultaneity, time dilation and length contraction, and science under social and political pressure."
+              }
+            },
+            {
+              "code": "3.3",
+              "title": {
+                "de": "Energieversorgung",
+                "en": "Energy supply"
+              },
+              "summary": {
+                "de": "Umkehrbare und nicht umkehrbare Vorgänge, Energieentwertung und Wirkungsgrad sowie Fragen der heutigen und künftigen Energieversorgung.",
+                "en": "Reversible and irreversible processes, energy degradation and efficiency, and questions about today’s and future energy supply."
+              }
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Profilbereich am NTG (27 Std.) (nur NTG)",
+            "en": "Profile area at the NTG (27 h) (science and technology track only)"
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Die Methode der kleinen Schritte",
+                "en": "The method of small steps"
+              },
+              "summary": {
+                "de": "Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen.",
+                "en": "Calculating motion under changing forces step by step on a computer, e.g. falling with air resistance and harmonic oscillation, and comparing with experiments."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Photovoltaik in Anwendungen",
+                "en": "Photovoltaics in applications"
+              },
+              "summary": {
+                "de": "U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten.",
+                "en": "Determining the U–I curve of a solar cell and its maximum power point, knowing the components of photovoltaic systems and assessing their benefit."
+              }
+            },
+            {
+              "code": "4.3",
+              "title": {
+                "de": "Außerunterrichtliche Aktivität",
+                "en": "Activity outside the classroom"
+              },
+              "summary": {
+                "de": "Mindestens eine Aktivität außerhalb des Unterrichts, etwa Schülerlabor, Museum, Betriebsbesuch oder ein eigenes Forschungsprojekt.",
+                "en": "At least one activity outside lessons, such as a student lab, a museum, a company visit or an own research project."
+              }
+            },
+            {
+              "code": "4.4",
+              "title": {
+                "de": "Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte",
+                "en": "Deepening process-related skills with further selected content"
+              },
+              "summary": {
+                "de": "Wahlthemen wie Physik auf dem Jahrmarkt, Akustik und Resonanz, Licht in der Technik oder Computermodelle für Würfe mit Luftwiderstand und Planetenbahnen.",
+                "en": "Optional topics such as physics at the fair, acoustics and resonance, light in technology, or computer models of throws with air resistance and planetary orbits."
+              },
+              "simulations": [
+                "schiefer-wurf",
+                "planetenbahnen",
+                "resonanz"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/physik/grundlegend",
+      "note": {
+        "de": "Grundlegendes Anforderungsniveau (Standardlehrplan).",
+        "en": "Basic level (standard syllabus)."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Statische elektrische und magnetische Felder",
+            "en": "Static electric and magnetic fields"
+          },
+          "summary": {
+            "de": "Feldlinien und Feldstärke, Überlagerung von Feldern, Kondensator mit Lade- und Entladekurve, Potential sowie geladene Teilchen in elektrischen und magnetischen Feldern.",
+            "en": "Field lines and field strength, superposition of fields, the capacitor with charging and discharging curves, potential, and charged particles in electric and magnetic fields."
+          },
+          "simulations": [
+            "feldlinien",
+            "kondensator",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Elektromagnetische Induktion und Schwingungen",
+            "en": "Electromagnetic induction and oscillations"
+          },
+          "summary": {
+            "de": "Induktionsgesetz und Wechselspannung, Selbstinduktion, technische Anwendungen sowie der elektromagnetische Schwingkreis im Vergleich zum Federpendel.",
+            "en": "Law of induction and alternating voltage, self-induction, technical applications, and the electromagnetic LC circuit compared with the spring pendulum."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Elektromagnetische Wellen",
+            "en": "Electromagnetic waves"
+          },
+          "summary": {
+            "de": "Wellen eines Dipols, Polarisation, Interferenz am Doppelspalt und Gitter, stehende Wellen, Wellenlängen von LED-Licht, Röntgenbremsstrahlung und das elektromagnetische Spektrum.",
+            "en": "Waves from a dipole, polarisation, interference at double slits and gratings, standing waves, wavelengths of LED light, X-ray bremsstrahlung and the electromagnetic spectrum."
+          },
+          "simulations": [
+            "doppelspalt",
+            "interferenz",
+            "stehende-wellen"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/physik/grundlegend-bio",
+      "note": {
+        "de": "Lehrplanalternative Biophysik (grundlegendes Anforderungsniveau), alternativ zum Standardlehrplan der Jahrgangsstufe 12.",
+        "en": "Biophysics syllabus alternative (basic level), instead of the standard syllabus of year 12."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Das Auge (nur Biophysik)",
+            "en": "The eye (biophysics only)"
+          },
+          "summary": {
+            "de": "Linse-Schirm-Modell und Linsengleichung, Fehlsichtigkeit, Farbsehen sowie Beugung an Spalt und Pupille als Grenze des Auflösungsvermögens.",
+            "en": "Lens–screen model and lens equation, vision defects, colour vision, and diffraction at slits and the pupil as the limit of resolution."
+          },
+          "simulations": [
+            "doppelspalt",
+            "linsen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Das Ohr (nur Biophysik)",
+            "en": "The ear (biophysics only)"
+          },
+          "summary": {
+            "de": "Interferenz von Schall und Frequenzspektren, Schalldruckpegel und Lautstärke, Richtungshören sowie Resonanz der Basilarmembran im Innenohr.",
+            "en": "Interference of sound and frequency spectra, sound pressure level and loudness, directional hearing, and resonance of the basilar membrane in the inner ear."
+          },
+          "simulations": [
+            "interferenz",
+            "resonanz"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Strahlenbiophysik und medizintechnische Anwendungen (nur Biophysik)",
+            "en": "Radiation biophysics and medical technology (biophysics only)"
+          },
+          "summary": {
+            "de": "Elektrische Felder und Potential am Beispiel des EKG, Lorentzkraft, Fadenstrahlrohr und Zyklotron für die Strahlentherapie sowie Röntgenstrahlung.",
+            "en": "Electric fields and potential using the ECG as an example, the Lorentz force, the fine-beam tube and the cyclotron for radiotherapy, and X-rays."
+          },
+          "simulations": [
+            "feldlinien",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Neuronale Signalleitung (nur Biophysik)",
+            "en": "Neural signal transmission (biophysics only)"
+          },
+          "summary": {
+            "de": "Ruhepotential, Ersatzschaltbild eines Axons mit Kondensator und Widerständen, passive und aktive Signalleitung sowie einfache Verschaltungen von Nervenzellen.",
+            "en": "Resting potential, an equivalent circuit of an axon with capacitor and resistors, passive and active signal transmission, and simple wiring of nerve cells."
+          },
+          "simulations": [
+            "kondensator"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/physik/erhoeht",
+      "note": {
+        "de": "Erhöhtes Anforderungsniveau.",
+        "en": "Advanced level."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Statische elektrische und magnetische Felder (erhöhtes Niveau)",
+            "en": "Static electric and magnetic fields (advanced level)"
+          },
+          "summary": {
+            "de": "Wie im grundlegenden Niveau, zusätzlich Coulombkraft, radialsymmetrisches Feld, Dielektrikum und Differentialgleichungen für Lade- und Entladevorgänge.",
+            "en": "As at the basic level, plus the Coulomb force, radial fields, dielectrics and differential equations for charging and discharging."
+          },
+          "simulations": [
+            "feldlinien",
+            "kondensator",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Elektromagnetische Induktion und Schwingungen (erhöhtes Niveau)",
+            "en": "Electromagnetic induction and oscillations (advanced level)"
+          },
+          "summary": {
+            "de": "Induktion, Schaltvorgänge an Spulen, Schwingkreis mit Differentialgleichung, gedämpfte und erzwungene Schwingungen mit Resonanz sowie Wechselstromkreise mit Zeigern.",
+            "en": "Induction, switching processes with coils, the LC circuit with its differential equation, damped and forced oscillations with resonance, and AC circuits with phasors."
+          },
+          "simulations": [
+            "induktion",
+            "resonanz",
+            "federpendel"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Elektromagnetische Wellen (erhöhtes Niveau)",
+            "en": "Electromagnetic waves (advanced level)"
+          },
+          "summary": {
+            "de": "Dipol und Maxwellgleichungen, Polarisation, Interferenz an Doppelspalt, Mehrfachspalt, Gitter und Einfachspalt, Bragg-Reflexion sowie Röntgenstrahlung.",
+            "en": "Dipoles and Maxwell’s equations, polarisation, interference at double slits, multiple slits, gratings and single slits, Bragg reflection and X-rays."
+          },
+          "simulations": [
+            "doppelspalt",
+            "interferenz",
+            "stehende-wellen"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Experimentelles Arbeiten (nur erhöhtes Niveau)",
+            "en": "Experimental work (advanced level only)"
+          },
+          "summary": {
+            "de": "Pflichtexperimente mit Fehlerbetrachtung, etwa Kondensator laden und entladen, Bahnen geladener Teilchen, Schwingungen, Wechselstromkreise und Wellenlängen mit dem Gitter.",
+            "en": "Compulsory experiments including uncertainty analysis, e.g. charging and discharging a capacitor, paths of charged particles, oscillations, AC circuits and wavelengths with a grating."
+          },
+          "simulations": [
+            "kondensator",
+            "lorentzkraft",
+            "resonanz",
+            "doppelspalt"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik/grundlegend",
+      "note": {
+        "de": "Grundlegendes Anforderungsniveau (Standardlehrplan).",
+        "en": "Basic level (standard syllabus)."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Grundideen der Quantenphysik",
+            "en": "Basic ideas of quantum physics"
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Eigenschaften von Quantenobjekten",
+                "en": "Properties of quantum objects"
+              },
+              "summary": {
+                "de": "Elektronenbeugung und de-Broglie-Wellenlänge, Doppelspaltversuch mit Elektronen und Photonen in der Simulation sowie Energie und Impuls von Photonen.",
+                "en": "Electron diffraction and de Broglie wavelength, the double-slit experiment with electrons and photons in simulation, and energy and momentum of photons."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Einblick in das Weltbild der Quantenphysik",
+                "en": "Insight into the world view of quantum physics"
+              },
+              "summary": {
+                "de": "Wellenfunktion und Nachweiswahrscheinlichkeit, Superposition, Komplementarität und der quantenphysikalische Messprozess.",
+                "en": "Wave function and detection probability, superposition, complementarity and the quantum measurement process."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Ein Atommodell der Quantenphysik",
+            "en": "An atomic model of quantum physics"
+          },
+          "summary": {
+            "de": "Potentialtopf mit diskreten Energieniveaus, Orbitale und Energiewerte des Wasserstoffatoms, Emission und Absorption von Licht sowie der Franck-Hertz-Versuch.",
+            "en": "The potential well with discrete energy levels, orbitals and energy values of the hydrogen atom, emission and absorption of light, and the Franck–Hertz experiment."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Strukturuntersuchungen zum Aufbau der Materie",
+            "en": "Investigating the structure of matter"
+          },
+          "summary": {
+            "de": "Methoden wie Streu- und Kollisionsexperimente sowie Grundaussagen des Standardmodells, selbstständig recherchiert und präsentiert.",
+            "en": "Methods such as scattering and collision experiments and the basic statements of the Standard Model, researched and presented independently."
+          }
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Kernphysik",
+            "en": "Nuclear physics"
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Ein einfaches Kernmodell der Quantenphysik",
+                "en": "A simple nuclear model of quantum physics"
+              },
+              "summary": {
+                "de": "Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen.",
+                "en": "Binding energy per nucleon, the potential-well model of the nucleus, the origin of the types of radiation, and energy balances in decays and nuclear reactions."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Radioaktivität und Kernenergietechnik",
+                "en": "Radioactivity and nuclear technology"
+              },
+              "summary": {
+                "de": "Geiger-Müller-Zähler, Zerfallsgesetz und Halbwertszeit, C14-Datierung, Strahlenschutz sowie Kernspaltung und Reaktor.",
+                "en": "Geiger–Müller counter, decay law and half-life, carbon-14 dating, radiation protection, and nuclear fission and reactors."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik/grundlegend-astro",
+      "note": {
+        "de": "Lehrplanalternative Astrophysik (grundlegendes Anforderungsniveau), alternativ zum Standardlehrplan der Jahrgangsstufe 13.",
+        "en": "Astrophysics syllabus alternative (basic level), instead of the standard syllabus of year 13."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Orientierung am Himmel (nur Astrophysik)",
+            "en": "Orientation in the sky (astrophysics only)"
+          },
+          "summary": {
+            "de": "Sternbilder und Objekte am Nachthimmel mit Sternkarte oder Software finden, Sichtbarkeit beurteilen und Schleifenbahnen der Planeten erklären.",
+            "en": "Finding constellations and objects in the night sky with a star chart or software, judging visibility and explaining the retrograde loops of planets."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Das Sonnensystem (nur Astrophysik)",
+            "en": "The solar system (astrophysics only)"
+          },
+          "summary": {
+            "de": "Astronomische Einheit, Gravitationsgesetz und Ellipsenbahnen zur Massenbestimmung, Einteilung der Himmelskörper sowie Satelliten und zweite kosmische Geschwindigkeit.",
+            "en": "The astronomical unit, the law of gravitation and elliptical orbits for determining masses, classifying celestial bodies, and satellites and escape velocity."
+          },
+          "simulations": [
+            "planetenbahnen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Die Sonne (nur Astrophysik)",
+            "en": "The Sun (astrophysics only)"
+          },
+          "summary": {
+            "de": "Zustandsgrößen der Sonne, Kernfusion und Energietransport, Sonnenflecken, Sonnenspektrum mit Absorptionslinien und Strahlungsgesetze für Temperaturabschätzungen.",
+            "en": "State quantities of the Sun, nuclear fusion and energy transport, sunspots, the solar spectrum with absorption lines, and radiation laws for estimating temperatures."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Sterne (nur Astrophysik)",
+            "en": "Stars (astrophysics only)"
+          },
+          "summary": {
+            "de": "Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten.",
+            "en": "Parallax, brightness and luminosity, spectral classes, the Hertzsprung–Russell diagram and stellar evolution, binary stars, gravitational waves and exoplanets."
+          },
+          "simulations": [
+            "doppler-effekt"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Großstrukturen im Weltall (nur Astrophysik)",
+            "en": "Large-scale structures in the universe (astrophysics only)"
+          },
+          "summary": {
+            "de": "Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell.",
+            "en": "Structure and mass of the Milky Way, dark matter, distances of galaxies, the Hubble relation and the Big Bang model."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik/erhoeht",
+      "note": {
+        "de": "Erhöhtes Anforderungsniveau.",
+        "en": "Advanced level."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Grundideen der Quantenphysik (erhöhtes Niveau)",
+            "en": "Basic ideas of quantum physics (advanced level)"
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Eigenschaften von Quantenobjekten",
+                "en": "Properties of quantum objects"
+              },
+              "summary": {
+                "de": "Elektronenbeugung mit Bragg-Reflexion und de-Broglie-Beziehung, Doppelspalt und Mach-Zehnder-Interferometer mit einzelnen Quanten sowie Photoeffekt mit Gegenfeldmethode.",
+                "en": "Electron diffraction with Bragg reflection and the de Broglie relation, double slit and Mach–Zehnder interferometer with single quanta, and the photoelectric effect with the retarding-field method."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "doppelspalt",
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Einblick in das Weltbild der Quantenphysik",
+                "en": "Insight into the world view of quantum physics"
+              },
+              "summary": {
+                "de": "Wellenfunktion, Unbestimmtheitsrelation, Messprozess, Quantenradierer, Nicht-Lokalität und Dekohärenz sowie Quantentechnik und ihr Missbrauch in Texten.",
+                "en": "Wave function, uncertainty principle, measurement, the quantum eraser, non-locality and decoherence, and quantum technology and its misuse in texts."
+              }
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Ein Atommodell der Quantenphysik (erhöhtes Niveau)",
+            "en": "An atomic model of quantum physics (advanced level)"
+          },
+          "summary": {
+            "de": "Schrödinger-Gleichung im Potentialtopf, Orbitale und Energiewerte von Wasserstoff und wasserstoffähnlichen Systemen, Pauli-Prinzip, Röntgenspektren und Franck-Hertz-Versuch.",
+            "en": "The Schrödinger equation in a potential well, orbitals and energy values of hydrogen and hydrogen-like systems, the Pauli principle, X-ray spectra and the Franck–Hertz experiment."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Strukturuntersuchungen zum Aufbau der Materie (erhöhtes Niveau)",
+            "en": "Investigating the structure of matter (advanced level)"
+          },
+          "summary": {
+            "de": "Methoden der Strukturuntersuchung und Standardmodell, zusätzlich Röntgen-Strukturanalyse und Synchrotronstrahlung.",
+            "en": "Methods of structural investigation and the Standard Model, plus X-ray structure analysis and synchrotron radiation."
+          }
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Kernphysik (erhöhtes Niveau)",
+            "en": "Nuclear physics (advanced level)"
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Ein einfaches Kernmodell",
+                "en": "A simple nuclear model"
+              },
+              "summary": {
+                "de": "Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte.",
+                "en": "Binding energy, potential-well model, origin of the types of radiation, energy and momentum balances, decay chains and the chart of nuclides."
+              }
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Radioaktivität und Kernenergietechnik",
+                "en": "Radioactivity and nuclear technology"
+              },
+              "summary": {
+                "de": "Zerfallsgesetz aus einer Differentialgleichung, Halbwertszeit und mittlere Lebensdauer, Altersbestimmung, Strahlenschutz und Kernreaktor.",
+                "en": "Decay law from a differential equation, half-life and mean lifetime, dating, radiation protection and nuclear reactors."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Experimentelles Arbeiten (nur erhöhtes Niveau)",
+            "en": "Experimental work (advanced level only)"
+          },
+          "summary": {
+            "de": "Pflichtexperimente mit Fehlerbetrachtung, etwa Polarisation, Elektronenbeugung, Gegenfeldmethode zum Photoeffekt, Spektrometerbau und Absorption radioaktiver Strahlung.",
+            "en": "Compulsory experiments with uncertainty analysis, e.g. polarisation, electron diffraction, the retarding-field method for the photoelectric effect, building a spectrometer and absorption of radiation."
+          },
+          "simulations": [
+            "elektronenbeugung",
+            "photoeffekt",
+            "linienspektren"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -15,3 +15,12 @@ export function piFunnel(total: number): number {
   const p = Math.PI / 4;
   return total > 0 ? 4 * 1.96 * Math.sqrt((p * (1 - p)) / total) : 4;
 }
+
+/**
+ * Ist der Schätzwert 4·k/n mit `decimals` Nachkommastellen exakt darstellbar?
+ * Dann steht in der Anzeige „=“, sonst „≈“. Ganzzahlige Rechnung, keine Rundungsfehler.
+ */
+export function estimateIsExact(hits: number, total: number, decimals: number): boolean {
+  if (total <= 0) return false;
+  return (4 * hits * 10 ** decimals) % total === 0;
+}

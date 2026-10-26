@@ -9,6 +9,7 @@ export type {
   ActionDef,
   BooleanParam,
   ChoiceParam,
+  DynamicText,
   NumberParam,
   ParamDef,
   Preset,
@@ -21,13 +22,25 @@ export type {
   ValuesOf,
 } from './types';
 export { Surface, TapTarget, type Rect } from './surface';
+export type { KeyTarget } from './key-targets';
 export { Plot, type Handle, type PlotOptions } from './plot';
 export { Clock, FixedStepper } from './clock';
-export { Formatter, formatNumber, formatPiFraction, MINUS } from './format';
+export { bindUnits, Formatter, formatNumber, formatPiFraction, MINUS, NBSP, withUnit } from './format';
 export * as term from './formula';
 export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
-export { drawImageFit, roundRect, softShadow, text, withAlpha } from './draw';
+export {
+  drawImageFit,
+  measureSubText,
+  parseSubText,
+  roundRect,
+  softShadow,
+  subText,
+  text,
+  withAlpha,
+  type SubTextPart,
+  type SubTextStyle,
+} from './draw';
 export { ImageStore, simAssetUrl } from './images';
 export { offscreenCanvas, scaledSprite, tintedSprite, type SpriteOptions, type TintOptions } from './sprites';
 export { drawLabStand, type LabStandOptions } from './lab-stand';

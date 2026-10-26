@@ -19,7 +19,9 @@ In the example the graphs intersect at $S_1(-1.5,\ 1.25)$ and $S_2(2,\ 3)$, so $
 
 | Position of the graphs | Solutions |
 | --- | --- |
+| intersect in exactly one point | one solution |
 | intersect in two points | two solutions |
+| intersect in three points | three solutions |
 | touch in one point (touching point) | one solution |
 | have no point in common | no solution: $S = \{\,\}$ |
 | (partly) coincide | infinitely many solutions |
@@ -82,7 +84,7 @@ Use the graphs to decide how many solutions the equation has: (a) $x^2 + 1 = x$,
 <summary>Show solution</summary>
 
 $D = \mathbb{R} \setminus \{0\}$. Hyperbola and line intersect at $(-4,\ -1)$ and $(1,\ 4)$, so $S = \{-4,\ 1\}$.
-By calculation: multiplying by $x$ gives $4 = x^2 + 3x$, so $x^2 + 3x - 4 = 0$, i.e. $(x + 4)(x - 1) = 0$. [Show in the simulation](?f=hyp&a1=4&d1=0&e1=0&m2=1&t2=3)
+By calculation: multiplying by $x$ (allowed, since $x \neq 0$) gives $4 = x^2 + 3x$, so $x^2 + 3x - 4 = 0$, i.e. $(x + 4)(x - 1) = 0$. Both solutions lie in $D$. [Show in the simulation](?f=hyp&a1=4&d1=0&e1=0&m2=1&t2=3)
 
 </details>
 
@@ -125,6 +127,7 @@ The hyperbola $y = \frac{1}{x}$ gets arbitrarily close to the $x$-axis but never
 
 - **Use (curriculum link is a draft, Bavarian Gymnasium):** grade 8, learning area 4 (solving fractional equations and interpreting them as intersection problems of graphs), building on the concept of a function from learning area 1; grade 9, learning area 2 (quadratic equations, intersections of parabola and line) and learning area 1 (approximations of square roots: bisection is a form of nested intervals). Suitable as an introduction, for practice and for comparing the graphical and the algebraic method.
 - **Model:** each side is a line $mx + c$, a parabola $a(x - d)^2 + e$, a hyperbola $\frac{a}{x - d} + e$ or a V-shaped graph $a \cdot |x - d| + e$. The simulation computes the solutions exactly (for quadratic equations with square roots, e.g. $\frac{1 + \sqrt{5}}{2}$), and numerically for cubic equations (hyperbola and parabola). The underlying set is $\mathbb{R}$; in grade 8 (rational numbers) choose examples with rational solutions.
+- **Certain digits:** For $x^2 = 2$ the simulation reports the second decimal place ($1.41$) as certain only after 11 steps, although the interval is narrower than $0.01$ after 7 steps. A good occasion to ask why the width alone is not enough.
 - **Task mode:** `show=0` hides the intersections, drop lines and the solution card in the picture, `_hide=1` covers the number of solutions, the solution set and the check in the results.
 - **Common stumbling blocks:**
   - The point of intersection $(2,\ 3)$ is given as the solution instead of its $x$-coordinate $2$.

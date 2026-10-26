@@ -45,7 +45,7 @@ In der **Vorzeichentabelle** bekommt jeder Faktor eine Zeile: $(x - x_0)^m$ ist 
 
 ### Aufgabe 1: Eigenschaften ablesen
 
-Gegeben ist $f(x) = -0{,}4 \cdot (x + 3)(x + 0{,}5)(x - 2{,}5)$. Gib Grad, Nullstellen, Randverhalten und $f(0)$ an. [Aufgabe laden](?z=3&x1=-3&m1=1&x2=-0.5&m2=1&x3=2.5&m3=1&a=-0.4&info=0&_hide=1)
+Gegeben ist $f(x) = -0{,}4 \cdot (x + 3)(x + 0{,}5)(x - 2{,}5)$. Gib Grad, Nullstellen, Randverhalten und $f(0)$ an. [Aufgabe laden](?z=3&x1=-3&m1=1&x2=-0.5&m2=1&x3=2.5&m3=1&a=-0.4&info=0&ends=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -78,7 +78,7 @@ $(x - 1)^3 = x^3 - 3x^2 + 3x - 1$; mal $(x + 3)$: $x^4 - 6x^2 + 8x - 3$; mal $0{
 
 ### Aufgabe 4: Vorzeichentabelle
 
-Erstelle für $f(x) = 0{,}2 \cdot (x + 3) \cdot x^2 \cdot (x - 3)$ eine Vorzeichentabelle mit einer Zeile pro Faktor. Wo ist $f(x) < 0$? Berechne $f(1)$ und gib das Randverhalten an. [Aufgabe laden](?z=3&x1=-3&m1=1&x2=0&m2=2&x3=3&m3=1&a=0.2&info=0&_hide=1)
+Erstelle für $f(x) = 0{,}2 \cdot (x + 3) \cdot x^2 \cdot (x - 3)$ eine Vorzeichentabelle mit einer Zeile pro Faktor. Wo ist $f(x) < 0$? Berechne $f(1)$ und gib das Randverhalten an. [Aufgabe laden](?z=3&x1=-3&m1=1&x2=0&m2=2&x3=3&m3=1&a=0.2&info=0&sign=0&ends=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

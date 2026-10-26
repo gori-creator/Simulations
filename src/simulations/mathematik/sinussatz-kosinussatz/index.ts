@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angles,
@@ -158,6 +158,7 @@ export default defineSimulation({
   id: 'sinussatz-kosinussatz',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
+  images: { crown: 'baumkrone.webp' },
   groups: [
     { id: 'pts', label: L('Ecken (in cm)', 'Vertices (in cm)') },
     { id: 'given', label: L('Gegebene Stücke', 'Given parts') },
@@ -294,7 +295,8 @@ export default defineSimulation({
 
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
-    const N = (v: number, d = 2) => fmt.num(clean(v, d), d);
+    /** Exakte Werte ohne Endnullen (9 cm, 0,5), gerundete mit allen Stellen (≈ 4,30 cm, ≈ 0,640). */
+    const N = (v: number, d = 2) => (isExact(v, d) ? fmt.num(clean(v, d), d) : fmt.fixed(clean(v, d), d));
     const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
     const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
     const M = '\\t{m}';
@@ -328,10 +330,13 @@ export default defineSimulation({
     let sceneFade: { from: Scene; t0: number } | null = null;
     let cardFade: number | null = null;
     let proof: { t0: number } | null = null;
+    /** Nach „Beweis abspielen“ bleibt die Beweiskarte sichtbar, notfalls vor den Balken (bis zur nächsten Änderung). */
+    let proofFocus = false;
     let sweep: { t0: number; C: Pt; A: Pt; a: number; orient: number; g0: number; box: [number, number, number, number] } | null = null;
     let steps: { t0: number } | null = null;
     let story: { t0: number } | null = null;
     let drag: HitId | null = null;
+    let grabOff: Px = [0, 0];
     let hover: HitId | null = null;
     let hits: Hit[] = [];
     let lastTime = performance.now();
@@ -417,7 +422,7 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= a;
       g.save();
-      g.fillStyle = opts.fill ?? (th().dark ? 'rgba(15,20,30,0.92)' : 'rgba(255,255,255,0.95)');
+      g.fillStyle = opts.fill ?? mixColor(th().bg, th().bg, 0, th().dark ? 0.92 : 0.95);
       g.shadowColor = th().dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
       g.shadowBlur = 7;
       g.shadowOffsetY = 2;
@@ -549,7 +554,7 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
       roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
       g.fill();
       g.restore();
@@ -561,7 +566,7 @@ export default defineSimulation({
         roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
         g.fill();
       }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
       g.stroke();
@@ -619,11 +624,11 @@ export default defineSimulation({
       g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
       g.shadowBlur = 12;
       g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#121923' : '#fdfdfb';
+      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.02 : 0.006);
       roundRect(g, R.x + 1, R.y + 1, R.w - 2, R.h - 2, 14);
       g.fill();
       g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
+      g.strokeStyle = theme.grid;
       g.lineWidth = 1.2;
       roundRect(g, R.x + 1.5, R.y + 1.5, R.w - 3, R.h - 3, 14);
       g.stroke();
@@ -719,7 +724,7 @@ export default defineSimulation({
       const tx = q[0] + (away[0] / l) * (r + 12);
       const ty = q[1] + (away[1] / l) * (r + 12);
       g.lineWidth = 4;
-      g.strokeStyle = th().dark ? 'rgba(18,25,35,0.9)' : 'rgba(253,253,251,0.95)';
+      g.strokeStyle = mixColor(th().bg, th().bg, 0, th().dark ? 0.9 : 0.95);
       g.lineJoin = 'round';
       g.strokeText(name, tx, ty);
       g.fillStyle = color;
@@ -1366,7 +1371,7 @@ export default defineSimulation({
         g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
         g.shadowBlur = on ? 8 : 4;
         g.shadowOffsetY = 1.5;
-        g.fillStyle = on ? lc : theme.dark ? '#1a2230' : '#ffffff';
+        g.fillStyle = on ? lc : mixColor(theme.bg, theme.text, theme.dark ? 0.05 : 0);
         roundRect(g, x, y, wdt, hgt, hgt / 2);
         g.fill();
         g.restore();
@@ -1374,7 +1379,7 @@ export default defineSimulation({
         g.lineWidth = hov ? 2 : 1.3;
         roundRect(g, x + 0.5, y + 0.5, wdt - 1, hgt - 1, hgt / 2);
         g.stroke();
-        g.fillStyle = on ? '#ffffff' : theme.text;
+        g.fillStyle = on ? theme.bg : theme.text;
         g.textAlign = 'center';
         g.textBaseline = 'middle';
         g.fillText(name, x + wdt / 2, y + hgt / 2 + 0.5);
@@ -1421,7 +1426,7 @@ export default defineSimulation({
         const name = isAngle ? ANG[i]! : KEY[i]!;
         const ck = KEY[i]!;
         const unit = isAngle ? '°' : ' cm';
-        const d = isAngle ? 2 : 2;
+        const d = 2;
         if (given(key)) return `\\c{${ck}}{\\b{${name} = ${N(v, d)}${unit}}}`;
         const rv = revealed(now, key);
         return rv > 0.5 ? `\\c{${ck}}{${name}${suffix} ${eq(v, d)} ${N(v, d)}${unit}}` : `\\c{${ck}}{${name}${suffix} = ?}`;
@@ -1616,7 +1621,7 @@ export default defineSimulation({
       const y = R.y + R.h - 18;
       g.save();
       g.globalAlpha *= alpha;
-      g.fillStyle = th().dark ? 'rgba(15,20,30,0.85)' : 'rgba(255,255,255,0.88)';
+      g.fillStyle = mixColor(th().bg, th().bg, 0, th().dark ? 0.85 : 0.88);
       roundRect(g, x - 8, y - 22, len + 16 + 50, 32, 8);
       g.fill();
       g.fillStyle = th().text;
@@ -1638,7 +1643,7 @@ export default defineSimulation({
       if (alpha <= 0.01) return;
       g.save();
       g.globalAlpha *= alpha;
-      g.strokeStyle = th().dark ? '#c9cfd8' : '#4a5160';
+      g.strokeStyle = th().axis;
       g.lineWidth = 2;
       for (let i = 0; i < 3; i++) {
         const a = -Math.PI / 2 + (i * TAU) / 3;
@@ -1718,6 +1723,13 @@ export default defineSimulation({
       g.shadowBlur = 8;
       g.shadowOffsetX = 3;
       g.shadowOffsetY = 4;
+      const crownImg = ctx.images.get('crown');
+      if (crownImg) {
+        // Foto der Krone von oben, Mitte = Messpunkt T
+        g.drawImage(scaledSprite(crownImg, 2 * cr, 2 * cr, surface.dpr), pT[0] - cr, pT[1] - cr, 2 * cr, 2 * cr);
+      }
+      const crownGA = g.globalAlpha;
+      if (crownImg) g.globalAlpha = 0;
       const cg = g.createRadialGradient(pT[0] - cr * 0.3, pT[1] - cr * 0.35, 2, pT[0], pT[1], cr);
       cg.addColorStop(0, dark ? '#4f8a45' : '#7cc46a');
       cg.addColorStop(1, dark ? '#2a5a28' : '#3f8a35');
@@ -1733,6 +1745,7 @@ export default defineSimulation({
       }
       g.closePath();
       g.fill();
+      g.globalAlpha = crownGA;
       g.restore();
       // Standlinie wie ein Maßband
       const k0 = st(0);
@@ -1796,7 +1809,7 @@ export default defineSimulation({
           hits.push({ id: 'T', x: pT[0], y: pT[1], r: fs(22, 26) });
           if (hover === 'T' || drag === 'T') {
             g.save();
-            g.strokeStyle = withAlpha('#ffffff', 0.9);
+            g.strokeStyle = mixColor(th().bg, th().bg, 0, 0.9);
             g.lineWidth = 2;
             g.setLineDash([3, 3]);
             g.beginPath();
@@ -2187,7 +2200,7 @@ export default defineSimulation({
         const rows: Row[] = [{ src: `A = \\f{1}{2} · \\c{a}{a} · \\c{b}{b} · sin \\c{c}{γ}`, size: fs(14.5, 13.5), gap: 8 }];
         for (const d of list) {
           const A = areaSAS(d.a, d.b, d.ga);
-          rows.push({ src: `A${d.idx ?? ''} ${show ? `= \\f{1}{2} · ${N(d.a)} · ${N(d.b)} · sin ${N(d.ga, 1)}° ${eq(A, 1)} \\b{${N(A, 1)} cm²}` : '= ?'}`, size: fs(13, 12), gap: 6 });
+          rows.push({ src: `A${d.idx ?? ''} ${show ? `= \\f{1}{2} · ${N(d.a)} · ${N(d.b)} · sin ${N(d.ga, 1)}° ${eq(A)} \\b{${N(A)} cm²}` : '= ?'}`, size: fs(13, 12), gap: 6 });
         }
         rows.push({ src: `\\c{m}{\\t{${say(L('Zwei Seiten und der eingeschlossene Winkel', 'Two sides and the included angle'))}}}`, size: fs(11.5, 11), color: th().muted, gap: 2 });
         return formulaCard(R, measure, k, say(L('Flächeninhalt', 'Area')), col.c(), rows);
@@ -2295,7 +2308,7 @@ export default defineSimulation({
           const inside = xe + 6 + box.w > x1;
           g.save();
           if (inside) {
-            const box2 = fit(`${N(c * c, 1)}`, 80, fs(12, 11), '#ffffff', 700);
+            const box2 = fit(`${N(c * c, 1)}`, 80, fs(12, 11), th().bg, 700);
             box2.draw(g, xe - 6 - box2.w, y + barH / 2 + (box2.asc - box2.desc) / 2);
           } else box.draw(g, xe + 6, y + barH / 2 + (box.asc - box.desc) / 2);
           g.restore();
@@ -2392,7 +2405,7 @@ export default defineSimulation({
           const extra: Record<string, Txt> = {
             triangle: L(`${N(Math.min(G.a, G.b, G.c))} + ${N([G.a, G.b, G.c].sort((x, y) => x - y)[1]!)} ≤ ${N(Math.max(G.a, G.b, G.c))}: Die Dreiecksungleichung ist verletzt.`, `${N(Math.min(G.a, G.b, G.c))} + ${N([G.a, G.b, G.c].sort((x, y) => x - y)[1]!)} ≤ ${N(Math.max(G.a, G.b, G.c))}: the triangle inequality fails.`),
             angles: L(`α + β = ${N(G.al + G.be, 1)}° – für γ bleibt nichts übrig.`, `α + β = ${N(G.al + G.be, 1)}° – nothing is left for γ.`),
-            short: L(`sin γ = c · sin α : a = ${N(G.c)} · ${N(sinD(G.al), 3)} : ${N(G.a)} ≈ ${N(res.sinG ?? 0, 3)} > 1 – der Taschenrechner meldet einen Fehler.`, `sin γ = c · sin α : a = ${N(G.c)} · ${N(sinD(G.al), 3)} : ${N(G.a)} ≈ ${N(res.sinG ?? 0, 3)} > 1 – the calculator shows an error.`),
+            short: L(`sin γ = c · sin α : a = ${N(G.c)} · ${N(sinD(G.al), 3)} : ${N(G.a)} ${eq(res.sinG ?? 0, 3)} ${N(res.sinG ?? 0, 3)} > 1 – der Taschenrechner meldet einen Fehler.`, `sin γ = c · sin α : a = ${N(G.c)} · ${N(sinD(G.al), 3)} : ${N(G.a)} ${eq(res.sinG ?? 0, 3)} ${N(res.sinG ?? 0, 3)} > 1 – the calculator shows an error.`),
             obtuse: L('Gegenüber dem stumpfen Winkel liegt immer die längste Seite. Hier ist a ≤ c.', 'The longest side is always opposite the obtuse angle. Here a ≤ c.'),
           };
           return textCard(R, measure, k, say(L('Kein Dreieck', 'No triangle')), col.warn(), [
@@ -2518,7 +2531,19 @@ export default defineSimulation({
 
     function cardsFor(now: number, k: Intro): CardFn[] {
       const m = mode();
-      if (m === 'sin') return p.h ? [sinBarsCard(now, k), proofCard(now, k), areaCard(now, k, null)] : [sinBarsCard(now, k), areaCard(now, k, null)];
+      if (m === 'sin') {
+        const bars = sinBarsCard(now, k);
+        if (!p.h) return [bars, areaCard(now, k, null)];
+        const pc = proofCard(now, k);
+        if (proofFocus) {
+          // Passen Balken und Beweis nicht untereinander (Tablet quer, Handy), kommt der Beweis zuerst.
+          const C = regions().col;
+          const two = !regions().wide && C.w >= 460;
+          const R0 = { x: C.x, y: C.y, w: two ? (C.w - fs(10, 8)) / 2 : C.w, h: C.h };
+          if (!two && bars(R0, true) + fs(10, 8) + pc(R0, true) > C.h) return [pc, bars, areaCard(now, k, null)];
+        }
+        return [bars, pc, areaCard(now, k, null)];
+      }
       if (m === 'cos') return [cosCard(now, k), balanceCard(now, k), areaCard(now, k, null)];
       if (m === 'solve') {
         const res = solve(kase(), goalGiven());
@@ -2594,7 +2619,7 @@ export default defineSimulation({
         } else {
           const [a, b, c] = s;
           const corr = 2 * a * b * cosD(w[2]);
-          ctx.readout('law', { html: `${v('c')}<sup>2</sup> = ${N(a)}<sup>2</sup> + ${N(b)}<sup>2</sup> − 2 · ${N(a)} · ${N(b)} · cos ${N(w[2], 1)}° ≈ ${N(a * a, 1)} + ${N(b * b, 1)} ${corr >= 0 ? '−' : '+'} ${N(Math.abs(corr), 1)} ≈ <strong>${N(c * c, 1)} cm²</strong>` });
+          ctx.readout('law', { html: `${v('c')}<sup>2</sup> = ${N(a)}<sup>2</sup> + ${N(b)}<sup>2</sup> − 2 · ${N(a)} · ${N(b)} · cos ${N(w[2], 1)}° ${isExact(a * a, 1) && isExact(b * b, 1) && isExact(corr, 1) ? '=' : '≈'} ${N(a * a, 1)} + ${N(b * b, 1)} ${corr >= 0 ? '−' : '+'} ${N(Math.abs(corr), 1)} ${eq(c * c, 1)} <strong>${N(c * c, 1)} cm²</strong>` });
         }
         return;
       }
@@ -2729,6 +2754,7 @@ export default defineSimulation({
 
     function cancelStories(): void {
       proof = null;
+      proofFocus = false;
       sweep = null;
       steps = null;
       story = null;
@@ -2797,6 +2823,9 @@ export default defineSimulation({
           return true;
         }
         drag = id;
+        // Griffversatz merken, damit der Punkt beim Anfassen nicht unter den Zeiger springt
+        const h0 = hits.find((h) => h.id === id);
+        grabOff = h0 ? [h0.x - pt.px, h0.y - pt.py] : [0, 0];
         cancelStories();
         surface.setCursor('grabbing');
         ctx.requestRender();
@@ -2804,7 +2833,7 @@ export default defineSimulation({
       },
       pointerMove: (pt: { px: number; py: number }) => {
         if (!drag || ctx.locked) return;
-        dragTo(drag, pt.px, pt.py);
+        dragTo(drag, pt.px + grabOff[0], pt.py + grabOff[1]);
         ctx.requestRender();
       },
       pointerUp: () => {
@@ -2869,6 +2898,7 @@ export default defineSimulation({
         } else if (id === 'proof') {
           cancelStories();
           if (!p.h) ctx.set({ h: true });
+          proofFocus = true;
           if (!reduced()) proof = { t0: now };
         } else if (id === 'sweep') {
           cancelStories();

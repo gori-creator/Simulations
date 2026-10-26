@@ -13,12 +13,15 @@ import {
   modelKT,
   ParticleBox,
   phaseState,
+  SPEED_SCALE,
   SAMPLE_MASS,
   SOLID,
   speedDensity,
   SwapLattice,
   swapRate,
   thermalSpeed,
+  THERMOSTAT,
+  thermostatOptions,
   timeToMix,
   WATER,
   waterViscosity,
@@ -230,5 +233,156 @@ describe('Modell: Teilchenmodell – Diffusion', () => {
     const cold = timeToMix(10, 12, 40, 10);
     const warm = timeToMix(10, 12, 40, 70);
     expect(warm).toBeLessThan(cold / 3);
+  });
+});
+
+describe('Modell: Teilchenmodell – Werte aus Lernmaterial und Anzeigen', () => {
+  it('Celsius → Kelvin (Aufgabe 1) und absoluter Nullpunkt', () => {
+    expect(kelvin(20)).toBeCloseTo(293.15, 12);
+    expect(kelvin(-20)).toBeCloseTo(253.15, 12);
+    expect(kelvin(100)).toBeCloseTo(373.15, 12);
+    expect(kelvin(-273.15)).toBe(0);
+    // Bewegungsenergie bei 100 °C rund 27 % größer als bei 20 °C (nicht fünfmal so groß)
+    expect(meanKineticEnergy(100) / meanKineticEnergy(20)).toBeCloseTo(1.273, 3);
+    // unter 0 K wird nichts negativ
+    expect(meanSpeed(-300)).toBe(0);
+    expect(meanKineticEnergy(-300)).toBe(0);
+  });
+
+  it('Anzeige „Temperatur und Teilchenbewegung“: 6,07 · 10⁻²¹ J und rund 590 m/s bei 20 °C', () => {
+    expect(meanKineticEnergy(20) * 1e21).toBeCloseTo(6.07, 2);
+    expect(Math.round(meanSpeed(20) / 10) * 10).toBe(590);
+    expect(Math.round(meanSpeed(-20) / 10) * 10).toBe(550);
+    expect(Math.round(meanSpeed(100) / 10) * 10).toBe(660);
+  });
+
+  it('Schmelzen und Verdampfen (Aufgaben 2 und 3): 167 kJ, 1128,5 kJ, 334 s bei 500 W', () => {
+    const { melt, boil } = latentHeats();
+    expect(melt).toBeCloseTo(167000, 6);
+    expect(boil).toBeCloseTo(1128500, 6);
+    expect(melt / 500).toBeCloseTo(334, 9);
+    expect(boil / melt).toBeCloseTo(6.76, 2);
+    // Eis von −20 °C bis zum Sieden bei 1000 W: 21 kJ + 167 kJ + 209,5 kJ → 397,5 s ≈ 6,6 min
+    expect((enthalpy(100) - enthalpy(-20)) / 1000).toBeCloseTo(397.5, 9);
+  });
+
+  it('Phasenübergang genau an den Grenzen: 0 °C fest, 100 °C flüssig, halbe Schmelzwärme = halb geschmolzen', () => {
+    expect(phaseState(enthalpy(0)).phase).toBe('solid');
+    expect(phaseState(enthalpy(100)).phase).toBe('liquid');
+    const half = phaseState(latentHeats().melt / 2);
+    expect(half.theta).toBe(0);
+    expect(half.liquid).toBeCloseTo(0.5, 12);
+  });
+
+  it('Diffusion bei 10 °C und 70 °C: Teilchen tauschen rund 3,9-mal so oft die Plätze', () => {
+    expect(diffusionFactor(70) / diffusionFactor(10)).toBeCloseTo(3.93, 2);
+    expect(Math.round(meanSpeed(10) / 10) * 10).toBe(580);
+    expect(Math.round(meanSpeed(70) / 10) * 10).toBe(640);
+  });
+});
+
+describe('Prüfrunde: Thermostat beim Zustandswechsel', () => {
+  it('regelt beim Schmelzen und Sieden (und kurz danach) straffer, sonst wie bisher', () => {
+    const kT = modelKT(0);
+    expect(thermostatOptions('solid', kT)).toEqual({ kT, tau: 0.35, shuffle: 0.35 });
+    expect(thermostatOptions('liquid', kT)).toEqual({ kT, tau: 0.35, shuffle: 0.35 });
+    expect(thermostatOptions('gas', kT)).toEqual({ kT, tau: 0.35, shuffle: 0.35 });
+    for (const ph of ['melting', 'boiling'] as const) {
+      const o = thermostatOptions(ph, kT);
+      expect(o.tau).toBe(THERMOSTAT.tauTransition);
+      expect(o.tau!).toBeLessThan(0.35 / 5);
+      expect(o.shuffle!).toBeGreaterThan(0.35);
+    }
+    expect(thermostatOptions('solid', kT, 0.5).tau).toBe(THERMOSTAT.tauTransition);
+    expect(thermostatOptions('solid', kT, THERMOSTAT.hold + 0.01).tau).toBe(0.35);
+  });
+
+  it('schnelles Schmelzen (1000 W, ≈ 4,2 s im Bild): mittlere Geschwindigkeit bleibt höchstens ≈ 3 % neben dem Wert bei 0 °C', () => {
+    for (const seed of [1, 2, 3]) {
+      const box = new ParticleBox(60, 14, 16, latticeSites(10, 6, 14), seededRandom(seed));
+      const kT = modelKT(0);
+      box.arrange(60, 0, kT);
+      const mean = () => {
+        let sum = 0;
+        for (let i = 0; i < box.n; i++) sum += Math.hypot(box.vx[i]!, box.vy[i]!);
+        return sum / box.n;
+      };
+      // Eis bei 0 °C einschwingen lassen, dann Bezugswert messen
+      for (let s = 0; s < 900; s++) box.step(1 / 300, thermostatOptions('solid', kT));
+      let ref = 0;
+      for (let s = 0; s < 900; s++) {
+        box.step(1 / 300, thermostatOptions('solid', kT));
+        ref += mean() / 900;
+      }
+      // wie in der Simulation: 60 Bilder/s, je 5 Schritte, gleitender Mittelwert wie im Histogramm
+      const frames = Math.round(4.2 * 60);
+      let shown = ref;
+      let worst = 0;
+      for (let f = 0; f < frames; f++) {
+        box.syncRoles(Math.round((1 - (f + 1) / frames) * 60), 0, kT);
+        for (let k = 0; k < 5; k++) box.step(1 / 300, thermostatOptions('melting', kT));
+        shown += (mean() - shown) * (1 - Math.exp(-1.2 / 60));
+        worst = Math.max(worst, Math.abs(shown / ref - 1));
+      }
+      expect(box.count(LIQUID)).toBe(60);
+      expect(worst).toBeLessThan(0.035);
+    }
+  });
+});
+
+describe('Nachbesserung: mittlere Geschwindigkeit folgt der Temperatur', () => {
+  const mean = (box: ParticleBox) => {
+    let sum = 0;
+    for (let i = 0; i < box.n; i++) sum += Math.hypot(box.vx[i]!, box.vy[i]!);
+    return (sum / box.n) * SPEED_SCALE;
+  };
+
+  it('ruhende Flüssigkeit bei 50 °C: Ø im Mittel höchstens 1,5 % neben dem Sollwert (vorher ≈ +3,5 %)', () => {
+    const box = new ParticleBox(60, 14, 16, latticeSites(10, 6, 14), seededRandom(4));
+    const kT = modelKT(50);
+    box.arrange(0, 0, kT);
+    for (let s = 0; s < 1500; s++) box.step(1 / 300, thermostatOptions('liquid', kT, s < 450 ? 0 : Infinity));
+    let m = 0;
+    for (let s = 0; s < 3000; s++) {
+      box.step(1 / 300, thermostatOptions('liquid', kT));
+      m += mean(box) / 3000;
+    }
+    expect(Math.abs(m / meanSpeed(50) - 1)).toBeLessThan(0.015);
+  });
+
+  it('schnelles Abkühlen 100 → 0 °C (2000 W, ≈ 2,6 s im Bild): angezeigtes Ø hinkt nicht nach (vorher bis ≈ +14 %)', () => {
+    // Bei 60 Teilchen schwankt Ø auch bei fester Temperatur um einige Prozent (Zufall).
+    // Geprüft wird deshalb: im Mittel kaum Nachlauf (< 1,5 %) und nie weiter weg als bei
+    // fester Temperatur üblich (< 4,5 %); typisch liegt die Abweichung unter 3 %.
+    let bias = 0;
+    let count = 0;
+    let typical = 0;
+    for (const seed of [1, 2, 3, 4, 5, 6, 7, 8]) {
+      const box = new ParticleBox(60, 14, 16, latticeSites(10, 6, 14), seededRandom(seed));
+      box.arrange(0, 0, modelKT(99));
+      let ratio = 1;
+      for (let s = 0; s < 1500; s++) {
+        box.step(1 / 300, thermostatOptions('liquid', modelKT(99), s < 450 ? 0 : Infinity));
+        if (s % 5 === 4) ratio += (mean(box) / meanSpeed(99) - ratio) * (1 - Math.exp(-1.2 / 60));
+      }
+      // wie in der Simulation: 60 Bilder/s, je 5 Schritte, Zeitraffer 40; geglättet wird das Verhältnis zum Sollwert
+      const H1 = enthalpy(1);
+      let H = enthalpy(99);
+      let worst = 0;
+      while (H > H1) {
+        H -= (2000 * 40) / 60;
+        const th = phaseState(H).theta;
+        const kT = modelKT(th);
+        for (let k = 0; k < 5; k++) box.step(1 / 300, thermostatOptions('liquid', kT));
+        ratio += (mean(box) / meanSpeed(th) - ratio) * (1 - Math.exp(-1.2 / 60));
+        worst = Math.max(worst, Math.abs(ratio - 1));
+        bias += ratio - 1;
+        count++;
+      }
+      expect(worst).toBeLessThan(0.045);
+      if (worst < 0.03) typical++;
+    }
+    expect(Math.abs(bias / count)).toBeLessThan(0.015);
+    expect(typical).toBeGreaterThanOrEqual(6);
   });
 });

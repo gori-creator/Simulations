@@ -7,7 +7,7 @@ description: "Interaktive Simulation zum ohmschen Gesetz – Spannung am Netzger
 Legt man an ein Bauteil eine **Spannung** $U$ an, fließt ein elektrischer Strom der **Stärke** $I$. Gemessen wird so:
 
 - Das **Amperemeter** liegt **in Reihe** mit dem Bauteil – der ganze Strom muss hindurch.
-- Das **Voltmeter** liegt **parallel** zum Bauteil – es vergleicht die beiden Anschlüsse.
+- Das **Voltmeter** liegt **parallel** zum Bauteil – es misst die Spannung zwischen seinen beiden Anschlüssen.
 
 Der **elektrische Widerstand** gibt an, wie stark ein Bauteil den Strom hemmt:
 
@@ -94,7 +94,7 @@ Doppelte Länge verdoppelt $R$, doppelter Querschnitt halbiert ihn: wieder $4{,}
 
 ### Aufgabe 6: Strombegrenzung
 
-Beim Draht ($1\,\text{m}$, $0{,}1\,\text{mm}^2$) ist am Netzgerät $12\,\text{V}$ eingestellt, das Voltmeter zeigt aber nur etwa $9{,}8\,\text{V}$. Erkläre. [Aufgabe laden](?part=wire&U=12)
+Beim Draht ($1\,\text{m}$, $0{,}1\,\text{mm}^2$) ist am Netzgerät $12\,\text{V}$ eingestellt, das Voltmeter zeigt aber nur etwa $9{,}8\,\text{V}$. Erkläre. [Aufgabe laden](?part=wire&U=12&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

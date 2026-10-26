@@ -965,7 +965,7 @@ export default defineSimulation({
         if (focus) rows.push({ src: `P(${focus}) = ${pathFormula(focus)}`, col: th().text, a: 1 });
       } else {
         if (useComp) rows.push({ src: tt(`Gegenereignis hat weniger Pfade (${sp.outside.length} statt ${sp.inside.length}):`, `the complement has fewer paths (${sp.outside.length} instead of ${sp.inside.length}):`), col: th().muted, a: 1 });
-        else rows.push({ src: tt(`${sp.inside.length} Pfad${sp.inside.length === 1 ? '' : 'e'} gehören zum Ereignis:`, `${sp.inside.length} path${sp.inside.length === 1 ? '' : 's'} belong to the event:`), col: th().muted, a: 1 });
+        else rows.push({ src: tt(`${sp.inside.length} ${sp.inside.length === 1 ? 'Pfad gehört' : 'Pfade gehören'} zum Ereignis:`, `${sp.inside.length} ${sp.inside.length === 1 ? 'path belongs' : 'paths belong'} to the event:`), col: th().muted, a: 1 });
         listPaths.forEach((path, i) => rows.push({ src: `P(${path}) = ${pathFormula(path)}`, col: th().text, a: clamp01((prog - i) * 2.5) }));
         const sumParts = listPaths.map((path) => leaves(t).find((l) => l.path === path)!.prob);
         const sum = sumParts.reduce((s, f) => fadd(s, f), ZERO);
@@ -1175,7 +1175,14 @@ export default defineSimulation({
       if (evId() !== 'none') {
         const parts = lv.filter((l) => inEv(l.path));
         const sum = eventProb(tree(), evId(), sel());
-        ctx.readout('ev', parts.length ? `${parts.map((l) => `P(${pathName(l.path)})`).join(' + ')} = ${parts.map((l) => numText(l.prob, true, false)).join(' + ')} = ${numText(sum, true, false)}` : '0');
+        ctx.readout(
+          'ev',
+          parts.length === 1
+            ? `P(${pathName(parts[0]!.path)}) = ${numText(sum, true, false)}`
+            : parts.length
+              ? `${parts.map((l) => `P(${pathName(l.path)})`).join(' + ')} = ${parts.map((l) => numText(l.prob, true, false)).join(' + ')} = ${numText(sum, true, false)}`
+              : tt('Kein Pfad gehört zum Ereignis: P = 0', 'No path belongs to the event: P = 0'),
+        );
       } else ctx.readout('ev', null);
       if (drawn.length) {
         const lines = lv.map((l) => `${l.path}: ${drawn.filter((d) => d === l.path).length}`).join(' · ');

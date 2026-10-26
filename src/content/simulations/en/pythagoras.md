@@ -28,7 +28,7 @@ The big square and the four triangles are the same, so the uncovered area must b
 
 ## Try it
 
-1. Drag the vertices of the triangle and count the unit squares inside the squares. Does $a^2 + b^2 = c^2$ always hold? [Isosceles](?a=3&b=3)
+1. Drag the two coloured vertices and count the unit squares inside the squares. For the 3-4-5 triangle this works exactly. Does $a^2 + b^2 = c^2$ also hold for the isosceles triangle? [Isosceles](?a=3&b=3)
 2. Switch to the **puzzle proof** and let the triangles move. Which areas stay the same? [Puzzle proof](?mode=puzzle)
 3. Try the puzzle proof with a flat triangle. Does it still work? [Flat triangle](?mode=puzzle&a=1.5&b=5)
 

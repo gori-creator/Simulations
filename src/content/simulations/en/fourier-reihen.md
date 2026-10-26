@@ -57,7 +57,7 @@ DC part $d = 0.25$; $\hat A_k = \frac{2|\sin(\pi k d)|}{\pi k}$: $0.450$, $0.318
 
 ### Task 4: Full-wave rectifier
 
-Mains at $50\,\text{Hz}$ gives $|\sin x|$ after the rectifier. Find the mean and the first harmonic. At which frequency does the power supply hum?
+Mains at $50\,\text{Hz}$ gives $|\sin x|$ after the rectifier. Find the mean and the second harmonic (first overtone, $k = 2$). At which frequency does the power supply hum?
 
 <details>
 <summary>Show solution</summary>

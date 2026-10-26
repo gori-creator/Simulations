@@ -5,6 +5,7 @@ import {
   axisRange,
   baseArea,
   buildSlabs,
+  isExactTo,
   section,
   sectionArea,
   slabIndexAt,
@@ -139,5 +140,51 @@ describe('Modell: Prinzip von Cavalieri – Scheibenstapel', () => {
     expect(slabIndexAt('zyl', D, 5, 0)).toBe(0);
     expect(slabIndexAt('zyl', D, 5, 2.2)).toBe(2);
     expect(slabIndexAt('zyl', D, 5, 5)).toBe(4);
+  });
+});
+
+describe('Modell: Prinzip von Cavalieri – Aufgaben aus dem Lernmaterial', () => {
+  it('Aufgabe 1: schiefer Zylinder r = 2 cm, h = 6 cm: V = 24π ≈ 75,40 cm³', () => {
+    expect(volume('zyl', { r: 2, a: 4, h: 6 })).toBeCloseTo(75.398, 3);
+    expect(areaAt('zyl', { r: 2, a: 4, h: 6 }, 4, 2, { s: 3, k: 0 })).toBeCloseTo(4 * Math.PI, 12);
+  });
+  it('Aufgabe 2: Pyramide a = 6 cm, h = 5 cm: A(2) = 12,96 cm², V = 60 cm³ (exakt)', () => {
+    const d = { r: 3, a: 6, h: 5 };
+    expect(2 * section('pyr', d, 2, 2, { s: 3, k: 0 }).outer).toBeCloseTo(3.6, 12);
+    expect(areaAt('pyr', d, 2, 2, { s: 3, k: 0 })).toBeCloseTo(12.96, 12);
+    expect(volume('pyr', d)).toBeCloseTo(60, 12);
+    expect(isExactTo(volume('pyr', d), 2)).toBe(true);
+  });
+  it('Aufgabe 4: Kugel r = 3 cm: A(2) = 5π ≈ 15,71 cm², V = 36π ≈ 113,10 cm³', () => {
+    expect(areaAt('kugel', D, 2, 1)).toBeCloseTo(5 * Math.PI, 12);
+    expect(areaAt('kugel', D, 2, 2)).toBeCloseTo(5 * Math.PI, 12);
+    expect(sphereParts(3).sphere).toBeCloseTo(113.097, 3);
+  });
+  it('Aufgabe 5: Kegelstapel mit 4 Scheiben = 21,09375π ≈ 66,27 cm³, etwa 41 % zu groß', () => {
+    const v = stackVolumeFormula('kegel', D, 4);
+    expect(v).toBeCloseTo(21.09375 * Math.PI, 9);
+    expect(stackVolume('kegel', buildSlabs('kegel', D, 1, 4))).toBeCloseTo(v, 9);
+    expect(v / volume('kegel', D) - 1).toBeCloseTo(0.40625, 9);
+  });
+});
+
+describe('Anzeige: „=“ nur bei exakten Werten', () => {
+  it('erkennt exakte und gerundete Werte', () => {
+    expect(isExactTo(80, 2)).toBe(true);
+    expect(isExactTo(12.96, 2)).toBe(true);
+    expect(isExactTo(3 * (1 - 0.4) * 2, 2)).toBe(true); // 3,6000000000000005
+    expect(isExactTo(0, 2)).toBe(true);
+    expect(isExactTo(50.625, 2)).toBe(false);
+    expect(isExactTo(36 * Math.PI, 2)).toBe(false);
+    expect(isExactTo(80 / 3, 2)).toBe(false);
+    expect(isExactTo(5 / 12, 2)).toBe(false);
+  });
+  it('Prisma: V = a² · h ist für alle Reglerwerte exakt auf zwei Stellen oder wird als „≈“ erkannt', () => {
+    for (let a = 1; a <= 6; a += 0.5) {
+      for (let h = 2; h <= 8; h += 0.5) {
+        const v = volume('prisma', { r: 3, a, h });
+        expect(isExactTo(v, 2)).toBe(Math.abs(v * 100 - Math.round(v * 100)) < 1e-6);
+      }
+    }
   });
 });

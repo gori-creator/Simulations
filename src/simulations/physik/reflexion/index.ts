@@ -1,10 +1,12 @@
 import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dirFromVertical,
+  evenWedges,
   glancingAngle,
   hitsFront,
   imageCountRule,
   incidence,
+  isEvenWedge,
   isReversed,
   lightPath,
   mirrorDir,
@@ -22,8 +24,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-/** Kerze (kerze.webp, 144 × 631): Schnitt über dem Docht, Mitte der Wölbung, Beginn von Schaft und Fuß. */
-const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Kerze ohne Flamme (kerze.webp, 540 × 1352): Schnitt unter dem Docht des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 540, h: 1352, top: 57, dome: 66, shaft: 215, foot: 1290 };
 /** Laser (laser.webp, 700 × 200): Höhe der Austrittsöffnung rechts. */
 const LASER_IMG = { noseY: 78 };
 type Mode = 'law' | 'image' | 'multi';
@@ -63,7 +65,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
-  images: { candle: 'kerze.webp', laser: 'laser.webp' },
+  images: { candle: 'kerze.webp', laser: 'laser.webp', table: 'tischkante.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -158,6 +160,7 @@ export default defineSimulation({
       normal: 'Lot',
       mirror: 'Spiegel',
       backHit: 'Das Licht trifft die Rückseite des Spiegels.',
+      grazeHit: 'Das Licht streift genau an der Spiegelfläche entlang (α = 90°).',
       tableTitle: 'Messreihe',
       colNo: 'Nr.',
       emptyTable: 'Drücke „Messwert aufnehmen“, um Einfalls- und Reflexionswinkel einzutragen.',
@@ -200,6 +203,7 @@ export default defineSimulation({
       selSame: ' – nicht seitenverkehrt',
       selHidden: ' Vom Auge aus ist dieses Bild nicht zu sehen (der Lichtweg ginge am Spiegel vorbei).',
       tapHint: 'Tippe auf ein Bild, um seinen Lichtweg zu sehen.',
+      keyImage: 'Spiegelbild {n}: {k} Spiegelung(en), {seq}',
       then: 'dann',
       countCard: 'Bilder',
       mirrorShort: 'Spiegel',
@@ -208,12 +212,14 @@ export default defineSimulation({
       legRev: 'seitenverkehrt',
       legEye: 'vom Auge aus zu sehen',
       chartTitle: 'Anzahl der Bilder bei anderen Winkeln',
+      chartDepends: 'hängt von der Lage ab',
     },
     en: {
       canvas: 'Optical disc with a plane mirror and a laser, a candle in front of a vertical mirror with its image and lines of sight, or two angled mirrors with multiple images',
       normal: 'normal',
       mirror: 'Mirror',
       backHit: 'The light hits the back of the mirror.',
+      grazeHit: 'The light just grazes along the mirror surface (α = 90°).',
       tableTitle: 'Measurements',
       colNo: 'No.',
       emptyTable: 'Press “Record measurement” to add the angles of incidence and reflection.',
@@ -256,6 +262,7 @@ export default defineSimulation({
       selSame: ' – not reversed',
       selHidden: ' This image cannot be seen from the eye (the light path would miss the mirror).',
       tapHint: 'Tap an image to see its light path.',
+      keyImage: 'Image {n}: {k} reflection(s), {seq}',
       then: 'then',
       countCard: 'Images',
       mirrorShort: 'Mirror',
@@ -264,6 +271,7 @@ export default defineSimulation({
       legRev: 'reversed',
       legEye: 'visible from the eye',
       chartTitle: 'Number of images at other angles',
+      chartDepends: 'depends on the position',
     },
   },
 
@@ -408,6 +416,8 @@ export default defineSimulation({
     const alphaNow = () => incidence(laser, p.tilt);
     const laserLen = () => (narrow() ? 38 : 64);
     const front = () => hitsFront(laser, p.tilt);
+    /** Meldung, wenn nichts reflektiert wird: streifend (α = ±90°) oder Rückseite. */
+    const backKey = () => (Math.abs(Math.abs(alphaNow()) - 90) < 1e-9 ? 'grazeHit' : 'backHit');
 
     /** Lage eines Punktes zwischen den Spiegeln (Abstand r, Anteil f des Winkels vom linken Spiegel aus). */
     function wedgePoint(r: number, f: number, w = wedge): V2 {
@@ -575,6 +585,35 @@ export default defineSimulation({
       },
     });
 
+    /** Bilder im Winkelspiegel per Tastatur auswählen (Tab auf die Bühne, Pfeiltasten, Enter) – wie Antippen. */
+    function updateKeyTargets(): void {
+      if (mode() !== 'multi') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const list = currentImages();
+      const R = Math.max(14, 1.3 * multiPlot.scale.x);
+      const fig = figure();
+      const eye = eyeW();
+      ctx.setKeyTargets(
+        list.map((img, i) => {
+          const [x, y] = multiPlot.toPx(...imgPos(img));
+          // Spiegelfolge wie in der Liste und im Ergebnis (Lichtweg vom Auge aus, falls sichtbar)
+          const path = lightPath(wedge, fig, img, eye, WEDGE_LEN);
+          const seq = `${ctx.t('mirrorShort')} ${(path ? path.seq : img.seq).map((m) => (m === 'A' ? '1' : '2')).join(' → ')}`;
+          return {
+            id: `img${i}`,
+            label: tr('keyImage', { n: String(i + 1), k: String(img.seq.length), seq }),
+            rect: { x: x - R, y: y - R, w: 2 * R, h: 2 * R },
+            activate: () => {
+              selected = i;
+              updateReadouts();
+            },
+          };
+        }),
+      );
+    }
+
     /* ---------- Ergebnisse ---------- */
     const deg0 = (v: number) => fmt.num(Math.abs(v), 0);
 
@@ -595,7 +634,7 @@ export default defineSimulation({
           ctx.readout('angles', tr('anglesText', { a: deg0(a), b: deg0(a) }));
           ctx.readout('glance', tr('glanceText', { g: fmt.num(glancingAngle(a), 0) }) + (p.tilt !== 0 ? ` · ${tr('turnText', { t: fmt.num(Math.abs(p.tilt), 0), t2: fmt.num(2 * Math.abs(p.tilt), 0) })}` : ''));
         } else {
-          ctx.readout('angles', ctx.t('backHit'));
+          ctx.readout('angles', ctx.t(backKey()));
           ctx.readout('glance', null);
         }
         ctx.readout('law', ctx.t('lawText'));
@@ -609,8 +648,7 @@ export default defineSimulation({
       } else {
         const list = currentImages();
         const n = list.length;
-        const ratio = 360 / wedge;
-        const even = Math.abs(ratio - Math.round(ratio)) < 1e-6 && Math.round(ratio) % 2 === 0;
+        const even = isEvenWedge(wedge);
         ctx.readout('count', {
           html: `<strong>${n === 1 ? ctx.t('countOne') : tr('countText', { n: String(n) })}</strong> · ${even ? tr('ruleText', { w: fmt.num(wedge, 0), n: fmt.num(imageCountRule(wedge), 0) }) : tr('ruleNot', { w: fmt.num(wedge, 1) })}`,
         });
@@ -982,7 +1020,7 @@ export default defineSimulation({
       for (const t of tags) pill(t.txt, t.x, t.y, t.color, { size });
       drawLaser(lx, ly, Math.atan2(cy - ly, cx - lx));
       lawPlot.end();
-      if (!hit) pill(ctx.t('backHit'), disc.x + disc.w / 2, disc.y + 22, theme.series[1]!, { size: small ? 11 : 12, solid: true });
+      if (!hit) pill(ctx.t(backKey()), disc.x + disc.w / 2, disc.y + 22, theme.series[1]!, { size: small ? 11 : 12, solid: true });
       drawTableCard(cr);
     }
 
@@ -1094,6 +1132,23 @@ export default defineSimulation({
     /* =================================================================== */
     /* Spiegelbild                                                          */
     /* =================================================================== */
+
+    /**
+     * Streifen aus dem Foto der Tischkante: waagerecht abwechselnd gespiegelt
+     * gekachelt (keine Nahtstellen), ganzzahlige Kachelbreite mit 1 px Überlappung
+     * (sonst helle Pixelstreifen an den Kachelrändern). Wird zwischengespeichert,
+     * damit die halb durchsichtige Spiegelwelt keine doppelt deckenden Fugen zeigt.
+     */
+    let stripCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function tableStrip(img: HTMLImageElement, w: number, h: number): HTMLCanvasElement {
+      const key = `${Math.round(w)}|${Math.round(h * 2)}|${surface.dpr}`;
+      if (stripCache?.key === key) return stripCache.canvas;
+      const { canvas, g: b } = offscreenCanvas(w, h, surface.dpr);
+      const tw = Math.max(8, Math.round((h * img.width) / img.height));
+      for (let i = 0, x = 0; x < w; i++, x += tw) b.drawImage(scaledSprite(img, tw + 1, h, surface.dpr, { flipX: i % 2 === 1 }), x, 0, tw + 1, h);
+      stripCache = { key, canvas };
+      return canvas;
+    }
 
     /**
      * Kerzenkörper aus dem Foto: Kopf (Rand mit Wölbung) und Fuß bleiben unverzerrt,
@@ -1272,11 +1327,23 @@ export default defineSimulation({
       const table = (x0: number, x1: number, alpha: number) => {
         g.save();
         g.globalAlpha = alpha;
-        const wood = g.createLinearGradient(0, tY, 0, tB);
-        wood.addColorStop(0, dark ? '#7a5a3c' : '#c79a69');
-        wood.addColorStop(1, dark ? '#4f3a27' : '#9a7048');
-        g.fillStyle = wood;
-        g.fillRect(x0, tY, x1 - x0, tB - tY);
+        const edge = ctx.images.get('table');
+        if (edge) {
+          // Foto der Tischkante als durchgehender Streifen (auch hinter dem Spiegel)
+          const strip = tableStrip(edge, scene.w, tB - tY);
+          const k = strip.width / scene.w;
+          g.drawImage(strip, (x0 - scene.x) * k, 0, (x1 - x0) * k, strip.height, x0, tY, x1 - x0, tB - tY);
+          if (dark) {
+            g.fillStyle = 'rgba(0,0,0,0.3)';
+            g.fillRect(x0, tY, x1 - x0, tB - tY);
+          }
+        } else {
+          const wood = g.createLinearGradient(0, tY, 0, tB);
+          wood.addColorStop(0, dark ? '#7a5a3c' : '#c79a69');
+          wood.addColorStop(1, dark ? '#4f3a27' : '#9a7048');
+          g.fillStyle = wood;
+          g.fillRect(x0, tY, x1 - x0, tB - tY);
+        }
         g.fillStyle = dark ? 'rgba(0,0,0,0.25)' : 'rgba(80,55,30,0.18)';
         g.fillRect(x0, tB, x1 - x0, scene.y + scene.h - tB);
         g.restore();
@@ -1805,6 +1872,9 @@ export default defineSimulation({
     /** Anzahl der Bilder für alle Winkel 30° … 180° bei der aktuellen Lage der Figur (zwischengespeichert). */
     let countSeries: V2[] = [];
     let countKey = '';
+    /** Winkel, bei denen 360° : φ gerade ist – nur dort ist die Zahl der Bilder eindeutig. */
+    const EVEN_WEDGES = evenWedges(30, 180);
+
     function countsOverAngle(): V2[] {
       const key = `${p.r}|${p.f}`;
       if (key !== countKey) {
@@ -1831,8 +1901,7 @@ export default defineSimulation({
       const nw = g.measureText(String(n)).width;
       text(g, n === 1 ? ctx.t('countOne').replace(/^1\s*/, '') : ctx.t('countCard'), x + nw + 8, y + (small ? 4 : 10), { font: `700 ${small ? 14 : 16}px ${theme.font}`, color: theme.text, align: 'left' });
       y += small ? 28 : 44;
-      const ratio = 360 / wedge;
-      const even = Math.abs(ratio - Math.round(ratio)) < 1e-6 && Math.round(ratio) % 2 === 0;
+      const even = isEvenWedge(wedge);
       const ruleStr = even ? tr('ruleText', { w: fmt.num(wedge, 0), n: fmt.num(imageCountRule(wedge), 0) }) : tr('ruleNot', { w: fmt.num(wedge, 1) });
       const ruleFont = even ? `700 ${small ? 12.5 : 14}px ${theme.font}` : `500 ${small ? 11.5 : 12.5}px ${theme.font}`;
       const lh = small ? 15 : 18;
@@ -1907,9 +1976,9 @@ export default defineSimulation({
       if (perColMax * cols < n) text(g, '…', r.x + r.w / 2, y + perColMax * rowH + 2, { font: rowFont, color: theme.muted });
       const hintY = y + Math.min(perCol, perColMax) * rowH + 10;
       const hintFont = `500 ${small ? 11 : 12}px ${theme.font}`;
-      wrap(ctx.t('tapHint'), r.w - 32, hintFont).forEach((ln, k) => {
-        if (hintY + k * lh < bottom - 4) text(g, ln, x, hintY + k * lh, { font: hintFont, color: theme.muted, align: 'left' });
-      });
+      // Hinweis nur ganz zeigen – ein halber Satz wäre verwirrend
+      const hintLines = wrap(ctx.t('tapHint'), r.w - 32, hintFont);
+      if (hintY + (hintLines.length - 1) * lh < bottom - 4) hintLines.forEach((ln, k) => text(g, ln, x, hintY + k * lh, { font: hintFont, color: theme.muted, align: 'left' }));
       // Diagramm: Anzahl der Bilder bei anderen Winkeln
       if (lay.chart) {
         text(g, ctx.t('chartTitle'), x, lay.chart.y - 6, { font: `700 12px ${theme.font}`, color: theme.text, align: 'left' });
@@ -1920,10 +1989,15 @@ export default defineSimulation({
         g.fillRect(cr.x, cr.y, cr.w, cr.h);
         countPlot.grid();
         countPlot.axes();
-        countPlot.fn((t) => (2 * Math.PI) / t - 1, { color: theme.series[2]!, width: 1.6, dash: [5, 4], from: rad(30), to: Math.PI });
-        countPlot.polyline(countsOverAngle(), { color: theme.series[3]!, width: 2.2 });
-        countPlot.point(rad(wedge), n, { color: theme.series[3]!, radius: 5 });
-        countPlot.text(rad(52), 360 / 52 - 1, '360° : φ − 1', { color: theme.series[2]!, size: 11, align: 'left', offset: [8, -4], halo: true });
+        // Eindeutig ist die Zahl nur, wenn 360° : φ gerade ist (30°, 36°, 45°, 60°, 90°, 180°).
+        // Alles dazwischen hängt von der Lage der Figur ab und wird deshalb nur ausgegraut gezeigt.
+        const grey = withAlpha(theme.muted, 0.5);
+        countPlot.fn((t) => (2 * Math.PI) / t - 1, { color: grey, width: 1.4, dash: [5, 4], from: rad(30), to: Math.PI });
+        countPlot.polyline(countsOverAngle(), { color: withAlpha(theme.muted, 0.38), width: 2 });
+        countPlot.text(rad(52), 360 / 52 - 1, '360° : φ − 1', { color: theme.muted, size: 11, align: 'left', offset: [8, -4], halo: true });
+        countPlot.text(Math.PI, 8.6, ctx.t('chartDepends'), { color: theme.muted, size: 11, align: 'right', offset: [-6, 0], halo: true });
+        for (const w of EVEN_WEDGES) countPlot.point(rad(w), imageCountRule(w), { color: theme.series[3]!, radius: 4 });
+        countPlot.point(rad(wedge), n, even ? { color: theme.series[3]!, radius: 6, hollow: true } : { color: theme.muted, radius: 5 });
         countPlot.end();
       }
     }
@@ -2009,6 +2083,7 @@ export default defineSimulation({
           drawHint();
         } else if (mode() === 'image') drawImageMode();
         else drawMulti();
+        updateKeyTargets();
         if (fade.running) {
           g.fillStyle = withAlpha(ctx.theme.bg, 1 - fade.value);
           g.fillRect(0, 0, surface.width, surface.height);

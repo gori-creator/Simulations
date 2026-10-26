@@ -6,10 +6,12 @@ import {
   cross,
   crossScheme,
   dot,
+  exactTo,
   dotAndArea,
   handedness,
   hasSolution,
   norm,
+  normForm,
   parallelogramArea,
   perpUnit,
   projection,
@@ -123,7 +125,8 @@ const TASK_TEXT: Record<TaskId, { de: string; en: string; short: { de: string; e
 /** Was die gefundenen Lösungen gemeinsam haben – wird nach drei Funden aufgedeckt. */
 const TASK_SHAPE: Record<TaskId, { de: string; en: string }> = {
   perp: L('Alle Lösungen liegen in einer Ebene durch O, die senkrecht auf a steht.', 'All solutions lie in one plane through O perpendicular to a.'),
-  angle: L('Alle Lösungen liegen auf einem Kegel um a (Öffnung 2 · 60° um −a).', 'All solutions lie on a cone around a (opening 2 · 60° around −a).'),
+  // 120° zu a heißt 60° zu −a: Kegel mit Achse −a und halbem Öffnungswinkel 60° (siehe coneShape)
+  angle: L('Alle Lösungen liegen auf einem Kegel mit Spitze O um die Richtung −a; jede Mantellinie bildet mit −a 60°.', 'All solutions lie on a cone with apex O around the direction −a; each line on it makes 60° with −a.'),
   area: L('Alle Lösungen liegen auf einem Zylinder um die x₁-Achse mit Radius 3: Nur der Abstand von b zur Geraden durch a zählt.', 'All solutions lie on a cylinder around the x₁ axis with radius 3: only the distance of b from the line of a counts.'),
   vol: L('Alle Lösungen liegen in den Ebenen x₃ = 2 und x₃ = −2: Grundfläche 6 mal Höhe 2.', 'All solutions lie in the planes x₃ = 2 and x₃ = −2: base 6 times height 2.'),
   flat: L('Alle Lösungen liegen in der Ebene, die a und b aufspannen: c = r · a + s · b.', 'All solutions lie in the plane spanned by a and b: c = r · a + s · b.'),
@@ -380,6 +383,11 @@ export default defineSimulation({
     const cardBg = () => (ctx.theme.dark ? shade(ctx.theme.bg, 0.06) : '#ffffff');
     const vt = (v: V3) => `(${v.map(n1).join(lang === 'de' ? ' | ' : ', ')})`;
     const deg = (v: number) => `${fmt.num(v, 1)}°`;
+    // Betrag exakt (3), als Wurzel (√5) oder gerundet (2,24) – „approx“ verlangt danach „≈“
+    const lenTxt = (v: V3) => {
+      const f = normForm(v);
+      return { s: f.kind === 'root' ? `√${fmt.num(f.sq, 2)}` : n1(f.value), exact: f.kind !== 'approx' };
+    };
 
     /* ---------------- Ziehen ---------------- */
     const r05 = (v: number) => clamp(Math.round(v * 2) / 2, -LIM, LIM);
@@ -1235,7 +1243,9 @@ export default defineSimulation({
       }
       const phi = angleDeg(a, b);
       const r = rows(x0, w, y + 4, bottom);
-      r.row('|a| · |b|', `${n1(norm(a))} · ${n1(norm(b))} ≈ ${n1(norm(a) * norm(b))}`);
+      const la = lenTxt(a);
+      const lb = lenTxt(b);
+      r.row('|a| · |b|', `${la.s} · ${lb.s} ${exactTo(norm(a) * norm(b)) ? '=' : '≈'} ${n1(norm(a) * norm(b))}`);
       r.row('cos φ = a·b / (|a|·|b|)', q(Number.isFinite(phi) ? fmt.num(Math.cos((phi * Math.PI) / 180), 3) : '–'));
       r.row(tt('Winkel φ', 'Angle φ'), q(Number.isFinite(phi) ? deg(phi) : tt('nicht definiert', 'undefined')), cn);
       if (p.proj) r.row(tt('Projektion a·b / |a|', 'Projection a·b / |a|'), q(n1(projLength(b, a))), CP());
@@ -1332,8 +1342,8 @@ export default defineSimulation({
       const r = rows(x0, w, C0.y + C0.h + 34, bottom);
       const c = Math.cos((phi * Math.PI) / 180);
       const s = Math.sin((phi * Math.PI) / 180);
-      r.row2('a · b = |a| · |b| · cos φ', `${n1(la)} · ${n1(lb)} · ${fmt.num(c, 3)} ≈ ${n1(cur.dot)}`, cp);
-      r.row2('|a × b| = |a| · |b| · sin φ', `${n1(la)} · ${n1(lb)} · ${fmt.num(s, 3)} ≈ ${n1(cur.area)}`, cn);
+      r.row2('a · b = |a| · |b| · cos φ', `${n1(la)} · ${n1(lb)} · ${fmt.fixed(c, 3)} ≈ ${n1(cur.dot)}`, cp);
+      r.row2('|a × b| = |a| · |b| · sin φ', `${n1(la)} · ${n1(lb)} · ${fmt.fixed(s, 3)} ≈ ${n1(cur.area)}`, cn);
       if (wide) r.row('b', vt(effB('angle', Math.round(phi))));
       if (wide && r.y < bottom - 56) drawTip({ x: x0 - 4, y: r.y, w: w + 8, h: Math.min(110, bottom - r.y - 12) }, tipText('angle'));
     }
@@ -1684,8 +1694,11 @@ export default defineSimulation({
       switch (mode()) {
         case 'dot': {
           const phi = angleDeg(a, b);
+          const la = lenTxt(a);
+          const lb = lenTxt(b);
+          const cosPhi = dot(a, b) / (norm(a) * norm(b));
           ctx.readout('calc', `a · b = ${a.map((v, i) => `${n1(v)} · ${par(b[i]!)}`).join(' + ')} = ${n1(dot(a, b))}`);
-          ctx.readout('geo', Number.isFinite(phi) ? `cos φ = ${n1(dot(a, b))} / (${n1(norm(a))} · ${n1(norm(b))}) ≈ ${fmt.num(Math.cos((phi * Math.PI) / 180), 3)}, φ ≈ ${deg(phi)}` : tt('Winkel nicht definiert (Nullvektor)', 'Angle undefined (zero vector)'));
+          ctx.readout('geo', Number.isFinite(phi) ? `cos φ ${la.exact && lb.exact && exactTo(dot(a, b)) ? '=' : '≈'} ${n1(dot(a, b))} / (${la.s} · ${lb.s}) ${exactTo(cosPhi, 3) ? '=' : '≈'} ${fmt.num(cosPhi, 3)}, φ ${exactTo(phi, 1) ? '=' : '≈'} ${deg(phi)}` : tt('Winkel nicht definiert (Nullvektor)', 'Angle undefined (zero vector)'));
           ctx.readout('info', specialNote()?.text ?? null);
           break;
         }

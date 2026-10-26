@@ -1,4 +1,4 @@
-import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   elasticLimitForce,
   ELASTIC_LIMIT,
@@ -15,6 +15,8 @@ import {
 
 const L = (de: string, en: string) => ({ de, en });
 const MAX_PIECES = 10;
+/** Tischkante `tischkante.webp` (2172 × 271 px, nahtlos kachelbar, oben die Kante der Platte). */
+const TABLE_IMG = { w: 2172, h: 271 };
 /** Dämpfungsgrad beim Nachschwingen (bei der automatischen Messreihe stärker, damit es zügig geht). */
 const DAMPING = 0.12;
 const DAMPING_AUTO = 0.3;
@@ -99,7 +101,7 @@ export default defineSimulation({
     { id: 'clear', label: L('Messwerte löschen', 'Clear data') },
     { id: 'fresh', label: L('Neue Feder einsetzen', 'Fit new springs'), visibleIf: (v) => v.limit === true },
   ],
-  images: { stand: 'stativ.webp' },
+  images: { stand: 'stativ.webp', piece: 'massestueck.webp', table: 'tischkante.webp' },
   readouts: [
     { key: 'now', label: L('Momentan', 'Right now') },
     { key: 'law', label: L('Hookesches Gesetz', 'Hooke’s law') },
@@ -134,6 +136,7 @@ export default defineSimulation({
       FG: 'F_G = {F} N',
       FF: 'F_Feder = {F} N',
       now: 'm = {m} g · F_G = m · g = {F} N · s = {s} cm',
+      overMark: '* überdehnt (nicht für die Ursprungsgerade verwendet)',
       law: 'F = D · s: Die Verlängerung s ist proportional zur Kraft F (g = 9,81 N/kg).',
       thM: 'm in g',
       thF: 'F in N',
@@ -162,6 +165,7 @@ export default defineSimulation({
       FG: 'F_G = {F} N',
       FF: 'F_spring = {F} N',
       now: 'm = {m} g · F_G = m · g = {F} N · s = {s} cm',
+      overMark: '* overstretched (not used for the line through the origin)',
       law: 'F = D · s: the extension s is proportional to the force F (g = 9.81 N/kg).',
       thM: 'm in g',
       thF: 'F in N',
@@ -271,18 +275,21 @@ export default defineSimulation({
     const cm = (s: number) => fmt.num(s * 100, 1);
 
     function updateNow(): void {
-      ctx.readout('now', tr('now', { m: fmt.num(mass() * 1000, 0), F: fmt.num(force(), 2), s: cm(x) }));
+      // Formelzeichen mit echtem Index statt „F_G“
+      ctx.readout('now', { html: tr('now', { m: fmt.num(mass() * 1000, 0), F: fmt.num(force(), 2), s: cm(x) }).replace(/F_G/g, '<var>F</var><sub>G</sub>') });
     }
 
     function updateReadouts(): void {
       updateNow();
       ctx.readout('law', { html: tr('law', {}).replace('F = D · s', '<var>F</var> = <var>D</var> · <var>s</var>') });
       if (points.length) {
-        const rows = points
-          .slice(-12)
-          .map((q) => `<tr${q.elastic ? '' : ' style="color: var(--series-4)"'}><td>${fmt.num(q.m * 1000, 0)}</td><td>${fmt.num(q.F, 2)}</td><td>${cm(q.s)}</td></tr>`)
+        const shown = points.slice(-12);
+        // Überdehnte Messpunkte nicht nur über die Farbe kennzeichnen, sondern auch mit „*“
+        const rows = shown
+          .map((q) => `<tr${q.elastic ? '' : ' style="color: var(--series-4)"'}><td>${fmt.num(q.m * 1000, 0)}</td><td>${fmt.num(q.F, 2)}</td><td>${cm(q.s)}${q.elastic ? '' : ' *'}</td></tr>`)
           .join('');
-        ctx.readout('table', { html: `<table class="mini-table"><tr><th>${ctx.t('thM')}</th><th>${ctx.t('thF')}</th><th>${ctx.t('thS')}</th></tr>${rows}</table>` });
+        const note = shown.some((q) => !q.elastic) ? `<small style="display: block; margin-top: 4px">${ctx.t('overMark')}</small>` : '';
+        ctx.readout('table', { html: `<table class="mini-table"><tr><th>${ctx.t('thM')}</th><th>${ctx.t('thF')}</th><th>${ctx.t('thS')}</th></tr>${rows}</table>${note}` });
       } else ctx.readout('table', ctx.t('none'));
       const fit = fitThroughOrigin(points.filter((q) => q.elastic && q.s > 1e-6));
       const enough = points.filter((q) => q.elastic && q.s > 1e-6).length >= 2;
@@ -446,6 +453,13 @@ export default defineSimulation({
 
     function drawPiece(cx: number, y: number, w: number, h: number, label: string | null): void {
       const gx = surface.g;
+      const pieceImg = ctx.images.get('piece');
+      if (pieceImg) {
+        // Foto: flache Schlitzscheibe von der Seite, auf die Höhe des Massestücks gebracht (Kante ohne Details)
+        gx.drawImage(scaledSprite(pieceImg, w, h, surface.dpr), cx - w / 2, y, w, h);
+        if (label && h >= 11 && w >= 26) text(gx, label, cx, y + h / 2 + 0.5, { font: `700 ${h >= 13 ? 9.5 : 8.5}px ${ctx.theme.font}`, color: '#3d2a06' });
+        return;
+      }
       const brass = gx.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
       brass.addColorStop(0, '#8d6a24');
       brass.addColorStop(0.3, '#f0d27a');
@@ -481,16 +495,8 @@ export default defineSimulation({
       gx.fill();
       const theme = ctx.theme;
       const size = narrow() ? 10.5 : 11.5;
-      gx.font = `700 ${size}px ${theme.font}`;
-      gx.textAlign = side === 'right' ? 'left' : 'right';
-      gx.textBaseline = 'middle';
-      gx.lineWidth = 3;
-      gx.lineJoin = 'round';
-      gx.strokeStyle = theme.bg;
-      const lx = x0 + (side === 'right' ? 8 : -8);
-      const ly = (y0 + y1) / 2;
-      gx.strokeText(label, lx, ly);
-      gx.fillText(label, lx, ly);
+      // „F_G = …“: Buchstabe mit tiefgestelltem Index (Kern-Helfer `subText`)
+      subText(gx, label, side === 'right' ? x0 + 8 : x0 - 8, (y0 + y1) / 2, { size, weight: 700, family: theme.font, color, align: side === 'right' ? 'left' : 'right', halo: theme.bg, haloWidth: 3, subScale: 0.72, subShift: 0.3 });
     }
 
     function buildGeo(r: Rect): Geo {
@@ -530,13 +536,25 @@ export default defineSimulation({
       wall.addColorStop(1, dark ? '#101824' : '#e1e7ee');
       gx.fillStyle = wall;
       gx.fillRect(r.x, r.y, r.w, r.h);
-      const table = gx.createLinearGradient(0, g0.tableY, 0, r.y + r.h);
-      table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
-      table.addColorStop(1, dark ? '#33281e' : '#9c7349');
-      gx.fillStyle = table;
-      gx.fillRect(r.x, g0.tableY, r.w, r.y + r.h - g0.tableY);
-      gx.fillStyle = 'rgba(255,255,255,0.22)';
-      gx.fillRect(r.x, g0.tableY, r.w, 1.5);
+      const tableImg = ctx.images.get('table');
+      if (tableImg) {
+        // Foto: Tischkante, abwechselnd gespiegelt gekachelt (im Dunkelmodus abgedunkelt)
+        const th = r.y + r.h - g0.tableY;
+        const tw = (TABLE_IMG.w * th) / TABLE_IMG.h;
+        for (let i = 0, tx = r.x; tx < r.x + r.w; i++, tx += tw) gx.drawImage(scaledSprite(tableImg, tw, th, surface.dpr, { flipX: i % 2 === 1 }), tx, g0.tableY, tw + 0.5, th);
+        if (dark) {
+          gx.fillStyle = 'rgba(10,14,22,0.38)';
+          gx.fillRect(r.x, g0.tableY, r.w, th);
+        }
+      } else {
+        const table = gx.createLinearGradient(0, g0.tableY, 0, r.y + r.h);
+        table.addColorStop(0, dark ? '#4a3a2b' : '#c49a6c');
+        table.addColorStop(1, dark ? '#33281e' : '#9c7349');
+        gx.fillStyle = table;
+        gx.fillRect(r.x, g0.tableY, r.w, r.y + r.h - g0.tableY);
+        gx.fillStyle = 'rgba(255,255,255,0.22)';
+        gx.fillRect(r.x, g0.tableY, r.w, 1.5);
+      }
 
       // Stativ
       const metal = (x0: number, w: number) => {

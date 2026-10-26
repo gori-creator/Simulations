@@ -12,7 +12,9 @@ import {
   moonPhase,
   moonPosition,
   observerPosition,
+  outerShadowSize,
   pointShadowSize,
+  umbraSize,
   shadowCone,
   shadowOnScreen,
   solarView,
@@ -184,5 +186,70 @@ describe('Modell: Sonnen- und Mondfinsternis (schematisch)', () => {
     expect(lunarEclipse(150).kind).toBe('penumbral');
     expect(lunarEclipse(120).kind).toBe('none');
     expect(lunarEclipse(0).kind).toBe('none');
+  });
+});
+
+describe('Prüfrunde: Aufgaben und Grenzfälle der optischen Bank', () => {
+  it('Aufgabe 1: a = 20 cm, b = 80 cm, G = 8 cm → S = 32 cm', () => {
+    expect(pointShadowSize(8, 20, 80)).toBeCloseTo(32, 12);
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 0 }, { x: 30, y: 0, r: 4 }, 90);
+    expect(sh.umbra!.hi - sh.umbra!.lo).toBeCloseTo(32, 12);
+  });
+
+  it('Aufgabe 2: Scheibe in der Mitte zwischen Lampe und Schirm → doppelt so großer Schatten', () => {
+    expect(pointShadowSize(10, 40, 80) / 10).toBeCloseTo(2, 12);
+  });
+
+  it('Aufgabe 3: Kernschatten 14 cm, gesamter Schatten 46 cm, Halbschattenring 16 cm breit', () => {
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 4 }, { x: 40, y: 0, r: 5 }, 100);
+    expect(sh.umbra!.hi - sh.umbra!.lo).toBeCloseTo(14, 12);
+    expect(sh.outer.hi - sh.outer.lo).toBeCloseTo(46, 12);
+    expect(sh.outer.hi - sh.umbra!.hi).toBeCloseTo(16, 12);
+  });
+
+  it('Schattengröße hängt nicht von der Höhe von Lampe und Scheibe ab', () => {
+    const a = shadowOnScreen({ x: 10, y: 12, r: 4 }, { x: 40, y: -7, r: 5 }, 100);
+    expect(a.umbra!.hi - a.umbra!.lo).toBeCloseTo(14, 12);
+    expect(a.outer.hi - a.outer.lo).toBeCloseTo(46, 12);
+  });
+
+  it('Reglergrenzen: Lampe sehr nah (a = 3 cm) und sehr fern (a = 95 cm)', () => {
+    // G = 20 cm, a = 3 cm, b = 50 cm → S = 1000/3 ≈ 333,3 cm
+    expect(pointShadowSize(20, 3, 50)).toBeCloseTo(1000 / 3, 9);
+    // G = 2 cm, a = 95 cm, b = 100 cm → S ≈ 2,105 cm (kaum größer als die Scheibe)
+    expect(pointShadowSize(2, 95, 100)).toBeCloseTo(200 / 95, 12);
+  });
+
+  it('großer Leuchtkörper, kleine Scheibe (d = 16 cm, G = 4 cm): kein Kernschatten, Halbschatten 44 cm', () => {
+    const sh = shadowOnScreen({ x: 10, y: 0, r: 8 }, { x: 40, y: 0, r: 2 }, 100);
+    expect(sh.umbra).toBeNull();
+    expect(sh.beyondApex).toBe(true);
+    expect(sh.outer.hi - sh.outer.lo).toBeCloseTo(44, 12);
+  });
+
+  it('zwei Lampen weit auseinander (±15 cm, G = 4 cm): Schatten überlappen nicht', () => {
+    const obj = { x: 40, y: 0, r: 2 };
+    const a = shadowOnScreen({ x: 10, y: -15, r: 0 }, obj, 100).outer;
+    const b = shadowOnScreen({ x: 10, y: 15, r: 0 }, obj, 100).outer;
+    expect(a.hi - a.lo).toBeCloseTo(12, 12);
+    expect(intersect(a, b)).toBeNull();
+  });
+
+  it('Schirm hinter der Spitze des Kernschattens: keine negative Größe, nur „kein Kernschatten“', () => {
+    // d = 16 cm, G = 4 cm, a = 30 cm, b = 90 cm: Formel ergäbe (4·90 − 16·60)/30 = −20 cm
+    expect(umbraSize(4, 30, 90, 16)).toBeNull();
+    expect(outerShadowSize(4, 30, 90, 16)).toBeCloseTo(44, 12);
+    // genau an der Spitze (Kernschatten 0) ebenfalls kein Kernschatten
+    expect(umbraSize(4, 30, 40, 16)).toBeNull();
+    // Aufgabe 3 (d = 8 cm, G = 10 cm, a = 30 cm, b = 90 cm): Kernschatten 14 cm, außen 46 cm
+    expect(umbraSize(10, 30, 90, 8)).toBeCloseTo(14, 12);
+    expect(outerShadowSize(10, 30, 90, 8)).toBeCloseTo(46, 12);
+    // stimmt mit der Strahlengeometrie überein
+    for (const [G, a, b, d] of [[4, 30, 90, 16], [10, 30, 90, 8], [6, 20, 70, 12], [20, 50, 95, 4]] as const) {
+      const sh = shadowOnScreen({ x: 0, y: 0, r: d / 2 }, { x: a, y: 0, r: G / 2 }, b);
+      const u = umbraSize(G, a, b, d);
+      if (sh.umbra) expect(u).toBeCloseTo(sh.umbra.hi - sh.umbra.lo, 9);
+      else expect(u).toBeNull();
+    }
   });
 });

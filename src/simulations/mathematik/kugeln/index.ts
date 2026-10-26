@@ -277,7 +277,12 @@ export default defineSimulation({
       const s = Math.sqrt(Math.max(0, v));
       return nice(s) ? n1(s) : `√${n1(v)} ≈ ${n1(s)}`;
     };
+    /** Vektor mit Pfeil für die Ergebnisliste (HTML; der kombinierende Pfeil U+20D7 fehlt in vielen Schriften). */
+    const vecH = (name: string) =>
+      `<span style="display: inline-flex; flex-direction: column; align-items: center; vertical-align: bottom; line-height: 1"><span style="font-size: 0.75em; line-height: 0.55" aria-hidden="true">→</span><var>${name}</var></span>`;
     const paren = (v: number) => (v < 0 ? `(${n1(v)})` : n1(v));
+    /** Länge eines Vektors: exakt („3“) oder als Wurzel („√3“), wie in der Karte im Bild. */
+    const normText = (ln: number) => (nice(ln) ? n1(ln) : `√${n1(ln * ln)}`);
     /** (x₁ − 1)² bzw. (x₁ + 2)² bzw. x₁². */
     const sqTerm = (k: number, m: number) => (Math.abs(m) < 1e-12 ? `x${SUB[k]}²` : `(x${SUB[k]} ${m < 0 ? '+' : '−'} ${n1(Math.abs(m))})²`);
     const sphereText = (m: V3, r: number) => `${[0, 1, 2].map((k) => sqTerm(k, m[k]!)).join(' + ')} = ${n1(r * r)}`;
@@ -992,6 +997,40 @@ export default defineSimulation({
         fitText(value, x0 + w, y, w * 0.7, 12, color, 800, 'right');
         y += lh;
       };
+      /** Zeile mit Vektorpfeilen in der Beschriftung (Teile mit vec: true bekommen einen Pfeil). */
+      const rowVec = (parts: { s: string; vec?: boolean }[], value: string, color = theme.text) => {
+        g.font = font(800, 12);
+        const vw = Math.min(g.measureText(value).width, w * 0.7);
+        const maxW = w - vw - 8;
+        let size = 12;
+        const widthAt = (sz: number) => {
+          g.font = font(600, sz);
+          return g.measureText(parts.map((q) => q.s).join('')).width;
+        };
+        while (size > 9.5 && widthAt(size) > maxW) size -= 0.5;
+        g.font = font(600, size);
+        let cx = x0;
+        for (const part of parts) {
+          text(g, part.s, cx, y, { font: font(600, size), color: theme.muted, align: 'left' });
+          const tw = g.measureText(part.s).width;
+          if (part.vec) {
+            // Pfeil über dem Buchstaben (kombinierender Pfeil fehlt in vielen Schriften)
+            const ay = y - size * 0.8;
+            g.strokeStyle = theme.muted;
+            g.lineWidth = 1.1;
+            g.beginPath();
+            g.moveTo(cx + 0.5, ay);
+            g.lineTo(cx + tw, ay);
+            g.moveTo(cx + tw - 2.5, ay - 2);
+            g.lineTo(cx + tw, ay);
+            g.lineTo(cx + tw - 2.5, ay + 2);
+            g.stroke();
+          }
+          cx += tw;
+        }
+        fitText(value, x0 + w, y, w * 0.7, 12, color, 800, 'right');
+        y += lh;
+      };
       const big = wide ? 14 : 12.5;
       const titles: Record<Mode, string> = {
         sphere: tt('Kugelgleichung und Punktprobe', 'Equation of a sphere, point test'),
@@ -1027,9 +1066,9 @@ export default defineSimulation({
           fitText(tt('Normalenvektor = Nullvektor: keine Ebene', 'Normal vector = zero vector: not a plane'), x0, y, w, 12, CS(), 700);
         } else {
           const nm = dot(n, m);
-          const lnTxt = nice(ln) ? n1(ln) : `√${n1(ln * ln)}`;
+          const lnTxt = normText(ln);
           const dNow = Math.abs(nm - cNow) / ln;
-          row(tt('Abstand d(M, E)', 'Distance d(M, E)'), q(`|${n1(nm)} − ${paren(cNow)}| / ${lnTxt} = ${n1(dNow)}`));
+          row(tt('Abstand d(M, E)', 'Distance d(M, E)'), q(`|${n1(nm)} − ${paren(cNow)}| / ${lnTxt} ${nice(dNow) ? '=' : '≈'} ${n1(dNow)}`));
           const cut = spherePlane(m, r, n, cNow)!;
           const vs = cut.kind === 'circle' ? '<' : cut.kind === 'tangent' ? '=' : '>';
           const verdict = cut.kind === 'circle' ? (cut.d < 1e-9 ? tt('Großkreis (E geht durch M)', 'great circle (E passes through M)') : tt('Schnittkreis', 'circle of intersection')) : cut.kind === 'tangent' ? tt('Berührpunkt', 'point of contact') : tt('kein gemeinsamer Punkt', 'no common point');
@@ -1052,7 +1091,7 @@ export default defineSimulation({
           y += lh;
           const sg = cut.D > 0 ? '> 0' : cut.D < 0 ? '< 0' : '= 0';
           row('D = B² − 4AC', q(`${n1(cut.D)} ${sg}`));
-          const verdict = cut.kind === 'secant' ? tt('Sekante: 2 Schnittpunkte', 'secant: 2 intersection points') : cut.kind === 'tangent' ? tt('Tangente: 1 Berührpunkt', 'tangent: 1 point of contact') : tt('Passante: kein Schnittpunkt', 'passing line: no intersection');
+          const verdict = cut.kind === 'secant' ? tt('Sekante: 2 Schnittpunkte', 'secant: 2 intersection points') : cut.kind === 'tangent' ? tt('Tangente: 1 Berührpunkt', 'tangent: 1 point of contact') : tt('Passante: kein Schnittpunkt', 'line misses K: no common point');
           row(tt('Lage', 'Position'), q(verdict), cut.kind === 'passante' ? theme.muted : CS());
           if (cut.kind === 'secant') {
             row(`t₁ = ${q(n1(cut.ts[0]!))}`, q(`S₁${pt(cut.points[0]!)}`), CS());
@@ -1068,7 +1107,7 @@ export default defineSimulation({
         drawToks([{ kind: 'txt', s: 'T:', math: true }, { kind: 'txt', s: '[' }, { kind: 'vec', s: 'x', color: theme.text }, { kind: 'txt', s: '−' }, { kind: 'col', v: [...b], color: CT() }, { kind: 'txt', s: ']·' }, { kind: 'col', v: res ? [...t.n] : ['?', '?', '?'], color: CG() }, { kind: 'txt', s: '= 0' }], x0, y, w, big);
         y += compact ? 34 : 40;
         row(`B${exact ? '' : ' ≈'}`, pt(b), CT());
-        row(`${tt('Normalenvektor', 'Normal vector')} B − M`, q(pt(t.n)), CG());
+        rowVec([{ s: `${tt('Normalenvektor', 'Normal vector')} ` }, { s: 'MB', vec: true }, { s: ' = ' }, { s: 'b', vec: true }, { s: ' − ' }, { s: 'm', vec: true }], q(pt(t.n)), CG());
         row(tt('Koordinatenform', 'Coordinate form'), q(`${planeText(red.n, red.c)}`), CT());
         row(`|MB| = r`, q(`${sqrtText(sphereLhs(m, b))} = ${n1(r)} ✓`));
       }
@@ -1134,13 +1173,13 @@ export default defineSimulation({
           ctx.readout('res', null);
           return;
         }
-        ctx.readout('calc', `d(M, E) = |${n1(dot(n, m))} − ${paren(p.c)}| / ${n1(norm(n))} = ${n1(cut.d)}`);
+        ctx.readout('calc', `d(M, E) = |${n1(dot(n, m))} − ${paren(p.c)}| / ${normText(norm(n))} ${nice(cut.d) ? '=' : '≈'} ${n1(cut.d)}`);
         ctx.readout(
           'res',
           cut.kind === 'circle'
             ? cut.d < 1e-9
               ? tt(`d = 0: E geht durch M, Großkreis mit ρ = r = ${n1(r)}`, `d = 0: E passes through M, great circle with ρ = r = ${n1(r)}`)
-              : tt(`d < r: Schnittkreis mit M′${ptA(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`, `d < r: circle with centre M′${ptA(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ≈ ${n1(cut.rho)}`)
+              : tt(`d < r: Schnittkreis mit M′${ptA(cut.foot)} und ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ${nice(cut.rho) ? '=' : '≈'} ${n1(cut.rho)}`, `d < r: circle with centre M′${ptA(cut.foot)} and ρ = √(${n1(r * r)} − ${n1(cut.d * cut.d)}) ${nice(cut.rho) ? '=' : '≈'} ${n1(cut.rho)}`)
             : cut.kind === 'tangent'
               ? tt(`d = r: E berührt K in ${pt(cut.foot)}`, `d = r: E touches K at ${pt(cut.foot)}`)
               : tt('d > r: E und K haben keinen gemeinsamen Punkt', 'd > r: E and K have no common point'),
@@ -1152,20 +1191,20 @@ export default defineSimulation({
           ctx.readout('res', null);
           return;
         }
-        ctx.readout('calc', `${quadText(cut.A, cut.B, cut.C)} · D = ${n1(cut.D)}`);
+        ctx.readout('calc', `${quadText(cut.A, cut.B, cut.C)}; D = ${n1(cut.D)}`);
         ctx.readout(
           'res',
           cut.kind === 'secant'
             ? tt(`Sekante: S₁${pt(cut.points[0]!)}, S₂${pt(cut.points[1]!)}`, `Secant: S₁${pt(cut.points[0]!)}, S₂${pt(cut.points[1]!)}`)
             : cut.kind === 'tangent'
               ? tt(`Tangente: Berührpunkt ${pt(cut.points[0]!)}`, `Tangent: point of contact ${pt(cut.points[0]!)}`)
-              : tt(`Passante: Abstand ${n1(cut.dist)} > r`, `Passing line: distance ${n1(cut.dist)} > r`),
+              : tt(`Passante: Abstand ${n1(cut.dist)} > r`, `Line misses the sphere: distance ${n1(cut.dist)} > r`),
         );
       } else {
         const b = projectToSphere(m, r, tB());
         const t = tangentPlane(m, b);
         const red = reducePlane(t.n, t.c);
-        ctx.readout('calc', `n = B − M = ${pt(t.n)} · n · B = ${n1(t.c)}`);
+        ctx.readout('calc', { html: `${vecH('n')} = ${vecH('b')} − ${vecH('m')} = ${pt(t.n)}; ${vecH('n')} · ${vecH('b')} = ${n1(t.c)}` });
         ctx.readout('res', `T: ${planeText(red.n, red.c)}`);
       }
     }

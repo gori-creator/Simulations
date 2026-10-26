@@ -41,7 +41,7 @@ Weitere Sachsituationen in der Simulation:
 ## Ausprobieren
 
 1. Ziehe den Griff am Gehege (oder den Punkt auf dem Graphen). Beobachte, wie Fläche und Höhe des Punktes zusammenhängen. Wann ist das Gehege schmal und lang, wann kurz und tief? [Beispiel laden](?sit=wall&L=40&x=4)
-2. Stelle die Karte auf **Wertetabelle**. Zwischen welchen Tabellenwerten liegt das Maximum? Was fällt an den Werten links und rechts davon auf? [Beispiel laden](?sit=wall&L=40&x=6&card=table)
+2. Stelle die Karte auf **Wertetabelle**. Bei welchem Tabellenwert ist die Fläche am größten? Was fällt an den Werten links und rechts davon auf? [Beispiel laden](?sit=wall&L=40&x=6&card=table)
 3. Klicke auf **Maximum suchen**. Erst wird probiert, dann gerechnet. Verfolge jede Zeile der quadratischen Ergänzung.
 4. Ohne Mauer: Welche Form hat das beste Gehege? Ändere die Zaunlänge – bleibt es bei dieser Form? [Beispiel laden](?sit=free&L=40&x=4)
 5. Rechteck im Dreieck: Ziehe die Ecke auf der Hypotenuse. Vergleiche die größte Rechteckfläche mit der Dreiecksfläche. [Beispiel laden](?sit=tri&a=80&b=60&xt=16)

@@ -38,12 +38,12 @@ const KIND_OPTIONS = [
   { value: 'lin', label: L('Gerade', 'Line') },
   { value: 'quad', label: L('Parabel', 'Parabola') },
   { value: 'hyp', label: L('Hyperbel', 'Hyperbola') },
-  { value: 'abs', label: L('Betrag', '|x|') },
+  { value: 'abs', label: L('Betrag', 'Absolute value') },
 ] as const;
 
 const KIND_HELP = L(
   'Gerade: mx + t · Parabel: a(x − d)² + e · Hyperbel: a/(x − d) + e · Betrag: a·|x − d| + e',
-  'Line: mx + c · parabola: a(x − d)² + e · hyperbola: a/(x − d) + e · absolute value: a·|x − d| + e',
+  'Line: mx + t · parabola: a(x − d)² + e · hyperbola: a/(x − d) + e · absolute value: a·|x − d| + e',
 );
 
 /** Regler einer Seite (Schlüssel mit Index 1 = links, 2 = rechts). */
@@ -54,7 +54,7 @@ function sideParams<S extends '1' | '2'>(s: S, kindKey: 'f' | 'g', group: string
   return [
     { key: kindKey, type: 'choice', group, label: L('Funktionsart', 'Type of function'), options: KIND_OPTIONS, default: def.kind, help: KIND_HELP },
     { key: `m${s}`, type: 'number', group, label: L(`Steigung m${sub}`, `Slope m${sub}`), min: -5, max: 5, step: 0.25, default: def.m, visibleIf: isLin },
-    { key: `t${s}`, type: 'number', group, label: L(`y-Achsenabschnitt t${sub}`, `y-intercept c${sub}`), min: -8, max: 8, step: 0.25, default: def.t, visibleIf: isLin },
+    { key: `t${s}`, type: 'number', group, label: L(`y-Achsenabschnitt t${sub}`, `y-intercept t${sub}`), min: -8, max: 8, step: 0.25, default: def.t, visibleIf: isLin },
     { key: `a${s}`, type: 'number', group, label: L(`Faktor a${sub}`, `Factor a${sub}`), min: -4, max: 4, step: 0.25, default: def.a, visibleIf: notLin },
     { key: `d${s}`, type: 'number', group, label: L(`Verschiebung in x-Richtung d${sub}`, `Shift in x-direction d${sub}`), min: -6, max: 6, step: 0.25, default: def.d, visibleIf: notLin },
     { key: `e${s}`, type: 'number', group, label: L(`Verschiebung in y-Richtung e${sub}`, `Shift in y-direction e${sub}`), min: -6, max: 6, step: 0.25, default: def.e, visibleIf: notLin },
@@ -183,10 +183,10 @@ export default defineSimulation({
       setSep: '; ',
       keepLeft: 'links',
       keepRight: 'rechts',
-      a0: 'a = 0: kein {kind}, sondern eine Parallele zur x-Achse',
-      kindQuad: 'Parabel',
-      kindHyp: 'Hyperbel',
-      kindAbs: 'Betragsgraph',
+      a0: 'a = 0: Der Graph ist {kind}, sondern eine Parallele zur x-Achse',
+      a0Hyp: 'a = 0: Der Graph ist keine Hyperbel, sondern eine Parallele zur x-Achse mit Lücke bei x = {d}',
+      kindQuad: 'keine Parabel',
+      kindAbs: 'kein Betragsgraph',
     },
     en: {
       canvas: 'Coordinate plane with the graphs of both sides of an equation; the solutions are the x-coordinates of the points of intersection',
@@ -239,10 +239,10 @@ export default defineSimulation({
       setSep: ', ',
       keepLeft: 'left',
       keepRight: 'right',
-      a0: 'a = 0: not a {kind} but a line parallel to the x-axis',
-      kindQuad: 'parabola',
-      kindHyp: 'hyperbola',
-      kindAbs: 'V-shaped graph',
+      a0: 'a = 0: the graph is {kind} but a line parallel to the x-axis',
+      a0Hyp: 'a = 0: the graph is not a hyperbola but a line parallel to the x-axis with a gap at x = {d}',
+      kindQuad: 'not a parabola',
+      kindAbs: 'not a V-shaped graph',
     },
   },
 
@@ -1232,7 +1232,11 @@ export default defineSimulation({
         [f, 'f'],
         [g, 'g'],
       ] as const) {
-        if (fn.kind !== 'lin' && fn.a === 0 && !compact) rows.push(noteRow(`${side}: ${tr('a0', { kind: ctx.t(fn.kind === 'quad' ? 'kindQuad' : fn.kind === 'hyp' ? 'kindHyp' : 'kindAbs') })}`, w));
+        if (fn.kind !== 'lin' && fn.a === 0 && !compact) {
+          // Hyperbel mit a = 0: konstante Funktion e, aber weiter mit Definitionslücke bei x = d
+          const note = fn.kind === 'hyp' ? tr('a0Hyp', { d: n(fn.d, 3) }) : tr('a0', { kind: ctx.t(fn.kind === 'quad' ? 'kindQuad' : 'kindAbs') });
+          rows.push(noteRow(`${side}: ${note}`, w));
+        }
       }
       if (t === 1) {
         rows.push(gapRow(4));
