@@ -125,6 +125,8 @@ npm run verify
 
 Die Konsistenztests melden u. a. fehlende Registrierung, fehlendes Lernmaterial, ungültige Beispiele oder doppelte Adressen.
 
+Nach dem Push melden die **Bildtests** in GitHub „Referenzbild fehlt“. Wenn die Simulation fertig ist, die Referenzbilder erneuern: einen Commit mit `[bilder erneuern]` in der Nachricht pushen (siehe `docs/BILDTESTS.md`).
+
 ## Checkliste
 
 - [ ] Lehrplan-Eintrag auf `ready` mit `slug`, `summary`, `kmk`, `keywords` und eigener `thumb.svg` (sonst `thumb`)
@@ -136,3 +138,4 @@ Die Konsistenztests melden u. a. fehlende Registrierung, fehlendes Lernmaterial,
 - [ ] Bilder (falls verwendet) in `docs/BILDER.md` mit Prompt eingetragen; Ersatzgrafik sieht ordentlich aus
 - [ ] Lernmaterial (DE) mit Aufgaben und Lösungen; Englisch optional
 - [ ] `npm run verify` ist grün
+- [ ] Referenzbilder für die Bildtests erzeugt (`[bilder erneuern]`, siehe `docs/BILDTESTS.md`)
