@@ -64,6 +64,102 @@ export function withAlpha(color: string, alpha: number): string {
 }
 
 /* ------------------------------------------------------------------ */
+/* Dach (Zirkumflex) über einem Zeichen: „φ̂“, „v̂“, „x̂“                  */
+/* ------------------------------------------------------------------ */
+
+/** Kombinierendes Dach U+0302 (z. B. in „φ̂“ für die Amplitude). */
+export const COMBINING_HAT = '\u0302';
+
+/** Buchstabe oder Ziffer mit folgendem kombinierendem Dach. */
+const HAT_PATTERN = /([\p{L}\p{N}])\u0302/gu;
+
+/** Ein Stück Text: normal oder ein einzelnes Zeichen mit Dach (`hat`). */
+export interface HatPart {
+  text: string;
+  hat: boolean;
+}
+
+/**
+ * Zerlegt Text an Zeichen mit kombinierendem Dach (U+0302). Viele Schriften
+ * setzen das Dach über Zeichen wie „φ“ verrutscht (neben oder halb in das
+ * Zeichen); der Kern zeichnet es deshalb selbst. Text ohne Dach bleibt ein Teil.
+ */
+export function splitHats(value: string): HatPart[] {
+  if (!value.includes(COMBINING_HAT)) return value ? [{ text: value, hat: false }] : [];
+  const parts: HatPart[] = [];
+  let last = 0;
+  for (const match of value.matchAll(HAT_PATTERN)) {
+    const index = match.index!;
+    if (index > last) parts.push({ text: value.slice(last, index), hat: false });
+    parts.push({ text: match[1]!, hat: true });
+    last = index + match[0].length;
+  }
+  if (last < value.length) parts.push({ text: value.slice(last), hat: false });
+  return parts;
+}
+
+/** Braucht der Text die Zeichenhilfen für Index oder Dach? */
+export function hasRichText(value: string): boolean {
+  return value.includes('_') || value.includes(COMBINING_HAT);
+}
+
+/** Breite eines Textstücks mit der aktuellen Schrift; Dächer haben keine eigene Breite. */
+export function measureHatText(g: CanvasRenderingContext2D, value: string): number {
+  if (!value.includes(COMBINING_HAT)) return g.measureText(value).width;
+  return splitHats(value).reduce((sum, part) => sum + g.measureText(part.text).width, 0);
+}
+
+/**
+ * Zeichnet ein Textstück mit der aktuellen Schrift, Ausrichtung links,
+ * gefüllt (`fill`) oder als Rand (`halo`, Farbe und Breite wie gesetzt), und
+ * setzt Dächer selbst: ein kleiner Winkel mittig über der Oberkante des
+ * Zeichens (aus `actualBoundingBox…`). Gibt die Breite zurück.
+ */
+export function drawHatText(g: CanvasRenderingContext2D, value: string, x: number, y: number, pass: 'fill' | 'halo'): number {
+  if (!value.includes(COMBINING_HAT)) {
+    if (pass === 'halo') g.strokeText(value, x, y);
+    else g.fillText(value, x, y);
+    return g.measureText(value).width;
+  }
+  const size = Number(/(\d+(?:\.\d+)?)px/.exec(g.font)?.[1] ?? 14);
+  const bold = /\b(?:[6-9]00|bold)\b/.test(g.font);
+  let cx = x;
+  for (const part of splitHats(value)) {
+    if (pass === 'halo') g.strokeText(part.text, cx, y);
+    else g.fillText(part.text, cx, y);
+    const m = g.measureText(part.text);
+    if (part.hat) {
+      // Mitte und Oberkante des Zeichens; ohne Angaben grob aus der Schriftgröße
+      const left = m.actualBoundingBoxLeft ?? 0;
+      const right = m.actualBoundingBoxRight ?? m.width;
+      const ascent = m.actualBoundingBoxAscent ?? size * 0.7;
+      const mid = cx + (right - left) / 2 + size * 0.02;
+      const bottom = y - ascent - size * 0.09;
+      const half = size * 0.19;
+      const height = size * 0.15;
+      const width = size * (bold ? 0.085 : 0.07);
+      g.save();
+      g.beginPath();
+      g.moveTo(mid - half, bottom);
+      g.lineTo(mid, bottom - height);
+      g.lineTo(mid + half, bottom);
+      g.lineJoin = 'round';
+      g.lineCap = 'round';
+      if (pass === 'halo') {
+        g.lineWidth += width;
+      } else {
+        g.lineWidth = width;
+        g.strokeStyle = g.fillStyle;
+      }
+      g.stroke();
+      g.restore();
+    }
+    cx += m.width;
+  }
+  return cx - x;
+}
+
+/* ------------------------------------------------------------------ */
 /* Text mit tiefgestelltem Index                                       */
 /* ------------------------------------------------------------------ */
 
@@ -169,7 +265,7 @@ export function measureSubText(g: CanvasRenderingContext2D, value: string, style
   let width = 0;
   for (const part of parseSubText(value)) {
     g.font = subFont(style, part.sub);
-    width += g.measureText(part.text).width;
+    width += measureHatText(g, part.text);
   }
   return width;
 }
@@ -178,6 +274,8 @@ export function measureSubText(g: CanvasRenderingContext2D, value: string, style
  * Zeichnet Text mit echtem tiefgestelltem Index, z. B.
  * `subText(g, 'F_G = 5 N', x, y, { size: 14, family: theme.font, color })`.
  * `align` bezieht sich auf die Gesamtbreite. Gibt die Breite in Pixeln zurück.
+ * Ein kombinierendes Dach (U+0302, „φ̂_E“) zeichnet der Kern selbst über das
+ * Zeichen (`drawHatText`), weil Schriften es oft verrutscht setzen.
  */
 export function subText(g: CanvasRenderingContext2D, value: string, x: number, y: number, style: SubTextStyle): number {
   const parts = parseSubText(value);
@@ -197,12 +295,11 @@ export function subText(g: CanvasRenderingContext2D, value: string, x: number, y
         g.lineJoin = 'round';
         g.lineWidth = style.haloWidth ?? 3.5;
         g.strokeStyle = style.halo!;
-        g.strokeText(part.text, cx, yy);
       } else {
         g.fillStyle = style.color;
-        g.fillText(part.text, cx, yy);
       }
-      cx += g.measureText(part.text).width;
+      // Zeichen mit Dach („φ̂“) setzt drawHatText selbst; sonst wie fillText/strokeText
+      cx += drawHatText(g, part.text, cx, yy, pass === 'halo' ? 'halo' : 'fill');
     }
   }
   g.restore();

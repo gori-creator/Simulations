@@ -8,7 +8,7 @@ import { bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
 import { defaultValues, dragHintKey, resolveHint, sanitize, valuesEqual } from './params';
-import { setSubLabel, setSubReadout } from './rich-label';
+import { hatsInHtml, setSubLabel, setSubReadout } from './rich-label';
 import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
@@ -430,7 +430,7 @@ class SimulationHost {
     // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts);
     // reiner Text setzt „_“ wie die Beschriftungen als Index („F_max“)
     if (typeof value === 'string') setSubReadout(row.value, value);
-    else row.value.innerHTML = bindUnitsHtml(value.html);
+    else row.value.innerHTML = bindUnitsHtml(hatsInHtml(value.html));
   }
 
   /* ---------- Aktionen ---------- */
