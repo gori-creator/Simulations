@@ -12,7 +12,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 ## Erledigt
 
-- [x] **Länder-Lehrpläne vollständig** (26.10.): 56 Zuordnungen nachgetragen (Hessen Mathe/Physik, Bayern Physik, BW Mathe), Klassenstufen von 12 Simulationen erweitert (z. B. Binomialverteilung bis 13 für Hessen Q3). Neuer Test: jede fertige Simulation steht in jedem Länder-Lehrplan ihres Fachs oder ist mit Grund ausgenommen (10 Fälle).
+- [x] **Länder-Lehrpläne vollständig** (26.10.): 56 Zuordnungen nachgetragen (Hessen Mathe/Physik, Bayern Physik, BW Mathe), Klassenstufen von 12 Simulationen erweitert (z. B. Binomialverteilung bis 13 für Hessen Q3). Neuer Test: jede fertige Simulation steht in jedem Länder-Lehrplan ihres Fachs oder ist mit Grund ausgenommen (10 Fälle). Diese stehen auf der Fachseite (bei gewähltem Land) und auf der Lehrplan-Übersicht des Landes unter „Weitere Simulationen“.
 - [x] **Prüfrunde Physik** (PR #45, #52/#53, 26.10.): alle Protokolle und Nachbesserungen in `main`, zuletzt Fadenpendel und Brechung (`docs/pruefung/SAMMLUNG.md`).
 - [x] **Automatische Bildtests** (PR #51/#54, 26.10.): Referenzbild je Simulation, Vergleich in GitHub Actions (`docs/BILDTESTS.md`).
 - [x] **Barrierefreiheit der Seiten** (PR #44, 25.10.): 19 Seiten hell/dunkel geprüft (axe, Tastatur, Zoom, reduzierte Bewegung), 10 Funde behoben.

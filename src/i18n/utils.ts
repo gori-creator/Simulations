@@ -36,6 +36,7 @@ export function formatGrades(lang: Lang, grades: readonly [number, number], uni 
   const uniLabel = t(lang, 'grades.uni');
   if (from > 13) return uniLabel;
   const withUni = uni || to > 13;
-  const school = from === to ? t(lang, 'grades.single', { n: from }) : t(lang, 'grades.range', { from, to: Math.min(to, 13) });
+  const last = Math.min(to, 13);
+  const school = from === last ? t(lang, 'grades.single', { n: from }) : t(lang, 'grades.range', { from, to: last });
   return withUni ? `${school} · ${uniLabel}` : school;
 }
