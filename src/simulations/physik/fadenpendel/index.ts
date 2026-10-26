@@ -810,6 +810,12 @@ export default defineSimulation({
     /** Zeilen der Anzeigen oben in der Szene (Werte, Legende, Hinweise). */
     const chipRows = () => 2 + Math.min(2, hints().length);
 
+    /**
+     * Ab 60° Auslenkung hängt der Aufhängepunkt an einem kurzen Haken unter dem
+     * Ausleger, damit die Kugel bei 90° nicht auf dem Ausleger liegt (Pixel).
+     */
+    const armLift = (R: number) => (Math.abs(amp()) >= toRad(60) ? R + 8 : 0);
+
     function targetView(r: Rect): { cx: number; cy: number; Lpx: number } {
       const small = r.w < 520;
       const R = bobRadius(small);
@@ -817,7 +823,7 @@ export default defineSimulation({
       const ex = Math.max(0.42, a >= Math.PI / 2 ? 1 : Math.sin(a));
       const up = a > Math.PI / 2 ? -Math.cos(a) : 0;
       const tableY = r.y + r.h - (small ? 16 : 20);
-      const PT = 8 + chipRows() * (small ? 28 : 29) + 6 + (up > 0 ? R : 0);
+      const PT = 8 + chipRows() * (small ? 28 : 29) + 6 + (up > 0 ? R : 0) + armLift(R);
       const PB = r.y + r.h - tableY + R + (small ? 8 : 14);
       const standW = small ? 30 : 46;
       const PS = R + (small ? 12 : 20);
@@ -889,13 +895,27 @@ export default defineSimulation({
       gx.fillRect(r.x, g0.tableY, r.w, 1.5);
     }
 
+    /** Breite der Beschriftung h (größter Wert bei der Auslenkung), sonst 0. */
+    function heightLabelWidth(g0: Geo): number {
+      if (mode() !== 'swing' || !p.energy || p.amp === 0 || Math.abs(amp()) >= Math.PI / 2) return 0;
+      const h = p.l * (1 - Math.cos(amp()));
+      const hs = h < 1 ? `${n(h * 100, 1)} cm` : `${n(h, 2)} m`;
+      return richWidth(tr('hLabel', { h: hs }), g0.small ? 11 : 12) + 20;
+    }
+
+    /** Lage der Stativstange: rechts neben der Schwingung und der Beschriftung h. */
+    function rodXOf(g0: Geo): number {
+      return Math.min(g0.r.x + g0.r.w - (g0.small ? 14 : 22), g0.cx + Math.max(g0.ex, g0.Lpx * 0.42) + g0.R + 24 + heightLabelWidth(g0));
+    }
+
     function drawStand(g0: Geo): void {
       const gx = surface.g;
       const dark = ctx.theme.dark;
-      const rodX = Math.min(g0.r.x + g0.r.w - (g0.small ? 14 : 22), g0.cx + Math.max(g0.ex, g0.Lpx * 0.42) + g0.R + 24);
+      const rodX = rodXOf(g0);
+      const armY = g0.cy - armLift(g0.R);
       const img = ctx.images.get('stand');
       const sc = g0.small ? 0.46 : 0.58;
-      if (img && drawLabStand(gx, img, { rodX, armY: g0.cy - 4 * sc, armTo: g0.cx - 6, floorY: g0.tableY + (g0.small ? 9 : 12), scale: sc, dpr: surface.dpr, dark })) return;
+      if (img && drawLabStand(gx, img, { rodX, armY: armY - 4 * sc, armTo: g0.cx - 6, floorY: g0.tableY + (g0.small ? 9 : 12), scale: sc, dpr: surface.dpr, dark })) return;
       // gezeichnetes Stativ: Fuß, Stange, Ausleger, Klemme
       const metal = gx.createLinearGradient(rodX - 4, 0, rodX + 4, 0);
       metal.addColorStop(0, '#5d6570');
@@ -909,15 +929,15 @@ export default defineSimulation({
       roundRect(gx, rodX - 40, g0.tableY - 8, 64, 9, 3);
       gx.fill();
       gx.fillStyle = metal;
-      gx.fillRect(rodX - 4, g0.cy - 18, 8, g0.tableY - 8 - (g0.cy - 18));
-      const arm = gx.createLinearGradient(0, g0.cy - 4, 0, g0.cy + 4);
+      gx.fillRect(rodX - 4, armY - 18, 8, g0.tableY - 8 - (armY - 18));
+      const arm = gx.createLinearGradient(0, armY - 4, 0, armY + 4);
       arm.addColorStop(0, '#d5dae1');
       arm.addColorStop(1, '#5d6570');
       gx.fillStyle = arm;
-      gx.fillRect(g0.cx - 10, g0.cy - 4, rodX - g0.cx + 10, 7);
+      gx.fillRect(g0.cx - 10, armY - 4, rodX - g0.cx + 10, 7);
       gx.restore();
       gx.fillStyle = dark ? '#6b7584' : '#4a5361';
-      roundRect(gx, rodX - 9, g0.cy - 9, 18, 18, 3);
+      roundRect(gx, rodX - 9, armY - 9, 18, 18, 3);
       gx.fill();
     }
 
@@ -1132,8 +1152,12 @@ export default defineSimulation({
       let rot = ang;
       if (rot > Math.PI / 2) rot -= Math.PI;
       if (rot < -Math.PI / 2) rot += Math.PI;
-      const mx = g0.cx + g0.Lpx * grow * 0.62 * Math.sin(phi);
-      const my = g0.cy + g0.Lpx * grow * 0.62 * Math.cos(phi);
+      // bei Kraftpfeilen etwas weiter von der Kugel weg (die Pfeile liegen am Faden), aber nicht im Winkelmesser
+      const L0 = g0.Lpx * grow;
+      const half = richWidth(tr('lLabel', { l: n(p.l, 2) }), g0.small ? 11 : 12, 650) / 2;
+      const at = arrows() === 'F' ? clamp((clamp(g0.Lpx * 0.42, 34, 112) + half + 14) / L0, 0.5, 0.62) : 0.62;
+      const mx = g0.cx + L0 * at * Math.sin(phi);
+      const my = g0.cy + L0 * at * Math.cos(phi);
       // auf der Seite zum Lot hin versetzt
       const side = (phi >= 0 ? -1 : 1) * (Math.abs(phi) < 0.6 ? -1 : 1);
       ang = phi;
@@ -1163,7 +1187,13 @@ export default defineSimulation({
       gx.setLineDash([]);
       const hPx = low - by;
       if (hPx > 6) {
-        const x = bx + (phi >= 0 ? 1 : -1) * (g0.R + 12);
+        const h = p.l * (1 - Math.cos(phi));
+        const hs = h < 1 ? `${n(h * 100, 1)} cm` : `${n(h, 2)} m`;
+        const label = tr('hLabel', { h: hs });
+        // nach außen; rechts nur, wenn die Beschriftung vor der Stativstange endet
+        const out = phi < 0 || bx + g0.R + 20 + richWidth(label, g0.small ? 11 : 12) < rodXOf(g0) - 8;
+        const sgn = (phi >= 0 ? 1 : -1) * (out ? 1 : -1);
+        const x = bx + sgn * (g0.R + 12);
         gx.strokeStyle = C.pot();
         gx.lineWidth = 1.8;
         gx.beginPath();
@@ -1174,9 +1204,9 @@ export default defineSimulation({
         gx.moveTo(x - 4, by);
         gx.lineTo(x + 4, by);
         gx.stroke();
-        const h = p.l * (1 - Math.cos(phi));
-        const hs = h < 1 ? `${n(h * 100, 1)} cm` : `${n(h, 2)} m`;
-        clampedText(tr('hLabel', { h: hs }), x + (phi >= 0 ? 8 : -8), (low + by) / 2, g0.small ? 11 : 12, C.pot(), g0.r, phi >= 0 ? 'left' : 'right');
+        // über 90° liegt die Mitte auf Höhe der Winkelanzeige φ – dann weiter unten beschriften
+        const ly = Math.abs(phi) > Math.PI / 2 ? low - (low - by) * 0.2 : (low + by) / 2;
+        clampedText(label, x + sgn * 8, ly, g0.small ? 11 : 12, C.pot(), g0.r, sgn > 0 ? 'left' : 'right');
       }
       gx.restore();
       void theme;
@@ -1354,6 +1384,16 @@ export default defineSimulation({
       }
       drawTrail(g0, v.t);
       drawThread(g0, phi, 1, grow, false);
+      // Haken unter dem Ausleger (große Auslenkung)
+      const lift = armLift(g0.R);
+      if (lift > 0) {
+        gx.strokeStyle = theme.dark ? '#aab3bf' : '#4a5361';
+        gx.lineWidth = 2.5;
+        gx.beginPath();
+        gx.moveTo(g0.cx, g0.cy - lift);
+        gx.lineTo(g0.cx, g0.cy);
+        gx.stroke();
+      }
       // Aufhängepunkt
       gx.fillStyle = theme.dark ? '#c3cbd6' : '#3c4552';
       gx.beginPath();
@@ -1952,6 +1992,18 @@ export default defineSimulation({
         return k === 'tf';
       });
     }
+
+    function stepScrub(dt: number): void {
+      ctx.clock.pause();
+      scrub = clamp((scrub ?? t) + dt, Math.max(hist.first(), windowNow().t0), t);
+      updateNow();
+      ctx.requestRender();
+    }
+    // Tastatur: Zeitmarke schrittweise setzen (wie Antippen des Diagramms; hält an)
+    ctx.setKeyTargets([
+      { id: 'tBack', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s zurück' : 'Time marker 0.1 s back', activate: () => { if (!ctx.locked && hist.size > 2) { stepScrub(-0.1); } } },
+      { id: 'tFwd', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s vor' : 'Time marker 0.1 s forward', activate: () => { if (!ctx.locked && hist.size > 2) { stepScrub(0.1); } } },
+    ]);
 
     let chartDrag = -1;
     function chartSet(i: number, px: number): void {

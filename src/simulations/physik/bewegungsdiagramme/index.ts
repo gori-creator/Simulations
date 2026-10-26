@@ -454,6 +454,18 @@ export default defineSimulation({
       axis: 'x',
       color: () => ctx.theme.text,
     });
+    function stepTime(dt: number): void {
+      ctx.clock.pause();
+      t = Math.max(0, Math.min(T, t + dt));
+      updateNow();
+      ctx.requestRender();
+    }
+    // Tastatur: Zeitmarke schrittweise setzen (wie Antippen des Diagramms; hält an)
+    ctx.setKeyTargets([
+      { id: 'tBack', label: ctx.lang === 'de' ? 'Zeitmarke 0,5 s zurück' : 'Time marker 0.5 s back', activate: () => { if (true) { stepTime(-0.5); } } },
+      { id: 'tFwd', label: ctx.lang === 'de' ? 'Zeitmarke 0,5 s vor' : 'Time marker 0.5 s forward', activate: () => { if (true) { stepTime(0.5); } } },
+    ]);
+
     plotS.addHandle({ get: () => [0, p.s0], set: (_x, y) => ctx.set({ s0: y }), axis: 'y', enabled: editable, color: () => ctx.theme.series[0]! });
     plotV.addHandle({ get: () => [T / 2, p.v], set: (_x, y) => ctx.set({ v: y }), axis: 'y', enabled: () => editable() && mode() === 'uni', color: () => ctx.theme.series[3]! });
     plotV.addHandle({ get: () => [0, p.v0], set: (_x, y) => ctx.set({ v0: y }), axis: 'y', enabled: () => editable() && mode() !== 'uni', color: () => ctx.theme.series[3]! });
