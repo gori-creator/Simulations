@@ -716,6 +716,18 @@ export default defineSimulation({
       updateNow();
       ctx.requestRender();
     }
+    function stepScrub(dt: number): void {
+      ctx.clock.pause();
+      scrub = clamp((scrub ?? t) + dt, Math.max(window0().t0, hist.first()), t);
+      updateNow();
+      ctx.requestRender();
+    }
+    // Tastatur: Zeitmarke schrittweise setzen (wie Antippen des Diagramms; hält an)
+    ctx.setKeyTargets([
+      { id: 'tBack', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s zurück' : 'Time marker 0.1 s back', activate: () => { if (!ctx.locked && hist.size > 2) { stepScrub(-0.1); } } },
+      { id: 'tFwd', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s vor' : 'Time marker 0.1 s forward', activate: () => { if (!ctx.locked && hist.size > 2) { stepScrub(0.1); } } },
+    ]);
+
     const inArea = (px: number, py: number) => {
       const a = lay.chartArea;
       return px >= a.x && px <= a.x + a.w && py >= a.y && py <= a.y + a.h;

@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, lerp, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, lerp, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, subText, Surface, text, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   acceptanceAngle,
   apexPrism,
@@ -688,8 +688,12 @@ export default defineSimulation({
       return out;
     }
 
-    /** Zeilen der Karte (und des Ergebnisses) in der Ansicht „Platte, Prisma, Hebung“. */
+    /** Zeilen der Karte (und des Ergebnisses) in der Ansicht „Platte, Prisma, Hebung“; verdeckte Werte als „?“ ohne Einheit. */
     function optLines(exact: boolean): string[] {
+      return optLinesRaw(exact).map((line) => line.replace(/\?°/g, '?'));
+    }
+
+    function optLinesRaw(exact: boolean): string[] {
       const html = (s: string) => (exact ? s.replace(/_\{([^}]*)\}/g, '<sub>$1</sub>') : s);
       const a = exact ? p.alpha : shown.alpha;
       const nm = nMat();
@@ -714,54 +718,32 @@ export default defineSimulation({
       return [hp === null ? ctx.t('depthTotal') : tr('depthLine', { h: q(fmt.fixed(hp, 2)) }), html(tr('depthNear', { h: q(fmt.fixed((h * 1) / nm, 2)) }))];
     }
 
-    /* ---------- Zeichenhilfen (Texte mit tiefgestellten Teilen: „n_{1}“) ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\{([^}]*)\}/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
-
+    /* ---------- Zeichenhilfen (Texte mit tiefgestellten Teilen: „n_{1}“, über subText aus dem Kern) ---------- */
     function richWidth(str: string, size: number, weight = 700): number {
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(g, str, { size, family: ctx.theme.font, weight, color: '' });
     }
 
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
       const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
+      const style: SubTextStyle = { size, family: theme.font, weight, color, align, subShift: 0.3 };
+      if (halo) style.halo = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
+      return subText(g, str, x, y, style);
+    }
+
+    /** Text in Zeilen von höchstens maxW Pixeln umbrechen (an Leerzeichen; höchstens drei Zeilen, dann gekürzt). */
+    function wrapLines(str: string, maxW: number, size: number, weight = 700): string[] {
+      const lines: string[] = [];
+      let cur = '';
+      for (const word of str.split(' ')) {
+        const next = cur ? `${cur} ${word}` : word;
+        if (cur && richWidth(next, size, weight) > maxW) {
+          lines.push(cur);
+          cur = word;
+        } else cur = next;
       }
-      return total;
+      if (cur) lines.push(cur);
+      if (lines.length <= 3) return lines;
+      return [...lines.slice(0, 2), fitText(lines.slice(2).join(' '), maxW, size, weight)];
     }
 
     /** Text auf höchstens maxW Pixel gekürzt (mit „…“). */
@@ -1449,10 +1431,38 @@ export default defineSimulation({
         g.arc(hx, hy, 4.5, 0, TAU);
         g.fill();
         const label = `${deg1(worst.angle)}° ${ok ? '>' : '<'} α_{G} = ${c === null ? '–' : deg1(c)}°`;
-        const w = richWidth(label, small ? 11 : 12) + 16;
-        const lxp = clamp(hx - w / 2, r.x + 6, r.x + r.w - w - 6);
-        const lyp = clamp(hy + (worst.b[1] > 0 ? -34 : 12), r.y + 50, r.y + r.h - 30);
-        pill(lxp, lyp, label, col, 'left', small ? 11 : 12);
+        const fsz = small ? 11 : 12;
+        const w = richWidth(label, fsz) + 16;
+        const ph = fsz + 11;
+        // außerhalb der Faser neben die Wand setzen (nicht über die Strahlen): Richtung von der Fasermitte weg
+        const [bx, by] = worst.b;
+        let out: V2;
+        if (bx <= FIBER.L1) out = [0, by > 0 ? 1 : -1];
+        else if (by > -R) {
+          const dx = bx - FIBER.L1;
+          const dy = by + R;
+          const len = Math.hypot(dx, dy) || 1;
+          out = len > R ? [dx / len, dy / len] : [-dx / len, -dy / len];
+        } else out = [bx > FIBER.L1 + R ? 1 : -1, 0];
+        const [qx, qy] = sp.toPx(bx + out[0], by + out[1]);
+        const ux = qx - hx;
+        const uy = qy - hy;
+        const ul = Math.hypot(ux, uy) || 1;
+        // Griff am Bogen (Biegeradius) freilassen: notfalls weiter nach außen rücken
+        const [kx, ky] = sp.toPx(FIBER.L1 + R * Math.SQRT1_2, -R + R * Math.SQRT1_2);
+        let gap = 10 + (Math.abs(ux / ul) * w) / 2 + (Math.abs(uy / ul) * ph) / 2;
+        let lxp = 0;
+        let lyp = 0;
+        const hitsHandle = () => !ctx.locked && kx > lxp - 12 && kx < lxp + w + 12 && ky > lyp - 12 && ky < lyp + ph + 12;
+        for (let tries = 0; tries < 6; tries++) {
+          lxp = clamp(hx + (ux / ul) * gap - w / 2, r.x + 6, r.x + r.w - w - 6);
+          lyp = clamp(hy + (uy / ul) * gap - ph / 2, r.y + 50, r.y + r.h - 30);
+          if (!hitsHandle()) break;
+          gap += 14;
+        }
+        // am Rand festgehalten und immer noch auf dem Griff: über den Griff setzen
+        if (hitsHandle()) lyp = clamp(ky - 14 - ph, r.y + 50, r.y + r.h - 30);
+        pill(lxp, lyp, label, col, 'left', fsz);
       }
       // Griff am Bogen (Biegeradius ziehen)
       if (!ctx.locked) {
@@ -1485,7 +1495,7 @@ export default defineSimulation({
       const dv = shown.deliv < 0 ? deliv : shown.deliv;
       pill(r.x + r.w - 8, r.y + 8, `${fmt.num(dv * 100, 0)} % ${ctx.t('arrive')}`, dv > 0.6 ? C.b() : C.p(), 'right', size);
       const h = fiberHint();
-      if (h) pill(r.x + 8, r.y + 8 + size + 17, fitText(h, r.w - 30, size), C.crit(), 'left', size);
+      if (h) wrapLines(h, r.w - 30, size).forEach((ln, i) => pill(r.x + 8, r.y + 8 + (size + 17) * (i + 1), ln, C.crit(), 'left', size));
       sp.end();
     }
 

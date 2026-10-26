@@ -1,4 +1,4 @@
-# Offene Aufgaben (Stand 25.10.2026)
+# Offene Aufgaben (Stand 26.10.2026)
 
 Zentrale Aufgabenliste. Wer eine Aufgabe übernimmt, trägt sich in der Spalte „Wer“ ein; Erledigtes wird abgehakt und kurz mit PR-Nummer vermerkt. Ältere Pläne: `docs/FAHRPLAN.md` (Phasen bis zur Veröffentlichung), `docs/agenten/WARTESCHLANGE.md` (Bau der Simulationen, abgeschlossen).
 
@@ -8,19 +8,19 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
-| Prüfrunde Physik abschließen (Abschnitt A, `docs/pruefung/UEBERGABE-NEUE-PRUEFER.md`) | Claude-Agent | 16 von 17 Protokollen auf `pruefen/paket-1`, noch nicht in `main` |
-| Sicherheit und Ladezeit (Abschnitte unten) | Claude-Agent | Pull Request offen (PR #48) |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
 
 ## Erledigt
 
+- [x] **Prüfrunde Physik** (PR #45, #52/#53, 26.10.): alle Protokolle und Nachbesserungen in `main`, zuletzt Fadenpendel und Brechung (`docs/pruefung/SAMMLUNG.md`).
+- [x] **Automatische Bildtests** (PR #51/#54, 26.10.): Referenzbild je Simulation, Vergleich in GitHub Actions (`docs/BILDTESTS.md`).
 - [x] **Barrierefreiheit der Seiten** (PR #44, 25.10.): 19 Seiten hell/dunkel geprüft (axe, Tastatur, Zoom, reduzierte Bewegung), 10 Funde behoben.
 
 ## Barrierefreiheit in den Simulationen (Folgeaufgabe aus PR #44)
 
 Betrifft `src/sim-core/` und einzelne Simulationen; Details in der Beschreibung von PR #44 („Nur aufgelistet“).
 
-- [x] Pro Simulation prüfen, ob alle ziehbaren Punkte als Tastatur-Ziel angemeldet sind (`key-targets.ts`). Alle gezogenen Werte haben Regler; Antippen-Aktionen in 17 Simulationen sind jetzt Tastatur-Ziele, 3D-Ansichten und verschiebbare Koordinatensysteme per Pfeiltasten/Plus/Minus bedienbar (PR „Barrierefreiheit in den Simulationen“). Offen: Zeitmarken (z. B. Bewegungsdiagramme) nur über Abspielen/Anhalten.
+- [x] Pro Simulation prüfen, ob alle ziehbaren Punkte als Tastatur-Ziel angemeldet sind (`key-targets.ts`). Alle gezogenen Werte haben Regler; Antippen-Aktionen in 17 Simulationen sind jetzt Tastatur-Ziele, 3D-Ansichten und verschiebbare Koordinatensysteme per Pfeiltasten/Plus/Minus bedienbar (PR „Barrierefreiheit in den Simulationen“). Zeitmarken per Tastatur (Ziele „Zeitmarke zurück/vor“) seit 26.10. in Bewegungsdiagramme, Fadenpendel, Federpendel und Wellenausbreitung; offen noch in Doppler-Effekt, Schiefer Wurf, Freier Fall und Änderungsrate (dort nur Abspielen/Anhalten).
 - [x] Namen der Zeichenflächen (`surface.ts`) beschreibend machen statt allgemein. Fast alle waren schon beschreibend; die vier kürzesten ergänzt.
 - [x] Messwerte: nach Loslassen bzw. Tastatur-Änderung höflich vorlesen (statt `aria-live="off"`). Geänderte Ergebnisse werden angesagt; neu `ctx.announce()`.
 - [x] `dragHint` mit aktuellen Werten statt festem Text (unsichtbarer Zusatz mit den Regler-Werten).
@@ -37,7 +37,7 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 - [ ] **Impressum** (`src/content/pages/{de,en}/imprint.md`): Platzhalter durch echte Angaben ersetzen (Name, Anschrift, E-Mail der verantwortlichen Person; bei Minderjährigen eher Elternteil oder Schule). **Angaben kommen von der Projektleitung.**
 - [ ] **Datenschutzerklärung** (`src/content/pages/{de,en}/privacy.md`): verantwortliche Stelle eintragen; Abschnitt „Hosting“ für GitHub Pages ausformulieren (GitHub Inc., USA; IP-Adresse in Server-Protokollen; Rechtsgrundlage Art. 6 Abs. 1 lit. f DSGVO; Drittlandübermittlung/Data Privacy Framework). Hinweis „Vorlage“ erst entfernen, wenn alles geprüft ist. → Abschnitt „Hosting“ ausformuliert (PR #49, 25.10., Entwurf, rechtliche Prüfung offen); verantwortliche Stelle trägt die Projektleitung ein.
 - [ ] **Lizenz** festlegen und als `LICENSE` ablegen. Vorschlag: MIT für den Code, CC BY 4.0 für Texte und Bilder, damit Lehrkräfte Material weitergeben und anpassen dürfen. **Entscheidung der Projektleitung.**
-- [ ] **Bildrechte** dokumentieren: Bilder sind selbst mit KI erzeugt (Prompts in `docs/BILDER.md`/`docs/BILDER-WUNSCHLISTE.md`); keine Marken, keine Logos. Vorbild-Bilder fremder Designer nicht ins Repository legen.
+- [x] **Bildrechte** dokumentieren (26.10., Entwurf in `docs/BILDER.md`, Abschnitt „Herkunft und Rechte“; offen für die Projektleitung: festhalten, welcher Bildgenerator verwendet wurde, und dessen Bedingungen prüfen): Bilder sind selbst mit KI erzeugt (Prompts in `docs/BILDER.md`/`docs/BILDER-WUNSCHLISTE.md`); keine Marken, keine Logos. Vorbild-Bilder fremder Designer nicht ins Repository legen.
 - [ ] Bis Impressum und Datenschutz fertig sind, ggf. wieder `SITE_LIVE: 'false'` in `.github/workflows/deploy.yml` (zeigt nur eine Platzhalterseite).
 
 ## Sicherheit
@@ -47,7 +47,7 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 - [x] **Pakete aktualisieren** (PR #48, 25.10.): `npm audit` meldet `undici` (hoch) und `fast-uri` (mittel). Mit `npm audit fix` beheben, prüfen, ob sie nur beim Bauen gebraucht werden, `npm run verify`. → Behoben (dazu `zod`); alle drei nur beim Bauen bzw. in der Typprüfung, nicht auf der fertigen Seite.
 - [x] **Content-Security-Policy** (PR #48, 25.10.) als `<meta http-equiv="Content-Security-Policy">` im Layout (`src/layouts/BaseLayout.astro`): nur eigene Skripte, Styles, Bilder und Schriften; keine externen Quellen. Prüfen, dass Inline-Skripte (Bundesland, Dunkelmodus) weiter laufen (Hash oder Nonce). → Über Astro (`security.csp`) mit Prüfsummen; alle 416 Seiten ohne Verstoß.
 - [ ] **GitHub-Konto absichern** (Projektleitung): Zwei-Faktor-Anmeldung; unter Settings → Branches Schutzregel für `main` (nur per Pull Request, Prüfungen müssen grün sein).
-- [ ] Optional: Dependabot für Sicherheitsupdates einschalten (Settings → Code security).
+- [x] Dependabot (26.10.): `.github/dependabot.yml` sucht wöchentlich nach npm-Updates und monatlich nach Updates der GitHub-Aktionen (je als Pull Request). Die Sicherheitswarnungen selbst schaltet die Projektleitung unter Settings → Code security ein.
 
 ## Inhalte und Funktionen
 

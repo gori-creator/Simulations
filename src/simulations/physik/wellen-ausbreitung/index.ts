@@ -1581,6 +1581,18 @@ export default defineSimulation({
       updateNow();
       ctx.requestRender();
     }
+    function stepScrub(dt: number): void {
+      ctx.clock.pause();
+      scrub = clamp((scrub ?? t) + dt, window0().t0, t);
+      updateNow();
+      ctx.requestRender();
+    }
+    // Tastatur: Zeitmarke schrittweise setzen (wie Antippen des Diagramms; hält an)
+    ctx.setKeyTargets([
+      { id: 'tBack', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s zurück' : 'Time marker 0.1 s back', activate: () => { if (!ctx.locked && t > 0.05) { stepScrub(-0.1); } } },
+      { id: 'tFwd', label: ctx.lang === 'de' ? 'Zeitmarke 0,1 s vor' : 'Time marker 0.1 s forward', activate: () => { if (!ctx.locked && t > 0.05) { stepScrub(0.1); } } },
+    ]);
+
     surface.addTarget({
       contains: (px: number, py: number) => !ctx.locked && t > 0.05 && inRect(lay.yt, px, py),
       pointerDown: (q: { px: number; py: number }) => {

@@ -1,0 +1,18 @@
+# Dependabot: wöchentlich nach Sicherheits- und Versionsupdates suchen
+# (npm-Pakete und GitHub-Aktionen). Jede Aktualisierung kommt als Pull Request
+# und muss wie jede Änderung durch „Prüfen“ und die Bildtests.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # kleine Updates gebündelt, damit nicht jede Woche viele Pull Requests kommen
+      kleine-updates:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
