@@ -9,10 +9,10 @@ import {
   photonEnergy,
   PLANCK_EV,
   saturationCurrent,
-  stoppingVoltage,
   thresholdFrequency,
   thresholdWavelength,
   wavelengthToRgb,
+  zeroVoltage,
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -24,8 +24,8 @@ const E_MAX = 3.5;
 /** Diagramm I über U. */
 const U_AXIS = 4;
 const I_AXIS = 2.2;
-/** „Strom null“: weniger als 1 % des Sättigungsstroms bei voller Intensität. */
-const I_ZERO = 0.02;
+/** „Strom null“: unter der Anzeigegenauigkeit des Strommessers (0,005 nA, zeigt „0,00 nA“). */
+const I_ZERO = 0.005;
 /** Wellenlängen der automatischen Messreihe in nm. */
 const AUTO_LAM = [250, 280, 320, 360, 400, 450, 500, 550, 600];
 /** Elektronen im Bild: Beschleunigung je Volt Gegenspannung (Modelleinheiten). */
@@ -101,7 +101,7 @@ interface Point {
 export default defineSimulation({
   id: 'photoeffekt',
   animated: true,
-  dragHint: true,
+  hint: L('Tipp: Am Drehknopf der Spannungsquelle lässt sich die Gegenspannung mit Maus oder Finger einstellen.', 'Tip: turn the knob of the power supply with the mouse or a finger to set the retarding voltage.'),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
   images: { meter: 'manometer.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -142,7 +142,7 @@ export default defineSimulation({
   presets: [
     { id: 'start', label: L('Cäsium, violettes Licht (400 nm)', 'Caesium, violet light (400 nm)'), values: {} },
     { id: 'stop', label: L('Gegenspannung 1,16 V: Strom null', 'Retarding voltage 1.16 V: no current'), values: { U: 1.16 } },
-    { id: 'bright', label: L('Doppelte Intensität', 'Twice the intensity'), values: { P: 100, U: 0.6 } },
+    { id: 'bright', label: L('Volle Intensität (100 %)', 'Full intensity (100 %)'), values: { P: 100, U: 0.6 } },
     { id: 'red', label: L('Rotes Licht: keine Elektronen', 'Red light: no electrons'), values: { lam: 650 } },
     { id: 'zn', label: L('Zink: erst im UV', 'Zinc: only in the UV'), values: { metal: 'Zn', lam: 250 } },
   ],
@@ -177,13 +177,15 @@ export default defineSimulation({
       emptyS: 'Messwerte aufnehmen …',
       notZero: 'Erst Gegenspannung abgleichen: I muss null sein.',
       notZeroS: 'Erst I = 0 einstellen!',
+      lampOff: 'Lampe aus: Ohne Licht ist der Strom immer null.',
+      lampOffS: 'Erst die Lampe einschalten!',
       fitLab: 'Steigung h ≈ {h} · 10^−15 eV·s',
       fitLabS: 'h ≈ {h} · 10^−15 eV·s',
       fG: 'f_[G]',
       WA: '−W_[A]',
       vis: 'sichtbar',
       photon:
-        '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>3,00 · 10<sup>8</sup> m/s</span><span>{lam} nm</span></span> = {f} Hz<br><var>E</var><sub>Ph</sub> = <var>h</var> · <var>f</var> = 4,136 · 10<sup>−15</sup> eV · s · {f} Hz = <strong>{E} eV</strong><br>Intensität {P} %: etwa {n} Photonen pro Sekunde im Bild – mehr Licht heißt mehr Photonen, nicht energiereichere.',
+        '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>2,998 · 10<sup>8</sup> m/s</span><span>{lam} nm</span></span> = {f} Hz<br><var>E</var><sub>Ph</sub> = <var>h</var> · <var>f</var> = 4,136 · 10<sup>−15</sup> eV · s · {f} Hz = <strong>{E} eV</strong><br>Intensität {P} %: etwa {n} Photonen pro Sekunde im Bild – mehr Licht heißt mehr Photonen, nicht energiereichere.',
       ekinYes:
         '<var>E</var><sub>kin,max</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub> = {E} eV − {W} eV = <strong>{K} eV</strong><br>Gegenfeld: Der Strom verschwindet bei <var>U</var><sub>G</sub> = <span class="frac"><span><var>E</var><sub>kin,max</sub></span><span><var>e</var></span></span> = <strong>{K} V</strong>.<br>Grenzfrequenz <var>f</var><sub>G</sub> = <span class="frac"><span><var>W</var><sub>A</sub></span><span><var>h</var></span></span> = {fG} Hz (<var>λ</var><sub>G</sub> = {lG} nm).',
       ekinNo:
@@ -192,11 +194,11 @@ export default defineSimulation({
       nowZero: ' – Strom null',
       thF: 'f in 10¹⁴ Hz',
       thL: 'λ in nm',
-      thU: 'U_G in V',
-      thE: 'E_kin in eV',
+      thU: '<var>U</var><sub>G</sub> in V',
+      thE: '<var>E</var><sub>kin,max</sub> in eV',
       tableNone: 'Noch keine Messwerte – Gegenspannung abgleichen und „Messwert aufnehmen“ oder „Messreihe automatisch“.',
       fitFew: 'Für die Auswertung sind mindestens zwei Messpunkte mit Elektronen nötig.',
-      fit: 'Ausgleichsgerade <var>E</var><sub>kin</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub>: Steigung <strong><var>h</var> ≈ {h} · 10<sup>−15</sup> eV · s</strong> = {hJ} · 10<sup>−34</sup> J · s (Tabellenwert 4,136 · 10<sup>−15</sup> eV · s).<br>Achsenabschnitt <strong><var>W</var><sub>A</sub> ≈ {W} eV</strong>, Grenzfrequenz <var>f</var><sub>G</sub> ≈ {fG} · 10<sup>14</sup> Hz.',
+      fit: 'Ausgleichsgerade <var>E</var><sub>kin</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub>: Steigung <strong><var>h</var> ≈ {h} · 10<sup>−15</sup> eV · s</strong> = {hJ} · 10<sup>−34</sup> J · s (Tabellenwert 4,136 · 10<sup>−15</sup> eV · s).<br>Achsenabschnitt −<var>W</var><sub>A</sub> ≈ {b} eV, also <strong><var>W</var><sub>A</sub> ≈ {W} eV</strong>, Grenzfrequenz <var>f</var><sub>G</sub> ≈ {fG} · 10<sup>14</sup> Hz.',
     },
     en: {
       canvas:
@@ -228,13 +230,15 @@ export default defineSimulation({
       emptyS: 'Record data …',
       notZero: 'Adjust the voltage first: I must be zero.',
       notZeroS: 'Set I = 0 first!',
+      lampOff: 'Lamp off: without light the current is always zero.',
+      lampOffS: 'Switch the lamp on first!',
       fitLab: 'slope h ≈ {h} · 10^−15 eV·s',
       fitLabS: 'h ≈ {h} · 10^−15 eV·s',
       fG: 'f_[G]',
       WA: '−W_[A]',
       vis: 'visible',
       photon:
-        '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>3.00 · 10<sup>8</sup> m/s</span><span>{lam} nm</span></span> = {f} Hz<br><var>E</var><sub>Ph</sub> = <var>h</var> · <var>f</var> = 4.136 · 10<sup>−15</sup> eV · s · {f} Hz = <strong>{E} eV</strong><br>Intensity {P} %: about {n} photons per second on screen – more light means more photons, not more energetic ones.',
+        '<var>f</var> = <span class="frac"><span><var>c</var></span><span><var>λ</var></span></span> = <span class="frac"><span>2.998 · 10<sup>8</sup> m/s</span><span>{lam} nm</span></span> = {f} Hz<br><var>E</var><sub>Ph</sub> = <var>h</var> · <var>f</var> = 4.136 · 10<sup>−15</sup> eV · s · {f} Hz = <strong>{E} eV</strong><br>Intensity {P} %: about {n} photons per second on screen – more light means more photons, not more energetic ones.',
       ekinYes:
         '<var>E</var><sub>kin,max</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub> = {E} eV − {W} eV = <strong>{K} eV</strong><br>Retarding field: the current vanishes at <var>U</var><sub>G</sub> = <span class="frac"><span><var>E</var><sub>kin,max</sub></span><span><var>e</var></span></span> = <strong>{K} V</strong>.<br>Threshold frequency <var>f</var><sub>G</sub> = <span class="frac"><span><var>W</var><sub>A</sub></span><span><var>h</var></span></span> = {fG} Hz (<var>λ</var><sub>G</sub> = {lG} nm).',
       ekinNo:
@@ -243,11 +247,11 @@ export default defineSimulation({
       nowZero: ' – no current',
       thF: 'f in 10¹⁴ Hz',
       thL: 'λ in nm',
-      thU: 'U_G in V',
-      thE: 'E_kin in eV',
+      thU: '<var>U</var><sub>G</sub> in V',
+      thE: '<var>E</var><sub>kin,max</sub> in eV',
       tableNone: 'No data yet – adjust the voltage and “Record a data point”, or “Automatic series”.',
       fitFew: 'The analysis needs at least two data points with electrons.',
-      fit: 'Line of best fit <var>E</var><sub>kin</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub>: slope <strong><var>h</var> ≈ {h} · 10<sup>−15</sup> eV · s</strong> = {hJ} · 10<sup>−34</sup> J · s (table value 4.136 · 10<sup>−15</sup> eV · s).<br>Intercept <strong><var>W</var><sub>A</sub> ≈ {W} eV</strong>, threshold frequency <var>f</var><sub>G</sub> ≈ {fG} · 10<sup>14</sup> Hz.',
+      fit: 'Line of best fit <var>E</var><sub>kin</sub> = <var>h</var> · <var>f</var> − <var>W</var><sub>A</sub>: slope <strong><var>h</var> ≈ {h} · 10<sup>−15</sup> eV · s</strong> = {hJ} · 10<sup>−34</sup> J · s (table value 4.136 · 10<sup>−15</sup> eV · s).<br>Intercept −<var>W</var><sub>A</sub> ≈ {b} eV, so <strong><var>W</var><sub>A</sub> ≈ {W} eV</strong>, threshold frequency <var>f</var><sub>G</sub> ≈ {fG} · 10<sup>14</sup> Hz.',
     },
   },
 
@@ -408,9 +412,12 @@ export default defineSimulation({
     let autoIdx = 0;
     let autoWait = 0;
 
+    /** Kleinste Reglerspannung (0,01-V-Schritte) mit I = 0: U_G aufgerundet. */
+    const zeroU = (lam: number) => zeroVoltage(lam, W());
+
     /** Gegenspannung schrittweise zum Wert mit I = 0 führen (sichtbar am Zeiger). */
     function zeroStep(dt: number): boolean {
-      const target = Math.min(4, Math.round(stoppingVoltage(p.lam, W()) * 100) / 100);
+      const target = zeroU(p.lam);
       const d = target - p.U;
       if (Math.abs(d) < 0.005) {
         zeroing = false;
@@ -421,8 +428,11 @@ export default defineSimulation({
       return false;
     }
 
+    let warnKey: 'notZero' | 'lampOff' = 'notZero';
     function record(): boolean {
-      if (Icur() > I_ZERO) {
+      if (p.P <= 0 || Icur() > I_ZERO) {
+        // Ohne Licht ist der Strom immer null – das ist keine Messung von U_G.
+        warnKey = p.P <= 0 ? 'lampOff' : 'notZero';
         warn.play();
         return false;
       }
@@ -1068,7 +1078,7 @@ export default defineSimulation({
       const left = p.val ? `${ctx.t(m.id)} · W_[A] = ${fx(m.W, 2)} eV` : ctx.t(m.id);
       const lp = pill(r.x + 12, r.y + 12, left, theme.text, 'left', fs);
       const Eph = photonEnergy(p.lam);
-      const right = p.val ? `λ = ${n(p.lam, 0)} nm · E_[Ph] = ${fx(Eph, 2)} eV` : `λ = ${n(p.lam, 0)} nm`;
+      const right = p.val && !ctx.isHidden('photon') ? `λ = ${n(p.lam, 0)} nm · E_[Ph] = ${fx(Eph, 2)} eV` : `λ = ${n(p.lam, 0)} nm`;
       const rw = richWidth(right, fs) + 16;
       if (lp.x + lp.w + 8 + rw < r.x + r.w - 12) pill(r.x + r.w - 12 - rw, r.y + 12, right, inkOf(p.lam), 'left', fs);
       else pill(r.x + 12, r.y + 12 + fs + 16, right, inkOf(p.lam), 'left', fs);
@@ -1088,7 +1098,7 @@ export default defineSimulation({
         const a = u < 0.1 ? u / 0.1 : u > 0.8 ? (1 - u) / 0.2 : 1;
         g.save();
         g.globalAlpha *= a;
-        const msg = ctx.t(G.sm ? 'notZeroS' : 'notZero');
+        const msg = ctx.t(G.sm ? `${warnKey}S` : warnKey);
         const w = richWidth(msg, fs) + 16;
         pill(clamp(G.tx + G.tw / 2 - w / 2, r.x + 8, r.x + r.w - 8 - w), G.ty + 8, msg, '#ffffff', 'left', fs, withAlpha(orange(), 0.95));
         g.restore();
@@ -1243,7 +1253,8 @@ export default defineSimulation({
       if (fit) {
         const lab = tr(A.w < 260 ? 'fitLabS' : 'fitLab', { h: fx(fit.m / 1e14 / 1e-15, 2) });
         const w = richWidth(lab, fs) + 16;
-        pill(A.x + A.w - w, A.y + 2, lab, orange(), 'left', fs);
+        // unten rechts: dort liegt die Einstein-Gerade nie (E > 0 bei großen f)
+        pill(A.x + A.w - w, A.y + A.h - fs - 15, lab, orange(), 'left', fs);
       } else if (!points.length) {
         const msg = ctx.t(A.w < 300 ? 'emptyS' : 'empty');
         const w = Math.min(A.w - 8, richWidth(msg, fs, 600) + 22);
@@ -1329,7 +1340,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(X(UG), Y(0), 4.5, 0, TAU);
         g.fill();
-        if (p.val) richText(`U_[G] = ${fx(UG, 2)} V`, X(UG) + 6, Y(0) - 11, fs, inkOf(p.lam), UG > U_AXIS * 0.7 ? 'right' : 'left', 750, haloCol());
+        if (p.val && !ctx.isHidden('ekin')) richText(`U_[G] = ${fx(UG, 2)} V`, X(UG) + 6, Y(0) - 11, fs, inkOf(p.lam), UG > U_AXIS * 0.7 ? 'right' : 'left', 750, haloCol());
       }
       // aktueller Zustand
       const Us = soft.get('Ushow') ?? p.U;
@@ -1357,11 +1368,11 @@ export default defineSimulation({
       const m = metal();
       const f = frequencyOf(p.lam);
       const E = photonEnergy(p.lam);
-      const sci = (v: number) => {
+      const sci = (v: number, d = 2) => {
         const e = Math.floor(Math.log10(v));
-        return `${fx(v / 10 ** e, 2)} · 10<sup>${e}</sup>`;
+        return `${fx(v / 10 ** e, d)} · 10<sup>${e}</sup>`;
       };
-      ctx.readout('photon', { html: tr('photon', { lam: n(p.lam, 0), f: sci(f), E: fx(E, 2), P: n(p.P, 0), n: n(Math.round((p.P / 100) * 26), 0) }) });
+      ctx.readout('photon', { html: tr('photon', { lam: n(p.lam, 0), f: sci(f, 3), E: fx(E, 2), P: n(p.P, 0), n: n(Math.round((p.P / 100) * 26), 0) }) });
       const vars = { E: fx(E, 2), W: fx(m.W, 2), K: fx(maxKineticEnergy(p.lam, m.W), 2), fG: sci(thresholdFrequency(m.W)), lG: n(Math.round(thresholdWavelength(m.W)), 0) };
       ctx.readout('ekin', { html: tr(emits(p.lam, m.W) ? 'ekinYes' : 'ekinNo', vars) });
       updateNow();
@@ -1390,7 +1401,7 @@ export default defineSimulation({
         if (!fit) ctx.readout('fit', ctx.t('fitFew'));
         else {
           const h = fit.m / 1e14;
-          ctx.readout('fit', { html: tr('fit', { h: fx(h / 1e-15, 2), hJ: fx((h * 1.602176634e-19) / 1e-34, 2), W: fx(-fit.b, 2), fG: fx(-fit.b / fit.m, 2) }) });
+          ctx.readout('fit', { html: tr('fit', { h: fx(h / 1e-15, 2), hJ: fx((h * 1.602176634e-19) / 1e-34, 2), b: fx(fit.b, 2), W: fx(-fit.b, 2), fG: fx(-fit.b / fit.m, 2) }) });
         }
       }
       ctx.setAction('clear', { enabled: points.length > 0 && !ctx.locked });
@@ -1465,7 +1476,7 @@ export default defineSimulation({
         if (ctx.locked) return;
         if (id === 'zero') {
           autoRun = false;
-          if (prefersReducedMotion() || !ctx.clock.playing) ctx.set({ U: Math.min(4, Math.round(stoppingVoltage(p.lam, W()) * 100) / 100) });
+          if (prefersReducedMotion() || !ctx.clock.playing) ctx.set({ U: zeroU(p.lam) });
           else zeroing = true;
         } else if (id === 'rec') {
           record();
@@ -1474,8 +1485,8 @@ export default defineSimulation({
           autoIdx = 0;
           autoWait = 0;
           if (prefersReducedMotion()) {
-            for (const lam of AUTO_LAM) points.push({ lam, U: Math.min(4, Math.round(stoppingVoltage(lam, W()) * 100) / 100), born: -1e9 });
-            ctx.set({ lam: AUTO_LAM[AUTO_LAM.length - 1]!, U: Math.min(4, Math.round(stoppingVoltage(AUTO_LAM[AUTO_LAM.length - 1]!, W()) * 100) / 100) });
+            for (const lam of AUTO_LAM) points.push({ lam, U: zeroU(lam), born: -1e9 });
+            ctx.set({ lam: AUTO_LAM[AUTO_LAM.length - 1]!, U: zeroU(AUTO_LAM[AUTO_LAM.length - 1]!) });
           } else {
             autoRun = true;
             if (!ctx.clock.playing) ctx.clock.play();

@@ -30,21 +30,21 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 10–11 | `kreisbewegung` | Kreisbewegung und Zentripetalkraft | `/de/physik/mechanik/kreisbewegung-zentripetalkraft/` |
 | ☑ | 10–11 | `schiefer-wurf` | Waagerechter und schiefer Wurf | `/de/physik/mechanik/schiefer-wurf/` |
 | ☑ | 10–11 | `stoesse` | Elastische und unelastische Stöße | `/de/physik/mechanik/elastische-und-unelastische-stoesse/` |
-| ☐ | 10–12 | `doppler-effekt` | Doppler-Effekt | `/de/physik/schwingungen-und-wellen/doppler-effekt/` |
-| ☐ | 10–12 | `federpendel` | Federpendel | `/de/physik/schwingungen-und-wellen/federpendel/` |
-| ☐ | 10–12 | `wellen-ausbreitung` | Transversal- und Longitudinalwellen | `/de/physik/schwingungen-und-wellen/transversal-longitudinalwellen/` |
-| ☐ | 11–12 | `feldlinien` | Feldlinien von Punktladungen | `/de/physik/elektrizitaetslehre/feldlinien-punktladungen/` |
-| ☐ | 11–12 | `kondensator` | Lade- und Entladekurve des Kondensators | `/de/physik/elektrizitaetslehre/kondensator-laden-entladen/` |
-| ☐ | 11–13 | `doppelspalt` | Doppelspalt und Gitter | `/de/physik/optik/doppelspalt-gitter/` |
-| ☐ | 11–13 | `induktion` | Elektromagnetische Induktion | `/de/physik/elektrizitaetslehre/elektromagnetische-induktion/` |
-| ☐ | 11–13 | `interferenz` | Interferenz zweier Kreiswellen | `/de/physik/schwingungen-und-wellen/interferenz-kreiswellen/` |
-| ☐ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
-| ☐ | 11–13 | `planetenbahnen` | Planetenbahnen und Keplersche Gesetze | `/de/physik/mechanik/planetenbahnen-keplersche-gesetze/` |
-| ☐ | 11–13 | `resonanz` | Erzwungene Schwingung und Resonanz | `/de/physik/schwingungen-und-wellen/erzwungene-schwingung-resonanz/` |
-| ☐ | 11–13 | `stehende-wellen` | Stehende Wellen | `/de/physik/schwingungen-und-wellen/stehende-wellen/` |
-| ☐ | 12–13 | `linienspektren` | Atommodelle und Linienspektren | `/de/physik/atom-kern-und-quantenphysik/linienspektren-energieniveaus/` |
-| ☐ | 12–13 | `photoeffekt` | Photoeffekt | `/de/physik/atom-kern-und-quantenphysik/photoeffekt-gegenfeldmethode/` |
-| ☐ | 12–14 | `elektronenbeugung` | Elektronenbeugung | `/de/physik/atom-kern-und-quantenphysik/elektronenbeugung-graphit/` |
+| ☑ | 10–12 | `doppler-effekt` | Doppler-Effekt | `/de/physik/schwingungen-und-wellen/doppler-effekt/` |
+| ☑ | 10–12 | `federpendel` | Federpendel | `/de/physik/schwingungen-und-wellen/federpendel/` |
+| ☑ | 10–12 | `wellen-ausbreitung` | Transversal- und Longitudinalwellen | `/de/physik/schwingungen-und-wellen/transversal-longitudinalwellen/` |
+| ☑ | 11–12 | `feldlinien` | Feldlinien von Punktladungen | `/de/physik/elektrizitaetslehre/feldlinien-punktladungen/` |
+| ☑ | 11–12 | `kondensator` | Lade- und Entladekurve des Kondensators | `/de/physik/elektrizitaetslehre/kondensator-laden-entladen/` |
+| ☑ | 11–13 | `doppelspalt` | Doppelspalt und Gitter | `/de/physik/optik/doppelspalt-gitter/` |
+| ☑ | 11–13 | `induktion` | Elektromagnetische Induktion | `/de/physik/elektrizitaetslehre/elektromagnetische-induktion/` |
+| ☑ | 11–13 | `interferenz` | Interferenz zweier Kreiswellen | `/de/physik/schwingungen-und-wellen/interferenz-kreiswellen/` |
+| ☑ | 11–13 | `lorentzkraft` | Lorentzkraft und Fadenstrahlrohr | `/de/physik/elektrizitaetslehre/lorentzkraft-fadenstrahlrohr/` |
+| ☑ | 11–13 | `planetenbahnen` | Planetenbahnen und Keplersche Gesetze | `/de/physik/mechanik/planetenbahnen-keplersche-gesetze/` |
+| ☑ | 11–13 | `resonanz` | Erzwungene Schwingung und Resonanz | `/de/physik/schwingungen-und-wellen/erzwungene-schwingung-resonanz/` |
+| ☑ | 11–13 | `stehende-wellen` | Stehende Wellen | `/de/physik/schwingungen-und-wellen/stehende-wellen/` |
+| ☑ | 12–13 | `linienspektren` | Atommodelle und Linienspektren | `/de/physik/atom-kern-und-quantenphysik/linienspektren-energieniveaus/` |
+| ☑ | 12–13 | `photoeffekt` | Photoeffekt | `/de/physik/atom-kern-und-quantenphysik/photoeffekt-gegenfeldmethode/` |
+| ☑ | 12–14 | `elektronenbeugung` | Elektronenbeugung | `/de/physik/atom-kern-und-quantenphysik/elektronenbeugung-graphit/` |
 | ☑ | 13–13 | `aenderungsrate` | Integral als Gesamtänderung: von der Geschwindigkeit zum Weg | `/de/mathematik/analysis/integral-gesamtaenderung/` |
 | ☑ | 13–13 | `extremwertprobleme` | Extremwertprobleme | `/de/mathematik/analysis/extremwertprobleme/` |
 | ☑ | 13–13 | `kugeln` | Kugeln, Geraden und Ebenen | `/de/mathematik/analytische-geometrie/kugeln-geraden-ebenen/` |
@@ -53,8 +53,8 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
 | ☑ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
 | ☑ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
-| ☐ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
-| ☐ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
+| ☑ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
+| ☑ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
 
 ## Paket 2 – Prüf-Agent 2 (Mathematik Jgst. 5–8) – 43 Simulationen
 

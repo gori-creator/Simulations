@@ -143,6 +143,24 @@ export function reflectionAntinodes(end: EndType, lambda: number, dMax: number):
   return reflectionNodes(end === 'fix' ? 'free' : 'fix', lambda, dMax);
 }
 
+/** Spielraum für „Knoten“ bzw. „Bauch“: 1 % von λ (Regler für P in Schritten von 1 cm). */
+export const POINT_TOLERANCE = 0.01;
+
+/**
+ * Lage eines Punktes im Abstand d vom Ende: Knoten, Bauch oder dazwischen.
+ * Knoten bzw. Bäuche liegen im Abstand λ/2 voneinander; gilt als getroffen,
+ * wenn d höchstens 1 % von λ daneben liegt.
+ */
+export function pointKind(end: EndType, d: number, lambda: number): 'node' | 'anti' | 'mid' {
+  const q2 = (2 * d) / lambda; // d in Einheiten von λ/2
+  const offNode = end === 'fix' ? q2 : q2 - 0.5;
+  const offAnti = end === 'fix' ? q2 - 0.5 : q2;
+  const tol = 2 * POINT_TOLERANCE;
+  if (Math.abs(offNode - Math.round(offNode)) <= tol) return 'node';
+  if (Math.abs(offAnti - Math.round(offAnti)) <= tol) return 'anti';
+  return 'mid';
+}
+
 /** Weicher Anstieg 0 … 1 (smoothstep). */
 export function smooth(q: number): number {
   const v = q <= 0 ? 0 : q >= 1 ? 1 : q;

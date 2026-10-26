@@ -225,3 +225,86 @@ describe('Modell: Planetenbahnen – reale Planeten', () => {
     }
   });
 });
+
+describe('Modell: Planetenbahnen – Prüfrunde (Langzeit, Sonderfälle, Aufgaben)', () => {
+  it('keine Drift über 200 Umläufe: Energie, Drehimpuls und Bahn bleiben erhalten (auch beim Kometen)', () => {
+    for (const [r0, v0, tolE, tolA] of [
+      [1, 36, 1e-5, 1e-7],
+      [0.59, 54.38, 2e-4, 2e-4],
+    ] as const) {
+      const run = new OrbitRun({ r0, v0, alpha: 90, M: 1, n: 12, closed: true });
+      const E0 = energies(run.s, 1).total;
+      const L0 = run.s.x * run.s.vy - run.s.y * run.s.vx;
+      const T = run.orbit.T;
+      let dE = 0;
+      for (let i = 0; i < 200 * 10; i++) {
+        run.advance(T / 10, 1e9);
+        dE = Math.max(dE, Math.abs(energies(run.s, 1).total / E0 - 1));
+      }
+      expect(dE).toBeLessThan(tolE);
+      expect(Math.abs((run.s.x * run.s.vy - run.s.y * run.s.vx) / L0 - 1)).toBeLessThan(1e-11);
+      const o = orbitFromState(run.s, 1);
+      expect(Math.abs(o.a / run.orbit.a - 1)).toBeLessThan(tolA);
+      // Periheldrehung durch das Rechenverfahren nach 200 Umläufen unter 0,1°
+      const dw = Math.atan2(Math.sin(o.omega - run.orbit.omega), Math.cos(o.omega - run.orbit.omega));
+      expect(Math.abs((dw * 180) / Math.PI)).toBeLessThan(0.1);
+    }
+  }, 60000);
+
+  it('v₀ = 0: freier Fall in den Stern, von 1 AE in ≈ 64,6 d (halbe Umlaufdauer der Ellipse mit a = r₀/2)', () => {
+    const o = orbitFromState(startState(1, 0, 90), 1);
+    expect(o.hitsStar).toBe(true);
+    const tFall = Math.PI * Math.sqrt(0.5 ** 3 / MU_SUN);
+    expect(tFall * 365.25).toBeCloseTo(64.6, 1);
+    const run = new OrbitRun({ r0: 1, v0: 0, alpha: 90, M: 1, n: 12, closed: true });
+    while (!run.crashed && run.t < 1) run.advance(0.001, 1e7);
+    expect(run.crashed).toBe(true);
+    expect(run.t * 365.25).toBeGreaterThan(64);
+    expect(run.t * 365.25).toBeLessThan(64.7);
+  }, 30000);
+
+  it('Reglergrenzen: kleinste Geschwindigkeit stürzt bei r₀ = 0,3 AE ab, größte ist fast überall Flucht', () => {
+    const crash = orbitFromState(startState(0.3, 2, 90), 1);
+    expect(crash.hitsStar).toBe(true);
+    // Fallzeit aus dem Aphel ≈ T/2 = π·√(a³/(G·M)) mit a ≈ 0,15 AE ≈ 10,6 d
+    expect((crash.T / 2) * 365.25).toBeCloseTo(10.6, 1);
+    expect(orbitFromState(startState(5.5, 2, 90), 1).hitsStar).toBe(false);
+    for (const r0 of [1, 5.5]) {
+      for (const M of [0.2, 1, 3]) expect(orbitFromState(startState(r0, 80, 30), M).kind).toBe('hyperbola');
+    }
+    // r₀ = 0,3 AE, M = 3 M☉: v_F ≈ 133 km/s > 80 km/s → gebunden
+    expect(escapeSpeed(0.3, 3)).toBeCloseTo(133.2, 1);
+    expect(orbitFromState(startState(0.3, 80, 90), 3).bound).toBe(true);
+  });
+
+  it('Werte der Aufgaben im Lernmaterial', () => {
+    // A1: v_K = √(G·M/r) ≈ 29,8 km/s
+    expect(circularSpeed(1, 1)).toBeCloseTo(29.78, 2);
+    expect(orbitFromState(startState(1, 29.78, 90), 1).kind).toBe('circle');
+    // A2: E = ½·v² − G·M/r > 0 bei 46 km/s
+    const e2 = energies(startState(1, 46, 90), 1);
+    expect(e2.kin / 1e8).toBeCloseTo(10.58, 2);
+    expect(-e2.pot / 1e8).toBeCloseTo(8.87, 2);
+    expect(e2.total).toBeGreaterThan(0);
+    // A3: r_A = 2,71 AE, v_A = 13,3 km/s, a ≈ 1,855 AE, ε ≈ 0,461
+    const o3 = orbitFromState(startState(1, 36, 90), 1);
+    expect(o3.rA).toBeCloseTo(2.71, 2);
+    expect(o3.vA).toBeCloseTo(13.28, 2);
+    expect(o3.a).toBeCloseTo(1.855, 3);
+    expect(o3.e).toBeCloseTo(0.461, 3);
+    // A4: Mars T = √1,524³ ≈ 1,88 a; Jupiter a = ∛11,86² ≈ 5,20 AE; Link: a ≈ 1,52 AE
+    expect(Math.sqrt(1.524 ** 3)).toBeCloseTo(1.88, 2);
+    expect(Math.cbrt(11.86 ** 2)).toBeCloseTo(5.2, 2);
+    const o4 = orbitFromState(startState(1.38, 26.51, 90), 1);
+    expect(o4.a).toBeCloseTo(1.522, 3);
+    expect(o4.T).toBeCloseTo(1.878, 3);
+    // A5: Halley-Link: a ≈ 17,7 AE, T ≈ 74,7 a, r_A ≈ 34,9 AE
+    const o5 = orbitFromState(startState(0.59, 54.38, 90), 1);
+    expect(o5.a).toBeCloseTo(17.73, 2);
+    expect(o5.T).toBeCloseTo(74.67, 2);
+    expect(o5.rA).toBeCloseTo(34.87, 2);
+    // A6: M = 4π²·a³/(G·T²) ≈ 1,99·10³⁰ kg
+    const M = (4 * Math.PI ** 2 * 1.496e11 ** 3) / (6.674e-11 * (365.26 * 86400) ** 2);
+    expect(M / 1e30).toBeCloseTo(1.99, 2);
+  });
+});

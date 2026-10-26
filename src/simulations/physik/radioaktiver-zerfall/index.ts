@@ -404,6 +404,9 @@ export default defineSimulation({
       return group(n(Math.round(v / q) * q, d));
     }
     const unitLabel = (nu: Nuclide) => (nu.unit === 'Ga' ? '10⁹ a' : nu.unit);
+    /** Zeiteinheit der Zählrate: Englisch ausgeschrieben („per 10⁹ years“ statt „/10⁹ a“). */
+    const EN_RATE_UNIT: Record<string, string> = { s: 's', d: 'day', a: 'year', Ga: '10⁹ years' };
+    const rateUnit = (nu: Nuclide) => (ctx.lang === 'de' ? unitLabel(nu) : (EN_RATE_UNIT[nu.unit] ?? nu.unit));
     /** Kehrwert der Zeiteinheit, z. B. „1/s“ oder „1/(10⁹ a)“. */
     const perUnit = (nu: Nuclide) => (nu.unit === 'Ga' ? '1/(10⁹ a)' : `1/${nu.unit}`);
     /** Zeit in der Einheit des Nuklids (u in Halbwertszeiten). */
@@ -1385,7 +1388,7 @@ export default defineSimulation({
         let k = 0;
         for (let i = pulseU.length - 1; i >= 0 && pulseU[i]! > u - W; i--) k++;
         const z = k / (W * nu.halfLife);
-        return tr('rate', { z: sig(z, 2), u: unitLabel(nu) });
+        return tr('rate', { z: sig(z, 2), u: rateUnit(nu) });
       }
       return ctx.t('rateNone');
     }
@@ -1510,12 +1513,24 @@ export default defineSimulation({
       const rate = rateText();
       const ry = D.y + D.h + (B.y + B.h - D.y - D.h) / 2;
       const fsR = sm ? 10.5 : 11.5;
-      let rl = rate;
-      // Platz bis vor den Lautsprecher (B.w − 34) freihalten
-      if (textW(rl, `600 ${fsR}px ${theme.font}`) > B.w - 47) rl = rate.replace(/ pro | per /, '/');
-      const rw = textW(rl, `600 ${fsR}px ${theme.font}`);
-      const fsR2 = rw > B.w - 47 ? Math.max(9, (fsR * (B.w - 47)) / rw) : fsR;
-      text(g, rl, B.x + 9, ry, { font: `600 ${fsR2}px ${theme.font}`, color: '#d9dee5', align: 'left' });
+      // Platz bis vor den Lautsprecher (B.w − 34) freihalten; zu lang (z. B. „≈ 7.2 per 10⁹ years“):
+      // zweizeilig nach „pro“/„per“, erst dann kleiner
+      const avail = B.w - 47;
+      const rf = (fs: number) => `600 ${fs}px ${theme.font}`;
+      let lines = [rate];
+      let fsR2 = fsR;
+      if (textW(rate, rf(fsR)) > avail) {
+        // Deutsch: „≈ 7,2/10⁹ a“ ist üblich und passt in eine Zeile
+        if (ctx.lang === 'de') lines = [rate.replace(' pro ', '/')];
+        const m = ctx.lang === 'de' ? null : /^(.*? per) (.+)$/.exec(rate);
+        if (m) {
+          lines = [m[1]!, m[2]!];
+          fsR2 = Math.min(fsR, (B.y + B.h - D.y - D.h - 4) / 2.3);
+        }
+        const lw = Math.max(...lines.map((l) => textW(l, rf(fsR2))));
+        if (lw > avail) fsR2 = Math.max(8.5, (fsR2 * avail) / lw);
+      }
+      lines.forEach((l, i) => text(g, l, B.x + 9, ry + (i - (lines.length - 1) / 2) * fsR2 * 1.15, { font: rf(fsR2), color: '#d9dee5', align: 'left' }));
       // Leuchtdiode und Lautsprecher
       const led = clamp(1 - (now - ledMs) / 180, 0, 1);
       if (led > 0) animating = true;

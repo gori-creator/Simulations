@@ -109,4 +109,82 @@ describe('Modell: Federpendel', () => {
     expect(dampedOmega(0.5, 20, 7)).toBe(0);
     expect(dampedPeriod(0.5, 20, 7)).toBe(Infinity);
   });
+
+  it('Periodendauer ist unabhängig von der Amplitude (auch numerisch)', () => {
+    const m = 0.5;
+    const D = 20;
+    const T = period(m, D);
+    for (const amp of [0.01, 0.05, 0.1]) {
+      const s0 = initialState(amp, -Math.PI / 2, m, D, 0);
+      const s = run(s0, m, D, 0, T, T / 2000);
+      expect(s[0]).toBeCloseTo(-amp, 9);
+      expect(s[1]).toBeCloseTo(0, 8);
+    }
+  });
+
+  it('Reglergrenzen: sehr weiche und sehr harte Feder', () => {
+    // m = 1 kg, D = 10 N/m: T = 2π·√0,1 ≈ 1,987 s; s₀ = 0,981 m; ω = √10 ≈ 3,16 1/s
+    expect(period(1, 10)).toBeCloseTo(1.9869, 4);
+    expect(equilibriumExtension(1, 10)).toBeCloseTo(0.981, 10);
+    expect(omega0(1, 10)).toBeCloseTo(3.1623, 4);
+    // m = 0,1 kg, D = 60 N/m: T = 2π·√(1/600) ≈ 0,257 s; s₀ ≈ 1,6 cm; f ≈ 3,90 Hz
+    expect(period(0.1, 60)).toBeCloseTo(0.25651, 5);
+    expect(equilibriumExtension(0.1, 60)).toBeCloseTo(0.01635, 5);
+    expect(1 / period(0.1, 60)).toBeCloseTo(3.8985, 3);
+    // größte Dämpfung (δ = 2 1/s) bleibt bei allen Reglerwerten schwingend: ω₀ ≥ √10 > 2
+    expect(dampedOmega(1, 10, 2)).toBeCloseTo(Math.sqrt(6), 12);
+    expect(dampedPeriod(1, 10, 2)).toBeCloseTo(2.5651, 4);
+  });
+
+  it('Sonderfall Amplitude 0: Körper bleibt in der Ruhelage', () => {
+    const s0 = initialState(0, -Math.PI / 2, 0.5, 20, 0.3);
+    expect(s0[0]).toBe(-0);
+    expect(s0[1]).toBeCloseTo(0, 15);
+    const s = run(s0, 0.5, 20, 0.3, 2);
+    expect(Math.abs(s[0])).toBeLessThan(1e-15);
+    expect(phasor(s, 0.5, 20, 0.3).amp).toBeLessThan(1e-15);
+    const e = energies(s, 0.5, 20, 0);
+    expect(e.kin + e.osc).toBeCloseTo(0, 15);
+  });
+
+  it('Phasenbeziehung: v eilt y um 90° voraus, a ist gegenphasig zu y', () => {
+    const m = 0.5;
+    const D = 20;
+    const amp = 0.08;
+    const w = omega0(m, D);
+    const T = period(m, D);
+    // aus der Ruhelage angestoßen (φ₀ = 0): bei t = 0 ist v maximal, bei T/4 ist y maximal und a = −â
+    const s0 = initialState(amp, 0, m, D, 0);
+    expect(s0[1]).toBeCloseTo(amp * w, 12);
+    const q = run(s0, m, D, 0, T / 4, T / 4000);
+    expect(q[0]).toBeCloseTo(amp, 9);
+    expect(q[1]).toBeCloseTo(0, 8);
+    expect(acceleration(q, m, D, 0)).toBeCloseTo(-amp * w * w, 8);
+  });
+
+  it('Aufgabenwerte aus dem Lernmaterial', () => {
+    // A1: T ≈ 0,99 s, f ≈ 1,01 Hz
+    expect(period(0.5, 20)).toBeCloseTo(0.9935, 4);
+    expect(1 / period(0.5, 20)).toBeCloseTo(1.0066, 4);
+    // A2: 10 Schwingungen in 12,6 s, m = 0,4 kg → D = 4π²m/T² ≈ 9,9 N/m
+    expect((4 * Math.PI ** 2 * 0.4) / 1.26 ** 2).toBeCloseTo(9.947, 3);
+    expect(period(0.4, 10)).toBeCloseTo(1.2566, 4);
+    // A4: v̂ = ŷ·ω ≈ 0,51 m/s, â = ŷ·ω² = 3,2 m/s²
+    expect(0.08 * omega0(0.5, 20)).toBeCloseTo(0.506, 3);
+    expect(Math.abs(acceleration([-0.08, 0], 0.5, 20, 0))).toBeCloseTo(3.2, 12);
+    // A5: T = 2π·√(s₀/g) mit s₀ = 24,5 cm; m und D verdoppelt → gleiche Dehnung und Periode
+    expect(2 * Math.PI * Math.sqrt(equilibriumExtension(0.5, 20) / G)).toBeCloseTo(period(0.5, 20), 12);
+    expect(equilibriumExtension(1, 40)).toBeCloseTo(0.24525, 10);
+    // A7: E = ½·D·ŷ² = 0,064 J; bei y = 4 cm: v = √(2·0,048/0,5) ≈ 0,44 m/s
+    const e = energies([0.04, Math.sqrt(0.192)], 0.5, 20, -0.08);
+    expect(e.osc).toBeCloseTo(0.016, 12);
+    expect(e.osc + e.kin).toBeCloseTo(0.064, 12);
+    expect(Math.sqrt(0.192)).toBeCloseTo(0.438, 3);
+  });
+
+  it('mit Dämpfung startet der Körper (φ₀ = −90°) mit v₀ = δ·ŷ', () => {
+    const s0 = initialState(0.08, -Math.PI / 2, 0.5, 20, 0.3);
+    expect(s0[0]).toBeCloseTo(-0.08, 12);
+    expect(s0[1]).toBeCloseTo(0.3 * 0.08, 12);
+  });
 });

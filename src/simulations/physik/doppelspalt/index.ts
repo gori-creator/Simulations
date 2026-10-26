@@ -32,6 +32,7 @@ export default defineSimulation({
   id: 'doppelspalt',
   animated: true,
   dragHint: true,
+  hint: L('Tipp: Die orange Messmarke auf dem Schirmbild lässt sich mit Maus oder Finger ziehen.', 'Tip: drag the orange measuring mark on the screen with the mouse or a finger.'),
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -50,7 +51,7 @@ export default defineSimulation({
     { key: 'gl', type: 'number', label: L('Gitter: Striche pro mm', 'Grating: lines per mm'), help: L('Gitterkonstante g = 1 mm / Strichzahl.', 'Grating constant g = 1 mm / number of lines.'), min: 50, max: 1000, step: 10, default: 500, visibleIf: (v) => v.mode === 'grating' },
     { key: 'lam', type: 'number', label: L('Wellenlänge λ', 'Wavelength λ'), min: 400, max: 700, step: 1, default: 650, unit: 'nm' },
     { key: 'a', type: 'number', label: L('Schirmabstand a', 'Screen distance a'), min: 0.2, max: 5, step: 0.1, default: 2, unit: 'm' },
-    { key: 'xm', type: 'number', label: L('Messmarke x', 'Measuring mark x'), help: L('Oder: die Marke auf dem Schirm ziehen. Abstand von der Mitte.', 'Or drag the mark on the screen. Distance from the centre.'), min: 0, max: 3000, step: 0.5, default: 20, unit: 'mm', visibleIf: (v) => v.meas === true },
+    { key: 'xm', type: 'number', label: L('Messmarke x', 'Measuring mark x'), help: L('Oder: die Marke auf dem Schirm ziehen. Abstand von der Mitte.', 'Or drag the mark on the screen. Distance from the centre.'), min: 0, max: 5000, step: 0.5, default: 20, unit: 'mm', visibleIf: (v) => v.meas === true },
     { key: 'meas', type: 'boolean', group: 'view', label: L('Messmarke', 'Measuring mark'), default: true },
     { key: 'env', type: 'boolean', group: 'view', label: L('Einzelspalt-Hülle im Diagramm', 'Single-slit envelope in the graph'), default: false },
     { key: 'val', type: 'boolean', group: 'view', label: L('Werte im Bild anzeigen', 'Show values in the picture'), default: true },
@@ -106,6 +107,7 @@ export default defineSimulation({
       ordersSlit: 'Einzelspalt: helles Hauptmaximum in der Mitte, Minima bei sin <var>α</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span><var>b</var></span></span> mit <var>b</var> = {b} (erstes Minimum bei <var>x</var> ≈ {x0}).',
       meas: 'Messmarke bei <var>x</var> = <strong>{x} mm</strong>: tan <var>α</var> = <span class="frac"><span><var>x</var></span><span><var>a</var></span></span> = {t} → <var>α</var> = {al}°. Intensität dort: {I} % von <var>I</var><sub>0</sub>.',
       measOff: 'Messmarke ausgeblendet.',
+      missing: 'Wegen <var>b</var> = <span class="frac"><span><var>g</var></span><span>6</span></span> fallen die Ordnungen <var>k</var> = 6, 12, … auf Minima der Einzelspalt-Hülle und fehlen.',
     },
     en: {
       canvas:
@@ -144,6 +146,7 @@ export default defineSimulation({
       ordersSlit: 'Single slit: bright central maximum, minima at sin <var>α</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span><var>b</var></span></span> with <var>b</var> = {b} (first minimum at <var>x</var> ≈ {x0}).',
       meas: 'Measuring mark at <var>x</var> = <strong>{x} mm</strong>: tan <var>α</var> = <span class="frac"><span><var>x</var></span><span><var>a</var></span></span> = {t} → <var>α</var> = {al}°. Intensity there: {I} % of <var>I</var><sub>0</sub>.',
       measOff: 'Measuring mark hidden.',
+      missing: 'Because <var>b</var> = <span class="frac"><span><var>g</var></span><span>6</span></span>, the orders <var>k</var> = 6, 12, … fall on minima of the single-slit envelope and are missing.',
     },
   },
 
@@ -362,13 +365,26 @@ export default defineSimulation({
     }
 
     /** Länge in m schön formatiert (mm, cm oder m). */
-    function lenText(x: number, d = 1): string {
-      const ax = Math.abs(x);
-      if (ax < 0.1) return `${fx(x * 1000, d)} mm`;
-      if (ax < 1) return `${fx(x * 100, d)} cm`;
+    /** Nachkommastellen, damit ein Wert mindestens 2 gültige Ziffern zeigt (mindestens d). */
+    const digits = (v: number, d: number) => (v > 0 ? clamp(1 - Math.floor(Math.log10(v)), d, 4) : d);
+    /**
+     * Länge in m schön formatiert (mm, cm oder m). Mit `ref` (z. B. x₁) richten sich
+     * Einheit und Stellen nach diesem Wert, damit eine Spalte einheitlich bleibt.
+     */
+    function lenText(x: number, d = 1, ref = 0): string {
+      const u = ref > 0 ? ref : Math.abs(x);
+      if (u < 0.1) return `${fx(x * 1000, digits(u * 1000, d))} mm`;
+      if (u < 1) return `${fx(x * 100, d)} cm`;
       return `${fx(x, 2)} m`;
     }
+    /** Winkel in Grad mit 2 Nachkommastellen, unter 1° mit 3 gültigen Ziffern (0,372°). */
+    const degText = (al: number, ref = al) => {
+      const r = Math.abs(deg(ref));
+      return fx(deg(al), r > 0 ? clamp(2 - Math.floor(Math.log10(r)), 2, 5) : 2);
+    };
     const gText = (g: number) => (g >= 1e-5 ? `${fx(g * 1000, 2)} mm` : `${fx(g * 1e6, 2)} µm`);
+    /** Spaltbreite b = g/6: unter 0,1 mm in µm, sonst in mm. */
+    const bText = (b: number) => (b < 1e-4 ? `${fx(b * 1e6, 1)} µm` : `${fx(b * 1000, 3)} mm`);
 
     /* ---------- Aufbau von der Seite ---------- */
     const field = document.createElement('canvas');
@@ -829,7 +845,7 @@ export default defineSimulation({
       const fit = Math.max(1, Math.floor((R.y + R.h - footer - y + rowH / 2) / rowH));
       const first = single ? 1 : 0;
       const total = kmax - first + 1;
-      let rows = Math.min(total, 6, fit);
+      let rows = Math.min(total, 10, fit);
       if (rows < total && rows >= fit) rows = Math.max(1, fit - 1);
       const xmM = p.xm / 1000;
       let best = -1;
@@ -844,7 +860,8 @@ export default defineSimulation({
         }
       }
       const a1 = angleOf(1);
-      const tol = 0.12 * (a1 === null ? v.Xh : screenPosition(a1, v.a));
+      const x1ref = a1 === null ? 0 : screenPosition(a1, v.a);
+      const tol = 0.12 * (a1 === null ? v.Xh : x1ref);
       for (let q = first; q < first + rows; q++) {
         const al = angleOf(q);
         if (al === null) break;
@@ -855,8 +872,8 @@ export default defineSimulation({
         }
         const val = p.val || q === 0;
         richText(String(q), colK, y, fs, theme.text, 'center', 700);
-        richText(val ? `${fx(deg(al), 2)}°` : '?', colA, y, fs, theme.text, 'right', 600);
-        richText(val ? lenText(screenPosition(al, v.a)) : '?', colX, y, fs, lc, 'right', 700);
+        richText(val ? `${degText(al, a1 ?? al)}°` : '?', colA, y, fs, theme.text, 'right', 600);
+        richText(val ? lenText(screenPosition(al, v.a), 1, x1ref) : '?', colX, y, fs, lc, 'right', 700);
         y += rowH;
       }
       if (rows < total) richText(tr('more', { k: String(kmax) }), R.x + pad, y, fs - 0.5, theme.muted, 'left', 600);
@@ -868,7 +885,8 @@ export default defineSimulation({
       g.lineTo(R.x + R.w - pad, fy - (sm ? 12 : 14));
       g.stroke();
       if (!isGrating() && Nof() > 1) {
-        const d = p.val ? fx(spacingSmallAngle(v.lam, v.a, v.g) * 1000, 1) : '?';
+        const dx = spacingSmallAngle(v.lam, v.a, v.g) * 1000;
+        const d = p.val ? fx(dx, digits(dx, 1)) : '?';
         let s = fs;
         const lab = tr('dx', { d });
         while (s > 10 && richWidth(lab, s, 700) > R.w - 2 * pad) s -= 0.5;
@@ -876,7 +894,7 @@ export default defineSimulation({
       }
       if (p.meas) {
         const al = Math.atan2(p.xm / 1000, v.a);
-        const lab = tr('markInfo', { al: fx(deg(al), 2) });
+        const lab = tr('markInfo', { al: degText(al) });
         let s = fs - 0.5;
         while (s > 9.5 && richWidth(lab, s, 650) > R.w - 2 * pad) s -= 0.5;
         richText(lab, R.x + pad, fy + (sm ? 16 : 20), s, orange(), 'left', 650);
@@ -892,24 +910,27 @@ export default defineSimulation({
       if (p.N === 1 && !isGrating()) {
         const b = g * SLIT_RATIO;
         const x0 = screenPosition(Math.asin(Math.min(0.999, (p.lam * 1e-9) / b)), p.a);
-        ctx.readout('max', { html: tr('ordersSlit', { b: gText(b), x0: lenText(x0) }) });
+        ctx.readout('max', { html: tr('ordersSlit', { b: bText(b), x0: lenText(x0) }) });
         ctx.readout('orders', null);
       } else {
         if (a1 === null) ctx.readout('max', { html: ctx.t('noFirst') });
         else {
-          const small = isGrating() ? '' : tr('small', { lam: n(p.lam, 0), a: fx(p.a, 1), g: gT, dx: fx(spacingSmallAngle(p.lam, p.a, g) * 1000, 1) });
-          ctx.readout('max', { html: tr('max', { lam: n(p.lam, 0), g: gT, s1: fx(Math.sin(a1), 4), a1: fx(deg(a1), 2), a: fx(p.a, 1), x1: lenText(screenPosition(a1, p.a), 2), small }) });
+          const dx = spacingSmallAngle(p.lam, p.a, g) * 1000;
+          const small = isGrating() ? '' : tr('small', { lam: n(p.lam, 0), a: fx(p.a, 1), g: gT, dx: fx(dx, digits(dx, 1)) });
+          const s1 = Math.sin(a1);
+          ctx.readout('max', { html: tr('max', { lam: n(p.lam, 0), g: gT, s1: fx(s1, digits(s1, 4)), a1: degText(a1), a: fx(p.a, 1), x1: lenText(screenPosition(a1, p.a), 2), small }) });
         }
         const k = maxOrder(p.lam, g);
         const ks = k === 0 ? '0' : `−${k} … ${k}`;
-        ctx.readout('orders', { html: tr('orders', { q: fx(g / (p.lam * 1e-9), 2), k: String(k), n: String(2 * k + 1), ks }) });
+        const missing = k >= Math.round(1 / SLIT_RATIO) ? ' ' + ctx.t('missing') : '';
+        ctx.readout('orders', { html: tr('orders', { q: fx(g / (p.lam * 1e-9), 2), k: String(k), n: String(2 * k + 1), ks }) + missing });
       }
       if (!p.meas) ctx.readout('meas', ctx.t('measOff'));
       else {
         const t = p.xm / 1000 / p.a;
         const al = Math.atan(t);
         const I = intensity(al, Nof(), p.lam, g);
-        ctx.readout('meas', { html: tr('meas', { x: fx(p.xm, 1), t: fx(t, 4), al: fx(deg(al), 2), I: n(Math.round(I * 100), 0) }) });
+        ctx.readout('meas', { html: tr('meas', { x: fx(p.xm, 1), t: fx(t, digits(t, 4)), al: degText(al), I: n(Math.round(I * 100), 0) }) });
       }
     }
 
@@ -925,7 +946,7 @@ export default defineSimulation({
       if (!S) return;
       const Xh = 10 ** (soft.get('lXh') ?? Math.log10(targetXh(p.lam, gOf(), p.a)));
       const x = (Math.abs(px - S.cx) / (S.x1 - S.cx)) * Xh * 1000;
-      const xm = Math.round(clamp(x, 0, 3000) * 2) / 2;
+      const xm = Math.round(clamp(x, 0, 5000) * 2) / 2;
       if (xm !== p.xm) ctx.set({ xm });
     }
     surface.addTarget({

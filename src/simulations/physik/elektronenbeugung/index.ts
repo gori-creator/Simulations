@@ -104,7 +104,10 @@ interface Point {
 export default defineSimulation({
   id: 'elektronenbeugung',
   animated: true,
-  dragHint: true,
+  hint: L(
+    'Tipp: Den Griff des gestrichelten Messkreises auf dem Schirm ziehen und auf einen Ring legen.',
+    'Tip: Drag the handle of the dashed measuring circle on the screen onto a ring.',
+  ),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -213,7 +216,7 @@ export default defineSimulation({
       thL: 'λ in pm',
       none: 'Noch keine Messwerte – „Messwert aufnehmen“ oder „Messreihe automatisch“.',
       fitFew: 'Für die Auswertung fehlen noch Messwerte (mindestens zwei).',
-      fit: 'Ursprungsgeraden <var>r</var> = <var>k</var> · <span class="frac"><span>1</span><span>√<var>U</var></span></span>: <var>k</var><sub>1</sub> ≈ {k1} mm · √kV, <var>k</var><sub>2</sub> ≈ {k2} mm · √kV.<br>Mit <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var> und <var>λ</var> = <var>h</var> / √(2 · <var>m</var> · <var>e</var> · <var>U</var>) folgt <var>d</var> = <span class="frac"><span><var>L</var> · <var>h</var></span><span><var>k</var> · √(2 · <var>m</var> · <var>e</var>)</span></span>: <strong><var>d</var><sub>1</sub> ≈ {d1} nm</strong>, <strong><var>d</var><sub>2</sub> ≈ {d2} nm</strong> (Tabellenwerte für Graphit: 0,213 nm und 0,123 nm).',
+      fit: 'Ursprungsgeraden <var>r</var> = <var>k</var> · <span class="frac"><span>1</span><span>√<var>U</var></span></span>: <var>k</var><sub>1</sub> ≈ {k1} mm · √kV, <var>k</var><sub>2</sub> ≈ {k2} mm · √kV.<br>Mit <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var> und <var>λ</var> = <var>h</var> / √(2 · <var>m</var> · <var>e</var> · <var>U</var>) folgt <var>d</var> = <span class="frac"><span><var>L</var> · <var>h</var></span><span><var>k</var> · √(2 · <var>m</var> · <var>e</var>)</span></span>: <strong><var>d</var><sub>1</sub> ≈ {d1} nm</strong>, <strong><var>d</var><sub>2</sub> ≈ {d2} nm</strong> (Tabellenwerte für Graphit: 0,213 nm und 0,123 nm; wegen der Näherung <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var> fällt <var>d</var><sub>2</sub> etwa 1 % zu klein aus).',
     },
     en: {
       canvas:
@@ -261,7 +264,7 @@ export default defineSimulation({
       thL: 'λ in pm',
       none: 'No data yet – “Record a data point” or “Automatic series”.',
       fitFew: 'More data are needed for the analysis (at least two points).',
-      fit: 'Lines through the origin <var>r</var> = <var>k</var> · <span class="frac"><span>1</span><span>√<var>U</var></span></span>: <var>k</var><sub>1</sub> ≈ {k1} mm · √kV, <var>k</var><sub>2</sub> ≈ {k2} mm · √kV.<br>With <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var> and <var>λ</var> = <var>h</var> / √(2 · <var>m</var> · <var>e</var> · <var>U</var>) we get <var>d</var> = <span class="frac"><span><var>L</var> · <var>h</var></span><span><var>k</var> · √(2 · <var>m</var> · <var>e</var>)</span></span>: <strong><var>d</var><sub>1</sub> ≈ {d1} nm</strong>, <strong><var>d</var><sub>2</sub> ≈ {d2} nm</strong> (table values for graphite: 0.213 nm and 0.123 nm).',
+      fit: 'Lines through the origin <var>r</var> = <var>k</var> · <span class="frac"><span>1</span><span>√<var>U</var></span></span>: <var>k</var><sub>1</sub> ≈ {k1} mm · √kV, <var>k</var><sub>2</sub> ≈ {k2} mm · √kV.<br>With <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var> and <var>λ</var> = <var>h</var> / √(2 · <var>m</var> · <var>e</var> · <var>U</var>) we get <var>d</var> = <span class="frac"><span><var>L</var> · <var>h</var></span><span><var>k</var> · √(2 · <var>m</var> · <var>e</var>)</span></span>: <strong><var>d</var><sub>1</sub> ≈ {d1} nm</strong>, <strong><var>d</var><sub>2</sub> ≈ {d2} nm</strong> (table values for graphite: 0.213 nm and 0.123 nm; because of the approximation <var>r</var> ≈ <var>L</var> · <var>λ</var> / <var>d</var>, <var>d</var><sub>2</sub> comes out about 1 % too small).',
     },
   },
 
@@ -695,7 +698,8 @@ export default defineSimulation({
       g.lineTo(anodeX, sy);
       g.lineTo(anodeX, by + neckH * 0.85);
       g.stroke();
-      const lab = p.val ? `U = ${fx(ease2('Ushow', p.U, 9), 1)} kV` : 'U';
+      // U ist eine Eingabe (keine Lösung) und bleibt auch im Aufgabenmodus sichtbar
+      const lab = `U = ${fx(ease2('Ushow', p.U, 9), 1)} kV`;
       pill((cathX + anodeX) / 2, sy - (sm ? 10.5 : 11.5), lab, orange(), 'center', sm ? 10.5 : 11.5);
       // Beschriftungen über dem Hals
       const fs = sm ? 10 : 11;
@@ -961,8 +965,8 @@ export default defineSimulation({
         g.fillText(String(mm), cx + mm * k, cy + 7);
       }
       g.restore();
-      // Ringbeschriftungen (links unten außen)
-      if (p.val) {
+      // Ringbeschriftungen (links unten außen); im Aufgabenmodus verdeckt, solange „Ringe“ verdeckt ist
+      if (!ctx.isHidden('ring')) {
         const fs = sm ? 10.5 : 11.5;
         // links außerhalb des Schirms, mit Hinweislinie zum Ring
         const ph = fs + 11;
@@ -1285,13 +1289,15 @@ export default defineSimulation({
       const U = ease2('Uinfo', p.U, 9);
       const v = electronSpeed(U * 1000);
       const lam = deBroglie(U * 1000) * 1e12;
-      const val = p.val;
+      // Werte nur, wenn das passende Ergebnis nicht verdeckt ist (Schalter „Werte im Bild“ bzw. Aufgabenmodus)
+      const valLam = !ctx.isHidden('lam');
+      const valRing = !ctx.isHidden('ring');
       const rows: [string, string][] = [
         [`e · U = ½ · m · v²`, theme.muted],
-        [`v = √(2 · e · U / m) = ${val ? `${sciCanvas(v, 2)} m/s` : '?'}`, theme.text],
-        [`λ = h / (m · v) = ${val ? `${fx(lam, 1)} pm` : '?'}`, mixColor(blue(), theme.text, theme.dark ? 0.1 : 0.2)],
-        [`r_[1] = L · tan 2θ_[1] = ${val ? `${fx(r1Of(U), 1)} mm` : '?'}`, c1()],
-        [`r_[2] = L · tan 2θ_[2] = ${val ? `${fx(r2Of(U), 1)} mm` : '?'}`, c2()],
+        [`v = √(2 · e · U / m) = ${valLam ? `${sciCanvas(v, 2)} m/s` : '?'}`, theme.text],
+        [`λ = h / (m · v) = ${valLam ? `${fx(lam, 1)} pm` : '?'}`, mixColor(blue(), theme.text, theme.dark ? 0.1 : 0.2)],
+        [`r_[1] = L · tan 2θ_[1] = ${valRing ? `${fx(r1Of(U), 1)} mm` : '?'}`, c1()],
+        [`r_[2] = L · tan 2θ_[2] = ${valRing ? `${fx(r2Of(U), 1)} mm` : '?'}`, c2()],
       ];
       if (R.h > 175) rows.splice(3, 0, [`2 · d · sin θ = λ`, theme.muted]);
       const top = ty + (sm ? 14 : 18);
@@ -1337,13 +1343,20 @@ export default defineSimulation({
       ctx.readout('meas', { html: tr('measOn', { r: fx(p.rm, 1), fit: k ? tr('measFit', { k: String(k) }) : '' }) });
     }
 
+    /** Stand der λ-Spalte beim letzten Aufbau der Tabelle (Aufdecken einzelner Ergebnisse ruft kein `hiddenChange`). */
+    let tableLam = true;
     function updateTable(): void {
       if (!points.length) {
         ctx.readout('table', ctx.t('none'));
         ctx.readout('fit', ctx.t('fitFew'));
       } else {
-        const head = [ctx.t('thU'), ctx.t('thR1'), ctx.t('thR2'), ctx.t('thL')];
-        const rows = points.map((q) => `<tr><td>${fx(q.U, 1)}</td><td>${fx(q.r1, 1)}</td><td>${fx(q.r2, 1)}</td><td>${fx(deBroglie(q.U * 1000) * 1e12, 1)}</td></tr>`);
+        // λ ist berechnet (Lösung von Aufgabe 1) und fehlt, solange „de-Broglie-Wellenlänge“ verdeckt ist
+        const showLam = !ctx.isHidden('lam');
+        tableLam = showLam;
+        const head = [ctx.t('thU'), ctx.t('thR1'), ctx.t('thR2'), ...(showLam ? [ctx.t('thL')] : [])];
+        const rows = points.map(
+          (q) => `<tr><td>${fx(q.U, 1)}</td><td>${fx(q.r1, 1)}</td><td>${fx(q.r2, 1)}</td>${showLam ? `<td>${fx(deBroglie(q.U * 1000) * 1e12, 1)}</td>` : ''}</tr>`,
+        );
         ctx.readout('table', { html: `<table class="mini-table"><tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>${rows.join('')}</table>` });
         if (points.length < 2) ctx.readout('fit', ctx.t('fitFew'));
         else {
@@ -1454,6 +1467,11 @@ export default defineSimulation({
         ctx.requestRender();
       },
 
+      hiddenChange() {
+        updateTable();
+        ctx.requestRender();
+      },
+
       tick(dt) {
         tickElectrons(Math.min(dt, 0.05));
       },
@@ -1475,6 +1493,7 @@ export default defineSimulation({
         }
         // ohne laufende Uhr trotzdem die Messreihe fortsetzen
         if (autoRun && !ctx.clock.playing) autoStep();
+        if (points.length && tableLam === ctx.isHidden('lam')) updateTable();
         const lay = computeLayout();
         surface.begin();
         drawScene(lay.scene);

@@ -16,7 +16,9 @@ $$
 E = k \cdot \frac{|Q|}{r^2}, \qquad k = \frac{1}{4\pi\varepsilon_0} \approx 8{,}99 \cdot 10^9\,\frac{\text{N}\,\text{m}^2}{\text{C}^2} .
 $$
 
-Doppelter Abstand heißt also nur noch ein Viertel der Feldstärke. Das Feld zeigt bei positiver Ladung von ihr weg, bei negativer Ladung zu ihr hin.
+Doppelter Abstand heißt also nur noch ein Viertel der Feldstärke. Das Feld zeigt bei positiver Ladung von ihr weg, bei negativer Ladung zu ihr hin. Direkt auf der Ladung ($r = 0$) ist die Feldstärke nicht definiert; setzt du die Probeladung genau auf eine Ladung, zeigt die Simulation deshalb keinen Wert.
+
+**Kraft auf eine Ladung:** Auf eine Ladung $q$ im Feld wirkt $F = q \cdot E$. Ist $q$ positiv, zeigt die Kraft in Richtung der Feldlinien; ist $q$ negativ (zum Beispiel ein Elektron), zeigt sie genau entgegengesetzt. Die Probeladung in der Simulation ist immer positiv ($q_0 = +1\,\text{nC}$).
 
 Wirken **mehrere Ladungen**, addieren sich ihre Felder als **Vektoren** (Superposition). Der Kasten „Vektoraddition“ zeigt das: Die Einzelfelder $\vec E_1, \vec E_2, \dots$ werden aneinandergehängt, der orange Pfeil ist die Summe.
 
@@ -41,7 +43,7 @@ Die Äquipotentiallinien sind dort parallel zu den Platten und gleich weit vonei
 
 ## Ausprobieren
 
-1. Ziehe die Probeladung um den Dipol herum. Wo ist das Feld am stärksten, wo zeigt es senkrecht nach unten? [Dipol](?px=0&py=0)
+1. Ziehe die Probeladung um den Dipol herum. Wo ist das Feld am stärksten? In welche Richtung zeigt es auf der Mittelsenkrechten zwischen den beiden Ladungen? [Dipol](?px=0&py=0)
 2. Eine einzelne Ladung: Verdopple den Abstand der Probeladung von 10 cm auf 20 cm. Was passiert mit $E$? [Einzelne Ladung](?n=1&x1=0&y1=0&px=10&py=0)
 3. Zwei gleiche Ladungen: Suche die Stelle, an der das Feld null ist. [Zwei gleiche Ladungen](?q2=1&eq=1&px=0&py=6)
 4. Ungleiche Ladungen: Von der großen Ladung gehen dreimal so viele Linien aus. Wohin laufen die übrigen? [+3 nC und −1 nC](?q1=3&q2=-1&px=0&py=8)
@@ -81,6 +83,39 @@ An einem Kondensator mit $d = 10\,\text{cm}$ liegen $U = 1000\,\text{V}$. Wie gr
 <summary>Lösung anzeigen</summary>
 
 $E = \frac{U}{d} = \frac{1000\,\text{V}}{0{,}10\,\text{m}} = 10\,000\,\frac{\text{V}}{\text{m}}$, $F = q_0 \cdot E = 10\,\mu\text{N}$. Potential: $\varphi = E \cdot s = 10\,000\,\frac{\text{V}}{\text{m}} \cdot 0{,}05\,\text{m} = 500\,\text{V}$. [In der Simulation zeigen](?mode=plates&py=3&eq=1)
+
+</details>
+
+### Aufgabe 4: Zwei gleiche Ladungen
+
+Zwei Ladungen $+1\,\text{nC}$ sitzen bei $x = -10\,\text{cm}$ und $x = +10\,\text{cm}$. Bestimme die Feldstärke im Punkt $(0 \mid 10\,\text{cm})$ über der Mitte. Wo ist das Feld null? [Aufgabe laden](?q2=1&px=0&py=10&val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Abstand zu jeder Ladung: $r = \sqrt{(0{,}10\,\text{m})^2 + (0{,}10\,\text{m})^2} \approx 0{,}141\,\text{m}$, also $E_1 = E_2 = 8{,}99 \cdot 10^9 \cdot \frac{10^{-9}}{0{,}02}\,\frac{\text{N}}{\text{C}} \approx 449\,\frac{\text{N}}{\text{C}}$. Die waagerechten Anteile heben sich auf, die senkrechten addieren sich: $E = 2 \cdot 449\,\frac{\text{N}}{\text{C}} \cdot \frac{10\,\text{cm}}{14{,}1\,\text{cm}} \approx 636\,\frac{\text{N}}{\text{C}}$, senkrecht nach oben (90°). In der Mitte zwischen den Ladungen ($x = 0$, $y = 0$) heben sich beide Felder ganz auf: Dort ist das Feld null (feldfreier Punkt). [In der Simulation zeigen](?q2=1&px=0&py=10)
+
+</details>
+
+### Aufgabe 5: Feldfreier Punkt bei ungleichen Ladungen
+
+$Q_1 = +1\,\text{nC}$ sitzt bei $x = -10\,\text{cm}$, $Q_2 = +4\,\text{nC}$ bei $x = +14\,\text{cm}$. An welcher Stelle zwischen den Ladungen ist das Feld null? [Aufgabe laden](?q2=4&x2=14&px=0&py=0&val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Die Ladungen sind $24\,\text{cm}$ voneinander entfernt. Im Abstand $a$ von $Q_1$ gilt $\frac{k \cdot 1\,\text{nC}}{a^2} = \frac{k \cdot 4\,\text{nC}}{(24\,\text{cm} - a)^2}$, also $24\,\text{cm} - a = 2a$ und $a = 8\,\text{cm}$. Der feldfreie Punkt liegt bei $x = -2\,\text{cm}$, näher an der kleineren Ladung. [In der Simulation zeigen](?q2=4&x2=14&px=-2&py=0)
+
+</details>
+
+### Aufgabe 6: Ein Elektron im Kondensator
+
+Statt der Probeladung befindet sich ein Elektron ($q = -1{,}6 \cdot 10^{-19}\,\text{C}$) im Kondensator aus Aufgabe 3. Wie groß ist die Kraft, und in welche Richtung zeigt sie? [Aufgabe laden](?mode=plates&py=3&val=0&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$F = |q| \cdot E = 1{,}6 \cdot 10^{-19}\,\text{C} \cdot 10\,000\,\frac{\text{N}}{\text{C}} = 1{,}6 \cdot 10^{-15}\,\text{N}$. Weil das Elektron negativ ist, zeigt die Kraft entgegen den Feldlinien, also zur positiven Platte hin. Der orange Pfeil der positiven Probeladung zeigt genau in die Gegenrichtung. [In der Simulation zeigen](?mode=plates&py=3)
 
 </details>
 

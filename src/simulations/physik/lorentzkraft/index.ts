@@ -90,7 +90,7 @@ export default defineSimulation({
       Bin: 'B zeigt in die Zeichenebene',
       handTitle: 'Linke Hand (Elektronen)',
       thumb: 'Daumen: v',
-      index: 'Zeigefinger: B',
+      index: 'Zeigefinger: B ⊗',
       middle: 'Mittelfinger: F',
       infoTitle: 'Rechnung',
       chartTitle: 'Messreihe: 2U über B²r²',
@@ -100,10 +100,12 @@ export default defineSimulation({
       fit: 'Steigung = e/m ≈ {em} C/kg',
       lit: 'Literatur: 1,759 · 10^11 C/kg',
       Bro: '<var>B</var> = (4/5)<sup>3/2</sup> · <var>μ</var><sub>0</sub> · <span class="frac"><span><var>n</var> · <var>I</var></span><span><var>R</var></span></span> = 0,716 · 1,257 · 10<sup>−6</sup> <span class="frac"><span>T m</span><span>A</span></span> · <span class="frac"><span>130 · {I} A</span><span>0,15 m</span></span> = <strong>{B} mT</strong>',
-      rro: '<var>v</var> = √(2 · <var>e</var>/<var>m</var> · <var>U</var>) = {v} · 10<sup>6</sup> m/s; <var>r</var> = <span class="frac"><span><var>v</var></span><span><var>e</var>/<var>m</var> · <var>B</var></span></span> = <span class="frac"><span>√(2 <var>U</var> <var>m</var>/<var>e</var>)</span><span><var>B</var></span></span> = <strong>{r} cm</strong> (Durchmesser {d} cm)',
+      rro: '<var>v</var> = √(2 · <var>e</var>/<var>m</var> · <var>U</var>) = {v} m/s; <var>r</var> = <span class="frac"><span><var>v</var></span><span><var>e</var>/<var>m</var> · <var>B</var></span></span> = <span class="frac"><span>√(2 <var>U</var> <var>m</var>/<var>e</var>)</span><span><var>B</var></span></span> = <strong>{r} cm</strong> (Durchmesser {d} cm)',
       rnone: 'Ohne Magnetfeld fliegen die Elektronen geradeaus.',
-      emro: '<var>e</var>/<var>m</var> = <span class="frac"><span>2 <var>U</var></span><span><var>B</var><sup>2</sup> <var>r</var><sup>2</sup></span></span> ≈ <strong>{em} · 10<sup>11</sup> C/kg</strong> aus {n} Messwerten (Literatur 1,759 · 10<sup>11</sup> C/kg, Abweichung {dev} %)',
+      emro: '<var>e</var>/<var>m</var> = <span class="frac"><span>2 <var>U</var></span><span><var>B</var><sup>2</sup> <var>r</var><sup>2</sup></span></span> ≈ <strong>{em} · 10<sup>11</sup> C/kg</strong> aus {n} (Literatur 1,759 · 10<sup>11</sup> C/kg, Abweichung {dev} %)',
       emnone: 'Noch keine Messwerte.',
+      pt1: '1 Messwert',
+      ptN: '{n} Messwerten',
     },
     en: {
       canvas:
@@ -116,7 +118,7 @@ export default defineSimulation({
       Bin: 'B points into the page',
       handTitle: 'Left hand (electrons)',
       thumb: 'thumb: v',
-      index: 'index finger: B',
+      index: 'index finger: B ⊗',
       middle: 'middle finger: F',
       infoTitle: 'Calculation',
       chartTitle: 'Series: 2U against B²r²',
@@ -126,10 +128,12 @@ export default defineSimulation({
       fit: 'slope = e/m ≈ {em} C/kg',
       lit: 'literature: 1.759 · 10^11 C/kg',
       Bro: '<var>B</var> = (4/5)<sup>3/2</sup> · <var>μ</var><sub>0</sub> · <span class="frac"><span><var>n</var> · <var>I</var></span><span><var>R</var></span></span> = 0.716 · 1.257 · 10<sup>−6</sup> <span class="frac"><span>T m</span><span>A</span></span> · <span class="frac"><span>130 · {I} A</span><span>0.15 m</span></span> = <strong>{B} mT</strong>',
-      rro: '<var>v</var> = √(2 · <var>e</var>/<var>m</var> · <var>U</var>) = {v} · 10<sup>6</sup> m/s; <var>r</var> = <span class="frac"><span><var>v</var></span><span><var>e</var>/<var>m</var> · <var>B</var></span></span> = <span class="frac"><span>√(2 <var>U</var> <var>m</var>/<var>e</var>)</span><span><var>B</var></span></span> = <strong>{r} cm</strong> (diameter {d} cm)',
+      rro: '<var>v</var> = √(2 · <var>e</var>/<var>m</var> · <var>U</var>) = {v} m/s; <var>r</var> = <span class="frac"><span><var>v</var></span><span><var>e</var>/<var>m</var> · <var>B</var></span></span> = <span class="frac"><span>√(2 <var>U</var> <var>m</var>/<var>e</var>)</span><span><var>B</var></span></span> = <strong>{r} cm</strong> (diameter {d} cm)',
       rnone: 'Without a magnetic field the electrons fly straight on.',
-      emro: '<var>e</var>/<var>m</var> = <span class="frac"><span>2 <var>U</var></span><span><var>B</var><sup>2</sup> <var>r</var><sup>2</sup></span></span> ≈ <strong>{em} · 10<sup>11</sup> C/kg</strong> from {n} data points (literature 1.759 · 10<sup>11</sup> C/kg, deviation {dev} %)',
+      emro: '<var>e</var>/<var>m</var> = <span class="frac"><span>2 <var>U</var></span><span><var>B</var><sup>2</sup> <var>r</var><sup>2</sup></span></span> ≈ <strong>{em} · 10<sup>11</sup> C/kg</strong> from {n} (literature 1.759 · 10<sup>11</sup> C/kg, deviation {dev} %)',
       emnone: 'No data yet.',
+      pt1: '1 data point',
+      ptN: '{n} data points',
     },
   },
 
@@ -158,9 +162,24 @@ export default defineSimulation({
     /** Zahl als „1,76 · 10^11“ (für richText). */
     function sci(v: number, digits = 3): string {
       if (!Number.isFinite(v) || v === 0) return '0';
-      const e = Math.floor(Math.log10(Math.abs(v)));
-      const m = v / Math.pow(10, e);
+      const [m, e] = mantissa(v, digits);
       return `${fx(m, digits - 1)} · 10^${e < 0 ? '−' : ''}${Math.abs(e)}`;
+    }
+    /** Mantisse und Exponent; die gerundete Mantisse bleibt unter 10 (9,996 → 1,00 · 10^(e+1)). */
+    function mantissa(v: number, digits: number): [number, number] {
+      let e = Math.floor(Math.log10(Math.abs(v)));
+      let m = v / Math.pow(10, e);
+      if (Math.abs(Number(m.toFixed(digits - 1))) >= 10) {
+        e += 1;
+        m /= 10;
+      }
+      return [m, e];
+    }
+    /** Zahl als „1,76 · 10<sup>11</sup>“ (für Ergebnisse unter der Bühne). */
+    function sciHtml(v: number, digits = 3): string {
+      if (!Number.isFinite(v) || v === 0) return '0';
+      const [m, e] = mantissa(v, digits);
+      return `${fx(m, digits - 1)} · 10<sup>${e < 0 ? '−' : ''}${Math.abs(e)}</sup>`;
     }
 
     /* ---------- Messreihe ---------- */
@@ -649,7 +668,15 @@ export default defineSimulation({
 
       // Titel und Werte
       richText(ctx.t('title'), R.x + 14, R.y + (sm ? 16 : 20), sm ? 12 : 13, txt, 'left', 750, darkHalo);
-      richText(ctx.t('sub'), R.x + 14, R.y + (sm ? 31 : 38), sm ? 10 : 11, mut, 'left', 600, darkHalo);
+      // Auf schmaler Bühne liegt die Hand-Karte über dem Untertitel: dann ausblenden (n, R stehen auch am Regler)
+      const hA = ease2('handA', p.hand ? 1 : 0, 7);
+      const subA = sm ? 1 - hA : 1;
+      if (subA > 0.02) {
+        g.save();
+        g.globalAlpha *= subA;
+        richText(ctx.t('sub'), R.x + 14, R.y + (sm ? 31 : 38), sm ? 10 : 11, mut, 'left', 600, darkHalo);
+        g.restore();
+      }
       if (vecA > 0.02 && B > 0 && !sm) richText(ctx.t('Bin'), R.x + 14, R.y + 56, 11, '#a9c8ff', 'left', 650, darkHalo);
       richText(ctx.t('ladder'), X(GUN_X + 5), Y(0) + 0.45 * k + (sm ? 21 : 26), sm ? 9.5 : 10.5, mut, 'center', 600, darkHalo);
       if (p.val) {
@@ -665,7 +692,6 @@ export default defineSimulation({
       }
 
       // Linke-Hand-Regel
-      const hA = ease2('handA', p.hand ? 1 : 0, 7);
       if (hA > 0.02) drawHand(R, hA, sm);
       g.restore();
       g.restore();
@@ -874,10 +900,10 @@ export default defineSimulation({
       const B = Bnow();
       const r = rNow();
       ctx.readout('B', { html: tr('Bro', { I: fx(p.I, 2), B: fx(B * 1e3, 3) }) });
-      ctx.readout('r', { html: Number.isFinite(r) ? tr('rro', { v: fx(electronSpeed(p.U) / 1e6, 2), r: fx(r, 2), d: fx(2 * r, 2) }) : ctx.t('rnone') });
+      ctx.readout('r', { html: Number.isFinite(r) ? tr('rro', { v: sciHtml(electronSpeed(p.U), 3), r: fx(r, 2), d: fx(2 * r, 2) }) : ctx.t('rnone') });
       const data = points.map((q) => ({ U: q.U, B: helmholtzField(COILS.n, q.I, COILS.R), r: q.d / 200 }));
       const em = fitSpecificCharge(data);
-      ctx.readout('em', em === null ? ctx.t('emnone') : { html: tr('emro', { em: fx(em / 1e11, 3), n: String(points.length), dev: fx((Math.abs(em - SPECIFIC_CHARGE) / SPECIFIC_CHARGE) * 100, 1) }) });
+      ctx.readout('em', em === null ? ctx.t('emnone') : { html: tr('emro', { em: fx(em / 1e11, 3), n: points.length === 1 ? ctx.t('pt1') : tr('ptN', { n: String(points.length) }), dev: fx((Math.abs(em - SPECIFIC_CHARGE) / SPECIFIC_CHARGE) * 100, 1) }) });
       ctx.setAction('snap', { enabled: !ctx.locked && !autoRun });
       ctx.setAction('rec', { enabled: !ctx.locked && !autoRun });
       ctx.setAction('auto', { enabled: !ctx.locked && !autoRun });

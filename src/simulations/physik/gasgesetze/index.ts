@@ -1316,6 +1316,14 @@ export default defineSimulation({
         if (a < 0.02) continue;
         g.save();
         g.globalAlpha *= a;
+        // heller bzw. dunkler Rand in der Farbe des Glases, damit Wasserspiegel und Teilchen die Zahl nicht stören
+        g.font = font;
+        g.textAlign = 'left';
+        g.textBaseline = 'middle';
+        g.lineJoin = 'round';
+        g.lineWidth = 4;
+        g.strokeStyle = ctx.theme.dark ? 'rgba(32,48,70,0.75)' : 'rgba(240,245,251,0.92)';
+        g.strokeText(String(V), G.ix + (G.sm ? 10 : 12), yy);
         text(g, String(V), G.ix + (G.sm ? 10 : 12), yy, { font, color: labCol, align: 'left' });
         g.restore();
       }
@@ -1847,7 +1855,8 @@ export default defineSimulation({
       const tx = clamp(G.tx, G.r.x + G.r.w - tw / 2 - 4, G.tx);
       const tpx = Math.min(tx, G.r.x + G.r.w - tw / 2 - 4);
       pill(tpx, G.hdrY, tl, tCol(), 'center', size);
-      text(g, `${fx(kelvin(thShown), 2)} K`, tpx, G.hdrY + size + 21, { font: `600 ${sm ? 10.5 : 11}px ${theme.font}`, color: theme.muted });
+      // Kelvin aus der gerundeten °C-Angabe, sonst stünde z. B. „373,07 K“ neben „100 °C“
+      text(g, `${fx(kelvin(Math.round(thShown)), 2)} K`, tpx, G.hdrY + size + 21, { font: `600 ${sm ? 10.5 : 11}px ${theme.font}`, color: theme.muted });
       g.restore();
     }
 
@@ -2327,9 +2336,19 @@ export default defineSimulation({
         const highRight = ch === 'pV' && pressure(nD, cur.T, V_CAP * 0.75) > 0.55 * M.yMax;
         const ex = ch === 'pV' || ch === 'pinv' ? A.x + A.w - w - 4 : A.x + 4;
         const y = ch === 'pinv' || highRight ? A.y + A.h - fs - 18 : A.y + 4;
-        g.fillStyle = theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.9)';
+        // sichtbarer Hintergrund mit Rand, damit der Hinweis nicht auf den Gitterlinien liegt
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.12)';
+        g.shadowBlur = 5;
+        g.shadowOffsetY = 1;
+        g.fillStyle = theme.dark ? 'rgba(30,38,50,0.96)' : 'rgba(246,248,251,0.97)';
         roundRect(g, ex, y, w, fs + 12, (fs + 12) / 2);
         g.fill();
+        g.restore();
+        g.strokeStyle = withAlpha(theme.muted, 0.4);
+        g.lineWidth = 1;
+        roundRect(g, ex + 0.5, y + 0.5, w - 1, fs + 11, (fs + 11) / 2);
+        g.stroke();
         text(g, msg, ex + w / 2, y + (fs + 12) / 2 + 0.5, { font: g.font, color: theme.muted });
       }
       g.restore();

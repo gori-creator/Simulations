@@ -40,7 +40,7 @@ Genau diese Formel begegnet dir beim **Doppelspalt** mit Licht wieder.
 ## Ausprobieren
 
 1. Drücke „Wellen neu starten“. Wo entsteht das Muster zuerst? Ab wann ändert es sich nicht mehr?
-2. Ziehe den Korken $P$ auf eine ruhige Linie und lies $\Delta s$ ab. Wiederhole das auf einer anderen ruhigen Linie. Was fällt dir auf?
+2. Ziehe den Korken $P$ (den Messpunkt) auf eine ruhige Linie und lies $\Delta s$ ab. Wiederhole das auf einer anderen ruhigen Linie. Was fällt dir auf?
 3. Schalte auf das Amplitudenbild um und blende beide Linienarten ein. [Beispiel laden](?view=amp&lines=both)
 4. Ziehe $E_2$ langsam nach außen. Wie viele Bauchlinien gibt es bei $d = 2\lambda$, $3\lambda$, $4\lambda$? Was passiert, wenn eine neue Linie „geboren“ wird?
 5. Mach $d$ kleiner als $\frac{\lambda}{2}$. Warum verschwinden alle Knotenlinien? [d < λ/2](?d=0.8&lam=2.4&lines=both&view=amp)
@@ -112,6 +112,17 @@ In einer Wellenwanne mit $d = 5\,\text{cm}$ misst man weit weg das erste Maximum
 <summary>Lösung anzeigen</summary>
 
 $\lambda = d \cdot \sin\alpha_1 = 5\,\text{cm} \cdot 0{,}400 \approx 2{,}0\,\text{cm}$, $f = \frac{c}{\lambda} = 10\,\text{Hz}$. So bestimmt man später auch die Wellenlänge von Licht am Doppelspalt. [Prüfen](?d=5&lam=2&lines=max&far=1&view=amp)
+
+</details>
+
+### Aufgabe 7: Phasenverschiebung verschiebt das Muster
+
+Wie in Aufgabe 1 ist $d = 6\,\text{cm}$ und $\lambda = 2\,\text{cm}$. Jetzt eilt $E_2$ aber dem Erreger $E_1$ um $\Delta\varphi = 90°$ voraus. Bei welchem Gangunterschied liegt die Bauchlinie, die vorher auf der Mittelsenkrechten lag? Liegt sie jetzt näher an $E_1$ oder an $E_2$? Wie viele Bauchlinien gibt es? [Aufgabe laden](?ph=90&lines=none&_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Maximum heißt $\delta = 2\pi \cdot \frac{\Delta s}{\lambda} + \frac{\pi}{2} = k \cdot 2\pi$, also $\Delta s = \left(k - \tfrac{1}{4}\right) \cdot \lambda$. Für $k = 0$ ist $\Delta s = -0{,}5\,\text{cm}$: Dort ist $s_1$ um $0{,}5\,\text{cm}$ kürzer als $s_2$. Die Linie ist also zu $E_1$ hin gerückt, zu dem Erreger, der nachhinkt. Seine Welle hat einen kürzeren Weg und holt so die Viertelperiode auf. Bauchlinien gibt es für $\Delta s = -4{,}5;\ -2{,}5;\ -0{,}5;\ 1{,}5;\ 3{,}5;\ 5{,}5\,\text{cm}$, also $6$ Stück. Das Muster ist nicht mehr symmetrisch. [In der Simulation zeigen](?ph=90&lines=max&view=amp)
 
 </details>
 

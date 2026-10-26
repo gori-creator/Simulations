@@ -82,6 +82,10 @@ export default defineSimulation({
   id: 'resonanz',
   animated: true,
   dragHint: true,
+  hint: L(
+    'Ziehen mit Maus oder Finger: den markierten Punkt auf der gestrichelten Linie der Erregerfrequenz im Resonanzdiagramm oder im Diagramm der Phasenverschiebung, nach links oder rechts.',
+    'Drag with the mouse or a finger: the marked point on the dashed driving-frequency line in the resonance graph or the phase-shift graph, to the left or right.',
+  ),
   layout: { aspect: 1.32, aspectNarrow: 0.42 },
   images: { wheel: 'rad.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -90,7 +94,7 @@ export default defineSimulation({
       key: 'fE',
       type: 'number',
       label: L('Erregerfrequenz f_E', 'Driving frequency f_E'),
-      help: L('Drehfrequenz des Motors. Oder: Linie im Resonanzdiagramm ziehen.', 'Rotation frequency of the motor. Or drag the line in the resonance graph.'),
+      help: L('Drehfrequenz des Motors. Oder: Punkt auf der gestrichelten Linie im Resonanzdiagramm ziehen.', 'Rotation frequency of the motor. Or drag the point on the dashed line in the resonance graph.'),
       min: 0.05,
       max: F_MAX,
       step: 0.01,
@@ -130,6 +134,8 @@ export default defineSimulation({
     { id: 'auto', label: L('Resonanzkurve aufnehmen', 'Record resonance curve') },
     { id: 'clear', label: L('Messpunkte löschen', 'Clear data') },
   ],
+  /** Theorie aus: auch die Theorie-Ergebnisse sind verdeckt (Vorhersage aus den Messpunkten). */
+  resultsParam: 'theory',
   readouts: [
     { key: 'f0', label: L('Eigenfrequenz', 'Natural frequency') },
     { key: 'state', label: L('Messung', 'Measurement') },
@@ -176,6 +182,7 @@ export default defineSimulation({
       fR: 'f_[R]',
       fE: 'f_[E] = {f} Hz',
       top: 'f_[E] = {f} Hz · f₀ = 0,50 Hz',
+      f0Only: '<var>f</var>₀ = 0,50 Hz (<var>T</var>₀ = 2,00 s)',
       f0Text: '<var>f</var>₀ = 0,50 Hz (<var>T</var>₀ = 2,00 s); Resonanz bei <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
       ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r}-fach)',
       shiftText: 'Δ<var>φ</var> = arctan <span class="frac"><span>2<var>δω</var><sub>E</sub></span><span><var>ω</var>₀² − <var>ω</var><sub>E</sub>²</span></span> ≈ <strong>{d}°</strong>',
@@ -183,9 +190,9 @@ export default defineSimulation({
       stateSteady: 'eingeschwungen: <var>φ̂</var> = {a}°, Δ<var>φ</var> = {d}° – als Messpunkt eingetragen',
       stateBroken: 'Resonanzkatastrophe: Die Auslenkung hat die Belastungsgrenze von ±120° überschritten. Dämpfung erhöhen oder Erregerfrequenz ändern.',
       stateAuto: 'Messreihe läuft: Punkt {i} von {n}',
-      thF: 'f_E in Hz',
-      thA: 'φ̂ in °',
-      thD: 'Δφ in °',
+      thF: '<var>f</var><sub>E</sub> in Hz',
+      thA: '<var>φ̂</var> in °',
+      thD: 'Δ<var>φ</var> in °',
       none: 'Noch keine Messwerte.',
       over: '> 120',
       now: 't = {t} s · φ = {p}° · φ_E = {e}°',
@@ -219,6 +226,7 @@ export default defineSimulation({
       fR: 'f_[R]',
       fE: 'f_[E] = {f} Hz',
       top: 'f_[E] = {f} Hz · f₀ = 0.50 Hz',
+      f0Only: '<var>f</var>₀ = 0.50 Hz (<var>T</var>₀ = 2.00 s)',
       f0Text: '<var>f</var>₀ = 0.50 Hz (<var>T</var>₀ = 2.00 s); resonance at <var>f</var><sub>R</sub> = √(<var>f</var>₀² − <var>δ</var>²/(2π²)) ≈ {fr} Hz',
       ampText: '<var>φ̂</var> = <var>φ̂</var><sub>E</sub> · <span class="frac"><span><var>ω</var>₀²</span><span>√((<var>ω</var>₀² − <var>ω</var><sub>E</sub>²)² + (2<var>δω</var><sub>E</sub>)²)</span></span> ≈ <strong>{a}°</strong> ({r} times)',
       shiftText: 'Δ<var>φ</var> = arctan <span class="frac"><span>2<var>δω</var><sub>E</sub></span><span><var>ω</var>₀² − <var>ω</var><sub>E</sub>²</span></span> ≈ <strong>{d}°</strong>',
@@ -226,9 +234,9 @@ export default defineSimulation({
       stateSteady: 'steady state: <var>φ̂</var> = {a}°, Δ<var>φ</var> = {d}° – recorded as a data point',
       stateBroken: 'Resonance disaster: the deflection exceeded the load limit of ±120°. Increase the damping or change the driving frequency.',
       stateAuto: 'recording: point {i} of {n}',
-      thF: 'f_E in Hz',
-      thA: 'φ̂ in °',
-      thD: 'Δφ in °',
+      thF: '<var>f</var><sub>E</sub> in Hz',
+      thA: '<var>φ̂</var> in °',
+      thD: 'Δ<var>φ</var> in °',
       none: 'No data yet.',
       over: '> 120',
       now: 't = {t} s · φ = {p}° · φ_E = {e}°',
@@ -245,7 +253,11 @@ export default defineSimulation({
     const eColor = () => ctx.theme.series[2]!;
     const shiftColor = () => ctx.theme.series[4]!;
     const red = () => ctx.theme.series[1]!;
-    const n = (v: number, d: number) => fmt.num(v, d);
+    /** Feste Nachkommastellen (keine weggelassenen Endnullen: „0,500 Hz“, „7,0°“). */
+    const n = (v: number, d: number) => fmt.fixed(v, d);
+    /** Theoretische Kurven sichtbar? (aus mit dem Schalter oder im Aufgabenmodus, bis aufgedeckt) */
+    const showAmpTheory = () => p.theory && !ctx.isHidden('amp');
+    const showShiftTheory = () => p.theory && !ctx.isHidden('shift');
 
     /* ---------- Aufteilung ---------- */
     function computeLayout(): Layout {
@@ -395,10 +407,15 @@ export default defineSimulation({
       ctx.readout('now', tr('now', { t: fmt.fixed(t, 2), p: n(s[0] / DEG, 1), e: n(driveAngle(drive(), t) / DEG, 1) }));
     }
 
+    /** Stand von `ctx.isHidden('amp')` bei der letzten Ausgabe von „Eigenfrequenz“. */
+    let ampHiddenShown = false;
+
     function updateReadouts(): void {
       const d = drive();
       const fr = resonanceOmega(OMEGA0, p.damp) / TAU;
-      ctx.readout('f0', { html: tr('f0Text', { fr: n(fr, 3) }) });
+      // f_R verrät Aufgabe 5: im Aufgabenmodus nur zusammen mit der Theorie-Amplitude
+      ampHiddenShown = ctx.isHidden('amp');
+      ctx.readout('f0', { html: ampHiddenShown ? ctx.t('f0Only') : tr('f0Text', { fr: n(fr, 3) }) });
       const ratio = amplitudeRatio(d.omegaE, OMEGA0, p.damp);
       ctx.readout('amp', { html: tr('ampText', { a: n(p.amp * ratio, 1), r: n(ratio, 2) }) });
       ctx.readout('shift', { html: tr('shiftText', { d: n(phaseShift(d.omegaE, OMEGA0, p.damp) / DEG, 0) }) });
@@ -1029,6 +1046,8 @@ export default defineSimulation({
       richText(ctx.t('phasor'), R0.x + pad, R0.y + (sm ? 13 : 15), sm ? 11 : 12, theme.text, 'left', false);
       const d = drive();
       const shift = clamp(liveShift, -Math.PI, Math.PI);
+      /** Rad-Zeiger nur bei laufender Schwingung (nach der Resonanzkatastrophe ist Δφ bedeutungslos). */
+      const live = !broken && liveAmp > 0.2 * DEG;
       // flache Karte (Handy): Kreis rechts in voller Höhe, Titel und Δφ links
       const wide = R0.w > 1.7 * R0.h;
       const footer = wide ? 6 : sm ? 26 : 30;
@@ -1048,13 +1067,13 @@ export default defineSimulation({
       g.lineTo(cx + R + 4, cy);
       g.stroke();
       const aE = drivePhase(d, t);
-      const aR = aE - (steady || liveAmp > 0.2 * DEG ? shift : 0);
+      const aR = aE - (steady || live ? shift : 0);
       // Zeigerlängen im Verhältnis der Amplituden (der längere füllt den Kreis, der kürzere bleibt sichtbar)
       const q = liveAmp / (p.amp * DEG);
       const lenE = q > 1 ? Math.max(R * 0.16, (R * 0.95) / q) : R * 0.95;
       const lenR = q > 1 ? R * 0.95 : Math.max(R * 0.12, R * 0.95 * q);
       // Winkel zwischen den Zeigern
-      if (liveAmp > 0.2 * DEG && Math.abs(shift) > 2 * DEG) {
+      if (live && Math.abs(shift) > 2 * DEG) {
         const rr = Math.max(10, Math.min(R * 0.42, sm ? 22 : 28, 0.8 * Math.min(lenE, lenR)));
         g.fillStyle = withAlpha(shiftColor(), 0.16);
         g.strokeStyle = shiftColor();
@@ -1069,7 +1088,7 @@ export default defineSimulation({
         g.stroke();
       }
       arrowPx(cx, cy, cx + lenE * Math.cos(aE), cy - lenE * Math.sin(aE), eColor(), sm ? 2.6 : 3, sm ? 9 : 10);
-      if (liveAmp > 0.2 * DEG) arrowPx(cx, cy, cx + lenR * Math.cos(aR), cy - lenR * Math.sin(aR), radColor(), sm ? 2.8 : 3.2, sm ? 9 : 11);
+      if (live) arrowPx(cx, cy, cx + lenR * Math.cos(aR), cy - lenR * Math.sin(aR), radColor(), sm ? 2.8 : 3.2, sm ? 9 : 11);
       g.fillStyle = theme.text;
       g.beginPath();
       g.arc(cx, cy, 2.4, 0, TAU);
@@ -1081,11 +1100,11 @@ export default defineSimulation({
         richText(str, clamp(lx, R0.x + 22, R0.x + R0.w - 22), clamp(ly, R0.y + 26, R0.y + R0.h - footer), sm ? 10.5 : 11.5, color, 'center');
       };
       lab(aE, lenE, ctx.t('erreger'), eColor());
-      if (liveAmp > 0.2 * DEG) lab(aR, lenR, ctx.t('rad'), radColor());
+      if (live) lab(aR, lenR, ctx.t('rad'), radColor());
       // Fußzeile: Phasenverschiebung
       // vorzeichenrichtig wie der Bogen (negativ nur kurz beim Einschwingen: das Rad eilt voraus)
       const dd = shift / DEG;
-      const msg = liveAmp < 0.2 * DEG ? '' : tr('lag', { d: n(dd, 0) });
+      const msg = live ? tr('lag', { d: n(dd, 0) }) : '';
       if (msg && wide) richText(msg, R0.x + pad, R0.y + R0.h - 16, sm ? 12 : 13, shiftColor(), 'left', false);
       else if (msg) richText(msg, cx, R0.y + R0.h - footer / 2 - 2, sm ? 12 : 13, shiftColor(), 'center', false);
     }
@@ -1129,10 +1148,15 @@ export default defineSimulation({
       pill(r.x + r.w - 8, r.y + 8, tr('top', { f: fmt.fixed(p.fE, 2) }), theme.text, 'right', size);
       if (broken) {
         const k = flash.running ? 1 + 0.08 * Math.sin(Math.PI * flash.t) : 1;
+        // langer Text nur, wenn er (mit Pulsieren) in die Szene passt; Pille innerhalb der Szene halten
+        const longW = (richWidth(ctx.t('broken'), size + 1) + 16) * 1.08;
+        const label = ctx.t(sm || longW > r.w - 16 ? 'brokenShort' : 'broken');
+        const half = ((richWidth(label, size + 1) + 16) * 1.08) / 2;
+        const bx = clamp(g0.cx, r.x + 8 + half, r.x + r.w - 8 - half);
         g.save();
-        g.translate(g0.cx, g0.cy);
+        g.translate(bx, g0.cy);
         g.scale(k, k);
-        pill(0, -11, ctx.t(sm ? 'brokenShort' : 'broken'), red(), 'center', size + 1, withAlpha(red(), 0.94));
+        pill(0, -11, label, red(), 'center', size + 1, withAlpha(red(), 0.94));
         g.restore();
       } else if (jumpNote && performance.now() < jumpNote.until) {
         pill(g0.cx, g0.cy + (sm ? 22 : 26), tr('jump', { s: fmt.num(jumpNote.s, 0) }), theme.muted, 'center', size);
@@ -1170,8 +1194,9 @@ export default defineSimulation({
       const p10 = 10 ** Math.floor(Math.log10(rangeT / 1.2));
       const stepY = [5, 2, 1].map((f) => f * p10).find((v) => v <= rangeT / 1.2) ?? p10;
       const ticks = [-2, -1, 1, 2].map((k) => k * stepY).filter((v) => Math.abs(v) < rangeT * 0.95);
-      plot.axes();
       const gutter = plot.px(t0);
+      // läuft das Fenster mit, steht am linken Rand die „0“ der y-Achse: die t-Zahl dort weglassen
+      plot.axes(t0 > 0 ? { blocked: [{ x: gutter - 2, y: plot.py(0), w: 14, h: 22 }] } : undefined);
       if (t0 > 0) plot.vline(t0, { color: theme.axis, width: 1.5 });
       yTicks(plot, gutter, t0 > 0 ? [...ticks, 0] : ticks, 0);
       // Belastungsgrenze
@@ -1232,7 +1257,7 @@ export default defineSimulation({
       const theme = ctx.theme;
       const sm = small();
       const ratioPeak = amplitudeRatio(Math.max(resonanceOmega(OMEGA0, p.damp), 1e-6), OMEGA0, p.damp);
-      const theoryPeak = p.theory ? p.amp * ratioPeak : 0;
+      const theoryPeak = showAmpTheory() ? p.amp * ratioPeak : 0;
       const measured = points.reduce((m, q) => Math.max(m, q.amp / DEG), 0);
       const yMax = niceCeil(Math.max(theoryPeak, measured, liveAmp / DEG, p.amp * 1.5) * 1.12);
       plot.setRangePadded([0, F_MAX], [0, yMax], { left: sm ? 38 : 44, right: 12, top: 30, bottom: 20 });
@@ -1252,7 +1277,7 @@ export default defineSimulation({
         plot.text(F_MAX, 120, ctx.t('limit'), { color: red(), size: 11, weight: 'bold', align: 'right', baseline: 'bottom', offset: [-4, -3] });
       }
       // Theorie
-      if (p.theory) {
+      if (showAmpTheory()) {
         const f = (x: number) => Math.min(yMax * 1.5, p.amp * amplitudeRatio(TAU * x, OMEGA0, p.damp));
         plot.fn(f, { color: radColor(), width: 2.2, from: 0, to: F_MAX, alpha: 0.55 });
       }
@@ -1275,7 +1300,7 @@ export default defineSimulation({
       plot.segment([p.fE, 0], [p.fE, yMax * 2], { color: eColor(), width: 1.6, dash: [5, 4] });
       const r = plot.rect;
       chip(r, plot.px(0) + 6, ctx.t('chipAmp'), radColor());
-      if (!points.length && !p.theory) {
+      if (!points.length && !showAmpTheory()) {
         plot.textPx(r.x + r.w / 2 + 16, r.y + r.h * 0.45, ctx.t('empty'), { color: theme.muted, size: 13, weight: '600', align: 'center' });
         plot.textPx(r.x + r.w / 2 + 16, r.y + r.h * 0.45 + 18, ctx.t('emptyHint'), { color: theme.muted, size: 12, align: 'center' });
       }
@@ -1293,7 +1318,7 @@ export default defineSimulation({
       plot.axes();
       yTicks(plot, plot.px(0), [90, 180], 0, '°');
       plot.segment([F0, 0], [F0, 400], { color: theme.muted, width: 1.2, dash: [4, 4] });
-      if (p.theory) plot.fn((x) => phaseShift(TAU * x, OMEGA0, p.damp) / DEG, { color: shiftColor(), width: 2.2, from: 0, to: F_MAX, alpha: 0.6 });
+      if (showShiftTheory()) plot.fn((x) => phaseShift(TAU * x, OMEGA0, p.damp) / DEG, { color: shiftColor(), width: 2.2, from: 0, to: F_MAX, alpha: 0.6 });
       points.forEach((q, i) => {
         if (q.over) return;
         const last = i === points.length - 1 && pop.running;
@@ -1437,6 +1462,10 @@ export default defineSimulation({
         updateNow();
       },
 
+      hiddenChange() {
+        updateReadouts();
+      },
+
       resetTime() {
         auto = null;
         restart();
@@ -1444,6 +1473,8 @@ export default defineSimulation({
       },
 
       render() {
+        // einzelnes Aufdecken ändert `ctx.hidden` nicht immer: f_R in „Eigenfrequenz“ hängt an der Theorie-Amplitude
+        if (ctx.isHidden('amp') !== ampHiddenShown) updateReadouts();
         const now = performance.now();
         const dt = Math.min(0.1, (now - lastFrame) / 1000);
         lastFrame = now;

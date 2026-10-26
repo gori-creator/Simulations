@@ -25,7 +25,7 @@ Alle Sprünge, die auf demselben Niveau enden, bilden eine **Serie**: Lyman ($n 
 
 **Absorption:** Schickt man weißes Licht durch ein kühles Gas, nehmen die Atome genau die Photonen auf, deren Energie für einen Sprung nach oben passt. Im Spektrum fehlen dann dieselben Farben, die das Gas beim Leuchten aussendet: dunkle **Absorptionslinien** im farbigen Band. So hat Fraunhofer die dunklen Linien im Sonnenspektrum entdeckt.
 
-**Zur Darstellung:** Die Bahnen im Atombild sind ein Modell (wie bei Bohr) und nicht maßstäblich. Für Helium, Natrium und Quecksilber stimmt das einfache Bohr-Modell nicht mehr; die Niveaus stammen dort aus Tabellenwerten. Im Termschema stehen sie in Spalten (s, p, d bzw. Singulett und Triplett), weil nur bestimmte Sprünge vorkommen. Wellenlängen werden auf ganze nm gerundet angezeigt.
+**Zur Darstellung:** Die Bahnen im Atombild sind ein Modell (wie bei Bohr) und nicht maßstäblich. Für Helium, Natrium und Quecksilber stimmt das einfache Bohr-Modell nicht mehr; die Niveaus stammen dort aus Tabellenwerten. Im Termschema stehen sie in Spalten (s, p, d bzw. Singulett und Triplett), weil nur bestimmte Sprünge vorkommen. Wellenlängen stehen im Bild auf ganze nm gerundet, in der Tabelle „Sichtbare Linien“ auf 0,1 nm.
 
 ## Ausprobieren
 
@@ -74,7 +74,7 @@ $\Delta E = \frac{h \cdot c}{\lambda} = \frac{1240\,\text{eV}\cdot\text{nm}}{589
 
 ### Aufgabe 4: Welches Niveau?
 
-Im Quecksilberspektrum leuchtet eine grüne Linie bei $546\,\text{nm}$. Sie entsteht, wenn das Elektron vom Niveau $7^3\text{S}_1$ ($E = -2{,}71\,\text{eV}$) springt. Auf welchem Niveau landet es? Nutze das Termschema. [Aufgabe laden](?el=Hg&u=6&l=4&val=0&_hide=1)
+Im Quecksilberspektrum leuchtet eine grüne Linie bei $546\,\text{nm}$. Sie entsteht, wenn das Elektron vom Niveau $7^3\text{S}_1$ ($E = -2{,}71\,\text{eV}$) springt. Auf welchem Niveau landet es? Nutze das Termschema und prüfe deine Antwort, indem du den passenden Pfeil antippst. [Aufgabe laden](?el=Hg&u=6&l=2&val=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

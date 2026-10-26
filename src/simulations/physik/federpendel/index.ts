@@ -147,6 +147,10 @@ export default defineSimulation({
   id: 'federpendel',
   animated: true,
   dragHint: true,
+  hint: L(
+    'Tipp: Körper oder Zeigerspitze ziehen und loslassen. Diagramm antippen: Zeitmarke setzen.',
+    'Tip: drag the body or the tip of the phasor and let go. Tap a graph to set the time marker.',
+  ),
   layout: { aspect: 1.32, aspectNarrow: 0.46 },
   groups: [
     { id: 'start', label: L('Anfangsbedingung', 'Initial condition') },
@@ -231,7 +235,14 @@ export default defineSimulation({
       default: 'va',
     },
     { key: 'phasor', type: 'boolean', group: 'view', label: L('Zeigerdiagramm', 'Phasor diagram'), default: true },
-    { key: 'per', type: 'boolean', group: 'view', label: L('Periodendauer anzeigen', 'Show the period'), default: true },
+    {
+      key: 'per',
+      type: 'boolean',
+      group: 'view',
+      label: L('Periodendauer anzeigen', 'Show the period'),
+      help: L('Aus: Periodendauer, Momentanwerte und Energiezahlen sind verdeckt (zum Selbstrechnen).', 'Off: period, current values and energy numbers are hidden (to work them out yourself).'),
+      default: true,
+    },
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
   ],
   actions: [
@@ -245,7 +256,7 @@ export default defineSimulation({
     { key: 'law', label: L('Zeit-Elongation-Gesetz', 'Displacement–time law'), spoiler: true },
     { key: 'watch', label: L('Stoppuhr', 'Stopwatch') },
     { key: 'cmp', label: L('Vergleich', 'Comparison'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
   resultsParam: 'per',
   presets: [
@@ -290,7 +301,7 @@ export default defineSimulation({
       pendB: 'B',
       FF: 'F_[F]',
       FG: 'F_[G]',
-      FR: 'F_[R]',
+      FR: 'F_[res]',
       lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
       lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
       eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9,81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> Dehnung; dort gilt <var>F</var><sub>F</sub> = <var>F</var><sub>G</sub>.',
@@ -340,7 +351,7 @@ export default defineSimulation({
       pendB: 'B',
       FF: 'F_[s]',
       FG: 'F_[g]',
-      FR: 'F_[r]',
+      FR: 'F_[net]',
       lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
       lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
       eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9.81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> extension; there <var>F</var><sub>s</sub> = <var>F</var><sub>g</sub>.',
@@ -477,6 +488,8 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Berechnete Werte mit fester Stellenzahl (Endnullen bleiben stehen). */
+    const nf = (v: number, d: number) => fmt.fixed(v, d);
 
     function phiText(): string {
       if (p.phi === 0) return '';
@@ -487,29 +500,29 @@ export default defineSimulation({
     function updateNow(): void {
       const v = view();
       const a = acceleration(v.a, p.m, p.D, p.damp);
-      ctx.readout('now', tr(scrub !== null ? 'nowScrub' : 'now', { t: fmt.fixed(v.t, 2), y: n(v.a[0] * 100, 1), v: n(v.a[1], 2), a: n(a, 2) }));
+      ctx.readout('now', tr(scrub !== null ? 'nowScrub' : 'now', { t: fmt.fixed(v.t, 2), y: nf(v.a[0] * 100, 1), v: nf(v.a[1], 2), a: nf(a, 2) }));
     }
 
     function updateWatch(): void {
       if (watch.state === 'idle') ctx.readout('watch', ctx.t('watchIdle'));
       else if (watch.state === 'run') ctx.readout('watch', tr('watchRun', { t: fmt.fixed(watch.t, 2), n: String(watch.n) }));
       else if (watch.n < 1) ctx.readout('watch', tr('watchNone', { t: fmt.fixed(watch.t, 2) }));
-      else ctx.readout('watch', { html: tr('watchDone', { t: fmt.fixed(watch.t, 2), n: String(watch.n), T: n(watch.t / watch.n, 3) }) + (watch.exact ? '' : `<br>${tr('watchOff', { t: fmt.fixed(watch.t, 2), n: String(watch.n) })}`) });
+      else ctx.readout('watch', { html: tr('watchDone', { t: fmt.fixed(watch.t, 2), n: String(watch.n), T: nf(watch.t / watch.n, 3) }) + (watch.exact ? '' : `<br>${tr('watchOff', { t: fmt.fixed(watch.t, 2), n: String(watch.n) })}`) });
       ctx.setAction('watch', { label: ctx.t(watch.state === 'run' ? 'stopLabel' : 'startLabel'), enabled: !ctx.locked });
     }
 
     function updateReadouts(): void {
       const T = period(p.m, p.D);
       const w = omega0(p.m, p.D);
-      let html = tr('TText', { m: n(p.m, 2), D: n(p.D, 0), T: n(T, 3), f: n(1 / T, 2), w: n(w, 2) });
-      if (p.damp > 0) html += tr('TDamped', { Td: n(dampedPeriod(p.m, p.D, p.damp), 3) });
+      let html = tr('TText', { m: n(p.m, 2), D: n(p.D, 0), T: nf(T, 3), f: nf(1 / T, 2), w: nf(w, 2) });
+      if (p.damp > 0) html += tr('TDamped', { Td: nf(dampedPeriod(p.m, p.D, p.damp), 3) });
       ctx.readout('T', { html });
-      ctx.readout('eq', { html: tr('eqText', { m: n(p.m, 2), D: n(p.D, 0), s: n(equilibriumExtension(p.m, p.D) * 100, 1) }) });
-      if (p.damp > 0) ctx.readout('law', { html: tr('lawDamped', { amp: n(p.amp, 1), d: n(p.damp, 2), w: n(dampedOmega(p.m, p.D, p.damp), 2), phi: phiText() }) });
-      else ctx.readout('law', { html: tr('lawText', { amp: n(p.amp, 1), w: n(w, 2), phi: phiText(), v: n(ampM() * w, 2), a: n(ampM() * w * w, 2) }) });
+      ctx.readout('eq', { html: tr('eqText', { m: n(p.m, 2), D: n(p.D, 0), s: nf(equilibriumExtension(p.m, p.D) * 100, 1) }) });
+      if (p.damp > 0) ctx.readout('law', { html: tr('lawDamped', { amp: n(p.amp, 1), d: n(p.damp, 2), w: nf(dampedOmega(p.m, p.D, p.damp), 2), phi: phiText() }) });
+      else ctx.readout('law', { html: tr('lawText', { amp: n(p.amp, 1), w: nf(w, 2), phi: phiText(), v: nf(ampM() * w, 2), a: nf(ampM() * w * w, 2) }) });
       if (p.cmp) {
         const Tb = period(mB(), DB());
-        ctx.readout('cmp', { html: tr('cmpText', { Tb: n(Tb, 3), r: n(Tb / T, 2) }) });
+        ctx.readout('cmp', { html: tr('cmpText', { Tb: nf(Tb, 3), r: nf(Tb / T, 2) }) });
       } else ctx.readout('cmp', null);
       updateWatch();
       updateNow();
@@ -1190,7 +1203,7 @@ export default defineSimulation({
       const size = sm ? 11 : 12;
       const w1 = pill(r.x + 8, r.y + 8, `t = ${fmt.fixed(v.t, 2)} s`, scrub !== null ? aColor() : theme.text, 'left', size);
       let right = r.x + r.w - 8;
-      if (p.per) {
+      if (p.per && !ctx.isHidden('T')) {
         const label = p.cmp ? tr('TAB', { a: fmt.fixed(period(p.m, p.D), 2), b: fmt.fixed(period(mB(), DB()), 2) }) : tr('T', { T: fmt.fixed(period(p.m, p.D), 2) });
         right -= pill(right, r.y + 8, label, theme.text, 'right', size) + 6;
       }
@@ -1213,9 +1226,10 @@ export default defineSimulation({
       const lx = x + side * 6;
       const fs = sm ? 10.5 : 11.5;
       const s0c = theme.series[2]!;
-      const s0Text = `s_[0] = ${n(q.s0 * 100, 1)} cm`;
+      const s0Text = `s_[0] = ${nf(q.s0 * 100, 1)} cm`;
       // höchste Lage der Oberkante des Körpers: darüber ist Platz für die Beschriftung von s₀
-      const highest = yC - ampM() * g0.k - (vecMode() === 'off' ? 6 : 14);
+      const arrowUp = vecMode() === 'F' ? forceScale(g0, q) * (q.m * 9.81 + q.D * ampM()) + 18 : vecMode() === 'off' ? 6 : 14;
+      const highest = yC - ampM() * g0.k - arrowUp;
       const roomy = highest > yA + (sm ? 40 : 46);
       const head = `${p.cmp ? `${ctx.t(i === 0 ? 'pendA' : 'pendB')}: ` : ''}D = ${n(q.D, 0)} N/m`;
       const hw = richText(head, lx, yA + (sm ? 11 : 13), sm ? 11 : 12, theme.text, align);
@@ -1445,6 +1459,13 @@ export default defineSimulation({
       g.fill();
     }
 
+    /** Pixel pro Newton der Kraftpfeile (größte Federkraft ≤ 46/60 px, Gewichtskraft endet über dem Tisch). */
+    function forceScale(g0: Geo, q: Pend): number {
+      const weight = q.m * 9.81;
+      const room = g0.tableY - 8 - (g0.yEq + ampM() * g0.k - q.mh / 2);
+      return Math.min((g0.small ? 46 : 60) / (weight + q.D * ampM()), Math.max(20, room) / weight);
+    }
+
     function drawVectors(q: Pend, s: State, yc: number): void {
       const mode = vecMode();
       if (mode === 'off') return;
@@ -1473,10 +1494,8 @@ export default defineSimulation({
       // Kräfte: Federkraft und Gewichtskraft (beide an der Oberkante angesetzt, damit die Gewichtskraft
       // auch im unteren Umkehrpunkt über dem Tisch endet) und resultierende Kraft im Schwerpunkt
       const f = forces(s[0], q.m, q.D);
-      const weight = q.m * 9.81;
       const topY = yc - q.mh / 2;
-      const room = g0.tableY - 8 - (g0.yEq + ampM() * g0.k - q.mh / 2);
-      const k = Math.min((sm ? 46 : 60) / (weight + q.D * ampM()), Math.max(20, room) / weight);
+      const k = forceScale(g0, q);
       const red = theme.series[1]!;
       const blue = theme.series[0]!;
       vArrow(x0, topY, topY - f.spring * k, blue, sm ? 2.6 : 3);
@@ -1513,9 +1532,10 @@ export default defineSimulation({
       const stepY = ([5, 2, 1].map((f) => f * p10).find((s) => s <= ymax * (1 + 1e-9)) ?? p10);
       const ticks = [-2, -1, 1, 2].map((k) => k * stepY).filter((yy) => Math.abs(yy) < range * 0.97);
       for (const yy of ticks) plot.hline(yy, { color: theme.grid, width: 1 });
-      plot.axes();
-      if (t0 > 0) plot.vline(t0, { color: theme.axis, width: 1.5 });
       const gutter = plot.px(t0);
+      // Zeitachsen-Zahlen, die die linke Fensterkante berühren, weglassen (sonst halb verdeckt)
+      plot.axes(t0 > 0 ? { blocked: [{ x: gutter - 3, y: plot.rect.y, w: 6, h: plot.rect.h }] } : undefined);
+      if (t0 > 0) plot.vline(t0, { color: theme.axis, width: 1.5 });
       const dec = Math.max(0, -Math.floor(Math.log10(stepY) + 1e-9));
       // eng beieinander: nur den positiven Wert beschriften (die Null steht am Ursprung)
       const tight = Math.abs(plot.py(stepY) - plot.py(0)) < 32;
@@ -1552,9 +1572,19 @@ export default defineSimulation({
       const legend = p.cmp && key === graphs()[0];
       const legW = legend ? 86 : 0;
       const chip: Rect = { x: gutter + 6, y: r.y + 5, w: nameW + legW, h: chipH };
-      if (key === 'y' && p.per && !p.cmp && scrub === null) drawPeriodMark(plot, range, chip.x + chip.w + 6, plot.px(tm) - 64);
-      plot.segment([tm, -range * 2], [tm, range * 2], { color: scrub !== null ? aColor() : theme.muted, width: scrub !== null ? 2 : 1.2, dash: scrub !== null ? [] : [4, 4], alpha: 0.9 });
       const valA = valueOf(key, v.a[0], v.a[1], p.m, p.D);
+      // Wert an der Zeitmarke: im Aufgabenmodus für v und a verdeckt (verrät v̂ und â)
+      const unit = key === 'y' ? 'cm' : key === 'v' ? 'm/s' : 'm/s²';
+      const label = `${nf(valA, key === 'y' ? 1 : 2)} ${unit}`;
+      const showValue = key === 'y' || !ctx.isHidden('now');
+      g.font = `bold ${fsz}px ${theme.font}`;
+      const labW = g.measureText(label).width;
+      const pxm = plot.px(tm);
+      const rightSide = pxm < r.x + r.w - labW - 16;
+      const lx0 = rightSide ? pxm + 8 : pxm - 8 - labW;
+      // Klammer „T“ endet vor dem Wert-Etikett (steht dieses links der Zeitmarke)
+      if (key === 'y' && p.per && !ctx.isHidden('T') && !p.cmp && scrub === null) drawPeriodMark(plot, range, chip.x + chip.w + 6, Math.min(pxm - 64, rightSide ? Infinity : lx0 - 30));
+      plot.segment([tm, -range * 2], [tm, range * 2], { color: scrub !== null ? aColor() : theme.muted, width: scrub !== null ? 2 : 1.2, dash: scrub !== null ? [] : [4, 4], alpha: 0.9 });
       if (p.cmp) plot.point(tm, valueOf(key, v.b[0], v.b[1], mB(), DB()), { color, radius: 4, hollow: true });
       plot.point(tm, valA, { color, radius: 5 });
       // Achsenbeschriftung (und Legende A/B) als Etikett
@@ -1581,14 +1611,7 @@ export default defineSimulation({
         text(g, ctx.t('pendB'), lx + 58, cyc, { font: `700 ${fsz}px ${theme.font}`, color: theme.text, align: 'left' });
       }
       // Wert an der Zeitmarke (weicht dem Etikett aus)
-      const unit = key === 'y' ? 'cm' : key === 'v' ? 'm/s' : 'm/s²';
-      const label = `${n(valA, key === 'y' ? 1 : 2)} ${unit}`.replace(/^-/, '−');
-      g.font = `bold ${fsz}px ${theme.font}`;
-      const labW = g.measureText(label).width;
-      const pxm = plot.px(tm);
       const pyv = plot.py(valA);
-      const rightSide = pxm < r.x + r.w - labW - 16;
-      const lx0 = rightSide ? pxm + 8 : pxm - 8 - labW;
       // Platz der Achsenbeschriftung „t in s“ (rechts über der Zeitachse)
       g.font = `600 13px ${theme.font}`;
       const tW = g.measureText(ctx.t('axisT')).width;
@@ -1602,7 +1625,7 @@ export default defineSimulation({
       let base = valA >= 0 ? pyv - 8 : pyv + fsz + 6;
       if (!fits(base)) base = valA >= 0 ? pyv + fsz + 6 : pyv - 8;
       base = clamp(base, r.y + fsz + 2, r.y + r.h - 4);
-      plot.textPx(lx0, base, label, { color, size: fsz, weight: 'bold', align: 'left' });
+      if (showValue) plot.textPx(lx0, base, label, { color, size: fsz, weight: 'bold', align: 'left' });
       plot.end();
       g.save();
       g.strokeStyle = theme.grid;
@@ -1696,6 +1719,8 @@ export default defineSimulation({
       const scale = bw / Math.max(e0, 1e-9);
       const fs = sm ? 11 : 12;
       const digits = e0 < 0.1 ? 4 : 3;
+      // Aufgabenmodus: Balken bleiben, Zahlen (Lösung von Aufgabe 7) erst nach dem Aufdecken
+      const numbers = !ctx.isHidden('now');
       rows.forEach(([label, value, color], i) => {
         const y = y0 + i * rowH;
         richText(label, bx - 8, y + rowH / 2, fs, theme.muted, 'right', false, 650);
@@ -1705,7 +1730,7 @@ export default defineSimulation({
         g.fillStyle = color;
         roundRect(g, bx, y + 4, Math.max(0, Math.min(bw, value * scale)), rowH - 8, 4);
         g.fill();
-        text(g, `${fmt.num(value, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `600 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
+        if (numbers) text(g, `${nf(value, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `600 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
       });
       // Summe als gestapelter Balken
       const y = y0 + rows.length * rowH;
@@ -1731,10 +1756,10 @@ export default defineSimulation({
       g.lineWidth = 1;
       roundRect(g, bx + 0.5, y + 3.5, bw - 1, rowH - 7, 4);
       g.stroke();
-      text(g, `${fmt.num(sum, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `700 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
-      if (p.damp > 0) {
+      if (numbers) text(g, `${nf(sum, digits)} J`, bx + bw + 6, y + rowH / 2, { font: `700 ${fs}px ${theme.font}`, color: theme.text, align: 'left' });
+      if (p.damp > 0 && numbers) {
         // Legende: innere Energie (durch Reibung umgewandelt)
-        const lbl = `${ctx.t('eLoss')}: ${fmt.num(loss, digits)} J`;
+        const lbl = `${ctx.t('eLoss')}: ${nf(loss, digits)} J`;
         g.font = `600 ${fs - 1}px ${theme.font}`;
         const lw2 = g.measureText(lbl).width;
         const lx = R0.x + R0.w - pad - lw2;

@@ -14,6 +14,8 @@ import {
 
 const DEG = Math.PI / 180;
 const drive = (fE: number, delta: number, ampDeg = 5): Drive => ({ ampE: ampDeg * DEG, omegaE: 2 * Math.PI * fE, delta, omega0: OMEGA0 });
+/** Eingeschwungene Amplitude in Grad. */
+const deg = (fE: number, delta: number, amp = 5) => steadyAmplitude(drive(fE, delta, amp)) / DEG;
 
 describe('Modell: Erzwungene Schwingung (Pohlsches Rad)', () => {
   it('Eigenfrequenz f₀ = 0,5 Hz', () => {
@@ -81,5 +83,70 @@ describe('Modell: Erzwungene Schwingung (Pohlsches Rad)', () => {
     expect(res.t).toBeLessThan(20);
     const calm = integrate(drive(0.5, 0.5, 10), 0, [0, 0], 60, 0.002, 120 * DEG);
     expect(calm.exceeded).toBe(false);
+  });
+
+  it('Werte der Anzeige und der Aufgaben (von Hand nachgerechnet)', () => {
+    const shiftDeg = (fE: number, delta: number) => phaseShift(2 * Math.PI * fE, OMEGA0, delta) / DEG;
+    // Start: f_E = 0,3 Hz, δ = 0,25 1/s → 7,7° (1,55-fach), Δφ ≈ 8°
+    expect(amplitudeRatio(2 * Math.PI * 0.3, OMEGA0, 0.25)).toBeCloseTo(1.5454, 3);
+    expect(shiftDeg(0.3, 0.25)).toBeCloseTo(8.49, 1);
+    // Schnelle Erregung f_E = 1 Hz → 1,7°, Δφ ≈ 174°
+    expect(deg(1, 0.25)).toBeCloseTo(1.657, 2);
+    expect(shiftDeg(1, 0.25)).toBeCloseTo(173.94, 1);
+    // Aufgabe 2: f_E = 1,5 Hz → etwa 0,6°
+    expect(deg(1.5, 0.25)).toBeCloseTo(0.624, 2);
+    // Aufgabe 4: δ > 10° · π / 240° ≈ 0,131 1/s; bei δ = 0,16 1/s etwa 98°
+    expect((10 * Math.PI) / 240).toBeCloseTo(0.1309, 4);
+    expect(deg(0.5, 0.16, 10)).toBeCloseTo(98.17, 1);
+    expect(deg(0.5, 0.13, 10)).toBeGreaterThan(120);
+    // Aufgabe 5 und Anzeige f_R: δ = 0,25 → 0,497 Hz, δ = 1 → 0,446 Hz
+    expect(resonanceOmega(OMEGA0, 0.25) / (2 * Math.PI)).toBeCloseTo(0.49683, 4);
+    expect(resonanceOmega(OMEGA0, 1) / (2 * Math.PI)).toBeCloseTo(0.44648, 4);
+    // Resonanzkatastrophe-Beispiel: Theorie 523,6°
+    expect(deg(0.5, 0.03, 10)).toBeCloseTo(523.6, 1);
+  });
+
+  it('Halbwertsbreite bei schwacher Dämpfung: Δf ≈ δ/π', () => {
+    const delta = 0.05;
+    const peak = amplitudeRatio(resonanceOmega(OMEGA0, delta), OMEGA0, delta);
+    const target = peak / Math.SQRT2;
+    // Grenzen links und rechts per Bisektion
+    const edge = (lo: number, hi: number, rising: boolean) => {
+      for (let i = 0; i < 80; i++) {
+        const mid = (lo + hi) / 2;
+        const above = amplitudeRatio(mid, OMEGA0, delta) > target;
+        if (above === rising) hi = mid;
+        else lo = mid;
+      }
+      return (lo + hi) / 2;
+    };
+    const w1 = edge(0.5 * OMEGA0, OMEGA0, true);
+    const w2 = edge(OMEGA0, 1.5 * OMEGA0, false);
+    expect((w2 - w1) / (2 * Math.PI)).toBeCloseTo(delta / Math.PI, 3);
+  });
+
+  it('Sonderfälle und Reglergrenzen', () => {
+    // ohne Dämpfung: Resonanz genau bei ω₀, Amplitude dort unendlich (Regler erlaubt δ ≥ 0,03)
+    expect(resonanceOmega(OMEGA0, 0)).toBeCloseTo(OMEGA0, 12);
+    expect(amplitudeRatio(OMEGA0, OMEGA0, 0)).toBe(Infinity);
+    // f_E → 0: Rad folgt dem Erreger (Verhältnis 1, Phase 0)
+    expect(amplitudeRatio(0, OMEGA0, 0.25)).toBe(1);
+    expect(phaseShift(0, OMEGA0, 0.25)).toBe(0);
+    // f_E ≫ f₀: Amplitude ∝ 1/ω_E², Phase → 180°
+    expect(amplitudeRatio(100 * OMEGA0, OMEGA0, 0.25)).toBeCloseTo(1 / (100 ** 2 - 1), 6);
+    // Reglergrenzen: f_E 0,05 … 1,5 Hz, δ 0,03 … 1,5 1/s, φ̂_E 2 … 15° – alles endlich, Phase in [0; π]
+    for (const fE of [0.05, 0.5, 1.5])
+      for (const delta of [0.03, 1.5])
+        for (const amp of [2, 15]) {
+          const a = deg(fE, delta, amp);
+          expect(Number.isFinite(a)).toBe(true);
+          const ph = phaseShift(2 * Math.PI * fE, OMEGA0, delta);
+          expect(ph).toBeGreaterThanOrEqual(0);
+          expect(ph).toBeLessThanOrEqual(Math.PI);
+        }
+    // größte Dämpfung δ = 1,5 1/s < ω₀/√2 ≈ 2,22 1/s: Maximum existiert noch, bei √(π² − 4,5)/(2π) ≈ 0,369 Hz
+    expect(resonanceOmega(OMEGA0, 1.5) / (2 * Math.PI)).toBeCloseTo(0.3688, 3);
+    // ab δ ≥ ω₀/√2 gibt es kein Maximum mehr
+    expect(resonanceOmega(OMEGA0, OMEGA0 / Math.SQRT2 + 1e-9)).toBe(0);
   });
 });

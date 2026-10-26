@@ -138,7 +138,9 @@ describe('Modell: Linienspektren und Energieniveaus', () => {
     expect(wavelengthToRgb(900)).toBeNull();
     expect(colorNameOf(589)).toBe('yellow');
     expect(colorNameOf(410)).toBe('violet');
-    expect(colorNameOf(486)).toBe('blue');
+    expect(colorNameOf(486)).toBe('cyan'); // Hβ: blaugrün wie im Unterricht
+    expect(colorNameOf(470)).toBe('blue');
+    expect(colorNameOf(434)).toBe('blue'); // Hγ
     expect(colorNameOf(500)).toBe('cyan');
   });
 
@@ -160,5 +162,57 @@ describe('Modell: Linienspektren und Energieniveaus', () => {
       }
     }
   });
-});
 
+  it('Sonderfälle: zu große Nummern, gleiche Niveaus, unteres über oberem', () => {
+    const H = ELEMENTS.H;
+    // Regler bis 10, Wasserstoff hat 6 Niveaus: höchstes Niveau statt Lyman-α
+    expect(resolveTransition(H, 10, 9)).toMatchObject({ u: 6, l: 5 });
+    expect(resolveTransition(H, 7, 2)).toMatchObject({ u: 6, l: 2 });
+    // gleiche Niveaus bzw. l > u: hellste Linie vom oberen Niveau
+    expect(resolveTransition(H, 3, 3)).toMatchObject({ u: 3, l: 2 });
+    expect(resolveTransition(H, 3, 5)).toMatchObject({ u: 3, l: 2 });
+    for (const id of ELEMENT_IDS) {
+      const el = ELEMENTS[id];
+      for (let u = 2; u <= 10; u++)
+        for (let l = 1; l <= 9; l++) {
+          const t = resolveTransition(el, u, l);
+          expect(isAllowed(el, t.u, t.l)).toBe(true);
+        }
+    }
+  });
+
+  it('Seriengrenzen und Ionisierung: Balmer 365 nm, Lyman 91 nm, Linien rücken zusammen', () => {
+    // n → ∞: ΔE = 0 − E_l
+    expect(wavelengthOf(-hydrogenEnergy(2))).toBeCloseTo(364.7, 1);
+    expect(wavelengthOf(-hydrogenEnergy(1))).toBeCloseTo(91.2, 1);
+    expect(rydbergWavelength(1e9, 2)).toBeCloseTo(364.7, 1);
+    // Balmer-Linien werden kürzer und nähern sich der Grenze, Abstände schrumpfen
+    const b = [3, 4, 5, 6, 7, 8].map((u) => rydbergWavelength(u, 2));
+    for (let i = 1; i < b.length; i++) {
+      expect(b[i]!).toBeLessThan(b[i - 1]!);
+      expect(b[i]!).toBeGreaterThan(364.7);
+    }
+    expect(b[4]! - b[5]!).toBeLessThan(b[0]! - b[1]!);
+    // Paschen-Grenze im IR
+    expect(regionOf(wavelengthOf(-hydrogenEnergy(3)))).toBe('ir');
+  });
+
+  it('Lösungen der Aufgaben im Lernmaterial', () => {
+    // Aufgabe 1: Hβ
+    const hb = lineOf(ELEMENTS.H, 4, 2);
+    expect(hb.dE).toBeCloseTo(2.55, 2);
+    expect(joule(hb.dE) / 1e-19).toBeCloseTo(4.09, 2);
+    expect(hb.f / 1e14).toBeCloseTo(6.17, 2);
+    expect(Math.round(hb.lambda)).toBe(486);
+    // Aufgabe 2: Lyman-α ≈ 122 nm
+    expect(Math.round(lam('H', 2, 1))).toBe(122);
+    // Aufgabe 3: Na-D 2,10 eV
+    expect(lineOf(ELEMENTS.Na, 2, 1).dE).toBeCloseTo(2.1, 2);
+    // Aufgabe 4: Hg 546 nm vom Niveau 7³S₁ (−2,71 eV) nach 6³P₂ (−4,98 eV)
+    const hg = ELEMENTS.Hg;
+    expect(hg.levels[5]!.label).toBe('7³S₁');
+    expect(hg.levels[5]!.E).toBeCloseTo(-2.71, 2);
+    expect(hg.levels[3]!.label).toBe('6³P₂');
+    expect(hg.levels[3]!.E).toBeCloseTo(-2.71 - energyOf(546), 1);
+  });
+});

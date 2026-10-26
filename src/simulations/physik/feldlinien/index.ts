@@ -1,5 +1,5 @@
 import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { fieldAt, lineCount, plateField, potentialAt, traceLine, type Charge } from './model';
+import { chargeAt, fieldAt, lineCount, plateField, pointField, potentialAt, traceLine, type Charge } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const TAU = 2 * Math.PI;
@@ -44,6 +44,10 @@ export default defineSimulation({
   id: 'feldlinien',
   animated: true,
   dragHint: true,
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'plates'
+      ? L('Tipp: Ziehe die Probeladung q₀ zwischen den Platten hin und her.', 'Tip: drag the test charge q₀ between the plates.')
+      : L('Tipp: Ziehe die Ladungen und die Probeladung q₀ mit Maus oder Finger.', 'Tip: drag the charges and the test charge q₀ with the mouse or a finger.'),
   layout: { aspect: 1.55, aspectNarrow: 0.62 },
   groups: [
     { id: 'charges', label: L('Ladungen', 'Charges') },
@@ -115,6 +119,10 @@ export default defineSimulation({
       Ei: '<var>E</var><sub>{i}</sub> = <var>k</var> · <span class="frac"><span>|<var>Q</var><sub>{i}</sub>|</span><span><var>r</var><sub>{i}</sub><sup>2</sup></span></span> = 8,99 · 10<sup>9</sup> <span class="frac"><span>N m<sup>2</sup></span><span>C<sup>2</sup></span></span> · <span class="frac"><span>{q} · 10<sup>−9</sup> C</span><span>({r} m)<sup>2</sup></span></span> = {E} N/C ({dir})',
       away: 'weg von Q<sub>{i}</sub>',
       toward: 'hin zu Q<sub>{i}</sub>',
+      zeroQ: '<var>Q</var><sub>{i}</sub> = 0: kein Beitrag',
+      Ezero: '{list}<br>Vektorsumme: <strong><var>E</var> = 0 N/C</strong>: Die Einzelfelder heben sich auf (feldfreier Punkt), keine Kraft auf die Probeladung.',
+      onCharge: 'Die Probeladung sitzt genau auf <var>Q</var><sub>{i}</sub>: Der Abstand ist <var>r</var> = 0, dort ist die Feldstärke nicht definiert (Division durch 0). Verschiebe die Probeladung.',
+      onChargeS: 'r = 0: E nicht definiert',
       Eplates: '<var>E</var> = <span class="frac"><span><var>U</var></span><span><var>d</var></span></span> = <span class="frac"><span>{U} V</span><span>{d} m</span></span> = <strong>{E} N/C</strong> (überall zwischen den Platten gleich)',
       F: '<var>F</var> = <var>q</var><sub>0</sub> · <var>E</var> = 1 · 10<sup>−9</sup> C · {E} N/C = <strong>{F} µN</strong>, in Richtung von <var>E</var> (positive Probeladung)',
       phi: 'Potential bei der Probeladung: <var>φ</var> = Σ <var>k</var> · <var>Q</var><sub><var>i</var></sub> / <var>r</var><sub><var>i</var></sub> = <strong>{V} V</strong> (Bezug: unendlich fern)',
@@ -142,6 +150,10 @@ export default defineSimulation({
       Ei: '<var>E</var><sub>{i}</sub> = <var>k</var> · <span class="frac"><span>|<var>Q</var><sub>{i}</sub>|</span><span><var>r</var><sub>{i}</sub><sup>2</sup></span></span> = 8.99 · 10<sup>9</sup> <span class="frac"><span>N m<sup>2</sup></span><span>C<sup>2</sup></span></span> · <span class="frac"><span>{q} · 10<sup>−9</sup> C</span><span>({r} m)<sup>2</sup></span></span> = {E} N/C ({dir})',
       away: 'away from Q<sub>{i}</sub>',
       toward: 'towards Q<sub>{i}</sub>',
+      zeroQ: '<var>Q</var><sub>{i}</sub> = 0: no contribution',
+      Ezero: '{list}<br>Vector sum: <strong><var>E</var> = 0 N/C</strong>: the single fields cancel (field-free point), no force on the test charge.',
+      onCharge: 'The test charge sits exactly on <var>Q</var><sub>{i}</sub>: the distance is <var>r</var> = 0, the field strength is not defined there (division by zero). Move the test charge.',
+      onChargeS: 'r = 0: E not defined',
       Eplates: '<var>E</var> = <span class="frac"><span><var>U</var></span><span><var>d</var></span></span> = <span class="frac"><span>{U} V</span><span>{d} m</span></span> = <strong>{E} N/C</strong> (the same everywhere between the plates)',
       F: '<var>F</var> = <var>q</var><sub>0</sub> · <var>E</var> = 1 · 10<sup>−9</sup> C · {E} N/C = <strong>{F} µN</strong>, in the direction of <var>E</var> (positive test charge)',
       phi: 'Potential at the test charge: <var>φ</var> = Σ <var>k</var> · <var>Q</var><sub><var>i</var></sub> / <var>r</var><sub><var>i</var></sub> = <strong>{V} V</strong> (zero at infinity)',
@@ -157,6 +169,8 @@ export default defineSimulation({
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
     const n = (v: number, d: number) => fmt.num(v, d);
     const fx = (v: number, d: number) => fmt.fixed(v, d);
+    /** Kraft in µN: 2 Nachkommastellen, ab 100 µN ganzzahlig (keine Scheingenauigkeit wie „125,00 µN“). */
+    const fFmt = (v: number) => (v >= 99.995 ? n(Math.round(v), 0) : v >= 9.995 ? fx(v, 1) : fx(v, 2));
     const blue = () => ctx.theme.series[0]!;
     const red = () => ctx.theme.series[1]!;
     const green = () => ctx.theme.series[2]!;
@@ -271,8 +285,11 @@ export default defineSimulation({
       cs.forEach((c, i) => {
         if (c.q <= 0) return;
         const m = lineCount(c.q);
+        // Liegen gleichnamige Ladungen übereinander, Startwinkel versetzen (sonst decken sich die Linien)
+        const same = cs.slice(0, i).filter((o) => o.q > 0 && Math.hypot(o.x - c.x, o.y - c.y) < 0.005).length;
+        const phase = 0.5 + ([0, 0.5, 0.25][same] ?? 0);
         for (let j = 0; j < m; j++) {
-          const a = (TAU * (j + 0.5)) / m;
+          const a = (TAU * (j + phase)) / m;
           const res = traceLine(cs, c.x + Math.cos(a) * r0, c.y + Math.sin(a) * r0, i, opts);
           withLen(res.points.map(([x, y]) => [x * 100, y * 100]));
           if (res.end >= 0) {
@@ -525,6 +542,9 @@ export default defineSimulation({
 
     /* ---------- Szene ---------- */
     let lastGeo: Geo | null = null;
+    /** Belegte Flächen (Ladungen und ihre Beschriftungen) im aktuellen Bild, damit die E-Pille sie nicht verdeckt. */
+    let obstacles: Rect[] = [];
+    const overlap = (a: Rect, b: Rect) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
     let grab: Grab | null = null;
     let hover: Grab | null = null;
 
@@ -623,6 +643,7 @@ export default defineSimulation({
       const y = Y(G, c.y);
       const r = (G.sm ? 11 : 14) * (0.75 + 0.25 * Math.min(1, Math.sqrt(Math.abs(c.q) / 2))) * pop;
       if (r < 0.5) return;
+      obstacles.push({ x: x - r - 2, y: y - r - 2, w: 2 * r + 4, h: 2 * r + 4 });
       const col = c.q > 0 ? red() : c.q < 0 ? blue() : theme.muted;
       const hot = hover === (`c${idx}` as Grab) || grab === (`c${idx}` as Grab);
       if (hot && !ctx.locked) {
@@ -663,6 +684,7 @@ export default defineSimulation({
           .some((o) => Math.abs(X(G, o.x * 100) - x) < lw && Math.abs(Y(G, o.y * 100) - y) < 30);
         const ly = clash ? y - r - (G.sm ? 11 : 13) : y + r + (G.sm ? 11 : 13);
         textAt(lab, x, ly, G.sm ? 10.5 : 11.5, col, 'center', 750, haloCol());
+        obstacles.push({ x: x - lw / 2, y: ly - 8, w: lw, h: 16 });
       }
     }
 
@@ -690,7 +712,9 @@ export default defineSimulation({
         g.restore();
         for (let i = 0; i < 7; i++) {
           const y = Y(G, -PLATE_H / 2 + 1.5 + ((PLATE_H - 3) * i) / 6);
-          textAt(sign, x - side * (t + 8), y, G.sm ? 13 : 15, col, 'center', 800);
+          // Zeichen innen an der Platte; bei engem Spalt außen, damit sich + und − nicht berühren
+          const inner = p.d * G.k > 2 * (t + 8) + 24;
+          textAt(sign, x + (inner ? -1 : 1) * side * (t + 8), y, G.sm ? 13 : 15, col, 'center', 800);
         }
       }
       // Spannung und Abstand
@@ -705,6 +729,7 @@ export default defineSimulation({
       g.restore();
     }
 
+    const r0Probe = 9;
     function drawProbe(G: Geo, ik: number): void {
       const a = ease2('probeA', p.probe ? 1 : 0, 7) * ik;
       if (a < 0.01) {
@@ -737,9 +762,36 @@ export default defineSimulation({
         if (capped) textAt('≫', x + ux * (len + 12), y + uy * (len + 12), 13, orange(), 'center', 800, haloCol());
         if (p.val) {
           const lab = `E = ${n(Math.round(m), 0)} N/C`;
-          const lx = clamp(x + ux * len * 0.5 + (Math.abs(uy) > 0.7 ? 12 : 0), G.r.x + 8, G.r.x + G.r.w - 8 - richWidth(lab, 12) - 16);
-          const ly = clamp(y + uy * len * 0.5 - (Math.abs(uy) > 0.7 ? 0 : 26), G.r.y + 40, G.r.y + G.r.h - 30);
-          pill(lx, ly, lab, orange(), 'left', G.sm ? 10.5 : 12);
+          const size = G.sm ? 10.5 : 12;
+          const pw = richWidth(lab, size) + 16;
+          const ph = size + 11;
+          // Kandidaten: neben der Pfeilmitte, sonst über/unter/links/rechts der Probeladung;
+          // gewählt wird der erste, der weder Ladungen noch Beschriftungen, q₀ oder den Pfeil verdeckt.
+          const mx = x + ux * len * 0.5;
+          const my = y + uy * len * 0.5;
+          const steep = Math.abs(uy) > 0.7;
+          const cands: [number, number][] = [
+            [mx + (steep ? 12 : 0), my - (steep ? 0 : 26)],
+            [mx + (steep ? 12 : 0), my + (steep ? 0 : 8)],
+            [mx - pw - 12, my - ph / 2],
+            [x - pw / 2, y - r0Probe - ph - 22],
+            [x - pw / 2, y + r0Probe + 10],
+            [x + 16, y - ph / 2],
+            [x - pw - 16, y - ph / 2],
+          ];
+          const probeBox: Rect = { x: x - 30, y: y - 24, w: 42, h: 36 };
+          let best: Rect | null = null;
+          for (const [cx0, cy0] of cands) {
+            const rc: Rect = { x: clamp(cx0, G.r.x + 8, G.r.x + G.r.w - 8 - pw), y: clamp(cy0, G.r.y + 40, G.r.y + G.r.h - 30), w: pw, h: ph };
+            best ??= rc;
+            const onArrow = [0.2, 0.4, 0.6, 0.8, 1].some((t) => overlap(rc, { x: x + ux * len * t, y: y + uy * len * t, w: 0, h: 0 }));
+            const blocked = onArrow || [...obstacles, probeBox].some((o) => overlap(rc, o));
+            if (!blocked) {
+              best = rc;
+              break;
+            }
+          }
+          pill(best!.x, best!.y, lab, orange(), 'left', size);
         }
       }
       const hot = hover === 'probe' || grab === 'probe';
@@ -825,6 +877,7 @@ export default defineSimulation({
         drawEqui(G, cache, eqA);
         drawLines(G, cache, ik, grow);
       }
+      obstacles = [];
       if (isPlates()) drawPlates(G, ik);
       else
         charges().forEach((c, i) => {
@@ -883,13 +936,14 @@ export default defineSimulation({
         const out = m > 0 ? '' : ctx.lang === 'de' ? '(außen) ' : '(outside) ';
         textAt(`${out}E(q₀) = ${v ? n(Math.round(m), 0) : '?'} N/C`, R.x + pad, y, fs, theme.text, 'left', 700);
         y += lh;
-        textAt(`F = q₀ · E = ${v ? fx(m * Q0 * 1e6, 2) : '?'} µN`, R.x + pad, y, fs, theme.text, 'left', 700);
+        textAt(`F = q₀ · E = ${v ? fFmt(m * Q0 * 1e6) : '?'} µN`, R.x + pad, y, fs, theme.text, 'left', 700);
       } else {
         textAt('E = k · |Q| / r²', R.x + pad, y, fs + 2, theme.text, 'left', 750);
         y += lh + 2;
+        const on = chargeAt(charges(), px, py) >= 0;
         charges().forEach((c, i) => {
           const r = Math.hypot(px - c.x, py - c.y);
-          const Ei = r > 1e-6 ? (8.9875517923e9 * Math.abs(c.q)) / (r * r) : Infinity;
+          const Ei = pointField(c.q, r);
           const col = c.q > 0 ? red() : c.q < 0 ? blue() : theme.muted;
           let lab = `E${['₁', '₂', '₃'][i]} = ${v && Number.isFinite(Ei) ? n(Math.round(Ei), 0) : '?'} N/C  (r = ${fx(r * 100, 1)} cm)`;
           let s = fs;
@@ -905,17 +959,23 @@ export default defineSimulation({
         g.lineTo(R.x + R.w - pad, y - lh / 2);
         g.stroke();
         y += 4;
-        textAt(`E = ${v ? n(Math.round(m), 0) : '?'} N/C`, R.x + pad, y, fs + 4, orange(), 'left', 800);
-        y += lh + 2;
-        const ang = (Math.atan2(ey, ex) * 180) / Math.PI;
-        if (v) textAt(tr('dirL', { a: n(Math.round(ang), 0) }), R.x + pad, y, fs, theme.muted, 'left', 650);
-        y += lh;
-        textAt(`F = q₀ · E = ${v ? fx(m * Q0 * 1e6, 2) : '?'} µN`, R.x + pad, y, fs, theme.text, 'left', 700);
+        if (on) {
+          // r = 0: Feldstärke nicht definiert (Division durch 0)
+          textAt(ctx.t('onChargeS'), R.x + pad, y, fs + 2, orange(), 'left', 800);
+          y += 2 * lh + 2;
+        } else {
+          textAt(`E = ${v ? n(Math.round(m), 0) : '?'} N/C`, R.x + pad, y, fs + 4, orange(), 'left', 800);
+          y += lh + 2;
+          const ang = (Math.atan2(ey, ex) * 180) / Math.PI;
+          if (v && m >= 0.5) textAt(tr('dirL', { a: n(Math.round(ang), 0) }), R.x + pad, y, fs, theme.muted, 'left', 650);
+          y += lh;
+          textAt(`F = q₀ · E = ${v ? fFmt(m * Q0 * 1e6) : '?'} µN`, R.x + pad, y, fs, theme.text, 'left', 700);
+        }
         y += lh;
         // Vektoraddition: Einzelfelder aneinandergehängt, Summe in Orange
         const boxTop = y + 4;
         const boxBot = R.y + R.h - (sm ? 34 : 42) - (p.heat ? 30 : 0);
-        if (boxBot - boxTop > 90 && m > 1) drawVectorSum({ x: R.x + pad, y: boxTop, w: R.w - 2 * pad, h: boxBot - boxTop }, px, py, sm);
+        if (boxBot - boxTop > 90 && m > 1 && !on) drawVectorSum({ x: R.x + pad, y: boxTop, w: R.w - 2 * pad, h: boxBot - boxTop }, px, py, sm);
       }
       // Farbskala der Feldstärke
       const hA = ease2('heatA2', p.heat ? 1 : 0, 6);
@@ -1007,18 +1067,29 @@ export default defineSimulation({
         const s = p.d / 2 - p.px;
         ctx.readout('phi', { html: inside ? tr('phiPlates', { V: n(Math.round(plateField(p.U, p.d / 100) * (s / 100)), 0), s: fx(s, 1) }) : ctx.t('phiOut') });
       } else {
-        const list = charges()
+        const cs = charges();
+        // Probeladung genau auf einer Ladung: r = 0, Feldstärke nicht definiert
+        const on = chargeAt(cs, px, py);
+        if (on >= 0) {
+          ctx.readout('E', { html: tr('onCharge', { i: String(on + 1) }) });
+          ctx.readout('F', null);
+          ctx.readout('phi', null);
+          return;
+        }
+        const list = cs
           .map((c, i) => {
+            if (c.q === 0) return tr('zeroQ', { i: String(i + 1) });
             const r = Math.hypot(px - c.x, py - c.y);
-            const Ei = (8.9875517923e9 * Math.abs(c.q)) / (r * r);
-            const dir = tr(c.q >= 0 ? 'away' : 'toward', { i: String(i + 1) });
+            const Ei = pointField(c.q, r);
+            const dir = tr(c.q > 0 ? 'away' : 'toward', { i: String(i + 1) });
             return tr('Ei', { i: String(i + 1), q: n(Math.abs(c.q) / NC, 1), r: fx(r, 3), E: n(Math.round(Ei), 0), dir });
           })
           .join('<br>');
-        ctx.readout('E', { html: tr('E', { list, E: n(Math.round(m), 0), a: n(Math.round(ang), 0) }) });
-        ctx.readout('phi', { html: tr('phi', { V: n(Math.round(potentialAt(charges(), px, py)), 0) }) });
+        // Betrag unter 0,5 N/C wird als 0 angezeigt: dann ist keine Richtung sinnvoll
+        ctx.readout('E', { html: m < 0.5 ? tr('Ezero', { list }) : tr('E', { list, E: n(Math.round(m), 0), a: n(Math.round(ang), 0) }) });
+        ctx.readout('phi', { html: tr('phi', { V: n(Math.round(potentialAt(cs, px, py)), 0) }) });
       }
-      ctx.readout('F', { html: tr('F', { E: n(Math.round(m), 0), F: fx(m * Q0 * 1e6, 2) }) });
+      ctx.readout('F', { html: tr('F', { E: n(Math.round(m), 0), F: fFmt(m * Q0 * 1e6) }) });
     }
 
     /* ---------- Ziehen ---------- */

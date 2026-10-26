@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, withUnit, type Rect } from '../../../sim-core';
 import {
   arrivals,
   C_AIR,
@@ -73,7 +73,7 @@ interface Snap {
 export default defineSimulation({
   id: 'doppler-effekt',
   animated: true,
-  dragHint: true,
+  hint: L('Tipp: Den Beobachter (grün) im Bild mit Maus oder Finger ziehen – das ändert Abstand und Standort.', 'Tip: drag the observer (green) in the picture with the mouse or a finger – this changes the distance and position.'),
   layout: { aspect: 1.25, aspectNarrow: 0.56 },
   images: { road: 'strasse.webp', ambulance: 'krankenwagen.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -83,7 +83,13 @@ export default defineSimulation({
       key: 'vq',
       type: 'number',
       label: L('Geschwindigkeit der Quelle v_Q', 'Source speed v_Q'),
-      help: L('34 m/s ≈ 122 km/h. Ab c = 340 m/s ist die Quelle schneller als ihr Schall.', '34 m/s ≈ 122 km/h. From c = 340 m/s on the source is faster than its sound.'),
+      help: (v) => {
+        const vq = Number(v.vq);
+        const kmh = `${vq} m/s ≈ ${Math.round(vq * 3.6)} km/h. `;
+        if (vq < C_AIR) return L(`${kmh}Schallgeschwindigkeit: c = 340 m/s.`, `${kmh}Speed of sound: c = 340 m/s.`);
+        if (vq === C_AIR) return L(`${kmh}Genau Schallgeschwindigkeit (Ma = 1).`, `${kmh}Exactly the speed of sound (Ma = 1).`);
+        return L(`${kmh}Schneller als der Schall (c = 340 m/s).`, `${kmh}Faster than sound (c = 340 m/s).`);
+      },
       min: 0,
       max: 700,
       step: 1,
@@ -179,6 +185,7 @@ export default defineSimulation({
       hiddenSub: 'Wert ausgeblendet',
       second: '+ rückwärts: {f} Hz',
       radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
+      radialQ: 'v_[Q,r] = {q} m/s',
       fQ: 'f_[Q]',
       fV: 'f_[v]',
       fH: 'f_[h]',
@@ -199,8 +206,10 @@ export default defineSimulation({
       machOne: '<var>Ma</var> = 1: Die Quelle fährt genau mit Schallgeschwindigkeit. Die Wellenfronten stauen sich vor ihr zur „Schallmauer“.',
       machSuper:
         '<var>Ma</var> = <span class="frac"><span><var>v</var><sub>Q</sub></span><span><var>c</var></span></span> = {m} &gt; 1: Machscher Kegel mit sin <var>α</var> = <span class="frac"><span><var>c</var></span><span><var>v</var><sub>Q</sub></span></span> = {s}, also <var>α</var> = <strong>{a}°</strong>. Wo der Kegel vorbeizieht, hört man den Überschallknall.',
-      now: 't = {t} s · Abstand {r} m · f_B = {f} Hz',
-      nowSilent: 't = {t} s · noch Stille beim Beobachter',
+      now: '<var>t</var> = {t} s · Abstand {r} m · <var>f</var><sub>B</sub> = {f} Hz',
+      lowWord: 'tiefer',
+      highWord: 'höher',
+      nowSilent: '<var>t</var> = {t} s · noch Stille beim Beobachter',
       sndOn: 'Ton anhören',
       sndOff: 'Ton aus',
     },
@@ -245,6 +254,7 @@ export default defineSimulation({
       hiddenSub: 'value hidden',
       second: '+ backwards: {f} Hz',
       radial: 'v_[Q,r] = {q} m/s · v_[B,r] = {b} m/s',
+      radialQ: 'v_[Q,r] = {q} m/s',
       fQ: 'f_[Q]',
       fV: 'f_[a]',
       fH: 'f_[b]',
@@ -265,8 +275,10 @@ export default defineSimulation({
       machOne: '<var>Ma</var> = 1: the source moves exactly at the speed of sound. The wave fronts pile up in front of it to form the “sound barrier”.',
       machSuper:
         '<var>Ma</var> = <span class="frac"><span><var>v</var><sub>Q</sub></span><span><var>c</var></span></span> = {m} &gt; 1: Mach cone with sin <var>α</var> = <span class="frac"><span><var>c</var></span><span><var>v</var><sub>Q</sub></span></span> = {s}, so <var>α</var> = <strong>{a}°</strong>. Where the cone passes, a sonic boom is heard.',
-      now: 't = {t} s · distance {r} m · f_B = {f} Hz',
-      nowSilent: 't = {t} s · still silent at the observer',
+      now: '<var>t</var> = {t} s · distance {r} m · <var>f</var><sub>B</sub> = {f} Hz',
+      lowWord: 'lower',
+      highWord: 'higher',
+      nowSilent: '<var>t</var> = {t} s · still silent at the observer',
       sndOn: 'Play sound',
       sndOff: 'Sound off',
     },
@@ -278,6 +290,8 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Zahlen im Bild zeigen? Nein im Aufgabenmodus (_hide=1) und wenn „Frequenzen im Bild anzeigen“ aus ist. */
+    const show = () => !ctx.hidden;
     const blue = () => ctx.theme.series[0]!;
     const red = () => ctx.theme.series[1]!;
     const green = () => ctx.theme.series[2]!;
@@ -605,6 +619,11 @@ export default defineSimulation({
       g.stroke();
     }
 
+    /** Radialkomponente mit 1 Nachkommastelle, genau 0 ohne Stellen (kein „−0,0“). */
+    const radial = (v: number) => (Math.abs(v) < 0.05 ? '0' : fmt.fixed(v, 1));
+    /** Machzahl mit 2 Stellen; knapp neben 1 mit 3 Stellen (sonst „Ma = 1,00 < 1“ bei v_Q = 339 m/s). */
+    const maText = (ma: number) => fmt.fixed(ma, Math.abs(ma - 1) < 0.005 && Math.abs(ma - 1) > 1e-6 ? 3 : 2);
+
     /** Farbe einer Frequenz: höher als f_Q blau, tiefer rot. */
     const fColor = (f: number) => {
       const q = clamp((f - p.f) / (p.f * 0.06), -1, 1);
@@ -902,8 +921,8 @@ export default defineSimulation({
           g.lineTo(spx - ra * 1.7, g0.roadY);
           g.stroke();
           g.setLineDash([]);
-          if (p.val) {
-            richText(tr('alpha', { a: n((ang * 180) / Math.PI, 1) }), spx - ra - 6, g0.roadY - (g0.sm ? 8 : 9), g0.sm ? 11 : 12, orange(), 'right');
+          if (show()) {
+            richText(tr('alpha', { a: fmt.fixed((ang * 180) / Math.PI, 1) }), Math.min(spx - ra - 6, r.x + r.w - 8), g0.roadY - (g0.sm ? 8 : 9), g0.sm ? 11 : 12, orange(), 'right');
           }
           // Beschriftung längs der oberen Kegellinie
           const q = 0.62;
@@ -978,18 +997,18 @@ export default defineSimulation({
         const ahead = fronts.map((w) => w.cx + w.r);
         for (let i = 0; i + 1 < ahead.length; i++) {
           if (ahead[i]! - sx >= minGap) {
-            const wide = !sm && (ahead[i + 1]! - ahead[i]!) * g0.k > 120;
+            const wide = !sm && !ctx.isHidden('lam') && (ahead[i + 1]! - ahead[i]!) * g0.k > 120;
             const key = one ? (wide ? 'lam1Vv' : 'lam1V') : wide ? 'lamVv' : 'lamV';
-            bracket(ahead[i]!, ahead[i + 1]!, tr(key, { n: String(nP), l: n(one ? lv : nP * lv, 2) }), blue());
+            bracket(ahead[i]!, ahead[i + 1]!, tr(key, { n: String(nP), l: fmt.fixed(one ? lv : nP * lv, 2) }), blue());
             break;
           }
         }
         const behind = fronts.map((w) => w.cx - w.r);
         for (let i = 0; i + 1 < behind.length; i++) {
           if (sx - behind[i]! >= minGap) {
-            const wide = !sm && (behind[i]! - behind[i + 1]!) * g0.k > 120;
+            const wide = !sm && !ctx.isHidden('lam') && (behind[i]! - behind[i + 1]!) * g0.k > 120;
             const key = one ? (wide ? 'lam1Hv' : 'lam1H') : wide ? 'lamHv' : 'lamH';
-            bracket(behind[i + 1]!, behind[i]!, tr(key, { n: String(nP), l: n(one ? lh : nP * lh, 2) }), red());
+            bracket(behind[i + 1]!, behind[i]!, tr(key, { n: String(nP), l: fmt.fixed(one ? lh : nP * lh, 2) }), red());
             break;
           }
         }
@@ -1323,11 +1342,11 @@ export default defineSimulation({
         const ax = obs[0] + dir * (s * 0.7 + 2);
         arrowPx(ax, obs[1] + s * 0.06, ax + dir * al, obs[1] + s * 0.06, green(), 2.4, 8);
       }
-      const lab = Math.abs(vbShown) > 0.5 ? tr('vB', { v: n(Math.abs(vbShown), 0) }) : ctx.t('observer');
+      const lab = Math.abs(vbShown) > 0.5 ? tr('vB', { v: fmt.fixed(Math.abs(vbShown), 0) }) : ctx.t('observer');
       richText(lab, obs[0], obs[1] + s * 0.55 + (sm ? 9 : 11), sm ? 11 : 12, green(), 'center');
       // gehörte Frequenz neben dem Beobachter
-      if (p.val && shownF !== null && Number.isFinite(shownF)) {
-        const lbl = `${n(shownF, 1)} Hz`;
+      if (show() && shownF !== null && Number.isFinite(shownF)) {
+        const lbl = withUnit(fmt.fixed(shownF, 1), 'Hz');
         const fs = sm ? 11 : 12;
         const wpx = richWidth(lbl, fs) + 16;
         const right = obs[0] + s * 0.75 + wpx < r.x + r.w - 6;
@@ -1369,7 +1388,7 @@ export default defineSimulation({
         else pill(r.x + 8 + w1 + 8, r.y + 8, tr('slowPill', { k: kTxt }), purple(), 'left', size);
       }
       const ma = ease2('ma', p.vq / C_AIR);
-      pill(r.x + r.w - 8, r.y + 8, tr(sm ? 'machPillS' : 'machPill', { m: n(ma, 2) }), ma > 1.001 ? orange() : theme.text, 'right', size);
+      pill(r.x + r.w - 8, r.y + 8, tr(sm ? 'machPillS' : 'machPill', { m: maText(ma) }), ma > 1.001 ? orange() : theme.text, 'right', size);
       // Fußzeile: Darstellung der Ringe, Maßstab
       const ringTxt = N === 1 ? ctx.t('ringsOne') : tr(sm ? 'ringsS' : 'rings', { n: String(N) });
       pill(r.x + 8, r.y + r.h - size - 19, ringTxt, theme.muted, 'left', size);
@@ -1459,7 +1478,7 @@ export default defineSimulation({
       g.fillStyle = theme.muted;
       g.textAlign = 'right';
       g.textBaseline = 'middle';
-      if (p.val) {
+      if (show()) {
         for (let f = Math.ceil(y0 / sy) * sy; f <= y1 + 1e-9; f += sy) {
           const yy = Y(f);
           if (yy < A.y + 6 || yy > A.y + A.h - 4) continue;
@@ -1508,7 +1527,7 @@ export default defineSimulation({
       g.stroke();
       g.setLineDash([]);
       // Grenzwerte vorn/hinten (ruhender Beobachter auf der Straße)
-      if (p.val && p.vq > 0 && p.vq < C_AIR && p.vb === 0) {
+      if (show() && p.vq > 0 && p.vq < C_AIR && p.vb === 0) {
         const fv = (p.f * C_AIR) / (C_AIR - p.vq);
         const fh = (p.f * C_AIR) / (C_AIR + p.vq);
         g.lineWidth = 1;
@@ -1596,7 +1615,7 @@ export default defineSimulation({
       // Beschriftungen rechts an den Linien
       const right = A.x + A.w - 4;
       richText(ctx.t('fQ'), right, yq - 9, fs, theme.text, 'right', true, 700);
-      if (p.val && p.vq > 0 && p.vq < C_AIR && p.vb === 0) {
+      if (show() && p.vq > 0 && p.vq < C_AIR && p.vb === 0) {
         const fv = (p.f * C_AIR) / (C_AIR - p.vq);
         const fh = (p.f * C_AIR) / (C_AIR + p.vq);
         if (Y(fv) > A.y + 8 && yq - Y(fv) > 20) richText(ctx.t('fV'), right, Y(fv) - 9, fs, blue(), 'right', true, 700);
@@ -1669,8 +1688,8 @@ export default defineSimulation({
       const colW = flat ? R.w * 0.46 : R.w;
       const by = flat ? R.y + R.h * 0.6 : R.y + pad + 22 + big * 0.6;
       if (shownF !== null && Number.isFinite(shownF) && main) {
-        if (p.val) {
-          const txt = n(shownF, 1);
+        if (show()) {
+          const txt = fmt.fixed(shownF, 1);
           g.font = `800 ${big}px ${theme.font}`;
           g.fillStyle = fColor(shownF);
           g.textAlign = 'left';
@@ -1704,13 +1723,20 @@ export default defineSimulation({
         ly += fs + 8;
       };
       if (!main || shownF === null) sub(ctx.t(p.vq > C_AIR ? 'silentSubS' : 'silentSub'), theme.muted, 600);
-      else if (!p.val) sub(ctx.t('hiddenSub'), theme.muted, 600);
+      else if (!show()) sub(ctx.t('hiddenSub'), theme.muted, 600);
       else {
         const dF = shownF - p.f;
         if (Math.abs(dF) < 0.05) sub(ctx.t('same'), theme.muted);
-        else sub(tr(dF > 0 ? 'higher' : 'lower', { d: n(Math.abs(dF), 1) }), fColor(shownF));
-        if (rev) sub(tr('second', { f: n(Math.abs(rev.f), 1) }), purple());
-        else if (!flat || R.h > 90) sub(tr('radial', { q: n(main.vQr, 1), b: n(main.vBr, 1) }), theme.muted, 600);
+        else sub(tr(dF > 0 ? 'higher' : 'lower', { d: fmt.fixed(Math.abs(dF), 1) }), fColor(shownF));
+        if (rev) sub(tr('second', { f: fmt.fixed(Math.abs(rev.f), 1) }), purple());
+        else if (!flat || R.h > 90) {
+          // Radialkomponenten nur, wenn sie in die Karte passen (Handy: sonst rechts abgeschnitten)
+          const room = R.x + R.w - pad - lx;
+          const full = tr('radial', { q: radial(main.vQr), b: radial(main.vBr) });
+          const short = tr('radialQ', { q: radial(main.vQr) });
+          if (richWidth(full, fs, 600) <= room) sub(full, theme.muted, 600);
+          else if (richWidth(short, fs, 600) <= room) sub(short, theme.muted, 600);
+        }
       }
       // Tonhöhen-Skala
       const gy = flat ? R.y + R.h - pad - 10 : Math.min(R.y + R.h - pad - 18, ly + 14);
@@ -1735,9 +1761,9 @@ export default defineSimulation({
         g.lineTo(xq, gy + 8);
         g.stroke();
         if (xq - gx0 > 44 && gx1 - xq > 44) richText(ctx.t('fQ'), xq, gy + 16, 11, theme.muted, 'center', false);
-        richText(ctx.lang === 'de' ? 'tiefer' : 'lower', gx0, gy + 16, 11, red(), 'left', false, 650);
-        richText(ctx.lang === 'de' ? 'höher' : 'higher', gx1, gy + 16, 11, blue(), 'right', false, 650);
-        if (shownF !== null && Number.isFinite(shownF) && main && p.val) {
+        richText(ctx.t('lowWord'), gx0, gy + 16, 11, red(), 'left', false, 650);
+        richText(ctx.t('highWord'), gx1, gy + 16, 11, blue(), 'right', false, 650);
+        if (shownF !== null && Number.isFinite(shownF) && main && show()) {
           const xm = GX(shownF);
           g.save();
           g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(16,24,40,0.25)';
@@ -1761,11 +1787,11 @@ export default defineSimulation({
     /* ---------- Ergebnisse ---------- */
     function updateNow(): void {
       const a = mainArrival(model, t);
-      if (!a || !Number.isFinite(a.f)) ctx.readout('now', tr('nowSilent', { t: fmt.fixed(t, 2) }));
+      if (!a || !Number.isFinite(a.f)) ctx.readout('now', { html: tr('nowSilent', { t: fmt.fixed(t, 2) }) });
       else {
         const [ox, oy] = observerPos(model, t);
         const [sx, sy] = sourcePos(model, t);
-        ctx.readout('now', tr('now', { t: fmt.fixed(t, 2), r: n(Math.hypot(ox - sx, oy - sy), 1), f: n(a.f, 1) }));
+        ctx.readout('now', { html: tr('now', { t: fmt.fixed(t, 2), r: fmt.fixed(Math.hypot(ox - sx, oy - sy), 1), f: fmt.fixed(a.f, 1) }) });
       }
     }
 
@@ -1773,14 +1799,14 @@ export default defineSimulation({
       updateLive();
       const lv = wavelengthAhead(p.f, p.vq);
       const lh = wavelengthBehind(p.f, p.vq);
-      let lam = lv !== null ? tr('lamText', { c: n(C_AIR, 0), v: n(p.vq, 0), f: n(p.f, 0), lv: n(lv, 3), fv: n(C_AIR / lv, 1) }) : ctx.t('lamNone');
-      lam += tr('lamBack', { lh: n(lh, 3), fh: n(C_AIR / lh, 1), l0: n(C_AIR / p.f, 3) });
+      let lam = lv !== null ? tr('lamText', { c: n(C_AIR, 0), v: n(p.vq, 0), f: n(p.f, 0), lv: fmt.fixed(lv, lv < 0.01 ? 5 : lv < 0.1 ? 4 : 3), fv: fmt.fixed(C_AIR / lv, 1) }) : ctx.t('lamNone');
+      lam += tr('lamBack', { lh: fmt.fixed(lh, 3), fh: fmt.fixed(C_AIR / lh, 1), l0: fmt.fixed(C_AIR / p.f, 3) });
       ctx.readout('lam', { html: lam });
       const ma = p.vq / C_AIR;
       const ang = machAngle(p.vq);
-      if (ang !== null) ctx.readout('mach', { html: tr('machSuper', { m: n(ma, 2), s: n(C_AIR / p.vq, 3), a: n((ang * 180) / Math.PI, 1) }) });
+      if (ang !== null) ctx.readout('mach', { html: tr('machSuper', { m: maText(ma), s: fmt.fixed(C_AIR / p.vq, 3), a: fmt.fixed((ang * 180) / Math.PI, 1) }) });
       else if (p.vq === C_AIR) ctx.readout('mach', { html: ctx.t('machOne') });
-      else ctx.readout('mach', { html: tr('machSub', { m: n(ma, 3) }) });
+      else ctx.readout('mach', { html: tr('machSub', { m: maText(ma) }) });
       ctx.setAction('go', { enabled: !ctx.locked });
       ctx.setAction('snd', { label: ctx.t(rig ? 'sndOff' : 'sndOn') });
     }
@@ -1791,9 +1817,9 @@ export default defineSimulation({
       if (!a || !Number.isFinite(a.f)) ctx.readout('fb', ctx.t('fbSilent'));
       else {
         const list = arrivals(model, t);
-        const par = (v: number) => (v < -0.05 ? `(${n(v, 1)})` : n(Math.abs(v) < 0.05 ? 0 : v, 1));
-        let html = tr('fbText', { f: n(p.f, 0), c: n(C_AIR, 0), b: par(a.vBr), q: par(a.vQr), r: n(a.f, 1) });
-        if (list.length >= 2 && Number.isFinite(list[0]!.f)) html += tr('fbTwo', { r: n(Math.abs(list[0]!.f), 1) });
+        const par = (v: number) => (v < -0.05 ? `(${radial(v)})` : radial(v));
+        let html = tr('fbText', { f: n(p.f, 0), c: n(C_AIR, 0), b: par(a.vBr), q: par(a.vQr), r: fmt.fixed(a.f, 1) });
+        if (list.length >= 2 && Number.isFinite(list[0]!.f)) html += tr('fbTwo', { r: fmt.fixed(Math.abs(list[0]!.f), 1) });
         ctx.readout('fb', { html });
       }
       updateNow();
