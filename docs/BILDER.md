@@ -148,7 +148,7 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Maßstab | `bug` | `src/assets/sims/massstab/marienkaefer-oben.webp` | 1066 × 995 | transparent |
 | Maßstab | `stamp` | `src/assets/sims/massstab/briefmarke.webp` | 921 × 1254 | transparent |
 | Maßstab | `sand` | `src/assets/sims/massstab/sandkorn.webp` | 1280 × 973 | transparent |
-| Maßstab | `lupe` | `src/assets/sims/massstab/lupe.webp` | 1074 × 949 | transparent |
+| Maßstab | `lupe` | `src/assets/sims/massstab/lupe.webp` | 1000 × 994 | transparent |
 | Zahlengerade | `frog` | `src/assets/sims/zahlengerade/frosch.webp` | 1045 × 899 | transparent |
 | Zahlengerade | `piggy` | `src/assets/sims/zahlengerade/sparschwein.webp` | 1326 × 979 | transparent |
 | Zahlengerade | `penguin` | `src/assets/sims/zahlengerade/pinguin.webp` | 775 × 1372 | transparent |
@@ -213,6 +213,14 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Kreisbewegung | `car` | `src/assets/sims/kreisbewegung/auto-oben.webp` | 1600 × 801 | transparent |
 | Kreisbewegung | `asphalt` | `src/assets/sims/kreisbewegung/asphalt.webp` | 768 × 768 | deckend |
 | Doppler-Effekt | `ambulance` | `src/assets/sims/doppler-effekt/krankenwagen.webp` | 1600 × 735 | transparent |
+| Hebelgesetz | `opener` | `src/assets/sims/hebelgesetz/flaschenoeffner.webp` | 1600 × 140 | transparent |
+| Zahlengerade | `iceberg` | `src/assets/sims/zahlengerade/eisberg.webp` | 558 × 1400 | transparent |
+| Teilchenmodell | `beaker` | `src/assets/sims/teilchenmodell/becherglas.webp` | 816 × 1000 | transparent |
+| Baumdiagramm | `urn` | `src/assets/sims/baumdiagramm/urne.webp` | 1000 × 886 | transparent |
+| Sinus, Kosinus, Tangens | `ladder` | `src/assets/sims/sin-cos-tan-dreieck/leiter.webp` | 198 × 1600 | transparent |
+| Schiefe Ebene | `boardAsphalt` | `src/assets/sims/schiefe-ebene/brett-asphalt.webp` | 2160 × 216 | deckend |
+| Strahlensätze | `pole` | `src/assets/sims/strahlensaetze/fluchtstab.webp` | 97 × 1499 | transparent |
+| Prozentstreifen | `book` | `src/assets/sims/prozentstreifen/sparbuch.webp` | 1200 × 799 | transparent |
 
 ## Ziegenproblem
 
@@ -508,7 +516,11 @@ Beispiel „Hebel im Alltag“: grüne Schubkarre in Seitenansicht, **Rad links*
 
 > A classic garden wheelbarrow with a green metal tub, one front wheel and two wooden handles, exact side view facing left, empty, isolated on a transparent background, photorealistic
 
-`flaschenoeffner.webp` (Draufsicht) ist **nicht eingebaut**: Die Szene zeigt den Öffner von der Seite auf der Flasche (Zahn unter dem Kronkorken, Auflagepunkt); dafür wäre eine Seitenansicht nötig. Das Bild liegt weiter in `docs/bilder-eingang/hebelgesetz/`.
+### `flaschenoeffner.webp` – Flaschenöffner (nachgeliefert 26.10.2026)
+
+Beispiel „Hebel im Alltag“ → Flaschenöffner, exaktes Profil. Die Spitze liegt auf dem Kronkorken genau an der Drehachse, die Innenkante des Zahns knapp hinter dem rechten Rand (Lastarm 2 cm wie in der Rechnung). Kopf und Griff unverzerrt, nur der gleichförmige Schaft gestaucht; senkrecht leicht gestaucht, damit der Zahn knapp unter den Rand greift. Der Öffner dreht sich beim Anheben mit.
+
+> A classic flat stainless steel lever bottle opener seen exactly from the side in profile, orthographic view, lying horizontal: the left end is a short flat tip that rests on top of a bottle cap, just to the right of the tip a small sharp tooth points straight down to hook under the rim of the cap, from there a long straight flat handle continues to the right and ends in a rounded black rubber grip, only the thin side profile is visible, not the top face and not the hole, soft studio light from the upper left, isolated on a fully transparent background, no bottle, no cap, no shadow, photorealistic, no text, no logo
 
 ## Kräfteaddition
 
@@ -806,3 +818,55 @@ Für den Zirkel: zwei getrennte Schenkel, damit die Simulation den Öffnungswink
 Für die Zahlengerade wäre ein polares Motiv stimmiger (Eisberg und Pinguin):
 
 > Side cross-section view of a polar sea: calm dark blue water surface exactly horizontal in the middle of the image, pale sky and distant snowy coast above, clear underwater part below fading into deep blue, no animals, no icebergs in the left half, photorealistic, 1600 × 1600 px
+
+## Nachgelieferte Bilder (26.10.2026)
+
+Zweiter Versuch für die Bilder, die beim ersten Mal nicht passten (Gründe in `docs/BILDER-WUNSCHLISTE.md`, Abschnitt „Stand 22.10.2026“). Den Flaschenöffner beschreibt der Abschnitt „Hebelgesetz“. Alle Bilder haben weiterhin eine gezeichnete Ersatzgrafik.
+
+### `zahlengerade/eisberg.webp` – Eisberg
+
+Meeresspiegel: Die Wasserlinie (Bildzeile 271) liegt auf Höhe 0, die Spitze reicht bis zum Pinguin, der Unterwasserteil bis zur Tiefe der Ersatzgrafik. Beide Teile werden einzeln eingepasst. Im Dunkelmodus wird der Unterwasserteil wie das Meer abgedunkelt.
+
+> A single tall and narrow iceberg in side cross-section, the whole iceberg is two and a half times as tall as it is wide and fills the image height edge to edge, a slim pointed tip above a perfectly straight horizontal water line at exactly one fifth of the image height from the top, white snowy ice above the line, a slim tapering translucent pale turquoise-blue underwater part below the line, no water, no sea, no sky, only the iceberg, soft even light, isolated on a fully transparent background, photorealistic, no text, no animals
+
+### `teilchenmodell/becherglas.webp` – Becherglas
+
+Diffusion: Das Glas liegt vor Wasser und Teilchen; es ist in der Mitte vollständig durchsichtig. Die Außenkanten der Wände liegen auf den Kanten der Ersatzgrafik. Das rechte Glas ist gespiegelt, damit die Ausgüsse nach außen zeigen.
+
+> An empty laboratory glass beaker seen exactly from the front at eye level, perfectly straight vertical walls, the top rim appears as a straight horizontal line (no visible ellipse), thin flat bottom seen edge-on as a thin line, small pouring spout on the upper left rim, very thin crystal clear glass that is almost invisible: only thin bright edge highlights and the outline are visible, the whole inside is fully transparent, no liquid, no graduation marks, isolated on a fully transparent background, no shadow, photorealistic, no text, no numbers
+
+### `baumdiagramm/urne.webp` – Urne
+
+Das Glas wird hinter die Kugeln gezeichnet und danach noch einmal zart (45 %) davor. So wirken die Kugeln wie im Glas. Innen ist es durchsichtig, auch im Dunkelmodus.
+
+> An empty wide clear glass jar with a wide open top, exact front view at eye level, straight walls with rounded lower corners and a slightly narrower neck rim, very thin crystal clear glass that is almost invisible: only thin bright edge highlights and the outline are visible, the inside is completely transparent and empty, no lid, no label, no contents, no white or frosted areas, isolated on a fully transparent background, no shadow, photorealistic, no text
+
+### `sin-cos-tan-dreieck/leiter.webp` – Leiter
+
+Leiter anlehnen: gedreht und auf die Leiterlänge skaliert, Breite im Seitenverhältnis des Fotos (1 : 8). Die 14 Sprossen haben bei 4 m Leiterlänge etwa 0,27 m Abstand.
+
+> A single long straight aluminium ladder standing exactly vertical, exact front view, the ladder is very slim: eight times as tall as it is wide and it fills the image height edge to edge, two parallel silver side rails and exactly fourteen evenly spaced flat rungs, grey rubber feet at the bottom, isolated on a fully transparent background, no wall, no shadow, photorealistic, no text, no labels, no warning stickers
+
+### `schiefe-ebene/brett-asphalt.webp` – Asphalt
+
+Oberfläche der Ebene beim Materialpaar „Gummi auf Asphalt“, gekachelt wie `brett-stahl`/`brett-eis`.
+
+> A long horizontal strip showing the edge of a thick slab of road asphalt seen exactly from the side, dark grey asphalt with fine embedded gravel, a slightly lighter rough top surface line, evenly lit, the texture is uniform and seamless horizontally tileable, photorealistic, no road markings, no text
+
+### `strahlensaetze/fluchtstab.webp` – Fluchtstab
+
+Baumhöhe: Stab bei Z und vergrößert in der Lupe. Der Stab reicht vom Boden bis zur Stablänge s, die Stahlspitze (ab Bildzeile 1432) steckt im Boden.
+
+> A single surveying ranging pole standing exactly vertical, exact front view, a sturdy round pole that is fifteen times as tall as it is wide and fills the image height edge to edge, painted in exactly eight alternating red and white bands of equal length, a short pointed steel tip at the bottom, soft daylight from the upper left, isolated on a fully transparent background, no ground, no shadow, photorealistic, no text, no numbers
+
+### `massstab/lupe.webp` – Lupe (ersetzt)
+
+Ersetzt die milchige Fassung. Die Glasmitte liegt bei (323 | 323), der Außenradius des Rahmens beträgt 322 px. Bei `dezimalbrueche` gibt es keine passende Stelle.
+
+> A classic round magnifying glass seen exactly from the front, a thin polished black frame ring, the handle pointing diagonally to the lower right at 45 degrees, black handle with a silver collar, the lens is completely clear and fully transparent like empty air, with only one faint thin reflection arc at the upper left, no milky or frosted glass, isolated on a fully transparent background, no shadow, photorealistic, no text, no logo
+
+### `prozentstreifen/sparbuch.webp` – Sparbuch
+
+Zinsen: Die linierte Seite mit Einbandrand ersetzt Einband und Seite der Ersatzgrafik; Überschrift und Zeilen schreibt die Simulation darauf. Im Dunkelmodus wird die Seite abgedunkelt wie der Kassenbon.
+
+> A single page of a small savings passbook lying flat, exact top-down view, one cream-coloured page with faint empty ruled horizontal lines across its full width, a narrow dark teal cover border visible around all four edges, no centre fold, no second page, no spine, completely blank with no writing, evenly lit, isolated on a fully transparent background, no shadow, photorealistic, no text, no numbers, no bank logo

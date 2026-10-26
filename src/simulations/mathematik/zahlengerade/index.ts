@@ -1,10 +1,12 @@
-import { defineSimulation, ease, prefersReducedMotion, roundRect, scaledSprite, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { drawFrog, drawPenguin, drawPhotoFigure, drawPiggy, drawSnowflake, drawSun, groundShadow } from './figures';
 import { absolute, change, compute, num, opposite, operand, randomTask, rewrite, story, termText, viewRange, walkPlan, type Lang, type Op, type Scene } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 /** meer.webp: 1600 × 1600, die Wasseroberfläche liegt in Bildzeile 683 (gemessen). */
 const SEA_IMG = { w: 1024, h: 1024, water: 311 } as const;
+/** eisberg.webp: 558 × 1400, Wasserlinie in Bildzeile 271 (gemessen). */
+const ICEBERG_IMG = { w: 558, h: 1400, water: 271 } as const;
 /** Thermometerfoto (Pixel in thermometer.webp): Röhrenmitte, Kugelmitte und -radius, Innenröhre, Schnitte für das Strecken der gleichförmigen Röhre. */
 const THERMO_IMG = { w: 200, h: 1410, cx: 100, bulbY: 1305, bulbR: 100, bore: 22, capEnd: 70, neck: 1150, red: 1192 } as const;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -49,7 +51,7 @@ export default defineSimulation({
   id: 'zahlengerade',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
-  images: { sea: 'meer.webp', frog: 'frosch.webp', piggy: 'sparschwein.webp', penguin: 'pinguin.webp', thermo: 'thermometer.webp' },
+  images: { sea: 'meer.webp', frog: 'frosch.webp', piggy: 'sparschwein.webp', penguin: 'pinguin.webp', thermo: 'thermometer.webp', iceberg: 'eisberg.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1026,45 +1028,64 @@ export default defineSimulation({
         [ix + iw * 0.2, lerp(y0, deep, 0.85)],
         [ix - iw * 0.05, lerp(y0, deep, 0.4)],
       ];
-      const ice = g.createLinearGradient(ix, 0, ix + iw, 0);
-      ice.addColorStop(0, '#ffffff');
-      ice.addColorStop(1, '#cfe9f7');
-      g.fillStyle = ice;
-      g.beginPath();
-      berg.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
-      g.closePath();
-      g.fill();
-      // Facetten für Tiefe
-      g.fillStyle = 'rgba(110,170,210,0.32)';
-      g.beginPath();
-      g.moveTo(ix + iw * 0.38, peak);
-      g.lineTo(ix + iw * 0.55, lerp(y0, peak, 0.7));
-      g.lineTo(ix + iw * 0.72, lerp(y0, peak, 0.35));
-      g.lineTo(ix + iw * 0.95, y0);
-      g.lineTo(ix + iw * 1.05, lerp(y0, deep, 0.35));
-      g.lineTo(ix + iw * 0.92, lerp(y0, deep, 0.8));
-      g.lineTo(ix + iw * 0.6, deep);
-      g.lineTo(ix + iw * 0.48, lerp(y0, deep, 0.4));
-      g.closePath();
-      g.fill();
-      g.fillStyle = 'rgba(255,255,255,0.6)';
-      g.beginPath();
-      g.moveTo(ix + iw * 0.38, peak);
-      g.lineTo(ix + iw * 0.2, lerp(y0, peak, 0.55));
-      g.lineTo(ix + iw * 0.3, lerp(y0, peak, 0.4));
-      g.closePath();
-      g.fill();
-      // Unterwasserteil abdunkeln
-      g.save();
-      g.beginPath();
-      g.rect(S.x, y0, S.w, S.y + S.h - y0);
-      g.clip();
-      g.fillStyle = theme.dark ? 'rgba(10,40,70,0.55)' : 'rgba(30,110,170,0.45)';
-      g.beginPath();
-      berg.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
-      g.closePath();
-      g.fill();
-      g.restore();
+      const icebergImg = ctx.images.get('iceberg');
+      if (icebergImg) {
+        // Foto in zwei Stücken: Spitze bis zur Wasserlinie (Höhe 0), Unterwasserteil bis zur Tiefe
+        const I = ICEBERG_IMG;
+        const cx = ix + iw * 0.5;
+        const bw = Math.min(iw * 1.1, (I.w * (deep - peak)) / I.h);
+        g.drawImage(icebergImg, 0, 0, I.w, I.water, cx - bw / 2, peak, bw, y0 - peak);
+        g.drawImage(icebergImg, 0, I.water, I.w, I.h - I.water, cx - bw / 2, y0, bw, deep - y0);
+        if (theme.dark) {
+          // Unterwasserteil wie das Meer abdunkeln (nur auf dem Eis)
+          const { canvas: dim, g: dg } = offscreenCanvas(bw, deep - y0, surface.dpr);
+          dg.drawImage(icebergImg, 0, I.water, I.w, I.h - I.water, 0, 0, bw, deep - y0);
+          dg.globalCompositeOperation = 'source-atop';
+          dg.fillStyle = 'rgba(8,24,44,0.45)';
+          dg.fillRect(0, 0, bw, deep - y0);
+          g.drawImage(dim, cx - bw / 2, y0, bw, deep - y0);
+        }
+      } else {
+        const ice = g.createLinearGradient(ix, 0, ix + iw, 0);
+        ice.addColorStop(0, '#ffffff');
+        ice.addColorStop(1, '#cfe9f7');
+        g.fillStyle = ice;
+        g.beginPath();
+        berg.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+        g.closePath();
+        g.fill();
+        // Facetten für Tiefe
+        g.fillStyle = 'rgba(110,170,210,0.32)';
+        g.beginPath();
+        g.moveTo(ix + iw * 0.38, peak);
+        g.lineTo(ix + iw * 0.55, lerp(y0, peak, 0.7));
+        g.lineTo(ix + iw * 0.72, lerp(y0, peak, 0.35));
+        g.lineTo(ix + iw * 0.95, y0);
+        g.lineTo(ix + iw * 1.05, lerp(y0, deep, 0.35));
+        g.lineTo(ix + iw * 0.92, lerp(y0, deep, 0.8));
+        g.lineTo(ix + iw * 0.6, deep);
+        g.lineTo(ix + iw * 0.48, lerp(y0, deep, 0.4));
+        g.closePath();
+        g.fill();
+        g.fillStyle = 'rgba(255,255,255,0.6)';
+        g.beginPath();
+        g.moveTo(ix + iw * 0.38, peak);
+        g.lineTo(ix + iw * 0.2, lerp(y0, peak, 0.55));
+        g.lineTo(ix + iw * 0.3, lerp(y0, peak, 0.4));
+        g.closePath();
+        g.fill();
+        // Unterwasserteil abdunkeln
+        g.save();
+        g.beginPath();
+        g.rect(S.x, y0, S.w, S.y + S.h - y0);
+        g.clip();
+        g.fillStyle = theme.dark ? 'rgba(10,40,70,0.55)' : 'rgba(30,110,170,0.45)';
+        g.beginPath();
+        berg.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+        g.closePath();
+        g.fill();
+        g.restore();
+      }
       // Wellen
       g.strokeStyle = theme.dark ? 'rgba(160,215,245,0.9)' : 'rgba(255,255,255,0.95)';
       g.lineWidth = 2.5;

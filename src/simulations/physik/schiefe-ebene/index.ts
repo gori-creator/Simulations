@@ -131,6 +131,7 @@ export default defineSimulation({
     board: 'brett.webp',
     boardSteel: 'brett-stahl.webp',
     boardIce: 'brett-eis.webp',
+    boardAsphalt: 'brett-asphalt.webp',
     cart: 'wagen.webp',
     wheel: 'wagen-rad.webp',
     meter: 'kraftmesser.webp',
@@ -885,8 +886,8 @@ export default defineSimulation({
       gx.fill();
       gx.restore();
       // Oberfläche (Material)
-      // Fotos für Holz, Stahl und Eis (Asphalt bleibt gezeichnet)
-      const boardKey = st.label === 'wood' ? 'board' : st.label === 'steel' ? 'boardSteel' : st.label === 'ice' ? 'boardIce' : null;
+      // Fotos für Holz, Stahl, Eis und Asphalt
+      const boardKey = st.label === 'wood' ? 'board' : st.label === 'steel' ? 'boardSteel' : st.label === 'ice' ? 'boardIce' : st.label === 'asphalt' ? 'boardAsphalt' : null;
       const boardImg = boardKey ? ctx.images.get(boardKey) : null;
       const thick = boardImg ? (sm ? 6 : 9) : sm ? 4 : 6;
       gx.save();

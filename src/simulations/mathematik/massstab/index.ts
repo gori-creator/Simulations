@@ -66,7 +66,7 @@ type Mode = 'map' | 'zoom' | 'calc';
 
 const scaleLabel = (n: number) => L(`1 : ${groupDigits(String(n), 'de')}`, `1 : ${groupDigits(String(n), 'en')}`);
 /** Lupenfoto: Mitte des Glases und Außenradius des Rahmens (Pixel im Bild lupe.webp). */
-const LUPE_IMG = { cx: 333, cy: 330, r: 332 };
+const LUPE_IMG = { cx: 323, cy: 323, r: 322 };
 const isMap = (v: Record<string, unknown>) => v.mode === 'map';
 
 const OBJ_TEXT: Record<ObjId, { name: Loc; what: Loc; approx: boolean }> = {
@@ -2474,7 +2474,7 @@ export default defineSimulation({
       g.restore();
       const lupeImg = ctx.images.get('lupe');
       if (lupeImg) {
-        // Foto der Lupe: Glasmitte (333 | 330 px), Außenradius des Rahmens 332 px im Bild
+        // Foto der Lupe: Glasmitte (323 | 323 px), Außenradius des Rahmens 322 px im Bild
         const k = (lr + 3) / LUPE_IMG.r;
         g.save();
         g.shadowColor = th.dark ? 'rgba(0,0,0,0.5)' : 'rgba(40,30,20,0.25)';

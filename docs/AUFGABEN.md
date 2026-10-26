@@ -51,7 +51,7 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 
 ## Inhalte und Funktionen
 
-- [ ] **9 Bilder neu erzeugen** (Projektleitung mit Bildgenerator, Prompts: `docs/agenten/PROMPT-BILDER-NACHLIEFERUNG.md`; Einbau: `docs/agenten/AUFTRAG-BILDER-NACHLIEFERUNG.md`): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Oberfläche Gummi/Asphalt, Fluchtstab, Lupe, Sparbuch – Gründe in `docs/BILDER-WUNSCHLISTE.md` (Abschnitt „Stand 22.10.2026“). Danach einbauen wie in PR #41.
+- [x] **9 Bilder neu erzeugen und einbauen** (26.10.): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Asphalt, Fluchtstab, Lupe (ersetzt die alte bei Maßstab), Sparbuch – alle eingebaut, Beschreibung in `docs/BILDER.md` („Nachgelieferte Bilder“).
 - [x] **Ladezeit für Schulnetze** (PR #48, 25.10.): Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR. → Service Worker lädt nicht mehr die ganze Seite vorab (vorher 23 MB je Gerät), Fachseiten halb so groß, 9 Bilder verkleinert, Test für ≤ 300 KB.
 - [ ] **Design einbauen**, sobald der Codex-Agent abgegeben hat: Abgabe prüfen, Patch anwenden, Sichtprüfung hell/dunkel, PC/Handy, PR.
 - [ ] **Chemie:** Plan für die ersten 10 Simulationen (Klasse 7–13, KMK-Bildungsstandards), dann die ersten zwei vollständig bauen (`docs/NEUE-SIMULATION.md`).
