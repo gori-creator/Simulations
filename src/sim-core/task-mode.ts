@@ -40,6 +40,17 @@ export function isTaskHidden(state: TaskModeState): boolean {
 }
 
 /**
+ * Sind Regler, die die Lösung verraten (`spoiler: true` und der Schalter
+ * `resultsParam`), auszublenden? Nur im Aufgabenmodus (`_hide=1`) und nur,
+ * solange noch ein Ergebnis verdeckt ist. Der Schalter `resultsParam` zählt
+ * dabei nicht mit, sonst ließe er sich nach dem Aufdecken nicht wieder
+ * einschalten (z. B. wenn alle Ergebnisse `ignoresResultsParam` haben).
+ */
+export function hidesSpoilerControls(state: TaskModeState): boolean {
+  return state.hideFlag && isTaskHidden({ ...state, resultsOff: false });
+}
+
+/**
  * Ist ein einzelnes `spoiler`-Ergebnis allein wegen des Aufgabenmodus
  * (`_hide=1`) verdeckt, also noch nicht aufgedeckt? Der Schalter `resultsParam`
  * zählt hier nicht (für `ctx.isHiddenByTask(key)`).

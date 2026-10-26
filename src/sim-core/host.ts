@@ -9,7 +9,7 @@ import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
 import { defaultValues, dragHintKey, resolveHint, sanitize, stepDecimals, valuesEqual } from './params';
 import { hatsInHtml, plainSubText, setSubLabel, setSubReadout } from './rich-label';
-import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
+import { hidesSpoilerControls, isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -315,7 +315,14 @@ class SimulationHost {
       idPrefix: `sim-${this.def.id}`,
       onInput: (key: string, value: ParamValue) => this.set({ [key]: value }, 'input'),
       taskHidden: isTaskHidden(this.taskState()),
+      spoilerKeys: new Set(this.def.resultsParam ? [this.def.resultsParam] : []),
     });
+    this.controls.setSpoilersHidden(hidesSpoilerControls(this.taskState()));
+  }
+
+  /** Regler, die die Lösung verraten (`spoiler`, Schalter `resultsParam`). */
+  private isSpoilerParam(def: ParamDef): boolean {
+    return !!def.spoiler || def.key === this.def.resultsParam;
   }
 
   private buildPresets(): void {
@@ -473,6 +480,8 @@ class SimulationHost {
     const state = this.taskState();
     // Zusatzangaben der Auswahl-Optionen (z. B. Halbwertszeiten) im Aufgabenmodus verbergen
     this.controls?.setTaskHidden(isTaskHidden(state));
+    // Regler, die die Lösung verraten, im Aufgabenmodus ausblenden
+    this.controls?.setSpoilersHidden(hidesSpoilerControls(state));
     for (const [key, row] of this.readouts) {
       if (!row.reveal) continue;
       const hidden = isReadoutHidden(state, key);
@@ -508,6 +517,7 @@ class SimulationHost {
     if (hidden === this.lastHidden) return;
     this.lastHidden = hidden;
     this.controls?.setTaskHidden(hidden);
+    this.controls?.setSpoilersHidden(hidesSpoilerControls(this.taskState()));
     this.instance.hiddenChange?.(hidden);
     this.requestRender();
   }
@@ -596,8 +606,11 @@ class SimulationHost {
   /** „Mit der Tastatur … Aktuelle Werte: a = 2, …“ – nur sichtbare Zahlen-Regler. */
   private valuesSummary(): string {
     const parts: string[] = [];
+    const spoilersHidden = hidesSpoilerControls(this.taskState());
     for (const def of this.defs) {
       if (def.type !== 'number' || def.visibleIf?.(this.values) === false) continue;
+      // Ausgeblendete Regler, die die Lösung verraten, nicht vorlesen
+      if (spoilersHidden && this.isSpoilerParam(def)) continue;
       const value = this.values[def.key] as number;
       const shown = def.display ? def.display(value, this.lang) : this.fmt.num(value, stepDecimals(def.step));
       const label = plainSubText(def.label[this.lang]).replace(/\s+/g, ' ').trim();

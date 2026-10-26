@@ -36,6 +36,13 @@ interface BaseParam<K extends string> {
   group?: string;
   /** Nur anzeigen (und in Links speichern), wenn die Bedingung erfüllt ist. */
   visibleIf?: (values: ParamValues) => boolean;
+  /**
+   * Der Regler verrät die Lösung (z. B. „Lösungswinkel zeigen“): Im
+   * Aufgabenmodus (`_hide=1`) wird er ausgeblendet, bis alle Ergebnisse
+   * aufgedeckt sind (`ctx.hidden` ist dann `false`). Der Wert bleibt erhalten
+   * und steht weiter im Link. Der Schalter `resultsParam` zählt automatisch dazu.
+   */
+  spoiler?: boolean;
 }
 
 export interface NumberParam<K extends string = string> extends BaseParam<K> {
