@@ -22,6 +22,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
+/** Fluchtstab fluchtstab.webp (Pixel): Breite, Höhe, Beginn der Stahlspitze (darunter im Boden). */
+const POLE_IMG = { w: 97, h: 1499, tip: 1432 } as const;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 type Px = [number, number];
@@ -132,7 +134,7 @@ export default defineSimulation({
   id: 'strahlensaetze',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.42 },
-  images: { tree: 'baum.webp', crown: 'baumkrone.webp' },
+  images: { tree: 'baum.webp', crown: 'baumkrone.webp', pole: 'fluchtstab.webp' },
   groups: [
     { id: 'fig', label: L('Figur', 'Figure') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1371,11 +1373,13 @@ export default defineSimulation({
       g.shadowColor = 'rgba(0,0,0,0.25)';
       g.shadowBlur = 3;
       g.shadowOffsetX = 1.5;
-      for (let i = 0; i < 6; i++) {
-        const y0 = lerp(stickB[1], stickT[1], i / 6);
-        const y1 = lerp(stickB[1], stickT[1], (i + 1) / 6);
-        g.fillStyle = i % 2 ? '#f8f8f8' : '#d9363e';
-        g.fillRect(stickB[0] - sw / 2, y1, sw, y0 - y1 + 0.5);
+      if (!drawPolePhoto(stickB[0], stickB[1], stickT[1], sw)) {
+        for (let i = 0; i < 6; i++) {
+          const y0 = lerp(stickB[1], stickT[1], i / 6);
+          const y1 = lerp(stickB[1], stickT[1], (i + 1) / 6);
+          g.fillStyle = i % 2 ? '#f8f8f8' : '#d9363e';
+          g.fillRect(stickB[0] - sw / 2, y1, sw, y0 - y1 + 0.5);
+        }
       }
       g.restore();
       // Strahl über beide Spitzen nach Z (Strahl 1 der V-Figur)
@@ -1411,6 +1415,22 @@ export default defineSimulation({
       fpill(R.x + 12, R.y + 22, say(L('Baumhöhe über den Schatten', 'Tree height from shadows')), { align: 'left', size: fs(13, 12), alpha: k.panel, border: withAlpha(col.par(), 0.55) });
       g.restore();
       g.restore();
+    }
+
+    /**
+     * Fluchtstab als Foto: Stab von `yBottom` (Boden) bis `yTop`, die Stahlspitze
+     * steckt im Boden. Mindestens `minW` breit. Ohne Foto `false` (dann gezeichnet).
+     */
+    function drawPolePhoto(x: number, yBottom: number, yTop: number, minW: number): boolean {
+      const img = ctx.images.get('pole');
+      if (!img) return false;
+      const g = surface.g;
+      const P = POLE_IMG;
+      const len = yBottom - yTop;
+      const k = len / P.tip;
+      const w = Math.max(minW, P.w * k);
+      g.drawImage(scaledSprite(img, w, P.h * k, surface.dpr), x - w / 2, yTop, w, P.h * k);
+      return true;
     }
 
     /** Lupe in der linken oberen Ecke: Z, Stab und Schatten groß, mit Sonnenhöhe und Maßen. */
@@ -1487,11 +1507,13 @@ export default defineSimulation({
       line(Z0, [Z0[0] + ux * rL * 3, Z0[1] + uy * rL * 3], col.sun(), 2.4, { glow: true });
       // Stab
       const sw = 6;
-      for (let i = 0; i < 6; i++) {
-        const y0 = lerp(B0[1], A0[1], i / 6);
-        const y1 = lerp(B0[1], A0[1], (i + 1) / 6);
-        g.fillStyle = i % 2 ? '#f8f8f8' : '#d9363e';
-        g.fillRect(B0[0] - sw / 2, y1, sw, y0 - y1 + 0.5);
+      if (!drawPolePhoto(B0[0], B0[1], A0[1], sw)) {
+        for (let i = 0; i < 6; i++) {
+          const y0 = lerp(B0[1], A0[1], i / 6);
+          const y1 = lerp(B0[1], A0[1], (i + 1) / 6);
+          g.fillStyle = i % 2 ? '#f8f8f8' : '#d9363e';
+          g.fillRect(B0[0] - sw / 2, y1, sw, y0 - y1 + 0.5);
+        }
       }
       // Winkel bei Z
       g.strokeStyle = col.sun();

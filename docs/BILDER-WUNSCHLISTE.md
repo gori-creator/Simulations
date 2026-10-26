@@ -1,20 +1,20 @@
 # Bilder-Wunschliste
 
-## Stand 22.10.2026: eingebaut
+## Stand 26.10.2026: alle eingebaut
 
-Von den 93 gelieferten Bildern sind **84 eingebaut** (Tabellen in `docs/BILDER.md`, Einbauhinweise je Gruppe in `docs/bilder-einbau/`). **Neu zu erzeugen**, weil sie nicht passen (Dateien teils in `docs/bilder-eingang/<sim>/`, sonst in Commit 439c45d):
+Von den 93 gelieferten Bildern waren am 22.10. **84 eingebaut**. Die 9 unpassenden wurden neu erzeugt (Prompts: `docs/agenten/PROMPT-BILDER-NACHLIEFERUNG.md`) und am 26.10. eingebaut; Beschreibung und Prompts stehen in `docs/BILDER.md` im Abschnitt „Nachgelieferte Bilder“. Die alten Fassungen in `docs/bilder-eingang/` sind gelöscht.
 
-| Bild | Grund |
-| --- | --- |
-| A14 Flaschenöffner | Hakenöffner statt Hebelöffner; Drehachse und Lastarm passen nicht zur Rechnung |
-| A12 Eisberg | Seitenverhältnis 1 : 1,44 statt 1 : 2,5 |
-| B14 Becherglas | leichte Aufsicht, Boden und Wände fast deckend |
-| B35 Urne | innen nicht durchsichtig, verdeckt die Kugeln |
-| B42 Leiter | 1 : 4,5 statt 1 : 8 |
-| C2 Oberfläche Gummi | soll Asphalt sein (Materialpaar „Gummi auf Asphalt“) |
-| C9 Fluchtstab | 1 : 27,5 statt 1 : 15, Farbbänder zu schmal |
-| C10 Lupe | milchiges Glas; passt nur bei Maßstab |
-| C14 Sparbuch | Doppelseite mit Falz statt flacher Seite |
+| Bild | Grund beim ersten Versuch | Zweiter Versuch |
+| --- | --- | --- |
+| A14 Flaschenöffner | Hakenöffner statt Hebelöffner; Drehachse und Lastarm passen nicht zur Rechnung | eingebaut (Profil, Zahn unter dem Rand) |
+| A12 Eisberg | Seitenverhältnis 1 : 1,44 statt 1 : 2,5 | eingebaut |
+| B14 Becherglas | leichte Aufsicht, Boden und Wände fast deckend | eingebaut (innen durchsichtig) |
+| B35 Urne | innen nicht durchsichtig, verdeckt die Kugeln | eingebaut (innen durchsichtig) |
+| B42 Leiter | 1 : 4,5 statt 1 : 8 | eingebaut (14 Sprossen) |
+| C2 Oberfläche Gummi | soll Asphalt sein (Materialpaar „Gummi auf Asphalt“) | eingebaut als `brett-asphalt.webp` |
+| C9 Fluchtstab | 1 : 27,5 statt 1 : 15, Farbbänder zu schmal | eingebaut |
+| C10 Lupe | milchiges Glas; passt nur bei Maßstab | eingebaut bei Maßstab (ersetzt die alte Lupe); bei Dezimalbrüchen keine passende Stelle |
+| C14 Sparbuch | Doppelseite mit Falz statt flacher Seite | eingebaut |
 
 ## Noch zu erzeugen (Stand 20.10.2026)
 

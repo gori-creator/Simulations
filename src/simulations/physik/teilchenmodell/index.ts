@@ -115,7 +115,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
-  images: { thermo: 'thermometer.webp', plate: 'heizplatte.webp', pipette: 'pipette.webp', table: 'tischkante.webp' },
+  images: { thermo: 'thermometer.webp', plate: 'heizplatte.webp', pipette: 'pipette.webp', table: 'tischkante.webp', beaker: 'becherglas.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -2303,38 +2303,54 @@ export default defineSimulation({
       g.moveTo(D.ix[k], D.water - D.s * 0.55);
       g.lineTo(D.ix[k] + D.iw, D.water - D.s * 0.55);
       g.stroke();
-      // Glaswand vorn
-      const gw = D.sm ? 5 : 7;
-      for (const [xa, left] of [
-        [x0, true],
-        [x0 + w - gw, false],
-      ] as const) {
-        const gr = g.createLinearGradient(xa, 0, xa + gw, 0);
-        gr.addColorStop(0, dark ? 'rgba(170,200,235,0.3)' : 'rgba(150,175,205,0.55)');
-        gr.addColorStop(left ? 0.35 : 0.65, dark ? 'rgba(220,235,255,0.42)' : 'rgba(255,255,255,0.85)');
-        gr.addColorStop(1, dark ? 'rgba(150,180,220,0.22)' : 'rgba(140,165,195,0.5)');
-        g.fillStyle = gr;
-        g.fillRect(xa, top, gw, bot - top);
+      const beakerImg = ctx.images.get('beaker');
+      if (beakerImg) {
+        // Foto: Außenkanten der Wände auf x0 … x0 + w, Rand auf top, Boden auf bot; der Ausguss
+        // zeigt nach außen (rechtes Glas gespiegelt), damit sich die Gläser nicht berühren
+        const B = BEAKER_IMG;
+        const sx = w / (B.right - B.left);
+        const sy = (bot - top) / (B.bottom - B.top);
+        g.save();
+        if (k === 1) {
+          g.translate(2 * x0 + w, 0);
+          g.scale(-1, 1);
+        }
+        g.drawImage(beakerImg, x0 - B.left * sx, top - B.top * sy, B.w * sx, B.h * sy);
+        g.restore();
+      } else {
+        // Glaswand vorn
+        const gw = D.sm ? 5 : 7;
+        for (const [xa, left] of [
+          [x0, true],
+          [x0 + w - gw, false],
+        ] as const) {
+          const gr = g.createLinearGradient(xa, 0, xa + gw, 0);
+          gr.addColorStop(0, dark ? 'rgba(170,200,235,0.3)' : 'rgba(150,175,205,0.55)');
+          gr.addColorStop(left ? 0.35 : 0.65, dark ? 'rgba(220,235,255,0.42)' : 'rgba(255,255,255,0.85)');
+          gr.addColorStop(1, dark ? 'rgba(150,180,220,0.22)' : 'rgba(140,165,195,0.5)');
+          g.fillStyle = gr;
+          g.fillRect(xa, top, gw, bot - top);
+        }
+        const bg = g.createLinearGradient(0, D.bottom, 0, bot);
+        bg.addColorStop(0, dark ? 'rgba(190,215,245,0.35)' : 'rgba(255,255,255,0.8)');
+        bg.addColorStop(1, dark ? 'rgba(120,150,190,0.3)' : 'rgba(150,175,205,0.6)');
+        g.fillStyle = bg;
+        roundRect(g, x0, D.bottom, w, bot - D.bottom, 4);
+        g.fill();
+        // Ausguss und Rand
+        g.fillStyle = dark ? 'rgba(210,228,250,0.5)' : 'rgba(255,255,255,0.95)';
+        roundRect(g, x0 - 3, top - 2, gw + 5, 5, 2);
+        g.fill();
+        roundRect(g, x0 + w - gw - 2, top - 2, gw + 5, 5, 2);
+        g.fill();
+        // Lichtreflex
+        const sh = g.createLinearGradient(x0, 0, x0 + w, 0);
+        sh.addColorStop(0, 'rgba(255,255,255,0)');
+        sh.addColorStop(0.1, dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.3)');
+        sh.addColorStop(0.18, 'rgba(255,255,255,0)');
+        g.fillStyle = sh;
+        g.fillRect(x0, top, w, bot - top);
       }
-      const bg = g.createLinearGradient(0, D.bottom, 0, bot);
-      bg.addColorStop(0, dark ? 'rgba(190,215,245,0.35)' : 'rgba(255,255,255,0.8)');
-      bg.addColorStop(1, dark ? 'rgba(120,150,190,0.3)' : 'rgba(150,175,205,0.6)');
-      g.fillStyle = bg;
-      roundRect(g, x0, D.bottom, w, bot - D.bottom, 4);
-      g.fill();
-      // Ausguss und Rand
-      g.fillStyle = dark ? 'rgba(210,228,250,0.5)' : 'rgba(255,255,255,0.95)';
-      roundRect(g, x0 - 3, top - 2, gw + 5, 5, 2);
-      g.fill();
-      roundRect(g, x0 + w - gw - 2, top - 2, gw + 5, 5, 2);
-      g.fill();
-      // Lichtreflex
-      const sh = g.createLinearGradient(x0, 0, x0 + w, 0);
-      sh.addColorStop(0, 'rgba(255,255,255,0)');
-      sh.addColorStop(0.1, dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.3)');
-      sh.addColorStop(0.18, 'rgba(255,255,255,0)');
-      g.fillStyle = sh;
-      g.fillRect(x0, top, w, bot - top);
       // Dampfschwaden über dem warmen Glas
       if (k === 1 && warmth > 0.3) {
         const a = (warmth - 0.3) / 0.7;
@@ -2367,6 +2383,8 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Becherglas-Foto (Bildpixel): Außenkanten der Wände, Oberkante des Rands, Unterkante des Bodens. */
+    const BEAKER_IMG = { w: 816, h: 1000, left: 65, right: 802, top: 2, bottom: 998 };
     /** Pipetten-Foto: Mitte, Glasröhre (oben/unten) und ihre Breite (Bildpixel). */
     const PIPETTE_SRC = { cx: 107.5, tubeA: 420, tubeB: 1170, tubeW: 129 };
     function drawPipettes(D: DiffGeo): void {

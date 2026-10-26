@@ -27,6 +27,8 @@ import {
 const L = (de: string, en: string) => ({ de, en });
 /** Höhe einer Ziegelreihe (mit Fuge) im Foto ziegelwand.webp, in Pixeln. */
 const BRICK_ROW = 72.4;
+/** Leiterfoto leiter.webp (Pixel): füllt das Bild, 14 Sprossen. */
+const LADDER_IMG = { w: 198, h: 1600 } as const;
 type Txt = { de: string; en: string };
 type Lng = 'de' | 'en';
 type Px = [number, number];
@@ -141,7 +143,7 @@ export default defineSimulation({
   id: 'sin-cos-tan-dreieck',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
-  images: { wheelchair: 'rollstuhl.webp', bricks: 'ziegelwand.webp' },
+  images: { wheelchair: 'rollstuhl.webp', bricks: 'ziegelwand.webp', ladder: 'leiter.webp' },
   groups: [
     { id: 'fig', label: L('Dreieck', 'Triangle') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1794,25 +1796,37 @@ export default defineSimulation({
       const dl = Math.hypot(dir[0], dir[1]) || 1;
       const nrm: Px = [-dir[1] / dl, dir[0] / dl];
       const off = clamp(V.s * 0.05, 3, 7);
-      const railCol = dark ? '#c7ccd3' : '#8d96a1';
-      const rail = (sgn: number) => line([foot[0] + nrm[0] * off * sgn, foot[1] + nrm[1] * off * sgn], [top[0] + nrm[0] * off * sgn, top[1] + nrm[1] * off * sgn], railCol, fs(3.6, 3), { glow: true, alpha: k.draw });
-      rail(-1);
-      const nR = Math.floor(Lv / 0.28);
-      g.save();
-      g.globalAlpha *= k.draw;
-      g.strokeStyle = dark ? '#aeb4bc' : '#a3abb5';
-      g.lineWidth = 2;
-      for (let i = 1; i < nR; i++) {
-        const t = i / nR;
-        const cx = lerp(foot[0], top[0], t);
-        const cy = lerp(foot[1], top[1], t);
-        g.beginPath();
-        g.moveTo(cx - nrm[0] * off, cy - nrm[1] * off);
-        g.lineTo(cx + nrm[0] * off, cy + nrm[1] * off);
-        g.stroke();
+      const ladderImg = ctx.images.get('ladder');
+      if (ladderImg) {
+        // Foto (1 : 8, 14 Sprossen): Füße am Fußpunkt, Oberende an der Wand
+        const lw = (dl * LADDER_IMG.w) / LADDER_IMG.h;
+        g.save();
+        g.globalAlpha *= k.draw;
+        g.translate(foot[0], foot[1]);
+        g.rotate(Math.atan2(dir[1], dir[0]) + Math.PI / 2);
+        g.drawImage(scaledSprite(ladderImg, lw, dl, surface.dpr), -lw / 2, -dl, lw, dl);
+        g.restore();
+      } else {
+        const railCol = dark ? '#c7ccd3' : '#8d96a1';
+        const rail = (sgn: number) => line([foot[0] + nrm[0] * off * sgn, foot[1] + nrm[1] * off * sgn], [top[0] + nrm[0] * off * sgn, top[1] + nrm[1] * off * sgn], railCol, fs(3.6, 3), { glow: true, alpha: k.draw });
+        rail(-1);
+        const nR = Math.floor(Lv / 0.28);
+        g.save();
+        g.globalAlpha *= k.draw;
+        g.strokeStyle = dark ? '#aeb4bc' : '#a3abb5';
+        g.lineWidth = 2;
+        for (let i = 1; i < nR; i++) {
+          const t = i / nR;
+          const cx = lerp(foot[0], top[0], t);
+          const cy = lerp(foot[1], top[1], t);
+          g.beginPath();
+          g.moveTo(cx - nrm[0] * off, cy - nrm[1] * off);
+          g.lineTo(cx + nrm[0] * off, cy + nrm[1] * off);
+          g.stroke();
+        }
+        g.restore();
+        rail(1);
       }
-      g.restore();
-      rail(1);
       // Dreieck: Höhe (GK), Fußabstand (AK), Leiter (HY)
       line(foot, [wallX, gy], col.adj(), fs(4.5, 4), { glow: true, alpha: lab });
       line([wallX, gy], top, col.opp(), fs(4.5, 4), { glow: true, alpha: lab });

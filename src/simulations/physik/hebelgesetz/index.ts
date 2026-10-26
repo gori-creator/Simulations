@@ -91,6 +91,15 @@ const TABLE_IMG = { w: 2172, h: 271 };
  */
 const BOTTLE_IMG = { w: 882, h: 1414, cx: 443, top: 127, pxPerCm: 130 };
 
+/**
+ * Flaschenöffner `flaschenoeffner.webp` (1600 × 140 px, Profil, Spitze links).
+ * Spitze liegt bei Bild-x 20 (Drehachse), Innenkante des Zahns bei x 160 (hinter
+ * dem Kronkorkenrand), Unterkante der Spitze bei y 35, Griff ab x 1062.
+ * Waagerecht 68 px/cm, senkrecht 120 px/cm (Profil leicht gestaucht, damit der
+ * Zahn knapp unter den Rand greift); der gleichförmige Schaft wird gestaucht.
+ */
+const OPENER_IMG = { h: 140, tipX: 20, baseY: 35, head: 300, grip: 1062, w: 1600, kx: 68, ky: 120 };
+
 /** Walnuss `walnuss.webp` (1075 × 1173 px, füllt das Bild). */
 const NUT_IMG = { w: 1075, h: 1173 };
 
@@ -186,6 +195,7 @@ export default defineSimulation({
     nutArm: 'nussknacker-arm.webp',
     stand: 'wippe-gestell.webp',
     board: 'brett.webp',
+    opener: 'flaschenoeffner.webp',
   },
   groups: [
     { id: 'w1', label: L('Massestücke (1)', 'Weights (1)') },
@@ -1976,63 +1986,89 @@ export default defineSimulation({
       gx.fillStyle = cg;
       gx.fill();
       // Öffner (Stahl)
-      const body: Pt[] = [
-        [-1.3, 0.05],
-        [1.4, 0.05],
-        [1.4, -0.35],
-        [1.75, -0.85],
-        [2.05, -0.75],
-        [1.95, -0.2],
-        [2.3, 0.05],
-        [5, 0.05],
-        [6, -0.25],
-        [15.2, -0.25],
-        [15.8, 0.4],
-        [15.2, 1.05],
-        [6, 1.05],
-        [5, 0.55],
-        [-1.0, 0.55],
-        [-1.5, 0.3],
-      ];
-      const [o0x, o0y] = P([0, 1.05]);
-      const [o1x, o1y] = P([0, -0.25]);
-      const steel = gx.createLinearGradient(o0x, o0y, o1x, o1y);
-      steel.addColorStop(0, '#f2f4f7');
-      steel.addColorStop(0.5, '#b4bcc7');
-      steel.addColorStop(1, '#6b7584');
-      gx.save();
-      gx.shadowColor = 'rgba(0,0,0,0.3)';
-      gx.shadowBlur = 6;
-      gx.shadowOffsetY = 2;
-      gx.beginPath();
-      body.forEach((q, i) => {
-        const [x, y] = P(q);
-        if (i === 0) gx.moveTo(x, y);
-        else gx.lineTo(x, y);
-      });
-      gx.closePath();
-      gx.fillStyle = steel;
-      gx.fill();
-      gx.restore();
-      gx.strokeStyle = '#4a5361';
-      gx.lineWidth = 1;
-      gx.stroke();
-      // Griffschale
-      gx.fillStyle = '#26303d';
-      gx.beginPath();
-      [
-        [6.4, -0.05],
-        [15, -0.05],
-        [15.45, 0.4],
-        [15, 0.85],
-        [6.4, 0.85],
-      ].forEach((q, i) => {
-        const [x, y] = P(q as Pt);
-        if (i === 0) gx.moveTo(x, y);
-        else gx.lineTo(x, y);
-      });
-      gx.closePath();
-      gx.fill();
+      const openerImg = ctx.images.get('opener');
+      if (openerImg) {
+        // Foto in drei Stücken: Kopf und Griff unverzerrt, Schaft gestaucht
+        const O = OPENER_IMG;
+        const x0 = F0[0] - O.tipX / O.kx;
+        const y0 = O.baseY / O.ky;
+        const headW = O.head / O.kx;
+        const gripW = (O.w - O.grip) / O.kx;
+        const gripX = 15.8 - x0 - gripW;
+        const hh = O.h / O.ky;
+        const [ox, oy] = P([x0, y0]);
+        const [ux, uy] = P([x0 + 1, y0]);
+        gx.save();
+        gx.translate(ox, oy);
+        gx.rotate(Math.atan2(uy - oy, ux - ox));
+        gx.scale(k, k);
+        gx.shadowColor = 'rgba(0,0,0,0.3)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        gx.imageSmoothingQuality = 'high';
+        gx.drawImage(openerImg, 0, 0, O.head, O.h, 0, 0, headW, hh);
+        gx.drawImage(openerImg, O.head, 0, O.grip - O.head, O.h, headW - 0.01, 0, gripX - headW + 0.02, hh);
+        gx.drawImage(openerImg, O.grip, 0, O.w - O.grip, O.h, gripX, 0, gripW, hh);
+        gx.restore();
+      } else {
+        const body: Pt[] = [
+          [-1.3, 0.05],
+          [1.4, 0.05],
+          [1.4, -0.35],
+          [1.75, -0.85],
+          [2.05, -0.75],
+          [1.95, -0.2],
+          [2.3, 0.05],
+          [5, 0.05],
+          [6, -0.25],
+          [15.2, -0.25],
+          [15.8, 0.4],
+          [15.2, 1.05],
+          [6, 1.05],
+          [5, 0.55],
+          [-1.0, 0.55],
+          [-1.5, 0.3],
+        ];
+        const [o0x, o0y] = P([0, 1.05]);
+        const [o1x, o1y] = P([0, -0.25]);
+        const steel = gx.createLinearGradient(o0x, o0y, o1x, o1y);
+        steel.addColorStop(0, '#f2f4f7');
+        steel.addColorStop(0.5, '#b4bcc7');
+        steel.addColorStop(1, '#6b7584');
+        gx.save();
+        gx.shadowColor = 'rgba(0,0,0,0.3)';
+        gx.shadowBlur = 6;
+        gx.shadowOffsetY = 2;
+        gx.beginPath();
+        body.forEach((q, i) => {
+          const [x, y] = P(q);
+          if (i === 0) gx.moveTo(x, y);
+          else gx.lineTo(x, y);
+        });
+        gx.closePath();
+        gx.fillStyle = steel;
+        gx.fill();
+        gx.restore();
+        gx.strokeStyle = '#4a5361';
+        gx.lineWidth = 1;
+        gx.stroke();
+        // Griffschale
+        gx.fillStyle = '#26303d';
+        gx.beginPath();
+        [
+          [6.4, -0.05],
+          [15, -0.05],
+          [15.45, 0.4],
+          [15, 0.85],
+          [6.4, 0.85],
+        ].forEach((q, i) => {
+          const [x, y] = P(q as Pt);
+          if (i === 0) gx.moveTo(x, y);
+          else gx.lineTo(x, y);
+        });
+        gx.closePath();
+        gx.fill();
+      }
 
       const FL = p.of;
       const FK = effortForce(FL, OPENER_LOAD_ARM, p.ok);
@@ -2041,7 +2077,9 @@ export default defineSimulation({
       const [tx, ty] = dplot.toPx(T[0], T[1]);
       arrowPx(tx, ty, tx, ty + lL, theme.series[1]!);
       haloText(`F_L = ${fmt.num(FL, 0)} N`, tx + 10, ty + lL * 0.7, theme.series[1]!, narrow() ? 11 : 13, 'left');
-      const Hh = R([-0.4 + p.ok, 1.05]);
+      // Hand oben am Griff (Foto ist flacher als die gezeichnete Schale)
+      const handY = openerImg ? 0.25 : 1.05;
+      const Hh = R([-0.4 + p.ok, handY]);
       const [hx, hy] = dplot.toPx(Hh[0], Hh[1]);
       arrowPx(hx, hy, hx, hy - lK, theme.series[2]!);
       haloText(`F_K = ${fmt.num(FK, 1)} N`, hx + 10, hy - lK * 0.6, theme.series[2]!, narrow() ? 11 : 13, 'left');
@@ -2051,7 +2089,7 @@ export default defineSimulation({
         dimension(-0.4, 1.6, 2.6, `a_L = ${fmt.num(OPENER_LOAD_ARM, 0)} cm`, theme.series[1]!, [0.6, 0.6]);
         dimension(-0.4, -0.4 + p.ok, 4.4, `a_K = ${fmt.num(p.ok, 1)} cm`, theme.series[2]!, [0.6, 1.1]);
       }
-      travelArc(F0, [-0.4 + p.ok, 1.05], lift, theme.series[2]!, tr('sK', { s: fmt.num(p.ok * lift, 1) }), 1);
+      travelArc(F0, [-0.4 + p.ok, handY], lift, theme.series[2]!, tr('sK', { s: fmt.num(p.ok * lift, 1) }), 1);
       travelArc(F0, [1.6, -0.62], lift, theme.series[1]!, tr('sL', { s: fmt.num(OPENER_LOAD_ARM * lift, 1) }), 1);
     }
 

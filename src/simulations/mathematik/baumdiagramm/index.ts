@@ -118,6 +118,7 @@ export default defineSimulation({
   id: 'baumdiagramm',
   dragHint: false,
   layout: { aspect: 1.55, aspectNarrow: 0.62 },
+  images: { urn: 'urne.webp' },
   groups: [
     { id: 'urn', label: L('Urne', 'Urn') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -522,29 +523,40 @@ export default defineSimulation({
       rich(sub, R.x + 14, R.y + 38, fitSize(sub, R.w - 28, 11, 600), th().muted, 'left', 600);
       const G0 = urnGeo(R, !opts.tray);
       const { jar, r, slots, tray } = G0;
-      g.save();
-      g.beginPath();
-      const neck = jar.w * 0.16;
-      g.moveTo(jar.x + neck, jar.y - 10);
-      g.lineTo(jar.x + jar.w - neck, jar.y - 10);
-      g.quadraticCurveTo(jar.x + jar.w - neck + 2, jar.y + 6, jar.x + jar.w, jar.y + 22);
-      g.lineTo(jar.x + jar.w, jar.y + jar.h - 14);
-      g.quadraticCurveTo(jar.x + jar.w, jar.y + jar.h, jar.x + jar.w - 14, jar.y + jar.h);
-      g.lineTo(jar.x + 14, jar.y + jar.h);
-      g.quadraticCurveTo(jar.x, jar.y + jar.h, jar.x, jar.y + jar.h - 14);
-      g.lineTo(jar.x, jar.y + 22);
-      g.quadraticCurveTo(jar.x + neck - 2, jar.y + 6, jar.x + neck, jar.y - 10);
-      g.closePath();
-      const glass = g.createLinearGradient(jar.x, 0, jar.x + jar.w, 0);
-      glass.addColorStop(0, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.16 : 0.1));
-      glass.addColorStop(0.5, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.06 : 0.03));
-      glass.addColorStop(1, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.16 : 0.1));
-      g.fillStyle = glass;
-      g.fill();
-      g.strokeStyle = mixColor(th().text, th().bg, 0, th().dark ? 0.35 : 0.3);
-      g.lineWidth = 1.8;
-      g.stroke();
-      g.restore();
+      const urnImg = ctx.images.get('urn');
+      // Foto: Hals oben bei jar.y − 10, Bauch auf die volle Breite, Boden auf jar.y + jar.h
+      const drawJar = (alpha: number) => {
+        g.save();
+        g.globalAlpha *= alpha;
+        g.drawImage(urnImg!, jar.x, jar.y - 10, jar.w, jar.h + 10);
+        g.restore();
+      };
+      if (urnImg) drawJar(1);
+      else {
+        g.save();
+        g.beginPath();
+        const neck = jar.w * 0.16;
+        g.moveTo(jar.x + neck, jar.y - 10);
+        g.lineTo(jar.x + jar.w - neck, jar.y - 10);
+        g.quadraticCurveTo(jar.x + jar.w - neck + 2, jar.y + 6, jar.x + jar.w, jar.y + 22);
+        g.lineTo(jar.x + jar.w, jar.y + jar.h - 14);
+        g.quadraticCurveTo(jar.x + jar.w, jar.y + jar.h, jar.x + jar.w - 14, jar.y + jar.h);
+        g.lineTo(jar.x + 14, jar.y + jar.h);
+        g.quadraticCurveTo(jar.x, jar.y + jar.h, jar.x, jar.y + jar.h - 14);
+        g.lineTo(jar.x, jar.y + 22);
+        g.quadraticCurveTo(jar.x + neck - 2, jar.y + 6, jar.x + neck, jar.y - 10);
+        g.closePath();
+        const glass = g.createLinearGradient(jar.x, 0, jar.x + jar.w, 0);
+        glass.addColorStop(0, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.16 : 0.1));
+        glass.addColorStop(0.5, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.06 : 0.03));
+        glass.addColorStop(1, mixColor(th().series[5]!, th().bg, 0, th().dark ? 0.16 : 0.1));
+        g.fillStyle = glass;
+        g.fill();
+        g.strokeStyle = mixColor(th().text, th().bg, 0, th().dark ? 0.35 : 0.3);
+        g.lineWidth = 1.8;
+        g.stroke();
+        g.restore();
+      }
       const dr = currentDrawn(now);
       const shown = draw && !p.rep && opts.tray ? urnAfter(u, dr.path.slice(0, dr.k), false) : u;
       const list = urnBalls(shown);
@@ -554,12 +566,15 @@ export default defineSimulation({
         const pop = ease.outBack(clamp01(growU * 1.4 - i * 0.03));
         ball(s.x, s.y, r * pop, c);
       });
-      g.save();
-      g.globalAlpha = th().dark ? 0.12 : 0.35;
-      g.fillStyle = '#ffffff';
-      roundRect(g, jar.x + 6, jar.y + 26, 6, jar.h * 0.55, 3);
-      g.fill();
-      g.restore();
+      if (urnImg) drawJar(0.45);
+      else {
+        g.save();
+        g.globalAlpha = th().dark ? 0.12 : 0.35;
+        g.fillStyle = '#ffffff';
+        roundRect(g, jar.x + 6, jar.y + 26, 6, jar.h * 0.55, 3);
+        g.fill();
+        g.restore();
+      }
       if (tot === 0) rich(tt('Urne leer', 'Urn empty'), jar.x + jar.w / 2, jar.y + jar.h / 2, 12, th().muted, 'center', 700);
       else if (draw && !p.rep && urnTotal(shown) === 0) pill(jar.x + jar.w / 2, jar.y + jar.h / 2, tt('leer', 'empty'), th().muted, { size: 11 });
       if (!opts.tray) return;

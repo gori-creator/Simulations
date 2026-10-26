@@ -130,7 +130,7 @@ export default defineSimulation({
   id: 'prozentstreifen',
   dragHint: true,
   layout: { aspect: 1.2, aspectNarrow: 0.36 },
-  images: { tag: 'preisschild.webp', receipt: 'kassenbon.webp' },
+  images: { tag: 'preisschild.webp', receipt: 'kassenbon.webp', book: 'sparbuch.webp' },
   groups: [
     { id: 'val', label: L('Werte', 'Values') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -936,18 +936,25 @@ export default defineSimulation({
       const x = R.x + (R.w - w) / 2;
       const y = R.y + 3;
       const cover = th().series[5]!;
+      const bookImg = ctx.images.get('book');
       g.save();
       g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.18)';
       g.shadowBlur = 9;
       g.shadowOffsetY = 3;
-      g.fillStyle = mixColor(cover, '#000000', dark ? 0.35 : 0.15);
-      roundRect(g, x, y, w, h, 6);
-      g.fill();
-      g.restore();
-      // Seite
-      g.fillStyle = paperCol();
-      roundRect(g, x + 5, y + 4, w - 10, h - 8, 4);
-      g.fill();
+      if (bookImg) {
+        // Foto: eine linierte Seite mit Einbandrand, im Dunkelmodus abgedunkelt wie der Kassenbon
+        g.drawImage(photoSprite(bookImg, w, h, dark ? 0.8 : 0), x, y, w, h);
+        g.restore();
+      } else {
+        g.fillStyle = mixColor(cover, '#000000', dark ? 0.35 : 0.15);
+        roundRect(g, x, y, w, h, 6);
+        g.fill();
+        g.restore();
+        // Seite
+        g.fillStyle = paperCol();
+        roundRect(g, x + 5, y + 4, w - 10, h - 8, 4);
+        g.fill();
+      }
       // Linien
       const fsz = clamp(Math.round(h * 0.105), 10.5, 12.5);
       const font = (wt: number) => `${wt} ${fsz}px ${th().font}`;
@@ -956,9 +963,10 @@ export default defineSimulation({
       label(say(L('SPARBUCH', 'SAVINGS BOOK')), x + w / 2, y + 4 + headH / 2 + 1, `800 ${fsz}px ${th().font}`, cover);
       const lh = (h - 8 - headH - 6) / rows;
       let yy = y + 4 + headH + lh / 2;
+      // Linien (das Foto hat eigene)
       g.strokeStyle = withAlpha(cover, 0.3);
       g.lineWidth = 1;
-      for (let i = 0; i <= rows; i++) {
+      for (let i = 0; i <= rows && !bookImg; i++) {
         const ly = Math.round(y + 4 + headH + i * lh) + 0.5;
         g.beginPath();
         g.moveTo(x + 9, ly);
