@@ -95,7 +95,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | doppler-effekt | Bei v_Q = c berührt die Beschriftung „v_Q = 340 m/s“ die gestaute Wellenfront. | offen |
 | federpendel | Eigene `richText`-Hilfe (`F_[G]`) auf `subText` umstellen; bei sehr harter Feder stehen „F_G“ und „F_res“ dicht nebeneinander. | offen |
 | lorentzkraft | Die mitwandernden Pfeile v und F streifen kurz die Kanone bzw. die Beschriftung „Durchmesser in cm“. | offen |
-| interferenz | iPad quer: Wellenwanne im Seitenlayout recht klein; bei d = 14 cm, λ = 1 cm stehen die k-Beschriftungen sehr dicht (ausdünnen). | offen |
+| interferenz | iPad quer: Wellenwanne im Seitenlayout recht klein; bei d = 14 cm, λ = 1 cm stehen die k-Beschriftungen sehr dicht (ausdünnen). | erledigt: Bei mittleren Breiten (Bühne < 760 px, iPad quer) ist die Seitenspalte schmaler (206 statt 228 px), die Wanne dadurch ≈ 6 % breiter; bei mehr als 18 Linien einer Art (Handy 24) nur noch gerade Ordnungen beschriftet; Zeichenhilfen über `subText`/`measureSubText`, Schreibweise `α_k`, `s_1`, `E_1` (Desktop und Handy in Standardansicht und allen Beispielen pixelgleich) |
 | resonanz | Nach einem Zeitsprung in die Katastrophe ist das t-φ-Diagramm fast leer; Beschriftung „Rad“ bei sehr kleiner Amplitude nah an der Achse. | offen |
 | planetenbahnen | Bei sehr flachen Ellipsen (Sturz, Halley) liegen Flächennummern und die Beschriftungen „a“/„e“ eng beieinander. | offen |
 | stehende-wellen | An den Reglergrenzen (ν = 45) wirkt das Seil beim Erreger zackig, K-Marken dicht an dicht; feiner abtasten und Marken ausdünnen. | offen |
