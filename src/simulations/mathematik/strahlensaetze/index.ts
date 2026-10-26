@@ -315,7 +315,6 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => fmt.num(clean(v, d), d);
-    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
     const eq = (v: number, d = 2) => ctx.fmt.rel(v, d);
     const M = '\\t{m}';
 

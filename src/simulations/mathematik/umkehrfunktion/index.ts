@@ -242,7 +242,6 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => (Number.isFinite(v) ? fmt.num(clean(v, d), d) : '–');
-    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
     const eq = (v: number, d = 2) => ctx.fmt.rel(v, d);
     /** Kleine Steigungen mit mehr Stellen (sonst wäre 1 : 0,05 irreführend). */
     const NS = (v: number) => (Math.abs(v) < 0.095 && Math.abs(v) > 5e-5 ? N(v, 4) : N(v));
