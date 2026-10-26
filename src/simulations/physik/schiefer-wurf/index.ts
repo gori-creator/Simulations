@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, prefersReducedMotion, roundRect, scaledSprite, shade, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, shade, subText, Surface, text, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   aimAngles,
   directionOf,
@@ -812,56 +812,31 @@ export default defineSimulation({
     }
 
     /* ---------- Zeichenhilfen ---------- */
-    /** Text mit tiefgestellten Teilen: „v_{y} = 3 m/s“. */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\{([^}]*)\}/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
+    /**
+     * Text mit tiefgestellten Teilen („v_{y} = 3 m/s“) über den Kern-Helfer `subText`. Indexgröße
+     * (ganze Pixel) und Absenkung wie bisher, damit sich das Bild nicht ändert.
+     */
+    function subStyle(size: number, color: string, align: CanvasTextAlign, halo: boolean, weight: number): SubTextStyle {
+      const theme = ctx.theme;
+      return {
+        size,
+        family: theme.font,
+        weight,
+        color,
+        align,
+        baseline: 'middle',
+        halo: halo ? (theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)') : undefined,
+        subScale: Math.round(size * 0.74) / size,
+        subShift: 0.3,
+      };
     }
 
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', 'left', false, weight));
     }
 
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, subStyle(size, color, align, halo, weight));
     }
 
     /** Beschriftung, die innerhalb des Rechtecks r bleibt. */
@@ -1336,10 +1311,28 @@ export default defineSimulation({
         g.arc(x, y, 6, 0, Math.PI * 2);
         g.stroke();
       }
+      for (const e of shadowPills(r, s)) pill(e.x, e.y, e.label, e.color, e.align, e.size);
+    }
+
+    /**
+     * Etiketten der Schatten (x-Wert auf der Zahlenleiste, y-Wert an der Schiene) mit ihren Rechtecken;
+     * die Achsenzahlen darunter lässt `scene.axes({ blocked })` weg.
+     */
+    function shadowPills(r: Rect, s: FlightState): { x: number; y: number; label: string; color: string; align: 'left' | 'center'; size: number; rect: Rect }[] {
+      const ground = scene.py(0);
+      const top = r.y + 54;
+      const [bx] = scene.toPx(s.x, Math.max(0, s.y));
+      const by = scene.py(Math.max(0, s.y)) - ballRadius() + 1;
       const small = r.w < 520;
-      // x-Wert als Etikett auf der Zahlenleiste (verdeckt die Achsenzahlen darunter, statt sie zu überlappen)
-      pill(clamp(bx, r.x + 44, r.x + r.w - 44), ground + 4, `x = ${q(f(s.x, 1))} m`, C.x(), 'center', small ? 11 : 12);
-      pill(rx - 6, clamp(by - 30, top + 4, ground - 30), `y = ${q(f(Math.max(0, s.y), 1))} m`, C.y(), 'left', 11);
+      const list = [
+        { x: clamp(bx, r.x + 44, r.x + r.w - 44), y: ground + 4, label: `x = ${q(f(s.x, 1))} m`, color: C.x(), align: 'center' as const, size: small ? 11 : 12 },
+        { x: railX() - 6, y: clamp(by - 30, top + 4, ground - 30), label: `y = ${q(f(Math.max(0, s.y), 1))} m`, color: C.y(), align: 'left' as const, size: 11 },
+      ];
+      return list.map((e) => {
+        const w = richWidth(e.label, e.size) + 16;
+        const h = e.size + 11;
+        return { ...e, rect: { x: e.align === 'center' ? e.x - w / 2 : e.x, y: e.y, w, h } };
+      });
     }
 
     /* ---------- Szene: Pfeile ---------- */
@@ -1399,10 +1392,77 @@ export default defineSimulation({
       arrowPx(bx, by, ex, ey, C.v(), 3.2, 11);
       // fällt der Ball, steht vₓ oberhalb und v unterhalb des Pfeils (und umgekehrt)
       const down = ey >= by;
-      if (Math.abs(s.vx * k) > 14) clampedText(`v_{x} = ${q(f(s.vx, 1))} m/s`, ex + 6, down ? by - 12 : by + 13, fs, C.x(), r, 'left');
-      if (Math.abs(s.vy * k) > 10) clampedText(`v_{y} = ${q(f(s.vy, 1))} m/s`, bx - 8, (by + ey) / 2, fs, C.y(), r, 'right');
+      // Jede Beschriftung nimmt die erste Stelle, an der sie keinen Stroboskop-Punkt, kein Schatten-Etikett und
+      // keine schon gesetzte Beschriftung überdeckt; sonst wie bisher die erste.
+      const avoid = labelObstacles(r);
+      // Pfeile selbst zählen als Hindernis (Punkte entlang der Pfeile)
+      for (const [x1, y1] of [
+        [ex, by],
+        [bx, ey],
+        [ex, ey],
+      ] as const) {
+        const len = Math.hypot(x1 - bx, y1 - by);
+        for (let d = 8; d < len; d += 6) avoid.points.push([bx + ((x1 - bx) * d) / len, by + ((y1 - by) * d) / len]);
+      }
+      // Die bisherige Stelle zuerst; ist sie belegt, die nächstgelegene freie Stelle in einem Raster um sie herum
+      const put = (str: string, color: string, x: number, y: number, align: CanvasTextAlign) => {
+        const w = richWidth(str, fs);
+        const spots: [number, number, CanvasTextAlign][] = [[x, y, align]];
+        for (const dy of [0, -13, 13, -26, 26, -39, 39, -52, -65])
+          for (const dx of [0, -w / 2 - 6, w / 2 + 6, -w - 12, w + 12]) if (dx || dy) spots.push([x + dx, y + dy, align]);
+        let pick = spots[0]!;
+        let best = Infinity;
+        for (const sp of spots) {
+          const c = labelCost(str, fs, sp[0], sp[1], sp[2], r, avoid) + 0.01 * Math.hypot(sp[0] - x, sp[1] - y);
+          if (c < best) [pick, best] = [sp, c];
+        }
+        avoid.rects.push(labelRect(str, fs, pick[0], pick[1], pick[2], r));
+        clampedText(str, pick[0], pick[1], fs, color, r, pick[2]);
+      };
+      if (Math.abs(s.vx * k) > 14) put(`v_{x} = ${q(f(s.vx, 1))} m/s`, C.x(), ex + 6, down ? by - 12 : by + 13, 'left');
+      if (Math.abs(s.vy * k) > 10) put(`v_{y} = ${q(f(s.vy, 1))} m/s`, C.y(), bx - 8, (by + ey) / 2, 'right');
       else if (Math.abs(s.vy) < 1) clampedText(ctx.t('apex'), bx, by - 24, fs, C.y(), r, 'center');
-      clampedText(`v = ${q(f(speedOf(s), 1))} m/s`, ex + 8, down ? ey + 14 : ey - 10, fs, C.v(), r, 'left');
+      put(`v = ${q(f(speedOf(s), 1))} m/s`, C.v(), ex + 8, down ? ey + 14 : ey - 10, 'left');
+    }
+
+    /** Rechteck einer Beschriftung, wie `clampedText` sie setzt. */
+    function labelRect(str: string, size: number, x: number, y: number, align: CanvasTextAlign, r: Rect): Rect {
+      const w = richWidth(str, size);
+      let left = align === 'left' ? x : align === 'right' ? x - w : x - w / 2;
+      left = clamp(left, r.x + 6, r.x + r.w - w - 6);
+      const cy = clamp(y, r.y + size, r.y + r.h - size);
+      return { x: left, y: cy - size / 2 - 1, w, h: size + 2 };
+    }
+
+    /** Hindernisse für Pfeilbeschriftungen: Stroboskop-Punkte (Bahn und Schatten) und Schatten-Etiketten. */
+    function labelObstacles(r: Rect): { points: [number, number][]; rects: Rect[] } {
+      const points: [number, number][] = [];
+      const rects: Rect[] = [];
+      if (p.strobe && t > 0) {
+        const dt = strobeInterval(tEnd());
+        const inParts = mode() === 'parts';
+        for (let k = 0; k * dt <= Math.min(t, endMain) + 1e-9; k++) {
+          const q0 = stateAt(k * dt);
+          const [x, y] = scene.toPx(q0.x, Math.max(0, q0.y));
+          points.push([x, y - ballRadius() + 1]);
+          if (inParts) points.push([x, scene.py(0)], [railX(), scene.py(Math.max(0, q0.y))]);
+        }
+      }
+      if (mode() === 'parts' && main.time > 0) for (const e of shadowPills(r, stateAt(t))) rects.push(e.rect);
+      // Achsbeschriftung „x in m“ rechts über der Achse
+      const sr = scene.rect;
+      const ax = richWidth('x in m', 13, 600);
+      rects.push({ x: sr.x + sr.w - 6 - ax, y: scene.py(0) - 6 - 15, w: ax, h: 15 });
+      return { points, rects };
+    }
+
+    /** 0 = frei; sonst Zahl der überdeckten Punkte, Etiketten und Beschriftungen zählen stärker. */
+    function labelCost(str: string, size: number, x: number, y: number, align: CanvasTextAlign, r: Rect, avoid: { points: [number, number][]; rects: Rect[] }): number {
+      const b = labelRect(str, size, x, y, align, r);
+      const pad = 6;
+      const dots = avoid.points.filter(([px, py]) => px > b.x - pad && px < b.x + b.w + pad && py > b.y - pad && py < b.y + b.h + pad).length;
+      const boxes = avoid.rects.filter((o) => b.x < o.x + o.w + 2 && o.x < b.x + b.w + 2 && b.y < o.y + o.h + 1 && o.y < b.y + b.h + 1).length;
+      return dots + boxes * 50;
     }
 
     /* ---------- Szene: Markierungen und Anzeigen ---------- */
@@ -1544,7 +1604,8 @@ export default defineSimulation({
       roundRect(g, r.x, r.y, r.w, r.h, 12);
       g.clip();
       drawBackground(r);
-      scene.axes();
+      // Zerlegung: Achsenzahlen unter den Schatten-Etiketten weglassen (statt halb verdeckt)
+      scene.axes(mode() === 'parts' && main.time > 0 ? { blocked: shadowPills(r, stateAt(t)).map((e) => e.rect) } : {});
       drawTower();
       const m = mode();
       const modeAlpha = fade.running ? fade.value : 1;
