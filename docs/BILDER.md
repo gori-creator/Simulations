@@ -16,18 +16,11 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 - Einheitlicher Stil: fotorealistisch, weiches Studiolicht, freundlich, nicht kitschig.
 - Dateigröße höchstens 300 KB (Schulnetze!); ein Test in `tests/simulations.test.ts` prüft das. Bilder nur so groß anlegen, wie sie höchstens gezeichnet werden (Gerätepixel), und unbenutzte Bildteile einfarbig lassen.
 - Bitte nur Bilder verwenden, die frei genutzt werden dürfen (selbst erzeugt oder mit passender Lizenz).
+- Herkunft, Prüfung aller Bilder und Rechtslage: `docs/BILDRECHTE.md`.
 
-## Herkunft und Rechte (Entwurf, Stand 26.10.2026)
+## Herkunft und Rechte
 
-Keine Rechtsberatung. Vor der Veröffentlichung bitte von einer kundigen Person prüfen lassen.
-
-- **Herkunft:** Alle Fotos in `src/assets/sims/` hat die Projektleitung selbst mit Bildgeneratoren (KI) erzeugt. Zu jedem Bild steht der Prompt in diesem Dokument; Prompts für noch fehlende Bilder stehen in `docs/BILDER-WUNSCHLISTE.md`. Bearbeitet wurde nur technisch: zugeschnitten, freigestellt, verkleinert, eingefärbt.
-- **Keine fremden Werke:** keine Stockfotos, keine Bilder aus dem Internet, keine Vorlagen anderer Designer. Vorbild-Bilder (z. B. Dribbble-Entwürfe für das Design) dienen nur zur Abstimmung und kommen **nicht** ins Repository.
-- **Keine Kennzeichen:** keine Marken, Logos, Wasserzeichen, echten Geldscheine oder Münzen, keine erkennbaren Personen (siehe „Allgemeine Regeln“).
-- **Nutzungsbedingungen der Generatoren:** Je nach Dienst gelten eigene Bedingungen für die Nutzung erzeugter Bilder. Die Projektleitung prüft vor dem Start, ob der jeweilige Dienst eine freie Weitergabe erlaubt, und hält fest, welcher Dienst verwendet wurde.
-- **Lizenz der Bilder:** wird zusammen mit der Lizenz des Projekts festgelegt (Vorschlag in `docs/AUFGABEN.md`: CC BY 4.0 für Texte und Bilder).
-- **Symbole der Web-App** (`public/icons/`) wurden im Projekt selbst erstellt.
-- Übrige Grafiken (Vorschaubilder `thumb.svg`, Ersatzgrafiken) zeichnet der Code selbst.
+Ausführlich (Durchsicht aller Bilder, Rechtslage, offene Fragen): `docs/BILDRECHTE.md`. Kurz: alle Fotos selbst mit KI erzeugt, Prompt zu jedem Bild, keine fremden Vorlagen, Marken oder Personen; Vorbild-Bilder fremder Designer kommen nicht ins Repository.
 
 ## Übersicht
 
