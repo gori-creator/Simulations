@@ -16,6 +16,7 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 - Einheitlicher Stil: fotorealistisch, weiches Studiolicht, freundlich, nicht kitschig.
 - Dateigröße höchstens 300 KB (Schulnetze!); ein Test in `tests/simulations.test.ts` prüft das. Bilder nur so groß anlegen, wie sie höchstens gezeichnet werden (Gerätepixel), und unbenutzte Bildteile einfarbig lassen.
 - Bitte nur Bilder verwenden, die frei genutzt werden dürfen (selbst erzeugt oder mit passender Lizenz).
+- Herkunft, Prüfung aller Bilder und Rechtslage: `docs/BILDRECHTE.md`.
 
 ## Übersicht
 
