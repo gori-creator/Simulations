@@ -120,7 +120,7 @@ export default defineSimulation({
       type: 'number',
       group: 'start',
       label: L('Startgeschwindigkeit v₀', 'Initial speed v₀'),
-      help: L('Auch durch Ziehen an der Pfeilspitze. Die Ringe zeigen die Kreisbahngeschwindigkeit v_K und die Fluchtgeschwindigkeit v_F.', 'You can also drag the arrow tip. The rings show the circular speed v_K and the escape speed v_F.'),
+      help: L('Auch durch Ziehen an der Pfeilspitze. Der innere Ring zeigt die Kreisbahngeschwindigkeit, der äußere die Fluchtgeschwindigkeit.', 'You can also drag the arrow tip. The inner ring shows the circular speed, the outer one the escape speed.'),
       min: 2,
       max: 80,
       step: 0.01,
@@ -196,7 +196,7 @@ export default defineSimulation({
     { key: 'pa', label: L('Perihel und Aphel (2. Keplersches Gesetz)', 'Perihelion and aphelion (Kepler’s second law)'), spoiler: true },
     { key: 'period', label: L('Umlaufdauer (3. Keplersches Gesetz)', 'Orbital period (Kepler’s third law)'), spoiler: true },
     { key: 'energy', label: L('Energie pro kg Planetenmasse', 'Energy per kg of planet mass'), spoiler: true },
-    { key: 'now', label: L('Momentan', 'Right now') },
+    { key: 'now', label: L('Momentan', 'Right now'), spoiler: true },
   ],
   resultsParam: 'num',
   presets: [
@@ -235,6 +235,7 @@ export default defineSimulation({
       k2TitleShort: 'Gleiche Zeiten – gleiche Flächen',
       k2Dt: 'Δt = T/{n} = {dt}',
       k2DtOpen: 'Δt = {dt}',
+      k2DtHidden: 'Δt = T/{n}',
       k2Empty: '„Start“ – hier wachsen die Flächen.',
       k2Axis: 'A in AE²',
       k2Equal: 'je {A}',
@@ -293,7 +294,7 @@ export default defineSimulation({
       periodOpen: 'Keine Umlaufdauer: Die Bahn ist offen.',
       energyText: '<var>E</var><sub>ges</sub> = ½ · <var>v</var>₀² − <var>G</var> · <var>M</var> / <var>r</var>₀ ≈ {kin} − {pot} = <strong>{tot} J/kg</strong> {rel} 0',
       now: 't = {t} · r = {r} AE · v = {v} km/s',
-      nowLaps: 't = {t} · r = {r} AE · v = {v} km/s · {n} Umläufe',
+      nowLaps: 't = {t} · r = {r} AE · v = {v} km/s · Umläufe: {n}',
     },
     en: {
       canvas: 'Top view of the orbital plane: a planet moves under the gravity of a star on a circular, elliptical, parabolic or hyperbolic orbit. Foci, semi-axes, perihelion and aphelion are drawn, as well as the areas swept by the radius vector in equal times. Next to it graphs or a table on Kepler’s laws.',
@@ -322,6 +323,7 @@ export default defineSimulation({
       k2TitleShort: 'Equal times – equal areas',
       k2Dt: 'Δt = T/{n} = {dt}',
       k2DtOpen: 'Δt = {dt}',
+      k2DtHidden: 'Δt = T/{n}',
       k2Empty: '“Start” – the areas grow here.',
       k2Axis: 'A in AU²',
       k2Equal: 'each {A}',
@@ -380,7 +382,7 @@ export default defineSimulation({
       periodOpen: 'No period: the orbit is open.',
       energyText: '<var>E</var><sub>tot</sub> = ½ · <var>v</var>₀² − <var>G</var> · <var>M</var> / <var>r</var>₀ ≈ {kin} − {pot} = <strong>{tot} J/kg</strong> {rel} 0',
       now: 't = {t} · r = {r} AU · v = {v} km/s',
-      nowLaps: 't = {t} · r = {r} AU · v = {v} km/s · {n} orbits',
+      nowLaps: 't = {t} · r = {r} AU · v = {v} km/s · orbits: {n}',
     },
   },
 
@@ -621,7 +623,13 @@ export default defineSimulation({
     }
 
     /* ---------- Hilfsgrößen ---------- */
-    const n2 = (v: number, d: number) => fmt.num(v, d);
+    /** Feste Nachkommastellen (keine weggelassenen Endnullen: „22,00 km/s“ neben „29,78 km/s“). */
+    const n2 = (v: number, d: number) => fmt.fixed(v, d);
+    /**
+     * Zahlenwerte im Bild zeigen? Nein bei „Zahlenwerte im Bild“ aus (`resultsParam`)
+     * und im Aufgabenmodus (`_hide=1`), solange noch ein Ergebnis verdeckt ist.
+     */
+    const shown = () => !ctx.hidden;
     /** Abstand in AE mit sinnvoller Stellenzahl. */
     const dist = (r: number) => (r < 10 ? fmt.fixed(r, r < 1 ? 3 : 2) : r < 100 ? fmt.fixed(r, 1) : fmt.num(r, 0));
     const daysMode = () => run.tRef <= 2;
@@ -629,8 +637,6 @@ export default defineSimulation({
     const rLow = () => Math.max(run.orbit.rP, R_SUN);
     /** Größte Bahngeschwindigkeit in km/s (im Perihel bzw. an der Sternoberfläche). */
     const vPeak = () => (run.orbit.hitsStar ? Math.sqrt(2 * (run.orbit.energy + (MU_SUN * p.M) / R_SUN)) * (AU / YEAR / 1000) : run.orbit.vP);
-    /** Zahl mit n geltenden Ziffern. */
-    const sig = (v: number, n: number) => fmt.fixed(v, Math.max(0, n - 1 - Math.floor(Math.log10(Math.abs(v) || 1))));
     /** Dauer: unter einem Jahr in Tagen, sonst in Jahren. */
     const durText = (t: number) => (t < 1 ? `${fmt.num(t * 365.25, t * 365.25 < 100 ? 1 : 0)} d` : `${fmt.fixed(t, t < 10 ? 2 : 1)} ${ctx.t('yr')}`);
     const timeText = (t: number) => (daysMode() ? `${fmt.num(t * 365.25, t * 365.25 < 100 ? 1 : 0)} d` : `${fmt.fixed(t, t < 10 ? 2 : 1)} ${ctx.t('yr')}`);
@@ -673,7 +679,7 @@ export default defineSimulation({
           html: tr('paText', { rp: dist(o.rP), vp: n2(o.vP, 2), ra: dist(o.rA), va: n2(o.vA, 2), L: n2(o.rP * o.vP, 2) }),
         });
         ctx.readout('period', {
-          html: tr('periodText', { T: n2(o.T, 3), Td: n2(o.T * 365.25, 1), q: sciHtml(keplerConstant(p.M), 3) }),
+          html: tr('periodText', { T: n2(o.T, 3), Td: n2(o.T * 365.25, o.T < 10 ? 1 : 0), q: sciHtml(keplerConstant(p.M), 3) }),
         });
       } else {
         ctx.readout('pa', { html: tr('paOpen', { rp: dist(o.rP), vp: n2(o.vP, 2) }) });
@@ -1197,7 +1203,7 @@ export default defineSimulation({
       const suy = -uy;
       const [fx, fy] = [wx(0), wy(0)];
       const geo = colGeo();
-      const num = p.num;
+      const num = shown();
       const atIdle = run.t === 0;
       if (o.kind === 'circle') {
         const a = (135 * Math.PI) / 180;
@@ -1390,7 +1396,7 @@ export default defineSimulation({
       const r1 = Math.hypot(run.s.x, run.s.y);
       const r2 = Math.hypot(run.s.x - o.focus2[0], run.s.y - o.focus2[1]);
       const r = regions(surface.width, surface.height).scene;
-      const text = p.num ? `r_[1] + r_[2] = ${dist(r1)} + ${dist(r2)} = ${dist(r1 + r2)} ${AE} = 2a` : 'r_[1] + r_[2] = 2a';
+      const text = shown() ? `r_[1] + r_[2] = ${dist(r1)} + ${dist(r2)} = ${dist(r1 + r2)} ${AE} = 2a` : 'r_[1] + r_[2] = 2a';
       pill(r.x + r.w / 2, r.y + r.h - (small ? 54 : 60), text, colStr(), 'center', small ? 11 : 12);
     }
 
@@ -1406,8 +1412,8 @@ export default defineSimulation({
       const fs = small ? 10.5 : 11.5;
       // Ringe v_K und v_F um den Startpunkt
       const rings: [number, string, string, string, boolean][] = [
-        [vk, colGeo(snapped === 'vk' ? 0.95 : 0.6), colGeo(), p.num ? `v_[K] = ${n2(vk, 1)} km/s` : 'v_[K]', snapped === 'vk'],
-        [vf, colF(snapped === 'vf' ? 0.95 : 0.6), colF(), p.num ? `v_[F] = ${n2(vf, 1)} km/s` : 'v_[F]', snapped === 'vf'],
+        [vk, colGeo(snapped === 'vk' ? 0.95 : 0.6), colGeo(), shown() ? `v_[K] = ${n2(vk, 1)} km/s` : 'v_[K]', snapped === 'vk'],
+        [vf, colF(snapped === 'vf' ? 0.95 : 0.6), colF(), shown() ? `v_[F] = ${n2(vf, 1)} km/s` : 'v_[F]', snapped === 'vf'],
       ];
       for (const [v, color, ink, label, hot] of rings) {
         g.strokeStyle = color;
@@ -1459,7 +1465,7 @@ export default defineSimulation({
       const tx = px + Math.cos(a) * p.v0 * k;
       const ty = py - Math.sin(a) * p.v0 * k;
       arrowPx(px, py, tx, ty, colV(), small ? 3.2 : 3.8, small ? 11 : 13);
-      const lab = p.num ? `v_[0] = ${n2(p.v0, 2)} km/s` : 'v_[0]';
+      const lab = shown() ? `v_[0] = ${n2(p.v0, 2)} km/s` : 'v_[0]';
       labelAt(lab, tx, ty, Math.cos(a), -Math.sin(a), colV(), small ? 11.5 : 12.5, 15);
     }
 
@@ -1483,7 +1489,7 @@ export default defineSimulation({
         const vy = -run.s.vy / v;
         const lenV = clamp(toKmsLocal(v) * kLive() * s, 10, Math.min(sr.w, sr.h) * 0.42);
         arrowPx(x, y, x + vx * lenV, y + vy * lenV, colV(), small ? 3 : 3.4, small ? 10 : 12);
-        labelAt(p.num ? `v = ${n2(run.v, 1)} km/s` : 'v', x + vx * lenV, y + vy * lenV, vx, vy, colV(), small ? 11 : 12, 6);
+        labelAt(shown() ? `v = ${n2(run.v, 1)} km/s` : 'v', x + vx * lenV, y + vy * lenV, vx, vy, colV(), small ? 11 : 12, 6);
       }
       labelAt('F_[G]', x + ((sx - x) / d) * (R * 0.6 + lenF), y + ((sy - y) / d) * (R * 0.6 + lenF), -(sy - y) / d, (sx - x) / d, colF(), small ? 11 : 12, 6);
     }
@@ -1565,18 +1571,21 @@ export default defineSimulation({
       // Anzeigen oben
       const size = small ? 11 : 12;
       const tText = `t = ${timeText(run.t)}`;
-      const w1 = pill(r.x + 8, r.y + 8, run.closed && p.num && !small ? `${tText} · T = ${timeText(run.tRef)}` : tText, INK, 'left', size);
+      const w1 = pill(r.x + 8, r.y + 8, run.closed && !o.hitsStar && shown() && !small ? `${tText} · T = ${timeText(run.tRef)}` : tText, INK, 'left', size);
       if (run.closed && run.t >= run.tRef && !small) {
         const laps = Math.floor(run.t / run.tRef + 1e-9);
         pill(r.x + 8 + w1 + 6, r.y + 8, tr('laps', { n: String(laps) }), INK_MUTED, 'left', size);
       }
       const eps = o.kind === 'circle' ? '' : ` · ${ctx.t('eps')} = ${o.kind === 'parabola' ? '1' : fmt.fixed(o.e, small ? 2 : 3)}`;
-      pill(r.x + r.w - 8, r.y + 8, kindName(o) + (p.num && !o.hitsStar ? eps : ''), '#ffffff', 'right', size, mixColor(kindColor(o), '#000000', 0.25, 0.92));
+      // Bahnform erst nach dem Aufdecken von „Bahnform“ (Aufgabe 2 fragt danach); ein Sturz bleibt sichtbar
+      if (!ctx.isHidden('kind') || done === 'crash') {
+        pill(r.x + r.w - 8, r.y + 8, kindName(o) + (shown() && !o.hitsStar ? eps : ''), '#ffffff', 'right', size, mixColor(kindColor(o), '#000000', 0.25, 0.92));
+      }
       // Meldungen
       const msgY = r.y + (small ? 38 : 42);
       if (done === 'crash') pill(r.x + r.w / 2, msgY, ctx.t('msgCrash'), '#fff', 'center', size + 0.5, colF(0.92));
       else if (done === 'escape') pill(r.x + r.w / 2, msgY, ctx.t(small ? 'msgEscapeShort' : 'msgEscape'), '#fff', 'center', size + 0.5, sp(3, 0.92));
-      else if (done === 'far') pill(r.x + r.w / 2, msgY, tr(small ? 'msgFarShort' : 'msgFar', { T: timeText(o.T) }), '#fff', 'center', size + 0.5, sp(5, 0.9));
+      else if (done === 'far') pill(r.x + r.w / 2, msgY, tr(small ? 'msgFarShort' : 'msgFar', { T: shown() ? timeText(o.T) : '?' }), '#fff', 'center', size + 0.5, sp(5, 0.9));
       drawScaleBar(r);
       rich(ctx.t(small ? 'notToScaleShort' : 'notToScale'), r.x + r.w - 12, r.y + r.h - (small ? 14 : 16), small ? 10.5 : 11, 'rgba(200,212,240,0.7)', 'right', null, 600);
       g.restore();
@@ -1609,7 +1618,9 @@ export default defineSimulation({
       const parts2 = panelParts(R);
       const B = parts2.bars;
       const dtText = durText(run.dtSector);
-      panelTitle(R, ctx.t('k2Title'), run.closed ? tr('k2Dt', { n: String(run.n), dt: dtText }) : tr('k2DtOpen', { dt: dtText }));
+      // Im Aufgabenmodus verriete Δt = T/n die Umlaufdauer
+      const sub = run.closed ? (shown() ? tr('k2Dt', { n: String(run.n), dt: dtText }) : tr('k2DtHidden', { n: String(run.n) })) : tr('k2DtOpen', { dt: dtText });
+      panelTitle(R, ctx.t('k2Title'), sub);
       const o = run.orbit;
       const expected = o.arealVelocity * run.dtSector;
       const list = run.sectors.filter((s) => s.area > 0 || !s.done).slice(-run.n);
@@ -1642,7 +1653,7 @@ export default defineSimulation({
       g.stroke();
       g.setLineDash([]);
       g.globalAlpha = 1;
-      const eqText = tr('k2Equal', { A: p.num ? `${sig(expected, 3)} ${AE}²` : 'A' });
+      const eqText = tr('k2Equal', { A: shown() ? `${fmt.sig(expected, 3)} ${AE}²` : 'A' });
       rich(eqText, right, Y(expected) - 9, small ? 11 : 11.5, theme.text, 'right', panelHalo(), 700);
       for (let i = 0; i < count; i++) {
         const sec = run.closed ? run.sectors.find((s) => s.index === i) : list[i];
@@ -1736,7 +1747,7 @@ export default defineSimulation({
             [tP, 'P', -12],
             [tA, 'A', -12],
           ] as const) {
-            const label = p.num ? `v_[${name}] = ${n2(q.v, 1)}` : `v_[${name}]`;
+            const label = shown() ? `v_[${name}] = ${n2(q.v, 1)}` : `v_[${name}]`;
             const w = richWidth(label, 11.5);
             // nahe der y-Achse (deren Beschriftung) lieber am rechten Ende, wo die Kurve wieder ansteigt
             const px0 = chart.px(q.t * tf);
@@ -1812,9 +1823,9 @@ export default defineSimulation({
         rows.push({
           name,
           dot: ownColor,
-          a: p.num ? fmt.fixed(m.a, m.a < 10 ? 3 : 2) : '?',
-          T: p.num ? fmt.fixed(m.T, m.T < 10 ? 3 : 2) : '?',
-          q: p.num ? fmt.fixed(keplerRatio(m.a, m.T) * 1e19, 3) : '?',
+          a: shown() ? fmt.fixed(m.a, m.a < 10 ? 3 : 2) : '?',
+          T: shown() ? fmt.fixed(m.T, m.T < 10 ? 3 : 2) : '?',
+          q: shown() ? fmt.fixed(keplerRatio(m.a, m.T) * 1e19, 3) : '?',
           own: true,
           hot: m.id === lastMeasId && run.complete,
         });
@@ -1963,7 +1974,8 @@ export default defineSimulation({
         g.fillStyle = grad;
         roundRect(g, xa, yc - bh / 2, Math.max(1.5, xb - xa), bh, 3);
         g.fill();
-        // Wert über dem Balken
+        // Wert über dem Balken (nicht im Aufgabenmodus bzw. ohne „Zahlenwerte im Bild“)
+        if (!shown()) return;
         const txt = `${val < 0 ? '−' : '+'}${fmt.fixed(Math.abs(val) / unit, 2)}`;
         const right = val >= 0;
         const tw = richWidth(txt, 11);

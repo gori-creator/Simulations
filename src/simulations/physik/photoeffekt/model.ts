@@ -92,6 +92,17 @@ export function stoppingVoltage(lambdaNm: number, W: number): number {
   return maxKineticEnergy(lambdaNm, W);
 }
 
+/**
+ * Kleinste Gegenspannung auf dem Reglerraster (Schritt 0,01 V, höchstens 4 V),
+ * bei der kein Strom mehr fließt: U_G aufgerundet. Abrunden ließe einen kleinen
+ * Reststrom übrig.
+ */
+export function zeroVoltage(lambdaNm: number, W: number, step = 0.01, max = 4): number {
+  const k = Math.ceil(stoppingVoltage(lambdaNm, W) / step - 1e-9);
+  // Math.max(0, …) vermeidet −0 (würde als „−0,00 V“ erscheinen)
+  return Math.max(0, Math.min(max, Math.round(k * step * 1e6) / 1e6));
+}
+
 /** Sättigungsstrom in nA bei der Intensität P (0 … 100 %). */
 export function saturationCurrent(P: number): number {
   return (I_SAT_MAX * Math.max(0, Math.min(100, P))) / 100;

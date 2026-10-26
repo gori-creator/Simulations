@@ -75,13 +75,13 @@ Ein Planet startet im Perihel $r_P = 1{,}00\,\text{AE}$ mit $v_P = 36{,}0\,\tfra
 
 Flächensatz: $v_A = v_P \cdot \frac{r_P}{r_A} = 36{,}0\,\tfrac{\text{km}}{\text{s}} \cdot \frac{1{,}00}{2{,}71} \approx 13{,}3\,\tfrac{\text{km}}{\text{s}}$
 
-$a = \frac{r_P + r_A}{2} \approx 1{,}86\,\text{AE}$, $e = a - r_P \approx 0{,}86\,\text{AE}$, $\varepsilon = \frac{e}{a} = \frac{r_A - r_P}{r_A + r_P} \approx 0{,}46$. [In der Simulation zeigen](?str=1)
+$a = \frac{r_P + r_A}{2} = \frac{1{,}00 + 2{,}71}{2}\,\text{AE} = 1{,}855\,\text{AE}$, $e = a - r_P = 0{,}855\,\text{AE}$, $\varepsilon = \frac{e}{a} = \frac{r_A - r_P}{r_A + r_P} = \frac{1{,}71}{3{,}71} \approx 0{,}461$. Die Simulation rechnet mit dem genaueren $r_A = 2{,}7099\,\text{AE}$ und zeigt deshalb $a \approx 1{,}85\,\text{AE}$. [In der Simulation zeigen](?str=1)
 
 </details>
 
 ### Aufgabe 4: Mars und Jupiter
 
-Mars hat die große Halbachse $a = 1{,}524\,\text{AE}$. Berechne seine Umlaufdauer mit dem 3. Keplerschen Gesetz (Erde: $a = 1\,\text{AE}$, $T = 1\,\text{a}$). Jupiter braucht für einen Umlauf $11{,}86\,\text{a}$. Wie groß ist seine große Halbachse? [Aufgabe laden](?panel=k3&r0=1.38&v0=26.51&pl=1&sec=0&num=0&_hide=1)
+Mars hat die große Halbachse $a = 1{,}524\,\text{AE}$. Berechne seine Umlaufdauer mit dem 3. Keplerschen Gesetz (Erde: $a = 1\,\text{AE}$, $T = 1\,\text{a}$). Jupiter braucht für einen Umlauf $11{,}86\,\text{a}$. Wie groß ist seine große Halbachse? [Aufgabe laden](?r0=1.38&v0=26.51&pl=1&sec=0&num=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>
@@ -97,7 +97,7 @@ Der Halleysche Komet kommt der Sonne bis auf $0{,}59\,\text{AE}$ nahe, seine gro
 <details>
 <summary>Lösung anzeigen</summary>
 
-$T = \sqrt{17{,}8^3}\,\text{a} \approx 75\,\text{a}$, $r_A = 2a - r_P \approx 35{,}0\,\text{AE}$ (weiter als Neptun). Nach dem Flächensatz überstreicht der Fahrstrahl in Sonnennähe in kurzer Zeit eine große Fläche: Der Komet rast durch das innere Sonnensystem und verbringt fast die ganze Umlaufdauer weit draußen, wo er langsam und lichtschwach ist. [In der Simulation zeigen](?r0=0.59&v0=54.38&n=8)
+$T = \sqrt{17{,}8^3}\,\text{a} \approx 75\,\text{a}$, $r_A = 2a - r_P = 35{,}6\,\text{AE} - 0{,}59\,\text{AE} \approx 35{,}0\,\text{AE}$ (weiter als Neptun). Die Simulation startet mit $v_0 = 54{,}38\,\tfrac{\text{km}}{\text{s}}$ (Reglerschritt 0,01) und zeigt $a \approx 17{,}7\,\text{AE}$ und $T \approx 74{,}7\,\text{a}$ – schon 0,01 km/s mehr verlängert die Bahn deutlich. Nach dem Flächensatz überstreicht der Fahrstrahl in Sonnennähe in kurzer Zeit eine große Fläche: Der Komet rast durch das innere Sonnensystem und verbringt fast die ganze Umlaufdauer weit draußen, wo er langsam und lichtschwach ist. [In der Simulation zeigen](?r0=0.59&v0=54.38&n=8)
 
 </details>
 

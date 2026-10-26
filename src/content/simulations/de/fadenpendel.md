@@ -14,7 +14,13 @@ $$
 
 $T_0$ hängt nur von der **Länge** und vom **Ortsfaktor** $g$ ab – **nicht** von der Masse: Eine schwerere Kugel erfährt zwar eine größere Rückstellkraft, ist aber im gleichen Maß träger. Quadriert man, erhält man $T^2 = \frac{4\pi^2}{g} \cdot l$: Trägt man $T^2$ über $l$ auf, liegen die Messpunkte auf einer **Ursprungsgeraden** mit der Steigung $k = 4\pi^2/g$. So lässt sich $g$ messen.
 
-Bei **großen Auslenkungen** wird die Periodendauer länger. Exakt gilt $T = T_0 / \operatorname{AGM}(1;\, \cos\tfrac{\varphi_0}{2})$ (arithmetisch-geometrisches Mittel). Bis etwa $22{,}8^\circ$ weicht $T$ um weniger als $1\,\%$ von $T_0$ ab, bei $90^\circ$ sind es schon $18\,\%$.
+Bei **großen Auslenkungen** wird die Periodendauer länger, weil die Rückstellkraft $m g \sin\varphi$ dann kleiner ist als $m g \varphi$. Eine gute Näherung bis etwa $60^\circ$ ist
+
+$$
+T \approx T_0 \cdot \left(1 + \frac{\varphi_0^2}{16}\right) \quad (\varphi_0 \text{ im Bogenmaß}).
+$$
+
+Bis etwa $22{,}8^\circ$ weicht $T$ um weniger als $1\,\%$ von $T_0$ ab, bei $90^\circ$ sind es schon $18\,\%$. Die Simulation rechnet nicht mit einer Näherung: Sie löst die Bewegungsgleichung mit $\sin\varphi$ Schritt für Schritt (numerisch). Die exakte Periodendauer im Ergebnisfeld berechnet sie mit dem **arithmetisch-geometrischen Mittel** (AGM): Man bildet aus $1$ und $\cos\tfrac{\varphi_0}{2}$ immer wieder das arithmetische Mittel $\tfrac{a+b}{2}$ und das geometrische Mittel $\sqrt{a b}$, bis beide gleich sind. Dann gilt $T = T_0 / \operatorname{AGM}(1;\, \cos\tfrac{\varphi_0}{2})$. Das ist gleichwertig zum elliptischen Integral aus der Formelsammlung der Hochschule – für die Schule genügt die Näherung oben.
 
 **Energie:** Lageenergie und Bewegungsenergie wandeln sich ineinander um:
 
@@ -22,7 +28,7 @@ $$
 E_\text{pot} = m g l (1 - \cos\varphi) \qquad E_\text{kin} = \tfrac{1}{2} m v^2
 $$
 
-Die **Fadenkraft** ist im tiefsten Punkt am größten: $F_S = m g \cos\varphi + m v^2/l$. Ein Faden kann nur ziehen. Für $|\varphi_0| > 90^\circ$ würde er schlaff – die Simulation rechnet dann mit einer starren Stange. Mit **Dämpfung** nimmt die Amplitude ungefähr mit $e^{-\gamma t}$ ab (mit $\gamma = k/2$ für den Reibungsterm $-k\dot\varphi$).
+Die **Fadenkraft** ist im tiefsten Punkt am größten: $F_S = m g \cos\varphi + m v^2/l$. Ein Faden kann nur ziehen. Für $|\varphi_0| > 90^\circ$ würde er schlaff – die Simulation rechnet dann mit einer starren Stange. Mit **Dämpfung** nimmt die Amplitude ungefähr mit $e^{-\gamma t}$ ab (mit der Abklingkonstanten $\gamma = k/2$; $k$ ist die Dämpfung am Regler).
 
 ## Ausprobieren
 
@@ -30,15 +36,15 @@ Die **Fadenkraft** ist im tiefsten Punkt am größten: $F_S = m g \cos\varphi + 
 2. Verändere während des Schwingens die Masse. Was passiert mit der Bewegung, was mit den Energien?
 3. Schalte die Kraftpfeile ein. Wo ist die Rückstellkraft am größten, wo die Fadenkraft? [Kräfte aus 90°](?arrows=F&amp=90)
 4. Vergleiche mit der Kleinwinkelnäherung (gestricheltes „Geisterpendel“): Bei $70^\circ$ läuft die Näherung im Diagramm sichtbar davon. [Diagramme](?mode=graphs&amp=70&compare=1)
-5. **Messreihe:** Stoppe 10 Schwingungen bei verschiedenen Längen. Ab drei Längen wertet die Simulation $T^2$ über $l$ aus. Welchen Wert für $g$ erhältst du? Wiederhole auf dem Mond. [Messreihe](?mode=period&amp=6)
-6. Ziehe im Diagramm $T/T_0$ über $\varphi_0$ und suche den Winkel, ab dem die Näherung mehr als $1\,\%$ daneben liegt. Bei welchem Winkel würde ein Faden schlaff? [Große Auslenkung](?mode=large&amp=120&compare=1)
+5. **Messreihe:** Stoppe 10 Schwingungen bei verschiedenen Längen. Ab zwei verschiedenen Längen wertet die Simulation $T^2$ über $l$ unter den Ergebnissen aus, ab drei Längen auch im Diagramm. Welchen Wert für $g$ erhältst du? Wiederhole auf dem Mond. [Messreihe](?mode=period&amp=6)
+6. Tippe im Diagramm $T/T_0$ über $\varphi_0$ verschiedene Winkel an und suche den Winkel, ab dem die Näherung mehr als $1\,\%$ daneben liegt. Bei welchem Winkel würde ein Faden schlaff? [Große Auslenkung](?mode=large&amp=120&compare=1)
 7. Mit Dämpfung wird die Bahn im Phasendiagramm zur Spirale. [Gedämpft](?mode=phase&amp=40&damping=0.2)
 
 ## Aufgaben
 
 ### Aufgabe 1: Sekundenpendel
 
-Wie lang muss ein Pendel auf der Erde sein, damit jede Halbschwingung genau $1\,\text{s}$ dauert ($T = 2\,\text{s}$)? [Ausprobieren](?l=0.99&_hide=1)
+Wie lang muss ein Pendel auf der Erde sein, damit jede Halbschwingung genau $1\,\text{s}$ dauert ($T = 2\,\text{s}$)? Stelle die Länge so ein, dass $T_0 = 2{,}00\,\text{s}$ angezeigt wird. [Ausprobieren](?l=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

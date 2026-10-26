@@ -12,6 +12,7 @@ import {
   nearestOrder,
   nodes,
   pipeBc,
+  pointKind,
   reflectionAmplitude,
   reflectionAntinodes,
   reflectionNodes,
@@ -107,6 +108,12 @@ export default defineSimulation({
   id: 'stehende-wellen',
   animated: true,
   dragHint: true,
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'eig'
+      ? L('Tipp: Tippe unten eine Eigenfrequenz an, um die Eigenschwingung zu wechseln.', 'Tip: tap a natural frequency below to switch the normal mode.')
+      : v.mode === 'res'
+        ? L('Tipp: Ziehe in der Resonanzkurve, um die Frequenz des Erregers zu ändern.', 'Tip: drag in the resonance curve to change the driving frequency.')
+        : L('Tipp: Ziehe den Punkt P auf dem Seil mit Maus oder Finger.', 'Tip: drag point P along the rope with the mouse or a finger.'),
   layout: { aspect: 1.4, aspectNarrow: 0.54 },
   images: { driver: 'erreger.webp', pulley: 'umlenkrolle.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -183,7 +190,7 @@ export default defineSimulation({
       key: 'f',
       type: 'number',
       label: L('Frequenz f des Erregers', 'Frequency f of the driver'),
-      help: L('Oder: in der Resonanzkurve ziehen – nahe einer Eigenfrequenz rastet sie ein.', 'Or drag in the resonance curve – it snaps near a natural frequency.'),
+      help: L('Beim Erreger auch in der Resonanzkurve ziehen – nahe einer Eigenfrequenz rastet sie ein.', 'With the driver you can also drag in the resonance curve – it snaps near a natural frequency.'),
       min: 10,
       max: 1500,
       step: 1,
@@ -227,7 +234,7 @@ export default defineSimulation({
     { id: 'snd', label: L('Ton anhören', 'Play sound') },
   ],
   readouts: [
-    { key: 'main', label: L('Wellenlänge und Frequenz', 'Wavelength and frequency') },
+    { key: 'main', label: L('Wellenlänge und Frequenz', 'Wavelength and frequency'), spoiler: true },
     { key: 'kb', label: L('Knoten und Bäuche', 'Nodes and antinodes'), spoiler: true },
     { key: 'p', label: L('Punkt P', 'Point P'), spoiler: true },
     { key: 'res', label: L('Resonanz', 'Resonance'), spoiler: true },
@@ -294,6 +301,7 @@ export default defineSimulation({
       fRow: 'f_[{n}] = c/λ_[{n}] = {f} Hz',
       fRowS: 'f_[{n}] = {f} Hz',
       countRow: '{k} Knoten · {b} Bäuche',
+      countRow1: '{k} Knoten · 1 Bauch',
       genEq: 'allgemein: f_[n] = n · c/(2L)',
       genUneq: 'allgemein: f_[n] = (2n − 1) · c/(4L)',
       countAir: 'Bewegung: {k} K, {b} B · Druck umgekehrt',
@@ -326,8 +334,8 @@ export default defineSimulation({
       oddNote: '<br>Bei ungleichen Enden gibt es nur ungerade Vielfache: <var>f</var><sub><var>n</var></sub> = (2<var>n</var> − 1) · <span class="frac"><span><var>c</var></span><span>4<var>L</var></span></span>.',
       mainRes:
         'Eigenfrequenzen: <var>f</var><sub><var>n</var></sub> = <var>n</var> · <span class="frac"><span><var>c</var></span><span>2<var>L</var></span></span> = <var>n</var> · {f1} Hz → {list} …<br>Erreger: <var>f</var> = <strong>{f} Hz</strong> = {q} · <var>f</var><sub>1</sub>',
-      kbEntFix: 'Am festen Ende wird die Welle mit Phasensprung um π reflektiert: Dort ist immer ein <strong>Knoten</strong>. Knoten im Abstand <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> vom Ende: {nodes} m; Bäuche bei <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {anti} m.',
-      kbEntFree: 'Am losen Ende wird die Welle ohne Phasensprung reflektiert: Dort ist immer ein <strong>Bauch</strong>. Bäuche im Abstand <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> vom Ende: {anti} m; Knoten bei <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {nodes} m.',
+      kbEntFix: 'Am festen Ende wird die Welle mit Phasensprung um π reflektiert: Dort ist immer ein <strong>Knoten</strong>. Knoten im Abstand <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> vom Ende: {nodes}; Bäuche bei <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {anti}.',
+      kbEntFree: 'Am losen Ende wird die Welle ohne Phasensprung reflektiert: Dort ist immer ein <strong>Bauch</strong>. Bäuche im Abstand <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> vom Ende: {anti}; Knoten bei <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {nodes}.',
       kbEig: 'Knoten bei <var>x</var> = {nodes} m · Bäuche bei <var>x</var> = {anti} m (gemessen vom linken Ende). Benachbarte Knoten sind <var>λ</var>/2 = {h} m voneinander entfernt.',
       kbAir: 'Bewegung der Luftteilchen (Schnelle): Knoten bei <var>x</var> = {nodes} m, Bäuche bei <var>x</var> = {anti} m. Ein geschlossenes Ende ist ein Schnelleknoten, ein offenes Ende ein Schnellebauch. Der Druck schwankt genau umgekehrt: Druckbäuche an den Schnelleknoten, Druckknoten an den Schnellebäuchen.',
       kbRes: 'Nahe <var>f</var><sub>{n}</sub> bildet sich die {n}. Eigenschwingung aus: Knoten bei <var>x</var> = {nodes} m (der Erreger bewegt sich nur wenig und wirkt fast wie ein Knoten).',
@@ -349,6 +357,7 @@ export default defineSimulation({
       sndOn: 'Ton anhören',
       goEnt: 'Welle neu losschicken',
       goRes: 'Aus der Ruhe starten',
+      noneOnRope: 'keine (das Seil ist kürzer)',
     },
     en: {
       canvas:
@@ -402,6 +411,7 @@ export default defineSimulation({
       fRow: 'f_[{n}] = c/λ_[{n}] = {f} Hz',
       fRowS: 'f_[{n}] = {f} Hz',
       countRow: '{k} nodes · {b} antinodes',
+      countRow1: '{k} nodes · 1 antinode',
       genEq: 'in general: f_[n] = n · c/(2L)',
       genUneq: 'in general: f_[n] = (2n − 1) · c/(4L)',
       countAir: 'motion: {k} N, {b} A · pressure reversed',
@@ -434,8 +444,8 @@ export default defineSimulation({
       oddNote: '<br>With unequal ends there are only odd multiples: <var>f</var><sub><var>n</var></sub> = (2<var>n</var> − 1) · <span class="frac"><span><var>c</var></span><span>4<var>L</var></span></span>.',
       mainRes:
         'Natural frequencies: <var>f</var><sub><var>n</var></sub> = <var>n</var> · <span class="frac"><span><var>c</var></span><span>2<var>L</var></span></span> = <var>n</var> · {f1} Hz → {list} …<br>Driver: <var>f</var> = <strong>{f} Hz</strong> = {q} · <var>f</var><sub>1</sub>',
-      kbEntFix: 'At a fixed end the wave is reflected with a phase jump of π: there is always a <strong>node</strong> there. Nodes at a distance <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> from the end: {nodes} m; antinodes at <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {anti} m.',
-      kbEntFree: 'At a free end the wave is reflected without a phase jump: there is always an <strong>antinode</strong> there. Antinodes at a distance <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> from the end: {anti} m; nodes at <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {nodes} m.',
+      kbEntFix: 'At a fixed end the wave is reflected with a phase jump of π: there is always a <strong>node</strong> there. Nodes at a distance <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> from the end: {nodes}; antinodes at <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {anti}.',
+      kbEntFree: 'At a free end the wave is reflected without a phase jump: there is always an <strong>antinode</strong> there. Antinodes at a distance <var>d</var> = <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span> from the end: {anti}; nodes at <var>d</var> = <span class="frac"><span><var>λ</var></span><span>4</span></span> + <var>k</var> · <span class="frac"><span><var>λ</var></span><span>2</span></span>: {nodes}.',
       kbEig: 'Nodes at <var>x</var> = {nodes} m · antinodes at <var>x</var> = {anti} m (measured from the left end). Neighbouring nodes are <var>λ</var>/2 = {h} m apart.',
       kbAir: 'Motion of the air particles (velocity): nodes at <var>x</var> = {nodes} m, antinodes at <var>x</var> = {anti} m. A closed end is a velocity node, an open end a velocity antinode. The pressure varies the other way round: pressure antinodes at the velocity nodes, pressure nodes at the velocity antinodes.',
       kbRes: 'Close to <var>f</var><sub>{n}</sub> normal mode {n} builds up: nodes at <var>x</var> = {nodes} m (the driver moves only a little and acts almost like a node).',
@@ -457,6 +467,7 @@ export default defineSimulation({
       sndOn: 'Play sound',
       goEnt: 'Send the wave again',
       goRes: 'Start from rest',
+      noneOnRope: 'none (the rope is shorter)',
     },
   },
 
@@ -466,6 +477,13 @@ export default defineSimulation({
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
     const n = (v: number, d: number) => fmt.num(v, d);
+    /** Frequenz: ab 100 Hz ganzzahlig, darunter mit einer Nachkommastelle (f₁ kann bis 16,7 Hz sinken). */
+    const fHz = (f: number) => fmt.fixed(f, f >= 99.95 ? 0 : 1);
+    /** Längen in Listen einheitlich mit 3 Nachkommastellen, das Ende selbst als „0“. */
+    const len3 = (x: number) => (Math.abs(x) < 5e-13 ? '0' : fmt.fixed(x, 3));
+    /** Aufgabenmodus: Frequenzen und Wellenlängen verraten die Lösungen (Ergebnis „Wellenlänge und Frequenz“). */
+    const hideF = () => ctx.isHidden('main');
+    const lamLbl = (key: 'lam2' | 'lam4', v: number) => (hideF() ? (key === 'lam2' ? 'λ/2' : 'λ/4') : tr(key, { l: n(v, 3) }));
     const blue = () => ctx.theme.series[0]!;
     const red = () => ctx.theme.series[1]!;
     const green = () => ctx.theme.series[2]!;
@@ -1293,7 +1311,7 @@ export default defineSimulation({
       if (nd.length >= 2) {
         const xa = g0.x1 - (nd[0]! / Ls) * (g0.x1 - g0.x0);
         const xb = g0.x1 - (nd[1]! / Ls) * (g0.x1 - g0.x0);
-        bracket(xb, xa, g0.brRow, tr('lam2', { l: n(lam / 2, 3) }), theme.text, g0.sm, aKb * Math.min(pop(nd[1]!), 1));
+        bracket(xb, xa, g0.brRow, lamLbl('lam2', lam / 2), theme.text, g0.sm, aKb * Math.min(pop(nd[1]!), 1));
       }
       // Wellen
       const sw = g0.sm ? 2 : 2.4;
@@ -1470,10 +1488,10 @@ export default defineSimulation({
       const b = antinodes(eigNow.bc, eigNow.n);
       const X = (xh: number) => g0.x0 + xh * (g0.x1 - g0.x0);
       const brA = aKb * ik * (morph.running ? s : 1) * (pluck.running ? clamp(pluck.t * 2 - 0.6, 0, 1) : 1);
-      if (k.length >= 2) bracket(X(k[0]!), X(k[1]!), g0.brRow, tr('lam2', { l: n(lam / 2, 3) }), theme.text, g0.sm, brA);
+      if (k.length >= 2) bracket(X(k[0]!), X(k[1]!), g0.brRow, lamLbl('lam2', lam / 2), theme.text, g0.sm, brA);
       else if (k.length === 1) {
         const bb = b.reduce((best, x) => (Math.abs(x - k[0]!) < Math.abs(best - k[0]!) ? x : best), b[0]!);
-        bracket(X(k[0]!), X(bb), g0.brRow, tr('lam4', { l: n(lam / 4, 3) }), theme.text, g0.sm, brA);
+        bracket(X(k[0]!), X(bb), g0.brRow, lamLbl('lam4', lam / 4), theme.text, g0.sm, brA);
       }
       drawRuler(g0, Ls, false, ik);
     }
@@ -1740,7 +1758,7 @@ export default defineSimulation({
         ];
         drawMarks(g0, marks, theme.text, g0.topRow, g0.kRow, g0.cy);
         const lam = (2 * Ls) / ord;
-        bracket(X(0), X(1 / ord), g0.brRow, tr('lam2', { l: n(lam / 2, 3) }), theme.text, g0.sm, strength * aKb);
+        bracket(X(0), X(1 / ord), g0.brRow, lamLbl('lam2', lam / 2), theme.text, g0.sm, strength * aKb);
       }
       drawPulley(g0.x1, g0.cy, g0.sm);
       strokeRope(pts, green(), g0.sm ? 3.2 : 4, true);
@@ -1761,17 +1779,17 @@ export default defineSimulation({
       if (m === 'ent') {
         const f = ease2('hf', p.f, 8);
         const l = ease2('hl', lamEnt(), 8);
-        hdr = tr(sm ? 'hdrEntS' : 'hdrEnt', { f: n(f, 0), l: n(l, 3) });
+        hdr = tr(sm ? 'hdrEntS' : 'hdrEnt', { f: n(f, 0), l: hideF() ? '?' : n(l, 3) });
         nuVis = nuEnt();
       } else if (m === 'eig') {
         const f = ease2('hf', eigenFrequency(eigNow.bc, eigNow.n, p.L, p.c), 8);
         const l = ease2('hl', eigenWavelength(eigNow.bc, eigNow.n, p.L), 8);
-        hdr = tr(sm ? 'hdrEigS' : 'hdrEig', { n: String(eigNow.n), f: n(f, 0), l: n(l, 3) });
+        hdr = tr(sm ? 'hdrEigS' : 'hdrEig', { n: String(eigNow.n), f: hideF() ? '?' : fHz(f), l: hideF() ? '?' : n(l, 3) });
         nuVis = eigenNu(eigNow.bc, eigNow.n);
       } else {
         const f = ease2('hf', p.f, 8);
         const f1 = ease2('hf1', f1ref(), 8);
-        hdr = tr(sm ? 'hdrResS' : 'hdrRes', { f: n(f, 0), f1: n(f1, 0) });
+        hdr = tr(sm ? 'hdrResS' : 'hdrRes', { f: n(f, 0), f1: hideF() ? '?' : fHz(f1) });
         nuVis = nuEnt();
       }
       const kk = ease2('slowK', f1ref() / rateFor(nuVis), 8);
@@ -1868,9 +1886,9 @@ export default defineSimulation({
       const arrived = smooth((2 * tauE - (2 - xh)) / frontRamp(nu));
       const A = reflectionAmplitude(end, pd, lam);
       const q = pd / lam;
-      const frac = Math.abs(q * 2 - Math.round(q * 2));
-      const atNode = end === 'fix' ? Math.abs(q * 2 - Math.round(q * 2)) < 0.02 : Math.abs(q * 2 - 0.5 - Math.round(q * 2 - 0.5)) < 0.02;
-      const atAnti = end === 'fix' ? Math.abs(q * 2 - 0.5 - Math.round(q * 2 - 0.5)) < 0.02 : frac < 0.02;
+      const kind = pointKind(end, pd, lam);
+      const atNode = kind === 'node';
+      const atAnti = kind === 'anti';
       const t0 = cardTitle(R, ctx.t('cardP'), purple(), sm);
       const verdict = arrived < 0.5 ? ctx.t('vWait') : atNode ? ctx.t('vNode') : atAnti ? ctx.t('vAnti') : ctx.t('vMid');
       const vCol = arrived < 0.5 ? theme.muted : atNode ? teal() : atAnti ? orange() : theme.text;
@@ -2070,9 +2088,9 @@ export default defineSimulation({
       const lam = ease2('cLam', eigenWavelength(cfg.bc, cfg.n, p.L), 8);
       const f = ease2('cF', eigenFrequency(cfg.bc, cfg.n, p.L, p.c), 8);
       const sub = String(cfg.n);
-      richText(tr('lamRow', { n: sub, l: n(lam, 3) }), lx, ly, fs, theme.text, 'left', false, 650);
+      richText(tr('lamRow', { n: sub, l: hideF() ? '?' : n(lam, 3) }), lx, ly, fs, theme.text, 'left', false, 650);
       ly += row;
-      const fTxt = tr(R.w < 320 ? 'fRowS' : 'fRow', { n: sub, f: n(f, 0) });
+      const fTxt = tr(R.w < 320 ? 'fRowS' : 'fRow', { n: sub, f: hideF() ? '?' : fHz(f) });
       richText(fTxt, lx, ly, fs + 1, green(), 'left', false, 800);
       ly += row;
       if (ly + row + 7 < R.y + R.h - 4) {
@@ -2082,7 +2100,7 @@ export default defineSimulation({
       if (ly + 7 < R.y + R.h - 4) {
         const k = nodes(cfg.bc, cfg.n).length;
         const b = antinodes(cfg.bc, cfg.n).length;
-        const cnt = cfg.med === 'air' ? tr(R.w < 340 ? 'countAirS' : 'countAir', { k: String(k), b: String(b) }) : tr('countRow', { k: String(k), b: String(b) });
+        const cnt = cfg.med === 'air' ? tr(R.w < 340 ? 'countAirS' : 'countAir', { k: String(k), b: String(b) }) : tr(b === 1 ? 'countRow1' : 'countRow', { k: String(k), b: String(b) });
         richText(cnt, lx, ly, sm ? 11 : 12, theme.muted, 'left', false, 600);
       }
       g.restore();
@@ -2178,8 +2196,8 @@ export default defineSimulation({
         // Beschriftung: f_k unten, Wert oben (Wert nur, wenn Platz)
         richText(`f_[${k}]`, x, ay + (sm ? 12 : 14), fs, sel ? green() : theme.muted, 'center', false, sel ? 800 : 650);
         const gap = Xf(harmonic(cfg.bc, 2)) - Xf(harmonic(cfg.bc, 1));
-        const val = `${n(f1 * h, 0)}`;
-        if (sel || gap > richWidth(val + ' Hz', fs) + 6) richText(sel ? `${val} Hz` : val, x, top - (sm ? 11 : 13), fs, sel ? green() : theme.muted, 'center', true, sel ? 800 : 600);
+        const val = hideF() ? '?' : fHz(f1 * h);
+        if (sel || (!hideF() && gap > richWidth(val + ' Hz', fs) + 6)) richText(sel ? `${val} Hz` : val, x, top - (sm ? 11 : 13), fs, sel ? green() : theme.muted, 'center', true, sel ? 800 : 600);
         ladderHits.push({ n: k, x, y0: A.y - 6, y1: ay + 22 });
       }
       g.restore();
@@ -2210,7 +2228,7 @@ export default defineSimulation({
       richText(tr('fNow', { f: n(f, 0) }), lx, ly, fs, purple(), 'left', false, 750);
       ly += row;
       const fn = ease2('rfn', ord * f1ref(), 8);
-      richText(tr(R.w < 330 ? 'fNextS' : 'fNext', { n: String(ord), f: n(fn, 0) }), lx, ly, fs, theme.text, 'left', false, 600);
+      richText(tr(R.w < 330 ? 'fNextS' : 'fNext', { n: String(ord), f: hideF() ? '?' : fHz(fn) }), lx, ly, fs, theme.text, 'left', false, 600);
       ly += row + (sm ? 4 : 8);
       const big = sm ? 20 : 25;
       const aS = ease2('ramp', ampLive, 6);
@@ -2218,7 +2236,7 @@ export default defineSimulation({
       g.textAlign = 'left';
       g.textBaseline = 'middle';
       g.fillStyle = aS > 4.5 ? green() : theme.text;
-      g.fillText(tr('ampBig', { a: n(aS, 1) }), lx, ly);
+      g.fillText(tr('ampBig', { a: fmt.fixed(aS, 1) }), lx, ly);
       // Balken 0 … Resonanz
       const by = ly + big / 2 + (sm ? 10 : 14);
       if (by + 18 < R.y + R.h) {
@@ -2475,20 +2493,20 @@ export default defineSimulation({
     }
 
     /* ---------- Ergebnisse ---------- */
-    const list = (xs: number[], d = 3) => xs.map((x) => n(x, d)).join('; ');
+    const list = (xs: number[]) => xs.map(len3).join('; ');
 
     function updateNow(): void {
       const m = mode();
-      const t = fmt.num(simMs, simMs < 100 ? 2 : 1);
+      const t = fmt.fixed(simMs, simMs < 100 ? 2 : 1);
       if (m === 'ent') {
         const nu = nuEnt();
         const xh = 1 - Math.min(p.pd, p.L) / p.L;
         const w = travelling(endType(), nu, xh, tauE, thetaE);
-        ctx.readout('now', tr('nowEnt', { t, yh: n(w.yh, 2), yr: n(w.yr, 2), y: n(w.yh + w.yr, 2) }));
+        ctx.readout('now', tr('nowEnt', { t, yh: fmt.fixed(w.yh, 2), yr: fmt.fixed(w.yr, 2), y: fmt.fixed(w.yh + w.yr, 2) }));
       } else if (m === 'eig') {
         const deg = ((((thetaN * 180) / Math.PI) % 360) + 360) % 360;
-        ctx.readout('now', tr('nowEig', { t, ph: n(deg, 0), y: n(Math.cos(thetaN), 2) }));
-      } else ctx.readout('now', tr('nowRes', { t, y: n(rope.maxAbs(), 1) }));
+        ctx.readout('now', tr('nowEig', { t, ph: fmt.fixed(deg, 0), y: fmt.fixed(Math.cos(thetaN), 2) }));
+      } else ctx.readout('now', tr('nowRes', { t, y: fmt.fixed(rope.maxAbs(), 1) }));
     }
 
     function updateReadouts(): void {
@@ -2499,12 +2517,14 @@ export default defineSimulation({
         ctx.readout('main', { html: tr('mainEnt', { c: n(p.c, 0), f: n(p.f, 0), l: n(lam, 3), h: n(lam / 2, 3) }) });
         const nd = reflectionNodes(endType(), lam, p.L);
         const an = reflectionAntinodes(endType(), lam, p.L);
-        ctx.readout('kb', { html: tr(endType() === 'fix' ? 'kbEntFix' : 'kbEntFree', { nodes: list(nd.slice(0, 6)) + (nd.length > 6 ? ' …' : ''), anti: list(an.slice(0, 6)) + (an.length > 6 ? ' …' : '') }) });
+        const show = (xs: number[]) => (xs.length ? `${list(xs.slice(0, 6))}${xs.length > 6 ? ' …' : ''} m` : ctx.t('noneOnRope'));
+        ctx.readout('kb', { html: tr(endType() === 'fix' ? 'kbEntFix' : 'kbEntFree', { nodes: show(nd), anti: show(an) }) });
         const pd = Math.min(p.pd, p.L);
         const q = pd / lam;
         const A = reflectionAmplitude(endType(), pd, lam);
-        const atNode = A < 0.02;
-        const atAnti = A > 1.98;
+        const kind = pointKind(endType(), pd, lam);
+        const atNode = kind === 'node';
+        const atAnti = kind === 'anti';
         ctx.readout('p', {
           html: tr('pText', { d: n(pd, 2), q: n(q, 3), fn: endType() === 'fix' ? 'sin' : 'cos', a: n(A, 2), verdict: ctx.t(atNode ? 'pNode' : atAnti ? 'pAnti' : 'pMid') }),
         });
@@ -2522,7 +2542,7 @@ export default defineSimulation({
             lf: tr(uneq ? 'lfUneq' : 'lfEq', { n: String(cfg.n), h: String(h) }),
             l: n(lam, 3),
             c: n(p.c, 0),
-            f: n(f, 1),
+            f: fHz(f),
             h: String(h),
             odd: uneq ? ctx.t('oddNote') : '',
           }),
@@ -2535,13 +2555,13 @@ export default defineSimulation({
       } else {
         const f1 = f1ref();
         const nu = nuEnt();
-        ctx.readout('main', { html: tr('mainRes', { f1: n(f1, 1), list: [1, 2, 3, 4].map((k) => `${n(k * f1, 0)} Hz`).join(', '), f: n(p.f, 0), q: n(nu, 2) }) });
+        ctx.readout('main', { html: tr('mainRes', { f1: fHz(f1), list: [1, 2, 3, 4].map((k) => `${fHz(k * f1)} Hz`).join(', '), f: n(p.f, 0), q: fmt.fixed(nu, 2) }) });
         const steady = resonanceAmplitude(nu);
         const ord = nearestOrder(nu);
         const isRes = steady > 4.5;
-        ctx.readout('kb', { html: isRes ? tr('kbRes', { n: String(ord), nodes: list(nodes('ff', ord).map((x) => x * p.L)) }) : ctx.t('kbResNo') });
+        ctx.readout('kb', { html: isRes ? tr('kbRes', { n: String(ord), nodes: ((xs) => list(xs.slice(0, 7)) + (xs.length > 7 ? ' …' : ''))(nodes('ff', ord).map((x) => x * p.L)) }) : ctx.t('kbResNo') });
         ctx.readout('p', null);
-        ctx.readout('res', { html: tr('resText', { a: n(steady, 1), verdict: ctx.t(isRes ? 'resYesText' : steady > 2.5 ? 'resNearText' : 'resNoText') }) });
+        ctx.readout('res', { html: tr('resText', { a: fmt.fixed(steady, 1), verdict: ctx.t(isRes ? 'resYesText' : steady > 2.5 ? 'resNearText' : 'resNoText') }) });
       }
       updateNow();
       updateAudio();

@@ -239,10 +239,12 @@ export function isAllowed(el: ElementData, u: number, l: number): boolean {
 
 /**
  * Gültiger Übergang zu einer Wahl (u, l): unverändert, wenn vorgesehen;
- * sonst die hellste Linie vom Niveau u nach unten; sonst die hellste Linie
+ * sonst (mit u höchstens gleich der Zahl der Niveaus) die hellste Linie vom Niveau u nach unten; sonst die hellste Linie
  * nach l hinunter; sonst die hellste Linie überhaupt.
  */
 export function resolveTransition(el: ElementData, u: number, l: number): TransitionDef {
+  // zu große Nummern (Regler bis 10, Wasserstoff hat 6 Niveaus) auf das höchste Niveau setzen
+  u = Math.min(u, el.levels.length);
   const exact = el.transitions.find((t) => t.u === u && t.l === l);
   if (exact) return exact;
   const best = (list: TransitionDef[]) => list.reduce<TransitionDef | null>((a, t) => (!a || t.w > a.w ? t : a), null);
@@ -272,7 +274,8 @@ export type ColorName = 'violet' | 'blue' | 'cyan' | 'green' | 'yellow' | 'orang
 export function colorNameOf(lambdaNm: number): ColorName | null {
   if (lambdaNm < VISIBLE_MIN || lambdaNm > VISIBLE_MAX) return null;
   if (lambdaNm < 430) return 'violet';
-  if (lambdaNm < 490) return 'blue';
+  if (lambdaNm < 480) return 'blue';
+  // Hβ (486 nm) heißt im Unterricht meist „blaugrün“ bzw. „türkis“
   if (lambdaNm < 510) return 'cyan';
   if (lambdaNm < 565) return 'green';
   if (lambdaNm < 590) return 'yellow';

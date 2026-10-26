@@ -55,7 +55,7 @@ Mit **Dämpfung** wird Energie in innere Energie umgewandelt; die Amplitude nimm
 3. Starte die Stoppuhr, wenn der Zeiger an einer gut erkennbaren Stelle ist, und stoppe nach 10 vollen Umdrehungen. Vergleiche $T = t/10$ mit der Formel.
 4. Verändere die Amplitude. Ändert sich die Periodendauer? [Kleine Amplitude](?amp=2)
 5. Vergleiche zwei Pendel: vierfache Masse [Beispiel laden](?cmp=1&m=0.25&m2=1&D2=20) oder vierfache Federhärte [Beispiel laden](?cmp=1&m=0.3&D=10&m2=0.3&D2=40).
-6. Schau dir die Kräfte und alle drei Energieformen an. Warum ändert sich die Bewegungsenergie so wenig? [Kräfte und Energieformen](?energy=full&vec=F&graphs=yv)
+6. Schau dir die Kräfte und alle drei Energieformen an. Spann- und Lageenergie ändern sich stark, die Bewegungsenergie bleibt klein. Zwischen welchen Energieformen wird hauptsächlich umgewandelt? [Kräfte und Energieformen](?energy=full&vec=F&graphs=yv)
 7. Schalte die Dämpfung ein und beobachte Zeiger, Diagramm und Energie. [Gedämpft](?damp=0.3&graphs=y)
 
 ## Aufgaben
@@ -126,10 +126,21 @@ Bei $\tfrac14 T$ im oberen Umkehrpunkt ($y = 8\,\text{cm}$), bei $\tfrac12 T$ wi
 
 </details>
 
+### Aufgabe 7: Energie
+
+Für $m = 0{,}5\,\text{kg}$, $D = 20\,\tfrac{\text{N}}{\text{m}}$ und $\hat y = 8\,\text{cm}$ (ohne Dämpfung): Wie groß ist die Gesamtenergie $\tfrac12 D \hat y^2$? Wie schnell ist der Körper, wenn er bei $y = 4\,\text{cm}$ ist? Decke danach „Momentan“ auf und prüfe mit der Zeitmarke und den Energiebalken. [Aufgabe laden](?_hide=1)
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$E = \tfrac12 \cdot 20\,\tfrac{\text{N}}{\text{m}} \cdot (0{,}08\,\text{m})^2 = 0{,}064\,\text{J}$. Bei $y = 4\,\text{cm}$ ist $\tfrac12 D y^2 = 0{,}016\,\text{J}$, also $E_\text{kin} = 0{,}048\,\text{J}$ und $v = \sqrt{\frac{2 \cdot 0{,}048\,\text{J}}{0{,}5\,\text{kg}}} \approx 0{,}44\,\tfrac{\text{m}}{\text{s}}$ (nach oben oder nach unten). Bei halber Elongation steckt also erst ein Viertel der Energie in der Feder.
+
+</details>
+
 ## Ideen für den Unterricht
 
 - **Einsatz:** Mechanische Schwingungen in der Oberstufe bzw. dort, wo der Lehrplan harmonische Schwingungen vorsieht: Einstieg (Beobachten, Zeigerdiagramm), Erarbeitung von $T = 2\pi\sqrt{m/D}$ durch Messen mit der Stoppuhr und Vergleichspendel, Vertiefung (Phasenbeziehungen von $y$, $v$, $a$ mit der Zeitmarke; Energie; Dämpfung).
-- **Modell:** Ideale, masselose Feder, für die das Hookesche Gesetz auch beim Stauchen gilt. Die Elongation $y$ ist **nach oben positiv**. Die Dämpfung ist geschwindigkeitsproportional ($m\ddot y = -Dy - 2m\delta\dot y$); die Bewegung wird mit dem Runge-Kutta-Verfahren (Schrittweite $1\,\text{ms}$) berechnet. Spann- und Lageenergie werden in der Einstellung „½·D·y²“ zusammengefasst; die dritte Einstellung zeigt sie getrennt (Bezugsniveau der Lageenergie: unterer Umkehrpunkt).
+- **Modell:** Ideale, masselose Feder, für die das Hookesche Gesetz auch beim Stauchen gilt. Die Elongation $y$ ist **nach oben positiv**. Die Dämpfung ist geschwindigkeitsproportional ($m\ddot y = -Dy - 2m\delta\dot y$). Damit das angezeigte Gesetz $y(t) = \hat y\,e^{-\delta t}\sin(\omega_d t + \varphi_0)$ genau gilt, startet der Körper bei Dämpfung mit einer kleinen Anfangsgeschwindigkeit (bei $\varphi_0 = -90^\circ$: $v_0 = \delta\,\hat y$ nach oben). Die Bewegung wird mit dem Runge-Kutta-Verfahren (Schrittweite $1\,\text{ms}$) berechnet. Spann- und Lageenergie werden in der Einstellung „½·D·y²“ zusammengefasst; die dritte Einstellung zeigt sie getrennt (Bezugsniveau der Lageenergie: unterer Umkehrpunkt). Die Pfeile „Kräfte“ zeigen Federkraft $F_F$, Gewichtskraft $F_G$ und die resultierende Kraft $F_\text{res} = -D\,y$.
 - **Vergleichspendel:** Die beiden Pendel sind so aufgehängt, dass ihre Ruhelagen auf gleicher Höhe liegen; sie starten mit gleicher Amplitude und gleichem Nullphasenwinkel.
 - **Stoppuhr:** Der Zähler $n$ zählt volle Umdrehungen des Zeigers seit dem Start (grüne Marke). Wird zwischen zwei vollen Perioden gestoppt, weist die Auswertung darauf hin. Am Vergleich mit einer Messung über nur eine Periode lässt sich zeigen, warum man mehrere Perioden misst.
 - **Häufige Stolpersteine:**

@@ -57,7 +57,7 @@ $\omega \approx 6.32\,\text{s}^{-1}$, $\hat v = \hat y\,\omega \approx 0.51\,\te
 
 ## Ideas for the classroom
 
-- **Model:** ideal massless spring obeying Hooke’s law, displacement positive upwards, velocity-proportional damping, Runge–Kutta integration with a step of $1\,\text{ms}$.
+- **Model:** ideal massless spring obeying Hooke’s law, displacement positive upwards, velocity-proportional damping (with damping the body starts with a small initial velocity so that $y = \hat y\,e^{-\delta t}\sin(\omega_d t + \varphi_0)$ holds exactly), Runge–Kutta integration with a step of $1\,\text{ms}$.
 - The two pendulums in comparison mode are suspended so that their equilibrium positions are at the same height.
 - The stopwatch counts full turns of the phasor since the start (green mark).
 - **Common stumbling blocks:** “A larger amplitude means a longer period.” – “At the turning point the acceleration is zero.” – “On the Moon a spring pendulum oscillates more slowly.”

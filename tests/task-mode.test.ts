@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { isReadoutHidden, isTaskHidden } from '../src/sim-core/task-mode';
 
-const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = []) => ({ hideFlag, resultsOff, revealed: new Set(revealed) });
+const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = [], spoilers: string[] = ['trip']) => ({
+  hideFlag,
+  resultsOff,
+  revealed: new Set(revealed),
+  spoilers,
+});
 
 describe('Aufgabenmodus', () => {
   it('ist ohne _hide und mit eingeschaltetem Ergebnis-Schalter aus', () => {
@@ -20,5 +25,25 @@ describe('Aufgabenmodus', () => {
     expect(isTaskHidden(state(false, true))).toBe(true);
     expect(isTaskHidden(state(true, true, ['trip']))).toBe(true);
     expect(isReadoutHidden(state(false, true), 'trip')).toBe(true);
+  });
+
+  it('bleibt mit _hide verdeckt, bis alle angezeigten Spoiler aufgedeckt sind', () => {
+    const spoilers = ['trip', 'table', 'law'];
+    expect(isTaskHidden(state(true, false, [], spoilers))).toBe(true);
+    expect(isTaskHidden(state(true, false, ['trip'], spoilers))).toBe(true);
+    expect(isTaskHidden(state(true, false, ['trip', 'table'], spoilers))).toBe(true);
+    expect(isTaskHidden(state(true, false, ['trip', 'table', 'law'], spoilers))).toBe(false);
+    // Einzelne Ergebnisse folgen weiterhin nur ihrem eigenen Aufdecken
+    expect(isReadoutHidden(state(true, false, ['trip'], spoilers), 'trip')).toBe(false);
+    expect(isReadoutHidden(state(true, false, ['trip'], spoilers), 'law')).toBe(true);
+  });
+
+  it('zählt nur angezeigte Spoiler, ohne Aufdecken bleibt es verdeckt', () => {
+    // „table“ ist gerade ausgeblendet (ctx.readout(key, null)) und lässt sich nicht aufdecken
+    expect(isTaskHidden(state(true, false, ['trip'], ['trip']))).toBe(false);
+    // Kein Spoiler sichtbar und nichts aufgedeckt: weiter verdeckt
+    expect(isTaskHidden(state(true, false, [], []))).toBe(true);
+    // Ohne Liste (ältere Aufrufer): aufgedeckt heißt sichtbar
+    expect(isTaskHidden({ hideFlag: true, resultsOff: false, revealed: new Set(['trip']) })).toBe(false);
   });
 });

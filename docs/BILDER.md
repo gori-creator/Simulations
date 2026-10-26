@@ -14,7 +14,7 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 - Keine Schrift, keine Logos, keine Wasserzeichen, keine echten Marken (Autohersteller, Münzen echter Währungen).
 - Keine Personen.
 - Einheitlicher Stil: fotorealistisch, weiches Studiolicht, freundlich, nicht kitschig.
-- Dateigröße möglichst unter 300 KB (Schulnetze!).
+- Dateigröße höchstens 300 KB (Schulnetze!); ein Test in `tests/simulations.test.ts` prüft das. Bilder nur so groß anlegen, wie sie höchstens gezeichnet werden (Gerätepixel), und unbenutzte Bildteile einfarbig lassen.
 - Bitte nur Bilder verwenden, die frei genutzt werden dürfen (selbst erzeugt oder mit passender Lizenz).
 
 ## Übersicht
@@ -154,17 +154,17 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Zahlengerade | `penguin` | `src/assets/sims/zahlengerade/pinguin.webp` | 775 × 1372 | transparent |
 | Zahlengerade | `thermo` | `src/assets/sims/zahlengerade/thermometer.webp` | 200 × 1410 | transparent |
 | Strahlensätze | `tree` | `src/assets/sims/strahlensaetze/baum.webp` | 666 × 1000 | transparent |
-| Strahlensätze | `crown` | `src/assets/sims/strahlensaetze/baumkrone.webp` | 900 × 881 | transparent |
+| Strahlensätze | `crown` | `src/assets/sims/strahlensaetze/baumkrone.webp` | 450 × 440 | transparent |
 | Prozentstreifen | `tag` | `src/assets/sims/prozentstreifen/preisschild.webp` | 1600 × 615 | transparent |
 | Prozentstreifen | `receipt` | `src/assets/sims/prozentstreifen/kassenbon.webp` | 754 × 1336 | transparent |
 | Sinus, Kosinus, Tangens | `wheelchair` | `src/assets/sims/sin-cos-tan-dreieck/rollstuhl.webp` | 1279 × 1086 | transparent |
 | Sinus, Kosinus, Tangens | `bricks` | `src/assets/sims/sin-cos-tan-dreieck/ziegelwand.webp` | 1024 × 1024 | deckend |
-| Sinussatz und Kosinussatz | `crown` | `src/assets/sims/sinussatz-kosinussatz/baumkrone.webp` | 900 × 881 | transparent |
+| Sinussatz und Kosinussatz | `crown` | `src/assets/sims/sinussatz-kosinussatz/baumkrone.webp` | 450 × 440 | transparent |
 | Integral als Gesamtänderung | `car` | `src/assets/sims/aenderungsrate/auto.webp` | 1600 × 686 | transparent |
 | Integral als Gesamtänderung | `bike` | `src/assets/sims/aenderungsrate/fahrrad.webp` | 1280 × 701 | transparent |
 | Ähnliche Figuren | `car` | `src/assets/sims/vergroessern/auto.webp` | 1600 × 686 | transparent |
 | Ähnliche Figuren | `bucket` | `src/assets/sims/vergroessern/farbeimer.webp` | 1055 × 1226 | transparent |
-| Proportionalität | `apple` | `src/assets/sims/proportional/apfel.webp` | 1051 × 1115 | transparent |
+| Proportionalität | `apple` | `src/assets/sims/proportional/apfel.webp` | 320 × 339 | transparent |
 | Proportionalität | `taxi` | `src/assets/sims/proportional/taxi.webp` | 1600 × 582 | transparent |
 | Mittelsenkrechte und Winkelhalbierende | `compass` | `src/assets/sims/mittelsenkrechte/zirkel-teile.webp` | 459 × 1038 | transparent |
 | Mittelsenkrechte und Winkelhalbierende | `pencil` | `src/assets/sims/mittelsenkrechte/bleistift.webp` | 1600 × 120 | transparent |
@@ -211,7 +211,7 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Stöße | `piece` | `src/assets/sims/stoesse/massestueck.webp` | 1600 × 146 | transparent |
 | Stöße | `table` | `src/assets/sims/stoesse/tischkante.webp` | 2172 × 271 | deckend |
 | Kreisbewegung | `car` | `src/assets/sims/kreisbewegung/auto-oben.webp` | 1600 × 801 | transparent |
-| Kreisbewegung | `asphalt` | `src/assets/sims/kreisbewegung/asphalt.webp` | 1024 × 1024 | deckend |
+| Kreisbewegung | `asphalt` | `src/assets/sims/kreisbewegung/asphalt.webp` | 768 × 768 | deckend |
 | Doppler-Effekt | `ambulance` | `src/assets/sims/doppler-effekt/krankenwagen.webp` | 1600 × 735 | transparent |
 
 ## Ziegenproblem
@@ -678,7 +678,7 @@ Hochkant in Seitenansicht, nur für die Sammellinse (Zerstreuungslinse bleibt ge
 
 ### `strasse.webp` – Straße von oben
 
-Draufsicht, Straße waagerecht, Wiese beidseitig. Verwendet werden zwei Ausschnitte als Texturen, gespiegelt gekachelt: die Wiese und eine Fahrspur aus reinem Asphalt. So bleiben Maßstab und Lage der Fahrbahn genau wie gezeichnet; Rand- und Mittellinie (gestrichelt, wie in Deutschland) zeichnet die Simulation. Im Dunkelmodus abgedunkelt.
+Draufsicht, Straße waagerecht, Wiese beidseitig. Verwendet werden zwei Ausschnitte als Texturen, gespiegelt gekachelt: die Wiese und eine Fahrspur aus reinem Asphalt. So bleiben Maßstab und Lage der Fahrbahn genau wie gezeichnet; Rand- und Mittellinie (gestrichelt, wie in Deutschland) zeichnet die Simulation. Im Dunkelmodus abgedunkelt. Genutzt werden nur die Bildzeilen 357–431 (Fahrspur) und 592–788 (Wiese, `LANE`/`GRASS` in `index.ts`); der Rest der Datei ist einfarbig, damit sie klein bleibt. Die Bildgröße 1800 × 890 muss bleiben, sonst stimmen die Ausschnitte nicht.
 
 > Top-down aerial view of a straight two-lane road running horizontally, grass on both sides, evenly lit, photorealistic
 

@@ -108,6 +108,18 @@ export default defineSimulation({
   id: 'brechung',
   animated: true,
   dragHint: true,
+  hint: (v: { readonly mode?: unknown; readonly app?: unknown; readonly ex?: unknown }) =>
+    v.mode === 'total'
+      ? v.app === 'fiber'
+        ? L('Tipp: Laser ziehen (Neigung) oder den Griff am Bogen ziehen (Biegeradius). Diagramm antippen: Radius wählen.', 'Tip: drag the laser (tilt) or the handle on the bend (bending radius). Tap the graph to pick a radius.')
+        : L('Tipp: Laser ziehen, um die Neigung des Lichts zu ändern – oder „Abspielen“ schwenkt ihn hin und her.', 'Tip: drag the laser to change the tilt of the light – or press “Play” to swing it back and forth.')
+      : v.mode === 'measure'
+        ? L('Tipp: Laser auf dem Winkelmesser ziehen, β am Winkelmesser ablesen, dann „Messwert aufnehmen“.', 'Tip: drag the laser on the protractor, read β on the protractor, then “Record measurement”.')
+        : v.mode === 'optics'
+          ? v.ex === 'depth'
+            ? L('Tipp: Auge ziehen, um schräger oder steiler auf den Fisch zu schauen. Diagramm antippen: α wählen.', 'Tip: drag the eye to look at the fish more or less obliquely. Tap the graph to pick α.')
+            : L('Tipp: Laser ziehen, um den Einfallswinkel zu ändern. Diagramm antippen: α wählen.', 'Tip: drag the laser to change the angle of incidence. Tap the graph to pick α.')
+          : L('Tipp: Laser über den Winkelmesser ziehen – auch auf die andere Seite der Grenzfläche. Diagramm antippen: α wählen.', 'Tip: drag the laser around the protractor – also to the other side of the boundary. Tap a graph to pick α.'),
   layout: { aspect: 1.6, aspectNarrow: 0.56 },
   images: { laser: 'laser.webp' },
   groups: [
@@ -605,15 +617,15 @@ export default defineSimulation({
       const beta = refractionAngle(n1, n2, a);
       const as = fmt.num(a, 0);
       if (m === 'ray' || m === 'graph') {
-        ctx.readout('angles', beta === null ? tr('anglesTotal', { a: as }) : tr('angles', { a: as, b: fmt.num(beta, 1) }));
+        ctx.readout('angles', beta === null ? tr('anglesTotal', { a: as }) : tr('angles', { a: as, b: fmt.fixed(beta, 1) }));
         ctx.readout(
           'law',
           beta === null
             ? { html: `<var>n</var><sub>1</sub> · sin α = ${fmt.fixed(n1, 2)} · sin ${as}° ≈ ${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} &gt; ${fmt.fixed(n2, 2)} = <var>n</var><sub>2</sub> · sin 90°` }
-            : { html: `<var>n</var><sub>1</sub> · sin α = <var>n</var><sub>2</sub> · sin β: &nbsp;${fmt.fixed(n1, 2)} · sin ${as}° ≈ ${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} ≈ ${fmt.fixed(n2, 2)} · sin ${fmt.num(beta, 1)}°` },
+            : { html: `<var>n</var><sub>1</sub> · sin α = <var>n</var><sub>2</sub> · sin β: &nbsp;${fmt.fixed(n1, 2)} · sin ${as}° ≈ ${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} ≈ ${fmt.fixed(n2, 2)} · sin ${fmt.fixed(beta, 1)}°` },
         );
         const c = criticalAngle(n1, n2);
-        ctx.readout('critical', c === null ? ctx.t('none') : { html: `α<sub>G</sub> = arcsin(${fmt.fixed(n2, 2)} / ${fmt.fixed(n1, 2)}) ≈ ${fmt.num(c, 1)}°` });
+        ctx.readout('critical', c === null ? ctx.t('none') : { html: `α<sub>G</sub> = arcsin(${fmt.fixed(n2, 2)} / ${fmt.fixed(n1, 2)}) ≈ ${fmt.fixed(c, 1)}°` });
       }
       if (m === 'ray') {
         const f = fresnel(n1, n2, a);
@@ -622,7 +634,7 @@ export default defineSimulation({
           'reflect',
           f.total
             ? ctx.t('totalText')
-            : { html: `${tr('reflectText', { r: fmt.num(f.R * 100, 1), t: fmt.num(f.T * 100, 1) })}<br><var>R</var><sub>s</sub> = ${fmt.num(f.rs * 100, 1)} %, <var>R</var><sub>p</sub> = ${fmt.num(f.rp * 100, 1)} % · Brewster-${tx('Winkel', 'angle')} arctan(${n(n2, 2)}/${n(n1, 2)}) ≈ ${fmt.num(brew, 1)}°` },
+            : { html: `${tr('reflectText', { r: fmt.fixed(f.R * 100, 1), t: fmt.fixed(f.T * 100, 1) })}<br><var>R</var><sub>s</sub> = ${fmt.fixed(f.rs * 100, 1)} %, <var>R</var><sub>p</sub> = ${fmt.fixed(f.rp * 100, 1)} % · Brewster-${tx('Winkel', 'angle')} arctan(${fmt.fixed(n2, 2)}/${fmt.fixed(n1, 2)}) ≈ ${fmt.fixed(brew, 1)}°` },
         );
         const top = MEDIA[p.top as MediumId];
         const bottom = MEDIA[p.bottom as MediumId];
@@ -631,16 +643,16 @@ export default defineSimulation({
       if (m === 'graph') ctx.readout('slope', { html: `sin β / sin α = <var>n</var><sub>1</sub>/<var>n</var><sub>2</sub> = ${fmt.fixed(n1, 2)}/${fmt.fixed(n2, 2)} ≈ ${fmt.fixed(n1 / n2, 3)}` });
       if (m === 'measure') {
         const b = beta === null ? 0 : readAngle(beta);
-        ctx.readout('angles', tr('anglesMeasure', { a: as, b: fmt.num(b, 1) }));
+        ctx.readout('angles', tr('anglesMeasure', { a: as, b: fmt.fixed(b, 1) }));
         if (!rows.length) ctx.readout('table', ctx.t('emptyRows'));
         else {
           const head = `<tr><th>${ctx.t('thNo')}</th><th>α</th><th>β</th><th>sin α</th><th>sin β</th></tr>`;
-          const body = rows.map(([x, y], i) => `<tr${i === rows.length - 1 ? ' class="is-current"' : ''}><td>${i + 1}</td><td>${fmt.num(x, 0)}°</td><td>${fmt.num(y, 1)}°</td><td>${fmt.fixed(Math.sin(toRad(x)), 3)}</td><td>${fmt.fixed(Math.sin(toRad(y)), 3)}</td></tr>`).join('');
+          const body = rows.map(([x, y], i) => `<tr${i === rows.length - 1 ? ' class="is-current"' : ''}><td>${i + 1}</td><td>${fmt.num(x, 0)}°</td><td>${fmt.fixed(y, 1)}°</td><td>${fmt.fixed(Math.sin(toRad(x)), 3)}</td><td>${fmt.fixed(Math.sin(toRad(y)), 3)}</td></tr>`).join('');
           ctx.readout('table', { html: `<table class="mini-table">${head}${body}</table>` });
         }
         const nn = indexFromSeries(rows);
         const s = SAMPLES[p.x - 1]!;
-        ctx.readout('fit', nn === null ? ctx.t('emptyFit') : { html: `sin β = <var>k</var> · sin α mit <var>k</var> ≈ ${fmt.fixed(1 / nn, 3)} → <var>n</var> = 1/<var>k</var> ≈ <strong>${fmt.fixed(nn, 2)}</strong> · ${tx('Tabellenwert', 'table value')} ${s[ctx.lang]} ${n(s.n, 2)}` });
+        ctx.readout('fit', nn === null ? ctx.t('emptyFit') : { html: `sin β = <var>k</var> · sin α ${tx('mit', 'with')} <var>k</var> ≈ ${fmt.fixed(1 / nn, 3)} → <var>n</var> = 1/<var>k</var> ≈ <strong>${fmt.fixed(nn, 2)}</strong> · ${tx('Tabellenwert', 'table value')} ${s[ctx.lang]} ${fmt.fixed(s.n, 2)}` });
       }
       if (m === 'total') ctx.readout('app', { html: appLines().join('<br>') });
       if (m === 'optics') ctx.readout('opt', { html: optLines(true).join('<br>') });
@@ -659,7 +671,7 @@ export default defineSimulation({
         out.push(html(c === null ? ctx.t('critNone') : tr('critLine', { n2: fmt.fixed(ncl, 2), n1: fmt.fixed(nc, 2), g: n(c, 1) })));
         const acc = acceptanceAngle(nc, ncl);
         if (acc !== null) out.push(html(acc >= 90 ? ctx.t('acceptAll') : tr('accept', { a: n(acc, 1) })));
-        out.push(tr('bendLine', { r: n(p.rb, 1), k: n(p.rb / FIBER.d, 1) }));
+        out.push(tr('bendLine', { r: fmt.fixed(p.rb, 1), k: n(p.rb / FIBER.d, 1) }));
         out.push(`${fmt.num(fiberDelivery({ ...FIBER, R: p.rb }, p.ain, nc, ncl) * 100, 0)} % ${ctx.t('arrive')}`);
       } else if (app() === 'prism') {
         const c = criticalAngle(nc, 1);
@@ -681,22 +693,25 @@ export default defineSimulation({
       const html = (s: string) => (exact ? s.replace(/_\{([^}]*)\}/g, '<sub>$1</sub>') : s);
       const a = exact ? p.alpha : shown.alpha;
       const nm = nMat();
+      /** Im Bild (nicht im Ergebnis, das der Host verdeckt) Lösungen im Aufgabenmodus durch „?“ ersetzen. */
+      const q = (v: string) => (!exact && ctx.isHidden('opt') ? '?' : v);
       if (ex() === 'plate') {
         const b = refractionAngle(1, nm, a)!;
-        return [tr('shiftLine', { d: fmt.fixed(plateShift(a, nm, 1, 2), 2) }), tr('betaLine', { b: deg1(b) }), ctx.t('parallel')];
+        return [tr('shiftLine', { d: q(fmt.fixed(plateShift(a, nm, 1, 2), 2)) }), tr('betaLine', { b: q(deg1(b)) }), ctx.t('parallel')];
       }
       if (ex() === 'prism') {
         const gam = exact ? p.pa : shown.pa;
         const path = prismPath(gam, a, nm);
-        const out = [path ? html(tr('devLine', { a: deg1(a), b: deg1(path.beta2), g: deg1(gam), d: deg1(path.delta) })) : html(tr('devTotal', { a: deg1(gam - refractionAngle(1, nm, a)!) }))];
+        const out = [path ? html(tr('devLine', { a: deg1(a), b: q(deg1(path.beta2)), g: deg1(gam), d: q(deg1(path.delta)) })) : html(tr('devTotal', { a: deg1(gam - refractionAngle(1, nm, a)!) }))];
         const dm = minDeviation(gam, nm);
-        if (dm !== null) out.push(html(tr('devMin', { d: deg1(dm) })));
+        if (dm !== null) out.push(html(tr('devMin', { d: q(deg1(dm)) })));
         if (p.disp) out.push(mat() === 'glas' ? html(tr('dispLine', { r: fmt.fixed(cauchyIndex(660), 3), v: fmt.fixed(cauchyIndex(410), 3) })) : ctx.t('dispOnly'));
         return out;
       }
       const h = exact ? p.dep : shown.dep;
       const hp = apparentDepth(h, nm, 1, a);
-      return [hp === null ? ctx.t('depthTotal') : tr('depthLine', { h: fmt.fixed(hp, 2) }), html(tr('depthNear', { h: fmt.fixed((h * 1) / nm, 2) }))];
+      if (a < 0.5) return [html(tr('depthNear', { h: q(fmt.fixed((h * 1) / nm, 2)) }))];
+      return [hp === null ? ctx.t('depthTotal') : tr('depthLine', { h: q(fmt.fixed(hp, 2)) }), html(tr('depthNear', { h: q(fmt.fixed((h * 1) / nm, 2)) }))];
     }
 
     /* ---------- Zeichenhilfen (Texte mit tiefgestellten Teilen: „n_{1}“) ---------- */
@@ -1040,8 +1055,9 @@ export default defineSimulation({
       const showArcs = !intro.running || it > 0.85;
       if (showArcs && a > 0.5) {
         const items: [string, string, number, number, number][] = [[`α = ${deg1(a)}°`, C.a(), sweepOf(nIn, scr(fromLaser)), nIn, r0]];
-        if (!meas) items.push([`α′ = ${deg1(a)}°`, C.r(), sweepOf(nIn, scr(refl)), nIn, r0 * 0.78]);
-        if (refr && beta! > 0.5) items.push([`β = ${meas ? '?' : deg1(beta!)}°`, C.b(), sweepOf(nOut, scr(refr)), nOut, r0]);
+        const sameN = Math.abs(n1 - n2) < 1e-6;
+        if (!meas && !sameN) items.push([`α′ = ${deg1(a)}°`, C.r(), sweepOf(nIn, scr(refl)), nIn, r0 * 0.78]);
+        if (refr && beta! > 0.5) items.push([meas || ctx.isHidden('angles') ? 'β = ?' : `β = ${deg1(beta!)}°`, C.b(), sweepOf(nOut, scr(refr)), nOut, r0]);
         for (const [t, col, d, base, rr] of items) {
           const w = richWidth(t, size) + 16;
           const mid = base + d / 2;
@@ -1094,7 +1110,7 @@ export default defineSimulation({
       richText(ctx.t('normal'), cx + 8, cy - s * R * 1.12, 12, theme.muted, 'left', true, 600);
       // Grenzwinkel
       const c = criticalAngle(n1, n2);
-      if (p.critical && c !== null && !meas) {
+      if (p.critical && c !== null && !meas && !ctx.isHidden('critical')) {
         g.save();
         g.strokeStyle = C.crit();
         g.setLineDash([3, 4]);
@@ -1118,7 +1134,8 @@ export default defineSimulation({
       beam(lx, ly, lerp(lx, cx, grow1), lerp(ly, cy, grow1), 1);
       if (grow2 > 0) {
         const L1 = R * 1.12 * grow2;
-        if (!meas || p.intensity) beam(cx, cy, cx + refl[0] * L1, cy - refl[1] * L1, strength(f.R) * (meas ? 0.8 : 1));
+        // gleiche Stoffe: kein reflektierter Strahl (R = 0)
+        if ((!meas || p.intensity) && Math.abs(n1 - n2) > 1e-6) beam(cx, cy, cx + refl[0] * L1, cy - refl[1] * L1, strength(f.R) * (meas ? 0.8 : 1));
         if (refr) beam(cx, cy, cx + refr[0] * L1, cy - refr[1] * L1, strength(f.T));
         spot(cx, cy, 15, grow2);
       }
@@ -1464,8 +1481,9 @@ export default defineSimulation({
       const size = small ? 11 : 12;
       let x = r.x + 8;
       x += pill(x, r.y + 8, `θ = ${fmt.num(shown.ain, 0)}°`, C.a(), 'left', size).w + 6;
-      x += pill(x, r.y + 8, `R = ${fmt.num(R, 1)} mm`, theme.text, 'left', size).w + 6;
-      pill(r.x + r.w - 8, r.y + 8, `${fmt.num((shown.deliv < 0 ? deliv : shown.deliv) * 100, 0)} % ${ctx.t('arrive')}`, C.b(), 'right', size);
+      x += pill(x, r.y + 8, `R = ${fmt.fixed(R, 1)} mm`, theme.text, 'left', size).w + 6;
+      const dv = shown.deliv < 0 ? deliv : shown.deliv;
+      pill(r.x + r.w - 8, r.y + 8, `${fmt.num(dv * 100, 0)} % ${ctx.t('arrive')}`, dv > 0.6 ? C.b() : C.p(), 'right', size);
       const h = fiberHint();
       if (h) pill(r.x + 8, r.y + 8 + size + 17, fitText(h, r.w - 30, size), C.crit(), 'left', size);
       sp.end();
@@ -1476,10 +1494,12 @@ export default defineSimulation({
       const ncl = MEDIA[p.clad as MediumId];
       if (Math.abs(nc - ncl) < 1e-6) return ctx.t('hFiberSame');
       if (ncl > nc) return ctx.t('hFiberDense');
-      const straight = fiberDelivery({ ...FIBER, R: 15 }, p.ain, nc, ncl);
+      // Zu schräg eingekoppelt nur, wenn der Winkel über dem Akzeptanzwinkel liegt; sonst geht das Licht in der Biegung verloren
+      const acc = acceptanceAngle(nc, ncl);
+      if (acc !== null && Math.abs(p.ain) > acc + 0.5) return ctx.t('hAccept');
+      const ideal = fresnel(1, nc, Math.abs(p.ain)).T;
       const now = fiberDelivery({ ...FIBER, R: p.rb }, p.ain, nc, ncl);
-      if (straight < 0.5) return ctx.t('hAccept');
-      if (now < straight - 0.05) return ctx.t('hBendLoss');
+      if (now < ideal - 0.05) return ctx.t('hBendLoss');
       return null;
     }
 
@@ -1524,7 +1544,7 @@ export default defineSimulation({
       drawLaser(lx, ly, Math.atan2(-d[1], d[0]), small);
       const size = small ? 11 : 12;
       pill(r.x + 8, r.y + 8, `θ = ${fmt.num(shown.ain, 0)}°`, C.a(), 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, `${fmt.num(st.out * 100, 0)} % ${ctx.t('deflect')}`, C.b(), 'right', size);
+      pill(r.x + r.w - 8, r.y + 8, `${fmt.num(st.out * 100, 0)} % ${ctx.t('deflect')}`, st.out > 0.6 ? C.b() : C.p(), 'right', size);
       if (c === null || c > 45) pill(r.x + 8, r.y + 8 + size + 17, fitText(tr('hPrismLeak', { m: MEDIUM_NAME[mat()][ctx.lang], g: c === null ? '90' : deg1(c) }), r.w - 30, size), C.crit(), 'left', size);
       sp.end();
     }
@@ -1585,7 +1605,7 @@ export default defineSimulation({
       drawLaser(lx, ly, Math.atan2(-d[1], d[0]), small);
       const size = small ? 11 : 12;
       pill(r.x + 8, r.y + 8, `θ = ${fmt.num(shown.ain, 0)}°`, C.a(), 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, `${fmt.num(st.top * 100, 0)} % ${ctx.t('sparkle')}`, C.b(), 'right', size);
+      pill(r.x + r.w - 8, r.y + 8, `${fmt.num(st.top * 100, 0)} % ${ctx.t('sparkle')}`, st.top > 0.45 ? C.b() : C.p(), 'right', size);
       if (mat() === 'glas') pill(r.x + 8, r.y + 8 + size + 17, fitText(ctx.t('hGemGlass'), r.w - 30, size), C.crit(), 'left', size);
       else if (mat() === 'luft') pill(r.x + 8, r.y + 8 + size + 17, fitText(ctx.t('hAir'), r.w - 30, size), C.crit(), 'left', size);
       sp.end();
@@ -1645,7 +1665,7 @@ export default defineSimulation({
       }
       const size = small ? 11 : 12;
       pill(clamp(ix - r0 - 90, r.x + 6, r.x + r.w - 100), iy - r0 - 26, `α = ${deg1(a)}°`, C.a(), 'left', size);
-      pill(ix + 10, iy + r0 * 0.4, `β = ${deg1(beta)}°`, C.b(), 'left', size);
+      pill(ix + 10, iy + r0 * 0.4, ctx.isHidden('opt') ? 'β = ?' : `β = ${deg1(beta)}°`, C.b(), 'left', size);
       // Versatz Δ zwischen Verlängerung und austretendem Strahl
       if (exitSeg) {
         const q = exitSeg.b;
@@ -1664,7 +1684,7 @@ export default defineSimulation({
           arrowHead(fx, fy, ang, 9, C.crit());
           arrowHead(qx, qy, ang + Math.PI, 9, C.crit());
           const sh = plateShift(a, nm, 1, 2);
-          pill(clamp((qx + fx) / 2 + 12, r.x + 6, r.x + r.w - 110), (qy + fy) / 2 + 6, `Δ = ${fmt.fixed(sh, 2)} cm`, C.crit(), 'left', size);
+          pill(clamp((qx + fx) / 2 + 12, r.x + 6, r.x + r.w - 110), (qy + fy) / 2 + 6, ctx.isHidden('opt') ? 'Δ = ?' : `Δ = ${fmt.fixed(sh, 2)} cm`, C.crit(), 'left', size);
         }
       }
       const lp: V2 = [-3.1 * d[0], 1 - 3.1 * d[1]];
@@ -1781,7 +1801,7 @@ export default defineSimulation({
           g.restore();
           const rr = clamp(sp.scale.x * 1.2, 34, 70);
           angleArc(qx, qy, rr, scr(d), sweepOf(scr(d), scr(od)), C.crit());
-          pill(qx + rr + 6, qy + 4, `δ = ${deg1(path.delta)}°`, C.crit(), 'left', size);
+          pill(qx + rr + 6, qy + 4, ctx.isHidden('opt') ? 'δ = ?' : `δ = ${deg1(path.delta)}°`, C.crit(), 'left', size);
         }
       }
       // Laser und Winkel am Eintritt
@@ -1985,7 +2005,7 @@ export default defineSimulation({
           };
           const [xd] = sp.toPx(-0.45, 0);
           dim(sy, fy, xd, `h = ${fmt.fixed(h, 2)} m`, theme.text);
-          richText(`h′ = ${fmt.fixed(hp, 2)} m`, gx + fw * 0.65, gy + fw * 0.15, size, C.a(), 'left', true, 700);
+          richText(ctx.isHidden('opt') ? 'h′ = ?' : `h′ = ${fmt.fixed(hp, 2)} m`, gx + fw * 0.65, gy + fw * 0.15, size, C.a(), 'left', true, 700);
         }
         // Lot an der Oberfläche und Winkel
         g.save();
@@ -2003,7 +2023,7 @@ export default defineSimulation({
           angleArc(px, py, r0, -Math.PI / 2, sweepOf(-Math.PI / 2, Math.atan2(ey - py, ex - px)), C.b());
         }
         pill(px + 8, py + r0 * 0.5, `α = ${deg1(a)}°`, C.a(), 'left', size);
-        pill(px + 8, py - r0 - 22, `β = ${deg1(beta)}°`, C.b(), 'left', size);
+        pill(px + 8, py - r0 - 22, ctx.isHidden('opt') ? 'β = ?' : `β = ${deg1(beta)}°`, C.b(), 'left', size);
         // Auge
         g.save();
         g.translate(ex, ey);
@@ -2070,10 +2090,19 @@ export default defineSimulation({
         line(`${fmt.fixed(n1, 2)} · sin ${deg1(a)}° = ${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} > ${fmt.fixed(n2, 2)}`, C.crit());
         line(ctx.t('total'), C.crit(), fs, 650);
       } else {
-        line(`${fmt.fixed(n1, 2)} · sin ${deg1(a)}° = ${fmt.fixed(n2, 2)} · sin ${deg1(beta)}°`, theme.text, fs, 650);
-        line(`${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} = ${fmt.fixed(n2 * Math.sin(toRad(beta)), 3)}  →  β = ${deg1(beta)}°`, C.b(), fs, 700);
+        // Aufgabenmodus: β (Lösung) nicht verraten
+        const hideB = ctx.isHidden('angles') || ctx.isHidden('law');
+        if (hideB) {
+          line(`${fmt.fixed(n1, 2)} · sin ${deg1(a)}° = ${fmt.fixed(n2, 2)} · sin β`, theme.text, fs, 650);
+          line('β = ?', C.b(), fs, 700);
+        } else {
+          line(`${fmt.fixed(n1, 2)} · sin ${deg1(a)}° = ${fmt.fixed(n2, 2)} · sin ${deg1(beta)}°`, theme.text, fs, 650);
+          line(`${fmt.fixed(n1 * Math.sin(toRad(a)), 3)} = ${fmt.fixed(n2 * Math.sin(toRad(beta)), 3)}  →  β = ${deg1(beta)}°`, C.b(), fs, 700);
+        }
         const dir = Math.abs(n1 - n2) < 1e-6 || a < 0.5 ? ctx.t('hStraight') : n2 > n1 ? ctx.t('hTowards') : ctx.t('hAway');
-        line(dir, theme.muted, fs - 1, 600);
+        // auf flachen Karten (Handy) zuerst Platz für beide Balken lassen
+        const barsNeed = 2 * ((small ? 12 : 14) + (small ? 8 : 10)) + 2;
+        if (y + fs + barsNeed < R.y + R.h - 4) line(dir, theme.muted, fs - 1, 600);
       }
       // Anteile als Balken
       y += 2;
@@ -2120,14 +2149,14 @@ export default defineSimulation({
       const label = app() === 'fiber' ? ctx.t('arrive') : app() === 'prism' ? ctx.t('deflect') : ctx.t('sparkle');
       for (const ln of lines.slice(0, lines.length - 1)) {
         if (y > R.y + R.h - big - 16) break;
-        richText(fitText(ln.replace(/<\/?sub>/g, ''), R.w - 28, fs - 0.5, 600), x, y, fs - 0.5, theme.muted, 'left', false, 600);
+        richText(fitText(ln.replace(/<sub>([^<]*)<\/sub>/g, '_{$1}'), R.w - 28, fs - 0.5, 600), x, y, fs - 0.5, theme.muted, 'left', false, 600);
         y += fs + 8;
       }
       const by = Math.min(R.y + R.h - big / 2 - 10, y + big / 2 + 4);
       g.font = `800 ${big}px ${theme.font}`;
       g.textAlign = 'left';
       g.textBaseline = 'middle';
-      g.fillStyle = share > 0.6 ? C.b() : C.p();
+      g.fillStyle = share > (app() === 'gem' ? 0.45 : 0.6) ? C.b() : C.p();
       g.fillText(bigText, x, by);
       const bw = g.measureText(bigText).width;
       richText(fitText(label, R.w - bw - 40, fs, 650), x + bw + 10, by + 2, fs, theme.text, 'left', false, 650);
@@ -2351,8 +2380,8 @@ export default defineSimulation({
         plot.point(a, b, { color: C.b(), radius: 6 });
       }
       plot.end();
-      if (c !== null) richText(`α_{G} = ${deg1(c)}°`, plot.px(c) + (c > 60 ? -8 : 8), plot.py(90) + 12, small ? 11 : 12, C.crit(), c > 60 ? 'right' : 'left', true, 700);
-      titleChip(R, ctx.t('tBeta'), theme.text, small ? undefined : b === null ? ctx.t('totalZone') : `β = ${deg1(b)}°`, b === null ? C.crit() : C.b());
+      if (c !== null) richText(ctx.isHidden('critical') ? 'α_{G} = ?' : `α_{G} = ${deg1(c)}°`, plot.px(c) + (c > 60 ? -8 : 8), plot.py(90) + 12, small ? 11 : 12, C.crit(), c > 60 ? 'right' : 'left', true, 700);
+      titleChip(R, ctx.t('tBeta'), theme.text, small ? undefined : b === null ? ctx.t('totalZone') : ctx.isHidden('angles') ? 'β = ?' : `β = ${deg1(b)}°`, b === null ? C.crit() : C.b());
     }
 
     function drawSinChart(plot: Plot, R: Rect): void {
@@ -2373,7 +2402,7 @@ export default defineSimulation({
       const x1 = 0.65 * xEnd;
       plot.segment([x0, k * x0], [x1, k * x0], { color: theme.text, width: 1.3, alpha: 0.7 });
       plot.segment([x1, k * x0], [x1, k * x1], { color: theme.text, width: 1.3, alpha: 0.7 });
-      const slopeTxt = tr('slopeLbl', { k: fmt.fixed(k, 3) });
+      const slopeTxt = tr('slopeLbl', { k: ctx.isHidden('slope') ? '?' : fmt.fixed(k, 3) });
       const slopePos: Pt = [plot.px(x1) + 8, plot.py((k * x0 + k * x1) / 2)];
       const a = shown.alpha;
       const sa = Math.sin(toRad(a));
@@ -2395,7 +2424,7 @@ export default defineSimulation({
       plot.grid({ minor: false });
       plot.axes();
       const nn = indexFromSeries(rows);
-      if (nn !== null && rows.length >= 2) plot.segment([0, 0], [1, 1 / nn], { color: C.r(), width: 2, dash: [6, 4] });
+      if (nn !== null && rows.length >= 2 && !ctx.isHidden('fit')) plot.segment([0, 0], [1, 1 / nn], { color: C.r(), width: 2, dash: [6, 4] });
       rows.forEach(([aa, bb], i) => {
         const u = i === rows.length - 1 && rowPop.running ? rowPop.value : 1;
         plot.point(Math.sin(toRad(aa)), Math.sin(toRad(bb)), { color: C.r(), radius: 5.5 * Math.max(0.2, u) });
@@ -2409,7 +2438,7 @@ export default defineSimulation({
         richText(ctx.t('emptyFit'), R.x + R.w / 2, R.y + R.h * 0.45, fs, theme.muted, 'center', true, 600);
         return;
       }
-      if (nn !== null && rows.length >= 2) {
+      if (nn !== null && rows.length >= 2 && !ctx.isHidden('fit')) {
         const s = SAMPLES[p.x - 1]!;
         const u = rowPop.running ? clamp(rowPop.value, 0, 1.2) : 1;
         g.save();
@@ -2419,7 +2448,7 @@ export default defineSimulation({
         g.restore();
         const reveal = rows.length >= 3;
         const near = nearestSample(nn);
-        const label = reveal ? tr('fitReveal', { name: s[ctx.lang], n: n(s.n, 2) }) : tr('fitMore', { k: String(3 - rows.length) });
+        const label = reveal ? tr('fitReveal', { name: s[ctx.lang], n: fmt.fixed(s.n, 2) }) : tr('fitMore', { k: String(3 - rows.length) });
         const ok = reveal && near === p.x - 1;
         richText(fitText(label, plot.rect.w - 12, fs, 650), plot.rect.x + plot.rect.w * 0.62, R.y + 80, fs, reveal ? (ok ? C.b() : C.a()) : theme.muted, 'center', true, 650);
       }
@@ -2460,7 +2489,7 @@ export default defineSimulation({
       plot.vline(a, { color: C.a(), width: 1.4, alpha: 0.6 });
       plot.point(a, sh, { color: C.crit(), radius: 6 });
       plot.end();
-      titleChip(R, ctx.t('tShift'), theme.text, small ? undefined : `Δ = ${fmt.fixed(sh, 2)} cm`, C.crit());
+      titleChip(R, ctx.t('tShift'), theme.text, small || ctx.isHidden('opt') ? undefined : `Δ = ${fmt.fixed(sh, 2)} cm`, C.crit());
     }
 
     function drawDevChart(plot: Plot, R: Rect): void {
@@ -2495,8 +2524,8 @@ export default defineSimulation({
       plot.vline(a, { color: C.a(), width: 1.4, alpha: 0.6 });
       if (path) plot.point(a, path.delta, { color: C.crit(), radius: 6 });
       plot.end();
-      if (dm !== null && !small) richText(`δ_{min} = ${deg1(dm)}°`, plot.px((dm + gam) / 2), plot.py(dm) + 15, 11.5, theme.text, 'center', true, 700);
-      titleChip(R, ctx.t('tDev'), theme.text, small ? undefined : path ? `δ = ${deg1(path.delta)}°` : ctx.t('totalZone'), C.crit());
+      if (dm !== null && !small && !ctx.isHidden('opt')) richText(`δ_{min} = ${deg1(dm)}°`, plot.px((dm + gam) / 2), plot.py(dm) + 15, 11.5, theme.text, 'center', true, 700);
+      titleChip(R, ctx.t('tDev'), theme.text, small || ctx.isHidden('opt') ? undefined : path ? `δ = ${deg1(path.delta)}°` : ctx.t('totalZone'), C.crit());
     }
 
     function drawLiftChart(plot: Plot, R: Rect): void {
@@ -2512,13 +2541,13 @@ export default defineSimulation({
       if (c !== null) plot.polygon([[c, 0], [90, 0], [90, 1.05], [c, 1.05]], { fill: withAlpha(C.crit(), 0.12) });
       for (const q of chartCurve((a) => apparentDepth(1, nm, 1, a), 0, c === null ? 89.5 : c - 0.01, 300)) plot.polyline(q, { color: C.a(), width: 2.6 });
       plot.hline(1 / nm, { color: theme.muted, width: 1.2, dash: [4, 4] });
-      if (!small) plot.text(4, 1 / nm, `1/n = ${fmt.fixed(1 / nm, 3)}`, { color: theme.muted, size: 11, align: 'left', offset: [0, -10] });
+      if (!small && !ctx.isHidden('opt')) plot.text(4, 1 / nm, `1/n = ${fmt.fixed(1 / nm, 3)}`, { color: theme.muted, size: 11, align: 'left', offset: [0, -10] });
       const a = shown.alpha;
       const hp = apparentDepth(1, nm, 1, a);
       plot.vline(a, { color: C.a(), width: 1.4, alpha: 0.6 });
       if (hp !== null) plot.point(a, hp, { color: C.a(), radius: 6 });
       plot.end();
-      titleChip(R, ctx.t('tLift'), theme.text, small ? undefined : hp === null ? ctx.t('totalZone') : `h′/h = ${fmt.fixed(hp, 3)}`, C.a());
+      titleChip(R, ctx.t('tLift'), theme.text, small || ctx.isHidden('opt') ? undefined : hp === null ? ctx.t('totalZone') : `h′/h = ${fmt.fixed(hp, 3)}`, C.a());
     }
 
     function drawPanels(reg: { panels: Rect[] }): void {

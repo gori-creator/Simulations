@@ -165,8 +165,10 @@ export interface SimContext<V> {
   readonly images: ImageStore;
   /**
    * Aufgabenmodus: `true`, solange Lösungen verdeckt sein sollen – also bei
-   * geteiltem Link mit „Ergebnisse verdecken“ (`_hide=1`), bis ein Ergebnis
-   * aufgedeckt wird, oder solange der Schalter `resultsParam` aus ist.
+   * geteiltem Link mit „Ergebnisse verdecken“ (`_hide=1`), solange noch
+   * mindestens ein angezeigtes `spoiler`-Ergebnis verdeckt ist (erst wenn alle
+   * aufgedeckt sind, wird es `false`), oder solange der Schalter `resultsParam`
+   * aus ist. Für einzelne Werte im Bild `isHidden(key)` verwenden.
    * Damit lassen sich Etiketten im Bild gezielt ausblenden. Bei einem Wechsel
    * zeichnet der Host neu und ruft `hiddenChange` auf.
    */

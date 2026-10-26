@@ -69,3 +69,20 @@ export function resolveText<V>(text: DynamicText<V> | undefined, values: Readonl
   const value = localized?.[lang] ?? localized?.de ?? '';
   return value.trim() ? value : null;
 }
+
+/**
+ * Tipp unter der Bühne: eigener `hint` (fest oder abhängig von den Werten),
+ * sonst der allgemeine Ziehen-Hinweis (`dragHint`), sonst keiner. Bei
+ * gesperrten Links (`_lock=1`) erscheint kein Tipp, weil man dann weder ziehen
+ * noch etwas einstellen kann.
+ */
+export function resolveHint<V>(
+  def: { hint?: DynamicText<V>; dragHint?: boolean },
+  values: Readonly<V>,
+  lang: Lang,
+  dragHintText: string,
+  locked: boolean,
+): string {
+  if (locked) return '';
+  return resolveText(def.hint, values, lang) ?? (def.dragHint ? dragHintText : '');
+}

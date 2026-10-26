@@ -43,6 +43,12 @@ export default defineSimulation({
   id: 'induktion',
   animated: true,
   dragHint: true,
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'gen'
+      ? L('Tipp: Achte auf die Stellung der Spule, wenn die Spannung am größten ist.', 'Tip: watch the position of the coil when the voltage is largest.')
+      : v.mode === 'rail'
+        ? L('Tipp: Ziehe den Stab mit Maus oder Finger – schnell, langsam oder gar nicht.', 'Tip: drag the rod with the mouse or a finger – fast, slowly or not at all.')
+        : L('Tipp: Ziehe den Magneten mit Maus oder Finger – schnell, langsam oder gar nicht.', 'Tip: drag the magnet with the mouse or a finger – fast, slowly or not at all.'),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
   images: { magnet: 'stabmagnet.webp', coil: 'spule.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -117,6 +123,10 @@ export default defineSimulation({
       lenzRail: 'Der Strom im Stab erfährt im Magnetfeld die Kraft <var>F</var> = <var>B</var> · <var>I</var> · <var>l</var>. Sie ist der Bewegung entgegengerichtet: Man muss Arbeit verrichten, die als elektrische Energie im Stromkreis ankommt.',
       lenzGen: 'Der Strom in der Spule erzeugt ein bremsendes Drehmoment: Je mehr Strom entnommen wird, desto schwerer lässt sich der Generator drehen.',
       now: '<var>t</var> = {t} s · <var>U</var> = {U} V',
+      keyMagnetIn: 'Magnet in die Spule schieben',
+      keyMagnetOut: 'Magnet aus der Spule ziehen',
+      keyRodRight: 'Stab nach rechts ziehen',
+      keyRodLeft: 'Stab nach links ziehen',
     },
     en: {
       canvas:
@@ -145,12 +155,16 @@ export default defineSimulation({
       calcMagnet: 'Coil: <var>n</var> = {n}, <var>A</var> = π · (2 cm)<sup>2</sup> ≈ {A} cm<sup>2</sup>. The faster the magnet moves and the more turns, the larger the voltage. Pushing in and pulling out give voltages of opposite sign.',
       calcRail: '<var>U</var> = <var>B</var> · <var>l</var> · <var>v</var> = {B} T · {l} m · {v} m/s = <strong>{U} V</strong><br>(from <var>Φ</var> = <var>B</var> · <var>l</var> · <var>x</var>: Δ<var>Φ</var>/Δ<var>t</var> = <var>B</var> · <var>l</var> · <var>v</var>)<br>With <var>R</var> = 2 Ω: <var>I</var> = {I} A, braking force <var>F</var> = <var>B</var> · <var>I</var> · <var>l</var> = {F} N.',
       calcGen: '<var>Φ</var>(<var>t</var>) = <var>B</var> · <var>A</var> · cos(<var>ω</var> <var>t</var>), <var>U</var>(<var>t</var>) = <var>n</var> · <var>B</var> · <var>A</var> · <var>ω</var> · sin(<var>ω</var> <var>t</var>)<br><var>Û</var> = <var>n</var> · <var>B</var> · <var>A</var> · <var>ω</var> = {n} · {B} T · {A} m<sup>2</sup> · {w} 1/s = <strong>{U} V</strong><br><var>ω</var> = 2π · {f} Hz, period <var>T</var> = {T} s, rms value <var>U</var><sub>eff</sub> = <var>Û</var>/√2 = {Ue} V',
-      lenzIn: 'The magnet approaches: the induced current makes the left end of the coil a <strong>{p} pole</strong> – the coil repels the magnet and slows it down.',
+      lenzIn: 'The magnet approaches: the induced current makes the left end of the coil an <strong>{p} pole</strong> – the coil repels the magnet and slows it down.',
       lenzOut: 'The magnet moves away: the left end of the coil becomes an <strong>{p} pole</strong> – the coil attracts the magnet and slows it down.',
       lenzStill: 'If the magnet is at rest, the flux does not change: no voltage, no current.',
       lenzRail: 'The current in the rod experiences the force <var>F</var> = <var>B</var> · <var>I</var> · <var>l</var> in the magnetic field. It opposes the motion: you have to do work, which arrives as electrical energy in the circuit.',
       lenzGen: 'The current in the coil produces a braking torque: the more current is drawn, the harder it is to turn the generator.',
       now: '<var>t</var> = {t} s · <var>U</var> = {U} V',
+      keyMagnetIn: 'Push the magnet into the coil',
+      keyMagnetOut: 'Pull the magnet out of the coil',
+      keyRodRight: 'Pull the rod to the right',
+      keyRodLeft: 'Pull the rod to the left',
     },
   },
 
@@ -161,6 +175,8 @@ export default defineSimulation({
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (_, k: string) => vars[k] ?? '');
     const n = (v: number, d: number) => fmt.num(v, d);
     const fx = (v: number, d: number) => fmt.fixed(v, d);
+    /** Spannung mit sinnvoller Stellenzahl (etwa 3 gültige Ziffern): 0,200 V; 3,14 V; 62,8 V; 1257 V. */
+    const volt = (u: number) => fx(u, Math.abs(u) < 1 ? 3 : Math.abs(u) < 10 ? 2 : Math.abs(u) < 100 ? 1 : 0);
     const mode = (): Mode => (p.mode === 'rail' ? 'rail' : p.mode === 'gen' ? 'gen' : 'magnet');
     const blue = () => ctx.theme.series[0]!;
     const red = () => ctx.theme.series[1]!;
@@ -207,6 +223,10 @@ export default defineSimulation({
     let flow = 0;
     let history: Sample[] = [];
     let drag: 'magnet' | 'rod' | null = null;
+    /** Per Tastatur ausgelöste Bewegung mit fester Geschwindigkeit zum Ziel. */
+    let keyMove = false;
+    /** Geschwindigkeit des Magneten bei Tastaturbedienung in m/s. */
+    const KEY_SPEED_MAGNET = 0.25;
     let hover: 'magnet' | 'rod' | null = null;
 
     function resetState(): void {
@@ -217,6 +237,7 @@ export default defineSimulation({
       xVel = 0;
       railDir = 1;
       railPause = 0;
+      keyMove = false;
       phi = 0;
       U = 0;
       history = [];
@@ -239,7 +260,11 @@ export default defineSimulation({
       if (mode() === 'magnet') {
         if (p.auto && !drag) zTarget = 0.155 + 0.125 * Math.cos((TAU * t) / 2.6);
         const z0 = z;
-        z += (zTarget - z) * (1 - Math.exp(-h * (drag ? 18 : 40)));
+        if (keyMove && !drag) {
+          const dz = zTarget - z;
+          z = Math.abs(dz) <= KEY_SPEED_MAGNET * h ? zTarget : z + Math.sign(dz) * KEY_SPEED_MAGNET * h;
+          if (z === zTarget) keyMove = false;
+        } else z += (zTarget - z) * (1 - Math.exp(-h * (drag ? 18 : 40)));
         z = clamp(z, Z_MIN, Z_MAX);
         const v = h > 0 ? (z - z0) / h : 0;
         zVel += (v - zVel) * (1 - Math.exp(-h * 30));
@@ -258,6 +283,13 @@ export default defineSimulation({
           }
           const x0 = x;
           x = xTarget;
+          xVel = h > 0 ? (x - x0) / h : 0;
+        } else if (keyMove && !drag) {
+          // Tastatur: gleichförmig mit v zum Ziel, dann Stillstand
+          const x0 = x;
+          const dx = xTarget - x;
+          x = Math.abs(dx) <= p.v * h ? xTarget : x + Math.sign(dx) * p.v * h;
+          if (x === xTarget) keyMove = false;
           xVel = h > 0 ? (x - x0) / h : 0;
         } else {
           const x0 = x;
@@ -280,6 +312,13 @@ export default defineSimulation({
     let peak = 0.05;
     function meterRange(): number {
       return RANGES.find((r) => r >= peak * 1.08) ?? RANGES[RANGES.length - 1]!;
+    }
+    /** Bereich des Diagramms: „runder“ Wert knapp über dem Scheitel (1; 1,5; 2; 2,5; 3; 4; 5; 6; 8 · 10^k). */
+    function chartRange(): number {
+      const want = peak * 1.12;
+      const e = Math.pow(10, Math.floor(Math.log10(want)));
+      const m = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].find((q) => q * e >= want * (1 - 1e-9)) ?? 10;
+      return m * e;
     }
     function updatePeak(): void {
       let m = 0;
@@ -577,7 +616,7 @@ export default defineSimulation({
         for (let i = 0; i <= turns; i += 2) {
           const xx = x0 + i * dx;
           for (let q = 0; q < 2; q++) {
-            const u = (((flow * sgn + q * 0.5) % 1) + 1) % 1;
+            const u = (((flow + q * 0.5) % 1) + 1) % 1;
             const a = -Math.PI / 2 + Math.PI * u;
             g.globalAlpha = ik * Math.min(1, s * 2.2);
             g.beginPath();
@@ -586,9 +625,10 @@ export default defineSimulation({
           }
         }
         g.globalAlpha = ik;
-        // Richtung des Stroms auf der Vorderseite
+        // Richtung des Stroms auf der Vorderseite: U > 0 heißt Umlauf rechtshändig um die
+        // Feldrichtung (nach rechts), vorn also nach unten; beim Annähern (U < 0) nach oben
         const ax = x0 + cl + 12;
-        arrowPx(ax, cy + (sgn > 0 ? cr * 0.55 : -cr * 0.55), ax, cy + (sgn > 0 ? -cr * 0.55 : cr * 0.55), withAlpha(orange(), Math.min(1, 0.3 + s)), 2.2, 7);
+        arrowPx(ax, cy + (sgn > 0 ? -cr * 0.55 : cr * 0.55), ax, cy + (sgn > 0 ? cr * 0.55 : -cr * 0.55), withAlpha(orange(), Math.min(1, 0.3 + s)), 2.2, 7);
         richText('I', ax + 7, cy, sm ? 11 : 12, orange(), 'left', 800);
       }
       // induzierter Pol am linken Spulenende (Lenz)
@@ -716,7 +756,7 @@ export default defineSimulation({
           [xl - 22, yB],
           [xr, yB],
         ];
-        // Richtung: U > 0 ⇒ Strom im Stab nach oben (im Bild), außen im Uhrzeigersinn
+        // Richtung: U > 0 ⇒ Strom im Stab nach oben (im Bild), im Kreis gegen den Uhrzeigersinn (Lenz: Fluss in die Ebene wächst)
         const segs: [number, number, number, number][] = [];
         for (let i = 0; i < 4; i++) {
           const a = path[i]!;
@@ -727,7 +767,7 @@ export default defineSimulation({
         g.fillStyle = theme.dark ? 'rgba(255,240,170,0.95)' : 'rgba(240,170,30,0.95)';
         const nDots = 22;
         for (let i = 0; i < nDots; i++) {
-          let d = ((((i / nDots - flow * sgn * 0.6) % 1) + 1) % 1) * total;
+          let d = ((((i / nDots + flow * 0.6) % 1) + 1) % 1) * total;
           for (const q of segs) {
             const len = Math.hypot(q[2] - q[0], q[3] - q[1]);
             if (d <= len) {
@@ -777,7 +817,7 @@ export default defineSimulation({
         const Fv = brakingForce(p.B, current(U, R_RAIL), p.l);
         const fy = yB + (sm ? 24 : 30);
         arrowPx(xr, fy, xr - dir * (18 + Math.min(70, 1200 * Math.abs(Fv))), fy, red(), 2.6, 8);
-        richText(p.val ? `F = ${fx(Math.abs(Fv), 3)} N` : 'F', xr - dir * (22 + Math.min(70, 1200 * Math.abs(Fv))), fy, sm ? 10.5 : 11.5, red(), dir > 0 ? 'right' : 'left', 750, haloCol());
+        richText(p.val && !ctx.isHidden('calc') ? `F = ${fx(Math.abs(Fv), 3)} N` : 'F', xr - dir * (22 + Math.min(70, 1200 * Math.abs(Fv))), fy, sm ? 10.5 : 11.5, red(), dir > 0 ? 'right' : 'left', 750, haloCol());
       }
       // Maß l
       if (p.val) richText(`l = ${fx(p.l, 2)} m`, xr + 10, yB - 12, sm ? 10.5 : 11, theme.muted, 'left', 650, haloCol());
@@ -791,8 +831,9 @@ export default defineSimulation({
       const theme = ctx.theme;
       const sm = R.w < 440;
       const cx = R.x + R.w * 0.5;
-      const cy = R.y + R.h * 0.5 - 4;
-      const H = R.h * 0.42;
+      // oben Platz für den Titel, unten für Schleifringe und Leitungen
+      const H = Math.max(20, Math.min(R.h * 0.42, (R.h - 30 - 46) / 2.1));
+      const cy = R.y + 30 + H * 1.05;
       const Wl = Math.min(R.w * 0.18, H * 0.75) * Math.sqrt(p.A / 100) * 0.85;
       const poleW = Math.max(40, R.w * 0.12);
       const gap = Math.min(R.w * 0.36, Wl + 40);
@@ -830,14 +871,18 @@ export default defineSimulation({
         g.restore();
         richText(lab, xa + poleW / 2, cy, sm ? 18 : 22, '#ffffff', 'center', 800);
       }
-      // rotierende Spule: senkrechte Achse, Projektion der Breite ∝ cos φ (Blick von vorn)
+      // rotierende Spule um die senkrechte Achse. Normale n = (cos φ, sin φ) in der
+      // Waagerechten (x nach rechts = Feldrichtung, z zum Betrachter, im Bild leicht
+      // nach unten versetzt). Die Seiten liegen bei ±(−sin φ, cos φ): Bei φ = 0 steht
+      // die Fläche senkrecht zum Feld (Kante zum Betrachter, Fluss maximal), bei
+      // φ = 90° parallel zum Feld (volle Breite, Fluss null, Spannung maximal).
       const c = Math.cos(phi);
       const sn = Math.sin(phi);
-      const xa = cx - Wl * c;
-      const xb = cx + Wl * c;
       const depth = 0.18;
-      const ya = -Wl * sn * depth;
-      const yb = Wl * sn * depth;
+      const xa = cx + Wl * sn;
+      const xb = cx - Wl * sn;
+      const ya = -Wl * c * depth;
+      const yb = Wl * c * depth;
       const s = strength();
       // Achse und Schleifringe
       g.strokeStyle = theme.dark ? '#9aa3af' : '#6b7480';
@@ -868,7 +913,7 @@ export default defineSimulation({
       g.lineTo(R.x + R.w - 16, R.y + R.h - 10);
       g.stroke();
       richText(`${ctx.t('toMeter')} →`, R.x + R.w - 18, R.y + R.h - 22, sm ? 10 : 11, theme.muted, 'right', 650, haloCol());
-      // Spulenfläche (Fluss: Feld durch die Fläche ∝ |cos φ|)
+      // Spulenfläche (Fluss: Feld durch die Fläche ∝ |cos φ|; je stärker durchsetzt, desto kräftiger)
       g.fillStyle = withAlpha(blue(), 0.1 + 0.18 * Math.abs(c));
       g.beginPath();
       g.moveTo(xa, cy - H + ya);
@@ -878,7 +923,7 @@ export default defineSimulation({
       g.closePath();
       g.fill();
       // Spulenrahmen: vordere Kante heller (die Seite mit z > 0)
-      const front = sn >= 0 ? 'b' : 'a';
+      const front = c >= 0 ? 'b' : 'a';
       for (const side of ['a', 'b'] as const) {
         const xx = side === 'a' ? xa : xb;
         const yy = side === 'a' ? ya : yb;
@@ -899,11 +944,12 @@ export default defineSimulation({
       g.moveTo(xa, cy + H + ya);
       g.lineTo(xb, cy + H + yb);
       g.stroke();
-      // Strom in den Seiten (Punkte wandern)
+      // Strom in den Seiten (Punkte wandern): U > 0 heißt Umlauf rechtshändig um n,
+      // also in Seite b (+t) nach unten, in Seite a nach oben
       if (s > 0.02) {
         g.fillStyle = theme.dark ? 'rgba(255,240,170,0.95)' : 'rgba(240,170,30,0.95)';
         for (let i = 0; i < 6; i++) {
-          const u = ((((i / 6 + flow * Math.sign(U) * 0.4) % 1) + 1) % 1) * 2 - 1;
+          const u = ((((i / 6 - flow * 0.4) % 1) + 1) % 1) * 2 - 1;
           g.globalAlpha = ik * Math.min(1, s * 2);
           g.beginPath();
           g.arc(xa, cy + u * H + ya, 2.6, 0, TAU);
@@ -982,7 +1028,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(cx, cy, rad * 0.86, -Math.PI / 2 - span, -Math.PI / 2 + span);
         g.stroke();
-        const labelled = rad > 55 ? [-10, -5, 0, 5, 10] : [-10, 0, 10];
+        const labelled = rad > 55 && rangeLab < 1000 ? [-10, -5, 0, 5, 10] : [-10, 0, 10];
         for (let i = -10; i <= 10; i++) {
           const a = -Math.PI / 2 + (i / 10) * span;
           const big = i % 5 === 0;
@@ -1026,14 +1072,14 @@ export default defineSimulation({
         g.fill();
       }
       // Digitalwert und Messbereich
-      const val = p.val ? `U = ${fx(U, Math.abs(U) < 1 ? 3 : 2)} V` : 'U = ?';
+      const val = !ctx.isHidden('now') ? `U = ${volt(U)} V` : 'U = ?';
       const rl = `${ctx.t('rangeLab')} ± ${n(rangeLab, rangeLab < 0.1 ? 2 : rangeLab < 1 ? 1 : 0)} V`;
       if (compact) {
         const tx = R.x + dialW + (R.w - dialW) / 2 - 6;
-        richText(val, tx, R.y + R.h * 0.5, sm ? 14 : 16, U >= 0 ? blue() : red(), 'center', 800);
+        richText(val, tx, R.y + R.h * 0.5, sm ? 14 : 16, volt(U).startsWith('−') ? red() : blue(), 'center', 800);
         richText(rl, tx, R.y + R.h * 0.5 + (sm ? 20 : 24), sm ? 10 : 11, theme.muted, 'center', 600);
       } else {
-        richText(val, cx, R.y + R.h - (sm ? 30 : 36), sm ? 13 : 15, U >= 0 ? blue() : red(), 'center', 800);
+        richText(val, cx, R.y + R.h - (sm ? 30 : 36), sm ? 13 : 15, volt(U).startsWith('−') ? red() : blue(), 'center', 800);
         richText(rl, cx, R.y + R.h - (sm ? 13 : 16), sm ? 10 : 11, theme.muted, 'center', 600);
       }
       g.restore();
@@ -1056,7 +1102,8 @@ export default defineSimulation({
         g.restore();
         return;
       }
-      const range = ease2('rangeC', meterRange(), 6);
+      const rangeT = chartRange();
+      const range = ease2('rangeC', rangeT, 6);
       const w = window();
       const t1 = t;
       const t0 = t1 - w;
@@ -1075,10 +1122,11 @@ export default defineSimulation({
         g.lineTo(Math.round(X(tt)) + 0.5, A.y + A.h);
       }
       g.stroke();
-      const dec = range < 0.1 ? 3 : range < 1 ? 2 : 1;
+      const dec = rangeT < 0.1 ? 3 : rangeT < 1 ? 2 : 1;
       for (const q of [-1, 0, 1]) {
         const v = q * range;
-        richText(v === 0 ? '0' : `${v < 0 ? '−' : ''}${n(Math.abs(v), dec)}`, A.x - 6, Y(v), fs, theme.muted, 'right', 500);
+        const lab = q * rangeT;
+        richText(lab === 0 ? '0' : `${lab < 0 ? '−' : ''}${n(Math.abs(lab), dec)}`, A.x - 6, Y(v), fs, theme.muted, 'right', 500);
       }
       const ul = ctx.t('axisU');
       richText(ul, R.x + R.w - (sm ? 14 : 18), R.y + (sm ? 16 : 19), fs, theme.muted, 'right', 600);
@@ -1128,7 +1176,7 @@ export default defineSimulation({
         g.fill();
       }
       // Scheitelwert beim Generator
-      if (mode() === 'gen' && p.val) {
+      if (mode() === 'gen' && !ctx.isHidden('calc')) {
         const Up = generatorPeak(p.n, p.B, p.A * 1e-4, p.f);
         g.strokeStyle = withAlpha(orange(), 0.7);
         g.setLineDash([3, 3]);
@@ -1137,7 +1185,7 @@ export default defineSimulation({
         g.lineTo(A.x + A.w, Y(Up) + 0.5);
         g.stroke();
         g.setLineDash([]);
-        richText(`Û = ${fx(Up, 2)} V`, A.x + A.w - 4, Y(Up) - 9, fs, orange(), 'right', 750, haloCol());
+        richText(`Û = ${volt(Up)} V`, A.x + A.w - 4, Y(Up) - 9, fs, orange(), 'right', 750, haloCol());
       }
       g.restore();
     }
@@ -1153,14 +1201,16 @@ export default defineSimulation({
       const sm = R.w < 300 || R.h < 150;
       const pad = sm ? 12 : 16;
       richText(ctx.t('infoTitle'), R.x + pad, R.y + (sm ? 16 : 19), sm ? 12 : 13, theme.text, 'left', 750);
-      const v = p.val;
+      // Aufgabenmodus: Rechenergebnisse wie „Rechnung“, Momentanwerte wie „Momentan“ verdecken
+      const v = !ctx.isHidden('calc');
+      const vNow = !ctx.isHidden('now');
       let rows: [string, string][];
       if (mode() === 'magnet') {
         rows = [
           ['U_[ind] = −n · ΔΦ / Δt', theme.text],
           [`n = ${n(p.n, 0)}, A ≈ ${fx(COIL_AREA * 1e4, 1)} cm²`, theme.muted],
-          [`n · Φ = ${v ? fx(coilLinkage(z, p.n) * 1000, 2) : '?'} mWb`, purple()],
-          [`U = ${v ? fx(U, 3) : '?'} V`, blue()],
+          [`n · Φ = ${vNow ? fx(coilLinkage(z, p.n) * 1000, 2) : '?'} mWb`, purple()],
+          [`U = ${vNow ? fx(U, 3) : '?'} V`, blue()],
         ];
       } else if (mode() === 'rail') {
         const Uc = motionalVoltage(p.B, p.l, p.v);
@@ -1174,9 +1224,9 @@ export default defineSimulation({
         const Up = generatorPeak(p.n, p.B, p.A * 1e-4, p.f);
         rows = [
           ['Û = n · B · A · ω', theme.text],
-          [`= ${n(p.n, 0)} · ${fx(p.B, 2)} T · ${fx(p.A * 1e-4, 4)} m² · ${fx(TAU * p.f, 1)} 1/s`, theme.muted],
-          [`= ${v ? fx(Up, 2) : '?'} V`, blue()],
-          [`U_[eff] = Û / √2 = ${v ? fx(rms(Up), 2) : '?'} V`, orange()],
+          [`= ${n(p.n, 0)} · ${fx(p.B, 2)} T · ${n(p.A * 1e-4, 4)} m² · ${fx(TAU * p.f, 1)} 1/s`, theme.muted],
+          [`= ${v ? volt(Up) : '?'} V`, blue()],
+          [`U_[eff] = Û / √2 = ${v ? volt(rms(Up)) : '?'} V`, orange()],
         ];
       }
       const top = R.y + (sm ? 30 : 38);
@@ -1194,7 +1244,7 @@ export default defineSimulation({
     /* ---------- Ergebnisse ---------- */
     let lastNow = '';
     function updateNow(): void {
-      const s = tr('now', { t: fx(t, 2), U: fx(U, Math.abs(U) < 1 ? 3 : 2) });
+      const s = tr('now', { t: fx(t, 2), U: volt(U) });
       if (s !== lastNow) {
         lastNow = s;
         ctx.readout('now', { html: s });
@@ -1217,10 +1267,10 @@ export default defineSimulation({
       else if (mode() === 'rail') {
         const Uc = motionalVoltage(p.B, p.l, p.v);
         const I = current(Uc, R_RAIL);
-        ctx.readout('calc', { html: tr('calcRail', { B: fx(p.B, 2), l: fx(p.l, 2), v: fx(p.v, 1), U: fx(Uc, 3), I: fx(I, 3), F: fx(brakingForce(p.B, I, p.l), 4) }) });
+        ctx.readout('calc', { html: tr('calcRail', { B: fx(p.B, 2), l: fx(p.l, 2), v: fx(p.v, 1), U: fx(Uc, 3), I: fx(I, 3), F: fx(brakingForce(p.B, I, p.l), 3) }) });
       } else {
         const Up = generatorPeak(p.n, p.B, p.A * 1e-4, p.f);
-        ctx.readout('calc', { html: tr('calcGen', { n: n(p.n, 0), B: fx(p.B, 2), A: fx(p.A * 1e-4, 4), w: fx(TAU * p.f, 2), U: fx(Up, 2), f: fx(p.f, 1), T: fx(1 / p.f, 3), Ue: fx(rms(Up), 2) }) });
+        ctx.readout('calc', { html: tr('calcGen', { n: n(p.n, 0), B: fx(p.B, 2), A: n(p.A * 1e-4, 4), w: fx(TAU * p.f, 1), U: volt(Up), f: n(p.f, 1), T: n(1 / p.f, 3), Ue: volt(rms(Up)) }) });
       }
       lastLenz = '';
       lastNow = '';
@@ -1258,6 +1308,7 @@ export default defineSimulation({
         const h = hitObj(q.px, q.py);
         if (!h) return false;
         drag = h;
+        keyMove = false;
         if (p.auto) ctx.set({ auto: false });
         const R = lastScene!;
         if (h === 'magnet') {
@@ -1292,6 +1343,28 @@ export default defineSimulation({
       wheel: () => false,
     });
 
+    /** Tastatur: Magnet bzw. Stab per Enter ans andere Ende bewegen (wie Ziehen). */
+    function updateKeyTargets(): void {
+      const m = mode();
+      if (ctx.locked || m === 'gen') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const go = (fn: () => void) => () => {
+        if (p.auto) ctx.set({ auto: false });
+        fn();
+        keyMove = true;
+        if (!ctx.clock.playing) ctx.clock.play();
+      };
+      if (m === 'magnet') {
+        const toIn = zTarget > 0.1;
+        ctx.setKeyTargets([{ id: 'magnet', label: ctx.t(toIn ? 'keyMagnetIn' : 'keyMagnetOut'), ...(magnetBox ? { rect: magnetBox } : {}), activate: go(() => (zTarget = toIn ? 0.03 : 0.25)) }]);
+      } else {
+        const toRight = xTarget < (X_MIN + X_MAX) / 2;
+        ctx.setKeyTargets([{ id: 'rod', label: ctx.t(toRight ? 'keyRodRight' : 'keyRodLeft'), ...(rodBox ? { rect: rodBox } : {}), activate: go(() => (xTarget = toRight ? X_MAX : X_MIN)) }]);
+      }
+    }
+
     /* ---------- Ablauf ---------- */
     const offClock = ctx.clock.onChange(() => ctx.requestRender());
 
@@ -1312,7 +1385,7 @@ export default defineSimulation({
         }
         if (mode() === 'gen' || (changed.has('B') || changed.has('n') || changed.has('A') || changed.has('f') || changed.has('l') || changed.has('v'))) updatePeak();
         if (!ctx.clock.playing) {
-          // ohne laufende Uhr: Zustand für ein ruhiges Standbild (Generator bei 90°, Stab in Bewegung)
+          // ohne laufende Uhr: Zustand für ein ruhiges Standbild (Generator bei φ = 60°)
           if (mode() === 'gen' && t === 0) phi = Math.PI / 3;
           U = voltageNow();
         }
@@ -1346,6 +1419,7 @@ export default defineSimulation({
         drawChart(lay.chart, stage(0.2, 0.5));
         drawMeter(lay.meter, stage(0.15, 0.5));
         drawInfo(lay.info, stage(0.3, 0.5));
+        updateKeyTargets();
         if (animating || intro.running || swap.running || drag || ctx.clock.playing) ctx.requestRender();
       },
 

@@ -12,6 +12,7 @@ import {
   modeShape,
   nodes,
   pipeBc,
+  pointKind,
   reflectionAmplitude,
   reflectionAntinodes,
   reflectionNodes,
@@ -173,5 +174,58 @@ describe('Modell: Stehende Wellen – Resonanz (Melde)', () => {
     }
     expect(m / a0).toBeGreaterThan(0.95);
     expect(m / a0).toBeLessThan(1.05);
+  });
+});
+
+describe('Modell: Stehende Wellen – Prüfwerte, Aufgaben und Grenzen (Prüfrunde)', () => {
+  it('Aufgabenwerte: Gitarre, Knoten bei 660 Hz, Pfeifen, Melde, Kundtsches Rohr', () => {
+    // A1: λ₁ = 1,3 m, f₁ = 220 Hz; λ₃ = 0,433 m, f₃ = 660 Hz
+    expect(eigenWavelength('ff', 3, 0.65)).toBeCloseTo(0.4333, 4);
+    // A2: λ = 286/660 = 0,4333 m → Knoten 0; 0,217; 0,433; 0,65 m, Bäuche 0,108; 0,325; 0,542 m
+    const lam = 286 / 660;
+    expect(reflectionNodes('fix', lam, 0.65).map((d) => +d.toFixed(3))).toEqual([0, 0.217, 0.433, 0.65]);
+    expect(reflectionAntinodes('fix', lam, 0.65).map((d) => +d.toFixed(3))).toEqual([0.108, 0.325, 0.542]);
+    // A3: offen 340, 680, 1020 Hz; gedackt 170, 510, 850 Hz
+    expect([1, 2, 3].map((n) => eigenFrequency(pipeBc('open'), n, 0.5, 340))).toEqual([340, 680, 1020].map((x) => expect.closeTo(x, 9)));
+    expect([1, 2, 3].map((n) => eigenFrequency(pipeBc('closed'), n, 0.5, 340))).toEqual([170, 510, 850].map((x) => expect.closeTo(x, 9)));
+    // A4: f₁ = 100 Hz, bei 300 Hz drei Bäuche, Knotenabstand 0,4 m; dazwischen keine Resonanz
+    expect(refFrequency(1.2, 240)).toBeCloseTo(100, 9);
+    expect(antinodes('ff', 3)).toHaveLength(3);
+    expect(eigenWavelength('ff', 3, 1.2) / 2).toBeCloseTo(0.4, 12);
+    expect(resonanceAmplitude(150 / 100)).toBeLessThan(1.2);
+    // A6: Kundtsches Rohr (beidseitig geschlossen), L = 0,51 m, n = 6 → 2000 Hz, Knotenabstand 8,5 cm
+    expect(eigenFrequency(pipeBc('shut'), 6, 0.51, 340)).toBeCloseTo(2000, 9);
+    expect(eigenWavelength(pipeBc('shut'), 6, 0.51) / 2).toBeCloseTo(0.085, 12);
+  });
+
+  it('Reglergrenzen: tiefste und höchste Grundfrequenz, große n', () => {
+    // L = 1,5 m, c = 100 m/s, fest–lose: f₁ = 100/6 = 16,7 Hz; n = 6 → 11 · f₁ = 183,3 Hz
+    expect(fundamental('fl', 1.5, 100)).toBeCloseTo(16.667, 3);
+    expect(eigenFrequency('fl', 6, 1.5, 100)).toBeCloseTo(183.333, 3);
+    // L = 0,3 m, c = 500 m/s: f₁ = 833,3 Hz, f₆ = 5000 Hz
+    expect(fundamental('ff', 0.3, 500)).toBeCloseTo(833.333, 3);
+    expect(eigenFrequency('ff', 6, 0.3, 500)).toBeCloseTo(5000, 9);
+    for (const bc of ['ff', 'fl', 'll'] as const) {
+      expect(nodes(bc, 6).every((x) => x >= 0 && x <= 1)).toBe(true);
+      expect(antinodes(bc, 6).every((x) => x >= 0 && x <= 1)).toBe(true);
+    }
+    // f = 10 Hz, c = 500 m/s: λ = 50 m ≫ L = 0,3 m → nur der Knoten am Ende, kein Bauch auf dem Seil
+    expect(reflectionNodes('fix', 50, 0.3)).toEqual([0]);
+    expect(reflectionAntinodes('fix', 50, 0.3)).toEqual([]);
+    expect(reflectionNodes('free', 50, 0.3)).toEqual([]);
+  });
+
+  it('Punkt P: Knoten, Bauch oder dazwischen (Spielraum 1 % von λ)', () => {
+    const lam = 286 / 660;
+    // Start: d = 0,11 m ≈ λ/4 = 0,108 m → Bauch, A = 2 · |sin(2π · 0,254)| = 2,00 ŷ
+    expect(pointKind('fix', 0.11, lam)).toBe('anti');
+    expect(reflectionAmplitude('fix', 0.11, lam)).toBeCloseTo(1.9994, 3);
+    // d = 0,22 m ≈ λ/2 = 0,217 m (nächster Reglerwert) → Knoten am festen, Bauch am losen Ende
+    expect(pointKind('fix', 0.22, lam)).toBe('node');
+    expect(pointKind('free', 0.22, lam)).toBe('anti');
+    expect(pointKind('fix', 0.16, lam)).toBe('mid');
+    // f = 1500 Hz, c = 100 m/s: d/λ = 1,65 → A = 2 · |sin(3,3π)| = 1,62 ŷ, dazwischen
+    expect(reflectionAmplitude('fix', 0.11, 100 / 1500)).toBeCloseTo(1.618, 3);
+    expect(pointKind('fix', 0.11, 100 / 1500)).toBe('mid');
   });
 });

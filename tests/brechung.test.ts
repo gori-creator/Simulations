@@ -216,4 +216,60 @@ describe('Modell: Brechung und Totalreflexion', () => {
     // Unterteil 40,75°: senkrechtes Licht trifft dort unter 40,75° auf – mehr als 24,4°, weniger als 41,1°
     expect(toDeg(Math.atan(-gemOutline()[3]![1]))).toBeCloseTo(40.75, 9);
   });
+  it('Prüfwerte der Prüfrunde: Luft → Wasser 45°, Luft → Glas (1,5) 30°, Grenzwinkel mit n = 1,5', () => {
+    // sin β = 0,7071/1,33 = 0,5317 → β = 32,12°
+    expect(Math.sin(toRad(refractionAngle(1, 1.33, 45)!))).toBeCloseTo(0.5317, 4);
+    expect(refractionAngle(1, 1.33, 45)!).toBeCloseTo(32.12, 2);
+    // sin β = 0,5/1,5 = 0,3333 → β = 19,47°
+    expect(refractionAngle(1, 1.5, 30)!).toBeCloseTo(19.47, 2);
+    expect(criticalAngle(1.5, 1)!).toBeCloseTo(41.81, 2);
+    // Reflexionsgesetz und Umkehrbarkeit des Lichtwegs: Wasser → Luft unter β kommt unter α heraus
+    expect(refractionAngle(1.33, 1, refractionAngle(1, 1.33, 45)!)!).toBeCloseTo(45, 9);
+  });
+
+  it('Sonderfälle: α = 0°, α = 89° (Reglergrenze), knapp über dem Grenzwinkel, Luft in Luft', () => {
+    for (const [n1, n2] of [[1, 1.33], [1.52, 1], [2.42, 1], [1.33, 1.52]] as const) {
+      expect(refractionAngle(n1, n2, 0)).toBe(0);
+      expect(plateShift(0, n2, n1, 2)).toBe(0);
+    }
+    // streifender Einfall aus Luft: β nähert sich dem Grenzwinkel der Gegenrichtung
+    expect(refractionAngle(1, 1.33, 89)!).toBeLessThan(criticalAngle(1.33, 1)!);
+    expect(refractionAngle(1, 1.33, 89)!).toBeGreaterThan(48.7);
+    // knapp unter / über dem Grenzwinkel Glas → Luft
+    const c = criticalAngle(1.52, 1)!;
+    expect(refractionAngle(1.52, 1, c - 0.1)!).toBeGreaterThan(80);
+    expect(refractionAngle(1.52, 1, c + 0.1)).toBeNull();
+    // Reflexionsanteil steigt vor dem Grenzwinkel steil an
+    expect(fresnel(1.52, 1, c - 0.1).R).toBeGreaterThan(0.5);
+    // Platte und Hebung mit Luft (n = 1): kein Versatz, keine Hebung
+    expect(plateShift(40, 1, 1, 2)).toBeCloseTo(0, 12);
+    expect(apparentDepth(1, 1, 1, 0)).toBe(1);
+    // Platte bei streifendem Einfall: Versatz → d
+    expect(plateShift(89.9, 1.52, 1, 2)).toBeGreaterThan(1.99);
+  });
+
+  it('Aufgabenwerte des Lernmaterials (A1–A6)', () => {
+    expect(refractionAngle(1, 1.33, 40)!).toBeCloseTo(28.9, 1); // A1
+    expect(criticalAngle(1.52, 1)!).toBeCloseTo(41.1, 1); // A2
+    // A3: Messwerte von Probe 3 (Glycerin) → k ≈ 0,680, n ≈ 1,47
+    const rows: [number, number][] = [
+      [30, 20],
+      [50, 31.5],
+      [70, 39.5],
+    ];
+    const pts = rows.map(([a, b]) => [Math.sin(toRad(a)), Math.sin(toRad(b))] as [number, number]);
+    expect(slopeThroughOrigin(pts)!).toBeCloseTo(0.68, 2);
+    expect(indexFromSeries(rows)!).toBeCloseTo(1.47, 2);
+    expect(SAMPLES[2]!.n).toBe(1.47);
+    // A4
+    expect(normalReflectance(1, 1.52) * 100).toBeCloseTo(4.26, 2);
+    expect(brewsterAngle(1, 1.52)).toBeCloseTo(56.7, 1);
+    // A5: Grenzwinkel 78,6°, Akzeptanzwinkel 17,5°; bei R = 15 mm (1-mm-Faser) kommt nichts an
+    expect(criticalAngle(1.52, 1.49)!).toBeCloseTo(78.6, 1);
+    expect(acceptanceAngle(1.52, 1.49)!).toBeCloseTo(17.5, 1);
+    expect(fiberDelivery({ ...FIBER, R: 15 }, 10, 1.52, 1.49)).toBeLessThan(0.01);
+    // A6: 1 m Wasser → 0,75 m (senkrecht), 0,65 m bei 30°
+    expect(apparentDepth(1, 1.33, 1, 0)!).toBeCloseTo(0.75, 2);
+    expect(apparentDepth(1, 1.33, 1, 30)!).toBeCloseTo(0.65, 2);
+  });
 });
