@@ -27,6 +27,10 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 
 Die Seite ist eine statische Website, die mit [Astro](https://astro.build) erzeugt wird. Simulationen werden mit TypeScript und dem HTML-Canvas gezeichnet; Formeln werden bereits beim Erstellen der Seite mit KaTeX gesetzt. Es werden keine externen Server, Schriftarten oder Skripte geladen.
 
+## Bilder
+
+Die Fotos in den Simulationen (Gegenstände, Hintergründe, Messgeräte) sind mit KI erzeugt. Sie zeigen keine echten Personen und keine Marken. Alles Übrige – Diagramme, Pfeile, Beschriftungen und die Vorschaubilder – ist im Projekt selbst gezeichnet. Fehlt ein Foto, zeichnet die Simulation eine eigene Grafik.
+
 ## Mitmachen
 
 Der Quellcode liegt auf GitHub. Dort finden Sie auch eine Anleitung, wie neue Simulationen entstehen. Rückmeldungen, Fehlerberichte und Ideen sind jederzeit willkommen.

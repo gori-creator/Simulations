@@ -8,7 +8,7 @@
 
 | Art | Wo | Herkunft | Anzahl |
 | --- | --- | --- | --- |
-| Fotos und gerenderte Gegenstände der Simulationen | `src/assets/sims/<id>/` | **Selbst mit einem KI-Bildgenerator erzeugt**; zu jedem Bild gibt es den Prompt (siehe unten) | 198 Dateien (einige Bilder liegen byte-gleich in mehreren Ordnern) |
+| Fotos und gerenderte Gegenstände der Simulationen | `src/assets/sims/<id>/` | **Selbst mit KI erzeugt** (Bildgenerierung in OpenAI Codex, siehe unten); zu jedem Bild gibt es den Prompt | 198 Dateien (einige Bilder liegen byte-gleich in mehreren Ordnern) |
 | Eingangsbilder, die nicht eingebaut sind | `docs/bilder-eingang/` | ebenso KI-erzeugt; nur im Repository, **nicht auf der Seite** | 20 |
 | Vorschaubilder der Karten | `src/simulations/<fach>/<id>/thumb.svg` | im Projekt gezeichnet (SVG) | 113 |
 | Website-Symbol und App-Symbole | `public/favicon.svg`, `public/icons/` | im Projekt gezeichnet | 5 |
@@ -52,8 +52,13 @@ Ich habe alle 218 Bilder angesehen (198 eingebaute und 20 im Eingang) und dabei 
   - Für das Projekt heißt das: Wir dürfen sie nutzen, ohne jemanden um Erlaubnis zu fragen.
   - Allerdings hat auch niemand ein ausschließliches Recht an ihnen.
   - Eine Lizenz wie CC BY wirkt für diese Bilder daher nur eingeschränkt (siehe Aufgabe „Lizenz“).
-- **Nutzungsbedingungen des Generators:** Maßgeblich ist außerdem, was der verwendete Dienst erlaubt, etwa zur Nutzung in einem frei zugänglichen Bildungsangebot oder zur Kennzeichnung. **Welcher Generator verwendet wurde, ist im Repository nicht festgehalten**; siehe „Offen“.
-- **Kennzeichnung als KI-Bild:** Die EU-KI-Verordnung (Art. 50) verlangt eine Kennzeichnung vor allem bei täuschend echten Darstellungen realer Personen, Orte oder Ereignisse („Deepfakes“). Unsere Bilder zeigen Alltagsgegenstände ohne Personen. Ein freiwilliger Hinweis auf der Seite „Über das Projekt“ ist trotzdem transparent und kostet nichts. Vorschlag: „Die Fotos in den Simulationen sind mit KI erzeugt.“
+- **Verwendeter Generator:** Die Bilder hat die Projektleitung mit **OpenAI Codex** erzeugt (Bildgenerierung von OpenAI). Angabe der Projektleitung vom 26.10.2026.
+- **Nutzungsbedingungen von OpenAI** ([Europe Terms of Use](https://openai.com/policies/eu-terms-of-use/), Stand der Prüfung 26.10.2026):
+  - Soweit das Gesetz es zulässt, behält der Nutzer die Rechte an seinen Eingaben, und die Ergebnisse („Output“) gehören ihm. OpenAI überträgt dafür seine etwaigen Rechte an den Ergebnissen.
+  - Ergebnisse sind nicht unbedingt einzigartig; andere können ähnliche Bilder erhalten. Das ist ein Grund mehr, auf Marken und erkennbare Vorbilder zu verzichten.
+  - Eine Pflicht, die Bilder als KI-erzeugt zu kennzeichnen, steht dort nicht. Die Seite nennt es trotzdem (siehe unten).
+  - Bei einer Änderung der Bedingungen gilt die jeweils aktuelle Fassung; vor der Veröffentlichung kurz nachsehen.
+- **Kennzeichnung als KI-Bild:** Die EU-KI-Verordnung (Art. 50) verlangt eine Kennzeichnung vor allem bei täuschend echten Darstellungen realer Personen, Orte oder Ereignisse („Deepfakes“). Unsere Bilder zeigen Alltagsgegenstände ohne Personen. Trotzdem steht auf der Seite „Über das Projekt“ (DE und EN) ein Abschnitt „Bilder“: „Die Fotos in den Simulationen … sind mit KI erzeugt.“ Das hat die Projektleitung am 26.10.2026 entschieden.
 - **Marken und Designs:** Erkennbare Markenzeichen gibt es keine. Ähnlichkeiten in der Form (Autos) sind ein kleines Restrisiko; siehe Grenzfälle.
 
 ## Fremde Bestandteile ohne Bilder
@@ -76,7 +81,7 @@ Die Seite selbst lädt **keine** Schriften, Skripte oder Bilder von fremden Serv
 
 ## Offen (Projektleitung)
 
-- [ ] **Generator eintragen:** welcher Dienst und welches Konto die Bilder erzeugt hat; dazu kurz festhalten, was dessen Nutzungsbedingungen zur Nutzung und Kennzeichnung sagen. Am besten hier in dieser Datei.
-- [ ] **Hinweis „mit KI erzeugt“** auf der Seite „Über das Projekt“: ja oder nein?
+- [x] **Generator eintragen:** OpenAI Codex; Nutzungsbedingungen oben zusammengefasst.
+- [x] **Hinweis „mit KI erzeugt“** auf der Seite „Über das Projekt“: ja, Abschnitt „Bilder“ (DE und EN).
 - [ ] **Lizenzhinweise** für KaTeX und qrcode-generator auf der Seite nennen, z. B. auf „Über das Projekt“. Das hängt mit der Entscheidung zur Lizenz zusammen (`docs/AUFGABEN.md`).
 - [ ] Optional: `ziegenproblem/auto.webp` als ganz allgemeines Auto neu erzeugen.

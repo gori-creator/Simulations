@@ -26,3 +26,7 @@ Mathematics and physics are best understood by trying things out: change a param
 ## Technology
 
 The site is a static website built with [Astro](https://astro.build). Simulations are written in TypeScript and drawn on an HTML canvas; formulas are typeset with KaTeX at build time. No external servers, fonts or scripts are loaded.
+
+## Images
+
+The photos in the simulations (objects, backgrounds, instruments) are generated with AI. They show no real people and no brands. Everything else – diagrams, arrows, labels and the preview images – is drawn within the project. If a photo is missing, the simulation draws its own graphic.
