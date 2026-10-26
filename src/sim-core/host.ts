@@ -7,9 +7,9 @@ import { exportStagePng } from './export';
 import { bindUnitsHtml, Formatter } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
-import { defaultValues, resolveHint, sanitize, valuesEqual } from './params';
-import { setSubLabel, setSubReadout } from './rich-label';
-import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
+import { defaultValues, dragHintKey, resolveHint, sanitize, valuesEqual } from './params';
+import { hatsInHtml, setSubLabel, setSubReadout } from './rich-label';
+import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
   ParamDef,
@@ -62,6 +62,8 @@ interface ReadoutRow {
   reveal?: HTMLButtonElement;
   last?: string;
   spoiler: boolean;
+  /** `ignoresResultsParam` aus der Definition: Schalter `resultsParam` verdeckt es nicht. */
+  ignoresResultsParam: boolean;
 }
 
 class SimulationHost {
@@ -84,6 +86,8 @@ class SimulationHost {
   private revealed = new Set<string>();
   /** Zuletzt an die Simulation gemeldeter Stand von `ctx.hidden`. */
   private lastHidden: boolean | null = null;
+  /** Zuletzt an die Simulation gemeldeter Stand von `ctx.isHidden(key)` je `spoiler`-Ergebnis. */
+  private lastSpoilerHidden = new Map<string, boolean>();
   private pending = new Set<string>();
   private pendingSource: UpdateSource = 'sim';
   private flushScheduled = false;
@@ -94,6 +98,8 @@ class SimulationHost {
   /** Tipp unter der Bühne (`hint`/`dragHint`) und der allgemeine Text aus der Hülle. */
   private hintEl: HTMLElement | null = null;
   private dragHintText = '';
+  /** Zuletzt gesetzter Tipp-Text (Quelltext mit `_`). */
+  private lastHint = '';
 
   constructor(
     private readonly root: HTMLElement,
@@ -128,6 +134,7 @@ class SimulationHost {
 
     this.instance = def.mount(this.createContext());
     this.lastHidden = isTaskHidden(this.taskState());
+    spoilerChanges(this.taskState(), this.spoilerKeys(), this.lastSpoilerHidden);
     this.instance.update?.(new Set(this.defs.map((d) => d.key)), 'init');
     this.controls?.sync(this.values);
     this.syncHint();
@@ -137,6 +144,9 @@ class SimulationHost {
       this.theme = readTheme(root);
       this.requestRender();
     });
+    // Schriften (z. B. KaTeX_Math für Beschriftungen) laden nebenbei. Danach neu zeichnen,
+    // sonst bleibt Text je nach Ladereihenfolge in der Ersatzschrift stehen.
+    document.fonts?.addEventListener('loadingdone', () => this.requestRender());
     this.clock.onChange((playing) => {
       this.updatePlayButton(playing);
       this.lastTime = null;
@@ -171,6 +181,10 @@ class SimulationHost {
         return isTaskHidden(host.taskState());
       },
       isHidden: (key) => isReadoutHidden(this.taskState(), key),
+      get taskMode() {
+        return host.flags.hide;
+      },
+      isHiddenByTask: (key) => isReadoutTaskHidden(this.taskState(), key),
       setKeyTargets: (targets) => {
         if (!this.keyTargets && !targets.length) return;
         this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
@@ -320,7 +334,7 @@ class SimulationHost {
       const value = document.createElement('span');
       value.className = 'readout__value';
       dd.append(value);
-      const entry: ReadoutRow = { root: row, value, spoiler: !!def.spoiler };
+      const entry: ReadoutRow = { root: row, value, spoiler: !!def.spoiler, ignoresResultsParam: !!def.ignoresResultsParam };
       if (def.spoiler) {
         const reveal = document.createElement('button');
         reveal.type = 'button';
@@ -329,7 +343,8 @@ class SimulationHost {
         reveal.addEventListener('click', () => {
           this.revealed.add(def.key);
           const param = this.def.resultsParam;
-          if (param && this.values[param] === false) this.set({ [param]: true }, 'input');
+          // Ergebnisse mit `ignoresResultsParam` lassen den Schalter, wie er ist
+          if (param && this.values[param] === false && !def.ignoresResultsParam) this.set({ [param]: true }, 'input');
           this.applyHide();
         });
         dd.append(reveal);
@@ -359,8 +374,24 @@ class SimulationHost {
     }
     // Simulation über den Wechsel informieren und neu zeichnen (z. B. Etiketten im Bild)
     if (!this.instance) return;
+    this.syncSpoilers();
     this.syncTaskHidden();
     this.requestRender();
+  }
+
+  /**
+   * Meldet jeden Wechsel von `ctx.isHidden(key)` einzeln über `spoilerChange`
+   * (Aufdecken eines Ergebnisses, Schalter `resultsParam`, Link im Lernmaterial).
+   */
+  private syncSpoilers(): void {
+    for (const [key, hidden] of spoilerChanges(this.taskState(), this.spoilerKeys(), this.lastSpoilerHidden)) {
+      this.instance?.spoilerChange?.(key, hidden);
+    }
+  }
+
+  /** Schlüssel aller `spoiler`-Ergebnisse (auch gerade ausgeblendeter). */
+  private spoilerKeys(): string[] {
+    return [...this.readouts].filter(([, row]) => row.spoiler).map(([key]) => key);
   }
 
   /** Meldet einen Wechsel von `ctx.hidden` (Auswahl-Zusätze, `hiddenChange`, neu zeichnen). */
@@ -382,6 +413,7 @@ class SimulationHost {
       revealed: this.revealed,
       // Nur angezeigte Spoiler zählen: ausgeblendete lassen sich nicht aufdecken
       spoilers: [...this.readouts].filter(([, row]) => row.spoiler && !row.root.hidden).map(([key]) => key),
+      ignoresResultsParam: new Set([...this.readouts].filter(([, row]) => row.ignoresResultsParam).map(([key]) => key)),
     };
   }
 
@@ -401,7 +433,7 @@ class SimulationHost {
     // Zahl und Einheit nicht trennen (geschütztes Leerzeichen, siehe format.ts);
     // reiner Text setzt „_“ wie die Beschriftungen als Index („F_max“)
     if (typeof value === 'string') setSubReadout(row.value, value);
-    else row.value.innerHTML = bindUnitsHtml(value.html);
+    else row.value.innerHTML = bindUnitsHtml(hatsInHtml(value.html));
   }
 
   /* ---------- Aktionen ---------- */
@@ -437,7 +469,11 @@ class SimulationHost {
     const el = this.hintEl;
     if (!el) return;
     const text = resolveHint(this.def, this.values, this.lang, this.dragHintText, this.locked);
-    if (text && el.textContent !== text) el.textContent = text;
+    // `_` als Index wie bei den Beschriftungen; Wörter wie „log_2“ bleiben (Option `prose`)
+    if (text && text !== this.lastHint) {
+      this.lastHint = text;
+      setSubLabel(el, text, { prose: true });
+    }
     el.hidden = !text;
   }
 
@@ -460,7 +496,9 @@ class SimulationHost {
     if (this.def.animated) this.query('[data-sim-anim]').hidden = false;
     if (this.def.hint || this.def.dragHint) {
       this.hintEl = this.query('[data-sim-hint]');
-      this.dragHintText = this.hintEl.textContent ?? '';
+      // Allgemeiner Text: „markierte Punkte“ (aus der Hülle) bzw. für Drehknöpfe/Schieber
+      const key = dragHintKey(this.def.dragHint);
+      this.dragHintText = key ? t(this.lang, key) : '';
       this.syncHint();
     }
 

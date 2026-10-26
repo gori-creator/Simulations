@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { LANGS } from '../src/i18n/config';
 import { defaultValues, sanitize, valuesEqual } from '../src/sim-core/params';
@@ -53,6 +53,14 @@ describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
     expect((def.readouts ?? []).some((r) => r.spoiler), 'ohne spoiler-Ergebnisse wirkungslos').toBe(true);
   });
 
+  it('nutzt ignoresResultsParam nur bei spoiler-Ergebnissen mit resultsParam', () => {
+    for (const readout of def.readouts ?? []) {
+      if (!readout.ignoresResultsParam) continue;
+      expect(readout.spoiler, readout.key).toBe(true);
+      expect(def.resultsParam, readout.key).toBeDefined();
+    }
+  });
+
   it('hat eindeutige, beschriftete Aktionen', () => {
     const ids = (def.actions ?? []).map((a) => a.id);
     expect(new Set(ids).size).toBe(ids.length);
@@ -73,6 +81,12 @@ describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
     if (existsSync(dir)) {
       for (const file of readdirSync(dir)) expect(files, `${dir}/${file}`).toContain(file);
     }
+  });
+
+  it('hält Bilder klein (höchstens 300 KB, Schulnetze)', () => {
+    const dir = `src/assets/sims/${id}`;
+    if (!existsSync(dir)) return;
+    for (const file of readdirSync(dir)) expect(statSync(`${dir}/${file}`).size, `${dir}/${file}`).toBeLessThanOrEqual(300_000);
   });
 
   it('setzt in Links im Lernmaterial nur gültige Werte', () => {

@@ -1,4 +1,4 @@
-import { defineSimulation, drawLabStand, ease, FixedStepper, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawLabStand, ease, FixedStepper, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { acceleration, dampedOmega, dampedPeriod, energies, equilibriumExtension, forces, initialState, omega0, period, phasor, step, type State } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -278,15 +278,15 @@ export default defineSimulation({
       cm: 'cm',
       energy: 'Energie',
       energyA: 'Energie (Pendel A)',
-      ePot: 'E_[pot] = ½·D·y²',
-      eKin: 'E_[kin] = ½·m·v²',
-      ePotS: 'E_[pot]',
-      eKinS: 'E_[kin]',
+      ePot: 'E_pot = ½·D·y²',
+      eKin: 'E_kin = ½·m·v²',
+      ePotS: 'E_pot',
+      eKinS: 'E_kin',
       eSpring: 'Spannenergie',
       eGrav: 'Lageenergie',
       eKinL: 'Bewegungsenergie',
-      eSpringS: 'E_[Spann]',
-      eGravS: 'E_[Lage]',
+      eSpringS: 'E_Spann',
+      eGravS: 'E_Lage',
       eSum: 'Summe',
       eLoss: 'innere Energie',
       watch: 'Stoppuhr',
@@ -294,14 +294,14 @@ export default defineSimulation({
       scrub: 'Zeitmarke',
       scrubHint: 'Diagramm antippen: Zeitmarke setzen',
       T: 'T = {T} s',
-      TAB: 'T_[A] = {a} s · T_[B] = {b} s',
+      TAB: 'T_A = {a} s · T_B = {b} s',
       Tshort: 'T ≈ {T} s',
       Tlabel: 'T',
       pendA: 'A',
       pendB: 'B',
-      FF: 'F_[F]',
-      FG: 'F_[G]',
-      FR: 'F_[res]',
+      FF: 'F_F',
+      FG: 'F_G',
+      FR: 'F_res',
       lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
       lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
       eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9,81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> Dehnung; dort gilt <var>F</var><sub>F</sub> = <var>F</var><sub>G</sub>.',
@@ -328,15 +328,15 @@ export default defineSimulation({
       cm: 'cm',
       energy: 'Energy',
       energyA: 'Energy (pendulum A)',
-      ePot: 'E_[pot] = ½·D·y²',
-      eKin: 'E_[kin] = ½·m·v²',
-      ePotS: 'E_[pot]',
-      eKinS: 'E_[kin]',
+      ePot: 'E_pot = ½·D·y²',
+      eKin: 'E_kin = ½·m·v²',
+      ePotS: 'E_pot',
+      eKinS: 'E_kin',
       eSpring: 'elastic energy',
       eGrav: 'grav. energy',
       eKinL: 'kinetic energy',
-      eSpringS: 'E_[el]',
-      eGravS: 'E_[grav]',
+      eSpringS: 'E_el',
+      eGravS: 'E_grav',
       eSum: 'total',
       eLoss: 'internal energy',
       watch: 'Stopwatch',
@@ -344,14 +344,14 @@ export default defineSimulation({
       scrub: 'time marker',
       scrubHint: 'Tap a graph to set the time marker',
       T: 'T = {T} s',
-      TAB: 'T_[A] = {a} s · T_[B] = {b} s',
+      TAB: 'T_A = {a} s · T_B = {b} s',
       Tshort: 'T ≈ {T} s',
       Tlabel: 'T',
       pendA: 'A',
       pendB: 'B',
-      FF: 'F_[s]',
-      FG: 'F_[g]',
-      FR: 'F_[net]',
+      FF: 'F_s',
+      FG: 'F_g',
+      FR: 'F_net',
       lawText: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · sin(<var>ω</var> · <var>t</var> + <var>φ</var>₀) = {amp} cm · sin({w} 1/s · <var>t</var>{phi})<br><var>v̂</var> = <var>ŷ</var> · <var>ω</var> ≈ {v} m/s · <var>â</var> = <var>ŷ</var> · <var>ω</var>² ≈ {a} m/s²',
       lawDamped: '<var>y</var>(<var>t</var>) = <var>ŷ</var> · e<sup>−<var>δ</var>·<var>t</var></sup> · sin(<var>ω</var><sub>d</sub> · <var>t</var> + <var>φ</var>₀) = {amp} cm · e<sup>−{d}·<var>t</var></sup> · sin({w} 1/s · <var>t</var>{phi})',
       eqText: '<var>s</var>₀ = <span class="frac"><span><var>m</var> · <var>g</var></span><span><var>D</var></span></span> = <span class="frac"><span>{m} kg · 9.81 N/kg</span><span>{D} N/m</span></span> ≈ <strong>{s} cm</strong> extension; there <var>F</var><sub>s</sub> = <var>F</var><sub>g</sub>.',
@@ -742,56 +742,31 @@ export default defineSimulation({
     });
 
     /* ---------- Zeichenhilfen ---------- */
-    /** Text mit tiefgestellten Teilen: „F_[G]“. */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
+    /**
+     * Text mit tiefgestellten Teilen („F_G“, „E_pot“) über den Kern-Helfer `subText`. Indexgröße
+     * (ganze Pixel) und Absenkung wie bisher, damit sich das Bild nicht ändert.
+     */
+    function subStyle(size: number, color: string, align: CanvasTextAlign, halo: boolean, weight: number): SubTextStyle {
+      const theme = ctx.theme;
+      return {
+        size,
+        family: theme.font,
+        weight,
+        color,
+        align,
+        baseline: 'middle',
+        halo: halo ? (theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)') : undefined,
+        subScale: Math.round(size * 0.74) / size,
+        subShift: 0.3,
+      };
     }
 
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', 'left', false, weight));
     }
 
     function richText(str: string, x: number, y: number, size: number, color: string, align: CanvasTextAlign = 'center', halo = true, weight = 700): number {
-      const g = surface.g;
-      const theme = ctx.theme;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start = align === 'left' ? x : align === 'right' ? x - total : x - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = theme.dark ? 'rgba(16,22,31,0.85)' : 'rgba(250,251,252,0.92)';
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x, y, subStyle(size, color, align, halo, weight));
     }
 
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, fill?: string): number {
@@ -1226,7 +1201,7 @@ export default defineSimulation({
       const lx = x + side * 6;
       const fs = sm ? 10.5 : 11.5;
       const s0c = theme.series[2]!;
-      const s0Text = `s_[0] = ${nf(q.s0 * 100, 1)} cm`;
+      const s0Text = `s_0 = ${nf(q.s0 * 100, 1)} cm`;
       // höchste Lage der Oberkante des Körpers: darüber ist Platz für die Beschriftung von s₀
       const arrowUp = vecMode() === 'F' ? forceScale(g0, q) * (q.m * 9.81 + q.D * ampM()) + 18 : vecMode() === 'off' ? 6 : 14;
       const highest = yC - ampM() * g0.k - arrowUp;
@@ -1251,7 +1226,7 @@ export default defineSimulation({
         g.lineTo(x, yB);
         g.stroke();
         const s0Label = Math.min((yB + yC) / 2, highest);
-        if (roomy && yB - top > 26 && s0Label - (top + yB) / 2 > 18) richText(sm ? 'L_[0]' : `L_[0] = ${n(L0 * 100, 0)} cm`, lx, (top + yB) / 2, fs, theme.muted, align, true, 650);
+        if (roomy && yB - top > 26 && s0Label - (top + yB) / 2 > 18) richText(sm ? 'L_0' : `L_0 = ${n(L0 * 100, 0)} cm`, lx, (top + yB) / 2, fs, theme.muted, align, true, 650);
       }
       tick(yB, withAlpha(theme.text, 0.5));
       g.strokeStyle = s0c;
@@ -1475,7 +1450,6 @@ export default defineSimulation({
       const x0 = q.x + q.side * (q.mw / 2 + (sm ? 9 : 11));
       const dx = q.side * (sm ? 14 : 17);
       const lab = sm ? 11 : 12;
-      const labelAt = (x: number, y: number, str: string, color: string, below: boolean) => richText(str, x, y + (below ? 9 : -9), lab, color, 'center');
       if (mode === 'va') {
         const w = omega0(q.m, q.D);
         const vMax = ampM() * w;
@@ -1501,9 +1475,44 @@ export default defineSimulation({
       vArrow(x0, topY, topY - f.spring * k, blue, sm ? 2.6 : 3);
       vArrow(x0 + dx, topY, topY - f.weight * k, red, sm ? 2.6 : 3);
       vArrow(x0 + 2 * dx, yc, yc - f.net * k, aColor(), sm ? 2.6 : 3);
-      labelAt(x0, topY - f.spring * k, ctx.t('FF'), blue, false);
-      labelAt(x0 + dx, topY - f.weight * k, ctx.t('FG'), red, true);
-      if (Math.abs(f.net * k) > 6) labelAt(x0 + 2 * dx, yc - f.net * k, ctx.t('FR'), aColor(), f.net < 0);
+      // Beschriftungen an den Pfeilspitzen; liegt eine zu dicht an einem anderen Pfeil oder einer schon
+      // gesetzten Beschriftung (z. B. „F_G“ neben „F_res“ bei sehr harter Feder), rückt sie weiter vom Pfeil weg
+      // bzw. zur Seite. Ohne Konflikt bleibt sie wie bisher direkt an der Spitze.
+      const shaft = (x: number, ya: number, yb: number): Rect => ({ x: x - 3, y: Math.min(ya, yb) - 2, w: 6, h: Math.abs(yb - ya) + 4 });
+      const arrows: Rect[] = [shaft(x0, topY, topY - f.spring * k), shaft(x0 + dx, topY, topY - f.weight * k), shaft(x0 + 2 * dx, yc, yc - f.net * k)];
+      const body: Rect = { x: q.x - q.mw / 2, y: yc - q.mh / 2, w: q.mw, h: q.mh };
+      const placed: Rect[] = [];
+      const forceLabel = (i: number, x: number, y: number, str: string, color: string, below: boolean) => {
+        const w = richWidth(str, lab);
+        const h = lab + 2;
+        const dir = below ? 1 : -1;
+        const others = [...arrows.filter((_, j) => j !== i), ...placed, body];
+        const boxAt = (cx: number, cy: number): Rect => ({ x: cx - w / 2, y: cy - h / 2, w, h });
+        const free = (b: Rect) => !others.some((o) => b.x < o.x + o.w + 3 && o.x < b.x + b.w + 3 && b.y < o.y + o.h + 1 && o.y < b.y + b.h + 1);
+        const side = q.side * (w / 2 + 5);
+        const spots: [number, number][] = [
+          [0, 9],
+          [0, 15],
+          [0, 21],
+          [-side, 3],
+          [side, 3],
+          [-side, 9],
+          [side, 9],
+        ];
+        let at = boxAt(x, y + dir * 9);
+        for (const [ox, oy] of spots) {
+          const b = boxAt(x + ox, y + dir * oy);
+          if (free(b)) {
+            at = b;
+            break;
+          }
+        }
+        placed.push(at);
+        richText(str, at.x + w / 2, at.y + h / 2, lab, color, 'center');
+      };
+      forceLabel(0, x0, topY - f.spring * k, ctx.t('FF'), blue, f.spring < 0);
+      forceLabel(1, x0 + dx, topY - f.weight * k, ctx.t('FG'), red, true);
+      if (Math.abs(f.net * k) > 6) forceLabel(2, x0 + 2 * dx, yc - f.net * k, ctx.t('FR'), aColor(), f.net < 0);
     }
 
     /* ---------- Diagramme ---------- */

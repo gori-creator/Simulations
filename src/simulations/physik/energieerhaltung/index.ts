@@ -64,10 +64,18 @@ function niceTop(x: number): number {
 export default defineSimulation({
   id: 'energieerhaltung',
   animated: true,
-  hint: L(
-    'Tipp: Zieh den Wagen vor der Fahrt an der Startrampe, bei der eigenen Bahn auch die Punkte 1–4. Tippe auf die Schiene, um Messpunkte zu setzen, und in die Diagramme, um Zeit oder Starthöhe zu wählen.',
-    'Tip: drag the car along the starting ramp before the ride; on the custom track you can also drag points 1–4. Tap the track to set measuring points, and tap the graphs to choose the time or the starting height.',
-  ),
+  // Tipp je Ansicht (kurz, damit er auf dem Handy höchstens zwei bis drei Zeilen braucht)
+  hint: (v: { readonly mode?: unknown; readonly track?: unknown }) => {
+    const own = v.track === 'eigen';
+    const car = own ? L('Zieh vor der Fahrt den Wagen oder die Punkte 1–4.', 'Before the ride, drag the car or points 1–4.') : L('Zieh vor der Fahrt den Wagen an der Rampe.', 'Before the ride, drag the car along the ramp.');
+    const extra =
+      v.mode === 'energy'
+        ? L('Schiene antippen: Messpunkt; E-t-Diagramm: Zeit wählen.', 'Tap the track: measuring point; E–t graph: choose the time.')
+        : v.mode === 'loop' || v.mode === 'task'
+          ? L('Diagramm antippen: Starthöhe wählen.', 'Tap the graph to choose the starting height.')
+          : L('Schiene antippen: Messpunkt setzen.', 'Tap the track to set a measuring point.');
+    return L(`Tipp: ${car.de} ${extra.de}`, `Tip: ${car.en} ${extra.en}`);
+  },
   layout: { aspect: 1.7, aspectNarrow: 0.6 },
   groups: [
     { id: 'custom', label: L('Eigene Bahn', 'Custom track') },
@@ -1019,17 +1027,33 @@ export default defineSimulation({
         clampedText(label, scene.px(LOOP_RADIUS + 1.2), y - 11, size, C.level(), r, 'left');
         return;
       }
-      // Stelle suchen, an der weder Schiene noch Stützpunkt (eigene Bahn) unter der Beschriftung liegt
+      // Stelle suchen, an der weder Schiene noch Stützpunkt (eigene Bahn) noch der Wagen am Start unter der
+      // Beschriftung liegt; erst die üblichen Stellen, dann ein feineres Raster, dann unterhalb der Linie.
       const w = richWidth(label, size) + 8;
       const sup = (track.features.supports ?? []).map((s) => track.at(s));
-      const free = (cx: number) => {
+      const { len: carLen, hgt: carHgt } = carSize();
+      const [carX, carY] = carCenter(s0);
+      const railPx = track.points.map((q) => [scene.px(q.x), scene.py(q.y)] as Pt);
+      const cost = (cx: number, yc: number) => {
         const x0 = clamp(cx - w / 2, r.x + 6, r.x + r.w - w - 6);
-        const hit = (px: number, py: number, pad: number) => px > x0 - pad && px < x0 + w + pad && py > y - 11 - size - pad && py < y - 11 + size * 0.5 + pad;
-        return !track.points.some((q) => hit(scene.px(q.x), scene.py(q.y), 4)) && !sup.some((q) => hit(scene.px(q.x), scene.py(q.y) - 2, 12));
+        const hit = (px: number, py: number, pad: number) => px > x0 - pad && px < x0 + w + pad && py > yc - size - pad && py < yc + size * 0.5 + pad;
+        let rails = 0;
+        for (const [px, py] of railPx) if (hit(px, py, 4)) rails++;
+        const posts = sup.filter((q) => hit(scene.px(q.x), scene.py(q.y) - 2, 12)).length;
+        const car = carX + carLen * 0.6 > x0 - 6 && carX - carLen * 0.6 < x0 + w + 6 && carY + carHgt * 0.8 > yc - size - 4 && carY - carHgt * 0.8 < yc + size * 0.5 + 4;
+        return rails + posts * 20 + (car ? 1000 : 0);
       };
       const shares = mode() === 'task' ? [0.3, 0.5, 0.7, 0.18, 0.82] : [0.5, 0.3, 0.7, 0.18, 0.82];
-      const lx = r.x + r.w * (shares.find((f) => free(r.x + r.w * f)) ?? shares[0]!);
-      clampedText(label, lx, y - 11, size, C.level(), r, 'center');
+      const fine = Array.from({ length: 21 }, (_, i) => 0.1 + i * 0.04).sort((a, b) => Math.abs(a - 0.5) - Math.abs(b - 0.5));
+      const spots = [...shares.map((f) => [f, y - 11]), ...fine.map((f) => [f, y - 11]), ...shares.map((f) => [f, y + 13]), ...fine.map((f) => [f, y + 13])] as [number, number][];
+      let best = spots[0]!;
+      let bestCost = Infinity;
+      for (const sp of spots) {
+        const c = cost(r.x + r.w * sp[0], sp[1]);
+        if (c < bestCost) [best, bestCost] = [sp, c];
+        if (c === 0) break;
+      }
+      clampedText(label, r.x + r.w * best[0], best[1], size, C.level(), r, 'center');
     }
 
     function drawTurns(r: Rect): void {

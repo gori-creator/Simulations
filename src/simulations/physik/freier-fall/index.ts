@@ -57,10 +57,13 @@ function niceTop(x: number): number {
 export default defineSimulation({
   id: 'freier-fall',
   animated: true,
-  hint: L(
-    'Tipp: Zieh die Kugel im Fallturm oder den Punkt im t-s-Diagramm. Beim Reaktionstest fängst du das Lineal durch Tippen, Klick oder mit der Leertaste.',
-    'Tip: drag the ball in the drop tower or the point in the distance–time graph. In the reaction test, catch the ruler with a tap, a click or the space bar.',
-  ),
+  // Tipp je Versuch
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'ruler'
+      ? L('Tipp: Fang das Lineal durch Tippen, Klick oder mit der Leertaste.', 'Tip: catch the ruler with a tap, a click or the space bar.')
+      : v.mode === 'tube'
+        ? L('Tipp: Während des Falls kannst du den Punkt im t-s-Diagramm ziehen.', 'Tip: while the objects fall, you can drag the point in the distance–time graph.')
+        : L('Tipp: Zieh die Kugel im Fallturm oder den Punkt im t-s-Diagramm.', 'Tip: drag the ball in the drop tower or the point in the distance–time graph.'),
   layout: { aspect: 1.5, aspectNarrow: 0.56 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

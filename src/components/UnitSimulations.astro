@@ -10,9 +10,11 @@ interface Props {
   ids: string[];
   /** Hat dieser Lernbereich keine Simulation: Links zu anderen Jahrgangsstufen mit demselben Lernbereich */
   elsewhere?: { grade: number; href: string }[];
+  /** Ebene der Kartenüberschriften: eine unter der Überschrift des Lernbereichs */
+  headingLevel?: 'h3' | 'h4';
 }
 
-const { lang, ids, elsewhere = [] } = Astro.props;
+const { lang, ids, elsewhere = [], headingLevel = 'h4' } = Astro.props;
 const sims = ids.map((id) => getSimulation(id));
 const ready = sims.filter((s) => s.status === 'ready');
 const planned = sims.filter((s) => s.status === 'planned');
@@ -36,7 +38,7 @@ const planned = sims.filter((s) => s.status === 'planned');
       {ready.length > 0 && (
         <div class="card-grid">
           {ready.map((sim) => (
-            <SimCard lang={lang} sim={sim} headingLevel="h4" />
+            <SimCard lang={lang} sim={sim} headingLevel={headingLevel} />
           ))}
         </div>
       )}

@@ -19,9 +19,15 @@ Diese Website ist bewusst datensparsam gebaut:
 
 ## Hosting und Server-Protokolle
 
-Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, aufgerufene Adresse, Browsertyp) an den Server, auf dem die Seite liegt. Diese Daten werden vom Hosting-Anbieter verarbeitet, um die Seite auszuliefern und die Sicherheit des Betriebs zu gewährleisten.
+Diese Website wird über **GitHub Pages** bereitgestellt. Anbieter ist die GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.
 
-[Angaben zum Hosting-Anbieter, z. B. GitHub Pages (GitHub Inc.), Rechtsgrundlage (Art. 6 Abs. 1 lit. f DSGVO), Speicherdauer und ggf. Drittlandübermittlung ergänzen.]
+Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten an die Server von GitHub, insbesondere Ihre **IP-Adresse**, Datum und Uhrzeit, die aufgerufene Adresse sowie Angaben zu Browser und Betriebssystem. GitHub speichert die IP-Adresse in Server-Protokollen, um die Seite auszuliefern und die Sicherheit des Dienstes zu gewährleisten (z. B. zur Abwehr von Angriffen). Wir selbst haben keinen Zugriff auf diese Protokolle und werten sie nicht aus. Wie lange GitHub die Daten speichert, legt GitHub fest.
+
+**Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren, zuverlässigen und kostenlosen Bereitstellung der Website.
+
+**Übermittlung in die USA:** Dabei können Daten in die USA übermittelt werden. Die Übermittlung stützt sich auf den Angemessenheitsbeschluss der EU-Kommission zum **EU-US Data Privacy Framework** (Art. 45 DSGVO), soweit GitHub danach zertifiziert ist, und im Übrigen auf Standardvertragsklauseln der EU-Kommission (Art. 46 Abs. 2 lit. c DSGVO).
+
+Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub: [docs.github.com](https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement).
 
 ## Speicherung im Browser
 

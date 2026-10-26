@@ -19,12 +19,49 @@ export default defineConfig({
     format: 'directory',
   },
   markdown: {
+    // Keine Code-Blöcke im Lernmaterial; Shiki würde Inline-Styles erzeugen (CSP).
+    syntaxHighlight: false,
     processor: satteri({
       features: { math: true },
       mdastPlugins: [katexMarkdownPlugin],
     }),
   },
   integrations: [serviceWorker()],
+  /**
+   * Content-Security-Policy als <meta>-Tag auf jeder Seite (nur im Build, nicht
+   * im Dev-Server): Skripte, Styles, Bilder, Schriften usw. nur von der eigenen
+   * Seite, keine fremden Quellen (`data:` nur für eingebettete Bilder und die
+   * kleinen KaTeX-Schriften, `blob:` für den Bild-Export). Astro ergänzt die
+   * Prüfsummen seiner eigenen Skripte/Styles; die Inline-Skripte im Layout
+   * melden ihre Prüfsumme selbst (src/lib/csp.ts). `style`-Attribute (Formeln,
+   * Kartenlayout) bleiben erlaubt, <style>-Elemente nur über Prüfsumme.
+   */
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data: blob:",
+        "font-src 'self' data:",
+        "connect-src 'self'",
+        "media-src 'self'",
+        "worker-src 'self'",
+        "manifest-src 'self'",
+        "object-src 'none'",
+        "frame-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+      ],
+      scriptDirective: {
+        resources: ["'self'"],
+      },
+      styleDirective: {
+        resources: [
+          { resource: "'self'", kind: 'element' },
+          { resource: "'unsafe-inline'", kind: 'attribute' },
+        ],
+      },
+    },
+  },
   devToolbar: {
     enabled: false,
   },

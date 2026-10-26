@@ -28,6 +28,8 @@ interface BaseParam<K extends string> {
   /**
    * Kurzer Erklärtext unter dem Regler. Fester Text oder Funktion der aktuellen
    * Werte (`(v) => L(…)`, `null` blendet ihn aus); der Host aktualisiert ihn bei jeder Änderung.
+   * `_` setzt einen Index wie in Beschriftungen („v_K“); Wörter wie „log_2“
+   * (zwei oder mehr Kleinbuchstaben vor `_`) bleiben stehen, `\_` = Unterstrich.
    */
   help?: DynamicText;
   /** ID einer Gruppe aus `SimulationDefinition.groups`. */
@@ -107,8 +109,19 @@ export type ValuesOf<P extends readonly ParamDef[]> = { [D in P[number] as D['ke
 export interface ReadoutDef {
   key: string;
   label: Localized;
-  /** Wird beim Teilen mit „Ergebnisse verdecken“ ausgeblendet (Aufgabenmodus). */
+  /**
+   * Wird beim Teilen mit „Ergebnisse verdecken“ ausgeblendet (Aufgabenmodus).
+   * Achtung: Hat die Simulation einen Schalter `resultsParam`, verdeckt dieser
+   * auf „aus“ ALLE `spoiler`-Ergebnisse – auch solche, die fachlich nichts mit
+   * dem Schalter zu tun haben. Ausnahme per `ignoresResultsParam: true`.
+   */
   spoiler?: boolean;
+  /**
+   * Nur mit `spoiler`: Der Schalter `resultsParam` verdeckt dieses Ergebnis nicht,
+   * nur der Aufgabenmodus (`_hide=1`). „Aufdecken“ schaltet den Schalter dann
+   * auch nicht ein. `ctx.hidden` bleibt davon unberührt (Schalter aus → `true`).
+   */
+  ignoresResultsParam?: boolean;
 }
 
 /** Text (wird escaped) oder vertrauenswürdiges HTML aus dem Simulationscode. `null` blendet die Zeile aus. */
@@ -176,6 +189,20 @@ export interface SimContext<V> {
   /** Ist das `spoiler`-Ergebnis `key` gerade verdeckt (für feinere Steuerung als `hidden`)? */
   isHidden(key: string): boolean;
   /**
+   * Nur der Aufgabenmodus: `true`, wenn die Seite mit `_hide=1` geöffnet wurde
+   * (geteilter Link mit „Ergebnisse verdecken“ oder Link im Lernmaterial),
+   * unabhängig vom Schalter `resultsParam` und vom Aufdecken. Für Teile, die nur
+   * in Aufgaben verborgen sein sollen, nicht beim Ausschalten von „Zahlenwerte“.
+   */
+  readonly taskMode: boolean;
+  /**
+   * Ist das `spoiler`-Ergebnis `key` allein wegen des Aufgabenmodus verdeckt
+   * (`_hide=1` und noch nicht aufgedeckt)? Wie `isHidden(key)`, aber ohne den
+   * Schalter `resultsParam`, z. B. für ein Etikett ohne Zahl, das bei
+   * „Zahlenwerte aus“ sichtbar bleiben soll.
+   */
+  isHiddenByTask(key: string): boolean;
+  /**
    * Antippbare Objekte für die Tastatur melden (optional). Die Bühne wird dann
    * per Tab erreichbar, Pfeiltasten wählen, Enter/Leertaste ruft `activate` auf.
    * Darf bei jeder Änderung (auch in `render`) neu aufgerufen werden; die
@@ -223,6 +250,14 @@ export interface SimInstance {
   resetView?(): void;
   /** `ctx.hidden` hat sich geändert (z. B. Ergebnis aufgedeckt). Neu gezeichnet wird ohnehin. */
   hiddenChange?(hidden: boolean): void;
+  /**
+   * Ein einzelnes `spoiler`-Ergebnis wurde verdeckt bzw. aufgedeckt
+   * (`ctx.isHidden(key)` hat sich geändert): „Aufdecken“, Schalter
+   * `resultsParam`, Link im Lernmaterial. Feuert für jedes betroffene Ergebnis,
+   * auch wenn `ctx.hidden` gleich bleibt (vor `hiddenChange`, nicht beim Start).
+   * Neu gezeichnet wird ohnehin; nützlich z. B. für Übergänge beim Aufdecken.
+   */
+  spoilerChange?(key: string, hidden: boolean): void;
   destroy?(): void;
 }
 
@@ -233,21 +268,28 @@ export interface SimulationDefinition<P extends readonly ParamDef[] = readonly P
   readouts?: ReadoutDef[];
   /**
    * Boolescher Parameter (z. B. `show`), der Lösungen im Bild ein- und ausblendet.
-   * Ist er aus, werden auch die `spoiler`-Ergebnisse unter der Bühne verdeckt;
-   * „Aufdecken“ schaltet ihn wieder ein.
+   * Ist er aus, werden ALLE `spoiler`-Ergebnisse unter der Bühne verdeckt (nicht
+   * nur die zum Schalter passenden) und `ctx.hidden` ist `true`; „Aufdecken“
+   * schaltet ihn wieder ein. Einzelne Ergebnisse nimmt `ignoresResultsParam: true`
+   * in der Ergebnis-Definition aus.
    */
   resultsParam?: P[number]['key'];
   presets?: Preset<ValuesOf<P>>[];
   /** Zeigt Abspielen/Anhalten in der Werkzeugleiste. */
   animated?: boolean;
-  /** Zeigt unter der Bühne den Hinweis, dass Punkte gezogen werden können. */
-  dragHint?: boolean;
+  /**
+   * Allgemeiner Tipp unter der Bühne: `true` – „Die markierten Punkte lassen
+   * sich … ziehen“; `'knob'` – „Drehknöpfe und Schieber im Bild lassen sich …
+   * bewegen“ (für Bedienelemente auf der Bühne statt Punkten).
+   */
+  dragHint?: boolean | 'knob';
   /**
    * Eigener Tipp unter der Bühne, z. B. „Tippe auf ein Bild …“. Ersetzt den
    * allgemeinen Hinweis von `dragHint` und wird auch ohne `dragHint` gezeigt.
    * Auch als Funktion der aktuellen Werte möglich (`(v) => L(…)`, z. B. ein Tipp
    * je Modus); der Host aktualisiert ihn bei jeder Änderung. Gibt sie `null`
    * zurück, erscheint der allgemeine Hinweis von `dragHint` bzw. gar keiner.
+   * `_` setzt einen Index wie bei `help` („F_res“; „log_2“ bleibt stehen).
    */
   hint?: DynamicText<ValuesOf<P>>;
   layout?: StageLayout;

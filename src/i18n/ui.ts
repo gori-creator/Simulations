@@ -17,6 +17,8 @@ const de = {
 
   'lang.label': 'Sprache',
   'theme.toggle': 'Hell/Dunkel umschalten',
+  'theme.toDark': 'Zum dunklen Farbschema wechseln',
+  'theme.toLight': 'Zum hellen Farbschema wechseln',
 
   'settings.label': 'Einstellungen',
   'settings.region': 'Bundesland',
@@ -135,6 +137,7 @@ const de = {
   'sim.reveal': 'Aufdecken',
   'sim.hiddenValue': 'verdeckt',
   'sim.dragHint': 'Tipp: Die markierten Punkte lassen sich mit Maus oder Finger ziehen.',
+  'sim.dragHintKnob': 'Tipp: Drehknöpfe und Schieber im Bild lassen sich mit Maus oder Finger bewegen.',
   'sim.keyTargets': 'Zeichenfläche: Mit den Pfeiltasten ein Objekt wählen, mit Enter oder Leertaste auslösen.',
 
   'share.title': 'Simulation teilen',
@@ -186,6 +189,8 @@ const en: Record<UiKey, string> = {
 
   'lang.label': 'Language',
   'theme.toggle': 'Toggle light/dark mode',
+  'theme.toDark': 'Switch to dark mode',
+  'theme.toLight': 'Switch to light mode',
 
   'settings.label': 'Settings',
   'settings.region': 'Federal state',
@@ -303,6 +308,7 @@ const en: Record<UiKey, string> = {
   'sim.reveal': 'Reveal',
   'sim.hiddenValue': 'hidden',
   'sim.dragHint': 'Tip: the highlighted points can be dragged with mouse or finger.',
+  'sim.dragHintKnob': 'Tip: the knobs and sliders in the picture can be moved with mouse or finger.',
   'sim.keyTargets': 'Drawing area: use the arrow keys to choose an object, Enter or Space to activate it.',
 
   'share.title': 'Share simulation',

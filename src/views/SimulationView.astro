@@ -1,4 +1,7 @@
 ---
+// Formel-Styles nur auf Simulationsseiten (nur dort gibt es Formeln). Als eigene Datei im <head>
+// vor global.css, damit global.css sie überschreiben kann; ein normaler Import gälte für alle Seiten der Route.
+import katexCss from 'katex/dist/katex.min.css?url';
 import { getCollection, render } from 'astro:content';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import GradeBadge from '../components/GradeBadge.astro';
@@ -44,6 +47,7 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
   description={entry?.data.description ?? sim.summary?.[lang]}
   alternates={alternates({ kind: 'simulation', id: simId })}
   section={sim.subject}
+  stylesheets={[katexCss]}
 >
   <div class:list={['container', `subject-${sim.subject}`]}>
     <Breadcrumbs

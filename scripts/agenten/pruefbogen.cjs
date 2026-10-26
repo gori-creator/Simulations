@@ -99,28 +99,48 @@ const DEVICES = [
       });
       return out;
     });
-    await page.locator('[data-sim-root]').first().focus().catch(() => {});
-    for (let i = 0; i < 12; i++) {
-      await page.keyboard.press('Tab');
-      report.tabOrder.push(await page.evaluate(() => {
+    // Tab-Reihenfolge innerhalb der Simulation: beim ersten fokussierbaren Element
+    // der Simulation beginnen (nicht in der Kopfzeile der Seite) und so lange Tab
+    // drücken, bis der Fokus die Simulation verlässt (höchstens 80 Schritte).
+    const focusables = await page.evaluate(() => {
+      const root = document.querySelector('[data-sim-root]');
+      if (!root) return 0;
+      const list = [...root.querySelectorAll('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(
+        (el) => !el.disabled && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden',
+      );
+      list[0]?.focus();
+      return list.length;
+    });
+    const describe = () =>
+      page.evaluate(() => {
         const el = document.activeElement;
-        if (!el) return '–';
+        if (!el || el === document.body) return null;
+        if (!el.closest('[data-sim-root]')) return null;
         const visible = getComputedStyle(el).outlineStyle !== 'none' || getComputedStyle(el).boxShadow !== 'none';
         return `${el.tagName.toLowerCase()} „${(el.getAttribute('aria-label') || el.textContent || el.value || '').trim().slice(0, 40)}“${visible ? '' : ' (kein sichtbarer Fokus?)'}`;
-      }));
+      });
+    for (let i = 0; i < Math.min(Math.max(focusables, 1), 80); i++) {
+      if (i > 0) await page.keyboard.press('Tab');
+      const entry = await describe();
+      if (!entry) {
+        report.tabOrder.push('(Fokus hat die Simulation verlassen)');
+        break;
+      }
+      report.tabOrder.push(entry);
     }
     await ctx.close();
   }
 
-  // 5. Bogen zusammensetzen
-  const cells = report.shots.map((s) => `<figure><img src="data:image/png;base64,${fs.readFileSync(s.file).toString('base64')}"><figcaption>${s.label}</figcaption></figure>`).join('');
+  // 5. Bogen zusammensetzen (Texte genau einmal für HTML maskieren)
+  const esc = (text) => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const cells = report.shots.map((s) => `<figure><img src="data:image/png;base64,${fs.readFileSync(s.file).toString('base64')}"><figcaption>${esc(s.label)}</figcaption></figure>`).join('');
   const findings = [
     `Reduzierte Bewegung: ${report.reducedMotionStill ? 'steht still ✓' : 'Bild ändert sich ✗ – <name>-bewegung-a/b.png vergleichen'}`,
     `Konsolenfehler: ${report.consoleErrors.length ? report.consoleErrors.join(' | ') : 'keine ✓'}`,
     `Waagerechter Überlauf: ${report.overflow.length ? report.overflow.join(', ') : 'keiner ✓'}`,
     `Bedienelemente ohne Namen: ${report.unnamedControls.length || 'keine ✓'}`,
-  ].map((f) => `<li>${f.replace(/</g, '&lt;')}</li>`).join('');
-  const html = `<!doctype html><meta charset="utf-8"><style>body{font:14px system-ui;margin:16px;background:#fff}h1{font-size:20px}figure{display:inline-block;vertical-align:top;margin:0 12px 16px 0}img{display:block;max-width:420px;max-height:520px;border:1px solid #ccc}figcaption{font-size:12px;color:#444}</style><h1>Prüfbogen ${name} – ${url}</h1><ul>${findings}</ul>${cells}`;
+  ];
+  const html = `<!doctype html><meta charset="utf-8"><style>body{font:14px system-ui;margin:16px;background:#fff}h1{font-size:20px}figure{display:inline-block;vertical-align:top;margin:0 12px 16px 0}img{display:block;max-width:420px;max-height:520px;border:1px solid #ccc}figcaption{font-size:12px;color:#444}</style><h1>Prüfbogen ${esc(name)} – ${esc(url)}</h1><ul>${findings.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>${cells}`;
   const sheet = await browser.newPage({ viewport: { width: 1800, height: 1000 } });
   await sheet.setContent(html);
   await sheet.screenshot({ path: path.join(outDir, `${name}.png`), fullPage: true });
@@ -129,5 +149,5 @@ const DEVICES = [
   fs.writeFileSync(path.join(outDir, `${name}.json`), JSON.stringify(report, null, 2));
   fs.rmSync(tmp, { recursive: true, force: true });
   console.log(`Prüfbogen: ${path.join(outDir, name + '.png')}`);
-  console.log(findings.replace(/<\/?li>/g, '\n').replace(/&lt;/g, '<').trim());
+  console.log(findings.join('\n'));
 })().catch((e) => { console.error(e); process.exit(1); });
