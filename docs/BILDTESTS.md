@@ -33,6 +33,14 @@ Schützt vor ungewollten Änderungen im Aussehen (`docs/FAHRPLAN.md`, Punkt 1.6)
 
 Auch „Referenzbild fehlt“ (neue Simulation) und Fehler auf der Seite (`pageerror`) machen die Bildtests rot.
 
+**Rot auf `main`, obwohl jeder Pull Request grün war:**
+
+- Das passiert, wenn zwei Pull Requests kurz nacheinander gemergt werden und der eine das Aussehen ändert. Der andere wurde dann noch gegen die alten Bilder geprüft.
+- Vorgehen:
+  1. Abweichungen wie oben ansehen. Die Commits des anderen Pull Requests sagen meist, ob die Änderung gewollt ist.
+  2. Wenn ja: einen Zweig von `main` anlegen und dort die Referenzbilder erneuern (Weg 1 oder 2 unten).
+  3. Per Pull Request zurück nach `main`.
+
 ## Referenzbilder bewusst erneuern
 
 Die Referenzbilder entstehen **immer in GitHub Actions**: Dort laufen der Browser und die Schriften in einem festen Container. Auf anderen Rechnern sehen Schriften anders aus, deshalb taugen dort erzeugte Bilder nicht als Referenz.
