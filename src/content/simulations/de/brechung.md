@@ -10,11 +10,11 @@ $$
 n_1 \cdot \sin\alpha = n_2 \cdot \sin\beta
 $$
 
-Die **Brechzahl** $n$ sagt, wie stark das Licht im Stoff langsamer ist: $c = \frac{c_0}{n}$, in Wasser also $c = \frac{299\,792\,458\,\text{m/s}}{1{,}33} \approx 2{,}25 \cdot 10^8\,\tfrac{\text{m}}{\text{s}}$. Beim Übergang in den **optisch dichteren** Stoff (größeres $n$) wird das Licht **zum Lot hin** gebrochen, sonst **vom Lot weg**. Mit Wellenfronten (Huygens) sieht man den Grund: Im dichteren Stoff rücken die Fronten enger zusammen ($\lambda_2 = \lambda_1 \cdot \frac{n_1}{n_2}$) und knicken an der Grenzfläche ab.
+Die **Brechzahl** $n$ sagt, wie stark das Licht im Stoff langsamer ist: $c = \frac{c_0}{n}$, in Wasser also $c = \frac{299\,792\,458\,\text{m/s}}{1{,}33} \approx 2{,}25 \cdot 10^8\,\tfrac{\text{m}}{\text{s}}$. Luft hat genau genommen $n = 1{,}0003$; in der Schule und in der Simulation rechnet man mit $n = 1{,}00$. Für Glas nimmt die Simulation Kronglas mit $n = 1{,}52$ (oft wird auch mit $n \approx 1{,}5$ gerechnet). Beim Übergang in den **optisch dichteren** Stoff (größeres $n$) wird das Licht **zum Lot hin** gebrochen, sonst **vom Lot weg**. Mit Wellenfronten (Huygens) sieht man den Grund: Im dichteren Stoff rücken die Fronten enger zusammen ($\lambda_2 = \lambda_1 \cdot \frac{n_1}{n_2}$) und knicken an der Grenzfläche ab.
 
 Trägt man $\sin\beta$ über $\sin\alpha$ auf, ergibt sich eine **Ursprungsgerade** mit der Steigung $\frac{n_1}{n_2}$ – so lässt sich eine unbekannte Brechzahl messen.
 
-**Totalreflexion:** Vom dichteren in den dünneren Stoff gibt es einen **Grenzwinkel** $\alpha_G$ mit $\sin\alpha_G = \frac{n_2}{n_1}$: Wasser → Luft $48{,}8^\circ$, Glas → Luft $41{,}1^\circ$, Diamant → Luft $24{,}4^\circ$. Ist $\alpha > \alpha_G$, wird alles Licht reflektiert. Das nutzen **Glasfasern**, **Umlenkprismen** und geschliffene **Diamanten**.
+**Totalreflexion:** Vom dichteren in den dünneren Stoff gibt es einen **Grenzwinkel** $\alpha_G$ mit $\sin\alpha_G = \frac{n_2}{n_1}$: Wasser → Luft $48{,}8^\circ$, Glas → Luft $41{,}1^\circ$ (mit $n = 1{,}5$ gerechnet: $41{,}8^\circ$), Diamant → Luft $24{,}4^\circ$. Ist $\alpha > \alpha_G$, wird alles Licht reflektiert. Das nutzen **Glasfasern**, **Umlenkprismen** und geschliffene **Diamanten**.
 
 Wie viel Licht reflektiert wird, beschreiben die **Fresnel-Formeln**. Bei senkrechtem Einfall auf Glas sind es $\left(\frac{1{,}52 - 1}{1{,}52 + 1}\right)^2 \approx 4{,}3\,\%$. Kurz vor dem Grenzwinkel steigt der Anteil steil auf $100\,\%$.
 
@@ -26,6 +26,8 @@ Wie viel Licht reflektiert wird, beschreiben die **Fresnel-Formeln**. Bei senkre
 4. Biege den Lichtleiter aus Plexiglas immer enger (am blauen Griff ziehen). Ab wann geht Licht verloren? [Lichtleiter](?mode=total&mat=plexiglas&ain=40&rb=3)
 5. Vergleiche den Brillanten aus Glas und aus Diamant. [Diamant](?mode=total&app=gem&mat=diamant&ain=0) · [Glas](?mode=total&app=gem&mat=glas&ain=0)
 6. Schicke weißes Licht durch ein Glasprisma. Welche Farbe wird am stärksten abgelenkt? [Prisma](?mode=optics&ex=prism&alpha=50)
+7. Miss an einer unbekannten Probe mindestens drei Wertepaare $(\alpha \mid \beta)$. Liegen die Punkte im Diagramm $\sin\beta$ über $\sin\alpha$ auf einer Ursprungsgeraden? [Unbekannte Probe](?mode=measure)
+8. Drehe den Laser an der planparallelen Platte. Bleibt der austretende Strahl parallel zum einfallenden? Wann ist der Versatz am größten? [Platte](?mode=optics&ex=plate&alpha=40)
 
 ## Aufgaben
 
@@ -82,13 +84,13 @@ Eine Faser hat einen Kern aus Glas ($n = 1{,}52$) und einen Mantel mit $n = 1{,}
 <details>
 <summary>Lösung anzeigen</summary>
 
-$\alpha_G = \arcsin\frac{1{,}49}{1{,}52} \approx 78{,}6^\circ$ – das Licht muss sehr flach auf die Wand treffen. $\sin\theta_{max} = \sqrt{1{,}52^2 - 1{,}49^2} \approx 0{,}300$, also $\theta_{max} \approx 17{,}5^\circ$. Schon sanfte Biegungen lassen bei so kleinem Unterschied Licht austreten. [Faser mit Mantel](?mode=total&clad=plexiglas&ain=10&rb=15)
+$\alpha_G = \arcsin\frac{1{,}49}{1{,}52} \approx 78{,}6^\circ$ – das Licht muss sehr flach auf die Wand treffen. $\sin\theta_{max} = \sqrt{1{,}52^2 - 1{,}49^2} \approx 0{,}300$, also $\theta_{max} \approx 17{,}5^\circ$. Bei so kleinem Unterschied der Brechzahlen lassen schon sanfte Biegungen Licht austreten: Die Faser in der Simulation ist $1\,\text{mm}$ dick, und selbst bei $R = 15\,\text{mm}$ kommt kein Licht am Ende an. Echte Glasfasern haben einen viel dünneren Kern (oft unter $0{,}01\,\text{mm}$), darum vertragen sie Biegungen mit einigen Zentimetern Radius. [Faser mit Mantel](?mode=total&clad=plexiglas&ain=10&rb=15)
 
 </details>
 
 ### Aufgabe 6: Der Fisch ist tiefer, als er aussieht
 
-Ein Fisch schwimmt $1{,}00\,\text{m}$ tief. Wie tief scheint er, wenn man fast senkrecht von oben schaut?
+Ein Fisch schwimmt $1{,}00\,\text{m}$ tief. Wie tief scheint er, wenn man fast senkrecht von oben schaut? [Aufgabe laden](?mode=optics&ex=depth&mat=wasser&alpha=0&_hide=1)
 
 <details>
 <summary>Lösung anzeigen</summary>

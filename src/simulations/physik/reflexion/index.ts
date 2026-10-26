@@ -24,8 +24,8 @@ import {
 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-/** Kerze (kerze.webp, 144 × 631): Schnitt über dem Docht, Mitte der Wölbung, Beginn von Schaft und Fuß. */
-const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Kerze ohne Flamme (kerze.webp, 540 × 1352): Schnitt unter dem Docht des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 540, h: 1352, top: 57, dome: 66, shaft: 215, foot: 1290 };
 /** Laser (laser.webp, 700 × 200): Höhe der Austrittsöffnung rechts. */
 const LASER_IMG = { noseY: 78 };
 type Mode = 'law' | 'image' | 'multi';
@@ -65,7 +65,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
-  images: { candle: 'kerze.webp', laser: 'laser.webp' },
+  images: { candle: 'kerze.webp', laser: 'laser.webp', table: 'tischkante.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1134,6 +1134,23 @@ export default defineSimulation({
     /* =================================================================== */
 
     /**
+     * Streifen aus dem Foto der Tischkante: waagerecht abwechselnd gespiegelt
+     * gekachelt (keine Nahtstellen), ganzzahlige Kachelbreite mit 1 px Überlappung
+     * (sonst helle Pixelstreifen an den Kachelrändern). Wird zwischengespeichert,
+     * damit die halb durchsichtige Spiegelwelt keine doppelt deckenden Fugen zeigt.
+     */
+    let stripCache: { key: string; canvas: HTMLCanvasElement } | null = null;
+    function tableStrip(img: HTMLImageElement, w: number, h: number): HTMLCanvasElement {
+      const key = `${Math.round(w)}|${Math.round(h * 2)}|${surface.dpr}`;
+      if (stripCache?.key === key) return stripCache.canvas;
+      const { canvas, g: b } = offscreenCanvas(w, h, surface.dpr);
+      const tw = Math.max(8, Math.round((h * img.width) / img.height));
+      for (let i = 0, x = 0; x < w; i++, x += tw) b.drawImage(scaledSprite(img, tw + 1, h, surface.dpr, { flipX: i % 2 === 1 }), x, 0, tw + 1, h);
+      stripCache = { key, canvas };
+      return canvas;
+    }
+
+    /**
      * Kerzenkörper aus dem Foto: Kopf (Rand mit Wölbung) und Fuß bleiben unverzerrt,
      * nur der gleichförmige Schaft wird auf die eingestellte Höhe gestreckt.
      * Die Flamme des Fotos wird abgeschnitten; Docht und Flamme zeichnet die Simulation.
@@ -1310,11 +1327,23 @@ export default defineSimulation({
       const table = (x0: number, x1: number, alpha: number) => {
         g.save();
         g.globalAlpha = alpha;
-        const wood = g.createLinearGradient(0, tY, 0, tB);
-        wood.addColorStop(0, dark ? '#7a5a3c' : '#c79a69');
-        wood.addColorStop(1, dark ? '#4f3a27' : '#9a7048');
-        g.fillStyle = wood;
-        g.fillRect(x0, tY, x1 - x0, tB - tY);
+        const edge = ctx.images.get('table');
+        if (edge) {
+          // Foto der Tischkante als durchgehender Streifen (auch hinter dem Spiegel)
+          const strip = tableStrip(edge, scene.w, tB - tY);
+          const k = strip.width / scene.w;
+          g.drawImage(strip, (x0 - scene.x) * k, 0, (x1 - x0) * k, strip.height, x0, tY, x1 - x0, tB - tY);
+          if (dark) {
+            g.fillStyle = 'rgba(0,0,0,0.3)';
+            g.fillRect(x0, tY, x1 - x0, tB - tY);
+          }
+        } else {
+          const wood = g.createLinearGradient(0, tY, 0, tB);
+          wood.addColorStop(0, dark ? '#7a5a3c' : '#c79a69');
+          wood.addColorStop(1, dark ? '#4f3a27' : '#9a7048');
+          g.fillStyle = wood;
+          g.fillRect(x0, tY, x1 - x0, tB - tY);
+        }
         g.fillStyle = dark ? 'rgba(0,0,0,0.25)' : 'rgba(80,55,30,0.18)';
         g.fillRect(x0, tB, x1 - x0, scene.y + scene.h - tB);
         g.restore();

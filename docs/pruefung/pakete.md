@@ -53,8 +53,8 @@ Reihenfolge innerhalb des Pakets: von oben nach unten. Haken setzen, sobald das 
 | ☑ | 13–13 | `rotationskoerper` | Rotationskörper | `/de/mathematik/analysis/rotationskoerper/` |
 | ☑ | 13–14 | `taylor-polynome` | Taylorpolynome | `/de/mathematik/analysis/taylorpolynome/` |
 | ☑ | 14–14 | `fourier-reihen` | Fourier-Reihen | `/de/mathematik/analysis/fourier-reihen/` |
-| ☐ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
-| ☐ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
+| ☑ | 8–10 | `brechung` | Brechung und Totalreflexion | `/de/physik/optik/brechung-totalreflexion/` |
+| ☑ | 10–12 | `fadenpendel` | Fadenpendel | `/de/physik/schwingungen-und-wellen/fadenpendel/` |
 
 ## Paket 2 – Prüf-Agent 2 (Mathematik Jgst. 5–8) – 43 Simulationen
 

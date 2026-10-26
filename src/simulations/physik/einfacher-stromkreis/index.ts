@@ -9,6 +9,7 @@ import {
   roundRect,
   scaledSprite,
   Surface,
+  tintedSprite,
   TapTarget,
   text,
   Tween,
@@ -233,7 +234,23 @@ function flowSpeed(I: number): number {
 export default defineSimulation({
   id: 'einfacher-stromkreis',
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
-  images: { battery: 'batterie.webp', bulb: 'gluehlampe.webp', switch: 'schalter.webp', motor: 'motor.webp', bell: 'klingel.webp' },
+  images: {
+    battery: 'batterie.webp',
+    bulb: 'gluehlampe.webp',
+    switch: 'schalter.webp',
+    motor: 'motor.webp',
+    bell: 'klingel.webp',
+    clamp: 'krokodilklemme.webp',
+    // Gegenstände für den Leitertest
+    clip: 'bueroklammer.webp',
+    coin: 'muenze.webp',
+    lead: 'bleistiftmine.webp',
+    foil: 'alufolie.webp',
+    wood: 'holzstab.webp',
+    eraser: 'radiergummi.webp',
+    ruler: 'kunststofflineal.webp',
+    glass: 'glasstab.webp',
+  },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -2024,6 +2041,44 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Anteil der Kunststoffhülle an der Länge des Klemmen-Fotos (Rest: Metallbacken). */
+    const CLAMP_SLEEVE = 0.56;
+    /** Helligkeit der grauen Hülle im Foto (0 … 1). */
+    const CLAMP_SLEEVE_LUMA = 0.59;
+    const clampCache = new Map<string, HTMLCanvasElement>();
+
+    /**
+     * Foto der Krokodilklemme mit eingefärbter Hülle: Farbton aus `color`, die
+     * Helligkeit wird zusätzlich auf die der Farbe abgesenkt (sonst wirkt eine
+     * schwarze Klemme hellgrau).
+     */
+    function clampSprite(img: HTMLImageElement, w: number, h: number, color: string): HTMLCanvasElement {
+      const key = `${color}|${Math.round(w * 2)}|${Math.round(h * 2)}|${surface.dpr}`;
+      const hit = clampCache.get(key);
+      if (hit) return hit;
+      if (clampCache.size > 8) clampCache.clear();
+      const region = { x: 0, y: 0, w: w * CLAMP_SLEEVE, h };
+      const tinted = tintedSprite(img, w, h, surface.dpr, color, { region });
+      const { canvas, g: b } = offscreenCanvas(w, h, surface.dpr);
+      b.drawImage(tinted, 0, 0, w, h);
+      const pc = parseInt(color.slice(1), 16);
+      const luma = (0.299 * ((pc >> 16) & 255) + 0.587 * ((pc >> 8) & 255) + 0.114 * (pc & 255)) / 255;
+      const f = Math.round(255 * Math.min(1, luma / CLAMP_SLEEVE_LUMA + 0.08));
+      b.save();
+      b.beginPath();
+      b.rect(region.x, region.y, region.w, region.h);
+      b.clip();
+      b.globalCompositeOperation = 'multiply';
+      b.fillStyle = `rgb(${f},${f},${f})`;
+      b.fillRect(0, 0, w, h);
+      b.restore();
+      b.globalCompositeOperation = 'destination-in';
+      b.drawImage(tinted, 0, 0, w, h);
+      b.globalCompositeOperation = 'source-over';
+      clampCache.set(key, canvas);
+      return canvas;
+    }
+
     function drawClamp(tail: Pt, tip: Pt, color: string, s: number): void {
       const dir = Math.sign(tip[0] - tail[0]) || 1;
       const y = tail[1];
@@ -2032,6 +2087,18 @@ export default defineSimulation({
       g.save();
       g.translate(tail[0], y);
       g.scale(dir, 1);
+      const photo = ctx.images.get('clamp');
+      if (photo) {
+        // Foto: Maul rechts, die gegenüberliegende Klemme entsteht durch das Spiegeln oben
+        const w = L2 * 1.3;
+        const h = (w * photo.height) / photo.width;
+        g.save();
+        shadowOn(5 * s, 2 * s, 0.8);
+        g.drawImage(clampSprite(photo, w, h, color), L2 - w, -h / 2, w, h);
+        g.restore();
+        g.restore();
+        return;
+      }
       // Kunststoffhülle
       g.save();
       shadowOn(5 * s, 2 * s, 0.8);
@@ -2084,13 +2151,33 @@ export default defineSimulation({
     /** Höhe relativ zur Länge (zum Einpassen in Kästchen und Schaltplan). */
     const OBJ_THICK: Record<MaterialId, number> = { clip: 0.34, coin: 1, foil: 0.3, lead: 0.07, wood: 0.14, eraser: 0.42, ruler: 0.22, glass: 0.11 };
 
+    /** Breite der abgerundeten Enden im Foto der Bleistiftmine (Bildpixel). */
+    const LEAD_END = 40;
     function drawObject(id: MaterialId, cx: number, cy: number, k: number, alpha = 1): void {
       const len = OBJ_LEN[id] * k;
       const dark = ctx.theme.dark;
       g.save();
       g.globalAlpha = alpha;
       g.translate(cx, cy);
-      if (id === 'clip') {
+      const photo = ctx.images.get(id);
+      if (photo && id === 'lead') {
+        // Mine: das Foto ist viel schlanker (46 : 1) als die Mine im Aufbau (14 : 1). Dicke wie die
+        // Ersatzgrafik, die Enden maßstabsgetreu, nur das gleichförmige Mittelstück wird gestaucht.
+        const h = len * OBJ_THICK.lead;
+        const k = h / photo.height;
+        const e = LEAD_END;
+        const ew = e * k;
+        const piece = (sx: number, sw: number, dx: number, dw: number) => {
+          g.drawImage(scaledSprite(photo, dw, h, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: photo.height } }), dx, -h / 2, dw, h);
+        };
+        piece(e, photo.width - 2 * e, -len / 2 + ew - 0.5, Math.max(1, len - 2 * ew + 1));
+        piece(0, e, -len / 2, ew);
+        piece(photo.width - e, e, len / 2 - ew, ew);
+      } else if (photo) {
+        // Foto in voller Länge, Seitenverhältnis bleibt (etwas schlanker als die Ersatzgrafik)
+        const h = (len * photo.height) / photo.width;
+        g.drawImage(scaledSprite(photo, len, h, surface.dpr), -len / 2, -h / 2, len, h);
+      } else if (id === 'clip') {
         const H = len * 0.34;
         const t = Math.max(1.2, len * 0.045);
         const y1 = -H / 2;

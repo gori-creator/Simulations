@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angleBetween,
@@ -132,6 +132,7 @@ export default defineSimulation({
   id: 'strahlensaetze',
   dragHint: true,
   layout: { aspect: 1.4, aspectNarrow: 0.42 },
+  images: { tree: 'baum.webp', crown: 'baumkrone.webp' },
   groups: [
     { id: 'fig', label: L('Figur', 'Figure') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1323,13 +1324,25 @@ export default defineSimulation({
       };
       shadow(z[0] + (0 - 0) * V.s, treeB[0], fs(9, 7));
       shadow(P([stickTipX, 0])[0], stickB[0], fs(5, 4));
-      // Baum
+      // Baum: Foto (Kronenspitze am oberen Bildrand = Baumhöhe, Stamm unten mittig) oder Ersatzgrafik
+      const treeImg = ctx.images.get('tree');
+      if (treeImg) {
+        const h = ht * V.s;
+        const w = (h * treeImg.naturalWidth) / treeImg.naturalHeight;
+        g.save();
+        g.imageSmoothingQuality = 'high';
+        g.drawImage(treeImg, treeB[0] - w * 0.505, treeB[1] - h, w, h);
+        g.restore();
+      }
       const trunkW = Math.max(7, ht * V.s * 0.06);
       const trunkTop = P([dTree, ht * 0.5]);
       const tg = g.createLinearGradient(treeB[0] - trunkW / 2, 0, treeB[0] + trunkW / 2, 0);
       tg.addColorStop(0, dark ? '#5a3d24' : '#8a5a33');
       tg.addColorStop(1, dark ? '#3a2716' : '#5e3b1f');
       g.fillStyle = tg;
+      // mit Foto wird die Ersatzgrafik unsichtbar gezeichnet (gleiche Abläufe, kein doppelter Code)
+      const treeGA = g.globalAlpha;
+      if (treeImg) g.globalAlpha = 0;
       g.beginPath();
       g.moveTo(treeB[0] - trunkW * 0.6, treeB[1]);
       g.lineTo(treeB[0] - trunkW * 0.35, trunkTop[1]);
@@ -1351,6 +1364,7 @@ export default defineSimulation({
       crown(-0.17, 0.6, 0.2, 0.12);
       crown(0.17, 0.62, 0.19, 0.1);
       crown(0, 0.76, 0.24, 0);
+      g.globalAlpha = treeGA;
       // Stab (rot-weiß)
       const stickT = P([stickX, st]);
       const sw = fs(6, 5);
@@ -1611,10 +1625,21 @@ export default defineSimulation({
         g.stroke();
       }
       // Büsche (Draufsicht)
+      const crownImg = ctx.images.get('crown');
       const bush = (q: Pt, r: number) => {
         const c = P(q);
         const rp = r * V.s;
         g.save();
+        if (crownImg) {
+          // Foto einer Baumkrone von oben, Durchmesser wie der gezeichnete Busch
+          g.shadowColor = 'rgba(0,0,0,0.3)';
+          g.shadowBlur = 6;
+          g.shadowOffsetX = 3;
+          g.shadowOffsetY = 3;
+          g.drawImage(scaledSprite(crownImg, 2 * rp, 2 * rp, surface.dpr), c[0] - rp, c[1] - rp, 2 * rp, 2 * rp);
+          g.restore();
+          return;
+        }
         g.fillStyle = 'rgba(0,0,0,0.22)';
         g.beginPath();
         g.arc(c[0] + 4, c[1] + 4, rp, 0, TAU);
