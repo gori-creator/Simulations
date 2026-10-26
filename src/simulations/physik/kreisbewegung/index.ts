@@ -75,10 +75,14 @@ export default defineSimulation({
   id: 'kreisbewegung',
   animated: true,
   dragHint: true,
-  hint: L(
-    'Ziehen mit Maus oder Finger: die Spitze des v-Pfeils (Geschwindigkeit), den Punkt im Diagramm und bei der Schnur die Kugel nach außen oder innen (Radius).',
-    'Drag with the mouse or a finger: the tip of the v arrow (speed), the point in the graph and, on the string, the ball outwards or inwards (radius).',
-  ),
+  // Tipp je Versuch: die Kugel (Radius) lässt sich nur im Schnur-Versuch ziehen
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'car'
+      ? L('Ziehen mit Maus oder Finger: die Spitze des v-Pfeils (Geschwindigkeit) und den Punkt im Diagramm.', 'Drag with the mouse or a finger: the tip of the v arrow (speed) and the point in the graph.')
+      : L(
+          'Ziehen mit Maus oder Finger: die Spitze des v-Pfeils (Geschwindigkeit), die Kugel nach außen oder innen (Radius) und den Punkt im Diagramm.',
+          'Drag with the mouse or a finger: the tip of the v arrow (speed), the ball outwards or inwards (radius) and the point in the graph.',
+        ),
   layout: { aspect: 1.6, aspectNarrow: 0.52 },
   images: { car: 'auto-oben.webp', asphalt: 'asphalt.webp' },
   groups: [
@@ -96,7 +100,7 @@ export default defineSimulation({
       ],
       default: 'string',
     },
-    { key: 'r', type: 'number', group: 'body', label: L('Radius r', 'Radius r'), min: 0.2, max: 1.5, step: 0.05, default: 0.8, unit: 'm', visibleIf: (v) => v.mode === 'string' },
+    { key: 'r', type: 'number', group: 'body', label: L('Radius r', 'Radius r'), help: (v: { readonly mode?: unknown }) => (v.mode === 'string' ? L('Oder: die Kugel nach außen oder innen ziehen.', 'Or drag the ball outwards or inwards.') : null), min: 0.2, max: 1.5, step: 0.05, default: 0.8, unit: 'm', visibleIf: (v) => v.mode === 'string' },
     {
       key: 'T',
       type: 'number',
@@ -1031,15 +1035,25 @@ export default defineSimulation({
       const h = size + 4;
       const r = regions(surface.width, surface.height).scene;
       // Abstand so, dass das Textfeld (w × h) die Spitze nicht überdeckt; anderen Beschriftungen ausweichen
-      let d = gap + Math.abs(ux) * (w / 2) + Math.abs(uy) * (h / 2);
-      let box: Rect = { x: 0, y: 0, w, h };
-      for (let k = 0; k < 30; k++) {
-        const lx = clamp(x + ux * d, r.x + w / 2 + 6, r.x + r.w - w / 2 - 6);
-        const ly = clamp(y + uy * d, r.y + 42, r.y + r.h - 14);
-        box = { x: lx - w / 2, y: ly - h / 2, w, h };
-        const hit = avoid.some((a) => box.x < a.x + a.w + 4 && a.x < box.x + box.w + 4 && box.y < a.y + a.h + 2 && a.y < box.y + box.h + 2);
-        if (!hit) break;
-        d += 4;
+      const d0 = gap + Math.abs(ux) * (w / 2) + Math.abs(uy) * (h / 2);
+      const boxAt = (dAlong: number, dSide: number): Rect => {
+        const lx = clamp(x + ux * dAlong - uy * dSide, r.x + w / 2 + 6, r.x + r.w - w / 2 - 6);
+        const ly = clamp(y + uy * dAlong + ux * dSide, r.y + 42, r.y + r.h - 14);
+        return { x: lx - w / 2, y: ly - h / 2, w, h };
+      };
+      // Abstand zu anderen Beschriftungen: 6 px seitlich, 5 px oben/unten (vorher 4/2: „F_Z = …“ stand dicht unter „r = …“)
+      const free = (b: Rect) => !avoid.some((a) => b.x < a.x + a.w + 6 && a.x < b.x + b.w + 6 && b.y < a.y + a.h + 5 && a.y < b.y + b.h + 5);
+      // erst direkt hinter der Spitze, dann seitlich daneben (bleibt nah am Pfeil), dann weiter hinaus
+      const side = Math.abs(ux) * (h / 2 + 8) + Math.abs(uy) * (w / 2 + 16);
+      const spots: [number, number][] = [[d0, 0], [d0, -side], [d0, side]];
+      for (let k = 1; k < 30; k++) spots.push([d0 + 4 * k, 0]);
+      let box = boxAt(d0 + 4 * 29, 0);
+      for (const [da, ds] of spots) {
+        const b = boxAt(da, ds);
+        if (free(b)) {
+          box = b;
+          break;
+        }
       }
       richText(str, box.x + w / 2, box.y + h / 2, size, color, 'center');
       return box;
@@ -1226,6 +1240,15 @@ export default defineSimulation({
         // ausgewählte Fahrbahn zuerst beschriften, andere nur, wenn Platz ist
         const taken: number[] = [];
         const order = [p.road as RoadId, ...ROAD_ORDER.filter((id) => id !== p.road)];
+        // Platz der Achsbeschriftung („v in m/s“ bzw. „r in m“) rechts über der Rechtsachse: Fahrbahn-Namen,
+        // die dort hineinreichen würden, rücken auf ihrer Linie nach links neben sie.
+        const g = surface.g;
+        g.save();
+        g.font = `600 13px ${theme.font}`;
+        const axisW = g.measureText(ctx.t(byR ? 'axisR' : 'axisV')).width;
+        g.restore();
+        const axisY = chart.py(0);
+        const axisLeft = chart.rect.x + chart.rect.w - 6 - axisW;
         for (const id of order) {
           const fl = maxFriction(ROADS[id], p.mc) / k;
           const sel = id === p.road;
@@ -1233,7 +1256,11 @@ export default defineSimulation({
           const py = chart.py(fl);
           if (taken.some((q) => Math.abs(q - py) < 14)) continue;
           taken.push(py);
-          chart.text(xMax, fl, ctx.t(id), { color: sel ? theme.text : theme.muted, size: 11, weight: sel ? 'bold' : '600', align: 'right', baseline: 'bottom', offset: [-4, -3] });
+          // Läuft die Linie selbst durch die Achsbeschriftung, weicht diese ohnehin nach oben aus: dann bleibt der Name rechts
+          const lineInLabel = py > axisY - 6 - 13 - 3 && py < axisY - 6 + 3;
+          const nearAxis = !lineInLabel && py - 3 > axisY - 6 - 13 - 10 && py - 3 - 12 < axisY + 4;
+          const dx = nearAxis ?Math.max(0, chart.px(xMax) - 4 - (axisLeft - 8)) : 0;
+          chart.text(xMax, fl, ctx.t(id), { color: sel ? theme.text : theme.muted, size: 11, weight: sel ? 'bold' : '600', align: 'right', baseline: 'bottom', offset: [-4 - dx, -3] });
         }
       } else {
         chart.hline(lim, { color: theme.text, width: 2, alpha: 0.85 });
