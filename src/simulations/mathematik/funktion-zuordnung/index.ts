@@ -1549,9 +1549,50 @@ export default defineSimulation({
 
     /* ---------- Zeichnen ---------- */
     let viewKey = '';
+    /**
+     * Tastatur wie Antippen: erst ein Element links wählen, dann rechts ein
+     * Element – der Pfeil dazwischen wird gesetzt bzw. entfernt.
+     */
+    function updateKeyTargets(): void {
+      if (mode() !== 'map' || ctx.locked) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const geo = diagramGeo(map, mapRegions().diag);
+      const de = lang === 'de';
+      const box = (pl: Pill) => ({ x: pl.x - 4, y: pl.y - 3, w: pl.w + 8, h: pl.h + 6 });
+      ctx.setKeyTargets([
+        ...map.a.map((it, i) => ({
+          id: `a${i}`,
+          label: `${label(it)} (${de ? 'links' : 'left'})${selA === i ? ` – ${de ? 'gewählt' : 'selected'}` : ''}`,
+          rect: box(geo.left[i]!),
+          activate: () => {
+            selA = selA === i ? null : i;
+            updateReadouts();
+            ctx.requestRender();
+          },
+        })),
+        ...map.b.map((it, j) => {
+          const has = selA !== null && map.arrows.some(([i, k]) => i === selA && k === j);
+          const from = selA !== null ? label(map.a[selA]!) : '';
+          return {
+            id: `b${j}`,
+            label: `${label(it)} (${de ? 'rechts' : 'right'})${selA === null ? '' : de ? ` – Pfeil von ${from} ${has ? 'entfernen' : 'setzen'}` : ` – ${has ? 'remove' : 'add'} arrow from ${from}`}`,
+            rect: box(geo.right[j]!),
+            disabled: selA === null,
+            activate: () => {
+              if (selA !== null) setArrows(toggleArrow(map.arrows, selA, j));
+              ctx.requestRender();
+            },
+          };
+        }),
+      ]);
+    }
+
     function render(): void {
       const now = performance.now();
       surface.begin();
+      updateKeyTargets();
       if (mode() === 'map') {
         const reg = mapRegions();
         drawDiagram(reg.diag, now);

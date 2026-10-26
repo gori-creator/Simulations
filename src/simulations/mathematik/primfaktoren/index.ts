@@ -1286,21 +1286,55 @@ export default defineSimulation({
       return best;
     }
 
+    /** Antippen eines Knotens (aufklappen bzw. auswählen) oder einer Zahl im Sieb (Hinweis). */
+    function tapHit(id: string): void {
+      const [kind, arg] = id.split(':');
+      const k = Number(arg);
+      if (kind === 'node') {
+        const node = nodesOf(tree).find((x) => x.id === k);
+        if (node) {
+          if (node.children && !open.has(node.id)) openNode(node);
+          else selected = node.id;
+        }
+      } else if (kind === 'cell') {
+        tipCell = tipCell === k ? -1 : k;
+        if (tipCell > 0) ctx.announce(cellTipText(k));
+      }
+      ctx.requestRender();
+    }
+
+    /** Text des Hinweises zu einer Zahl im Sieb (für Bildschirmleser; Hochzahlen als ², ³ …). */
+    function cellTipText(k: number): string {
+      if (k === 1) return tr('tipOne');
+      if (isPrime(k)) return tr('tipPrime', { n: k });
+      const supDigits = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+      return `${k} = ${factorPieces(k)
+        .map((q) => (q.sup ? q.text.replace(/\d/g, (d) => supDigits[Number(d)]!) : q.text))
+        .join('')}`;
+    }
+
+    /** Tastatur wie Antippen: Knoten im Baum bzw. Zahlen im Sieb. */
+    function updateKeyTargets(): void {
+      const de = ctx.lang === 'de';
+      ctx.setKeyTargets(
+        hits.map((h) => {
+          const [kind, arg] = h.id.split(':');
+          const k = Number(arg);
+          const node = kind === 'node' ? nodesOf(tree).find((x) => x.id === k) : undefined;
+          const label = node
+            ? `${node.value}${node.children && !open.has(node.id) ? (de ? ' – zerlegen' : ' – split') : ''}`
+            : `${k}${de ? ' – Hinweis' : ' – hint'}`;
+          return { id: h.id, label, rect: { x: h.x - h.r, y: h.y - h.r, w: 2 * h.r, h: 2 * h.r }, activate: () => tapHit(h.id) };
+        }),
+      );
+    }
+
     surface.addTarget({
       contains: (px: number, py: number) => hitAt(px, py) !== null,
       pointerDown: (pt: { px: number; py: number }) => {
         const id = hitAt(pt.px, pt.py);
         if (!id) return false;
-        const [kind, arg] = id.split(':');
-        const k = Number(arg);
-        if (kind === 'node') {
-          const node = nodesOf(tree).find((x) => x.id === k);
-          if (node) {
-            if (node.children && !open.has(node.id)) openNode(node);
-            else selected = node.id;
-          }
-        } else if (kind === 'cell') tipCell = tipCell === k ? -1 : k;
-        ctx.requestRender();
+        tapHit(id);
         return true;
       },
       pointerMove: () => {},
@@ -1410,6 +1444,7 @@ export default defineSimulation({
           animating = drawTree(now, dt) || autoTree > 0;
         } else if (m === 'sieb') animating = drawSieve(now);
         else animating = drawGgt(now);
+        updateKeyTargets();
         if (animating) ctx.requestRender();
       },
 

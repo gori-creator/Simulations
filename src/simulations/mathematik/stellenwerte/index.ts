@@ -64,6 +64,8 @@ interface Hit {
   y: number;
   w: number;
   h: number;
+  /** Knopf gerade ohne Wirkung (ausgegraut). */
+  off?: boolean;
 }
 
 interface View {
@@ -643,7 +645,7 @@ export default defineSimulation({
             font: `700 ${geo.wide ? clamp(bh * 0.62, 13, 20) : 15}px ${theme.font}`,
             color: enabled ? (hot ? shade(color, theme.dark ? 0.2 : -0.2) : theme.text) : withAlpha(theme.muted, 0.35),
           });
-          hits.push({ id, x: bx, y: by, w: bw, h: bh });
+          hits.push({ id, x: bx, y: by, w: bw, h: bh, off: !enabled });
         }
         hits.push({ id: `tile:${k}`, x: tx, y: dy, w: tw, h: th });
         hits.push({ id: `tile:${k}`, x: cx - fw / 2, y: fy, w: fw, h: geo.frameH });
@@ -1280,6 +1282,36 @@ export default defineSimulation({
       if (value !== p.n) ctx.set({ n: Math.min(MAX_NUMBER, value) });
     }
 
+    /** Tastatur wie Antippen: die Knöpfe + und − je Stelle (ein Plättchen dazu bzw. weg). */
+    function updateKeyTargets(): void {
+      if (ctx.locked) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const seen = new Set<string>();
+      ctx.setKeyTargets(
+        hits
+          .filter((h) => (h.id.startsWith('plus:') || h.id.startsWith('minus:')) && !seen.has(h.id) && seen.add(h.id))
+          .map((h) => {
+            const [kind, arg] = h.id.split(':');
+            const place = Number(arg);
+            const plus = kind === 'plus';
+            const name = placeName(place, lang);
+            return {
+              id: h.id,
+              label: lang === 'de' ? `${name}: ${plus ? 'ein Plättchen dazulegen' : 'ein Plättchen wegnehmen'}` : `${name}: ${plus ? 'add a counter' : 'remove a counter'}`,
+              rect: { x: h.x, y: h.y, w: h.w, h: h.h },
+              disabled: h.off,
+              activate: () => {
+                focus = -1;
+                step(place, plus ? 1 : -1);
+                ctx.requestRender();
+              },
+            };
+          }),
+      );
+    }
+
     surface.addTarget({
       contains: (px: number, py: number) => dragging || hitAt(px, py) !== null,
       pointerDown: (pt: { px: number; py: number }) => {
@@ -1403,6 +1435,7 @@ export default defineSimulation({
         drawTable(geo, now);
         drawNumber(geo);
         drawLine(geo, now);
+        updateKeyTargets();
         if (moving || running || queue.length) ctx.requestRender();
       },
 

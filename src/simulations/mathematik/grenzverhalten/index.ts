@@ -2347,6 +2347,7 @@ export default defineSimulation({
       const now = performance.now();
       const dt = Math.min(0.1, Math.max(0, (now - lastTime) / 1000));
       lastTime = now;
+      updateKeyTargets();
       frameNow = now;
       frameDt = dt;
       numsBusy = false;
@@ -2495,6 +2496,31 @@ export default defineSimulation({
       return 'plot';
     }
     const cursorFor = (id: string | null) => (id === 'eT' || id === 'eB' ? 'ns-resize' : id === 'mid' || id === 'P' ? 'grab' : id === 'play' || id?.startsWith('n') ? 'pointer' : id === 'track' ? 'ew-resize' : id === 'plot' ? 'crosshair' : '');
+    /** Lauf zu einem Wert der Tabelle (Knoten auf der Leiste) springen lassen. */
+    function jumpToNode(i: number, now = performance.now()): void {
+      ctx.clock.pause();
+      engaged = true;
+      finishT = null;
+      const ax = tableXs(key())[i]!;
+      const u = runU(key(), dir(), dir() * ax);
+      if (reduced()) U.jump(u);
+      else U.glide(u, 700, 0, now);
+      ctx.requestRender();
+    }
+    /** Tastatur wie Antippen: Knoten der Leiste (x-Werte der Tabelle) anspringen. */
+    function updateKeyTargets(): void {
+      if (!editable()) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const G = stripGeom(regions().strip);
+      ctx.setKeyTargets(
+        tableXs(key()).map((ax, i) => {
+          const x = lerp(G.x0, G.x1, stripU(ax));
+          return { id: `n${i}`, label: `x = ${fmt.num(dir() * ax, 2)}`, rect: { x: x - 10, y: G.ty - 14, w: 20, h: 28 }, activate: () => jumpToNode(i) };
+        }),
+      );
+    }
     function scrubTo(px: number): void {
       const G = stripGeom(regions().strip);
       const s = clamp01((px - G.x0) / (G.x1 - G.x0));
@@ -2582,13 +2608,7 @@ export default defineSimulation({
         drag = null;
         const now = performance.now();
         if (d0?.kind === 'scrub' && !d0.moved && d0.node !== null) {
-          ctx.clock.pause();
-          engaged = true;
-          finishT = null;
-          const ax = tableXs(key())[d0.node]!;
-          const u = runU(key(), dir(), dir() * ax);
-          if (reduced()) U.jump(u);
-          else U.glide(u, 700, 0, now);
+          jumpToNode(d0.node, now);
         }
         if (d0?.kind === 'edge' && conv() && p.band) okPulse = reduced() ? null : now;
         if (d0?.kind === 'P' || d0?.kind === 'edge' || d0?.kind === 'mid') retargetView(now, 'glide');

@@ -357,7 +357,27 @@ export default defineSimulation({
       return exact ? cm2(face.area, 2) : `≈ ${cm2(face.area, 1)}`;
     }
 
+    /** Tastatur wie Antippen: Flächen des Netzes auswählen (Maße erscheinen unter „Angetippte Fläche“). */
+    function updateKeyTargets(): void {
+      ctx.setKeyTargets(
+        net.faces.map((face, i) => {
+          const id = faceId(i);
+          const name = face.mantle ? ctx.t('mantle') : ctx.t(face.shape);
+          return {
+            id,
+            label: `${name} ${i + 1}${selected === id ? (ctx.lang === 'de' ? ' – gewählt' : ' – selected') : ''}`,
+            activate: () => {
+              selected = selected === id ? null : id;
+              updateReadouts();
+              ctx.requestRender();
+            },
+          };
+        }),
+      );
+    }
+
     function render(): void {
+      updateKeyTargets();
       // Faltung fortschreiben
       if (anim) {
         shown = anim.from + (anim.to - anim.from) * anim.tween.value;

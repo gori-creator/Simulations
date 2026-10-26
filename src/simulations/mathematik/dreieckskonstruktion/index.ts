@@ -341,7 +341,7 @@ export default defineSimulation({
     let intro: number | null = null;
     let cardFade: number | null = null;
     let hits: { id: HandleId; x: number; y: number; r: number }[] = [];
-    let buttons: { id: ButtonId; r: Rect }[] = [];
+    let buttons: { id: ButtonId; r: Rect; label: string }[] = [];
     let hover: HandleId | ButtonId | null = null;
     let drag: HandleId | null = null;
     let lastDrag = -Infinity;
@@ -2310,7 +2310,7 @@ export default defineSimulation({
         const roomy = g.measureText(rl).width + 26 + nextW + 10 <= R.w - 2 * pad;
         const restartW = roomy ? g.measureText(rl).width + 26 : btnH;
         button({ x: R.x + R.w - pad - nextW, y: btnY, w: nextW, h: btnH }, nextLabel, 'next', col.res(), true, !stepRunning(now) && !autoPlay);
-        if (stepIdx > 0) button({ x: R.x + pad, y: btnY, w: restartW, h: btnH }, roomy ? rl : '↺', 'restart', theme.muted, false, true);
+        if (stepIdx > 0) button({ x: R.x + pad, y: btnY, w: restartW, h: btnH }, roomy ? rl : '↺', 'restart', theme.muted, false, true, rl);
         // Fortschrittspunkte
         const dotsX0 = R.x + pad + (stepIdx > 0 ? restartW + 12 : 0);
         const dotsX1 = R.x + R.w - pad - nextW - 12;
@@ -2329,7 +2329,7 @@ export default defineSimulation({
       return natural;
     }
 
-    function button(r: Rect, label: string, id: ButtonId, color: string, filled: boolean, enabled: boolean): void {
+    function button(r: Rect, label: string, id: ButtonId, color: string, filled: boolean, enabled: boolean, srLabel = label): void {
       const g = surface.g;
       const hov = hover === id && enabled;
       g.save();
@@ -2360,7 +2360,7 @@ export default defineSimulation({
       g.textBaseline = 'middle';
       g.fillText(label, r.x + r.w / 2, r.y + r.h / 2 + 0.5);
       g.restore();
-      if (enabled) buttons.push({ id, r });
+      if (enabled) buttons.push({ id, r, label: srLabel });
     }
 
     /** Ergebnis: Bedingung des Kongruenzsatzes mit Zahlen, Urteil, gemessene Stücke. */
@@ -2647,6 +2647,7 @@ export default defineSimulation({
       g.stroke();
       g.restore();
       drawColumn(R.col, now, k, st);
+      updateKeyTargets();
       if (cardFade !== null) anim = true;
 
       const running = stepRunning(now);
@@ -2748,16 +2749,26 @@ export default defineSimulation({
       }
     }
 
+    function pressButton(id: ButtonId): void {
+      if (id === 'next') {
+        autoPlay = false;
+        fast = false;
+        nextStep();
+      } else restart();
+      ctx.requestRender();
+    }
+
+    /** Tastatur: Knöpfe im Bild („Nächster Schritt“, „Von vorn“) wie Antippen. */
+    function updateKeyTargets(): void {
+      ctx.setKeyTargets(ctx.locked ? [] : buttons.map((b) => ({ id: b.id, label: b.label, rect: b.r, activate: () => pressButton(b.id) })));
+    }
+
     surface.addTarget({
       contains: (px: number, py: number) => drag !== null || hitAt(px, py) !== null,
       pointerDown: (q: { px: number; py: number }) => {
         const id = hitAt(q.px, q.py);
         if (!id) return false;
-        if (id === 'next') {
-          autoPlay = false;
-          fast = false;
-          nextStep();
-        } else if (id === 'restart') restart();
+        if (id === 'next' || id === 'restart') pressButton(id);
         else {
           drag = id;
           surface.setCursor('grabbing');
