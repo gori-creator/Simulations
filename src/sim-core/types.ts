@@ -186,6 +186,12 @@ export interface SimContext<V> {
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
   readout(key: string, value: ReadoutValue): void;
+  /**
+   * Text für Bildschirmleser ansagen (höflich, unsichtbar), z. B. eine Meldung,
+   * die nur auf der Zeichenfläche steht („Hinter Tür 3 steht eine Ziege …“).
+   * Geänderte Ergebnisse sagt der Host nach Eingaben schon selbst an.
+   */
+  announce(message: string): void;
   /** Simulationseigener Text aus `strings`. */
   t(key: string): string;
   /** Aktions-Knopf aktivieren/deaktivieren oder umbenennen. */

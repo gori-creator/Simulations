@@ -350,8 +350,8 @@ export default defineSimulation({
       const c = clean(v, d);
       return c > 0 ? `+ ${N(c, d)}` : c < 0 ? `− ${N(-c, d)}` : '± 0';
     };
-    const isExact = (v: number, d = 1) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eq = (v: number, d = 1) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 1) => ctx.fmt.isExact(v, d);
+    const eq = (v: number, d = 1) => ctx.fmt.rel(v, d);
     /** Vorzeichen ohne Leerzeichen für die Ergebnisliste; der Wert 0 erscheint nur als „0“ (ohne „±“) */
     const Sr = (v: number, d = 1) => (clean(v, d) === 0 ? '0' : S(v, d).replace(' ', ''));
 

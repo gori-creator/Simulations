@@ -133,6 +133,25 @@ export class Formatter {
     return `(${this.num(x, decimals)}${sep}${this.num(y, decimals)})`;
   }
 
+  /**
+   * Wird `value` mit `decimals` Nachkommastellen ohne Rundung dargestellt?
+   * (Toleranz für Rechenungenauigkeiten wie 0,1 + 0,2.)
+   */
+  isExact(value: number, decimals = 2): boolean {
+    const scaled = value * 10 ** decimals;
+    return Math.abs(scaled - Math.round(scaled)) < 1e-6;
+  }
+
+  /** „=“, wenn der gerundete Wert exakt ist, sonst „≈“. */
+  rel(value: number, decimals = 2): '=' | '≈' {
+    return this.isExact(value, decimals) ? '=' : '≈';
+  }
+
+  /** Zahl mit passendem Zeichen davor: DE „= 2,5“ bzw. „≈ 3,14“. */
+  approx(value: number, decimals = 2): string {
+    return `${this.rel(value, decimals)} ${this.num(value, decimals)}`;
+  }
+
   /** Dezimaltrennzeichen der Sprache. */
   get decimalSeparator(): string {
     return this.lang === 'de' ? ',' : '.';

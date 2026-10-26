@@ -487,7 +487,7 @@ export default defineSimulation({
       }
       if (view() === 'family') ctx.readout('common', commonPoints(a, n).map(([x, y]) => fmt.point(x, y)).join(', '));
     }
-    const approxEq = (y: number, d = 3) => (Math.abs(y * 10 ** d - Math.round(y * 10 ** d)) < 1e-6 ? '=' : '≈');
+    const approxEq = (y: number, d = 3) => ctx.fmt.rel(y, d);
     /** Stellen, mit denen N() rundet – damit „=“ nur bei exakt gezeigten Werten steht. */
     const nDigits = (v: number) => {
       const r = Math.abs(v);

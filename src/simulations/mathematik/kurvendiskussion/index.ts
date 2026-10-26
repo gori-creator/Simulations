@@ -210,8 +210,8 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => (Number.isFinite(v) ? fmt.num(clean(v, d), d) : '–');
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eqS = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
+    const eqS = (v: number, d = 2) => ctx.fmt.rel(v, d);
     const show = () => p.show;
     /** Wert oder Platzhalter „¿“ (wird als gestrichelter Kasten mit „?“ gezeichnet). */
     const S = (s: string) => (show() ? s : '¿');

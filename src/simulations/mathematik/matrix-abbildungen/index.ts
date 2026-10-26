@@ -466,8 +466,8 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => (Number.isFinite(v) ? fmt.num(clean(v, d), d) : '–');
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eqs = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
+    const eqs = (v: number, d = 2) => ctx.fmt.rel(v, d);
     /** Zahl als Formeltext: abbrechende Dezimalzahl oder kleiner Bruch. */
     function q(v: number): string {
       if (isExact(v, 3)) return N(v, 3);

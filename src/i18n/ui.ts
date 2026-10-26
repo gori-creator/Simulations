@@ -137,6 +137,8 @@ const de = {
   'sim.reveal': 'Aufdecken',
   'sim.hiddenValue': 'verdeckt',
   'sim.dragHint': 'Tipp: Die markierten Punkte lassen sich mit Maus oder Finger ziehen.',
+  'sim.keyboardHint': 'Mit der Tastatur lassen sich dieselben Werte über die Regler unter „Einstellungen“ einstellen.',
+  'sim.currentValues': 'Aktuelle Werte',
   'sim.keyTargets': 'Zeichenfläche: Mit den Pfeiltasten ein Objekt wählen, mit Enter oder Leertaste auslösen.',
 
   'share.title': 'Simulation teilen',
@@ -307,6 +309,8 @@ const en: Record<UiKey, string> = {
   'sim.reveal': 'Reveal',
   'sim.hiddenValue': 'hidden',
   'sim.dragHint': 'Tip: the highlighted points can be dragged with mouse or finger.',
+  'sim.keyboardHint': 'With the keyboard, the same values can be set with the controls under “Settings”.',
+  'sim.currentValues': 'Current values',
   'sim.keyTargets': 'Drawing area: use the arrow keys to choose an object, Enter or Space to activate it.',
 
   'share.title': 'Share simulation',

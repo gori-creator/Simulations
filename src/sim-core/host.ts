@@ -4,11 +4,11 @@ import { registry } from '../simulations/registry';
 import { Clock } from './clock';
 import { Controls } from './controls';
 import { exportStagePng } from './export';
-import { bindUnits, bindUnitsHtml, Formatter } from './format';
+import { bindUnits, bindUnitsHtml, Formatter, withUnit } from './format';
 import { ImageStore } from './images';
 import { KeyTargetLayer } from './key-targets';
-import { defaultValues, resolveText, sanitize, valuesEqual } from './params';
-import { setSubLabel } from './rich-label';
+import { defaultValues, resolveText, sanitize, stepDecimals, valuesEqual } from './params';
+import { plainSubText, setSubLabel } from './rich-label';
 import { isReadoutHidden, isTaskHidden, type TaskModeState } from './task-mode';
 import { onThemeChange, readTheme, type Theme } from './theme';
 import type {
@@ -64,6 +64,26 @@ interface ReadoutRow {
   spoiler: boolean;
 }
 
+const SUPERSCRIPT: Record<string, string> = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '−': '⁻', '-': '⁻', '+': '⁺' };
+
+/**
+ * Text für die Ansage: ohne `aria-hidden`-Teile, Hochzahlen als ², ³ … (sonst
+ * „x2“), Indizes abgesetzt, Leerraum zusammengefasst. Tabellen werden nicht
+ * vorgelesen (leer), dafür sind sie zu lang.
+ */
+function spokenText(element: HTMLElement, lang: Lang): string {
+  if (element.querySelector('table')) return '';
+  const copy = element.cloneNode(true) as HTMLElement;
+  for (const hidden of copy.querySelectorAll('[aria-hidden="true"]')) hidden.remove();
+  for (const sup of copy.querySelectorAll('sup')) {
+    const raw = sup.textContent ?? '';
+    const mapped = [...raw].map((ch) => SUPERSCRIPT[ch]);
+    sup.replaceWith(mapped.every(Boolean) ? mapped.join('') : ` ${lang === 'de' ? 'hoch' : 'to the power of'} ${raw} `);
+  }
+  for (const sub of copy.querySelectorAll('sub')) sub.replaceWith(` ${sub.textContent ?? ''} `);
+  return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
+}
+
 class SimulationHost {
   private readonly defs: readonly ParamDef[];
   private readonly defsByKey: Map<string, ParamDef>;
@@ -94,6 +114,11 @@ class SimulationHost {
   /** Tipp unter der Bühne (`hint`/`dragHint`) und der allgemeine Text aus der Hülle. */
   private hintEl: HTMLElement | null = null;
   private dragHintText = '';
+  private hintComposed = '';
+  /** Ansage geänderter Ergebnisse für Bildschirmleser (höflich, nach Loslassen bzw. Tastatureingabe). */
+  private liveEl: HTMLElement | null = null;
+  private spoken = new Map<string, string>();
+  private announceTimer = 0;
 
   constructor(
     private readonly root: HTMLElement,
@@ -142,6 +167,7 @@ class SimulationHost {
       this.lastTime = null;
       if (playing) this.requestRender();
     });
+    this.bindAnnounce();
     root.classList.add('sim--ready');
   }
 
@@ -184,6 +210,7 @@ class SimulationHost {
       },
       set: (values) => this.set(values, 'sim'),
       readout: (key, value) => this.readout(key, value),
+      announce: (message) => this.say(message),
       t: (key) => strings?.[this.lang]?.[key] ?? strings?.de?.[key] ?? key,
       setAction: (id, state) => {
         const button = this.actionButtons.get(id);
@@ -339,7 +366,75 @@ class SimulationHost {
       this.readouts.set(def.key, entry);
     }
     this.query('[data-sim-readouts-wrap]').hidden = false;
+    // Unsichtbare Ansage für Bildschirmleser (die Liste selbst bleibt still, sonst redet sie beim Ziehen ständig)
+    list.after(this.live());
     this.applyHide();
+  }
+
+  /**
+   * Ergebnisse ansagen, die sich durch eine Eingabe geändert haben: nach dem
+   * Loslassen auf der Bühne, nach Tastatureingaben (Regler, Bühne) und nach
+   * Beispielen oder Aktionen – nicht während des Ziehens. Verdeckte Ergebnisse
+   * (Aufgabenmodus) werden nie angesagt.
+   */
+  /** Unsichtbarer, höflicher Ansagebereich (einmal pro Simulation). */
+  private live(): HTMLElement {
+    if (!this.liveEl) {
+      const live = document.createElement('p');
+      live.className = 'visually-hidden';
+      live.setAttribute('aria-live', 'polite');
+      this.root.append(live);
+      this.liveEl = live;
+    }
+    return this.liveEl;
+  }
+
+  /** Text ansagen (gleicher Text erneut: kurz leeren, damit er wieder gelesen wird). */
+  private say(message: string): void {
+    const live = this.live();
+    if (live.textContent === message) live.textContent = '';
+    window.setTimeout(() => (live.textContent = message), 30);
+  }
+
+  private bindAnnounce(): void {
+    if (!this.liveEl) return;
+    const later = () => this.scheduleAnnounce();
+    const stage = this.root.querySelector<HTMLElement>('[data-sim-stage]');
+    stage?.addEventListener('pointerup', later);
+    stage?.addEventListener('keyup', later);
+    for (const sel of ['[data-sim-controls]', '[data-sim-preset-list]', '[data-sim-actions]']) {
+      const el = this.root.querySelector<HTMLElement>(sel);
+      el?.addEventListener('change', later);
+      el?.addEventListener('click', later);
+    }
+    // Stand nach dem ersten Zeichnen merken, damit beim Laden nichts angesagt wird
+    requestAnimationFrame(() => requestAnimationFrame(() => (this.spoken = this.readoutTexts())));
+  }
+
+  private scheduleAnnounce(): void {
+    clearTimeout(this.announceTimer);
+    this.announceTimer = window.setTimeout(() => this.announce(), 700);
+  }
+
+  /** Sichtbare Ergebnisse als „Beschriftung: Wert“. */
+  private readoutTexts(): Map<string, string> {
+    const texts = new Map<string, string>();
+    for (const [key, row] of this.readouts) {
+      if (row.root.hidden || row.value.hidden) continue;
+      const dt = row.root.querySelector('dt');
+      const label = dt ? spokenText(dt, this.lang) : '';
+      const value = spokenText(row.value, this.lang);
+      if (value) texts.set(key, label ? `${label}: ${value}` : value);
+    }
+    return texts;
+  }
+
+  private announce(): void {
+    if (!this.liveEl || !this.readouts.size) return;
+    const now = this.readoutTexts();
+    const changed = [...now].filter(([key, text]) => this.spoken.get(key) !== text).map(([, text]) => text);
+    this.spoken = now;
+    if (changed.length) this.say(changed.join('; '));
   }
 
   /**
@@ -423,8 +518,34 @@ class SimulationHost {
     const el = this.hintEl;
     if (!el) return;
     const text = resolveText(this.def.hint, this.values, this.lang) ?? (this.def.dragHint ? this.dragHintText : '');
-    if (el.textContent !== text) el.textContent = text;
+    // Für Bildschirmleser: Hinweis auf die Regler und die aktuellen Werte (unsichtbar)
+    const extra = text && this.def.dragHint ? this.valuesSummary() : '';
+    const composed = `${text}\u0000${extra}`;
+    if (composed !== this.hintComposed) {
+      this.hintComposed = composed;
+      el.textContent = text;
+      if (extra) {
+        const span = document.createElement('span');
+        span.className = 'visually-hidden';
+        span.textContent = ` ${extra}`;
+        el.append(span);
+      }
+    }
     el.hidden = !text;
+  }
+
+  /** „Mit der Tastatur … Aktuelle Werte: a = 2, …“ – nur sichtbare Zahlen-Regler. */
+  private valuesSummary(): string {
+    const parts: string[] = [];
+    for (const def of this.defs) {
+      if (def.type !== 'number' || def.visibleIf?.(this.values) === false) continue;
+      const value = this.values[def.key] as number;
+      const shown = def.display ? def.display(value, this.lang) : this.fmt.num(value, stepDecimals(def.step));
+      const label = plainSubText(def.label[this.lang]).replace(/\s+/g, ' ').trim();
+      parts.push(`${label}: ${def.unit && !def.display ? withUnit(shown, def.unit) : shown}`);
+    }
+    if (!parts.length) return '';
+    return `${t(this.lang, 'sim.keyboardHint')} ${t(this.lang, 'sim.currentValues')}: ${parts.join('; ')}.`;
   }
 
   /** Sichtbarkeit der Aktions-Knöpfe an die aktuellen Werte anpassen. */

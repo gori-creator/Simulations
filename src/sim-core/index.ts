@@ -30,6 +30,7 @@ export * as term from './formula';
 export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
 export {
+  contrastRatio,
   drawImageFit,
   measureSubText,
   parseSubText,
@@ -37,6 +38,7 @@ export {
   softShadow,
   subText,
   text,
+  textOn,
   withAlpha,
   type SubTextPart,
   type SubTextStyle,
