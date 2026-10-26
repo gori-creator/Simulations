@@ -113,9 +113,13 @@ ctx.setKeyTargets(images.map((im, i) => ({
 
 Markdown in `src/content/simulations/<sprache>/<id>.md`. Formeln werden mit `$…$` bzw. `$$…$$` geschrieben und **beim Build** mit KaTeX gesetzt (`tooling/katex-markdown.mjs`) – der Browser lädt dafür kein JavaScript. Lösungen stehen in `<details>`-Blöcken.
 
-## 5. Offline-Fähigkeit
+## 5. Offline-Fähigkeit, Ladezeit und Sicherheit
 
-`tooling/service-worker.mjs` erzeugt nach dem Build eine `sw.js`, die alle Seiten und Dateien vorab speichert. Seiten werden „zuerst Netzwerk, sonst Cache“ geladen (Updates kommen sofort an), Dateien „zuerst Cache“. Der Cache-Name enthält einen Hash über alle Dateien, sodass alte Versionen automatisch entfernt werden.
+`tooling/service-worker.mjs` erzeugt nach dem Build eine `sw.js`. Vorab gespeichert wird nur ein kleiner Kern (Styles, Website-Symbol, Fehlerseite); alles andere wird beim ersten Abruf gespeichert. Offline funktionieren also alle Seiten und Simulationen, die auf dem Gerät schon einmal geöffnet wurden (Lehrkraft: vor der Stunde einmal öffnen). Seiten werden „zuerst Netzwerk, sonst Cache“ geladen (Updates kommen sofort an), Dateien „zuerst Cache“. Abgerufene Dateien liegen in einem dauerhaften Cache (`mint-sim-runtime`), damit besuchte Seiten auch nach einer neuen Version offline bleiben; Dateien, die es nicht mehr gibt, werden nach 30 Tagen entfernt. Früher wurde die ganze Seite (rund 70 MB) vorab geladen – zu viel für Schulnetze.
+
+**Ladezeit:** Simulationsbilder (`ImageStore`) werden erst beim ersten `ctx.images.get()` angefordert; die übrigen Bilder der Simulation folgen, wenn die Seite fertig geladen ist und der Browser Zeit hat (nicht im Datensparmodus). Vorschaubilder der Karten stehen pro Seite nur einmal im HTML und werden per `<use>` wiederholt (`SimThumb.astro`). Die KaTeX-Styles lädt nur die Simulationsseite. Bilder höchstens 300 KB (Test in `tests/simulations.test.ts`, Hinweise in `docs/BILDER.md`).
+
+**Content-Security-Policy:** Astro schreibt auf jede Seite ein `<meta http-equiv="content-security-policy">` (Einstellungen `security.csp` in `astro.config.mjs`, nur im Build). Erlaubt sind nur eigene Dateien; Astro ergänzt die Prüfsummen seiner Skripte und Styles. Eigene Inline-Skripte (`is:inline`) stehen als fertige Zeichenkette im Code und melden ihre Prüfsumme mit `Astro.csp?.insertScriptHash(cspHash(…))` (`src/lib/csp.ts`), z. B. Farbschema, Bundesland und Service Worker in `BaseLayout.astro`. Neue Inline-Skripte brauchen das ebenfalls, sonst blockiert der Browser sie. `style`-Attribute sind erlaubt (Formeln, Kartenlayout), fremde Quellen nicht.
 
 ## 6. Gestaltung
 

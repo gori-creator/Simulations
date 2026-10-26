@@ -4,10 +4,14 @@
  * (Standard: Deutsch).
  */
 import { SITE } from '../config/site';
+import { cspHash } from '../lib/csp';
 import { withBase } from '../lib/routes';
 
 const de = withBase('/de/');
 const en = withBase('/en/');
+// Sprache wählen und weiterleiten; als fertige Zeichenkette, damit die Prüfsumme der Content-Security-Policy passt.
+const redirectScript = `let l=null;try{l=localStorage.getItem('lang')}catch{}if(l!=='de'&&l!=='en'){l=(navigator.languages||[navigator.language]).some((x)=>String(x).toLowerCase().startsWith('de'))?'de':'en'}location.replace(l==='en'?${JSON.stringify(en)}:${JSON.stringify(de)});`;
+Astro.csp?.insertScriptHash(cspHash(redirectScript));
 ---
 
 <!doctype html>
@@ -21,16 +25,7 @@ const en = withBase('/en/');
     <link rel="alternate" hreflang="de" href={de} />
     <link rel="alternate" hreflang="en" href={en} />
     <noscript><meta http-equiv="refresh" content={`0; url=${de}`} /></noscript>
-    <script is:inline define:vars={{ de, en }}>
-      let lang = null;
-      try {
-        lang = localStorage.getItem('lang');
-      } catch {}
-      if (lang !== 'de' && lang !== 'en') {
-        lang = (navigator.languages || [navigator.language]).some((l) => String(l).toLowerCase().startsWith('de')) ? 'de' : 'en';
-      }
-      location.replace(lang === 'en' ? en : de);
-    </script>
+    <script is:inline set:html={redirectScript} />
   </head>
   <body>
     <p><a href={de}>Deutsch</a> · <a href={en}>English</a></p>

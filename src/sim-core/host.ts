@@ -137,6 +137,9 @@ class SimulationHost {
       this.theme = readTheme(root);
       this.requestRender();
     });
+    // Schriften (z. B. KaTeX_Math für Beschriftungen) laden nebenbei. Danach neu zeichnen,
+    // sonst bleibt Text je nach Ladereihenfolge in der Ersatzschrift stehen.
+    document.fonts?.addEventListener('loadingdone', () => this.requestRender());
     this.clock.onChange((playing) => {
       this.updatePlayButton(playing);
       this.lastTime = null;
