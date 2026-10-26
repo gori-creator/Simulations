@@ -434,6 +434,8 @@ class SimulationHost {
     const now = this.readoutTexts();
     const changed = [...now].filter(([key, text]) => this.spoken.get(key) !== text).map(([, text]) => text);
     this.spoken = now;
+    // Läuft die Zeit, ändern sich die Werte ständig – dann nichts ungefragt ansagen
+    if (this.clock.playing) return;
     if (changed.length) this.say(changed.join('; '));
   }
 

@@ -210,6 +210,8 @@ const VERTEX = ['A', 'B', 'C', 'D'] as const;
 interface Hit {
   id: string;
   r: Rect;
+  /** Name für Bildschirmleser (Tastatur-Ziele). */
+  label?: string;
 }
 
 type Drag = { kind: 'vertex'; i: number } | { kind: 'move'; start: Pt; orig: Quad } | null;
@@ -815,7 +817,7 @@ export default defineSimulation({
       g.lineWidth = 1.3;
       g.stroke();
       text(g, label, r.x + r.w / 2, r.y + r.h / 2 + 0.5, { font: `700 ${wide() ? 12.5 : 12}px ${theme.font}`, color: filled ? onColor() : color });
-      hits.push({ id, r });
+      hits.push({ id, r, label });
     }
 
     /** Häkchen (ok) bzw. leerer Kreis (offen) bzw. Kreuz (falsch). */
@@ -1289,6 +1291,11 @@ export default defineSimulation({
       return clamp((houseTw.t - delay) / 0.22, 0, 1);
     }
 
+    /** Name einer Viereckart in einer Zeile (Trennstriche der Zeilen entfernt). */
+    function nodeName(k: QuadClass): string {
+      return NODE[k][lang][0]!.reduce((a, l) => (a.endsWith('-') ? a.slice(0, -1) + l : a ? `${a} ${l}` : l), '');
+    }
+
     function nodeLines(k: QuadClass, maxW: number, size: number, maxLines = 3): { lines: string[]; size: number } {
       const g = surface.g;
       const all = NODE[k][lang];
@@ -1526,7 +1533,7 @@ export default defineSimulation({
       if (fb === 'wrong') badge(x + n.w - 2, y + 1, '✗', col.bad());
       if (isGoal && solved && an.classes.includes(n.k)) badge(x + 6, y + 1, '✓', col.ok());
       g.restore();
-      hits.push({ id, r: { x: n.cx - n.w / 2 - 3, y: n.cy - n.h / 2 - 3, w: n.w + 6, h: n.h + 6 } });
+      hits.push({ id, r: { x: n.cx - n.w / 2 - 3, y: n.cy - n.h / 2 - 3, w: n.w + 6, h: n.h + 6 }, label: nodeName(n.k) });
     }
 
     function badge(x: number, y: number, label: string, color: string): void {
@@ -1941,6 +1948,7 @@ export default defineSimulation({
       drawInfo(lay.info);
       if (lay.props) drawProps(lay.props);
       lastShown = shown();
+      updateKeyTargets();
       const anim = morphTw.running || houseTw.running || bestPop.running || burst.running || shake.running || cardPop.running || toast !== null;
       if (anim) ctx.requestRender();
     }
@@ -2009,6 +2017,24 @@ export default defineSimulation({
       } else if (id === 'new') newBuildTask(true);
       else if (id === 'next') newQuiz();
       ctx.requestRender();
+    }
+
+    /** Tastatur wie Antippen: Arten im „Haus der Vierecke“ und die Knöpfe im Bild. */
+    function updateKeyTargets(): void {
+      ctx.setKeyTargets(
+        hits
+          .filter((h) => h.label)
+          .map((h) => ({
+            id: h.id,
+            label: h.label!,
+            rect: h.r,
+            activate: () => {
+              tap(h.id);
+              // Rückmeldung im Rätsel steht nur im Bild
+              if (mode() === 'einordnen' && quizFeedback && h.id.startsWith('node:')) ctx.announce(ctx.t(quizFeedback.verdict));
+            },
+          })),
+      );
     }
 
     surface.addTarget({

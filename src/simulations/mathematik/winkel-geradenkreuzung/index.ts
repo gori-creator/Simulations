@@ -1660,6 +1660,22 @@ export default defineSimulation({
       ctx.requestRender();
     }
 
+    /** Tastatur wie Antippen: Winkel wählen (Aufgabe: gesuchten Winkel aufdecken). */
+    function updateKeyTargets(): void {
+      const m = mode();
+      const de = ctx.lang === 'de';
+      ctx.setKeyTargets(
+        scene.secs
+          .filter((sc) => !(m === 'aufgabe' && sc.id === p.gi))
+          .map((sc) => {
+            const id = m === 'aufgabe' ? `t:${sc.id}` : `${m === 'kreuz' ? 'k' : 'd'}:${sc.id}`;
+            const r = Math.max(sc.r, 18);
+            const label = m === 'aufgabe' ? (de ? `Winkel ${angleName(sc.id)} bestimmen` : `Find angle ${angleName(sc.id)}`) : `${de ? 'Winkel' : 'Angle'} ${angleName(sc.id)}`;
+            return { id, label, rect: { x: sc.V[0] - r, y: sc.V[1] - r, w: 2 * r, h: 2 * r }, activate: () => tap(id) };
+          }),
+      );
+    }
+
     function reveal(id: AngleId): void {
       const gi = p.gi as AngleId;
       if (id === gi) return;
@@ -1803,6 +1819,7 @@ export default defineSimulation({
         g.globalAlpha = ease.outCubic(prog(introAt, 500));
         drawCards(geo.panel, cards);
         g.restore();
+        updateKeyTargets();
         let busy = now < introAt + 1700 || gA.busy(now) || gW.busy(now) || gS.busy(now) || gG.busy(now) || gH.busy(now) || gPar.busy(now) || colorsBusy();
         if (anim && now < anim.t0 + animMs(anim.kind) + 1000) busy = true;
         if (m === 'aufgabe' && ([...known.values()].some((t) => now < t + 500) || now < lastAt + 800)) busy = true;

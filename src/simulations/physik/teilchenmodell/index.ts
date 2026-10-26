@@ -2156,6 +2156,50 @@ export default defineSimulation({
       return [D.ix[k]! + x * D.s, D.bottom - y * D.s];
     }
 
+    /** Tastatur wie Antippen: ein Teilchen verfolgen (bzw. im Diffusionsversuch je Glas eines). */
+    function updateKeyTargets(): void {
+      const de = ctx.lang === 'de';
+      if (mode() === 'state') {
+        const n = box?.n ?? 0;
+        ctx.setKeyTargets([
+          {
+            id: 'follow',
+            label: tracked >= 0 ? (de ? 'Ein anderes Teilchen verfolgen' : 'Follow another particle') : de ? 'Ein Teilchen verfolgen' : 'Follow a particle',
+            disabled: n === 0,
+            activate: () => {
+              tracked = n ? (tracked + 1) % n : -1;
+              trail.length = 0;
+              ctx.requestRender();
+            },
+          },
+          {
+            id: 'stop',
+            label: de ? 'Verfolgen beenden' : 'Stop following',
+            disabled: tracked < 0,
+            activate: () => {
+              tracked = -1;
+              trail.length = 0;
+              ctx.requestRender();
+            },
+          },
+        ]);
+        return;
+      }
+      ctx.setKeyTargets(
+        ([0, 1] as const).map((k) => ({
+          id: `glass${k}`,
+          label: de ? `Ein Teilchen im ${ctx.t(k === 0 ? 'cold' : 'warm')}en Glas verfolgen` : `Follow a particle in the ${ctx.t(k === 0 ? 'cold' : 'warm')} glass`,
+          disabled: beakers[k].lat.n === 0,
+          activate: () => {
+            const i = dTracked && dTracked[0] === k ? (dTracked[1] + 1) % beakers[k].lat.n : 0;
+            dTracked = [k, i];
+            dTrail.length = 0;
+            ctx.requestRender();
+          },
+        })),
+      );
+    }
+
     function hitDiff(px: number, py: number): [number, number] | null {
       const D = lastDiffGeo;
       if (mode() !== 'diff' || !D) return null;
@@ -2776,6 +2820,7 @@ export default defineSimulation({
         frameDt = Math.min(0.1, (now - lastFrame) / 1000);
         lastFrame = now;
         animating = false;
+        updateKeyTargets();
         const lay = computeLayout();
         surface.begin();
         const ia = stage(0.2, 0.5);
