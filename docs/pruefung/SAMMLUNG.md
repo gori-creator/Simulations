@@ -100,7 +100,7 @@ Hier sammelt die Vertretung der Projektleitung, was die Prüfer nicht selbst än
 | planetenbahnen | Bei sehr flachen Ellipsen (Sturz, Halley) liegen Flächennummern und die Beschriftungen „a“/„e“ eng beieinander. | offen |
 | stehende-wellen | An den Reglergrenzen (ν = 45) wirkt das Seil beim Erreger zackig, K-Marken dicht an dicht; feiner abtasten und Marken ausdünnen. | offen |
 | linienspektren | He-Termschema auf dem iPad quer eng; Hinweis „Vakuumwellenlänge“ (He 587,7 statt 587,6 nm in Luft) im Lernmaterial ergänzen. | offen |
-| elektronenbeugung | Die Skalenzahl „10“ auf dem Schirm wird teils vom Pfeil des Messkreises gekreuzt. | offen |
+| elektronenbeugung | Die Skalenzahl „10“ auf dem Schirm wird teils vom Pfeil des Messkreises gekreuzt. | erledigt: Skalenzahlen werden nach Messkreis und Pfeil gezeichnet, mit Rand in Schirmfarbe (sonst unverändert; einzige Bildänderung in Standardansicht und Beispielen ist die Zahlenzeile); Zeichenhilfen über `subText`/`measureSubText`, Schreibweise `r_1`, `θ_1` |
 | fadenpendel | „h = 8,6 cm“ berührt bei etwa 20–25° die Stativstange; bei 90° liegt die Kugel auf dem Stativarm; bei −170° und 2,5 m drängen sich die Kraftbeschriftungen an der Kugel. | offen |
 | brechung | Lokale Index-Helfer `parts`/`richText` (mit Schein und Kürzung) auf `subText` umstellen; im Aufgabenmodus des Prismas „+ ?° … = ?°“ ohne Gradzeichen; auf dem Handy wird der Glasfaser-Hinweis „Zu starke Biegung …“ gekürzt; „41,9° < α_G = 42,2°“ liegt auf dem Faserbogen über den Strahlen. | offen |
 | freier-fall, gasgesetze, kreisbewegung | `hint` bzw. Regler-`help` je Versuch über die neue Funktionsschreibweise (Reaktionstest; Kolben nur isotherm ziehbar; Kugel nur im Schnur-Versuch ziehbar). | offen |
