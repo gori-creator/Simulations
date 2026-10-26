@@ -58,7 +58,7 @@ Der Knopf erscheint erst, wenn die Aktion auf `main` liegt. Bitte nicht auf `mai
 
 **Hinweise:**
 
-- Ein Commit der Aktion startet keine neuen Prüfläufe, das ist eine Regel von GitHub. Die Prüfungen laufen beim nächsten eigenen Push wieder.
+- Nach einem Commit der Aktion laufen die Prüfungen nicht von selbst: „Prüfen“ im Pull Request wartet auf Freigabe („action_required“), die Bildtests starten gar nicht. Das ist eine Regel von GitHub. Mit dem nächsten eigenen Push laufen wieder alle Prüfungen; ist nichts mehr zu ändern, die wartende Prüfung in GitHub freigeben (Knopf „Approve and run“).
 - Wird eine Simulation gelöscht, entfernt das Erneuern ihre Referenzbilder.
 - Bei einem Wechsel der Container-Version (Zeile `image:` im Workflow, dazu `playwright@…`) alle Referenzbilder erneuern.
 
