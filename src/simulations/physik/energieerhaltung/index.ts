@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, lerp, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, lerp, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   bracket,
   CUSTOM_DEFAULT,
@@ -668,7 +668,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, solid ? '#ffffff' : color, 'center', false);
+      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, solid ? textOn(solid, theme) : color, 'center', false);
       return { w, h };
     }
 
@@ -906,7 +906,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(px, py - 2, hot ? 10 : 8, 0, Math.PI * 2);
         g.stroke();
-        text(g, String(i), px, py - 1.5, { font: `700 11px ${theme.font}`, color: '#ffffff' });
+        text(g, String(i), px, py - 1.5, { font: `700 11px ${theme.font}`, color: textOn(C.mech(), theme) });
         clampedText(`${n(q.y, 1)} m`, px, py + (q.y > 1.5 ? 20 : -20), small ? 11 : 12, C.mech(), r, 'center');
       });
     }

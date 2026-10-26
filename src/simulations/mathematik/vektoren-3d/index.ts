@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import { add, axisStep, bestRS, histogram, meanSq, walkEnd, between, centroid, collinear, coplanar, degenerate, det3, divide, hasVec, isZero, latticeOnSphere, lengthSteps, linComb, midpoint, multipleOf, neg, norm, normSq, randomVec, scale, spatCorner, spatCorners, sortSteps, stepCounts, sub, sumOf, triangleMids, unit, walkPositions, type V3 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -1142,7 +1142,7 @@ export default defineSimulation({
         g.fillStyle = note.ok ? theme.series[2]! : mixColor(theme.series[1]!, theme.bg, 0.05);
         roundRect(g, x, y, Math.min(w, R.w - 70), 24, 12);
         g.fill();
-        text(g, note.text, x + 10, y + 12.5, { font: font(750, narrow ? 11 : 12), color: '#ffffff', align: 'left' });
+        text(g, note.text, x + 10, y + 12.5, { font: font(750, narrow ? 11 : 12), color: textOn(note.ok ? theme.series[2]! : mixColor(theme.series[1]!, theme.bg, 0.05), theme), align: 'left' });
         g.restore();
       }
     }

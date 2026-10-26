@@ -811,6 +811,19 @@ export class View3D implements PointerTarget {
     this.initial = { azimuth: this.camera.azimuth, elevation: this.camera.elevation };
     surface.addTarget(this);
     if (options.controls ?? options.zoom ?? true) this.createControls();
+    if (options.rotate ?? true) {
+      // Tastatur: Pfeiltasten drehen (15° bzw. 10° je Druck), Plus/Minus zoomen
+      surface.host.setViewKeys?.({
+        hint: t(surface.lang, 'sim.viewKeys3d'),
+        move: (dx, dy) => {
+          const cam = this.camera;
+          this.animateTo({ azimuth: cam.azimuth - dx * 15, elevation: cam.elevation - dy * 10 }, prefersReducedMotion() ? 0 : 180);
+        },
+        zoom: (factor) => {
+          if (this.options.zoom ?? true) this.animateTo({ zoom: this.camera.zoom * factor }, prefersReducedMotion() ? 0 : 180);
+        },
+      });
+    }
     this.resize();
   }
 

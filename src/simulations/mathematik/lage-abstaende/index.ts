@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import {
   add,
   clipLineToBox,
@@ -1185,7 +1185,7 @@ export default defineSimulation({
         g.lineWidth = 1 + l;
         g.stroke();
         g.restore();
-        const color = nd.leaf ? (l > 0.5 ? '#ffffff' : theme.text) : l > 0.5 ? (theme.dark ? shade(hot, 0.35) : shade(hot, -0.2)) : theme.text;
+        const color = nd.leaf ? (l > 0.5 ? textOn(mixColor(theme.muted, hot, l), theme) : theme.text) : l > 0.5 ? (theme.dark ? shade(hot, 0.35) : shade(hot, -0.2)) : theme.text;
         text(g, nd.text, b.x + b.w / 2, b.y + 0.5, { font: font(nd.leaf ? 800 : 650, b.size), color });
       }
       return rowY[3]! - y0 + 12;

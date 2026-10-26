@@ -148,7 +148,7 @@ export default defineSimulation({
       const exact = exactTrig(deg, fn);
       if (exact === '0' || exact === '1' || exact === '−1') return `${fn} α = ${exact}`;
       /* „=“, wenn die Dezimalzahl exakt ist (1/2 = 0,5), sonst „≈“ (√3/2 ≈ 0,866) */
-      const rel = Math.abs(value * 1000 - Math.round(value * 1000)) < 1e-6 ? '=' : '≈';
+      const rel = fmt.rel(value, 3);
       if (exact) return `${fn} α = ${exact} ${rel} ${fmt.num(value, 3)}`;
       return `${fn} α ≈ ${fmt.num(value, 3)}`;
     }

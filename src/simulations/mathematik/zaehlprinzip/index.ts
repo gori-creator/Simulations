@@ -1725,6 +1725,38 @@ export default defineSimulation({
     }
 
     /* ---------------- Zeiger ---------------- */
+    /** Ast oder Ergebniskarte antippen: Pfad auswählen (nochmals: abwählen). */
+    function tapHit(h: Hit): void {
+      stopWalk();
+      const key = pathKey(h.path);
+      const node = tree.byKey.get(key);
+      let path = h.path;
+      if (h.kind === 'node' && node && node.kind === 'more') path = node.path;
+      if (selKey() === pathKey(path) || path.length === 0) select(null);
+      else select(path.slice());
+      ctx.requestRender();
+    }
+
+    /** Tastatur wie Antippen: Äste des Baums und Ergebniskarten. */
+    function updateKeyTargets(): void {
+      if (ctx.locked) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const de = lang === 'de';
+      ctx.setKeyTargets(
+        hits
+          .filter((h) => h.path.length > 0)
+          .map((h) => {
+            const names = h.path.map((idx, stage) => itemName(stage, idx)).join(' – ');
+            const kind = h.kind === 'card' ? (de ? 'Ergebnis' : 'Outcome') : de ? 'Ast' : 'Branch';
+            const chosen = selKey() === pathKey(h.path) ? (de ? ' – gewählt' : ' – selected') : '';
+            const rect = h.round ? { x: h.x - h.w, y: h.y - h.w, w: 2 * h.w, h: 2 * h.w } : { x: h.x, y: h.y, w: h.w, h: h.h };
+            return { id: h.key, label: `${kind}: ${names}${chosen}`, rect, activate: () => tapHit(h) };
+          }),
+      );
+    }
+
     function hitAt(px: number, py: number): Hit | null {
       let best: Hit | null = null;
       let bestD = Infinity;
@@ -1746,14 +1778,7 @@ export default defineSimulation({
         if (ctx.locked) return false;
         const h = hitAt(pt.px, pt.py);
         if (!h) return false;
-        stopWalk();
-        const key = pathKey(h.path);
-        const node = tree.byKey.get(key);
-        let path = h.path;
-        if (h.kind === 'node' && node && node.kind === 'more') path = node.path;
-        if (selKey() === pathKey(path) || path.length === 0) select(null);
-        else select(path.slice());
-        ctx.requestRender();
+        tapHit(h);
         return true;
       },
       pointerMove: () => {},
@@ -1935,6 +1960,7 @@ export default defineSimulation({
         }
         drawList(1 - A);
         drawCards(now);
+        updateKeyTargets();
         if (busy || walkBusy) ctx.requestRender();
       },
 

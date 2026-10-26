@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, textOn, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   APPS,
@@ -496,8 +496,8 @@ export default defineSimulation({
     /** Stellen nach Größe: große Werte mit weniger Nachkommastellen. */
     const nd = (v: number) => (Math.abs(v) >= 100 ? 1 : Math.abs(v) >= 10 ? 2 : 2);
     const NV = (v: number) => N(v, nd(v));
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
+    const eq = (v: number, d = 2) => ctx.fmt.rel(v, d);
 
     /* ---------- Funktionen ---------- */
     const coefNow = (): Coeffs => {
@@ -1730,7 +1730,8 @@ export default defineSimulation({
           const txt = label(v);
           g.font = `700 ${fs(11, 10.5)}px ${theme.font}`;
           if (txt && g.measureText(txt).width < xb - xa - 8) {
-            g.fillStyle = theme.dark ? '#f4f7fb' : '#1b2533';
+            // Dunkelmodus: hell auf der Bandfarbe, sonst dunkle Schrift (Kontrast)
+            g.fillStyle = theme.dark ? textOn(color(v), theme, '#f4f7fb') : '#1b2533';
             g.textAlign = 'center';
             g.textBaseline = 'middle';
             g.fillText(txt, (xa + xb) / 2, y + h / 2 + 0.5);

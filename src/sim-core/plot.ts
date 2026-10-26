@@ -177,6 +177,20 @@ export class Plot implements PointerTarget {
     surface.addTarget(this);
     if (options.controls ?? options.zoom ?? true) this.createControls();
     this.resize();
+    if (options.pan ?? true) {
+      // Tastatur: Pfeiltasten verschieben (ein Zehntel der Breite bzw. Höhe), Plus/Minus zoomen
+      surface.host.setViewKeys?.({
+        hint: t(surface.lang, 'sim.viewKeysPan'),
+        move: (dx, dy) => {
+          this.center = [this.center[0] + (dx * this.r.w * 0.1) / this.sx, this.center[1] - (dy * this.r.h * 0.1) / this.sy];
+          this.viewChanged = true;
+          this.surface.host.requestRender();
+        },
+        zoom: (factor) => {
+          if (this.options.zoom ?? true) this.zoomBy(factor);
+        },
+      });
+    }
   }
 
   /* ---------- Ansicht ---------- */

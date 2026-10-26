@@ -494,8 +494,8 @@ export default defineSimulation({
     /** Stellen nach Größe: große Werte mit weniger Nachkommastellen. */
     const nd = (v: number) => (Math.abs(v) >= 100 ? 1 : Math.abs(v) >= 10 ? 2 : 3);
     const NV = (v: number) => N(v, nd(v));
-    const isExact = (v: number, d = 3) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eq = (v: number, d = 3) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 3) => ctx.fmt.isExact(v, d);
+    const eq = (v: number, d = 3) => ctx.fmt.rel(v, d);
     const lim = (v: number) => {
       const D = exactFn().x;
       return clamp(v, D[0], D[1]);

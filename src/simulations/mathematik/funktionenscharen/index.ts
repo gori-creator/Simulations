@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, withAlpha, Plot, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, textOn, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { branchXRange, caseAt, caseIndex, FAMS, inDom, K_MAX, K_MIN, nearestK, sweepK, sweepLength, bounceK, type Branch, type FamKey, type Family } from './model';
 
@@ -1626,7 +1626,7 @@ export default defineSimulation({
           g.font = `800 ${Math.round(r0 * 1.15)}px ${theme.font}`;
           g.textAlign = 'center';
           g.textBaseline = 'middle';
-          g.fillStyle = done || cur ? '#ffffff' : theme.muted;
+          g.fillStyle = done || cur ? textOn(cur ? col.loc() : mixColor(col.loc(), theme.bg, 0.25), theme) : theme.muted;
           g.fillText(done ? '✓' : String(k), cx, yD + 0.5);
           g.restore();
           dotHits.push({ x: cx, y: yD, r: Math.max(r0, 14), k });

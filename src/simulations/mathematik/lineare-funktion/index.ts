@@ -67,7 +67,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Koordinatensystem mit dem Graphen der linearen Funktion',
+      canvas: 'Koordinatensystem mit dem Graphen der linearen Funktion f(x) = mx + t, dem Steigungsdreieck und dem Schnittpunkt mit der y-Achse; auf Wunsch eine zweite Gerade g',
       rising: 'steigend (m > 0)',
       falling: 'fallend (m < 0)',
       constant: 'konstant (m = 0), parallel zur x-Achse',
@@ -80,7 +80,7 @@ export default defineSimulation({
       intercept: 't',
     },
     en: {
-      canvas: 'Coordinate system with the graph of the linear function',
+      canvas: 'Coordinate system with the graph of the linear function f(x) = mx + c, the slope triangle and the y-intercept; optionally a second line g',
       rising: 'increasing (m > 0)',
       falling: 'decreasing (m < 0)',
       constant: 'constant (m = 0), parallel to the x-axis',

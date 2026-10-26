@@ -69,6 +69,9 @@ Höchstens zwei Korrekturrunden, dann Bericht mit ehrlich benannten Restpunkten.
 - [ ] Zahlen mit Dezimalkomma und echtem Minus `−`, Einheiten vorhanden.
 - [ ] Keine Konsolenfehler und kein horizontaler Überlauf (meldet `simshot`).
 - [ ] Animationen: Nichts springt. Zahlen zählen, Elemente blenden ein, kurze Einstiegsanimation. Mit `prefersReducedMotion` alles sofort.
+- [ ] Tastatur: Alles, was man im Bild nur antippen kann (Türen, Knoten, Knöpfe im Bild), ist mit `ctx.setKeyTargets` angemeldet; was man zieht, hat einen Regler. Meldungen, die nur im Bild stehen, mit `ctx.announce` ansagen.
+- [ ] Etiketten auf Farbflächen: Schriftfarbe über `textOn(fläche, ctx.theme)` statt festem Weiß (sonst im Dunkelmodus oft nur 2,5 : 1).
+- [ ] „=“/„≈“ über `ctx.fmt.rel`/`ctx.fmt.approx` statt eigener Helfer.
 
 ### 4.4 Lernmaterial
 - DE ausführlich (60–110 Zeilen), EN kürzer, Aufbau nach `AUFTRAG.md` Abschnitt 4.

@@ -71,3 +71,22 @@ describe('Terme', () => {
     expect(strip(sum([{ coef: 2, body: 'sin(x)', dot: true }], de))).toBe('2 · sin(x)');
   });
 });
+
+describe('Formatter: exakt oder gerundet (= / ≈)', () => {
+  it('erkennt exakt darstellbare Werte', () => {
+    expect(de.isExact(2.5, 1)).toBe(true);
+    expect(de.isExact(0.1 + 0.2, 2)).toBe(true);
+    expect(de.isExact(Math.PI, 2)).toBe(false);
+    expect(de.isExact(1 / 3, 4)).toBe(false);
+    expect(de.isExact(-1.25, 2)).toBe(true);
+    expect(de.isExact(Number.NaN, 2)).toBe(false);
+  });
+
+  it('wählt das Zeichen und schreibt die Zahl dazu', () => {
+    expect(de.rel(2.5, 1)).toBe('=');
+    expect(de.rel(Math.SQRT2, 3)).toBe('≈');
+    expect(de.approx(Math.PI)).toBe('≈ 3,14');
+    expect(de.approx(2.5)).toBe('= 2,5');
+    expect(new Formatter('en').approx(-Math.E, 3)).toBe(`≈ ${MINUS}2.718`);
+  });
+});

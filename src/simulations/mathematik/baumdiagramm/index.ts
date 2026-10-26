@@ -1100,19 +1100,27 @@ export default defineSimulation({
     }
 
     /* ---------- Zeiger ---------- */
-    function leafAt(px: number, py: number): string | null {
+    /** Bäume mit Lage der Blätter (zweiter Baum nur im Vergleich). */
+    function leafGeos(): { R: Rect; tg: TreeGeo }[] {
       const m = mode();
       const lay = layout(m);
       const cands: [Rect | undefined, boolean, boolean][] = [
         [lay.tree, m === 'compare' ? false : repNow(), m === 'draw' || m === 'sim'],
         [lay.tree2, true, false],
       ];
+      const out: { R: Rect; tg: TreeGeo }[] = [];
       for (const [R, rep, bars] of cands) {
-        if (!R || px < R.x || px > R.x + R.w || py < R.y || py > R.y + R.h) continue;
+        if (!R) continue;
         const narrow = R.w < 460;
         const infoW = bars ? (narrow ? Math.min(150, R.w * 0.42) : Math.min(240, R.w * 0.38)) : narrow ? Math.min(120, R.w * 0.34) : Math.min(170, R.w * 0.32);
         const footerOn = m !== 'rules' && m !== 'sim' && (evId() !== 'none' || hoverPath !== null || pickPath !== null);
-        const tg = treeGeo(R, treeOf(rep), rep, infoW, footerOn ? 58 : 14);
+        out.push({ R, tg: treeGeo(R, treeOf(rep), rep, infoW, footerOn ? 58 : 14) });
+      }
+      return out;
+    }
+    function leafAt(px: number, py: number): string | null {
+      for (const { R, tg } of leafGeos()) {
+        if (px < R.x || px > R.x + R.w || py < R.y || py > R.y + R.h) continue;
         let best: string | null = null;
         let bd = Infinity;
         for (const row of tg.leafRows) {
@@ -1125,6 +1133,34 @@ export default defineSimulation({
         return best;
       }
       return null;
+    }
+    /** Pfad antippen: hervorheben (und bei „eigenes Ereignis“ hinzufügen/entfernen). */
+    function tapLeaf(lp: string): void {
+      if (evId() === 'custom' && !ctx.locked) {
+        const cur = sel();
+        const next = cur.includes(lp) ? cur.filter((s) => s !== lp) : [...cur, lp];
+        ctx.set({ sel: next.join(', ') });
+      }
+      pickPath = pickPath === lp ? null : lp;
+      updateReadouts();
+      ctx.requestRender();
+    }
+    /** Tastatur: Pfade wie Antippen (Pfeiltasten wählen, Enter hebt hervor). */
+    function updateKeyTargets(): void {
+      const first = leafGeos()[0];
+      if (!first) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const { R, tg } = first;
+      ctx.setKeyTargets(
+        tg.leafRows.map((row) => ({
+          id: row.path,
+          label: `P(${pathName(row.path)})${evId() === 'custom' && sel().includes(row.path) ? ` – ${tt('im Ereignis', 'in the event')}` : ''}`,
+          rect: { x: row.x - 30, y: row.y - tg.rowH / 2, w: R.x + R.w - (row.x - 30), h: tg.rowH },
+          activate: () => tapLeaf(row.path),
+        })),
+      );
     }
     surface.addTarget({
       contains: (px, py) => {
@@ -1141,14 +1177,7 @@ export default defineSimulation({
           }
           return true;
         }
-        if (evId() === 'custom' && !ctx.locked) {
-          const cur = sel();
-          const next = cur.includes(lp) ? cur.filter((s) => s !== lp) : [...cur, lp];
-          ctx.set({ sel: next.join(', ') });
-        }
-        pickPath = pickPath === lp ? null : lp;
-        updateReadouts();
-        ctx.requestRender();
+        tapLeaf(lp);
         return true;
       },
       pointerMove: () => undefined,
@@ -1248,6 +1277,7 @@ export default defineSimulation({
     }
 
     function render(): void {
+      updateKeyTargets();
       const now = performance.now();
       const dt = Math.min(0.1, Math.max(0, (now - lastTime) / 1000));
       lastTime = now;

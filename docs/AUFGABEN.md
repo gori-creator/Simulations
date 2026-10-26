@@ -20,14 +20,15 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 Betrifft `src/sim-core/` und einzelne Simulationen; Details in der Beschreibung von PR #44 („Nur aufgelistet“).
 
-- [ ] Pro Simulation prüfen, ob alle ziehbaren Punkte als Tastatur-Ziel angemeldet sind (`key-targets.ts`).
-- [ ] Namen der Zeichenflächen (`surface.ts`) beschreibend machen statt allgemein.
-- [ ] Messwerte: nach Loslassen bzw. Tastatur-Änderung höflich vorlesen (statt `aria-live="off"`).
-- [ ] `dragHint` mit aktuellen Werten statt festem Text.
-- [ ] Klären, ob `_hide=1` auch die zugehörigen Regler ausblenden soll (Prüfungs-Links).
-- [ ] `fmt.approx` im Kern ergänzen; Simulationen, die „≈“ selbst bauen, darauf umstellen.
-- [ ] Prüfbogen: reduzierte Bewegung auch nach „Start“ prüfen.
-- [ ] Fest eingetragene Farben in Simulationen auf `ctx.theme` umstellen bzw. Kontrast im Dunkelmodus prüfen.
+- [x] Pro Simulation prüfen, ob alle ziehbaren Punkte als Tastatur-Ziel angemeldet sind (`key-targets.ts`). Alle gezogenen Werte haben Regler; Antippen-Aktionen in 17 Simulationen sind jetzt Tastatur-Ziele, 3D-Ansichten und verschiebbare Koordinatensysteme per Pfeiltasten/Plus/Minus bedienbar (PR „Barrierefreiheit in den Simulationen“). Offen: Zeitmarken (z. B. Bewegungsdiagramme) nur über Abspielen/Anhalten.
+- [x] Namen der Zeichenflächen (`surface.ts`) beschreibend machen statt allgemein. Fast alle waren schon beschreibend; die vier kürzesten ergänzt.
+- [x] Messwerte: nach Loslassen bzw. Tastatur-Änderung höflich vorlesen (statt `aria-live="off"`). Geänderte Ergebnisse werden angesagt; neu `ctx.announce()`.
+- [x] `dragHint` mit aktuellen Werten statt festem Text (unsichtbarer Zusatz mit den Regler-Werten).
+- [x] Klären, ob `_hide=1` auch die zugehörigen Regler ausblenden soll (Prüfungs-Links). Empfehlung im PR: nicht alle Regler, nur als `spoiler` gekennzeichnete; Entscheidung der Projektleitung steht aus.
+- [x] `fmt.approx` im Kern ergänzen; Simulationen, die „≈“ selbst bauen, darauf umstellen (`fmt.isExact`, `fmt.rel`, `fmt.approx`; 18 Simulationen).
+- [x] Prüfbogen: reduzierte Bewegung auch nach „Start“ prüfen (auch nach Aktionsknöpfen).
+- [x] Fest eingetragene Farben in Simulationen auf `ctx.theme` umstellen bzw. Kontrast im Dunkelmodus prüfen. Kontrast gemessen; Schrift auf Farbflächen über `textOn()` (rund 30 Simulationen). Materialfarben (Kupfer, Holz …) bewusst unverändert, damit das Aussehen gleich bleibt.
+- [ ] Theme-Reihenfarben Orange/Grün im hellen Modus als Textfarbe unter 4,5 : 1 auf Weiß – beim neuen Design entscheiden.
 
 ## Rechtliches (vor der echten Veröffentlichung)
 

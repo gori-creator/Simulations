@@ -286,8 +286,8 @@ export default defineSimulation({
     /* ---------- Zahlen ---------- */
     const clean = (v: number, d: number) => (Math.abs(v) < 0.5 * 10 ** -d ? 0 : v);
     const N = (v: number, d = 2) => fmt.num(clean(v, d), d);
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
+    const eq = (v: number, d = 2) => ctx.fmt.rel(v, d);
     /** Faktor als Formel: ganze Zahl, Dezimalzahl oder Stammbruch (1/8). */
     const facF = (v: number, d = 3) => {
       const n = reciprocalInt(v);

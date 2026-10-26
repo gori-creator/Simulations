@@ -303,6 +303,25 @@ export default defineSimulation({
       ctx.setAction('remove', { enabled: p.n > 0 && !ctx.locked });
     }
 
+    /** Tastatur: Feder wie mit der Maus 4 cm nach unten ziehen und loslassen (Schwingung). */
+    function updateKeyTargets(): void {
+      const de = ctx.lang === 'de';
+      ctx.setKeyTargets([
+        {
+          id: 'pull',
+          label: de ? 'Feder nach unten ziehen und loslassen' : 'Pull the spring down and let go',
+          activate: () => {
+            autoRun = false;
+            x = Math.min(viewS * 1.15 + 0.02, x + 0.04);
+            v = 0;
+            settled = false;
+            lastFrame = performance.now();
+            ctx.requestRender();
+          },
+        },
+      ]);
+    }
+
     /* ---------- Zeiger: Kasten antippen, Massestücke antippen oder ziehen ---------- */
     let press: { py: number; x0: number; moved: boolean; onStack: boolean } | null = null;
     const stackRect = (): Rect | null => {
@@ -933,6 +952,7 @@ export default defineSimulation({
       },
 
       render() {
+        updateKeyTargets();
         const now = performance.now();
         const dt = Math.min(0.05, (now - lastFrame) / 1000);
         lastFrame = now;

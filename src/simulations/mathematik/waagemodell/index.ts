@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, text, withAlpha, type KeyTarget, type Rect } from '../../../sim-core';
 import {
   canDivide,
   canSubtract,
@@ -633,6 +633,30 @@ export default defineSimulation({
         if (it) removeOne(it);
       },
     });
+
+    /** Tastatur wie Antippen: je Schale ein x-Päckchen bzw. ein Gewicht wegnehmen. */
+    function updateKeyTargets(): void {
+      const de = ctx.lang === 'de';
+      const targets: KeyTarget[] = [];
+      for (const side of ['L', 'R'] as const) {
+        for (const kind of ['x', '1'] as const) {
+          const it = items.find((q) => q.side === side && q.kind === kind && !q.leaving);
+          const what = kind === 'x' ? (de ? 'ein x-Päckchen' : 'one x box') : de ? 'ein Gewicht (1)' : 'one weight (1)';
+          const where = side === 'L' ? (de ? 'links' : 'left') : de ? 'rechts' : 'right';
+          targets.push({
+            id: `${side}${kind}`,
+            label: de ? `${where}: ${what} wegnehmen` : `${where}: remove ${what}`,
+            rect: it ? itemRects.get(it.id) : undefined,
+            disabled: !it || ctx.locked,
+            activate: () => {
+              if (it && !ctx.locked) removeOne(it);
+              ctx.requestRender();
+            },
+          });
+        }
+      }
+      ctx.setKeyTargets(targets);
+    }
 
     /* ---------- Zeichnen ---------- */
     function drawTokens(parts: { s: string; italic?: boolean }[], x: number, y: number, size: number, color: string, align: 'left' | 'right' | 'center'): number {
@@ -1439,6 +1463,7 @@ export default defineSimulation({
         const now = performance.now();
         const dt = Math.min(0.05, (now - lastFrame) / 1000);
         lastFrame = now;
+        updateKeyTargets();
         const moving = physics(dt);
         if (divAnim && now - divAnim.start >= 1300) {
           // Nach dem Gruppieren: übrige Gruppen wegnehmen

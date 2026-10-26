@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { denominatorFactors, digitAt, levelBounds, longDivision, nextRemainder, placeName, powerOfTen, predict, primeFactors, remainderAt, remainders, type DecimalKind, type Expansion } from './model';
 import { drawFrac, drawRich, fill, fr, fracWidth, richHeight, type TextToken, type Token } from './rich';
 
@@ -1194,7 +1194,7 @@ export default defineSimulation({
           g.arc(x, y, nr + (hov ? 1.5 : 0), 0, Math.PI * 2);
           g.stroke();
         }
-        if (big) text(g, String(r), x, y + 0.5, { font: `750 ${Math.min(13, nr * 1.02)}px ${F()}`, color: isVisited ? '#ffffff' : zero ? colFin() : T.muted });
+        if (big) text(g, String(r), x, y + 0.5, { font: `750 ${Math.min(13, nr * 1.02)}px ${F()}`, color: isVisited ? textOn(zero ? colFin() : colRest(), T) : zero ? colFin() : T.muted });
         else if (isVisited || zero || n <= 30 || r % 5 === 0) {
           const lr = R + nr + 9;
           haloText(String(r), cx + lr * Math.cos(ang(r)), cy + lr * Math.sin(ang(r)), `${isVisited ? 750 : 600} 10px ${F()}`, isVisited ? (zero ? colFin() : colRest()) : T.muted);
@@ -1221,7 +1221,7 @@ export default defineSimulation({
           g.fillStyle = color;
           roundRect(g, x - hs, y - hs, 2 * hs, 2 * hs, 3.5);
           g.fill();
-          text(g, String(exp.steps[i - 1]!.digit), x, y + 0.5, { font: `800 11px ${F()}`, color: '#ffffff' });
+          text(g, String(exp.steps[i - 1]!.digit), x, y + 0.5, { font: `800 11px ${F()}`, color: textOn(color, T) });
           g.restore();
         }
       }
@@ -1403,7 +1403,7 @@ export default defineSimulation({
             g.beginPath();
             g.arc(xc, y - 15, 7.5, 0, Math.PI * 2);
             g.fill();
-            text(g, String(k), xc, y - 14.5, { font: `800 11px ${F()}`, color: '#ffffff' });
+            text(g, String(k), xc, y - 14.5, { font: `800 11px ${F()}`, color: textOn(color, T) });
             g.restore();
           } else text(g, String(k), xc, y - 14.5, { font: `600 ${wide ? 10 : 9.5}px ${F()}`, color: withAlpha(T.text, 0.38) });
         }

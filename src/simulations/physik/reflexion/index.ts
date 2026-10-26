@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, TapTarget, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dirFromVertical,
   evenWedges,
@@ -694,7 +694,7 @@ export default defineSimulation({
         roundRect(g, left + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, str, left + w / 2, y + 0.5, { font: `700 ${size}px ${theme.font}`, color: opts.solid ? '#ffffff' : color });
+      text(g, str, left + w / 2, y + 0.5, { font: `700 ${size}px ${theme.font}`, color: opts.solid ? textOn(color, theme) : color });
       return w;
     }
 
@@ -1803,7 +1803,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(x, y, 9, 0, Math.PI * 2);
         g.stroke();
-        text(g, String(img.seq.length), x, y + 0.5, { font: `700 11px ${theme.font}`, color: on ? '#ffffff' : theme.text });
+        text(g, String(img.seq.length), x, y + 0.5, { font: `700 11px ${theme.font}`, color: on ? textOn(theme.series[3]!, theme) : theme.text });
       });
       // Lichtweg zum ausgewählten Bild
       if (sel) {
@@ -1964,7 +1964,7 @@ export default defineSimulation({
         g.beginPath();
         g.arc(rx + 14, cy, 8.5, 0, Math.PI * 2);
         g.fill();
-        text(g, String(img.seq.length), rx + 14, cy + 0.5, { font: `700 11px ${theme.font}`, color: on ? '#ffffff' : theme.text });
+        text(g, String(img.seq.length), rx + 14, cy + 0.5, { font: `700 11px ${theme.font}`, color: on ? textOn(theme.series[3]!, theme) : theme.text });
         const right = rx + colW - 10;
         eyeIcon(right - 8, cy, 16, !!paths[i]);
         flagIcon(right - 30, cy, small ? 13 : 15, isReversed(img), 0.95);

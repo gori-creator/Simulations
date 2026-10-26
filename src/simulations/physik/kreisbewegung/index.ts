@@ -1,4 +1,4 @@
-import { defineSimulation, ease, measureSubText, Plot, roundRect, scaledSprite, shade, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, measureSubText, Plot, roundRect, scaledSprite, shade, subText, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   breakingPeriod,
   breakingSpeed,
@@ -502,7 +502,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? '#ffffff' : color, 'center', false);
+      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? textOn(fill, theme) : color, 'center', false);
       return w;
     }
 

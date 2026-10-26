@@ -2,7 +2,7 @@ import type { Lang, Localized } from '../i18n/config';
 import type { Clock } from './clock';
 import type { Formatter } from './format';
 import type { ImageStore } from './images';
-import type { KeyTarget } from './key-targets';
+import type { KeyTarget, ViewKeys } from './key-targets';
 import type { Theme } from './theme';
 
 /* ------------------------------------------------------------------ */
@@ -182,12 +182,20 @@ export interface SimContext<V> {
    * Auswahl bleibt über die `id` erhalten. Leere Liste schaltet es ab.
    */
   setKeyTargets(targets: readonly KeyTarget[]): void;
+  /** Tastatur für die Ansicht (meldet `View3D` bzw. `Plot` selbst an; selten direkt nötig). */
+  setViewKeys(keys: ViewKeys | null): void;
   /** ID des per Tastatur ausgewählten Objekts, solange die Bühne den Fokus hat (sonst `null`). */
   readonly keyFocus: string | null;
   /** Parameter ändern (z. B. beim Ziehen eines Punktes). Werte werden auf min/max/step gerundet. */
   set(values: Partial<V>): void;
   /** Ein Ergebnis anzeigen oder (mit `null`) ausblenden. */
   readout(key: string, value: ReadoutValue): void;
+  /**
+   * Text für Bildschirmleser ansagen (höflich, unsichtbar), z. B. eine Meldung,
+   * die nur auf der Zeichenfläche steht („Hinter Tür 3 steht eine Ziege …“).
+   * Geänderte Ergebnisse sagt der Host nach Eingaben schon selbst an.
+   */
+  announce(message: string): void;
   /** Simulationseigener Text aus `strings`. */
   t(key: string): string;
   /** Aktions-Knopf aktivieren/deaktivieren oder umbenennen. */

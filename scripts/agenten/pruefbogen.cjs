@@ -28,7 +28,7 @@ const DEVICES = [
   fs.mkdirSync(outDir, { recursive: true });
   const tmp = fs.mkdtempSync(path.join(outDir, `.${name}-`));
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
-  const report = { name, url, shots: [], consoleErrors: [], overflow: [], reducedMotionStill: null, unnamedControls: [], tabOrder: [] };
+  const report = { name, url, shots: [], consoleErrors: [], overflow: [], reducedMotionStill: null, reducedMotionPlay: null, reducedMotionActions: [], unnamedControls: [], tabOrder: [] };
 
   const open = async (w, h, scheme, opts = {}) => {
     const ctx = await browser.newContext({ viewport: { width: w, height: h }, colorScheme: scheme, hasTouch: !!opts.touch, isMobile: !!opts.touch && w < 700, reducedMotion: opts.reduced ? 'reduce' : 'no-preference' });
@@ -68,7 +68,7 @@ const DEVICES = [
     await ctx.close();
   }
 
-  // 3. Reduzierte Bewegung: zwei Fotos im Abstand von 1,5 s müssen gleich sein
+  // 3. Reduzierte Bewegung: zwei Fotos im Abstand von 1,5 s müssen gleich sein (Startzustand)
   {
     const { ctx, page } = await open(1360, 900, 'light', { reduced: true });
     const root = page.locator('[data-sim-root]').first();
@@ -81,6 +81,41 @@ const DEVICES = [
     if (!report.reducedMotionStill) {
       fs.writeFileSync(path.join(outDir, `${name}-bewegung-a.png`), a);
       fs.writeFileSync(path.join(outDir, `${name}-bewegung-b.png`), b);
+    }
+    const still = async (label) => {
+      const x = await page.screenshot({ clip });
+      await page.waitForTimeout(1500);
+      const y = await page.screenshot({ clip });
+      const same = Buffer.compare(x, y) === 0;
+      if (!same) {
+        fs.writeFileSync(path.join(outDir, `${name}-bewegung-${label}-a.png`), x);
+        fs.writeFileSync(path.join(outDir, `${name}-bewegung-${label}-b.png`), y);
+      }
+      return same;
+    };
+    // 3b. Nach „Start“ läuft die Simulation (gewollt); nach „Anhalten“ muss sie wieder stillstehen
+    const play = page.locator('[data-action="play"]').first();
+    if (await play.isVisible().catch(() => false)) {
+      const before = await page.screenshot({ clip });
+      await play.click();
+      await page.waitForTimeout(1200);
+      const running = await page.screenshot({ clip });
+      await play.click();
+      await page.waitForTimeout(300);
+      report.reducedMotionPlay = { moves: Buffer.compare(before, running) !== 0, stillAfterPause: await still('pause') };
+    }
+    // 3c. Aktionsknöpfe (z. B. „Würfeln“, „Ziehen“): danach kein Nachlaufen, solange die Uhr nicht läuft
+    const actions = page.locator('[data-sim-actions] button:visible');
+    const n = Math.min(await actions.count(), 6);
+    for (let i = 0; i < n; i++) {
+      const btn = actions.nth(i);
+      const label = ((await btn.textContent()) || '').trim().slice(0, 40);
+      if (!(await btn.isEnabled().catch(() => false))) continue;
+      await btn.click().catch(() => {});
+      await page.waitForTimeout(400);
+      const playing = await page.locator('[data-action="play"][aria-pressed="true"]').count();
+      if (playing) continue;
+      if (!(await still(`aktion-${i + 1}`))) report.reducedMotionActions.push(label);
     }
     await ctx.close();
   }
@@ -116,6 +151,8 @@ const DEVICES = [
   const cells = report.shots.map((s) => `<figure><img src="data:image/png;base64,${fs.readFileSync(s.file).toString('base64')}"><figcaption>${s.label}</figcaption></figure>`).join('');
   const findings = [
     `Reduzierte Bewegung: ${report.reducedMotionStill ? 'steht still ✓' : 'Bild ändert sich ✗ – <name>-bewegung-a/b.png vergleichen'}`,
+    `Reduzierte Bewegung nach Start/Anhalten: ${report.reducedMotionPlay === null ? 'kein Start-Knopf' : `${report.reducedMotionPlay.moves ? 'läuft nach Start' : 'Start ändert nichts (prüfen)'}, ${report.reducedMotionPlay.stillAfterPause ? 'steht nach Anhalten still ✓' : 'bewegt sich nach Anhalten weiter ✗ – <name>-bewegung-pause-a/b.png'}`}`,
+    `Reduzierte Bewegung nach Aktionen: ${report.reducedMotionActions.length ? `läuft nach ✗: ${report.reducedMotionActions.join(', ')} (<name>-bewegung-aktion-*.png)` : 'kein Nachlaufen ✓'}`,
     `Konsolenfehler: ${report.consoleErrors.length ? report.consoleErrors.join(' | ') : 'keine ✓'}`,
     `Waagerechter Überlauf: ${report.overflow.length ? report.overflow.join(', ') : 'keiner ✓'}`,
     `Bedienelemente ohne Namen: ${report.unnamedControls.length || 'keine ✓'}`,

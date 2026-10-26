@@ -64,6 +64,54 @@ export function withAlpha(color: string, alpha: number): string {
 }
 
 /* ------------------------------------------------------------------ */
+/* Kontrast                                                            */
+/* ------------------------------------------------------------------ */
+
+/** Farbe als [r, g, b] (0–255) aus `#rgb`, `#rrggbb`, `#rrggbbaa`, `rgb(…)` oder `rgba(…)`; sonst `null`. */
+export function colorRgb(color: string): [number, number, number] | null {
+  const c = color.trim().toLowerCase();
+  let m = /^#([0-9a-f]{3})$/.exec(c);
+  if (m) return [...m[1]!].map((h) => parseInt(h + h, 16)) as [number, number, number];
+  m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/.exec(c);
+  if (m) return [0, 2, 4].map((i) => parseInt(m![1]!.slice(i, i + 2), 16)) as [number, number, number];
+  m = /^rgba?\(([^)]+)\)$/.exec(c);
+  if (m) {
+    const v = m[1]!.split(/[\s,/]+/).filter(Boolean).map(Number);
+    if (v.length >= 3 && v.slice(0, 3).every(Number.isFinite)) return [v[0]!, v[1]!, v[2]!];
+  }
+  return null;
+}
+
+/** Kontrastverhältnis zweier Farben nach WCAG (1 bis 21); `null`, wenn eine Farbe nicht lesbar ist. */
+export function contrastRatio(a: string, b: string): number | null {
+  const ca = colorRgb(a);
+  const cb = colorRgb(b);
+  if (!ca || !cb) return null;
+  const lum = (c: [number, number, number]) => {
+    const [r, g, bl] = c.map((v) => {
+      const u = v / 255;
+      return u <= 0.03928 ? u / 12.92 : ((u + 0.055) / 1.055) ** 2.4;
+    }) as [number, number, number];
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const la = lum(ca);
+  const lb = lum(cb);
+  return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+}
+
+/**
+ * Textfarbe auf einer farbigen Fläche (z. B. Etikett in einer Reihenfarbe).
+ * Im hellen Modus bleibt es bei `light` (Standard Weiß). Im Dunkelmodus sind
+ * die Reihenfarben hell; reicht dort der Kontrast von `light` nicht (unter 4,5 : 1),
+ * wird die dunkle Hintergrundfarbe des Themes genommen.
+ */
+export function textOn(fill: string, theme: { dark: boolean; bg: string }, light = '#ffffff'): string {
+  if (!theme.dark) return light;
+  const ratio = contrastRatio(light, fill);
+  return ratio === null || ratio >= 4.5 ? light : theme.bg;
+}
+
+/* ------------------------------------------------------------------ */
 /* Text mit tiefgestelltem Index                                       */
 /* ------------------------------------------------------------------ */
 
