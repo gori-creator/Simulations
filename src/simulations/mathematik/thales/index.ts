@@ -40,7 +40,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Thaleskreis über der Strecke AB mit Dreieck ABC und dem Winkel bei C',
+      canvas: 'Thaleskreis über der Strecke AB mit Mittelpunkt M, Dreieck ABC und dem Winkel bei C; C liegt auf dem Kreis oder lässt sich frei verschieben',
       on: 'auf dem Thaleskreis',
       inside: 'innerhalb des Thaleskreises',
       outside: 'außerhalb des Thaleskreises',
@@ -52,7 +52,7 @@ export default defineSimulation({
       proofFree: 'Die Beweisidee gilt nur, wenn C auf dem Kreis liegt.',
     },
     en: {
-      canvas: 'Thales circle over segment AB with triangle ABC and the angle at C',
+      canvas: 'Thales circle over segment AB with centre M, triangle ABC and the angle at C; C lies on the circle or can be moved freely',
       on: 'on the Thales circle',
       inside: 'inside the Thales circle',
       outside: 'outside the Thales circle',

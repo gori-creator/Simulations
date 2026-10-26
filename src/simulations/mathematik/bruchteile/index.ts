@@ -54,7 +54,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Ganzes, das in gleich große Teile geschnitten ist; ausgewählte Teile sind hervorgehoben',
+      canvas: 'Ein Ganzes (Pizza, Blechkuchen oder Strecke), in n gleich große Teile geschnitten; die z genommenen Teile sind hervorgehoben',
       tap: 'Tippe auf ein Stück, um bis dorthin auszuwählen.',
       of: '{z} von {n} gleich großen Teilen',
       wholes: '{w} Ganze und {r}/{n}',
@@ -65,7 +65,7 @@ export default defineSimulation({
       more: 'weitere Ganze sind nicht gezeichnet',
     },
     en: {
-      canvas: 'A whole cut into equal parts; selected parts are highlighted',
+      canvas: 'A whole (pizza, sheet cake or line segment) cut into n equal parts; the z parts taken are highlighted',
       tap: 'Tap a piece to select up to it.',
       of: '{z} of {n} equal parts',
       wholes: '{w} wholes and {r}/{n}',

@@ -99,6 +99,7 @@ class SimulationHost {
   private instance: SimInstance | null = null;
   /** Tastaturbedienung der Zeichenfläche; entsteht erst, wenn die Simulation Objekte meldet. */
   private keyTargets: KeyTargetLayer | null = null;
+  private viewKeysSet = false;
   private controls: Controls | null = null;
   private readouts = new Map<string, ReadoutRow>();
   private revealed = new Set<string>();
@@ -202,11 +203,14 @@ class SimulationHost {
       isHidden: (key) => isReadoutHidden(this.taskState(), key),
       setKeyTargets: (targets) => {
         if (!this.keyTargets && !targets.length) return;
-        this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
-          if (activated && this.pending.size) this.flush();
-          this.requestRender();
-        });
-        this.keyTargets.setTargets(targets);
+        this.keyLayer().setTargets(targets);
+      },
+      setViewKeys: (keys) => {
+        // Nur die erste Ansicht (Hauptansicht) bekommt die Pfeiltasten
+        if (keys && this.viewKeysSet) return;
+        this.viewKeysSet = keys !== null;
+        if (!this.keyTargets && !keys) return;
+        this.keyLayer().setView(keys);
       },
       get keyFocus() {
         return host.keyTargets?.selectedId ?? null;
@@ -381,6 +385,14 @@ class SimulationHost {
    * Beispielen oder Aktionen – nicht während des Ziehens. Verdeckte Ergebnisse
    * (Aufgabenmodus) werden nie angesagt.
    */
+  private keyLayer(): KeyTargetLayer {
+    this.keyTargets ??= new KeyTargetLayer(this.stage, t(this.lang, 'sim.keyTargets'), (activated) => {
+      if (activated && this.pending.size) this.flush();
+      this.requestRender();
+    });
+    return this.keyTargets;
+  }
+
   /** Unsichtbarer, höflicher Ansagebereich (einmal pro Simulation). */
   private live(): HTMLElement {
     if (!this.liveEl) {

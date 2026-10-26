@@ -1,4 +1,5 @@
 import type { Lang } from '../i18n/config';
+import type { ViewKeys } from './key-targets';
 import type { Theme } from './theme';
 
 export interface Rect {
@@ -14,6 +15,8 @@ export interface SurfaceHost {
   readonly lang: Lang;
   readonly theme: Theme;
   requestRender(): void;
+  /** Tastatur für die Ansicht (von `View3D`/`Plot`; optional, z. B. in Tests nicht vorhanden). */
+  setViewKeys?(keys: ViewKeys | null): void;
 }
 
 export interface SurfacePointer {

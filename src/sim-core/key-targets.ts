@@ -26,6 +26,21 @@ export interface KeyTarget {
 
 export type KeyResult = 'move' | 'activate' | null;
 
+/**
+ * Tastatur für die Ansicht selbst (3D-Ansicht drehen, Koordinatensystem
+ * verschieben, zoomen). `View3D` und `Plot` melden sich hier an; die Bühne wird
+ * dann per Tab erreichbar. Pfeiltasten bewegen die Ansicht – gibt es zugleich
+ * antippbare Objekte, mit gedrückter Umschalttaste. Plus/Minus zoomen.
+ */
+export interface ViewKeys {
+  /** Pfeiltaste: Richtung je −1, 0 oder 1 (x nach rechts, y nach unten). */
+  move(dx: number, dy: number): void;
+  /** Plus (Faktor > 1) bzw. Minus (< 1). */
+  zoom(factor: number): void;
+  /** Hinweis für Bildschirmleser, z. B. „Pfeiltasten drehen die Ansicht …“. */
+  hint: string;
+}
+
 /** Auswahl-Logik ohne DOM (testbar). */
 export class KeyTargetNav {
   private targets: KeyTarget[] = [];
@@ -116,6 +131,7 @@ export class KeyTargetLayer {
   private readonly live: HTMLElement;
   private focused = false;
   private active = false;
+  private view: ViewKeys | null = null;
 
   constructor(
     private readonly stage: HTMLElement,
@@ -133,13 +149,21 @@ export class KeyTargetLayer {
     stage.append(this.ring, this.live);
 
     stage.addEventListener('keydown', (event) => {
-      if (!this.active || event.target !== stage || event.altKey || event.ctrlKey || event.metaKey) return;
-      const result = this.nav.key(event.key);
-      if (!result) return;
-      event.preventDefault();
-      if (result === 'move') this.announce();
-      this.updateRing();
-      this.onChange(result === 'activate');
+      if (event.target !== stage || event.altKey || event.ctrlKey || event.metaKey) return;
+      if (this.active && !event.shiftKey) {
+        const result = this.nav.key(event.key);
+        if (result) {
+          event.preventDefault();
+          if (result === 'move') this.announce();
+          this.updateRing();
+          this.onChange(result === 'activate');
+          return;
+        }
+      }
+      if (this.view && this.viewKey(event.key)) {
+        event.preventDefault();
+        this.onChange(false);
+      }
     });
     stage.addEventListener('focus', () => {
       this.focused = true;
@@ -165,17 +189,42 @@ export class KeyTargetLayer {
     const active = targets.length > 0;
     if (active !== this.active) {
       this.active = active;
-      if (active) {
-        this.stage.tabIndex = 0;
-        this.stage.setAttribute('aria-label', this.label);
-        this.stage.classList.add('sim__stage--keys');
-      } else {
-        this.stage.removeAttribute('tabindex');
-        this.stage.removeAttribute('aria-label');
-        this.stage.classList.remove('sim__stage--keys');
-      }
+      this.syncStage();
     }
     this.updateRing();
+  }
+
+  /** Tastatur für die Ansicht an- (bzw. mit `null` ab-)melden. */
+  setView(view: ViewKeys | null): void {
+    this.view = view;
+    this.syncStage();
+  }
+
+  /** Bühne fokussierbar machen, solange es Objekte oder eine bewegliche Ansicht gibt. */
+  private syncStage(): void {
+    const on = this.active || this.view !== null;
+    if (on) {
+      this.stage.tabIndex = 0;
+      const label = this.active ? (this.view ? `${this.label} ${this.view.hint}` : this.label) : (this.view?.hint ?? '');
+      this.stage.setAttribute('aria-label', label);
+      this.stage.classList.add('sim__stage--keys');
+    } else {
+      this.stage.removeAttribute('tabindex');
+      this.stage.removeAttribute('aria-label');
+      this.stage.classList.remove('sim__stage--keys');
+    }
+  }
+
+  /** Pfeiltasten und Plus/Minus für die Ansicht; `true`, wenn die Taste verarbeitet wurde. */
+  private viewKey(key: string): boolean {
+    const view = this.view!;
+    const dir: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+    const d = dir[key];
+    if (d) view.move(d[0], d[1]);
+    else if (key === '+' || key === '=') view.zoom(1.25);
+    else if (key === '-' || key === '_') view.zoom(0.8);
+    else return false;
+    return true;
   }
 
   get selectedId(): string | null {
