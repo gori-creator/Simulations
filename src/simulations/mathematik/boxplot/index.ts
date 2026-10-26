@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, type Rect } from '../../../sim-core';
 import {
   autoRange,
   clampData,
@@ -547,7 +547,7 @@ export default defineSimulation({
       g.fillStyle = color;
       g.fill();
       g.restore();
-      text(g, value, cx, cy + 0.5, { font: f, color: '#ffffff' });
+      text(g, value, cx, cy + 0.5, { font: f, color: textOn(color, ctx.theme) });
       return { x, y: cy - h / 2, w, h };
     }
 

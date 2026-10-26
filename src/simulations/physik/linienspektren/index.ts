@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   cascade,
   colorNameOf,
@@ -710,7 +710,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? '#ffffff' : color, 'center');
+      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? textOn(fill, theme) : color, 'center');
       return { x: x0, y, w, h };
     }
 

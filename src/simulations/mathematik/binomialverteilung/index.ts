@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, seededRandom, Surface, textOn, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   bernoulliChain,
@@ -885,7 +885,7 @@ export default defineSimulation({
       for (const kb of knobs) {
         const active = drag === kb.id;
         const src = `${kb.name} = ${kb.val}`;
-        const box = formula(g, src, fstyle(size, '#ffffff', 800));
+        const box = formula(g, src, fstyle(size, textOn(c.ev, th()), 800));
         const w = box.w + 18;
         const h = size + 12;
         let x = X(kb.x) - w / 2;

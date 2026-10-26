@@ -12,6 +12,7 @@ import {
   shade,
   Surface,
   text,
+  textOn,
   Tween,
   withAlpha,
   type Rect,
@@ -619,7 +620,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: fill ? '#ffffff' : color });
+      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: fill ? textOn(fill, theme) : color });
       return { x: x0, y, w, h };
     }
     function pillWidth(label: string, size = 12): number {
@@ -1801,7 +1802,7 @@ export default defineSimulation({
           roundRect(g, x + 0.75, y + 0.75, w - 1.5, h - 1.5, h / 2);
           g.stroke();
         }
-        text(g, lab, x + w / 2, y + h / 2 + 0.5, { font: `${on > 0.5 ? 800 : 700} ${size}px ${theme.font}`, color: mixColor(theme.text, '#ffffff', on) });
+        text(g, lab, x + w / 2, y + h / 2 + 0.5, { font: `${on > 0.5 ? 800 : 700} ${size}px ${theme.font}`, color: mixColor(theme.text, textOn(col, theme), on) });
         tabRects.push({ v, r: { x, y, w, h } });
         x -= 5;
       }

@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, lerp, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, lerp, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   acceptanceAngle,
   apexPrism,
@@ -789,7 +789,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, solid ? '#ffffff' : color, 'center', false);
+      richText(label, x0 + w / 2, y + h / 2 + 0.5, size, solid ? textOn(solid, theme) : color, 'center', false);
       return { w, h };
     }
 

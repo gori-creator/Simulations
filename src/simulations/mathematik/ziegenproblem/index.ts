@@ -309,19 +309,39 @@ export default defineSimulation({
         return i >= 0 ? String(i) : null;
       },
       onHover: (id) => (hovered = id === null ? -1 : Number(id)),
-      onTap: (id) => {
-        const door = Number(id);
-        if (phase === 'pick') choose(door);
-        else if (phase === 'decide') {
-          if (door === chosen) decide(true);
-          else if (door === other) decide(false);
-        } else {
-          newGame();
-          choose(door);
-        }
-        ctx.requestRender();
-      },
+      onTap: (id) => tapDoor(Number(id)),
     });
+
+    function tapDoor(door: number): void {
+      if (phase === 'pick') choose(door);
+      else if (phase === 'decide') {
+        if (door === chosen) decide(true);
+        else if (door === other) decide(false);
+      } else {
+        newGame();
+        choose(door);
+      }
+      // Die Meldung steht nur im Bild – für Bildschirmleser ansagen
+      ctx.announce(messageText());
+      ctx.requestRender();
+    }
+
+    /** Tastatur: Türen wie Antippen (Pfeiltasten wählen, Enter öffnet). */
+    function updateKeyTargets(): void {
+      if (p.mode !== 'play') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      ctx.setKeyTargets(
+        doorRects().map((rect, i) => ({
+          id: String(i),
+          label: `${tr('door', { n: i + 1 })}${i === chosen && phase !== 'pick' ? ` – ${ctx.t('yourChoice')}` : i === other && phase === 'decide' ? ` – ${ctx.t('otherDoor')}` : ''}`,
+          rect,
+          disabled: phase === 'decide' && i !== chosen && i !== other,
+          activate: () => tapDoor(i),
+        })),
+      );
+    }
 
     /* ---------- Zeichnen ---------- */
     function openness(door: number, now: number): number {
@@ -562,22 +582,25 @@ export default defineSimulation({
       }
     }
 
+    /** Meldung über den Türen (je nach Spielphase). */
+    function messageText(): string {
+      if (phase === 'decide') {
+        const opened = openedDoors(p.doors, chosen, other);
+        return p.doors === 3
+          ? tr('decide3', { opened: opened[0]! + 1, chosen: chosen + 1, other: other + 1 })
+          : tr('decideN', { count: opened.length, chosen: chosen + 1, other: other + 1 });
+      }
+      if (phase === 'done') return `${ctx.t(finalChoice === car ? 'win' : 'lose')} ${ctx.t('again')}`;
+      return ctx.t('pick');
+    }
+
     function drawMessage(now: number): void {
       const g = surface.g;
       const w = surface.width;
-      let message = ctx.t('pick');
+      const revealed = phase === 'done' && openness(finalChoice, now) > 0.6;
+      const message = phase === 'done' && !revealed ? '…' : messageText();
       let color = '#ffffff';
-      if (phase === 'decide') {
-        const opened = openedDoors(p.doors, chosen, other);
-        message =
-          p.doors === 3
-            ? tr('decide3', { opened: opened[0]! + 1, chosen: chosen + 1, other: other + 1 })
-            : tr('decideN', { count: opened.length, chosen: chosen + 1, other: other + 1 });
-      } else if (phase === 'done') {
-        const revealed = openness(finalChoice, now) > 0.6;
-        message = revealed ? `${ctx.t(finalChoice === car ? 'win' : 'lose')} ${ctx.t('again')}` : '…';
-        if (revealed) color = finalChoice === car ? '#8ce99a' : '#ffc9c9';
-      }
+      if (revealed) color = finalChoice === car ? '#8ce99a' : '#ffc9c9';
       const font = `700 ${w < 600 ? 14 : 17}px ${ctx.theme.font}`;
       g.font = font;
       const maxWidth = w * 0.9;
@@ -706,12 +729,15 @@ export default defineSimulation({
         switch (id) {
           case 'stay':
             decide(true);
+            ctx.announce(messageText());
             break;
           case 'switch':
             decide(false);
+            ctx.announce(messageText());
             break;
           case 'new':
             newGame();
+            ctx.announce(messageText());
             break;
           case 'run100':
             runGames(100);
@@ -738,6 +764,7 @@ export default defineSimulation({
       render() {
         const now = performance.now();
         surface.begin();
+        updateKeyTargets();
         if (p.mode === 'simulate') {
           if (auto) {
             carry += ((now - lastFrame) / 1000) * p.speed;

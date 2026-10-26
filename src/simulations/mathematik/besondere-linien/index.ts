@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type KeyTarget, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   altitudeFeet,
@@ -421,7 +421,7 @@ export default defineSimulation({
     let cardFade: number | null = null;
     let bal: { t0: number; pins: Pt[] } | null = null;
     let hits: { id: HitId; x: number; y: number; r: number }[] = [];
-    let buttons: { id: HitId; r: Rect }[] = [];
+    let buttons: { id: HitId; r: Rect; label: string }[] = [];
     let hover: HitId | null = null;
     let drag: 0 | 1 | 2 | null = null;
     let lastDrag = -Infinity;
@@ -2532,7 +2532,7 @@ export default defineSimulation({
       if (cur) rows.push(cur);
       return rows;
     }
-    function button(r: Rect, label: string, id: HitId, color: string, filled: boolean, enabled: boolean): void {
+    function button(r: Rect, label: string, id: HitId, color: string, filled: boolean, enabled: boolean, srLabel = label): void {
       const g = surface.g;
       const hov = hover === id && enabled;
       g.save();
@@ -2563,7 +2563,7 @@ export default defineSimulation({
       g.textBaseline = 'middle';
       g.fillText(label, r.x + r.w / 2, r.y + r.h / 2 + 0.5);
       g.restore();
-      if (enabled) buttons.push({ id, r });
+      if (enabled) buttons.push({ id, r, label: srLabel });
     }
 
     const stepsTitle = (): string => {
@@ -2682,7 +2682,7 @@ export default defineSimulation({
           const roomy = g.measureText(rl).width + 26 + nextW + 10 <= R.w - 2 * pad;
           const restartW = roomy ? g.measureText(rl).width + 26 : btnH;
           button({ x: R.x + R.w - pad - nextW, y: btnY, w: nextW, h: btnH }, nextLabel, 'next', accent, true, !stepRunning(now) && !autoPlay);
-          if (stepIdx > 0) button({ x: R.x + pad, y: btnY, w: restartW, h: btnH }, roomy ? rl : '↺', 'restart', theme.muted, false, true);
+          if (stepIdx > 0) button({ x: R.x + pad, y: btnY, w: restartW, h: btnH }, roomy ? rl : '↺', 'restart', theme.muted, false, true, rl);
           const dotsX0 = R.x + pad + (stepIdx > 0 ? restartW + 12 : 0);
           const dotsX1 = R.x + R.w - pad - nextW - 12;
           const gapD = Math.min(14, (dotsX1 - dotsX0) / Math.max(1, n));
@@ -3170,6 +3170,7 @@ export default defineSimulation({
       g.stroke();
       g.restore();
       drawColumn(R.col, now, k);
+      updateKeyTargets();
       if (cardFade !== null) anim = true;
       if (bal) anim = true;
 
@@ -3222,16 +3223,41 @@ export default defineSimulation({
       return null;
     }
 
+    function pressButton(id: 'next' | 'restart'): void {
+      if (id === 'next') {
+        autoPlay = false;
+        fast = false;
+        nextStep();
+      } else restart();
+      ctx.requestRender();
+    }
+
+    /** Tastatur: Knöpfe im Bild und (Seitenhalbierende) die Pappe aufstecken. */
+    function updateKeyTargets(): void {
+      if (ctx.locked) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const targets: KeyTarget[] = buttons
+        .filter((b): b is { id: 'next' | 'restart'; r: Rect; label: string } => b.id === 'next' || b.id === 'restart')
+        .map((b) => ({ id: b.id, label: b.label, rect: b.r, activate: () => pressButton(b.id) }));
+      if (mode() === 'sh' && finished() && !geom().deg) {
+        const G = geom();
+        const A = G.t[0];
+        targets.push(
+          { id: 'pinS', label: say(L('Pappe im Schwerpunkt S aufstecken', 'Pin the card at the centroid S')), activate: () => startBalance([G.S]) },
+          { id: 'pinOff', label: say(L('Pappe neben dem Schwerpunkt aufstecken', 'Pin the card away from the centroid')), activate: () => startBalance([[(G.S[0] + A[0]) / 2, (G.S[1] + A[1]) / 2]]) },
+        );
+      }
+      ctx.setKeyTargets(targets);
+    }
+
     surface.addTarget({
       contains: (px: number, py: number) => drag !== null || hitAt(px, py) !== null,
       pointerDown: (q: { px: number; py: number }) => {
         const id = hitAt(q.px, q.py);
         if (!id) return false;
-        if (id === 'next') {
-          autoPlay = false;
-          fast = false;
-          nextStep();
-        } else if (id === 'restart') restart();
+        if (id === 'next' || id === 'restart') pressButton(id);
         else if (id === 'card') {
           const w = toWorld(q.px, q.py);
           const G = geom();

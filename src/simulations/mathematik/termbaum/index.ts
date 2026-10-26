@@ -789,34 +789,60 @@ export default defineSimulation({
       onHover: (id) => {
         hovered = id === null ? null : Number(id);
       },
-      onTap: (id) => {
-        if (!term) return;
-        const node = term.nodes[Number(id)]!;
-        tapFocus = { id: node.id, until: performance.now() + 1800 };
-        if (!isInner(node)) {
-          status =
-            node.kind === 'var'
-              ? { text: tr('leafVar', { v: node.name, value: numText(fromNumber(p[node.name])) }), tone: 'info', color: classColor('var') }
-              : { text: tr('leaf', { leaf: termText({ ...node, brackets: [] }, lang) }), tone: 'info' };
-          return;
-        }
-        if (done.includes(node.id)) {
-          const i = done.indexOf(node.id);
-          const remaining = term.nodes.filter((n): n is InnerNode => isInner(n) && !done.slice(0, i + 1).includes(n.id));
-          status = { text: tr('step', { k: i + 1, reason: ctx.t(reasonFor(node, remaining, depths[node.id] ?? 0)), calc: calcText(node) }), tone: 'info', color: classColor(opClass(node)) };
-          return;
-        }
-        if (finished()) return;
-        const missing = children(node).find((c) => isInner(c) && !done.includes(c.id));
-        if (missing) {
-          shake = { id: node.id, start: performance.now() };
-          status = { text: tr('notReady', { child: termText({ ...missing, brackets: [] }, lang, useDecimal()) }), tone: 'warn' };
-          return;
-        }
-        auto = false;
-        evaluate(node);
-      },
+      onTap: (id) => tapNode(Number(id)),
     });
+
+    /** Knoten antippen; die Meldung steht nur im Bild und wird deshalb auch angesagt. */
+    function tapNode(id: number): void {
+      tapNodeInner(id);
+      if (status) ctx.announce(status.text);
+      ctx.requestRender();
+    }
+
+    /** Tastatur wie Antippen: alle Knoten des Termbaums (Zahlen, Variablen, Rechenzeichen). */
+    function updateKeyTargets(): void {
+      if (!term) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const de = lang === 'de';
+      ctx.setKeyTargets(
+        geo.map((gn) => {
+          const inner = isInner(gn.node);
+          const txt = termText({ ...gn.node, brackets: [] }, lang, useDecimal());
+          const state = inner ? (done.includes(gn.node.id) ? (de ? ' – berechnet' : ' – done') : de ? ' – ausrechnen' : ' – evaluate') : '';
+          return { id: String(gn.node.id), label: `${txt}${state}`, rect: { x: gn.x - gn.hw, y: gn.y - gn.hh, w: 2 * gn.hw, h: 2 * gn.hh }, activate: () => tapNode(gn.node.id) };
+        }),
+      );
+    }
+
+    function tapNodeInner(id: number): void {
+      if (!term) return;
+      const node = term.nodes[id]!;
+      tapFocus = { id: node.id, until: performance.now() + 1800 };
+      if (!isInner(node)) {
+        status =
+          node.kind === 'var'
+            ? { text: tr('leafVar', { v: node.name, value: numText(fromNumber(p[node.name])) }), tone: 'info', color: classColor('var') }
+            : { text: tr('leaf', { leaf: termText({ ...node, brackets: [] }, lang) }), tone: 'info' };
+        return;
+      }
+      if (done.includes(node.id)) {
+        const i = done.indexOf(node.id);
+        const remaining = term.nodes.filter((n): n is InnerNode => isInner(n) && !done.slice(0, i + 1).includes(n.id));
+        status = { text: tr('step', { k: i + 1, reason: ctx.t(reasonFor(node, remaining, depths[node.id] ?? 0)), calc: calcText(node) }), tone: 'info', color: classColor(opClass(node)) };
+        return;
+      }
+      if (finished()) return;
+      const missing = children(node).find((c) => isInner(c) && !done.includes(c.id));
+      if (missing) {
+        shake = { id: node.id, start: performance.now() };
+        status = { text: tr('notReady', { child: termText({ ...missing, brackets: [] }, lang, useDecimal()) }), tone: 'warn' };
+        return;
+      }
+      auto = false;
+      evaluate(node);
+    }
 
     /* ---------- Zeichnen ---------- */
     function pill(x: number, y: number, label: string, color: string, size: number, scale = 1, alpha = 1, strong = false): Rect {
@@ -1377,6 +1403,7 @@ export default defineSimulation({
       render() {
         const now = performance.now();
         computeGeometry();
+        updateKeyTargets();
         surface.begin();
         const g = surface.g;
         const theme = ctx.theme;

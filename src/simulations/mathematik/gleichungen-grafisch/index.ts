@@ -1476,10 +1476,27 @@ export default defineSimulation({
     }
 
     /* ---------- Hauptzeichnung ---------- */
+    /** Tastatur wie Antippen: Schnittstelle (Lösung) auswählen. */
+    function updateKeyTargets(): void {
+      if (ctx.locked) {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      ctx.setKeyTargets(
+        sol.roots.flatMap((r, i) => {
+          const m = markerPx(i);
+          if (!m) return [];
+          const x = `x${sol.roots.length > 1 ? String(i + 1) : ''} ≈ ${fmt.num(r.x, 2)}`;
+          return [{ id: String(i), label: `${ctx.lang === 'de' ? 'Lösung' : 'Solution'} ${x}${sel === i ? (ctx.lang === 'de' ? ' – gewählt' : ' – selected') : ''}`, rect: { x: m[0] - 12, y: m[1] - 12, w: 24, h: 24 }, activate: () => selectRoot(i) }];
+        }),
+      );
+    }
+
     function render(): void {
       const now = performance.now();
       const reg = regions();
       plot.resize();
+      updateKeyTargets();
       const key = `${surface.width}x${surface.height}`;
       if (key !== viewKey) {
         viewKey = key;

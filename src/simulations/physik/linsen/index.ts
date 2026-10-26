@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { blurRadius, constructionRays, describeImage, imageDistance, isSharp, power, rayThrough, rayY, screenScale, zoneOf, type RayId, type Zone } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -537,7 +537,7 @@ export default defineSimulation({
         roundRect(g, left + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, str, left + w / 2, y + 0.5, { font: `700 ${size}px ${theme.font}`, color: opts.solid ? '#ffffff' : color });
+      text(g, str, left + w / 2, y + 0.5, { font: `700 ${size}px ${theme.font}`, color: opts.solid ? textOn(color, theme) : color });
       return w;
     }
 

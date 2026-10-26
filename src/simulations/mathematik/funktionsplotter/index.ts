@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, formatPiFraction, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, formatPiFraction, Plot, prefersReducedMotion, roundRect, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   compile,
   derivative,
@@ -863,7 +863,7 @@ export default defineSimulation({
         roundRect(g, left + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, label, left + w / 2, y + 0.5, { font, color: filled ? '#ffffff' : color });
+      text(g, label, left + w / 2, y + 0.5, { font, color: filled ? textOn(color, theme) : color });
       return rect;
     }
 

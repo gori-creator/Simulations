@@ -137,7 +137,11 @@ const de = {
   'sim.reveal': 'Aufdecken',
   'sim.hiddenValue': 'verdeckt',
   'sim.dragHint': 'Tipp: Die markierten Punkte lassen sich mit Maus oder Finger ziehen.',
+  'sim.keyboardHint': 'Mit der Tastatur lassen sich dieselben Werte über die Regler unter „Einstellungen“ einstellen.',
+  'sim.currentValues': 'Aktuelle Werte',
   'sim.keyTargets': 'Zeichenfläche: Mit den Pfeiltasten ein Objekt wählen, mit Enter oder Leertaste auslösen.',
+  'sim.viewKeys3d': 'Ansicht: Pfeiltasten drehen (bei wählbaren Objekten mit Umschalttaste), Plus und Minus zoomen.',
+  'sim.viewKeysPan': 'Ansicht: Pfeiltasten verschieben (bei wählbaren Objekten mit Umschalttaste), Plus und Minus zoomen.',
 
   'share.title': 'Simulation teilen',
   'share.intro': 'Der Link enthält alle aktuellen Einstellungen. Wer ihn öffnet, sieht genau diese Ansicht.',
@@ -307,7 +311,11 @@ const en: Record<UiKey, string> = {
   'sim.reveal': 'Reveal',
   'sim.hiddenValue': 'hidden',
   'sim.dragHint': 'Tip: the highlighted points can be dragged with mouse or finger.',
+  'sim.keyboardHint': 'With the keyboard, the same values can be set with the controls under “Settings”.',
+  'sim.currentValues': 'Current values',
   'sim.keyTargets': 'Drawing area: use the arrow keys to choose an object, Enter or Space to activate it.',
+  'sim.viewKeys3d': 'View: arrow keys rotate (with Shift if objects can be chosen), plus and minus zoom.',
+  'sim.viewKeysPan': 'View: arrow keys pan (with Shift if objects can be chosen), plus and minus zoom.',
 
   'share.title': 'Share simulation',
   'share.intro': 'The link contains all current settings. Anyone who opens it sees exactly this view.',

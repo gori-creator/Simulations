@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, textOn, Tween, withAlpha } from '../../../sim-core';
 import {
   approxText,
   compareTariffs,
@@ -119,7 +119,7 @@ export default defineSimulation({
   ],
   strings: {
     de: {
-      canvas: 'Koordinatensystem mit zwei Geraden und ihrem Schnittpunkt',
+      canvas: 'Koordinatensystem mit den Geraden zu den Gleichungen I und II und ihrem Schnittpunkt S; seine Koordinaten sind die Lösung des Gleichungssystems',
       unique: 'Genau eine Lösung: Die Geraden schneiden sich in S{p}.',
       uniqueApprox: 'Genau eine Lösung: S ≈ {approx} – exakt S{p}. Grafisch nur ungefähr ablesbar!',
       parallel: 'Keine Lösung: Die Geraden sind parallel (gleiche Steigung, verschiedene y-Achsenabschnitte).',
@@ -146,7 +146,7 @@ export default defineSimulation({
       equate: 'Gleichsetzen',
     },
     en: {
-      canvas: 'Coordinate plane with two lines and their point of intersection',
+      canvas: 'Coordinate plane with the lines of equations I and II and their point of intersection S; its coordinates are the solution of the system',
       unique: 'Exactly one solution: the lines intersect at S{p}.',
       uniqueApprox: 'Exactly one solution: S ≈ {approx} – exactly S{p}. Only approximately readable from the graph!',
       parallel: 'No solution: the lines are parallel (same slope, different y-intercepts).',
@@ -516,7 +516,7 @@ export default defineSimulation({
         g.fillStyle = q.color;
         roundRect(g, ox + 9, cy - fs * 0.62, nameW - 6, fs * 1.24, 5);
         g.fill();
-        text(g, q.name, ox + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: '#ffffff' });
+        text(g, q.name, ox + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: textOn(q.color, theme) });
         mathText(q.eq, ox + nameW + 12, cy, fs, ink);
         if (q.sub) mathText(q.sub, ox + nameW + 12, cy + fs * 1.15, fs * 0.8, inkSub, 'left', 500);
       });

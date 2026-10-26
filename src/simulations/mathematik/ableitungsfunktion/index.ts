@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, textOn, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   APPS,
@@ -607,8 +607,8 @@ export default defineSimulation({
     /** Stellen nach Größe: große Werte mit weniger Nachkommastellen. */
     const nd = (v: number) => (Math.abs(v) >= 1000 ? 0 : Math.abs(v) >= 100 ? 1 : 2);
     const NV = (v: number) => N(v, nd(v));
-    const isExact = (v: number, d = 2) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eq = (v: number, d = 2) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d = 2) => ctx.fmt.isExact(v, d);
+    const eq = (v: number, d = 2) => ctx.fmt.rel(v, d);
     /** Gerundeter Wert mit Endnullen (täuscht keine Genauigkeit vor), exakter ohne. */
     const RD = (v: number, d = 2) => (!Number.isFinite(v) ? '–' : isExact(v, d) ? N(v, d) : fmt.fixed(clean(v, d), d));
     /** „= 2“ bzw. „≈ 2,10“: Zeichen und Zahl nach Exaktheit des Zielwerts; `shown` ist der (zählende) angezeigte Wert. */
@@ -1724,7 +1724,7 @@ export default defineSimulation({
           g.font = `700 ${fs(11, 10.5)}px ${theme.font}`;
           if (txt && g.measureText(txt).width >= xb - xa - 8) txt = txt.slice(0, 1);
           if (txt && g.measureText(txt).width < xb - xa - 6) {
-            g.fillStyle = theme.text;
+            g.fillStyle = theme.dark ? textOn(color(v), theme, theme.text) : theme.text;
             g.textAlign = 'center';
             g.textBaseline = 'middle';
             g.fillText(txt, (xa + xb) / 2, y + h / 2 + 0.5);

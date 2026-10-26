@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, type Rect } from '../../../sim-core';
 import {
   CALC_SCALES,
   closestOnSegment,
@@ -399,7 +399,8 @@ export default defineSimulation({
       g.restore();
       g.save();
       g.globalAlpha *= a;
-      text(g, label, x, y + 0.5, { font: f, color });
+      // Weiß auf hellen Farbflächen (Dunkelmodus) wird zu dunkler Schrift
+      text(g, label, x, y + 0.5, { font: f, color: color === '#ffffff' ? textOn(fill, ctx.theme) : color });
       g.restore();
       return { x: x - w / 2, y: y - h / 2, w, h };
     }

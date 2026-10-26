@@ -256,8 +256,8 @@ export default defineSimulation({
     const N = (v: number, d = 4) => fmt.num(v, d);
     const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
     const supTxt = (n: number) => (n < 0 ? '⁻' : '') + String(Math.abs(n)).split('').map((c) => SUP[Number(c)]).join('');
-    const isExact = (v: number, d: number) => Math.abs(v * 10 ** d - Math.round(v * 10 ** d)) < 1e-6;
-    const eqs = (v: number, d: number) => (isExact(v, d) ? '=' : '≈');
+    const isExact = (v: number, d: number) => ctx.fmt.isExact(v, d);
+    const eqs = (v: number, d: number) => ctx.fmt.rel(v, d);
     /** Zerlegung m · 10^e (für sehr kleine oder große Werte). */
     function sciParts(v: number): { m: number; e: number } {
       let e = Math.floor(Math.log10(Math.abs(v)));

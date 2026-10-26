@@ -1,4 +1,4 @@
-import { defineSimulation, ease, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, FixedStepper, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   balance,
   balancingForce,
@@ -861,7 +861,7 @@ export default defineSimulation({
         roundRect(gx, left + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         gx.stroke();
       }
-      richDraw(label, left + w / 2, y + h / 2 + 0.5, size, 'center', 'middle', 700, null, solid ? '#ffffff' : color);
+      richDraw(label, left + w / 2, y + h / 2 + 0.5, size, 'center', 'middle', 700, null, solid ? textOn(color, theme) : color);
       return w;
     }
 
@@ -1576,7 +1576,7 @@ export default defineSimulation({
       gx.arc(cx, cy, rr, 0, Math.PI * 2);
       gx.fill();
       gx.restore();
-      text(gx, balanced ? '=' : b.net > 0 ? '>' : '<', cx, cy + 1, { font: `800 ${small ? 17 : 21}px ${theme.font}`, color: '#ffffff' });
+      text(gx, balanced ? '=' : b.net > 0 ? '>' : '<', cx, cy + 1, { font: `800 ${small ? 17 : 21}px ${theme.font}`, color: textOn(col, theme) });
       const status = balanced ? ctx.t('equal') : ctx.t(b.net > 0 ? 'tipLeft' : 'tipRight');
       haloText(status, cx, y0 + ch + (small ? 11 : 13), col, small ? 10.5 : 12);
     }
