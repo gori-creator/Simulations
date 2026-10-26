@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isReadoutHidden, isTaskHidden } from '../src/sim-core/task-mode';
+import { isReadoutHidden, isReadoutTaskHidden, isTaskHidden, spoilerChanges } from '../src/sim-core/task-mode';
 
 const state = (hideFlag: boolean, resultsOff: boolean, revealed: string[] = [], spoilers: string[] = ['trip']) => ({
   hideFlag,
@@ -45,5 +45,53 @@ describe('Aufgabenmodus', () => {
     expect(isTaskHidden(state(true, false, [], []))).toBe(true);
     // Ohne Liste (ältere Aufrufer): aufgedeckt heißt sichtbar
     expect(isTaskHidden({ hideFlag: true, resultsOff: false, revealed: new Set(['trip']) })).toBe(false);
+  });
+});
+
+describe('spoilerChange: Wechsel einzelner Ergebnisse', () => {
+  it('meldet jedes Aufdecken einzeln, auch wenn ctx.hidden gleich bleibt', () => {
+    const keys = ['trip', 'table', 'law'];
+    const last = new Map<string, boolean>();
+    // Start: nur vermerken, nichts melden
+    expect(spoilerChanges(state(true, false, [], keys), keys, last)).toEqual([]);
+    // „trip“ aufgedeckt: ctx.hidden bleibt wahr, trotzdem eine Meldung
+    expect(isTaskHidden(state(true, false, ['trip'], keys))).toBe(true);
+    expect(spoilerChanges(state(true, false, ['trip'], keys), keys, last)).toEqual([['trip', false]]);
+    // unverändert: keine Meldung
+    expect(spoilerChanges(state(true, false, ['trip'], keys), keys, last)).toEqual([]);
+    // Schalter resultsParam aus: alle drei wieder verdeckt, „trip“ wechselt
+    expect(spoilerChanges(state(true, true, ['trip'], keys), keys, last)).toEqual([['trip', true]]);
+    // Link ohne _hide und Schalter an: alle aufgedeckt
+    expect(spoilerChanges(state(false, false, [], keys), keys, last)).toEqual([
+      ['trip', false],
+      ['table', false],
+      ['law', false],
+    ]);
+  });
+});
+
+describe('Nur Aufgabenmodus (ctx.isHiddenByTask)', () => {
+  it('trennt _hide=1 vom Schalter resultsParam', () => {
+    // Schalter aus, kein _hide: isHidden ja, nur Aufgabenmodus nein
+    expect(isReadoutHidden(state(false, true), 'shape')).toBe(true);
+    expect(isReadoutTaskHidden(state(false, true), 'shape')).toBe(false);
+    // _hide=1: verdeckt bis zum Aufdecken
+    expect(isReadoutTaskHidden(state(true, false), 'shape')).toBe(true);
+    expect(isReadoutTaskHidden(state(true, false, ['shape']), 'shape')).toBe(false);
+    expect(isReadoutTaskHidden(state(true, true), 'shape')).toBe(true);
+  });
+});
+
+describe('ignoresResultsParam', () => {
+  it('nimmt einzelne Ergebnisse vom Schalter resultsParam aus, nicht vom Aufgabenmodus', () => {
+    const base = { revealed: new Set<string>(), spoilers: ['T', 'now'], ignoresResultsParam: new Set(['now']) };
+    // Schalter aus: T verdeckt, „now“ nicht
+    expect(isReadoutHidden({ ...base, hideFlag: false, resultsOff: true }, 'T')).toBe(true);
+    expect(isReadoutHidden({ ...base, hideFlag: false, resultsOff: true }, 'now')).toBe(false);
+    // _hide=1: beide verdeckt, bis sie aufgedeckt sind
+    expect(isReadoutHidden({ ...base, hideFlag: true, resultsOff: false }, 'now')).toBe(true);
+    expect(isReadoutHidden({ ...base, hideFlag: true, resultsOff: true, revealed: new Set(['now']) }, 'now')).toBe(false);
+    // ctx.hidden folgt weiter dem Schalter
+    expect(isTaskHidden({ ...base, hideFlag: false, resultsOff: true })).toBe(true);
   });
 });

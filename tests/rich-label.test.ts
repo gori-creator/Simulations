@@ -78,3 +78,25 @@ describe('Ergebnisse aus reinem Text mit Index', () => {
     expect(el.innerHTML).toContain('P A (B) = 10/14');
   });
 });
+
+describe('Hilfetexte und Tipps mit Index (Option prose)', () => {
+  it('setzt Formelzeichen als Index', () => {
+    expect(subLabelHtml('Die Bahngeschwindigkeit v_K ist konstant.', { prose: true })).toContain('v<sub>K</sub>');
+    expect(subLabelHtml('F_res und E_pot', { prose: true })).toContain('F<sub>res</sub> und E<sub>pot</sub>');
+    expect(subLabelHtml('Δs_1 und x_max', { prose: true })).toContain('Δs<sub>1</sub> und x<sub>max</sub>');
+    expect(subLabelHtml('U_{C,0}', { prose: true })).toContain('U<sub>C,0</sub>');
+  });
+
+  it('lässt Eingabe-Schreibweisen wie log_2 stehen', () => {
+    const plotter = 'Funktionen: sin, cos, tan, sqrt (√), abs oder |x|, exp, ln, lg, log_2. Konstanten π (pi) und e.';
+    expect(subLabelHtml(plotter, { prose: true })).toBeNull();
+    expect(subLabelHtml('auf dem Graphen von log_b', { prose: true })).toBeNull();
+    expect(subLabelHtml('snake_case', { prose: true })).toBeNull();
+    // ohne Option (Beschriftungen) wie bisher
+    expect(subLabelHtml('log_2')).toContain('log<sub>2</sub>');
+    const el = { textContent: '', innerHTML: '' } as unknown as HTMLElement;
+    setSubLabel(el, plotter, { prose: true });
+    expect(el.textContent).toBe(plotter);
+    expect(el.innerHTML).toBe('');
+  });
+});

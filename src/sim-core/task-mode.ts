@@ -16,6 +16,11 @@ export interface TaskModeState {
    * aufdecken; ohne Angabe zählt nur, ob überhaupt etwas aufgedeckt wurde.
    */
   spoilers?: readonly string[];
+  /**
+   * Schlüssel der `spoiler`-Ergebnisse mit `ignoresResultsParam: true`: Der
+   * Schalter `resultsParam` verdeckt sie nicht, nur der Aufgabenmodus.
+   */
+  ignoresResultsParam?: ReadonlySet<string>;
 }
 
 /**
@@ -34,7 +39,34 @@ export function isTaskHidden(state: TaskModeState): boolean {
   return (state.spoilers ?? []).some((key) => !state.revealed.has(key));
 }
 
+/**
+ * Ist ein einzelnes `spoiler`-Ergebnis allein wegen des Aufgabenmodus
+ * (`_hide=1`) verdeckt, also noch nicht aufgedeckt? Der Schalter `resultsParam`
+ * zählt hier nicht (für `ctx.isHiddenByTask(key)`).
+ */
+export function isReadoutTaskHidden(state: TaskModeState, key: string): boolean {
+  return state.hideFlag && !state.revealed.has(key);
+}
+
 /** Ist ein einzelnes `spoiler`-Ergebnis verdeckt? */
 export function isReadoutHidden(state: TaskModeState, key: string): boolean {
-  return state.resultsOff || (state.hideFlag && !state.revealed.has(key));
+  const byResultsParam = state.resultsOff && !state.ignoresResultsParam?.has(key);
+  return byResultsParam || (state.hideFlag && !state.revealed.has(key));
+}
+
+/**
+ * Welche `spoiler`-Ergebnisse haben ihren Stand (`isReadoutHidden`) seit dem
+ * letzten Aufruf gewechselt? Aktualisiert `last` und liefert die Wechsel in
+ * der Reihenfolge von `keys` (für `spoilerChange(key, hidden)` im Host).
+ * Schlüssel ohne bisherigen Stand werden nur vermerkt, nicht gemeldet.
+ */
+export function spoilerChanges(state: TaskModeState, keys: Iterable<string>, last: Map<string, boolean>): [string, boolean][] {
+  const changes: [string, boolean][] = [];
+  for (const key of keys) {
+    const hidden = isReadoutHidden(state, key);
+    const before = last.get(key);
+    last.set(key, hidden);
+    if (before !== undefined && before !== hidden) changes.push([key, hidden]);
+  }
+  return changes;
 }

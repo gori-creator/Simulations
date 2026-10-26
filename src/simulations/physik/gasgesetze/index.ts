@@ -159,10 +159,17 @@ interface Seg {
 export default defineSimulation({
   id: 'gasgesetze',
   animated: true,
-  hint: L(
-    'Tipp: Den Kolben am Griff (isotherm) und das Thermometer kannst du mit Maus oder Finger ziehen. Die Reiter über dem Diagramm wechseln die Darstellung.',
-    'Tip: Drag the piston by its handle (isothermal) or the thermometer with the mouse or a finger. The tabs above the graph switch the view.',
-  ),
+  // Tipp je Versuch: der Kolben lässt sich nur im isothermen Versuch ziehen
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'isotherm'
+      ? L(
+          'Tipp: Den Kolben am Griff und das Thermometer kannst du mit Maus oder Finger ziehen. Die Reiter über dem Diagramm wechseln die Darstellung.',
+          'Tip: Drag the piston by its handle or the thermometer with the mouse or a finger. The tabs above the graph switch the view.',
+        )
+      : L(
+          'Tipp: Das Thermometer kannst du mit Maus oder Finger ziehen. Die Reiter über dem Diagramm wechseln die Darstellung.',
+          'Tip: Drag the thermometer with the mouse or a finger. The tabs above the graph switch the view.',
+        ),
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
   images: { gauge: 'manometer.webp', thermo: 'thermometer.webp', plate: 'heizplatte.webp', table: 'tischkante.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -182,7 +189,7 @@ export default defineSimulation({
       key: 'V',
       type: 'number',
       label: L('Volumen V', 'Volume V'),
-      help: L('Im isothermen Versuch auch: den Kolben am Griff ziehen.', 'In the isothermal experiment you can also drag the piston by its handle.'),
+      help: (v: { readonly mode?: unknown }) => (v.mode === 'isotherm' ? L('Oder: den Kolben am Griff ziehen.', 'Or drag the piston by its handle.') : null),
       min: V_MIN,
       max: V_MAX,
       step: 0.1,

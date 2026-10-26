@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { currentAt, energy, halfLife, voltageAt } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -115,7 +115,7 @@ export default defineSimulation({
       real: 'Echtzeit',
       fast: 'Zeitraffer ×{f}',
       slow: 'Zeitlupe 1 : {f}',
-      chartU: 'Kondensatorspannung U_[C]',
+      chartU: 'Kondensatorspannung U_C',
       chartI: 'Stromstärke I',
       axisT: 't in s',
       axisU: 'U in V',
@@ -140,7 +140,7 @@ export default defineSimulation({
       real: 'real time',
       fast: 'time lapse ×{f}',
       slow: 'slow motion 1 : {f}',
-      chartU: 'Capacitor voltage U_[C]',
+      chartU: 'Capacitor voltage U_C',
       chartI: 'Current I',
       axisT: 't in s',
       axisU: 'U in V',
@@ -258,52 +258,22 @@ export default defineSimulation({
     }
 
     /* ---------- Zeichenhilfen ---------- */
-    function parts(str: string): { t: string; sub: boolean }[] {
-      const out: { t: string; sub: boolean }[] = [];
-      const re = /_\[([^\]]*)\]/g;
-      let last = 0;
-      let mm: RegExpExecArray | null;
-      while ((mm = re.exec(str))) {
-        if (mm.index > last) out.push({ t: str.slice(last, mm.index), sub: false });
-        out.push({ t: mm[1]!, sub: true });
-        last = re.lastIndex;
-      }
-      if (last < str.length) out.push({ t: str.slice(last), sub: false });
-      return out;
-    }
+    /* Text mit Index über den Kern-Helfer `subText` (Indexgröße wie bisher auf ganze Pixel gerundet). */
+    const subStyle = (size: number, color: string, weight: number, align: CanvasTextAlign = 'left', halo: string | null = null): SubTextStyle => ({
+      size,
+      family: ctx.theme.font,
+      weight,
+      color,
+      align,
+      subScale: Math.round(size * 0.74) / size,
+      subShift: 0.3,
+      ...(halo ? { halo } : {}),
+    });
     function richWidth(str: string, size: number, weight = 700): number {
-      const g = surface.g;
-      return parts(str).reduce((w, q) => {
-        g.font = `${weight} ${q.sub ? Math.round(size * 0.74) : size}px ${ctx.theme.font}`;
-        return w + g.measureText(q.t).width;
-      }, 0);
+      return measureSubText(surface.g, str, subStyle(size, '', weight));
     }
     function richText(str: string, x0: number, y: number, size: number, color: string, align: CanvasTextAlign = 'left', weight = 700, halo: string | null = null): number {
-      const g = surface.g;
-      const list = parts(str);
-      const total = richWidth(str, size, weight);
-      const start0 = align === 'left' ? x0 : align === 'right' ? x0 - total : x0 - total / 2;
-      g.textAlign = 'left';
-      g.textBaseline = 'middle';
-      for (const pass of halo ? [0, 1] : [1]) {
-        let cx = start0;
-        for (const q of list) {
-          const s = q.sub ? Math.round(size * 0.74) : size;
-          g.font = `${weight} ${s}px ${ctx.theme.font}`;
-          const yy = y + (q.sub ? size * 0.3 : 0);
-          if (pass === 0) {
-            g.lineWidth = 3.5;
-            g.lineJoin = 'round';
-            g.strokeStyle = halo!;
-            g.strokeText(q.t, cx, yy);
-          } else {
-            g.fillStyle = color;
-            g.fillText(q.t, cx, yy);
-          }
-          cx += g.measureText(q.t).width;
-        }
-      }
-      return total;
+      return subText(surface.g, str, x0, y, subStyle(size, color, weight, align, halo));
     }
     const haloCol = () => (ctx.theme.dark ? 'rgba(16,22,31,0.88)' : 'rgba(255,255,255,0.92)');
 
@@ -412,7 +382,7 @@ export default defineSimulation({
       return { r, sm, xL, xC, xP, xR, yT, yB, y2, yM, gap, plate, resX0, resX1, resH: sm ? 14 : 18, batTop: yM - bat, batBot: yM + bat };
     }
 
-    const u0Label = () => `U_[0] = ${n(p.U, 1)} V`;
+    const u0Label = () => `U_0 = ${n(p.U, 1)} V`;
 
     function makeLoop(pts: [number, number][], hide: boolean[]): Loop {
       const len: number[] = [];
@@ -654,7 +624,7 @@ export default defineSimulation({
       // Messwerte
       if (!ctx.hidden) {
         const s = sm ? 10.5 : 12;
-        pill(xR - plate - 6, yM + (sm ? 2 : 4), `U_[C] = ${fx(u, 2)} V`, blue(), 'right', s);
+        pill(xR - plate - 6, yM + (sm ? 2 : 4), `U_C = ${fx(u, 2)} V`, blue(), 'right', s);
         pill((G.resX0 + G.resX1) / 2, yT + G.resH / 2 + 8, `I = ${fmtI(I)}`, red(), 'center', s);
       }
       // technische Stromrichtung
@@ -802,7 +772,17 @@ export default defineSimulation({
         // im Aufgabenmodus nur „τ“ (der Wert ist Lösung von Aufgabe 1)
         const lab = ctx.hidden ? 'τ' : `τ = ${fx(tc, tDec(tc))} s`;
         richText(lab, X(tc) + 6, A.y + 9, fs, orange(), 'left', 750, haloCol());
-        if (!ctx.hidden && showPct && Math.abs(v0 - vEnd) > 1e-12) richText(`${n(Math.round(pct * 100), 0)} %`, X(tc) + 8, Y(vt) + (vt > (yMax + yMin) / 2 ? 12 : -12), fs, orange(), 'left', 750, haloCol());
+        if (!ctx.hidden && showPct && Math.abs(v0 - vEnd) > 1e-12) {
+          const pctLab = `${n(Math.round(pct * 100), 0)} %`;
+          if (p.half) {
+            // Mit Halbwertszeit-Linien: rechts neben die Linie bei 2 t½ und auf die Seite,
+            // von der sich die Kurve wegbewegt (dort ist das Feld frei)
+            const xh = Math.max(X(tc) + 8, X(2 * halfLife(tc)) + 6);
+            // nicht an die Beschriftung „τ = …“ oben stoßen
+            const yh = Math.max(Y(vt) + (vEnd > vt ? 12 : -12), A.y + 9 + fs + 4);
+            richText(pctLab, xh, yh, fs, orange(), 'left', 750, haloCol());
+          } else richText(pctLab, X(tc) + 8, Y(vt) + (vt > (yMax + yMin) / 2 ? 12 : -12), fs, orange(), 'left', 750, haloCol());
+        }
       }
       // Halbwertszeit
       if (p.half) {
@@ -828,8 +808,8 @@ export default defineSimulation({
         g.setLineDash([]);
         node(X(th), Y(vh), purple(), 3.5);
         node(X(2 * th), Y(vh2), purple(), 3);
-        richText('t_[½]', X(th) + 4, Y(0) + (vh >= 0 ? -9 : 9), fs, purple(), 'left', 750, haloCol());
-        richText('2 t_[½]', X(2 * th) + 4, Y(0) + (vh >= 0 ? -9 : 9), fs, purple(), 'left', 750, haloCol());
+        richText('t_½', X(th) + 4, Y(0) + (vh >= 0 ? -9 : 9), fs, purple(), 'left', 750, haloCol());
+        richText('2 t_½', X(2 * th) + 4, Y(0) + (vh >= 0 ? -9 : 9), fs, purple(), 'left', 750, haloCol());
       }
       g.restore();
       // aktueller Punkt
@@ -861,10 +841,10 @@ export default defineSimulation({
       const I = Inow();
       const rows: [string, string][] = [
         [`τ = R · C = ${n(p.R, 0)} kΩ · ${n(p.C, 0)} µF = ${v ? fx(tc, tDec(tc)) : '?'} s`, theme.text],
-        [`I_[0] = ΔU / R = ${v ? fmtI((Ue - Ua) / Rsi()) : '?'}`, red()],
-        [`t_[½] = τ · ln 2 = ${v ? fx(halfLife(tc), tDec(halfLife(tc))) : '?'} s`, purple()],
-        [v ? `U_[C] = ${fx(u, 2)} V   I = ${fmtI(I)}` : 'U_[C] = ? V   I = ?', blue()],
-        [`W = ½ · C · U_[C]² = ${v ? fmtW(energy(Csi(), u)) : '?'}`, orange()],
+        [`I_0 = ΔU / R = ${v ? fmtI((Ue - Ua) / Rsi()) : '?'}`, red()],
+        [`t_½ = τ · ln 2 = ${v ? fx(halfLife(tc), tDec(halfLife(tc))) : '?'} s`, purple()],
+        [v ? `U_C = ${fx(u, 2)} V   I = ${fmtI(I)}` : 'U_C = ? V   I = ?', blue()],
+        [`W = ½ · C · U_{C}² = ${v ? fmtW(energy(Csi(), u)) : '?'}`, orange()],
       ];
       richText(ctx.t('infoTitle'), R.x + pad, R.y + (sm ? 15 : 19), sm ? 11.5 : 13, theme.text, 'left', 750);
       const topY = R.y + (sm ? 27 : 36);

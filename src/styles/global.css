@@ -244,6 +244,39 @@ sup {
   display: none !important;
 }
 
+/*
+ * Dach über einem Zeichen („φ̂“, aus kombinierendem U+0302, siehe
+ * sim-core/rich-label.ts): Viele Schriften setzen das Dach über „φ“ verrutscht,
+ * daher zeichnet CSS es selbst als kleinen Winkel mittig über dem Zeichen.
+ */
+.hat {
+  position: relative;
+  display: inline-block;
+  /* Box ohne Zeilenabstand, damit „top“ unabhängig von line-height ist */
+  line-height: 1;
+}
+.hat::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -0.04em;
+  width: 0.22em;
+  height: 0.22em;
+  border: solid currentColor;
+  border-width: 0.075em 0 0 0.075em;
+  transform: translateX(-50%) rotate(45deg);
+  pointer-events: none;
+}
+.hat--low::after {
+  top: 0.16em;
+}
+/* kursiv (<var>): Oberkante liegt weiter rechts */
+var .hat::after,
+i .hat::after,
+em .hat::after {
+  left: 62%;
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px;
