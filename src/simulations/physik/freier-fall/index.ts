@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, subText, Surface, TapTarget, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, Plot, roundRect, scaledSprite, seededRandom, subText, Surface, TapTarget, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   dragDistance,
   dragFallTime,
@@ -473,6 +473,23 @@ export default defineSimulation({
       onTap: (id) => (id === 'catch' ? catchRuler() : startTrial()),
     });
 
+    /** Tastatur: Linealversuch wie Antippen – erst starten, dann mit Enter bzw. Leertaste fangen. */
+    function updateKeyTargets(): void {
+      if (mode() !== 'ruler') {
+        ctx.setKeyTargets([]);
+        return;
+      }
+      const catching = phase === 'armed' || phase === 'falling';
+      const de = ctx.lang === 'de';
+      ctx.setKeyTargets([
+        {
+          id: 'ruler',
+          label: catching ? (de ? 'Lineal fangen' : 'Catch the ruler') : de ? 'Versuch starten' : 'Start a trial',
+          activate: () => (catching ? catchRuler() : startTrial()),
+        },
+      ]);
+    }
+
     /* ---------- Zeichenhilfen ---------- */
     function pill(x: number, y: number, label: string, color: string, align: 'left' | 'right' | 'center', size = 12, solid = false): number {
       const gx = surface.g;
@@ -495,7 +512,7 @@ export default defineSimulation({
         roundRect(gx, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         gx.stroke();
       }
-      text(gx, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? '#ffffff' : color });
+      text(gx, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? textOn(color, theme) : color });
       return w;
     }
 
@@ -1524,6 +1541,7 @@ export default defineSimulation({
       },
 
       render() {
+        updateKeyTargets();
         const reg = regions();
         plotS.resize();
         plotV.resize();
