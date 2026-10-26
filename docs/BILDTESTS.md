@@ -62,7 +62,7 @@ Der Knopf erscheint erst, wenn die Aktion auf `main` liegt. Bitte nicht auf `mai
 
 - Im Pull Request zeigt GitHub unter „Files changed“ jedes geänderte Referenzbild als Vorher/Nachher („2-up“, „Swipe“, „Onion Skin“).
 - Prüfen, dass sich **nur das Gewollte** geändert hat.
-- Unveränderte Bilder werden nicht neu committet.
+- Unveränderte Bilder werden nicht neu committet; winzige Rundungsunterschiede (höchstens 2 von 255) zählen dabei als unverändert.
 
 **Hinweise:**
 
