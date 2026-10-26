@@ -2,11 +2,13 @@
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
-import { getSimulation, getSubject, progressOf } from '../curriculum';
+import SimCard from '../components/SimCard.astro';
+import { getSimulation, getSubject, progressOf, simulationsOf } from '../curriculum';
 import { getCurriculum, simulationsOfGrade, unitAnchor } from '../curriculum/lehrplaene';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { groupByCurriculumGrade } from '../lib/region';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -17,6 +19,9 @@ interface Props {
 const { lang, curriculumId } = Astro.props;
 const curriculum = getCurriculum(curriculumId);
 const subject = getSubject(curriculum.subject);
+// Fertige Simulationen des Fachs, die dieser Lehrplan keiner Jahrgangsstufe zuordnet
+const readyIds = simulationsOf({ subject: curriculum.subject }).filter((s) => s.status === 'ready').map((s) => s.id);
+const rest = groupByCurriculumGrade(curriculum, readyIds).rest;
 const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang], subject: subject.title[lang], source: curriculum.sourceName };
 ---
 
@@ -70,6 +75,20 @@ const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang
         })
       }
     </div>
+
+    {
+      rest.length > 0 && (
+        <section class="section" style="padding-top:32px" aria-labelledby="lp-rest">
+          <h2 id="lp-rest">{t(lang, 'region.rest')}</h2>
+          <p class="muted" style="margin-bottom:12px">{t(lang, 'region.restLead', { state: curriculum.state[lang] })}</p>
+          <div class="card-grid">
+            {rest.map((id) => (
+              <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h3" />
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <p class="note" style="margin-top:32px">{t(lang, 'curriculum.disclaimer')}</p>
   </div>
