@@ -2,8 +2,20 @@ import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite,
 import { blurRadius, constructionRays, describeImage, imageDistance, isSharp, power, rayThrough, rayY, screenScale, zoneOf, type RayId, type Zone } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
-/** Kerze (kerze.webp, 144 × 631): Schnitt unter der Flamme des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
-const CANDLE_IMG = { w: 144, h: 631, top: 70, dome: 76, shaft: 128, foot: 598 };
+/** Kerze ohne Flamme (kerze.webp, 540 × 1352): Schnitt unter dem Docht des Fotos, Mitte der Wölbung, Beginn von Schaft und Fuß. */
+const CANDLE_IMG = { w: 540, h: 1352, top: 57, dome: 66, shaft: 215, foot: 1290 };
+/**
+ * Reiter (reiter.webp, 1257 × 769): Mitte der Stange, rechte Kante des Grundkörpers
+ * (rechts davon die Klemmschraube) und Unterkante des Grundkörpers (darunter die
+ * Klemmbacken an der Schiene).
+ */
+const RIDER_IMG = { w: 1257, h: 769, rod: 452, bodyL: 2, bodyR: 1040, bodyB: 705 };
+/**
+ * Profilschiene der optischen Bank (optische-bank.webp, 1600 × 107): Unterkante des
+ * Profils (darunter die Füße) und Breite der Endstücke mit den Füßen (Bildpixel).
+ * Die Endstücke bleiben maßstabsgetreu, nur das gleichförmige Mittelstück wird gestreckt.
+ */
+const RAIL_IMG = { w: 1600, h: 107, profile: 85, end: 120 };
 /** Sammellinse hochkant (linse.webp, 97 × 731): Mitte der Linse (dickste Stelle) in x. */
 const LENS_IMG = { w: 97, h: 731, cx: 48 };
 type Mode = 'con' | 'bench';
@@ -35,7 +47,7 @@ export default defineSimulation({
   animated: true,
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
-  images: { candle: 'kerze.webp', lens: 'linse.webp' },
+  images: { candle: 'kerze.webp', lens: 'linse.webp', rider: 'reiter.webp', rail: 'optische-bank.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -1345,19 +1357,24 @@ export default defineSimulation({
       // Schiene mit Skala
       const [x0] = B(-2.5, 0);
       const [x1] = B(BENCH_LEN + 2.5, 0);
-      g.save();
-      g.shadowColor = 'rgba(0,0,0,0.5)';
-      g.shadowBlur = 8;
-      g.shadowOffsetY = 3;
-      const rail = g.createLinearGradient(0, railY, 0, railY + railH);
-      rail.addColorStop(0, '#c9d0da');
-      rail.addColorStop(0.18, '#9aa3b0');
-      rail.addColorStop(1, '#5d6673');
-      g.fillStyle = rail;
-      roundRect(g, x0, railY, x1 - x0, railH, 3);
-      g.fill();
-      g.restore();
-      g.strokeStyle = 'rgba(20,24,32,0.75)';
+      const railPhoto = ctx.images.get('rail');
+      if (railPhoto) drawRailPhoto(railPhoto, x0, railY, x1 - x0, railH);
+      else {
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.5)';
+        g.shadowBlur = 8;
+        g.shadowOffsetY = 3;
+        const rail = g.createLinearGradient(0, railY, 0, railY + railH);
+        rail.addColorStop(0, '#c9d0da');
+        rail.addColorStop(0.18, '#9aa3b0');
+        rail.addColorStop(1, '#5d6673');
+        g.fillStyle = rail;
+        roundRect(g, x0, railY, x1 - x0, railH, 3);
+        g.fill();
+        g.restore();
+      }
+      // Skala: auf der dunklen Profilschiene hell, auf der gezeichneten dunkel
+      g.strokeStyle = railPhoto ? 'rgba(235,240,248,0.8)' : 'rgba(20,24,32,0.75)';
       for (let c = 0; c <= BENCH_LEN; c++) {
         if (small && c % 5 !== 0) continue;
         const [x] = B(c, 0);
@@ -1367,7 +1384,9 @@ export default defineSimulation({
         g.moveTo(x, railY + 1);
         g.lineTo(x, railY + 1 + len);
         g.stroke();
-        if (c % (small ? 20 : 10) === 0) text(g, String(c), x, railY + railH * 0.74, { font: `600 ${small ? 9.5 : 10}px ${theme.font}`, color: '#1b2230' });
+        if (c % (small ? 20 : 10) === 0) {
+          text(g, String(c), x, railY + railH * 0.74, { font: `600 ${small ? 9.5 : 10}px ${theme.font}`, color: railPhoto ? 'rgba(235,240,248,0.92)' : '#1b2230' });
+        }
       }
       // Kerze, Linse und Schirm auf Reitern
       drawCandle(candleX, top, sx, sy, railY);
@@ -1425,9 +1444,52 @@ export default defineSimulation({
       }
     }
 
+    /** Profilschiene als Foto: Profil von `y` bis `y + h`, die Füße stehen darunter auf dem Tisch. */
+    function drawRailPhoto(img: HTMLImageElement, x: number, y: number, w: number, h: number): void {
+      const R = RAIL_IMG;
+      const k = h / R.profile;
+      const ew = R.end * k;
+      const ph = R.h * k;
+      const piece = (sx: number, sw: number, dx: number, dw: number) => {
+        g.drawImage(scaledSprite(img, dw, ph, surface.dpr, { crop: { x: sx, y: 0, w: sw, h: R.h } }), dx, y, dw, ph);
+      };
+      g.save();
+      g.shadowColor = 'rgba(0,0,0,0.5)';
+      g.shadowBlur = 8;
+      g.shadowOffsetY = 3;
+      piece(R.end, R.w - 2 * R.end, x + ew - 0.5, Math.max(1, w - 2 * ew + 1));
+      piece(0, R.end, x, ew);
+      piece(R.w - R.end, R.end, x + w - ew, ew);
+      g.restore();
+    }
+
     function rider(x: number, railY: number, sx: number, color: string): void {
       const [px] = bench.toPx(x, 0);
       const w = Math.max(16, 4.5 * sx);
+      const photo = ctx.images.get('rider');
+      if (photo) {
+        // Foto: Grundkörper so breit wie der gezeichnete Reiter, Stange genau unter dem Bauteil
+        const R = RIDER_IMG;
+        const k = (w * 1.15) / (R.bodyR - R.bodyL);
+        const pw = R.w * k;
+        const ph = R.h * k;
+        const y0 = railY + 3 - R.bodyB * k;
+        g.save();
+        g.shadowColor = 'rgba(0,0,0,0.45)';
+        g.shadowBlur = 4;
+        g.shadowOffsetY = 1;
+        g.drawImage(scaledSprite(photo, pw, ph, surface.dpr), px - R.rod * k, y0, pw, ph);
+        g.restore();
+        // Markierung der Stelle auf der Skala
+        g.fillStyle = color;
+        g.beginPath();
+        g.moveTo(px, railY + 3.5);
+        g.lineTo(px - 3.5, railY - 1.5);
+        g.lineTo(px + 3.5, railY - 1.5);
+        g.closePath();
+        g.fill();
+        return;
+      }
       g.save();
       g.shadowColor = 'rgba(0,0,0,0.45)';
       g.shadowBlur = 4;

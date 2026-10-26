@@ -258,4 +258,53 @@ describe('Modell: Fadenpendel', () => {
     }
     expect(crossingTime(1, 2, 2, -2)).toBeCloseTo(1.5, 12);
   });
+
+  it('Aufgabenwerte aus dem Lernmaterial (Prüfrunde)', () => {
+    // A1: Sekundenpendel l = 9,81 · (2/2π)² = 0,994 m; Reglerwert 0,99 m → 2,00 s
+    expect(lengthForPeriod(2, G)).toBeCloseTo(0.994, 3);
+    expect(smallAnglePeriod(0.99, G)).toBeCloseTo(1.996, 3);
+    // A2: Messreihe 0,5/1,0/1,5 m mit 1,42/2,01/2,46 s → k ≈ 4,036 s²/m, g ≈ 9,78 m/s²
+    const fit = fitSeries([
+      { l: 0.5, T: 1.42 },
+      { l: 1, T: 2.01 },
+      { l: 1.5, T: 2.46 },
+    ])!;
+    expect(fit.slope).toBeCloseTo(4.036, 3);
+    expect(fit.g).toBeCloseTo(9.78, 2);
+    // A3: Mond, 1 m → 4,94 s, Faktor √(9,81/1,62) ≈ 2,46
+    expect(smallAnglePeriod(1, PLANETS.mond.g)).toBeCloseTo(4.937, 3);
+    expect(Math.sqrt(G / PLANETS.mond.g)).toBeCloseTo(2.461, 3);
+    // A4: 20°, 1 m, 0,5 kg → h = 0,0603 m, E = 0,296 J, v = 1,09 m/s; aus 90°: F_S = 3·m·g = 14,7 N
+    expect(energies([toRad(20), 0], 1, G, 0.5).height).toBeCloseTo(0.0603, 4);
+    expect(releaseEnergy(toRad(20), 1, G, 0.5)).toBeCloseTo(0.296, 3);
+    expect(maxSpeed(toRad(20), 1, G)).toBeCloseTo(1.088, 3);
+    expect(tension(0, toRad(90), G, 0.5)).toBeCloseTo(14.715, 3);
+    // A5: 90° → T/T₀ = 1,180, T = 2,37 s; 120° → schlaff ab |φ| = arccos(−1/3) = 109,5°
+    expect(periodFactor(toRad(90))).toBeCloseTo(1.1803, 4);
+    expect(exactPeriod(1, G, toRad(90))).toBeCloseTo(2.368, 3);
+    expect(toDeg(slackAngle(toRad(120))!)).toBeCloseTo(109.47, 2);
+    // Unterrichtsideen: bei 20° ist T etwa 0,8 % zu lang
+    expect((periodFactor(toRad(20)) - 1) * 100).toBeCloseTo(0.77, 2);
+    // Reihe 1 + φ₀²/16 bis 60° auf 0,5 % genau
+    expect(Math.abs(seriesFactor(toRad(60), 1) / periodFactor(toRad(60)) - 1)).toBeLessThan(0.005);
+  });
+
+  it('Sonderfälle und Reglergrenzen (Prüfrunde)', () => {
+    // φ₀ = 0: keine Schwingung, keine Rückkehrzeiten, keine Energie
+    expect(returnTimes(1, G, 0, 0, 3)).toEqual([]);
+    expect(periodFactor(0)).toBe(1);
+    expect(releaseEnergy(0, 1, G, 1)).toBe(0);
+    // φ₀ → 180°: Periodendauer unendlich, bei 170° (Reglergrenze) endlich und ≈ 2,44 · T₀
+    expect(periodFactor(Math.PI)).toBe(Infinity);
+    expect(periodFactor(toRad(170))).toBeCloseTo(2.439, 3);
+    // Reglergrenzen der Länge 0,2 m und 2,5 m
+    expect(smallAnglePeriod(0.2, G)).toBeCloseTo(0.897, 3);
+    expect(smallAnglePeriod(2.5, G)).toBeCloseTo(3.172, 3);
+    // numerische Messung bei 170° und 2,5 m stimmt mit der exakten Periodendauer überein
+    const ts = returnTimes(2.5, G, toRad(-170), 0, 1);
+    expect(ts[0]!).toBeCloseTo(exactPeriod(2.5, G, toRad(170)), 2);
+    // Vorzeichen: Rückstellkraft zeigt immer zur Ruhelage
+    expect(forces([toRad(30), 0], 1, G, 1).restoring).toBeLessThan(0);
+    expect(forces([toRad(-30), 0], 1, G, 1).restoring).toBeGreaterThan(0);
+  });
 });

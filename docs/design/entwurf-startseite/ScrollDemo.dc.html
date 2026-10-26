@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Scroll-Vorschau fallende Kugel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div onScroll="{{onScroll}}" style="width: 1280px; height: 860px; overflow-y: auto; overflow-x: hidden; position: relative; background: #FCFCFD; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <div style="position: relative; width: 1280px; height: 2160px">
+    <dc-import name="Main" ball="frei" hint-size="1280px,2160px"></dc-import>
+    <div aria-hidden="true" style="position: absolute; left: {{b.x}}px; top: {{b.y}}px; width: {{b.d}}px; height: {{b.d}}px; margin-left: {{b.m}}px; margin-top: {{b.m}}px; border-radius: 50%; background: radial-gradient(circle at 35% 32%, #FFF3B0 0, #FFD24A 30%, #FF8A2B 100%); box-shadow: 0 12px 24px rgba(255, 138, 43, 0.45); pointer-events: none; z-index: 5"></div>
+    <div aria-hidden="true" style="position: absolute; left: {{b.x}}px; top: {{b.shadowY}}px; width: {{b.shadowW}}px; height: 10px; margin-left: {{b.shadowM}}px; border-radius: 50%; background: rgba(36, 25, 111, 0.18); opacity: {{b.shadowO}}; pointer-events: none; z-index: 4"></div>
+  </div>
+  <div style="position: sticky; bottom: 18px; left: 0; display: flex; justify-content: center; pointer-events: none; z-index: 6; margin-top: -60px">
+    <span style="background: #1E1650; color: #FFFFFF; font-size: 13px; font-weight: 700; padding: 10px 16px; border-radius: 20px; opacity: {{hintO}}">Nach unten scrollen – die Kugel fällt mit</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { top: 0 };
+  }
+  renderVals() {
+    // Landepunkte der Kugel (Seitenkoordinaten) und ab welcher Scrollhöhe sie erreicht sind
+    const STOPS = [
+      { x: 1130, y: 360, r: 38, at: 0 },     // hängt am Pendel oben rechts
+      { x: 560, y: 800, r: 12, at: 480 },    // wird zum Atomkern auf der Physik-Karte
+      { x: 783, y: 1300, r: 11, at: 1000 },  // fällt in die Bühne „Probier's aus“
+      { x: 493, y: 1915, r: 10, at: 1520 },  // landet auf der Karte „Freier Fall“
+    ];
+    const st = this.state.top;
+    let k = 0;
+    while (k < STOPS.length - 2 && st >= STOPS[k + 1].at) k++;
+    const A = STOPS[k], B = STOPS[k + 1];
+    let u = Math.min(1, Math.max(0, (st - A.at) / (B.at - A.at)));
+    if (st >= STOPS[STOPS.length - 1].at) u = 1;
+    // waagerecht gleichmäßig, senkrecht beschleunigt wie im freien Fall, am Ende ein kleiner Hüpfer
+    const fallU = u * u;
+    const hop = u > 0.86 ? Math.sin((u - 0.86) / 0.14 * Math.PI) * 14 : 0;
+    const x = A.x + (B.x - A.x) * u;
+    const y = A.y + (B.y - A.y) * fallU - hop;
+    const r = A.r + (B.r - A.r) * u;
+    const d = Math.round(r * 2);
+    const near = u > 0.6 ? (u - 0.6) / 0.4 : 0;
+    return {
+      onScroll: (e) => this.setState({ top: e.target.scrollTop }),
+      hintO: st > 120 ? 0 : 1,
+      b: {
+        x: Math.round(x), y: Math.round(y), d, m: -Math.round(r),
+        shadowY: Math.round(B.y + r + 4), shadowW: Math.round(d * (0.6 + near * 0.6)), shadowM: -Math.round(d * (0.6 + near * 0.6) / 2),
+        shadowO: k === 0 && u === 0 ? 0 : near.toFixed(2),
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

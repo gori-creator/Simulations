@@ -144,6 +144,14 @@ export default defineSimulation({
   id: 'fadenpendel',
   animated: true,
   dragHint: true,
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'period'
+      ? L('Tipp: Länge wählen (auch durch Antippen eines Diagramms), dann „10 Schwingungen stoppen“.', 'Tip: choose the length (or tap a graph), then “Time 10 oscillations”.')
+      : v.mode === 'large'
+        ? L('Tipp: Kugel zur Seite ziehen und loslassen – oder im Diagramm T/T₀ den Winkel antippen.', 'Tip: drag the bob aside and let go – or tap an angle in the T/T₀ graph.')
+        : v.mode === 'graphs'
+          ? L('Tipp: Kugel zur Seite ziehen und loslassen. Diagramm antippen: Zeitmarke setzen.', 'Tip: drag the bob aside and let go. Tap a graph to set a time marker.')
+          : L('Tipp: Kugel mit Maus oder Finger zur Seite ziehen und loslassen.', 'Tip: drag the bob aside with the mouse or a finger and let go.'),
   layout: { aspect: 1.75, aspectNarrow: 0.62 },
   groups: [
     { id: 'world', label: L('Ort und Reibung', 'Location and friction') },
@@ -195,7 +203,7 @@ export default defineSimulation({
       type: 'number',
       group: 'world',
       label: L('Dämpfung k', 'Damping k'),
-      help: L('Reibungsterm −k·φ̇ wie in der bisherigen Fassung (geteilte Links bleiben gleich). Die Amplitude nimmt etwa mit e^(−γ·t) ab, mit γ = k/2.', 'Friction term −k·φ̇ as in the previous version (shared links stay the same). The amplitude decreases roughly as e^(−γ·t) with γ = k/2.'),
+      help: L('Reibung bremst das Pendel proportional zur Geschwindigkeit. Die Amplitude nimmt dann mit e^(−γ·t) ab, mit γ = k/2.', 'Friction slows the pendulum in proportion to its speed. The amplitude then decreases as e^(−γ·t) with γ = k/2.'),
       min: 0,
       max: 0.5,
       step: 0.01,
@@ -234,9 +242,9 @@ export default defineSimulation({
   ],
   images: { bob: 'pendelkugel.webp', stand: 'stativ.webp' },
   readouts: [
-    { key: 'formula', label: L('Periodendauer (Kleinwinkelnäherung)', 'Period (small-angle approximation)') },
+    { key: 'formula', label: L('Periodendauer (Kleinwinkelnäherung)', 'Period (small-angle approximation)'), spoiler: true },
     { key: 'exact', label: L('Periodendauer bei φ₀ (exakt)', 'Period at φ₀ (exact)'), spoiler: true },
-    { key: 'measured', label: L('Gemessene Periodendauer', 'Measured period') },
+    { key: 'measured', label: L('Gemessene Periodendauer', 'Measured period'), spoiler: true },
     { key: 'series', label: L('Messreihe', 'Series of measurements') },
     { key: 'fit', label: L('Auswertung: g aus der Steigung', 'Evaluation: g from the slope'), spoiler: true },
     { key: 'large', label: L('Große Auslenkung', 'Large amplitude') },
@@ -324,7 +332,7 @@ export default defineSimulation({
       exactText: '<var>T</var> = <var>T</var><sub>0</sub> / AGM(1; cos(<var>φ</var><sub>0</sub>/2)) ≈ <strong>{t} s</strong> – {d} % länger als die Näherung',
       exactZero: 'φ₀ = 0°: keine Schwingung',
       measuredText: '<strong>{t} s</strong> (Zeit zwischen zwei Rückkehren zum Startpunkt)',
-      measuring: 'wird gemessen …',
+      measuring: 'erscheint nach der ersten vollen Schwingung',
       noSwing: 'keine Schwingung',
       thNr: 'Nr.',
       thPlace: 'Ort',
@@ -409,7 +417,7 @@ export default defineSimulation({
       exactText: '<var>T</var> = <var>T</var><sub>0</sub> / AGM(1, cos(<var>φ</var><sub>0</sub>/2)) ≈ <strong>{t} s</strong> – {d} % longer than the approximation',
       exactZero: 'φ₀ = 0°: no oscillation',
       measuredText: '<strong>{t} s</strong> (time between two returns to the starting point)',
-      measuring: 'measuring …',
+      measuring: 'appears after the first full oscillation',
       noSwing: 'no oscillation',
       thNr: 'no.',
       thPlace: 'place',
@@ -432,7 +440,7 @@ export default defineSimulation({
     const p = ctx.params;
     const fmt = ctx.fmt;
     const tr = (key: string, vars: Record<string, string>) => ctx.t(key).replace(/\{(\w+)\}/g, (all: string, k: string) => vars[k] ?? all);
-    const n = (v: number, d: number) => fmt.num(v, d);
+    const n = (v: number, d: number) => fmt.fixed(v, d);
     const mode = () => p.mode as Mode;
     const arrows = () => p.arrows as ArrowMode;
     const planetId = () => p.planet as PlanetId;
@@ -586,7 +594,7 @@ export default defineSimulation({
       const t0 = T0();
       ctx.readout('formula', { html: tr('formula', { l: n(p.l, 2), g: n(g(), 2), t: fmt.fixed(t0, 3), f: n(1 / t0, 3) }) });
       if (p.amp === 0) ctx.readout('exact', ctx.t('exactZero'));
-      else ctx.readout('exact', { html: tr('exactText', { t: fmt.fixed(Tex(), 3), d: n((Tex() / t0 - 1) * 100, 2) }) });
+      else ctx.readout('exact', { html: tr('exactText', { t: fmt.fixed(Tex(), 3), d: n((Tex() / t0 - 1) * 100, 1) }) });
       updateMeasured();
       // Messreihe
       if (m === 'period') {
@@ -622,7 +630,7 @@ export default defineSimulation({
       } else ctx.readout('damp', null);
       // Energie
       const h0 = p.l * (1 - Math.cos(amp()));
-      ctx.readout('en', { html: tr('enText', { e: n(e0(), 4), h: n(h0, 4), v: n(maxSpeed(amp(), p.l, g()), 3) }) });
+      ctx.readout('en', { html: tr('enText', { e: fmt.sig(e0(), 3), h: fmt.sig(h0, 3), v: fmt.sig(maxSpeed(amp(), p.l, g()), 3) }) });
       ctx.setAction('measure', { enabled: !ctx.locked && p.amp !== 0 && !measuring() });
       ctx.setAction('clear', { enabled: !ctx.locked && series.length > 0 });
       updateNow();
@@ -777,7 +785,12 @@ export default defineSimulation({
       richText(label, x + 7, y + (fs + 9) / 2 + 0.5, fs, color, 'left', false);
       if (right) {
         const wr = richWidth(right, fs - 0.5, 600);
-        if (x + w + wr + 16 < R.x + R.w) richText(right, R.x + R.w - 10, y + (fs + 9) / 2 + 0.5, fs - 0.5, rightColor ?? ctx.theme.muted, 'right', false, 600);
+        if (x + w + wr + 16 < R.x + R.w) {
+          gx.fillStyle = ctx.theme.dark ? 'rgba(16,22,31,0.9)' : 'rgba(255,255,255,0.94)';
+          roundRect(gx, R.x + R.w - 16 - wr, y, wr + 12, fs + 9, 6);
+          gx.fill();
+          richText(right, R.x + R.w - 10, y + (fs + 9) / 2 + 0.5, fs - 0.5, rightColor ?? ctx.theme.muted, 'right', false, 600);
+        }
       }
     }
 
@@ -1122,7 +1135,7 @@ export default defineSimulation({
       const mx = g0.cx + g0.Lpx * grow * 0.62 * Math.sin(phi);
       const my = g0.cy + g0.Lpx * grow * 0.62 * Math.cos(phi);
       // auf der Seite zum Lot hin versetzt
-      const side = phi >= 0 ? -1 : 1;
+      const side = (phi >= 0 ? -1 : 1) * (Math.abs(phi) < 0.6 ? -1 : 1);
       ang = phi;
       const ox = side * Math.cos(ang) * 12;
       const oy = -side * Math.sin(ang) * 12;
@@ -1231,8 +1244,8 @@ export default defineSimulation({
       if (rod()) out.push({ text: ctx.t(small ? 'hRodShort' : 'hRod'), color: C.heat() });
       if (m === 'period' && measuring()) out.push({ text: ctx.t('hMeasure'), color: C.good() });
       else if (m === 'period' && Math.abs(p.amp) > 15) out.push({ text: ctx.t('hSmall'), color: C.heat() });
-      if (planetId() === 'erde' && Math.abs(T0() - 2) < 0.005) out.push({ text: ctx.t('hSeconds'), color: C.good() });
-      if (planetId() !== 'erde' && (m === 'swing' || m === 'graphs')) out.push({ text: tr('hPlanet', { p: ctx.t(planetId()), g: n(g(), 2), f: n(Math.sqrt(PLANETS.erde.g / g()), 2) }), color: theme.series[4]! });
+      if (planetId() === 'erde' && Math.abs(T0() - 2) < 0.005 && !ctx.isHidden('formula')) out.push({ text: ctx.t('hSeconds'), color: C.good() });
+      if (planetId() !== 'erde' && (m === 'swing' || m === 'graphs') && !ctx.isHidden('formula')) out.push({ text: tr('hPlanet', { p: ctx.t(planetId()), g: n(g(), 2), f: n(Math.sqrt(PLANETS.erde.g / g()), 2) }), color: theme.series[4]! });
       if (m === 'large' && Math.abs(p.amp) > 0 && Math.abs(p.amp) < ONE_PERCENT) out.push({ text: ctx.t('hOnePct'), color: C.good() });
       if (m === 'phase' && p.damping === 0 && p.amp !== 0) out.push({ text: ctx.t('hClosed'), color: theme.muted });
       return out.slice(0, 2);
@@ -1298,14 +1311,14 @@ export default defineSimulation({
       x += pill(x, r.y + 8, `t = ${fmt.fixed(tView, 2)} s`, scrub !== null ? C.ghost() : theme.text, 'left', size).w + 6;
       x += pill(x, r.y + 8, `φ = ${n(toDeg(s[0]), 1)}°`, C.phi(), 'left', size).w + 6;
       if (!small) pill(x, r.y + 8, `v = ${n(e.speed, 2)} m/s`, C.kin(), 'left', size);
-      pill(r.x + r.w - 8, r.y + 8, tr('T0', { t: fmt.fixed(disp.T0, 2) }), theme.text, 'right', size);
+      pill(r.x + r.w - 8, r.y + 8, tr('T0', { t: ctx.isHidden('formula') ? '?' : fmt.fixed(disp.T0, 2) }), theme.text, 'right', size);
       // zweite Zeile: Legende bzw. Stoppuhr links, Ort rechts
       const y2 = r.y + 8 + row;
       const gLabel = `${small ? '' : `${ctx.t(planetId())} · `}g = ${n(g(), 2)} m/s²`;
       pill(r.x + r.w - 8, y2, gLabel, planetId() === 'erde' ? theme.muted : theme.series[4]!, 'right', size);
       if (meas && mode() === 'period') drawWatch(r, y2, size);
       else if (p.compare) pill(r.x + 8, y2, `- - ${ctx.t(small ? 'approxShort' : 'approx')}`, C.ghost(), 'left', size);
-      else if (meas === null && mode() === 'period' && p.amp !== 0 && ctx.clock.playing) pill(r.x + 8, y2, tr('Tmeas', { t: fmt.fixed(Tex(), 2) }), theme.muted, 'left', size);
+      else if (meas === null && mode() === 'period' && p.amp !== 0 && ctx.clock.playing && !ctx.isHidden('exact')) pill(r.x + 8, y2, tr('Tmeas', { t: fmt.fixed(Tex(), 2) }), theme.muted, 'left', size);
       // Hinweise
       hints().forEach((h, i) => {
         const maxW = r.w - 20;
@@ -1537,13 +1550,13 @@ export default defineSimulation({
         plot.segment([a, y], [b, y], { color: theme.text, width: 1.4 });
         for (const q of [a, b]) plot.segment([q, y - range * 0.06], [q, y + range * 0.05], { color: theme.text, width: 1.4 });
         const w = plot.px(b) - plot.px(a);
-        plot.text((a + b) / 2, y, w > 70 ? tr('Tmeas', { t: fmt.fixed(b - a, 2) }) : 'T', { color: theme.text, size: R.w < 300 ? 11 : 12, weight: 'bold', align: 'center', offset: [0, 11] });
+        plot.text((a + b) / 2, y, w > 70 && !ctx.isHidden('measured') ? tr('Tmeas', { t: fmt.fixed(b - a, 2) }) : 'T', { color: theme.text, size: R.w < 300 ? 11 : 12, weight: 'bold', align: 'center', offset: [0, 11] });
       }
       plot.vline(v.t, { color: scrub !== null ? C.ghost() : theme.text, width: scrub !== null ? 2 : 1.3, alpha: 0.55 });
       if (p.compare && p.amp !== 0) plot.point(v.t, toDeg(ghostAt(v.t)), { color: C.ghost(), radius: 4, hollow: true });
       plot.point(v.t, toDeg(v.s[0]), { color: C.phi(), radius: 5.5 });
       plot.end();
-      const right = p.compare ? `- - ${ctx.t('approxShort')}` : returns.length >= 2 ? tr('Tmeas', { t: fmt.fixed(returns[returns.length - 1]! - returns[returns.length - 2]!, 3) }) : undefined;
+      const right = p.compare ? `- - ${ctx.t('approxShort')}` : returns.length >= 2 && !ctx.isHidden('measured') ? tr('Tmeas', { t: fmt.fixed(returns[returns.length - 1]! - returns[returns.length - 2]!, 3) }) : undefined;
       titleChip(R, ctx.t('tPhi'), C.phi(), right, p.compare ? C.ghost() : theme.text);
     }
 
@@ -1648,9 +1661,9 @@ export default defineSimulation({
         // Steigung und g je Ort
         const fits = ids.map((id) => ({ id, fit: fitSeries(series.filter((q) => q.planet === id)) })).filter((q) => q.fit);
         const cur = fits.find((q) => q.id === planetId()) ?? fits[fits.length - 1];
-        titleChip(R, ctx.t('tT2l'), theme.text, cur && !small ? tr('slope', { k: n(cur.fit!.slope, 3), g: n(cur.fit!.g, 2) }) : undefined, cur ? PLANET_COLOR[cur.id]() : undefined);
+        titleChip(R, ctx.t('tT2l'), theme.text, cur && !small && !ctx.isHidden('fit') ? tr('slope', { k: n(cur.fit!.slope, 3), g: n(cur.fit!.g, 2) }) : undefined, cur ? PLANET_COLOR[cur.id]() : undefined);
         // Rückmeldung, sobald drei Längen gemessen sind
-        if (cur && cur.fit!.lengths >= 3) {
+        if (cur && cur.fit!.lengths >= 3 && !ctx.isHidden('fit')) {
           const u = resultPop.running ? resultPop.value : 1;
           const gx = surface.g;
           gx.save();
@@ -1717,10 +1730,10 @@ export default defineSimulation({
       richText(ctx.t(R.w < 420 ? 'approxShort' : 'approx'), plot.px(172), plot.py(1) - 11, fs, C.ghost(), 'right', true, 650);
       if (R.w >= 420) richText(ctx.t('series2'), plot.px(176), plot.py(seriesFactor(toRad(176))) + 16, fs - 0.5, theme.muted, 'right', true, 600);
       richText(ctx.t('exactCurve'), plot.px(160) - 6, plot.py(periodFactor(toRad(160))), fs, theme.text, 'right', true, 700);
-      const label = tr('factor', { f: n(f, 3) });
+      const label = ctx.isHidden('exact') ? 'T = ? · T_{0}' : tr('factor', { f: n(f, 3) });
       const lx = plot.px(a) + (a > 110 ? -10 : 10);
       clampedText(label, lx, plot.py(f) - 14, fs, C.phi(), plot.rect, a > 110 ? 'right' : 'left');
-      titleChip(R, ctx.t('tTf'), theme.text, small ? undefined : tr('TT', { t: fmt.fixed(Tex(), 3) }), C.phi());
+      titleChip(R, ctx.t('tTf'), theme.text, small || ctx.isHidden('exact') ? undefined : tr('TT', { t: fmt.fixed(Tex(), 3) }), C.phi());
     }
 
     function drawTensionChart(plot: Plot, R: Rect): void {
@@ -2024,7 +2037,7 @@ export default defineSimulation({
         }
         if (changed.has('m') && source === 'input' && !physics) {
           const f = p.m / lastMass;
-          if (Math.abs(f - 1) > 0.01) transient = { text: tr('hMass', { f: n(f, 2), t: fmt.fixed(Tex() || T0(), 2) }), until: performance.now() + 3400 };
+          if (Math.abs(f - 1) > 0.01) transient = { text: tr('hMass', { f: fmt.num(f, 2), t: fmt.fixed(Tex() || T0(), 2) }), until: performance.now() + 3400 };
         }
         lastMass = p.m;
         if (changed.has('mode')) scrub = null;

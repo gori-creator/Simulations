@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   distance,
@@ -29,6 +29,10 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 const clamp01 = (t: number) => clamp(t, 0, 1);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const TAU = Math.PI * 2;
+/** Autofoto (Pixel in auto.webp): Radmitten, Radius, Unterkante der Reifen, Rücklicht. */
+const CAR_IMG = { wheels: [231, 1302], wy: 548, wr: 134, ground: 682, tail: [70, 275] } as const;
+/** Fahrradfoto (Pixel in fahrrad.webp): Naben hinten/vorn auf gleicher Höhe. */
+const BIKE_IMG = { hubs: [238, 1023], hy: 456 } as const;
 
 /** Dauer eines ganzen Ablaufs 0 → T bei normaler Geschwindigkeit (s). */
 const RUN_S = 8;
@@ -219,6 +223,7 @@ export default defineSimulation({
   dragHint: true,
   animated: true,
   layout: { aspect: 1.32, aspectNarrow: 0.34 },
+  images: { car: 'auto.webp', bike: 'fahrrad.webp' },
   groups: [
     { id: 'own', label: L('Eigene Zuflussrate', 'Your own inflow rate') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -1056,6 +1061,41 @@ export default defineSimulation({
       const wr = L * 0.16;
       const left = x - w / 2;
       const base = y + h * 0.15;
+      const carImg = ctx.images.get('car');
+      if (carImg) {
+        // Foto: so breit wie die Ersatzgrafik, Reifen auf derselben Bodenlinie; die Felgen werden ausgeschnitten und gedreht
+        const C = CAR_IMG;
+        const k = w / carImg.naturalWidth;
+        const ih = carImg.naturalHeight * k;
+        const x0 = left;
+        const y0 = base + wr - C.ground * k;
+        g.save();
+        g.fillStyle = 'rgba(0,0,0,0.28)';
+        g.beginPath();
+        g.ellipse(x, base + wr, w * 0.48, wr * 0.25, 0, 0, TAU);
+        g.fill();
+        g.restore();
+        const spr = scaledSprite(carImg, w, ih, surface.dpr);
+        g.drawImage(spr, x0, y0, w, ih);
+        const r = C.wr * k;
+        for (const wx of C.wheels) {
+          const cx = x0 + wx * k;
+          const cy = y0 + C.wy * k;
+          g.save();
+          g.beginPath();
+          g.arc(cx, cy, r * 0.985, 0, TAU);
+          g.clip();
+          g.translate(cx, cy);
+          g.rotate(roll / r);
+          g.drawImage(spr, -wx * k, -C.wy * k, w, ih);
+          g.restore();
+        }
+        const tx = x0 + C.tail[0] * k;
+        const ty = y0 + C.tail[1] * k;
+        if (lights.brake) halo(tx, ty, '#ef4444', L * 0.35, 1);
+        if (lights.reverse) halo(tx, ty + h * 0.25, '#ffffff', L * 0.3, 1);
+        return;
+      }
       // Schatten
       g.save();
       g.fillStyle = 'rgba(0,0,0,0.28)';
@@ -1147,6 +1187,21 @@ export default defineSimulation({
       const r = L * 0.3;
       const xa = x - L * 0.42;
       const xb = x + L * 0.42;
+      const bikeImg = ctx.images.get('bike');
+      if (bikeImg) {
+        // Foto: Naben auf den Radmitten der Ersatzgrafik (Radstand 0,84 L). Die Speichen bleiben stehen –
+        // ein gedrehter Ausschnitt würde Rahmen, Kette und Schaltwerk mitdrehen.
+        const B = BIKE_IMG;
+        const k = (xb - xa) / (B.hubs[1] - B.hubs[0]);
+        const iw = bikeImg.naturalWidth * k;
+        const ih = bikeImg.naturalHeight * k;
+        g.fillStyle = 'rgba(0,0,0,0.25)';
+        g.beginPath();
+        g.ellipse(x, y + (bikeImg.naturalHeight - B.hy) * k, L * 0.7, r * 0.15, 0, 0, TAU);
+        g.fill();
+        g.drawImage(scaledSprite(bikeImg, iw, ih, surface.dpr), xa - B.hubs[0] * k, y - B.hy * k, iw, ih);
+        return;
+      }
       // Schatten
       g.fillStyle = 'rgba(0,0,0,0.25)';
       g.beginPath();

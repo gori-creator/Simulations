@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { brakingForce, coilLinkage, COIL_AREA, current, generatorPeak, MAGNET, magnetVoltage, motionalVoltage, rms } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -50,6 +50,7 @@ export default defineSimulation({
         ? L('Tipp: Ziehe den Stab mit Maus oder Finger – schnell, langsam oder gar nicht.', 'Tip: drag the rod with the mouse or a finger – fast, slowly or not at all.')
         : L('Tipp: Ziehe den Magneten mit Maus oder Finger – schnell, langsam oder gar nicht.', 'Tip: drag the magnet with the mouse or a finger – fast, slowly or not at all.'),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
+  images: { magnet: 'stabmagnet.webp', coil: 'spule.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -484,6 +485,11 @@ export default defineSimulation({
     let magnetBox: Rect | null = null;
     let rodBox: Rect | null = null;
 
+    /**
+     * Spulen-Foto (spule.webp, 1215 × 742): Anfang und Ende der Wicklung, Mitte der
+     * Spulenachse, Außenradius der Wicklung, Unterkante und Lage der Anschlussdrähte (Bildpixel).
+     */
+    const COIL_SRC = { x0: 200, x1: 1040, cy: 205, r: 200, top: 0, wireEnd: 742, legA: 195, legB: 1019 };
     function drawMagnetScene(R: Rect, ik: number): void {
       const g = surface.g;
       const theme = ctx.theme;
@@ -491,8 +497,12 @@ export default defineSimulation({
       const cy = R.y + R.h * 0.5;
       const k = (R.w * 0.62) / (Z_MAX + MAGNET.length);
       const xc = R.x + R.w * 0.74;
-      const cr = clamp(R.h * 0.22, 26, 90);
       const cl = clamp(R.w * 0.2, 70, 170);
+      const coilImg = ctx.images.get('coil');
+      const magImg = ctx.images.get('magnet');
+      // Maßstab des Spulen-Fotos: Wicklung so lang wie die gezeichnete Spule
+      const ck = cl / (COIL_SRC.x1 - COIL_SRC.x0);
+      const cr = coilImg ? COIL_SRC.r * ck : clamp(R.h * 0.22, 26, 90);
       const turns = clamp(Math.round(p.n / 12), 6, 26);
       const faceX = xc - z * k;
       const ml = Math.max(MAGNET.length * k, cl * 0.9);
@@ -521,56 +531,84 @@ export default defineSimulation({
       // Spule: hintere Windungshälften
       const x0 = xc - cl / 2;
       const dx = cl / turns;
-      g.lineWidth = sm ? 2.6 : 3.2;
-      g.lineCap = 'round';
-      for (let i = 0; i <= turns; i++) {
-        const xx = x0 + i * dx;
-        g.strokeStyle = theme.dark ? '#7a4d2a' : '#8a5426';
-        g.beginPath();
-        g.ellipse(xx, cy, cr * 0.28, cr, 0, -Math.PI / 2, Math.PI / 2, true);
-        g.stroke();
+      if (coilImg) {
+        // Foto der ganzen Spule hinter dem Magneten (vorn liegt die Wicklung noch einmal halb durchsichtig darüber)
+        const w = coilImg.width * ck;
+        const h = coilImg.height * ck;
+        g.drawImage(scaledSprite(coilImg, w, h, surface.dpr), x0 - COIL_SRC.x0 * ck, cy - COIL_SRC.cy * ck, w, h);
+      } else {
+        g.lineWidth = sm ? 2.6 : 3.2;
+        g.lineCap = 'round';
+        for (let i = 0; i <= turns; i++) {
+          const xx = x0 + i * dx;
+          g.strokeStyle = theme.dark ? '#7a4d2a' : '#8a5426';
+          g.beginPath();
+          g.ellipse(xx, cy, cr * 0.28, cr, 0, -Math.PI / 2, Math.PI / 2, true);
+          g.stroke();
+        }
+        // Spulenkörper (Kunststoff, durchscheinend)
+        g.fillStyle = theme.dark ? 'rgba(120,140,170,0.12)' : 'rgba(180,195,215,0.25)';
+        g.fillRect(x0, cy - cr, cl, 2 * cr);
       }
-      // Spulenkörper (Kunststoff, durchscheinend)
-      g.fillStyle = theme.dark ? 'rgba(120,140,170,0.12)' : 'rgba(180,195,215,0.25)';
-      g.fillRect(x0, cy - cr, cl, 2 * cr);
       // Magnet
       const mxL = faceX - ml;
-      magnetBox = { x: mxL, y: cy - mh / 2, w: ml, h: mh };
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
-      g.shadowBlur = 10;
-      g.shadowOffsetY = 4;
-      for (const [xa, col] of [
-        [mxL, SOUTH],
-        [mxL + ml / 2, NORTH],
-      ] as const) {
-        const mg = g.createLinearGradient(0, cy - mh / 2, 0, cy + mh / 2);
-        mg.addColorStop(0, mixColor(col, '#ffffff', 0.35));
-        mg.addColorStop(0.5, col);
-        mg.addColorStop(1, mixColor(col, '#000000', 0.3));
-        g.fillStyle = mg;
-        g.fillRect(xa, cy - mh / 2, ml / 2, mh);
+      // Foto: gleiche Länge, Seitenverhältnis bleibt (schlanker als die Ersatzgrafik)
+      const mhv = magImg ? (ml * magImg.height) / magImg.width : mh;
+      magnetBox = { x: mxL, y: cy - mhv / 2, w: ml, h: mhv };
+      if (magImg) {
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(magImg, ml, mhv, surface.dpr), mxL, cy - mhv / 2, ml, mhv);
+        g.restore();
+      } else {
+        g.save();
+        g.shadowColor = theme.dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
+        g.shadowBlur = 10;
+        g.shadowOffsetY = 4;
+        for (const [xa, col] of [
+          [mxL, SOUTH],
+          [mxL + ml / 2, NORTH],
+        ] as const) {
+          const mg = g.createLinearGradient(0, cy - mh / 2, 0, cy + mh / 2);
+          mg.addColorStop(0, mixColor(col, '#ffffff', 0.35));
+          mg.addColorStop(0.5, col);
+          mg.addColorStop(1, mixColor(col, '#000000', 0.3));
+          g.fillStyle = mg;
+          g.fillRect(xa, cy - mh / 2, ml / 2, mh);
+        }
+        g.restore();
       }
-      g.restore();
       const hot = hover === 'magnet' || drag === 'magnet';
       if (hot) {
         g.strokeStyle = orange();
         g.lineWidth = 2;
-        roundRect(g, mxL - 3, cy - mh / 2 - 3, ml + 6, mh + 6, 4);
+        roundRect(g, mxL - 3, cy - mhv / 2 - 3, ml + 6, mhv + 6, 4);
         g.stroke();
       }
-      richText('S', mxL + ml / 4, cy, sm ? 13 : 16, '#ffffff', 'center', 800);
-      richText('N', mxL + (3 * ml) / 4, cy, sm ? 13 : 16, '#ffffff', 'center', 800);
+      const poleSize = magImg ? clamp(mhv * 0.62, 10, sm ? 13 : 16) : sm ? 13 : 16;
+      richText('S', mxL + ml / 4, cy, poleSize, '#ffffff', 'center', 800);
+      richText('N', mxL + (3 * ml) / 4, cy, poleSize, '#ffffff', 'center', 800);
       // Spule: vordere Windungshälften mit Induktionsstrom
-      for (let i = 0; i <= turns; i++) {
-        const xx = x0 + i * dx;
-        const cg = g.createLinearGradient(xx - cr * 0.28, 0, xx + cr * 0.28, 0);
-        cg.addColorStop(0, copper(0.25));
-        cg.addColorStop(1, copper(-0.1));
-        g.strokeStyle = cg;
-        g.beginPath();
-        g.ellipse(xx, cy, cr * 0.28, cr, 0, -Math.PI / 2, Math.PI / 2, false);
-        g.stroke();
+      if (coilImg) {
+        // vordere Wicklung halb durchsichtig, damit der Magnet in der Spule sichtbar bleibt
+        g.save();
+        g.globalAlpha *= 0.55;
+        const crop = { x: COIL_SRC.x0, y: COIL_SRC.top, w: COIL_SRC.x1 - COIL_SRC.x0, h: COIL_SRC.cy + COIL_SRC.r + 10 };
+        g.drawImage(scaledSprite(coilImg, cl, crop.h * ck, surface.dpr, { crop }), x0, cy - COIL_SRC.cy * ck, cl, crop.h * ck);
+        g.restore();
+      } else {
+        for (let i = 0; i <= turns; i++) {
+          const xx = x0 + i * dx;
+          const cg = g.createLinearGradient(xx - cr * 0.28, 0, xx + cr * 0.28, 0);
+          cg.addColorStop(0, copper(0.25));
+          cg.addColorStop(1, copper(-0.1));
+          g.strokeStyle = cg;
+          g.beginPath();
+          g.ellipse(xx, cy, cr * 0.28, cr, 0, -Math.PI / 2, Math.PI / 2, false);
+          g.stroke();
+        }
       }
       // Stromfluss: helle Punkte wandern auf den vorderen Windungen
       if (s > 0.02) {
@@ -615,11 +653,15 @@ export default defineSimulation({
       // Anschlüsse zum Messgerät
       g.strokeStyle = theme.dark ? '#c9a46a' : '#9a6a2f';
       g.lineWidth = 2;
+      // mit Foto beginnen die Leitungen am Ende der Anschlussdrähte
+      const wy = coilImg ? Math.min(cy + (COIL_SRC.wireEnd - COIL_SRC.cy) * ck - 2, R.y + R.h - 14) : cy + cr;
+      const wxA = coilImg ? x0 + (COIL_SRC.legA - COIL_SRC.x0) * ck : x0;
+      const wxB = coilImg ? x0 + (COIL_SRC.legB - COIL_SRC.x0) * ck : x0 + cl;
       g.beginPath();
-      g.moveTo(x0, cy + cr);
-      g.lineTo(x0, R.y + R.h - 14);
-      g.moveTo(x0 + cl, cy + cr);
-      g.lineTo(x0 + cl, R.y + R.h - 14);
+      g.moveTo(wxA, wy);
+      g.lineTo(wxA, R.y + R.h - 14);
+      g.moveTo(wxB, wy);
+      g.lineTo(wxB, R.y + R.h - 14);
       g.stroke();
       // Beschriftung nach links schieben, falls sie sonst am rechten Rand abgeschnitten würde
       const tmLab = `${ctx.t('toMeter')} →`;

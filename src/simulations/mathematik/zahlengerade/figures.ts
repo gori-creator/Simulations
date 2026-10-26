@@ -15,6 +15,23 @@ function ellipse(g: G, x: number, y: number, rx: number, ry: number, rot = 0): v
   g.ellipse(x, y, rx, ry, rot, 0, Math.PI * 2);
 }
 
+/**
+ * Foto einer Figur statt der gezeichneten Form: Ursprung zwischen den Füßen,
+ * Bildhöhe `h`, unverzerrt. `facing` spiegelt wie bei den Zeichnungen, `angle`
+ * dreht um einen Punkt auf Höhe `pivot · h` über den Füßen (Pinguin beim Schwimmen).
+ */
+export function drawPhotoFigure(g: G, img: HTMLImageElement, x: number, y: number, h: number, facing: number, angle = 0, pivot = 0.48): void {
+  const w = (h * img.naturalWidth) / img.naturalHeight;
+  g.save();
+  g.translate(x, y - pivot * h);
+  g.rotate(angle);
+  g.scale(Math.max(0.04, Math.abs(facing)) * Math.sign(facing || 1), 1);
+  g.imageSmoothingEnabled = true;
+  g.imageSmoothingQuality = 'high';
+  g.drawImage(img, -w / 2, pivot * h - h, w, h);
+  g.restore();
+}
+
 /** Bodenschatten (nicht gespiegelt, wird beim Hüpfen kleiner). */
 export function groundShadow(g: G, x: number, y: number, w: number, lift: number, dark: boolean): void {
   const k = Math.max(0.35, 1 - lift * 0.8);
