@@ -1,17 +1,18 @@
 import {
   BATTERY_IMG,
   BULB_IMG,
-  drawBulbPhoto,
   defineSimulation,
+  drawBulbPhoto,
   ease,
   offscreenCanvas,
   prefersReducedMotion,
   roundRect,
   scaledSprite,
   Surface,
-  tintedSprite,
   TapTarget,
   text,
+  textOn,
+  tintedSprite,
   Tween,
   withAlpha,
   type Rect,
@@ -1000,7 +1001,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? '#ffffff' : color });
+      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: solid ? textOn(color, theme) : color });
       return { x: x0, y, w, h };
     }
 

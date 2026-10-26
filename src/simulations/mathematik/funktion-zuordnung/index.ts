@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, Plot, prefersReducedMotion, roundRect, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, Plot, prefersReducedMotion, roundRect, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   analyze,
   countProfile,
@@ -399,7 +399,7 @@ export default defineSimulation({
         roundRect(g, left + 0.5, y - h / 2 + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, label, left + w / 2, y + 0.5, { font, color: filled ? '#ffffff' : color });
+      text(g, label, left + w / 2, y + 0.5, { font, color: filled ? textOn(color, theme) : color });
       return { x: left, y: y - h / 2, w, h };
     }
 
@@ -607,7 +607,7 @@ export default defineSimulation({
       g.lineWidth = 2;
       g.strokeStyle = ctx.theme.bg;
       g.stroke();
-      text(g, str, x, y + 0.5, { font: `800 11px ${ctx.theme.font}`, color: '#ffffff' });
+      text(g, str, x, y + 0.5, { font: `800 11px ${ctx.theme.font}`, color: textOn(color, ctx.theme) });
     }
 
     function arrowColor(i: number, an: Analysis): string {
@@ -968,7 +968,7 @@ export default defineSimulation({
       g.arc(0, 0, icon, 0, Math.PI * 2);
       g.fillStyle = v.color;
       g.fill();
-      g.strokeStyle = '#ffffff';
+      g.strokeStyle = textOn(v.color, theme);
       g.lineWidth = 3;
       g.lineCap = 'round';
       g.lineJoin = 'round';
@@ -984,7 +984,7 @@ export default defineSimulation({
         g.lineTo(-4.5, 4.5);
       }
       g.stroke();
-      if (v.ok === null) text(g, '?', 0, 1, { font: `800 16px ${theme.font}`, color: '#ffffff' });
+      if (v.ok === null) text(g, '?', 0, 1, { font: `800 16px ${theme.font}`, color: textOn(v.color, theme) });
       g.restore();
       const tx = Rr.x + pad + icon * 2 + 10;
       const tw = Rr.x + Rr.w - pad - tx;
@@ -1205,7 +1205,7 @@ export default defineSimulation({
       roundRect(g, gx - gw / 2, gy - 12, gw, 24, 12);
       g.fill();
       g.restore();
-      text(g, `‹ ${xl} ›`, gx, gy + 0.5, { font: `700 12px ${theme.font}`, color: '#ffffff' });
+      text(g, `‹ ${xl} ›`, gx, gy + 0.5, { font: `700 12px ${theme.font}`, color: textOn(c, theme) });
     }
 
     function drawStrip(Rr: Rect, now: number): void {

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { compare, crossCancel, divide, measure, mixed, multiply, reciprocal, reduce, type Fraction } from './model';
 import { drawFrac, drawRich, fill, fr, fracWidth, richHeight, type TextToken, type Token } from './rich';
 
@@ -574,7 +574,7 @@ export default defineSimulation({
             if (appear <= 0) continue;
             g.save();
             g.globalAlpha = appear;
-            text(g, String(k), ox + (i + 0.5) * cw, oy - (j + 0.5) * chh + 0.5, { font: `750 ${fs}px ${F()}`, color: '#ffffff' });
+            text(g, String(k), ox + (i + 0.5) * cw, oy - (j + 0.5) * chh + 0.5, { font: `750 ${fs}px ${F()}`, color: textOn(colP(), T) });
             g.restore();
           }
       }
@@ -1108,7 +1108,7 @@ export default defineSimulation({
         g.fillStyle = colB();
         roundRect(g, sx + 0.5, yS, sw - 1, bh, 4);
         g.fill();
-        if (sw > 14) text(g, String(k + 1), sx + sw / 2, yS + bh / 2 + 0.5, { font: `800 ${Math.min(12, bh * 0.55)}px ${F()}`, color: '#ffffff' });
+        if (sw > 14) text(g, String(k + 1), sx + sw / 2, yS + bh / 2 + 0.5, { font: `800 ${Math.min(12, bh * 0.55)}px ${F()}`, color: textOn(colB(), T) });
       }
       if (restZ > 0) {
         const sx = X(full * C);

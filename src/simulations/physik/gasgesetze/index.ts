@@ -12,6 +12,7 @@ import {
   shade,
   Surface,
   text,
+  textOn,
   tintedSprite,
   Tween,
   withAlpha,
@@ -677,7 +678,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: fill ? '#ffffff' : color });
+      text(g, label, x0 + w / 2, y + h / 2 + 0.5, { font: `700 ${size}px ${theme.font}`, color: fill ? textOn(fill, theme) : color });
       return { x: x0, y, w, h };
     }
 

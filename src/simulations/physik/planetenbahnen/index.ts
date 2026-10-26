@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, roundRect, seededRandom, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, Plot, roundRect, seededRandom, Surface, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   circularSpeed,
   conicPoint,
@@ -850,7 +850,7 @@ export default defineSimulation({
         roundRect(g, x0 + 0.5, y + 0.5, w - 1, h - 1, h / 2);
         g.stroke();
       }
-      rich(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? '#ffffff' : color, 'center', null);
+      rich(label, x0 + w / 2, y + h / 2 + 0.5, size, fill ? textOn(fill, ctx.theme) : color, 'center', null);
       return w;
     }
 

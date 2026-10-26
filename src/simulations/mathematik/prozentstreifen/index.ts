@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, Surface, TapTarget, textOn, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { asFraction, changeSign, gridFill, isNice, problem, randomTask, ruleOfThree, shareRate, wrongBase, type Find, type Problem, type Sit } from './model';
 
@@ -863,7 +863,7 @@ export default defineSimulation({
         bs -= 1;
         g.font = `800 ${bs}px ${th().font}`;
       }
-      label(badge, bx, by + 0.5, `800 ${bs}px ${th().font}`, '#ffffff');
+      label(badge, bx, by + 0.5, `800 ${bs}px ${th().font}`, textOn(bc, th()));
       g.restore();
     }
 
@@ -1063,7 +1063,7 @@ export default defineSimulation({
       g.arc(cx, cy, r, 0, TAU);
       g.fill();
       g.restore();
-      label('%', cx, cy + 1, `800 ${Math.round(r * 1.05)}px ${th().font}`, '#ffffff');
+      label('%', cx, cy + 1, `800 ${Math.round(r * 1.05)}px ${th().font}`, textOn(col.p(), th()));
       // „1 % = 1/100“
       const fx = cx + r + 12;
       const box = formula(g, '1 % = \\f{1}{100}', fstyle(clamp(r * 0.42, 12, 16), col.p(), 700));
@@ -1453,7 +1453,7 @@ export default defineSimulation({
       if (xWr > xW) {
         hatch(xW, ys, xWr - xW, h, withAlpha(col.bad(), 0.7));
       } else hatch(xWr, ys, xW - xWr, h, withAlpha(col.bad(), 0.6));
-      label(`${val(pb.W)} ${say(L('als 100 %', 'as 100 %'))}`, xa + 8, ys + h / 2 + 0.5, `700 ${fs(11.5, 11)}px ${theme.font}`, '#ffffff', 'left');
+      label(`${val(pb.W)} ${say(L('als 100 %', 'as 100 %'))}`, xa + 8, ys + h / 2 + 0.5, `700 ${fs(11.5, 11)}px ${theme.font}`, textOn(col.bad(), theme), 'left');
       // senkrechte Linie beim richtigen Grundwert
       const xg = XV(pb.G);
       g.strokeStyle = col.G();

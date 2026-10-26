@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import {
   angleDeg,
   angleInPlane,
@@ -990,7 +990,7 @@ export default defineSimulation({
       g.beginPath();
       g.rect(x, y, w - 8, 24);
       g.clip();
-      text(g, note.text, x + 10, y + 12.5, { font: f, color: '#ffffff', align: 'left' });
+      text(g, note.text, x + 10, y + 12.5, { font: f, color: textOn(note.ok ? theme.series[2]! : mixColor(theme.series[1]!, theme.bg, 0.05), theme), align: 'left' });
       g.restore();
     }
 

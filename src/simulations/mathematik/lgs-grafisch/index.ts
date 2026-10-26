@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha } from '../../../sim-core';
+import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, textOn, Tween, withAlpha } from '../../../sim-core';
 import {
   approxText,
   compareTariffs,
@@ -516,7 +516,7 @@ export default defineSimulation({
         g.fillStyle = q.color;
         roundRect(g, ox + 9, cy - fs * 0.62, nameW - 6, fs * 1.24, 5);
         g.fill();
-        text(g, q.name, ox + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: '#ffffff' });
+        text(g, q.name, ox + 9 + (nameW - 6) / 2, cy + 0.5, { font: `800 ${fs * 0.82}px ${theme.font}`, color: textOn(q.color, theme) });
         mathText(q.eq, ox + nameW + 12, cy, fs, ink);
         if (q.sub) mathText(q.sub, ox + nameW + 12, cy + fs * 1.15, fs * 0.8, inkSub, 'left', 500);
       });

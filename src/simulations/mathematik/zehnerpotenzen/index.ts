@@ -1,4 +1,4 @@
-import { defineSimulation, ease, formatNumber, mixColor, prefersReducedMotion, roundRect, seededRandom, shade, Surface, text, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, formatNumber, mixColor, prefersReducedMotion, roundRect, seededRandom, shade, Surface, text, textOn, type Rect } from '../../../sim-core';
 import {
   approxScientific,
   commaShift,
@@ -2531,7 +2531,7 @@ export default defineSimulation({
           g.beginPath();
           g.arc(x0 + 9, y + 12, 9, 0, Math.PI * 2);
           g.fill();
-          text(g, String(i + 1), x0 + 9, y + 12.5, { font: font(800, 11.5), color: '#ffffff' });
+          text(g, String(i + 1), x0 + 9, y + 12.5, { font: font(800, 11.5), color: on ? textOn(cExp, theme) : '#ffffff' });
           rows.forEach((r, k) => text(g, r, x0 + 26, y + 12 + k * 16, { font: font(600, 12.5), color: theme.text, align: 'left' }));
           y += h + 8;
         });
@@ -2566,7 +2566,7 @@ export default defineSimulation({
           g.beginPath();
           g.arc(x0 + 8, y + 7, 8, 0, Math.PI * 2);
           g.fill();
-          text(g, String(i + 1), x0 + 8, y + 7.5, { font: font(800, 11), color: '#ffffff' });
+          text(g, String(i + 1), x0 + 8, y + 7.5, { font: font(800, 11), color: on ? textOn(cExp, theme) : '#ffffff' });
           rows.forEach((r, k) => text(g, r, x0 + 22, y + 7 + k * 15, { font: font(on ? 700 : 600, 11.5), color: theme.text, align: 'left' }));
           y += rows.length * 15 + 9;
         });
