@@ -132,7 +132,7 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
                 {refs.map((r) => (
                   <li>
                     <a href={`${href(lang, { kind: 'grade', curriculum: curriculum.id, grade: r.grade })}#${unitAnchor(r.unit.code)}`}>
-                      <strong>{t(lang, 'curriculum.gradeShort', { n: r.grade })}</strong> · {r.unit.code} {r.unit.title[lang]}
+                      <strong>{t(lang, 'curriculum.gradeShort', { n: r.label })}</strong> · {r.unit.code} {r.unit.title[lang]}
                     </a>
                   </li>
                 ))}

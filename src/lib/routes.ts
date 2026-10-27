@@ -1,5 +1,5 @@
 import { allSimulations, getArea, getSimulation, getSubject, SUBJECTS } from '../curriculum';
-import { getCurriculum, STATE_CURRICULA } from '../curriculum/lehrplaene';
+import { getCurriculum, getCurriculumGrade, STATE_CURRICULA } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import { LANGS, type Lang, type Localized } from '../i18n/config';
 
@@ -33,9 +33,10 @@ export const INFO_PAGES: Record<InfoPageId, Localized> = {
 
 export const CATALOG_SLUG: Localized = { de: 'simulationen', en: 'simulations' };
 
-/** URL-Segment einer Jahrgangsstufe, z. B. "jahrgangsstufe-7" / "grade-7". */
-export function gradeSlug(lang: Lang, grade: number): string {
-  return lang === 'de' ? `jahrgangsstufe-${grade}` : `grade-${grade}`;
+/** URL-Segment einer Jahrgangsstufe, z. B. "jahrgangsstufe-7" / "grade-7", bei einer Stufe "jahrgangsstufe-5-6". */
+export function gradeSlug(lang: Lang, grade: number, toGrade?: number): string {
+  const n = toGrade !== undefined && toGrade !== grade ? `${grade}-${toGrade}` : String(grade);
+  return lang === 'de' ? `jahrgangsstufe-${n}` : `grade-${n}`;
 }
 
 /** Pfadsegmente einer Route (ohne Sprache und ohne Basis-Pfad). */
@@ -57,7 +58,8 @@ export function routeSegments(lang: Lang, route: Route): string[] {
     }
     case 'grade': {
       const curriculum = getCurriculum(route.curriculum);
-      return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang], gradeSlug(lang, route.grade)];
+      const stage = getCurriculumGrade(route.curriculum, route.grade);
+      return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang], gradeSlug(lang, stage.grade, stage.toGrade)];
     }
     case 'simulation': {
       const sim = getSimulation(route.id);

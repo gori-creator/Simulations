@@ -4,7 +4,7 @@ import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
 import UnitSimulations from '../components/UnitSimulations.astro';
 import { getSimulation, getSubject, progressOf } from '../curriculum';
-import { getCurriculum, getCurriculumGrade, sameUnitElsewhere, simulationsOfGrade, unitAnchor, type CurriculumUnit } from '../curriculum/lehrplaene';
+import { getCurriculum, getCurriculumGrade, gradeLabel, sameUnitElsewhere, simulationsOfGrade, unitAnchor, type CurriculumUnit } from '../curriculum/lehrplaene';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -21,14 +21,14 @@ const curriculum = getCurriculum(curriculumId);
 const entry = getCurriculumGrade(curriculumId, grade);
 const subject = getSubject(curriculum.subject);
 const progress = progressOf(simulationsOfGrade(entry).map((id) => getSimulation(id)));
-const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang], subject: subject.title[lang], source: curriculum.sourceName, n: grade };
+const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang], subject: subject.title[lang], source: curriculum.sourceName, n: gradeLabel(entry) };
 const title = t(lang, 'curriculum.gradeTitle', vars);
-// Doppeljahrgangsstufen: auf dieselben Lernbereiche anderer Jahrgangsstufen verweisen, wenn hier keine Simulation passt
+// Derselbe Lernbereich in einer anderen Stufe mit Simulation (Doppeljahrgangsstufen sind zusammengefasst, das ist selten)
 const elsewhere = (unit: CurriculumUnit) =>
   unit.simulations?.length
     ? []
     : sameUnitElsewhere(curriculum, grade, unit).map((g) => ({
-        grade: g,
+        label: gradeLabel(getCurriculumGrade(curriculumId, g)),
         href: `${href(lang, { kind: 'grade', curriculum: curriculumId, grade: g })}#${unitAnchor(unit.code)}`,
       }));
 ---

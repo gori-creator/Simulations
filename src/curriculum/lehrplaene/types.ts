@@ -26,7 +26,14 @@ export interface StateCurriculum {
 }
 
 export interface CurriculumGrade {
+  /** Jahrgangsstufe bzw. erste Jahrgangsstufe einer Stufe (z. B. 5 bei „5/6“). */
   grade: number;
+  /**
+   * Letzte Jahrgangsstufe, wenn die Stufe mehrere Jahrgänge umfasst
+   * (Doppeljahrgangsstufe 5/6, Physik 7–10). Aufeinanderfolgende Jahrgänge mit
+   * gleichen Lernbereichen fasst `STATE_CURRICULA` automatisch so zusammen.
+   */
+  toGrade?: number;
   /** Link zum offiziellen Fachlehrplan dieser Jahrgangsstufe. */
   sourceUrl: string;
   /** Hinweis, z. B. zum Anforderungsniveau. */

@@ -130,6 +130,7 @@ Nach dem Push melden die **Bildtests** in GitHub „Referenzbild fehlt“. Wenn 
 ## Checkliste
 
 - [ ] Lehrplan-Eintrag auf `ready` mit `slug`, `summary`, `kmk`, `keywords` und eigener `thumb.svg` (sonst `thumb`)
+- [ ] `npm run lehrplan:luecken` (die neue Simulation füllt ggf. Lücken in `docs/LEHRPLAN-LUECKEN.md`)
 - [ ] Zuordnung in **jedem** Länder-Lehrplan des Fachs (`src/curriculum/lehrplaene/`) – Klassenstufen müssen passen; passt die Simulation in einem Land nirgends hin, die Ausnahme mit Grund in `NOT_IN_CURRICULUM` (`tests/curriculum.test.ts`) eintragen
 - [ ] Simulation funktioniert mit Maus, Touch und Tastatur (Regler)
 - [ ] Hell- und Dunkelmodus geprüft

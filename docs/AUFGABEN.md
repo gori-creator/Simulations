@@ -13,6 +13,8 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 ## Erledigt
 
+- [x] **Doppeljahrgangsstufen zusammengefasst** (27.10.): 5/6, 7/8, 9/10, 12/13, Physik NRW 7–10 usw. als eine Stufe statt einzelner Jahrgänge mit Querverweisen (automatisch beim Laden, `mergeStages`).
+- [x] **Liste der Lehrplan-Themen ohne Simulation** (27.10.): `docs/LEHRPLAN-LUECKEN.md`, automatisch erzeugt (`npm run lehrplan:luecken`), ein Test hält sie aktuell – Vorrat für neue Simulationen.
 - [x] **Länder-Lehrpläne vollständig** (26.10.): 56 Zuordnungen nachgetragen (Hessen Mathe/Physik, Bayern Physik, BW Mathe), Klassenstufen von 12 Simulationen erweitert (z. B. Binomialverteilung bis 13 für Hessen Q3). Neuer Test: jede fertige Simulation steht in jedem Länder-Lehrplan ihres Fachs oder ist mit Grund ausgenommen (10 Fälle). Diese stehen auf der Fachseite (bei gewähltem Land) und auf der Lehrplan-Übersicht des Landes unter „Weitere Simulationen“.
 - [x] **Prüfrunde Physik** (PR #45, #52/#53, 26.10.): alle Protokolle und Nachbesserungen in `main`, zuletzt Fadenpendel und Brechung (`docs/pruefung/SAMMLUNG.md`).
 - [x] **Automatische Bildtests** (PR #51/#54, 26.10.): Referenzbild je Simulation, Vergleich in GitHub Actions (`docs/BILDTESTS.md`).

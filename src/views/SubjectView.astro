@@ -10,7 +10,7 @@ import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { curriculumFor, groupByCurriculumGrade, regionGrades, regionIdOf, regionsOf } from '../lib/region';
+import { curriculumFor, groupByCurriculumGrade, regionGradeLabels, regionIdOf, regionsOf } from '../lib/region';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -90,7 +90,7 @@ const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v
                 <div class="region-grade">
                   <h3>
                     <a href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: group.grade })}>
-                      {t(lang, 'region.gradeHeading', { n: group.grade, state: region.name[lang] })}
+                      {t(lang, 'region.gradeHeading', { n: group.label, state: region.name[lang] })}
                     </a>
                   </h3>
                   {group.first.length > 0 && (
@@ -107,7 +107,7 @@ const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v
                         <>
                           {i > 0 && ', '}
                           <a href={href(lang, { kind: 'simulation', id })}>{getSimulation(id).title[lang]}</a>{' '}
-                          ({t(lang, 'curriculum.gradeShort', { n: regionGrades(id, region.id)[0] ?? group.grade })})
+                          ({t(lang, 'curriculum.gradeShort', { n: regionGradeLabels(id, region.id)[0] ?? group.label })})
                         </>
                       ))}
                     </p>

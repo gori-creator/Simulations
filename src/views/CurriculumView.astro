@@ -4,7 +4,7 @@ import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
 import SimCard from '../components/SimCard.astro';
 import { getSimulation, getSubject, progressOf, simulationsOf } from '../curriculum';
-import { getCurriculum, simulationsOfGrade, unitAnchor } from '../curriculum/lehrplaene';
+import { getCurriculum, gradeLabel, simulationsOfGrade, unitAnchor } from '../curriculum/lehrplaene';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -58,7 +58,7 @@ const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang
           return (
             <article class="card lp-grade">
               <h2>
-                <a href={gradeHref}>{t(lang, 'curriculum.grade', { n: g.grade })}</a>
+                <a href={gradeHref}>{t(lang, 'curriculum.grade', { n: gradeLabel(g) })}</a>
               </h2>
               <ol class="lp-grade__units">
                 {g.units.map((unit) => (

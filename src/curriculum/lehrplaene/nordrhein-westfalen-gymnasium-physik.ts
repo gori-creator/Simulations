@@ -13,13 +13,13 @@ const SOURCE = 'https://www.schulentwicklung.nrw.de/lehrplaene/';
 
 // Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md, Teil E).
 const ERPROBUNGSSTUFE = L(
-  'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder sind im Lehrplan nummeriert, die Nummern der Schwerpunkte sind von uns vergeben.',
-  'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. The content areas are numbered in the curriculum; the numbers of the focal points are our own.',
+  'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Beide Jahrgänge werden deshalb als eine Stufe gezeigt. Die Inhaltsfelder sind im Lehrplan nummeriert, die Nummern der Schwerpunkte sind von uns vergeben.',
+  'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Both grades are therefore shown as one stage. The content areas are numbered in the curriculum; the numbers of the focal points are our own.',
 );
 
 const SEK_I = L(
-  'Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich, und jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern der Schwerpunkte sind von uns vergeben.',
-  'By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10, and each simulation is listed under the grades it is designed for. The numbers of the focal points are our own.',
+  'Bis zum Ende der Sekundarstufe I (Klassen 7 bis 10): Der Kernlehrplan verteilt die Inhaltsfelder 5–11 nicht auf einzelne Jahrgänge; das regelt der schulinterne Lehrplan. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich; sie werden als eine Stufe gezeigt. Die Nummern der Schwerpunkte sind von uns vergeben.',
+  'By the end of lower secondary (grades 7 to 10): the core curriculum does not assign content areas 5–11 to individual grades; each school decides in its own syllabus. The units are therefore the same for grades 7, 8, 9 and 10; they are shown as one stage. The numbers of the focal points are our own.',
 );
 
 const EF = L(
