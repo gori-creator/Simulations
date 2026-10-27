@@ -14,8 +14,8 @@ const SOURCE = 'https://cuvo.nibis.de/';
 // Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md, Teil E).
 const DOPPELJAHRGANG = (a: number, b: number) =>
   L(
-    `Doppelschuljahrgang ${a}/${b}: Das Kerncurriculum beschreibt Lernbereiche für die Schuljahrgänge ${a} und ${b} gemeinsam; sie stehen deshalb bei beiden Jahrgängen gleich. Reihenfolge und Zuschnitt legt die Schule fest. Jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Unterbereiche sind die Punkte des „Kerns“ (und gegebenenfalls die fakultativen Erweiterungen); die Nummern sind von uns vergeben und laufen über alle Doppeljahrgänge durch.`,
-    `Double grade ${a}/${b}: the core curriculum describes learning areas for grades ${a} and ${b} together, so they are the same for both grades. Each school decides order and scope. Each simulation is listed under the grades it is designed for. The sub-areas are the items of the “core” (and, where present, the optional extensions); the numbers are our own and run through all double grades.`,
+    `Doppelschuljahrgang ${a}/${b}: Das Kerncurriculum beschreibt Lernbereiche für die Schuljahrgänge ${a} und ${b} gemeinsam; sie stehen deshalb bei beiden Jahrgängen gleich. Reihenfolge und Zuschnitt legt die Schule fest. Die Jahrgänge werden deshalb als eine Stufe gezeigt. Die Unterbereiche sind die Punkte des „Kerns“ (und gegebenenfalls die fakultativen Erweiterungen); die Nummern sind von uns vergeben und laufen über alle Doppeljahrgänge durch.`,
+    `Double grade ${a}/${b}: the core curriculum describes learning areas for grades ${a} and ${b} together, so they are the same for both grades. Each school decides order and scope. The grades are therefore shown as one stage. The sub-areas are the items of the “core” (and, where present, the optional extensions); the numbers are our own and run through all double grades.`,
   );
 
 const EF = L(

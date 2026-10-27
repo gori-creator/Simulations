@@ -14,8 +14,8 @@ const SOURCE = 'https://cuvo.nibis.de/';
 // Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/niedersachsen-gymnasium-physik.md, Teil E).
 const DOPPELJAHRGANG = (a: number, b: number) =>
   L(
-    `Doppeljahrgang ${a}/${b}: Das Kerncurriculum nennt die Kompetenzen „am Ende von Schuljahrgang ${b}“; die Lernbereiche stehen deshalb bei ${a} und ${b} gleich. Die Fachkonferenz legt fest, in welcher Reihenfolge die Themenbereiche unterrichtet werden. Jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben und laufen über alle Doppeljahrgänge durch.`,
-    `Double grade ${a}/${b}: the core curriculum states its expectations “by the end of grade ${b}”, so the units are the same for grades ${a} and ${b}. Each school decides the order of the topic areas. Each simulation is listed under the grades it is designed for. The numbers are our own and run through all double grades.`,
+    `Doppeljahrgang ${a}/${b}: Das Kerncurriculum nennt die Kompetenzen „am Ende von Schuljahrgang ${b}“; die Lernbereiche stehen deshalb bei ${a} und ${b} gleich. Die Fachkonferenz legt fest, in welcher Reihenfolge die Themenbereiche unterrichtet werden. Die Jahrgänge werden deshalb als eine Stufe gezeigt. Die Nummern sind von uns vergeben und laufen über alle Doppeljahrgänge durch.`,
+    `Double grade ${a}/${b}: the core curriculum states its expectations “by the end of grade ${b}”, so the units are the same for grades ${a} and ${b}. Each school decides the order of the topic areas. The grades are therefore shown as one stage. The numbers are our own and run through all double grades.`,
   );
 
 const EF = L(

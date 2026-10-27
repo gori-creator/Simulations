@@ -9,7 +9,7 @@ interface Props {
   lang: Lang;
   ids: string[];
   /** Hat dieser Lernbereich keine Simulation: Links zu anderen Jahrgangsstufen mit demselben Lernbereich */
-  elsewhere?: { grade: number; href: string }[];
+  elsewhere?: { label: string; href: string }[];
   /** Ebene der Kartenüberschriften: eine unter der Überschrift des Lernbereichs */
   headingLevel?: 'h3' | 'h4';
 }
@@ -27,7 +27,7 @@ const planned = sims.filter((s) => s.status === 'planned');
       {elsewhere.map((e, i) => (
         <>
           {i > 0 && ', '}
-          <a href={e.href}>{t(lang, 'curriculum.grade', { n: e.grade })}</a>
+          <a href={e.href}>{t(lang, 'curriculum.grade', { n: e.label })}</a>
         </>
       ))}
     </p>

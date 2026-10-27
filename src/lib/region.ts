@@ -1,4 +1,4 @@
-import { STATE_CURRICULA, simulationsOfGrade } from '../curriculum/lehrplaene';
+import { gradeLabel, STATE_CURRICULA, simulationsOfGrade } from '../curriculum/lehrplaene';
 import type { StateCurriculum } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import type { Lang, Localized } from '../i18n/config';
@@ -97,6 +97,14 @@ export function regionGrades(simId: string, regionId: string, curricula: StateCu
   return [...new Set(grades)].sort((a, b) => a - b);
 }
 
+/** Wie `regionGrades`, aber als Bezeichnung der Stufe („5/6“ statt 5). */
+export function regionGradeLabels(simId: string, regionId: string, curricula: StateCurriculum[] = STATE_CURRICULA): string[] {
+  const stages = leadingCurricula(regionId, curricula)
+    .flatMap((c) => c.grades.filter((g) => simulationsOfGrade(g).includes(simId)))
+    .sort((a, b) => a.grade - b.grade);
+  return [...new Set(stages.map(gradeLabel))];
+}
+
 /**
  * Sortierschlüssel einer Simulation im Land: erste Jahrgangsstufe · 1000 +
  * Position innerhalb dieser Stufe (Reihenfolge der Lernbereiche).
@@ -143,6 +151,8 @@ export function sortForRegion<T extends { id: string }>(
 
 export interface RegionGradeGroup {
   grade: number;
+  /** Bezeichnung der Stufe, z. B. „7“ oder „5/6“. */
+  label: string;
   /** Simulationen, die hier zum ersten Mal vorkommen (Reihenfolge der Lernbereiche). */
   first: string[];
   /** Simulationen, die schon in einer früheren Stufe vorkamen. */
@@ -165,7 +175,7 @@ export function groupByCurriculumGrade(
     const first = ids.filter((id) => !shown.has(id));
     const again = ids.filter((id) => shown.has(id));
     first.forEach((id) => shown.add(id));
-    if (ids.length > 0) groups.push({ grade: g.grade, first, again });
+    if (ids.length > 0) groups.push({ grade: g.grade, label: gradeLabel(g), first, again });
   }
   return { groups, rest: simIds.filter((id) => !shown.has(id)) };
 }

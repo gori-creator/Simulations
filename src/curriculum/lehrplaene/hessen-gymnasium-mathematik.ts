@@ -7,8 +7,8 @@ const SOURCE = 'https://kultus.hessen.de';
 // Hinweise je Jahrgangsstufe: Annahmen der Aufbereitung sichtbar machen (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md, Teil E).
 const sek1 = (from: number, to: number) =>
   L(
-    `Doppeljahrgangsstufe ${from}/${to}: Das Kerncurriculum beschreibt, was am Ende von Jahrgangsstufe ${to} erreicht sein soll; die Lernbereiche stehen deshalb bei ${from} und ${to} gleich. Jede Simulation steht bei der Jahrgangsstufe, für die sie gedacht ist; bei der anderen führt ein Verweis dorthin. Die Nummern (Leitidee.Inhaltsfeld.Schwerpunkt) sind von uns vergeben.`,
-    `Double grade ${from}/${to}: the core curriculum describes what should be achieved by the end of grade ${to}, so the units are the same for grades ${from} and ${to}. Each simulation is listed under the grade it is designed for; the other grade links to it. The numbers (guiding idea.content area.focus) are our own.`,
+    `Doppeljahrgangsstufe ${from}/${to}: Das Kerncurriculum beschreibt, was am Ende von Jahrgangsstufe ${to} erreicht sein soll; die Lernbereiche stehen deshalb bei ${from} und ${to} gleich. Beide Jahrgänge werden deshalb als eine Stufe gezeigt. Die Nummern (Leitidee.Inhaltsfeld.Schwerpunkt) sind von uns vergeben.`,
+    `Double grade ${from}/${to}: the core curriculum describes what should be achieved by the end of grade ${to}, so the units are the same for grades ${from} and ${to}. Both grades are therefore shown as one stage. The numbers (guiding idea.content area.focus) are our own.`,
   );
 
 const SEK1_5_6 = sek1(5, 6);

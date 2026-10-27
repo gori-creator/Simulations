@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allSimulations, getSimulation, readySimulations, SUBJECTS } from '../src/curriculum';
 import { getKmkStandard } from '../src/curriculum/kmk';
-import { getCurriculum, getCurriculumGrade, sameUnitElsewhere, simulationsOfGrade, STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
+import { getCurriculum, getCurriculumGrade, gradeLabel, sameUnitElsewhere, simulationsOfGrade, STATE_CURRICULA, unitsOf } from '../src/curriculum/lehrplaene';
 import { LANGS } from '../src/i18n/config';
 import { allRoutes, routePath } from '../src/lib/routes';
 import { registry } from '../src/simulations/registry';
@@ -143,7 +143,9 @@ describe('Länder-Lehrpläne', () => {
       for (const unit of unitsOf(grade)) {
         for (const simId of unit.simulations ?? []) {
           const sim = getSimulation(simId);
-          expect(sim.grades[0] <= grade.grade && grade.grade <= sim.grades[1], `${simId} in Jgst. ${grade.grade} (${sim.grades.join('–')})`).toBe(true);
+          // Stufe (z. B. 5/6) und Klassenstufen der Simulation müssen sich überschneiden
+          const to = grade.toGrade ?? grade.grade;
+          expect(sim.grades[0] <= to && grade.grade <= sim.grades[1], `${simId} in Jgst. ${gradeLabel(grade)} (${sim.grades.join('–')})`).toBe(true);
           expect(sim.subject, simId).toBe(curriculum.subject);
         }
       }
@@ -237,12 +239,32 @@ describe('Länder-Lehrpläne', () => {
     for (const simId of Object.keys(except)) expect(used.has(simId), `${simId} ist zugeordnet – Ausnahme streichen`).toBe(false);
   });
 
-  it('Doppeljahrgangsstufen verweisen auf die Stufe mit passender Simulation', () => {
+  it('fasst Doppeljahrgangsstufen zu einer Stufe zusammen', () => {
     const hessen = getCurriculum('hessen-gymnasium-mathematik');
-    const unit = (grade: number, code: string) => unitsOf(getCurriculumGrade(hessen.id, grade)).find((u) => u.code === code)!;
-    // Brüche (Simulation für Klasse 6): bei 5 ohne Simulation, Verweis auf 6
-    expect(unit(5, '1.1.3').simulations).toBeUndefined();
-    expect(sameUnitElsewhere(hessen, 5, unit(5, '1.1.3'))).toEqual([6]);
-    expect(sameUnitElsewhere(hessen, 6, unit(6, '1.1.3'))).toEqual([]);
+    const stage = getCurriculumGrade(hessen.id, 5);
+    expect(gradeLabel(stage)).toBe('5/6');
+    // auch über den zweiten Jahrgang erreichbar
+    expect(getCurriculumGrade(hessen.id, 6)).toBe(stage);
+    // Brüche (Simulation für Klasse 6) stehen jetzt direkt in der Stufe 5/6
+    expect(unitsOf(stage).find((u) => u.code === '1.1.3')?.simulations?.length).toBeGreaterThan(0);
+    expect(sameUnitElsewhere(hessen, 5, unitsOf(stage).find((u) => u.code === '1.1.3')!)).toEqual([]);
+    // Bayern hat keine Doppeljahrgangsstufen
+    expect(getCurriculum('bayern-gymnasium-mathematik').grades.every((g) => g.toGrade === undefined)).toBe(true);
+  });
+
+  it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s hat keine zwei aufeinanderfolgenden Stufen mit gleichen Lernbereichen', (_id, curriculum) => {
+    const sig = (g: (typeof curriculum.grades)[number]) => unitsOf(g).map((u) => `${u.code}|${u.title.de}`).join(';');
+    const grades = [...curriculum.grades].sort((a, b) => a.grade - b.grade);
+    for (let i = 1; i < grades.length; i++) {
+      const prev = grades[i - 1]!;
+      if (grades[i]!.grade === (prev.toGrade ?? prev.grade) + 1) expect(sig(grades[i]!), `${gradeLabel(prev)} und ${gradeLabel(grades[i]!)}`).not.toBe(sig(prev));
+    }
+  });
+
+  it('bezeichnet Stufen als „7“, „5/6“ oder „7–10“', () => {
+    const g = (grade: number, toGrade?: number) => ({ grade, toGrade, sourceUrl: 'https://x', units: [] });
+    expect(gradeLabel(g(7))).toBe('7');
+    expect(gradeLabel(g(5, 6))).toBe('5/6');
+    expect(gradeLabel(g(7, 10))).toBe('7–10');
   });
 });

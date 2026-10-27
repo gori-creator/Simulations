@@ -6,21 +6,23 @@ Briefing der Projektleitung (Stand 26.10.2026) für einen Claude-Agenten mit Git
 
 Die Seite bietet kostenlose MINT-Simulationen für Schulen. Wählt man im Zahnrad ein Bundesland, zeigt die Fachseite die Simulationen nach den Jahrgangsstufen **dieses** Landes. Alles, was dort keinem Jahrgang zugeordnet ist, steht darunter bei „Weitere Simulationen“.
 
-Bisher gibt es Bayern, Baden-Württemberg und Hessen, jeweils Gymnasium, Mathematik und Physik. Deine Aufgabe sind **weitere Länder**, in dieser Reihenfolge:
+**Fertig** (in `main`, Gymnasium, Mathematik und Physik): Baden-Württemberg, Bayern, Hessen, Niedersachsen, Nordrhein-Westfalen.
 
-1. Nordrhein-Westfalen
-2. Niedersachsen
-3. Sachsen
-4. Rheinland-Pfalz
-5. Schleswig-Holstein
-6. Berlin
-7. Brandenburg
-8. Thüringen
-9. Sachsen-Anhalt
-10. Mecklenburg-Vorpommern
-11. Hamburg
-12. Saarland
-13. Bremen
+**Offen**, in dieser Reihenfolge (das erste noch nicht fertige Land ist dran, außer die Projektleitung nennt ein anderes):
+
+1. Sachsen
+2. Rheinland-Pfalz
+3. Schleswig-Holstein
+4. Berlin
+5. Brandenburg
+6. Thüringen
+7. Sachsen-Anhalt
+8. Mecklenburg-Vorpommern
+9. Hamburg
+10. Saarland
+11. Bremen
+
+Vor dem Start prüfen, welche Länder schon in `src/curriculum/lehrplaene/` liegen (`main` aktuell holen), und nach dem Merge das Land oben von „Offen“ nach „Fertig“ verschieben.
 
 **Pro Runde ein Land, beide Fächer.** Erst wenn ein Land fertig abgegeben ist, kommt das nächste.
 
@@ -43,7 +45,7 @@ Bisher gibt es Bayern, Baden-Württemberg und Hessen, jeweils Gymnasium, Mathema
    - Überschriften so, wie sie im Lehrplan stehen.
    - Kurzbeschreibungen (`summary`) **in eigenen Worten**, ein bis zwei Sätze, Deutsch und Englisch. Nicht abschreiben.
    - Hat der Lehrplan keine Nummern, vergib eigene und vermerke das in der Notiz der Jahrgangsstufe (wie bei Hessen).
-3. **Doppeljahrgangsstufen** (z. B. 5/6, 7/8): Die Lernbereiche stehen bei beiden Jahrgängen gleich. Eine Simulation steht nur bei den Jahrgängen, die in ihre Klassenstufen fallen; Vorbild ist Hessen. Oberstufe ohne Jahrgangsangabe: Einführungsphase = 11, Qualifikationsphase = 12/13 (G9). Das ist eine Annahme und kommt in die Notiz.
+3. **Doppeljahrgangsstufen** (z. B. 5/6, 7/8): Die Lernbereiche bei beiden Jahrgängen gleich eintragen; aufeinanderfolgende Jahrgänge mit gleichen Lernbereichen fasst die Seite automatisch zu einer Stufe „5/6“ zusammen (alternativ direkt eine Stufe mit `toGrade`). Eine Simulation steht nur bei den Jahrgängen, die in ihre Klassenstufen fallen; Vorbild ist Hessen. Oberstufe ohne Jahrgangsangabe: Einführungsphase = 11, Qualifikationsphase = 12/13 (G9). Das ist eine Annahme und kommt in die Notiz.
 4. **Simulationen zuordnen:** Lies die Kurzbeschreibung (`summary`) in `src/curriculum/<fach>.ts` und ordne nur zu, was **wirklich** zum Lernbereich passt, nicht bloß „irgendwie verwandt“. Eine Simulation darf bei mehreren Lernbereichen stehen.
 5. **Ziel: jede Simulation steht bei mindestens einem Jahrgang.** Was im Lehrplan des Landes wirklich nicht vorkommt, kommt auf die Ausnahmeliste, jeweils mit Grund (z. B. „Taylorpolynome: nicht im Kernlehrplan“).
 6. **Klassenstufe passt nicht?** Wird ein Thema im Land in einer Jahrgangsstufe unterrichtet, die außerhalb der `grades` der Simulation liegt (z. B. Binomialverteilung erst in 13), dann **nicht** einfach weglassen: die `grades` der Simulation in `src/curriculum/<fach>.ts` erweitern (nur so weit wie nötig) und im Pull Request auflisten (ID, bisher, neu, Lernbereich, Fundstelle). Den Test nicht abschwächen. Wird dadurch die Sortierung nach Klassenstufe verletzt, die Simulation innerhalb ihres Bereichs passend einsortieren (gleicher Bereich = gleiche Adresse).
@@ -64,7 +66,7 @@ Bisher gibt es Bayern, Baden-Württemberg und Hessen, jeweils Gymnasium, Mathema
 1. `src/curriculum/lehrplaene/<land>-gymnasium-mathematik.ts` und `…-physik.ts` anlegen und in `src/curriculum/lehrplaene/index.ts` eintragen (Liste `STATE_CURRICULA` und Kommentar, alphabetisch nach Land).
 2. `docs/lehrplaene/<land>-gymnasium-<fach>.md` und `.json`: Aufbau wie bei Hessen (Überblick, Lehrplan im Detail mit Zuordnung, „Nicht zugeordnet“ mit Grund, Annahmen, unsichere Zuordnungen). Die JSON-Datei enthält dieselben Daten wie die `.ts`.
 3. Ausnahmen mit Grund in `NOT_IN_CURRICULUM` (`tests/curriculum.test.ts`) eintragen.
-4. `npm run verify`: 0 Fehler, 0 Warnungen, 0 Hinweise, alle Tests grün. Die Bildtests ändern sich nicht (Lehrpläne stehen nicht in den Simulationen).
+4. `npm run lehrplan:luecken` (erneuert `docs/LEHRPLAN-LUECKEN.md`, sonst schlägt ein Test fehl), dann `npm run verify`: 0 Fehler, 0 Warnungen, 0 Hinweise, alle Tests grün. Die Bildtests ändern sich nicht (Lehrpläne stehen nicht in den Simulationen).
 5. **Sichtprüfung:** `npm run build` und `npx astro preview`. Dann im Zahnrad das neue Land wählen. Fachseite Mathe und Physik ansehen, ebenso die Lehrplan-Übersicht des Landes mit „Weitere Simulationen“ und eine Jahrgangsseite. Jeweils bei 1360 px und 390 px; Screenshots z. B. mit `node scripts/agenten/simshot.cjs` (Kopf der Datei lesen).
 6. In `docs/AUFGABEN.md` den Stand vermerken.
 7. **Pull Request nach `main`** mit:

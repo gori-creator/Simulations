@@ -1,5 +1,5 @@
 ---
-import type { StateCurriculum } from '../curriculum/lehrplaene';
+import { gradeLabel, type StateCurriculum } from '../curriculum/lehrplaene';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import { href } from '../lib/routes';
@@ -21,9 +21,9 @@ const { lang, curriculum, current } = Astro.props;
         class="grade-nav__item"
         href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: g.grade })}
         aria-current={g.grade === current ? 'page' : undefined}
-        title={t(lang, 'curriculum.grade', { n: g.grade })}
+        title={t(lang, 'curriculum.grade', { n: gradeLabel(g) })}
       >
-        {g.grade}
+        {gradeLabel(g)}
       </a>
     ))
   }

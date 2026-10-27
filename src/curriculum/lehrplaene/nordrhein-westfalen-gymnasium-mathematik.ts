@@ -13,18 +13,18 @@ const SOURCE = 'https://www.schulentwicklung.nrw.de/lehrplaene/';
 
 // Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md, Teil E).
 const ERPROBUNGSSTUFE = L(
-  'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder und Schwerpunkte sind im Lehrplan nicht nummeriert; die Nummern sind von uns vergeben und laufen über alle Stufen der Sekundarstufe I durch.',
-  'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. Content areas and focal points are not numbered in the curriculum; the numbers are our own and run through all stages of lower secondary.',
+  'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Beide Jahrgänge werden deshalb als eine Stufe gezeigt. Die Inhaltsfelder und Schwerpunkte sind im Lehrplan nicht nummeriert; die Nummern sind von uns vergeben und laufen über alle Stufen der Sekundarstufe I durch.',
+  'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Both grades are therefore shown as one stage. Content areas and focal points are not numbered in the curriculum; the numbers are our own and run through all stages of lower secondary.',
 );
 
 const ERSTE_STUFE = L(
-  'Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine genauen Jahrgänge; die erste Stufe steht deshalb als Doppeljahrgangsstufe 7/8 (G9), die Lernbereiche stehen bei 7 und 8 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
-  'First stage up to the end of lower secondary. The core curriculum does not name exact grades for the first and second stage, so the first stage is shown as the double grade 7/8 (G9) with the same units for grades 7 and 8; each simulation is listed under the grades it is designed for. The numbers are our own.',
+  'Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine genauen Jahrgänge; die erste Stufe steht deshalb als Doppeljahrgangsstufe 7/8 (G9), die Lernbereiche stehen bei 7 und 8 gleich; beide werden als eine Stufe gezeigt. Die Nummern sind von uns vergeben.',
+  'First stage up to the end of lower secondary. The core curriculum does not name exact grades for the first and second stage, so the first stage is shown as the double grade 7/8 (G9) with the same units for grades 7 and 8; both are shown as one stage. The numbers are our own.',
 );
 
 const ZWEITE_STUFE = L(
-  'Zweite Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt keine genauen Jahrgänge; die zweite Stufe steht deshalb als Doppeljahrgangsstufe 9/10 (G9, Ende der Sekundarstufe I nach Klasse 10), die Lernbereiche stehen bei 9 und 10 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
-  'Second stage up to the end of lower secondary. The core curriculum does not name exact grades, so the second stage is shown as the double grade 9/10 (G9, lower secondary ends after grade 10) with the same units for grades 9 and 10; each simulation is listed under the grades it is designed for. The numbers are our own.',
+  'Zweite Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt keine genauen Jahrgänge; die zweite Stufe steht deshalb als Doppeljahrgangsstufe 9/10 (G9, Ende der Sekundarstufe I nach Klasse 10), die Lernbereiche stehen bei 9 und 10 gleich; beide werden als eine Stufe gezeigt. Die Nummern sind von uns vergeben.',
+  'Second stage up to the end of lower secondary. The core curriculum does not name exact grades, so the second stage is shown as the double grade 9/10 (G9, lower secondary ends after grade 10) with the same units for grades 9 and 10; both are shown as one stage. The numbers are our own.',
 );
 
 const EF = L(

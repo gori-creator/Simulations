@@ -6,13 +6,13 @@ const SOURCE = 'https://kultus.hessen.de';
 
 // Hinweise je Jahrgangsstufe: Annahmen der Aufbereitung sichtbar machen (siehe docs/lehrplaene/hessen-gymnasium-physik.md, Teil E).
 const STUFE_1 = L(
-  'Stufe 1 („nach ca. der Hälfte des Stundenkontingents“): Das Kerncurriculum ordnet sie keiner Jahrgangsstufe zu; die Einordnung bei Jahrgangsstufe 6–8 ist eine Annahme. Ab wann Physik unterrichtet wird, regelt die Stundentafel. Jede Simulation steht bei den Jahrgangsstufen, für die sie gedacht ist; bei den anderen führt ein Verweis dorthin. Die Nummern (Inhaltsfeld.Schwerpunkt) sind von uns vergeben.',
-  'Stage 1 (“after about half of the allotted teaching time”): the core curriculum does not assign it to a grade; placing it in grades 6–8 is an assumption. When physics starts depends on the timetable. Each simulation is listed under the grades it is designed for; the other grades link to it. The numbers (content area.focus) are our own.',
+  'Stufe 1 („nach ca. der Hälfte des Stundenkontingents“): Das Kerncurriculum ordnet sie keiner Jahrgangsstufe zu; die Einordnung bei Jahrgangsstufe 6–8 ist eine Annahme. Ab wann Physik unterrichtet wird, regelt die Stundentafel. Diese Jahrgänge werden deshalb als eine Stufe gezeigt. Die Nummern (Inhaltsfeld.Schwerpunkt) sind von uns vergeben.',
+  'Stage 1 (“after about half of the allotted teaching time”): the core curriculum does not assign it to a grade; placing it in grades 6–8 is an assumption. When physics starts depends on the timetable. These grades are therefore shown as one stage. The numbers (content area.focus) are our own.',
 );
 
 const STUFE_2 = L(
-  'Stufe 2: zusätzliche Schwerpunkte bis zum Ende der Jahrgangsstufe 9/10; die Inhalte von Stufe 1 (Jahrgangsstufe 6–8) werden vorausgesetzt. Die Lernbereiche stehen bei 9 und 10 gleich. Jede Simulation steht bei der Jahrgangsstufe, für die sie gedacht ist; bei der anderen führt ein Verweis dorthin. Die Nummern (Inhaltsfeld.Schwerpunkt) sind von uns vergeben.',
-  'Stage 2: additional focal points up to the end of grade 9/10; stage 1 content (grades 6–8) is assumed. The units are the same for grades 9 and 10. Each simulation is listed under the grade it is designed for; the other grade links to it. The numbers (content area.focus) are our own.',
+  'Stufe 2: zusätzliche Schwerpunkte bis zum Ende der Jahrgangsstufe 9/10; die Inhalte von Stufe 1 (Jahrgangsstufe 6–8) werden vorausgesetzt. Die Lernbereiche stehen bei 9 und 10 gleich. Beide Jahrgänge werden deshalb als eine Stufe gezeigt. Die Nummern (Inhaltsfeld.Schwerpunkt) sind von uns vergeben.',
+  'Stage 2: additional focal points up to the end of grade 9/10; stage 1 content (grades 6–8) is assumed. The units are the same for grades 9 and 10. Both grades are therefore shown as one stage. The numbers (content area.focus) are our own.',
 );
 
 const E_PHASE = L(

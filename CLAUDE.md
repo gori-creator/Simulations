@@ -7,6 +7,7 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - `npm run dev` – Entwicklungsserver
 - `npm run verify` – Typprüfung (`astro check`), Tests (`vitest`) und Build; vor jedem Commit ausführen
 - `npm run bildtests` – Bildtests (Referenzbilder je Simulation); laufen automatisch in GitHub Actions, Anleitung `docs/BILDTESTS.md`
+- `npm run lehrplan:luecken` – Liste der Lehrplan-Themen ohne Simulation neu erzeugen (`docs/LEHRPLAN-LUECKEN.md`); nach jeder Änderung an Länder-Lehrplänen oder Zuordnungen
 - `npm run new:sim -- <id> --subject <fach> [--animated]` – neue Simulation anlegen (siehe `docs/NEUE-SIMULATION.md`)
 
 ## Aufbau

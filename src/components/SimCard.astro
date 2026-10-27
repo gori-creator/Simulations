@@ -3,7 +3,7 @@ import { getSubject } from '../curriculum';
 import type { SimulationEntry } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
-import { regionGrades, regionOrders, regionOrderStyle, regionsOf } from '../lib/region';
+import { regionGradeLabels, regionOrders, regionOrderStyle, regionsOf } from '../lib/region';
 import { href } from '../lib/routes';
 import GradeBadge from './GradeBadge.astro';
 import SimThumb from './SimThumb.astro';
@@ -25,7 +25,7 @@ const searchText = [sim.title[lang], sim.summary?.[lang] ?? '', ...(sim.keywords
 // Einstellung „Bundesland“: Sortierschlüssel je Land (CSS `order` und Skript) und Etikett mit der Jahrgangsstufe
 const orders = regionOrders(sim.id);
 const regionBadges = regionsOf(lang)
-  .map((region) => ({ region, grades: regionGrades(sim.id, region.id) }))
+  .map((region) => ({ region, grades: regionGradeLabels(sim.id, region.id) }))
   .filter((r) => r.grades.length > 0);
 ---
 
