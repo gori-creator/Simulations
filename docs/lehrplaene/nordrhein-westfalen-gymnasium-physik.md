@@ -95,7 +95,7 @@ Jahrgangsstufe(n) im JSON: 7, 8, 9, 10
 - Simulationen: `reflexion`, `brechung`, `linsen`
 - Unterbereiche:
   - 5.1 Spiegelungen · *Reflections* – Kurz: Reflexionsgesetz und Bildentstehung am ebenen Spiegel. · *EN: Law of reflection and image formation in a plane mirror.* – Simulationen: `reflexion` (7, 8)
-  - 5.2 Lichtbrechung · *Refraction of light* – Kurz: Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten. · *EN: Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments.* – Simulationen: `brechung` (8, 9, 10), `linsen` (8, 9, 10)
+  - 5.2 Lichtbrechung · *Refraction of light* – Kurz: Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten. · *EN: Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments.* – Simulationen: `brechung`, `linsen`
   - 5.3 Licht und Farben · *Light and colours* – Kurz: Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK). · *EN: Splitting light with a prism, infrared and ultraviolet, absorption and colour mixing (RGB, CMYK).* – Simulationen: –
 
 ### 6 Sterne und Weltall

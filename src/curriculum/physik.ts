@@ -579,7 +579,7 @@ export const physik: Subject = {
                 'Ein Lichtstrahl knickt beim Übergang in Glas oder Wasser ab. Bei flachem Winkel kann er nicht mehr hinaus: Totalreflexion, wie in der Glasfaser.',
                 'A light ray bends when it passes into glass or water. At a shallow angle it cannot get out at all: total internal reflection, as in an optical fibre.',
               ),
-              grades: [8, 10],
+              grades: [6, 10],
               kmk: ['P-E', 'P-S', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['Brechung', 'Brechungsgesetz', 'Snellius', 'Totalreflexion', 'Grenzwinkel', 'Brechungsindex', 'Lot', 'Einfallswinkel', 'optisch dichter', 'Lichtleiter', 'Glasfaser', 'Prisma', 'Dispersion', 'Brewster-Winkel', 'scheinbare Hebung', 'Huygens'],
@@ -595,7 +595,7 @@ export const physik: Subject = {
                 'Verschiebe eine Kerze vor einer Linse und konstruiere das Bild mit drei besonderen Strahlen. Auf dem Schirm wird es scharf.',
                 'Move a candle in front of a lens and construct the image with three special rays. It becomes sharp on the screen.',
               ),
-              grades: [8, 10],
+              grades: [6, 10],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['Linse', 'Sammellinse', 'Zerstreuungslinse', 'Brennweite', 'Brennpunkt', 'Parallelstrahl', 'Mittelpunktstrahl', 'Brennpunktstrahl', 'Linsengleichung', 'Abbildungsmaßstab', 'reelles Bild', 'virtuelles Bild', 'Lupe', 'Projektor', 'Kamera', 'Auge', 'Blende', 'Schärfentiefe'],

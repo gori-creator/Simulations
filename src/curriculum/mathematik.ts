@@ -384,7 +384,7 @@ export const mathematik: Subject = {
               'Ziehe einen Punkt und vergleiche seine Abstände. So entdeckst du Mittelsenkrechte und Winkelhalbierende und konstruierst sie mit Zirkel und Lineal.',
               'Drag a point and compare its distances. This is how you discover perpendicular bisectors and angle bisectors and construct them with compass and ruler.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Mittelsenkrechte', 'Winkelhalbierende', 'Ortslinie', 'Abstand', 'gleich weit entfernt', 'Mittelpunkt', 'Lot', 'Zirkel', 'Lineal', 'Konstruktion', 'Grundkonstruktion', 'Umkreis', 'Umkreismittelpunkt', 'Drachenviereck'],
@@ -402,7 +402,7 @@ export const mathematik: Subject = {
               'Drehe Geraden und sieh, welche Winkel gleich groß bleiben. An parallelen Geraden gibt es Stufen- und Wechselwinkel.',
               'Rotate lines and see which angles stay equal. Parallel lines give corresponding and alternate angles.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L4', 'M-K1', 'M-K2', 'M-K5'],
             keywords: L(
               ['Scheitelwinkel', 'Nebenwinkel', 'Stufenwinkel', 'Wechselwinkel', 'Nachbarwinkel', 'F-Winkel', 'Z-Winkel', 'E-Winkel', 'Geradenkreuzung', 'Doppelkreuzung', 'parallele Geraden', 'Querlinie', 'Schnittwinkel', 'begründen'],
@@ -418,7 +418,7 @@ export const mathematik: Subject = {
               'Reiße die Ecken eines Dreiecks ab und lege sie zusammen: Sie ergeben immer 180°. Auch für Vierecke und Vielecke.',
               'Tear off the corners of a triangle and put them together: they always make 180°. Also for quadrilaterals and polygons.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L4', 'M-K1', 'M-K6'],
             keywords: L(
               ['Innenwinkelsumme', 'Winkelsumme', 'Dreieck', 'Vieleck', 'n-Eck', 'Wechselwinkel', 'Parallele', 'gestreckter Winkel', 'Außenwinkel', 'regelmäßiges Vieleck', 'konvex', 'Beweis'],
@@ -1186,23 +1186,6 @@ export const mathematik: Subject = {
             ),
           },
           {
-            id: 'ziegenproblem',
-            status: 'ready',
-            slug: L('ziegenproblem', 'monty-hall-problem'),
-            title: L('Ziegenproblem', 'Monty Hall problem'),
-            summary: L(
-              'Spiele selbst oder simuliere tausende Spiele: Lohnt es sich, die Tür zu wechseln?',
-              'Play yourself or simulate thousands of games: is it worth switching doors?',
-            ),
-            grades: [10, 10],
-            kmk: ['M-L5', 'M-K2', 'M-K3'],
-            keywords: L(
-              ['Ziegenproblem', 'Monty-Hall-Problem', 'Drei-Türen-Problem', 'bedingte Wahrscheinlichkeit', 'Simulation', 'Baumdiagramm', 'Wechseln'],
-              ['Monty Hall problem', 'three doors', 'goat', 'conditional probability', 'simulation', 'tree diagram', 'switch'],
-            ),
-            thumb: 'doors',
-          },
-          {
             id: 'geburtstagsproblem',
             status: 'ready',
             slug: L('geburtstagsproblem', 'birthday-problem'),
@@ -1211,12 +1194,29 @@ export const mathematik: Subject = {
               'Wie wahrscheinlich ist es, dass zwei in der Klasse am selben Tag Geburtstag haben? Schon ab 23 Personen ist es wahrscheinlicher als nicht.',
               'How likely is it that two people in a class share a birthday? From just 23 people on, it is more likely than not.',
             ),
-            grades: [10, 13],
+            grades: [8, 13],
             kmk: ['M-L5', 'M-K3', 'M-K2', 'M-K1'],
             keywords: L(
               ['Geburtstagsproblem', 'Geburtstagsparadoxon', 'Gegenereignis', 'Simulation', 'Pfadregel', 'Laplace', 'relative Häufigkeit', 'Wahrscheinlichkeit', '23 Personen', 'Paare', 'Schubfachprinzip', 'Gesetz der großen Zahlen'],
               ['birthday problem', 'birthday paradox', 'complement', 'simulation', 'path rule', 'Laplace', 'relative frequency', 'probability', '23 people', 'pairs', 'pigeonhole principle', 'law of large numbers'],
             ),
+          },
+          {
+            id: 'ziegenproblem',
+            status: 'ready',
+            slug: L('ziegenproblem', 'monty-hall-problem'),
+            title: L('Ziegenproblem', 'Monty Hall problem'),
+            summary: L(
+              'Spiele selbst oder simuliere tausende Spiele: Lohnt es sich, die Tür zu wechseln?',
+              'Play yourself or simulate thousands of games: is it worth switching doors?',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L5', 'M-K2', 'M-K3'],
+            keywords: L(
+              ['Ziegenproblem', 'Monty-Hall-Problem', 'Drei-Türen-Problem', 'bedingte Wahrscheinlichkeit', 'Simulation', 'Baumdiagramm', 'Wechseln'],
+              ['Monty Hall problem', 'three doors', 'goat', 'conditional probability', 'simulation', 'tree diagram', 'switch'],
+            ),
+            thumb: 'doors',
           },
           {
             id: 'monte-carlo-pi',

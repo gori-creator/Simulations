@@ -20,10 +20,10 @@ import {
 
 /** Erfundener Lehrplan, um zu prüfen, dass neue Dateien ohne Code-Änderung aufgenommen werden. */
 const testCurriculum: StateCurriculum = {
-  id: 'niedersachsen-gymnasium-physik',
+  id: 'musterland-gymnasium-physik',
   subject: 'physik',
-  slug: L('niedersachsen-gymnasium', 'lower-saxony-gymnasium'),
-  state: L('Niedersachsen', 'Lower Saxony'),
+  slug: L('musterland-gymnasium', 'sample-state-gymnasium'),
+  state: L('Musterland', 'Sample state'),
   schoolType: L('Gymnasium', 'Gymnasium'),
   sourceName: 'Test',
   grades: [
@@ -33,10 +33,11 @@ const testCurriculum: StateCurriculum = {
 };
 
 describe('Einstellung Bundesland', () => {
-  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Hessen, Nordrhein-Westfalen)', () => {
+  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Hessen, Niedersachsen, Nordrhein-Westfalen)', () => {
     const ids = regionIds();
     expect(ids).toContain('bayern');
     expect(ids).toContain('hessen');
+    expect(ids).toContain('niedersachsen');
     expect(ids).toContain('nordrhein-westfalen');
     expect(new Set(ids).size).toBe(ids.length);
     expect(regionsOf('de').map((r) => r.name.de)).toEqual([...regionsOf('de').map((r) => r.name.de)].sort((a, b) => a.localeCompare(b, 'de')));
@@ -85,12 +86,12 @@ describe('Einstellung Bundesland', () => {
 
   it('nimmt einen neuen Lehrplan automatisch auf', () => {
     const curricula = [...STATE_CURRICULA, testCurriculum];
-    expect(regionIds(curricula)).toContain('niedersachsen');
-    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen', 'niedersachsen', 'nordrhein-westfalen']);
-    expect(curriculumFor('physik', 'niedersachsen', curricula)?.id).toBe(testCurriculum.id);
-    expect(regionGrades('reflexion', 'niedersachsen', curricula)).toEqual([7]);
-    expect(regionOrders('ohmsches-gesetz', curricula)['niedersachsen']).toBe(8000);
-    expect(regionCss(regionIds(curricula))).toContain('[data-region="niedersachsen"]');
+    expect(regionIds(curricula)).toContain('musterland');
+    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen', 'musterland', 'niedersachsen', 'nordrhein-westfalen']);
+    expect(curriculumFor('physik', 'musterland', curricula)?.id).toBe(testCurriculum.id);
+    expect(regionGrades('reflexion', 'musterland', curricula)).toEqual([7]);
+    expect(regionOrders('ohmsches-gesetz', curricula)['musterland']).toBe(8000);
+    expect(regionCss(regionIds(curricula))).toContain('[data-region="musterland"]');
     // Der Bayern-Physik-Lehrplan steht mit dem Mathematik-Lehrplan unter "bayern".
     expect(curriculumFor('physik', 'bayern', curricula)?.id).toBe('bayern-gymnasium-physik');
     expect(regionsOf('de', curricula).find((r) => r.id === 'bayern')?.curricula).toHaveLength(2);
