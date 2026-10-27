@@ -1,0 +1,1186 @@
+{
+  "id": "sachsen-gymnasium-mathematik",
+  "subject": "mathematik",
+  "slug": {
+    "de": "sachsen-gymnasium",
+    "en": "saxony-gymnasium"
+  },
+  "state": {
+    "de": "Sachsen",
+    "en": "Saxony"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Lehrplan",
+  "grades": [
+    {
+      "grade": 5,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Arbeiten mit natürlichen Zahlen",
+            "en": "Working with natural numbers"
+          },
+          "summary": {
+            "de": "Natürliche Zahlen darstellen, runden und ordnen, sicher rechnen, potenzieren, Teiler, Primzahlen und Teilbarkeitsregeln.",
+            "en": "Representing, rounding and ordering natural numbers, calculating confidently, powers, divisors, prime numbers and divisibility rules."
+          },
+          "simulations": [
+            "stellenwerte",
+            "termbaum",
+            "zehnerpotenzen",
+            "primfaktoren"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Gemeine Brüche und Dezimalzahlen",
+            "en": "Fractions and decimals"
+          },
+          "summary": {
+            "de": "Brüche an Figuren und am Zahlenstrahl darstellen, kürzen und erweitern, zwischen Bruch, Dezimalzahl und Prozent wechseln und mit Dezimalzahlen rechnen.",
+            "en": "Showing fractions on figures and the number line, simplifying and expanding, switching between fractions, decimals and percentages, and calculating with decimals."
+          },
+          "simulations": [
+            "bruchteile",
+            "brueche-vergleichen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Lagebeziehungen geometrischer Objekte",
+            "en": "Relative positions of geometric objects"
+          },
+          "summary": {
+            "de": "Punkte im Koordinatensystem, parallele und senkrechte Geraden, Winkel messen und Winkelpaare an Geraden, Symmetrie und Geradenspiegelung.",
+            "en": "Points in the coordinate system, parallel and perpendicular lines, measuring angles and angle pairs at lines, symmetry and line reflection."
+          },
+          "simulations": [
+            "koordinaten-lage",
+            "winkel-messen",
+            "winkel-geradenkreuzung",
+            "spiegelung"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Rechtecke und Quader",
+            "en": "Rectangles and cuboids"
+          },
+          "summary": {
+            "de": "Umfang und Flächeninhalt von Rechtecken, Quader in Schrägbild und Netz darstellen, Oberfläche und Volumen von Quadern mit ihren Einheiten.",
+            "en": "Perimeter and area of rectangles, drawing cuboids as oblique drawings and nets, surface area and volume of cuboids with their units."
+          },
+          "simulations": [
+            "umfang-flaeche",
+            "koerpernetze",
+            "quader-volumen",
+            "einheiten"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vernetzung: Mathematik im Alltag",
+            "en": "Connections: mathematics in everyday life"
+          },
+          "summary": {
+            "de": "Sachaufgaben mit Größen lösen, Einheiten umrechnen, sinnvoll runden und ein Problem in Teilschritte zerlegen.",
+            "en": "Solving word problems with quantities, converting units, rounding sensibly and breaking a problem into steps."
+          },
+          "simulations": [
+            "einheiten"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Dynamisieren geometrischer Objekte (Wahlbereich)",
+            "en": "Dynamic geometry (optional)"
+          },
+          "summary": {
+            "de": "Figuren mit dynamischer Geometriesoftware darstellen und bewegen.",
+            "en": "Drawing and moving figures with dynamic geometry software."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Mathematische Puzzles und Spiele (Wahlbereich)",
+            "en": "Mathematical puzzles and games (optional)"
+          },
+          "summary": {
+            "de": "Lege-, Strategie- und Zufallsspiele untersuchen.",
+            "en": "Investigating puzzles, strategy games and games of chance."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Zählen und Rechnen – einst und jetzt (Wahlbereich)",
+            "en": "Counting and calculating – then and now (optional)"
+          },
+          "summary": {
+            "de": "Zahlschreibweisen anderer Kulturen und Rechnen in anderen Stellenwertsystemen.",
+            "en": "Number systems of other cultures and calculating in other bases."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 6,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Arbeiten mit gebrochenen Zahlen",
+            "en": "Working with fractions"
+          },
+          "summary": {
+            "de": "Brüche und Dezimalzahlen, auch periodische, darstellen, mit ihnen nach den Rechengesetzen rechnen und Sachaufgaben lösen.",
+            "en": "Representing fractions and decimals, including recurring ones, calculating with them using the laws of arithmetic and solving word problems."
+          },
+          "simulations": [
+            "dezimalbrueche",
+            "brueche-rechnen",
+            "brueche-vergleichen",
+            "bruchteile",
+            "termbaum"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Zuordnungen in der Umwelt",
+            "en": "Relationships in everyday life"
+          },
+          "summary": {
+            "de": "Eindeutige und mehrdeutige Zuordnungen in Tabelle, Diagramm und Pfeildarstellung; direkt und indirekt proportionale Zuordnungen mit Dreisatz.",
+            "en": "Unique and non-unique relationships in tables, diagrams and arrow diagrams; direct and inverse proportionality with the rule of three."
+          },
+          "simulations": [
+            "proportional",
+            "funktion-zuordnung"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Dreiecke und Vierecke",
+            "en": "Triangles and quadrilaterals"
+          },
+          "summary": {
+            "de": "Innenwinkelsatz beweisen, Kongruenzsätze für Konstruktionen, besondere Linien im Dreieck, Umfang und Flächeninhalt von Dreiecken und Vierecken und das Haus der Vierecke.",
+            "en": "Proving the angle sum theorem, congruence theorems for constructions, special lines in a triangle, perimeter and area of triangles and quadrilaterals, and classifying quadrilaterals."
+          },
+          "simulations": [
+            "winkelsumme",
+            "dreieckskonstruktion",
+            "besondere-linien",
+            "mittelsenkrechte",
+            "flaechen-zerlegen",
+            "vierecke"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Prismen",
+            "en": "Prisms"
+          },
+          "summary": {
+            "de": "Prismen in Kavalierperspektive und als Netz darstellen, Oberfläche und Volumen gerader Prismen berechnen.",
+            "en": "Drawing prisms in cavalier perspective and as nets, calculating surface area and volume of right prisms."
+          },
+          "simulations": [
+            "koerpernetze",
+            "prisma-zylinder"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vernetzung: Anteile",
+            "en": "Connections: proportions"
+          },
+          "summary": {
+            "de": "Anteile als Bruch und in Prozent angeben, in Kreisdiagrammen zeigen und an Flächen und Körpern bestimmen.",
+            "en": "Stating parts as fractions and percentages, showing them in pie charts and finding them for areas and solids."
+          },
+          "simulations": [
+            "bruchteile",
+            "prozentstreifen",
+            "diagramme"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Finden von Vermutungen mit dynamischer Geometrie (Wahlbereich)",
+            "en": "Finding conjectures with dynamic geometry (optional)"
+          },
+          "summary": {
+            "de": "Mit Geometriesoftware messen und Zusammenhänge vermuten.",
+            "en": "Measuring with geometry software and conjecturing relationships."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Unterhaltsame Geometrie (Wahlbereich)",
+            "en": "Entertaining geometry (optional)"
+          },
+          "summary": {
+            "de": "Optische Täuschungen, „unmögliche Figuren“ und Legespiele.",
+            "en": "Optical illusions, “impossible figures” and tiling puzzles."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Primzahlen (Wahlbereich)",
+            "en": "Prime numbers (optional)"
+          },
+          "summary": {
+            "de": "Primfaktorzerlegung, Sieb des Eratosthenes und die unendliche Menge der Primzahlen.",
+            "en": "Prime factorisation, the sieve of Eratosthenes and the infinitude of primes."
+          },
+          "simulations": [
+            "primfaktoren"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Geometrie in der Ebene",
+            "en": "Plane geometry"
+          },
+          "summary": {
+            "de": "Kreis und Gerade, Inkreis und Umkreis, Winkelsätze am Kreis und Satz des Thales; Konstruktions- und Beweisaufgaben lösen.",
+            "en": "Circles and lines, incircle and circumcircle, angle theorems in circles and Thales’ theorem; solving construction and proof problems."
+          },
+          "simulations": [
+            "thales",
+            "mittelsenkrechte",
+            "besondere-linien",
+            "dreieckskonstruktion"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Arbeiten mit rationalen Zahlen",
+            "en": "Working with rational numbers"
+          },
+          "summary": {
+            "de": "Negative Zahlen darstellen und ordnen, mit rationalen Zahlen rechnen, potenzieren und Quadratwurzeln ziehen, lineare Gleichungen lösen und Prozentrechnung.",
+            "en": "Representing and ordering negative numbers, calculating with rational numbers, powers and square roots, solving linear equations and percentages."
+          },
+          "simulations": [
+            "zahlengerade",
+            "termbaum",
+            "waagemodell",
+            "quadratwurzel",
+            "prozentstreifen",
+            "diagramme"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Darstellen und Berechnen von Prismen und Pyramiden",
+            "en": "Drawing and calculating prisms and pyramids"
+          },
+          "summary": {
+            "de": "Prismen und Pyramiden im Schrägbild, Zweitafelbild und Netz; Oberfläche, Volumen und Masse von Pyramiden und zusammengesetzten Körpern.",
+            "en": "Prisms and pyramids in oblique and two-view drawings and as nets; surface area, volume and mass of pyramids and composite solids."
+          },
+          "simulations": [
+            "koerpernetze",
+            "pyramide-kegel-kugel"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Vernetzung: Darstellen von Daten",
+            "en": "Connections: presenting data"
+          },
+          "summary": {
+            "de": "Statistische Daten in Säulen-, Linien- und Kreisdiagrammen darstellen und auswerten.",
+            "en": "Presenting and evaluating statistical data in bar, line and pie charts."
+          },
+          "simulations": [
+            "diagramme"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Tabellenkalkulation – ein mathematisches Werkzeug (Wahlbereich)",
+            "en": "Spreadsheets as a mathematical tool (optional)"
+          },
+          "summary": {
+            "de": "Formeln, Bezüge und Diagramme in der Tabellenkalkulation.",
+            "en": "Formulas, references and charts in spreadsheets."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Maßstäbe und ihre Anwendungen (Wahlbereich)",
+            "en": "Scales and their applications (optional)"
+          },
+          "summary": {
+            "de": "Vergrößern und Verkleinern, Größen mit dem Maßstab umrechnen, maßstäblich zeichnen.",
+            "en": "Enlarging and reducing, converting quantities with a scale, drawing to scale."
+          },
+          "simulations": [
+            "massstab"
+          ]
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Platonische Körper (Wahlbereich)",
+            "en": "Platonic solids (optional)"
+          },
+          "summary": {
+            "de": "Reguläre Polyeder und der Euler’sche Polyedersatz.",
+            "en": "Regular polyhedra and Euler’s polyhedron formula."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Arbeiten mit Termen und Gleichungen",
+            "en": "Working with terms and equations"
+          },
+          "summary": {
+            "de": "Struktur von Termen erkennen, Terme und lineare Gleichungen ohne Hilfsmittel umformen, binomische Formeln und ein Einblick in Ungleichungen.",
+            "en": "Recognising the structure of terms, transforming terms and linear equations by hand, binomial formulas and an introduction to inequalities."
+          },
+          "simulations": [
+            "binomische-formeln"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Zufallsversuche",
+            "en": "Random experiments"
+          },
+          "summary": {
+            "de": "Ergebnisse, Ereignisse und relative Häufigkeiten, Laplace-Wahrscheinlichkeit, mehrstufige Versuche mit Urnenmodell, Baumdiagramm und Pfadregeln sowie die Produktregel beim Abzählen.",
+            "en": "Outcomes, events and relative frequencies, Laplace probability, multi-stage experiments with urn models, tree diagrams and path rules, and the product rule for counting."
+          },
+          "simulations": [
+            "gesetz-grosse-zahlen",
+            "baumdiagramm",
+            "zaehlprinzip",
+            "geburtstagsproblem"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Funktionen und lineare Gleichungssysteme",
+            "en": "Functions and linear systems"
+          },
+          "summary": {
+            "de": "Funktionsbegriff und Eigenschaften, lineare Funktionen mit Anstieg und Nullstelle, lineare Regression sowie Gleichungssysteme mit zwei Unbekannten grafisch und rechnerisch lösen.",
+            "en": "The concept and properties of functions, linear functions with slope and zero, linear regression, and solving systems with two unknowns graphically and algebraically."
+          },
+          "simulations": [
+            "funktion-zuordnung",
+            "lineare-funktion",
+            "funktionsplotter",
+            "lgs-grafisch"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Ähnlichkeit",
+            "en": "Similarity"
+          },
+          "summary": {
+            "de": "Zentrische Streckung, Hauptähnlichkeitssatz und Längen, Flächen und Volumina ähnlicher Figuren berechnen.",
+            "en": "Enlargement, the main similarity theorem and calculating lengths, areas and volumes of similar figures."
+          },
+          "simulations": [
+            "strahlensaetze",
+            "vergroessern"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vernetzung: Heuristische Strategien",
+            "en": "Connections: problem-solving strategies"
+          },
+          "summary": {
+            "de": "Vorwärts- und Rückwärtsarbeiten, Lösungspläne aufstellen und Lösungswege darstellen.",
+            "en": "Working forwards and backwards, making solution plans and presenting solutions."
+          }
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Programmierung mathematischer Algorithmen (Wahlbereich)",
+            "en": "Programming mathematical algorithms (optional)"
+          },
+          "summary": {
+            "de": "Algorithmen beschreiben und mit Sequenz, Verzweigung und Schleife umsetzen.",
+            "en": "Describing algorithms and implementing them with sequence, branching and loops."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Lineare Optimierung (Wahlbereich)",
+            "en": "Linear optimisation (optional)"
+          },
+          "summary": {
+            "de": "Optimierungsprobleme grafisch mit einer Zielfunktion lösen.",
+            "en": "Solving optimisation problems graphically with an objective function."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Simulation mit Zufallszahlen (Wahlbereich)",
+            "en": "Simulation with random numbers (optional)"
+          },
+          "summary": {
+            "de": "Monte-Carlo-Methode: Zufallszahlen erzeugen und Zufallsversuche am Computer simulieren.",
+            "en": "The Monte Carlo method: generating random numbers and simulating random experiments on the computer."
+          },
+          "simulations": [
+            "monte-carlo-pi",
+            "gesetz-grosse-zahlen"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Funktionen und Potenzen",
+            "en": "Functions and powers"
+          },
+          "summary": {
+            "de": "Potenzen und Wurzeln mit Potenzgesetzen, Potenzfunktionen und quadratische Funktionen mit Parametern, quadratische Gleichungen lösen und einfache Extremwertaufgaben.",
+            "en": "Powers and roots with the laws of exponents, power functions and quadratic functions with parameters, solving quadratic equations and simple optimisation problems."
+          },
+          "simulations": [
+            "quadratwurzel",
+            "potenzfunktionen",
+            "hyperbel",
+            "quadratische-funktion",
+            "gleichungen-grafisch",
+            "extremwert-parabel",
+            "funktionsplotter"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Kreise, Kreiszylinder und Kugeln",
+            "en": "Circles, cylinders and spheres"
+          },
+          "summary": {
+            "de": "Umfang und Fläche von Kreisen und Kreisteilen, Oberfläche, Volumen und Masse von Zylindern und Kugeln.",
+            "en": "Circumference and area of circles and sectors, surface area, volume and mass of cylinders and spheres."
+          },
+          "simulations": [
+            "kreiszahl-pi",
+            "prisma-zylinder",
+            "pyramide-kegel-kugel"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Rechtwinklige Dreiecke",
+            "en": "Right triangles"
+          },
+          "summary": {
+            "de": "Satz des Pythagoras mit Beweis, Höhen- und Kathetensatz, Sinus, Kosinus und Tangens; Berechnungen auch an Pyramide und Kegel.",
+            "en": "Pythagoras’ theorem with proof, the altitude and leg theorems, sine, cosine and tangent; calculations including pyramids and cones."
+          },
+          "simulations": [
+            "pythagoras",
+            "sin-cos-tan-dreieck",
+            "pyramide-kegel-kugel"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Auswerten von Daten",
+            "en": "Evaluating data"
+          },
+          "summary": {
+            "de": "Modalwert, Median und Mittelwert, Spannweite, Varianz und Standardabweichung, Histogramme sowie Fehler und Manipulationen in der Statistik.",
+            "en": "Mode, median and mean, range, variance and standard deviation, histograms, and errors and manipulation in statistics."
+          },
+          "simulations": [
+            "boxplot",
+            "diagramme"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vernetzung: Mathematik und moderne Rechentechnik",
+            "en": "Connections: mathematics and modern computing"
+          },
+          "summary": {
+            "de": "Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten.",
+            "en": "Using computers to solve problems and judging the results critically."
+          }
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Der goldene Schnitt (Wahlbereich)",
+            "en": "The golden ratio (optional)"
+          },
+          "summary": {
+            "de": "Definition, Konstruktion und Vorkommen in Kunst und Architektur.",
+            "en": "Definition, construction and occurrence in art and architecture."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Rund um den Pythagoras (Wahlbereich)",
+            "en": "All about Pythagoras (optional)"
+          },
+          "summary": {
+            "de": "Geschichte, verschiedene Beweise und pythagoreische Zahlentripel.",
+            "en": "History, different proofs and Pythagorean triples."
+          },
+          "simulations": [
+            "pythagoras"
+          ]
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Baupläne und Bauzeichnungen (Wahlbereich)",
+            "en": "Building plans and technical drawings (optional)"
+          },
+          "summary": {
+            "de": "Parallelprojektionen und wahre Größen in Bauzeichnungen.",
+            "en": "Parallel projections and true sizes in technical drawings."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Wachstumsvorgänge und periodische Vorgänge",
+            "en": "Growth and periodic processes"
+          },
+          "summary": {
+            "de": "Wachstum und Zerfall mit Exponentialfunktionen beschreiben, Parameter und Regression; periodische Vorgänge mit der Sinusfunktion in Grad- und Bogenmaß.",
+            "en": "Describing growth and decay with exponential functions, parameters and regression; periodic processes with the sine function in degrees and radians."
+          },
+          "simulations": [
+            "exponentielles-wachstum",
+            "sinusfunktion",
+            "einheitskreis",
+            "transformationen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Diskrete Zufallsgrößen",
+            "en": "Discrete random variables"
+          },
+          "summary": {
+            "de": "Wahrscheinlichkeitsverteilungen in Stabdiagramm und Histogramm, Erwartungswert, Varianz und Standardabweichung und faire Spiele.",
+            "en": "Probability distributions in bar charts and histograms, expected value, variance and standard deviation, and fair games."
+          },
+          "simulations": [
+            "galtonbrett"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Algebraisches Lösen geometrischer Probleme",
+            "en": "Solving geometric problems algebraically"
+          },
+          "summary": {
+            "de": "Sinus- und Kosinussatz herleiten und an Dreiecken, Pyramiden und Kegeln anwenden.",
+            "en": "Deriving the laws of sines and cosines and applying them to triangles, pyramids and cones."
+          },
+          "simulations": [
+            "sinussatz-kosinussatz",
+            "pyramide-kegel-kugel"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Funktionale Zusammenhänge",
+            "en": "Functional relationships"
+          },
+          "summary": {
+            "de": "Umkehrfunktionen und Logarithmus, Exponentialgleichungen, Verknüpfen und Verketten von Funktionen, wichtige Funktionsgraphen ohne Hilfsmittel und Zahlenfolgen mit Grenzwert.",
+            "en": "Inverse functions and logarithms, exponential equations, combining and composing functions, key graphs by hand, and sequences with limits."
+          },
+          "simulations": [
+            "umkehrfunktion",
+            "logarithmus",
+            "grenzverhalten",
+            "funktionsplotter"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vernetzung: Zinsrechnung",
+            "en": "Connections: interest"
+          },
+          "summary": {
+            "de": "Zinsen und Zinseszinsen, Kredit und Tilgung.",
+            "en": "Simple and compound interest, loans and repayment."
+          },
+          "simulations": [
+            "exponentielles-wachstum"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Komplexe Zahlen (Wahlbereich)",
+            "en": "Complex numbers (optional)"
+          },
+          "summary": {
+            "de": "Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen.",
+            "en": "The complex plane and calculating with complex numbers."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Logistisches Wachstum (Wahlbereich)",
+            "en": "Logistic growth (optional)"
+          },
+          "summary": {
+            "de": "Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen.",
+            "en": "The logistic growth model, explicit and recursive, and its limits."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich)",
+            "en": "Parametric curves and polar coordinates (optional)"
+          },
+          "summary": {
+            "de": "Kurven mit Parametern und Polarkoordinaten beschreiben.",
+            "en": "Describing curves with parameters and polar coordinates."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Jahrgangsstufen 11/12: Der Lehrplan beschreibt Grundkurs und Leistungskurs jeweils für beide Jahre gemeinsam, deshalb stehen sie als eine Stufe 11/12. GK- und LK-Codes sind von uns, die Nummern danach stammen aus dem Lehrplan; W kennzeichnet Wahlbereiche.",
+        "en": "Grades 11/12: the curriculum describes the basic and the advanced course for both years together, so they are shown as one stage 11/12. The GK/LK prefixes are ours; the numbers after them are the curriculum’s; W marks optional areas."
+      },
+      "units": [
+        {
+          "code": "GK-1",
+          "title": {
+            "de": "Differentialrechnung (Grundkurs)",
+            "en": "Differential calculus (basic course)"
+          },
+          "summary": {
+            "de": "Grenzwerte und Verhalten im Unendlichen, Ableitung als Sekanten- und Tangentenanstieg, Ableitungsregeln, Kurvendiskussion mit Polstellen und Asymptoten, Funktionsgleichungen aus Bedingungen und Extremwertprobleme.",
+            "en": "Limits and behaviour at infinity, the derivative as slope of secant and tangent, rules of differentiation, curve sketching with poles and asymptotes, function equations from conditions and optimisation problems."
+          },
+          "simulations": [
+            "sekante-tangente",
+            "ableitungsfunktion",
+            "kurvendiskussion",
+            "extremwertprobleme",
+            "polstellen-asymptoten",
+            "grenzverhalten",
+            "ganzrationale-funktionen",
+            "parabel-drei-punkte",
+            "e-funktion"
+          ]
+        },
+        {
+          "code": "GK-2",
+          "title": {
+            "de": "Matrizen (Grundkurs)",
+            "en": "Matrices (basic course)"
+          },
+          "summary": {
+            "de": "Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.",
+            "en": "Linear systems in matrix notation, multiplying matrices and a further application."
+          },
+          "simulations": [
+            "matrix-abbildungen"
+          ]
+        },
+        {
+          "code": "GK-3",
+          "title": {
+            "de": "Vektoren, Geraden und Ebenen (Grundkurs)",
+            "en": "Vectors, lines and planes (basic course)"
+          },
+          "summary": {
+            "de": "Räumliches Koordinatensystem, Rechnen mit Vektoren, Geraden und Ebenen in Parameter- und Koordinatenform und ihre Lagebeziehungen.",
+            "en": "The 3D coordinate system, calculating with vectors, lines and planes in parametric and coordinate form and their relative positions."
+          },
+          "simulations": [
+            "koordinaten-3d",
+            "vektoren-3d",
+            "geraden-ebenen",
+            "lage-abstaende"
+          ]
+        },
+        {
+          "code": "GK-4",
+          "title": {
+            "de": "Binomialverteilte Zufallsgrößen (Grundkurs)",
+            "en": "Binomially distributed random variables (basic course)"
+          },
+          "summary": {
+            "de": "Mehrstufige Zufallsexperimente mit Baumdiagramm, Vierfeldertafel und Simulation, Unabhängigkeit, Bernoulli-Ketten und Kenngrößen der Binomialverteilung.",
+            "en": "Multi-stage experiments with tree diagrams, two-way tables and simulation, independence, Bernoulli chains and the measures of the binomial distribution."
+          },
+          "simulations": [
+            "vierfeldertafel",
+            "binomialverteilung",
+            "galtonbrett",
+            "geburtstagsproblem"
+          ]
+        },
+        {
+          "code": "GK-5",
+          "title": {
+            "de": "Integralrechnung (Grundkurs)",
+            "en": "Integral calculus (basic course)"
+          },
+          "summary": {
+            "de": "Stammfunktionen, bestimmtes Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz und Flächenberechnung.",
+            "en": "Antiderivatives, the definite integral as reconstructed total and area, the fundamental theorem and calculating areas."
+          },
+          "simulations": [
+            "ober-untersummen",
+            "aenderungsrate",
+            "hauptsatz",
+            "stammfunktion-grafisch"
+          ]
+        },
+        {
+          "code": "GK-6",
+          "title": {
+            "de": "Beurteilende Statistik (Grundkurs)",
+            "en": "Inferential statistics (basic course)"
+          },
+          "summary": {
+            "de": "Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.",
+            "en": "Estimating parameters and one- and two-sided significance tests for the binomial distribution."
+          },
+          "simulations": [
+            "signifikanztest"
+          ]
+        },
+        {
+          "code": "GK-7",
+          "title": {
+            "de": "Abstände und Winkel (Grundkurs)",
+            "en": "Distances and angles (basic course)"
+          },
+          "summary": {
+            "de": "Skalar- und Vektorprodukt, Normalenvektor, Schnittwinkel und Abstände zwischen Punkten und Ebenen.",
+            "en": "Dot and cross product, normal vectors, angles of intersection and distances between points and planes."
+          },
+          "simulations": [
+            "lage-abstaende",
+            "skalar-vektorprodukt"
+          ]
+        },
+        {
+          "code": "GK-8",
+          "title": {
+            "de": "Weitere Anwendungen (Grundkurs)",
+            "en": "Further applications (basic course)"
+          },
+          "summary": {
+            "de": "Extremale Abstände, Spiegelung an Ebenen, Flächeninhalte sowie Funktions- und Geradenscharen.",
+            "en": "Extremal distances, reflection in planes, areas, and families of functions and lines."
+          },
+          "simulations": [
+            "lage-abstaende",
+            "funktionenscharen"
+          ]
+        },
+        {
+          "code": "GK-W1",
+          "title": {
+            "de": "Kegelschnitte (Wahlbereich Grundkurs)",
+            "en": "Conic sections (optional, basic course)"
+          },
+          "summary": {
+            "de": "Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse.",
+            "en": "Circle, ellipse, parabola and hyperbola as conic sections; constructing the ellipse."
+          }
+        },
+        {
+          "code": "GK-W2",
+          "title": {
+            "de": "Numerische Verfahren zum Lösen von Gleichungen (Wahlbereich Grundkurs)",
+            "en": "Numerical methods for solving equations (optional, basic course)"
+          },
+          "summary": {
+            "de": "Grafische Verfahren, Bisektion und Newton-Verfahren.",
+            "en": "Graphical methods, bisection and Newton’s method."
+          },
+          "simulations": [
+            "newton-verfahren"
+          ]
+        },
+        {
+          "code": "GK-W3",
+          "title": {
+            "de": "Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs)",
+            "en": "Dynamical systems and fractals (optional, basic course)"
+          },
+          "summary": {
+            "de": "Räuber-Beute-System und fraktale Strukturen.",
+            "en": "Predator–prey systems and fractal structures."
+          }
+        },
+        {
+          "code": "GK-W4",
+          "title": {
+            "de": "Bedingte Wahrscheinlichkeiten (Wahlbereich Grundkurs)",
+            "en": "Conditional probability (optional, basic course)"
+          },
+          "summary": {
+            "de": "Bedingte Wahrscheinlichkeit, Satz von Bayes und stochastische Unabhängigkeit.",
+            "en": "Conditional probability, Bayes’ theorem and stochastic independence."
+          },
+          "simulations": [
+            "bedingte-wahrscheinlichkeit",
+            "vierfeldertafel",
+            "ziegenproblem"
+          ]
+        },
+        {
+          "code": "GK-W5",
+          "title": {
+            "de": "Numerische Integrationsverfahren (Wahlbereich Grundkurs)",
+            "en": "Numerical integration (optional, basic course)"
+          },
+          "summary": {
+            "de": "Rechteck- und Trapezverfahren.",
+            "en": "Rectangle and trapezium rules."
+          },
+          "simulations": [
+            "ober-untersummen"
+          ]
+        },
+        {
+          "code": "GK-W6",
+          "title": {
+            "de": "Differentialgleichungen (Wahlbereich Grundkurs)",
+            "en": "Differential equations (optional, basic course)"
+          },
+          "summary": {
+            "de": "Einfache Differentialgleichungen für Wachstum und Bewegung.",
+            "en": "Simple differential equations for growth and motion."
+          }
+        },
+        {
+          "code": "LK-1",
+          "title": {
+            "de": "Differentialrechnung (Leistungskurs)",
+            "en": "Differential calculus (advanced course)"
+          },
+          "summary": {
+            "de": "Wie im Grundkurs, vertieft: Grenzwerte und Stetigkeit, Ableitungsregeln, Kurvendiskussion mit Asymptoten, Funktionsgleichungen aus Bedingungen und Extremwertprobleme.",
+            "en": "As in the basic course, in more depth: limits and continuity, rules of differentiation, curve sketching with asymptotes, function equations from conditions and optimisation problems."
+          },
+          "simulations": [
+            "sekante-tangente",
+            "ableitungsfunktion",
+            "kurvendiskussion",
+            "extremwertprobleme",
+            "polstellen-asymptoten",
+            "grenzverhalten",
+            "ganzrationale-funktionen",
+            "parabel-drei-punkte",
+            "e-funktion"
+          ]
+        },
+        {
+          "code": "LK-2",
+          "title": {
+            "de": "Matrizen (Leistungskurs)",
+            "en": "Matrices (advanced course)"
+          },
+          "summary": {
+            "de": "Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.",
+            "en": "Linear systems in matrix notation, multiplying matrices and a further application."
+          },
+          "simulations": [
+            "matrix-abbildungen"
+          ]
+        },
+        {
+          "code": "LK-3",
+          "title": {
+            "de": "Vektoren, Geraden und Ebenen (Leistungskurs)",
+            "en": "Vectors, lines and planes (advanced course)"
+          },
+          "summary": {
+            "de": "Wie im Grundkurs, dazu lineare Abhängigkeit von Vektoren und Schnittgeraden von Ebenen.",
+            "en": "As in the basic course, plus linear dependence of vectors and lines of intersection of planes."
+          },
+          "simulations": [
+            "koordinaten-3d",
+            "vektoren-3d",
+            "geraden-ebenen",
+            "lage-abstaende"
+          ]
+        },
+        {
+          "code": "LK-4",
+          "title": {
+            "de": "Binomialverteilte Zufallsgrößen (Leistungskurs)",
+            "en": "Binomially distributed random variables (advanced course)"
+          },
+          "summary": {
+            "de": "Wie im Grundkurs, dazu Zugänge zum Wahrscheinlichkeitsbegriff, Abzählverfahren, bedingte Wahrscheinlichkeit und Satz von Bayes.",
+            "en": "As in the basic course, plus approaches to probability, counting methods, conditional probability and Bayes’ theorem."
+          },
+          "simulations": [
+            "vierfeldertafel",
+            "bedingte-wahrscheinlichkeit",
+            "ziegenproblem",
+            "binomialverteilung",
+            "galtonbrett",
+            "geburtstagsproblem"
+          ]
+        },
+        {
+          "code": "LK-5",
+          "title": {
+            "de": "Integralrechnung (Leistungskurs)",
+            "en": "Integral calculus (advanced course)"
+          },
+          "summary": {
+            "de": "Wie im Grundkurs, dazu Integralfunktion, lineare Substitution und Volumen von Rotationskörpern.",
+            "en": "As in the basic course, plus the integral function, linear substitution and volumes of solids of revolution."
+          },
+          "simulations": [
+            "ober-untersummen",
+            "aenderungsrate",
+            "hauptsatz",
+            "stammfunktion-grafisch",
+            "rotationskoerper"
+          ]
+        },
+        {
+          "code": "LK-6",
+          "title": {
+            "de": "Normalverteilte Zufallsgrößen (Leistungskurs)",
+            "en": "Normally distributed random variables (advanced course)"
+          },
+          "summary": {
+            "de": "Dichte- und Verteilungsfunktion, Kenngrößen und Zusammenhang mit der Binomialverteilung.",
+            "en": "Density and distribution function, measures and the link to the binomial distribution."
+          },
+          "simulations": [
+            "normalverteilung"
+          ]
+        },
+        {
+          "code": "LK-7",
+          "title": {
+            "de": "Beurteilende Statistik (Leistungskurs)",
+            "en": "Inferential statistics (advanced course)"
+          },
+          "summary": {
+            "de": "Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.",
+            "en": "Estimating parameters and one- and two-sided significance tests for the binomial distribution."
+          },
+          "simulations": [
+            "signifikanztest"
+          ]
+        },
+        {
+          "code": "LK-8",
+          "title": {
+            "de": "Abstände und Winkel (Leistungskurs)",
+            "en": "Distances and angles (advanced course)"
+          },
+          "summary": {
+            "de": "Skalar- und Vektorprodukt, Hesse’sche Normalenform, Schnittwinkel und alle Abstände zwischen Punkten, Geraden und Ebenen.",
+            "en": "Dot and cross product, Hesse normal form, angles of intersection and all distances between points, lines and planes."
+          },
+          "simulations": [
+            "lage-abstaende",
+            "skalar-vektorprodukt"
+          ]
+        },
+        {
+          "code": "LK-9",
+          "title": {
+            "de": "Weitere Anwendungen (Leistungskurs)",
+            "en": "Further applications (advanced course)"
+          },
+          "summary": {
+            "de": "Extremale Abstände und Winkel, Spiegelung, begrenzte und unbegrenzte Flächen sowie Scharen.",
+            "en": "Extremal distances and angles, reflection, bounded and unbounded areas, and families."
+          },
+          "simulations": [
+            "lage-abstaende",
+            "funktionenscharen"
+          ]
+        },
+        {
+          "code": "LK-W1",
+          "title": {
+            "de": "Kegelschnitte (Wahlbereich Leistungskurs)",
+            "en": "Conic sections (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Kegelschnitte, Ellipse mit Konstruktion und Tangenten.",
+            "en": "Conic sections, the ellipse with construction and tangents."
+          }
+        },
+        {
+          "code": "LK-W2",
+          "title": {
+            "de": "Numerische Verfahren zum Lösen von Gleichungen (Wahlbereich Leistungskurs)",
+            "en": "Numerical methods for solving equations (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Bisektion, Newton-Verfahren und allgemeines Iterationsverfahren.",
+            "en": "Bisection, Newton’s method and general iteration."
+          },
+          "simulations": [
+            "newton-verfahren"
+          ]
+        },
+        {
+          "code": "LK-W3",
+          "title": {
+            "de": "Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs)",
+            "en": "Dynamical systems and fractals (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos.",
+            "en": "Predator–prey systems, fractals, the Feigenbaum diagram and chaos."
+          }
+        },
+        {
+          "code": "LK-W4",
+          "title": {
+            "de": "Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs)",
+            "en": "Functions of two variables (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Graphen im Raum, Schnittfiguren und partielle Ableitungen.",
+            "en": "Graphs in space, cross-sections and partial derivatives."
+          }
+        },
+        {
+          "code": "LK-W5",
+          "title": {
+            "de": "Numerische Integrationsverfahren (Wahlbereich Leistungskurs)",
+            "en": "Numerical integration (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Rechteck-, Trapez- und Simpson-Verfahren.",
+            "en": "Rectangle, trapezium and Simpson’s rules."
+          },
+          "simulations": [
+            "ober-untersummen"
+          ]
+        },
+        {
+          "code": "LK-W6",
+          "title": {
+            "de": "Differentialgleichungen (Wahlbereich Leistungskurs)",
+            "en": "Differential equations (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld.",
+            "en": "Differential equations for growth, motion and the harmonic oscillator, slope fields."
+          }
+        }
+      ],
+      "toGrade": 12
+    }
+  ]
+}

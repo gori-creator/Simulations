@@ -142,7 +142,7 @@ export const physik: Subject = {
         {
           id: 'energie-impuls',
           title: L('Energie und Impuls', 'Energy and momentum'),
-          grades: [9, 11],
+          grades: [7, 11],
           simulations: [
             {
               id: 'energieerhaltung',
@@ -153,7 +153,7 @@ export const physik: Subject = {
                 'Ein Wagen fährt Achterbahn: Energie-Säulen zeigen, wie sich Lageenergie und Bewegungsenergie ineinander umwandeln.',
                 'A car rides a roller coaster: energy bars show how potential and kinetic energy turn into each other.',
               ),
-              grades: [9, 11],
+              grades: [7, 11],
               kmk: ['P-BK-Energie', 'P-S', 'P-E'],
               keywords: L(
                 ['Energieerhaltung', 'Lageenergie', 'Bewegungsenergie', 'Höhenenergie', 'kinetische Energie', 'Reibung', 'Reibungswärme', 'innere Energie', 'Achterbahn', 'Looping', 'Zentripetalkraft', 'Energieumwandlung', 'Energiediagramm', 'Umkehrpunkt'],
@@ -231,7 +231,7 @@ export const physik: Subject = {
                 'Starte einen Planeten mit eigener Geschwindigkeit und sieh, ob er auf einer Ellipse kreist oder davonfliegt. Mit den Keplerschen Gesetzen.',
                 'Launch a planet at your chosen speed and see whether it moves on an ellipse or flies away. With Kepler\'s laws.',
               ),
-              grades: [11, 13],
+              grades: [10, 13],
               uni: true,
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Erhaltung', 'P-BK-Mathematisieren'],
               keywords: L(
@@ -300,7 +300,7 @@ export const physik: Subject = {
                 'Ein Motor treibt ein schwingendes Rad an. Trifft der Motor genau den richtigen Takt, schwingt das Rad besonders stark: Resonanz.',
                 'A motor drives an oscillating wheel. If the motor hits exactly the right rhythm, the wheel swings especially strongly: resonance.',
               ),
-              grades: [11, 13],
+              grades: [10, 13],
               uni: true,
               kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Wechselwirkung'],
               keywords: L(
@@ -356,7 +356,7 @@ export const physik: Subject = {
                 'Zwei Kreiswellen überlagern sich und verstärken sich an manchen Stellen, an anderen löschen sie sich aus.',
                 'Two circular waves overlap: in some places they reinforce each other, in others they cancel out.',
               ),
-              grades: [11, 13],
+              grades: [10, 13],
               kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
               keywords: L(
                 ['Interferenz', 'Überlagerung', 'Superposition', 'Kreiswelle', 'Wellenwanne', 'Gangunterschied', 'Phasenunterschied', 'Knotenlinie', 'Bauchlinie', 'Hyperbel', 'Maximum', 'Minimum', 'konstruktive Interferenz', 'destruktive Interferenz', 'Auslöschung', 'Verstärkung', 'Zeigerdiagramm', 'kohärent', 'gegenphasig', 'Doppelspalt', 'Fernfeld'],
@@ -416,6 +416,22 @@ export const physik: Subject = {
               ),
             },
             {
+              id: 'reihe-parallel',
+              status: 'ready',
+              slug: L('reihen-und-parallelschaltung', 'series-and-parallel-circuits'),
+              title: L('Reihen- und Parallelschaltung', 'Series and parallel circuits'),
+              summary: L(
+                'Schalte Lampen hintereinander oder nebeneinander und miss Strom und Spannung an verschiedenen Stellen.',
+                'Connect lamps in series or in parallel and measure current and voltage at different points.',
+              ),
+              grades: [7, 9],
+              kmk: ['P-BK-System', 'P-E', 'P-S'],
+              keywords: L(
+                ['Reihenschaltung', 'Parallelschaltung', 'gemischte Schaltung', 'Ersatzwiderstand', 'Gesamtwiderstand', 'Knotenregel', 'Maschenregel', 'Spannungsteiler', 'Stromstärke', 'Spannung', 'Glühlampe', 'Kirchhoff', 'Verzweigung'],
+                ['series circuit', 'parallel circuit', 'mixed circuit', 'equivalent resistance', 'total resistance', 'junction rule', 'loop rule', 'voltage divider', 'current', 'voltage', 'light bulb', 'Kirchhoff'],
+              ),
+            },
+            {
               id: 'ohmsches-gesetz',
               status: 'ready',
               slug: L('ohmsches-gesetz', 'ohms-law'),
@@ -431,29 +447,29 @@ export const physik: Subject = {
                 ['Ohm’s law', 'resistance', 'characteristic', 'current–voltage graph', 'current', 'voltage', 'ammeter', 'voltmeter', 'light bulb', 'constantan', 'resistivity', 'proportionality'],
               ),
             },
-            {
-              id: 'reihe-parallel',
-              status: 'ready',
-              slug: L('reihen-und-parallelschaltung', 'series-and-parallel-circuits'),
-              title: L('Reihen- und Parallelschaltung', 'Series and parallel circuits'),
-              summary: L(
-                'Schalte Lampen hintereinander oder nebeneinander und miss Strom und Spannung an verschiedenen Stellen.',
-                'Connect lamps in series or in parallel and measure current and voltage at different points.',
-              ),
-              grades: [8, 9],
-              kmk: ['P-BK-System', 'P-E', 'P-S'],
-              keywords: L(
-                ['Reihenschaltung', 'Parallelschaltung', 'gemischte Schaltung', 'Ersatzwiderstand', 'Gesamtwiderstand', 'Knotenregel', 'Maschenregel', 'Spannungsteiler', 'Stromstärke', 'Spannung', 'Glühlampe', 'Kirchhoff', 'Verzweigung'],
-                ['series circuit', 'parallel circuit', 'mixed circuit', 'equivalent resistance', 'total resistance', 'junction rule', 'loop rule', 'voltage divider', 'current', 'voltage', 'light bulb', 'Kirchhoff'],
-              ),
-            },
           ],
         },
         {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [10, 13],
+          grades: [9, 13],
           simulations: [
+            {
+              id: 'induktion',
+              status: 'ready',
+              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
+              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
+              summary: L(
+                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
+                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
+                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
+              ),
+            },
             {
               id: 'lorentzkraft',
               status: 'ready',
@@ -468,22 +484,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
                 ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
-              ),
-            },
-            {
-              id: 'induktion',
-              status: 'ready',
-              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
-              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
-              summary: L(
-                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
-                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
-              ),
-              grades: [10, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
-                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
               ),
             },
             {
@@ -607,7 +607,7 @@ export const physik: Subject = {
         {
           id: 'wellenoptik',
           title: L('Wellenoptik', 'Wave optics'),
-          grades: [11, 13],
+          grades: [10, 13],
           simulations: [
             {
               id: 'doppelspalt',
@@ -618,7 +618,7 @@ export const physik: Subject = {
                 'Laserlicht fällt durch einen Doppelspalt oder ein Gitter. Auf dem Schirm entsteht ein Muster aus hellen und dunklen Streifen.',
                 'Laser light passes through a double slit or a grating. A pattern of bright and dark stripes appears on the screen.',
               ),
-              grades: [11, 13],
+              grades: [10, 13],
               kmk: ['P-BK-Superposition', 'P-S', 'P-E', 'P-BK-Mathematisieren'],
               keywords: L(
                 ['Doppelspalt', 'Gitter', 'Mehrfachspalt', 'Einzelspalt', 'Interferenz', 'Beugung', 'Gitterkonstante', 'Gangunterschied', 'Maximum', 'Ordnung', 'Nebenmaximum', 'Laser', 'Wellenlänge', 'Huygens', 'Intensitätsverteilung', 'Wellenmodell des Lichts'],

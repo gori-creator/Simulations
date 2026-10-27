@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **265 von 872** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **311 von 1015** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (111)
+## Mathematik (134)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -143,7 +143,35 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-S.3 | Stochastik (S) › Diskrete Zufallsgrößen | Wahrscheinlichkeitsverteilungen und ihre Kenngrößen. |
 | 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
-## Physik (154)
+### Sachsen · Gymnasium (23)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 5 | W1 | Dynamisieren geometrischer Objekte (Wahlbereich) | Figuren mit dynamischer Geometriesoftware darstellen und bewegen. |
+| 5 | W2 | Mathematische Puzzles und Spiele (Wahlbereich) | Lege-, Strategie- und Zufallsspiele untersuchen. |
+| 5 | W3 | Zählen und Rechnen – einst und jetzt (Wahlbereich) | Zahlschreibweisen anderer Kulturen und Rechnen in anderen Stellenwertsystemen. |
+| 6 | W1 | Finden von Vermutungen mit dynamischer Geometrie (Wahlbereich) | Mit Geometriesoftware messen und Zusammenhänge vermuten. |
+| 6 | W2 | Unterhaltsame Geometrie (Wahlbereich) | Optische Täuschungen, „unmögliche Figuren“ und Legespiele. |
+| 7 | W1 | Tabellenkalkulation – ein mathematisches Werkzeug (Wahlbereich) | Formeln, Bezüge und Diagramme in der Tabellenkalkulation. |
+| 7 | W3 | Platonische Körper (Wahlbereich) | Reguläre Polyeder und der Euler’sche Polyedersatz. |
+| 8 | 5 | Vernetzung: Heuristische Strategien | Vorwärts- und Rückwärtsarbeiten, Lösungspläne aufstellen und Lösungswege darstellen. |
+| 8 | W1 | Programmierung mathematischer Algorithmen (Wahlbereich) | Algorithmen beschreiben und mit Sequenz, Verzweigung und Schleife umsetzen. |
+| 8 | W2 | Lineare Optimierung (Wahlbereich) | Optimierungsprobleme grafisch mit einer Zielfunktion lösen. |
+| 9 | 5 | Vernetzung: Mathematik und moderne Rechentechnik | Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten. |
+| 9 | W1 | Der goldene Schnitt (Wahlbereich) | Definition, Konstruktion und Vorkommen in Kunst und Architektur. |
+| 9 | W3 | Baupläne und Bauzeichnungen (Wahlbereich) | Parallelprojektionen und wahre Größen in Bauzeichnungen. |
+| 10 | W1 | Komplexe Zahlen (Wahlbereich) | Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen. |
+| 10 | W2 | Logistisches Wachstum (Wahlbereich) | Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen. |
+| 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
+| 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
+| 11/12 | GK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs) | Räuber-Beute-System und fraktale Strukturen. |
+| 11/12 | GK-W6 | Differentialgleichungen (Wahlbereich Grundkurs) | Einfache Differentialgleichungen für Wachstum und Bewegung. |
+| 11/12 | LK-W1 | Kegelschnitte (Wahlbereich Leistungskurs) | Kegelschnitte, Ellipse mit Konstruktion und Tangenten. |
+| 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
+| 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
+| 11/12 | LK-W6 | Differentialgleichungen (Wahlbereich Leistungskurs) | Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld. |
+
+## Physik (177)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -323,4 +351,32 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GK-4.1 | Strahlung und Materie (Grundkurs) › Strahlung | Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen. |
 | 12/13 | LK-4.2 | Atom- und Kernphysik (Leistungskurs) › Ionisierende Strahlung | Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
+
+### Sachsen · Gymnasium (23)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 6 | W2 | Wärmedämmung (Wahlbereich) | Wärmeverluste am Haus finden und Dämmung untersuchen. |
+| 6 | W3 | Farben (Wahlbereich) | Zerlegung weißen Lichts, additive und subtraktive Farbmischung. |
+| 7 | W3 | Vom Fliegen (Wahlbereich) | Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel. |
+| 8 | 1 | Mechanik der Flüssigkeiten und Gase | Druck, Schweredruck, Auftrieb nach Archimedes und Luftdruck. |
+| 8 | W1 | Vom Ballonfahren (Wahlbereich) | Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff. |
+| 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
+| 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
+| 9 | 1 | Grundlagen der Elektronik | Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen. |
+| 9 | W2 | Energie von Wind und Sonne (Wahlbereich) | Windkraftanlagen, Solarthermie und Fotovoltaik. |
+| 9 | W3 | Bewegungen auf gekrümmten Bahnen (Wahlbereich) | Gleichförmige Kreisbewegung, Radialkraft und Satellitenbahnen. |
+| 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
+| 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
+| 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
+| 11 | GK-W1 | Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
+| 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
+| 11 | GK-W3 | Relativität von Zeit und Raum (Wahlbereich Grundkurs) | Postulate, Zeitdilatation und Längenkontraktion. |
+| 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
+| 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
+| 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
+| 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
+| 12 | GK-2 | Praktikum Optik und Schwingungen (Grundkurs) | Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten. |
+| 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
+| 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 

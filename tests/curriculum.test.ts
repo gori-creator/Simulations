@@ -226,6 +226,12 @@ describe('Länder-Lehrpläne', () => {
     'nordrhein-westfalen-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
+    'sachsen-gymnasium-mathematik': {
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+      kugeln: 'Kugelgleichung und Tangentialebene nicht im Lehrplan (Kugeln nur als Körper in Klasse 9)',
+      cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
+    },
   };
 
   it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s ordnet jede fertige Simulation einem Jahrgang zu (oder begründet die Ausnahme)', (id, curriculum) => {
