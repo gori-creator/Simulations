@@ -142,7 +142,7 @@ export const physik: Subject = {
         {
           id: 'energie-impuls',
           title: L('Energie und Impuls', 'Energy and momentum'),
-          grades: [9, 11],
+          grades: [8, 11],
           simulations: [
             {
               id: 'energieerhaltung',
@@ -153,7 +153,7 @@ export const physik: Subject = {
                 'Ein Wagen fährt Achterbahn: Energie-Säulen zeigen, wie sich Lageenergie und Bewegungsenergie ineinander umwandeln.',
                 'A car rides a roller coaster: energy bars show how potential and kinetic energy turn into each other.',
               ),
-              grades: [9, 11],
+              grades: [8, 11],
               kmk: ['P-BK-Energie', 'P-S', 'P-E'],
               keywords: L(
                 ['Energieerhaltung', 'Lageenergie', 'Bewegungsenergie', 'Höhenenergie', 'kinetische Energie', 'Reibung', 'Reibungswärme', 'innere Energie', 'Achterbahn', 'Looping', 'Zentripetalkraft', 'Energieumwandlung', 'Energiediagramm', 'Umkehrpunkt'],
@@ -179,6 +179,46 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'kreisbewegung-gravitation',
+          title: L('Kreisbewegung und Gravitation', 'Circular motion and gravitation'),
+          grades: [9, 13],
+          simulations: [
+            {
+              id: 'kreisbewegung',
+              status: 'ready',
+              slug: L('kreisbewegung-zentripetalkraft', 'circular-motion-centripetal-force'),
+              title: L('Kreisbewegung und Zentripetalkraft', 'Circular motion and centripetal force'),
+              summary: L(
+                'Eine Kugel kreist an einer Schnur, ein Auto fährt durch eine Kurve. Welche Kraft hält sie auf der Kreisbahn?',
+                'A ball swings round on a string, a car drives through a bend. Which force keeps them on a circular path?',
+              ),
+              grades: [9, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Kreisbewegung', 'gleichförmige Kreisbewegung', 'Zentripetalkraft', 'Zentripetalbeschleunigung', 'Bahngeschwindigkeit', 'Winkelgeschwindigkeit', 'Umlaufdauer', 'Frequenz', 'Trägheit', 'Tangente', 'Kurvenfahrt', 'Haftreibung', 'Haftreibungszahl', 'Kurvenradius', 'Glatteis'],
+                ['circular motion', 'uniform circular motion', 'centripetal force', 'centripetal acceleration', 'speed', 'angular velocity', 'period', 'frequency', 'inertia', 'tangent', 'cornering', 'static friction', 'coefficient of friction', 'radius of a bend', 'black ice'],
+              ),
+            },
+            {
+              id: 'planetenbahnen',
+              status: 'ready',
+              slug: L('planetenbahnen-keplersche-gesetze', 'planetary-orbits-keplers-laws'),
+              title: L('Planetenbahnen und Keplersche Gesetze', 'Planetary orbits and Kepler’s laws'),
+              summary: L(
+                'Starte einen Planeten mit eigener Geschwindigkeit und sieh, ob er auf einer Ellipse kreist oder davonfliegt. Mit den Keplerschen Gesetzen.',
+                'Launch a planet at your chosen speed and see whether it moves on an ellipse or flies away. With Kepler\'s laws.',
+              ),
+              grades: [10, 13],
+              uni: true,
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Erhaltung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Keplersche Gesetze', 'Planetenbahn', 'Ellipse', 'Brennpunkt', 'große Halbachse', 'Exzentrizität', 'Perihel', 'Aphel', 'Flächensatz', 'Umlaufdauer', 'Gravitation', 'Gravitationsgesetz', 'Kreisbahngeschwindigkeit', 'Fluchtgeschwindigkeit', 'Hyperbel', 'Drehimpulserhaltung', 'Komet', 'Sonnensystem'],
+                ['Kepler’s laws', 'planetary orbit', 'ellipse', 'focus', 'semi-major axis', 'eccentricity', 'perihelion', 'aphelion', 'law of areas', 'orbital period', 'gravitation', 'law of gravitation', 'circular speed', 'escape velocity', 'hyperbola', 'conservation of angular momentum', 'comet', 'solar system'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'wuerfe',
           title: L('Würfe', 'Projectile motion'),
           grades: [10, 11],
@@ -197,46 +237,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Wurf', 'schiefer Wurf', 'waagerechter Wurf', 'Wurfparabel', 'Wurfweite', 'Steighöhe', 'Superposition', 'Luftwiderstand', 'Fallbeschleunigung', 'Abwurfwinkel', 'Zielwurf', 'Komplementärwinkel'],
                 ['projectile', 'oblique throw', 'horizontal throw', 'trajectory', 'range', 'maximum height', 'superposition', 'air resistance', 'gravitational acceleration', 'launch angle', 'target', 'complementary angles'],
-              ),
-            },
-          ],
-        },
-        {
-          id: 'kreisbewegung-gravitation',
-          title: L('Kreisbewegung und Gravitation', 'Circular motion and gravitation'),
-          grades: [10, 13],
-          simulations: [
-            {
-              id: 'kreisbewegung',
-              status: 'ready',
-              slug: L('kreisbewegung-zentripetalkraft', 'circular-motion-centripetal-force'),
-              title: L('Kreisbewegung und Zentripetalkraft', 'Circular motion and centripetal force'),
-              summary: L(
-                'Eine Kugel kreist an einer Schnur, ein Auto fährt durch eine Kurve. Welche Kraft hält sie auf der Kreisbahn?',
-                'A ball swings round on a string, a car drives through a bend. Which force keeps them on a circular path?',
-              ),
-              grades: [10, 11],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Kreisbewegung', 'gleichförmige Kreisbewegung', 'Zentripetalkraft', 'Zentripetalbeschleunigung', 'Bahngeschwindigkeit', 'Winkelgeschwindigkeit', 'Umlaufdauer', 'Frequenz', 'Trägheit', 'Tangente', 'Kurvenfahrt', 'Haftreibung', 'Haftreibungszahl', 'Kurvenradius', 'Glatteis'],
-                ['circular motion', 'uniform circular motion', 'centripetal force', 'centripetal acceleration', 'speed', 'angular velocity', 'period', 'frequency', 'inertia', 'tangent', 'cornering', 'static friction', 'coefficient of friction', 'radius of a bend', 'black ice'],
-              ),
-            },
-            {
-              id: 'planetenbahnen',
-              status: 'ready',
-              slug: L('planetenbahnen-keplersche-gesetze', 'planetary-orbits-keplers-laws'),
-              title: L('Planetenbahnen und Keplersche Gesetze', 'Planetary orbits and Kepler’s laws'),
-              summary: L(
-                'Starte einen Planeten mit eigener Geschwindigkeit und sieh, ob er auf einer Ellipse kreist oder davonfliegt. Mit den Keplerschen Gesetzen.',
-                'Launch a planet at your chosen speed and see whether it moves on an ellipse or flies away. With Kepler\'s laws.',
-              ),
-              grades: [11, 13],
-              uni: true,
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Erhaltung', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Keplersche Gesetze', 'Planetenbahn', 'Ellipse', 'Brennpunkt', 'große Halbachse', 'Exzentrizität', 'Perihel', 'Aphel', 'Flächensatz', 'Umlaufdauer', 'Gravitation', 'Gravitationsgesetz', 'Kreisbahngeschwindigkeit', 'Fluchtgeschwindigkeit', 'Hyperbel', 'Drehimpulserhaltung', 'Komet', 'Sonnensystem'],
-                ['Kepler’s laws', 'planetary orbit', 'ellipse', 'focus', 'semi-major axis', 'eccentricity', 'perihelion', 'aphelion', 'law of areas', 'orbital period', 'gravitation', 'law of gravitation', 'circular speed', 'escape velocity', 'hyperbola', 'conservation of angular momentum', 'comet', 'solar system'],
               ),
             },
           ],
@@ -452,8 +452,24 @@ export const physik: Subject = {
         {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [10, 13],
+          grades: [9, 13],
           simulations: [
+            {
+              id: 'induktion',
+              status: 'ready',
+              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
+              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
+              summary: L(
+                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
+                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
+                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
+              ),
+            },
             {
               id: 'lorentzkraft',
               status: 'ready',
@@ -468,22 +484,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Lorentzkraft', 'Fadenstrahlrohr', 'Helmholtzspulen', 'spezifische Ladung', 'e/m', 'Elektron', 'Kreisbahn', 'Zentripetalkraft', 'Magnetfeld', 'Flussdichte', 'Beschleunigungsspannung', 'Linke-Hand-Regel', 'Drei-Finger-Regel'],
                 ['Lorentz force', 'fine-beam tube', 'Helmholtz coils', 'specific charge', 'e/m', 'electron', 'circular path', 'centripetal force', 'magnetic field', 'flux density', 'accelerating voltage', 'left-hand rule', 'three-finger rule'],
-              ),
-            },
-            {
-              id: 'induktion',
-              status: 'ready',
-              slug: L('elektromagnetische-induktion', 'electromagnetic-induction'),
-              title: L('Elektromagnetische Induktion', 'Electromagnetic induction'),
-              summary: L(
-                'Schiebe einen Magneten in eine Spule oder drehe eine Spule im Magnetfeld: Es entsteht eine Spannung. So funktioniert ein Generator.',
-                'Push a magnet into a coil or turn a coil in a magnetic field: a voltage appears. This is how a generator works.',
-              ),
-              grades: [10, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Induktion', 'Induktionsgesetz', 'Induktionsspannung', 'magnetischer Fluss', 'Lenzsche Regel', 'Spule', 'Stabmagnet', 'Leiterschleife', 'Generator', 'Wechselspannung', 'Scheitelwert', 'Effektivwert', 'Windungszahl', 'Flussdichte', 'Lorentzkraft'],
-                ['induction', 'law of induction', 'induced voltage', 'magnetic flux', 'Lenz’s law', 'coil', 'bar magnet', 'conducting loop', 'generator', 'alternating voltage', 'peak value', 'rms value', 'number of turns', 'flux density', 'Lorentz force'],
               ),
             },
             {
@@ -666,7 +666,7 @@ export const physik: Subject = {
         {
           id: 'gase',
           title: L('Gase', 'Gases'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
             {
               id: 'gasgesetze',
@@ -677,7 +677,7 @@ export const physik: Subject = {
                 'Ein Gas in einem Zylinder mit Kolben: Ändere Druck, Volumen oder Temperatur und sieh, wie sich die anderen Größen verhalten.',
                 'A gas in a cylinder with a piston: change the pressure, volume or temperature and see how the other quantities respond.',
               ),
-              grades: [9, 13],
+              grades: [8, 13],
               uni: true,
               kmk: ['P-BK-Materie', 'P-BK-Mathematisieren', 'P-E', 'P-S'],
               keywords: L(

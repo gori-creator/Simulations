@@ -436,11 +436,27 @@ export const mathematik: Subject = {
               'Konstruiere Dreiecke aus drei gegebenen Stücken mit Lineal und Zirkel, Schritt für Schritt wie im Heft. Manchmal gibt es keine, eine oder zwei Lösungen.',
               'Construct triangles from three given parts with ruler and compass, step by step as in your exercise book. Sometimes there are no, one or two solutions.',
             ),
-            grades: [7, 7],
+            grades: [6, 7],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung', 'Kreis', 'Schnittpunkt', 'Winkelsumme', 'ähnlich'],
               ['congruence', 'congruence criterion', 'SSS', 'SAS', 'ASA', 'SSA', 'AAA', 'constructing triangles', 'sketch', 'compasses', 'set square', 'triangle inequality', 'unique', 'construction steps', 'circle', 'intersection', 'angle sum', 'similar'],
+            ),
+          },
+          {
+            id: 'besondere-linien',
+            status: 'ready',
+            slug: L('besondere-linien-im-dreieck', 'special-lines-in-a-triangle'),
+            title: L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'),
+            summary: L(
+              'Konstruiere die besonderen Linien im Dreieck. Je drei davon schneiden sich immer in einem Punkt, zum Beispiel im Mittelpunkt von Umkreis und Inkreis.',
+              'Construct the special lines in a triangle. Each set of three always meets in one point, for example at the centre of the circumcircle or the incircle.',
+            ),
+            grades: [6, 8],
+            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie', 'Konstruktion', 'Zirkel', 'Geodreieck', 'Thaleskreis'],
+              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus', 'construction', 'compasses', 'set square', 'Thales circle'],
             ),
           },
           {
@@ -459,22 +475,6 @@ export const mathematik: Subject = {
               ['Thales circle', 'right angle', 'semicircle', 'circumcircle', 'isosceles triangle', 'angle sum', 'proof'],
             ),
             thumb: 'thales',
-          },
-          {
-            id: 'besondere-linien',
-            status: 'ready',
-            slug: L('besondere-linien-im-dreieck', 'special-lines-in-a-triangle'),
-            title: L('Umkreis, Inkreis und besondere Linien im Dreieck', 'Circumcircle, incircle and special lines in a triangle'),
-            summary: L(
-              'Konstruiere die besonderen Linien im Dreieck. Je drei davon schneiden sich immer in einem Punkt, zum Beispiel im Mittelpunkt von Umkreis und Inkreis.',
-              'Construct the special lines in a triangle. Each set of three always meets in one point, for example at the centre of the circumcircle or the incircle.',
-            ),
-            grades: [7, 8],
-            kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
-            keywords: L(
-              ['Mittelsenkrechte', 'Umkreis', 'Umkreismittelpunkt', 'Winkelhalbierende', 'Inkreis', 'Inkreismittelpunkt', 'Seitenhalbierende', 'Schwerpunkt', 'Höhe', 'Höhenschnittpunkt', 'Euler-Gerade', 'Dreieck', 'Ortslinie', 'Konstruktion', 'Zirkel', 'Geodreieck', 'Thaleskreis'],
-              ['perpendicular bisector', 'circumcircle', 'circumcentre', 'angle bisector', 'incircle', 'incentre', 'median', 'centroid', 'altitude', 'orthocentre', 'Euler line', 'triangle', 'locus', 'construction', 'compasses', 'set square', 'Thales circle'],
-            ),
           },
         ]),
         topic('pythagoras', L('Satz des Pythagoras', 'Pythagorean theorem'), [
@@ -686,7 +686,7 @@ export const mathematik: Subject = {
               'Wasser umschütten zeigt: Eine Pyramide fasst ein Drittel des Prismas. Dazu Volumen und Oberfläche von Pyramide, Kegel und Kugel, drehbar in 3D.',
               'Pouring water shows that a pyramid holds one third of a prism. With volume and surface area of pyramids, cones and spheres, rotatable in 3D.',
             ),
-            grades: [10, 10],
+            grades: [8, 10],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Pyramide', 'Kegel', 'Kugel', 'Volumen', 'Oberfläche', 'Mantel', 'Seitenhöhe', 'Seitenkante', 'Mantellinie', 'Satz des Pythagoras', 'Kreissektor', 'Umschüttversuch', 'Archimedes', 'Halbkugel', 'Netz'],
@@ -839,7 +839,7 @@ export const mathematik: Subject = {
               'Verschiebe und strecke eine Hyperbel und sieh, wie sie sich ihren Asymptoten nähert.',
               'Shift and stretch a hyperbola and see how it approaches its asymptotes.',
             ),
-            grades: [8, 9],
+            grades: [8, 10],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
               ['Hyperbel', 'Asymptote', 'Polstelle', 'Definitionslücke', 'Definitionsmenge', 'Wertemenge', 'indirekte Proportionalität', 'gebrochen-rationale Funktion', 'Kehrwertfunktion'],
@@ -970,6 +970,22 @@ export const mathematik: Subject = {
         ]),
         topic('exponentialfunktionen', L('Exponentialfunktionen und Logarithmus', 'Exponential functions and logarithms'), [
           {
+            id: 'logarithmus',
+            status: 'ready',
+            slug: L('logarithmus', 'logarithms'),
+            title: L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'),
+            summary: L(
+              'Der Logarithmus beantwortet die Frage: Hoch wie viel ergibt diese Zahl? Mit Graphen, Rechengesetzen und Exponentialgleichungen.',
+              'The logarithm answers the question: to what power do I raise the base to get this number? With graphs, rules and exponential equations.',
+            ),
+            grades: [9, 12],
+            kmk: ['M-L1', 'M-L3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Logarithmus', 'Logarithmusfunktion', 'Umkehrfunktion', 'Basis', 'Exponentialgleichung', 'Basiswechsel', 'Produktregel', 'Quotientenregel', 'Potenzregel', 'Zehnerlogarithmus', 'natürlicher Logarithmus', 'lg', 'ln', 'Rechenschieber', 'Spiegelung an y = x'],
+              ['logarithm', 'logarithmic function', 'inverse function', 'base', 'exponential equation', 'change of base', 'product rule', 'quotient rule', 'power rule', 'common logarithm', 'natural logarithm', 'lg', 'ln', 'slide rule', 'reflection in y = x'],
+            ),
+          },
+          {
             id: 'exponentielles-wachstum',
             status: 'ready',
             slug: L('exponentielles-wachstum', 'exponential-growth'),
@@ -985,22 +1001,6 @@ export const mathematik: Subject = {
               ['exponential growth', 'growth factor', 'doubling time', 'half-life', 'compound interest', 'decay', 'exponential function', 'logarithmic scale'],
             ),
             thumb: 'growth',
-          },
-          {
-            id: 'logarithmus',
-            status: 'ready',
-            slug: L('logarithmus', 'logarithms'),
-            title: L('Logarithmus als Umkehrung des Potenzierens', 'Logarithms as the inverse of exponentiation'),
-            summary: L(
-              'Der Logarithmus beantwortet die Frage: Hoch wie viel ergibt diese Zahl? Mit Graphen, Rechengesetzen und Exponentialgleichungen.',
-              'The logarithm answers the question: to what power do I raise the base to get this number? With graphs, rules and exponential equations.',
-            ),
-            grades: [10, 12],
-            kmk: ['M-L1', 'M-L3', 'M-K4', 'M-K5'],
-            keywords: L(
-              ['Logarithmus', 'Logarithmusfunktion', 'Umkehrfunktion', 'Basis', 'Exponentialgleichung', 'Basiswechsel', 'Produktregel', 'Quotientenregel', 'Potenzregel', 'Zehnerlogarithmus', 'natürlicher Logarithmus', 'lg', 'ln', 'Rechenschieber', 'Spiegelung an y = x'],
-              ['logarithm', 'logarithmic function', 'inverse function', 'base', 'exponential equation', 'change of base', 'product rule', 'quotient rule', 'power rule', 'common logarithm', 'natural logarithm', 'lg', 'ln', 'slide rule', 'reflection in y = x'],
-            ),
           },
           {
             id: 'e-funktion',
@@ -1143,7 +1143,7 @@ export const mathematik: Subject = {
               'Ziehe Datenpunkte auf dem Zahlenstrahl und sieh, wie sich Mittelwert, Median und Boxplot sofort verändern.',
               'Drag data points along a number line and see how the mean, the median and the box plot change straight away.',
             ),
-            grades: [6, 7],
+            grades: [6, 9],
             kmk: ['M-L5', 'M-K4', 'M-K1', 'M-K6'],
             keywords: L(
               ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
@@ -1202,6 +1202,23 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'monte-carlo-pi',
+            status: 'ready',
+            slug: L('monte-carlo-pi', 'monte-carlo-pi'),
+            title: L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'),
+            summary: L(
+              'Zufällige Punkte fallen auf ein Quadrat mit einem Kreis darin. Aus dem Anteil im Kreis lässt sich π schätzen.',
+              'Random points fall on a square with a circle inside. From the share inside the circle you can estimate π.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L5', 'M-L2', 'M-K3'],
+            keywords: L(
+              ['Monte-Carlo', 'Kreiszahl', 'Pi', 'Simulation', 'Zufallszahlen', 'Flächenverhältnis', 'Kreisfläche'],
+              ['Monte Carlo', 'pi', 'simulation', 'random numbers', 'area ratio', 'circle area'],
+            ),
+            thumb: 'monte-carlo',
+          },
+          {
             id: 'ziegenproblem',
             status: 'ready',
             slug: L('ziegenproblem', 'monty-hall-problem'),
@@ -1218,23 +1235,6 @@ export const mathematik: Subject = {
             ),
             thumb: 'doors',
           },
-          {
-            id: 'monte-carlo-pi',
-            status: 'ready',
-            slug: L('monte-carlo-pi', 'monte-carlo-pi'),
-            title: L('Monte-Carlo-Methode: π mit Zufall bestimmen', 'Monte Carlo method: estimating π by chance'),
-            summary: L(
-              'Zufällige Punkte fallen auf ein Quadrat mit einem Kreis darin. Aus dem Anteil im Kreis lässt sich π schätzen.',
-              'Random points fall on a square with a circle inside. From the share inside the circle you can estimate π.',
-            ),
-            grades: [10, 10],
-            kmk: ['M-L5', 'M-L2', 'M-K3'],
-            keywords: L(
-              ['Monte-Carlo', 'Kreiszahl', 'Pi', 'Simulation', 'Zufallszahlen', 'Flächenverhältnis', 'Kreisfläche'],
-              ['Monte Carlo', 'pi', 'simulation', 'random numbers', 'area ratio', 'circle area'],
-            ),
-            thumb: 'monte-carlo',
-          },
         ]),
         topic('verknuepfte-ereignisse', L('Verknüpfte Ereignisse und bedingte Wahrscheinlichkeit', 'Combined events and conditional probability'), [
           {
@@ -1246,7 +1246,7 @@ export const mathematik: Subject = {
               'Vierfeldertafel, Mengendiagramm und Baumdiagramm zeigen dieselben Daten und hängen zusammen. Wer eins verändert, sieht die anderen mitlaufen.',
               'A two-way table, a Venn diagram and a tree diagram show the same data and are linked. Change one and the others follow.',
             ),
-            grades: [9, 13],
+            grades: [8, 13],
             kmk: ['M-L5', 'M-K4', 'M-K1'],
             keywords: L(
               ['Vierfeldertafel', 'Mengendiagramm', 'Venn-Diagramm', 'Schnittmenge', 'Vereinigungsmenge', 'Gegenereignis', 'Additionssatz', 'Baumdiagramm', 'umgekehrter Baum', 'bedingte Wahrscheinlichkeit', 'Unabhängigkeit', 'Randsumme', 'Einheitsquadrat', 'natürliche Häufigkeiten'],
@@ -1329,7 +1329,7 @@ export const mathematik: Subject = {
               'Die Glockenkurve: Wahrscheinlichkeiten sind Flächen unter der Kurve. Mit Sigma-Regeln und Beispielen wie Abfüllanlagen.',
               'The bell curve: probabilities are areas under the curve. With the sigma rules and examples such as filling machines.',
             ),
-            grades: [13, 13],
+            grades: [12, 13],
             uni: true,
             kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K5'],
             keywords: L(
@@ -1593,7 +1593,7 @@ export const mathematik: Subject = {
               'Setze Punkte im räumlichen Koordinatensystem, drehe die Ansicht und berechne Abstände mit dem Satz des Pythagoras.',
               'Place points in 3D coordinates, rotate the view and calculate distances with Pythagoras\' theorem.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['räumliches Koordinatensystem', 'Koordinaten', 'Punkt im Raum', 'x₁x₂-Ebene', 'Koordinatenebene', 'Oktant', 'Projektion', 'Quader', 'Eckpunkte', 'Raumdiagonale', 'Abstand vom Ursprung', 'Schrägbild'],
@@ -1609,7 +1609,7 @@ export const mathematik: Subject = {
               'Ziehe Vektorpfeile im Raum, addiere sie und vervielfache sie. Die Rechnung steht daneben in Spaltenschreibweise.',
               'Drag vector arrows in space, add them and multiply them by numbers. The calculation is shown alongside in column form.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['Vektor', 'Vektoraddition', 'Vektorsubtraktion', 'Gegenvektor', 'Vielfaches', 'S-Multiplikation', 'Linearkombination', 'Verbindungsvektor', 'Ortsvektor', 'Mittelpunkt', 'Betrag', 'Parallelogramm', 'kollinear'],
@@ -1625,7 +1625,7 @@ export const mathematik: Subject = {
               'Das Skalarprodukt verrät den Winkel zwischen zwei Vektoren, das Vektorprodukt einen senkrechten Vektor und eine Fläche.',
               'The dot product tells you the angle between two vectors; the cross product gives a perpendicular vector and an area.',
             ),
-            grades: [12, 12],
+            grades: [10, 12],
             kmk: ['M-L4', 'M-L2', 'M-K4', 'M-K5'],
             keywords: L(
               ['Skalarprodukt', 'Vektorprodukt', 'Kreuzprodukt', 'Spatprodukt', 'Winkel zwischen Vektoren', 'orthogonal', 'senkrecht', 'Projektion', 'Normalenvektor', 'Parallelogrammfläche', 'Dreiecksfläche', 'Spat', 'Volumen', 'Rechte-Hand-Regel'],
