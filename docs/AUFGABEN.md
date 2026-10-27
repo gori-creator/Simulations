@@ -57,6 +57,8 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 - [x] **Ladezeit für Schulnetze** (PR #48, 25.10.): Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR. → Service Worker lädt nicht mehr die ganze Seite vorab (vorher 23 MB je Gerät), Fachseiten halb so groß, 9 Bilder verkleinert, Test für ≤ 300 KB.
 - [ ] **Design einbauen**, sobald der Codex-Agent abgegeben hat: Abgabe prüfen, Patch anwenden, Sichtprüfung hell/dunkel, PC/Handy, PR.
 - [ ] **Chemie:** Plan für die ersten 10 Simulationen (Klasse 7–13, KMK-Bildungsstandards), dann die ersten zwei vollständig bauen (`docs/NEUE-SIMULATION.md`).
-- [ ] **Weitere Bundesländer:** Lehrpläne Mathematik und Physik (Gymnasium) für Nordrhein-Westfalen und Niedersachsen nach dem Muster in `src/curriculum/lehrplaene/`, nur amtliche Quellen, Unsicheres als Entwurf.
+- [ ] **Weitere Bundesländer:** Lehrpläne Mathematik und Physik (Gymnasium) nach dem Muster in `src/curriculum/lehrplaene/`, nur amtliche Quellen, Unsicheres als Entwurf; Reihenfolge und Regeln im Auftrag `docs/agenten/AUFTRAG-BUNDESLAENDER.md`.
+  - [x] Nordrhein-Westfalen (26.10.): Kernlehrpläne Sek. I (G9, 2019) und Sek. II (2026, gilt ab 01.08.2027), Mathe 85 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 5 Simulationen erweitert. Protokolle in `docs/lehrplaene/nordrhein-westfalen-gymnasium-*.md`.
+  - [ ] Niedersachsen (Kerncurricula liegen der Projektleitung vor), danach Sachsen, Rheinland-Pfalz, …
 - [x] **Automatische Bildtests** (`docs/FAHRPLAN.md`, 1.6): Referenzfotos je Simulation, Vergleich bei jeder Änderung. Eigene GitHub-Aktion „Bildtests“, Anleitung in `docs/BILDTESTS.md`.
 - [ ] Freiwillig: Ideen für später (Vorhersage-Frage vor dem Start, „Für morgen, 5 Minuten“ für Lehrkräfte, Suche nach Formeln) – erst nach dem Design.

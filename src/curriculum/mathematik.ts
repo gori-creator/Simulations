@@ -56,7 +56,7 @@ export const mathematik: Subject = {
               'Ein Frosch hüpft auf der Zahlengeraden und zeigt, wie man mit negativen Zahlen plus und minus rechnet. Dazu Beispiele mit Thermometer und Konto.',
               'A frog hops along the number line and shows how to add and subtract negative numbers. With examples from thermometers and bank accounts.',
             ),
-            grades: [5, 5],
+            grades: [5, 7],
             kmk: ['M-L1', 'M-K4', 'M-K3'],
             keywords: L(
               ['ganze Zahlen', 'negative Zahlen', 'Zahlengerade', 'Pfeilmodell', 'Laufmodell', 'Gegenzahl', 'Betrag', 'Addition', 'Subtraktion', 'Guthaben', 'Schulden', 'Temperatur', 'Meeresspiegel'],
@@ -924,7 +924,7 @@ export const mathematik: Subject = {
               'Ändere den Exponenten und sieh, wie sich der Graph von y = a · xⁿ verwandelt. Mit Symmetrie und gemeinsamen Punkten.',
               'Change the exponent and watch how the graph of y = a · xⁿ changes. With symmetry and shared points.',
             ),
-            grades: [9, 10],
+            grades: [9, 11],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
               ['Potenzfunktion', 'Exponent', 'Parabel n-ter Ordnung', 'Hyperbel n-ter Ordnung', 'Achsensymmetrie', 'Punktsymmetrie', 'Monotonie', 'Wertemenge', 'Definitionsmenge', 'Asymptote', 'Polstelle', 'gemeinsame Punkte'],
@@ -1109,7 +1109,7 @@ export const mathematik: Subject = {
               'Wie viele Outfits oder Eiskombinationen gibt es? Ein Baumdiagramm wächst Stufe für Stufe, und du siehst, warum man die Möglichkeiten multipliziert.',
               'How many outfits or ice cream combinations are there? A tree diagram grows step by step and shows why you multiply the options.',
             ),
-            grades: [5, 8],
+            grades: [5, 9],
             kmk: ['M-L5', 'M-L1', 'M-K2', 'M-K4'],
             keywords: L(
               ['Zählprinzip', 'Produktregel', 'Baumdiagramm', 'Kombinatorik', 'systematisches Abzählen', 'mit Wiederholung', 'ohne Wiederholung', 'Fakultät', 'Reihenfolge', 'PIN'],

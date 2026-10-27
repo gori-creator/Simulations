@@ -5,6 +5,8 @@ import { bayernGymnasiumMathematik } from "./bayern-gymnasium-mathematik";
 import { bayernGymnasiumPhysik } from "./bayern-gymnasium-physik";
 import { hessenGymnasiumMathematik } from "./hessen-gymnasium-mathematik";
 import { hessenGymnasiumPhysik } from "./hessen-gymnasium-physik";
+import { nordrheinWestfalenGymnasiumMathematik } from "./nordrhein-westfalen-gymnasium-mathematik";
+import { nordrheinWestfalenGymnasiumPhysik } from "./nordrhein-westfalen-gymnasium-physik";
 import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from "./types";
 
 export type * from "./types";
@@ -17,6 +19,7 @@ export type * from "./types";
  * - Baden-Württemberg, Gymnasium: Mathematik und Physik (Bildungsplan, G9)
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
+ * - Nordrhein-Westfalen, Gymnasium: Mathematik und Physik (Kernlehrpläne Sek. I, G9, und Sek. II von 2026)
  */
 export const STATE_CURRICULA: StateCurriculum[] = [
   badenWuerttembergGymnasiumMathematik,
@@ -25,6 +28,8 @@ export const STATE_CURRICULA: StateCurriculum[] = [
   bayernGymnasiumPhysik,
   hessenGymnasiumMathematik,
   hessenGymnasiumPhysik,
+  nordrheinWestfalenGymnasiumMathematik,
+  nordrheinWestfalenGymnasiumPhysik,
 ];
 
 export function curriculaFor(subject: SubjectId): StateCurriculum[] {

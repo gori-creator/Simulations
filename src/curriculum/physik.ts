@@ -391,13 +391,13 @@ export const physik: Subject = {
         'Stromkreise bauen, Spannungen messen, Felder sichtbar machen und Induktion verstehen.',
         'Build circuits, measure voltages, visualise fields and understand induction.',
       ),
-      grades: [7, 13],
+      grades: [6, 13],
       kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Wechselwirkung'],
       topics: [
         {
           id: 'stromkreise',
           title: L('Stromkreise', 'Circuits'),
-          grades: [7, 9],
+          grades: [6, 9],
           simulations: [
             {
               id: 'einfacher-stromkreis',
@@ -408,7 +408,7 @@ export const physik: Subject = {
                 'Baue einen Stromkreis aus Batterie, Schalter und Lampe, als Aufbau und als Schaltplan. Ist der Kreis geschlossen, leuchtet die Lampe.',
                 'Build a circuit with a battery, a switch and a lamp, as a set-up and as a circuit diagram. When the circuit is closed, the lamp lights up.',
               ),
-              grades: [7, 9],
+              grades: [6, 9],
               kmk: ['P-S', 'P-E', 'P-K', 'P-BK-System'],
               keywords: L(
                 ['Stromkreis', 'geschlossener Stromkreis', 'offener Stromkreis', 'Schalter', 'Glühlampe', 'Batterie', 'Elektronen', 'technische Stromrichtung', 'Schaltplan', 'Schaltzeichen', 'Kurzschluss', 'Sicherung', 'Leiter', 'Nichtleiter', 'Isolator'],
@@ -637,13 +637,13 @@ export const physik: Subject = {
         'Vom Teilchenmodell zu den Gasgesetzen: Temperatur, Druck und Volumen im Zusammenspiel.',
         'From the particle model to the gas laws: temperature, pressure and volume interacting.',
       ),
-      grades: [7, 13],
+      grades: [6, 13],
       kmk: ['P-S', 'P-BK-Materie', 'P-BK-Energie'],
       topics: [
         {
           id: 'teilchenmodell',
           title: L('Teilchenmodell', 'Particle model'),
-          grades: [7, 8],
+          grades: [6, 8],
           simulations: [
             {
               id: 'teilchenmodell',
@@ -654,7 +654,7 @@ export const physik: Subject = {
                 'Heize Eis zu Wasser und Dampf und sieh, wie sich die Teilchen dabei bewegen. Dazu ein Diagramm der Temperatur.',
                 'Heat ice into water and steam and see how the particles move. With a graph of the temperature.',
               ),
-              grades: [7, 9],
+              grades: [6, 9],
               kmk: ['P-BK-Materie', 'P-BK-Energie', 'P-S'],
               keywords: L(
                 ['Teilchenmodell', 'Temperatur', 'Aggregatzustand', 'fest', 'flüssig', 'gasförmig', 'Schmelzen', 'Sieden', 'Erstarren', 'Kondensieren', 'Schmelztemperatur', 'Siedetemperatur', 'Schmelzwärme', 'Verdampfungswärme', 'Kelvin', 'absoluter Nullpunkt', 'Bewegungsenergie', 'Diffusion', 'Brownsche Bewegung'],
