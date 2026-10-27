@@ -11,7 +11,7 @@
 | Jahr / Stand | 1. Auflage 2019; RdErl. vom 23.06.2019 (526-6.03.13.02-143664), in Kraft ab 01.08.2019 für die Klassen 5 und 6 aufsteigend | RdErl. vom 07.08.2026 (526-2026-0003217), ABl. NRW. 08/26; in Kraft ab 01.08.2027 beginnend mit der Einführungsphase. Der bisherige Kernlehrplan (Heft 4720, 24.05.2023) tritt mit Ablauf des 31.07.2027 auslaufend außer Kraft und ist hier nicht abgebildet |
 | Datei (von der Projektleitung geliefert, nicht im Repository) | `g9_m_klp_3401_2019_06_23_0.pdf` (40 Seiten) | `gost_klp_m_2026_08_24.pdf` (44 Seiten) |
 | Link laut Dokument | „www.lehrplannavigator.nrw.de“ (Online-Fassung) | „https://www.schulentwicklung.nrw.de/lehrplaene/“ (Lehrplannavigator); in `sourceUrl` verwendet |
-| G8/G9 | G9 (Sekundarstufe I bis Klasse 10, „neues G9“) | G9 (Einführungsphase = Jahrgangsstufe 11, Annahme siehe Teil E) |
+| G8/G9 | G9 (Sekundarstufe I bis Klasse 10, „neues G9“) | G9 (Einführungsphase = Jahrgangsstufe 11, Qualifikationsphase = 12/13, siehe Teil E) |
 | Niveaus / Wahl | keine | Qualifikationsphase: Grundkurs und Leistungskurs mit eigenen Kompetenzerwartungen |
 | Struktur | Erprobungsstufe, erste Stufe, zweite Stufe → je vier Inhaltsfelder (Arithmetik/Algebra, Funktionen, Geometrie, Stochastik) → inhaltliche Schwerpunkte (ohne Nummern im Original) | Einführungsphase: Inhaltsfelder A und G; Qualifikationsphase: A, G und S, jeweils für Grund- und Leistungskurs → inhaltliche Schwerpunkte (ohne Nummern) |
 
@@ -89,7 +89,7 @@ Jahrgangsstufe(n) im JSON: 5, 6
 Jahrgangsstufe(n) im JSON: 7, 8  
 (Quelle: Kernlehrplan Sek. I Mathematik (Heft 3401), Kap. 2.4.1, S. 28–31)
 
-> Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine Jahrgänge; die Einordnung bei den Klassen 7 und 8 ist eine Annahme (G9). Die Lernbereiche stehen bei 7 und 8 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.
+> Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine genauen Jahrgänge; die erste Stufe steht deshalb als Doppeljahrgangsstufe 7/8 (G9), die Lernbereiche stehen bei 7 und 8 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.
 
 ### 5 Arithmetik/Algebra
 *EN: Arithmetic/algebra*
@@ -141,7 +141,7 @@ Jahrgangsstufe(n) im JSON: 7, 8
 Jahrgangsstufe(n) im JSON: 9, 10  
 (Quelle: Kernlehrplan Sek. I Mathematik (Heft 3401), Kap. 2.4.2, S. 32–35)
 
-> Zweite Stufe bis zum Ende der Sekundarstufe I. Die Einordnung bei den Klassen 9 und 10 ist eine Annahme (G9, Ende der Sekundarstufe I nach Klasse 10). Die Lernbereiche stehen bei 9 und 10 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.
+> Zweite Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt keine genauen Jahrgänge; die zweite Stufe steht deshalb als Doppeljahrgangsstufe 9/10 (G9, Ende der Sekundarstufe I nach Klasse 10), die Lernbereiche stehen bei 9 und 10 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.
 
 ### 9 Arithmetik/Algebra
 *EN: Arithmetic/algebra*
@@ -306,11 +306,13 @@ Die vollständige JSON-Datei liegt separat bei: `nordrhein-westfalen-gymnasium-m
 | Prognose- und Konfidenzintervall | Stichproben ziehen, σ-Intervalle einzeichnen und sehen, wie oft p getroffen wird. | Q-S.5 |
 | Irreführende Diagramme | Achsen abschneiden, Flächen verzerren: dieselben Daten wirken anders. | 12.1 (teilweise schon `diagramme`, aber nur für Klasse 6–7 gedacht) |
 
-# Teil E – Annahmen und Unklarheiten
+# Teil E – Einordnung und Unklarheiten
 
-1. **Jahrgänge der Sekundarstufe I.** Der Kernlehrplan nennt nur die Erprobungsstufe (Klassen 5 und 6 laut Erlass) sowie eine erste und eine zweite Stufe „bis zum Ende der Sekundarstufe I“. Erste Stufe = Klassen 7/8 und zweite Stufe = Klassen 9/10 ist eine **Annahme** (G9, Ende der Sek. I nach Klasse 10). Bitte am Lehrplan bzw. Lehrplannavigator prüfen.
-2. **Oberstufe ohne Jahrgänge.** Einführungsphase = 11, Qualifikationsphase = 12 und 13 (G9) ist eine Annahme; der Lehrplan verteilt die Qualifikationsphase nicht auf Halbjahre, deshalb stehen die Lernbereiche bei 12 und 13 gleich.
-3. **Fassung der Oberstufe.** Abgebildet ist der Kernlehrplan von 2026, der ab 01.08.2027 mit der Einführungsphase gilt (Vorgabe der Projektleitung). Bis dahin unterrichten die Schulen nach dem Kernlehrplan von 2023, der hier nicht vorliegt.
+Festlegung der Projektleitung (27.10.2026): Nennt der Lehrplan keine genauen Jahrgänge, werden Doppeljahrgangsstufen verwendet; in der Oberstufe gilt der Kernlehrplan von 2026, obwohl er erst ab 01.08.2027 in Kraft tritt.
+
+1. **Jahrgänge der Sekundarstufe I.** Der Kernlehrplan nennt nur die Erprobungsstufe (Klassen 5 und 6 laut Erlass) sowie eine erste und eine zweite Stufe „bis zum Ende der Sekundarstufe I“. Nach der Festlegung oben stehen sie als Doppeljahrgangsstufen: erste Stufe = Klassen 7/8, zweite Stufe = Klassen 9/10 (G9, Ende der Sek. I nach Klasse 10).
+2. **Oberstufe ohne Jahrgänge.** Einführungsphase = Jahrgangsstufe 11 (G9). Der Lehrplan verteilt die Qualifikationsphase nicht auf Halbjahre; sie steht deshalb als Doppeljahrgangsstufe 12/13 mit gleichen Lernbereichen.
+3. **Fassung der Oberstufe.** Abgebildet ist der Kernlehrplan von 2026, der ab 01.08.2027 mit der Einführungsphase gilt (ausdrücklich so von der Projektleitung festgelegt). Bis dahin unterrichten die Schulen nach dem Kernlehrplan von 2023, der hier nicht vorliegt.
 4. **Grund- und Leistungskurs zusammengefasst.** Die Schwerpunkte des Grundkurses sind im Leistungskurs enthalten; abgebildet sind die LK-Schwerpunkte, mit „nur LK“ für Zusätze (z. B. Q-G.5 Lagebeziehungen und Abstände, Q-S.5 Beurteilende Statistik, Q-S.6 Normalverteilung, Rotationskörper). Die Unterschiede in der Tiefe (z. B. Kettenregel im GK nur mit linearer innerer Funktion und e-Funktion) stehen nur im Lehrplan.
 5. **Nummern.** Inhaltsfelder und Schwerpunkte der Sek. I sind im Original nicht nummeriert. Die Nummern 1–12 sind von uns vergeben und laufen über die drei Stufen durch (1–4 Erprobungsstufe, 5–8 erste Stufe, 9–12 zweite Stufe), damit gleichnamige Inhaltsfelder verschiedener Stufen nicht verwechselt werden. In der Oberstufe stammen die Buchstaben A, G, S aus dem Lehrplan; „EF-“ und „Q-“ sowie die Nummern der Schwerpunkte sind von uns.
 6. **Erweiterte Klassenstufen** (in `src/curriculum/mathematik.ts`), weil NRW das Thema in einem anderen Jahrgang unterrichtet:

@@ -11,7 +11,7 @@ import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from './types';
  */
 const SOURCE = 'https://www.schulentwicklung.nrw.de/lehrplaene/';
 
-// Hinweise je Jahrgangsstufe: Annahmen sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md, Teil E).
+// Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md, Teil E).
 const ERPROBUNGSSTUFE = L(
   'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder sind im Lehrplan nummeriert, die Nummern der Schwerpunkte sind von uns vergeben.',
   'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. The content areas are numbered in the curriculum; the numbers of the focal points are our own.',
@@ -741,7 +741,7 @@ const grade = (n: number, note: Localized, units: CurriculumUnit[]): CurriculumG
  *   ab 01.08.2027 beginnend mit der Einführungsphase), Jahrgangsstufen 11–13.
  *
  * Aufbereitung und Protokoll: docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.{json,md}.
- * Annahmen (Teil E): Erprobungsstufe = Klassen 5/6, Inhaltsfelder 5–11 = Klassen 7–10
+ * Einordnung (Teil E): Erprobungsstufe = Klassen 5/6, Inhaltsfelder 5–11 = Klassen 7–10
  * (ohne Verteilung im Lehrplan), Einführungsphase = 11, Qualifikationsphase = 12/13.
  * Nummern der Schwerpunkte und die Codes der Oberstufe sind selbst vergeben.
  *

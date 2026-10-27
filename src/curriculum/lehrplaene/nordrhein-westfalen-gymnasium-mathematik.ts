@@ -11,20 +11,20 @@ import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from './types';
  */
 const SOURCE = 'https://www.schulentwicklung.nrw.de/lehrplaene/';
 
-// Hinweise je Jahrgangsstufe: Annahmen sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md, Teil E).
+// Hinweise je Jahrgangsstufe: Einordnung sichtbar machen (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md, Teil E).
 const ERPROBUNGSSTUFE = L(
   'Erprobungsstufe (Klassen 5 und 6): Der Kernlehrplan nennt die Kompetenzerwartungen „bis zum Ende der Erprobungsstufe“; die Lernbereiche stehen deshalb bei 5 und 6 gleich. Jede Simulation steht bei dem Jahrgang, für den sie gedacht ist; beim anderen führt ein Verweis dorthin. Die Inhaltsfelder und Schwerpunkte sind im Lehrplan nicht nummeriert; die Nummern sind von uns vergeben und laufen über alle Stufen der Sekundarstufe I durch.',
   'Orientation stage (grades 5 and 6): the core curriculum states its expectations “by the end of the orientation stage”, so the units are the same for grades 5 and 6. Each simulation is listed under the grade it is designed for; the other grade links to it. Content areas and focal points are not numbered in the curriculum; the numbers are our own and run through all stages of lower secondary.',
 );
 
 const ERSTE_STUFE = L(
-  'Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine Jahrgänge; die Einordnung bei den Klassen 7 und 8 ist eine Annahme (G9). Die Lernbereiche stehen bei 7 und 8 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
-  'First stage up to the end of lower secondary. The core curriculum does not name grades for the first and second stage; placing this stage in grades 7 and 8 is an assumption (G9). The units are the same for grades 7 and 8; each simulation is listed under the grades it is designed for. The numbers are our own.',
+  'Erste Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt für die erste und zweite Stufe keine genauen Jahrgänge; die erste Stufe steht deshalb als Doppeljahrgangsstufe 7/8 (G9), die Lernbereiche stehen bei 7 und 8 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
+  'First stage up to the end of lower secondary. The core curriculum does not name exact grades for the first and second stage, so the first stage is shown as the double grade 7/8 (G9) with the same units for grades 7 and 8; each simulation is listed under the grades it is designed for. The numbers are our own.',
 );
 
 const ZWEITE_STUFE = L(
-  'Zweite Stufe bis zum Ende der Sekundarstufe I. Die Einordnung bei den Klassen 9 und 10 ist eine Annahme (G9, Ende der Sekundarstufe I nach Klasse 10). Die Lernbereiche stehen bei 9 und 10 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
-  'Second stage up to the end of lower secondary. Placing it in grades 9 and 10 is an assumption (G9, lower secondary ends after grade 10). The units are the same for grades 9 and 10; each simulation is listed under the grades it is designed for. The numbers are our own.',
+  'Zweite Stufe bis zum Ende der Sekundarstufe I. Der Kernlehrplan nennt keine genauen Jahrgänge; die zweite Stufe steht deshalb als Doppeljahrgangsstufe 9/10 (G9, Ende der Sekundarstufe I nach Klasse 10), die Lernbereiche stehen bei 9 und 10 gleich; jede Simulation steht bei den Jahrgängen, für die sie gedacht ist. Die Nummern sind von uns vergeben.',
+  'Second stage up to the end of lower secondary. The core curriculum does not name exact grades, so the second stage is shown as the double grade 9/10 (G9, lower secondary ends after grade 10) with the same units for grades 9 and 10; each simulation is listed under the grades it is designed for. The numbers are our own.',
 );
 
 const EF = L(
@@ -796,8 +796,9 @@ const grade = (n: number, note: Localized, units: CurriculumUnit[]): CurriculumG
  *   ab 01.08.2027 beginnend mit der Einführungsphase), Jahrgangsstufen 11–13.
  *
  * Aufbereitung und Protokoll: docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.{json,md}.
- * Annahmen (Teil E): Erprobungsstufe = Klassen 5/6, erste Stufe = 7/8, zweite Stufe = 9/10,
- * Einführungsphase = 11, Qualifikationsphase = 12/13. Die Nummern in der Sekundarstufe I
+ * Einordnung (Teil E): Erprobungsstufe = Klassen 5/6; wo der Lehrplan keine genauen Jahrgänge
+ * nennt, Doppeljahrgangsstufen: erste Stufe = 7/8, zweite Stufe = 9/10, Qualifikationsphase = 12/13;
+ * Einführungsphase = 11. Die Nummern in der Sekundarstufe I
  * und die Nummern der Schwerpunkte in der Oberstufe sind selbst vergeben.
  *
  * Überschriften entsprechen dem Kernlehrplan; die Kurzbeschreibungen sind eigene

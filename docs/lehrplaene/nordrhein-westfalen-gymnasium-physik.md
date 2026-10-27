@@ -11,7 +11,7 @@
 | Jahr / Stand | 1. Auflage 2019; RdErl. vom 23.06.2019 (526-6.03.13.02-143664), in Kraft ab 01.08.2019 für die Klassen 5 und 6 aufsteigend | RdErl. vom 07.08.2026 (526-2026-0003217), ABl. NRW. 08/26; in Kraft ab 01.08.2027 beginnend mit der Einführungsphase. Der bisherige Kernlehrplan (Heft 4721, 31.05.2022) tritt mit Ablauf des 31.07.2027 auslaufend außer Kraft und ist hier nicht abgebildet |
 | Datei (von der Projektleitung geliefert, nicht im Repository) | `g9_ph_klp_3411_2019_06_23.pdf` (48 Seiten) | `gost_klp_ph_2026_08_24.pdf` (58 Seiten) |
 | Link laut Dokument | „www.lehrplannavigator.nrw.de“ (Online-Fassung) | „https://www.schulentwicklung.nrw.de/lehrplaene/“ (Lehrplannavigator); in `sourceUrl` verwendet |
-| G8/G9 | G9 (Sekundarstufe I bis Klasse 10, „neues G9“) | G9 (Einführungsphase = Jahrgangsstufe 11, Annahme siehe Teil E) |
+| G8/G9 | G9 (Sekundarstufe I bis Klasse 10, „neues G9“) | G9 (Einführungsphase = Jahrgangsstufe 11, Qualifikationsphase = 12/13, siehe Teil E) |
 | Niveaus / Wahl | keine; in der Erprobungsstufe dürfen Biologie und Physik integriert unterrichtet werden | Qualifikationsphase: Grundkurs und Leistungskurs mit **verschiedenen** Inhaltsfeldern |
 | Struktur | Erprobungsstufe: Inhaltsfelder 1–4; bis zum Ende der Sek. I: Inhaltsfelder 5–11 (nummeriert) → inhaltliche Schwerpunkte (ohne Nummern) | Einführungsphase: 2 Inhaltsfelder; Qualifikationsphase: 4 Inhaltsfelder Grundkurs, 4 Inhaltsfelder Leistungskurs (ohne Nummern) → inhaltliche Schwerpunkte |
 
@@ -319,11 +319,13 @@ Die vollständige JSON-Datei liegt separat bei: `nordrhein-westfalen-gymnasium-p
 | Absorption ionisierender Strahlung | Alpha, Beta, Gamma durch Papier, Aluminium und Blei; Zählrate messen. | 10.2, GK-4.1, LK-4.2 |
 | Kettenreaktion und Bindungsenergie | Neutronen spalten Kerne; Bindungsenergie pro Nukleon. | 10.3, LK-4.4 |
 
-# Teil E – Annahmen und Unklarheiten
+# Teil E – Einordnung und Unklarheiten
 
-1. **Klassen 7–10 ohne Verteilung.** Der Kernlehrplan nennt für die Inhaltsfelder 5–11 nur „bis zum Ende der Sekundarstufe I“. Sie stehen deshalb bei den Klassen 7, 8, 9 und 10 gleich; jede Simulation steht nur bei den Jahrgängen, für die sie gedacht ist. Wann welches Inhaltsfeld unterrichtet wird, legt der schulinterne Lehrplan fest.
-2. **Oberstufe ohne Jahrgänge.** Einführungsphase = 11, Qualifikationsphase = 12 und 13 (G9) ist eine Annahme; der Lehrplan verteilt die Qualifikationsphase nicht auf Halbjahre.
-3. **Fassung der Oberstufe.** Abgebildet ist der Kernlehrplan von 2026, der ab 01.08.2027 mit der Einführungsphase gilt (Vorgabe der Projektleitung). Bis dahin unterrichten die Schulen nach dem Kernlehrplan von 2022, der hier nicht vorliegt.
+Festlegung der Projektleitung (27.10.2026): Nennt der Lehrplan keine genauen Jahrgänge, werden Doppeljahrgangsstufen verwendet; in der Oberstufe gilt der Kernlehrplan von 2026, obwohl er erst ab 01.08.2027 in Kraft tritt.
+
+1. **Klassen 7–10 ohne Verteilung.** Der Kernlehrplan nennt für die Inhaltsfelder 5–11 nur „bis zum Ende der Sekundarstufe I“. Sie stehen deshalb bei den Klassen 7, 8, 9 und 10 gleich; jede Simulation steht nur bei den Jahrgängen, für die sie gedacht ist. Eine Teilung in die Doppeljahrgangsstufen 7/8 und 9/10 gibt der Lehrplan nicht her (keine Stufen, keine Verteilung der Inhaltsfelder); wann welches Inhaltsfeld unterrichtet wird, legt der schulinterne Lehrplan fest.
+2. **Oberstufe ohne Jahrgänge.** Einführungsphase = Jahrgangsstufe 11 (G9). Der Lehrplan verteilt die Qualifikationsphase nicht auf Halbjahre; sie steht deshalb als Doppeljahrgangsstufe 12/13 mit gleichen Lernbereichen.
+3. **Fassung der Oberstufe.** Abgebildet ist der Kernlehrplan von 2026, der ab 01.08.2027 mit der Einführungsphase gilt (ausdrücklich so von der Projektleitung festgelegt). Bis dahin unterrichten die Schulen nach dem Kernlehrplan von 2022, der hier nicht vorliegt.
 4. **Grund- und Leistungskurs getrennt.** Anders als in Mathematik haben GK und LK in Physik verschiedene Inhaltsfelder. Beide stehen bei 12 und 13; „(Grundkurs)“ bzw. „(Leistungskurs)“ steht im Titel. Codes GK-1 … GK-4, LK-1 … LK-4 und EF-1, EF-2 sowie alle Nummern der Schwerpunkte sind von uns vergeben; die Nummern der Inhaltsfelder 1–11 der Sek. I stammen aus dem Lehrplan.
 5. **Erweiterte Klassenstufen** (in `src/curriculum/physik.ts`, mit den unteren Grenzen von Thema und Bereich), weil NRW das Thema in der Erprobungsstufe unterrichtet:
 
