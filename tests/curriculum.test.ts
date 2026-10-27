@@ -196,6 +196,21 @@ describe('Länder-Lehrpläne', () => {
     'hessen-gymnasium-physik': {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
+    'niedersachsen-gymnasium-mathematik': {
+      'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md)',
+      'newton-verfahren': 'Newton-Verfahren nicht im Kerncurriculum',
+      'monte-carlo-pi': 'kein passender Lernbereich',
+      signifikanztest: 'Hypothesentests mit Fehlern 1. und 2. Art nicht im Kerncurriculum (nur Prognoseintervalle und Verträglichkeit)',
+      'taylor-polynome': 'nicht im Kerncurriculum (Hochschule)',
+      'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
+    },
+    'niedersachsen-gymnasium-physik': {
+      hebelgesetz: 'Hebel und einfache Maschinen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-physik.md)',
+      'schiefe-ebene': 'schiefe Ebene, Kräftezerlegung und Reibung nicht im Kerncurriculum',
+      stoesse: 'Impuls und Stöße nicht im Kerncurriculum',
+      planetenbahnen: 'Gravitationsgesetz und Kepler’sche Gesetze nicht im Kerncurriculum',
+      'doppler-effekt': 'Doppler-Effekt nicht im Kerncurriculum',
+    },
     'nordrhein-westfalen-gymnasium-mathematik': {
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Kernlehrplan',

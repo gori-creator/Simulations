@@ -432,7 +432,11 @@
               "summary": {
                 "de": "Brechung an Grenzflächen, Totalreflexion und Lichtleiter, Bilder an Sammellinsen, im Auge und in optischen Instrumenten.",
                 "en": "Refraction at boundaries, total internal reflection and optical fibres, images formed by converging lenses, in the eye and in optical instruments."
-              }
+              },
+              "simulations": [
+                "brechung",
+                "linsen"
+              ]
             },
             {
               "code": "5.3",
