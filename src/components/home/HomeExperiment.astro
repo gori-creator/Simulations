@@ -62,7 +62,15 @@ const shown = (key: string, value: number) =>
     </div>
   </div>
 
+  <!-- Farbflächen hinter dem Glasfenster (nur Dekoration) -->
+  <div class="home-experiment__aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <div class="home-experiment__window">
   <div class="home-experiment__body">
+    <div class="home-experiment__titlebar" aria-hidden="true">
+      <span class="home-experiment__lights"><i></i><i></i><i></i></span>
+      <span class="home-experiment__wtitle">{t(lang, 'home.windowTitle')}</span>
+    </div>
     <div class="home-experiment__top">
       <div class="home-experiment__tracks" role="group" aria-label={t(lang, 'home.track')}>
         {tracks.map((track) => <button type="button" data-track={track.id} aria-pressed={track.id === 'looping' ? 'true' : 'false'}>{track.label}</button>)}
@@ -112,6 +120,7 @@ const shown = (key: string, value: number) =>
         }
       </div>
     </details>
+  </div>
   </div>
 
   <div class="home-experiment__foot">
