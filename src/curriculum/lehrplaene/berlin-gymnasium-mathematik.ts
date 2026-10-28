@@ -92,7 +92,7 @@ const THEMES: Array<{ code: string; title: Localized; parts: Array<{ code: strin
 ];
 
 /** Lernbereiche einer Jahrgangsstufe: die fünf Themenbereiche mit der Niveaustufe im Titel (Kap. 3.1–3.5). */
-function niveauUnits(niveau: Localized, parts: Record<string, PartSpec>): CurriculumUnit[] {
+export function niveauUnits(niveau: Localized, parts: Record<string, PartSpec>): CurriculumUnit[] {
   return THEMES.map((theme) => ({
     code: theme.code,
     title: L(`${theme.title.de} (${niveau.de})`, `${theme.title.en} (${niveau.en})`),
@@ -101,7 +101,7 @@ function niveauUnits(niveau: Localized, parts: Record<string, PartSpec>): Curric
 }
 
 /** Niveaustufe D mit Bezügen zu C (Jahrgangsstufen 5 und 6). */
-const D_PARTS: Record<string, PartSpec> = {
+export const D_PARTS: Record<string, PartSpec> = {
   '1.1': {
     summary: L(
       'Große natürliche Zahlen in der Stellenwerttafel, Teilbarkeitsregeln, Primzahlen, Vielfache und Teiler; Brüche als Anteile, erweitern, kürzen, vergleichen und am Zahlenstrahl ordnen; Dezimalzahlen.',
