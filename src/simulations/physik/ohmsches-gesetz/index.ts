@@ -1,4 +1,19 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import {
+  defineSimulation,
+  ease,
+  offscreenCanvas,
+  Plot,
+  prefersReducedMotion,
+  RESISTOR_RING_COLORS,
+  RESISTOR_RING_GOLD,
+  roundRect,
+  scaledSprite,
+  Surface,
+  text,
+  Tween,
+  withAlpha,
+  type Rect,
+} from '../../../sim-core';
 import {
   AMP_RANGES,
   autoRange,
@@ -122,9 +137,9 @@ function niceTop(x: number): number {
   return Math.ceil((x * 1.08) / step - 1e-9) * step;
 }
 
-/** Farben der Ringe auf Widerständen (0 … 9), Gold für den Multiplikator 0,1. */
-const BAND_COLORS = ['#1b1b1b', '#7a4a1e', '#d32f2f', '#ef6c00', '#fbc02d', '#2e7d32', '#1565c0', '#7b1fa2', '#9e9e9e', '#f5f5f5'];
-const GOLD = '#c9a43a';
+/** Farben der Ringe auf Widerständen (0 … 9), Gold für den Multiplikator 0,1 – dieselben wie in „Reihen- und Parallelschaltung“. */
+const BAND_COLORS = RESISTOR_RING_COLORS;
+const GOLD = RESISTOR_RING_GOLD;
 
 /* ------------------------------------------------------------------ */
 /* Simulation                                                          */

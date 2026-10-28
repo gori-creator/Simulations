@@ -11,6 +11,7 @@
  * Wert beschrieben (R = 12 Ω). Ein herausgedrehtes (oder durchgebranntes)
  * Bauteil unterbricht seinen Zweig.
  */
+import { RESISTOR_RING_COLORS, RESISTOR_RING_GOLD, RESISTOR_RING_SILVER } from '../../../sim-core';
 
 export type Circuit = 'series' | 'parallel' | 'mixed';
 
@@ -154,10 +155,10 @@ export function burnsOut(U: number): boolean {
   return U > BURN_U + 1e-9;
 }
 
-/** Farben der Ringe nach IEC 60062 (0 … 9, dann Gold = ×0,1, Silber = ×0,01). */
-export const RING_COLORS = ['#141414', '#7a3f12', '#d11f1f', '#f07818', '#f2d21b', '#2f9e44', '#1f5fd6', '#7b3fbf', '#8a8f96', '#f4f4f0'];
-export const RING_GOLD = '#c9a43a';
-export const RING_SILVER = '#c3c8cf';
+/** Farben der Ringe nach IEC 60062 (0 … 9, dann Gold = ×0,1, Silber = ×0,01), gemeinsam in sim-core. */
+export const RING_COLORS: readonly string[] = RESISTOR_RING_COLORS;
+export const RING_GOLD = RESISTOR_RING_GOLD;
+export const RING_SILVER = RESISTOR_RING_SILVER;
 
 /**
  * Farbcode eines Widerstands: zwei Ziffern + Multiplikator + Gold (±5 %) oder,
