@@ -200,6 +200,19 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
+    'brandenburg-gymnasium-mathematik': {
+      strahlensaetze: 'Strahlensätze nicht im Rahmenlehrplan (nur Ähnlichkeitsabbildungen; siehe docs/lehrplaene/brandenburg-gymnasium-mathematik.md)',
+      'newton-verfahren': 'Newton-Verfahren nicht im Rahmenlehrplan',
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Rahmenlehrplan',
+      'matrix-abbildungen': 'Matrizen nur als Koeffizientenmatrizen und Tabellen',
+      'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
+    },
+    'brandenburg-gymnasium-physik': {
+      stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
+      'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
+      'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
+      'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+    },
     'hessen-gymnasium-mathematik': {
       'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
       ziegenproblem: 'kein passender Schwerpunkt',
