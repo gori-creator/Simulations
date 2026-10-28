@@ -144,7 +144,15 @@ export default defineSimulation({
     { id: 'start', label: L('Losfahren', 'Go'), primary: true },
     { id: 'clear', label: L('Messpunkte löschen', 'Clear the measuring points'), visibleIf: (v) => v.mode === 'ride' || v.mode === 'energy' || v.mode === 'task' },
   ],
-  images: { car: 'wagen.webp', sky: 'himmel.webp', land: 'landschaft.webp' },
+  images: {
+    car: 'wagen.webp',
+    sky: 'himmel.webp',
+    land: 'landschaft.webp',
+    mid: 'wagen-mitte.webp',
+    station: 'station.webp',
+    pano: 'landschaft-panorama.webp',
+    night: 'himmel-abend.webp',
+  },
   readouts: [
     { key: 'motion', label: L('Höhe und Geschwindigkeit', 'Height and speed') },
     { key: 'energy', label: L('Energien', 'Energies') },
@@ -814,7 +822,7 @@ export default defineSimulation({
     let landCache: { key: string; canvas: HTMLCanvasElement } | null = null;
     /** Parklandschaft (Foto mit durchsichtigem Himmel), vorab skaliert; im Dunkelmodus abgedunkelt. */
     function landSprite(img: HTMLImageElement, w: number, h: number, dark: boolean): HTMLCanvasElement {
-      const key = `${Math.round(w)}|${Math.round(h)}|${surface.dpr}|${dark ? 1 : 0}`;
+      const key = `${img.src}|${Math.round(w)}|${Math.round(h)}|${surface.dpr}|${dark ? 1 : 0}`;
       if (landCache?.key === key) return landCache.canvas;
       const base = scaledSprite(img, w, h, surface.dpr);
       let canvas = base;
@@ -834,7 +842,9 @@ export default defineSimulation({
       const g = surface.g;
       const dark = ctx.theme.dark;
       const groundY = scene.py(-0.6);
-      const sky = ctx.images.get('sky');
+      // Dunkelmodus: eigener Abendhimmel (sonst der abgedunkelte Taghimmel)
+      const night = dark ? ctx.images.get('night') : undefined;
+      const sky = night ?? ctx.images.get('sky');
       const land = ctx.images.get('land');
       if (sky) {
         const k = Math.max(r.w / sky.width, (groundY - r.y) / sky.height);
@@ -842,7 +852,7 @@ export default defineSimulation({
         const h = sky.height * k;
         g.drawImage(scaledSprite(sky, w, h, surface.dpr), r.x + (r.w - w) / 2, groundY - h, w, h);
         if (dark) {
-          g.fillStyle = 'rgba(5,10,25,0.55)';
+          g.fillStyle = night ? 'rgba(5,10,25,0.12)' : 'rgba(5,10,25,0.55)';
           g.fillRect(r.x, r.y, r.w, groundY - r.y);
         }
       } else {
@@ -859,14 +869,17 @@ export default defineSimulation({
         g.lineTo(r.x + r.w, groundY);
         g.fill();
       }
-      if (land) {
-        const w = r.w;
-        const h = (w * land.height) / land.width;
-        const sprite = landSprite(land, w, h, dark);
+      const pano = follows() && view ? ctx.images.get('pano') : undefined;
+      if (pano || land) {
+        const img = (pano ?? land)!;
+        // Mitfahren: breites Panorama in fester Höhe; sonst die Parklandschaft über die ganze Breite
+        const h = pano ? clamp(r.h * 0.26, 70, 200) : (r.w * img.height) / img.width;
+        const w = pano ? (h * img.width) / img.height : r.w;
+        const sprite = landSprite(img, w, h, dark);
         if (follows() && view) {
           // Parallaxe: Die Landschaft zieht langsamer vorbei als die Bahn (abwechselnd gespiegelt, damit keine Naht entsteht)
           const shift = -view.x0 * view.s * 0.3;
-          for (let k = Math.floor(-shift / w); k * w + shift < r.w; k++) {
+          for (let k = Math.floor(-shift / w); k * w + shift < r.w + w; k++) {
             const x = r.x + k * w + shift;
             if (Math.abs(k) % 2 === 0) g.drawImage(sprite, x, groundY + 6 - h, w, h);
             else {
@@ -1008,9 +1021,9 @@ export default defineSimulation({
         }
         g.stroke();
       };
+      if (steel && reveal >= 1) drawStation(tk);
       rail(-4, dark ? '#c43f3f' : '#b3261e', 4);
       rail(0, dark ? '#e4e8ee' : '#3b4252', 3);
-      if (steel && reveal >= 1) drawStation(tk);
       // Prellböcke
       if (reveal >= 1) {
         for (const q of [pts[0]!, pts[pts.length - 1]!]) {
@@ -1036,6 +1049,18 @@ export default defineSimulation({
       const [x0, y0] = scene.toPx(a.x, a.y);
       const [x1] = scene.toPx(b.x, b.y);
       const k = scene.scale.x;
+      const img = ctx.images.get('station');
+      if (img) {
+        // Bild: Bahnsteigboden (bei 79 % der Bildhöhe) auf Höhe der Schiene, etwas breiter als das waagerechte Stück
+        const w = x1 - x0 + 3 * k;
+        const h = (w * img.height) / img.width;
+        const sprite = scaledSprite(img, w, h, surface.dpr);
+        g.save();
+        if (dark) g.filter = 'brightness(0.7)';
+        g.drawImage(sprite, x0 - 1.5 * k, y0 + 3 - 0.79 * h, w, h);
+        g.restore();
+        return;
+      }
       const roof = y0 - 4.6 * k;
       g.save();
       g.fillStyle = dark ? '#5b6372' : '#8d95a3';
@@ -1111,7 +1136,7 @@ export default defineSimulation({
       const q = track.at(s);
       const full = carSize();
       const hgt = full.hgt;
-      const len = part === 'rear' ? full.len * REAR_SHARE : full.len;
+      const len = part === 'rear' ? rearLen() : full.len;
       const [px, py] = scene.toPx(q.x, q.y);
       g.save();
       g.globalAlpha *= alpha;
@@ -1120,7 +1145,9 @@ export default defineSimulation({
       g.shadowColor = 'rgba(0,0,0,0.3)';
       g.shadowBlur = 6;
       const img = ctx.images.get('car');
-      if (img) {
+      const mid = part === 'rear' ? ctx.images.get('mid') : undefined;
+      if (mid) g.drawImage(scaledSprite(mid, len, hgt, surface.dpr), -len / 2, -hgt - 1, len, hgt);
+      else if (img) {
         const sprite = scaledSprite(img, full.len, hgt, surface.dpr);
         if (part === 'rear') g.drawImage(sprite, 0, 0, sprite.width * REAR_SHARE, sprite.height, -len / 2, -hgt - 1, len, hgt);
         else g.drawImage(sprite, -len / 2, -hgt - 1, len, hgt);
@@ -1494,15 +1521,23 @@ export default defineSimulation({
       g.restore();
     }
 
-    /** Abstand der Wagen des Zugs (Bogenlänge in m, gemessen von Wagenmitte zu Wagenmitte). */
+    /** Ersatz ohne eigenes Bild des Mittelwagens: Anteil des Wagenbilds ohne die Spitze. */
     const REAR_SHARE = 0.69;
+    /** Länge eines hinteren Wagens in Pixeln (eigenes Bild oder gekürztes Wagenbild). */
+    function rearLen(): number {
+      const { len, hgt } = carSize();
+      const mid = ctx.images.get('mid');
+      return mid ? (hgt * mid.width) / mid.height : len * REAR_SHARE;
+    }
+
     function trainLayout(s: number): { s: number; part: 'front' | 'rear' }[] {
       if (trackId() !== 'mega') return [{ s, part: 'front' }];
       const lenM = carSize().len / scene.scale.x;
+      const rearM = rearLen() / scene.scale.x;
       const gap = lenM * 0.04;
       // Der Massenpunkt der Rechnung ist der mittlere Wagen
-      const front = s + lenM * (REAR_SHARE / 2 + 0.5) + gap;
-      const rear = s - lenM * REAR_SHARE - gap;
+      const front = s + rearM / 2 + lenM / 2 + gap;
+      const rear = s - rearM - gap;
       return [
         { s: rear, part: 'rear' },
         { s, part: 'rear' },
