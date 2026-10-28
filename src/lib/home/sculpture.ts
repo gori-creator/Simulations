@@ -57,6 +57,12 @@ const cross = (a: Vec3, b: Vec3): Vec3 => [a[1] * b[2] - a[2] * b[1], a[2] * b[0
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
 const twoPi = Math.PI * 2;
+const darkScheme = matchMedia('(prefers-color-scheme: dark)');
+/** Dunkelmodus: ausdrücklich gewählt (data-theme) oder vom System. */
+const darkTheme = () => {
+  const chosen = document.documentElement.dataset.theme;
+  return chosen ? chosen === 'dark' : darkScheme.matches;
+};
 const root = chain(RX(0.16), RY(-0.17));
 const center = T(0, 0.45, 0);
 /**
@@ -75,13 +81,14 @@ const thirdZ = cross(thirdX, thirdNormal);
 const hoopC: Mat4 = [...thirdX, 0, ...thirdNormal, 0, ...thirdZ, 0, 0, 0, 0, 1];
 
 const VERTEX = `attribute vec3 position;attribute vec3 normal;uniform mat4 projection;uniform mat4 model;varying vec3 vNormal;varying vec3 vLocal;varying vec3 vLocalNormal;varying vec3 vWorld;void main(){vec4 p=model*vec4(position,1.);vNormal=normalize(mat3(model)*normal);vLocal=position;vLocalNormal=normal;vWorld=p.xyz;gl_Position=projection*p;}`;
+// glow (Dunkelmodus): heller Kantenschimmer und etwas Eigenleuchten, damit sich das Blau vom Nachthimmel abhebt.
 // Das Korn ist eine feste Materialtextur mit Mipmaps: Es dreht sich mit der Oberfläche und wird nicht je Bild neu gewürfelt.
-const FRAGMENT = `precision highp float;varying vec3 vNormal;varying vec3 vLocal;varying vec3 vLocalNormal;varying vec3 vWorld;uniform vec3 pigment;uniform sampler2D grainMap;void main(){vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-.45,.8,1.));float diffuse=max(dot(n,light),0.);float side=max(dot(n,normalize(vec3(1.,.4,-.2))),0.);float rim=pow(1.-abs(n.z),3.);float spec=pow(max(dot(reflect(-light,n),vec3(0.,0.,1.)),0.),28.);vec3 weights=pow(abs(normalize(vLocalNormal)),vec3(4.));weights/=max(dot(weights,vec3(1.)),.001);float grain=dot(vec3(texture2D(grainMap,vLocal.yz*.34).r,texture2D(grainMap,vLocal.xz*.34).r,texture2D(grainMap,vLocal.xy*.34).r),weights)-.5;vec3 c=pigment*(.27+.94*diffuse)+vec3(.06,.12,.23)*side+vec3(.08,.14,.22)*rim+vec3(.34,.43,.52)*spec;c*=clamp((vWorld.y+4.3)*.075,.72,1.);c+=grain*(.18+.22*diffuse);gl_FragColor=vec4(c,1.);}`;
+const FRAGMENT = `precision highp float;varying vec3 vNormal;varying vec3 vLocal;varying vec3 vLocalNormal;varying vec3 vWorld;uniform vec3 pigment;uniform float glow;uniform sampler2D grainMap;void main(){vec3 n=normalize(vNormal);vec3 light=normalize(vec3(-.45,.8,1.));float diffuse=max(dot(n,light),0.);float side=max(dot(n,normalize(vec3(1.,.4,-.2))),0.);float rim=pow(1.-abs(n.z),3.);float spec=pow(max(dot(reflect(-light,n),vec3(0.,0.,1.)),0.),28.);vec3 weights=pow(abs(normalize(vLocalNormal)),vec3(4.));weights/=max(dot(weights,vec3(1.)),.001);float grain=dot(vec3(texture2D(grainMap,vLocal.yz*.34).r,texture2D(grainMap,vLocal.xz*.34).r,texture2D(grainMap,vLocal.xy*.34).r),weights)-.5;vec3 c=pigment*(.27+.94*diffuse)+vec3(.06,.12,.23)*side+vec3(.08,.14,.22)*rim+vec3(.34,.43,.52)*spec;c*=clamp((vWorld.y+4.3)*.075,.72,1.);c+=glow*(vec3(.2,.38,.82)*rim*1.6+pigment*.22);c+=grain*(.18+.22*diffuse);gl_FragColor=vec4(c,1.);}`;
 
 /** Zeichnet die Skulptur mit WebGL. */
 class SculptureRenderer {
   private program!: WebGLProgram;
-  private loc!: { position: number; normal: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; pigment: WebGLUniformLocation | null };
+  private loc!: { position: number; normal: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; pigment: WebGLUniformLocation | null; glow: WebGLUniformLocation | null };
   private meshes!: Record<'outer' | 'crossHoop' | 'middle' | 'inner' | 'sphere' | 'axis' | 'post' | 'plinth' | 'base' | 'collar' | 'floor', Mesh>;
 
   constructor(private readonly gl: WebGLRenderingContext) {
@@ -172,6 +179,7 @@ class SculptureRenderer {
       model: gl.getUniformLocation(program, 'model'),
       projection: gl.getUniformLocation(program, 'projection'),
       pigment: gl.getUniformLocation(program, 'pigment'),
+      glow: gl.getUniformLocation(program, 'glow'),
     };
     gl.enable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
@@ -224,9 +232,10 @@ class SculptureRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, mesh.count);
   }
 
-  draw(projection: Mat4, width: number, height: number, time: number): void {
+  draw(projection: Mat4, width: number, height: number, time: number, glow: number): void {
     const gl = this.gl, meshes = this.meshes;
     gl.viewport(0, 0, width, height);
+    gl.uniform1f(this.loc.glow, glow);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(this.loc.projection, false, projection);
     this.paint(meshes.floor, I(), [0.79, 0.78, 0.72]);
@@ -445,7 +454,7 @@ export function initSculpture(el: Elements): Journey {
     last = now;
     if (!paused()) time += delta;
     const onScreen = visible();
-    if (onScreen && renderer) renderer.draw(projection, canvas.width, canvas.height, time);
+    if (onScreen && renderer) renderer.draw(projection, canvas.width, canvas.height, time, darkTheme() ? 1 : 0);
     moveCoin(delta);
     const unsettled = Math.abs(targetProgress - progress) * totalLength > 0.1;
     if (!paused() && !document.hidden && (onScreen || unsettled)) frame = requestAnimationFrame(tick);
@@ -467,6 +476,10 @@ export function initSculpture(el: Elements): Journey {
   observer.observe(wrap);
   observer.observe(base);
   if (el.footer) observer.observe(el.footer);
+  // Wechsel hell/dunkel: auch bei pausierter Bewegung neu zeichnen
+  const themeObserver = new MutationObserver(request);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  darkScheme.addEventListener('change', request);
   const onVisibility = () => {
     last = 0;
     if (document.hidden) {
@@ -525,6 +538,8 @@ export function initSculpture(el: Elements): Journey {
       cancelAnimationFrame(frame);
       cancelAnimationFrame(measureFrame);
       observer.disconnect();
+      themeObserver.disconnect();
+      darkScheme.removeEventListener('change', request);
       removeEventListener('resize', scheduleMeasure);
       removeEventListener('scroll', request);
       removeEventListener('pageshow', request);
