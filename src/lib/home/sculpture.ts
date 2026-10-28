@@ -59,8 +59,12 @@ const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(ma
 const twoPi = Math.PI * 2;
 const root = chain(RX(0.16), RY(-0.17));
 const center = T(0, 0.45, 0);
-/** Begrenzter Schwenk (etwa ±20°), damit der Kopf nie als schmales Oval erscheint. */
-const turnAngle = (seconds: number) => 0.34 * Math.sin((seconds * twoPi) / 48);
+/**
+ * Kleiner Schwenk (etwa ±6°) um die Vorderansicht: Weiter zur Seite gedreht
+ * überdecken sich zwei große Ringe und der Kopf wirkt eingedellt. Leben bringen
+ * die umlaufenden Kugeln.
+ */
+const turnAngle = (seconds: number) => 0.1 * Math.sin((seconds * twoPi) / 48);
 const blue: Vec3 = [0.08, 0.29, 0.81];
 const hoopA = chain(RZ(0.66), RY(1.1), RX(Math.PI / 2));
 const hoopB = chain(RZ(-0.64), RY(-1.08), RX(Math.PI / 2));
