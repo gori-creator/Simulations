@@ -106,8 +106,8 @@ const shown = (key: string, value: number) =>
       <noscript><p class="home-experiment__loading">{t(lang, 'home.noScript')}</p></noscript>
     </div>
 
-    <details class="home-experiment__custom" data-energy-custom hidden>
-      <summary>{t(lang, 'home.customSummary')}</summary>
+    <div class="home-experiment__custom" data-energy-custom role="group" aria-labelledby="energy-custom-title" hidden>
+      <p class="home-experiment__custom-title" id="energy-custom-title">{t(lang, 'home.customSummary')}</p>
       <div class="home-experiment__points">
         {
           points.map(({ n, def }) => (
@@ -119,7 +119,7 @@ const shown = (key: string, value: number) =>
           ))
         }
       </div>
-    </details>
+    </div>
   </div>
   </div>
 
