@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **397 von 1627** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **400 von 1691** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (159)
+## Mathematik (160)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -39,6 +39,12 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
 | 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
+
+### Bremen · Gymnasium (1)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 11/12 | LA | Schwerpunkt Lineare Algebra (LA 2 bis LA 4) | Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren. |
 
 ### Hamburg · Gymnasium (2)
 
@@ -226,7 +232,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (238)
+## Physik (240)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -273,6 +279,13 @@ Alle Lernbereiche haben eine Simulation.
 ### Berlin · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
+
+### Bremen · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
+| 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
 ### Hamburg · Gymnasium (2)
 

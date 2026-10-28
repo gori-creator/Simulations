@@ -200,6 +200,18 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
+    'bremen-gymnasium-mathematik': {
+      strahlensaetze: 'Strahlensätze nicht im Bildungsplan (nur zentrische Streckung und Ähnlichkeit; siehe docs/lehrplaene/bremen-gymnasium-mathematik.md)',
+      cavalieri: 'Prinzip von Cavalieri nicht im Bildungsplan',
+      'sinussatz-kosinussatz': 'Trigonometrie nur im rechtwinkligen Dreieck',
+      kugeln: 'Kugeln nur als Körper; vektorielle Kugelgleichungen ausdrücklich nicht gefordert',
+      'matrix-abbildungen': 'Matrizen nur als Übergangs- und Populationsmatrizen im Schwerpunkt Lineare Algebra',
+      'taylor-polynome': 'nicht im Bildungsplan (Hochschule)',
+      'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
+    },
+    'bremen-gymnasium-physik': {
+      hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
+    },
     'hamburg-gymnasium-mathematik': {
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-mathematik.md)',
       'matrix-abbildungen': 'Matrizen nur als Übergangsmatrizen im Wahlpflichtmodul Lineare Algebra',

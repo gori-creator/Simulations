@@ -855,7 +855,7 @@ export const mathematik: Subject = {
               'Ziehe Nullstellen und Polstellen eines Bruchterms und sieh, wie sich der Graph verändert. Mit Asymptoten und Lücken im Graphen.',
               'Drag the zeros and poles of a rational function and see how the graph changes. With asymptotes and holes in the graph.',
             ),
-            grades: [11, 13],
+            grades: [10, 13],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
               ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert', 'Kürzen', 'Näherungskurve', 'Vorzeichentabelle'],
@@ -1393,7 +1393,7 @@ export const mathematik: Subject = {
               'Finde eine Nullstelle näherungsweise mit Tangenten. Jeder Schritt bringt dich näher, aber manchmal geht es auch schief.',
               'Approximate a zero with tangent lines. Each step gets you closer, but sometimes it goes wrong.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
             keywords: L(
               ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
@@ -1409,7 +1409,7 @@ export const mathematik: Subject = {
               'Untersuche einen Graphen Schritt für Schritt: Nullstellen, Hoch- und Tiefpunkte, Wendepunkte und wo er steigt oder fällt.',
               'Analyse a graph step by step: zeros, maximum and minimum points, inflection points and where it rises or falls.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
             keywords: L(
               ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
