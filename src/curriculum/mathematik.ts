@@ -88,7 +88,7 @@ export const mathematik: Subject = {
               'Zoome vom Sandkorn bis zur Erde: Jeder Schritt macht das Bild zehnmal so groß. So lernst du Potenzen und das Schreiben sehr großer und sehr kleiner Zahlen.',
               'Zoom from a grain of sand to the Earth: each step makes the picture ten times larger. Learn about powers and how to write very large and very small numbers.',
             ),
-            grades: [5, 7],
+            grades: [5, 8],
             kmk: ['M-L1', 'M-L2', 'M-K4', 'M-K5'],
             keywords: L(
               ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
@@ -237,7 +237,7 @@ export const mathematik: Subject = {
               'Die drei binomischen Formeln als Flächen: Ein Quadrat zerfällt in kleinere Quadrate und Rechtecke.',
               'The three binomial formulas as areas: a square splits into smaller squares and rectangles.',
             ),
-            grades: [7, 8],
+            grades: [7, 9],
             kmk: ['M-L3', 'M-K1', 'M-K4'],
             keywords: L(
               ['binomische Formel', 'Quadrat', 'Flächenmodell', 'ausmultiplizieren', 'Term', 'a plus b', 'Differenz'],
@@ -487,7 +487,7 @@ export const mathematik: Subject = {
               'Quadrate über den Seiten eines rechtwinkligen Dreiecks und ein Puzzle-Beweis zeigen: a² + b² = c².',
               'Squares on the sides of a right triangle and a puzzle proof show: a² + b² = c².',
             ),
-            grades: [8, 9],
+            grades: [7, 9],
             kmk: ['M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Pythagoras', 'Hypotenuse', 'Kathete', 'rechtwinkliges Dreieck', 'Flächenbeweis', 'Quadrat', 'Beweis'],
@@ -738,7 +738,7 @@ export const mathematik: Subject = {
               'Ein Rad rollt ab, und Kreisstücke werden zu einem Rechteck gelegt. So entdeckst du die Zahl π und die Formeln für Umfang und Fläche des Kreises.',
               'A wheel rolls along and pieces of a circle are rearranged into a rectangle. This is how you discover π and the formulas for the circumference and area of a circle.',
             ),
-            grades: [8, 9],
+            grades: [7, 9],
             kmk: ['M-L2', 'M-L4', 'M-K1'],
             keywords: L(
               ['Kreiszahl', 'Pi', 'Kreisumfang', 'Kreisfläche', 'Durchmesser', 'Radius', 'Archimedes', 'Kreissektor'],
@@ -1011,7 +1011,7 @@ export const mathematik: Subject = {
               'Warum ist die Zahl e so besonders? Bei der e-Funktion sind Graph und Ableitung genau gleich.',
               'Why is the number e so special? For the exponential function, the graph and its derivative are exactly the same.',
             ),
-            grades: [12, 12],
+            grades: [11, 12],
             kmk: ['M-L3', 'M-K5', 'M-K4', 'M-K1'],
             keywords: L(
               ['e-Funktion', 'Exponentialfunktion', 'eulersche Zahl', 'e', 'Ableitung', 'Tangente', 'Steigungsdreieck', 'natürlicher Logarithmus', 'ln', 'Umkehrfunktion', 'Zinseszins', 'Grenzwert', 'Stammfunktion'],
@@ -1262,7 +1262,7 @@ export const mathematik: Subject = {
               'Ein medizinischer Test ist positiv, aber wie wahrscheinlich ist man wirklich krank? 1000 Personen zeigen, warum die Antwort oft überrascht.',
               'A medical test is positive, but how likely is it that you are really ill? 1000 people show why the answer is often surprising.',
             ),
-            grades: [10, 13],
+            grades: [9, 13],
             kmk: ['M-L5', 'M-K3', 'M-K4', 'M-K1'],
             keywords: L(
               ['bedingte Wahrscheinlichkeit', 'Satz von Bayes', 'Sensitivität', 'Spezifität', 'Prävalenz', 'Vorhersagewert', 'falsch positiv', 'falsch negativ', 'Basisrate', 'natürliche Häufigkeiten', 'umgekehrter Baum', 'medizinischer Test', 'Schnelltest'],
@@ -1360,13 +1360,29 @@ export const mathematik: Subject = {
               'Lass einen Punkt Q auf P zulaufen: Aus der Sekante wird die Tangente und aus der mittleren Steigung die Ableitung.',
               'Let a point Q move towards P: the secant becomes the tangent, and the average slope becomes the derivative.',
             ),
-            grades: [11, 11],
+            grades: [10, 11],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
               ['Sekante', 'Tangente', 'Differenzenquotient', 'Differentialquotient', 'Ableitung', 'Steigung', 'Grenzwert', 'h-Methode', 'lokale Änderungsrate'],
               ['secant', 'tangent', 'difference quotient', 'derivative', 'slope', 'limit', 'rate of change'],
             ),
             thumb: 'secant',
+          },
+          {
+            id: 'ableitungsfunktion',
+            status: 'ready',
+            slug: L('ableitungsfunktion-grafisch', 'derivative-function-graphically'),
+            title: L('Ableitungsfunktion grafisch', 'The derivative function graphically'),
+            summary: L(
+              'Eine Tangente gleitet am Graphen entlang und zeichnet dabei die Steigung als neuen Graphen: die Ableitungsfunktion.',
+              'A tangent slides along the graph and draws its slope as a new graph: the derivative function.',
+            ),
+            grades: [10, 12],
+            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5', 'M-K3'],
+            keywords: L(
+              ['Ableitung', 'Ableitungsfunktion', 'Tangente', 'Sekante', 'Differenzenquotient', 'Steigungsdreieck', 'grafisches Ableiten', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Sattelpunkt', 'zweite Ableitung', 'Krümmung', 'Differenzierbarkeit', 'Faktorregel', 'Summenregel', 'Potenzregel', 'Produktregel', 'Kettenregel', 'Geschwindigkeit', 'Grenzkosten', 'Sinus', 'Kosinus'],
+              ['derivative', 'derivative function', 'tangent', 'secant', 'difference quotient', 'slope triangle', 'graphical differentiation', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'second derivative', 'curvature', 'differentiability', 'constant multiple rule', 'sum rule', 'power rule', 'product rule', 'chain rule', 'velocity', 'marginal cost', 'sine', 'cosine'],
+            ),
           },
           {
             id: 'newton-verfahren',
@@ -1382,22 +1398,6 @@ export const mathematik: Subject = {
             keywords: L(
               ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
               ['Newton’s method', 'Newton-Raphson', 'zero', 'root', 'iteration', 'tangent', 'slope triangle', 'derivative', 'starting value', 'quadratic convergence', 'Heron’s method', 'basin of attraction'],
-            ),
-          },
-          {
-            id: 'ableitungsfunktion',
-            status: 'ready',
-            slug: L('ableitungsfunktion-grafisch', 'derivative-function-graphically'),
-            title: L('Ableitungsfunktion grafisch', 'The derivative function graphically'),
-            summary: L(
-              'Eine Tangente gleitet am Graphen entlang und zeichnet dabei die Steigung als neuen Graphen: die Ableitungsfunktion.',
-              'A tangent slides along the graph and draws its slope as a new graph: the derivative function.',
-            ),
-            grades: [11, 12],
-            kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5', 'M-K3'],
-            keywords: L(
-              ['Ableitung', 'Ableitungsfunktion', 'Tangente', 'Sekante', 'Differenzenquotient', 'Steigungsdreieck', 'grafisches Ableiten', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Sattelpunkt', 'zweite Ableitung', 'Krümmung', 'Differenzierbarkeit', 'Faktorregel', 'Summenregel', 'Potenzregel', 'Produktregel', 'Kettenregel', 'Geschwindigkeit', 'Grenzkosten', 'Sinus', 'Kosinus'],
-              ['derivative', 'derivative function', 'tangent', 'secant', 'difference quotient', 'slope triangle', 'graphical differentiation', 'monotonicity', 'extremum', 'inflection point', 'saddle point', 'second derivative', 'curvature', 'differentiability', 'constant multiple rule', 'sum rule', 'power rule', 'product rule', 'chain rule', 'velocity', 'marginal cost', 'sine', 'cosine'],
             ),
           },
           {
@@ -1443,7 +1443,7 @@ export const mathematik: Subject = {
               'Viele Graphen auf einmal: Ändere den Parameter k und sieh, wie die Hochpunkte auf einer Kurve wandern.',
               'Many graphs at once: change the parameter k and see how the maximum points move along a curve.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K2'],
             keywords: L(
               ['Funktionenschar', 'Kurvenschar', 'Parameter', 'Ortskurve', 'Extrempunkte', 'Wendepunkte', 'gemeinsamer Punkt', 'Fallunterscheidung', 'e-Funktion', 'ganzrationale Funktion'],
@@ -1459,7 +1459,7 @@ export const mathematik: Subject = {
               'Die Höhe eines Graphen wird zur Steigung eines neuen Graphen, der Stammfunktion. Mit Alltagsbeispielen wie dem Kontostand.',
               'The height of one graph becomes the slope of a new graph: the antiderivative. With everyday examples such as a bank balance.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
             keywords: L(
               ['Stammfunktion', 'grafisches Aufleiten', 'grafisches Integrieren', 'Integrationskonstante', 'Kurvenschar', 'Richtungsfeld', 'Anfangswertproblem', 'Anfangswert', 'orientierte Fläche', 'Flächenbilanz', 'Monotonie', 'Extremstelle', 'Wendestelle', 'Terrassenpunkt', 'Vorzeichentabelle', 'Änderungsrate', 'Bestand'],
@@ -1477,7 +1477,7 @@ export const mathematik: Subject = {
               'Fülle die Fläche unter einem Graphen mit Rechtecken. Je mehr Rechtecke, desto genauer wird der Wert des Integrals.',
               'Fill the area under a graph with rectangles. The more rectangles, the more precisely you get the value of the integral.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L2', 'M-L3', 'M-K4'],
             keywords: L(
               ['Integral', 'Untersumme', 'Obersumme', 'Rechtecksumme', 'Flächenbilanz', 'Riemann-Summe', 'Trapezregel', 'Grenzwert'],
@@ -1494,7 +1494,7 @@ export const mathematik: Subject = {
               'Die Fläche unter einem Graphen wächst mit. Ihre Änderungsrate ist genau die Funktion selbst: Das ist der Hauptsatz.',
               'The area under a graph grows as you move along. Its rate of change is exactly the function itself: this is the fundamental theorem.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             uni: true,
             kmk: ['M-L3', 'M-L2', 'M-K1', 'M-K5'],
             keywords: L(
@@ -1511,7 +1511,7 @@ export const mathematik: Subject = {
               'Aus der Geschwindigkeit eines Autos wird der zurückgelegte Weg: Die Fläche unter der Kurve zeigt die Gesamtänderung.',
               'From the speed of a car you get the distance travelled: the area under the curve shows the total change.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L3', 'M-L2', 'M-K3', 'M-K4'],
             keywords: L(
               ['Integral', 'Änderungsrate', 'Gesamtänderung', 'Rekonstruktion', 'Bestand', 'Geschwindigkeit', 'Weg', 'Zufluss', 'Rechtecksumme', 'Mittelsumme', 'zurückgelegter Weg', 'Modellieren'],
@@ -1545,7 +1545,7 @@ export const mathematik: Subject = {
               'Polynome schmiegen sich immer besser an eine Funktion an, Summand für Summand. So rechnet auch ein Taschenrechner.',
               'Polynomials hug a function more and more closely, term by term. This is also how a calculator works.',
             ),
-            grades: [13, 14],
+            grades: [12, 14],
             uni: true,
             kmk: ['M-L3', 'M-L1', 'M-K4', 'M-K5'],
             keywords: L(

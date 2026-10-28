@@ -3,6 +3,8 @@ import { badenWuerttembergGymnasiumMathematik } from "./baden-wuerttemberg-gymna
 import { badenWuerttembergGymnasiumPhysik } from "./baden-wuerttemberg-gymnasium-physik";
 import { bayernGymnasiumMathematik } from "./bayern-gymnasium-mathematik";
 import { bayernGymnasiumPhysik } from "./bayern-gymnasium-physik";
+import { berlinGymnasiumMathematik } from "./berlin-gymnasium-mathematik";
+import { berlinGymnasiumPhysik } from "./berlin-gymnasium-physik";
 import { hessenGymnasiumMathematik } from "./hessen-gymnasium-mathematik";
 import { hessenGymnasiumPhysik } from "./hessen-gymnasium-physik";
 import { niedersachsenGymnasiumMathematik } from "./niedersachsen-gymnasium-mathematik";
@@ -28,6 +30,7 @@ export type * from "./types";
  *
  * - Baden-Württemberg, Gymnasium: Mathematik und Physik (Bildungsplan, G9)
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
+ * - Berlin, Gymnasium: Mathematik und Physik (Rahmenlehrplan 1–10 Teil C und Rahmenlehrplan gymnasiale Oberstufe Teil C, G8)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Niedersachsen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Nordrhein-Westfalen, Gymnasium: Mathematik und Physik (Kernlehrpläne Sek. I, G9, und Sek. II von 2026)
@@ -41,6 +44,8 @@ const RAW_CURRICULA: StateCurriculum[] = [
   badenWuerttembergGymnasiumPhysik,
   bayernGymnasiumMathematik,
   bayernGymnasiumPhysik,
+  berlinGymnasiumMathematik,
+  berlinGymnasiumPhysik,
   hessenGymnasiumMathematik,
   hessenGymnasiumPhysik,
   niedersachsenGymnasiumMathematik,
