@@ -29,6 +29,7 @@
   --sc-stage-haze: #ffffffaa;
   --sc-stage-fade: #18336526;
   --sc-stage-stars: 0;
+  --sc-stage-halo: transparent;
   --sc-stage-layer: radial-gradient(circle, #3157d52a 1px, transparent 1.5px);
   --sc-stage-layer-size: 22px 22px;
   --sc-stage-layer-mask: radial-gradient(65% 85% at 70% 48%, #000 15%, #0006 55%, transparent 88%);
@@ -70,6 +71,7 @@
   --sc-stage-haze: transparent;
   --sc-stage-fade: transparent;
   --sc-stage-stars: 1;
+  --sc-stage-halo: #4f7dff5c;
   --sc-stage-layer:
     radial-gradient(1px 1px at 51.7% 35.8%, #fff7, transparent),
     radial-gradient(1.5px 1.5px at 78.4% 46.9%, #fff9, transparent),
@@ -143,6 +145,7 @@
     --sc-stage-haze: transparent;
     --sc-stage-fade: transparent;
     --sc-stage-stars: 1;
+    --sc-stage-halo: #4f7dff5c;
     --sc-stage-layer:
       radial-gradient(1px 1px at 51.7% 35.8%, #fff7, transparent),
       radial-gradient(1.5px 1.5px at 78.4% 46.9%, #fff9, transparent),
@@ -221,6 +224,8 @@
   /* Lage der Lichtquelle (über der Skulptur) und leichtes Pendeln des Lichtkegels */
   --stage-x: 76%;
   --stage-y: -8%;
+  /* Lichthof hinter dem Kopf der Skulptur (nur im Dunkelmodus) */
+  --stage-halo-y: 45%;
   position: relative;
   height: 580px;
   overflow: hidden;
@@ -233,6 +238,7 @@
       var(--sc-stage-beam-edge) 18deg,
       transparent 30deg
     ),
+    radial-gradient(24% 38% at var(--stage-x) var(--stage-halo-y), var(--sc-stage-halo), transparent 72%),
     radial-gradient(28% 22% at var(--stage-x) 92%, var(--sc-stage-floor), transparent 70%),
     radial-gradient(60% 70% at 20% 30%, var(--sc-stage-haze), transparent 70%),
     linear-gradient(180deg, transparent 70%, var(--sc-stage-fade)),
@@ -1616,6 +1622,7 @@
   .home-hero {
     --stage-x: 50%;
     --stage-y: 42%;
+    --stage-halo-y: 76%;
     display: flex;
     flex-direction: column;
     height: auto;
