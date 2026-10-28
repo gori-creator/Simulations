@@ -1,5 +1,5 @@
 ---
-description: "Interaktive Simulation für die Jahrgangsstufe 13: das Integral als Gesamtänderung – aus der Geschwindigkeit den Weg, aus der Zuflussrate die Füllmenge rekonstruieren, mit laufender Zeit, Rechtecksummen (links, rechts, Mitte), gestapelten Streifen, Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate."
+description: "Interaktive Simulation für die Oberstufe: das Integral als Gesamtänderung – aus der Geschwindigkeit den Weg, aus der Zuflussrate die Füllmenge rekonstruieren, mit laufender Zeit, Rechtecksummen (links, rechts, Mitte), gestapelten Streifen, Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate."
 ---
 
 ## Worum geht es?
@@ -94,7 +94,7 @@ Trapez- und Dreiecksflächen: $0$–$10$: $30\,\text{L}$, $10$–$20$: $20\,\tex
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 13, Lernbereich „Flächeninhalt und bestimmtes Integral“ (LehrplanPLUS Gymnasium Bayern, Rekonstruktion eines Bestands aus der Änderungsrate – Details bitte am Lehrplan prüfen). Geeignet als Einstieg (Fläche = Gesamtänderung mit der laufenden Zeit), zum Üben (verdeckte Werte) und zur Vertiefung (Fehlerordnung der Rechtecksummen).
+- **Einsatz:** Oberstufe, Integralrechnung: Rekonstruktion eines Bestands aus der Änderungsrate, Flächeninhalt und bestimmtes Integral. Geeignet als Einstieg (Fläche = Gesamtänderung mit der laufenden Zeit), zum Üben (verdeckte Werte) und zur Vertiefung (Fehlerordnung der Rechtecksummen).
 - **Vom Rechteck zum Integral:** Mit „Rechtecke stapeln“ und „Streifen verdoppeln“ lässt sich der Grenzübergang $n \to \infty$ vorführen; die Fehler-Karte macht ihn messbar.
 - **Einheiten als Kontrolle:** „Rate mal Zeit“ ergibt immer die Einheit des Bestands – eine schöne Probe für eigene Rechnungen.
 - **Physik-Bezug:** $s(t)$ aus $v(t)$ wie im $t$-$v$-Diagramm der Mechanik; „vor und zurück“ trennt Ortsänderung und zurückgelegten Weg.

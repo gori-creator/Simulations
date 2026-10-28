@@ -118,7 +118,7 @@ $h = 0{,}1$: $\frac{0{,}1 - 0}{0{,}1} = 1$. $\;h = -0{,}1$: $\frac{0{,}1 - 0}{-0
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Gymnasium, Jahrgangsstufe 11, Lernbereich 4.1 „Lokales und globales Differenzieren“ (Sekanten- und Tangentensteigung, mittlere und lokale Änderungsrate, Ableitungsfunktion, Tangentengleichung). Die Animation **h → 0** verkleinert $h$ logarithmisch, sodass die Annäherung gleichmäßig sichtbar bleibt.
+- **Einsatz:** Oberstufe, Einführung der Differentialrechnung (Sekanten- und Tangentensteigung, mittlere und lokale Änderungsrate, Ableitungsfunktion, Tangentengleichung). Die Animation **h → 0** verkleinert $h$ logarithmisch, sodass die Annäherung gleichmäßig sichtbar bleibt.
 - **Tabelle:** Die Annäherungstabelle zeigt die Differenzenquotienten für $h = 1;\ 0{,}1;\ 0{,}01;\ 0{,}001$ mit dem Vorzeichen des eingestellten $h$. Sie eignet sich gut, um den Grenzwertbegriff numerisch vorzubereiten. Lassen Sie die Klasse die Werte zuerst vermuten oder von Hand rechnen.
 - **h = 0:** Stellt man $h = 0$ ein, ist der Differenzenquotient nicht definiert ($\frac{0}{0}$); die Simulation zeigt dann nur die Tangente. Das ist ein guter Anlass, über den Unterschied zwischen „$h = 0$ einsetzen“ und „Grenzwert für $h \to 0$“ zu sprechen.
 - **Beidseitiger Grenzwert:** Vergleichen Sie $h > 0$ und $h < 0$ zuerst bei $x^2$ (gleicher Grenzwert) und dann bei $|x|$ (verschiedene Werte). So wird greifbar, warum Differenzierbarkeit mehr verlangt als „der Graph hat keinen Sprung“.

@@ -107,7 +107,7 @@ $\frac{0}{4} = 0$: no piece taken. [0/4](?z=0&n=4) $\frac{4}{4} = 1$: all pieces
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, grade 6 (fractions and parts of a whole, expanding and reducing, decimals).
+- **Use:** About grade 6 (fractions and parts of a whole, expanding and reducing, decimals).
 - **Operation:** Pieces can be tapped directly – good on an interactive whiteboard. The selected pieces are pulled out.
 - **Common stumbling blocks:**
   - The parts must be **equal** in size – otherwise it is not a fraction of the whole.

@@ -134,7 +134,7 @@ $P(A \cap B) = 0{,}4 \cdot 0{,}6 = 0{,}24$ und $P(B) = 0{,}6$, also $P(A) \cdot 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 9 (Vierfeldertafel, Mengendiagramm, Additionssatz) und Jahrgangsstufe 11 (bedingte Wahrscheinlichkeit, umgekehrter Baum) nach LehrplanPLUS Bayern, Gymnasium – die genaue Zuordnung bitte am Lehrplan prüfen.
+- **Einsatz:** Mittelstufe (Vierfeldertafel, Mengendiagramm, Additionssatz) und Oberstufe (bedingte Wahrscheinlichkeit, umgekehrter Baum).
 - **Eigene Umfrage:** Zwei Ja/Nein-Fragen in der Klasse ergeben schnell eine eigene Vierfeldertafel, die sich mit den Reglern eintragen lässt.
 - **Darstellungswechsel:** Das synchrone Hervorheben kann helfen, jede Zahl einer Darstellung in den anderen wiederzufinden.
 - **Häufige Stolpersteine:**

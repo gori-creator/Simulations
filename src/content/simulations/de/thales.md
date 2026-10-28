@@ -90,7 +90,7 @@ Konstruktion: Mittelpunkt von $\overline{MP}$ bestimmen, Thaleskreis über $\ove
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Entdeckend in Jahrgangsstufe 7 (Bayern: Lernbereich zu Kongruenz und besonderen Dreiecken, dort auch die Tangentenkonstruktion aus Aufgabe 4). Die Lernenden formulieren die Vermutung selbst, bevor Sie die Beweisidee einblenden.
+- **Einsatz:** Entdeckend etwa in Klasse 7/8 (Kongruenz und besondere Dreiecke, dort auch die Tangentenkonstruktion aus Aufgabe 4). Die Lernenden formulieren die Vermutung selbst, bevor Sie die Beweisidee einblenden.
 - **Animation:** Mit **Abspielen** wandert $C$ gleichmäßig über den Kreis. Gut geeignet, um die Konstanz von $\gamma$ trotz wechselnder $\alpha$ und $\beta$ zu betonen.
 - **Häufige Stolpersteine:**
   - „Der rechte Winkel liegt bei $M$.“ – Der rechte Winkel liegt immer gegenüber dem Durchmesser, also bei $C$.

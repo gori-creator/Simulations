@@ -132,7 +132,7 @@ $\frac{1}{2}$ passt mehr als einmal in $\frac{3}{4}$, nämlich $\frac{3}{4} \cdo
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.4 „Multiplikation und Division rationaler Zahlen“ (LehrplanPLUS Bayern, Gymnasium): tragfähige Vorstellungen „Anteil von“ (Rechteckmodell) und „Aufteilen/Messen“ (Division). Zur Erarbeitung im Unterricht und zur Übung; die Vorstellung des Erweiterns und Gleichnamigmachens aus „Brüche erweitern, kürzen und vergleichen“ wird beim Dividieren genutzt.
+- **Einsatz:** Etwa Klasse 6, Multiplikation und Division von Brüchen: tragfähige Vorstellungen „Anteil von“ (Rechteckmodell) und „Aufteilen/Messen“ (Division). Zur Erarbeitung im Unterricht und zur Übung; die Vorstellung des Erweiterns und Gleichnamigmachens aus „Brüche erweitern, kürzen und vergleichen“ wird beim Dividieren genutzt.
 - **Modell:** Faktoren bis $3$ (also bis zu $3 \times 3$ Ganze im Bild) und Nenner bis $12$. Zähler sind mindestens $1$, eine Division durch $0$ kommt also nicht vor. Die Griffe am Rand rasten in Schritten von $\frac{1}{b}$ bzw. $\frac{1}{d}$ ein. Mit „Aufbauen“ entsteht das Bild schrittweise: erst der eine Faktor, dann der andere, dann die Überlappung mit durchnummerierten Feldern.
 - **Division:** Die Simulation nutzt die Vorstellung des **Aufteilens (Messens)**: „Wie oft passt …?“. Ist der Divisor eine natürliche Zahl, liegt die Vorstellung des **Verteilens** näher: $\frac{3}{4} : 3$ heißt „$\frac{3}{4}$ auf $3$ Personen verteilen“, also $\frac{1}{4}$ für jede. Beide Vorstellungen führen auf $\frac{3}{4} \cdot \frac{1}{3}$.
 - **Häufige Stolpersteine:**

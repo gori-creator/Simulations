@@ -90,7 +90,7 @@ Construction: find the midpoint of $\overline{MP}$ and draw the Thales circle ov
 
 ## Ideas for the classroom
 
-- **Use:** Discovery lesson in grade 7 (Bavaria: unit on congruence and special triangles, which also covers the tangent construction from Exercise 4). Students state the conjecture themselves before you show the proof idea.
+- **Use:** Discovery lesson in about grade 7/8 (congruence and special triangles, which also covers the tangent construction from Exercise 4). Students state the conjecture themselves before you show the proof idea.
 - **Animation:** With **Play**, $C$ moves steadily around the circle. This is a good way to stress that $\gamma$ stays the same while $\alpha$ and $\beta$ change.
 - **Common stumbling blocks:**
   - “The right angle is at $M$.” – The right angle is always opposite the diameter, i.e. at $C$.

@@ -115,7 +115,7 @@ With $g = 2f$: $\frac{1}{b} = \frac{1}{f} - \frac{1}{2f} = \frac{1}{2f}$, so $b 
 
 ## Ideas for the classroom
 
-- **Use:** optics in lower secondary school (lenses, image formation, optical instruments); at Bavarian Gymnasium in physics in grades 8 to 10 (assignment is a draft, please check against the curriculum). Part 1 is suited to introducing and practising ray construction, part 2 as a substitute for or preparation of the experiment on the optical bench.
+- **Use:** optics in lower secondary school (lenses, image formation, optical instruments), about grades 8 to 10. Part 1 is suited to introducing and practising ray construction, part 2 as a substitute for or preparation of the experiment on the optical bench.
 - **Model:** thin lens, paraxial rays, no lens aberrations; refraction happens at the central plane. Construction rays may hit the central plane outside the drawn lens – they only serve the construction. The drawing adapts its scale to the focal length.
 - **Signs:** virtual image $b < 0$, diverging lens $f < 0$; the magnification uses absolute values.
 - **Construction practice:** image and rays can be hidden under “Display”; `_hide=1` hides the results.

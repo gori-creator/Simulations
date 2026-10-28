@@ -120,7 +120,7 @@ $\frac{1}{47}$ (and every other fraction $\frac{z}{47}$ that cannot be reduced) 
 
 ## Ideas for the classroom
 
-- **Use:** Grade 6, learning area 1.2 “Decimals” (LehrplanPLUS Bavaria, Gymnasium): fractions as terminating or repeating decimals, converting. Suitable for introducing the topic (step by step with `show=0`) and for consolidation (remainder circle, table). The prime factorisation from the simulation “Prime factorisation and divisibility” is applied here.
+- **Use:** About grade 6, decimals: fractions as terminating or repeating decimals, converting. Suitable for introducing the topic (step by step with `show=0`) and for consolidation (remainder circle, table). The prime factorisation from the simulation “Prime factorisation and divisibility” is applied here.
 - **Two views:** *Long division* (squared paper, with either the remainder circle or the number line zoom) and *Which denominators?* (all fractions $\frac{z}{n}$ with $n \leq 50$ as coloured tiles, optionally with prime factors; factors that cancel are crossed out).
 - **Reasoning instead of memorising:** The remainder circle makes the pigeonhole principle visible: there are only finitely many remainders, so one must repeat. The tags next to the remainders show that each remainder fixes its next digit – that is why the digits repeat along with the remainder.
 - **Going further:** The length of the pre-period is the larger of the two exponents of $2$ and $5$ in the reduced denominator ($12 = 2^2 \cdot 3$ → $2$ digits). Converting decimals with a pre-period back into fractions is not covered here.

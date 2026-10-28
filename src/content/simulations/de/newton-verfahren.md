@@ -114,7 +114,7 @@ $e_3 \approx \frac{0{,}00245^2}{2{,}828} \approx 2{,}1 \cdot 10^{-6}$; tatsächl
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 11, Lernbereich „Anwendung der Differentialrechnung bei der Untersuchung ganzrationaler Funktionen“ (LehrplanPLUS Gymnasium Bayern, dort mit dem Newton-Verfahren). Die Tangentengleichung aus dem Lernbereich davor wird gebraucht. $\cos x = x$ eignet sich als Ausblick.
+- **Einsatz:** Oberstufe, Anwendung der Differentialrechnung bei der Untersuchung ganzrationaler Funktionen (Newton-Verfahren). Die Tangentengleichung wird vorausgesetzt. $\cos x = x$ eignet sich als Ausblick.
 - **Herleitung entdecken lassen:** Erst „Nächster Schritt“ mit ausgeschalteten Werten (`show=0`) zeigen, die Lernenden das Steigungsdreieck beschriften lassen und daraus die Formel gewinnen.
 - **Heron und Tabellenkalkulation:** Für $x^2 - 2$ entsteht genau das Heron-Verfahren aus der 9. Klasse. Das Verfahren in einer Tabellenkalkulation nachbauen, mit der Simulation vergleichen und anschließend mit dem Halbierungsverfahren (Bisektion) um die Wette rechnen.
 - **Einzugsbereiche:** Mit „Einzugsbereiche färben“ lässt sich untersuchen, warum Startwerte nahe den Extremstellen unberechenbar werden – gut als Projekt oder für Interessierte.

@@ -101,7 +101,7 @@ Für kleine Winkel gilt $h' \approx h \cdot \frac{n_\text{Luft}}{n_\text{Wasser}
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Optik in der Mittelstufe (Brechung, Totalreflexion), vertiefend mit Brechungsgesetz, Messreihe und Anwendungen; der genaue Ort im Lehrplan sollte bitte am LehrplanPLUS geprüft werden. Die Messreihe zur unbekannten Probe passt gut vor oder nach einem echten Versuch mit der optischen Scheibe.
+- **Einsatz:** Optik in der Mittelstufe (Brechung, Totalreflexion), vertiefend mit Brechungsgesetz, Messreihe und Anwendungen; der genaue Ort im Lehrplan unterscheidet sich je nach Land. Die Messreihe zur unbekannten Probe passt gut vor oder nach einem echten Versuch mit der optischen Scheibe.
 - **Modell:** Die Helligkeit der Strahlen folgt den Fresnel-Formeln für unpolarisiertes Licht. Glasfaser, Prisma und Brillant werden als 2D-Schnitt mit Strahlverfolgung gerechnet. Die Farbzerlegung nutzt für Kronglas die Cauchy-Formel – eine Näherung; die Farben liegen auf dem Schirm so eng, dass ein vergrößerter Ausschnitt gezeigt wird.
 - **Häufige Stolpersteine:**
   - Winkel werden zur Grenzfläche statt zum Lot gemessen.

@@ -126,7 +126,7 @@ Gleichnamig: $\frac{2}{6}$ und $\frac{3}{6}$ – dazwischen liegt kein Sechstel.
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.1 „Bruchteile und Bruchzahlen“ (LehrplanPLUS Bayern, Gymnasium): Erweitern, Kürzen, Vergleichen und Brüche am Zahlenstrahl. Das Gleichnamigmachen wird in Lernbereich 1.3 beim Addieren wieder gebraucht. Die Simulation „Bruchteile darstellen“ eignet sich als Einstieg, diese zur Vertiefung und Übung.
+- **Einsatz:** Etwa Klasse 6, Bruchteile und Bruchzahlen: Erweitern, Kürzen, Vergleichen und Brüche am Zahlenstrahl. Das Gleichnamigmachen wird beim Addieren von Brüchen wieder gebraucht. Die Simulation „Bruchteile darstellen“ eignet sich als Einstieg, diese zur Vertiefung und Übung.
 - **Drei Ansichten:** *Vergleichen* (zwei Brüche als Streifen oder Kreise mit gemeinsamem Zahlenstrahl), *Erweitern und Kürzen* (Rechenweg mit Bögen „·3“ bzw. „:2“, Gruppen-Klammern und Bruchwand) und das Spiel *Brüche ordnen* (drei Stufen, mit Tipp-Streifen).
 - **Raten statt ablesen:** Mit `show=0` (Schalter „Vergleichszeichen sofort zeigen“ aus) erscheinen statt des Zeichens drei Knöpfe; die Lernenden tippen selbst auf $<$, $=$ oder $>$ und erhalten sofort Rückmeldung. Zusammen mit „Ergebnisse verdecken“ eignet sich das für Aufgaben per Link oder QR-Code.
 - **Bewusste Gestaltung:** Die Stücke werden erst nummeriert, wenn sie gleich groß sind (nach dem Gleichnamigmachen). So wird nicht nahegelegt, Zähler verschieden großer Stücke zu vergleichen.

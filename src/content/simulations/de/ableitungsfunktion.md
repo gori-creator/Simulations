@@ -103,7 +103,7 @@ Falsch. Ein Hochpunkt von $f'$ bedeutet: $f$ steigt dort am stärksten – $f$ h
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** LehrplanPLUS Gymnasium Bayern, Jahrgangsstufe 11, Lernbereich 4.1 „Lokales und globales Differenzieren“ (Sekanten- und Tangentensteigung, Ableitungsfunktion) und 4.2 (Monotonie, Extrem- und Wendestellen), sowie Jahrgangsstufe 12, Lernbereich 1 (Ableitung von Sinus und Kosinus grafisch plausibel machen, Produkt- und Kettenregel). In welcher Jahrgangsstufe Faktor-, Summen- und Potenzregel eingeführt werden, bitte am Lehrplan prüfen. Die Ansichten passen als Abfolge: Sekante → Tangente, Tangente läuft, Merkmale, eigene Skizze, Regeln.
+- **Einsatz:** Oberstufe, Einführung der Differentialrechnung: Sekanten- und Tangentensteigung, Ableitungsfunktion, Monotonie, Extrem- und Wendestellen; später Ableitung von Sinus und Kosinus grafisch plausibel machen sowie Produkt- und Kettenregel. Wann Faktor-, Summen- und Potenzregel eingeführt werden, unterscheidet sich je nach Lehrplan. Die Ansichten passen als Abfolge: Sekante → Tangente, Tangente läuft, Merkmale, eigene Skizze, Regeln.
 - **Vorhersagen:** Mit „Terme und Werte zeigen“ aus skizzieren die Lernenden $f'$ zuerst auf Papier, dann prüfen sie mit der Spur oder im Aufgabenmodus „f′ skizzieren“, der für jeden Punkt rückmeldet, ob er passt.
 - **Differenzierbarkeit:** Das Diagramm „Differenzenquotient über h“ zeigt Grenzwerte als Bild: Bei glatten Funktionen laufen linker und rechter Ast auf denselben Punkt zu, bei $|x|$ nicht.
 - **Alltagsbezug:** Neun Beispiele mit Einheiten (m/s, m/s², L/min, GE/ME, m/km und Prozent) – gut für die Deutung von Hochpunkten, Nullstellen von $f'$ und Wendepunkten im Sachzusammenhang.

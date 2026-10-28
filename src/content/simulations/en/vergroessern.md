@@ -108,7 +108,7 @@ $O : V = \frac{6a^2}{a^3} = \frac{6}{a}$, so $6$, $3$ and $2$. If you cut the cu
 
 ## Ideas for the classroom
 
-- **Use:** Year 9 (Jahrgangsstufe 9), similarity and enlargement (LehrplanPLUS Gymnasium Bavaria; please check the exact placement against the curriculum). The animation “Lay out copies” works well as an introduction before the rule $k$, $k^2$, $k^3$ is stated – for example with an estimate first: “How many small cubes do I need?” Interlocking cubes help to rebuild the figures.
+- **Use:** About grade 9, similarity and enlargement. The animation “Lay out copies” works well as an introduction before the rule $k$, $k^2$, $k^3$ is stated – for example with an estimate first: “How many small cubes do I need?” Interlocking cubes help to rebuild the figures.
 - **Tasks from the picture:** with “Show the results” switched off (`show=0`), unknown values appear as “?” until the animation has run.
 - **Applications:** pizza (price per area), model building (paint $\cdot \frac{1}{100}$, mass for the same material $\cdot \frac{1}{1000}$ at scale $1 : 10$) and the ratio of surface area to volume (heat loss in animals, icing sugar, wood shavings) offer opportunities for modelling.
 - **Common stumbling blocks:**

@@ -123,7 +123,7 @@ b) Nach Pythagoras ist $a^2 + b^2 = c^2$. Teilt man durch $c^2$, folgt $\left(\f
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 9, Trigonometrie am rechtwinkligen Dreieck (LehrplanPLUS Gymnasium Bayern); der Einheitskreis leitet zu den Sinus- und Kosinusfunktionen der Jahrgangsstufe 10 über – genaue Zuordnung bitte am Lehrplan prüfen.
+- **Einsatz:** Etwa Klasse 9, Trigonometrie am rechtwinkligen Dreieck; der Einheitskreis leitet zu den Sinus- und Kosinusfunktionen über.
 - **Entdecken vor Benennen:** Die Animation „Ähnliche Dreiecke wachsen lassen“ kann vor der Definition stehen: Was bleibt gleich, wenn das Dreieck wächst? Anschließend messen die Lernenden selbst gezeichnete Dreiecke mit $\alpha = 35°$ nach.
 - **Aufgabenmodus:** Mit „Ergebnisse zeigen“ aus (`show=0`) erscheinen gesuchte Größen im Bild als „?“. So lassen sich alle Themen als Übungsaufgaben verwenden.
 - **Taschenrechner:** Gradmodus (DEG) prüfen; die Umkehrtasten $\sin^{-1}$, $\cos^{-1}$, $\tan^{-1}$ liefern den Winkel.

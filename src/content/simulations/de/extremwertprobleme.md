@@ -89,7 +89,7 @@ Die gerade Linie schneidet das Ufer nach dem Strahlensatz bei $x = 60 \cdot \fra
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Anwendungen der Differentialrechnung in der Oberstufe (LehrplanPLUS Gymnasium Bayern; die genaue Jahrgangsstufe und der Lernbereich bitte am Lehrplan prüfen). Die Schachtel eignet sich als Einstieg, Kegel und Rettungsschwimmer als Vertiefung.
+- **Einsatz:** Anwendungen der Differentialrechnung in der Oberstufe. Die Schachtel eignet sich als Einstieg, Kegel und Rettungsschwimmer als Vertiefung.
 - **Einstieg:** Schachteln aus DIN-A4-Papier mit verschiedenen $x$ falten und vergleichen; „Optimum suchen“ zeigt danach erst das Probieren, dann die Rechnung. Vielleicht schätzt die Klasse vorher, welches $x$ am besten ist.
 - **Aufgabenmodus:** Mit „Lösungsweg zeigen“ aus sind Graph, Ergebnisse und Lösungsweg verdeckt; das Bild bleibt bedienbar. „Lösung aufdecken“ löst Schritt für Schritt auf.
 - **Modellkritik:** Warum sind echte Getränkedosen nicht optimal? (Falz, Stabilität, Griffigkeit, Werbefläche.)

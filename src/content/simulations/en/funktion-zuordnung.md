@@ -132,7 +132,7 @@ Sketch the graphs and decide using the line test: (a) the line on which all poin
 
 ## Ideas for the classroom
 
-- **Use (curriculum link as a draft):** Bavaria, year 8, learning area 1 “Function and term”: function as a unique relation, domain and range, graphs. Works well as an introduction (everyday relations in the arrow diagram) and for consolidation (line test, reversing).
+- **Use (curriculum link as a draft):** about grade 8, function and term: function as a unique relation, domain and range, graphs. Works well as an introduction (everyday relations in the arrow diagram) and for consolidation (line test, reversing).
 - **Representations:** arrow diagram, table of values and graph are in sync – tapping or dragging changes all three. Elements with several arrows (number) or without an arrow (?) are marked in red. With `show=0`, the colouring and the verdict are hidden; students decide themselves.
 - **Line test:** the strip below the graph shows how many intersections the vertical line has at every position visited. For graphs of functions, the simulation marks $D$ (teal, on the $x$-axis) and $R$ (purple, on the $y$-axis). The semicircle $f(x) = \sqrt{9 - x^2}$ anticipates square roots from year 9 and can also be looked at just as a graph. A vertical line and the absolute value function are not built in as graphs; task 7 covers them on paper.
 - **Common stumbling blocks:**

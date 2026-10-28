@@ -122,7 +122,7 @@ Bestimme die Lösungsmenge: (a) $3x + 5 = 3x + 2$, (b) $2x + 2 = 2(x + 1)$.
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 7, Lernbereich 3 (Lineare Gleichungen: Gleichungen aufstellen und durch Äquivalenzumformungen lösen) – als anschaulicher Einstieg, bevor Gleichungen mit negativen Zahlen rein rechnerisch gelöst werden.
+- **Einsatz:** Etwa Klasse 7 (Lineare Gleichungen: Gleichungen aufstellen und durch Äquivalenzumformungen lösen) – als anschaulicher Einstieg, bevor Gleichungen mit negativen Zahlen rein rechnerisch gelöst werden.
 - **Bedienung:** Ein Antippen nimmt einen Gegenstand **nur auf einer Seite** weg – die Waage kippt und die Umformung wird rot markiert. Erst wenn auf der anderen Seite dasselbe weggenommen wird, entsteht eine gültige Zeile (aufeinanderfolgende gleichartige Schritte werden wie im Heft zusammengefasst, z. B. $\mid -2$). Die Knöpfe führen Umformungen auf beiden Seiten aus; „Beide Seiten : n“ schlägt einen passenden Teiler vor und teilt die Schalen sichtbar in gleiche Gruppen.
 - **Geteilte Links** enthalten die Ausgangsgleichung. „Neue Gleichung“ erzeugt Aufgaben mit natürlicher Lösung von 1 bis 6.
 - **Grenzen des Modells** (bewusst thematisieren): keine negativen Zahlen und keine Differenzen wie $3x - 2$, Lösungen nur positiv, Teilen nur, wenn es aufgeht (bei $2x = 5$ nennt die Simulation $x = 2{,}5$ als rechnerische Lösung). Addieren und Multiplizieren beider Seiten werden hier nicht angeboten, weil sie zum Lösen solcher Gleichungen nicht nötig sind. Sprechen Sie sie trotzdem an: Legt man auf beide Schalen dasselbe, bleibt die Waage ebenfalls im Gleichgewicht.

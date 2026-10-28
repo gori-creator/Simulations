@@ -94,7 +94,7 @@ $f'(x) = 3x^2 - 6x = 3x(x - 2)$: $H(0, 2)$ because $f''(0) = -6 < 0$, and $T(2, 
 
 ## Ideas for the classroom
 
-- **Use:** In the Bavarian LehrplanPLUS (Gymnasium) the simulation fits year 11, learning area 4.2 “Investigating polynomial functions with calculus”. Steps 2 and 3 (symmetry, behaviour for $x \to \pm\infty$, zeros with multiplicity) pick up year 10, learning area 4 “Polynomial functions”, and year 11, learning area 1. It suits introducing, practising and revising before exams.
+- **Use:** The simulation fits upper secondary calculus, investigating polynomial functions. Steps 2 and 3 (symmetry, behaviour for $x \to \pm\infty$, zeros with multiplicity) pick up polynomial functions from lower secondary. It suits introducing, practising and revising before exams.
 - **Work it out first, then reveal:** with “Show the results” off, students work out each step on paper, go on with “Next step” and check with “Reveal the results”.
 - **Sketching derivatives:** switch off “Show the graphs of f′ and f″ below”, let students sketch $f'$, then show it – the guide lines show whether the zeros are in the right place.
 - **Exploring parameters:** when does $x^3 + cx$ have extreme points? (Only for $c < 0$.) This prepares families of functions.

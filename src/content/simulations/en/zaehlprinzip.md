@@ -116,7 +116,7 @@ With only 3 digits, no digit is left after three positions: $3 \cdot 2 \cdot 1 \
 
 ## Ideas for the classroom
 
-- **Use:** in Bavaria in year 5 (learning area “multiplication and division”: counting principle with tree diagrams) as an introduction, for instance with the outfits; in year 8 (Laplace experiments) for revision, when counting favourable and possible outcomes.
+- **Use:** in grade 5 (multiplication and division: counting principle with tree diagrams) as an introduction, for instance with the outfits; later with Laplace experiments for revision, when counting favourable and possible outcomes.
 - **Starting without a formula:** the class could first write down outfits themselves and discover duplicates or gaps; walking all paths and the table then show two ways of counting systematically.
 - **Representation:** with many paths only the beginning of the tree is drawn in full; collapsed branches carry the number of paths behind them. This can be an occasion to discuss why, beyond a certain size, you calculate instead of drawing.
 - **Common stumbling blocks:**

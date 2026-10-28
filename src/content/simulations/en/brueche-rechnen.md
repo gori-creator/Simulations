@@ -132,7 +132,7 @@ $\frac{1}{2}$ fits into $\frac{3}{4}$ more than once, namely $\frac{3}{4} \cdot 
 
 ## Ideas for the classroom
 
-- **Use:** Grade 6, learning area 1.4 “Multiplying and dividing rational numbers” (LehrplanPLUS Bavaria, Gymnasium): solid mental models “part of” (area model) and “sharing out/measuring” (division). For introducing the topic in class and for practice; dividing uses the idea of expanding to a common denominator from “Equivalent fractions and comparing”.
+- **Use:** About grade 6, multiplying and dividing fractions: solid mental models “part of” (area model) and “sharing out/measuring” (division). For introducing the topic in class and for practice; dividing uses the idea of expanding to a common denominator from “Equivalent fractions and comparing”.
 - **Model:** factors up to $3$ (so up to $3 \times 3$ wholes in the picture) and denominators up to $12$. Numerators are at least $1$, so division by $0$ cannot occur. The handles at the edge snap in steps of $\frac{1}{b}$ or $\frac{1}{d}$. With “Build up” the picture appears step by step: first one factor, then the other, then the overlap with numbered cells.
 - **Division:** the simulation uses the idea of **measuring (quotition)**: “How often does … fit?”. If the divisor is a whole number, the idea of **sharing (partition)** is more natural: $\frac{3}{4} \div 3$ means “sharing $\frac{3}{4}$ among $3$ people”, so $\frac{1}{4}$ each. Both ideas lead to $\frac{3}{4} \cdot \frac{1}{3}$.
 - **Common stumbling blocks:**

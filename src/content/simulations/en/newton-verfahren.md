@@ -114,7 +114,7 @@ $e_3 \approx \frac{0.00245^2}{2.828} \approx 2.1 \cdot 10^{-6}$; in fact $\frac{
 
 ## Ideas for the classroom
 
-- **Use:** year 11, applications of differential calculus to polynomial functions (in Bavaria’s LehrplanPLUS for the Gymnasium explicitly with Newton’s method). The tangent equation from the previous unit is needed. $\cos x = x$ works well as an outlook.
+- **Use:** upper secondary, applications of differential calculus to polynomial functions (Newton’s method). The tangent equation from the previous unit is needed. $\cos x = x$ works well as an outlook.
 - **Discovering the derivation:** first show “Next step” with values hidden (`show=0`), let the students label the slope triangle and derive the formula from it.
 - **Heron and spreadsheets:** for $x^2 - 2$ you get exactly Heron’s method from year 9. Rebuild the method in a spreadsheet, compare it with the simulation and then race it against bisection.
 - **Basins of attraction:** with “Colour the basins of attraction” students can investigate why starting values near the turning points become unpredictable – good as a project or for those who are interested.

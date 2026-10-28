@@ -87,7 +87,7 @@ Add all hits and all points: $\pi \approx 4 \cdot \frac{k_1 + k_2 + \ldots}{n_1 
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, grade 10 (simulating random experiments, the number π). Links probability, the area of a circle and the Pythagorean theorem.
+- **Use:** Lower secondary (simulating random experiments, the number π). Links probability, the area of a circle and the Pythagorean theorem.
 - **Display:** The first $120\,000$ points are drawn; counting continues without limit. For each $n$, the funnel shows the range containing about 95 % of the estimates after $n$ points ($\pi \pm \frac{3.22}{\sqrt{n}}$). It is based on a normal approximation and is only rough for small $n$ (below about 50). A single curve may leave it now and then: on average it lies outside for about 5 % of all $n$.
 - **Common pitfalls:**
   - "With more points the value gets more accurate at every step." – The estimate keeps fluctuating, just less and less.

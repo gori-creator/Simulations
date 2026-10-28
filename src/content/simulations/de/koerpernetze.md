@@ -110,11 +110,11 @@ Eine Fläche hat $150\,\text{cm}^2 : 6 = 25\,\text{cm}^2$, also ist $a = 5\,\tex
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 5 (Lernbereich 4.2: Oberfläche von Quadern, Würfel- und Quadernetze), Jahrgangsstufe 6 (Lernbereich 2.1: Oberflächen einfacher Körper) und Jahrgangsstufe 8 (Lernbereich 7: Netz und Oberfläche von Prisma und Zylinder). Pyramide und Zylinder eignen sich auch als Ausblick.
+- **Einsatz:** Etwa Klasse 5 (Oberfläche von Quadern, Würfel- und Quadernetze), Klasse 6 (Oberflächen einfacher Körper) und Klasse 8 (Netz und Oberfläche von Prisma und Zylinder). Pyramide und Zylinder eignen sich auch als Ausblick.
 - **Raumvorstellung zuerst:** Vor dem Falten kann man Vermutungen sammeln (z. B. mit verdeckten Ergebnissen über „Teilen“). Die gezeigten Flächeninhalte und Maße lassen sich ausschalten.
 - **Häufige Stolpersteine:**
   - „Jedes Netz aus sechs Quadraten ist ein Würfelnetz.“ – Die Netze 3, 7, 10 und 13 zeigen das Gegenteil.
   - Gegenüberliegende Flächen werden im Netz nebeneinander gesucht.
   - Beim Zylinder wird als Länge des Mantelrechtecks der Durchmesser statt des Umfangs angenommen.
-  - Bei der Pyramide werden die Höhe $h_a$ der Seitendreiecke und die Körperhöhe $h$ verwechselt; es gilt $h = \sqrt{h_a^2 - \left(\tfrac{a}{2}\right)^2}$ (Satz des Pythagoras, ab Jahrgangsstufe 9). Damit sich die Pyramide schließt, muss $h_a > \tfrac{a}{2}$ sein; die Simulation verlangt $h_a \ge \tfrac{a}{2} + 0{,}5\,\text{cm}$ und passt $h_a$ sonst an.
+  - Bei der Pyramide werden die Höhe $h_a$ der Seitendreiecke und die Körperhöhe $h$ verwechselt; es gilt $h = \sqrt{h_a^2 - \left(\tfrac{a}{2}\right)^2}$ (Satz des Pythagoras). Damit sich die Pyramide schließt, muss $h_a > \tfrac{a}{2}$ sein; die Simulation verlangt $h_a \ge \tfrac{a}{2} + 0{,}5\,\text{cm}$ und passt $h_a$ sonst an.
 - **Zur Darstellung:** Der Zylindermantel wird aus 61 schmalen Streifen aufgerollt, die Kreise sind 61-Ecke mit demselben Umfang; der Unterschied zum echten Kreis ist kleiner als ein Promille. Das Prisma hat ein gleichseitiges Dreieck als Grundfläche.

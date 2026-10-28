@@ -94,8 +94,8 @@ export default defineSimulation({
       ],
       default: 'minus',
       help: L(
-        'Bei „x + d“ (so z. B. im LehrplanPLUS Bayern) verschiebt ein positives d nach links.',
-        'With “x + d” (as e.g. in the Bavarian LehrplanPLUS), a positive d shifts the graph to the left.',
+        'Bei „x + d“ (so in manchen Lehrplänen und Lehrwerken) verschiebt ein positives d nach links.',
+        'With “x + d” (as in some curricula and textbooks), a positive d shifts the graph to the left.',
       ),
       visibleIf: (v) => v.form === 'scheitel',
     },

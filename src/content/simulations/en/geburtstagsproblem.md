@@ -118,7 +118,7 @@ Rather **more** likely: if some days are more frequent, birthdays cluster there 
 
 ## Ideas for the classroom
 
-- **Use:** Year 10, “Multi-stage random experiments and stochastic simulations” (LehrplanPLUS Bavaria, Gymnasium). Let the class estimate before calculating – and perhaps take a look at the birthdays in your own class.
+- **Use:** Lower secondary, multi-stage random experiments and stochastic simulations. Let the class estimate before calculating – and perhaps take a look at the birthdays in your own class.
 - **Simulation and calculation:** The view “Many classes” makes the surprising size plausible, the view “Calculation” explains it. The funnel shows how much relative frequencies still vary after $100$ classes.
 - **Same month** works well as a game in class: even in small groups a shared month almost always turns up.
 - **Compare groups:** Each device draws its own classes. Collect the numbers of hits after $100$ classes each on the board – the spread between the groups fits the funnel well.

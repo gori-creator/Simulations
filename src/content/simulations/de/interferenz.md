@@ -128,7 +128,7 @@ Maximum heißt $\delta = 2\pi \cdot \frac{\Delta s}{\lambda} + \frac{\pi}{2} = k
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** In der Oberstufe beim Thema Interferenz mechanischer Wellen, als Vorbereitung auf den Doppelspalt und das Gitter. Gut als Ergänzung zum Realexperiment in der Wellenwanne: Was dort schnell und flüchtig ist, lässt sich hier anhalten, verlangsamen und vermessen. Die Zuordnung zu einer bestimmten Jahrgangsstufe hängt vom Lehrplanstand ab.
+- **Einsatz:** In der Oberstufe beim Thema Interferenz mechanischer Wellen, als Vorbereitung auf den Doppelspalt und das Gitter. Gut als Ergänzung zum Realexperiment in der Wellenwanne: Was dort schnell und flüchtig ist, lässt sich hier anhalten, verlangsamen und vermessen. Die Zuordnung zu einer bestimmten Klassenstufe hängt vom Lehrplan ab.
 - **Vorschlag für den Ablauf:** zuerst das Momentbild beobachten und die ruhigen Linien finden lassen, dann mit dem Messpunkt die Bedingung $\Delta s = (k + \frac{1}{2}) \cdot \lambda$ selbst entdecken, erst danach das Amplitudenbild und die Hyperbeln zeigen. Mit „Werte im Bild anzeigen“ aus (`val=0`) lassen sich Messaufgaben stellen.
 - **Modell:** gleich große Amplituden, keine Dämpfung, ideale Punktquellen. In der echten Wellenwanne nimmt die Amplitude mit dem Abstand ab; die Knotenlinien sind dann nicht ganz in Ruhe.
 - **Häufige Stolpersteine:**

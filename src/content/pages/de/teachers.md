@@ -42,11 +42,11 @@ Unter jeder Simulation finden Sie:
 
 Die Themen sind nach den **Bildungsstandards der Kultusministerkonferenz (KMK)** und nach Klassenstufen gegliedert. Bei jeder Simulation sehen Sie die passende Klassenstufe und die Bezüge zu Leitideen bzw. Kompetenzbereichen.
 
-Für **Mathematik am bayerischen Gymnasium** gibt es zusätzlich eine Ansicht **nach Jahrgangsstufe**: Für jede Jahrgangsstufe von 5 bis 13 sehen Sie die Lernbereiche des LehrplanPLUS mit den passenden Simulationen – zu finden auf der Seite [Mathematik](../mathematik/). Weitere Fächer, Bundesländer und Schularten folgen.
+Über das **Zahnrad** oben rechts lässt sich zusätzlich ein **Bundesland** wählen. Dann sind die Fachseiten nach den Jahrgangsstufen des jeweiligen Lehrplans sortiert, und bei jeder Simulation steht der passende Bezug zum Landeslehrplan. Bisher sind Lehrpläne für das Gymnasium in Mathematik und Physik eingetragen; weitere Länder und Schularten folgen. Das Lernmaterial selbst ist bewusst neutral gehalten und nennt nur ungefähre Klassenstufen.
 
 ## Datenschutz
 
-Die Seite speichert keine personenbezogenen Daten und setzt keine Cookies. Im Browser werden lediglich das gewählte Farbschema (hell/dunkel) und die Sprache gespeichert sowie – für die Offline-Nutzung – die Seiten selbst zwischengespeichert. Mehr dazu in der [Datenschutzerklärung](../datenschutz/).
+Die Seite speichert keine personenbezogenen Daten und setzt keine Cookies. Im Browser werden lediglich das gewählte Farbschema (hell/dunkel), die Sprache und gegebenenfalls das gewählte Bundesland gespeichert sowie – für die Offline-Nutzung – die Seiten selbst zwischengespeichert. Mehr dazu in der [Datenschutzerklärung](../datenschutz/).
 
 ## Feedback und Wünsche
 

@@ -4,7 +4,7 @@ description: "Interactive simulation for grade 5: measure angles correctly with 
 
 ## What is it about?
 
-An **angle** is formed by two rays, the **arms** $[SA$ and $[SB$, which start at the same point $S$. $S$ is called the **vertex**. Angles are named with Greek letters ($\alpha$, $\beta$, $\gamma$, …) or with three points: $\alpha = \angle ASB$. Here – as usual in Bavarian school books – $\angle ASB$ is measured **anticlockwise** from the arm $[SA$ to the arm $[SB$. The unit is the **degree** ($1^\circ$ is one 360th of a full turn).
+An **angle** is formed by two rays, the **arms** $[SA$ and $[SB$, which start at the same point $S$. $S$ is called the **vertex**. Angles are named with Greek letters ($\alpha$, $\beta$, $\gamma$, …) or with three points: $\alpha = \angle ASB$. Here – as usual in many school books – $\angle ASB$ is measured **anticlockwise** from the arm $[SA$ to the arm $[SB$. The unit is the **degree** ($1^\circ$ is one 360th of a full turn).
 
 | Type of angle | Size |
 | --- | --- |
@@ -101,7 +101,7 @@ $112^\circ$ (a little more than a right angle), $38^\circ$ (a little less than h
 
 ## Ideas for the classroom
 
-- **Use:** grade 5, learning area 2 “Geometric figures and relative positions” (LehrplanPLUS Gymnasium Bavaria): estimating, measuring and drawing angles up to $360^\circ$, types of angles. Well suited for working together at the whiteboard (placing the set square as a class) and for individual practice with the estimation game.
+- **Use:** grade 5, geometric figures and relative positions: estimating, measuring and drawing angles up to $360^\circ$, types of angles. Well suited for working together at the whiteboard (placing the set square as a class) and for individual practice with the estimation game.
 - **Handling:** The set square can be moved in the middle and turned at the round handles or the corners. It snaps to the vertex and to the arms. With “Show the size of the angle” off, students really have to read the size; the highlight then only shows which scale to use.
 - **Model:** Set square and grid match: the edge is 16 cm long, one square is 5 mm. Angles are rounded to whole degrees. “Random angle” hides the size and puts the set square to one side.
 - **Estimation game:** Tasks alternate between estimating and drawing an angle; the size and the direction of the first arm are random. Points depend on the difference from the correct value: up to $3^\circ$ three points, up to $10^\circ$ two, up to $20^\circ$ one, otherwise none. After checking, the set square is ready for measuring.

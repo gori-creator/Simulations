@@ -84,7 +84,7 @@ export default defineSimulation({
       ],
       default: 'minus',
       help: L(
-        'Bei „x + c“ (so z. B. im LehrplanPLUS Bayern) verschiebt ein positives c nach links.',
+        'Bei „x + c“ (so in manchen Lehrplänen und Lehrwerken) verschiebt ein positives c nach links.',
         'With “x + c”, a positive c shifts the graph to the left.',
       ),
     },

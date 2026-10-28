@@ -121,7 +121,7 @@ Tim calculates: $-3^2 = 9$ and $20 - 8 - 2 = 20 - 6 = 14$. Explain his mistakes 
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, grade 5 (LB 1.2 and 3.2: structure of expressions, multiplication and division before addition and subtraction), grade 6 (LB 1.5: structure of expressions with rational numbers) and grade 7 (LB 1.1: expressions with variables, values, naming the structure).
+- **Use:** About grade 5 (structure of expressions, multiplication and division before addition and subtraction), grade 6 (structure of expressions with rational numbers) and grade 7 (expressions with variables, values, naming the structure).
 - **Input:** `*` or `·` for multiplication, `:` for division, `^` or `²` for powers, brackets `( )` and `[ ]`. A slash between two whole numbers (`3/4`) stands for a **fraction** (one number), otherwise for a division. Allowed variables: $a, b, c, n, x, y, z$. Your own expressions can be shared as a link or QR code with **Share**.
 - **Display:** As in many textbooks, the numbers are at the top and the result at the bottom; under “Display” you can turn the tree upside down. The operations have different colours (addition and subtraction blue, multiplication and division green, powers orange).
 - **Order and structure:** “Next step” follows the rules. If you tap another *possible* operation yourself, it is carried out and commented on: independent parts may be worked out in any order – the rules fix the structure, not the order within independent parts.

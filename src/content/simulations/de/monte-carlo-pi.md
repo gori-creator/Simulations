@@ -87,7 +87,7 @@ Man addiert alle Treffer und alle Punkte: $\pi \approx 4 \cdot \frac{k_1 + k_2 +
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 10 (Simulation von Zufallsexperimenten, Kreiszahl). Verknüpft Stochastik, Flächeninhalt des Kreises und den Satz des Pythagoras.
+- **Einsatz:** Mittelstufe (Simulation von Zufallsexperimenten, Kreiszahl). Verknüpft Stochastik, Flächeninhalt des Kreises und den Satz des Pythagoras.
 - **Darstellung:** Die ersten $120\,000$ Punkte werden gezeichnet, gezählt wird unbegrenzt. Der Trichter zeigt für jedes $n$ den Bereich, in dem etwa 95 % der Schätzwerte nach $n$ Punkten liegen ($\pi \pm \frac{3{,}22}{\sqrt{n}}$). Er beruht auf einer Näherung durch die Normalverteilung und ist für kleine $n$ (unter etwa 50) nur grob. Eine einzelne Kurve darf ihn zwischendurch verlassen: Im Mittel liegt sie bei etwa 5 % aller $n$ außerhalb.
 - **Häufige Stolpersteine:**
   - „Mit mehr Punkten wird der Wert bei jedem Schritt genauer.“ – Der Schätzwert schwankt weiter, nur immer weniger.

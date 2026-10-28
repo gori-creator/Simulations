@@ -118,7 +118,7 @@ Die Frequenz bleibt $440\,\text{Hz}$, denn sie legt der Erreger fest. Die Ausbre
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Einstieg in mechanische Wellen (Jahrgangsstufe 10 bzw. Oberstufe, je nach Lehrplanstand): Entstehung durch Kopplung, Unterscheidung transversal/longitudinal, Grundgleichung $c = \lambda \cdot f$, Momentaufnahme und Zeitverlauf. Gut für Erarbeitung an der Tafel (Wiedergabe anhalten, Zeitmarke setzen) und für Schülerarbeit mit den Aufträgen.
+- **Einsatz:** Einstieg in mechanische Wellen (Klasse 10 bzw. Oberstufe, je nach Lehrplanstand): Entstehung durch Kopplung, Unterscheidung transversal/longitudinal, Grundgleichung $c = \lambda \cdot f$, Momentaufnahme und Zeitverlauf. Gut für Erarbeitung an der Tafel (Wiedergabe anhalten, Zeitmarke setzen) und für Schülerarbeit mit den Aufträgen.
 - **Modell:** Die Bewegung wird analytisch berechnet: Jedes Teilchen wiederholt die Bewegung des Erregers mit der Verspätung $x/c$ (ideale, verlustfreie Kette ohne Reflexion am Ende, keine Dispersion). Die Kette ist $4\,\text{m}$ lang, die Teilchen haben $10\,\text{cm}$ Abstand. Quer zur Kette wird die Transversalwelle zur besseren Sichtbarkeit überhöht gezeichnet (der Faktor steht im Bild); die Longitudinalwelle ist maßstäblich.
 - **Darstellung:** Die Färbung des Bandes zeigt die Teilchendichte. Ist $2\pi\hat y/\lambda \ge 1$, würden sich benachbarte Teilchen der Longitudinalwelle überholen – die Simulation weist darauf hin.
 - **Häufige Stolpersteine:**

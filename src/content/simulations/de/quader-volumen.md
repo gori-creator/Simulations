@@ -93,7 +93,7 @@ Gib in der jeweils anderen Einheit an: (a) $3\,\text{dm}^3$ in $\text{cm}^3$, (b
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 6, Lernbereich 2.2 (Volumen): Volumen des Quaders über Einheitswürfel, Volumeneinheiten einschließlich Liter.
+- **Einsatz:** Etwa Klasse 5/6 (Volumen): Volumen des Quaders über Einheitswürfel, Volumeneinheiten einschließlich Liter.
 - **Didaktischer Kern:** Die Formel $V = a \cdot b \cdot c$ entsteht aus dem strukturierten Zählen (Reihe → Schicht → Schichten). Die Zählhilfe lässt sich ausschalten (`count=0`), damit Schülerinnen und Schüler die Struktur selbst beschreiben.
 - **Häufige Stolpersteine:**
   - Volumen und Oberfläche werden verwechselt („außen zählen“ statt „innen füllen“).

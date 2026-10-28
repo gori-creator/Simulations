@@ -94,7 +94,7 @@ $f'(x) = 3x^2 - 6x = 3x(x - 2)$: $H(0 \mid 2)$ wegen $f''(0) = -6 < 0$ und $T(2 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Im LehrplanPLUS Gymnasium Bayern passt die Simulation zu Jahrgangsstufe 11, Lernbereich 4.2 „Anwendung der Differentialrechnung bei der Untersuchung ganzrationaler Funktionen“. Die Schritte 2 und 3 (Symmetrie, Verhalten für $x \to \pm\infty$, Nullstellen mit Vielfachheit) greifen Jahrgangsstufe 10, Lernbereich 4 „Ganzrationale Funktionen“, und Jahrgangsstufe 11, Lernbereich 1 auf. Die Simulation eignet sich zur Erarbeitung, zur Übung und zum Wiederholen vor Prüfungen.
+- **Einsatz:** Die Simulation passt zur Oberstufe, Anwendung der Differentialrechnung bei der Untersuchung ganzrationaler Funktionen. Die Schritte 2 und 3 (Symmetrie, Verhalten für $x \to \pm\infty$, Nullstellen mit Vielfachheit) greifen die ganzrationalen Funktionen der Mittelstufe auf. Die Simulation eignet sich zur Erarbeitung, zur Übung und zum Wiederholen vor Prüfungen.
 - **Erst rechnen, dann aufdecken:** Mit „Ergebnisse zeigen“ aus rechnen die Lernenden jeden Schritt auf Papier, gehen mit „Nächster Schritt“ weiter und prüfen mit „Ergebnisse aufdecken“.
 - **Graphisches Ableiten:** „Graphen von f′ und f″“ ausschalten, $f'$ skizzieren lassen und dann einblenden – die Hilfslinien zeigen, ob die Nullstellen an der richtigen Stelle sitzen.
 - **Parameter erkunden:** Wann hat $x^3 + cx$ Extrempunkte? (Nur für $c < 0$.) Das bereitet Funktionenscharen vor.
