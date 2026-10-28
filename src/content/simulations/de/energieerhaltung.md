@@ -35,6 +35,7 @@ $$
 5. Baue eine **eigene Bahn**: Ziehe die Punkte 1 bis 4 und den Wagen. Wann schafft er den Hügel bei Punkt 2? [Eigene Bahn](?track=eigen)
 6. Sieh dir die **Kräfte im Looping** an: aus 20 m und aus 13 m Höhe. [Looping aus 20 m](?mode=loop&track=looping&h0=20) · [aus 13 m](?mode=loop&track=looping&h0=13)
 7. **Entdeckungsaufgabe:** Finde die kleinste Starthöhe, mit der der Wagen den Looping schafft. Jede Fahrt erscheint als Punkt in der Messreihe. [Aufgabe starten](?mode=task&track=looping&h0=10&_hide=1)
+8. Fahre die **Mega-Bahn** mit zwei Loopings. Die Kamera fährt mit, die Übersicht oben rechts zeigt die ganze Strecke. Die **Andruck-Anzeige** unten links zeigt, wie stark der Sitz dich drückt – als Vielfaches deiner Gewichtskraft (in $g$): im Tal kräftig, auf dem ersten Hügel weniger als null (Airtime). Warum sind die Loopings oben enger als unten? [Mega-Bahn](?track=mega)
 
 ## Aufgaben
 
@@ -112,7 +113,7 @@ Ohne Reibung kehrt er genau in der Starthöhe um, also in $12\,\text{m}$ Höhe a
 
 - **Einsatz:** Energieerhaltung in der Mittelstufe (etwa Klasse 9/10); die Energie-Diagramme bereiten auf Potentialdiagramme vor, der Looping eignet sich als Vertiefung zur Kreisbewegung.
 - **Entdeckungsaufgabe in Gruppen:** Jede Gruppe sucht die Mindesthöhe – erst ohne, dann mit Reibung – und begründet das Ergebnis anschließend mit $v^2 \geq g r$.
-- **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2} = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Wer im Unterricht mit $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ rechnet, erhält etwa $2\,\%$ größere Energien und Kräfte und etwa $1\,\%$ größere Geschwindigkeiten. Energien zeigt die Simulation in Kilojoule ($1\,\text{kJ} = 1000\,\text{J}$). Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln).
+- **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2} = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Wer im Unterricht mit $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ rechnet, erhält etwa $2\,\%$ größere Energien und Kräfte und etwa $1\,\%$ größere Geschwindigkeiten. Energien zeigt die Simulation in Kilojoule ($1\,\text{kJ} = 1000\,\text{J}$). Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln). Auf der Mega-Bahn ist ein Zug aus drei Wagen gezeichnet; gerechnet wird weiter mit einem Massenpunkt in der Mitte des Zugs. Ihre Loopings sind wie echte Bahnen tropfenförmig (unten weit, oben eng): Unten ist der Zug schnell, ein großer Radius hält den Andruck $1 + \frac{v^2}{g r}$ klein; oben ist er langsam, dort genügt ein kleiner Radius für $v^2 \geq g r$. Der Andruck ist die Normalkraft geteilt durch die Gewichtskraft, $\frac{F_\text{N}}{m g}$.
 - **Häufige Stolpersteine:**
   - „Schwere Wagen sind schneller.“ – Die Geschwindigkeit hängt nicht von der Masse ab.
   - „Mit Reibung geht Energie verloren.“ – Sie wird in innere Energie umgewandelt, nicht vernichtet.

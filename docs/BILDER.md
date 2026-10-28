@@ -77,6 +77,10 @@ Stand Oktober 2026: Alle Bilder dieser Tabelle sind vorhanden. Neue Einträge ko
 | Resonanz | `wheel` | `src/assets/sims/resonanz/rad.webp` | 384 × 376 | transparent |
 | Wellenausbreitung | `ball` | `src/assets/sims/wellen-ausbreitung/kugel.webp` | 202 × 201 | transparent |
 | Achterbahn | `land` | `src/assets/sims/energieerhaltung/landschaft.webp` | 1003 × 126 | transparent oben |
+| Achterbahn | `mid` | `src/assets/sims/energieerhaltung/wagen-mitte.webp` | 660 × 390 | transparent |
+| Achterbahn | `station` | `src/assets/sims/energieerhaltung/station.webp` | 1200 × 455 | transparent |
+| Achterbahn | `pano` | `src/assets/sims/energieerhaltung/landschaft-panorama.webp` | 3000 × 230 | transparent oben |
+| Achterbahn | `night` | `src/assets/sims/energieerhaltung/himmel-abend.webp` | 1920 × 1200 | deckend |
 | Einfacher Stromkreis | `battery` | `src/assets/sims/einfacher-stromkreis/batterie.webp` | 350 × 307 | transparent |
 | Einfacher Stromkreis | `bulb` | `src/assets/sims/einfacher-stromkreis/gluehlampe.webp` | 250 × 445 | transparent |
 | Einfacher Stromkreis | `switch` | `src/assets/sims/einfacher-stromkreis/schalter.webp` | 415 × 254 | transparent |
@@ -362,6 +366,32 @@ Füllt den Hintergrund; unten wird ein Wiesenstreifen darübergezeichnet.
 Panoramastreifen eines Freizeitparks mit durchsichtigem Himmel. Liegt über dem Himmel am unteren Rand hinter der Bahn: volle Breite der Szene (Seitenverhältnis bleibt), die Unterkante reicht knapp in den gezeichneten Wiesenstreifen. Vorab skaliert; im Dunkelmodus wie der Himmel abgedunkelt. Die Auflösung (1003 px breit) reicht für den Hintergrund knapp.
 
 > Wide panoramic strip of a summer amusement park landscape, green rolling grass and a few trees at the bottom, transparent sky above, side view, photorealistic
+
+Die folgenden vier Bilder gehören zur Mega-Bahn bzw. zum Dunkelmodus (Oktober 2026, mit einem KI-Bildwerkzeug erzeugt; der Mittelwagen mit `wagen.webp` als Vorlage für Form und Farben). Beim Einbau wurde jeweils der leere durchsichtige Rand oben abgeschnitten.
+
+### `wagen-mitte.webp` – Mittelwagen
+
+Mittlerer und hinterer Wagen des Zugs auf der Mega-Bahn: gleiche Höhe wie der vordere Wagen (`wagen.webp`), Breite nach Seitenverhältnis, Räder genau am unteren Bildrand. Ersatz ohne Bild: das Wagenbild ohne die Spitze.
+
+> Strict orthographic side view (camera exactly perpendicular, no perspective, no tilt) of a single empty middle car of a modern steel roller coaster train, facing right. The car has NO nose and NO front fairing: both ends are flat and vertical, with a short dark grey metal coupling bar sticking out at the left end and at the right end at axle height, cut off by the image border. Glossy bright red fibreglass body (signal red, like a sports car, slightly metallic clear coat) with two sweeping thin golden-yellow racing stripes along the side, running horizontally from end to end and slightly rising toward the front. Two rows of empty seats one behind the other, black padded seats, each row with a black over-the-shoulder safety restraint with yellow grab handles, restraints in the closed, locked position. Below the body a dark grey steel chassis with two bogies, one under each end, each bogie with two large polyurethane road wheels (dark grey tyre, silver hub) on top and smaller up-stop wheels below, as on real steel coasters. The lowest wheels touch the bottom edge of the image exactly. The car fills the image width almost completely, from left border to right border. Soft, even daylight from the upper left, gentle reflections on the red paint, a very subtle contact shadow is NOT included. No track, no rails, no ground, no people, no text, no logos, no numbers, no stickers. Isolated on a fully transparent background (alpha channel), clean crisp edges, photorealistic product render, high detail, aspect ratio 1.29:1.
+
+### `station.webp` – Station
+
+Steht auf dem waagerechten Anfangsstück der Mega-Bahn hinter der Schiene; der Bahnsteigboden (gelbe Kante, bei etwa 79 % der Bildhöhe nach dem Zuschnitt) liegt auf Höhe der Schiene, etwas breiter als das waagerechte Stück. Im Dunkelmodus abgedunkelt. Ersatz ohne Bild: gezeichnetes Dach mit Aufschrift „Start“.
+
+> Strict orthographic side view (no perspective) of a small modern open-air roller coaster boarding station standing on an elevated platform high above the ground, like the loading station at the top of a steel coaster. Composition from bottom to top: at the bottom a horizontal concrete-and-steel platform slab spanning the full image width, its top surface (the boarding floor) exactly at 85 percent of the image height measured from the top, its underside at the bottom edge; on the platform a row of thin vertical steel columns painted dark anthracite grey, a simple yellow-and-black safety railing along the back edge of the platform, a few turnstile gates at the back, warm wood panelling on the rear wall, two or three small round lamps; on top a wide, flat, slightly overhanging cantilevered roof in glossy signal red (same red as a red roller coaster car), with a thin white fascia strip along its front edge and subtle LED strip lighting under the roof edge. The station is open at the front (toward the viewer) and at both short ends, so a train could pass straight through it from left to right. Sunny summer daylight from the upper left, soft shadows under the roof. No train, no track, no rails, no people, no text, no signs with letters, no logos, no ground, no sky. Isolated on a fully transparent background (alpha channel), clean crisp edges, photorealistic architectural render, aspect ratio 15:8.
+
+### `landschaft-panorama.webp` – Panorama
+
+Landschaft, die beim Mitfahren (Mega-Bahn) langsamer vorbeizieht als die Bahn (Parallaxe). Feste Höhe (etwa ein Viertel der Szene), abwechselnd gespiegelt aneinandergesetzt, weil die Ränder nicht pixelgenau zusammenpassen. Ersatz ohne Bild: `landschaft.webp`.
+
+> Ultra-wide seamless horizontally tileable panoramic landscape strip (left and right edges must match perfectly so the image can be repeated endlessly), side view at eye level, for use as a parallax background layer behind a roller coaster. Content: a lush green summer amusement park landscape seen from far away: gently rolling meadow hills, clusters of deciduous trees (oaks, beeches, birches) in varied greens, a few tall poplars, small bushes; far in the distance and small, partly hidden behind trees, a few colourful amusement park attractions: a Ferris wheel, a drop tower, a carousel roof with a striped tent top, colourful flags, a small lake reflection between trees; the attractions are hazy from atmospheric perspective, lighter and slightly bluish, so they stay in the background. The silhouette of trees and hills varies in height along the strip and fills only the lower half of the image; the bottom edge is a continuous band of green grass across the full width. Everything above the tree line is fully transparent (alpha channel), no sky, no clouds, no sun. Bright, warm summer afternoon light from the left, soft shadows. No roller coaster track in the foreground, no people, no text, no logos, no signs, no buildings with letters. Photorealistic, high detail, clean cut-out edges along the tree line, aspect ratio 10:1.
+
+### `himmel-abend.webp` – Abendhimmel
+
+Himmel im Dunkelmodus (alle Bahnen), nur leicht abgedunkelt. Ersatz ohne Bild: der abgedunkelte Taghimmel.
+
+> Wide evening sky over an amusement park at blue hour, about twenty minutes after sunset, for use as a dark-mode background. Gradient from deep navy blue and indigo at the top to a soft violet and warm, muted orange glow just above the horizon at the very bottom edge of the image. A few thin, softly lit wispy clouds catching the last pink and peach light, more concentrated in the lower third. The first faint stars visible in the upper part of the sky, very subtle, small. Along the very bottom edge only a faint, tiny, hazy glow of distant amusement park lights (warm points of light, a barely visible Ferris wheel silhouette with tiny lights), nothing else in the foreground, no ground, no trees, the horizon line exactly at the bottom edge. Calm, atmospheric, not too bright overall so that white text and coloured graphics stay readable on top of it. No moon, no people, no text, no logos, no lens flare. Photorealistic, smooth gradients without banding, high detail, aspect ratio 16:10.
 
 ## Brechung
 

@@ -35,6 +35,7 @@ $$
 5. Build a **custom track**: drag points 1 to 4 and the car. When does it get over the hill at point 2? [Custom track](?track=eigen)
 6. Look at the **forces in the loop**: from 20 m and from 13 m. [Loop from 20 m](?mode=loop&track=looping&h0=20) · [from 13 m](?mode=loop&track=looping&h0=13)
 7. **Discovery task:** find the smallest starting height with which the car gets through the loop. Every ride appears as a point in the series of measurements. [Start the task](?mode=task&track=looping&h0=10&_hide=1)
+8. Ride the **mega coaster** with two loops. The camera follows the train, the overview at the top right shows the whole track. The **g-force gauge** at the bottom left shows how strongly the seat pushes you – as a multiple of your weight (in $g$): strongly in the valley, less than zero on the first hill (airtime). Why are the loops tighter at the top than at the bottom? [Mega coaster](?track=mega)
 
 ## Tasks
 
@@ -112,7 +113,7 @@ Without friction it turns back exactly at the starting height, i.e. at $12\,\tex
 
 - **Use:** conservation of energy in lower secondary school (grades 9/10, please check against your curriculum); the energy graphs prepare for potential diagrams, the loop works as an extension on circular motion.
 - **Discovery task in groups:** each group looks for the minimum height – first without, then with friction – and then justifies the result with $v^2 \geq g r$.
-- **Model:** point mass on the rail, friction proportional to the normal force (also in the loop), $g = 9.81\,\tfrac{\text{m}}{\text{s}^2} = 9.81\,\tfrac{\text{N}}{\text{kg}}$. If you calculate with $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ in class, energies and forces come out about $2\,\%$ larger and speeds about $1\,\%$ larger. The simulation shows energies in kilojoules ($1\,\text{kJ} = 1000\,\text{J}$). The car is drawn larger than to scale. Safety bars keep it on the rail; where it would lift off without them, the simulation shows this (also "airtime" on hills).
+- **Model:** point mass on the rail, friction proportional to the normal force (also in the loop), $g = 9.81\,\tfrac{\text{m}}{\text{s}^2} = 9.81\,\tfrac{\text{N}}{\text{kg}}$. If you calculate with $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ in class, energies and forces come out about $2\,\%$ larger and speeds about $1\,\%$ larger. The simulation shows energies in kilojoules ($1\,\text{kJ} = 1000\,\text{J}$). The car is drawn larger than to scale. Safety bars keep it on the rail; where it would lift off without them, the simulation shows this (also "airtime" on hills). On the mega coaster a train of three cars is drawn; the calculation still uses one point mass in the middle of the train. Like real coasters, its loops are teardrop-shaped (wide at the bottom, tight at the top): at the bottom the train is fast, and a large radius keeps the g-force $1 + \frac{v^2}{g r}$ small; at the top it is slow, so a small radius is enough for $v^2 \geq g r$. The g-force is the normal force divided by the weight, $\frac{F_\text{N}}{m g}$.
 - **Common stumbling blocks:**
   - "Heavier cars are faster." – The speed does not depend on the mass.
   - "Friction destroys energy." – It is converted into internal energy, not destroyed.

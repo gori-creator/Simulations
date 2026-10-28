@@ -16,6 +16,7 @@ import {
   loopMinSpeed,
   loopTopForces,
   loopTopSpeed,
+  MEGA_LOOPS,
   minStartHeight,
   normalAcceleration,
   placeStart,
@@ -89,7 +90,7 @@ describe('Modell: Energieerhaltung (Achterbahn) – Formeln', () => {
 });
 
 describe('Modell: Energieerhaltung (Achterbahn) – numerische Fahrt', () => {
-  it.each(['tal', 'huegel', 'looping'] as const)('ohne Reibung bleibt E_pot + E_kin konstant (%s, Abweichung < 1e-3)', (id) => {
+  it.each(['tal', 'huegel', 'looping', 'mega'] as const)('ohne Reibung bleibt E_pot + E_kin konstant (%s, Abweichung < 1e-3)', (id) => {
     const track = buildTrack(id);
     const run = simulate(track, track.startAt(22), 0, { tMax: 30 });
     const e0 = perKg(track, run.samples[0]!);
@@ -101,7 +102,7 @@ describe('Modell: Energieerhaltung (Achterbahn) – numerische Fahrt', () => {
   });
 
   it('mit Reibung: E_pot + E_kin + W_R konstant, E_pot + E_kin fällt monoton, der Wagen bleibt stehen', () => {
-    for (const id of ['tal', 'huegel', 'looping'] as const) {
+    for (const id of ['tal', 'huegel', 'looping', 'mega'] as const) {
       const track = buildTrack(id);
       const run = simulate(track, track.startAt(20), 0.03, { tMax: 120 });
       const e0 = perKg(track, run.samples[0]!);
@@ -266,5 +267,76 @@ describe('Modell: Energieerhaltung (Achterbahn) – Aufgaben, Sonderfälle, Regl
     expect(potentialEnergy(800, 26) / potentialEnergy(100, 26)).toBeCloseTo(8, 12);
     // h₀ = 26 m, m = 800 kg: E_pot = 800 · 9,81 · 26 = 204 048 J
     expect(potentialEnergy(800, 26)).toBeCloseTo(204048, 6);
+  });
+});
+
+describe('Modell: Energieerhaltung (Achterbahn) – Großbahn', () => {
+  const mega = buildTrack('mega');
+  const andruck = (track: Track, st: { s: number; v: number }) => normalAcceleration(track, st.s, st.v, G) / G;
+
+  it('Aufbau: Station in 27,5 m, zwei geschlossene Tropfen-Loopings, Rampe am Ende höher als jede Starthöhe', () => {
+    expect(mega.points[0]!.y).toBeCloseTo(27.5, 9);
+    expect(mega.points[mega.points.length - 1]!.y).toBeGreaterThan(28);
+    const loops = mega.features.loops!;
+    expect(loops).toHaveLength(2);
+    loops.forEach((loop, i) => {
+      const a = mega.at(loop.start);
+      const b = mega.at(loop.end);
+      // eine volle Umdrehung, Ein- und Ausfahrt waagerecht am Boden
+      expect(b.theta - a.theta).toBeCloseTo(2 * Math.PI, 2);
+      expect(a.y).toBeCloseTo(0, 6);
+      expect(b.y).toBeCloseTo(0, 6);
+      // Scheitel: oben, Kehrseite, engster Radius
+      const top = mega.at(loop.top);
+      expect(top.theta - a.theta).toBeCloseTo(Math.PI, 2);
+      expect(1 / top.kappa).toBeCloseTo(MEGA_LOOPS[i]!.at(-1)![0], 1);
+      expect(top.y).toBeGreaterThan(10);
+    });
+    // Winkelsumme jedes Loopings bis zum Scheitel: π
+    for (const half of MEGA_LOOPS) expect(half.reduce((sum, [, a]) => sum + a, 0)).toBeCloseTo(Math.PI, 12);
+  });
+
+  it('Krümmung überall beschränkt (keine Knicke): Radius ≥ 3,5 m im Looping, ≥ 9 m sonst', () => {
+    const loops = mega.features.loops!;
+    for (const q of mega.points.slice(1, -1)) {
+      const inLoop = loops.some((l) => q.s > l.start - 0.1 && q.s < l.end + 0.1);
+      expect(Math.abs(q.kappa)).toBeLessThan(inLoop ? 1 / 3.5 : 1 / 9);
+    }
+  });
+
+  it('aus 20 m ohne Reibung: beide Loopings geschafft, Airtime nur auf dem ersten Hügel, Andruck höchstens 6 g', () => {
+    const { track, s0 } = placeStart('mega', 20);
+    const run = simulate(track, s0, 0, { tMax: 40 });
+    const [first, second] = track.features.loops!;
+    // ganz durch bis auf die Endrampe und zurück
+    expect(run.maxS).toBeGreaterThan(second!.end + 60);
+    expect(run.liftOff).not.toBeNull();
+    expect(run.liftOff!.s).toBeGreaterThan(first!.end);
+    expect(run.liftOff!.s).toBeLessThan(second!.start);
+    const out = run.samples.filter((q) => q.v > 0.5);
+    const inLoops = out.filter((q) => [first!, second!].some((l) => q.s > l.start && q.s < l.end));
+    expect(Math.min(...inLoops.map((q) => andruck(track, q)))).toBeGreaterThan(0.3);
+    const all = out.map((q) => andruck(track, q));
+    expect(Math.max(...all)).toBeLessThan(6);
+    // Airtime-Hügel: leicht negativ, aber nicht extrem
+    expect(Math.min(...all)).toBeGreaterThan(-0.8);
+    expect(Math.min(...all)).toBeLessThan(-0.2);
+    // Umkehrpunkt auf der Endrampe wieder genau in 20 m Höhe
+    expect(run.turns[0]!.y).toBeCloseTo(20, 1);
+  });
+
+  it('aus 14 m schafft der Zug den ersten Looping (Scheitel über 14 m) nicht', () => {
+    const { track, s0 } = placeStart('mega', 14);
+    const run = simulate(track, s0, 0, { tMax: 20 });
+    const first = track.features.loops![0]!;
+    expect(track.at(first.top).y).toBeGreaterThan(14);
+    expect(run.maxS).toBeLessThan(first.end);
+    expect(run.liftOff!.s).toBeGreaterThan(first.start);
+    expect(run.liftOff!.s).toBeLessThan(first.end);
+  });
+
+  it('Andruck in Ruhe: N/g = cos θ (auf der 45°-Abfahrt ≈ 0,71)', () => {
+    const { track, s0 } = placeStart('mega', 20);
+    expect(andruck(track, { s: s0, v: 0 })).toBeCloseTo(Math.cos(Math.PI / 4), 3);
   });
 });
