@@ -1,5 +1,95 @@
 # Bilder-Wunschliste
 
+## Runde 3 · Stand 28.10.2026: noch zu erzeugen (17 Bilder)
+
+Wunsch des Inhabers: weniger gezeichnete Elemente, mehr echte Bilder. Grundlage: alle 129 Bühnen (Bildtest-Referenzbilder, hell) durchgesehen. Aufgenommen ist alles, was gezeichnet ist, als Gegenstand erkennbar sein soll und nicht von Reglern verformt wird. Es gelten weiter die Regeln unten unter „So geht's“ (transparent, kein Text, keine Personen, Dateiname genau so, Upload nach `incoming/`; Zweig dafür: `claude/exciting-gauss-noh1h9`). Jede Stelle behält ihre gezeichnete Ersatzgrafik, solange das Bild fehlt.
+
+**Bewusst nicht auf der Liste:** Personen (gezeichnetes Kind, Rettungsschwimmer – Regel in `docs/BILDER.md`), alles Abstrakte (Graphen, Vektoren, 3D-Körper der Geometrie, Baumdiagramme), Bauteile, die sich verformen (Federn, Wellen, Strahlen).
+
+### R1 · Sonnenblume statt gezeichnetem Kind
+- **Simulation:** Zehnerpotenzen (`mathematik/zehnerpotenzen`, Stufe „Kind“ in `model.ts`, Größe wird auf 1,5 m angepasst, Text „Sonnenblume ≈ 1,5 m“)
+- **Datei:** `sonnenblume.png` → `src/assets/sims/zehnerpotenzen/sonnenblume.webp`
+- **Hintergrund:** transparent · **Format:** 1 : 3 hoch, mind. 700 × 2100 px · **Blick:** exakte Seitenansicht
+> A single tall sunflower plant growing straight up, the whole plant from the ground to the flower head fully visible, a few large green leaves along the straight stem, one open yellow flower head facing the viewer slightly to the right, exact side view with no perspective, the plant fills almost the full image height, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no soil, no pot, no shadow, photorealistic, clean educational style, no text, no numbers
+
+### R2–R4 · Kleidung in neutralem Hellgrau (wird in der Simulation eingefärbt)
+- **Simulation:** Zählprinzip, Situation „Outfits“ (`mathematik/zaehlprinzip`, Symbole `pants`, `shirt`, `hat` im Baum und in der Ergebnisliste; Farben aus `model.ts`)
+- **Dateien:** `hose.png`, `t-shirt.png`, `muetze.png` → `src/assets/sims/zaehlprinzip/`
+- **Hintergrund:** transparent · **Format:** 1 : 1, mind. 1024 × 1024 px · **Blick:** flach von vorn (Flatlay)
+- **Wichtig:** alle drei im selben Chat nacheinander, gleiches Licht, **sehr helles, neutrales Grau ohne Muster und ohne Aufdruck** – die Simulation färbt sie in Rot, Grün, Jeansblau usw. ein.
+> R2: A pair of plain long trousers laid perfectly flat and symmetric, seen exactly from the front, very light neutral grey cotton fabric without any pattern, print, logo or label, simple waistband and two straight legs, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+>
+> R3: A plain short-sleeved crew-neck T-shirt laid perfectly flat and symmetric, seen exactly from the front, very light neutral grey cotton without any pattern, print, logo or label, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+>
+> R4: A plain knitted beanie hat with a folded cuff, seen exactly from the front, very light neutral grey wool without any pattern, logo or label, no pompom, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+
+### R5 · Vakuum-Fotozelle
+- **Simulation:** Photoeffekt (`physik/photoeffekt/index.ts` `drawTube`, `drawElectrodes`; Kathode und Anode werden weiter gezeichnet, damit Elektronen und Feld genau sitzen)
+- **Datei:** `fotozelle.png` → `src/assets/sims/photoeffekt/fotozelle.webp`
+- **Hintergrund:** transparent · **Format:** 3 : 4 hoch, mind. 1200 × 1600 px · **Blick:** exakte Seitenansicht
+> An empty evacuated glass bulb of a laboratory photocell, clear thin glass with a smooth rounded shape on a short black base with two metal pins below, the inside completely empty and transparent, exact side view with no perspective, soft studio light from the upper left with gentle highlights on the glass, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no labels
+- **Hinweis:** Der Glaskolben muss **innen leer** sein (die Simulation zeichnet Kathode, Anode und Elektronen hinein).
+
+### R6 · Lichtquelle (Lampengehäuse)
+- **Simulation:** Photoeffekt (`drawLampAndLight`, Lampe links oben, Licht nach rechts unten)
+- **Datei:** `lampe.png` → `src/assets/sims/photoeffekt/lampe.webp`
+- **Hintergrund:** transparent · **Format:** 2 : 1, mind. 1600 × 800 px · **Blick:** exakte Seitenansicht, Lichtaustritt nach rechts
+> A compact cylindrical laboratory lamp housing made of dark grey powder-coated metal with small cooling slots, a round light exit opening on the right side with a dark lens, mounted on a short metal rod, exact side view with no perspective, the lamp is switched off, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no labels, no logo
+
+### R7 · Elektronenbeugungsröhre
+- **Simulation:** Elektronenbeugung (`physik/elektronenbeugung/index.ts` `drawTube`; Strahl, Leuchtringe und Beschriftung zeichnet weiter die Simulation)
+- **Datei:** `beugungsroehre.png` → `src/assets/sims/elektronenbeugung/beugungsroehre.webp`
+- **Hintergrund:** transparent · **Format:** 3 : 1, mind. 2100 × 700 px · **Blick:** exakte Seitenansicht, waagerecht, Kolben rechts
+> A laboratory electron diffraction tube lying perfectly horizontal, a long clear glass neck on the left with a small electron gun inside near the left end and electrical contacts at the left end cap, widening on the right into a large clear glass sphere, the inside of the sphere completely empty, the tube is switched off and not glowing, exact side view with no perspective, soft studio light from the upper left with gentle reflections on the glass, no hard shadows, isolated on a fully transparent background, no stand, no shadow, photorealistic, clean educational style, no text, no numbers, no labels
+
+### R8 · Laser auf kleinem Ständer
+- **Simulation:** Doppelspalt und Gitter (`physik/doppelspalt/index.ts` `drawSetup`, Laser links, Strahl nach rechts)
+- **Datei:** `laser.png` → `src/assets/sims/doppelspalt/laser.webp`
+- **Hintergrund:** transparent · **Format:** 3 : 1, mind. 1800 × 600 px · **Blick:** exakte Seitenansicht, Austritt nach rechts
+> A compact cylindrical laboratory diode laser module in matte black anodised aluminium with a small aperture on the right end and a cable gland on the left end, mounted on a short silver post with a small round foot, exact side view with no perspective, the laser is switched off, no beam, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no warning label, no logo
+
+### R9 · Karton (Wellpappe), Oberfläche
+- **Simulation:** Extremwertprobleme, Schachtel aus Karton (`mathematik/extremwertprobleme/index.ts` `drawBox`, Flächen der Schachtel und des flachen Netzes)
+- **Datei:** `karton.png` → `src/assets/sims/extremwertprobleme/karton.webp`
+- **Hintergrund:** deckend · **Format:** 1 : 1, mind. 1024 × 1024 px · **Blick:** genau von oben
+> A seamless flat surface of plain brown cardboard seen exactly from above, fine paper fibres and a very subtle corrugation texture, evenly lit with soft diffuse light, no edges, no folds, no stains, no print, no tape, fills the entire image, photorealistic texture, no text
+
+### R10 · Helles Holz, Oberfläche
+- **Simulation:** Volumen von Quadern (`mathematik/quader-volumen/index.ts` `drawCubes`, `drawUnitCube` – die Einheitswürfel)
+- **Datei:** `holz.png` → `src/assets/sims/quader-volumen/holz.webp`
+- **Hintergrund:** deckend · **Format:** 1 : 1, mind. 1024 × 1024 px · **Blick:** genau von oben
+> A seamless flat surface of light natural beech wood seen exactly from above, fine straight grain, matte finish, evenly lit with soft diffuse light, no knots, no edges, no stains, fills the entire image, photorealistic texture, no text
+
+### R11 · Einfamilienhaus (2× verwendet)
+- **Simulation:** Mittelsenkrechte und Winkelhalbierende, Anwendung „Spielplatz“ (`mathematik/mittelsenkrechte/index.ts` `drawHouse`, Häuser A und B)
+- **Datei:** `haus.png` → `src/assets/sims/mittelsenkrechte/haus.webp`
+- **Hintergrund:** transparent · **Format:** 1 : 1, mind. 1024 × 1024 px · **Blick:** exakte Vorderansicht
+> A small detached family house seen exactly from the front, white plastered walls, a dark grey pitched roof, a wooden front door in the middle and two windows, simple and friendly, no garden, no fence, no car, no people, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text, no house number
+
+### R12 · Schaukel (Spielplatz)
+- **Simulation:** wie R11 (`drawSwing`)
+- **Datei:** `schaukel.png` → `src/assets/sims/mittelsenkrechte/schaukel.webp`
+- **Hintergrund:** transparent · **Format:** 1 : 1, mind. 1024 × 1024 px · **Blick:** exakte Vorderansicht
+> A simple wooden playground swing frame with two swings hanging on chains, seen exactly from the front, natural wood, no people, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+
+### R13–R17 · Sportarten (kleine Bilder unter den Säulen)
+- **Simulation:** Diagramme lesen (`mathematik/diagramme`, Datensatz „Lieblingssport“: Fußball, Tanzen, Reiten, Tennis, Turnen – Bild unter jeder Säule bzw. im Kreisdiagramm an der Beschriftung)
+- **Dateien:** `fussball.png`, `tanzschuhe.png`, `reithelm.png`, `tennis.png`, `turnringe.png` → `src/assets/sims/diagramme/`
+- **Hintergrund:** transparent · **Format:** 1 : 1, mind. 768 × 768 px · **Blick:** leicht von vorn oben, Gegenstand mittig
+- **Wichtig:** alle fünf im selben Chat nacheinander, gleiches Licht und gleiche Größe im Bild.
+> R13: A classic white and black leather football, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+>
+> R14: A pair of light pink satin ballet shoes with ribbons, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+>
+> R15: A black velvet equestrian riding helmet, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+>
+> R16: A tennis racket leaning diagonally with a yellow tennis ball in front of it, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+>
+> R17: A pair of wooden gymnastics rings hanging on straps, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+---
+
+
 ## Stand 26.10.2026: alle eingebaut
 
 Von den 93 gelieferten Bildern waren am 22.10. **84 eingebaut**. Die 9 unpassenden wurden neu erzeugt (Prompts: `docs/agenten/PROMPT-BILDER-NACHLIEFERUNG.md`) und am 26.10. eingebaut; Beschreibung und Prompts stehen in `docs/BILDER.md` im Abschnitt „Nachgelieferte Bilder“. Die alten Fassungen in `docs/bilder-eingang/` sind gelöscht.
