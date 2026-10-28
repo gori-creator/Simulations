@@ -69,6 +69,42 @@ const thirdNormal = normalize(cross(transform(hoopA, [0, 1, 0]), transform(hoopB
 const thirdX = normalize(cross([0, 0, 1], thirdNormal));
 const thirdZ = cross(thirdX, thirdNormal);
 const hoopC: Mat4 = [...thirdX, 0, ...thirdNormal, 0, ...thirdZ, 0, 0, 0, 0, 1];
+/**
+ * Fester Meridianring, der immer zum Betrachter zeigt (hebt die Neigung `root` auf):
+ * Sein Umriss ist der Umriss der ganzen Kugel. Ohne ihn wirkte der Kopf je nach
+ * Schwenk bis zu 9 % breiter als hoch, also oval statt rund.
+ */
+const facing = chain(RY(0.17), RX(-0.16), RX(Math.PI / 2));
+const meridian = chain(center, facing);
+
+/** Außenradius der großen Ringe (Mittellinie 2,65 plus halbe Bandbreite). */
+const HEAD_RADIUS = 2.65 + 0.135;
+
+/**
+ * Umriss des Kopfs in der Bildebene zur Zeit `seconds`: größte Ausdehnung der
+ * großen Ringe je Richtung (Stützfunktion, Abstand vom Kopfmittelpunkt). Für
+ * einen runden Kopf sind alle Werte gleich; geprüft in tests/skulptur.test.ts.
+ */
+export function headOutline(seconds: number, directions = 72): number[] {
+  const assembly = RY(turnAngle(seconds));
+  const rings: [Mat4, number][] = [
+    [chain(root, assembly, hoopA), HEAD_RADIUS],
+    [chain(root, assembly, hoopB), HEAD_RADIUS],
+    [chain(root, assembly, hoopC), 2.65 + 0.09],
+    [chain(root, facing), HEAD_RADIUS],
+  ];
+  const support = Array<number>(directions).fill(0);
+  for (const [m, r] of rings)
+    for (let i = 0; i < 720; i++) {
+      const a = (i / 720) * twoPi;
+      const p = transform(m, [r * Math.cos(a), 0, r * Math.sin(a)]);
+      for (let k = 0; k < directions; k++) {
+        const d = (k / directions) * twoPi;
+        support[k] = Math.max(support[k]!, p[0] * Math.cos(d) + p[1] * Math.sin(d));
+      }
+    }
+  return support;
+}
 
 const VERTEX = `attribute vec3 position;attribute vec3 normal;uniform mat4 projection;uniform mat4 model;varying vec3 vNormal;varying vec3 vLocal;varying vec3 vLocalNormal;varying vec3 vWorld;void main(){vec4 p=model*vec4(position,1.);vNormal=normalize(mat3(model)*normal);vLocal=position;vLocalNormal=normal;vWorld=p.xyz;gl_Position=projection*p;}`;
 // Das Korn ist eine feste Materialtextur mit Mipmaps: Es dreht sich mit der Oberfläche und wird nicht je Bild neu gewürfelt.
@@ -78,7 +114,7 @@ const FRAGMENT = `precision highp float;varying vec3 vNormal;varying vec3 vLocal
 class SculptureRenderer {
   private program!: WebGLProgram;
   private loc!: { position: number; normal: number; model: WebGLUniformLocation | null; projection: WebGLUniformLocation | null; pigment: WebGLUniformLocation | null };
-  private meshes!: Record<'outer' | 'crossHoop' | 'middle' | 'inner' | 'sphere' | 'axis' | 'post' | 'plinth' | 'base' | 'collar' | 'floor', Mesh>;
+  private meshes!: Record<'outer' | 'crossHoop' | 'meridian' | 'middle' | 'inner' | 'sphere' | 'axis' | 'post' | 'plinth' | 'base' | 'collar' | 'floor', Mesh>;
 
   constructor(private readonly gl: WebGLRenderingContext) {
     this.setup();
@@ -196,6 +232,7 @@ class SculptureRenderer {
     this.meshes = {
       outer: this.band(2.65, 0.27, 0.24),
       crossHoop: this.band(2.65, 0.18, 0.18),
+      meridian: this.band(2.65, 0.27, 0.16),
       middle: this.band(2.12, 0.045, 0.05),
       inner: this.band(1.43, 0.035, 0.035),
       sphere: this.sphere(),
@@ -234,6 +271,7 @@ class SculptureRenderer {
     this.paint(meshes.axis, T(0, -0.02, -0.5));
     this.paint(meshes.sphere, chain(T(0, 3.18, -0.5), S(0.17)));
     // Drei feste Ringebenen bilden einen räumlichen Rahmen; der ganze Kopf schwenkt als starres Ganzes.
+    this.paint(meshes.meridian, meridian, [0.07, 0.27, 0.78]);
     const assembly = chain(center, RY(turnAngle(time)));
     this.paint(meshes.outer, chain(assembly, hoopA));
     this.paint(meshes.outer, chain(assembly, hoopB), [0.075, 0.32, 0.88]);
