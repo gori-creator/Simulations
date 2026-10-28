@@ -2,7 +2,7 @@
 
 Auftrag: `docs/agenten/AUFTRAG-APPLE-STIL.md`. Vorbild ist das Glasfenster der Achterbahn auf der Startseite: ruhig, hochwertig, viel Luft, feine Glas- und Lichteffekte, nicht bunt.
 
-**Stand: Entwurf zur Abnahme.** Eingebaut sind die Vorschläge 1–5. Alles steht in einer eigenen Datei, `src/styles/apple-stil.css`. Sie wird nach `global.css` geladen (`BaseLayout.astro`, `404.astro`). Ohne diese Datei sieht die Seite aus wie vorher. Nach der Zustimmung kann sie in `global.css` aufgehen.
+**Stand 28.10.2026: abgenommen und eingebaut.** Die Vorschläge 1–5 stehen am Ende von `src/styles/global.css` (Abschnitt „Feinschliff im ruhigen Apple-Stil“); die frühere eigene Datei `apple-stil.css` gibt es nicht mehr. Der Stand von `global.css` davor liegt in `docs/design/apple-stil/global-vor-apple-stil.css`. Entscheidungen des Inhabers: Die Karten im Katalog der Startseite bekommen denselben Stil; im Dunkelmodus behält der gewählte Reiter zusätzlich den blauen Unterstrich. Die weiteren Vorschläge (6–12) bespricht der Inhaber selbst mit dem Agenten.
 
 ## Vorschläge
 
@@ -26,7 +26,7 @@ Aufwand: S = unter 1 Stunde, M = halber Tag, L = mehr.
 ### 1. Kopfzeile aus Glas (eingebaut)
 
 - **Was:** Die Kopfzeile war schon leicht durchscheinend. Jetzt ist sie mattes Glas mit stärkerer Unschärfe (`blur(20px) saturate(180%)`) und einer feinen Haarlinie unten. Navigationspunkte haben Kapselform. Der Sprachumschalter ist ein Segmented Control: Das gewählte Segment ist hell und leicht angehoben statt blau gefüllt. Die Einstellungstafel (Zahnrad) bekommt größere Rundung und einen weicheren Schatten. Knöpfe ohne Rahmen (`btn--ghost`, z. B. Zahnrad und Farbschema) bleiben ohne Rahmen.
-- **Wo:** `src/styles/apple-stil.css`, Abschnitt 1.
+- **Wo:** `global.css`, Apple-Stil, Abschnitt 1.
 - **Risiken:**
   - Lesbarkeit: Der Glasgrund ist zu 72 % deckend, Schrift bleibt lesbar.
   - Leistung: Ein `backdrop-filter` auf einer kleinen Fläche ist auch auf schwachen Rechnern unkritisch.
@@ -36,7 +36,7 @@ Aufwand: S = unter 1 Stunde, M = halber Tag, L = mehr.
 ### 2. Simulationsfenster (eingebaut)
 
 - **Was:** Die Simulation wirkt wie ein macOS-Fenster: mehrstufiger, weicher Schatten nach unten und ein feiner Rand. Das Bedienfeld ist wie eine Seitenleiste leicht getönt. Die einklappbaren Gruppen liegen darauf als helle Inseln wie in den iOS-Einstellungen.
-- **Wo:** `apple-stil.css`, Abschnitt 2.
+- **Wo:** `global.css`, Apple-Stil, Abschnitt 2.
 - **Unverändert wegen der Bildtests:** Größe, Rand, Rundung und Hintergrund der Bühne und alles, was auf ihr liegt. Breite des Bedienfelds und Innenabstände bleiben gleich. Die Bühne ist also gleich groß.
 - **Risiken:**
   - Kontrast: graue Schrift auf der Seitenleiste 6,0 : 1 (hell) und 7,4 : 1 (dunkel).
@@ -45,7 +45,7 @@ Aufwand: S = unter 1 Stunde, M = halber Tag, L = mehr.
 ### 3. Reiter als Segmented Control (eingebaut)
 
 - **Was:** „Einstellungen · Beispiele · Ergebnisse“ stehen auf einer grauen Spur. Der gewählte Reiter ist ein helles, leicht angehobenes Segment, wie in macOS und iOS. Die Auswahlfelder in den Einstellungen (z. B. „Fahrt / Energie-Diagramme“, „Tal / Hügel …“) haben denselben Stil.
-- **Wo:** `apple-stil.css`, Abschnitt 3.
+- **Wo:** `global.css`, Apple-Stil, Abschnitt 3.
 - **Was erhalten bleibt:** Das Markup ist unverändert. Tastaturbedienung (Pfeiltasten, Pos1/Ende) und Rollen kommen weiter aus `host.ts`. Geprüft: Mit Pfeil rechts wechselt der Reiter und das passende Feld erscheint.
   - Auf dem Handy haftet die Leiste weiter unter der Kopfzeile (geprüft: 64 px von oben, hell und dunkel).
   - Im Vollbild haftet sie am oberen Rand des Bedienfelds.
@@ -60,7 +60,7 @@ Aufwand: S = unter 1 Stunde, M = halber Tag, L = mehr.
   - 18 px Rundung
   - einen sehr weichen Schatten
 - Beim Überfahren hebt sich die Karte sanft an. Der Schatten wird größer, der Rand färbt sich leicht in der Fachfarbe. Bei reduzierter Bewegung hebt sich die Karte nicht, nur der Schatten ändert sich.
-- **Wo:** `apple-stil.css`, Abschnitt 4. Die Startseite behält ihre eigene, ruhigere Kartendarstellung aus dem Entwurf v13 (`home.css` wiegt dort schwerer).
+- **Wo:** `global.css`, Apple-Stil, Abschnitt 4. Gilt auch für den Katalog der Startseite.
 - **Risiken:**
   - Kontrast: Die Kartenränder sind schwächer. Die Karte hebt sich vor allem durch die weiße Fläche und den Schatten ab. Inhalt und Link sind über den Titel klar erkennbar.
   - Leistung: Auf der Fachseite liegen viele Karten (auch versteckte für andere Bundesländer). Der Schatten ist statisch, die Animation läuft nur auf der Karte unter der Maus.
@@ -71,7 +71,7 @@ Aufwand: S = unter 1 Stunde, M = halber Tag, L = mehr.
   - Der Hauptknopf (z. B. „Abspielen“, „Losfahren“) hat oben einen zarten Glanz und einen farbigen weichen Schatten.
   - Beim Drücken gibt der Knopf kurz nach (`scale(0.97)`), nur wenn keine reduzierte Bewegung gewünscht ist.
   - Alle Übergänge nutzen eine gemeinsame, sanfte Kurve.
-- **Wo:** `apple-stil.css`, Abschnitt 5.
+- **Wo:** `global.css`, Apple-Stil, Abschnitt 5.
 - **Risiken:**
   - Kontrast: Der Glanz endet auf halber Höhe. Hinter der Schrift liegt das unveränderte Blau, Weiß auf Blau bleibt über 4,5 : 1.
   - „Abspielen läuft“ sieht aus wie bisher: heller Knopf mit blauer Schrift.

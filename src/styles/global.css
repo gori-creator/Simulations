@@ -2795,3 +2795,357 @@ legend .ctl__info {
 .sim--fullscreen .sim-tabs {
   top: -18px;
 }
+
+/* ==========================================================================
+   Feinschliff im ruhigen Apple-Stil (Entwurf, docs/agenten/AUFTRAG-APPLE-STIL.md)
+
+   Eingearbeitet am 28.10.2026 (vorher eigene Datei apple-stil.css; der Stand von
+   global.css davor liegt in docs/design/apple-stil/global-vor-apple-stil.css).
+   Steht bewusst am Ende, damit es die Regeln oben überschreibt, und ändert nur
+   das Aussehen:
+   1. Kopfzeile aus mattem Glas, Sprachumschalter als Segmented Control
+   2. Simulationsfenster mit weichem Fensterschatten und getönter Seitenleiste
+   3. Reiter im Bedienfeld als Segmented Control
+   4. Karten mit Haarlinie, größerer Rundung und sanftem Anheben
+   5. Knöpfe als Kapseln mit sanften Übergängen
+
+   Bewusst unverändert, weil die Bildtests die Bühne samt Rand fotografieren:
+   Größe, Rand, Rundung und Hintergrund von [data-sim-stage], alles, was auf
+   der Bühne liegt (z. B. Zoom-Knöpfe .plot-controls), sowie --surface und
+   --border (Rand und Ecken der Bühne). Neue Farben stehen deshalb in eigenen
+   Variablen (--ap-*).
+   ========================================================================== */
+
+:root {
+  /* Haarlinien statt kräftiger Rahmen */
+  --ap-hairline: rgb(16 24 40 / 0.09);
+  --ap-hairline-strong: rgb(16 24 40 / 0.14);
+  /* Glas der Kopfzeile; --ap-glass-solid, wenn Transparenz nicht geht oder nicht gewünscht ist */
+  --ap-glass: rgb(250 251 253 / 0.72);
+  --ap-glass-solid: #fafbfd;
+  /* Seitenleiste (Bedienfeld) wie in macOS-Fenstern leicht getönt */
+  --ap-sidebar: #f8f9fc;
+  /* Segmented Control: Spur und gewähltes Segment */
+  --ap-seg-track: #eceff4;
+  --ap-seg-on: #ffffff;
+  --ap-seg-shadow: 0 1px 2px rgb(16 24 40 / 0.12), 0 0 0 0.5px rgb(16 24 40 / 0.06);
+  /* Schatten: Karte, angehobene Karte, Fenster */
+  --ap-elev-1: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 14px rgb(16 24 40 / 0.05);
+  --ap-elev-2: 0 2px 6px rgb(16 24 40 / 0.06), 0 22px 44px -12px rgb(16 24 40 / 0.2);
+  --ap-elev-window: 0 1px 2px rgb(16 24 40 / 0.05), 0 12px 28px -6px rgb(16 24 40 / 0.1), 0 40px 80px -24px rgb(16 24 40 / 0.22);
+  /* gemeinsame Übergangskurve (sanft aus, ohne Nachschwingen) */
+  --ap-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --ap-radius-card: 18px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --ap-hairline: rgb(255 255 255 / 0.08);
+    --ap-hairline-strong: rgb(255 255 255 / 0.14);
+    --ap-glass: rgb(13 18 24 / 0.7);
+    --ap-glass-solid: #0f151d;
+    --ap-sidebar: #11171f;
+    --ap-seg-track: rgb(255 255 255 / 0.07);
+    --ap-seg-on: #364256;
+    --ap-seg-shadow: 0 1px 2px rgb(0 0 0 / 0.5), inset 0 0.5px 0 rgb(255 255 255 / 0.1);
+    --ap-elev-1: 0 1px 2px rgb(0 0 0 / 0.35), 0 6px 18px rgb(0 0 0 / 0.22);
+    --ap-elev-2: 0 2px 6px rgb(0 0 0 / 0.4), 0 22px 44px -12px rgb(0 0 0 / 0.6);
+    --ap-elev-window: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 28px -6px rgb(0 0 0 / 0.35), 0 40px 80px -24px rgb(0 0 0 / 0.6);
+  }
+}
+
+:root[data-theme='dark'] {
+  --ap-hairline: rgb(255 255 255 / 0.08);
+  --ap-hairline-strong: rgb(255 255 255 / 0.14);
+  --ap-glass: rgb(13 18 24 / 0.7);
+  --ap-glass-solid: #0f151d;
+  --ap-sidebar: #11171f;
+  --ap-seg-track: rgb(255 255 255 / 0.07);
+  --ap-seg-on: #364256;
+  --ap-seg-shadow: 0 1px 2px rgb(0 0 0 / 0.5), inset 0 0.5px 0 rgb(255 255 255 / 0.1);
+  --ap-elev-1: 0 1px 2px rgb(0 0 0 / 0.35), 0 6px 18px rgb(0 0 0 / 0.22);
+  --ap-elev-2: 0 2px 6px rgb(0 0 0 / 0.4), 0 22px 44px -12px rgb(0 0 0 / 0.6);
+  --ap-elev-window: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 28px -6px rgb(0 0 0 / 0.35), 0 40px 80px -24px rgb(0 0 0 / 0.6);
+}
+
+/* ---------- 1. Kopfzeile aus Glas ---------- */
+
+.site-header {
+  background: var(--ap-glass);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom-color: var(--ap-hairline);
+}
+
+/* Ohne backdrop-filter wäre halbdurchsichtiger Grund unruhig: deckend zeigen */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    background: var(--ap-glass-solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background: var(--ap-glass-solid);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+.site-nav__link {
+  border-radius: 999px;
+  transition:
+    background-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease);
+}
+
+/* Sprachumschalter: gewähltes Segment hell und angehoben statt blau gefüllt */
+.lang-switch {
+  padding: 2px;
+  border: 0;
+  background: var(--ap-seg-track);
+}
+
+.lang-switch a {
+  transition:
+    background-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease);
+}
+
+.lang-switch a:hover {
+  color: var(--text);
+}
+
+.lang-switch a[aria-current='true'] {
+  background: var(--ap-seg-on);
+  color: var(--text);
+  box-shadow: var(--ap-seg-shadow);
+}
+
+/* Menü und Einstellungen als schwebende Tafeln */
+.settings__panel {
+  border-color: var(--ap-hairline);
+  border-radius: var(--ap-radius-card);
+  box-shadow: var(--ap-elev-2);
+}
+
+/* ---------- 2. Simulationsfenster ---------- */
+
+/* Rand, Rundung und Hintergrund der Bühne bleiben unverändert (Bildtests). */
+.sim {
+  border-color: var(--ap-hairline-strong);
+  box-shadow: var(--ap-elev-window);
+}
+
+.sim__panel {
+  border-left-color: var(--ap-hairline);
+  background: var(--ap-sidebar);
+  border-radius: 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0;
+}
+
+/* Einklappbare Gruppen als helle Inseln auf der getönten Seitenleiste */
+.ctl-group[role='group'] {
+  border-color: var(--ap-hairline);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 1px 1px rgb(16 24 40 / 0.03);
+}
+
+.ctl-group__chevron {
+  transition: transform 0.25s var(--ap-ease);
+}
+
+@media (max-width: 860px) {
+  .sim__panel {
+    border-top-color: var(--ap-hairline);
+    border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
+  }
+}
+
+.sim--fullscreen .sim__panel {
+  border-radius: 0;
+}
+
+/* ---------- 3. Reiter als Segmented Control ---------- */
+
+/*
+ * Die Leiste behält ihren deckenden Grund (sie haftet beim Scrollen über dem
+ * Inhalt); die Spur liegt als ::before darunter, die Reiter sind die Segmente.
+ * Tastaturbedienung und Rollen kommen unverändert aus host.ts (bindTabs).
+ */
+.sim-tabs {
+  gap: 2px;
+  padding: 14px 17px 11px;
+  border-bottom: 1px solid var(--ap-hairline);
+  background: var(--ap-sidebar);
+}
+
+.sim-tabs::before {
+  content: '';
+  position: absolute;
+  inset: 11px 14px 8px;
+  z-index: -1;
+  border-radius: 11px;
+  background: var(--ap-seg-track);
+}
+
+.sim-tabs__tab {
+  min-height: 34px;
+  margin-bottom: 0;
+  padding: 4px 8px;
+  border-bottom: 0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 650;
+  transition:
+    background-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease),
+    box-shadow 0.2s var(--ap-ease);
+}
+
+.sim-tabs__tab[aria-selected='true'] {
+  background: var(--ap-seg-on);
+  box-shadow: var(--ap-seg-shadow);
+}
+
+/* Dunkelmodus: Das gewählte Segment hebt sich nur wenig ab, darum zusätzlich der blaue Unterstrich */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sim-tabs__tab[aria-selected='true'] {
+    box-shadow: var(--ap-seg-shadow), inset 0 -2px 0 var(--brand);
+  }
+}
+
+:root[data-theme='dark'] .sim-tabs__tab[aria-selected='true'] {
+  box-shadow: var(--ap-seg-shadow), inset 0 -2px 0 var(--brand);
+}
+
+.sim-tabs__tab:focus-visible {
+  outline-offset: 0;
+}
+
+.sim-tabs__count {
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+}
+
+/* Auswahlfelder in den Einstellungen im gleichen Stil */
+.segmented {
+  padding: 2px;
+  border-radius: 10px;
+  background: var(--ap-seg-track);
+}
+
+.segmented__input:checked + span {
+  background: var(--ap-seg-on);
+  box-shadow: var(--ap-seg-shadow);
+}
+
+.segmented__option > span {
+  transition:
+    background-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease);
+}
+
+/* ---------- 4. Karten ---------- */
+
+.card {
+  border-color: var(--ap-hairline);
+  border-radius: var(--ap-radius-card);
+  box-shadow: var(--ap-elev-1);
+  transition:
+    transform 0.35s var(--ap-ease),
+    box-shadow 0.35s var(--ap-ease),
+    border-color 0.35s var(--ap-ease);
+}
+
+.card--link:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ap-elev-2);
+  border-color: color-mix(in srgb, var(--accent, var(--brand)) 40%, transparent);
+}
+
+.card__thumb {
+  border-bottom-color: var(--ap-hairline);
+}
+
+.card--planned {
+  border-color: var(--ap-hairline-strong);
+  box-shadow: none;
+}
+
+/* Kästen der Fach- und Simulationsseite in derselben Formensprache */
+.lp-entry,
+.aside-box {
+  border-color: var(--ap-hairline);
+  border-radius: var(--ap-radius-card);
+  box-shadow: var(--ap-elev-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card--link:hover {
+    transform: none;
+  }
+}
+
+/* ---------- 5. Knöpfe als Kapseln ---------- */
+
+.btn {
+  border-color: var(--ap-hairline-strong);
+  border-radius: 999px;
+  box-shadow: 0 1px 1px rgb(16 24 40 / 0.04);
+  transition:
+    background-color 0.2s var(--ap-ease),
+    border-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease),
+    box-shadow 0.2s var(--ap-ease),
+    transform 0.15s var(--ap-ease);
+}
+
+.btn--primary {
+  border-color: transparent;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 55%),
+    var(--brand);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.18),
+    0 1px 2px color-mix(in srgb, var(--brand) 35%, transparent),
+    0 4px 12px -4px color-mix(in srgb, var(--brand) 45%, transparent);
+}
+
+.btn--primary:hover {
+  border-color: transparent;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0) 55%),
+    var(--brand-strong);
+}
+
+.btn--ghost {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Abspielen läuft: heller Knopf mit blauer Schrift (wie bisher), ohne Verlauf */
+[data-action='play'].is-playing,
+[data-action='play'].is-playing:hover {
+  border-color: var(--ap-hairline-strong);
+  background: var(--surface);
+  color: var(--brand);
+  box-shadow: 0 1px 1px rgb(16 24 40 / 0.04);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+.chip {
+  border-color: var(--ap-hairline-strong);
+  transition:
+    background-color 0.2s var(--ap-ease),
+    border-color 0.2s var(--ap-ease),
+    color 0.2s var(--ap-ease);
+}
+
+.chip[aria-pressed='true'] {
+  border-color: var(--brand);
+}
