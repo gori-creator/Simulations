@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Funktionsbegriff: Zuordnungen als Pfeildiagramm, Wertetabelle und Graph synchron, Eindeutigkeit prüfen, Zuordnungen umkehren und der senkrechte Linientest an Kreis, liegender Parabel, Treppenfunktion und mehr."
----
-
 ## Worum geht es?
 
 Eine **Zuordnung** ordnet Elementen einer Menge $A$ Elemente einer Menge $B$ zu, z. B. jeder Zahl ihr Quadrat oder jedem Kind seinen Geburtsmonat. Eine Zuordnung heißt **Funktion**, wenn sie **eindeutig** ist:

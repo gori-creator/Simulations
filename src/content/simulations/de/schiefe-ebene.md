@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur schiefen Ebene – Gewichtskraft in Hangabtriebskraft und Normalkraft zerlegen, Haft- und Gleitreibung, Grenzwinkel, Rutschen mit a = g · (sin α − μ · cos α), Kraftmesser, Messreihe und Diagramm F(α)."
----
-
 ## Worum geht es?
 
 Auf einer **schiefen Ebene** mit dem Neigungswinkel $\alpha$ wirkt auf einen Körper die **Gewichtskraft** $F_G = m \cdot g$ senkrecht nach unten. Man zerlegt sie in zwei Komponenten:

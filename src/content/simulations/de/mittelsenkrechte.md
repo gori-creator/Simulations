@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. Klasse: Mittelsenkrechte und Winkelhalbierende als Ortslinien gleicher Abstände entdecken, beide Grundkonstruktionen mit Zirkel und Lineal Schritt für Schritt verfolgen, einen Treffpunkt an einer Straße finden und als Ausblick den Umkreismittelpunkt eines Dreiecks untersuchen."
----
-
 ## Worum geht es?
 
 Die **Mittelsenkrechte** $m$ einer Strecke $[AB]$ ist die Gerade, die durch den Mittelpunkt $M$ von $[AB]$ geht und senkrecht auf $[AB]$ steht. Sie hat eine besondere Eigenschaft:

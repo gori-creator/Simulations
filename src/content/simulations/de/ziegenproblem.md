@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum Ziegenproblem (Monty-Hall-Problem) – selbst spielen oder tausende Spiele simulieren und herausfinden, ob sich Wechseln lohnt.
----
-
 ## Worum geht es?
 
 In einer Spielshow gibt es drei Türen. Hinter einer steht ein **Auto**, hinter den beiden anderen je eine **Ziege**.

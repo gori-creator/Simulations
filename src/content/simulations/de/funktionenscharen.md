@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 12. und 13. Klasse: Funktionenscharen mit Parameter k – Extrem- und Wendepunkte in Abhängigkeit von k, Ortskurven mit schrittweiser Herleitung, gemeinsame Punkte aller Scharkurven und die Fallunterscheidung auf einem k-Strahl, mit ziehbaren Extrempunkten und „k läuft“."
----
-
 ## Worum geht es?
 
 Eine **Funktionenschar** fasst unendlich viele Funktionen zusammen, die sich nur in einem **Parameter** $k$ unterscheiden, zum Beispiel $f_k(x) = x^3 - kx$. Für jedes $k$ erhält man einen eigenen Graphen. Beim Ableiten wird $k$ wie eine feste Zahl behandelt: $f_k'(x) = 3x^2 - k$, $f_k''(x) = 6x$.

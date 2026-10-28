@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. Klasse: Figuren an einer Achse oder an einem Punkt spiegeln, die Konstruktion mit Lot und gleichen Abständen sehen, Umklappen und Drehen um 180° animiert verfolgen, Umlaufsinn, Fixpunkte und Fixgeraden untersuchen und Symmetrieachsen selbst einzeichnen."
----
-
 ## Worum geht es?
 
 Bei einer **Achsenspiegelung** an der Achse $s$ wird jeder Punkt $P$ auf einen Bildpunkt $P'$ abgebildet. Es gilt:

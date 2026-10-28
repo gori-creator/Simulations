@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the natural exponential function: why the base e? For y = bˣ, f′(x) : f(x) = ln b, and only for b = e do f and f′ coincide. Plus the tangent to y = eˣ with slope triangle and (1 + 1/n)ⁿ as compound interest."
----
-
 ## What is it about?
 
 For every exponential function $f(x) = b^x$ the derivative is a fixed multiple of the function itself:

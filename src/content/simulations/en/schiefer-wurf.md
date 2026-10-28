@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of horizontal and oblique projectile motion – trajectory with stroboscope and vectors, splitting into x and y motion, angle comparison, target practice and air resistance on Earth, the Moon and Mars."
----
-
 ## What is it about?
 
 A thrown ball performs two motions **at the same time** that do not affect each other (**principle of superposition**):

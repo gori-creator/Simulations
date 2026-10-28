@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu Ober- und Untersummen – das Integral als Grenzwert von Rechtecksummen und als Flächenbilanz.
----
-
 ## Worum geht es?
 
 Die Fläche zwischen einem Graphen und der x-Achse lässt sich mit **Rechtecken** annähern. Man teilt das Intervall $[a; b]$ in $n$ gleich breite Streifen der Breite $\Delta x = \frac{b - a}{n}$.

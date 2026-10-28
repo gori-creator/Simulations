@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of electromagnetic induction: push a magnet into a coil, pull a rod on rails through a magnetic field, turn a generator – with voltmeter, U(t) graph, Lenz’s law, U = B · l · v and Û = n · B · A · ω."
----
-
 ## What is it about?
 
 When the magnetic flux $\Phi = B \cdot A \cdot \cos\varphi$ through a coil changes, a voltage is induced:

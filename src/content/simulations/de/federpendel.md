@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Federpendel – harmonische Schwingung mit Zeigerdiagramm, y(t)-, v(t)- und a(t)-Diagramm, Energieumwandlung, Dämpfung und Messung der Periodendauer T = 2π·√(m/D) mit der Stoppuhr."
----
-
 ## Worum geht es?
 
 Ein Körper der Masse $m$ hängt an einer Schraubenfeder mit der **Federhärte** $D$. In der **Ruhelage** ist die Feder um $s_0$ gedehnt; dort ist die Federkraft genauso groß wie die Gewichtskraft:

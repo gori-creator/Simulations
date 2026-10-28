@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 11: investigate how functions behave as x → +∞ and x → −∞ – a point runs outwards on a logarithmic scale, the view zooms out, a magnifier shows the tiny distance to the horizontal asymptote, the table fills up and a draggable ε-strip makes the limit visible; plus counterexamples without a limit."
----
-
 ## What is it about?
 
 How does $f(x)$ behave when $x$ gets larger and larger ($x \to +\infty$) or smaller and smaller ($x \to -\infty$)? There are two typical cases:

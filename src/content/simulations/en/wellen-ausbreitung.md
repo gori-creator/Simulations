@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of mechanical waves – transverse and longitudinal waves on a chain of coupled particles, wave front, wavelength between particles in phase, c = λ·f, snapshot y(x) and time graph y(t)."
----
-
 ## What is it about?
 
 A **source** sets one particle of a chain of coupled particles oscillating. The coupling (springs) passes the motion on from particle to particle, each one starting a little later. What travels is the **state of oscillation** and **energy** – the particles themselves only oscillate about their **rest position**.

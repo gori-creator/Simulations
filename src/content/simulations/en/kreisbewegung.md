@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of uniform circular motion: speed, period, centripetal acceleration and centripetal force – with a ball on a string that can break and a car that skids out of a bend if it is too fast."
----
-
 ## What is it about?
 
 In **uniform circular motion** the speed stays the same, but the **direction** of the velocity changes all the time; it always points along the **tangent**. For one revolution on a circle with radius $r$ the body needs the **period** $T$; the **frequency** is $f = \frac{1}{T}$ (unit $\frac{1}{\text{s}} = \text{Hz}$). For engines and machines it is often given as **revolutions per minute** (rpm): $1200\,\text{rpm} = \frac{1200}{60\,\text{s}} = 20\,\text{Hz}$.

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the particle model – ice, water and steam as particles, temperature as a measure of particle motion, melting and boiling plateaus in a live temperature–time graph, and diffusion of ink in cold and warm water."
----
-
 ## What is it about?
 
 All substances consist of tiny **particles** that are always moving. Between the particles there is **nothing** – no water, no air, just empty space. Particles that are close to each other attract each other.

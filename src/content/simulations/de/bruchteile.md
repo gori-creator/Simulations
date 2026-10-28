@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu Bruchteilen – Pizza, Blechkuchen oder Strecke in gleiche Teile schneiden, erweitern, kürzen und als Dezimalzahl darstellen.
----
-
 ## Worum geht es?
 
 Ein **Bruch** $\frac{z}{n}$ beschreibt einen Teil eines Ganzen:

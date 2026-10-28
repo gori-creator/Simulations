@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of lenses – ray construction with parallel, central and focal rays, the lens equation, magnification, magnifier, projector and camera, and focusing an image on the optical bench."
----
-
 ## What is it about?
 
 A **converging lens** (convex, thicker in the middle) refracts light that travels parallel to the optical axis so that it meets at the **focal point** $F$. The distance from the focal point to the centre of the lens is the **focal length** $f$. A **diverging lens** (concave, thinner in the middle) spreads parallel light out as if it came from a focal point in front of the lens.

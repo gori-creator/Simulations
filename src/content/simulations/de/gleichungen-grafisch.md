@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum grafischen Lösen von Gleichungen: beide Seiten als Graphen, Lösungen als x-Koordinaten der Schnittpunkte, Differenzfunktion, Berührpunkt, Bruch- und Betragsgleichungen und Intervallhalbierung mit Lupe."
----
-
 ## Worum geht es?
 
 Eine Gleichung wie $x^2 - 1 = 0{,}5x + 2$ vergleicht zwei Terme. Fasst man beide Seiten als **Funktionen** auf, also $f(x) = x^2 - 1$ und $g(x) = 0{,}5x + 2$, dann sucht man alle $x$, für die beide Funktionen **denselben Wert** haben. An genau diesen Stellen haben die Graphen von $f$ und $g$ einen gemeinsamen Punkt – sie **schneiden** (oder berühren) sich.

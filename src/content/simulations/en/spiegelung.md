@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 7: reflect figures in a line or in a point, see the construction with perpendiculars and equal distances, watch the fold-over and the half turn, explore orientation, fixed points and fixed lines, and draw lines of symmetry yourself."
----
-
 ## What is it about?
 
 In a **reflection in a line** $s$, every point $P$ is mapped to an image point $P'$. The following holds:

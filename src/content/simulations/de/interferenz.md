@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur Interferenz zweier Kreiswellen in der Wellenwanne – Momentbild und Amplitudenbild, Knoten- und Bauchlinien als Hyperbeln, Gangunterschied und Zeigerdiagramm in einem ziehbaren Messpunkt, gegenphasige Erreger und Fernfeld wie beim Doppelspalt."
----
-
 ## Worum geht es?
 
 In einer **Wellenwanne** tauchen zwei Erreger $E_1$ und $E_2$ im Abstand $d$ im gleichen Takt ins Wasser. Jeder erzeugt **Kreiswellen** mit derselben Wellenlänge $\lambda = \frac{c}{f}$. Wo sich die Wellen treffen, addieren sich ihre Auslenkungen (**Superposition**): $y = y_1 + y_2$.

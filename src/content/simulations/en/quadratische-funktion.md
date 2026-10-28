@@ -1,7 +1,3 @@
----
-description: Interactive simulation of quadratic functions – parabolas in vertex form and standard form, zeros, discriminant and exercises.
----
-
 ## What is it about?
 
 The graph of a **quadratic function** is a **parabola**. The simplest one is the **standard parabola** $y = x^2$ with its vertex at the origin.

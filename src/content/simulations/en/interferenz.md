@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the interference of two circular waves in a ripple tank – snapshot and amplitude pattern, nodal and antinodal lines as hyperbolas, path difference and phasor diagram at a draggable point, sources in antiphase and the far field as with the double slit."
----
-
 ## What is it about?
 
 Two sources $E_1$ and $E_2$ at a distance $d$ dip into the water of a **ripple tank** in step and send out **circular waves** of wavelength $\lambda = \frac{c}{f}$. Where they meet, the displacements add up (**superposition**). Whether they reinforce or cancel at a point $P$ depends on the **path difference** $\Delta s = s_1 - s_2$:

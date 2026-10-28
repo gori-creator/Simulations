@@ -1,7 +1,3 @@
----
-description: Interactive simulation of the linear function f(x) = mx + c – with slope triangle, zero, a second line and exercises.
----
-
 ## What is it about?
 
 A **linear function** has the equation

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of reflection at a plane mirror – measure the law of reflection on an optical disc, construct mirror images with lines of sight and count multiple images in angled mirrors."
----
-
 ## What is it about?
 
 When light hits a mirror, it is **reflected** (thrown back). At the point of incidence we draw the **normal**, the line perpendicular to the mirror. Both angles are measured **from the normal**, not from the mirror surface: the **angle of incidence** $\alpha$ and the **angle of reflection** $\alpha'$.

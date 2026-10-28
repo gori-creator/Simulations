@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of light and shadow – umbra and penumbra with edge rays on the optical bench, coloured shadows and a model of solar and lunar eclipses."
----
-
 ## What is it about?
 
 Light travels in **straight lines**. Behind an opaque object there is a region that receives no light – its **shadow**. **Edge rays** from the rim of the light source past the rim of the object mark the borders of the shadow.

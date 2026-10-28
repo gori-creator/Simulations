@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grades 6 and 7: base value, rate and percentage value on a percentage bar – with the rule of three step by step, a hundred square and a circle, discounts, price rises, VAT, interest, surveys and the classic pitfall when working backwards."
----
-
 ## What is it about?
 
 Percent means **hundredths**: $1\,\% = \frac{1}{100}$, so $25\,\% = \frac{25}{100} = \frac14 = 0.25$. Every percentage problem has three quantities:

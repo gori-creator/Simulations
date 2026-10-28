@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for solving systems of linear equations graphically: two lines, reading off the intersection, checking by substitution, parallel and identical lines and a tariff comparison."
----
-
 ## What is it about?
 
 Each linear equation in $x$ and $y$ describes a **line**. A pair $(x, y)$ that satisfies **both** equations lies on both lines – it is their **point of intersection**. Graphical method: rearrange both equations to $y = mx + t$ (slope $m$, $y$-intercept $t$), draw both lines, read off the intersection and check it in both equations.

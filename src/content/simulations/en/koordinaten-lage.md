@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 5: plot and read points in the coordinate plane, tell segments, rays and lines apart, check parallel and perpendicular lines with a set square, measure distances and explore circles and lines – with a point game."
----
-
 ## What is it about?
 
 In the **coordinate plane** a point is given by two numbers. The horizontal axis is the **x-axis**, the vertical one the **y-axis**; they meet at the **origin** $O(0, 0)$. For $P(3, 5)$ the **x-coordinate** comes first: from the origin go **3 to the right**, then **5 up**. Swapping the numbers gives a different point, $(5, 3)$.

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Haus der Vierecke: Ecken auf Karopapier ziehen, parallele und gleich lange Seiten, rechte Winkel, Diagonalen und Symmetrieachsen live sehen, Vierecke einordnen und gezielt bauen."
----
-
 ## Worum geht es?
 
 Ein **Viereck** $ABCD$ hat vier Ecken, die Seiten $a = [AB]$, $b = [BC]$, $c = [CD]$, $d = [DA]$, die Innenwinkel $\alpha, \beta, \gamma, \delta$ und die beiden **Diagonalen** $e = [AC]$ und $f = [BD]$. Die Ecken werden gegen den Uhrzeigersinn beschriftet. In jedem Viereck gilt:

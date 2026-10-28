@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary and university: Taylor polynomials of sin x, cos x, eˣ, ln(1 + x) and 1/(1 − x) – build them term by term, match the derivatives at a, error and Lagrange bound, ε-band, radius of convergence, partial sums like a calculator and the small-angle approximation of the pendulum."
----
-
 ## What is it about?
 
 The Taylor polynomial $T_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(a)}{k!}(x-a)^k$ shares the value and the first $n$ derivatives with $f$ at $a$: $T_0$ is the horizontal line $y = f(a)$, $T_1$ the tangent, $T_2$ the osculating parabola. Differentiating $(x-a)^k$ $k$ times gives $k!$ – that is why $c_k = \frac{f^{(k)}(a)}{k!}$.

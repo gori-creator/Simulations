@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die Oberstufe: gebrochen-rationale Funktionen aus Linearfaktoren – Zähler-Perlen in Pol-Ringe ziehen und zusehen, wie sich ein Faktor kürzt und aus der Polstelle ein Loch wird; Polstellen mit und ohne Vorzeichenwechsel, waagrechte und schräge Asymptoten mit Polynomdivision Schritt für Schritt, Wertetabelle an der Polstelle, Vorzeichentabelle und Blick aus der Ferne."
----
-
 ## Worum geht es?
 
 Eine **gebrochen-rationale Funktion** ist ein Quotient zweier ganzrationaler Funktionen. Hier ist sie in Linearfaktoren gegeben, zum Beispiel

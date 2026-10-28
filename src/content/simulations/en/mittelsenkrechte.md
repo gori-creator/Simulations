@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 7: discover the perpendicular bisector and the angle bisector as loci of equal distances, follow both constructions with compasses and ruler step by step, find a meeting point by a road and explore the circumcentre of a triangle as an outlook."
----
-
 ## What is it about?
 
 The **perpendicular bisector** $m$ of a segment $AB$ is the line that passes through the midpoint $M$ of $AB$ and is perpendicular to $AB$. It has a special property:

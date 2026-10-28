@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Addieren und Zerlegen von Kräften – Kräfteparallelogramm, Kräfte aneinanderhängen, Resultierende, Gleichgewicht und Gegenkraft, Zerlegung in Komponenten und die Seilkraft bei einer Lampe an zwei Seilen oder einer Wäscheleine."
----
-
 ## Worum geht es?
 
 Eine **Kraft** hat einen Betrag (in Newton), eine Richtung und einen Angriffspunkt. Man zeichnet sie als **Kraftpfeil**: Die Länge gibt den Betrag an (z. B. $1\,\text{cm} \mathrel{\widehat{=}} 1\,\text{N}$), die Pfeilspitze die Richtung.

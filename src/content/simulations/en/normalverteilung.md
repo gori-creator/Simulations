@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary: the normal distribution with a bell curve, draggable bounds and probability as area, the distribution function Φ, sigma rules, standardising as an animation, properties of the bell, quantiles with the z table, two filling machines compared, the binomial approximation and samples."
----
-
 ## What is it about?
 
 For a normally distributed random variable $X \sim N(\mu;\,\sigma^2)$, the probability $P(a \leq X \leq b)$ is the **area under the bell curve** between $a$ and $b$, and equals $F(b) - F(a)$ with the distribution function $F(x) = P(X \leq x)$; for $N(0;\,1)$ it is called $\Phi$, and $F(x) = \Phi\left(\frac{x - \mu}{\sigma}\right)$. A single value has probability $P(X = a) = 0$.

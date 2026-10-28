@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die Oberstufe: Extremwertprobleme mit Differentialrechnung – Schachtel aus Karton (zum Falten), Dose mit kleinster Oberfläche, Rechteck unter einer e-Funktion, größter Zylinder im Kegel und schnellster Weg eines Rettungsschwimmers, mit gekoppeltem Graphen, Ableitung, Randwertvergleich und Lösungsweg Schritt für Schritt."
----
-
 ## Worum geht es?
 
 Bei einem **Extremwertproblem** sucht man den größten oder kleinsten Wert einer Größe – das größte Volumen, die kleinste Oberfläche, die kürzeste Zeit. Oben im Bild verändert sich das Objekt mit der Variablen, darunter läuft der Punkt auf dem Graphen der **Zielfunktion** mit, ganz unten zeigt der Streifen die **Ableitung**: grün, wo die Zielfunktion steigt, rot, wo sie fällt. Das Vorgehen ist immer gleich:

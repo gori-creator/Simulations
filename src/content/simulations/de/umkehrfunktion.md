@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die Oberstufe: Umkehrfunktionen als Spiegelung an y = x – der Graph klappt wie eine Folie um, eine waagrechte Gerade prüft die Umkehrbarkeit, Definitions- und Wertemenge tauschen sichtbar die Rollen, und das Steigungsdreieck zeigt (f⁻¹)′(b) = 1/f′(a)."
----
-
 ## Worum geht es?
 
 Eine Funktion $f$ ordnet jedem $x$ genau ein $y = f(x)$ zu. Die **Umkehrfunktion** $f^{-1}$ geht den Weg rückwärts: Sie ordnet jedem Funktionswert wieder sein $x$ zu. Aus $f(3) = 5$ wird $f^{-1}(5) = 3$.

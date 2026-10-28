@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 9. Klasse: Quadratwurzeln als Seitenlänge eines Quadrats auf Kästchenpapier, das Heron-Verfahren als Rechteck, das Schritt für Schritt zum Quadrat wird, die Intervallschachtelung mit Lupe und Probe durch Quadrieren – und warum √2 kein Bruch ist."
----
-
 ## Worum geht es?
 
 Die **Quadratwurzel** $\sqrt{a}$ (für $a \geq 0$) ist die nichtnegative Zahl, deren Quadrat $a$ ergibt: $\left(\sqrt{a}\right)^2 = a$ und $\sqrt{a} \geq 0$. Die Zahl $a$ unter der Wurzel heißt **Radikand**. Geometrisch ist $\sqrt{a}$ die **Seitenlänge eines Quadrats mit dem Flächeninhalt $a$**.

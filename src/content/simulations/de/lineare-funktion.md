@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zur linearen Funktion f(x) = mx + t – mit Steigungsdreieck, Nullstelle, zweiter Geraden und Aufgaben.
----
-
 ## Worum geht es?
 
 Eine **lineare Funktion** hat die Funktionsgleichung

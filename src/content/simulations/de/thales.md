@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum Satz des Thales – Punkt C auf dem Halbkreis ziehen, rechten Winkel beobachten, Beweisidee und Umkehrung untersuchen.
----
-
 ## Worum geht es?
 
 Zeichnet man über einer Strecke $\overline{AB}$ einen Kreis, dessen **Durchmesser** genau diese Strecke ist, erhält man den **Thaleskreis**. Sein Mittelpunkt $M$ ist der Mittelpunkt von $\overline{AB}$.

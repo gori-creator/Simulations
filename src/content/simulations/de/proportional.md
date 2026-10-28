@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 6. bis 8. Klasse: direkte und indirekte Proportionalität an Äpfeln auf der Waage, Pumpen am Becken und einem Taxi mit Grundgebühr – synchron als Bild, Wertetabelle mit Verdoppeln-Pfeilen und Graph, mit Dreisatz Schritt für Schritt und einem Test „Ist das proportional?“."
----
-
 ## Worum geht es?
 
 Bei einer **Zuordnung** gehört zu jedem $x$-Wert genau ein $y$-Wert. Zwei besondere Zuordnungen kommen im Alltag ständig vor. In der Simulation hat jede Größe ihre Farbe: $x$ blau, $y$ violett, der Faktor $k$ orange.

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Fadenpendel – Kugel auslenken und loslassen, Kräfte und Energie live, φ(t) im Vergleich zur Kleinwinkelnäherung, Messreihe zur Bestimmung von g, große Auslenkungen und Dämpfung im Phasendiagramm."
----
-
 ## Worum geht es?
 
 Ein **Fadenpendel** besteht aus einem kleinen, schweren Körper an einem Faden der Länge $l$. Lenkt man ihn um den Winkel $\varphi_0$ aus und lässt los, zieht die **Rückstellkraft** $F_R = m \cdot g \cdot \sin\varphi$ ihn zur Ruhelage zurück. Die Zeit für eine volle Hin- und Herbewegung heißt **Periodendauer** $T$.

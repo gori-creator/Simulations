@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum Übergang von der Sekante zur Tangente – Differenzenquotient, Grenzwert h → 0, negatives h, der Knick bei |x| und die Ableitung anschaulich.
----
-
 ## Worum geht es?
 
 Die **Sekante** ist die Gerade durch zwei Punkte des Graphen: $P(x_0 \mid f(x_0))$ und $Q(x_0 + h \mid f(x_0 + h))$. Ihre Steigung ist der **Differenzenquotient**

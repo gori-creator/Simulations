@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 7: construct triangles from three given parts step by step with ruler, set square and compasses – with a sketch, construction steps as in an exercise book and the congruence criteria SSS, SAS, ASA and SsA. Plus the special cases: violated triangle inequality, parallel arms, no, one or two solutions for SSA and similar triangles for AAA."
----
-
 ## What is it about?
 
 A triangle has six **parts**: three sides $a$, $b$, $c$ and three angles $\alpha$, $\beta$, $\gamma$. The side $a = [BC]$ lies opposite the vertex $A$, $b = [CA]$ opposite $B$ and $c = [AB]$ opposite $C$; the angle $\alpha$ is at $A$, $\beta$ at $B$, $\gamma$ at $C$. Two triangles that can be moved, turned or reflected so that they fit exactly onto each other are called **congruent**.

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Laden und Entladen eines Kondensators: RC-Kreis mit Umschalter, fließende Elektronen, U(t)- und I(t)-Diagramm mit Tangente, Zeitkonstante τ = R · C, Halbwertszeit und Energie W = ½ C U²."
----
-
 ## Worum geht es?
 
 Ein **Kondensator** speichert elektrische Ladung: Auf der einen Platte sammeln sich Elektronen, auf der anderen fehlen sie. Die Ladung $Q$ ist proportional zur Spannung, $Q = C \cdot U$, mit der **Kapazität** $C$ (Einheit Farad, $1\,\text{F} = 1\,\frac{\text{C}}{\text{V}}$). Ein Farad ist sehr viel; übliche Kondensatoren haben Kapazitäten in µF ($10^{-6}\,\text{F}$), nF ($10^{-9}\,\text{F}$) oder pF ($10^{-12}\,\text{F}$). Wie groß $C$ ist, hängt vom Bau ab, beim Plattenkondensator zum Beispiel $C = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}$.

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 10 and 11: drag the zeros of a polynomial function as beads, tap them to raise their multiplicity and let them merge – with factored and exact expanded form, sign chart, a magnifier for the behaviour at the zeros and a view from far away for the end behaviour."
----
-
 ## What is it about?
 
 A **polynomial function** that splits into **linear factors** can be written like this:

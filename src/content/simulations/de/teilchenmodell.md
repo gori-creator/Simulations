@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Teilchenmodell – Eis, Wasser und Wasserdampf im Teilchenbild, Temperatur als Maß für die Teilchenbewegung, Schmelz- und Siedeplateau im live gezeichneten Temperatur-Zeit-Diagramm und Diffusion von Tinte in kaltem und warmem Wasser."
----
-
 ## Worum geht es?
 
 Alle Stoffe bestehen aus winzigen **Teilchen**, die sich ständig bewegen. Zwischen den Teilchen ist **nichts** – kein Wasser, keine Luft, leerer Raum. Die Teilchen ziehen sich gegenseitig an, wenn sie sich nahe sind.

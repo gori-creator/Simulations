@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 5: measure angles correctly with a set square or a full-circle protractor, recognise types of angles from acute to reflex, find reflex angles via the other angle and collect points in an estimation game."
----
-
 ## What is it about?
 
 An **angle** is formed by two rays, the **arms** $[SA$ and $[SB$, which start at the same point $S$. $S$ is called the **vertex**. Angles are named with Greek letters ($\alpha$, $\beta$, $\gamma$, …) or with three points: $\alpha = \angle ASB$. Here – as usual in many school books – $\angle ASB$ is measured **anticlockwise** from the arm $[SA$ to the arm $[SB$. The unit is the **degree** ($1^\circ$ is one 360th of a full turn).

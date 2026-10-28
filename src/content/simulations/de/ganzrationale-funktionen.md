@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 10. und 11. Klasse: Nullstellen einer ganzrationalen Funktion als Perlen ziehen, Vielfachheiten antippen und verschmelzen lassen – mit Linearfaktorform und exakter Normalform, Vorzeichentabelle, Lupe für das Verhalten an den Nullstellen und dem Blick aus der Ferne auf das Randverhalten."
----
-
 ## Worum geht es?
 
 Eine **ganzrationale Funktion** (Polynomfunktion), die in **Linearfaktoren** zerfällt, lässt sich so schreiben:

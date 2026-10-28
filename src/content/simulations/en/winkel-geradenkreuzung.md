@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 7: vertical and adjacent angles at two intersecting lines, comparing corresponding, alternate and co-interior angles at a transversal by sliding and turning, and giving reasons for angle sizes."
----
-
 ## What is it about?
 
 **Two lines intersect** at the point $S$. This forms four angles $\alpha$, $\beta$, $\gamma$, $\delta$ (anticlockwise).

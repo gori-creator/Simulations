@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Doppelspalt, Mehrfachspalt und Gitter: Laserlicht wird an Spalten gebeugt, die Wellen überlagern sich, auf dem Schirm entstehen Maxima bei sin α_k = k · λ/g – mit Wellenfeld, Intensitätsverteilung und ziehbarer Messmarke."
----
-
 ## Worum geht es?
 
 Schickt man Laserlicht durch zwei sehr schmale, eng benachbarte Spalte, sieht man auf einem weit entfernten Schirm nicht zwei helle Striche, sondern eine ganze Reihe heller und dunkler Streifen. Das lässt sich nur mit dem **Wellenmodell des Lichts** erklären: Von jedem Spalt geht nach dem **Huygens-Prinzip** eine Kreiswelle aus, und die Wellen **überlagern** sich (Interferenz).

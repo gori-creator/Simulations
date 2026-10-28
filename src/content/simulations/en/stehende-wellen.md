@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of standing waves – incident and reflected waves superpose at a fixed and a free end, normal modes of a string and an air column with nodes and antinodes, a driver with any frequency and a resonance curve as in Melde’s experiment."
----
-
 ## What is it about?
 
 A wave travelling towards the end of a rope is **reflected** there. The incident wave and the reflected wave have the same frequency and wavelength $\lambda = \frac{c}{f}$ and superpose to form a **standing wave**: some points never move (**nodes N**), others in between oscillate particularly strongly (**antinodes A**).

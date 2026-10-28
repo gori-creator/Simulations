@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary: inverse functions as a reflection in y = x – the graph flips over like a transparency, a horizontal line checks invertibility, domain and range visibly swap roles, and the slope triangle shows (f⁻¹)′(b) = 1/f′(a)."
----
-
 ## What is it about?
 
 The **inverse function** $f^{-1}$ reverses $f$: from $f(3) = 5$ we get $f^{-1}(5) = 3$. This only works if every value occurs **exactly once** – every horizontal line meets the graph **at most once**. That is certainly the case if $f$ is **strictly monotonic**. $x^2$ on all of $\mathbb{R}$ is not invertible ($f(-2) = f(2) = 4$); restricted to $x \geq 0$ its inverse is $\sqrt{x}$, restricted to $x \leq 0$ it is $-\sqrt{x}$. Monotonicity is sufficient but not necessary: $\frac{1}{x}$ is invertible (it is even its own inverse).

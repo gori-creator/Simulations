@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary and university: 2×2 matrices as linear maps of the plane – continuous deformation, composition and AB ≠ BA, determinant as signed area, eigenvectors with the characteristic polynomial, inverse, iteration with fixed vector and ten everyday examples."
----
-
 ## What is it about?
 
 A $2 \times 2$ matrix maps $\vec{x}$ to $A\vec{x}$. Its **columns** are the images of $\vec{e}_1$ and $\vec{e}_2$, so the grid becomes a grid of parallelograms. Applying $B$ first and then $A$ gives the product $A \cdot B$; in general $AB \neq BA$.

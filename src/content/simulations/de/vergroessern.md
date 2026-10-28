@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 9. Klasse: Wie wachsen Länge, Flächeninhalt und Volumen beim Vergrößern mit dem Streckfaktor k? Strecke, Fläche und ein drehbarer Körper werden Kopie für Kopie ausgelegt – dazu Wachstumsdiagramm, Rückwärts-Schluss und Anwendungen von der Pizza bis zum Modellauto."
----
-
 ## Worum geht es?
 
 Vergrößert man eine Figur mit dem **Streckfaktor** $k$, entsteht eine **ähnliche** Figur: Alle Winkel bleiben gleich, alle Längen werden $k$-mal so lang. Wie verändern sich dabei Flächeninhalte und Volumina?

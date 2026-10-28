@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 11. Klasse: Den Graphen einer Grundfunktion mit g(x) = a · f(b(x − c)) + d verschieben, strecken und spiegeln – Schritt für Schritt auf einer Zeitleiste, mit ziehbarem Anker- und Formpunkt, wandernden markanten Punkten, Punkttabelle und Eigenschaften für Parabel, Wurzel, Betrag, Hyperbel, Sinus und Exponentialfunktion."
----
-
 ## Worum geht es?
 
 Aus dem Graphen einer **Grundfunktion** $f$ (zum Beispiel $x^2$, $\sqrt{x}$, $\frac{1}{x}$, $\sin x$ oder $2^x$) entsteht durch Verschieben, Strecken und Spiegeln der Graph von

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the double slit, multiple slit and grating: laser light is diffracted at slits, the waves overlap, and maxima appear on the screen at sin α_k = k · λ/g – with wave field, intensity distribution and a draggable measuring mark."
----
-
 ## What is it about?
 
 Laser light passing through two narrow slits gives a whole series of bright and dark fringes on a distant screen – explained by the **wave model of light**: each slit sends out a circular wave (**Huygens**), and the waves **interfere**. In direction $\alpha$ neighbouring slits have the path difference $\Delta s = g \cdot \sin\alpha$, so principal maxima appear at

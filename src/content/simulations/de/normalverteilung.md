@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die Oberstufe: Normalverteilung mit Glockenkurve, ziehbaren Grenzen und Wahrscheinlichkeit als Fläche, Verteilungsfunktion Φ, Sigma-Regeln, Standardisieren als Animation, Eigenschaften der Glocke, Umkehrung mit der z-Tabelle (Quantile), Vergleich zweier Abfüllanlagen, Näherung der Binomialverteilung mit Laplace-Bedingung und Stichproben."
----
-
 ## Worum geht es?
 
 Viele Messgrößen – Körpergrößen, Abfüllmengen, Messfehler, IQ-Werte – sind näherungsweise **normalverteilt**. Ihre Werte häufen sich um den **Erwartungswert** $\mu$; die **Standardabweichung** $\sigma$ beschreibt, wie stark sie streuen. Man schreibt $X \sim N(\mu;\,\sigma^2)$.

@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum empirischen Gesetz der großen Zahlen – Münze, Würfel oder Reißnagel tausendfach werfen und die relative Häufigkeit beobachten.
----
-
 ## Worum geht es?
 
 Wirft man einen Würfel $n$-mal und erhält dabei $k$-mal eine Sechs, dann ist

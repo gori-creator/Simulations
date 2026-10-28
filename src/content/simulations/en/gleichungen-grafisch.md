@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for solving equations graphically: both sides as graphs, solutions as x-coordinates of the intersections, difference function, touching points, fractional and absolute value equations and bisection with a magnifier."
----
-
 ## What is it about?
 
 An equation such as $x^2 - 1 = 0.5x + 2$ compares two expressions. Read both sides as **functions**, $f(x) = x^2 - 1$ and $g(x) = 0.5x + 2$: you are looking for all $x$ at which both have **the same value** – exactly where the graphs of $f$ and $g$ **intersect** (or touch).

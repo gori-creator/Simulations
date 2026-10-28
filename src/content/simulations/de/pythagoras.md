@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum Satz des Pythagoras – Quadrate über den Seiten eines rechtwinkligen Dreiecks und ein animierter Puzzle-Beweis.
----
-
 ## Worum geht es?
 
 In einem **rechtwinkligen Dreieck** heißen die beiden Seiten am rechten Winkel **Katheten** ($a$ und $b$), die Seite gegenüber dem rechten Winkel heißt **Hypotenuse** ($c$). Sie ist immer die längste Seite.

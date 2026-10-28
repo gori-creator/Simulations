@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu elastischen, teilelastischen und vollkommen unelastischen Stößen auf der Luftkissenbahn – mit Impuls- und Energiebilanz, Schwerpunkt sowie t-v- und t-x-Diagramm."
----
-
 ## Worum geht es?
 
 Zwei Gleiter mit den Massen $m_1$ und $m_2$ gleiten fast reibungsfrei auf einer Luftkissenbahn und stoßen zusammen. Der **Impuls** eines Körpers ist
