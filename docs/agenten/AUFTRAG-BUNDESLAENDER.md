@@ -6,15 +6,14 @@ Briefing der Projektleitung (Stand 26.10.2026) für einen Claude-Agenten mit Git
 
 Die Seite bietet kostenlose MINT-Simulationen für Schulen. Wählt man im Zahnrad ein Bundesland, zeigt die Fachseite die Simulationen nach den Jahrgangsstufen **dieses** Landes. Alles, was dort keinem Jahrgang zugeordnet ist, steht darunter bei „Weitere Simulationen“.
 
-**Fertig** (in `main`, Gymnasium, Mathematik und Physik): Baden-Württemberg, Bayern, Berlin, Hamburg, Hessen, Niedersachsen, Nordrhein-Westfalen, Rheinland-Pfalz, Sachsen, Sachsen-Anhalt, Schleswig-Holstein.
+**Fertig** (in `main`, Gymnasium, Mathematik und Physik): Baden-Württemberg, Bayern, Berlin, Hamburg, Hessen, Niedersachsen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Sachsen, Sachsen-Anhalt, Schleswig-Holstein.
 
 **Offen**, in dieser Reihenfolge (das erste noch nicht fertige Land ist dran, außer die Projektleitung nennt ein anderes):
 
 1. Brandenburg
 2. Thüringen
 3. Mecklenburg-Vorpommern
-4. Saarland
-5. Bremen
+4. Bremen
 
 Vor dem Start prüfen, welche Länder schon in `src/curriculum/lehrplaene/` liegen (`main` aktuell holen), und nach dem Merge das Land oben von „Offen“ nach „Fertig“ verschieben.
 

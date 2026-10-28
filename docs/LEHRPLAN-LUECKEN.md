@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **388 von 1545** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **397 von 1627** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (155)
+## Mathematik (159)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -171,6 +171,15 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 5/6 | 6 | Funktionaler Zusammenhang | Wird in der Orientierungsstufe nicht eigens unterrichtet: Zahlenfolgen, Terme, Operatormodell, Formeln, Maßstab und Datendarstellungen bereiten die funktionale Sichtweise in den anderen Leitideen vor. |
 
+### Saarland · Gymnasium (4)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 8 | 6 | Rechnen in anderen Zahlensystemen (nur Informatik-Zweig) | Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel. |
+| 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
+| 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
+| 11 | 2 | Stereometrie | Prisma und Zylinder, Pyramide und Kegel, Prinzip von Cavalieri, Halbkugel und Kugel. |
+
 ### Sachsen · Gymnasium (23)
 
 | Stufe | Nr. | Lernbereich | Kurz |
@@ -217,7 +226,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (233)
+## Physik (238)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -447,6 +456,16 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
+
+### Saarland · Gymnasium (5)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
+| 8 | 6 | Wahlthema oder Praktikum | Wahlthema oder Praktikum nach Wahl der Lehrkraft. |
+| 9 | 3 | Wahlthema oder Praktikum | Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen. |
+| 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
+| 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
 ### Sachsen · Gymnasium (23)
 

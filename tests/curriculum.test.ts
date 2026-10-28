@@ -257,6 +257,15 @@ describe('Länder-Lehrpläne', () => {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/rheinland-pfalz-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
+    'saarland-gymnasium-mathematik': {
+      'matrix-abbildungen': 'Matrizen nur als Schreibweise für lineare Gleichungssysteme (siehe docs/lehrplaene/saarland-gymnasium-mathematik.md)',
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+    },
+    'saarland-gymnasium-physik': {
+      'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
+      'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
+    },
     'sachsen-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
