@@ -19,6 +19,16 @@
   --sc-field: #fff;
   --sc-guide-rail: #aebfe1;
   --sc-guide-shadow: #203e7212;
+  /* Einstieg als Bühne: Lichtkegel von oben auf die Skulptur, Boden-Lichthof, Verlauf zum Blau der Achterbahn */
+  --sc-stage-top: #e3ebfb;
+  --sc-stage-mid: #f3f6fc;
+  --sc-stage-bottom: #dfe7f7;
+  --sc-stage-beam: #ffffffcc;
+  --sc-stage-beam-edge: #dbe6ff;
+  --sc-stage-floor: #3157d530;
+  --sc-stage-haze: #ffffffaa;
+  --sc-stage-fade: #18336526;
+  --sc-stage-stars: 0;
   /* Achterbahn-Bereich: in beiden Farbschemata dunkelblau */
   --sc-navy: #183365;
   --sc-navy-panel: #203e72;
@@ -47,6 +57,15 @@
   --sc-field: var(--surface);
   --sc-guide-rail: #3e5487;
   --sc-guide-shadow: #00000030;
+  --sc-stage-top: #070b16;
+  --sc-stage-mid: #0c1224;
+  --sc-stage-bottom: #13284f;
+  --sc-stage-beam: #5b8cff40;
+  --sc-stage-beam-edge: #8fb0ff2a;
+  --sc-stage-floor: #5b8cff40;
+  --sc-stage-haze: transparent;
+  --sc-stage-fade: transparent;
+  --sc-stage-stars: 1;
   --sc-navy: #13284f;
   --sc-navy-panel: #1a3463;
 }
@@ -65,9 +84,24 @@
     --sc-field: var(--surface);
     --sc-guide-rail: #3e5487;
     --sc-guide-shadow: #00000030;
+    --sc-stage-top: #070b16;
+    --sc-stage-mid: #0c1224;
+    --sc-stage-bottom: #13284f;
+    --sc-stage-beam: #5b8cff40;
+    --sc-stage-beam-edge: #8fb0ff2a;
+    --sc-stage-floor: #5b8cff40;
+    --sc-stage-haze: transparent;
+    --sc-stage-fade: transparent;
+    --sc-stage-stars: 1;
     --sc-navy: #13284f;
     --sc-navy-panel: #1a3463;
   }
+}
+
+/* Kopfleiste über dem Einstieg: durchscheinend, damit der Verlauf oben weiterläuft */
+:root:has(.scitura-home) .site-header {
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--border) 50%, transparent);
 }
 
 /* Die Seite endet direkt mit dem Katalog. */
@@ -88,10 +122,77 @@
 /* ---------- Einstieg ---------- */
 
 .home-hero {
+  /* Lage der Lichtquelle (über der Skulptur) und leichtes Pendeln des Lichtkegels */
+  --stage-x: 76%;
+  --stage-y: -8%;
   position: relative;
   height: 580px;
   overflow: hidden;
-  background: var(--sc-paper);
+  isolation: isolate;
+  background:
+    conic-gradient(
+      from calc(168deg + var(--stage-sway)) at var(--stage-x) var(--stage-y),
+      transparent 0deg,
+      var(--sc-stage-beam) 10deg,
+      var(--sc-stage-beam-edge) 18deg,
+      transparent 30deg
+    ),
+    radial-gradient(28% 22% at var(--stage-x) 92%, var(--sc-stage-floor), transparent 70%),
+    radial-gradient(60% 70% at 20% 30%, var(--sc-stage-haze), transparent 70%),
+    linear-gradient(180deg, transparent 70%, var(--sc-stage-fade)),
+    linear-gradient(180deg, var(--sc-stage-top) 0%, var(--sc-stage-mid) 45%, var(--sc-stage-bottom) 100%);
+  animation: stage-sway 16s ease-in-out infinite alternate;
+}
+
+/* Sterne (nur im Dunkelmodus sichtbar), funkeln langsam */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--sc-stage-stars);
+  background:
+    radial-gradient(1px 1px at 12% 20%, #fff8, transparent),
+    radial-gradient(1px 1px at 30% 70%, #fff6, transparent),
+    radial-gradient(1.5px 1.5px at 48% 14%, #fff9, transparent),
+    radial-gradient(1px 1px at 62% 58%, #fff5, transparent),
+    radial-gradient(1px 1px at 88% 30%, #fff7, transparent),
+    radial-gradient(1.5px 1.5px at 94% 76%, #fff6, transparent),
+    radial-gradient(1px 1px at 6% 86%, #fff5, transparent),
+    radial-gradient(1px 1px at 40% 40%, #fff4, transparent),
+    radial-gradient(1px 1px at 55% 88%, #fff5, transparent),
+    radial-gradient(1.5px 1.5px at 24% 48%, #fff6, transparent);
+  animation: stage-twinkle 6s ease-in-out infinite alternate;
+}
+
+@property --stage-sway {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@keyframes stage-sway {
+  from {
+    --stage-sway: -3deg;
+  }
+  to {
+    --stage-sway: 3deg;
+  }
+}
+
+@keyframes stage-twinkle {
+  from {
+    opacity: calc(var(--sc-stage-stars) * 0.55);
+  }
+  to {
+    opacity: var(--sc-stage-stars);
+  }
+}
+
+.motion-paused .home-hero,
+.motion-paused .home-hero::before {
+  animation-play-state: paused;
 }
 
 .home-hero__inner {
@@ -1358,6 +1459,8 @@
   }
 
   .home-hero {
+    --stage-x: 50%;
+    --stage-y: 42%;
     display: flex;
     flex-direction: column;
     height: auto;
@@ -1727,5 +1830,10 @@
   .home-hero__subject,
   .home-experiment__tracks button {
     transition: none;
+  }
+
+  .home-hero,
+  .home-hero::before {
+    animation: none;
   }
 }
