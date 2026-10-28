@@ -27,6 +27,7 @@ const sliders = [
 ].map((s) => ({ ...s, def: param(s.key) }));
 const points = [1, 2, 3, 4].map((n) => ({ n, def: param(`p${n}`) }));
 const tracks = [
+  { id: 'mega', label: t(lang, 'home.trackMega') },
   { id: 'huegel', label: t(lang, 'home.trackHills') },
   { id: 'looping', label: t(lang, 'home.trackLoop') },
   { id: 'eigen', label: t(lang, 'home.trackCustom') },
@@ -73,7 +74,7 @@ const shown = (key: string, value: number) =>
     </div>
     <div class="home-experiment__top">
       <div class="home-experiment__tracks" role="group" aria-label={t(lang, 'home.track')}>
-        {tracks.map((track) => <button type="button" data-track={track.id} aria-pressed={track.id === 'looping' ? 'true' : 'false'}>{track.label}</button>)}
+        {tracks.map((track) => <button type="button" data-track={track.id} aria-pressed={track.id === 'mega' ? 'true' : 'false'}>{track.label}</button>)}
       </div>
       <div class="home-experiment__actions">
         <button type="button" class="home-experiment__play" data-energy-play aria-pressed="false">{t(lang, 'home.go')}</button>

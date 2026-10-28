@@ -21,7 +21,17 @@ export const LOOP_RADIUS = 6;
 /** Toleranz beim Abheben (Anteil von g) gegen Rundungsfehler der numerischen Fahrt. */
 export const LIFT_TOL = 0.02;
 
-export type TrackId = 'tal' | 'huegel' | 'looping' | 'eigen';
+/**
+ * Die beiden Tropfen-Loopings der Großbahn: Kreisbögen (Radius in m, Winkel) vom
+ * Tiefpunkt bis zum Scheitel. Unten weit (sanfte Einfahrt), oben eng.
+ */
+const DEG = Math.PI / 180;
+export const MEGA_LOOPS = [
+  [[14, 40 * DEG], [8, 50 * DEG], [5, 90 * DEG]],
+  [[14, 45 * DEG], [8, 45 * DEG], [3.8, 90 * DEG]],
+] as const;
+
+export type TrackId = 'tal' | 'huegel' | 'looping' | 'mega' | 'eigen';
 
 /** Waagerechte Lage der Stützpunkte der eigenen Bahn: Start, Punkte 1–4. */
 export const CUSTOM_X = [-42, -26, -10, 6, 22] as const;
@@ -48,6 +58,15 @@ export interface TrackFeatures {
   loopEnd?: number;
   /** Bogenlängen der Stützpunkte der eigenen Bahn. */
   supports?: number[];
+  /** Alle Loopings der Bahn (auch mehrere), mit Radius. */
+  loops?: LoopFeature[];
+}
+
+export interface LoopFeature {
+  start: number;
+  top: number;
+  end: number;
+  r: number;
 }
 
 export class Track {
@@ -209,6 +228,116 @@ function catmullRom(points: readonly (readonly [number, number])[], perSegment: 
   return out;
 }
 
+/**
+ * Bahn aus Geraden und Kreisbögen, wie sie im Achterbahnbau entworfen wird: Die
+ * Krümmung ist stückweise konstant und damit überall beschränkt (keine Knicke,
+ * keine unrealistischen Kraftspitzen).
+ */
+class PathBuilder {
+  readonly raw: [number, number][];
+  s = 0;
+  private theta = 0;
+
+  constructor(
+    private x: number,
+    private y: number,
+    private readonly step = 0.05,
+  ) {
+    this.raw = [[x, y]];
+  }
+
+  get height(): number {
+    return this.y;
+  }
+
+  line(len: number): this {
+    const n = Math.max(1, Math.round(len / this.step));
+    const dx = Math.cos(this.theta) * (len / n);
+    const dy = Math.sin(this.theta) * (len / n);
+    for (let i = 0; i < n; i++) {
+      this.x += dx;
+      this.y += dy;
+      this.raw.push([this.x, this.y]);
+    }
+    this.s += len;
+    return this;
+  }
+
+  /** Kreisbogen mit Radius r; turn > 0 dreht nach links (bei Fahrt nach rechts: nach oben). */
+  arc(r: number, turn: number): this {
+    const len = r * Math.abs(turn);
+    const n = Math.max(1, Math.round(len / this.step));
+    const sign = Math.sign(turn);
+    // Mittelpunkt links bzw. rechts der Fahrtrichtung
+    const cx = this.x - sign * r * Math.sin(this.theta);
+    const cy = this.y + sign * r * Math.cos(this.theta);
+    const t0 = this.theta;
+    for (let i = 1; i <= n; i++) {
+      const th = t0 + (turn * i) / n;
+      this.raw.push([cx + sign * r * Math.sin(th), cy - sign * r * Math.cos(th)]);
+    }
+    this.theta = t0 + turn;
+    [this.x, this.y] = this.raw[this.raw.length - 1]!;
+    this.s += len;
+    return this;
+  }
+
+  /** Parabelstück y = y₀ + tan a·u − c·u²/2 (Wurfparabel) von der Steigung tan a bis −tan a. */
+  parabola(c: number, a: number): this {
+    const width = (2 * Math.tan(a)) / c;
+    const n = Math.max(1, Math.round((width / Math.cos(a)) / this.step));
+    const [x0, y0] = [this.x, this.y];
+    for (let i = 1; i <= n; i++) {
+      const u = (width * i) / n;
+      const x = x0 + u;
+      const y = y0 + Math.tan(a) * u - (c * u * u) / 2;
+      const [px, py] = this.raw[this.raw.length - 1]!;
+      this.s += Math.hypot(x - px, y - py);
+      this.raw.push([x, y]);
+    }
+    this.theta = -a;
+    [this.x, this.y] = [x0 + width, y0];
+    return this;
+  }
+
+  /**
+   * Waagerecht ein- und auslaufender Hügel der Höhe h: unten Bögen mit Radius rb,
+   * oben eine Parabel. Sie ist so gekrümmt, dass ein Wagen mit der Energie der
+   * Starthöhe hd dort überall etwa die Normalbeschleunigung (1 − q)·g spürt
+   * (q = 1: Schwerelosigkeit, q > 1: Airtime, q < 1: sanfter Buckel).
+   */
+  hill(h: number, rb: number, a: number, hd: number, q: number): this {
+    const c = q / (2 * (hd - h));
+    const top = h - Math.tan(a) ** 2 / (2 * c);
+    const flank = (top - rb * (1 - Math.cos(a))) / Math.sin(a);
+    if (flank < 0) throw new Error('Hügel zu flach für diese Parameter');
+    return this.arc(rb, a).line(flank).parabola(c, a).line(flank).arc(rb, a);
+  }
+
+  /** Von waagerecht zu waagerecht um dy nach oben (dy > 0) oder unten. */
+  slope(dy: number, r1: number, r2: number, a: number): this {
+    const sign = Math.sign(dy);
+    const flank = (Math.abs(dy) - (r1 + r2) * (1 - Math.cos(a))) / Math.sin(a);
+    return this.arc(r1, sign * a).line(flank).arc(r2, -sign * a);
+  }
+
+  /**
+   * Looping aus Kreisbögen, symmetrisch zum Scheitel: Radien und Winkel vom
+   * Tiefpunkt bis zum Scheitel (Winkelsumme π). Werden die Radien nach oben
+   * kleiner, entsteht die Tropfenform echter Achterbahnen.
+   */
+  loop(half: readonly (readonly [number, number])[]): LoopFeature {
+    const start = this.s;
+    const [rt, at] = half[half.length - 1]!;
+    const lower = half.slice(0, -1);
+    for (const [r, a] of lower) this.arc(r, a);
+    const top = this.s + rt * at;
+    this.arc(rt, 2 * at);
+    for (const [r, a] of [...lower].reverse()) this.arc(r, a);
+    return { start, top, end: this.s, r: rt };
+  }
+}
+
 /** Standardhöhen der eigenen Bahn: Start h₀, dann Punkte 1–4. */
 export const CUSTOM_DEFAULT = [20, 2, 14, 3, 10] as const;
 
@@ -275,6 +404,19 @@ export function buildTrack(id: TrackId, custom?: readonly number[]): Track {
       const track = new Track([...approach, ...loop, ...flat, ...ramp]);
       const start = track.points.find((q) => q.x >= -1e-9 && q.s > 30)!.s;
       track.features = { loopStart: start, loopTop: start + Math.PI * r, loopEnd: start + 2 * Math.PI * r };
+      return track;
+    }
+    case 'mega': {
+      // Großbahn: Steilabfahrt, großer Looping, Airtime-Hügel, zweiter Looping, Kamelbuckel, Auslauf nach oben.
+      // Die Hügel sind für eine Fahrt ab 20 m Starthöhe geformt (Airtime bzw. sanfter Buckel).
+      const b = new PathBuilder(-112, 27.5);
+      b.line(10).slope(-27.5, 10, 16, 45 * DEG).line(3);
+      const first = b.loop(MEGA_LOOPS[0]);
+      b.line(3).hill(11, 16, 40 * DEG, 20, 1.4).line(4);
+      const second = b.loop(MEGA_LOOPS[1]);
+      b.line(3).hill(15, 16, 45 * DEG, 20, 0.7).line(4).slope(28.5, 16, 10, 50 * DEG).line(3);
+      const track = new Track(b.raw);
+      track.features = { loops: [first, second] };
       return track;
     }
     case 'eigen':

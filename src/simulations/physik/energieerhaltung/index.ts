@@ -7,6 +7,7 @@ import {
   G,
   goalOf,
   judgeRun,
+  LIFT_TOL,
   liftOffHeight,
   LOOP_RADIUS,
   loopMinHeight,
@@ -102,6 +103,7 @@ export default defineSimulation({
         { value: 'tal', label: L('Tal', 'Valley') },
         { value: 'huegel', label: L('Hügel', 'Hills') },
         { value: 'looping', label: L('Looping', 'Loop') },
+        { value: 'mega', label: L('Mega-Bahn', 'Mega coaster') },
         { value: 'eigen', label: L('Eigene Bahn', 'Custom') },
       ],
       default: 'huegel',
@@ -136,6 +138,7 @@ export default defineSimulation({
     { key: 'level', type: 'boolean', group: 'view', label: L('Linie in Starthöhe', 'Line at the starting height'), default: true },
     { key: 'vel', type: 'boolean', group: 'view', label: L('Geschwindigkeitspfeil', 'Velocity arrow'), default: true },
     { key: 'slow', type: 'boolean', group: 'view', label: L('Zeitlupe', 'Slow motion'), default: false },
+    { key: 'cam', type: 'boolean', group: 'view', label: L('Kamera fährt mit', 'Camera follows the train'), default: true, visibleIf: (v) => v.track === 'mega' && (v.mode === 'ride' || v.mode === 'energy') },
   ],
   actions: [
     { id: 'start', label: L('Losfahren', 'Go'), primary: true },
@@ -158,6 +161,7 @@ export default defineSimulation({
     { id: 'graphs', label: L('Energie-Diagramme mit Reibung', 'Energy graphs with friction'), values: { mode: 'energy', track: 'tal', h0: 15, mu: 0.02 } },
     { id: 'loop', label: L('Looping', 'Loop'), values: { mode: 'loop', track: 'looping', h0: 20 } },
     { id: 'loopLow', label: L('Looping: zu niedrig gestartet', 'Loop: start too low'), values: { mode: 'loop', track: 'looping', h0: 13 } },
+    { id: 'mega', label: L('Mega-Bahn: zwei Loopings und Airtime', 'Mega coaster: two loops and airtime'), values: { track: 'mega', h0: 20 } },
     { id: 'custom', label: L('Eigene Bahn bauen', 'Build your own track'), values: { track: 'eigen' } },
     { id: 'task', label: L('Aufgabe: kleinste Starthöhe für den Looping', 'Task: smallest starting height for the loop'), values: { mode: 'task', track: 'looping', h0: 10 } },
   ],
@@ -223,6 +227,10 @@ export default defineSimulation({
       lift: 'Ohne Sicherungsbügel fiele der Wagen hier heraus!',
       liftShort: 'Würde herausfallen!',
       air: 'Airtime: Der Wagen würde kurz abheben.',
+      gLabel: 'Andruck',
+      gMax: 'max. {g} g',
+      gAir: 'Airtime!',
+      gZero: 'schwerelos',
       hMu0: 'μ = 0: Die Gesamtenergie bleibt konstant.',
       hRest: 'Wagen steht: {p} % der Anfangsenergie sind jetzt Reibungswärme.',
       hTurn: 'Umkehrpunkt wieder genau in h₀ = {h} m',
@@ -307,6 +315,10 @@ export default defineSimulation({
       lift: 'Without safety bars the car would fall out here!',
       liftShort: 'Would fall out!',
       air: 'Airtime: the car would briefly lift off.',
+      gLabel: 'g-force',
+      gMax: 'max. {g} g',
+      gAir: 'Airtime!',
+      gZero: 'weightless',
       hMu0: 'μ = 0: the total energy stays constant.',
       hRest: 'Car at rest: {p} % of the initial energy is now heat from friction.',
       hTurn: 'Turning point again exactly at h₀ = {h} m',
@@ -428,6 +440,9 @@ export default defineSimulation({
     let transient: { text: string; until: number } | null = null;
     let disp = { pot: 0, kin: 0, heat: 0 };
     let view: { x0: number; y0: number; s: number } | null = null;
+    /** Andruck N/g zu jedem gespeicherten Zustand der Fahrt und das bisherige Maximum. */
+    let gSeries: number[] = [];
+    let gPeak: number[] = [];
     let dragging = false;
     let lastFrame = performance.now();
     let hoverKind: string | null = null;
@@ -439,6 +454,8 @@ export default defineSimulation({
     const resultPop = new Tween(650, ease.outBack);
     const liftPop = new Tween(700, ease.outCubic);
     const turnPop = new Tween(600, ease.outBack);
+    /** Kameraflug beim Laden der Großbahn: von der ganzen Bahn hinunter zur Startrampe. */
+    const flyIn = new Tween(2600, ease.inOutCubic);
 
     /** Zustand der Fahrt zur Zeit t. */
     const now = (): RunSample => sampleAt(run, t);
@@ -451,7 +468,10 @@ export default defineSimulation({
       s0 = placed.s0;
       startH = placed.h;
       const mu = p.mu;
-      run = simulate(track, s0, mu, { tMax: mu > 0 ? 90 : 24 });
+      run = simulate(track, s0, mu, { tMax: mu > 0 ? 90 : trackId() === 'mega' ? 40 : 24 });
+      gSeries = run.samples.map((q) => normalAcceleration(track, q.s, q.v, G) / G);
+      let peak = -Infinity;
+      gPeak = gSeries.map((v) => (peak = Math.max(peak, v)));
       goal = goalOf(track);
       const step = Math.max(1, Math.floor(track.points.length / 360));
       profile = track.points.filter((_, i) => i % step === 0 || i === track.points.length - 1).map((q) => [q.s, q.y] as Pt);
@@ -471,7 +491,37 @@ export default defineSimulation({
     }
 
     /* ---------- Sichtbarer Bereich (gleiche Einheiten, Boden unten) ---------- */
+    /** Großbahn: Die Kamera fährt mit dem Zug (sonst ist immer die ganze Bahn zu sehen). */
+    const follows = () => trackId() === 'mega' && !!p.cam && (mode() === 'ride' || mode() === 'energy');
+
     function targetView(): { x0: number; y0: number; s: number } {
+      return follows() ? followView() : overviewView();
+    }
+
+    /** Ausschnitt um den Zug: Höhe der ganzen Bahn, Breite je nach Bildformat (34 m bis 80 m). */
+    function followView(): { x0: number; y0: number; s: number } {
+      const r = scene.rect;
+      const small = r.w < 520;
+      const PT = mapRect(r).y + mapRect(r).h - r.y + 10;
+      const PB = small ? 14 : 22;
+      const yMin = -0.9;
+      const yMax = track.maxHeight + 1.2;
+      const s = clamp((r.h - PT - PB) / (yMax - yMin), r.w / 80, r.w / 34);
+      const W = r.w / s;
+      const H = (r.h - PT - PB) / s;
+      const st = now();
+      const q = track.at(st.s);
+      // vor der Fahrt die Abfahrt zeigen, während der Fahrt etwas in Fahrtrichtung vorausschauen
+      const lead = t === 0 ? W * 0.18 : clamp(st.v * Math.cos(q.theta) * 0.45, -W * 0.22, W * 0.22);
+      const xs = track.points;
+      const xMin = xs[0]!.x - 3;
+      const xMax = xs[xs.length - 1]!.x + 3;
+      const cx = clamp(q.x + lead, xMin + W / 2, Math.max(xMin + W / 2, xMax - W / 2));
+      const bottom = H >= yMax - yMin ? yMin : clamp(q.y - H * 0.45, yMin, yMax - H);
+      return { x0: cx - W / 2, y0: bottom - PB / s, s };
+    }
+
+    function overviewView(): { x0: number; y0: number; s: number } {
       const r = scene.rect;
       const small = r.w < 520;
       const PL = small ? 8 : 16;
@@ -499,7 +549,19 @@ export default defineSimulation({
         applyView();
         return false;
       }
-      const u = 1 - Math.exp(-dt * 7);
+      if (flyIn.running) {
+        // Kameraflug: Maßstab logarithmisch, Lage linear zwischen Übersicht und Zug
+        const from = overviewView();
+        const u = flyIn.value;
+        const s = Math.exp(lerp(Math.log(from.s), Math.log(target.s), u));
+        const r = scene.rect;
+        const cx = lerp(from.x0 + r.w / 2 / from.s, target.x0 + r.w / 2 / target.s, u);
+        view = { x0: cx - r.w / 2 / s, y0: lerp(from.y0, target.y0, u), s };
+        applyView();
+        return true;
+      }
+      // Mitfahrende Kamera folgt zügiger, damit der Zug nicht aus dem Bild fährt
+      const u = 1 - Math.exp(-dt * (follows() && ctx.clock.playing ? 5 : 7));
       const ls = Math.log(view.s) + (Math.log(target.s) - Math.log(view.s)) * u;
       const pl = -view.x0 * view.s + (-target.x0 * target.s + view.x0 * view.s) * u;
       const pb = -view.y0 * view.s + (-target.y0 * target.s + view.y0 * view.s) * u;
@@ -800,7 +862,22 @@ export default defineSimulation({
       if (land) {
         const w = r.w;
         const h = (w * land.height) / land.width;
-        g.drawImage(landSprite(land, w, h, dark), r.x, groundY + 6 - h, w, h);
+        const sprite = landSprite(land, w, h, dark);
+        if (follows() && view) {
+          // Parallaxe: Die Landschaft zieht langsamer vorbei als die Bahn (abwechselnd gespiegelt, damit keine Naht entsteht)
+          const shift = -view.x0 * view.s * 0.3;
+          for (let k = Math.floor(-shift / w); k * w + shift < r.w; k++) {
+            const x = r.x + k * w + shift;
+            if (Math.abs(k) % 2 === 0) g.drawImage(sprite, x, groundY + 6 - h, w, h);
+            else {
+              g.save();
+              g.translate(x + w, 0);
+              g.scale(-1, 1);
+              g.drawImage(sprite, 0, groundY + 6 - h, w, h);
+              g.restore();
+            }
+          }
+        } else g.drawImage(sprite, r.x, groundY + 6 - h, w, h);
       }
       const ground = g.createLinearGradient(0, groundY, 0, r.y + r.h);
       ground.addColorStop(0, dark ? '#2f4a2a' : '#6db357');
@@ -809,12 +886,36 @@ export default defineSimulation({
       g.fillRect(r.x, groundY, r.w, r.y + r.h - groundY);
       g.fillStyle = 'rgba(255,255,255,0.18)';
       g.fillRect(r.x, groundY, r.w, 1.5);
+      if (follows() && view) {
+        // Grasbüschel fest am Boden: Beim Mitfahren sieht man, wie schnell der Zug ist
+        g.strokeStyle = dark ? 'rgba(120,170,100,0.5)' : 'rgba(40,90,30,0.55)';
+        g.lineWidth = 1.4;
+        const x0 = Math.floor(view.x0 / 1.7) * 1.7;
+        g.beginPath();
+        for (let x = x0; x < view.x0 + r.w / view.s + 2; x += 1.7) {
+          const hash = Math.abs(Math.sin(x * 12.9898) * 43758.5453) % 1;
+          const px = scene.px(x + hash);
+          const tall = 3 + hash * 5;
+          const gy = groundY + 4 + hash * Math.max(4, (r.y + r.h - groundY) * 0.6);
+          g.moveTo(px - 2, gy);
+          g.lineTo(px - 3, gy - tall);
+          g.moveTo(px, gy);
+          g.lineTo(px, gy - tall - 2);
+          g.moveTo(px + 2, gy);
+          g.lineTo(px + 3.5, gy - tall * 0.8);
+        }
+        g.stroke();
+      }
     }
 
     /* ---------- Szene: Bahn ---------- */
-    function inLoop(tk: Track, q: { s: number; y: number }): boolean {
+    function loopsOf(tk: Track): { start: number; end: number }[] {
       const f = tk.features;
-      return f.loopStart !== undefined && q.s > f.loopStart + 0.3 && q.s < f.loopEnd! - 0.3 && q.y > 0.4;
+      return f.loops ?? (f.loopStart !== undefined ? [{ start: f.loopStart, end: f.loopEnd! }] : []);
+    }
+
+    function inLoop(tk: Track, q: { s: number; y: number }): boolean {
+      return q.y > 0.4 && loopsOf(tk).some((l) => q.s > l.start + 0.3 && q.s < l.end - 0.3);
     }
 
     function drawTrack(tk: Track, alpha: number, reveal: number): void {
@@ -826,19 +927,47 @@ export default defineSimulation({
       g.save();
       g.globalAlpha *= alpha;
       // Stützen
+      const steel = tk === track && trackId() === 'mega';
+      const left = scene.rect.x - 60;
+      const right = scene.rect.x + scene.rect.w + 60;
       g.strokeStyle = dark ? 'rgba(170,180,195,0.5)' : 'rgba(90,100,115,0.55)';
-      g.lineWidth = 2;
+      g.lineWidth = steel ? 2.6 : 2;
       g.lineCap = 'round';
       let nextX = -Infinity;
+      let prev: Pt | null = null;
       for (const q of pts) {
         if (q.s > sMax) break;
         if (q.x < nextX || Math.cos(q.theta) < 0.2 || q.y < 0.3 || inLoop(tk, q)) continue;
         nextX = q.x + 2.6;
         const [px, py] = scene.toPx(q.x, q.y);
+        if (px < left || px > right) {
+          prev = null;
+          continue;
+        }
         g.beginPath();
         g.moveTo(px, py + 4);
         g.lineTo(px, groundY);
         g.stroke();
+        // Großbahn: Stahlgerüst mit Querstreben (Zickzack) zwischen benachbarten Stützen
+        if (steel && prev && Math.abs(px - prev[0]) < 2.9 * scene.scale.x) {
+          const top = Math.max(py, prev[1]) + 6;
+          const levels = Math.floor((groundY - top) / 46);
+          if (levels > 0) {
+            g.save();
+            g.lineWidth = 1.1;
+            g.globalAlpha *= 0.7;
+            g.beginPath();
+            for (let i = 0; i <= levels; i++) {
+              const y = top + ((groundY - top) * i) / levels;
+              g.moveTo(prev[0], y);
+              g.lineTo(px, y);
+              if (i < levels) g.lineTo(prev[0], top + ((groundY - top) * (i + 1)) / levels);
+            }
+            g.stroke();
+            g.restore();
+          }
+        }
+        prev = [px, py];
       }
       // Schwellen
       g.strokeStyle = dark ? '#8d6e57' : '#6b4b33';
@@ -849,6 +978,7 @@ export default defineSimulation({
         if (q.s < nextS) continue;
         nextS = q.s + Math.max(0.9, 7 / Math.max(1, scene.scale.x));
         const [px, py] = scene.toPx(q.x, q.y);
+        if (px < left || px > right) continue;
         const nx = -Math.sin(q.theta);
         const ny = Math.cos(q.theta);
         g.beginPath();
@@ -866,6 +996,10 @@ export default defineSimulation({
         for (const q of pts) {
           if (q.s > sMax) break;
           const [px, py] = scene.toPx(q.x, q.y);
+          if (px < left || px > right) {
+            first = true;
+            continue;
+          }
           const x = px - Math.sin(q.theta) * offset;
           const y = py - Math.cos(q.theta) * offset;
           if (first) g.moveTo(x, y);
@@ -876,6 +1010,7 @@ export default defineSimulation({
       };
       rail(-4, dark ? '#c43f3f' : '#b3261e', 4);
       rail(0, dark ? '#e4e8ee' : '#3b4252', 3);
+      if (steel && reveal >= 1) drawStation(tk);
       // Prellböcke
       if (reveal >= 1) {
         for (const q of [pts[0]!, pts[pts.length - 1]!]) {
@@ -885,6 +1020,43 @@ export default defineSimulation({
           g.fill();
         }
       }
+      g.restore();
+    }
+
+    /** Station auf dem waagerechten Anfangsstück der Großbahn: Bahnsteig und Dach. */
+    function drawStation(tk: Track): void {
+      const g = surface.g;
+      const dark = ctx.theme.dark;
+      const a = tk.points[0]!;
+      let b = a;
+      for (const q of tk.points) {
+        if (Math.abs(q.theta) > 0.01) break;
+        b = q;
+      }
+      const [x0, y0] = scene.toPx(a.x, a.y);
+      const [x1] = scene.toPx(b.x, b.y);
+      const k = scene.scale.x;
+      const roof = y0 - 4.6 * k;
+      g.save();
+      g.fillStyle = dark ? '#5b6372' : '#8d95a3';
+      g.fillRect(x0 - 0.6 * k, y0 + 5, x1 - x0, 0.9 * k);
+      g.strokeStyle = dark ? '#9aa3b2' : '#4c5462';
+      g.lineWidth = 2.4;
+      g.beginPath();
+      for (const x of [x0 + 0.3 * k, x1 - 1.2 * k]) {
+        g.moveTo(x, y0 + 5);
+        g.lineTo(x, roof);
+      }
+      g.stroke();
+      g.fillStyle = dark ? '#a8322c' : '#c0392b';
+      g.beginPath();
+      g.moveTo(x0 - 1.2 * k, roof);
+      g.lineTo(x1 - 0.2 * k, roof);
+      g.lineTo(x1 - 1.0 * k, roof - 1.1 * k);
+      g.lineTo(x0 - 0.4 * k, roof - 1.1 * k);
+      g.closePath();
+      g.fill();
+      text(g, ctx.t('start').toUpperCase(), (x0 + x1) / 2 - 0.5 * k, roof - 0.55 * k, { font: `800 ${Math.round(clamp(0.7 * k, 9, 16))}px ${ctx.theme.font}`, color: '#ffffff' });
       g.restore();
     }
 
@@ -921,7 +1093,8 @@ export default defineSimulation({
 
     /* ---------- Szene: Wagen ---------- */
     function carSize(): { len: number; hgt: number } {
-      const len = Math.max(CAR_LENGTH * scene.scale.x * 1.6, scene.rect.w < 520 ? 34 : 44);
+      // Großbahn: Der Zug aus drei Wagen wird nicht ganz so stark vergrößert
+      const len = Math.max(CAR_LENGTH * scene.scale.x * (trackId() === 'mega' ? 1.3 : 1.6), scene.rect.w < 520 ? 34 : 44);
       return { len, hgt: len * (CAR_HEIGHT / CAR_LENGTH) };
     }
 
@@ -932,10 +1105,13 @@ export default defineSimulation({
       return [px - Math.sin(q.theta) * hgt * 0.5, py - Math.cos(q.theta) * hgt * 0.5];
     }
 
-    function drawCar(s: number, alpha = 1, lift = 0): void {
+    /** Ein Wagen; „rear“: hinterer Wagen eines Zugs (Bild ohne die Spitze des vorderen Wagens). */
+    function drawCar(s: number, alpha = 1, lift = 0, part: 'front' | 'rear' = 'front'): void {
       const g = surface.g;
       const q = track.at(s);
-      const { len, hgt } = carSize();
+      const full = carSize();
+      const hgt = full.hgt;
+      const len = part === 'rear' ? full.len * REAR_SHARE : full.len;
       const [px, py] = scene.toPx(q.x, q.y);
       g.save();
       g.globalAlpha *= alpha;
@@ -944,8 +1120,11 @@ export default defineSimulation({
       g.shadowColor = 'rgba(0,0,0,0.3)';
       g.shadowBlur = 6;
       const img = ctx.images.get('car');
-      if (img) g.drawImage(scaledSprite(img, len, hgt, surface.dpr), -len / 2, -hgt - 1, len, hgt);
-      else {
+      if (img) {
+        const sprite = scaledSprite(img, full.len, hgt, surface.dpr);
+        if (part === 'rear') g.drawImage(sprite, 0, 0, sprite.width * REAR_SHARE, sprite.height, -len / 2, -hgt - 1, len, hgt);
+        else g.drawImage(sprite, -len / 2, -hgt - 1, len, hgt);
+      } else {
         const body = g.createLinearGradient(0, -hgt, 0, 0);
         body.addColorStop(0, '#ff6b5e');
         body.addColorStop(1, '#c4271c');
@@ -1033,7 +1212,7 @@ export default defineSimulation({
       const sup = (track.features.supports ?? []).map((s) => track.at(s));
       const { len: carLen, hgt: carHgt } = carSize();
       const [carX, carY] = carCenter(s0);
-      const railPx = track.points.map((q) => [scene.px(q.x), scene.py(q.y)] as Pt);
+      const railPx = track.points.map((q) => [scene.px(q.x), scene.py(q.y)] as Pt).filter(([px, py]) => Math.abs(py - y) < 44 && px > r.x - 12 && px < r.x + r.w + 12);
       const cost = (cx: number, yc: number) => {
         const x0 = clamp(cx - w / 2, r.x + 6, r.x + r.w - w - 6);
         const hit = (px: number, py: number, pad: number) => px > x0 - pad && px < x0 + w + pad && py > yc - size - pad && py < yc + size * 0.5 + pad;
@@ -1225,6 +1404,226 @@ export default defineSimulation({
       }
     }
 
+    /* ---------- Großbahn: Übersichtskarte, Zug, Fahrspur, Andruck ---------- */
+    /** Platz der Übersichtskarte: oben rechts unter μ, auf schmalen Bildern als Streifen unter t und v. */
+    function mapRect(r: Rect): Rect {
+      const pts = track.points;
+      const spanX = pts[pts.length - 1]!.x - pts[0]!.x + 6;
+      const spanY = track.maxHeight + 3;
+      if (r.w < 520) {
+        const w = r.w - 16;
+        return { x: r.x + 8, y: r.y + 37, w, h: clamp((w * spanY) / spanX + 10, 28, 44) };
+      }
+      const w = Math.min(300, r.w * 0.3);
+      return { x: r.x + r.w - 8 - w, y: r.y + 40, w, h: (w * spanY) / spanX + 14 };
+    }
+
+    function drawMap(r: Rect): void {
+      if (!follows() || !view) return;
+      const g = surface.g;
+      const theme = ctx.theme;
+      const m = mapRect(r);
+      const pts = track.points;
+      const xa = pts[0]!.x - 3;
+      const spanX = pts[pts.length - 1]!.x + 3 - xa;
+      const spanY = track.maxHeight + 3;
+      const k = Math.min((m.w - 12) / spanX, (m.h - 10) / spanY);
+      const ox = m.x + (m.w - spanX * k) / 2;
+      const oy = m.y + m.h - 5 - 1.5 * k;
+      const at = (x: number, y: number): Pt => [ox + (x - xa) * k, oy - y * k];
+      g.save();
+      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.14)';
+      g.shadowBlur = 6;
+      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.82)' : 'rgba(255,255,255,0.86)';
+      roundRect(g, m.x, m.y, m.w, m.h, 9);
+      g.fill();
+      g.restore();
+      g.save();
+      roundRect(g, m.x, m.y, m.w, m.h, 9);
+      g.clip();
+      // sichtbarer Ausschnitt
+      const sr = scene.rect;
+      const [vx0, vy0] = at(view.x0, view.y0 + sr.h / view.s);
+      const [vx1, vy1] = at(view.x0 + sr.w / view.s, view.y0);
+      g.fillStyle = withAlpha(C.kin(), 0.12);
+      g.strokeStyle = withAlpha(C.kin(), 0.75);
+      g.lineWidth = 1.2;
+      g.fillRect(vx0, Math.max(m.y + 2, vy0), vx1 - vx0, Math.min(m.y + m.h - 2, vy1) - Math.max(m.y + 2, vy0));
+      g.strokeRect(vx0 + 0.5, Math.max(m.y + 2, vy0) + 0.5, vx1 - vx0 - 1, Math.min(m.y + m.h - 2, vy1) - Math.max(m.y + 2, vy0) - 1);
+      // Bahn
+      g.strokeStyle = theme.dark ? 'rgba(228,232,238,0.85)' : 'rgba(59,66,82,0.85)';
+      g.lineWidth = 1.6;
+      g.lineJoin = 'round';
+      g.beginPath();
+      for (let i = 0; i < pts.length; i += 6) {
+        const [x, y] = at(pts[i]!.x, pts[i]!.y);
+        if (i === 0) g.moveTo(x, y);
+        else g.lineTo(x, y);
+      }
+      g.stroke();
+      // bisher gefahrene Strecke
+      const st = now();
+      const reached = Math.max(st.s, ...run.samples.filter((q) => q.t <= t).map((q) => q.s));
+      if (t > 0) {
+        g.strokeStyle = C.kin();
+        g.lineWidth = 2.4;
+        g.beginPath();
+        for (let i = 0, first = true; i < pts.length && pts[i]!.s <= reached; i += 6) {
+          if (pts[i]!.s < s0) continue;
+          const [x, y] = at(pts[i]!.x, pts[i]!.y);
+          if (first) g.moveTo(x, y);
+          else g.lineTo(x, y);
+          first = false;
+        }
+        g.stroke();
+      }
+      // Zug als leuchtender Punkt
+      const q = track.at(st.s);
+      const [px, py] = at(q.x, q.y);
+      g.fillStyle = withAlpha(C.kin(), 0.3);
+      g.beginPath();
+      g.arc(px, py, 6.5, 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = C.kin();
+      g.beginPath();
+      g.arc(px, py, 3.6, 0, Math.PI * 2);
+      g.fill();
+      g.strokeStyle = '#ffffff';
+      g.lineWidth = 1.2;
+      g.stroke();
+      g.restore();
+    }
+
+    /** Abstand der Wagen des Zugs (Bogenlänge in m, gemessen von Wagenmitte zu Wagenmitte). */
+    const REAR_SHARE = 0.69;
+    function trainLayout(s: number): { s: number; part: 'front' | 'rear' }[] {
+      if (trackId() !== 'mega') return [{ s, part: 'front' }];
+      const lenM = carSize().len / scene.scale.x;
+      const gap = lenM * 0.04;
+      // Der Massenpunkt der Rechnung ist der mittlere Wagen
+      const front = s + lenM * (REAR_SHARE / 2 + 0.5) + gap;
+      const rear = s - lenM * REAR_SHARE - gap;
+      return [
+        { s: rear, part: 'rear' },
+        { s, part: 'rear' },
+        { s: front, part: 'front' },
+      ].map((c) => ({ ...c, s: clamp(c.s, 0, track.length) })) as { s: number; part: 'front' | 'rear' }[];
+    }
+
+    function drawTrain(s: number, alpha = 1, lift = 0): void {
+      for (const car of trainLayout(s)) drawCar(car.s, alpha, lift, car.part);
+    }
+
+    /** Leuchtspur der letzten Sekunde hinter dem Zug (Großbahn). */
+    function drawTrail(): void {
+      if (trackId() !== 'mega' || t <= 0) return;
+      const g = surface.g;
+      const list = run.samples.filter((q) => q.t <= t && q.t >= t - 1.1);
+      if (list.length < 2) return;
+      g.save();
+      g.lineCap = 'round';
+      for (let i = 1; i < list.length; i++) {
+        const a = list[i - 1]!;
+        const b = list[i]!;
+        const age = (t - b.t) / 1.1;
+        const speed = clamp(Math.abs(b.v) / 22, 0, 1);
+        const qa = track.at(a.s);
+        const qb = track.at(b.s);
+        const [ax, ay] = scene.toPx(qa.x, qa.y);
+        const [bx, by] = scene.toPx(qb.x, qb.y);
+        const off = 3;
+        g.strokeStyle = withAlpha(C.kin(), (1 - age) * (0.25 + 0.6 * speed));
+        g.lineWidth = 3 + 7 * speed * (1 - age);
+        g.beginPath();
+        g.moveTo(ax + Math.sin(qa.theta) * off, ay + Math.cos(qa.theta) * off);
+        g.lineTo(bx + Math.sin(qb.theta) * off, by + Math.cos(qb.theta) * off);
+        g.stroke();
+      }
+      g.restore();
+    }
+
+    /** Andruck-Anzeige (Großbahn): Zeiger von −1 g bis 6 g, darunter der Wert und das bisherige Maximum. */
+    function drawGauge(r: Rect, st: RunSample): void {
+      if (trackId() !== 'mega' || (mode() !== 'ride' && mode() !== 'energy')) return;
+      const g = surface.g;
+      const theme = ctx.theme;
+      const small = r.w < 520;
+      const value = Math.abs(st.v) > 1e-6 ? normalAcceleration(track, st.s, st.v, G) / G : Math.cos(track.at(st.s).theta);
+      const i = Math.min(gPeak.length - 1, Math.max(0, Math.floor(t / 0.02)));
+      const peak = t > 0 ? Math.max(gPeak[i] ?? value, value) : null;
+      const rad = small ? 30 : 42;
+      const below = small ? 26 : 34;
+      const cx = r.x + 16 + rad;
+      const cy = r.y + r.h - 10 - below;
+      const lo = -1;
+      const hi = 6;
+      const ang = (v: number) => Math.PI + ((clamp(v, lo, hi) - lo) / (hi - lo)) * Math.PI;
+      g.save();
+      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.45)' : 'rgba(16,24,40,0.16)';
+      g.shadowBlur = 8;
+      g.fillStyle = theme.dark ? 'rgba(16,22,31,0.86)' : 'rgba(255,255,255,0.9)';
+      roundRect(g, cx - rad - 8, cy - rad - 8, rad * 2 + 16, rad + 8 + below, 12);
+      g.fill();
+      g.restore();
+      // Bereiche: Airtime, normal, kräftig, extrem
+      const zones: [number, number, string][] = [
+        [lo, 0, theme.series[4]!],
+        [0, 3, C.good()],
+        [3, 5, theme.series[3]!],
+        [5, hi, C.heat()],
+      ];
+      g.lineWidth = small ? 6 : 8;
+      for (const [a, b, color] of zones) {
+        g.strokeStyle = withAlpha(color, 0.85);
+        g.beginPath();
+        g.arc(cx, cy, rad - 4, ang(a) + 0.02, ang(b) - 0.02);
+        g.stroke();
+      }
+      // Skala
+      g.strokeStyle = theme.muted;
+      g.lineWidth = 1;
+      for (let v = lo; v <= hi; v++) {
+        const a = ang(v);
+        g.beginPath();
+        g.moveTo(cx + Math.cos(a) * (rad - 10), cy + Math.sin(a) * (rad - 10));
+        g.lineTo(cx + Math.cos(a) * (rad - 14), cy + Math.sin(a) * (rad - 14));
+        g.stroke();
+      }
+      if (!small) {
+        for (const v of [0, 1, 3, 5]) {
+          const a = ang(v);
+          text(g, String(v), cx + Math.cos(a) * (rad - 22), cy + Math.sin(a) * (rad - 22), { font: `600 9px ${theme.font}`, color: theme.muted });
+        }
+      }
+      // Maximum als kleine Marke
+      if (peak !== null) {
+        const a = ang(peak);
+        g.fillStyle = C.heat();
+        g.beginPath();
+        g.arc(cx + Math.cos(a) * (rad + 1), cy + Math.sin(a) * (rad + 1), 2.6, 0, Math.PI * 2);
+        g.fill();
+      }
+      // Zeiger
+      const a = ang(value);
+      g.strokeStyle = theme.text;
+      g.lineWidth = 2.4;
+      g.lineCap = 'round';
+      g.beginPath();
+      g.moveTo(cx, cy);
+      g.lineTo(cx + Math.cos(a) * (rad - 6), cy + Math.sin(a) * (rad - 6));
+      g.stroke();
+      g.fillStyle = theme.text;
+      g.beginPath();
+      g.arc(cx, cy, 3.4, 0, Math.PI * 2);
+      g.fill();
+      const color = value < 0 ? theme.series[4]! : value > 5 ? C.heat() : value > 3 ? theme.series[3]! : theme.text;
+      // zweite Zeile: Airtime bzw. Schwerelosigkeit, sonst das bisherige Maximum
+      const state = value < -LIFT_TOL ? ctx.t('gAir') : Math.abs(value) <= 0.15 && Math.abs(st.v) > 0.5 ? ctx.t('gZero') : null;
+      text(g, `${fx(value, 1)} g`, cx, cy + (small ? 9 : 12), { font: `700 ${small ? 11 : 13}px ${theme.font}`, color });
+      const second = state ?? (peak !== null ? tr('gMax', { g: fx(peak, 1) }) : ctx.t('gLabel'));
+      text(g, second, cx, cy + (small ? 20 : 25), { font: `${state ? 700 : 500} ${small ? 9 : 10}px ${theme.font}`, color: state ? color : theme.muted });
+    }
+
     /* ---------- Szene: Anzeigen ---------- */
     function hints(st: RunSample): { text: string; color: string; solid?: boolean }[] {
       const out: { text: string; color: string; solid?: boolean }[] = [];
@@ -1233,7 +1632,8 @@ export default defineSimulation({
       const nowMs = performance.now();
       if (transient && transient.until > nowMs) out.push({ text: transient.text, color: theme.series[4]! });
       if (run.liftOff && t >= run.liftOff.t) {
-        if (track.features.loopStart) out.push({ text: ctx.t(scene.rect.w < 560 ? 'liftShort' : 'lift'), color: C.heat(), solid: true });
+        const lo = run.liftOff;
+        if (loopsOf(track).some((l) => lo.s > l.start && lo.s < l.end)) out.push({ text: ctx.t(scene.rect.w < 560 ? 'liftShort' : 'lift'), color: C.heat(), solid: true });
         else if (t < run.liftOff.t + 2.5) out.push({ text: ctx.t('air'), color: theme.series[4]! });
       }
       if (m === 'task' && !goal) out.push({ text: ctx.t('hTal'), color: theme.series[4]! });
@@ -1265,15 +1665,19 @@ export default defineSimulation({
       pill(r.x + r.w - 8, r.y + 8, `μ = ${n(p.mu, 3)}`, p.mu > 0 ? C.heat() : theme.text, 'right', size);
       const list = hints(st);
       const row = size + 17;
+      // Mit Übersichtskarte: schmal darunter, breit links daneben (Platz nach rechts frei lassen)
+      const map = follows() ? mapRect(r) : null;
+      const beside = map !== null && r.w >= 820;
+      const top = map && !beside ? map.y + map.h + 6 - row : r.y + 8;
       list.forEach((h, i) => {
         const g = surface.g;
         const pop = i === 0 && h.solid && liftPop.running ? 0.85 + 0.15 * liftPop.value : 1;
         g.save();
         const cx = r.x + r.w / 2;
-        const cy = r.y + 8 + row * (i + 1);
+        const cy = top + row * (i + 1);
         g.translate(cx, cy);
         g.scale(pop, pop);
-        const maxW = r.w - 20;
+        const maxW = map && beside ? r.w - 2 * (map.w + 20) : r.w - 20;
         const label = richWidth(h.text, size) + 16 > maxW ? h.text.slice(0, Math.max(8, Math.floor((h.text.length * maxW) / (richWidth(h.text, size) + 16)) - 2)) + '…' : h.text;
         pill(0, 0, label, h.color, 'center', size, h.solid ? h.color : undefined);
         g.restore();
@@ -1311,12 +1715,15 @@ export default defineSimulation({
         g.stroke();
         g.restore();
       }
-      drawCar(st.s, carAlpha, drop);
+      drawTrail();
+      drawTrain(st.s, carAlpha, drop);
       if (!intro.running) {
         drawVelocity(r, st);
         drawLoopForces(r, st);
       }
       drawChips(r, st);
+      drawMap(r);
+      drawGauge(r, st);
       g.restore();
       scene.end();
       g.strokeStyle = theme.dark ? '#273142' : '#dfe4ec';
@@ -1952,6 +2359,7 @@ export default defineSimulation({
 
     compute();
     intro.play();
+    if (follows() && !prefersReducedMotion()) flyIn.play();
     disp = { pot: e0(), kin: 0, heat: 0 };
 
     return {
@@ -1967,6 +2375,7 @@ export default defineSimulation({
             oldTrack = before;
             trackFade.play();
             marks = [];
+            if (follows() && !prefersReducedMotion()) flyIn.play();
           }
           if (changed.has('track') || changed.has('mu') || source === 'replace' || source === 'init' || (trackId() === 'eigen' && ['p1', 'p2', 'p3', 'p4'].some((k) => changed.has(k)))) {
             series = [];
@@ -1976,7 +2385,7 @@ export default defineSimulation({
         // Wechsel in die Looping-Ansicht: Looping-Bahn wählen; Aufgabe: Bahn mit Ziel
         if (changed.has('mode') && source === 'input') {
           if (mode() === 'loop' && trackId() !== 'looping') ctx.set({ track: 'looping' });
-          if (mode() === 'task' && trackId() === 'tal') ctx.set({ track: 'looping' });
+          if (mode() === 'task' && (trackId() === 'tal' || trackId() === 'mega')) ctx.set({ track: 'looping' });
         }
         if (changed.has('m') && source === 'input' && !physics) {
           const prev = disp.pot + disp.kin + disp.heat;
@@ -2059,7 +2468,7 @@ export default defineSimulation({
         drawScene(reg.scene);
         drawPanels(reg);
         const busy =
-          moving || settling || split !== st || intro.running || fade.running || trackFade.running || resultPop.running || liftPop.running || turnPop.running || marks.some((mk) => mk.pop.running) || (transient !== null && transient.until > nowMs);
+          moving || settling || split !== st || intro.running || flyIn.running || fade.running || trackFade.running || resultPop.running || liftPop.running || turnPop.running || marks.some((mk) => mk.pop.running) || (transient !== null && transient.until > nowMs);
         if (!trackFade.running) oldTrack = null;
         if (busy) ctx.requestRender();
       },

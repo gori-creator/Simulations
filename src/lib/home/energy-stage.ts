@@ -160,7 +160,7 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     loading ??= (registry.energieerhaltung ? registry.energieerhaltung() : Promise.reject(new Error('energieerhaltung fehlt'))).then((def) => {
       if (destroyed) return;
       definition = def;
-      values = { ...defaultValues(def.params), track: 'looping' };
+      values = { ...defaultValues(def.params), track: 'mega' };
       stage.querySelector('[data-energy-loading]')?.remove();
       keys = new KeyTargetLayer(stage, text('keys'), () => forceRender());
       images = new ImageStore('energieerhaltung', def.images ?? {}, forceRender);
