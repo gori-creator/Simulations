@@ -187,6 +187,19 @@ describe('Länder-Lehrpläne', () => {
     'bayern-gymnasium-physik': {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
+    'berlin-gymnasium-mathematik': {
+      strahlensaetze: 'Strahlensätze nicht im Rahmenlehrplan (nur Ähnlichkeitsabbildungen; siehe docs/lehrplaene/berlin-gymnasium-mathematik.md)',
+      'newton-verfahren': 'Newton-Verfahren nicht im Rahmenlehrplan',
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Rahmenlehrplan',
+      'matrix-abbildungen': 'Matrizen nur als Koeffizientenmatrizen und Tabellen',
+      'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
+    },
+    'berlin-gymnasium-physik': {
+      stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
+      'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
+      'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
+      'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+    },
     'hessen-gymnasium-mathematik': {
       'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
       ziegenproblem: 'kein passender Schwerpunkt',
@@ -226,6 +239,10 @@ describe('Länder-Lehrpläne', () => {
     'nordrhein-westfalen-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
+    'rheinland-pfalz-gymnasium-mathematik': {
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/rheinland-pfalz-gymnasium-mathematik.md)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+    },
     'sachsen-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
@@ -242,6 +259,17 @@ describe('Länder-Lehrpläne', () => {
     },
     'sachsen-anhalt-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
+    },
+    'schleswig-holstein-gymnasium-mathematik': {
+      cavalieri: 'Prinzip von Cavalieri nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-mathematik.md)',
+      'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht genannt (nur Verknüpfungen von Funktionen)',
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht in den Fachanforderungen',
+      'matrix-abbildungen': 'Matrizen nur als Koeffizientenmatrix beim Gauß-Verfahren',
+      'taylor-polynome': 'nicht in den Fachanforderungen (Hochschule)',
+      'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
+    },
+    'schleswig-holstein-gymnasium-physik': {
+      hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
   };
 

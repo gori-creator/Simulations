@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **326 von 1110** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **384 von 1470** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (138)
+## Mathematik (153)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -24,6 +24,21 @@ Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfert
 ### Bayern · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
+
+### Berlin · Gymnasium (10)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 5 | 4.2 | Gleichungen und Funktionen (Niveaustufen C–D) › Zuordnungen und Funktionen | Direkt proportionale Zuordnungen beschreiben, in Tabelle, Text und Koordinatensystem darstellen und mit dem Dreisatz rechnen. |
+| 5 | 5.1 | Daten und Zufall (Niveaustufen C–D) › Daten | Messwerte erfassen und in Tabellen und Diagrammen darstellen, Minimum, Maximum und Spannweite ermitteln. |
+| 6 | 2.1 | Größen und Messen (Niveaustufe D, in Teilen E) › Größenvorstellungen und Messen | Längen, Flächen, Volumen und Winkel unterscheiden, messen und schätzen, Einheiten umwandeln und Größen in Dezimalschreibweise angeben. |
+| 8 | 2.1 | Größen und Messen (Niveaustufe F) › Größenvorstellungen und Messen | Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten. |
+| 8 | 3.2 | Raum und Form (Niveaustufe F) › Geometrische Abbildungen | Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren. |
+| 9 | 2.1 | Größen und Messen (Niveaustufe G) › Größenvorstellungen und Messen | Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen. |
+| 10 | 1.1 | Zahlen und Operationen (Niveaustufe H) › Zahlvorstellungen | Zahlen situationsgerecht darstellen, ganze, rationale und reelle Zahlen angemessen verwenden, Einschachtelung von Quadratwurzeln oder π. |
+| 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
+| 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
+| 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
 
 ### Hessen · Gymnasium (88)
 
@@ -143,6 +158,12 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-S.3 | Stochastik (S) › Diskrete Zufallsgrößen | Wahrscheinlichkeitsverteilungen und ihre Kenngrößen. |
 | 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
+### Rheinland-Pfalz · Gymnasium (1)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 5/6 | 6 | Funktionaler Zusammenhang | Wird in der Orientierungsstufe nicht eigens unterrichtet: Zahlenfolgen, Terme, Operatormodell, Formeln, Maßstab und Datendarstellungen bereiten die funktionale Sichtweise in den anderen Leitideen vor. |
+
 ### Sachsen · Gymnasium (23)
 
 | Stufe | Nr. | Lernbereich | Kurz |
@@ -180,7 +201,16 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 
-## Physik (188)
+### Schleswig-Holstein · Gymnasium (4)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 5/6 | 5.3 | Daten und Zufall › einstufige Zufallsexperimente | Zufallsexperimente, Versuche, Ergebnisse und Ergebnismengen beschreiben. |
+| 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
+| 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
+| 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
+
+## Physik (231)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -223,6 +253,10 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | E1.2 | Grundideen der Quantenphysik (erhöhtes Niveau) › Einblick in das Weltbild der Quantenphysik | Wellenfunktion, Unbestimmtheitsrelation, Messprozess, Quantenradierer, Nicht-Lokalität und Dekohärenz sowie Quantentechnik und ihr Missbrauch in Texten. |
 | 13 | E3 | Strukturuntersuchungen zum Aufbau der Materie (erhöhtes Niveau) | Methoden der Strukturuntersuchung und Standardmodell, zusätzlich Röntgen-Strukturanalyse und Synchrotronstrahlung. |
 | 13 | E4.1 | Kernphysik (erhöhtes Niveau) › Ein einfaches Kernmodell | Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte. |
+
+### Berlin · Gymnasium (0)
+
+Alle Lernbereiche haben eine Simulation.
 
 ### Hessen · Gymnasium (92)
 
@@ -361,6 +395,45 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LK-4.2 | Atom- und Kernphysik (Leistungskurs) › Ionisierende Strahlung | Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
+### Rheinland-Pfalz · Gymnasium (34)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 7–10 | 7 | Kosmos und Forschung | Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten. |
+| 7–10 | 8 | Wärmetransporte und ihre Beeinflussung | Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine. |
+| 7–10 | 11 | Sensoren im Alltag | Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC. |
+| 7–10 | 12 | Praxis und Forschung | Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern. |
+| 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
+| 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
+| 12/13 | GF-W.7 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
+| 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
+| 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
+| 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
+| 12/13 | GF-W.14 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Entropie | Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad. |
+| 12/13 | GF-W.16 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
+| 12/13 | GF-W.17 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
+| 12/13 | GF-W.18 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
+| 12/13 | GF-W.19 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
+| 12/13 | GF-W.20 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
+| 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
+| 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
+| 12/13 | GF-W.23 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Physik als sich weiterentwickelnde Wissenschaft | Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang. |
+| 12/13 | GF-W.24 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
+| 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
+| 12/13 | LF-W.5 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
+| 12/13 | LF-W.6 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
+| 12/13 | LF-W.7 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
+| 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
+| 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
+| 12/13 | LF-W.14 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
+| 12/13 | LF-W.15 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
+| 12/13 | LF-W.16 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
+| 12/13 | LF-W.17 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
+| 12/13 | LF-W.18 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
+| 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
+| 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
+| 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
+
 ### Sachsen · Gymnasium (23)
 
 | Stufe | Nr. | Lernbereich | Kurz |
@@ -404,4 +477,18 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | eA-3.1 | Ausgewählte Gebiete der nichtklassischen Physik (erhöhtes Anforderungsniveau) › Spezielle Relativitätstheorie | Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie. |
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
+
+### Schleswig-Holstein · Gymnasium (9)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 7–10 | 1.3 | Energie › Herausforderungen der Energieversorgung (Block II) | Arten der Energieversorgung vergleichen und bewerten, Transport und Speicherung, regenerative Energien und verantwortungsvoller Umgang mit Energie. |
+| 7–10 | 2.2 | Elektrizitätslehre und Magnetismus › Permanentmagnetismus (Block I) | Magnetische Pole, Anziehung und Abstoßung, Magnetisierbarkeit und Magnetfelder. |
+| 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
+| 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
+| 7–10 | 4.1 | Mechanik › Dichte (Block I) | Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken. |
+| 7–10 | 5.1 | Radioaktivität und ionisierende Strahlung › Ionisierende Strahlung (Block II) | α-, β- und γ-Strahlung, Nachweis, Abschirmung, Nutzung und biologische Wirkung. |
+| 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
+| 11 | W.4 | Mechanische und elektromagnetische Schwingungen und Wellen › Spektren | Farben, elektromagnetisches Spektrum, Emissions- und Absorptionsspektren, diskrete und kontinuierliche Spektren. |
+| 11 | Q.2 | Quantenphysik und Materie › Atomvorstellungen | Quantenmechanisches Atommodell, Orbitale und Energieniveaus des Wasserstoffatoms, Linienspektren, Potenzialtopf, charakteristische Röntgenstrahlung und Pauli-Prinzip. |
 

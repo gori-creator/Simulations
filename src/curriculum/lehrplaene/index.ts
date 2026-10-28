@@ -3,16 +3,22 @@ import { badenWuerttembergGymnasiumMathematik } from "./baden-wuerttemberg-gymna
 import { badenWuerttembergGymnasiumPhysik } from "./baden-wuerttemberg-gymnasium-physik";
 import { bayernGymnasiumMathematik } from "./bayern-gymnasium-mathematik";
 import { bayernGymnasiumPhysik } from "./bayern-gymnasium-physik";
+import { berlinGymnasiumMathematik } from "./berlin-gymnasium-mathematik";
+import { berlinGymnasiumPhysik } from "./berlin-gymnasium-physik";
 import { hessenGymnasiumMathematik } from "./hessen-gymnasium-mathematik";
 import { hessenGymnasiumPhysik } from "./hessen-gymnasium-physik";
 import { niedersachsenGymnasiumMathematik } from "./niedersachsen-gymnasium-mathematik";
 import { niedersachsenGymnasiumPhysik } from "./niedersachsen-gymnasium-physik";
 import { nordrheinWestfalenGymnasiumMathematik } from "./nordrhein-westfalen-gymnasium-mathematik";
 import { nordrheinWestfalenGymnasiumPhysik } from "./nordrhein-westfalen-gymnasium-physik";
+import { rheinlandPfalzGymnasiumMathematik } from "./rheinland-pfalz-gymnasium-mathematik";
+import { rheinlandPfalzGymnasiumPhysik } from "./rheinland-pfalz-gymnasium-physik";
 import { sachsenGymnasiumMathematik } from "./sachsen-gymnasium-mathematik";
 import { sachsenGymnasiumPhysik } from "./sachsen-gymnasium-physik";
 import { sachsenAnhaltGymnasiumMathematik } from "./sachsen-anhalt-gymnasium-mathematik";
 import { sachsenAnhaltGymnasiumPhysik } from "./sachsen-anhalt-gymnasium-physik";
+import { schleswigHolsteinGymnasiumMathematik } from "./schleswig-holstein-gymnasium-mathematik";
+import { schleswigHolsteinGymnasiumPhysik } from "./schleswig-holstein-gymnasium-physik";
 import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from "./types";
 
 export type * from "./types";
@@ -24,27 +30,36 @@ export type * from "./types";
  *
  * - Baden-Württemberg, Gymnasium: Mathematik und Physik (Bildungsplan, G9)
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
+ * - Berlin, Gymnasium: Mathematik und Physik (Rahmenlehrplan 1–10 Teil C und Rahmenlehrplan gymnasiale Oberstufe Teil C, G8)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Niedersachsen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Nordrhein-Westfalen, Gymnasium: Mathematik und Physik (Kernlehrpläne Sek. I, G9, und Sek. II von 2026)
+ * - Rheinland-Pfalz, Gymnasium: Mathematik und Physik (Rahmenlehrpläne Sek. I, Lehrpläne Mainzer Studienstufe, G9)
  * - Sachsen, Gymnasium: Mathematik und Physik (Lehrpläne Gymnasium, Klasse 5 bzw. 6 bis Jahrgangsstufe 12)
  * - Sachsen-Anhalt, Gymnasium: Mathematik und Physik (Fachlehrpläne, G8, Stand 01.08.2022)
+ * - Schleswig-Holstein, Gymnasium: Mathematik und Physik (Fachanforderungen Sek. I und II, G9)
  */
 const RAW_CURRICULA: StateCurriculum[] = [
   badenWuerttembergGymnasiumMathematik,
   badenWuerttembergGymnasiumPhysik,
   bayernGymnasiumMathematik,
   bayernGymnasiumPhysik,
+  berlinGymnasiumMathematik,
+  berlinGymnasiumPhysik,
   hessenGymnasiumMathematik,
   hessenGymnasiumPhysik,
   niedersachsenGymnasiumMathematik,
   niedersachsenGymnasiumPhysik,
   nordrheinWestfalenGymnasiumMathematik,
   nordrheinWestfalenGymnasiumPhysik,
+  rheinlandPfalzGymnasiumMathematik,
+  rheinlandPfalzGymnasiumPhysik,
   sachsenGymnasiumMathematik,
   sachsenGymnasiumPhysik,
   sachsenAnhaltGymnasiumMathematik,
   sachsenAnhaltGymnasiumPhysik,
+  schleswigHolsteinGymnasiumMathematik,
+  schleswigHolsteinGymnasiumPhysik,
 ];
 
 /** Lernbereiche (Nummer und Überschrift) einer Jahrgangsstufe als Vergleichsschlüssel. */
