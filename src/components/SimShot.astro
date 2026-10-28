@@ -1,6 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
-import { shotFile, shotFocus, type ShotScheme } from '../lib/sim-shots';
+import { previewFile, shotFile, shotFocus, type ShotScheme } from '../lib/sim-shots';
 
 /**
  * Vorschaubild einer Simulation aus ihrer echten Bühne: Die Bildtests
@@ -15,6 +15,11 @@ interface Props {
 }
 
 const { id } = Astro.props;
+// Generiertes Vorschaubild (docs/VORSCHAUBILDER.md) hat Vorrang: ein Bild für hell und dunkel
+const art = previewFile(id);
+const artImage = art
+  ? await getImage({ src: (await art()).default, width: 800, height: 450, fit: 'cover', position: 'center', format: 'webp', quality: 76 })
+  : null;
 const load = async (scheme: ShotScheme) => {
   const file = shotFile(id, scheme);
   if (!file) return null;
@@ -22,11 +27,14 @@ const load = async (scheme: ShotScheme) => {
   // davon nur einen vergrößerten Ausschnitt (shotFocus), der bleibt so scharf.
   return getImage({ src: (await file()).default, width: 810, height: 456, fit: 'cover', position: 'center', format: 'webp', quality: 74 });
 };
-const [light, dark] = await Promise.all([load('hell'), load('dunkel')]);
+const [light, dark] = artImage ? [null, null] : await Promise.all([load('hell'), load('dunkel')]);
 const focus = shotFocus(id);
 const style = `--shot-x:${focus.x}%;--shot-y:${focus.y}%;--shot-zoom:${focus.zoom}`;
 ---
 
+{
+  artImage && <img class="sim-shot sim-shot--art" src={artImage.src} width="800" height="450" alt="" loading="lazy" decoding="async" />
+}
 {
   light && (
     <img class="sim-shot sim-shot--hell" src={light.src} width="810" height="456" alt="" style={style} loading="lazy" decoding="async" />

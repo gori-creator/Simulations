@@ -1103,6 +1103,13 @@ em .hat::after {
   display: none;
 }
 
+/* Generiertes Vorschaubild: ganzes Motiv zeigen, ohne Ausschnitt-Zoom */
+.sim-shot--art {
+  object-position: center;
+  transform: none;
+  transform-origin: center;
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .sim-shot--hell {
     display: none;
@@ -1129,6 +1136,10 @@ em .hat::after {
 
   .card--link:hover .sim-shot {
     transform: scale(calc(var(--shot-zoom, 1.5) * 1.04));
+  }
+
+  .card--link:hover .sim-shot--art {
+    transform: scale(1.04);
   }
 }
 
