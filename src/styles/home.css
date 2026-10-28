@@ -236,6 +236,12 @@
   max-width: none;
 }
 
+/* Knopf „Bewegung pausieren“ nur mit Skripten. Kein `hidden`, das erst das Skript
+   aufhebt: Sonst rückt die Kopfleiste nach dem Laden sichtbar zur Seite. */
+:root:not([data-js]) .motion-toggle {
+  display: none;
+}
+
 /* Ersatzgrafik nur ohne JavaScript oder ohne WebGL – nicht während des Ladens
    (sonst blitzt sie kurz vor der echten Skulptur auf). `data-js` setzt das
    Inline-Skript im Layout vor dem ersten Zeichnen. */
@@ -1159,22 +1165,10 @@
   font-size: 11px;
 }
 
-/* Originale Simulationskarten in der ruhigen Darstellung des Entwurfs */
+/* Originale Simulationskarten; Rahmen, Rundung, Schatten und Anheben wie überall (global.css, Apple-Stil) */
 .home-catalog__grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 22px 20px;
-}
-
-.home-catalog .card {
-  border-color: var(--sc-line);
-  border-radius: 12px;
-  box-shadow: none;
-}
-
-.home-catalog .card--link:hover {
-  transform: none;
-  border-color: #8fa7df;
-  box-shadow: 0 5px 18px #1833650b;
 }
 
 .home-catalog .card__thumb {
@@ -1244,43 +1238,46 @@
   }
 }
 
-/* Desktop ab 1024 px: eigene Randspur für die Münze links; die Inhalte rücken ein. */
+/* Desktop ab 1024 px: eigene Randspur für die Münze links; die Inhalte rücken ein.
+   Hängt nur an Bildschirmbreite und `data-js` (im <head> gesetzt), nicht an der
+   Klasse `home-journey` aus sculpture.ts: Die kommt erst nach dem Laden und ließ
+   die Seite bei jedem Aufruf (z. B. Sprachwechsel) sichtbar springen. */
 @media (min-width: 1024px) {
   .scitura-home {
     --page-gutter: max(96px, calc((100% - 1180px) / 2));
   }
 
-  .home-journey .coin-guide {
+  :root[data-js] .coin-guide {
     z-index: 12;
   }
 
-  .home-journey .home-hero {
+  :root[data-js] .home-hero {
     height: 640px;
   }
 
-  .home-journey .home-experiment__heading {
+  :root[data-js] .home-experiment__heading {
     grid-template-columns: 1fr 1fr;
   }
 
-  .home-journey .coin-dock {
+  :root[data-js] .coin-dock {
     display: none;
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1400px) {
-  .home-journey .site-footer > .container {
+  :root[data-js]:has(.scitura-home) .site-footer > .container {
     padding-left: 96px;
   }
 }
 
 @media (min-width: 1550px) {
-  .home-journey .home-hero {
+  :root[data-js] .home-hero {
     height: 670px;
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1150px) {
-  .home-journey .home-hero {
+  :root[data-js] .home-hero {
     height: 610px;
   }
 }
