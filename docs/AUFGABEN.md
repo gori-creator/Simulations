@@ -32,7 +32,7 @@ Betrifft `src/sim-core/` und einzelne Simulationen; Details in der Beschreibung 
 - [x] `fmt.approx` im Kern ergänzen; Simulationen, die „≈“ selbst bauen, darauf umstellen (`fmt.isExact`, `fmt.rel`, `fmt.approx`; 18 Simulationen).
 - [x] Prüfbogen: reduzierte Bewegung auch nach „Start“ prüfen (auch nach Aktionsknöpfen).
 - [x] Fest eingetragene Farben in Simulationen auf `ctx.theme` umstellen bzw. Kontrast im Dunkelmodus prüfen. Kontrast gemessen; Schrift auf Farbflächen über `textOn()` (rund 30 Simulationen). Materialfarben (Kupfer, Holz …) bewusst unverändert, damit das Aussehen gleich bleibt.
-- [ ] Theme-Reihenfarben Orange/Grün im hellen Modus als Textfarbe unter 4,5 : 1 auf Weiß – beim neuen Design entscheiden.
+- [x] Theme-Reihenfarben Orange/Grün im hellen Modus als Textfarbe unter 4,5 : 1 auf Weiß – mit dem Farbkonzept 10/2026 gelöst (`docs/FARBEN.md`).
 
 ## Rechtliches (vor der echten Veröffentlichung)
 
