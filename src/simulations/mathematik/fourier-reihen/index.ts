@@ -55,6 +55,12 @@ class Chan {
     this.tw = null;
   }
   follow(goal: number, tau: number): void {
+    // Reduzierte Bewegung: Zahlen springen sofort auf ihr Ziel (auch für die Bildtests,
+    // sonst hinge der angezeigte Wert davon ab, wie viele Bilder schon gezeichnet wurden).
+    if (prefersReducedMotion()) {
+      this.jump(goal);
+      return;
+    }
     if (this.tw) this.tw = null;
     this.goal = goal;
     this.tau = tau;
