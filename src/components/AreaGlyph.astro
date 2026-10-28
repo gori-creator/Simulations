@@ -1,0 +1,63 @@
+---
+/**
+ * Eigene Symbole der Bereiche (Mathematik, Physik): feine Linien in Textfarbe
+ * (currentColor) und je ein Akzent in der Fachfarbe (--accent). Gezeichnet auf
+ * 40 × 40, Linienstärke 1,75, runde Enden – bewusst keine Standard-Icons.
+ * Unbekannte Bereiche (z. B. Chemie, solange es dort noch keine gibt) bekommen
+ * ein schlichtes Raster.
+ */
+interface Props {
+  area: string;
+  size?: number;
+}
+const { area, size = 40 } = Astro.props;
+
+/** Linien (`line`) und Akzentflächen (`accent`) je Bereich. */
+const GLYPHS: Record<string, { line: string; accent: string }> = {
+  // Zahlengerade mit Sprungbogen
+  zahlen: { line: 'M4 28h32M8 25v6M14 25v6M20 25v6M26 25v6M32 25v6M14 22c2-9 10-9 12 0M24 19.5l2 2.5 2.5-2', accent: 'M26 28m-3.2 0a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0' },
+  // Balkenwaage
+  terme: { line: 'M20 9v22M13 33h14M7 14h26M7 14l-4 9h8zM33 14l-4 9h8zM20 9l-1.5-2h3z', accent: 'M5 23h8a4 4 0 0 1-8 0zM28.5 20.5h5v2.5h-5z' },
+  // Dreieck mit Zirkelbogen
+  geometrie: { line: 'M6 32 L20 8 L34 32 Z M11 32a9 9 0 0 1 4.5-7.8', accent: 'M20 8m-3.4 0a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0' },
+  // Würfel mit Akzentfläche
+  'flaechen-koerper': { line: 'M8 14l12-6 12 6v13l-12 6-12-6zM8 14l12 6 12-6M20 20v13', accent: 'M20 20l12-6v13l-12 6z' },
+  // Achsen mit Parabel
+  funktionen: { line: 'M6 32h28M10 6v30M13 10c3 18 15 18 18 0', accent: 'M22 23.5m-3.2 0a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0' },
+  // Säulendiagramm einer Verteilung
+  stochastik: { line: 'M5 33h30M8 33v-5h4v5M14 33v-11h4v11M26 33v-11h4v11M32 33v-5h4v5', accent: 'M20 33V12h4v21z' },
+  // Kurve mit Tangente
+  analysis: { line: 'M5 30c8 0 10-20 18-20s8 10 12 10M6 25l26-14', accent: 'M18 15.5m-3.2 0a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0' },
+  // Räumliche Achsen mit Vektor
+  vektoren: { line: 'M14 28V6M14 28h22M14 28l-9 7M14 28l14-14', accent: 'M28 14l-6.5 1.2 5.3 5.3z' },
+  // Wurfbahn
+  mechanik: { line: 'M4 33h32M7 31c5-22 19-22 26 0', accent: 'M28.5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0' },
+  // Welle
+  'schwingungen-wellen': { line: 'M3 20c3-10 6-10 8.5 0s5.5 10 8.5 0 6-10 8.5 0 5.5 10 8.5 0M3 31h34', accent: 'M7.2 12.5m-2.4 0a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0' },
+  // Stromkreis mit Lampe
+  elektrizitaet: { line: 'M17 12H6v18h16.4M31.6 30H34V12H21M17 8v8M21 10v4M23.8 26.8l6.4 6.4M30.2 26.8l-6.4 6.4', accent: 'M27 30m-4.6 0a4.6 4.6 0 1 0 9.2 0a4.6 4.6 0 1 0 -9.2 0' },
+  // Linse mit Strahlen
+  optik: { line: 'M18 6c-4 8-4 20 0 28M22 6c4 8 4 20 0 28M3 12l17 0 14 8M3 28l17 0 14-8M3 20h31', accent: 'M33 20m-2.4 0a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0' },
+  // Thermometer
+  waerme: { line: 'M17 24V8a3 3 0 0 1 6 0v16a6 6 0 1 1-6 0zM26 11h4M26 16h4M26 21h3', accent: 'M20 31m-3.6 0a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0M18.6 18h2.8v10h-2.8z' },
+  // Atom
+  'moderne-physik': { line: '', accent: 'M20 20m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0' },
+};
+const glyph = GLYPHS[area] ?? { line: 'M8 8h24v24H8zM8 20h24M20 8v24', accent: 'M20 20m-2.5 0a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0' };
+const atom = area === 'moderne-physik';
+---
+
+<svg class="area-glyph" width={size} height={size} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+  <path d={glyph.accent} class="area-glyph__accent" />
+  {
+    atom ? (
+      <g fill="none" stroke="currentColor" stroke-width="1.75">
+        <ellipse cx="20" cy="20" rx="15" ry="6" />
+        <ellipse cx="20" cy="20" rx="15" ry="6" transform="rotate(60 20 20)" />
+        <ellipse cx="20" cy="20" rx="15" ry="6" transform="rotate(120 20 20)" />
+      </g>
+    ) : (
+      <path d={glyph.line} fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+    )
+  }
+</svg>

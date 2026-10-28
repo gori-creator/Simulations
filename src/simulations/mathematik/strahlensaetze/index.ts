@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   angleBetween,
@@ -507,17 +507,8 @@ export default defineSimulation({
     }
 
     function arrowHead(tip: Px, dir: Px, color: string, size: number): void {
-      const g = surface.g;
-      const l = Math.hypot(dir[0], dir[1]) || 1;
-      const ux = dir[0] / l;
-      const uy = dir[1] / l;
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(tip[0], tip[1]);
-      g.lineTo(tip[0] - ux * size - uy * size * 0.45, tip[1] - uy * size + ux * size * 0.45);
-      g.lineTo(tip[0] - ux * size + uy * size * 0.45, tip[1] - uy * size - ux * size * 0.45);
-      g.closePath();
-      g.fill();
+      // gemeinsame Form aus sim-core
+      drawArrowHead(surface.g, tip[0], tip[1], Math.atan2(dir[1], dir[0]), size, color);
     }
 
     function card(r: Rect, accent?: string): void {

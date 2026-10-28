@@ -40,6 +40,7 @@ export * from './numeric';
 export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing } from './anim';
 export {
   contrastRatio,
+  drawArrowHead,
   drawImageFit,
   measureSubText,
   parseSubText,

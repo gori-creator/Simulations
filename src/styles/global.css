@@ -1241,6 +1241,42 @@ em .hat::after {
   font-size: 1.25rem;
 }
 
+/* Eigenes Bereichssymbol (AreaGlyph.astro) auf einer ruhigen Fläche in der Fachfarbe */
+.area-card__main {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.area-card__glyph {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--accent-soft, var(--surface-2));
+  color: var(--text);
+}
+
+.area-glyph__accent {
+  fill: var(--accent, var(--brand));
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .area-card__glyph {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .area-card__glyph svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
 .area-card__topics {
   grid-column: 1 / -1;
   display: flex;

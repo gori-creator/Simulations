@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { FAMILY, givenParts, isSsW, pieces, solve, sssGap, sswAnalysis, stepPlan, thirdAngle, type Case, type Given, type Pt, type Solution, type StepKind } from './model';
 
@@ -998,15 +998,8 @@ export default defineSimulation({
       haloText(str, clamp(x, P.x + w, P.x + P.w - w), clamp(y, P.y + 12, P.y + P.h - 12), f, color);
     }
     function arrowHead(tip: Px, dir: Px, color: string, size: number): void {
-      const g = surface.g;
-      const [ux, uy] = unit(dir[0], dir[1]);
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(tip[0], tip[1]);
-      g.lineTo(tip[0] - ux * size - uy * size * 0.45, tip[1] - uy * size + ux * size * 0.45);
-      g.lineTo(tip[0] - ux * size + uy * size * 0.45, tip[1] - uy * size - ux * size * 0.45);
-      g.closePath();
-      g.fill();
+      // gemeinsame Form aus sim-core
+      drawArrowHead(surface.g, tip[0], tip[1], Math.atan2(dir[1], dir[0]), size, color);
     }
     /** Pille mit Formel, z. B. Hinweise auf der Zeichnung. */
     function fpill(x: number, y: number, src: string, opts: { color?: string; border?: string; size?: number; alpha?: number; align?: 'left' | 'center' | 'right' } = {}): Rect {
