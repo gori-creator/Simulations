@@ -455,12 +455,6 @@ em .hat::after {
   white-space: nowrap;
 }
 
-.badge--ready {
-  background: color-mix(in srgb, var(--success) 14%, transparent);
-  /* reine Erfolgsfarbe hatte auf dem hellen Grund nur 4,4 : 1 */
-  color: color-mix(in srgb, var(--success) 78%, var(--text));
-}
-
 .badge--subject-mathematik {
   background: var(--math-soft);
   color: var(--math);
@@ -1086,6 +1080,52 @@ em .hat::after {
 .card__thumb svg {
   width: 100%;
   height: 100%;
+}
+
+/* Vorschaubild aus der echten Bühne (SimShot.astro): je Farbschema ein Foto */
+.card__thumb--shot {
+  overflow: hidden;
+  background: var(--plot-bg);
+}
+
+.sim-shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sim-shot--dunkel {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sim-shot--hell {
+    display: none;
+  }
+
+  :root:not([data-theme='light']) .sim-shot--dunkel {
+    display: block;
+  }
+}
+
+:root[data-theme='dark'] .sim-shot--hell {
+  display: none;
+}
+
+:root[data-theme='dark'] .sim-shot--dunkel {
+  display: block;
+}
+
+/* sanftes Heranzoomen beim Darüberfahren */
+@media (prefers-reduced-motion: no-preference) {
+  .sim-shot {
+    transition: transform 0.5s var(--ap-ease, ease);
+  }
+
+  .card--link:hover .sim-shot {
+    transform: scale(1.04);
+  }
 }
 
 .card__body {

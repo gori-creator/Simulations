@@ -6,6 +6,8 @@ import { t } from '../i18n/utils';
 import { regionGradeLabels, regionOrders, regionOrderStyle, regionsOf } from '../lib/region';
 import { href } from '../lib/routes';
 import GradeBadge from './GradeBadge.astro';
+import { hasShot } from '../lib/sim-shots';
+import SimShot from './SimShot.astro';
 import SimThumb from './SimThumb.astro';
 
 interface Props {
@@ -40,7 +42,9 @@ const regionBadges = regionsOf(lang)
   data-region-order={Object.keys(orders).length ? JSON.stringify(orders) : undefined}
   style={regionOrderStyle(orders)}
 >
-  <div class="card__thumb"><SimThumb kind={sim.thumb} id={sim.id} /></div>
+  <div class:list={['card__thumb', { 'card__thumb--shot': ready && hasShot(sim.id) }]}>
+    {ready && hasShot(sim.id) ? <SimShot id={sim.id} /> : <SimThumb kind={sim.thumb} id={sim.id} />}
+  </div>
   <div class="card__body">
     <Heading class="card__title">
       {ready ? <a class="card__link" href={href(lang, { kind: 'simulation', id: sim.id })}>{sim.title[lang]}</a> : sim.title[lang]}
@@ -56,7 +60,7 @@ const regionBadges = regionsOf(lang)
           </span>
         ))
       }
-      <span class:list={['badge', { 'badge--ready': ready }]}>{t(lang, ready ? 'status.ready' : 'status.planned')}</span>
+      {!ready && <span class="badge">{t(lang, 'status.planned')}</span>}
     </div>
   </div>
 </article>

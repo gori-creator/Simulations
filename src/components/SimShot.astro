@@ -1,0 +1,36 @@
+---
+import { getImage } from 'astro:assets';
+import { shotFile, type ShotScheme } from '../lib/sim-shots';
+
+/**
+ * Vorschaubild einer Simulation aus ihrer echten Bühne: Die Bildtests
+ * fotografieren jede Simulation hell und dunkel (tests/bildtests/referenz/,
+ * erzeugt in GitHub Actions, siehe docs/BILDTESTS.md). Daraus entstehen beim
+ * Bauen kleine WebP-Bilder; das passende zum Farbschema blendet global.css ein
+ * (.sim-shot--hell / --dunkel). Fehlt ein Foto (neue oder geplante Simulation),
+ * gibt die Komponente nichts aus und die Karte zeigt die gezeichnete Grafik.
+ */
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const load = async (scheme: ShotScheme) => {
+  const file = shotFile(id, scheme);
+  if (!file) return null;
+  // 16 : 9 wie die Kartenfläche; doppelte Pixeldichte für scharfe Darstellung
+  return getImage({ src: (await file()).default, width: 640, height: 360, fit: 'cover', position: 'center', format: 'webp', quality: 72 });
+};
+const [light, dark] = await Promise.all([load('hell'), load('dunkel')]);
+---
+
+{
+  light && (
+    <img class="sim-shot sim-shot--hell" src={light.src} width="640" height="360" alt="" loading="lazy" decoding="async" />
+  )
+}
+{
+  dark && (
+    <img class="sim-shot sim-shot--dunkel" src={dark.src} width="640" height="360" alt="" loading="lazy" decoding="async" />
+  )
+}
