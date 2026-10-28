@@ -436,7 +436,7 @@ export const mathematik: Subject = {
               'Konstruiere Dreiecke aus drei gegebenen Stücken mit Lineal und Zirkel, Schritt für Schritt wie im Heft. Manchmal gibt es keine, eine oder zwei Lösungen.',
               'Construct triangles from three given parts with ruler and compass, step by step as in your exercise book. Sometimes there are no, one or two solutions.',
             ),
-            grades: [6, 7],
+            grades: [6, 8],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Kongruenz', 'Kongruenzsatz', 'SSS', 'SWS', 'WSW', 'SsW', 'SSW', 'WWW', 'Dreieckskonstruktion', 'Planfigur', 'Zirkel', 'Geodreieck', 'Dreiecksungleichung', 'eindeutig', 'Konstruktionsbeschreibung', 'Kreis', 'Schnittpunkt', 'Winkelsumme', 'ähnlich'],
@@ -602,7 +602,7 @@ export const mathematik: Subject = {
               'Miss auf einer Karte mit dem Lineal und rechne mit dem Maßstab aus, wie weit es in Wirklichkeit ist.',
               'Measure on a map with a ruler and use the scale to work out the real distance.',
             ),
-            grades: [5, 7],
+            grades: [5, 9],
             kmk: ['M-L2', 'M-K3', 'M-L1', 'M-K4'],
             keywords: L(
               ['Maßstab', 'Karte', 'Landkarte', 'Wirklichkeit', 'Maßstabszahl', 'Maßstabsleiste', 'Entfernung', 'Luftlinie', 'Wegstrecke', 'Vergrößerung', 'Verkleinerung', 'Lineal', 'Längen', 'Einheiten', 'Kilometer', 'Zentimeter'],
@@ -839,7 +839,7 @@ export const mathematik: Subject = {
               'Verschiebe und strecke eine Hyperbel und sieh, wie sie sich ihren Asymptoten nähert.',
               'Shift and stretch a hyperbola and see how it approaches its asymptotes.',
             ),
-            grades: [8, 10],
+            grades: [7, 10],
             kmk: ['M-L3', 'M-K4', 'M-K5'],
             keywords: L(
               ['Hyperbel', 'Asymptote', 'Polstelle', 'Definitionslücke', 'Definitionsmenge', 'Wertemenge', 'indirekte Proportionalität', 'gebrochen-rationale Funktion', 'Kehrwertfunktion'],
@@ -855,7 +855,7 @@ export const mathematik: Subject = {
               'Ziehe Nullstellen und Polstellen eines Bruchterms und sieh, wie sich der Graph verändert. Mit Asymptoten und Lücken im Graphen.',
               'Drag the zeros and poles of a rational function and see how the graph changes. With asymptotes and holes in the graph.',
             ),
-            grades: [11, 12],
+            grades: [10, 13],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K1'],
             keywords: L(
               ['gebrochen-rationale Funktion', 'Polstelle', 'Asymptote', 'senkrechte Asymptote', 'waagrechte Asymptote', 'schräge Asymptote', 'Definitionslücke', 'hebbare Lücke', 'Polynomdivision', 'Vorzeichenwechsel', 'Grenzwert', 'Kürzen', 'Näherungskurve', 'Vorzeichentabelle'],
@@ -1011,7 +1011,7 @@ export const mathematik: Subject = {
               'Warum ist die Zahl e so besonders? Bei der e-Funktion sind Graph und Ableitung genau gleich.',
               'Why is the number e so special? For the exponential function, the graph and its derivative are exactly the same.',
             ),
-            grades: [11, 12],
+            grades: [11, 13],
             kmk: ['M-L3', 'M-K5', 'M-K4', 'M-K1'],
             keywords: L(
               ['e-Funktion', 'Exponentialfunktion', 'eulersche Zahl', 'e', 'Ableitung', 'Tangente', 'Steigungsdreieck', 'natürlicher Logarithmus', 'ln', 'Umkehrfunktion', 'Zinseszins', 'Grenzwert', 'Stammfunktion'],
@@ -1393,7 +1393,7 @@ export const mathematik: Subject = {
               'Finde eine Nullstelle näherungsweise mit Tangenten. Jeder Schritt bringt dich näher, aber manchmal geht es auch schief.',
               'Approximate a zero with tangent lines. Each step gets you closer, but sometimes it goes wrong.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-L1', 'M-K2', 'M-K5'],
             keywords: L(
               ['Newton-Verfahren', 'Nullstelle', 'Näherungsverfahren', 'Iteration', 'Tangente', 'Steigungsdreieck', 'Ableitung', 'Startwert', 'quadratische Konvergenz', 'Heron-Verfahren', 'Wurzel 2', 'Einzugsbereich'],
@@ -1409,7 +1409,7 @@ export const mathematik: Subject = {
               'Untersuche einen Graphen Schritt für Schritt: Nullstellen, Hoch- und Tiefpunkte, Wendepunkte und wo er steigt oder fällt.',
               'Analyse a graph step by step: zeros, maximum and minimum points, inflection points and where it rises or falls.',
             ),
-            grades: [11, 12],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
             keywords: L(
               ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
@@ -1527,7 +1527,7 @@ export const mathematik: Subject = {
               'Die Fläche unter einem Graphen dreht sich um die x-Achse und wird zu einem Körper. Sein Volumen wird mit Scheiben berechnet.',
               'The area under a graph rotates about the x-axis and becomes a solid. Its volume is calculated with thin discs.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L2', 'M-L3', 'M-L4', 'M-K4'],
             keywords: L(
               ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],

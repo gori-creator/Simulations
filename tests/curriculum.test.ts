@@ -213,6 +213,32 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
+    'bremen-gymnasium-mathematik': {
+      strahlensaetze: 'Strahlensätze nicht im Bildungsplan (nur zentrische Streckung und Ähnlichkeit; siehe docs/lehrplaene/bremen-gymnasium-mathematik.md)',
+      cavalieri: 'Prinzip von Cavalieri nicht im Bildungsplan',
+      'sinussatz-kosinussatz': 'Trigonometrie nur im rechtwinkligen Dreieck',
+      kugeln: 'Kugeln nur als Körper; vektorielle Kugelgleichungen ausdrücklich nicht gefordert',
+      'matrix-abbildungen': 'Matrizen nur als Übergangs- und Populationsmatrizen im Schwerpunkt Lineare Algebra',
+      'taylor-polynome': 'nicht im Bildungsplan (Hochschule)',
+      'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
+    },
+    'bremen-gymnasium-physik': {
+      hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
+    },
+    'hamburg-gymnasium-mathematik': {
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-mathematik.md)',
+      'matrix-abbildungen': 'Matrizen nur als Übergangsmatrizen im Wahlpflichtmodul Lineare Algebra',
+      'taylor-polynome': 'nicht im Bildungsplan (Hochschule)',
+      'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
+    },
+    'hamburg-gymnasium-physik': {
+      'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
+      reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
+      brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
+      linsen: 'Strahlenoptik in NWT 5/6; Linsen in der Studienstufe nur im Wahlthema Astrophysik',
+      'doppler-effekt': 'Doppler-Effekt nicht im Bildungsplan',
+      gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
+    },
     'hessen-gymnasium-mathematik': {
       'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
       ziegenproblem: 'kein passender Schwerpunkt',
@@ -255,6 +281,15 @@ describe('Länder-Lehrpläne', () => {
     'rheinland-pfalz-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/rheinland-pfalz-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+    },
+    'saarland-gymnasium-mathematik': {
+      'matrix-abbildungen': 'Matrizen nur als Schreibweise für lineare Gleichungssysteme (siehe docs/lehrplaene/saarland-gymnasium-mathematik.md)',
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+    },
+    'saarland-gymnasium-physik': {
+      'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
+      'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
     },
     'sachsen-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',

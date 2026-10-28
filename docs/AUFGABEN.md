@@ -8,7 +8,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
-| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt, Rheinland-Pfalz, Schleswig-Holstein, Berlin, Brandenburg; als Nächstes Thüringen |
+| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt, Rheinland-Pfalz, Schleswig-Holstein, Berlin, Brandenburg, Hamburg, Saarland, Bremen; Thüringen und Mecklenburg-Vorpommern vorerst zurückgestellt |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (Entwurf), Claude (Einbau) | Startseite „Scitura“ eingebaut (`docs/design/coin-reise-v13/UMSETZUNG.md`); Unterseiten noch im alten Design |
 
 ## Erledigt
@@ -69,6 +69,9 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
   - [x] Schleswig-Holstein (28.10.): Fachanforderungen Mathematik (2. Auflage 2024) und Physik (4. Auflage 2026), je ein Dokument für Sek. I und II, G9, Mathe 87 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 2 Simulationen erweitert. Protokolle in `docs/lehrplaene/schleswig-holstein-gymnasium-*.md`.
   - [x] Berlin (28.10.): Rahmenlehrplan 1–10 Teil C Mathematik (2023) und Teil C Physik 7–10, Rahmenlehrpläne gymnasiale Oberstufe Teil C Mathematik (2014) und Physik (2021), G8, Mathe 88 von 93, Physik 32 von 36 zugeordnet; Klassenstufen von 15 Simulationen erweitert. Protokolle in `docs/lehrplaene/berlin-gymnasium-*.md`.
   - [x] Brandenburg (28.10.): dieselben Rahmenlehrpläne wie Berlin (Teil C Mathematik 1–10 in Brandenburg gültig ab 1. 8. 2023), Jahrgangsstufen 7–12 aus Berlin übernommen, 5/6 nach den Brandenburger Regelungen (Niveaustufe D), Mathe 88 von 93, Physik 32 von 36 zugeordnet; keine eigenen Erweiterungen. Protokolle in `docs/lehrplaene/brandenburg-gymnasium-*.md`.
-  - [ ] Thüringen, danach Mecklenburg-Vorpommern, … (Reihenfolge im Auftrag)
+  - [x] Hamburg (28.10., auf Wunsch der Projektleitung vorgezogen): Bildungspläne Gymnasium Sek. I Mathematik (2022) und Physik (2024), Bildungspläne Studienstufe Mathematik und Physik (2022), G8, Mathe 89 von 93, Physik 30 von 36 zugeordnet; Klassenstufen von 2 Simulationen erweitert. Protokolle in `docs/lehrplaene/hamburg-gymnasium-*.md`.
+  - [x] Saarland (28.10.): Lehrpläne neunjähriges Gymnasium Mathematik (5/6–10, 2023–2026) und Physik (7–10, NW-Zweig, 2023–2026), Oberstufe Mathematik (Einführungsphase 2014, Hauptphase G-Kurs 2016/2019 und LK 2019) und Physik (2023), G9, Mathe 90 von 93, Physik 34 von 36 zugeordnet; Klassenstufen von 6 Simulationen erweitert. Protokolle in `docs/lehrplaene/saarland-gymnasium-*.md`.
+  - [x] Bremen (28.10.): Bildungspläne Gymnasium Sek. I Mathematik und Naturwissenschaften (Physik 7–9), Stand 08/2026, Bildungspläne Gymnasiale Oberstufe Mathematik (2022, Stand 2026) und Physik (2026), Abitur nach 12, Mathe 86 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 3 Simulationen erweitert. Protokolle in `docs/lehrplaene/bremen-gymnasium-*.md`.
+  - [ ] Thüringen, danach Mecklenburg-Vorpommern (vorerst zurückgestellt, Reihenfolge im Auftrag)
 - [x] **Automatische Bildtests** (`docs/FAHRPLAN.md`, 1.6): Referenzfotos je Simulation, Vergleich bei jeder Änderung. Eigene GitHub-Aktion „Bildtests“, Anleitung in `docs/BILDTESTS.md`.
 - [ ] Freiwillig: Ideen für später (Vorhersage-Frage vor dem Start, „Für morgen, 5 Minuten“ für Lehrkräfte, Suche nach Formeln) – erst nach dem Design.

@@ -7,6 +7,10 @@ import { berlinGymnasiumMathematik } from "./berlin-gymnasium-mathematik";
 import { berlinGymnasiumPhysik } from "./berlin-gymnasium-physik";
 import { brandenburgGymnasiumMathematik } from "./brandenburg-gymnasium-mathematik";
 import { brandenburgGymnasiumPhysik } from "./brandenburg-gymnasium-physik";
+import { bremenGymnasiumMathematik } from "./bremen-gymnasium-mathematik";
+import { bremenGymnasiumPhysik } from "./bremen-gymnasium-physik";
+import { hamburgGymnasiumMathematik } from "./hamburg-gymnasium-mathematik";
+import { hamburgGymnasiumPhysik } from "./hamburg-gymnasium-physik";
 import { hessenGymnasiumMathematik } from "./hessen-gymnasium-mathematik";
 import { hessenGymnasiumPhysik } from "./hessen-gymnasium-physik";
 import { niedersachsenGymnasiumMathematik } from "./niedersachsen-gymnasium-mathematik";
@@ -15,6 +19,8 @@ import { nordrheinWestfalenGymnasiumMathematik } from "./nordrhein-westfalen-gym
 import { nordrheinWestfalenGymnasiumPhysik } from "./nordrhein-westfalen-gymnasium-physik";
 import { rheinlandPfalzGymnasiumMathematik } from "./rheinland-pfalz-gymnasium-mathematik";
 import { rheinlandPfalzGymnasiumPhysik } from "./rheinland-pfalz-gymnasium-physik";
+import { saarlandGymnasiumMathematik } from "./saarland-gymnasium-mathematik";
+import { saarlandGymnasiumPhysik } from "./saarland-gymnasium-physik";
 import { sachsenGymnasiumMathematik } from "./sachsen-gymnasium-mathematik";
 import { sachsenGymnasiumPhysik } from "./sachsen-gymnasium-physik";
 import { sachsenAnhaltGymnasiumMathematik } from "./sachsen-anhalt-gymnasium-mathematik";
@@ -34,10 +40,13 @@ export type * from "./types";
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
  * - Berlin, Gymnasium: Mathematik und Physik (Rahmenlehrplan 1–10 Teil C und Rahmenlehrplan gymnasiale Oberstufe Teil C, G8)
  * - Brandenburg, Gymnasium: Mathematik und Physik (dieselben Rahmenlehrpläne wie Berlin; 5/6 = Niveaustufe D)
+ * - Bremen, Gymnasium: Mathematik und Physik (Bildungspläne Gymnasium 5–9 und Gymnasiale Oberstufe, Abitur nach 12)
+ * - Hamburg, Gymnasium: Mathematik und Physik (Bildungspläne Sek. I und Studienstufe, G8)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Niedersachsen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Nordrhein-Westfalen, Gymnasium: Mathematik und Physik (Kernlehrpläne Sek. I, G9, und Sek. II von 2026)
  * - Rheinland-Pfalz, Gymnasium: Mathematik und Physik (Rahmenlehrpläne Sek. I, Lehrpläne Mainzer Studienstufe, G9)
+ * - Saarland, Gymnasium: Mathematik und Physik (Lehrpläne neunjähriges Gymnasium 5–10, Lehrpläne gymnasiale Oberstufe)
  * - Sachsen, Gymnasium: Mathematik und Physik (Lehrpläne Gymnasium, Klasse 5 bzw. 6 bis Jahrgangsstufe 12)
  * - Sachsen-Anhalt, Gymnasium: Mathematik und Physik (Fachlehrpläne, G8, Stand 01.08.2022)
  * - Schleswig-Holstein, Gymnasium: Mathematik und Physik (Fachanforderungen Sek. I und II, G9)
@@ -51,6 +60,10 @@ const RAW_CURRICULA: StateCurriculum[] = [
   berlinGymnasiumPhysik,
   brandenburgGymnasiumMathematik,
   brandenburgGymnasiumPhysik,
+  bremenGymnasiumMathematik,
+  bremenGymnasiumPhysik,
+  hamburgGymnasiumMathematik,
+  hamburgGymnasiumPhysik,
   hessenGymnasiumMathematik,
   hessenGymnasiumPhysik,
   niedersachsenGymnasiumMathematik,
@@ -59,6 +72,8 @@ const RAW_CURRICULA: StateCurriculum[] = [
   nordrheinWestfalenGymnasiumPhysik,
   rheinlandPfalzGymnasiumMathematik,
   rheinlandPfalzGymnasiumPhysik,
+  saarlandGymnasiumMathematik,
+  saarlandGymnasiumPhysik,
   sachsenGymnasiumMathematik,
   sachsenGymnasiumPhysik,
   sachsenAnhaltGymnasiumMathematik,

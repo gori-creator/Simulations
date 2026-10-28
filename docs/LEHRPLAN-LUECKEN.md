@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **391 von 1552** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **407 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (160)
+## Mathematik (167)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -51,6 +51,19 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
 | 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
+
+### Bremen · Gymnasium (1)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 11/12 | LA | Schwerpunkt Lineare Algebra (LA 2 bis LA 4) | Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren. |
+
+### Hamburg · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
+| 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
 ### Hessen · Gymnasium (88)
 
@@ -176,6 +189,15 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 5/6 | 6 | Funktionaler Zusammenhang | Wird in der Orientierungsstufe nicht eigens unterrichtet: Zahlenfolgen, Terme, Operatormodell, Formeln, Maßstab und Datendarstellungen bereiten die funktionale Sichtweise in den anderen Leitideen vor. |
 
+### Saarland · Gymnasium (4)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 8 | 6 | Rechnen in anderen Zahlensystemen (nur Informatik-Zweig) | Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel. |
+| 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
+| 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
+| 11 | 2 | Stereometrie | Prisma und Zylinder, Pyramide und Kegel, Prinzip von Cavalieri, Halbkugel und Kugel. |
+
 ### Sachsen · Gymnasium (23)
 
 | Stufe | Nr. | Lernbereich | Kurz |
@@ -222,7 +244,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (231)
+## Physik (240)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -273,6 +295,20 @@ Alle Lernbereiche haben eine Simulation.
 ### Brandenburg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
+
+### Bremen · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
+| 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
+
+### Hamburg · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
+| 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
 ### Hessen · Gymnasium (92)
 
@@ -449,6 +485,16 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
+
+### Saarland · Gymnasium (5)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
+| 8 | 6 | Wahlthema oder Praktikum | Wahlthema oder Praktikum nach Wahl der Lehrkraft. |
+| 9 | 3 | Wahlthema oder Praktikum | Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen. |
+| 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
+| 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
 ### Sachsen · Gymnasium (23)
 

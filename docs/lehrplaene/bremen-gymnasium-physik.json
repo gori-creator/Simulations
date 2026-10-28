@@ -1,0 +1,570 @@
+{
+  "id": "bremen-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "bremen-gymnasium",
+    "en": "bremen-gymnasium"
+  },
+  "state": {
+    "de": "Bremen",
+    "en": "Bremen"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Bildungsplan",
+  "grades": [
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Jahrgangsstufen 7 bis 9: Fünf Rahmenthemen in der vom Bildungsplan festgelegten Reihenfolge, alle für 7/8/9 ausgewiesen; die Lernbereiche stehen deshalb bei 7, 8 und 9 gleich und werden als eine Stufe gezeigt. In 5/6 ist Physik Teil des Fachs Naturwissenschaft. Die Nummern sind die des Bildungsplans.",
+        "en": "Grades 7 to 9: five framework topics in the order set by the curriculum, all listed for 7/8/9; the units are therefore the same for grades 7, 8 and 9 and are shown as one stage. In grades 5/6 physics is part of the subject science. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Sichtbare und unsichtbare Strahlung",
+            "en": "Visible and invisible radiation"
+          },
+          "summary": {
+            "de": "Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.",
+            "en": "The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung",
+            "linsen",
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Kräfte und Bewegung",
+            "en": "Forces and motion"
+          },
+          "summary": {
+            "de": "Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.",
+            "en": "Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "hookesches-gesetz",
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Elektrizität – Elektrostatik und Stromkreise",
+            "en": "Electricity – electrostatics and circuits"
+          },
+          "summary": {
+            "de": "Elektrostatische Grundphänomene und Ladung, Spannung, Stromstärke und Widerstand, Kennlinien, Reihen- und Parallelschaltung, elektrische Leistung und Energie, Sicherheit.",
+            "en": "Basic electrostatic phenomena and charge, voltage, current and resistance, characteristic curves, series and parallel circuits, electrical power and energy, safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.",
+            "en": "Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer."
+          }
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Strahlung und Radioaktivität",
+            "en": "Radiation and radioactivity"
+          },
+          "summary": {
+            "de": "Elektromagnetisches Spektrum, Atomkern, radioaktiver Zerfall und Strahlungsarten, Nachweis, Halbwertszeit und Aktivität, Kernspaltung und Kernfusion, Strahlenschutz und Kernenergie.",
+            "en": "The electromagnetic spectrum, the nucleus, radioactive decay and types of radiation, detection, half-life and activity, fission and fusion, radiation protection and nuclear energy."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Jahrgangsstufen 7 bis 9: Fünf Rahmenthemen in der vom Bildungsplan festgelegten Reihenfolge, alle für 7/8/9 ausgewiesen; die Lernbereiche stehen deshalb bei 7, 8 und 9 gleich und werden als eine Stufe gezeigt. In 5/6 ist Physik Teil des Fachs Naturwissenschaft. Die Nummern sind die des Bildungsplans.",
+        "en": "Grades 7 to 9: five framework topics in the order set by the curriculum, all listed for 7/8/9; the units are therefore the same for grades 7, 8 and 9 and are shown as one stage. In grades 5/6 physics is part of the subject science. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Sichtbare und unsichtbare Strahlung",
+            "en": "Visible and invisible radiation"
+          },
+          "summary": {
+            "de": "Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.",
+            "en": "The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen",
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Kräfte und Bewegung",
+            "en": "Forces and motion"
+          },
+          "summary": {
+            "de": "Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.",
+            "en": "Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "hookesches-gesetz",
+            "kraefteaddition",
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Elektrizität – Elektrostatik und Stromkreise",
+            "en": "Electricity – electrostatics and circuits"
+          },
+          "summary": {
+            "de": "Elektrostatische Grundphänomene und Ladung, Spannung, Stromstärke und Widerstand, Kennlinien, Reihen- und Parallelschaltung, elektrische Leistung und Energie, Sicherheit.",
+            "en": "Basic electrostatic phenomena and charge, voltage, current and resistance, characteristic curves, series and parallel circuits, electrical power and energy, safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.",
+            "en": "Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer."
+          }
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Strahlung und Radioaktivität",
+            "en": "Radiation and radioactivity"
+          },
+          "summary": {
+            "de": "Elektromagnetisches Spektrum, Atomkern, radioaktiver Zerfall und Strahlungsarten, Nachweis, Halbwertszeit und Aktivität, Kernspaltung und Kernfusion, Strahlenschutz und Kernenergie.",
+            "en": "The electromagnetic spectrum, the nucleus, radioactive decay and types of radiation, detection, half-life and activity, fission and fusion, radiation protection and nuclear energy."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Jahrgangsstufen 7 bis 9: Fünf Rahmenthemen in der vom Bildungsplan festgelegten Reihenfolge, alle für 7/8/9 ausgewiesen; die Lernbereiche stehen deshalb bei 7, 8 und 9 gleich und werden als eine Stufe gezeigt. In 5/6 ist Physik Teil des Fachs Naturwissenschaft. Die Nummern sind die des Bildungsplans.",
+        "en": "Grades 7 to 9: five framework topics in the order set by the curriculum, all listed for 7/8/9; the units are therefore the same for grades 7, 8 and 9 and are shown as one stage. In grades 5/6 physics is part of the subject science. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Sichtbare und unsichtbare Strahlung",
+            "en": "Visible and invisible radiation"
+          },
+          "summary": {
+            "de": "Modell Lichtstrahl, Sehvorgang, Mondphasen und Finsternisse, Reflexion und Brechung, Linsen und Linsengleichung, Auge, Farben, Wärmestrahlung und Wärmetransport im Teilchenmodell.",
+            "en": "The light-ray model, how we see, phases of the moon and eclipses, reflection and refraction, lenses and the lens equation, the eye, colours, thermal radiation and heat transfer in the particle model."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen",
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Kräfte und Bewegung",
+            "en": "Forces and motion"
+          },
+          "summary": {
+            "de": "Geschwindigkeit und Zeit-Weg-Diagramme, Masse und Gewichtskraft, Kräfte als Pfeile, Kraft als Ursache von Bewegungsänderung und Verformung, Trägheit und Reibung, Energie, Arbeit und Leistung.",
+            "en": "Velocity and distance–time graphs, mass and weight, forces as arrows, force as the cause of change in motion and deformation, inertia and friction, energy, work and power."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "hookesches-gesetz",
+            "kraefteaddition",
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Elektrizität – Elektrostatik und Stromkreise",
+            "en": "Electricity – electrostatics and circuits"
+          },
+          "summary": {
+            "de": "Elektrostatische Grundphänomene und Ladung, Spannung, Stromstärke und Widerstand, Kennlinien, Reihen- und Parallelschaltung, elektrische Leistung und Energie, Sicherheit.",
+            "en": "Basic electrostatic phenomena and charge, voltage, current and resistance, characteristic curves, series and parallel circuits, electrical power and energy, safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektromagnetismus",
+            "en": "Electromagnetism"
+          },
+          "summary": {
+            "de": "Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.",
+            "en": "Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Strahlung und Radioaktivität",
+            "en": "Radiation and radioactivity"
+          },
+          "summary": {
+            "de": "Elektromagnetisches Spektrum, Atomkern, radioaktiver Zerfall und Strahlungsarten, Nachweis, Halbwertszeit und Aktivität, Kernspaltung und Kernfusion, Strahlenschutz und Kernenergie.",
+            "en": "The electromagnetic spectrum, the nucleus, radioactive decay and types of radiation, detection, half-life and activity, fission and fusion, radiation protection and nuclear energy."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Einführungsphase der gymnasialen Oberstufe (am Gymnasium Jahrgangsstufe 10) mit den Inhaltsbereichen Mechanik und Energie. Die Codes sind die des Bildungsplans.",
+        "en": "Introductory phase of upper secondary (at the Gymnasium grade 10) with the content areas mechanics and energy. The codes are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "E1",
+          "title": {
+            "de": "Mechanik",
+            "en": "Mechanics"
+          },
+          "summary": {
+            "de": "Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, Wurfbewegungen, Addition und Zerlegung von Kräften an der schiefen Ebene, Impuls und Impulserhaltung, Kreisbewegung und Zentripetalkraft, Messunsicherheiten.",
+            "en": "Uniform and uniformly accelerated motion, free fall, projectile motion, adding and resolving forces on an inclined plane, momentum and its conservation, circular motion and centripetal force, measurement uncertainty."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "freier-fall",
+            "kraefteaddition",
+            "schiefe-ebene",
+            "kreisbewegung",
+            "stoesse",
+            "schiefer-wurf"
+          ]
+        },
+        {
+          "code": "E2",
+          "title": {
+            "de": "Energie",
+            "en": "Energy"
+          },
+          "summary": {
+            "de": "Energieerhaltung und Energieentwertung mit den Hauptsätzen der Thermodynamik, Wärme und Arbeit, Wirkungsgrad von Wärmekraftmaschinen und Wärmepumpen, Verfahren der Energiegewinnung.",
+            "en": "Conservation and dissipation of energy with the laws of thermodynamics, heat and work, efficiency of heat engines and heat pumps, ways of generating energy."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "gasgesetze"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Qualifikationsphase (am Gymnasium Jahrgangsstufen 11 und 12): Kernbausteine ohne vorgegebene Reihenfolge; die Lernbereiche stehen deshalb bei 11 und 12 gleich und werden als eine Stufe gezeigt. Erweiterungsbausteine ergänzen die Kernbausteine. LK = nur im Leistungskurs. Die Nummern sind die des Bildungsplans.",
+        "en": "Qualification phase (at the Gymnasium grades 11 and 12): core modules in no fixed order; the units are therefore the same for grades 11 and 12 and are shown as one stage. Extension modules complement the core modules. LK = advanced course only. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Elektrisches Feld",
+            "en": "Electric field"
+          },
+          "summary": {
+            "de": "Feldlinienmodell und Feldlinienbilder, Feldstärke, Plattenkondensator mit Kapazität und Energie, Auf- und Entladen; Erweiterung: Gravitationsfeld mit Satelliten- und Planetenbahnen (ohne Keplersche Gesetze).",
+            "en": "The field line model and field line patterns, field strength, the parallel-plate capacitor with capacitance and energy, charging and discharging; extension: the gravitational field with satellite and planetary orbits (without Kepler’s laws)."
+          },
+          "simulations": [
+            "planetenbahnen",
+            "feldlinien",
+            "kondensator"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Magnetisches Feld",
+            "en": "Magnetic field"
+          },
+          "summary": {
+            "de": "Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.",
+            "en": "Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction."
+          },
+          "simulations": [
+            "induktion",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Mechanische Schwingungen & Wellen",
+            "en": "Mechanical oscillations and waves"
+          },
+          "summary": {
+            "de": "Feder- und Fadenpendel, erzwungene Schwingung, Dämpfung und Resonanz, Wellenausbreitung, Überlagerung und stehende Wellen; Erweiterung: Akustik und Doppler-Effekt.",
+            "en": "Spring and simple pendulums, forced oscillation, damping and resonance, wave propagation, superposition and standing waves; extension: acoustics and the Doppler effect."
+          },
+          "simulations": [
+            "fadenpendel",
+            "federpendel",
+            "resonanz",
+            "wellen-ausbreitung",
+            "doppler-effekt",
+            "interferenz",
+            "stehende-wellen"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektromagnetische Schwingungen",
+            "en": "Electromagnetic oscillations"
+          },
+          "summary": {
+            "de": "Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen.",
+            "en": "Harmonic electromagnetic oscillations, the oscillating circuit, propagation and spectrum of electromagnetic waves."
+          }
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wellenoptik",
+            "en": "Wave optics"
+          },
+          "summary": {
+            "de": "Licht als Welle, Huygenssches Prinzip und Beugung, Interferenz an Doppelspalt und Gitter, Polarisation; LK: Einzelspalt und Interferometer.",
+            "en": "Light as a wave, Huygens’ principle and diffraction, interference at a double slit and a grating, polarisation; LK: single slit and interferometer."
+          },
+          "simulations": [
+            "interferenz",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Quantenobjekte",
+            "en": "Quantum objects"
+          },
+          "summary": {
+            "de": "Fotoeffekt, Photonen und Elektronen als Quantenobjekte, Elektronenbeugung, Doppelspalt mit Elektronen.",
+            "en": "The photoelectric effect, photons and electrons as quantum objects, electron diffraction, the double slit with electrons."
+          },
+          "simulations": [
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Quantenphysik der Atomhülle",
+            "en": "Quantum physics of the atomic shell"
+          },
+          "summary": {
+            "de": "Energieniveaus und Linienspektren, quantenmechanische Atomvorstellung.",
+            "en": "Energy levels and line spectra, the quantum view of the atom."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Struktur der Materie (LK)",
+            "en": "Structure of matter (LK)"
+          },
+          "summary": {
+            "de": "LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo.",
+            "en": "LK: building blocks of matter, nuclear mass and radius, pair production, quarks and the particle zoo."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.bildung.bremen.de",
+      "note": {
+        "de": "Qualifikationsphase (am Gymnasium Jahrgangsstufen 11 und 12): Kernbausteine ohne vorgegebene Reihenfolge; die Lernbereiche stehen deshalb bei 11 und 12 gleich und werden als eine Stufe gezeigt. Erweiterungsbausteine ergänzen die Kernbausteine. LK = nur im Leistungskurs. Die Nummern sind die des Bildungsplans.",
+        "en": "Qualification phase (at the Gymnasium grades 11 and 12): core modules in no fixed order; the units are therefore the same for grades 11 and 12 and are shown as one stage. Extension modules complement the core modules. LK = advanced course only. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Elektrisches Feld",
+            "en": "Electric field"
+          },
+          "summary": {
+            "de": "Feldlinienmodell und Feldlinienbilder, Feldstärke, Plattenkondensator mit Kapazität und Energie, Auf- und Entladen; Erweiterung: Gravitationsfeld mit Satelliten- und Planetenbahnen (ohne Keplersche Gesetze).",
+            "en": "The field line model and field line patterns, field strength, the parallel-plate capacitor with capacitance and energy, charging and discharging; extension: the gravitational field with satellite and planetary orbits (without Kepler’s laws)."
+          },
+          "simulations": [
+            "planetenbahnen",
+            "feldlinien",
+            "kondensator"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Magnetisches Feld",
+            "en": "Magnetic field"
+          },
+          "summary": {
+            "de": "Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.",
+            "en": "Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction."
+          },
+          "simulations": [
+            "induktion",
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Mechanische Schwingungen & Wellen",
+            "en": "Mechanical oscillations and waves"
+          },
+          "summary": {
+            "de": "Feder- und Fadenpendel, erzwungene Schwingung, Dämpfung und Resonanz, Wellenausbreitung, Überlagerung und stehende Wellen; Erweiterung: Akustik und Doppler-Effekt.",
+            "en": "Spring and simple pendulums, forced oscillation, damping and resonance, wave propagation, superposition and standing waves; extension: acoustics and the Doppler effect."
+          },
+          "simulations": [
+            "fadenpendel",
+            "federpendel",
+            "resonanz",
+            "wellen-ausbreitung",
+            "doppler-effekt",
+            "interferenz",
+            "stehende-wellen"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektromagnetische Schwingungen",
+            "en": "Electromagnetic oscillations"
+          },
+          "summary": {
+            "de": "Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen.",
+            "en": "Harmonic electromagnetic oscillations, the oscillating circuit, propagation and spectrum of electromagnetic waves."
+          }
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Wellenoptik",
+            "en": "Wave optics"
+          },
+          "summary": {
+            "de": "Licht als Welle, Huygenssches Prinzip und Beugung, Interferenz an Doppelspalt und Gitter, Polarisation; LK: Einzelspalt und Interferometer.",
+            "en": "Light as a wave, Huygens’ principle and diffraction, interference at a double slit and a grating, polarisation; LK: single slit and interferometer."
+          },
+          "simulations": [
+            "interferenz",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Quantenobjekte",
+            "en": "Quantum objects"
+          },
+          "summary": {
+            "de": "Fotoeffekt, Photonen und Elektronen als Quantenobjekte, Elektronenbeugung, Doppelspalt mit Elektronen.",
+            "en": "The photoelectric effect, photons and electrons as quantum objects, electron diffraction, the double slit with electrons."
+          },
+          "simulations": [
+            "doppelspalt",
+            "photoeffekt",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Quantenphysik der Atomhülle",
+            "en": "Quantum physics of the atomic shell"
+          },
+          "summary": {
+            "de": "Energieniveaus und Linienspektren, quantenmechanische Atomvorstellung.",
+            "en": "Energy levels and line spectra, the quantum view of the atom."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Struktur der Materie (LK)",
+            "en": "Structure of matter (LK)"
+          },
+          "summary": {
+            "de": "LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo.",
+            "en": "LK: building blocks of matter, nuclear mass and radius, pair production, quarks and the particle zoo."
+          }
+        }
+      ]
+    }
+  ]
+}

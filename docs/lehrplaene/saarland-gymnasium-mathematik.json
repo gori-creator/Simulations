@@ -1,0 +1,1037 @@
+{
+  "id": "saarland-gymnasium-mathematik",
+  "subject": "mathematik",
+  "slug": {
+    "de": "saarland-gymnasium",
+    "en": "saarland-gymnasium"
+  },
+  "state": {
+    "de": "Saarland",
+    "en": "Saarland"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Lehrplan",
+  "grades": [
+    {
+      "grade": 5,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufen 5 und 6 (neunjähriges Gymnasium): Der Lehrplan gilt für beide Klassenstufen zusammen; die Lernbereiche stehen deshalb bei 5 und 6 gleich und werden als eine Stufe gezeigt. Die Reihenfolge der Themenfelder ist nur verbindlich, soweit es sachlogisch nötig ist. Die Nummern sind die des Lehrplans.",
+        "en": "Grades 5 and 6 (nine-year Gymnasium): the curriculum covers both grades together, so the units are the same for grades 5 and 6 and are shown as one stage. The order of the topic fields is binding only where the subject requires it. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Natürliche Zahlen",
+            "en": "Natural numbers"
+          },
+          "summary": {
+            "de": "Daten und Diagramme, Dezimalsystem mit Stellenwerttafel und Runden, Dualsystem und römische Zahlen, Mengen, Zahlenstrahl und Anordnung.",
+            "en": "Data and charts, the decimal system with place value table and rounding, the binary system and Roman numerals, sets, the number line and order."
+          },
+          "simulations": [
+            "stellenwerte",
+            "zahlengerade"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Rechnen mit natürlichen Zahlen",
+            "en": "Calculating with natural numbers"
+          },
+          "summary": {
+            "de": "Grundrechenarten und ihre Fachbegriffe, Rechengesetze, Terme mit Klammern, Potenzen, figurierte Zahlen.",
+            "en": "The four operations and their terms, laws of arithmetic, terms with brackets, powers, figurate numbers."
+          },
+          "simulations": [
+            "termbaum",
+            "zehnerpotenzen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Größen im Alltag",
+            "en": "Quantities in everyday life"
+          },
+          "summary": {
+            "de": "Größen mit Maßzahl und Einheit, Umrechnen zwischen Einheiten, Zeitpunkte und Zeitspannen.",
+            "en": "Quantities with value and unit, converting between units, points in time and time spans."
+          },
+          "simulations": [
+            "einheiten"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Figuren und Körper",
+            "en": "Figures and solids"
+          },
+          "summary": {
+            "de": "Punkt, Strecke, Strahl und Gerade, parallel und senkrecht, Koordinatensystem, Vierecke, Körper mit Netz und Schrägbild.",
+            "en": "Point, segment, ray and line, parallel and perpendicular, the coordinate system, quadrilaterals, solids with nets and oblique drawings."
+          },
+          "simulations": [
+            "koordinaten-lage",
+            "vierecke",
+            "koerpernetze"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Flächeninhalt und Volumen",
+            "en": "Area and volume"
+          },
+          "summary": {
+            "de": "Umfang und Flächeninhalt von Rechteck und Quadrat, Flächen- und Volumeneinheiten, Volumen und Oberflächeninhalt von Quader und Würfel.",
+            "en": "Perimeter and area of rectangle and square, units of area and volume, volume and surface area of cuboid and cube."
+          },
+          "simulations": [
+            "umfang-flaeche",
+            "quader-volumen"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Teilbarkeit der natürlichen Zahlen",
+            "en": "Divisibility of natural numbers"
+          },
+          "summary": {
+            "de": "Teiler und Vielfache, Teilbarkeitsregeln, Primzahlen und Primfaktorzerlegung, ggT und kgV.",
+            "en": "Divisors and multiples, divisibility rules, prime numbers and prime factorisation, gcd and lcm."
+          },
+          "simulations": [
+            "primfaktoren"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Brüche",
+            "en": "Fractions"
+          },
+          "summary": {
+            "de": "Brüche als Anteile, Bruchzahlen am Zahlenstrahl, kürzen und erweitern, vergleichen, Dezimalbrüche und periodische Dezimalzahlen.",
+            "en": "Fractions as parts, fractions on the number line, simplifying and expanding, comparing, decimals and recurring decimals."
+          },
+          "simulations": [
+            "bruchteile",
+            "brueche-vergleichen"
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Rechnen mit Brüchen",
+            "en": "Calculating with fractions"
+          },
+          "summary": {
+            "de": "Die vier Grundrechenarten mit Brüchen und Dezimalzahlen, Kehrbruch und Doppelbruch, Kommaverschiebung.",
+            "en": "The four operations with fractions and decimals, reciprocals and complex fractions, moving the decimal point."
+          }
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Kreis, Winkel, Symmetrie",
+            "en": "Circle, angle, symmetry"
+          },
+          "summary": {
+            "de": "Kreis mit Radius und Durchmesser, Winkel messen und zeichnen, Achsen-, Punkt- und Drehsymmetrie, Spiegelung, Drehung und Verschiebung, Basiswinkelsatz.",
+            "en": "The circle with radius and diameter, measuring and drawing angles, line, point and rotational symmetry, reflection, rotation and translation, the base angle theorem."
+          },
+          "simulations": [
+            "winkel-messen",
+            "spiegelung"
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Statistische Daten",
+            "en": "Statistical data"
+          },
+          "summary": {
+            "de": "Absolute und relative Häufigkeit, Kreisdiagramme, Minimum, Maximum, Spannweite, Median und Quartile, Boxplot.",
+            "en": "Absolute and relative frequency, pie charts, minimum, maximum, range, median and quartiles, box plots."
+          }
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Ganze Zahlen",
+            "en": "Integers"
+          },
+          "summary": {
+            "de": "Negative Zahlen im Alltag, Zahlengerade und Vorzeichen, Koordinatensystem mit vier Quadranten, Rechnen mit ganzen Zahlen.",
+            "en": "Negative numbers in everyday life, the number line and signs, the coordinate system with four quadrants, calculating with integers."
+          },
+          "simulations": [
+            "zahlengerade",
+            "koordinaten-lage"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 6,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufen 5 und 6 (neunjähriges Gymnasium): Der Lehrplan gilt für beide Klassenstufen zusammen; die Lernbereiche stehen deshalb bei 5 und 6 gleich und werden als eine Stufe gezeigt. Die Reihenfolge der Themenfelder ist nur verbindlich, soweit es sachlogisch nötig ist. Die Nummern sind die des Lehrplans.",
+        "en": "Grades 5 and 6 (nine-year Gymnasium): the curriculum covers both grades together, so the units are the same for grades 5 and 6 and are shown as one stage. The order of the topic fields is binding only where the subject requires it. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Natürliche Zahlen",
+            "en": "Natural numbers"
+          },
+          "summary": {
+            "de": "Daten und Diagramme, Dezimalsystem mit Stellenwerttafel und Runden, Dualsystem und römische Zahlen, Mengen, Zahlenstrahl und Anordnung.",
+            "en": "Data and charts, the decimal system with place value table and rounding, the binary system and Roman numerals, sets, the number line and order."
+          },
+          "simulations": [
+            "zahlengerade",
+            "diagramme"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Rechnen mit natürlichen Zahlen",
+            "en": "Calculating with natural numbers"
+          },
+          "summary": {
+            "de": "Grundrechenarten und ihre Fachbegriffe, Rechengesetze, Terme mit Klammern, Potenzen, figurierte Zahlen.",
+            "en": "The four operations and their terms, laws of arithmetic, terms with brackets, powers, figurate numbers."
+          },
+          "simulations": [
+            "termbaum",
+            "zehnerpotenzen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Größen im Alltag",
+            "en": "Quantities in everyday life"
+          },
+          "summary": {
+            "de": "Größen mit Maßzahl und Einheit, Umrechnen zwischen Einheiten, Zeitpunkte und Zeitspannen.",
+            "en": "Quantities with value and unit, converting between units, points in time and time spans."
+          }
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Figuren und Körper",
+            "en": "Figures and solids"
+          },
+          "summary": {
+            "de": "Punkt, Strecke, Strahl und Gerade, parallel und senkrecht, Koordinatensystem, Vierecke, Körper mit Netz und Schrägbild.",
+            "en": "Point, segment, ray and line, parallel and perpendicular, the coordinate system, quadrilaterals, solids with nets and oblique drawings."
+          },
+          "simulations": [
+            "vierecke",
+            "koerpernetze"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Flächeninhalt und Volumen",
+            "en": "Area and volume"
+          },
+          "summary": {
+            "de": "Umfang und Flächeninhalt von Rechteck und Quadrat, Flächen- und Volumeneinheiten, Volumen und Oberflächeninhalt von Quader und Würfel.",
+            "en": "Perimeter and area of rectangle and square, units of area and volume, volume and surface area of cuboid and cube."
+          },
+          "simulations": [
+            "quader-volumen"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Teilbarkeit der natürlichen Zahlen",
+            "en": "Divisibility of natural numbers"
+          },
+          "summary": {
+            "de": "Teiler und Vielfache, Teilbarkeitsregeln, Primzahlen und Primfaktorzerlegung, ggT und kgV.",
+            "en": "Divisors and multiples, divisibility rules, prime numbers and prime factorisation, gcd and lcm."
+          },
+          "simulations": [
+            "primfaktoren"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Brüche",
+            "en": "Fractions"
+          },
+          "summary": {
+            "de": "Brüche als Anteile, Bruchzahlen am Zahlenstrahl, kürzen und erweitern, vergleichen, Dezimalbrüche und periodische Dezimalzahlen.",
+            "en": "Fractions as parts, fractions on the number line, simplifying and expanding, comparing, decimals and recurring decimals."
+          },
+          "simulations": [
+            "bruchteile",
+            "brueche-vergleichen",
+            "dezimalbrueche"
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Rechnen mit Brüchen",
+            "en": "Calculating with fractions"
+          },
+          "summary": {
+            "de": "Die vier Grundrechenarten mit Brüchen und Dezimalzahlen, Kehrbruch und Doppelbruch, Kommaverschiebung.",
+            "en": "The four operations with fractions and decimals, reciprocals and complex fractions, moving the decimal point."
+          },
+          "simulations": [
+            "brueche-rechnen",
+            "dezimalbrueche"
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Kreis, Winkel, Symmetrie",
+            "en": "Circle, angle, symmetry"
+          },
+          "summary": {
+            "de": "Kreis mit Radius und Durchmesser, Winkel messen und zeichnen, Achsen-, Punkt- und Drehsymmetrie, Spiegelung, Drehung und Verschiebung, Basiswinkelsatz.",
+            "en": "The circle with radius and diameter, measuring and drawing angles, line, point and rotational symmetry, reflection, rotation and translation, the base angle theorem."
+          },
+          "simulations": [
+            "spiegelung"
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Statistische Daten",
+            "en": "Statistical data"
+          },
+          "summary": {
+            "de": "Absolute und relative Häufigkeit, Kreisdiagramme, Minimum, Maximum, Spannweite, Median und Quartile, Boxplot.",
+            "en": "Absolute and relative frequency, pie charts, minimum, maximum, range, median and quartiles, box plots."
+          },
+          "simulations": [
+            "diagramme",
+            "boxplot"
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Ganze Zahlen",
+            "en": "Integers"
+          },
+          "summary": {
+            "de": "Negative Zahlen im Alltag, Zahlengerade und Vorzeichen, Koordinatensystem mit vier Quadranten, Rechnen mit ganzen Zahlen.",
+            "en": "Negative numbers in everyday life, the number line and signs, the coordinate system with four quadrants, calculating with integers."
+          },
+          "simulations": [
+            "zahlengerade"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufe 7 (neunjähriges Gymnasium): Themenfelder des Lehrplans; die Reihenfolge ist nur verbindlich, soweit es sachlogisch nötig ist. Die Nummern sind die des Lehrplans.",
+        "en": "Grade 7 (nine-year Gymnasium): topic fields of the curriculum; the order is binding only where the subject requires it. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Rationale Zahlen",
+            "en": "Rational numbers"
+          },
+          "summary": {
+            "de": "Negative Brüche an der Zahlengeraden, Gegenzahl und Betrag, die vier Grundrechenarten mit rationalen Zahlen.",
+            "en": "Negative fractions on the number line, opposite and absolute value, the four operations with rational numbers."
+          },
+          "simulations": [
+            "zahlengerade"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Terme, Gleichungen und Ungleichungen",
+            "en": "Terms, equations and inequalities"
+          },
+          "summary": {
+            "de": "Aussagen und Aussageformen, Grund- und Lösungsmenge, Äquivalenzumformungen bei Gleichungen und Ungleichungen.",
+            "en": "Statements and open sentences, domain and solution set, equivalent transformations of equations and inequalities."
+          },
+          "simulations": [
+            "termbaum",
+            "waagemodell"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Zuordnungen",
+            "en": "Relationships"
+          },
+          "summary": {
+            "de": "Zuordnungen in Tabelle und Graph, proportionale und umgekehrt proportionale Zuordnungen mit Ursprungsgerade und Hyperbel, Dreisatz.",
+            "en": "Relationships in tables and graphs, proportional and inversely proportional relationships with line through the origin and hyperbola, the rule of three."
+          },
+          "simulations": [
+            "proportional",
+            "funktion-zuordnung",
+            "hyperbel"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Geometrische Konstruktionen",
+            "en": "Geometric constructions"
+          },
+          "summary": {
+            "de": "Lot, Mittelsenkrechte und Winkelhalbierende, Umkreis und Inkreis von Dreiecken.",
+            "en": "Perpendiculars, perpendicular bisectors and angle bisectors, circumcircle and incircle of triangles."
+          },
+          "simulations": [
+            "mittelsenkrechte",
+            "besondere-linien",
+            "dreieckskonstruktion"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Prozentrechnung",
+            "en": "Percentages"
+          },
+          "summary": {
+            "de": "Grundwert, Prozentwert und Prozentsatz, Zu- und Abnahme, Rabatt und Mehrwertsteuer, Zinsen und Zinseszins.",
+            "en": "Base value, percentage value and rate, increase and decrease, discount and VAT, simple and compound interest."
+          },
+          "simulations": [
+            "prozentstreifen"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Einführung in die Stochastik",
+            "en": "Introduction to probability"
+          },
+          "summary": {
+            "de": "Zufallsexperimente mit Ergebnissen und Ereignissen, Laplace-Wahrscheinlichkeit, Simulationen.",
+            "en": "Random experiments with outcomes and events, Laplace probability, simulations."
+          },
+          "simulations": [
+            "zaehlprinzip",
+            "gesetz-grosse-zahlen"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Winkel in Figuren",
+            "en": "Angles in figures"
+          },
+          "summary": {
+            "de": "Neben-, Scheitel-, Stufen- und Wechselwinkel, Winkelsummen, Sekante und Tangente, Satz des Thales, Kehrsatz.",
+            "en": "Adjacent, vertical, corresponding and alternate angles, angle sums, secant and tangent, Thales’ theorem, converse."
+          },
+          "simulations": [
+            "winkel-geradenkreuzung",
+            "winkelsumme",
+            "thales"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufe 8 (neunjähriges Gymnasium): Themenfelder des Lehrplans; die Reihenfolge ist nur verbindlich, soweit es sachlogisch nötig ist. Die Themenfelder 6 bis 8 gelten nur im Informatik-Zweig. Die Nummern sind die des Lehrplans.",
+        "en": "Grade 8 (nine-year Gymnasium): topic fields of the curriculum; the order is binding only where the subject requires it. Topic fields 6 to 8 apply only in the computer science branch. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Kongruenz und Dreieckskonstruktionen",
+            "en": "Congruence and triangle constructions"
+          },
+          "summary": {
+            "de": "Kongruenzsätze und Dreieckskonstruktionen, Dreiecksungleichung, Höhen und Seitenhalbierende mit Schwerpunkt.",
+            "en": "Congruence theorems and triangle constructions, the triangle inequality, altitudes and medians with centroid."
+          },
+          "simulations": [
+            "dreieckskonstruktion",
+            "besondere-linien"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Terme",
+            "en": "Terms"
+          },
+          "summary": {
+            "de": "Terme umformen und faktorisieren, binomische Formeln und Pascalsches Dreieck, Bruchterme und Bruchgleichungen, Potenzregeln.",
+            "en": "Rearranging and factorising terms, binomial formulas and Pascal’s triangle, algebraic fractions and fractional equations, laws of powers."
+          },
+          "simulations": [
+            "binomische-formeln"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Vielecke und Prismen",
+            "en": "Polygons and prisms"
+          },
+          "summary": {
+            "de": "Haus der Vierecke, Flächeninhalte über Zerlegung und Ergänzung, Prismen mit Oberfläche und Volumen.",
+            "en": "The family of quadrilaterals, areas by dissection and completion, prisms with surface area and volume."
+          },
+          "simulations": [
+            "flaechen-zerlegen",
+            "prisma-zylinder",
+            "koerpernetze"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Lineare Funktionen",
+            "en": "Linear functions"
+          },
+          "summary": {
+            "de": "Funktionsbegriff, lineare Funktionen mit Steigung und y-Achsenabschnitt, Änderungsrate, parallele und orthogonale Geraden.",
+            "en": "The concept of function, linear functions with slope and y-intercept, rate of change, parallel and perpendicular lines."
+          },
+          "simulations": [
+            "lineare-funktion",
+            "funktionsplotter"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Kreis und Zylinder",
+            "en": "Circle and cylinder"
+          },
+          "summary": {
+            "de": "Kreiszahl π, Umfang und Flächeninhalt von Kreis, Kreisbogen und Kreissegment, Oberfläche und Volumen des Zylinders.",
+            "en": "The number π, circumference and area of circles, arcs and segments, surface area and volume of cylinders."
+          },
+          "simulations": [
+            "kreiszahl-pi",
+            "prisma-zylinder"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Rechnen in anderen Zahlensystemen (nur Informatik-Zweig)",
+            "en": "Calculating in other number systems (computer science branch only)"
+          },
+          "summary": {
+            "de": "Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel.",
+            "en": "Binary and hexadecimal systems, converting and calculating, the geometric series formula."
+          }
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Aussagenlogik (nur Informatik-Zweig)",
+            "en": "Propositional logic (computer science branch only)"
+          },
+          "summary": {
+            "de": "Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln.",
+            "en": "Statements and truth values, connectives such as conjunction, disjunction, NAND and NOR, truth tables."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Vertiefung der regulären Themenfelder (nur Informatik-Zweig)",
+            "en": "Deepening the regular topic fields (computer science branch only)"
+          },
+          "summary": {
+            "de": "Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen.",
+            "en": "Deepening topic fields 1 to 5, for example means, tilings and filling graphs."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufe 9 (neunjähriges Gymnasium): Themenfelder des Lehrplans; die Reihenfolge ist nur verbindlich, soweit es sachlogisch nötig ist. Die Nummern sind die des Lehrplans.",
+        "en": "Grade 9 (nine-year Gymnasium): topic fields of the curriculum; the order is binding only where the subject requires it. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Lineare Gleichungen und Gleichungssysteme",
+            "en": "Linear equations and systems of equations"
+          },
+          "summary": {
+            "de": "Lineare Gleichungen mit zwei Variablen, Gleichungssysteme grafisch und mit Gleichsetzungs-, Einsetzungs- und Additionsverfahren lösen.",
+            "en": "Linear equations in two variables, solving systems graphically and by equating, substitution and elimination."
+          },
+          "simulations": [
+            "lgs-grafisch"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Quadratwurzeln und reelle Zahlen",
+            "en": "Square roots and real numbers"
+          },
+          "summary": {
+            "de": "Quadratwurzeln, Heron- und Intervallhalbierungsverfahren, Intervallschachtelung, irrationale und reelle Zahlen, Wurzelgesetze.",
+            "en": "Square roots, Heron’s method and bisection, nested intervals, irrational and real numbers, laws of roots."
+          },
+          "simulations": [
+            "quadratwurzel"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Satzgruppe des Pythagoras",
+            "en": "Pythagoras’ group of theorems"
+          },
+          "summary": {
+            "de": "Satz des Pythagoras und Höhensatz, Hypotenusenabschnitte, pythagoreische Zahlentripel, Anwendungen.",
+            "en": "Pythagoras’ theorem and the altitude theorem, segments of the hypotenuse, Pythagorean triples, applications."
+          },
+          "simulations": [
+            "pythagoras"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Quadratische Funktionen und Gleichungen",
+            "en": "Quadratic functions and equations"
+          },
+          "summary": {
+            "de": "Parabeln verschieben, strecken und spiegeln, Scheitelpunkt- und Nullstellenform, quadratische Gleichungen mit p-q-Formel und Satz von Vieta, Extremwertaufgaben.",
+            "en": "Translating, stretching and reflecting parabolas, vertex and factored form, quadratic equations with the quadratic formula and Vieta’s theorem, optimisation problems."
+          },
+          "simulations": [
+            "quadratische-funktion",
+            "parabel-drei-punkte",
+            "extremwert-parabel",
+            "gleichungen-grafisch"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Ähnlichkeit",
+            "en": "Similarity"
+          },
+          "summary": {
+            "de": "Zentrische Streckung, Ähnlichkeitssätze, Strahlensätze, maßstäbliches Vergrößern und Verkleinern.",
+            "en": "Enlargement, similarity theorems, intercept theorems, scaling up and down."
+          },
+          "simulations": [
+            "strahlensaetze",
+            "vergroessern",
+            "massstab"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Klassenstufe 10 (neunjähriges Gymnasium): Themenfelder des Lehrplans; die Reihenfolge ist nur verbindlich, soweit es sachlogisch nötig ist. Die Nummern sind die des Lehrplans.",
+        "en": "Grade 10 (nine-year Gymnasium): topic fields of the curriculum; the order is binding only where the subject requires it. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Trigonometrie",
+            "en": "Trigonometry"
+          },
+          "summary": {
+            "de": "Sinus, Kosinus und Tangens im rechtwinkligen Dreieck und am Einheitskreis, Steigungswinkel, Sinus- und Kosinussatz.",
+            "en": "Sine, cosine and tangent in right triangles and on the unit circle, angle of slope, the sine and cosine rules."
+          },
+          "simulations": [
+            "sin-cos-tan-dreieck",
+            "sinussatz-kosinussatz",
+            "einheitskreis"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Potenzen und Potenzfunktionen",
+            "en": "Powers and power functions"
+          },
+          "summary": {
+            "de": "Potenzen und n-te Wurzeln, wissenschaftliche Notation, Potenzfunktionen mit Symmetrie, Monotonie und asymptotischem Verhalten.",
+            "en": "Powers and nth roots, scientific notation, power functions with symmetry, monotonicity and asymptotic behaviour."
+          },
+          "simulations": [
+            "potenzfunktionen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Mehrstufige Zufallsexperimente",
+            "en": "Multi-stage random experiments"
+          },
+          "summary": {
+            "de": "Baumdiagramme und Pfadregeln, Urnenmodell und Tupel, Ereignisse mit Venn-Diagramm und Vierfeldertafel, bedingte Wahrscheinlichkeit.",
+            "en": "Tree diagrams and path rules, urn models and tuples, events with Venn diagrams and two-way tables, conditional probability."
+          },
+          "simulations": [
+            "baumdiagramm",
+            "geburtstagsproblem",
+            "monte-carlo-pi",
+            "vierfeldertafel",
+            "bedingte-wahrscheinlichkeit",
+            "ziegenproblem"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Wachstumsprozesse und Exponentialfunktionen (Teil I)",
+            "en": "Growth processes and exponential functions (part I)"
+          },
+          "summary": {
+            "de": "Lineares und exponentielles Wachstum, prozentuale Wachstumsrate, Halbwerts- und Verdopplungszeit, Exponentialgleichungen.",
+            "en": "Linear and exponential growth, percentage growth rate, half-life and doubling time, exponential equations."
+          },
+          "simulations": [
+            "exponentielles-wachstum"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Pyramide, Kegel, Kugel",
+            "en": "Pyramid, cone, sphere"
+          },
+          "summary": {
+            "de": "Pyramide, Kegel und ihre Stümpfe, Kugel, Satz des Cavalieri, Oberfläche und Volumen.",
+            "en": "Pyramids, cones and their frustums, spheres, Cavalieri’s principle, surface area and volume."
+          },
+          "simulations": [
+            "pyramide-kegel-kugel",
+            "cavalieri"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Trigonometrische Funktionen (Teil I)",
+            "en": "Trigonometric functions (part I)"
+          },
+          "summary": {
+            "de": "Bogenmaß, Sinusfunktion als periodische Funktion mit Periode und Amplitude.",
+            "en": "Radians, the sine function as a periodic function with period and amplitude."
+          },
+          "simulations": [
+            "einheitskreis",
+            "sinusfunktion"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Einführungsphase der gymnasialen Oberstufe (hier Klassenstufe 11): Lehrplan von 2014 (Erprobungsphase), geschrieben für das achtjährige Gymnasium. Einige Inhalte (Sinusfunktion, Körper, Exponentialfunktionen) behandelt das neunjährige Gymnasium schon in Klasse 10. Die Nummern sind die des Lehrplans.",
+        "en": "Introductory phase of upper secondary (here grade 11): curriculum from 2014 (trial phase), written for the eight-year Gymnasium. Some content (sine function, solids, exponential functions) is already covered in grade 10 of the nine-year Gymnasium. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Allgemeine Sinusfunktion",
+            "en": "General sine function"
+          },
+          "summary": {
+            "de": "Periodizität, Sinusfunktion und Operationen mit ihr: Verschieben, Strecken und Stauchen.",
+            "en": "Periodicity, the sine function and operations on it: translating, stretching and compressing."
+          },
+          "simulations": [
+            "sinusfunktion",
+            "transformationen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Stereometrie",
+            "en": "Solid geometry"
+          },
+          "summary": {
+            "de": "Prisma und Zylinder, Pyramide und Kegel, Prinzip von Cavalieri, Halbkugel und Kugel.",
+            "en": "Prism and cylinder, pyramid and cone, Cavalieri’s principle, hemisphere and sphere."
+          }
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Exponentialfunktionen",
+            "en": "Exponential functions"
+          },
+          "summary": {
+            "de": "Exponentielles Wachstum, Exponentialfunktionen der Form x ↦ a · bˣ, Logarithmen und Logarithmengesetze.",
+            "en": "Exponential growth, exponential functions of the form x ↦ a · bˣ, logarithms and the laws of logarithms."
+          },
+          "simulations": [
+            "logarithmus"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Stetigkeit",
+            "en": "Continuity"
+          },
+          "summary": {
+            "de": "Grenzwert, lokale und globale Stetigkeit, Monotonie, Eigenschaften stetiger Funktionen.",
+            "en": "Limits, local and global continuity, monotonicity, properties of continuous functions."
+          },
+          "simulations": [
+            "grenzverhalten"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Einstieg in die Differentialrechnung",
+            "en": "Introduction to differential calculus"
+          },
+          "summary": {
+            "de": "Globale und lokale Änderungsrate, Differenzierbarkeit und Ableitung; fakultativ das Newtonverfahren.",
+            "en": "Average and local rate of change, differentiability and the derivative; optionally Newton’s method."
+          },
+          "simulations": [
+            "sekante-tangente",
+            "ableitungsfunktion",
+            "newton-verfahren"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Ganzrationale Funktionen",
+            "en": "Polynomial functions"
+          },
+          "summary": {
+            "de": "Ganzrationale Funktionen und ihre Nullstellen, Untersuchung mit erster und zweiter Ableitung, Anwendungen.",
+            "en": "Polynomial functions and their zeros, analysis with the first and second derivative, applications."
+          },
+          "simulations": [
+            "funktionsplotter",
+            "ganzrationale-funktionen",
+            "kurvendiskussion",
+            "extremwertprobleme"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Hauptphase, 1. und 2. Halbjahr (hier Klassenstufe 12): Lernbereiche 1 bis 5 für Grund- und Leistungskurs; LK = nur im Leistungskurs. Die Nummern sind die des Lehrplans.",
+        "en": "Main phase, first and second half-year (here grade 12): learning areas 1 to 5 for the basic and the advanced course; LK = advanced course only. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Grundlegende Funktionen und Ableitungen",
+            "en": "Basic functions and derivatives"
+          },
+          "summary": {
+            "de": "Ganzrationale und weitere Grundfunktionen, Verknüpfung und Verkettung, Ableitungsregeln, Umkehrfunktionen; LK: Funktionenscharen.",
+            "en": "Polynomial and other basic functions, combining and composing functions, rules of differentiation, inverse functions; LK: families of functions."
+          },
+          "simulations": [
+            "funktionsplotter",
+            "umkehrfunktion",
+            "kurvendiskussion",
+            "funktionenscharen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Integralrechnung",
+            "en": "Integral calculus"
+          },
+          "summary": {
+            "de": "Flächeninhalte und Rekonstruktion von Beständen, Integralfunktion und Hauptsatz, Integrationsregeln, Anwendungen bis zu Rotationskörpern.",
+            "en": "Areas and reconstructing totals, the integral function and the fundamental theorem, rules of integration, applications including solids of revolution."
+          },
+          "simulations": [
+            "stammfunktion-grafisch",
+            "ober-untersummen",
+            "hauptsatz",
+            "aenderungsrate",
+            "rotationskoerper"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Wahrscheinlichkeiten",
+            "en": "Probabilities"
+          },
+          "summary": {
+            "de": "Grundlagen der Wahrscheinlichkeitsrechnung aus der Sekundarstufe I vertieft, Bernoulli-Experimente.",
+            "en": "Deepening the basics of probability from lower secondary, Bernoulli experiments."
+          },
+          "simulations": [
+            "geburtstagsproblem",
+            "vierfeldertafel",
+            "bedingte-wahrscheinlichkeit",
+            "galtonbrett",
+            "ziegenproblem",
+            "binomialverteilung"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Vektoren",
+            "en": "Vectors"
+          },
+          "summary": {
+            "de": "Punkte im Raum, Vektoren als Verschiebungen, Rechnen mit Vektoren, Betrag und Skalarprodukt; LK: Vektorprodukt.",
+            "en": "Points in space, vectors as translations, calculating with vectors, magnitude and dot product; LK: cross product."
+          },
+          "simulations": [
+            "koordinaten-3d",
+            "vektoren-3d",
+            "skalar-vektorprodukt"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Vektorielle Untersuchung geometrischer Strukturen",
+            "en": "Vector analysis of geometric structures"
+          },
+          "summary": {
+            "de": "Linearkombination, Geraden und Ebenen, Lagebeziehungen, Anwendungen; im Grundkurs je nach Länge der Halbjahre zum Teil im 3. Halbjahr.",
+            "en": "Linear combinations, lines and planes, relative positions, applications; in the basic course partly in the third half-year, depending on its length."
+          },
+          "simulations": [
+            "geraden-ebenen",
+            "lage-abstaende"
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://www.saarland.de/mbk",
+      "note": {
+        "de": "Hauptphase, 3. und 4. Halbjahr (hier Klassenstufe 13): Lernbereiche 6 bis 8 und der Pflichtbereich mit wechselnden Themen, die die Schulaufsicht vor Beginn der Hauptphase festlegt. LK = nur im Leistungskurs. Die Nummern sind die des Lehrplans.",
+        "en": "Main phase, third and fourth half-year (here grade 13): learning areas 6 to 8 and the compulsory area with changing topics set by the school authority before the main phase. LK = advanced course only. The numbers are those of the curriculum."
+      },
+      "units": [
+        {
+          "code": "6",
+          "title": {
+            "de": "Die e-Funktion und die ln-Funktion",
+            "en": "The exponential and the natural logarithm function"
+          },
+          "summary": {
+            "de": "Exponentielles Wachstum mit der e-Funktion, Exponentialgleichungen, ln-Funktion als Umkehrfunktion, zusammengesetzte Funktionen.",
+            "en": "Exponential growth with the exponential function, exponential equations, the ln function as the inverse, composite functions."
+          },
+          "simulations": [
+            "e-funktion"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Modellieren",
+            "en": "Modelling"
+          },
+          "summary": {
+            "de": "Sachprobleme mit Funktionen modellieren, Modelle prüfen und bewerten.",
+            "en": "Modelling real problems with functions, checking and judging models."
+          },
+          "simulations": [
+            "extremwertprobleme",
+            "funktionenscharen"
+          ]
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Zufallsgrößen",
+            "en": "Random variables"
+          },
+          "summary": {
+            "de": "Diskrete Zufallsgrößen mit Erwartungswert und Standardabweichung, Binomialverteilung; LK: stetige Zufallsgrößen, Normalverteilung und Hypothesentests.",
+            "en": "Discrete random variables with expected value and standard deviation, the binomial distribution; LK: continuous random variables, the normal distribution and hypothesis tests."
+          },
+          "simulations": [
+            "binomialverteilung",
+            "signifikanztest",
+            "normalverteilung"
+          ]
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Pflichtbereich (wechselnde Themen)",
+            "en": "Compulsory area (changing topics)"
+          },
+          "summary": {
+            "de": "Themen nach Festlegung der Schulaufsicht: gebrochenrationale Funktionen, Kreis und Kugel, ln-Funktion; im LK auch vollständige Induktion.",
+            "en": "Topics set by the school authority: rational functions, circle and sphere, the ln function; in the LK also mathematical induction."
+          },
+          "simulations": [
+            "polstellen-asymptoten",
+            "kugeln"
+          ]
+        }
+      ]
+    }
+  ]
+}
