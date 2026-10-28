@@ -35,8 +35,8 @@ const regions = regionIds();
 const regionStyle = regionCss(regions);
 // Gewähltes Bundesland vor dem ersten Zeichnen setzen (nur bekannte Länder), verhindert Umspringen.
 const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.stringify(regions)}.includes(r))document.documentElement.dataset.region=r}catch{}`;
-// Farbschema vor dem ersten Zeichnen setzen (verhindert Aufblitzen).
-const themeScript = `try{const t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch{}`;
+// Farbschema vor dem ersten Zeichnen setzen (verhindert Aufblitzen); `data-js` zeigt der CSS, dass Skripte laufen.
+const themeScript = `document.documentElement.dataset.js='';try{const t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch{}`;
 // Service Worker für die Offline-Nutzung (nur im fertigen Build).
 const swScript = `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register(${JSON.stringify(base.replace(/\/?$/, '/') + 'sw.js')}).catch(()=>{})})}`;
 // Content-Security-Policy (Regeln in astro.config.mjs): Die Inline-Skripte und
