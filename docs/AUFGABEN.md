@@ -8,7 +8,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
-| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | beginnt mit Nordrhein-Westfalen |
+| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt; als Nächstes Rheinland-Pfalz |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
 
 ## Erledigt
@@ -62,6 +62,8 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 - [ ] **Weitere Bundesländer:** Lehrpläne Mathematik und Physik (Gymnasium) nach dem Muster in `src/curriculum/lehrplaene/`, nur amtliche Quellen, Unsicheres als Entwurf; Reihenfolge und Regeln im Auftrag `docs/agenten/AUFTRAG-BUNDESLAENDER.md`.
   - [x] Nordrhein-Westfalen (26.10.): Kernlehrpläne Sek. I (G9, 2019) und Sek. II (2026, gilt ab 01.08.2027), Mathe 85 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 5 Simulationen erweitert. Protokolle in `docs/lehrplaene/nordrhein-westfalen-gymnasium-*.md`.
   - [x] Niedersachsen (27.10.): Kerncurricula Sek. I (Mathe 2015, Physik als Auszug ohne Stand) und Sek. II (Mathe 2018, Physik 2022), Mathe 87 von 93, Physik 31 von 36 zugeordnet; Klassenstufen von 7 Simulationen erweitert. Protokolle in `docs/lehrplaene/niedersachsen-gymnasium-*.md`.
-  - [ ] Sachsen, danach Rheinland-Pfalz, Schleswig-Holstein, … (Reihenfolge im Auftrag)
+  - [x] Sachsen (27.10.): Lehrpläne Gymnasium Mathematik (2021) und Physik (2026), je ein Dokument für Klasse 5 bzw. 6 bis 12 (Abitur nach Klasse 12), Mathe 89 von 93, Physik 36 von 36 zugeordnet; Klassenstufen von 25 Simulationen erweitert. Protokolle in `docs/lehrplaene/sachsen-gymnasium-*.md`.
+  - [x] Sachsen-Anhalt (27.10., auf Wunsch der Projektleitung vorgezogen): Fachlehrpläne Gymnasium Mathematik und Physik (Stand 01.08.2022), je ein Dokument für Klasse 5 bzw. 6 bis 12 (Abitur nach Klasse 12), Mathe 87 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 17 Simulationen erweitert. Protokolle in `docs/lehrplaene/sachsen-anhalt-gymnasium-*.md`.
+  - [ ] Rheinland-Pfalz, danach Schleswig-Holstein, … (Reihenfolge im Auftrag)
 - [x] **Automatische Bildtests** (`docs/FAHRPLAN.md`, 1.6): Referenzfotos je Simulation, Vergleich bei jeder Änderung. Eigene GitHub-Aktion „Bildtests“, Anleitung in `docs/BILDTESTS.md`.
 - [ ] Freiwillig: Ideen für später (Vorhersage-Frage vor dem Start, „Für morgen, 5 Minuten“ für Lehrkräfte, Suche nach Formeln) – erst nach dem Design.

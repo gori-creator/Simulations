@@ -1,0 +1,992 @@
+{
+  "id": "sachsen-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "sachsen-gymnasium",
+    "en": "saxony-gymnasium"
+  },
+  "state": {
+    "de": "Sachsen",
+    "en": "Saxony"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Lehrplan",
+  "grades": [
+    {
+      "grade": 6,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12; Physik ab Klasse 6). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12; physics from grade 6). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Licht und seine Eigenschaften",
+            "en": "Light and its properties"
+          },
+          "summary": {
+            "de": "Geradlinige Ausbreitung, Schatten, Finsternisse und Mondphasen, Reflexion und Brechung sowie Bilder an Sammellinsen und in einfachen optischen Geräten.",
+            "en": "Straight-line propagation, shadows, eclipses and lunar phases, reflection and refraction, and images formed by converging lenses and simple optical instruments."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Eigenschaften und Bewegungen von Körpern",
+            "en": "Properties and motion of bodies"
+          },
+          "summary": {
+            "de": "Körper aus Teilchen, Volumen, Masse und Dichte messen, Bewegungen einteilen und die Geschwindigkeit gleichförmiger Bewegungen bestimmen.",
+            "en": "Bodies made of particles, measuring volume, mass and density, classifying motion and finding the speed of uniform motion."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Temperatur und Zustand von Körpern",
+            "en": "Temperature and state of bodies"
+          },
+          "summary": {
+            "de": "Temperatur messen und mit der Teilchenbewegung deuten, Wärmeausdehnung, Thermometer und die Übergänge zwischen den Aggregatzuständen.",
+            "en": "Measuring temperature and interpreting it with particle motion, thermal expansion, thermometers and changes of state."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Elektrische Stromkreise",
+            "en": "Electric circuits"
+          },
+          "summary": {
+            "de": "Wirkungen und Gefahren des Stroms, Leiter und Isolatoren, Stromkreise nach Schaltplan aufbauen, verzweigt und unverzweigt.",
+            "en": "Effects and dangers of electric current, conductors and insulators, building circuits from diagrams, branched and unbranched."
+          },
+          "simulations": [
+            "einfacher-stromkreis"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Sehen und Fotografieren (Wahlbereich)",
+            "en": "Seeing and photography (optional)"
+          },
+          "summary": {
+            "de": "Auge und Fotoapparat vergleichen, eine Lochkamera bauen.",
+            "en": "Comparing the eye and the camera, building a pinhole camera."
+          },
+          "simulations": [
+            "linsen"
+          ]
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Wärmedämmung (Wahlbereich)",
+            "en": "Thermal insulation (optional)"
+          },
+          "summary": {
+            "de": "Wärmeverluste am Haus finden und Dämmung untersuchen.",
+            "en": "Finding heat losses in a house and investigating insulation."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Farben (Wahlbereich)",
+            "en": "Colours (optional)"
+          },
+          "summary": {
+            "de": "Zerlegung weißen Lichts, additive und subtraktive Farbmischung.",
+            "en": "Splitting white light, additive and subtractive colour mixing."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12; Physik ab Klasse 6). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12; physics from grade 6). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Kräfte",
+            "en": "Forces"
+          },
+          "summary": {
+            "de": "Kraft als Pfeil, Gewichtskraft, Hooke’sches Gesetz, Hebelgesetz, Reibung sowie magnetische und elektrostatische Kräfte mit Feldlinienbildern.",
+            "en": "Force as an arrow, weight, Hooke’s law, the law of the lever, friction, and magnetic and electrostatic forces with field-line patterns."
+          },
+          "simulations": [
+            "hookesches-gesetz",
+            "hebelgesetz"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Stromstärke und Spannung in Stromkreisen",
+            "en": "Current and voltage in circuits"
+          },
+          "summary": {
+            "de": "Stromstärke und Spannung messen, Elektronenleitung, Gesetze für Strom und Spannung in verzweigten und unverzweigten Stromkreisen.",
+            "en": "Measuring current and voltage, conduction by electrons, rules for current and voltage in branched and unbranched circuits."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Energiewandler",
+            "en": "Energy converters"
+          },
+          "summary": {
+            "de": "Energieformen und Energieumwandlung, potentielle Energie, Energieerhaltung in der Mechanik, Wirkungsgrad und Leistung.",
+            "en": "Forms of energy and energy conversion, potential energy, conservation of energy in mechanics, efficiency and power."
+          },
+          "simulations": [
+            "energieerhaltung"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Kraftwandler – früher und heute (Wahlbereich)",
+            "en": "Force converters – then and now (optional)"
+          },
+          "summary": {
+            "de": "Hebel, Seilmaschinen, Fahrrad und die Goldene Regel der Mechanik.",
+            "en": "Levers, pulley systems, the bicycle and the golden rule of mechanics."
+          },
+          "simulations": [
+            "hebelgesetz"
+          ]
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Elektrische Schaltungen (Wahlbereich)",
+            "en": "Electric circuits in practice (optional)"
+          },
+          "summary": {
+            "de": "Schaltungen aus dem Alltag erkennen und selbst eine Anwendung bauen.",
+            "en": "Recognising everyday circuits and building an application."
+          },
+          "simulations": [
+            "einfacher-stromkreis"
+          ]
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Vom Fliegen (Wahlbereich)",
+            "en": "Flight (optional)"
+          },
+          "summary": {
+            "de": "Geschichte des Fliegens und dynamischer Auftrieb am Tragflügel.",
+            "en": "History of flight and dynamic lift on a wing."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12; Physik ab Klasse 6). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12; physics from grade 6). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Mechanik der Flüssigkeiten und Gase",
+            "en": "Mechanics of liquids and gases"
+          },
+          "summary": {
+            "de": "Druck, Schweredruck, Auftrieb nach Archimedes und Luftdruck.",
+            "en": "Pressure, hydrostatic pressure, buoyancy according to Archimedes and air pressure."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Thermische Energie und Klimaphysik",
+            "en": "Thermal energy and climate physics"
+          },
+          "summary": {
+            "de": "Thermische Energie im Teilchenbild, Wärme und Aggregatzustandsänderungen, Wärmeübertragung sowie Strahlungshaushalt der Erde und Treibhauseffekt.",
+            "en": "Thermal energy in the particle model, heat and changes of state, heat transfer, and the Earth’s radiation budget and the greenhouse effect."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Eigenschaften elektrischer Bauelemente",
+            "en": "Properties of electrical components"
+          },
+          "summary": {
+            "de": "Widerstand und Widerstandsgesetz, Kennlinien verschiedener Bauelemente, ohmsches Gesetz sowie elektrische Energie und Leistung.",
+            "en": "Resistance and the resistance law, characteristic curves of components, Ohm’s law, and electrical energy and power."
+          },
+          "simulations": [
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Selbstständiges Experimentieren",
+            "en": "Independent experimenting"
+          },
+          "summary": {
+            "de": "Widerstände in Reihe und parallel, Potentiometer und Messunsicherheiten, auch mit digitaler Messwerterfassung.",
+            "en": "Resistors in series and parallel, potentiometers and measurement uncertainty, also with digital data logging."
+          },
+          "simulations": [
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Vom Ballonfahren (Wahlbereich)",
+            "en": "Ballooning (optional)"
+          },
+          "summary": {
+            "de": "Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff.",
+            "en": "Static buoyancy in gases, hot-air balloons and airships."
+          }
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Kühlschrank und Wärmepumpe (Wahlbereich)",
+            "en": "Refrigerator and heat pump (optional)"
+          },
+          "summary": {
+            "de": "Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand.",
+            "en": "Transferring heat against the temperature gradient using energy."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Elektrisches Messen nichtelektrischer Größen (Wahlbereich)",
+            "en": "Electrical measurement of non-electrical quantities (optional)"
+          },
+          "summary": {
+            "de": "Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um.",
+            "en": "Sensors convert quantities such as temperature or light into voltages."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12; Physik ab Klasse 6). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12; physics from grade 6). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Grundlagen der Elektronik",
+            "en": "Basics of electronics"
+          },
+          "summary": {
+            "de": "Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen.",
+            "en": "Semiconductor components such as diodes and solar cells, conduction in semiconductors and simple circuits."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Energieversorgung",
+            "en": "Energy supply"
+          },
+          "summary": {
+            "de": "Kraftwerke, elektromagnetische Induktion, Generator und Transformator, Energieübertragung mit Hochspannung sowie Atomkern, Radioaktivität und Kernreaktor.",
+            "en": "Power stations, electromagnetic induction, generator and transformer, high-voltage transmission, and the atomic nucleus, radioactivity and nuclear reactors."
+          },
+          "simulations": [
+            "induktion",
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Bewegungsgesetze",
+            "en": "Laws of motion"
+          },
+          "summary": {
+            "de": "Bezugssystem, Durchschnitts- und Augenblicksgeschwindigkeit, gleichförmige und gleichmäßig beschleunigte Bewegung und der freie Fall.",
+            "en": "Frames of reference, average and instantaneous velocity, uniform and uniformly accelerated motion, and free fall."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "freier-fall"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Physikalisches Praktikum",
+            "en": "Physics practical"
+          },
+          "summary": {
+            "de": "Aufgaben aus Mechanik und Elektrik experimentell lösen, Beschleunigung und Weg im v(t)-Diagramm deuten.",
+            "en": "Solving mechanics and electricity problems experimentally, interpreting acceleration and distance in velocity–time graphs."
+          },
+          "simulations": [
+            "bewegungsdiagramme"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Natürliche Radioaktivität (Wahlbereich)",
+            "en": "Natural radioactivity (optional)"
+          },
+          "summary": {
+            "de": "Zählrohr, Durchdringungsvermögen und Reichweite der Strahlung, Nulleffekt und Anwendungen.",
+            "en": "Geiger counter, penetration and range of radiation, background radiation and applications."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Energie von Wind und Sonne (Wahlbereich)",
+            "en": "Wind and solar energy (optional)"
+          },
+          "summary": {
+            "de": "Windkraftanlagen, Solarthermie und Fotovoltaik.",
+            "en": "Wind turbines, solar thermal energy and photovoltaics."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Bewegungen auf gekrümmten Bahnen (Wahlbereich)",
+            "en": "Motion along curved paths (optional)"
+          },
+          "summary": {
+            "de": "Gleichförmige Kreisbewegung, Radialkraft und Satellitenbahnen.",
+            "en": "Uniform circular motion, centripetal force and satellite orbits."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Der Lehrplan ordnet die Lernbereiche genau dieser Klassenstufe zu (Sachsen, Gymnasium bis Klasse 12; Physik ab Klasse 6). Die Nummern der Lernbereiche stammen aus dem Lehrplan; Wahlbereiche sind wahlweise zu unterrichten und hier mit W1–W3 bezeichnet.",
+        "en": "The curriculum assigns these units to exactly this grade (Saxony, Gymnasium up to grade 12; physics from grade 6). The unit numbers are the curriculum’s; optional areas (“Wahlbereiche”) are labelled W1–W3 here."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Newton’sche Gesetze und deren Anwendung",
+            "en": "Newton’s laws and their application"
+          },
+          "summary": {
+            "de": "F = m · a, Trägheits- und Wechselwirkungsgesetz, Kräfte überlagern, geneigte Ebene sowie Bremsweg und Gefahren im Straßenverkehr.",
+            "en": "F = m · a, the laws of inertia and interaction, superposition of forces, the inclined plane, and braking distance and road safety."
+          },
+          "simulations": [
+            "kraefteaddition",
+            "schiefe-ebene"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Mechanische Schwingungen und Wellen",
+            "en": "Mechanical oscillations and waves"
+          },
+          "summary": {
+            "de": "Schwingungen mit Amplitude, Periode und Dämpfung, Faden- und Federpendel, Resonanz, Wellen mit c = λ · f, Akustik und Interferenz zweier Kreiswellen.",
+            "en": "Oscillations with amplitude, period and damping, simple and spring pendulums, resonance, waves with c = λ · f, acoustics and interference of two circular waves."
+          },
+          "simulations": [
+            "fadenpendel",
+            "federpendel",
+            "resonanz",
+            "wellen-ausbreitung",
+            "interferenz"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Kosmos, Erde und Mensch",
+            "en": "Cosmos, Earth and humankind"
+          },
+          "summary": {
+            "de": "Sonne und Planeten, Orientierung am Himmel, vom geozentrischen zum heliozentrischen Weltbild mit den Kepler’schen Gesetzen und dem Gravitationsgesetz sowie Methoden der Astronomie.",
+            "en": "The Sun and planets, finding one’s way in the sky, from the geocentric to the heliocentric world view with Kepler’s laws and the law of gravitation, and methods of astronomy."
+          },
+          "simulations": [
+            "planetenbahnen"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Licht als Strahl und Welle",
+            "en": "Light as ray and wave"
+          },
+          "summary": {
+            "de": "Brechungsgesetz und Totalreflexion, Farbzerlegung, Interferenz am Doppelspalt und Gitter zur Bestimmung der Wellenlänge und das elektromagnetische Spektrum.",
+            "en": "The law of refraction and total internal reflection, dispersion, interference at double slits and gratings to measure wavelength, and the electromagnetic spectrum."
+          },
+          "simulations": [
+            "brechung",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Physikalisches Praktikum",
+            "en": "Physics practical"
+          },
+          "summary": {
+            "de": "Neues experimentell erarbeiten, etwa die Linsengleichung, und Experimentieranordnungen entwickeln.",
+            "en": "Developing new knowledge experimentally, for example the lens equation, and designing experiments."
+          },
+          "simulations": [
+            "linsen"
+          ]
+        },
+        {
+          "code": "W1",
+          "title": {
+            "de": "Fernrohre (Wahlbereich)",
+            "en": "Telescopes (optional)"
+          },
+          "summary": {
+            "de": "Linsen- und Spiegelfernrohre, Vergrößerung und Auflösungsvermögen.",
+            "en": "Refracting and reflecting telescopes, magnification and resolving power."
+          },
+          "simulations": [
+            "linsen"
+          ]
+        },
+        {
+          "code": "W2",
+          "title": {
+            "de": "Kommunikation mit elektronischen Medien (Wahlbereich)",
+            "en": "Communication with electronic media (optional)"
+          },
+          "summary": {
+            "de": "Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation.",
+            "en": "Transmitting information with radio waves, modulation and demodulation."
+          }
+        },
+        {
+          "code": "W3",
+          "title": {
+            "de": "Fernsehbildtechnik (Wahlbereich)",
+            "en": "Television picture technology (optional)"
+          },
+          "summary": {
+            "de": "Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen.",
+            "en": "How the television picture is built and how screens work."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Jahrgangsstufe 11 mit Grundkurs (GK) und Leistungskurs (LK). Die Präfixe GK- und LK- sind von uns, die Nummern danach stammen aus dem Lehrplan; W kennzeichnet Wahlbereiche.",
+        "en": "Grade 11 with basic course (GK) and advanced course (LK). The GK/LK prefixes are ours; the numbers after them are the curriculum’s; W marks optional areas."
+      },
+      "units": [
+        {
+          "code": "GK-1",
+          "title": {
+            "de": "Mechanische Grundlagen (Grundkurs)",
+            "en": "Foundations of mechanics (basic course)"
+          },
+          "summary": {
+            "de": "Energieerhaltung, Reibung und Bewegung auf der geneigten Ebene, Superposition von Kräften, F = m · a und die gleichförmige Kreisbewegung.",
+            "en": "Conservation of energy, friction and motion on an inclined plane, superposition of forces, F = m · a and uniform circular motion."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "schiefe-ebene",
+            "kraefteaddition",
+            "kreisbewegung"
+          ]
+        },
+        {
+          "code": "GK-2",
+          "title": {
+            "de": "Elektrisches Feld (Grundkurs)",
+            "en": "Electric field (basic course)"
+          },
+          "summary": {
+            "de": "Feldbegriff, Feldlinienbilder, Feldstärke, homogenes und radiales Feld, Kondensator mit Kapazität, Auf- und Entladen.",
+            "en": "The concept of a field, field-line patterns, field strength, uniform and radial fields, capacitors with capacitance, charging and discharging."
+          },
+          "simulations": [
+            "feldlinien",
+            "kondensator"
+          ]
+        },
+        {
+          "code": "GK-3",
+          "title": {
+            "de": "Magnetisches Feld (Grundkurs)",
+            "en": "Magnetic field (basic course)"
+          },
+          "summary": {
+            "de": "Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen.",
+            "en": "Field-line patterns, flux density, the field around wires and inside coils."
+          }
+        },
+        {
+          "code": "GK-4",
+          "title": {
+            "de": "Geladene Teilchen bzw. Körper in statischen Feldern (Grundkurs)",
+            "en": "Charged particles and bodies in static fields (basic course)"
+          },
+          "summary": {
+            "de": "Lorentzkraft und Kreisbahnen, Millikan-Versuch, Beschleunigung und Ablenkung im elektrischen Feld.",
+            "en": "The Lorentz force and circular paths, the Millikan experiment, acceleration and deflection in an electric field."
+          },
+          "simulations": [
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "GK-5",
+          "title": {
+            "de": "Elektromagnetische Felder (Grundkurs)",
+            "en": "Electromagnetic fields (basic course)"
+          },
+          "summary": {
+            "de": "Induktionsgesetz, magnetischer Fluss und Lenz’sches Gesetz.",
+            "en": "The law of induction, magnetic flux and Lenz’s law."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "GK-W1",
+          "title": {
+            "de": "Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs)",
+            "en": "Conduction in semiconductors (optional, basic course)"
+          },
+          "summary": {
+            "de": "Bändermodell, pn-Übergang, Diode und Transistor.",
+            "en": "The band model, pn junction, diode and transistor."
+          }
+        },
+        {
+          "code": "GK-W2",
+          "title": {
+            "de": "Messen und Modellieren (Wahlbereich Grundkurs)",
+            "en": "Measuring and modelling (optional, basic course)"
+          },
+          "summary": {
+            "de": "Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen.",
+            "en": "Recording measurements with video analysis and data loggers and comparing them with models."
+          }
+        },
+        {
+          "code": "GK-W3",
+          "title": {
+            "de": "Relativität von Zeit und Raum (Wahlbereich Grundkurs)",
+            "en": "Relativity of time and space (optional, basic course)"
+          },
+          "summary": {
+            "de": "Postulate, Zeitdilatation und Längenkontraktion.",
+            "en": "Postulates, time dilation and length contraction."
+          }
+        },
+        {
+          "code": "LK-1",
+          "title": {
+            "de": "Erhaltungssätze und ihre Anwendungen (Leistungskurs)",
+            "en": "Conservation laws and their applications (advanced course)"
+          },
+          "summary": {
+            "de": "Mechanische Energie und Arbeit, Energieerhaltung, Impulserhaltung bei elastischen und unelastischen Stößen.",
+            "en": "Mechanical energy and work, conservation of energy, conservation of momentum in elastic and inelastic collisions."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "stoesse"
+          ]
+        },
+        {
+          "code": "LK-2",
+          "title": {
+            "de": "Kräfte (Leistungskurs)",
+            "en": "Forces (advanced course)"
+          },
+          "summary": {
+            "de": "Reibung, Zerlegung von Kräften an der geneigten Ebene, Grundgesetz der Mechanik und Kreisbewegung.",
+            "en": "Friction, resolving forces on an inclined plane, Newton’s second law and circular motion."
+          },
+          "simulations": [
+            "schiefe-ebene",
+            "kraefteaddition",
+            "kreisbewegung"
+          ]
+        },
+        {
+          "code": "LK-3",
+          "title": {
+            "de": "Kinematik und Dynamik – Praktikum (Leistungskurs)",
+            "en": "Kinematics and dynamics – practical (advanced course)"
+          },
+          "summary": {
+            "de": "Bewegungen messen und klassifizieren, Diagramme, waagerechter Wurf und Messunsicherheiten.",
+            "en": "Measuring and classifying motion, graphs, horizontal projection and measurement uncertainty."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "schiefer-wurf",
+            "freier-fall"
+          ]
+        },
+        {
+          "code": "LK-4",
+          "title": {
+            "de": "Modellbildung und Simulation (Leistungskurs)",
+            "en": "Modelling and simulation (advanced course)"
+          },
+          "summary": {
+            "de": "Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen.",
+            "en": "Modelling motion numerically, varying parameters and comparing with experiment."
+          }
+        },
+        {
+          "code": "LK-5",
+          "title": {
+            "de": "Elektrisches Feld (Leistungskurs)",
+            "en": "Electric field (advanced course)"
+          },
+          "summary": {
+            "de": "Coulomb’sches Gesetz, Feldlinien und Feldstärke, Kondensator mit Dielektrikum, Auf- und Entladekurven sowie Potential und Spannung.",
+            "en": "Coulomb’s law, field lines and field strength, capacitors with dielectrics, charging and discharging curves, and potential and voltage."
+          },
+          "simulations": [
+            "feldlinien",
+            "kondensator"
+          ]
+        },
+        {
+          "code": "LK-6",
+          "title": {
+            "de": "Magnetisches Feld (Leistungskurs)",
+            "en": "Magnetic field (advanced course)"
+          },
+          "summary": {
+            "de": "Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld.",
+            "en": "Field-line patterns, flux density, the field around wires and inside coils, matter in a magnetic field."
+          }
+        },
+        {
+          "code": "LK-7",
+          "title": {
+            "de": "Geladene Teilchen bzw. Körper in statischen Feldern (Leistungskurs)",
+            "en": "Charged particles and bodies in static fields (advanced course)"
+          },
+          "summary": {
+            "de": "Lorentzkraft, spezifische Ladung des Elektrons, Hall-Effekt, Wien-Filter, Beschleuniger und Massenspektrometer.",
+            "en": "The Lorentz force, the specific charge of the electron, the Hall effect, the Wien filter, accelerators and mass spectrometers."
+          },
+          "simulations": [
+            "lorentzkraft"
+          ]
+        },
+        {
+          "code": "LK-8",
+          "title": {
+            "de": "Elektromagnetische Felder (Leistungskurs)",
+            "en": "Electromagnetic fields (advanced course)"
+          },
+          "summary": {
+            "de": "Induktionsgesetz, Transformator, Lenz’sches Gesetz, Selbstinduktion und Energie des Magnetfelds.",
+            "en": "The law of induction, transformers, Lenz’s law, self-induction and magnetic field energy."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "LK-W1",
+          "title": {
+            "de": "Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs)",
+            "en": "Introduction to relativity (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Postulate, Michelson-Experiment, Zeitdilatation und E = m · c².",
+            "en": "Postulates, the Michelson experiment, time dilation and E = m · c²."
+          }
+        },
+        {
+          "code": "LK-W2",
+          "title": {
+            "de": "Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs)",
+            "en": "Conduction in semiconductors (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Bändermodell, pn-Übergang, Diode und Transistor.",
+            "en": "The band model, pn junction, diode and transistor."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://www.lasub.smk.sachsen.de/",
+      "note": {
+        "de": "Jahrgangsstufe 12 mit Grundkurs (GK) und Leistungskurs (LK). Die Präfixe GK- und LK- sind von uns, die Nummern danach stammen aus dem Lehrplan; W kennzeichnet Wahlbereiche.",
+        "en": "Grade 12 with basic course (GK) and advanced course (LK). The GK/LK prefixes are ours; the numbers after them are the curriculum’s; W marks optional areas."
+      },
+      "units": [
+        {
+          "code": "GK-1",
+          "title": {
+            "de": "Mechanische und elektromagnetische Schwingungen und Wellen (Grundkurs)",
+            "en": "Mechanical and electromagnetic oscillations and waves (basic course)"
+          },
+          "summary": {
+            "de": "Harmonische Schwingungen am Federpendel, Schwingkreis, Wellen mit Reflexion, Brechung, Beugung und Interferenz, stehende Wellen und Licht als Welle am Doppelspalt und Gitter.",
+            "en": "Harmonic oscillation of a spring pendulum, the LC circuit, waves with reflection, refraction, diffraction and interference, standing waves, and light as a wave at double slits and gratings."
+          },
+          "simulations": [
+            "federpendel",
+            "wellen-ausbreitung",
+            "interferenz",
+            "stehende-wellen",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "GK-2",
+          "title": {
+            "de": "Praktikum Optik und Schwingungen (Grundkurs)",
+            "en": "Practical: optics and oscillations (basic course)"
+          },
+          "summary": {
+            "de": "Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten.",
+            "en": "Experimental tasks on oscillations and optics and analysis of measurement uncertainty."
+          }
+        },
+        {
+          "code": "GK-3",
+          "title": {
+            "de": "Quantenobjekte (Grundkurs)",
+            "en": "Quantum objects (basic course)"
+          },
+          "summary": {
+            "de": "Photoeffekt und Photonenmodell, De-Broglie-Wellenlänge und Beugung von Elektronen sowie stochastische Deutung und Komplementarität.",
+            "en": "The photoelectric effect and photon model, de Broglie wavelength and electron diffraction, stochastic interpretation and complementarity."
+          },
+          "simulations": [
+            "photoeffekt",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "GK-4",
+          "title": {
+            "de": "Atomvorstellungen (Grundkurs)",
+            "en": "Models of the atom (basic course)"
+          },
+          "summary": {
+            "de": "Bohr’sches Modell, Energieniveaus und diskrete Spektren, Orbitale und Laser.",
+            "en": "The Bohr model, energy levels and discrete spectra, orbitals and lasers."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "GK-W1",
+          "title": {
+            "de": "Anwendungen der Physik (Wahlbereich Grundkurs)",
+            "en": "Applications of physics (optional, basic course)"
+          },
+          "summary": {
+            "de": "Doppler-Effekt beim Schall, Ultraschall in der Medizin und Röntgenstrahlung.",
+            "en": "The Doppler effect for sound, ultrasound in medicine and X-rays."
+          },
+          "simulations": [
+            "doppler-effekt"
+          ]
+        },
+        {
+          "code": "GK-W2",
+          "title": {
+            "de": "Radioaktivität (Wahlbereich Grundkurs)",
+            "en": "Radioactivity (optional, basic course)"
+          },
+          "summary": {
+            "de": "Strahlungsarten, Nuklidkarte, Zerfallsgesetz, Halbwertszeit und Aktivität.",
+            "en": "Types of radiation, the chart of nuclides, the decay law, half-life and activity."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "LK-1",
+          "title": {
+            "de": "Mechanische und elektromagnetische Schwingungen (Leistungskurs)",
+            "en": "Mechanical and electromagnetic oscillations (advanced course)"
+          },
+          "summary": {
+            "de": "Feder- und Fadenpendel mit linearem Kraftgesetz, gedämpfte Schwingungen, Resonanz und Schwingkreis im Vergleich.",
+            "en": "Spring and simple pendulums with the linear force law, damped oscillations, resonance and comparison with the LC circuit."
+          },
+          "simulations": [
+            "federpendel",
+            "fadenpendel",
+            "resonanz"
+          ]
+        },
+        {
+          "code": "LK-2",
+          "title": {
+            "de": "Mechanische und elektromagnetische Wellen (Leistungskurs)",
+            "en": "Mechanical and electromagnetic waves (advanced course)"
+          },
+          "summary": {
+            "de": "Fortschreitende und stehende Wellen, Reflexion, Brechung, Beugung und Interferenz, Hertz’sche Wellen und Licht am Doppelspalt, Gitter und Einzelspalt.",
+            "en": "Travelling and standing waves, reflection, refraction, diffraction and interference, radio waves, and light at double slits, gratings and single slits."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "interferenz",
+            "stehende-wellen",
+            "doppelspalt"
+          ]
+        },
+        {
+          "code": "LK-3",
+          "title": {
+            "de": "Praktikum Optik und Schwingungen (Leistungskurs)",
+            "en": "Practical: optics and oscillations (advanced course)"
+          },
+          "summary": {
+            "de": "Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten.",
+            "en": "Experimental tasks and quantitative analysis of measurement uncertainty."
+          }
+        },
+        {
+          "code": "LK-4",
+          "title": {
+            "de": "Quantenobjekte (Leistungskurs)",
+            "en": "Quantum objects (advanced course)"
+          },
+          "summary": {
+            "de": "Photoeffekt, Photonenimpuls, Elektronenbeugung, Wellenfunktion, Unschärferelation und Delayed-Choice-Experiment.",
+            "en": "The photoelectric effect, photon momentum, electron diffraction, the wave function, the uncertainty principle and the delayed-choice experiment."
+          },
+          "simulations": [
+            "photoeffekt",
+            "elektronenbeugung"
+          ]
+        },
+        {
+          "code": "LK-5",
+          "title": {
+            "de": "Atomvorstellungen (Leistungskurs)",
+            "en": "Models of the atom (advanced course)"
+          },
+          "summary": {
+            "de": "Atommodelle, Energieniveaus und Spektren, Potentialtopf, Lumineszenz, Laser und Röntgenspektrum.",
+            "en": "Atomic models, energy levels and spectra, the potential well, luminescence, lasers and the X-ray spectrum."
+          },
+          "simulations": [
+            "linienspektren"
+          ]
+        },
+        {
+          "code": "LK-6",
+          "title": {
+            "de": "Thermodynamik (Leistungskurs)",
+            "en": "Thermodynamics (advanced course)"
+          },
+          "summary": {
+            "de": "Allgemeine Gasgleichung, isochore, isobare und isotherme Zustandsänderungen, Hauptsätze, Carnot- und Stirling-Prozess und Wirkungsgrad.",
+            "en": "The ideal gas law, isochoric, isobaric and isothermal changes, the laws of thermodynamics, Carnot and Stirling cycles and efficiency."
+          },
+          "simulations": [
+            "gasgesetze"
+          ]
+        },
+        {
+          "code": "LK-W1",
+          "title": {
+            "de": "Eigenschaften der Atomkerne (Wahlbereich Leistungskurs)",
+            "en": "Properties of atomic nuclei (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Strahlungsarten, Kernumwandlungen, Zerfallsgesetz und Wechselwirkung mit Materie.",
+            "en": "Types of radiation, nuclear transformations, the decay law and interaction with matter."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "LK-W2",
+          "title": {
+            "de": "Deterministisches Chaos (Wahlbereich Leistungskurs)",
+            "en": "Deterministic chaos (optional, advanced course)"
+          },
+          "summary": {
+            "de": "Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit.",
+            "en": "Non-linear systems, attractors and limited predictability."
+          }
+        }
+      ]
+    }
+  ]
+}

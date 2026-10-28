@@ -226,6 +226,23 @@ describe('Länder-Lehrpläne', () => {
     'nordrhein-westfalen-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
+    'sachsen-gymnasium-mathematik': {
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+      kugeln: 'Kugelgleichung und Tangentialebene nicht im Lehrplan (Kugeln nur als Körper in Klasse 9)',
+      cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
+    },
+    'sachsen-anhalt-gymnasium-mathematik': {
+      cavalieri: 'Prinzip von Cavalieri nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-mathematik.md)',
+      kugeln: 'Kugeln nur als Körper in Schuljahrgang 7/8; Kugelgleichung und Tangentialebene nicht im Fachlehrplan',
+      'matrix-abbildungen': 'Matrizen nicht im Fachlehrplan',
+      signifikanztest: 'Hypothesentests nicht im Fachlehrplan (nur Prognose- und Vertrauensintervalle)',
+      'taylor-polynome': 'nicht im Fachlehrplan (Hochschule)',
+      'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
+    },
+    'sachsen-anhalt-gymnasium-physik': {
+      'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
+    },
   };
 
   it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s ordnet jede fertige Simulation einem Jahrgang zu (oder begründet die Ausnahme)', (id, curriculum) => {
