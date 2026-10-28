@@ -111,7 +111,7 @@ $A = \begin{pmatrix} 0{,}9 & 0{,}2 \\ 0{,}1 & 0{,}8 \end{pmatrix}$: $\vec{x}_1 =
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Lineare Algebra im ersten Studienjahr; in der Oberstufe als Vertiefung im Anschluss an Vektoren, etwa in einem Seminar, im Profilfach oder in der Begabtenförderung. Übergangsmatrizen und Populationsmodelle kommen in manchen Lehrplänen (nicht in Bayern, Gymnasium) direkt vor – bitte am eigenen Lehrplan prüfen.
+- **Einsatz:** Lineare Algebra im ersten Studienjahr; in der Oberstufe als Vertiefung im Anschluss an Vektoren, etwa in einem Seminar, im Profilfach oder in der Begabtenförderung. Übergangsmatrizen und Populationsmodelle kommen nur in manchen Lehrplänen direkt vor.
 - **Vermutungen sammeln:** Erst Abbildungen durch Ziehen „bauen“ (Drehung, Spiegelung, Scherung), dann die Matrizen notieren und mit den Bauplänen vergleichen.
 - **Rechnen und Sehen verbinden:** Mit „Werte zeigen“ aus rechnen die Lernenden zuerst (Determinante, Produkt, Inverse, Eigenwerte) und prüfen dann im Bild.
 - **Häufige Stolpersteine:**

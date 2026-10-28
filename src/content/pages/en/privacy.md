@@ -25,4 +25,4 @@ For more information, see GitHub's privacy statement: [docs.github.com](https://
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme** and **language** (local storage) and a **copy of the pages** (service worker) for offline use. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state** (local storage) and a **copy of the pages** (service worker) for offline use. You can delete this data at any time in your browser settings.

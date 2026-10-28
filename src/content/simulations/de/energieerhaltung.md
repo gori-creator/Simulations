@@ -110,7 +110,7 @@ Ohne Reibung kehrt er genau in der Starthöhe um, also in $12\,\text{m}$ Höhe a
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Energieerhaltung in der Mittelstufe (Jahrgangsstufe 9/10, bitte am Lehrplan prüfen); die Energie-Diagramme bereiten auf Potentialdiagramme vor, der Looping eignet sich als Vertiefung zur Kreisbewegung.
+- **Einsatz:** Energieerhaltung in der Mittelstufe (etwa Klasse 9/10); die Energie-Diagramme bereiten auf Potentialdiagramme vor, der Looping eignet sich als Vertiefung zur Kreisbewegung.
 - **Entdeckungsaufgabe in Gruppen:** Jede Gruppe sucht die Mindesthöhe – erst ohne, dann mit Reibung – und begründet das Ergebnis anschließend mit $v^2 \geq g r$.
 - **Modell:** Massenpunkt auf der Schiene, Reibung proportional zur Normalkraft (auch im Looping), $g = 9{,}81\,\tfrac{\text{m}}{\text{s}^2} = 9{,}81\,\tfrac{\text{N}}{\text{kg}}$. Wer im Unterricht mit $g \approx 10\,\tfrac{\text{N}}{\text{kg}}$ rechnet, erhält etwa $2\,\%$ größere Energien und Kräfte und etwa $1\,\%$ größere Geschwindigkeiten. Energien zeigt die Simulation in Kilojoule ($1\,\text{kJ} = 1000\,\text{J}$). Der gezeichnete Wagen ist größer als maßstäblich. Sicherungsbügel halten ihn auf der Schiene; wo er ohne sie abheben würde, zeigt die Simulation das an (auch „Airtime“ auf Hügeln).
 - **Häufige Stolpersteine:**

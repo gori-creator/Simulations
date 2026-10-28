@@ -110,7 +110,7 @@ One face has $150\,\text{cm}^2 : 6 = 25\,\text{cm}^2$, so $a = 5\,\text{cm}$, be
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria grade 5 (learning area 4.2: surface area of cuboids, cube and cuboid nets), grade 6 (learning area 2.1: surface area of simple solids) and grade 8 (learning area 7: net and surface area of prism and cylinder). The pyramid and cylinder are also suitable as an outlook.
+- **Use:** About grade 5 (surface area of cuboids, cube and cuboid nets), grade 6 (surface area of simple solids) and grade 8 (net and surface area of prism and cylinder). The pyramid and cylinder are also suitable as an outlook.
 - **Spatial reasoning first:** Before folding, you can collect predictions (e.g. with results hidden via “Share”). The areas and dimensions shown can be switched off.
 - **Common stumbling blocks:**
   - “Every net of six squares is a cube net.” – Nets 3, 7, 10 and 13 show the opposite.

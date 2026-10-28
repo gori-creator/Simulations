@@ -107,7 +107,7 @@ $n$ is even and negative, e.g. $n = -2$: $f(x) = \frac{1}{x^2}$ with $W = \mathb
 
 ## Ideas for the classroom
 
-- **Use:** Year 9, "Power functions with natural exponents and extending powers", and Year 10, "Polynomial functions" (LehrplanPLUS Bavaria, Gymnasium). Negative exponents build on the hyperbola $y = \frac{1}{x}$ from Year 8; please check the curriculum for whether and how far they are covered.
+- **Use:** About grades 9/10, power functions with natural exponents and extending powers, then polynomial functions. Negative exponents build on the hyperbola $y = \frac{1}{x}$ from Year 8; please check the curriculum for whether and how far they are covered.
 - **Discovery:** The family view is a good way to collect conjectures ("What do they all have in common?"), which can then be justified with $1^n$, $(-1)^n$ and $0^n$.
 - **Justifying symmetry:** The animation shows *what* symmetry about an axis and about a point mean; the reasoning $(-x)^n = x^n$ or $(-x)^n = -x^n$ can follow.
 - **Common stumbling blocks:**

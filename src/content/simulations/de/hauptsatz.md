@@ -106,7 +106,7 @@ $h = 0{,}5$. Links: $0{,}5 \cdot (0 + 0{,}25 + 1 + 2{,}25) = 1{,}75$; rechts: $0
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12 (Integralfunktion, Hauptsatz, Flächenbilanz) im LehrplanPLUS Gymnasium Bayern, dazu Analysis im ersten Studienjahr – bitte am Lehrplan prüfen. Die Ansichten lassen sich als Abfolge nutzen: Integralfunktion → Ableitung (Beweisidee) → Berechnen → Kurvendiskussion von $I_a$ → Riemann-Summen als Ausblick oder Wiederholung.
+- **Einsatz:** Oberstufe (Integralfunktion, Hauptsatz, Flächenbilanz), dazu Analysis im ersten Studienjahr. Die Ansichten lassen sich als Abfolge nutzen: Integralfunktion → Ableitung (Beweisidee) → Berechnen → Kurvendiskussion von $I_a$ → Riemann-Summen als Ausblick oder Wiederholung.
 - **Anwendungen:** Die acht Beispiele zeigen „Änderungsrate integrieren ergibt Bestandsänderung“ mit Einheiten (m/s · s = m, kW · h = kWh). Gut für Gruppenarbeit: Jede Gruppe stellt eine Anwendung vor und deutet Nullstellen und Extrema von $f$ im Sachzusammenhang.
 - **Aufgaben aus dem Bild:** Mit „Werte zeigen“ aus (`show=0`) eignen sich die Bilder als Rechenaufgaben.
 - **Häufige Stolpersteine:**

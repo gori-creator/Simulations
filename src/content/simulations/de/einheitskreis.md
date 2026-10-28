@@ -89,7 +89,7 @@ Bei 90° ist $\cos\alpha = 0$ – man müsste durch null teilen. Geometrisch ver
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Übergang von der Trigonometrie im rechtwinkligen Dreieck zu den trigonometrischen Funktionen (in Bayern: Jahrgangsstufe 9, Lernbereich 7.2, und Jahrgangsstufe 10, Lernbereich 3).
+- **Einsatz:** Übergang von der Trigonometrie im rechtwinkligen Dreieck zu den trigonometrischen Funktionen (meist Klasse 9/10).
 - **Am Beamer:** Die Animation mit niedriger Geschwindigkeit (z. B. 10 °/s) laufen lassen und die Klasse vorhersagen lassen, wann der Sinus sein Maximum erreicht.
 - **Häufige Stolpersteine:**
   - Sinus und Kosinus gibt es „nur im Dreieck“, also nur für Winkel unter 90°.

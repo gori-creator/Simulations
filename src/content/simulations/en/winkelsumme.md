@@ -112,7 +112,7 @@ The fourth angle is $360^\circ - 30^\circ - 40^\circ - 50^\circ = 240^\circ$. It
 
 ## Ideas for the classroom
 
-- **Use:** year 7, angles in figures (in Bavaria: LehrplanPLUS Gymnasium, “Winkelbetrachtungen an Figuren”): justify the angle sum of a triangle and transfer it to polygons. Tearing off the corners works well as an introduction (ideally alongside real paper triangles), the proof with the parallel for consolidation, and the polygons for an exploration phase with the table.
+- **Use:** about grade 7, angles in figures: justify the angle sum of a triangle and transfer it to polygons. Tearing off the corners works well as an introduction (ideally alongside real paper triangles), the proof with the parallel for consolidation, and the polygons for an exploration phase with the table.
 - **From experiment to proof:** tearing off the corners only shows that it “fits” – a measurement is never quite exact. Comparing both approaches can lead to the question of why we prove things at all. The half turn of the pieces about the midpoints of the sides is exactly the point reflection that maps the alternate angles onto each other.
 - **Model:** the corners snap to half grid squares; angles are rounded to one decimal place and distributed so that the displayed sum is correct. Switching off “Show the sizes of the angles” and `_hide=1` are useful for calculation tasks.
 - **Common stumbling blocks:**

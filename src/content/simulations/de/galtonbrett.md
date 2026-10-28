@@ -82,7 +82,7 @@ Für $p = 0{,}5$ ist jeder Weg gleich wahrscheinlich, und es gibt zu Fach $k$ ge
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 12 (Bernoulli-Ketten, Binomialverteilung); qualitativ auch früher bei mehrstufigen Zufallsexperimenten. Die Glockenkurve leitet zur Normalverteilung über.
+- **Einsatz:** Oberstufe (Bernoulli-Ketten, Binomialverteilung); qualitativ auch früher bei mehrstufigen Zufallsexperimenten. Die Glockenkurve leitet zur Normalverteilung über.
 - **Darstellung:** Solange es passt, werden die Kugeln einzeln gestapelt; bei vielen Kugeln werden die Fächer als Säulen dargestellt. Die waagerechten Striche (in der Legende „B(n; p)“) zeigen die erwartete Anzahl $N \cdot P(X = k)$ bei $N$ Kugeln.
 - **Gruppen vergleichen:** Lassen Sie mehrere Gruppen je 100 Kugeln werfen. Jede Gruppe erhält eine etwas andere Verteilung – zusammengelegt kommen die Häufigkeiten der Binomialverteilung immer näher.
 - **Bilder:** Holzbrett und Kugeln werden gezeichnet; optional können Fotos ergänzt werden (siehe `docs/BILDER.md`).

@@ -101,7 +101,7 @@ Straight line: $10\,\text{cm} \cdot 25\,000 = 250\,000\,\text{cm} = 2.5\,\text{k
 
 ## Ideas for the classroom
 
-- **Use:** Grade 5, measures (length, scale) in the Bavarian LehrplanPLUS, Gymnasium – please check against your curriculum. Use the map as a shared introduction on the projector and the “New measuring task” with the result hidden for practice in pairs.
+- **Use:** Grade 5, measures (length, scale). Use the map as a shared introduction on the projector and the “New measuring task” with the result hidden for practice in pairs.
 - **Link to a real map:** Afterwards, have the children measure their way to school on a hiking map of the area and convert it.
 - **Model:** The landscape is invented. As on real maps, houses and map symbols are drawn somewhat larger than they would be to scale. The map length is measured to the nearest $1\,\text{mm}$; the calculation uses this measured value.
 - **Common stumbling blocks:**

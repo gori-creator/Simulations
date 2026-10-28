@@ -4,7 +4,7 @@ description: "Interaktive Simulation für die 5. Klasse: Winkel mit dem Geodreie
 
 ## Worum geht es?
 
-Ein **Winkel** entsteht, wenn zwei Halbgeraden, die **Schenkel** $[SA$ und $[SB$, im selben Punkt $S$ beginnen. $S$ heißt **Scheitel**. Winkel bezeichnet man mit griechischen Buchstaben ($\alpha$, $\beta$, $\gamma$, …) oder mit drei Punkten: $\alpha = \sphericalangle ASB$. Hier wird – wie in bayerischen Schulbüchern üblich – $\sphericalangle ASB$ **gegen den Uhrzeigersinn** vom Schenkel $[SA$ zum Schenkel $[SB$ gemessen. Die Einheit ist das **Grad** ($1^\circ$ ist der 360. Teil einer ganzen Drehung).
+Ein **Winkel** entsteht, wenn zwei Halbgeraden, die **Schenkel** $[SA$ und $[SB$, im selben Punkt $S$ beginnen. $S$ heißt **Scheitel**. Winkel bezeichnet man mit griechischen Buchstaben ($\alpha$, $\beta$, $\gamma$, …) oder mit drei Punkten: $\alpha = \sphericalangle ASB$. Hier wird – wie in vielen Schulbüchern üblich – $\sphericalangle ASB$ **gegen den Uhrzeigersinn** vom Schenkel $[SA$ zum Schenkel $[SB$ gemessen. Die Einheit ist das **Grad** ($1^\circ$ ist der 360. Teil einer ganzen Drehung).
 
 | Winkelart | Größe |
 | --- | --- |
@@ -101,7 +101,7 @@ $112^\circ$ (etwas mehr als ein rechter Winkel), $38^\circ$ (etwas weniger als d
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 „Geometrische Figuren und Lagebeziehungen“ (LehrplanPLUS Gymnasium Bayern): Winkel bis $360^\circ$ schätzen, messen und zeichnen, Winkelarten. Gut geeignet für die Erarbeitung am Whiteboard (Geodreieck gemeinsam anlegen) und für Einzelarbeit mit dem Schätzspiel.
+- **Einsatz:** Klasse 5, geometrische Figuren und Lagebeziehungen: Winkel bis $360^\circ$ schätzen, messen und zeichnen, Winkelarten. Gut geeignet für die Erarbeitung am Whiteboard (Geodreieck gemeinsam anlegen) und für Einzelarbeit mit dem Schätzspiel.
 - **Bedienung:** Das Geodreieck lässt sich in der Mitte verschieben und an den runden Griffen bzw. den Ecken drehen. In der Nähe des Scheitels und der Schenkel rastet es ein. Mit „Winkelgröße anzeigen“ aus muss die Größe tatsächlich abgelesen werden; die Hervorhebung zeigt dann nur, an welcher Skala.
 - **Modell:** Geodreieck und Kästchen passen zueinander: Die Kante ist 16 cm lang, ein Kästchen 5 mm. Winkel werden auf ganze Grad gerundet. „Zufälliger Winkel“ blendet die Größe aus und legt das Geodreieck zur Seite.
 - **Schätzspiel:** Abwechselnd wird ein Winkel geschätzt oder gezeichnet; Größe und Lage des ersten Schenkels sind zufällig. Punkte gibt es nach der Abweichung vom richtigen Wert: bis $3^\circ$ drei Punkte, bis $10^\circ$ zwei, bis $20^\circ$ einen, darüber keinen. Nach dem Prüfen liegt das Geodreieck zum Nachmessen bereit.

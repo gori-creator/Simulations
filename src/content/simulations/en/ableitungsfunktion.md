@@ -103,7 +103,7 @@ False. A maximum of $f'$ means that $f$ increases most steeply there – $f$ has
 
 ## Ideas for the classroom
 
-- **Use:** the views work well as a sequence: secant → tangent, running tangent, features, your own sketch, rules. In Bavaria (LehrplanPLUS Gymnasium) the simulation fits year 11 (local and global differentiation, monotonicity and extrema) and year 12 (derivatives of sine and cosine, product and chain rule).
+- **Use:** the views work well as a sequence: secant → tangent, running tangent, features, your own sketch, rules. The simulation fits upper secondary calculus (local and global differentiation, monotonicity and extrema) and later the derivatives of sine and cosine and the product and chain rules.
 - **Predictions:** with “Show terms and values” switched off, students first sketch $f'$ on paper, then check with the trace or in the task mode “sketch f′”, which tells them for each point whether it fits.
 - **Differentiability:** the chart “difference quotient against h” turns limits into a picture: for smooth functions the left and right branches run towards the same point, for $|x|$ they do not.
 - **Real-world context:** nine examples with units (m/s, m/s², L/min, MU/unit, m/km and percent) – good for interpreting maxima, zeros of $f'$ and points of inflection in context.

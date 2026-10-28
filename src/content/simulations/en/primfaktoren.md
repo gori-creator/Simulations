@@ -110,7 +110,7 @@ A composite number up to $100$ is a product $a \cdot b$ with $a \le b$. If $a$ w
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, year 5, learning area 3.1 (prime factorisation and divisibility rules). gcd and lcm are needed later for simplifying fractions and finding common denominators (year 6).
+- **Use:** About grade 5 (prime factorisation and divisibility rules). gcd and lcm are needed later for simplifying fractions and finding common denominators (year 6).
 - **Three views:** factor tree with divisibility rules, sieve of Eratosthenes and gcd/lcm in a set diagram. Each prime keeps the same colour in all views.
 - **Step by step:** If “Show the result right away” is off (`show=0`), tree, sieve and set diagram start empty and are built up with the buttons or by tapping.
 - **Uniqueness:** “Another tree” splits with random divisors. That the same prime factors always appear is a good reason to ask why (without proof in year 5).

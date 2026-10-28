@@ -67,7 +67,7 @@ $F(3) - F(-2) = (10{,}125 - 9) - (2 - 4) = 3{,}125$. Teile des Graphen liegen un
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 13 (erhöhtes Anforderungsniveau: Flächeninhalt und bestimmtes Integral); auch für die Einführung des Integralbegriffs allgemein.
+- **Einsatz:** Oberstufe (Flächeninhalt und bestimmtes Integral, oft auf erhöhtem Anforderungsniveau); auch für die Einführung des Integralbegriffs allgemein.
 - **Animation:** Beim Verdoppeln bzw. Halbieren von $n$ wachsen die neuen Rechtecke aus den alten heraus. Die Tabelle zeigt die Summen für $n = 4$ bis $128$.
 - **Hinweis zur Berechnung:** Minimum und Maximum je Streifen werden exakt bestimmt: Die Simulation vergleicht die Funktionswerte an den Streifenrändern und an den Stellen mit $f'(x) = 0$ im Streifen.
 - **Häufige Stolpersteine:**

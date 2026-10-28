@@ -103,7 +103,7 @@ Bei $\alpha = 1\,\%$: $P(X \ge 39) \approx 0{,}0057$, $P(X \ge 38) \approx 0{,}0
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Einseitiger Signifikanztest“ (LehrplanPLUS Bayern, Gymnasium) – Einführung des Vorgehens und Vertiefung zu Fehlern 1. und 2. Art. Die Gütefunktion kann als Ausblick dienen.
+- **Einsatz:** Oberstufe, einseitiger Signifikanztest – Einführung des Vorgehens und Vertiefung zu Fehlern 1. und 2. Art. Die Gütefunktion kann als Ausblick dienen.
 - **Schreibweise:** Die Simulation verwendet $H_0\colon p \le p_0$ bzw. $p \ge p_0$ und $\overline{A}$ für den Ablehnungsbereich; manche Bücher schreiben $H_0\colon p = p_0$ oder $K$ – die Rechnung ist dieselbe.
 - **Simulation des Fehlers 1. Art:** Mit $p_1 = p_0$ und „100 Stichproben“ lässt sich erleben, dass der Test etwa in $2{,}8\,\%$ der Fälle (tatsächliche Irrtumswahrscheinlichkeit $\alpha^\ast$) fälschlich ablehnt.
 - **Häufige Stolpersteine:**

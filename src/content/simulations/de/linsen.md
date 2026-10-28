@@ -115,7 +115,7 @@ Mit $g = 2f$: $\frac{1}{b} = \frac{1}{f} - \frac{1}{2f} = \frac{1}{2f}$, also $b
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Optik in der Mittelstufe (Linsen, Bildentstehung, optische Geräte); am bayerischen Gymnasium im Physikunterricht der Jahrgangsstufen 8 bis 10 (Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Teil 1 eignet sich zum Einführen und Üben der Bildkonstruktion, Teil 2 als Ersatz oder Vorbereitung für den Versuch auf der optischen Bank.
+- **Einsatz:** Optik in der Mittelstufe (Linsen, Bildentstehung, optische Geräte), etwa Klasse 8 bis 10. Teil 1 eignet sich zum Einführen und Üben der Bildkonstruktion, Teil 2 als Ersatz oder Vorbereitung für den Versuch auf der optischen Bank.
 - **Modell:** dünne Linse, achsennahe Strahlen, keine Linsenfehler; gebrochen wird an der Mittelebene. Konstruktionsstrahlen dürfen die Mittelebene auch außerhalb der gezeichneten Linse treffen – sie dienen nur der Konstruktion. Die Zeichnung passt ihren Maßstab der Brennweite an.
 - **Vorzeichen:** virtuelles Bild $b < 0$, Zerstreuungslinse $f < 0$; im Abbildungsmaßstab werden Beträge verwendet.
 - **Konstruktionsübungen:** Unter „Anzeige“ lassen sich Bild und Strahlen ausblenden, die Ergebnisse mit `_hide=1` verdecken.

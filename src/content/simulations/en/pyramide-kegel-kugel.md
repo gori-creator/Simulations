@@ -116,7 +116,7 @@ The cylinder has $V = 2\pi r^3 \approx 98.17\,\text{cm}^3$. The sphere fills $\t
 
 ## Ideas for the classroom
 
-- **Use:** grade 10, calculating solids (LehrplanPLUS Bavaria, Gymnasium; the assignment is a draft, please check against the current curriculum). Suitable as an introduction (pouring experiment), for practice (Pythagoras in solids) and for going further (Archimedes).
+- **Use:** about grades 9/10, calculating solids. Suitable as an introduction (pouring experiment), for practice (Pythagoras in solids) and for going further (Archimedes).
 - **Model:** the pyramid has a regular $n$-gon as its base, with the apex directly above the centre. When pouring, the amount of water is calculated exactly from the volume; the drawing only approximates it.
 - **Common mistakes:**
   - The factor $\tfrac{1}{3}$ is forgotten – correct: pyramid and cone fill only a third.

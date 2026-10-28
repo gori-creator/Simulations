@@ -114,7 +114,7 @@ Together they make $120\,\%$ – but a whole is $100\,\%$. Someone divided by $2
 
 ## Ideas for the classroom
 
-- **Use:** Year 6 (Bavarian curriculum, Gymnasium: percentages, data and charts): create, read and critically judge charts; shares as percentages and as central angles. Also possible in year 5 for reading column charts.
+- **Use:** About grade 6 (percentages, data and charts): create, read and critically judge charts; shares as percentages and as central angles. Also possible in year 5 for reading column charts.
 - **Your own data:** The class could collect its own favourite sports and enter the values with the sliders; the tally chart is created along the way.
 - **Changing representations:** The morph from columns via the strip to the circle can show that all three charts contain the same data – only the strip and the circle show the share of the whole directly.
 - **Detective mode:** May work well in pairs; the cases can also be linked individually (e.g. case 3). A follow-up idea is to design a "polished" chart yourselves and swap it with others.

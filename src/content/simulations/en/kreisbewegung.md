@@ -127,7 +127,7 @@ At the highest point the weight points to the centre. At the minimum speed it is
 
 ## Ideas for the classroom
 
-- **Use:** circular motion and centripetal force in mechanics, grades 10/11 (in Bavarian Gymnasium as part of Newtonian mechanics; draft assignment, please check against the curriculum). Good as a starter ("cut the string"), for working out $F_Z \sim v^2$ and $F_Z \sim \frac{1}{r}$ or $F_Z \sim r$ (graph), and as an application (cornering, road safety).
+- **Use:** circular motion and centripetal force in mechanics, lower or upper secondary (about grades 10/11). Good as a starter ("cut the string"), for working out $F_Z \sim v^2$ and $F_Z \sim \frac{1}{r}$ or $F_Z \sim r$ (graph), and as an application (cornering, road safety).
 - **Model:** The ball moves without friction on a horizontal table (top view); the table balances the weight, and the string force is the centripetal force. The bend of the car is not drawn to scale. The coefficients of static friction are typical values. When the car skids, it is assumed for simplicity that the maximum static friction still acts at the same speed; the car then moves on a circle with the larger radius $r' = \frac{v^2}{\mu_H g}$ (in reality sliding friction is even smaller).
 - **Common stumbling blocks:**
   - "A centrifugal force pushes the ball outwards." – In the frame at rest only the force towards the centre acts; without it the ball flies on along the tangent, not radially outwards. The centrifugal force is a fictitious force that only appears in the rotating frame.

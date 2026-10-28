@@ -100,7 +100,7 @@ Es muss gelten: falsch positive $\le$ richtig positive, also $0{,}99 \cdot (1 - 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 11, Lernbereich „Bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit“ (LehrplanPLUS Bayern, Gymnasium); medizinische Tests sind dort ein typischer Anwendungsfall. Ob die Formel von Bayes ausdrücklich verlangt ist, bitte am Lehrplan prüfen. Vierfeldertafel und Baumdiagramm vertieft die Simulation [Vierfeldertafel und Mengendiagramm](../vierfeldertafel-mengendiagramm/), Pfadregeln die Simulation [Mehrstufige Zufallsexperimente](../baumdiagramm-pfadregeln/).
+- **Einsatz:** Oberstufe, bedingte Wahrscheinlichkeit und stochastische Unabhängigkeit; medizinische Tests sind dabei ein typischer Anwendungsfall. Ob die Formel von Bayes ausdrücklich verlangt ist, bitte am Lehrplan prüfen. Vierfeldertafel und Baumdiagramm vertieft die Simulation [Vierfeldertafel und Mengendiagramm](../vierfeldertafel-mengendiagramm/), Pfadregeln die Simulation [Mehrstufige Zufallsexperimente](../baumdiagramm-pfadregeln/).
 - **Einstieg mit Schätzung:** Vor dem Aufdecken schätzen lassen, wie wahrscheinlich ein positiv Getesteter krank ist – die Schätzungen liegen erfahrungsgemäß oft weit über $9\,\%$.
 - **Natürliche Häufigkeiten:** Das Symbolbild und der Baum mit Anzahlen machen die Rechnung oft leichter zugänglich als die Formel allein; die Formel von Bayes lässt sich dann aus dem Baum ablesen.
 - **Für Aufgaben:** Mit „Ergebnisse anzeigen“ aus erscheinen Anzahlen und Vorhersagewerte als „?“. Prävalenz, Sensitivität und Spezifität bleiben sichtbar.

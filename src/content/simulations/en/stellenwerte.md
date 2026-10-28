@@ -109,7 +109,7 @@ Mia: $71{,}499 \approx 71{,}500$, then $71{,}500 \approx 72{,}000$. Tom: $71{,}4
 
 ## Ideas for the classroom
 
-- **Use:** Bavarian Gymnasium, year 5, learning area 1.1 (large numbers, the base-ten place value system, number line, rounding). The place value chart with counters builds on the representation used in primary school.
+- **Use:** Grade 5 (large numbers, the base-ten place value system, number line, rounding). The place value chart with counters builds on the representation used in primary school.
 - **Controls:** **+** and **−** add or remove one counter in a column. When a tenth counter is added, the counters are regrouped automatically; when a column is empty, a counter from the left is exchanged – both are animated and named (“10 O = 1 T”). Tapping a column heading sets the rounding place, tapping a digit card shows its value. The pin on the number line can be dragged.
 - **Number line with magnifier:** at the top, the section of the next higher place is divided into ten parts; below, the part between the two neighbouring numbers is magnified. The digits $0$ to $9$ under the parts show that the deciding digit tells you in which tenth of the interval the number lies. This way the rounding rule is justified by the position on the number line.
 - **Task mode:** turn off “Show the rounded number right away” (`show=0`): the result only appears after “Round”. The number in words can be hidden (`words=0`).

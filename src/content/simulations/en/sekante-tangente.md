@@ -118,7 +118,7 @@ $h = 0.1$: $\frac{0.1 - 0}{0.1} = 1$. $\;h = -0.1$: $\frac{0.1 - 0}{-0.1} = -1$.
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, Gymnasium, grade 11, learning area 4.1 "Local and global differentiation" (slopes of secants and tangents, average and instantaneous rate of change, derivative function, tangent equation). The **h → 0** animation shrinks $h$ logarithmically, so the approach stays evenly visible.
+- **Use:** Upper secondary, introduction to calculus (slopes of secants and tangents, average and instantaneous rate of change, derivative function, tangent equation). The **h → 0** animation shrinks $h$ logarithmically, so the approach stays evenly visible.
 - **Table:** The table shows the difference quotients for $h = 1;\ 0.1;\ 0.01;\ 0.001$ with the sign of the chosen $h$. It is a good way to prepare the idea of a limit numerically. Let the class guess or compute the values by hand first.
 - **h = 0:** If you set $h = 0$, the difference quotient is undefined ($\frac{0}{0}$); the simulation then shows only the tangent. This is a good moment to discuss the difference between "plugging in $h = 0$" and "the limit as $h \to 0$".
 - **Two-sided limit:** Compare $h > 0$ and $h < 0$ first for $x^2$ (same limit) and then for $|x|$ (different values). This makes it tangible why differentiability needs more than "the graph has no jump".

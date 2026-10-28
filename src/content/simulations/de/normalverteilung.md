@@ -92,7 +92,7 @@ $\sigma = \sqrt{n \cdot 0{,}1 \cdot 0{,}9} > 3 \iff n \cdot 0{,}09 > 9 \iff n > 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 13 (stetige Zufallsgrößen, Normalverteilung), LehrplanPLUS Gymnasium Bayern. Ob Quantile und die Näherung der Binomialverteilung im Unterricht gerechnet werden, bitte am Lehrplan prüfen.
+- **Einsatz:** Oberstufe (stetige Zufallsgrößen, Normalverteilung). Ob Quantile und die Näherung der Binomialverteilung im Unterricht gerechnet werden, bitte am Lehrplan prüfen.
 - **Einstieg über die Fläche:** Erst schätzen lassen, welcher Anteil zwischen $a$ und $b$ liegt, dann ziehen und vergleichen. Der Balken im Diagramm der Verteilungsfunktion zeigt, warum man zwei Tabellenwerte subtrahiert.
 - **Standardisieren sichtbar machen:** Die Animation eignet sich, um zu begründen, warum eine einzige $\Phi$-Tabelle für alle Normalverteilungen reicht.
 - **Tabelle rückwärts und Qualitätskontrolle:** Die Ansicht „Umkehrung“ zeigt, wo man in der Tabelle sucht (Vergleich mit dem Taschenrechner). Beim Vergleich zweier Anlagen kann die Klasse vorab argumentieren, ob kleines $\sigma$ oder mittiges $\mu$ wichtiger ist.

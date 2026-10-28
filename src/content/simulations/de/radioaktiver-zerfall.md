@@ -108,7 +108,7 @@ Erwartet werden $50$ bzw. $1250$ Kerne. Die typische Abweichung (Standardabweich
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Radioaktivität in der Mittelstufe (Zerfallsarten, Halbwertszeit, Zählrohr) und vertiefend in der Oberstufe (Zerfallsgesetz mit $\lambda$, Aktivität, Logarithmieren, Zufall als Basiskonzept). Die genaue Zuordnung bitte am LehrplanPLUS bzw. am Hessischen Kerncurriculum prüfen.
+- **Einsatz:** Radioaktivität in der Mittelstufe (Zerfallsarten, Halbwertszeit, Zählrohr) und vertiefend in der Oberstufe (Zerfallsgesetz mit $\lambda$, Aktivität, Logarithmieren, Zufall als Basiskonzept).
 - **Würfelmodell als Einstieg:** Jede Schülerin und jeder Schüler würfelt mit vielen Würfeln, alle Sechsen „zerfallen“ und werden aussortiert. Danach die Simulation als „sehr viele Würfel in sehr kleinen Schritten“ vorstellen.
 - **Vorhersagen lassen:** „Sind nach zwei Halbwertszeiten alle Kerne zerfallen?“ – viele erwarten das zunächst. Die Messpunkte zeigen das Viertel.
 - **Zufall und Gesetz:** Mehrere Gruppen starten jeweils „Neues Präparat“ mit 100 Kernen und notieren $N$ nach einer Halbwertszeit; die Ergebnisse streuen (meist zwischen 45 und 55), ihr Mittelwert liegt nahe 50. Der Knopf „Zeit zurücksetzen“ wiederholt genau denselben Zufallsverlauf.

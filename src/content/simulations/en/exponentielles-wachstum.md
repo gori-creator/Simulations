@@ -79,7 +79,7 @@ Exact: $\frac{\ln 2}{\ln 1.02} \approx 35.0$, $\frac{\ln 2}{\ln 1.05} \approx 14
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, grade 10 (exponential functions, exponential growth, logarithm).
+- **Use:** About grade 10 (exponential functions, exponential growth, logarithm).
 - **Decay:** Each of the 400 nuclei decays at a random time; on average the number follows the exponential function. This shows that decay is a random process.
 - **Logarithmic axis:** Exponential functions appear as straight lines – a good preparation for the logarithm.
 - **Common pitfalls:**

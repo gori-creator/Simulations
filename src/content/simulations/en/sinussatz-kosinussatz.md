@@ -117,7 +117,7 @@ b) The longer side is opposite the larger angle. From $a \geq c$ it follows that
 
 ## Ideas for the classroom
 
-- **Use:** Grade 10, the unit on the law of sines and cosines and on sine/cosine on the unit circle (LehrplanPLUS Gymnasium Bavaria; please check the exact curriculum reference). Prior knowledge: $\sin(180° - \alpha) = \sin \alpha$ and $\cos(180° - \alpha) = -\cos \alpha$.
+- **Use:** About grade 10, the law of sines and cosines and sine/cosine on the unit circle. Prior knowledge: $\sin(180° - \alpha) = \sin \alpha$ and $\cos(180° - \alpha) = -\cos \alpha$.
 - **Discover before proving:** First let students just watch the bars (“what stays the same while dragging?”), then comment on “Play the proof” together. The same works for the γ sweep in the law of cosines: when is the correction subtracted, when is it added?
 - **Decision training:** Have students sort cards with the given parts (SSS, SAS, ASA, SSA); then let them calculate on their own in the solver with “Show results” off (`show=0`). The cases match the congruence criteria from grade 7; in the SSA case the circle construction shows why there can be two points of intersection.
 - **Common stumbling blocks:**

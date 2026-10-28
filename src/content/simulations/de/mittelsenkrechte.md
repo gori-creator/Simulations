@@ -103,7 +103,7 @@ Er gehört in den Schnittpunkt $U$ der Mittelsenkrechten (zwei genügen, die dri
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 7, Lernbereich 2.1 „Achsen- und punktsymmetrische Figuren“ (LehrplanPLUS Gymnasium Bayern): Grundkonstruktionen Mittelsenkrechte und Winkelhalbierende, Begründung über Symmetrie, Ortslinien. Geeignet zur Erarbeitung (Ortslinie entdecken), zum Vorführen der Konstruktionen am Beamer und für Übungsphasen. Der Umkreis ist hier als Ausblick gedacht und wird bei der Behandlung von Dreiecken vertieft.
+- **Einsatz:** Etwa Klasse 7, achsen- und punktsymmetrische Figuren: Grundkonstruktionen Mittelsenkrechte und Winkelhalbierende, Begründung über Symmetrie, Ortslinien. Geeignet zur Erarbeitung (Ortslinie entdecken), zum Vorführen der Konstruktionen am Beamer und für Übungsphasen. Der Umkreis ist hier als Ausblick gedacht und wird bei der Behandlung von Dreiecken vertieft.
 - **Bedienung:** $P$, die Punkte $A$, $B$, $C$, der Scheitel $S$, die Schenkel sowie $G$ und $H$ lassen sich ziehen. Mit „Ortslinie zeigen“ aus können die Lernenden die Gerade erst selbst entdecken; „Spur löschen“ startet neu. Die Konstruktion lässt sich schrittweise oder ganz abspielen.
 - **Modell:** Karopapier mit $0{,}5\,\text{cm}$ pro Kästchen. Bei der Mittelsenkrechten springt $P$ auf Gitterpunkte und rastet in der Nähe von $m$ auf $m$ ein; bei der Winkelhalbierenden bewegt sich $P$ frei im Winkelfeld und rastet auf $w$ ein. Gerundete Längen werden mit „≈“ angezeigt. Der Winkel $\alpha$ lässt sich zwischen $20°$ und $180°$ einstellen. Stellen Sie $A$ und $B$ mit den Reglern auf denselben Punkt, rückt der zuletzt bewegte Punkt ein Kästchen weiter, denn ohne Strecke gibt es keine Mittelsenkrechte.
 - **Häufige Stolpersteine:**

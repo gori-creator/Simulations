@@ -82,7 +82,7 @@ For $p = 0.5$ every path is equally likely, and there are as many paths to bin $
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria grade 12 (Bernoulli chains, binomial distribution); qualitatively also earlier with multi-stage random experiments. The bell curve leads on to the normal distribution.
+- **Use:** Upper secondary (Bernoulli chains, binomial distribution); qualitatively also earlier with multi-stage random experiments. The bell curve leads on to the normal distribution.
 - **Display:** As long as they fit, the balls are stacked one by one; with many balls the bins are shown as bars. The horizontal marks (“B(n; p)” in the legend) show the expected count $N \cdot P(X = k)$ for $N$ balls.
 - **Compare groups:** Let several groups drop 100 balls each. Every group gets a slightly different distribution – combined, the frequencies come closer and closer to the binomial distribution.
 - **Images:** The wooden board and the balls are drawn; photos can be added optionally (see `docs/BILDER.md`).

@@ -113,7 +113,7 @@ Richtung $\vec n \times \vec m = \begin{pmatrix} 2 \\ -1 \\ 2 \end{pmatrix} \tim
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 13, Lernbereich „Geraden und Ebenen im Raum“ (LehrplanPLUS Bayern, Gymnasium; genaue Zuordnung bitte am Lehrplan prüfen). Gut als Einstieg in die Lagebeziehungen oder zur Wiederholung vor dem Abitur.
+- **Einsatz:** Oberstufe, analytische Geometrie: Geraden und Ebenen im Raum. Gut als Einstieg in die Lagebeziehungen oder zur Wiederholung vor dem Abitur.
 - **Entscheidungsbaum als Rechenplan:** Die Fragen im Baum entsprechen genau den Rechenschritten (Richtungen vergleichen, Gleichungssystem lösen, Einsetzen). Man kann die Klasse den Pfad zuerst vorhersagen lassen und dann die Animation abspielen.
 - **Besondere Blickrichtungen:** Die Kantenansicht macht sichtbar, warum Abstände und Winkel „in wahrer Größe“ erscheinen, wenn man parallel zu einer Ebene schaut – eine Brücke zur darstellenden Geometrie.
 - **Aufgabenmodus:** Mit „Ergebnisse anzeigen“ aus und verdeckten Ergebnissen rechnen die Lernenden zuerst selbst und kontrollieren dann im Bild.

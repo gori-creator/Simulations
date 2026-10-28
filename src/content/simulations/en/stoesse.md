@@ -121,7 +121,7 @@ With equal masses, the gliders swap their velocities in an elastic collision: $v
 
 ## Ideas for the classroom
 
-- **Use:** momentum and its conservation in mechanics, grades 10/11 (at the Bavarian Gymnasium as part of Newtonian mechanics; assignment is a draft, please check against the curriculum). Suitable as a substitute for or preparation of the air-track experiment, for practising the collision formulas and for comparing conservation of momentum and of energy.
+- **Use:** momentum and its conservation in mechanics, lower or upper secondary (about grades 10/11). Suitable as a substitute for or preparation of the air-track experiment, for practising the collision formulas and for comparing conservation of momentum and of energy.
 - **Let students predict:** the "after" balance only appears at the moment of collision. With `_hide=1` (task links) the calculated results are covered, as are the numbers after the collision at the arrows, at the centre of mass and in the energy balance. Arrows, bars and graph stay visible and allow a rough check of one's own calculation.
 - **Model:** straight, central collision without friction; the duration of the collision is neglected (the velocities jump). The simulation chooses the starting positions so that the motion fits well onto the $1.6\,\text{m}$ track. Masses up to $2\,\text{kg}$ are shown as slotted masses on the glider.
 - **Display:** in the position–time graph the bands show the length of the gliders ($0.2\,\text{m}$); they touch exactly at the collision. The line of the centre of mass is a straight line.

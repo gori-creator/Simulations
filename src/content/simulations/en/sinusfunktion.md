@@ -91,4 +91,4 @@ $$f(t) \approx 3.8 \cdot \sin\big(0.52\,(t - 2.7)\big) + 0.2$$
 - **π axis:** by default the x-axis is labelled in multiples of $\pi$ and $c$ snaps to steps of $\frac{\pi}{12}$. Turn this off under **Display** for modelling tasks; $c$ can then be set as a decimal.
 - **Exercise mode:** switch off **Show values and guides**. Sliders, guides and results are then hidden, and the class reads the parameters off the graph. You can pass such a state on as a link via **Share**.
 - **Introduction:** the simulation "Unit circle" shows how the sine curve arises from motion on a circle.
-- **Notation in Bavaria:** the Bavarian curriculum (LehrplanPLUS) writes $a \cdot \sin(b \cdot (x + c)) + d$. You can switch the simulation to this form under **Display → Notation**; a positive $c$ then shifts to the left.
+- **Notation:** some curricula and textbooks write $a \cdot \sin(b \cdot (x + c)) + d$. You can switch the simulation to this form under **Display → Notation**; a positive $c$ then shifts to the left.

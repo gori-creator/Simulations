@@ -112,7 +112,7 @@ Nur $S_3(0 \mid 0 \mid 3)$: Für $x_1$- und $x_2$-Achse müsste $0 = 3$ gelten. 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12/13, analytische Geometrie, Geraden und Ebenen im Raum (LehrplanPLUS Bayern, Gymnasium; Zuordnung zu den Jahrgangsstufen bitte am Lehrplan prüfen). Als Einstieg in die Parameterform, zum Üben von Spurpunkten oder zur Vorbereitung auf Lagebeziehungen.
+- **Einsatz:** Oberstufe, analytische Geometrie: Geraden und Ebenen im Raum. Als Einstieg in die Parameterform, zum Üben von Spurpunkten oder zur Vorbereitung auf Lagebeziehungen.
 - **Parameter als „Fahrplan“:** Der Regler $t$ kann als Zeit gedeutet werden – $X$ fährt mit konstanter Geschwindigkeit $\vec u$ durch den Raum. Das hilft beim Verständnis, warum $t$ negativ sein darf.
 - **Gleiche Ebene, andere Gleichung:** Zwei verschiedene Parameterformen derselben Ebene führen zur gleichen Koordinatenform (bis auf einen Faktor). Das lässt sich mit den Spannvektoren direkt ausprobieren.
 - **Spurdreieck zeichnen:** Mit den drei Spurpunkten lässt sich eine Ebene schnell in ein Schrägbild einzeichnen – die Simulation kann zur Kontrolle dienen.

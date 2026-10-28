@@ -109,7 +109,7 @@ $f(x) = x^3\left(0.1 - \frac{1}{x^2}\right)$: the bracket tends to $0.1$ and $x^
 
 ## Ideas for the classroom
 
-- **Use:** Year 11 (Bavarian Gymnasium), limits at infinity and horizontal asymptotes; how far the ε idea is taken there, please check against the curriculum. The strip is meant as a visual picture, not as a formal definition.
+- **Use:** Upper secondary, limits at infinity and horizontal asymptotes; how far the ε idea is taken depends on the curriculum. The strip is meant as a visual picture, not as a formal definition.
 - **Find the limit:** With “Show the limit and the asymptote” switched off, the asymptote, the strip and the distances are hidden. Students guess the limit from the table and the run, justify it with a rewriting and then check with “Reveal the limit”.
 - **ε-game in pairs:** One person picks an ε, the other predicts $x_\varepsilon$ (for $\frac{2x + 1}{x - 1}$, $x_\varepsilon = 1 + \frac{3}{\varepsilon}$); the simulation checks.
 - **Model:** Where possible $x_\varepsilon$ is calculated exactly, otherwise numerically ($\frac{\sin x}{x}$, $x \cdot 2^{-x}$). It is always the position from which the condition holds for all further $x$. Exact values are shown with “=”, rounded ones with “≈” (e.g. $x_\varepsilon \approx 8.42$ for $\frac{\sin x}{x}$).

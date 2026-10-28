@@ -26,7 +26,7 @@ Bei **Zehnerpotenzen** ist das Ergebnis besonders leicht: $10^n$ ist eine $1$ mi
 
 Daraus folgen die Umrechnungen $1\,\text{km} = 10^3\,\text{m}$ und $1\,\text{m} = 10^3\,\text{mm}$.
 
-**Wissenschaftliche Schreibweise** (Vertiefung bzw. Jahrgangsstufe 6): Große Zahlen schreibt man als $a \cdot 10^n$ mit $1 \le a < 10$, zum Beispiel $35\,000 = 3{,}5 \cdot 10^4$ und $1\,270\,000 = 1{,}27 \cdot 10^6$. Man setzt das Komma hinter die erste Ziffer, die nicht $0$ ist, und zählt, um wie viele Stellen es nach links gewandert ist.
+**Wissenschaftliche Schreibweise** (Vertiefung bzw. Klasse 6): Große Zahlen schreibt man als $a \cdot 10^n$ mit $1 \le a < 10$, zum Beispiel $35\,000 = 3{,}5 \cdot 10^4$ und $1\,270\,000 = 1{,}27 \cdot 10^6$. Man setzt das Komma hinter die erste Ziffer, die nicht $0$ ist, und zählt, um wie viele Stellen es nach links gewandert ist.
 
 *Ausblick:* Für Zahlen kleiner als $1$ wandert das Komma nach rechts, die Hochzahl wird negativ: $10^{-1} = 0{,}1$, $10^{-3} = 0{,}001$ und $0{,}0042 = 4{,}2 \cdot 10^{-3}$. Negative Hochzahlen kommen in der Simulation bei sehr kleinen Längen vor. In der 5. Klasse sind sie ein Ausblick, in der 6. Klasse lernst du sie genauer kennen.
 
@@ -109,7 +109,7 @@ Das Komma wandert 3 Stellen nach rechts, die Hochzahl ist negativ: $0{,}0042 = 4
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5 (Potenzen und Zehnerpotenzen bei großen Zahlen), Jahrgangsstufe 6 als Wiederholung und für die wissenschaftliche Schreibweise sowie für negative Hochzahlen wie $10^{-3} = 0{,}001$ (LehrplanPLUS Bayern, Gymnasium – bitte am Lehrplan prüfen). Die Reise eignet sich als Einstieg am Beamer, die Würfelbauten für das Verständnis von „Hochzahl + 1 heißt mal Grundzahl“.
+- **Einsatz:** Klasse 5 (Potenzen und Zehnerpotenzen bei großen Zahlen), Klasse 6 als Wiederholung und für die wissenschaftliche Schreibweise sowie für negative Hochzahlen wie $10^{-3} = 0{,}001$ (je nach Lehrplan auch später). Die Reise eignet sich als Einstieg am Beamer, die Würfelbauten für das Verständnis von „Hochzahl + 1 heißt mal Grundzahl“.
 - **Schätzen:** Bei ausgeschalteten Ergebnissen schätzen die Schülerinnen und Schüler die Größen mithilfe der Kästchen und vergleichen danach.
 - **Modell:** Die Objekte sind maßstäblich gezeichnet, nur Flugzeug und Raumstation sind als Symbole vergrößert. Die Größen sind typische, gerundete Werte.
 - **Häufige Stolpersteine:**

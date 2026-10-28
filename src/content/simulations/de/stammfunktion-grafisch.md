@@ -107,7 +107,7 @@ Falsch. Ein Hochpunkt von $f$ bedeutet: Die Steigung von $F$ ist dort am größt
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12 (Stammfunktion, grafisches Aufleiten, Integrationskonstante) im LehrplanPLUS Gymnasium Bayern; Anfangswertprobleme als Ausblick auf Differentialgleichungen – bitte am Lehrplan prüfen. Die Ansichten lassen sich als Abfolge nutzen: Steigung übertragen → Richtungsfeld → Merkmale → Flächenstücke → umgekehrt → eigene Skizze.
+- **Einsatz:** Oberstufe (Stammfunktion, grafisches Aufleiten, Integrationskonstante); Anfangswertprobleme als Ausblick auf Differentialgleichungen. Die Ansichten lassen sich als Abfolge nutzen: Steigung übertragen → Richtungsfeld → Merkmale → Flächenstücke → umgekehrt → eigene Skizze.
 - **Aufgabenmodus:** In „Aufgabe: F skizzieren“ zeigt die Karte zunächst nur Hinweise (Anfangspunkt getroffen? Anzahl der Extremstellen?). Erst „Lösung aufdecken“ zeigt die richtige Kurve, die Abweichung und für jeden Abschnitt, ob die Steigung passt. Gut für Partnerarbeit: Eine Person skizziert, die andere begründet.
 - **Gegenstück:** Zusammen mit „Ableitungsfunktion grafisch“ und „Integralfunktion und Hauptsatz“ einsetzen – dieselben Zusammenhänge in umgekehrter Richtung bzw. mit der Fläche als Integral.
 - **Alltagsbezug:** Die acht Beispiele deuten Hochpunkte (meiste Wassermenge, höchster Kontostand, größte Höhe) und Wendepunkte (stärkste Zunahme) im Sachzusammenhang, mit Einheiten (m³/h · h = m³).

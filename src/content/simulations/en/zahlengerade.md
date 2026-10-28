@@ -107,7 +107,7 @@ $7$ and $-7$ have the absolute value $7$. The integers $-2, -1, 0, 1$ and $2$ ha
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria grade 5, learning areas 1.1 (negative numbers, ordering, opposite and absolute value on the number line) and 1.2 (adding and subtracting integers, strategies with credit and debt).
+- **Use:** About grades 5/6 (negative numbers, ordering, opposite and absolute value on the number line; adding and subtracting integers, strategies with credit and debt).
 - **Models:** The simulation links the arrow model with the walking model. For subtraction the arrow of the second number is drawn dashed and flips to the opposite direction when the frog turns around – this makes the rule “subtracting means adding the opposite” visible. Operation signs and signs of numbers have different colours and roles.
 - **Controls:** Drag the blue start point and the arrow tip; press **Go!** to show the steps. If “Show the result right away” is switched off (`show=0`), the result and the arrow only appear after **Go!**; the visible part of the number line then does not give away the direction.
 - **Real-life contexts:** Thermometer, sea level and bank balance each describe the actual change. The bank account is especially suitable for subtracting negative numbers (“a debt is cancelled”).

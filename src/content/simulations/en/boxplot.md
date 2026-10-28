@@ -104,7 +104,7 @@ The middle value must be $10$, the sum $5 \cdot 20 = 100$. For example $5, 8, 10
 
 ## Ideas for the classroom
 
-- **Use:** Year 7, learning area “statistics of data” (LehrplanPLUS Bavaria, Gymnasium): comparing mean and median, range and quartiles, drawing and interpreting box plots. Dragging a single point may be a good way in; “Step by step” can accompany the construction on the board.
+- **Use:** About grade 7, statistics of data: comparing mean and median, range and quartiles, drawing and interpreting box plots. Dragging a single point may be a good way in; “Step by step” can accompany the construction on the board.
 - **Own data:** The class could collect its own data (way to school, hours of sleep, long jump) and type it into the “Values” field. Comparison mode shows two surveys side by side.
 - **Quartiles:** The simulation takes the quartiles as medians of the two halves (with an odd count the median is left out). Another common convention takes as $Q_1$ the smallest value up to which at least a quarter of the values reach (for $1, \ldots, 9$ that is $3$ instead of $2.5$). If your textbook uses another convention, a short note can avoid confusion.
 - **Outliers with few values:** For $1, 2, 3, 4, 100$ the box is very wide ($Q_1 = 1.5$, $Q_3 = 52$). So the $1.5$ rule does not mark the $100$ as an outlier – but it still shifts the mean a lot. [Try it](?ctx=own&d=1%3B2%3B3%3B4%3B100&out=1)

@@ -115,7 +115,7 @@ b) Horizontal asymptote $y = 3$ (because $d = 3$). Zero: $2^{x - 1} = 3 \Rightar
 
 ## Ideas for the classroom
 
-- **Use:** Year 11 (Jahrgangsstufe 11), learning area “Special properties of functions” (LehrplanPLUS Gymnasium Bavaria): shifting, stretching and reflecting graphs, applied to familiar types of functions. Please check the curriculum for the exact list of basic functions.
+- **Use:** Upper secondary, special properties of functions: shifting, stretching and reflecting graphs, applied to familiar types of functions. Please check the curriculum for the exact list of basic functions.
 - **Steps on the board:** The timeline can be paused after each step. The class can first predict where the graph will move next and then check the prediction.
 - **Guess the term:** With “Show the term and the effects” switched off, only the graph is shown and the sliders for $a$, $b$, $c$ and $d$ are hidden; “New task” rolls new values that can be read off uniquely, “Reveal the term” shows the answer and plays the steps. This works well in pairs.
 - **Same logic, different functions:** The same four steps work in the same way for parabola, square root, hyperbola, sine and exponential function. It may be worth setting one transformation and only changing the basic function.

@@ -122,7 +122,7 @@ Find the solution set: (a) $3x + 5 = 3x + 2$, (b) $2x + 2 = 2(x + 1)$.
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, Gymnasium year 7, learning area 3 (linear equations: setting up equations and solving them by equivalent transformations) – as a visual introduction before equations with negative numbers are solved purely by calculation.
+- **Use:** About grade 7 (linear equations: setting up equations and solving them by equivalent transformations) – as a visual introduction before equations with negative numbers are solved purely by calculation.
 - **How it works:** A tap removes an object **on one side only** – the balance tips and the transformation is marked red. Only when the same is removed on the other side does a valid line appear (consecutive steps of the same kind are combined as in an exercise book, e.g. $\mid -2$). The buttons transform both sides; "Both sides : n" suggests a suitable divisor and visibly splits the pans into equal groups.
 - **Shared links** contain the original equation. "New equation" creates tasks with a natural-number solution from 1 to 6.
 - **Limits of the model** (discuss them deliberately): no negative numbers and no differences such as $3x - 2$, positive solutions only, dividing only when it works out (for $2x = 5$ the simulation gives $x = 2.5$ as the calculated solution). Adding to and multiplying both sides are not offered here, because they are not needed to solve such equations. Mention them anyway: if you put the same on both pans, the balance also stays level.

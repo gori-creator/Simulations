@@ -119,7 +119,7 @@ $17^2 = 289$, aber $2 \cdot 12^2 = 288$; $99^2 = 9801$, aber $2 \cdot 70^2 = 980
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 9, Lernbereich „Quadratwurzeln“ im LehrplanPLUS Gymnasium Bayern (Wurzelbegriff, Näherungsverfahren, irrationale und reelle Zahlen, Rechnen mit Wurzeln) – die genaue Zuordnung bitte am Lehrplan prüfen. Die vier Ansichten passen gut als Einstieg (Kästchen), Erarbeitung (Heron, Intervalle) und Vertiefung (Beweis).
+- **Einsatz:** Etwa Klasse 9, Quadratwurzeln (Wurzelbegriff, Näherungsverfahren, irrationale und reelle Zahlen, Rechnen mit Wurzeln). Die vier Ansichten passen gut als Einstieg (Kästchen), Erarbeitung (Heron, Intervalle) und Vertiefung (Beweis).
 - **Ohne Formel beginnen:** Das umgelegte Rechteck macht das Heron-Verfahren anschaulich, bevor die Formel steht. Vielleicht lohnt es sich, die Lernenden zuerst selbst vorschlagen zu lassen, wie man ein Rechteck „quadratischer“ machen könnte.
 - **Wettrechnen:** Wer schafft zuerst sechs richtige Stellen – mit Heron oder mit der Intervallschachtelung?
 - **Für Aufgaben:** Mit „Werte zeigen“ aus (`show=0`) erscheinen $\sqrt{a}$ und die Näherungen im Bild als „?“.

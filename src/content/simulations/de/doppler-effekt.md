@@ -118,7 +118,7 @@ $\sin\alpha = \frac{1}{2}$, also $\alpha = 30^\circ$. Der Kegel erreicht dich, w
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Zur Wellenlehre (Schall als Welle, $c = \lambda \cdot f$) in Jahrgangsstufe 10 oder in der Oberstufe, je nach Lehrplanstand. Als Einstieg eignet sich die Alltagserfahrung mit dem Martinshorn, gern zuerst mit Ton und ohne Zahlen (`val=0`), dann die Erklärung über die gestauchten Wellenfronten.
+- **Einsatz:** Zur Wellenlehre (Schall als Welle, $c = \lambda \cdot f$) in der Mittelstufe oder in der Oberstufe, je nach Lehrplan. Als Einstieg eignet sich die Alltagserfahrung mit dem Martinshorn, gern zuerst mit Ton und ohne Zahlen (`val=0`), dann die Erklärung über die gestauchten Wellenfronten.
 - **Modell:** Die Luft ruht, die Quelle fährt gleichförmig geradeaus und sendet von Anfang an. Für jeden Zeitpunkt wird exakt berechnet, wann der gerade ankommende Schall ausgesandt wurde ($|B(t) - S(\tau)| = c \cdot (t - \tau)$); daraus folgen Frequenz, Lautstärke und die Radialkomponenten. Die Wellenfronten sind in der Draufsicht Kreise; gezeichnet wird nur jede $n$-te. Fahrzeug und Person sind zur besseren Sichtbarkeit größer als maßstäblich gezeichnet.
 - **Ton:** Der Ton ist standardmäßig aus und startet nur auf Knopfdruck, leise. In Zeitlupe bleibt die Tonhöhe die physikalisch richtige, nur der Ablauf ist langsamer. Bei Überschall sind nach dem Knall zwei Töne gleichzeitig zu hören; der früher ausgesandte kommt zeitlich rückwärts an (gestrichelt im Diagramm) – eine schöne Zusatzfrage für Interessierte.
 - **Häufige Stolpersteine:**

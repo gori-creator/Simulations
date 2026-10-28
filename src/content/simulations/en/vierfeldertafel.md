@@ -134,7 +134,7 @@ $P(A \cap B) = 0.4 \cdot 0.6 = 0.24$ and $P(B) = 0.6$, so $P(A) \cdot P(B) = 0.2
 
 ## Ideas for the classroom
 
-- **Use:** Year 9 (two-way table, Venn diagram, addition rule) and Year 11 (conditional probability, reversed tree) following the Bavarian LehrplanPLUS, Gymnasium – please check the exact assignment against the curriculum.
+- **Use:** Lower secondary (two-way table, Venn diagram, addition rule) and upper secondary (conditional probability, reversed tree).
 - **Your own survey:** two yes/no questions in class quickly give your own two-way table, which you can enter with the sliders.
 - **Switching representations:** the synchronised highlighting can help students find each number of one representation in the others.
 - **Common stumbling blocks:**

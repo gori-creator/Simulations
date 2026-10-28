@@ -116,7 +116,7 @@ For example $f(x) = \frac{2x^2}{(x-1)^2}$: double denominator factor → no sign
 
 ## Ideas for the classroom
 
-- **Use:** in the Bavarian curriculum (LehrplanPLUS Gymnasium) in grade 11 (rational functions – limits and asymptotes) and grade 12 (investigating rational functions). Whether approximating curves (numerator degree greater than denominator degree + 1) are required there, please check the curriculum.
+- **Use:** in upper secondary (rational functions – limits and asymptotes, later investigating rational functions). Whether approximating curves (numerator degree greater than denominator degree + 1) are required there, please check the curriculum.
 - **Discovery:** students drag a numerator bead into a pole ring and describe what happens to the term and the graph – the idea of a removable gap can grow out of this.
 - **Profiles:** with “Show the properties” off, the profile, poles, gaps, asymptotes, the cancelled term and the table of values stay hidden; the graph remains visible as a check. After working it out, “Reveal the properties” shows everything. Task 7 works well in pairs: one person gives properties, the other builds a matching function.
 - **Signs without calculation:** the sign can only change at zeros and poles, and only for odd multiplicity. The sign strip and the sign chart make this visible.

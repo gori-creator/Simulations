@@ -96,7 +96,7 @@ $S = \tfrac13 (3 \mid 3 \mid 3) = (1 \mid 1 \mid 1)$; $M_a(0 \mid 1{,}5 \mid 1{,
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium).
+- **Einsatz:** Oberstufe, Grundlagen der Koordinatengeometrie im Raum.
 - **Zufallsweg als Experiment:** Erst schätzen lassen, wie weit man nach $100$ Schritten kommt, dann simulieren; das sortierte Bild zeigt das Kommutativgesetz.
 - **Häufige Stolpersteine:**
   - Beim Verbindungsvektor wird „Fuß minus Spitze“ gerechnet.

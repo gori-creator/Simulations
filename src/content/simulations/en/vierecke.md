@@ -10,7 +10,7 @@ $$
 \alpha + \beta + \gamma + \delta = 360^\circ
 $$
 
-Some quadrilaterals have special properties and their own name. Here – as in Bavarian schools – they are defined by their **symmetry** or by their sides and angles:
+Some quadrilaterals have special properties and their own name. Here – as in many textbooks – they are defined by their **symmetry** or by their sides and angles:
 
 | Type | Definition | Symmetry |
 | --- | --- | --- |
@@ -95,7 +95,7 @@ In a rectangle $a$ and $c$ are parallel, so it is a trapezium. In addition, the 
 
 ## Ideas for the classroom
 
-- **Use:** grade 5, learning area 2 (recognising and describing special quadrilaterals) and grade 7, learning area 2.1 (quadrilaterals with line and point symmetry, ordering them in the house of quadrilaterals) in the Bavarian LehrplanPLUS for Gymnasium. Suitable for introducing the topic on the whiteboard, for pair work (one builds, the other classifies) and for practice in the two task modes.
+- **Use:** about grade 5 (recognising and describing special quadrilaterals) and grade 7 (quadrilaterals with line and point symmetry, ordering them in the house of quadrilaterals). Suitable for introducing the topic on the whiteboard, for pair work (one builds, the other classifies) and for practice in the two task modes.
 - **Definitions:** The simulation uses the inclusive, symmetry-based definitions (a square is also a rectangle, a parallelogram is also a trapezium). An isosceles trapezium is an axially symmetric trapezium here, so slanted parallelograms do not belong to it. Non-convex kites (“arrowheads”) count as kites because they are symmetric about a diagonal – some textbooks only consider convex ones. Please check against the textbook you use.
 - **Model:** The corners lie on grid points, so parallel, perpendicular, equal and symmetric are detected exactly (without rounding). Crossed quadrilaterals and quadrilaterals with three corners on one line cannot be dragged. If you enter them in the number fields, a notice appears instead of a classification.
 - **Controls:** Drag corners, grab the inside to move the shape, tap the boxes in the house for the definition and “what is missing?”. Switching off “Show the classification in the house” turns exploring into a puzzle.

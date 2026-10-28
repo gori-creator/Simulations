@@ -115,7 +115,7 @@ b) Der längeren Seite liegt der größere Winkel gegenüber. Aus $a \geq c$ fol
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 10, Lernbereich zu Sinus- und Kosinussatz und Sinus/Kosinus am Einheitskreis (LehrplanPLUS Gymnasium Bayern; die genaue Zuordnung bitte am Lehrplan prüfen). Vorwissen: $\sin(180° - \alpha) = \sin \alpha$ und $\cos(180° - \alpha) = -\cos \alpha$.
+- **Einsatz:** Etwa Klasse 10, Sinus- und Kosinussatz und Sinus/Kosinus am Einheitskreis. Vorwissen: $\sin(180° - \alpha) = \sin \alpha$ und $\cos(180° - \alpha) = -\cos \alpha$.
 - **Entdecken vor Beweisen:** Zuerst nur die Balken beobachten lassen („Was bleibt beim Ziehen gleich?“), dann „Beweis abspielen“ gemeinsam kommentieren. Ebenso die γ-Fahrt beim Kosinussatz: Wann wird abgezogen, wann dazugezählt?
 - **Entscheidungstraining:** Kärtchen mit gegebenen Stücken (SSS, SWS, WSW, SSW) sortieren lassen; danach im Löser mit „Ergebnisse zeigen“ aus (`show=0`) selbst rechnen. Die Fälle entsprechen den Kongruenzsätzen der 7. Klasse; beim Fall SSW zeigt die Kreiskonstruktion, warum es zwei Schnittpunkte geben kann.
 - **Häufige Stolpersteine:**

@@ -116,7 +116,7 @@ Zum Beispiel $f(x) = \frac{2x^2}{(x-1)^2}$: Nennerfaktor doppelt → ohne VZW; g
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** LehrplanPLUS Gymnasium Bayern, Jahrgangsstufe 11, Lernbereich 2 (gebrochen-rationale Funktionen – Grenzwerte und Asymptoten) und Jahrgangsstufe 12, Lernbereich 4.1 (Untersuchung gebrochen-rationaler Funktionen). Ob Näherungskurven (Zählergrad größer als Nennergrad + 1) dort verbindlich sind, bitte am Lehrplan prüfen.
+- **Einsatz:** Oberstufe: gebrochen-rationale Funktionen – Grenzwerte und Asymptoten, später die Untersuchung gebrochen-rationaler Funktionen. Ob Näherungskurven (Zählergrad größer als Nennergrad + 1) dort verbindlich sind, bitte am Lehrplan prüfen.
 - **Entdeckend:** Die Lernenden ziehen eine Zähler-Perle in einen Pol-Ring und beschreiben, was mit Term und Graph passiert – daraus kann der Begriff der behebbaren Lücke entstehen.
 - **Steckbriefe:** Mit „Eigenschaften zeigen“ aus bleiben Steckbrief, Polstellen, Lücken, Asymptoten, gekürzter Term und Wertetabelle verdeckt; der Graph bleibt als Kontrolle sichtbar. Nach dem Rechnen deckt „Eigenschaften aufdecken“ alles auf. Aufgabe 7 eignet sich als Partnerarbeit: Eine Person gibt Eigenschaften vor, die andere baut die Funktion nach.
 - **Vorzeichen ohne Rechnung:** Das Vorzeichen kann nur an Nullstellen und Polstellen wechseln, und nur bei ungerader Vielfachheit. Vorzeichenstreifen und Vorzeichentabelle machen das sichtbar.

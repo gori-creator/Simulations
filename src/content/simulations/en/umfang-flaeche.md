@@ -107,7 +107,7 @@ Perimeter: $8 + 2 + 3 + 4 + 5 + 6 = 28$, so $P = 28\,\text{cm} = 2 \cdot (8\,\te
 
 ## Ideas for the classroom
 
-- **Use:** Year 5, learning area "Quantities and their units", section on area (LehrplanPLUS Bavaria, Gymnasium). Suitable for introducing the topic (tiling, the ant), for practice (task links with `show=0&_hide=1`) and for going further (comparisons, L-shape).
+- **Use:** Grade 5, quantities and their units, section on area. Suitable for introducing the topic (tiling, the ant), for practice (task links with `show=0&_hide=1`) and for going further (comparisons, L-shape).
 - **Model:** side lengths are whole centimetres ($a \le 10$, $b \le 6$). The squared paper shows whole centimetres in bold and half centimetres in fine lines – as in German exercise books, where one small square is $5\,\text{mm}$ wide. There, one square centimetre consists of **four** small squares. On screen, "1 cm" is of course not really 1 cm long.
 - **Representations:** length $a$ (horizontal) and width $b$ (vertical) have the same colour in the picture, in the formulas and in the string. The string falls into two pieces of length $a + b$ and so justifies $P = 2 \cdot (a + b)$. In German, the perimeter is written $U$ (for *Umfang*).
 - **Common stumbling blocks:**

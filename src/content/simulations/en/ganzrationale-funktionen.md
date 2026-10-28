@@ -118,7 +118,7 @@ a) False: at most four. $f(x) = 0.5 \cdot (x - 1)^4$ has only the zero $1$ (four
 
 ## Ideas for the classroom
 
-- **Use:** Year 10, learning area “polynomial functions” in the Bavarian LehrplanPLUS for Gymnasium (zeros with multiplicity, end behaviour); in year 11 as revision before curve sketching. Please check against the curriculum and your textbook whether sign charts with one row per factor are common there.
+- **Use:** About grade 10, polynomial functions (zeros with multiplicity, end behaviour); in upper secondary as revision before curve sketching. Please check against the curriculum and your textbook whether sign charts with one row per factor are common there.
 - **Guess the term:** With “Show the term and properties” switched off, only the graph appears. Pairs can set up graphs for each other and find the term; “Reveal the term” resolves it.
 - **From the magnifier to the far view:** The magnifier shows why the graph crosses or touches at a zero (it behaves like a power $c \cdot (x - x_0)^m$ there), the view from far away shows why only $a x^n$ decides the end behaviour. Both work well discussed one after the other.
 - **Model:** Zeros at half units between $-4$ and $4$, multiplicities up to 4. Only functions that split completely into linear factors are shown; functions such as $x^2 + 1$ do not occur.

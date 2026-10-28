@@ -101,7 +101,7 @@ $a + c = 5$ and $\frac{a}{4} + c = 2$. Subtracting gives $\frac{3}{4}a = 3$, so 
 
 ## Ideas for the classroom
 
-- **Use:** Grade 8, learning area “elementary rational functions” (LehrplanPLUS Bavaria, Gymnasium): start with inverse proportion (rectangles of equal area), then the effect of the parameters, domain and range, asymptotes. The form $\frac{a}{x - b} + c$ corresponds to the vertex form of a parabola – the animation “First stretch, then shift” builds on this.
+- **Use:** About grade 8, elementary rational functions: start with inverse proportion (rectangles of equal area), then the effect of the parameters, domain and range, asymptotes. The form $\frac{a}{x - b} + c$ corresponds to the vertex form of a parabola – the animation “First stretch, then shift” builds on this.
 - **Limits:** approaching the asymptotes is treated only informally with tables of values (“gets arbitrarily close but never reaches it”); $x \to \infty$ is a way of speaking here, not a formal limit.
 - **Common stumbling blocks:**
   - “The graph never crosses the asymptote.” – True for these hyperbolas; in general (later: rational functions) a graph may well cross its horizontal asymptote.

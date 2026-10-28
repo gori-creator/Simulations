@@ -103,7 +103,7 @@ It belongs at the intersection $U$ of the perpendicular bisectors (two are enoug
 
 ## Ideas for the classroom
 
-- **Use:** Year 7, Lernbereich 2.1 “Achsen- und punktsymmetrische Figuren” (LehrplanPLUS Gymnasium Bavaria): basic constructions of the perpendicular bisector and the angle bisector, reasoning via symmetry, loci. Suitable for discovering (finding the locus), for demonstrating the constructions on a projector and for practice. The circumcircle is meant as an outlook here and is deepened when triangles are covered.
+- **Use:** About grade 7, figures with line and point symmetry: basic constructions of the perpendicular bisector and the angle bisector, reasoning via symmetry, loci. Suitable for discovering (finding the locus), for demonstrating the constructions on a projector and for practice. The circumcircle is meant as an outlook here and is deepened when triangles are covered.
 - **Operation:** $P$, the points $A$, $B$, $C$, the vertex $S$, the arms as well as $G$ and $H$ can be dragged. With “Show the locus” switched off, students can discover the line themselves; “Clear the trace” starts again. The construction can be played step by step or all at once.
 - **Model:** squared paper with $0.5\,\text{cm}$ per square. For the perpendicular bisector, $P$ jumps to grid points and snaps onto $m$ when it is close; for the angle bisector, $P$ moves freely inside the angle and snaps onto $w$. Rounded lengths are shown with “≈”. The angle $\alpha$ can be set between $20°$ and $180°$. If you set $A$ and $B$ to the same point with the sliders, the point moved last moves one square further, because there is no perpendicular bisector without a segment.
 - **Common stumbling blocks:**

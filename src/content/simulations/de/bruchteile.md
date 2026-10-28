@@ -107,7 +107,7 @@ $\frac{0}{4} = 0$: kein Stück genommen. [0/4](?z=0&n=4) $\frac{4}{4} = 1$: alle
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
+- **Einsatz:** Etwa Klasse 6 (Brüche und Bruchteile, Erweitern und Kürzen, Dezimalbrüche).
 - **Bedienung:** Stücke können direkt angetippt werden – gut am Smartboard. Die ausgewählten Stücke werden herausgezogen.
 - **Häufige Stolpersteine:**
   - Teile müssen **gleich groß** sein – sonst ist es kein Bruchteil.

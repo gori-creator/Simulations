@@ -123,7 +123,7 @@ b) By Pythagoras, $a^2 + b^2 = c^2$. Dividing by $c^2$ gives $\left(\frac{a}{c}\
 
 ## Ideas for the classroom
 
-- **Use:** Year 9, trigonometry in the right triangle (LehrplanPLUS Gymnasium Bavaria); the unit circle leads on to the sine and cosine functions in year 10 – please check the exact placement in the curriculum.
+- **Use:** About grade 9, trigonometry in the right triangle; the unit circle leads on to the sine and cosine functions.
 - **Discover before naming:** The animation “Grow similar triangles” can come before the definition: what stays the same when the triangle grows? Afterwards students could measure triangles with $\alpha = 35°$ that they have drawn themselves.
 - **Exercise mode:** With “Show results” off (`show=0`) the unknowns appear as “?” in the picture. This turns every topic into an exercise.
 - **Calculator:** Check degree mode (DEG); the inverse keys $\sin^{-1}$, $\cos^{-1}$, $\tan^{-1}$ give the angle.
