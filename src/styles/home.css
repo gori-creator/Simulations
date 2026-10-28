@@ -236,10 +236,15 @@
   max-width: none;
 }
 
+/* Ersatzgrafik nur ohne JavaScript oder ohne WebGL – nicht während des Ladens
+   (sonst blitzt sie kurz vor der echten Skulptur auf). `data-js` setzt das
+   Inline-Skript im Layout vor dem ersten Zeichnen. */
+:root:not([data-js]) .sculpture-fallback,
 .sculpture.webgl-unavailable .sculpture-fallback {
   display: block;
 }
 
+:root:not([data-js]) .sculpture canvas,
 .sculpture.webgl-unavailable canvas {
   visibility: hidden;
 }
