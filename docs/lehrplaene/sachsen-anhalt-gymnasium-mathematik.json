@@ -1,0 +1,1076 @@
+{
+  "id": "sachsen-anhalt-gymnasium-mathematik",
+  "subject": "mathematik",
+  "slug": {
+    "de": "sachsen-anhalt-gymnasium",
+    "en": "saxony-anhalt-gymnasium"
+  },
+  "state": {
+    "de": "Sachsen-Anhalt",
+    "en": "Saxony-Anhalt"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Fachlehrplan",
+  "grades": [
+    {
+      "grade": 5,
+      "sourceUrl": "https://www.lisa.sachsen-anhalt.de/",
+      "note": {
+        "de": "Schuljahrgänge 5/6: Der Fachlehrplan beschreibt beide Jahrgänge gemeinsam; die Lernbereiche stehen deshalb bei 5 und 6 gleich, und beide werden als eine Stufe gezeigt. Lernbereiche sind die Inhaltsbereiche mit ihren Kompetenzschwerpunkten; der Lehrplan nummeriert sie nicht, die Nummern sind von uns vergeben.",
+        "en": "Grades 5/6: the curriculum describes both grades together, so the units are the same for grades 5 and 6, and both are shown as one stage. Units are the content areas with their focal points; the curriculum does not number them, the numbers are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Zahlen und Größen",
+            "en": "Numbers and quantities"
+          },
+          "summary": {
+            "de": "Natürliche Zahlen und Teilbarkeit, erste Gleichungen, Brüche und Dezimalbrüche, Größen mit ihren Einheiten sowie das Rechnen mit gebrochenen Zahlen.",
+            "en": "Natural numbers and divisibility, first equations, fractions and decimals, quantities with their units, and calculating with non-negative rational numbers."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Natürliche Zahlen",
+                "en": "Natural numbers"
+              },
+              "summary": {
+                "de": "Große Zahlen lesen, ordnen und runden, im Kopf und schriftlich rechnen, Potenzen bilden, Teiler und Primfaktoren bestimmen; erste negative Zahlen an der Zahlengeraden.",
+                "en": "Reading, ordering and rounding large numbers, mental and written arithmetic, powers, divisors and prime factors; first negative numbers on the number line."
+              },
+              "simulations": [
+                "stellenwerte",
+                "zehnerpotenzen",
+                "primfaktoren",
+                "termbaum",
+                "zahlengerade"
+              ]
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Gleichungen und Ungleichungen",
+                "en": "Equations and inequalities"
+              },
+              "summary": {
+                "de": "Begriffe Variable, Gleichung und Lösung; einfache Gleichungen und Ungleichungen durch Überlegen oder mit Umkehroperationen lösen und die Probe machen.",
+                "en": "The terms variable, equation and solution; solving simple equations and inequalities by reasoning or with inverse operations, and checking the result."
+              }
+            },
+            {
+              "code": "1.3",
+              "title": {
+                "de": "Brüche",
+                "en": "Fractions"
+              },
+              "summary": {
+                "de": "Brüche als Teile eines Ganzen darstellen, erweitern und kürzen, gleichnamige Brüche vergleichen und addieren, Dezimalbrüche in der Stellenwerttafel.",
+                "en": "Showing fractions as parts of a whole, expanding and simplifying them, comparing and adding like fractions, decimals in the place-value chart."
+              },
+              "simulations": [
+                "bruchteile",
+                "brueche-vergleichen"
+              ]
+            },
+            {
+              "code": "1.4",
+              "title": {
+                "de": "Größen",
+                "en": "Quantities"
+              },
+              "summary": {
+                "de": "Längen, Flächen, Volumen, Massen, Zeit und Geld messen, schätzen und in andere Einheiten umrechnen; Maßstab.",
+                "en": "Measuring and estimating length, area, volume, mass, time and money and converting between units; scale."
+              },
+              "simulations": [
+                "einheiten",
+                "massstab"
+              ]
+            },
+            {
+              "code": "1.5",
+              "title": {
+                "de": "Gebrochene Zahlen",
+                "en": "Non-negative rational numbers"
+              },
+              "summary": {
+                "de": "Mit gemeinen Brüchen und Dezimalbrüchen in allen Grundrechenarten rechnen, beide Schreibweisen umwandeln und periodische Dezimalbrüche kennenlernen; Zahlenbereiche vergleichen.",
+                "en": "All four operations with fractions and decimals, converting between both notations and meeting recurring decimals; comparing number sets."
+              },
+              "simulations": [
+                "zahlengerade",
+                "brueche-rechnen",
+                "dezimalbrueche"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Raum und Form",
+            "en": "Space and shape"
+          },
+          "summary": {
+            "de": "Grundbegriffe der Geometrie und Abbildungen, Winkel an Geraden, Umfang, Flächeninhalt und Volumen sowie Dreiecke und Vierecke.",
+            "en": "Basic geometric concepts and transformations, angles at lines, perimeter, area and volume, and triangles and quadrilaterals."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Geometrische Grundbegriffe und Abbildungen",
+                "en": "Basic geometric concepts and transformations"
+              },
+              "summary": {
+                "de": "Punkte, Geraden und Strecken, parallel und senkrecht, Koordinatensystem, Winkel messen und zeichnen; Achsensymmetrie, Spiegelung, Verschiebung und Drehung.",
+                "en": "Points, lines and segments, parallel and perpendicular, coordinate system, measuring and drawing angles; line symmetry, reflection, translation and rotation."
+              },
+              "simulations": [
+                "koordinaten-lage",
+                "winkel-messen",
+                "spiegelung"
+              ]
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Winkelbeziehungen",
+                "en": "Angle relationships"
+              },
+              "summary": {
+                "de": "Neben-, Scheitel-, Stufen- und Wechselwinkel erkennen und damit Winkel berechnen und Aussagen begründen.",
+                "en": "Recognising adjacent, vertical, corresponding and alternate angles and using them to calculate angles and justify statements."
+              },
+              "simulations": [
+                "winkel-geradenkreuzung"
+              ]
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Umfang, Flächeninhalt und Volumen",
+                "en": "Perimeter, area and volume"
+              },
+              "summary": {
+                "de": "Umfang und Flächeninhalt von Rechtecken, Netze und Schrägbilder von Quadern, Oberflächeninhalt und Volumen von Quader und Würfel.",
+                "en": "Perimeter and area of rectangles, nets and oblique drawings of cuboids, surface area and volume of cuboids and cubes."
+              },
+              "simulations": [
+                "umfang-flaeche",
+                "koerpernetze",
+                "quader-volumen"
+              ]
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Dreiecke",
+                "en": "Triangles"
+              },
+              "summary": {
+                "de": "Dreiecksarten, Innenwinkelsatz, Kongruenzsätze und Dreieckskonstruktionen; Höhen, Winkelhalbierende und Mittelsenkrechte mit Inkreis und Umkreis; Umfang und Flächeninhalt.",
+                "en": "Types of triangle, the angle sum, congruence criteria and constructions; altitudes, angle bisectors and perpendicular bisectors with incircle and circumcircle; perimeter and area."
+              },
+              "simulations": [
+                "winkelsumme",
+                "dreieckskonstruktion",
+                "besondere-linien",
+                "mittelsenkrechte",
+                "flaechen-zerlegen"
+              ]
+            },
+            {
+              "code": "2.5",
+              "title": {
+                "de": "Vierecke",
+                "en": "Quadrilaterals"
+              },
+              "summary": {
+                "de": "Vierecksarten und ihre Beziehungen, Eigenschaften von Seiten, Diagonalen und Winkeln, Vierecke konstruieren, Umfang und Flächeninhalt besonderer Vierecke.",
+                "en": "Types of quadrilateral and how they relate, properties of sides, diagonals and angles, constructing quadrilaterals, perimeter and area of special quadrilaterals."
+              },
+              "simulations": [
+                "vierecke",
+                "flaechen-zerlegen"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Zuordnungen und Funktionen",
+            "en": "Relationships and functions"
+          },
+          "summary": {
+            "de": "Zuordnungen in Alltag und Mathematik beschreiben und direkt oder indirekt proportionale Zusammenhänge erkennen.",
+            "en": "Describing relationships in everyday life and mathematics and recognising direct and inverse proportion."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Zuordnungen, direkte und indirekte Proportionalität",
+                "en": "Relationships, direct and inverse proportion"
+              },
+              "summary": {
+                "de": "Zuordnungen in Tabelle, Diagramm und Pfeilbild darstellen, auf Proportionalität prüfen und mit dem Dreisatz rechnen.",
+                "en": "Showing relationships in tables, graphs and arrow diagrams, testing them for proportionality and using the rule of three."
+              },
+              "simulations": [
+                "proportional"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Daten und Zufall",
+            "en": "Data and chance"
+          },
+          "summary": {
+            "de": "Daten erheben, übersichtlich darstellen und mit Kenngrößen wie dem Mittelwert auswerten.",
+            "en": "Collecting data, presenting it clearly and analysing it with measures such as the mean."
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Erfassen, Darstellen und Auswerten von Daten",
+                "en": "Collecting, displaying and analysing data"
+              },
+              "summary": {
+                "de": "Erhebungen planen, Daten in Strichlisten und Häufigkeitstabellen erfassen und als Säulen- oder Balkendiagramm darstellen und lesen.",
+                "en": "Planning surveys, recording data in tally charts and frequency tables, and drawing and reading bar charts."
+              },
+              "simulations": [
+                "diagramme"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Kenngrößen von Daten",
+                "en": "Statistical measures"
+              },
+              "summary": {
+                "de": "Arithmetisches Mittel berechnen und deuten, dazu Modalwert, Median und Spannweite.",
+                "en": "Calculating and interpreting the mean, together with mode, median and range."
+              },
+              "simulations": [
+                "boxplot"
+              ]
+            }
+          ]
+        }
+      ],
+      "toGrade": 6
+    },
+    {
+      "grade": 7,
+      "sourceUrl": "https://www.lisa.sachsen-anhalt.de/",
+      "note": {
+        "de": "Schuljahrgänge 7/8: Der Fachlehrplan beschreibt beide Jahrgänge gemeinsam; die Lernbereiche stehen deshalb bei 7 und 8 gleich, und beide werden als eine Stufe gezeigt. Lernbereiche sind die Inhaltsbereiche mit ihren Kompetenzschwerpunkten; der Lehrplan nummeriert sie nicht, die Nummern sind von uns vergeben.",
+        "en": "Grades 7/8: the curriculum describes both grades together, so the units are the same for grades 7 and 8, and both are shown as one stage. Units are the content areas with their focal points; the curriculum does not number them, the numbers are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Zahlen und Größen",
+            "en": "Numbers and quantities"
+          },
+          "summary": {
+            "de": "Prozent- und Zinsrechnung, rationale Zahlen und Quadratwurzeln, Gleichungen mit Äquivalenzumformungen und das Umformen von Termen.",
+            "en": "Percentages and interest, rational numbers and square roots, equations solved by equivalent transformations, and rearranging terms."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Prozentrechnung",
+                "en": "Percentages"
+              },
+              "summary": {
+                "de": "Grundwert, Prozentwert und Prozentsatz bestimmen, auch bei Rabatt, Zinsen und Zinseszins; Prozente im Kreisdiagramm.",
+                "en": "Finding base value, percentage value and rate, including discounts, interest and compound interest; percentages in pie charts."
+              },
+              "simulations": [
+                "prozentstreifen"
+              ]
+            },
+            {
+              "code": "1.2",
+              "title": {
+                "de": "Rationale Zahlen und Wurzeln",
+                "en": "Rational numbers and roots"
+              },
+              "summary": {
+                "de": "Mit positiven und negativen Zahlen rechnen, Zahlenbereiche unterscheiden, Wurzeln ziehen und erkennen, dass √2 nicht rational ist.",
+                "en": "Calculating with positive and negative numbers, distinguishing number sets, taking roots and seeing that √2 is not rational."
+              },
+              "simulations": [
+                "zahlengerade",
+                "quadratwurzel"
+              ]
+            },
+            {
+              "code": "1.3",
+              "title": {
+                "de": "Gleichungen und Ungleichungen",
+                "en": "Equations and inequalities"
+              },
+              "summary": {
+                "de": "Lineare Gleichungen, Verhältnisgleichungen und Ungleichungen mit Äquivalenzumformungen lösen, Formeln umstellen und Sachaufgaben damit lösen.",
+                "en": "Solving linear equations, proportions and inequalities by equivalent transformations, rearranging formulas and applying them to word problems."
+              },
+              "simulations": [
+                "waagemodell"
+              ]
+            },
+            {
+              "code": "1.4",
+              "title": {
+                "de": "Arbeiten mit Variablen",
+                "en": "Working with variables"
+              },
+              "summary": {
+                "de": "Termstrukturen erkennen, ausmultiplizieren, ausklammern und mit den binomischen Formeln umformen; einfache Beweise mit Variablen.",
+                "en": "Recognising term structure, expanding, factoring and using the binomial formulas; simple proofs with variables."
+              },
+              "simulations": [
+                "termbaum",
+                "binomische-formeln"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Raum und Form",
+            "en": "Space and shape"
+          },
+          "summary": {
+            "de": "Kreise und Winkelsätze am Kreis, Darstellung und Berechnung von Körpern, Ähnlichkeit und die Satzgruppe des Pythagoras.",
+            "en": "Circles and circle angle theorems, drawing and calculating solids, similarity and the Pythagorean group of theorems."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Kreise",
+                "en": "Circles"
+              },
+              "summary": {
+                "de": "Kreis und Gerade, Tangenten, Peripherie- und Zentriwinkelsatz, Satz des Thales; Umfang und Flächeninhalt mit der Kreiszahl π.",
+                "en": "Circles and lines, tangents, inscribed and central angle theorems, Thales’ theorem; circumference and area with π."
+              },
+              "simulations": [
+                "thales",
+                "kreiszahl-pi"
+              ]
+            },
+            {
+              "code": "2.2",
+              "title": {
+                "de": "Körperdarstellung",
+                "en": "Representing solids"
+              },
+              "summary": {
+                "de": "Prismen, Pyramiden, Zylinder und Kegel erkennen, als Netz, Schrägbild und Zweitafelbild darstellen.",
+                "en": "Recognising prisms, pyramids, cylinders and cones and drawing them as nets, oblique drawings and two-view projections."
+              },
+              "simulations": [
+                "koerpernetze"
+              ]
+            },
+            {
+              "code": "2.3",
+              "title": {
+                "de": "Körperberechnung",
+                "en": "Calculating solids"
+              },
+              "summary": {
+                "de": "Oberflächeninhalt und Volumen von Prisma, Zylinder, Pyramide, Kegel und Kugel berechnen, auch bei zusammengesetzten Körpern.",
+                "en": "Calculating surface area and volume of prisms, cylinders, pyramids, cones and spheres, including composite solids."
+              },
+              "simulations": [
+                "prisma-zylinder",
+                "pyramide-kegel-kugel"
+              ]
+            },
+            {
+              "code": "2.4",
+              "title": {
+                "de": "Ähnlichkeit",
+                "en": "Similarity"
+              },
+              "summary": {
+                "de": "Streckenverhältnisse und Maßstab, zentrische Streckung, ähnliche Figuren erkennen und Längen über Ähnlichkeit berechnen.",
+                "en": "Ratios of lengths and scale, enlargement from a centre, recognising similar figures and calculating lengths using similarity."
+              },
+              "simulations": [
+                "strahlensaetze",
+                "vergroessern"
+              ]
+            },
+            {
+              "code": "2.5",
+              "title": {
+                "de": "Satzgruppe des Pythagoras",
+                "en": "Pythagorean group of theorems"
+              },
+              "summary": {
+                "de": "Satz des Pythagoras, Höhensatz und Kathetensatz aufstellen und damit Seiten in rechtwinkligen Dreiecken berechnen.",
+                "en": "Setting up Pythagoras’ theorem, the altitude theorem and Euclid’s leg theorem and using them to find sides of right triangles."
+              },
+              "simulations": [
+                "pythagoras"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Zuordnungen und Funktionen",
+            "en": "Relationships and functions"
+          },
+          "summary": {
+            "de": "Der Funktionsbegriff am Beispiel linearer Funktionen mit ihren Darstellungen und Eigenschaften.",
+            "en": "The concept of a function, using linear functions with their representations and properties."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Lineare Funktionen",
+                "en": "Linear functions"
+              },
+              "summary": {
+                "de": "Funktionsbegriff und Darstellungsformen, Steigung und y-Achsenabschnitt, Nullstellen und Schnittpunkte zweier Geraden rechnerisch und grafisch.",
+                "en": "The concept of a function and its representations, slope and y-intercept, zeros and the intersection of two lines, by calculation and graphically."
+              },
+              "simulations": [
+                "lineare-funktion",
+                "funktion-zuordnung",
+                "lgs-grafisch",
+                "gleichungen-grafisch",
+                "funktionsplotter"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Daten und Zufall",
+            "en": "Data and chance"
+          },
+          "summary": {
+            "de": "Zufallsversuche, Häufigkeiten und Wahrscheinlichkeiten, auch bei mehrstufigen Versuchen mit Baumdiagramm.",
+            "en": "Random experiments, frequencies and probabilities, including multi-stage experiments with tree diagrams."
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Zufällige Ereignisse, Häufigkeiten, Wahrscheinlichkeiten",
+                "en": "Random events, frequencies, probabilities"
+              },
+              "summary": {
+                "de": "Zufallsversuche durchführen und simulieren, relative Häufigkeiten als Schätzwerte nutzen, Ereignisse mit Mengendiagramm und Vierfeldertafel darstellen, Laplace-Wahrscheinlichkeiten berechnen.",
+                "en": "Carrying out and simulating random experiments, using relative frequencies as estimates, showing events in Venn diagrams and two-way tables, calculating Laplace probabilities."
+              },
+              "simulations": [
+                "gesetz-grosse-zahlen",
+                "monte-carlo-pi",
+                "vierfeldertafel"
+              ]
+            },
+            {
+              "code": "4.2",
+              "title": {
+                "de": "Mehrstufige Zufallsversuche und Wahrscheinlichkeiten",
+                "en": "Multi-stage random experiments and probabilities"
+              },
+              "summary": {
+                "de": "Mehrstufige Versuche im Baumdiagramm darstellen, Pfadregeln anwenden, Urnenmodelle mit und ohne Zurücklegen nutzen.",
+                "en": "Showing multi-stage experiments in tree diagrams, applying the path rules, using urn models with and without replacement."
+              },
+              "simulations": [
+                "zaehlprinzip",
+                "baumdiagramm",
+                "geburtstagsproblem"
+              ]
+            }
+          ]
+        }
+      ],
+      "toGrade": 8
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://www.lisa.sachsen-anhalt.de/",
+      "note": {
+        "de": "Schuljahrgang 9. Lernbereiche sind die Inhaltsbereiche mit ihren Kompetenzschwerpunkten; der Lehrplan nummeriert sie nicht, die Nummern sind von uns vergeben.",
+        "en": "Grade 9. Units are the content areas with their focal points; the curriculum does not number them, the numbers are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Zahlen und Größen",
+            "en": "Numbers and quantities"
+          },
+          "summary": {
+            "de": "Potenzen mit rationalen Exponenten, Wurzeln und Logarithmen.",
+            "en": "Powers with rational exponents, roots and logarithms."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Potenzen und Logarithmen",
+                "en": "Powers and logarithms"
+              },
+              "summary": {
+                "de": "Potenz-, Wurzel- und Logarithmengesetze anwenden, die drei Schreibweisen ineinander übersetzen und Zahlen mit abgetrennten Zehnerpotenzen schreiben.",
+                "en": "Applying the laws of powers, roots and logarithms, translating between the three notations and writing numbers in scientific notation."
+              },
+              "simulations": [
+                "quadratwurzel",
+                "logarithmus"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Raum und Form",
+            "en": "Space and shape"
+          },
+          "summary": {
+            "de": "Berechnungen an Dreiecken mit Sinus, Kosinus und Tangens.",
+            "en": "Calculations in triangles with sine, cosine and tangent."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Trigonometrie",
+                "en": "Trigonometry"
+              },
+              "summary": {
+                "de": "Sinus, Kosinus und Tangens im rechtwinkligen Dreieck, Sinussatz, Kosinussatz und Flächeninhaltssatz für beliebige Dreiecke.",
+                "en": "Sine, cosine and tangent in right triangles, the sine rule, cosine rule and area formula for any triangle."
+              },
+              "simulations": [
+                "sin-cos-tan-dreieck",
+                "sinussatz-kosinussatz",
+                "einheitskreis"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Zuordnungen und Funktionen",
+            "en": "Relationships and functions"
+          },
+          "summary": {
+            "de": "Quadratische Gleichungen und Funktionen und ihre Anwendung.",
+            "en": "Quadratic equations and functions and their applications."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Quadratische Gleichungen und quadratische Funktionen",
+                "en": "Quadratic equations and quadratic functions"
+              },
+              "summary": {
+                "de": "Quadratische Gleichungen lösen und ihre Lösbarkeit untersuchen, Parabeln zeichnen, Scheitelpunkt und Nullstellen bestimmen und den Einfluss der Parameter beschreiben.",
+                "en": "Solving quadratic equations and examining how many solutions they have, drawing parabolas, finding vertex and zeros and describing the effect of the parameters."
+              },
+              "simulations": [
+                "quadratische-funktion",
+                "parabel-drei-punkte",
+                "extremwert-parabel",
+                "gleichungen-grafisch"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Daten und Zufall",
+            "en": "Data and chance"
+          },
+          "summary": {
+            "de": "Häufigkeitsverteilungen darstellen und mit Lage- und Streumaßen beschreiben.",
+            "en": "Displaying frequency distributions and describing them with measures of centre and spread."
+          },
+          "parts": [
+            {
+              "code": "4.1",
+              "title": {
+                "de": "Häufigkeitsverteilungen",
+                "en": "Frequency distributions"
+              },
+              "summary": {
+                "de": "Daten in Klassen einteilen und als Histogramm oder Boxplot darstellen, Lage- und Streumaße bestimmen und Verteilungen auch durch Simulation erzeugen.",
+                "en": "Grouping data into classes and showing them as histograms or box plots, finding measures of centre and spread and also creating distributions by simulation."
+              },
+              "simulations": [
+                "boxplot",
+                "gesetz-grosse-zahlen",
+                "galtonbrett"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://www.lisa.sachsen-anhalt.de/",
+      "note": {
+        "de": "Schuljahrgang 10 ist in Sachsen-Anhalt die Einführungsphase der gymnasialen Oberstufe (Abitur nach Klasse 12). Die Inhaltsbereiche heißen ab hier Analysis, Analytische Geometrie und Stochastik; die Nummern sind von uns vergeben.",
+        "en": "In Saxony-Anhalt, grade 10 is the introductory phase of upper secondary (Abitur after grade 12). From here on the content areas are calculus, analytic geometry and probability and statistics; the numbers are our own."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Analysis",
+            "en": "Calculus"
+          },
+          "summary": {
+            "de": "Wichtige Funktionsklassen mit Graphen, Eigenschaften und Parametern als Grundlage der Analysis.",
+            "en": "Important families of functions with their graphs, properties and parameters as a basis for calculus."
+          },
+          "parts": [
+            {
+              "code": "1.1",
+              "title": {
+                "de": "Funktionsklassen",
+                "en": "Families of functions"
+              },
+              "summary": {
+                "de": "Potenz-, Exponential-, Sinus- und Kosinusfunktionen, in einfachen Fällen auch Wurzel- und Logarithmusfunktionen: Graphen, Eigenschaften, Einfluss der Parameter, Umkehrfunktionen, Wachstum und periodische Vorgänge.",
+                "en": "Power, exponential, sine and cosine functions, and in simple cases root and logarithmic functions: graphs, properties, effect of parameters, inverse functions, growth and periodic processes."
+              },
+              "simulations": [
+                "potenzfunktionen",
+                "hyperbel",
+                "ganzrationale-funktionen",
+                "exponentielles-wachstum",
+                "logarithmus",
+                "einheitskreis",
+                "sinusfunktion",
+                "transformationen",
+                "umkehrfunktion",
+                "grenzverhalten",
+                "funktionsplotter"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Analytische Geometrie",
+            "en": "Analytic geometry"
+          },
+          "summary": {
+            "de": "Vektoren im räumlichen Koordinatensystem und das Rechnen mit ihnen.",
+            "en": "Vectors in the 3D coordinate system and calculating with them."
+          },
+          "parts": [
+            {
+              "code": "2.1",
+              "title": {
+                "de": "Vektoren",
+                "en": "Vectors"
+              },
+              "summary": {
+                "de": "Räumliches Koordinatensystem, Vektoren addieren und vervielfachen, lineare Abhängigkeit, Gleichungssysteme mit drei Variablen, Skalarprodukt, Winkel und Vektorprodukt.",
+                "en": "The 3D coordinate system, adding and scaling vectors, linear dependence, systems of equations in three variables, dot product, angles and cross product."
+              },
+              "simulations": [
+                "koordinaten-3d",
+                "vektoren-3d",
+                "skalar-vektorprodukt"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Stochastik",
+            "en": "Probability and statistics"
+          },
+          "summary": {
+            "de": "Zufallsgrößen mit Verteilung, Erwartungswert und Standardabweichung.",
+            "en": "Random variables with their distribution, expected value and standard deviation."
+          },
+          "parts": [
+            {
+              "code": "3.1",
+              "title": {
+                "de": "Zufallsgrößen",
+                "en": "Random variables"
+              },
+              "summary": {
+                "de": "Ereignisse mit Zufallsgrößen beschreiben, Wahrscheinlichkeitsverteilungen aufstellen, Erwartungswert und Standardabweichung berechnen und deuten.",
+                "en": "Describing events with random variables, setting up probability distributions, calculating and interpreting expected value and standard deviation."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://www.lisa.sachsen-anhalt.de/",
+      "note": {
+        "de": "Qualifikationsphase (Schuljahrgänge 11/12): Der Fachlehrplan beschreibt beide Jahrgänge gemeinsam, getrennt nach grundlegendem (gA) und erhöhtem Anforderungsniveau (eA). Die Lernbereiche stehen deshalb bei 11 und 12 gleich, und beide werden als eine Stufe gezeigt. Die Nummern sind von uns vergeben.",
+        "en": "Qualification phase (grades 11/12): the curriculum describes both grades together, split into the basic (gA) and the higher level (eA). The units are therefore the same for grades 11 and 12, and both are shown as one stage. The numbers are our own."
+      },
+      "units": [
+        {
+          "code": "gA-1",
+          "title": {
+            "de": "Analysis (grundlegendes Anforderungsniveau)",
+            "en": "Calculus (basic level)"
+          },
+          "summary": {
+            "de": "Grenzwerte und Ableitung, Untersuchung von Funktionen und Integralrechnung im grundlegenden Anforderungsniveau.",
+            "en": "Limits and derivatives, analysing functions and integral calculus at the basic level."
+          },
+          "parts": [
+            {
+              "code": "gA-1.1",
+              "title": {
+                "de": "Grundlagen der Infinitesimalrechnung",
+                "en": "Foundations of calculus"
+              },
+              "summary": {
+                "de": "Verhalten von Funktionen im Unendlichen und an einer Stelle, Grenzwerte, mittlere und lokale Änderungsrate, Ableitung als Tangentensteigung.",
+                "en": "Behaviour of functions at infinity and near a point, limits, average and instantaneous rate of change, the derivative as the slope of the tangent."
+              },
+              "simulations": [
+                "grenzverhalten",
+                "polstellen-asymptoten",
+                "sekante-tangente",
+                "ableitungsfunktion"
+              ]
+            },
+            {
+              "code": "gA-1.2",
+              "title": {
+                "de": "Differentialrechnung",
+                "en": "Differential calculus"
+              },
+              "summary": {
+                "de": "Ableitungsregeln für ganzrationale Funktionen, die e-Funktion sowie Sinus und Kosinus; Monotonie, Krümmung, Extrem- und Wendepunkte, Tangenten und Extremwertaufgaben.",
+                "en": "Differentiation rules for polynomials, the natural exponential function and sine and cosine; monotonicity, curvature, extreme and inflection points, tangents and optimisation problems."
+              },
+              "simulations": [
+                "ganzrationale-funktionen",
+                "ableitungsfunktion",
+                "kurvendiskussion",
+                "extremwertprobleme",
+                "e-funktion",
+                "stammfunktion-grafisch"
+              ]
+            },
+            {
+              "code": "gA-1.3",
+              "title": {
+                "de": "Integralrechnung",
+                "en": "Integral calculus"
+              },
+              "summary": {
+                "de": "Stammfunktionen, das bestimmte Integral als rekonstruierter Bestand und als Flächeninhalt, Hauptsatz der Differential- und Integralrechnung.",
+                "en": "Antiderivatives, the definite integral as a reconstructed total and as an area, the fundamental theorem of calculus."
+              },
+              "simulations": [
+                "ober-untersummen",
+                "hauptsatz",
+                "aenderungsrate",
+                "stammfunktion-grafisch"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "gA-2",
+          "title": {
+            "de": "Analytische Geometrie (grundlegendes Anforderungsniveau)",
+            "en": "Analytic geometry (basic level)"
+          },
+          "summary": {
+            "de": "Geraden, Ebenen und Kreise mit Gleichungen beschreiben und ihre Lage untersuchen.",
+            "en": "Describing lines, planes and circles by equations and examining how they lie."
+          },
+          "parts": [
+            {
+              "code": "gA-2.1",
+              "title": {
+                "de": "Geraden und Ebenen",
+                "en": "Lines and planes"
+              },
+              "summary": {
+                "de": "Geraden und Ebenen durch Gleichungen beschreiben, Lage von Gerade und Gerade oder Gerade und Ebene untersuchen, Schnittpunkte, Winkel und Abstände berechnen.",
+                "en": "Describing lines and planes by equations, examining how two lines or a line and a plane lie, calculating intersections, angles and distances."
+              },
+              "simulations": [
+                "geraden-ebenen",
+                "lage-abstaende"
+              ]
+            },
+            {
+              "code": "gA-2.2",
+              "title": {
+                "de": "Kreise",
+                "en": "Circles"
+              },
+              "summary": {
+                "de": "Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen.",
+                "en": "Describing circles in the plane by equations and examining how a point or a line lies relative to the circle."
+              }
+            }
+          ]
+        },
+        {
+          "code": "gA-3",
+          "title": {
+            "de": "Stochastik (grundlegendes Anforderungsniveau)",
+            "en": "Probability and statistics (basic level)"
+          },
+          "summary": {
+            "de": "Bedingte Wahrscheinlichkeit und Binomialverteilung.",
+            "en": "Conditional probability and the binomial distribution."
+          },
+          "parts": [
+            {
+              "code": "gA-3.1",
+              "title": {
+                "de": "Bedingte Wahrscheinlichkeit",
+                "en": "Conditional probability"
+              },
+              "summary": {
+                "de": "Zweistufige Versuche mit der Vierfeldertafel beschreiben, bedingte Wahrscheinlichkeiten berechnen und deuten, Ereignisse auf Unabhängigkeit prüfen.",
+                "en": "Describing two-stage experiments with two-way tables, calculating and interpreting conditional probabilities, testing events for independence."
+              },
+              "simulations": [
+                "vierfeldertafel",
+                "bedingte-wahrscheinlichkeit",
+                "ziegenproblem"
+              ]
+            },
+            {
+              "code": "gA-3.2",
+              "title": {
+                "de": "Binomialverteilung",
+                "en": "Binomial distribution"
+              },
+              "summary": {
+                "de": "Bernoulli-Ketten, binomialverteilte Zufallsgrößen mit ihren Kenngrößen, typische Gestalt der Verteilung und Vertrauensintervalle.",
+                "en": "Bernoulli chains, binomially distributed random variables and their parameters, the typical shape of the distribution and confidence intervals."
+              },
+              "simulations": [
+                "galtonbrett",
+                "binomialverteilung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "eA-1",
+          "title": {
+            "de": "Analysis (erhöhtes Anforderungsniveau)",
+            "en": "Calculus (higher level)"
+          },
+          "summary": {
+            "de": "Grenzwerte und Ableitung, Untersuchung von Funktionen und Integralrechnung im erhöhten Anforderungsniveau, mit Funktionsscharen und Rotationskörpern.",
+            "en": "Limits and derivatives, analysing functions and integral calculus at the higher level, with families of functions and solids of revolution."
+          },
+          "parts": [
+            {
+              "code": "eA-1.1",
+              "title": {
+                "de": "Grundlagen der Infinitesimalrechnung",
+                "en": "Foundations of calculus"
+              },
+              "summary": {
+                "de": "Wie im grundlegenden Niveau, zusätzlich Grenzwertsätze und lineare Näherung einer Funktion an einer Stelle.",
+                "en": "As at the basic level, plus limit laws and the linear approximation of a function at a point."
+              },
+              "simulations": [
+                "grenzverhalten",
+                "polstellen-asymptoten",
+                "sekante-tangente",
+                "ableitungsfunktion"
+              ]
+            },
+            {
+              "code": "eA-1.2",
+              "title": {
+                "de": "Differentialrechnung",
+                "en": "Differential calculus"
+              },
+              "summary": {
+                "de": "Wie im grundlegenden Niveau, zusätzlich Logarithmusfunktionen, Kettenregel, Newtonverfahren sowie Funktionsscharen und Ortskurven.",
+                "en": "As at the basic level, plus logarithmic functions, the chain rule, Newton’s method and families of functions with their loci."
+              },
+              "simulations": [
+                "ganzrationale-funktionen",
+                "ableitungsfunktion",
+                "kurvendiskussion",
+                "extremwertprobleme",
+                "logarithmus",
+                "newton-verfahren",
+                "e-funktion",
+                "funktionenscharen",
+                "stammfunktion-grafisch"
+              ]
+            },
+            {
+              "code": "eA-1.3",
+              "title": {
+                "de": "Integralrechnung",
+                "en": "Integral calculus"
+              },
+              "summary": {
+                "de": "Wie im grundlegenden Niveau, zusätzlich lineare Substitution, ln als Stammfunktion von 1/x und das Volumen von Rotationskörpern.",
+                "en": "As at the basic level, plus linear substitution, ln as an antiderivative of 1/x and the volume of solids of revolution."
+              },
+              "simulations": [
+                "ober-untersummen",
+                "hauptsatz",
+                "aenderungsrate",
+                "stammfunktion-grafisch",
+                "rotationskoerper"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "eA-2",
+          "title": {
+            "de": "Analytische Geometrie (erhöhtes Anforderungsniveau)",
+            "en": "Analytic geometry (higher level)"
+          },
+          "summary": {
+            "de": "Geraden, Ebenen und Kreise im erhöhten Anforderungsniveau, auch Ebene-Ebene und Tangenten an Kreise.",
+            "en": "Lines, planes and circles at the higher level, including two planes and tangents to circles."
+          },
+          "parts": [
+            {
+              "code": "eA-2.1",
+              "title": {
+                "de": "Geraden und Ebenen",
+                "en": "Lines and planes"
+              },
+              "summary": {
+                "de": "Wie im grundlegenden Niveau, zusätzlich die Lage zweier Ebenen mit Schnittgerade sowie Abstände zwischen Punkt und Gerade und zwischen zwei Geraden im Raum.",
+                "en": "As at the basic level, plus the position of two planes with their line of intersection and distances between a point and a line and between two lines in space."
+              },
+              "simulations": [
+                "geraden-ebenen",
+                "lage-abstaende"
+              ]
+            },
+            {
+              "code": "eA-2.2",
+              "title": {
+                "de": "Kreise",
+                "en": "Circles"
+              },
+              "summary": {
+                "de": "Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb.",
+                "en": "As at the basic level, plus the position of two circles and tangents to a circle, including from an outside point."
+              }
+            }
+          ]
+        },
+        {
+          "code": "eA-3",
+          "title": {
+            "de": "Stochastik (erhöhtes Anforderungsniveau)",
+            "en": "Probability and statistics (higher level)"
+          },
+          "summary": {
+            "de": "Bedingte Wahrscheinlichkeit, Binomial- und Normalverteilung und beurteilende Statistik.",
+            "en": "Conditional probability, binomial and normal distributions and inferential statistics."
+          },
+          "parts": [
+            {
+              "code": "eA-3.1",
+              "title": {
+                "de": "Bedingte Wahrscheinlichkeit",
+                "en": "Conditional probability"
+              },
+              "summary": {
+                "de": "Vierfeldertafel, bedingte Wahrscheinlichkeiten und stochastische Unabhängigkeit wie im grundlegenden Niveau.",
+                "en": "Two-way tables, conditional probabilities and independence, as at the basic level."
+              },
+              "simulations": [
+                "vierfeldertafel",
+                "bedingte-wahrscheinlichkeit",
+                "ziegenproblem"
+              ]
+            },
+            {
+              "code": "eA-3.2",
+              "title": {
+                "de": "Binomial- und Normalverteilung",
+                "en": "Binomial and normal distribution"
+              },
+              "summary": {
+                "de": "Binomialverteilte Zufallsgrößen mit Kenngrößen und σ-Umgebungen; diskrete und stetige Zufallsgrößen, Normalverteilung mit der Gaußschen Dichtefunktion.",
+                "en": "Binomially distributed random variables with their parameters and σ-intervals; discrete and continuous random variables, the normal distribution with the Gaussian density."
+              },
+              "simulations": [
+                "galtonbrett",
+                "binomialverteilung",
+                "normalverteilung"
+              ]
+            },
+            {
+              "code": "eA-3.3",
+              "title": {
+                "de": "Beurteilende Statistik",
+                "en": "Inferential statistics"
+              },
+              "summary": {
+                "de": "Mit Simulationen Stichproben erkunden, von der Grundgesamtheit auf Stichproben schließen, unbekannte Wahrscheinlichkeiten schätzen und Prognose- und Vertrauensintervalle angeben.",
+                "en": "Exploring samples with simulations, inferring from the population to samples, estimating unknown probabilities and giving prediction and confidence intervals."
+              },
+              "simulations": [
+                "binomialverteilung"
+              ]
+            }
+          ]
+        }
+      ],
+      "toGrade": 12
+    }
+  ]
+}

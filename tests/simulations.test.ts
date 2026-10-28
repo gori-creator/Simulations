@@ -13,10 +13,11 @@ import { evaluate, period, range } from '../src/simulations/mathematik/sinusfunk
 describe.each(Object.entries(registry))('Simulation %s', (id, load) => {
   let def: SimulationDefinition;
 
+  // Das erste Laden übersetzt den ganzen Kern; unter Last (alle Testdateien parallel) dauert das teils über 5 s
   it('lässt sich laden und hat die passende ID', async () => {
     def = await load();
     expect(def.id).toBe(id);
-  });
+  }, 30_000);
 
   it('hat eindeutige Parameter mit gültigen Standardwerten', () => {
     const keys = def.params.map((p) => p.key);

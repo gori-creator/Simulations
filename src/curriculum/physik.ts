@@ -179,32 +179,9 @@ export const physik: Subject = {
           ],
         },
         {
-          id: 'wuerfe',
-          title: L('Würfe', 'Projectile motion'),
-          grades: [10, 11],
-          simulations: [
-            {
-              id: 'schiefer-wurf',
-              status: 'ready',
-              slug: L('schiefer-wurf', 'projectile-motion'),
-              title: L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'),
-              summary: L(
-                'Wirf einen Ball unter einem Winkel und sieh seine Bahn. Welcher Winkel trägt am weitesten? Auch auf Mond und Mars.',
-                'Throw a ball at an angle and watch its path. Which angle goes furthest? Also on the Moon and Mars.',
-              ),
-              grades: [10, 11],
-              kmk: ['P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Wurf', 'schiefer Wurf', 'waagerechter Wurf', 'Wurfparabel', 'Wurfweite', 'Steighöhe', 'Superposition', 'Luftwiderstand', 'Fallbeschleunigung', 'Abwurfwinkel', 'Zielwurf', 'Komplementärwinkel'],
-                ['projectile', 'oblique throw', 'horizontal throw', 'trajectory', 'range', 'maximum height', 'superposition', 'air resistance', 'gravitational acceleration', 'launch angle', 'target', 'complementary angles'],
-              ),
-            },
-          ],
-        },
-        {
           id: 'kreisbewegung-gravitation',
           title: L('Kreisbewegung und Gravitation', 'Circular motion and gravitation'),
-          grades: [10, 13],
+          grades: [9, 13],
           simulations: [
             {
               id: 'kreisbewegung',
@@ -215,7 +192,7 @@ export const physik: Subject = {
                 'Eine Kugel kreist an einer Schnur, ein Auto fährt durch eine Kurve. Welche Kraft hält sie auf der Kreisbahn?',
                 'A ball swings round on a string, a car drives through a bend. Which force keeps them on a circular path?',
               ),
-              grades: [10, 11],
+              grades: [9, 11],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
               keywords: L(
                 ['Kreisbewegung', 'gleichförmige Kreisbewegung', 'Zentripetalkraft', 'Zentripetalbeschleunigung', 'Bahngeschwindigkeit', 'Winkelgeschwindigkeit', 'Umlaufdauer', 'Frequenz', 'Trägheit', 'Tangente', 'Kurvenfahrt', 'Haftreibung', 'Haftreibungszahl', 'Kurvenradius', 'Glatteis'],
@@ -237,6 +214,29 @@ export const physik: Subject = {
               keywords: L(
                 ['Keplersche Gesetze', 'Planetenbahn', 'Ellipse', 'Brennpunkt', 'große Halbachse', 'Exzentrizität', 'Perihel', 'Aphel', 'Flächensatz', 'Umlaufdauer', 'Gravitation', 'Gravitationsgesetz', 'Kreisbahngeschwindigkeit', 'Fluchtgeschwindigkeit', 'Hyperbel', 'Drehimpulserhaltung', 'Komet', 'Sonnensystem'],
                 ['Kepler’s laws', 'planetary orbit', 'ellipse', 'focus', 'semi-major axis', 'eccentricity', 'perihelion', 'aphelion', 'law of areas', 'orbital period', 'gravitation', 'law of gravitation', 'circular speed', 'escape velocity', 'hyperbola', 'conservation of angular momentum', 'comet', 'solar system'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'wuerfe',
+          title: L('Würfe', 'Projectile motion'),
+          grades: [10, 11],
+          simulations: [
+            {
+              id: 'schiefer-wurf',
+              status: 'ready',
+              slug: L('schiefer-wurf', 'projectile-motion'),
+              title: L('Waagerechter und schiefer Wurf', 'Horizontal and oblique projectile motion'),
+              summary: L(
+                'Wirf einen Ball unter einem Winkel und sieh seine Bahn. Welcher Winkel trägt am weitesten? Auch auf Mond und Mars.',
+                'Throw a ball at an angle and watch its path. Which angle goes furthest? Also on the Moon and Mars.',
+              ),
+              grades: [10, 11],
+              kmk: ['P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Wurf', 'schiefer Wurf', 'waagerechter Wurf', 'Wurfparabel', 'Wurfweite', 'Steighöhe', 'Superposition', 'Luftwiderstand', 'Fallbeschleunigung', 'Abwurfwinkel', 'Zielwurf', 'Komplementärwinkel'],
+                ['projectile', 'oblique throw', 'horizontal throw', 'trajectory', 'range', 'maximum height', 'superposition', 'air resistance', 'gravitational acceleration', 'launch angle', 'target', 'complementary angles'],
               ),
             },
           ],
@@ -666,7 +666,7 @@ export const physik: Subject = {
         {
           id: 'gase',
           title: L('Gase', 'Gases'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
             {
               id: 'gasgesetze',
@@ -677,7 +677,7 @@ export const physik: Subject = {
                 'Ein Gas in einem Zylinder mit Kolben: Ändere Druck, Volumen oder Temperatur und sieh, wie sich die anderen Größen verhalten.',
                 'A gas in a cylinder with a piston: change the pressure, volume or temperature and see how the other quantities respond.',
               ),
-              grades: [9, 13],
+              grades: [8, 13],
               uni: true,
               kmk: ['P-BK-Materie', 'P-BK-Mathematisieren', 'P-E', 'P-S'],
               keywords: L(
