@@ -12,15 +12,17 @@ interface Props {
   lang: Lang;
   alternates: Record<Lang, string>;
   section?: string;
+  /** Knopf „Bewegung pausieren“ zeigen (Startseite mit Skulptur und Münze, src/lib/home/motion.ts). */
+  motionToggle?: boolean;
 }
 
-const { lang, alternates, section } = Astro.props;
+const { lang, alternates, section, motionToggle = false } = Astro.props;
 ---
 
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="brand" href={href(lang, { kind: 'home' })}>
-      <Logo class="brand__logo" />
+      <Logo class="brand__logo" size={42} />
       <span>{SITE.name[lang]}</span>
     </a>
 
@@ -66,6 +68,24 @@ const { lang, alternates, section } = Astro.props;
         }
       </div>
       <RegionSettings lang={lang} />
+      {
+        motionToggle && (
+          <button
+            class="btn btn--ghost btn--icon motion-toggle"
+            type="button"
+            data-motion-toggle
+            data-label-pause={t(lang, 'home.motionPause')}
+            data-label-resume={t(lang, 'home.motionResume')}
+            aria-pressed="false"
+            aria-label={t(lang, 'home.motionPause')}
+            title={t(lang, 'home.motionPause')}
+            hidden
+          >
+            <Icon name="pause" class="motion-icon motion-icon--pause" />
+            <Icon name="play" class="motion-icon motion-icon--play" />
+          </button>
+        )
+      }
       <button
         class="btn btn--ghost btn--icon"
         type="button"

@@ -1,8 +1,8 @@
-# MINT-Simulationen
+# Scitura
 
 Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht** – für den Beamer, das Tablet und das Lernen zu Hause. Zuerst auf Deutsch, nach und nach auch auf Englisch. Chemie und Hochschulthemen folgen später.
 
-> „MINT-Simulationen“ ist ein Arbeitstitel. Der Name lässt sich zentral in `src/config/site.ts` ändern.
+> Die Website heißt seit 27.10.2026 **Scitura** (vorher Arbeitstitel „MINT-Simulationen“). Der Name steht zentral in `src/config/site.ts`.
 
 ## Was die Seite kann
 

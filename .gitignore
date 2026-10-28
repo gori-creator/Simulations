@@ -22,6 +22,9 @@ npm-debug.log*
 !.vscode/extensions.json
 .idea/
 
+# Lokale Vorschau des Startseiten-Entwurfs (docs/design/coin-reise-v13/export-preview.cjs)
+.scitura-preview/
+
 # Test-Artefakte
 coverage/
 bildtests-ergebnis/

@@ -9,7 +9,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
 | Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt, Rheinland-Pfalz, Schleswig-Holstein, Berlin; als Nächstes Brandenburg |
-| Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
+| Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (Entwurf), Claude (Einbau) | Startseite „Scitura“ eingebaut (`docs/design/coin-reise-v13/UMSETZUNG.md`); Unterseiten noch im alten Design |
 
 ## Erledigt
 
@@ -57,7 +57,8 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
 
 - [x] **9 Bilder neu erzeugen und einbauen** (26.10.): Flaschenöffner, Eisberg, Becherglas, Urne, Leiter, Asphalt, Fluchtstab, Lupe (ersetzt die alte bei Maßstab), Sparbuch – alle eingebaut, Beschreibung in `docs/BILDER.md` („Nachgelieferte Bilder“).
 - [x] **Ladezeit für Schulnetze** (PR #48, 25.10.): Seitengröße messen (JavaScript, Bilder), große Bilder verkleinern (Ziel ≤ 300 KB, aktuell u. a. Baumkrone, Baum, Erde, Asphalt darüber), Bilder erst bei Bedarf laden, Vorher-/Nachher-Zahlen im PR. → Service Worker lädt nicht mehr die ganze Seite vorab (vorher 23 MB je Gerät), Fachseiten halb so groß, 9 Bilder verkleinert, Test für ≤ 300 KB.
-- [ ] **Design einbauen**, sobald der Codex-Agent abgegeben hat: Abgabe prüfen, Patch anwenden, Sichtprüfung hell/dunkel, PC/Handy, PR.
+- [x] **Startseite Scitura einbauen** (28.10.): Name Scitura und Logo 01 (Kopfleiste, Icons, Manifest), Einstieg mit Orbit-Skulptur und Münzbahn, Achterbahn mit der echten Energieerhaltung, vollständiger Katalog mit Filtern. Umsetzung, Prüfung und offene Punkte: `docs/design/coin-reise-v13/UMSETZUNG.md`.
+- [ ] Startseite auf Safari, Firefox und echten Mobilgeräten prüfen (Laufzeit der Skulptur, Ziehen auf der Bühne); Logo später als Vektordatei mit derselben Form.
 - [ ] **Chemie:** Plan für die ersten 10 Simulationen (Klasse 7–13, KMK-Bildungsstandards), dann die ersten zwei vollständig bauen (`docs/NEUE-SIMULATION.md`).
 - [ ] **Weitere Bundesländer:** Lehrpläne Mathematik und Physik (Gymnasium) nach dem Muster in `src/curriculum/lehrplaene/`, nur amtliche Quellen, Unsicheres als Entwurf; Reihenfolge und Regeln im Auftrag `docs/agenten/AUFTRAG-BUNDESLAENDER.md`.
   - [x] Nordrhein-Westfalen (26.10.): Kernlehrpläne Sek. I (G9, 2019) und Sek. II (2026, gilt ab 01.08.2027), Mathe 85 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 5 Simulationen erweitert. Protokolle in `docs/lehrplaene/nordrhein-westfalen-gymnasium-*.md`.
