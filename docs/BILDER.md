@@ -875,3 +875,16 @@ Ersetzt die milchige Fassung. Die Glasmitte liegt bei (323 | 323), der Außenrad
 Zinsen: Die linierte Seite mit Einbandrand ersetzt Einband und Seite der Ersatzgrafik; Überschrift und Zeilen schreibt die Simulation darauf. Im Dunkelmodus wird die Seite abgedunkelt wie der Kassenbon.
 
 > A single page of a small savings passbook lying flat, exact top-down view, one cream-coloured page with faint empty ruled horizontal lines across its full width, a narrow dark teal cover border visible around all four edges, no centre fold, no second page, no spine, completely blank with no writing, evenly lit, isolated on a fully transparent background, no shadow, photorealistic, no text, no numbers, no bank logo
+
+## Marke: Scitura-Logo 01
+
+Kein Simulationsbild, sondern das Zeichen der Website (seit 27.10.2026). Ausgewählt von der Projektleitung aus einer Logo-Studie, abgeleitet aus der Orbit-Skulptur der Startseite. Erzeugt mit dem Bildwerkzeug von OpenAI (über Codex), transparent freigestellt und auf Wunsch in Marineblau #183365 umgefärbt. Den wörtlichen Prompt der ersten Studie enthält die Übergabe nicht; Herkunft und Bearbeitungsauftrag stehen in `docs/design/coin-reise-v13/LOGO-HERKUNFT.md`.
+
+| Verwendung | Datei | Größe | Hintergrund |
+| --- | --- | --- | --- |
+| Masterdatei | `docs/design/coin-reise-v13/assets/scitura-logo-master.png` | 1254 × 1254 | transparent |
+| Kopfleiste, Münze der Startseite | `src/assets/brand/scitura-logo.png` | 256 × 256 | transparent |
+| Browser-Icon | `public/favicon.png` | 64 × 64 | transparent |
+| App-Icons (aus der Masterdatei verkleinert) | `public/icons/apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | 180–512 | deckend #f6f7fa |
+
+Ersatzgrafik: keine nötig (Rasterbild ohne Ladefehler-Risiko im Build). Im dunklen Farbschema und auf der Münze erscheint das Zeichen per CSS-Filter hell. Eine spätere Vektorfassung soll dieselbe Form behalten; kein neues Logo entwerfen.

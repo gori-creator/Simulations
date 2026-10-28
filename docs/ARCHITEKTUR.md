@@ -144,6 +144,14 @@ Markdown in `src/content/simulations/<sprache>/<id>.md`. Formeln werden mit `$�
 
 `src/styles/global.css` enthält das Design-System als CSS-Variablen (Farben für hell/dunkel, Fachfarben, Abstände, Bedienelemente). Simulationen verwenden **nur** die Variablen `--plot-*` und `--series-1 … --series-6` über `ctx.theme`, damit sie in beiden Farbschemata gut aussehen. Es werden keine externen Schriftarten geladen.
 
+**Marke:** Die Website heißt **Scitura** (`src/config/site.ts`), Zeichen ist Logo 01 in Marineblau (`src/assets/brand/scitura-logo.png`, Icons in `public/`; Herkunft `docs/design/coin-reise-v13/LOGO-HERKUNFT.md`). Im dunklen Farbschema wird das Logo per CSS hell.
+
+**Startseite** (`src/pages/[lang]/index.astro`, Entwurf `docs/design/coin-reise-v13/`):
+
+- Drei Teile als Komponenten in `src/components/home/`: Einstieg mit Orbit-Skulptur und Münze (`HomeHero`), Achterbahn (`HomeExperiment`), Katalog (`HomeCatalog`). Stile nur für die Startseite in `src/styles/home.css` (alles unter `.scitura-home`), Texte in `src/i18n/ui.ts` (`home.*`).
+- Skripte in `src/lib/home/`: `sculpture.ts` (WebGL-Skulptur, SVG-Ersatzgrafik, Münzbahn; ab 1024 px als Spur am linken Rand bis zum Seitenende), `energy-stage.ts` (bettet die Simulation „Energieerhaltung“ über die Registry ein, ohne den Host; Regler-Bereiche kommen aus ihrer Definition, der Link zur Simulationsseite nimmt die Einstellungen mit), `catalog.ts` (Filter für die normalen Simulationskarten), `motion.ts` (gemeinsame Pause; startet pausiert bei `prefers-reduced-motion`, Knopf in der Kopfleiste nur auf der Startseite). Jede Init-Funktion gibt eine Abbau-Funktion zurück; Animationen laufen nur, solange sie im Bild sind und der Tab sichtbar ist.
+- Der Katalog zeigt alle fertigen Simulationen aus dem aktuellen Lehrplan; Anzahlen werden gezählt, nicht fest eingetragen. Die Bundesland-Sortierung (`data-region-sort`) gilt auch hier.
+
 ## 7. Qualitätssicherung
 
 - `npm run check` – strenge Typprüfung.

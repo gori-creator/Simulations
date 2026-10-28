@@ -1,0 +1,133 @@
+{
+  "passed": true,
+  "checks": [
+    "Überschrift und Fachauswahl: DE / EN, 320 bis 1600 Pixel",
+    "Fachseiten erreichbar, Sprachwechsel und Tastaturfokus",
+    "Bestehende Einstiege, Skulptur, Beispiel und Katalog bleiben erreichbar",
+    "Vollständiger Sockel im tatsächlich gerenderten Canvas",
+    "Linke Münzbahn begleitet Experiment, Katalog und Seitenende",
+    "Filter und responsive Wechsel halten die Bahn an der Seite",
+    "Farbflächen über volle Breite und lesbare Texte",
+    "Gerenderte Schwenkstellungen ohne schmale Seitenlage"
+  ],
+  "errors": [],
+  "layouts": [
+    {
+      "width": 320,
+      "lang": "de",
+      "titleHeight": 72,
+      "copyBottom": 475
+    },
+    {
+      "width": 320,
+      "lang": "en",
+      "titleHeight": 72,
+      "copyBottom": 475
+    },
+    {
+      "width": 390,
+      "lang": "de",
+      "titleHeight": 78,
+      "copyBottom": 482
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "titleHeight": 78,
+      "copyBottom": 456
+    },
+    {
+      "width": 700,
+      "lang": "de",
+      "titleHeight": 114,
+      "copyBottom": 405
+    },
+    {
+      "width": 700,
+      "lang": "en",
+      "titleHeight": 114,
+      "copyBottom": 405
+    },
+    {
+      "width": 768,
+      "lang": "de",
+      "titleHeight": 79,
+      "copyBottom": 452
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "titleHeight": 79,
+      "copyBottom": 452
+    },
+    {
+      "width": 1024,
+      "lang": "de",
+      "titleHeight": 95,
+      "copyBottom": 468
+    },
+    {
+      "width": 1024,
+      "lang": "en",
+      "titleHeight": 95,
+      "copyBottom": 441
+    },
+    {
+      "width": 1360,
+      "lang": "de",
+      "titleHeight": 130,
+      "copyBottom": 517
+    },
+    {
+      "width": 1360,
+      "lang": "en",
+      "titleHeight": 130,
+      "copyBottom": 488
+    },
+    {
+      "width": 1600,
+      "lang": "de",
+      "titleHeight": 136,
+      "copyBottom": 523
+    },
+    {
+      "width": 1600,
+      "lang": "en",
+      "titleHeight": 136,
+      "copyBottom": 494
+    },
+    {
+      "width": 390,
+      "floorBottomGap": 10
+    },
+    {
+      "width": 1024,
+      "floorBottomGap": 10
+    },
+    {
+      "width": 1360,
+      "floorBottomGap": 11
+    },
+    {
+      "width": 1600,
+      "floorBottomGap": 12
+    },
+    {
+      "seconds": 0,
+      "assemblyAngle": 0
+    },
+    {
+      "seconds": 12,
+      "assemblyAngle": 0.34
+    },
+    {
+      "seconds": 24,
+      "assemblyAngle": 4.163799117101001e-17
+    },
+    {
+      "seconds": 36.93,
+      "assemblyAngle": -0.33748373911417096
+    }
+  ],
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+}

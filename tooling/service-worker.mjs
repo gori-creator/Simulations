@@ -25,7 +25,7 @@ import { fileURLToPath } from 'node:url';
 const EXCLUDE = [/^sw\.js$/, /\.map$/];
 // Kern, der beim Einrichten vorab gespeichert wird (klein, auf jeder Seite gebraucht).
 // Formel-Schriften und Symbole folgen beim ersten Abruf.
-const CORE = [/\.css$/, /^favicon\.svg$/, /^manifest\.webmanifest$/, /^404\.html$/];
+const CORE = [/\.css$/, /^favicon\.png$/, /^manifest\.webmanifest$/, /^404\.html$/];
 
 /** @param {string} dir @param {string} [prefix] @returns {Promise<string[]>} */
 async function walk(dir, prefix = '') {

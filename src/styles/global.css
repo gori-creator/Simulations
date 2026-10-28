@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Design-System der MINT-Simulationen
+   Design-System von Scitura
    - Farben als CSS-Variablen (hell/dunkel), keine externen Schriften (DSGVO)
    - Simulationen lesen die --plot-* und --series-* Variablen für das Canvas
    ========================================================================== */
@@ -527,8 +527,20 @@ em .hat::after {
 
 .brand__logo {
   flex: none;
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+/* Logo 01 ist dunkles Marineblau; auf dunklem Grund hell zeigen (wie auf der Münze der Startseite). */
+:root[data-theme='dark'] .brand__logo {
+  filter: brightness(0) invert(0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .brand__logo {
+    filter: brightness(0) invert(0.9);
+  }
 }
 
 /* Auf sehr schmalen Bildschirmen darf der Name gekürzt werden, statt den Kopf zu verbreitern. */
@@ -547,12 +559,41 @@ em .hat::after {
   }
 
   .brand {
-    gap: 8px;
+    gap: 6px;
     font-size: 0.98rem;
+  }
+
+  .brand__logo {
+    width: 34px;
+    height: 34px;
   }
 
   .header-tools {
     gap: 2px;
+  }
+
+  .header-tools .lang-switch a {
+    padding-inline: 7px;
+  }
+}
+
+/* Sehr schmal: nur das Logo zeigen; der Name bleibt für Bildschirmleser lesbar. */
+@media (max-width: 374px) {
+  .brand {
+    flex: none;
+  }
+
+  .brand > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .header-tools .btn--icon {
+    width: 36px;
   }
 }
 

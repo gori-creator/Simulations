@@ -1,0 +1,71 @@
+---
+/**
+ * Startseite: vollständige Liste der fertigen Simulationen aus dem aktuellen
+ * Lehrplan, mit den normalen Simulationskarten (Vorschaubilder, Klassenstufen,
+ * Bundesland-Etiketten und -Sortierung). Filter: src/lib/home/catalog.ts.
+ */
+import { GRADE_BANDS, readySimulations, simulationsOf, SUBJECTS } from '../../curriculum';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import SimCard from '../SimCard.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const sims = readySimulations();
+const countOf = (subject: string) => simulationsOf({ subject: subject as (typeof SUBJECTS)[number]['id'] }).filter((s) => s.status === 'ready').length;
+---
+
+<section class="home-catalog" id="simulations" aria-labelledby="catalog-title" data-home-catalog>
+  <h2 id="catalog-title">{t(lang, 'home.featured')}</h2>
+  <div class="home-catalog__bar">
+    <div class="home-catalog__subjects" role="group" aria-label={t(lang, 'home.filterSubject')}>
+      <button type="button" data-filter="all" aria-pressed="true">
+        <span>{t(lang, 'home.filterAll')}</span><small>{sims.length}</small>
+      </button>
+      {
+        SUBJECTS.map((subject) => {
+          const n = countOf(subject.id);
+          return (
+            <button type="button" data-filter={subject.id} aria-pressed="false">
+              <span>{subject.title[lang]}</span>
+              <small>{subject.status === 'active' && n > 0 ? n : t(lang, 'nav.soon')}</small>
+            </button>
+          );
+        })
+      }
+    </div>
+    <div class="home-catalog__search">
+      <label class="home-catalog__searchbox">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="6"></circle><path d="m15 15 5 5"></path></svg>
+        <input type="search" data-catalog-search placeholder={t(lang, 'home.searchPlaceholder')} aria-label={t(lang, 'home.searchLabel')} autocomplete="off" />
+      </label>
+      <label class="visually-hidden" for="home-grade">{t(lang, 'catalog.grade')}</label>
+      <select id="home-grade" data-catalog-grade>
+        <option value="">{t(lang, 'grades.all')}</option>
+        {GRADE_BANDS.map((b) => <option value={`${b.span[0]}-${b.span[1]}`}>{t(lang, `grades.band.${b.id}`)}</option>)}
+      </select>
+    </div>
+  </div>
+  <p class="home-catalog__count" data-catalog-count data-template={t(lang, 'home.results', { n: '{n}', total: '{total}' })} aria-live="polite">
+    {t(lang, 'home.results', { n: sims.length, total: sims.length })}
+  </p>
+  <div class="card-grid home-catalog__grid" data-region-sort>
+    {sims.map((sim) => <SimCard lang={lang} sim={sim} showSubject />)}
+  </div>
+  <div
+    class="home-catalog__empty"
+    data-catalog-empty
+    data-title={t(lang, 'home.emptyTitle')}
+    data-text={t(lang, 'home.emptyText')}
+    data-chem-title={t(lang, 'home.chemTitle')}
+    data-chem-text={t(lang, 'home.chemText')}
+    hidden
+  >
+    <span aria-hidden="true">∅</span>
+    <h3 data-empty-title>{t(lang, 'home.emptyTitle')}</h3>
+    <p data-empty-text>{t(lang, 'home.emptyText')}</p>
+    <button type="button" class="btn btn--primary" data-catalog-clear>{t(lang, 'home.clear')}</button>
+  </div>
+</section>

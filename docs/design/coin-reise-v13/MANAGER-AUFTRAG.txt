@@ -1,0 +1,9 @@
+Bitte übernimm als Main Manager die Integration der neuen Scitura-Startseite in das aktuelle Astro-Projekt.
+
+Lies zuerst docs/design/coin-reise-v13/START-HIER.md, INTEGRATION.md und ABNAHME.md sowie die aktuellen Projektregeln. Der Ordner enthält den ausgewählten Entwurf, lesbare Quellen, Referenzbilder und die bestätigten Logo-Dateien.
+
+Verbindlicher Stand: Scitura; Logo 01 in dunklem Marineblau; heller Einstieg mit zwei Fachbuttons und bewegter körniger Orbit-Skulptur; nachvollziehbare Münzbahn links auf Desktop; darunter dunkelblauer Achterbahn-Bereich mit echter Energieerhaltungssimulation; anschließend der saubere vollständige Simulationskatalog. Erhalte diese Gestaltung. Keine neue Designrunde und keine zusätzlichen Marketingtexte.
+
+Integriere den Prototyp sauber in die vorhandene Astro-Architektur. Verwende das aktuelle Curriculum, bestehende Routen/BASE_URL, DE/EN-Übersetzungen und den Simulationskern. Übernimm keine veralteten Projektdateien aus dem Vorschau-Build. Setze Scitura und das dunkle Logo auch in den bestehenden Header-/Metadaten-/Icon-Strukturen konsistent um.
+
+Die HTML-Vorschau ist eine Referenz, noch keine produktive Astro-Integration. Prüfe alle Punkte aus ABNAHME.md, führe npm run verify aus und dokumentiere Änderungen, Tests und verbleibende Einschränkungen. Bewahre vorhandene uncommitted Änderungen. Veröffentliche oder pushe nichts ohne den dafür erteilten Auftrag.
