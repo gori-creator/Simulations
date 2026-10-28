@@ -56,12 +56,14 @@
   --plot-axis: #343d4a;
   --plot-text: #17202c;
   --plot-muted: #5b6676;
-  --series-1: #2563eb;
-  --series-2: #d6336c;
-  --series-3: #2b8a3e;
-  --series-4: #e8590c;
-  --series-5: #7048e8;
-  --series-6: #0c8599;
+  /* Reihenfarben (Farbkonzept 10/2026, docs/FARBEN.md): kühle Edelsteintöne passend zur
+     Marke, Schrift in jeder Farbe lesbar (≥ 4,5 : 1 auf Weiß), bei Farbsehschwäche getrennt */
+  --series-1: #2c5fd6;
+  --series-2: #cc3f76;
+  --series-3: #0f6544;
+  --series-4: #b8600c;
+  --series-5: #7052dc;
+  --series-6: #0a7d96;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,12 +101,12 @@
     --plot-axis: #b9c3d1;
     --plot-text: #e6eaf0;
     --plot-muted: #9ba7b7;
-    --series-1: #6ea0ff;
-    --series-2: #ff7aa8;
-    --series-3: #69db7c;
-    --series-4: #ffa94d;
-    --series-5: #b197fc;
-    --series-6: #66d9e8;
+    --series-1: #78a0fa;
+    --series-2: #f283ad;
+    --series-3: #3fae7f;
+    --series-4: #e8a650;
+    --series-5: #a68cf2;
+    --series-6: #4cc0d6;
   }
 }
 
@@ -142,12 +144,12 @@
   --plot-axis: #b9c3d1;
   --plot-text: #e6eaf0;
   --plot-muted: #9ba7b7;
-  --series-1: #6ea0ff;
-  --series-2: #ff7aa8;
-  --series-3: #69db7c;
-  --series-4: #ffa94d;
-  --series-5: #b197fc;
-  --series-6: #66d9e8;
+  --series-1: #78a0fa;
+  --series-2: #f283ad;
+  --series-3: #3fae7f;
+  --series-4: #e8a650;
+  --series-5: #a68cf2;
+  --series-6: #4cc0d6;
 }
 
 /* ---------- Grundlagen ---------- */

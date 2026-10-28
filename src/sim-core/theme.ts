@@ -24,7 +24,7 @@ const FALLBACK: Theme = {
   axis: '#3b4554',
   text: '#1b2330',
   muted: '#5a6577',
-  series: ['#2563eb', '#d6336c', '#2f9e44', '#e8590c', '#7048e8', '#0c8599'],
+  series: ['#2c5fd6', '#cc3f76', '#0f6544', '#b8600c', '#7052dc', '#0a7d96'],
   font: 'system-ui, sans-serif',
   mathFont: '"KaTeX_Math", "Cambria Math", "Times New Roman", serif',
 };
