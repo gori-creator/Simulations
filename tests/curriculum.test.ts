@@ -200,6 +200,20 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
+    'hamburg-gymnasium-mathematik': {
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-mathematik.md)',
+      'matrix-abbildungen': 'Matrizen nur als Übergangsmatrizen im Wahlpflichtmodul Lineare Algebra',
+      'taylor-polynome': 'nicht im Bildungsplan (Hochschule)',
+      'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
+    },
+    'hamburg-gymnasium-physik': {
+      'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
+      reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
+      brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
+      linsen: 'Strahlenoptik in NWT 5/6; Linsen in der Studienstufe nur im Wahlthema Astrophysik',
+      'doppler-effekt': 'Doppler-Effekt nicht im Bildungsplan',
+      gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
+    },
     'hessen-gymnasium-mathematik': {
       'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
       ziegenproblem: 'kein passender Schwerpunkt',

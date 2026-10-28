@@ -714,7 +714,7 @@ export const physik: Subject = {
                 'Viele Atomkerne zerfallen zufällig, und ein Zählrohr knackt. Trotzdem ist nach jeder Halbwertszeit ungefähr die Hälfte übrig.',
                 'Many nuclei decay at random and a Geiger counter clicks. Even so, after each half-life almost exactly half are left.',
               ),
-              grades: [9, 13],
+              grades: [8, 13],
               kmk: ['P-BK-Zufall', 'P-BK-Mathematisieren', 'P-BK-Materie'],
               keywords: L(
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],

@@ -1527,7 +1527,7 @@ export const mathematik: Subject = {
               'Die Fläche unter einem Graphen dreht sich um die x-Achse und wird zu einem Körper. Sein Volumen wird mit Scheiben berechnet.',
               'The area under a graph rotates about the x-axis and becomes a solid. Its volume is calculated with thin discs.',
             ),
-            grades: [12, 13],
+            grades: [11, 13],
             kmk: ['M-L2', 'M-L3', 'M-L4', 'M-K4'],
             keywords: L(
               ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],

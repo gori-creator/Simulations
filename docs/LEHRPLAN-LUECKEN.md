@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **384 von 1470** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **388 von 1545** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (153)
+## Mathematik (155)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -39,6 +39,13 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
 | 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
+
+### Hamburg · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
+| 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
 ### Hessen · Gymnasium (88)
 
@@ -210,7 +217,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (231)
+## Physik (233)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -257,6 +264,13 @@ Alle Lernbereiche haben eine Simulation.
 ### Berlin · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
+
+### Hamburg · Gymnasium (2)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
+| 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
 ### Hessen · Gymnasium (92)
 
