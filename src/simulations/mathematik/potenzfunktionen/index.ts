@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   commonPoints,
@@ -700,19 +700,8 @@ export default defineSimulation({
     }
 
     function arrowHead(x: number, y: number, ang: number, color: string, size = 9): void {
-      const g = surface.g;
-      g.save();
-      g.fillStyle = color;
-      g.translate(x, y);
-      g.rotate(ang);
-      g.beginPath();
-      g.moveTo(size * 0.5, 0);
-      g.lineTo(-size * 0.6, -size * 0.55);
-      g.lineTo(-size * 0.3, 0);
-      g.lineTo(-size * 0.6, size * 0.55);
-      g.closePath();
-      g.fill();
-      g.restore();
+      // gemeinsame Form aus sim-core; Spitze wie bisher 0,5 · size vor (x, y)
+      drawArrowHead(surface.g, x + Math.cos(ang) * size * 0.5, y + Math.sin(ang) * size * 0.5, ang, size * 1.1, color);
     }
 
     function dot(x: number, y: number, color: string, r: number, hollow = false): void {

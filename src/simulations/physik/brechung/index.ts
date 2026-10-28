@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, lerp, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, subText, Surface, text, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
+import { clamp, defineSimulation, drawArrowHead, ease, lerp, measureSubText, Plot, prefersReducedMotion, roundRect, scaledSprite, softShadow, subText, Surface, text, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   acceptanceAngle,
   apexPrism,
@@ -818,17 +818,8 @@ export default defineSimulation({
     };
 
     function arrowHead(x: number, y: number, ang: number, size: number, color: string): void {
-      g.save();
-      g.translate(x, y);
-      g.rotate(ang);
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(size * 0.6, 0);
-      g.lineTo(-size * 0.5, -size * 0.45);
-      g.lineTo(-size * 0.5, size * 0.45);
-      g.closePath();
-      g.fill();
-      g.restore();
+      // gemeinsame Form aus sim-core; Spitze wie bisher 0,6 · size vor (x, y)
+      drawArrowHead(g, x + Math.cos(ang) * size * 0.6, y + Math.sin(ang) * size * 0.6, ang, size * 1.1, color);
     }
 
     /** Leuchtender Lichtstrahl (Pixel); strength 0…1 steuert Deckkraft und Leuchten. */

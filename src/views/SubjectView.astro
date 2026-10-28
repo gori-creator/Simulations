@@ -1,4 +1,5 @@
 ---
+import AreaGlyph from '../components/AreaGlyph.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import GradeBadge from '../components/GradeBadge.astro';
 import GradeNav from '../components/GradeNav.astro';
@@ -177,13 +178,16 @@ const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v
                   data-grade-to={area.grades[1]}
                   data-area-card
                 >
-                  <div>
-                    <h3>
-                      <a class="card__link" href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>
-                        {area.title[lang]}
-                      </a>
-                    </h3>
-                    <p class="card__text" style="margin-top:6px">{area.description[lang]}</p>
+                  <div class="area-card__main">
+                    <span class="area-card__glyph"><AreaGlyph area={area.id} /></span>
+                    <div>
+                      <h3>
+                        <a class="card__link" href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>
+                          {area.title[lang]}
+                        </a>
+                      </h3>
+                      <p class="card__text" style="margin-top:6px">{area.description[lang]}</p>
+                    </div>
                   </div>
                   <div class="area-card__side">
                     <GradeBadge lang={lang} grades={area.grades} />

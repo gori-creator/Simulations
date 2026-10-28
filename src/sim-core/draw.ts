@@ -44,6 +44,26 @@ export function text(
   g.fillText(value, x, y);
 }
 
+/**
+ * Einheitliche Pfeilspitze für alle Simulationen und Plots: Spitze bei (x, y),
+ * Richtung `angle` (Bogenmaß), Länge `length` in Pixeln. Leicht eingekerbt,
+ * Breite 0,9 · Länge – überall dieselbe Form (docs/FARBEN.md, „Details“).
+ */
+export function drawArrowHead(g: CanvasRenderingContext2D, x: number, y: number, angle: number, length: number, color?: string): void {
+  g.save();
+  g.translate(x, y);
+  g.rotate(angle);
+  if (color) g.fillStyle = color;
+  g.beginPath();
+  g.moveTo(0, 0);
+  g.lineTo(-length, -length * 0.45);
+  g.lineTo(-length * 0.78, 0);
+  g.lineTo(-length, length * 0.45);
+  g.closePath();
+  g.fill();
+  g.restore();
+}
+
 /** Weicher Schatten für das nächste Zeichnen (mit `g.save()`/`g.restore()` verwenden). */
 export function softShadow(g: CanvasRenderingContext2D, dark: boolean, blur = 14, offsetY = 4): void {
   g.shadowColor = dark ? 'rgba(0,0,0,0.55)' : 'rgba(16,24,40,0.18)';

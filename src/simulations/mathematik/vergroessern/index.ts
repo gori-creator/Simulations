@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mesh3d, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mesh3d, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, seededRandom, Surface, vec3, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   BODIES,
@@ -497,17 +497,8 @@ export default defineSimulation({
       g.restore();
     }
     function arrowHead(tip: Px, dir: Px, color: string, size: number): void {
-      const g = surface.g;
-      const l = Math.hypot(dir[0], dir[1]) || 1;
-      const ux = dir[0] / l;
-      const uy = dir[1] / l;
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(tip[0], tip[1]);
-      g.lineTo(tip[0] - ux * size - uy * size * 0.45, tip[1] - uy * size + ux * size * 0.45);
-      g.lineTo(tip[0] - ux * size + uy * size * 0.45, tip[1] - uy * size - ux * size * 0.45);
-      g.closePath();
-      g.fill();
+      // gemeinsame Form aus sim-core
+      drawArrowHead(surface.g, tip[0], tip[1], Math.atan2(dir[1], dir[0]), size, color);
     }
     /** Maßlinie mit Pfeilspitzen und Beschriftung. */
     function dimLine(a: Px, b: Px, color: string, label: string, opts: { alpha?: number; bounds?: Rect; side?: number } = {}): void {

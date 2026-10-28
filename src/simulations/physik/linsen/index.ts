@@ -1,4 +1,4 @@
-import { defineSimulation, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, offscreenCanvas, Plot, roundRect, scaledSprite, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { blurRadius, constructionRays, describeImage, imageDistance, isSharp, power, rayThrough, rayY, screenScale, zoneOf, type RayId, type Zone } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -574,17 +574,8 @@ export default defineSimulation({
     }
 
     function arrowHead(x: number, y: number, ang: number, size: number, color: string): void {
-      g.save();
-      g.translate(x, y);
-      g.rotate(ang);
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(size * 0.6, 0);
-      g.lineTo(-size * 0.5, -size * 0.45);
-      g.lineTo(-size * 0.5, size * 0.45);
-      g.closePath();
-      g.fill();
-      g.restore();
+      // gemeinsame Form aus sim-core; Spitze wie bisher 0,6 · size vor (x, y)
+      drawArrowHead(g, x + Math.cos(ang) * size * 0.6, y + Math.sin(ang) * size * 0.6, ang, size * 1.1, color);
     }
 
     /** Strahl als Linie (Pixel), optional gestrichelt und mit Pfeil in der Mitte. */

@@ -29,3 +29,12 @@ ist feiner abgestimmt. Damit sehen alle Simulationen ohne Änderung am Code stim
 - **Ohne Neon:** Im Dunkelmodus höchstens mittlere Buntheit, damit nichts grell leuchtet.
 - Farben von Gegenständen (Widerstandsringe, Kabel, Fotos, Zielscheiben) sind keine
   Reihenfarben und bleiben, wie sie sind.
+
+## Details
+
+- **Pfeilspitzen:** überall dieselbe, leicht eingekerbte Form aus `drawArrowHead`
+  (`src/sim-core/draw.ts`), auch an den Achsen von `Plot`. Neue Simulationen
+  zeichnen keine eigenen Pfeilspitzen mehr.
+- **Bereichssymbole** (Fachseiten): eigene Zeichnungen in `src/components/AreaGlyph.astro`,
+  feine Linien in Textfarbe plus ein Akzent in der Fachfarbe. Neue Bereiche bekommen
+  ein eigenes Symbol im selben Stil (40 × 40, Linie 1,75, runde Enden).
