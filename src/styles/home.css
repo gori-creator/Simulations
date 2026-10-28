@@ -29,9 +29,9 @@
   --sc-stage-haze: #ffffffaa;
   --sc-stage-fade: #18336526;
   --sc-stage-stars: 0;
-  --sc-stage-layer: radial-gradient(circle, #3157d545 1.15px, transparent 1.7px);
+  --sc-stage-layer: radial-gradient(circle, #3157d52a 1px, transparent 1.5px);
   --sc-stage-layer-size: 22px 22px;
-  --sc-stage-layer-mask: radial-gradient(80% 95% at 66% 45%, #000 20%, #0007 60%, transparent 95%);
+  --sc-stage-layer-mask: radial-gradient(65% 85% at 70% 48%, #000 15%, #0006 55%, transparent 88%);
   --sc-stage-layer-anim: none;
   /* Achterbahn-Bereich: in beiden Farbschemata dunkelblau */
   --sc-navy: #183365;
