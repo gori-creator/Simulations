@@ -42,7 +42,6 @@ const de = {
   'footer.source': 'Quellcode',
   'footer.offline': 'Funktioniert nach dem ersten Besuch auch offline.',
 
-  'status.ready': 'Verfügbar',
   'status.planned': 'In Planung',
   'status.subjectPlanned': 'Kommt später',
 
@@ -245,7 +244,6 @@ const en: Record<UiKey, string> = {
   'footer.source': 'Source code',
   'footer.offline': 'Works offline after your first visit.',
 
-  'status.ready': 'Available',
   'status.planned': 'Planned',
   'status.subjectPlanned': 'Coming later',
 

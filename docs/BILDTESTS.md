@@ -5,6 +5,7 @@ Schützt vor ungewollten Änderungen im Aussehen (`docs/FAHRPLAN.md`, Punkt 1.6)
 ## Was geprüft wird
 
 - Von jeder Simulation gibt es zwei **Referenzbilder** in `tests/bildtests/referenz/`: `<id>-hell.png` und `<id>-dunkel.png`.
+- Dieselben Bilder sind auch die **Vorschaubilder der Karten** (Fach- und Katalogseiten): Beim Bauen entstehen daraus kleine WebP-Bilder (`src/components/SimShot.astro`, `src/lib/sim-shots.ts`). Erneuerte Referenzbilder ändern also auch die Vorschau. Solange eine Simulation noch kein Referenzbild hat, zeigt die Karte ihre `thumb.svg`.
 - **Was ein Bild zeigt:**
   - Fotografiert wird die **Zeichenfläche** (Bühne) in der **Startansicht**.
   - Die Seite ist deutsch, das Fenster 1280 × 900 Pixel groß, mit Pixeldichte 1.

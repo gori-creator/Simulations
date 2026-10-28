@@ -20,7 +20,7 @@ Lernmaterial (content/*.md) ─────────────────�
 
 - Jede Simulation hat eine stabile `id`, Titel in beiden Sprachen, Klassenstufen (`grades`), KMK-Bezüge (`kmk`) und einen `status`:
   - `planned` – im Lehrplan vorgesehen, erscheint im Katalog als „In Planung“.
-  - `ready` – umgesetzt; braucht zusätzlich `slug`, `summary` und ein Vorschaubild – eine eigene `thumb.svg` im Simulationsordner, sonst eine Vorlage über `thumb` (bei eigener `thumb.svg` kein zusätzliches `thumb: 'generic'`, ein Test prüft das) – und bekommt eine eigene Seite.
+  - `ready` – umgesetzt; braucht zusätzlich `slug`, `summary` und ein Vorschaubild – eine eigene `thumb.svg` im Simulationsordner, sonst eine Vorlage über `thumb` (bei eigener `thumb.svg` kein zusätzliches `thumb: 'generic'`, ein Test prüft das) – und bekommt eine eigene Seite. Sobald die Bildtests ein Referenzbild der Simulation haben, zeigt die Karte statt der Grafik ein Foto der echten Bühne (`docs/BILDTESTS.md`).
 - `curriculum/kmk.ts` enthält die Leitideen bzw. Kompetenzbereiche und Basiskonzepte der KMK-Bildungsstandards. Die Zuordnung ist ein erster Entwurf und sollte fachdidaktisch geprüft werden.
 - Klassenstufen über 13 stehen für die Universität.
 - Innerhalb eines Bereichs sind Themen und Simulationen nach Klassenstufe sortiert (ein Test prüft das).
