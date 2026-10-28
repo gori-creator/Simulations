@@ -97,7 +97,7 @@ The points are $(-5 \mid 0)$, $(0 \mid 5)$ and $(5 \mid 0)$, which give $f(x) = 
 
 ## Ideas for the classroom
 
-- Year 9 (Bavaria, Gymnasium), quadratic functions combined with systems of linear equations. How far systems with three unknowns are required in year 9 should be checked against your own curriculum and textbook. Good for consolidation and modelling (thrown ball, bridge arch).
+- About grade 9, quadratic functions combined with systems of linear equations. How far systems with three unknowns are required in year 9 should be checked against your own curriculum and textbook. Good for consolidation and modelling (thrown ball, bridge arch).
 - The working uses II − I and III − I. Other orders are just as correct; comparing them with students' solutions is worthwhile.
 - Points snap to a 0.5 grid, so the working stays exact. Non-terminating results are shown as reduced fractions.
 - Common mistakes: treating $x$, $y$ as the unknowns, sign errors when squaring negative numbers, and believing that three points always determine a parabola.

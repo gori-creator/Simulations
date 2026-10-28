@@ -79,7 +79,7 @@ The deviation $|h_n - p|$ typically keeps getting smaller. The deviation of the 
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria grade 8 (Laplace experiments: relative frequency and the empirical law of large numbers); in other German states partly from grade 6. The drawing pin is the classic example of a probability that can only be determined by experiment.
+- **Use:** About grades 6 to 8 (Laplace experiments: relative frequency and the empirical law of large numbers). The drawing pin is the classic example of a probability that can only be determined by experiment.
 - **Images:** Die, coin, drawing pin and table are shown as photos; if an image is missing, the simulation draws a replacement graphic.
 - **Common stumbling blocks:**
   - Gambler's fallacy ("now the six is due").

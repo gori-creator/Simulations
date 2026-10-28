@@ -126,7 +126,7 @@ With a common denominator: $\frac{2}{6}$ and $\frac{3}{6}$ – there is no sixth
 
 ## Ideas for the classroom
 
-- **Use:** grade 6 (in Bavaria: LehrplanPLUS Gymnasium, learning area 1.1 “Fractions of a whole and fractions as numbers”): expanding, reducing, comparing and fractions on the number line. Common denominators are needed again for adding fractions (learning area 1.3). The simulation “Representing fractions” works as an introduction, this one for deepening and practice.
+- **Use:** about grade 6, fractions of a whole and fractions as numbers: expanding, reducing, comparing and fractions on the number line. Common denominators are needed again for adding fractions. The simulation “Representing fractions” works as an introduction, this one for deepening and practice.
 - **Three views:** *Compare* (two fractions as bars or circles with a shared number line), *Expand and reduce* (steps with arcs “·3” or “:2”, group brackets and fraction wall) and the game *Order fractions* (three levels, with hint bars).
 - **Guess instead of reading off:** with `show=0` (switch “Show the comparison sign right away” off) three buttons appear instead of the sign; students tap $<$, $=$ or $>$ themselves and get immediate feedback. Together with “Hide results (for exercises)” this works well for tasks shared by link or QR code.
 - **Deliberate design:** pieces are numbered only once they have equal size (after finding a common denominator). This way learners are not invited to compare numerators of different-sized pieces.

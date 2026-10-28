@@ -120,7 +120,7 @@ No: $\frac63 = 2$, but $\frac{5.6}{4} = 1.4$. A parallel would need $\overline{Z
 
 ## Ideas for the classroom
 
-- **Use:** Year 9, topic similarity, enlargement and intercept theorems (LehrplanPLUS Gymnasium Bavaria; please check the exact title in the curriculum). The animation “Slide the parallel” can prompt a conjecture (“All ratios stay the same – but only if …”), and the cards then confirm it with numbers.
+- **Use:** About grade 9, similarity, enlargement and intercept theorems. The animation “Slide the parallel” can prompt a conjecture (“All ratios stay the same – but only if …”), and the cards then confirm it with numbers.
 - **Negative scale factors:** Whether the X shape is described with $k < 0$ varies between classrooms – please check against the curriculum. That is why the slider works with the ratio of the lengths.
 - **Measuring outside:** The tree and pond tasks can be recreated on the school grounds; “Play the measurement” shows the order of the steps. With “Show the result” switched off (`show=0`), the calculation mode and the applications become exercises.
 - **Common stumbling blocks:**

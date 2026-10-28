@@ -132,9 +132,9 @@ Skizziere die Graphen und entscheide mit dem Linientest: (a) die Gerade, auf der
 
 ## Ideen für den Unterricht
 
-- **Einsatz (Bezug als Entwurf):** Jahrgangsstufe 8, Lernbereich 1 „Funktion und Term“: Funktion als eindeutige Zuordnung, Definitions- und Wertemenge, Graphen. Gut als Einstieg (Alltagszuordnungen im Pfeildiagramm) und zur Sicherung (Linientest, Umkehrung).
+- **Einsatz (Bezug als Entwurf):** etwa Klasse 8, Funktion und Term: Funktion als eindeutige Zuordnung, Definitions- und Wertemenge, Graphen. Gut als Einstieg (Alltagszuordnungen im Pfeildiagramm) und zur Sicherung (Linientest, Umkehrung).
 - **Darstellungen:** Pfeildiagramm, Wertetabelle und Graph sind synchron – antippen oder ziehen ändert alle drei. Rot markiert sind Elemente mit mehreren Pfeilen (Zahl) oder ohne Pfeil (?). Mit `show=0` werden Färbung und Urteil ausgeblendet; die Lernenden entscheiden selbst.
-- **Linientest:** Die Leiste unter dem Graphen zeigt, wie viele Schnittpunkte die senkrechte Gerade an jeder besuchten Stelle hat. Bei Funktionsgraphen markiert die Simulation $D$ (türkis, auf der $x$-Achse) und $W$ (lila, auf der $y$-Achse). Der Halbkreis $f(x) = \sqrt{9 - x^2}$ greift der Wurzel aus Jahrgangsstufe 9 vor und kann auch nur als Graph betrachtet werden. Eine senkrechte Gerade und die Betragsfunktion sind nicht als Graph eingebaut; Aufgabe 7 behandelt sie auf Papier.
+- **Linientest:** Die Leiste unter dem Graphen zeigt, wie viele Schnittpunkte die senkrechte Gerade an jeder besuchten Stelle hat. Bei Funktionsgraphen markiert die Simulation $D$ (türkis, auf der $x$-Achse) und $W$ (lila, auf der $y$-Achse). Der Halbkreis $f(x) = \sqrt{9 - x^2}$ greift der Quadratwurzel vor und kann auch nur als Graph betrachtet werden. Eine senkrechte Gerade und die Betragsfunktion sind nicht als Graph eingebaut; Aufgabe 7 behandelt sie auf Papier.
 - **Häufige Stolpersteine:**
   - „Wenn zwei Pfeile beim selben Element ankommen, ist es keine Funktion.“ – Es kommt nur auf die ausgehenden Pfeile an.
   - „Eine Funktion braucht eine Formel.“ – Auch Kind $\mapsto$ Geburtsmonat ist eine Funktion.

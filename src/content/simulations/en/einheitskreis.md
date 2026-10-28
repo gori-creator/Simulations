@@ -89,7 +89,7 @@ At 90°, $\cos\alpha = 0$ – you would have to divide by zero. Geometrically, t
 
 ## Ideas for the classroom
 
-- **Use:** the step from trigonometry in right triangles to trigonometric functions (in Bavaria: grade 9, learning area 7.2, and grade 10, learning area 3).
+- **Use:** the step from trigonometry in right triangles to trigonometric functions (usually grades 9/10).
 - **On the projector:** run the animation slowly (e.g. 10 °/s) and let the class predict when the sine reaches its maximum.
 - **Common pitfalls:**
   - Sine and cosine exist "only in the triangle", i.e. only for angles below 90°.

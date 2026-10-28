@@ -104,7 +104,7 @@ Der mittlere Wert muss $10$ sein, die Summe $5 \cdot 20 = 100$. Zum Beispiel $5;
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 7, Lernbereich „Kenngrößen von Daten“ (LehrplanPLUS Bayern, Gymnasium): Mittelwert und Median vergleichen, Spannweite und Quartile, Boxplots erstellen und deuten. Als Einstieg eignet sich vielleicht das Ziehen eines einzelnen Punktes; „Schritt für Schritt“ kann die Konstruktion an der Tafel begleiten.
+- **Einsatz:** Etwa Klasse 7, Kenngrößen von Daten: Mittelwert und Median vergleichen, Spannweite und Quartile, Boxplots erstellen und deuten. Als Einstieg eignet sich vielleicht das Ziehen eines einzelnen Punktes; „Schritt für Schritt“ kann die Konstruktion an der Tafel begleiten.
 - **Eigene Daten:** Die Klasse könnte selbst Daten erheben (Schulweg, Schlafdauer, Weitsprung) und sie in das Feld „Werte“ eintippen. Im Vergleichsmodus lassen sich zwei Erhebungen nebeneinander betrachten.
 - **Quartile:** Die Simulation bildet die Quartile als Mediane der beiden Hälften (Median bei ungerader Anzahl ausgeschlossen). Eine andere verbreitete Festlegung nimmt als $Q_1$ den kleinsten Wert, bis zu dem mindestens ein Viertel der Werte reicht (bei $1;\ \ldots;\ 9$ also $3$ statt $2{,}5$). Falls im Schulbuch eine andere Festlegung steht, kann ein kurzer Hinweis Verwirrung vermeiden.
 - **Ausreißer bei wenigen Werten:** Bei $1;\ 2;\ 3;\ 4;\ 100$ ist die Box sehr breit ($Q_1 = 1{,}5$, $Q_3 = 52$). Die $1{,}5$-Regel kennzeichnet die $100$ deshalb nicht als Ausreißer – den Mittelwert verschiebt sie trotzdem stark. [Ausprobieren](?ctx=own&d=1%3B2%3B3%3B4%3B100&out=1)

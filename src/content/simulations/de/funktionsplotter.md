@@ -44,7 +44,7 @@ Mit der **Spur** fährst du mit einem Punkt am Graphen entlang und liest seine K
 6. Lade [drei Sinuskurven](?f=sin%28x%29&g=2sin%28x%29&h=sin%282x%29&nst=0&sct=0&pi=1&x1=-6.5&x2=6.5&y1=-3&y2=3&eq=0) mit der $x$-Achse in Vielfachen von $\pi$. Woran erkennst du die Amplitude, woran die Periode?
 7. Untersuche die [Tangensfunktion](?f=tan%28x%29&g=&pi=1&x1=-6.5&x2=6.5): Wo liegen Nullstellen, wo Polstellen?
 8. Gib [(x² − 1)/(x − 1)](?f=%28x%5E2%20-%201%29%2F%28x%20-%201%29&g=) ein. Der Graph sieht aus wie eine Gerade – doch was ist bei $x = 1$?
-9. *(Ab Jahrgangsstufe 11)* Schalte die [Tangente](?f=x%5E3%20-%203x&g=&tg=1&tx=2) ein und ziehe den Spurpunkt. Wo ist die Tangente waagrecht?
+9. *(Oberstufe)* Schalte die [Tangente](?f=x%5E3%20-%203x&g=&tg=1&tx=2) ein und ziehe den Spurpunkt. Wo ist die Tangente waagrecht?
 
 ## Aufgaben
 
@@ -103,7 +103,7 @@ $f(x) = \frac{x^2 - 4}{x - 2} = \frac{(x - 2)(x + 2)}{x - 2} = x + 2$ für $x \n
 
 </details>
 
-### Aufgabe 6: Tangente (ab Jahrgangsstufe 11)
+### Aufgabe 6: Tangente (Oberstufe)
 
 [Aufgabe laden](?f=x%5E3%20-%203x&g=&tg=0&tx=2&ext=0&nst=0&_hide=1) Berechne für $f(x) = x^3 - 3x$ die Steigung $f'(2)$ und die Gleichung der Tangente bei $x = 2$. Überprüfe anschließend mit „Tangente im Spurpunkt“. An welchen Stellen ist die Tangente waagrecht?
 
@@ -116,7 +116,7 @@ $f'(x) = 3x^2 - 3$, also $f'(2) = 9$ und mit $f(2) = 2$: $t(x) = 9(x - 2) + 2 = 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 8, Lernbereich 1 „Funktion und Term“ (Graphen mit einem Funktionenplotter erstellen und untersuchen), danach als Werkzeug durch alle Jahrgangsstufen: quadratische Funktionen und Scharen (9), Potenz-, Exponential- und Sinusfunktionen (10), gebrochen-rationale Funktionen und Ableitung (11–13), auch im Studium.
+- **Einsatz:** Etwa Klasse 8, Funktion und Term (Graphen mit einem Funktionenplotter erstellen und untersuchen), danach als Werkzeug durch alle Klassen: quadratische Funktionen und Scharen, Potenz-, Exponential- und Sinusfunktionen, gebrochen-rationale Funktionen und Ableitung in der Oberstufe, auch im Studium.
 - **Sicher und datensparsam:** Die Terme werden von einem eigenen Leseprogramm ausgewertet (kein `eval`, keine Übertragung). Geteilte Links enthalten die Terme, den Ausschnitt und alle Einstellungen; mit `_hide=1` werden die Ergebnislisten verdeckt, die Marken im Bild schaltet man in Aufgabenlinks einzeln ab (`nst=0`, `sct=0`, `ext=0`, `asy=0`).
 - **Numerik:** Alle besonderen Punkte sind Näherungen im sichtbaren Ausschnitt. Sehr flache Extrempunkte (z. B. bei $x^{10}$) oder sehr dicht liegende Nullstellen können übersehen werden; hebbare Lücken werden an Stellen eines Viertelrasters gesucht. Potenzen mit negativer Basis sind nur für ganzzahlige Exponenten definiert (wie im Unterricht): `x^(1/3)` ist für $x < 0$ nicht definiert.
 - **Häufige Stolpersteine:**

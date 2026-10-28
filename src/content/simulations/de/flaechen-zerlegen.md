@@ -112,7 +112,7 @@ $(8 + 4) \cdot h : 2 = 30$, also $6 \cdot h = 30$ und $h = 5\,\text{cm}$. [Lösu
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 6, Lernbereich 2 „Flächeninhalt und Volumen“ (LehrplanPLUS Gymnasium Bayern): Flächeninhalt von Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen herleiten. Die Zuordnung bitte am Lehrplan prüfen. Gut als Einstieg am Whiteboard: erst vermuten lassen, dann zerlegen.
+- **Einsatz:** Etwa Klasse 6, Flächeninhalt: Flächeninhalt von Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen herleiten. Die Zuordnung bitte am Lehrplan prüfen. Gut als Einstieg am Whiteboard: erst vermuten lassen, dann zerlegen.
 - **Ablauf:** Zum Parallelogramm passt die Reihenfolge Parallelogramm → Rechteck, danach Dreieck → Parallelogramm und zuletzt das Trapez mit zwei Wegen. Mit „Flächeninhalt sofort zeigen“ aus erscheint das Ergebnis erst nach dem Zerlegen oder Zählen.
 - **Scherung:** „Spitze verschieben“ macht sichtbar, dass nur Grundseite und Höhe zählen. Daraus lässt sich die Frage ableiten, warum die schräge Seite in keiner Formel vorkommt.
 - **Modell:** Alle Ecken liegen auf Gitterpunkten, die Grundseite liegt waagerecht. Die Höhe wird von der linken oberen Ecke aus eingezeichnet; beim Trapez ist $h$ der Abstand der beiden parallelen Seiten.

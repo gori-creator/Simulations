@@ -121,12 +121,12 @@ Zwölf: Vier davon erreicht man mit „5 nach rechts, links, oben oder unten“,
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5, Lernbereich 2 „Geometrische Figuren und Lagebeziehungen“ (LehrplanPLUS Gymnasium Bayern): Einstieg ins Koordinatensystem, Erarbeitung der Begriffe parallel, senkrecht, Abstand und Tangente, Übung mit dem Punkte-Spiel (auch als Warm-up am Whiteboard).
+- **Einsatz:** Etwa Klasse 5, geometrische Figuren und Lagebeziehungen: Einstieg ins Koordinatensystem, Erarbeitung der Begriffe parallel, senkrecht, Abstand und Tangente, Übung mit dem Punkte-Spiel (auch als Warm-up am Whiteboard).
 - **Modell:** Alle Punkte liegen auf Gitterpunkten im 1. Quadranten; eine Längeneinheit entspricht 1 cm, also zwei Kästchen. „Senkrecht“, „parallel“ und „Tangente“ werden exakt (ganzzahlig) entschieden. Längen wie $\overline{AB}$ oder Abstände werden wie mit dem Lineal auf Millimeter gerundet angegeben ($\approx$). Das Geodreieck ist verkleinert (Zeichenkante 8 cm statt 16 cm).
 - **Häufige Stolpersteine:**
   - x- und y-Koordinate werden vertauscht – das Spiel erkennt diesen Fehler und gibt gezielt Rückmeldung („erst nach rechts, dann nach oben“).
   - „Senkrecht“ wird mit „lotrecht/hochkant“ verwechselt. In der Mathematik ist „senkrecht“ immer eine Beziehung **zwischen zwei** Geraden; auch schräge Geraden können senkrecht zueinander sein.
   - Parallel heißt nicht „gleich lang“ oder „waagerecht“; Geraden haben keine Länge.
   - Der Abstand wird schräg gemessen statt senkrecht (entlang des Lots).
-- **Schreibweise:** Punkte mit senkrechtem Strich $P(3 \mid 5)$, Strecke $[AB]$, Halbgerade $[AB$, Gerade $AB$, Streckenlänge $\overline{AB}$ – wie in bayerischen Schulbüchern üblich.
+- **Schreibweise:** Punkte mit senkrechtem Strich $P(3 \mid 5)$, Strecke $[AB]$, Halbgerade $[AB$, Gerade $AB$, Streckenlänge $\overline{AB}$ – wie in vielen Schulbüchern üblich; manche Lehrwerke schreiben $P(3;5)$ oder $\overline{AB}$ für die Strecke.
 - **Punkte-Spiel:** Es funktioniert auch in gesperrten Links (`_lock=1`). Die Ergebnisse „Lage“ und „Abstand“ lassen sich mit `_hide=1` verdecken; in der Zeichnung bleiben sie sichtbar.

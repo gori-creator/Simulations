@@ -110,7 +110,7 @@ Twice in the same line: the original again. With two reflections in lines, the o
 
 ## Ideas for the classroom
 
-- **Use:** Grade 7, learning area 2.1 “Figures with line and point symmetry” (LehrplanPLUS Gymnasium Bavaria): properties of reflections in a line and in a point, constructing image points with a set square, recognising symmetry. Suitable for introducing the topic (folding over as a hands-on idea) and for practice.
+- **Use:** About grade 7, figures with line and point symmetry: properties of reflections in a line and in a point, constructing image points with a set square, recognising symmetry. Suitable for introducing the topic (folding over as a hands-on idea) and for practice.
 - **Controls:** Corners, the points of the line, the line itself, the centre and the whole figure can be dragged; image points too. Switch off “Show the image” for construction tasks in exercise books. In “find the symmetry”, students draw lines by dragging and tap a suspected centre; wrong attempts show the non-matching image in red.
 - **Model:** All points lie on grid points of the squared paper (one square $= 0.5\,\text{cm}$); with a slanted line, image points in general do not lie on grid points. If part of the image lies outside the paper, a note appears. If $P$ and $Q$ coincide via a slider or link, the point moved last moves on by one square, so there is always a line. If the corners lie on one line, the simulation says that this is not a proper figure.
 - **Common stumbling blocks:**

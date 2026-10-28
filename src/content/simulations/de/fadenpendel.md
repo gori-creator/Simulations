@@ -103,7 +103,7 @@ $T/T_0 = 1/\operatorname{AGM}(1;\, \cos 45^\circ) \approx 1{,}180$, also rund $1
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Mechanische Schwingungen und Energieerhaltung, je nach Lehrplan Jahrgangsstufe 10 bis 12 (bitte am LehrplanPLUS prüfen). Die Messreihe eignet sich als Ergänzung oder Vorbereitung eines echten Schülerversuchs mit Stoppuhr.
+- **Einsatz:** Mechanische Schwingungen und Energieerhaltung, je nach Lehrplan Klasse 10 bis 12. Die Messreihe eignet sich als Ergänzung oder Vorbereitung eines echten Schülerversuchs mit Stoppuhr.
 - **Messen:** Die Simulation stoppt 10 Schwingungen mit zufälliger Reaktionszeit (abschaltbar). So lässt sich besprechen, warum man viele Perioden misst und warum eine kleine Auslenkung gewählt wird (bei $20^\circ$ ist $T$ schon $0{,}8\,\%$ zu lang).
 - **Modell:** Massepunkt an masselosem Faden, exakte Bewegungsgleichung $\ddot\varphi = -\tfrac{g}{l}\sin\varphi - 2\gamma\dot\varphi$ numerisch gelöst; die Kleinwinkelnäherung läuft als gestricheltes Vergleichspendel mit. Für $|\varphi_0| > 90^\circ$ starre Stange statt Faden.
 - **Häufige Stolpersteine:**

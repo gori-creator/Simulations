@@ -111,7 +111,7 @@ With $c = 4\,\text{cm}$ and with $c = 6.4\,\text{cm}$ you get two triangles with
 
 ## Ideas for the classroom
 
-- **Use:** grade 7, unit on congruence and triangle constructions (in Bavaria: LehrplanPLUS Gymnasium; please check the exact name in the curriculum). On the projector the simulation can construct step by step while the class draws along in their exercise books; afterwards the lines of the construction steps can be compared together.
+- **Use:** about grade 7, congruence and triangle constructions. On the projector the simulation can construct step by step while the class draws along in their exercise books; afterwards the lines of the construction steps can be compared together.
 - **Task mode:** With “Measure the missing parts” switched off (`meas=0`) the construction starts on a blank sheet and measurements and verdict stay hidden. Students construct on their own first and then compare with “Next step”.
 - **Model:** The construction always starts from the base $[AB]$, with $C$ above it; the intersection below gives a reflected, i.e. congruent, triangle. Lengths are set to $0.1\,\text{cm}$, angles to $1°$; measured parts are shown with “≈”.
 - **Common stumbling blocks:**

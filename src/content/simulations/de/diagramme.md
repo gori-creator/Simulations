@@ -114,7 +114,7 @@ Zusammen sind es $120\,\%$ – ein Ganzes sind aber $100\,\%$. Es wurde durch $2
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 6, Lernbereich „Prozentrechnung, Daten und Diagramme“ (LehrplanPLUS Bayern, Gymnasium): Diagramme erstellen, lesen und kritisch beurteilen; Anteile in Prozent und als Kreiswinkel. Auch in Jahrgangsstufe 5 zum Ablesen von Säulendiagrammen denkbar.
+- **Einsatz:** Etwa Klasse 6, Prozentrechnung, Daten und Diagramme: Diagramme erstellen, lesen und kritisch beurteilen; Anteile in Prozent und als Kreiswinkel. Auch in Klasse 5 zum Ablesen von Säulendiagrammen denkbar.
 - **Eigene Daten:** Die Klasse könnte ihren eigenen Lieblingssport erheben und die Werte mit den Reglern eintragen; die Strichliste entsteht dabei gleich mit.
 - **Darstellungswechsel:** Die Verwandlung von Säulen über den Streifen zum Kreis kann zeigen, dass alle drei Diagramme dieselben Daten enthalten – nur Streifen und Kreis zeigen den Anteil am Ganzen direkt.
 - **Detektiv-Modus:** Eignet sich vielleicht für Partnerarbeit; die Fälle lassen sich auch einzeln verlinken (z. B. Fall 3). Eine Anschlussidee ist, selbst ein „geschöntes“ Diagramm zu entwerfen und tauschen zu lassen.

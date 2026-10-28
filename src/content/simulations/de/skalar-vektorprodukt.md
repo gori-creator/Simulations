@@ -92,7 +92,7 @@ $\vec a \times \vec b = \begin{pmatrix} 0 \\ 0 \\ 6 \end{pmatrix}$, also $V = |6
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereich „Grundlagen der Koordinatengeometrie im Raum“ (LehrplanPLUS Bayern, Gymnasium).
+- **Einsatz:** Oberstufe, Grundlagen der Koordinatengeometrie im Raum.
 - **Entdecken statt Vorgeben:** Zuerst unter „Entdecken“ senkrechte Vektoren suchen lassen – die Ebene der Lösungen führt direkt zur Normalenform.
 - **cos und sin zusammen:** „Winkel drehen“ zeigt Skalarprodukt (Projektion) und Fläche (Höhe) im selben Bild.
 - **Häufige Stolpersteine:**

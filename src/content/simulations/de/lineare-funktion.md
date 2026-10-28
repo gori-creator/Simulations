@@ -102,7 +102,7 @@ Ein Handytarif kostet 5 € Grundgebühr im Monat und 2 € pro verbrauchtem Gig
 ## Ideen für den Unterricht
 
 - **Einsatz:** Einführung in Klasse 7/8 oder Wiederholung vor quadratischen Funktionen. Am Beamer bewährt: Die Klasse sagt vorher, was passiert, bevor ein Regler bewegt wird.
-- **Bezeichnung:** Die Simulation schreibt $f(x) = mx + t$ wie im bayerischen Lehrplan. Verwendet Ihr Lehrwerk $b$ oder $n$ für den y-Achsenabschnitt, weisen Sie kurz darauf hin.
+- **Bezeichnung:** Die Simulation schreibt $f(x) = mx + t$. Verwendet Ihr Lehrwerk $b$ oder $n$ für den y-Achsenabschnitt, weisen Sie kurz darauf hin.
 - **Häufige Stolpersteine:**
   - Steigung und y-Achsenabschnitt werden verwechselt.
   - Bei negativer Steigung wird das Steigungsdreieck „nach oben“ gezeichnet.

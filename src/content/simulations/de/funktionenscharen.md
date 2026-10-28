@@ -94,7 +94,7 @@ $f_k'(x) = e^x + (x - k)e^x = e^x(x - k + 1) = 0 \Rightarrow x = k - 1$; $f_k(k 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12 (ganzrationale Funktionen mit Parametern) und 13 (Anwendungen, verknüpfte Funktionen mit Parametern) im LehrplanPLUS Gymnasium Bayern; die genaue Zuordnung der e-Funktions-Scharen bitte am Lehrplan prüfen.
+- **Einsatz:** Oberstufe: ganzrationale Funktionen mit Parametern, danach Anwendungen und verknüpfte Funktionen mit Parametern (auch Scharen von e-Funktionen).
 - **Vermuten, dann rechnen:** Erst die Ortskurve mit „k durchlaufen lassen“ als leuchtende Spur sichtbar machen und eine Gleichung vermuten lassen, dann mit „Ergebnisse zeigen“ aus rechnen und schrittweise aufdecken.
 - **Fallunterscheidung am k-Strahl:** Die Klasse markiert vorher auf einem Zahlenstrahl, für welche $k$ welche Art von Extrempunkten entsteht, und vergleicht mit dem k-Strahl der Simulation.
 - **Sonderfälle:** Lücke der Ortskurve bei $x = 0$, Terrassenpunkt bei $k = 0$, Berühren statt Schneiden im gemeinsamen Punkt – gut für ein Gespräch über genaues Formulieren.

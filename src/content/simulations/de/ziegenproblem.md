@@ -115,7 +115,7 @@ Bleiben: $\frac{1}{4} = 25\,\%$. Wechseln: Mit $\frac{3}{4}$ war die erste Wahl 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 10 (mehrstufige Zufallsexperimente, Simulationen); bitte am Lehrplan prüfen. Gut als Einstieg: Lassen Sie die Klasse vorher abstimmen, ob sie wechseln würde.
+- **Einsatz:** Mittelstufe (mehrstufige Zufallsexperimente, Simulationen). Gut als Einstieg: Lassen Sie die Klasse vorher abstimmen, ob sie wechseln würde.
 - **Spielmodus:** Die Türen lassen sich direkt antippen, auch am Smartboard. Jede Gruppe kann zehn Spiele mit „Bleiben“ und zehn mit „Wechseln“ machen. Sammeln Sie danach die Ergebnisse der ganzen Klasse.
 - **Simulationsmodus:** Tausende Spiele laufen in Sekunden. Hier lässt sich gut über den Unterschied zwischen relativer Häufigkeit und Wahrscheinlichkeit sprechen (Aufgabe 5).
 - **Zum Begreifen:** Mit zehn Türen wird das Ergebnis für viele sofort einleuchtend (Aufgabe 3).

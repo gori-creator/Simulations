@@ -117,7 +117,7 @@ $V_\text{stack} = \pi \cdot 1.25\,\text{cm} \cdot (9 + 5.0625 + 2.25 + 0.5625)\,
 
 ## Ideas for the classroom
 
-- **Use:** Grade 10, volumes of solids (pyramid, cone, sphere; Cavalieri’s principle) in the Bavarian LehrplanPLUS, Gymnasium – assignment is a draft, please check it against the current curriculum. Works well as an introduction (stacks of coins and cards), to justify the formulas for oblique solids and as a highlight for deriving the volume of a sphere.
+- **Use:** About grade 9/10, volumes of solids (pyramid, cone, sphere; Cavalieri’s principle). Works well as an introduction (stacks of coins and cards), to justify the formulas for oblique solids and as a highlight for deriving the volume of a sphere.
 - **Model:** The slices enclose the solid (radius at the lower edge of each slice); the centre of every slice lies on the shifted or bent axis. The hatched orange area is the exact cross-section of the solid. The chart $A(z)$ shows the slices as bars – a first glimpse of integration (“area under the curve = volume”).
 - **Common stumbling blocks:**
   - “An oblique cylinder holds more because it is longer.” – What counts is the perpendicular height, not the slanted side.

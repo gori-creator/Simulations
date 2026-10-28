@@ -91,4 +91,4 @@ $$f(t) \approx 3{,}8 \cdot \sin\big(0{,}52\,(t - 2{,}7)\big) + 0{,}2$$
 - **π-Achse:** Standardmäßig ist die x-Achse in Vielfachen von $\pi$ beschriftet und $c$ rastet in Schritten von $\frac{\pi}{12}$ ein. Für Modellierungsaufgaben lässt sich das unter **Anzeige** abschalten; dann ist $c$ dezimal einstellbar.
 - **Aufgabenmodus:** Schalten Sie **Werte und Hilfslinien zeigen** aus. Dann sind Regler, Hilfslinien und Ergebnisse verdeckt, und die Klasse liest die Parameter am Graphen ab. Über **Teilen** lässt sich ein solcher Zustand als Link weitergeben.
 - **Einstieg:** Die Simulation „Einheitskreis“ zeigt, wie die Sinuskurve aus der Kreisbewegung entsteht.
-- **Schreibweise in Bayern:** Der LehrplanPLUS schreibt $a \cdot \sin(b \cdot (x + c)) + d$. Unter **Anzeige → Schreibweise** lässt sich die Simulation darauf umstellen; ein positives $c$ verschiebt dann nach links.
+- **Schreibweise:** Manche Lehrpläne und Lehrwerke schreiben $a \cdot \sin(b \cdot (x + c)) + d$. Unter **Anzeige → Schreibweise** lässt sich die Simulation darauf umstellen; ein positives $c$ verschiebt dann nach links.

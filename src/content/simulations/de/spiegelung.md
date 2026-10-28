@@ -110,7 +110,7 @@ Zweimal an derselben Achse: wieder das Original. Bei zwei Achsenspiegelungen wir
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 7, Lernbereich 2.1 „Achsen- und punktsymmetrische Figuren“ (LehrplanPLUS Gymnasium Bayern): Eigenschaften von Achsen- und Punktspiegelung, Konstruktion von Bildpunkten mit dem Geodreieck, Symmetrie erkennen. Geeignet für die Erarbeitung (Umklappen als Handlungsvorstellung) und für Übungsphasen.
+- **Einsatz:** Etwa Klasse 7, achsen- und punktsymmetrische Figuren: Eigenschaften von Achsen- und Punktspiegelung, Konstruktion von Bildpunkten mit dem Geodreieck, Symmetrie erkennen. Geeignet für die Erarbeitung (Umklappen als Handlungsvorstellung) und für Übungsphasen.
 - **Bedienung:** Ecken, Achsenpunkte, die Achse selbst, das Zentrum und die ganze Figur lassen sich ziehen; auch an Bildpunkten. „Bildfigur zeigen“ aus eignet sich für Konstruktionsaufgaben im Heft. Im Modus „Symmetrie erkennen“ zeichnet man Achsen durch Ziehen und tippt auf ein vermutetes Zentrum; falsche Versuche zeigen das nicht passende Bild in Rot.
 - **Modell:** Alle Punkte liegen auf Gitterpunkten des Karopapiers (ein Kästchen $= 0{,}5\,\text{cm}$); Bildpunkte bei schräger Achse liegen im Allgemeinen nicht auf Gitterpunkten. Liegt das Bild zum Teil außerhalb des Papiers, erscheint ein Hinweis. Fallen $P$ und $Q$ über Regler oder Link zusammen, rückt der zuletzt bewegte Punkt ein Kästchen weiter, damit es immer eine Achse gibt. Liegen die Ecken auf einer Geraden, zeigt die Simulation an, dass das keine richtige Figur ist.
 - **Häufige Stolpersteine:**

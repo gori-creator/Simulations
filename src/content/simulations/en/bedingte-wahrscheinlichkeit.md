@@ -100,7 +100,7 @@ We need false positives $\le$ true positives, i.e. $0.99 \cdot (1 - s) \le 0.009
 
 ## Ideas for the classroom
 
-- **Use:** conditional probability and Bayes’ theorem (upper secondary; in Bavaria grade 11 – please check against your own curriculum). Two-way tables and tree diagrams are covered in more depth in [Two-way tables and Venn diagrams](../two-way-table-venn-diagram/), path rules in [Multi-stage experiments](../tree-diagram-path-rules/).
+- **Use:** conditional probability and Bayes’ theorem (upper secondary). Two-way tables and tree diagrams are covered in more depth in [Two-way tables and Venn diagrams](../two-way-table-venn-diagram/), path rules in [Multi-stage experiments](../tree-diagram-path-rules/).
 - **Start with an estimate:** before revealing it, let students guess how likely a person who tested positive is ill – the guesses are often far above $9\,\%$.
 - **Natural frequencies:** the icon picture and the tree with counts often make the calculation easier to follow than the formula alone; Bayes’ formula can then be read off the tree.
 - **For tasks:** with “Show results” switched off, counts and predictive values appear as “?”. Prevalence, sensitivity and specificity stay visible.

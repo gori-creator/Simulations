@@ -114,4 +114,4 @@ The vertex $S(5, 6)$ is the highest point: a height of 6 m after 5 m. Landing: $
 - **Regional differences:** depending on the region, students work with the $pq$ formula (normal form $x^2 + px + q$) or the $abc$ formula. The simulation shows the discriminant $b^2 - 4ac$; for $a = 1$ it equals $p^2 - 4q$.
 - **Rounded values:** if zeros or the vertex cannot be shown exactly with two decimal places, the simulation shows "≈" instead of "=" (e.g. $x_2 \approx 10.48$ for the ball). This is a good opportunity to talk about exact values such as $5 + \sqrt{30}$.
 - **Exercise mode:** **Share → Hide results** hides the equations, the vertex and the zeros. This turns any setup into a reading exercise.
-- **Notation in Bavaria:** the Bavarian curriculum (LehrplanPLUS) writes the term as $a \cdot (x + d)^2 + e$. Under **Display → Notation of the vertex form** you can switch the simulation to this notation; a positive $d$ then shifts to the left.
+- **Notation:** some curricula and textbooks write the term as $a \cdot (x + d)^2 + e$. Under **Display → Notation of the vertex form** you can switch the simulation to this notation; a positive $d$ then shifts to the left.

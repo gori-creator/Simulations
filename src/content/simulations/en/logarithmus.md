@@ -115,7 +115,7 @@ $1.05^x = 2 \Rightarrow x = \frac{\lg 2}{\lg 1.05} = \frac{0.30103}{0.02119} \ap
 
 ## Ideas for the classroom
 
-- **Use:** Grade 10, unit “Exponential growth and logarithms” (LehrplanPLUS Bavaria, Gymnasium): introducing the logarithm through the question “$b$ to the power of what?”, exponential equations, laws of logarithms. The logarithmic *function* and the natural logarithm $\ln$ as the inverse of the exponential function $e^x$ belong, as we understand it, to the upper grades – please check your curriculum to see which parts are planned for your grade.
+- **Use:** About grade 10, exponential growth and logarithms: introducing the logarithm through the question “$b$ to the power of what?”, exponential equations, laws of logarithms. The logarithmic *function* and the natural logarithm $\ln$ as the inverse of the exponential function $e^x$ belong, as we understand it, to the upper grades – please check your curriculum to see which parts are planned for your grade.
 - **Starting without a formula:** Let students read the table of values of $2^x$ “backwards”, then move on to the graph with the reflection in $y = x$.
 - **Slide rule:** The view “Laws of logarithms” shows why people multiplied with log tables and slide rules before calculators existed: a multiplication becomes an addition of lengths.
 - **Common stumbling blocks:**

@@ -116,7 +116,7 @@ Boyle-Mariotte: $p_2 = p_1 \cdot \frac{V_1}{V_2} = 1013\,\text{hPa} \cdot \frac{
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Gasgesetze in der Mittelstufe (Wärmelehre) oder wiederholend in der Oberstufe bzw. im Chemieunterricht (molares Volumen, Stoffmenge); bitte die genaue Zuordnung am LehrplanPLUS prüfen. Gut als Ergänzung zu Realversuchen mit Kolbenprober, Gasthermometer oder Spritze und Manometer.
+- **Einsatz:** Gasgesetze in der Mittelstufe (Wärmelehre) oder wiederholend in der Oberstufe bzw. im Chemieunterricht (molares Volumen, Stoffmenge); die genaue Zuordnung unterscheidet sich je nach Lehrplan. Gut als Ergänzung zu Realversuchen mit Kolbenprober, Gasthermometer oder Spritze und Manometer.
 - **Vorhersagen lassen:** „Was zeigt das Manometer, wenn wir das Volumen halbieren?“ oder „Wie groß wird das Volumen bei $100\,°\text{C}$?“ – viele erwarten bei der zweiten Frage zunächst eine Verdopplung oder mehr.
 - **Messreihe wie im Praktikum:** Messwerte einzeln aufnehmen, Tabelle abschreiben, selbst ein Diagramm zeichnen und die Gerade verlängern; danach mit der Simulation vergleichen. Die Messunsicherheit lässt sich ein- und ausschalten.
 - **Teilchenbild und Formel verbinden:** Die Anzeige „aus Stößen“ macht sichtbar, dass der Druck nichts anderes ist als die Wirkung vieler Teilchenstöße.

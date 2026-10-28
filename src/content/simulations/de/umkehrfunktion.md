@@ -106,7 +106,7 @@ $f'(0) = 1{,}5 \cdot 0^2 = 0$: Die Tangente an $f$ in $(0 \mid 0)$ ist waagrecht
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 12, Lernbereiche zur Wurzelfunktion (Umkehrbarkeit über strenge Monotonie) und zur natürlichen Logarithmusfunktion samt Ableitung (LehrplanPLUS Gymnasium Bayern – bitte am Lehrplan prüfen). Der Sinus mit $\arcsin$ ist als Ausblick gedacht.
+- **Einsatz:** Oberstufe: Wurzelfunktion (Umkehrbarkeit über strenge Monotonie) und natürliche Logarithmusfunktion samt Ableitung. Der Sinus mit $\arcsin$ ist als Ausblick gedacht.
 - **Ablauf:** Die drei Ansichten lassen sich als Abfolge nutzen: erst „Umkehrbar?“ (waagrechte Gerade), dann „Spiegeln an y = x“ (Rechenweg und Umklappen), zuletzt „Ableitung von f⁻¹“ als Weg zu $(\ln x)' = \frac{1}{x}$.
 - **Handlungsorientiert:** Einen Graphen auf Folie zeichnen und die Folie entlang $y = x$ umdrehen – danach mit der Animation vergleichen. Mit „Lösungen zeigen“ aus (`show=0`) und ohne Graph von $f^{-1}$ (`inv=0`) eignen sich die Bilder als Übungsaufgaben.
 - **Häufige Stolpersteine:**

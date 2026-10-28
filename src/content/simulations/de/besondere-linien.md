@@ -119,7 +119,7 @@ Alle vier Punkte liegen auf einer Geraden, wenn das Dreieck **gleichschenklig** 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 7, Lernbereich zu Dreiecken, Kongruenz und Konstruktionen (LehrplanPLUS Gymnasium Bayern; genaue Zuordnung bitte am Lehrplan prüfen): Umkreis und Inkreis als Anwendung der Ortslinien Mittelsenkrechte und Winkelhalbierende. Seitenhalbierende, Höhen und Euler-Gerade eignen sich als Vertiefung oder Ausblick.
+- **Einsatz:** Etwa Klasse 7, Dreiecke, Kongruenz und Konstruktionen: Umkreis und Inkreis als Anwendung der Ortslinien Mittelsenkrechte und Winkelhalbierende. Seitenhalbierende, Höhen und Euler-Gerade eignen sich als Vertiefung oder Ausblick.
 - **Am Beamer:** „Nächster Schritt“ konstruiert Zeile für Zeile vor, die Klasse zeichnet im Heft mit. Die Begründungskarte („gleich weit von den Ecken“) kann Ausgangspunkt für einen gemeinsam formulierten Beweis sein.
 - **Entdecken:** Mit „Schnittpunkt und Kreis zeigen“ aus (`pt=0`) bleiben Punkt, Kreis und Messwerte verdeckt; die Lernenden stellen die Vermutung „Die drei Linien schneiden sich in einem Punkt“ selbst auf.
 - **Arbeitsteilig:** Vier Gruppen untersuchen je eine Linienart bei spitz-, recht- und stumpfwinkligen Dreiecken und tragen ihre Ergebnisse in eine gemeinsame Tabelle ein („Wo liegt der Punkt?“).

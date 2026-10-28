@@ -79,7 +79,7 @@ Die Abweichung $|h_n - p|$ wird typischerweise immer kleiner. Die Abweichung der
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 8 (Laplace-Experimente: relative Häufigkeit und empirisches Gesetz der großen Zahlen); in anderen Ländern teils schon ab Klasse 6. Der Reißnagel ist das klassische Beispiel für eine Wahrscheinlichkeit, die man nur experimentell bestimmen kann.
+- **Einsatz:** Etwa Klasse 6 bis 8 (Laplace-Experimente: relative Häufigkeit und empirisches Gesetz der großen Zahlen). Der Reißnagel ist das klassische Beispiel für eine Wahrscheinlichkeit, die man nur experimentell bestimmen kann.
 - **Bilder:** Würfel, Münze, Reißnagel und Tisch werden als Fotos gezeigt; fehlt ein Bild, zeichnet die Simulation eine Ersatzgrafik.
 - **Häufige Stolpersteine:**
   - Spielerfehlschluss („jetzt ist die Sechs dran“).

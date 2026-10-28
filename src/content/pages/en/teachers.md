@@ -32,8 +32,8 @@ Two extra options turn any setup into an exercise:
 
 Topics are organised by grade and aligned with the German national educational standards (KMK). Each simulation shows its grade level and the related competences.
 
-For **mathematics at Bavarian Gymnasium schools** there is also a view **by grade** (grades 5–13, LehrplanPLUS) on the [mathematics](../mathematics/) page.
+Using the **gear icon** at the top right you can also choose a **German state**. The subject pages are then sorted by the grades of that state’s curriculum, and each simulation shows the matching reference to the state curriculum. So far, curricula for the Gymnasium in mathematics and physics are included; more states and school types will follow. The learning material itself is deliberately neutral and only gives approximate grade levels.
 
 ## Privacy
 
-The site stores no personal data and sets no cookies. Only your colour scheme and language choice and – for offline use – the pages themselves are stored in your browser. See the [privacy policy](../privacy/).
+The site stores no personal data and sets no cookies. Only your colour scheme, your language choice, your chosen German state (if any) and – for offline use – the pages themselves are stored in your browser. See the [privacy policy](../privacy/).

@@ -119,7 +119,7 @@ $\text{I}\; x + y = 10$, $\text{II}\; x - y = 4$. Die Geraden schneiden sich in 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Bayern Jahrgangsstufe 8, Lernbereich 6 (Lineare Gleichungssysteme: aufstellen, grafisch und rechnerisch lösen, Lösbarkeit und Lösungsvielfalt). Voraussetzung sind lineare Funktionen (Lernbereich 2).
+- **Einsatz:** Etwa Klasse 8 (Lineare Gleichungssysteme: aufstellen, grafisch und rechnerisch lösen, Lösbarkeit und Lösungsvielfalt). Voraussetzung sind lineare Funktionen.
 - **Darstellungen:** Normalform $y = mx + t$ (Regler und ziehbare Punkte), allgemeine Form $ax + by = c$ mit ganzzahligen Koeffizienten (inklusive senkrechter Geraden; der Punkt auf der $y$-Achse verschiebt die Gerade parallel) und ein Tarifvergleich mit Achsen in Minuten und Euro. Beim Wechsel zwischen Normalform und allgemeiner Form werden die Gleichungen umgerechnet, soweit das mit den Reglern möglich ist.
 - **Exaktheit:** Die Simulation rechnet mit Brüchen. Liegt der Schnittpunkt nicht auf „schönen“ Werten, zeigt sie den abgelesenen Näherungswert und den exakten Wert – ein guter Anlass für die rechnerischen Verfahren. Mit `_hide=1` werden die Ergebnisse (Lage, Lösungsmenge, Rechnung, Probe, Tarif) verdeckt. Im Bild stehen dann keine Koordinaten des Schnittpunkts, und die Probe ist gesperrt. Dasselbe bewirkt der Schalter **Anzeige → Lösung anzeigen** (in Links: `show=0`).
 - **Häufige Stolpersteine:**

@@ -112,7 +112,7 @@ Der Pfad $rrb$: $\frac23 \cdot \frac12 \cdot 1 = \frac13$. Alle drei Pfade sind 
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 8 (Laplace-Experimente, Baumdiagramm) und Jahrgangsstufe 10, Lernbereich „Zusammengesetzte Zufallsexperimente und stochastische Simulationen“ (LehrplanPLUS Bayern, Gymnasium).
+- **Einsatz:** Mittelstufe: Laplace-Experimente und Baumdiagramme, später zusammengesetzte Zufallsexperimente und stochastische Simulationen.
 - **Echte Urne daneben:** Zuerst einige Male mit einer echten Urne ziehen, dann mit der Ansicht „Simulation“ vergleichen – sie ersetzt die vielen Wiederholungen.
 - **Bruchdarstellung:** Die Äste zeigen bewusst ungekürzte Brüche (z. B. $\frac24$), damit der Inhalt der Urne erkennbar bleibt; erst die Produkte werden gekürzt.
 - **Häufige Stolpersteine:**

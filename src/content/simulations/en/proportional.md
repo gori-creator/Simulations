@@ -121,7 +121,7 @@ The distance stays the same: speed times travel time is always $120\,\text{km}$,
 
 ## Ideas for the classroom
 
-- **Use:** proportional and inversely proportional relations with the rule of three (grade 6 or 7, depending on school type and federal state) and their return in grade 8 in the Bavarian LehrplanPLUS for the Gymnasium: direct proportion with linear functions (Lernbereich 2), inverse proportion with hyperbolas (Lernbereich 3) – please check against the curriculum.
+- **Use:** proportional and inversely proportional relations with the rule of three (grade 6 or 7, depending on school type and federal state) and their return with linear functions (direct proportion) and hyperbolas (inverse proportion).
 - **Three representations:** picture, table and graph react together. It can pay off to cover one of them and let students predict what “Double it” will do there.
 - **Tasks from the picture:** with “Show the solution” off (`show=0`) unknown values appear as “?”. In the test, students can tap a guess first and then check it; “Next table” works well for a short round with the whole class.
 - **Sorting task:** students collect everyday examples (fuel price, workers and working time, age and shoe size, phone contract with a base fee …) and sort them into the three cases before checking.

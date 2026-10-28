@@ -79,7 +79,7 @@ Write as a product: $x^2 + 10x + 25$, $49 - y^2$ and $9a^2 - 12ab + 4b^2$.
 
 ## Ideas for the classroom
 
-- **Use:** Grade 7 (Bavaria: terms with brackets, binomial formulas). The area model works as an introduction and as a justification of why the middle term $2ab$ appears.
+- **Use:** About grade 7/8 (terms with brackets, binomial formulas). The area model works as an introduction and as a justification of why the middle term $2ab$ appears.
 - **Animation:** The button below the drawing area splits the figure apart or puts it back together. For the third formula a strip is rotated and moved – a visual justification of $a^2 - b^2$.
 - **Common stumbling blocks:**
   - $(a + b)^2 = a^2 + b^2$ ("the square is distributed over the terms").

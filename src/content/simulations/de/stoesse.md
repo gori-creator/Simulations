@@ -121,7 +121,7 @@ Bei gleichen Massen tauschen die Gleiter beim elastischen Stoß ihre Geschwindig
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Impuls und Impulserhaltung in der Mechanik der Jahrgangsstufen 10/11 (am bayerischen Gymnasium im Rahmen der Newton’schen Mechanik; Zuordnung als Entwurf, bitte mit dem LehrplanPLUS abgleichen). Geeignet als Ersatz oder Vorbereitung für den Versuch an der Luftkissenbahn, zum Üben der Stoßformeln und zum Vergleich von Impuls- und Energieerhaltung.
+- **Einsatz:** Impuls und Impulserhaltung in der Mechanik der Mittel- oder Oberstufe (etwa Klasse 10/11). Geeignet als Ersatz oder Vorbereitung für den Versuch an der Luftkissenbahn, zum Üben der Stoßformeln und zum Vergleich von Impuls- und Energieerhaltung.
 - **Vorhersagen lassen:** Die Bilanz „nachher“ erscheint erst im Moment des Stoßes. Mit `_hide=1` (Aufgabenlinks) sind die berechneten Ergebnisse verdeckt, ebenso die Zahlen nach dem Stoß an den Pfeilen, am Schwerpunkt und in der Energiebilanz. Pfeile, Balken und Diagramm bleiben sichtbar und erlauben eine grobe Kontrolle der eigenen Rechnung.
 - **Modell:** gerader, zentraler Stoß ohne Reibung; die Stoßdauer wird vernachlässigt (Geschwindigkeiten springen). Die Startorte wählt die Simulation so, dass die Bewegung gut auf die $1{,}6\,\text{m}$ lange Bahn passt. Massen bis $2\,\text{kg}$ werden als Massestücke auf dem Gleiter dargestellt.
 - **Darstellung:** Im t-x-Diagramm zeigen die Bänder die Länge der Gleiter ($0{,}2\,\text{m}$); sie berühren sich genau beim Stoß. Die Linie des Schwerpunkts ist eine Gerade.

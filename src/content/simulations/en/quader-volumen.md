@@ -93,7 +93,7 @@ Give in the other unit: (a) $3\,\text{dm}^3$ in $\text{cm}^3$, (b) $2500\,\text{
 
 ## Ideas for the classroom
 
-- **Use:** Bavaria, year 6, learning area 2.2 (volume): volume of cuboids via unit cubes, units of volume including litres.
+- **Use:** About grade 5/6 (volume): volume of cuboids via unit cubes, units of volume including litres.
 - **Didactic core:** The formula $V = a \cdot b \cdot c$ grows out of structured counting (row → layer → layers). You can switch off the counting aid (`count=0`) so that students describe the structure themselves.
 - **Common stumbling blocks:**
   - Volume and surface area are confused ("counting outside" instead of "filling inside").

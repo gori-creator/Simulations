@@ -120,7 +120,7 @@ $\frac{1}{47}$ (und jeder andere Bruch $\frac{z}{47}$, der sich nicht kürzen l�
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 6, Lernbereich 1.2 „Dezimalbrüche“ (LehrplanPLUS Bayern, Gymnasium): Brüche als endliche oder periodische Dezimalbrüche, Umwandeln. Geeignet zur Erarbeitung (Schritt für Schritt mit `show=0`) und zur Vertiefung (Restekreis, Tafel). Die Primfaktorzerlegung aus der Simulation „Primfaktorzerlegung und Teilbarkeit“ wird hier angewendet.
+- **Einsatz:** Etwa Klasse 6, Dezimalbrüche: Brüche als endliche oder periodische Dezimalbrüche, Umwandeln. Geeignet zur Erarbeitung (Schritt für Schritt mit `show=0`) und zur Vertiefung (Restekreis, Tafel). Die Primfaktorzerlegung aus der Simulation „Primfaktorzerlegung und Teilbarkeit“ wird hier angewendet.
 - **Zwei Ansichten:** *Schriftlich dividieren* (Rechenblatt auf Karopapier, wahlweise mit Restekreis oder Zahlenstrahl-Lupe) und *Welche Nenner?* (alle Brüche $\frac{z}{n}$ mit $n \leq 50$ als farbige Kacheln, wahlweise mit Primfaktoren; weggekürzte Faktoren sind durchgestrichen).
 - **Begründen statt merken:** Der Restekreis macht das Schubfachprinzip sichtbar: Es gibt nur endlich viele Reste, also muss sich einer wiederholen. Die Plaketten an den Resten zeigen, dass jeder Rest seine nächste Ziffer festlegt – deshalb wiederholen sich mit dem Rest auch die Ziffern.
 - **Zur Vertiefung:** Die Länge der Vorperiode ist der größere der beiden Exponenten von $2$ und $5$ im gekürzten Nenner ($12 = 2^2 \cdot 3$ → $2$ Stellen). Das Umwandeln gemischt periodischer Dezimalbrüche in Brüche wird hier nicht behandelt.

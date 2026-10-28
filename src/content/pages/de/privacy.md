@@ -33,7 +33,7 @@ Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub: [docs.
 
 Auf Ihrem Gerät werden – ausschließlich lokal und ohne Übertragung an uns – gespeichert:
 
-- das gewählte **Farbschema** (hell/dunkel) und die gewählte **Sprache** (im „Local Storage“ des Browsers),
+- das gewählte **Farbschema** (hell/dunkel), die gewählte **Sprache** und gegebenenfalls das gewählte **Bundesland** (im „Local Storage“ des Browsers),
 - eine **Kopie der Seiten** (über einen „Service Worker“), damit die Simulationen auch offline funktionieren.
 
 Sie können diese Daten jederzeit über die Einstellungen Ihres Browsers löschen („Websitedaten löschen“).

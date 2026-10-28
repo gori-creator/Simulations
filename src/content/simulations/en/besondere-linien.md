@@ -119,7 +119,7 @@ All four points lie on one line if the triangle is **isosceles**: then the line 
 
 ## Ideas for the classroom
 
-- **Use:** year 7, topic triangles, congruence and constructions (LehrplanPLUS Gymnasium Bavaria; please check the exact assignment against the curriculum): circumcircle and incircle as an application of the loci perpendicular bisector and angle bisector. Medians, altitudes and the Euler line are suitable as an extension or outlook.
+- **Use:** about grade 7, triangles, congruence and constructions: circumcircle and incircle as an application of the loci perpendicular bisector and angle bisector. Medians, altitudes and the Euler line are suitable as an extension or outlook.
 - **On the projector:** “Next step” constructs line by line while the class draws along in their exercise books. The reasoning card (“equally far from the vertices”) can be the starting point for a proof formulated together.
 - **Discovery:** with “Show the point and the circle” switched off (`pt=0`) point, circle and measurements stay hidden; the students state the conjecture “The three lines meet at one point” themselves.
 - **Group work:** four groups each investigate one kind of line in acute, right and obtuse triangles and enter their results in a shared table (“Where is the point?”).

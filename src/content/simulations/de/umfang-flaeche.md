@@ -107,7 +107,7 @@ Umfang: $8 + 2 + 3 + 4 + 5 + 6 = 28$, also $U = 28\,\text{cm} = 2 \cdot (8\,\tex
 
 ## Ideen für den Unterricht
 
-- **Einsatz:** Jahrgangsstufe 5, Lernbereich „Größen und ihre Einheiten“, Abschnitt Flächeninhalt (LehrplanPLUS Bayern, Gymnasium). Geeignet zur Einführung (Auslegen, Ameise), zum Üben (Aufgabenlinks mit `show=0&_hide=1`) und zur Vertiefung (Vergleiche, L-Form).
+- **Einsatz:** Klasse 5, Größen und ihre Einheiten, Abschnitt Flächeninhalt. Geeignet zur Einführung (Auslegen, Ameise), zum Üben (Aufgabenlinks mit `show=0&_hide=1`) und zur Vertiefung (Vergleiche, L-Form).
 - **Modell:** Seitenlängen sind ganze Zentimeter ($a \le 10$, $b \le 6$). Das Rechenpapier zeigt ganze Zentimeter kräftig und halbe fein – wie im Heft, wo ein Kästchen $5\,\text{mm}$ breit ist. Ein Zentimeterquadrat besteht dort aus **vier** Kästchen. Auf dem Bildschirm ist „1 cm“ natürlich nicht wirklich 1 cm lang.
 - **Darstellungen:** Länge $a$ (waagerecht) und Breite $b$ (senkrecht) haben in Bild, Formeln und Faden dieselbe Farbe. Der Faden zerfällt in zwei Stücke der Länge $a + b$ und begründet so $U = 2 \cdot (a + b)$.
 - **Häufige Stolpersteine:**
@@ -116,4 +116,4 @@ Umfang: $8 + 2 + 3 + 4 + 5 + 6 = 28$, also $U = 28\,\text{cm} = 2 \cdot (8\,\tex
   - Formeln vertauscht ($U = a \cdot b$, $A = a + b$) oder beim Umfang nur zwei Seiten addiert ($U = a + b$).
   - Bei der L-Form werden die beiden inneren Kanten beim Umfang vergessen, oder es wird $A = a \cdot b$ gerechnet.
   - Auf Rechenpapier wird jedes Kästchen als $1\,\text{cm}^2$ gezählt.
-- **Ausblick:** Umrechnen von Flächeneinheiten ($1\,\text{cm}^2 = 100\,\text{mm}^2$) und Flächeninhalt von Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen in Jahrgangsstufe 6.
+- **Ausblick:** Umrechnen von Flächeneinheiten ($1\,\text{cm}^2 = 100\,\text{mm}^2$) und Flächeninhalt von Parallelogramm, Dreieck und Trapez durch Zerlegen und Ergänzen (etwa Klasse 6).

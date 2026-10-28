@@ -102,7 +102,7 @@ A phone tariff costs a basic fee of €5 per month plus €2 per gigabyte used.
 ## Ideas for the classroom
 
 - **Use:** introduction in grade 7/8 or revision before quadratic functions. On the projector, let the class predict what will happen before moving a slider.
-- **Notation:** The simulation writes $f(x) = mx + c$ (in German $f(x) = mx + t$, as in the Bavarian curriculum). If your textbook uses $b$ for the y-intercept, point this out briefly.
+- **Notation:** The simulation writes $f(x) = mx + c$ (the German version writes $f(x) = mx + t$). If your textbook uses $b$ for the y-intercept, point this out briefly.
 - **Common stumbling blocks:**
   - Slope and y-intercept are confused.
   - For a negative slope, the slope triangle is drawn "upwards".

@@ -91,7 +91,7 @@ The point moves 3 places to the right, so the exponent is negative: $0.0042 = 4.
 
 ## Ideas for the classroom
 
-- **Use:** year 5 (powers and powers of ten with large numbers), year 6 for revision, scientific notation and negative exponents such as $10^{-3} = 0.001$ (LehrplanPLUS Bavaria, Gymnasium – please check against the curriculum).
+- **Use:** grade 5 (powers and powers of ten with large numbers), grade 6 for revision, scientific notation and negative exponents such as $10^{-3} = 0.001$ (depending on the curriculum also later).
 - The journey works well as a whole-class starter; the cube models show that “exponent + 1” means “times the base”. With results hidden, pupils can estimate sizes from the grid first.
 - Objects are drawn to scale; only the airliner and the space station are enlarged symbols.
 - **Common stumbling blocks:** $10^3$ calculated as $10 \cdot 3$; mixing up $2^5$ and $5^2$; thinking $10^0 = 0$; writing $35 \cdot 10^3$ instead of $3.5 \cdot 10^4$.
