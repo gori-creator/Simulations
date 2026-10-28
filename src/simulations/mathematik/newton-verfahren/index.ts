@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { basinMap, classify, FNS, isCycle, iterate, matchingDecimals, nearestRootIndex, quadConstant, sequence, type Fn, type FnKey, type Outcome, type Step } from './model';
 
@@ -555,14 +555,8 @@ export default defineSimulation({
       arrowHead(x1, y1, ux, uy, color, hd);
     }
     function arrowHead(x: number, y: number, ux: number, uy: number, color: string, hd: number): void {
-      const g = surface.g;
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(x, y);
-      g.lineTo(x - ux * hd - uy * hd * 0.5, y - uy * hd + ux * hd * 0.5);
-      g.lineTo(x - ux * hd + uy * hd * 0.5, y - uy * hd - ux * hd * 0.5);
-      g.closePath();
-      g.fill();
+      // gemeinsame Form aus sim-core
+      drawArrowHead(surface.g, x, y, Math.atan2(uy, ux), hd, color);
     }
 
     function card(r: Rect, accent?: string): void {

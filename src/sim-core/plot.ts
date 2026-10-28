@@ -1,6 +1,6 @@
 import { t } from '../i18n/utils';
 import { Formatter, formatPiFraction, MINUS } from './format';
-import { drawHatText, hasRichText, measureHatText, parseSubText } from './draw';
+import { drawArrowHead, drawHatText, hasRichText, measureHatText, parseSubText } from './draw';
 import { clamp } from './numeric';
 import type { PointerTarget, Rect, Surface, SurfacePointer } from './surface';
 import { minorStep, niceStep, piStep, ticksIn } from './ticks';
@@ -605,17 +605,7 @@ export class Plot implements PointerTarget {
   }
 
   private arrowHeadPx(x: number, y: number, angle: number, size = 9): void {
-    const g = this.surface.g;
-    g.save();
-    g.translate(x, y);
-    g.rotate(angle);
-    g.beginPath();
-    g.moveTo(0, 0);
-    g.lineTo(-size, -size * 0.45);
-    g.lineTo(-size, size * 0.45);
-    g.closePath();
-    g.fill();
-    g.restore();
+    drawArrowHead(this.surface.g, x, y, angle, size);
   }
 
   /* ---------- Zeichenwerkzeuge ---------- */

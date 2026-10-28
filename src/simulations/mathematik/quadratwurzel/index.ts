@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, ease, mixColor, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   exactAt,
@@ -488,14 +488,8 @@ export default defineSimulation({
     }
 
     function arrowHead(x: number, y: number, ux: number, uy: number, color: string, size = 7): void {
-      const g = surface.g;
-      g.fillStyle = color;
-      g.beginPath();
-      g.moveTo(x, y);
-      g.lineTo(x - ux * size - uy * size * 0.5, y - uy * size + ux * size * 0.5);
-      g.lineTo(x - ux * size + uy * size * 0.5, y - uy * size - ux * size * 0.5);
-      g.closePath();
-      g.fill();
+      // gemeinsame Form aus sim-core
+      drawArrowHead(surface.g, x, y, Math.atan2(uy, ux), size, color);
     }
 
     function poly(pts: Pt[]): void {
