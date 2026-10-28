@@ -563,7 +563,7 @@ export const physik: Subject = {
                 'Richte einen Laser auf einen Spiegel und miss die Winkel. Dazu das Spiegelbild einer Kerze.',
                 'Point a laser at a mirror and measure the angles. Plus the mirror image of a candle.',
               ),
-              grades: [6, 8],
+              grades: [6, 10],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['Reflexion', 'Reflexionsgesetz', 'Spiegel', 'Einfallswinkel', 'Reflexionswinkel', 'Lot', 'Spiegelbild', 'virtuelles Bild', 'Sehstrahl', 'Winkelspiegel', 'Mehrfachbilder', 'Kaleidoskop'],

@@ -1,0 +1,2699 @@
+{
+  "id": "rheinland-pfalz-gymnasium-physik",
+  "subject": "physik",
+  "slug": {
+    "de": "rheinland-pfalz-gymnasium",
+    "en": "rhineland-palatinate-gymnasium"
+  },
+  "state": {
+    "de": "Rheinland-Pfalz",
+    "en": "Rhineland-Palatinate"
+  },
+  "schoolType": {
+    "de": "Gymnasium",
+    "en": "Gymnasium"
+  },
+  "sourceName": "Rahmenlehrplan und Lehrplan",
+  "grades": [
+    {
+      "grade": 7,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Klassenstufen 7 bis 10 (Mittelstufe): Der Rahmenlehrplan verteilt die zwölf Themenfelder in fester Reihenfolge auf drei Lernjahre, nennt aber keine Klassenstufen. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich und werden als eine Stufe gezeigt (Annahme, Entwurf, bitte am Lehrplan prüfen). Die Themenfelder sind im Lehrplan nummeriert.",
+        "en": "Grades 7 to 10 (lower secondary): the framework curriculum spreads its twelve topic fields over three years of physics in a fixed order but names no grades. The units are therefore the same for grades 7, 8, 9 and 10 and are shown as one stage (assumption, draft, please check against the curriculum). The topic fields are numbered in the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Akustische Phänomene",
+            "en": "Acoustic phenomena"
+          },
+          "summary": {
+            "de": "Schall im Basiskonzept Wechselwirkung: schwingende Körper als Schallquellen, Amplitude und Frequenz, Sender-Träger-Empfänger-Modell, Schallgeschwindigkeit und Lärmschutz; Echo und Resonanz als Vertiefung.",
+            "en": "Sound and interaction: vibrating bodies as sound sources, amplitude and frequency, the sender–carrier–receiver model, the speed of sound and noise protection; echo and resonance as extensions."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Optische Phänomene an Grenzflächen",
+            "en": "Optical phenomena at boundaries"
+          },
+          "summary": {
+            "de": "Licht im Basiskonzept Wechselwirkung: Reflexion, Brechung und Absorption, Schatten im Strahlenmodell, Strahlenverläufe auch bei Linsen; Totalreflexion als Vertiefung.",
+            "en": "Light and interaction: reflection, refraction and absorption, shadows in the ray model, ray paths also through lenses; total internal reflection as an extension."
+          },
+          "simulations": [
+            "licht-schatten",
+            "reflexion",
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Thermische Ausdehnung in Experiment und Modell",
+            "en": "Thermal expansion in experiment and model"
+          },
+          "summary": {
+            "de": "Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.",
+            "en": "Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension."
+          },
+          "simulations": [
+            "teilchenmodell"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Dynamische Phänomene",
+            "en": "Dynamic phenomena"
+          },
+          "summary": {
+            "de": "Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.",
+            "en": "Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "hookesches-gesetz"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Atombau und ionisierende Strahlung",
+            "en": "Atomic structure and ionising radiation"
+          },
+          "summary": {
+            "de": "Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.",
+            "en": "Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection."
+          }
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Spannung und Induktion",
+            "en": "Voltage and induction"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept Energie: geschlossener Stromkreis, Spannung als Antrieb, Leistung und Energie (ΔE = P · Δt), Maschenregel und Generator mit Induktion.",
+            "en": "Electricity and energy: the closed circuit, voltage as the drive, power and energy (ΔE = P · Δt), the loop rule and the generator with induction."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Kosmos und Forschung",
+            "en": "Cosmos and research"
+          },
+          "summary": {
+            "de": "Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten.",
+            "en": "Physics as an evolving science: the scientific method, research and presentation on topics of modern physics such as stars, space travel or exoplanets."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Wärmetransporte und ihre Beeinflussung",
+            "en": "Heat transport and how to influence it"
+          },
+          "summary": {
+            "de": "Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.",
+            "en": "Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines."
+          }
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Gesetzmäßigkeiten im elektrischen Stromkreis",
+            "en": "Laws of the electric circuit"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept System: Spannung, Stromstärke und Widerstand messen und berechnen, Knotenregel, U-I-Kennlinien, Leistung und Sicherheit im Umgang mit Strom.",
+            "en": "Electricity and systems: measuring and calculating voltage, current and resistance, the junction rule, I–V characteristics, power and electrical safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Energiebilanzen und Wirkungsgrade",
+            "en": "Energy balances and efficiency"
+          },
+          "summary": {
+            "de": "Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.",
+            "en": "Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "hebelgesetz"
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Sensoren im Alltag",
+            "en": "Sensors in everyday life"
+          },
+          "summary": {
+            "de": "Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.",
+            "en": "Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor."
+          }
+        },
+        {
+          "code": "12",
+          "title": {
+            "de": "Praxis und Forschung",
+            "en": "Practice and research"
+          },
+          "summary": {
+            "de": "Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern.",
+            "en": "Independent, question-led experimenting: forming hypotheses, planning, carrying out and evaluating experiments, with content from earlier or new topic fields."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Klassenstufen 7 bis 10 (Mittelstufe): Der Rahmenlehrplan verteilt die zwölf Themenfelder in fester Reihenfolge auf drei Lernjahre, nennt aber keine Klassenstufen. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich und werden als eine Stufe gezeigt (Annahme, Entwurf, bitte am Lehrplan prüfen). Die Themenfelder sind im Lehrplan nummeriert.",
+        "en": "Grades 7 to 10 (lower secondary): the framework curriculum spreads its twelve topic fields over three years of physics in a fixed order but names no grades. The units are therefore the same for grades 7, 8, 9 and 10 and are shown as one stage (assumption, draft, please check against the curriculum). The topic fields are numbered in the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Akustische Phänomene",
+            "en": "Acoustic phenomena"
+          },
+          "summary": {
+            "de": "Schall im Basiskonzept Wechselwirkung: schwingende Körper als Schallquellen, Amplitude und Frequenz, Sender-Träger-Empfänger-Modell, Schallgeschwindigkeit und Lärmschutz; Echo und Resonanz als Vertiefung.",
+            "en": "Sound and interaction: vibrating bodies as sound sources, amplitude and frequency, the sender–carrier–receiver model, the speed of sound and noise protection; echo and resonance as extensions."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Optische Phänomene an Grenzflächen",
+            "en": "Optical phenomena at boundaries"
+          },
+          "summary": {
+            "de": "Licht im Basiskonzept Wechselwirkung: Reflexion, Brechung und Absorption, Schatten im Strahlenmodell, Strahlenverläufe auch bei Linsen; Totalreflexion als Vertiefung.",
+            "en": "Light and interaction: reflection, refraction and absorption, shadows in the ray model, ray paths also through lenses; total internal reflection as an extension."
+          },
+          "simulations": [
+            "reflexion",
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Thermische Ausdehnung in Experiment und Modell",
+            "en": "Thermal expansion in experiment and model"
+          },
+          "summary": {
+            "de": "Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.",
+            "en": "Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension."
+          },
+          "simulations": [
+            "teilchenmodell",
+            "gasgesetze"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Dynamische Phänomene",
+            "en": "Dynamic phenomena"
+          },
+          "summary": {
+            "de": "Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.",
+            "en": "Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "kraefteaddition",
+            "hookesches-gesetz"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Atombau und ionisierende Strahlung",
+            "en": "Atomic structure and ionising radiation"
+          },
+          "summary": {
+            "de": "Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.",
+            "en": "Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection."
+          }
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Spannung und Induktion",
+            "en": "Voltage and induction"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept Energie: geschlossener Stromkreis, Spannung als Antrieb, Leistung und Energie (ΔE = P · Δt), Maschenregel und Generator mit Induktion.",
+            "en": "Electricity and energy: the closed circuit, voltage as the drive, power and energy (ΔE = P · Δt), the loop rule and the generator with induction."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Kosmos und Forschung",
+            "en": "Cosmos and research"
+          },
+          "summary": {
+            "de": "Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten.",
+            "en": "Physics as an evolving science: the scientific method, research and presentation on topics of modern physics such as stars, space travel or exoplanets."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Wärmetransporte und ihre Beeinflussung",
+            "en": "Heat transport and how to influence it"
+          },
+          "summary": {
+            "de": "Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.",
+            "en": "Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines."
+          }
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Gesetzmäßigkeiten im elektrischen Stromkreis",
+            "en": "Laws of the electric circuit"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept System: Spannung, Stromstärke und Widerstand messen und berechnen, Knotenregel, U-I-Kennlinien, Leistung und Sicherheit im Umgang mit Strom.",
+            "en": "Electricity and systems: measuring and calculating voltage, current and resistance, the junction rule, I–V characteristics, power and electrical safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Energiebilanzen und Wirkungsgrade",
+            "en": "Energy balances and efficiency"
+          },
+          "summary": {
+            "de": "Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.",
+            "en": "Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "hebelgesetz",
+            "schiefe-ebene"
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Sensoren im Alltag",
+            "en": "Sensors in everyday life"
+          },
+          "summary": {
+            "de": "Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.",
+            "en": "Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor."
+          }
+        },
+        {
+          "code": "12",
+          "title": {
+            "de": "Praxis und Forschung",
+            "en": "Practice and research"
+          },
+          "summary": {
+            "de": "Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern.",
+            "en": "Independent, question-led experimenting: forming hypotheses, planning, carrying out and evaluating experiments, with content from earlier or new topic fields."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 9,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Klassenstufen 7 bis 10 (Mittelstufe): Der Rahmenlehrplan verteilt die zwölf Themenfelder in fester Reihenfolge auf drei Lernjahre, nennt aber keine Klassenstufen. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich und werden als eine Stufe gezeigt (Annahme, Entwurf, bitte am Lehrplan prüfen). Die Themenfelder sind im Lehrplan nummeriert.",
+        "en": "Grades 7 to 10 (lower secondary): the framework curriculum spreads its twelve topic fields over three years of physics in a fixed order but names no grades. The units are therefore the same for grades 7, 8, 9 and 10 and are shown as one stage (assumption, draft, please check against the curriculum). The topic fields are numbered in the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Akustische Phänomene",
+            "en": "Acoustic phenomena"
+          },
+          "summary": {
+            "de": "Schall im Basiskonzept Wechselwirkung: schwingende Körper als Schallquellen, Amplitude und Frequenz, Sender-Träger-Empfänger-Modell, Schallgeschwindigkeit und Lärmschutz; Echo und Resonanz als Vertiefung.",
+            "en": "Sound and interaction: vibrating bodies as sound sources, amplitude and frequency, the sender–carrier–receiver model, the speed of sound and noise protection; echo and resonance as extensions."
+          }
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Optische Phänomene an Grenzflächen",
+            "en": "Optical phenomena at boundaries"
+          },
+          "summary": {
+            "de": "Licht im Basiskonzept Wechselwirkung: Reflexion, Brechung und Absorption, Schatten im Strahlenmodell, Strahlenverläufe auch bei Linsen; Totalreflexion als Vertiefung.",
+            "en": "Light and interaction: reflection, refraction and absorption, shadows in the ray model, ray paths also through lenses; total internal reflection as an extension."
+          },
+          "simulations": [
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Thermische Ausdehnung in Experiment und Modell",
+            "en": "Thermal expansion in experiment and model"
+          },
+          "summary": {
+            "de": "Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.",
+            "en": "Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension."
+          },
+          "simulations": [
+            "teilchenmodell",
+            "gasgesetze"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Dynamische Phänomene",
+            "en": "Dynamic phenomena"
+          },
+          "summary": {
+            "de": "Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.",
+            "en": "Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "kraefteaddition",
+            "hookesches-gesetz"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Atombau und ionisierende Strahlung",
+            "en": "Atomic structure and ionising radiation"
+          },
+          "summary": {
+            "de": "Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.",
+            "en": "Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Spannung und Induktion",
+            "en": "Voltage and induction"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept Energie: geschlossener Stromkreis, Spannung als Antrieb, Leistung und Energie (ΔE = P · Δt), Maschenregel und Generator mit Induktion.",
+            "en": "Electricity and energy: the closed circuit, voltage as the drive, power and energy (ΔE = P · Δt), the loop rule and the generator with induction."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "induktion"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Kosmos und Forschung",
+            "en": "Cosmos and research"
+          },
+          "summary": {
+            "de": "Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten.",
+            "en": "Physics as an evolving science: the scientific method, research and presentation on topics of modern physics such as stars, space travel or exoplanets."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Wärmetransporte und ihre Beeinflussung",
+            "en": "Heat transport and how to influence it"
+          },
+          "summary": {
+            "de": "Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.",
+            "en": "Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines."
+          }
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Gesetzmäßigkeiten im elektrischen Stromkreis",
+            "en": "Laws of the electric circuit"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept System: Spannung, Stromstärke und Widerstand messen und berechnen, Knotenregel, U-I-Kennlinien, Leistung und Sicherheit im Umgang mit Strom.",
+            "en": "Electricity and systems: measuring and calculating voltage, current and resistance, the junction rule, I–V characteristics, power and electrical safety."
+          },
+          "simulations": [
+            "einfacher-stromkreis",
+            "reihe-parallel",
+            "ohmsches-gesetz"
+          ]
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Energiebilanzen und Wirkungsgrade",
+            "en": "Energy balances and efficiency"
+          },
+          "summary": {
+            "de": "Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.",
+            "en": "Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "hebelgesetz",
+            "schiefe-ebene"
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Sensoren im Alltag",
+            "en": "Sensors in everyday life"
+          },
+          "summary": {
+            "de": "Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.",
+            "en": "Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor."
+          }
+        },
+        {
+          "code": "12",
+          "title": {
+            "de": "Praxis und Forschung",
+            "en": "Practice and research"
+          },
+          "summary": {
+            "de": "Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern.",
+            "en": "Independent, question-led experimenting: forming hypotheses, planning, carrying out and evaluating experiments, with content from earlier or new topic fields."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 10,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Klassenstufen 7 bis 10 (Mittelstufe): Der Rahmenlehrplan verteilt die zwölf Themenfelder in fester Reihenfolge auf drei Lernjahre, nennt aber keine Klassenstufen. Die Lernbereiche stehen deshalb bei 7, 8, 9 und 10 gleich und werden als eine Stufe gezeigt (Annahme, Entwurf, bitte am Lehrplan prüfen). Die Themenfelder sind im Lehrplan nummeriert.",
+        "en": "Grades 7 to 10 (lower secondary): the framework curriculum spreads its twelve topic fields over three years of physics in a fixed order but names no grades. The units are therefore the same for grades 7, 8, 9 and 10 and are shown as one stage (assumption, draft, please check against the curriculum). The topic fields are numbered in the curriculum."
+      },
+      "units": [
+        {
+          "code": "1",
+          "title": {
+            "de": "Akustische Phänomene",
+            "en": "Acoustic phenomena"
+          },
+          "summary": {
+            "de": "Schall im Basiskonzept Wechselwirkung: schwingende Körper als Schallquellen, Amplitude und Frequenz, Sender-Träger-Empfänger-Modell, Schallgeschwindigkeit und Lärmschutz; Echo und Resonanz als Vertiefung.",
+            "en": "Sound and interaction: vibrating bodies as sound sources, amplitude and frequency, the sender–carrier–receiver model, the speed of sound and noise protection; echo and resonance as extensions."
+          },
+          "simulations": [
+            "wellen-ausbreitung",
+            "resonanz"
+          ]
+        },
+        {
+          "code": "2",
+          "title": {
+            "de": "Optische Phänomene an Grenzflächen",
+            "en": "Optical phenomena at boundaries"
+          },
+          "summary": {
+            "de": "Licht im Basiskonzept Wechselwirkung: Reflexion, Brechung und Absorption, Schatten im Strahlenmodell, Strahlenverläufe auch bei Linsen; Totalreflexion als Vertiefung.",
+            "en": "Light and interaction: reflection, refraction and absorption, shadows in the ray model, ray paths also through lenses; total internal reflection as an extension."
+          },
+          "simulations": [
+            "brechung",
+            "linsen"
+          ]
+        },
+        {
+          "code": "3",
+          "title": {
+            "de": "Thermische Ausdehnung in Experiment und Modell",
+            "en": "Thermal expansion in experiment and model"
+          },
+          "summary": {
+            "de": "Temperatur im Basiskonzept Materie: Volumen- und Längenänderung bei Erwärmung im Experiment, Deutung mit dem Teilchenmodell und seine Grenzen; Gase und absoluter Nullpunkt als Vertiefung.",
+            "en": "Temperature and matter: changes in volume and length on heating in experiments, explanation with the particle model and its limits; gases and absolute zero as an extension."
+          },
+          "simulations": [
+            "gasgesetze"
+          ]
+        },
+        {
+          "code": "4",
+          "title": {
+            "de": "Dynamische Phänomene",
+            "en": "Dynamic phenomena"
+          },
+          "summary": {
+            "de": "Bewegungsänderungen im Basiskonzept Wechselwirkung: Geschwindigkeit mit Betrag und Richtung, Trägheit, Kraft als Maß der Wechselwirkung, Kraftpfeilpaare und Kräftegleichgewicht; Impuls als Vertiefung.",
+            "en": "Changes of motion and interaction: velocity with magnitude and direction, inertia, force as a measure of interaction, pairs of force arrows and equilibrium; momentum as an extension."
+          },
+          "simulations": [
+            "bewegungsdiagramme",
+            "kraefteaddition",
+            "hookesches-gesetz",
+            "stoesse"
+          ]
+        },
+        {
+          "code": "5",
+          "title": {
+            "de": "Atombau und ionisierende Strahlung",
+            "en": "Atomic structure and ionising radiation"
+          },
+          "summary": {
+            "de": "Radioaktivität im Basiskonzept Materie: Kern-Hülle-Modell, elektrische Ladung, radioaktiver Zerfall und Halbwertszeit, Kernspaltung, Nutzen, Gefahren und Strahlenschutz.",
+            "en": "Radioactivity and matter: the nucleus–shell model, electric charge, radioactive decay and half-life, nuclear fission, benefits, risks and radiation protection."
+          },
+          "simulations": [
+            "radioaktiver-zerfall"
+          ]
+        },
+        {
+          "code": "6",
+          "title": {
+            "de": "Spannung und Induktion",
+            "en": "Voltage and induction"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept Energie: geschlossener Stromkreis, Spannung als Antrieb, Leistung und Energie (ΔE = P · Δt), Maschenregel und Generator mit Induktion.",
+            "en": "Electricity and energy: the closed circuit, voltage as the drive, power and energy (ΔE = P · Δt), the loop rule and the generator with induction."
+          },
+          "simulations": [
+            "induktion"
+          ]
+        },
+        {
+          "code": "7",
+          "title": {
+            "de": "Kosmos und Forschung",
+            "en": "Cosmos and research"
+          },
+          "summary": {
+            "de": "Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten.",
+            "en": "Physics as an evolving science: the scientific method, research and presentation on topics of modern physics such as stars, space travel or exoplanets."
+          }
+        },
+        {
+          "code": "8",
+          "title": {
+            "de": "Wärmetransporte und ihre Beeinflussung",
+            "en": "Heat transport and how to influence it"
+          },
+          "summary": {
+            "de": "Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine.",
+            "en": "Thermal energy flows and systems: temperature difference as the drive, thermal resistance, cooling and insulation, heat pumps and heat engines."
+          }
+        },
+        {
+          "code": "9",
+          "title": {
+            "de": "Gesetzmäßigkeiten im elektrischen Stromkreis",
+            "en": "Laws of the electric circuit"
+          },
+          "summary": {
+            "de": "Elektrizität im Basiskonzept System: Spannung, Stromstärke und Widerstand messen und berechnen, Knotenregel, U-I-Kennlinien, Leistung und Sicherheit im Umgang mit Strom.",
+            "en": "Electricity and systems: measuring and calculating voltage, current and resistance, the junction rule, I–V characteristics, power and electrical safety."
+          }
+        },
+        {
+          "code": "10",
+          "title": {
+            "de": "Energiebilanzen und Wirkungsgrade",
+            "en": "Energy balances and efficiency"
+          },
+          "summary": {
+            "de": "Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.",
+            "en": "Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle."
+          },
+          "simulations": [
+            "energieerhaltung",
+            "hebelgesetz",
+            "schiefe-ebene"
+          ]
+        },
+        {
+          "code": "11",
+          "title": {
+            "de": "Sensoren im Alltag",
+            "en": "Sensors in everyday life"
+          },
+          "summary": {
+            "de": "Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.",
+            "en": "Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor."
+          }
+        },
+        {
+          "code": "12",
+          "title": {
+            "de": "Praxis und Forschung",
+            "en": "Practice and research"
+          },
+          "summary": {
+            "de": "Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern.",
+            "en": "Independent, question-led experimenting: forming hypotheses, planning, carrying out and evaluating experiments, with content from earlier or new topic fields."
+          }
+        }
+      ]
+    },
+    {
+      "grade": 11,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Einführungsphase der Mainzer Studienstufe (Jahrgangsstufe 11). Lernbereiche sind die Pflicht- und Wahlpflichtbausteine; im Grundfach (GF) ist einer, im Leistungsfach (LF) sind zwei der Wahlpflichtbausteine zu wählen. Der Lehrplan nummeriert die Bausteine nicht; die Nummern sind von uns vergeben.",
+        "en": "Introductory phase of the Mainz upper secondary (grade 11). Units are the compulsory and elective modules; the basic course (GF) chooses one elective module, the advanced course (LF) two. The curriculum does not number the modules; the numbers are our own."
+      },
+      "units": [
+        {
+          "code": "GF-P",
+          "title": {
+            "de": "Pflichtbausteine (Grundfach)",
+            "en": "Compulsory modules (basic course)"
+          },
+          "summary": {
+            "de": "Kinematik, Dynamik und Erhaltungsgrößen der Mechanik.",
+            "en": "Kinematics, dynamics and conserved quantities in mechanics."
+          },
+          "parts": [
+            {
+              "code": "GF-P.1",
+              "title": {
+                "de": "Kinematik",
+                "en": "Kinematics"
+              },
+              "summary": {
+                "de": "Ort, Zeit, Geschwindigkeit und Beschleunigung; gleichförmige und gleichmäßig beschleunigte lineare Bewegung sowie gleichförmige Kreisbewegung, in Diagrammen dargestellt.",
+                "en": "Position, time, velocity and acceleration; uniform and uniformly accelerated linear motion and uniform circular motion, shown in graphs."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall",
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "GF-P.2",
+              "title": {
+                "de": "Dynamik",
+                "en": "Dynamics"
+              },
+              "summary": {
+                "de": "Ursachen für Bewegungsänderungen, Wechselwirkungsprinzip und Trägheit, mit Impuls- oder Kraftbegriff.",
+                "en": "Causes of changes in motion, the interaction principle and inertia, using momentum or force."
+              },
+              "simulations": [
+                "kraefteaddition",
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "GF-P.3",
+              "title": {
+                "de": "Erhaltungsgrößen der Mechanik",
+                "en": "Conserved quantities in mechanics"
+              },
+              "summary": {
+                "de": "Energie- und Impulserhaltung als Methode des Bilanzierens, Reibung bei realen Vorgängen und die vektorielle Betrachtung des Impulses.",
+                "en": "Conservation of energy and momentum as a method of balancing, friction in real processes and the vector nature of momentum."
+              },
+              "simulations": [
+                "energieerhaltung",
+                "stoesse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Grundfach, einer zu wählen)",
+            "en": "Elective modules (basic course, choose one)"
+          },
+          "summary": {
+            "de": "Wurfbewegungen oder Gravitation.",
+            "en": "Projectile motion or gravitation."
+          },
+          "parts": [
+            {
+              "code": "GF-W.1",
+              "title": {
+                "de": "Wurfbewegungen",
+                "en": "Projectile motion"
+              },
+              "summary": {
+                "de": "Superpositionsprinzip, senkrechter und waagerechter Wurf.",
+                "en": "The superposition principle, vertical and horizontal projection."
+              },
+              "simulations": [
+                "schiefer-wurf",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "GF-W.2",
+              "title": {
+                "de": "Gravitation",
+                "en": "Gravitation"
+              },
+              "summary": {
+                "de": "Gravitationsgesetz und Satellitenbewegung.",
+                "en": "The law of gravitation and satellite motion."
+              },
+              "simulations": [
+                "planetenbahnen",
+                "kreisbewegung"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LF-P",
+          "title": {
+            "de": "Pflichtbausteine (Leistungsfach)",
+            "en": "Compulsory modules (advanced course)"
+          },
+          "summary": {
+            "de": "Kinematik mit Fehlerbetrachtung, Dynamik und Erhaltungsgrößen der Mechanik.",
+            "en": "Kinematics with error analysis, dynamics and conserved quantities in mechanics."
+          },
+          "parts": [
+            {
+              "code": "LF-P.1",
+              "title": {
+                "de": "Kinematik",
+                "en": "Kinematics"
+              },
+              "summary": {
+                "de": "Beschreibende Größen einer Bewegung und ihre funktionalen Zusammenhänge, idealisierte Bewegungsformen, Analyse einer realen Bewegung und Fehlerbetrachtung.",
+                "en": "Quantities describing motion and their functional relations, idealised forms of motion, analysing a real motion and error analysis."
+              },
+              "simulations": [
+                "bewegungsdiagramme",
+                "freier-fall",
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "LF-P.2",
+              "title": {
+                "de": "Dynamik",
+                "en": "Dynamics"
+              },
+              "summary": {
+                "de": "Ursachen für Bewegungsänderungen, Wechselwirkungsprinzip und Trägheit, ausgebaut zum Wechselwirkungskonzept.",
+                "en": "Causes of changes in motion, the interaction principle and inertia, built up into the concept of interaction."
+              },
+              "simulations": [
+                "kraefteaddition",
+                "schiefe-ebene",
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "LF-P.3",
+              "title": {
+                "de": "Erhaltungsgrößen der Mechanik",
+                "en": "Conserved quantities in mechanics"
+              },
+              "summary": {
+                "de": "Energie- und Impulserhaltung bilanzieren, Reibung und vektorielle Behandlung des Impulses.",
+                "en": "Balancing energy and momentum, friction and the vector treatment of momentum."
+              },
+              "simulations": [
+                "energieerhaltung",
+                "stoesse"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Leistungsfach, zwei zu wählen)",
+            "en": "Elective modules (advanced course, choose two)"
+          },
+          "summary": {
+            "de": "Wurfbewegungen, Gravitation oder Rotation starrer Körper.",
+            "en": "Projectile motion, gravitation or rotation of rigid bodies."
+          },
+          "parts": [
+            {
+              "code": "LF-W.1",
+              "title": {
+                "de": "Wurfbewegungen",
+                "en": "Projectile motion"
+              },
+              "summary": {
+                "de": "Superpositionsprinzip, senkrechter, waagerechter und schiefer Wurf.",
+                "en": "The superposition principle, vertical, horizontal and oblique projection."
+              },
+              "simulations": [
+                "schiefer-wurf",
+                "freier-fall"
+              ]
+            },
+            {
+              "code": "LF-W.2",
+              "title": {
+                "de": "Gravitation",
+                "en": "Gravitation"
+              },
+              "summary": {
+                "de": "Gravitationsgesetz, Satellitenbewegung, Energie im Gravitationsfeld und Fluchtgeschwindigkeit.",
+                "en": "The law of gravitation, satellite motion, energy in the gravitational field and escape velocity."
+              },
+              "simulations": [
+                "planetenbahnen",
+                "kreisbewegung"
+              ]
+            },
+            {
+              "code": "LF-W.3",
+              "title": {
+                "de": "Rotation starrer Körper",
+                "en": "Rotation of rigid bodies"
+              },
+              "summary": {
+                "de": "Trägheitsmoment, Drehimpuls, Drehmoment und Rotationsenergie in Analogie zur Translation.",
+                "en": "Moment of inertia, angular momentum, torque and rotational energy by analogy with translation."
+              },
+              "simulations": [
+                "hebelgesetz"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 12,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Qualifikationsphase der Mainzer Studienstufe (Jahrgangsstufen 12 und 13). Der Lehrplan gibt keine Reihenfolge vor; die Lernbereiche stehen deshalb bei 12 und 13 gleich und werden als eine Stufe gezeigt. Im Grundfach (GF) sind alle neun Pflichtbausteine und fünf Wahlpflichtbausteine, im Leistungsfach (LF) alle elf Pflichtbausteine und sieben Wahlpflichtbausteine zu behandeln. Die Nummern sind von uns vergeben.",
+        "en": "Qualification phase of the Mainz upper secondary (grades 12 and 13). The curriculum sets no order, so the units are the same for grades 12 and 13 and are shown as one stage. The basic course (GF) covers all nine compulsory modules and five electives, the advanced course (LF) all eleven compulsory modules and seven electives. The numbers are our own."
+      },
+      "units": [
+        {
+          "code": "GF-P",
+          "title": {
+            "de": "Pflichtbausteine (Grundfach)",
+            "en": "Compulsory modules (basic course)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Induktion, Schwingungen und Wellen sowie Quantenobjekte und Atomvorstellung.",
+            "en": "Electric and magnetic fields, induction, oscillations and waves, and quantum objects and the atom."
+          },
+          "parts": [
+            {
+              "code": "GF-P.1",
+              "title": {
+                "de": "Feldkonzept für statische elektrische und magnetische Felder",
+                "en": "Field concept for static electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Eigenschaften statischer Felder, Feldlinienbilder, Superposition von Feldern, elektrische Feldstärke, magnetische Flussdichte und das Magnetfeld einer Spule.",
+                "en": "Properties of static fields, field line patterns, superposition of fields, electric field strength, magnetic flux density and the field of a coil."
+              },
+              "simulations": [
+                "feldlinien"
+              ]
+            },
+            {
+              "code": "GF-P.2",
+              "title": {
+                "de": "Energie und Energiespeicherung im elektrischen Feld",
+                "en": "Energy and energy storage in the electric field"
+              },
+              "summary": {
+                "de": "Spannung und Feldstärke im Plattenkondensator, Kapazität, Energie des Feldes sowie Auf- und Entladen des Kondensators.",
+                "en": "Voltage and field strength in a parallel-plate capacitor, capacitance, field energy and charging and discharging the capacitor."
+              },
+              "simulations": [
+                "kondensator"
+              ]
+            },
+            {
+              "code": "GF-P.3",
+              "title": {
+                "de": "Wechselwirkung von geladenen Körpern mit statischen Feldern",
+                "en": "Interaction of charged bodies with static fields"
+              },
+              "summary": {
+                "de": "Kraft auf Ladungen im elektrischen Feld, Bewegung im Längs- und Querfeld, Lorentzkraft und Bewegung im homogenen Magnetfeld.",
+                "en": "Force on charges in an electric field, motion in longitudinal and transverse fields, the Lorentz force and motion in a uniform magnetic field."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "GF-P.4",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder",
+                "en": "Changing electromagnetic fields"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, Induktionsgesetz mit mittlerer Änderungsrate, Richtung des Induktionsstroms und eine technische Anwendung.",
+                "en": "Magnetic flux, the law of induction with the average rate of change, the direction of the induced current and a technical application."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "GF-P.5",
+              "title": {
+                "de": "Harmonische Schwingungen",
+                "en": "Harmonic oscillations"
+              },
+              "summary": {
+                "de": "Elongation, Amplitude, Periodendauer und Frequenz, Schwingkreis in Analogie zum mechanischen Oszillator, Periodendauer an einem Beispiel.",
+                "en": "Displacement, amplitude, period and frequency, the LC circuit by analogy with the mechanical oscillator, period of oscillation in one example."
+              },
+              "simulations": [
+                "fadenpendel",
+                "federpendel"
+              ]
+            },
+            {
+              "code": "GF-P.6",
+              "title": {
+                "de": "Harmonische Wellen",
+                "en": "Harmonic waves"
+              },
+              "summary": {
+                "de": "Erzeugung, Ausbreitung und Energietransport, Wellenlänge, Geschwindigkeit und Frequenz, transversal und longitudinal, Polarisation, Brechung, Reflexion und Beugung.",
+                "en": "Generation, propagation and energy transport, wavelength, speed and frequency, transverse and longitudinal, polarisation, refraction, reflection and diffraction."
+              },
+              "simulations": [
+                "wellen-ausbreitung"
+              ]
+            },
+            {
+              "code": "GF-P.7",
+              "title": {
+                "de": "Superposition von Wellen",
+                "en": "Superposition of waves"
+              },
+              "summary": {
+                "de": "Stehende Wellen und Wellenlängenbestimmung, Interferenz am Doppelspalt, Spektrum weißen Lichts und Überblick über elektromagnetische Wellen.",
+                "en": "Standing waves and measuring wavelength, double-slit interference, the spectrum of white light and an overview of electromagnetic waves."
+              },
+              "simulations": [
+                "stehende-wellen",
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GF-P.8",
+              "title": {
+                "de": "Quantenobjekte I",
+                "en": "Quantum objects I"
+              },
+              "summary": {
+                "de": "Elektronen und Photonen am Doppelspalt, Energie und Frequenz, Impuls und Wellenlänge, Grundaspekte der Quantentheorie und ein Näherungswert für h.",
+                "en": "Electrons and photons at the double slit, energy and frequency, momentum and wavelength, basic aspects of quantum theory and an estimate of h."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "GF-P.9",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung I",
+                "en": "Quantum view of the atom I"
+              },
+              "summary": {
+                "de": "Quantisierte Absorption und Emission am Wasserstoffatom, Energiestufenmodell und Orbitalmodell.",
+                "en": "Quantised absorption and emission in the hydrogen atom, the energy level model and the orbital model."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Grundfach, fünf zu wählen)",
+            "en": "Elective modules (basic course, choose five)"
+          },
+          "summary": {
+            "de": "Vertiefungen und Erweiterungen von Teilchen in Feldern bis zur Kosmologie, dazu ein individuelles Thema.",
+            "en": "Extensions from particles in fields to cosmology, plus an individual topic."
+          },
+          "parts": [
+            {
+              "code": "GF-W.1",
+              "title": {
+                "de": "Anwendungsbeispiele für Teilchen in Feldern",
+                "en": "Applications of particles in fields"
+              },
+              "summary": {
+                "de": "Fadenstrahlrohr zur Bestimmung von e/m, Elektronenablenkröhre, Teilchenbeschleuniger, Hall-Effekt.",
+                "en": "Fine-beam tube for e/m, electron deflection tube, particle accelerators, Hall effect."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "GF-W.2",
+              "title": {
+                "de": "Schwingungsphänomene",
+                "en": "Oscillation phenomena"
+              },
+              "summary": {
+                "de": "Gedämpfte, erzwungene und gekoppelte Schwingungen und Resonanz.",
+                "en": "Damped, forced and coupled oscillations and resonance."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            },
+            {
+              "code": "GF-W.3",
+              "title": {
+                "de": "Akustik",
+                "en": "Acoustics"
+              },
+              "summary": {
+                "de": "Schall als Longitudinalwelle, Schwebung, stehende Wellen und Resonanz, Fourieranalyse von Klängen.",
+                "en": "Sound as a longitudinal wave, beats, standing waves and resonance, Fourier analysis of sounds."
+              },
+              "simulations": [
+                "wellen-ausbreitung",
+                "stehende-wellen"
+              ]
+            },
+            {
+              "code": "GF-W.4",
+              "title": {
+                "de": "Licht als Wellenphänomen",
+                "en": "Light as a wave phenomenon"
+              },
+              "summary": {
+                "de": "Interferenz und Polarisation in Natur und Technik.",
+                "en": "Interference and polarisation in nature and technology."
+              },
+              "simulations": [
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GF-W.5",
+              "title": {
+                "de": "Elektromagnetische Wellen",
+                "en": "Electromagnetic waves"
+              },
+              "summary": {
+                "de": "Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.",
+                "en": "Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum."
+              }
+            },
+            {
+              "code": "GF-W.6",
+              "title": {
+                "de": "Wechselstromkreise",
+                "en": "AC circuits"
+              },
+              "summary": {
+                "de": "Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung.",
+                "en": "RMS values, impedance and phase shift, real and reactive power."
+              }
+            },
+            {
+              "code": "GF-W.7",
+              "title": {
+                "de": "Elektronik",
+                "en": "Electronics"
+              },
+              "summary": {
+                "de": "Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.",
+                "en": "Basic circuits, intrinsic and extrinsic conduction, diode and transistor."
+              }
+            },
+            {
+              "code": "GF-W.8",
+              "title": {
+                "de": "Festkörperphysik",
+                "en": "Solid-state physics"
+              },
+              "summary": {
+                "de": "Bändermodell und Eigenschaften von Festkörpern.",
+                "en": "The band model and properties of solids."
+              }
+            },
+            {
+              "code": "GF-W.9",
+              "title": {
+                "de": "Quantenobjekte II",
+                "en": "Quantum objects II"
+              },
+              "summary": {
+                "de": "Deutungen der Quantentheorie, Unbestimmtheitsrelation und experimentelle Belege wie Elektronenbeugung und Hallwachs-Effekt.",
+                "en": "Interpretations of quantum theory, the uncertainty principle and experimental evidence such as electron diffraction and the Hallwachs effect."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "GF-W.10",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung II",
+                "en": "Quantum view of the atom II"
+              },
+              "summary": {
+                "de": "Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.",
+                "en": "The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "GF-W.11",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Radionuklide, Zerfall, Spaltung und Fusion, Absorptions- und Zerfallsgesetz, Bindungsenergie.",
+                "en": "Radionuclides, decay, fission and fusion, the laws of absorption and decay, binding energy."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "GF-W.12",
+              "title": {
+                "de": "Strahlenbiophysik",
+                "en": "Radiation biophysics"
+              },
+              "summary": {
+                "de": "Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen.",
+                "en": "Dose, biological effects, radiation protection and medical uses."
+              }
+            },
+            {
+              "code": "GF-W.13",
+              "title": {
+                "de": "Elementarteilchenphysik",
+                "en": "Particle physics"
+              },
+              "summary": {
+                "de": "Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen.",
+                "en": "Fundamental particles and interactions, the Standard Model and open questions."
+              }
+            },
+            {
+              "code": "GF-W.14",
+              "title": {
+                "de": "Entropie",
+                "en": "Entropy"
+              },
+              "summary": {
+                "de": "Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad.",
+                "en": "Entropy as an energy carrier, entropy production and Carnot efficiency."
+              }
+            },
+            {
+              "code": "GF-W.15",
+              "title": {
+                "de": "Thermodynamische Maschinen",
+                "en": "Thermodynamic machines"
+              },
+              "summary": {
+                "de": "Gesetze des idealen Gases, Wärmepumpe und Stirlingmotor, Carnot-Wirkungsgrad.",
+                "en": "Ideal gas laws, heat pump and Stirling engine, Carnot efficiency."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "GF-W.16",
+              "title": {
+                "de": "Energiebereitstellung",
+                "en": "Energy supply"
+              },
+              "summary": {
+                "de": "Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.",
+                "en": "Basic principle and comparison of energy supply technologies, sustainability."
+              }
+            },
+            {
+              "code": "GF-W.17",
+              "title": {
+                "de": "Relativistische Kinematik",
+                "en": "Relativistic kinematics"
+              },
+              "summary": {
+                "de": "Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.",
+                "en": "Relativity of simultaneity, time dilation and length contraction, spacetime diagrams."
+              }
+            },
+            {
+              "code": "GF-W.18",
+              "title": {
+                "de": "Relativistische Dynamik",
+                "en": "Relativistic dynamics"
+              },
+              "summary": {
+                "de": "Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.",
+                "en": "Mass–energy equivalence, the speed limit and time in a gravitational field."
+              }
+            },
+            {
+              "code": "GF-W.19",
+              "title": {
+                "de": "Astrophysik",
+                "en": "Astrophysics"
+              },
+              "summary": {
+                "de": "Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.",
+                "en": "Properties of the Sun, stellar evolution and the standard solar model."
+              }
+            },
+            {
+              "code": "GF-W.20",
+              "title": {
+                "de": "Kosmologie",
+                "en": "Cosmology"
+              },
+              "summary": {
+                "de": "Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.",
+                "en": "Structure and evolution of the universe, the Big Bang and background radiation."
+              }
+            },
+            {
+              "code": "GF-W.21",
+              "title": {
+                "de": "Chaos und Fraktale – Nichtlineare dynamische Systeme",
+                "en": "Chaos and fractals – non-linear dynamical systems"
+              },
+              "summary": {
+                "de": "Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.",
+                "en": "Chaotic phenomena, features of chaotic systems and fractal structures."
+              }
+            },
+            {
+              "code": "GF-W.22",
+              "title": {
+                "de": "Strömungsphysik",
+                "en": "Fluid dynamics"
+              },
+              "summary": {
+                "de": "Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.",
+                "en": "Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift."
+              }
+            },
+            {
+              "code": "GF-W.23",
+              "title": {
+                "de": "Physik als sich weiterentwickelnde Wissenschaft",
+                "en": "Physics as an evolving science"
+              },
+              "summary": {
+                "de": "Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang.",
+                "en": "Scientific revolutions and ways of working in physics in their historical and social context."
+              }
+            },
+            {
+              "code": "GF-W.24",
+              "title": {
+                "de": "Individuelles Thema",
+                "en": "Individual topic"
+              },
+              "summary": {
+                "de": "Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.",
+                "en": "Freely chosen content, mainly for evaluation skills, for example sustainability or climate change."
+              }
+            }
+          ]
+        },
+        {
+          "code": "LF-P",
+          "title": {
+            "de": "Pflichtbausteine (Leistungsfach)",
+            "en": "Compulsory modules (advanced course)"
+          },
+          "summary": {
+            "de": "Felder mit Energiespeicherung in Kondensator und Spule, Induktion, Schwingungen und Wellen, Quantenphysik, Atom- und Kernphysik sowie Energie und Entropie.",
+            "en": "Fields with energy storage in capacitor and coil, induction, oscillations and waves, quantum physics, atomic and nuclear physics, and energy and entropy."
+          },
+          "parts": [
+            {
+              "code": "LF-P.1",
+              "title": {
+                "de": "Feldkonzept für statische elektrische und magnetische Felder",
+                "en": "Field concept for static electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.",
+                "en": "As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law."
+              },
+              "simulations": [
+                "feldlinien"
+              ]
+            },
+            {
+              "code": "LF-P.2",
+              "title": {
+                "de": "Energie und Energiespeicherung im elektrischen und magnetischen Feld",
+                "en": "Energy and energy storage in electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Potential und Spannung, Kondensator mit Kapazität, Energie und Auf- und Entladung; Spule mit Flussdichte, Induktivität und Feldenergie.",
+                "en": "Potential and voltage, the capacitor with capacitance, energy and charging and discharging; the coil with flux density, inductance and field energy."
+              },
+              "simulations": [
+                "kondensator"
+              ]
+            },
+            {
+              "code": "LF-P.3",
+              "title": {
+                "de": "Wechselwirkung von geladenen Körpern mit statischen Feldern",
+                "en": "Interaction of charged bodies with static fields"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Hall-Effekt, Kreisbahnen im Magnetfeld (quantitativ) und gekreuzte Felder.",
+                "en": "As in the basic course, plus the Hall effect, circular paths in a magnetic field (quantitative) and crossed fields."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LF-P.4",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder I",
+                "en": "Changing electromagnetic fields I"
+              },
+              "summary": {
+                "de": "Induktionsgesetz auch in differentieller Form, Richtung des Induktionsstroms, Selbstinduktion und Ein- und Ausschaltvorgänge an der Spule.",
+                "en": "The law of induction also in differential form, direction of the induced current, self-induction and switching a coil on and off."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "LF-P.5",
+              "title": {
+                "de": "Harmonische Schwingungen",
+                "en": "Harmonic oscillations"
+              },
+              "summary": {
+                "de": "Kenngrößen der Schwingung, Schwingkreis, lineares Kraftgesetz, Fadenpendel mit Kleinwinkelnäherung und Herleitung der Schwingungsdauer.",
+                "en": "Parameters of oscillation, the LC circuit, the linear force law, the simple pendulum with the small-angle approximation and deriving the period."
+              },
+              "simulations": [
+                "fadenpendel",
+                "federpendel"
+              ]
+            },
+            {
+              "code": "LF-P.6",
+              "title": {
+                "de": "Schwingungen und Wellen",
+                "en": "Oscillations and waves"
+              },
+              "summary": {
+                "de": "Gedämpfte, erzwungene und gekoppelte Schwingungen mit Resonanz; Erzeugung, Größen und mathematische Beschreibung harmonischer Wellen.",
+                "en": "Damped, forced and coupled oscillations with resonance; generation, quantities and mathematical description of harmonic waves."
+              },
+              "simulations": [
+                "resonanz",
+                "wellen-ausbreitung"
+              ]
+            },
+            {
+              "code": "LF-P.7",
+              "title": {
+                "de": "Harmonische Wellen und ihre Superposition",
+                "en": "Harmonic waves and their superposition"
+              },
+              "summary": {
+                "de": "Brechung, Reflexion und Beugung, stehende Wellen, Interferenz an Doppelspalt und Einzelspalt, Wellenlängenbestimmung und Interferometer.",
+                "en": "Refraction, reflection and diffraction, standing waves, interference at double and single slits, measuring wavelength and the interferometer."
+              },
+              "simulations": [
+                "stehende-wellen",
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LF-P.8",
+              "title": {
+                "de": "Quantenobjekte I",
+                "en": "Quantum objects I"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Delayed-Choice-Experiment, Koinzidenzmethode, stochastische Deutung mit |Ψ|² und Ort-Impuls-Unbestimmtheit.",
+                "en": "As in the basic course, plus the delayed-choice experiment, the coincidence method, the probabilistic interpretation with |Ψ|² and position–momentum uncertainty."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "LF-P.9",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung I",
+                "en": "Quantum view of the atom I"
+              },
+              "summary": {
+                "de": "Quantisierte Absorption und Emission, Röntgenspektrum, Energiestufenmodell, Potentialtopf, Orbitalmodell und Ausblick auf Mehrelektronensysteme.",
+                "en": "Quantised absorption and emission, the X-ray spectrum, the energy level model, the potential well, the orbital model and an outlook on many-electron systems."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LF-P.10",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Kernmodell, Bindungsenergie, Zerfall, Spaltung und Fusion, Absorptions- und Zerfallsgesetz und quantenmechanische Bezüge.",
+                "en": "Nuclear model, binding energy, decay, fission and fusion, the laws of absorption and decay and links to quantum mechanics."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LF-P.11",
+              "title": {
+                "de": "Energie und Entropie",
+                "en": "Energy and entropy"
+              },
+              "summary": {
+                "de": "Energieströme und Energieträger, Entropie, Entropieerzeugung, thermodynamische Maschinen und Carnot-Wirkungsgrad.",
+                "en": "Energy flows and carriers, entropy, entropy production, thermodynamic machines and Carnot efficiency."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Leistungsfach, sieben zu wählen)",
+            "en": "Elective modules (advanced course, choose seven)"
+          },
+          "summary": {
+            "de": "Vertiefungen und Erweiterungen von Teilchen in Feldern bis zur Kosmologie, dazu ein individuelles Thema.",
+            "en": "Extensions from particles in fields to cosmology, plus an individual topic."
+          },
+          "parts": [
+            {
+              "code": "LF-W.1",
+              "title": {
+                "de": "Anwendungsbeispiele für Teilchen in Feldern",
+                "en": "Applications of particles in fields"
+              },
+              "summary": {
+                "de": "Fadenstrahlrohr, Elektronenablenkröhre, Teilchenbeschleuniger, Massenspektrometer und MHD-Generator.",
+                "en": "Fine-beam tube, electron deflection tube, particle accelerators, mass spectrometer and MHD generator."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LF-W.2",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder II",
+                "en": "Changing electromagnetic fields II"
+              },
+              "summary": {
+                "de": "Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation.",
+                "en": "Maxwell’s equations, fields and frames of reference, the Lorentz transformation."
+              }
+            },
+            {
+              "code": "LF-W.3",
+              "title": {
+                "de": "Akustik",
+                "en": "Acoustics"
+              },
+              "summary": {
+                "de": "Schall als Longitudinalwelle, Dopplereffekt, Schwebung, stehende Wellen und Resonanz, Fourieranalyse.",
+                "en": "Sound as a longitudinal wave, the Doppler effect, beats, standing waves and resonance, Fourier analysis."
+              },
+              "simulations": [
+                "doppler-effekt",
+                "wellen-ausbreitung",
+                "stehende-wellen"
+              ]
+            },
+            {
+              "code": "LF-W.4",
+              "title": {
+                "de": "Licht als Wellenphänomen",
+                "en": "Light as a wave phenomenon"
+              },
+              "summary": {
+                "de": "Interferenz und Polarisation in Natur und Technik.",
+                "en": "Interference and polarisation in nature and technology."
+              },
+              "simulations": [
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LF-W.5",
+              "title": {
+                "de": "Elektromagnetische Wellen",
+                "en": "Electromagnetic waves"
+              },
+              "summary": {
+                "de": "Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.",
+                "en": "Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum."
+              }
+            },
+            {
+              "code": "LF-W.6",
+              "title": {
+                "de": "Wechselstromkreise",
+                "en": "AC circuits"
+              },
+              "summary": {
+                "de": "Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung.",
+                "en": "RMS values, impedance and phase shift, real and reactive power."
+              }
+            },
+            {
+              "code": "LF-W.7",
+              "title": {
+                "de": "Elektronik",
+                "en": "Electronics"
+              },
+              "summary": {
+                "de": "Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.",
+                "en": "Basic circuits, intrinsic and extrinsic conduction, diode and transistor."
+              }
+            },
+            {
+              "code": "LF-W.8",
+              "title": {
+                "de": "Festkörperphysik",
+                "en": "Solid-state physics"
+              },
+              "summary": {
+                "de": "Bändermodell und Eigenschaften von Festkörpern.",
+                "en": "The band model and properties of solids."
+              }
+            },
+            {
+              "code": "LF-W.9",
+              "title": {
+                "de": "Quantenobjekte II",
+                "en": "Quantum objects II"
+              },
+              "summary": {
+                "de": "Deutungen der Quantentheorie und experimentelle Belege wie Elektronenbeugung und Hallwachs-Effekt.",
+                "en": "Interpretations of quantum theory and experimental evidence such as electron diffraction and the Hallwachs effect."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "LF-W.10",
+              "title": {
+                "de": "Wechselwirkung von Quantenobjekten",
+                "en": "Interaction of quantum objects"
+              },
+              "summary": {
+                "de": "Compton- und Hallwachs-Effekt, Paarerzeugung, Elektronenbeugung, Bragg-Reflexion und Entstehung der Röntgenstrahlung.",
+                "en": "Compton and Hallwachs effects, pair production, electron diffraction, Bragg reflection and how X-rays arise."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "LF-W.11",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung II",
+                "en": "Quantum view of the atom II"
+              },
+              "summary": {
+                "de": "Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.",
+                "en": "The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LF-W.12",
+              "title": {
+                "de": "Strahlenbiophysik",
+                "en": "Radiation biophysics"
+              },
+              "summary": {
+                "de": "Dosis, biologische Wirkung, Strahlenschutz, Dosis-Effekt-Kurven und medizinische Anwendungen.",
+                "en": "Dose, biological effects, radiation protection, dose–effect curves and medical uses."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LF-W.13",
+              "title": {
+                "de": "Elementarteilchenphysik",
+                "en": "Particle physics"
+              },
+              "summary": {
+                "de": "Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen.",
+                "en": "The Standard Model, fundamental interactions, experimental findings and open questions."
+              }
+            },
+            {
+              "code": "LF-W.14",
+              "title": {
+                "de": "Energiebereitstellung",
+                "en": "Energy supply"
+              },
+              "summary": {
+                "de": "Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.",
+                "en": "Basic principle and comparison of energy supply technologies, sustainability."
+              }
+            },
+            {
+              "code": "LF-W.15",
+              "title": {
+                "de": "Relativistische Kinematik",
+                "en": "Relativistic kinematics"
+              },
+              "summary": {
+                "de": "Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.",
+                "en": "Relativity of simultaneity, time dilation and length contraction, spacetime diagrams."
+              }
+            },
+            {
+              "code": "LF-W.16",
+              "title": {
+                "de": "Relativistische Dynamik",
+                "en": "Relativistic dynamics"
+              },
+              "summary": {
+                "de": "Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.",
+                "en": "Mass–energy equivalence, the speed limit and time in a gravitational field."
+              }
+            },
+            {
+              "code": "LF-W.17",
+              "title": {
+                "de": "Astrophysik",
+                "en": "Astrophysics"
+              },
+              "summary": {
+                "de": "Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.",
+                "en": "Properties of the Sun, stellar evolution and the standard solar model."
+              }
+            },
+            {
+              "code": "LF-W.18",
+              "title": {
+                "de": "Kosmologie",
+                "en": "Cosmology"
+              },
+              "summary": {
+                "de": "Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.",
+                "en": "Structure and evolution of the universe, the Big Bang and background radiation."
+              }
+            },
+            {
+              "code": "LF-W.19",
+              "title": {
+                "de": "Chaos und Fraktale – Nichtlineare dynamische Systeme",
+                "en": "Chaos and fractals – non-linear dynamical systems"
+              },
+              "summary": {
+                "de": "Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.",
+                "en": "Chaotic phenomena, features of chaotic systems and fractal structures."
+              }
+            },
+            {
+              "code": "LF-W.20",
+              "title": {
+                "de": "Strömungsphysik",
+                "en": "Fluid dynamics"
+              },
+              "summary": {
+                "de": "Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.",
+                "en": "Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift."
+              }
+            },
+            {
+              "code": "LF-W.21",
+              "title": {
+                "de": "Individuelles Thema",
+                "en": "Individual topic"
+              },
+              "summary": {
+                "de": "Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.",
+                "en": "Freely chosen content, mainly for evaluation skills, for example sustainability or climate change."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "grade": 13,
+      "sourceUrl": "https://bm.rlp.de/",
+      "note": {
+        "de": "Qualifikationsphase der Mainzer Studienstufe (Jahrgangsstufen 12 und 13). Der Lehrplan gibt keine Reihenfolge vor; die Lernbereiche stehen deshalb bei 12 und 13 gleich und werden als eine Stufe gezeigt. Im Grundfach (GF) sind alle neun Pflichtbausteine und fünf Wahlpflichtbausteine, im Leistungsfach (LF) alle elf Pflichtbausteine und sieben Wahlpflichtbausteine zu behandeln. Die Nummern sind von uns vergeben.",
+        "en": "Qualification phase of the Mainz upper secondary (grades 12 and 13). The curriculum sets no order, so the units are the same for grades 12 and 13 and are shown as one stage. The basic course (GF) covers all nine compulsory modules and five electives, the advanced course (LF) all eleven compulsory modules and seven electives. The numbers are our own."
+      },
+      "units": [
+        {
+          "code": "GF-P",
+          "title": {
+            "de": "Pflichtbausteine (Grundfach)",
+            "en": "Compulsory modules (basic course)"
+          },
+          "summary": {
+            "de": "Elektrische und magnetische Felder, Induktion, Schwingungen und Wellen sowie Quantenobjekte und Atomvorstellung.",
+            "en": "Electric and magnetic fields, induction, oscillations and waves, and quantum objects and the atom."
+          },
+          "parts": [
+            {
+              "code": "GF-P.1",
+              "title": {
+                "de": "Feldkonzept für statische elektrische und magnetische Felder",
+                "en": "Field concept for static electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Eigenschaften statischer Felder, Feldlinienbilder, Superposition von Feldern, elektrische Feldstärke, magnetische Flussdichte und das Magnetfeld einer Spule.",
+                "en": "Properties of static fields, field line patterns, superposition of fields, electric field strength, magnetic flux density and the field of a coil."
+              }
+            },
+            {
+              "code": "GF-P.2",
+              "title": {
+                "de": "Energie und Energiespeicherung im elektrischen Feld",
+                "en": "Energy and energy storage in the electric field"
+              },
+              "summary": {
+                "de": "Spannung und Feldstärke im Plattenkondensator, Kapazität, Energie des Feldes sowie Auf- und Entladen des Kondensators.",
+                "en": "Voltage and field strength in a parallel-plate capacitor, capacitance, field energy and charging and discharging the capacitor."
+              }
+            },
+            {
+              "code": "GF-P.3",
+              "title": {
+                "de": "Wechselwirkung von geladenen Körpern mit statischen Feldern",
+                "en": "Interaction of charged bodies with static fields"
+              },
+              "summary": {
+                "de": "Kraft auf Ladungen im elektrischen Feld, Bewegung im Längs- und Querfeld, Lorentzkraft und Bewegung im homogenen Magnetfeld.",
+                "en": "Force on charges in an electric field, motion in longitudinal and transverse fields, the Lorentz force and motion in a uniform magnetic field."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "GF-P.4",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder",
+                "en": "Changing electromagnetic fields"
+              },
+              "summary": {
+                "de": "Magnetischer Fluss, Induktionsgesetz mit mittlerer Änderungsrate, Richtung des Induktionsstroms und eine technische Anwendung.",
+                "en": "Magnetic flux, the law of induction with the average rate of change, the direction of the induced current and a technical application."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "GF-P.5",
+              "title": {
+                "de": "Harmonische Schwingungen",
+                "en": "Harmonic oscillations"
+              },
+              "summary": {
+                "de": "Elongation, Amplitude, Periodendauer und Frequenz, Schwingkreis in Analogie zum mechanischen Oszillator, Periodendauer an einem Beispiel.",
+                "en": "Displacement, amplitude, period and frequency, the LC circuit by analogy with the mechanical oscillator, period of oscillation in one example."
+              }
+            },
+            {
+              "code": "GF-P.6",
+              "title": {
+                "de": "Harmonische Wellen",
+                "en": "Harmonic waves"
+              },
+              "summary": {
+                "de": "Erzeugung, Ausbreitung und Energietransport, Wellenlänge, Geschwindigkeit und Frequenz, transversal und longitudinal, Polarisation, Brechung, Reflexion und Beugung.",
+                "en": "Generation, propagation and energy transport, wavelength, speed and frequency, transverse and longitudinal, polarisation, refraction, reflection and diffraction."
+              }
+            },
+            {
+              "code": "GF-P.7",
+              "title": {
+                "de": "Superposition von Wellen",
+                "en": "Superposition of waves"
+              },
+              "summary": {
+                "de": "Stehende Wellen und Wellenlängenbestimmung, Interferenz am Doppelspalt, Spektrum weißen Lichts und Überblick über elektromagnetische Wellen.",
+                "en": "Standing waves and measuring wavelength, double-slit interference, the spectrum of white light and an overview of electromagnetic waves."
+              },
+              "simulations": [
+                "stehende-wellen",
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GF-P.8",
+              "title": {
+                "de": "Quantenobjekte I",
+                "en": "Quantum objects I"
+              },
+              "summary": {
+                "de": "Elektronen und Photonen am Doppelspalt, Energie und Frequenz, Impuls und Wellenlänge, Grundaspekte der Quantentheorie und ein Näherungswert für h.",
+                "en": "Electrons and photons at the double slit, energy and frequency, momentum and wavelength, basic aspects of quantum theory and an estimate of h."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "GF-P.9",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung I",
+                "en": "Quantum view of the atom I"
+              },
+              "summary": {
+                "de": "Quantisierte Absorption und Emission am Wasserstoffatom, Energiestufenmodell und Orbitalmodell.",
+                "en": "Quantised absorption and emission in the hydrogen atom, the energy level model and the orbital model."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "GF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Grundfach, fünf zu wählen)",
+            "en": "Elective modules (basic course, choose five)"
+          },
+          "summary": {
+            "de": "Vertiefungen und Erweiterungen von Teilchen in Feldern bis zur Kosmologie, dazu ein individuelles Thema.",
+            "en": "Extensions from particles in fields to cosmology, plus an individual topic."
+          },
+          "parts": [
+            {
+              "code": "GF-W.1",
+              "title": {
+                "de": "Anwendungsbeispiele für Teilchen in Feldern",
+                "en": "Applications of particles in fields"
+              },
+              "summary": {
+                "de": "Fadenstrahlrohr zur Bestimmung von e/m, Elektronenablenkröhre, Teilchenbeschleuniger, Hall-Effekt.",
+                "en": "Fine-beam tube for e/m, electron deflection tube, particle accelerators, Hall effect."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "GF-W.2",
+              "title": {
+                "de": "Schwingungsphänomene",
+                "en": "Oscillation phenomena"
+              },
+              "summary": {
+                "de": "Gedämpfte, erzwungene und gekoppelte Schwingungen und Resonanz.",
+                "en": "Damped, forced and coupled oscillations and resonance."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            },
+            {
+              "code": "GF-W.3",
+              "title": {
+                "de": "Akustik",
+                "en": "Acoustics"
+              },
+              "summary": {
+                "de": "Schall als Longitudinalwelle, Schwebung, stehende Wellen und Resonanz, Fourieranalyse von Klängen.",
+                "en": "Sound as a longitudinal wave, beats, standing waves and resonance, Fourier analysis of sounds."
+              },
+              "simulations": [
+                "stehende-wellen"
+              ]
+            },
+            {
+              "code": "GF-W.4",
+              "title": {
+                "de": "Licht als Wellenphänomen",
+                "en": "Light as a wave phenomenon"
+              },
+              "summary": {
+                "de": "Interferenz und Polarisation in Natur und Technik.",
+                "en": "Interference and polarisation in nature and technology."
+              },
+              "simulations": [
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "GF-W.5",
+              "title": {
+                "de": "Elektromagnetische Wellen",
+                "en": "Electromagnetic waves"
+              },
+              "summary": {
+                "de": "Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.",
+                "en": "Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum."
+              }
+            },
+            {
+              "code": "GF-W.6",
+              "title": {
+                "de": "Wechselstromkreise",
+                "en": "AC circuits"
+              },
+              "summary": {
+                "de": "Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung.",
+                "en": "RMS values, impedance and phase shift, real and reactive power."
+              }
+            },
+            {
+              "code": "GF-W.7",
+              "title": {
+                "de": "Elektronik",
+                "en": "Electronics"
+              },
+              "summary": {
+                "de": "Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.",
+                "en": "Basic circuits, intrinsic and extrinsic conduction, diode and transistor."
+              }
+            },
+            {
+              "code": "GF-W.8",
+              "title": {
+                "de": "Festkörperphysik",
+                "en": "Solid-state physics"
+              },
+              "summary": {
+                "de": "Bändermodell und Eigenschaften von Festkörpern.",
+                "en": "The band model and properties of solids."
+              }
+            },
+            {
+              "code": "GF-W.9",
+              "title": {
+                "de": "Quantenobjekte II",
+                "en": "Quantum objects II"
+              },
+              "summary": {
+                "de": "Deutungen der Quantentheorie, Unbestimmtheitsrelation und experimentelle Belege wie Elektronenbeugung und Hallwachs-Effekt.",
+                "en": "Interpretations of quantum theory, the uncertainty principle and experimental evidence such as electron diffraction and the Hallwachs effect."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "GF-W.10",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung II",
+                "en": "Quantum view of the atom II"
+              },
+              "summary": {
+                "de": "Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.",
+                "en": "The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "GF-W.11",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Radionuklide, Zerfall, Spaltung und Fusion, Absorptions- und Zerfallsgesetz, Bindungsenergie.",
+                "en": "Radionuclides, decay, fission and fusion, the laws of absorption and decay, binding energy."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "GF-W.12",
+              "title": {
+                "de": "Strahlenbiophysik",
+                "en": "Radiation biophysics"
+              },
+              "summary": {
+                "de": "Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen.",
+                "en": "Dose, biological effects, radiation protection and medical uses."
+              }
+            },
+            {
+              "code": "GF-W.13",
+              "title": {
+                "de": "Elementarteilchenphysik",
+                "en": "Particle physics"
+              },
+              "summary": {
+                "de": "Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen.",
+                "en": "Fundamental particles and interactions, the Standard Model and open questions."
+              }
+            },
+            {
+              "code": "GF-W.14",
+              "title": {
+                "de": "Entropie",
+                "en": "Entropy"
+              },
+              "summary": {
+                "de": "Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad.",
+                "en": "Entropy as an energy carrier, entropy production and Carnot efficiency."
+              }
+            },
+            {
+              "code": "GF-W.15",
+              "title": {
+                "de": "Thermodynamische Maschinen",
+                "en": "Thermodynamic machines"
+              },
+              "summary": {
+                "de": "Gesetze des idealen Gases, Wärmepumpe und Stirlingmotor, Carnot-Wirkungsgrad.",
+                "en": "Ideal gas laws, heat pump and Stirling engine, Carnot efficiency."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            },
+            {
+              "code": "GF-W.16",
+              "title": {
+                "de": "Energiebereitstellung",
+                "en": "Energy supply"
+              },
+              "summary": {
+                "de": "Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.",
+                "en": "Basic principle and comparison of energy supply technologies, sustainability."
+              }
+            },
+            {
+              "code": "GF-W.17",
+              "title": {
+                "de": "Relativistische Kinematik",
+                "en": "Relativistic kinematics"
+              },
+              "summary": {
+                "de": "Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.",
+                "en": "Relativity of simultaneity, time dilation and length contraction, spacetime diagrams."
+              }
+            },
+            {
+              "code": "GF-W.18",
+              "title": {
+                "de": "Relativistische Dynamik",
+                "en": "Relativistic dynamics"
+              },
+              "summary": {
+                "de": "Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.",
+                "en": "Mass–energy equivalence, the speed limit and time in a gravitational field."
+              }
+            },
+            {
+              "code": "GF-W.19",
+              "title": {
+                "de": "Astrophysik",
+                "en": "Astrophysics"
+              },
+              "summary": {
+                "de": "Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.",
+                "en": "Properties of the Sun, stellar evolution and the standard solar model."
+              }
+            },
+            {
+              "code": "GF-W.20",
+              "title": {
+                "de": "Kosmologie",
+                "en": "Cosmology"
+              },
+              "summary": {
+                "de": "Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.",
+                "en": "Structure and evolution of the universe, the Big Bang and background radiation."
+              }
+            },
+            {
+              "code": "GF-W.21",
+              "title": {
+                "de": "Chaos und Fraktale – Nichtlineare dynamische Systeme",
+                "en": "Chaos and fractals – non-linear dynamical systems"
+              },
+              "summary": {
+                "de": "Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.",
+                "en": "Chaotic phenomena, features of chaotic systems and fractal structures."
+              }
+            },
+            {
+              "code": "GF-W.22",
+              "title": {
+                "de": "Strömungsphysik",
+                "en": "Fluid dynamics"
+              },
+              "summary": {
+                "de": "Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.",
+                "en": "Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift."
+              }
+            },
+            {
+              "code": "GF-W.23",
+              "title": {
+                "de": "Physik als sich weiterentwickelnde Wissenschaft",
+                "en": "Physics as an evolving science"
+              },
+              "summary": {
+                "de": "Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang.",
+                "en": "Scientific revolutions and ways of working in physics in their historical and social context."
+              }
+            },
+            {
+              "code": "GF-W.24",
+              "title": {
+                "de": "Individuelles Thema",
+                "en": "Individual topic"
+              },
+              "summary": {
+                "de": "Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.",
+                "en": "Freely chosen content, mainly for evaluation skills, for example sustainability or climate change."
+              }
+            }
+          ]
+        },
+        {
+          "code": "LF-P",
+          "title": {
+            "de": "Pflichtbausteine (Leistungsfach)",
+            "en": "Compulsory modules (advanced course)"
+          },
+          "summary": {
+            "de": "Felder mit Energiespeicherung in Kondensator und Spule, Induktion, Schwingungen und Wellen, Quantenphysik, Atom- und Kernphysik sowie Energie und Entropie.",
+            "en": "Fields with energy storage in capacitor and coil, induction, oscillations and waves, quantum physics, atomic and nuclear physics, and energy and entropy."
+          },
+          "parts": [
+            {
+              "code": "LF-P.1",
+              "title": {
+                "de": "Feldkonzept für statische elektrische und magnetische Felder",
+                "en": "Field concept for static electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.",
+                "en": "As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law."
+              }
+            },
+            {
+              "code": "LF-P.2",
+              "title": {
+                "de": "Energie und Energiespeicherung im elektrischen und magnetischen Feld",
+                "en": "Energy and energy storage in electric and magnetic fields"
+              },
+              "summary": {
+                "de": "Potential und Spannung, Kondensator mit Kapazität, Energie und Auf- und Entladung; Spule mit Flussdichte, Induktivität und Feldenergie.",
+                "en": "Potential and voltage, the capacitor with capacitance, energy and charging and discharging; the coil with flux density, inductance and field energy."
+              }
+            },
+            {
+              "code": "LF-P.3",
+              "title": {
+                "de": "Wechselwirkung von geladenen Körpern mit statischen Feldern",
+                "en": "Interaction of charged bodies with static fields"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Hall-Effekt, Kreisbahnen im Magnetfeld (quantitativ) und gekreuzte Felder.",
+                "en": "As in the basic course, plus the Hall effect, circular paths in a magnetic field (quantitative) and crossed fields."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LF-P.4",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder I",
+                "en": "Changing electromagnetic fields I"
+              },
+              "summary": {
+                "de": "Induktionsgesetz auch in differentieller Form, Richtung des Induktionsstroms, Selbstinduktion und Ein- und Ausschaltvorgänge an der Spule.",
+                "en": "The law of induction also in differential form, direction of the induced current, self-induction and switching a coil on and off."
+              },
+              "simulations": [
+                "induktion"
+              ]
+            },
+            {
+              "code": "LF-P.5",
+              "title": {
+                "de": "Harmonische Schwingungen",
+                "en": "Harmonic oscillations"
+              },
+              "summary": {
+                "de": "Kenngrößen der Schwingung, Schwingkreis, lineares Kraftgesetz, Fadenpendel mit Kleinwinkelnäherung und Herleitung der Schwingungsdauer.",
+                "en": "Parameters of oscillation, the LC circuit, the linear force law, the simple pendulum with the small-angle approximation and deriving the period."
+              }
+            },
+            {
+              "code": "LF-P.6",
+              "title": {
+                "de": "Schwingungen und Wellen",
+                "en": "Oscillations and waves"
+              },
+              "summary": {
+                "de": "Gedämpfte, erzwungene und gekoppelte Schwingungen mit Resonanz; Erzeugung, Größen und mathematische Beschreibung harmonischer Wellen.",
+                "en": "Damped, forced and coupled oscillations with resonance; generation, quantities and mathematical description of harmonic waves."
+              },
+              "simulations": [
+                "resonanz"
+              ]
+            },
+            {
+              "code": "LF-P.7",
+              "title": {
+                "de": "Harmonische Wellen und ihre Superposition",
+                "en": "Harmonic waves and their superposition"
+              },
+              "summary": {
+                "de": "Brechung, Reflexion und Beugung, stehende Wellen, Interferenz an Doppelspalt und Einzelspalt, Wellenlängenbestimmung und Interferometer.",
+                "en": "Refraction, reflection and diffraction, standing waves, interference at double and single slits, measuring wavelength and the interferometer."
+              },
+              "simulations": [
+                "stehende-wellen",
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LF-P.8",
+              "title": {
+                "de": "Quantenobjekte I",
+                "en": "Quantum objects I"
+              },
+              "summary": {
+                "de": "Wie im Grundfach, zusätzlich Delayed-Choice-Experiment, Koinzidenzmethode, stochastische Deutung mit |Ψ|² und Ort-Impuls-Unbestimmtheit.",
+                "en": "As in the basic course, plus the delayed-choice experiment, the coincidence method, the probabilistic interpretation with |Ψ|² and position–momentum uncertainty."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "LF-P.9",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung I",
+                "en": "Quantum view of the atom I"
+              },
+              "summary": {
+                "de": "Quantisierte Absorption und Emission, Röntgenspektrum, Energiestufenmodell, Potentialtopf, Orbitalmodell und Ausblick auf Mehrelektronensysteme.",
+                "en": "Quantised absorption and emission, the X-ray spectrum, the energy level model, the potential well, the orbital model and an outlook on many-electron systems."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LF-P.10",
+              "title": {
+                "de": "Kernphysik",
+                "en": "Nuclear physics"
+              },
+              "summary": {
+                "de": "Kernmodell, Bindungsenergie, Zerfall, Spaltung und Fusion, Absorptions- und Zerfallsgesetz und quantenmechanische Bezüge.",
+                "en": "Nuclear model, binding energy, decay, fission and fusion, the laws of absorption and decay and links to quantum mechanics."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LF-P.11",
+              "title": {
+                "de": "Energie und Entropie",
+                "en": "Energy and entropy"
+              },
+              "summary": {
+                "de": "Energieströme und Energieträger, Entropie, Entropieerzeugung, thermodynamische Maschinen und Carnot-Wirkungsgrad.",
+                "en": "Energy flows and carriers, entropy, entropy production, thermodynamic machines and Carnot efficiency."
+              },
+              "simulations": [
+                "gasgesetze"
+              ]
+            }
+          ]
+        },
+        {
+          "code": "LF-W",
+          "title": {
+            "de": "Wahlpflichtbausteine (Leistungsfach, sieben zu wählen)",
+            "en": "Elective modules (advanced course, choose seven)"
+          },
+          "summary": {
+            "de": "Vertiefungen und Erweiterungen von Teilchen in Feldern bis zur Kosmologie, dazu ein individuelles Thema.",
+            "en": "Extensions from particles in fields to cosmology, plus an individual topic."
+          },
+          "parts": [
+            {
+              "code": "LF-W.1",
+              "title": {
+                "de": "Anwendungsbeispiele für Teilchen in Feldern",
+                "en": "Applications of particles in fields"
+              },
+              "summary": {
+                "de": "Fadenstrahlrohr, Elektronenablenkröhre, Teilchenbeschleuniger, Massenspektrometer und MHD-Generator.",
+                "en": "Fine-beam tube, electron deflection tube, particle accelerators, mass spectrometer and MHD generator."
+              },
+              "simulations": [
+                "lorentzkraft"
+              ]
+            },
+            {
+              "code": "LF-W.2",
+              "title": {
+                "de": "Veränderliche elektromagnetische Felder II",
+                "en": "Changing electromagnetic fields II"
+              },
+              "summary": {
+                "de": "Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation.",
+                "en": "Maxwell’s equations, fields and frames of reference, the Lorentz transformation."
+              }
+            },
+            {
+              "code": "LF-W.3",
+              "title": {
+                "de": "Akustik",
+                "en": "Acoustics"
+              },
+              "summary": {
+                "de": "Schall als Longitudinalwelle, Dopplereffekt, Schwebung, stehende Wellen und Resonanz, Fourieranalyse.",
+                "en": "Sound as a longitudinal wave, the Doppler effect, beats, standing waves and resonance, Fourier analysis."
+              },
+              "simulations": [
+                "stehende-wellen"
+              ]
+            },
+            {
+              "code": "LF-W.4",
+              "title": {
+                "de": "Licht als Wellenphänomen",
+                "en": "Light as a wave phenomenon"
+              },
+              "summary": {
+                "de": "Interferenz und Polarisation in Natur und Technik.",
+                "en": "Interference and polarisation in nature and technology."
+              },
+              "simulations": [
+                "interferenz",
+                "doppelspalt"
+              ]
+            },
+            {
+              "code": "LF-W.5",
+              "title": {
+                "de": "Elektromagnetische Wellen",
+                "en": "Electromagnetic waves"
+              },
+              "summary": {
+                "de": "Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum.",
+                "en": "Feedback, the open oscillating circuit, propagation and modulation, applications and the spectrum."
+              }
+            },
+            {
+              "code": "LF-W.6",
+              "title": {
+                "de": "Wechselstromkreise",
+                "en": "AC circuits"
+              },
+              "summary": {
+                "de": "Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung.",
+                "en": "RMS values, impedance and phase shift, real and reactive power."
+              }
+            },
+            {
+              "code": "LF-W.7",
+              "title": {
+                "de": "Elektronik",
+                "en": "Electronics"
+              },
+              "summary": {
+                "de": "Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.",
+                "en": "Basic circuits, intrinsic and extrinsic conduction, diode and transistor."
+              }
+            },
+            {
+              "code": "LF-W.8",
+              "title": {
+                "de": "Festkörperphysik",
+                "en": "Solid-state physics"
+              },
+              "summary": {
+                "de": "Bändermodell und Eigenschaften von Festkörpern.",
+                "en": "The band model and properties of solids."
+              }
+            },
+            {
+              "code": "LF-W.9",
+              "title": {
+                "de": "Quantenobjekte II",
+                "en": "Quantum objects II"
+              },
+              "summary": {
+                "de": "Deutungen der Quantentheorie und experimentelle Belege wie Elektronenbeugung und Hallwachs-Effekt.",
+                "en": "Interpretations of quantum theory and experimental evidence such as electron diffraction and the Hallwachs effect."
+              },
+              "simulations": [
+                "elektronenbeugung",
+                "photoeffekt"
+              ]
+            },
+            {
+              "code": "LF-W.10",
+              "title": {
+                "de": "Wechselwirkung von Quantenobjekten",
+                "en": "Interaction of quantum objects"
+              },
+              "summary": {
+                "de": "Compton- und Hallwachs-Effekt, Paarerzeugung, Elektronenbeugung, Bragg-Reflexion und Entstehung der Röntgenstrahlung.",
+                "en": "Compton and Hallwachs effects, pair production, electron diffraction, Bragg reflection and how X-rays arise."
+              },
+              "simulations": [
+                "photoeffekt",
+                "elektronenbeugung"
+              ]
+            },
+            {
+              "code": "LF-W.11",
+              "title": {
+                "de": "Quantenmechanische Atomvorstellung II",
+                "en": "Quantum view of the atom II"
+              },
+              "summary": {
+                "de": "Franck-Hertz-Versuch, Resonanzabsorption, Lumineszenz, Laser und Spektralanalyse.",
+                "en": "The Franck–Hertz experiment, resonance absorption, luminescence, lasers and spectral analysis."
+              },
+              "simulations": [
+                "linienspektren"
+              ]
+            },
+            {
+              "code": "LF-W.12",
+              "title": {
+                "de": "Strahlenbiophysik",
+                "en": "Radiation biophysics"
+              },
+              "summary": {
+                "de": "Dosis, biologische Wirkung, Strahlenschutz, Dosis-Effekt-Kurven und medizinische Anwendungen.",
+                "en": "Dose, biological effects, radiation protection, dose–effect curves and medical uses."
+              },
+              "simulations": [
+                "radioaktiver-zerfall"
+              ]
+            },
+            {
+              "code": "LF-W.13",
+              "title": {
+                "de": "Elementarteilchenphysik",
+                "en": "Particle physics"
+              },
+              "summary": {
+                "de": "Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen.",
+                "en": "The Standard Model, fundamental interactions, experimental findings and open questions."
+              }
+            },
+            {
+              "code": "LF-W.14",
+              "title": {
+                "de": "Energiebereitstellung",
+                "en": "Energy supply"
+              },
+              "summary": {
+                "de": "Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.",
+                "en": "Basic principle and comparison of energy supply technologies, sustainability."
+              }
+            },
+            {
+              "code": "LF-W.15",
+              "title": {
+                "de": "Relativistische Kinematik",
+                "en": "Relativistic kinematics"
+              },
+              "summary": {
+                "de": "Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.",
+                "en": "Relativity of simultaneity, time dilation and length contraction, spacetime diagrams."
+              }
+            },
+            {
+              "code": "LF-W.16",
+              "title": {
+                "de": "Relativistische Dynamik",
+                "en": "Relativistic dynamics"
+              },
+              "summary": {
+                "de": "Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.",
+                "en": "Mass–energy equivalence, the speed limit and time in a gravitational field."
+              }
+            },
+            {
+              "code": "LF-W.17",
+              "title": {
+                "de": "Astrophysik",
+                "en": "Astrophysics"
+              },
+              "summary": {
+                "de": "Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.",
+                "en": "Properties of the Sun, stellar evolution and the standard solar model."
+              }
+            },
+            {
+              "code": "LF-W.18",
+              "title": {
+                "de": "Kosmologie",
+                "en": "Cosmology"
+              },
+              "summary": {
+                "de": "Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.",
+                "en": "Structure and evolution of the universe, the Big Bang and background radiation."
+              }
+            },
+            {
+              "code": "LF-W.19",
+              "title": {
+                "de": "Chaos und Fraktale – Nichtlineare dynamische Systeme",
+                "en": "Chaos and fractals – non-linear dynamical systems"
+              },
+              "summary": {
+                "de": "Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen.",
+                "en": "Chaotic phenomena, features of chaotic systems and fractal structures."
+              }
+            },
+            {
+              "code": "LF-W.20",
+              "title": {
+                "de": "Strömungsphysik",
+                "en": "Fluid dynamics"
+              },
+              "summary": {
+                "de": "Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb.",
+                "en": "Types of flow, the continuity equation, Bernoulli’s equation and dynamic lift."
+              }
+            },
+            {
+              "code": "LF-W.21",
+              "title": {
+                "de": "Individuelles Thema",
+                "en": "Individual topic"
+              },
+              "summary": {
+                "de": "Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.",
+                "en": "Freely chosen content, mainly for evaluation skills, for example sustainability or climate change."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
