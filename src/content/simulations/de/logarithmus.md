@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Logarithmus als Umkehrung des Potenzierens: Graphen von bˣ und log_b x mit animierter Spiegelung an y = x, Rechengesetze als Pfeile auf einer logarithmischen Skala und Exponentialgleichungen mit Basiswechsel lösen."
----
-
 ## Worum geht es?
 
 Beim Potenzieren fragt man: Was ergibt $2^3$? Antwort: $8$. Der **Logarithmus** stellt die umgekehrte Frage: **„2 hoch wie viel ergibt 8?“** Antwort: $3$. Man schreibt $\log_2 8 = 3$.

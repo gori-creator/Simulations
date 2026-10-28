@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation: Extremwertaufgaben ohne Ableitung – Gehege an der Mauer, Rechteck im Dreieck, Eintrittspreis und Regenrinne. Bild und Graph der quadratischen Zielfunktion bewegen sich gemeinsam; das Maximum wird erst durch Probieren und dann exakt mit quadratischer Ergänzung gefunden."
----
-
 ## Worum geht es?
 
 Bei einer **Extremwertaufgabe** sucht man den größten (oder kleinsten) Wert einer Größe, z. B. die größte Fläche bei vorgegebener Zaunlänge. Beispiel: Mit $40\,\text{m}$ Zaun soll an einer Mauer ein rechteckiges Gehege entstehen. Die Mauer ersetzt eine Seite, der Zaun bildet die drei anderen.

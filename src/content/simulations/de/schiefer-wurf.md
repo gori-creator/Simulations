@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum waagerechten und schiefen Wurf – Bahn mit Stroboskop und Vektoren, Zerlegung in x- und y-Bewegung, Winkelvergleich, Zielwurf und Luftwiderstand auf Erde, Mond und Mars."
----
-
 ## Worum geht es?
 
 Ein geworfener Ball führt zwei Bewegungen **gleichzeitig** aus, die sich nicht gegenseitig stören (**Superpositionsprinzip**):

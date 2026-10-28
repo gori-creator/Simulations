@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. und 8. Klasse: Mittelsenkrechten, Winkelhalbierende, Seitenhalbierende und Höhen entstehen mit Zirkel, Lineal und Geodreieck auf Karopapier – und schneiden sich jedes Mal in einem Punkt. Mit Umkreis, Inkreis, Schwerpunkt (Pappdreieck auf der Nadel), Höhenschnittpunkt, Euler-Gerade und allen Sonderfällen."
----
-
 ## Worum geht es?
 
 In jedem Dreieck gibt es vier Sorten **besonderer Linien**, von jeder Sorte drei. Das Erstaunliche: Jedes Mal schneiden sich alle drei in **einem** Punkt.

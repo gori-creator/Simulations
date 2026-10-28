@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Photoeffekt mit der Gegenfeldmethode: Licht wählbarer Wellenlänge und Intensität löst Elektronen aus einer Metallkathode aus, die Gegenspannung wird abgeglichen, Messpunkte ergeben die Einstein-Gerade E_kin = h · f − W_A."
----
-
 ## Worum geht es?
 
 Fällt Licht auf eine Metallfläche, können Elektronen herausgelöst werden: der **Photoeffekt**. In einer **Fotozelle** treffen diese Elektronen auf die gegenüberliegende Anode, und ein Strommesser zeigt einen kleinen **Fotostrom** an.

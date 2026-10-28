@@ -1,7 +1,3 @@
----
-description: Interactive simulation of lower and upper sums – the integral as the limit of rectangle sums and as signed area.
----
-
 ## What is it about?
 
 Split $[a; b]$ into $n$ strips of width $\Delta x = \frac{b-a}{n}$. The **lower sum** uses the smallest, the **upper sum** the largest function value in each strip; the area lies in between. As $n \to \infty$ both converge to the integral:

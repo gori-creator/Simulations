@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur elektromagnetischen Induktion: Magnet in eine Spule schieben, Leiterstab auf Schienen durch ein Magnetfeld ziehen, Generator drehen – mit Spannungsmesser, U(t)-Diagramm, Lenzscher Regel, U = B · l · v und Û = n · B · A · ω."
----
-
 ## Worum geht es?
 
 Ändert sich das Magnetfeld, das eine Spule durchsetzt, entsteht an ihren Enden eine Spannung: **elektromagnetische Induktion**. Entscheidend ist der **magnetische Fluss**

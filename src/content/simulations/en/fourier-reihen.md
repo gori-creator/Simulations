@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for university: Fourier series of square, sawtooth, triangle, trapezoid, pulse train and rectified sine waves – partial sums with the Gibbs phenomenon, rotating phasors (epicycles), stacked harmonics, amplitude and phase spectrum, Parseval's share of power and sound."
----
-
 ## What is it about?
 
 A $2\pi$-periodic function can be written as a **Fourier series** $f(x) \approx \frac{a_0}{2} + \sum_{k=1}^{N}(a_k \cos kx + b_k \sin kx)$. Writing each term as $\hat A_k \sin(kx + \varphi_k)$ gives the **amplitude spectrum** $\hat A_k = \sqrt{a_k^2 + b_k^2}$ and the **phase spectrum** $\varphi_k$. The square wave is $\frac{4}{\pi}(\sin x + \frac13 \sin 3x + \frac15 \sin 5x + \ldots)$.

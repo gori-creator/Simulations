@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of hyperbolas f(x) = a/(x − b) + c: asymptotes, domain and range, inverse proportion with rectangles of equal area and how the graph approaches its asymptotes."
----
-
 ## What is it about?
 
 Two quantities are **inversely proportional** if their product is always the same: if one doubles, the other halves. For a fixed number $a$:

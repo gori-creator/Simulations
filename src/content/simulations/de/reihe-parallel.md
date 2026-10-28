@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur Reihen- und Parallelschaltung – Glühlampen oder Widerstände in Reihe, parallel oder gemischt, Strom- und Spannungsmesser an wählbaren Stellen, Lampen herausdrehen, Ersatzwiderstand und Knotenregel."
----
-
 ## Worum geht es?
 
 **Reihenschaltung:** Die Bauteile liegen hintereinander, es gibt nur einen einzigen Weg für den Strom.

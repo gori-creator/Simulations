@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Brechung und Totalreflexion – Laser auf der optischen Scheibe drehen, Brechungsgesetz und Fresnel-Anteile, Snellius-Diagramme, Glasfaser, Umlenkprisma und Brillant, Brechzahl eines unbekannten Stoffs messen, Platte, Prisma mit Farbzerlegung und scheinbare Hebung."
----
-
 ## Worum geht es?
 
 Trifft Licht schräg auf die Grenzfläche zweier durchsichtiger Stoffe, wird es teilweise **reflektiert** und teilweise **gebrochen**, also abgeknickt. Alle Winkel misst man zum **Lot**, der Senkrechten auf der Grenzfläche. Für die Reflexion gilt $\alpha' = \alpha$, für die Brechung das **Brechungsgesetz von Snellius**:

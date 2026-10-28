@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 11. Klasse: das Verhalten von Funktionen für x → +∞ und x → −∞ untersuchen – ein Punkt läuft logarithmisch nach außen, die Ansicht zoomt mit, eine Lupe zeigt den winzigen Abstand zur waagrechten Asymptote, die Wertetabelle füllt sich, und ein ziehbarer ε-Schlauch macht den Grenzwert anschaulich; dazu Gegenbeispiele ohne Grenzwert."
----
-
 ## Worum geht es?
 
 Wie verhält sich $f(x)$, wenn $x$ immer größer wird ($x \to +\infty$) oder immer kleiner ($x \to -\infty$)? Es gibt zwei typische Fälle:

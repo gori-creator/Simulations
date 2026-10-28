@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum elektrischen Feld: Punktladungen ziehen und einstellen, Feldlinien, Äquipotentiallinien und Feldstärke live sehen, Probeladung mit Kraftpfeil und Vektoraddition, dazu der Plattenkondensator mit E = U / d."
----
-
 ## Worum geht es?
 
 Eine elektrische Ladung verändert den Raum um sich herum: Jede andere Ladung erfährt dort eine Kraft. Diesen Zustand nennt man **elektrisches Feld**. Gemessen wird es mit einer kleinen positiven **Probeladung** $q_0$: Die **Feldstärke** ist die Kraft pro Ladung,

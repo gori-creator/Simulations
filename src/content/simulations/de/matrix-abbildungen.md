@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für Oberstufe und Studium: 2×2-Matrizen als lineare Abbildungen der Ebene – Ebene verformt sich stetig, Verkettung und AB ≠ BA, Determinante als orientierter Flächeninhalt, Eigenvektoren mit charakteristischem Polynom, Inverse, Iteration mit Fixvektor und zehn Alltagsbeispiele."
----
-
 ## Worum geht es?
 
 Eine $2 \times 2$-Matrix $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ beschreibt eine **lineare Abbildung** der Ebene: Jeder Vektor $\vec{x}$ wird auf $A \cdot \vec{x}$ abgebildet. Der Ursprung bleibt fest, Geraden bleiben Geraden, parallele Geraden bleiben parallel – das Koordinatengitter wird zu einem Gitter aus Parallelogrammen.

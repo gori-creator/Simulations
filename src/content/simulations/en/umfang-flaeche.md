@@ -1,7 +1,3 @@
----
-description: "Interactive simulation on the perimeter and area of rectangles: drag out a rectangle on squared paper, tile it row by row with unit squares, let an ant walk round the edge, compare rectangles with the same perimeter or the same area and split up an L-shape."
----
-
 ## What is it about?
 
 A rectangle has a **length** $a$ and a **width** $b$. Two questions sound similar but mean quite different things:

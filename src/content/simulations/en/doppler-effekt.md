@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the Doppler effect – an ambulance with its siren drives past, wave fronts closer ahead and further apart behind, frequency heard f_B(t), moving observer, sound barrier and Mach cone, with optional sound."
----
-
 ## What is it about?
 
 When an ambulance drives past, its siren sounds **higher** as it approaches and **lower** as it moves away. This is the **Doppler effect**.

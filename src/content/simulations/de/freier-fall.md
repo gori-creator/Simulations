@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum freien Fall – Stroboskopaufnahme mit den Abständen 1 : 3 : 5 : 7, Fallgesetze auf Erde, Mond, Mars und Jupiter, Kugel und Feder in der Fallröhre und ein Reaktionstest mit fallendem Lineal."
----
-
 ## Worum geht es?
 
 Lässt man einen Körper los, fällt er immer schneller. Ohne Luftwiderstand ist der **freie Fall** eine **gleichmäßig beschleunigte Bewegung** mit der Fallbeschleunigung $g$ (dem Ortsfaktor). In Mitteleuropa ist $g \approx 9{,}81\,\tfrac{\text{m}}{\text{s}^2}$. Aus der Ruhe gelten die **Fallgesetze**

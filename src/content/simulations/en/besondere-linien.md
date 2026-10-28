@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 7 and 8: perpendicular bisectors, angle bisectors, medians and altitudes are drawn with compasses, ruler and set square on squared paper – and each time all three meet at one point. With circumcircle, incircle, centroid (a card balancing on a pin), orthocentre, the Euler line and all special cases."
----
-
 ## What is it about?
 
 Every triangle has four kinds of **special lines**, three of each. The surprising thing: each time, all three meet at **one** point.

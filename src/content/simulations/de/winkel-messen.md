@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 5. Klasse: Winkel mit dem Geodreieck oder einem Vollkreis-Winkelmesser richtig messen, Winkelarten von spitz bis überstumpf erkennen, überstumpfe Winkel über den Ergänzungswinkel bestimmen und im Schätzspiel Punkte sammeln."
----
-
 ## Worum geht es?
 
 Ein **Winkel** entsteht, wenn zwei Halbgeraden, die **Schenkel** $[SA$ und $[SB$, im selben Punkt $S$ beginnen. $S$ heißt **Scheitel**. Winkel bezeichnet man mit griechischen Buchstaben ($\alpha$, $\beta$, $\gamma$, …) oder mit drei Punkten: $\alpha = \sphericalangle ASB$. Hier wird – wie in vielen Schulbüchern üblich – $\sphericalangle ASB$ **gegen den Uhrzeigersinn** vom Schenkel $[SA$ zum Schenkel $[SB$ gemessen. Die Einheit ist das **Grad** ($1^\circ$ ist der 360. Teil einer ganzen Drehung).

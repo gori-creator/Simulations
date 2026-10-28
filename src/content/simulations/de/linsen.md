@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Linsen – Bildkonstruktion mit Parallel-, Mittelpunkt- und Brennpunktstrahl, Linsengleichung, Abbildungsmaßstab, Lupe, Projektor und Kamera sowie das Scharfstellen auf der optischen Bank."
----
-
 ## Worum geht es?
 
 Eine **Sammellinse** (konvex, in der Mitte dicker) bricht Licht, das parallel zur optischen Achse einfällt, so, dass es sich im **Brennpunkt** $F$ trifft. Der Abstand vom Brennpunkt zur Linsenmitte ist die **Brennweite** $f$. Eine **Zerstreuungslinse** (konkav, in der Mitte dünner) lässt paralleles Licht auseinanderlaufen, als käme es von einem Brennpunkt vor der Linse.

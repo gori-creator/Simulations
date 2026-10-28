@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu mechanischen Wellen – Transversal- und Longitudinalwelle in einer Kette gekoppelter Teilchen, Wellenfront, Wellenlänge zwischen gleichphasigen Teilchen, c = λ·f, Momentaufnahme y(x) und Zeitverlauf y(t)."
----
-
 ## Worum geht es?
 
 Eine **mechanische Welle** entsteht, wenn ein **Erreger** ein Teilchen einer Kette gekoppelter Teilchen (Oszillatoren) zum Schwingen bringt. Über die Kopplung (hier: Federn) wird die Bewegung an das nächste Teilchen weitergegeben, von dort an das übernächste usw. Jedes Teilchen beginnt etwas später zu schwingen als sein Vorgänger. Es breitet sich also ein **Schwingungszustand** und damit **Energie** aus – die Teilchen selbst wandern **nicht** mit, sie schwingen nur um ihre **Ruhelage**.

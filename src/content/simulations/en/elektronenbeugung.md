@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of electron diffraction by graphite: accelerated electrons are diffracted by a graphite foil and build up two rings on the screen electron by electron – with de Broglie wavelength λ = h/(m·v), Bragg condition, measuring circle and a graph of r against U."
----
-
 ## What is it about?
 
 In an **electron diffraction tube** electrons from a hot cathode are accelerated by the voltage $U$, pass through a thin **graphite foil** and hit a fluorescent screen. Besides a bright central spot, **two bright rings** appear – a diffraction pattern, as known from waves.

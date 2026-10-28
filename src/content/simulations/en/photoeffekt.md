@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the photoelectric effect with the retarding field method: light of selectable wavelength and intensity releases electrons from a metal cathode, the voltage is adjusted until no current flows, and the data points give Einstein’s line E_kin = h · f − W_A."
----
-
 ## What is it about?
 
 Light falling on a metal can release electrons: the **photoelectric effect**. Below a **threshold frequency** no electrons are released, however bright the light. More **intensity** gives **more** electrons, but **not faster** ones. Einstein explained this with **photons** of energy $E_\text{Ph} = h \cdot f$. One photon gives its energy to one electron, which needs the **work function** $W_\text{A}$ to leave the metal:

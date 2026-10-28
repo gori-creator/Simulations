@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the fine-beam tube: electrons on a glowing circular path in the field of Helmholtz coils, read the diameter on the measuring ladder, determine e/m from a series – with Lorentz force F = e · v · B and the left-hand rule."
----
-
 ## What is it about?
 
 A charge moving perpendicular to a magnetic field feels the **Lorentz force** $F = q \cdot v \cdot B$, perpendicular to $v$ and $B$. For electrons the **left-hand rule** gives the direction (thumb: motion, index finger: field, middle finger: force). The force only changes the direction, so the electrons move on a circle.

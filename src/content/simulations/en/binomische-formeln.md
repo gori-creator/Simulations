@@ -1,7 +1,3 @@
----
-description: Interactive simulation of the binomial formulas – split squares and rectangles apart with an animation and understand (a + b)², (a − b)² and (a + b)(a − b).
----
-
 ## What is it about?
 
 The three **binomial formulas** are shortcuts for expanding brackets:

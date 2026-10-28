@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zur Monte-Carlo-Methode – zufällige Punkte im Quadrat liefern einen immer genaueren Schätzwert für die Kreiszahl π.
----
-
 ## Worum geht es?
 
 Man kann die Kreiszahl $\pi$ mit **Zufall** bestimmen. Dazu setzt man zufällige Punkte in das Einheitsquadrat (Seitenlänge 1) und zählt, wie viele davon im **Viertelkreis** mit Radius 1 liegen.

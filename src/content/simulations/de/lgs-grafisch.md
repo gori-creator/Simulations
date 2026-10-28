@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum grafischen Lösen linearer Gleichungssysteme: zwei Geraden, Schnittpunkt ablesen, Probe durch Einsetzen, parallele und identische Geraden und ein Tarifvergleich als Sachaufgabe."
----
-
 ## Worum geht es?
 
 Ein **lineares Gleichungssystem** mit zwei Variablen besteht aus zwei linearen Gleichungen, z. B.

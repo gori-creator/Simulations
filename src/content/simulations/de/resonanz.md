@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur erzwungenen Schwingung am Pohlschen Rad – Einschwingvorgang, Resonanzkurve und Phasenverschiebung als Messreihe mit Theorie, Zeigerdiagramm, Wirbelstrombremse und Resonanzkatastrophe."
----
-
 ## Worum geht es?
 
 Das **Pohlsche Rad** ist ein Drehpendel: Ein Kupferrad hängt an einer Spiralfeder und schwingt, einmal angestoßen, mit seiner **Eigenfrequenz** $f_0$ (hier $f_0 = 0{,}5\,\text{Hz}$, also $T_0 = 2\,\text{s}$). Eine **Wirbelstrombremse** dämpft die Bewegung: Je größer der Strom durch die Spule, desto größer die **Abklingkonstante** $\delta$.

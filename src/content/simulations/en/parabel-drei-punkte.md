@@ -1,7 +1,3 @@
----
-description: "Interactive simulation: three points determine exactly one parabola y = ax² + bx + c. Substituting gives a system of linear equations that is solved step by step – plus vertex form, factored form, special cases, a thrown ball and a bridge arch."
----
-
 ## What is it about?
 
 Two points determine a line. A **parabola** $y = ax^2 + bx + c$ needs **three points**, because three numbers $a$, $b$, $c$ are unknown. Substituting each point $P_i(x_i \mid y_i)$ gives one equation, so you get a **system of linear equations** in $a$, $b$, $c$:

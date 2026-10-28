@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu den binomischen Formeln – Quadrate und Rechtecke animiert zerlegen und so (a + b)², (a − b)² und (a + b)(a − b) verstehen.
----
-
 ## Worum geht es?
 
 Die drei **binomischen Formeln** sind Abkürzungen beim Ausmultiplizieren:

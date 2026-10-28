@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 11 and 12: graphical differentiation – tangent and slope triangle draw the graph of f′ (and f″), the secant becomes the tangent as h → 0, features with a sign chart, your own sketch of f′, the rules of differentiation visualised and nine everyday examples."
----
-
 ## What is it about?
 
 The **derivative** $f'(x)$ is the slope of the **tangent** to the graph of $f$ at $x$. It is the limit of the slopes of secants (**difference quotient**):

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary and university: the integral function and the fundamental theorem of calculus – area from a to x, strips with h → 0, evaluation with F(b) − F(a), the link between the graphs of f and I, Riemann sums and eight applications from distance to rainfall."
----
-
 ## What is it about?
 
 The **integral function** $I_a(x) = \int_a^x f(t)\,dt$ measures the signed area from $a$ to $x$ (green above, red below the $x$-axis); always $I_a(a) = 0$.

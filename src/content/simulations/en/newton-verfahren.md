@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 11: Newton’s method step by step – vertical line to the graph, tangent, x-intercept, the slope triangle behind the formula, a magnifier for tiny steps, a table with the correct digits in bold, Newton = Heron for √2 and the cases where the method fails."
----
-
 ## What is it about?
 
 Many equations cannot be solved for $x$, for example $x^3 - 2x - 5 = 0$ or $\cos x = x$. **Newton’s method** finds a zero of $f$ approximately – and surprisingly fast:

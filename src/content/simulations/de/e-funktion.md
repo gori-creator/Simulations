@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur natürlichen Exponentialfunktion: Warum gerade die Basis e? Für y = bˣ ist f′(x) : f(x) = ln b, nur bei b = e fallen f und f′ zusammen. Dazu die Tangente an y = eˣ mit Steigungsdreieck und (1 + 1/n)ⁿ als Zinseszins."
----
-
 ## Worum geht es?
 
 Jede Exponentialfunktion $f(x) = b^x$ mit $b > 1$ wächst – und zwar umso schneller, je größer ihr Funktionswert schon ist. Genauer: Die **Ableitung** ist ein festes Vielfaches der Funktion selbst,

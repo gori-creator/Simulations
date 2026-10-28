@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für Oberstufe und Studium: Taylorpolynome von sin x, cos x, eˣ, ln(1 + x) und 1/(1 − x) – Summand für Summand aufbauen, Ableitungen bei a anpassen, Fehler und Lagrange-Abschätzung, ε-Schlauch, Konvergenzradius, Partialsummen wie im Taschenrechner und die Kleinwinkelnäherung beim Pendel."
----
-
 ## Worum geht es?
 
 Viele Funktionen lassen sich in der Nähe einer Stelle $a$ gut durch **Polynome** annähern. Das **Taylorpolynom** $n$-ten Grades

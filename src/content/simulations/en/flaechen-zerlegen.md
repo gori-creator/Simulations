@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 6: derive the area of parallelograms, triangles and trapeziums by cutting, moving and completing shapes – with counting squares as a check and a shear: same base and same height give the same area."
----
-
 ## What is it about?
 
 You already know the area of a **rectangle**: length times width. Parallelograms, triangles and trapeziums can be turned into rectangles by **cutting**, **moving** and **completing** – the area does not change.

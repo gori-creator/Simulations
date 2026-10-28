@@ -1,7 +1,3 @@
----
-description: Interactive simulation on fractions – cut a pizza, a sheet cake or a line segment into equal parts, expand, reduce and show decimals.
----
-
 ## What is it about?
 
 A **fraction** $\frac{z}{n}$ describes a part of a whole:

@@ -1,7 +1,3 @@
----
-description: Interactive simulation of Thales's theorem – drag point C along the semicircle, watch the right angle, explore the proof idea and the converse.
----
-
 ## What is it about?
 
 Draw a circle whose **diameter** is exactly the segment $\overline{AB}$ – this is the **Thales circle**. Its centre $M$ is the midpoint of $\overline{AB}$.

@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu Primzahlen – Faktorbäume wachsen lassen, Teilbarkeitsregeln prüfen, das Sieb des Eratosthenes durchführen und ggT und kgV im Mengenbild bestimmen.
----
-
 ## Worum geht es?
 
 Eine **Primzahl** ist eine natürliche Zahl, die genau **zwei Teiler** hat: $1$ und sich selbst. $2, 3, 5, 7, 11, 13, \ldots$ sind Primzahlen. Die $1$ ist keine Primzahl, denn sie hat nur einen Teiler. Die $2$ ist die einzige gerade Primzahl. Zahlen mit mehr als zwei Teilern heißen **zusammengesetzt**.

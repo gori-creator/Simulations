@@ -1,7 +1,3 @@
----
-description: Interactive simulation of motion graphs – a car moves uniformly, accelerates or follows a schedule, while the position–time, velocity–time and acceleration–time graphs appear live with slope triangles and the area under the graph.
----
-
 ## What is it about?
 
 A motion is described by the **position** $s$ (measured on a tape) at every **time** $t$. Plotting $s$ against $t$ gives the **position–time graph** (s–t graph). The **velocity** tells you how fast the position changes:

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für Oberstufe und Studium: Integralfunktion und Hauptsatz der Differential- und Integralrechnung – Fläche von a bis x, Streifen h → 0, Berechnen mit F(b) − F(a), Zusammenhang der Graphen von f und I, Riemann-Summen und acht Anwendungen von Weg bis Regenmenge."
----
-
 ## Worum geht es?
 
 Hält man die untere Grenze $a$ fest und lässt die obere Grenze $x$ variieren, wird das Integral zu einer Funktion von $x$, der **Integralfunktion**

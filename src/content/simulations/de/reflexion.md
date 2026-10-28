@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur Reflexion am ebenen Spiegel – Reflexionsgesetz auf der optischen Scheibe messen, Spiegelbilder mit Sehstrahlen konstruieren und im Winkelspiegel Mehrfachbilder zählen."
----
-
 ## Worum geht es?
 
 Trifft Licht auf einen Spiegel, wird es **reflektiert** (zurückgeworfen). Um die Richtungen genau zu beschreiben, zeichnet man im Auftreffpunkt das **Einfallslot** (kurz **Lot**) – die Senkrechte auf die Spiegelfläche. Gemessen werden beide Winkel **zum Lot**, nicht zur Spiegelfläche:

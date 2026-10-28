@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Potenzfunktionen f(x) = a · xⁿ mit ganzzahligem Exponenten: Graphen verwandeln sich weich, Symmetrie, Steckbrief, Familien mit gemeinsamen Punkten und der Vergleich zweier Potenzfunktionen."
----
-
 ## Worum geht es?
 
 Eine **Potenzfunktion** hat die Form

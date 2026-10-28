@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Hookeschen Gesetz – Massestücke an eine Feder hängen, Verlängerung messen, Federhärte als Steigung der Ursprungsgeraden bestimmen, Federn hintereinander und nebeneinander, Elastizitätsgrenze."
----
-
 ## Worum geht es?
 
 Hängt man ein Massestück an eine Schraubenfeder, zieht seine **Gewichtskraft** an der Feder:

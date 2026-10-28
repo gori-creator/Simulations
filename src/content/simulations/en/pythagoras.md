@@ -1,7 +1,3 @@
----
-description: Interactive simulation of the Pythagorean theorem – squares on the sides of a right triangle and an animated puzzle proof.
----
-
 ## What is it about?
 
 In a **right triangle** the sides next to the right angle are the **legs** $a$ and $b$; the side opposite the right angle is the **hypotenuse** $c$.

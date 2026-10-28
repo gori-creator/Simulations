@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu Bewegungsdiagrammen – ein Auto fährt gleichförmig, beschleunigt oder nach Fahrplan, und live entstehen t-s-, t-v- und t-a-Diagramm mit Steigungsdreieck und Fläche unter dem Graphen.
----
-
 ## Worum geht es?
 
 Eine Bewegung beschreibt man mit dem **Ort** $s$ (gemessen an einem Maßband) zu jeder **Zeit** $t$. Trägt man $s$ über $t$ auf, erhält man das **t-s-Diagramm**. Die **Geschwindigkeit** gibt an, wie schnell sich der Ort ändert:

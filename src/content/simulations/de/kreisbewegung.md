@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur gleichförmigen Kreisbewegung: Bahngeschwindigkeit, Umlaufdauer, Zentripetalbeschleunigung und Zentripetalkraft – mit Kugel an der Schnur, reißender Schnur und einem Auto, das bei zu hoher Geschwindigkeit aus der Kurve rutscht."
----
-
 ## Worum geht es?
 
 Bei einer **gleichförmigen Kreisbewegung** bleibt der Betrag der Geschwindigkeit gleich, ihre **Richtung** ändert sich aber ständig – die Geschwindigkeit zeigt immer entlang der **Tangente**. Für einen Umlauf mit dem Radius $r$ braucht der Körper die **Umlaufdauer** $T$; die **Frequenz** ist $f = \frac{1}{T}$ (Einheit $\frac{1}{\text{s}} = \text{Hz}$). Bei Motoren und Maschinen gibt man sie oft als **Drehzahl** in Umdrehungen pro Minute an: $1200\,\tfrac{\text{U}}{\text{min}} = \frac{1200}{60\,\text{s}} = 20\,\text{Hz}$.

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation: optimisation problems without calculus – enclosure against a wall, rectangle in a triangle, ticket price and gutter. The picture and the graph of the quadratic objective function move together; the maximum is found first by trial and error and then exactly by completing the square."
----
-
 ## What is it about?
 
 In an **optimisation problem** you look for the largest (or smallest) value of a quantity. Example: with $40\,\text{m}$ of fence a rectangular enclosure is built against a wall, so the fence forms three sides.

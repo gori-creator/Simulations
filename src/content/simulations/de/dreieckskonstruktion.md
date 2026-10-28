@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. Klasse: Dreiecke aus drei gegebenen Stücken mit Lineal, Geodreieck und Zirkel Schritt für Schritt konstruieren – mit Planfigur, Konstruktionsbeschreibung wie im Heft und den Kongruenzsätzen SSS, SWS, WSW und SsW. Dazu die Sonderfälle: verletzte Dreiecksungleichung, parallele Schenkel, keine, eine oder zwei Lösungen bei SSW und ähnliche Dreiecke bei WWW."
----
-
 ## Worum geht es?
 
 Ein Dreieck hat sechs **Stücke**: drei Seiten $a$, $b$, $c$ und drei Winkel $\alpha$, $\beta$, $\gamma$. Die Seite $a = [BC]$ liegt der Ecke $A$ gegenüber, $b = [CA]$ der Ecke $B$ und $c = [AB]$ der Ecke $C$; der Winkel $\alpha$ liegt bei $A$, $\beta$ bei $B$, $\gamma$ bei $C$. Zwei Dreiecke, die man durch Verschieben, Drehen oder Spiegeln genau zur Deckung bringen kann, heißen **kongruent** (deckungsgleich).

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. Klasse: Scheitel- und Nebenwinkel an zwei sich schneidenden Geraden, Stufen-, Wechsel- und Nachbarwinkel an einer Doppelkreuzung durch Verschieben und Drehen vergleichen und Winkelgrößen begründen."
----
-
 ## Worum geht es?
 
 **Zwei Geraden schneiden sich** im Punkt $S$. Dabei entstehen vier Winkel $\alpha$, $\beta$, $\gamma$, $\delta$ (gegen den Uhrzeigersinn).

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grades 6 to 8: direct and inverse proportion with apples on a scale, pumps filling a pool and a taxi with a base fare – picture, table with doubling arrows and graph in sync, with the rule of three step by step and a test “Is it proportional?”."
----
-
 ## What is it about?
 
 In a **relation** (or *assignment*) each $x$ value goes with exactly one $y$ value. Two special relations come up all the time in everyday life. In the simulation every quantity has its own colour: $x$ blue, $y$ purple, the constant $k$ orange.

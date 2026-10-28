@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of charging and discharging a capacitor: RC circuit with a switch, moving electrons, U(t) and I(t) graphs with tangent, time constant τ = R · C, half-life and energy W = ½ C U²."
----
-
 ## What is it about?
 
 A capacitor stores charge, $Q = C \cdot U$. Charging through a resistor $R$ from $U_0$:

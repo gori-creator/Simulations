@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Licht und Schatten – Kern- und Halbschatten mit Randstrahlen auf der optischen Bank, farbige Schatten sowie Sonnen- und Mondfinsternis im Modell."
----
-
 ## Worum geht es?
 
 Licht breitet sich **geradlinig** aus. Im Modell zeichnet man das mit **Lichtstrahlen**. Trifft Licht auf einen undurchsichtigen Gegenstand, bleibt der Raum dahinter dunkel: Es entsteht ein **Schattenraum** und auf einem Schirm ein **Schattenbild**.

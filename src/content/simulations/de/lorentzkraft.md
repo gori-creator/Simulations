@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Fadenstrahlrohr: Elektronen auf einer leuchtenden Kreisbahn im Feld von Helmholtzspulen, Durchmesser an der Messleiter ablesen, e/m aus einer Messreihe bestimmen – mit Lorentzkraft F = e · v · B und Linke-Hand-Regel."
----
-
 ## Worum geht es?
 
 Bewegt sich eine Ladung $q$ mit der Geschwindigkeit $v$ senkrecht zu einem Magnetfeld $B$, wirkt auf sie die **Lorentzkraft**

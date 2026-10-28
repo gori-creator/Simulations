@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 12 and 13: families of functions with a parameter k – extrema and points of inflection depending on k, loci derived step by step, points common to all members and the case analysis on a k-axis, with draggable extrema and a running k."
----
-
 ## What is it about?
 
 A **family of functions** such as $f_k(x) = x^3 - kx$ contains one graph for each $k$. When differentiating, $k$ is a constant: $f_k'(x) = 3x^2 - k$. For $k > 0$ there are extrema at $x = \pm\sqrt{k/3}$, for $k = 0$ a saddle point (no extremum), for $k < 0$ none. Solving $x^2 = k/3$ for $k$ ($k = 3x^2$) and substituting gives the **locus** $y = -2x^3$ ($x \neq 0$). All members pass through $(0 \mid 0)$: $(k_2 - k_1) \cdot x = 0$ gives $x = 0$. For $f_k(x) = (x - k) \cdot e^x$ there is **no** common point, since $(k_2 - k_1)e^x \neq 0$. For $x \cdot e^{-kx}$ and $kx^2 - x^4$ all curves **touch** at the origin. Points of inflection move on a locus as well – for $x \cdot e^{-kx}$ on $y = \frac{x}{e^2}$.

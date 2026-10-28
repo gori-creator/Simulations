@@ -1,7 +1,3 @@
----
-description: "Interactive simulation on power functions f(x) = a · xⁿ with integer exponents: graphs morph smoothly, symmetry, key features, families with common points and a comparison of two power functions."
----
-
 ## What is it about?
 
 A **power function** has the form

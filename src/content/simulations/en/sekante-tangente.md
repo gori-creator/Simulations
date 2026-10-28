@@ -1,7 +1,3 @@
----
-description: Interactive simulation from secant to tangent – difference quotient, the limit h → 0, negative h, the kink of |x| and the derivative made visual.
----
-
 ## What is it about?
 
 The **secant** is the line through two points of the graph: $P(x_0 \mid f(x_0))$ and $Q(x_0 + h \mid f(x_0 + h))$. Its slope is the **difference quotient**

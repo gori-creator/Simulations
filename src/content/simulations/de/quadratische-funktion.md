@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zur quadratischen Funktion – Parabeln in Scheitelpunktform und allgemeiner Form, Nullstellen, Diskriminante und Aufgaben.
----
-
 ## Worum geht es?
 
 Der Graph einer **quadratischen Funktion** ist eine **Parabel**. Die einfachste ist die **Normalparabel** $y = x^2$ mit dem Scheitelpunkt im Ursprung.

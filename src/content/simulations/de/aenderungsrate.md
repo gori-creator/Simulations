@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die Oberstufe: das Integral als Gesamtänderung – aus der Geschwindigkeit den Weg, aus der Zuflussrate die Füllmenge rekonstruieren, mit laufender Zeit, Rechtecksummen (links, rechts, Mitte), gestapelten Streifen, Fehler beim Verdoppeln, Vor- und Rückwärtsfahrt und einer selbst gezogenen Rate."
----
-
 ## Worum geht es?
 
 Oft kennt man nicht eine Größe selbst, sondern wie schnell sie sich ändert: die **Geschwindigkeit** eines Autos, die **Zuflussrate** in einen Tank. Wie groß ist dann die **Gesamtänderung**?

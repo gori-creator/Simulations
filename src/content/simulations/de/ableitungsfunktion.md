@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 11. und 12. Klasse: grafisch ableiten – Tangente und Steigungsdreieck zeichnen den Graphen von f′ (und f″), die Sekante wird für h → 0 zur Tangente, Merkmale mit Vorzeichentabelle, eigene Skizze von f′, Ableitungsregeln anschaulich und neun Alltagsbeispiele."
----
-
 ## Worum geht es?
 
 Die **Ableitung** $f'(x)$ ist die Steigung der **Tangente** an den Graphen von $f$ an der Stelle $x$. Man erhält sie als Grenzwert der Sekantensteigungen (**Differenzenquotient**):

@@ -1,7 +1,3 @@
----
-description: Interactive simulation of the general sine function f(x) = a·sin(b(x − c)) + d – amplitude, period, shifts and modelling.
----
-
 ## What is it about?
 
 The **general sine function**

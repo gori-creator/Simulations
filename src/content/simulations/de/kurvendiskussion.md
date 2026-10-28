@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 11. und 12. Klasse: Kurvendiskussion ganzrationaler Funktionen in sieben animierten Schritten – Ableitungen, Symmetrie, Nullstellen, notwendige und hinreichende Bedingung, Vorzeichentabellen für f′ und f″, Hoch-, Tief-, Terrassen- und Wendepunkte, Monotonie und Krümmung, mit ziehbarer Tangente und den Graphen von f′ und f″ darunter."
----
-
 ## Worum geht es?
 
 Bei einer **Funktionsuntersuchung** (Kurvendiskussion) liest man mit Hilfe der Ableitungen ab, wo der Graph von $f$ steigt oder fällt, wo er Hoch- und Tiefpunkte hat und wo er seine Krümmung ändert. Die Simulation geht in sieben Schritten vor:

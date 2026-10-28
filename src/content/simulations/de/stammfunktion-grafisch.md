@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 12. und 13. Klasse: grafisch aufleiten – aus dem Graphen von f den Graphen einer Stammfunktion F gewinnen und umgekehrt, mit Richtungsfeld, Kurvenschar F + C, Anfangswertproblem, Merkmalen, Flächenstücken, eigener Skizze und acht Alltagsbeispielen."
----
-
 ## Worum geht es?
 
 Eine Funktion $F$ heißt **Stammfunktion** von $f$, wenn $F'(x) = f(x)$ gilt. Die Werte von $f$ sind also die **Steigungen** von $F$: Die Höhe des Graphen von $f$ an der Stelle $x$ ist die Steigung des Graphen von $F$ an derselben Stelle.

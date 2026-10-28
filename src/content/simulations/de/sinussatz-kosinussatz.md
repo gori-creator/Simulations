@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 10. Klasse: Sinussatz und Kosinussatz am allgemeinen Dreieck – Umkreis und Beweis über die Höhe, Quadrate an den Seiten mit dem Korrekturterm 2ab · cos γ, ein Löser für SSS, SWS, WSW und SSW (mit zwei Lösungen) und zwei Vermessungsaufgaben im Lageplan."
----
-
 ## Worum geht es?
 
 Sinus, Kosinus und Tangens helfen im **rechtwinkligen** Dreieck. Für **beliebige** Dreiecke gibt es zwei Sätze. Dabei gehören immer eine Seite und der Winkel **gegenüber** zusammen: $a$ und $\alpha$, $b$ und $\beta$, $c$ und $\gamma$ – in der Simulation haben sie dieselbe Farbe.
