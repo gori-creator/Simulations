@@ -46,9 +46,9 @@ Ziel: In den Einstellungen das Bundesland wählen (oder „bundeslandunabhängig
 
 ## Phase 4 – Name, Marke, Domain
 
-- Name finden (Ideen sammeln, kurz, gut aussprechbar, nicht „MINT-Simulationen“).
+- Name: **Scitura** (entschieden am 27.10.2026), Logo 01 in Marineblau (`docs/design/coin-reise-v13/`).
 - Prüfen: Domain frei (.de), keine Verwechslung mit bestehenden Marken (Suche beim DPMA/EUIPO), keine Konflikte mit Schulbuchverlagen.
-- Logo und Farben passend zum neuen Design.
+- Logo und Farben passend zum neuen Design: erledigt (Startseite eingebaut am 28.10.2026).
 - **Entscheidung:** Name.
 
 ## Phase 5 – Rechtliches und Veröffentlichung

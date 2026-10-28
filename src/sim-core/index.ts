@@ -12,6 +12,7 @@ export type {
   DynamicText,
   NumberParam,
   ParamDef,
+  ParamValues,
   Preset,
   ReadoutDef,
   ReadoutValue,
@@ -23,6 +24,14 @@ export type {
 } from './types';
 export { Surface, TapTarget, type Rect } from './surface';
 export type { KeyTarget } from './key-targets';
+/**
+ * Für Einbettungen außerhalb der Simulationsseite (Achterbahn auf der Startseite,
+ * src/scripts/home/energy-stage.ts): Parameterwerte, Farbschema und Tastaturbedienung
+ * wie im Host, ohne dessen Bedienfeld.
+ */
+export { KeyTargetLayer } from './key-targets';
+export { defaultValues, sanitize } from './params';
+export { readTheme } from './theme';
 export { Plot, type AxesOptions, type Handle, type PlotOptions } from './plot';
 export { Clock, FixedStepper } from './clock';
 export { bindUnits, Formatter, formatNumber, formatPiFraction, formatSig, groupThousands, MINUS, NBSP, NNBSP, roundHalfUp, sigDecimals, withUnit } from './format';

@@ -1,0 +1,67 @@
+---
+/**
+ * Startseite, Einstieg: Typografie mit zwei Fachzugängen links, bewegte
+ * Orbit-Skulptur rechts, dazu die Münze mit dem Logo und ihre Führung durch die
+ * Seite. Bewegung: src/lib/home/sculpture.ts. Entwurf: docs/design/coin-reise-v13/.
+ */
+import logo from '../../assets/brand/scitura-logo.png';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import { href } from '../../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<svg class="coin-guide" data-coin-guide aria-hidden="true" focusable="false">
+  <path class="guide-shadow" data-guide-line></path>
+  <path class="guide-rail" data-guide-line></path>
+  <path class="guide-center" data-guide-line></path>
+  <path data-journey-path fill="none" stroke="none"></path>
+</svg>
+<div class="coin" data-coin aria-hidden="true">
+  <div class="coin__perspective">
+    <div class="coin__rotor" data-coin-rotor>
+      <div class="coin__disc coin__disc--one"></div>
+      <div class="coin__disc coin__disc--two"></div>
+      <div class="coin__face coin__face--back"><img src={logo.src} alt="" width="80" height="80" decoding="async" /></div>
+      <div class="coin__face coin__face--front">
+        <div class="coin__ticks"></div>
+        <div class="coin__inner"></div>
+        <img src={logo.src} alt="" width="80" height="80" decoding="async" />
+        <span class="coin__glint"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="home-hero" data-home-hero>
+  <div class="sculpture webgl-unavailable" data-sculpture aria-hidden="true">
+    <div class="sculpture-shadow"></div>
+    <canvas data-sculpture-canvas></canvas>
+    <svg class="sculpture-fallback" viewBox="0 0 600 700" focusable="false">
+      <g fill="none" stroke="currentColor">
+        <ellipse cx="300" cy="300" rx="208" ry="214" stroke-width="15"></ellipse>
+        <ellipse cx="300" cy="300" rx="126" ry="173" stroke-width="11"></ellipse>
+        <ellipse cx="300" cy="300" rx="114" ry="106" stroke-width="7"></ellipse>
+        <path d="M300 86v41m0 346v41M213 496v134m174-114v134" stroke-width="5"></path>
+      </g>
+      <ellipse cx="300" cy="614" rx="103" ry="15" fill="currentColor"></ellipse>
+    </svg>
+  </div>
+  <div class="home-hero__inner">
+    <div class="home-hero__copy">
+      <p class="home-hero__kicker">{t(lang, 'home.kicker')}</p>
+      <h1>{t(lang, 'home.titleLine1')}<br />{t(lang, 'home.titleLine2')}</h1>
+      <p class="home-hero__lead">{t(lang, 'home.lead')}</p>
+      <nav class="home-hero__subjects" aria-label={t(lang, 'home.subjectChoice')}>
+        <a class="home-hero__subject home-hero__subject--primary" href={href(lang, { kind: 'subject', subject: 'mathematik' })}>
+          {t(lang, 'home.ctaMath')}
+        </a>
+        <a class="home-hero__subject" href={href(lang, { kind: 'subject', subject: 'physik' })}>{t(lang, 'home.ctaPhysics')}</a>
+      </nav>
+    </div>
+  </div>
+</section>

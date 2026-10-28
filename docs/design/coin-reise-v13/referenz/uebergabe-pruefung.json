@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-27",
+  "scope": "Dunkles Logo und portable Übergabe; keine neue vollständige Astro-Integrationsprüfung",
+  "browser_checks": {
+    "exported_preview_on_4181": true,
+    "title_scitura": true,
+    "three_logo_images_loaded": true,
+    "favicon_inline_png": true,
+    "catalog_cards": 129,
+    "desktop_horizontal_overflow": false,
+    "rollercoaster_canvas_mounted": true,
+    "rollercoaster_play_changed_to_pause": true
+  },
+  "asset_checks": {
+    "master_has_transparent_alpha": true,
+    "web_png_size": [
+      256,
+      256
+    ],
+    "favicon_png_size": [
+      64,
+      64
+    ]
+  },
+  "historical_layout_checks": "v13-browser-qa.json, vor Logo-Wechsel",
+  "not_run": [
+    "Neue produktive Astro-Integration",
+    "Safari/Firefox",
+    "Reale Mobilgeräte"
+  ]
+}

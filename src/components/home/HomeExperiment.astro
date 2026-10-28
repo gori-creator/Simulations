@@ -1,0 +1,121 @@
+---
+/**
+ * Startseite: dunkelblauer Bereich mit der echten Simulation „Energieerhaltung“
+ * (Achterbahn). Bereiche, Schrittweiten und Startwerte der Regler stammen aus
+ * der Simulation selbst; die Steuerung liegt in src/lib/home/energy-stage.ts.
+ */
+import { Formatter, type NumberParam } from '../../sim-core';
+import energieerhaltung from '../../simulations/physik/energieerhaltung/index';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import { href } from '../../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const param = (key: string): NumberParam => {
+  const def = energieerhaltung.params.find((p) => p.key === key);
+  if (!def || def.type !== 'number') throw new Error(`energieerhaltung: Regler ${key} fehlt`);
+  return def;
+};
+const sliders = [
+  { key: 'h0', label: t(lang, 'home.h0'), symbol: 'h₀' },
+  { key: 'mu', label: t(lang, 'home.mu'), symbol: 'μ' },
+  { key: 'm', label: t(lang, 'home.m'), symbol: 'm' },
+].map((s) => ({ ...s, def: param(s.key) }));
+const points = [1, 2, 3, 4].map((n) => ({ n, def: param(`p${n}`) }));
+const tracks = [
+  { id: 'huegel', label: t(lang, 'home.trackHills') },
+  { id: 'looping', label: t(lang, 'home.trackLoop') },
+  { id: 'eigen', label: t(lang, 'home.trackCustom') },
+];
+const fullHref = href(lang, { kind: 'simulation', id: 'energieerhaltung' });
+// Anzeige wie in src/lib/home/energy-stage.ts (SLIDERS): Höhen 1, Reibung 3, Masse 0 Nachkommastellen
+const fmt = new Formatter(lang);
+const shown = (key: string, value: number) =>
+  key === 'mu' ? fmt.fixed(value, 3) : key === 'm' ? `${fmt.fixed(value, 0)} kg` : `${fmt.fixed(value, 1)} m`;
+---
+
+<section
+  class="home-experiment"
+  id="experiment"
+  aria-labelledby="experiment-title"
+  data-home-experiment
+  data-go={t(lang, 'home.go')}
+  data-continue={t(lang, 'home.continue')}
+  data-pause={t(lang, 'home.pause')}
+  data-hint={t(lang, 'home.hint')}
+  data-hint-custom={t(lang, 'home.hintCustom')}
+  data-keys={t(lang, 'sim.keyTargets')}
+>
+  <div class="home-experiment__heading">
+    <div>
+      <p class="home-experiment__eyebrow">{t(lang, 'home.expEyebrow')}</p>
+      <h2 id="experiment-title">{t(lang, 'home.expTitle')}</h2>
+    </div>
+    <p>{t(lang, 'home.expLead')}</p>
+    <div class="coin-dock" data-coin-dock aria-hidden="true">
+      <span class="coin-dock__slot"></span>
+      <span class="coin-dock__label">{t(lang, 'home.dock')}</span>
+    </div>
+  </div>
+
+  <div class="home-experiment__body">
+    <div class="home-experiment__top">
+      <div class="home-experiment__tracks" role="group" aria-label={t(lang, 'home.track')}>
+        {tracks.map((track) => <button type="button" data-track={track.id} aria-pressed={track.id === 'looping' ? 'true' : 'false'}>{track.label}</button>)}
+      </div>
+      <div class="home-experiment__actions">
+        <button type="button" class="home-experiment__play" data-energy-play aria-pressed="false">{t(lang, 'home.go')}</button>
+        <button type="button" class="home-experiment__reset" data-energy-reset aria-label={t(lang, 'home.reset')} title={t(lang, 'home.reset')}>
+          <span aria-hidden="true">↺</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="home-experiment__controls">
+      {
+        sliders.map(({ key, label, symbol, def }) => (
+          <label>
+            <span>
+              <span>{label}</span> {symbol}
+              <output data-output={key}>{shown(key, def.default)}</output>
+            </span>
+            <input type="range" data-param={key} min={def.min} max={def.max} step={def.step} value={def.default} />
+          </label>
+        ))
+      }
+      <label class="home-experiment__slow">
+        <input type="checkbox" data-energy-slow />
+        <span>{t(lang, 'home.slow')}</span>
+      </label>
+    </div>
+
+    <div class="home-experiment__stage" data-energy-stage>
+      <p class="home-experiment__loading" data-energy-loading>{t(lang, 'home.loading')}</p>
+      <noscript><p class="home-experiment__loading">{t(lang, 'home.noScript')}</p></noscript>
+    </div>
+
+    <details class="home-experiment__custom" data-energy-custom hidden>
+      <summary>{t(lang, 'home.customSummary')}</summary>
+      <div class="home-experiment__points">
+        {
+          points.map(({ n, def }) => (
+            <label>
+              <span>{t(lang, 'home.point', { n })}</span>
+              <output data-output={`p${n}`}>{shown(`p${n}`, def.default)}</output>
+              <input type="range" data-param={`p${n}`} min={def.min} max={def.max} step={def.step} value={def.default} />
+            </label>
+          ))
+        }
+      </div>
+    </details>
+  </div>
+
+  <div class="home-experiment__foot">
+    <p data-energy-hint>{t(lang, 'home.hint')}</p>
+    <a class="home-experiment__link" href={fullHref} data-href={fullHref} data-energy-link>{t(lang, 'home.openFull')}</a>
+  </div>
+</section>
