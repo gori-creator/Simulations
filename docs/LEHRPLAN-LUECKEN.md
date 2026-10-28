@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **400 von 1691** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **407 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (160)
+## Mathematik (167)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -32,6 +32,18 @@ Alle Lernbereiche haben eine Simulation.
 | 5 | 4.2 | Gleichungen und Funktionen (Niveaustufen C–D) › Zuordnungen und Funktionen | Direkt proportionale Zuordnungen beschreiben, in Tabelle, Text und Koordinatensystem darstellen und mit dem Dreisatz rechnen. |
 | 5 | 5.1 | Daten und Zufall (Niveaustufen C–D) › Daten | Messwerte erfassen und in Tabellen und Diagrammen darstellen, Minimum, Maximum und Spannweite ermitteln. |
 | 6 | 2.1 | Größen und Messen (Niveaustufe D, in Teilen E) › Größenvorstellungen und Messen | Längen, Flächen, Volumen und Winkel unterscheiden, messen und schätzen, Einheiten umwandeln und Größen in Dezimalschreibweise angeben. |
+| 8 | 2.1 | Größen und Messen (Niveaustufe F) › Größenvorstellungen und Messen | Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten. |
+| 8 | 3.2 | Raum und Form (Niveaustufe F) › Geometrische Abbildungen | Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren. |
+| 9 | 2.1 | Größen und Messen (Niveaustufe G) › Größenvorstellungen und Messen | Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen. |
+| 10 | 1.1 | Zahlen und Operationen (Niveaustufe H) › Zahlvorstellungen | Zahlen situationsgerecht darstellen, ganze, rationale und reelle Zahlen angemessen verwenden, Einschachtelung von Quadratwurzeln oder π. |
+| 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
+| 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
+| 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
+
+### Brandenburg · Gymnasium (7)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
 | 8 | 2.1 | Größen und Messen (Niveaustufe F) › Größenvorstellungen und Messen | Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten. |
 | 8 | 3.2 | Raum und Form (Niveaustufe F) › Geometrische Abbildungen | Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren. |
 | 9 | 2.1 | Größen und Messen (Niveaustufe G) › Größenvorstellungen und Messen | Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen. |
@@ -277,6 +289,10 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | E4.1 | Kernphysik (erhöhtes Niveau) › Ein einfaches Kernmodell | Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte. |
 
 ### Berlin · Gymnasium (0)
+
+Alle Lernbereiche haben eine Simulation.
+
+### Brandenburg · Gymnasium (0)
 
 Alle Lernbereiche haben eine Simulation.
 

@@ -5,6 +5,8 @@ import { bayernGymnasiumMathematik } from "./bayern-gymnasium-mathematik";
 import { bayernGymnasiumPhysik } from "./bayern-gymnasium-physik";
 import { berlinGymnasiumMathematik } from "./berlin-gymnasium-mathematik";
 import { berlinGymnasiumPhysik } from "./berlin-gymnasium-physik";
+import { brandenburgGymnasiumMathematik } from "./brandenburg-gymnasium-mathematik";
+import { brandenburgGymnasiumPhysik } from "./brandenburg-gymnasium-physik";
 import { bremenGymnasiumMathematik } from "./bremen-gymnasium-mathematik";
 import { bremenGymnasiumPhysik } from "./bremen-gymnasium-physik";
 import { hamburgGymnasiumMathematik } from "./hamburg-gymnasium-mathematik";
@@ -37,6 +39,7 @@ export type * from "./types";
  * - Baden-Württemberg, Gymnasium: Mathematik und Physik (Bildungsplan, G9)
  * - Bayern, Gymnasium: Mathematik und Physik (LehrplanPLUS)
  * - Berlin, Gymnasium: Mathematik und Physik (Rahmenlehrplan 1–10 Teil C und Rahmenlehrplan gymnasiale Oberstufe Teil C, G8)
+ * - Brandenburg, Gymnasium: Mathematik und Physik (dieselben Rahmenlehrpläne wie Berlin; 5/6 = Niveaustufe D)
  * - Bremen, Gymnasium: Mathematik und Physik (Bildungspläne Gymnasium 5–9 und Gymnasiale Oberstufe, Abitur nach 12)
  * - Hamburg, Gymnasium: Mathematik und Physik (Bildungspläne Sek. I und Studienstufe, G8)
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
@@ -55,6 +58,8 @@ const RAW_CURRICULA: StateCurriculum[] = [
   bayernGymnasiumPhysik,
   berlinGymnasiumMathematik,
   berlinGymnasiumPhysik,
+  brandenburgGymnasiumMathematik,
+  brandenburgGymnasiumPhysik,
   bremenGymnasiumMathematik,
   bremenGymnasiumPhysik,
   hamburgGymnasiumMathematik,

@@ -1,4 +1,5 @@
 import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
 import { bindUnits, Formatter } from './format';
 import { isVisible, resolveText, stepDecimals } from './params';
 import { plainSubText, setSubLabel } from './rich-label';
@@ -45,6 +46,20 @@ interface ControlView {
   setDisabled(disabled: boolean): void;
   /** Aufgabenmodus an/aus (nur Auswahlen mit Zusatzangaben). */
   setTaskHidden?(hidden: boolean): void;
+  /** Kurzform des Werts für die Zusammenfassung einer eingeklappten Gruppe. */
+  summary(value: ParamValue): string;
+}
+
+/** Gruppe mit Titel: lässt sich auf- und zuklappen und zeigt eingeklappt eine Kurzfassung der Werte. */
+interface GroupView {
+  root: HTMLElement;
+  toggle: HTMLButtonElement;
+  body: HTMLElement;
+  summary: HTMLElement;
+  views: ControlView[];
+  open: boolean;
+  /** Bei der letzten Aktualisierung sichtbar? (Wird eine Gruppe neu sichtbar, klappt sie auf.) */
+  wasVisible: boolean | null;
 }
 
 export class Controls {
@@ -56,6 +71,9 @@ export class Controls {
   /** Regler mit `spoiler` gerade ausgeblendet (Aufgabenmodus)? */
   private spoilersHidden = false;
   private lastValues: ParamValues | null = null;
+  private groupViews: GroupView[] = [];
+  /** Gibt es Regler ohne Gruppe? Dann bleiben alle Gruppen mit Titel zu Beginn zu. */
+  private hasPlainGroup = false;
 
   constructor(private readonly options: ControlsOptions) {
     this.fmt = new Formatter(options.lang);
@@ -82,6 +100,52 @@ export class Controls {
     for (const fieldset of this.options.container.querySelectorAll<HTMLElement>('[data-group]')) {
       fieldset.hidden = !fieldset.querySelector('.ctl:not([hidden])');
     }
+    this.syncGroups(values);
+  }
+
+  /**
+   * Auf- und Zuklappen der Gruppen: Beim ersten Aufbau ist die erste sichtbare
+   * Gruppe offen (sofern es keine Regler ohne Gruppe gibt), alle anderen zu.
+   * Erscheint eine Gruppe später (z. B. durch `visibleIf`), klappt sie auf,
+   * damit neue Regler nicht unbemerkt bleiben.
+   */
+  private syncGroups(values: ParamValues): void {
+    const first = this.groupViews.every((g) => g.wasVisible === null);
+    let opened = this.hasPlainGroup;
+    for (const group of this.groupViews) {
+      const visible = !group.root.hidden;
+      if (first) {
+        if (visible && !opened) {
+          this.setGroupOpen(group, true);
+          opened = true;
+        }
+      } else if (visible && group.wasVisible === false) this.setGroupOpen(group, true);
+      group.wasVisible = visible;
+      if (!group.open && visible) group.summary.textContent = this.groupSummary(group, values);
+    }
+  }
+
+  private setGroupOpen(group: GroupView, open: boolean): void {
+    group.open = open;
+    group.toggle.setAttribute('aria-expanded', String(open));
+    group.body.hidden = !open;
+    group.root.classList.toggle('is-open', open);
+    if (!open && this.lastValues) group.summary.textContent = this.groupSummary(group, this.lastValues);
+  }
+
+  /** „2 von 3 an“ bei reinen Schaltern, sonst bis zu drei Werte („2,0 m · 0,05 · Looping“). */
+  private groupSummary(group: GroupView, values: ParamValues): string {
+    const shown = group.views.filter((v) => !v.root.hidden && values[v.def.key] !== undefined);
+    if (!shown.length) return '';
+    if (shown.every((v) => v.def.type === 'boolean')) {
+      const on = shown.filter((v) => values[v.def.key] === true).length;
+      return t(this.options.lang, 'sim.groupOn', { n: on, total: shown.length });
+    }
+    const parts = shown
+      .filter((v) => v.def.type !== 'boolean')
+      .map((v) => v.summary(values[v.def.key]!))
+      .filter(Boolean);
+    return parts.slice(0, 3).join(' · ') + (parts.length > 3 ? ' …' : '');
   }
 
   setDisabled(disabled: boolean): void {
@@ -116,22 +180,43 @@ export class Controls {
       const fieldset = document.createElement('div');
       fieldset.className = 'ctl-group';
       fieldset.dataset.group = group?.id ?? '';
-      if (group) {
-        const titleId = `${this.options.idPrefix}-group-${group.id}`;
-        const title = document.createElement('div');
-        title.className = 'ctl-group__title';
-        title.id = titleId;
-        setSubLabel(title, group.label[lang]);
-        fieldset.setAttribute('role', 'group');
-        fieldset.setAttribute('aria-labelledby', titleId);
-        fieldset.append(title);
+      const views = members.map((def) => this.createView(def));
+      this.views.push(...views);
+      if (!group) {
+        this.hasPlainGroup = true;
+        fieldset.append(...views.map((v) => v.root));
+        container.append(fieldset);
+        continue;
       }
-      for (const def of members) {
-        const view = this.createView(def);
-        this.views.push(view);
-        fieldset.append(view.root);
-      }
+      // Kopfzeile als Knopf (Muster „Disclosure“): Titel links, eingeklappt rechts die Kurzfassung
+      const titleId = `${this.options.idPrefix}-group-${group.id}`;
+      const bodyId = `${titleId}-body`;
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'ctl-group__toggle';
+      toggle.setAttribute('aria-controls', bodyId);
+      const title = document.createElement('span');
+      title.className = 'ctl-group__title';
+      title.id = titleId;
+      setSubLabel(title, group.label[lang]);
+      const summary = document.createElement('span');
+      summary.className = 'ctl-group__summary';
+      const chevron = document.createElement('span');
+      chevron.className = 'ctl-group__chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      toggle.append(title, summary, chevron);
+      const body = document.createElement('div');
+      body.className = 'ctl-group__body';
+      body.id = bodyId;
+      body.append(...views.map((v) => v.root));
+      fieldset.setAttribute('role', 'group');
+      fieldset.setAttribute('aria-labelledby', titleId);
+      fieldset.append(toggle, body);
       container.append(fieldset);
+      const view: GroupView = { root: fieldset, toggle, body, summary, views, open: true, wasVisible: null };
+      this.setGroupOpen(view, false);
+      toggle.addEventListener('click', () => this.setGroupOpen(view, !view.open));
+      this.groupViews.push(view);
     }
   }
 
@@ -148,7 +233,12 @@ export class Controls {
     }
   }
 
-  private helpText(def: ParamDef): HTMLElement | null {
+  /**
+   * Hilfetext eines Reglers. Feste Hinweise liegen hinter einem ⓘ-Knopf
+   * (`toggle`, gehört in die Kopfzeile des Reglers); Hinweise, die von den
+   * Werten abhängen, bleiben immer sichtbar, weil sie aktuelle Rückmeldungen sind.
+   */
+  private helpText(def: ParamDef): { text: HTMLElement; toggle: HTMLButtonElement | null } | null {
     if (!def.help) return null;
     const p = document.createElement('p');
     p.className = 'ctl__help';
@@ -156,10 +246,26 @@ export class Controls {
       // Text hängt von den Werten ab: wird in `sync` gesetzt (bis dahin ausgeblendet)
       p.hidden = true;
       this.dynamicHelp.push({ def, element: p, last: '' });
-      return p;
+      return { text: p, toggle: null };
     }
-    setSubLabel(p, def.help[this.options.lang], HELP_TEXT);
-    return p;
+    const { lang, idPrefix } = this.options;
+    setSubLabel(p, def.help[lang], HELP_TEXT);
+    p.id = `${idPrefix}-${def.key}-help`;
+    p.hidden = true;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'ctl__info';
+    toggle.textContent = 'i';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', p.id);
+    const name = plainSubText(def.label[lang]);
+    toggle.setAttribute('aria-label', t(lang, 'sim.helpShow', { label: name }));
+    toggle.title = t(lang, 'sim.helpShow', { label: name });
+    toggle.addEventListener('click', () => {
+      p.hidden = !p.hidden;
+      toggle.setAttribute('aria-expanded', String(!p.hidden));
+    });
+    return { text: p, toggle };
   }
 
   private displayNumber(def: NumberParam, value: number): string {
@@ -219,7 +325,10 @@ export class Controls {
 
     root.append(head, range);
     const help = this.helpText(def);
-    if (help) root.append(help);
+    if (help) {
+      if (help.toggle) label.after(help.toggle);
+      root.append(help.text);
+    }
 
     let current = def.default;
     const decimals = stepDecimals(def.step);
@@ -272,6 +381,7 @@ export class Controls {
         if (output) output.value = this.displayNumber(def, n);
         range.setAttribute('aria-valuetext', this.displayNumber(def, n));
       },
+      summary: (value) => this.displayNumber(def, Number(value)),
       setDisabled: (disabled) => {
         range.disabled = disabled;
         if (text) text.disabled = disabled;
@@ -299,7 +409,15 @@ export class Controls {
     label.append(input, track, text);
     root.append(label);
     const help = this.helpText(def);
-    if (help) root.append(help);
+    if (help) {
+      if (help.toggle) {
+        const head = document.createElement('div');
+        head.className = 'ctl__head ctl__head--switch';
+        head.append(label, help.toggle);
+        root.append(head);
+      }
+      root.append(help.text);
+    }
     input.addEventListener('change', () => onInput(def.key, input.checked));
     return {
       def,
@@ -307,6 +425,7 @@ export class Controls {
       sync: (value) => {
         input.checked = value === true;
       },
+      summary: () => '',
       setDisabled: (disabled) => {
         input.disabled = disabled;
       },
@@ -337,7 +456,10 @@ export class Controls {
     if (def.placeholder) input.placeholder = def.placeholder[lang];
     root.append(head, input);
     const help = this.helpText(def);
-    if (help) root.append(help);
+    if (help) {
+      if (help.toggle) label.after(help.toggle);
+      root.append(help.text);
+    }
     input.addEventListener('input', () => onInput(def.key, input.value));
     input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') input.blur();
@@ -348,6 +470,10 @@ export class Controls {
       sync: (value) => {
         const text = String(value);
         if (document.activeElement !== input && input.value !== text) input.value = text;
+      },
+      summary: (value) => {
+        const text = String(value);
+        return text.length > 14 ? `${text.slice(0, 13)}…` : text;
       },
       setDisabled: (disabled) => {
         input.disabled = disabled;
@@ -386,13 +512,17 @@ export class Controls {
     }
     root.append(legend, group);
     const help = this.helpText(def);
-    if (help) root.append(help);
+    if (help) {
+      if (help.toggle) legend.append(help.toggle);
+      root.append(help.text);
+    }
     return {
       def,
       root,
       sync: (value) => {
         for (const input of inputs) input.checked = input.value === value;
       },
+      summary: (value) => plainSubText(def.options.find((o) => o.value === value)?.label[lang] ?? ''),
       setDisabled: (disabled) => {
         for (const input of inputs) input.disabled = disabled;
       },

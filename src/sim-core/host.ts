@@ -124,6 +124,8 @@ class SimulationHost {
   private liveEl: HTMLElement | null = null;
   private spoken = new Map<string, string>();
   private announceTimer = 0;
+  /** Knöpfe der Beispiele; das zuletzt gewählte ist markiert, bis jemand selbst etwas ändert. */
+  private presetButtons: HTMLButtonElement[] = [];
 
   constructor(
     private readonly root: HTMLElement,
@@ -149,6 +151,7 @@ class SimulationHost {
     this.buildControls();
     this.buildReadouts();
     this.buildPresets();
+    this.bindTabs();
     this.bindToolbar();
     this.buildActions();
     this.bindShare();
@@ -248,7 +251,10 @@ class SimulationHost {
       this.values[key] = value;
       this.pending.add(key);
     }
-    if (this.pending.size > before) this.pendingSource = strongerSource(this.pendingSource, source);
+    if (this.pending.size > before) {
+      this.pendingSource = strongerSource(this.pendingSource, source);
+      if (source === 'input') this.markPreset(null);
+    }
     if (this.pending.size) this.scheduleFlush();
   }
 
@@ -325,23 +331,82 @@ class SimulationHost {
     return !!def.spoiler || def.key === this.def.resultsParam;
   }
 
+  /** Beispiele als ruhige Liste; bei vielen Beispielen zuerst nur die ersten (Knopf „Alle anzeigen“). */
   private buildPresets(): void {
     const presets = this.def.presets ?? [];
     if (!presets.length) return;
-    const wrap = this.query('[data-sim-presets]');
     const list = this.query('[data-sim-preset-list]');
-    for (const preset of presets) {
+    const more = this.query<HTMLButtonElement>('[data-sim-presets-more]');
+    const FIRST = 8;
+    const collapsible = presets.length > FIRST + 2;
+    presets.forEach((preset, index) => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'chip';
+      button.className = 'preset';
+      button.setAttribute('aria-pressed', 'false');
       setSubLabel(button, preset.label[this.lang]);
+      if (collapsible && index >= FIRST) button.hidden = true;
       button.addEventListener('click', () => {
         if (this.locked) return;
         this.replaceAll({ ...defaultValues(this.defs), ...(preset.values as ParamValues) });
+        this.markPreset(button);
       });
       list.append(button);
+      this.presetButtons.push(button);
+    });
+    if (collapsible) {
+      let open = false;
+      const label = () => (more.textContent = open ? t(this.lang, 'sim.presetsLess') : t(this.lang, 'sim.presetsMore', { n: presets.length }));
+      more.hidden = false;
+      more.setAttribute('aria-expanded', 'false');
+      label();
+      more.addEventListener('click', () => {
+        open = !open;
+        this.presetButtons.forEach((b, i) => (b.hidden = !open && i >= FIRST));
+        more.setAttribute('aria-expanded', String(open));
+        label();
+      });
     }
-    wrap.hidden = false;
+    this.query('[data-sim-preset-count]').textContent = String(presets.length);
+    this.query('[data-sim-tab="presets"]').hidden = false;
+  }
+
+  private markPreset(active: HTMLButtonElement | null): void {
+    for (const button of this.presetButtons) button.setAttribute('aria-pressed', String(button === active));
+  }
+
+  /**
+   * Reiter im Bedienfeld (Einstellungen · Beispiele · Ergebnisse) nach dem
+   * ARIA-Muster „Tabs“: Klick oder Pfeiltasten wechseln, nur der aktive Reiter
+   * ist per Tab erreichbar. Beim Start ist „Einstellungen“ offen.
+   */
+  private bindTabs(): void {
+    const tabs = [...this.root.querySelectorAll<HTMLButtonElement>('[data-sim-tab]')];
+    const select = (tab: HTMLButtonElement, focus: boolean) => {
+      for (const other of tabs) {
+        const active = other === tab;
+        other.setAttribute('aria-selected', String(active));
+        other.tabIndex = active ? 0 : -1;
+        const panel = this.root.querySelector<HTMLElement>(`[data-sim-tabpanel="${other.dataset.simTab}"]`);
+        if (panel) panel.hidden = !active;
+      }
+      if (focus) tab.focus();
+    };
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => select(tab, false));
+      tab.addEventListener('keydown', (event) => {
+        const visible = tabs.filter((x) => !x.hidden);
+        const i = visible.indexOf(tab);
+        const next =
+          event.key === 'ArrowRight' ? visible[(i + 1) % visible.length] :
+          event.key === 'ArrowLeft' ? visible[(i - 1 + visible.length) % visible.length] :
+          event.key === 'Home' ? visible[0] :
+          event.key === 'End' ? visible[visible.length - 1] : undefined;
+        if (!next) return;
+        event.preventDefault();
+        select(next, true);
+      });
+    }
   }
 
   private applyLock(): void {
@@ -349,7 +414,7 @@ class SimulationHost {
     this.root.classList.toggle('sim--locked', this.locked);
     const banner = this.root.querySelector<HTMLElement>('[data-sim-lock]');
     if (banner) banner.hidden = !this.locked;
-    for (const chip of this.root.querySelectorAll<HTMLButtonElement>('[data-sim-preset-list] .chip')) chip.disabled = this.locked;
+    for (const button of this.presetButtons) button.disabled = this.locked;
     this.syncHint();
     this.requestRender();
   }
@@ -390,9 +455,10 @@ class SimulationHost {
       list.append(row);
       this.readouts.set(def.key, entry);
     }
-    this.query('[data-sim-readouts-wrap]').hidden = false;
-    // Unsichtbare Ansage für Bildschirmleser (die Liste selbst bleibt still, sonst redet sie beim Ziehen ständig)
-    list.after(this.live());
+    this.query('[data-sim-tab="readouts"]').hidden = false;
+    // Unsichtbare Ansage für Bildschirmleser (die Liste selbst bleibt still, sonst redet sie beim Ziehen ständig).
+    // Sie liegt außerhalb der Reiter, damit sie auch bei geschlossenem Reiter „Ergebnisse“ spricht.
+    this.live();
     this.applyHide();
   }
 
@@ -658,6 +724,7 @@ class SimulationHost {
       this.instance?.resetTime?.();
       this.instance?.resetView?.();
       this.replaceAll(defaultValues(this.defs));
+      this.markPreset(null);
       this.requestRender();
     });
     on('unlock', () => {

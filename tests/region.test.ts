@@ -33,10 +33,11 @@ const testCurriculum: StateCurriculum = {
 };
 
 describe('Einstellung Bundesland', () => {
-  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Berlin, Bremen, Hamburg, Hessen, Niedersachsen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Sachsen, Sachsen-Anhalt, Schleswig-Holstein)', () => {
+  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Berlin, Brandenburg, Bremen, Hamburg, Hessen, Niedersachsen, Nordrhein-Westfalen, Rheinland-Pfalz, Saarland, Sachsen, Sachsen-Anhalt, Schleswig-Holstein)', () => {
     const ids = regionIds();
     expect(ids).toContain('bayern');
     expect(ids).toContain('berlin');
+    expect(ids).toContain('brandenburg');
     expect(ids).toContain('bremen');
     expect(ids).toContain('hamburg');
     expect(ids).toContain('hessen');
@@ -95,7 +96,7 @@ describe('Einstellung Bundesland', () => {
   it('nimmt einen neuen Lehrplan automatisch auf', () => {
     const curricula = [...STATE_CURRICULA, testCurriculum];
     expect(regionIds(curricula)).toContain('musterland');
-    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'berlin', 'bremen', 'hamburg', 'hessen', 'musterland', 'niedersachsen', 'nordrhein-westfalen', 'rheinland-pfalz', 'saarland', 'sachsen', 'sachsen-anhalt', 'schleswig-holstein']);
+    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'berlin', 'brandenburg', 'bremen', 'hamburg', 'hessen', 'musterland', 'niedersachsen', 'nordrhein-westfalen', 'rheinland-pfalz', 'saarland', 'sachsen', 'sachsen-anhalt', 'schleswig-holstein']);
     expect(curriculumFor('physik', 'musterland', curricula)?.id).toBe(testCurriculum.id);
     expect(regionGrades('reflexion', 'musterland', curricula)).toEqual([7]);
     expect(regionOrders('ohmsches-gesetz', curricula)['musterland']).toBe(8000);
