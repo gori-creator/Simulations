@@ -1,6 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
-import { shotFile, type ShotScheme } from '../lib/sim-shots';
+import { shotFile, shotFocus, type ShotScheme } from '../lib/sim-shots';
 
 /**
  * Vorschaubild einer Simulation aus ihrer echten Bühne: Die Bildtests
@@ -18,19 +18,22 @@ const { id } = Astro.props;
 const load = async (scheme: ShotScheme) => {
   const file = shotFile(id, scheme);
   if (!file) return null;
-  // 16 : 9 wie die Kartenfläche; doppelte Pixeldichte für scharfe Darstellung
-  return getImage({ src: (await file()).default, width: 640, height: 360, fit: 'cover', position: 'center', format: 'webp', quality: 72 });
+  // 16 : 9 wie die Kartenfläche, in voller Breite der Bühne: Die Karte zeigt
+  // davon nur einen vergrößerten Ausschnitt (shotFocus), der bleibt so scharf.
+  return getImage({ src: (await file()).default, width: 810, height: 456, fit: 'cover', position: 'center', format: 'webp', quality: 74 });
 };
 const [light, dark] = await Promise.all([load('hell'), load('dunkel')]);
+const focus = shotFocus(id);
+const style = `--shot-x:${focus.x}%;--shot-y:${focus.y}%;--shot-zoom:${focus.zoom}`;
 ---
 
 {
   light && (
-    <img class="sim-shot sim-shot--hell" src={light.src} width="640" height="360" alt="" loading="lazy" decoding="async" />
+    <img class="sim-shot sim-shot--hell" src={light.src} width="810" height="456" alt="" style={style} loading="lazy" decoding="async" />
   )
 }
 {
   dark && (
-    <img class="sim-shot sim-shot--dunkel" src={dark.src} width="640" height="360" alt="" loading="lazy" decoding="async" />
+    <img class="sim-shot sim-shot--dunkel" src={dark.src} width="810" height="456" alt="" style={style} loading="lazy" decoding="async" />
   )
 }

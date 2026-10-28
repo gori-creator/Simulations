@@ -1093,6 +1093,10 @@ em .hat::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--shot-x, 0%) var(--shot-y, 40%);
+  /* vergrößerter Ausschnitt statt der ganzen Bühne (lib/sim-shots.ts, shotFocus) */
+  transform: scale(var(--shot-zoom, 1.5));
+  transform-origin: var(--shot-x, 0%) var(--shot-y, 40%);
 }
 
 .sim-shot--dunkel {
@@ -1124,7 +1128,7 @@ em .hat::after {
   }
 
   .card--link:hover .sim-shot {
-    transform: scale(1.04);
+    transform: scale(calc(var(--shot-zoom, 1.5) * 1.04));
   }
 }
 

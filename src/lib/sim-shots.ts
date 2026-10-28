@@ -16,3 +16,23 @@ export function shotFile(id: string, scheme: ShotScheme): (() => Promise<{ defau
 export function hasShot(id: string): boolean {
   return shotFile(id, 'hell') !== null;
 }
+
+/**
+ * Ausschnitt des Vorschaubilds: Gezeigt wird nicht die ganze Bühne (rechts
+ * stehen oft Infokästen mit kleiner Schrift), sondern ein vergrößerter Teil.
+ * `x`/`y` in Prozent (Bezugspunkt der Vergrößerung), `zoom` als Faktor.
+ * Standard: links, etwas über der Mitte, 1,5-fach. Abweichungen je Simulation.
+ */
+export interface ShotFocus {
+  x: number;
+  y: number;
+  zoom: number;
+}
+
+export const DEFAULT_FOCUS: ShotFocus = { x: 0, y: 40, zoom: 1.5 };
+
+const FOCUS: Record<string, Partial<ShotFocus>> = {};
+
+export function shotFocus(id: string): ShotFocus {
+  return { ...DEFAULT_FOCUS, ...FOCUS[id] };
+}
