@@ -58,21 +58,31 @@ const dialogTitleId = `share-title-${simId}`;
       <p class="sim__hint" data-sim-hint hidden>{t(lang, 'sim.dragHint')}</p>
     </div>
 
-    <div class="sim__panel" role="region" aria-label={t(lang, 'sim.controls')}>
+    <div class="sim__panel" role="region" aria-label={t(lang, 'sim.panel')}>
       <div class="sim__lock" data-sim-lock hidden>
         <span>{t(lang, 'sim.locked')}</span>
         <button class="btn" type="button" data-action="unlock"><Icon name="lock" size={16} />{t(lang, 'sim.unlock')}</button>
       </div>
-      <div data-sim-presets hidden>
-        <span class="sim__panel-title">{t(lang, 'sim.presets')}</span>
-        <div class="chips" data-sim-preset-list></div>
+      <!-- Reiter: Einstellungen · Beispiele · Ergebnisse (Umschalten in sim-core/host.ts, bindTabs) -->
+      <div class="sim-tabs" role="tablist" aria-label={t(lang, 'sim.panel')} data-sim-tabs>
+        <button class="sim-tabs__tab" type="button" role="tab" id={`${simId}-tab-controls`} aria-controls={`${simId}-panel-controls`} aria-selected="true" data-sim-tab="controls">
+          {t(lang, 'sim.controls')}
+        </button>
+        <button class="sim-tabs__tab" type="button" role="tab" id={`${simId}-tab-presets`} aria-controls={`${simId}-panel-presets`} aria-selected="false" tabindex="-1" data-sim-tab="presets" hidden>
+          {t(lang, 'sim.presets')} <span class="sim-tabs__count" data-sim-preset-count></span>
+        </button>
+        <button class="sim-tabs__tab" type="button" role="tab" id={`${simId}-tab-readouts`} aria-controls={`${simId}-panel-readouts`} aria-selected="false" tabindex="-1" data-sim-tab="readouts" hidden>
+          {t(lang, 'sim.readouts')}
+        </button>
       </div>
-      <div>
-        <span class="sim__panel-title">{t(lang, 'sim.controls')}</span>
+      <div class="sim-tabpanel" role="tabpanel" id={`${simId}-panel-controls`} aria-labelledby={`${simId}-tab-controls`} data-sim-tabpanel="controls">
         <div data-sim-controls></div>
       </div>
-      <div data-sim-readouts-wrap hidden>
-        <span class="sim__panel-title">{t(lang, 'sim.readouts')}</span>
+      <div class="sim-tabpanel" role="tabpanel" id={`${simId}-panel-presets`} aria-labelledby={`${simId}-tab-presets`} data-sim-tabpanel="presets" hidden>
+        <div class="preset-list" data-sim-preset-list></div>
+        <button class="preset-list__more" type="button" data-sim-presets-more hidden></button>
+      </div>
+      <div class="sim-tabpanel" role="tabpanel" id={`${simId}-panel-readouts`} aria-labelledby={`${simId}-tab-readouts`} data-sim-tabpanel="readouts" hidden>
         <dl class="readouts" data-sim-readouts aria-live="off"></dl>
       </div>
     </div>
