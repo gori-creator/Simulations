@@ -56,7 +56,17 @@ export {
 export { ImageStore, simAssetUrl } from './images';
 export { offscreenCanvas, scaledSprite, tintedSprite, type SpriteOptions, type TintOptions } from './sprites';
 export { drawLabStand, type LabStandOptions } from './lab-stand';
-export { BATTERY_IMG, BULB_IMG, bulbSprites, drawBulbPhoto, unlitBulbPixels, type BulbDrawOptions } from './circuit-photos';
+export {
+  BATTERY_IMG,
+  BULB_IMG,
+  bulbSprites,
+  drawBulbPhoto,
+  RESISTOR_RING_COLORS,
+  RESISTOR_RING_GOLD,
+  RESISTOR_RING_SILVER,
+  unlitBulbPixels,
+  type BulbDrawOptions,
+} from './circuit-photos';
 export {
   Camera3D,
   closestOnLine,

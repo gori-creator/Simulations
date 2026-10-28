@@ -13,6 +13,15 @@
  */
 import { offscreenCanvas } from './sprites';
 
+/**
+ * Farben der Ringe auf Widerständen nach IEC 60062 (Ziffern 0 … 9), dazu Gold
+ * (×0,1 bzw. ±5 %) und Silber (×0,01). Gemeinsam für alle Stromkreis-
+ * Simulationen, damit derselbe Widerstand überall gleich aussieht.
+ */
+export const RESISTOR_RING_COLORS = ['#141414', '#7a3f12', '#d11f1f', '#f07818', '#f2d21b', '#2f9e44', '#1f5fd6', '#7b3fbf', '#8a8f96', '#f4f4f0'] as const;
+export const RESISTOR_RING_GOLD = '#c9a43a';
+export const RESISTOR_RING_SILVER = '#c3c8cf';
+
 type Source = CanvasImageSource & { width: number; height: number };
 
 /** Lage der Teile im Lampenfoto (Bildpixel). */
