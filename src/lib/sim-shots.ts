@@ -12,7 +12,41 @@ export function shotFile(id: string, scheme: ShotScheme): (() => Promise<{ defau
   return shots[`../../tests/bildtests/referenz/${id}-${scheme}.png`] ?? null;
 }
 
-/** Gibt es für diese Simulation ein Foto? */
+/**
+ * Generierte Vorschaubilder (docs/VORSCHAUBILDER.md), ein Bild für beide
+ * Farbschemata. Liegt eines vor, hat es Vorrang vor dem Foto der Bühne.
+ */
+const previews = import.meta.glob<{ default: ImageMetadata }>('../assets/vorschau/*.{webp,png,jpg}');
+
+export function previewFile(id: string): (() => Promise<{ default: ImageMetadata }>) | null {
+  for (const ext of ['webp', 'png', 'jpg']) {
+    const file = previews[`../assets/vorschau/${id}.${ext}`];
+    if (file) return file;
+  }
+  return null;
+}
+
+/** Gibt es für diese Simulation ein Vorschaubild (generiert oder Foto der Bühne)? */
 export function hasShot(id: string): boolean {
-  return shotFile(id, 'hell') !== null;
+  return previewFile(id) !== null || shotFile(id, 'hell') !== null;
+}
+
+/**
+ * Ausschnitt des Vorschaubilds: Gezeigt wird nicht die ganze Bühne (rechts
+ * stehen oft Infokästen mit kleiner Schrift), sondern ein vergrößerter Teil.
+ * `x`/`y` in Prozent (Bezugspunkt der Vergrößerung), `zoom` als Faktor.
+ * Standard: links, etwas über der Mitte, 1,5-fach. Abweichungen je Simulation.
+ */
+export interface ShotFocus {
+  x: number;
+  y: number;
+  zoom: number;
+}
+
+export const DEFAULT_FOCUS: ShotFocus = { x: 0, y: 40, zoom: 1.5 };
+
+const FOCUS: Record<string, Partial<ShotFocus>> = {};
+
+export function shotFocus(id: string): ShotFocus {
+  return { ...DEFAULT_FOCUS, ...FOCUS[id] };
 }

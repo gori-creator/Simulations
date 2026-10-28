@@ -58,7 +58,7 @@ Ich habe alle 218 Bilder angesehen (198 eingebaute und 20 im Eingang) und dabei 
   - Ergebnisse sind nicht unbedingt einzigartig; andere können ähnliche Bilder erhalten. Das ist ein Grund mehr, auf Marken und erkennbare Vorbilder zu verzichten.
   - Eine Pflicht, die Bilder als KI-erzeugt zu kennzeichnen, steht dort nicht. Die Seite nennt es trotzdem (siehe unten).
   - Bei einer Änderung der Bedingungen gilt die jeweils aktuelle Fassung; vor der Veröffentlichung kurz nachsehen.
-- **Kennzeichnung als KI-Bild:** Die EU-KI-Verordnung (Art. 50) verlangt eine Kennzeichnung vor allem bei täuschend echten Darstellungen realer Personen, Orte oder Ereignisse („Deepfakes“). Unsere Bilder zeigen Alltagsgegenstände ohne Personen. Trotzdem steht auf der Seite „Über das Projekt“ (DE und EN) ein Abschnitt „Bilder“: „Die Fotos in den Simulationen … sind mit KI erzeugt.“ Das hat die Projektleitung am 26.10.2026 entschieden.
+- **Kennzeichnung als KI-Bild:** Die EU-KI-Verordnung (Art. 50) verlangt eine Kennzeichnung vor allem bei täuschend echten Darstellungen realer Personen, Orte oder Ereignisse („Deepfakes“). Unsere Bilder zeigen vor allem Alltagsgegenstände; erfundene Personen (seit 28.10.2026 erlaubt) erscheinen nur von der Seite oder von hinten. Trotzdem steht auf der Seite „Über das Projekt“ (DE und EN) ein Abschnitt „Bilder“: „Die Fotos in den Simulationen … sind mit KI erzeugt.“ Das hat die Projektleitung am 26.10.2026 entschieden.
 - **Marken und Designs:** Erkennbare Markenzeichen gibt es keine. Ähnlichkeiten in der Form (Autos) sind ein kleines Restrisiko; siehe Grenzfälle.
 
 ## Fremde Bestandteile ohne Bilder
@@ -75,7 +75,8 @@ Die Seite selbst lädt **keine** Schriften, Skripte oder Bilder von fremden Serv
 
 - **Nur selbst erzeugte Bilder** oder Bilder mit einer Lizenz, die die freie Nutzung erlaubt. Die Quelle bzw. Lizenz wird beim Bild in `docs/BILDER.md` eingetragen.
 - **Prompt eintragen** (`docs/BILDER.md` oder Wunschliste), sonst ist später nicht nachvollziehbar, woher das Bild stammt.
-- Keine Personen, keine Logos, keine Markennamen, keine echten Münzen, keine erkennbaren Fahrzeug- oder Gerätemodelle (im Prompt: „generic, no brand, no logo, no text“).
+- Keine Logos, keine Markennamen, keine echten Münzen, keine erkennbaren Fahrzeug- oder Gerätemodelle (im Prompt: „generic, no brand, no logo, no text“).
+- Personen nur erfunden, von der Seite oder von hinten, ohne Gesichts-Nahaufnahme (Regeln in `docs/BILDER.md`, Entscheidung vom 28.10.2026). Bei der Durchsicht neuer Personenbilder prüfen: keine Ähnlichkeit mit bekannten Personen, keine verzerrten Hände oder Gesichter.
 - **Keine Vorbild-Bilder fremder Designer ins Repository legen.** Das gilt auch für Bildschirmfotos anderer Webseiten als Stilvorlage.
 - Die allgemeinen Regeln zu Stil und Dateigröße stehen in `docs/BILDER.md`.
 

@@ -12,7 +12,13 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 **Allgemeine Regeln**
 
 - Keine Schrift, keine Logos, keine Wasserzeichen, keine echten Marken (Autohersteller, Münzen echter Währungen).
-- Keine Personen.
+- Personen nur nach diesen Regeln (Entscheidung der Projektleitung vom 28.10.2026, vorher waren Personen ganz ausgeschlossen):
+  - eindeutig erfundene Menschen, fotorealistisch, keine Ähnlichkeit mit realen Personen, keine Prominenten
+  - von der Seite oder von hinten, keine Nahaufnahme von Gesichtern; Hände nur, wo der Gegenstand es verlangt (Griff)
+  - Kinder und Jugendliche nur in Alltagskleidung bei alltäglichen Tätigkeiten
+  - über alle Bilder hinweg vielfältig gemischt (Hautfarbe, Geschlecht)
+  - kein Text, keine Logos auf der Kleidung
+  - die Kennzeichnung als KI-Bild steht auf der Seite „Über das Projekt“
 - Einheitlicher Stil: fotorealistisch, weiches Studiolicht, freundlich, nicht kitschig.
 - Dateigröße höchstens 300 KB (Schulnetze!); ein Test in `tests/simulations.test.ts` prüft das. Bilder nur so groß anlegen, wie sie höchstens gezeichnet werden (Gerätepixel), und unbenutzte Bildteile einfarbig lassen.
 - Bitte nur Bilder verwenden, die frei genutzt werden dürfen (selbst erzeugt oder mit passender Lizenz).
