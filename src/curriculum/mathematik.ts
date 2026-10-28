@@ -88,7 +88,7 @@ export const mathematik: Subject = {
               'Zoome vom Sandkorn bis zur Erde: Jeder Schritt macht das Bild zehnmal so groß. So lernst du Potenzen und das Schreiben sehr großer und sehr kleiner Zahlen.',
               'Zoom from a grain of sand to the Earth: each step makes the picture ten times larger. Learn about powers and how to write very large and very small numbers.',
             ),
-            grades: [5, 6],
+            grades: [5, 7],
             kmk: ['M-L1', 'M-L2', 'M-K4', 'M-K5'],
             keywords: L(
               ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
@@ -522,7 +522,7 @@ export const mathematik: Subject = {
               'Vergrößere Strecken, Flächen und Körper. Bei doppelter Länge wird die Fläche viermal und das Volumen achtmal so groß.',
               'Enlarge lengths, areas and solids. Doubling the length makes the area four times and the volume eight times as large.',
             ),
-            grades: [8, 9],
+            grades: [8, 10],
             kmk: ['M-L4', 'M-L2', 'M-K1', 'M-K3', 'M-K4'],
             keywords: L(
               ['Streckfaktor', 'ähnlich', 'Ähnlichkeit', 'zentrische Streckung', 'Vergrößerung', 'Verkleinerung', 'Flächeninhalt', 'Oberfläche', 'Volumen', 'Einheitswürfel', 'Quadrat', 'Würfel', 'Quader', 'Kubikwurzel', 'Maßstab', 'Pizza', 'Oberfläche zu Volumen'],

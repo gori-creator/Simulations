@@ -8,7 +8,7 @@ Für jede Aufgabe gilt: `CLAUDE.md` lesen, eigener Zweig von `main`, `npm run ve
 
 | Aufgabe | Wer | Stand |
 | --- | --- | --- |
-| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt, Rheinland-Pfalz; als Nächstes Schleswig-Holstein |
+| Weitere Bundesländer, je Land Mathe und Physik (`docs/agenten/AUFTRAG-BUNDESLAENDER.md`) | Claude-Agent (Lehrpläne von der Projektleitung) | fertig: NRW, Niedersachsen, Sachsen, Sachsen-Anhalt, Rheinland-Pfalz, Schleswig-Holstein; als Nächstes Berlin |
 | Neues Design und Startseiten-Animation (`docs/agenten/AUFTRAG-DESIGN-STARTSEITE.md`) | Codex-Agent (ohne GitHub, Abgabe als ZIP und Patch) | läuft |
 
 ## Erledigt
@@ -65,6 +65,7 @@ Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das
   - [x] Sachsen (27.10.): Lehrpläne Gymnasium Mathematik (2021) und Physik (2026), je ein Dokument für Klasse 5 bzw. 6 bis 12 (Abitur nach Klasse 12), Mathe 89 von 93, Physik 36 von 36 zugeordnet; Klassenstufen von 25 Simulationen erweitert. Protokolle in `docs/lehrplaene/sachsen-gymnasium-*.md`.
   - [x] Sachsen-Anhalt (27.10., auf Wunsch der Projektleitung vorgezogen): Fachlehrpläne Gymnasium Mathematik und Physik (Stand 01.08.2022), je ein Dokument für Klasse 5 bzw. 6 bis 12 (Abitur nach Klasse 12), Mathe 87 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 17 Simulationen erweitert. Protokolle in `docs/lehrplaene/sachsen-anhalt-gymnasium-*.md`.
   - [x] Rheinland-Pfalz (28.10.): Rahmenlehrplan Mathematik Sek. I (2007), Lehrplan Mathematik Oberstufe (Stand März 2015), Physikteil des Rahmenlehrplans Naturwissenschaften Sek. I (Auszug ohne Stand) und Lehrplan Physik Oberstufe (2022), G9, Mathe 91 von 93, Physik 36 von 36 zugeordnet; keine Klassenstufen erweitert. Protokolle in `docs/lehrplaene/rheinland-pfalz-gymnasium-*.md`.
+  - [x] Schleswig-Holstein (28.10.): Fachanforderungen Mathematik (2. Auflage 2024) und Physik (4. Auflage 2026), je ein Dokument für Sek. I und II, G9, Mathe 87 von 93, Physik 35 von 36 zugeordnet; Klassenstufen von 2 Simulationen erweitert. Protokolle in `docs/lehrplaene/schleswig-holstein-gymnasium-*.md`.
   - [ ] Rheinland-Pfalz, danach Schleswig-Holstein, … (Reihenfolge im Auftrag)
 - [x] **Automatische Bildtests** (`docs/FAHRPLAN.md`, 1.6): Referenzfotos je Simulation, Vergleich bei jeder Änderung. Eigene GitHub-Aktion „Bildtests“, Anleitung in `docs/BILDTESTS.md`.
 - [ ] Freiwillig: Ideen für später (Vorhersage-Frage vor dem Start, „Für morgen, 5 Minuten“ für Lehrkräfte, Suche nach Formeln) – erst nach dem Design.

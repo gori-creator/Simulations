@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **361 von 1260** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **374 von 1378** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (139)
+## Mathematik (143)
 
 ### Baden-Württemberg · Gymnasium (8)
 
@@ -186,7 +186,16 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 
-## Physik (222)
+### Schleswig-Holstein · Gymnasium (4)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 5/6 | 5.3 | Daten und Zufall › einstufige Zufallsexperimente | Zufallsexperimente, Versuche, Ergebnisse und Ergebnismengen beschreiben. |
+| 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
+| 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
+| 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
+
+## Physik (231)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -449,4 +458,18 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | eA-3.1 | Ausgewählte Gebiete der nichtklassischen Physik (erhöhtes Anforderungsniveau) › Spezielle Relativitätstheorie | Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie. |
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
+
+### Schleswig-Holstein · Gymnasium (9)
+
+| Stufe | Nr. | Lernbereich | Kurz |
+| --- | --- | --- | --- |
+| 7–10 | 1.3 | Energie › Herausforderungen der Energieversorgung (Block II) | Arten der Energieversorgung vergleichen und bewerten, Transport und Speicherung, regenerative Energien und verantwortungsvoller Umgang mit Energie. |
+| 7–10 | 2.2 | Elektrizitätslehre und Magnetismus › Permanentmagnetismus (Block I) | Magnetische Pole, Anziehung und Abstoßung, Magnetisierbarkeit und Magnetfelder. |
+| 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
+| 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
+| 7–10 | 4.1 | Mechanik › Dichte (Block I) | Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken. |
+| 7–10 | 5.1 | Radioaktivität und ionisierende Strahlung › Ionisierende Strahlung (Block II) | α-, β- und γ-Strahlung, Nachweis, Abschirmung, Nutzung und biologische Wirkung. |
+| 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
+| 11 | W.4 | Mechanische und elektromagnetische Schwingungen und Wellen › Spektren | Farben, elektromagnetisches Spektrum, Emissions- und Absorptionsspektren, diskrete und kontinuierliche Spektren. |
+| 11 | Q.2 | Quantenphysik und Materie › Atomvorstellungen | Quantenmechanisches Atommodell, Orbitale und Energieniveaus des Wasserstoffatoms, Linienspektren, Potenzialtopf, charakteristische Röntgenstrahlung und Pauli-Prinzip. |
 

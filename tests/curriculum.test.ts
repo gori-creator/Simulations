@@ -247,6 +247,17 @@ describe('Länder-Lehrpläne', () => {
     'sachsen-anhalt-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
+    'schleswig-holstein-gymnasium-mathematik': {
+      cavalieri: 'Prinzip von Cavalieri nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-mathematik.md)',
+      'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht genannt (nur Verknüpfungen von Funktionen)',
+      kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht in den Fachanforderungen',
+      'matrix-abbildungen': 'Matrizen nur als Koeffizientenmatrix beim Gauß-Verfahren',
+      'taylor-polynome': 'nicht in den Fachanforderungen (Hochschule)',
+      'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
+    },
+    'schleswig-holstein-gymnasium-physik': {
+      hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
+    },
   };
 
   it.each(STATE_CURRICULA.map((c) => [c.id, c] as const))('%s ordnet jede fertige Simulation einem Jahrgang zu (oder begründet die Ausnahme)', (id, curriculum) => {

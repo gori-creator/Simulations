@@ -15,6 +15,8 @@ import { sachsenGymnasiumMathematik } from "./sachsen-gymnasium-mathematik";
 import { sachsenGymnasiumPhysik } from "./sachsen-gymnasium-physik";
 import { sachsenAnhaltGymnasiumMathematik } from "./sachsen-anhalt-gymnasium-mathematik";
 import { sachsenAnhaltGymnasiumPhysik } from "./sachsen-anhalt-gymnasium-physik";
+import { schleswigHolsteinGymnasiumMathematik } from "./schleswig-holstein-gymnasium-mathematik";
+import { schleswigHolsteinGymnasiumPhysik } from "./schleswig-holstein-gymnasium-physik";
 import type { CurriculumGrade, CurriculumUnit, StateCurriculum } from "./types";
 
 export type * from "./types";
@@ -32,6 +34,7 @@ export type * from "./types";
  * - Rheinland-Pfalz, Gymnasium: Mathematik und Physik (Rahmenlehrpläne Sek. I, Lehrpläne Mainzer Studienstufe, G9)
  * - Sachsen, Gymnasium: Mathematik und Physik (Lehrpläne Gymnasium, Klasse 5 bzw. 6 bis Jahrgangsstufe 12)
  * - Sachsen-Anhalt, Gymnasium: Mathematik und Physik (Fachlehrpläne, G8, Stand 01.08.2022)
+ * - Schleswig-Holstein, Gymnasium: Mathematik und Physik (Fachanforderungen Sek. I und II, G9)
  */
 const RAW_CURRICULA: StateCurriculum[] = [
   badenWuerttembergGymnasiumMathematik,
@@ -50,6 +53,8 @@ const RAW_CURRICULA: StateCurriculum[] = [
   sachsenGymnasiumPhysik,
   sachsenAnhaltGymnasiumMathematik,
   sachsenAnhaltGymnasiumPhysik,
+  schleswigHolsteinGymnasiumMathematik,
+  schleswigHolsteinGymnasiumPhysik,
 ];
 
 /** Lernbereiche (Nummer und Überschrift) einer Jahrgangsstufe als Vergleichsschlüssel. */
