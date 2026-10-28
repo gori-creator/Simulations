@@ -1,7 +1,3 @@
----
-description: Interactive simulation on the number π – roll a wheel for the circumference, rearrange sectors for the area and trap π like Archimedes.
----
-
 ## What is it about?
 
 For every circle the circumference $C$ divided by the diameter $d$ is the same number: $C : d = \pi \approx 3.14159\ldots$, so $C = \pi \cdot d = 2\pi \cdot r$ and $A = \pi r^2$. Rolling a wheel once covers a little more than three diameters. Cutting a circle into many sectors and rearranging them gives almost a rectangle with height $r$ and width $\pi r$. Archimedes trapped π between polygons: $3\frac{10}{71} < \pi < 3\frac{1}{7}$.

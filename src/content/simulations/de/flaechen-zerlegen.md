@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 6. Klasse: Flächeninhalt von Parallelogramm, Dreieck und Trapez durch Zerlegen, Verschieben und Ergänzen herleiten – mit Kästchenzählen als Kontrolle und der Scherung: gleiche Grundseite und gleiche Höhe ergeben gleichen Flächeninhalt."
----
-
 ## Worum geht es?
 
 Den Flächeninhalt eines **Rechtecks** kennst du schon: Länge mal Breite. Parallelogramm, Dreieck und Trapez lassen sich durch **Zerlegen**, **Verschieben** und **Ergänzen** auf das Rechteck zurückführen. Dabei ändert sich der Flächeninhalt nicht – es wird nichts weggenommen und nichts hinzugefügt.

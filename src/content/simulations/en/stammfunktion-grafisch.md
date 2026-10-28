@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 12 and 13: integrating graphically – from the graph of f to the graph of an antiderivative F and back, with slope field, family F + C, initial value problem, features, area pieces, your own sketch and eight everyday examples."
----
-
 ## What is it about?
 
 $F$ is an antiderivative of $f$ if $F'(x) = f(x)$: the height of the graph of $f$ is the slope of the graph of $F$. So without calculating:

@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 9. und 10. Klasse: Sinus, Kosinus und Tangens als Seitenverhältnisse im rechtwinkligen Dreieck – Gegenkathete, Ankathete und Hypotenuse wandern mit dem Bezugswinkel, ähnliche Dreiecke wachsen aus der Ecke, der Einheitskreis zeigt sin, cos und tan als Strecken. Dazu Winkel aus zwei Seiten berechnen und drei Anwendungen: Rampe mit Steigung in Prozent, Leiter an der Wand, Höhe eines Turms."
----
-
 ## Worum geht es?
 
 In einem rechtwinkligen Dreieck heißt die Seite gegenüber dem rechten Winkel **Hypotenuse**, die beiden anderen Seiten sind die **Katheten**. Von einem spitzen Winkel aus gesehen liegt eine Kathete am Winkel an (**Ankathete**), die andere liegt ihm gegenüber (**Gegenkathete**). Für den Winkel $\alpha$ gilt:

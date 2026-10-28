@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Umfang und Flächeninhalt von Rechtecken: Rechteck auf Rechenpapier aufziehen, Reihe für Reihe mit Einheitsquadraten auslegen, eine Ameise den Rand ablaufen lassen, Rechtecke mit gleichem Umfang oder gleichem Flächeninhalt vergleichen und eine L-Form zerlegen."
----
-
 ## Worum geht es?
 
 Ein Rechteck hat die **Länge** $a$ und die **Breite** $b$. Zwei Fragen klingen ähnlich, meinen aber ganz Verschiedenes:

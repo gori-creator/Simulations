@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu den Gasgesetzen – Gas im Zylinder mit Kolben im Teilchenbild, isotherm (Boyle-Mariotte), isobar (Gay-Lussac) und isochor (Amontons), Messreihen im p-V-, p-1/V-, V-T- und p-T-Diagramm, Extrapolation auf den absoluten Nullpunkt und allgemeine Gasgleichung."
----
-
 ## Worum geht es?
 
 Der Zustand einer abgeschlossenen Gasmenge wird durch drei Größen beschrieben: den **Druck** $p$, das **Volumen** $V$ und die **absolute Temperatur** $T$ (in Kelvin, $T = \vartheta + 273{,}15\,\text{K}$). Hält man eine Größe fest, hängen die beiden anderen auf einfache Weise zusammen:

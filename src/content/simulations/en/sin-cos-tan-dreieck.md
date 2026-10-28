@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grades 9 and 10: sine, cosine and tangent as ratios of sides in a right triangle – opposite, adjacent and hypotenuse move with the reference angle, similar triangles grow from the vertex, the unit circle shows sin, cos and tan as lengths. Plus finding an angle from two sides and three applications: ramp gradient in percent, ladder against a wall, height of a tower."
----
-
 ## What is it about?
 
 In a right triangle the side opposite the right angle is the **hypotenuse**; the other two sides are the **legs**. Seen from an acute angle, one leg lies next to the angle (**adjacent side**), the other lies opposite it (**opposite side**). For the angle $\alpha$:

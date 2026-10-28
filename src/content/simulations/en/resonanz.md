@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of driven oscillation with Pohl’s wheel – transient, resonance curve and phase shift as measurements with theory, phasor diagram, eddy-current brake and resonance disaster."
----
-
 ## What is it about?
 
 **Pohl’s wheel** is a torsion pendulum: a copper wheel on a spiral spring that, once pushed, oscillates at its **natural frequency** $f_0 = 0.5\,\text{Hz}$. An **eddy-current brake** damps it with decay constant $\delta$.

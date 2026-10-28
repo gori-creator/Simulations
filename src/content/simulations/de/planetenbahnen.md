@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Planetenbahnen und den drei Keplerschen Gesetzen: Startgeschwindigkeit wählen, die Bahn numerisch aus dem Gravitationsgesetz berechnen lassen und Ellipse, Flächensatz, T²/a³, Kreisbahn- und Fluchtgeschwindigkeit untersuchen."
----
-
 ## Worum geht es?
 
 Ein Planet der Masse $m$ wird nur von der **Gravitationskraft** des Sterns (Masse $M$) angezogen:

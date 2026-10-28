@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zur Elektronenbeugung an Graphit: Elektronen werden beschleunigt, an einer Graphitfolie gebeugt und erzeugen Elektron für Elektron zwei Ringe auf dem Leuchtschirm – mit de-Broglie-Wellenlänge λ = h/(m·v), Bragg-Bedingung, Messkreis und Diagramm r über U."
----
-
 ## Worum geht es?
 
 In der **Elektronenbeugungsröhre** treten aus einer Glühkathode Elektronen aus und werden mit der Spannung $U$ zur Anode hin beschleunigt. Danach fliegen sie durch eine sehr dünne **Graphitfolie** und treffen auf einen Leuchtschirm. Erwartet man Teilchen, sollte dort nur ein heller Fleck entstehen. Man sieht aber zusätzlich **zwei helle Ringe** – ein typisches Beugungsmuster, wie man es von Wellen kennt.

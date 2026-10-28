@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Doppler-Effekt – Krankenwagen mit Martinshorn fährt vorbei, Wellenfronten vorn dichter und hinten weiter, gehörte Frequenz f_B(t), bewegter Beobachter, Schallmauer und Machscher Kegel, auf Wunsch mit Ton."
----
-
 ## Worum geht es?
 
 Fährt ein Krankenwagen mit Martinshorn an dir vorbei, klingt der Ton beim Heranfahren **höher** und beim Wegfahren **tiefer** als im Stand. Das ist der **Doppler-Effekt** (nach Christian Doppler, 1842).

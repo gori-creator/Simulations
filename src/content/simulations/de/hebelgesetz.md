@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum Hebelgesetz – Massestücke an einen Hebel hängen, Drehmomente vergleichen, mit dem Kraftmesser senkrecht und schräg ziehen, einseitiger und zweiseitiger Hebel, Schubkarre, Flaschenöffner, Nussknacker, Wippe und die Goldene Regel der Mechanik."
----
-
 ## Worum geht es?
 
 Ein **Hebel** ist ein starrer Körper, der sich um eine **Drehachse** drehen kann. Eine Kraft, die am Hebel angreift, versucht ihn zu drehen. Wie stark, hängt nicht nur von der Kraft $F$ ab, sondern auch vom **Kraftarm** $a$ (auch Hebelarm genannt): dem Abstand zwischen Drehachse und **Wirkungslinie** der Kraft. Das Produkt heißt **Drehmoment**:

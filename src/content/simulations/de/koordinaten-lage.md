@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 5. Klasse: Punkte im Koordinatensystem setzen und ablesen, Strecke, Halbgerade und Gerade unterscheiden, parallel und senkrecht mit dem Geodreieck prüfen, Abstände messen und die Lage von Kreis und Gerade untersuchen – mit Punkte-Spiel."
----
-
 ## Worum geht es?
 
 Im **Koordinatensystem** legt man die Lage eines Punktes mit zwei Zahlen fest. Die waagerechte Achse heißt **x-Achse** (Rechtsachse), die senkrechte **y-Achse** (Hochachse). Sie schneiden sich im **Ursprung** $O(0 \mid 0)$.

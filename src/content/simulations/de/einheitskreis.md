@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zum Einheitskreis – Sinus, Kosinus und Tangens für beliebige Winkel, Bogenmaß und die Entstehung der Sinuskurve.
----
-
 ## Worum geht es?
 
 Der **Einheitskreis** ist der Kreis um den Ursprung mit dem Radius 1. Ein Punkt $P$ läuft auf diesem Kreis; der Winkel $\alpha$ wird von der positiven x-Achse aus **gegen den Uhrzeigersinn** gemessen.

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of radioactive decay – many nuclei decay at random, a counter tube registers counts, N–t graph with half-life (linear and logarithmic), activity A = λ · N, five real nuclides, radiocarbon dating and a single nucleus whose decay cannot be predicted."
----
-
 ## What is it about?
 
 Radioactive nuclei are unstable: at some moment they turn into a different nucleus and emit radiation. The original nucleus is called the **parent nucleus**, the new one the **daughter nucleus**. In **alpha decay** the nucleus emits a helium nucleus ($^4_2\text{He}$, two protons and two neutrons). In **beta⁻ decay** a neutron inside the nucleus turns into a proton, and an electron (plus an antineutrino) leaves the nucleus. Often **gamma radiation** follows. Mass number and charge number are conserved in the decay equation, for example

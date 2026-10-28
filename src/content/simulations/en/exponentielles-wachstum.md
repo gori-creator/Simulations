@@ -1,7 +1,3 @@
----
-description: Interactive simulation of exponential growth and decay – water lilies, compound interest and radioactive decay with doubling time and half-life.
----
-
 ## What is it about?
 
 In **exponential growth**, a quantity changes by the **same factor** $b$ in equal time steps:

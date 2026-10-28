@@ -1,7 +1,3 @@
----
-description: Interactive simulation on primes – grow factor trees, check divisibility rules, run the sieve of Eratosthenes and find gcd and lcm in a set diagram.
----
-
 ## What is it about?
 
 A **prime number** is a natural number with exactly **two divisors**: $1$ and itself. $2, 3, 5, 7, 11, 13, \ldots$ are primes. $1$ is not a prime, because it has only one divisor. $2$ is the only even prime. Numbers with more than two divisors are called **composite**.

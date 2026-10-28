@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for years 11 and 12: investigating polynomial functions in seven animated steps – derivatives, symmetry, zeros, necessary and sufficient conditions, sign charts for f′ and f″, maxima, minima, terrace and inflection points, monotonicity and curvature, with a draggable tangent and the graphs of f′ and f″ below."
----
-
 ## What is it about?
 
 In a **curve sketching** investigation you use the derivatives to find where the graph of $f$ rises or falls, where it has maxima and minima and where its curvature changes. The simulation works in seven steps:

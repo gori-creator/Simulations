@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu stehenden Wellen – hinlaufende und reflektierte Welle überlagern sich am festen und losen Ende, Eigenschwingungen von Saite und Luftsäule mit Knoten und Bäuchen, Erreger mit freier Frequenz und Resonanzkurve wie beim Melde-Versuch."
----
-
 ## Worum geht es?
 
 Läuft eine Welle auf das Ende eines Seils zu, wird sie dort **reflektiert**. Hinlaufende Welle $y_h$ und reflektierte Welle $y_r$ haben dieselbe Frequenz $f$ und Wellenlänge $\lambda = \frac{c}{f}$ und überlagern sich ($y = y_h + y_r$). Das Ergebnis ist eine **stehende Welle**: Es gibt Stellen, die sich nie bewegen (**Knoten K**), und dazwischen Stellen, die besonders stark schwingen (**Bäuche B**). Nichts läuft mehr – alle Punkte zwischen zwei Knoten schwingen gleichphasig auf und ab.

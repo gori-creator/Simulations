@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum radioaktiven Zerfall – viele Kerne zerfallen zufällig, Zählrohr mit Impulsen, N-t-Diagramm mit Halbwertszeit (linear und logarithmisch), Aktivität A = λ · N, fünf echte Nuklide, C-14-Altersbestimmung und ein einzelner Kern, dessen Zerfall sich nicht vorhersagen lässt."
----
-
 ## Worum geht es?
 
 Radioaktive Atomkerne sind instabil: Irgendwann wandeln sie sich unter Aussendung von Strahlung in einen anderen Kern um. Der ursprüngliche Kern heißt **Mutterkern**, der neue **Tochterkern**. Beim **α-Zerfall** sendet der Kern einen Heliumkern ($^4_2\text{He}$, zwei Protonen und zwei Neutronen) aus, beim **β⁻-Zerfall** wandelt sich im Kern ein Neutron in ein Proton um, und ein Elektron (dazu ein Antineutrino) verlässt den Kern. Oft folgt **γ-Strahlung**. In der Zerfallsgleichung bleiben Massenzahl und Ladungszahl erhalten, zum Beispiel

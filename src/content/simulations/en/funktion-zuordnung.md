@@ -1,7 +1,3 @@
----
-description: "Interactive simulation on the concept of a function: relations as arrow diagram, table of values and graph in sync, checking uniqueness, reversing relations and the vertical line test on a circle, a sideways parabola, a step function and more."
----
-
 ## What is it about?
 
 A **relation** assigns elements of a set $A$ to elements of a set $B$, e.g. every number its square or every child its birth month. A relation is called a **function** if it is **unique**:

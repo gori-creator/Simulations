@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary: rational functions built from linear factors – drag a numerator bead into a pole ring and watch the factor cancel and the pole turn into a hole; poles with and without sign change, horizontal and oblique asymptotes with step-by-step polynomial division, a table of values at the pole, a sign chart and a view from afar."
----
-
 ## What is it about?
 
 A **rational function** is a quotient of two polynomials. Here it is given in linear factors, for example

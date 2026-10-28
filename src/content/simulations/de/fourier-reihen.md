@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für das Studium: Fourier-Reihen von Rechteck, Sägezahn, Dreieck, Trapez, Pulsfolge und gleichgerichtetem Sinus – Partialsumme mit Gibbs-Phänomen, rotierende Zeiger (Epizykel), gestapelte Teilschwingungen, Amplituden- und Phasenspektrum, Energieanteil nach Parseval und Klang."
----
-
 ## Worum geht es?
 
 Jede (hinreichend gutartige) $2\pi$-periodische Funktion lässt sich als Summe von Sinus- und Kosinusschwingungen schreiben – als **Fourier-Reihe**:

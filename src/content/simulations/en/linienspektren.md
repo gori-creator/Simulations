@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of line spectra: an electron jumps between the energy levels of an atom and emits or absorbs a photon with ΔE = h · f – with energy level diagram, prism and spectrum for hydrogen, helium, sodium and mercury."
----
-
 ## What is it about?
 
 A gas of single atoms does not glow in all colours but only in very specific ones: behind a prism you see separate bright lines, a **line spectrum**. Every element has its own pattern, like a fingerprint.

@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zu exponentiellem Wachstum und Zerfall – Seerosen, Zinseszins und radioaktiver Zerfall mit Verdopplungs- und Halbwertszeit.
----
-
 ## Worum geht es?
 
 Beim **exponentiellen Wachstum** ändert sich eine Größe in gleichen Zeitabständen immer um **denselben Faktor** $b$:

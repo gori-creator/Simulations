@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum einfachen Stromkreis – Batterie, Schalter und Glühlampe, Motor oder Klingel als Aufbau und als Schaltplan, Elektronen und technische Stromrichtung, Kurzschluss, Sicherung und Leitertest mit Alltagsgegenständen."
----
-
 ## Worum geht es?
 
 Eine Glühlampe leuchtet nur, wenn sie in einem **geschlossenen Stromkreis** liegt: Von einem Pol der Batterie muss ein durchgehender Weg aus **Leitern** durch die Lampe zum anderen Pol führen. Ein **Schalter** öffnet oder schließt diesen Weg. Ist er offen, ist der Stromkreis unterbrochen (**offener Stromkreis**) und es fließt kein Strom.

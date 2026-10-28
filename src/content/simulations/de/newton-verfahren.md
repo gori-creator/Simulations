@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 11. Klasse: das Newton-Verfahren Schritt für Schritt – Lot zum Graphen, Tangente, Schnittpunkt mit der x-Achse, Steigungsdreieck als Herleitung, Lupe für winzige Schritte, Tabelle mit fett gedruckten richtigen Stellen, Newton = Heron für √2 und die Fälle, in denen das Verfahren scheitert."
----
-
 ## Worum geht es?
 
 Viele Gleichungen lassen sich nicht nach $x$ auflösen, zum Beispiel $x^3 - 2x - 5 = 0$ oder $\cos x = x$. Das **Newton-Verfahren** bestimmt eine Nullstelle von $f$ näherungsweise – und zwar erstaunlich schnell:

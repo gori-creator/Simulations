@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the electric field: drag and set point charges, see field lines, equipotential lines and field strength live, a test charge with force arrow and vector addition, plus the parallel-plate capacitor with E = U / d."
----
-
 ## What is it about?
 
 A charge creates an **electric field**: any other charge feels a force there. The **field strength** is the force per test charge, $\vec E = \vec F / q_0$, measured in N/C = V/m. For a **point charge**

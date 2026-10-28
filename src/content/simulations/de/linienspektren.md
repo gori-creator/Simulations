@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Linienspektren: Ein Elektron springt zwischen den Energieniveaus eines Atoms und sendet dabei ein Photon mit ΔE = h · f aus oder nimmt eines auf – mit Termschema, Prisma und Spektrum für Wasserstoff, Helium, Natrium und Quecksilber."
----
-
 ## Worum geht es?
 
 Ein Gas aus einzelnen Atomen leuchtet nicht in allen Farben, sondern nur in ganz bestimmten. Hinter einem Prisma oder Gitter sieht man deshalb kein Farbband, sondern einzelne helle Linien: ein **Linienspektrum**. Jedes Element hat sein eigenes Linienmuster, eine Art Fingerabdruck.

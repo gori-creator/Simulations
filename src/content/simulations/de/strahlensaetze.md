@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 9. Klasse: Strahlensätze an V- und X-Figur entdecken – die Parallele gleitet von AB nach A′B′, farbige Maßstäbe zeigen den gemeinsamen Faktor k, ohne Parallelen zerfallen die Verhältnisse. Dazu unbekannte Strecken Schritt für Schritt berechnen und zwei Anwendungen: Baumhöhe über den Schatten und die Breite eines Teichs."
----
-
 ## Worum geht es?
 
 Zwei Strahlen mit gemeinsamem Anfangspunkt $Z$ werden von zwei **parallelen** Geraden geschnitten: auf dem ersten Strahl in $A$ und $A'$, auf dem zweiten in $B$ und $B'$. Dann gelten die **Strahlensätze**.

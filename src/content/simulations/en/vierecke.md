@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the house of quadrilaterals: drag the corners on squared paper, see parallel and equal sides, right angles, diagonals and lines of symmetry live, classify and build quadrilaterals."
----
-
 ## What is it about?
 
 A **quadrilateral** $ABCD$ has four corners, the sides $a = [AB]$, $b = [BC]$, $c = [CD]$, $d = [DA]$, the interior angles $\alpha, \beta, \gamma, \delta$ and the two **diagonals** $e = [AC]$ and $f = [BD]$. The corners are labelled anticlockwise. In every quadrilateral:

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of elastic, partially elastic and perfectly inelastic collisions on an air track – with momentum and energy balance, centre of mass and velocity–time and position–time graphs."
----
-
 ## What is it about?
 
 Two gliders with masses $m_1$ and $m_2$ glide almost without friction on an air track and collide. The **momentum** of a body is

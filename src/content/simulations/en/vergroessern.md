@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 9: how do length, area and volume grow when scaling with factor k? A segment, a plane figure and a rotatable solid are laid out copy by copy – plus a growth chart, working backwards and applications from pizza to model cars."
----
-
 ## What is it about?
 
 Scaling a figure with the **scale factor** $k$ produces a **similar** figure: all angles stay the same, and every length becomes $k$ times as long. How do areas and volumes change?

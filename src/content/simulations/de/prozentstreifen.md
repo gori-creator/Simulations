@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 6. und 7. Klasse: Grundwert, Prozentsatz und Prozentwert am Prozentstreifen – mit Dreisatz Schritt für Schritt, Hunderterfeld und Kreis, Rabatt, Preiserhöhung, Mehrwertsteuer, Zinsen, Umfragen und dem Stolperstein beim Zurückrechnen."
----
-
 ## Worum geht es?
 
 Prozent heißt **Hundertstel**: $1\,\% = \frac{1}{100}$, also $25\,\% = \frac{25}{100} = \frac{1}{4} = 0{,}25$. In jeder Prozentaufgabe kommen drei Größen vor:

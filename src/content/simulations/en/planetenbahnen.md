@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of planetary orbits and Kepler’s three laws: choose a launch velocity, let the orbit be computed numerically from the law of gravitation and explore the ellipse, the law of areas, T²/a³, circular and escape speed."
----
-
 ## What is it about?
 
 The planet is attracted only by the star’s gravitational force $F_G = G \frac{M m}{r^2}$. The simulation does not know about ellipses: it computes acceleration, velocity and position in tiny time steps. Still, exactly Kepler’s orbits appear.

@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 13: the integral as total change – reconstructing distance from velocity and volume from an inflow rate, with running time, rectangle sums (left, right, midpoint), stacked strips, the error when doubling, driving forwards and back, and a rate you drag yourself."
----
-
 ## What is it about?
 
 If you know the rate of change $r(t)$, the total change is the area under its graph:

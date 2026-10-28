@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for upper secondary school: optimisation problems with calculus – a box folded from a sheet of card, a can with the smallest surface, a rectangle under an exponential, the largest cylinder in a cone and a lifeguard's fastest route, with linked graphs, derivative, boundary values and a step-by-step solution."
----
-
 ## What is it about?
 
 The picture changes with the variable, the point on the graph of the **objective function** follows, and the strip below shows the **derivative** (green: increasing, red: decreasing). The method: objective function → constraint (one variable left) → domain → $Z' = 0$ → sign change of $Z'$ or sign of $Z''$ → compare the boundary values → answer.

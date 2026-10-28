@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zum ohmschen Gesetz – Spannung am Netzgerät einstellen, Stromstärke und Spannung an Zeigerinstrumenten ablesen, Kennlinien von Widerstand, Glühlampe und Konstantandraht aufnehmen, R = U / I und R = ρ · l / A."
----
-
 ## Worum geht es?
 
 Legt man an ein Bauteil eine **Spannung** $U$ an, fließt ein elektrischer Strom der **Stärke** $I$. Gemessen wird so:

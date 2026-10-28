@@ -1,7 +1,3 @@
----
-description: Interactive simulation of the empirical law of large numbers – toss a coin, a die or a drawing pin thousands of times and watch the relative frequency.
----
-
 ## What is it about?
 
 If you throw a die $n$ times and get a six $k$ times, then

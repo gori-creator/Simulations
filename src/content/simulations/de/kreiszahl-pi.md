@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zur Kreiszahl π – Rad abrollen für den Umfang, Kreissektoren zum Rechteck umlegen für die Fläche und π eingrenzen wie Archimedes.
----
-
 ## Worum geht es?
 
 Bei **jedem** Kreis ist der Umfang ein festes Vielfaches des Durchmessers. Dieses Verhältnis heißt **Kreiszahl** $\pi$:

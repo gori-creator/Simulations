@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation: Drei Punkte bestimmen genau eine Parabel y = ax² + bx + c. Einsetzen ergibt ein lineares Gleichungssystem, das Schritt für Schritt gelöst wird – dazu Scheitel- und Nullstellenform, Sonderfälle sowie Wurfbahn und Brückenbogen."
----
-
 ## Worum geht es?
 
 Durch zwei Punkte geht genau eine Gerade. Für eine **Parabel** $y = ax^2 + bx + c$ braucht man **drei Punkte**, denn es sind drei Zahlen $a$, $b$, $c$ zu bestimmen. Setzt man jeden Punkt $P_i(x_i \mid y_i)$ in den Ansatz ein, entsteht für jeden Punkt eine Gleichung – zusammen ein **lineares Gleichungssystem** mit drei Unbekannten:

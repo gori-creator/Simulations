@@ -1,7 +1,3 @@
----
-description: "Interactive simulation on logarithms as the inverse of exponentiation: graphs of bˣ and log_b x with an animated reflection in y = x, the laws of logarithms as arrows on a logarithmic scale, and solving exponential equations with the change of base."
----
-
 ## What is it about?
 
 Exponentiation asks: what is $2^3$? Answer: $8$. The **logarithm** asks the reverse question: **“2 to the power of what gives 8?”** Answer: $3$. We write $\log_2 8 = 3$.

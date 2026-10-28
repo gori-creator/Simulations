@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 11: shift, stretch and reflect the graph of a basic function with g(x) = a · f(b(x − c)) + d – step by step on a timeline, with draggable anchor and shape points, moving key points, a table of points and the properties of g for parabola, square root, absolute value, hyperbola, sine and exponential function."
----
-
 ## What is it about?
 
 From the graph of a **basic function** $f$ (for example $x^2$, $\sqrt{x}$, $\frac{1}{x}$, $\sin x$ or $2^x$) we get the graph of

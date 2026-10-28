@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 9: square roots as the side of a square on squared paper, Heron’s method as a rectangle that becomes a square step by step, nested intervals with a magnifier and checks by squaring – and why √2 is not a fraction."
----
-
 ## What is it about?
 
 The **square root** $\sqrt{a}$ (for $a \geq 0$) is the non-negative number whose square is $a$: $\left(\sqrt{a}\right)^2 = a$ and $\sqrt{a} \geq 0$. The number $a$ under the root sign is called the **radicand**. Geometrically, $\sqrt{a}$ is the **side length of a square with area $a$**.

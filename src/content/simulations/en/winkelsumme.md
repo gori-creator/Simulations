@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 7: tear off the corners of a triangle and join them into a straight angle, prove the angle sum with a parallel line and alternate angles, split polygons into n − 2 triangles and discover that the exterior angles add up to 360°."
----
-
 ## What is it about?
 
 In **every triangle** the three interior angles add up to $180^\circ$:

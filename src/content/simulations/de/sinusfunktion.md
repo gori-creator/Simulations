@@ -1,7 +1,3 @@
----
-description: Interaktive Simulation zur allgemeinen Sinusfunktion f(x) = a·sin(b(x − c)) + d – Amplitude, Periode, Verschiebungen und Modellieren.
----
-
 ## Worum geht es?
 
 Mit der **allgemeinen Sinusfunktion**

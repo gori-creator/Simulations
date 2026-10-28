@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation für die 7. Klasse: Ecken eines Dreiecks abreißen und zu einem gestreckten Winkel zusammenlegen, die Innenwinkelsumme mit Parallele und Wechselwinkeln begründen, Vielecke in n − 2 Dreiecke zerlegen und beim Umrunden die Außenwinkelsumme 360° entdecken."
----
-
 ## Worum geht es?
 
 In **jedem Dreieck** ergeben die drei Innenwinkel zusammen $180^\circ$:

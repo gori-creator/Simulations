@@ -1,7 +1,3 @@
----
-description: "Interaktive Simulation zu Hyperbeln f(x) = a/(x − b) + c: Asymptoten, Definitions- und Wertemenge, indirekte Proportionalität mit Rechtecken gleichen Flächeninhalts und die Annäherung an die Asymptoten."
----
-
 ## Worum geht es?
 
 Zwei Größen heißen **indirekt proportional**, wenn ihr Produkt immer gleich ist: Verdoppelt man die eine, halbiert sich die andere. Für eine feste Zahl $a$ gilt dann

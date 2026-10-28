@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for year 9: discover the intercept theorems in the V and X shape – the parallel slides from AB to A′B′, coloured scale bars show the common factor k, and without parallels the ratios fall apart. Plus unknown lengths solved step by step and two applications: a tree’s height from its shadow and the width of a pond."
----
-
 ## What is it about?
 
 Two rays from a common starting point $Z$ are cut by two **parallel** lines: the first ray at $A$ and $A'$, the second at $B$ and $B'$. Then the **intercept theorems** hold.

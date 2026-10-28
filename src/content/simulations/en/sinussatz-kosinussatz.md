@@ -1,7 +1,3 @@
----
-description: "Interactive simulation for grade 10: the law of sines and the law of cosines in a general triangle – circumcircle and proof via the altitude, squares on the sides with the correction 2ab · cos γ, a solver for SSS, SAS, ASA and SSA (with two solutions) and two surveying tasks on a map."
----
-
 ## What is it about?
 
 Sine, cosine and tangent help in a **right** triangle. For **any** triangle there are two laws. A side and the angle **opposite** it always belong together: $a$ and $\alpha$, $b$ and $\beta$, $c$ and $\gamma$ – in the simulation they share a colour.

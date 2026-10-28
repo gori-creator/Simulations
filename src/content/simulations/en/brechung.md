@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of refraction and total internal reflection – turn a laser on the optical disc, Snell’s law and Fresnel shares, Snell diagrams, fibres, prisms and gems, measure an unknown refractive index, plate, prism with dispersion and apparent depth."
----
-
 ## What is it about?
 
 When light hits the boundary between two transparent materials at an angle, part of it is **reflected** and part of it is **refracted**, i.e. bent. All angles are measured from the **normal**, the line perpendicular to the boundary. For reflection $\alpha' = \alpha$; for refraction **Snell’s law** holds:

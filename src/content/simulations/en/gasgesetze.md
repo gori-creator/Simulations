@@ -1,7 +1,3 @@
----
-description: "Interactive simulation of the gas laws – gas in a cylinder with a piston in the particle model, isothermal (Boyle–Mariotte), isobaric (Gay-Lussac) and isochoric (Amontons) changes, data series in p–V, p–1/V, V–T and p–T graphs, extrapolation to absolute zero and the ideal gas law."
----
-
 ## What is it about?
 
 The state of a fixed amount of gas is described by three quantities: its **pressure** $p$, its **volume** $V$ and its **absolute temperature** $T$ (in kelvin, $T = \vartheta + 273.15\,\text{K}$). If one quantity is kept fixed, the other two are related in a simple way:
