@@ -33,12 +33,13 @@ const testCurriculum: StateCurriculum = {
 };
 
 describe('Einstellung Bundesland', () => {
-  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Hessen, Niedersachsen, Nordrhein-Westfalen, Sachsen, Sachsen-Anhalt)', () => {
+  it('leitet die Länderliste aus den Lehrplänen ab (Bayern, Hessen, Niedersachsen, Nordrhein-Westfalen, Rheinland-Pfalz, Sachsen, Sachsen-Anhalt)', () => {
     const ids = regionIds();
     expect(ids).toContain('bayern');
     expect(ids).toContain('hessen');
     expect(ids).toContain('niedersachsen');
     expect(ids).toContain('nordrhein-westfalen');
+    expect(ids).toContain('rheinland-pfalz');
     expect(ids).toContain('sachsen');
     expect(ids).toContain('sachsen-anhalt');
     expect(new Set(ids).size).toBe(ids.length);
@@ -89,7 +90,7 @@ describe('Einstellung Bundesland', () => {
   it('nimmt einen neuen Lehrplan automatisch auf', () => {
     const curricula = [...STATE_CURRICULA, testCurriculum];
     expect(regionIds(curricula)).toContain('musterland');
-    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen', 'musterland', 'niedersachsen', 'nordrhein-westfalen', 'sachsen', 'sachsen-anhalt']);
+    expect(regionsOf('de', curricula).map((r) => r.id)).toEqual(['baden-wuerttemberg', 'bayern', 'hessen', 'musterland', 'niedersachsen', 'nordrhein-westfalen', 'rheinland-pfalz', 'sachsen', 'sachsen-anhalt']);
     expect(curriculumFor('physik', 'musterland', curricula)?.id).toBe(testCurriculum.id);
     expect(regionGrades('reflexion', 'musterland', curricula)).toEqual([7]);
     expect(regionOrders('ohmsches-gesetz', curricula)['musterland']).toBe(8000);

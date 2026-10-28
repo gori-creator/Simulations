@@ -9,6 +9,8 @@ import { niedersachsenGymnasiumMathematik } from "./niedersachsen-gymnasium-math
 import { niedersachsenGymnasiumPhysik } from "./niedersachsen-gymnasium-physik";
 import { nordrheinWestfalenGymnasiumMathematik } from "./nordrhein-westfalen-gymnasium-mathematik";
 import { nordrheinWestfalenGymnasiumPhysik } from "./nordrhein-westfalen-gymnasium-physik";
+import { rheinlandPfalzGymnasiumMathematik } from "./rheinland-pfalz-gymnasium-mathematik";
+import { rheinlandPfalzGymnasiumPhysik } from "./rheinland-pfalz-gymnasium-physik";
 import { sachsenGymnasiumMathematik } from "./sachsen-gymnasium-mathematik";
 import { sachsenGymnasiumPhysik } from "./sachsen-gymnasium-physik";
 import { sachsenAnhaltGymnasiumMathematik } from "./sachsen-anhalt-gymnasium-mathematik";
@@ -27,6 +29,7 @@ export type * from "./types";
  * - Hessen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Niedersachsen, Gymnasium: Mathematik und Physik (Kerncurricula Sek. I und gymnasiale Oberstufe)
  * - Nordrhein-Westfalen, Gymnasium: Mathematik und Physik (Kernlehrpläne Sek. I, G9, und Sek. II von 2026)
+ * - Rheinland-Pfalz, Gymnasium: Mathematik und Physik (Rahmenlehrpläne Sek. I, Lehrpläne Mainzer Studienstufe, G9)
  * - Sachsen, Gymnasium: Mathematik und Physik (Lehrpläne Gymnasium, Klasse 5 bzw. 6 bis Jahrgangsstufe 12)
  * - Sachsen-Anhalt, Gymnasium: Mathematik und Physik (Fachlehrpläne, G8, Stand 01.08.2022)
  */
@@ -41,6 +44,8 @@ const RAW_CURRICULA: StateCurriculum[] = [
   niedersachsenGymnasiumPhysik,
   nordrheinWestfalenGymnasiumMathematik,
   nordrheinWestfalenGymnasiumPhysik,
+  rheinlandPfalzGymnasiumMathematik,
+  rheinlandPfalzGymnasiumPhysik,
   sachsenGymnasiumMathematik,
   sachsenGymnasiumPhysik,
   sachsenAnhaltGymnasiumMathematik,

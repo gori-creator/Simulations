@@ -226,6 +226,10 @@ describe('Länder-Lehrpläne', () => {
     'nordrhein-westfalen-gymnasium-physik': {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
+    'rheinland-pfalz-gymnasium-mathematik': {
+      'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/rheinland-pfalz-gymnasium-mathematik.md)',
+      'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
+    },
     'sachsen-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
