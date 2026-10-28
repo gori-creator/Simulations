@@ -46,7 +46,7 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
   const stage = q<HTMLElement>('[data-energy-stage]');
   const play = q<HTMLButtonElement>('[data-energy-play]');
   const reset = q<HTMLButtonElement>('[data-energy-reset]');
-  const custom = q<HTMLDetailsElement>('[data-energy-custom]');
+  const custom = q<HTMLElement>('[data-energy-custom]');
   const hint = q<HTMLElement>('[data-energy-hint]');
   const link = q<HTMLAnchorElement>('[data-energy-link]');
   const slow = q<HTMLInputElement>('[data-energy-slow]');

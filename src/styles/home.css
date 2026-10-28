@@ -710,10 +710,11 @@
   font-size: 12px;
 }
 
-.home-experiment__custom summary {
-  width: fit-content;
-  padding: 3px;
-  cursor: pointer;
+.home-experiment__custom-title {
+  margin: 0;
+  color: var(--sc-on-dark);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .home-experiment__points {
@@ -755,6 +756,257 @@
 
 .home-experiment__link:hover {
   color: #c8d9ff;
+}
+
+/* ---------- Glasfenster im Mac-Stil ----------
+   Das Achterbahn-Fenster liegt als mattes Glas über weichen Farbflächen
+   (backdrop-filter), mit Fensterleiste und einem schimmernden Regenbogenrand.
+   Der Rand dreht sich langsam; Pause-Knopf und reduzierte Bewegung halten ihn an. */
+
+@property --sc-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.home-experiment {
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #21407c 0%, transparent 60%),
+    var(--sc-navy);
+}
+
+.home-experiment__aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-experiment__aurora span {
+  position: absolute;
+  width: 42vw;
+  max-width: 620px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: sc-drift 22s ease-in-out infinite alternate;
+}
+
+.home-experiment__aurora span:nth-child(1) {
+  top: 18%;
+  left: 2%;
+  background: #2f5fc4;
+}
+
+.home-experiment__aurora span:nth-child(2) {
+  top: 40%;
+  right: 0;
+  background: #2a6fb0;
+  animation-delay: -8s;
+}
+
+.home-experiment__aurora span:nth-child(3) {
+  bottom: -10%;
+  left: 35%;
+  background: #3a4fa8;
+  opacity: 0.3;
+  animation-delay: -15s;
+}
+
+@keyframes sc-drift {
+  to {
+    transform: translate(6%, -8%) scale(1.12);
+  }
+}
+
+.home-experiment__heading,
+.home-experiment__foot {
+  position: relative;
+  z-index: 2;
+}
+
+.home-experiment__window {
+  position: relative;
+  z-index: 3;
+}
+
+/* Weiches Leuchten in Regenbogenfarben hinter dem Fenster */
+.home-experiment__window::before {
+  content: '';
+  position: absolute;
+  inset: 4% 3%;
+  z-index: -1;
+  border-radius: 40px;
+  background: conic-gradient(from var(--sc-angle), #ff6b9d, #b07cff, #5b8cff, #39d5ff, #5cf2b0, #ffd56b, #ff6b9d);
+  filter: blur(46px);
+  opacity: 0.16;
+  animation: sc-spin 14s linear infinite;
+}
+
+.home-experiment__body {
+  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 20px;
+  /* Heller Glanz oben, darunter ein dunkler Unterton: Schrift bleibt auf allen Farbflächen lesbar */
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.14), rgb(255 255 255 / 0.03)),
+    rgb(10 24 64 / 0.42);
+  box-shadow:
+    0 40px 90px -40px rgb(2 8 28 / 0.9),
+    inset 0 1px 0 rgb(255 255 255 / 0.28);
+  -webkit-backdrop-filter: blur(30px) saturate(170%);
+  backdrop-filter: blur(30px) saturate(170%);
+}
+
+/* Schimmernder Rand: Verlauf nur im 1,5-px-Rahmen (Maske) */
+.home-experiment__body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--sc-angle), #ff6b9d, #b07cff, #5b8cff, #39d5ff, #5cf2b0, #ffd56b, #ff6b9d);
+  opacity: 0.85;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  animation: sc-spin 14s linear infinite;
+}
+
+@keyframes sc-spin {
+  to {
+    --sc-angle: 360deg;
+  }
+}
+
+.motion-paused .home-experiment__aurora span,
+.motion-paused .home-experiment__window::before,
+.motion-paused .home-experiment__body::before {
+  animation-play-state: paused;
+}
+
+.home-experiment__titlebar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.home-experiment__lights {
+  display: flex;
+  gap: 8px;
+}
+
+.home-experiment__lights i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.25);
+}
+
+.home-experiment__lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.home-experiment__lights i:nth-child(3) {
+  background: #28c840;
+}
+
+.home-experiment__wtitle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgb(255 255 255 / 0.72);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.home-experiment__top,
+.home-experiment__controls,
+.home-experiment__custom {
+  background: transparent;
+}
+
+.home-experiment__controls {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  border-bottom: 0;
+}
+
+.home-experiment__custom {
+  border-top: 0;
+}
+
+.home-experiment__tracks {
+  background: rgb(4 14 40 / 0.35);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.25);
+}
+
+.home-experiment__actions button {
+  border-color: rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.06);
+}
+
+/* Die Zeichenfläche sitzt als Inhalt im Fenster, mit eigenem Rand */
+.home-experiment__stage {
+  width: auto;
+  margin: 0 14px 14px;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.18),
+    0 10px 30px -18px rgb(0 0 0 / 0.7);
+}
+
+@media (max-width: 760px) {
+  .home-experiment__aurora span {
+    width: 80vw;
+    filter: blur(70px);
+  }
+
+  .home-experiment__body {
+    border-radius: 16px;
+  }
+
+  .home-experiment__titlebar {
+    height: 34px;
+    padding: 0 12px;
+  }
+
+  .home-experiment__wtitle {
+    display: none;
+  }
+
+  .home-experiment__stage {
+    margin: 0 10px 10px;
+    border-radius: 10px;
+  }
+}
+
+/* Ohne backdrop-filter (ältere Browser): dunkleres Glas, damit Text lesbar bleibt */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .home-experiment__body {
+    background: rgb(32 62 114 / 0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-experiment__aurora span,
+  .home-experiment__window::before,
+  .home-experiment__body::before {
+    animation: none;
+  }
 }
 
 /* ---------- Katalog ---------- */
