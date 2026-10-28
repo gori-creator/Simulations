@@ -1,16 +1,19 @@
 # Bilder-Wunschliste
 
-## Runde 3 · Stand 28.10.2026: noch zu erzeugen (17 Bilder)
+## Runde 3 · Stand 28.10.2026: noch zu erzeugen (20 Bilder)
 
-Wunsch des Inhabers: weniger gezeichnete Elemente, mehr echte Bilder. Grundlage: alle 129 Bühnen (Bildtest-Referenzbilder, hell) durchgesehen. Aufgenommen ist alles, was gezeichnet ist, als Gegenstand erkennbar sein soll und nicht von Reglern verformt wird. Es gelten weiter die Regeln unten unter „So geht's“ (transparent, kein Text, keine Personen, Dateiname genau so, Upload nach `incoming/`; Zweig dafür: `claude/exciting-gauss-noh1h9`). Jede Stelle behält ihre gezeichnete Ersatzgrafik, solange das Bild fehlt.
+Wunsch des Inhabers: weniger gezeichnete Elemente, mehr echte Bilder. Grundlage: alle 129 Bühnen (Bildtest-Referenzbilder, hell) durchgesehen. Aufgenommen ist alles, was gezeichnet ist, als Gegenstand erkennbar sein soll und nicht von Reglern verformt wird. Es gelten weiter die Regeln unten unter „So geht's“ (transparent, kein Text, Personen nur nach den Regeln unten, Dateiname genau so, Upload nach `incoming/`; Zweig dafür: `claude/exciting-gauss-noh1h9`). Jede Stelle behält ihre gezeichnete Ersatzgrafik, solange das Bild fehlt.
 
-**Bewusst nicht auf der Liste:** Personen (gezeichnetes Kind, Rettungsschwimmer – Regel in `docs/BILDER.md`), alles Abstrakte (Graphen, Vektoren, 3D-Körper der Geometrie, Baumdiagramme), Bauteile, die sich verformen (Federn, Wellen, Strahlen).
+**Personen** sind seit 28.10.2026 erlaubt (Regeln in `docs/BILDER.md`: erfunden, von der Seite oder von hinten, keine Gesichts-Nahaufnahme, vielfältig). Ausgenommen bleiben Personen, die nur wenige Pixel groß sind (Rettungsschwimmer und Schwimmer in Extremwertprobleme, Personen-Piktogramme in Bedingte Wahrscheinlichkeit), die Hand der Linke-Hand-Regel (Lorentzkraft, Fingerrichtungen müssen exakt stimmen) und das schematische Auge (Reflexion).
 
-### R1 · Sonnenblume statt gezeichnetem Kind
-- **Simulation:** Zehnerpotenzen (`mathematik/zehnerpotenzen`, Stufe „Kind“ in `model.ts`, Größe wird auf 1,5 m angepasst, Text „Sonnenblume ≈ 1,5 m“)
-- **Datei:** `sonnenblume.png` → `src/assets/sims/zehnerpotenzen/sonnenblume.webp`
-- **Hintergrund:** transparent · **Format:** 1 : 3 hoch, mind. 700 × 2100 px · **Blick:** exakte Seitenansicht
-> A single tall sunflower plant growing straight up, the whole plant from the ground to the flower head fully visible, a few large green leaves along the straight stem, one open yellow flower head facing the viewer slightly to the right, exact side view with no perspective, the plant fills almost the full image height, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no soil, no pot, no shadow, photorealistic, clean educational style, no text, no numbers
+**Bewusst nicht auf der Liste:** alles Abstrakte (Graphen, Vektoren, 3D-Körper der Geometrie, Baumdiagramme), Bauteile, die sich verformen (Federn, Wellen, Strahlen).
+
+### R1 · Kind, stehend (ersetzt die gezeichnete Figur)
+- **Simulation:** Zehnerpotenzen (`mathematik/zehnerpotenzen`, Stufe „Kind“, 1,4 m, in `model.ts`)
+- **Datei:** `kind.png` → `src/assets/sims/zehnerpotenzen/kind.webp`
+- **Hintergrund:** transparent · **Format:** 1 : 3 hoch, mind. 700 × 2100 px · **Blick:** exakte Seitenansicht, Blick nach rechts
+> A fictional ten-year-old child standing upright in a relaxed pose, seen exactly from the side in profile looking to the right, full body from head to feet fully visible, casual everyday clothes (plain jeans, plain sweatshirt, sneakers) without any print or logo, arms hanging naturally, exact orthographic side view with no perspective, the child fills almost the full image height, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+- **Hinweis:** Profil, kein frontales Gesicht. Füße müssen ganz zu sehen sein (die Simulation stellt das Kind auf den Boden und misst die Höhe vom Scheitel bis zur Sohle).
 
 ### R2–R4 · Kleidung in neutralem Hellgrau (wird in der Simulation eingefärbt)
 - **Simulation:** Zählprinzip, Situation „Outfits“ (`mathematik/zaehlprinzip`, Symbole `pants`, `shirt`, `hat` im Baum und in der Ergebnisliste; Farben aus `model.ts`)
@@ -87,6 +90,23 @@ Wunsch des Inhabers: weniger gezeichnete Elemente, mehr echte Bilder. Grundlage:
 >
 > R17: A pair of wooden gymnastics rings hanging on straps, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
 
+
+### P1–P2 · Zwei Kinder auf der Wippe, sitzend
+- **Simulation:** Hebelgesetz, Alltag „Wippe“ (`physik/hebelgesetz/index.ts:2241` `drawKid`; das Brett und das Gestell sind schon Bilder, die Kinder sitzen darauf und kippen mit dem Brett)
+- **Dateien:** `kind-wippe-1.png` (jüngeres, kleineres Kind) und `kind-wippe-2.png` (älteres Kind) → `src/assets/sims/hebelgesetz/`
+- **Hintergrund:** transparent · **Format:** 3 : 4 hoch, mind. 900 × 1200 px · **Blick:** exakte Seitenansicht, **beide Kinder schauen nach rechts** (die Simulation spiegelt das rechte Kind)
+- **Wichtig:** beide im selben Chat direkt nacheinander, gleiches Licht und gleicher Maßstab; verschiedene Kinder (z. B. Junge und Mädchen, verschiedene Hautfarbe).
+> A fictional child of about six years sitting astride on an invisible plank, seen exactly from the side in profile looking to the right, both hands holding an invisible handle in front at chest height, legs hanging down on both sides, casual plain everyday clothes without print or logo, sneakers, exact orthographic side view, the bottom of the seated child is a straight horizontal line where the plank would be, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no seesaw, no plank, no handle, no shadow, photorealistic, clean educational style, no text
+>
+> P2: the same prompt with a fictional child of about ten years
+- **Hinweis:** Kein Brett und kein Griff im Bild (zeichnet bzw. zeigt die Simulation). Die Sitzfläche muss unten waagerecht sein.
+
+### P3 · Beobachter von oben
+- **Simulation:** Doppler-Effekt (`physik/doppler-effekt/index.ts:1173` `drawPerson`; die Szene ist eine Draufsicht auf Wiese und Straße)
+- **Datei:** `beobachter.png` → `src/assets/sims/doppler-effekt/beobachter.webp`
+- **Hintergrund:** transparent · **Format:** 1 : 1, mind. 800 × 800 px · **Blick:** genau von oben
+> A fictional adult person standing still, seen from directly above (top-down bird's-eye view), only the top of the head with short hair, the shoulders and a plain dark green jacket visible, arms at the sides, no face visible, exact top-down orthographic view, soft light from the upper left, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+
 ---
 
 
@@ -121,6 +141,8 @@ Grundlage: alle 129 Simulationen im Code (`src/simulations/<fach>/<id>/index.ts`
 5. **Wenn der Generator nur quadratische Bilder liefert** (z. B. 2048 × 2048 – so waren die bisherigen Lieferungen): kein Problem. Freigestellte Gegenstände werden beim Einbau ausgeschnitten. Wichtig ist nur, dass der Gegenstand **vollständig** im Bild ist und **die längere Bildseite fast ganz ausfüllt** (bei langen, schmalen Dingen also von links bis rechts). Dann am Ende des Prompts ergänzen: `the object spans almost the full width of a square image, empty transparent space above and below`. Bei **deckenden** Hintergründen und Texturen (Asphalt, Holz, Meer, Ziegel …) einfach quadratisch erzeugen; der Einbau schneidet den passenden Streifen heraus.
 6. **Zusammengehörige Bilder** (z. B. A2 Mittel- und Endstück, die Leitertest-Gegenstände B47–B54, die Oberflächen C1–C3) **im selben Chat direkt nacheinander** erzeugen, damit Licht, Maßstab und Stil zusammenpassen.
 7. Nach dem Erzeugen kurz prüfen: exakt von der Seite bzw. von oben? kein Text, keine Skala? Hintergrund wirklich durchsichtig (Schachbrettmuster im Bildbetrachter)? Wenn nicht: neu erzeugen, nicht hochladen.
+
+*(Seit 28.10.2026 gilt für Personen die neue Regel in `docs/BILDER.md`; die folgende Fassung stammt aus Runde 1 und 2.)*
 
 **Grundregeln für alle Bilder** (stehen auch in jedem Prompt): fotorealistisch, sauber, freundlich, weiches Studiolicht von links oben, keine harten Schatten, **kein Text, keine Zahlen, keine Skalen, keine Logos/Marken, keine Personen, keine Hände**. Alles, was die Simulation selbst einzeichnet (Skalen, Zeiger, Beschriftung, Füllstände, Flüssigkeitssäulen, Kraftpfeile), muss im Bild **fehlen**.
 
