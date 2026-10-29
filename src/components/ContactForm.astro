@@ -1,0 +1,528 @@
+---
+/**
+ * Kontaktformular (Feedback, Fragen, Fehler, Ideen …).
+ *
+ * Datenschutz an Schulen: Das Formular schickt nichts an einen Server und lädt
+ * nichts von fremden Diensten. Es setzt die Nachricht zusammen (src/lib/contact.ts)
+ * und öffnet das E-Mail-Programm (mailto:). Fehler, Ideen und fachliche Hinweise
+ * lassen sich zusätzlich öffentlich als GitHub-Meldung anlegen (ohne Name und
+ * E-Mail). Ein Entwurf bleibt nur im Browser (localStorage) erhalten.
+ *
+ * Vorbelegung per Link: ?typ=bug&sim=<id> (englisch auch ?type=…), z. B. vom
+ * Kasten „Feedback zu dieser Simulation“ auf jeder Simulationsseite.
+ */
+import { readySimulations, SUBJECTS } from '../curriculum';
+import { SITE } from '../config/site';
+import type { Lang } from '../i18n/config';
+import { t } from '../i18n/utils';
+import type { UiKey } from '../i18n/ui';
+import { CONTACT_ROLES, CONTACT_TYPES, MESSAGE_MAX, MESSAGE_MIN, PUBLIC_TYPES, SUBJECT_MAX, type MessageLabels } from '../lib/contact';
+import { href } from '../lib/routes';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const T = (key: UiKey, vars?: Record<string, string | number>) => t(lang, key, vars);
+const collator = new Intl.Collator(lang);
+
+// Simulationen nach Fach gruppiert und alphabetisch
+const ready = readySimulations();
+const groups = SUBJECTS.map((subject) => ({
+  label: subject.title[lang],
+  sims: ready
+    .filter((s) => s.subject === subject.id)
+    .map((s) => ({ id: s.id, title: s.title[lang], url: href(lang, { kind: 'simulation', id: s.id }) }))
+    .sort((a, b) => collator.compare(a.title, b.title)),
+})).filter((g) => g.sims.length > 0);
+
+const labels: MessageLabels = {
+  types: Object.fromEntries(CONTACT_TYPES.map((k) => [k, T(`contact.type.${k}` as UiKey)])) as MessageLabels['types'],
+  roles: Object.fromEntries(CONTACT_ROLES.map((k) => [k, T(`contact.role.${k}` as UiKey)])) as MessageLabels['roles'],
+  general: T('contact.simGeneral'),
+  mailType: T('contact.mailType'),
+  mailSim: T('contact.mailSim'),
+  mailRole: T('contact.mailRole'),
+  mailRating: T('contact.mailRating'),
+  ratingValue: T('contact.ratingValue'),
+  mailTech: T('contact.mailTech'),
+  mailPage: T('contact.mailPage'),
+  mailFrom: T('contact.mailFrom'),
+  mailReply: T('contact.mailReply'),
+  mailNoReply: T('contact.mailNoReply'),
+  bugSteps: T('contact.bugSteps'),
+  bugExpected: T('contact.bugExpected'),
+  bugActual: T('contact.bugActual'),
+};
+
+// Texte, die das Skript im Browser braucht
+const strings = {
+  counter: T('contact.counter'),
+  errMessage: T('contact.errMessage', { n: MESSAGE_MIN }),
+  errEmail: T('contact.errEmail'),
+  errEmailNeeded: T('contact.errEmailNeeded'),
+  errSummary: T('contact.errSummary'),
+  copied: T('contact.copied', { email: SITE.contactEmail }),
+  copyFailed: T('contact.copyFailed'),
+  opened: T('contact.opened', { email: SITE.contactEmail }),
+  long: T('contact.long'),
+  draftSaved: T('contact.draftSaved'),
+  draftRestored: T('contact.draftRestored'),
+  resetConfirm: T('contact.resetConfirm'),
+  ratingNone: T('contact.ratingNone'),
+  ratingValue: T('contact.ratingValue'),
+  hints: Object.fromEntries(CONTACT_TYPES.map((k) => [k, T(`contact.hint.${k}` as UiKey)])),
+};
+/** Kleine Symbole der Anliegen (24 × 24, Linien in Textfarbe). */
+const TYPE_ICONS: Record<(typeof CONTACT_TYPES)[number], string> = {
+  feedback: 'M4 5h16v11H9l-5 4z M8 9h8 M8 12h5',
+  question: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6 M12 17h.01',
+  bug: 'M8 9h8v6a4 4 0 0 1-8 0z M10 9V7a2 2 0 0 1 4 0v2 M4 13h4 M16 13h4 M5 8l3 2 M19 8l-3 2 M5 19l3-2 M19 19l-3-2 M12 11v7',
+  idea: 'M9 18h6 M10 21h4 M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z',
+  content: 'M4 5.5C6.5 4 9.5 4 12 5.5 14.5 4 17.5 4 20 5.5V19c-2.5-1.5-5.5-1.5-8 0-2.5-1.5-5.5-1.5-8 0z M12 5.5V19',
+  school: 'M3 10l9-6 9 6 M5 9v11h14V9 M10 20v-5h4v5 M3 20h18',
+  other: 'M6 12h.01 M12 12h.01 M18 12h.01',
+};
+const config = { lang, to: SITE.contactEmail, repo: SITE.repoUrl, publicTypes: PUBLIC_TYPES, labels, strings, max: MESSAGE_MAX };
+const privacyHref = href(lang, { kind: 'page', page: 'privacy' });
+const [privacyBefore, privacyAfter] = T('contact.privacy').split(T('contact.privacyLink'));
+---
+
+<div class="contact">
+  <form class="contact-form" data-contact-form data-config={JSON.stringify(config)} novalidate aria-label={T('contact.form')}>
+    <p class="note contact-form__status" data-contact-status role="status" aria-live="polite" hidden></p>
+    <div class="note note--warning contact-form__errors" data-contact-errors role="alert" tabindex="-1" hidden></div>
+
+    <!-- 1 · Worum geht es? -->
+    <fieldset class="contact-step">
+      <legend class="contact-step__title"><span class="contact-step__num" aria-hidden="true">1</span>{T('contact.step1')}</legend>
+
+      <div class="contact-field" role="radiogroup" aria-labelledby="contact-type-label">
+        <span class="contact-field__label" id="contact-type-label">{T('contact.type')}</span>
+        <div class="contact-types">
+          {
+            CONTACT_TYPES.map((type, i) => (
+              <label class="contact-type">
+                <input type="radio" name="type" value={type} checked={i === 0} />
+                <span class="contact-type__body">
+                  <svg class="contact-type__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d={TYPE_ICONS[type]} />
+                  </svg>
+                  <span>{T(`contact.type.${type}` as UiKey)}</span>
+                </span>
+              </label>
+            ))
+          }
+        </div>
+        <p class="contact-field__hint" data-type-hint>{T('contact.hint.feedback')}</p>
+      </div>
+
+      <div class="contact-grid">
+        <label class="contact-field">
+          <span class="contact-field__label">{T('contact.sim')} <span class="contact-field__opt">{T('contact.optional')}</span></span>
+          <select class="select" name="sim">
+            <option value="">{T('contact.simGeneral')}</option>
+            {
+              groups.map((g) => (
+                <optgroup label={g.label}>
+                  {g.sims.map((s) => (
+                    <option value={s.id} data-url={s.url}>
+                      {s.title}
+                    </option>
+                  ))}
+                </optgroup>
+              ))
+            }
+          </select>
+        </label>
+        <label class="contact-field">
+          <span class="contact-field__label">{T('contact.role')} <span class="contact-field__opt">{T('contact.optional')}</span></span>
+          <select class="select" name="role">
+            {CONTACT_ROLES.map((role) => <option value={role}>{T(`contact.role.${role}` as UiKey)}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <div class="contact-field" data-only="feedback">
+        <span class="contact-field__label" id="contact-rating-label">{T('contact.rating')} <span class="contact-field__opt">{T('contact.optional')}</span></span>
+        <div class="contact-rating" role="radiogroup" aria-labelledby="contact-rating-label">
+          {
+            [1, 2, 3, 4, 5].map((n) => (
+              <label class="contact-rating__star">
+                <input type="radio" name="rating" value={n} />
+                <span class="visually-hidden">{T('contact.ratingValue', { n })}</span>
+                <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+                  <path d="M12 3.2l2.6 5.5 6 .8-4.4 4.1 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.5l6-.8z" />
+                </svg>
+              </label>
+            ))
+          }
+          <span class="contact-rating__value" data-rating-value>{T('contact.ratingNone')}</span>
+          <button type="button" class="btn btn--ghost contact-rating__clear" data-rating-clear hidden>×<span class="visually-hidden">{T('contact.ratingNone')}</span></button>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 2 · Nachricht -->
+    <fieldset class="contact-step">
+      <legend class="contact-step__title"><span class="contact-step__num" aria-hidden="true">2</span>{T('contact.step2')}</legend>
+
+      <label class="contact-field">
+        <span class="contact-field__label">{T('contact.subject')} <span class="contact-field__opt">{T('contact.optional')}</span></span>
+        <input class="input" type="text" name="subject" maxlength={SUBJECT_MAX} placeholder={T('contact.subjectPlaceholder')} autocomplete="off" />
+      </label>
+
+      <label class="contact-field" data-field="message">
+        <span class="contact-field__label">{T('contact.message')} <span class="contact-field__req">{T('contact.required')}</span></span>
+        <textarea class="input contact-textarea" name="message" rows="7" maxlength={MESSAGE_MAX} placeholder={T('contact.messagePlaceholder')} aria-describedby="contact-message-count contact-message-error"></textarea>
+        <span class="contact-field__foot">
+          <span class="contact-field__error" id="contact-message-error" data-error="message"></span>
+          <span class="contact-field__count" id="contact-message-count" data-count="message"></span>
+        </span>
+      </label>
+
+      <div class="contact-bug" data-only="bug" hidden>
+        <label class="contact-field">
+          <span class="contact-field__label">{T('contact.bugSteps')}</span>
+          <textarea class="input contact-textarea" name="steps" rows="3" maxlength={MESSAGE_MAX} placeholder={T('contact.bugStepsPlaceholder')}></textarea>
+        </label>
+        <div class="contact-grid">
+          <label class="contact-field">
+            <span class="contact-field__label">{T('contact.bugExpected')}</span>
+            <textarea class="input contact-textarea" name="expected" rows="3" maxlength={MESSAGE_MAX}></textarea>
+          </label>
+          <label class="contact-field">
+            <span class="contact-field__label">{T('contact.bugActual')}</span>
+            <textarea class="input contact-textarea" name="actual" rows="3" maxlength={MESSAGE_MAX}></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="contact-check">
+        <label class="contact-check__row">
+          <input type="checkbox" name="tech" />
+          <span>
+            <strong>{T('contact.tech')}</strong>
+            <span class="contact-field__hint">{T('contact.techHint')}</span>
+          </span>
+        </label>
+        <details class="contact-tech" data-tech-details hidden>
+          <summary>{T('contact.techShow')}</summary>
+          <pre data-tech-info></pre>
+        </details>
+      </div>
+    </fieldset>
+
+    <!-- 3 · Antwort und Absenden -->
+    <fieldset class="contact-step">
+      <legend class="contact-step__title"><span class="contact-step__num" aria-hidden="true">3</span>{T('contact.step3')}</legend>
+
+      <label class="contact-check__row">
+        <input type="checkbox" name="reply" />
+        <span><strong>{T('contact.reply')}</strong></span>
+      </label>
+      <div class="contact-grid">
+        <label class="contact-field">
+          <span class="contact-field__label">{T('contact.name')} <span class="contact-field__opt">{T('contact.optional')}</span></span>
+          <input class="input" type="text" name="name" maxlength="120" autocomplete="name" />
+        </label>
+        <label class="contact-field" data-field="email">
+          <span class="contact-field__label">{T('contact.email')} <span class="contact-field__opt" data-email-opt>{T('contact.optional')}</span></span>
+          <input class="input" type="email" name="email" maxlength="200" autocomplete="email" inputmode="email" aria-describedby="contact-email-hint contact-email-error" />
+          <span class="contact-field__hint" id="contact-email-hint">{T('contact.emailHint')}</span>
+          <span class="contact-field__error" id="contact-email-error" data-error="email"></span>
+        </label>
+      </div>
+
+      <details class="contact-preview" data-preview>
+        <summary>{T('contact.preview')}</summary>
+        <div class="contact-preview__mail">
+          <p class="contact-preview__subject" data-preview-subject></p>
+          <pre class="contact-preview__body" data-preview-body></pre>
+        </div>
+      </details>
+
+      <p class="contact-privacy">
+        {privacyBefore}<a href={privacyHref}>{T('contact.privacyLink')}</a>{privacyAfter}
+      </p>
+
+      <div class="contact-actions">
+        <button type="submit" class="btn btn--primary btn--lg">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v12H3z" /><path d="M3 7l9 6 9-6" /></svg>
+          {T('contact.send')}
+        </button>
+        <button type="button" class="btn btn--lg" data-copy>{T('contact.copy')}</button>
+        <a class="btn btn--lg btn--ghost" data-github href={SITE.repoUrl} target="_blank" rel="noopener" hidden title={T('contact.githubHint')}>{T('contact.github')}</a>
+        <button type="button" class="btn btn--ghost contact-actions__reset" data-reset>{T('contact.reset')}</button>
+      </div>
+      <p class="contact-field__hint" data-github-hint hidden>{T('contact.githubHint')}</p>
+      <p class="contact-draft" data-draft-state aria-live="polite"></p>
+    </fieldset>
+  </form>
+
+  <aside class="contact-aside">
+    <section class="aside-box">
+      <h2>{T('contact.howTitle')}</h2>
+      <ol class="contact-how">
+        <li>{T('contact.how1')}</li>
+        <li>{T('contact.how2')}</li>
+        <li>{T('contact.how3')}</li>
+      </ol>
+    </section>
+    <section class="aside-box" data-only="bug" hidden>
+      <h2>{T('contact.tipsTitle')}</h2>
+      <ul>
+        <li>{T('contact.tip1')}</li>
+        <li>{T('contact.tip2')}</li>
+        <li>{T('contact.tip3')}</li>
+      </ul>
+    </section>
+    <section class="aside-box">
+      <h2>{T('contact.direct')}</h2>
+      <p>{T('contact.directText')} <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></p>
+    </section>
+  </aside>
+</div>
+
+<noscript>
+  <p class="note">{T('contact.noscript')} <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></p>
+</noscript>
+
+<script>
+  import { buildMessage, emptyDraft, githubIssueUrl, mailtoUrl, MAILTO_SAFE_LENGTH, sanitizeDraft, validateDraft, type ContactDraft, type ContactType, type MessageLabels } from '../lib/contact';
+
+  interface Config {
+    lang: string;
+    to: string;
+    repo: string;
+    publicTypes: ContactType[];
+    labels: MessageLabels;
+    max: number;
+    strings: Record<'counter' | 'errMessage' | 'errEmail' | 'errEmailNeeded' | 'errSummary' | 'copied' | 'copyFailed' | 'opened' | 'long' | 'draftSaved' | 'draftRestored' | 'resetConfirm' | 'ratingNone' | 'ratingValue', string> & {
+      hints: Record<string, string>;
+    };
+  }
+
+  const DRAFT_KEY = 'scitura-contact-draft';
+
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-contact-form]')) setup(form);
+
+  function setup(form: HTMLFormElement): void {
+    const cfg = JSON.parse(form.dataset.config ?? '{}') as Config;
+    const S = cfg.strings;
+    const root = form.closest('.contact') ?? document;
+    const $ = <T extends Element>(sel: string) => form.querySelector<T>(sel);
+    const field = <T extends HTMLElement>(name: string) => form.elements.namedItem(name) as T | null;
+    const status = $<HTMLElement>('[data-contact-status]')!;
+    const errorBox = $<HTMLElement>('[data-contact-errors]')!;
+    const github = $<HTMLAnchorElement>('[data-github]')!;
+    const githubHint = $<HTMLElement>('[data-github-hint]')!;
+    const draftState = $<HTMLElement>('[data-draft-state]')!;
+    const techDetails = $<HTMLDetailsElement>('[data-tech-details]')!;
+    const techPre = $<HTMLElement>('[data-tech-info]')!;
+    let touched = false;
+
+    const techInfo = (): string => {
+      const nav = navigator as Navigator & { userAgentData?: { platform?: string } };
+      return [
+        `Browser: ${navigator.userAgent}`,
+        `${nav.userAgentData?.platform ? `Plattform: ${nav.userAgentData.platform}\n` : ''}Bildschirm: ${screen.width} × ${screen.height}, Fenster: ${innerWidth} × ${innerHeight}, Pixeldichte: ${devicePixelRatio}`,
+        `Sprache: ${navigator.language}, Farbschema: ${document.documentElement.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')}`,
+        `Touch: ${navigator.maxTouchPoints > 0 ? 'ja' : 'nein'}, Offline-Modus: ${'serviceWorker' in navigator && navigator.serviceWorker.controller ? 'aktiv' : 'nein'}`,
+      ].join('\n');
+    };
+
+    /* ---------- Formular ⇄ Entwurf ---------- */
+    function read(): ContactDraft {
+      const d = emptyDraft();
+      const fd = new FormData(form);
+      d.type = (fd.get('type') as ContactType) ?? 'feedback';
+      d.sim = String(fd.get('sim') ?? '');
+      d.role = String(fd.get('role') ?? 'none') as ContactDraft['role'];
+      d.rating = Number(fd.get('rating') ?? 0) || 0;
+      for (const k of ['subject', 'message', 'steps', 'expected', 'actual', 'name', 'email'] as const) d[k] = String(fd.get(k) ?? '');
+      d.tech = fd.get('tech') === 'on';
+      d.reply = fd.get('reply') === 'on';
+      return sanitizeDraft(d);
+    }
+
+    function write(d: ContactDraft): void {
+      const radio = (name: string, value: string) => {
+        for (const el of form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`)) el.checked = el.value === value;
+      };
+      radio('type', d.type);
+      radio('rating', String(d.rating));
+      const sim = field<HTMLSelectElement>('sim')!;
+      sim.value = d.sim;
+      if (sim.value !== d.sim) sim.value = '';
+      field<HTMLSelectElement>('role')!.value = d.role;
+      for (const k of ['subject', 'message', 'steps', 'expected', 'actual', 'name', 'email'] as const) field<HTMLInputElement>(k)!.value = d[k];
+      field<HTMLInputElement>('tech')!.checked = d.tech;
+      field<HTMLInputElement>('reply')!.checked = d.reply;
+    }
+
+    function hasContent(d: ContactDraft): boolean {
+      return !!(d.subject || d.message || d.steps || d.expected || d.actual || d.name || d.email || d.rating);
+    }
+
+    function saveDraft(d: ContactDraft): void {
+      try {
+        if (hasContent(d)) {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(d));
+          draftState.textContent = S.draftSaved;
+        } else {
+          localStorage.removeItem(DRAFT_KEY);
+          draftState.textContent = '';
+        }
+      } catch {
+        /* privater Modus o. Ä.: ohne Entwurf weiter */
+      }
+    }
+
+    function loadDraft(): ContactDraft | null {
+      try {
+        const raw = localStorage.getItem(DRAFT_KEY);
+        return raw ? sanitizeDraft(JSON.parse(raw)) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    /* ---------- Nachricht ---------- */
+    function message(d: ContactDraft, isPublic = false) {
+      const opt = field<HTMLSelectElement>('sim')!.selectedOptions[0];
+      const url = opt?.dataset.url ? new URL(opt.dataset.url, location.origin).href : undefined;
+      const from = new URLSearchParams(location.search).get('von');
+      return buildMessage(d, {
+        labels: cfg.labels,
+        simTitle: d.sim ? opt?.textContent?.trim() : undefined,
+        simUrl: url,
+        page: from && from.startsWith('/') ? new URL(from, location.origin).href : undefined,
+        techInfo: d.tech ? techInfo() : undefined,
+        public: isPublic,
+      });
+    }
+
+    /* ---------- Anzeige ---------- */
+    function render(): void {
+      const d = read();
+      form.dataset.type = d.type;
+      for (const el of root.querySelectorAll<HTMLElement>('[data-only]')) el.hidden = el.dataset.only !== d.type;
+      $<HTMLElement>('[data-type-hint]')!.textContent = S.hints[d.type] ?? '';
+      // Zeichenzähler
+      const count = $<HTMLElement>('[data-count="message"]')!;
+      count.textContent = S.counter.replace('{n}', String(d.message.length)).replace('{max}', String(cfg.max));
+      // Bewertung
+      $<HTMLElement>('[data-rating-value]')!.textContent = d.rating ? S.ratingValue.replace('{n}', String(d.rating)) : S.ratingNone;
+      $<HTMLElement>('[data-rating-clear]')!.hidden = !d.rating;
+      form.querySelectorAll<HTMLElement>('.contact-rating__star').forEach((el, i) => el.classList.toggle('is-on', i < d.rating));
+      // E-Mail Pflicht, wenn Antwort gewünscht
+      $<HTMLElement>('[data-email-opt]')!.hidden = d.reply;
+      field<HTMLInputElement>('email')!.required = d.reply;
+      // Technische Angaben
+      techDetails.hidden = !d.tech;
+      if (d.tech) techPre.textContent = techInfo();
+      // GitHub nur für öffentliche Anliegen
+      const isPublic = cfg.publicTypes.includes(d.type);
+      github.hidden = githubHint.hidden = !isPublic;
+      if (isPublic) {
+        const m = message(d, true);
+        github.href = githubIssueUrl(cfg.repo, m.subject, m.body);
+      }
+      // Vorschau
+      const m = message(d);
+      $<HTMLElement>('[data-preview-subject]')!.textContent = m.subject;
+      $<HTMLElement>('[data-preview-body]')!.textContent = m.body;
+      if (touched) showErrors(d, false);
+      saveDraft(d);
+    }
+
+    function showErrors(d: ContactDraft, focus: boolean): boolean {
+      const errors = validateDraft(d);
+      const set = (name: string, text: string) => {
+        const box = form.querySelector<HTMLElement>(`[data-error="${name}"]`)!;
+        box.textContent = text;
+        const input = field<HTMLInputElement>(name)!;
+        input.setAttribute('aria-invalid', text ? 'true' : 'false');
+        input.closest('.contact-field')?.classList.toggle('has-error', !!text);
+      };
+      set('message', errors.message ? S.errMessage : '');
+      set('email', errors.email ? S.errEmail : errors.emailNeeded ? S.errEmailNeeded : '');
+      const ok = Object.keys(errors).length === 0;
+      errorBox.hidden = ok;
+      errorBox.textContent = ok ? '' : S.errSummary;
+      if (!ok && focus) {
+        const first = errors.message ? field<HTMLElement>('message') : field<HTMLElement>('email');
+        first?.focus();
+      }
+      return ok;
+    }
+
+    function say(text: string): void {
+      status.textContent = text;
+      status.hidden = !text;
+    }
+
+    /* ---------- Ereignisse ---------- */
+    form.addEventListener('input', render);
+    form.addEventListener('change', render);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      touched = true;
+      const d = read();
+      if (!showErrors(d, true)) return;
+      const m = message(d);
+      const url = mailtoUrl(cfg.to, m.subject, m.body);
+      say(url.length > MAILTO_SAFE_LENGTH ? `${S.opened} ${S.long}` : S.opened);
+      location.href = url;
+    });
+
+    $<HTMLButtonElement>('[data-copy]')!.addEventListener('click', async () => {
+      touched = true;
+      const d = read();
+      if (!showErrors(d, true)) return;
+      const m = message(d);
+      const text = `${m.subject}\n\n${m.body}`;
+      try {
+        await navigator.clipboard.writeText(text);
+        say(S.copied);
+      } catch {
+        $<HTMLDetailsElement>('[data-preview]')!.open = true;
+        say(S.copyFailed);
+      }
+    });
+
+    $<HTMLButtonElement>('[data-rating-clear]')!.addEventListener('click', () => {
+      for (const el of form.querySelectorAll<HTMLInputElement>('input[name="rating"]')) el.checked = false;
+      render();
+    });
+
+    $<HTMLButtonElement>('[data-reset]')!.addEventListener('click', () => {
+      if (hasContent(read()) && !confirm(S.resetConfirm)) return;
+      touched = false;
+      write(emptyDraft());
+      say('');
+      errorBox.hidden = true;
+      for (const name of ['message', 'email']) {
+        form.querySelector<HTMLElement>(`[data-error="${name}"]`)!.textContent = '';
+        field<HTMLElement>(name)!.closest('.contact-field')?.classList.remove('has-error');
+        field<HTMLElement>(name)!.removeAttribute('aria-invalid');
+      }
+      render();
+    });
+
+    /* ---------- Start: Entwurf, dann Vorbelegung aus dem Link ---------- */
+    const draft = loadDraft();
+    const params = new URLSearchParams(location.search);
+    const start = draft ?? emptyDraft();
+    const type = params.get('typ') ?? params.get('type');
+    const sim = params.get('sim');
+    const preset = sanitizeDraft({ ...start, ...(type ? { type } : {}), ...(sim ? { sim } : {}) });
+    if (type && preset.type !== type) preset.type = start.type;
+    write(preset);
+    if (draft && hasContent(draft)) say(S.draftRestored);
+    render();
+  }
+</script>
