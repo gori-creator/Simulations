@@ -180,7 +180,7 @@ export default defineSimulation({
     },
     { key: 'show', type: 'boolean', group: 'view', label: L('Anzahl anzeigen', 'Show the number'), default: true },
   ],
-  images: { cone: 'waffel.webp', lock: 'zahlenschloss.webp' },
+  images: { cone: 'waffel.webp', lock: 'zahlenschloss.webp', pants: 'hose.webp', shirt: 't-shirt.webp', hat: 'muetze.webp' },
   actions: [
     { id: 'walk', label: L('Alle Pfade ablaufen', 'Walk all paths'), primary: true },
     { id: 'grow', label: L('Neu wachsen lassen', 'Grow again') },
@@ -335,9 +335,81 @@ export default defineSimulation({
 
     const iconStyle = (label?: string): IconStyle => ({ dark: ctx.theme.dark, font: ctx.theme.font, ink: ctx.theme.text, paper: ctx.theme.bg, label });
 
-    function icon(stage: number, idx: number, x: number, y: number, s: number): void {
+    function icon(stage: number, idx: number, x: number, y: number, s: number, contour = true): void {
       const it = itemOf(stage, idx);
-      drawIcon(surface.g, it.icon, it.color(ctx.theme), x, y, s, iconStyle(it.label));
+      drawItem(surface.g, it.icon, it.color(ctx.theme), x, y, s, iconStyle(it.label), contour);
+    }
+
+    /* Kleidung als Foto (hellgrau, eingefärbt); ohne Foto die gezeichneten Symbole */
+    const CLOTHES: readonly IconKind[] = ['pants', 'shirt', 'hat'];
+    const clothCache = new Map<string, HTMLCanvasElement>();
+
+    /**
+     * Einmal je Kleidungsstück und Farbe in fester Größe einfärben: Jedes Pixel
+     * bekommt die Zielfarbe, mal seiner Helligkeit relativ zum Mittel des Fotos.
+     * So bleiben Falten und Strickmuster erhalten, und auch eine schwarze Hose
+     * wird wirklich dunkel (anders als beim Mischmodus „color“).
+     */
+    function clothSprite(kind: IconKind, color: string): HTMLCanvasElement | null {
+      if (!CLOTHES.includes(kind)) return null;
+      const img = ctx.images.get(kind);
+      if (!img) return null;
+      const key = `${kind}|${color}`;
+      const hit = clothCache.get(key);
+      if (hit) return hit;
+      const k = 192 / Math.max(img.naturalWidth, img.naturalHeight);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.naturalWidth * k);
+      canvas.height = Math.round(img.naturalHeight * k);
+      const c = canvas.getContext('2d', { willReadFrequently: true })!;
+      c.fillStyle = color;
+      c.fillRect(0, 0, 1, 1);
+      const [cr, cg, cb] = c.getImageData(0, 0, 1, 1).data;
+      c.clearRect(0, 0, 1, 1);
+      c.imageSmoothingQuality = 'high';
+      c.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const data = c.getImageData(0, 0, canvas.width, canvas.height);
+      const p = data.data;
+      let sum = 0;
+      let n = 0;
+      for (let i = 0; i < p.length; i += 4) {
+        if (p[i + 3]! < 128) continue;
+        sum += 0.3 * p[i]! + 0.59 * p[i + 1]! + 0.11 * p[i + 2]!;
+        n++;
+      }
+      const mean = n ? sum / n : 1;
+      for (let i = 0; i < p.length; i += 4) {
+        const l = (0.3 * p[i]! + 0.59 * p[i + 1]! + 0.11 * p[i + 2]!) / mean;
+        p[i] = Math.min(255, cr! * l);
+        p[i + 1] = Math.min(255, cg! * l);
+        p[i + 2] = Math.min(255, cb! * l);
+      }
+      c.putImageData(data, 0, 0);
+      clothCache.set(key, canvas);
+      return canvas;
+    }
+
+    function drawItem(g: CanvasRenderingContext2D, kind: IconKind, color: string, x: number, y: number, s: number, st: IconStyle, contour = true): void {
+      const sprite = clothSprite(kind, color);
+      if (!sprite) {
+        drawIcon(g, kind, color, x, y, s, st);
+        return;
+      }
+      const k = (s * 0.92) / Math.max(sprite.width, sprite.height);
+      const w = sprite.width * k;
+      const h = sprite.height * k;
+      g.save();
+      g.imageSmoothingEnabled = true;
+      g.imageSmoothingQuality = 'high';
+      // feiner Rand als Schatten: weißes T-Shirt auf Weiß, schwarze Hose im Dunkeln
+      if (contour) {
+        g.shadowOffsetX = 0;
+        g.shadowOffsetY = 0;
+        g.shadowColor = ctx.theme.dark ? 'rgba(255,255,255,0.35)' : 'rgba(16,24,40,0.6)';
+        g.shadowBlur = Math.max(1.5, s * 0.05);
+      }
+      g.drawImage(sprite, x - w / 2, y - h / 2, w, h);
+      g.restore();
     }
 
     /* ---------------- Zustand ---------------- */
@@ -1012,7 +1084,7 @@ export default defineSimulation({
             g.strokeStyle = alpha(color === theme.text ? theme.muted : color, 0.55);
             g.lineWidth = 1.4;
             g.stroke();
-            drawIcon(g, it.icon, color, a.x, a.y, r * 1.42, iconStyle(it.label));
+            drawItem(g, it.icon, color, a.x, a.y, r * 1.42, iconStyle(it.label));
           } else {
             g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
             g.shadowBlur = pin0() ? 6 : 3;
@@ -1373,7 +1445,7 @@ export default defineSimulation({
       g.shadowColor = ctx.theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.2)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 3;
-      icon(i, o, x, y, s * sc);
+      icon(i, o, x, y, s * sc, false);
       g.restore();
     }
 

@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { gratingConstant, intensity, maxAngle, maxOrder, screenPosition, SLIT_RATIO, slitFactor, spacingSmallAngle, wavelengthToRgb } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -34,6 +34,7 @@ export default defineSimulation({
   dragHint: true,
   hint: L('Tipp: Die orange Messmarke auf dem Schirmbild lässt sich mit Maus oder Finger ziehen.', 'Tip: drag the orange measuring mark on the screen with the mouse or a finger.'),
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
+  images: { laser: 'laser.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -440,17 +441,33 @@ export default defineSimulation({
       g.shadowColor = 'rgba(0,0,0,0.5)';
       g.shadowBlur = 8;
       g.shadowOffsetY = 3;
-      const lb = g.createLinearGradient(0, cy - lh / 2, 0, cy + lh / 2);
-      lb.addColorStop(0, '#6b7583');
-      lb.addColorStop(0.5, '#3a414c');
-      lb.addColorStop(1, '#1f242b');
-      g.fillStyle = lb;
-      roundRect(g, lx, cy - lh / 2, lw, lh, 5);
-      g.fill();
-      g.restore();
+      const laserImg = ctx.images.get('laser');
+      if (laserImg) {
+        // Foto (900 × 296, Austritt rechts, Mitte des Gehäuses bei y = 72): Austritt am Strahlanfang
+        const w = lw * 1.25;
+        const k = w / laserImg.naturalWidth;
+        const h = laserImg.naturalHeight * k;
+        // schwacher Lichtschein, damit das schwarze Gehäuse im dunklen Raum sichtbar bleibt
+        const glow = g.createRadialGradient(lx + lw - w / 2, cy, 2, lx + lw - w / 2, cy, w * 0.75);
+        glow.addColorStop(0, 'rgba(150,170,200,0.28)');
+        glow.addColorStop(1, 'rgba(150,170,200,0)');
+        g.fillStyle = glow;
+        g.fillRect(lx + lw - w * 1.25, cy - w * 0.75, w * 1.5, w * 1.5);
+        g.drawImage(scaledSprite(laserImg, w, h, surface.dpr), lx + lw + 2 - w, cy - 72 * k, w, h);
+        g.restore();
+      } else {
+        const lb = g.createLinearGradient(0, cy - lh / 2, 0, cy + lh / 2);
+        lb.addColorStop(0, '#6b7583');
+        lb.addColorStop(0.5, '#3a414c');
+        lb.addColorStop(1, '#1f242b');
+        g.fillStyle = lb;
+        roundRect(g, lx, cy - lh / 2, lw, lh, 5);
+        g.fill();
+        g.restore();
+      }
       g.fillStyle = col;
       g.beginPath();
-      g.arc(lx + lw - 3, cy, 3, 0, TAU);
+      g.arc(lx + lw - (laserImg ? 0 : 3), cy, laserImg ? 2.2 : 3, 0, TAU);
       g.fill();
       richText(ctx.t('laser'), lx + lw / 2, cy - lh / 2 - 9, sm ? 10 : 11, 'rgba(210,220,236,0.85)', 'center', 650);
       // Wellenfeld hinter der Blende (Huygens): Kreiswellen von jedem Spalt

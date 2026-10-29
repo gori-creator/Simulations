@@ -912,6 +912,130 @@ Zinsen: Die linierte Seite mit Einbandrand ersetzt Einband und Seite der Ersatzg
 
 > A single page of a small savings passbook lying flat, exact top-down view, one cream-coloured page with faint empty ruled horizontal lines across its full width, a narrow dark teal cover border visible around all four edges, no centre fold, no second page, no spine, completely blank with no writing, evenly lit, isolated on a fully transparent background, no shadow, photorealistic, no text, no numbers, no bank logo
 
+## Runde 3 (eingebaut 29.10.2026)
+
+Erzeugt mit dem integrierten Bildwerkzeug (Übergabe: `incoming/RUNDE-3-HINWEISE.md`, nach dem Einbau gelöscht), freigestellt geliefert, beim Einbau auf den sichtbaren Inhalt beschnitten und als WebP gespeichert. Jede Stelle behält ihre gezeichnete Ersatzgrafik. Prompts wörtlich aus der Wunschliste (Runde 3).
+
+### `zehnerpotenzen/kind.webp` – Kind (Zehnerpotenzen)
+
+R1 · Datei `src/assets/sims/zehnerpotenzen/kind.webp`. Stufe „Kind“: Scheitel bis Sohle = Bildhöhe = 1,4 m, Füße auf dem Boden. Zugeschnitten auf 185 × 900 px.
+
+> A fictional ten-year-old child standing upright in a relaxed pose, seen exactly from the side in profile looking to the right, full body from head to feet fully visible, casual everyday clothes (plain jeans, plain sweatshirt, sneakers) without any print or logo, arms hanging naturally, exact orthographic side view with no perspective, the child fills almost the full image height, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+
+### `zaehlprinzip/hose.webp` – Hose (Zählprinzip)
+
+R2 · Datei `src/assets/sims/zaehlprinzip/hose.webp`. Hellgrau; die Simulation färbt jedes Kleidungsstück pixelweise in seine Farbe (Helligkeit relativ zum Bildmittel), so werden auch schwarze Hosen wirklich dunkel. Feiner Schattenrand, damit das weiße T-Shirt auf Weiß sichtbar bleibt.
+
+> A pair of plain long trousers laid perfectly flat and symmetric, seen exactly from the front, very light neutral grey cotton fabric without any pattern, print, logo or label, simple waistband and two straight legs, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+
+### `zaehlprinzip/t-shirt.webp` – T-Shirt (Zählprinzip)
+
+R3 · Datei `src/assets/sims/zaehlprinzip/t-shirt.webp`. Wie die Hose eingefärbt.
+
+> A plain short-sleeved crew-neck T-shirt laid perfectly flat and symmetric, seen exactly from the front, very light neutral grey cotton without any pattern, print, logo or label, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+
+### `zaehlprinzip/muetze.webp` – Mütze (Zählprinzip)
+
+R4 · Datei `src/assets/sims/zaehlprinzip/muetze.webp`. Wie die Hose eingefärbt.
+
+> A plain knitted beanie hat with a folded cuff, seen exactly from the front, very light neutral grey wool without any pattern, logo or label, no pompom, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text
+
+### `photoeffekt/fotozelle.webp` – Fotozelle (Photoeffekt)
+
+R5 · Datei `src/assets/sims/photoeffekt/fotozelle.webp`. Kolbenmitte (252 | 262), Radius 252 px; die Steckerstifte (unter Bildzeile 690) werden abgeschnitten. Kathode, Anode und Zuleitungen zeichnet die Simulation in den Kolben, die Kabel setzen seitlich am Sockel an. Geliefert nur in 1086 × 1448 statt 1200 × 1600 (nicht hochskaliert).
+
+> An empty evacuated glass bulb of a laboratory photocell, clear thin glass with a smooth rounded shape on a short black base with two metal pins below, the inside completely empty and transparent, exact side view with no perspective, soft studio light from the upper left with gentle highlights on the glass, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no labels
+
+### `photoeffekt/lampe.webp` – Lampe (Photoeffekt)
+
+R6 · Datei `src/assets/sims/photoeffekt/lampe.webp`. Lichtaustritt rechts, Zylindermitte bei Bildzeile 158; zur Kathode gedreht, der farbige Filter wird davor gezeichnet.
+
+> A compact cylindrical laboratory lamp housing made of dark grey powder-coated metal with small cooling slots, a round light exit opening on the right side with a dark lens, mounted on a short metal rod, exact side view with no perspective, the lamp is switched off, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no labels, no logo
+
+### `elektronenbeugung/beugungsroehre.webp` – Elektronenbeugungsröhre
+
+R7 · Datei `src/assets/sims/elektronenbeugung/beugungsroehre.webp`. Sockel x 0 … 200, gleichmäßiger Hals bis 900, Kolben mit Mitte (1172 | 228) und Radius 228. Der Hals wird je nach Bühnenbreite gestreckt, Sockel und Kolben bleiben unverzerrt. Das Vakuum wird dunkel hinterlegt; Glühdraht, Anode, Folie und Strahl liegen davor.
+
+> A laboratory electron diffraction tube lying perfectly horizontal, a long clear glass neck on the left with a small electron gun inside near the left end and electrical contacts at the left end cap, widening on the right into a large clear glass sphere, the inside of the sphere completely empty, the tube is switched off and not glowing, exact side view with no perspective, soft studio light from the upper left with gentle reflections on the glass, no hard shadows, isolated on a fully transparent background, no stand, no shadow, photorealistic, clean educational style, no text, no numbers, no labels
+
+### `doppelspalt/laser.webp` – Laser (Doppelspalt)
+
+R8 · Datei `src/assets/sims/doppelspalt/laser.webp`. Austritt rechts, Gehäusemitte bei Bildzeile 72. Im dunklen Raum mit schwachem Lichtschein dahinter, damit das schwarze Gehäuse sichtbar bleibt.
+
+> A compact cylindrical laboratory diode laser module in matte black anodised aluminium with a small aperture on the right end and a cable gland on the left end, mounted on a short silver post with a small round foot, exact side view with no perspective, the laser is switched off, no beam, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no numbers, no warning label, no logo
+
+### `extremwertprobleme/karton.webp` – Karton (Extremwertprobleme)
+
+R9 · Datei `src/assets/sims/extremwertprobleme/karton.webp`. Oberfläche der Schachtel und des flachen Bogens (View3D-Option `texture`, ein Bild je Fläche, nicht gekachelt); Licht und Schatten der Fläche liegen darüber, beim Aufleuchten im Maximum tritt die Farbe hervor.
+
+> A seamless flat surface of plain brown cardboard seen exactly from above, fine paper fibres and a very subtle corrugation texture, evenly lit with soft diffuse light, no edges, no folds, no stains, no print, no tape, fills the entire image, photorealistic texture, no text
+
+### `quader-volumen/holz.webp` – Holz (Quader-Volumen)
+
+R10 · Datei `src/assets/sims/quader-volumen/holz.webp`. Der Einheitswürfel ist naturbelassen; die gezählten Würfel bleiben bunt (Foto mit der Würfelfarbe multipliziert, schwach).
+
+> A seamless flat surface of light natural beech wood seen exactly from above, fine straight grain, matte finish, evenly lit with soft diffuse light, no knots, no edges, no stains, fills the entire image, photorealistic texture, no text
+
+### `mittelsenkrechte/haus.webp` – Haus (Mittelsenkrechte)
+
+R11 · Datei `src/assets/sims/mittelsenkrechte/haus.webp`. Häuser A und B; ein farbiger Sockelstreifen zeigt, welches Haus A bzw. B ist.
+
+> A small detached family house seen exactly from the front, white plastered walls, a dark grey pitched roof, a wooden front door in the middle and two windows, simple and friendly, no garden, no fence, no car, no people, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text, no house number
+
+### `mittelsenkrechte/schaukel.webp` – Schaukel (Mittelsenkrechte)
+
+R12 · Datei `src/assets/sims/mittelsenkrechte/schaukel.webp`. Spielplatz; noch nicht gefundene Plätze blass.
+
+> A simple wooden playground swing frame with two swings hanging on chains, seen exactly from the front, natural wood, no people, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+
+### `diagramme/fussball.webp` – Fußball (Diagramme)
+
+R13 · Datei `src/assets/sims/diagramme/fussball.webp`. Kleines Bild vor der Beschriftung „Fußball“ (Säulen, Balken, Kreis), auf runder Unterlage.
+
+> A classic white and black leather football, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+### `diagramme/tanzschuhe.webp` – Tanzschuhe (Diagramme)
+
+R14 · Datei `src/assets/sims/diagramme/tanzschuhe.webp`. Vor „Tanzen“.
+
+> A pair of light pink satin ballet shoes with ribbons, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+### `diagramme/reithelm.webp` – Reithelm (Diagramme)
+
+R15 · Datei `src/assets/sims/diagramme/reithelm.webp`. Vor „Reiten“; im Dunkeln dank heller Unterlage sichtbar.
+
+> A black velvet equestrian riding helmet, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+### `diagramme/tennis.webp` – Tennis (Diagramme)
+
+R16 · Datei `src/assets/sims/diagramme/tennis.webp`. Vor „Tennis“.
+
+> A tennis racket leaning diagonally with a yellow tennis ball in front of it, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+### `diagramme/turnringe.webp` – Turnringe (Diagramme)
+
+R17 · Datei `src/assets/sims/diagramme/turnringe.webp`. Vor „Turnen“.
+
+> A pair of wooden gymnastics rings hanging on straps, centred, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no shadow, photorealistic, clean educational style, no text, no logo
+
+### `hebelgesetz/kind-wippe-1.webp` – Kind auf der Wippe, links (Hebelgesetz)
+
+P1 · Datei `src/assets/sims/hebelgesetz/kind-wippe-1.webp`. Sitzpunkt (90 | 440), Hände (300 | 270). Der Maßstab folgt aus der Masse (Kubikwurzel); der Haltegriff rückt mit, sodass die Hände ihn greifen. Körper bleibt aufrecht, auch wenn die Wippe kippt.
+
+> A fictional child of about six years sitting astride on an invisible plank, seen exactly from the side in profile looking to the right, both hands holding an invisible handle in front at chest height, legs hanging down on both sides, casual plain everyday clothes without print or logo, sneakers, exact orthographic side view, the bottom of the seated child is a straight horizontal line where the plank would be, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no seesaw, no plank, no handle, no shadow, photorealistic, clean educational style, no text
+
+### `hebelgesetz/kind-wippe-2.webp` – Kind auf der Wippe, rechts (Hebelgesetz)
+
+P2 · Datei `src/assets/sims/hebelgesetz/kind-wippe-2.webp`. Sitzpunkt (150 | 417), Hände (365 | 250); wird gespiegelt (schaut nach links).
+
+> A fictional child of about ten years sitting astride on an invisible plank, seen exactly from the side in profile looking to the right, both hands holding an invisible handle in front at chest height, legs hanging down on both sides, casual plain everyday clothes without print or logo, sneakers, exact orthographic side view, the bottom of the seated child is a straight horizontal line where the plank would be, soft studio light from the upper left, no hard shadows, isolated on a fully transparent background, no seesaw, no plank, no handle, no shadow, photorealistic, clean educational style, no text
+
+### `doppler-effekt/beobachter.webp` – Beobachter von oben (Doppler-Effekt)
+
+P3 · Datei `src/assets/sims/doppler-effekt/beobachter.webp`. Kopf oben (zur Straße); die Schallbögen am Ohr zeichnet die Simulation weiter.
+
+> A fictional adult person standing still, seen from directly above (top-down bird's-eye view), only the top of the head with short hair, the shoulders and a plain dark green jacket visible, arms at the sides, no face visible, exact top-down orthographic view, soft light from the upper left, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
+
 ## Marke: Scitura-Logo 01
 
 Kein Simulationsbild, sondern das Zeichen der Website (seit 27.10.2026). Ausgewählt von der Projektleitung aus einer Logo-Studie, abgeleitet aus der Orbit-Skulptur der Startseite. Erzeugt mit dem Bildwerkzeug von OpenAI (über Codex), transparent freigestellt und auf Wunsch in Marineblau #183365 umgefärbt. Den wörtlichen Prompt der ersten Studie enthält die Übergabe nicht; Herkunft und Bearbeitungsauftrag stehen in `docs/design/coin-reise-v13/LOGO-HERKUNFT.md`.

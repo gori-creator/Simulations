@@ -610,6 +610,13 @@ export interface FaceStyle3D {
   label?: { text: string; color?: string; size?: number; weight?: string; at?: Vec3 };
   /** Aufdrucke auf der Fläche (z. B. Würfelaugen), Eckpunkte in Weltkoordinaten. */
   decals?: { points: readonly Vec3[]; color: string }[];
+  /**
+   * Foto als Oberfläche (z. B. Karton, Holz): Das Bild deckt `size` Weltlängen
+   * ab und läuft von Ecke 0 entlang Kante 0 → 1 und 0 → letzte Ecke; Licht und
+   * Schatten der Fläche liegen darüber. Ohne Bild bleibt die Farbe. Mit
+   * `blend: 'multiply'` färbt die Flächenfarbe das Foto (z. B. bunte Holzwürfel).
+   */
+  texture?: { image: CanvasImageSource & { width: number; height: number }; size: number; alpha?: number; blend?: 'multiply' };
   /** Verschiebung in der Tiefensortierung (Weltlängen, positiv = weiter nach vorn). */
   depthBias?: number;
   layer?: Layer3D;
@@ -1026,10 +1033,46 @@ export class View3D implements PointerTarget {
     let depth = 0;
     for (const q of proj) depth += q.depth;
     depth /= proj.length;
-    this.queueFace(proj, normal, center, front, depth - (style.depthBias ?? 0), style);
+    this.queueFace(proj, normal, center, front, depth - (style.depthBias ?? 0), style, points);
   }
 
-  private queueFace(proj: Projected[], normal: Vec3, center: Vec3, front: boolean, depth: number, style: FaceStyle3D): void {
+  /** Foto auf eine Fläche legen (affin, Kanten 0 → 1 und 0 → letzte Ecke), danach Helligkeit der Beleuchtung. */
+  private paintTexture(pts: Vec2[], world: readonly Vec3[], tex: NonNullable<FaceStyle3D['texture']>, base: Rgb, lit: Rgb, alpha: number): void {
+    const g = this.surface.g;
+    const [p0, p1, p3] = [world[0]!, world[1]!, world[world.length - 1]!];
+    const lu = vec3.length(vec3.sub(p1, p0));
+    const lv = vec3.length(vec3.sub(p3, p0));
+    if (lu < 1e-9 || lv < 1e-9) return;
+    const s0 = pts[0]!;
+    const s1 = pts[1]!;
+    const s3 = pts[pts.length - 1]!;
+    const { width: iw, height: ih } = tex.image;
+    const ku = tex.size / lu / iw;
+    const kv = tex.size / lv / ih;
+    g.save();
+    g.beginPath();
+    pathPoly(g, pts);
+    g.clip();
+    g.globalAlpha *= alpha * (tex.alpha ?? 1);
+    if (tex.blend) g.globalCompositeOperation = tex.blend;
+    g.transform((s1[0] - s0[0]) * ku, (s1[1] - s0[1]) * ku, (s3[0] - s0[0]) * kv, (s3[1] - s0[1]) * kv, s0[0], s0[1]);
+    const nu = Math.ceil(lu / tex.size);
+    const nv = Math.ceil(lv / tex.size);
+    for (let i = 0; i < nu; i++) for (let j = 0; j < nv; j++) g.drawImage(tex.image, i * iw, j * ih, iw, ih);
+    g.restore();
+    // Beleuchtung: abdunkeln oder aufhellen wie die Farbfläche
+    const lum = (c: Rgb) => 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2];
+    const d = lum(lit) / Math.max(1, lum(base)) - 1;
+    if (Math.abs(d) < 0.01) return;
+    g.save();
+    g.beginPath();
+    pathPoly(g, pts);
+    g.fillStyle = d < 0 ? `rgba(0,0,0,${Math.min(0.85, -d) * alpha})` : `rgba(255,255,255,${Math.min(0.6, d) * alpha})`;
+    g.fill();
+    g.restore();
+  }
+
+  private queueFace(proj: Projected[], normal: Vec3, center: Vec3, front: boolean, depth: number, style: FaceStyle3D, world?: readonly Vec3[]): void {
     const theme = this.surface.theme;
     const base = parseColor(style.color ?? theme.series[0]!);
     const alpha = style.alpha ?? 1;
@@ -1039,12 +1082,14 @@ export class View3D implements PointerTarget {
     if (!front && !style.flat && style.backShade) rgb = mixRgb(rgb, [0, 0, 0], style.backShade);
     const fill = rgbCss(rgb, alpha);
     const pts: Vec2[] = proj.map((q) => [q.x, q.y]);
+    const tex = style.texture;
     this.add(style.layer ?? 'scene', depth, () => {
       const g = this.surface.g;
       g.beginPath();
       pathPoly(g, pts);
       g.fillStyle = fill;
       g.fill();
+      if (tex && world && pts.length >= 3) this.paintTexture(pts, world, tex, base, rgb, alpha);
       if (alpha >= 1) {
         // schließt feine Lücken zwischen benachbarten Flächen (Kantenglättung)
         g.strokeStyle = fill;
@@ -1135,6 +1180,7 @@ export class View3D implements PointerTarget {
         front[f],
         depths[f],
         { backShade: 0.12, ...style, ...extra, stroke: extra?.stroke, layer: extra?.layer ?? style.layer },
+        pts,
       );
     });
     if (style.edges === false && !style.hiddenEdges) return;

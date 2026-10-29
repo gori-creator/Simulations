@@ -140,6 +140,7 @@ export default defineSimulation({
   id: 'extremwertprobleme',
   dragHint: true,
   layout: { aspect: 1.25, aspectNarrow: 0.3 },
+  images: { card: 'karton.webp' },
   groups: [
     { id: 'data', label: L('Daten', 'Data') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -913,10 +914,13 @@ export default defineSimulation({
       view.shadow(folded.flat(), { alpha: 0.12 + 0.14 * F, blur: 18 + 10 * F, spread: 1.03 });
       const edge = n.cardEdge;
       const glowing = glowT !== null ? clamp01(1 - (frameNow - glowT) / 1400) : 0;
+      // Kartonfoto (ein Bild je Fläche, ohne Kacheln); beim Aufleuchten tritt die Farbe hervor
+      const cardImg = ctx.images.get('card');
+      const texture = cardImg ? { image: cardImg, size: Math.max(a, b), alpha: (1 - 0.6 * glowing) * (theme.dark ? 0.82 : 1) } : undefined;
       folded.forEach((pts) => {
         let color = n.card;
         if (glowing > 0) color = mixColor(color, col.opt(), 0.35 * glowing);
-        view.face(pts, { color, stroke: edge, width: 1.5, backShade: 0.22, gloss: 0.12 });
+        view.face(pts, { color, stroke: edge, width: 1.5, backShade: 0.22, gloss: 0.12, texture });
       });
       // Falzlinien im flachen Karton
       const flatK = 1 - clamp01(F / 0.3);

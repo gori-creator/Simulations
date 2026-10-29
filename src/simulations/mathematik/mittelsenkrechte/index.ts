@@ -151,7 +151,7 @@ export default defineSimulation({
     { key: 'trace', type: 'boolean', group: 'view', label: L('Spur der gleich weit entfernten Punkte', 'Trace of equidistant points'), default: true, visibleIf: isMode('mittel', 'winkel') },
     { key: 'circ', type: 'boolean', group: 'view', label: L('Umkreis zeigen', 'Show the circumcircle'), default: true, visibleIf: isMode('umk') },
   ],
-  images: { compass: 'zirkel-teile.webp', pencil: 'bleistift.webp' },
+  images: { compass: 'zirkel-teile.webp', pencil: 'bleistift.webp', house: 'haus.webp', swing: 'schaukel.webp' },
   actions: [
     { id: 'next', label: L('Nächster Schritt', 'Next step'), primary: true, visibleIf: isMode('konstr') },
     { id: 'play', label: L('Alles abspielen', 'Play all'), visibleIf: isMode('konstr') },
@@ -1912,9 +1912,27 @@ export default defineSimulation({
     let toolsLater: (() => void) | null = null;
 
     /* ---------- Modus: Anwendung (Straße und Häuser) ---------- */
+    /** Foto mittig bei q; liefert die Unterkante (oder `null` ohne Foto). */
+    function photoAt(key: 'house' | 'swing', q: Px, w: number, dy = 0): number | null {
+      const img = ctx.images.get(key);
+      if (!img) return null;
+      const h = (w * img.naturalHeight) / img.naturalWidth;
+      const y = q[1] - h / 2 + dy;
+      surface.g.drawImage(scaledSprite(img, w, h, surface.dpr), q[0] - w / 2, y, w, h);
+      return y + h;
+    }
+
     function drawHouse(q: Px, size: number, color: string): void {
       const g = surface.g;
       const theme = ctx.theme;
+      // Foto mit farbigem Sockelstreifen (Farbe von A bzw. B)
+      const bottom = photoAt('house', q, size * 1.3, size * 0.04);
+      if (bottom !== null) {
+        g.fillStyle = color;
+        roundRect(g, q[0] - size * 0.62, bottom - 1.5, size * 1.24, 3.5, 1.75);
+        g.fill();
+        return;
+      }
       const w = size;
       const h = size * 0.72;
       const x = q[0] - w / 2;
@@ -1945,9 +1963,16 @@ export default defineSimulation({
       g.fillRect(q[0] - w * 0.12, y + h * 0.42, w * 0.24, h * 0.58);
     }
 
-    function drawSwing(q: Px, size: number, color: string): void {
+    function drawSwing(q: Px, size: number, color: string, ghost = false): void {
       const g = surface.g;
       const s = size;
+      if (ctx.images.get('swing')) {
+        g.save();
+        if (ghost) g.globalAlpha *= 0.35;
+        photoAt('swing', q, s * 1.15);
+        g.restore();
+        return;
+      }
       g.save();
       g.strokeStyle = color;
       g.lineCap = 'round';
@@ -2674,7 +2699,7 @@ export default defineSimulation({
             g.setLineDash(found ? [] : [4, 4]);
             g.stroke();
             g.setLineDash([]);
-            drawSwing(c, s, found ? col.ok() : withAlpha(theme.text, 0.35));
+            drawSwing(c, s, found ? col.ok() : withAlpha(theme.text, 0.35), !found);
             if (!found) text(g, '?', c[0] + s * 0.62, c[1] - s * 0.62, { font: font(800, F(16, 14)), color: theme.muted });
           }
         },
