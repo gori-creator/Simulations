@@ -51,6 +51,7 @@ export default defineSimulation({
   id: 'quader-volumen',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.82 },
+  images: { wood: 'holz.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'a', type: 'number', label: L('Länge a', 'Length a'), min: 1, max: MAX, step: 1, default: 5 },
@@ -268,6 +269,16 @@ export default defineSimulation({
 
     /* ---------- Zeichnen ---------- */
 
+    /**
+     * Holzmaserung: Der Einheitswürfel ist naturbelassen, die gezählten Würfel
+     * bleiben bunt (Foto mit der Würfelfarbe multipliziert). Ohne Foto einfarbig.
+     */
+    function woodTexture(painted = true) {
+      const image = ctx.images.get('wood');
+      if (!image) return undefined;
+      return painted ? { image, size: 4, alpha: 0.3, blend: 'multiply' as const } : { image, size: 4 };
+    }
+
     function cubeColor(k: number): string {
       const s = ctx.theme.series;
       const ab = p.a * p.b;
@@ -437,6 +448,7 @@ export default defineSimulation({
           }
         });
       }
+      const wood = woodTexture();
       const index = (col: number, row: number, layer: number) => (col < 0 || row < 0 || layer < 0 || col >= a || row >= b || layer >= c ? -1 : layer * a * b + row * a + col);
       for (let k = 0; k < n; k++) {
         const g = group[k]!;
@@ -451,7 +463,7 @@ export default defineSimulation({
           const pts = cubeFace(corner, normal);
           const center = vec3.centroid(pts);
           if (vec3.dot(normal, vec3.sub(cam, center)) <= 0) continue;
-          view.face(pts, { color, alpha: alpha[k]!, stroke, width: 1, gloss: 0.12 });
+          view.face(pts, { color, alpha: alpha[k]!, stroke, width: 1, gloss: 0.12, texture: wood });
         }
       }
     }
@@ -505,7 +517,7 @@ export default defineSimulation({
       const x2 = -2.3;
       const cube = mesh3d.box([x1, x2, 0], [x1 + 1, x2 + 1, 1]);
       const color = th.dark ? th.series[3]! : mixColor(th.series[3]!, '#ffffff', 0.18);
-      view.mesh(cube, { color, edgeColor: mixColor(color, th.dark ? '#000000' : '#0b1220', 0.45), edgeWidth: 1.4 });
+      view.mesh(cube, { color, texture: woodTexture(false), edgeColor: mixColor(color, th.dark ? '#000000' : '#0b1220', 0.45), edgeWidth: 1.4 });
       view.label([x1, x2 + 0.5, 1], `1 ${u}³`, { color: th.text, size: 13, weight: '700', align: 'center', baseline: 'bottom', offset: [0, -9] });
       view.label([x1 + 1, x2 + 0.5, 0], `1 ${u}`, { color: th.muted, size: 11, weight: '600', align: 'center', baseline: 'top', offset: [0, 8] });
     }

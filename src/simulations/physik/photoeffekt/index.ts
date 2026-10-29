@@ -56,6 +56,8 @@ interface Geo {
   /** Anode: x und halbe Höhe. */
   ax: number;
   ah: number;
+  /** Runder Glaskolben des Fotos (Mitte, Radius) oder `null` (gezeichnete Röhre). */
+  bulb: { x: number; y: number; r: number } | null;
   /** Lampe. */
   lx: number;
   ly: number;
@@ -103,7 +105,7 @@ export default defineSimulation({
   animated: true,
   hint: L('Tipp: Am Drehknopf der Spannungsquelle lässt sich die Gegenspannung mit Maus oder Finger einstellen.', 'Tip: turn the knob of the power supply with the mouse or a finger to set the retarding voltage.'),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
-  images: { meter: 'manometer.webp' },
+  images: { meter: 'manometer.webp', cell: 'fotozelle.webp', lamp: 'lampe.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -333,12 +335,23 @@ export default defineSimulation({
       const tw = r.x + r.w - (sm ? 12 : 20) - tx;
       const ty = top + (sm ? 6 : 10);
       const th = bot - ty - (sm ? 8 : 14);
-      const cy = ty + th / 2;
-      const kr = Math.min(th * 0.42, tw * 0.5);
+      let cy = ty + th / 2;
+      let kr = Math.min(th * 0.42, tw * 0.5);
       const ka = 0.85;
-      const kx = tx + tw * 0.14 + kr;
-      const ax = tx + tw * 0.74;
-      const ah = th * 0.3;
+      let kx = tx + tw * 0.14 + kr;
+      let ax = tx + tw * 0.74;
+      let ah = th * 0.3;
+      // Foto der Fotozelle: Kolben oben bündig, Sockel ragt unter die Röhre; Elektroden im Kreis
+      let bulb: Geo['bulb'] = null;
+      if (ctx.images.get('cell')) {
+        const R = Math.min(tw, th) * 0.44;
+        bulb = { x: tx + tw / 2, y: ty + R * 1.02, r: R };
+        cy = bulb.y;
+        kr = R * 0.85;
+        kx = bulb.x - R * 0.72 + kr;
+        ax = bulb.x + R * 0.5;
+        ah = R * 0.55;
+      }
       const lx = r.x + (sm ? 18 : 26);
       const ly = top + (sm ? 10 : 16);
       const wy = bot + (sm ? 18 : 24);
@@ -349,7 +362,7 @@ export default defineSimulation({
       const mr = clamp(cb * 0.36, 32, 56);
       const mx = r.x + r.w - mr - (sm ? 14 : 24);
       const my = r.y + r.h - mr - (sm ? 10 : 14);
-      return { r, sm, tx, ty, tw, th, cy, kx, kr, ka, ax, ah, lx, ly, wy, sx, sy, sw, sh: shh, mx, my, mr };
+      return { r, sm, tx, ty, tw, th, cy, kx, kr, ka, ax, ah, bulb, lx, ly, wy, sx, sy, sw, sh: shh, mx, my, mr };
     }
 
     /** Punkt auf der Kathodenoberfläche (j von −1 oben bis 1 unten). */
@@ -642,6 +655,21 @@ export default defineSimulation({
       g.shadowColor = dark ? 'rgba(0,0,0,0.6)' : 'rgba(20,30,45,0.3)';
       g.shadowBlur = 10;
       g.shadowOffsetY = 3;
+      const lamp = ctx.images.get('lamp');
+      if (lamp) {
+        // Foto (900 × 487): Lichtaustritt rechts, Mitte des Zylinders bei y = 158
+        const w = L0 * 1.5;
+        const k = w / lamp.naturalWidth;
+        const h = lamp.naturalHeight * k;
+        g.drawImage(scaledSprite(lamp, w, h, surface.dpr), L0 * 0.25 - w, -158 * k, w, h);
+        g.shadowColor = 'rgba(0,0,0,0)';
+        g.fillStyle = alphaOf(col, 0.35 + 0.65 * on);
+        roundRect(g, L0 * 0.25 - 3, -150 * k, 4, 300 * k, 1.5);
+        g.fill();
+        g.restore();
+        g.restore();
+        return;
+      }
       const body = g.createLinearGradient(0, -H0 / 2, 0, H0 / 2);
       body.addColorStop(0, dark ? '#5d6674' : '#6b7583');
       body.addColorStop(0.5, dark ? '#3a414c' : '#454d58');
@@ -662,6 +690,22 @@ export default defineSimulation({
       const g = surface.g;
       const dark = ctx.theme.dark;
       const { tx, ty, tw, th } = G;
+      const cell = ctx.images.get('cell');
+      if (G.bulb && cell) {
+        // Foto (504 × 800): Kolbenmitte (252 | 262), Radius 252; Steckerstifte (unter y = 690) abgeschnitten
+        if (front) return;
+        const k = G.bulb.r / 252;
+        const w = cell.naturalWidth * k;
+        const h = 690 * k;
+        g.save();
+        g.globalAlpha *= ik;
+        g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.18)';
+        g.shadowBlur = 14;
+        g.shadowOffsetY = 4;
+        g.drawImage(scaledSprite(cell, w, h, surface.dpr, { crop: { x: 0, y: 0, w: cell.naturalWidth, h: 690 } }), G.bulb.x - 252 * k, G.bulb.y - 262 * k, w, h);
+        g.restore();
+        return;
+      }
       g.save();
       g.globalAlpha *= ik;
       if (!front) {
@@ -748,9 +792,17 @@ export default defineSimulation({
       g.beginPath();
       const kb = { x: kx - kr * Math.cos(ka), y: cy + kr * Math.sin(ka) };
       g.moveTo(kb.x, kb.y);
-      g.lineTo(kb.x, G.ty + G.th);
-      g.moveTo(ax, cy + ah);
-      g.lineTo(ax, G.ty + G.th);
+      if (G.bulb) {
+        // durch den Hals in den Sockel
+        const neck = G.bulb.y + G.bulb.r * 1.02;
+        g.lineTo(G.bulb.x - G.bulb.r * 0.08, neck);
+        g.moveTo(ax, cy + ah);
+        g.lineTo(G.bulb.x + G.bulb.r * 0.08, neck);
+      } else {
+        g.lineTo(kb.x, G.ty + G.th);
+        g.moveTo(ax, cy + ah);
+        g.lineTo(ax, G.ty + G.th);
+      }
       g.stroke();
       // Beschriftungen
       const fs = sm ? 10.5 : 11.5;
@@ -1035,8 +1087,15 @@ export default defineSimulation({
 
     function drawWires(G: Geo, ik: number): void {
       const g = surface.g;
-      const kb = { x: G.kx - G.kr * Math.cos(G.ka), y: G.ty + G.th };
-      const ab = { x: G.ax, y: G.ty + G.th };
+      let kb = { x: G.kx - G.kr * Math.cos(G.ka), y: G.ty + G.th };
+      let ab = { x: G.ax, y: G.ty + G.th };
+      if (G.bulb) {
+        // Anschlüsse seitlich am Sockel (Foto: Sockel 1,03 … 1,69 Radien unter der Kolbenmitte, halbe Breite 0,45)
+        const { x, y, r: R } = G.bulb;
+        const sy = clamp(G.wy - (G.sm ? 3 : 4), y + R * 1.12, y + R * 1.6);
+        kb = { x: x - R * 0.43, y: sy };
+        ab = { x: x + R * 0.43, y: sy };
+      }
       const by = G.sy + G.sh - (G.sm ? 11 : 13);
       const supplyPlus = { x: G.sx + 18, y: by };
       const supplyMinus = { x: G.sx + G.sw * 0.45, y: by };

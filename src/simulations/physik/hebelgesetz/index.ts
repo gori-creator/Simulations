@@ -196,6 +196,8 @@ export default defineSimulation({
     stand: 'wippe-gestell.webp',
     board: 'brett.webp',
     opener: 'flaschenoeffner.webp',
+    kid1: 'kind-wippe-1.webp',
+    kid2: 'kind-wippe-2.webp',
   },
   groups: [
     { id: 'w1', label: L('Massestücke (1)', 'Weights (1)') },
@@ -2238,11 +2240,46 @@ export default defineSimulation({
       }
     }
 
+    /**
+     * Fotos der sitzenden Kinder (beide schauen nach rechts; das rechte Kind wird
+     * gespiegelt): Sitzpunkt und Hände in Bildpixeln. Der Maßstab folgt aus dem
+     * Abstand Sitz → Griff, so greifen die Hände genau den Haltegriff.
+     */
+    const KID_PHOTOS = {
+      1: { key: 'kid1', seat: [90, 440], hand: [300, 270] },
+      [-1]: { key: 'kid2', seat: [150, 417], hand: [365, 250] },
+    } as const;
+    const kidPhoto = (facing: 1 | -1) => ctx.images.get(KID_PHOTOS[facing].key);
+    /** Griff vor dem Kind: Abstand längs der Wippe und Höhe (mit Foto mit der Größe des Kindes skaliert). */
+    function kidGrip(facing: 1 | -1, mass: number): { along: number; up: number } {
+      if (!kidPhoto(facing)) return { along: 0.42, up: 0.34 };
+      const ph = KID_PHOTOS[facing];
+      const along = 0.42 * Math.cbrt(mass / 40);
+      return { along, up: (along * (ph.seat[1] - ph.hand[1])) / (ph.hand[0] - ph.seat[0]) };
+    }
+
     function drawKid(x: number, y: number, mass: number, color: string, facing: 1 | -1, grip: Pt): void {
       const gx = surface.g;
       const f = Math.cbrt(mass / 40);
       const [px, py] = dplot.toPx(x, y);
       const k = dplot.scale.x;
+      const photo = kidPhoto(facing);
+      if (photo) {
+        const ph = KID_PHOTOS[facing];
+        const sc = (kidGrip(facing, mass).along * k) / (ph.hand[0] - ph.seat[0]);
+        const w = photo.naturalWidth * sc;
+        const h = photo.naturalHeight * sc;
+        const x0 = facing === 1 ? px - ph.seat[0] * sc : px - (photo.naturalWidth - ph.seat[0]) * sc;
+        const y0 = py - 0.02 * k - ph.seat[1] * sc;
+        gx.save();
+        gx.shadowColor = 'rgba(0,0,0,0.22)';
+        gx.shadowBlur = 5;
+        gx.shadowOffsetY = 2;
+        gx.drawImage(scaledSprite(photo, w, h, surface.dpr, { flipX: facing === -1 }), x0, y0, w, h);
+        gx.restore();
+        haloText(`${fmt.num(mass, 0)} kg`, px, y0 - 8, color, Math.max(10.5, Math.min(13, 0.1 * k)));
+        return;
+      }
       const bw = 0.34 * f * k;
       const bh = 0.5 * f * k;
       const head = 0.13 * f * k;
@@ -2358,8 +2395,9 @@ export default defineSimulation({
       for (const kid of kids) {
         const seat = rotateAbout(C, psi, [kid.s, SEESAW_H + 0.09]);
         seats.push(seat);
-        const g0 = rotateAbout(C, psi, [kid.s + kid.facing * 0.42, SEESAW_H + 0.09]);
-        const g1: Pt = [g0[0] + nrm[0] * 0.34, g0[1] + nrm[1] * 0.34];
+        const grip = kidGrip(kid.facing, kid.m);
+        const g0 = rotateAbout(C, psi, [kid.s + kid.facing * grip.along, SEESAW_H + 0.09]);
+        const g1: Pt = [g0[0] + nrm[0] * grip.up, g0[1] + nrm[1] * grip.up];
         gx.strokeStyle = '#3a4250';
         gx.lineCap = 'round';
         gx.lineWidth = Math.max(2.5, 0.035 * k);

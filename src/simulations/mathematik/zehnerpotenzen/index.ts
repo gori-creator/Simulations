@@ -188,6 +188,7 @@ export default defineSimulation({
     sand: 'sandkorn.webp',
     bug: 'marienkaefer.webp',
     apple: 'apfel.webp',
+    child: 'kind.webp',
     house: 'haus.webp',
     field: 'fussballfeld.webp',
     peak: 'berg.webp',
@@ -923,6 +924,12 @@ export default defineSimulation({
       const g = surface.g;
       const H = 1.4 * k;
       shadowEllipse(X, Y, H * 0.16, H * 0.025);
+      // Foto: Scheitel bis Sohle = Bildhöhe = 1,4 m
+      const childImg = ctx.images.get('child');
+      if (childImg) {
+        const ph = photo('child', X, Y, (H * childImg.naturalWidth) / childImg.naturalHeight);
+        if (ph) return ph;
+      }
       const skin = '#f0c29d';
       const lw = H * 0.075;
       // Beine

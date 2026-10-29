@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, seededRandom, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
+import { clamp, defineSimulation, ease, measureSubText, mixColor, prefersReducedMotion, roundRect, scaledSprite, seededRandom, subText, Surface, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   braggAngle,
   D1,
@@ -53,6 +53,8 @@ interface TubeGeo {
   Rb: number;
   neckX: number;
   neckH: number;
+  /** Breite des Röhrensockels links vom Hals (nur mit Foto, sonst 0). */
+  plugW: number;
   cathX: number;
   anodeX: number;
   foilX: number;
@@ -109,6 +111,7 @@ export default defineSimulation({
     'Tip: Drag the handle of the dashed measuring circle on the screen onto a ring.',
   ),
   layout: { aspect: 1.5, aspectNarrow: 0.45 },
+  images: { tube: 'beugungsroehre.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
@@ -331,13 +334,16 @@ export default defineSimulation({
       const Rb = Math.max(24, Math.min((bot - top) / 2, r.w * 0.2));
       const by = (top + bot) / 2;
       const bx = r.x + r.w - Rb - (sm ? 14 : 22);
-      const neckX = r.x + (sm ? 12 : 18);
-      const neckH = Rb * 0.42;
+      // Foto: Hals schmaler (0,29 Kolbenradien), links davor der Sockel
+      const photo = !!ctx.images.get('tube');
+      const plugW = photo ? Math.min((200 / 228) * Rb, (bx - Rb - r.x) * 0.22) : 0;
+      const neckX = r.x + (sm ? 12 : 18) + (photo ? plugW - (sm ? 8 : 12) : 0);
+      const neckH = Rb * (photo ? 0.29 : 0.42);
       const foilX = bx - Rb * 0.97;
       const screenX = bx + Rb * 0.97;
       const cathX = neckX + (sm ? 16 : 24);
       const anodeX = cathX + Math.max(28, (foilX - cathX) * 0.3);
-      return { r, sm, bx, by, Rb, neckX, neckH, cathX, anodeX, foilX, screenX, k: (screenX - foilX) / (SCREEN_DISTANCE * 1000) };
+      return { r, sm, bx, by, Rb, neckX, neckH, plugW, cathX, anodeX, foilX, screenX, k: (screenX - foilX) / (SCREEN_DISTANCE * 1000) };
     }
 
     function screenGeo(r: Rect): ScreenGeo {
@@ -604,6 +610,12 @@ export default defineSimulation({
       g.arc(bx, by, Rb - 3, -0.75, 0.75);
       g.stroke();
       g.restore();
+      const photo = ctx.images.get('tube');
+      if (photo) {
+        drawTubePhoto(T, photo);
+        g.restore();
+        return;
+      }
       // Glasrand mit Glanz
       g.strokeStyle = dark ? 'rgba(200,220,245,0.45)' : 'rgba(110,135,165,0.65)';
       g.lineWidth = 1.6;
@@ -615,6 +627,30 @@ export default defineSimulation({
       g.arc(bx, by, Rb - 6, -2.6, -1.9);
       g.stroke();
       g.restore();
+    }
+
+    /**
+     * Foto der Röhre (1400 × 456): Sockel x 0 … 200, gleichmäßiger Hals bis 900,
+     * Kolben mit Mitte (1172 | 228) und Radius 228. Der Hals wird in die Länge
+     * gezogen (ein Zylinder sieht gestreckt gleich aus), Sockel und Kolben bleiben
+     * unverzerrt. Elektroden und Strahl zeichnet die Simulation davor.
+     */
+    function drawTubePhoto(T: TubeGeo, img: HTMLImageElement): void {
+      const g = surface.g;
+      const k = T.Rb / 228;
+      const h = img.naturalHeight * k;
+      const y = T.by - 228 * k;
+      const bulbX = T.bx - (1172 - 900) * k;
+      const neckX = T.neckX - 6;
+      const dpr = surface.dpr;
+      const slice = (sx: number, sw: number, dx: number, dw: number) => {
+        if (dw < 1) return;
+        g.drawImage(scaledSprite(img, dw, h, dpr, { crop: { x: sx, y: 0, w: sw, h: img.naturalHeight } }), dx, y, dw, h);
+      };
+      const plugSrc = T.plugW / k;
+      slice(200 - plugSrc, plugSrc, neckX - T.plugW, T.plugW);
+      slice(200, 700, neckX, bulbX - neckX + 0.5);
+      slice(900, 500, bulbX, 500 * k);
     }
 
     /** Kathode, Anode, Graphitfolie, Spannungsquelle und Beschriftungen. */

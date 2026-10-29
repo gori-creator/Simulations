@@ -75,7 +75,7 @@ export default defineSimulation({
   animated: true,
   hint: L('Tipp: Den Beobachter (grün) im Bild mit Maus oder Finger ziehen – das ändert Abstand und Standort.', 'Tip: drag the observer (green) in the picture with the mouse or a finger – this changes the distance and position.'),
   layout: { aspect: 1.25, aspectNarrow: 0.56 },
-  images: { road: 'strasse.webp', ambulance: 'krankenwagen.webp' },
+  images: { road: 'strasse.webp', ambulance: 'krankenwagen.webp', person: 'beobachter.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'f', type: 'number', label: L('Frequenz der Quelle f_Q', 'Source frequency f_Q'), min: 200, max: 1000, step: 10, default: 440, unit: 'Hz' },
@@ -1187,6 +1187,33 @@ export default defineSimulation({
         g.arc(x, y, s * 1.05, 0, TAU);
         g.fill();
       }
+      const photo = ctx.images.get('person');
+      if (photo) {
+        // Foto von oben (Kopf oben, zur Straße), Schultern etwa so breit wie die Zeichnung
+        const w = s * 1.35;
+        const h = (w * photo.naturalHeight) / photo.naturalWidth;
+        g.save();
+        g.shadowColor = dark ? 'rgba(0,0,0,0.5)' : 'rgba(20,30,45,0.25)';
+        g.shadowBlur = 5;
+        g.shadowOffsetY = 3;
+        g.drawImage(scaledSprite(photo, w, h, surface.dpr), x - w / 2, y - h * 0.36, w, h);
+        g.restore();
+      } else drawPersonShape(x, y, s);
+      // Schallbögen am Ohr
+      g.strokeStyle = withAlpha(green(), 0.35 + 0.6 * hit);
+      g.lineWidth = 1.6;
+      g.lineCap = 'round';
+      for (let i = 1; i <= 2; i++) {
+        g.beginPath();
+        g.arc(x - s * 0.29, y - s * 0.04, s * (0.14 + 0.13 * i), Math.PI * 1.08, Math.PI * 1.42);
+        g.stroke();
+      }
+    }
+
+    /** Gezeichnete Person von oben (Ersatz ohne Foto). */
+    function drawPersonShape(x: number, y: number, s: number): void {
+      const g = surface.g;
+      const dark = ctx.theme.dark;
       // Schatten
       g.save();
       g.fillStyle = dark ? 'rgba(0,0,0,0.45)' : 'rgba(20,30,45,0.2)';
@@ -1221,15 +1248,6 @@ export default defineSimulation({
       g.beginPath();
       g.arc(x, y - s * 0.04, s * 0.27, 0, TAU);
       g.fill();
-      // Schallbögen am Ohr
-      g.strokeStyle = withAlpha(green(), 0.35 + 0.6 * hit);
-      g.lineWidth = 1.6;
-      g.lineCap = 'round';
-      for (let i = 1; i <= 2; i++) {
-        g.beginPath();
-        g.arc(x - s * 0.29, y - s * 0.04, s * (0.14 + 0.13 * i), Math.PI * 1.08, Math.PI * 1.42);
-        g.stroke();
-      }
     }
 
     /* ---------- Szene ---------- */

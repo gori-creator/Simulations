@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, scaledSprite, shade, Surface, text, type Rect } from '../../../sim-core';
 import { drawPictIcon, type PictIcon } from './icons';
 import {
   DATASETS,
@@ -275,6 +275,7 @@ export default defineSimulation({
   id: 'diagramme',
   dragHint: true,
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
+  images: { s0: 'fussball.webp', s1: 'tanzschuhe.webp', s2: 'reithelm.webp', s3: 'tennis.webp', s4: 'turnringe.webp' },
   groups: [
     { id: 'vals', label: L('Werte', 'Values') },
     { id: 'view', label: L('Anzeige', 'Display') },
@@ -820,6 +821,34 @@ export default defineSimulation({
     }
 
     /* ---------------- Texthelfer ---------------- */
+    /**
+     * Beschriftung einer Kategorie, beim Lieblingssport mit kleinem Foto davor
+     * (Ball, Schuhe …). Ohne Foto oder bei Platzmangel nur der Text.
+     */
+    function catLabel(i: number, value: string, x: number, y: number, font: string, color: string, align: CanvasTextAlign = 'center', maxW = Infinity): void {
+      const g = surface.g;
+      const img = shown.data === 'sport' ? ctx.images.get(`s${i}`) : null;
+      g.font = font;
+      const tw = g.measureText(value).width;
+      const isz = Math.round(parseFloat(/(\d+(\.\d+)?)px/.exec(font)?.[1] ?? '12') * 1.6);
+      if (!img || tw + isz + 5 > maxW) {
+        text(g, value, x, y, { font, color, align });
+        return;
+      }
+      const full = isz + 5 + tw;
+      const x0 = align === 'left' ? x : align === 'right' ? x - full : x - full / 2;
+      // runde Unterlage: Im Dunkeln bleiben so auch Reithelm und Ringe sichtbar
+      g.beginPath();
+      g.arc(x0 + isz / 2, y, isz / 2, 0, TAU);
+      g.fillStyle = ctx.theme.dark ? 'rgba(232,238,246,0.92)' : 'rgba(16,24,40,0.06)';
+      g.fill();
+      const k = (isz * 0.74) / Math.max(img.naturalWidth, img.naturalHeight);
+      const w = img.naturalWidth * k;
+      const h = img.naturalHeight * k;
+      g.drawImage(scaledSprite(img, w, h, surface.dpr), x0 + (isz - w) / 2, y - h / 2, w, h);
+      text(g, value, x0 + isz + 5, y, { font, color, align: 'left' });
+    }
+
     function fitText(values: string[], maxW: number, size: number, weight = 600, min = 10.5): { value: string; font: string } {
       const g = surface.g;
       for (const value of values) {
@@ -1350,7 +1379,7 @@ export default defineSimulation({
           const f = fitText([cats[i]!], slot - 4, small ? 11.5 : 12.5, 650, 10);
           g.save();
           g.globalAlpha = ca * (0.55 + 0.45 * dims[i]!.at(now));
-          text(g, f.value, cx, R.y + R.h + 16, { font: f.font, color: sel === i ? theme.text : theme.muted });
+          catLabel(i, f.value, cx, R.y + R.h + 16, f.font, sel === i ? theme.text : theme.muted, 'center', slot - 4);
           g.restore();
           if (ca > 0.5) zones.push({ id: 'cats', r: { x: cx - slot / 2, y: R.y + R.h + 4, w: slot, h: 24 } });
         });
@@ -1362,7 +1391,7 @@ export default defineSimulation({
         boxes.forEach((b, i) => {
           g.save();
           g.globalAlpha = ba * (0.55 + 0.45 * dims[i]!.at(now));
-          text(g, cats[i]!, Q.x - 10, b.y + b.h / 2, { font: `650 ${small ? 12 : 13}px ${theme.font}`, color: sel === i ? theme.text : theme.muted, align: 'right' });
+          catLabel(i, cats[i]!, Q.x - 10, b.y + b.h / 2, `650 ${small ? 12 : 13}px ${theme.font}`, sel === i ? theme.text : theme.muted, 'right', Q.x - 10 - geo!.C.x);
           g.restore();
           if (ba > 0.5) zones.push({ id: 'cats', r: { x: geo!.C.x, y: b.y - 4, w: Q.x - geo!.C.x, h: b.h + 8 } });
         });
@@ -1468,7 +1497,7 @@ export default defineSimulation({
           g.globalAlpha = pa * vis * (0.6 + 0.4 * dims[i]!.at(now));
           const nf = `700 ${small ? 11.5 : 12.5}px ${theme.font}`;
           const showP = labA > 0.01;
-          text(g, cats[i]!, x, y + dyName - (showP ? 8 : 0), { font: nf, color: theme.text, align });
+          catLabel(i, cats[i]!, x, y + dyName - (showP ? 8 : 0), nf, theme.text, align);
           if (showP) {
             g.globalAlpha *= labA;
             const pv = pcts[i]!;
