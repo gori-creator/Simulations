@@ -87,6 +87,7 @@ const CHIPS: { id: string; b: number | 'e' }[] = [
 export default defineSimulation({
   id: 'logarithmus',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Graphen – sein Spiegelbild wandert mit.', en: 'Tip: Drag point P on the graph – its mirror image moves along.' },
   layout: { aspect: 1.55, aspectNarrow: 0.44 },
   groups: [
     { id: 'base', label: L('Basis', 'Base') },

@@ -1,0 +1,87 @@
+# Veröffentlicht die Website bei jedem Push auf "main" zusätzlich auf dem
+# STRATO-Webspace (https://scitura.de, Server in Deutschland).
+#
+# Einmalig nötig (Repository → Settings → Secrets and variables → Actions):
+# - Secrets STRATO_HOST (z. B. ssh.strato.de), STRATO_USER, STRATO_PASSWORD
+#   aus dem SFTP/SSH-Zugang im STRATO-Kundenbereich
+# - optional Variable STRATO_DIR: Zielordner auf dem Webspace (Standard: scitura).
+#   Die Domain scitura.de muss im STRATO-Kundenbereich auf diesen Ordner zeigen.
+#
+# Ohne die Secrets wird nur gebaut, nichts hochgeladen.
+name: Veröffentlichen (STRATO)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: strato
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      STRATO_HOST: ${{ secrets.STRATO_HOST }}
+      STRATO_USER: ${{ secrets.STRATO_USER }}
+      LFTP_PASSWORD: ${{ secrets.STRATO_PASSWORD }}
+      STRATO_DIR: ${{ vars.STRATO_DIR || 'scitura' }}
+    steps:
+      - name: Zugangsdaten vorhanden?
+        id: ready
+        run: |
+          if [ -n "$STRATO_HOST" ] && [ -n "$STRATO_USER" ] && [ -n "$LFTP_PASSWORD" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::STRATO-Zugangsdaten fehlen – es wird nichts hochgeladen."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.ready.outputs.ok == 'true'
+        uses: actions/checkout@v7
+      - if: steps.ready.outputs.ok == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          # immer die neueste 22er-Version (Pakete verlangen teils eine bestimmte Mindestversion)
+          check-latest: true
+          cache: npm
+      - if: steps.ready.outputs.ok == 'true'
+        run: npm ci
+      - name: Build für scitura.de
+        if: steps.ready.outputs.ok == 'true'
+        run: npm run build
+        env:
+          SITE_URL: https://scitura.de
+          BASE_PATH: /
+      - name: Server-Einstellungen (.htaccess)
+        if: steps.ready.outputs.ok == 'true'
+        # Immer https und ohne „www.“; eigene 404-Seite; Dateien in _astro/ (Prüfsumme im Namen) lange zwischenspeichern
+        run: |
+          cat > dist/.htaccess <<'EOF'
+          ErrorDocument 404 /404.html
+          RewriteEngine On
+          RewriteCond %{SERVER_PORT} !^443$ [OR]
+          RewriteCond %{HTTP_HOST} ^www\. [NC]
+          RewriteRule ^ https://scitura.de%{REQUEST_URI} [L,R=301]
+          EOF
+          cat > dist/_astro/.htaccess <<'EOF'
+          <IfModule mod_headers.c>
+          Header set Cache-Control "public, max-age=31536000, immutable"
+          </IfModule>
+          EOF
+      - name: Installieren von lftp
+        if: steps.ready.outputs.ok == 'true'
+        run: sudo apt-get update -q && sudo apt-get install -y -q lftp
+      - name: Hochladen (SFTP)
+        if: steps.ready.outputs.ok == 'true'
+        # Spiegelt dist/ in den Zielordner; Dateien, die es nicht mehr gibt, werden dort gelöscht
+        run: |
+          lftp -e "set sftp:auto-confirm yes; set net:max-retries 3; set net:timeout 30; \
+            open --env-password -u \"$STRATO_USER\" sftp://$STRATO_HOST; \
+            mkdir -p -f \"$STRATO_DIR\"; \
+            mirror --reverse --delete --parallel=4 --verbose=1 dist/ \"$STRATO_DIR\"; \
+            bye"

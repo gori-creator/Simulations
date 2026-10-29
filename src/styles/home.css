@@ -352,7 +352,13 @@
 
 .motion-paused .home-hero,
 .motion-paused .home-hero::before,
-.motion-paused .home-hero::after {
+.motion-paused .home-hero::after,
+.home-hero.is-offscreen,
+.home-hero.is-offscreen::before,
+.home-hero.is-offscreen::after,
+.scitura-home:has(.home-experiment.is-running) .home-hero,
+.scitura-home:has(.home-experiment.is-running) .home-hero::before,
+.scitura-home:has(.home-experiment.is-running) .home-hero::after {
   animation-play-state: paused;
 }
 
@@ -1058,28 +1064,30 @@
   max-width: 620px;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(90px);
+  /* Weicher Rand als Verlauf statt filter: blur() – eine große Unschärfe kostet auf Tablets bei jedem Bild viel Rechenzeit */
+  background: radial-gradient(closest-side, var(--aurora), transparent);
   opacity: 0.35;
+  will-change: transform;
   animation: sc-drift 22s ease-in-out infinite alternate;
 }
 
 .home-experiment__aurora span:nth-child(1) {
   top: 18%;
   left: 2%;
-  background: #2f5fc4;
+  --aurora: #2f5fc4;
 }
 
 .home-experiment__aurora span:nth-child(2) {
   top: 40%;
   right: 0;
-  background: #2a6fb0;
+  --aurora: #2a6fb0;
   animation-delay: -8s;
 }
 
 .home-experiment__aurora span:nth-child(3) {
   bottom: -10%;
   left: 35%;
-  background: #3a4fa8;
+  --aurora: #3a4fa8;
   opacity: 0.3;
   animation-delay: -15s;
 }
@@ -1155,9 +1163,14 @@
   }
 }
 
+/* Auch während der Fahrt: die unscharfen Flächen müssten sonst bei jedem Bild neu gezeichnet
+   werden (Milchglas, Regenbogenrand) – auf Tablets ruckelt dann die Achterbahn. */
 .motion-paused .home-experiment__aurora span,
 .motion-paused .home-experiment__window::before,
-.motion-paused .home-experiment__body::before {
+.motion-paused .home-experiment__body::before,
+.home-experiment.is-running .home-experiment__aurora span,
+.home-experiment.is-running .home-experiment__window::before,
+.home-experiment.is-running .home-experiment__body::before {
   animation-play-state: paused;
 }
 
@@ -1240,7 +1253,6 @@
 @media (max-width: 760px) {
   .home-experiment__aurora span {
     width: 80vw;
-    filter: blur(70px);
   }
 
   .home-experiment__body {

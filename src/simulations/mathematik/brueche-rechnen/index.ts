@@ -43,6 +43,7 @@ interface MsgLine {
 export default defineSimulation({
   id: 'brueche-rechnen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die runden Griffe am Rand des Quadrats, um die Brüche zu ändern.', en: 'Tip: Drag the round handles at the edge of the square to change the fractions.' },
   layout: { aspect: 1.4, aspectNarrow: 0.5 },
   params: [
     {

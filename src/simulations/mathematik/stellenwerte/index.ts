@@ -97,6 +97,7 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export default defineSimulation({
   id: 'stellenwerte',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe auf + und − unter einer Stelle, um Plättchen dazuzulegen oder wegzunehmen.', en: 'Tip: Tap + and − below a place to add or remove counters.' },
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

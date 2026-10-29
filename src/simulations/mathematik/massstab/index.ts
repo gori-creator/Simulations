@@ -95,6 +95,7 @@ const SCALE_HINT: Record<number, Loc> = {
 export default defineSimulation({
   id: 'massstab',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die beiden Griffe des Lineals auf der Karte.', en: 'Tip: Drag the two handles of the ruler on the map.' },
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
   images: { bug: 'marienkaefer-oben.webp', stamp: 'briefmarke.webp', sand: 'sandkorn.webp', lupe: 'lupe.webp' },
   groups: [{ id: 'pts', label: L('Messstrecke (Lage in m, von der Nordwestecke aus)', 'Measured line (position in m from the north-west corner)') }],

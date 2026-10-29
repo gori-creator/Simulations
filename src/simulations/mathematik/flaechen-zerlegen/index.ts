@@ -53,6 +53,7 @@ const S_MAX = 10;
 export default defineSimulation({
   id: 'flaechen-zerlegen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken der Figur – der Flächeninhalt rechnet mit.', en: 'Tip: Drag the corners of the shape – the area is recalculated.' },
   layout: { aspect: 1.6, aspectNarrow: 0.62 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

@@ -44,6 +44,13 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 - [x] **Bildrechte** dokumentieren: `docs/BILDRECHTE.md` (alle 218 Bilder angesehen, Prompts zu jedem Bild, fremde Bestandteile mit Lizenz). Generator (OpenAI Codex) und Bedingungen eingetragen, Hinweis „mit KI erzeugt“ auf „Über das Projekt“. Offen: Lizenzhinweise KaTeX/qrcode-generator (mit der Lizenz-Entscheidung).
 - [ ] Bis Impressum und Datenschutz fertig sind, ggf. wieder `SITE_LIVE: 'false'` in `.github/workflows/deploy.yml` (zeigt nur eine Platzhalterseite).
 
+## Hosting und Domain
+
+- [x] **Name und Domains** (28.10.): Markenrecherche (DPMA, EUIPO) ohne Treffer für „Scitura“; scitura.de, .net und .eu bei STRATO gekauft (Hosting Basic, Server in Deutschland). scitura.com ist vergeben.
+- [x] **Automatischer Upload zu STRATO** (29.10.): `.github/workflows/strato.yml` baut bei jedem Push auf `main` für `https://scitura.de` und spiegelt `dist/` per SFTP in den Zielordner (Variable `STRATO_DIR`, Standard `scitura`). Dazu `.htaccess` (https, ohne „www.“, eigene 404-Seite). Läuft erst, wenn die Secrets da sind.
+- [ ] **STRATO einrichten** (Projektleitung): SFTP-Zugang anlegen; Secrets `STRATO_HOST`, `STRATO_USER`, `STRATO_PASSWORD` unter Settings → Secrets and variables → Actions eintragen (nie in den Chat); scitura.de (und www) auf den Ordner `scitura` zeigen lassen; SSL-Zertifikat für beide; .net und .eu auf https://scitura.de weiterleiten; Besucherstatistik aus; Postfach kontakt@scitura.de; Zwei-Faktor-Anmeldung.
+- [ ] Wenn scitura.de läuft: Datenschutzerklärung auf STRATO (Deutschland) umstellen, GitHub Pages abschalten (`deploy.yml` entfernen oder auf Weiterleitung umstellen).
+
 ## Sicherheit
 
 Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das Risiko ist gering.

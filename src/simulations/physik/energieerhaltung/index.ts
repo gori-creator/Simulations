@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, lerp, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, drawCard, ease, lerp, measureSubText, offscreenCanvas, Plot, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   bracket,
   CUSTOM_DEFAULT,
@@ -750,18 +750,9 @@ export default defineSimulation({
       return { w, h };
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.bg;
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      frame(r);
+      drawCard(surface.g, r, ctx.theme);
     }
 
     function frame(r: Rect): void {

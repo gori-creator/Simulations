@@ -1,22 +1,4 @@
-import {
-  clamp,
-  defineSimulation,
-  ease,
-  FixedStepper,
-  mixColor,
-  offscreenCanvas,
-  prefersReducedMotion,
-  roundRect,
-  scaledSprite,
-  seededRandom,
-  shade,
-  Surface,
-  text,
-  tintedSprite,
-  Tween,
-  withAlpha,
-  type Rect,
-} from '../../../sim-core';
+import { clamp, defineSimulation, drawCard, ease, FixedStepper, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, seededRandom, shade, Surface, text, tintedSprite, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   diffusionFactor,
   enthalpy,
@@ -114,6 +96,7 @@ export default defineSimulation({
   id: 'teilchenmodell',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Tippe ein Teilchen an, um seinen Weg zu verfolgen.', en: 'Tip: Tap a particle to follow its path.' },
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
   images: { thermo: 'thermometer.webp', plate: 'heizplatte.webp', pipette: 'pipette.webp', table: 'tischkante.webp', beaker: 'becherglas.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -501,21 +484,9 @@ export default defineSimulation({
       return g.measureText(label).width + 16;
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.bg;
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width: number, head = 8): void {

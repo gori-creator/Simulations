@@ -226,6 +226,7 @@ type Drag = { kind: 'vertex'; i: number } | { kind: 'move'; start: Pt; orig: Qua
 export default defineSimulation({
   id: 'vierecke',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken – das Haus der Vierecke zeigt, welche Art entsteht.', en: 'Tip: Drag the corners – the house of quadrilaterals shows which type you get.' },
   layout: { aspect: 1.32, aspectNarrow: 0.42 },
   groups: [
     { id: 'pts', label: L('Ecken (in Kästchen)', 'Corners (in grid squares)') },

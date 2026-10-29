@@ -32,6 +32,7 @@ export default defineSimulation({
   id: 'exponentielles-wachstum',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt auf dem Graphen, um einen Zeitpunkt t zu wählen.', en: 'Tip: Drag the point on the graph to choose a time t.' },
   layout: { aspect: 1.75, aspectNarrow: 0.72 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

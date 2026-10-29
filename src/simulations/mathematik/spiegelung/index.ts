@@ -89,6 +89,7 @@ type Drag =
 export default defineSimulation({
   id: 'spiegelung',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken der Figur oder die Spiegelachse.', en: 'Tip: Drag the corners of the shape or the mirror line.' },
   layout: { aspect: 1.5, aspectNarrow: 0.62 },
   groups: [
     { id: 'pts', label: L('Figur (in Kästchen)', 'Figure (in grid squares)') },

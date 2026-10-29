@@ -1,4 +1,4 @@
-import { defineSimulation, ease, measureSubText, mixColor, Plot, roundRect, seededRandom, subText, Surface, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, measureSubText, mixColor, Plot, roundRect, seededRandom, subText, Surface, textOn, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   circularSpeed,
   conicPoint,
@@ -97,6 +97,7 @@ export default defineSimulation({
   id: 'planetenbahnen',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh vor dem Start die Pfeilspitze der Startgeschwindigkeit.', en: 'Tip: Before the start, drag the tip of the starting-velocity arrow.' },
   layout: { aspect: 1.6, aspectNarrow: 0.46 },
   groups: [
     { id: 'start', label: L('Start des Planeten', 'Launch of the planet') },
@@ -851,20 +852,9 @@ export default defineSimulation({
       g.fill();
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.bg;
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     const wx = (x: number) => scene.px(x);

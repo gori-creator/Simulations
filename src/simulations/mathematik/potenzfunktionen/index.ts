@@ -153,6 +153,7 @@ const TABLE_X5 = [-2, -1, 0, 1, 2];
 export default defineSimulation({
   id: 'potenzfunktionen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt Q(1 | a) für den Streckfaktor oder P für die Punktprobe.', en: 'Tip: Drag point Q(1 | a) for the stretch factor or P for the point check.' },
   layout: { aspect: 1.55, aspectNarrow: 0.5 },
   groups: [
     { id: 'point', label: L('Punkt P (Punktprobe)', 'Point P (checking a point)') },

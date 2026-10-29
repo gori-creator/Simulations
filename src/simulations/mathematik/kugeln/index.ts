@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import { circlePoints, dot, norm, planeBasis, pointPosition, projectToSphere, reducePlane, signedDistance, sphereLhs, sphereLine, spherePlane, sub, tangentPlane, type V3 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -70,6 +70,7 @@ const same = (s: string) => L(s, s);
 export default defineSimulation({
   id: 'kugeln',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the points or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.68 },
   groups: [
     { id: 'kugel', label: L('Kugel K', 'Sphere K') },
@@ -887,23 +888,9 @@ export default defineSimulation({
     }
 
     /* ---------------- Tafel ---------------- */
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 18;
-      g.shadowOffsetY = 4;
-      roundRect(g, r.x, r.y, r.w, r.h, 14);
-      const gr0 = g.createLinearGradient(0, r.y, 0, r.y + r.h);
-      gr0.addColorStop(0, theme.dark ? shade(theme.bg, 0.075) : '#ffffff');
-      gr0.addColorStop(1, theme.dark ? shade(theme.bg, 0.035) : shade(theme.bg, -0.018));
-      g.fillStyle = gr0;
-      g.fill();
-      g.shadowColor = 'transparent';
-      g.strokeStyle = alpha(theme.text, theme.dark ? 0.1 : 0.07);
-      g.stroke();
-      g.restore();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     type Tok = { kind: 'col'; v: (number | string)[]; color: string } | { kind: 'txt'; s: string; color?: string; math?: boolean } | { kind: 'vec'; s: string; color: string };

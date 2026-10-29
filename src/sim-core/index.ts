@@ -31,7 +31,7 @@ export type { KeyTarget } from './key-targets';
  */
 export { KeyTargetLayer } from './key-targets';
 export { defaultValues, sanitize } from './params';
-export { readTheme } from './theme';
+export { onThemeChange, readTheme } from './theme';
 export { Plot, type AxesOptions, type Handle, type PlotOptions } from './plot';
 export { Clock, FixedStepper } from './clock';
 export { bindUnits, Formatter, formatNumber, formatPiFraction, formatSig, groupThousands, MINUS, NBSP, NNBSP, roundHalfUp, sigDecimals, withUnit } from './format';
@@ -41,6 +41,7 @@ export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing 
 export {
   contrastRatio,
   drawArrowHead,
+  drawCard,
   drawImageFit,
   measureSubText,
   parseSubText,

@@ -138,6 +138,7 @@ function cellRows(cells: Cell[], cols: number): { cell: Cell; row: number; col: 
 export default defineSimulation({
   id: 'hyperbel',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Graphen oder die Asymptoten, um die Hyperbel zu verschieben.', en: 'Tip: Drag point P on the graph or the asymptotes to shift the hyperbola.' },
   layout: { aspect: 1.55, aspectNarrow: 0.52 },
   groups: [
     { id: 'point', label: L('Punkt P und Wertetabelle', 'Point P and table of values') },

@@ -892,6 +892,18 @@ export default defineSimulation({
       g.lineTo(X(xMax), Y(SPECIFIC_CHARGE * xMax * 1e-9));
       g.stroke();
       g.setLineDash([]);
+      // Noch keine Messung: blasse Beispielpunkte entlang der Geraden zeigen, wie die Messreihe aussehen wird
+      if (!points.length) {
+        g.strokeStyle = withAlpha(theme.muted, 0.6);
+        g.lineWidth = 1.4;
+        [0.18, 0.34, 0.5, 0.66, 0.82].forEach((f, i) => {
+          const x = xMax * f;
+          const y = SPECIFIC_CHARGE * x * 1e-9 * (1 + [0.04, -0.03, 0.02, -0.04, 0.03][i]!);
+          g.beginPath();
+          g.arc(X(x), Y(y), sm ? 3.5 : 4.5, 0, TAU);
+          g.stroke();
+        });
+      }
       const data = points.map((q) => ({ U: q.U, B: helmholtzField(COILS.n, q.I, COILS.R), r: q.d / 200 }));
       const em = fitSpecificCharge(data);
       if (em !== null) {

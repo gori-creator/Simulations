@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { analyze, degree, derive, evalPoly, inflectionInfo, limits, secondTest, sidesAt, signChart, symmetry, tangentLine, zeroOrder, zeros, type Analysis, type Poly, type Sign, type SignChart } from './model';
 
@@ -94,6 +94,7 @@ const STEP_TITLES = [
 export default defineSimulation({
   id: 'kurvendiskussion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P über den Graphen – die Tangente zeigt die Steigung.', en: 'Tip: Drag point P along the graph – the tangent shows the slope.' },
   layout: { aspect: 1.3, aspectNarrow: 0.3 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },
@@ -739,29 +740,9 @@ export default defineSimulation({
       g.stroke();
       g.restore();
     }
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect, accent?: string): void {
-      const g = surface.g;
-      const theme = th();
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.04 : 0);
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      if (accent) {
-        const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(80, r.h));
-        grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.13 : 0.075));
-        grad.addColorStop(1, withAlpha(accent, 0));
-        g.fillStyle = grad;
-        roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-        g.fill();
-      }
-      g.strokeStyle = mixColor(theme.bg, theme.text, theme.dark ? 0.16 : 0.12);
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme, accent);
     }
     function cardTitle(R: Rect, title: string, color: string, right?: string): number {
       const g = surface.g;

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, formatPiFraction, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, formatPiFraction, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   clampA,
@@ -115,6 +115,7 @@ interface Graphs {
 export default defineSimulation({
   id: 'umkehrfunktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Graphen – P′ ist sein Spiegelbild an y = x.', en: 'Tip: Drag point P on the graph – P′ is its mirror image in y = x.' },
   layout: { aspect: 1.55, aspectNarrow: 0.42 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
@@ -612,29 +613,9 @@ export default defineSimulation({
     const toPx = (pts: P2[]): P2[] => pts.map(([x, y]) => [plot.px(x), plot.py(y)]);
     const swapPts = (pts: P2[]): P2[] => pts.map(([x, y]) => [y, x]);
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect, accent?: string): void {
-      const g = surface.g;
-      const theme = th();
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      if (accent) {
-        const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(80, r.h));
-        grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.13 : 0.075));
-        grad.addColorStop(1, withAlpha(accent, 0));
-        g.fillStyle = grad;
-        roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-        g.fill();
-      }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme, accent);
     }
 
     function cardTitle(R: Rect, title: string, color: string, right?: string): void {

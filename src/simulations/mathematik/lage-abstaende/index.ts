@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, textOn, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import {
   add,
   clipLineToBox,
@@ -89,6 +89,7 @@ const coord = <K extends string>(key: K, label: string, def: number, group: stri
 export default defineSimulation({
   id: 'lage-abstaende',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the points or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.62 },
   groups: [
     { id: 'g', label: L('Gerade g: x = a + t · u', 'Line g: x = a + t · u') },
@@ -983,23 +984,9 @@ export default defineSimulation({
     }
 
     /* ---------------- Tafel ---------------- */
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 18;
-      g.shadowOffsetY = 4;
-      roundRect(g, r.x, r.y, r.w, r.h, 14);
-      const grad = g.createLinearGradient(0, r.y, 0, r.y + r.h);
-      grad.addColorStop(0, theme.dark ? shade(theme.bg, 0.075) : '#ffffff');
-      grad.addColorStop(1, theme.dark ? shade(theme.bg, 0.035) : shade(theme.bg, -0.018));
-      g.fillStyle = grad;
-      g.fill();
-      g.shadowColor = 'transparent';
-      g.strokeStyle = alpha(theme.text, theme.dark ? 0.1 : 0.07);
-      g.stroke();
-      g.restore();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     type Tok = { kind: 'col'; v: (number | string)[]; color: string } | { kind: 'txt'; s: string; color?: string; math?: boolean; bold?: boolean } | { kind: 'vec'; s: string; color: string } | { kind: 'frac'; num: string; den: string; color?: string };

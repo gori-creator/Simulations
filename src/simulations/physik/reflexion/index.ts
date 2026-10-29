@@ -64,6 +64,7 @@ export default defineSimulation({
   id: 'reflexion',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Laser am Rand der Scheibe.', en: 'Tip: Drag the laser around the edge of the disc.' },
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
   images: { candle: 'kerze.webp', laser: 'laser.webp', table: 'tischkante.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   AFFINE_ID,
@@ -149,6 +149,7 @@ function piSrc(v: number): string | null {
 export default defineSimulation({
   id: 'transformationen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den runden Ankerpunkt zum Verschieben, den rautenförmigen zum Strecken.', en: 'Tip: Drag the round anchor point to shift and the diamond-shaped one to stretch.' },
   animated: true,
   layout: { aspect: 1.3, aspectNarrow: 0.36 },
   groups: [
@@ -812,29 +813,9 @@ export default defineSimulation({
       g.restore();
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect, accent?: string): void {
-      const g = surface.g;
-      const theme = th();
-      g.save();
-      g.shadowColor = shade(0.5, 0.1);
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = surf();
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      if (accent) {
-        const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(80, r.h));
-        grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.13 : 0.075));
-        grad.addColorStop(1, withAlpha(accent, 0));
-        g.fillStyle = grad;
-        roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-        g.fill();
-      }
-      g.strokeStyle = edgeLine();
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme, accent);
     }
     function cardTitle(R: Rect, title: string, color: string, right?: { src: string; color: string }): void {
       const g = surface.g;

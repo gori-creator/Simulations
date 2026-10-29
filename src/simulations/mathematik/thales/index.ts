@@ -16,6 +16,7 @@ export default defineSimulation({
   id: 'thales',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt C auf dem Kreis – der Winkel bei C bleibt 90°.', en: 'Tip: Drag point C on the circle – the angle at C stays 90°.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     { key: 'phi', type: 'number', label: L('Lage von C auf dem Kreis', 'Position of C on the circle'), min: 0, max: 360, step: 1, default: 62, unit: '°', visibleIf: (v) => v.free !== true },

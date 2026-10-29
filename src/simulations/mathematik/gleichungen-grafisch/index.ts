@@ -98,6 +98,7 @@ const MAX_STEPS = 14;
 export default defineSimulation({
   id: 'gleichungen-grafisch',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte auf den Graphen, um die Gleichung zu ändern.', en: 'Tip: Drag the points on the graphs to change the equation.' },
   layout: { aspect: 1.5, aspectNarrow: 0.6 },
   groups: [
     { id: 'left', label: L('Linke Seite f(x)', 'Left-hand side f(x)') },

@@ -111,6 +111,7 @@ interface CardLine {
 export default defineSimulation({
   id: 'pyramide-kegel-kugel',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die markierten Punkte oder dreh den Körper mit einem Finger.', en: 'Tip: Drag the marked points or rotate the solid with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.8 },
   groups: [
     { id: 'size', label: L('Maße in cm', 'Dimensions in cm') },

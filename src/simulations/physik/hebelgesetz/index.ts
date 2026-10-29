@@ -182,6 +182,7 @@ interface LabGeo {
 export default defineSimulation({
   id: 'hebelgesetz',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Massestücke auf andere Löcher des Hebels.', en: 'Tip: Drag the masses to other holes on the lever.' },
   layout: { aspect: 1.45, aspectNarrow: 0.8 },
   images: {
     mass: 'gewicht.webp',

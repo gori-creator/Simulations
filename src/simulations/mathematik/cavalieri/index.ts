@@ -73,6 +73,7 @@ interface Morph {
 export default defineSimulation({
   id: 'cavalieri',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Schnittebene nach oben und unten oder dreh die Ansicht.', en: 'Tip: Drag the cutting plane up and down or rotate the view.' },
   layout: { aspect: 1.6, aspectNarrow: 0.52 },
   groups: [
     { id: 'shape', label: L('Zweiter Körper', 'Second solid') },
