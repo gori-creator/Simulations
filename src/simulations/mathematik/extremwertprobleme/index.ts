@@ -139,6 +139,7 @@ const PARAM_KEYS = ['a', 'b', 'v', 'ch', 'cr', 'v1', 'v2'] as const;
 export default defineSimulation({
   id: 'extremwertprobleme',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Variable im Bild oder auf dem Graphen – wo liegt das Optimum?', en: 'Tip: Drag the variable in the picture or on the graph – where is the optimum?' },
   layout: { aspect: 1.25, aspectNarrow: 0.3 },
   images: { card: 'karton.webp' },
   groups: [

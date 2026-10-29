@@ -19,6 +19,7 @@ const RANGES: Record<FunctionId, { x: [number, number]; y: [number, number]; x0:
 export default defineSimulation({
   id: 'sekante-tangente',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte P und Q – wird h klein, wird die Sekante zur Tangente.', en: 'Tip: Drag points P and Q – as h gets small, the secant becomes the tangent.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {

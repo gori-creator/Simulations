@@ -129,6 +129,7 @@ const QUESTIONS: Record<Sit, Record<Find, Txt>> = {
 export default defineSimulation({
   id: 'prozentstreifen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh das Ende des gefärbten Streifens.', en: 'Tip: Drag the end of the coloured strip.' },
   layout: { aspect: 1.2, aspectNarrow: 0.36 },
   images: { tag: 'preisschild.webp', receipt: 'kassenbon.webp', book: 'sparbuch.webp' },
   groups: [

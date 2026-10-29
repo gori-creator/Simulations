@@ -142,6 +142,7 @@ const TASK_SHAPE: Record<TaskId, { de: string; en: string }> = {
 export default defineSimulation({
   id: 'skalar-vektorprodukt',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Spitzen der Vektoren oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the tips of the vectors or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.66 },
   groups: [
     { id: 'vec', label: L('Vektoren', 'Vectors') },

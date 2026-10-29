@@ -170,6 +170,7 @@ type ButtonId = 'next' | 'restart';
 export default defineSimulation({
   id: 'dreieckskonstruktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken der Planfigur oder tippe auf „Nächster Schritt“.', en: 'Tip: Drag the corners of the sketch or tap “Next step”.' },
   layout: { aspect: 1.42, aspectNarrow: 0.36 },
   groups: [
     { id: 'given', label: L('Gegebene Stücke', 'Given parts') },

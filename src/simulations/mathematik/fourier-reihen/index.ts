@@ -117,6 +117,7 @@ export default defineSimulation({
   id: 'fourier-reihen',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Prüfstelle oder tippe auf einen Balken im Spektrum.', en: 'Tip: Drag the test point or tap a bar in the spectrum.' },
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
   groups: [
     { id: 'sig', label: L('Signal formen', 'Shape the signal') },

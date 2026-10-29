@@ -147,6 +147,7 @@ function stairs(steps: number): (t: number) => number {
 export default defineSimulation({
   id: 'taylor-polynome',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Entwicklungsstelle a oder die Prüfstelle x.', en: 'Tip: Drag the expansion point a or the test point x.' },
   layout: { aspect: 1.6, aspectNarrow: 0.46 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

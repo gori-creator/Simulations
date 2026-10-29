@@ -98,6 +98,7 @@ function groupInt(n: number, lang: string): string {
 export default defineSimulation({
   id: 'e-funktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt auf dem Graphen, um die Steigung an jeder Stelle zu sehen.', en: 'Tip: Drag the point on the graph to see the slope at any position.' },
   layout: { aspect: 1.55, aspectNarrow: 0.48 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

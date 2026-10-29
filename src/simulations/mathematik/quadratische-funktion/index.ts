@@ -21,6 +21,7 @@ const L = (de: string, en: string) => ({ de, en });
 export default defineSimulation({
   id: 'quadratische-funktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Scheitel S oder den hohlen Punkt rechts daneben (Streckfaktor a).', en: 'Tip: Drag the vertex S or the hollow point to its right (stretch factor a).' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {

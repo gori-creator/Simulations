@@ -121,6 +121,7 @@ interface FillPlan {
 export default defineSimulation({
   id: 'vergroessern',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh am Griff der Strecke oder dreh den Würfel mit einem Finger.', en: 'Tip: Drag the handle of the segment or rotate the cube with one finger.' },
   layout: { aspect: 1.55, aspectNarrow: 0.38 },
   images: { car: 'auto.webp', bucket: 'farbeimer.webp' },
   groups: [

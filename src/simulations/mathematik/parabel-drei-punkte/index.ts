@@ -134,6 +134,7 @@ interface Flight {
 export default defineSimulation({
   id: 'parabel-drei-punkte',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die drei Punkte – die Parabel geht immer durch alle drei.', en: 'Tip: Drag the three points – the parabola always passes through all of them.' },
   layout: { aspect: 1.6, aspectNarrow: 0.5 },
   images: { ball: 'ball.webp', river: 'fluss.webp' },
   groups: [

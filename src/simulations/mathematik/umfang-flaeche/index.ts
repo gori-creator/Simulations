@@ -136,6 +136,7 @@ interface CardSpec {
 export default defineSimulation({
   id: 'umfang-flaeche',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecke des Rechtecks, um Länge und Breite zu ändern.', en: 'Tip: Drag the corner of the rectangle to change its length and width.' },
   layout: { aspect: 1.7, aspectNarrow: 0.6 },
   images: { ant: 'ameise.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

@@ -16,6 +16,7 @@ const L = (de: string, en: string) => ({ de, en });
 export default defineSimulation({
   id: 'lineare-funktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt auf der y-Achse (t) oder am Steigungsdreieck (m).', en: 'Tip: Drag the point on the y-axis (t) or on the slope triangle (m).' },
   groups: [
     { id: 'g', label: L('Zweite Gerade g', 'Second line g') },
     { id: 'view', label: L('Anzeige', 'Display') },

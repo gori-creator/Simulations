@@ -1,4 +1,4 @@
-import { defineSimulation, drawImageFit, ease, Plot, prefersReducedMotion, roundRect, softShadow, Surface, text, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawImageFit, ease, Plot, prefersReducedMotion, roundRect, seededRandom, softShadow, Surface, text, withAlpha, type Rect } from '../../../sim-core';
 import { estimateIsExact, estimatePi, insideQuarterCircle, piFunnel } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -80,6 +80,7 @@ export default defineSimulation({
       outside: 'außerhalb',
       ratio: 'Kreisfläche : Quadratfläche = π : 4',
       start: 'Punkte setzen, um zu beginnen',
+      ghost: 'Beispielverlauf – deine Punkte ersetzen ihn',
       estimate: 'π ≈ 4 · k/n',
       drawn: 'gezeichnet: die ersten {n} Punkte',
     },
@@ -89,6 +90,7 @@ export default defineSimulation({
       outside: 'outside',
       ratio: 'circle area : square area = π : 4',
       start: 'Add points to start',
+      ghost: 'Example run – your points replace it',
       estimate: 'π ≈ 4 · k/n',
       drawn: 'drawn: the first {n} points',
     },
@@ -442,6 +444,18 @@ export default defineSimulation({
         plot.text(toX(n), estimatePi(k, n), fmt.num(estimatePi(k, n), 3), { color: theme.series[0], align: 'right', offset: [-10, -12], weight: 'bold', size: 13 });
       } else {
         const r = plot.rect;
+        // Blasser Beispielverlauf (feste Zufallsfolge), damit man vorab sieht, was entsteht
+        const rnd = seededRandom(7);
+        const nMax = Math.max(10, Math.round(nAt(plot.bounds.xMax)));
+        const ghost: [number, number][] = [];
+        let hits = 0;
+        for (let i = 1; i <= nMax; i++) {
+          if (insideQuarterCircle(rnd(), rnd())) hits++;
+          // die ersten Schätzungen springen weit aus dem Bild: erst ab zehn Punkten zeichnen
+          if (i >= 10 && (i < 40 || i % Math.max(1, Math.round(nMax / 400)) === 0)) ghost.push([toX(i), estimatePi(hits, i)]);
+        }
+        plot.polyline(ghost, { color: withAlpha(theme.muted, 0.55), width: 1.6, dash: [4, 4] });
+        plot.textPx(r.x + r.w - 10, r.y + 14, ctx.t('ghost'), { color: theme.muted, size: 11, align: 'right' });
         // Hinweis bei schmalem Diagramm auf zwei Zeilen umbrechen
         const hint = ctx.t('start');
         surface.g.font = `14px ${theme.font}`;

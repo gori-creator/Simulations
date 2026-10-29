@@ -73,6 +73,7 @@ const comp = <K extends string>(key: K, label: string, def: number, show: (v: Re
 export default defineSimulation({
   id: 'vektoren-3d',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Spitzen der Vektoren oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the tips of the vectors or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
   groups: [
     { id: 'vec', label: L('Vektoren', 'Vectors') },

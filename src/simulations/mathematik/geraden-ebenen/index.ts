@@ -90,6 +90,7 @@ const PLANE_START = { a1: 3, a2: 1, a3: 0.5, u1: -3, u2: 2, u3: 0, v1: -3, v2: 0
 export default defineSimulation({
   id: 'geraden-ebenen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the points or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
   groups: [
     { id: 'vec', label: L('Stützpunkt und Richtungen', 'Point and directions') },

@@ -157,6 +157,7 @@ const STEP_GAP = 1000;
 export default defineSimulation({
   id: 'sinussatz-kosinussatz',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken A, B und C des Dreiecks.', en: 'Tip: Drag the corners A, B and C of the triangle.' },
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
   images: { crown: 'baumkrone.webp' },
   groups: [

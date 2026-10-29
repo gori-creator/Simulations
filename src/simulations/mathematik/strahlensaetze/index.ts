@@ -133,6 +133,7 @@ const ASK_INFO: Record<Ask, { name: Txt }> = {
 export default defineSimulation({
   id: 'strahlensaetze',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte A, B, A′ und B′.', en: 'Tip: Drag the points A, B, A′ and B′.' },
   layout: { aspect: 1.4, aspectNarrow: 0.42 },
   images: { tree: 'baum.webp', crown: 'baumkrone.webp', pole: 'fluchtstab.webp' },
   groups: [

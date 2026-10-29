@@ -114,6 +114,7 @@ export default defineSimulation({
   id: 'teilchenmodell',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Tippe ein Teilchen an, um seinen Weg zu verfolgen.', en: 'Tip: Tap a particle to follow its path.' },
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
   images: { thermo: 'thermometer.webp', plate: 'heizplatte.webp', pipette: 'pipette.webp', table: 'tischkante.webp', beaker: 'becherglas.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

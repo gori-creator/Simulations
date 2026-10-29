@@ -115,6 +115,7 @@ interface Graphs {
 export default defineSimulation({
   id: 'umkehrfunktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Graphen – P′ ist sein Spiegelbild an y = x.', en: 'Tip: Drag point P on the graph – P′ is its mirror image in y = x.' },
   layout: { aspect: 1.55, aspectNarrow: 0.42 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

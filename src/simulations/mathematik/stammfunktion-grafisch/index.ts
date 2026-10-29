@@ -237,6 +237,7 @@ const APP_META: Record<AppKey, AppMeta> = {
 export default defineSimulation({
   id: 'stammfunktion-grafisch',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt über f – seine Höhe wird zur Steigung von F.', en: 'Tip: Drag the point along f – its height becomes the slope of F.' },
   layout: { aspect: 1.55, aspectNarrow: 0.4 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },

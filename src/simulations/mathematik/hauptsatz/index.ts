@@ -272,6 +272,7 @@ const FN_START: Record<FnKey, { a: number; x: number; h: number }> = {
 export default defineSimulation({
   id: 'hauptsatz',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Grenzen a und x auf der x-Achse.', en: 'Tip: Drag the limits a and x on the x-axis.' },
   layout: { aspect: 1.55, aspectNarrow: 0.4 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },

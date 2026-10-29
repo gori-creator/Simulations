@@ -114,6 +114,7 @@ class Chan {
 export default defineSimulation({
   id: 'normalverteilung',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Grenzen a und b unter der Glockenkurve.', en: 'Tip: Drag the limits a and b under the bell curve.' },
   layout: { aspect: 1.58, aspectNarrow: 0.44 },
   groups: [
     { id: 'dist', label: L('Verteilung', 'Distribution') },

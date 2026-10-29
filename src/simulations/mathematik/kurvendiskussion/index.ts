@@ -94,6 +94,7 @@ const STEP_TITLES = [
 export default defineSimulation({
   id: 'kurvendiskussion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P über den Graphen – die Tangente zeigt die Steigung.', en: 'Tip: Drag point P along the graph – the tangent shows the slope.' },
   layout: { aspect: 1.3, aspectNarrow: 0.3 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },

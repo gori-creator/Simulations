@@ -114,6 +114,7 @@ interface Morph {
 export default defineSimulation({
   id: 'rotationskoerper',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Grenzen oder den Schnitt, oder dreh den Körper mit einem Finger.', en: 'Tip: Drag the limits or the cut, or rotate the solid with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.5 },
   groups: [
     { id: 'shape', label: L('Funktion', 'Function') },

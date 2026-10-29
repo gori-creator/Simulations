@@ -87,6 +87,7 @@ export default defineSimulation({
   id: 'bewegungsdiagramme',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Zeitmarke in einem Diagramm oder die Punkte des Fahrplans.', en: 'Tip: Drag the time marker in a graph or the points of the timetable.' },
   layout: { aspect: 1.12, aspectNarrow: 0.5 },
   groups: [
     { id: 'leg1', label: L('Abschnitt 1', 'Section 1') },

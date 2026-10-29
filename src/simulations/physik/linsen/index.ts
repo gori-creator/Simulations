@@ -46,6 +46,7 @@ export default defineSimulation({
   id: 'linsen',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Gegenstand oder den Schirm – das Bild wandert mit.', en: 'Tip: Drag the object or the screen – the image moves along.' },
   layout: { aspect: 1.6, aspectNarrow: 0.64 },
   images: { candle: 'kerze.webp', lens: 'linse.webp', rider: 'reiter.webp', rail: 'optische-bank.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

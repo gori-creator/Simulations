@@ -173,6 +173,7 @@ const X_KEY: Record<Situation, 'x' | 'xt' | 'xp' | 'xg'> = { wall: 'x', free: 'x
 export default defineSimulation({
   id: 'extremwert-parabel',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Griff im Bild oder den Punkt auf dem Graphen – wo wird die Fläche am größten?', en: 'Tip: Drag the handle in the picture or the point on the graph – where is the area largest?' },
   layout: { aspect: 1.6, aspectNarrow: 0.42 },
   images: { grass: 'wiese.webp', wall: 'mauer.webp', wood: 'holzdreieck.webp', metal: 'blech.webp' },
   groups: [

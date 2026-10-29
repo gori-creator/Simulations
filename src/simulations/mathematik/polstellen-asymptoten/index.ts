@@ -121,6 +121,7 @@ const supNum = (k: number) =>
 export default defineSimulation({
   id: 'polstellen-asymptoten',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Nullstellen von Zähler und Nenner auf der x-Achse.', en: 'Tip: Drag the zeros of numerator and denominator on the x-axis.' },
   layout: { aspect: 1.28, aspectNarrow: 0.36 },
   groups: [
     { id: 'num', label: L('Zähler', 'Numerator') },

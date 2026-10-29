@@ -54,6 +54,7 @@ const SAMPLES = 520;
 export default defineSimulation({
   id: 'funktion-zuordnung',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe links ein Element an und dann rechts eines, um einen Pfeil zu setzen.', en: 'Tip: Tap an element on the left and then one on the right to draw an arrow.' },
   layout: { aspect: 1.5, aspectNarrow: 0.48 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

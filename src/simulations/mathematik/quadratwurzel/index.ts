@@ -132,6 +132,7 @@ const PROOF: { head: Txt; src: Txt; tone?: 'bad' | 'ok' }[] = [
 export default defineSimulation({
   id: 'quadratwurzel',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecke des Rechtecks oder den Startwert x₀.', en: 'Tip: Drag the corner of the rectangle or the starting value x₀.' },
   layout: { aspect: 1.5, aspectNarrow: 0.42 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
