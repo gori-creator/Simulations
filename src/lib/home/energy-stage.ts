@@ -14,6 +14,7 @@ import {
   Formatter,
   ImageStore,
   KeyTargetLayer,
+  onThemeChange,
   readTheme,
   sanitize,
   type ParamValues,
@@ -62,6 +63,8 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
   let images: ImageStore | null = null;
   let keys: KeyTargetLayer | null = null;
   let frame = 0, last = 0, visible = false;
+  // Farben nur bei Wechsel hell/dunkel neu lesen – getComputedStyle bei jedem Zugriff bremst (Dutzende Male je Bild)
+  let theme = readTheme(stage);
   let wanted = false, started = false, interacted = false, autoStarted = false, loading: Promise<void> | null = null, destroyed = false;
   const paused = () => motion.paused || motion.reduced;
 
@@ -76,6 +79,8 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
   function syncButton(): void {
     play.textContent = clock.playing ? text('pause') : started ? text('continue') : text('go');
     play.setAttribute('aria-pressed', String(clock.playing));
+    // Während der Fahrt ruhen die Hintergrund-Effekte (home.css)
+    root.classList.toggle('is-running', clock.playing);
   }
 
   function syncControls(): void {
@@ -130,7 +135,7 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
       },
       locked: false,
       get theme() {
-        return readTheme(stage);
+        return theme;
       },
       fmt,
       clock,
@@ -282,6 +287,10 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     clock.pause();
   });
   const unArrival = journey?.onArrival(maybeAutoStart);
+  const unTheme = onThemeChange(() => {
+    theme = readTheme(stage);
+    forceRender();
+  });
   const unMotion = motion.subscribe(playback);
   const unReduced = motion.onReducedChange(() => {
     wanted = false;
@@ -298,6 +307,7 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     observer.disconnect();
     for (const [target, type, listener, options] of listeners) target.removeEventListener(type, listener, options);
     unArrival?.();
+    unTheme();
     unMotion();
     unReduced();
     instance?.destroy?.();
