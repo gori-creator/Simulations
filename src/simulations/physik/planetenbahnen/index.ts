@@ -1393,6 +1393,8 @@ export default defineSimulation({
         [vf, colF(snapped === 'vf' ? 0.95 : 0.6), colF(), shown() ? `v_F = ${n2(vf, 1)} km/s` : 'v_F', snapped === 'vf'],
       ];
       for (const [v, color, ink, label, hot] of rings) {
+        // Während des ersten Aufbaus kann der Maßstab kurz unbrauchbar sein: dann keinen Ring zeichnen
+        if (!(v * k > 0)) continue;
         g.strokeStyle = color;
         g.lineWidth = hot ? 2.2 : 1.3;
         g.setLineDash(hot ? [] : [4, 4]);
