@@ -473,7 +473,8 @@ export default defineSimulation({
       const hintH = hintRows * hintFs * 1.3 + 6;
       const top = Rr.y + titleH + 4;
       const bottom = Rr.y + Rr.h - hintH - 4;
-      const ry = (bottom - top) / 2;
+      // Bei sehr flachem Bereich (z. B. während des Umbaus der Aufteilung) nie negativ
+      const ry = Math.max(0, (bottom - top) / 2);
       const cy = (top + bottom) / 2;
       const rx = Math.min(Rr.w * 0.17, small ? 64 : 84);
       const cxL = Rr.x + Rr.w * 0.21;
@@ -544,6 +545,7 @@ export default defineSimulation({
     }
 
     function drawOval(o: DiagramGeo['ovalL'], color: string): void {
+      if (o.rx <= 0 || o.ry <= 0) return;
       const g = surface.g;
       const theme = ctx.theme;
       g.save();

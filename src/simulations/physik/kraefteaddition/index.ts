@@ -782,7 +782,9 @@ export default defineSimulation({
           const sum: Vec = [st.a[0] + st.b[0], st.a[1] + st.b[1]];
           const k1 = phase(t, st.t0, st.t1);
           if (k1 >= 1) {
-            vp.polygon([[0, 0], st.a, sum, st.b], { fill: withAlpha(theme.series[3]!, st.last ? 0.09 : 0.05) });
+            // Dunkel kräftiger: der zarte Ton verschwände sonst als graue Fläche
+            const fill = withAlpha(theme.series[3]!, (st.last ? 0.09 : 0.05) * (theme.dark ? 2 : 1));
+            vp.polygon([[0, 0], st.a, sum, st.b], { fill });
           }
           dashedWorld(st.a, sum, withAlpha(theme.text, 0.55), k1);
           dashedWorld(st.b, sum, withAlpha(theme.text, 0.55), k1);

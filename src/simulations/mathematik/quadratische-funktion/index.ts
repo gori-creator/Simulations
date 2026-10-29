@@ -380,7 +380,9 @@ export default defineSimulation({
           const { d, e } = s.vertex;
           plot.point(d + 1, e + s.a, { color: colorStep(), radius: 4, hollow: true });
           plot.point(d, e, { color: colorVertex(), radius: 6 });
-          plot.text(d, e, touching ? 'S = N' : 'S', { color: colorVertex(), math: true, size: 17, align: 'center', offset: [0, s.a > 0 ? 24 : -12] });
+          // Auf der x-Achse (S = N) seitlich neben den Punkt, sonst überdeckt die Beschriftung die Achsenzahlen
+          if (touching) plot.text(d, e, 'S = N', { color: colorVertex(), math: true, size: 17, align: 'left', offset: [12, s.a > 0 ? 22 : -10] });
+          else plot.text(d, e, 'S', { color: colorVertex(), math: true, size: 17, align: 'center', offset: [0, s.a > 0 ? 24 : -12] });
         }
 
         // Funktionsname am Graphen (dort, wo der rechte Ast den Rand erreicht)
