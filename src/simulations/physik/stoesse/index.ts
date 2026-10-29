@@ -1,4 +1,4 @@
-import { defineSimulation, ease, measureSubText, offscreenCanvas, Plot, roundRect, scaledSprite, shade, subText, Surface, text, tintedSprite, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, measureSubText, offscreenCanvas, Plot, roundRect, scaledSprite, shade, subText, Surface, text, tintedSprite, Tween, withAlpha, type Rect, type SubTextStyle } from '../../../sim-core';
 import { balance, planRun, restitution, stateAt, TRACK, type CollisionType, type Run, type RunState } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -491,21 +491,9 @@ export default defineSimulation({
       return w;
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.bg;
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     /** Waagerechter Pfeil in Pixeln. */

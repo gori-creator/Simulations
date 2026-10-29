@@ -68,6 +68,7 @@ export class Surface {
     const g = this.canvas.getContext('2d');
     if (!g) throw new Error('Canvas 2D wird nicht unterstützt.');
     this.g = g;
+    enforceMinFontSize(g);
 
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(host.stage);
@@ -265,3 +266,28 @@ export class TapTarget implements PointerTarget {
     return false;
   }
 }
+
+/** Kleinste Schriftgröße in den Zeichenflächen (px): darunter wird es am Beamer und auf dem Handy unleserlich. */
+export const MIN_FONT_PX = 11;
+
+/**
+ * Hebt jede kleinere Angabe in `g.font` auf {@link MIN_FONT_PX} an. Gilt für alle
+ * Simulationen, ohne dass jede ihre Größen einzeln prüfen muss; Messungen mit
+ * `measureText` nutzen danach dieselbe Größe, Layouts bleiben also stimmig.
+ */
+export function enforceMinFontSize(g: CanvasRenderingContext2D): void {
+  const desc = Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, 'font');
+  if (!desc?.set || !desc.get) return;
+  const set = desc.set;
+  Object.defineProperty(g, 'font', {
+    configurable: true,
+    get: () => desc.get!.call(g),
+    set: (value: string) => set.call(g, clampFontSize(value)),
+  });
+}
+
+/** „600 9.5px Inter“ → „600 11px Inter“; größere Angaben bleiben unverändert. */
+export function clampFontSize(font: string, min = MIN_FONT_PX): string {
+  return font.replace(/(^|\s)(\d+(?:\.\d+)?)px/, (all, pre: string, size: string) => (Number(size) < min ? `${pre}${min}px` : all));
+}
+

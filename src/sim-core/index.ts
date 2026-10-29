@@ -41,6 +41,7 @@ export { ease, mixPoint, prefersReducedMotion, seededRandom, Tween, type Easing 
 export {
   contrastRatio,
   drawArrowHead,
+  drawCard,
   drawImageFit,
   measureSubText,
   parseSubText,

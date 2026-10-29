@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, drawLabStand, ease, FixedStepper, lerp, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { clamp, defineSimulation, drawCard, drawLabStand, ease, FixedStepper, lerp, Plot, prefersReducedMotion, roundRect, scaledSprite, Surface, text, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   amplitudeForDeviation,
   amplitudeHalfLife,
@@ -731,18 +731,9 @@ export default defineSimulation({
       gx.restore();
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const gx = surface.g;
-      const theme = ctx.theme;
-      gx.save();
-      gx.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      gx.shadowBlur = 12;
-      gx.shadowOffsetY = 3;
-      gx.fillStyle = theme.bg;
-      roundRect(gx, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      gx.fill();
-      gx.restore();
-      frame(r);
+      drawCard(surface.g, r, ctx.theme);
     }
 
     function arrowPx(x0: number, y0: number, x1: number, y1: number, color: string, width: number, head = 10, dash: number[] = []): void {

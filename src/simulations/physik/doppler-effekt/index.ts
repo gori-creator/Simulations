@@ -1,4 +1,4 @@
-import { clamp, defineSimulation, ease, measureSubText, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, withUnit, type Rect, type SubTextStyle } from '../../../sim-core';
+import { clamp, defineSimulation, drawCard as drawCardBase, ease, measureSubText, mixColor, offscreenCanvas, prefersReducedMotion, roundRect, scaledSprite, subText, Surface, Tween, withAlpha, withUnit, type Rect, type SubTextStyle } from '../../../sim-core';
 import {
   arrivals,
   C_AIR,
@@ -567,21 +567,9 @@ export default defineSimulation({
       g.fill();
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.bg;
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCardBase(surface.g, r, ctx.theme);
     }
 
     /** Radialkomponente mit 1 Nachkommastelle, genau 0 ohne Stellen (kein „−0,0“). */

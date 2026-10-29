@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import {
   coefficients,
@@ -694,29 +694,9 @@ export default defineSimulation({
     }
 
     /* ---------- Karten ---------- */
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect, accent?: string): void {
-      const g = surface.g;
-      const theme = th();
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = theme.dark ? '#151c27' : '#ffffff';
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      if (accent) {
-        const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(80, r.h));
-        grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.14 : 0.08));
-        grad.addColorStop(1, withAlpha(accent, 0));
-        g.fillStyle = grad;
-        roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-        g.fill();
-      }
-      g.strokeStyle = theme.dark ? '#273142' : '#e1e6ee';
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme, accent);
     }
 
     function cardTitle(R: Rect, title: string, color: string, right?: string): number {

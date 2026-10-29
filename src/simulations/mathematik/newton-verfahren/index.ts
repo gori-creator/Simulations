@@ -1,4 +1,4 @@
-import { defineSimulation, drawArrowHead, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawArrowHead, drawCard, ease, mixColor, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, withAlpha, type Rect } from '../../../sim-core';
 import { formula, type FormulaBox, type FormulaStyle } from './formula';
 import { basinMap, classify, FNS, isCycle, iterate, matchingDecimals, nearestRootIndex, quadConstant, sequence, type Fn, type FnKey, type Outcome, type Step } from './model';
 
@@ -245,7 +245,6 @@ export default defineSimulation({
     /** Kartenfläche (im Dunkeln etwas heller als der Hintergrund). */
     const surf = (alpha = 1) => mixColor(th().bg, th().text, th().dark ? 0.045 : 0, alpha);
     /** Kartenrand. */
-    const edgeLine = () => mixColor(th().bg, th().text, th().dark ? 0.15 : 0.11);
     /** Pillenhintergrund (leicht durchscheinend). */
     const pillBg = () => mixColor(th().bg, th().text, th().dark ? 0.03 : 0, th().dark ? 0.9 : 0.94);
     /** Glanzlicht: helle Farbe des Themes. */
@@ -560,29 +559,9 @@ export default defineSimulation({
       drawArrowHead(surface.g, x, y, Math.atan2(uy, ux), hd, color);
     }
 
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect, accent?: string): void {
-      const g = surface.g;
-      const theme = th();
-      g.save();
-      g.shadowColor = shade(0.5, 0.1);
-      g.shadowBlur = 12;
-      g.shadowOffsetY = 3;
-      g.fillStyle = surf();
-      roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-      g.fill();
-      g.restore();
-      if (accent) {
-        const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(80, r.h));
-        grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.14 : 0.08));
-        grad.addColorStop(1, withAlpha(accent, 0));
-        g.fillStyle = grad;
-        roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, 12);
-        g.fill();
-      }
-      g.strokeStyle = edgeLine();
-      g.lineWidth = 1.2;
-      roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, 12);
-      g.stroke();
+      drawCard(surface.g, r, ctx.theme, accent);
     }
 
     function cardTitle(R: Rect, title: string, color: string, right?: string): number {

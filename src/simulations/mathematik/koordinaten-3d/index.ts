@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, mixColor, prefersReducedMotion, roundRect, shade, Surface, text, vec3, View3D, type Rect, type Vec3 } from '../../../sim-core';
 import { BOX_EDGES, BOX_FACES, boxCorners, boxVolume, CORNER_NAMES, deltas, distOrigin, distSteps, faceDiagonal, FIGURES, gridRandom, intoOctant, matches, mirrorOf, octant, octantCounts, octantSigns, pInsideOctant, projections, randomPoint, risse, rissMatch, ROMAN, spaceDiagonal, walk, walkAt, where, type P3 } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -910,23 +910,9 @@ export default defineSimulation({
     }
 
     /* ---------------- Zeichnen: Tafel ---------------- */
+    /** Infokarte im einheitlichen Stil (sim-core). */
     function card(r: Rect): void {
-      const g = surface.g;
-      const theme = ctx.theme;
-      g.save();
-      g.shadowColor = theme.dark ? 'rgba(0,0,0,0.5)' : 'rgba(16,24,40,0.10)';
-      g.shadowBlur = 18;
-      g.shadowOffsetY = 4;
-      roundRect(g, r.x, r.y, r.w, r.h, 14);
-      const grad = g.createLinearGradient(0, r.y, 0, r.y + r.h);
-      grad.addColorStop(0, theme.dark ? shade(theme.bg, 0.075) : '#ffffff');
-      grad.addColorStop(1, theme.dark ? shade(theme.bg, 0.035) : shade(theme.bg, -0.018));
-      g.fillStyle = grad;
-      g.fill();
-      g.shadowColor = 'transparent';
-      g.strokeStyle = alpha(theme.text, theme.dark ? 0.1 : 0.07);
-      g.stroke();
-      g.restore();
+      drawCard(surface.g, r, ctx.theme);
     }
 
     /** Koordinaten in Farbe: P(3 | 4 | 2). */
