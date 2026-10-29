@@ -51,9 +51,9 @@
   /* Canvas-Farben für Simulationen */
   --plot-scheme: light;
   --plot-bg: #ffffff;
-  --plot-grid: #d3d9e3;
-  --plot-grid-minor: #eceff4;
-  --plot-axis: #343d4a;
+  --plot-grid: #dfe4ec;
+  --plot-grid-minor: #f1f3f7;
+  --plot-axis: #475263;
   --plot-text: #17202c;
   --plot-muted: #5b6676;
   /* Reihenfarben (Farbkonzept 10/2026, docs/FARBEN.md): kühle Edelsteintöne passend zur
@@ -96,8 +96,8 @@
     --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.5);
     --plot-scheme: dark;
     --plot-bg: #10161f;
-    --plot-grid: #2a3442;
-    --plot-grid-minor: #19212c;
+    --plot-grid: #232c39;
+    --plot-grid-minor: #161d27;
     --plot-axis: #b9c3d1;
     --plot-text: #e6eaf0;
     --plot-muted: #9ba7b7;
@@ -139,8 +139,8 @@
   --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.5);
   --plot-scheme: dark;
   --plot-bg: #10161f;
-  --plot-grid: #2a3442;
-  --plot-grid-minor: #19212c;
+  --plot-grid: #232c39;
+  --plot-grid-minor: #161d27;
   --plot-axis: #b9c3d1;
   --plot-text: #e6eaf0;
   --plot-muted: #9ba7b7;
@@ -1902,9 +1902,11 @@ em .hat::after {
   position: relative;
   width: 100%;
   aspect-ratio: var(--sim-aspect);
-  border-radius: var(--radius);
+  border-radius: 14px;
   background: var(--plot-bg);
-  border: 1px solid var(--border);
+  /* zarte Kante statt harter Linie */
+  border: 0;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border) 60%, transparent);
   overflow: hidden;
   touch-action: none;
 }
@@ -1998,9 +2000,40 @@ em .hat::after {
 }
 
 .sim__hint {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
   margin: 0;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+}
+
+.sim__hint::before {
+  content: 'ⓘ';
+  flex: none;
+  opacity: 0.7;
+}
+
+/* Nebenaktionen (Zurücksetzen, Teilen, Bild, Vollbild) als leise Knöpfe: Sie stehen nicht
+   in Konkurrenz zu den Aktionen der Simulation darüber */
+.sim__toolbar {
+  padding-top: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+}
+
+.sim__toolbar .btn:not(.btn--primary) {
+  min-height: 36px;
+  padding-inline: 10px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--muted);
+}
+
+.sim__toolbar .btn:not(.btn--primary):hover,
+.sim__toolbar .btn:not(.btn--primary):focus-visible {
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 .sim__panel {

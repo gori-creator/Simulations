@@ -71,6 +71,35 @@ export function softShadow(g: CanvasRenderingContext2D, dark: boolean, blur = 14
   g.shadowOffsetY = offsetY;
 }
 
+/**
+ * Einheitliche Infokarte in der Zeichenfläche: weiße bzw. dunkle Fläche, weicher Schatten,
+ * feine Kante, Radius 12. `accent` tönt den oberen Rand zart in der Farbe der Karte.
+ * Alle Simulationen nutzen diese Form, damit Karten überall gleich aussehen.
+ */
+export function drawCard(g: CanvasRenderingContext2D, r: { x: number; y: number; w: number; h: number }, theme: { dark: boolean; bg: string; text: string }, accent?: string): void {
+  const radius = 12;
+  g.save();
+  g.shadowColor = theme.dark ? 'rgba(0,0,0,0.42)' : 'rgba(16,24,40,0.07)';
+  g.shadowBlur = 14;
+  g.shadowOffsetY = 3;
+  g.fillStyle = theme.dark ? '#141b26' : '#ffffff';
+  roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, radius);
+  g.fill();
+  g.restore();
+  if (accent) {
+    const grad = g.createLinearGradient(r.x, r.y, r.x, r.y + Math.min(72, r.h));
+    grad.addColorStop(0, withAlpha(accent, theme.dark ? 0.12 : 0.065));
+    grad.addColorStop(1, withAlpha(accent, 0));
+    g.fillStyle = grad;
+    roundRect(g, r.x + 1, r.y + 1, r.w - 2, r.h - 2, radius);
+    g.fill();
+  }
+  g.strokeStyle = withAlpha(theme.text, theme.dark ? 0.13 : 0.09);
+  g.lineWidth = 1;
+  roundRect(g, r.x + 1.5, r.y + 1.5, r.w - 3, r.h - 3, radius);
+  g.stroke();
+}
+
 /** Farbe mit Deckkraft versehen (für Hex-Farben aus dem Theme). */
 export function withAlpha(color: string, alpha: number): string {
   const hex = color.trim();

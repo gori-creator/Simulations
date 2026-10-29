@@ -389,8 +389,9 @@ export class Plot implements PointerTarget {
       const my = angularY ? sy / 2 : minorStep(sy);
       g.strokeStyle = theme.gridMinor;
       g.beginPath();
-      if (mx * this.sx >= 10) for (const x of ticksIn(xMin, xMax, mx)) this.vLinePath(x);
-      if (my * this.sy >= 10) for (const y of ticksIn(yMin, yMax, my)) this.hLinePath(y);
+      // Nebenlinien nur bei genug Abstand: sonst wird das Gitter zur grauen Fläche
+      if (mx * this.sx >= 16) for (const x of ticksIn(xMin, xMax, mx)) this.vLinePath(x);
+      if (my * this.sy >= 16) for (const y of ticksIn(yMin, yMax, my)) this.hLinePath(y);
       g.stroke();
     }
 
@@ -444,7 +445,7 @@ export class Plot implements PointerTarget {
 
     g.strokeStyle = theme.axis;
     g.fillStyle = theme.axis;
-    g.lineWidth = 1.5;
+    g.lineWidth = 1.25;
     g.beginPath();
     if (xVisible) {
       g.moveTo(r.x, Math.round(axisY) + 0.5);
@@ -894,6 +895,11 @@ export class Plot implements PointerTarget {
     return best;
   }
 
+  /**
+   * Einheitliches Zeichen „lässt sich ziehen“ für alle Griffe: ein feiner Ring um den
+   * Punkt (der Punkt selbst bleibt kräftig), beim Darüberfahren bzw. Ziehen zusätzlich
+   * ein weicher Lichthof.
+   */
   private drawHandles(): void {
     const g = this.surface.g;
     for (const handle of this.handles) {
@@ -902,11 +908,21 @@ export class Plot implements PointerTarget {
       if (!Number.isFinite(hx) || !Number.isFinite(hy)) continue;
       const active = this.hoveredHandle === handle || (this.drag?.mode === 'handle' && this.drag.handle === handle);
       const color = handle.color?.() ?? this.surface.theme.series[0]!;
+      const x = this.px(hx);
+      const y = this.py(hy);
+      if (active) {
+        g.beginPath();
+        g.arc(x, y, 16, 0, Math.PI * 2);
+        g.globalAlpha = 0.18;
+        g.fillStyle = color;
+        g.fill();
+      }
       g.beginPath();
-      g.arc(this.px(hx), this.py(hy), active ? 14 : 11, 0, Math.PI * 2);
-      g.globalAlpha = active ? 0.28 : 0.16;
-      g.fillStyle = color;
-      g.fill();
+      g.arc(x, y, active ? 12 : 10.5, 0, Math.PI * 2);
+      g.globalAlpha = active ? 0.9 : 0.55;
+      g.strokeStyle = color;
+      g.lineWidth = 1.5;
+      g.stroke();
       g.globalAlpha = 1;
     }
   }
