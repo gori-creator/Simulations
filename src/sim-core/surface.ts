@@ -119,6 +119,9 @@ export class Surface {
     this.canvas.height = Math.round(height * dpr);
     this.canvas.style.width = `${width}px`;
     this.canvas.style.height = `${height}px`;
+    // Das Setzen der Canvas-Größe setzt den Kontext zurück: Grundmaßstab sofort wiederherstellen,
+    // auch für Simulationen, die nur über Plot.begin()/View3D.begin() zeichnen (sonst halbe Größe bei dpr 2)
+    this.g.setTransform(dpr, 0, 0, dpr, 0, 0);
     for (const target of this.targets) target.resize?.();
     this.host.requestRender();
   }

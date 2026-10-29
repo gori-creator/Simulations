@@ -1,4 +1,4 @@
-import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, ease, mixColor, prefersReducedMotion, roundRect, shade, softShadow, Surface, text, textOn, Tween, withAlpha, type Rect } from '../../../sim-core';
 import { compare, crossCancel, divide, measure, mixed, multiply, reciprocal, reduce, type Fraction } from './model';
 import { drawFrac, drawRich, fill, fr, fracWidth, richHeight, type TextToken, type Token } from './rich';
 
@@ -490,9 +490,9 @@ export default defineSimulation({
       g.fillRect(ox, oy - gh, gw, gh);
       g.restore();
       // Streifen der Faktoren
-      g.fillStyle = alpha(colA(), T.dark ? 0.3 : 0.2);
+      g.fillStyle = T.dark ? shade(colA(), 0.35, 0.34) : alpha(colA(), 0.2);
       g.fillRect(ox, oy - gh, A * s, gh);
-      g.fillStyle = alpha(colB(), T.dark ? 0.3 : 0.2);
+      g.fillStyle = T.dark ? shade(colB(), 0.35, 0.34) : alpha(colB(), 0.2);
       g.fillRect(ox, oy - C * s, gw, C * s);
       // Überlappung = Produkt
       if (phP > 0) {

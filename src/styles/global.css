@@ -2430,6 +2430,9 @@ legend .ctl__info {
 }
 
 .ctl__label {
+  /* langes Etikett bricht um, statt das Zahlenfeld aus der Leiste zu schieben */
+  flex: 1 1 auto;
+  min-width: 0;
   padding: 0;
   font-size: 0.93rem;
   font-weight: 600;
@@ -2444,13 +2447,15 @@ legend .ctl__info {
 }
 
 .ctl__number-wrap {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
 .ctl__number {
-  width: 72px;
+  /* Breite nach der längsten möglichen Zahl (--ctl-chars aus controls.ts) */
+  width: max(72px, calc(var(--ctl-chars, 4) * 1ch + 22px));
   min-height: 32px;
   padding: 4px 8px;
   border: 1px solid var(--border-strong);

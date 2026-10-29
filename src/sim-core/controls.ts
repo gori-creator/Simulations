@@ -308,6 +308,10 @@ export class Controls {
       text.type = 'text';
       text.inputMode = 'decimal';
       text.className = 'ctl__number';
+      // Platz für die längste Zahl im Wertebereich (Vorzeichen, Ziffern, Komma und Nachkommastellen)
+      const places = stepDecimals(def.step);
+      const digits = (v: number) => String(Math.trunc(Math.abs(v))).length + (v < 0 ? 1 : 0);
+      text.style.setProperty('--ctl-chars', String(Math.max(digits(def.min), digits(def.max)) + (places ? places + 1 : 0)));
       text.setAttribute('aria-label', plainSubText(def.label[lang]));
       text.autocomplete = 'off';
       text.spellcheck = false;

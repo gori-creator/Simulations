@@ -1,4 +1,4 @@
-import { defineSimulation, ease, Plot, Surface, Tween, withAlpha } from '../../../sim-core';
+import { defineSimulation, ease, Plot, shade, Surface, Tween, withAlpha } from '../../../sim-core';
 import { expand, piecesFirst, type Formula } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
@@ -118,7 +118,8 @@ export default defineSimulation({
         [x + w, y + h],
         [x, y + h],
       ];
-      plot.polygon(pts, { fill: c, alpha });
+      // Dunkel mit aufgehelltem Ton füllen: zarte Töne wirken auf Dunkelblau sonst schlammig braun
+      plot.polygon(pts, { fill: ctx.theme.dark ? shade(c, 0.35) : c, alpha: ctx.theme.dark ? alpha * 1.3 : alpha });
       plot.polygon(pts, { stroke: c, width: 2.5, dash });
     }
 

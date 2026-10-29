@@ -11,7 +11,8 @@ type Point = [number, number];
  */
 export default defineSimulation({
   id: 'kreiszahl-pi',
-  layout: { aspect: 1.75, aspectNarrow: 0.85 },
+  // Schmal etwas flacher: Die Abrollstrecke ist breit, sonst bliebe auf dem Handy viel Fläche leer
+  layout: { aspect: 1.75, aspectNarrow: 1.15 },
   params: [
     {
       key: 'mode',
