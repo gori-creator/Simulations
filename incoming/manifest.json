@@ -1,0 +1,1292 @@
+[
+  {
+    "filename": "stellenwerte.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2012190,
+    "sha256": "1bef4222ef52098e74dff7f34a80fff25f2ae3ade74b00fb4156adf1c14c3b03"
+  },
+  {
+    "filename": "zahlengerade.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1705224,
+    "sha256": "1659aa26dd6e3239ed37ef9ef2cbba90fdad4c5856e2c860f82b04dd8d56f010"
+  },
+  {
+    "filename": "primfaktoren.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2039540,
+    "sha256": "71f4e5ab88361a6729a82bada28df35c77761cae4253e8a7d532f140e42f6bf6"
+  },
+  {
+    "filename": "zehnerpotenzen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2075715,
+    "sha256": "f34faafc8728a11e893db74b14aef49bad9aa39d24d758f52dfc001fd2bdf23e"
+  },
+  {
+    "filename": "bruchteile.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2364348,
+    "sha256": "05ee2b3aab927e8df8b381632743b937c1deab30d14140eda664ad3e17c6d9e2"
+  },
+  {
+    "filename": "brueche-vergleichen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1872305,
+    "sha256": "80a35219898684854ffcf2e894bf48ef417b430e93ae2b11f1f663621b9ec69c"
+  },
+  {
+    "filename": "dezimalbrueche.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1928139,
+    "sha256": "9dc20db4ef06a9603929dee2ca470d80fe1d6e95d2208f3012d7f7137128f1d6"
+  },
+  {
+    "filename": "brueche-rechnen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1937792,
+    "sha256": "ed740ffea2e00be4ff9399b9dbaa8be22588bbf26305c768ff2761ad84349821"
+  },
+  {
+    "filename": "prozentstreifen.png",
+    "size": [
+      1672,
+      940
+    ],
+    "mode": "RGB",
+    "bytes": 1749887,
+    "sha256": "d98c997bbe1e1290876ab2d2f66b2c0a02cfd03911e5ab16e3780d3e5755d4db"
+  },
+  {
+    "filename": "quadratwurzel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1910039,
+    "sha256": "522f289044ae61cca354c5b54e7542c6a98be1212a7cb700ab504f1bbff1b3fe"
+  },
+  {
+    "filename": "termbaum.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1947531,
+    "sha256": "2f05172082239c9a9b3667ca44008d03a6c20475b8d1ee8aa18fa34cd185e62a"
+  },
+  {
+    "filename": "binomische-formeln.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1861070,
+    "sha256": "5bc5c73ce349046c0e9a46e92a093e28748b167766643e1607c9613d8b97626d"
+  },
+  {
+    "filename": "waagemodell.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1873103,
+    "sha256": "bce43cd79039b22439f205a70ff3822a44320163cc11352792f534bdb155d604"
+  },
+  {
+    "filename": "lgs-grafisch.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1696708,
+    "sha256": "df9844196c72644bfa9ce4ec91d5a8ff52f3856dbc86abad278f1d357317f741"
+  },
+  {
+    "filename": "gleichungen-grafisch.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1589084,
+    "sha256": "9b52b2945cfa4f5d6356166a27954cc80b707bf8fab5cc16fe29fe91d9d7988f"
+  },
+  {
+    "filename": "koordinaten-lage.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1750028,
+    "sha256": "a87de3f45dd497a9496a85a71ea92d66771303315cb742225689a7740b9e17b7"
+  },
+  {
+    "filename": "winkel-messen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2064229,
+    "sha256": "786a0f346ca6346e3c6c7b52ba08013188d6e969d5929fc52eee0b98a82d2f96"
+  },
+  {
+    "filename": "vierecke.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1992850,
+    "sha256": "a2824958d96081ef79ab26cf82320c7704e6680b43bcca9fe062abb5df973379"
+  },
+  {
+    "filename": "spiegelung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1815466,
+    "sha256": "8f36aeaf8d7a63927b8b726c5fe77ef663f545e3d46cb15c2462164797927b62"
+  },
+  {
+    "filename": "mittelsenkrechte.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1808296,
+    "sha256": "728fd8bca3c73e4796a7762c8a10a76e5b40d704124f495a2a5c6337bb8c1256"
+  },
+  {
+    "filename": "winkel-geradenkreuzung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1789834,
+    "sha256": "b41427c99a019dbab8ccba2d24922fb8ab29361ac8d0c803b71eaa34119b858e"
+  },
+  {
+    "filename": "winkelsumme.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1840690,
+    "sha256": "80a5c81af1a4018f4f1dadd06ebbe25b8605a135b0127c23fac989ed9dfa4c04"
+  },
+  {
+    "filename": "dreieckskonstruktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1920130,
+    "sha256": "576136bacdb2e96c36703699d56dff7334ae84a4308a67c0b9d554bc4bc39936"
+  },
+  {
+    "filename": "besondere-linien.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1828108,
+    "sha256": "e7b9ec13d183417bd84d27fa4927c8d1f19f3d4aeb031b1a977923c6a1bdd659"
+  },
+  {
+    "filename": "thales.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1807202,
+    "sha256": "036fbda6b5a5e395d4de71b4804949d70a68a15ce59690fc50c791960e83cfb6"
+  },
+  {
+    "filename": "pythagoras.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1764514,
+    "sha256": "0cfd51c5f75d45cbe05548ed08a05e54348adb0e4595ee533b5e0b12cf0c9eb8"
+  },
+  {
+    "filename": "strahlensaetze.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1569970,
+    "sha256": "bb282663bf4805515a3ff31a4e6c393ae88e9abca3bad3de267cbabfeeb7e027"
+  },
+  {
+    "filename": "vergroessern.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2026450,
+    "sha256": "4889ece9c3d3a738b49453d57f3010f9776f2f89b746b0f65f21ba3ab87242b6"
+  },
+  {
+    "filename": "sin-cos-tan-dreieck.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1953949,
+    "sha256": "712efcbaa8d1e9b61babf7f23af1d17a374e399d4ab7a95820a65bd03148854f"
+  },
+  {
+    "filename": "sinussatz-kosinussatz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2519828,
+    "sha256": "912fd823c799872440f76f97d6de4eac8b34a943b201acc980b3f1d560b4964d"
+  },
+  {
+    "filename": "einheiten.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2061404,
+    "sha256": "b21dc31ad43711b21c6569c194c4d2295dcc37c59d34c3118c09fb691876f651"
+  },
+  {
+    "filename": "massstab.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2670433,
+    "sha256": "fe2f90c23672430270a2cb7bad3853ace610b400206f7a749ef1ea9e496f6af3"
+  },
+  {
+    "filename": "umfang-flaeche.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2097378,
+    "sha256": "f57d970c9195449d02b83e553a11ecaded75e85bcff317bf336aee4b07c13ede"
+  },
+  {
+    "filename": "flaechen-zerlegen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1696106,
+    "sha256": "8c6b40f00706f2a48209c95ea43b3b429d79976cb25f7c44b04f9634c446937b"
+  },
+  {
+    "filename": "koerpernetze.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1856601,
+    "sha256": "dd95a349d387efcc4f8a32a5d1020ffb91aed2b774245e4d7e86ae4731fc2981"
+  },
+  {
+    "filename": "prisma-zylinder.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2157089,
+    "sha256": "b0c10c9219649ba2ce9ff36baf38f5662047f588dcdb9e07c4270ae023549b47"
+  },
+  {
+    "filename": "pyramide-kegel-kugel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1919114,
+    "sha256": "95add14a45d4868a355aa18ee0f972ff484a41fbdc1fa3d6a0476e0f4c119bb9"
+  },
+  {
+    "filename": "cavalieri.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1862098,
+    "sha256": "76a6ae89554c165dde9ba9115e5b66a27299cccac4bd5169bfdfc9650347d50a"
+  },
+  {
+    "filename": "quader-volumen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1833158,
+    "sha256": "81fe83fc8cef603304058bcc0166e4087751d3d6736f1a89681d84837d41a809"
+  },
+  {
+    "filename": "kreiszahl-pi.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1782537,
+    "sha256": "9b23317d74660b34ee1ef5d51303b54dcd211813851f64d2e8e5206f7f01484e"
+  },
+  {
+    "filename": "proportional.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2003503,
+    "sha256": "0eb03ad46b2baad7818a0c25af4686e01d3a832b70e6d0248e023870a15d361b"
+  },
+  {
+    "filename": "funktion-zuordnung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1837526,
+    "sha256": "f1cc8a1fc95e30c5a18786c9ae0ffbe86d1635bd43f3104e10eedd81abda4405"
+  },
+  {
+    "filename": "funktionsplotter.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1818103,
+    "sha256": "a252beb1b959e4321b71f680b99fab0b5116ef94aa0fa6b82488b65b67359f54"
+  },
+  {
+    "filename": "lineare-funktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1621693,
+    "sha256": "079bf4d285105da6b3184f59a588ac6dd629f280eb54bd608be1b5e923d23472"
+  },
+  {
+    "filename": "hyperbel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1706398,
+    "sha256": "5eb9ef5e7217a557faead94bca78faec53806703ae0c1be35db1df0398f5d165"
+  },
+  {
+    "filename": "polstellen-asymptoten.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1587058,
+    "sha256": "4c418a26487f8b2edc55da91a6341b31b6c52c63f0f8933a7cb050d21f0a6e32"
+  },
+  {
+    "filename": "quadratische-funktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1817785,
+    "sha256": "ec0f66d838b600723bb29685ea6371aae774d2b9cf01e1114c2acfb4b8827981"
+  },
+  {
+    "filename": "parabel-drei-punkte.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1579274,
+    "sha256": "38db920d8022164bc9c4b0415afae687a214e70f6551a8fd4946942c4d800972"
+  },
+  {
+    "filename": "extremwert-parabel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2725260,
+    "sha256": "b7c86baf445a6c4b98fe0dcb345a2cd7691457e1d202f380bf45adc5217eb455"
+  },
+  {
+    "filename": "potenzfunktionen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1777284,
+    "sha256": "b0d5947d1f0ec61ac106aace96cbf2822c613f2d8483faf41c0a9664d7104fd9"
+  },
+  {
+    "filename": "einheitskreis.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1708257,
+    "sha256": "65837dec9b148e7e5fa1b130e102df6f58bc233ddd5f2d19734cbf9f2696acc6"
+  },
+  {
+    "filename": "sinusfunktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1746415,
+    "sha256": "55d3dd674acd867cb968d0ea7b4b6e09f03dde8c70a2b64cdbee73312235380b"
+  },
+  {
+    "filename": "logarithmus.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1667547,
+    "sha256": "1b8f467858d7241a53c159cb86a2550ec1c7e1fb32bd6a4e61292bb62f6498b1"
+  },
+  {
+    "filename": "exponentielles-wachstum.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2096775,
+    "sha256": "8176ca562683a6eef02c296444c5eba4455bd9d49767a585a8cfb88f51520faa"
+  },
+  {
+    "filename": "e-funktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1563681,
+    "sha256": "dcf0aeb10fe588d64f0800231ff92aa61c768703ebbbe1b2caaee9e3f64a012e"
+  },
+  {
+    "filename": "ganzrationale-funktionen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1633017,
+    "sha256": "567d693e82906584e99a244b8f5e3ca9a4145f51b0be5a77b3383ebd0e1f6c6d"
+  },
+  {
+    "filename": "transformationen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1835441,
+    "sha256": "4d5fd7f55aa012ab8526ae65f287f2fd29e22a75f3a565c3cee1ad5708d31f63"
+  },
+  {
+    "filename": "grenzverhalten.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1724826,
+    "sha256": "61fb6b20fb4859eca878f04d1fa7f3b7aeaa7f67b00b924a4a2c54c6f13b913e"
+  },
+  {
+    "filename": "umkehrfunktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1781981,
+    "sha256": "3b8291cc5585b1d39e265729479bb352369b9b7acfaa2afeff59b43803f24986"
+  },
+  {
+    "filename": "zaehlprinzip.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2337646,
+    "sha256": "a3d26bd1ec1663d5e14b1847bd0bcb6309fb99371db395e72a9b3498d9e90547"
+  },
+  {
+    "filename": "diagramme.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2001861,
+    "sha256": "a906ecfd0baf52ab623825117e71a23662c7d11d37262db057e1efdf2f378683"
+  },
+  {
+    "filename": "boxplot.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1703704,
+    "sha256": "0c68576cacc3152d92dfdec160c1ec50cf8048476ee390a7b4df28e1d223753a"
+  },
+  {
+    "filename": "gesetz-grosse-zahlen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1959895,
+    "sha256": "8aee35dbfb4e99cfc34c22ee5b8b5c5f4657ae54e943b99653919a147ca64dde"
+  },
+  {
+    "filename": "baumdiagramm.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1973126,
+    "sha256": "f5ad2e6206f5faf41dad3048d383eb4a225f7fd096f33c4c64a4eec99413a13d"
+  },
+  {
+    "filename": "geburtstagsproblem.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1820841,
+    "sha256": "14db938195848b508ba1016a466f0881e115f8aa045611ae71ac8f8fcd5c47e9"
+  },
+  {
+    "filename": "monte-carlo-pi.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1821060,
+    "sha256": "58016601128f19abf54fa87b99c3789746cef12b8459fbab579d1efb11f775c6"
+  },
+  {
+    "filename": "ziegenproblem.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1728787,
+    "sha256": "609fe82dd5c917a718ed68c5aad955bf48804ffb9a644bea046acb27245588f7"
+  },
+  {
+    "filename": "vierfeldertafel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2124148,
+    "sha256": "c2ea7a410ef25c2d0c819c5c6e312a4a76a1ef973501e98e10da33331e693e1e"
+  },
+  {
+    "filename": "bedingte-wahrscheinlichkeit.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1721282,
+    "sha256": "b184ea878dfd60b89db9cb4179dbd63768d28b607fbc303312ad616971ee700f"
+  },
+  {
+    "filename": "galtonbrett.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1926991,
+    "sha256": "07168c359f71c0a7e80348566f4057e0d831c0f8ab7e81478d8cd2b4106e811c"
+  },
+  {
+    "filename": "binomialverteilung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1747793,
+    "sha256": "48ce42f707ae1376a6c9b82fd88c5a1866b484c0aaba8c821eeda214bbd4bc18"
+  },
+  {
+    "filename": "signifikanztest.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1863921,
+    "sha256": "ac238ddb4ccbb16b4fc3e350f0f480a1df74f87e71a3b81c66aa7a0c08de3bc9"
+  },
+  {
+    "filename": "normalverteilung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1734683,
+    "sha256": "f05a0793967b9322276f5b1f4d4064c7843824d09adfde878c29608b6203bf25"
+  },
+  {
+    "filename": "sekante-tangente.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1685374,
+    "sha256": "1c99f78648bfc54cfde78e47e7e932d29129403bc18f121c2c5bc990568007df"
+  },
+  {
+    "filename": "ableitungsfunktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1778150,
+    "sha256": "3cf97d88e4778669325c15c033148a5c21189a9325511e43c9fc521027fe61a2"
+  },
+  {
+    "filename": "newton-verfahren.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1581207,
+    "sha256": "51061e418c82349eb29b1b4821aec66f42bb448c4d8b20e5eb7cdb7bf5d9e062"
+  },
+  {
+    "filename": "kurvendiskussion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1684478,
+    "sha256": "c0cfd4c12e7208ebcc9c13e7187fa8064e765bbe93aaa57ac76ee05d0082cdec"
+  },
+  {
+    "filename": "extremwertprobleme.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1973564,
+    "sha256": "360a66ca2e976b9b0bb1d9ee75bea21059407e30dd8e76c425cd8451c7d0c704"
+  },
+  {
+    "filename": "funktionenscharen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1745251,
+    "sha256": "719d2ab468bf2e85efcd62e2d63d4ad4544472ad42d55c23abdad10be9b87de2"
+  },
+  {
+    "filename": "stammfunktion-grafisch.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1673772,
+    "sha256": "3c4872263d59a663decdbd43116d9a1f53e1d3abe40be61658ce2370aa59d9bd"
+  },
+  {
+    "filename": "ober-untersummen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1649802,
+    "sha256": "a15de39604af44bfe14688ff60caea70862089f2fe310c9646fb352632cbe08a"
+  },
+  {
+    "filename": "hauptsatz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1849392,
+    "sha256": "e7475471a0fd4a88cb5684d26bd5d8e70dd5e602283a2edd102d927f41cf908f"
+  },
+  {
+    "filename": "aenderungsrate.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1605711,
+    "sha256": "ebfe8cf4cdaa26cd0fa4ca67e78fcbb85041d69df539eb5fefe8165438414c90"
+  },
+  {
+    "filename": "rotationskoerper.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1745112,
+    "sha256": "36a2a15bad18a67b03dbede749dcb081b6f7b728c72b8ca6322e9e1b4b3e4e42"
+  },
+  {
+    "filename": "taylor-polynome.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1699602,
+    "sha256": "945500651211c94732d157779f998f1fb30c19b20f9c10099cad676cc0125122"
+  },
+  {
+    "filename": "fourier-reihen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1826171,
+    "sha256": "ad1822b6d9a0f1f15c1c9bb5cd6b81f79dfdea3262ab54317eac60a6eb36774f"
+  },
+  {
+    "filename": "koordinaten-3d.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1670276,
+    "sha256": "9282fdacd63175bab3c7f2704d5be3ba9a4725df66e1585f37737314094cf779"
+  },
+  {
+    "filename": "vektoren-3d.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1643616,
+    "sha256": "e8a11b5cbae6b778e0c1a31490c9de887a3edd7cfab167c7b841b3946c61d71c"
+  },
+  {
+    "filename": "skalar-vektorprodukt.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1839340,
+    "sha256": "68157f12de7a53073fd340b47390c0b341f1583973cb62f95ba03aa66ec61fc0"
+  },
+  {
+    "filename": "geraden-ebenen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1810418,
+    "sha256": "fada3259989e184ba453cd4b023263306f11e0b555386fbdcd47e9aae53d8dc4"
+  },
+  {
+    "filename": "lage-abstaende.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1614577,
+    "sha256": "e51b2228a82db3c5580fe925fe3794a5fb75894a35f06aa59d4195a7dfed1e51"
+  },
+  {
+    "filename": "kugeln.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1916640,
+    "sha256": "2c5d53f36dfcc466aa1dd0c67c05d8d553754fbae1721d117bdae51d5efd30df"
+  },
+  {
+    "filename": "matrix-abbildungen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1747250,
+    "sha256": "59cb4ba30592968ae3a5230984f968f5eb93738e00e8bcd5436a382d35234f17"
+  },
+  {
+    "filename": "bewegungsdiagramme.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1699805,
+    "sha256": "2732c16b4f7b9a2552fe6db86c5e02a4f17d61e118180f0447fd650162b806a1"
+  },
+  {
+    "filename": "freier-fall.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1609132,
+    "sha256": "12211c72eb4c8c2aa9933a0e6be6e262aaffe023df3824427f79b89e8bcde191"
+  },
+  {
+    "filename": "hookesches-gesetz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1694355,
+    "sha256": "2e7f3bb4cd7f999984c0ab6aa7d4454fa6882f12a2f9c9bac6c542534b4ef5c0"
+  },
+  {
+    "filename": "hebelgesetz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1661499,
+    "sha256": "6ed37ad0cd5609d8066277b2d6ae2faf3f383a228dd29ce2765de61825c50328"
+  },
+  {
+    "filename": "kraefteaddition.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1744247,
+    "sha256": "228790ee120e440facdf5f003318f3156d82784721e94411b9102dde745328f0"
+  },
+  {
+    "filename": "schiefe-ebene.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1954108,
+    "sha256": "2d384a88250853c70b128f48b4eaa361429266bab65ab6aebc886f107ab9ec6f"
+  },
+  {
+    "filename": "energieerhaltung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2081543,
+    "sha256": "b47b47b2f08bc32e94e9055a85174fd5bb8fa91a7776e2caaba62ede64843a08"
+  },
+  {
+    "filename": "stoesse.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1691481,
+    "sha256": "a02d0d13f35e96d3136c1b38d06d915137515242ff2edbed0a01d4c8fde62cb7"
+  },
+  {
+    "filename": "kreisbewegung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1707265,
+    "sha256": "b35c2781ec1043d19ee3ef66b1b4b919a202f7bf60ee189aacff194e4cd08589"
+  },
+  {
+    "filename": "planetenbahnen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1901653,
+    "sha256": "6e40b3729f024860c886dc482f3ffc356aa8b091ed5d083813af47542e849261"
+  },
+  {
+    "filename": "schiefer-wurf.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1872821,
+    "sha256": "0fe1c29ef6a900f14c57e3b7dd535c4dc3986375153bc19b76c00cdd0fb9ec42"
+  },
+  {
+    "filename": "fadenpendel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1653625,
+    "sha256": "066f7c9e1e78d79918004344d11ac36a25405bfde003b3446bdda2da8042c2fe"
+  },
+  {
+    "filename": "federpendel.png",
+    "size": [
+      1672,
+      940
+    ],
+    "mode": "RGB",
+    "bytes": 1724400,
+    "sha256": "bc136567d4fd4851b2594e30bccd0510e3ad5207ac209330b001055be82fb2b4"
+  },
+  {
+    "filename": "resonanz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1965718,
+    "sha256": "642191bb8d9d0ae2a4b15bab76bd32424f9771b4a5c4fc5cf85bf68be367ebfe"
+  },
+  {
+    "filename": "wellen-ausbreitung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1552316,
+    "sha256": "cfc49e5db2c57882d9adb5cd7baad575f4ce1891b41d4d432134629c87468959"
+  },
+  {
+    "filename": "doppler-effekt.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1637082,
+    "sha256": "eb1c9b0020b5cf8b57d98746273784f4384bd7b0663506d98953b8efa5e93e82"
+  },
+  {
+    "filename": "interferenz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1969021,
+    "sha256": "e17a022b684ccc5d7874dc575750ae1a0c9f8fb36c5565a8112be1b5f9497590"
+  },
+  {
+    "filename": "stehende-wellen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1733806,
+    "sha256": "4edf55053424034d15f7b29456d1c76d70a71788c46191625fe1ed324187e794"
+  },
+  {
+    "filename": "einfacher-stromkreis.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1724474,
+    "sha256": "a602fb0b244f44fa1f22a64080d7ba17e31093a5066d8035641fc52b93819d91"
+  },
+  {
+    "filename": "reihe-parallel.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1650280,
+    "sha256": "d2a95bd8300a9ccfbce2285a2826657d75adeee025e6270602e63438ac6d6fb6"
+  },
+  {
+    "filename": "ohmsches-gesetz.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1898968,
+    "sha256": "c82a2f49ae8c4f811b4f99bc9ada20ffc54f7c52bcfbcdb842a01daa5595161d"
+  },
+  {
+    "filename": "induktion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1993549,
+    "sha256": "e45e2887d873ccf764e3578083008e3b39492c326fa92ff2fe9fff7f49ee490d"
+  },
+  {
+    "filename": "lorentzkraft.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1873034,
+    "sha256": "e938da9a140cb352216ec1066e3415654d44ec69b7b3f8616af7531184b81191"
+  },
+  {
+    "filename": "feldlinien.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1799630,
+    "sha256": "834f48767ab0f3481fb4aed44fe25afa8277b158a01e0f76020a78b7edbedc81"
+  },
+  {
+    "filename": "kondensator.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1712936,
+    "sha256": "99c1f34585b8a2581a10087773220f1330a9a8879ae3d21f224536656075d264"
+  },
+  {
+    "filename": "licht-schatten.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1675815,
+    "sha256": "0e27c67ab7e6e89c97311d7dd2af9bb9672541d0cff99652110a1f64d38d0213"
+  },
+  {
+    "filename": "reflexion.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1709621,
+    "sha256": "fa1a0efc89475895a27fd2acc9c57f44139a396c592eaffedbe250333676f3ba"
+  },
+  {
+    "filename": "brechung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1873306,
+    "sha256": "8693c030f9138cd76b1fde98e5f30468ed462b12718784fb2f509b808dac917c"
+  },
+  {
+    "filename": "linsen.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1725739,
+    "sha256": "c1cf866ab693949b72d7598f19d5c9efd6ef99aec508b9b2a8d2be07e3bb3585"
+  },
+  {
+    "filename": "doppelspalt.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1775199,
+    "sha256": "de54751ac908495e26b8dd4c95bbe14495241926b359bd9d2eab9e83a9f014e9"
+  },
+  {
+    "filename": "teilchenmodell.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2129813,
+    "sha256": "44c286832dae5c1fa562c8c4da3aa2f8fb0845f844497ac55db7e3a37dc678e2"
+  },
+  {
+    "filename": "gasgesetze.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1835778,
+    "sha256": "6107984727df3e6bd969a84a2ac293950b9805626e32dcc4b6ddaa5091ece03e"
+  },
+  {
+    "filename": "radioaktiver-zerfall.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1846933,
+    "sha256": "bb93b6c13d670ead668ce9751aa6b15db65fd1f4e2f4e2a3030309ad7c175cdf"
+  },
+  {
+    "filename": "photoeffekt.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1835372,
+    "sha256": "e3e6282b65194d3221803905da749f2458150c0702972556330d31dbc097d015"
+  },
+  {
+    "filename": "linienspektren.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 1898141,
+    "sha256": "2b92c40a01ba856274660c29fbb667ec7ab9ca953533ac4eb038ba604ac81917"
+  },
+  {
+    "filename": "elektronenbeugung.png",
+    "size": [
+      1672,
+      941
+    ],
+    "mode": "RGB",
+    "bytes": 2058166,
+    "sha256": "00f66bcda543439ad51f0b0a946b1b1e780f666104d13ce9adb47de1199b0649"
+  }
+]
