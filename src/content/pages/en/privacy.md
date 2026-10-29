@@ -6,7 +6,7 @@ title: Privacy policy
 
 ## As little data as possible
 
-- **No user accounts** and **no forms**.
+- **No user accounts**. The **contact form** sends nothing by itself (see below).
 - **No cookies.**
 - **No tracking**, no analytics and no advertising.
 - **No external content** (no fonts, scripts or images from third-party servers).
@@ -25,4 +25,12 @@ For more information, see GitHub's privacy statement: [docs.github.com](https://
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state** (local storage) and a **copy of the pages** (service worker) for offline use. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. You can delete this data at any time in your browser settings.
+
+## Contact form
+
+The contact form does not transmit any data to us or to third parties. It puts your entries together into a message and opens your own email program. We only receive it once you send the email from there, with the details you entered (name and email address are optional). Technical details (browser, screen size) are only attached if you tick the box.
+
+We use your message only to handle your request and, if wished, to reply. The **legal basis** is Art. 6(1)(f) GDPR (legitimate interest in answering requests and improving the website). The email is deleted once it has been dealt with, unless retention obligations apply.
+
+Optionally you can report bugs, ideas and subject-matter notes publicly on **GitHub**. This requires a GitHub account and GitHub's privacy statement applies; name and email address from the form are not included.

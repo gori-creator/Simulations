@@ -157,6 +157,13 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
             </section>
           )
         }
+        <section class="aside-box" style="position:static">
+          <h2>{t(lang, 'material.feedback')}</h2>
+          <p>{t(lang, 'material.feedbackLead')}</p>
+          <a class="btn" href={`${href(lang, { kind: 'page', page: 'contact' })}?sim=${encodeURIComponent(simId)}&von=${encodeURIComponent(href(lang, { kind: 'simulation', id: simId }))}`}>
+            {t(lang, 'nav.contact')}
+          </a>
+        </section>
       </aside>
     </div>
   </div>

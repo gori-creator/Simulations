@@ -10,7 +10,7 @@ import { LANGS, type Lang, type Localized } from '../i18n/config';
  * der Sprachumschalter zu jeder Seite die passende Übersetzung finden und
  * Links bleiben korrekt, wenn sich Slugs ändern.
  */
-export type InfoPageId = 'teachers' | 'about' | 'imprint' | 'privacy';
+export type InfoPageId = 'teachers' | 'about' | 'contact' | 'imprint' | 'privacy';
 
 export type Route =
   | { kind: 'home' }
@@ -27,6 +27,7 @@ export type Route =
 export const INFO_PAGES: Record<InfoPageId, Localized> = {
   teachers: { de: 'lehrkraefte', en: 'teachers' },
   about: { de: 'ueber', en: 'about' },
+  contact: { de: 'kontakt', en: 'contact' },
   imprint: { de: 'impressum', en: 'imprint' },
   privacy: { de: 'datenschutz', en: 'privacy' },
 };

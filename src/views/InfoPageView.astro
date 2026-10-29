@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContactForm from '../components/ContactForm.astro';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -31,5 +32,6 @@ const section = page === 'teachers' ? 'teachers' : page === 'about' ? 'about' : 
       {isFallback && <p class="note note--warning">{t(lang, 'material.translationMissing')}</p>}
       <Content />
     </article>
+    {page === 'contact' && <ContactForm lang={lang} />}
   </div>
 </BaseLayout>

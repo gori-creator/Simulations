@@ -12,6 +12,12 @@ export const SITE = {
     en: 'Free interactive simulations for mathematics and physics – for the classroom and for learning at home. No sign-up, no ads, no tracking.',
   } satisfies Localized,
   repoUrl: 'https://github.com/gori-creator/Simulations',
+  /**
+   * Empfangsadresse des Kontaktformulars (öffnet das E-Mail-Programm, siehe
+   * src/components/ContactForm.astro). VORLAGE: vor der Veröffentlichung die
+   * echte Adresse eintragen (dieselbe wie im Impressum).
+   */
+  contactEmail: 'kontakt@scitura.example',
   /** Marineblau des Logos (Scitura-Logo 01, siehe docs/design/coin-reise-v13/LOGO-HERKUNFT.md). */
   themeColor: '#183365',
 } as const;
