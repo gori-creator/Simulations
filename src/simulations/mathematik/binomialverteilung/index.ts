@@ -94,6 +94,7 @@ type Drag = 'k' | 'a' | 'b';
 export default defineSimulation({
   id: 'binomialverteilung',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe auf einen Balken, um die Trefferzahl k zu wählen.', en: 'Tip: Tap a bar to choose the number of successes k.' },
   layout: { aspect: 1.45, aspectNarrow: 0.5 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

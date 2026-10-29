@@ -1,5 +1,6 @@
 import {
   defineSimulation,
+  seededRandom,
   drawImageFit,
   ease,
   Plot,
@@ -149,6 +150,7 @@ export default defineSimulation({
       chartY: 'h',
       // Zeilenumbruch nur bei schmaler Fläche, sonst Leerzeichen
       start: 'Werfen,\num zu beginnen',
+      ghost: 'Beispielverlauf – deine Würfe ersetzen ihn',
     },
     en: {
       canvas: 'Random experiment with a chart of the relative frequency against the number of throws',
@@ -162,6 +164,7 @@ export default defineSimulation({
       bars: 'Relative frequencies',
       chartY: 'h',
       start: 'Throw\nto start',
+      ghost: 'Example run – your throws replace it',
     },
   },
 
@@ -605,6 +608,18 @@ export default defineSimulation({
         if (n > history.length) pts.push([toX(n), k / n]);
         plot.polyline(pts, { color: theme.series[0], width: 2.5 });
         plot.point(toX(n), k / n, { color: theme.series[0], radius: 6 });
+      } else {
+        // Blasser Beispielverlauf (feste Zufallsfolge) bis zum Rand: So sieht das Diagramm nach vielen Würfen aus
+        const rnd = seededRandom(11);
+        const nMax = Math.max(10, Math.round(nAt(plot.bounds.xMax)));
+        const ghost: [number, number][] = [];
+        let hits = 0;
+        for (let i = 1; i <= nMax; i++) {
+          if (rnd() < pv) hits++;
+          if (i < 30 || i % Math.max(1, Math.round(nMax / 400)) === 0) ghost.push([toX(i), hits / i]);
+        }
+        plot.polyline(ghost, { color: withAlpha(theme.muted, 0.55), width: 1.6, dash: [4, 4] });
+        plot.textPx(plot.rect.x + plot.rect.w - 10, plot.rect.y + 14, ctx.t('ghost'), { color: theme.muted, size: 11, align: 'right' });
       }
       plot.end();
     }

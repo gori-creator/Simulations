@@ -89,6 +89,7 @@ const coord = <K extends string>(key: K, label: string, def: number, group: stri
 export default defineSimulation({
   id: 'lage-abstaende',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the points or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.62 },
   groups: [
     { id: 'g', label: L('Gerade g: x = a + t · u', 'Line g: x = a + t · u') },

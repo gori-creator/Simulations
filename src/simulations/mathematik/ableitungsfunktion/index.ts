@@ -307,6 +307,7 @@ const APP_META: Record<AppKey, AppMeta> = {
 export default defineSimulation({
   id: 'ableitungsfunktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P über den Graphen von f – rechts bzw. unten entsteht f′.', en: 'Tip: Drag point P along the graph of f – f′ appears on the right or below.' },
   layout: { aspect: 1.55, aspectNarrow: 0.4 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },

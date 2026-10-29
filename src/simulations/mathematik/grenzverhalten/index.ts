@@ -132,6 +132,7 @@ const isConv = (v: Record<string, unknown>) => hasLimit(v.f as FnKey, v.dir === 
 export default defineSimulation({
   id: 'grenzverhalten',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt nach außen oder den Schlauch um den Grenzwert enger.', en: 'Tip: Drag the point outwards or narrow the tube around the limit.' },
   animated: true,
   layout: { aspect: 1.2, aspectNarrow: 0.34 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

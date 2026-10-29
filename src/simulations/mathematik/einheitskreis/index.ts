@@ -30,6 +30,7 @@ export default defineSimulation({
   id: 'einheitskreis',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Kreis – Sinus und Kosinus laufen im Graphen mit.', en: 'Tip: Drag point P around the circle – sine and cosine follow in the graph.' },
   layout: { aspect: 2.25, aspectNarrow: 0.78 },
   groups: [
     { id: 'show', label: L('Anzeige', 'Display') },

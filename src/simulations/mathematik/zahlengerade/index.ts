@@ -50,6 +50,7 @@ interface Hit {
 export default defineSimulation({
   id: 'zahlengerade',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Pfeilspitzen auf der Zahlengerade.', en: 'Tip: Drag the arrow tips on the number line.' },
   layout: { aspect: 1.6, aspectNarrow: 0.72 },
   images: { sea: 'meer.webp', frog: 'frosch.webp', piggy: 'sparschwein.webp', penguin: 'pinguin.webp', thermo: 'thermometer.webp', iceberg: 'eisberg.webp' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

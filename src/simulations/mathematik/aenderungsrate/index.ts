@@ -221,6 +221,7 @@ const META: Record<SitKey, Meta> = {
 export default defineSimulation({
   id: 'aenderungsrate',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh im Diagramm oder an der Zeitleiste, um den Zeitpunkt t zu wählen.', en: 'Tip: Drag in the graph or on the timeline to choose the time t.' },
   animated: true,
   layout: { aspect: 1.32, aspectNarrow: 0.34 },
   images: { car: 'auto.webp', bike: 'fahrrad.webp' },

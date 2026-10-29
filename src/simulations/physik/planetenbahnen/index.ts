@@ -97,6 +97,7 @@ export default defineSimulation({
   id: 'planetenbahnen',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh vor dem Start die Pfeilspitze der Startgeschwindigkeit.', en: 'Tip: Before the start, drag the tip of the starting-velocity arrow.' },
   layout: { aspect: 1.6, aspectNarrow: 0.46 },
   groups: [
     { id: 'start', label: L('Start des Planeten', 'Launch of the planet') },

@@ -128,6 +128,7 @@ class Prog {
 export default defineSimulation({
   id: 'winkelsumme',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken – die Winkelsumme bleibt gleich.', en: 'Tip: Drag the corners – the angle sum stays the same.' },
   layout: { aspect: 1.75, aspectNarrow: 0.6 },
   groups: [
     { id: 'pts', label: L('Ecken (in Kästchen)', 'Corners (in grid squares)') },

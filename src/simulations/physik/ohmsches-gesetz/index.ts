@@ -156,6 +156,7 @@ export default defineSimulation({
   layout: { aspect: 1.6, aspectNarrow: 0.56 },
   images: { meter: 'messgeraet.webp', supply: 'netzgeraet.webp' },
   dragHint: true,
+  hint: { de: 'Tipp: Dreh den Knopf am Netzgerät, um die Spannung einzustellen.', en: 'Tip: Turn the knob on the power supply to set the voltage.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {

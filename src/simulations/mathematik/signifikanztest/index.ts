@@ -117,6 +117,7 @@ class Bars {
 export default defineSimulation({
   id: 'signifikanztest',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe in die Diagramme, um die Stichprobe oder p₁ zu wählen.', en: 'Tip: Tap the charts to choose the sample or p₁.' },
   layout: { aspect: 1.1, aspectNarrow: 0.38 },
   groups: [
     { id: 'obs', label: L('Stichprobe', 'Sample') },

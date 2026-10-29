@@ -35,6 +35,7 @@ type Drag =
 export default defineSimulation({
   id: 'winkel-messen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Schenkel des Winkels oder das Geodreieck.', en: 'Tip: Drag the arms of the angle or the protractor.' },
   layout: { aspect: 1.6, aspectNarrow: 0.58 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

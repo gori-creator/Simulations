@@ -70,6 +70,7 @@ const same = (s: string) => L(s, s);
 export default defineSimulation({
   id: 'kugeln',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the points or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.68 },
   groups: [
     { id: 'kugel', label: L('Kugel K', 'Sphere K') },

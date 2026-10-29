@@ -51,6 +51,7 @@ interface Hit {
 export default defineSimulation({
   id: 'koordinaten-lage',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte im Koordinatensystem.', en: 'Tip: Drag the points in the coordinate system.' },
   layout: { aspect: 1.72, aspectNarrow: 0.62 },
   groups: [
     { id: 'pts', label: L('Koordinaten der Punkte', 'Coordinates of the points') },

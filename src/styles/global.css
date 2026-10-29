@@ -1954,6 +1954,36 @@ em .hat::after {
   padding-inline: 18px;
 }
 
+/* Gesperrte Aktion (z. B. „Wechseln“, bevor eine Tür gewählt ist): grau und gestrichelt statt blassblau,
+   damit sie nicht wie ein kaputter Hauptknopf wirkt */
+.sim .btn:disabled,
+.sim .btn--primary:disabled {
+  opacity: 1;
+  background: var(--surface-2);
+  border: 1px dashed var(--border-strong);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+/* Handy: Aktionen zwei pro Zeile, die erste Hauptaktion über die volle Breite */
+@media (max-width: 560px) {
+  .sim__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sim__actions .btn {
+    width: 100%;
+    min-height: 42px;
+    padding-inline: 10px;
+  }
+
+  .sim__actions .btn--primary:first-child,
+  .sim__actions .btn:only-child {
+    grid-column: 1 / -1;
+  }
+}
+
 .sim__toolbar {
   display: flex;
   flex-wrap: wrap;

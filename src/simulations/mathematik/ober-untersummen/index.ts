@@ -19,6 +19,7 @@ const START: Record<FunctionId, [number, number]> = { x2: [0, 2], sqrt: [0, 9], 
 export default defineSimulation({
   id: 'ober-untersummen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Grenzen a und b auf der x-Achse.', en: 'Tip: Drag the limits a and b on the x-axis.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {

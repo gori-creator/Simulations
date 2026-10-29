@@ -183,6 +183,7 @@ interface ZView {
 export default defineSimulation({
   id: 'zehnerpotenzen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Zeiger auf dem Größenstrahl, um durch die Größenordnungen zu zoomen.', en: 'Tip: Drag the pointer on the size scale to zoom through the orders of magnitude.' },
   layout: { aspect: 1.6, aspectNarrow: 0.62 },
   images: {
     sand: 'sandkorn.webp',

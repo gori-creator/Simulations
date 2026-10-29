@@ -149,6 +149,7 @@ function piSrc(v: number): string | null {
 export default defineSimulation({
   id: 'transformationen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den runden Ankerpunkt zum Verschieben, den rautenförmigen zum Strecken.', en: 'Tip: Drag the round anchor point to shift and the diamond-shaped one to stretch.' },
   animated: true,
   layout: { aspect: 1.3, aspectNarrow: 0.36 },
   groups: [

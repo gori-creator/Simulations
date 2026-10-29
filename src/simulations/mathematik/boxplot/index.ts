@@ -129,6 +129,7 @@ interface Geo {
 export default defineSimulation({
   id: 'boxplot',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Datenpunkte auf dem Zahlenstrahl, tippe auf den Strahl für einen neuen Wert.', en: 'Tip: Drag the data points on the number line, tap the line for a new value.' },
   layout: { aspect: 1.6, aspectNarrow: 0.6 },
   groups: [
     { id: 'data', label: L('Daten', 'Data') },

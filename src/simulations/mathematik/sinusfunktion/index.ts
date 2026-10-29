@@ -18,6 +18,7 @@ const shown = (v: Record<string, unknown>) => v.info !== false;
 export default defineSimulation({
   id: 'sinusfunktion',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Hochpunkt, den Beginn oder das Ende der Periode.', en: 'Tip: Drag the maximum, the start or the end of the period.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {

@@ -165,6 +165,7 @@ const VERDICTS: Verdict[] = ['dir', 'ind', 'none'];
 export default defineSimulation({
   id: 'proportional',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P auf dem Graphen.', en: 'Tip: Drag point P on the graph.' },
   layout: { aspect: 1.05, aspectNarrow: 0.325 },
   images: { apple: 'apfel.webp', taxi: 'taxi.webp' },
   groups: [

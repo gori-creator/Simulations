@@ -229,6 +229,7 @@ type HitId = 'v0' | 'v1' | 'v2' | 'next' | 'restart' | 'card';
 export default defineSimulation({
   id: 'besondere-linien',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken A, B und C – die besonderen Linien wandern mit.', en: 'Tip: Drag the corners A, B and C – the special lines move along.' },
   layout: { aspect: 1.42, aspectNarrow: 0.4 },
   groups: [
     { id: 'pts', label: L('Ecken (in cm)', 'Vertices (in cm)') },

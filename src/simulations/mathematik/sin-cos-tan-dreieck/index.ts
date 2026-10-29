@@ -142,6 +142,7 @@ const SWEEP: { to: number; dur: number; hold: number }[] = [
 export default defineSimulation({
   id: 'sin-cos-tan-dreieck',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecke B – die Verhältnisse der Seiten rechnen mit.', en: 'Tip: Drag corner B – the side ratios are recalculated.' },
   layout: { aspect: 1.4, aspectNarrow: 0.37 },
   images: { wheelchair: 'rollstuhl.webp', bricks: 'ziegelwand.webp', ladder: 'leiter.webp' },
   groups: [

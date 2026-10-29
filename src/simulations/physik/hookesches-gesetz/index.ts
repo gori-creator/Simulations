@@ -57,6 +57,7 @@ interface Geo {
 export default defineSimulation({
   id: 'hookesches-gesetz',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe auf die Massestücke, um sie an die Feder zu hängen.', en: 'Tip: Tap the masses to hang them on the spring.' },
   layout: { aspect: 1.55, aspectNarrow: 0.56 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

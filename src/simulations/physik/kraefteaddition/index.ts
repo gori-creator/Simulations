@@ -77,6 +77,7 @@ function snapForce(F: number): number {
 export default defineSimulation({
   id: 'kraefteaddition',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Spitzen der Kraftpfeile.', en: 'Tip: Drag the tips of the force arrows.' },
   layout: { aspect: 1.45, aspectNarrow: 0.82 },
   images: { lamp: 'lampe.webp', shirt: 't-shirt.webp', meter: 'kraftmesser.webp', table: 'tischkante.webp' },
   groups: [

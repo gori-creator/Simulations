@@ -50,6 +50,7 @@ function cubeFace(p: Vec3, n: Vec3): Vec3[] {
 export default defineSimulation({
   id: 'quader-volumen',
   dragHint: true,
+  hint: { de: 'Tipp: Dreh den Quader mit einem Finger, um ihn von allen Seiten zu sehen.', en: 'Tip: Rotate the cuboid with one finger to see it from all sides.' },
   layout: { aspect: 1.6, aspectNarrow: 0.82 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

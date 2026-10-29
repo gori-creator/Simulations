@@ -68,6 +68,7 @@ class Glide {
 export default defineSimulation({
   id: 'koordinaten-3d',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt im Raum oder dreh die Ansicht mit einem Finger.', en: 'Tip: Drag the point in space or rotate the view with one finger.' },
   layout: { aspect: 1.6, aspectNarrow: 0.7 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

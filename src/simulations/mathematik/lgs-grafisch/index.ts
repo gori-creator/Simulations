@@ -59,6 +59,7 @@ function mixGeom(g0: Geom, g1: Geom, t: number): Geom {
 export default defineSimulation({
   id: 'lgs-grafisch',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Punkte auf den Geraden – der Schnittpunkt wandert mit.', en: 'Tip: Drag the points on the lines – the intersection moves along.' },
   layout: { aspect: 1.5, aspectNarrow: 0.88 },
   images: { phone: 'handy.webp' },
   groups: [

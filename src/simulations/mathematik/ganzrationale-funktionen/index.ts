@@ -124,6 +124,7 @@ const supNum = (k: number) =>
 export default defineSimulation({
   id: 'ganzrationale-funktionen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Nullstellen auf der x-Achse oder den Griff für den Leitkoeffizienten a.', en: 'Tip: Drag the zeros on the x-axis or the handle for the leading coefficient a.' },
   layout: { aspect: 1.4, aspectNarrow: 0.4 },
   groups: [
     { id: 'zeros', label: L('Nullstellen', 'Zeros') },

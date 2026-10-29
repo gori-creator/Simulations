@@ -63,6 +63,7 @@ type Drag = { kind: 'kg' } | { kind: 'kh' } | { kind: 'dg' } | { kind: 'dh' } | 
 export default defineSimulation({
   id: 'winkel-geradenkreuzung',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Geraden oder tippe auf einen Winkel.', en: 'Tip: Drag the lines or tap an angle.' },
   layout: { aspect: 1.6, aspectNarrow: 0.56 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

@@ -84,6 +84,7 @@ interface Card {
 export default defineSimulation({
   id: 'brueche-vergleichen',
   dragHint: true,
+  hint: { de: 'Tipp: Tippe auf einen Streifen, um ein Stück zu markieren.', en: 'Tip: Tap a strip to mark one piece.' },
   layout: { aspect: 1.6, aspectNarrow: 0.66 },
   params: [
     {

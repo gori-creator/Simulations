@@ -150,6 +150,7 @@ export default defineSimulation({
   id: 'licht-schatten',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh Lampe, Gegenstand oder Schirm auf der optischen Bank.', en: 'Tip: Drag the lamp, the object or the screen along the optical bench.' },
   layout: { aspect: 1.7, aspectNarrow: 0.68 },
   groups: [
     { id: 'lamp', label: L('Lampe', 'Lamp') },

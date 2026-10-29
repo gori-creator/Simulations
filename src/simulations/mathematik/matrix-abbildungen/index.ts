@@ -253,6 +253,7 @@ const EX_VALUES = {
 export default defineSimulation({
   id: 'matrix-abbildungen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Spitzen der Bildvektoren von e₁ und e₂ – die Matrix ändert sich mit.', en: 'Tip: Drag the tips of the image vectors of e₁ and e₂ – the matrix changes with them.' },
   layout: { aspect: 1.55, aspectNarrow: 0.46 },
   groups: [
     { id: 'mat', label: L('Matrix A', 'Matrix A') },

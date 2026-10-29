@@ -93,6 +93,7 @@ const hingeSide = (refDeg: number) => (Math.cos((refDeg * Math.PI) / 180) >= 0 ?
 export default defineSimulation({
   id: 'mittelsenkrechte',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Punkt P – er hinterlässt eine Spur, wo er von A und B gleich weit entfernt ist.', en: 'Tip: Drag point P – it leaves a trace where it is equally far from A and B.' },
   layout: { aspect: 1.7, aspectNarrow: 0.47 },
   groups: [
     { id: 'pts', label: L('Punkte (in Kästchen)', 'Points (in grid squares)') },

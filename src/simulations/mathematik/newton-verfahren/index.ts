@@ -118,6 +118,7 @@ type Kind = 'start' | 'how' | 'heron' | 'quad' | 'double' | 'jump' | 'flat' | 'c
 export default defineSimulation({
   id: 'newton-verfahren',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Startwert x₀ auf der x-Achse.', en: 'Tip: Drag the starting value x₀ on the x-axis.' },
   layout: { aspect: 1.42, aspectNarrow: 0.38 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [

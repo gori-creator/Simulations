@@ -215,6 +215,7 @@ const DV_TITLES: Txt[] = [
 export default defineSimulation({
   id: 'funktionenscharen',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh einen Extrempunkt entlang seiner Ortskurve – k ändert sich mit.', en: 'Tip: Drag an extreme point along its locus – k changes with it.' },
   animated: true,
   layout: { aspect: 1.2, aspectNarrow: 0.34 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],

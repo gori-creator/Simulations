@@ -64,6 +64,7 @@ export default defineSimulation({
   id: 'interferenz',
   animated: true,
   dragHint: true,
+  hint: { de: 'Tipp: Zieh den Messpunkt P durch das Wellenfeld.', en: 'Tip: Drag the measuring point P through the wave field.' },
   layout: { aspect: 1.5, aspectNarrow: 0.5 },
   groups: [
     { id: 'view', label: L('Anzeige', 'Display') },

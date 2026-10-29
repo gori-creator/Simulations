@@ -11,6 +11,7 @@ const L = (de: string, en: string) => ({ de, en });
 export default defineSimulation({
   id: 'pythagoras',
   dragHint: true,
+  hint: { de: 'Tipp: Zieh die Ecken des Dreiecks – die Quadrate wachsen mit.', en: 'Tip: Drag the corners of the triangle – the squares grow with them.' },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
   params: [
     {
