@@ -1115,6 +1115,11 @@ em .hat::after {
     display: none;
   }
 
+  /* helle, schematische Vorschaubilder im Dunkeln etwas zurücknehmen */
+  :root:not([data-theme='light']) .sim-shot--art {
+    filter: brightness(0.86);
+  }
+
   :root:not([data-theme='light']) .sim-shot--dunkel {
     display: block;
   }
@@ -1126,6 +1131,10 @@ em .hat::after {
 
 :root[data-theme='dark'] .sim-shot--dunkel {
   display: block;
+}
+
+:root[data-theme='dark'] .sim-shot--art {
+  filter: brightness(0.86);
 }
 
 /* sanftes Heranzoomen beim Darüberfahren */
