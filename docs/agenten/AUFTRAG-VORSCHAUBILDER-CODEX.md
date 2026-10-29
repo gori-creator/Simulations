@@ -55,14 +55,14 @@ Claude passt danach bei Bedarf den Stil in `docs/VORSCHAUBILDER.md` an und nennt
 
 ## Schritt 3 · Alle übrigen Bilder (Codex)
 
-Erst starten, wenn Schritt 2 abgenommen ist. `<VORLAGEN>` durch die Dateien ersetzen, die Claude in Schritt 2 genannt hat.
+Schritt 2 ist abgenommen (29.10.2026). Die Stilvorlagen sind unten schon eingetragen.
 
 ```text
 Repository gori-creator/Simulations, Zweig claude/exciting-gauss-noh1h9. Erst den Zweig frisch holen (git pull) und docs/VORSCHAUBILDER.md neu lesen; der Stil kann sich nach der Probe geändert haben.
 
-Erzeuge die Vorschaubilder für alle übrigen Simulationen in docs/VORSCHAUBILDER.md, also alle außer den fünf Probebildern. Den Prompt jeweils wörtlich aus dem Abschnitt der Simulation nehmen, Dateiname genau wie dort angegeben.
+Erzeuge die Vorschaubilder für alle übrigen Simulationen in docs/VORSCHAUBILDER.md, also alle außer bruchteile, lineare-funktion und fadenpendel. pythagoras und brechung bitte neu erzeugen: Die Probe war zu karg und offenbar per Code gezeichnet. Jedes Bild mit dem Bildwerkzeug erzeugen, nicht per Code oder SVG zeichnen. Den Prompt jeweils wörtlich aus dem Abschnitt der Simulation nehmen, Dateiname genau wie dort angegeben.
 
-Stilvorlage: Gib bei jedem Bild diese Probebilder als Referenz mit („im selben Stil wie diese Bilder: gleiche Linienstärke, gleiche Farben, gleicher heller Hintergrund mit feinem Raster“): <VORLAGEN>
+Stilvorlage: Gib bei jedem Bild diese Probebilder als Referenz mit („im selben Stil wie diese Bilder: gleiche Linienstärke, gleiche Farben, gleicher heller Hintergrund mit feinem Raster“): incoming/vorschau/fadenpendel.png, incoming/vorschau/bruchteile.png, incoming/vorschau/lineare-funktion.png
 
 Vorgaben:
 - 16:9 quer, mindestens 1600 × 900 px, deckend
