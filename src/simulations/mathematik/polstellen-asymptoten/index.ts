@@ -174,6 +174,8 @@ export default defineSimulation({
     { key: 'far', type: 'boolean', group: 'view', label: L('Blick aus der Ferne (× 8)', 'View from afar (× 8)'), default: false },
     { key: 'tab', type: 'boolean', group: 'view', label: L('Wertetabelle an der Polstelle', 'Table of values at the pole'), default: false },
     { key: 'vzt', type: 'boolean', group: 'view', label: L('Vorzeichentabelle', 'Sign chart'), default: false },
+    // Zusatzkarte: im Bild zunächst Funktionsterm und Steckbrief (die Asymptoten stehen auch im Steckbrief)
+    { key: 'beh', type: 'boolean', group: 'view', label: L('Verhalten für x → ±∞ (Karte)', 'Behaviour for x → ±∞ (card)'), default: false },
     {
       key: 'show',
       type: 'boolean',
@@ -2423,7 +2425,7 @@ export default defineSimulation({
       if (p.tab) list.push({ id: 'tab', fn: tableCard(k, now) });
       if (p.vzt) list.push({ id: 'vzt', fn: signCard(k) });
       list.push({ id: 'prop', fn: propCard(k) });
-      if (!divOn) list.push({ id: 'asym', fn: asymCard(k, now) });
+      if (!divOn && p.beh) list.push({ id: 'asym', fn: asymCard(k, now) });
       const room = { x: C.x, y: C.y, w: C.w, h: C.h };
       const full = list.map((c) => c.fn(room, true, false));
       const short = list.map((c) => c.fn(room, true, true));

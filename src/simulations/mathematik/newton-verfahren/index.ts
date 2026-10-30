@@ -173,6 +173,14 @@ export default defineSimulation({
       default: false,
     },
     {
+      key: 'expl',
+      type: 'boolean',
+      group: 'view',
+      label: L('Erklärkarte (So geht’s, Newton = Heron …)', 'Explanation card (how it works, Newton = Heron …)'),
+      help: L('Warnungen (waagerechte Tangente, Zyklus, Abdriften) erscheinen immer.', 'Warnings (horizontal tangent, cycle, drifting away) always appear.'),
+      default: false,
+    },
+    {
       key: 'show',
       type: 'boolean',
       group: 'view',
@@ -1812,13 +1820,16 @@ export default defineSimulation({
       let hst = status(C, true);
       let hb = basin ? basin(C, true) : 0;
       // Platz: Rechnung, Erklärung, (Einzugsbereiche), Tabelle – notfalls kürzer bzw. ohne die hinteren Karten
+      // Erklärkarte nur auf Wunsch; Warnungen bei Problemfällen immer
+      const warning = V.kind === 'flat' || V.kind === 'cycle' || V.kind === 'far';
+      if (!p.expl && !warning) hst = 0;
       const free = () => C.h - hs - (hst ? hst + gap : 0) - (hb ? hb + gap : 0) - gap;
       if (free() < minTable) {
         shortNotes = true;
-        hst = status(C, true);
+        if (hst) hst = status(C, true);
       }
       if (free() < minTable) hb = 0;
-      if (free() < tightTable && V.kind !== 'flat' && V.kind !== 'cycle' && V.kind !== 'far') hst = 0;
+      if (free() < tightTable && !warning) hst = 0;
       const place = (fn: CardFn, R: Rect, i: number) => {
         g.save();
         const a = clamp01(k.cards * 1.6 - i * 0.25) * clamp01(fadeK * 2.2 - i * 0.35);

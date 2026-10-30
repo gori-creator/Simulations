@@ -39,7 +39,7 @@ $1 - \beta$ heißt **Macht** (Güte) des Tests. Die **Gütefunktion** zeigt für
 
 1. Tippe im oberen Histogramm auf verschiedene Säulen: So stellst du den Beobachtungswert $x$ ein. Wann wird $H_0$ abgelehnt? [Beispiel laden](?x=36)
 2. Stelle $\alpha$ auf $1\,\%$ und auf $10\,\%$. Wie wandert die Grenze, wie ändern sich die rote und die orange Fläche? [α = 1 %](?alpha=1)
-3. Drücke „p₁ wandern lassen“ und beobachte, wie $\beta$ schrumpft und der Punkt auf der Gütefunktion nach oben läuft.
+3. Schalte unter „Anzeige“ die **Gütefunktion** ein, drücke „p₁ wandern lassen“ und beobachte, wie $\beta$ schrumpft und der Punkt auf der Gütefunktion nach oben läuft. [Mit Gütefunktion](?curve=1)
 4. Setze $p_1 = p_0$. Was zeigt das untere Histogramm jetzt? [Grenzfall](?p1=0.6&x=33)
 5. Stelle $p_1 = 0{,}68$ ein und vergleiche die Macht bei $n = 50$ und $n = 200$. [n = 50](?p1=0.68) · [n = 200](?n=200&x=135&p1=0.68)
 6. Ziehe mit „100 Stichproben“ viele Stichproben mit $p_1 = p_0$: Wie oft wird $H_0$ (fälschlich) abgelehnt? [p₁ = p₀](?p1=0.6&x=33)
