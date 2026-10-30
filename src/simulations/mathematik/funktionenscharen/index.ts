@@ -215,7 +215,7 @@ const DV_TITLES: Txt[] = [
 export default defineSimulation({
   id: 'funktionenscharen',
   dragHint: true,
-  hint: { de: 'Tipp: Zieh einen Extrempunkt entlang seiner Ortskurve – k ändert sich mit.', en: 'Tip: Drag an extreme point along its locus – k changes with it.' },
+  hint: { de: 'Tipp: Zieh eine rote Perle entlang der Ortskurve – k folgt. ▶ auf dem k-Strahl lässt k laufen, eine blasse Kurve antippen springt zu ihr.', en: 'Tip: Drag a red bead along the locus – k follows. ▶ on the k-axis runs k, tapping a faint curve jumps to it.' },
   animated: true,
   layout: { aspect: 1.2, aspectNarrow: 0.34 },
   groups: [{ id: 'view', label: L('Anzeige', 'Display') }],
@@ -1668,19 +1668,6 @@ export default defineSimulation({
       };
     }
 
-    /** Hinweise zur Bedienung (wenn Platz ist). */
-    function tipsCard(I: Intro): CardFn {
-      return (R, measure, compact) => {
-        if (compact) return 0;
-        const rows: RowSpec[] = [
-          noteRow(T2('Eine rote Perle ziehen: Sie gleitet auf der Ortskurve, k folgt.', 'Drag a red bead: it glides along the locus, k follows.'), fs(12, 11), th().text),
-          noteRow(T2('▶ auf dem k-Strahl: k läuft und zeichnet die Spur der Extrempunkte.', '▶ on the k-axis: k runs and draws the trace of the extrema.'), fs(12, 11), th().text),
-          noteRow(T2('Eine blasse Kurve antippen: k springt zu ihr.', 'Tap a faint curve: k moves to it.'), fs(12, 11), th().text),
-        ];
-        return formulaCard(R, measure, T2('So geht’s', 'How it works'), th().muted, rows, stagger(I));
-      };
-    }
-
     function drawColumn(C0: Rect, I: Intro): void {
       const g = surface.g;
       const gap = C0.h < 620 ? 7 : fs(10, 8);
@@ -1691,7 +1678,6 @@ export default defineSimulation({
         { id: 'com', fn: comCard(I), alpha: 1 },
       ];
       if (kWp.v > 0.01) list.push({ id: 'wp', fn: wpCard(I), alpha: kWp.v });
-      list.push({ id: 'tips', fn: tipsCard(I), alpha: 1 });
       const two = !regions().wide && C0.w >= 440;
       const colW = two ? (C0.w - gap) / 2 : C0.w;
       const room = (i: number) => ({ x: C0.x, y: C0.y, w: i === 0 || !two ? C0.w : colW, h: C0.h });

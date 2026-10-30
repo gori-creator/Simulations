@@ -232,6 +232,9 @@ export default defineSimulation({
       help: L('Aus: Aufgabe „Welcher Term gehört zum Graphen?“', 'Off: task “Which term belongs to the graph?”'),
       default: true,
     },
+    // Zusatzkarten (aus, damit im Bild höchstens Term und Schrittfolge stehen)
+    { key: 'tbl', type: 'boolean', group: 'view', label: L('Tabelle: Punkte von f und ihre Bildpunkte', 'Table: points of f and their images'), default: false, visibleIf: (v) => v.info === true },
+    { key: 'props', type: 'boolean', group: 'view', label: L('Eigenschaften von g', 'Properties of g'), default: false, visibleIf: (v) => v.info === true },
   ],
   actions: [
     { id: 'steps', label: L('Schritt für Schritt abspielen', 'Play step by step'), primary: true, visibleIf: (v) => v.info === true },
@@ -1776,8 +1779,8 @@ export default defineSimulation({
       const list: { id: string; fn: CardFn }[] = [
         { id: 'term', fn: termCard(k) },
         { id: 'steps', fn: stepsCard(k) },
-        { id: 'pts', fn: pointsCard(k) },
-        { id: 'props', fn: propsCard(k) },
+        ...(p.tbl ? [{ id: 'pts', fn: pointsCard(k) }] : []),
+        ...(p.props ? [{ id: 'props', fn: propsCard(k) }] : []),
       ];
       // Höhen messen; reicht der Platz nicht, Karten nacheinander verkürzen (erst Schrittfolge, dann Punkte, Eigenschaften, Term)
       const measure = (C: Rect) => {
@@ -1786,7 +1789,7 @@ export default defineSimulation({
         const short = list.map((c) => c.fn(room, true, true));
         const compactSet = new Set<number>();
         const total = () => list.reduce((s, _, i) => s + (compactSet.has(i) ? short[i]! : full[i]!) + gap, -gap);
-        for (const i of [1, 2, 3, 0]) {
+        for (const i of [1, 2, 3, 0].filter((j) => j < list.length)) {
           if (total() <= C.h + 1) break;
           if (short[i]! < full[i]!) compactSet.add(i);
         }

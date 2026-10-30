@@ -94,7 +94,7 @@ const STEP_TITLES = [
 export default defineSimulation({
   id: 'kurvendiskussion',
   dragHint: true,
-  hint: { de: 'Tipp: Zieh den Punkt P über den Graphen – die Tangente zeigt die Steigung.', en: 'Tip: Drag point P along the graph – the tangent shows the slope.' },
+  hint: { de: 'Tipp: „Nächster Schritt“ oder die Punkte 1–7 antippen. P über den Graphen ziehen – die Tangente zeigt die Steigung; der Punkt auf der y-Achse verschiebt f.', en: 'Tip: Tap “Next step” or the dots 1–7. Drag P along the graph – the tangent shows the slope; the point on the y-axis shifts f.' },
   layout: { aspect: 1.3, aspectNarrow: 0.3 },
   groups: [
     { id: 'coef', label: L('Koeffizienten von f', 'Coefficients of f') },
@@ -2024,19 +2024,6 @@ export default defineSimulation({
       };
     }
 
-    /** Hinweise zur Bedienung (am Anfang, solange Platz ist). */
-    function tipsCard(I: Intro): CardFn {
-      return (R, measure, compact) => {
-        if (compact) return 0;
-        const rows: RowSpec[] = [
-          noteRow(T2('„Nächster Schritt“ oder die Punkte 1–7 antippen: Jeder Schritt erscheint als kleine Animation.', '“Next step” or tap the dots 1–7: each step appears as a small animation.'), fs(12, 11), th().text),
-          noteRow(T2('P auf dem Graphen ziehen: Die Steigung der Tangente ist der Wert von f′ darunter.', 'Drag P along the graph: the slope of the tangent is the value of f′ below.'), fs(12, 11), th().text),
-          noteRow(T2('Den Punkt auf der y-Achse ziehen: f verschiebt sich, f′ und f″ bleiben gleich.', 'Drag the point on the y-axis: f moves, f′ and f″ stay the same.'), fs(12, 11), th().text),
-        ];
-        return formulaCard(R, measure, T2('So geht’s', 'How it works'), th().muted, rows, stagger(I));
-      };
-    }
-
     function drawColumn(C0: Rect, I: Intro, now: number): void {
       const g = surface.g;
       const gap = fs(10, 8);
@@ -2045,7 +2032,6 @@ export default defineSimulation({
       if (vis[6]!.v > 0.01 && degree(A.d2) >= 1) list.push({ id: 'vz2', fn: signCard(2, I), alpha: vis[6]!.v });
       if (kTan.v > 0.01) list.push({ id: 'pt', fn: pointCard(I, now), alpha: kTan.v });
       if (p.st >= 2) list.push({ id: 'prof', fn: profileCard(I), alpha: 1 });
-      else list.push({ id: 'tips', fn: tipsCard(I), alpha: 1 });
       const two = !regions().wide && C0.w >= 440;
       const colW = two ? (C0.w - gap) / 2 : C0.w;
       const room = (i: number) => ({ x: C0.x, y: C0.y, w: i === 0 || !two ? C0.w : colW, h: C0.h });
