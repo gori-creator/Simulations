@@ -1069,7 +1069,9 @@ em .hat::after {
   display: flex;
   flex-wrap: wrap;
   gap: 0 8px;
-  margin: 0 0 8px;
+  /* ganze Pixel (wie zuvor die Etiketten-Zeile), damit die Bühne nicht auf Subpixeln landet */
+  margin: 0 0 12px;
+  line-height: 24px;
   /* wie bei den Fach-Etiketten etwas abgedunkelt (Kontrast der Physikfarbe) */
   color: color-mix(in srgb, var(--accent, var(--brand)) 82%, var(--text));
   font-size: 0.85rem;
