@@ -114,7 +114,11 @@ class Chan {
 export default defineSimulation({
   id: 'normalverteilung',
   dragHint: true,
-  hint: { de: 'Tipp: Zieh die Grenzen a und b unter der Glockenkurve.', en: 'Tip: Drag the limits a and b under the bell curve.' },
+  // Bedienung je Ansicht (ersetzt die frühere Karte „Ablesen“ bzw. „Worauf kommt es an?“)
+  hint: (v: { readonly mode?: unknown }) =>
+    v.mode === 'cmp'
+      ? { de: 'Tipp: Zieh die Hochpunkte A und B oder die grünen Toleranzgrenzen.', en: 'Tip: Drag the peaks A and B or the green tolerance limits.' }
+      : { de: 'Tipp: Zieh die Grenzen a und b – es zählt die Fläche, nicht die Höhe der Kurve.', en: 'Tip: Drag the limits a and b – the area counts, not the height of the curve.' },
   layout: { aspect: 1.58, aspectNarrow: 0.44 },
   groups: [
     { id: 'dist', label: L('Verteilung', 'Distribution') },
@@ -1723,22 +1727,16 @@ export default defineSimulation({
         return h;
       };
     }
+    /** „Warum 0?“ bei P(X = a): Über einem einzelnen Punkt liegt keine Fläche. */
     function hintCard(k: Intro): CardFn {
-      const m = mode();
-      if (m === 'cmp')
-        return textCard(k, say(L('Worauf kommt es an?', 'What matters?')), col.tol(), say(L('Ein kleines σ allein reicht nicht: Die Glocke muss auch mittig im Toleranzbereich sitzen. Ziehe die Hochpunkte A und B oder die grünen Grenzen.', 'A small σ alone is not enough: the bell must also sit in the middle of the tolerance range. Drag the peaks A and B or the green limits.')));
-      if (typ() === 'eq')
-        return textCard(k, say(L('Warum 0?', 'Why 0?')), col.area(), say(L('Bei einer stetigen Zufallsgröße zählt nur Fläche. Über einem einzelnen Punkt liegt keine Fläche – je schmaler das Intervall um a, desto kleiner die Wahrscheinlichkeit.', 'For a continuous random variable only area counts. There is no area above a single point – the narrower the interval around a, the smaller the probability.')));
-      const tail = p.cdf
-        ? L(' Ziehe a und b; im Diagramm der Verteilungsfunktion wächst F(b) − F(a) als Balken mit.', ' Drag a and b; in the chart of the distribution function, F(b) − F(a) grows as a bar.')
-        : L(' Ziehe a und b oder drücke „μ ± σ“.', ' Drag a and b or press “μ ± σ”.');
-      return textCard(k, say(L('Ablesen', 'Reading off')), col.area(), say(L('Es zählt die Fläche, nicht die Höhe der Kurve.', 'The area counts, not the height of the curve.')) + say(tail));
+      return textCard(k, say(L('Warum 0?', 'Why 0?')), col.area(), say(L('Bei einer stetigen Zufallsgröße zählt nur Fläche. Über einem einzelnen Punkt liegt keine Fläche – je schmaler das Intervall um a, desto kleiner die Wahrscheinlichkeit.', 'For a continuous random variable only area counts. There is no area above a single point – the narrower the interval around a, the smaller the probability.')));
     }
 
     function cardsFor(k: Intro): CardFn[] {
       const m = mode();
       if (m === 'quant') return [quantCard(k), tableCard(k)];
-      if (m === 'cmp') return [cmpCard(k), cmpWhyCard(k), hintCard(k)];
+      // höchstens zwei Karten im Bild; die Bedienung steht in der Tippzeile
+      if (m === 'cmp') return [cmpCard(k), cmpWhyCard(k)];
       if (m === 'binom') return [binomCard(k), errCard(k)];
       if (m === 'sample') return [sampleCard(k), rulesCard(k, () => false)];
       const d = dist();
@@ -1748,7 +1746,8 @@ export default defineSimulation({
       if (p.zs) list.push(stdCard(k));
       if (p.prop) list.push(propCard(k));
       list.push(rulesCard(k, hitOf));
-      list.push(hintCard(k));
+      // „Warum 0?“ erklärt ein echtes Missverständnis und bleibt; „Ablesen“ wiederholte nur die Bedienung
+      if (typ() === 'eq') list.push(hintCard(k));
       return list;
     }
 

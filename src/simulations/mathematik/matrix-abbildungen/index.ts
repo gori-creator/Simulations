@@ -1872,17 +1872,6 @@ export default defineSimulation({
       };
     }
 
-    /** Linearität am Eckpunkt (1 | 1) des Einheitsquadrats. */
-    function linCard(k: Intro): CardFn {
-      return (R, measure) => {
-        const A = cntMat('cA', exactA());
-        const rows: RowSpec[] = [
-          { src: `A·\\v{1}{1} = \\c{r}{A·e_1} + \\c{b}{A·e_2} = ${vecSrc([A.a, A.c], 'r')} + ${vecSrc([A.b, A.d], 'b')} = \\c{s}{${S(vecSrc([A.a + A.b, A.c + A.d]))}}`, size: fs(13, 12) },
-          note('Linear: A·(x + y) = A·x + A·y und A·(k·x) = k·A·x. Darum wird das Gitter zu einem Gitter aus Parallelogrammen.', 'Linear: A·(x + y) = A·x + A·y and A·(k·x) = k·A·x. That is why the grid becomes a grid of parallelograms.'),
-        ];
-        return formulaCard(R, measure, k, T2('Ecke (1 | 1) des Quadrats', 'Corner (1 | 1) of the square'), col.sq(), rows);
-      };
-    }
 
     function exCard(k: Intro): CardFn | null {
       const m = exMeta();
@@ -2348,7 +2337,8 @@ export default defineSimulation({
     function cardsFor(m: Mode, k: Intro): CardFn[] {
       const ex = exCard(k);
       const list: (CardFn | null)[] = [];
-      if (m === 'map') list.push(matrixCard(k), T.v < 0.999 ? morphCard(k) : null, kindCard(k), ex ?? linCard(k));
+      // Abbildung: Matrix und Art der Abbildung (höchstens zwei Karten; ein gewähltes Alltagsbeispiel kommt dazu)
+      if (m === 'map') list.push(matrixCard(k), T.v < 0.999 ? morphCard(k) : null, kindCard(k), ex);
       else if (m === 'comp') list.push(compCard(k), entryCard(k), compareCard(k), ex);
       else if (m === 'det') list.push(detCard(k), areaCard(k), kernelCard(k), ex);
       else if (m === 'eig') list.push(testCard(k), polyCard(k), angleChartCard(k));
