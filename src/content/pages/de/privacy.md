@@ -14,16 +14,16 @@ Diese Website ist bewusst datensparsam gebaut:
 
 - Es gibt **keine Benutzerkonten**. Das **Kontaktformular** schickt selbst nichts ab (siehe unten).
 - Es werden **keine Cookies** gesetzt.
-- Es gibt **kein Tracking**, keine Analyse-Werkzeuge und keine Werbung.
+- Es gibt **kein Tracking** und keine Werbung und keine Analyse-Werkzeuge im Browser. Eine grobe Besucherstatistik liefert nur der Hoster aus den Server-Protokollen (siehe unten).
 - Es werden **keine externen Inhalte** geladen (keine Schriftarten, Skripte oder Bilder von fremden Servern).
 
 ## Hosting und Server-Protokolle
 
 Diese Website (scitura.de) wird bei der **STRATO GmbH**, Otto-Ostrowski-Straße 7, 10249 Berlin, Deutschland, gehostet. Die Server stehen in Deutschland. Mit STRATO besteht ein Vertrag über Auftragsverarbeitung nach Art. 28 DSGVO.
 
-Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten an den Server, insbesondere Ihre **IP-Adresse**, Datum und Uhrzeit, die aufgerufene Adresse sowie Angaben zu Browser und Betriebssystem. STRATO speichert diese Daten in Server-Protokollen, um die Seite auszuliefern und die Sicherheit des Dienstes zu gewährleisten (z. B. zur Abwehr von Angriffen). Wir selbst werten diese Protokolle nicht aus und nutzen keine Statistik- oder Analysefunktionen des Hosters. Wie lange STRATO die Protokolle speichert, legt STRATO fest.
+Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten an den Server, insbesondere Ihre **IP-Adresse**, Datum und Uhrzeit, die aufgerufene Adresse sowie Angaben zu Browser und Betriebssystem. STRATO speichert diese Daten in Server-Protokollen, um die Seite auszuliefern und die Sicherheit des Dienstes zu gewährleisten (z. B. zur Abwehr von Angriffen). Über den Kundenbereich von STRATO sehen wir zusammengefasste **Besucherstatistiken**, die aus diesen Protokollen berechnet werden (z. B. Zahl der Aufrufe und Besucher, beliebte Seiten). Wir nutzen sie nur, um zu sehen, wie die Seite genutzt wird, und um sie zu verbessern; einzelne Personen verfolgen wir nicht. Auf Ihrem Gerät werden dafür weder Cookies noch Skripte eingesetzt. Wie lange STRATO die Protokolle speichert, legt STRATO fest.
 
-**Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren und zuverlässigen Bereitstellung der Website.
+**Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren und zuverlässigen Bereitstellung der Website und in einer groben Übersicht über die Nutzung.
 
 Eine Übermittlung dieser Daten in Länder außerhalb der EU findet durch uns nicht statt.
 

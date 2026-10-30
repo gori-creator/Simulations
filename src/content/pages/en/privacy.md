@@ -8,16 +8,16 @@ title: Privacy policy
 
 - **No user accounts**. The **contact form** sends nothing by itself (see below).
 - **No cookies.**
-- **No tracking**, no analytics and no advertising.
+- **No tracking** and no advertising, and no analytics tools in the browser. Only the host provides rough visitor statistics from its server logs (see below).
 - **No external content** (no fonts, scripts or images from third-party servers).
 
 ## Hosting and server logs
 
 This website (scitura.de) is hosted by **STRATO GmbH**, Otto-Ostrowski-Straße 7, 10249 Berlin, Germany. The servers are located in Germany. A data processing agreement under Art. 28 GDPR exists with STRATO.
 
-When you visit the site, your browser transmits technically necessary data to the server, in particular your **IP address**, date and time, the requested address and details of your browser and operating system. STRATO stores this data in server logs in order to deliver the site and to keep the service secure (e.g. to fend off attacks). We do not analyse these logs and do not use any statistics or analytics features of the host. STRATO determines how long the logs are kept.
+When you visit the site, your browser transmits technically necessary data to the server, in particular your **IP address**, date and time, the requested address and details of your browser and operating system. STRATO stores this data in server logs in order to deliver the site and to keep the service secure (e.g. to fend off attacks). In STRATO's customer area we see summarised **visitor statistics** calculated from these logs (e.g. number of visits and visitors, popular pages). We use them only to see how the site is used and to improve it; we do not follow individual people. No cookies or scripts are used on your device for this. STRATO determines how long the logs are kept.
 
-**Legal basis:** Art. 6(1)(f) GDPR. Our legitimate interest is to provide the website securely and reliably.
+**Legal basis:** Art. 6(1)(f) GDPR. Our legitimate interest is to provide the website securely and reliably and to have a rough overview of its use.
 
 We do not transfer this data to countries outside the EU.
 
