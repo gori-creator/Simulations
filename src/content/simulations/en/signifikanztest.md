@@ -21,7 +21,7 @@ $$
 
 1. Tap bars in the upper histogram to set the observed value $x$. When is $H_0$ rejected? [Load example](?x=36)
 2. Switch $\alpha$ between $1\,\%$ and $10\,\%$ and watch the red and orange areas. [α = 1 %](?alpha=1)
-3. Press “Let p₁ move” and watch $\beta$ shrink along the power curve.
+3. Switch on the **power curve** under “Display”, press “Let p₁ move” and watch $\beta$ shrink along the power curve. [With power curve](?curve=1)
 4. Set $p_1 = p_0$ and draw 100 samples: how often is $H_0$ wrongly rejected? [Boundary case](?p1=0.6&x=33)
 
 ## Tasks

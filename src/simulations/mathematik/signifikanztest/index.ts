@@ -193,7 +193,8 @@ export default defineSimulation({
       default: 0.75,
     },
     { key: 'h1', type: 'boolean', group: 'view', label: L('Verteilung für das wahre p₁ (Fehler 2. Art)', 'Distribution for the true p₁ (type II error)'), default: true },
-    { key: 'curve', type: 'boolean', group: 'view', label: L('Gütefunktion', 'Power curve'), default: true },
+    // Gütefunktion als Zusatzkarte: im Bild zunächst Entscheidungsregel und Entscheidung/Wirklichkeit
+    { key: 'curve', type: 'boolean', group: 'view', label: L('Gütefunktion', 'Power curve'), default: false },
     {
       key: 'info',
       type: 'boolean',
@@ -224,7 +225,7 @@ export default defineSimulation({
     { id: 'dice', label: L('Gezinkter Würfel?', 'Loaded die?'), values: { ctx: 'dice', n: 60, x: 18, p1: 0.25 } },
     { id: 'seed', label: L('Saatgut: linksseitig', 'Seeds: left-tailed'), values: { ctx: 'seed', n: 100, p0: 0.9, side: 'left', x: 83, p1: 0.82 } },
     { id: 'same', label: L('Grenzfall p₁ = p₀', 'Boundary case p₁ = p₀'), values: { p1: 0.6, x: 33 } },
-    { id: 'big', label: L('Großes n: mehr Macht', 'Large n: more power'), values: { n: 200, x: 135, p1: 0.68 } },
+    { id: 'big', label: L('Großes n: mehr Macht', 'Large n: more power'), values: { n: 200, x: 135, p1: 0.68, curve: true } },
   ],
   strings: {
     de: { canvas: 'Zwei Histogramme der Binomialverteilung: oben unter der Nullhypothese mit rot gefärbtem Ablehnungsbereich (Fehler 1. Art), darunter für das angenommene wahre p₁ mit Fehler 2. Art (orange) und Macht (grün). Rechts Entscheidungsregel mit Beobachtungswert, Vierfeld-Schema Entscheidung und Wirklichkeit sowie die Gütefunktion.' },
@@ -443,10 +444,11 @@ export default defineSimulation({
         const avail = H - 8;
         const showPower = p.curve && avail - RULE_H - MAT_H - 2 * gap >= 96;
         const extra = showPower ? Math.max(0, avail - RULE_H - MAT_H - 2 * gap - 190) : avail - RULE_H - MAT_H - gap;
-        const ruleH = RULE_H + Math.round(extra * 0.45);
-        const matH = MAT_H + Math.round(extra * (showPower ? 0.25 : 0.55));
+        // Ohne Gütefunktion wachsen die Karten nur wenig mit; der Rest der Spalte bleibt frei (keine leeren Riesenkarten)
+        const ruleH = RULE_H + Math.round(Math.min(extra * (showPower ? 0.45 : 0.15), showPower ? Infinity : 60));
+        const matH = MAT_H + Math.round(Math.min(extra * (showPower ? 0.25 : 0.25), showPower ? Infinity : 70));
         const rule = { x: cx, y: 4, w: colW, h: ruleH };
-        const matrix = { x: cx, y: 4 + ruleH + gap, w: colW, h: showPower ? matH : avail - ruleH - gap };
+        const matrix = { x: cx, y: 4 + ruleH + gap, w: colW, h: matH };
         const power = showPower ? { x: cx, y: matrix.y + matrix.h + gap, w: colW, h: H - 4 - (matrix.y + matrix.h + gap) } : null;
         return { top, bottom, rule, matrix, power };
       }
