@@ -195,6 +195,8 @@ const de = {
   'material.grades': 'Klassenstufe',
   'material.topic': 'Thema',
   'material.related': 'Weitere Simulationen in diesem Bereich',
+  'material.inCurricula': 'Im Lehrplan von {n} Bundesländern',
+  'material.inCurriculaOne': 'Im Lehrplan von 1 Bundesland',
   'material.loadExample': 'Beispiel laden',
 
   'catalog.title': 'Alle Simulationen',
@@ -493,6 +495,8 @@ const en: Record<UiKey, string> = {
   'material.grades': 'Grade',
   'material.topic': 'Topic',
   'material.related': 'More simulations in this area',
+  'material.inCurricula': 'In the curricula of {n} federal states',
+  'material.inCurriculaOne': 'In the curriculum of 1 federal state',
   'material.loadExample': 'Load example',
 
   'catalog.title': 'All simulations',

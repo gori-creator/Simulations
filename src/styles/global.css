@@ -897,12 +897,6 @@ em .hat::after {
   }
 }
 
-.region-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
 .menu-toggle {
   display: none;
 }
@@ -2100,6 +2094,46 @@ em .hat::after {
   color: var(--brand);
 }
 
+.lp-more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  list-style: none;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.lp-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.lp-more summary::after {
+  content: '';
+  flex: none;
+  width: 0.45em;
+  height: 0.45em;
+  margin-right: 2px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translateY(-2px);
+}
+
+.lp-more[open] summary::after {
+  transform: rotate(-135deg) translateY(-2px);
+}
+
+.lp-more__item {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.lp-more__item h3 {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+}
+
 .aside-box .kmk {
   margin-top: 4px;
 }
@@ -2114,8 +2148,9 @@ em .hat::after {
     position: static;
   }
 
+  /* Lernmaterial zuerst, die Seitenleiste folgt danach */
   .sim-page__aside {
-    order: -1;
+    order: 1;
   }
 
   .aside-box--toc {
