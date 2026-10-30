@@ -1,8 +1,10 @@
 ---
 import { SITE } from '../config/site';
+import { SUBJECTS } from '../curriculum';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import { href } from '../lib/routes';
+import Logo from './Logo.astro';
 
 interface Props {
   lang: Lang;
@@ -10,22 +12,39 @@ interface Props {
 
 const { lang } = Astro.props;
 const year = new Date().getFullYear();
+const subjects = SUBJECTS.filter((s) => s.status === 'active');
 ---
 
 <footer class="site-footer">
   <div class="container site-footer__inner">
-    <div>
-      <p style="margin:0 0 4px"><strong>{SITE.name[lang]}</strong> · {t(lang, 'footer.tagline')}</p>
-      <p style="margin:0">{t(lang, 'footer.offline')}</p>
+    <div class="site-footer__brand">
+      <a class="site-footer__name" href={href(lang, { kind: 'home' })}>
+        <Logo class="brand__logo" size={32} />
+        <strong>{SITE.name[lang]}</strong>
+      </a>
+      <p>{t(lang, 'footer.tagline')}</p>
+      <p>{t(lang, 'footer.offline')}</p>
     </div>
-    <ul class="site-footer__links">
-      <li><a href={href(lang, { kind: 'page', page: 'about' })}>{t(lang, 'nav.about')}</a></li>
-      <li><a href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'nav.teachers')}</a></li>
-      <li><a href={href(lang, { kind: 'page', page: 'contact' })}>{t(lang, 'nav.contact')}</a></li>
-      <li><a href={href(lang, { kind: 'page', page: 'imprint' })}>{t(lang, 'footer.imprint')}</a></li>
-      <li><a href={href(lang, { kind: 'page', page: 'privacy' })}>{t(lang, 'footer.privacy')}</a></li>
-      <li><a href={SITE.repoUrl} rel="noopener">{t(lang, 'footer.source')}</a></li>
-      <li>© {year}</li>
-    </ul>
+    <nav class="site-footer__col" aria-labelledby="footer-subjects">
+      <h2 id="footer-subjects">{t(lang, 'footer.subjects')}</h2>
+      <ul>
+        {subjects.map((s) => <li><a href={href(lang, { kind: 'subject', subject: s.id })}>{s.title[lang]}</a></li>)}
+        <li><a href={href(lang, { kind: 'catalog' })}>{t(lang, 'nav.catalog')}</a></li>
+      </ul>
+    </nav>
+    <nav class="site-footer__col" aria-labelledby="footer-project">
+      <h2 id="footer-project">{t(lang, 'footer.project')}</h2>
+      <ul>
+        <li><a href={href(lang, { kind: 'page', page: 'about' })}>{t(lang, 'nav.about')}</a></li>
+        <li><a href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'nav.teachers')}</a></li>
+        <li><a href={href(lang, { kind: 'page', page: 'contact' })}>{t(lang, 'nav.contact')}</a></li>
+        <li><a href={SITE.repoUrl} rel="noopener">{t(lang, 'footer.source')}</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container site-footer__legal">
+    <span>© {year} {SITE.name[lang]}</span>
+    <a href={href(lang, { kind: 'page', page: 'imprint' })}>{t(lang, 'footer.imprint')}</a>
+    <a href={href(lang, { kind: 'page', page: 'privacy' })}>{t(lang, 'footer.privacy')}</a>
   </div>
 </footer>

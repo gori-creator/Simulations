@@ -735,6 +735,168 @@ em .hat::after {
   font-size: 0.92rem;
 }
 
+/* Fachseite: Umschalter „Sortieren nach“, Bundesland, Sprungleiste, Bereichsgruppen */
+.view-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin: 8px 0 20px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.view-bar__group,
+.view-bar__region {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.view-bar__region .select {
+  width: auto;
+  min-width: 200px;
+}
+
+[data-view='grade'],
+:root[data-subject-view='grade'] [data-view='area'] {
+  display: none;
+}
+
+:root[data-subject-view='grade'] [data-view='grade'] {
+  display: block;
+}
+
+/* Gewählter Knopf bleibt unter dem Mauszeiger lesbar */
+.chip[aria-pressed='true']:hover:not(:disabled) {
+  color: var(--on-brand);
+}
+
+.region-view__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 14px 0 24px;
+}
+
+.jump-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.jump-bar .chip {
+  text-decoration: none;
+}
+
+.area-group {
+  padding-top: 32px;
+  scroll-margin-top: 80px;
+}
+
+.area-group__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 4px 14px;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.area-group__glyph {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft, var(--brand-soft));
+  color: var(--text);
+}
+
+.area-group__text h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.area-group__text h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.area-group__text h2 a:hover {
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.area-group__text p {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+}
+
+.area-group__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.area-group__count {
+  color: var(--muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.area-group__planned {
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.band-heading {
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+}
+
+@media (max-width: 640px) {
+  .area-group__head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .area-group__meta {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .view-bar__region,
+  .view-bar__region .select {
+    width: 100%;
+  }
+
+  /* Sprungleiste auf dem Handy als eine wischbare Zeile */
+  .jump-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: -16px;
+    padding: 2px 16px 6px;
+    scrollbar-width: none;
+  }
+
+  .jump-bar .chip {
+    flex: none;
+  }
+
+  .view-bar__region .select {
+    min-width: 0;
+  }
+}
+
 .region-stack {
   display: flex;
   flex-direction: column;
@@ -792,19 +954,66 @@ em .hat::after {
 }
 
 .site-footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 16px 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  gap: 24px 40px;
 }
 
-.site-footer__links {
+.site-footer__brand p {
+  margin: 0 0 4px;
+  max-width: 44ch;
+}
+
+.site-footer__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  color: var(--text) !important;
+  font-size: 1.05rem;
+  text-decoration: none;
+}
+
+.site-footer__name .brand__logo {
+  width: 32px;
+  height: 32px;
+}
+
+.site-footer__col h2 {
+  margin: 4px 0 10px;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-footer__col ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__legal {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 20px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .site-footer__inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / -1;
+  }
 }
 
 .site-footer a {
@@ -855,11 +1064,18 @@ em .hat::after {
   padding-block: 8px 24px;
 }
 
-.page-head__meta {
+/* Fach · Klassenstufe über dem Titel der Simulationsseite: eine ruhige Zeile in der Fachfarbe */
+.page-head__eyebrow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0 8px;
+  margin: 0 0 8px;
+  /* wie bei den Fach-Etiketten etwas abgedunkelt (Kontrast der Physikfarbe) */
+  color: color-mix(in srgb, var(--accent, var(--brand)) 82%, var(--text));
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .page-head h1 {
@@ -1444,59 +1660,6 @@ em .hat::after {
   color: var(--on-brand);
 }
 
-.lp-entry {
-  display: grid;
-  gap: 10px;
-  margin: 8px 0 16px;
-  padding: 20px 22px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-}
-
-.lp-entry h2 {
-  margin: 0;
-  font-size: 1.3rem;
-}
-
-.lp-entry p {
-  margin: 0;
-}
-
-/* Mehrere Länder-Lehrpläne untereinander: Spalten bündig ausrichten */
-.lp-entry__rows {
-  display: grid;
-  grid-template-columns: max-content max-content 1fr;
-  align-items: center;
-  gap: 12px 20px;
-  margin-top: 4px;
-}
-
-.lp-entry__row {
-  display: contents;
-}
-
-@media (max-width: 860px) {
-  .lp-entry__rows {
-    display: block;
-  }
-
-  .lp-entry__row {
-    display: grid;
-    gap: 10px;
-    padding: 14px 0;
-    border-top: 1px solid var(--border);
-  }
-
-  .lp-entry__row:last-child {
-    padding-bottom: 0;
-  }
-}
-
-.lp-entry__label {
-  font-weight: 700;
-}
-
 .lp-note {
   width: fit-content;
   max-width: 75ch;
@@ -1728,34 +1891,78 @@ em .hat::after {
   font-size: 0.9em;
 }
 
+/* Lösungen: dezente Zeile mit Pfeil statt Kasten; geöffnet mit feiner Linie links */
 .prose details {
-  margin: 0.8em 0 1.2em;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
+  margin: 0.4em 0 1.2em;
 }
 
 .prose summary {
-  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  list-style: none;
   cursor: pointer;
-  font-weight: 650;
+  font-size: 0.95em;
+  font-weight: 600;
   color: var(--brand);
 }
 
-.prose details[open] summary {
-  border-bottom: 1px solid var(--border);
+.prose summary::-webkit-details-marker {
+  display: none;
 }
 
+.prose summary::before {
+  content: '';
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s var(--ap-ease, ease);
+}
+
+.prose details[open] summary::before {
+  transform: rotate(45deg);
+}
+
+.prose summary:hover {
+  text-decoration: underline;
+}
+
+/* Abstände als Innenabstand, damit die Linie links durchgehend bleibt */
 .prose details > :not(summary) {
-  margin-inline: 14px;
+  margin: 0;
+  padding-block: 0.35em;
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
 }
 
-.prose details > :last-child {
-  margin-bottom: 12px;
+.prose details > ul,
+.prose details > ol {
+  padding-left: calc(14px + 1.4em);
 }
 
 .prose details > :nth-child(2) {
-  margin-top: 12px;
+  margin-top: 8px;
+}
+
+/* Aufgabenkopf: Überschrift und „Aufgabe laden“ in einer Zeile */
+.prose .task-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 1.5em;
+}
+
+.prose .task-head h3 {
+  margin: 0;
+}
+
+.prose .task-head + p {
+  margin-top: 0.4em;
 }
 
 .prose a[href^='?'] {
@@ -1857,6 +2064,38 @@ em .hat::after {
 
 .aside-box dd {
   margin: 0;
+}
+
+.related-sims li + li {
+  margin-top: 10px;
+}
+
+.related-sim {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  color: var(--text);
+}
+
+.related-sim__thumb {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--accent-soft, var(--surface-2));
+  color: var(--accent, var(--brand));
+}
+
+.related-sim__thumb svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.related-sim:hover .related-sim__title {
+  color: var(--brand);
 }
 
 .aside-box .kmk {
@@ -3243,7 +3482,7 @@ legend .ctl__info {
 }
 
 /* Kästen der Fach- und Simulationsseite in derselben Formensprache */
-.lp-entry,
+.view-bar,
 .aside-box {
   border-color: var(--ap-hairline);
   border-radius: var(--ap-radius-card);
@@ -3733,4 +3972,38 @@ legend .ctl__info {
 
 .contact-how li + li {
   margin-top: 6px;
+}
+
+/* ---------- Fehlerseite (pages/404.astro) ---------- */
+
+.not-found {
+  padding-top: 40px;
+}
+
+.not-found__code {
+  margin: 0 0 4px;
+  color: var(--brand);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.not-found__search {
+  display: flex;
+  gap: 10px;
+  max-width: 560px;
+  margin-top: 8px;
+}
+
+.not-found__search .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.not-found__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
 }

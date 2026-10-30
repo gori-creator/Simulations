@@ -6,12 +6,11 @@ import GradeNav from '../components/GradeNav.astro';
 import Progress from '../components/Progress.astro';
 import SimCard from '../components/SimCard.astro';
 import { GRADE_BANDS, getSimulation, getSubject, progressOf, simulationsOf } from '../curriculum';
-import { curriculaFor } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { curriculumFor, groupByCurriculumGrade, regionGradeLabels, regionIdOf, regionsOf } from '../lib/region';
+import { curriculumFor, groupByCurriculumGrade, regionGradeLabels, regionsOf } from '../lib/region';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -24,7 +23,6 @@ const subject = getSubject(subjectId);
 const sims = simulationsOf({ subject: subjectId });
 const progress = progressOf(sims);
 const ready = sims.filter((s) => s.status === 'ready');
-const curricula = curriculaFor(subjectId);
 
 // Einstellung „Bundesland“: je Land vorgerenderte Ansicht (per CSS über data-region gezeigt)
 const readyIds = ready.map((s) => s.id);
@@ -34,6 +32,23 @@ const regionViews = regionsOf(lang).map((region) => {
 });
 const regionsWithView = regionViews.filter((v) => v.curriculum).map((v) => v.region.id);
 const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v.region.id);
+
+// Ansicht „Themenbereich“: Bereiche mit fertigen Simulationen, die übrigen nur als Verweis
+const anchorOf = (areaId: string) => `bereich-${areaId}`;
+const areaGroups = subject.areas
+  .map((area) => {
+    const all = simulationsOf({ subject: subjectId, area: area.id });
+    return { area, sims: all.filter((s) => s.status === 'ready'), progress: progressOf(all) };
+  })
+  .filter((g) => g.sims.length > 0);
+const areasPlanned = subject.areas.filter((area) => !areaGroups.some((g) => g.area.id === area.id));
+
+// Ansicht „Klassenstufe“ ohne Bundesland: nach dem Bereich, in dem die Simulation beginnt
+const bandOf = (grade: number) => (GRADE_BANDS.find((b) => grade <= b.span[1]) ?? GRADE_BANDS[GRADE_BANDS.length - 1])!;
+const bandGroups = GRADE_BANDS.map((band) => ({
+  band,
+  sims: ready.filter((sim) => bandOf(sim.grades[0]).id === band.id),
+})).filter((g) => g.sims.length > 0);
 ---
 
 <BaseLayout
@@ -54,178 +69,205 @@ const regionsWithoutView = regionViews.filter((v) => !v.curriculum).map((v) => v
     {subject.status === 'planned' && <p class="note">{t(lang, 'subject.plannedText')}</p>}
 
     {
-      curricula.length > 0 && (
-        <section class="lp-entry" aria-labelledby="by-grade" data-region-hide={regionsWithoutView.join(' ') || undefined}>
-          <h2 id="by-grade">{t(lang, 'curriculum.byGrade')}</h2>
-          <p class="muted">{t(lang, 'curriculum.byGradeLead')}</p>
-          {/* Das Bundesland wird nur im Zahnrad gewählt; hier erscheint allein dessen Lehrplan */}
-          <p class="note" data-region-unset>{t(lang, 'curriculum.chooseRegion')}</p>
-          <div class="lp-entry__rows">
-            {curricula.map((c) => (
-              <div class="lp-entry__row" data-region-only={regionIdOf(c)}>
-                <span class="lp-entry__label">
-                  {t(lang, 'curriculum.label', { state: c.state[lang], school: c.schoolType[lang] })}
-                </span>
-                <GradeNav lang={lang} curriculum={c} />
-                <a href={href(lang, { kind: 'curriculum', curriculum: c.id })}>{t(lang, 'curriculum.overview')}</a>
-              </div>
-            ))}
+      ready.length > 0 && (
+        <div class="view-bar" data-view-bar>
+          <div class="view-bar__group" role="group" aria-label={t(lang, 'subject.sortBy')}>
+            <span class="filter-bar__label">{t(lang, 'subject.sortBy')}:</span>
+            <button class="chip" type="button" data-view-btn="area" aria-pressed="true">
+              {t(lang, 'subject.sortArea')}
+            </button>
+            <button class="chip" type="button" data-view-btn="grade" aria-pressed="false">
+              {t(lang, 'subject.sortGrade')}
+            </button>
           </div>
-        </section>
+          <label class="view-bar__region">
+            <span class="filter-bar__label">{t(lang, 'settings.region')}:</span>
+            <select class="select" data-region-inline>
+              <option value="">{t(lang, 'subject.regionNone')}</option>
+              {regionsOf(lang).map((r) => <option value={r.id}>{r.name[lang]}</option>)}
+            </select>
+          </label>
+        </div>
       )
     }
 
+    {/* Ansicht „Themenbereich“: alle fertigen Simulationen nach Bereich gruppiert */}
     {
-      regionViews.map(({ region, curriculum, grouping }) =>
-        curriculum && grouping ? (
-          ready.length > 0 && (
-            <section class="section region-view" style="padding-top:8px" data-region-only={region.id}>
-              <div class="section__head">
-                <h2>{t(lang, 'region.viewTitle', { state: region.name[lang] })}</h2>
+      ready.length > 0 && (
+        <div data-view="area">
+          {areaGroups.length > 1 && (
+            <nav class="jump-bar" aria-label={t(lang, 'subject.jumpLabel')}>
+              {areaGroups.map(({ area }) => (
+                <a class="chip" href={`#${anchorOf(area.id)}`}>{area.title[lang]}</a>
+              ))}
+            </nav>
+          )}
+          {areaGroups.map(({ area, sims: areaSims, progress: areaProgress }) => (
+            <section class="area-group" id={anchorOf(area.id)} aria-labelledby={`${anchorOf(area.id)}-title`}>
+              <div class="area-group__head">
+                <span class="area-group__glyph"><AreaGlyph area={area.id} size={32} /></span>
+                <div class="area-group__text">
+                  <h2 id={`${anchorOf(area.id)}-title`}>
+                    <a href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>{area.title[lang]}</a>
+                  </h2>
+                  <p class="muted">{area.description[lang]}</p>
+                </div>
+                <div class="area-group__meta">
+                  <GradeBadge lang={lang} grades={area.grades} />
+                  {areaProgress.ready < areaProgress.total && (
+                    <span class="area-group__count">{t(lang, 'subject.progress', areaProgress)}</span>
+                  )}
+                </div>
               </div>
-              <p class="muted" style="margin-bottom:20px">
-                {t(lang, 'region.viewLead', { state: region.name[lang], school: curriculum.schoolType[lang] })}{' '}
-                <a href={href(lang, { kind: 'curriculum', curriculum: curriculum.id })}>{t(lang, 'curriculum.overview')}</a>
-              </p>
-              {grouping.groups.map((group) => (
-                <div class="region-grade">
-                  <h3>
-                    <a href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: group.grade })}>
-                      {t(lang, 'region.gradeHeading', { n: group.label, state: region.name[lang] })}
-                    </a>
-                  </h3>
-                  {group.first.length > 0 && (
+              <div class="card-grid" data-region-sort>
+                {areaSims.map((sim) => (
+                  <SimCard lang={lang} sim={sim} />
+                ))}
+              </div>
+            </section>
+          ))}
+          {areasPlanned.length > 0 && (
+            <p class="area-group__planned">
+              {t(lang, 'subject.inProgress')}{' '}
+              {areasPlanned.map((area, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <a href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>{area.title[lang]}</a>
+                </>
+              ))}
+            </p>
+          )}
+        </div>
+      )
+    }
+
+    {/* Ansicht „Klassenstufe“: mit Bundesland nach dessen Lehrplan, sonst nach Klassenstufen-Bereichen */}
+    {
+      ready.length > 0 && (
+        <div data-view="grade">
+          {regionViews.map(({ region, curriculum, grouping }) =>
+            curriculum && grouping ? (
+              <section class="section region-view" style="padding-top:8px" data-region-only={region.id}>
+                <div class="section__head">
+                  <h2>{t(lang, 'region.viewTitle', { state: region.name[lang] })}</h2>
+                </div>
+                <p class="muted">
+                  {t(lang, 'region.viewLead', { state: region.name[lang], school: curriculum.schoolType[lang] })}{' '}
+                  <a href={href(lang, { kind: 'curriculum', curriculum: curriculum.id })}>{t(lang, 'curriculum.overview')}</a>
+                </p>
+                <div class="region-view__nav">
+                  <span class="filter-bar__label">{t(lang, 'curriculum.gradeNav')}:</span>
+                  <GradeNav lang={lang} curriculum={curriculum} />
+                </div>
+                {grouping.groups.map((group) => (
+                  <div class="region-grade">
+                    <h3>
+                      <a href={href(lang, { kind: 'grade', curriculum: curriculum.id, grade: group.grade })}>
+                        {t(lang, 'region.gradeHeading', { n: group.label, state: region.name[lang] })}
+                      </a>
+                    </h3>
+                    {group.first.length > 0 && (
+                      <div class="card-grid">
+                        {group.first.map((id) => (
+                          <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
+                        ))}
+                      </div>
+                    )}
+                    {group.again.length > 0 && (
+                      <p class="region-grade__again">
+                        {t(lang, 'region.again')}{' '}
+                        {group.again.map((id, i) => (
+                          <>
+                            {i > 0 && ', '}
+                            <a href={href(lang, { kind: 'simulation', id })}>{getSimulation(id).title[lang]}</a>{' '}
+                            ({t(lang, 'curriculum.gradeShort', { n: regionGradeLabels(id, region.id)[0] ?? group.label })})
+                          </>
+                        ))}
+                      </p>
+                    )}
+                  </div>
+                ))}
+                {grouping.rest.length > 0 && (
+                  <div class="region-grade">
+                    <h3>{t(lang, 'region.rest')}</h3>
+                    <p class="muted" style="margin-bottom:12px">{t(lang, 'region.restLead', { state: region.name[lang] })}</p>
                     <div class="card-grid">
-                      {group.first.map((id) => (
+                      {grouping.rest.map((id) => (
                         <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
                       ))}
                     </div>
-                  )}
-                  {group.again.length > 0 && (
-                    <p class="region-grade__again">
-                      {t(lang, 'region.again')}{' '}
-                      {group.again.map((id, i) => (
-                        <>
-                          {i > 0 && ', '}
-                          <a href={href(lang, { kind: 'simulation', id })}>{getSimulation(id).title[lang]}</a>{' '}
-                          ({t(lang, 'curriculum.gradeShort', { n: regionGradeLabels(id, region.id)[0] ?? group.label })})
-                        </>
-                      ))}
-                    </p>
-                  )}
-                </div>
-              ))}
-              {grouping.rest.length > 0 && (
-                <div class="region-grade">
-                  <h3>{t(lang, 'region.rest')}</h3>
-                  <p class="muted" style="margin-bottom:12px">{t(lang, 'region.restLead', { state: region.name[lang] })}</p>
-                  <div class="card-grid">
-                    {grouping.rest.map((id) => (
-                      <SimCard lang={lang} sim={getSimulation(id)} headingLevel="h4" />
-                    ))}
                   </div>
-                </div>
-              )}
-            </section>
-          )
-        ) : (
-          <p class="note" style="margin-top:16px" data-region-only={region.id}>
-            {t(lang, 'region.noCurriculum', { state: region.name[lang] })}
-          </p>
-        ),
-      )
-    }
+                )}
+              </section>
+            ) : (
+              <p class="note" style="margin-top:16px" data-region-only={region.id}>
+                {t(lang, 'region.noCurriculum', { state: region.name[lang] })}
+              </p>
+            ),
+          )}
 
-    {
-      ready.length > 0 && (
-        <section class="section" style="padding-top:8px" data-region-hide={regionsWithView.join(' ') || undefined}>
-          <div class="section__head">
-            <h2>{t(lang, 'home.featured')}</h2>
-          </div>
-          <div class="card-grid" data-region-sort>
-            {ready.map((sim) => (
-              <SimCard lang={lang} sim={sim} />
+          <section class="section" style="padding-top:8px" data-region-hide={regionsWithView.join(' ') || undefined}>
+            <p class="note" data-region-unset style="margin-bottom:20px">{t(lang, 'subject.bandLead')}</p>
+            {bandGroups.map(({ band, sims: bandSims }) => (
+              <div class="region-grade">
+                <h2 class="band-heading">{t(lang, `grades.band.${band.id}`)}</h2>
+                <div class="card-grid" data-region-sort>
+                  {bandSims.map((sim) => (
+                    <SimCard lang={lang} sim={sim} headingLevel="h3" />
+                  ))}
+                </div>
+              </div>
             ))}
-          </div>
-        </section>
-      )
-    }
-
-    {
-      subject.areas.length > 0 && (
-        <section class="section" style="padding-top:8px">
-          <div class="section__head">
-            <h2>{t(lang, 'subject.areas')}</h2>
-          </div>
-          <div class="filter-bar" role="group" aria-label={t(lang, 'subject.filterLabel')} data-grade-filter>
-            <span class="filter-bar__label">{t(lang, 'subject.filterLabel')}:</span>
-            <button class="chip" type="button" data-band="" aria-pressed="true">
-              {t(lang, 'grades.all')}
-            </button>
-            {GRADE_BANDS.map((band) => (
-              <button class="chip" type="button" data-band={band.id} data-from={band.span[0]} data-to={band.span[1]} aria-pressed="false">
-                {t(lang, `grades.band.${band.id}`)}
-              </button>
-            ))}
-          </div>
-          <div class="area-list">
-            {subject.areas.map((area) => {
-              const areaProgress = progressOf(simulationsOf({ subject: subjectId, area: area.id }));
-              return (
-                <article
-                  class="card card--link area-card"
-                  data-grade-from={area.grades[0]}
-                  data-grade-to={area.grades[1]}
-                  data-area-card
-                >
-                  <div class="area-card__main">
-                    <span class="area-card__glyph"><AreaGlyph area={area.id} /></span>
-                    <div>
-                      <h3>
-                        <a class="card__link" href={href(lang, { kind: 'area', subject: subjectId, area: area.id })}>
-                          {area.title[lang]}
-                        </a>
-                      </h3>
-                      <p class="card__text" style="margin-top:6px">{area.description[lang]}</p>
-                    </div>
-                  </div>
-                  <div class="area-card__side">
-                    <GradeBadge lang={lang} grades={area.grades} />
-                    <Progress ready={areaProgress.ready} total={areaProgress.total} label={t(lang, 'subject.progress', areaProgress)} />
-                  </div>
-                  <ul class="area-card__topics">
-                    {area.topics.map((topic) => (
-                      <li>{topic.title[lang]}</li>
-                    ))}
-                  </ul>
-                </article>
-              );
-            })}
-          </div>
-          <p class="note" data-no-match hidden>{t(lang, 'subject.noMatch')}</p>
-        </section>
+          </section>
+        </div>
       )
     }
   </div>
 </BaseLayout>
 
 <script>
-  // Themenbereiche nach Klassenstufe filtern
-  const bar = document.querySelector<HTMLElement>('[data-grade-filter]');
-  const cards = [...document.querySelectorAll<HTMLElement>('[data-area-card]')];
-  const empty = document.querySelector<HTMLElement>('[data-no-match]');
-  bar?.addEventListener('click', (event) => {
-    const button = (event.target as Element).closest<HTMLButtonElement>('button[data-band]');
-    if (!button) return;
-    for (const b of bar.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b === button));
-    const from = Number(button.dataset.from ?? -Infinity);
-    const to = Number(button.dataset.to ?? Infinity);
-    let visible = 0;
-    for (const card of cards) {
-      const show = !button.dataset.band || (Number(card.dataset.gradeFrom) <= to && from <= Number(card.dataset.gradeTo));
-      card.hidden = !show;
-      if (show) visible++;
-    }
-    if (empty) empty.hidden = visible > 0;
+  import { readRegion } from '../lib/region-client';
+
+  // Umschalter „Sortieren nach“ (Themenbereich/Klassenstufe); die Wahl gilt für alle Fächer
+  const root = document.documentElement;
+  const KEY = 'subjectView';
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-view-btn]')];
+
+  function showView(view: string): void {
+    if (view === 'grade') root.dataset.subjectView = 'grade';
+    else delete root.dataset.subjectView;
+    for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.viewBtn === (view === 'grade' ? 'grade' : 'area')));
+  }
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const view = button.dataset.viewBtn ?? 'area';
+      try {
+        if (view === 'grade') localStorage.setItem(KEY, view);
+        else localStorage.removeItem(KEY);
+      } catch {
+        /* privater Modus: Wahl gilt bis zum Neuladen */
+      }
+      showView(view);
+    });
+  }
+  showView(root.dataset.subjectView ?? 'area');
+
+  // Bundesland direkt auf der Seite wählen (dieselbe Einstellung wie im Zahnrad)
+  const select = document.querySelector<HTMLSelectElement>('[data-region-inline]');
+  function syncSelect(): void {
+    if (select) select.value = root.dataset.region ?? '';
+  }
+  select?.addEventListener('change', () => {
+    document.dispatchEvent(new CustomEvent('region:set', { detail: select.value }));
+    // Wer Bundesland wählt, will meist die Lehrplan-Sortierung sehen
+    if (select.value && root.dataset.subjectView !== 'grade') buttons.find((b) => b.dataset.viewBtn === 'grade')?.click();
   });
+  document.addEventListener('region:changed', syncSelect);
+  window.addEventListener('storage', (event) => {
+    if (event.key === null || event.key === 'region') {
+      if (select) select.value = readRegion();
+    }
+  });
+  syncSelect();
 </script>

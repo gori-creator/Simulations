@@ -50,10 +50,9 @@ const elsewhere = (unit: CurriculumUnit) =>
       ]}
     />
     <header class="page-head">
-      <div class="page-head__meta">
-        <span class={`badge badge--subject-${curriculum.subject}`}>{subject.title[lang]}</span>
-        <span class="badge">{t(lang, 'curriculum.label', vars)}</span>
-      </div>
+      <p class="page-head__eyebrow">
+        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{t(lang, 'curriculum.label', vars)}</span>
+      </p>
       <h1>{title}</h1>
       {entry.note && <p class="note lp-note">{entry.note[lang]}</p>}
       <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />

@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import { katexMarkdownPlugin } from './tooling/katex-markdown.mjs';
 import serviceWorker from './tooling/service-worker.mjs';
+import { taskLayoutPlugin } from './tooling/task-layout.mjs';
 
 /**
  * SITE_URL und BASE_PATH werden beim Deployment gesetzt (siehe
@@ -24,6 +25,7 @@ export default defineConfig({
     processor: satteri({
       features: { math: true },
       mdastPlugins: [katexMarkdownPlugin],
+      hastPlugins: [taskLayoutPlugin],
     }),
   },
   integrations: [serviceWorker()],

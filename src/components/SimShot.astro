@@ -12,13 +12,16 @@ import { previewFile, shotFile, shotFocus, type ShotScheme } from '../lib/sim-sh
  */
 interface Props {
   id: string;
+  /** Kleine Fassung (z. B. Liste „Weitere Simulationen“): 192 × 108 statt Kartengröße. */
+  small?: boolean;
 }
 
-const { id } = Astro.props;
+const { id, small = false } = Astro.props;
+const [w, h] = small ? [192, 108] : [800, 450];
 // Generiertes Vorschaubild (docs/VORSCHAUBILDER.md) hat Vorrang: ein Bild für hell und dunkel
 const art = previewFile(id);
 const artImage = art
-  ? await getImage({ src: (await art()).default, width: 800, height: 450, fit: 'cover', position: 'center', format: 'webp', quality: 76 })
+  ? await getImage({ src: (await art()).default, width: w, height: h, fit: 'cover', position: 'center', format: 'webp', quality: 76 })
   : null;
 const load = async (scheme: ShotScheme) => {
   const file = shotFile(id, scheme);
@@ -33,7 +36,7 @@ const style = `--shot-x:${focus.x}%;--shot-y:${focus.y}%;--shot-zoom:${focus.zoo
 ---
 
 {
-  artImage && <img class="sim-shot sim-shot--art" src={artImage.src} width="800" height="450" alt="" loading="lazy" decoding="async" />
+  artImage && <img class="sim-shot sim-shot--art" src={artImage.src} width={w} height={h} alt="" loading="lazy" decoding="async" />
 }
 {
   light && (

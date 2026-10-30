@@ -4,8 +4,9 @@
 import katexCss from 'katex/dist/katex.min.css?url';
 import { getCollection, render } from 'astro:content';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import GradeBadge from '../components/GradeBadge.astro';
 import KmkList from '../components/KmkList.astro';
+import SimShot from '../components/SimShot.astro';
+import SimThumb from '../components/SimThumb.astro';
 import SimulationShell from '../components/SimulationShell.astro';
 import { getArea, getSimulation, getSubject, getTopic, readySimulations } from '../curriculum';
 import { referencesFor, unitAnchor } from '../curriculum/lehrplaene';
@@ -14,6 +15,7 @@ import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { alternates, href } from '../lib/routes';
+import { hasShot } from '../lib/sim-shots';
 
 interface Props {
   lang: Lang;
@@ -60,10 +62,9 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
       ]}
     />
     <header class="page-head">
-      <div class="page-head__meta">
-        <span class={`badge badge--subject-${sim.subject}`}>{subject.title[lang]}</span>
-        <GradeBadge lang={lang} grades={sim.grades} uni={sim.uni} />
-      </div>
+      <p class="page-head__eyebrow">
+        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, sim.grades, sim.uni)}</span>
+      </p>
       <h1>{sim.title[lang]}</h1>
       {sim.summary && <p class="lead">{sim.summary[lang]}</p>}
     </header>
@@ -147,10 +148,15 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
           related.length > 0 && (
             <section class="aside-box" style="position:static">
               <h2>{t(lang, 'material.related')}</h2>
-              <ul>
+              <ul class="related-sims">
                 {related.map((r) => (
                   <li>
-                    <a href={href(lang, { kind: 'simulation', id: r.id })}>{r.title[lang]}</a>
+                    <a class="related-sim" href={href(lang, { kind: 'simulation', id: r.id })}>
+                      <span class:list={['related-sim__thumb', { 'card__thumb--shot': hasShot(r.id) }]}>
+                        {hasShot(r.id) ? <SimShot id={r.id} small /> : <SimThumb kind={r.thumb} id={r.id} />}
+                      </span>
+                      <span class="related-sim__title">{r.title[lang]}</span>
+                    </a>
                   </li>
                 ))}
               </ul>

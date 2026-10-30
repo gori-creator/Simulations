@@ -1,6 +1,5 @@
 ---
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import GradeBadge from '../components/GradeBadge.astro';
 import KmkList from '../components/KmkList.astro';
 import Progress from '../components/Progress.astro';
 import SimCard from '../components/SimCard.astro';
@@ -40,10 +39,9 @@ const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }))
       ]}
     />
     <header class="page-head">
-      <div class="page-head__meta">
-        <span class={`badge badge--subject-${subjectId}`}>{subject.title[lang]}</span>
-        <GradeBadge lang={lang} grades={area.grades} />
-      </div>
+      <p class="page-head__eyebrow">
+        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, area.grades)}</span>
+      </p>
       <h1>{area.title[lang]}</h1>
       <p class="lead">{area.description[lang]}</p>
       <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
