@@ -26,7 +26,7 @@ const de = {
   'settings.regionHint':
     'Mit Bundesland werden die Simulationen nach dessen Jahrgangsstufen sortiert. Die Wahl wird nur in diesem Browser gespeichert.',
   'region.viewTitle': 'Nach Jahrgangsstufe ({state})',
-  'region.viewLead': 'Sortiert nach dem Lehrplan {state} · {school}. Das Bundesland lässt sich über das Zahnrad oben ändern.',
+  'region.viewLead': 'Sortiert nach dem Lehrplan {state} · {school}. Das Bundesland lässt sich oben ändern.',
   'region.gradeHeading': 'Jahrgangsstufe {n} ({state})',
   'region.again': 'Außerdem passend:',
   'region.rest': 'Weitere Simulationen',
@@ -41,6 +41,8 @@ const de = {
   'footer.privacy': 'Datenschutz',
   'footer.source': 'Quellcode',
   'footer.offline': 'Funktioniert nach dem ersten Besuch auch offline.',
+  'footer.subjects': 'Fächer',
+  'footer.project': 'Projekt',
 
   'status.planned': 'In Planung',
   'status.subjectPlanned': 'Kommt später',
@@ -103,16 +105,20 @@ const de = {
   'home.chemText': 'Die Chemie-Sammlung ist in Vorbereitung. Bis dahin gibt es viel in Mathematik und Physik zu entdecken.',
   'home.clear': 'Alle Simulationen anzeigen',
 
-  'subject.areas': 'Themenbereiche',
   'subject.progress': '{ready} von {total} Simulationen verfügbar',
   'subject.plannedText':
     'Dieses Fach ist geplant. Sobald die ersten Simulationen fertig sind, erscheinen sie hier.',
-  'subject.filterLabel': 'Nach Klassenstufe filtern',
-  'subject.noMatch': 'Für diese Klassenstufe gibt es in diesem Fach noch keine Themen.',
+  'subject.sortBy': 'Sortieren nach',
+  'subject.regionNone': 'Kein Bundesland',
+  'subject.sortArea': 'Themenbereich',
+  'subject.sortGrade': 'Klassenstufe',
+  'subject.jumpLabel': 'Zu einem Themenbereich springen',
+  'subject.inProgress': 'In Vorbereitung:',
+  'subject.bandLead':
+    'Ohne Bundesland nach Klassenstufen sortiert. Wählen Sie oben Ihr Bundesland, dann folgt die Sortierung dessen Lehrplan.',
 
   'curriculum.byGrade': 'Nach Jahrgangsstufe',
   'curriculum.byGradeLead': 'Alle Lernbereiche einer Jahrgangsstufe mit den passenden Simulationen.',
-  'curriculum.chooseRegion': 'Wählen Sie oben im Zahnrad Ihr Bundesland – dann erscheinen hier die Jahrgangsstufen nach dessen Lehrplan.',
   'curriculum.byTopic': 'Nach Thema',
   'curriculum.overview': 'Alle Jahrgangsstufen im Überblick',
   'curriculum.label': 'Lehrplan {state} · {school}',
@@ -319,7 +325,7 @@ const en: Record<UiKey, string> = {
   'settings.regionHint':
     'With a federal state selected, simulations are ordered by its grades. Your choice is only stored in this browser.',
   'region.viewTitle': 'By grade ({state})',
-  'region.viewLead': 'Ordered by the {state} curriculum · {school}. Change the federal state via the gear icon at the top.',
+  'region.viewLead': 'Ordered by the {state} curriculum · {school}. Change the federal state above.',
   'region.gradeHeading': 'Grade {n} ({state})',
   'region.again': 'Also relevant:',
   'region.rest': 'More simulations',
@@ -334,6 +340,8 @@ const en: Record<UiKey, string> = {
   'footer.privacy': 'Privacy',
   'footer.source': 'Source code',
   'footer.offline': 'Works offline after your first visit.',
+  'footer.subjects': 'Subjects',
+  'footer.project': 'Project',
 
   'status.planned': 'Planned',
   'status.subjectPlanned': 'Coming later',
@@ -396,16 +404,20 @@ const en: Record<UiKey, string> = {
   'home.chemText': 'The chemistry collection is in preparation. Meanwhile, there is plenty to explore in mathematics and physics.',
   'home.clear': 'Show all simulations',
 
-  'subject.areas': 'Topic areas',
   'subject.progress': '{ready} of {total} simulations available',
   'subject.plannedText':
     'This subject is planned. Its first simulations will appear here as soon as they are ready.',
-  'subject.filterLabel': 'Filter by grade',
-  'subject.noMatch': 'There are no topics for this grade in this subject yet.',
+  'subject.sortBy': 'Sort by',
+  'subject.regionNone': 'No federal state',
+  'subject.sortArea': 'Topic area',
+  'subject.sortGrade': 'Grade',
+  'subject.jumpLabel': 'Jump to a topic area',
+  'subject.inProgress': 'In preparation:',
+  'subject.bandLead':
+    'Without a federal state, sorted by grade band. Choose your federal state above to follow its curriculum.',
 
   'curriculum.byGrade': 'By grade',
   'curriculum.byGradeLead': 'All units of a grade with matching simulations.',
-  'curriculum.chooseRegion': 'Choose your federal state via the gear icon at the top – the grades of its curriculum then appear here.',
   'curriculum.byTopic': 'By topic',
   'curriculum.overview': 'All grades at a glance',
   'curriculum.label': '{state} curriculum · {school}',

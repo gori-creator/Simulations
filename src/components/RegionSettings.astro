@@ -68,6 +68,7 @@ const regions = regionsOf(lang);
     if (region && known.has(region)) root.dataset.region = region;
     else delete root.dataset.region;
     applyRegionOrder(root.dataset.region);
+    document.dispatchEvent(new CustomEvent('region:changed'));
   }
 
   toggle?.addEventListener('click', () => setOpen(Boolean(panel?.hidden)));
@@ -88,6 +89,13 @@ const regions = regionsOf(lang);
   select?.addEventListener('change', () => {
     storeRegion(select.value);
     apply(select.value);
+  });
+
+  // Auswahl an anderer Stelle der Seite (z. B. Fachseite)
+  document.addEventListener('region:set', (event) => {
+    const region = String((event as CustomEvent).detail ?? '');
+    storeRegion(region);
+    apply(region);
   });
 
   // Änderung in einem anderen Tab übernehmen

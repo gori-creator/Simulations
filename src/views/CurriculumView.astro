@@ -41,10 +41,9 @@ const vars = { state: curriculum.state[lang], school: curriculum.schoolType[lang
       ]}
     />
     <header class="page-head">
-      <div class="page-head__meta">
-        <span class={`badge badge--subject-${curriculum.subject}`}>{subject.title[lang]}</span>
-        <span class="badge">{t(lang, 'curriculum.label', vars)}</span>
-      </div>
+      <p class="page-head__eyebrow">
+        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{t(lang, 'curriculum.label', vars)}</span>
+      </p>
       <h1>{t(lang, 'curriculum.overviewTitle', vars)}</h1>
       <p class="lead">{t(lang, 'curriculum.overviewLead', vars)}</p>
       <GradeNav lang={lang} curriculum={curriculum} />
