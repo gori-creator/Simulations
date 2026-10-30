@@ -2,7 +2,7 @@
 title: Datenschutzerklärung
 ---
 
-<p class="note note--warning"><strong>Vorlage:</strong> Diese Datenschutzerklärung beschreibt das technische Verhalten der Website. Sie muss vor der Veröffentlichung um die Angaben zur verantwortlichen Stelle und zum tatsächlichen Hosting ergänzt und rechtlich geprüft werden.</p>
+<p class="note note--warning"><strong>Vorlage:</strong> Diese Datenschutzerklärung beschreibt das technische Verhalten der Website. Sie muss vor der Veröffentlichung um die Angaben zur verantwortlichen Stelle ergänzt und rechtlich geprüft werden.</p>
 
 ## Verantwortliche Stelle
 
@@ -19,15 +19,17 @@ Diese Website ist bewusst datensparsam gebaut:
 
 ## Hosting und Server-Protokolle
 
-Diese Website wird über **GitHub Pages** bereitgestellt. Anbieter ist die GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.
+Diese Website (scitura.de) wird bei der **STRATO GmbH**, Otto-Ostrowski-Straße 7, 10249 Berlin, Deutschland, gehostet. Die Server stehen in Deutschland. Mit STRATO besteht ein Vertrag über Auftragsverarbeitung nach Art. 28 DSGVO.
 
-Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten an die Server von GitHub, insbesondere Ihre **IP-Adresse**, Datum und Uhrzeit, die aufgerufene Adresse sowie Angaben zu Browser und Betriebssystem. GitHub speichert die IP-Adresse in Server-Protokollen, um die Seite auszuliefern und die Sicherheit des Dienstes zu gewährleisten (z. B. zur Abwehr von Angriffen). Wir selbst haben keinen Zugriff auf diese Protokolle und werten sie nicht aus. Wie lange GitHub die Daten speichert, legt GitHub fest.
+Beim Aufruf der Seite überträgt Ihr Browser technisch notwendige Daten an den Server, insbesondere Ihre **IP-Adresse**, Datum und Uhrzeit, die aufgerufene Adresse sowie Angaben zu Browser und Betriebssystem. STRATO speichert diese Daten in Server-Protokollen, um die Seite auszuliefern und die Sicherheit des Dienstes zu gewährleisten (z. B. zur Abwehr von Angriffen). Wir selbst werten diese Protokolle nicht aus und nutzen keine Statistik- oder Analysefunktionen des Hosters. Wie lange STRATO die Protokolle speichert, legt STRATO fest.
 
-**Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren, zuverlässigen und kostenlosen Bereitstellung der Website.
+**Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO. Unser berechtigtes Interesse liegt in einer sicheren und zuverlässigen Bereitstellung der Website.
 
-**Übermittlung in die USA:** Dabei können Daten in die USA übermittelt werden. Die Übermittlung stützt sich auf den Angemessenheitsbeschluss der EU-Kommission zum **EU-US Data Privacy Framework** (Art. 45 DSGVO), soweit GitHub danach zertifiziert ist, und im Übrigen auf Standardvertragsklauseln der EU-Kommission (Art. 46 Abs. 2 lit. c DSGVO).
+Eine Übermittlung dieser Daten in Länder außerhalb der EU findet durch uns nicht statt.
 
-Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub: [docs.github.com](https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement).
+Weitere Informationen finden Sie in der Datenschutzerklärung von STRATO: [strato.de/datenschutz](https://www.strato.de/datenschutz/).
+
+**Quellcode und Veröffentlichung:** Der Quellcode der Seite liegt bei GitHub; dort wird die Seite auch automatisch gebaut und auf den Server von STRATO übertragen. Besucher der Website kommen dabei nicht mit GitHub in Berührung, ihre Daten werden dort nicht verarbeitet.
 
 ## Speicherung im Browser
 
@@ -41,7 +43,7 @@ Sie können diese Daten jederzeit über die Einstellungen Ihres Browsers lösche
 
 ## Kontaktformular
 
-Das Kontaktformular überträgt keine Daten an uns oder an Dritte. Es setzt Ihre Angaben zu einer Nachricht zusammen und öffnet damit Ihr eigenes E-Mail-Programm. Erst wenn Sie die E-Mail dort abschicken, erhalten wir sie, mit den Angaben, die Sie eingetragen haben (Name und E-Mail-Adresse sind freiwillig). Technische Angaben (Browser, Bildschirmgröße) werden nur angehängt, wenn Sie das ankreuzen.
+Das Kontaktformular überträgt keine Daten an uns oder an Dritte. Es setzt Ihre Angaben zu einer Nachricht zusammen und öffnet damit Ihr eigenes E-Mail-Programm. Erst wenn Sie die E-Mail dort abschicken, erhalten wir sie (das Postfach liegt bei STRATO), mit den Angaben, die Sie eingetragen haben (Name und E-Mail-Adresse sind freiwillig). Technische Angaben (Browser, Bildschirmgröße) werden nur angehängt, wenn Sie das ankreuzen.
 
 Wir verwenden Ihre Nachricht nur, um Ihr Anliegen zu bearbeiten und Ihnen gegebenenfalls zu antworten. **Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen und der Verbesserung der Website). Die E-Mail wird gelöscht, sobald sie erledigt ist und keine Aufbewahrungspflichten entgegenstehen.
 
