@@ -16,6 +16,7 @@ const { lang } = Astro.props;
 const sims = [...allSimulations()].sort((a, b) => Number(b.status === 'ready') - Number(a.status === 'ready'));
 const hasPlanned = sims.some((s) => s.status !== 'ready');
 const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
+const resultTemplateOne = t(lang, 'catalog.resultsOne', { n: '{n}' });
 ---
 
 <BaseLayout lang={lang} title={t(lang, 'catalog.title')} alternates={alternates({ kind: 'catalog' })} section="catalog">
@@ -56,7 +57,7 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
       }
     </form>
 
-    <p class="result-count" data-result-count data-template={resultTemplate} aria-live="polite">
+    <p class="result-count" data-result-count data-template={resultTemplate} data-template-one={resultTemplateOne} aria-live="polite">
       {t(lang, 'catalog.results', { n: sims.length })}
     </p>
     <div class="card-grid" data-catalog data-region-sort>
@@ -99,7 +100,9 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
       card.hidden = !match;
       if (match) visible++;
     }
-    if (count) count.textContent = (count.dataset.template ?? '{n}').replace('{n}', String(visible));
+    // Einzahl bei genau einem Treffer („1 Simulation“), sonst Mehrzahl (auch „0 Simulationen“)
+    const template = (visible === 1 ? count?.dataset.templateOne : count?.dataset.template) ?? '{n}';
+    if (count) count.textContent = template.replace('{n}', String(visible));
     if (empty) empty.hidden = visible > 0;
   }
 

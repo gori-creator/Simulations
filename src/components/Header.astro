@@ -47,6 +47,8 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
       >
         {t(lang, 'nav.teachers')}
       </a>
+      {/* Auf schmalen Bildschirmen wandern Bundesland, Bewegung und Hell/Dunkel hierher (Skript unten) */}
+      <div class="site-nav__tools" data-nav-tools></div>
     </nav>
 
     <div class="header-tools">
@@ -67,6 +69,7 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
           ))
         }
       </div>
+      <div class="header-extras" data-header-extras>
       <RegionSettings lang={lang} />
       {
         motionToggle && (
@@ -82,6 +85,7 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
           >
             <Icon name="pause" class="motion-icon motion-icon--pause" />
             <Icon name="play" class="motion-icon motion-icon--play" />
+            <span class="header-extras__text" aria-hidden="true">{t(lang, 'home.motionPause')}</span>
           </button>
         )
       }
@@ -96,7 +100,9 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
       >
         <Icon name="moon" class="theme-icon theme-icon--moon" />
         <Icon name="sun" class="theme-icon theme-icon--sun" />
+        <span class="header-extras__text" aria-hidden="true">{t(lang, 'theme.toggle')}</span>
       </button>
+      </div>
       <button
         class="btn btn--ghost btn--icon menu-toggle"
         type="button"
@@ -148,6 +154,8 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
     const label = (currentTheme() === 'dark' ? themeToggle.dataset.labelLight : themeToggle.dataset.labelDark) ?? '';
     themeToggle.setAttribute('aria-label', label);
     themeToggle.title = label;
+    const text = themeToggle.querySelector('.header-extras__text');
+    if (text) text.textContent = label;
   }
   labelThemeToggle();
   darkQuery.addEventListener('change', labelThemeToggle);
@@ -177,6 +185,25 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
     setMenu(false);
     if (inside) toggle?.focus();
   });
+
+  // Schmale Kopfleiste: nur Logo, Sprache und Menü. Bundesland, Bewegung und
+  // Hell/Dunkel ziehen ins Menü (dieselben Elemente, nur verschoben – Zustand und
+  // Ereignisse bleiben erhalten). Breite wie in global.css (.header-extras).
+  const extras = document.querySelector<HTMLElement>('[data-header-extras]');
+  const navTools = document.querySelector<HTMLElement>('[data-nav-tools]');
+  const homeSlot = extras?.parentElement;
+  const homeNext = extras?.nextElementSibling ?? null;
+  const narrow = matchMedia('(max-width: 600px)');
+  function placeExtras(): void {
+    if (!extras || !navTools || !homeSlot) return;
+    if (narrow.matches) {
+      if (extras.parentElement !== navTools) navTools.append(extras);
+    } else if (extras.parentElement !== homeSlot) {
+      homeSlot.insertBefore(extras, homeNext);
+    }
+  }
+  placeExtras();
+  narrow.addEventListener('change', placeExtras);
 
   // Beim Sprachwechsel Einstellungen der Simulation (Query) mitnehmen und Sprache merken
   for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-keep-query]')) {

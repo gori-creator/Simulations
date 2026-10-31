@@ -42,7 +42,7 @@ Unter jeder Simulation finden Sie:
 
 Die Themen sind nach den **Bildungsstandards der Kultusministerkonferenz (KMK)** und nach Klassenstufen gegliedert. Bei jeder Simulation sehen Sie die passende Klassenstufe und die Bezüge zu Leitideen bzw. Kompetenzbereichen.
 
-Über das **Zahnrad** oben rechts lässt sich zusätzlich ein **Bundesland** wählen. Dann sind die Fachseiten nach den Jahrgangsstufen des jeweiligen Lehrplans sortiert, und bei jeder Simulation steht der passende Bezug zum Landeslehrplan. Bisher sind Lehrpläne für das Gymnasium in Mathematik und Physik eingetragen; weitere Länder und Schularten folgen. Das Lernmaterial selbst ist bewusst neutral gehalten und nennt nur ungefähre Klassenstufen.
+Über den Knopf **Bundesland** (Ortsmarke) oben rechts lässt sich zusätzlich ein **Bundesland** wählen. Dann sind die Fachseiten nach den Jahrgangsstufen des jeweiligen Lehrplans sortiert, und bei jeder Simulation steht der passende Bezug zum Landeslehrplan. Bisher sind Lehrpläne für das Gymnasium in Mathematik und Physik eingetragen; weitere Länder und Schularten folgen. Das Lernmaterial selbst ist bewusst neutral gehalten und nennt nur ungefähre Klassenstufen.
 
 ## Datenschutz
 

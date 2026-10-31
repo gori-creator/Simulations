@@ -43,6 +43,9 @@ export function bindMotionToggle(button: HTMLButtonElement): () => void {
     const label = (value ? button.dataset.labelResume : button.dataset.labelPause) ?? '';
     button.setAttribute('aria-label', label);
     button.title = label;
+    // Sichtbarer Text, wenn der Knopf im Handy-Menü steht (Header.astro)
+    const text = button.querySelector('.header-extras__text');
+    if (text) text.textContent = label;
     button.classList.toggle('is-paused', value);
     document.documentElement.classList.toggle('motion-paused', value);
   };

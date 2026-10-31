@@ -1,6 +1,7 @@
 ---
 /**
- * Zahnrad in der Kopfleiste mit der Einstellung „Bundesland“.
+ * Knopf „Bundesland“ (Ortsmarke) in der Kopfleiste. Auf schmalen Bildschirmen
+ * steht er im Menü, dort ist die Auswahl direkt sichtbar (Header.astro).
  * Die Wahl steht nur in localStorage ("region") und als data-region am <html>
  * (früh gesetzt im <head>, siehe BaseLayout). Länderliste: src/lib/region.ts.
  */
@@ -27,7 +28,7 @@ const regions = regionsOf(lang);
     title={t(lang, 'settings.label')}
     data-settings-toggle
   >
-    <Icon name="settings" />
+    <Icon name="pin" />
   </button>
   <div class="settings__panel" id="settings-panel" role="dialog" aria-labelledby="settings-title" hidden data-settings-panel>
     <h2 class="settings__title" id="settings-title">{t(lang, 'settings.label')}</h2>
@@ -68,6 +69,7 @@ const regions = regionsOf(lang);
     if (region && known.has(region)) root.dataset.region = region;
     else delete root.dataset.region;
     applyRegionOrder(root.dataset.region);
+    if (select) select.value = root.dataset.region ?? '';
     document.dispatchEvent(new CustomEvent('region:changed'));
   }
 
@@ -105,4 +107,5 @@ const regions = regionsOf(lang);
 
   // Karten auch in der DOM-Reihenfolge sortieren (Tastatur, Bildschirmleser)
   applyRegionOrder(root.dataset.region);
+  if (select) select.value = root.dataset.region ?? '';
 </script>

@@ -20,9 +20,9 @@ const de = {
   'theme.toDark': 'Zum dunklen Farbschema wechseln',
   'theme.toLight': 'Zum hellen Farbschema wechseln',
 
-  'settings.label': 'Einstellungen',
+  'settings.label': 'Bundesland wählen',
   'settings.region': 'Bundesland',
-  'settings.regionNone': 'Kein Bundesland (allgemeine Sortierung)',
+  'settings.regionNone': 'Kein Bundesland gewählt',
   'settings.regionHint':
     'Mit Bundesland werden die Simulationen nach dessen Jahrgangsstufen sortiert. Die Wahl wird nur in diesem Browser gespeichert.',
   'region.viewTitle': 'Nach Jahrgangsstufe ({state})',
@@ -209,6 +209,7 @@ const de = {
   'catalog.grade': 'Klassenstufe',
   'catalog.showPlanned': 'Geplante anzeigen',
   'catalog.results': '{n} Simulationen',
+  'catalog.resultsOne': '{n} Simulation',
   'catalog.empty': 'Keine passenden Simulationen gefunden.',
   'nav.contact': 'Kontakt',
   'material.feedback': 'Feedback zu dieser Simulation',
@@ -321,9 +322,9 @@ const en: Record<UiKey, string> = {
   'theme.toDark': 'Switch to dark mode',
   'theme.toLight': 'Switch to light mode',
 
-  'settings.label': 'Settings',
+  'settings.label': 'Choose federal state',
   'settings.region': 'Federal state',
-  'settings.regionNone': 'No federal state (general order)',
+  'settings.regionNone': 'No federal state selected',
   'settings.regionHint':
     'With a federal state selected, simulations are ordered by its grades. Your choice is only stored in this browser.',
   'region.viewTitle': 'By grade ({state})',
@@ -509,6 +510,7 @@ const en: Record<UiKey, string> = {
   'catalog.grade': 'Grade',
   'catalog.showPlanned': 'Show planned',
   'catalog.results': '{n} simulations',
+  'catalog.resultsOne': '{n} simulation',
   'catalog.empty': 'No matching simulations found.',
   'nav.contact': 'Contact',
   'material.feedback': 'Feedback on this simulation',
