@@ -2368,8 +2368,8 @@
 }
 
 /* ---------- Karussell „Entdecken“ (HomeCarousel.astro, lib/home/carousel.ts) ----------
-   Dunkle Bühne zwischen Achterbahn und Unterrichts-Abschnitt: beginnt und endet
-   im Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
+   Dunkle Bühne zwischen Einstieg und Achterbahn: beginnt und endet im
+   Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
    Karten leuchten. Grundform: flache Wisch-Reihe; mit Skript auf breiten
    Bildschirmen (.is-3d) ein gebogenes Rad. */
 .home-carousel {
@@ -2710,44 +2710,44 @@
    Liegt hinter Skulptur und Text (z-index 1); steht still bei pausierter oder
    reduzierter Bewegung und wenn der Einstieg nicht zu sehen ist. */
 .scitura-home {
-  --sc-land-far: #dbe4f7;
-  --sc-land-near: #d0dbf3;
-  --sc-land-haze: #e4ebf9;
-  --sc-land-lake-top: #dfe7f8;
-  --sc-land-lake-bottom: #d6e0f5;
-  --sc-land-shore: #ffffff80;
-  --sc-land-cloud: #ffffff99;
+  --sc-land-far: #d3def5;
+  --sc-land-near: #c2d0ef;
+  --sc-land-haze: #e2eaf9;
+  --sc-land-lake-top: #dae4f8;
+  --sc-land-lake-bottom: #ccd9f3;
+  --sc-land-shore: #ffffffa6;
+  --sc-land-cloud: #ffffffb3;
   --sc-land-mote: #ffffff;
-  --sc-land-mote-glow: #8fb0ff55;
-  --sc-land-mirror: 0.22;
+  --sc-land-mote-glow: #7fa2ff88;
+  --sc-land-mirror: 0.34;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .scitura-home {
-    --sc-land-far: #142650;
-    --sc-land-near: #12224a;
-    --sc-land-haze: #11234c;
-    --sc-land-lake-top: #12254d;
-    --sc-land-lake-bottom: #102148;
-    --sc-land-shore: #8fb0ff1f;
-    --sc-land-cloud: #8fb0ff12;
+    --sc-land-far: #182b57;
+    --sc-land-near: #0f1f47;
+    --sc-land-haze: #10214a;
+    --sc-land-lake-top: #10224a;
+    --sc-land-lake-bottom: #0c1a3d;
+    --sc-land-shore: #8fb0ff33;
+    --sc-land-cloud: #8fb0ff17;
     --sc-land-mote: #d8e4ff;
-    --sc-land-mote-glow: #5b8cff66;
-    --sc-land-mirror: 0.3;
+    --sc-land-mote-glow: #5b8cff88;
+    --sc-land-mirror: 0.42;
   }
 }
 
 :root[data-theme='dark'] .scitura-home {
-  --sc-land-far: #142650;
-  --sc-land-near: #12224a;
-  --sc-land-haze: #11234c;
-  --sc-land-lake-top: #12254d;
-  --sc-land-lake-bottom: #102148;
-  --sc-land-shore: #8fb0ff1f;
-  --sc-land-cloud: #8fb0ff12;
+  --sc-land-far: #182b57;
+  --sc-land-near: #0f1f47;
+  --sc-land-haze: #10214a;
+  --sc-land-lake-top: #10224a;
+  --sc-land-lake-bottom: #0c1a3d;
+  --sc-land-shore: #8fb0ff33;
+  --sc-land-cloud: #8fb0ff17;
   --sc-land-mote: #d8e4ff;
-  --sc-land-mote-glow: #5b8cff66;
-  --sc-land-mirror: 0.3;
+  --sc-land-mote-glow: #5b8cff88;
+  --sc-land-mirror: 0.42;
 }
 
 .hero-land {
@@ -2797,7 +2797,7 @@
   overflow: hidden;
   background: linear-gradient(180deg, var(--sc-land-lake-top), var(--sc-land-lake-bottom));
   /* kein harter Rand: der See taucht weich aus dem Dunst auf */
-  mask-image: linear-gradient(180deg, transparent 0%, #000 35%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 20%);
 }
 
 /* Spiegelung der Felsen, leicht verwischt und zum Ufer hin ausgeblendet */
@@ -2817,7 +2817,7 @@
   position: absolute;
   inset: 0 -40px;
   background: repeating-linear-gradient(180deg, transparent 0 9px, var(--sc-land-shore) 9px 10px);
-  opacity: 0.18;
+  opacity: 0.26;
   mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
   animation: lake-shimmer 9s ease-in-out infinite alternate;
 }
@@ -2888,7 +2888,7 @@
   bottom: calc(var(--lake-h) - 10px);
   border-radius: 50%;
   background: var(--sc-land-mote);
-  box-shadow: 0 0 6px 2px var(--sc-land-mote-glow);
+  box-shadow: 0 0 8px 2px var(--sc-land-mote-glow);
   opacity: 0;
   animation: mote-rise 14s linear infinite;
 }
@@ -2899,10 +2899,10 @@
     transform: translate(0, 0);
   }
   15% {
-    opacity: 0.45;
+    opacity: 0.7;
   }
   80% {
-    opacity: 0.3;
+    opacity: 0.45;
   }
   100% {
     opacity: 0;
