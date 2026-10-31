@@ -51,6 +51,10 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 - [ ] **STRATO einrichten** (Projektleitung): SFTP-Zugang anlegen; Secrets `STRATO_HOST`, `STRATO_USER`, `STRATO_PASSWORD` unter Settings → Secrets and variables → Actions eintragen (nie in den Chat); scitura.de (und www) auf den Ordner `scitura` zeigen lassen; SSL-Zertifikat für beide; .net und .eu auf https://scitura.de weiterleiten; Besucherstatistik aus; Postfach kontakt@scitura.de; Zwei-Faktor-Anmeldung.
 - [ ] Wenn scitura.de läuft: Datenschutzerklärung auf STRATO (Deutschland) umstellen, GitHub Pages abschalten (`deploy.yml` entfernen oder auf Weiterleitung umstellen).
 
+## Neue Vorhaben
+
+- [ ] **KI-Grundlagenkurs** (Idee 31.10.): spielerischer Kurs „wie funktioniert KI“, ab Klasse 5, ohne Konten, ohne echte KI für Schüler. Entwurf: `docs/KI-KURS-KONZEPT.md`; wartet auf Freigabe der Projektleitung.
+
 ## Sicherheit
 
 Die Seite ist rein statisch (kein Server, keine Datenbank, keine Logins) – das Risiko ist gering.
