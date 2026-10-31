@@ -253,7 +253,7 @@ const bandGroups = GRADE_BANDS.map((band) => ({
   }
   showView(root.dataset.subjectView ?? 'area');
 
-  // Bundesland direkt auf der Seite wählen (dieselbe Einstellung wie im Zahnrad)
+  // Bundesland direkt auf der Seite wählen (dieselbe Einstellung wie im Knopf „Bundesland“ der Kopfleiste)
   const select = document.querySelector<HTMLSelectElement>('[data-region-inline]');
   function syncSelect(): void {
     if (select) select.value = root.dataset.region ?? '';

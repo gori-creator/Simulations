@@ -936,6 +936,69 @@ em .hat::after {
   }
 }
 
+/* Bundesland, Bewegung, Hell/Dunkel: auf breiten Bildschirmen Symbole in der Kopfleiste,
+   auf schmalen im Menü (Header.astro verschiebt die Gruppe) */
+.header-extras {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-extras__text,
+.site-nav__tools:empty {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  /* Bis das Skript die Gruppe ins Menü verschoben hat, nicht in der Kopfleiste zeigen */
+  .header-tools > .header-extras {
+    display: none;
+  }
+
+  .site-nav__tools {
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .site-nav .header-extras {
+    display: grid;
+    gap: 4px;
+  }
+
+  .site-nav .header-extras .btn--icon {
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    font-weight: 550;
+  }
+
+  .site-nav .header-extras__text {
+    display: inline;
+  }
+
+  /* Bundesland im Menü: Auswahl direkt sichtbar statt Knopf mit Klapptafel */
+  .site-nav .settings__toggle,
+  .site-nav .settings__title,
+  .site-nav .settings__hint {
+    display: none;
+  }
+
+  .site-nav .settings__panel,
+  .site-nav .settings__panel[hidden] {
+    position: static;
+    display: grid !important;
+    width: auto;
+    padding: 4px 12px 8px;
+    border: 0;
+    box-shadow: none;
+    background: none;
+  }
+}
+
 /* ---------- Footer ---------- */
 
 .site-footer {
@@ -1361,6 +1424,66 @@ em .hat::after {
 
   .card--link:hover .sim-shot--art {
     transform: scale(1.04);
+  }
+}
+
+/* Handy: Karten als Liste – Bild links, Titel, Kurztext (höchstens drei Zeilen)
+   und Klassenstufe rechts. Der volle Text steht auf der Simulationsseite. */
+@media (max-width: 560px) {
+  .card-grid,
+  .home-catalog__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .card-grid > .card,
+  .home-catalog__grid > .card {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 0 12px;
+    align-items: start;
+  }
+
+  /* Kleines Bild als Kachel oben links, im Seitenverhältnis 16:10 (Motiv bleibt ganz sichtbar) */
+  .card-grid > .card .card__thumb,
+  .home-catalog__grid > .card .card__thumb {
+    align-self: start;
+    aspect-ratio: 16 / 10;
+    height: auto;
+    margin: 12px 0 12px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .card-grid > .card .card__title,
+  .home-catalog__grid > .card .card__title {
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  .card-grid > .card .card__body,
+  .home-catalog__grid > .card .card__body {
+    gap: 6px;
+    padding: 12px 14px 12px 0;
+  }
+
+  .card-grid > .card .card__title {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .card-grid > .card .card__text,
+  .home-catalog__grid > .card .card__text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    font-size: 0.875rem;
+  }
+
+  .card-grid > .card .card__meta {
+    padding-top: 2px;
   }
 }
 

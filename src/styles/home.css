@@ -2012,3 +2012,38 @@
     animation: none;
   }
 }
+
+/* Handy: Katalog als einspaltige Liste (Bild links, Titel/Text rechts) statt zwei
+   schmaler Spalten; Grundform in global.css (.card-grid, ≤ 560 px), hier nur die
+   festen Bildhöhen und kleinen Schriften der Startseite aufheben. */
+@media (max-width: 560px) {
+  .home-catalog__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .home-catalog .card__thumb {
+    height: auto;
+  }
+
+  .home-catalog .card__body {
+    gap: 6px;
+    padding: 12px 14px 12px 0;
+  }
+
+  .home-catalog .card__title {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .home-catalog .card__text {
+    margin-bottom: 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .home-catalog .card__meta .badge {
+    padding: 2px 7px;
+    font-size: 11px;
+  }
+}

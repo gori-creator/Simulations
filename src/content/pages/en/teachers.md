@@ -32,7 +32,7 @@ Two extra options turn any setup into an exercise:
 
 Topics are organised by grade and aligned with the German national educational standards (KMK). Each simulation shows its grade level and the related competences.
 
-Using the **gear icon** at the top right you can also choose a **German state**. The subject pages are then sorted by the grades of that state’s curriculum, and each simulation shows the matching reference to the state curriculum. So far, curricula for the Gymnasium in mathematics and physics are included; more states and school types will follow. The learning material itself is deliberately neutral and only gives approximate grade levels.
+Using the **federal state** button (location pin) at the top right you can also choose a **German state**. The subject pages are then sorted by the grades of that state’s curriculum, and each simulation shows the matching reference to the state curriculum. So far, curricula for the Gymnasium in mathematics and physics are included; more states and school types will follow. The learning material itself is deliberately neutral and only gives approximate grade levels.
 
 ## Privacy
 
