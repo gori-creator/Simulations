@@ -44,21 +44,28 @@ const stats = [
 
 <section class="home-steps" aria-labelledby="steps-title">
   <div class="home-steps__head">
-    <p class="home-steps__eyebrow">{t(lang, 'home.stepsEyebrow')}</p>
-    <h2 id="steps-title">{t(lang, 'home.stepsTitle')}</h2>
+    <div>
+      <p class="home-steps__eyebrow">{t(lang, 'home.stepsEyebrow')}</p>
+      <h2 id="steps-title">{t(lang, 'home.stepsTitle')}</h2>
+    </div>
+    <div class="home-steps__intro">
+      <p>{t(lang, 'home.stepsLead')}</p>
+      <a class="home-steps__cta" href={href(lang, { kind: 'page', page: 'teachers' })}>
+        {t(lang, 'home.stepsMore')} <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 
   <ol class="home-steps__list">
     {
       steps.map(({ icon, n }) => (
         <li class="home-steps__item">
+          {/* Die Liste nummeriert schon; die große Ziffer ist nur Schmuck */}
+          <span class="home-steps__num" aria-hidden="true">{String(n).padStart(2, '0')}</span>
           <span class="home-steps__icon" aria-hidden="true">
             <Icon name={icon} />
           </span>
-          <h3>
-            <span class="home-steps__num">{n}</span>
-            {t(lang, `home.step${n}Title`)}
-          </h3>
+          <h3>{t(lang, `home.step${n}Title`)}</h3>
           <p>{t(lang, `home.step${n}Text`)}</p>
         </li>
       ))
@@ -75,10 +82,4 @@ const stats = [
       ))
     }
   </dl>
-
-  <p class="home-steps__more">
-    <a href={href(lang, { kind: 'page', page: 'teachers' })}>
-      {t(lang, 'home.stepsMore')} <span aria-hidden="true">→</span>
-    </a>
-  </p>
 </section>
