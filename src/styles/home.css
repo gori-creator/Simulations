@@ -2703,3 +2703,403 @@
     scroll-padding-inline: 16px;
   }
 }
+
+/* ---------- Landschaft im Einstieg (HomeHero.astro, .hero-land) ----------
+   Dunstiger Horizont mit Felsnadeln, ein See mit Spiegelung, ziehende
+   Wolkenschleier und aufsteigende Lichtpunkte – nur in den Blautönen von Scitura.
+   Liegt hinter Skulptur und Text (z-index 1); steht still bei pausierter oder
+   reduzierter Bewegung und wenn der Einstieg nicht zu sehen ist. */
+.scitura-home {
+  --sc-land-far: #dbe4f7;
+  --sc-land-near: #d0dbf3;
+  --sc-land-haze: #e4ebf9;
+  --sc-land-lake-top: #dfe7f8;
+  --sc-land-lake-bottom: #d6e0f5;
+  --sc-land-shore: #ffffff80;
+  --sc-land-cloud: #ffffff99;
+  --sc-land-mote: #ffffff;
+  --sc-land-mote-glow: #8fb0ff55;
+  --sc-land-mirror: 0.22;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .scitura-home {
+    --sc-land-far: #142650;
+    --sc-land-near: #12224a;
+    --sc-land-haze: #11234c;
+    --sc-land-lake-top: #12254d;
+    --sc-land-lake-bottom: #102148;
+    --sc-land-shore: #8fb0ff1f;
+    --sc-land-cloud: #8fb0ff12;
+    --sc-land-mote: #d8e4ff;
+    --sc-land-mote-glow: #5b8cff66;
+    --sc-land-mirror: 0.3;
+  }
+}
+
+:root[data-theme='dark'] .scitura-home {
+  --sc-land-far: #142650;
+  --sc-land-near: #12224a;
+  --sc-land-haze: #11234c;
+  --sc-land-lake-top: #12254d;
+  --sc-land-lake-bottom: #102148;
+  --sc-land-shore: #8fb0ff1f;
+  --sc-land-cloud: #8fb0ff12;
+  --sc-land-mote: #d8e4ff;
+  --sc-land-mote-glow: #5b8cff66;
+  --sc-land-mirror: 0.3;
+}
+
+.hero-land {
+  --lake-h: 108px;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Dunst am Fuß der Felsen */
+.hero-land::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--lake-h);
+  z-index: 2;
+  height: 70px;
+  background: linear-gradient(180deg, transparent, var(--sc-land-haze));
+  opacity: 0.85;
+}
+
+.hero-land__ridges {
+  position: absolute;
+  left: 0;
+  bottom: var(--lake-h);
+  width: 100%;
+  height: 170px;
+}
+
+.hero-land__far {
+  fill: var(--sc-land-far);
+}
+
+.hero-land__near {
+  fill: var(--sc-land-near);
+}
+
+.hero-land__lake {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--lake-h);
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sc-land-lake-top), var(--sc-land-lake-bottom));
+  /* kein harter Rand: der See taucht weich aus dem Dunst auf */
+  mask-image: linear-gradient(180deg, transparent 0%, #000 35%);
+}
+
+/* Spiegelung der Felsen, leicht verwischt und zum Ufer hin ausgeblendet */
+.hero-land__ridges--mirror {
+  top: 0;
+  bottom: auto;
+  opacity: var(--sc-land-mirror);
+  filter: blur(1.5px);
+  transform: scaleY(-1);
+  transform-origin: 50% 0;
+  mask-image: linear-gradient(0deg, #000 30%, transparent 85%);
+}
+
+/* feine Wellenlinien, die langsam wandern */
+.hero-land__lake::after {
+  content: '';
+  position: absolute;
+  inset: 0 -40px;
+  background: repeating-linear-gradient(180deg, transparent 0 9px, var(--sc-land-shore) 9px 10px);
+  opacity: 0.18;
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  animation: lake-shimmer 9s ease-in-out infinite alternate;
+}
+
+@keyframes lake-shimmer {
+  from {
+    transform: translateX(-20px);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+
+/* Wolkenschleier */
+.hero-land__clouds span {
+  position: absolute;
+  width: 560px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--sc-land-cloud), transparent);
+  filter: blur(6px);
+  animation: cloud-drift 70s ease-in-out infinite alternate;
+}
+
+.hero-land__clouds span:nth-child(1) {
+  top: 9%;
+  left: 38%;
+}
+
+.hero-land__clouds span:nth-child(2) {
+  top: 30%;
+  left: -6%;
+  width: 640px;
+  animation-duration: 90s;
+  animation-delay: -30s;
+}
+
+.hero-land__clouds span:nth-child(3) {
+  top: 46%;
+  left: 62%;
+  width: 480px;
+  height: 100px;
+  animation-duration: 80s;
+  animation-delay: -12s;
+}
+
+.hero-land__clouds span:nth-child(4) {
+  top: 2%;
+  left: 82%;
+  width: 420px;
+  height: 110px;
+  animation-duration: 100s;
+  animation-delay: -50s;
+}
+
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-60px);
+  }
+  to {
+    transform: translateX(80px);
+  }
+}
+
+/* Lichtpunkte steigen über dem See auf und verglimmen */
+.hero-land__motes i {
+  position: absolute;
+  bottom: calc(var(--lake-h) - 10px);
+  border-radius: 50%;
+  background: var(--sc-land-mote);
+  box-shadow: 0 0 6px 2px var(--sc-land-mote-glow);
+  opacity: 0;
+  animation: mote-rise 14s linear infinite;
+}
+
+@keyframes mote-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  15% {
+    opacity: 0.45;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--mote-drift, 0), var(--mote-rise, -240px));
+  }
+}
+
+.hero-land__motes i:nth-child(1) {
+  left: 61.3%;
+  width: 4px;
+  height: 4px;
+  --mote-drift: -28px;
+  --mote-rise: -234px;
+  animation-duration: 15.9s;
+  animation-delay: -14.3s;
+}
+
+.hero-land__motes i:nth-child(2) {
+  left: 90.8%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: -8px;
+  --mote-rise: -299px;
+  animation-duration: 15.2s;
+  animation-delay: -16.2s;
+}
+
+.hero-land__motes i:nth-child(3) {
+  left: 39.0%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: -6px;
+  --mote-rise: -189px;
+  animation-duration: 10.8s;
+  animation-delay: -4.5s;
+}
+
+.hero-land__motes i:nth-child(4) {
+  left: 83.8%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: -22px;
+  --mote-rise: -259px;
+  animation-duration: 13.1s;
+  animation-delay: -13.7s;
+}
+
+.hero-land__motes i:nth-child(5) {
+  left: 15.7%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: 16px;
+  --mote-rise: -314px;
+  animation-duration: 10.0s;
+  animation-delay: -15.7s;
+}
+
+.hero-land__motes i:nth-child(6) {
+  left: 19.3%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: 2px;
+  --mote-rise: -268px;
+  animation-duration: 11.3s;
+  animation-delay: -5.6s;
+}
+
+.hero-land__motes i:nth-child(7) {
+  left: 22.8%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: -12px;
+  --mote-rise: -218px;
+  animation-duration: 17.5s;
+  animation-delay: -12.4s;
+}
+
+.hero-land__motes i:nth-child(8) {
+  left: 19.3%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: 19px;
+  --mote-rise: -254px;
+  animation-duration: 11.2s;
+  animation-delay: -1.2s;
+}
+
+.hero-land__motes i:nth-child(9) {
+  left: 58.8%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: 19px;
+  --mote-rise: -237px;
+  animation-duration: 15.7s;
+  animation-delay: -1.2s;
+}
+
+.hero-land__motes i:nth-child(10) {
+  left: 33.1%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: -15px;
+  --mote-rise: -310px;
+  animation-duration: 13.8s;
+  animation-delay: -12.7s;
+}
+
+.hero-land__motes i:nth-child(11) {
+  left: 91.3%;
+  width: 4px;
+  height: 4px;
+  --mote-drift: 17px;
+  --mote-rise: -219px;
+  animation-duration: 12.9s;
+  animation-delay: -7.3s;
+}
+
+.hero-land__motes i:nth-child(12) {
+  left: 57.2%;
+  width: 2px;
+  height: 2px;
+  --mote-drift: 7px;
+  --mote-rise: -313px;
+  animation-duration: 10.1s;
+  animation-delay: -0.8s;
+}
+
+.hero-land__motes i:nth-child(13) {
+  left: 14.9%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: -9px;
+  --mote-rise: -217px;
+  animation-duration: 12.0s;
+  animation-delay: -14.8s;
+}
+
+.hero-land__motes i:nth-child(14) {
+  left: 52.3%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: 22px;
+  --mote-rise: -166px;
+  animation-duration: 16.2s;
+  animation-delay: -1.9s;
+}
+
+.hero-land__motes i:nth-child(15) {
+  left: 91.0%;
+  width: 4px;
+  height: 4px;
+  --mote-drift: -8px;
+  --mote-rise: -184px;
+  animation-duration: 10.7s;
+  animation-delay: -6.1s;
+}
+
+.hero-land__motes i:nth-child(16) {
+  left: 29.4%;
+  width: 3px;
+  height: 3px;
+  --mote-drift: -12px;
+  --mote-rise: -288px;
+  animation-duration: 15.6s;
+  animation-delay: -1.7s;
+}
+
+.motion-paused .hero-land *,
+.motion-paused .hero-land *::after,
+.home-hero.is-offscreen .hero-land *,
+.home-hero.is-offscreen .hero-land__lake::after,
+.scitura-home:has(.home-experiment.is-running) .hero-land * {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-land *,
+  .hero-land__lake::after {
+    animation: none;
+  }
+
+  .hero-land__motes {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-land {
+    --lake-h: 72px;
+  }
+
+  .hero-land__ridges {
+    height: 120px;
+  }
+
+  .hero-land__clouds span {
+    width: 340px;
+    height: 90px;
+  }
+}
