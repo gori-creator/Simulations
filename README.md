@@ -82,6 +82,6 @@ Der Basis-Pfad (z. B. `/Simulations/`) wird automatisch gesetzt. Für andere Anb
 
 ## Offene Entscheidungen
 
-- **Lizenz:** noch nicht festgelegt. Ein gängiger Weg für freie Bildungsprojekte ist MIT (Code) plus CC BY 4.0 oder CC BY-SA 4.0 (Texte).
+- **Lizenz:** keine – alle Rechte vorbehalten (siehe `LICENSE`). Der Code ist nicht Open Source. Fremde Bestandteile (KaTeX, qrcode-generator, Astro; MIT) stehen in `public/lizenzen.txt`.
 - **Name und Domain** des Projekts.
 - **Weitere Länder-Lehrpläne:** Bayern (Gymnasium, Mathematik) ist hinterlegt; Physik und andere Bundesländer bzw. Schularten folgen.

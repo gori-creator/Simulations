@@ -14,7 +14,6 @@ Mathematics and physics are best understood by trying things out: change a param
 - **Sound content and good teaching** – with explanations, exercises and notes for teachers.
 - **Any device** – from phones to interactive whiteboards.
 - **Bilingual** – German first, English step by step.
-- **Open** – the source code is public and contributions are welcome.
 
 ## Roadmap
 
@@ -30,3 +29,13 @@ The site is a static website built with [Astro](https://astro.build). Simulation
 ## Images
 
 The photos in the simulations (objects, backgrounds, instruments) are generated with AI. They show no real people and no brands. Everything else – diagrams, arrows, labels and the preview images – is drawn within the project. If a photo is missing, the simulation draws its own graphic.
+
+## Feedback
+
+Feedback, bug reports and ideas are always welcome – simply use the [contact form](../contact/).
+
+## Rights
+
+Simulations, texts, exercises and graphics are protected by copyright; all rights reserved. You are of course free to use the website for teaching and learning and to share links. For any other use, please ask via the contact form.
+
+Third-party software: [KaTeX](https://katex.org) (formula typesetting), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (QR codes) and [Astro](https://astro.build) (site generator), each under the MIT licence. The licence texts are in [lizenzen.txt](../../lizenzen.txt).

@@ -1,0 +1,28 @@
+Copyright (c) 2025–2026 Louis Bugert. Alle Rechte vorbehalten.
+
+Quellcode, Texte, Aufgaben, Grafiken, Bilder und Gestaltung dieses Projekts
+(Scitura, https://scitura.de) sind urheberrechtlich geschützt. Es wird keine
+Lizenz zur Nutzung erteilt. Ohne vorherige schriftliche Zustimmung ist es nicht
+gestattet, sie ganz oder in Teilen zu kopieren, zu verändern, zu verbreiten,
+weiterzuverkaufen oder öffentlich zugänglich zu machen.
+
+Die Nutzung der veröffentlichten Website scitura.de im Unterricht und zum
+Lernen bleibt davon unberührt.
+
+Anfragen: kontakt@scitura.de
+
+-------------------------------------------------------------------------------
+English summary: All rights reserved. This is not open-source software. No
+licence is granted to copy, modify or redistribute any part of this project
+without prior written permission. Using the published website scitura.de for
+teaching and learning is not affected.
+
+-------------------------------------------------------------------------------
+Fremde Bestandteile / third-party components
+
+Diese Bestandteile stehen unter ihren eigenen Lizenzen (alle MIT), siehe
+public/lizenzen.txt bzw. https://scitura.de/lizenzen.txt:
+
+- KaTeX – Copyright (c) 2013-2020 Khan Academy and other contributors
+- qrcode-generator – Copyright (c) 2009 Kazuhiko Arase
+- Astro – Copyright (c) 2021 Fred K. Schott (nur beim Bauen und kleiner Laufzeitcode)

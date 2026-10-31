@@ -65,7 +65,7 @@ Ziel: In den Einstellungen das Bundesland wählen (oder „bundeslandunabhängig
 
 ## Phase 6 – Open Source oder nicht?
 
-**Entscheidung** – zum Besprechen:
+**Entschieden (Oktober 2026): geschlossen.** Code und Inhalte: alle Rechte vorbehalten (`LICENSE`). Die Übersicht unten bleibt als Begründung stehen.
 
 | Möglichkeit | Vorteile | Nachteile |
 | --- | --- | --- |
@@ -74,7 +74,7 @@ Ziel: In den Einstellungen das Bundesland wählen (oder „bundeslandunabhängig
 | Inhalte (Texte, Aufgaben) unter CC BY-SA | Lehrkräfte dürfen Material frei verwenden und anpassen, Namensnennung bleibt | – |
 | Geschlossen | Volle Kontrolle, spätere Vermarktung leichter | Weniger Vertrauen, keine Mitarbeit von außen |
 
-Ein häufiger Weg für Bildungsprojekte: Code offen (MIT oder AGPL) + Inhalte unter CC BY-SA. Das Repository ist im Moment **öffentlich**.
+Das Repository ist im Moment noch **öffentlich**; ohne Lizenz darf der Code trotzdem nicht weiterverwendet werden. Ob es privat werden soll, entscheidet die Projektleitung (Hinweis: GitHub Pages und Actions-Minuten hängen davon ab).
 
 ## Phase 7 – Start und danach
 
