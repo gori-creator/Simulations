@@ -12,7 +12,7 @@ title: Impressum
 
 ## Kontakt
 
-E-Mail: [E-Mail-Adresse]
+E-Mail: kontakt@scitura.de
 
 ## Verantwortlich für den Inhalt
 

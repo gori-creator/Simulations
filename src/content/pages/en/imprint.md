@@ -8,4 +8,4 @@ title: Imprint
 [Street and number]
 [Postcode, city, country]
 
-Email: [email address]
+Email: kontakt@scitura.de

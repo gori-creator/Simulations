@@ -14,10 +14,9 @@ export const SITE = {
   repoUrl: 'https://github.com/gori-creator/Simulations',
   /**
    * Empfangsadresse des Kontaktformulars (öffnet das E-Mail-Programm, siehe
-   * src/components/ContactForm.astro). VORLAGE: vor der Veröffentlichung die
-   * echte Adresse eintragen (dieselbe wie im Impressum).
+   * src/components/ContactForm.astro); dieselbe wie im Impressum.
    */
-  contactEmail: 'kontakt@scitura.example',
+  contactEmail: 'kontakt@scitura.de',
   /** Marineblau des Logos (Scitura-Logo 01, siehe docs/design/coin-reise-v13/LOGO-HERKUNFT.md). */
   themeColor: '#183365',
 } as const;
