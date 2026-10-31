@@ -1,0 +1,88 @@
+---
+/**
+ * Startseite: Karussell „Entdecken“ zwischen dem Unterrichts-Abschnitt und dem
+ * Katalog. Alle fertigen Simulationen als Karten auf einem gebogenen Rad
+ * (CSS-3D); Steuerung in src/lib/home/carousel.ts.
+ *
+ * Grundform ohne Skript, auf schmalen Bildschirmen und bei reduzierter Bewegung:
+ * eine flache, wischbare Reihe. Das Skript schaltet erst danach auf das Rad um
+ * (Klasse `is-3d`). Jede Karte ist ein normaler Link zur Simulation.
+ */
+import { getSubject, readySimulations } from '../../curriculum';
+import type { Lang } from '../../i18n/config';
+import { formatGrades, t } from '../../i18n/utils';
+import { href } from '../../lib/routes';
+import { hasShot } from '../../lib/sim-shots';
+import SimShot from '../SimShot.astro';
+import SimThumb from '../SimThumb.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Fächer abwechselnd, damit beim Durchblättern Mathematik und Physik gemischt erscheinen
+const ready = readySimulations();
+const bySubject = [ready.filter((s) => s.subject === 'mathematik'), ready.filter((s) => s.subject !== 'mathematik')];
+const sims: typeof ready = [];
+for (let i = 0; sims.length < ready.length; i++) {
+  // Auf zwei Mathe-Simulationen kommt etwa eine aus Physik (Verhältnis 93 : 36)
+  const pick = i % 3 === 2 ? bySubject[1] : bySubject[0];
+  const next = pick?.shift() ?? bySubject[0]?.shift() ?? bySubject[1]?.shift();
+  if (next) sims.push(next);
+}
+const metaOf = (sim: (typeof sims)[number]) =>
+  `${getSubject(sim.subject).title[lang]} · ${formatGrades(lang, sim.grades, sim.uni)}`;
+const first = sims[0]!;
+---
+
+<section class="home-carousel" aria-labelledby="carousel-title" aria-roledescription={t(lang, 'home.carouselRole')} data-home-carousel>
+  <div class="home-carousel__head">
+    <div>
+      <p class="home-carousel__eyebrow">{t(lang, 'home.carouselEyebrow')}</p>
+      <h2 id="carousel-title">{t(lang, 'home.carouselTitle')}</h2>
+    </div>
+    <p class="home-carousel__hint home-carousel__hint--wheel">{t(lang, 'home.carouselHint')}</p>
+    <p class="home-carousel__hint home-carousel__hint--swipe">{t(lang, 'home.carouselSwipe')}</p>
+  </div>
+
+  <div class="home-carousel__stage" data-carousel-stage>
+    <ul class="home-carousel__ring" data-carousel-ring>
+      {
+        sims.map((sim, i) => (
+          <li class="home-carousel__item" style={`--i:${i}`} data-index={i} data-meta={metaOf(sim)} data-title={sim.title[lang]}>
+            <a class="home-carousel__card" href={href(lang, { kind: 'simulation', id: sim.id })} draggable="false">
+              <span class="home-carousel__img">
+                {hasShot(sim.id) ? <SimShot id={sim.id} medium /> : <SimThumb kind={sim.thumb} id={sim.id} />}
+              </span>
+              <span class="home-carousel__label">
+                <span class="home-carousel__label-title">{sim.title[lang]}</span>
+                <span class="home-carousel__label-meta">{metaOf(sim)}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  {/* Nur im Rad sichtbar: Titel der Karte in der Mitte und Steuerung */}
+  <div class="home-carousel__bottom">
+    <div class="home-carousel__caption" aria-live="polite">
+      <p class="home-carousel__meta" data-carousel-meta>{metaOf(first)}</p>
+      <p class="home-carousel__title">
+        <a href={href(lang, { kind: 'simulation', id: first.id })} data-carousel-title>{first.title[lang]}</a>
+      </p>
+    </div>
+    <div class="home-carousel__controls">
+      <button type="button" class="home-carousel__btn" data-carousel-prev aria-label={t(lang, 'home.carouselPrev')}>
+        <span aria-hidden="true">←</span>
+      </button>
+      <div class="home-carousel__progress" aria-hidden="true"><span data-carousel-bar></span></div>
+      <span class="home-carousel__count" data-carousel-count>1 / {sims.length}</span>
+      <button type="button" class="home-carousel__btn" data-carousel-next aria-label={t(lang, 'home.carouselNext')}>
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</section>

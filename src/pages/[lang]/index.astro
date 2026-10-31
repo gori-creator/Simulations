@@ -4,6 +4,7 @@
  * der echten Energieerhaltung und vollständiger Simulationskatalog.
  * Entwurf und Abnahme: docs/design/coin-reise-v13/ (START-HIER.md, ABNAHME.md).
  */
+import HomeCarousel from '../../components/home/HomeCarousel.astro';
 import HomeCatalog from '../../components/home/HomeCatalog.astro';
 import HomeExperiment from '../../components/home/HomeExperiment.astro';
 import HomeHero from '../../components/home/HomeHero.astro';
@@ -26,12 +27,14 @@ const lang = Astro.params.lang as Lang;
     <HomeHero lang={lang} />
     <HomeExperiment lang={lang} />
     <HomeSteps lang={lang} />
+    <HomeCarousel lang={lang} />
     <HomeCatalog lang={lang} />
   </div>
 </BaseLayout>
 
 <script>
   import type { Lang } from '../../i18n/config';
+  import { initCarousel } from '../../lib/home/carousel';
   import { initCatalog } from '../../lib/home/catalog';
   import { initEnergyStage } from '../../lib/home/energy-stage';
   import { bindMotionToggle } from '../../lib/home/motion';
@@ -72,6 +75,7 @@ const lang = Astro.params.lang as Lang;
     heroObserver.observe(hero);
     teardown.push(() => heroObserver.disconnect());
     teardown.push(initEnergyStage({ root: q('[data-home-experiment]'), lang, journey }));
+    teardown.push(initCarousel(q('[data-home-carousel]')));
     teardown.push(initCatalog(q('[data-home-catalog]')));
 
     // Abbau beim endgültigen Verlassen (nicht beim Zwischenspeichern im Verlauf)
