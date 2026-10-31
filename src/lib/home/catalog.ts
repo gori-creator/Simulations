@@ -4,6 +4,8 @@
  * aktuellen Lehrplan; gefiltert wird über ihre data-Attribute wie im Katalog
  * (src/views/CatalogView.astro).
  */
+import { matchesWords, normalizeSearch, searchWords } from '../search';
+
 export function initCatalog(root: HTMLElement): () => void {
   const cards = [...root.querySelectorAll<HTMLElement>('[data-sim-card]')];
   const subjects = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
@@ -18,16 +20,11 @@ export function initCatalog(root: HTMLElement): () => void {
   const lang = document.documentElement.lang || 'de';
   let subject = 'all';
 
-  // Groß/klein, Akzente und ß egal („Große Zahlen“ findet auch „grosse zahlen“)
-  const normalize = (s: string) =>
-    s
-      .toLocaleLowerCase(lang)
-      .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '')
-      .replace(/ß/g, 'ss');
+  // Vereinheitlichter Suchtext je Karte (Regel in lib/search.ts, gleich wie im Katalog)
+  const texts = new Map(cards.map((card) => [card, normalizeSearch(card.dataset.search ?? '', lang)]));
 
   function apply(): void {
-    const words = normalize(search.value.trim()).split(/\s+/).filter(Boolean);
+    const words = searchWords(search.value, lang);
     const [from, to] = grade.value ? grade.value.split('-').map(Number) : [];
     let shown = 0;
     for (const card of cards) {
@@ -35,7 +32,7 @@ export function initCatalog(root: HTMLElement): () => void {
       const match =
         (subject === 'all' || d.subject === subject) &&
         (from === undefined || (Number(d.gradeFrom) <= (to ?? from) && from <= Number(d.gradeTo))) &&
-        words.every((w) => normalize(d.search ?? '').includes(w));
+        matchesWords(texts.get(card) ?? '', words);
       card.hidden = !match;
       if (match) shown++;
     }
