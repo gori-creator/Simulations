@@ -35,6 +35,7 @@ const lang = Astro.params.lang as Lang;
 <script>
   import type { Lang } from '../../i18n/config';
   import { initCarousel } from '../../lib/home/carousel';
+  import { initLandscape } from '../../lib/home/landscape';
   import { initCatalog } from '../../lib/home/catalog';
   import { initEnergyStage } from '../../lib/home/energy-stage';
   import { bindMotionToggle } from '../../lib/home/motion';
@@ -75,6 +76,7 @@ const lang = Astro.params.lang as Lang;
     heroObserver.observe(hero);
     teardown.push(() => heroObserver.disconnect());
     teardown.push(initEnergyStage({ root: q('[data-home-experiment]'), lang, journey }));
+    teardown.push(initLandscape(hero, q('[data-hero-land]')));
     teardown.push(initCarousel(q('[data-home-carousel]')));
     teardown.push(initCatalog(q('[data-home-catalog]')));
 
