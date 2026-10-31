@@ -2158,7 +2158,7 @@
 /* Zahlenband: große Zahl, Beschriftung darunter */
 .home-steps__stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px;
   margin: 40px 0 0;
   padding-top: 32px;
@@ -2209,9 +2209,18 @@
     gap: 12px;
   }
 
+  /* Schmal: oben die zwei Simulationszahlen, darunter die drei Nullen in einer Zeile */
   .home-steps__stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 24px 16px;
+  }
+
+  .home-steps__stats > div:nth-child(-n + 2) {
+    grid-column: span 3;
+  }
+
+  .home-steps__stats > div:nth-child(n + 3) {
+    grid-column: span 2;
   }
 }
 

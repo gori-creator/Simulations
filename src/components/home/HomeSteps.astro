@@ -1,13 +1,12 @@
 ---
 /**
  * Startseite: Abschnitt zwischen Achterbahn und Katalog im mittleren Blau.
- * „Im Unterricht in drei Schritten“ (öffnen – einstellen – teilen) und darunter
- * ein Zahlenband. Die Zahlen kommen aus dem Lehrplan, nicht von Hand.
+ * Drei Einsatzwege (eigenes Gerät – Beamer – Tablets der Klasse) und darunter
+ * ein Zahlenband. Die Simulationszahlen kommen aus dem Lehrplan, nicht von Hand.
  */
-import { readySimulations, SUBJECTS } from '../../curriculum';
+import { readySimulations } from '../../curriculum';
 import type { Lang } from '../../i18n/config';
 import { t } from '../../i18n/utils';
-import { regionsOf } from '../../lib/region';
 import { href } from '../../lib/routes';
 import Icon from '../Icon.astro';
 
@@ -18,15 +17,18 @@ const { lang } = Astro.props;
 
 const steps = [
   { icon: 'devices', n: 1 },
-  { icon: 'function', n: 2 },
-  { icon: 'share', n: 3 },
+  { icon: 'fullscreen', n: 2 },
+  { icon: 'qr', n: 3 },
 ] as const;
 
+const ready = readySimulations();
+const count = (subject: string) => String(ready.filter((s) => s.subject === subject).length);
 const stats = [
-  { value: String(readySimulations().length), label: t(lang, 'home.statSims') },
-  { value: String(SUBJECTS.filter((s) => s.status === 'active').length), label: t(lang, 'home.statSubjects') },
-  { value: String(regionsOf(lang).length), label: t(lang, 'home.statStates') },
-  { value: '0', label: t(lang, 'home.statZero') },
+  { value: count('mathematik'), label: t(lang, 'home.statMath') },
+  { value: count('physik'), label: t(lang, 'home.statPhysics') },
+  { value: '0', label: t(lang, 'home.statSignup') },
+  { value: '0', label: t(lang, 'home.statTracking') },
+  { value: '0', label: t(lang, 'home.statAds') },
 ];
 ---
 
