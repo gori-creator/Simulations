@@ -38,15 +38,13 @@ Auf Ihrem Gerät werden – ausschließlich lokal und ohne Übertragung an uns �
 - ein noch nicht abgeschickter **Entwurf im Kontaktformular** (ebenfalls im „Local Storage“; er wird mit „Formular leeren“ gelöscht),
 - eine **Kopie der Seiten** (über einen „Service Worker“), damit die Simulationen auch offline funktionieren.
 
-Sie können diese Daten jederzeit über die Einstellungen Ihres Browsers löschen („Websitedaten löschen“).
+Diese Speicherung ist für die von Ihnen gewünschten Funktionen unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG); eine Einwilligung ist dafür nicht nötig. Sie können diese Daten jederzeit über die Einstellungen Ihres Browsers löschen („Websitedaten löschen“).
 
 ## Kontaktformular
 
-Das Kontaktformular überträgt keine Daten an uns oder an Dritte. Es setzt Ihre Angaben zu einer Nachricht zusammen und öffnet damit Ihr eigenes E-Mail-Programm. Erst wenn Sie die E-Mail dort abschicken, erhalten wir sie (das Postfach liegt bei STRATO), mit den Angaben, die Sie eingetragen haben (Name und E-Mail-Adresse sind freiwillig). Technische Angaben (Browser, Bildschirmgröße) werden nur angehängt, wenn Sie das ankreuzen.
+Das Kontaktformular überträgt keine Daten an uns oder an Dritte. Es setzt Ihre Angaben zu einer Nachricht zusammen und öffnet damit Ihr eigenes E-Mail-Programm. Erst wenn Sie die E-Mail dort abschicken, erhalten wir sie (das Postfach liegt bei STRATO), mit den Angaben, die Sie eingetragen haben. Alle Angaben außer der Nachricht selbst sind freiwillig; ohne Absenderadresse können wir allerdings nicht antworten. Technische Angaben (Browser, Bildschirmgröße) werden nur angehängt, wenn Sie das ankreuzen.
 
 Wir verwenden Ihre Nachricht nur, um Ihr Anliegen zu bearbeiten und Ihnen gegebenenfalls zu antworten. **Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen und der Verbesserung der Website). Die E-Mail wird gelöscht, sobald sie erledigt ist und keine Aufbewahrungspflichten entgegenstehen.
-
-Wahlweise können Sie Fehler, Ideen und fachliche Hinweise auch öffentlich auf **GitHub** melden. Dafür brauchen Sie ein GitHub-Konto, und es gilt die Datenschutzerklärung von GitHub; Name und E-Mail-Adresse aus dem Formular werden dabei nicht übernommen.
 
 ## Einstellungen in Links
 
@@ -54,4 +52,20 @@ Die Einstellungen einer Simulation (z. B. `?m=2&b=1`) stehen in der Adresse der 
 
 ## Ihre Rechte
 
-Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.
+Sie haben gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten:
+
+- Recht auf **Auskunft** (Art. 15 DSGVO),
+- Recht auf **Berichtigung** (Art. 16 DSGVO),
+- Recht auf **Löschung** (Art. 17 DSGVO),
+- Recht auf **Einschränkung der Verarbeitung** (Art. 18 DSGVO),
+- Recht auf **Datenübertragbarkeit** (Art. 20 DSGVO).
+
+Eine formlose Nachricht an kontakt@scitura.de genügt.
+
+**Widerspruchsrecht (Art. 21 DSGVO):** Soweit wir Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO verarbeiten, können Sie dieser Verarbeitung aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen. Wir verarbeiten die Daten dann nicht mehr, es sei denn, wir können zwingende schutzwürdige Gründe nachweisen.
+
+**Beschwerderecht:** Sie können sich bei einer Datenschutz-Aufsichtsbehörde beschweren. Für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach, [www.lda.bayern.de](https://www.lda.bayern.de).
+
+Eine automatisierte Entscheidungsfindung einschließlich Profiling findet nicht statt.
+
+Stand: Oktober 2026

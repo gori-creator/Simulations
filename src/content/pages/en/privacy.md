@@ -32,12 +32,34 @@ For more information, see STRATO's privacy policy: [strato.de/datenschutz](https
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
 
 ## Contact form
 
-The contact form does not transmit any data to us or to third parties. It puts your entries together into a message and opens your own email program. We only receive it once you send the email from there (the mailbox is hosted at STRATO), with the details you entered (name and email address are optional). Technical details (browser, screen size) are only attached if you tick the box.
+The contact form does not transmit any data to us or to third parties. It puts your entries together into a message and opens your own email program. We only receive it once you send the email from there (the mailbox is hosted at STRATO), with the details you entered. Everything except the message itself is optional; without a sender address, however, we cannot reply. Technical details (browser, screen size) are only attached if you tick the box.
 
 We use your message only to handle your request and, if wished, to reply. The **legal basis** is Art. 6(1)(f) GDPR (legitimate interest in answering requests and improving the website). The email is deleted once it has been dealt with, unless retention obligations apply.
 
-Optionally you can report bugs, ideas and subject-matter notes publicly on **GitHub**. This requires a GitHub account and GitHub's privacy statement applies; name and email address from the form are not included.
+## Settings in links
+
+The settings of a simulation (e.g. `?m=2&b=1`) are part of the page address. They contain no personal data.
+
+## Your rights
+
+You have the following rights regarding your personal data:
+
+- right of **access** (Art. 15 GDPR),
+- right to **rectification** (Art. 16 GDPR),
+- right to **erasure** (Art. 17 GDPR),
+- right to **restriction of processing** (Art. 18 GDPR),
+- right to **data portability** (Art. 20 GDPR).
+
+An informal message to kontakt@scitura.de is sufficient.
+
+**Right to object (Art. 21 GDPR):** Where we process data on the basis of Art. 6(1)(f) GDPR, you may object to this processing at any time on grounds relating to your particular situation. We will then no longer process the data unless we can demonstrate compelling legitimate grounds.
+
+**Right to lodge a complaint:** You may lodge a complaint with a data protection supervisory authority. The authority responsible for us is the Bavarian State Office for Data Protection Supervision (BayLDA), Promenade 18, 91522 Ansbach, Germany, [www.lda.bayern.de](https://www.lda.bayern.de).
+
+No automated decision-making, including profiling, takes place.
+
+Last updated: October 2026
