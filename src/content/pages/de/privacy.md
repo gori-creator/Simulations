@@ -2,11 +2,10 @@
 title: Datenschutzerklärung
 ---
 
-<p class="note note--warning"><strong>Vorlage:</strong> Diese Datenschutzerklärung beschreibt das technische Verhalten der Website. Sie muss vor der Veröffentlichung um die Angaben zur verantwortlichen Stelle ergänzt und rechtlich geprüft werden.</p>
-
 ## Verantwortliche Stelle
 
-[Name und Anschrift der verantwortlichen Person bzw. Organisation, E-Mail-Adresse]
+Louis Bugert, Erwin-Rommel-Straße 49, 91058 Erlangen\
+E-Mail: kontakt@scitura.de
 
 ## Grundsatz: so wenige Daten wie möglich
 

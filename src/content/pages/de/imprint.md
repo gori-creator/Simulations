@@ -2,13 +2,11 @@
 title: Impressum
 ---
 
-<p class="note note--warning"><strong>Vorlage:</strong> Diese Seite muss vor der Veröffentlichung mit den echten Angaben der verantwortlichen Person bzw. Organisation ausgefüllt und rechtlich geprüft werden.</p>
-
 ## Angaben gemäß § 5 DDG
 
-[Vorname Nachname / Name der Organisation]
-[Straße Hausnummer]
-[PLZ Ort]
+Louis Bugert\
+Erwin-Rommel-Straße 49\
+91058 Erlangen
 
 ## Kontakt
 
@@ -16,7 +14,7 @@ E-Mail: kontakt@scitura.de
 
 ## Verantwortlich für den Inhalt
 
-[Vorname Nachname, Anschrift wie oben]
+Louis Bugert, Anschrift wie oben
 
 ## Haftung für Inhalte und Links
 
