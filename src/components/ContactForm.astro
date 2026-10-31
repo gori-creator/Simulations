@@ -84,7 +84,7 @@ const TYPE_ICONS: Record<(typeof CONTACT_TYPES)[number], string> = {
   school: 'M3 10l9-6 9 6 M5 9v11h14V9 M10 20v-5h4v5 M3 20h18',
   other: 'M6 12h.01 M12 12h.01 M18 12h.01',
 };
-const config = { lang, to: SITE.contactEmail, repo: SITE.repoUrl, publicTypes: PUBLIC_TYPES, labels, strings, max: MESSAGE_MAX };
+const config = { lang, to: SITE.contactEmail, repo: SITE.publicIssues ? SITE.repoUrl : '', publicTypes: SITE.publicIssues ? PUBLIC_TYPES : [], labels, strings, max: MESSAGE_MAX };
 const privacyHref = href(lang, { kind: 'page', page: 'privacy' });
 const [privacyBefore, privacyAfter] = T('contact.privacy').split(T('contact.privacyLink'));
 ---
@@ -253,10 +253,10 @@ const [privacyBefore, privacyAfter] = T('contact.privacy').split(T('contact.priv
           {T('contact.send')}
         </button>
         <button type="button" class="btn btn--lg" data-copy>{T('contact.copy')}</button>
-        <a class="btn btn--lg btn--ghost" data-github href={SITE.repoUrl} target="_blank" rel="noopener" hidden title={T('contact.githubHint')}>{T('contact.github')}</a>
+        {SITE.publicIssues && <a class="btn btn--lg btn--ghost" data-github href={SITE.repoUrl} target="_blank" rel="noopener" hidden title={T('contact.githubHint')}>{T('contact.github')}</a>}
         <button type="button" class="btn btn--ghost contact-actions__reset" data-reset>{T('contact.reset')}</button>
       </div>
-      <p class="contact-field__hint" data-github-hint hidden>{T('contact.githubHint')}</p>
+      {SITE.publicIssues && <p class="contact-field__hint" data-github-hint hidden>{T('contact.githubHint')}</p>}
       <p class="contact-draft" data-draft-state aria-live="polite"></p>
     </fieldset>
   </form>
@@ -316,8 +316,9 @@ const [privacyBefore, privacyAfter] = T('contact.privacy').split(T('contact.priv
     const field = <T extends HTMLElement>(name: string) => form.elements.namedItem(name) as T | null;
     const status = $<HTMLElement>('[data-contact-status]')!;
     const errorBox = $<HTMLElement>('[data-contact-errors]')!;
-    const github = $<HTMLAnchorElement>('[data-github]')!;
-    const githubHint = $<HTMLElement>('[data-github-hint]')!;
+    // Nur vorhanden, wenn SITE.publicIssues an ist
+    const github = $<HTMLAnchorElement>('[data-github]');
+    const githubHint = $<HTMLElement>('[data-github-hint]');
     const draftState = $<HTMLElement>('[data-draft-state]')!;
     const techDetails = $<HTMLDetailsElement>('[data-tech-details]')!;
     const techPre = $<HTMLElement>('[data-tech-info]')!;
@@ -425,8 +426,8 @@ const [privacyBefore, privacyAfter] = T('contact.privacy').split(T('contact.priv
       if (d.tech) techPre.textContent = techInfo();
       // GitHub nur für öffentliche Anliegen
       const isPublic = cfg.publicTypes.includes(d.type);
-      github.hidden = githubHint.hidden = !isPublic;
-      if (isPublic) {
+      if (github && githubHint) github.hidden = githubHint.hidden = !isPublic;
+      if (github && isPublic) {
         const m = message(d, true);
         github.href = githubIssueUrl(cfg.repo, m.subject, m.body);
       }

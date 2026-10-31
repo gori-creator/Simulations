@@ -14,7 +14,6 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 - **Fachlich sauber und didaktisch durchdacht** – mit Erklärungen, Aufgaben und Ideen für den Unterricht.
 - **Für alle Geräte** – vom Smartphone bis zum interaktiven Whiteboard.
 - **Zweisprachig** – zuerst Deutsch, nach und nach auch Englisch.
-- **Offen** – der Quellcode ist öffentlich, Beiträge sind willkommen.
 
 ## Fahrplan
 
@@ -31,6 +30,12 @@ Die Seite ist eine statische Website, die mit [Astro](https://astro.build) erzeu
 
 Die Fotos in den Simulationen (Gegenstände, Hintergründe, Messgeräte) sind mit KI erzeugt. Sie zeigen keine echten Personen und keine Marken. Alles Übrige – Diagramme, Pfeile, Beschriftungen und die Vorschaubilder – ist im Projekt selbst gezeichnet. Fehlt ein Foto, zeichnet die Simulation eine eigene Grafik.
 
-## Mitmachen
+## Rückmeldungen
 
-Der Quellcode liegt auf GitHub. Dort finden Sie auch eine Anleitung, wie neue Simulationen entstehen. Rückmeldungen, Fehlerberichte und Ideen sind jederzeit willkommen.
+Rückmeldungen, Fehlerberichte und Ideen sind jederzeit willkommen – am einfachsten über das [Kontaktformular](../kontakt/).
+
+## Rechte
+
+Simulationen, Texte, Aufgaben und Grafiken sind urheberrechtlich geschützt; alle Rechte vorbehalten. Im Unterricht und zum Lernen dürfen Sie die Website selbstverständlich frei nutzen und Links teilen. Für andere Verwendungen fragen Sie bitte über das Kontaktformular an.
+
+Verwendete fremde Software: [KaTeX](https://katex.org) (Formelsatz), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (QR-Codes) und [Astro](https://astro.build) (Erstellen der Seite), jeweils unter der MIT-Lizenz. Die Lizenztexte stehen in der Datei [lizenzen.txt](../../lizenzen.txt).

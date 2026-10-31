@@ -2,7 +2,12 @@
 title: Privacy policy
 ---
 
-<p class="note note--warning"><strong>Template:</strong> this text describes the technical behaviour of the website and must be completed with the responsible party and checked before publishing. The legally binding version is the <a href="../../de/datenschutz/">German privacy policy</a>.</p>
+<p class="note">The legally binding version is the <a href="../../de/datenschutz/">German privacy policy</a>.</p>
+
+## Controller
+
+Louis Bugert, Erwin-Rommel-Straße 49, 91058 Erlangen, Germany\
+Email: kontakt@scitura.de
 
 ## As little data as possible
 

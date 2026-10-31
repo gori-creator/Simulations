@@ -38,12 +38,11 @@ const subjects = SUBJECTS.filter((s) => s.status === 'active');
         <li><a href={href(lang, { kind: 'page', page: 'about' })}>{t(lang, 'nav.about')}</a></li>
         <li><a href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'nav.teachers')}</a></li>
         <li><a href={href(lang, { kind: 'page', page: 'contact' })}>{t(lang, 'nav.contact')}</a></li>
-        <li><a href={SITE.repoUrl} rel="noopener">{t(lang, 'footer.source')}</a></li>
       </ul>
     </nav>
   </div>
   <div class="container site-footer__legal">
-    <span>© {year} {SITE.name[lang]}</span>
+    <span>© {year} {SITE.name[lang]} · {t(lang, 'footer.rights')}</span>
     <a href={href(lang, { kind: 'page', page: 'imprint' })}>{t(lang, 'footer.imprint')}</a>
     <a href={href(lang, { kind: 'page', page: 'privacy' })}>{t(lang, 'footer.privacy')}</a>
   </div>

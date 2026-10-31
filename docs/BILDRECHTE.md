@@ -51,7 +51,7 @@ Ich habe alle 218 Bilder angesehen (198 eingebaute und 20 im Eingang) und dabei 
 - **KI-Bilder und Urheberrecht:** Nach deutschem Recht schützt das Urheberrecht nur „persönliche geistige Schöpfungen“ von Menschen (§ 2 Abs. 2 UrhG). Bilder, die ein Generator aus einem kurzen Text erzeugt, sind deshalb nach überwiegender Ansicht **nicht urheberrechtlich geschützt**.
   - Für das Projekt heißt das: Wir dürfen sie nutzen, ohne jemanden um Erlaubnis zu fragen.
   - Allerdings hat auch niemand ein ausschließliches Recht an ihnen.
-  - Eine Lizenz wie CC BY wirkt für diese Bilder daher nur eingeschränkt (siehe Aufgabe „Lizenz“).
+  - Eine Lizenz wie CC BY wirkt für diese Bilder daher nur eingeschränkt. Entschieden: keine offene Lizenz, alle Rechte vorbehalten (`LICENSE`).
 - **Verwendeter Generator:** Die Bilder hat die Projektleitung mit **OpenAI Codex** erzeugt (Bildgenerierung von OpenAI). Angabe der Projektleitung vom 26.10.2026.
 - **Nutzungsbedingungen von OpenAI** ([Europe Terms of Use](https://openai.com/policies/eu-terms-of-use/), Stand der Prüfung 26.10.2026):
   - Soweit das Gesetz es zulässt, behält der Nutzer die Rechte an seinen Eingaben, und die Ergebnisse („Output“) gehören ihm. OpenAI überträgt dafür seine etwaigen Rechte an den Ergebnissen.
@@ -84,5 +84,5 @@ Die Seite selbst lädt **keine** Schriften, Skripte oder Bilder von fremden Serv
 
 - [x] **Generator eintragen:** OpenAI Codex; Nutzungsbedingungen oben zusammengefasst.
 - [x] **Hinweis „mit KI erzeugt“** auf der Seite „Über das Projekt“: ja, Abschnitt „Bilder“ (DE und EN).
-- [ ] **Lizenzhinweise** für KaTeX und qrcode-generator auf der Seite nennen, z. B. auf „Über das Projekt“. Das hängt mit der Entscheidung zur Lizenz zusammen (`docs/AUFGABEN.md`).
+- [x] **Lizenzhinweise** für KaTeX und qrcode-generator: Abschnitt „Rechte“ auf „Über das Projekt“, Lizenztexte in `public/lizenzen.txt`.
 - [ ] Optional: `ziegenproblem/auto.webp` als ganz allgemeines Auto neu erzeugen.
