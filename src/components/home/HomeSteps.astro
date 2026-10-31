@@ -1,0 +1,72 @@
+---
+/**
+ * Startseite: Abschnitt zwischen Achterbahn und Katalog im mittleren Blau.
+ * „Im Unterricht in drei Schritten“ (öffnen – einstellen – teilen) und darunter
+ * ein Zahlenband. Die Zahlen kommen aus dem Lehrplan, nicht von Hand.
+ */
+import { readySimulations, SUBJECTS } from '../../curriculum';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import { regionsOf } from '../../lib/region';
+import { href } from '../../lib/routes';
+import Icon from '../Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const steps = [
+  { icon: 'devices', n: 1 },
+  { icon: 'function', n: 2 },
+  { icon: 'share', n: 3 },
+] as const;
+
+const stats = [
+  { value: String(readySimulations().length), label: t(lang, 'home.statSims') },
+  { value: String(SUBJECTS.filter((s) => s.status === 'active').length), label: t(lang, 'home.statSubjects') },
+  { value: String(regionsOf(lang).length), label: t(lang, 'home.statStates') },
+  { value: '0', label: t(lang, 'home.statZero') },
+];
+---
+
+<section class="home-steps" aria-labelledby="steps-title">
+  <div class="home-steps__head">
+    <p class="home-steps__eyebrow">{t(lang, 'home.stepsEyebrow')}</p>
+    <h2 id="steps-title">{t(lang, 'home.stepsTitle')}</h2>
+  </div>
+
+  <ol class="home-steps__list">
+    {
+      steps.map(({ icon, n }) => (
+        <li class="home-steps__item">
+          <span class="home-steps__icon" aria-hidden="true">
+            <Icon name={icon} />
+          </span>
+          <h3>
+            <span class="home-steps__num">{n}</span>
+            {t(lang, `home.step${n}Title`)}
+          </h3>
+          <p>{t(lang, `home.step${n}Text`)}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <dl class="home-steps__stats">
+    {
+      stats.map(({ value, label }) => (
+        <div>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <p class="home-steps__more">
+    <a href={href(lang, { kind: 'page', page: 'teachers' })}>
+      {t(lang, 'home.stepsMore')} <span aria-hidden="true">→</span>
+    </a>
+  </p>
+</section>

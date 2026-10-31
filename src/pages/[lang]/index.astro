@@ -7,6 +7,7 @@
 import HomeCatalog from '../../components/home/HomeCatalog.astro';
 import HomeExperiment from '../../components/home/HomeExperiment.astro';
 import HomeHero from '../../components/home/HomeHero.astro';
+import HomeSteps from '../../components/home/HomeSteps.astro';
 import { LANGS, type Lang } from '../../i18n/config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 // Nach dem Layout (global.css) laden, damit die Startseiten-Regeln Vorrang haben.
@@ -24,6 +25,7 @@ const lang = Astro.params.lang as Lang;
   <div class="scitura-home" data-scitura-home>
     <HomeHero lang={lang} />
     <HomeExperiment lang={lang} />
+    <HomeSteps lang={lang} />
     <HomeCatalog lang={lang} />
   </div>
 </BaseLayout>
