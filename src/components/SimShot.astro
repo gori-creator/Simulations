@@ -14,10 +14,12 @@ interface Props {
   id: string;
   /** Kleine Fassung (z. B. Liste „Weitere Simulationen“): 192 × 108 statt Kartengröße. */
   small?: boolean;
+  /** Mittlere Fassung (Karussell der Startseite): 480 × 270. */
+  medium?: boolean;
 }
 
-const { id, small = false } = Astro.props;
-const [w, h] = small ? [192, 108] : [800, 450];
+const { id, small = false, medium = false } = Astro.props;
+const [w, h] = small ? [192, 108] : medium ? [480, 270] : [800, 450];
 // Generiertes Vorschaubild (docs/VORSCHAUBILDER.md) hat Vorrang: ein Bild für hell und dunkel
 const art = previewFile(id);
 const artImage = art

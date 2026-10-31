@@ -2366,3 +2366,340 @@
     transition: none;
   }
 }
+
+/* ---------- Karussell „Entdecken“ (HomeCarousel.astro, lib/home/carousel.ts) ----------
+   Dunkle Bühne zwischen Achterbahn und Unterrichts-Abschnitt: beginnt und endet
+   im Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
+   Karten leuchten. Grundform: flache Wisch-Reihe; mit Skript auf breiten
+   Bildschirmen (.is-3d) ein gebogenes Rad. */
+.home-carousel {
+  --car-glow: #4f7dff;
+  --car-ink: #fff;
+  --car-soft: #c9d6ff;
+  --car-line: #ffffff24;
+  --card-w: 260px;
+  position: relative;
+  z-index: 6;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 24px var(--page-gutter) 64px;
+  background:
+    radial-gradient(70% 40% at 50% 50%, #3a63e040 0%, transparent 70%),
+    linear-gradient(180deg, var(--sc-navy) 0%, #0b1840 30%, #081230 60%, var(--sc-navy) 100%);
+  color: var(--car-ink);
+}
+
+.home-carousel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px 48px;
+  margin-bottom: 28px;
+}
+
+.home-carousel__eyebrow {
+  margin: 0 0 12px;
+  color: var(--car-soft);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-carousel h2 {
+  margin: 0;
+  color: var(--car-ink);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.home-carousel__hint {
+  max-width: 380px;
+  margin: 0;
+  color: var(--car-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* Hinweis passend zur Form: Rad (mit Skript, breit) oder Wisch-Reihe */
+.home-carousel__hint--wheel,
+.home-carousel.is-3d .home-carousel__hint--swipe {
+  display: none;
+}
+
+.home-carousel.is-3d .home-carousel__hint--wheel {
+  display: block;
+}
+
+/* Grundform: flache, wischbare Reihe */
+.home-carousel__ring {
+  display: flex;
+  gap: 16px;
+  margin: 0 calc(-1 * var(--page-gutter));
+  padding: 8px var(--page-gutter) 20px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--page-gutter);
+  scrollbar-width: none;
+}
+
+.home-carousel__item {
+  flex: none;
+  width: var(--card-w);
+  scroll-snap-align: start;
+}
+
+.home-carousel__card {
+  display: block;
+  overflow: hidden;
+  border: 1px solid #9db8ff40;
+  border-radius: 16px;
+  background: #0d1c4d;
+  color: var(--car-ink);
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 0 #ffffff1f,
+    0 18px 40px -22px #000c;
+}
+
+.home-carousel__card:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.home-carousel__img {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--plot-bg, #eef3ff);
+}
+
+.home-carousel__img .sim-shot,
+.home-carousel__img svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-carousel__label {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px 14px;
+}
+
+.home-carousel__label-title {
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.home-carousel__label-meta {
+  color: var(--car-soft);
+  font-size: 12px;
+}
+
+/* Titel unten und Steuerung gibt es nur im Rad */
+.home-carousel__bottom {
+  display: none;
+}
+
+/* ---------- Rad (mit Skript, breite Bildschirme) ---------- */
+.home-carousel.is-3d .home-carousel__stage {
+  position: relative;
+  height: 310px;
+  margin: 0 calc(-1 * var(--page-gutter));
+  perspective: 950px;
+  perspective-origin: 50% 30%;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  /* Ränder weich ausblenden */
+  mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+
+.home-carousel.is-3d .home-carousel__stage.is-dragging {
+  cursor: grabbing;
+}
+
+/* Lichtpfütze unter dem Rad */
+.home-carousel.is-3d .home-carousel__stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 15% -10px;
+  z-index: -1;
+  height: 120px;
+  background: radial-gradient(50% 50% at 50% 50%, #4f7dff55 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.home-carousel.is-3d .home-carousel__ring {
+  position: absolute;
+  inset: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  transform: translateZ(var(--r, 1000px));
+  transform-style: preserve-3d;
+  /* Der Ring liegt im Raum vor den Karten; Klicks sollen die Karten erreichen */
+  pointer-events: none;
+}
+
+.home-carousel.is-3d .home-carousel__card {
+  pointer-events: auto;
+}
+
+.home-carousel.is-3d .home-carousel__item {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  width: var(--card-w);
+  margin-left: calc(var(--card-w) / -2);
+  transform: rotateY(calc((var(--i) - var(--pos, 0)) * var(--step, 19deg) * -1)) translateZ(calc(var(--r, 1000px) * -1));
+  backface-visibility: hidden;
+}
+
+.home-carousel.is-3d .home-carousel__item.is-far {
+  display: none;
+}
+
+.home-carousel.is-3d .home-carousel__label {
+  display: none;
+}
+
+.home-carousel.is-3d .home-carousel__card {
+  border-color: #9db8ff33;
+  filter: brightness(0.62) saturate(0.85);
+  transition:
+    filter 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+  /* Spiegelung auf dem Boden (Chrome, Edge, Safari) */
+  -webkit-box-reflect: below 14px linear-gradient(transparent 62%, #ffffff2e);
+}
+
+.home-carousel.is-3d .home-carousel__item.is-current .home-carousel__card {
+  border-color: #b9ccff;
+  filter: none;
+  box-shadow:
+    inset 0 0 0 1px #dfe7ff,
+    0 0 28px var(--car-glow),
+    0 0 90px #3a63e080;
+}
+
+.home-carousel.is-3d .home-carousel__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px 40px;
+  margin-top: 8px;
+}
+
+.home-carousel__meta {
+  margin: 0 0 6px;
+  color: var(--car-soft);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.home-carousel__title {
+  margin: 0;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.home-carousel__title a {
+  color: var(--car-ink);
+  text-decoration: none;
+}
+
+.home-carousel__title a::after {
+  content: ' →';
+  color: var(--car-soft);
+}
+
+.home-carousel__title a:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.home-carousel__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.home-carousel__btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--car-line);
+  border-radius: 999px;
+  background: #ffffff10;
+  color: var(--car-ink);
+  font: inherit;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.home-carousel__btn:hover:not(:disabled) {
+  background: #ffffff24;
+}
+
+.home-carousel__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.home-carousel__btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.home-carousel__progress {
+  position: relative;
+  width: 160px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #ffffff26;
+}
+
+.home-carousel__progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  background: #fff;
+  transition: width 0.2s ease;
+}
+
+.home-carousel__count {
+  min-width: 64px;
+  color: var(--car-soft);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .home-carousel {
+    --card-w: 230px;
+    padding: 16px 16px 48px;
+  }
+
+  .home-carousel__ring {
+    margin: 0 -16px;
+    padding: 8px 16px 20px;
+    scroll-padding-inline: 16px;
+  }
+}
