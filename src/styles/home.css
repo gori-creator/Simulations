@@ -2063,7 +2063,7 @@
   z-index: 6;
   isolation: isolate;
   overflow: hidden;
-  padding: 40px var(--page-gutter) 72px;
+  padding: 40px var(--page-gutter) 136px;
   background: linear-gradient(180deg, var(--steps-from) 0%, var(--steps-mid) 38%, var(--steps-to) 100%);
   color: var(--steps-ink);
 }
@@ -2274,7 +2274,7 @@
 }
 
 /* Der Katalog schiebt sich als helles Blatt über das Blau */
-.home-carousel + .home-catalog {
+.home-steps + .home-catalog {
   margin-top: -64px;
   border-radius: 36px 36px 0 0;
   box-shadow: 0 -24px 48px -28px #040d3380;
@@ -2315,7 +2315,7 @@
 
 @media (max-width: 560px) {
   .home-steps {
-    padding: 28px 16px 56px;
+    padding: 28px 16px 104px;
   }
 
   .home-steps__head {
@@ -2355,7 +2355,7 @@
     padding: 0 14px;
   }
 
-  .home-carousel + .home-catalog {
+  .home-steps + .home-catalog {
     margin-top: -48px;
     border-radius: 26px 26px 0 0;
   }
@@ -2368,11 +2368,11 @@
 }
 
 /* ---------- Karussell „Entdecken“ (HomeCarousel.astro, lib/home/carousel.ts) ----------
-   Schließt an das Blau des Unterrichts-Abschnitts an und wird nach unten zur
-   dunklen Bühne, auf der die Karten leuchten. Grundform: flache Wisch-Reihe;
-   mit Skript auf breiten Bildschirmen (.is-3d) ein gebogenes Rad. */
+   Dunkle Bühne zwischen Achterbahn und Unterrichts-Abschnitt: beginnt und endet
+   im Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
+   Karten leuchten. Grundform: flache Wisch-Reihe; mit Skript auf breiten
+   Bildschirmen (.is-3d) ein gebogenes Rad. */
 .home-carousel {
-  --car-from: #2a50cc;
   --car-glow: #4f7dff;
   --car-ink: #fff;
   --car-soft: #c9d6ff;
@@ -2382,21 +2382,11 @@
   z-index: 6;
   isolation: isolate;
   overflow: hidden;
-  padding: 8px var(--page-gutter) 136px;
+  padding: 24px var(--page-gutter) 64px;
   background:
-    radial-gradient(70% 45% at 50% 58%, #3a63e04d 0%, transparent 70%),
-    linear-gradient(180deg, var(--car-from) 0%, #142a70 22%, #0b1840 48%, #081230 100%);
+    radial-gradient(70% 40% at 50% 50%, #3a63e040 0%, transparent 70%),
+    linear-gradient(180deg, var(--sc-navy) 0%, #0b1840 30%, #081230 60%, var(--sc-navy) 100%);
   color: var(--car-ink);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .home-carousel {
-    --car-from: #1d3a8f;
-  }
-}
-
-:root[data-theme='dark'] .home-carousel {
-  --car-from: #1d3a8f;
 }
 
 .home-carousel__head {
@@ -2704,7 +2694,7 @@
 @media (max-width: 560px) {
   .home-carousel {
     --card-w: 230px;
-    padding: 4px 16px 104px;
+    padding: 16px 16px 48px;
   }
 
   .home-carousel__ring {

@@ -1,8 +1,8 @@
 ---
 /**
  * Startseite: Karussell „Entdecken“ zwischen dem Unterrichts-Abschnitt und dem
- * Katalog. Alle fertigen Simulationen als Karten auf einem gebogenen Rad
- * (CSS-3D); Steuerung in src/lib/home/carousel.ts.
+ * Katalog. Ausgewählte Simulationen (src/lib/home/featured.ts) als Karten auf
+ * einem gebogenen Rad (CSS-3D); Steuerung in src/lib/home/carousel.ts.
  *
  * Grundform ohne Skript, auf schmalen Bildschirmen und bei reduzierter Bewegung:
  * eine flache, wischbare Reihe. Das Skript schaltet erst danach auf das Rad um
@@ -11,6 +11,7 @@
 import { getSubject, readySimulations } from '../../curriculum';
 import type { Lang } from '../../i18n/config';
 import { formatGrades, t } from '../../i18n/utils';
+import { CAROUSEL_IDS } from '../../lib/home/featured';
 import { href } from '../../lib/routes';
 import { hasShot } from '../../lib/sim-shots';
 import SimShot from '../SimShot.astro';
@@ -21,15 +22,17 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Fächer abwechselnd, damit beim Durchblättern Mathematik und Physik gemischt erscheinen
-const ready = readySimulations();
-const bySubject = [ready.filter((s) => s.subject === 'mathematik'), ready.filter((s) => s.subject !== 'mathematik')];
-const sims: typeof ready = [];
-for (let i = 0; sims.length < ready.length; i++) {
-  // Auf zwei Mathe-Simulationen kommt etwa eine aus Physik (Verhältnis 93 : 36)
-  const pick = i % 3 === 2 ? bySubject[1] : bySubject[0];
-  const next = pick?.shift() ?? bySubject[0]?.shift() ?? bySubject[1]?.shift();
-  if (next) sims.push(next);
+// Ausgewählte Simulationen mit ausdrucksstarkem Bild (lib/home/featured.ts), Fächer im
+// Wechsel, damit beim Durchblättern Mathematik und Physik gemischt erscheinen
+const chosen = new Set<string>(CAROUSEL_IDS);
+const picked = readySimulations().filter((s) => chosen.has(s.id));
+const bySubject = [picked.filter((s) => s.subject === 'mathematik'), picked.filter((s) => s.subject !== 'mathematik')];
+const sims: typeof picked = [];
+while (sims.length < picked.length) {
+  for (const list of bySubject) {
+    const next = list.shift();
+    if (next) sims.push(next);
+  }
 }
 const metaOf = (sim: (typeof sims)[number]) =>
   `${getSubject(sim.subject).title[lang]} · ${formatGrades(lang, sim.grades, sim.uni)}`;

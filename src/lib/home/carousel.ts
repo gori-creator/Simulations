@@ -38,8 +38,10 @@ export function initCarousel(root: HTMLElement): () => void {
     listeners.push([target, type, listener, options]);
   };
 
-  let pos = 0;
-  let target = 0;
+  // Start bei der dritten Karte, damit links und rechts Karten stehen
+  const START = Math.min(2, n - 1);
+  let pos = START;
+  let target = START;
   let current = -1;
   let frame = 0;
   let active = false;
