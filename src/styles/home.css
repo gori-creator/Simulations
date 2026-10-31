@@ -2710,44 +2710,44 @@
    Liegt hinter Skulptur und Text (z-index 1); steht still bei pausierter oder
    reduzierter Bewegung und wenn der Einstieg nicht zu sehen ist. */
 .scitura-home {
-  --sc-land-far: #d3def5;
-  --sc-land-near: #c2d0ef;
+  --sc-land-far: #c6d3f1;
+  --sc-land-near: #a9bce8;
   --sc-land-haze: #e2eaf9;
-  --sc-land-lake-top: #dae4f8;
-  --sc-land-lake-bottom: #ccd9f3;
-  --sc-land-shore: #ffffffa6;
-  --sc-land-cloud: #ffffffb3;
+  --sc-land-lake-top: #d3dff7;
+  --sc-land-lake-bottom: #bfcff0;
+  --sc-land-shore: #ffffffcc;
+  --sc-land-cloud: #ffffffd9;
   --sc-land-mote: #ffffff;
-  --sc-land-mote-glow: #7fa2ff88;
-  --sc-land-mirror: 0.34;
+  --sc-land-mote-glow: #6f95ffaa;
+  --sc-land-mirror: 0.5;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .scitura-home {
-    --sc-land-far: #182b57;
-    --sc-land-near: #0f1f47;
-    --sc-land-haze: #10214a;
-    --sc-land-lake-top: #10224a;
-    --sc-land-lake-bottom: #0c1a3d;
-    --sc-land-shore: #8fb0ff33;
-    --sc-land-cloud: #8fb0ff17;
-    --sc-land-mote: #d8e4ff;
-    --sc-land-mote-glow: #5b8cff88;
-    --sc-land-mirror: 0.42;
+    --sc-land-far: #1d3264;
+    --sc-land-near: #13244f;
+    --sc-land-haze: #13254f;
+    --sc-land-lake-top: #132852;
+    --sc-land-lake-bottom: #0d1c42;
+    --sc-land-shore: #8fb0ff4d;
+    --sc-land-cloud: #8fb0ff24;
+    --sc-land-mote: #e4ecff;
+    --sc-land-mote-glow: #5b8cffbb;
+    --sc-land-mirror: 0.55;
   }
 }
 
 :root[data-theme='dark'] .scitura-home {
-  --sc-land-far: #182b57;
-  --sc-land-near: #0f1f47;
-  --sc-land-haze: #10214a;
-  --sc-land-lake-top: #10224a;
-  --sc-land-lake-bottom: #0c1a3d;
-  --sc-land-shore: #8fb0ff33;
-  --sc-land-cloud: #8fb0ff17;
-  --sc-land-mote: #d8e4ff;
-  --sc-land-mote-glow: #5b8cff88;
-  --sc-land-mirror: 0.42;
+  --sc-land-far: #1d3264;
+  --sc-land-near: #13244f;
+  --sc-land-haze: #13254f;
+  --sc-land-lake-top: #132852;
+  --sc-land-lake-bottom: #0d1c42;
+  --sc-land-shore: #8fb0ff4d;
+  --sc-land-cloud: #8fb0ff24;
+  --sc-land-mote: #e4ecff;
+  --sc-land-mote-glow: #5b8cffbb;
+  --sc-land-mirror: 0.55;
 }
 
 .hero-land {
@@ -2777,7 +2777,7 @@
   left: 0;
   bottom: var(--lake-h);
   width: 100%;
-  height: 170px;
+  height: 200px;
 }
 
 .hero-land__far {
@@ -2786,17 +2786,17 @@
 
 /* Parallaxe (lib/home/landscape.ts): hinten wenig, vorn mehr Bewegung */
 .hero-land__ridges--far {
-  translate: calc(var(--land-x, 0) * -6px) calc(var(--land-s, 0) * 22px);
+  translate: calc(var(--land-x, 0) * -10px) calc(var(--land-s, 0) * 30px);
 }
 
 .hero-land__ridges--near {
-  translate: calc(var(--land-x, 0) * -16px) calc(var(--land-s, 0) * 8px);
+  translate: calc(var(--land-x, 0) * -26px) calc(var(--land-s, 0) * 10px);
 }
 
 .hero-land__clouds {
   position: absolute;
   inset: 0;
-  translate: calc(var(--land-x, 0) * -28px) calc(var(--land-s, 0) * 48px);
+  translate: calc(var(--land-x, 0) * -44px) calc(var(--land-s, 0) * 64px);
 }
 
 /* Nebelbänke ziehen in Gegenrichtung über den Horizont */
@@ -2809,7 +2809,7 @@
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--sc-land-cloud), transparent);
   filter: blur(8px);
-  opacity: 0.8;
+  opacity: 1;
   animation: mist-drift 46s ease-in-out infinite alternate;
 }
 
@@ -2818,7 +2818,7 @@
   left: 35%;
   width: 70%;
   height: 40px;
-  opacity: 0.6;
+  opacity: 0.85;
   animation-duration: 58s;
   animation-direction: alternate-reverse;
 }
@@ -2875,7 +2875,7 @@
 /* Lichtreflexe auf dem Wasser unter der Skulptur */
 .hero-land__glints span {
   position: absolute;
-  width: 22px;
+  width: 28px;
   height: 2px;
   border-radius: 2px;
   background: linear-gradient(90deg, transparent, var(--sc-land-mote), transparent);
@@ -2930,7 +2930,7 @@
     transform: translateX(-6px) scaleX(0.6);
   }
   45% {
-    opacity: 0.85;
+    opacity: 1;
     transform: translateX(4px) scaleX(1);
   }
 }
@@ -2941,7 +2941,7 @@
   position: absolute;
   inset: 0 -40px;
   background: repeating-linear-gradient(180deg, transparent 0 9px, var(--sc-land-shore) 9px 10px);
-  opacity: 0.26;
+  opacity: 0.4;
   mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
   animation: lake-shimmer 9s ease-in-out infinite alternate;
 }
@@ -3012,7 +3012,7 @@
   bottom: calc(var(--lake-h) - 10px);
   border-radius: 50%;
   background: var(--sc-land-mote);
-  box-shadow: 0 0 8px 2px var(--sc-land-mote-glow);
+  box-shadow: 0 0 12px 3px var(--sc-land-mote-glow);
   opacity: 0;
   animation:
     mote-rise 14s linear infinite,
@@ -3034,10 +3034,10 @@
     transform: translate(0, 0);
   }
   15% {
-    opacity: 0.7;
+    opacity: 1;
   }
   80% {
-    opacity: 0.45;
+    opacity: 0.7;
   }
   100% {
     opacity: 0;
@@ -3047,8 +3047,8 @@
 
 .hero-land__motes i:nth-child(1) {
   left: 61.3%;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   --mote-drift: -28px;
   --mote-rise: -234px;
   animation-duration: 15.9s, 3.9s;
@@ -3057,8 +3057,8 @@
 
 .hero-land__motes i:nth-child(2) {
   left: 90.8%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: -8px;
   --mote-rise: -299px;
   animation-duration: 15.2s, 3.2s;
@@ -3067,8 +3067,8 @@
 
 .hero-land__motes i:nth-child(3) {
   left: 39.0%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: -6px;
   --mote-rise: -189px;
   animation-duration: 10.8s, 4.8s;
@@ -3077,8 +3077,8 @@
 
 .hero-land__motes i:nth-child(4) {
   left: 83.8%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: -22px;
   --mote-rise: -259px;
   animation-duration: 13.1s, 4.1s;
@@ -3087,8 +3087,8 @@
 
 .hero-land__motes i:nth-child(5) {
   left: 15.7%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: 16px;
   --mote-rise: -314px;
   animation-duration: 10.0s, 4.0s;
@@ -3097,8 +3097,8 @@
 
 .hero-land__motes i:nth-child(6) {
   left: 19.3%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: 2px;
   --mote-rise: -268px;
   animation-duration: 11.3s, 5.3s;
@@ -3107,8 +3107,8 @@
 
 .hero-land__motes i:nth-child(7) {
   left: 22.8%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: -12px;
   --mote-rise: -218px;
   animation-duration: 17.5s, 5.5s;
@@ -3117,8 +3117,8 @@
 
 .hero-land__motes i:nth-child(8) {
   left: 19.3%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: 19px;
   --mote-rise: -254px;
   animation-duration: 11.2s, 5.2s;
@@ -3127,8 +3127,8 @@
 
 .hero-land__motes i:nth-child(9) {
   left: 58.8%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: 19px;
   --mote-rise: -237px;
   animation-duration: 15.7s, 3.7s;
@@ -3137,8 +3137,8 @@
 
 .hero-land__motes i:nth-child(10) {
   left: 33.1%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: -15px;
   --mote-rise: -310px;
   animation-duration: 13.8s, 4.8s;
@@ -3147,8 +3147,8 @@
 
 .hero-land__motes i:nth-child(11) {
   left: 91.3%;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   --mote-drift: 17px;
   --mote-rise: -219px;
   animation-duration: 12.9s, 3.9s;
@@ -3157,8 +3157,8 @@
 
 .hero-land__motes i:nth-child(12) {
   left: 57.2%;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   --mote-drift: 7px;
   --mote-rise: -313px;
   animation-duration: 10.1s, 4.1s;
@@ -3167,8 +3167,8 @@
 
 .hero-land__motes i:nth-child(13) {
   left: 14.9%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: -9px;
   --mote-rise: -217px;
   animation-duration: 12.0s, 3.0s;
@@ -3177,8 +3177,8 @@
 
 .hero-land__motes i:nth-child(14) {
   left: 52.3%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: 22px;
   --mote-rise: -166px;
   animation-duration: 16.2s, 4.2s;
@@ -3187,8 +3187,8 @@
 
 .hero-land__motes i:nth-child(15) {
   left: 91.0%;
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   --mote-drift: -8px;
   --mote-rise: -184px;
   animation-duration: 10.7s, 4.7s;
@@ -3197,8 +3197,8 @@
 
 .hero-land__motes i:nth-child(16) {
   left: 29.4%;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   --mote-drift: -12px;
   --mote-rise: -288px;
   animation-duration: 15.6s, 3.6s;
@@ -3230,7 +3230,7 @@
   }
 
   .hero-land__ridges {
-    height: 120px;
+    height: 140px;
   }
 
   .hero-land__clouds span {
