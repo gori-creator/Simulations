@@ -1,8 +1,9 @@
 ---
 /**
  * Startseite: Karussell „Entdecken“ zwischen dem Unterrichts-Abschnitt und dem
- * Katalog. Ausgewählte Simulationen (src/lib/home/featured.ts) als Karten auf
- * einem gebogenen Rad (CSS-3D); Steuerung in src/lib/home/carousel.ts.
+ * Katalog. Alle fertigen Simulationen als Karten auf einem gebogenen Rad (CSS-3D),
+ * die mit ausdrucksstarkem Bild (src/lib/home/featured.ts) zuerst; Steuerung in
+ * src/lib/home/carousel.ts.
  *
  * Grundform ohne Skript, auf schmalen Bildschirmen und bei reduzierter Bewegung:
  * eine flache, wischbare Reihe. Das Skript schaltet erst danach auf das Rad um
@@ -22,18 +23,24 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-// Ausgewählte Simulationen mit ausdrucksstarkem Bild (lib/home/featured.ts), Fächer im
-// Wechsel, damit beim Durchblättern Mathematik und Physik gemischt erscheinen
-const chosen = new Set<string>(CAROUSEL_IDS);
-const picked = readySimulations().filter((s) => chosen.has(s.id));
-const bySubject = [picked.filter((s) => s.subject === 'mathematik'), picked.filter((s) => s.subject !== 'mathematik')];
-const sims: typeof picked = [];
-while (sims.length < picked.length) {
-  for (const list of bySubject) {
-    const next = list.shift();
-    if (next) sims.push(next);
+// Zuerst die Simulationen mit ausdrucksstarkem Bild (lib/home/featured.ts), danach alle
+// übrigen. Innerhalb beider Gruppen Fächer im Wechsel, damit Mathematik und Physik gemischt
+// erscheinen.
+type Sim = ReturnType<typeof readySimulations>[number];
+const mixSubjects = (list: Sim[]): Sim[] => {
+  const bySubject = [list.filter((s) => s.subject === 'mathematik'), list.filter((s) => s.subject !== 'mathematik')];
+  const mixed: Sim[] = [];
+  while (mixed.length < list.length) {
+    for (const group of bySubject) {
+      const next = group.shift();
+      if (next) mixed.push(next);
+    }
   }
-}
+  return mixed;
+};
+const chosen = new Set<string>(CAROUSEL_IDS);
+const ready = readySimulations();
+const sims = [...mixSubjects(ready.filter((s) => chosen.has(s.id))), ...mixSubjects(ready.filter((s) => !chosen.has(s.id)))];
 const metaOf = (sim: (typeof sims)[number]) =>
   `${getSubject(sim.subject).title[lang]} · ${formatGrades(lang, sim.grades, sim.uni)}`;
 const first = sims[0]!;

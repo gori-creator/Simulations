@@ -1,8 +1,8 @@
 /**
- * Simulationen im Karussell „Entdecken“ der Startseite (HomeCarousel.astro):
- * nur solche mit ausdrucksstarkem Vorschaubild – Gegenstände, Szenen,
- * Experimente. Reine Koordinatensysteme, Graphen, Flächen und Körper bleiben
- * dem Katalog vorbehalten. tests/karussell.test.ts prüft, dass jede ID fertig ist.
+ * Karussell „Entdecken“ der Startseite (HomeCarousel.astro): Diese Simulationen
+ * mit ausdrucksstarkem Vorschaubild – Gegenstände, Szenen, Experimente – stehen
+ * vorn; alle übrigen (Koordinatensysteme, Graphen, Flächen, Körper) folgen danach.
+ * tests/karussell.test.ts prüft, dass jede ID fertig ist.
  */
 export const CAROUSEL_IDS = [
   // Mathematik
