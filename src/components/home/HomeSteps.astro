@@ -4,6 +4,7 @@
  * Drei Einsatzwege (eigenes Gerät – Beamer – Tablets der Klasse) und darunter
  * ein Zahlenband. Die Simulationszahlen kommen aus dem Lehrplan, nicht von Hand.
  */
+import { getCollection } from 'astro:content';
 import { readySimulations } from '../../curriculum';
 import { registry } from '../../simulations/registry';
 import type { Lang } from '../../i18n/config';
@@ -24,16 +25,20 @@ const steps = [
 
 const ready = readySimulations();
 const count = (subject: string) => String(ready.filter((s) => s.subject === subject).length);
-// Ladbare Beispiele aller fertigen Simulationen, abgerundet auf volle Hundert („900+“)
+// Beispiele (presets) aller fertigen Simulationen, abgerundet auf volle Hundert („900+“)
 const definitions = await Promise.all(ready.map((s) => registry[s.id]?.()));
 const presets = definitions.reduce((sum, def) => sum + (def?.presets?.length ?? 0), 0);
-const presetsShown = presets >= 100 ? `${Math.floor(presets / 100) * 100}+` : String(presets);
+// Aufgaben mit Lösung im deutschen Lernmaterial (je Aufgabe ein Kasten „Lösung anzeigen“)
+const readyIds = new Set(ready.map((s) => s.id));
+const texts = await getCollection('simulationTexts', (e) => e.id.startsWith('de/') && readyIds.has(e.id.slice(3)));
+const tasks = texts.reduce((sum, e) => sum + (e.body?.match(/<summary>\s*Lösung/g)?.length ?? 0), 0);
+const rounded = (n: number) => (n >= 100 ? `${Math.floor(n / 100) * 100}+` : String(n));
 const stats = [
   { value: count('mathematik'), label: t(lang, 'home.statMath') },
   { value: count('physik'), label: t(lang, 'home.statPhysics') },
-  { value: presetsShown, label: t(lang, 'home.statExamples') },
-  { value: '0', label: t(lang, 'home.statSignup') },
-  { value: '0', label: t(lang, 'home.statAds') },
+  { value: rounded(presets), label: t(lang, 'home.statExamples') },
+  { value: rounded(tasks), label: t(lang, 'home.statTasks') },
+  { value: '0', label: t(lang, 'home.statZero') },
 ];
 ---
 

@@ -2211,7 +2211,7 @@
     gap: 12px;
   }
 
-  /* Schmal: oben die zwei Simulationszahlen, darunter Beispiele und die zwei Nullen in einer Zeile */
+  /* Schmal: oben die zwei Simulationszahlen, darunter Beispiele, Aufgaben und die Null in einer Zeile */
   .home-steps__stats {
     grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 24px 16px;
