@@ -1,0 +1,84 @@
+---
+/**
+ * Startseite: Abschnitt zwischen Achterbahn und Katalog im mittleren Blau.
+ * Drei Einsatzwege (eigenes Gerät – Beamer – Tablets der Klasse) und darunter
+ * ein Zahlenband. Die Simulationszahlen kommen aus dem Lehrplan, nicht von Hand.
+ */
+import { getCollection } from 'astro:content';
+import { readySimulations } from '../../curriculum';
+import { registry } from '../../simulations/registry';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import { href } from '../../lib/routes';
+import Icon from '../Icon.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const steps = [
+  { icon: 'devices', n: 1 },
+  { icon: 'fullscreen', n: 2 },
+  { icon: 'qr', n: 3 },
+] as const;
+
+const ready = readySimulations();
+const count = (subject: string) => String(ready.filter((s) => s.subject === subject).length);
+// Beispiele (presets) aller fertigen Simulationen, abgerundet auf volle Hundert („900+“)
+const definitions = await Promise.all(ready.map((s) => registry[s.id]?.()));
+const presets = definitions.reduce((sum, def) => sum + (def?.presets?.length ?? 0), 0);
+// Aufgaben mit Lösung im deutschen Lernmaterial (je Aufgabe ein Kasten „Lösung anzeigen“)
+const readyIds = new Set(ready.map((s) => s.id));
+const texts = await getCollection('simulationTexts', (e) => e.id.startsWith('de/') && readyIds.has(e.id.slice(3)));
+const tasks = texts.reduce((sum, e) => sum + (e.body?.match(/<summary>\s*Lösung/g)?.length ?? 0), 0);
+const rounded = (n: number) => (n >= 100 ? `${Math.floor(n / 100) * 100}+` : String(n));
+const stats = [
+  { value: count('mathematik'), label: t(lang, 'home.statMath') },
+  { value: count('physik'), label: t(lang, 'home.statPhysics') },
+  { value: rounded(presets), label: t(lang, 'home.statExamples') },
+  { value: rounded(tasks), label: t(lang, 'home.statTasks') },
+  { value: '0', label: t(lang, 'home.statZero') },
+];
+---
+
+<section class="home-steps" aria-labelledby="steps-title">
+  <div class="home-steps__head">
+    <p class="home-steps__eyebrow">{t(lang, 'home.stepsEyebrow')}</p>
+    <h2 id="steps-title">{t(lang, 'home.stepsTitle')}</h2>
+  </div>
+
+  <ol class="home-steps__list">
+    {
+      steps.map(({ icon, n }) => (
+        <li class="home-steps__item">
+          <span class="home-steps__icon" aria-hidden="true">
+            <Icon name={icon} />
+          </span>
+          <h3>
+            <span class="home-steps__num">{n}</span>
+            {t(lang, `home.step${n}Title`)}
+          </h3>
+          <p>{t(lang, `home.step${n}Text`)}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <dl class="home-steps__stats">
+    {
+      stats.map(({ value, label }) => (
+        <div>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <p class="home-steps__more">
+    <a href={href(lang, { kind: 'page', page: 'teachers' })}>
+      {t(lang, 'home.stepsMore')} <span aria-hidden="true">→</span>
+    </a>
+  </p>
+</section>
