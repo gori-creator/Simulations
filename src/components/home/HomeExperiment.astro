@@ -92,7 +92,8 @@ const shown = (key: string, value: number) =>
               <span>{label}</span> {symbol}
               <output data-output={key}>{shown(key, def.default)}</output>
             </span>
-            <input type="range" data-param={key} min={def.min} max={def.max} step={def.step} value={def.default} />
+            {/* Name ausdrücklich: Der Text der Beschriftung allein (ohne den angezeigten Wert) */}
+            <input type="range" data-param={key} min={def.min} max={def.max} step={def.step} value={def.default} aria-label={`${label} ${symbol}`} />
           </label>
         ))
       }
@@ -115,7 +116,7 @@ const shown = (key: string, value: number) =>
             <label>
               <span>{t(lang, 'home.point', { n })}</span>
               <output data-output={`p${n}`}>{shown(`p${n}`, def.default)}</output>
-              <input type="range" data-param={`p${n}`} min={def.min} max={def.max} step={def.step} value={def.default} />
+              <input type="range" data-param={`p${n}`} min={def.min} max={def.max} step={def.step} value={def.default} aria-label={t(lang, 'home.point', { n })} />
             </label>
           ))
         }

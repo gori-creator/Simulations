@@ -87,8 +87,13 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     for (const [key, [digits, unit]] of Object.entries(SLIDERS) as [SliderKey, (typeof SLIDERS)[SliderKey]][]) {
       const input = root.querySelector<HTMLInputElement>(`[data-param="${key}"]`);
       const output = root.querySelector<HTMLOutputElement>(`[data-output="${key}"]`);
-      if (input) input.value = String(values[key]);
-      if (output) output.textContent = fmt.fixed(Number(values[key]), digits) + unit;
+      const shown = fmt.fixed(Number(values[key]), digits) + unit;
+      if (input) {
+        input.value = String(values[key]);
+        // Bildschirmleser sagen den Wert mit Einheit an (statt der nackten Zahl)
+        input.setAttribute('aria-valuetext', shown.trim());
+      }
+      if (output) output.textContent = shown;
     }
     slow.checked = !!values.slow;
     for (const button of tracks) button.setAttribute('aria-pressed', String(button.dataset.track === values.track));

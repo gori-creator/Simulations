@@ -67,18 +67,20 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
 </BaseLayout>
 
 <script>
+  import { matchesWords, normalizeSearch, searchWords } from '../lib/search';
+
+  const lang = document.documentElement.lang || 'de';
   const form = document.querySelector<HTMLFormElement>('[data-catalog-filters]');
   const cards = [...document.querySelectorAll<HTMLElement>('[data-catalog] [data-sim-card]')];
   const count = document.querySelector<HTMLElement>('[data-result-count]');
   const empty = document.querySelector<HTMLElement>('[data-catalog-empty]');
+  // Vereinheitlichter Suchtext je Karte (gleiche Regel wie auf der Startseite)
+  const texts = new Map(cards.map((card) => [card, normalizeSearch(card.dataset.search ?? '', lang)]));
 
   function apply(): void {
     if (!form) return;
     const data = new FormData(form);
-    const words = String(data.get('q') ?? '')
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
+    const words = searchWords(String(data.get('q') ?? ''), lang);
     const subject = String(data.get('subject') ?? '');
     const [from, to] = String(data.get('grade') ?? '')
       .split('-')
@@ -93,7 +95,7 @@ const resultTemplate = t(lang, 'catalog.results', { n: '{n}' });
         (!subject || d.subject === subject) &&
         (showPlanned || d.status === 'ready') &&
         (!from || (Number(d.gradeFrom) <= (to ?? from) && from <= Number(d.gradeTo))) &&
-        words.every((w) => (d.search ?? '').includes(w));
+        matchesWords(texts.get(card) ?? '', words);
       card.hidden = !match;
       if (match) visible++;
     }
