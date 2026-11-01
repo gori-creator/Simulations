@@ -2773,9 +2773,13 @@
 }
 
 .hero-land {
-  /* Die Felsen füllen immer die volle Breite; die Höhe wächst mit (Seitenverhältnis
-     der Bilder 2172 × 460 hinten, 2172 × 248 vorn), damit oben nichts abgeschnitten wird. */
-  --land-w: 100vw;
+  /* Breite eines Felsbildes (Höhe aus dem Seitenverhältnis 2172 × 460 hinten,
+     2172 × 248 vorn). Das Tal liegt bei 74 % der Bildbreite und wird unter die
+     Mitte der Skulptur geschoben (--sculpt-x, gemessen in lib/home/landscape.ts;
+     ohne Skript 75 %). Gespiegelte Kopien füllen die Ränder. */
+  --land-w: clamp(680px, 100vw, 1600px);
+  --land-valley: 0.74;
+  --sculpt-x: 75%;
   --land-far-h: calc(var(--land-w) * 460 / 2172);
   --land-near-h: calc(var(--land-w) * 248 / 2172);
 }
@@ -2792,7 +2796,6 @@
   height: var(--land-near-h);
 }
 
-.hero-land__img,
 .hero-land__mirror-layer {
   position: absolute;
   left: 0;
@@ -2801,10 +2804,36 @@
   height: 100%;
 }
 
+.hero-land__tiles {
+  position: absolute;
+  bottom: 0;
+  left: calc(var(--sculpt-x) - var(--land-w) * var(--land-valley));
+  width: var(--land-w);
+  height: 100%;
+}
+
+.hero-land__tile,
+.hero-land__img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-land__tile--left {
+  left: -100%;
+  transform: scaleX(-1);
+}
+
+.hero-land__tile--right {
+  left: 100%;
+  transform: scaleX(-1);
+}
+
 .hero-land__img {
   display: block;
-  object-fit: cover;
-  object-position: 50% 100%;
+  object-fit: fill;
 }
 
 .hero-land__mirror-layer--near {
@@ -3274,12 +3303,6 @@
 @media (max-width: 760px) {
   .hero-land {
     --lake-h: 72px;
-    /* schmale Bildschirme: Felsen breiter als der Bildschirm, Ausschnitt um die Skulptur */
-    --land-w: max(100vw, 680px);
-  }
-
-  .hero-land__img {
-    object-position: 74% 100%;
   }
 
   .hero-land__clouds span {

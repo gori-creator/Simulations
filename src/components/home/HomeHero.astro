@@ -9,6 +9,7 @@ import landFarLight from '../../assets/home/land-fern-hell.webp';
 import landNearDark from '../../assets/home/land-nah-dunkel.webp';
 import landNearLight from '../../assets/home/land-nah-hell.webp';
 import logo from '../../assets/brand/scitura-logo.png';
+import LandTiles from './LandTiles.astro';
 import type { Lang } from '../../i18n/config';
 import { t } from '../../i18n/utils';
 import { href } from '../../lib/routes';
@@ -53,25 +54,16 @@ const LAYERS = {
   <div class="hero-land" aria-hidden="true" data-hero-land>
     <div class="hero-land__clouds"><span></span><span></span><span></span><span></span></div>
     <div class="hero-land__ridges hero-land__ridges--far" data-depth="far">
-      {(['hell', 'dunkel'] as const).map((scheme) => (
-        <img class={`hero-land__img hero-land__img--${scheme}`} src={LAYERS.far[scheme].src} width={LAYERS.far[scheme].width} height={LAYERS.far[scheme].height} alt="" decoding="async" />
-      ))}
+      <LandTiles layer={LAYERS.far} />
     </div>
     <div class="hero-land__mist"><span></span><span></span></div>
     <div class="hero-land__ridges hero-land__ridges--near" data-depth="near">
-      {(['hell', 'dunkel'] as const).map((scheme) => (
-        <img class={`hero-land__img hero-land__img--${scheme}`} src={LAYERS.near[scheme].src} width={LAYERS.near[scheme].width} height={LAYERS.near[scheme].height} alt="" decoding="async" />
-      ))}
+      <LandTiles layer={LAYERS.near} />
     </div>
     <div class="hero-land__lake">
       <div class="hero-land__ridges hero-land__ridges--mirror">
-        {(['far', 'near'] as const).map((depth) => (
-          <div class={`hero-land__mirror-layer hero-land__mirror-layer--${depth}`}>
-            {(['hell', 'dunkel'] as const).map((scheme) => (
-              <img class={`hero-land__img hero-land__img--${scheme}`} src={LAYERS[depth][scheme].src} width={LAYERS[depth][scheme].width} height={LAYERS[depth][scheme].height} alt="" decoding="async" />
-            ))}
-          </div>
-        ))}
+        <div class="hero-land__mirror-layer hero-land__mirror-layer--far"><LandTiles layer={LAYERS.far} /></div>
+        <div class="hero-land__mirror-layer hero-land__mirror-layer--near"><LandTiles layer={LAYERS.near} /></div>
       </div>
       <div class="hero-land__glints"><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </div>
