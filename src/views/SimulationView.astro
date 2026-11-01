@@ -2,11 +2,13 @@
 // Formel-Styles nur auf Simulationsseiten (nur dort gibt es Formeln). Als eigene Datei im <head>
 // vor global.css, damit global.css sie überschreiben kann; ein normaler Import gälte für alle Seiten der Route.
 import katexCss from 'katex/dist/katex.min.css?url';
+import { getImage } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import KmkList from '../components/KmkList.astro';
 import SimShot from '../components/SimShot.astro';
 import SimThumb from '../components/SimThumb.astro';
+import SimCard from '../components/SimCard.astro';
 import SimulationShell from '../components/SimulationShell.astro';
 import { getArea, getSimulation, getSubject, getTopic, readySimulations } from '../curriculum';
 import { referencesFor, unitAnchor } from '../curriculum/lehrplaene';
@@ -14,7 +16,9 @@ import { regionIdOf } from '../lib/region';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { bannerFile, SECTION_KEYS, sectionFile, type SectionKey } from '../lib/page-art';
 import { alternates, href } from '../lib/routes';
+import { previewFile } from '../lib/sim-shots';
 import { hasShot } from '../lib/sim-shots';
 
 interface Props {
@@ -41,6 +45,38 @@ const isFallback = !!entry && !entry.id.startsWith(`${lang}/`);
 const rendered = entry ? await render(entry) : null;
 const Content = rendered?.Content;
 const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
+
+// Kopfbereich: Bannerbild des Bereichs (docs/BEREICHSBILDER.md), sonst das Vorschaubild der Simulation
+const banner = bannerFile(sim.area);
+const bannerImg = banner ? await getImage({ src: (await banner()).default, width: 1800, format: 'webp', quality: 80 }) : null;
+const preview = banner ? null : previewFile(simId);
+const previewImg = preview ? await getImage({ src: (await preview()).default, width: 720, height: 405, fit: 'cover', format: 'webp', quality: 80 }) : null;
+
+// Anzahl der Aufgaben: Unterüberschriften im dritten Abschnitt („Aufgaben“)
+const headings = rendered?.headings ?? [];
+const tasksStart = headings.indexOf(toc[2]!);
+const tasksEnd = toc[3] ? headings.indexOf(toc[3]) : headings.length;
+const taskCount = tasksStart >= 0 ? headings.slice(tasksStart + 1, tasksEnd).filter((h) => h.depth === 3).length : 0;
+
+// Abschnitts-Illustrationen (optional; ohne Bild zeichnet das Skript ein Symbol)
+const artKeys: SectionKey[] = [...SECTION_KEYS, 'weiter-lernen'];
+const sectionArt = Object.fromEntries(
+  await Promise.all(
+    artKeys.map(async (key) => {
+      const file = sectionFile(key);
+      return [key, file ? (await getImage({ src: (await file()).default, width: 168, format: 'webp' })).src : null] as const;
+    }),
+  ),
+);
+
+// Weiter lernen: die nächsten Simulationen im Bereich (in Lehrplan-Reihenfolge, am Ende von vorn)
+const areaSims = readySimulations().filter((s) => s.area === sim.area && s.subject === sim.subject);
+const here = areaSims.findIndex((s) => s.id === simId);
+const nextSims = [...areaSims.slice(here + 1), ...areaSims.slice(0, Math.max(0, here))].slice(0, 3);
+const materialLabels = {
+  tried: t(lang, 'material.tried'),
+  markTried: t(lang, 'material.markTried'),
+};
 ---
 
 <BaseLayout
@@ -61,18 +97,40 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
         { label: sim.title[lang] },
       ]}
     />
-    <header class="page-head">
-      <p class="page-head__eyebrow">
-        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, sim.grades, sim.uni)}</span>
-      </p>
-      <h1>{sim.title[lang]}</h1>
-      {sim.summary && <p class="lead">{sim.summary[lang]}</p>}
+    <header class:list={['page-head', 'sim-hero', { 'sim-hero--banner': bannerImg }]} style={bannerImg ? `--hero-banner:url(${bannerImg.src})` : undefined}>
+      <div class="sim-hero__text">
+        <p class="page-head__eyebrow">
+          <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, sim.grades, sim.uni)}</span>
+        </p>
+        <h1>{sim.title[lang]}</h1>
+        {sim.summary && <p class="lead">{sim.summary[lang]}</p>}
+        <ul class="sim-hero__chips">
+          <li>
+            <a href={href(lang, { kind: 'area', subject: sim.subject, area: sim.area })}>{area.title[lang]}</a>
+          </li>
+          <li>{topic.title[lang]}</li>
+          {taskCount > 0 && <li>{taskCount === 1 ? t(lang, 'material.taskCountOne') : t(lang, 'material.taskCount', { n: taskCount })}</li>}
+        </ul>
+      </div>
+      {
+        previewImg && (
+          <div class="sim-hero__art" aria-hidden="true">
+            <img src={previewImg.src} width="720" height="405" alt="" decoding="async" fetchpriority="high" />
+          </div>
+        )
+      }
     </header>
 
-    <SimulationShell lang={lang} simId={simId} title={sim.title[lang]} />
+    <div class="sim-window">
+      <div class="sim-window__bar" aria-hidden="true">
+        <span class="sim-window__lights"><i></i><i></i><i></i></span>
+        <span class="sim-window__title">{subject.title[lang]} – {sim.title[lang]}</span>
+      </div>
+      <SimulationShell lang={lang} simId={simId} title={sim.title[lang]} />
+    </div>
 
     <div class="sim-page__material">
-      <article class="prose" data-sim-material>
+      <article class="prose" data-sim-material data-sim-id={simId} data-art={JSON.stringify(sectionArt)} data-labels={JSON.stringify(materialLabels)}>
         {isFallback && <p class="note note--warning">{t(lang, 'material.translationMissing')}</p>}
         {Content && <Content />}
       </article>
@@ -186,5 +244,29 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
         </section>
       </aside>
     </div>
+
+    {
+      nextSims.length > 0 && (
+        <section class="sim-next" aria-labelledby="sim-next-title">
+          <div class="sim-next__head">
+            <span class="mat-icon" data-art-key="weiter-lernen" aria-hidden="true">
+              {sectionArt['weiter-lernen'] && <img src={sectionArt['weiter-lernen']} alt="" width="84" height="84" loading="lazy" decoding="async" />}
+            </span>
+            <h2 id="sim-next-title">{t(lang, 'material.next')}</h2>
+          </div>
+          <div class="card-grid sim-next__grid">
+            {nextSims.map((s) => (
+              <SimCard lang={lang} sim={s} />
+            ))}
+          </div>
+        </section>
+      )
+    }
   </div>
 </BaseLayout>
+
+<script>
+  import { initMaterial } from '../lib/sim-material';
+
+  initMaterial();
+</script>

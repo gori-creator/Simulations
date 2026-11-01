@@ -4167,3 +4167,422 @@ legend .ctl__info {
   gap: 10px;
   margin-top: 16px;
 }
+
+/* ---------- Simulationsseite: Kopf, Fenster, Lernmaterial (SimulationView.astro, lib/sim-material.ts) ---------- */
+
+/* Kopfbereich als helles Band mit feinem Raster; rechts Bereichs- oder Vorschaubild */
+.sim-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  align-items: center;
+  gap: 40px;
+  margin: 4px 0 28px;
+  padding: 36px 40px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(var(--sim-hero-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, var(--sim-hero-grid) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(135deg, color-mix(in srgb, var(--accent, var(--brand)) 9%, var(--surface)), var(--surface) 70%);
+  --sim-hero-grid: color-mix(in srgb, var(--accent, var(--brand)) 7%, transparent);
+}
+
+/* mit Bereichsbild: Bild füllt das Band, Text links auf dem freien Teil */
+.sim-hero--banner {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 300px;
+  background:
+    var(--hero-banner) right center / auto 100% no-repeat,
+    #f2f6fd;
+}
+
+.sim-hero--banner .sim-hero__text {
+  max-width: 52%;
+}
+
+.sim-hero__text {
+  position: relative;
+  min-width: 0;
+}
+
+.sim-hero h1 {
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  letter-spacing: -0.03em;
+}
+
+.sim-hero .lead {
+  max-width: 60ch;
+  margin-bottom: 18px;
+}
+
+.sim-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sim-hero__chips li {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sim-hero__chips a {
+  color: var(--accent, var(--brand));
+  text-decoration: none;
+}
+
+.sim-hero__chips a:hover {
+  text-decoration: underline;
+}
+
+.sim-hero__art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  rotate: 1.5deg;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sim-hero__art img,
+  :root:not([data-theme='light']) .sim-hero--banner {
+    filter: brightness(0.86);
+  }
+}
+
+:root[data-theme='dark'] .sim-hero__art img,
+:root[data-theme='dark'] .sim-hero--banner {
+  filter: brightness(0.86);
+}
+
+@media (max-width: 900px) {
+  .sim-hero {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 26px 22px;
+  }
+
+  .sim-hero__art {
+    max-width: 420px;
+  }
+
+  .sim-hero--banner {
+    min-height: 0;
+    padding-bottom: 46%;
+    background-position: center bottom;
+    background-size: 100% auto;
+  }
+
+  .sim-hero--banner .sim-hero__text {
+    max-width: none;
+  }
+}
+
+/* Simulation als Fenster: Titelleiste über der Simulation, weiches Leuchten dahinter.
+   Breite und Bühne der Simulation bleiben unverändert (Bildtests). */
+.sim-window {
+  position: relative;
+  isolation: isolate;
+}
+
+.sim-window::before {
+  content: '';
+  position: absolute;
+  inset: 6% 4% 2%;
+  z-index: -1;
+  border-radius: 40px;
+  background: conic-gradient(from 200deg, #ff6b9d, #b07cff, #5b8cff, #39d5ff, #5cf2b0, #ffd56b, #ff6b9d);
+  filter: blur(48px);
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.sim-window__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--ap-hairline-strong, var(--border));
+  border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--ap-sidebar, var(--surface-2));
+}
+
+.sim-window__lights {
+  display: flex;
+  gap: 8px;
+}
+
+.sim-window__lights i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: inset 0 0 0 0.5px rgb(0 0 0 / 0.2);
+}
+
+.sim-window__lights i:nth-child(2) {
+  background: #febc2e;
+}
+
+.sim-window__lights i:nth-child(3) {
+  background: #28c840;
+}
+
+.sim-window__title {
+  position: absolute;
+  left: 50%;
+  max-width: 60%;
+  overflow: hidden;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sim-window .sim {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.sim-window .sim__panel {
+  border-top-right-radius: 0;
+}
+
+/* Abschnitte des Lernmaterials */
+.mat-section + .mat-section {
+  margin-top: 56px;
+}
+
+.mat-section__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.prose .mat-section__head h2 {
+  margin: 0;
+}
+
+.mat-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--accent, var(--brand)) 11%, var(--surface));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent, var(--brand)) 20%, transparent);
+  color: var(--accent, var(--brand));
+}
+
+.mat-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+/* Formeln in ruhigen Kästen */
+.prose .katex-display {
+  margin: 1.2em 0;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent, var(--brand));
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+/* Ausprobieren: Fortschritt und Haken */
+.mat-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 14px;
+}
+
+.mat-progress__track {
+  flex: 1;
+  max-width: 260px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+
+.mat-progress__fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent, var(--brand));
+  transition: width 0.4s ease;
+}
+
+.mat-progress__text {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.mat-progress.is-complete .mat-progress__text {
+  color: var(--success);
+}
+
+.prose .mat-checklist {
+  padding-left: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.prose .mat-checklist > li {
+  position: relative;
+  margin: 0;
+  padding: 12px 14px 12px 52px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.prose .mat-checklist > li + li {
+  margin-top: 8px;
+}
+
+.prose .mat-checklist > li.is-done {
+  border-color: color-mix(in srgb, var(--success) 40%, var(--border));
+  background: color-mix(in srgb, var(--success) 6%, var(--surface));
+}
+
+.mat-check {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+}
+
+.mat-check:hover {
+  border-color: var(--accent, var(--brand));
+}
+
+.mat-check[aria-pressed='true'] {
+  border-color: var(--success);
+  background: var(--success)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 16px no-repeat;
+}
+
+.mat-check:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* Aufgaben als Karten */
+.mat-task {
+  margin: 14px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.prose .mat-task h3 {
+  margin-top: 0;
+}
+
+.prose .mat-task .task-head {
+  margin-top: 0;
+}
+
+.prose .mat-task > :last-child {
+  margin-bottom: 0;
+}
+
+/* Inhaltsverzeichnis ans Ende der Seitenleiste: Es bleibt beim Scrollen stehen, die
+   Kästen darüber gleiten nach oben weg statt darunter durch */
+.sim-page__aside .aside-box--toc {
+  order: 99;
+  z-index: 1;
+}
+
+/* Inhaltsverzeichnis: aktueller Abschnitt */
+.aside-box--toc a {
+  display: block;
+  margin-left: -10px;
+  padding: 3px 10px;
+  border-left: 2px solid transparent;
+  border-radius: 0 6px 6px 0;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.aside-box--toc a.is-active {
+  border-left-color: var(--accent, var(--brand));
+  background: color-mix(in srgb, var(--accent, var(--brand)) 9%, transparent);
+  color: var(--text);
+  font-weight: 650;
+}
+
+/* Weiter lernen */
+.sim-next {
+  margin-top: 72px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+}
+
+.sim-next__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sim-next__head h2 {
+  margin: 0;
+}
+
+.sim-next__grid {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* Einblenden beim Scrollen (Skript setzt .reveal nur ohne reduzierte Bewegung) */
+.reveal {
+  opacity: 0;
+  translate: 0 24px;
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  translate: 0 0;
+}
