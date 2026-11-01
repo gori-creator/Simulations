@@ -1086,6 +1086,10 @@ em .hat::after {
 .breadcrumbs {
   margin: 20px 0 8px;
   font-size: 0.9rem;
+  /* ganze Pixel: Alles darunter (auch die Bühne der Simulation) beginnt so auf
+     einem ganzen Pixel. Sonst rundet das Bildschirmfoto der Bildtests die
+     Bühnenhöhe je nach Kopfbereich mal auf, mal ab. */
+  line-height: 24px;
 }
 
 .breadcrumbs ol {
