@@ -6,6 +6,10 @@
  *  - `--land-s`: Scrollfortschritt durch den Einstieg, 0 … 1.
  * Ruht bei reduzierter Bewegung, bei pausierter Bewegung (Knopf in der
  * Kopfleiste) und solange der Einstieg nicht zu sehen ist.
+ *
+ * Außerdem `--sculpt-x`: waagerechte Mitte der Skulptur im Einstieg (px). Die
+ * Felsen werden so verschoben, dass ihr Tal genau darunter liegt, auf jedem
+ * Bildschirm (die Skulptur sitzt je nach Breite an einer anderen Stelle).
  */
 export function initLandscape(hero: HTMLElement, land: HTMLElement): () => void {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
@@ -35,6 +39,19 @@ export function initLandscape(hero: HTMLElement, land: HTMLElement): () => void 
     land.style.setProperty('--land-s', progress.toFixed(3));
   }
 
+  const sculpture = hero.querySelector<HTMLElement>('[data-sculpture]');
+  /** Waagerechte Mitte der Skulptur relativ zum Einstieg (der Kasten selbst bewegt sich nicht, nur sein Inhalt). */
+  function placeValley(): void {
+    if (!sculpture) return;
+    const s = sculpture.getBoundingClientRect();
+    const h = hero.getBoundingClientRect();
+    land.style.setProperty('--sculpt-x', `${Math.round(s.left + s.width / 2 - h.left)}px`);
+  }
+  const resize = new ResizeObserver(placeValley);
+  resize.observe(hero);
+  if (sculpture) resize.observe(sculpture);
+  placeValley();
+
   const observer = new IntersectionObserver(([entry]) => {
     visible = !!entry?.isIntersecting;
   });
@@ -46,6 +63,7 @@ export function initLandscape(hero: HTMLElement, land: HTMLElement): () => void 
   return () => {
     cancelAnimationFrame(frame);
     observer.disconnect();
+    resize.disconnect();
     window.removeEventListener('pointermove', onPointer);
     window.removeEventListener('scroll', onScroll);
   };

@@ -1,0 +1,27 @@
+---
+/**
+ * Eine Felsebene der Landschaft im Einstieg (HomeHero.astro): das Bild in der
+ * Mitte, links und rechts je eine gespiegelte Kopie. Die Kopien schließen
+ * nahtlos an (gespiegelt passt jeder Rand zu sich selbst), so kann die Ebene
+ * frei verschoben werden, damit das Tal immer unter der Skulptur liegt
+ * (--sculpt-x, gesetzt in lib/home/landscape.ts). Hell und dunkel je Kachel.
+ */
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  layer: { hell: ImageMetadata; dunkel: ImageMetadata };
+}
+const { layer } = Astro.props;
+---
+
+<div class="hero-land__tiles">
+  {
+    (['left', 'main', 'right'] as const).map((tile) => (
+      <div class={`hero-land__tile hero-land__tile--${tile}`}>
+        {(['hell', 'dunkel'] as const).map((scheme) => (
+          <img class={`hero-land__img hero-land__img--${scheme}`} src={layer[scheme].src} width={layer[scheme].width} height={layer[scheme].height} alt="" decoding="async" />
+        ))}
+      </div>
+    ))
+  }
+</div>
