@@ -1,10 +1,11 @@
 ---
 /**
  * Eine Felsebene der Landschaft im Einstieg (HomeHero.astro): das Bild in der
- * Mitte, links und rechts je eine gespiegelte Kopie. Die Kopien schließen
- * nahtlos an (gespiegelt passt jeder Rand zu sich selbst), so kann die Ebene
- * frei verschoben werden, damit das Tal immer unter der Skulptur liegt
- * (--sculpt-x, gesetzt in lib/home/landscape.ts). Hell und dunkel je Kachel.
+ * Mitte, links eine gespiegelte Kopie, rechts eine ungespiegelte. So schließt
+ * an beiden Seiten der flache Teil des Bildes an (Berge nur neben der Skulptur),
+ * und die Ebene kann frei verschoben werden, damit das Tal immer unter der
+ * Skulptur liegt (--sculpt-x, gesetzt in lib/home/landscape.ts). Hell und
+ * dunkel je Kachel.
  */
 import type { ImageMetadata } from 'astro';
 
