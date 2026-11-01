@@ -2368,8 +2368,8 @@
 }
 
 /* ---------- Karussell „Entdecken“ (HomeCarousel.astro, lib/home/carousel.ts) ----------
-   Dunkle Bühne zwischen Einstieg und Achterbahn: beginnt und endet im
-   Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
+   Dunkle Bühne zwischen Achterbahn und Unterrichts-Abschnitt: beginnt und endet
+   im Marineblau der Achterbahn (keine Kanten), dazwischen dunkler, damit die
    Karten leuchten. Grundform: flache Wisch-Reihe; mit Skript auf breiten
    Bildschirmen (.is-3d) ein gebogenes Rad. */
 .home-carousel {
