@@ -73,9 +73,9 @@ export const kiAbenteuer: Course = {
       title: L('Bilder und Sprache', 'Pictures and language'),
       blurb: L('Wie eine KI Bilder sieht und Texte schreibt – mit nichts als Zahlen.', 'How an AI sees pictures and writes text – using nothing but numbers.'),
       lessons: [
-        lesson('pixel', ['bilder-sind-zahlen', 'pictures-are-numbers'], ['Bilder sind Zahlen', 'Pictures are numbers'], ['Mal ein Bild aus Kästchen – für Bit ist es eine Liste von Zahlen.', 'Paint a picture from squares – to Bit it’s a list of numbers.'], '🟦', 6, 'planned'),
-        lesson('zeichen', ['zeichen-erkennen', 'recognising-symbols'], ['Zeichen erkennen', 'Recognising symbols'], ['Bring Bit bei, Kreuz, Kreis und Strich zu erkennen – mit deinen eigenen Zeichnungen.', 'Teach Bit to recognise cross, circle and line – using your own drawings.'], '🎨', 8, 'planned'),
-        lesson('naechstes-wort', ['das-naechste-wort', 'the-next-word'], ['Das nächste Wort', 'The next word'], ['Wie Chatbots schreiben: Bit rät immer nur das nächste Wort.', 'How chatbots write: Bit only ever guesses the next word.'], '💬', 7, 'planned'),
+        lesson('pixel', ['bilder-sind-zahlen', 'pictures-are-numbers'], ['Bilder sind Zahlen', 'Pictures are numbers'], ['Mal ein Bild aus Kästchen – für Bit ist es eine Liste von Zahlen.', 'Paint a picture from squares – to Bit it’s a list of numbers.'], '🟦', 6),
+        lesson('zeichen', ['zeichen-erkennen', 'recognising-symbols'], ['Zeichen erkennen', 'Recognising symbols'], ['Bring Bit bei, Kreuz, Kreis und Strich zu erkennen – mit deinen eigenen Zeichnungen.', 'Teach Bit to recognise cross, circle and line – using your own drawings.'], '🎨', 8),
+        lesson('naechstes-wort', ['das-naechste-wort', 'the-next-word'], ['Das nächste Wort', 'The next word'], ['Wie Chatbots schreiben: Bit rät immer nur das nächste Wort.', 'How chatbots write: Bit only ever guesses the next word.'], '💬', 7),
       ],
     },
     {
@@ -83,9 +83,9 @@ export const kiAbenteuer: Course = {
       title: L('KI und wir', 'AI and us'),
       blurb: L('Fair, wahr, sicher? Was du im Umgang mit KI wissen solltest.', 'Fair, true, safe? What you should know when using AI.'),
       lessons: [
-        lesson('fair', ['ist-das-fair', 'is-it-fair'], ['Ist das fair?', 'Is it fair?'], ['Bit hat nur Sneaker gesehen. Was passiert bei Sandalen?', 'Bit has only seen sneakers. What happens with sandals?'], '🤝', 6, 'planned'),
-        lesson('stimmt-das', ['stimmt-das', 'is-that-true'], ['Stimmt das?', 'Is that true?'], ['KI klingt sicher, auch wenn sie sich irrt. Prüfe Bits Antworten.', 'AI sounds sure even when it’s wrong. Check Bit’s answers.'], '✅', 6, 'planned'),
-        lesson('meine-daten', ['meine-daten', 'my-data'], ['Meine Daten', 'My data'], ['Was darf eine KI über dich wissen? Entscheide mit Bit.', 'What should an AI know about you? Decide together with Bit.'], '🔒', 5, 'planned'),
+        lesson('fair', ['ist-das-fair', 'is-it-fair'], ['Ist das fair?', 'Is it fair?'], ['Bit hat nur Sneaker gesehen. Was passiert bei Sandalen?', 'Bit has only seen sneakers. What happens with sandals?'], '🤝', 6),
+        lesson('stimmt-das', ['stimmt-das', 'is-that-true'], ['Stimmt das?', 'Is that true?'], ['KI klingt sicher, auch wenn sie sich irrt. Prüfe Bits Antworten.', 'AI sounds sure even when it’s wrong. Check Bit’s answers.'], '✅', 6),
+        lesson('meine-daten', ['meine-daten', 'my-data'], ['Meine Daten', 'My data'], ['Was darf eine KI über dich wissen? Entscheide mit Bit.', 'What should an AI know about you? Decide together with Bit.'], '🔒', 5),
       ],
     },
   ],

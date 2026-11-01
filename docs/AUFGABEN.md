@@ -53,7 +53,8 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 
 ## Neue Vorhaben
 
-- [ ] **KI-Grundlagenkurs** (Idee 31.10.): spielerischer Kurs „wie funktioniert KI“, ab Klasse 5, ohne Konten, ohne echte KI für Schüler. Entwurf: `docs/KI-KURS-KONZEPT.md`; wartet auf Freigabe der Projektleitung.
+- [x] **KI-Abenteuer** (01.11.): Kurs „wie funktioniert KI“ ab Klasse 5 mit Bit, dem Roboter – 6 Bereiche, 18 Lektionen, Spielstand ohne Konto. Aufbau und Lektionen: `docs/KI-KURS-KONZEPT.md`.
+- [ ] **KI-Abenteuer freigeben** (Projektleitung): durchspielen, Texte prüfen lassen, dann `COURSES_PUBLIC = true` in `src/kurse/index.ts` (Link in der Kopfleiste, Suchmaschinen) und Hinweis auf der Startseite.
 
 ## Sicherheit
 
