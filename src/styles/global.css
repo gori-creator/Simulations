@@ -4207,14 +4207,21 @@ legend .ctl__info {
   min-width: 0;
 }
 
+/* Schriftgrößen und Zeilenhöhen in ganzen Pixeln: So landet die Simulation darunter
+   nie auf halben Pixeln (sonst wird die Zeichenfläche unscharf, und die Bildtests
+   schwanken mit der Fensterbreite). */
 .sim-hero h1 {
-  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  margin: 0 0 14px;
+  font-size: 48px;
+  line-height: 56px;
   letter-spacing: -0.03em;
 }
 
 .sim-hero .lead {
   max-width: 60ch;
-  margin-bottom: 18px;
+  margin: 0 0 18px;
+  font-size: 19px;
+  line-height: 30px;
 }
 
 .sim-hero__chips {
@@ -4228,11 +4235,12 @@ legend .ctl__info {
 
 .sim-hero__chips li {
   padding: 5px 12px;
+  line-height: 20px;
   border: 1px solid var(--border);
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 85%, transparent);
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -4271,6 +4279,16 @@ legend .ctl__info {
     grid-template-columns: 1fr;
     gap: 22px;
     padding: 26px 22px;
+  }
+
+  .sim-hero h1 {
+    font-size: 34px;
+    line-height: 40px;
+  }
+
+  .sim-hero .lead {
+    font-size: 17px;
+    line-height: 27px;
   }
 
   .sim-hero__art {
