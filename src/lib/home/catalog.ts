@@ -7,9 +7,8 @@
  * Treffern; gefiltert wird über die data-Attribute der Karten wie im Katalog
  * (src/views/CatalogView.astro).
  *
- * Dazu: Pfeile zum Blättern in den Reihen, eine Themenleiste, die beim Scrollen
- * den aktuellen Bereich markiert, und eine sanfte Einblendung der Reihen
- * (nicht bei reduzierter oder pausierter Bewegung).
+ * Dazu: Pfeile zum Blättern in den Reihen und eine sanfte Einblendung der
+ * Reihen (nicht bei reduzierter oder pausierter Bewegung).
  */
 import { matchesWords, normalizeSearch, searchWords } from '../search';
 
@@ -18,9 +17,6 @@ export function initCatalog(root: HTMLElement): () => void {
   const cards = [...grid.querySelectorAll<HTMLElement>('[data-sim-card]')];
   const rowsBox = root.querySelector<HTMLElement>('[data-catalog-rows]')!;
   const rows = [...root.querySelectorAll<HTMLElement>('[data-row]')];
-  const topicsBar = root.querySelector<HTMLElement>('[data-catalog-topics]')!;
-  const topicsTrack = topicsBar.querySelector<HTMLElement>('[data-topics-track]')!;
-  const chips = [...topicsBar.querySelectorAll<HTMLAnchorElement>('[data-topic]')];
   const subjects = [...root.querySelectorAll<HTMLButtonElement>('[data-filter]')];
   const search = root.querySelector<HTMLInputElement>('[data-catalog-search]')!;
   const grade = root.querySelector<HTMLSelectElement>('[data-catalog-grade]')!;
@@ -59,11 +55,9 @@ export function initCatalog(root: HTMLElement): () => void {
         row.hidden = !visible;
         if (visible) shown += row.querySelectorAll('[data-sim-card]').length;
       }
-      for (const chip of chips) chip.hidden = !(subject === 'all' || chip.dataset.subject === subject);
     }
     grid.hidden = !asGrid || shown === 0;
     rowsBox.hidden = asGrid || shown === 0;
-    topicsBar.hidden = asGrid || shown === 0;
     count.textContent = (count.dataset.template ?? '{n}').replace('{n}', String(shown)).replace('{total}', String(total));
     empty.hidden = shown > 0;
     const chemistry = subject === 'chemie';
@@ -125,33 +119,6 @@ export function initCatalog(root: HTMLElement): () => void {
   const onResize = () => rows.forEach(updateArrows);
   window.addEventListener('resize', onResize, { passive: true });
   cleanup.push(() => window.removeEventListener('resize', onResize));
-
-  /* ---------- Themenleiste: aktuellen Bereich markieren ---------- */
-  let active = '';
-  function mark(id: string): void {
-    if (id === active) return;
-    active = id;
-    for (const chip of chips) {
-      const on = chip.dataset.topic === id;
-      chip.classList.toggle('is-active', on);
-      if (on) {
-        chip.setAttribute('aria-current', 'true');
-        // nur die Leiste seitlich verschieben, nie die Seite
-        const left = chip.offsetLeft - (topicsTrack.clientWidth - chip.offsetWidth) / 2;
-        topicsTrack.scrollTo({ left, behavior: calm() ? 'auto' : 'smooth' });
-      } else chip.removeAttribute('aria-current');
-    }
-  }
-  const spy = new IntersectionObserver(
-    (entries) => {
-      // Der oberste Bereich, der die Linie knapp unter der Leiste schneidet
-      const hit = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-      if (hit) mark(hit.target.id);
-    },
-    { rootMargin: '-30% 0px -60% 0px' },
-  );
-  for (const row of rows) spy.observe(row);
-  cleanup.push(() => spy.disconnect());
 
   /* ---------- Einblenden beim Scrollen ---------- */
   if (!calm() && 'IntersectionObserver' in window) {
