@@ -6,8 +6,9 @@
  *
  * Zwei Ansichten (Umschalten in src/lib/home/catalog.ts):
  * - Themenreihen (Grundansicht): je Bereich eine seitlich wischbare Reihe mit
- *   Bereichssymbol und Link zur Bereichsseite. Die Fachknöpfe blenden die
- *   Reihen der anderen Fächer aus.
+ *   Bereichssymbol und Link zur Bereichsseite, darüber eine Themenleiste, die
+ *   beim Scrollen mitläuft und den aktuellen Bereich zeigt. Die Fachknöpfe
+ *   blenden die Reihen der anderen Fächer aus.
  * - Raster: sobald gesucht oder nach Klassenstufe gefiltert wird, die Treffer.
  */
 import AreaGlyph from '../AreaGlyph.astro';
@@ -67,6 +68,18 @@ const rowId = (subject: string, area: string) => `reihe-${subject}-${area}`;
   <p class="home-catalog__count" data-catalog-count data-template={t(lang, 'home.results', { n: '{n}', total: '{total}' })} aria-live="polite">
     {t(lang, 'home.results', { n: sims.length, total: sims.length })}
   </p>
+  <nav class="home-topics" aria-label={t(lang, 'home.topics')} data-catalog-topics>
+    <div class="home-topics__track" data-topics-track>
+      {
+        rows.map(({ subject, area }) => (
+          <a class={`home-topics__chip subject-${subject.id}`} href={`#${rowId(subject.id, area.id)}`} data-topic={rowId(subject.id, area.id)} data-subject={subject.id}>
+            <span class="home-topics__dot" aria-hidden="true" />
+            {area.title[lang]}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
   <div class="home-rows" data-catalog-rows>
     {
       rows.map(({ subject, area, sims: list }) => (
