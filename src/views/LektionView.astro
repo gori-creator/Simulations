@@ -1,0 +1,71 @@
+---
+import type { Lang } from '../i18n/config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { COURSES_PUBLIC, getCourse, getLesson, lessonsOf } from '../kurse';
+import { bitSvg } from '../kurse/engine/bit';
+import { ks } from '../kurse/strings';
+import { alternates, href } from '../lib/routes';
+import '../styles/kurs.css';
+
+interface Props {
+  lang: Lang;
+  courseId: string;
+  lessonId: string;
+}
+
+const { lang, courseId, lessonId } = Astro.props;
+const course = getCourse(courseId);
+const lesson = getLesson(courseId, lessonId);
+const ready = lessonsOf(course).filter((l) => l.status === 'ready');
+const next = ready[ready.findIndex((l) => l.id === lessonId) + 1];
+const mapHref = href(lang, { kind: 'course', course: course.id });
+const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: next.id }) : '';
+---
+
+<BaseLayout
+  lang={lang}
+  title={`${lesson.title[lang]} – ${course.title[lang]}`}
+  description={lesson.teaser[lang]}
+  alternates={alternates({ kind: 'lesson', course: course.id, lesson: lesson.id })}
+  section="kurs"
+  noindex={!COURSES_PUBLIC}
+>
+  <div class:list={['kurs', 'klesson', `kchapter--${lesson.chapterNo}`]} data-lesson-root data-course={course.id} data-lesson={lesson.id} data-lang={lang} data-map-href={mapHref} data-next-href={nextHref}>
+    <div class="container klesson__container">
+      <div class="klesson__top">
+        <a class="btn btn--ghost klesson__back" href={mapHref}>← {ks(lang, 'back')}</a>
+        <div class="kdots" data-dots role="img"></div>
+        <span class="klesson__level" data-level></span>
+      </div>
+
+      <header class="klesson__head">
+        <p class="klesson__eyebrow">{ks(lang, 'chapter', { n: lesson.chapterNo })} · {lesson.chapter.title[lang]}</p>
+        <h1 class="klesson__title"><span aria-hidden="true">{lesson.icon}</span> {lesson.title[lang]}</h1>
+      </header>
+
+      <div class="klesson__stage">
+        <div class="klesson__bit" data-bit set:html={bitSvg('happy', 1, 'Bit')} />
+        <div class="kbubble">
+          <span class="visually-hidden">{ks(lang, 'bitSays')}:</span>
+          <p class="kbubble__text" data-bubble aria-live="polite">{lesson.teaser[lang]}</p>
+        </div>
+      </div>
+
+      <div class="klesson__play" data-play>
+        <p class="klesson__loading" data-loading>{ks(lang, 'loading')}</p>
+        <noscript><p class="note">{ks(lang, 'noscript')}</p></noscript>
+      </div>
+
+      <div class="klesson__foot">
+        <button class="btn btn--primary btn--lg klesson__next" type="button" data-next disabled>{ks(lang, 'next')}</button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initLesson } from '../kurse/engine/lesson';
+
+  const root = document.querySelector<HTMLElement>('[data-lesson-root]');
+  if (root) initLesson(root);
+</script>

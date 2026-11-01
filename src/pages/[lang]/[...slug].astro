@@ -10,6 +10,8 @@ import CatalogView from '../../views/CatalogView.astro';
 import CurriculumView from '../../views/CurriculumView.astro';
 import GradeView from '../../views/GradeView.astro';
 import InfoPageView from '../../views/InfoPageView.astro';
+import KursView from '../../views/KursView.astro';
+import LektionView from '../../views/LektionView.astro';
 import SimulationView from '../../views/SimulationView.astro';
 import SubjectView from '../../views/SubjectView.astro';
 
@@ -33,3 +35,5 @@ const { route } = Astro.props as { route: Route };
 {route.kind === 'simulation' && <SimulationView lang={lang} simId={route.id} />}
 {route.kind === 'curriculum' && <CurriculumView lang={lang} curriculumId={route.curriculum} />}
 {route.kind === 'grade' && <GradeView lang={lang} curriculumId={route.curriculum} grade={route.grade} />}
+{route.kind === 'course' && <KursView lang={lang} courseId={route.course} />}
+{route.kind === 'lesson' && <LektionView lang={lang} courseId={route.course} lessonId={route.lesson} />}
