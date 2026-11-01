@@ -18,9 +18,24 @@ function find(files: Record<string, Loader>, dir: string, name: string): Loader 
   return null;
 }
 
-/** Bannerbild eines Bereichs oder `null`. */
-export function bannerFile(area: string): Loader | null {
-  return find(banners, 'bereiche', area);
+/** Bannerbild eines Bereichs oder `null` (dunkel: `<bereich>-dunkel`, automatisch aus dem hellen erzeugt). */
+export function bannerFile(area: string, scheme: 'hell' | 'dunkel' = 'hell'): Loader | null {
+  return find(banners, 'bereiche', scheme === 'dunkel' ? `${area}-dunkel` : area);
+}
+
+/**
+ * CSS-Variablen für den Kopfbereich mit Bereichsbild (`--hero-banner`, im
+ * Dunkelmodus `--hero-banner-dark`), oder `null`, wenn es für den Bereich kein
+ * Bild gibt. Nur beim Bauen (astro:assets).
+ */
+export async function bannerStyle(area: string): Promise<string | null> {
+  const light = bannerFile(area);
+  if (!light) return null;
+  const { getImage } = await import('astro:assets');
+  const load = async (file: Loader) => (await getImage({ src: (await file()).default, width: 1800, format: 'webp', quality: 82 })).src;
+  const dark = bannerFile(area, 'dunkel');
+  const lightUrl = await load(light);
+  return `--hero-banner:url(${lightUrl});--hero-banner-dark:url(${dark ? await load(dark) : lightUrl})`;
 }
 
 /** Abschnitte des Lernmaterials in ihrer festen Reihenfolge (alle Texte haben diese vier Überschriften). */

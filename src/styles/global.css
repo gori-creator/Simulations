@@ -1086,6 +1086,10 @@ em .hat::after {
 .breadcrumbs {
   margin: 20px 0 8px;
   font-size: 0.9rem;
+  /* ganze Pixel: Alles darunter (auch die Bühne der Simulation) beginnt so auf
+     einem ganzen Pixel. Sonst rundet das Bildschirmfoto der Bildtests die
+     Bühnenhöhe je nach Kopfbereich mal auf, mal ab. */
+  line-height: 24px;
 }
 
 .breadcrumbs ol {
@@ -4189,13 +4193,25 @@ legend .ctl__info {
   --sim-hero-grid: color-mix(in srgb, var(--accent, var(--brand)) 7%, transparent);
 }
 
-/* mit Bereichsbild: Bild füllt das Band, Text links auf dem freien Teil */
+/* mit Bereichsbild: Bild füllt das Band, Text links auf dem freien Teil.
+   Im Dunkelmodus die automatisch erzeugte Blaupausen-Fassung (-dunkel.webp). */
 .sim-hero--banner {
   grid-template-columns: minmax(0, 1fr);
   min-height: 300px;
-  background:
-    var(--hero-banner) right center / auto 100% no-repeat,
-    #f2f6fd;
+  border-color: color-mix(in srgb, var(--accent, var(--brand)) 18%, var(--border));
+  background: #f2f6fd var(--hero-banner) right center / auto 100% no-repeat;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sim-hero--banner {
+    background-image: var(--hero-banner-dark);
+    background-color: #111727;
+  }
+}
+
+:root[data-theme='dark'] .sim-hero--banner {
+  background-image: var(--hero-banner-dark);
+  background-color: #111727;
 }
 
 .sim-hero--banner .sim-hero__text {
@@ -4263,14 +4279,12 @@ legend .ctl__info {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .sim-hero__art img,
-  :root:not([data-theme='light']) .sim-hero--banner {
+  :root:not([data-theme='light']) .sim-hero__art img {
     filter: brightness(0.86);
   }
 }
 
-:root[data-theme='dark'] .sim-hero__art img,
-:root[data-theme='dark'] .sim-hero--banner {
+:root[data-theme='dark'] .sim-hero__art img {
   filter: brightness(0.86);
 }
 
@@ -4295,11 +4309,12 @@ legend .ctl__info {
     max-width: 420px;
   }
 
+  /* schmal: nur die rechte Bildhälfte (dort ist das Motiv) unter dem Text */
   .sim-hero--banner {
     min-height: 0;
-    padding-bottom: 46%;
-    background-position: center bottom;
-    background-size: 100% auto;
+    padding-bottom: 62%;
+    background-position: right bottom;
+    background-size: 190% auto;
   }
 
   .sim-hero--banner .sim-hero__text {
