@@ -34,8 +34,8 @@ export const kiAbenteuer: Course = {
       blurb: L('Was ist eigentlich KI? Regeln schreiben oder aus Beispielen lernen?', 'What is AI anyway? Writing rules or learning from examples?'),
       lessons: [
         lesson('hallo-bit', ['hallo-bit', 'hello-bit'], ['Hallo, ich bin Bit', 'Hello, I’m Bit'], ['Bit soll Katzen und Hunde auseinanderhalten. Reichen ein paar Regeln?', 'Bit has to tell cats from dogs. Are a few rules enough?'], '👋', 5),
-        lesson('ki-im-alltag', ['ki-im-alltag', 'ai-in-everyday-life'], ['KI im Alltag', 'AI in everyday life'], ['Steckt im Taschenrechner KI? Und im Handy? Sortiere mit Bit.', 'Is there AI in a calculator? And in a phone? Sort it out with Bit.'], '📱', 5, 'planned'),
-        lesson('aus-beispielen', ['aus-beispielen', 'learning-from-examples'], ['Aus Beispielen lernen', 'Learning from examples'], ['Zeig Bit Äpfel und Birnen. Wie viele Beispiele braucht er?', 'Show Bit apples and pears. How many examples does he need?'], '🍎', 6, 'planned'),
+        lesson('ki-im-alltag', ['ki-im-alltag', 'ai-in-everyday-life'], ['KI im Alltag', 'AI in everyday life'], ['Steckt im Taschenrechner KI? Und im Handy? Sortiere mit Bit.', 'Is there AI in a calculator? And in a phone? Sort it out with Bit.'], '📱', 5),
+        lesson('aus-beispielen', ['aus-beispielen', 'learning-from-examples'], ['Aus Beispielen lernen', 'Learning from examples'], ['Zeig Bit Äpfel und Birnen. Wie viele Beispiele braucht er?', 'Show Bit apples and pears. How many examples does he need?'], '🍎', 6),
       ],
     },
     {
@@ -43,9 +43,9 @@ export const kiAbenteuer: Course = {
       title: L('Daten und Muster', 'Data and patterns'),
       blurb: L('KI lernt aus Daten. Aber welche Daten helfen – und welche schaden?', 'AI learns from data. But which data help – and which do harm?'),
       lessons: [
-        lesson('merkmale', ['merkmale', 'features'], ['Gute Merkmale', 'Good features'], ['Gewicht, Farbe oder Lieblingsessen? Finde heraus, was Bit wirklich hilft.', 'Weight, colour or favourite food? Find out what really helps Bit.'], '🔍', 6, 'planned'),
-        lesson('grenze', ['grenze-finden', 'find-the-border'], ['Die Grenze finden', 'Find the border'], ['Zieh eine Linie zwischen zwei Gruppen – so trennt eine KI Daten.', 'Draw a line between two groups – that’s how an AI separates data.'], '📈', 7, 'planned'),
-        lesson('aufraeumen', ['falsche-daten', 'bad-data'], ['Falsche Daten', 'Bad data'], ['Jemand hat Fehler in Bits Daten versteckt. Findest du sie?', 'Someone hid mistakes in Bit’s data. Can you find them?'], '🧹', 6, 'planned'),
+        lesson('merkmale', ['merkmale', 'features'], ['Gute Merkmale', 'Good features'], ['Gewicht, Farbe oder Lieblingsessen? Finde heraus, was Bit wirklich hilft.', 'Weight, colour or favourite food? Find out what really helps Bit.'], '🔍', 6),
+        lesson('grenze', ['grenze-finden', 'find-the-border'], ['Die Grenze finden', 'Find the border'], ['Zieh eine Linie zwischen zwei Gruppen – so trennt eine KI Daten.', 'Draw a line between two groups – that’s how an AI separates data.'], '📈', 7),
+        lesson('aufraeumen', ['falsche-daten', 'bad-data'], ['Falsche Daten', 'Bad data'], ['Jemand hat Fehler in Bits Daten versteckt. Findest du sie?', 'Someone hid mistakes in Bit’s data. Can you find them?'], '🧹', 6),
       ],
     },
     {
@@ -53,9 +53,9 @@ export const kiAbenteuer: Course = {
       title: L('Bit lernt', 'Bit learns'),
       blurb: L('Drei Arten, wie eine Maschine aus Beispielen Entscheidungen lernt.', 'Three ways a machine learns to decide from examples.'),
       lessons: [
-        lesson('nachbarn', ['frag-die-nachbarn', 'ask-the-neighbours'], ['Frag die Nachbarn', 'Ask the neighbours'], ['Bit schaut, was die ähnlichsten Beispiele sind – und entscheidet wie die Mehrheit.', 'Bit looks at the most similar examples – and goes with the majority.'], '🏘️', 7, 'planned'),
-        lesson('fragenbaum', ['fragen-baum', 'question-tree'], ['Der Fragen-Baum', 'The question tree'], ['Mit wenigen Ja-Nein-Fragen zum richtigen Tier. Welche Frage zuerst?', 'Find the right animal with a few yes/no questions. Which question first?'], '🌳', 7, 'planned'),
-        lesson('ueben-pruefen', ['ueben-und-pruefen', 'practice-and-test'], ['Üben und Prüfen', 'Practice and test'], ['Auswendig lernen oder verstehen? Bit schreibt eine Probe.', 'Memorise or understand? Bit takes a test.'], '📝', 6, 'planned'),
+        lesson('nachbarn', ['frag-die-nachbarn', 'ask-the-neighbours'], ['Frag die Nachbarn', 'Ask the neighbours'], ['Bit schaut, was die ähnlichsten Beispiele sind – und entscheidet wie die Mehrheit.', 'Bit looks at the most similar examples – and goes with the majority.'], '🏘️', 7),
+        lesson('fragenbaum', ['fragen-baum', 'question-tree'], ['Der Fragen-Baum', 'The question tree'], ['Mit wenigen Ja-Nein-Fragen zum richtigen Tier. Welche Frage zuerst?', 'Find the right animal with a few yes/no questions. Which question first?'], '🌳', 7),
+        lesson('ueben-pruefen', ['ueben-und-pruefen', 'practice-and-test'], ['Üben und Prüfen', 'Practice and test'], ['Auswendig lernen oder verstehen? Bit schreibt eine Probe.', 'Memorise or understand? Bit takes a test.'], '📝', 6),
       ],
     },
     {

@@ -1095,6 +1095,8 @@ button.kitem:hover:not(:disabled) {
 .kplot {
   display: block;
   width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
   height: auto;
   max-height: 62vh;
   touch-action: none;
@@ -1148,3 +1150,242 @@ button.kitem:hover:not(:disabled) {
     grid-template-columns: 1fr;
   }
 }
+
+/* Kartenspiel */
+
+.kcard-stage {
+  display: grid;
+  gap: 14px;
+}
+
+.kcard {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 22px 18px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-strong);
+  background: var(--surface-2);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kcard {
+    animation: kcard-in 0.3s ease-out;
+  }
+}
+
+@keyframes kcard-in {
+  from { opacity: 0; transform: translateY(10px) rotate(-1deg); }
+}
+
+.kcard.is-right { border-color: var(--k-good); background: var(--k-good-soft); }
+.kcard.is-wrong { border-color: var(--k-bad); background: var(--k-bad-soft); }
+
+.kcard__count {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.kcard__emoji {
+  font-size: 3.4rem;
+  line-height: 1.1;
+}
+
+.kcard__text {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.kcard__why {
+  margin: 4px 0 0;
+  max-width: 46ch;
+  color: var(--text);
+}
+
+.kcard__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.kcard__btn {
+  min-width: 150px;
+  font-size: 1.05rem;
+}
+
+/* Obst: Farbpunkt für rot/gelb/grün */
+
+.kfruit {
+  position: relative;
+  font-size: 2.1rem;
+  line-height: 1.1;
+}
+
+.kfruit::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  bottom: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+}
+
+.kfruit--red::after { background: #e03131; }
+.kfruit--yellow::after { background: #f2c200; }
+.kfruit--green::after { background: #37b24d; }
+
+.klegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: center;
+  margin: 8px 0 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.klegend__a,
+.klegend__b {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+}
+
+.klegend__a { border-radius: 50%; background: var(--k-a); }
+.klegend__b { background: var(--k-b); transform: rotate(45deg) scale(0.85); }
+
+.kpoint { cursor: pointer; outline: none; }
+.kpoint__hit { fill: transparent; }
+.kpoint:hover .kpoint__hit { fill: color-mix(in srgb, var(--text) 10%, transparent); }
+.kpoint:focus-visible .kpoint__hit { fill: none; stroke: var(--focus); stroke-width: 3; }
+.kpoint__ok { fill: none; stroke: var(--k-good); stroke-width: 3; }
+
+.kbox {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 2px dashed var(--border-strong);
+}
+
+.kbox__title {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.kbox .kitems {
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+}
+
+.kscore {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.kscore li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.kplot__link { stroke: var(--text); stroke-width: 2; stroke-dasharray: 5 4; opacity: 0.7; }
+.kpoint.is-selected .kplot__mystery { stroke-width: 4; stroke-dasharray: none; fill: color-mix(in srgb, var(--k-gold) 45%, var(--surface)); }
+.kmark { font-size: 20px; font-weight: 800; font-family: var(--font-sans); }
+.kmark--ok { fill: var(--k-good); }
+.kmark--bad { fill: var(--k-bad); }
+
+.kvote {
+  margin: 10px 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-weight: 600;
+}
+
+/* Fragen-Baum */
+
+.ktree__node {
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border-strong);
+  background: var(--surface);
+}
+
+.ktree__node.is-pure {
+  border-color: var(--k-good);
+  background: var(--k-good-soft);
+}
+
+.ktree__animals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ktree__animal {
+  display: grid;
+  justify-items: center;
+  min-width: 58px;
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+
+.ktree__animal small {
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.ktree__q,
+.ktree__answer,
+.ktree__done,
+.ktree__ask {
+  margin: 8px 0 6px;
+  font-weight: 700;
+}
+
+.ktree__answer {
+  margin-top: 0;
+  color: var(--k-tone);
+}
+
+.ktree__done {
+  color: var(--k-good);
+}
+
+.ktree__ask {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.ktree__kids {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .ktree__kids {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kplot__test { fill: var(--surface); stroke: var(--k-good); stroke-width: 2.5; }
+.kplot__test--bad { stroke: var(--k-bad); stroke-width: 3; }
+.klegend__test { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2.5px solid var(--k-good); background: var(--surface); }
