@@ -63,9 +63,9 @@ export const kiAbenteuer: Course = {
       title: L('Bits Gehirn', 'Bit’s brain'),
       blurb: L('Neuronale Netze: Wie aus vielen kleinen Rechnern eine lernende Maschine wird.', 'Neural networks: how many tiny calculators become a learning machine.'),
       lessons: [
-        lesson('neuron', ['ein-neuron', 'one-neuron'], ['Ein Neuron', 'One neuron'], ['Soll Bit ins Kino gehen? Ein künstliches Neuron wägt ab.', 'Should Bit go to the cinema? An artificial neuron weighs it up.'], '⚡', 7, 'planned'),
-        lesson('neuron-lernt', ['neuron-lernt', 'neuron-learns'], ['Das Neuron lernt', 'The neuron learns'], ['Bei jedem Fehler dreht Bit ein bisschen an den Reglern. Schau zu, wie er besser wird.', 'After every mistake Bit turns his dials a little. Watch him get better.'], '🎯', 7, 'planned'),
-        lesson('bergab', ['bergab-lernen', 'learning-downhill'], ['Bergab lernen', 'Learning downhill'], ['Große oder kleine Schritte? Bring Bit ins Tal der kleinsten Fehler.', 'Big steps or small ones? Guide Bit into the valley of the smallest error.'], '⛰️', 6, 'planned'),
+        lesson('neuron', ['ein-neuron', 'one-neuron'], ['Ein Neuron', 'One neuron'], ['Soll Bit ins Kino gehen? Ein künstliches Neuron wägt ab.', 'Should Bit go to the cinema? An artificial neuron weighs it up.'], '⚡', 7),
+        lesson('neuron-lernt', ['neuron-lernt', 'neuron-learns'], ['Das Neuron lernt', 'The neuron learns'], ['Bei jedem Fehler dreht Bit ein bisschen an den Reglern. Schau zu, wie er besser wird.', 'After every mistake Bit turns his dials a little. Watch him get better.'], '🎯', 7),
+        lesson('bergab', ['bergab-lernen', 'learning-downhill'], ['Bergab lernen', 'Learning downhill'], ['Große oder kleine Schritte? Bring Bit ins Tal der kleinsten Fehler.', 'Big steps or small ones? Guide Bit into the valley of the smallest error.'], '⛰️', 6),
       ],
     },
     {

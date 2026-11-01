@@ -1389,3 +1389,106 @@ button.kitem:hover:not(:disabled) {
 .kplot__test { fill: var(--surface); stroke: var(--k-good); stroke-width: 2.5; }
 .kplot__test--bad { stroke: var(--k-bad); stroke-width: 3; }
 .klegend__test { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2.5px solid var(--k-good); background: var(--surface); }
+
+/* Neuron */
+
+.kneuron-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  .kneuron-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kneuron {
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+}
+
+.kneuron__wire { stroke: var(--k-a); opacity: 0.45; stroke-linecap: round; }
+.kneuron__wire.is-neg { stroke: var(--k-b); }
+.kneuron__wire.is-active { opacity: 1; }
+.kneuron__in { fill: var(--surface-2); stroke: var(--border-strong); stroke-width: 2; }
+.kneuron__in.is-on { fill: color-mix(in srgb, var(--k-gold) 35%, var(--surface)); stroke: var(--k-gold); }
+.kneuron__icon { font-size: 20px; }
+.kneuron__w { fill: var(--text); font-size: 15px; font-weight: 800; font-family: var(--font-sans); }
+.kneuron__body { fill: var(--surface-2); stroke: var(--k-tone); stroke-width: 3; transition: fill 0.2s; }
+.kneuron__body.is-fire { fill: color-mix(in srgb, var(--k-gold) 55%, var(--surface)); }
+.kneuron__sum { fill: var(--text); font-size: 16px; font-weight: 800; font-family: var(--font-sans); }
+
+.kneuron__controls {
+  display: grid;
+  gap: 8px;
+}
+
+.kneuron__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.kneuron__row--th {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.kstep {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kstep__btn {
+  width: 44px;
+  padding: 0;
+  font-size: 1.3rem;
+}
+
+.kstep__value {
+  min-width: 2.2em;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.ktable-wrap {
+  overflow-x: auto;
+}
+
+.ktable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.ktable th,
+.ktable td {
+  padding: 7px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ktable tbody tr {
+  cursor: pointer;
+}
+
+.ktable tr.is-right td:last-child { color: var(--k-good); font-weight: 700; }
+.ktable tr.is-wrong { background: var(--k-bad-soft); }
+.ktable tr.is-wrong td:last-child { color: var(--k-bad); font-weight: 700; }
+.ktable tr.is-selected { outline: 3px solid var(--k-tone); outline-offset: -3px; }
+.kplot__ring--learn { stroke: var(--k-gold); stroke-width: 4; }
+
+.kbergab__fill { fill: color-mix(in srgb, var(--k-tone) 12%, transparent); }
+.kbergab__curve { fill: none; stroke: var(--k-tone); stroke-width: 3; }
+.kbergab__flag { font-size: 18px; }
+.kbergab__jump { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 4 4; }
+.kbergab__dot { fill: var(--muted); }
+.kbergab__ball { fill: var(--surface); stroke: var(--text); stroke-width: 2.5; }
+.kbergab__face { font-size: 14px; }

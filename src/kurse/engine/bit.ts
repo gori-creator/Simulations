@@ -29,7 +29,7 @@ ${ears ? '<rect class="bit__ear" x="10" y="40" width="12" height="24" rx="5"/><r
 <g class="bit__face bit__face--wink"><circle cx="45" cy="49" r="7"/><path class="bit__line" d="M68 50 Q75 44 82 50"/><path class="bit__line" d="M48 62 Q60 71 72 62"/></g>
 <g class="bit__face bit__face--think"><circle cx="48" cy="45" r="6"/><circle cx="78" cy="45" r="6"/><path class="bit__line" d="M50 65 L68 63"/></g>
 <g class="bit__face bit__face--wow"><circle cx="45" cy="47" r="9"/><circle cx="75" cy="47" r="9"/><ellipse cx="60" cy="66" rx="6" ry="5"/></g>
-<g class="bit__face bit__face--sad"><circle cx="45" cy="51" r="6"/><circle cx="75" cy="51" r="6"/><path class="bit__line" d="M37 41 L50 44 M83 41 L70 44"/><path class="bit__line" d="M49 68 Q60 61 71 68"/></g>
+<g class="bit__face bit__face--sad"><circle cx="45" cy="51" r="6"/><circle cx="75" cy="51" r="6"/><path class="bit__line" d="M37 43 L50 39 M83 43 L70 39"/><path class="bit__line" d="M49 68 Q60 61 71 68"/></g>
 </g>
 </svg>`;
 }
