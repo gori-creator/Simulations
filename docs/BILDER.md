@@ -1049,6 +1049,14 @@ Felsen hinter der Skulptur im Einstieg der Startseite (`src/components/home/Home
 
 Erzeugt mit dem integrierten Bildwerkzeug (Lieferung `Scitura-Landschaft-V2.zip`, Hinweise in `docs/design/landschaft-v2/LIEFERUNG.md`); die vier Prompts wörtlich in `docs/design/landschaft-v2/PROMPTS.md`. Beim Einbau auf die Uferlinie (letzte überwiegend deckende Zeile) und den sichtbaren Inhalt beschnitten. Bekannte Abweichungen: 2172 statt 3840 px breit, links/rechts nicht nahtlos (wird nicht gekachelt, sondern auf volle Breite gestreckt). Ersatzgrafik: keine nötig (Bilder im Build, ohne Ladefehler-Risiko); fällt ein Bild aus, bleiben Himmel und See.
 
+## Bereichsbilder und Abschnitts-Illustrationen (eingebaut 01.11.2026)
+
+Für die Kopfbereiche der Simulations- und Bereichsseiten und die Abschnitte des Lernmaterials. Prompts wörtlich in `docs/BEREICHSBILDER.md` (Teil A und B), erzeugt von Codex mit dem Bildwerkzeug, Stil wie die Vorschaubilder.
+
+- `src/assets/bereiche/<bereich>.webp`: 14 Banner, 1800 × 600 (aus 2400 × 800), linke Hälfte frei für den Titel. Dazu je `<bereich>-dunkel.webp` für den Dunkelmodus, per Skript erzeugt (Helligkeit gespiegelt, Farbton behalten, Grund #111727).
+- `src/assets/abschnitte/<abschnitt>.webp`: 5 Illustrationen (`worum-geht-es`, `ausprobieren`, `aufgaben`, `unterricht`, `weiter-lernen`), 320 × 320, transparent.
+- Ersatz ohne Bild: Kopf zeigt das Vorschaubild der Simulation, Abschnitte ein gezeichnetes Symbol (`lib/sim-material.ts`).
+
 ## Marke: Scitura-Logo 01
 
 Kein Simulationsbild, sondern das Zeichen der Website (seit 27.10.2026). Ausgewählt von der Projektleitung aus einer Logo-Studie, abgeleitet aus der Orbit-Skulptur der Startseite. Erzeugt mit dem Bildwerkzeug von OpenAI (über Codex), transparent freigestellt und auf Wunsch in Marineblau #183365 umgefärbt. Den wörtlichen Prompt der ersten Studie enthält die Übergabe nicht; Herkunft und Bearbeitungsauftrag stehen in `docs/design/coin-reise-v13/LOGO-HERKUNFT.md`.

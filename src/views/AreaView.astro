@@ -8,6 +8,7 @@ import type { SubjectId } from '../curriculum/types';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { bannerStyle } from '../lib/page-art';
 import { alternates, href } from '../lib/routes';
 
 interface Props {
@@ -20,6 +21,8 @@ const { lang, subjectId, areaId } = Astro.props;
 const subject = getSubject(subjectId);
 const area = getArea(subjectId, areaId);
 const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }));
+// Bereichsbild im Kopf (docs/BEREICHSBILDER.md), wie auf den Simulationsseiten
+const banner = await bannerStyle(areaId);
 ---
 
 <BaseLayout
@@ -38,18 +41,20 @@ const progress = progressOf(simulationsOf({ subject: subjectId, area: areaId }))
         { label: area.title[lang] },
       ]}
     />
-    <header class="page-head">
-      <p class="page-head__eyebrow">
-        <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, area.grades)}</span>
-      </p>
-      <h1>{area.title[lang]}</h1>
-      <p class="lead">{area.description[lang]}</p>
-      <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
-      <div style="margin-top:20px">
-        <span class="sim__panel-title">{t(lang, 'area.kmk')}</span>
-        <KmkList lang={lang} ids={area.kmk} />
+    <header class:list={['page-head', { 'sim-hero sim-hero--banner': banner }]} style={banner ?? undefined}>
+      <div class="sim-hero__text">
+        <p class="page-head__eyebrow">
+          <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, area.grades)}</span>
+        </p>
+        <h1>{area.title[lang]}</h1>
+        <p class="lead">{area.description[lang]}</p>
+        <Progress ready={progress.ready} total={progress.total} label={t(lang, 'subject.progress', progress)} />
       </div>
     </header>
+    <div style="margin:0 0 24px">
+      <span class="sim__panel-title">{t(lang, 'area.kmk')}</span>
+      <KmkList lang={lang} ids={area.kmk} />
+    </div>
 
     {
       area.topics.map((topic) => {

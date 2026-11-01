@@ -16,7 +16,7 @@ import { regionIdOf } from '../lib/region';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { bannerFile, SECTION_KEYS, sectionFile, type SectionKey } from '../lib/page-art';
+import { bannerStyle, SECTION_KEYS, sectionFile, type SectionKey } from '../lib/page-art';
 import { alternates, href } from '../lib/routes';
 import { previewFile } from '../lib/sim-shots';
 import { hasShot } from '../lib/sim-shots';
@@ -47,8 +47,7 @@ const Content = rendered?.Content;
 const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
 
 // Kopfbereich: Bannerbild des Bereichs (docs/BEREICHSBILDER.md), sonst das Vorschaubild der Simulation
-const banner = bannerFile(sim.area);
-const bannerImg = banner ? await getImage({ src: (await banner()).default, width: 1800, format: 'webp', quality: 80 }) : null;
+const banner = await bannerStyle(sim.area);
 const preview = banner ? null : previewFile(simId);
 const previewImg = preview ? await getImage({ src: (await preview()).default, width: 720, height: 405, fit: 'cover', format: 'webp', quality: 80 }) : null;
 
@@ -97,7 +96,7 @@ const materialLabels = {
         { label: sim.title[lang] },
       ]}
     />
-    <header class:list={['page-head', 'sim-hero', { 'sim-hero--banner': bannerImg }]} style={bannerImg ? `--hero-banner:url(${bannerImg.src})` : undefined}>
+    <header class:list={['page-head', 'sim-hero', { 'sim-hero--banner': banner }]} style={banner ?? undefined}>
       <div class="sim-hero__text">
         <p class="page-head__eyebrow">
           <span>{subject.title[lang]}</span><span aria-hidden="true">·</span><span>{formatGrades(lang, sim.grades, sim.uni)}</span>
