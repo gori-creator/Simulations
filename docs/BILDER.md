@@ -1036,6 +1036,19 @@ P3 · Datei `src/assets/sims/doppler-effekt/beobachter.webp`. Kopf oben (zur Str
 
 > A fictional adult person standing still, seen from directly above (top-down bird's-eye view), only the top of the head with short hair, the shoulders and a plain dark green jacket visible, arms at the sides, no face visible, exact top-down orthographic view, soft light from the upper left, isolated on a fully transparent background, no ground, no shadow, photorealistic, clean educational style, no text
 
+## Startseite: Landschaft V2 (eingebaut 01.11.2026)
+
+Felsen hinter der Skulptur im Einstieg der Startseite (`src/components/home/HomeHero.astro`, Stil in `src/styles/home.css`, Abschnitt „Landschaft im Einstieg“). Ersetzt die gezeichneten SVG-Felsen. Zwei Ebenen (fern, nah), je eine helle und eine dunkle Fassung; dieselben Bilder spiegeln sich im See. Himmel, See, Nebel und Lichtpunkte zeichnet weiter die Seite.
+
+| Datei | Größe | Inhalt |
+| --- | --- | --- |
+| `src/assets/home/land-fern-hell.webp` | 2172 × 460 | ferne Felsnadeln, hell |
+| `src/assets/home/land-fern-dunkel.webp` | 2172 × 463 | ferne Felsnadeln, dunkel |
+| `src/assets/home/land-nah-hell.webp` | 2172 × 248 | Uferfelsen, hell |
+| `src/assets/home/land-nah-dunkel.webp` | 2172 × 252 | Uferfelsen, dunkel |
+
+Erzeugt mit dem integrierten Bildwerkzeug (Lieferung `Scitura-Landschaft-V2.zip`, Hinweise in `docs/design/landschaft-v2/LIEFERUNG.md`); die vier Prompts wörtlich in `docs/design/landschaft-v2/PROMPTS.md`. Beim Einbau auf die Uferlinie (letzte überwiegend deckende Zeile) und den sichtbaren Inhalt beschnitten. Bekannte Abweichungen: 2172 statt 3840 px breit, links/rechts nicht nahtlos (wird nicht gekachelt, sondern auf volle Breite gestreckt). Ersatzgrafik: keine nötig (Bilder im Build, ohne Ladefehler-Risiko); fällt ein Bild aus, bleiben Himmel und See.
+
 ## Marke: Scitura-Logo 01
 
 Kein Simulationsbild, sondern das Zeichen der Website (seit 27.10.2026). Ausgewählt von der Projektleitung aus einer Logo-Studie, abgeleitet aus der Orbit-Skulptur der Startseite. Erzeugt mit dem Bildwerkzeug von OpenAI (über Codex), transparent freigestellt und auf Wunsch in Marineblau #183365 umgefärbt. Den wörtlichen Prompt der ersten Studie enthält die Übergabe nicht; Herkunft und Bearbeitungsauftrag stehen in `docs/design/coin-reise-v13/LOGO-HERKUNFT.md`.

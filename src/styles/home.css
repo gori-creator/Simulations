@@ -2772,16 +2772,66 @@
   opacity: 0.85;
 }
 
+.hero-land {
+  /* Die Felsen füllen immer die volle Breite; die Höhe wächst mit (Seitenverhältnis
+     der Bilder 2172 × 460 hinten, 2172 × 248 vorn), damit oben nichts abgeschnitten wird. */
+  --land-w: 100vw;
+  --land-far-h: calc(var(--land-w) * 460 / 2172);
+  --land-near-h: calc(var(--land-w) * 248 / 2172);
+}
+
 .hero-land__ridges {
   position: absolute;
   left: 0;
   bottom: var(--lake-h);
   width: 100%;
-  height: 200px;
+  height: var(--land-far-h);
 }
 
-.hero-land__far {
-  fill: var(--sc-land-far);
+.hero-land__ridges--near {
+  height: var(--land-near-h);
+}
+
+.hero-land__img,
+.hero-land__mirror-layer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-land__img {
+  display: block;
+  object-fit: cover;
+  object-position: 50% 100%;
+}
+
+.hero-land__mirror-layer--near {
+  height: var(--land-near-h);
+}
+
+/* hell oder dunkel, wie das Farbschema */
+.hero-land__img--dunkel {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .hero-land__img--hell {
+    display: none;
+  }
+
+  :root:not([data-theme='light']) .hero-land__img--dunkel {
+    display: block;
+  }
+}
+
+:root[data-theme='dark'] .hero-land__img--hell {
+  display: none;
+}
+
+:root[data-theme='dark'] .hero-land__img--dunkel {
+  display: block;
 }
 
 /* Parallaxe (lib/home/landscape.ts): hinten wenig, vorn mehr Bewegung */
@@ -2832,10 +2882,6 @@
   }
 }
 
-.hero-land__near {
-  fill: var(--sc-land-near);
-}
-
 .hero-land__lake {
   position: absolute;
   left: 0;
@@ -2855,7 +2901,8 @@
   opacity: var(--sc-land-mirror);
   filter: blur(1.5px);
   transform: scaleY(-1);
-  transform-origin: 50% 0;
+  /* um die eigene Mitte gespiegelt: die Uferlinie liegt oben am Seeufer */
+  transform-origin: 50% 50%;
   mask-image: linear-gradient(0deg, #000 30%, transparent 85%);
   animation: mirror-wave 7s ease-in-out infinite alternate;
 }
@@ -3227,10 +3274,12 @@
 @media (max-width: 760px) {
   .hero-land {
     --lake-h: 72px;
+    /* schmale Bildschirme: Felsen breiter als der Bildschirm, Ausschnitt um die Skulptur */
+    --land-w: max(100vw, 680px);
   }
 
-  .hero-land__ridges {
-    height: 140px;
+  .hero-land__img {
+    object-position: 74% 100%;
   }
 
   .hero-land__clouds span {
