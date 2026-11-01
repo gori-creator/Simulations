@@ -1,0 +1,168 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Lang } from '../i18n/config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
+import { bitSvg } from '../kurse/engine/bit';
+import { badgeRules } from '../kurse/engine/progress';
+import { ks } from '../kurse/strings';
+import { alternates, href } from '../lib/routes';
+import '../styles/kurs.css';
+
+interface Props {
+  lang: Lang;
+  courseId: string;
+}
+
+const { lang, courseId } = Astro.props;
+const course = getCourse(courseId);
+const lessons = lessonsOf(course);
+const ready = lessons.filter((l) => l.status === 'ready');
+const first = ready[0];
+const badges = badgeRules(course);
+const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.id, lesson: id });
+---
+
+<BaseLayout
+  lang={lang}
+  title={course.title[lang]}
+  description={course.description[lang]}
+  alternates={alternates({ kind: 'course', course: course.id })}
+  section="kurs"
+  noindex={!COURSES_PUBLIC}
+>
+  <div class="kurs" data-kurs-hub data-course={course.id} data-lang={lang}>
+    <div class="container">
+      <Breadcrumbs lang={lang} items={[{ label: ks(lang, 'home'), href: href(lang, { kind: 'home' }) }, { label: course.title[lang] }]} />
+
+      <header class="khero">
+        <div class="khero__bit" data-hub-bit set:html={bitSvg('wink', 1, 'Bit')} />
+        <div class="khero__text">
+          <h1 class="khero__title">{course.title[lang]}</h1>
+          <p class="khero__tagline">{course.tagline[lang]}</p>
+          <div class="khero__stats">
+            <p class="khero__level"><strong data-hub-level>{ks(lang, 'levelName', { n: 1, name: lang === 'de' ? 'Funke' : 'Spark' })}</strong></p>
+            <div class="kbar" aria-hidden="true"><span class="kbar__fill" data-hub-bar></span></div>
+            <p class="khero__meta">
+              <span data-hub-xp>{ks(lang, 'xp', { n: 0 })}</span>
+              <span data-hub-done>{ks(lang, 'overall', { done: 0, total: ready.length })}</span>
+              <span data-hub-streak hidden></span>
+            </p>
+          </div>
+          {
+            first && (
+              <a class="btn btn--primary btn--lg khero__go" href={lessonHref(first.id)} data-hub-go>
+                <span data-hub-go-label>{ks(lang, 'startAt', { title: first.title[lang] })}</span> →
+              </a>
+            )
+          }
+          <p class="khero__privacy">🔒 {ks(lang, 'privacy')}</p>
+        </div>
+      </header>
+
+      <p class="ktoast" data-hub-toast role="status" hidden></p>
+
+      <ol class="kmap">
+        {
+          course.chapters.map((chapter, ci) => (
+            <li class:list={['kchapter', `kchapter--${ci + 1}`]}>
+              <header class="kchapter__head">
+                <span class="kchapter__no">{ks(lang, 'chapter', { n: ci + 1 })}</span>
+                <h2 class="kchapter__title">{chapter.title[lang]}</h2>
+                <p class="kchapter__blurb">{chapter.blurb[lang]}</p>
+              </header>
+              <ol class="kpath">
+                {chapter.lessons.map((lesson) => {
+                  const entry = lessons.find((l) => l.id === lesson.id)!;
+                  return (
+                    <li class="kpath__item">
+                      {lesson.status === 'ready' ? (
+                        <a class="knode" href={lessonHref(lesson.id)} data-lesson={lesson.id} data-title={lesson.title[lang]}>
+                          <span class="knode__icon" aria-hidden="true">{lesson.icon}</span>
+                          <span class="knode__body">
+                            <span class="knode__no">{entry.no}</span>
+                            <strong class="knode__title">{lesson.title[lang]}</strong>
+                            <span class="knode__teaser">{lesson.teaser[lang]}</span>
+                            <span class="knode__meta">
+                              <span class="knode__stars" aria-hidden="true">
+                                <span data-star>★</span>
+                                <span data-star>★</span>
+                                <span data-star>★</span>
+                              </span>
+                              <span>{ks(lang, 'minutes', { n: lesson.minutes })}</span>
+                              <span class="visually-hidden" data-state />
+                            </span>
+                          </span>
+                          <span class="knode__lock" aria-hidden="true">🔒</span>
+                        </a>
+                      ) : (
+                        <span class="knode knode--soon">
+                          <span class="knode__icon" aria-hidden="true">{lesson.icon}</span>
+                          <span class="knode__body">
+                            <span class="knode__no">{entry.no}</span>
+                            <strong class="knode__title">{lesson.title[lang]}</strong>
+                            <span class="knode__teaser">{lesson.teaser[lang]}</span>
+                            <span class="knode__meta">{ks(lang, 'soon')}</span>
+                          </span>
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </li>
+          ))
+        }
+      </ol>
+
+      <section class="kbadges" aria-labelledby="kbadges-title">
+        <h2 id="kbadges-title">{ks(lang, 'badges')} <span class="kbadges__count" data-hub-badges></span></h2>
+        <ul class="kbadges__list">
+          {
+            badges.map((badge) => (
+              <li class="kbadge" data-badge={badge.id}>
+                <span class="kbadge__icon" aria-hidden="true">{badge.icon}</span>
+                <span>
+                  <strong>{badge.title[lang]}</strong>
+                  <span>{badge.text[lang]}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <details class="ksettings">
+        <summary>⚙️ {ks(lang, 'settings')}</summary>
+        <div class="ksettings__body">
+          <label class="switch">
+            <input class="switch__input" type="checkbox" role="switch" data-hub-free />
+            <span class="switch__track" aria-hidden="true"></span>
+            <span class="switch__label">{ks(lang, 'freeMode')}</span>
+          </label>
+          <p class="muted">{ks(lang, 'freeModeHint')}</p>
+
+          <h3>{ks(lang, 'saveTitle')}</h3>
+          <p class="muted">{ks(lang, 'saveText')}</p>
+          <div class="ksettings__row">
+            <input class="input" type="text" readonly data-hub-code aria-label={ks(lang, 'saveTitle')} />
+            <button class="btn" type="button" data-hub-copy>{ks(lang, 'saveCopy')}</button>
+          </div>
+          <div class="ksettings__row">
+            <input class="input" type="text" data-hub-import aria-label={ks(lang, 'loadLabel')} placeholder={ks(lang, 'loadLabel')} />
+            <button class="btn" type="button" data-hub-load>{ks(lang, 'loadButton')}</button>
+          </div>
+          <p class="ksettings__msg" data-hub-msg role="status"></p>
+          <button class="btn btn--ghost ksettings__reset" type="button" data-hub-reset>🗑️ {ks(lang, 'resetButton')}</button>
+        </div>
+      </details>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initHub } from '../kurse/engine/hub';
+
+  const root = document.querySelector<HTMLElement>('[data-kurs-hub]');
+  if (root) initHub(root);
+</script>

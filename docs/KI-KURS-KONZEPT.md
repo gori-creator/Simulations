@@ -1,6 +1,6 @@
-# Konzept: KI-Grundlagenkurs (Entwurf)
+# KI-Abenteuer: Konzept und Umsetzung
 
-Stand 31.10.2026. Entwurf der Projektleitung und des Assistenten; Zielgruppe, Spielweise und Konten am 31.10. von der Projektleitung festgelegt, der Rest noch nicht freigegeben. Gebaut wird erst nach Freigabe.
+Stand 01.11.2026. Name „KI-Abenteuer“, roter Faden „Bit, der Roboter, den man trainiert“ und die 6 Bereiche hat die Projektleitung am 01.11. freigegeben. Alle 18 Lektionen sind als erste Fassung gebaut (siehe „Umsetzung“). Bis zur Freigabe nach dem Probespielen ist der Kurs nur über die Adresse erreichbar (`/de/ki-abenteuer/`), nicht verlinkt und nicht in Suchmaschinen (`COURSES_PUBLIC` in `src/kurse/index.ts`).
 
 ## Ziel
 
@@ -15,16 +15,45 @@ Ein spielerischer Kurs („Gamification“), der Schülern erklärt, **wie Küns
 - **Keine echte KI im Netz (festgelegt):** Alle Beispiele laufen im Browser mit kleinen, selbst gerechneten Modellen. Schüler benutzen keine echte KI, auch keinen Chat mit einem Sprachmodell, und es werden keine externen Dienste genutzt. Es geht darum, wie KI funktioniert.
 - **Sprachen:** wie bisher Deutsch und Englisch.
 
-## Aufbau im Projekt
+## Umsetzung
 
-Der Kurs wird ein neues **Fach** neben Mathematik, Physik und Chemie (z. B. `ki`, Titel „KI und Daten“). Die vorhandene Struktur aus Fach, Bereich, Thema und Simulation wird genutzt:
+Der Kurs ist kein Fach im Lehrplan, sondern ein eigener Bereich `src/kurse/` (eigene Adressen, eigene Tests, berührt die Simulationen und Länder-Lehrpläne nicht):
 
-- `src/curriculum/ki.ts`: Bereiche und Themen, Reihenfolge wie im Kurs.
-- `src/simulations/ki/<id>/`: je Lektion eine interaktive Simulation (Canvas, wie bisher). Die Rechenlogik steht in `model.ts` und ist getestet.
-- `src/content/simulations/{de,en}/<id>.md`: Erklärtext zur Lektion.
-- Spielstand, Punkte und Abzeichen in einem kleinen Modul in `src/sim-core/` bzw. `src/lib/`, gespeichert im „Local Storage“ des Browsers.
+- `src/kurse/ki-abenteuer/index.ts`: Bereiche und Lektionen (Titel, Adresse, Symbol, Dauer, `status`).
+- `src/kurse/ki-abenteuer/lessons/<id>.ts`: Schritte einer Lektion – `say` (Bit erzählt), `choice` (Frage, genau eine richtige Antwort), `game` (Spiel), `info` („Für Neugierige“).
+- `src/kurse/ki-abenteuer/games/<name>.ts`: die Spiele (Oberfläche ohne innerHTML, Bausteine in `parts/` und `engine/ui.ts`).
+- `src/kurse/ki-abenteuer/models/*.ts`: Rechenlogik und Daten der Spiele, getestet in `tests/kurs-*.test.ts`.
+- `src/kurse/engine/`: Spielstand (`progress.ts`: XP, 10 Stufen, Sterne, Abzeichen, Serie, Code zum Mitnehmen), Speicher (`store.ts`, Schnittstelle `ProgressStore`), Bit als SVG (`bit.ts`), Karte (`hub.ts`), Lektionsablauf (`lesson.ts`).
+- Seiten: `src/views/KursView.astro` (Karte), `src/views/LektionView.astro`; Aussehen `src/styles/kurs.css`; Oberflächentexte `src/kurse/strings.ts`.
 
-Alle Regeln aus `CLAUDE.md` gelten unverändert (zweisprachig, Farben nur über `ctx.theme`, keine externen Ressourcen, Tests für Rechenlogik).
+**Neue Lektion:** Eintrag in `index.ts`, Datei in `lessons/`, ggf. Spiel in `games/` und Modell mit Test. Danach `npm run verify`. Hinweis: Neue Dateien findet der Testlauf über `import.meta.glob`; meldet ein Test eine fehlende Lektion, obwohl die Datei da ist, den Ordner `node_modules/.vitest-cache` löschen.
+
+**Wertung:** Fehler in Fragen und Spielen ergeben Sterne (0 Fehler: 3, 1–2: 2, sonst 1). XP: 20 + 10 je Stern, beim Wiederholen nur für Verbesserungen; je Abzeichen 20 XP. Lektionen werden der Reihe nach frei; „Alle Lektionen freischalten“ in den Einstellungen der Karte (für Lehrkräfte).
+
+### Lektionen (erste Fassung)
+
+| Bereich | Lektion | Spiel |
+| --- | --- | --- |
+| 1 Bit erwacht | Hallo, ich bin Bit | Regeln für Katze/Hund – keine Regel schafft alle (höchstens 6 von 9) |
+| | KI im Alltag | Karten „KI / keine KI“ |
+| | Aus Beispielen lernen | Äpfel und Birnen zeigen, Probe nach jedem Beispiel (nächster Nachbar) |
+| 2 Daten und Muster | Gute Merkmale | Merkmal wählen, Bit sortiert Vögel/Säugetiere (Federn 10/10, Fotos 6/10) |
+| | Die Grenze finden | Linie zwischen Zitronen und Orangen ziehen |
+| | Falsche Daten | drei falsch beschriftete Früchte finden; Probe steigt von 75 % auf 100 % |
+| 3 Bit lernt | Frag die Nachbarn | k = 1, 3, 5; Zwergkaninchen als Ausreißer |
+| | Der Fragen-Baum | Entscheidungsbaum bauen (am kürzesten: 2 Fragen) |
+| | Üben und Prüfen | Überanpassung: Übung gegen Probe je nach Zahl der Nachbarn |
+| 4 Bits Gehirn | Ein Neuron | Gewichte und Schwelle für „Kino ja/nein“ |
+| | Das Neuron lernt | Perzeptron-Lernregel Schritt für Schritt (rund 30 Schritte) |
+| | Bergab lernen | Gradientenabstieg, zwei Täler, Schrittweite (Lernrate) wählen |
+| 5 Bilder und Sprache | Bilder sind Zahlen | Smiley aus Zahlen nachmalen (7 × 7) |
+| | Zeichen erkennen | Kreuz/Kreis/Strich zeichnen, Probe mit verwackelten Zeichnungen |
+| | Das nächste Wort | Wortpaar-Modell aus 11 Sätzen; erfundene, aber richtig klingende Sätze |
+| 6 KI und wir | Ist das fair? | nur Turnschuhe gelernt → Sandalen falsch; Beispiele ergänzen |
+| | Stimmt das? | Karten „stimmt / stimmt nicht“, Quellen prüfen |
+| | Meine Daten | Karten „okay zu teilen / lieber nicht“ |
+
+Offen: Probespielen durch die Projektleitung und mit Schülern; fachliche und sprachliche Durchsicht (Entwurf); Englisch gegenlesen; danach `COURSES_PUBLIC = true` und Hinweis auf der Startseite.
 
 ## Kursplan (Vorschlag, 6 Bereiche, rund 20 Lektionen)
 

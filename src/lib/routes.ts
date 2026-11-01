@@ -2,6 +2,7 @@ import { allSimulations, getArea, getSimulation, getSubject, SUBJECTS } from '..
 import { getCurriculum, getCurriculumGrade, STATE_CURRICULA } from '../curriculum/lehrplaene';
 import type { SubjectId } from '../curriculum/types';
 import { LANGS, type Lang, type Localized } from '../i18n/config';
+import { COURSES, getCourse, getLesson, lessonsOf } from '../kurse';
 
 /**
  * Alle Seiten der Website und ihre (sprachabhängigen) Adressen.
@@ -22,7 +23,11 @@ export type Route =
   /** Länder-Lehrplan: Übersicht aller Jahrgangsstufen */
   | { kind: 'curriculum'; curriculum: string }
   /** Länder-Lehrplan: eine Jahrgangsstufe */
-  | { kind: 'grade'; curriculum: string; grade: number };
+  | { kind: 'grade'; curriculum: string; grade: number }
+  /** Kurs (z. B. KI-Abenteuer): Karte mit allen Lektionen */
+  | { kind: 'course'; course: string }
+  /** Eine Lektion eines Kurses */
+  | { kind: 'lesson'; course: string; lesson: string };
 
 export const INFO_PAGES: Record<InfoPageId, Localized> = {
   teachers: { de: 'lehrkraefte', en: 'teachers' },
@@ -62,6 +67,10 @@ export function routeSegments(lang: Lang, route: Route): string[] {
       const stage = getCurriculumGrade(route.curriculum, route.grade);
       return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang], gradeSlug(lang, stage.grade, stage.toGrade)];
     }
+    case 'course':
+      return [getCourse(route.course).slug[lang]];
+    case 'lesson':
+      return [getCourse(route.course).slug[lang], getLesson(route.course, route.lesson).slug[lang]];
     case 'simulation': {
       const sim = getSimulation(route.id);
       if (!sim.slug) throw new Error(`Simulation ${sim.id} hat keinen Slug (nur fertige Simulationen haben eine Seite).`);
@@ -101,6 +110,10 @@ export function allRoutes(): Route[] {
     for (const area of subject.areas) routes.push({ kind: 'area', subject: subject.id, area: area.id });
   }
   for (const sim of allSimulations()) if (sim.status === 'ready') routes.push({ kind: 'simulation', id: sim.id });
+  for (const course of COURSES) {
+    routes.push({ kind: 'course', course: course.id });
+    for (const lesson of lessonsOf(course)) if (lesson.status === 'ready') routes.push({ kind: 'lesson', course: course.id, lesson: lesson.id });
+  }
   for (const curriculum of STATE_CURRICULA) {
     routes.push({ kind: 'curriculum', curriculum: curriculum.id });
     for (const grade of curriculum.grades) routes.push({ kind: 'grade', curriculum: curriculum.id, grade: grade.grade });

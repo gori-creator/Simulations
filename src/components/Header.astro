@@ -1,5 +1,6 @@
 ---
 import { SUBJECTS } from '../curriculum';
+import { COURSES, COURSES_PUBLIC } from '../kurse';
 import { LANG_META, LANGS, type Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import { href } from '../lib/routes';
@@ -37,6 +38,14 @@ const { lang, alternates, section, motionToggle = false } = Astro.props;
             {subject.status === 'planned' && <span class="site-nav__soon">{' '}{t(lang, 'nav.soon')}</span>}
           </a>
         ))
+      }
+      {
+        COURSES_PUBLIC &&
+          COURSES.map((course) => (
+            <a class:list={['site-nav__link', { 'is-active': section === 'kurs' }]} href={href(lang, { kind: 'course', course: course.id })}>
+              {course.title[lang]}
+            </a>
+          ))
       }
       <a class:list={['site-nav__link', { 'is-active': section === 'catalog' }]} href={href(lang, { kind: 'catalog' })}>
         {t(lang, 'nav.catalog')}
