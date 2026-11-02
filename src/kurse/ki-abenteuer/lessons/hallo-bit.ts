@@ -24,6 +24,12 @@ const lesson: LessonContent = {
     { kind: 'say', mood: 'wow', text: L('So funktioniert auch KI: Statt Regeln zu schreiben, zeigt man ihr viele Beispiele. Daraus findet sie selbst heraus, worauf es ankommt.', 'That’s how AI works too: instead of writing rules, you show it lots of examples. From them it works out by itself what matters.') },
     {
       kind: 'info',
+      tone: 'plain',
+      title: L('Wer ist Bit?', 'Who is Bit?'),
+      text: L('Ich rede wie ein kleiner Roboter, der „weiß“ und „denkt“. In Wahrheit bin ich ein Programm, das mit Zahlen rechnet. Wenn ich „ich lerne“ sage, heißt das: Meine Zahlen werden besser eingestellt. Achte in diesen Kästen darauf, was wirklich passiert.', 'I talk like a little robot who “knows” and “thinks”. In truth I’m a program that calculates with numbers. When I say “I learn”, it means: my numbers are getting set better. Watch these boxes to see what really happens.'),
+    },
+    {
+      kind: 'info',
       title: L('Was heißt KI?', 'What does AI mean?'),
       text: L(
         'KI steht für Künstliche Intelligenz. Gemeint sind Computerprogramme, die Aufgaben lösen, für die Menschen nachdenken müssen: Bilder erkennen, Sprache verstehen, Texte schreiben. Die meisten heutigen KIs lernen aus Beispielen. Das nennt man maschinelles Lernen.',

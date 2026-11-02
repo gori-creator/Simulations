@@ -46,3 +46,25 @@ export function averageEpsilon(probs: readonly number[], n: number, eps: number,
   for (let k = 0; k < runs; k++) sum += runEpsilon(probs, n, eps, random);
   return sum / runs;
 }
+
+/** „Beim ersten Erfolg bleiben“: der Reihe nach probieren, nach dem ersten Erfolg nur noch dort. */
+export function runSticky(probs: readonly number[], n: number, random: () => number): number {
+  let arm = 0;
+  let stuck = false;
+  let total = 0;
+  for (let t = 0; t < n; t++) {
+    const r = pull(probs[arm]!, random);
+    total += r;
+    if (!stuck) {
+      if (r) stuck = true;
+      else arm = (arm + 1) % probs.length;
+    }
+  }
+  return total;
+}
+
+export function averageSticky(probs: readonly number[], n: number, runs: number, random: () => number): number {
+  let sum = 0;
+  for (let k = 0; k < runs; k++) sum += runSticky(probs, n, random);
+  return sum / runs;
+}

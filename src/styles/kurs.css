@@ -2891,3 +2891,34 @@ button.kitem:hover:not(:disabled) {
 .kfair__label { fill: var(--text); font-size: 13px; font-weight: 700; font-family: var(--font-sans); }
 .kfair__zone { fill: color-mix(in srgb, var(--k-tone) 12%, transparent); }
 .klegend__dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; } .klegend__dot.is-good { background: var(--k-good); } .klegend__dot.is-bad { background: var(--k-bad); }
+
+/* ---------- KI-Abenteuer: neue Spiele ---------- */
+
+.kgrp__dot { fill: var(--surface-3); stroke: var(--border-strong); stroke-width: 1.5; }
+.kgrp__dot.kgrp--a { fill: var(--k-a); stroke: none; }
+.kgrp__dot.kgrp--b { fill: var(--k-b); stroke: none; }
+.kgrp__dot.kgrp--c { fill: var(--k-good); stroke: none; }
+.kgrp__flag { font-size: 26px; }
+.kgrp__emoji { font-size: 18px; }
+.kzaun__animal { font-size: 20px; pointer-events: none; }
+.kmapw { font-size: 24px; pointer-events: none; }
+.kmapw.is-new { filter: drop-shadow(0 0 4px var(--k-gold)); }
+.kmapw__label { fill: var(--muted); font-size: 11px; font-family: var(--font-sans); pointer-events: none; }
+.kbandit__icon { font-size: 2.2rem; }
+.kq--kids .kq__floor { fill: color-mix(in srgb, var(--k-gold) calc(var(--v) * 45%), var(--surface-2)); }
+.kq__trail { font-size: 22px; opacity: 0.55; pointer-events: none; }
+.kq__trail.is-path { opacity: 1; }
+.kq__icon--big { font-size: 30px; }
+.knim__pile--sticks { gap: 10px; }
+.knim__stick { width: 10px; height: 56px; border-radius: 4px; background: linear-gradient(180deg, #e8553d 0 14%, #d9a066 14% 100%); }
+.kboxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.kboxes__box { display: grid; gap: 2px; padding: 8px 10px; border-radius: 10px; border: 2px solid var(--border); background: color-mix(in srgb, #d9a066 18%, var(--surface)); font-size: 0.85rem; word-break: break-all; }
+.kboxes__box.is-now { border-color: var(--k-gold); }
+.kmodelcard { display: grid; gap: 10px; }
+.kmodelcard__field { margin: 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); display: grid; gap: 6px; }
+.kmodelcard__field legend { font-weight: 800; padding: 0 4px; }
+.kfeed { display: grid; gap: 8px; }
+.kfeed__item { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; padding: 8px 10px; border-radius: var(--radius); border: 2px solid var(--border); background: var(--surface); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.kfeed__item:hover { border-color: var(--k-tone); }
+.kfeed__item small { display: block; color: var(--muted); }
+.kfeed__icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px; background: var(--surface-2); font-size: 1.8rem; }

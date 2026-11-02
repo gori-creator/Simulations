@@ -16,7 +16,7 @@ type Pair = [string, string];
 const card = (year: number, title: Pair, text: Pair): KnowledgeCard => ({ year, title: L(...title), text: L(...text) });
 
 /** Noch im Bau (erscheinen auf der Karte als „bald“). */
-const SOON = new Set(['gruppen-finden', 'steckbrief', 'team-neuronen', 'woerter-karte', 'eisdiele', 'labyrinth', 'streichhoelzer', 'chatbot-bauen', 'bilder-aus-rauschen', 'echt-oder-fake', 'mein-feed', 'schlau-nutzen', 'zeitreise']);
+const SOON = new Set<string>([]);
 
 const lesson = (id: string, slug: Pair, title: Pair, teaser: Pair, icon: string, minutes: number, c: KnowledgeCard, extra: Partial<LessonMeta> = {}): LessonMeta => ({
   id,
