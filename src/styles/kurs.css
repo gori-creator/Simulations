@@ -2746,3 +2746,36 @@ button.kitem:hover:not(:disabled) {
 .ktree3__open.is-active { color: var(--k-gold); }
 .kitems--wide { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
 .kitem--split { justify-items: start; text-align: left; gap: 4px; font-size: 0.9rem; }
+
+/* ---------- Neuronale Netze (KI-Labor) ---------- */
+
+.klogic__shade { fill: color-mix(in srgb, var(--k-a) 16%, transparent); }
+.kplot__line--a { stroke: var(--k-a); }
+.kplot__line--b { stroke: var(--k-b); }
+
+.kgraph { display: block; width: 100%; height: auto; }
+.kgraph__edge { stroke: var(--border-strong); stroke-width: 3; }
+.kgraph__node { fill: var(--surface-2); stroke: var(--border-strong); stroke-width: 2; }
+.kgraph__node.is-known { fill: color-mix(in srgb, var(--k-tone) 14%, var(--surface)); stroke: var(--k-tone); }
+.kgraph__value { fill: var(--text); font-size: 17px; font-weight: 800; font-family: var(--font-sans); }
+.kgraph__label { fill: var(--muted); font-size: 12px; font-family: var(--font-sans); }
+.kgraph__param { fill: var(--muted); font-size: 12px; font-family: var(--font-mono); }
+.kgraph__grad { fill: var(--k-bad); font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
+
+.kspark { display: block; width: 100%; max-width: 360px; height: auto; margin-top: 8px; background: var(--surface-2); border-radius: 8px; }
+
+.kplay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.kplay__canvas { display: block; width: 100%; max-width: 360px; height: auto; aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--border); image-rendering: auto; }
+.kplay__net { display: block; width: 100%; height: auto; margin-bottom: 8px; }
+.kplay__w { stroke-linecap: round; opacity: 0.85; }
+.kplay__w.is-pos { stroke: var(--k-a); }
+.kplay__w.is-neg { stroke: var(--k-b); }
+.kplay__n { fill: var(--surface); stroke: var(--text); stroke-width: 2; }
+.kplay__controls { display: grid; gap: 8px; }
+.kplay__group { display: grid; gap: 4px; }
+.kplay__label { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kbtn--small { min-height: 36px; padding: 4px 12px; font-size: 0.9rem; }
+
+@media (max-width: 760px) {
+  .kplay { grid-template-columns: 1fr; }
+}
