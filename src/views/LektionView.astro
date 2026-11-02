@@ -57,6 +57,7 @@ const card = lesson.card ? await cardArt(course.id, lesson.id) : null;
         <div class="kbubble">
           <span class="visually-hidden">{ks(lang, 'bitSays', { name: course.guideName })}:</span>
           <p class="kbubble__text" data-bubble aria-live="polite">{lesson.teaser[lang]}</p>
+          <button class="kbubble__speak" type="button" data-speak hidden aria-pressed="false" aria-label={ks(lang, 'readAloud')} title={ks(lang, 'readAloud')}>🔊</button>
         </div>
       </div>
 

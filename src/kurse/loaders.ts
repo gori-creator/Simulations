@@ -1,4 +1,4 @@
-import type { GameMount, LessonContent } from './types';
+import type { GameMount, GlossaryEntry, LessonContent } from './types';
 
 /**
  * Inhalte und Spiele werden erst auf der Lektionsseite geladen (eigene
@@ -10,6 +10,7 @@ import type { GameMount, LessonContent } from './types';
  */
 const lessonModules = import.meta.glob<{ default: LessonContent }>('./*/lessons/*.ts');
 const gameModules = import.meta.glob<{ default: GameMount<never> }>('./*/games/*.ts');
+const glossaryModules = import.meta.glob<{ GLOSSARY: GlossaryEntry[] }>('./*/woerter.ts');
 
 /** Ordner mit gemeinsamen Spielen. */
 export const SHARED = 'gemeinsam';
@@ -42,4 +43,10 @@ export async function loadGame(courseId: string, game: string): Promise<GameMoun
   const load = games[gameKey(courseId, game)];
   if (!load) throw new Error(`Spiel fehlt: ${courseId}/${game}`);
   return (await load()).default;
+}
+
+/** KI-Wörterbuch eines Kurses (leer, wenn es keins gibt). */
+export async function loadGlossary(courseId: string): Promise<GlossaryEntry[]> {
+  const load = glossaryModules[`./${courseId}/woerter.ts`];
+  return load ? (await load()).GLOSSARY : [];
 }

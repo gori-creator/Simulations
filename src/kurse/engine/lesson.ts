@@ -1,9 +1,10 @@
 import type { Lang, Localized } from '../../i18n/config';
 import { getCourse, getLesson } from '../index';
-import { loadGame, loadLesson } from '../loaders';
+import { loadGame, loadGlossary, loadLesson } from '../loaders';
 import { ks } from '../strings';
 import type { GameCtx, GameInstance, KnowledgeCard, Mood, Step } from '../types';
 import { clear, h } from './dom';
+import { compileGlossary, splitTerms, type CompiledGlossary } from './glossary';
 import { guideSvg, guideUpgrade } from './guide';
 import { dayKey, finishLesson, levelFor, type FinishResult } from './progress';
 import { storeFor } from './store';
@@ -57,11 +58,102 @@ export function initLesson(root: HTMLElement): void {
     guideBox.firstElementChild?.setAttribute('data-mood', mood);
   }
 
+  // ---------- Vorlesen: nur Stimmen, die auf dem Gerät laufen (localService), nichts geht ins Netz ----------
+  const speakBtn = root.querySelector<HTMLButtonElement>('[data-speak]');
+  const synth = typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : null;
+  let voice: SpeechSynthesisVoice | null = null;
+  const pickVoice = () => {
+    if (!synth || !speakBtn) return;
+    const local = synth.getVoices().filter((v) => v.localService && v.lang.toLowerCase().startsWith(lang));
+    voice = local.find((v) => v.default) ?? local[0] ?? null;
+    speakBtn.hidden = !voice;
+  };
+  const stopReading = () => {
+    if (synth?.speaking) synth.cancel();
+    speakBtn?.setAttribute('aria-pressed', 'false');
+  };
+  if (synth && speakBtn) {
+    pickVoice();
+    synth.addEventListener?.('voiceschanged', pickVoice);
+    speakBtn.addEventListener('click', () => {
+      if (!voice) return;
+      if (synth.speaking) return stopReading();
+      // Sprechblase, dann Kasten- und Antworttexte des aktuellen Schritts
+      const parts = [bubble.textContent ?? '', ...[...play.querySelectorAll<HTMLElement>('.kinfo > p, .kchoice__opt')].map((el) => el.textContent ?? '')];
+      const utterance = new SpeechSynthesisUtterance(parts.filter((t) => t.trim()).join('. '));
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+      utterance.rate = 0.95;
+      utterance.onend = utterance.onerror = () => speakBtn.setAttribute('aria-pressed', 'false');
+      speakBtn.setAttribute('aria-pressed', 'true');
+      synth.speak(utterance);
+    });
+    addEventListener('pagehide', stopReading);
+  }
+
+  // ---------- KI-Wörterbuch: Fachwörter antippen ----------
+  let glossary: CompiledGlossary | null = null;
+  /** Jedes Wort wird je Lektion nur beim ersten Vorkommen markiert. */
+  const usedTerms = new Set<string>();
+  const termPop = h('div', { class: 'kterm-pop', attrs: { role: 'dialog', 'aria-modal': 'false', hidden: true } });
+  root.append(termPop);
+  let activeTerm: HTMLButtonElement | null = null;
+  const hideTerm = () => {
+    termPop.hidden = true;
+    activeTerm?.setAttribute('aria-expanded', 'false');
+    activeTerm = null;
+  };
+  const showTerm = (button: HTMLButtonElement, term: Localized, text: Localized) => {
+    if (activeTerm === button) return hideTerm();
+    hideTerm();
+    clear(termPop);
+    termPop.setAttribute('aria-label', tx(term));
+    termPop.append(h('strong', { class: 'kterm-pop__title', text: `📖 ${tx(term)}` }), h('p', { class: 'kterm-pop__text', text: tx(text) }));
+    termPop.hidden = false;
+    const r = button.getBoundingClientRect();
+    const width = Math.min(320, window.innerWidth - 24);
+    termPop.style.width = `${width}px`;
+    termPop.style.left = `${Math.max(12, Math.min(window.innerWidth - width - 12, r.left + r.width / 2 - width / 2))}px`;
+    const below = r.bottom + 8;
+    termPop.style.top = `${below + termPop.offsetHeight > window.innerHeight - 8 ? Math.max(8, r.top - termPop.offsetHeight - 8) : below}px`;
+    button.setAttribute('aria-expanded', 'true');
+    activeTerm = button;
+  };
+  document.addEventListener('click', (event) => {
+    if (activeTerm && !termPop.contains(event.target as Node) && event.target !== activeTerm) hideTerm();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && activeTerm) {
+      const button = activeTerm;
+      hideTerm();
+      button.focus();
+    }
+  });
+  addEventListener('scroll', () => activeTerm && hideTerm(), { passive: true });
+
+  /** Text einsetzen; Fachwörter aus dem Wörterbuch werden zu Knöpfen mit Erklärung. */
+  function richText(el: HTMLElement, text: string): void {
+    clear(el);
+    for (const part of splitTerms(text, glossary, usedTerms)) {
+      if (!part.entry) {
+        el.append(part.text);
+        continue;
+      }
+      const entry = part.entry;
+      const button = h('button', { class: 'kterm', attrs: { type: 'button', 'aria-expanded': 'false', 'aria-haspopup': 'dialog', title: tx(entry.term) } }, part.text);
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        showTerm(button, entry.term, entry.text);
+      });
+      el.append(button);
+    }
+  }
+
   let talkTimer = 0;
   function say(text: Localized | string, mood: Mood = 'happy'): void {
     setMood(mood);
     const words = typeof text === 'string' ? text : tx(text);
-    bubble.textContent = words;
+    richText(bubble, words);
     // Die Figur „spricht“ (Mund bewegt sich), ungefähr so lange, wie der Satz zum Lesen braucht
     if (!reducedMotion) {
       guideBox.classList.add('is-talking');
@@ -119,6 +211,7 @@ export function initLesson(root: HTMLElement): void {
   }
 
   async function renderStep(): Promise<void> {
+    stopReading();
     const my = ++token;
     game?.destroy?.();
     game = undefined;
@@ -140,7 +233,9 @@ export function initLesson(root: HTMLElement): void {
       const plain = step.tone === 'plain';
       say(step.title, plain ? 'think' : 'wink');
       const head = plain ? `🔧 ${ks(lang, 'plain')}: ${tx(step.title)}` : `💡 ${ks(lang, 'forCurious')}: ${tx(step.title)}`;
-      const box = h('details', { class: `kinfo${plain ? ' kinfo--plain' : ''}`, attrs: { open: true } }, h('summary', {}, head), h('p', { text: tx(step.text) }));
+      const infoText = h('p');
+      richText(infoText, tx(step.text));
+      const box = h('details', { class: `kinfo${plain ? ' kinfo--plain' : ''}`, attrs: { open: true } }, h('summary', {}, head), infoText);
       if (step.formula) {
         const formula = typeof step.formula === 'string' ? step.formula : tx(step.formula);
         box.append(h('p', { class: 'kformula', attrs: { role: 'math', 'aria-label': formula }, text: formula }));
@@ -379,8 +474,9 @@ export function initLesson(root: HTMLElement): void {
 
   setLevelPill();
   setMood('happy');
-  loadLesson(courseId, lessonId)
-    .then((content) => {
+  Promise.all([loadLesson(courseId, lessonId), loadGlossary(courseId).catch(() => [])])
+    .then(([content, entries]) => {
+      glossary = compileGlossary(entries, lang);
       steps = content.steps;
       takeaway = content.takeaway;
       root.classList.add('is-ready');

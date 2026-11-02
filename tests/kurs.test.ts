@@ -120,3 +120,47 @@ describe('Handreichung für Lehrkräfte', () => {
     for (const course of COURSES) for (const lesson of lessonsOf(course)) for (const lang of LANGS) expect(lesson.slug[lang]).not.toBe(COURSE_GUIDE_SLUG[lang]);
   });
 });
+
+describe('KI-Wörterbuch', () => {
+  it('Muster sind gültig, ohne eigene Gruppen, und die meisten Wörter kommen in den Lektionen vor', async () => {
+    const { loadGlossary } = await import('../src/kurse/loaders');
+    const { compileGlossary, splitTerms } = await import('../src/kurse/engine/glossary');
+    for (const course of COURSES) {
+      const entries = await loadGlossary(course.id);
+      expect(entries.length, course.id).toBeGreaterThanOrEqual(15);
+      expect(new Set(entries.map((e) => e.id)).size).toBe(entries.length);
+      for (const lang of LANGS) {
+        for (const e of entries) {
+          // keine Fanggruppen im Muster (sonst stimmt die Zuordnung nicht)
+          expect(new RegExp(`${e.match[lang]}|`, 'u').exec('')!.length, `${e.id}/${lang}`).toBe(1);
+          expect(e.text[lang].length, e.id).toBeGreaterThan(30);
+        }
+        const g = compileGlossary(entries, lang);
+        const hits = new Set<string>();
+        for (const l of lessonsOf(course)) {
+          const content = await loadLesson(course.id, l.id);
+          const used = new Set<string>();
+          for (const step of content.steps as Step[]) {
+            const texts = step.kind === 'choice' || step.kind === 'predict' ? [step.question] : step.kind === 'info' ? [step.title, step.text] : step.kind === 'say' ? [step.text] : [];
+            for (const t of texts) for (const seg of splitTerms(t[lang], g, used)) if (seg.entry) hits.add(seg.entry.id);
+          }
+        }
+        expect(hits.size / entries.length, `${course.id}/${lang}`).toBeGreaterThanOrEqual(0.7);
+      }
+    }
+  });
+
+  it('markiert jedes Wort nur einmal und nur als ganzes Wort', async () => {
+    const { compileGlossary, splitTerms } = await import('../src/kurse/engine/glossary');
+    const entries = [
+      { id: 'test', term: { de: 'Probe', en: 'Test' }, match: { de: 'Probe(?:n)?', en: 'tests?' }, text: { de: 'x'.repeat(31), en: 'x'.repeat(31) } },
+      { id: 'turing', term: { de: 'Turing-Test', en: 'Turing test' }, match: { de: 'Turing-Test', en: 'Turing test' }, text: { de: 'x'.repeat(31), en: 'x'.repeat(31) } },
+    ];
+    const g = compileGlossary(entries, 'en');
+    const used = new Set<string>();
+    const parts = splitTerms('The Turing test is a test. Tests and contests.', g, used);
+    expect(parts.filter((p) => p.entry).map((p) => p.text)).toEqual(['Turing test', 'test']);
+    expect(splitTerms('More tests.', g, used).some((p) => p.entry)).toBe(false);
+    expect(splitTerms('contests', compileGlossary(entries, 'en'), new Set()).some((p) => p.entry)).toBe(false);
+  });
+});

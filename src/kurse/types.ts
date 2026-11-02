@@ -137,3 +137,14 @@ export interface WorldGuide {
   /** Idee ohne Computer (unplugged). */
   unplugged: Localized;
 }
+
+/** Eintrag im KI-Wörterbuch eines Kurses (`<kurs>/woerter.ts`). */
+export interface GlossaryEntry {
+  id: string;
+  /** Anzeigename im Wörterbuch. */
+  term: Localized;
+  /** Regulärer Ausdruck (Quelltext, ohne Flags) für die Wortformen im Text. */
+  match: Localized;
+  /** Erklärung in ein, zwei einfachen Sätzen. */
+  text: Localized;
+}

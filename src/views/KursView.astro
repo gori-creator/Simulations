@@ -5,7 +5,7 @@ import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
 import { cardArt, worldArt } from '../kurse/art';
-import { loadLesson } from '../kurse/loaders';
+import { loadGlossary, loadLesson } from '../kurse/loaders';
 import { guideSvg } from '../kurse/engine/guide';
 import { badgeRules } from '../kurse/engine/progress';
 import { ks } from '../kurse/strings';
@@ -29,6 +29,8 @@ const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.i
 // Optionale Bilder (docs/KI-KURS-BILDER.md); fehlen sie, bleibt die gezeichnete Darstellung.
 const worldArts = await Promise.all(course.chapters.map((chapter) => worldArt(course.id, chapter.id)));
 const cardArts = new Map(await Promise.all(cards.map(async (lesson) => [lesson.id, await cardArt(course.id, lesson.id)] as const)));
+// KI-Wörterbuch (alphabetisch)
+const glossary = (await loadGlossary(course.id)).sort((a, b) => a.term[lang].localeCompare(b.term[lang], lang));
 // Merksätze für den Spickzettel jeder Welt
 const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.id, (await loadLesson(course.id, lesson.id)).takeaway] as const)));
 ---
@@ -235,6 +237,29 @@ const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.
                 );
               })}
             </ol>
+          </section>
+        )
+      }
+
+      {
+        glossary.length > 0 && (
+          <section class="kwords">
+            <details>
+              <summary>
+                <h2 id="kwords-title">
+                  📖 {ks(lang, 'glossary')} <span class="kwords__count">({glossary.length})</span>
+                </h2>
+              </summary>
+              <p class="kalbum__text">{ks(lang, 'glossaryText')}</p>
+              <dl class="kwords__list">
+                {glossary.map((entry) => (
+                  <div class="kwords__item">
+                    <dt>{entry.term[lang]}</dt>
+                    <dd>{entry.text[lang]}</dd>
+                  </div>
+                ))}
+              </dl>
+            </details>
           </section>
         )
       }
