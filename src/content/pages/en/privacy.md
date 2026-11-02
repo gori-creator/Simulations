@@ -32,7 +32,7 @@ For more information, see STRATO's privacy policy: [strato.de/datenschutz](https
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, your **AI Adventure progress** (lessons, stars, points, badges), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, your **AI course progress** (AI Adventure and AI Lab: lessons, stars, points, badges), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
 
 ## Contact form
 
@@ -62,4 +62,4 @@ An informal message to kontakt@scitura.de is sufficient.
 
 No automated decision-making, including profiling, takes place.
 
-Last updated: October 2026
+Last updated: November 2026

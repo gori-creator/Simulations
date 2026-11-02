@@ -1,7 +1,7 @@
 import { clear, h, seeded } from '../../engine/dom';
 import { solved } from '../../engine/ui';
 import type { GameMount } from '../../types';
-import { closest, gaussian, generate, N, noisy, PICTURES, STEPS, type Pic } from '../../gemeinsam/models/diffusion';
+import { closest, gaussian, generate, noisy, PICTURES, STEPS, type Pic } from '../../gemeinsam/models/diffusion';
 
 /**
  * Spiel „Aus Rauschen wird Bild“: (1) Vorwärts: einem Bild Schritt für

@@ -3,7 +3,7 @@ import { clear, h, s } from '../../engine/dom';
 import { meter, solved } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { side, type Pt } from '../models/linie';
-import { marker, paintShade, scatter, sx, sy } from '../parts/scatter';
+import { paintShade, scatter, sx, sy } from '../parts/scatter';
 
 /**
  * Spiel „Neuronen im Team“: Schafe stehen in der Mitte, Wölfe drumherum.

@@ -18,7 +18,7 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - `src/sim-core/` – Kern (Host, Regler, URL-Zustand, Plot/Surface, Format, Uhr). Simulationen importieren nur aus `src/sim-core/index.ts`
 - `src/simulations/<fach>/<id>/` – Umsetzung (`index.ts`), Rechenlogik (`model.ts`), optional Vorschaubild (`thumb.svg`); `registry.ts` findet die Ordner automatisch
 - `src/content/simulations/{de,en}/<id>.md` – Lernmaterial; `src/content/pages/{de,en}/` – Infoseiten
-- `src/kurse/` – Kurse (KI-Abenteuer): Lektionen, Spiele, Spielstand; Aufbau in `docs/KI-KURS-KONZEPT.md`
+- `src/kurse/` – Kurse (KI-Abenteuer, Klasse 5–10; KI-Labor, Klasse 11–13; gemeinsame Spiele in `gemeinsam/`): Lektionen, Spiele, Spielstand; Aufbau in `docs/KI-KURS-KONZEPT.md`
 - `src/i18n/ui.ts` – alle UI-Texte (DE ist Referenz, EN muss alle Schlüssel haben)
 - Details: `docs/ARCHITEKTUR.md`
 - Offene Aufgaben: `docs/AUFGABEN.md`

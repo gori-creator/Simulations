@@ -1,115 +1,166 @@
-# KI-Abenteuer: Konzept und Umsetzung
+# KI-Kurse: Konzept und Umsetzung
 
-Stand 01.11.2026. Name „KI-Abenteuer“, roter Faden „Bit, der Roboter, den man trainiert“ und die 6 Bereiche hat die Projektleitung am 01.11. freigegeben. Alle 18 Lektionen sind als erste Fassung gebaut (siehe „Umsetzung“). Bis zur Freigabe nach dem Probespielen ist der Kurs nur über die Adresse erreichbar (`/de/ki-abenteuer/`), nicht verlinkt und nicht in Suchmaschinen (`COURSES_PUBLIC` in `src/kurse/index.ts`).
+Stand 03.11.2026. Es gibt zwei Kurse auf zwei Stufen, beide als vollständige erste Fassung gebaut:
+
+| Kurs | Für | Begleitung | Umfang | Adresse |
+| --- | --- | --- | --- | --- |
+| **KI-Abenteuer** | Klasse 5–10 | Bit, ein Roboter, den man trainiert | 9 Welten, 34 Lektionen à 5–8 Minuten (rund 4 Stunden) | `/de/ki-abenteuer/` |
+| **KI-Labor** | Klasse 11–13 | Ada, die Laborassistenz (eine schwebende Kugel, benannt nach Ada Lovelace) | 8 Welten, 31 Lektionen à 10–15 Minuten (rund 6 Stunden) | `/de/ki-labor/` |
+
+Beide Kurse stehen auf der Übersichtsseite `/de/ki-kurse/` (englisch `/en/ai-courses/`). Bis zur Freigabe sind sie nur über die Adresse erreichbar, nicht verlinkt und nicht in Suchmaschinen (`COURSES_PUBLIC = false` in `src/kurse/index.ts`).
+
+Freigegeben hat die Projektleitung am 01.11.: Name „KI-Abenteuer“, Bit als roter Faden, die ersten 6 Bereiche. Auf ihren Wunsch vom 02.11. kamen dazu: die zweite Stufe (KI-Labor), mehr Spiel (Welten, Missionen, Wissenskarten), die Geschichte der KI als zweiter roter Faden und die Erweiterung des KI-Abenteuers auf 9 Welten. Diese Erweiterung ist noch nicht durchgesehen (siehe „Offen“).
 
 ## Ziel
 
-Ein spielerischer Kurs („Gamification“), der Schülern erklärt, **wie Künstliche Intelligenz funktioniert**: von Daten und Mustern über lernende Modelle bis zu Sprachmodellen. Der Schwerpunkt liegt auf den Grundlagen, nicht auf der Bedienung einzelner KI-Werkzeuge. Hinweise zum sinnvollen Umgang kommen als eigenes, kleines Modul dazu.
+Die Kurse sollen zeigen, **wie KI funktioniert** und **wie sie entstanden ist**: von Regeln und Suche über das Lernen aus Daten und neuronale Netze bis zu Sprach- und Bildmodellen. Es geht um Grundlagen, nicht um die Bedienung bestimmter KI-Werkzeuge. Jede Welt verbindet drei Blickwinkel (nach dem „Dagstuhl-Dreieck“ der Gesellschaft für Informatik):
 
-## Annahmen (bitte bestätigen oder ändern)
+- **Wie funktioniert das?** Daten, Merkmale, Modelle, Training, Netze, Sprachmodelle – jedes Mal mit einem echten kleinen Modell zum Anfassen.
+- **Wie wirkt das?** Fairness, Feeds und Filterblasen, Fälschungen, Datenschutz, Regeln wie der AI Act.
+- **Wie nutze ich das?** Antworten prüfen, lernen statt abschreiben, die eigenen Daten schützen.
 
-- **Zielgruppe (festgelegt):** ab **Klasse 5**, ohne Vorkenntnisse. Sehr einfache Sprache, kurze Lektionen, viel Ausprobieren, wenig Text. Später eine Vertiefung für ältere Schüler (ab etwa Klasse 8 bis zur Oberstufe) als eigene Stufe.
-- **Spielweise (festgelegt):** **sehr gamifiziert**: Der Spielgedanke steht vorne, Erklärungen kommen in kleinen Häppchen.
-- **Einsatz:** in der Schule und zu Hause, frei zugänglich, kostenlos.
-- **Fortschritt (festgelegt):** zuerst **ohne Konten**, nur lokal im Browser (keine Anmeldung, keine Daten an uns). Das Spielstandsmodul wird aber so gebaut, dass Konten später ergänzt werden können (siehe „Konten später“).
-- **Keine echte KI im Netz (festgelegt):** Alle Beispiele laufen im Browser mit kleinen, selbst gerechneten Modellen. Schüler benutzen keine echte KI, auch keinen Chat mit einem Sprachmodell, und es werden keine externen Dienste genutzt. Es geht darum, wie KI funktioniert.
-- **Sprachen:** wie bisher Deutsch und Englisch.
+## Leitlinien
 
-## Umsetzung
-
-Der Kurs ist kein Fach im Lehrplan, sondern ein eigener Bereich `src/kurse/` (eigene Adressen, eigene Tests, berührt die Simulationen und Länder-Lehrpläne nicht):
-
-- `src/kurse/ki-abenteuer/index.ts`: Bereiche und Lektionen (Titel, Adresse, Symbol, Dauer, `status`).
-- `src/kurse/ki-abenteuer/lessons/<id>.ts`: Schritte einer Lektion – `say` (Bit erzählt), `choice` (Frage, genau eine richtige Antwort), `game` (Spiel), `info` („Für Neugierige“).
-- `src/kurse/ki-abenteuer/games/<name>.ts`: die Spiele (Oberfläche ohne innerHTML, Bausteine in `parts/` und `engine/ui.ts`).
-- `src/kurse/ki-abenteuer/models/*.ts`: Rechenlogik und Daten der Spiele, getestet in `tests/kurs-*.test.ts`.
-- `src/kurse/engine/`: Spielstand (`progress.ts`: XP, 10 Stufen, Sterne, Abzeichen, Serie, Code zum Mitnehmen), Speicher (`store.ts`, Schnittstelle `ProgressStore`), Bit als SVG (`bit.ts`), Karte (`hub.ts`), Lektionsablauf (`lesson.ts`).
-- Seiten: `src/views/KursView.astro` (Karte), `src/views/LektionView.astro`; Aussehen `src/styles/kurs.css`; Oberflächentexte `src/kurse/strings.ts`.
-
-**Neue Lektion:** Eintrag in `index.ts`, Datei in `lessons/`, ggf. Spiel in `games/` und Modell mit Test. Danach `npm run verify`. Hinweis: Neue Dateien findet der Testlauf über `import.meta.glob`; meldet ein Test eine fehlende Lektion, obwohl die Datei da ist, den Ordner `node_modules/.vitest-cache` löschen.
-
-**Wertung:** Fehler in Fragen und Spielen ergeben Sterne (0 Fehler: 3, 1–2: 2, sonst 1). XP: 20 + 10 je Stern, beim Wiederholen nur für Verbesserungen; je Abzeichen 20 XP. Lektionen werden der Reihe nach frei; „Alle Lektionen freischalten“ in den Einstellungen der Karte (für Lehrkräfte).
-
-### Lektionen (erste Fassung)
-
-| Bereich | Lektion | Spiel |
-| --- | --- | --- |
-| 1 Bit erwacht | Hallo, ich bin Bit | Regeln für Katze/Hund – keine Regel schafft alle (höchstens 6 von 9) |
-| | KI im Alltag | Karten „KI / keine KI“ |
-| | Aus Beispielen lernen | Äpfel und Birnen zeigen, Probe nach jedem Beispiel (nächster Nachbar) |
-| 2 Daten und Muster | Gute Merkmale | Merkmal wählen, Bit sortiert Vögel/Säugetiere (Federn 10/10, Fotos 6/10) |
-| | Die Grenze finden | Linie zwischen Zitronen und Orangen ziehen |
-| | Falsche Daten | drei falsch beschriftete Früchte finden; Probe steigt von 75 % auf 100 % |
-| 3 Bit lernt | Frag die Nachbarn | k = 1, 3, 5; Zwergkaninchen als Ausreißer |
-| | Der Fragen-Baum | Entscheidungsbaum bauen (am kürzesten: 2 Fragen) |
-| | Üben und Prüfen | Überanpassung: Übung gegen Probe je nach Zahl der Nachbarn |
-| 4 Bits Gehirn | Ein Neuron | Gewichte und Schwelle für „Kino ja/nein“ |
-| | Das Neuron lernt | Perzeptron-Lernregel Schritt für Schritt (rund 30 Schritte) |
-| | Bergab lernen | Gradientenabstieg, zwei Täler, Schrittweite (Lernrate) wählen |
-| 5 Bilder und Sprache | Bilder sind Zahlen | Smiley aus Zahlen nachmalen (7 × 7) |
-| | Zeichen erkennen | Kreuz/Kreis/Strich zeichnen, Probe mit verwackelten Zeichnungen |
-| | Das nächste Wort | Wortpaar-Modell aus 11 Sätzen; erfundene, aber richtig klingende Sätze |
-| 6 KI und wir | Ist das fair? | nur Turnschuhe gelernt → Sandalen falsch; Beispiele ergänzen |
-| | Stimmt das? | Karten „stimmt / stimmt nicht“, Quellen prüfen |
-| | Meine Daten | Karten „okay zu teilen / lieber nicht“ |
-
-Offen: Probespielen durch die Projektleitung und mit Schülern; fachliche und sprachliche Durchsicht (Entwurf); Englisch gegenlesen; danach `COURSES_PUBLIC = true` und Hinweis auf der Startseite.
-
-## Kursplan (Vorschlag, 6 Bereiche, rund 20 Lektionen)
-
-Für Klasse 5 bis 7 wird jede Lektion als kleines Spiel gebaut (Ordnen, Sortieren, Raten, Training eines „Haustiers“ oder Roboters). Begriffe wie „Gewicht“ oder „Gradient“ werden erst über Bilder und Spiele eingeführt, die genaue Fachsprache steht in einer ausklappbaren Zusatzerklärung („Für Neugierige“). So kann dieselbe Lektion für ältere Schüler tiefer erklärt werden.
-
-1. **Was ist KI?** Regeln gegen Lernen: ein Spamfilter mit festen Regeln und einer, der aus Beispielen lernt. KI im Alltag erkennen.
-2. **Daten und Muster.** Daten sammeln, Merkmale wählen, Ausreißer. Streudiagramm: Wo liegt die Grenze zwischen zwei Gruppen?
-3. **Lernen aus Beispielen.** Nächster-Nachbar-Verfahren, Entscheidungsbaum zum Selbstbauen, Training und Test, Überanpassung.
-4. **Neuronale Netze.** Ein Neuron, Gewichte und Schwelle, ein Netz verschieben und beobachten, Fehler und Lernrate, Training als „Bergabwandern“ (Gradientenabstieg).
-5. **Bilder und Sprache.** Wie ein Bild zu Zahlen wird, Zeichen erkennen, Wörter als Zahlen, Vorhersage des nächsten Wortes, warum Sprachmodelle überzeugend klingen, aber irren können.
-6. **KI und Gesellschaft.** Verzerrte Daten und Fairness, Fehlentscheidungen, Datenschutz, Urheberrecht, Umgang mit KI-Antworten (prüfen, nicht blind vertrauen).
-
-Jede Lektion hat: eine Frage, eine Simulation zum Ausprobieren, eine kurze Erklärung und 2 bis 4 Aufgaben mit sofortiger Rückmeldung.
+1. **Erst vermuten, dann ausprobieren, dann erklären.** Viele Lektionen beginnen mit einer Vermutungsfrage („Was glaubst du?“). Dort gibt es keine falschen Antworten; die Auflösung kommt nach dem Spiel.
+2. **Echte Modelle statt Attrappen.** Jedes Spiel rechnet mit einem kleinen, selbst geschriebenen Modell im Browser (k-nächste Nachbarn, Entscheidungsbaum, Perzeptron, Q-Lernen, Sprachmodell aus Wortpaaren, Entrauschen …). Was ein Text behauptet (z. B. „Lernrate 0,2 schaukelt sich auf“, „Alpha-Beta braucht weniger als ein Fünftel der Knoten“), ist durch Tests in `tests/kurs-*.test.ts` abgesichert.
+3. **Klartext statt Vermenschlichung.** Bit und Ada sagen „ich denke“ und „ich habe gelernt“, weil das Geschichten trägt. Kästen „Klartext“ (`info` mit `tone: 'plain'`) sagen dann nüchtern, was wirklich passiert: Es wird gezählt, verglichen und gerechnet. Die erste Lektion stellt das klar („Wer ist Bit?“).
+4. **Geschichte als roter Faden.** Jede Lektion schenkt eine Wissenskarte mit Jahr (von 1763 bis heute). Die Karten sammeln sich in einem Album auf der Kurskarte, nach Jahr sortiert. Welten tragen Zeitspannen, Zeitstrahl-Spiele ordnen Meilensteine, die letzte Mission jedes Kurses blickt auf die ganze Geschichte zurück.
+5. **Fachsprache in Stufen.** Im KI-Abenteuer gibt es keine Formeln; Fachwörter stehen in Kästen „Für Neugierige“. Das KI-Labor benutzt die echten Begriffe und zeigt Formeln (`info` mit `formula`), etwa für kleinste Quadrate, Entropie, Softmax oder die Q-Lern-Regel.
+6. **Verantwortung in jeder Welt, nicht nur am Ende.** Schon ELIZA hat eine Hilfe-Regel (bei Sätzen wie „Ich will nicht mehr leben“ nennt sie die Nummer gegen Kummer 116 111), der Chatbot zeigt „freundlich heißt nicht richtig“, der Steckbrief lehrt, Grenzen offen zu sagen.
+7. **Keine echte KI im Netz.** Schüler benutzen keinen Chat mit einem Sprachmodell, es werden keine externen Dienste aufgerufen, und nichts verlässt den Browser.
 
 ## Spielmechanik
 
-- **Punkte (XP)** für gelöste Aufgaben, mehr für Aufgaben ohne Hinweis.
-- **Abzeichen** je Bereich und für Besonderes (z. B. „Hast den Fehler im Modell gefunden“).
-- **Weg durch den Kurs:** eine Karte mit freigeschalteten Lektionen. Jede Lektion schaltet die nächste frei, wiederholen ist immer möglich.
-- **Serie:** Tage in Folge lernen, nur lokal sichtbar. Kein Druck, keine Strafen.
-- **Keine Bestenlisten und keine Vergleiche zwischen Schülern** (Datenschutz, kein Wettbewerbsdruck).
-- Wer den Fortschritt behalten will, kann ihn als Datei oder Code **exportieren und wieder importieren**.
-- Figuren, Farben und Töne sind kindgerecht, aber nicht kindisch, damit ältere Schüler es auch mögen. Töne sind aus und lassen sich nicht erzwingen (Barrierefreiheit, reduzierte Bewegung wie auf der Startseite).
+- **Lektion** = Folge von Schritten (`src/kurse/types.ts`): `say` (Begleitung erzählt), `choice` (Frage mit genau einer richtigen Antwort), `predict` (Vermutung ohne Wertung), `game` (Spiel), `info` („Für Neugierige“, „Klartext“, optional mit Formel).
+- **Sterne:** Fehler in Fragen und Spielen zählen (0 Fehler: 3 Sterne, 1–2: 2, sonst 1).
+- **XP:** 20 + 10 je Stern; beim Wiederholen nur für Verbesserungen; je Abzeichen 20 XP. XP lassen sich jederzeit aus Sternen und Abzeichen neu berechnen (`computeXp`).
+- **Stufen:** 10 je Kurs mit eigenen Namen (KI-Abenteuer: Funke … Meister; KI-Labor: Lochkarte, Relais, Röhre … Supercomputer). Bit und Ada verändern ihr Aussehen mit der Stufe.
+- **Abzeichen:** eines je Welt (Symbol der Welt), ein Abschlussabzeichen je Kurs und „Kartensammler“ für 10 Wissenskarten.
+- **Missionen:** Die letzte Lektion vieler Welten ist eine Mission, die das Gelernte zusammenführt (im KI-Labor jede Welt).
+- **Kurskarte:** Welten als Pfad mit Stationen; geschaffte Stationen mit Sternen, gesperrte mit Schloss, die nächste mit „Weiter“. Darunter Album und Abzeichen.
+- **Serie:** Tage in Folge, nur lokal sichtbar. Kein Druck, keine Strafen.
+- **Keine Bestenlisten** und keine Vergleiche zwischen Schülern.
+- **Für Lehrkräfte:** „Alle Lektionen freischalten“ in den Einstellungen der Karte. Spielstand per Code mitnehmen (anderes Gerät, anderer Browser).
 
-## Konten später (offen halten)
+## KI-Abenteuer (Klasse 5–10)
 
-Der Spielstand wird hinter einer kleinen Schnittstelle gespeichert (`ProgressStore` mit `load`, `save`, `export`, `import`). Heute schreibt sie in den Local Storage. Später kann dieselbe Schnittstelle an einen Server mit Anmeldung angeschlossen werden, ohne dass die Lektionen geändert werden müssen. Dafür sind dann nötig (nicht Teil dieser Phase):
+| Welt | Lektion | Spiel | Karte |
+| --- | --- | --- | --- |
+| 1 🔌 Bit erwacht | Hallo, ich bin Bit | Regeln für Katze/Hund – keine Regel schafft alle; Klartext „Wer ist Bit?“ | 1956 |
+| | KI im Alltag | Karten „KI / keine KI“ | 2011 |
+| | Aus Beispielen lernen | Äpfel und Birnen zeigen, Probe nach jedem Beispiel (nächster Nachbar) | 1951 |
+| 2 🕰️ Bits Vorfahren (1950–1997) | Mensch oder Maschine? | chatten und raten: Mensch oder Programm? | 1950 |
+| | Der erste Chatbot | mit ELIZA schreiben und ihre Regeln entdecken | 1966 |
+| | Bit rechnet voraus (Mission) | Steinchen-Spiel gegen Bit, das alle Spielverläufe durchrechnet | 1997 |
+| 3 📊 Daten und Muster | Gute Merkmale | Merkmal wählen, Bit sortiert Vögel und Säugetiere | 1936 |
+| | Die Grenze finden | Linie zwischen Zitronen und Orangen ziehen | 1995 |
+| | Falsche Daten | falsch beschriftete Früchte finden, Probe steigt | 2021 |
+| 4 🧭 Bit lernt | Frag die Nachbarn | k = 1, 3, 5; ein Ausreißer täuscht nur k = 1 | 1967 |
+| | Der Fragen-Baum | Entscheidungsbaum bauen | 1986 |
+| | Gruppen ohne Etiketten | Gruppen finden ohne Beschriftung (k-Means) | 1967 |
+| | Üben und Prüfen | Übungs- gegen Probefehler (Überanpassung) | 1974 |
+| | Bits Steckbrief (Mission) | aus einem Prüfbericht ehrlich einen Steckbrief (Model Card) ausfüllen | 2019 |
+| 5 🧠 Bits Gehirn | Ein Neuron | Gewichte und Schwelle für „Kino ja/nein“ | 1943 |
+| | Das Neuron lernt | Perzeptron-Lernregel Schritt für Schritt | 1958 |
+| | Bergab lernen | Gradientenabstieg, Schrittweite wählen | 1847 |
+| | Neuronen im Team | drei „Zäune“ (Neuronen) grenzen gemeinsam eine Insel ein | 1986 |
+| 6 🖼️ Bilder und Sprache | Bilder sind Zahlen | Smiley aus Zahlen malen | 1957 |
+| | Zeichen erkennen | Zeichen zeichnen, Probe mit verwackelten Zeichnungen | 1989 |
+| | Das nächste Wort | Wortpaar-Modell; erfundene, aber richtig klingende Sätze | 1948 |
+| | Die Wörter-Landkarte | neue Wörter einordnen; König − Mann + Frau = ? | 2013 |
+| 7 🍪 Lernen durch Belohnung | Ausprobieren oder Bewährtes? | 20 Tage Eisdielen wählen, danach drei Strategien im Vergleich | 1952 |
+| | Das Labyrinth | Bit lernt durch Belohnung den Weg zum Keks (Q-Lernen) | 2016 |
+| | Das Streichholz-Spiel (Mission) | Schachteln mit Perlen lernen das Spiel (Idee von MENACE) | 1961 |
+| 8 ✨ Bit wird kreativ | Bit wird ein Chatbot | erst lesen (zählen), dann Daumen (Rückmeldung); freundlich heißt nicht richtig | 2022 |
+| | Bilder aus Rauschen | Bild verrauschen, dann aus Rauschen ein Bild „aufräumen“ | 2022 |
+| | Echt oder Fake? | Karten „Vorsicht, prüfen!“ oder „spricht eher für echt“ | 2023 |
+| 9 🤝 KI und wir | Ist das fair? | nur Turnschuhe gelernt → Sandalen falsch; Beispiele ergänzen | 2018 |
+| | Mein Feed | Empfehlungen verstärken sich zur Filterblase | 2006 |
+| | Stimmt das? | Aussagen prüfen, Quellen suchen | 2023 |
+| | Meine Daten | „okay zu teilen“ oder „lieber nicht“ | 2018 |
+| | KI schlau nutzen | hilft beim Lernen, Lernen fällt aus oder riskant? | 2024 |
+| | Bits Zeitreise (Mission) | zehn Meilensteine der KI in die richtige Reihenfolge bringen | 2026 |
 
-- ein Server und eine Datenbank, Einwilligung und Datenschutzprüfung, besonders für Kinder unter 16 (Eltern bzw. Schule);
-- eine Lösung, die ohne Klarnamen auskommt (z. B. Klassencode oder Pseudonym);
-- Angaben in Impressum und Datenschutzerklärung und ein Löschweg für Nutzerdaten.
+## KI-Labor (Klasse 11–13)
 
-## Technik und Aufwand
+| Welt | Lektion | Experiment | Karte |
+| --- | --- | --- | --- |
+| 1 🧩 Was heißt hier Intelligenz? (1950–1980) | Das Imitationsspiel | Turing-Test, Kritik (chinesisches Zimmer) | 1950 |
+| | ELIZA unter der Haube | Regeln mit Rang, Pronomen spiegeln, Hilfe-Regel | 1966 |
+| | Wissen in Regeln (Mission) | Expertensystem mit Vorwärtsverkettung | 1976 |
+| 2 ♟️ Suchen und Spielen (1956–2016) | Den Weg finden | Breiten-, Tiefen-, gierige Suche und A* im Vergleich | 1968 |
+| | Minimax und Alpha-Beta | Tic-Tac-Toe: 549 946 Knoten, mit Alpha-Beta ein Bruchteil | 1997 |
+| | Zufall als Ratgeber (Mission) | Hex gegen Monte-Carlo-Züge | 2016 |
+| 3 📈 Lernen aus Daten (1763–1995) | Die beste Gerade | Methode der kleinsten Quadrate | 1805 |
+| | Gradientenabstieg | Lernrate: 0,12 läuft, 0,2 schaukelt sich auf | 1847 |
+| | Überanpassung | Polynom Grad 9: Trainingsfehler 0, Testfehler groß | 1974 |
+| | Der Spamfilter | naiver Bayes mit Wortwahrscheinlichkeiten | 1763 |
+| | Bäume aus Information (Mission) | ID3 mit Entropie und Informationsgewinn | 1986 |
+| 4 🧠 Neuronale Netze (1943–1989) | Neuronen als Logik | UND, ODER, NICHT mit Schwellen | 1943 |
+| | Rosenblatts Perzeptron | Lernregel, lineare Trennbarkeit | 1958 |
+| | Der erste KI-Winter | XOR-Problem und Zeitstrahl der Erwartungen | 1969 |
+| | Die verborgene Schicht | XOR mit zwei verborgenen Neuronen | 1986 |
+| | Backpropagation | Kettenregel auf einem Rechengraphen | 1970 |
+| | Netz-Spielplatz (Mission) | kleines Netz trainieren, Schichten und Neuronen wählen | 1989 |
+| 5 👁️ Maschinen sehen (1959–2015) | Faltung: Filter für Bilder | Kantenfilter selbst anwenden | 1959 |
+| | Der Durchbruch 2012 | Fehlerraten im ImageNet-Wettbewerb | 2012 |
+| | Täuschung für Netze (Mission) | gegnerisches Beispiel (FGSM): kleine Änderung, falsches Ergebnis | 2013 |
+| 6 💬 Maschinen sprechen (1948–2022) | Tokens | Byte-Pair-Encoding von Hand | 2016 |
+| | Wörter als Vektoren | Analogien mit Kosinus-Ähnlichkeit | 2013 |
+| | Das nächste Token | n-Gramm-Modell mit Temperatur | 1948 |
+| | Aufmerksamkeit | „Der Ball passte nicht in den Koffer, weil er zu groß/klein war“ | 2017 |
+| | Vom Modell zum Assistenten (Mission) | Belohnungsmodell aus Vergleichen (RLHF), Belohnungs-Hacking | 2022 |
+| 7 🎮 Lernen durch Belohnung (1952–2016) | Erkunden oder ausnutzen | mehrarmige Banditen, ε-gierig | 1952 |
+| | Q-Lernen (Mission) | Gitterwelt mit γ und ε | 1989 |
+| 8 ⚖️ Generative KI und Verantwortung (2014–heute) | Aus Rauschen wird Bild | Diffusion mit bestem Entrauscher für kleine Datensätze | 2020 |
+| | Fairness messen | gleiche Annahmequoten oder gleiche Trefferquoten – beides geht nicht | 2016 |
+| | Regeln für KI | Risikoklassen des AI Act zuordnen | 2024 |
+| | Die letzte Mission (Mission) | Meilensteine ordnen, eigene Position beziehen | 2026 |
 
-- Rechnen im Browser: kleine Modelle (Punktwolken, ein paar Neuronen, einfache Zeichenerkennung) laufen ohne Server und ohne große Bibliothek.
-- Nichts Neues im Hosting: statische Dateien auf STRATO wie bisher.
-- Grober Aufwand: etwa 1 Lektion (Simulation, Text, Aufgaben, Tests) entspricht dem Aufwand einer bisherigen Simulation. Das Spielgerüst (Spielstand, Karte, Abzeichen) kommt einmalig dazu. Ein erster Bereich mit 3 bis 4 Lektionen reicht für einen Test mit Schülern.
+## Umsetzung
+
+Die Kurse sind kein Fach im Lehrplan, sondern ein eigener Bereich `src/kurse/` (eigene Adressen und Tests; Simulationen und Länder-Lehrpläne bleiben unberührt):
+
+- `src/kurse/index.ts`: Liste der Kurse (`COURSES`), Schalter `COURSES_PUBLIC`.
+- `src/kurse/<kurs>/index.ts`: Welten, Lektionen (Titel, Adresse, Symbol, Dauer, Wissenskarte, Mission), Stufennamen, Begleitung, Abschlussabzeichen.
+- `src/kurse/<kurs>/lessons/<id>.ts`: Schritte einer Lektion.
+- `src/kurse/<kurs>/games/<name>.ts`: Spiele (Oberfläche ohne innerHTML, Bausteine in `parts/` und `engine/ui.ts`).
+- `src/kurse/<kurs>/models/*.ts`: Rechenlogik und Daten, getestet in `tests/kurs-*.test.ts`.
+- `src/kurse/gemeinsam/`: Spiele und Modelle, die beide Kurse nutzen (Karten, Sortieren, Zeitstrahl, Turing, ELIZA, Nim, Wortvektoren, Sprachmodell, Banditen, Gitterwelt, Diffusion). Findet ein Kurs ein Spiel nicht selbst, lädt `loaders.ts` es von hier.
+- `src/kurse/engine/`: Spielstand (`progress.ts`), Speicher (`store.ts`), Begleitung als SVG (`bit.ts`, `guide.ts`), Kurskarte (`hub.ts`), Lektionsablauf (`lesson.ts`).
+- Seiten: `src/views/KurseView.astro` (Übersicht), `KursView.astro` (Karte), `LektionView.astro`; Aussehen `src/styles/kurs.css`; Oberflächentexte `src/kurse/strings.ts`.
+
+**Neue Lektion:** Eintrag in `<kurs>/index.ts` (mit Wissenskarte), Datei in `lessons/`, bei Bedarf Spiel in `games/` und Modell mit Test, dann `npm run verify`. Neue Dateien findet der Testlauf über `import.meta.glob`. Meldet ein Test eine fehlende Lektion, obwohl die Datei da ist, die Ordner `node_modules/.vitest-cache` und `node_modules/.vite` löschen.
+
+## Konten später
+
+Heute bleibt der Spielstand im Local Storage (`kurs:<kurs-id>`). Die Kurse sind so gebaut, dass Konten später ohne Änderung an Lektionen dazukommen können:
+
+- Alle Zugriffe laufen über die Schnittstelle `ProgressStore` (`store.ts`). Mit `setStoreFactory()` lässt sich ein anderer Speicher einsetzen, etwa einer, der zusätzlich mit einem Server abgleicht.
+- XP werden nicht blind gespeichert, sondern lassen sich aus Sternen und Abzeichen neu berechnen (`computeXp`). Damit kann ein Server den Stand prüfen.
+- `mergeProgress()` führt zwei Spielstände verlustfrei zusammen (beste Sterne, alle Abzeichen, neuere Serie). Das nutzt schon heute „Code einlesen“; später gleicht es Gerät und Konto ab.
+
+Für Konten wären dann nötig (nicht Teil dieser Phase): Server und Datenbank; Einwilligung und Datenschutzprüfung, besonders für Kinder unter 16 (Eltern bzw. Schule); eine Lösung ohne Klarnamen (Klassencode oder Pseudonym); Angaben in Impressum und Datenschutzerklärung; ein Löschweg.
+
+## Materialien
+
+Die Projektleitung hat Materialien zur Verfügung gestellt. Sie dienten nur als Anregung; alle Texte, Beispiele und Spiele sind selbst geschrieben, nichts ist übernommen:
+
+- klicksafe, „KI and me“ (Material für die pädagogische Praxis, Lizenz CC BY-NC): Themen KI im Alltag, Fälschungen, Datenschutz, Empfehlungen und Filterblasen, kluge Nutzung.
+- Experience AI, Leitfaden für Lehrkräfte (Raspberry Pi Foundation und Google DeepMind, Lizenz CC BY-NC-ND – keine Bearbeitung erlaubt, daher nur Ideen): keine Vermenschlichung von KI (Grundlage der Klartext-Kästen), Modell-Steckbriefe, Verzerrung durch Daten.
+- TU Chemnitz, Vorlesung „KI 01 – Einleitung“ und HTWK Leipzig, „Grundlagen der Künstlichen Intelligenz“ (Hochschulfolien): Geschichte (Turing-Test, Dartmouth 1956, ELIZA, Expertensysteme, KI-Winter), Suche und Spiele, Perzeptron und Backpropagation. Für Klasse 5–10 stark vereinfacht.
 
 ## Recht und Datenschutz
 
-- Ohne Konten und ohne Übertragung bleibt die Datenschutzerklärung fast unverändert. Es kommt nur der Spielstand im Local Storage dazu (ein Satz im Abschnitt „Speicherung im Browser“).
-- **Würden später echte KI-Dienste oder Konten genutzt**, braucht es eine neue Prüfung (Auftragsverarbeitung, Minderjährige, Einwilligung). Das ist nicht Teil dieses Konzepts.
-- Fachliche Aussagen (besonders zu Sprachmodellen, Fairness, Urheberrecht) sorgfältig formulieren und von einer fachkundigen Person prüfen lassen. Unsicheres als Entwurf kennzeichnen.
-- Bilder und Beispieldaten selbst erzeugen oder frei lizenzieren; Herkunft in `docs/BILDRECHTE.md` eintragen.
+- Ohne Konten und ohne Übertragung ändert sich die Datenschutzerklärung kaum: Der Spielstand im Local Storage steht im Abschnitt „Speicherung im Browser“.
+- **Würden später echte KI-Dienste oder Konten genutzt**, braucht es eine neue Prüfung (Auftragsverarbeitung, Minderjährige, Einwilligung).
+- Fachliche Aussagen (besonders zu Sprachmodellen, Fairness, AI Act, Urheberrecht) sind sorgfältig formuliert, aber noch von einer fachkundigen Person zu prüfen. Bis dahin gelten sie als Entwurf.
+- Es gibt keine Bilder aus fremden Quellen; alles ist gezeichnet (SVG, Emoji) oder gerechnet.
 
-## Vorgehen
+## Offen
 
-1. Konzept freigeben und Annahmen bestätigen (Zielgruppe, nur lokaler Fortschritt, keine echte KI im Netz).
-2. **Gerüst:** neues Fach `ki`, Spielstand-Modul, Kursseite mit Karte.
-3. **Bereich 1 und 2** als erster Test (rund 6 Lektionen), mit Schülern ausprobieren.
-4. Rückmeldungen einbauen, dann Bereiche 3 bis 6.
-5. Texte fachlich und sprachlich prüfen lassen, dann veröffentlichen.
-
-## Offene Entscheidungen der Projektleitung
-
-- Name des Fachs (z. B. „KI und Daten“, „KI verstehen“, „KI-Abenteuer“).
-- Soll der Kurs auf der Startseite als eigenes Fach neben den MINT-Fächern erscheinen?
-- Sollen Lehrkräfte später etwas sehen können (z. B. Klassencode)? Das ginge nur mit Server und ist zunächst nicht vorgesehen.
-- Welche Spielfigur bzw. welcher rote Faden trägt den Kurs (z. B. ein Roboter, den man trainiert)?
+- Probespielen durch die Projektleitung und mit Schülern beider Stufen.
+- Fachliche Durchsicht (Entwurf), besonders Wissenskarten mit Jahreszahlen, KI-Labor-Formeln, AI Act.
+- Englische Texte gegenlesen lassen.
+- Danach `COURSES_PUBLIC = true` (Link in der Kopfleiste, Suchmaschinen) und Hinweis auf der Startseite.
+- Später möglich: kurze Handreichung für Lehrkräfte je Welt (Ziele, Dauer, Gesprächsimpulse), dritte Stufe, Konten.
