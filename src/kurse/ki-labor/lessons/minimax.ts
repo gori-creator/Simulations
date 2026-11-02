@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Blätter (Spielende) bekommen einen Wert: Sieg für Ada positiv, Niederlage negativ, Unentschieden 0. Nach oben gilt: An Adas Knoten das Maximum der Kinder, an deinen Knoten das Minimum. Ist der Baum zu tief, stoppt man bei einer Tiefengrenze und schätzt die Stellung mit einer Bewertungsfunktion – hier: offene Dreierlinien für Ada minus offene Dreierlinien für dich.',
         'Leaves (game over) get a value: a win for Ada positive, a loss negative, a draw 0. Going up: at Ada’s nodes take the maximum of the children, at yours the minimum. If the tree is too deep, you stop at a depth limit and estimate the position with an evaluation function – here: Ada’s open lines of three minus your open lines of three.',
       ),
-      formula: 'v(n) = max over children v(c) (Ada) · min over children v(c) (you)',
+      formula: L('v(n) = max v(Kind), wenn Ada am Zug ist;   v(n) = min v(Kind), wenn du am Zug bist', 'v(n) = max v(child) when Ada is to move;   v(n) = min v(child) when you are to move'),
     },
     {
       kind: 'predict',

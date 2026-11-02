@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Nutzt man nur, was bisher am besten aussah, verpasst man vielleicht etwas Besseres. Probiert man ständig Neues, verschenkt man sichere Gewinne. Die ε-gierige Strategie wählt mit Wahrscheinlichkeit ε zufällig, sonst die bisher beste Möglichkeit. Der Name „Bandit“ kommt von Spielautomaten mit einem Arm – heute geht es eher um Werbeanzeigen, Webseiten oder medizinische Studien.',
         'If you only use what looked best so far, you may miss something better. If you constantly try new things, you give away sure gains. The ε-greedy strategy picks at random with probability ε, otherwise the best option so far. The name “bandit” comes from one-armed slot machines – today it’s more about ads, websites or clinical trials.',
       ),
-      formula: 'a = zufällig mit Wahrscheinlichkeit ε,  sonst  argmaxᵢ Q̂ᵢ,   Q̂ᵢ = Erfolge / Versuche',
+      formula: L('a = zufällig mit Wahrscheinlichkeit ε,  sonst  argmaxᵢ Q̂ᵢ,   Q̂ᵢ = Erfolge / Versuche', 'a = random with probability ε,  else  argmaxᵢ Q̂ᵢ,   Q̂ᵢ = successes / tries'),
     },
     { kind: 'game', game: 'banditen', intro: L('Ein Online-Shop testet vier Startseiten. Zeige 40 Besuchern je eine Seite – und versuche, möglichst viele Käufe zu bekommen.', 'An online shop is testing four home pages. Show 40 visitors one page each – and try to get as many sales as possible.') },
     {

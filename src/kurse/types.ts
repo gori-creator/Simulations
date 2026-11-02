@@ -54,9 +54,9 @@ export type Step =
   /**
    * Wissenskasten ohne Wertung. `curious` (Standard): „Für Neugierige“.
    * `plain`: „Klartext“ – was wirklich passiert, ohne Vermenschlichung
-   * („Bit denkt“ → „das Programm rechnet“). `formula`: eine Formelzeile.
+   * („Bit denkt“ → „das Programm rechnet“). `formula`: eine Formelzeile (Text, oder zweisprachig, wenn Wörter darin stehen).
    */
-  | { kind: 'info'; title: Localized; text: Localized; formula?: string; tone?: 'curious' | 'plain' };
+  | { kind: 'info'; title: Localized; text: Localized; formula?: string | Localized; tone?: 'curious' | 'plain' };
 
 /** Sammelkarte einer Lektion: ein Meilenstein der KI-Geschichte und was man mitnimmt. */
 export interface KnowledgeCard {

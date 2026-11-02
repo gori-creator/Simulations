@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Das Neuron feuert genau dann, wenn w₁x₁ + w₂x₂ ≥ θ. Die Grenze w₁x₁ + w₂x₂ = θ ist eine Gerade im Eingaberaum: auf der einen Seite 1, auf der anderen 0. Mit passenden Gewichten wird das Neuron zu einem Logikgatter – Netze solcher Neuronen können jede logische Verknüpfung berechnen.',
         'The neuron fires exactly when w₁x₁ + w₂x₂ ≥ θ. The boundary w₁x₁ + w₂x₂ = θ is a line in input space: 1 on one side, 0 on the other. With suitable weights the neuron becomes a logic gate – networks of such neurons can compute any logical function.',
       ),
-      formula: 'y = 1, falls w₁·x₁ + w₂·x₂ ≥ θ, sonst y = 0',
+      formula: L('y = 1, falls w₁·x₁ + w₂·x₂ ≥ θ, sonst y = 0', 'y = 1 if w₁·x₁ + w₂·x₂ ≥ θ, else y = 0'),
     },
     { kind: 'game', game: 'logik', intro: L('Stell w₁, w₂ und die Schwelle θ so ein, dass das Neuron UND, ODER und NAND berechnet. Danach wartet XOR.', 'Set w₁, w₂ and the threshold θ so the neuron computes AND, OR and NAND. Then XOR is waiting.') },
     {

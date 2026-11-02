@@ -120,7 +120,10 @@ export function initLesson(root: HTMLElement): void {
       say(step.title, plain ? 'think' : 'wink');
       const head = plain ? `🔧 ${ks(lang, 'plain')}: ${tx(step.title)}` : `💡 ${ks(lang, 'forCurious')}: ${tx(step.title)}`;
       const box = h('details', { class: `kinfo${plain ? ' kinfo--plain' : ''}`, attrs: { open: true } }, h('summary', {}, head), h('p', { text: tx(step.text) }));
-      if (step.formula) box.append(h('p', { class: 'kformula', attrs: { role: 'math', 'aria-label': step.formula }, text: step.formula }));
+      if (step.formula) {
+        const formula = typeof step.formula === 'string' ? step.formula : tx(step.formula);
+        box.append(h('p', { class: 'kformula', attrs: { role: 'math', 'aria-label': formula }, text: formula }));
+      }
       play.append(box);
       setNext(true, label);
       focusLater(nextBtn);

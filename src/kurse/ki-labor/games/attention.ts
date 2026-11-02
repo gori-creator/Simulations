@@ -64,7 +64,8 @@ const game: GameMount<void> = (host, ctx) => {
     const sc = scores(t, sel);
     const q = t[sel]!.q;
     const k = t[top.j]!.k;
-    calc.textContent = `„${t[sel]!.text[ctx.lang]}“ → „${t[top.j]!.text[ctx.lang]}“:  q·k/√2 = (${ctx.num(q[0], 1)}·${ctx.num(k[0], 1)} + ${ctx.num(q[1], 1)}·${ctx.num(k[1], 1)}) / 1,41 = ${ctx.num(sc[top.j]!, 2)}   ⇒   softmax = ${ctx.percent(top.v)}`;
+    const quote = (text: string) => (ctx.lang === 'de' ? `„${text}“` : `“${text}”`);
+    calc.textContent = `${quote(t[sel]!.text[ctx.lang])} → ${quote(t[top.j]!.text[ctx.lang])}:  q·k/√2 = (${ctx.num(q[0], 1)}·${ctx.num(k[0], 1)} + ${ctx.num(q[1], 1)}·${ctx.num(k[1], 1)}) / ${ctx.num(Math.SQRT2, 2)} = ${ctx.num(sc[top.j]!, 2)}   ⇒   softmax = ${ctx.percent(top.v)}`;
     if (sel === PRONOUN) {
       if (!seen[adj]) {
         seen[adj] = true;

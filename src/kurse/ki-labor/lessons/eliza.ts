@@ -37,7 +37,7 @@ const lesson: LessonContent = {
         'Weizenbaum nannte das Prinzip Zerlegungsmuster und Zusammensetzungsregel: Das Muster zerlegt die Eingabe in Teile, die Regel baut aus einem Teil die Antwort. Jedes Schlüsselwort hat einen Rang; passen mehrere, gewinnt der höchste. Vor dem Einsetzen werden Pronomen getauscht.',
         'Weizenbaum called the principle decomposition pattern and reassembly rule: the pattern breaks the input into parts, the rule builds the answer from one part. Every keyword has a rank; if several match, the highest wins. Pronouns are swapped before inserting.',
       ),
-      formula: '* ich bin {X}  ⟶  „Warum bist du {X′}?“   (X′ = X mit ich↔du, mein↔dein)',
+      formula: L('* ich bin {X}  ⟶  „Warum bist du {X′}?“   (X′ = X mit ich↔du, mein↔dein)', '* I am {X}  ⟶  “Why are you {X′}?”   (X′ = X with I↔you, my↔your)'),
     },
     {
       kind: 'choice',

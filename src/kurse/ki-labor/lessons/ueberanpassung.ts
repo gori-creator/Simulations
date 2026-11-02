@@ -22,7 +22,7 @@ const lesson: LessonContent = {
         'Ein zu starres Modell (kleiner Grad) liegt systematisch daneben: hohe Verzerrung (Bias), Unteranpassung. Ein zu bewegliches Modell lernt das Rauschen der Trainingsdaten mit: hohe Varianz, Überanpassung. Der Testfehler ist eine U-Kurve; der Trainingsfehler sinkt immer weiter. Gegenmittel: mehr Daten, einfachere Modelle, Regularisierung (Strafterm für große Koeffizienten) und ehrliches Testen mit getrennten Daten.',
         'A model that is too rigid (low degree) is systematically off: high bias, underfitting. A model that is too flexible also learns the noise of the training data: high variance, overfitting. The test error is a U-curve; the training error keeps falling. Remedies: more data, simpler models, regularisation (a penalty for large coefficients) and honest testing with separate data.',
       ),
-      formula: 'Testfehler ≈ Bias² + Varianz + Rauschen',
+      formula: L('Testfehler ≈ Bias² + Varianz + Rauschen', 'test error ≈ bias² + variance + noise'),
     },
     {
       kind: 'choice',

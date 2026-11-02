@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Ein n-Gramm-Modell schätzt die Wahrscheinlichkeit des nächsten Wortes aus Zählungen: Wie oft folgte es auf die letzten n − 1 Wörter? Große Modelle berechnen die Verteilung stattdessen mit einem Netz, das Tausende vorige Tokens berücksichtigt. Die Temperatur T verändert die Verteilung vor dem Ziehen: klein → fast immer das wahrscheinlichste Wort, groß → mehr Zufall.',
         'An n-gram model estimates the probability of the next word from counts: how often did it follow the last n − 1 words? Large models instead compute the distribution with a network that takes thousands of previous tokens into account. The temperature T changes the distribution before drawing: small → almost always the most likely word, large → more randomness.',
       ),
-      formula: 'P(w | Kontext) ∝ Anzahl(Kontext, w)^(1/T)',
+      formula: L('P(w | Kontext) ∝ Anzahl(Kontext, w)^(1/T)', 'P(w | context) ∝ count(context, w)^(1/T)'),
     },
     {
       kind: 'predict',

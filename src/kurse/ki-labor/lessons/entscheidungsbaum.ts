@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Die Entropie misst die Unordnung einer Menge in Bit: 0, wenn alle Beispiele zur selben Klasse gehören, 1, wenn es halb-halb steht. Der Informationsgewinn einer Frage ist die Entropie vorher minus die gewichtete Entropie der Teile nachher. ID3 wählt an jedem Knoten die Frage mit dem größten Gewinn.',
         'Entropy measures the disorder of a set in bits: 0 if all examples belong to the same class, 1 if it is half and half. The information gain of a question is the entropy before minus the weighted entropy of the parts afterwards. ID3 picks the question with the largest gain at every node.',
       ),
-      formula: 'H(S) = −Σ pₖ·log₂ pₖ,   Gewinn(S, A) = H(S) − Σᵥ |Sᵥ|/|S| · H(Sᵥ)',
+      formula: L('H(S) = −Σ pₖ·log₂ pₖ,   Gewinn(S, A) = H(S) − Σᵥ |Sᵥ|/|S| · H(Sᵥ)', 'H(S) = −Σ pₖ·log₂ pₖ,   Gain(S, A) = H(S) − Σᵥ |Sᵥ|/|S| · H(Sᵥ)'),
     },
     {
       kind: 'choice',

@@ -11,7 +11,7 @@ const lesson: LessonContent = {
         'Klassen sind c = +1 oder −1. Liegt ein Punkt x auf der falschen Seite, addiert man ihn (mit Vorzeichen c) zum Gewichtsvektor: w ← w + η·c·x, ebenso b ← b + η·c. Geometrisch dreht sich die Gerade zum Punkt hin. Liegt alles richtig, ändert sich nichts mehr.',
         'Classes are c = +1 or −1. If a point x is on the wrong side, you add it (with sign c) to the weight vector: w ← w + η·c·x, likewise b ← b + η·c. Geometrically the line turns towards the point. When everything is right, nothing changes any more.',
       ),
-      formula: 'ŷ = sign(w · x + b),   bei Fehler:  w ← w + η·c·x,   b ← b + η·c',
+      formula: L('ŷ = sign(w · x + b),   bei Fehler:  w ← w + η·c·x,   b ← b + η·c', 'ŷ = sign(w · x + b),   on error:  w ← w + η·c·x,   b ← b + η·c'),
     },
     {
       kind: 'predict',

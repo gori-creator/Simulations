@@ -24,6 +24,8 @@
   --k-bad: #c0352b;
   --k-bad-soft: #fde8e6;
   --k-gold: #e7a600;
+  --k-wall: #3a4354; /* Wände in Labyrinthen und Gitterwelten */
+  --k-wall-edge: #3a4354;
   --k-a: #2b5fd9; /* Gruppe A in Spielen (blau) */
   --k-b: #d9480f; /* Gruppe B in Spielen (orange) */
   --k-a-soft: #dfe8ff;
@@ -54,6 +56,8 @@
     --k-bad: #ff8a80;
     --k-bad-soft: #3a1b1a;
     --k-gold: #ffc940;
+    --k-wall: #07090d;
+    --k-wall-edge: #6b7588;
     --k-a: #7ea5ff;
     --k-b: #ff9a5c;
     --k-a-soft: #1b2a4d;
@@ -78,6 +82,8 @@
   --k-bad: #ff8a80;
   --k-bad-soft: #3a1b1a;
   --k-gold: #ffc940;
+  --k-wall: #07090d;
+  --k-wall-edge: #6b7588;
   --k-a: #7ea5ff;
   --k-b: #ff9a5c;
   --k-a-soft: #1b2a4d;
@@ -2117,6 +2123,8 @@ button.kitem:hover:not(:disabled) {
   white-space: nowrap;
 }
 
+.kformula--wrap { white-space: normal; }
+
 /* Vermutung */
 .kchoice__tag {
   margin: 0;
@@ -2644,10 +2652,10 @@ button.kitem:hover:not(:disabled) {
 }
 
 .kmaze__cell { fill: var(--surface-2); }
-.kmaze__cell.is-wall { fill: var(--text); opacity: 0.8; }
+.kmaze__cell.is-wall { fill: var(--k-wall); stroke: var(--k-wall-edge); stroke-width: 1.5; }
 .kmaze__cell.is-seen { fill: color-mix(in srgb, var(--k-tone) 28%, var(--surface)); }
 .kmaze__cell.is-path { fill: color-mix(in srgb, var(--k-gold) 60%, var(--surface)); }
-.kmaze__n { fill: var(--muted); font-size: 10px; font-family: var(--font-sans); pointer-events: none; }
+.kmaze__n { fill: var(--text); opacity: 0.72; font-size: 10px; font-family: var(--font-sans); pointer-events: none; }
 .kmaze__icon { font-size: 18px; pointer-events: none; }
 .kmaze__path { fill: none; stroke: var(--k-bad); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0.8; }
 
@@ -2883,7 +2891,7 @@ button.kitem:hover:not(:disabled) {
 .kbandit__rate { font-size: 1.3rem !important; font-weight: 800; color: var(--k-tone) !important; }
 
 .kq { display: block; width: 100%; max-width: 420px; height: auto; }
-.kq__wall { fill: var(--text); opacity: 0.8; }
+.kq__wall { fill: var(--k-wall); stroke: var(--k-wall-edge); stroke-width: 1.5; }
 .kq__term.is-good { fill: color-mix(in srgb, var(--k-good) 22%, var(--surface)); stroke: var(--k-good); stroke-width: 2; }
 .kq__term.is-bad { fill: color-mix(in srgb, var(--k-bad) 22%, var(--surface)); stroke: var(--k-bad); stroke-width: 2; }
 .kq__tri { stroke: var(--surface); stroke-width: 1; }

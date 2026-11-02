@@ -31,7 +31,7 @@ const lesson: LessonContent = {
         'A* sortiert die Agenda nach f(n) = g(n) + h(n): bisherige Kosten plus geschätzte Restkosten. Unterschätzt die Schätzung h die wahren Restkosten nie (sie ist „zulässig“), findet A* garantiert einen kürzesten Weg. Die Manhattan-Distanz ist im Gitter zulässig: Kein Weg kann kürzer sein als die Summe der waagerechten und senkrechten Abstände.',
         'A* orders the agenda by f(n) = g(n) + h(n): cost so far plus estimated remaining cost. If the estimate h never overestimates the true remaining cost (it is “admissible”), A* is guaranteed to find a shortest path. The Manhattan distance is admissible on a grid: no path can be shorter than the sum of horizontal and vertical distances.',
       ),
-      formula: 'f(n) = g(n) + h(n),   h(n) = |x − x_Z| + |y − y_Z|',
+      formula: L('f(n) = g(n) + h(n),   h(n) = |x − x_Z| + |y − y_Z|   (Z = Ziel)', 'f(n) = g(n) + h(n),   h(n) = |x − x_G| + |y − y_G|   (G = goal)'),
     },
     {
       kind: 'choice',

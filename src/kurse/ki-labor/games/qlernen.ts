@@ -30,7 +30,7 @@ const game: GameMount<void> = (host, ctx) => {
   const gRow = h('div', { class: 'krow', attrs: { role: 'group', 'aria-label': 'γ' } });
   const eRow = h('div', { class: 'krow', attrs: { role: 'group', 'aria-label': 'ε' } });
   const runRow = h('div', { class: 'krow' });
-  const info = h('p', { class: 'kformula', attrs: { 'aria-live': 'polite' } });
+  const info = h('p', { class: 'kformula kformula--wrap', attrs: { 'aria-live': 'polite' } });
   const goals = h('ul', { class: 'kgoals' });
   host.append(h('div', { class: 'kpanel kgrid-2' }, svg, h('div', {}, h('p', { class: 'kpanel__title', text: tx({ de: 'Diskontfaktor γ (wie viel ist Belohnung später wert?)', en: 'Discount factor γ (how much is later reward worth?)' }) }), gRow, h('p', { class: 'kpanel__title', text: tx({ de: 'Erkundung ε', en: 'Exploration ε' }) }), eRow, h('p', { class: 'kpanel__title', text: tx({ de: 'Trainieren', en: 'Train' }) }), runRow, info)), h('div', { class: 'kpanel' }, goals));
 

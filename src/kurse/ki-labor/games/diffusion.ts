@@ -64,7 +64,7 @@ const game: GameMount<void> = (host, ctx) => {
     promptRow.append(b);
   };
   promptBtn(null, tx({ de: 'ohne Prompt', en: 'no prompt' }));
-  for (const p of PICTURES) promptBtn(p.id, `„${p.icon}“`);
+  for (const p of PICTURES) promptBtn(p.id, ctx.lang === 'de' ? `„${p.icon}“` : `“${p.icon}”`);
 
   function renderForward(): void {
     clear(fwdView);
