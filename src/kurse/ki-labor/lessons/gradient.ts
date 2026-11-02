@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Gradientenabstieg geht schrittweise gegen den Gradienten. Die Lernrate entscheidet: zu klein ist langsam, zu groß schaukelt sich auf.', 'Gradient descent steps against the gradient. The learning rate decides: too small is slow, too large blows up.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Stell dir die MSE als Landschaft vor: Jeder Punkt (m, b) hat eine Höhe – den Fehler. Das Training soll ins tiefste Tal. Aber man sieht nur die Steigung genau dort, wo man steht.', 'Imagine the MSE as a landscape: every point (m, b) has a height – the error. Training should reach the deepest valley. But you can only see the slope exactly where you stand.') },
     {

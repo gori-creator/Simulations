@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Eine Faltung schiebt einen kleinen Filter über das Bild. Gelernte Filter finden erst Kanten, dann Formen, dann Objekte.', 'A convolution slides a small filter over the image. Learned filters find edges first, then shapes, then objects.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Foto mit 1000 × 1000 Pixeln hat eine Million Eingaben. Würde jedes Neuron mit jedem Pixel verbunden, gäbe es Milliarden Gewichte schon in der ersten Schicht. Die Lösung: kleine Filter, die über das Bild wandern.', 'A photo with 1000 × 1000 pixels has a million inputs. If every neuron were connected to every pixel, there would be billions of weights in the first layer alone. The solution: small filters that slide across the image.') },
     {

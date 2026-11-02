@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('KI heißt: Ein Programm lernt aus Beispielen, statt dass jemand jede Regel aufschreibt.', 'AI means a program learns from examples instead of someone writing down every rule.'),
   steps: [
     { kind: 'say', mood: 'wink', text: L('Hallo! Ich bin Bit, ein kleiner Roboter. Ich bin gerade erst aufgewacht und weiß noch gar nichts.', 'Hello! I’m Bit, a little robot. I’ve only just woken up and I don’t know anything yet.') },
     { kind: 'say', text: L('Du wirst meine Trainerin oder mein Trainer. Gemeinsam finden wir heraus, wie eine Maschine schlau wird.', 'You’ll be my trainer. Together we’ll find out how a machine becomes smart.') },

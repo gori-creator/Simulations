@@ -17,6 +17,7 @@ const timeline: ZeitstrahlProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Übertriebene Versprechen und ein bewiesenes Limit (XOR für ein Perzeptron) ließen Geld und Interesse einbrechen – der erste KI-Winter.', 'Exaggerated promises and a proven limit (XOR for a perceptron) made funding and interest collapse – the first AI winter.'),
   steps: [
     { kind: 'say', mood: 'think', text: L('1969 veröffentlichten Marvin Minsky und Seymour Papert das Buch „Perceptrons“. Sie bewiesen sauber, was einschichtige Perzeptronen nicht können – XOR ist das bekannteste Beispiel.', 'In 1969 Marvin Minsky and Seymour Papert published the book “Perceptrons”. They rigorously proved what single-layer perceptrons cannot do – XOR is the best-known example.') },
     {

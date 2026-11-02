@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Lernen heißt hier: eine Grenze zwischen zwei Gruppen finden, die auch für neue Beispiele passt.', 'Learning here means finding a boundary between two groups that also works for new examples.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ich habe 24 Früchte gemessen: wie groß und wie süß sie sind. Jede Frucht ist ein Punkt im Bild.', 'I measured 24 fruits: how big and how sweet they are. Each fruit is a dot in the picture.') },
     { kind: 'say', mood: 'think', text: L('Kreise sind Zitronen, Rauten sind Orangen. Zitronen sind eher klein und sauer – sie liegen links unten.', 'Circles are lemons, diamonds are oranges. Lemons tend to be small and sour – they sit at the bottom left.') },

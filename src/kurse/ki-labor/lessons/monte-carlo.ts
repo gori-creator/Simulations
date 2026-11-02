@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ist der Baum zu groß, schätzen zufällige Partien den Wert eines Zuges. Der Fehler der Schätzung sinkt wie 1/√n.', 'When the tree is too big, random playouts estimate the value of a move. The error of the estimate shrinks like 1/√n.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Was tun, wenn der Spielbaum zu groß ist und niemand weiß, wie man eine Stellung bewertet? Idee: Spiel von dort aus einfach viele zufällige Partien zu Ende und zähl, wie oft du gewinnst.', 'What do you do when the game tree is too big and nobody knows how to evaluate a position? Idea: from there, just play lots of random games to the end and count how often you win.') },
     {

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Bildgeneratoren lernen, Rauschen Schritt für Schritt wegzuräumen, bis ein Bild entsteht, das zu ihren Beispielen passt.', 'Image generators learn to clear away noise step by step until a picture appears that fits their examples.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Bildgeneratoren malen Bilder aus einer Beschreibung – zum Beispiel „ein Haus im Schnee“. Aber sie malen nicht mit einem Pinsel. Sie fangen mit Kriselkram an, wie bei einem Fernseher ohne Empfang.', 'Image generators paint pictures from a description – for example “a house in the snow”. But they don’t paint with a brush. They start with fuzz, like a TV without reception.') },
     {

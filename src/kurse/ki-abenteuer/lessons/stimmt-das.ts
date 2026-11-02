@@ -20,6 +20,7 @@ const cards: KartenProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('KI-Antworten können erfunden sein, auch wenn sie sicher klingen. Wichtiges immer mit einer zweiten Quelle prüfen.', 'AI answers can be made up even when they sound sure. Always check important things with a second source.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ich habe so viel gelesen, dass ich zu allem etwas sagen kann. Klingt gut, oder?', 'I’ve read so much that I can say something about everything. Sounds good, right?') },
     { kind: 'say', mood: 'wink', text: L('Aber erinnerst du dich? Ich baue Sätze aus Wörtern, die oft zusammen vorkommen. Manchmal klingt das sicher – und ist trotzdem falsch. Prüf mich!', 'But remember? I build sentences from words that often go together. Sometimes that sounds certain – and is still wrong. Check me!') },

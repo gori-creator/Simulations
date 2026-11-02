@@ -60,6 +60,16 @@ describe('Kurse', () => {
           expect(l.card!.title[lang].trim(), l.id).not.toBe('');
           expect(l.card!.text[lang].length, l.id).toBeGreaterThan(40);
         }
+        // Quelle zu jedem historischen Meilenstein (nicht zur Karte „heute“)
+        if (l.card!.year < 2026) {
+          const source = l.card!.source;
+          expect(source, `Quelle fehlt: ${l.id}`).toBeDefined();
+          for (const lang of LANGS) {
+            const text = typeof source === 'string' ? source : source![lang];
+            expect(text.length, l.id).toBeGreaterThan(20);
+            expect(text, `Quelle nennt kein Jahr: ${l.id}`).toMatch(/1[7-9]\d\d|20[0-2]\d/);
+          }
+        }
       }
     });
 

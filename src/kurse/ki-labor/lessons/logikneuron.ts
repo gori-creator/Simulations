@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Schwellenneuron kann UND, ODER und NICHT – aber kein XOR, weil keine einzelne Gerade die Fälle trennt.', 'A threshold neuron can compute AND, OR and NOT – but not XOR, because no single straight line separates the cases.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('1943 beschrieben der Neurologe Warren McCulloch und der Logiker Walter Pitts eine Nervenzelle als Rechenbaustein: Eingänge mit Gewichten zusammenzählen, mit einer Schwelle vergleichen, 0 oder 1 ausgeben.', 'In 1943 the neurologist Warren McCulloch and the logician Walter Pitts described a nerve cell as a computing unit: add up weighted inputs, compare with a threshold, output 0 or 1.') },
     {

@@ -39,3 +39,26 @@ ${orbit ? '<ellipse class="ada__orbit" cx="60" cy="62" rx="56" ry="14" transform
 export function guideSvg(guide: GuideId, mood: Mood = 'happy', level = 1, label = guide === 'ada' ? 'Ada' : 'Bit'): string {
   return guide === 'ada' ? adaSvg(mood, level, label) : bitSvg(mood, level, label);
 }
+
+/** Was sich an der Figur ab einer Stufe verändert (für den Stufenaufstieg). */
+export const GUIDE_UPGRADES: Record<GuideId, Record<number, { de: string; en: string }>> = {
+  bit: {
+    3: { de: 'Bit bekommt Ohren – zum besseren Zuhören.', en: 'Bit gets ears – for better listening.' },
+    5: { de: 'Bits Brustlicht leuchtet jetzt in Farbe.', en: 'Bit’s chest light now shines in colour.' },
+    7: { de: 'Eine zweite Antenne für doppelt so viele Signale!', en: 'A second antenna for twice the signals!' },
+    10: { de: 'Die Krone: Bit ist jetzt ein Meister-Roboter.', en: 'The crown: Bit is now a master robot.' },
+  },
+  ada: {
+    3: { de: 'Ada bekommt eine Umlaufbahn.', en: 'Ada gets an orbit.' },
+    5: { de: 'Adas Kern leuchtet heller.', en: 'Ada’s core glows brighter.' },
+    7: { de: 'Eine zweite Umlaufbahn – Ada rechnet jetzt parallel.', en: 'A second orbit – Ada now computes in parallel.' },
+    10: { de: 'Ein Lichtkranz: Ada ist ein Supercomputer.', en: 'A halo: Ada has become a supercomputer.' },
+  },
+};
+
+/** Die neueste Veränderung zwischen zwei Stufen (oder null). */
+export function guideUpgrade(guide: GuideId, before: number, after: number): { de: string; en: string } | null {
+  let found: { de: string; en: string } | null = null;
+  for (const [level, text] of Object.entries(GUIDE_UPGRADES[guide])) if (Number(level) > before && Number(level) <= after) found = text;
+  return found;
+}

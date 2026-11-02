@@ -21,6 +21,7 @@ const cards: KartenProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Persönliche Daten wie Adresse, Fotos oder Passwörter gehören nicht in Chatbots oder unbekannte Apps.', 'Personal data such as your address, photos or passwords don’t belong in chatbots or unknown apps.'),
   steps: [
     { kind: 'say', mood: 'think', text: L('Viele KI-Apps speichern, was du eintippst. Manche lernen sogar daraus. Darum lohnt es sich zu überlegen, was du verrätst.', 'Many AI apps store what you type. Some even learn from it. So it’s worth thinking about what you give away.') },
     { kind: 'game', game: 'karten', props: cards, intro: L('Was würdest du einer KI-App erzählen? Entscheide bei jeder Karte.', 'What would you tell an AI app? Decide for each card.') },

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein künstliches Neuron rechnet: jede Eingabe mal ihr Gewicht, alles zusammenzählen, mit der Schwelle vergleichen.', 'An artificial neuron calculates: each input times its weight, add it all up, compare with the threshold.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen in meinem Gehirn! Es besteht aus vielen winzigen Rechnern. Sie heißen Neuronen – wie die Nervenzellen in deinem Kopf.', 'Welcome to my brain! It’s made of lots of tiny calculators. They’re called neurons – like the nerve cells in your head.') },
     { kind: 'say', mood: 'think', text: L('Ein Neuron bekommt Eingaben. Jede Eingabe hat ein Gewicht: Wie wichtig ist sie? Das Neuron zählt alles zusammen. Ist die Summe groß genug, „feuert“ es.', 'A neuron gets inputs. Each input has a weight: how important is it? The neuron adds everything up. If the sum is big enough, it “fires”.') },

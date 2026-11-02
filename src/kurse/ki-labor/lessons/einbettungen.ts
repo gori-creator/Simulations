@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Wortvektoren legen ähnliche Wörter nah zusammen, Richtungen tragen Bedeutung (König − Mann + Frau ≈ Königin).', 'Word vectors place similar words close together, and directions carry meaning (king − man + woman ≈ queen).'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Wort ist ein Punkt in einem Raum mit vielen Richtungen. Wörter, die in ähnlichen Zusammenhängen vorkommen, liegen nah beieinander. „Du sollst ein Wort an seiner Gesellschaft erkennen“, schrieb der Sprachforscher John Firth schon 1957.', 'A word is a point in a space with many directions. Words that occur in similar contexts lie close together. “You shall know a word by the company it keeps,” the linguist John Firth wrote back in 1957.') },
     {

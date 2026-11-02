@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Erkunden oder ausnutzen: ε-gierig probiert mit Wahrscheinlichkeit ε zufällig und nimmt sonst die bisher beste Wahl.', 'Explore or exploit: ε-greedy tries something random with probability ε and otherwise takes the best choice so far.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Bisher kam die richtige Antwort immer mit den Daten. Beim bestärkenden Lernen gibt es nur eine Rückmeldung: Belohnung. Und man muss selbst ausprobieren, um sie zu bekommen.', 'So far the right answer always came with the data. In reinforcement learning there is only one kind of feedback: reward. And you have to try things yourself to get it.') },
     {
@@ -30,6 +31,15 @@ const lesson: LessonContent = {
         'Apps testen ständig, welche Beiträge, Bilder oder Überschriften dich länger festhalten – mit genau solchen Verfahren. Die Belohnung ist dabei meist deine Aufmerksamkeit, nicht dein Wohlbefinden. Es lohnt sich zu fragen, wofür ein System eigentlich belohnt wird.',
         'Apps constantly test which posts, pictures or headlines keep you hooked longer – with exactly such methods. The reward is usually your attention, not your well-being. It’s worth asking what a system is actually rewarded for.',
       ),
+    },
+    {
+      kind: 'choice',
+      question: L('Was misst ein Empfehlungssystem in einer App meistens als „Belohnung“?', 'What does a recommender system in an app usually measure as its “reward”?'),
+      options: [
+        { text: L('Aufmerksamkeit: ob du klickst und wie lange du dranbleibst.', 'Attention: whether you click and how long you stay.'), correct: true, feedback: L('Genau. Das lässt sich leicht messen – ob es dir guttut, dagegen kaum.', 'Exactly. That is easy to measure – whether it is good for you hardly is.') },
+        { text: L('Ob es dir nach dem Schauen besser geht.', 'Whether you feel better after watching.'), feedback: L('Das wäre schön, lässt sich aber kaum messen. Gezählt werden meist Klicks und Zeit.', 'That would be nice but is hard to measure. What usually counts are clicks and time.') },
+        { text: L('Wie viele Beiträge es dir absichtlich nicht zeigt.', 'How many posts it deliberately doesn’t show you.'), feedback: L('Nein – belohnt wird, was dich in der App hält.', 'No – what gets rewarded is whatever keeps you in the app.') },
+      ],
     },
     { kind: 'say', mood: 'wink', text: L('Beim Banditen zählt nur der nächste Zug. Spannender wird es, wenn Belohnungen erst nach vielen Schritten kommen – wie im Labyrinth oder beim Go.', 'With the bandit only the next move counts. It gets more exciting when rewards come only after many steps – like in a maze or in Go.') },
   ],

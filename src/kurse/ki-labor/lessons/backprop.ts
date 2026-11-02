@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Backpropagation wendet die Kettenregel rückwärts durch den Rechengraphen an und liefert alle Ableitungen in einem Durchgang.', 'Backpropagation applies the chain rule backwards through the computation graph and delivers all derivatives in one pass.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Netz ist eine lange Verkettung von Funktionen. Der Fehler L hängt über viele Zwischenschritte von jedem Gewicht ab. Die Kettenregel aus der Analysis sagt, wie man diese Abhängigkeit ausrechnet.', 'A network is a long chain of functions. The error L depends on every weight through many intermediate steps. The chain rule from calculus says how to compute this dependence.') },
     {

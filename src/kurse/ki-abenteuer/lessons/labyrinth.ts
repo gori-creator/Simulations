@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Lernen durch Belohnung: Was zum Ziel führt, wird verstärkt – ohne dass jemand den Weg zeigt.', 'Learning from rewards: whatever leads to the goal gets reinforced – without anyone showing the way.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Irgendwo im Labyrinth liegt ein Keks 🍪. Und eine Pfütze 💧, in die ich nicht fallen will. Ich kenne den Weg nicht. Niemand zeigt ihn mir.', 'Somewhere in the maze there’s a cookie 🍪. And a puddle 💧 I don’t want to fall into. I don’t know the way. Nobody shows it to me.') },
     { kind: 'say', mood: 'think', text: L('Also laufe ich los und probiere. Wenn ich den Keks finde, merke ich mir: Der letzte Schritt war gut. Und der davor auch ein bisschen. Und der davor …', 'So I set off and try. When I find the cookie I remember: the last step was good. And the one before it a little too. And the one before that …') },

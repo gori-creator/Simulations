@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Sprachmodell zieht das nächste Token aus einer Wahrscheinlichkeitsverteilung. Die Temperatur macht es vorsichtiger oder wilder.', 'A language model draws the next token from a probability distribution. Temperature makes it more cautious or wilder.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Jedes Sprachmodell – vom winzigen bis zum riesigen – macht im Kern dasselbe: Es berechnet eine Wahrscheinlichkeitsverteilung für das nächste Token und zieht daraus.', 'Every language model – from tiny to huge – does the same thing at its core: it computes a probability distribution for the next token and draws from it.') },
     {

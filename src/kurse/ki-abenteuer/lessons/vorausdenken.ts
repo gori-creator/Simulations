@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Computer kann sehr viele Züge vorausrechnen. Das ist schnelles Durchprobieren, kein Verstehen.', 'A computer can calculate a huge number of moves ahead. That is fast trying, not understanding.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Lange bevor Computer lernen konnten, haben sie schon Spiele gewonnen. Ihr Trick: Sie probieren im Kopf alle Züge aus – und alle Antworten darauf – und alle Antworten darauf …', 'Long before computers could learn, they were already winning games. Their trick: they try every move in their head – and every reply to it – and every reply to that …') },
     { kind: 'say', mood: 'think', text: L('Unser Spiel: 10 Steine liegen auf dem Tisch. Wer dran ist, nimmt 1, 2 oder 3 Steine. Wer den letzten Stein nimmt, gewinnt!', 'Our game: 10 stones are on the table. Whoever’s turn it is takes 1, 2 or 3 stones. Whoever takes the last stone wins!') },

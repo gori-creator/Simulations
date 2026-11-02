@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('2012 senkte ein tiefes Faltungsnetz auf Grafikkarten den Fehler im ImageNet-Wettbewerb von rund 26 auf 15 Prozent – der Beginn des Deep-Learning-Booms.', 'In 2012 a deep convolutional network on graphics cards cut the error in the ImageNet challenge from about 26 to 15 per cent – the start of the deep learning boom.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Die Informatikerin Fei-Fei Li ließ ab 2007 Millionen Fotos von Menschen beschriften – ImageNet. Für den jährlichen Wettbewerb gab es 1,2 Millionen Trainingsbilder in 1000 Klassen, vom Dalmatiner bis zum Espresso.', 'From 2007 the computer scientist Fei-Fei Li had millions of photos labelled by people – ImageNet. The annual competition had 1.2 million training images in 1000 classes, from Dalmatian to espresso.') },
     {

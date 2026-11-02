@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Naiver Bayes verrechnet Vorwissen mit Wortwahrscheinlichkeiten, als wären die Wörter unabhängig – einfach und oft erstaunlich gut.', 'Naive Bayes combines prior knowledge with word probabilities as if the words were independent – simple and often surprisingly good.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Thomas Bayes war Pfarrer und Mathematiker. Sein Satz sagt, wie man eine Vermutung anpasst, wenn neue Beobachtungen dazukommen. Genau das macht ein Spamfilter mit jedem Wort einer Mail.', 'Thomas Bayes was a clergyman and mathematician. His theorem says how to update a belief when new observations come in. That’s exactly what a spam filter does with every word of an email.') },
     {

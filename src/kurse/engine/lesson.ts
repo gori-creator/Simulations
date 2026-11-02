@@ -4,7 +4,7 @@ import { loadGame, loadLesson } from '../loaders';
 import { ks } from '../strings';
 import type { GameCtx, GameInstance, KnowledgeCard, Mood, Step } from '../types';
 import { clear, h } from './dom';
-import { guideSvg } from './guide';
+import { guideSvg, guideUpgrade } from './guide';
 import { dayKey, finishLesson, levelFor, type FinishResult } from './progress';
 import { storeFor } from './store';
 
@@ -36,6 +36,7 @@ export function initLesson(root: HTMLElement): void {
   const levelPill = q<HTMLElement>('[data-level]');
 
   let steps: Step[] = [];
+  let takeaway: Localized | undefined;
   let index = 0;
   let mistakes = 0;
   let game: GameInstance | void = undefined;
@@ -104,6 +105,7 @@ export function initLesson(root: HTMLElement): void {
       h('span', { class: 'kcardx__year', text: String(card.year) }),
       h('h3', { class: 'kcardx__title', text: tx(card.title) }),
       h('p', { class: 'kcardx__text', text: tx(card.text) }),
+      ...(card.source ? [h('p', { class: 'kcardx__source', text: `📚 ${typeof card.source === 'string' ? card.source : tx(card.source)}` })] : []),
       h('span', { class: 'kcardx__icon', attrs: { 'aria-hidden': 'true' }, text: meta.icon }),
     );
   }
@@ -236,6 +238,31 @@ export function initLesson(root: HTMLElement): void {
     }
   }
 
+  /** Alte und neue Gestalt der Figur nebeneinander (eigenes SVG aus guide.ts, kein Nutzertext). */
+  function evolveRow(from: number, to: number): HTMLElement {
+    const figure = (cls: string, mood: Mood, level: number) => {
+      const el = h('span', { class: cls });
+      el.innerHTML = guideSvg(course.guide, mood, level, course.guideName);
+      return el;
+    };
+    return h('div', { class: 'kevolve__row', attrs: { 'aria-hidden': 'true' } }, figure('kevolve__from', 'happy', from), h('span', { class: 'kevolve__arrow', text: '→' }), figure('kevolve__to', 'wow', to));
+  }
+
+  /** Zahl in einem Text sanft hochzählen (z. B. „+40 XP“). */
+  function countUp(el: HTMLElement, value: number): void {
+    if (reducedMotion) return;
+    const start = performance.now();
+    const duration = 900;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - (1 - t) ** 3;
+      el.textContent = ks(lang, 'xpGained', { n: Math.round(value * eased) });
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    el.textContent = ks(lang, 'xpGained', { n: 0 });
+    window.setTimeout(() => requestAnimationFrame(tick), 600);
+  }
+
   function confetti(): void {
     if (reducedMotion) return;
     const layer = h('div', { class: 'kconfetti', attrs: { 'aria-hidden': 'true' } });
@@ -271,12 +298,33 @@ export function initLesson(root: HTMLElement): void {
     }
     const mistakeText = mistakes === 0 ? ks(lang, 'mistakes0') : mistakes === 1 ? ks(lang, 'mistakes1') : ks(lang, 'mistakesN', { n: mistakes });
     const xpLine = result.xpGained > 0 ? h('p', { class: 'kend__xp', text: ks(lang, 'xpGained', { n: result.xpGained }) }) : h('p', { class: 'kend__muted', text: ks(lang, 'noXp') });
+    if (result.xpGained > 0) countUp(xpLine, result.xpGained);
     const bar = h('div', { class: 'kbar', attrs: { role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': info.need || 1, 'aria-valuenow': info.max ? 1 : info.into, 'aria-label': ks(lang, 'levelName', { n: info.level, name: tx(info.name) }) } }, h('span', { class: 'kbar__fill' }));
-    (bar.firstElementChild as HTMLElement).style.setProperty('--p', `${info.max ? 100 : Math.round((100 * info.into) / info.need)}%`);
+    const fill = bar.firstElementChild as HTMLElement;
+    const target = `${info.max ? 100 : Math.round((100 * info.into) / info.need)}%`;
+    const before = levelFor(Math.max(0, p.xp - result.xpGained), course.levels);
+    if (reducedMotion || result.xpGained === 0) fill.style.setProperty('--p', target);
+    else {
+      // Balken wächst sichtbar vom alten Stand (nach einem Stufenaufstieg von null)
+      fill.style.setProperty('--p', before.level === info.level && !before.max ? `${Math.round((100 * before.into) / before.need)}%` : '0%');
+      window.setTimeout(() => fill.style.setProperty('--p', target), 700);
+    }
     const levelLine = h('p', { class: 'kend__level' }, h('strong', { text: ks(lang, 'levelName', { n: info.level, name: tx(info.name) }) }), ' · ', info.max ? ks(lang, 'levelMax') : ks(lang, 'levelNext', { n: info.need - info.into, next: info.level + 1 }));
-    const summary = h('section', { class: 'kend', attrs: { 'aria-live': 'polite' } }, h('h2', { class: 'kend__title', text: ks(lang, 'lessonDone') }), stars, h('p', { class: 'kend__muted', text: mistakeText }), xpLine, levelLine, bar);
+    const summary = h('section', { class: 'kend', attrs: { 'aria-live': 'polite' } }, h('h2', { class: 'kend__title', text: ks(lang, 'lessonDone') }), stars, h('p', { class: 'kend__muted', text: mistakeText }));
+    if (takeaway) summary.append(h('div', { class: 'ktakeaway' }, h('p', { class: 'ktakeaway__label', text: `📌 ${ks(lang, 'takeaway')}` }), h('p', { class: 'ktakeaway__text', text: tx(takeaway) })));
+    summary.append(xpLine, levelLine, bar);
     if (result.levelAfter > result.levelBefore) {
-      summary.append(h('p', { class: 'kend__levelup', text: `🎉 ${ks(lang, 'levelUp', { name: tx(info.name) })}` }));
+      // Stufenaufstieg: die Figur verwandelt sich (alte und neue Stufe nebeneinander)
+      const upgrade = guideUpgrade(course.guide, result.levelBefore, result.levelAfter);
+      summary.append(
+        h(
+          'div',
+          { class: 'kevolve' },
+          h('p', { class: 'kend__levelup', text: `🎉 ${ks(lang, 'levelUp', { name: tx(info.name) })}` }),
+          evolveRow(result.levelBefore, result.levelAfter),
+          ...(upgrade ? [h('p', { class: 'kevolve__text', text: tx(upgrade) })] : []),
+        ),
+      );
     }
     for (const badge of result.newBadges) {
       summary.append(h('div', { class: 'kbadge kbadge--new' }, h('span', { class: 'kbadge__icon', text: badge.icon }), h('span', {}, h('small', { text: ks(lang, 'newBadge') }), h('strong', { text: tx(badge.title) }), h('span', { text: tx(badge.text) }))));
@@ -320,6 +368,7 @@ export function initLesson(root: HTMLElement): void {
   loadLesson(courseId, lessonId)
     .then((content) => {
       steps = content.steps;
+      takeaway = content.takeaway;
       root.classList.add('is-ready');
       q('[data-loading]')?.remove();
       void renderStep();

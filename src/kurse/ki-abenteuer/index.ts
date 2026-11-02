@@ -1,6 +1,7 @@
 import { L } from '../../curriculum/helpers';
 import { LEVEL_NAMES } from '../engine/progress';
 import type { Course, KnowledgeCard, LessonMeta } from '../types';
+import { SOURCES } from './quellen';
 
 /**
  * KI-Abenteuer: Grundlagenkurs „Wie funktioniert KI?“ für Klasse 5 bis 10.
@@ -26,7 +27,7 @@ const lesson = (id: string, slug: Pair, title: Pair, teaser: Pair, icon: string,
   teaser: L(...teaser),
   icon,
   minutes,
-  card: c,
+  card: SOURCES[id] ? { ...c, source: SOURCES[id] } : c,
   ...extra,
 });
 
@@ -171,7 +172,7 @@ export const kiAbenteuer: Course = {
         lesson('bilder-aus-rauschen', ['bilder-aus-rauschen', 'pictures-from-noise'], ['Bilder aus Rauschen', 'Pictures from noise'], ['Bildgeneratoren beginnen mit Kriselkram. Hilf Bit, Schritt für Schritt aufzuräumen.', 'Image generators start with fuzz. Help Bit clean it up step by step.'], '🌫️', 7,
           card(2022, ['Bilder aus Text', 'Pictures from text'], ['Bildgeneratoren wie DALL·E 2 und Stable Diffusion malen aus einer Beschreibung neue Bilder. Sie beginnen mit Rauschen und entfernen es Schritt für Schritt.', 'Image generators like DALL·E 2 and Stable Diffusion paint new pictures from a description. They start from noise and remove it step by step.'])),
         lesson('echt-oder-fake', ['echt-oder-fake', 'real-or-fake'], ['Echt oder Fake?', 'Real or fake?'], ['Ein Bild geht viral. Wie findest du heraus, ob es echt ist?', 'A picture goes viral. How do you find out whether it’s real?'], '🕵️', 6,
-          card(2023, ['Der Papst im Daunenmantel', 'The Pope in a puffer jacket'], ['Ein mit KI erzeugtes Bild zeigt Papst Franziskus in einem weißen Daunenmantel. Millionen halten es für echt. Seitdem wissen viele: Fotos können täuschend echt erfunden sein.', 'An AI-generated picture shows Pope Francis in a white puffer jacket. Millions believe it is real. Since then many people know: photos can be invented and look completely real.'])),
+          card(2023, ['Der Papst im Daunenmantel', 'The Pope in a puffer jacket'], ['Ein mit KI erzeugtes Bild zeigt Papst Franziskus in einem weißen Daunenmantel. Es verbreitet sich rasend schnell, viele halten es für echt. Seitdem wissen viele: Fotos können täuschend echt erfunden sein.', 'An AI-generated picture shows Pope Francis in a white puffer jacket. It spreads like wildfire, and many people believe it is real. Since then many people know: photos can be invented and look completely real.'])),
       ],
     },
     {
@@ -185,7 +186,7 @@ export const kiAbenteuer: Course = {
         lesson('mein-feed', ['mein-feed', 'my-feed'], ['Mein Feed', 'My feed'], ['Warum zeigt dir die App immer mehr vom Gleichen? Sei der Algorithmus.', 'Why does the app show you more and more of the same? Be the algorithm.'], '📲', 7,
           card(2006, ['Der Wettbewerb um Empfehlungen', 'The recommendation contest'], ['Netflix bietet eine Million Dollar für ein Programm, das besser vorhersagt, welche Filme jemandem gefallen. Empfehlungen aus Daten bestimmen heute, was wir in Apps sehen.', 'Netflix offers a million dollars for a program that better predicts which films someone will like. Recommendations from data now decide what we see in apps.'])),
         lesson('stimmt-das', ['stimmt-das', 'is-that-true'], ['Stimmt das?', 'Is that true?'], ['KI klingt sicher, auch wenn sie sich irrt. Prüfe Bits Antworten.', 'AI sounds sure even when it’s wrong. Check Bit’s answers.'], '✅', 6,
-          card(2023, ['Erfundene Urteile', 'Made-up court cases'], ['Ein Anwalt in New York reicht Urteile ein, die ein Chatbot erfunden hatte. Sie klangen echt, gab es aber nicht. Das Gericht bestrafte ihn – prüfen hätte geholfen.', 'A lawyer in New York submits court rulings that a chatbot had made up. They sounded real but didn’t exist. The court fined him – checking would have helped.'])),
+          card(2023, ['Erfundene Urteile', 'Made-up court cases'], ['Ein Anwalt in New York reicht Urteile ein, die ein Chatbot erfunden hatte. Sie klangen echt, gab es aber nicht. Das Gericht verhängte eine Geldstrafe – prüfen hätte geholfen.', 'A lawyer in New York submits court rulings that a chatbot had made up. They sounded real but didn’t exist. The court imposed a fine – checking would have helped.'])),
         lesson('meine-daten', ['meine-daten', 'my-data'], ['Meine Daten', 'My data'], ['Was darf eine KI über dich wissen? Entscheide mit Bit.', 'What should an AI know about you? Decide together with Bit.'], '🔒', 5,
           card(2018, ['Die DSGVO gilt', 'The GDPR applies'], ['In der EU gilt ab Mai die Datenschutz-Grundverordnung: Du darfst erfahren, welche Daten Firmen über dich speichern, und verlangen, dass sie gelöscht werden.', 'From May the General Data Protection Regulation applies in the EU: you may find out which data companies store about you and ask for it to be deleted.'])),
         lesson('schlau-nutzen', ['ki-schlau-nutzen', 'using-ai-wisely'], ['KI schlau nutzen', 'Using AI wisely'], ['Hausaufgaben mit KI: Wann hilft sie dir beim Lernen – und wann lernst du gar nichts?', 'Homework with AI: when does it help you learn – and when do you learn nothing at all?'], '🎒', 6,

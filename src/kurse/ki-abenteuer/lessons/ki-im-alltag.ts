@@ -22,6 +22,7 @@ const cards: KartenProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('KI steckt oft unsichtbar in Alltagsdingen – überall dort, wo ein Programm aus Daten gelernt hat, etwas zu erkennen oder vorzuschlagen.', 'AI is often hidden in everyday things – wherever a program has learned from data to recognise or suggest something.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Weißt du, wo überall KI steckt? Viele denken: in jedem Gerät mit Strom. Stimmt das?', 'Do you know where AI is hiding? Many people think: in every device that uses electricity. Is that true?') },
     { kind: 'say', mood: 'think', text: L('Mein Tipp: KI ist dabei, wenn ein Gerät etwas aus Beispielen gelernt hat. Feste Abläufe sind keine KI.', 'My tip: AI is involved when a device has learned something from examples. Fixed routines are not AI.') },

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Expertensysteme verketten Wenn-dann-Regeln vorwärts bis zum Ergebnis. Ihr Wissen muss von Hand eingegeben werden – das begrenzt sie.', 'Expert systems chain if-then rules forward to a result. Their knowledge has to be entered by hand – and that limits them.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('In den 1970ern hieß die Idee: Intelligenz ist Wissen. Also befragt man Fachleute, schreibt ihr Wissen als Wenn-dann-Regeln auf und lässt den Computer daraus schließen. So entstehen Expertensysteme.', 'In the 1970s the idea was: intelligence is knowledge. So you interview experts, write their knowledge down as if-then rules and let the computer reason from them. That’s how expert systems came about.') },
     {

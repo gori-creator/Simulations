@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Diffusionsmodelle lernen, Rauschen schrittweise zu entfernen. Rückwärts angewendet wird aus reinem Rauschen ein neues Bild.', 'Diffusion models learn to remove noise step by step. Applied backwards, pure noise turns into a new picture.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Bildgeneratoren arbeiten rückwärts: Im Training lernt ein Netz, aus verrauschten Bildern das Rauschen herauszurechnen. Zum Erzeugen startet man mit reinem Rauschen und entrauscht Schritt für Schritt.', 'Image generators work backwards: in training a network learns to remove the noise from noisy images. To generate, you start with pure noise and denoise step by step.') },
     {

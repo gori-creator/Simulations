@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Winzige, gezielte Änderungen in Richtung des Gradienten können ein Netz täuschen. Hohe Genauigkeit heißt nicht Robustheit.', 'Tiny, targeted changes in the direction of the gradient can fool a network. High accuracy does not mean robustness.'),
   steps: [
     { kind: 'say', mood: 'think', text: L('2013 entdeckten Forschende etwas Beunruhigendes: Man kann ein Bild so minimal verändern, dass ein Mensch keinen Unterschied sieht – und das Netz trotzdem etwas völlig anderes erkennt.', 'In 2013 researchers discovered something unsettling: you can change an image so slightly that a person sees no difference – and the network still recognises something completely different.') },
     {

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Q-Lernen schätzt für jeden Zustand und jede Aktion einen Wert. γ legt fest, wie viel spätere Belohnung zählt.', 'Q-learning estimates a value for every state and action. γ sets how much later rewards count.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Agent steht in einer Welt, wählt Aktionen und bekommt ab und zu eine Belohnung. Er soll lernen, welche Aktion in welchem Zustand langfristig am meisten bringt – ohne dass ihm jemand den Weg zeigt.', 'An agent stands in a world, chooses actions and now and then receives a reward. It should learn which action pays off most in the long run in each state – without anyone showing it the way.') },
     {

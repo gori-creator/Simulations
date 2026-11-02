@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Neuron zieht nur eine gerade Grenze. Mehrere Neuronen zusammen können sogar eine Insel einzäunen.', 'One neuron draws only one straight boundary. Several neurons together can even fence in an island.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Weißt du noch? Ein Neuron rechnet Eingaben mal Gewichte und vergleicht mit einer Schwelle. Auf einer Karte heißt das: Es zieht eine gerade Linie. Auf der einen Seite sagt es „ja“, auf der anderen „nein“.', 'Remember? A neuron multiplies inputs by weights and compares with a threshold. On a map that means: it draws a straight line. On one side it says “yes”, on the other “no”.') },
     { kind: 'say', mood: 'think', text: L('Mein Problem: Die Schafe stehen in der Mitte der Wiese, die Wölfe ringsherum. Ich soll einen Zaun bauen, der nur Schafe einschließt.', 'My problem: the sheep stand in the middle of the meadow, the wolves all around. I have to build a fence that only encloses sheep.') },

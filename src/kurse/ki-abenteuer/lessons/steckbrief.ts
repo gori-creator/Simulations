@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein ehrlicher Steckbrief sagt, wofür eine KI gedacht ist, womit sie geübt hat und wo sie Fehler macht.', 'An honest model card says what an AI is meant for, what it practised on and where it makes mistakes.'),
   steps: [
     { kind: 'say', mood: 'wow', text: L('Große Neuigkeit: Ich werde veröffentlicht! Bald sollen Menschen mich benutzen, um Äpfel und Birnen zu sortieren.', 'Big news: I’m being released! Soon people will use me to sort apples and pears.') },
     { kind: 'say', mood: 'think', text: L('Aber woher sollen sie wissen, was ich kann – und was nicht? Dafür gibt es einen Steckbrief, wie bei einem Medikament der Beipackzettel.', 'But how will they know what I can do – and what I can’t? That’s what a model card is for, like the leaflet that comes with medicine.') },

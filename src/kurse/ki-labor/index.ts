@@ -1,5 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Course, KnowledgeCard, LessonMeta } from '../types';
+import { SOURCES } from './quellen';
 
 /**
  * KI-Labor: Vertiefungskurs für die Oberstufe (Klasse 11–13). Roter Faden:
@@ -26,7 +27,7 @@ const lesson = (id: string, slug: Pair, title: Pair, teaser: Pair, icon: string,
   teaser: L(...teaser),
   icon,
   minutes,
-  card: c,
+  card: SOURCES[id] ? { ...c, source: SOURCES[id] } : c,
   ...extra,
 });
 

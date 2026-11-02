@@ -19,6 +19,33 @@ Die Kurse sollen zeigen, **wie KI funktioniert** und **wie sie entstanden ist**:
 - **Wie wirkt das?** Fairness, Feeds und Filterblasen, Fälschungen, Datenschutz, Regeln wie der AI Act.
 - **Wie nutze ich das?** Antworten prüfen, lernen statt abschreiben, die eigenen Daten schützen.
 
+## Grundlagen und Quellen
+
+Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI. Alles ist in eigenen Worten umgesetzt; übernommen sind nur Ideen.
+
+**Rahmen für KI-Bildung**
+
+- AI4K12, „Five Big Ideas in AI“ (Touretzky, Gardner-McCune, Martin & Seehorn 2019, AAAI): Wahrnehmung, Darstellung und Schlussfolgern, Lernen, natürliche Interaktion, gesellschaftliche Wirkung. Jede Idee hat mindestens eine Welt (Sehen und Sprache, Regeln und Suche, Lernen aus Daten und Netze, Chatbots, „KI und wir“).
+- UNESCO (2024), „AI competency framework for students“: vier Dimensionen (menschzentrierte Haltung, Ethik der KI, KI-Techniken und -Anwendungen, Gestaltung von KI-Systemen) in drei Stufen (verstehen, anwenden, gestalten). Das KI-Abenteuer zielt vor allem auf „verstehen“ und „anwenden“, das KI-Labor auch auf „gestalten“ (eigene Netze, Belohnungsmodelle, Fairness-Schwellen).
+- Dagstuhl-Erklärung der Gesellschaft für Informatik (2016): technologische, gesellschaftlich-kulturelle und anwendungsbezogene Perspektive („Drei Blickwinkel“ auf der Übersichtsseite).
+- KMK, „Handlungsempfehlung für die Bildungsverwaltung zum Umgang mit Künstlicher Intelligenz in schulischen Bildungsprozessen“ (10.10.2024): konstruktiv-kritischer Umgang statt Verbot; KI-Kompetenz als Teil der Bildung in der digitalen Welt.
+- KI-Verordnung der EU (Verordnung (EU) 2024/1689), Art. 4 „KI-Kompetenz“ (gilt seit 2. Februar 2025): Wer KI einsetzt, soll für ausreichende KI-Kompetenz sorgen. Die Kurse sind ein Baustein dafür.
+- Long & Magerko (2020), „What is AI Literacy? Competencies and Design Considerations“ (CHI 2020): u. a. Erklärbarkeit, Daten in Zusammenhang stellen, schrittweise aufdecken („unveil gradually“), Vorwissen aufgreifen, niedrige Einstiegshürde – alles Leitlinien der Kurse.
+
+**Was Schüler über KI denken (Vorstellungen)**
+
+- Mertala, Fagerlund & Calderon (2022), Computers and Education: AI 3, 100095: 195 finnische Fünft- und Sechstklässler; die Rolle von **Daten** kam in ihren Erklärungen praktisch nicht vor, KI wurde oft **menschenähnlich** beschrieben. Folgerung: technische Grundlagen alltäglicher KI zeigen, besonders Daten. Darum beginnt das KI-Abenteuer mit „Aus Beispielen lernen“ und hat eine eigene Welt „Daten und Muster“.
+- Marx, Leonhardt & Bergner (2023), Computers and Education: AI 5, 100169 (Übersicht über 18 Studien zu Vorstellungen und Einstellungen von Schülern der Sekundarstufe zu KI).
+- Experience AI (Raspberry Pi Foundation und Google DeepMind): Vermenschlichung von KI in Sprache und Bildern vermeiden, weil sie davon ablenkt, dass Menschen KI bauen und verantworten. Umsetzung hier: Klartext-Kästen und keine Roboter-Gesichter auf den Kursbildern.
+
+**Lernen**
+
+- Vermuten, beobachten, erklären („Predict – Observe – Explain“, White & Gunstone 1992): die Vermutungsfragen vor den Spielen.
+- Abrufen statt nur wiederlesen (Testing-Effekt, Roediger & Karpicke 2006, Psychological Science 17(3), 249–255) und verteilt wiederholen (Cepeda et al. 2006, Psychological Bulletin 132(3), 354–380): Merksätze am Ende jeder Lektion und das Wiederholen je Welt.
+- Ohne Computer verstehen: „AI Unplugged“ (Lindner, Seegerer & Romeike 2019, FAU Erlangen-Nürnberg, aiunplugged.org) als Ideenquelle für die Vorschläge „Ohne Computer“ in der Handreichung für Lehrkräfte.
+
+**Fachliche Quellen:** Jede Wissenskarte nennt ihre Originalquelle (`src/kurse/<kurs>/quellen.ts`), sichtbar auf der Karte im Album und am Ende der Lektion.
+
 ## Leitlinien
 
 1. **Erst vermuten, dann ausprobieren, dann erklären.** Viele Lektionen beginnen mit einer Vermutungsfrage („Was glaubst du?“). Dort gibt es keine falschen Antworten; die Auflösung kommt nach dem Spiel.

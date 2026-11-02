@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Bei verschiedenen Grundraten lassen sich nicht alle Fairness-Maße zugleich erfüllen. Welches gelten soll, ist eine Wertentscheidung.', 'With different base rates not all fairness measures can be met at once. Which one should apply is a decision about values.'),
   steps: [
     { kind: 'say', mood: 'think', text: L('2016 untersuchte die Redaktion ProPublica ein Programm, das in US-Gerichten die Rückfallgefahr Angeklagter schätzt. Fehlalarme trafen Schwarze Angeklagte fast doppelt so oft. Der Hersteller hielt dagegen: Die Punktzahlen seien für beide Gruppen gleich zuverlässig. Beide hatten recht – wie geht das?', 'In 2016 the newsroom ProPublica examined a program that estimates defendants’ risk of reoffending in US courts. False alarms hit Black defendants almost twice as often. The vendor countered: the scores were equally reliable for both groups. Both were right – how can that be?') },
     {

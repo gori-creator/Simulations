@@ -19,6 +19,7 @@ const timeline: ZeitstrahlProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('KI ist in über 70 Jahren aus vielen Ideen gewachsen: Regeln, Suche, Lernen aus Daten, Netze. Wie es weitergeht, entscheiden Menschen.', 'AI grew over more than 70 years from many ideas: rules, search, learning from data, networks. People decide what comes next.'),
   steps: [
     { kind: 'say', mood: 'wow', text: L('Die große Abschlussmission! Wir reisen durch die Zeit – vom ersten künstlichen Neuron bis heute. Erinnerst du dich an deine Wissenskarten?', 'The big final mission! We travel through time – from the first artificial neuron to today. Do you remember your knowledge cards?') },
     { kind: 'game', game: 'zeitstrahl', props: timeline, intro: L('Tippe die Ereignisse vom ältesten zum neuesten an.', 'Tap the events from oldest to newest.') },

@@ -60,6 +60,7 @@ const rounds: TuringProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Turing ersetzt „Können Maschinen denken?“ durch ein Verhaltensexperiment. Ob Bestehen Verstehen bedeutet, ist umstritten (chinesisches Zimmer).', 'Turing replaces “Can machines think?” with a behavioural experiment. Whether passing means understanding is disputed (Chinese room).'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen im KI-Labor! Ich bin Ada – benannt nach Ada Lovelace, die 1843 als Erste ein Programm für eine Rechenmaschine beschrieb.', 'Welcome to the AI Lab! I’m Ada – named after Ada Lovelace, who in 1843 was the first to describe a program for a computing machine.') },
     {

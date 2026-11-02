@@ -17,6 +17,7 @@ const chat: ElizaProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Muster-Antwort-Regeln mit Rang und gespiegelten Pronomen reichen für ein glaubwürdiges Gespräch – ganz ohne Verständnis.', 'Pattern–response rules with ranks and mirrored pronouns are enough for a believable conversation – without any understanding.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('1966, MIT: Joseph Weizenbaum veröffentlicht ELIZA. Sein bekanntestes Skript, DOCTOR, ahmt eine Psychotherapeutin nach, die Aussagen als Fragen zurückgibt. Hier läuft ein Nachbau mit gut 20 Regeln.', '1966, MIT: Joseph Weizenbaum publishes ELIZA. Its best-known script, DOCTOR, imitates a psychotherapist who turns statements back into questions. Here is a rebuild with about 20 rules.') },
     {

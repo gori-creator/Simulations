@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Mehr Parameter senken den Trainingsfehler, aber nicht unbedingt den Testfehler. Kreuzvalidierung findet das passende Maß.', 'More parameters lower the training error, but not necessarily the test error. Cross-validation finds the right complexity.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Je beweglicher ein Modell ist, desto besser kann es die Trainingsdaten treffen. Ein Polynom vom Grad 9 hat 10 Parameter – genug, um durch 10 Punkte exakt hindurchzugehen.', 'The more flexible a model, the better it can fit the training data. A degree-9 polynomial has 10 parameters – enough to pass exactly through 10 points.') },
     {

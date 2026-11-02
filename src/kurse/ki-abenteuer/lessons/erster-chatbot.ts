@@ -16,6 +16,7 @@ const chat: ElizaProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('ELIZA hat nur Regeln abgearbeitet und nichts verstanden – trotzdem fühlten sich Menschen verstanden.', 'ELIZA only followed rules and understood nothing – yet people felt understood.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Darf ich vorstellen: ELIZA! Joseph Weizenbaum hat sie 1966 programmiert. Viele Leute glaubten damals, ELIZA verstehe sie.', 'Let me introduce ELIZA! Joseph Weizenbaum programmed her in 1966. Many people back then believed ELIZA understood them.') },
     {

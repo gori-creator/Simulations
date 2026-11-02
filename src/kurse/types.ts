@@ -65,6 +65,8 @@ export interface KnowledgeCard {
   title: Localized;
   /** Ein bis zwei Sätze: Was geschah damals – und was hat das mit der Lektion zu tun? */
   text: Localized;
+  /** Quelle zum Meilenstein (Originalarbeit, Gesetz), aus `<kurs>/quellen.ts`. */
+  source?: string | Localized;
 }
 
 export interface LessonMeta {
@@ -119,5 +121,7 @@ export interface Course {
 
 /** Inhalt einer Lektion (wird erst auf der Lektionsseite geladen). */
 export interface LessonContent {
+  /** Merksatz: das Wichtigste der Lektion in einem Satz (Ende der Lektion, Spickzettel auf der Karte). */
+  takeaway?: Localized;
   steps: Step[];
 }

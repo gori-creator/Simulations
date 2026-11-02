@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('ID3 wählt an jedem Knoten die Frage mit dem größten Informationsgewinn, also der stärksten Abnahme der Entropie.', 'ID3 picks at each node the question with the largest information gain, i.e. the biggest drop in entropy.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Entscheidungsbaum stellt Fragen, bis die Antwort klar ist. Aber welche Frage zuerst? Ross Quinlan hatte 1986 eine Antwort: die, die am meisten Information bringt.', 'A decision tree asks questions until the answer is clear. But which question first? In 1986 Ross Quinlan had an answer: the one that brings the most information.') },
     {

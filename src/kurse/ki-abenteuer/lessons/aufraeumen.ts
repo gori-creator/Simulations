@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Falsche Beispiele führen zu falschem Lernen. Daten prüfen und aufräumen gehört dazu.', 'Wrong examples lead to wrong learning. Checking and cleaning data is part of the job.'),
   steps: [
     { kind: 'say', mood: 'sad', text: L('Oh nein! Beim Beschriften meiner Früchte ist etwas schiefgegangen. Drei Früchte haben das falsche Schild.', 'Oh no! Something went wrong when my fruit was labelled. Three fruits have the wrong label.') },
     { kind: 'say', mood: 'think', text: L('Ich lerne diesmal anders: Bei einer neuen Frucht schaue ich, welche bekannte Frucht am nächsten liegt. Falsche Schilder bringen mich so durcheinander.', 'This time I learn differently: for a new fruit I look at which known fruit is closest. Wrong labels confuse me that way.') },

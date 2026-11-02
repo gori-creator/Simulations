@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Schon Streichholzschachteln mit Perlen können ein Spiel lernen: Gute Züge bekommen mehr Perlen, schlechte weniger.', 'Even matchboxes with beads can learn a game: good moves get more beads, bad ones fewer.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('1961 baute der Forscher Donald Michie eine lernende Maschine – ganz ohne Computer! Sie bestand aus 304 Streichholzschachteln voller bunter Perlen.', 'In 1961 the researcher Donald Michie built a learning machine – without any computer! It was made of 304 matchboxes full of coloured beads.') },
     { kind: 'say', mood: 'think', text: L('Ich mache es genauso. Unser Spiel: 9 Hölzer, jeder nimmt 1 oder 2, wer das letzte nimmt, gewinnt. Für jede Zahl von Hölzern habe ich eine Schachtel. Ich ziehe blind eine Perle: 🔵 heißt „1 nehmen“, 🔴 heißt „2 nehmen“.', 'I do it the same way. Our game: 9 sticks, each takes 1 or 2, whoever takes the last one wins. For every number of sticks I have a box. I draw a bead without looking: 🔵 means “take 1”, 🔴 means “take 2”.') },

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Eine KI erkennt Zeichen, die ihren Übungsbeispielen ähneln. Ganz anders Gezeichnetes erkennt sie oft nicht.', 'An AI recognises characters that look like its practice examples. It often fails on something drawn very differently.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Heute lerne ich drei Zeichen: Kreuz, Kreis und Strich. Du bist meine Zeichenlehrerin oder mein Zeichenlehrer!', 'Today I’ll learn three symbols: cross, circle and line. You’re my drawing teacher!') },
     { kind: 'say', mood: 'think', text: L('Mein Plan: Ich vergleiche eine neue Zeichnung Kästchen für Kästchen mit deinen Beispielen. Das Beispiel mit den wenigsten Unterschieden gewinnt.', 'My plan: I compare a new drawing square by square with your examples. The example with the fewest differences wins.') },

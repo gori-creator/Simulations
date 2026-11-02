@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('A* wählt nach f = g + h. Mit einer zulässigen Schätzung h findet es den kürzesten Weg und untersucht meist viel weniger Felder als die Breitensuche.', 'A* chooses by f = g + h. With an admissible estimate h it finds the shortest path and usually explores far fewer cells than breadth-first search.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Viele KI-Probleme sind in Wahrheit Suchprobleme: Es gibt Zustände, Züge zwischen ihnen, einen Start und ein Ziel. Gesucht ist ein Weg – beim Navi, beim Roboter, beim Puzzle.', 'Many AI problems are really search problems: there are states, moves between them, a start and a goal. You are looking for a path – in satnavs, robots, puzzles.') },
     {

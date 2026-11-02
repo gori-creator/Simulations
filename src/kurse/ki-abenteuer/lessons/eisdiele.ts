@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Am meisten Erfolg hat, wer meistens das Bewährte nimmt und ab und zu etwas Neues ausprobiert.', 'The most success comes from mostly picking what works and now and then trying something new.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen in meiner dritten Lernwelt! Hier sagt mir niemand die richtige Antwort. Ich probiere etwas aus und bekomme danach eine Belohnung – oder eben nicht.', 'Welcome to my third learning world! Here nobody tells me the right answer. I try something and get a reward afterwards – or not.') },
     { kind: 'say', mood: 'think', text: L('In meiner Stadt gibt es drei Eisdielen. Manchmal ist das Eis lecker, manchmal nicht. Welche ist die beste? Das weiß niemand – ich muss es herausfinden.', 'There are three ice-cream shops in my town. Sometimes the ice cream is yummy, sometimes not. Which is the best? Nobody knows – I have to find out.') },

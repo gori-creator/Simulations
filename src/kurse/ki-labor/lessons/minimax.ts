@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Minimax bewertet den Spielbaum unter der Annahme bester Gegenzüge. Alpha-Beta schneidet Äste ab, ohne das Ergebnis zu ändern.', 'Minimax evaluates the game tree assuming the best replies. Alpha-beta prunes branches without changing the result.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('In einem Spiel für zwei will ich meinen Wert maximieren, du willst ihn minimieren. Minimax heißt: Ich nehme an, dass du immer den für mich schlechtesten Zug wählst – und suche den Zug, der dann am besten für mich ist.', 'In a two-player game I want to maximise my value and you want to minimise it. Minimax means: I assume you always pick the move that’s worst for me – and look for the move that is then best for me.') },
     {

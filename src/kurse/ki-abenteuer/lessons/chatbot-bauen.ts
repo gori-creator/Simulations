@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Chatbots lernen erst aus riesigen Textmengen und dann aus Bewertungen von Menschen. Freundlich heißt nicht richtig.', 'Chatbots learn first from huge amounts of text and then from people’s ratings. Friendly doesn’t mean correct.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Wie entsteht eigentlich ein Chatbot wie ChatGPT? Ich zeige es dir an mir selbst. Es passiert in zwei großen Schritten.', 'How is a chatbot like ChatGPT actually made? I’ll show you using myself. It happens in two big steps.') },
     { kind: 'say', mood: 'think', text: L('Schritt 1: Ich lese. Sehr, sehr viel. Echte Chatbots lesen Milliarden Sätze aus dem Internet und aus Büchern. Dabei zählen sie, welche Wörter aufeinander folgen.', 'Step 1: I read. A lot. Real chatbots read billions of sentences from the internet and from books. While doing so they count which words follow each other.') },

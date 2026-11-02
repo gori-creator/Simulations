@@ -25,6 +25,7 @@ const sort: SortierenProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Der AI Act regelt nach Risiko: verboten, hohes Risiko mit Pflichten, Transparenzpflichten, sonst kaum Vorgaben.', 'The AI Act regulates by risk: banned, high risk with obligations, transparency duties, otherwise hardly any rules.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Seit dem 1. August 2024 gilt in der EU die KI-Verordnung, der AI Act – das erste umfassende KI-Gesetz der Welt. Ihre Pflichten treten schrittweise in Kraft. Sie fragt nicht, welche Technik benutzt wird, sondern wofür.', 'Since 1 August 2024 the EU’s AI Regulation, the AI Act, has been in force – the world’s first comprehensive AI law. Its obligations take effect step by step. It doesn’t ask which technique is used, but what it is used for.') },
     {

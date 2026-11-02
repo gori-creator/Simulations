@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Bei der Aufmerksamkeit gewichtet jedes Token alle anderen mit softmax(q·k/√d) – so hängt die Bedeutung von „er“ vom Zusammenhang ab.', 'In attention every token weighs all others with softmax(q·k/√d) – that is how the meaning of “it” depends on the context.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('„Der Ball passte nicht in den Koffer, weil er zu groß war.“ Du weißt sofort: „er“ ist der Ball. Ändere ein Wort – „zu klein“ – und „er“ ist der Koffer. Solche Sätze heißen Winograd-Schemata.', '“The ball didn’t fit into the suitcase because it was too big.” You immediately know: “it” is the ball. Change one word – “too small” – and “it” is the suitcase. Such sentences are called Winograd schemas.') },
     {

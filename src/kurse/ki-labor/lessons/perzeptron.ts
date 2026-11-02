@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Die Perzeptron-Regel verschiebt die Trenngerade bei jedem Fehler. Sind die Daten linear trennbar, endet sie nach endlich vielen Schritten.', 'The perceptron rule shifts the separating line after every mistake. If the data are linearly separable, it stops after finitely many steps.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('1958 stellte Frank Rosenblatt das Perzeptron vor – eine Maschine mit 400 Lichtsensoren und von Motoren verstellten Widerständen als Gewichten. Neu war: Die Gewichte stellten sich durch Fehler selbst ein.', 'In 1958 Frank Rosenblatt presented the perceptron – a machine with 400 light sensors and motor-driven resistors as weights. What was new: the weights adjusted themselves through errors.') },
     {

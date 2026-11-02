@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ob eine KI etwas kann, zeigt erst die Probe mit neuen Beispielen. Auswendiglernen hilft dort nicht.', 'Whether an AI can do something only shows in a test with new examples. Memorising doesn’t help there.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Morgen schreibe ich eine Probe! Ich habe Übungsaufgaben bekommen. Die Probe hat aber neue Aufgaben.', 'Tomorrow I have a test! I got practice questions. But the test has new questions.') },
     {

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Die Ausgleichsgerade macht die Summe der Fehlerquadrate so klein wie möglich – dafür gibt es eine geschlossene Formel.', 'The regression line makes the sum of squared errors as small as possible – and there is a closed formula for it.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen in der zweiten großen Linie der KI: Statt Wissen aufzuschreiben, lernt man es aus Daten. Das älteste Lernverfahren der Welt ist über 200 Jahre alt.', 'Welcome to the second great line of AI: instead of writing knowledge down, you learn it from data. The oldest learning method in the world is over 200 years old.') },
     { kind: 'say', mood: 'think', text: L('Zehn Schülerinnen und Schüler haben notiert, wie lange sie gelernt haben und wie viele Punkte sie im Test hatten. Gesucht ist ein Modell: eine Gerade y = m·x + b, die aus der Lernzeit die Punkte vorhersagt.', 'Ten students wrote down how long they studied and how many points they got in a test. We want a model: a line y = m·x + b that predicts the points from the study time.') },

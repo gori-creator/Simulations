@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Sprachmodell sagt das nächste Wort aus Zählungen voraus. Das klingt richtig, muss aber nicht wahr sein.', 'A language model predicts the next word from counts. It sounds right but doesn’t have to be true.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Hast du schon mal mit einem Chatbot geschrieben? Weißt du, wie der seine Antworten schreibt?', 'Have you ever chatted with a chatbot? Do you know how it writes its answers?') },
     { kind: 'say', mood: 'think', text: L('Er rät immer nur das nächste Wort. Dann das nächste. Und so weiter. Ich zeige dir das im Kleinen: Ich habe elf Sätze gelesen und gezählt, welches Wort auf welches folgt.', 'It only ever guesses the next word. Then the next one. And so on. I’ll show you in miniature: I read eleven sentences and counted which word follows which.') },

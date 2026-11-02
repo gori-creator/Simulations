@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Wörter, die in ähnlichen Sätzen vorkommen, liegen für die KI nah beieinander. So kann sie mit Bedeutungen rechnen.', 'Words that appear in similar sentences lie close together for the AI. That is how it can calculate with meanings.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Für mich sind Wörter erst einmal nur Buchstaben. Woher soll ich wissen, dass „Hund“ und „Katze“ etwas gemeinsam haben, „Hund“ und „Bus“ aber nicht?', 'To me, words are just letters at first. How would I know that “dog” and “cat” have something in common, but “dog” and “bus” don’t?') },
     { kind: 'say', mood: 'think', text: L('Mein Trick: Ich lese sehr viele Sätze. Wörter, die in ähnlichen Sätzen vorkommen („Der … bellt“, „Die … schläft“), bekommen auf meiner Karte nahe Plätze.', 'My trick: I read lots and lots of sentences. Words that appear in similar sentences (“The … barks”, “The … sleeps”) get places close together on my map.') },

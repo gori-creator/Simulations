@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Ein Entscheidungsbaum stellt nacheinander Fragen. Gute Fragen teilen die Beispiele möglichst sauber auf.', 'A decision tree asks questions one after another. Good questions split the examples as cleanly as possible.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Kennst du das Spiel „Wer bin ich?“ Man stellt Ja-Nein-Fragen, bis man die Antwort weiß. So kann ich auch entscheiden!', 'Do you know the game “Who am I?” You ask yes/no questions until you know the answer. I can decide like that too!') },
     { kind: 'say', mood: 'think', text: L('Ich habe sieben Tiere. Am Ende soll jeder Ast nur noch Vögel, nur Fische oder nur Säugetiere enthalten. Mit möglichst wenigen Fragen!', 'I have seven animals. In the end, each branch should hold only birds, only fish or only mammals. With as few questions as possible!') },

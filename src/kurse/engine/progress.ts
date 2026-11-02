@@ -18,10 +18,22 @@ export interface LessonRecord {
   plays: number;
 }
 
+/** Wiederholen einer Welt: bestes Ergebnis und letzter Tag. */
+export interface ReviewRecord {
+  /** Beste Zahl richtiger Antworten in einer Runde. */
+  best: number;
+  /** Fragen in dieser Runde. */
+  total: number;
+  /** Letzter Tag mit Wiederholung (JJJJ-MM-TT). */
+  last: string;
+}
+
 export interface Progress {
   v: 1;
   xp: number;
   lessons: Record<string, LessonRecord>;
+  /** Wiederholungen je Welt (Schlüssel: Welt-ID). Fehlt in älteren Ständen. */
+  reviews: Record<string, ReviewRecord>;
   badges: string[];
   /** Serie: letzter Spieltag (JJJJ-MM-TT) und Tage in Folge. */
   streak: { last: string; days: number };
@@ -35,7 +47,7 @@ export function cloneProgress(progress: Progress): Progress {
 }
 
 export function emptyProgress(): Progress {
-  return { v: 1, xp: 0, lessons: {}, badges: [], streak: { last: '', days: 0 }, free: false };
+  return { v: 1, xp: 0, lessons: {}, reviews: {}, badges: [], streak: { last: '', days: 0 }, free: false };
 }
 
 /** Gespeicherte Daten prüfen; Unbekanntes oder Kaputtes wird verworfen. */
@@ -50,6 +62,15 @@ export function sanitizeProgress(raw: unknown): Progress {
       const { stars, plays } = rec as Record<string, unknown>;
       if (stars !== 1 && stars !== 2 && stars !== 3) continue;
       p.lessons[id] = { stars, plays: typeof plays === 'number' && plays >= 1 ? Math.min(9999, Math.round(plays)) : 1 };
+    }
+  }
+  if (r.reviews && typeof r.reviews === 'object') {
+    for (const [id, rec] of Object.entries(r.reviews as Record<string, unknown>)) {
+      if (!/^[a-z0-9-]{1,40}$/.test(id) || !rec || typeof rec !== 'object') continue;
+      const { best, total, last } = rec as Record<string, unknown>;
+      if (typeof total !== 'number' || !Number.isInteger(total) || total < 1 || total > 50) continue;
+      if (typeof best !== 'number' || !Number.isInteger(best) || best < 0 || best > total) continue;
+      p.reviews[id] = { best, total, last: typeof last === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(last) ? last : '' };
     }
   }
   if (Array.isArray(r.badges)) p.badges = [...new Set(r.badges.filter((b): b is string => typeof b === 'string' && /^[a-z0-9-]{1,40}$/.test(b)))];
@@ -122,12 +143,16 @@ export function lessonXp(stars: number): number {
 /** XP für ein neues Abzeichen. */
 export const BADGE_XP = 20;
 
+/** XP je richtiger Antwort beim Wiederholen (bestes Ergebnis je Welt zählt). */
+export const REVIEW_XP = 2;
+
 /**
  * XP aus dem Spielstand neu berechnen: je Lektion die XP der besten Wertung,
  * je Abzeichen BADGE_XP. Stimmt mit dem überein, was `finishLesson` vergibt.
  */
 export function computeXp(p: Progress): number {
-  return Object.values(p.lessons).reduce((sum, rec) => sum + lessonXp(rec.stars), 0) + p.badges.length * BADGE_XP;
+  const reviews = Object.values(p.reviews ?? {}).reduce((sum, rec) => sum + rec.best * REVIEW_XP, 0);
+  return Object.values(p.lessons).reduce((sum, rec) => sum + lessonXp(rec.stars), 0) + p.badges.length * BADGE_XP + reviews;
 }
 
 // ---------- Abzeichen ----------
@@ -182,6 +207,13 @@ export function badgeRules(course: Course): BadgeRule[] {
       title: L('Dranbleiber', 'Keep going'),
       text: L('An drei Tagen in Folge gespielt.', 'Played on three days in a row.'),
       earned: (p) => p.streak.days >= 3,
+    },
+    {
+      id: 'gedaechtnis',
+      icon: '🧠',
+      title: L('Gutes Gedächtnis', 'Good memory'),
+      text: L('Eine Welt ganz ohne Fehler wiederholt.', 'Reviewed a world without a single mistake.'),
+      earned: (p) => Object.values(p.reviews ?? {}).some((r) => r.total >= 3 && r.best === r.total),
     },
     {
       id: 'wiederholer',
@@ -300,6 +332,54 @@ export function finishLesson(progress: Progress, course: Course, lessonId: strin
   return { progress: p, stars, xpGained, newBadges, firstTime: !before, levelBefore, levelAfter: levelFor(p.xp, levels).level };
 }
 
+// ---------- Wiederholen ----------
+
+export interface ReviewResult {
+  progress: Progress;
+  xpGained: number;
+  newBadges: BadgeDef[];
+  levelBefore: number;
+  levelAfter: number;
+  /** Neues bestes Ergebnis für diese Welt. */
+  improved: boolean;
+}
+
+/**
+ * Wiederholung einer Welt beendet: bestes Ergebnis und Tag merken, Serie
+ * weiterzählen, Abzeichen prüfen. XP gibt es nur für Verbesserungen
+ * (REVIEW_XP je zusätzlicher richtiger Antwort), damit `computeXp` stimmt.
+ */
+export function finishReview(progress: Progress, course: Course, worldId: string, correct: number, total: number, today: string): ReviewResult {
+  const p: Progress = cloneProgress(progress);
+  p.reviews = p.reviews ?? {};
+  const right = Math.max(0, Math.min(total, Math.round(correct)));
+  const before = p.reviews[worldId];
+  const improved = !before || right > before.best;
+  let xpGained = improved ? (right - (before?.best ?? 0)) * REVIEW_XP : 0;
+  p.reviews[worldId] = { best: improved ? right : before!.best, total: improved ? total : before!.total, last: today };
+  p.streak = touchStreak(p.streak, today);
+  const newBadges: BadgeDef[] = [];
+  for (const rule of badgeRules(course)) {
+    if (p.badges.includes(rule.id) || !rule.earned(p, course)) continue;
+    p.badges.push(rule.id);
+    newBadges.push({ id: rule.id, icon: rule.icon, title: rule.title, text: rule.text });
+    xpGained += BADGE_XP;
+  }
+  const levelBefore = levelFor(p.xp, course.levels).level;
+  p.xp += xpGained;
+  return { progress: p, xpGained, newBadges, levelBefore, levelAfter: levelFor(p.xp, course.levels).level, improved };
+}
+
+/** Tage zwischen zwei Tagen (JJJJ-MM-TT); leer → unendlich. */
+export function daysBetween(from: string, to: string): number {
+  if (!from) return Infinity;
+  const parse = (key: string) => {
+    const [y, m, d] = key.split('-').map(Number) as [number, number, number];
+    return Date.UTC(y, m - 1, d);
+  };
+  return Math.round((parse(to) - parse(from)) / 86400000);
+}
+
 // ---------- Zusammenführen (für Codes und spätere Konten) ----------
 
 /**
@@ -313,6 +393,15 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
   for (const [id, rec] of Object.entries(b.lessons)) {
     const mine = p.lessons[id];
     p.lessons[id] = mine ? { stars: Math.max(mine.stars, rec.stars) as 1 | 2 | 3, plays: Math.max(mine.plays, rec.plays) } : { ...rec };
+  }
+  p.reviews = { ...(a.reviews ?? {}) };
+  for (const [id, rec] of Object.entries(b.reviews ?? {})) {
+    const mine = p.reviews[id];
+    if (!mine) p.reviews[id] = { ...rec };
+    else {
+      const better = rec.best / rec.total > mine.best / mine.total || (rec.best / rec.total === mine.best / mine.total && rec.best > mine.best) ? rec : mine;
+      p.reviews[id] = { best: better.best, total: better.total, last: rec.last > mine.last ? rec.last : mine.last };
+    }
   }
   p.badges = [...new Set([...a.badges, ...b.badges])];
   if (b.streak.last > p.streak.last || (b.streak.last === p.streak.last && b.streak.days > p.streak.days)) p.streak = { ...b.streak };

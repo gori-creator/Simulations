@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Sprachmodelle lesen Tokens: häufige Wortteile, die Byte-Pair-Encoding aus Zählungen bildet. So passt jedes Wort in ein festes Vokabular.', 'Language models read tokens: frequent word pieces that byte-pair encoding builds from counts. That way every word fits into a fixed vocabulary.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Sprachmodell rechnet nur mit Zahlen. Zuerst wird Text also in Stücke zerlegt, die je eine Nummer bekommen: Tokens. Aber welche Stücke? Buchstaben? Ganze Wörter?', 'A language model only computes with numbers. So text is first split into pieces that each get a number: tokens. But which pieces? Letters? Whole words?') },
     {

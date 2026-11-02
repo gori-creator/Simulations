@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Je mehr gute und verschiedene Beispiele, desto besser erkennt eine KI Neues.', 'The more good and varied examples, the better an AI recognises new things.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Heute lerne ich wie eine echte KI: aus Beispielen. Mein Ziel: Äpfel und Birnen unterscheiden.', 'Today I’ll learn like a real AI: from examples. My goal: telling apples from pears.') },
     { kind: 'say', mood: 'think', text: L('Ich achte auf zwei Dinge: die Farbe und die Form. Bei einer neuen Frucht suche ich das ähnlichste Beispiel, das ich kenne.', 'I pay attention to two things: colour and shape. For a new fruit I look for the most similar example I know.') },

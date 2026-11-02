@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Schon eine verborgene Schicht kann jede stetige Funktion auf einem begrenzten Bereich beliebig genau annähern. Ob das Training sie findet, hängt von Daten, Größe und Lernrate ab.', 'Even one hidden layer can approximate any continuous function on a bounded region arbitrarily well. Whether training finds it depends on data, size and learning rate.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen auf dem Netz-Spielplatz! Hier trainiert ein echtes neuronales Netz direkt in deinem Browser – mit allem, was du in dieser Welt gelernt hast.', 'Welcome to the network playground! Here a real neural network trains right in your browser – with everything you learned in this world.') },
     {

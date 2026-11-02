@@ -20,6 +20,7 @@ const timeline: ZeitstrahlProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('KI ist Mathematik mit Daten – mächtig, aber nicht magisch. Wer sie versteht, kann mitreden und mitentscheiden.', 'AI is mathematics with data – powerful but not magic. Whoever understands it can join the debate and the decisions.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Letzte Mission! Du hast Regeln geschrieben, Bäume durchsucht, Geraden angepasst, Netze trainiert, Bilder gefaltet, Tokens gebaut, Agenten belohnt und Fairness gemessen. Zeit, alles zusammenzusetzen.', 'Final mission! You’ve written rules, searched trees, fitted lines, trained networks, convolved images, built tokens, rewarded agents and measured fairness. Time to put it all together.') },
     { kind: 'game', game: 'zeitstrahl', props: timeline, intro: L('Bring die großen Meilensteine in die richtige Reihenfolge.', 'Put the great milestones in the right order.') },

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Lernen heißt hier: Nach jedem Fehler werden die Gewichte ein kleines Stück verstellt.', 'Learning here means: after every mistake the weights are adjusted a little.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Erinnerst du dich an die Zitronen und Orangen? Diesmal ziehst du die Linie nicht selbst. Mein Neuron lernt sie!', 'Remember the lemons and oranges? This time you don’t draw the line. My neuron learns it!') },
     { kind: 'say', mood: 'think', text: L('Mein Trick: Ich schaue mir eine Frucht an, die ich falsch einordne. Dann verändere ich meine Gewichte ein kleines bisschen, damit es bei ihr besser passt. Und dann die nächste.', 'My trick: I look at a fruit I place wrongly. Then I change my weights a tiny bit so that it fits better for that one. And then the next one.') },

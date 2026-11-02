@@ -5,6 +5,7 @@ import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
 import { cardArt, worldArt } from '../kurse/art';
+import { loadLesson } from '../kurse/loaders';
 import { guideSvg } from '../kurse/engine/guide';
 import { badgeRules } from '../kurse/engine/progress';
 import { ks } from '../kurse/strings';
@@ -28,6 +29,8 @@ const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.i
 // Optionale Bilder (docs/KI-KURS-BILDER.md); fehlen sie, bleibt die gezeichnete Darstellung.
 const worldArts = await Promise.all(course.chapters.map((chapter) => worldArt(course.id, chapter.id)));
 const cardArts = new Map(await Promise.all(cards.map(async (lesson) => [lesson.id, await cardArt(course.id, lesson.id)] as const)));
+// Merksätze für den Spickzettel jeder Welt
+const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.id, (await loadLesson(course.id, lesson.id)).takeaway] as const)));
 ---
 
 <BaseLayout
@@ -161,10 +164,50 @@ const cardArts = new Map(await Promise.all(cards.map(async (lesson) => [lesson.i
                   );
                 })}
               </ol>
+              <div class="kworld__tools">
+                <details class="knotes">
+                  <summary>
+                    📝 {ks(lang, 'notesTitle')} <span class="knotes__count" data-notes-count />
+                  </summary>
+                  <ol class="knotes__list">
+                    {chapter.lessons
+                      .filter((lesson) => lesson.status === 'ready' && takeaways.get(lesson.id))
+                      .map((lesson) => (
+                        <li class="knotes__item" data-note={lesson.id}>
+                          <span class="knotes__icon" aria-hidden="true">
+                            {lesson.icon}
+                          </span>
+                          <span class="knotes__body">
+                            <strong>{lesson.title[lang]}</strong>
+                            <span class="knotes__text">{takeaways.get(lesson.id)![lang]}</span>
+                            <span class="knotes__locked">🔒 {ks(lang, 'noteLocked')}</span>
+                          </span>
+                        </li>
+                      ))}
+                  </ol>
+                </details>
+                <button class="btn kworld__review" type="button" data-review={chapter.id} data-review-title={ks(lang, 'reviewTitle', { world: chapter.title[lang] })} disabled>
+                  🔁 {ks(lang, 'reviewButton')}
+                </button>
+                <span class="kworld__due" data-review-due hidden>
+                  ⏰ {ks(lang, 'reviewDue')}
+                </span>
+                <span class="kworld__reviewed" data-review-info />
+              </div>
             </li>
           ))
         }
       </ol>
+
+      <dialog class="kreview" data-review-dialog aria-labelledby="kreview-title">
+        <div class="kreview__inner">
+          <header class="kreview__head">
+            <h2 class="kreview__title" id="kreview-title" data-review-heading>{ks(lang, 'reviewButton')}</h2>
+            <button class="btn btn--ghost kreview__close" type="button" data-review-close aria-label={ks(lang, 'close')}>✕</button>
+          </header>
+          <div class="kreview__body" data-review-body />
+        </div>
+      </dialog>
 
       {
         cards.length > 0 && (
@@ -182,6 +225,7 @@ const cardArts = new Map(await Promise.all(cards.map(async (lesson) => [lesson.i
                     <span class="kcardx__year">{lesson.card!.year}</span>
                     <h3 class="kcardx__title">{lesson.card!.title[lang]}</h3>
                     <p class="kcardx__text">{lesson.card!.text[lang]}</p>
+                    {lesson.card!.source && <p class="kcardx__source">📚 {typeof lesson.card!.source === 'string' ? lesson.card!.source : lesson.card!.source[lang]}</p>}
                     <p class="kcardx__locked">{ks(lang, 'cardLocked', { title: lesson.title[lang] })}</p>
                     <span class="kcardx__icon" aria-hidden="true">
                       {lesson.icon}

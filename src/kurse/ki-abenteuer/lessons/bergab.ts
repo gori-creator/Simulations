@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Training ist wie Bergabgehen im Nebel: immer ein Schritt dahin, wo der Fehler kleiner wird. Zu große Schritte schießen übers Ziel hinaus.', 'Training is like walking downhill in fog: always a step towards a smaller error. Steps that are too big overshoot.'),
   steps: [
     { kind: 'say', mood: 'think', text: L('Stell dir vor, du stehst nachts im Nebel auf einem Berg. Du willst ins Tal, siehst aber nichts. Was machst du?', 'Imagine standing on a mountain at night in fog. You want to get down to the valley, but you can’t see anything. What do you do?') },
     {

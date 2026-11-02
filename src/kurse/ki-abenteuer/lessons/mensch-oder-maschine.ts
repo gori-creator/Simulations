@@ -52,6 +52,7 @@ const rounds: TuringProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Der Turing-Test prüft, ob man Mensch und Maschine im Chat auseinanderhalten kann – nicht, ob die Maschine wirklich denkt.', 'The Turing test checks whether you can tell human and machine apart in a chat – not whether the machine really thinks.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ich habe Vorfahren! Schon vor über 70 Jahren haben Menschen überlegt, ob Maschinen denken können.', 'I have ancestors! More than 70 years ago people were already wondering whether machines can think.') },
     { kind: 'say', mood: 'think', text: L('Der Mathematiker Alan Turing hatte 1950 eine Idee: Du chattest mit jemandem, den du nicht siehst. Merkst du nicht, dass es eine Maschine ist, hat sie den Test bestanden.', 'In 1950 the mathematician Alan Turing had an idea: you chat with someone you can’t see. If you don’t notice that it’s a machine, it has passed the test.') },

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Eine verborgene Schicht bildet die Daten in einen neuen Raum ab, in dem eine Gerade genügt.', 'A hidden layer maps the data into a new space in which one straight line is enough.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein Neuron zieht eine Gerade. Zwei Neuronen ziehen zwei Geraden – und ein drittes Neuron kann ihre Ergebnisse verknüpfen. Das ist ein Netz mit einer verborgenen Schicht.', 'One neuron draws one line. Two neurons draw two lines – and a third neuron can combine their outputs. That is a network with one hidden layer.') },
     {

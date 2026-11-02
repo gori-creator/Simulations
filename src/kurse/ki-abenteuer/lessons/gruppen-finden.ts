@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Auch ohne Etiketten findet eine KI Gruppen ähnlicher Dinge. Was die Gruppen bedeuten, entscheiden Menschen.', 'Even without labels an AI can find groups of similar things. What the groups mean is up to people.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Bisher hast du mir immer gesagt, was was ist: „Das ist ein Apfel, das eine Birne.“ Diese Schilder heißen Etiketten. Aber was, wenn niemand Zeit hat, alles zu beschriften?', 'So far you always told me what is what: “This is an apple, that a pear.” These signs are called labels. But what if nobody has time to label everything?') },
     {

@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Mehrere Nachbarn fragen ist sicherer als einen: Ein einzelner Ausreißer bestimmt dann nicht alles.', 'Asking several neighbours is safer than asking one: a single outlier can’t decide everything.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Willkommen in Bereich 3! Heute frage ich meine Nachbarn um Rat.', 'Welcome to chapter 3! Today I ask my neighbours for advice.') },
     { kind: 'say', mood: 'think', text: L('Im Tierheim sind neue Tiere angekommen: Kaninchen oder Meerschweinchen? Ich vergleiche sie mit Tieren, die ich schon kenne – nach Ohrlänge und Gewicht.', 'New animals have arrived at the shelter: rabbits or guinea pigs? I compare them with animals I already know – by ear length and weight.') },

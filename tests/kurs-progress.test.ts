@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { getCourse, lessonsOf } from '../src/kurse';
+import { COURSES, getCourse, lessonsOf } from '../src/kurse';
+import { pickQuestions, questionsOf } from '../src/kurse/engine/review';
+import { loadLesson } from '../src/kurse/loaders';
 import {
   badgeRules,
   BADGE_XP,
   computeXp,
+  daysBetween,
   earnedCards,
+  finishReview,
+  REVIEW_XP,
   mergeProgress,
   dayKey,
   emptyProgress,
@@ -175,5 +180,66 @@ describe('Spielstand', () => {
     expect(p.badges).toEqual(['a']);
     expect(p.streak).toEqual({ last: '', days: 0 });
     expect(p.free).toBe(false);
+  });
+});
+
+describe('Wiederholen', () => {
+  const course = COURSES[0]!;
+  const world = course.chapters[0]!;
+
+  it('bestes Ergebnis zählt, XP nur für Verbesserungen, computeXp stimmt', () => {
+    let p = emptyProgress();
+    const first = finishReview(p, course, world.id, 3, 5, '2026-11-02');
+    expect(first.improved).toBe(true);
+    expect(first.xpGained).toBe(3 * REVIEW_XP);
+    p = first.progress;
+    const worse = finishReview(p, course, world.id, 2, 5, '2026-11-05');
+    expect(worse.xpGained).toBe(0);
+    expect(worse.progress.reviews[world.id]).toEqual({ best: 3, total: 5, last: '2026-11-05' });
+    const perfect = finishReview(worse.progress, course, world.id, 5, 5, '2026-11-06');
+    expect(perfect.newBadges.map((b) => b.id)).toContain('gedaechtnis');
+    expect(perfect.xpGained).toBe(2 * REVIEW_XP + BADGE_XP);
+    expect(computeXp(perfect.progress)).toBe(perfect.progress.xp);
+  });
+
+  it('übersteht Code und Zusammenführen', () => {
+    const p = finishReview(emptyProgress(), course, world.id, 4, 5, '2026-11-02').progress;
+    const back = importCode(exportCode(p))!;
+    expect(back.reviews[world.id]).toEqual({ best: 4, total: 5, last: '2026-11-02' });
+    const other = finishReview(emptyProgress(), course, world.id, 5, 5, '2026-11-01').progress;
+    const merged = mergeProgress(p, other);
+    expect(merged.reviews[world.id]).toEqual({ best: 5, total: 5, last: '2026-11-02' });
+    expect(merged.xp).toBe(computeXp(merged));
+    // ältere Stände ohne Wiederholungen bleiben gültig
+    const old = sanitizeProgress({ v: 1, xp: 50, lessons: { 'hallo-bit': { stars: 3, plays: 1 } }, badges: [] });
+    expect(old.reviews).toEqual({});
+    expect(sanitizeProgress({ reviews: { x: { best: 7, total: 5, last: 'gestern' } } }).reviews).toEqual({});
+  });
+
+  it('Abstand in Tagen', () => {
+    expect(daysBetween('2026-11-01', '2026-11-04')).toBe(3);
+    expect(daysBetween('', '2026-11-04')).toBe(Infinity);
+  });
+
+  it('Fragen: genau eine richtige Antwort, möglichst aus verschiedenen Lektionen', async () => {
+    const contents = await Promise.all(world.lessons.map(async (l) => ({ id: l.id, content: await loadLesson(course.id, l.id) })));
+    const all = questionsOf(contents);
+    expect(all.length).toBeGreaterThanOrEqual(world.lessons.length);
+    let seed = 7;
+    const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const picked = pickQuestions(all, 5, random);
+    expect(picked.length).toBe(Math.min(5, all.length));
+    for (const q of picked) expect(q.options.filter((o) => o.correct).length).toBe(1);
+    const lessonsUsed = new Set(picked.slice(0, world.lessons.length).map((q) => q.lessonId));
+    expect(lessonsUsed.size).toBe(Math.min(world.lessons.length, picked.length));
+  });
+
+  it('jede Welt beider Kurse hat genug Fragen zum Wiederholen', async () => {
+    for (const c of COURSES) {
+      for (const chapter of c.chapters) {
+        const contents = await Promise.all(chapter.lessons.map(async (l) => ({ id: l.id, content: await loadLesson(c.id, l.id) })));
+        expect(questionsOf(contents).length, `${c.id}/${chapter.id}`).toBeGreaterThanOrEqual(3);
+      }
+    }
   });
 });

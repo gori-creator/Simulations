@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Empfehlungen zeigen mehr von dem, was du schon angeschaut hast. So kann eine Filterblase entstehen.', 'Recommendations show more of what you have already watched. That is how a filter bubble can form.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Warum zeigt dir eine Video-App genau diese Videos? Niemand sucht sie von Hand aus. Ein Programm – ein Empfehlungs-Algorithmus – rechnet aus, was du wahrscheinlich anschaust.', 'Why does a video app show you exactly these videos? Nobody picks them by hand. A program – a recommendation algorithm – calculates what you’ll probably watch.') },
     {

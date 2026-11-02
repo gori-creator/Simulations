@@ -14,6 +14,7 @@ const pipeline: ZeitstrahlProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('Aus Vorlieben von Menschen lernt ein Belohnungsmodell, was „gut“ ist. Es kann aber auch Falsches belohnen (Belohnungs-Hacking).', 'A reward model learns from people’s preferences what “good” means. But it can also reward the wrong thing (reward hacking).'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Ein frisch vortrainiertes Sprachmodell setzt Text fort. Fragst du „Wie backe ich Brot?“, schreibt es vielleicht weitere Fragen aus einem Forum. Damit daraus ein hilfreicher Assistent wird, braucht es Menschen.', 'A freshly pre-trained language model continues text. Ask “How do I bake bread?” and it may write more questions from a forum. To turn it into a helpful assistant, you need people.') },
     { kind: 'game', game: 'zeitstrahl', props: pipeline, intro: L('Bring die Schritte vom Rohmodell zum Assistenten in die richtige Reihenfolge (die Zahlen zeigen am Ende die Schrittnummer).', 'Put the steps from raw model to assistant in the right order (the numbers show the step number at the end).') },

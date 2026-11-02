@@ -2,6 +2,7 @@ import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
 
 const lesson: LessonContent = {
+  takeaway: L('Eine KI ist nur so gut wie ihre Merkmale: Federn verraten Vögel, die Farbe eines Fotos nicht.', 'An AI is only as good as its features: feathers give away birds, the colour of a photo doesn’t.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Neuer Bereich, neue Aufgabe! Ich soll Vögel und Säugetiere auseinanderhalten.', 'New chapter, new task! I have to tell birds and mammals apart.') },
     { kind: 'say', mood: 'think', text: L('Über jedes Tier habe ich ein paar Angaben gespeichert. Solche Angaben heißen Merkmale. Aber welches Merkmal hilft mir wirklich?', 'For every animal I’ve stored a few facts. Facts like these are called features. But which feature really helps me?') },

@@ -21,6 +21,7 @@ const sort: SortierenProps = {
 };
 
 const lesson: LessonContent = {
+  takeaway: L('KI kann beim Lernen helfen – wenn du selbst denkst und sie nicht für dich denken lässt.', 'AI can help you learn – if you think for yourself and don’t let it think for you.'),
   steps: [
     { kind: 'say', mood: 'happy', text: L('Viele Jugendliche nutzen Chatbots für die Schule. Das kann super helfen – oder dafür sorgen, dass man gar nichts mehr lernt. Es kommt darauf an, wie.', 'Lots of young people use chatbots for school. That can help a great deal – or mean you don’t learn anything any more. It depends on how.') },
     { kind: 'game', game: 'sortieren', props: sort, intro: L('Sortiere: Hilft das beim Lernen, fällt das Lernen aus – oder ist es riskant?', 'Sort: does it help you learn, does learning not happen – or is it risky?') },

@@ -1,9 +1,16 @@
-import type { Lang } from '../../i18n/config';
+import type { Lang, Localized } from '../../i18n/config';
 import { getCourse, lessonsOf } from '../index';
+import { loadLesson } from '../loaders';
 import { ks } from '../strings';
+import { clear, h } from './dom';
 import { guideSvg } from './guide';
-import { exportCode, importCode, isUnlocked, levelFor, mergeProgress, nextLesson, type Progress } from './progress';
+import { dayKey, daysBetween, exportCode, finishReview, importCode, isUnlocked, levelFor, mergeProgress, nextLesson, type Progress } from './progress';
+import { pickQuestions, questionsOf, type ReviewQuestion } from './review';
 import { storeFor } from './store';
+
+/** Fragen je Wiederholung und Tage, nach denen Wiederholen wieder „dran“ ist. */
+const REVIEW_COUNT = 5;
+const REVIEW_AFTER_DAYS = 3;
 
 /**
  * Karte eines Kurses: zeigt den Spielstand aus dem Browser an (Sterne,
@@ -67,12 +74,40 @@ export function initHub(root: HTMLElement): void {
     }
 
     // Welten
+    const today = dayKey(new Date());
     for (const world of root.querySelectorAll<HTMLElement>('[data-world]')) {
       const ids = [...world.querySelectorAll<HTMLElement>('[data-lesson]')].map((n) => n.dataset.lesson!);
       const n = ids.filter((id) => p.lessons[id]).length;
       world.classList.toggle('is-complete', ids.length > 0 && n === ids.length);
       const count = world.querySelector('[data-world-count]');
       if (count) count.textContent = ks(lang, 'worldProgress', { done: n, total: ids.length });
+
+      // Spickzettel: Merksätze geschaffter Lektionen
+      const notes = [...world.querySelectorAll<HTMLElement>('[data-note]')];
+      let open = 0;
+      for (const note of notes) {
+        const has = !!p.lessons[note.dataset.note!] || p.free;
+        note.classList.toggle('is-done', has);
+        if (has) open += 1;
+      }
+      const notesCount = world.querySelector('[data-notes-count]');
+      if (notesCount) notesCount.textContent = `(${open}/${notes.length})`;
+
+      // Wiederholen: ab einer geschafften Lektion; „dran“ ohne Wiederholung oder nach ein paar Tagen
+      const review = world.querySelector<HTMLButtonElement>('[data-review]');
+      const record = p.reviews[world.dataset.world!];
+      if (review) review.disabled = n === 0 && !p.free;
+      const due = world.querySelector<HTMLElement>('[data-review-due]');
+      if (due) due.hidden = n === 0 || (!!record && daysBetween(record.last, today) < REVIEW_AFTER_DAYS);
+      const info = world.querySelector<HTMLElement>('[data-review-info]');
+      if (info) {
+        if (!record) info.textContent = '';
+        else {
+          const ago = daysBetween(record.last, today);
+          const when = ago <= 0 ? ks(lang, 'reviewToday') : ago === 1 ? ks(lang, 'reviewYesterday') : ks(lang, 'reviewDays', { n: ago });
+          info.textContent = `${ks(lang, 'reviewBest', { best: record.best, total: record.total })} · ${when}`;
+        }
+      }
     }
 
     // Wissenskarten
@@ -155,6 +190,108 @@ export function initHub(root: HTMLElement): void {
     if (!confirm(ks(lang, 'resetConfirm'))) return;
     store.clear();
     render(store.load());
+  });
+
+  // ---------- Wiederholen (Dialog) ----------
+  const dialog = q<HTMLDialogElement>('[data-review-dialog]');
+  const body = q<HTMLElement>('[data-review-body]');
+  const heading = q<HTMLElement>('[data-review-heading]');
+  const tx = (text: Localized) => text[lang];
+
+  async function openReview(button: HTMLButtonElement): Promise<void> {
+    if (!dialog || !body) return;
+    const worldId = button.dataset.review!;
+    const chapter = course.chapters.find((c) => c.id === worldId);
+    if (!chapter) return;
+    const p = store.load();
+    const ids = chapter.lessons.filter((l) => l.status === 'ready' && (p.lessons[l.id] || p.free)).map((l) => l.id);
+    if (heading) heading.textContent = button.dataset.reviewTitle ?? '';
+    clear(body);
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+    if (ids.length === 0) {
+      body.append(h('p', { text: ks(lang, 'reviewEmpty') }));
+      return;
+    }
+    body.append(h('p', { class: 'kreview__loading', text: ks(lang, 'loading', { name: course.guideName }) }));
+    const contents = await Promise.all(ids.map(async (id) => ({ id, content: await loadLesson(course.id, id) })));
+    const questions = pickQuestions(questionsOf(contents), REVIEW_COUNT);
+    let index = 0;
+    let correct = 0;
+
+    const showQuestion = (question: ReviewQuestion) => {
+      clear(body);
+      const feedback = h('p', { class: 'kreview__feedback', attrs: { 'aria-live': 'polite' } });
+      const next = h('button', { class: 'btn btn--primary', attrs: { type: 'button', hidden: true }, text: index < questions.length - 1 ? `${ks(lang, 'reviewNext')} →` : ks(lang, 'reviewFinish') });
+      const options = h('div', { class: 'kchoice', attrs: { role: 'group', 'aria-label': tx(question.question) } });
+      for (const option of question.options) {
+        const b = h('button', { class: 'kchoice__opt', attrs: { type: 'button' }, text: tx(option.text) });
+        b.addEventListener('click', () => {
+          for (const other of options.querySelectorAll<HTMLButtonElement>('button')) other.disabled = true;
+          if (option.correct) correct += 1;
+          b.classList.add(option.correct ? 'is-right' : 'is-wrong');
+          if (!option.correct) {
+            const right = question.options.findIndex((o) => o.correct);
+            options.querySelectorAll<HTMLButtonElement>('button')[right]?.classList.add('is-right');
+          }
+          feedback.textContent = `${option.correct ? '✅' : '💡'} ${option.feedback ? tx(option.feedback) : ''}`.trim();
+          next.hidden = false;
+          next.focus();
+        });
+        options.append(b);
+      }
+      next.addEventListener('click', () => {
+        index += 1;
+        if (index < questions.length) showQuestion(questions[index]!);
+        else showResult();
+      });
+      body.append(
+        h('p', { class: 'kreview__intro', text: index === 0 ? ks(lang, 'reviewIntro') : '' }),
+        h('p', { class: 'kreview__count', text: ks(lang, 'reviewQuestion', { n: index + 1, total: questions.length }) }),
+        h('p', { class: 'kreview__question', text: tx(question.question) }),
+        options,
+        feedback,
+        h('div', { class: 'kreview__actions' }, next),
+      );
+      options.querySelector<HTMLButtonElement>('button')?.focus();
+    };
+
+    const showResult = () => {
+      const result = finishReview(store.load(), course, worldId, correct, questions.length, dayKey(new Date()));
+      store.save(result.progress);
+      clear(body);
+      const share = correct / questions.length;
+      body.append(
+        h('p', { class: 'kreview__score', text: ks(lang, 'reviewResult', { n: correct, total: questions.length }) }),
+        h('p', { text: share === 1 ? ks(lang, 'reviewPerfect') : share >= 0.6 ? ks(lang, 'reviewGood') : ks(lang, 'reviewTry') }),
+      );
+      if (result.xpGained > 0) body.append(h('p', { class: 'kend__xp', text: ks(lang, 'xpGained', { n: result.xpGained }) }));
+      for (const badge of result.newBadges) body.append(h('div', { class: 'kbadge kbadge--new' }, h('span', { class: 'kbadge__icon', text: badge.icon }), h('span', {}, h('small', { text: ks(lang, 'newBadge') }), h('strong', { text: tx(badge.title) }), h('span', { text: tx(badge.text) }))));
+      const again = h('button', { class: 'btn', attrs: { type: 'button' }, text: `↺ ${ks(lang, 'again')}` });
+      again.addEventListener('click', () => void openReview(button));
+      const done = h('button', { class: 'btn btn--primary', attrs: { type: 'button' }, text: ks(lang, 'close') });
+      done.addEventListener('click', () => dialog.close());
+      body.append(h('div', { class: 'kreview__actions' }, again, done));
+      done.focus();
+      render(result.progress);
+    };
+
+    if (questions.length === 0) {
+      clear(body);
+      body.append(h('p', { text: ks(lang, 'reviewEmpty') }));
+      return;
+    }
+    showQuestion(questions[0]!);
+  }
+
+  root.addEventListener('click', (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>('[data-review]');
+    if (button && !button.disabled) void openReview(button);
+  });
+  q<HTMLButtonElement>('[data-review-close]')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    // Klick auf den abgedunkelten Rand schließt
+    if (event.target === dialog) dialog.close();
   });
 
   render(store.load());
