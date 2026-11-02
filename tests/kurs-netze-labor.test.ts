@@ -91,3 +91,32 @@ describe('Netz-Spielplatz', () => {
     expect(accuracy(net, test)).toBeLessThan(0.85);
   });
 });
+
+import { convolve, detectsHorizontal, examples, fgsm, IMAGES, KERNELS, minEps, pCross, START_CIRCLE, trainLinear } from '../src/kurse/ki-labor/models/sehen';
+
+describe('Maschinen sehen', () => {
+  it('Kantenfilter: Summe 0, reagiert auf die richtige Richtung', () => {
+    expect(detectsHorizontal(KERNELS.waagerecht)).toBe(true);
+    expect(detectsHorizontal(KERNELS.senkrecht)).toBe(false);
+    expect(detectsHorizontal(KERNELS.weich)).toBe(false);
+    // Identität verändert das Bild nicht
+    expect(convolve(IMAGES.haus, KERNELS.identitaet)).toEqual(IMAGES.haus);
+  });
+
+  it('lineares Modell erkennt Kreis und Kreuz', () => {
+    const m = trainLinear();
+    const test = examples(100, 9);
+    const acc = test.filter((e) => (pCross(m, e.img) >= 0.5 ? 1 : 0) === e.label).length / test.length;
+    expect(acc).toBeGreaterThanOrEqual(0.95);
+    expect(pCross(m, START_CIRCLE)).toBeLessThan(0.1);
+  });
+
+  it('gezielte Störung kippt die Entscheidung', () => {
+    const m = trainLinear();
+    const e = minEps(m, START_CIRCLE);
+    expect(e).toBeGreaterThan(0.05);
+    expect(e).toBeLessThan(0.5);
+    expect(pCross(m, fgsm(m, START_CIRCLE, e))).toBeGreaterThanOrEqual(0.5);
+    expect(pCross(m, fgsm(m, START_CIRCLE, e - 0.02))).toBeLessThan(0.5);
+  });
+});
