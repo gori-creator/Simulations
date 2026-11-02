@@ -66,7 +66,9 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
   // Farben nur bei Wechsel hell/dunkel neu lesen – getComputedStyle bei jedem Zugriff bremst (Dutzende Male je Bild)
   let theme = readTheme(stage);
   let wanted = false, started = false, interacted = false, autoStarted = false, loading: Promise<void> | null = null, destroyed = false;
-  const paused = () => motion.paused || motion.reduced;
+  // Wie bei der Skulptur: pausiert nur über den gemeinsamen Zustand, damit „Losfahren“
+  // auch bei „reduzierter Bewegung“ fährt (start() hebt die Pause auf).
+  const paused = () => motion.paused;
 
   const requestRender = () => {
     if (!frame && visible && !document.hidden && !paused()) frame = requestAnimationFrame(loop);

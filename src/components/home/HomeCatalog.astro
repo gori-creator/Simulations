@@ -107,15 +107,14 @@ const rowId = (subject: string, area: string) => `reihe-${subject}-${area}`;
             </span>
           </header>
           <div class="home-row__track" data-row-track data-region-sort>
-            {list.map((sim) => <SimCard lang={lang} sim={sim} />)}
+            {list.map((sim) => <SimCard lang={lang} sim={sim} showSubject />)}
           </div>
         </section>
       ))
     }
   </div>
-  <div class="card-grid home-catalog__grid" data-catalog-grid data-region-sort hidden>
-    {sims.map((sim) => <SimCard lang={lang} sim={sim} showSubject />)}
-  </div>
+  {/* Trefferraster: leer ausgeliefert, das Skript füllt es beim ersten Suchen mit Kopien der Reihen-Karten (spart rund 130 Karten im HTML) */}
+  <div class="card-grid home-catalog__grid" data-catalog-grid data-region-sort hidden></div>
   <div
     class="home-catalog__empty"
     data-catalog-empty

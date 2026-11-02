@@ -1770,7 +1770,8 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const esc = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const varHtml = (str: string) => esc(str).replace(/(?<![A-Za-zäöü])([xab])(?![A-Za-zäöü])/g, '<var>$1</var>');
+    // ganze Buchstabenfolgen prüfen statt Lookbehind (kennt Safari erst ab 16.4)
+    const varHtml = (str: string) => esc(str).replace(/[A-Za-zäöü]+/g, (w) => (w === 'x' || w === 'a' || w === 'b' ? `<var>${w}</var>` : w));
     const span = (s: Slot, html: string) => `<span style="color: var(--series-${SERIES[s] + 1})">${html}</span>`;
 
     function updateTermReadouts(): void {

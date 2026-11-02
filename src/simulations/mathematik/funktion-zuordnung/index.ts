@@ -422,10 +422,18 @@ export default defineSimulation({
 
     /** Formeltext: einzelne Buchstaben x, y, f kursiv. */
     function segs(s: string, c?: string): Seg[] {
-      return s
-        .split(/(?<![A-Za-zÄÖÜäöüß])([xyf])(?![A-Za-zÄÖÜäöüß])/)
-        .filter((q) => q.length)
-        .map((q) => (q === 'x' || q === 'y' || q === 'f' ? { t: q, v: true, c } : { t: q, c }));
+      // Buchstabenfolgen einzeln betrachten statt Lookbehind (kennt Safari erst ab 16.4)
+      const parts: string[] = [];
+      let text = '';
+      for (const part of s.split(/([A-Za-zÄÖÜäöüß]+)/)) {
+        if (part === 'x' || part === 'y' || part === 'f') {
+          if (text) parts.push(text);
+          text = '';
+          parts.push(part);
+        } else text += part;
+      }
+      if (text) parts.push(text);
+      return parts.map((q) => (q === 'x' || q === 'y' || q === 'f' ? { t: q, v: true, c } : { t: q, c }));
     }
 
     const segFont = (q: Seg, size: number, weight: number) => (q.v ? `italic ${size * 1.12}px ${ctx.theme.mathFont}` : `${q.w ?? weight} ${size}px ${ctx.theme.font}`);
@@ -1515,7 +1523,8 @@ export default defineSimulation({
 
     /* ---------- Ergebnisse ---------- */
     const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const varHtml = (s: string) => esc(s).replace(/(?<![A-Za-zÄÖÜäöüß])([xyf])(?![A-Za-zÄÖÜäöüß])/g, '<var>$1</var>');
+    // ganze Buchstabenfolgen prüfen statt Lookbehind (kennt Safari erst ab 16.4)
+    const varHtml = (s: string) => esc(s).replace(/[A-Za-zÄÖÜäöüß]+/g, (w) => (w === 'x' || w === 'y' || w === 'f' ? `<var>${w}</var>` : w));
 
     function updateReadouts(): void {
       if (mode() === 'map') {
