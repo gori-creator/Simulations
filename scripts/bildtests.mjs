@@ -160,6 +160,8 @@ async function shoot(browser, port, url, scheme) {
   page.on('pageerror', (/** @type {Error} */ e) => errors.push(e.message));
   try {
     await page.addInitScript(seededRandom);
+    // Die Seite startet immer hell; Dunkel wie nach einem Klick auf den Umschalter
+    if (scheme === 'dark') await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
     // Uhr anhalten: Sie läuft nur, wenn das Skript sie vorstellt.
     await page.clock.install({ time: START_TIME });
     await page.clock.pauseAt(new Date(START_TIME.getTime() + 1000));
