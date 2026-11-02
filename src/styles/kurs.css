@@ -2812,3 +2812,43 @@ button.kitem:hover:not(:disabled) {
 .kadv__btn.show-w.is-neg { box-shadow: inset 0 0 0 calc(var(--w) * 8px) color-mix(in srgb, var(--k-b) 75%, transparent); }
 .kadv-pair { display: flex; gap: 18px; flex-wrap: wrap; }
 @media (max-width: 420px) { .kadv { grid-template-columns: repeat(8, 32px); } .kadv__btn { width: 32px; height: 32px; } .kconv { grid-template-columns: repeat(16, 12px); } .kconv__px { width: 12px; height: 12px; } }
+
+/* ---------- Sprache (KI-Labor) ---------- */
+
+.ktok-words { display: grid; gap: 6px; margin-bottom: 10px; }
+.ktok-row { display: flex; align-items: center; gap: 10px; }
+.ktok-row small { color: var(--muted); }
+.ktok { display: inline-flex; gap: 3px; flex-wrap: wrap; }
+.ktok__t { padding: 2px 7px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.95rem; }
+.ktok__t.is-merged { background: color-mix(in srgb, var(--k-tone) 18%, var(--surface)); border-color: var(--k-tone); font-weight: 700; }
+
+.kvec__dot { fill: var(--surface); stroke: var(--border-strong); stroke-width: 1.5; }
+.kvec__dot.is-slot { stroke: var(--k-gold); stroke-width: 3; }
+.kvec__icon { font-size: 16px; pointer-events: none; }
+.kvec__result { fill: none; stroke: var(--k-bad); stroke-width: 3; stroke-dasharray: 4 3; }
+.kvec__guide { stroke: var(--k-gold); stroke-width: 2.5; stroke-dasharray: 6 4; }
+
+.kgen { min-height: 2.6em; margin: 0 0 10px; padding: 10px 14px; border-radius: var(--radius); background: var(--surface-2); font-size: 1.15rem; font-weight: 600; }
+.kprobs { display: grid; gap: 4px; margin-bottom: 10px; }
+.kprobs__row { display: grid; grid-template-columns: minmax(80px, 9em) 1fr 6.5em; gap: 8px; align-items: center; font-size: 0.92rem; }
+.kprobs__word { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kprobs__bar { height: 14px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.kprobs__fill { display: block; height: 100%; width: var(--p); background: var(--k-tone); border-radius: inherit; transition: width 0.3s; }
+.kprobs__p { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+.kprobs__fill.is-neg { background: var(--k-b); }
+.katt { display: block; width: 100%; height: auto; }
+.katt__arc { fill: none; stroke: var(--k-tone); stroke-linecap: round; }
+.katt__toks { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.katt__tok { display: grid; justify-items: center; gap: 2px; padding: 6px 10px; border-radius: 10px; border: 2px solid var(--border-strong); background: color-mix(in srgb, var(--k-tone) calc(var(--w) * 70%), var(--surface)); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
+.katt__tok small { font-weight: 500; font-size: 0.75rem; color: var(--muted); }
+.katt__tok.is-sel { border-color: var(--k-gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--k-gold) 40%, transparent); }
+.katt__matrix td.katt__cell { background: color-mix(in srgb, var(--k-tone) calc(var(--w) * 90%), var(--surface)); font-size: 0.72rem; text-align: center; padding: 3px; }
+.katt__mh { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 0.75rem; padding: 4px 2px; }
+
+.krlhf__pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+.krlhf__ans { display: grid; gap: 6px; text-align: left; padding: 14px 16px; border-radius: var(--radius-lg); border: 2px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; line-height: 1.45; cursor: pointer; }
+.krlhf__ans:hover { border-color: var(--k-tone); }
+.krlhf__ans strong { color: var(--k-tone); }
+.krlhf__checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.kprobs--wide .kprobs__row { grid-template-columns: minmax(120px, 15em) 1fr 4.5em; }

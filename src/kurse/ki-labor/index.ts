@@ -16,7 +16,6 @@ const card = (year: number, title: Pair, text: Pair): KnowledgeCard => ({ year, 
 
 /** Noch im Bau (erscheinen auf der Karte als „bald“). */
 const SOON = new Set<string>([
-  'tokens', 'einbettungen', 'sprachmodell', 'aufmerksamkeit', 'assistent',
   'banditen', 'q-lernen',
   'diffusion', 'fairness', 'ai-act', 'abschluss',
 ]);
