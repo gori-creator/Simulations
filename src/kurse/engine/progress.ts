@@ -27,6 +27,11 @@ export interface Progress {
   free: boolean;
 }
 
+/** Tiefe Kopie (reine JSON-Daten); ersetzt structuredClone, das ältere Safari-Versionen (vor 15.4) nicht kennen. */
+export function cloneProgress(progress: Progress): Progress {
+  return JSON.parse(JSON.stringify(progress)) as Progress;
+}
+
 export function emptyProgress(): Progress {
   return { v: 1, xp: 0, lessons: {}, badges: [], streak: { last: '', days: 0 }, free: false };
 }
@@ -250,7 +255,7 @@ export interface FinishResult {
  * weiterzählen, neue Abzeichen vergeben. `progress` bleibt unverändert.
  */
 export function finishLesson(progress: Progress, course: Course, lessonId: string, mistakes: number, today: string): FinishResult {
-  const p: Progress = structuredClone(progress);
+  const p: Progress = cloneProgress(progress);
   const stars = starsFor(mistakes);
   const before = p.lessons[lessonId];
   let xpGained = Math.max(0, lessonXp(stars) - (before ? lessonXp(before.stars) : 0));

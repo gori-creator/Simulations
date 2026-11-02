@@ -58,6 +58,12 @@ export default defineConfig({
       },
       styleDirective: {
         resources: [
+          // Ältere Browser (z. B. Safari vor iOS 15.4) kennen style-src-elem/-attr nicht
+          // und nehmen nur style-src: Ohne 'unsafe-inline' dort würden sie alle
+          // style-Attribute sperren und das Layout zerfallen. Neuere Browser nutzen
+          // die genaueren Regeln unten (Elemente nur 'self' und Prüfsummen).
+          "'self'",
+          "'unsafe-inline'",
           { resource: "'self'", kind: 'element' },
           { resource: "'unsafe-inline'", kind: 'attribute' },
         ],

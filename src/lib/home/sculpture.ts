@@ -316,7 +316,9 @@ export function initSculpture(el: Elements): Journey {
   let startAt = 50, endAt = 800, totalLength = 1;
   let sideJourney = false, joinLength = 0, joinY = 0, railX = 40, mainTop = 0, railEnd = 0, arrivalY = 0, joinAt = 0;
   const arrivalListeners = new Set<() => void>();
-  const paused = () => motion.paused || motion.reduced;
+  // Nur der gemeinsame Pausenzustand zählt: „Reduzierte Bewegung“ startet ihn pausiert,
+  // der Knopf in der Kopfleiste (oder „Losfahren“) hebt das auf.
+  const paused = () => motion.paused;
 
   function screen(point: readonly number[]) {
     const p = transform(root, point);
@@ -328,7 +330,7 @@ export function initSculpture(el: Elements): Journey {
   }
 
   function desiredProgress(): number {
-    if (motion.reduced) return 0;
+    if (motion.reduced && motion.paused) return 0;
     if (!sideJourney) return clamp((scrollY - startAt) / (endAt - startAt), 0, 1);
     let distance: number;
     if (scrollY < joinAt) {
@@ -420,7 +422,7 @@ export function initSculpture(el: Elements): Journey {
 
   function moveCoin(delta: number): void {
     targetProgress = desiredProgress();
-    if (motion.reduced) progress = 0;
+    if (motion.reduced && motion.paused) progress = 0;
     else if (!motion.paused) {
       progress += (targetProgress - progress) * (1 - Math.exp(-delta * 14));
       if (Math.abs(targetProgress - progress) * totalLength < 0.1) progress = targetProgress;

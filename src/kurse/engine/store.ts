@@ -1,4 +1,4 @@
-import { emptyProgress, sanitizeProgress, type Progress } from './progress';
+import { cloneProgress, emptyProgress, sanitizeProgress, type Progress } from './progress';
 
 /**
  * Ablage des Spielstands. Heute im Browser (Local Storage), ohne Konto.
@@ -23,11 +23,11 @@ export class LocalProgressStore implements ProgressStore {
     } catch {
       // Speicher gesperrt oder Daten kaputt: neu beginnen
     }
-    return this.memory ? structuredClone(this.memory) : emptyProgress();
+    return this.memory ? cloneProgress(this.memory) : emptyProgress();
   }
 
   save(progress: Progress): void {
-    this.memory = structuredClone(progress);
+    this.memory = cloneProgress(progress);
     try {
       localStorage.setItem(this.key, JSON.stringify(progress));
     } catch {

@@ -15,7 +15,18 @@ import { matchesWords, normalizeSearch, searchWords } from '../search';
 
 export function initCatalog(root: HTMLElement): () => void {
   const grid = root.querySelector<HTMLElement>('[data-catalog-grid]')!;
-  const cards = [...grid.querySelectorAll<HTMLElement>('[data-sim-card]')];
+  // Karten der Reihen (jede Simulation steht in genau einer Reihe); das Trefferraster
+  // bekommt beim ersten Suchen Kopien davon, statt sie doppelt im HTML auszuliefern.
+  const rowCards = [...root.querySelectorAll<HTMLElement>('[data-row] [data-sim-card]')];
+  let cards: HTMLElement[] = [];
+  const gridCards = (): HTMLElement[] => {
+    if (!cards.length) {
+      cards = rowCards.map((card) => card.cloneNode(true) as HTMLElement);
+      grid.append(...cards);
+      texts = new Map(cards.map((card) => [card, normalizeSearch(card.dataset.search ?? '', lang)]));
+    }
+    return cards;
+  };
   const rowsBox = root.querySelector<HTMLElement>('[data-catalog-rows]')!;
   const rows = [...root.querySelectorAll<HTMLElement>('[data-row]')];
   const topicsBar = root.querySelector<HTMLElement>('[data-catalog-topics]')!;
@@ -29,13 +40,13 @@ export function initCatalog(root: HTMLElement): () => void {
   const emptyTitle = empty.querySelector<HTMLElement>('[data-empty-title]')!;
   const emptyText = empty.querySelector<HTMLElement>('[data-empty-text]')!;
   const clear = empty.querySelector<HTMLButtonElement>('[data-catalog-clear]')!;
-  const total = cards.length;
+  const total = rowCards.length;
   const lang = document.documentElement.lang || 'de';
   const cleanup: (() => void)[] = [];
   let subject = 'all';
 
   // Vereinheitlichter Suchtext je Karte (Regel in lib/search.ts, gleich wie im Katalog)
-  const texts = new Map(cards.map((card) => [card, normalizeSearch(card.dataset.search ?? '', lang)]));
+  let texts = new Map<HTMLElement, string>();
 
   /* ---------- Filter und Ansicht ---------- */
   function apply(): void {
@@ -44,7 +55,7 @@ export function initCatalog(root: HTMLElement): () => void {
     const asGrid = words.length > 0 || from !== undefined;
     let shown = 0;
     if (asGrid) {
-      for (const card of cards) {
+      for (const card of gridCards()) {
         const d = card.dataset;
         const match =
           (subject === 'all' || d.subject === subject) &&
