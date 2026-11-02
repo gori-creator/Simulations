@@ -520,10 +520,6 @@ export function initSculpture(el: Elements): Journey {
     last = 0;
     request();
   });
-  const unReduced = motion.onReducedChange(() => {
-    progress = 0;
-    measure();
-  });
   desktop.addEventListener('change', scheduleMeasure);
   measure();
 
@@ -551,7 +547,6 @@ export function initSculpture(el: Elements): Journey {
       canvas.removeEventListener('webglcontextrestored', onContextRestored);
       desktop.removeEventListener('change', scheduleMeasure);
       unsubscribe();
-      unReduced();
       arrivalListeners.clear();
       renderer?.dispose();
       document.documentElement.classList.remove('home-journey');

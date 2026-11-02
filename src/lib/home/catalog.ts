@@ -9,7 +9,7 @@
  *
  * Dazu: Pfeile zum Blättern in den Reihen, eine Themenleiste, die beim Scrollen
  * den aktuellen Bereich markiert, und eine sanfte Einblendung der Reihen
- * (nicht bei reduzierter oder pausierter Bewegung).
+ * (nicht bei pausierter Bewegung).
  */
 import { matchesWords, normalizeSearch, searchWords } from '../search';
 
@@ -107,8 +107,7 @@ export function initCatalog(root: HTMLElement): () => void {
   });
 
   /* ---------- Blättern in den Reihen ---------- */
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const calm = () => reduce.matches || document.documentElement.classList.contains('motion-paused');
+  const calm = () => document.documentElement.classList.contains('motion-paused');
 
   function updateArrows(row: HTMLElement): void {
     const track = row.querySelector<HTMLElement>('[data-row-track]')!;

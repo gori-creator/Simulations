@@ -1281,14 +1281,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .home-experiment__aurora span,
-  .home-experiment__window::before,
-  .home-experiment__body::before {
-    animation: none;
-  }
-}
-
 /* ---------- Katalog ---------- */
 
 .home-catalog {
@@ -2294,19 +2286,6 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .home-hero__subject,
-  .home-experiment__tracks button {
-    transition: none;
-  }
-
-  .home-hero,
-  .home-hero::before,
-  .home-hero::after {
-    animation: none;
-  }
-}
-
 /* Handy: Katalog als einspaltige Liste (Bild links, Titel/Text rechts) statt zwei
    schmaler Spalten; Grundform in global.css (.card-grid, ≤ 560 px), hier nur die
    festen Bildhöhen und kleinen Schriften der Startseite aufheben. */
@@ -2652,12 +2631,6 @@
   .home-steps + .home-catalog {
     margin-top: -48px;
     border-radius: 26px 26px 0 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-steps__cta {
-    transition: none;
   }
 }
 
@@ -3576,23 +3549,14 @@
   animation-delay: -1.7s, -0.6s;
 }
 
+/* Die Startseite bewegt sich immer, auch bei „reduzierter Bewegung“ im System
+   (lib/home/motion.ts); angehalten wird nur über den Pausenknopf. */
 .motion-paused .hero-land *,
 .motion-paused .hero-land *::after,
 .home-hero.is-offscreen .hero-land *,
 .home-hero.is-offscreen .hero-land__lake::after,
 .scitura-home:has(.home-experiment.is-running) .hero-land * {
   animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-land *,
-  .hero-land__lake::after {
-    animation: none;
-  }
-
-  .hero-land__motes {
-    display: none;
-  }
 }
 
 @media (max-width: 760px) {

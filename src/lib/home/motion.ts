@@ -1,14 +1,16 @@
 /**
  * Bewegung auf der Startseite: Skulptur, Münze und Achterbahn hören auf einen
- * gemeinsamen Pausenzustand. Er startet pausiert, wenn das System reduzierte
- * Bewegung wünscht (`prefers-reduced-motion`), und lässt sich über den Knopf in
- * der Kopfleiste (`[data-motion-toggle]`) umschalten. Gemerkt wird nichts.
+ * gemeinsamen Pausenzustand. Er startet immer laufend, auch wenn das System
+ * reduzierte Bewegung wünscht (`prefers-reduced-motion`; unter Windows 11 ist
+ * „Animationseffekte“ oft ab Werk oder im Energiesparmodus aus). Anhalten lässt
+ * sich alles über den Knopf in der Kopfleiste (`[data-motion-toggle]`).
+ * Gemerkt wird nichts.
  */
 type Listener = (paused: boolean) => void;
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const listeners = new Set<Listener>();
-let paused = reduced.matches;
+let paused = false;
 
 export const motion = {
   get paused(): boolean {
@@ -52,12 +54,10 @@ export function bindMotionToggle(button: HTMLButtonElement): () => void {
   const onClick = () => motion.set(!motion.paused);
   button.addEventListener('click', onClick);
   const unsubscribe = motion.subscribe(sync);
-  const unReduced = motion.onReducedChange((value) => motion.set(value));
   button.hidden = false;
   sync(motion.paused);
   return () => {
     button.removeEventListener('click', onClick);
     unsubscribe();
-    unReduced();
   };
 }
