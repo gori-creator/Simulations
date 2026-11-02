@@ -283,6 +283,29 @@ const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.
         </ul>
       </section>
 
+      <section class="kcertbox" aria-labelledby="kcert-title">
+        <h2 id="kcert-title">🏅 {ks(lang, 'certTitle')}</h2>
+        <p class="kalbum__text" data-cert-hint>{ks(lang, 'certHint')}</p>
+        <div class="ksettings__row">
+          <input class="input" type="text" maxlength="60" autocomplete="off" data-cert-name aria-label={ks(lang, 'certName')} placeholder={ks(lang, 'certName')} />
+          <button class="btn btn--primary" type="button" data-cert-print>🖨️ {ks(lang, 'certPrint')}</button>
+        </div>
+        <p class="muted kcertbox__note">{ks(lang, 'certPrivacy')}</p>
+      </section>
+
+      <!-- Druckansicht der Urkunde (nur beim Drucken sichtbar, Inhalt setzt hub.ts) -->
+      <section class="kcert" data-cert aria-hidden="true">
+        <div class="kcert__frame">
+          <div class="kcert__guide" data-cert-guide />
+          <p class="kcert__kind" data-cert-kind />
+          <p class="kcert__name" data-cert-who />
+          <p class="kcert__text" data-cert-text />
+          <ul class="kcert__facts" data-cert-facts />
+          <p class="kcert__worlds" data-cert-worlds />
+          <p class="kcert__foot" data-cert-foot />
+        </div>
+      </section>
+
       <details class="ksettings">
         <summary>⚙️ {ks(lang, 'settings')}</summary>
         <div class="ksettings__body">

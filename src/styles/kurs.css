@@ -3326,3 +3326,23 @@ button.kitem:hover:not(:disabled) {
   .kdiff-reveal { animation: kdiff-reveal 0.35s ease-out both; animation-delay: calc(var(--i) * 0.18s); }
 }
 @keyframes kdiff-reveal { from { opacity: 0; transform: translateY(6px) scale(0.92); filter: blur(2px); } }
+
+/* ---------- Urkunde ---------- */
+.kcertbox { margin: 26px 0; padding: clamp(14px, 2.5vw, 22px); border-radius: var(--radius-lg); border: 2px dashed color-mix(in srgb, var(--k-gold) 60%, var(--border)); background: color-mix(in srgb, var(--k-gold) 7%, var(--surface)); }
+.kcertbox h2 { margin: 0 0 4px; font-size: 1.3rem; }
+.kcertbox__note { margin: 8px 0 0; font-size: 0.85rem; }
+.kcert { display: none; }
+@media print {
+  html.is-printing-cert, html.is-printing-cert body { background: #fff !important; }
+  html.is-printing-cert body > *:not(.kcert) { display: none !important; }
+  html.is-printing-cert .kcert { display: block; margin: 0; background: #fff; color: #111; }
+  .kcert__frame { box-sizing: border-box; min-height: 255mm; padding: 14mm 16mm; border: 6px double #b8860b; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4mm; font-family: var(--font-sans); }
+  .kcert__guide { width: 34mm; }
+  .kcert__guide svg { width: 100%; height: auto; }
+  .kcert__kind { margin: 0; font-size: 30pt; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #8a6400; }
+  .kcert__name { margin: 2mm 0 0; font-size: 24pt; font-weight: 700; border-bottom: 1px solid #999; padding: 0 10mm 1mm; }
+  .kcert__text { margin: 0; max-width: 150mm; font-size: 13pt; line-height: 1.45; }
+  .kcert__facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 3mm 8mm; margin: 2mm 0 0; padding: 0; list-style: none; font-size: 11pt; font-weight: 700; }
+  .kcert__worlds { margin: 0; max-width: 170mm; font-size: 10pt; color: #333; }
+  .kcert__foot { margin: 4mm 0 0; font-size: 9pt; color: #555; }
+}

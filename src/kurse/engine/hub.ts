@@ -317,6 +317,44 @@ export function initHub(root: HTMLElement): void {
     window.setTimeout(() => item.classList.remove('is-just-done', 'is-first'), 2600);
   }
 
+  // ---------- Urkunde (Druckansicht; der Name wird nicht gespeichert) ----------
+  const cert = q<HTMLElement>('[data-cert]');
+  q<HTMLButtonElement>('[data-cert-print]')?.addEventListener('click', () => {
+    if (!cert) return;
+    const p = store.load();
+    const info = levelFor(p.xp, course.levels);
+    const done = lessons.filter((l) => p.lessons[l.id]).length;
+    const complete = done === lessons.length && lessons.length > 0;
+    const stars = Object.values(p.lessons).reduce((n, r) => n + r.stars, 0);
+    const cards = lessons.filter((l) => l.card && p.lessons[l.id]).length;
+    const worlds = course.chapters.filter((c) => c.lessons.every((l) => l.status !== 'ready' || p.lessons[l.id]) && c.lessons.some((l) => l.status === 'ready'));
+    const name = (q<HTMLInputElement>('[data-cert-name]')?.value ?? '').trim();
+    const set = (sel: string, text: string) => {
+      const el = cert.querySelector<HTMLElement>(sel);
+      if (el) el.textContent = text;
+    };
+    const guide = cert.querySelector<HTMLElement>('[data-cert-guide]');
+    if (guide) guide.innerHTML = guideSvg(course.guide, complete ? 'wow' : 'happy', info.level, course.guideName);
+    set('[data-cert-kind]', complete ? ks(lang, 'certDone') : ks(lang, 'certProgress'));
+    set('[data-cert-who]', name || '_______________________');
+    set('[data-cert-text]', complete ? ks(lang, 'certDoneText', { course: course.title[lang], audience: course.audience[lang] }) : ks(lang, 'certProgressText', { course: course.title[lang], audience: course.audience[lang], done, total: lessons.length }));
+    const facts = cert.querySelector<HTMLElement>('[data-cert-facts]');
+    if (facts) {
+      clear(facts);
+      for (const text of [ks(lang, 'certLessons', { done, total: lessons.length }), ks(lang, 'certStars', { n: stars }), ks(lang, 'certCards', { n: cards }), ks(lang, 'certBadges', { n: p.badges.length }), ks(lang, 'levelName', { n: info.level, name: info.name[lang] })]) facts.append(h('li', { text }));
+    }
+    set('[data-cert-worlds]', worlds.length ? ks(lang, 'certWorlds', { list: worlds.map((c) => `${c.icon} ${c.title[lang]}`).join(' · ') }) : ks(lang, 'certNoWorlds'));
+    set('[data-cert-foot]', ks(lang, 'certFoot', { date: new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) }));
+    // Beim Drucken steht nur die Urkunde auf der Seite (direkt unter <body>)
+    if (cert.parentElement !== document.body) document.body.append(cert);
+    document.documentElement.classList.add('is-printing-cert');
+    const done_ = () => document.documentElement.classList.remove('is-printing-cert');
+    addEventListener('afterprint', done_, { once: true });
+    window.print();
+    // Manche Browser kennen „afterprint“ nicht zuverlässig
+    window.setTimeout(done_, 1500);
+  });
+
   render(store.load());
   root.classList.add('is-ready');
   celebrate();
