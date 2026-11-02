@@ -26,15 +26,35 @@ const game: GameMount<void> = (host, ctx) => {
   const status = h('p', { class: 'kvote', attrs: { 'aria-live': 'polite' } });
   host.append(h('div', { class: 'kpanel' }, plot.svg, h('div', { class: 'krow' }, assignBtn, moveBtn), status));
 
+  // Fähnchen bleiben dieselben Elemente, damit sie zur neuen Mitte gleiten können
+  const links = s('g', { class: 'kgrp__links' });
+  const flagEls = flags.map((_, i) => s('g', { class: `kgrp__flag ${COLORS[i]}` }, s('circle', { class: 'kgrp__ring', cx: 0, cy: 0, r: 15 }), s('text', { x: 4, y: -2, 'text-anchor': 'middle' }, '🚩')));
+  plot.over.append(links, ...flagEls);
+
   function draw(): void {
     clear(plot.points);
-    clear(plot.over);
     FRUITS.forEach((f, i) => {
       const g = groups ? groups[i]! : -1;
-      if (revealed) plot.points.append(s('text', { class: 'kgrp__emoji', x: sx(f.x), y: sy(f.y) + 7, 'text-anchor': 'middle' }, f.emoji));
-      else plot.points.append(s('circle', { class: `kgrp__dot ${g >= 0 ? COLORS[g] : ''}`, cx: sx(f.x), cy: sy(f.y), r: 8 }));
+      if (revealed) {
+        const emoji = s('text', { class: 'kgrp__emoji', x: sx(f.x), y: sy(f.y) + 7, 'text-anchor': 'middle' }, f.emoji);
+        emoji.style.setProperty('--i', String(i));
+        plot.points.append(emoji);
+      } else plot.points.append(s('circle', { class: `kgrp__dot ${g >= 0 ? COLORS[g] : ''}`, cx: sx(f.x), cy: sy(f.y), r: 8 }));
     });
-    flags.forEach((f, i) => plot.over.append(s('text', { class: `kgrp__flag ${COLORS[i]}`, x: sx(f.x), y: sy(f.y), 'text-anchor': 'middle' }, '🚩')));
+    flags.forEach((f, i) => (flagEls[i]!.style.transform = `translate(${sx(f.x)}px, ${sy(f.y)}px)`));
+  }
+
+  /** Kurz zeigen, zu welchem Fähnchen jede Frucht gehört (Linien verblassen). */
+  function showLinks(): void {
+    if (ctx.reducedMotion || !groups) return;
+    clear(links);
+    FRUITS.forEach((f, i) => {
+      const flag = flags[groups![i]!]!;
+      links.append(s('line', { class: `kgrp__link ${COLORS[groups![i]!]}`, x1: sx(f.x), y1: sy(f.y), x2: sx(flag.x), y2: sy(flag.y) }));
+    });
+    links.classList.remove('is-on');
+    void links.getBoundingClientRect();
+    links.classList.add('is-on');
   }
 
   assignBtn.addEventListener('click', () => {
@@ -42,6 +62,7 @@ const game: GameMount<void> = (host, ctx) => {
     const changed = !groups || next.some((g, i) => g !== groups![i]);
     groups = next;
     draw();
+    showLinks();
     status.textContent = changed ? tx(L('Jede Frucht gehört jetzt zum nächsten Fähnchen. Jetzt die Fähnchen verschieben!', 'Every fruit now belongs to its nearest flag. Now move the flags!')) : tx(L('Nichts hat sich geändert – die Gruppen stehen fest!', 'Nothing changed – the groups are settled!'));
     if (!changed && rounds > 0) reveal();
   });

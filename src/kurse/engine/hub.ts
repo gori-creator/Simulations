@@ -294,8 +294,32 @@ export function initHub(root: HTMLElement): void {
     if (event.target === dialog) dialog.close();
   });
 
+  // Gerade geschaffte Station feiern: Knoten hüpft, Weg zur nächsten Station füllt sich, Blick dorthin
+  function celebrate(): void {
+    let info: { lesson: string; first: boolean; t: number } | null = null;
+    try {
+      const key = `kurs:geschafft:${course.id}`;
+      const raw = sessionStorage.getItem(key);
+      sessionStorage.removeItem(key);
+      info = raw ? (JSON.parse(raw) as { lesson: string; first: boolean; t: number }) : null;
+    } catch {
+      info = null;
+    }
+    if (!info || Date.now() - info.t > 30 * 60 * 1000) return;
+    const node = q<HTMLAnchorElement>(`[data-lesson="${CSS.escape(info.lesson)}"]`);
+    const item = node?.closest<HTMLElement>('.ktrail__item');
+    if (!node || !item) return;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    node.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
+    if (reduced) return;
+    item.classList.add('is-just-done');
+    if (info.first) item.classList.add('is-first');
+    window.setTimeout(() => item.classList.remove('is-just-done', 'is-first'), 2600);
+  }
+
   render(store.load());
   root.classList.add('is-ready');
+  celebrate();
   // Zurück aus einer Lektion (Seite aus dem Verlauf): Stand neu lesen
   addEventListener('pageshow', () => render(store.load()));
 }

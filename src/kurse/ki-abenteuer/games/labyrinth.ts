@@ -45,7 +45,11 @@ const game: GameMount<void> = (host, ctx) => {
   const one = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `▶ ${tx(L('1 Runde', '1 round'))}` });
   const ten = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `⏩ ${tx(L('10 Runden', '10 rounds'))}` });
   const forget = h('button', { class: 'kbtn', attrs: { type: 'button' }, text: `↺ ${tx(L('Alles vergessen', 'Forget everything'))}` });
-  host.append(h('div', { class: 'kpanel kgrid-2' }, svg, h('div', {}, h('div', { class: 'krow' }, one, ten, forget), status, h('p', { class: 'khint', text: tx(L('Schritte pro Runde (weniger ist besser):', 'Steps per round (fewer is better):')) }), bars)));
+  const show = h('button', { class: 'kbtn', attrs: { type: 'button', hidden: true }, text: `🚶 ${tx(L('Bit zeigt seinen Weg', 'Bit shows his way'))}` });
+  // Bit als eigene Figur, die über die Felder läuft (CSS-Übergang zwischen den Feldern)
+  const walker = s('text', { class: 'kq__icon kq__icon--big kq__walker', x: 0, y: 0, 'text-anchor': 'middle' }, '🤖');
+  let walking = false;
+  host.append(h('div', { class: 'kpanel kgrid-2' }, svg, h('div', {}, h('div', { class: 'krow' }, one, ten, forget, show), status, h('p', { class: 'khint', text: tx(L('Schritte pro Runde (weniger ist besser):', 'Steps per round (fewer is better):')) }), bars)));
 
   function draw(): void {
     clear(svg);
@@ -72,8 +76,10 @@ const game: GameMount<void> = (host, ctx) => {
         const arrow = ['⬆️', '➡️', '⬇️', '⬅️'][a]!;
         svg.append(s('text', { class: `kq__trail${path.includes(i) ? ' is-path' : ''}`, x: x + C / 2, y: y + C / 2 + 8, 'text-anchor': 'middle' }, arrow));
       }
-      if (i === world.start) svg.append(s('text', { class: 'kq__icon kq__icon--big', x: x + C / 2, y: y + C - 8, 'text-anchor': 'middle' }, '🤖'));
     }
+    svg.append(walker);
+    if (!walking) place(world.start, false);
+    show.hidden = path.at(-1) !== goal;
     clear(bars);
     const shown = history.slice(-30);
     const hmax = Math.max(10, ...shown);
@@ -89,18 +95,52 @@ const game: GameMount<void> = (host, ctx) => {
     }
   }
 
-  function rounds(n: number): void {
+  /** Bit auf ein Feld setzen (mit oder ohne Übergang). */
+  function place(cell: number, smooth = true): void {
+    const x = (cell % world.w) * C + C / 2;
+    const y = Math.floor(cell / world.w) * C + C - 8;
+    walker.classList.toggle('is-moving', smooth);
+    walker.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  /** Bit läuft die Felder nacheinander ab; lange Irrwege werden schneller gezeigt. */
+  async function walk(cells: readonly number[]): Promise<void> {
+    if (ctx.reducedMotion || cells.length < 2) return;
+    walking = true;
+    for (const b of [one, ten, forget, show]) b.disabled = true;
+    const ms = Math.max(45, Math.min(220, 2600 / cells.length));
+    walker.style.setProperty('--step', `${ms}ms`);
+    place(cells[0]!, false);
+    for (const cell of cells.slice(1)) {
+      await new Promise((r) => setTimeout(r, 30));
+      place(cell);
+      await new Promise((r) => setTimeout(r, ms));
+    }
+    await new Promise((r) => setTimeout(r, 350));
+    walking = false;
+    for (const b of [one, ten, forget, show]) b.disabled = false;
+  }
+
+  async function rounds(n: number): Promise<void> {
+    let lastPath: number[] = [];
     for (let k = 0; k < n; k++) {
-      const r = episode(world, q, 0.5, 0.9, 0.2, rnd, 200);
+      const visited: number[] = [];
+      const r = episode(world, q, 0.5, 0.9, 0.2, rnd, 200, visited);
       history.push(r.steps);
+      lastPath = visited;
       if (r.end !== goal && history.length < 3) ctx.say(L('Platsch, in die Pfütze! Das merke ich mir.', 'Splash, into the puddle! I’ll remember that.'), 'sad');
     }
     if (history.length <= 2) ctx.say(L('Am Anfang irre ich herum. Aber jede Runde hinterlässt eine Spur.', 'At first I wander around. But every round leaves a trail.'), 'think');
+    // Bei einer einzelnen Runde sieht man Bit laufen – erst wild, später gezielt
+    if (n === 1) await walk(lastPath);
     draw();
   }
 
-  one.addEventListener('click', () => rounds(1));
-  ten.addEventListener('click', () => rounds(10));
+  one.addEventListener('click', () => void rounds(1));
+  ten.addEventListener('click', () => void rounds(10));
+  show.addEventListener('click', () => {
+    void walk(greedyPath(world, q)).then(() => ctx.say(L('Hier ist der Keks! Ich folge einfach meiner Spur.', 'Here is the cookie! I just follow my trail.'), 'happy'));
+  });
   forget.addEventListener('click', () => {
     q = newQ(world);
     rnd = seeded(11 + history.length);

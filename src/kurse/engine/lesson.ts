@@ -57,9 +57,17 @@ export function initLesson(root: HTMLElement): void {
     guideBox.firstElementChild?.setAttribute('data-mood', mood);
   }
 
+  let talkTimer = 0;
   function say(text: Localized | string, mood: Mood = 'happy'): void {
     setMood(mood);
-    bubble.textContent = typeof text === 'string' ? text : tx(text);
+    const words = typeof text === 'string' ? text : tx(text);
+    bubble.textContent = words;
+    // Die Figur „spricht“ (Mund bewegt sich), ungefähr so lange, wie der Satz zum Lesen braucht
+    if (!reducedMotion) {
+      guideBox.classList.add('is-talking');
+      window.clearTimeout(talkTimer);
+      talkTimer = window.setTimeout(() => guideBox.classList.remove('is-talking'), Math.min(2600, 500 + words.split(/\s+/).length * 90));
+    }
     bubble.classList.remove('is-new');
     // Neu einblenden (Animation in kurs.css)
     void bubble.offsetWidth;
@@ -360,6 +368,12 @@ export function initLesson(root: HTMLElement): void {
     }
     const result = finishLesson(store.load(), course, lessonId, mistakes, dayKey(new Date()));
     store.save(result.progress);
+    // Für die Karte: diese Station beim nächsten Besuch feiern
+    try {
+      sessionStorage.setItem(`kurs:geschafft:${courseId}`, JSON.stringify({ lesson: lessonId, first: result.firstTime, t: Date.now() }));
+    } catch {
+      // ohne sessionStorage keine Feier – nicht schlimm
+    }
     renderEnd(result);
   });
 

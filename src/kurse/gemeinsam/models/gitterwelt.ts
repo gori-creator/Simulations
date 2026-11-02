@@ -81,13 +81,15 @@ export function qStep(world: World, q: QTable, s: number, alpha: number, gamma: 
 }
 
 /** Eine ganze Episode vom Start; liefert Schritte und Summe der Belohnungen. */
-export function episode(world: World, q: QTable, alpha: number, gamma: number, eps: number, random: () => number, maxSteps = 100): { steps: number; ret: number; end: number } {
+export function episode(world: World, q: QTable, alpha: number, gamma: number, eps: number, random: () => number, maxSteps = 100, visited?: number[]): { steps: number; ret: number; end: number } {
   let s = world.start;
   let ret = 0;
+  visited?.push(s);
   for (let k = 1; k <= maxSteps; k++) {
     const r = qStep(world, q, s, alpha, gamma, eps, random);
     ret += r.r;
     s = r.next;
+    visited?.push(s);
     if (r.done) return { steps: k, ret, end: s };
   }
   return { steps: maxSteps, ret, end: s };
