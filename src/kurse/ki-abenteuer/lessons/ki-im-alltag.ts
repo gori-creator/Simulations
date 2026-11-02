@@ -1,6 +1,6 @@
 import { L } from '../../../curriculum/helpers';
 import type { LessonContent } from '../../types';
-import type { KartenProps } from '../games/karten';
+import type { KartenProps } from '../../gemeinsam/games/karten';
 
 const cards: KartenProps = {
   a: L('KI', 'AI'),

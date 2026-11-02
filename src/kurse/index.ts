@@ -1,10 +1,11 @@
 import { kiAbenteuer } from './ki-abenteuer';
+import { kiLabor } from './ki-labor';
 import type { Chapter, Course, LessonMeta } from './types';
 
 export type * from './types';
 
-/** Alle Kurse (bisher einer). */
-export const COURSES: Course[] = [kiAbenteuer];
+/** Alle Kurse: KI-Abenteuer (Klasse 5–10) und KI-Labor (Klasse 11–13). */
+export const COURSES: Course[] = [kiAbenteuer, kiLabor];
 
 export function getCourse(id: string): Course {
   const course = COURSES.find((c) => c.id === id);

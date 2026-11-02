@@ -1,14 +1,14 @@
 import type { Lang } from '../../i18n/config';
 import { getCourse, lessonsOf } from '../index';
 import { ks } from '../strings';
-import { bitSvg } from './bit';
-import { exportCode, importCode, isUnlocked, levelFor, nextLesson, type Progress } from './progress';
+import { guideSvg } from './guide';
+import { exportCode, importCode, isUnlocked, levelFor, mergeProgress, nextLesson, type Progress } from './progress';
 import { storeFor } from './store';
 
 /**
  * Karte eines Kurses: zeigt den Spielstand aus dem Browser an (Sterne,
- * gesperrte Lektionen, Stufe, Abzeichen) und bietet Sichern/Laden per Code.
- * Ohne JavaScript bleibt die Karte eine normale Liste mit Links.
+ * gesperrte Lektionen, Welten, Stufe, Wissenskarten, Abzeichen) und bietet
+ * Sichern/Laden per Code. Ohne JavaScript bleibt die Karte eine Liste mit Links.
  */
 export function initHub(root: HTMLElement): void {
   const lang = (root.dataset.lang === 'en' ? 'en' : 'de') satisfies Lang;
@@ -18,16 +18,15 @@ export function initHub(root: HTMLElement): void {
   const q = <T extends Element>(selector: string) => root.querySelector<T>(selector);
 
   function render(p: Progress): void {
-    const info = levelFor(p.xp);
+    const info = levelFor(p.xp, course.levels);
     const done = lessons.filter((l) => p.lessons[l.id]).length;
 
-    // Bit und Stufe
-    const bit = q<HTMLElement>('[data-hub-bit]');
-    if (bit) bit.innerHTML = bitSvg(done === 0 ? 'wink' : 'happy', info.level, ks(lang, 'navLabel'));
+    // Figur und Stufe
+    const guide = q<HTMLElement>('[data-hub-bit]');
+    if (guide) guide.innerHTML = guideSvg(course.guide, done === 0 ? 'wink' : 'happy', info.level, course.guideName);
     q('[data-hub-level]')!.textContent = ks(lang, 'levelName', { n: info.level, name: info.name[lang] });
     q('[data-hub-xp]')!.textContent = info.max ? `${ks(lang, 'xp', { n: p.xp })} · ${ks(lang, 'levelMax')}` : `${ks(lang, 'xp', { n: p.xp })} · ${ks(lang, 'levelNext', { n: info.need - info.into, next: info.level + 1 })}`;
-    const fill = q<HTMLElement>('[data-hub-bar]');
-    fill?.style.setProperty('--p', `${info.max ? 100 : Math.round((100 * info.into) / info.need)}%`);
+    q<HTMLElement>('[data-hub-bar]')?.style.setProperty('--p', `${info.max ? 100 : Math.round((100 * info.into) / info.need)}%`);
     q('[data-hub-done]')!.textContent = ks(lang, 'overall', { done, total: lessons.length });
     const streak = q<HTMLElement>('[data-hub-streak]')!;
     streak.hidden = p.streak.days < 2;
@@ -35,32 +34,57 @@ export function initHub(root: HTMLElement): void {
 
     // Weiter-Knopf
     const nextId = nextLesson(p, course);
-    const go = q<HTMLAnchorElement>('[data-hub-go]')!;
-    const goLabel = q('[data-hub-go-label]')!;
-    if (nextId) {
-      const node = q<HTMLAnchorElement>(`[data-lesson="${nextId}"]`);
-      const title = node?.dataset.title ?? '';
-      go.href = node?.href ?? go.href;
-      goLabel.textContent = done === 0 ? ks(lang, 'startAt', { title }) : ks(lang, 'continueAt', { title });
-    } else {
-      goLabel.textContent = ks(lang, 'allDone');
-      go.href = q<HTMLAnchorElement>('[data-lesson]')?.href ?? go.href;
+    const go = q<HTMLAnchorElement>('[data-hub-go]');
+    const goLabel = q('[data-hub-go-label]');
+    if (go && goLabel) {
+      if (nextId) {
+        const node = q<HTMLAnchorElement>(`[data-lesson="${nextId}"]`);
+        const title = node?.dataset.title ?? '';
+        go.href = node?.href ?? go.href;
+        goLabel.textContent = done === 0 ? ks(lang, 'startAt', { title }) : ks(lang, 'continueAt', { title });
+      } else {
+        goLabel.textContent = ks(lang, 'allDone');
+        go.href = q<HTMLAnchorElement>('[data-lesson]')?.href ?? go.href;
+      }
     }
 
-    // Lektionen
+    // Lektionen auf dem Pfad
     for (const node of root.querySelectorAll<HTMLAnchorElement>('[data-lesson]')) {
       const id = node.dataset.lesson!;
       const record = p.lessons[id];
       const open = isUnlocked(p, course, id);
-      node.classList.toggle('is-done', !!record);
-      node.classList.toggle('is-locked', !open);
-      node.classList.toggle('is-next', id === nextId);
+      const item = node.closest('.ktrail__item');
+      for (const el of [node, item]) {
+        el?.classList.toggle('is-done', !!record);
+        el?.classList.toggle('is-locked', !open);
+        el?.classList.toggle('is-next', id === nextId);
+      }
       if (open) node.removeAttribute('aria-disabled');
       else node.setAttribute('aria-disabled', 'true');
       const state = node.querySelector('[data-state]');
       if (state) state.textContent = record ? ks(lang, 'stars', { n: record.stars }) : open ? '' : `${ks(lang, 'locked')} – ${ks(lang, 'lockedHint')}`;
       node.querySelectorAll('[data-star]').forEach((star, i) => star.classList.toggle('is-on', !!record && i < record.stars));
     }
+
+    // Welten
+    for (const world of root.querySelectorAll<HTMLElement>('[data-world]')) {
+      const ids = [...world.querySelectorAll<HTMLElement>('[data-lesson]')].map((n) => n.dataset.lesson!);
+      const n = ids.filter((id) => p.lessons[id]).length;
+      world.classList.toggle('is-complete', ids.length > 0 && n === ids.length);
+      const count = world.querySelector('[data-world-count]');
+      if (count) count.textContent = ks(lang, 'worldProgress', { done: n, total: ids.length });
+    }
+
+    // Wissenskarten
+    const cards = root.querySelectorAll<HTMLElement>('[data-card]');
+    let owned = 0;
+    for (const card of cards) {
+      const has = !!p.lessons[card.dataset.card!];
+      card.classList.toggle('is-earned', has);
+      if (has) owned += 1;
+    }
+    const albumCount = q('[data-album-count]');
+    if (albumCount) albumCount.textContent = ks(lang, 'albumCount', { n: owned, total: cards.length });
 
     // Abzeichen
     let earned = 0;
@@ -117,9 +141,11 @@ export function initHub(root: HTMLElement): void {
   const msg = q<HTMLElement>('[data-hub-msg]');
   q<HTMLButtonElement>('[data-hub-load]')?.addEventListener('click', () => {
     const input = q<HTMLInputElement>('[data-hub-import]')!;
-    const p = importCode(input.value);
-    if (msg) msg.textContent = p ? ks(lang, 'loadOk') : ks(lang, 'loadBad');
-    if (!p) return;
+    const imported = importCode(input.value);
+    if (msg) msg.textContent = imported ? ks(lang, 'loadOk') : ks(lang, 'loadBad');
+    if (!imported) return;
+    // Zusammenführen statt Überschreiben: nichts geht verloren
+    const p = mergeProgress(store.load(), imported);
     store.save(p);
     input.value = '';
     render(p);

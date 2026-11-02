@@ -2,7 +2,7 @@
 import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES_PUBLIC, getCourse, getLesson, lessonsOf } from '../kurse';
-import { bitSvg } from '../kurse/engine/bit';
+import { guideSvg } from '../kurse/engine/guide';
 import { ks } from '../kurse/strings';
 import { alternates, href } from '../lib/routes';
 import '../styles/kurs.css';
@@ -30,7 +30,7 @@ const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: 
   section="kurs"
   noindex={!COURSES_PUBLIC}
 >
-  <div class:list={['kurs', 'klesson', `kchapter--${lesson.chapterNo}`]} data-lesson-root data-course={course.id} data-lesson={lesson.id} data-lang={lang} data-map-href={mapHref} data-next-href={nextHref}>
+  <div class:list={['kurs', `kurs--${course.guide}`, 'klesson', `kchapter--${lesson.chapterNo}`, { 'klesson--boss': lesson.boss }]} data-lesson-root data-course={course.id} data-lesson={lesson.id} data-lang={lang} data-map-href={mapHref} data-next-href={nextHref}>
     <div class="container klesson__container">
       <div class="klesson__top">
         <a class="btn btn--ghost klesson__back" href={mapHref}>← {ks(lang, 'back')}</a>
@@ -39,20 +39,23 @@ const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: 
       </div>
 
       <header class="klesson__head">
-        <p class="klesson__eyebrow">{ks(lang, 'chapter', { n: lesson.chapterNo })} · {lesson.chapter.title[lang]}</p>
+        <p class="klesson__eyebrow">
+          {lesson.chapter.icon} {ks(lang, 'chapter', { n: lesson.chapterNo })} · {lesson.chapter.title[lang]}
+          {lesson.boss && <span class="klesson__boss">{ks(lang, 'boss')}</span>}
+        </p>
         <h1 class="klesson__title"><span aria-hidden="true">{lesson.icon}</span> {lesson.title[lang]}</h1>
       </header>
 
       <div class="klesson__stage">
-        <div class="klesson__bit" data-bit set:html={bitSvg('happy', 1, 'Bit')} />
+        <div class="klesson__bit" data-bit set:html={guideSvg(course.guide, 'happy', 1, course.guideName)} />
         <div class="kbubble">
-          <span class="visually-hidden">{ks(lang, 'bitSays')}:</span>
+          <span class="visually-hidden">{ks(lang, 'bitSays', { name: course.guideName })}:</span>
           <p class="kbubble__text" data-bubble aria-live="polite">{lesson.teaser[lang]}</p>
         </div>
       </div>
 
       <div class="klesson__play" data-play>
-        <p class="klesson__loading" data-loading>{ks(lang, 'loading')}</p>
+        <p class="klesson__loading" data-loading>{ks(lang, 'loading', { name: course.guideName })}</p>
         <noscript><p class="note">{ks(lang, 'noscript')}</p></noscript>
       </div>
 

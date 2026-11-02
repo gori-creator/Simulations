@@ -15,6 +15,8 @@ const texts = (step: Step): string[] => {
       return [...all(step.title), ...all(step.text)];
     case 'choice':
       return [...all(step.question), ...all(step.explain), ...step.options.flatMap((o) => [...all(o.text), ...all(o.feedback)])];
+    case 'predict':
+      return [...all(step.question), ...all(step.reveal), ...step.options.flatMap((o) => [...all(o.text), ...all(o.feedback)])];
     case 'game':
       return all(step.intro);
   }
@@ -38,6 +40,29 @@ describe('Kurse', () => {
       for (const l of lessons) if (l.status === 'ready') expect(hasLesson(course.id, l.id), l.id).toBe(true);
     });
 
+    it(`${course.id}: Kursangaben, Welten und Wissenskarten`, () => {
+      expect(course.levels.length).toBeGreaterThanOrEqual(5);
+      expect(course.grades[0]).toBeLessThanOrEqual(course.grades[1]);
+      for (const lang of LANGS) {
+        for (const text of [course.title, course.tagline, course.description, course.audience, course.voice.perfect, course.voice.done, course.finalBadge.title, ...course.levels]) expect(text[lang].trim()).not.toBe('');
+      }
+      expect(new Set(course.chapters.map((c) => c.id)).size).toBe(course.chapters.length);
+      for (const chapter of course.chapters) {
+        expect(chapter.icon.trim(), chapter.id).not.toBe('');
+        expect(chapter.lessons.length, chapter.id).toBeGreaterThan(0);
+      }
+      // Jede fertige Lektion bringt eine Wissenskarte mit Jahr (Zeitstrahl)
+      for (const l of lessons.filter((x) => x.status === 'ready')) {
+        expect(l.card, l.id).toBeDefined();
+        expect(l.card!.year, l.id).toBeGreaterThanOrEqual(1700);
+        expect(l.card!.year, l.id).toBeLessThanOrEqual(2030);
+        for (const lang of LANGS) {
+          expect(l.card!.title[lang].trim(), l.id).not.toBe('');
+          expect(l.card!.text[lang].length, l.id).toBeGreaterThan(40);
+        }
+      }
+    });
+
     for (const l of lessons.filter((x) => x.status === 'ready')) {
       it(`${course.id}/${l.id}: Schritte, Spiele und Texte`, async () => {
         const { steps } = await loadLesson(course.id, l.id);
@@ -48,6 +73,7 @@ describe('Kurse', () => {
             expect(step.options.filter((o) => o.correct)).toHaveLength(1);
             expect(step.options.length).toBeGreaterThanOrEqual(2);
           }
+          if (step.kind === 'predict') expect(step.options.length).toBeGreaterThanOrEqual(2);
           for (const text of texts(step)) expect(text.trim()).not.toBe('');
         }
         for (const lang of LANGS) {

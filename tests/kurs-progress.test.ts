@@ -3,6 +3,9 @@ import { getCourse, lessonsOf } from '../src/kurse';
 import {
   badgeRules,
   BADGE_XP,
+  computeXp,
+  earnedCards,
+  mergeProgress,
   dayKey,
   emptyProgress,
   exportCode,
@@ -121,6 +124,47 @@ describe('Spielstand', () => {
     expect(importCode(` ${code} `)).toEqual(p);
     expect(importCode(code.slice(0, -1) + (code.endsWith('a') ? 'b' : 'a'))).toBeNull();
     expect(importCode('Unsinn')).toBeNull();
+  });
+
+  it('XP lassen sich aus Sternen und Abzeichen neu berechnen', () => {
+    let p = emptyProgress();
+    for (const [id, m] of [['l1', 0], ['l2', 3], ['l1', 1], ['l3', 0]] as const) p = finishLesson(p, mini, id, m, '2026-11-01').progress;
+    expect(computeXp(p)).toBe(p.xp);
+  });
+
+  it('Zusammenführen verliert nichts', () => {
+    const a = finishLesson(emptyProgress(), mini, 'l1', 3, '2026-11-01').progress;
+    let b = finishLesson(emptyProgress(), mini, 'l1', 0, '2026-11-02').progress;
+    b = finishLesson(b, mini, 'l2', 0, '2026-11-02').progress;
+    const m = mergeProgress(a, b);
+    expect(m.lessons.l1!.stars).toBe(3);
+    expect(m.lessons.l2).toBeDefined();
+    expect(new Set(m.badges)).toEqual(new Set([...a.badges, ...b.badges]));
+    expect(m.xp).toBe(computeXp(m));
+    expect(m.streak.last).toBe('2026-11-02');
+    expect(mergeProgress(m, m)).toEqual(m);
+    // Unabhängig von der Reihenfolge
+    expect(mergeProgress(b, a).lessons).toEqual(m.lessons);
+  });
+
+  it('Stufennamen je Kurs', () => {
+    const labor = getCourse('ki-labor');
+    expect(levelFor(0, labor.levels).name.de).toBe('Lochkarte');
+    expect(levelFor(99999, labor.levels)).toMatchObject({ level: labor.levels.length, max: true });
+  });
+
+  it('Wissenskarten nach Jahr', () => {
+    const withCards: Course = {
+      ...mini,
+      chapters: [{ ...mini.chapters[0]!, lessons: [
+        { ...mini.chapters[0]!.lessons[0]!, card: { year: 1990, title: { de: 'b', en: 'b' }, text: { de: 'b', en: 'b' } } },
+        { ...mini.chapters[0]!.lessons[1]!, card: { year: 1950, title: { de: 'a', en: 'a' }, text: { de: 'a', en: 'a' } } },
+      ] }],
+    };
+    let p = finishLesson(emptyProgress(), withCards, 'l1', 0, '2026-11-01').progress;
+    expect(earnedCards(p, withCards).map((l) => l.id)).toEqual(['l1']);
+    p = finishLesson(p, withCards, 'l2', 0, '2026-11-01').progress;
+    expect(earnedCards(p, withCards).map((l) => l.id)).toEqual(['l2', 'l1']);
   });
 
   it('verwirft kaputte Daten', () => {

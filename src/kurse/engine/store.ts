@@ -45,7 +45,22 @@ export class LocalProgressStore implements ProgressStore {
   }
 }
 
+/** Erzeugt die Ablage für einen Kurs. */
+export type StoreFactory = (courseId: string) => ProgressStore;
+
+let factory: StoreFactory = (courseId) => new LocalProgressStore(`kurs:${courseId}`);
+
+/**
+ * Andere Ablage einsetzen, z. B. später ein Konto auf einem Server. Eine
+ * solche Umsetzung lädt beim Anmelden den Stand vom Server, führt ihn mit dem
+ * lokalen Stand zusammen (`mergeProgress` in progress.ts) und speichert
+ * beide. Karte und Lektionen merken davon nichts.
+ */
+export function setStoreFactory(next: StoreFactory): void {
+  factory = next;
+}
+
 /** Ablage für einen Kurs. */
 export function storeFor(courseId: string): ProgressStore {
-  return new LocalProgressStore(`kurs:${courseId}`);
+  return factory(courseId);
 }

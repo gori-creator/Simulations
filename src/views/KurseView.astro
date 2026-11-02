@@ -1,0 +1,136 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Lang } from '../i18n/config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { COURSES, COURSES_PUBLIC, lessonsOf } from '../kurse';
+import { guideSvg } from '../kurse/engine/guide';
+import { ks } from '../kurse/strings';
+import { alternates, href } from '../lib/routes';
+import '../styles/kurs.css';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const L = (de: string, en: string) => (lang === 'de' ? de : en);
+const courses = COURSES.map((course) => {
+  const ready = lessonsOf(course).filter((l) => l.status === 'ready');
+  const minutes = ready.reduce((sum, l) => sum + l.minutes, 0);
+  return { course, ready, hours: Math.max(1, Math.round(minutes / 60)) };
+});
+
+const features = [
+  { icon: '🗺️', title: L('Welten und Missionen', 'Worlds and missions'), text: L('Eine Karte mit Welten voller kurzer Spiele. Am Ende jeder Welt wartet eine Mission.', 'A map of worlds full of short games. A mission waits at the end of each world.') },
+  { icon: '🃏', title: L('Zeitstrahl der KI', 'AI timeline'), text: L('Jede Lektion schenkt dir eine Wissenskarte mit einem Meilenstein – von 1763 bis heute.', 'Every lesson gives you a knowledge card with a milestone – from 1763 to today.') },
+  { icon: '🔧', title: L('Klartext statt Zauberei', 'Plain talk, no magic'), text: L('Die Figuren sagen „ich denke“ – der Klartext zeigt, was wirklich passiert: Es wird gerechnet.', 'The guides say “I think” – plain talk shows what really happens: numbers are crunched.') },
+  { icon: '🔒', title: L('Ohne Konto', 'No account'), text: L('Keine Anmeldung, keine echte KI im Netz. Der Spielstand bleibt im Browser und lässt sich per Code mitnehmen.', 'No sign-up, no online AI. Progress stays in your browser and can be moved with a code.') },
+];
+
+const lenses = [
+  { icon: '⚙️', title: L('Wie funktioniert das?', 'How does it work?'), text: L('Daten, Merkmale, Modelle, Training, neuronale Netze, Sprachmodelle – zum Anfassen.', 'Data, features, models, training, neural networks, language models – hands-on.') },
+  { icon: '🌍', title: L('Wie wirkt das?', 'What does it do to us?'), text: L('Fairness, Feeds und Filterblasen, Deepfakes, Datenschutz, Regeln wie der AI Act.', 'Fairness, feeds and filter bubbles, deepfakes, privacy, rules like the AI Act.') },
+  { icon: '🧭', title: L('Wie nutze ich das?', 'How do I use it?'), text: L('KI-Antworten prüfen, sinnvoll lernen statt abschreiben, die eigenen Daten schützen.', 'Check AI answers, learn instead of copying, protect your own data.') },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  title={ks(lang, 'coursesTitle')}
+  description={ks(lang, 'coursesLead')}
+  alternates={alternates({ kind: 'courses' })}
+  section="kurs"
+  noindex={!COURSES_PUBLIC}
+>
+  <div class="kurs kurse" data-kurse>
+    <div class="container">
+      <Breadcrumbs lang={lang} items={[{ label: ks(lang, 'home'), href: href(lang, { kind: 'home' }) }, { label: ks(lang, 'coursesTitle') }]} />
+
+      <header class="kurse__hero">
+        <h1 class="kurse__title">{ks(lang, 'coursesTitle')}</h1>
+        <p class="kurse__lead">{ks(lang, 'coursesLead')}</p>
+      </header>
+
+      <ul class="klevels">
+        {
+          courses.map(({ course, ready, hours }) => (
+            <li class:list={['klevel', `kurs--${course.guide}`]}>
+              <a class="klevel__link" href={href(lang, { kind: 'course', course: course.id })}>
+                <span class="klevel__guide" set:html={guideSvg(course.guide, 'wink', 1, course.guideName)} />
+                <span class="klevel__body">
+                  <span class="klevel__audience">{course.audience[lang]}</span>
+                  <strong class="klevel__title">{course.title[lang]}</strong>
+                  <span class="klevel__tagline">{course.tagline[lang]}</span>
+                  <span class="klevel__facts">{ks(lang, 'coursesFacts', { worlds: course.chapters.length, lessons: ready.length, hours })}</span>
+                  <span class="klevel__worlds" aria-hidden="true">
+                    {course.chapters.map((c) => (
+                      <span title={c.title[lang]}>{c.icon}</span>
+                    ))}
+                  </span>
+                  <span class="klevel__mine" data-mine={course.id} data-total={ready.length} hidden />
+                  <span class="btn btn--primary klevel__go">{ks(lang, 'coursesStart')} →</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <section class="kfeatures" aria-label={L('So funktioniert der Kurs', 'How the course works')}>
+        {
+          features.map((f) => (
+            <div class="kfeature">
+              <span class="kfeature__icon" aria-hidden="true">
+                {f.icon}
+              </span>
+              <h2 class="kfeature__title">{f.title}</h2>
+              <p>{f.text}</p>
+            </div>
+          ))
+        }
+      </section>
+
+      <section class="klenses">
+        <h2>{L('Drei Blickwinkel auf KI', 'Three perspectives on AI')}</h2>
+        <p class="muted">
+          {
+            L(
+              'Beide Kurse verbinden Technik, Gesellschaft und Anwendung – wie es die Dagstuhl-Erklärung zur Bildung in der digitalen Welt vorschlägt. Die Oberstufe rechnet dabei mit echter Mathematik: Ableitungen, Wahrscheinlichkeiten, Vektoren.',
+              'Both courses combine technology, society and use – as suggested by the Dagstuhl declaration on education in a digital world. The upper-school course uses real maths: derivatives, probabilities, vectors.',
+            )
+          }
+        </p>
+        <ul class="klenses__list">
+          {
+            lenses.map((lens) => (
+              <li class="klens">
+                <span class="klens__icon" aria-hidden="true">
+                  {lens.icon}
+                </span>
+                <strong>{lens.title}</strong>
+                <span>{lens.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="kurse__teachers">
+          👩‍🏫 {L('Für Lehrkräfte: In den Einstellungen jeder Karte lassen sich alle Lektionen freischalten. Alles läuft nach dem ersten Besuch auch offline.', 'For teachers: in the settings of each map you can unlock every lesson. Everything also works offline after the first visit.')}{' '}
+          <a href={href(lang, { kind: 'page', page: 'teachers' })}>{L('Mehr für Lehrkräfte', 'More for teachers')}</a>
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { ks } from '../kurse/strings';
+  import { storeFor } from '../kurse/engine/store';
+
+  const lang = document.documentElement.lang === 'en' ? 'en' : 'de';
+  for (const el of document.querySelectorAll<HTMLElement>('[data-mine]')) {
+    const done = Object.keys(storeFor(el.dataset.mine!).load().lessons).length;
+    if (done === 0) continue;
+    el.textContent = `⭐ ${ks(lang, 'coursesYours', { done, total: Number(el.dataset.total) })}`;
+    el.hidden = false;
+  }
+</script>

@@ -24,6 +24,8 @@ export type Route =
   | { kind: 'curriculum'; curriculum: string }
   /** Länder-Lehrplan: eine Jahrgangsstufe */
   | { kind: 'grade'; curriculum: string; grade: number }
+  /** Übersicht der Kurse (KI verstehen: beide Stufen) */
+  | { kind: 'courses' }
   /** Kurs (z. B. KI-Abenteuer): Karte mit allen Lektionen */
   | { kind: 'course'; course: string }
   /** Eine Lektion eines Kurses */
@@ -38,6 +40,9 @@ export const INFO_PAGES: Record<InfoPageId, Localized> = {
 };
 
 export const CATALOG_SLUG: Localized = { de: 'simulationen', en: 'simulations' };
+
+/** Adresse der Kursübersicht. */
+export const COURSES_SLUG: Localized = { de: 'ki-kurse', en: 'ai-courses' };
 
 /** URL-Segment einer Jahrgangsstufe, z. B. "jahrgangsstufe-7" / "grade-7", bei einer Stufe "jahrgangsstufe-5-6". */
 export function gradeSlug(lang: Lang, grade: number, toGrade?: number): string {
@@ -67,6 +72,8 @@ export function routeSegments(lang: Lang, route: Route): string[] {
       const stage = getCurriculumGrade(route.curriculum, route.grade);
       return [getSubject(curriculum.subject).slug[lang], curriculum.slug[lang], gradeSlug(lang, stage.grade, stage.toGrade)];
     }
+    case 'courses':
+      return [COURSES_SLUG[lang]];
     case 'course':
       return [getCourse(route.course).slug[lang]];
     case 'lesson':
@@ -110,6 +117,7 @@ export function allRoutes(): Route[] {
     for (const area of subject.areas) routes.push({ kind: 'area', subject: subject.id, area: area.id });
   }
   for (const sim of allSimulations()) if (sim.status === 'ready') routes.push({ kind: 'simulation', id: sim.id });
+  routes.push({ kind: 'courses' });
   for (const course of COURSES) {
     routes.push({ kind: 'course', course: course.id });
     for (const lesson of lessonsOf(course)) if (lesson.status === 'ready') routes.push({ kind: 'lesson', course: course.id, lesson: lesson.id });

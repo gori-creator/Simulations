@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Localized } from '../../i18n/config';
-import type { Course } from '../types';
+import type { Course, LessonMeta } from '../types';
 
 /**
  * Spielstand eines Kurses: XP, Sterne je Lektion, Abzeichen, Serie.
@@ -8,6 +8,8 @@ import type { Course } from '../types';
  * Reine Rechenlogik ohne Browser-Zugriff (getestet in tests/kurs-progress.test.ts).
  * Gespeichert wird über einen `ProgressStore` (engine/store.ts) – heute im
  * Browser, später ggf. auf einem Server mit Konto, ohne dass sich hier etwas ändert.
+ * Für Konten wichtig: XP lassen sich aus Sternen und Abzeichen neu berechnen
+ * (`computeXp`), zwei Stände lassen sich verlustfrei zusammenführen (`mergeProgress`).
  */
 export interface LessonRecord {
   /** Beste Wertung: 1 bis 3 Sterne. */
@@ -63,7 +65,7 @@ export function sanitizeProgress(raw: unknown): Progress {
 
 // ---------- Stufen ----------
 
-/** Namen der Stufen: Bit baut sich Stück für Stück zu einer klugen Maschine aus. */
+/** Stufen im KI-Abenteuer: Bit baut sich Stück für Stück zu einer klugen Maschine aus. */
 export const LEVEL_NAMES: Localized[] = [
   L('Funke', 'Spark'),
   L('Schalter', 'Switch'),
@@ -92,15 +94,15 @@ export interface LevelInfo {
   max: boolean;
 }
 
-export function levelFor(xp: number): LevelInfo {
+export function levelFor(xp: number, names: readonly Localized[] = LEVEL_NAMES): LevelInfo {
   let level = 1;
   let rest = Math.max(0, xp);
-  while (level < LEVEL_NAMES.length && rest >= xpForNext(level)) {
+  while (level < names.length && rest >= xpForNext(level)) {
     rest -= xpForNext(level);
     level += 1;
   }
-  const max = level === LEVEL_NAMES.length;
-  return { level, name: LEVEL_NAMES[level - 1]!, into: max ? 0 : rest, need: max ? 0 : xpForNext(level), max };
+  const max = level === names.length;
+  return { level, name: names[level - 1]!, into: max ? 0 : rest, need: max ? 0 : xpForNext(level), max };
 }
 
 // ---------- Sterne und XP ----------
@@ -120,6 +122,14 @@ export function lessonXp(stars: number): number {
 /** XP für ein neues Abzeichen. */
 export const BADGE_XP = 20;
 
+/**
+ * XP aus dem Spielstand neu berechnen: je Lektion die XP der besten Wertung,
+ * je Abzeichen BADGE_XP. Stimmt mit dem überein, was `finishLesson` vergibt.
+ */
+export function computeXp(p: Progress): number {
+  return Object.values(p.lessons).reduce((sum, rec) => sum + lessonXp(rec.stars), 0) + p.badges.length * BADGE_XP;
+}
+
 // ---------- Abzeichen ----------
 
 export interface BadgeDef {
@@ -135,7 +145,7 @@ interface BadgeRule extends BadgeDef {
 
 const readyLessons = (course: Course) => course.chapters.flatMap((c) => c.lessons.filter((l) => l.status === 'ready'));
 
-/** Alle Abzeichen eines Kurses (Bereichs-Abzeichen ergeben sich aus den Bereichen). */
+/** Alle Abzeichen eines Kurses (Welt-Abzeichen ergeben sich aus den Welten). */
 export function badgeRules(course: Course): BadgeRule[] {
   const rules: BadgeRule[] = [
     {
@@ -160,6 +170,13 @@ export function badgeRules(course: Course): BadgeRule[] {
       earned: (p) => Object.values(p.lessons).reduce((n, l) => n + l.stars, 0) >= 30,
     },
     {
+      id: 'kartensammler',
+      icon: '🃏',
+      title: L('Zeitreisende', 'Time traveller'),
+      text: L('10 Wissenskarten im Album.', '10 knowledge cards in your album.'),
+      earned: (p, c) => readyLessons(c).filter((l) => l.card && p.lessons[l.id]).length >= 10,
+    },
+    {
       id: 'serie-3',
       icon: '🔥',
       title: L('Dranbleiber', 'Keep going'),
@@ -179,17 +196,17 @@ export function badgeRules(course: Course): BadgeRule[] {
     if (ids.length === 0) return;
     rules.push({
       id: `bereich-${chapter.id}`,
-      icon: ['🔌', '📊', '🧭', '🧠', '🖼️', '🤝'][i] ?? '🏅',
+      icon: chapter.icon,
       title: chapter.title,
-      text: L(`Bereich ${i + 1} komplett geschafft.`, `Finished all of chapter ${i + 1}.`),
+      text: L(`Welt ${i + 1} komplett geschafft.`, `Finished all of world ${i + 1}.`),
       earned: (p) => ids.every((id) => p.lessons[id]),
     });
   });
   rules.push({
     id: 'abenteuer',
-    icon: '🏆',
-    title: L('Abenteuer bestanden', 'Adventure complete'),
-    text: L('Alle Lektionen geschafft.', 'Finished every lesson.'),
+    icon: course.finalBadge.icon,
+    title: course.finalBadge.title,
+    text: course.finalBadge.text,
     earned: (p, c) => {
       const all = readyLessons(c);
       return all.length > 0 && all.every((l) => p.lessons[l.id]);
@@ -219,6 +236,13 @@ export function nextLesson(p: Progress, course: Course): string | null {
   return lessonOrder(course).find((id) => !p.lessons[id]) ?? null;
 }
 
+/** Sammelkarten, die schon im Album liegen (nach Jahr sortiert). */
+export function earnedCards(p: Progress, course: Course): LessonMeta[] {
+  return readyLessons(course)
+    .filter((l) => l.card && p.lessons[l.id])
+    .sort((a, b) => a.card!.year - b.card!.year);
+}
+
 // ---------- Serie ----------
 
 /** Datum als JJJJ-MM-TT in Ortszeit. */
@@ -246,6 +270,8 @@ export interface FinishResult {
   /** XP aus dieser Runde (Lektion + neue Abzeichen). */
   xpGained: number;
   newBadges: BadgeDef[];
+  /** Zum ersten Mal geschafft (neue Sammelkarte). */
+  firstTime: boolean;
   levelBefore: number;
   levelAfter: number;
 }
@@ -268,9 +294,31 @@ export function finishLesson(progress: Progress, course: Course, lessonId: strin
     newBadges.push({ id: rule.id, icon: rule.icon, title: rule.title, text: rule.text });
     xpGained += BADGE_XP;
   }
-  const levelBefore = levelFor(p.xp).level;
+  const levels = course.levels;
+  const levelBefore = levelFor(p.xp, levels).level;
   p.xp += xpGained;
-  return { progress: p, stars, xpGained, newBadges, levelBefore, levelAfter: levelFor(p.xp).level };
+  return { progress: p, stars, xpGained, newBadges, firstTime: !before, levelBefore, levelAfter: levelFor(p.xp, levels).level };
+}
+
+// ---------- Zusammenführen (für Codes und spätere Konten) ----------
+
+/**
+ * Zwei Spielstände desselben Kurses verlustfrei vereinen: je Lektion die
+ * bessere Wertung und die höhere Spielzahl, alle Abzeichen, die längere bzw.
+ * jüngere Serie. XP werden neu berechnet (mindestens die höheren XP beider
+ * Stände, falls ein Stand aus einer älteren Wertung stammt).
+ */
+export function mergeProgress(a: Progress, b: Progress): Progress {
+  const p = cloneProgress(a);
+  for (const [id, rec] of Object.entries(b.lessons)) {
+    const mine = p.lessons[id];
+    p.lessons[id] = mine ? { stars: Math.max(mine.stars, rec.stars) as 1 | 2 | 3, plays: Math.max(mine.plays, rec.plays) } : { ...rec };
+  }
+  p.badges = [...new Set([...a.badges, ...b.badges])];
+  if (b.streak.last > p.streak.last || (b.streak.last === p.streak.last && b.streak.days > p.streak.days)) p.streak = { ...b.streak };
+  p.free = a.free || b.free;
+  p.xp = Math.max(computeXp(p), a.xp, b.xp);
+  return p;
 }
 
 // ---------- Mitnehmen per Code ----------
