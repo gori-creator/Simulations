@@ -58,6 +58,7 @@ const game: GameMount<void> = (host, ctx) => {
 
   function draw(): void {
     clear(svg);
+    svg.append(s('defs', {}, s('marker', { id: 'kbergab-arrow', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto-start-reverse' }, s('path', { class: 'kbergab__head', d: 'M0 0 L10 5 L0 10 Z' }))));
     const t = terrain();
     let d = '';
     for (let i = 0; i <= 120; i++) {
@@ -76,6 +77,21 @@ const game: GameMount<void> = (host, ctx) => {
       svg.append(s('line', { class: 'kbergab__jump', x1: px(prev), y1: py(height(t, prev)) - 12, x2: px(tw), y2: py(height(t, tw)) - 12 }));
     });
     for (const tw of trail.slice(0, -1)) if (tw >= X0 && tw <= X1) svg.append(s('circle', { class: 'kbergab__dot', cx: px(tw), cy: py(height(t, tw)) - 12, r: 4 }));
+    if (w >= X0 && w <= X1 && state === 'run') {
+      // Steigung spüren: kurze Tangente und Pfeil bergab
+      const e = 0.01;
+      const slope = (height(t, w + e) - height(t, w - e)) / (2 * e);
+      const sx = px(w + 0.8) - px(w);
+      const sy = py(height(t, w) + slope * 0.8) - py(height(t, w));
+      const len = Math.hypot(sx, sy) || 1;
+      const ux = (sx / len) * 34;
+      const uy = (sy / len) * 34;
+      const cx = px(w);
+      const cy = py(height(t, w)) - 12;
+      svg.append(s('line', { class: 'kbergab__tangent', x1: cx - ux, y1: cy - uy, x2: cx + ux, y2: cy + uy }));
+      const dir = slope > 0 ? -1 : 1;
+      if (Math.abs(slope) > 0.05) svg.append(s('line', { class: 'kbergab__down', x1: cx, y1: cy, x2: cx + dir * ux * 1.1, y2: cy + dir * uy * 1.1, 'marker-end': 'url(#kbergab-arrow)' }));
+    }
     if (w >= X0 && w <= X1) {
       svg.append(s('circle', { class: 'kbergab__ball', cx: px(w), cy: py(height(t, w)) - 12, r: 12 }));
       svg.append(s('text', { class: 'kbergab__face', x: px(w), y: py(height(t, w)) - 7, 'text-anchor': 'middle' }, state === 'lost' ? '😵' : '🤖'));
@@ -94,9 +110,46 @@ const game: GameMount<void> = (host, ctx) => {
     draw();
   }
 
-  stepBtn.addEventListener('click', () => {
-    if (state !== 'run') return;
+  /** Bit hüpft in einem Bogen vom alten zum neuen Punkt. */
+  function hop(from: number, to: number): Promise<void> {
+    const t = terrain();
+    if (ctx.reducedMotion || from < X0 || from > X1) return Promise.resolve();
+    const ball = svg.querySelector<SVGCircleElement>('.kbergab__ball');
+    const face = svg.querySelector<SVGTextElement>('.kbergab__face');
+    if (!ball || !face) return Promise.resolve();
+    const end = Math.max(X0 - 1, Math.min(X1 + 1, to));
+    const x0 = px(from);
+    const y0 = py(height(t, from)) - 12;
+    const x1 = px(end);
+    const y1 = py(Math.min(height(t, end), ymax())) - 12;
+    const lift = 30 + Math.abs(x1 - x0) * 0.25;
+    const duration = 420;
+    const start = performance.now();
+    return new Promise((resolve) => {
+      const frame = (now: number) => {
+        const k = Math.min(1, (now - start) / duration);
+        const x = x0 + (x1 - x0) * k;
+        const y = y0 + (y1 - y0) * k - lift * 4 * k * (1 - k);
+        ball.setAttribute('cx', x.toFixed(1));
+        ball.setAttribute('cy', y.toFixed(1));
+        face.setAttribute('x', x.toFixed(1));
+        face.setAttribute('y', (y + 5).toFixed(1));
+        if (k < 1) requestAnimationFrame(frame);
+        else resolve();
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
+  let hopping = false;
+  stepBtn.addEventListener('click', async () => {
+    if (state !== 'run' || hopping) return;
+    const from = w;
     w = step(terrain(), w, RATES[rateIndex]!);
+    hopping = true;
+    stepBtn.disabled = true;
+    await hop(from, w);
+    hopping = false;
     trail.push(w);
     const n = trail.length - 1;
     if (lost(w)) {

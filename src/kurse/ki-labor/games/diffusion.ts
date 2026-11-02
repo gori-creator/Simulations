@@ -96,8 +96,12 @@ const game: GameMount<void> = (host, ctx) => {
     const pics = PICTURES.filter((p) => !prompt || p.id === prompt).map((p) => p.pic);
     const path = generate(pics, rnd);
     clear(steps);
+    // Die Zwischenbilder erscheinen nacheinander: man sieht das Bild aus dem Rauschen auftauchen
     path.forEach((x, k) => {
-      if (k % 2 === 0 || k === path.length - 1) steps.append(h('figure', { class: 'kconv-fig' }, tile(x), h('figcaption', { text: `t = ${STEPS - k}` })));
+      if (k % 2 !== 0 && k !== path.length - 1) return;
+      const fig = h('figure', { class: 'kconv-fig kdiff-reveal' }, tile(x), h('figcaption', { text: `t = ${STEPS - k}` }));
+      fig.style.setProperty('--i', String(k / 2));
+      steps.append(fig);
     });
     const final = path.at(-1)!;
     const c = closest(final);

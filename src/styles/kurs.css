@@ -1898,6 +1898,9 @@ button.kitem:hover:not(:disabled) {
 .kbergab__dot { fill: var(--muted); }
 .kbergab__ball { fill: var(--surface); stroke: var(--text); stroke-width: 2.5; }
 .kbergab__face { font-size: 14px; }
+.kbergab__tangent { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 3 3; opacity: 0.8; }
+.kbergab__down { stroke: var(--k-gold); stroke-width: 3.5; stroke-linecap: round; }
+.kbergab__head { fill: var(--k-gold); }
 
 /* Kästchenraster */
 
@@ -3319,3 +3322,7 @@ button.kitem:hover:not(:disabled) {
 .kwords__item { padding: 8px 0; border-top: 1px solid var(--border); }
 .kwords__item dt { font-weight: 800; color: var(--k-tone); }
 .kwords__item dd { margin: 2px 0 0; line-height: 1.45; }
+@media (prefers-reduced-motion: no-preference) {
+  .kdiff-reveal { animation: kdiff-reveal 0.35s ease-out both; animation-delay: calc(var(--i) * 0.18s); }
+}
+@keyframes kdiff-reveal { from { opacity: 0; transform: translateY(6px) scale(0.92); filter: blur(2px); } }

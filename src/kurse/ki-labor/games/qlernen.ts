@@ -50,7 +50,7 @@ const game: GameMount<void> = (host, ctx) => {
   toggle(eRow, [0.05, 0.2, 0.5], () => eps, (v) => (eps = v));
   for (const n of [1, 10, 100, 1000]) {
     const b = h('button', { class: 'kbtn kbtn--main kbtn--small', attrs: { type: 'button' }, text: `+${ctx.num(n)} ${tx(n === 1 ? { de: 'Episode', en: 'episode' } : { de: 'Episoden', en: 'episodes' })}` });
-    b.addEventListener('click', () => train(n));
+    b.addEventListener('click', () => void train(n));
     runRow.append(b);
   }
   const resetBtn = h('button', { class: 'kbtn kbtn--small', attrs: { type: 'button' }, text: `↺ ${tx({ de: 'Vergessen', en: 'Forget' })}` });
@@ -64,12 +64,41 @@ const game: GameMount<void> = (host, ctx) => {
     draw();
   }
 
-  function train(n: number): void {
+  // Agent als eigene Figur: Bei einer einzelnen Episode läuft er seinen Weg sichtbar ab
+  const walker = s('text', { class: 'kq__icon kq__walker', x: 0, y: 0, 'text-anchor': 'middle' }, '🤖');
+  let walking = false;
+  const place = (cell: number, smooth: boolean) => {
+    walker.classList.toggle('is-moving', smooth);
+    walker.style.transform = `translate(${(cell % world.w) * C + C / 2}px, ${Math.floor(cell / world.w) * C + C / 2 + 7}px)`;
+  };
+  async function walk(cells: readonly number[]): Promise<void> {
+    if (ctx.reducedMotion || cells.length < 2) return;
+    walking = true;
+    const buttons = [...host.querySelectorAll<HTMLButtonElement>('button')];
+    for (const b of buttons) b.disabled = true;
+    const ms = Math.max(40, Math.min(200, 2400 / cells.length));
+    walker.style.setProperty('--step', `${ms}ms`);
+    place(cells[0]!, false);
+    for (const cell of cells.slice(1)) {
+      await new Promise((r) => setTimeout(r, 30));
+      place(cell, true);
+      await new Promise((r) => setTimeout(r, ms));
+    }
+    await new Promise((r) => setTimeout(r, 300));
+    for (const b of buttons) b.disabled = false;
+    walking = false;
+  }
+
+  async function train(n: number): Promise<void> {
+    if (walking) return;
     let lastEnd = -1;
+    let visited: number[] = [];
     for (let k = 0; k < n; k++) {
-      lastEnd = episode(world, q, alpha, gamma, eps, rnd).end;
+      visited = n === 1 ? [] : visited;
+      lastEnd = episode(world, q, alpha, gamma, eps, rnd, 100, n === 1 ? visited : undefined).end;
       episodes += 1;
     }
+    if (n === 1) await walk(visited);
     draw(lastEnd);
   }
 
@@ -109,8 +138,9 @@ const game: GameMount<void> = (host, ctx) => {
         const dy = [-1, 0, 1, 0][a]! * 14;
         svg.append(s('line', { class: `kq__arrow${path.includes(i) ? ' is-path' : ''}`, x1: cx - dx, y1: cy - dy, x2: cx + dx, y2: cy + dy }), s('circle', { class: `kq__head${path.includes(i) ? ' is-path' : ''}`, cx: cx + dx, cy: cy + dy, r: path.includes(i) ? 5 : 4 }));
       }
-      if (i === world.start) svg.append(s('text', { class: 'kq__icon', x: cx, y: cy + 7, 'text-anchor': 'middle' }, '🤖'));
     }
+    svg.append(walker);
+    place(world.start, false);
     const end = path.at(-1);
     info.textContent = episodes === 0 ? tx({ de: 'Noch nichts gelernt: Alle Q-Werte sind 0.', en: 'Nothing learned yet: all Q-values are 0.' }) : `${tx({ de: 'Episoden', en: 'episodes' })}: ${episodes} · Q(Start) = [${q[world.start]!.map((v) => ctx.num(v, 1)).join('; ')}] · ${tx({ de: 'gelernter Weg endet bei', en: 'learned path ends at' })} ${end === SCHATZ ? '💎' : end === KEKS ? '🍪' : end === 14 ? '🕳️' : '…'}`;
     if (end === SCHATZ && !done.schatz) {
