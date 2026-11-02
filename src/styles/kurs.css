@@ -2710,3 +2710,39 @@ button.kitem:hover:not(:disabled) {
 .kttt__cell--mini { font-size: 0.78rem; font-weight: 700; color: var(--muted); border-width: 1px; border-radius: 8px; cursor: default; background: var(--surface-2); }
 .kttt__cell--mini.is-chosen { border: 2px solid var(--k-b); color: var(--k-b); }
 @media (max-width: 640px) { .kttt--mini { grid-template-columns: repeat(3, 76px); } }
+
+/* ---------- Diagramme im KI-Labor ---------- */
+
+.kplot--lab { max-width: 100%; }
+.kplot__tick { fill: var(--muted); font-size: 11px; font-family: var(--font-sans); }
+.kplot__sq { fill: color-mix(in srgb, var(--k-b) 22%, transparent); stroke: var(--k-b); stroke-width: 1; }
+.kplot__sq.is-above { fill: color-mix(in srgb, var(--k-a) 18%, transparent); stroke: var(--k-a); }
+.kplot__res { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.kplot__best { stroke: var(--k-good); stroke-width: 3; stroke-dasharray: 8 6; }
+.kheat { fill: var(--k-tone); }
+.kplot__trail { fill: none; stroke: var(--k-gold); stroke-width: 2.5; stroke-linejoin: round; }
+.kplot__arrow { stroke: var(--k-bad); stroke-width: 3; stroke-linecap: round; }
+.kplot__goal { fill: var(--k-good); font-size: 18px; font-weight: 900; }
+.kplot__curve { fill: none; stroke: var(--k-tone); stroke-width: 3; stroke-linejoin: round; }
+.kplot__curve--train { stroke: var(--k-a); }
+.kplot__curve--test { stroke: var(--k-b); stroke-dasharray: 7 4; }
+.kplot__marker { stroke: var(--k-gold); stroke-width: 10; opacity: 0.35; }
+.klegend__line { display: inline-block; width: 22px; height: 0; border-top: 3px solid var(--k-a); vertical-align: middle; }
+.klegend__line--test { border-top: 3px dashed var(--k-b); }
+.kbtn--sq { min-width: 44px; padding-inline: 0; }
+.kgrid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }
+.kmail { margin: 8px 0; padding: 10px 14px; border-radius: var(--radius); background: var(--surface-2); font-style: italic; }
+
+/* ---------- Entscheidungsbaum (ID3) ---------- */
+
+.ktree3__node { margin: 4px 0; }
+.ktree3__kids { margin-left: 18px; padding-left: 12px; border-left: 3px solid color-mix(in srgb, var(--k-tone) 40%, var(--border)); }
+.ktree3__label { color: var(--muted); font-size: 0.9rem; }
+.ktree3__q { font-weight: 800; color: var(--k-tone); }
+.ktree3__leaf { font-weight: 700; padding: 1px 8px; border-radius: 999px; }
+.ktree3__leaf.is-yes { background: var(--k-good-soft); color: var(--k-good); }
+.ktree3__leaf.is-no { background: var(--k-bad-soft); color: var(--k-bad); }
+.ktree3__open { font-weight: 700; color: var(--muted); }
+.ktree3__open.is-active { color: var(--k-gold); }
+.kitems--wide { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.kitem--split { justify-items: start; text-align: left; gap: 4px; font-size: 0.9rem; }
