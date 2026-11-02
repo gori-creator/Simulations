@@ -299,10 +299,6 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     forceRender();
   });
   const unMotion = motion.subscribe(playback);
-  const unReduced = motion.onReducedChange(() => {
-    wanted = false;
-    playback();
-  });
   syncButton();
   scheduleVisibility();
 
@@ -316,7 +312,6 @@ export function initEnergyStage({ root, lang, journey }: EnergyStageOptions): ()
     unArrival?.();
     unTheme();
     unMotion();
-    unReduced();
     instance?.destroy?.();
   };
 }

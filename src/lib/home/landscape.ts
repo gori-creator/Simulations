@@ -12,14 +12,13 @@
  * Bildschirm (die Skulptur sitzt je nach Breite an einer anderen Stelle).
  */
 export function initLandscape(hero: HTMLElement, land: HTMLElement): () => void {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const root = document.documentElement;
   let targetX = 0;
   let x = 0;
   let frame = 0;
   let visible = true;
 
-  const paused = () => reduce.matches || root.classList.contains('motion-paused');
+  const paused = () => root.classList.contains('motion-paused');
 
   function tick(): void {
     x += (targetX - x) * 0.06;
