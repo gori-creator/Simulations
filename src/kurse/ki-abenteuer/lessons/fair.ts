@@ -4,7 +4,7 @@ import type { LessonContent } from '../../types';
 const lesson: LessonContent = {
   takeaway: L('Eine KI ist nur so fair wie ihre Daten: Fehlt eine Gruppe in den Beispielen, macht sie bei dieser Gruppe mehr Fehler.', 'An AI is only as fair as its data: if a group is missing from the examples, it makes more mistakes for that group.'),
   steps: [
-    { kind: 'say', mood: 'happy', text: L('Letzter Bereich! Ich arbeite jetzt in einem Schuhgeschäft und soll erkennen, ob etwas ein Schuh ist.', 'Last chapter! I now work in a shoe shop and have to recognise whether something is a shoe.') },
+    { kind: 'say', mood: 'happy', text: L('Letzte Welt! Ich arbeite jetzt in einem Schuhgeschäft und soll erkennen, ob etwas ein Schuh ist.', 'Last world! I now work in a shoe shop and have to recognise whether something is a shoe.') },
     { kind: 'say', mood: 'think', text: L('Beim Training hat man mir allerdings nur Turnschuhe gezeigt. Mal sehen, wie ich mich in der Prüfung schlage …', 'During training, though, I was only shown sneakers. Let’s see how I do in the exam …') },
     { kind: 'game', game: 'fair', intro: L('Schau dir meine Prüfung an. Wo liege ich falsch? Zeig mir passende Beispiele, bis ich alle Gruppen richtig erkenne.', 'Look at my exam. Where am I wrong? Show me fitting examples until I get every group right.') },
     {

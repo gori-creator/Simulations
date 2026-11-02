@@ -25,7 +25,7 @@ const lesson: LessonContent = {
         'The examples an AI learns from are called training data. In your case they were six fruits. Big AIs learn from millions of pictures or texts. To be good afterwards, the examples must be varied and correctly labelled.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Bereich 1 geschafft! Du weißt jetzt: KI lernt aus Beispielen. Als Nächstes schauen wir uns diese Beispiele – die Daten – genauer an.', 'Chapter 1 complete! You now know: AI learns from examples. Next we’ll take a closer look at those examples – the data.') },
+    { kind: 'say', mood: 'wow', text: L('Welt 1 geschafft! Du weißt jetzt: KI lernt aus Beispielen. Bevor wir die Daten genauer anschauen, reisen wir in die Vergangenheit: Wie haben meine Vorfahren versucht, schlau zu sein – ganz ohne Lernen?', 'World 1 complete! You now know: AI learns from examples. Before we look at the data more closely, let’s travel back in time: how did my ancestors try to be smart – without learning at all?') },
   ],
 };
 

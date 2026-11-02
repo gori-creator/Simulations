@@ -24,7 +24,7 @@ const lesson: LessonContent = {
         'Experts say: “garbage in, garbage out” – bad data makes a bad AI. That’s why people check training data before an AI learns from it. It’s a lot of work, but very important.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Bereich 2 geschafft! Du weißt jetzt: Gute Daten und gute Merkmale sind das Wichtigste. Als Nächstes lerne ich richtig – auf drei verschiedene Arten.', 'Chapter 2 done! You now know: good data and good features matter most. Next I’ll learn properly – in three different ways.') },
+    { kind: 'say', mood: 'wow', text: L('Welt geschafft! Du weißt jetzt: Gute Daten und gute Merkmale sind das Wichtigste. Als Nächstes lerne ich richtig – mit Nachbarn, mit Fragen und sogar ganz ohne Etiketten.', 'World complete! You now know: good data and good features matter most. Next I’ll learn properly – with neighbours, with questions and even without any labels.') },
   ],
 };
 

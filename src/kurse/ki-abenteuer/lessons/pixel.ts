@@ -4,7 +4,7 @@ import type { LessonContent } from '../../types';
 const lesson: LessonContent = {
   takeaway: L('Für den Computer ist ein Bild eine Tabelle aus Zahlen – eine Zahl für jedes Kästchen.', 'To a computer a picture is a table of numbers – one number for each square.'),
   steps: [
-    { kind: 'say', mood: 'happy', text: L('Bereich 5! Jetzt verrate ich dir ein Geheimnis: Ich sehe gar keine Bilder. Ich sehe nur Zahlen.', 'Chapter 5! Now I’ll tell you a secret: I don’t see pictures at all. I only see numbers.') },
+    { kind: 'say', mood: 'happy', text: L('Neue Welt! Jetzt verrate ich dir ein Geheimnis: Ich sehe gar keine Bilder. Ich sehe nur Zahlen.', 'New world! Now I’ll tell you a secret: I don’t see pictures at all. I only see numbers.') },
     { kind: 'say', mood: 'think', text: L('Jedes Bild besteht aus winzigen Kästchen, den Pixeln. Für jedes Pixel speichert der Computer eine Zahl.', 'Every picture is made of tiny squares called pixels. For every pixel the computer stores a number.') },
     { kind: 'game', game: 'pixel', intro: L('Ich habe dir ein Bild geschickt – aber nur als Zahlen. Mal es nach! Eine 1 heißt: ausmalen.', 'I sent you a picture – but only as numbers. Paint it! A 1 means: fill it in.') },
     {

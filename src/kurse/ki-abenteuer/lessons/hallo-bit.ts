@@ -45,7 +45,7 @@ const lesson: LessonContent = {
         { text: L('Sie braucht gar keine Daten.', 'It doesn’t need any data at all.'), feedback: L('Doch! Ohne Beispiele kann ich nichts lernen.', 'Oh yes it does! Without examples I can’t learn anything.') },
         { text: L('Sie weiß von Anfang an alles.', 'It knows everything from the start.'), feedback: L('Schön wär’s! Ich wusste am Anfang gar nichts.', 'If only! At the start I knew nothing.') },
       ],
-      explain: L('Darum sind Beispiele (Daten) für eine KI so wichtig – darum geht es im nächsten Bereich.', 'That’s why examples (data) matter so much to an AI – more on that soon.'),
+      explain: L('Darum sind Beispiele (Daten) für eine KI so wichtig – mehr dazu in der Welt „Daten und Muster“.', 'That’s why examples (data) matter so much to an AI – more on that in the world “Data and patterns”.'),
     },
     { kind: 'say', mood: 'happy', text: L('Danke für meinen ersten Trainingstag! Als Nächstes schauen wir, wo überall schon KI steckt.', 'Thanks for my first day of training! Next, let’s see where AI is already hiding.') },
   ],

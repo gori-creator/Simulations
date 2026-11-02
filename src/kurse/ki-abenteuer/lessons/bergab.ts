@@ -24,7 +24,7 @@ const lesson: LessonContent = {
         'Experts call this gradient descent. The step size is called the learning rate. If it’s too small, the AI learns very slowly. If it’s too big, it jumps past the goal – or flies off completely. Finding the right learning rate is part of the job of AI experts.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Bereich 4 geschafft! Du weißt jetzt, wie ein neuronales Netz lernt. Als Nächstes zeige ich dir, wie ich Bilder sehe und Texte schreibe.', 'Chapter 4 done! You now know how a neural network learns. Next I’ll show you how I see pictures and write texts.') },
+    { kind: 'say', mood: 'wow', text: L('Du weißt jetzt, wie ein Neuron lernt: Schritt für Schritt bergab. Aber was schaffen viele Neuronen zusammen? Das probieren wir als Nächstes aus.', 'You now know how a neuron learns: step by step downhill. But what can many neurons do together? That’s what we try next.') },
   ],
 };
 

@@ -23,7 +23,7 @@ const lesson: LessonContent = {
         'Chatbots like ChatGPT work the same way at their core: they predict the next word. But they have read billions of texts and look not just at the last word but at the whole text before it. That’s why they sound so good. Even so, they can make up things that aren’t true.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Bereich 5 geschafft! Jetzt weißt du, wie ich sehe und schreibe. Im letzten Bereich geht es um uns: Ist KI fair? Darf man ihr glauben?', 'Chapter 5 done! Now you know how I see and write. The last chapter is about us: is AI fair? Can you believe it?') },
+    { kind: 'say', mood: 'wow', text: L('Jetzt weißt du, wie ich schreibe: Wort für Wort, nach Häufigkeit. Aber woher weiß ich, welche Wörter ähnlich sind? Das zeigt dir die Wörter-Landkarte.', 'Now you know how I write: word by word, by frequency. But how do I know which words are similar? The word map will show you.') },
   ],
 };
 

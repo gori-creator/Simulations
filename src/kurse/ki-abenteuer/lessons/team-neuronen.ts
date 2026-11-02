@@ -31,7 +31,7 @@ const lesson: LessonContent = {
         { text: L('Weil jedes Neuron ein Wort speichert.', 'Because every neuron stores one word.'), feedback: L('So einfach ist es nicht. Wissen ist über viele Gewichte verteilt.', 'It’s not that simple. Knowledge is spread over many weights.') },
       ],
     },
-    { kind: 'say', mood: 'wink', text: L('1986 fanden Forschende heraus, wie so ein Netz seine vielen Gewichte selbst einstellen kann – mit dem Bergab-Lernen, das du schon kennst.', 'In 1986 researchers found out how such a network can set its many weights itself – with the downhill learning you already know.') },
+    { kind: 'say', mood: 'wink', text: L('1986 fanden Forschende heraus, wie so ein Netz seine vielen Gewichte selbst einstellen kann – mit dem Bergab-Lernen, das du schon kennst. In der nächsten Welt siehst du, was solche Netze mit Bildern und Wörtern machen.', 'In 1986 researchers found out how such a network can set its many weights itself – with the downhill learning you already know. In the next world you’ll see what such networks do with pictures and words.') },
   ],
 };
 
