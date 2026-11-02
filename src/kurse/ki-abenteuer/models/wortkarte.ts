@@ -34,10 +34,10 @@ export const KNOWN: MapWord[] = [
 
 /** Neue Wörter, die man einsortieren soll. */
 export const NEW_WORDS: MapWord[] = [
-  W('kuh', 'Kuh', 'cow', '🐄', 2.4, 7.4, 'tiere'),
-  W('brot', 'Brot', 'bread', '🍞', 8.2, 6.6, 'essen'),
-  W('zug', 'Zug', 'train', '🚆', 2.6, 2.6, 'fahrzeuge'),
-  W('gewitter', 'Gewitter', 'thunderstorm', '⛈️', 8.6, 2.8, 'wetter'),
+  W('kuh', 'Kuh', 'cow', '🐄', 3.2, 7.2, 'tiere'),
+  W('brot', 'Brot', 'bread', '🍞', 8.0, 6.2, 'essen'),
+  W('zug', 'Zug', 'train', '🚆', 2.9, 3.0, 'fahrzeuge'),
+  W('gewitter', 'Gewitter', 'thunderstorm', '⛈️', 9.0, 3.4, 'wetter'),
 ];
 
 /** Zu welcher Gruppe gehört ein Platz auf der Karte (nächstes bekanntes Wort)? */

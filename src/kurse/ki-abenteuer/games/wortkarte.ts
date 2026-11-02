@@ -14,7 +14,7 @@ import { scatter, sx, sy } from '../parts/scatter';
 const game: GameMount<void> = (host, ctx) => {
   const { tx } = ctx;
   let index = 0;
-  const placed: { id: string; x: number; y: number }[] = [];
+  const placed: string[] = [];
   let mathDone = false;
   let finished = false;
 
@@ -26,9 +26,10 @@ const game: GameMount<void> = (host, ctx) => {
   function draw(): void {
     clear(plot.points);
     for (const w of KNOWN) plot.points.append(s('text', { class: 'kmapw', x: sx(w.x), y: sy(w.y) + 7, 'text-anchor': 'middle' }, w.icon), s('text', { class: 'kmapw__label', x: sx(w.x), y: sy(w.y) + 24, 'text-anchor': 'middle' }, tx(w.name)));
-    for (const p of placed) {
-      const w = NEW_WORDS.find((x) => x.id === p.id)!;
-      plot.points.append(s('text', { class: 'kmapw is-new', x: sx(p.x), y: sy(p.y) + 7, 'text-anchor': 'middle' }, w.icon));
+    // Richtig eingeordnete Wörter rücken an ihren Platz auf Bits Karte.
+    for (const id of placed) {
+      const w = NEW_WORDS.find((x) => x.id === id)!;
+      plot.points.append(s('text', { class: 'kmapw is-new', x: sx(w.x), y: sy(w.y) + 7, 'text-anchor': 'middle' }, w.icon), s('text', { class: 'kmapw__label is-new', x: sx(w.x), y: sy(w.y) + 24, 'text-anchor': 'middle' }, tx(w.name)));
     }
     const next = NEW_WORDS[index];
     prompt.textContent = next ? tx(L(`Wo wohnt „${next.name.de}“ ${next.icon}?`, `Where does “${next.name.en}” ${next.icon} live?`)) : tx(L('Alle neuen Wörter haben einen Platz!', 'All new words have a place!'));
@@ -39,7 +40,7 @@ const game: GameMount<void> = (host, ctx) => {
     if (!next) return;
     const w = plot.toWorld(event as PointerEvent);
     if (groupAt(w.x, w.y) === next.group) {
-      placed.push({ id: next.id, x: w.x, y: w.y });
+      placed.push(next.id);
       index += 1;
       ctx.say(L(`Ja! „${next.name.de}“ passt zu seinen Nachbarn – in Texten kommt es in ähnlichen Sätzen vor.`, `Yes! “${next.name.en}” fits with its neighbours – in texts it appears in similar sentences.`), 'happy');
       draw();

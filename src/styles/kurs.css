@@ -1323,6 +1323,18 @@ a.kstop:focus-visible {
   cursor: not-allowed;
 }
 
+.kbtn.is-right {
+  border-color: var(--k-good);
+  background: var(--k-good-soft);
+  color: var(--k-good);
+}
+
+.kbtn.is-wrong {
+  border-color: var(--k-bad);
+  background: var(--k-bad-soft);
+  color: var(--k-bad);
+}
+
 .kbtn[aria-pressed='true'] {
   border-color: var(--k-tone);
   background: var(--k-tone);
@@ -1418,6 +1430,9 @@ a.kstop:focus-visible {
   font-size: 0.82rem;
   line-height: 1.25;
   text-align: center;
+  hyphens: auto;
+  hyphenate-limit-chars: 10 4 4;
+  overflow-wrap: anywhere;
 }
 
 button.kitem {
@@ -2510,6 +2525,10 @@ button.kitem:hover:not(:disabled) {
   padding: 6px 0;
 }
 
+.ktimeline__pool {
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+}
+
 .ktimeline__pool .kitem {
   font-size: 0.85rem;
 }
@@ -2829,6 +2848,7 @@ button.kitem:hover:not(:disabled) {
 .kvec__guide { stroke: var(--k-gold); stroke-width: 2.5; stroke-dasharray: 6 4; }
 
 .kgen { min-height: 2.6em; margin: 0 0 10px; padding: 10px 14px; border-radius: var(--radius); background: var(--surface-2); font-size: 1.15rem; font-weight: 600; }
+.kgen.is-wrong { box-shadow: inset 4px 0 0 var(--k-bad); background: var(--k-bad-soft); }
 .kprobs { display: grid; gap: 4px; margin-bottom: 10px; }
 .kprobs__row { display: grid; grid-template-columns: minmax(80px, 9em) 1fr 6.5em; gap: 8px; align-items: center; font-size: 0.92rem; }
 .kprobs__word { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -2883,6 +2903,9 @@ button.kitem:hover:not(:disabled) {
 .kdiff__px { aspect-ratio: 1; background: color-mix(in srgb, var(--text) calc(var(--v) * 100%), var(--surface)); }
 .kdiff-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin: 8px 0; }
 .kdiff-row--steps .kdiff--small { width: 60px; }
+.kdiff-step { display: grid; justify-items: center; gap: 2px; }
+.kdiff-step small { color: var(--muted); font-size: 0.75rem; }
+.kdiff-row--steps .kdiff-step .kdiff--small { width: 44px; }
 
 .kfair { display: block; width: 100%; height: auto; }
 .kfair__good { fill: var(--k-good); }
@@ -2904,7 +2927,8 @@ button.kitem:hover:not(:disabled) {
 .kmapw { font-size: 24px; pointer-events: none; }
 .kmapw.is-new { filter: drop-shadow(0 0 4px var(--k-gold)); }
 .kmapw__label { fill: var(--muted); font-size: 11px; font-family: var(--font-sans); pointer-events: none; }
-.kbandit__icon { font-size: 2.2rem; }
+.kmapw__label.is-new { fill: var(--text); font-weight: 700; }
+.kbandit__arm .kbandit__icon { font-size: 2.2rem; line-height: 1.1; color: inherit; }
 .kq--kids .kq__floor { fill: color-mix(in srgb, var(--k-gold) calc(var(--v) * 45%), var(--surface-2)); }
 .kq__trail { font-size: 22px; opacity: 0.55; pointer-events: none; }
 .kq__trail.is-path { opacity: 1; }

@@ -7,7 +7,8 @@ import type { GameMount } from '../../types';
 /**
  * Spiel „Bit wird ein Chatbot“. Teil 1 (Vortraining): Bit liest Sätze und
  * antwortet auf „Hunde sind …“ mit dem Wort, das am häufigsten folgte – auch
- * wenn es falsch ist. Teil 2 (Rückmeldung): Daumen hoch für die bessere von
+ * wenn es falsch ist. Das Forum (×7) schlägt „treu“ (höchstens 3 + 2 = 5) in
+ * jeder Lesereihenfolge, damit der Fehler sicher sichtbar wird. Teil 2 (Rückmeldung): Daumen hoch für die bessere von
  * zwei Antworten; Bit lernt, welche Art Antwort gewünscht ist.
  */
 interface Text {
@@ -24,7 +25,7 @@ const START: Text[] = [
 
 const MORE: { label: Localized; add: Text }[] = [
   { label: L('📚 Tierbuch lesen: „Hunde sind treu.“', '📚 Read an animal book: “Dogs are loyal.”'), add: { word: L('treu', 'loyal'), count: 2 } },
-  { label: L('💬 Forum lesen: „Hunde sind Pflanzenfresser.“ (×5)', '💬 Read a forum: “Dogs are herbivores.” (×5)'), add: { word: L('Pflanzenfresser', 'herbivores'), count: 5, wrong: true } },
+  { label: L('💬 Forum lesen: „Hunde sind Pflanzenfresser.“ (×7)', '💬 Read a forum: “Dogs are herbivores.” (×7)'), add: { word: L('Pflanzenfresser', 'herbivores'), count: 7, wrong: true } },
   { label: L('📰 Zeitung lesen: „Hunde sind verspielt.“', '📰 Read a newspaper: “Dogs are playful.”'), add: { word: L('verspielt', 'playful'), count: 2 } },
 ];
 
@@ -112,11 +113,16 @@ const game: GameMount<void> = (host, ctx) => {
 
   function done(): void {
     const kind = nett >= 2 ? 'nett' : 'frech';
+    const fact = answer();
     stage.append(
       h('p', { class: 'kpanel__title', text: tx(L('Neue Frage an den fertigen Chatbot: „Wie spät ist es auf dem Mond?“', 'New question for the finished chatbot: “What time is it on the moon?”')) }),
       h('p', { class: 'kgen', text: `🤖 ${kind === 'nett' ? tx(L('Gute Frage! Auf dem Mond gibt es keine eigene Uhrzeit wie bei uns – ein Mondtag dauert etwa einen Monat.', 'Good question! The moon has no clock time like ours – a lunar day lasts about a month.')) : tx(L('Keine Ahnung, frag jemand anderen.', 'No idea, ask someone else.'))}` }),
+      h('p', { class: 'kpanel__title', text: tx(L('Und noch eine: „Was sind Hunde?“', 'And one more: “What are dogs?”')) }),
+      h('p', { class: `kgen${fact.wrong ? ' is-wrong' : ''}`, text: `🤖 ${kind === 'nett' ? tx(L(`Sehr gern! Hunde sind ${fact.word.de}. 😊`, `Happy to help! Dogs are ${fact.word.en}. 😊`)) : tx(L(`Hunde sind ${fact.word.de}, weiß doch jeder.`, `Dogs are ${fact.word.en}, everyone knows that.`))}` }),
     );
-    ctx.say(kind === 'nett' ? L('Aus deinen Daumen habe ich gelernt: hilfsbereit und freundlich antworten. So werden echte Chatbots nach dem Lesen „erzogen“ – mit Bewertungen von Menschen.', 'From your thumbs I learned: answer helpfully and kindly. That’s how real chatbots are “brought up” after reading – with ratings from people.') : L('Du hast freche Antworten belohnt – also antworte ich frech. Ein Chatbot wird so, wie die Menschen ihn bewerten!', 'You rewarded cheeky answers – so I answer cheekily. A chatbot becomes the way people rate it!'), kind === 'nett' ? 'wow' : 'wink');
+    const style = kind === 'nett' ? L('Aus deinen Daumen habe ich gelernt, freundlich und hilfsbereit zu antworten.', 'From your thumbs I learned to answer kindly and helpfully.') : L('Du hast freche Antworten belohnt – also antworte ich frech.', 'You rewarded cheeky answers – so I answer cheekily.');
+    const truth = fact.wrong ? L(' Aber schau: „Pflanzenfresser“ sage ich immer noch! Die Daumen haben meinen Ton verändert, nicht mein Wissen. Freundlich heißt nicht richtig.', ' But look: I still say “herbivores”! The thumbs changed my tone, not my knowledge. Friendly doesn’t mean correct.') : L(' So werden echte Chatbots nach dem Lesen „erzogen“ – mit Bewertungen von Menschen.', ' That’s how real chatbots are “brought up” after reading – with ratings from people.');
+    ctx.say({ de: style.de + truth.de, en: style.en + truth.en }, fact.wrong ? 'think' : kind === 'nett' ? 'wow' : 'wink');
     if (!finished) {
       finished = true;
       host.append(solved(tx(L('Chatbot gebaut!', 'Chatbot built!'))));

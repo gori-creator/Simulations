@@ -16,6 +16,8 @@ const game: GameMount<void> = (host, ctx) => {
   let wish = PICTURES[0]!.id;
   let x: Pic | null = null;
   let t = STEPS;
+  /** Alle Zwischenbilder des aktuellen Malvorgangs (für den Filmstreifen). */
+  let history: Pic[] = [];
   let made = 0;
   let sawNoise = false;
   let finished = false;
@@ -34,12 +36,13 @@ const game: GameMount<void> = (host, ctx) => {
   const range = h('input', { class: 'kslider__input', attrs: { type: 'range', min: 0, max: STEPS, step: 1, value: 0, 'aria-label': tx(L('Wie viel Rauschen?', 'How much noise?')) } });
   const wishRow = h('div', { class: 'krow' });
   const canvas = h('div', { class: 'kdiff-row' });
+  const strip = h('div', { class: 'kdiff-row kdiff-row--steps', attrs: { 'aria-hidden': 'true' } });
   const startBtn = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `🌫️ ${tx(L('Neues Rauschen', 'New noise'))}` });
   const stepBtn = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `🧹 ${tx(L('Bit räumt einen Schritt auf', 'Bit cleans up one step'))}` });
   const status = h('p', { class: 'kvote', attrs: { 'aria-live': 'polite' } });
   host.append(
     h('div', { class: 'kpanel' }, h('p', { class: 'kpanel__title', text: tx(L('1. Mach ein Bild kaputt: Schieb das Rauschen hoch.', '1. Break a picture: slide the noise up.')) }), fwd, h('label', { class: 'kslider' }, h('span', { class: 'kslider__label', text: tx(L('Rauschen', 'Noise')) }), range)),
-    h('div', { class: 'kpanel' }, h('p', { class: 'kpanel__title', text: tx(L('2. Was soll Bit malen?', '2. What should Bit paint?')) }), wishRow, h('div', { class: 'krow' }, startBtn, stepBtn), canvas, status),
+    h('div', { class: 'kpanel' }, h('p', { class: 'kpanel__title', text: tx(L('2. Was soll Bit malen?', '2. What should Bit paint?')) }), wishRow, h('div', { class: 'krow' }, startBtn, stepBtn), canvas, strip, status),
   );
 
   const renderFwd = () => {
@@ -65,7 +68,9 @@ const game: GameMount<void> = (host, ctx) => {
 
   function renderCanvas(): void {
     clear(canvas);
+    clear(strip);
     if (x) canvas.append(tile(x, true));
+    if (history.length > 1) history.forEach((pic, i) => strip.append(h('div', { class: 'kdiff-step' }, tile(pic), h('small', { text: String(STEPS - i) }))));
     stepBtn.disabled = !x || t <= 0;
     status.textContent = !x ? tx(L('Drück „Neues Rauschen“.', 'Press “New noise”.')) : t > 0 ? tx(L(`Noch ${t} Schritte bis zum fertigen Bild.`, `${t} steps left until the finished picture.`)) : tx(L('Fertig gemalt!', 'Painting finished!'));
   }
@@ -73,12 +78,14 @@ const game: GameMount<void> = (host, ctx) => {
   startBtn.addEventListener('click', () => {
     x = gaussian(rnd);
     t = STEPS;
+    history = [x];
     renderCanvas();
   });
   stepBtn.addEventListener('click', () => {
     if (!x || t <= 0) return;
     x = reverseStep(x, t, PICTURES.filter((p) => p.id === wish).map((p) => p.pic));
     t -= 1;
+    history.push(x);
     renderCanvas();
     if (t === 0) {
       made += 1;
