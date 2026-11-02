@@ -2852,3 +2852,42 @@ button.kitem:hover:not(:disabled) {
 .krlhf__ans strong { color: var(--k-tone); }
 .krlhf__checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-bottom: 10px; }
 .kprobs--wide .kprobs__row { grid-template-columns: minmax(120px, 15em) 1fr 4.5em; }
+
+/* ---------- Belohnung (Banditen, Q-Lernen) ---------- */
+
+.kbandit { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.kbandit__arm { display: grid; gap: 4px; justify-items: center; padding: 14px 10px; border-radius: var(--radius-lg); border: 2px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.kbandit__arm:hover:not(:disabled) { border-color: var(--k-tone); }
+.kbandit__arm:disabled { opacity: 0.6; cursor: default; }
+.kbandit__arm span { color: var(--muted); font-size: 0.85rem; }
+.kbandit__rate { font-size: 1.3rem !important; font-weight: 800; color: var(--k-tone) !important; }
+
+.kq { display: block; width: 100%; max-width: 420px; height: auto; }
+.kq__wall { fill: var(--text); opacity: 0.8; }
+.kq__term.is-good { fill: color-mix(in srgb, var(--k-good) 22%, var(--surface)); stroke: var(--k-good); stroke-width: 2; }
+.kq__term.is-bad { fill: color-mix(in srgb, var(--k-bad) 22%, var(--surface)); stroke: var(--k-bad); stroke-width: 2; }
+.kq__tri { stroke: var(--surface); stroke-width: 1; }
+.kq__tri.is-pos { fill: color-mix(in srgb, var(--k-good) calc(var(--v) * 85%), var(--surface-2)); }
+.kq__tri.is-neg { fill: color-mix(in srgb, var(--k-bad) calc(var(--v) * 85%), var(--surface-2)); }
+.kq__arrow { stroke: var(--muted); stroke-width: 3; stroke-linecap: round; marker-end: none; }
+.kq__arrow.is-path { stroke: var(--text); stroke-width: 5; }
+.kq__icon { font-size: 22px; pointer-events: none; }
+.kq__val { fill: var(--text); font-size: 12px; font-weight: 700; font-family: var(--font-sans); }
+.kq__head { fill: var(--muted); } .kq__head.is-path { fill: var(--text); }
+
+/* ---------- Diffusion und Fairness ---------- */
+
+.kdiff { display: grid; grid-template-columns: repeat(8, 1fr); gap: 1px; padding: 2px; border-radius: 6px; background: var(--border); }
+.kdiff--small { width: 72px; }
+.kdiff--big { width: 128px; }
+.kdiff__px { aspect-ratio: 1; background: color-mix(in srgb, var(--text) calc(var(--v) * 100%), var(--surface)); }
+.kdiff-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin: 8px 0; }
+.kdiff-row--steps .kdiff--small { width: 60px; }
+
+.kfair { display: block; width: 100%; height: auto; }
+.kfair__good { fill: var(--k-good); }
+.kfair__bad { fill: var(--k-bad); }
+.kfair__thr { stroke: var(--text); stroke-width: 3; }
+.kfair__label { fill: var(--text); font-size: 13px; font-weight: 700; font-family: var(--font-sans); }
+.kfair__zone { fill: color-mix(in srgb, var(--k-tone) 12%, transparent); }
+.klegend__dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; } .klegend__dot.is-good { background: var(--k-good); } .klegend__dot.is-bad { background: var(--k-bad); }

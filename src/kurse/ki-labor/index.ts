@@ -16,9 +16,7 @@ const card = (year: number, title: Pair, text: Pair): KnowledgeCard => ({ year, 
 
 /** Noch im Bau (erscheinen auf der Karte als „bald“). */
 const SOON = new Set<string>([
-  'banditen', 'q-lernen',
-  'diffusion', 'fairness', 'ai-act', 'abschluss',
-]);
+  ]);
 
 const lesson = (id: string, slug: Pair, title: Pair, teaser: Pair, icon: string, minutes: number, c: KnowledgeCard, extra: Partial<LessonMeta> = {}): LessonMeta => ({
   id,
