@@ -2954,3 +2954,77 @@ button.kitem:hover:not(:disabled) {
 .kfeed__item:hover { border-color: var(--k-tone); }
 .kfeed__item small { display: block; color: var(--muted); }
 .kfeed__icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 12px; background: var(--surface-2); font-size: 1.8rem; }
+
+/* ---------- Optionale Kursbilder (src/kurse/art.ts, docs/KI-KURS-BILDER.md) ---------- */
+.kart { display: block; pointer-events: none; }
+.kart__img { display: block; width: 100%; height: auto; }
+.kart__img--dark { display: none; }
+:root[data-theme='dark'] .kart.has-dark .kart__img--light { display: none; }
+:root[data-theme='dark'] .kart.has-dark .kart__img--dark { display: block; }
+
+/* Weltbild: rechts im Kopf der Welt, nach links ausgeblendet (linke Bildhälfte ist frei) */
+.kworld.has-art { overflow: hidden; }
+.kworld.has-art .kworld__head { position: relative; min-height: 150px; }
+.kworld.has-art .kworld__head > :not(.kworld__art) { position: relative; z-index: 1; }
+/* Ränder weich ausblenden (links und unten) und mit dem Hintergrund mischen,
+   damit der helle Bildhintergrund nicht als Kasten sichtbar wird. */
+.kworld__art,
+.klesson__art {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 45%), linear-gradient(180deg, transparent 0%, #000 16%, #000 58%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 45%), linear-gradient(180deg, transparent 0%, #000 16%, #000 58%, transparent 100%);
+  mask-composite: intersect;
+  mix-blend-mode: multiply;
+}
+:root[data-theme='dark'] .kworld__art,
+:root[data-theme='dark'] .klesson__art { mix-blend-mode: lighten; }
+.kworld__art {
+  position: absolute;
+  top: calc(-1 * clamp(16px, 2.5vw, 26px));
+  right: calc(-1 * clamp(16px, 2.5vw, 26px));
+  z-index: 0;
+  width: min(70%, 620px);
+}
+.kworld.has-art .kworld__count { align-self: start; }
+@media (max-width: 640px) {
+  .kworld__art { width: 100%; opacity: 0.35; }
+}
+
+/* Weltbild im Kopf einer Lektion */
+.klesson__head.has-art { position: relative; min-height: 110px; padding-right: 30%; }
+.klesson__head.has-art > :not(.klesson__art) { position: relative; z-index: 1; }
+.klesson__art {
+  position: absolute;
+  top: -12px;
+  right: 0;
+  z-index: 0;
+  width: min(56%, 520px);
+}
+@media (max-width: 640px) {
+  .klesson__head.has-art { padding-right: 0; }
+  .klesson__art { width: 70%; opacity: 0.35; }
+}
+
+/* Kartenbild in Album und Abschluss */
+.kcardx__art {
+  margin: -14px -16px 8px;
+  border-radius: calc(var(--radius-lg) - 2px) calc(var(--radius-lg) - 2px) 0 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: color-mix(in srgb, var(--k-tone) 10%, var(--surface));
+}
+.kcardx__art .kart__img { width: 100%; height: 100%; object-fit: cover; }
+.kcardx.has-art .kcardx__icon { display: none; }
+.kcardx.has-art:not(.is-earned) .kcardx__art { filter: grayscale(1) blur(3px); opacity: 0.45; }
+.kcardx--big .kcardx__art { margin: -18px -20px 10px; }
+
+/* Titelbild eines Kurses auf der Übersicht */
+.klevel.has-art .klevel__link { grid-template-columns: 120px 1fr; padding-top: 0; }
+.klevel__art {
+  grid-column: 1 / -1;
+  margin: 0 calc(-1 * clamp(18px, 3vw, 28px));
+  border-radius: calc(var(--radius-lg) - 2px) calc(var(--radius-lg) - 2px) 0 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+}
+.klevel__art .kart__img { width: 100%; height: 100%; object-fit: cover; }

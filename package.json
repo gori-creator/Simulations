@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "verify": "npm run check && npm run test && npm run build",
     "bildtests": "node scripts/bildtests.mjs",
+    "kurs:bilder": "node scripts/kurs-bilder.mjs",
     "lehrplan:luecken": "vitest run tests/lehrplan-luecken.test.ts",
     "new:sim": "node scripts/new-simulation.mjs"
   },

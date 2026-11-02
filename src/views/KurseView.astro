@@ -1,8 +1,10 @@
 ---
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import KursArt from '../components/KursArt.astro';
 import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, lessonsOf } from '../kurse';
+import { coverArt } from '../kurse/art';
 import { guideSvg } from '../kurse/engine/guide';
 import { ks } from '../kurse/strings';
 import { alternates, href } from '../lib/routes';
@@ -14,11 +16,13 @@ interface Props {
 
 const { lang } = Astro.props;
 const L = (de: string, en: string) => (lang === 'de' ? de : en);
-const courses = COURSES.map((course) => {
-  const ready = lessonsOf(course).filter((l) => l.status === 'ready');
-  const minutes = ready.reduce((sum, l) => sum + l.minutes, 0);
-  return { course, ready, hours: Math.max(1, Math.round(minutes / 60)) };
-});
+const courses = await Promise.all(
+  COURSES.map(async (course) => {
+    const ready = lessonsOf(course).filter((l) => l.status === 'ready');
+    const minutes = ready.reduce((sum, l) => sum + l.minutes, 0);
+    return { course, ready, hours: Math.max(1, Math.round(minutes / 60)), cover: await coverArt(course.id) };
+  }),
+);
 
 const features = [
   { icon: '🗺️', title: L('Welten und Missionen', 'Worlds and missions'), text: L('Eine Karte mit Welten voller kurzer Spiele. Viele Welten enden mit einer großen Mission.', 'A map of worlds full of short games. Many worlds end with a big mission.') },
@@ -53,9 +57,10 @@ const lenses = [
 
       <ul class="klevels">
         {
-          courses.map(({ course, ready, hours }) => (
-            <li class:list={['klevel', `kurs--${course.guide}`]}>
+          courses.map(({ course, ready, hours, cover }) => (
+            <li class:list={['klevel', `kurs--${course.guide}`, { 'has-art': cover }]}>
               <a class="klevel__link" href={href(lang, { kind: 'course', course: course.id })}>
+                <KursArt art={cover} class="klevel__art" eager />
                 <span class="klevel__guide" set:html={guideSvg(course.guide, 'wink', 1, course.guideName)} />
                 <span class="klevel__body">
                   <span class="klevel__audience">{course.audience[lang]}</span>

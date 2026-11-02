@@ -24,6 +24,10 @@ Einige Simulationen können Fotos bzw. gerenderte Bilder verwenden, damit sie ho
 - Bitte nur Bilder verwenden, die frei genutzt werden dürfen (selbst erzeugt oder mit passender Lizenz).
 - Herkunft, Prüfung aller Bilder und Rechtslage: `docs/BILDRECHTE.md`.
 
+## Bilder der KI-Kurse
+
+Titelbilder, Weltbilder und Wissenskarten für das KI-Abenteuer und das KI-Labor (84 Prompts, Abgabe und Umwandlung mit `npm run kurs:bilder`): `docs/KI-KURS-BILDER.md`.
+
 ## Herkunft und Rechte
 
 Ausführlich (Durchsicht aller Bilder, Rechtslage, offene Fragen): `docs/BILDRECHTE.md`. Kurz: alle Fotos selbst mit KI erzeugt, Prompt zu jedem Bild, keine fremden Vorlagen, Marken oder Personen; Vorbild-Bilder fremder Designer kommen nicht ins Repository.

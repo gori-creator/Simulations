@@ -1,0 +1,26 @@
+---
+/**
+ * Optionales Kursbild (src/kurse/art.ts) als helle und dunkle Fassung.
+ * Ohne Bild wird nichts ausgegeben – die Seite zeigt dann ihre gezeichnete
+ * Darstellung. Rein schmückend, daher alt="" und aria-hidden.
+ */
+import type { Art } from '../kurse/art';
+
+interface Props {
+  art: Art | null | undefined;
+  class?: string;
+  eager?: boolean;
+}
+
+const { art, class: className, eager = false } = Astro.props;
+const hasDark = art ? art.dark !== art.light : false;
+---
+
+{
+  art && (
+    <span class:list={['kart', className, { 'has-dark': hasDark }]} aria-hidden="true">
+      <img class="kart__img kart__img--light" src={art.light} width={art.width} height={art.height} alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+      {hasDark && <img class="kart__img kart__img--dark" src={art.dark} width={art.width} height={art.height} alt="" loading="lazy" decoding="async" />}
+    </span>
+  )
+}

@@ -1,8 +1,10 @@
 ---
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import KursArt from '../components/KursArt.astro';
 import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
+import { cardArt, worldArt } from '../kurse/art';
 import { guideSvg } from '../kurse/engine/guide';
 import { badgeRules } from '../kurse/engine/progress';
 import { ks } from '../kurse/strings';
@@ -23,6 +25,9 @@ const badges = badgeRules(course);
 const cards = ready.filter((l) => l.card).sort((a, b) => a.card!.year - b.card!.year);
 const others = COURSES.filter((c) => c.id !== course.id);
 const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.id, lesson: id });
+// Optionale Bilder (docs/KI-KURS-BILDER.md); fehlen sie, bleibt die gezeichnete Darstellung.
+const worldArts = await Promise.all(course.chapters.map((chapter) => worldArt(course.id, chapter.id)));
+const cardArts = new Map(await Promise.all(cards.map(async (lesson) => [lesson.id, await cardArt(course.id, lesson.id)] as const)));
 ---
 
 <BaseLayout
@@ -82,8 +87,9 @@ const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.i
       <ol class="kmap">
         {
           course.chapters.map((chapter, ci) => (
-            <li class:list={['kworld', `kchapter--${ci + 1}`]} data-world={chapter.id}>
+            <li class:list={['kworld', `kchapter--${ci + 1}`, { 'has-art': worldArts[ci] }]} data-world={chapter.id}>
               <header class="kworld__head">
+                <KursArt art={worldArts[ci]} class="kworld__art" />
                 <span class="kworld__emblem" aria-hidden="true">
                   {chapter.icon}
                 </span>
@@ -171,7 +177,8 @@ const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.i
               {cards.map((lesson) => {
                 const entry = lessons.find((l) => l.id === lesson.id)!;
                 return (
-                  <li class:list={['kcardx', `kchapter--${entry.chapterNo}`]} data-card={lesson.id}>
+                  <li class:list={['kcardx', `kchapter--${entry.chapterNo}`, { 'has-art': cardArts.get(lesson.id) }]} data-card={lesson.id}>
+                    <KursArt art={cardArts.get(lesson.id)} class="kcardx__art" />
                     <span class="kcardx__year">{lesson.card!.year}</span>
                     <h3 class="kcardx__title">{lesson.card!.title[lang]}</h3>
                     <p class="kcardx__text">{lesson.card!.text[lang]}</p>

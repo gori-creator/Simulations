@@ -84,11 +84,22 @@ export function initLesson(root: HTMLElement): void {
     requestAnimationFrame(() => el.focus({ preventScroll: false }));
   }
 
+  /** Optionales Kartenbild (src/kurse/art.ts), helle und dunkle Fassung. */
+  function cardArtEl(): HTMLElement | null {
+    const light = root.dataset.cardArt;
+    if (!light) return null;
+    const dark = root.dataset.cardArtDark || light;
+    const img = (src: string, variant: string) => h('img', { class: `kart__img kart__img--${variant}`, attrs: { src, alt: '', decoding: 'async' } });
+    return h('span', { class: `kart kcardx__art${dark !== light ? ' has-dark' : ''}`, attrs: { 'aria-hidden': 'true' } }, img(light, 'light'), ...(dark !== light ? [img(dark, 'dark')] : []));
+  }
+
   /** Wissenskarte (auch für das Ende der Lektion). */
   function cardEl(card: KnowledgeCard, label: string, fresh: boolean): HTMLElement {
+    const art = cardArtEl();
     return h(
       'article',
-      { class: `kcardx kcardx--big${fresh ? ' is-fresh' : ''}` },
+      { class: `kcardx kcardx--big is-earned${fresh ? ' is-fresh' : ''}${art ? ' has-art' : ''}` },
+      ...(art ? [art] : []),
       h('span', { class: 'kcardx__tag', text: label }),
       h('span', { class: 'kcardx__year', text: String(card.year) }),
       h('h3', { class: 'kcardx__title', text: tx(card.title) }),

@@ -1,0 +1,523 @@
+[
+ {
+  "id": "A1",
+  "path": "ki-abenteuer/titel",
+  "width": 1280,
+  "height": 720
+ },
+ {
+  "id": "A2",
+  "path": "ki-labor/titel",
+  "width": 1280,
+  "height": 720
+ },
+ {
+  "id": "B01",
+  "path": "ki-abenteuer/welten/erwachen",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B02",
+  "path": "ki-abenteuer/welten/vorfahren",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B03",
+  "path": "ki-abenteuer/welten/daten",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B04",
+  "path": "ki-abenteuer/welten/lernen",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B05",
+  "path": "ki-abenteuer/welten/netze",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B06",
+  "path": "ki-abenteuer/welten/bilder-sprache",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B07",
+  "path": "ki-abenteuer/welten/belohnung",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B08",
+  "path": "ki-abenteuer/welten/kreativ",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B09",
+  "path": "ki-abenteuer/welten/wir",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B10",
+  "path": "ki-labor/welten/intelligenz",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B11",
+  "path": "ki-labor/welten/suche",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B12",
+  "path": "ki-labor/welten/daten",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B13",
+  "path": "ki-labor/welten/netze",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B14",
+  "path": "ki-labor/welten/sehen",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B15",
+  "path": "ki-labor/welten/sprache",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B16",
+  "path": "ki-labor/welten/belohnung",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "B17",
+  "path": "ki-labor/welten/verantwortung",
+  "width": 1800,
+  "height": 600,
+  "position": "right"
+ },
+ {
+  "id": "C01",
+  "path": "ki-abenteuer/karten/hallo-bit",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C02",
+  "path": "ki-abenteuer/karten/ki-im-alltag",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C03",
+  "path": "ki-abenteuer/karten/aus-beispielen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C04",
+  "path": "ki-abenteuer/karten/mensch-oder-maschine",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C05",
+  "path": "ki-abenteuer/karten/erster-chatbot",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C06",
+  "path": "ki-abenteuer/karten/vorausdenken",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C07",
+  "path": "ki-abenteuer/karten/merkmale",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C08",
+  "path": "ki-abenteuer/karten/grenze",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C09",
+  "path": "ki-abenteuer/karten/aufraeumen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C10",
+  "path": "ki-abenteuer/karten/nachbarn",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C11",
+  "path": "ki-abenteuer/karten/fragenbaum",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C12",
+  "path": "ki-abenteuer/karten/gruppen-finden",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C13",
+  "path": "ki-abenteuer/karten/ueben-pruefen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C14",
+  "path": "ki-abenteuer/karten/steckbrief",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C15",
+  "path": "ki-abenteuer/karten/neuron",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C16",
+  "path": "ki-abenteuer/karten/neuron-lernt",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C17",
+  "path": "ki-abenteuer/karten/bergab",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C18",
+  "path": "ki-abenteuer/karten/team-neuronen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C19",
+  "path": "ki-abenteuer/karten/pixel",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C20",
+  "path": "ki-abenteuer/karten/zeichen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C21",
+  "path": "ki-abenteuer/karten/naechstes-wort",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C22",
+  "path": "ki-abenteuer/karten/woerter-karte",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C23",
+  "path": "ki-abenteuer/karten/eisdiele",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C24",
+  "path": "ki-abenteuer/karten/labyrinth",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C25",
+  "path": "ki-abenteuer/karten/streichhoelzer",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C26",
+  "path": "ki-abenteuer/karten/chatbot-bauen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C27",
+  "path": "ki-abenteuer/karten/bilder-aus-rauschen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C28",
+  "path": "ki-abenteuer/karten/echt-oder-fake",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C29",
+  "path": "ki-abenteuer/karten/fair",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C30",
+  "path": "ki-abenteuer/karten/mein-feed",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C31",
+  "path": "ki-abenteuer/karten/stimmt-das",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C32",
+  "path": "ki-abenteuer/karten/meine-daten",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C33",
+  "path": "ki-abenteuer/karten/schlau-nutzen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C34",
+  "path": "ki-abenteuer/karten/zeitreise",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C35",
+  "path": "ki-labor/karten/imitationsspiel",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C36",
+  "path": "ki-labor/karten/eliza",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C37",
+  "path": "ki-labor/karten/expertensystem",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C38",
+  "path": "ki-labor/karten/wegsuche",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C39",
+  "path": "ki-labor/karten/minimax",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C40",
+  "path": "ki-labor/karten/monte-carlo",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C41",
+  "path": "ki-labor/karten/regression",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C42",
+  "path": "ki-labor/karten/gradient",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C43",
+  "path": "ki-labor/karten/ueberanpassung",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C44",
+  "path": "ki-labor/karten/bayes",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C45",
+  "path": "ki-labor/karten/entscheidungsbaum",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C46",
+  "path": "ki-labor/karten/logikneuron",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C47",
+  "path": "ki-labor/karten/perzeptron",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C48",
+  "path": "ki-labor/karten/ki-winter",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C49",
+  "path": "ki-labor/karten/xor-netz",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C50",
+  "path": "ki-labor/karten/backprop",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C51",
+  "path": "ki-labor/karten/spielplatz",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C52",
+  "path": "ki-labor/karten/faltung",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C53",
+  "path": "ki-labor/karten/imagenet",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C54",
+  "path": "ki-labor/karten/taeuschung",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C55",
+  "path": "ki-labor/karten/tokens",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C56",
+  "path": "ki-labor/karten/einbettungen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C57",
+  "path": "ki-labor/karten/sprachmodell",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C58",
+  "path": "ki-labor/karten/aufmerksamkeit",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C59",
+  "path": "ki-labor/karten/assistent",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C60",
+  "path": "ki-labor/karten/banditen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C61",
+  "path": "ki-labor/karten/q-lernen",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C62",
+  "path": "ki-labor/karten/diffusion",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C63",
+  "path": "ki-labor/karten/fairness",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C64",
+  "path": "ki-labor/karten/ai-act",
+  "width": 800,
+  "height": 500
+ },
+ {
+  "id": "C65",
+  "path": "ki-labor/karten/abschluss",
+  "width": 800,
+  "height": 500
+ }
+]

@@ -1,7 +1,9 @@
 ---
+import KursArt from '../components/KursArt.astro';
 import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES_PUBLIC, getCourse, getLesson, lessonsOf } from '../kurse';
+import { cardArt, worldArt } from '../kurse/art';
 import { guideSvg } from '../kurse/engine/guide';
 import { ks } from '../kurse/strings';
 import { alternates, href } from '../lib/routes';
@@ -20,6 +22,9 @@ const ready = lessonsOf(course).filter((l) => l.status === 'ready');
 const next = ready[ready.findIndex((l) => l.id === lessonId) + 1];
 const mapHref = href(lang, { kind: 'course', course: course.id });
 const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: next.id }) : '';
+// Optionale Bilder: Weltbild im Kopf, Kartenbild für die Wissenskarte am Ende.
+const banner = await worldArt(course.id, lesson.chapter.id);
+const card = lesson.card ? await cardArt(course.id, lesson.id) : null;
 ---
 
 <BaseLayout
@@ -30,7 +35,7 @@ const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: 
   section="kurs"
   noindex={!COURSES_PUBLIC}
 >
-  <div class:list={['kurs', `kurs--${course.guide}`, 'klesson', `kchapter--${lesson.chapterNo}`, { 'klesson--boss': lesson.boss }]} data-lesson-root data-course={course.id} data-lesson={lesson.id} data-lang={lang} data-map-href={mapHref} data-next-href={nextHref}>
+  <div class:list={['kurs', `kurs--${course.guide}`, 'klesson', `kchapter--${lesson.chapterNo}`, { 'klesson--boss': lesson.boss }]} data-lesson-root data-course={course.id} data-lesson={lesson.id} data-lang={lang} data-map-href={mapHref} data-next-href={nextHref} data-card-art={card?.light} data-card-art-dark={card?.dark}>
     <div class="container klesson__container">
       <div class="klesson__top">
         <a class="btn btn--ghost klesson__back" href={mapHref}>← {ks(lang, 'back')}</a>
@@ -38,7 +43,8 @@ const nextHref = next ? href(lang, { kind: 'lesson', course: course.id, lesson: 
         <span class="klesson__level" data-level></span>
       </div>
 
-      <header class="klesson__head">
+      <header class:list={['klesson__head', { 'has-art': banner }]}>
+        <KursArt art={banner} class="klesson__art" eager />
         <p class="klesson__eyebrow">
           {lesson.chapter.icon} {ks(lang, 'chapter', { n: lesson.chapterNo })} · {lesson.chapter.title[lang]}
           {lesson.boss && <span class="klesson__boss">{ks(lang, 'boss')}</span>}
