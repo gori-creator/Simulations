@@ -2613,3 +2613,100 @@ button.kitem:hover:not(:disabled) {
 .kbtn.is-hint {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--k-gold) 70%, transparent);
 }
+
+/* ---------- Suche, Tic-Tac-Toe, Hex ---------- */
+
+.kmaze {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  margin: 0 auto 12px;
+}
+
+.kmaze__cell { fill: var(--surface-2); }
+.kmaze__cell.is-wall { fill: var(--text); opacity: 0.8; }
+.kmaze__cell.is-seen { fill: color-mix(in srgb, var(--k-tone) 28%, var(--surface)); }
+.kmaze__cell.is-path { fill: color-mix(in srgb, var(--k-gold) 60%, var(--surface)); }
+.kmaze__n { fill: var(--muted); font-size: 10px; font-family: var(--font-sans); pointer-events: none; }
+.kmaze__icon { font-size: 18px; pointer-events: none; }
+.kmaze__path { fill: none; stroke: var(--k-bad); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0.8; }
+
+.kttt-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+}
+
+.kttt {
+  display: grid;
+  grid-template-columns: repeat(3, 84px);
+  grid-template-rows: repeat(3, 84px);
+  gap: 6px;
+}
+
+.kttt__cell {
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 2.4rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.kttt__cell:hover:not(:disabled) { border-color: var(--k-tone); }
+.kttt__cell:disabled { cursor: default; }
+.kttt__cell.is-x { color: var(--k-a); }
+.kttt__cell.is-o { color: var(--k-b); }
+.kttt__val { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+
+.kgoals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.kgoals li.is-done { color: var(--k-good); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .kttt-wrap { grid-template-columns: 1fr; }
+  .kttt { grid-template-columns: repeat(3, 76px); grid-template-rows: repeat(3, 76px); justify-content: center; }
+}
+
+.khex {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.khex__cell polygon {
+  fill: color-mix(in srgb, var(--k-b) calc(var(--heat, 0) * 55%), var(--surface-2));
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+
+.khex__cell:hover polygon { stroke: var(--k-tone); stroke-width: 3; }
+.khex__cell:focus-visible { outline: none; }
+.khex__cell:focus-visible polygon { stroke: var(--focus); stroke-width: 4; }
+.khex__cell.is-blue polygon { fill: var(--k-a); cursor: default; }
+.khex__cell.is-orange polygon { fill: var(--k-b); cursor: default; }
+.khex__rate { fill: var(--text); font-size: 11px; font-weight: 700; font-family: var(--font-sans); pointer-events: none; }
+.khex__edge--b, .khex__edge--o { stroke-width: 6; stroke-linecap: round; }
+.khex__edge--b { stroke: var(--k-a); }
+.khex__edge--o { stroke: var(--k-b); }
+
+.kttt-eval { margin-top: 10px; }
+.kttt--mini { grid-template-columns: repeat(3, 84px); grid-template-rows: repeat(3, 34px); gap: 4px; }
+.kttt__cell--mini { font-size: 0.78rem; font-weight: 700; color: var(--muted); border-width: 1px; border-radius: 8px; cursor: default; background: var(--surface-2); }
+.kttt__cell--mini.is-chosen { border: 2px solid var(--k-b); color: var(--k-b); }
+@media (max-width: 640px) { .kttt--mini { grid-template-columns: repeat(3, 76px); } }
