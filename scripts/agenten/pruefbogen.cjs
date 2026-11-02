@@ -33,6 +33,8 @@ const DEVICES = [
   const open = async (w, h, scheme, opts = {}) => {
     const ctx = await browser.newContext({ viewport: { width: w, height: h }, colorScheme: scheme, hasTouch: !!opts.touch, isMobile: !!opts.touch && w < 700, reducedMotion: opts.reduced ? 'reduce' : 'no-preference' });
     const page = await ctx.newPage();
+    // Die Seite startet immer hell; Dunkel wie nach einem Klick auf den Umschalter
+    if (scheme === 'dark') await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
     page.on('console', (m) => { if (m.type() === 'error' && !/403|Failed to load resource/.test(m.text())) report.consoleErrors.push(m.text().slice(0, 200)); });
     page.on('pageerror', (e) => report.consoleErrors.push('Skriptfehler: ' + e.message.slice(0, 200)));
     await page.goto(base + url, { waitUntil: 'networkidle' });

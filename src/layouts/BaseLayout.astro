@@ -38,8 +38,10 @@ const regionStyle = regionCss(regions);
 // Gewähltes Bundesland vor dem ersten Zeichnen setzen (nur bekannte Länder), verhindert Umspringen.
 // Außerdem die Sortierung der Fachseiten (Themenbereich/Klassenstufe).
 const regionScript = `try{const r=localStorage.getItem('region');if(r&&${JSON.stringify(regions)}.includes(r))document.documentElement.dataset.region=r;if(localStorage.getItem('subjectView')==='grade')document.documentElement.dataset.subjectView='grade'}catch{}`;
-// Farbschema vor dem ersten Zeichnen setzen (verhindert Aufblitzen); `data-js` zeigt der CSS, dass Skripte laufen.
-const themeScript = `document.documentElement.dataset.js='';try{const t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch{}`;
+// Farbschema: immer hell, egal was im System eingestellt ist (data-theme="light" am <html>,
+// auch ohne JavaScript). Dunkel nur, wenn es jemand über den Knopf gewählt hat – das wird
+// hier vor dem ersten Zeichnen gesetzt (verhindert Aufblitzen). `data-js` zeigt der CSS, dass Skripte laufen.
+const themeScript = `document.documentElement.dataset.js='';try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch{}`;
 // Service Worker für die Offline-Nutzung (nur im fertigen Build).
 const swScript = `if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register(${JSON.stringify(base.replace(/\/?$/, '/') + 'sw.js')}).catch(()=>{})})}`;
 // Content-Security-Policy (Regeln in astro.config.mjs): Die Inline-Skripte und
@@ -51,7 +53,7 @@ Astro.csp?.insertStyleHash({ hash: cspHash(regionStyle), kind: 'element' });
 ---
 
 <!doctype html>
-<html lang={lang} data-base={base}>
+<html lang={lang} data-base={base} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

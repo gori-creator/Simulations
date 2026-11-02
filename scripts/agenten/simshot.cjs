@@ -20,6 +20,8 @@ fs.mkdirSync(outDir, { recursive: true });
     if (only.length && !only.some((o) => name.startsWith(o))) continue;
     const ctx = await browser.newContext({ viewport: { width, height }, colorScheme: scheme, deviceScaleFactor: 1 });
     const page = await ctx.newPage();
+    // Die Seite startet immer hell; Dunkel wie nach einem Klick auf den Umschalter
+    if (scheme === 'dark') await page.addInitScript(() => localStorage.setItem('theme', 'dark'));
     const errors = [];
     page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
     page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
