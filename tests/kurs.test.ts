@@ -94,3 +94,29 @@ describe('Kurse', () => {
     }
   }
 });
+
+describe('Handreichung für Lehrkräfte', () => {
+  it('jede Welt beider Kurse hat Lernziele, Fehlvorstellung, Impulse und eine Idee ohne Computer', async () => {
+    const { COURSE_GUIDES } = await import('../src/kurse/guides');
+    for (const course of COURSES) {
+      const guides = COURSE_GUIDES[course.id];
+      expect(guides, course.id).toBeDefined();
+      expect(Object.keys(guides!).sort()).toEqual(course.chapters.map((c) => c.id).sort());
+      for (const chapter of course.chapters) {
+        const g = guides![chapter.id]!;
+        expect(g.goals.length, chapter.id).toBeGreaterThanOrEqual(2);
+        expect(g.misconceptions.length, chapter.id).toBeGreaterThanOrEqual(1);
+        expect(g.talk.length, chapter.id).toBeGreaterThanOrEqual(2);
+        for (const lang of LANGS) {
+          for (const t of [...g.goals, ...g.talk, g.unplugged, ...g.misconceptions.flatMap((m) => [m.wrong, m.right])]) expect(t[lang].trim().length, chapter.id).toBeGreaterThan(10);
+          expect(g.unplugged[lang].length, chapter.id).toBeGreaterThan(60);
+        }
+      }
+    }
+  });
+
+  it('die Adresse der Handreichung kollidiert mit keiner Lektion', async () => {
+    const { COURSE_GUIDE_SLUG } = await import('../src/lib/routes');
+    for (const course of COURSES) for (const lesson of lessonsOf(course)) for (const lang of LANGS) expect(lesson.slug[lang]).not.toBe(COURSE_GUIDE_SLUG[lang]);
+  });
+});

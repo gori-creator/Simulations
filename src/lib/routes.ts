@@ -28,6 +28,8 @@ export type Route =
   | { kind: 'courses' }
   /** Kurs (z. B. KI-Abenteuer): Karte mit allen Lektionen */
   | { kind: 'course'; course: string }
+  /** Handreichung für Lehrkräfte zu einem Kurs */
+  | { kind: 'courseGuide'; course: string }
   /** Eine Lektion eines Kurses */
   | { kind: 'lesson'; course: string; lesson: string };
 
@@ -43,6 +45,8 @@ export const CATALOG_SLUG: Localized = { de: 'simulationen', en: 'simulations' }
 
 /** Adresse der Kursübersicht. */
 export const COURSES_SLUG: Localized = { de: 'ki-kurse', en: 'ai-courses' };
+/** Unterseite eines Kurses mit der Handreichung (kollidiert mit keiner Lektion, Test in tests/kurs.test.ts). */
+export const COURSE_GUIDE_SLUG: Localized = { de: 'lehrkraefte', en: 'teachers' };
 
 /** URL-Segment einer Jahrgangsstufe, z. B. "jahrgangsstufe-7" / "grade-7", bei einer Stufe "jahrgangsstufe-5-6". */
 export function gradeSlug(lang: Lang, grade: number, toGrade?: number): string {
@@ -76,6 +80,8 @@ export function routeSegments(lang: Lang, route: Route): string[] {
       return [COURSES_SLUG[lang]];
     case 'course':
       return [getCourse(route.course).slug[lang]];
+    case 'courseGuide':
+      return [getCourse(route.course).slug[lang], COURSE_GUIDE_SLUG[lang]];
     case 'lesson':
       return [getCourse(route.course).slug[lang], getLesson(route.course, route.lesson).slug[lang]];
     case 'simulation': {
@@ -120,6 +126,7 @@ export function allRoutes(): Route[] {
   routes.push({ kind: 'courses' });
   for (const course of COURSES) {
     routes.push({ kind: 'course', course: course.id });
+    routes.push({ kind: 'courseGuide', course: course.id });
     for (const lesson of lessonsOf(course)) if (lesson.status === 'ready') routes.push({ kind: 'lesson', course: course.id, lesson: lesson.id });
   }
   for (const curriculum of STATE_CURRICULA) {

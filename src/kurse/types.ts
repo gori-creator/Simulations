@@ -125,3 +125,15 @@ export interface LessonContent {
   takeaway?: Localized;
   steps: Step[];
 }
+
+/** Handreichung für Lehrkräfte zu einer Welt (Seite …/<kurs>/lehrkraefte/). */
+export interface WorldGuide {
+  /** Lernziele: „Die Lernenden können …“ (ohne diesen Satzanfang). */
+  goals: Localized[];
+  /** Typische Fehlvorstellungen und was stattdessen stimmt. */
+  misconceptions: { wrong: Localized; right: Localized }[];
+  /** Fragen für ein Gespräch in der Klasse. */
+  talk: Localized[];
+  /** Idee ohne Computer (unplugged). */
+  unplugged: Localized;
+}

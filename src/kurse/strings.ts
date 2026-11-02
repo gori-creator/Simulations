@@ -87,6 +87,7 @@ export const KS = {
   reviewTry: L('Ein paar Lücken. Schau dir die Lektionen nochmal an und versuch es bald wieder.', 'A few gaps. Have another look at the lessons and try again soon.'),
   reviewEmpty: L('Schaffe erst eine Lektion dieser Welt.', 'Finish a lesson in this world first.'),
   close: L('Schließen', 'Close'),
+  teacherGuide: L('Handreichung für Lehrkräfte: Lernziele, Fehlvorstellungen, Gesprächsimpulse, Ideen ohne Computer', 'Teacher’s guide: goals, misconceptions, discussion prompts, unplugged ideas'),
   boss: L('Mission', 'Mission'),
   youAreHere: L('Weiter', 'Next'),
   album: L('Zeitstrahl der KI', 'AI timeline'),

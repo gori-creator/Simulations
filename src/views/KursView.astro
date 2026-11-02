@@ -75,6 +75,7 @@ const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.
             )
           }
           <p class="khero__privacy">🔒 {ks(lang, 'privacy')}</p>
+          <p class="khero__other">👩‍🏫 <a href={href(lang, { kind: 'courseGuide', course: course.id })}>{ks(lang, 'teacherGuide')}</a></p>
           {
             others.map((other) => (
               <p class="khero__other">

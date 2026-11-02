@@ -1,6 +1,6 @@
 # KI-Kurse: Konzept und Umsetzung
 
-Stand 03.11.2026. Es gibt zwei Kurse auf zwei Stufen, beide als vollständige erste Fassung gebaut:
+Stand 03.11.2026 (nachts überarbeitet: Merksätze, Wiederholen, Quellen, Handreichung, Animationen, Bilder vorbereitet). Es gibt zwei Kurse auf zwei Stufen, beide als vollständige erste Fassung gebaut:
 
 | Kurs | Für | Begleitung | Umfang | Adresse |
 | --- | --- | --- | --- | --- |
@@ -67,7 +67,11 @@ Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI
 - **Kurskarte:** Welten als Pfad mit Stationen; geschaffte Stationen mit Sternen, gesperrte mit Schloss, die nächste mit „Weiter“. Darunter Album und Abzeichen.
 - **Serie:** Tage in Folge, nur lokal sichtbar. Kein Druck, keine Strafen.
 - **Keine Bestenlisten** und keine Vergleiche zwischen Schülern.
-- **Für Lehrkräfte:** „Alle Lektionen freischalten“ in den Einstellungen der Karte. Spielstand per Code mitnehmen (anderes Gerät, anderer Browser).
+- **Merksätze und Spickzettel:** Jede Lektion endet mit einem Merksatz („Das nimmst du mit“). Auf der Kurskarte sammelt jede Welt die Merksätze geschaffter Lektionen als Spickzettel.
+- **Wiederholen:** Je Welt fünf gemischte Fragen aus den geschafften Lektionen mit Sofort-Rückmeldung (Abrufübung). Das beste Ergebnis zählt (2 XP je richtiger Antwort, nur für Verbesserungen), Abzeichen „Gutes Gedächtnis“ für eine fehlerfreie Runde, Hinweis „Zeit zum Wiederholen“ nach drei Tagen.
+- **Animationen:** Figuren bewegen beim Sprechen den Mund; am Ende einer Lektion zählen die XP hoch, der Balken wächst, beim Stufenaufstieg verwandelt sich die Figur sichtbar (alte und neue Gestalt); auf der Karte wird die gerade geschaffte Station gefeiert. Spiele zeigen Vorgänge in Bewegung (Bit läuft durchs Labyrinth, k-Means-Fähnchen gleiten). Alles respektiert „Bewegung reduzieren“.
+- **Bilder:** optional, 84 Prompts in `docs/KI-KURS-BILDER.md` (Titelbilder, Weltbilder, Wissenskarten); ohne Bilder bleibt die gezeichnete Darstellung.
+- **Für Lehrkräfte:** Handreichung je Kurs (`/de/ki-abenteuer/lehrkraefte/`, `/de/ki-labor/lehrkraefte/`, druckbar): Einsatz im Unterricht, je Welt Lektionen mit Merksätzen, Lernziele, typische Fehlvorstellungen mit Richtigstellung, Gesprächsimpulse, eine Idee ohne Computer und die Quellen der Wissenskarten. Inhalte in `src/kurse/<kurs>/lehrkraefte.ts`. Dazu „Alle Lektionen freischalten“ in den Einstellungen der Karte und Spielstand per Code mitnehmen.
 
 ## KI-Abenteuer (Klasse 5–10)
 

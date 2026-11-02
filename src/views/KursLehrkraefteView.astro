@@ -1,0 +1,213 @@
+---
+/**
+ * Handreichung für Lehrkräfte zu einem Kurs: Aufbau, Einsatz im Unterricht,
+ * je Welt Lernziele, Fehlvorstellungen, Gesprächsimpulse, eine Idee ohne
+ * Computer und die Quellen der Wissenskarten; am Ende die Grundlagen.
+ * Druckfreundlich (Navigation und Knöpfe werden beim Drucken ausgeblendet).
+ */
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Lang } from '../i18n/config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
+import { COURSE_GUIDES } from '../kurse/guides';
+import { loadLesson } from '../kurse/loaders';
+import { ks } from '../kurse/strings';
+import { alternates, href } from '../lib/routes';
+import '../styles/kurs.css';
+
+interface Props {
+  lang: Lang;
+  courseId: string;
+}
+
+const { lang, courseId } = Astro.props;
+const course = getCourse(courseId);
+const guides = COURSE_GUIDES[course.id] ?? {};
+const L = (de: string, en: string) => (lang === 'de' ? de : en);
+const lessons = lessonsOf(course).filter((l) => l.status === 'ready');
+const minutes = lessons.reduce((sum, l) => sum + l.minutes, 0);
+const takeaways = new Map(await Promise.all(lessons.map(async (l) => [l.id, (await loadLesson(course.id, l.id)).takeaway] as const)));
+const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.id, lesson: id });
+const source = (s: string | { de: string; en: string } | undefined) => (s === undefined ? '' : typeof s === 'string' ? s : s[lang]);
+const other = COURSES.find((c) => c.id !== course.id);
+const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course.title.en}`);
+---
+
+<BaseLayout lang={lang} title={title} description={L(`Lernziele, Fehlvorstellungen, Gesprächsimpulse und Ideen ohne Computer zu allen Welten des Kurses ${course.title.de}.`, `Learning goals, misconceptions, discussion prompts and unplugged ideas for every world of ${course.title.en}.`)} alternates={alternates({ kind: 'courseGuide', course: course.id })} section="kurs" noindex={!COURSES_PUBLIC}>
+  <div class:list={['kurs', 'kguide', `kurs--${course.guide}`]}>
+    <div class="container">
+      <Breadcrumbs
+        lang={lang}
+        items={[
+          { label: ks(lang, 'home'), href: href(lang, { kind: 'home' }) },
+          { label: ks(lang, 'coursesTitle'), href: href(lang, { kind: 'courses' }) },
+          { label: course.title[lang], href: href(lang, { kind: 'course', course: course.id }) },
+          { label: L('Für Lehrkräfte', 'For teachers') },
+        ]}
+      />
+
+      <header class="kguide__hero">
+        <p class="khero__audience">{course.audience[lang]}</p>
+        <h1>{title}</h1>
+        <p class="kguide__lead">{course.description[lang]}</p>
+        <ul class="kguide__facts">
+          <li>🗺️ {L(`${course.chapters.length} Welten, ${lessons.length} Lektionen`, `${course.chapters.length} worlds, ${lessons.length} lessons`)}</li>
+          <li>⏱️ {L(`zusammen rund ${Math.round(minutes / 60)} Stunden (je Lektion ${Math.min(...lessons.map((l) => l.minutes))}–${Math.max(...lessons.map((l) => l.minutes))} Minuten)`, `about ${Math.round(minutes / 60)} hours in total (${Math.min(...lessons.map((l) => l.minutes))}–${Math.max(...lessons.map((l) => l.minutes))} minutes per lesson)`)}</li>
+          <li>🔒 {L('keine Anmeldung, keine echte KI im Netz, Spielstand nur im Browser', 'no sign-up, no online AI, progress only in the browser')}</li>
+        </ul>
+        <p class="kguide__actions">
+          <a class="btn btn--primary" href={href(lang, { kind: 'course', course: course.id })}>{L('Zum Kurs', 'Open the course')} →</a>
+          <button class="btn" type="button" data-print>🖨️ {L('Drucken oder als PDF speichern', 'Print or save as PDF')}</button>
+          {other && <a class="btn btn--ghost" href={href(lang, { kind: 'courseGuide', course: other.id })}>{L(`Handreichung ${other.title.de}`, `Guide for ${other.title.en}`)}</a>}
+        </p>
+      </header>
+
+      <section class="kguide__intro" aria-labelledby="kguide-use">
+        <h2 id="kguide-use">{L('So setzen Sie den Kurs ein', 'How to use the course')}</h2>
+        <div class="kguide__cols">
+          <div>
+            <h3>{L('Im Unterricht', 'In class')}</h3>
+            <ul>
+              <li>{L('Am besten allein oder zu zweit am Tablet oder Laptop; eine Lektion passt gut in eine halbe Stunde mit Gespräch.', 'Best alone or in pairs on a tablet or laptop; one lesson fits well into half an hour including discussion.')}</li>
+              <li>{L('Am Beamer gemeinsam: Die Klasse stimmt bei den Vermutungsfragen ab, bevor ausprobiert wird.', 'Together on the projector: the class votes on the prediction questions before trying things out.')}</li>
+              <li>{L('Lektionen werden nacheinander frei. Unter „Einstellungen“ auf der Kurskarte lässt sich alles freischalten, um gezielt einzelne Lektionen zu zeigen.', 'Lessons unlock one after another. Under “Settings” on the course map you can unlock everything to show individual lessons.')}</li>
+              <li>{L('Den Spielstand können Lernende per Code auf ein anderes Gerät mitnehmen. Nichts wird an uns übertragen.', 'Learners can take their progress to another device with a code. Nothing is sent to us.')}</li>
+            </ul>
+          </div>
+          <div>
+            <h3>{L('Wie die Lektionen aufgebaut sind', 'How the lessons work')}</h3>
+            <ul>
+              <li>{L('Vermuten → ausprobieren → erklären: Vor vielen Spielen steht eine Vermutungsfrage ohne Wertung.', 'Predict → try → explain: many games start with a prediction question that is not marked.')}</li>
+              <li>{L('Jedes Spiel rechnet mit einem echten, kleinen Modell im Browser – keine Attrappe.', 'Every game computes with a real, small model in the browser – no mock-up.')}</li>
+              <li>{L('„Klartext“-Kästen sagen nüchtern, was wirklich passiert. Die Figur spricht zwar in der Ich-Form, ist aber ein Programm.', '“Plain talk” boxes say soberly what really happens. The character speaks in the first person but is a program.')}</li>
+              <li>{L('Jede Lektion endet mit einem Merksatz und einer Wissenskarte aus der Geschichte der KI (mit Quelle). Je Welt gibt es einen Spickzettel und eine Wiederholung mit Fragen.', 'Every lesson ends with a takeaway and a knowledge card from the history of AI (with source). Each world has a cheat sheet and a review quiz.')}</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <ol class="kguide__worlds">
+        {
+          course.chapters.map((chapter, ci) => {
+            const guide = guides[chapter.id];
+            const chapterLessons = chapter.lessons.filter((l) => l.status === 'ready');
+            const worldMinutes = chapterLessons.reduce((sum, l) => sum + l.minutes, 0);
+            return (
+              <li class:list={['kguide__world', `kchapter--${ci + 1}`]}>
+                <header class="kguide__head">
+                  <span class="kworld__emblem" aria-hidden="true">
+                    {chapter.icon}
+                  </span>
+                  <div>
+                    <p class="kworld__no">
+                      {ks(lang, 'chapter', { n: ci + 1 })}
+                      {chapter.era && ` · ${chapter.era[lang]}`} · {L(`rund ${worldMinutes} Minuten`, `about ${worldMinutes} minutes`)}
+                    </p>
+                    <h2 class="kworld__title">{chapter.title[lang]}</h2>
+                    <p class="kworld__blurb">{chapter.blurb[lang]}</p>
+                  </div>
+                </header>
+
+                <table class="kguide__lessons">
+                  <thead>
+                    <tr>
+                      <th scope="col">{L('Lektion', 'Lesson')}</th>
+                      <th scope="col">{L('Merksatz', 'Takeaway')}</th>
+                      <th scope="col">{L('Min.', 'Min.')}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {chapterLessons.map((lesson) => (
+                      <tr>
+                        <td>
+                          <a href={lessonHref(lesson.id)}>
+                            {lesson.icon} {lesson.title[lang]}
+                          </a>
+                          {lesson.boss && <span class="kguide__boss">{ks(lang, 'boss')}</span>}
+                        </td>
+                        <td>{takeaways.get(lesson.id)?.[lang]}</td>
+                        <td>{lesson.minutes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {guide && (
+                  <div class="kguide__grid">
+                    <section>
+                      <h3>🎯 {L('Lernziele – die Lernenden können …', 'Goals – learners can …')}</h3>
+                      <ul>
+                        {guide.goals.map((goal) => (
+                          <li>{goal[lang]}</li>
+                        ))}
+                      </ul>
+                    </section>
+                    <section>
+                      <h3>🧩 {L('Typische Fehlvorstellungen', 'Common misconceptions')}</h3>
+                      <ul class="kguide__myths">
+                        {guide.misconceptions.map((m) => (
+                          <li>
+                            <span class="kguide__wrong">{lang === 'de' ? `„${m.wrong.de}“` : `“${m.wrong.en}”`}</span>
+                            <span class="kguide__right">→ {m.right[lang]}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                    <section>
+                      <h3>💬 {L('Gesprächsimpulse', 'Discussion prompts')}</h3>
+                      <ul>
+                        {guide.talk.map((t) => (
+                          <li>{t[lang]}</li>
+                        ))}
+                      </ul>
+                    </section>
+                    <section>
+                      <h3>✂️ {L('Ohne Computer', 'Unplugged')}</h3>
+                      <p>{guide.unplugged[lang]}</p>
+                    </section>
+                  </div>
+                )}
+
+                <details class="kguide__sources">
+                  <summary>📚 {L('Quellen der Wissenskarten dieser Welt', 'Sources of this world’s knowledge cards')}</summary>
+                  <ul>
+                    {chapterLessons
+                      .filter((l) => l.card?.source)
+                      .map((l) => (
+                        <li>
+                          <strong>{l.card!.year} · {l.card!.title[lang]}:</strong> {source(l.card!.source)}
+                        </li>
+                      ))}
+                  </ul>
+                </details>
+              </li>
+            );
+          })
+        }
+      </ol>
+
+      <section class="kguide__intro" aria-labelledby="kguide-basis">
+        <h2 id="kguide-basis">{L('Grundlagen und weiterführende Quellen', 'Foundations and further reading')}</h2>
+        <ul class="kguide__refs">
+          <li>{L('Touretzky, D., Gardner-McCune, C., Martin, F. & Seehorn, D. (2019). Envisioning AI for K-12: What should every child know about AI? AAAI 2019 – die „Five Big Ideas“: Wahrnehmung, Darstellung und Schlussfolgern, Lernen, natürliche Interaktion, gesellschaftliche Wirkung.', 'Touretzky, D., Gardner-McCune, C., Martin, F. & Seehorn, D. (2019). Envisioning AI for K-12: What should every child know about AI? AAAI 2019 – the “Five Big Ideas”: perception, representation and reasoning, learning, natural interaction, societal impact.')}</li>
+          <li>{L('UNESCO (2024). AI competency framework for students. Paris: UNESCO – vier Dimensionen (menschzentrierte Haltung, Ethik, Techniken und Anwendungen, Gestaltung von KI-Systemen) in drei Stufen.', 'UNESCO (2024). AI competency framework for students. Paris: UNESCO – four dimensions (human-centred mindset, ethics, techniques and applications, AI system design) at three levels.')}</li>
+          <li>{L('Kultusministerkonferenz (2024). Handlungsempfehlung für die Bildungsverwaltung zum Umgang mit Künstlicher Intelligenz in schulischen Bildungsprozessen (Beschluss vom 10.10.2024).', 'Standing Conference of the Ministers of Education (KMK, 2024). Recommendations on dealing with artificial intelligence in school education (resolution of 10 October 2024).')}</li>
+          <li>{L('Gesellschaft für Informatik (2016). Dagstuhl-Erklärung: Bildung in der digitalen vernetzten Welt – technologische, gesellschaftlich-kulturelle und anwendungsbezogene Perspektive.', 'German Informatics Society (2016). Dagstuhl Declaration: Education in the digital networked world – technological, socio-cultural and user-oriented perspective.')}</li>
+          <li>{L('Verordnung (EU) 2024/1689 (KI-Verordnung), Art. 4 „KI-Kompetenz“, anwendbar seit 2. Februar 2025.', 'Regulation (EU) 2024/1689 (AI Act), Art. 4 “AI literacy”, applicable since 2 February 2025.')}</li>
+          <li>Long, D. & Magerko, B. (2020). What is AI literacy? Competencies and design considerations. CHI 2020.</li>
+          <li>{L('Mertala, P., Fagerlund, J. & Calderon, O. (2022). Finnish 5th and 6th grade students’ pre-instructional conceptions of artificial intelligence (AI) and their implications for AI literacy education. Computers and Education: Artificial Intelligence 3, 100095 – die Rolle von Daten fehlt in Schülervorstellungen fast ganz, KI wird oft vermenschlicht.', 'Mertala, P., Fagerlund, J. & Calderon, O. (2022). Finnish 5th and 6th grade students’ pre-instructional conceptions of artificial intelligence (AI) and their implications for AI literacy education. Computers and Education: Artificial Intelligence 3, 100095 – the role of data is almost absent from students’ ideas, and AI is often anthropomorphised.')}</li>
+          <li>Marx, E., Leonhardt, T. & Bergner, N. (2023). Secondary school students’ mental models and attitudes regarding artificial intelligence – A scoping review. Computers and Education: Artificial Intelligence 5, 100169.</li>
+          <li>{L('Lindner, A., Seegerer, S. & Romeike, R. (2019). Unplugged activities in the context of AI. ISSEP 2019 – Material: aiunplugged.org (FAU Erlangen-Nürnberg).', 'Lindner, A., Seegerer, S. & Romeike, R. (2019). Unplugged activities in the context of AI. ISSEP 2019 – materials: aiunplugged.org (FAU Erlangen-Nürnberg).')}</li>
+          <li>{L('Raspberry Pi Foundation & Google DeepMind: Experience AI – Leitfaden für Lehrkräfte (Grundsatz: KI nicht vermenschlichen).', 'Raspberry Pi Foundation & Google DeepMind: Experience AI – teacher guide (principle: avoid anthropomorphising AI).')}</li>
+          <li>{L('Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning. Psychological Science 17(3), 249–255 – Abrufen festigt Wissen (Grundlage der Wiederholungen).', 'Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning. Psychological Science 17(3), 249–255 – retrieval strengthens memory (basis of the review quizzes).')}</li>
+        </ul>
+        <p class="muted">{L('Alle Texte, Spiele und Beispiele sind eigene Arbeit; aus den genannten Materialien stammen nur Ideen. Fachliche Durchsicht: Entwurf.', 'All texts, games and examples are original work; only ideas were taken from the materials above. Subject review: draft.')}</p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Drucken (Inline-Handler verbietet die Content-Security-Policy)
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>

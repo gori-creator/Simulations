@@ -120,6 +120,14 @@ const lenses = [
         </ul>
         <p class="kurse__teachers">
           👩‍🏫 {L('Für Lehrkräfte: In den Einstellungen jeder Karte lassen sich alle Lektionen freischalten. Alles läuft nach dem ersten Besuch auch offline.', 'For teachers: in the settings of each map you can unlock every lesson. Everything also works offline after the first visit.')}{' '}
+          {L('Handreichungen mit Lernzielen, Fehlvorstellungen und Ideen ohne Computer:', 'Guides with goals, misconceptions and unplugged ideas:')}{' '}
+          {COURSES.map((c, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={href(lang, { kind: 'courseGuide', course: c.id })}>{c.title[lang]}</a>
+            </>
+          ))}
+          {' · '}
           <a href={href(lang, { kind: 'page', page: 'teachers' })}>{L('Mehr für Lehrkräfte', 'More for teachers')}</a>
         </p>
       </section>
