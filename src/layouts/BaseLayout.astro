@@ -24,11 +24,18 @@ interface Props {
   motionToggle?: boolean;
   /** Nicht in Suchmaschinen aufnehmen (Fehlerseite); dann auch ohne canonical/hreflang. */
   noindex?: boolean;
+  /** Strukturierte Daten (schema.org) für Suchmaschinen; werden als JSON-LD eingebettet. */
+  jsonLd?: Record<string, unknown>;
 }
 
-const { lang, title, description = SITE.description[lang], alternates, section, stylesheets = [], motionToggle = false, noindex = false } = Astro.props;
+const { lang, title, description = SITE.description[lang], alternates, section, stylesheets = [], motionToggle = false, noindex = false, jsonLd } = Astro.props;
 const siteName = SITE.name[lang];
-const fullTitle = title ? `${title} – ${siteName}` : siteName;
+const fullTitle = title ? `${title} – ${siteName}` : SITE.homeTitle[lang];
+// Nur der Build für die Hauptadresse (scitura.de) gehört in Suchmaschinen; Kopien
+// wie GitHub Pages würden sonst als doppelter Inhalt mit ihr konkurrieren.
+const isPrimary = Astro.site?.origin === new URL(SITE.url).origin;
+// JSON-LD: „<“ maskieren, damit kein Text das Skript-Element beenden kann.
+const jsonLdText = jsonLd ? JSON.stringify({ '@context': 'https://schema.org', ...jsonLd }).replace(/</g, '\\u003c') : '';
 const canonical = new URL(alternates[lang], Astro.site).href;
 const base = import.meta.env.BASE_URL;
 const isProd = import.meta.env.PROD;
@@ -60,6 +67,7 @@ Astro.csp?.insertStyleHash({ hash: cspHash(regionStyle), kind: 'element' });
     <title>{fullTitle}</title>
     {stylesheets.map((url) => <link rel="stylesheet" href={url} />)}
     <meta name="description" content={description} />
+    {!noindex && !isPrimary && <meta name="robots" content="noindex" />}
     {
       noindex ? (
         <meta name="robots" content="noindex" />
@@ -76,12 +84,14 @@ Astro.csp?.insertStyleHash({ hash: cspHash(regionStyle), kind: 'element' });
     <link rel="manifest" href={withBase('/manifest.webmanifest')} />
     <meta name="theme-color" content={SITE.themeColor} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'en_GB'} />
     <meta property="og:image" content={new URL(withBase('/icons/icon-512.png'), Astro.site).href} />
     <meta name="generator" content={Astro.generator} />
+    {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}
     <script is:inline set:html={themeScript} />
     <script is:inline set:html={regionScript} />
     <style is:inline set:html={regionStyle} />

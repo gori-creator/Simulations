@@ -15,6 +15,7 @@ import { referencesFor, unitAnchor } from '../curriculum/lehrplaene';
 import { regionIdOf } from '../lib/region';
 import type { Lang } from '../i18n/config';
 import { formatGrades, t } from '../i18n/utils';
+import { SITE } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { bannerStyle, SECTION_KEYS, sectionFile, type SectionKey } from '../lib/page-art';
 import { alternates, href } from '../lib/routes';
@@ -72,6 +73,19 @@ const sectionArt = Object.fromEntries(
 const areaSims = readySimulations().filter((s) => s.area === sim.area && s.subject === sim.subject);
 const here = areaSims.findIndex((s) => s.id === simId);
 const nextSims = [...areaSims.slice(here + 1), ...areaSims.slice(0, Math.max(0, here))].slice(0, 3);
+// Strukturierte Daten (schema.org/LearningResource) für Suchmaschinen
+const jsonLd = {
+  '@type': 'LearningResource',
+  name: sim.title[lang],
+  description: entry?.data.description ?? sim.summary?.[lang],
+  url: new URL(href(lang, { kind: 'simulation', id: simId }), SITE.url).href,
+  inLanguage: lang,
+  learningResourceType: lang === 'de' ? 'Interaktive Simulation' : 'Interactive simulation',
+  educationalLevel: formatGrades(lang, sim.grades, sim.uni),
+  about: [subject.title[lang], area.title[lang], topic.title[lang]],
+  isAccessibleForFree: true,
+  publisher: { '@type': 'Organization', name: SITE.name[lang], url: `${SITE.url}/` },
+};
 const materialLabels = {
   tried: t(lang, 'material.tried'),
   markTried: t(lang, 'material.markTried'),
@@ -80,8 +94,9 @@ const materialLabels = {
 
 <BaseLayout
   lang={lang}
-  title={sim.title[lang]}
+  title={`${sim.title[lang]} – ${lang === 'de' ? 'Interaktive Simulation' : 'Interactive simulation'}`}
   description={entry?.data.description ?? sim.summary?.[lang]}
+  jsonLd={jsonLd}
   alternates={alternates({ kind: 'simulation', id: simId })}
   section={sim.subject}
   stylesheets={[katexCss]}
