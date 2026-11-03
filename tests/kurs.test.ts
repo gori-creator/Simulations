@@ -207,3 +207,36 @@ describe('Klartext-Prinzip', () => {
     }
   });
 });
+
+describe('Einfache Sprache im KI-Abenteuer (Klasse 5–10)', () => {
+  /** Grobe Satztrennung: nach . ! ? …, wenn ein neuer Satz beginnt. */
+  const sentences = (text: string): string[] => text.replace(/\s+/g, ' ').split(/(?<=[.!?…])\s+(?=[A-ZÄÖÜ„“"(0-9])/u);
+  const words = (sentence: string): number => (sentence.match(/[\p{L}\p{N}][\p{L}\p{N}’'-]*/gu) ?? []).length;
+  // Deutsch braucht für denselben Inhalt meist weniger Wörter als Englisch.
+  const LIMIT = { de: 25, en: 28 } as const;
+
+  it('kein Satz ist länger als die Grenze, im Schnitt höchstens 11 Wörter je Satz', async () => {
+    const course = COURSES.find((c) => c.id === 'ki-abenteuer')!;
+    for (const lang of LANGS) {
+      let total = 0;
+      let count = 0;
+      const tooLong: string[] = [];
+      for (const lesson of lessonsOf(course)) {
+        const content = await loadLesson(course.id, lesson.id);
+        const all = [...content.steps.flatMap(texts), ...(content.takeaway ? [content.takeaway.de, content.takeaway.en] : [])].filter((_, i) => i % 2 === (lang === 'de' ? 0 : 1));
+        if (lesson.card) all.push(lesson.card.text[lang]);
+        for (const text of all) {
+          for (const s of sentences(text)) {
+            const n = words(s);
+            if (!n) continue;
+            total += n;
+            count += 1;
+            if (n > LIMIT[lang]) tooLong.push(`${lesson.id}: ${s}`);
+          }
+        }
+      }
+      expect(tooLong, lang).toEqual([]);
+      expect(total / count, lang).toBeLessThanOrEqual(11);
+    }
+  });
+});

@@ -20,8 +20,8 @@ const lesson: LessonContent = {
       kind: 'info',
       title: L('Wenn KI unfair wird', 'When AI becomes unfair'),
       text: L(
-        'Bei Schuhen ist das harmlos. Aber es gab Gesichtserkennungen, die bei Menschen mit dunkler Haut viel öfter falschlagen – weil sie fast nur mit Fotos hellhäutiger Menschen trainiert wurden. Fehlt eine Gruppe in den Daten, behandelt die KI sie schlechter. Darum müssen Trainingsdaten alle Menschen fair abbilden.',
-        'With shoes that’s harmless. But there have been face recognition systems that were wrong much more often for people with dark skin – because they were trained almost only with photos of light-skinned people. If a group is missing from the data, the AI treats it worse. That’s why training data must represent everyone fairly.',
+        'Bei Schuhen ist das harmlos. Aber es gab Gesichtserkennungen, die bei Menschen mit dunkler Haut viel öfter falschlagen. Der Grund: Sie wurden fast nur mit Fotos hellhäutiger Menschen trainiert. Fehlt eine Gruppe in den Daten, behandelt die KI sie schlechter. Darum müssen Trainingsdaten alle Menschen fair abbilden.',
+        'With shoes that’s harmless. But there have been face recognition systems that were wrong much more often for people with dark skin. The reason: they were trained almost only with photos of light-skinned people. If a group is missing from the data, the AI treats it worse. That’s why training data must represent everyone fairly.',
       ),
     },
     {
