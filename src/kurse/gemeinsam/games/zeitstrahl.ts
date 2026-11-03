@@ -33,9 +33,29 @@ const game: GameMount<ZeitstrahlProps> = (host, ctx, props) => {
     h('div', { class: 'kpanel' }, cards, h('div', { class: 'khint' }, progress.el)),
   );
 
-  function render(): void {
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /** Jahreszahl zählt vom vorigen Ereignis hoch (ohne „Bewegung reduzieren“). */
+  function countUp(el: HTMLElement, from: number, to: number): void {
+    if (reduced || from >= to) return;
+    const start = performance.now();
+    const step = (now: number) => {
+      const k = Math.min(1, (now - start) / 600);
+      el.textContent = String(Math.round(from + (to - from) * (1 - (1 - k) ** 3)));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    el.textContent = String(from);
+    requestAnimationFrame(step);
+  }
+
+  function render(fresh = false): void {
     clear(line);
-    for (const e of placed) line.append(h('li', { class: 'ktimeline__item' }, h('span', { class: 'ktimeline__year', text: String(e.year) }), h('span', { class: 'ktimeline__icon', attrs: { 'aria-hidden': 'true' }, text: e.icon }), h('span', { text: tx(e.text) })));
+    placed.forEach((e, i) => {
+      const isNew = fresh && i === placed.length - 1;
+      const year = h('span', { class: 'ktimeline__year', text: String(e.year) });
+      line.append(h('li', { class: `ktimeline__item${isNew ? ' is-new' : ''}` }, year, h('span', { class: 'ktimeline__icon', attrs: { 'aria-hidden': 'true' }, text: e.icon }), h('span', { text: tx(e.text) })));
+      if (isNew) countUp(year, i > 0 ? placed[i - 1]!.year : e.year - 20, e.year);
+    });
     if (placed.length === 0) line.append(h('li', { class: 'ktimeline__empty', text: tx({ de: 'Noch leer – was kam zuerst?', en: 'Still empty – what came first?' }) }));
     clear(cards);
     for (const e of pool) {
@@ -52,7 +72,7 @@ const game: GameMount<ZeitstrahlProps> = (host, ctx, props) => {
       placed.push(e);
       pool = pool.filter((x) => x !== e);
       ctx.say({ de: `${e.year}: richtig!`, en: `${e.year}: correct!` }, 'happy');
-      render();
+      render(true);
       if (pool.length === 0) {
         cards.append(solved(tx({ de: 'Zeitstrahl komplett!', en: 'Timeline complete!' })));
         ctx.say(props.done, 'wow');
