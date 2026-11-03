@@ -4,7 +4,7 @@ Stand 03.11.2026 (nachts überarbeitet: Merksätze, Wiederholen, Quellen, Handre
 
 | Kurs | Für | Begleitung | Umfang | Adresse |
 | --- | --- | --- | --- | --- |
-| **KI-Abenteuer** | Klasse 5–10 | Bit, ein Roboter, den man trainiert | 9 Welten, 34 Lektionen à 5–8 Minuten (rund 4 Stunden) | `/de/ki-abenteuer/` |
+| **KI-Abenteuer** | Klasse 5–10 | Bit, ein Roboter, den man trainiert | 9 Welten, 35 Lektionen à 5–8 Minuten (rund 4 Stunden) | `/de/ki-abenteuer/` |
 | **KI-Labor** | Klasse 11–13 | Ada, die Laborassistenz (eine schwebende Kugel, benannt nach Ada Lovelace) | 8 Welten, 31 Lektionen à 10–15 Minuten (rund 6 Stunden) | `/de/ki-labor/` |
 
 Beide Kurse stehen auf der Übersichtsseite `/de/ki-kurse/` (englisch `/en/ai-courses/`). Bis zur Freigabe sind sie nur über die Adresse erreichbar, nicht verlinkt und nicht in Suchmaschinen (`COURSES_PUBLIC = false` in `src/kurse/index.ts`).
@@ -114,6 +114,7 @@ Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI
 | | Stimmt das? | Aussagen prüfen, Quellen suchen | 2023 |
 | | Meine Daten | „okay zu teilen“ oder „lieber nicht“ | 2018 |
 | | KI schlau nutzen | hilft beim Lernen, Lernen fällt aus oder riskant? | 2024 |
+| | KI braucht Strom | Karten „stimmt / stimmt nicht“ zu Rechenzentren, Training und Nutzung; Rechenaufgabe | 2024 |
 | | Bits Zeitreise (Mission) | zehn Meilensteine der KI in die richtige Reihenfolge bringen | 2026 |
 
 ## KI-Labor (Klasse 11–13)

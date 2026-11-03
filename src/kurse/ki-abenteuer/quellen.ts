@@ -38,5 +38,6 @@ export const SOURCES: Record<string, string | Localized> = {
   'mein-feed': 'Bennett, J. & Lanning, S. (2007). The Netflix Prize. Proceedings of KDD Cup and Workshop 2007.',
   'stimmt-das': 'Mata v. Avianca, Inc., 678 F. Supp. 3d 443 (S.D.N.Y. 2023).',
   'meine-daten': { de: 'Verordnung (EU) 2016/679 (Datenschutz-Grundverordnung, DSGVO), anwendbar seit 25. Mai 2018.', en: 'Regulation (EU) 2016/679 (General Data Protection Regulation, GDPR), applicable since 25 May 2018.' },
+  energie: 'International Energy Agency (2025). Energy and AI. Paris: IEA; Google (2025). Measuring the environmental impact of delivering AI at Google scale (technical paper); Patterson, D. et al. (2021). Carbon emissions and large neural network training. arXiv:2104.10350.',
   'schlau-nutzen': { de: 'Verordnung (EU) 2024/1689 (KI-Verordnung, „AI Act“), Amtsblatt der EU vom 12. Juli 2024.', en: 'Regulation (EU) 2024/1689 (Artificial Intelligence Act), Official Journal of the EU, 12 July 2024.' },
 };

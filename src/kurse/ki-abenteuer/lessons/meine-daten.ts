@@ -42,8 +42,7 @@ const lesson: LessonContent = {
         'In Europe the General Data Protection Regulation (GDPR) protects your data. You may ask what a company has stored about you and demand that it deletes it. Many AI apps are only allowed from age 13 – if unsure, ask your parents or teachers.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Du hast das ganze KI-Abenteuer geschafft! Aus mir, einem Roboter ohne Wissen, ist mit deiner Hilfe ein kluger Lerner geworden. Danke, Trainerin oder Trainer!', 'You’ve completed the whole AI adventure! With your help I went from a robot with no knowledge to a smart learner. Thank you, trainer!') },
-    { kind: 'say', mood: 'happy', text: L('Jetzt weißt du: KI lernt aus Daten, sie rechnet mit Zahlen, sie kann sich irren – und du kannst sie prüfen. Bleib neugierig!', 'Now you know: AI learns from data, it calculates with numbers, it can be wrong – and you can check it. Stay curious!') },
+    { kind: 'say', mood: 'wow', text: L('Super! Du weißt jetzt, welche Daten du lieber für dich behältst. Als Nächstes geht es darum, wie man KI so nutzt, dass man selbst schlauer wird.', 'Great! You now know which data you’d rather keep to yourself. Next we look at how to use AI so that you get smarter yourself.') },
   ],
 };
 

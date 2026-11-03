@@ -139,6 +139,7 @@ export const GUIDES: Record<string, WorldGuide> = {
       L('beschreiben, wie Empfehlungen eine Filterblase erzeugen können', 'describe how recommendations can create a filter bubble'),
       L('KI-Antworten mit einer zweiten Quelle prüfen und persönliche Daten schützen', 'check AI answers with a second source and protect personal data'),
       L('KI so nutzen, dass sie beim Lernen hilft, und Meilensteine der KI-Geschichte ordnen', 'use AI in a way that helps learning, and put milestones of AI history in order'),
+      L('erklären, dass KI in Rechenzentren Strom und Kühlwasser braucht – vor allem beim Training', 'explain that AI needs electricity and cooling water in data centres – above all for training'),
     ],
     misconceptions: [
       { wrong: L('Computer sind neutral, deshalb entscheiden sie fair.', 'Computers are neutral, so their decisions are fair.'), right: L('Ein Modell übernimmt die Lücken und Verzerrungen seiner Daten. Fairness muss man prüfen und gestalten.', 'A model takes on the gaps and biases of its data. Fairness has to be checked and designed.') },
@@ -147,6 +148,7 @@ export const GUIDES: Record<string, WorldGuide> = {
     talk: [
       L('Wer trägt die Verantwortung, wenn eine KI einen Fehler macht?', 'Who is responsible when an AI makes a mistake?'),
       L('Welche Regeln für KI-Hilfe bei Hausaufgaben findet ihr fair?', 'Which rules for AI help with homework do you think are fair?'),
+      L('Wofür lohnt sich der Strom, den KI braucht – und wofür eher nicht?', 'What is worth the electricity AI needs – and what isn’t?'),
     ],
     unplugged: L('Feed-Spiel: Jedes Kind zieht Themenkarten; wer eine Karte „anschaut“, bekommt zwei weitere vom selben Thema. Nach fünf Runden vergleicht die Klasse die Stapel – so entsteht eine Filterblase.', 'Feed game: every child draws topic cards; whoever “watches” a card gets two more on the same topic. After five rounds the class compares the piles – that is how a filter bubble forms.'),
   },

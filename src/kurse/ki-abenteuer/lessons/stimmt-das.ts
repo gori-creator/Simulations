@@ -42,7 +42,7 @@ const lesson: LessonContent = {
         'When a language AI makes up something that sounds real, experts say it is “hallucinating”. This happens especially with numbers, names, quotes and references. So the rule is: AI answers are a suggestion, not proof.',
       ),
     },
-    { kind: 'say', mood: 'wow', text: L('Du bist ein guter Faktenprüfer! Eine letzte Lektion noch – über deine Daten.', 'You’re a great fact-checker! One last lesson – about your data.') },
+    { kind: 'say', mood: 'wow', text: L('Du prüfst Fakten wie ein Profi! Als Nächstes geht es um deine Daten.', 'You check facts like a pro! Next it’s about your data.') },
   ],
 };
 

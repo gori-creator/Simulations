@@ -6,9 +6,9 @@ Stand: 03.11.2026. Bilder für das **KI-Abenteuer** (Klasse 5–10) und das **KI
 
 - **A · Titelbilder (2):** oben auf den Kurskarten der Übersicht `/de/ki-kurse/`.
 - **B · Weltbilder (17):** rechts im Kopf jeder Welt auf der Kurskarte und im Kopf jeder Lektion dieser Welt. Die linke Bildhälfte bleibt frei, dort steht der Titel.
-- **C · Wissenskarten (65):** auf jeder Wissenskarte im Album (vor dem Freischalten grau und unscharf) und groß am Ende der Lektion. Sie zeigen den Meilenstein der KI-Geschichte, ohne echte Personen.
+- **C · Wissenskarten (66):** auf jeder Wissenskarte im Album (vor dem Freischalten grau und unscharf) und groß am Ende der Lektion. Sie zeigen den Meilenstein der KI-Geschichte, ohne echte Personen.
 
-**Reihenfolge:** zuerst A und B (19 Bilder, größter Effekt), dann C nach und nach.
+**Reihenfolge:** zuerst A und B (19 Bilder, größter Effekt), dann C nach und nach (C66 kam als Nachtrag dazu).
 
 ## So geht's
 
@@ -118,6 +118,7 @@ Den **Dunkelmodus** erzeugt das Skript automatisch (Helligkeit umgekehrt, Farben
 | C63 | KI-Labor | 2016 · COMPAS | `incoming/kurse/C63.png` → `src/assets/kurse/ki-labor/karten/fairness.webp` |
 | C64 | KI-Labor | 2024 · Der AI Act | `incoming/kurse/C64.png` → `src/assets/kurse/ki-labor/karten/ai-act.webp` |
 | C65 | KI-Labor | 2026 · Deine Position | `incoming/kurse/C65.png` → `src/assets/kurse/ki-labor/karten/abschluss.webp` |
+| C66 | KI-Abenteuer | 2024 · Strom für Rechenzentren | `incoming/kurse/C66.png` → `src/assets/kurse/ki-abenteuer/karten/energie.webp` |
 
 ## A · Titelbilder (2)
 
@@ -237,7 +238,7 @@ Den **Dunkelmodus** erzeugt das Skript automatisch (Helligkeit umgekehrt, Farben
 
 > Wide panoramic header illustration for a school AI course, a film strip of six frames in which the picture of a tree emerges from noise step by step, a classic balance scale with two groups of tokens, a stepped pyramid with four levels in different shades, and a shield, drawn as a crisp flat vector illustration in the style of a high-quality modern university textbook figure: clear navy outlines (#1e3a6e) of even, medium line weight, flat fills in pale blue tints (#e5edff and #cfdcf7) and white, accent colours used sparingly: magenta #a2367f on the key object plus cobalt blue #2c5fd6 for details, soft flat shadows only, precise geometric shapes, a very pale blue background (#f2f6fd) with a faint fine engineering grid, COMPOSITION: 3 : 1 landscape, the whole motif group sits in the RIGHT 45 % of the image and is centred vertically, the LEFT 55 % stays almost empty (only the pale background and the faint grid, at most a few tiny decorative dots or thin lines) because text will be placed there, nothing touches the top or bottom edge, generous calm space, orthographic or gentle isometric view, historically plausible but generic, calm, precise, friendly and understated, no text, no letters, no numbers, no digits, no labels, no formulas, no pseudo-writing (use simple wavy lines where writing would be), no logos, no brand names, no flags, no watermark, no people, no faces, no hands, no robots or robot faces (the course has its own robot character), no glow, no lens flare, no sparkles, no neon, no bokeh, no dark background, no gradients except the very subtle background, no 3D render look, no photorealism
 
-## C · Wissenskarten (65)
+## C · Wissenskarten (66)
 
 ### C01 · 1956 · Ein Name für ein neues Fach
 - **Kurs:** KI-Abenteuer (Klasse 5–10) · **Datei:** `C01.png`
@@ -628,4 +629,10 @@ Den **Dunkelmodus** erzeugt das Skript automatisch (Helligkeit umgekehrt, Farben
 - **Zu sehen:** Kompass auf einer Karte mit vielen Wegen, leeres Podest
 
 > Small landscape vignette illustration for a collectible history card in a school AI course, a compass lying on a map with many branching paths, an empty podium standing at one of the crossroads, drawn as a crisp flat vector illustration in the style of a high-quality modern university textbook figure: clear navy outlines (#1e3a6e) of even, medium line weight, flat fills in pale blue tints (#e5edff and #cfdcf7) and white, accent colours used sparingly: magenta #a2367f on the key object plus cobalt blue #2c5fd6 for details, soft flat shadows only, precise geometric shapes, a very pale blue background (#f2f6fd) with a faint fine engineering grid, COMPOSITION: 16 : 10 landscape vignette for a small collectible history card, one clear main object in the centre taking about 55 % of the width, at most two small supporting objects, generous empty margin on all sides, simple shapes that stay readable as a 300-pixel thumbnail, gentle isometric or front view, historically plausible but generic, calm, precise, friendly and understated, no text, no letters, no numbers, no digits, no labels, no formulas, no pseudo-writing (use simple wavy lines where writing would be), no logos, no brand names, no flags, no watermark, no people, no faces, no hands, no robots or robot faces (the course has its own robot character), no glow, no lens flare, no sparkles, no neon, no bokeh, no dark background, no gradients except the very subtle background, no 3D render look, no photorealism
+
+### C66 · 2024 · Strom für Rechenzentren
+- **Kurs:** KI-Abenteuer (Klasse 5–10) · **Datei:** `C66.png`
+- **Zu sehen:** Rechenzentrum: Reihen von Serverschränken, Stromleitung, Kühlwasser-Rohre, Windrad und Sonnenpanel
+
+> Small landscape vignette illustration for a collectible history card in a school AI course, a data centre seen in gentle isometric view: neat rows of server racks with small status lamps, a thick power cable leading in from a wind turbine and a solar panel outside, and blue cooling-water pipes running along the floor, drawn as a crisp flat vector illustration for a friendly AI course for children aged 10 to 16, in the style of a high-quality modern picture-book textbook figure: clear navy outlines (#1e3a6e) of even, medium-bold line weight with rounded line ends, flat fills in pale blue tints (#e5edff and #cfdcf7) and white, the key object coloured in amber #9a6200, small details in cobalt blue #2c5fd6, soft flat shadows only, rounded friendly shapes, a very pale blue background (#f2f6fd) with a faint fine engineering grid, COMPOSITION: 16 : 10 landscape vignette for a small collectible history card, one clear main object in the centre taking about 55 % of the width, at most two small supporting objects, generous empty margin on all sides, simple shapes that stay readable as a 300-pixel thumbnail, gentle isometric or front view, historically plausible but generic, calm, precise, friendly and understated, no text, no letters, no numbers, no digits, no labels, no formulas, no pseudo-writing (use simple wavy lines where writing would be), no logos, no brand names, no flags, no watermark, no people, no faces, no hands, no robots or robot faces (the course has its own robot character), no glow, no lens flare, no sparkles, no neon, no bokeh, no dark background, no gradients except the very subtle background, no 3D render look, no photorealism
 

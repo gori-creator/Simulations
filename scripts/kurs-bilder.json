@@ -519,5 +519,11 @@
   "path": "ki-labor/karten/abschluss",
   "width": 800,
   "height": 500
+ },
+ {
+  "id": "C66",
+  "path": "ki-abenteuer/karten/energie",
+  "width": 800,
+  "height": 500
  }
 ]

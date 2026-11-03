@@ -54,7 +54,7 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 ## Neue Vorhaben
 
 - [x] **KI-Abenteuer** (01.11.): Kurs „wie funktioniert KI“ ab Klasse 5 mit Bit, dem Roboter – 6 Bereiche, 18 Lektionen, Spielstand ohne Konto. Aufbau und Lektionen: `docs/KI-KURS-KONZEPT.md`.
-- [x] **KI-Kurse auf zwei Stufen** (02./03.11.): KI-Abenteuer (Klasse 5–10) auf 9 Welten und 34 Lektionen erweitert; neuer Kurs **KI-Labor** (Klasse 11–13) mit Ada, 8 Welten, 31 Lektionen (Suche, Lernen aus Daten, neuronale Netze, Sehen, Sprache, Belohnung, generative KI und Verantwortung). Dazu Welten mit Missionen, Wissenskarten mit Jahr (Album, Geschichte der KI), Vermutungsfragen, Klartext-Kästen, Übersichtsseite `/de/ki-kurse/`, Spielstand vorbereitet für spätere Konten (`setStoreFactory`, `mergeProgress`). Aufbau und Lektionen: `docs/KI-KURS-KONZEPT.md`.
+- [x] **KI-Kurse auf zwei Stufen** (02./03.11.): KI-Abenteuer (Klasse 5–10) auf 9 Welten und 35 Lektionen erweitert; neuer Kurs **KI-Labor** (Klasse 11–13) mit Ada, 8 Welten, 31 Lektionen (Suche, Lernen aus Daten, neuronale Netze, Sehen, Sprache, Belohnung, generative KI und Verantwortung). Dazu Welten mit Missionen, Wissenskarten mit Jahr (Album, Geschichte der KI), Vermutungsfragen, Klartext-Kästen, Übersichtsseite `/de/ki-kurse/`, Spielstand vorbereitet für spätere Konten (`setStoreFactory`, `mergeProgress`). Aufbau und Lektionen: `docs/KI-KURS-KONZEPT.md`.
 - [ ] **KI-Kurse freigeben** (Projektleitung): beide Kurse durchspielen (Lehrkräfte: „Alle Lektionen freischalten“ in den Einstellungen der Karte), Texte fachlich prüfen lassen (Entwurf), Englisch gegenlesen, dann `COURSES_PUBLIC = true` in `src/kurse/index.ts` (Link in der Kopfleiste, Suchmaschinen) und Hinweis auf der Startseite.
 
 ## Sicherheit

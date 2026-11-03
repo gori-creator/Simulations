@@ -37,9 +37,17 @@ const lesson: LessonContent = {
       kind: 'info',
       title: L('Offene Fragen', 'Open questions'),
       text: L(
-        'Energie: Nach einer Schätzung von 2021 verbrauchte schon das Training von GPT-3 rund 1300 Megawattstunden Strom – so viel wie über hundert Haushalte in einem Jahr; heutige Modelle sind viel größer. Arbeit: Welche Tätigkeiten ändern sich, welche fallen weg? Wahrheit: Wie gehen wir mit täuschend echten Fälschungen um? Kontrolle: 2023 forderten Tausende in einem offenen Brief eine Pause beim Training noch größerer Modelle; andere hielten das für übertrieben. Auf keine dieser Fragen gibt es eine Rechnung als Antwort.',
-        'Energy: according to a 2021 estimate, training GPT-3 alone used about 1,300 megawatt hours of electricity – as much as more than a hundred households in a year; today’s models are much larger. Work: which jobs change, which disappear? Truth: how do we deal with deceptively real fakes? Control: in 2023 thousands signed an open letter calling for a pause in training even larger models; others thought that exaggerated. None of these questions has a calculation as its answer.',
+        'Energie: Nach einer Schätzung von 2021 verbrauchte schon das Training von GPT-3 rund 1300 Megawattstunden Strom; heutige Modelle sind viel größer, und alle Rechenzentren der Welt brauchten 2024 rund 1,5 % des Stroms (Internationale Energieagentur). Arbeit: Welche Tätigkeiten ändern sich, welche fallen weg? Wahrheit: Wie gehen wir mit täuschend echten Fälschungen um? Kontrolle: 2023 forderten Tausende in einem offenen Brief eine Pause beim Training noch größerer Modelle; andere hielten das für übertrieben. Auf keine dieser Fragen gibt es eine Rechnung als Antwort.',
+        'Energy: according to a 2021 estimate, training GPT-3 alone used about 1,300 megawatt hours of electricity; today’s models are much larger, and all the world’s data centres used about 1.5% of its electricity in 2024 (International Energy Agency). Work: which jobs change, which disappear? Truth: how do we deal with deceptively real fakes? Control: in 2023 thousands signed an open letter calling for a pause in training even larger models; others thought that exaggerated. None of these questions has a calculation as its answer.',
       ),
+    },
+    {
+      kind: 'calc',
+      question: L('Ein deutscher Haushalt braucht etwa 3 500 kWh Strom im Jahr. Wie viele Haushalte könnte man mit den 1 300 MWh für das Training von GPT-3 ein Jahr lang versorgen?', 'A German household uses about 3,500 kWh of electricity a year. How many households could the 1,300 MWh used to train GPT-3 supply for a year?'),
+      answer: 371,
+      tolerance: 2,
+      hint: L('1 MWh = 1 000 kWh.', '1 MWh = 1,000 kWh.'),
+      solution: L('1 300 MWh = 1 300 000 kWh. 1 300 000 : 3 500 ≈ 371 Haushalte – nur für ein einziges Training. Dazu kommt der Strom für jede Nutzung.', '1,300 MWh = 1,300,000 kWh. 1,300,000 ÷ 3,500 ≈ 371 households – for a single training run. On top of that comes the electricity for every use.'),
     },
     {
       kind: 'predict',

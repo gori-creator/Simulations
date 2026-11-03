@@ -39,7 +39,7 @@ const lesson: LessonContent = {
         { text: L('Egal, merkt ja keiner.', 'Doesn’t matter, nobody notices.'), feedback: L('Darum geht es nicht – es geht um dein Lernen und um Fairness.', 'That’s not the point – it’s about your learning and about fairness.') },
       ],
     },
-    { kind: 'say', mood: 'wink', text: L('Jetzt fehlt nur noch die große Abschlussmission: Bits Zeitreise durch die Geschichte der KI!', 'Only the big final mission is left: Bit’s time travel through the history of AI!') },
+    { kind: 'say', mood: 'wink', text: L('Eine Sache noch vor der großen Abschlussmission: KI braucht Strom. Wie viel eigentlich?', 'One more thing before the big final mission: AI needs power. How much, actually?') },
   ],
 };
 
