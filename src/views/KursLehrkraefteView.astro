@@ -80,7 +80,9 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
               <li>{L('Vermuten → ausprobieren → erklären: Vor vielen Spielen steht eine Vermutungsfrage ohne Wertung.', 'Predict → try → explain: many games start with a prediction question that is not marked.')}</li>
               <li>{L('Jedes Spiel rechnet mit einem echten, kleinen Modell im Browser – keine Attrappe.', 'Every game computes with a real, small model in the browser – no mock-up.')}</li>
               <li>{L('„Klartext“-Kästen sagen nüchtern, was wirklich passiert. Die Figur spricht zwar in der Ich-Form, ist aber ein Programm.', '“Plain talk” boxes say soberly what really happens. The character speaks in the first person but is a program.')}</li>
-              <li>{L('Jede Lektion endet mit einem Merksatz und einer Wissenskarte aus der Geschichte der KI (mit Quelle). Je Welt gibt es einen Spickzettel und eine Wiederholung mit Fragen.', 'Every lesson ends with a takeaway and a knowledge card from the history of AI (with source). Each world has a cheat sheet and a review quiz.')}</li>
+              <li>{L('Jede Lektion endet mit einem Merksatz und einer Wissenskarte aus der Geschichte der KI (mit Quelle). Je Welt gibt es einen Spickzettel, eine Wiederholung mit Fragen und eine „Ich kann …“-Liste zur Selbsteinschätzung.', 'Every lesson ends with a takeaway and a knowledge card from the history of AI (with source). Each world has a cheat sheet, a review quiz and an “I can …” list for self-assessment.')}</li>
+              <li>{L('Fachwörter sind antippbar und erklären sich selbst (KI-Wörterbuch); ein Vorlese-Knopf nutzt die Stimme des Geräts.', 'Technical words can be tapped for an explanation (AI dictionary); a read-aloud button uses the device’s voice.')}</li>
+              {course.id === 'ki-labor' && <li>{L('Im KI-Labor gibt es zusätzlich 17 Rechenaufgaben („Rechne selbst“) mit Tipp und Lösungsweg – gut auch als Hausaufgabe.', 'The AI Lab also has 17 calculation tasks (“Work it out”) with a hint and a worked solution – good as homework, too.')}</li>}
             </ul>
           </div>
         </div>
