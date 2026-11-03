@@ -63,6 +63,39 @@ const game: GameMount<void> = (host, ctx) => {
     h('div', { class: 'kpanel' }, h('p', { class: 'kpanel__title', text: tx(L('Bits Entscheidungen der letzten Wochen (Zeile antippen für die Rechnung)', 'Bit’s decisions over the last weeks (tap a row for the sum)')) }), h('div', { class: 'ktable-wrap' }, table), calc, h('div', { class: 'khint' }, result.el)),
   );
 
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pulseFrame = 0;
+
+  /**
+   * Signale laufen über die aktiven Eingänge zum Neuron (rot bei negativem
+   * Gewicht); danach „zuckt“ das Neuron kurz. Zeigt: Nur was „an“ ist, zählt.
+   */
+  function pulse(body: SVGElement, out: SVGElement): void {
+    cancelAnimationFrame(pulseFrame);
+    if (reduced) return;
+    const ys = [30, 85, 140];
+    const sit = SITUATIONS[selected]!;
+    const dots = ys.flatMap((y, i) => (sit.x[i] === 1 && w[i] !== 0 ? [{ y, el: s('circle', { class: `kneuron__pulse${w[i]! < 0 ? ' is-neg' : ''}`, r: 3 + Math.min(4, Math.abs(w[i]!)), cx: 52, cy: y }) }] : []));
+    for (const d of dots) diagram.append(d.el);
+    const start = performance.now();
+    const step = (now: number) => {
+      const k = Math.min(1, (now - start) / 520);
+      const e = k * k * (3 - 2 * k);
+      for (const d of dots) {
+        d.el.setAttribute('cx', String(52 + 148 * e));
+        d.el.setAttribute('cy', String(d.y + (85 - d.y) * e));
+      }
+      if (k < 1) {
+        pulseFrame = requestAnimationFrame(step);
+        return;
+      }
+      for (const d of dots) d.el.remove();
+      body.classList.add('is-pop');
+      out.classList.add('is-pop');
+    };
+    pulseFrame = requestAnimationFrame(step);
+  }
+
   function drawDiagram(fire: boolean): void {
     clear(diagram);
     const ys = [30, 85, 140];
@@ -76,12 +109,10 @@ const game: GameMount<void> = (host, ctx) => {
         s('text', { class: 'kneuron__w', x: 120, y: y + (85 - y) * 0.45 - 8, 'text-anchor': 'middle' }, ctx.num(weight)),
       );
     });
-    diagram.append(
-      s('circle', { class: `kneuron__body${fire ? ' is-fire' : ''}`, cx: 220, cy: 85, r: 34 }),
-      s('text', { class: 'kneuron__sum', x: 220, y: 92, 'text-anchor': 'middle' }, `≥ ${ctx.num(threshold)}`),
-      s('line', { class: 'kneuron__wire', x1: 254, y1: 85, x2: 280, y2: 85 }),
-      s('text', { class: 'kneuron__icon', x: 300, y: 94, 'text-anchor': 'middle' }, fire ? '🍿' : '🏠'),
-    );
+    const body = s('circle', { class: `kneuron__body${fire ? ' is-fire' : ''}`, cx: 220, cy: 85, r: 34 });
+    const out = s('text', { class: 'kneuron__icon kneuron__out', x: 300, y: 94, 'text-anchor': 'middle' }, fire ? '🍿' : '🏠');
+    diagram.append(body, s('text', { class: 'kneuron__sum', x: 220, y: 92, 'text-anchor': 'middle' }, `≥ ${ctx.num(threshold)}`), s('line', { class: 'kneuron__wire', x1: 254, y1: 85, x2: 280, y2: 85 }), out);
+    pulse(body, out);
   }
 
   function update(): void {
@@ -122,7 +153,7 @@ const game: GameMount<void> = (host, ctx) => {
     result.set(m, SITUATIONS.length, `${m} / ${SITUATIONS.length}`, m === SITUATIONS.length);
     if (m === SITUATIONS.length && !finished) {
       finished = true;
-      ctx.say(L('Genau so hätte ich entschieden! Das Neuron denkt jetzt wie ich.', 'That’s exactly how I would have decided! The neuron now thinks like me.'), 'wow');
+      ctx.say(L('Genau so hätte ich entschieden! Das Neuron rechnet jetzt meine Entscheidungen nach.', 'That’s exactly how I would have decided! The neuron now reproduces my decisions.'), 'wow');
       host.append(solved(tx(L('Neuron eingestellt!', 'Neuron tuned!'))));
       ctx.finish();
     } else if (!finished && m >= 4) {

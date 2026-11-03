@@ -1939,6 +1939,12 @@ button.kitem:hover:not(:disabled) {
 .kneuron__body { fill: var(--surface-2); stroke: var(--k-tone); stroke-width: 3; transition: fill 0.2s; }
 .kneuron__body.is-fire { fill: color-mix(in srgb, var(--k-gold) 55%, var(--surface)); }
 .kneuron__sum { fill: var(--text); font-size: 16px; font-weight: 800; font-family: var(--font-sans); }
+.kneuron__pulse { fill: var(--k-gold); stroke: var(--surface); stroke-width: 1.5; }
+.kneuron__pulse.is-neg { fill: var(--k-b); }
+@media (prefers-reduced-motion: no-preference) {
+  .kneuron__body.is-pop, .kneuron__out.is-pop { transform-box: fill-box; transform-origin: center; animation: kneuron-pop 0.35s ease; }
+}
+@keyframes kneuron-pop { 50% { transform: scale(1.15); } }
 
 .kneuron__controls {
   display: grid;
