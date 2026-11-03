@@ -22,6 +22,8 @@ const game: GameMount<void> = (host, ctx) => {
   const name = (k: string) => tx(NAMES[k]!);
   const root: TreeNode = { days: DAYS, attrs: [...ATTRS], label: tx({ de: 'alle Tage', en: 'all days' }) };
   let finished = false;
+  /** Zuletzt geteilter Knoten: seine Äste wachsen sichtbar heraus. */
+  let fresh: TreeNode | null = null;
 
   const treeEl = h('div', { class: 'ktree3' });
   const work = h('div', { class: 'kpanel' });
@@ -51,7 +53,7 @@ const game: GameMount<void> = (host, ctx) => {
         : h('span', { class: `ktree3__open${n === active ? ' is-active' : ''}`, text: tx({ de: 'gemischt – welche Frage?', en: 'mixed – which question?' }) });
     const el = h('div', { class: 'ktree3__node' }, h('span', { class: 'ktree3__label', text: `${n.label} (${counts(n.days)})` }), ' ', head);
     if (n.children) {
-      const kids = h('div', { class: 'ktree3__kids' });
+      const kids = h('div', { class: `ktree3__kids${n === fresh ? ' is-new' : ''}` });
       for (const child of n.children.values()) kids.append(renderTree(child, active));
       el.append(kids);
     }
@@ -88,6 +90,7 @@ const game: GameMount<void> = (host, ctx) => {
       return;
     }
     node.split = a;
+    fresh = node;
     node.children = new Map([...split(node.days, a).entries()].map(([v, ds]) => [v, { days: ds, attrs: node.attrs.filter((x) => x !== a), label: `${name(a)} = ${name(v)}` }]));
     ctx.say({ de: `Richtig! Gewinne: ${gains}. ${name(a)} verrät am meisten.`, en: `Right! Gains: ${gains}. ${name(a)} reveals the most.` }, 'happy');
     render();

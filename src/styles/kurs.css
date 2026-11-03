@@ -2942,6 +2942,11 @@ button.kitem:hover:not(:disabled) {
 /* ---------- Entscheidungsbaum (ID3) ---------- */
 
 .ktree3__node { margin: 4px 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .ktree3__kids.is-new > .ktree3__node { animation: ktree-branch 0.4s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+  .ktree3__kids.is-new > .ktree3__node:nth-child(2) { animation-delay: 0.08s; }
+  .ktree3__kids.is-new > .ktree3__node:nth-child(3) { animation-delay: 0.16s; }
+}
 .ktree3__kids { margin-left: 18px; padding-left: 12px; border-left: 3px solid color-mix(in srgb, var(--k-tone) 40%, var(--border)); }
 .ktree3__label { color: var(--muted); font-size: 0.9rem; }
 .ktree3__q { font-weight: 800; color: var(--k-tone); }
