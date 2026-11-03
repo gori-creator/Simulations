@@ -2072,6 +2072,13 @@ button.kitem:hover:not(:disabled) {
   cursor: default;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .kgrid.is-wave .kgrid__cell.is-on { animation: kgrid-wave 0.5s ease both; animation-delay: calc(var(--d, 0) * 45ms); }
+  .knumbers .is-flash { border-radius: 3px; animation: knum-flash 0.7s ease; }
+}
+@keyframes kgrid-wave { 50% { transform: scale(1.2); filter: brightness(1.25); } }
+@keyframes knum-flash { from { background: color-mix(in srgb, var(--k-gold) 55%, transparent); } }
+
 .kgrid__cell.is-on {
   background: var(--k-tone);
 }

@@ -14,6 +14,8 @@ const game: GameMount<void> = (host, ctx) => {
   const mine = h('pre', { class: 'knumbers', attrs: { 'aria-label': tx(L('Dein Bild als Zahlen', 'Your picture as numbers')) } });
   const result = meter(tx(L('Kästchen richtig', 'Squares correct')), tx(L('Ziel: alle 49', 'Goal: all 49')));
   const grid = paintGrid(SIZE, tx(L('Malfläche 7 mal 7', 'Drawing grid 7 by 7')), update);
+  /** Voriger Stand: geänderte Ziffern blinken kurz (Kästchen ↔ Zahl). */
+  let prev: number[] | null = null;
 
   host.append(
     h(
@@ -35,15 +37,21 @@ const game: GameMount<void> = (host, ctx) => {
     clear(mine);
     rowsOf(cells).forEach((row, r) => {
       row.split(' ').forEach((v, c) => {
-        const diff = Number(v) !== SMILEY[r * SIZE + c];
-        mine.append(diff ? h('span', { class: 'is-diff', text: v }) : v, c < SIZE - 1 ? ' ' : '');
+        const i = r * SIZE + c;
+        const diff = Number(v) !== SMILEY[i];
+        const changed = prev !== null && prev[i] !== cells[i];
+        mine.append(diff || changed ? h('span', { class: `${diff ? 'is-diff' : ''}${changed ? ' is-flash' : ''}`.trim(), text: v }) : v, c < SIZE - 1 ? ' ' : '');
       });
       if (r < SIZE - 1) mine.append('\n');
     });
+    prev = [...cells];
     const same = sameCells(cells, SMILEY);
     result.set(same, SMILEY.length, `${same} / ${SMILEY.length}`, same === SMILEY.length);
     if (same === SMILEY.length && !finished) {
       finished = true;
+      // Welle über das fertige Bild (diagonal, nur ohne „Bewegung reduzieren“)
+      grid.el.querySelectorAll<HTMLElement>('.kgrid__cell').forEach((cell, i) => cell.style.setProperty('--d', String(Math.floor(i / SIZE) + (i % SIZE))));
+      grid.el.classList.add('is-wave');
       ctx.say(L('Ein Smiley! Du hast meine Zahlen in ein Bild verwandelt. Genau so speichert jeder Computer Bilder.', 'A smiley! You turned my numbers into a picture. That’s exactly how every computer stores pictures.'), 'wow');
       host.append(solved(tx(L('Bild entschlüsselt!', 'Picture decoded!'))));
       ctx.finish();
