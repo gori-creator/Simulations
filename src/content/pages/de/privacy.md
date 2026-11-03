@@ -35,7 +35,7 @@ Weitere Informationen finden Sie in der Datenschutzerklärung von STRATO: [strat
 Auf Ihrem Gerät werden – ausschließlich lokal und ohne Übertragung an uns – gespeichert:
 
 - das gewählte **Farbschema** (hell/dunkel), die gewählte **Sprache** und gegebenenfalls das gewählte **Bundesland** (im „Local Storage“ des Browsers),
-- der **Spielstand in den KI-Kursen** (KI-Abenteuer und KI-Labor: geschaffte Lektionen, Sterne, Punkte, Abzeichen; ebenfalls im „Local Storage“, löschbar über „Spielstand löschen“),
+- der **Spielstand in den KI-Kursen** (KI-Abenteuer und KI-Labor: geschaffte Lektionen, Sterne, Punkte, Abzeichen, Ergebnisse beim Wiederholen und die Häkchen der „Ich kann …“-Listen; ebenfalls im „Local Storage“, löschbar über „Spielstand löschen“; nur für die Dauer der Sitzung zusätzlich, welche Lektion zuletzt geschafft wurde, damit die Kurskarte sie hervorheben kann),
 - ein noch nicht abgeschickter **Entwurf im Kontaktformular** (ebenfalls im „Local Storage“; er wird mit „Formular leeren“ gelöscht),
 - eine **Kopie der Seiten** (über einen „Service Worker“), damit die Simulationen auch offline funktionieren.
 

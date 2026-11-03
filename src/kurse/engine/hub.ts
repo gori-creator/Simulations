@@ -189,7 +189,13 @@ export function initHub(root: HTMLElement): void {
   q<HTMLButtonElement>('[data-hub-reset]')?.addEventListener('click', () => {
     if (!confirm(ks(lang, 'resetConfirm'))) return;
     store.clear();
+    try {
+      localStorage.removeItem(`kurs:${course.id}:ichkann`);
+    } catch {
+      // nichts zu löschen
+    }
     render(store.load());
+    renderCan();
   });
 
   // ---------- Wiederholen (Dialog) ----------
