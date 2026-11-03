@@ -192,3 +192,18 @@ describe('Rechne selbst', () => {
     expect(count).toBeGreaterThanOrEqual(15);
   });
 });
+
+describe('Klartext-Prinzip', () => {
+  it('jede Welt beider Kurse hat mindestens einen Klartext-Kasten', async () => {
+    for (const course of COURSES) {
+      for (const chapter of course.chapters) {
+        let plain = 0;
+        for (const lesson of chapter.lessons) {
+          const content = await loadLesson(course.id, lesson.id);
+          plain += content.steps.filter((st) => st.kind === 'info' && st.tone === 'plain').length;
+        }
+        expect(plain, `${course.id}/${chapter.id}`).toBeGreaterThanOrEqual(1);
+      }
+    }
+  });
+});

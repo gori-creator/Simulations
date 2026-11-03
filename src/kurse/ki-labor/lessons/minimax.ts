@@ -52,6 +52,15 @@ const lesson: LessonContent = {
       ],
     },
     {
+      kind: 'info',
+      tone: 'plain',
+      title: L('Was „vorausdenken“ hier heißt', 'What “thinking ahead” means here'),
+      text: L(
+        'Ich sage „ich denke voraus“, aber es wird gesucht: Stellungen erzeugen, bewerten, Minimum und Maximum nehmen. Deep Blue prüfte 1997 je nach Stellung 100 bis 200 Millionen Stellungen pro Sekunde mit einer Bewertungsfunktion, die Menschen mit Großmeistern zusammen geschrieben hatten. Schach „verstanden“ hat das System nicht – es hat sehr schnell sehr viel durchsucht.',
+        'I say “I think ahead”, but what happens is search: generating positions, evaluating them, taking minimum and maximum. In 1997 Deep Blue examined 100 to 200 million positions per second, depending on the position, with an evaluation function that people had written together with grandmasters. The system did not “understand” chess – it searched a great deal very fast.',
+      ),
+    },
+    {
       kind: 'calc',
       question: L('Ada (max) hat zwei Züge. Nach Zug 1 kann der Gegner (min) zu Endwerten 3 oder 5 führen, nach Zug 2 zu 2 oder 9. Welchen Minimax-Wert hat Adas Stellung?', 'Ada (max) has two moves. After move 1 the opponent (min) can lead to final values 3 or 5, after move 2 to 2 or 9. What is the minimax value of Ada’s position?'),
       answer: 3,
