@@ -21,7 +21,7 @@ const cards: KartenProps = {
 const lesson: LessonContent = {
   takeaway: L('Bilder und Videos können täuschend echt erfunden sein. Prüfe die Quelle, bevor du etwas glaubst oder teilst.', 'Pictures and videos can be invented and still look real. Check the source before you believe or share something.'),
   steps: [
-    { kind: 'say', mood: 'think', text: L('2023 ging ein Bild um die Welt: der Papst in einer weißen Daunenjacke. Millionen hielten es für echt. Es war mit KI erzeugt.', 'In 2023 a picture went around the world: the Pope in a white puffer jacket. Millions thought it was real. It was made with AI.') },
+    { kind: 'say', mood: 'think', text: L('2023 ging ein Bild um die Welt: der Papst in einer weißen Daunenjacke. Viele hielten es für echt. Es war mit KI erzeugt.', 'In 2023 a picture went around the world: the Pope in a white puffer jacket. Many people thought it was real. It was made with AI.') },
     {
       kind: 'predict',
       question: L('Woran erkennst du heute am sichersten ein gefälschtes Bild?', 'What is the surest way today to spot a fake picture?'),
