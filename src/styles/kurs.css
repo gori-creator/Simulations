@@ -3054,6 +3054,23 @@ button.kitem:hover:not(:disabled) {
 .kbandit__arm:disabled { opacity: 0.6; cursor: default; }
 .kbandit__arm span { color: var(--muted); font-size: 0.85rem; }
 .kbandit__rate { font-size: 1.3rem !important; font-weight: 800; color: var(--k-tone) !important; }
+.kbandit__arm { position: relative; }
+.kbandit__arm .kbandit__pop { position: absolute; top: 8px; left: 50%; font-size: 1.9rem; color: inherit; pointer-events: none; opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .kbandit__arm .kbandit__pop { animation: kbandit-pop 0.9s ease-out forwards; }
+}
+@keyframes kbandit-pop {
+  0% { opacity: 0; transform: translate(-50%, 6px) scale(0.6); }
+  25% { opacity: 1; transform: translate(-50%, -6px) scale(1.25); }
+  100% { opacity: 0; transform: translate(-50%, -28px) scale(1); }
+}
+.kscore li.kscore__row { display: grid; gap: 6px; }
+.kscore__bar { display: block; height: 10px; width: var(--p, 0%); border-radius: 999px; background: color-mix(in srgb, var(--k-tone) 55%, var(--surface-3)); }
+.kscore__bar.is-best { background: linear-gradient(90deg, var(--k-gold), #ff8f3d); }
+@media (prefers-reduced-motion: no-preference) {
+  .kscore__bar { transform-origin: left center; animation: kbar-grow 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; animation-delay: calc(var(--i, 0) * 0.25s); }
+}
+@keyframes kbar-grow { from { transform: scaleX(0); } }
 
 .kq { display: block; width: 100%; max-width: 420px; height: auto; }
 .kq__wall { fill: var(--k-wall); stroke: var(--k-wall-edge); stroke-width: 1.5; }

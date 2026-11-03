@@ -44,6 +44,8 @@ const game: GameMount<void> = (host, ctx) => {
         day += 1;
         ctx.say(yum ? L(`${shop.icon} Lecker!`, `${shop.icon} Yummy!`) : L(`${shop.icon} Bäh, heute nicht so gut.`, `${shop.icon} Yuck, not great today.`), yum ? 'happy' : 'sad');
         render();
+        // Ergebnis springt über der gewählten Eisdiele hoch
+        shops.children[i]?.append(h('span', { class: 'kbandit__pop', attrs: { 'aria-hidden': 'true' }, text: yum ? '😋' : '😖' }));
         if (day >= DAYS) end();
       });
       shops.append(b);
@@ -57,7 +59,15 @@ const game: GameMount<void> = (host, ctx) => {
     const same = averageSticky(probs, DAYS, 2000, rnd);
     const random = averageEpsilon(probs, DAYS, 1, 2000, rnd);
     const smart = averageEpsilon(probs, DAYS, 0.1, 2000, rnd);
-    const row = (icon: string, text: string, v: number) => h('li', {}, `${icon} ${text}: ${tx(L('im Schnitt', 'on average'))} ${ctx.num(v, 1)}`);
+    const best = Math.max(same, random, smart);
+    // Balken je Strategie (wachsen nacheinander) – der Unterschied ist auf einen Blick sichtbar
+    let n = 0;
+    const row = (icon: string, text: string, v: number) => {
+      const bar = h('span', { class: `kscore__bar${v === best ? ' is-best' : ''}`, attrs: { 'aria-hidden': 'true' } });
+      bar.style.setProperty('--p', `${Math.round((100 * v) / DAYS)}%`);
+      bar.style.setProperty('--i', String(n++));
+      return h('li', { class: 'kscore__row' }, h('span', { text: `${icon} ${text}: ${tx(L('im Schnitt', 'on average'))} ${ctx.num(v, 1)}` }), bar);
+    };
     clear(compare);
     compare.append(
       h('p', { class: 'kpanel__title', text: tx(L('So hätten drei Strategien abgeschnitten (viele Durchläufe):', 'How three strategies would have done (many runs):')) }),
