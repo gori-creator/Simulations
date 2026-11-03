@@ -27,6 +27,8 @@ const game: GameMount<void> = (host, ctx) => {
   const { tx } = ctx;
   const data: Thing[] = [...START];
   let finished = false;
+  /** Voriges Prüfungsergebnis: Karten, die umschlagen, drehen sich einmal um. */
+  let prev: boolean[] = [];
 
   const known = h('div', { class: 'kchips' });
   const pool = POOL.map((p) => {
@@ -49,13 +51,16 @@ const game: GameMount<void> = (host, ctx) => {
 
   function update(added?: Thing): void {
     clear(known);
-    for (const d of data) known.append(h('span', { class: `kchip ${d.label === 'shoe' ? 'is-a' : 'is-b'}`, attrs: { title: tx(GROUP[d.group]) }, text: emoji(d) }));
+    for (const d of data) known.append(h('span', { class: `kchip ${d.label === 'shoe' ? 'is-a' : 'is-b'}${d === added ? ' is-new' : ''}`, attrs: { title: tx(GROUP[d.group]) }, text: emoji(d) }));
     clear(tests);
-    for (const x of TEST) {
+    const now = TEST.map((x) => classify(x, data, 1) === x.label);
+    for (const [i, x] of TEST.entries()) {
       const said = classify(x, data, 1)!;
-      const ok = said === x.label;
-      tests.append(h('div', { class: `kitem ${ok ? 'is-right' : 'is-wrong'}` }, h('span', { class: 'kitem__mark', text: ok ? '✓' : '✗' }), h('span', { class: 'kitem__emoji', attrs: { 'aria-hidden': 'true' }, text: emoji(x) }), h('strong', { text: tx(GROUP[x.group]) }), h('span', { class: 'kitem__tag', text: `Bit: ${tx(KIND[said])}` })));
+      const ok = now[i]!;
+      const flip = prev.length > 0 && prev[i] !== ok ? ' is-flip' : '';
+      tests.append(h('div', { class: `kitem ${ok ? 'is-right' : 'is-wrong'}${flip}` }, h('span', { class: 'kitem__mark', text: ok ? '✓' : '✗' }), h('span', { class: 'kitem__emoji', attrs: { 'aria-hidden': 'true' }, text: emoji(x) }), h('strong', { text: tx(GROUP[x.group]) }), h('span', { class: 'kitem__tag', text: `Bit: ${tx(KIND[said])}` })));
     }
+    prev = now;
     let all = true;
     for (const { g, m } of meters) {
       const share = accuracy(TEST.filter((x) => x.group === g), data, 1);
