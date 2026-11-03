@@ -1838,6 +1838,9 @@ button.kitem:hover:not(:disabled) {
 @keyframes ksearch-grow { from { transform: scale(0); opacity: 0; } }
 @keyframes klink-grow { from { transform: scale(0); } }
 @keyframes kring-pop { 0% { transform: scale(0); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: no-preference) {
+  .kplot__test.is-pop { transform-box: fill-box; transform-origin: center; animation: kring-pop 0.3s ease-out both; animation-delay: calc(var(--d, 0) * 40ms); }
+}
 .kpoint.is-selected .kplot__mystery { stroke-width: 4; stroke-dasharray: none; fill: color-mix(in srgb, var(--k-gold) 45%, var(--surface)); }
 .kmark { font-size: 20px; font-weight: 800; font-family: var(--font-sans); }
 .kmark--ok { fill: var(--k-good); }

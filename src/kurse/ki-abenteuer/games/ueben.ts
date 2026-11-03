@@ -17,6 +17,8 @@ const game: GameMount<void> = (host, ctx) => {
   const bestTest = Math.max(...tests);
   let index = 0;
   let showTest = false;
+  /** Probe-Aufgaben erscheinen beim Einschalten nacheinander. */
+  let popTest = false;
   let finished = false;
   const tried = new Map<number, [number, number]>();
 
@@ -49,11 +51,14 @@ const game: GameMount<void> = (host, ctx) => {
     for (const p of TRAIN) plot.points.append(marker(p.x, p.y, p.label, 6));
     clear(plot.over);
     if (showTest) {
-      for (const p of TEST) {
+      TEST.forEach((p, i) => {
         const ok = classify(p, TRAIN, k) === p.label;
-        plot.over.append(s('circle', { class: ok ? 'kplot__test' : 'kplot__test kplot__test--bad', cx: sx(p.x), cy: sy(p.y), r: 5 }));
-      }
+        const dot = s('circle', { class: `kplot__test${ok ? '' : ' kplot__test--bad'}${popTest ? ' is-pop' : ''}`, cx: sx(p.x), cy: sy(p.y), r: 5 });
+        dot.style.setProperty('--d', String(i));
+        plot.over.append(dot);
+      });
     }
+    popTest = false;
     const train = accuracy(TRAIN, TRAIN, k);
     const test = tests[index]!;
     trainM.set(Math.round(train * 100), 100, ctx.percent(train));
@@ -66,7 +71,7 @@ const game: GameMount<void> = (host, ctx) => {
       }
     }
     if (k === 1) ctx.say(L('Mit einem Nachbarn kann ich alle Übungsaufgaben auswendig – 100 %! Aber wie läuft die Probe?', 'With one neighbour I know all practice questions by heart – 100%! But how does the test go?'), 'wink');
-    else if (test === bestTest) ctx.say(L(`Mit ${k} Nachbarn schaffe ich in der Probe ${ctx.percent(test)} – meine beste Note! Ich habe das Muster verstanden statt auswendig gelernt.`, `With ${k} neighbours I get ${ctx.percent(test)} in the test – my best score! I understood the pattern instead of memorising.`), 'wow');
+    else if (test === bestTest) ctx.say(L(`Mit ${k} Nachbarn schaffe ich in der Probe ${ctx.percent(test)} – meine beste Note! Ich habe das Muster erkannt statt auswendig gelernt.`, `With ${k} neighbours I get ${ctx.percent(test)} in the test – my best score! I picked up the pattern instead of memorising.`), 'wow');
     else if (k >= 21) ctx.say(L('So viele Nachbarn? Jetzt frage ich halb die ganze Klasse und werde ungenau.', 'So many neighbours? Now I’m asking half the class and getting sloppy.'), 'sad');
     else ctx.say(L(`Probe: ${ctx.percent(test)}. Geht es noch besser?`, `Test: ${ctx.percent(test)}. Can it get better?`), 'think');
     if (!finished && test === bestTest && tried.has(1)) {
@@ -82,6 +87,7 @@ const game: GameMount<void> = (host, ctx) => {
   });
   toggle.addEventListener('click', () => {
     showTest = !showTest;
+    popTest = showTest;
     toggle.setAttribute('aria-pressed', String(showTest));
     draw();
   });
