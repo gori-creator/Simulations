@@ -1,6 +1,6 @@
 import type { Localized } from '../../../i18n/config';
 import { clear, h } from '../../engine/dom';
-import { meter, solved } from '../../engine/ui';
+import { meter, solved, stagger, stampCard } from '../../engine/ui';
 import type { GameMount } from '../../types';
 
 /**
@@ -53,6 +53,7 @@ const game: GameMount<SortierenProps> = (host, ctx, props) => {
         for (const x of buttons) x.disabled = true;
         b.setAttribute('aria-pressed', 'true');
         card.classList.add(ok ? 'is-right' : 'is-wrong');
+        stampCard(card, ok);
         const target = binOf(item.bin);
         why.textContent = `${ok ? '✓' : '✗'} ${target.icon} ${tx(target.label)}: ${tx(item.why)}`;
         why.hidden = false;
@@ -79,6 +80,7 @@ const game: GameMount<SortierenProps> = (host, ctx, props) => {
       if (items.length === 0) continue;
       stage.append(h('div', { class: 'kbox' }, h('p', { class: 'kbox__title', text: `${bin.icon} ${tx(bin.label)}` }), h('div', { class: 'kitems' }, ...items.map((i) => h('div', { class: 'kitem' }, h('span', { class: 'kitem__emoji', attrs: { 'aria-hidden': 'true' }, text: i.icon }), h('span', { text: tx(i.text) }))))));
     }
+    stagger(stage.querySelectorAll<HTMLElement>('.kitem'));
     stage.append(solved(`${right} / ${props.items.length}`));
     ctx.say(tx(props.done).replace('{n}', String(right)).replace('{total}', String(props.items.length)), right === props.items.length ? 'wow' : 'happy');
     ctx.finish();

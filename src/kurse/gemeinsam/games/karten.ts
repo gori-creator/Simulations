@@ -1,6 +1,6 @@
 import type { Localized } from '../../../i18n/config';
 import { clear, h } from '../../engine/dom';
-import { meter, solved } from '../../engine/ui';
+import { meter, solved, stagger, stampCard } from '../../engine/ui';
 import type { GameMount } from '../../types';
 
 /**
@@ -60,6 +60,7 @@ const game: GameMount<KartenProps> = (host, ctx, props) => {
       btnB.disabled = true;
       (pick === 'a' ? btnA : btnB).setAttribute('aria-pressed', 'true');
       el.classList.add(ok ? 'is-right' : 'is-wrong');
+      stampCard(el, ok, pick === 'a' ? -1 : 1);
       why.textContent = `${ok ? '✓' : '✗'} ${tx(card.answer === 'a' ? props.a : props.b)}: ${tx(card.why)}`;
       why.hidden = false;
       ctx.say(card.why, ok ? 'happy' : 'think');
@@ -93,6 +94,7 @@ const game: GameMount<KartenProps> = (host, ctx, props) => {
         ),
       );
     });
+    stagger(list.children as HTMLCollectionOf<HTMLElement>);
     stage.append(list, solved(`${right} / ${cards.length}`));
     const text = tx(props.done).replace('{n}', String(right)).replace('{total}', String(cards.length));
     ctx.say(text, right === cards.length ? 'wow' : 'happy');

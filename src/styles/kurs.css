@@ -1664,6 +1664,40 @@ button.kitem:hover:not(:disabled) {
   from { opacity: 0; transform: translateY(10px) rotate(-1deg); }
 }
 
+/* Stempel nach der Antwort */
+.kcard__stamp {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--k-good);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.18);
+}
+.kcard.is-wrong .kcard__stamp { background: var(--k-bad); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .kcard.is-sent-a { animation: kcard-nudge-a 0.45s ease; }
+  .kcard.is-sent-b { animation: kcard-nudge-b 0.45s ease; }
+  .kcard.is-sent { animation: kcard-nod 0.4s ease; }
+  .kcard.is-wrong.is-sent-a, .kcard.is-wrong.is-sent-b, .kcard.is-wrong.is-sent { animation-name: kcard-shake; }
+  .kcard__stamp { animation: kcard-stamp 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+  .kitem.is-stagger { animation: kitem-in 0.35s ease both; animation-delay: calc(var(--i, 0) * 70ms); }
+}
+
+@keyframes kcard-nudge-a { 40% { transform: translateX(-12px) rotate(-2.5deg); } }
+@keyframes kcard-nudge-b { 40% { transform: translateX(12px) rotate(2.5deg); } }
+@keyframes kcard-nod { 40% { transform: scale(0.97); } }
+@keyframes kcard-shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes kcard-stamp { from { opacity: 0; transform: scale(2.2) rotate(-14deg); } }
+@keyframes kitem-in { from { opacity: 0; transform: translateY(8px) scale(0.96); } }
+
 .kcard.is-right { border-color: var(--k-good); background: var(--k-good-soft); }
 .kcard.is-wrong { border-color: var(--k-bad); background: var(--k-bad-soft); }
 
