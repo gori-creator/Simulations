@@ -92,7 +92,7 @@ const lesson: LessonContent = {
         { text: L('Weil Maschinen immer lügen.', 'Because machines always lie.'), feedback: L('Nicht immer – aber sie können sich irren, ohne es zu merken.', 'Not always – but they can be wrong without noticing.') },
       ],
     },
-    { kind: 'say', mood: 'wink', text: L('Als Nächstes triffst du ELIZA – einen der allerersten Chatbots, von 1966. Mal sehen, ob sie dich versteht …', 'Next you’ll meet ELIZA – one of the very first chatbots, from 1966. Let’s see whether she understands you …') },
+    { kind: 'say', mood: 'wink', text: L('Als Nächstes triffst du ELIZA – einen der allerersten Chatbots, von 1966. Mal sehen, ob sie dich „versteht“ …', 'Next you’ll meet ELIZA – one of the very first chatbots, from 1966. Let’s see whether she “understands” you …') },
   ],
 };
 

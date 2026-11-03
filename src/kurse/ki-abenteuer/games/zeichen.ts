@@ -25,7 +25,7 @@ const game: GameMount<void> = (host, ctx) => {
       return;
     }
     const r = recognise(cells, examples);
-    live.textContent = r ? tx(L(`Bit glaubt: ${tx(NAME[r.label])} ${ICON[r.label]}`, `Bit thinks: ${NAME[r.label].en} ${ICON[r.label]}`)) : tx(L('Bit kennt noch kein Beispiel.', 'Bit doesn’t know any examples yet.'));
+    live.textContent = r ? tx(L(`Bit tippt auf: ${tx(NAME[r.label])} ${ICON[r.label]}`, `Bit’s guess: ${NAME[r.label].en} ${ICON[r.label]}`)) : tx(L('Bit kennt noch kein Beispiel.', 'Bit doesn’t know any examples yet.'));
   });
   const counts = h('p', { class: 'khint' });
   const store = SYMBOLS.map((sym) => {
