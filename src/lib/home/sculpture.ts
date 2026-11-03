@@ -12,6 +12,7 @@
  * - darunter: in zwei Bögen bis zur Ablage („Startimpuls“) neben der Achterbahn.
  */
 import { motion } from './motion';
+import { smoothDamp, type Follower } from './smooth';
 
 type Mat4 = number[];
 type Vec3 = [number, number, number];
@@ -316,6 +317,8 @@ export function initSculpture(el: Elements): Journey {
   let startAt = 50, endAt = 800, totalLength = 1;
   let sideJourney = false, joinLength = 0, joinY = 0, railX = 40, mainTop = 0, baseLeft = 0, railEnd = 0, arrivalY = 0, joinAt = 0;
   let pinned = false;
+  // Weg der Münze auf der Bahn (px), weich dem Scrollen nachgeführt (smooth.ts)
+  const follow: Follower = { value: 0, velocity: 0 };
   const arrivalListeners = new Set<() => void>();
   // Nur der gemeinsame Pausenzustand zählt: „Reduzierte Bewegung“ startet ihn pausiert,
   // der Knopf in der Kopfleiste (oder „Losfahren“) hebt das auf.
@@ -436,12 +439,23 @@ export function initSculpture(el: Elements): Journey {
     targetProgress = desiredProgress();
     if (motion.reduced && motion.paused) progress = 0;
     else if (!motion.paused) {
-      // Auf der Randspur folgt die Münze dem Scrollen ohne Verzögerung (sonst
-      // schwingt sie im Bild auf und ab); nur im Bogen davor wird geglättet.
-      const onRail = sideJourney && progress * totalLength >= joinLength && targetProgress * totalLength >= joinLength;
-      if (onRail) progress = targetProgress;
-      else progress += (targetProgress - progress) * (1 - Math.exp(-delta * 14));
-      if (Math.abs(targetProgress - progress) * totalLength < 0.1) progress = targetProgress;
+      const target = targetProgress * totalLength;
+      follow.value = progress * totalLength;
+      if (pinned && target > joinLength) {
+        // Auf der Randspur folgt die Münze dem Scrollen ohne Verzögerung (sonst
+        // schwingt sie im Bild auf und ab).
+        follow.value = target;
+        follow.velocity = 0;
+      } else {
+        // Im Bogen legt die Münze ein Vielfaches des Scrollwegs zurück: weich
+        // hinübergleiten statt mit jedem Ruck am Mausrad zu springen.
+        smoothDamp(follow, target, 0.15, 6000, delta);
+        if (Math.abs(target - follow.value) < 0.5) {
+          follow.value = target;
+          follow.velocity = 0;
+        }
+      }
+      progress = follow.value === target ? targetProgress : follow.value / totalLength;
     }
     const distance = progress * totalLength;
     const p = path.getPointAtLength(distance);
@@ -490,7 +504,7 @@ export function initSculpture(el: Elements): Journey {
     const onScreen = visible();
     if (onScreen && renderer) renderer.draw(projection, canvas.width, canvas.height, time, darkTheme() ? 1 : 0);
     moveCoin(delta);
-    const unsettled = Math.abs(targetProgress - progress) * totalLength > 0.1;
+    const unsettled = Math.abs(targetProgress - progress) * totalLength > 0.1 || follow.velocity !== 0;
     if (!paused() && !document.hidden && (onScreen || unsettled)) frame = requestAnimationFrame(tick);
   }
 
