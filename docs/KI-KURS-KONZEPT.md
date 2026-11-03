@@ -42,6 +42,7 @@ Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI
 
 - Vermuten, beobachten, erklären („Predict – Observe – Explain“, White & Gunstone 1992): die Vermutungsfragen vor den Spielen.
 - Abrufen statt nur wiederlesen (Testing-Effekt, Roediger & Karpicke 2006, Psychological Science 17(3), 249–255) und verteilt wiederholen (Cepeda et al. 2006, Psychological Bulletin 132(3), 354–380): Merksätze am Ende jeder Lektion und das Wiederholen je Welt.
+- Vorher fragen weckt Neugier und hilft beim späteren Lernen, auch wenn die Antwort falsch war (Pretesting-Effekt, Richland, Kornell & Kao 2009, Journal of Experimental Psychology: Applied 15(3), 243–257): der Startcheck.
 - Ohne Computer verstehen: „AI Unplugged“ (Lindner, Seegerer & Romeike 2019, FAU Erlangen-Nürnberg, aiunplugged.org) als Ideenquelle für die Vorschläge „Ohne Computer“ in der Handreichung für Lehrkräfte.
 
 **Fachliche Quellen:** Jede Wissenskarte nennt ihre Originalquelle (`src/kurse/<kurs>/quellen.ts`), sichtbar auf der Karte im Album und am Ende der Lektion.
@@ -72,6 +73,7 @@ Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI
 - **Animationen:** Figuren bewegen beim Sprechen den Mund; am Ende einer Lektion zählen die XP hoch, der Balken wächst, beim Stufenaufstieg verwandelt sich die Figur sichtbar (alte und neue Gestalt); auf der Karte wird die gerade geschaffte Station gefeiert. Spiele zeigen Vorgänge in Bewegung (Bit läuft durchs Labyrinth, k-Means-Fähnchen gleiten). Alles respektiert „Bewegung reduzieren“.
 - **KI-Wörterbuch:** Fachwörter (24 im KI-Abenteuer, 34 im KI-Labor, `src/kurse/<kurs>/woerter.ts`) sind beim ersten Vorkommen je Lektion antippbar und erklären sich in ein, zwei Sätzen; auf der Kurskarte steht das ganze Wörterbuch.
 - **Vorlesen:** Knopf an der Sprechblase liest Sprechblase, Kasten und Antworten vor – nur mit Stimmen, die auf dem Gerät laufen (sonst bleibt er verborgen).
+- **Vorher-Nachher-Check:** Eine eigene Frage je Welt (`src/kurse/<kurs>/check.ts`, nicht wortgleich mit den Lektionen, falsche Antworten greifen Fehlvorstellungen auf). Startcheck vor dem Kurs ohne Auflösung (es zählt der erste), Endcheck nach allen Welten mit Erklärung (es zählt der beste) und Vergleich „vorher – jetzt“; Abzeichen „Lernsprung“ nach beiden. Ein Test prüft, dass sich die richtige Antwort nicht durch ihre Länge verrät. Fragen mit Lösung stehen in der Handreichung.
 - **„Ich kann …“-Listen:** Die Lernziele jeder Welt zum Abhaken auf der Kurskarte (Selbsteinschätzung, nur im Browser gespeichert).
 - **Urkunde:** auf der Kurskarte druckbar – nach dem ganzen Kurs als Urkunde, vorher als Lernnachweis mit dem aktuellen Stand; der Name wird nicht gespeichert.
 - **Bilder:** optional, 84 Prompts in `docs/KI-KURS-BILDER.md` (Titelbilder, Weltbilder, Wissenskarten); ohne Bilder bleibt die gezeichnete Darstellung.

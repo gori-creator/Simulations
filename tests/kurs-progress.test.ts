@@ -8,6 +8,7 @@ import {
   computeXp,
   daysBetween,
   earnedCards,
+  finishCheck,
   finishReview,
   REVIEW_XP,
   mergeProgress,
@@ -252,5 +253,64 @@ describe('Wiederholen', () => {
     const contents = await Promise.all(chapter.lessons.map(async (l) => ({ id: l.id, content: await loadLesson(labor.id, l.id) })));
     const all = questionsOf(contents);
     expect(all.some((q) => q.calc && q.calc.answer === 5.5)).toBe(true);
+  });
+});
+
+describe('Vorher-Nachher-Check', () => {
+  const course = COURSES[0]!;
+
+  it('erster Startcheck zählt, bester Endcheck zählt, Abzeichen nach beiden, computeXp stimmt', () => {
+    const start = finishCheck(emptyProgress(), course, 'start', 3, 9, '2026-11-01');
+    expect(start.progress.checks?.start).toEqual({ correct: 3, total: 9, day: '2026-11-01' });
+    expect(start.newBadges.map((b) => b.id)).not.toContain('vorher-nachher');
+    // ein zweiter Startcheck ändert das Vorwissen nicht
+    const again = finishCheck(start.progress, course, 'start', 8, 9, '2026-11-02');
+    expect(again.progress.checks?.start?.correct).toBe(3);
+    const end = finishCheck(again.progress, course, 'end', 7, 9, '2026-11-20');
+    expect(end.newBadges.map((b) => b.id)).toContain('vorher-nachher');
+    expect(end.xpGained).toBe(BADGE_XP);
+    const worse = finishCheck(end.progress, course, 'end', 5, 9, '2026-11-21');
+    expect(worse.progress.checks?.end).toEqual({ correct: 7, total: 9, day: '2026-11-20' });
+    expect(worse.xpGained).toBe(0);
+    const better = finishCheck(worse.progress, course, 'end', 9, 9, '2026-11-22');
+    expect(better.progress.checks?.end).toEqual({ correct: 9, total: 9, day: '2026-11-22' });
+    expect(computeXp(better.progress)).toBe(better.progress.xp);
+  });
+
+  it('übersteht Code, Prüfung und Zusammenführen', () => {
+    const a = finishCheck(emptyProgress(), course, 'start', 2, 9, '2026-11-03').progress;
+    const back = importCode(exportCode(a))!;
+    expect(back.checks?.start).toEqual({ correct: 2, total: 9, day: '2026-11-03' });
+    let b = finishCheck(emptyProgress(), course, 'start', 5, 9, '2026-11-01').progress;
+    b = finishCheck(b, course, 'end', 8, 9, '2026-11-25').progress;
+    const merged = mergeProgress(a, b);
+    // der frühere Startcheck zeigt das Vorwissen, der Endcheck kommt mit
+    expect(merged.checks?.start).toEqual({ correct: 5, total: 9, day: '2026-11-01' });
+    expect(merged.checks?.end).toEqual({ correct: 8, total: 9, day: '2026-11-25' });
+    expect(merged.xp).toBe(computeXp(merged));
+    // ältere Stände ohne Check bleiben gültig, Kaputtes wird verworfen
+    expect(sanitizeProgress({ v: 1, xp: 0, lessons: {}, badges: [] }).checks).toEqual({});
+    expect(sanitizeProgress({ checks: { start: { correct: 10, total: 9, day: '2026-11-01' }, end: { correct: 1, total: 9, day: 'morgen' } } }).checks).toEqual({ end: { correct: 1, total: 9, day: '' } });
+  });
+
+  it('jeder Kurs hat eine Check-Frage je Welt (in Reihenfolge), genau eine richtige Antwort, Erklärung in beiden Sprachen', async () => {
+    const { loadCheck } = await import('../src/kurse/loaders');
+    for (const c of COURSES) {
+      const questions = await loadCheck(c.id);
+      expect(questions.map((q) => q.world), c.id).toEqual(c.chapters.map((ch) => ch.id));
+      for (const q of questions) {
+        expect(q.options.length, q.world).toBeGreaterThanOrEqual(3);
+        expect(q.options.filter((o) => o.correct).length, q.world).toBe(1);
+        for (const lang of ['de', 'en'] as const) {
+          expect(q.question[lang].trim().length, q.world).toBeGreaterThan(15);
+          expect(q.explain[lang].length, q.world).toBeGreaterThan(60);
+          for (const o of q.options) expect(o.text[lang].trim().length, q.world).toBeGreaterThan(3);
+          // Die richtige Antwort verrät sich nicht durch ihre Länge
+          const lengths = q.options.map((o) => o.text[lang].length);
+          const right = q.options.findIndex((o) => o.correct);
+          expect(lengths[right]!, `${c.id}/${q.world}/${lang}: richtige Antwort viel länger`).toBeLessThanOrEqual(1.5 * Math.max(...lengths.filter((_, i) => i !== right)));
+        }
+      }
+    }
   });
 });

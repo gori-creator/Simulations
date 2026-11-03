@@ -91,6 +91,19 @@ const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.
 
       <p class="ktoast" data-hub-toast role="status" hidden></p>
 
+      <!-- Vorher-Nachher-Check: sichtbar erst mit JavaScript (Zustand setzt hub.ts) -->
+      <section class="kcheck" data-check data-check-total={course.chapters.length} aria-labelledby="kcheck-title" hidden>
+        <span class="kcheck__icon" aria-hidden="true">🎯</span>
+        <div class="kcheck__text">
+          <h2 class="kcheck__title" id="kcheck-title">{ks(lang, 'checkTitle')}</h2>
+          <p data-check-text>{ks(lang, 'checkIntro', { n: course.chapters.length })}</p>
+        </div>
+        <div class="kcheck__actions">
+          <button class="btn btn--primary" type="button" data-check-start>🎯 {ks(lang, 'checkStart')}</button>
+          <button class="btn" type="button" data-check-end hidden>🏁 {ks(lang, 'checkEnd')}</button>
+        </div>
+      </section>
+
       <ol class="kmap">
         {
           course.chapters.map((chapter, ci) => (

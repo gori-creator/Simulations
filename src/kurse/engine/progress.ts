@@ -28,6 +28,14 @@ export interface ReviewRecord {
   last: string;
 }
 
+/** Vorher-Nachher-Check: richtige Antworten, Fragen, Tag. */
+export interface CheckRecord {
+  correct: number;
+  total: number;
+  /** Tag (JJJJ-MM-TT). */
+  day: string;
+}
+
 export interface Progress {
   v: 1;
   xp: number;
@@ -39,6 +47,8 @@ export interface Progress {
   streak: { last: string; days: number };
   /** Alle fertigen Lektionen frei wählbar (Lehrkräfte, Neugierige). */
   free: boolean;
+  /** Vorher-Nachher-Check: erster Startcheck, bester Endcheck. Fehlt in älteren Ständen. */
+  checks?: { start?: CheckRecord; end?: CheckRecord };
 }
 
 /** Tiefe Kopie (reine JSON-Daten); ersetzt structuredClone, das ältere Safari-Versionen (vor 15.4) nicht kennen. */
@@ -47,7 +57,7 @@ export function cloneProgress(progress: Progress): Progress {
 }
 
 export function emptyProgress(): Progress {
-  return { v: 1, xp: 0, lessons: {}, reviews: {}, badges: [], streak: { last: '', days: 0 }, free: false };
+  return { v: 1, xp: 0, lessons: {}, reviews: {}, badges: [], streak: { last: '', days: 0 }, free: false, checks: {} };
 }
 
 /** Gespeicherte Daten prüfen; Unbekanntes oder Kaputtes wird verworfen. */
@@ -81,6 +91,16 @@ export function sanitizeProgress(raw: unknown): Progress {
     }
   }
   p.free = r.free === true;
+  if (r.checks && typeof r.checks === 'object') {
+    for (const kind of ['start', 'end'] as const) {
+      const rec = (r.checks as Record<string, unknown>)[kind];
+      if (!rec || typeof rec !== 'object') continue;
+      const { correct, total, day } = rec as Record<string, unknown>;
+      if (typeof total !== 'number' || !Number.isInteger(total) || total < 1 || total > 50) continue;
+      if (typeof correct !== 'number' || !Number.isInteger(correct) || correct < 0 || correct > total) continue;
+      p.checks![kind] = { correct, total, day: typeof day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : '' };
+    }
+  }
   return p;
 }
 
@@ -214,6 +234,13 @@ export function badgeRules(course: Course): BadgeRule[] {
       title: L('Gutes Gedächtnis', 'Good memory'),
       text: L('Eine Welt ganz ohne Fehler wiederholt.', 'Reviewed a world without a single mistake.'),
       earned: (p) => Object.values(p.reviews ?? {}).some((r) => r.total >= 3 && r.best === r.total),
+    },
+    {
+      id: 'vorher-nachher',
+      icon: '📈',
+      title: L('Lernsprung', 'Learning leap'),
+      text: L('Start- und Endcheck gemacht – und gesehen, was dazukam.', 'Did the start and the final check – and saw how much you gained.'),
+      earned: (p) => !!p.checks?.start && !!p.checks?.end,
     },
     {
       id: 'wiederholer',
@@ -380,6 +407,41 @@ export function daysBetween(from: string, to: string): number {
   return Math.round((parse(to) - parse(from)) / 86400000);
 }
 
+// ---------- Vorher-Nachher-Check ----------
+
+export interface CheckResult {
+  progress: Progress;
+  xpGained: number;
+  newBadges: BadgeDef[];
+  levelBefore: number;
+  levelAfter: number;
+}
+
+/**
+ * Check beendet. Startcheck: Es zählt der erste (er zeigt das Vorwissen),
+ * spätere Versuche ändern nichts. Endcheck: Es zählt der beste. XP gibt es
+ * nur über Abzeichen, damit `computeXp` stimmt.
+ */
+export function finishCheck(progress: Progress, course: Course, kind: 'start' | 'end', correct: number, total: number, today: string): CheckResult {
+  const p: Progress = cloneProgress(progress);
+  p.checks = p.checks ?? {};
+  const right = Math.max(0, Math.min(total, Math.round(correct)));
+  const before = p.checks[kind];
+  if (kind === 'start' ? !before : !before || right > before.correct || (right === before.correct && total === before.total)) p.checks[kind] = { correct: right, total, day: today };
+  p.streak = touchStreak(p.streak, today);
+  let xpGained = 0;
+  const newBadges: BadgeDef[] = [];
+  for (const rule of badgeRules(course)) {
+    if (p.badges.includes(rule.id) || !rule.earned(p, course)) continue;
+    p.badges.push(rule.id);
+    newBadges.push({ id: rule.id, icon: rule.icon, title: rule.title, text: rule.text });
+    xpGained += BADGE_XP;
+  }
+  const levelBefore = levelFor(p.xp, course.levels).level;
+  p.xp += xpGained;
+  return { progress: p, xpGained, newBadges, levelBefore, levelAfter: levelFor(p.xp, course.levels).level };
+}
+
 // ---------- Zusammenführen (für Codes und spätere Konten) ----------
 
 /**
@@ -406,6 +468,15 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
   p.badges = [...new Set([...a.badges, ...b.badges])];
   if (b.streak.last > p.streak.last || (b.streak.last === p.streak.last && b.streak.days > p.streak.days)) p.streak = { ...b.streak };
   p.free = a.free || b.free;
+  // Check: der frühere Startcheck (Vorwissen), der bessere Endcheck
+  const checks: NonNullable<Progress['checks']> = {};
+  const [sa, sb] = [a.checks?.start, b.checks?.start];
+  const start = sa && sb ? ((sb.day && (!sa.day || sb.day < sa.day)) ? sb : sa) : (sa ?? sb);
+  if (start) checks.start = { ...start };
+  const [ea, eb] = [a.checks?.end, b.checks?.end];
+  const end = ea && eb ? (eb.correct / eb.total > ea.correct / ea.total || (eb.correct / eb.total === ea.correct / ea.total && eb.day > ea.day) ? eb : ea) : (ea ?? eb);
+  if (end) checks.end = { ...end };
+  p.checks = checks;
   p.xp = Math.max(computeXp(p), a.xp, b.xp);
   return p;
 }

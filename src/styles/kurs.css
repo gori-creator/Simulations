@@ -253,6 +253,84 @@
   box-shadow: var(--shadow-lg);
 }
 
+/* ---------- Vorher-Nachher-Check ---------- */
+
+.kcheck {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0 0 22px;
+  padding: 16px 18px;
+  border: 2px dashed color-mix(in srgb, var(--k-gold) 65%, var(--border));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--k-gold) 8%, var(--surface));
+}
+
+.kcheck.is-done {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--k-good) 45%, var(--border));
+  background: color-mix(in srgb, var(--k-good) 7%, var(--surface));
+}
+
+.kcheck__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.kcheck__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.kcheck__text p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.kcheck__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (min-width: 760px) {
+  .kcheck {
+    grid-template-columns: auto 1fr auto;
+  }
+  .kcheck__actions {
+    grid-column: auto;
+    margin-top: 0;
+  }
+}
+
+/* Startcheck: gewählte Antwort ohne Auflösung */
+.kchoice .kchoice__opt.is-picked:disabled:not(.is-wrong) {
+  border-color: var(--k-tone);
+  background: color-mix(in srgb, var(--k-tone) 10%, var(--surface));
+  opacity: 1;
+}
+
+.kcheck__gain {
+  margin: 8px 0;
+  color: var(--k-good);
+  font-size: 1.2rem;
+  font-weight: 700;
+  animation: kcheck-pop 0.6s ease both;
+}
+
+@keyframes kcheck-pop {
+  0% { opacity: 0; transform: scale(0.6); }
+  60% { opacity: 1; transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kcheck__gain { animation: none; }
+}
+
 /* ---------- Weltkarte ---------- */
 
 .khero__audience {
@@ -3377,6 +3455,13 @@ button.kitem:hover:not(:disabled) {
 .kcalc__q { margin: 0; padding: 12px 14px; border-radius: var(--radius); background: var(--surface-2); font-size: 1.05rem; font-weight: 600; line-height: 1.5; }
 .kguide__quiz ol { margin: 8px 0 0; padding-left: 1.4em; display: grid; gap: 6px; color: var(--text); }
 .kguide__answer { color: var(--k-good); font-weight: 700; }
+.kguide__check { margin: 12px 0 0; padding-left: 1.4em; display: grid; gap: 14px; }
+.kguide__check > li { break-inside: avoid; }
+.kguide__checkq { margin: 0 0 4px; font-weight: 700; }
+.kguide__checkworld { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--surface-3); color: var(--muted); font-size: 0.8rem; font-weight: 600; }
+.kguide__check ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; color: var(--muted); }
+.kguide__check ul .is-right { color: var(--k-good); font-weight: 700; }
+.kguide__checkwhy { margin: 6px 0 0; font-size: 0.95rem; }
 @media print {
   .kguide__quiz, .kguide__sources { break-inside: auto; }
 }

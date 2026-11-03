@@ -1,11 +1,11 @@
 import type { Lang, Localized } from '../../i18n/config';
 import { getCourse, lessonsOf } from '../index';
-import { loadLesson } from '../loaders';
+import { loadCheck, loadLesson } from '../loaders';
 import { ks } from '../strings';
 import { clear, h } from './dom';
 import { guideSvg } from './guide';
-import { dayKey, daysBetween, exportCode, finishReview, importCode, isUnlocked, levelFor, mergeProgress, nextLesson, type Progress } from './progress';
-import { pickQuestions, questionsOf, type ReviewQuestion } from './review';
+import { dayKey, daysBetween, exportCode, finishCheck, finishReview, importCode, isUnlocked, levelFor, mergeProgress, nextLesson, type BadgeDef, type Progress } from './progress';
+import { pickQuestions, questionsOf, shuffled, type ReviewQuestion } from './review';
 import { storeFor } from './store';
 
 /** Fragen je Wiederholung und Tage, nach denen Wiederholen wieder „dran“ ist. */
@@ -130,6 +130,35 @@ export function initHub(root: HTMLElement): void {
     }
     const count = q('[data-hub-badges]');
     if (count) count.textContent = `${earned} / ${root.querySelectorAll('[data-badge]').length}`;
+
+    // Vorher-Nachher-Check
+    const check = q<HTMLElement>('[data-check]');
+    if (check) {
+      check.hidden = false;
+      const start = p.checks?.start;
+      const end = p.checks?.end;
+      const canEnd = done === lessons.length || p.free;
+      const total = Number(check.dataset.checkTotal) || 0;
+      const startBtn = check.querySelector<HTMLButtonElement>('[data-check-start]');
+      const endBtn = check.querySelector<HTMLButtonElement>('[data-check-end]');
+      if (startBtn) startBtn.hidden = !!start || !!end || done === lessons.length;
+      if (endBtn) {
+        endBtn.hidden = !canEnd;
+        endBtn.textContent = end ? `↺ ${ks(lang, 'checkEndAgain')}` : `🏁 ${ks(lang, 'checkEnd')}`;
+        endBtn.classList.toggle('btn--primary', !end);
+      }
+      let text = ks(lang, 'checkIntro', { n: total });
+      if (start && end) {
+        text = ks(lang, 'checkCompare', { a: start.correct, b: end.correct, total: end.total });
+        if (end.correct > start.correct) text += ` ${ks(lang, 'checkGain', { n: end.correct - start.correct })}`;
+        else if (start.correct === start.total && end.correct === end.total) text += ` ${ks(lang, 'checkSame')}`;
+      } else if (end) text = ks(lang, 'checkEndOnly', { n: end.correct, total: end.total });
+      else if (canEnd) text = ks(lang, done === lessons.length ? 'checkReady' : 'checkReadyFree');
+      else if (start) text = ks(lang, 'checkStartDone', { n: start.correct, total: start.total });
+      const label = check.querySelector('[data-check-text]');
+      if (label) label.textContent = text;
+      check.classList.toggle('is-done', !!start && !!end);
+    }
 
     // Einstellungen
     const free = q<HTMLInputElement>('[data-hub-free]');
@@ -342,6 +371,94 @@ export function initHub(root: HTMLElement): void {
     if (button && !button.disabled) void openReview(button);
   });
   q<HTMLButtonElement>('[data-review-close]')?.addEventListener('click', () => dialog?.close());
+
+  // ---------- Vorher-Nachher-Check (im selben Dialog) ----------
+  const badgeBox = (badge: BadgeDef) => h('div', { class: 'kbadge kbadge--new' }, h('span', { class: 'kbadge__icon', text: badge.icon }), h('span', {}, h('small', { text: ks(lang, 'newBadge') }), h('strong', { text: tx(badge.title) }), h('span', { text: tx(badge.text) })));
+
+  async function openCheck(kind: 'start' | 'end'): Promise<void> {
+    if (!dialog || !body) return;
+    if (heading) heading.textContent = kind === 'start' ? `🎯 ${ks(lang, 'checkStartTitle')}` : `🏁 ${ks(lang, 'checkEndTitle')}`;
+    clear(body);
+    if (!dialog.open) {
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    }
+    body.append(h('p', { class: 'kreview__loading', text: ks(lang, 'loading', { name: course.guideName }) }));
+    const questions = (await loadCheck(course.id)).map((question) => ({ ...question, options: shuffled(question.options) }));
+    if (questions.length === 0) return;
+    let index = 0;
+    let correct = 0;
+
+    const showResult = () => {
+      const result = finishCheck(store.load(), course, kind, correct, questions.length, dayKey(new Date()));
+      store.save(result.progress);
+      clear(body);
+      const start = result.progress.checks?.start;
+      if (kind === 'start') {
+        body.append(h('p', { class: 'kreview__score', text: ks(lang, 'reviewResult', { n: correct, total: questions.length }) }), h('p', { text: ks(lang, 'checkStartResult', { n: correct, total: questions.length }) }));
+      } else {
+        body.append(h('p', { class: 'kreview__score', text: start ? ks(lang, 'checkCompare', { a: start.correct, b: correct, total: questions.length }) : ks(lang, 'checkEndOnly', { n: correct, total: questions.length }) }));
+        if (start && correct > start.correct) body.append(h('p', { class: 'kcheck__gain', text: `📈 ${ks(lang, 'checkGain', { n: correct - start.correct })}` }));
+        else body.append(h('p', { text: correct === questions.length ? ks(lang, 'reviewPerfect') : ks(lang, start ? 'checkNoGain' : 'reviewGood') }));
+      }
+      if (result.xpGained > 0) body.append(h('p', { class: 'kend__xp', text: ks(lang, 'xpGained', { n: result.xpGained }) }));
+      for (const badge of result.newBadges) body.append(badgeBox(badge));
+      const done = h('button', { class: 'btn btn--primary', attrs: { type: 'button' }, text: ks(lang, 'close') });
+      done.addEventListener('click', () => dialog.close());
+      body.append(h('div', { class: 'kreview__actions' }, done));
+      done.focus();
+      render(result.progress);
+    };
+
+    const showOne = () => {
+      const question = questions[index]!;
+      const ci = course.chapters.findIndex((c) => c.id === question.world);
+      const chapter = course.chapters[ci];
+      clear(body);
+      const feedback = h('p', { class: 'kreview__feedback', attrs: { 'aria-live': 'polite' } });
+      const next = h('button', { class: 'btn btn--primary', attrs: { type: 'button', hidden: true }, text: index < questions.length - 1 ? `${ks(lang, 'reviewNext')} →` : ks(lang, 'reviewFinish') });
+      const options = h('div', { class: 'kchoice', attrs: { role: 'group', 'aria-label': tx(question.question) } });
+      question.options.forEach((option) => {
+        const b = h('button', { class: 'kchoice__opt', attrs: { type: 'button' }, text: tx(option.text) });
+        b.addEventListener('click', () => {
+          const all = [...options.querySelectorAll<HTMLButtonElement>('button')];
+          for (const other of all) other.disabled = true;
+          if (option.correct) correct += 1;
+          if (kind === 'start') {
+            // Vorher keine Auflösung: Neugier statt Rotstift
+            b.classList.add('is-picked');
+            feedback.textContent = `📝 ${ks(lang, 'checkPickedStart')}`;
+          } else {
+            b.classList.add(option.correct ? 'is-right' : 'is-wrong');
+            if (!option.correct) all[question.options.findIndex((o) => o.correct)]?.classList.add('is-right');
+            feedback.textContent = `${option.correct ? '✅' : '💡'} ${tx(question.explain)}`;
+          }
+          next.hidden = false;
+          next.focus();
+        });
+        options.append(b);
+      });
+      next.addEventListener('click', () => {
+        index += 1;
+        if (index < questions.length) showOne();
+        else showResult();
+      });
+      body.append(
+        h('p', { class: 'kreview__intro', text: index === 0 ? ks(lang, kind === 'start' ? 'checkStartIntro' : 'checkEndIntro') : '' }),
+        h('p', { class: 'kreview__count', text: `${ks(lang, 'reviewQuestion', { n: index + 1, total: questions.length })}${chapter ? ` · ${chapter.icon} ${ks(lang, 'chapter', { n: ci + 1 })}` : ''}` }),
+        h('p', { class: 'kreview__question', text: tx(question.question) }),
+        options,
+        feedback,
+        h('div', { class: 'kreview__actions' }, next),
+      );
+      options.querySelector<HTMLButtonElement>('button')?.focus();
+    };
+
+    showOne();
+  }
+
+  q<HTMLButtonElement>('[data-check-start]')?.addEventListener('click', () => void openCheck('start'));
+  q<HTMLButtonElement>('[data-check-end]')?.addEventListener('click', () => void openCheck('end'));
   dialog?.addEventListener('click', (event) => {
     // Klick auf den abgedunkelten Rand schließt
     if (event.target === dialog) dialog.close();

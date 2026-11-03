@@ -1,4 +1,4 @@
-import type { GameMount, GlossaryEntry, LessonContent } from './types';
+import type { CheckQuestion, GameMount, GlossaryEntry, LessonContent } from './types';
 
 /**
  * Inhalte und Spiele werden erst auf der Lektionsseite geladen (eigene
@@ -11,6 +11,7 @@ import type { GameMount, GlossaryEntry, LessonContent } from './types';
 const lessonModules = import.meta.glob<{ default: LessonContent }>('./*/lessons/*.ts');
 const gameModules = import.meta.glob<{ default: GameMount<never> }>('./*/games/*.ts');
 const glossaryModules = import.meta.glob<{ GLOSSARY: GlossaryEntry[] }>('./*/woerter.ts');
+const checkModules = import.meta.glob<{ CHECK: CheckQuestion[] }>('./*/check.ts');
 
 /** Ordner mit gemeinsamen Spielen. */
 export const SHARED = 'gemeinsam';
@@ -49,4 +50,10 @@ export async function loadGame(courseId: string, game: string): Promise<GameMoun
 export async function loadGlossary(courseId: string): Promise<GlossaryEntry[]> {
   const load = glossaryModules[`./${courseId}/woerter.ts`];
   return load ? (await load()).GLOSSARY : [];
+}
+
+/** Fragen des Vorher-Nachher-Checks (leer, wenn es keinen gibt). */
+export async function loadCheck(courseId: string): Promise<CheckQuestion[]> {
+  const load = checkModules[`./${courseId}/check.ts`];
+  return load ? (await load()).CHECK : [];
 }

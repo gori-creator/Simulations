@@ -10,7 +10,7 @@ import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
 import { COURSE_GUIDES } from '../kurse/guides';
-import { loadLesson } from '../kurse/loaders';
+import { loadCheck, loadLesson } from '../kurse/loaders';
 import { ks } from '../kurse/strings';
 import { alternates, href } from '../lib/routes';
 import '../styles/kurs.css';
@@ -28,6 +28,7 @@ const lessons = lessonsOf(course).filter((l) => l.status === 'ready');
 const minutes = lessons.reduce((sum, l) => sum + l.minutes, 0);
 const contents = new Map(await Promise.all(lessons.map(async (l) => [l.id, await loadLesson(course.id, l.id)] as const)));
 const takeaways = new Map([...contents].map(([id, c]) => [id, c.takeaway] as const));
+const check = await loadCheck(course.id);
 const calcCount = [...contents.values()].reduce((n, c) => n + c.steps.filter((st) => st.kind === 'calc').length, 0);
 const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.id, lesson: id });
 const source = (s: string | { de: string; en: string } | undefined) => (s === undefined ? '' : typeof s === 'string' ? s : s[lang]);
@@ -84,6 +85,7 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
               <li>{L('„Klartext“-Kästen sagen nüchtern, was wirklich passiert. Die Figur spricht zwar in der Ich-Form, ist aber ein Programm.', '“Plain talk” boxes say soberly what really happens. The character speaks in the first person but is a program.')}</li>
               <li>{L('Jede Lektion endet mit einem Merksatz und einer Wissenskarte aus der Geschichte der KI (mit Quelle). Je Welt gibt es einen Spickzettel, eine Wiederholung mit Fragen und eine „Ich kann …“-Liste zur Selbsteinschätzung.', 'Every lesson ends with a takeaway and a knowledge card from the history of AI (with source). Each world has a cheat sheet, a review quiz and an “I can …” list for self-assessment.')}</li>
               <li>{L('Fachwörter sind antippbar und erklären sich selbst (KI-Wörterbuch); ein Vorlese-Knopf nutzt die Stimme des Geräts.', 'Technical words can be tapped for an explanation (AI dictionary); a read-aloud button uses the device’s voice.')}</li>
+              {check.length > 0 && <li>{L(`Vorher-Nachher-Check: ${check.length} Fragen, eine je Welt. Vor dem Kurs ohne Auflösung (das weckt Neugier und zeigt Vorwissen), am Ende dieselben Fragen mit Erklärung – so sehen die Lernenden ihren Lernzuwachs. Die Fragen stehen unten.`, `Before-and-after check: ${check.length} questions, one per world. Before the course without answers (this sparks curiosity and shows prior knowledge), at the end the same questions with explanations – so learners see how much they have gained. The questions are listed below.`)}</li>}
               {calcCount > 0 && <li>{L(`Dazu kommen ${calcCount} Rechenaufgaben („Rechne selbst“) mit Tipp und Lösungsweg – gut auch als Hausaufgabe.`, `There are also ${calcCount} calculation tasks (“Work it out”) with a hint and a worked solution – good as homework, too.`)}</li>}
             </ul>
           </div>
@@ -210,6 +212,33 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
         }
       </ol>
 
+      {
+        check.length > 0 && (
+          <section class="kguide__intro" aria-labelledby="kguide-check">
+            <h2 id="kguide-check">🎯 {L('Vorher-Nachher-Check', 'Before-and-after check')}</h2>
+            <p>{L('Eigene Fragen, nicht wortgleich mit den Lektionen: Der Endcheck soll Verständnis zeigen, nicht Wiedererkennen. Die falschen Antworten greifen typische Fehlvorstellungen auf – gut auch als Einstieg ins Gespräch („Warum könnte man das denken?“).', 'Separate questions, not worded like the lessons: the final check should show understanding, not recognition. The wrong answers pick up typical misconceptions – also good to start a discussion (“Why might someone think that?”).')}</p>
+            <ol class="kguide__check">
+              {check.map((item) => {
+                const ci = course.chapters.findIndex((c) => c.id === item.world);
+                return (
+                  <li>
+                    <p class="kguide__checkq">
+                      <span class="kguide__checkworld">{course.chapters[ci]?.icon} {ks(lang, 'chapter', { n: ci + 1 })}</span> {item.question[lang]}
+                    </p>
+                    <ul>
+                      {item.options.map((o) => (
+                        <li class:list={{ 'is-right': o.correct }}>{o.correct ? '✔' : '✗'} {o.text[lang]}</li>
+                      ))}
+                    </ul>
+                    <p class="kguide__checkwhy">{item.explain[lang]}</p>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        )
+      }
+
       <section class="kguide__intro" aria-labelledby="kguide-basis">
         <h2 id="kguide-basis">{L('Grundlagen und weiterführende Quellen', 'Foundations and further reading')}</h2>
         <ul class="kguide__refs">
@@ -224,6 +253,7 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
           <li>{L('Lindner, A., Seegerer, S. & Romeike, R. (2019). Unplugged activities in the context of AI. ISSEP 2019 – Material: aiunplugged.org (FAU Erlangen-Nürnberg).', 'Lindner, A., Seegerer, S. & Romeike, R. (2019). Unplugged activities in the context of AI. ISSEP 2019 – materials: aiunplugged.org (FAU Erlangen-Nürnberg).')}</li>
           <li>{L('Raspberry Pi Foundation & Google DeepMind: Experience AI – Leitfaden für Lehrkräfte (Grundsatz: KI nicht vermenschlichen).', 'Raspberry Pi Foundation & Google DeepMind: Experience AI – teacher guide (principle: avoid anthropomorphising AI).')}</li>
           <li>{L('Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning. Psychological Science 17(3), 249–255 – Abrufen festigt Wissen (Grundlage der Wiederholungen).', 'Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning. Psychological Science 17(3), 249–255 – retrieval strengthens memory (basis of the review quizzes).')}</li>
+          <li>{L('Richland, L. E., Kornell, N. & Kao, L. S. (2009). The pretesting effect: Do unsuccessful retrieval attempts enhance learning? Journal of Experimental Psychology: Applied 15(3), 243–257 – schon der Versuch, vorher zu antworten, hilft beim späteren Lernen (Grundlage des Startchecks).', 'Richland, L. E., Kornell, N. & Kao, L. S. (2009). The pretesting effect: Do unsuccessful retrieval attempts enhance learning? Journal of Experimental Psychology: Applied 15(3), 243–257 – even trying to answer beforehand helps later learning (basis of the start check).')}</li>
         </ul>
         <p class="muted">{L('Alle Texte, Spiele und Beispiele sind eigene Arbeit; aus den genannten Materialien stammen nur Ideen. Fachliche Durchsicht: Entwurf.', 'All texts, games and examples are original work; only ideas were taken from the materials above. Subject review: draft.')}</p>
       </section>

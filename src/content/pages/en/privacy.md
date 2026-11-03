@@ -32,7 +32,7 @@ For more information, see STRATO's privacy policy: [strato.de/datenschutz](https
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, your **AI course progress** (AI Adventure and AI Lab: lessons, stars, points, badges, review results and the ticks of the “I can …” lists; for the session only, also which lesson was finished last so the course map can highlight it), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, your **AI course progress** (AI Adventure and AI Lab: lessons, stars, points, badges, review and before-and-after check results and the ticks of the “I can …” lists; for the session only, also which lesson was finished last so the course map can highlight it), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
 
 ## Contact form
 

@@ -154,3 +154,18 @@ export interface GlossaryEntry {
   /** Erklärung in ein, zwei einfachen Sätzen. */
   text: Localized;
 }
+
+/**
+ * Vorher-Nachher-Check: eine Auswahlfrage je Welt, die ohne die Lektion
+ * verständlich ist. Vor dem Kurs ohne Auflösung (Neugier wecken, Vorwissen
+ * sichtbar machen), am Ende dieselben Fragen mit Erklärung und Vergleich.
+ */
+export interface CheckQuestion {
+  /** Welt-ID (Reihenfolge wie die Welten). */
+  world: string;
+  question: Localized;
+  /** Antworten, genau eine mit `correct: true`. */
+  options: { text: Localized; correct?: true }[];
+  /** Erklärung nach der Antwort (nur im Endcheck). */
+  explain: Localized;
+}
