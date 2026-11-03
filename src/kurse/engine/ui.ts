@@ -52,3 +52,10 @@ export function stagger(items: Iterable<HTMLElement>): void {
     i += 1;
   }
 }
+
+/** Animation neu starten (Klasse ab, Neuberechnung erzwingen, Klasse dran). */
+export function replay(el: HTMLElement, cls: string): void {
+  el.classList.remove(cls);
+  void el.offsetWidth;
+  el.classList.add(cls);
+}

@@ -1,7 +1,7 @@
 import { L } from '../../../curriculum/helpers';
 import type { Localized } from '../../../i18n/config';
 import { h } from '../../engine/dom';
-import { meter, solved } from '../../engine/ui';
+import { meter, replay, solved } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { bestScore, classify, CONDITIONS, PETS, ruleKey, score, type Condition } from '../models/regeln';
 
@@ -95,14 +95,17 @@ const game: GameMount<void> = (host, ctx) => {
   test.addEventListener('click', () => {
     const points = score(rule);
     tried.add(ruleKey(rule));
-    for (const card of cards) {
+    cards.forEach((card, i) => {
       const said = classify(card.pet, rule);
       const ok = said === card.pet.kind;
+      // Karten drehen sich nacheinander um: Bit prüft Tier für Tier
+      card.el.style.setProperty('--i', String(i));
+      replay(card.el, 'is-flip-seq');
       card.el.classList.toggle('is-right', ok);
       card.el.classList.toggle('is-wrong', !ok);
       card.mark.textContent = ok ? '✓' : '✗';
       card.guess.textContent = tx(L(`Bit: ${said === 'cat' ? 'Katze' : 'Hund'}`, `Bit: ${said === 'cat' ? 'cat' : 'dog'}`));
-    }
+    });
     result.set(points, PETS.length, `${points} / ${PETS.length}`, points >= best);
     if (points >= best) {
       ctx.say(L(`${points} von ${PETS.length}! Besser geht es mit diesen Merkmalen nicht. Aber ein paar Tiere erwische ich immer falsch.`, `${points} of ${PETS.length}! That’s the best these features allow. But I always get a few animals wrong.`), 'wow');
