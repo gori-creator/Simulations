@@ -13,16 +13,42 @@ import { LANGS, type Lang } from '../../i18n/config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 // Nach dem Layout (global.css) laden, damit die Startseiten-Regeln Vorrang haben.
 import '../../styles/home.css';
-import { alternates } from '../../lib/routes';
+import { SITE } from '../../config/site';
+import { alternates, href, withBase } from '../../lib/routes';
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
 }
 
 const lang = Astro.params.lang as Lang;
+// Strukturierte Daten: Website und Herausgeber, damit Suchmaschinen den Namen
+// „Scitura“ der Website zuordnen (Markenname im Suchergebnis).
+const home = new URL(href(lang, { kind: 'home' }), SITE.url).href;
+const jsonLd = {
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE.url}/#website`,
+      name: SITE.name[lang],
+      alternateName: [SITE.homeTitle[lang], 'scitura.de'],
+      url: home,
+      description: SITE.description[lang],
+      inLanguage: lang,
+      publisher: { '@id': `${SITE.url}/#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE.url}/#organization`,
+      name: SITE.name[lang],
+      url: `${SITE.url}/`,
+      logo: new URL(withBase('/icons/icon-512.png'), SITE.url).href,
+      email: SITE.contactEmail,
+    },
+  ],
+};
 ---
 
-<BaseLayout lang={lang} alternates={alternates({ kind: 'home' })} motionToggle>
+<BaseLayout lang={lang} alternates={alternates({ kind: 'home' })} motionToggle jsonLd={jsonLd}>
   <div class="scitura-home" data-scitura-home>
     <HomeHero lang={lang} />
     <HomeExperiment lang={lang} />

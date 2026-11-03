@@ -7,9 +7,19 @@ import type { Localized } from '../i18n/config';
 export const SITE = {
   name: { de: 'Scitura', en: 'Scitura' } satisfies Localized,
   shortName: 'Scitura',
+  /**
+   * Hauptadresse. Nur ein Build für diese Adresse darf in Suchmaschinen
+   * (Sitemap, robots.txt); Kopien (GitHub Pages, Vorschau) bekommen noindex.
+   */
+  url: 'https://scitura.de',
+  /** Titel der Startseite (Suchergebnis, Browser-Tab): Name plus worum es geht. */
+  homeTitle: {
+    de: 'Scitura – Interaktive Simulationen für Mathe und Physik',
+    en: 'Scitura – Interactive simulations for maths and physics',
+  } satisfies Localized,
   description: {
-    de: 'Kostenlose, interaktive Simulationen für Mathematik und Physik – für den Unterricht und zum Lernen zu Hause. Ohne Anmeldung, ohne Werbung, ohne Tracking.',
-    en: 'Free interactive simulations for mathematics and physics – for the classroom and for learning at home. No sign-up, no ads, no tracking.',
+    de: 'Scitura: kostenlose, interaktive Simulationen für Mathematik und Physik – Wissenschaft zum Ausprobieren, für den Unterricht und zum Lernen zu Hause. Ohne Anmeldung, ohne Werbung, ohne Tracking.',
+    en: 'Scitura: free interactive simulations for mathematics and physics – science to try out, for the classroom and for learning at home. No sign-up, no ads, no tracking.',
   } satisfies Localized,
   repoUrl: 'https://github.com/gori-creator/Simulations',
   /**
