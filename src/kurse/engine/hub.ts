@@ -545,7 +545,10 @@ export function initHub(root: HTMLElement): void {
     const facts = cert.querySelector<HTMLElement>('[data-cert-facts]');
     if (facts) {
       clear(facts);
-      for (const text of [ks(lang, 'certLessons', { done, total: lessons.length }), ks(lang, 'certStars', { n: stars }), ks(lang, 'certCards', { n: cards }), ks(lang, 'certBadges', { n: p.badges.length }), ks(lang, 'levelName', { n: info.level, name: info.name[lang] })]) facts.append(h('li', { text }));
+      const start = p.checks?.start;
+      const end = p.checks?.end;
+      const check = start && end ? ks(lang, 'certCheck', { a: start.correct, b: end.correct, total: end.total }) : '';
+      for (const text of [ks(lang, 'certLessons', { done, total: lessons.length }), stars === 1 ? ks(lang, 'certStar') : ks(lang, 'certStars', { n: stars }), cards === 1 ? ks(lang, 'certCard') : ks(lang, 'certCards', { n: cards }), p.badges.length === 1 ? ks(lang, 'certBadge') : ks(lang, 'certBadges', { n: p.badges.length }), ks(lang, 'levelName', { n: info.level, name: info.name[lang] }), ...(check ? [check] : [])]) facts.append(h('li', { text }));
     }
     set('[data-cert-worlds]', worlds.length ? ks(lang, 'certWorlds', { list: worlds.map((c) => `${c.icon} ${c.title[lang]}`).join(' · ') }) : ks(lang, 'certNoWorlds'));
     set('[data-cert-foot]', ks(lang, 'certFoot', { date: new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) }));
