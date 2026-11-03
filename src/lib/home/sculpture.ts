@@ -314,7 +314,8 @@ export function initSculpture(el: Elements): Journey {
   let projection = I(), width = 1, height = 1, viewHeight = 9.2;
   let frame = 0, last = 0, time = 0, progress = 0, targetProgress = 0, arrived = false;
   let startAt = 50, endAt = 800, totalLength = 1;
-  let sideJourney = false, joinLength = 0, joinY = 0, railX = 40, mainTop = 0, railEnd = 0, arrivalY = 0, joinAt = 0;
+  let sideJourney = false, joinLength = 0, joinY = 0, railX = 40, mainTop = 0, baseLeft = 0, railEnd = 0, arrivalY = 0, joinAt = 0;
+  let pinned = false;
   const arrivalListeners = new Set<() => void>();
   // Nur der gemeinsame Pausenzustand zählt: „Reduzierte Bewegung“ startet ihn pausiert,
   // der Knopf in der Kopfleiste (oder „Losfahren“) hebt das auf.
@@ -354,6 +355,7 @@ export function initSculpture(el: Elements): Journey {
     // Der geneigte Boden reicht unter −4,4: Platz für seine Vorderkante lassen.
     viewHeight = innerWidth < 761 ? Math.max(9.2, (5.6 * height) / (innerWidth - 28)) : innerWidth <= 1150 ? Math.max(9.2, (5.6 * height) / (innerWidth * 0.46)) : 9.2;
     mainTop = b.top + scrollY;
+    baseLeft = b.left + scrollX;
     const dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
@@ -420,23 +422,53 @@ export function initSculpture(el: Elements): Journey {
       `<circle cx="${cx + 1.8 * unit}" cy="${cy + 0.42 * unit}" r="${0.3 * unit}" fill="currentColor"/>`;
   }
 
+  /** Rollwinkel (Grad) nach `distance` Pixeln Weg bei Radius `radius`. */
+  function rollAngle(distance: number, radius: number): number {
+    // Auf der Randspur rollt die Münze ohne zu rutschen: Winkel = Weg / Radius.
+    // Im Bogen davor wächst die Drehrate gleichmäßig von 0 auf diesen Wert,
+    // damit es am Übergang keinen Ruck gibt.
+    const rate = 180 / (Math.PI * radius);
+    const join = Math.max(joinLength, 1);
+    return distance < join ? (rate * distance * distance) / (2 * join) : rate * (distance - join / 2);
+  }
+
   function moveCoin(delta: number): void {
     targetProgress = desiredProgress();
     if (motion.reduced && motion.paused) progress = 0;
     else if (!motion.paused) {
-      progress += (targetProgress - progress) * (1 - Math.exp(-delta * 14));
+      // Auf der Randspur folgt die Münze dem Scrollen ohne Verzögerung (sonst
+      // schwingt sie im Bild auf und ab); nur im Bogen davor wird geglättet.
+      const onRail = sideJourney && progress * totalLength >= joinLength && targetProgress * totalLength >= joinLength;
+      if (onRail) progress = targetProgress;
+      else progress += (targetProgress - progress) * (1 - Math.exp(-delta * 14));
       if (Math.abs(targetProgress - progress) * totalLength < 0.1) progress = targetProgress;
     }
     const distance = progress * totalLength;
     const p = path.getPointAtLength(distance);
     const transfer = sideJourney ? clamp(distance / Math.max(joinLength, 1), 0, 1) : progress;
     const initialSize = (1.07 * height) / viewHeight;
-    const coinSize = initialSize * (1 - transfer) + (sideJourney ? 48 : innerWidth < 761 ? 49 : 65) * transfer;
+    const railSize = sideJourney ? 48 : innerWidth < 761 ? 49 : 65;
+    const coinSize = initialSize * (1 - transfer) + railSize * transfer;
+    // Während die Münze auf der Spur mitläuft, steht sie fest im Bild: dann
+    // `position: fixed`, damit der Browser sie beim Scrollen nicht erst
+    // mitnimmt und danach zurücksetzt (Zittern bei schnellem Scrollen).
+    const railDistance = distance - joinLength;
+    const pin = sideJourney && railDistance > 0 && distance < totalLength - 0.5 && progress === targetProgress;
+    if (pin !== pinned) {
+      pinned = pin;
+      anchor.classList.toggle('is-pinned', pin);
+    }
+    const x = pin ? p.x + baseLeft - scrollX : p.x;
+    const y = pin ? p.y + mainTop - scrollY : p.y;
     anchor.style.visibility = 'visible';
-    anchor.style.transform = `translate3d(${p.x - 60}px,${p.y - 60}px,0) scale(${coinSize / 120})`;
-    const eased = transfer * transfer * (3 - 2 * transfer);
-    const sideDistance = Math.max(0, distance - joinLength);
-    rotor.style.transform = `rotateY(${Math.sin(transfer * Math.PI) * 22 + (sideJourney ? Math.sin(sideDistance / 220) * 12 : 0)}deg) rotateZ(${eased * 360 + (sideJourney ? sideDistance * 0.4 : 0)}deg)`;
+    anchor.style.transform = `translate3d(${x - 60}px,${y - 60}px,0) scale(${coinSize / 120})`;
+    if (sideJourney) {
+      // Kippen nur im Bogen (die Münze dreht sich zur Spur), auf der Spur flach.
+      rotor.style.transform = `rotateY(${Math.sin(transfer * Math.PI) * 22}deg) rotateZ(${rollAngle(distance, railSize / 2)}deg)`;
+    } else {
+      const eased = transfer * transfer * (3 - 2 * transfer);
+      rotor.style.transform = `rotateY(${Math.sin(transfer * Math.PI) * 22}deg) rotateZ(${eased * 360}deg)`;
+    }
     const atExperiment = sideJourney ? p.y >= arrivalY : progress >= 0.999;
     dock.classList.toggle('is-arrived', !sideJourney && atExperiment);
     if (atExperiment && !arrived && !paused()) {
