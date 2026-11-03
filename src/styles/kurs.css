@@ -3013,6 +3013,8 @@ button.kitem:hover:not(:disabled) {
 .kconv__px.is-pos { background: color-mix(in srgb, var(--k-a) calc(var(--v) * 100%), var(--surface)); }
 .kconv__px.is-neg { background: color-mix(in srgb, var(--k-b) calc(var(--v) * 100%), var(--surface)); }
 .kconv__px.is-window { outline: 2px solid var(--k-gold); outline-offset: -1px; }
+.kconv__px.is-pending { background: var(--surface); }
+.kconv-views:focus-visible { outline: 3px solid var(--k-tone); outline-offset: 4px; border-radius: 8px; }
 .kkernel { display: grid; grid-template-columns: repeat(3, 64px); gap: 6px; margin-top: 10px; }
 .kkernel__in { text-align: center; font-weight: 700; padding: 6px 4px; }
 

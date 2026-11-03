@@ -71,12 +71,13 @@ const game: GameMount<void> = (host, ctx) => {
   const imgRow = h('div', { class: 'krow' });
   const presetRow = h('div', { class: 'krow' });
   const kernelEl = h('div', { class: 'kkernel', attrs: { role: 'group', 'aria-label': tx({ de: 'Filter (3 × 3)', en: 'Filter (3 × 3)' }) } });
-  const views = h('div', { class: 'kconv-views' });
-  const readout = h('p', { class: 'kformula' });
+  const views = h('div', { class: 'kconv-views', attrs: { tabindex: 0, 'aria-label': tx({ de: 'Bild und Merkmalskarte – Pfeiltasten bewegen den Filter', en: 'Image and feature map – arrow keys move the filter' }) } });
+  const readout = h('p', { class: 'kformula', attrs: { 'aria-live': 'polite' } });
+  const slide = h('button', { class: 'kbtn kbtn--small', attrs: { type: 'button' }, text: `▶ ${tx({ de: 'Filter gleiten lassen', en: 'Slide the filter' })}` });
   const check = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `🧪 ${tx({ de: 'Ist mein Filter ein Detektor für waagerechte Kanten?', en: 'Is my filter a horizontal edge detector?' })}` });
   const goals = h('ul', { class: 'kgoals' });
   host.append(
-    h('div', { class: 'kpanel' }, imgRow, views, readout),
+    h('div', { class: 'kpanel' }, imgRow, views, h('div', { class: 'krow' }, slide), readout),
     h('div', { class: 'kpanel kgrid-2' }, h('div', {}, h('p', { class: 'kpanel__title', text: tx({ de: 'Filter wählen oder Zahlen selbst eintragen', en: 'Choose a filter or enter numbers yourself' }) }), presetRow, kernelEl), h('div', {}, h('div', { class: 'krow' }, check), goals)),
   );
 
@@ -120,6 +121,11 @@ const game: GameMount<void> = (host, ctx) => {
   }
 
   function renderImages(): void {
+    if (sliding) {
+      window.clearInterval(sliding);
+      sliding = 0;
+      slide.disabled = false;
+    }
     const img = IMAGES[imgId];
     const out = convolve(img, kernel);
     current = { img, out };
@@ -134,6 +140,42 @@ const game: GameMount<void> = (host, ctx) => {
     setHover(hover);
     renderGoals();
   }
+
+  // Der Filter gleitet Feld für Feld über das Bild; die Merkmalskarte füllt sich dabei
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let sliding = 0;
+  slide.addEventListener('click', () => {
+    if (sliding) return;
+    if (reduced) {
+      setHover(0);
+      return;
+    }
+    let i = 0;
+    outCells.forEach((c) => c.classList.add('is-pending'));
+    slide.disabled = true;
+    sliding = window.setInterval(() => {
+      outCells[i]?.classList.remove('is-pending');
+      setHover(i);
+      i += 1;
+      if (i >= 256) {
+        window.clearInterval(sliding);
+        sliding = 0;
+        slide.disabled = false;
+        setHover(-1);
+      }
+    }, 14);
+  });
+  // Tastatur: Pfeiltasten bewegen das Fenster (zeigt die Rechnung für ein Feld)
+  views.addEventListener('keydown', (event: KeyboardEvent) => {
+    const moves: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -16, ArrowDown: 16 };
+    const d = moves[event.key];
+    if (d === undefined) return;
+    event.preventDefault();
+    const start = hover < 0 ? 0 : hover;
+    const x = (start % 16) + (Math.abs(d) === 1 ? d : 0);
+    const y = Math.floor(start / 16) + (Math.abs(d) === 16 ? Math.sign(d) : 0);
+    setHover(Math.max(0, Math.min(15, y)) * 16 + Math.max(0, Math.min(15, x)));
+  });
 
   function renderGoals(): void {
     clear(goals);
