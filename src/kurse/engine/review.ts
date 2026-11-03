@@ -9,7 +9,10 @@ import type { LessonContent } from '../types';
 export interface ReviewQuestion {
   lessonId: string;
   question: Localized;
+  /** Auswahlfrage: Antworten (genau eine richtig). Rechenaufgabe: leer. */
   options: { text: Localized; correct: boolean; feedback?: Localized }[];
+  /** Rechenaufgabe („Rechne selbst“): Ergebnis, Toleranz, Lösungsweg. */
+  calc?: { answer: number; tolerance: number; unit?: string; solution: Localized };
 }
 
 /** Gleichmäßig gemischte Kopie (Fisher-Yates). */
@@ -27,6 +30,10 @@ export function questionsOf(contents: readonly { id: string; content: LessonCont
   const out: ReviewQuestion[] = [];
   for (const { id, content } of contents) {
     for (const step of content.steps) {
+      if (step.kind === 'calc') {
+        out.push({ lessonId: id, question: step.question, options: [], calc: { answer: step.answer, tolerance: step.tolerance, unit: step.unit, solution: step.solution } });
+        continue;
+      }
       if (step.kind !== 'choice') continue;
       const options = step.options.map((o) => ({ text: o.text, correct: o.correct === true, feedback: o.feedback }));
       if (options.filter((o) => o.correct).length !== 1 || options.length < 2) continue;

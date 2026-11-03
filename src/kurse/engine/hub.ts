@@ -213,8 +213,10 @@ export function initHub(root: HTMLElement): void {
     const ids = chapter.lessons.filter((l) => l.status === 'ready' && (p.lessons[l.id] || p.free)).map((l) => l.id);
     if (heading) heading.textContent = button.dataset.reviewTitle ?? '';
     clear(body);
-    if (typeof dialog.showModal === 'function') dialog.showModal();
-    else dialog.setAttribute('open', '');
+    if (!dialog.open) {
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    }
     if (ids.length === 0) {
       body.append(h('p', { text: ks(lang, 'reviewEmpty') }));
       return;
@@ -224,6 +226,51 @@ export function initHub(root: HTMLElement): void {
     const questions = pickQuestions(questionsOf(contents), REVIEW_COUNT);
     let index = 0;
     let correct = 0;
+
+    /** Rechenaufgabe im Wiederholen: ein Versuch, dann Lösungsweg. */
+    const showCalc = (question: ReviewQuestion, calc: NonNullable<ReviewQuestion['calc']>) => {
+      clear(body);
+      const feedback = h('p', { class: 'kreview__feedback', attrs: { 'aria-live': 'polite' } });
+      const next = h('button', { class: 'btn btn--primary', attrs: { type: 'button', hidden: true }, text: index < questions.length - 1 ? `${ks(lang, 'reviewNext')} →` : ks(lang, 'reviewFinish') });
+      const input = h('input', { class: 'input kcalc__input', attrs: { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': ks(lang, 'calcLabel'), placeholder: ks(lang, 'calcLabel') } });
+      const check = h('button', { class: 'btn', attrs: { type: 'button' }, text: ks(lang, 'calcCheck') });
+      const submit = () => {
+        const raw = input.value.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.');
+        const value = Number(raw);
+        if (!raw || !Number.isFinite(value)) {
+          feedback.textContent = ks(lang, 'calcEmpty');
+          return;
+        }
+        const ok = Math.abs(value - calc.answer) <= calc.tolerance;
+        if (ok) correct += 1;
+        input.disabled = true;
+        check.disabled = true;
+        input.classList.add(ok ? 'is-right' : 'is-wrong');
+        feedback.textContent = `${ok ? '✅' : '💡'} ${tx(calc.solution)}`;
+        next.hidden = false;
+        next.focus();
+      };
+      check.addEventListener('click', submit);
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') submit();
+      });
+      next.addEventListener('click', () => {
+        index += 1;
+        if (index < questions.length) show(questions[index]!);
+        else showResult();
+      });
+      body.append(
+        h('p', { class: 'kreview__intro', text: index === 0 ? ks(lang, 'reviewIntro') : '' }),
+        h('p', { class: 'kreview__count', text: `${ks(lang, 'reviewQuestion', { n: index + 1, total: questions.length })} · 🧮 ${ks(lang, 'calcTag')}` }),
+        h('p', { class: 'kreview__question', text: tx(question.question) }),
+        h('div', { class: 'kcalc__row' }, input, ...(calc.unit ? [h('span', { class: 'kcalc__unit', text: calc.unit })] : []), check),
+        feedback,
+        h('div', { class: 'kreview__actions' }, next),
+      );
+      input.focus();
+    };
+
+    const show = (question: ReviewQuestion) => (question.calc ? showCalc(question, question.calc) : showQuestion(question));
 
     const showQuestion = (question: ReviewQuestion) => {
       clear(body);
@@ -248,7 +295,7 @@ export function initHub(root: HTMLElement): void {
       }
       next.addEventListener('click', () => {
         index += 1;
-        if (index < questions.length) showQuestion(questions[index]!);
+        if (index < questions.length) show(questions[index]!);
         else showResult();
       });
       body.append(
@@ -287,7 +334,7 @@ export function initHub(root: HTMLElement): void {
       body.append(h('p', { text: ks(lang, 'reviewEmpty') }));
       return;
     }
-    showQuestion(questions[0]!);
+    show(questions[0]!);
   }
 
   root.addEventListener('click', (event) => {

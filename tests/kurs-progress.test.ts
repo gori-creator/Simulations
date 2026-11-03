@@ -229,7 +229,10 @@ describe('Wiederholen', () => {
     const random = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
     const picked = pickQuestions(all, 5, random);
     expect(picked.length).toBe(Math.min(5, all.length));
-    for (const q of picked) expect(q.options.filter((o) => o.correct).length).toBe(1);
+    for (const q of picked) {
+      if (q.calc) expect(Number.isFinite(q.calc.answer)).toBe(true);
+      else expect(q.options.filter((o) => o.correct).length).toBe(1);
+    }
     const lessonsUsed = new Set(picked.slice(0, world.lessons.length).map((q) => q.lessonId));
     expect(lessonsUsed.size).toBe(Math.min(world.lessons.length, picked.length));
   });
@@ -241,5 +244,13 @@ describe('Wiederholen', () => {
         expect(questionsOf(contents).length, `${c.id}/${chapter.id}`).toBeGreaterThanOrEqual(3);
       }
     }
+  });
+
+  it('Rechenaufgaben kommen mit ins Wiederholen', async () => {
+    const labor = getCourse('ki-labor');
+    const chapter = labor.chapters.find((c) => c.id === 'belohnung')!;
+    const contents = await Promise.all(chapter.lessons.map(async (l) => ({ id: l.id, content: await loadLesson(labor.id, l.id) })));
+    const all = questionsOf(contents);
+    expect(all.some((q) => q.calc && q.calc.answer === 5.5)).toBe(true);
   });
 });
