@@ -568,6 +568,11 @@
   will-change: transform;
 }
 
+/* Auf der Randspur steht die Münze fest im Bild (sculpture.ts setzt die Klasse). */
+.coin.is-pinned {
+  position: fixed;
+}
+
 .coin__perspective {
   position: absolute;
   inset: 0;
