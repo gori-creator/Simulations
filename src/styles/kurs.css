@@ -2497,6 +2497,13 @@ button.kitem:hover:not(:disabled) {
   margin-bottom: 32px;
 }
 
+/* sechs Kästen: auf breiten Bildschirmen 3 × 2 statt 5 + 1 */
+@media (min-width: 900px) {
+  .kfeatures {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .kfeature {
   padding: 16px 18px;
   border-radius: var(--radius-lg);
