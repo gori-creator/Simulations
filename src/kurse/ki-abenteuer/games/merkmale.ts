@@ -1,7 +1,7 @@
 import { L } from '../../../curriculum/helpers';
 import type { Localized } from '../../../i18n/config';
 import { clear, h } from '../../engine/dom';
-import { meter, solved } from '../../engine/ui';
+import { meter, solved, stagger } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { CREATURES, FEATURES, featureScore, type FeatureId, type Group } from '../models/merkmale';
 
@@ -74,10 +74,15 @@ const game: GameMount<void> = (host, ctx) => {
         ),
       );
     }
+    // Tiere fliegen nacheinander in ihre Kästen
+    stagger(boxes.querySelectorAll<HTMLElement>('.kitem'));
     result.set(r.correct, r.total, `${r.correct} / ${r.total}`, r.correct === r.total);
     if (!tested.has(f)) {
       tested.add(f);
-      table.append(h('li', {}, h('span', { text: tx(FEATURE[f]) }), h('strong', { text: `${r.correct} / ${r.total}` })));
+      // Vergleich der Merkmale als Balken: Wie viele hat Bit richtig sortiert?
+      const bar = h('span', { class: `kscore__bar${r.correct === r.total ? ' is-best' : ''}`, attrs: { 'aria-hidden': 'true' } });
+      bar.style.setProperty('--p', `${Math.round((100 * r.correct) / r.total)}%`);
+      table.append(h('li', { class: 'kscore__row' }, h('span', { class: 'kscore__line' }, h('span', { text: tx(FEATURE[f]) }), h('strong', { text: `${r.correct} / ${r.total}` })), bar));
     }
     if (r.correct === r.total) ctx.say(L('Federn haben nur Vögel – damit liege ich immer richtig!', 'Only birds have feathers – with that I’m always right!'), 'wow');
     else if (r.correct >= 9) ctx.say(L('Fast perfekt. Nur die Fledermaus steht auch auf zwei Beinen.', 'Almost perfect. Only the bat also stands on two legs.'), 'happy');

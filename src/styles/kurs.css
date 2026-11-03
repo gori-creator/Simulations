@@ -3091,7 +3091,8 @@ button.kitem:hover:not(:disabled) {
   25% { opacity: 1; transform: translate(-50%, -6px) scale(1.25); }
   100% { opacity: 0; transform: translate(-50%, -28px) scale(1); }
 }
-.kscore li.kscore__row { display: grid; gap: 6px; }
+.kscore li.kscore__row { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 6px; }
+.kscore__line { display: flex; justify-content: space-between; gap: 12px; }
 .kscore__bar { display: block; height: 10px; width: var(--p, 0%); border-radius: 999px; background: color-mix(in srgb, var(--k-tone) 55%, var(--surface-3)); }
 .kscore__bar.is-best { background: linear-gradient(90deg, var(--k-gold), #ff8f3d); }
 @media (prefers-reduced-motion: no-preference) {
