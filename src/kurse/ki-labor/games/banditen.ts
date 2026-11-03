@@ -40,6 +40,8 @@ const game: GameMount<void> = (host, ctx) => {
         st.wins += r;
         total += r;
         render();
+        // Ergebnis des Besuchers springt kurz hoch
+        arms.children[i]?.append(h('span', { class: 'kbandit__pop', attrs: { 'aria-hidden': 'true' }, text: r ? '🛒' : '·' }));
       });
       arms.append(b);
     });
@@ -62,7 +64,9 @@ const game: GameMount<void> = (host, ctx) => {
       const x = 40 + i * ((W - 60) / EPS.length);
       const bw = (W - 60) / EPS.length - 14;
       const y = H - 30 - (v / max) * (H - 60);
-      svg.append(s('rect', { class: 'kbars__bar', x, y, width: bw, height: H - 30 - y, rx: 4 }), s('text', { class: 'kbars__val', x: x + bw / 2, y: y - 5, 'text-anchor': 'middle' }, ctx.num(v, 0)), s('text', { class: 'kplot__tick', x: x + bw / 2, y: H - 12, 'text-anchor': 'middle' }, `ε = ${ctx.num(EPS[i]!, 2)}`));
+      const bar = s('rect', { class: 'kbars__bar is-grow', x, y, width: bw, height: H - 30 - y, rx: 4 });
+      bar.style.setProperty('--i', String(i));
+      svg.append(bar, s('text', { class: 'kbars__val', x: x + bw / 2, y: y - 5, 'text-anchor': 'middle' }, ctx.num(v, 0)), s('text', { class: 'kplot__tick', x: x + bw / 2, y: H - 12, 'text-anchor': 'middle' }, `ε = ${ctx.num(EPS[i]!, 2)}`));
     });
     const yMax = H - 30 - (H - 60);
     svg.append(s('line', { class: 'kbars__human', x1: 30, x2: W - 10, y1: yMax, y2: yMax }), s('text', { class: 'kbars__humantext', x: W - 12, y: yMax - 6, 'text-anchor': 'end' }, tx({ de: `immer die beste Seite: ${ctx.num(max, 0)}`, en: `always the best page: ${ctx.num(max, 0)}` })));

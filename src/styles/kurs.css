@@ -3087,6 +3087,10 @@ button.kitem:hover:not(:disabled) {
   .kscore__bar { transform-origin: left center; animation: kbar-grow 0.7s cubic-bezier(0.2, 0.9, 0.3, 1) both; animation-delay: calc(var(--i, 0) * 0.25s); }
 }
 @keyframes kbar-grow { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: no-preference) {
+  .kbars__bar.is-grow { transform-box: fill-box; transform-origin: bottom; animation: kbars-grow 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) both; animation-delay: calc(var(--i, 0) * 90ms); }
+}
+@keyframes kbars-grow { from { transform: scaleY(0); } }
 
 .kq { display: block; width: 100%; max-width: 420px; height: auto; }
 .kq__wall { fill: var(--k-wall); stroke: var(--k-wall-edge); stroke-width: 1.5; }
