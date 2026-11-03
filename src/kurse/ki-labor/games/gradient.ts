@@ -137,8 +137,24 @@ const game: GameMount<void> = (host, ctx) => {
     stepOnce();
     draw();
   });
-  tenBtn.addEventListener('click', () => {
-    for (let k = 0; k < 10; k++) stepOnce();
+  // 10 Schritte nacheinander zeigen: Man sieht den Weg ins Tal (oder das Aufschaukeln)
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let busy = false;
+  tenBtn.addEventListener('click', async () => {
+    if (busy) return;
+    busy = true;
+    for (const b of [stepBtn, tenBtn, resetBtn]) b.disabled = true;
+    for (let k = 0; k < 10; k++) {
+      stepOnce();
+      if (!reduced) {
+        draw();
+        stepBtn.disabled = true;
+        tenBtn.disabled = true;
+        await new Promise<void>((resolve) => window.setTimeout(resolve, 90));
+      }
+    }
+    busy = false;
+    resetBtn.disabled = false;
     draw();
   });
   resetBtn.addEventListener('click', reset);
