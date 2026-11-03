@@ -1,7 +1,7 @@
 import { L } from '../../../curriculum/helpers';
 import type { Localized } from '../../../i18n/config';
 import { clear, h, seeded } from '../../engine/dom';
-import { solved } from '../../engine/ui';
+import { solved, stagger } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { bubble, feed, mix, startWeights, TOPICS, watch, type Topic, type Weights } from '../models/feed';
 
@@ -36,6 +36,16 @@ const game: GameMount<void> = (host, ctx) => {
   const varietyBtn = h('button', { class: 'kbtn', attrs: { type: 'button', 'aria-pressed': 'false' }, text: `🌈 ${tx(L('Mehr Vielfalt einschalten', 'Turn on more variety'))}` });
   host.append(h('div', { class: 'kpanel kgrid-2' }, h('div', {}, h('p', { class: 'kpanel__title', text: tx(L('Dein Feed – tippe an, was du anschauen würdest', 'Your feed – tap what you would watch')) }), feedEl), h('div', {}, h('p', { class: 'kpanel__title', text: tx(L('Was der Algorithmus dir als Nächstes zeigt', 'What the algorithm shows you next')) }), meterEl, status, h('div', { class: 'krow' }, varietyBtn))));
 
+  // Balken bleiben stehen und wachsen/schrumpfen fließend – so sieht man den Algorithmus lernen
+  const rows = new Map(
+    TOPICS.map((t) => {
+      const fill = h('span', { class: 'kprobs__fill kprobs__fill--slow' });
+      const pct = h('span', { class: 'kprobs__p' });
+      meterEl.append(h('div', { class: 'kprobs__row' }, h('span', { class: 'kprobs__word', text: `${INFO[t].icon} ${tx(INFO[t].name)}` }), h('span', { class: 'kprobs__bar' }, fill), pct));
+      return [t, { fill, pct }] as const;
+    }),
+  );
+
   function render(): void {
     clear(feedEl);
     items.forEach((t, i) => {
@@ -50,12 +60,14 @@ const game: GameMount<void> = (host, ctx) => {
       });
       feedEl.append(b);
     });
-    clear(meterEl);
+    stagger(feedEl.children as HTMLCollectionOf<HTMLElement>);
     const m = mix(w, variety);
-    for (const t of [...TOPICS].sort((a, b) => m[b] - m[a])) {
-      const fill = h('span', { class: 'kprobs__fill' });
-      fill.style.setProperty('--p', `${Math.round(m[t] * 100)}%`);
-      meterEl.append(h('div', { class: 'kprobs__row' }, h('span', { class: 'kprobs__word', text: `${INFO[t].icon} ${tx(INFO[t].name)}` }), h('span', { class: 'kprobs__bar' }, fill), h('span', { class: 'kprobs__p', text: ctx.percent(m[t]) })));
+    const top = TOPICS.reduce((a, b) => (m[b] > m[a] ? b : a));
+    for (const t of TOPICS) {
+      const row = rows.get(t)!;
+      row.fill.style.setProperty('--p', `${Math.round(m[t] * 100)}%`);
+      row.fill.classList.toggle('is-top', t === top);
+      row.pct.textContent = ctx.percent(m[t]);
     }
     const b = bubble(w, variety);
     status.textContent = tx(L(`Angeschaut: ${watched} · Größtes Thema: ${ctx.percent(b)} deines Feeds`, `Watched: ${watched} · Biggest topic: ${ctx.percent(b)} of your feed`));

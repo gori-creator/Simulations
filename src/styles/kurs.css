@@ -3058,6 +3058,14 @@ button.kitem:hover:not(:disabled) {
 .kprobs__p { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
 
 .kprobs__fill.is-neg { background: var(--k-b); }
+.kprobs__fill--slow { transition: width 0.6s cubic-bezier(0.2, 0.9, 0.3, 1), background-color 0.3s; }
+.kprobs__fill.is-top { background: linear-gradient(90deg, var(--k-gold), #ff8f3d); }
+@media (prefers-reduced-motion: reduce) {
+  .kprobs__fill, .kprobs__fill--slow { transition: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .kfeed__item.is-stagger { animation: kitem-in 0.3s ease both; animation-delay: calc(var(--i, 0) * 50ms); }
+}
 .katt { display: block; width: 100%; height: auto; }
 .katt__arc { fill: none; stroke: var(--k-tone); stroke-linecap: round; }
 @media (prefers-reduced-motion: no-preference) {
