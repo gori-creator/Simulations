@@ -9,7 +9,7 @@ const timeline: ZeitstrahlProps = {
     { year: 1966, icon: '📉', text: L('ALPAC-Bericht: Maschinelle Übersetzung enttäuscht, die USA kürzen die Förderung.', 'ALPAC report: machine translation disappoints, the US cuts funding.') },
     { year: 1969, icon: '❌', text: L('Minsky und Papert: „Perceptrons“ zeigt die Grenzen einschichtiger Netze.', 'Minsky and Papert: “Perceptrons” shows the limits of single-layer networks.') },
     { year: 1973, icon: '❄️', text: L('Lighthill-Bericht: Großbritannien streicht fast alle KI-Gelder.', 'Lighthill report: Britain cuts almost all AI funding.') },
-    { year: 1980, icon: '💼', text: L('Expertensysteme werden ein Geschäft – Firmen investieren Milliarden.', 'Expert systems become a business – companies invest billions.') },
+    { year: 1980, icon: '💼', text: L('Expertensysteme werden ein Geschäft – Mitte der 1980er geben Firmen jährlich über eine Milliarde Dollar dafür aus.', 'Expert systems become a business – by the mid-1980s companies spend over a billion dollars a year on them.') },
     { year: 1987, icon: '🧊', text: L('Der Markt für Spezialrechner bricht ein: der zweite KI-Winter.', 'The market for specialised machines collapses: the second AI winter.') },
     { year: 2012, icon: '🚀', text: L('Ein tiefes Netz gewinnt ImageNet – der Deep-Learning-Boom beginnt.', 'A deep network wins ImageNet – the deep learning boom begins.') },
   ],

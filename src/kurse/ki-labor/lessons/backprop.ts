@@ -9,8 +9,8 @@ const lesson: LessonContent = {
       kind: 'info',
       title: L('Kettenregel', 'Chain rule'),
       text: L(
-        'Hängt L von a ab, a von z und z von w, dann gilt ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w. Backpropagation rechnet diese Produkte von hinten nach vorne aus und benutzt Zwischenergebnisse mehrfach. So kostet der ganze Gradient etwa so viel wie ein Vorwärtsdurchlauf – egal wie viele Gewichte es gibt.',
-        'If L depends on a, a on z and z on w, then ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w. Backpropagation computes these products from back to front and reuses intermediate results. So the whole gradient costs about as much as one forward pass – no matter how many weights there are.',
+        'Hängt L von a ab, a von z und z von w, dann gilt ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w. Backpropagation rechnet diese Produkte von hinten nach vorne aus und benutzt Zwischenergebnisse mehrfach. So kostet der ganze Gradient nur etwa das Zwei- bis Dreifache eines Vorwärtsdurchlaufs – egal wie viele Gewichte es gibt.',
+        'If L depends on a, a on z and z on w, then ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w. Backpropagation computes these products from back to front and reuses intermediate results. So the whole gradient costs only about two to three times a forward pass – no matter how many weights there are.',
       ),
       formula: '∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w',
     },
