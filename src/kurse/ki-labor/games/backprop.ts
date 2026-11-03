@@ -38,7 +38,8 @@ const game: GameMount<void> = (host, ctx) => {
   const work = h('div', { class: 'kpanel' });
   host.append(h('div', { class: 'kpanel' }, svg), work);
 
-  function graph(): void {
+  /** fresh.fwd: gerade berechneter Knoten (Signal läuft nach rechts); fresh.back: neuer Gradient (läuft nach links). */
+  function graph(fresh: { fwd?: number; back?: number } = {}): void {
     clear(svg);
     const P = pass(params);
     const nodes = [
@@ -52,10 +53,23 @@ const game: GameMount<void> = (host, ctx) => {
     }
     // w und b als Eingänge von z
     svg.append(s('text', { class: 'kgraph__param', x: 230, y: 16, 'text-anchor': 'middle' }, `w = ${n(params.w)}   b = ${n(params.b)}`));
-    for (const node of nodes) {
-      svg.append(s('rect', { class: `kgraph__node${node.show ? ' is-known' : ''}`, x: node.x - 46, y: 44, width: 92, height: 52, rx: 12 }));
-      svg.append(s('text', { class: 'kgraph__value', x: node.x, y: 76, 'text-anchor': 'middle' }, node.show ? n(node.value) : '?'));
+    nodes.forEach((node, k) => {
+      const isNew = fresh.fwd === k ? ' is-new' : '';
+      svg.append(s('rect', { class: `kgraph__node${node.show ? ' is-known' : ''}${isNew}`, x: node.x - 46, y: 44, width: 92, height: 52, rx: 12 }));
+      svg.append(s('text', { class: `kgraph__value${isNew}`, x: node.x, y: 76, 'text-anchor': 'middle' }, node.show ? n(node.value) : '?'));
       svg.append(s('text', { class: 'kgraph__label', x: node.x, y: 116, 'text-anchor': 'middle' }, node.label));
+    });
+    // Signal auf der Kante: vorwärts zum neuen Knoten, rückwärts (rot) zum Knoten davor
+    const edge = (k: number) => [nodes[k]!.x + 46, nodes[k + 1]!.x - 46] as const;
+    const dot = (from: number, to: number, back: boolean) => {
+      const c = s('circle', { class: `kgraph__pulse${back ? ' is-back' : ''}`, cx: from, cy: 70, r: 7 });
+      c.style.setProperty('--dx', `${to - from}px`);
+      svg.append(c);
+    };
+    if (fresh.fwd) dot(...edge(fresh.fwd - 1), false);
+    if (fresh.back) {
+      const [x1, x2] = edge(Math.max(0, 3 - fresh.back));
+      dot(x2, x1, true);
     }
     // Gradienten rückwärts (unter den Kanten)
     const back: [number, string, boolean][] = [
@@ -65,7 +79,7 @@ const game: GameMount<void> = (host, ctx) => {
       [140, `∂L/∂b = ${n(P.dLdb)}`, backIndex >= 4],
     ];
     back.forEach(([x, text, show], i) => {
-      if (show) svg.append(s('text', { class: 'kgraph__grad', x, y: i === 3 ? 160 : 142, 'text-anchor': 'middle' }, `← ${text}`));
+      if (show) svg.append(s('text', { class: `kgraph__grad${fresh.back === i + 1 ? ' is-new' : ''}`, x, y: i === 3 ? 160 : 142, 'text-anchor': 'middle' }, `← ${text}`));
     });
   }
 
@@ -75,7 +89,7 @@ const game: GameMount<void> = (host, ctx) => {
     const b = h('button', { class: 'kbtn kbtn--main', attrs: { type: 'button' }, text: `▶ ${labels[forwardStep]}` });
     b.addEventListener('click', () => {
       forwardStep += 1;
-      graph();
+      graph({ fwd: forwardStep });
       const P = pass(params);
       const msgs: Localized[] = [
         { de: `z = ${n(params.w)} · ${n(SAMPLE.x)} + (${n(params.b)}) = ${n(P.z)}`, en: `z = ${n(params.w)} · ${n(SAMPLE.x)} + (${n(params.b)}) = ${n(P.z)}` },
@@ -106,7 +120,7 @@ const game: GameMount<void> = (host, ctx) => {
           return;
         }
         backIndex += 1;
-        graph();
+        graph({ back: backIndex });
         const P = pass(params);
         const extra: Record<Local['key'], Localized> = {
           dLda: { de: `= 2 · ${n(P.a)} = ${n(P.dLda)}`, en: `= 2 · ${n(P.a)} = ${n(P.dLda)}` },

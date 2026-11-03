@@ -2959,6 +2959,17 @@ button.kitem:hover:not(:disabled) {
 .kgraph__label { fill: var(--muted); font-size: 12px; font-family: var(--font-sans); }
 .kgraph__param { fill: var(--muted); font-size: 12px; font-family: var(--font-mono); }
 .kgraph__grad { fill: var(--k-bad); font-size: 13px; font-weight: 700; font-family: var(--font-mono); }
+.kgraph__pulse { fill: var(--k-gold); stroke: var(--surface); stroke-width: 2; opacity: 0; }
+.kgraph__pulse.is-back { fill: var(--k-bad); }
+@media (prefers-reduced-motion: no-preference) {
+  .kgraph__pulse { animation: kgraph-move 0.5s ease-in-out both; }
+  .kgraph__node.is-new { animation: kgraph-flash 0.7s ease both; animation-delay: 0.4s; }
+  .kgraph__value.is-new { transform-box: fill-box; transform-origin: center; animation: kcheck-pop 0.45s ease both; animation-delay: 0.4s; }
+  .kgraph__grad.is-new { animation: kgrad-in 0.45s ease both; animation-delay: 0.4s; }
+}
+@keyframes kgraph-move { 0% { opacity: 1; transform: none; } 90% { opacity: 1; } 100% { opacity: 0; transform: translateX(var(--dx)); } }
+@keyframes kgraph-flash { 30% { stroke-width: 5; } }
+@keyframes kgrad-in { from { opacity: 0; transform: translateX(24px); } }
 
 .kspark { display: block; width: 100%; max-width: 360px; height: auto; margin-top: 8px; background: var(--surface-2); border-radius: 8px; }
 
