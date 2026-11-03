@@ -28,11 +28,27 @@ const game: GameMount<void> = (host, ctx) => {
   const tryBox = h('div', { class: 'kpanel', attrs: { hidden: true } }, h('p', { class: 'kpanel__title', text: tx({ de: 'Dein Tokenizer: Tippe ein Wort', en: 'Your tokenizer: type a word' }) }), tryIn, tryOut);
   host.append(h('div', { class: 'kpanel' }, status, wordsEl, h('div', { class: 'krow' }, countBtn), choices, vocab), tryBox);
 
-  const tokenChips = (seg: string[]) => h('span', { class: 'ktok' }, ...seg.map((t) => h('span', { class: `ktok__t${t.length > 1 ? ' is-merged' : ''}`, text: t })));
+  const tokenChips = (seg: string[], fresh: string) => h('span', { class: 'ktok' }, ...seg.map((t) => h('span', { class: `ktok__t${t.length > 1 ? ' is-merged' : ''}${t === fresh ? ' is-new' : ''}`, text: t })));
 
-  function render(): void {
+  /** Wo kommt das Paar vor? Beim Zeigen auf einen Kandidaten leuchten alle Stellen auf – hilft beim Zählen. */
+  function highlight(pair: [string, string] | null): void {
+    for (const row of wordsEl.querySelectorAll<HTMLElement>('.ktok')) {
+      const chips = [...row.children] as HTMLElement[];
+      chips.forEach((c) => c.classList.remove('is-pair'));
+      if (!pair) continue;
+      for (let i = 0; i + 1 < chips.length; i++) {
+        // wie beim Zählen: jede Stelle, auch überlappend
+        if (chips[i]!.textContent === pair[0] && chips[i + 1]!.textContent === pair[1]) {
+          chips[i]!.classList.add('is-pair');
+          chips[i + 1]!.classList.add('is-pair');
+        }
+      }
+    }
+  }
+
+  function render(fresh = ''): void {
     clear(wordsEl);
-    for (const w of words) wordsEl.append(h('div', { class: 'ktok-row' }, tokenChips(w.seg), h('small', { text: `× ${w.count}` })));
+    for (const w of words) wordsEl.append(h('div', { class: 'ktok-row' }, tokenChips(w.seg, fresh), h('small', { text: `× ${w.count}` })));
     const total = words.reduce((s, w) => s + w.seg.length * w.count, 0);
     status.textContent = merges.length < ROUNDS ? tx({ de: `Runde ${merges.length + 1} von ${ROUNDS}: Welches Paar kommt am häufigsten vor? (Tokens im Text: ${total})`, en: `Round ${merges.length + 1} of ${ROUNDS}: which pair occurs most often? (tokens in the text: ${total})` }) : tx({ de: `Fertig! Tokens im Text: ${total} statt ${initial(ctx.lang).reduce((s, w) => s + w.seg.length * w.count, 0)} am Anfang.`, en: `Done! Tokens in the text: ${total} instead of ${initial(ctx.lang).reduce((s, w) => s + w.seg.length * w.count, 0)} at the start.` });
     vocab.textContent = merges.length ? `${tx({ de: 'Neue Tokens', en: 'New tokens' })}: ${merges.map((m) => m.join('')).join(', ')}` : '';
@@ -44,6 +60,10 @@ const game: GameMount<void> = (host, ctx) => {
     const shown = top.slice(0, 6).sort((a, b) => a.pair.join('').localeCompare(b.pair.join('')));
     for (const cand of shown) {
       const b = h('button', { class: 'kbtn', attrs: { type: 'button' }, text: `${cand.pair[0]} + ${cand.pair[1]}${showCounts ? ` (${cand.count})` : ''}` });
+      b.addEventListener('pointerenter', () => highlight(cand.pair));
+      b.addEventListener('focus', () => highlight(cand.pair));
+      b.addEventListener('pointerleave', () => highlight(null));
+      b.addEventListener('blur', () => highlight(null));
       b.addEventListener('click', () => {
         if (cand.count < best) {
           ctx.mistake();
@@ -54,7 +74,7 @@ const game: GameMount<void> = (host, ctx) => {
         merges.push(cand.pair);
         words = merge(words, cand.pair);
         ctx.say({ de: `„${cand.pair.join('')}“ (${cand.count}-mal) wird ein Token.`, en: `“${cand.pair.join('')}” (${cand.count} times) becomes a token.` }, 'happy');
-        render();
+        render(cand.pair.join(''));
         if (merges.length >= ROUNDS) done();
       });
       choices.append(b);

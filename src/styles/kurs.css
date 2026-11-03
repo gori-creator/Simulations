@@ -2978,6 +2978,12 @@ button.kitem:hover:not(:disabled) {
 .ktok { display: inline-flex; gap: 3px; flex-wrap: wrap; }
 .ktok__t { padding: 2px 7px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.95rem; }
 .ktok__t.is-merged { background: color-mix(in srgb, var(--k-tone) 18%, var(--surface)); border-color: var(--k-tone); font-weight: 700; }
+.ktok__t.is-pair { background: color-mix(in srgb, var(--k-gold) 30%, var(--surface)); border-color: var(--k-gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--k-gold) 45%, transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  .ktok__t { transition: background-color 0.15s, box-shadow 0.15s; }
+  .ktok__t.is-new { animation: ktok-snap 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+}
+@keyframes ktok-snap { 0% { transform: scaleX(1.5); opacity: 0.3; } 100% { transform: none; } }
 
 .kvec__dot { fill: var(--surface); stroke: var(--border-strong); stroke-width: 1.5; }
 .kvec__dot.is-slot { stroke: var(--k-gold); stroke-width: 3; }
