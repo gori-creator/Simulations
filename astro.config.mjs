@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import { katexMarkdownPlugin } from './tooling/katex-markdown.mjs';
 import serviceWorker from './tooling/service-worker.mjs';
+import sitemap from './tooling/sitemap.mjs';
 import { taskLayoutPlugin } from './tooling/task-layout.mjs';
 
 /**
@@ -28,7 +29,7 @@ export default defineConfig({
       hastPlugins: [taskLayoutPlugin],
     }),
   },
-  integrations: [serviceWorker()],
+  integrations: [sitemap(), serviceWorker()],
   /**
    * Content-Security-Policy als <meta>-Tag auf jeder Seite (nur im Build, nicht
    * im Dev-Server): Skripte, Styles, Bilder, Schriften usw. nur von der eigenen

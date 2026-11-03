@@ -31,7 +31,7 @@ export function initCarousel(root: HTMLElement): () => void {
   if (!stage || !ring || items.length === 0) return () => {};
 
   const n = items.length;
-  const wide = matchMedia('(min-width: 720px) and (prefers-reduced-motion: no-preference)');
+  const wide = matchMedia('(min-width: 720px)');
   const listeners: [EventTarget, string, EventListener, AddEventListenerOptions?][] = [];
   const on = (target: EventTarget, type: string, listener: EventListener, options?: AddEventListenerOptions) => {
     target.addEventListener(type, listener, options);

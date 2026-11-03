@@ -3355,10 +3355,12 @@ legend .ctl__info {
   }
 }
 
+/* Gilt nicht für die Startseite: Dort läuft die Bewegung immer und lässt sich
+   über den Pausenknopf anhalten (lib/home/motion.ts). */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  :not(.scitura-home *),
+  :not(.scitura-home *)::before,
+  :not(.scitura-home *)::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
