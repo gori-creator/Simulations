@@ -43,6 +43,14 @@ const lesson: LessonContent = {
         { text: L('Große Modelle kopieren nie.', 'Large models never copy.'), feedback: L('Selten, aber es kommt vor – besonders bei häufig vorkommenden Texten.', 'Rarely, but it happens – especially with texts that occur often.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Nach „Der Hund“ folgte im Text 6-mal „bellt“ und 2-mal „schläft“. Mit Temperatur T = 0,5 gilt P ∝ Anzahl^(1/T). Wie groß ist P(„bellt“)?', 'After “the dog” the text had “barks” 6 times and “sleeps” 2 times. With temperature T = 0.5, P ∝ count^(1/T). What is P(“barks”)?'),
+      answer: 0.9,
+      tolerance: 0.005,
+      hint: L('1/T = 2: Quadriere die Zählungen und teile durch ihre Summe.', '1/T = 2: square the counts and divide by their sum.'),
+      solution: L('6² = 36 und 2² = 4. P = 36 / (36 + 4) = 0,9. Bei T = 1 wären es 6/8 = 0,75 – kleine Temperatur macht das Häufige noch häufiger.', '6² = 36 and 2² = 4. P = 36 / (36 + 4) = 0.9. With T = 1 it would be 6/8 = 0.75 – a low temperature makes the frequent even more frequent.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Ein n-Gramm-Modell sieht nur die letzten ein, zwei Wörter. Echte Sprache braucht mehr: Worauf bezieht sich „er“ zehn Wörter später? Dafür gibt es Aufmerksamkeit.', 'An n-gram model only sees the last one or two words. Real language needs more: what does “it” refer to ten words later? That’s what attention is for.') },
   ],
 };

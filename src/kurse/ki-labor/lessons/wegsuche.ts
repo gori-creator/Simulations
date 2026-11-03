@@ -52,6 +52,14 @@ const lesson: LessonContent = {
         { text: L('Für Labyrinthe.', 'For mazes.'), feedback: L('Für kleine Labyrinthe ist sie völlig in Ordnung.', 'For small mazes it’s perfectly fine.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Ein Feld n bei (2 | 3) ist 5 Schritte vom Start entfernt (g = 5), das Ziel liegt bei (6 | 1). Wie groß ist f(n) = g(n) + h(n) mit der Manhattan-Distanz als h?', 'A cell n at (2 | 3) is 5 steps from the start (g = 5), the goal is at (6 | 1). What is f(n) = g(n) + h(n) with the Manhattan distance as h?'),
+      answer: 11,
+      tolerance: 0.001,
+      hint: L('h = |x − x_Z| + |y − y_Z|.', 'h = |x − x_G| + |y − y_G|.'),
+      solution: L('h = |2 − 6| + |3 − 1| = 4 + 2 = 6. f = 5 + 6 = 11. A* nimmt als Nächstes das offene Feld mit dem kleinsten f.', 'h = |2 − 6| + |3 − 1| = 4 + 2 = 6. f = 5 + 6 = 11. A* next takes the open cell with the smallest f.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Bisher war die Welt still. Spannend wird es, wenn ein Gegner mitspielt und deine Züge durchkreuzt. Dafür braucht man Spielbäume.', 'So far the world was passive. It gets exciting when an opponent plays along and counters your moves. For that you need game trees.') },
   ],
 };

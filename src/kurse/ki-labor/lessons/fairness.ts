@@ -32,6 +32,14 @@ const lesson: LessonContent = {
         'Which fairness measure should apply can’t be decided by a formula. It is a question of values that society, lawmakers and the people affected must answer. What matters is that such systems disclose how they decide, can be audited, and that people can object.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Gruppe A: 100 Anträge, 60 Personen zahlen zurück. Angenommen werden 48 der Zuverlässigen und 8 der Unzuverlässigen. Wie hoch ist die Annahmequote?', 'Group A: 100 applications, 60 people repay. Accepted are 48 of the reliable and 8 of the unreliable. What is the acceptance rate?'),
+      answer: 56,
+      tolerance: 0.5, unit: '%',
+      hint: L('Annahmequote = alle Angenommenen / alle Anträge.', 'Acceptance rate = all accepted / all applications.'),
+      solution: L('(48 + 8) / 100 = 56 %. Zum Vergleich: Die Trefferquote ist 48 / 60 = 80 %, die Fehlalarmquote 8 / 40 = 20 %. Drei verschiedene Zahlen – drei mögliche Fairness-Maße.', '(48 + 8) / 100 = 56%. For comparison: the true positive rate is 48 / 60 = 80%, the false positive rate 8 / 40 = 20%. Three different numbers – three possible fairness measures.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Genau dafür gibt es seit 2024 in Europa ein Gesetz. Schauen wir es uns an.', 'That’s exactly why Europe has had a law since 2024. Let’s look at it.') },
   ],
 };

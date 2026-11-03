@@ -49,6 +49,14 @@ const lesson: LessonContent = {
         { text: L('1 %', '1%'), feedback: L('Der positive Test erhöht die Wahrscheinlichkeit schon deutlich – nur nicht auf 99 %.', 'The positive test does raise the probability a lot – just not to 99%.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('40 % aller Mails sind Spam. Das Wort „Gewinn“ steht in 30 % der Spam-Mails, aber nur in 2 % der normalen Mails. Wie groß ist P(Spam | „Gewinn“) in Prozent?', '40% of all mails are spam. The word “prize” appears in 30% of spam mails but only in 2% of normal mails. What is P(spam | “prize”) in per cent?'),
+      answer: 90.9,
+      tolerance: 0.6, unit: '%',
+      hint: L('Satz von Bayes: P(S|W) = P(W|S)·P(S) / (P(W|S)·P(S) + P(W|H)·P(H)).', 'Bayes’ theorem: P(S|W) = P(W|S)·P(S) / (P(W|S)·P(S) + P(W|H)·P(H)).'),
+      solution: L('P = 0,3·0,4 / (0,3·0,4 + 0,02·0,6) = 0,12 / 0,132 ≈ 0,909 = 90,9 %, also rund 91 %. Ein einziges Wort verschiebt 40 % auf über 90 %.', 'P = 0.3·0.4 / (0.3·0.4 + 0.02·0.6) = 0.12 / 0.132 ≈ 0.909 = 90.9%, i.e. about 91%. A single word shifts 40% to over 90%.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Wahrscheinlichkeit misst Unsicherheit. Information misst, wie viel Unsicherheit eine Frage beseitigt. Damit baut die Mission dieser Welt einen Entscheidungsbaum.', 'Probability measures uncertainty. Information measures how much uncertainty a question removes. With that, this world’s mission builds a decision tree.') },
   ],
 };

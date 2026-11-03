@@ -43,6 +43,14 @@ const lesson: LessonContent = {
         { text: L('Nicht zwingend – Korrelation ist keine Kausalität; es könnte z. B. eine dritte Ursache geben.', 'Not necessarily – correlation is not causation; there could be a third cause, for example.'), correct: true, feedback: L('Genau. Lernende Systeme finden Zusammenhänge, nicht automatisch Ursachen.', 'Exactly. Learning systems find relationships, not automatically causes.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Drei Messpunkte: (0 | 1), (1 | 2), (2 | 4). Welche Steigung m hat die Ausgleichsgerade?', 'Three data points: (0 | 1), (1 | 2), (2 | 4). What is the slope m of the regression line?'),
+      answer: 1.5,
+      tolerance: 0.001,
+      hint: L('m = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)² mit x̄ = 1 und ȳ = 7/3.', 'm = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)² with x̄ = 1 and ȳ = 7/3.'),
+      solution: L('x̄ = 1, ȳ = 7/3. Zähler: (−1)·(1 − 7/3) + 0 + 1·(4 − 7/3) = 4/3 + 5/3 = 3. Nenner: 1 + 0 + 1 = 2. m = 3/2 = 1,5; dazu b = ȳ − m·x̄ ≈ 0,83.', 'x̄ = 1, ȳ = 7/3. Numerator: (−1)·(1 − 7/3) + 0 + 1·(4 − 7/3) = 4/3 + 5/3 = 3. Denominator: 1 + 0 + 1 = 2. m = 3/2 = 1.5; and b = ȳ − m·x̄ ≈ 0.83.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Die Gerade hatte eine Formel. Für fast alle anderen Modelle nicht. Im nächsten Experiment suchst du das Minimum wie ein Netz: bergab, Schritt für Schritt.', 'The line had a formula. Almost all other models don’t. In the next experiment you look for the minimum like a network does: downhill, step by step.') },
   ],
 };

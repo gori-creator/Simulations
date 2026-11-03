@@ -51,6 +51,14 @@ const lesson: LessonContent = {
         { text: L('Es spielt zufällige Züge.', 'It plays random moves.'), feedback: L('Zufall kommt in der nächsten Lektion – bei Go.', 'Randomness comes in the next lesson – with Go.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Ada (max) hat zwei Züge. Nach Zug 1 kann der Gegner (min) zu Endwerten 3 oder 5 führen, nach Zug 2 zu 2 oder 9. Welchen Minimax-Wert hat Adas Stellung?', 'Ada (max) has two moves. After move 1 the opponent (min) can lead to final values 3 or 5, after move 2 to 2 or 9. What is the minimax value of Ada’s position?'),
+      answer: 3,
+      tolerance: 0.001,
+      hint: L('Erst je Zug das Minimum (Gegner), dann das Maximum (Ada).', 'First the minimum for each move (opponent), then the maximum (Ada).'),
+      solution: L('Zug 1: min(3, 5) = 3. Zug 2: min(2, 9) = 2. Ada wählt max(3, 2) = 3 – die verlockende 9 bekommt sie nie, weil der Gegner sie verhindert.', 'Move 1: min(3, 5) = 3. Move 2: min(2, 9) = 2. Ada picks max(3, 2) = 3 – she never gets the tempting 9 because the opponent prevents it.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Bei Go hilft das nicht: Es gibt rund 250 mögliche Züge pro Stellung, und eine gute Bewertungsfunktion konnte lange niemand bauen. Die Lösung klingt verrückt: Zufall.', 'For Go that doesn’t help: there are about 250 possible moves per position, and for a long time nobody could build a good evaluation function. The answer sounds crazy: randomness.') },
   ],
 };

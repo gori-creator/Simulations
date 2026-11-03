@@ -32,6 +32,14 @@ const lesson: LessonContent = {
         'The sigmoid derivative a·(1 − a) is at most 0.25. With ten layers the gradient at the front is multiplied by up to 0.25¹⁰ ≈ 0.000001 – the early layers barely learn. One reason deep networks were long considered untrainable. Remedies: ReLU (derivative 1 for positive values), better initial weights, shortcut connections.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Rechengraph: z = w·x mit w = 2 und x = 3, dann a = z², Verlust L = a. Wie groß ist ∂L/∂w?', 'Computation graph: z = w·x with w = 2 and x = 3, then a = z², loss L = a. What is ∂L/∂w?'),
+      answer: 36,
+      tolerance: 0.001,
+      hint: L('Kettenregel: ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w.', 'Chain rule: ∂L/∂w = ∂L/∂a · ∂a/∂z · ∂z/∂w.'),
+      solution: L('z = 6. ∂L/∂a = 1, ∂a/∂z = 2z = 12, ∂z/∂w = x = 3. Produkt: 1 · 12 · 3 = 36.', 'z = 6. ∂L/∂a = 1, ∂a/∂z = 2z = 12, ∂z/∂w = x = 3. Product: 1 · 12 · 3 = 36.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Jetzt hast du alle Teile: Neuronen, Schichten, Verlust, Gradient, Backpropagation. Zeit für die Mission dieser Welt – echte Netze trainieren.', 'Now you have all the parts: neurons, layers, loss, gradient, backpropagation. Time for this world’s mission – training real networks.') },
   ],
 };

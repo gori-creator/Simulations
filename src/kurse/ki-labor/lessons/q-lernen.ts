@@ -41,6 +41,14 @@ const lesson: LessonContent = {
         'Here Q fits in a table of 30 cells × 4 actions. In Atari games the states are screen images – endlessly many. In 2013 DeepMind replaced the table with a convolutional network (deep Q-network). AlphaGo and its successors combined learned evaluations with tree search and learned from millions of games against themselves.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Q(s, a) = 2, α = 0,5, γ = 0,9. Der Schritt bringt r = 0, und im neuen Zustand ist maxₐ′ Q(s′, a′) = 10. Wie groß ist Q(s, a) danach?', 'Q(s, a) = 2, α = 0.5, γ = 0.9. The step yields r = 0, and in the new state maxₐ′ Q(s′, a′) = 10. What is Q(s, a) afterwards?'),
+      answer: 5.5,
+      tolerance: 0.001,
+      hint: L('Q ← Q + α·(r + γ·max Q′ − Q).', 'Q ← Q + α·(r + γ·max Q′ − Q).'),
+      solution: L('Ziel: r + γ·max Q′ = 0 + 0,9·10 = 9. Fehler: 9 − 2 = 7. Q ← 2 + 0,5·7 = 5,5. Der Wert wandert halb zum Ziel – so sickert die Belohnung Schritt für Schritt zurück.', 'Target: r + γ·max Q′ = 0 + 0.9·10 = 9. Error: 9 − 2 = 7. Q ← 2 + 0.5·7 = 5.5. The value moves halfway to the target – that is how reward seeps back step by step.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Die letzte Welt: Was passiert, wenn KI nicht nur erkennt und entscheidet, sondern Bilder erzeugt und über Menschen urteilt? Und wer setzt die Regeln?', 'The last world: what happens when AI doesn’t just recognise and decide, but generates images and judges people? And who sets the rules?') },
   ],
 };

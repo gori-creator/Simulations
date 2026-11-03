@@ -34,6 +34,14 @@ const lesson: LessonContent = {
       ],
       explain: L('Der AI Act verlangt, dass künstlich erzeugte oder veränderte Bilder, Töne und Videos als solche gekennzeichnet werden.', 'The AI Act requires artificially generated or manipulated images, audio and video to be labelled as such.'),
     },
+    {
+      kind: 'calc',
+      question: L('Mit ᾱₜ = 0,64 gilt xₜ = √ᾱₜ·x₀ + √(1 − ᾱₜ)·ε. Welchen Wert hat xₜ für das Pixel x₀ = 1 und das Rauschen ε = −0,5?', 'With ᾱₜ = 0.64, xₜ = √ᾱₜ·x₀ + √(1 − ᾱₜ)·ε. What is xₜ for the pixel x₀ = 1 and the noise ε = −0.5?'),
+      answer: 0.5,
+      tolerance: 0.001,
+      hint: L('√0,64 = 0,8 und √0,36 = 0,6.', '√0.64 = 0.8 and √0.36 = 0.6.'),
+      solution: L('xₜ = 0,8·1 + 0,6·(−0,5) = 0,8 − 0,3 = 0,5. Je kleiner ᾱₜ, desto mehr Rauschen steckt im Pixel.', 'xₜ = 0.8·1 + 0.6·(−0.5) = 0.8 − 0.3 = 0.5. The smaller ᾱₜ, the more noise is in the pixel.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Erzeugen ist das eine. Noch heikler wird es, wenn KI über Menschen entscheidet – etwa über Kredite. Wann ist das fair?', 'Generating is one thing. It gets even trickier when AI decides about people – for example about loans. When is that fair?') },
   ],
 };

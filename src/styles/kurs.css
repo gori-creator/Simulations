@@ -3358,3 +3358,16 @@ button.kitem:hover:not(:disabled) {
 .kcan__item input { width: 1.15rem; height: 1.15rem; margin-top: 0.15rem; accent-color: var(--k-good); }
 .kcan__item:has(input:checked) { background: var(--k-good-soft); }
 .kcan__item:has(input:checked) span { color: var(--text); }
+
+/* ---------- Rechne selbst ---------- */
+.kcalc { display: grid; gap: 10px; max-width: 34rem; }
+.kcalc__row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.kcalc__input { width: 12rem; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.kcalc__input.is-right { border-color: var(--k-good); background: var(--k-good-soft); }
+.kcalc__input.is-wrong { border-color: var(--k-bad); }
+@media (prefers-reduced-motion: no-preference) {
+  .kcalc__input.is-wrong { animation: bit-shake 0.4s ease-in-out 1; }
+}
+.kcalc__unit { font-weight: 700; color: var(--muted); }
+.kcalc__feedback { margin: 0; min-height: 1.4em; }
+.kcalc__q { margin: 0; padding: 12px 14px; border-radius: var(--radius); background: var(--surface-2); font-size: 1.05rem; font-weight: 600; line-height: 1.5; }

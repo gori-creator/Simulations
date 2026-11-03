@@ -79,7 +79,7 @@ export function initLesson(root: HTMLElement): void {
       if (!voice) return;
       if (synth.speaking) return stopReading();
       // Sprechblase, dann Kasten- und Antworttexte des aktuellen Schritts
-      const parts = [bubble.textContent ?? '', ...[...play.querySelectorAll<HTMLElement>('.kinfo > p, .kchoice__opt')].map((el) => el.textContent ?? '')];
+      const parts = [bubble.textContent ?? '', ...[...play.querySelectorAll<HTMLElement>('.kinfo > p, .kchoice__opt, .kcalc__q')].map((el) => el.textContent ?? '')];
       const utterance = new SpeechSynthesisUtterance(parts.filter((t) => t.trim()).join('. '));
       utterance.voice = voice;
       utterance.lang = voice.lang;
@@ -269,6 +269,68 @@ export function initLesson(root: HTMLElement): void {
       }
       play.append(list, note);
       focusLater(list.querySelector('button'));
+      return;
+    }
+
+    if (step.kind === 'calc') {
+      say(L(ks('de', 'calcIntro'), ks('en', 'calcIntro')), 'think');
+      setNext(false, label);
+      let attempts = 0;
+      let done = false;
+      const input = h('input', { class: 'input kcalc__input', attrs: { type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-label': ks(lang, 'calcLabel'), placeholder: ks(lang, 'calcLabel') } });
+      const check = h('button', { class: 'btn btn--primary', attrs: { type: 'button' }, text: ks(lang, 'calcCheck') });
+      const feedback = h('p', { class: 'kcalc__feedback', attrs: { 'aria-live': 'polite' } });
+      const solution = h('details', { class: 'kinfo kcalc__solution', attrs: { hidden: true } }, h('summary', {}, `🧮 ${ks(lang, 'calcSolution')}`), h('p', { text: tx(step.solution) }));
+      const showSolution = () => {
+        solution.hidden = false;
+        (solution as HTMLDetailsElement).open = true;
+      };
+      const finish = (ok: boolean) => {
+        done = true;
+        input.disabled = true;
+        check.disabled = true;
+        if (ok) say(L(`${ks('de', 'calcRight')} ${step.answer.toLocaleString('de-DE')}${step.unit ? ` ${step.unit}` : ''}`, `${ks('en', 'calcRight')} ${step.answer.toLocaleString('en-GB')}${step.unit ? ` ${step.unit}` : ''}`), 'wow');
+        showSolution();
+        setNext(true, label);
+        focusLater(nextBtn);
+      };
+      const submit = () => {
+        if (done) return;
+        const raw = input.value.trim().replace(/\s/g, '').replace('−', '-').replace(',', '.');
+        const value = Number(raw);
+        if (!raw || !Number.isFinite(value)) {
+          feedback.textContent = ks(lang, 'calcEmpty');
+          return;
+        }
+        if (Math.abs(value - step.answer) <= step.tolerance) {
+          input.classList.add('is-right');
+          feedback.textContent = `✅ ${ks(lang, 'calcRight')}`;
+          finish(true);
+          return;
+        }
+        attempts += 1;
+        mistakes += 1;
+        input.classList.add('is-wrong');
+        window.setTimeout(() => input.classList.remove('is-wrong'), 500);
+        feedback.textContent = `${ks(lang, 'calcWrong')}${step.hint && attempts === 1 ? ` 💡 ${tx(step.hint)}` : ''}`;
+        if (attempts >= 2) {
+          const reveal = h('button', { class: 'btn btn--ghost', attrs: { type: 'button' }, text: ks(lang, 'calcShow') });
+          reveal.addEventListener('click', () => {
+            reveal.remove();
+            finish(false);
+          });
+          if (!form.querySelector('.btn--ghost')) form.append(reveal);
+        }
+      };
+      check.addEventListener('click', submit);
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') submit();
+      });
+      const form = h('div', { class: 'kcalc__row' }, input, ...(step.unit ? [h('span', { class: 'kcalc__unit', text: step.unit })] : []), check);
+      const task = h('p', { class: 'kcalc__q' });
+      richText(task, tx(step.question));
+      play.append(h('div', { class: 'kcalc' }, h('p', { class: 'kchoice__tag', text: `🧮 ${ks(lang, 'calcTag')}` }), task, form, feedback, solution));
+      focusLater(input);
       return;
     }
 

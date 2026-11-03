@@ -42,6 +42,14 @@ const lesson: LessonContent = {
         { text: L('Beide + 0,1', 'Both + 0.1'), feedback: L('Der Punkt selbst (2, 3) bestimmt die Änderung.', 'The point (2, 3) itself determines the change.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Perzeptron mit w = (1; −2), b = 0,5 und η = 1. Das Beispiel x = (1; 1) hat das Etikett c = +1. Welchen Wert hat w₂ nach diesem Schritt?', 'Perceptron with w = (1; −2), b = 0.5 and η = 1. The example x = (1; 1) has label c = +1. What is w₂ after this step?'),
+      answer: -1,
+      tolerance: 0.001,
+      hint: L('Erst ŷ = sign(w·x + b) prüfen. Nur bei einem Fehler: w ← w + η·c·x.', 'First check ŷ = sign(w·x + b). Only after a mistake: w ← w + η·c·x.'),
+      solution: L('w·x + b = 1 − 2 + 0,5 = −0,5, also ŷ = −1 ≠ c: ein Fehler. Update: w ← (1; −2) + 1·1·(1; 1) = (2; −1), b ← 0,5 + 1 = 1,5. Also w₂ = −1.', 'w·x + b = 1 − 2 + 0.5 = −0.5, so ŷ = −1 ≠ c: a mistake. Update: w ← (1; −2) + 1·1·(1; 1) = (2; −1), b ← 0.5 + 1 = 1.5. So w₂ = −1.'),
+    },
     { kind: 'say', mood: 'think', text: L('Die Presse war begeistert: Die Navy erwarte bald eine Maschine, die laufen, sprechen und sehen könne. Doch eine kleine Logikaufgabe aus der letzten Lektion sollte das ganze Feld einfrieren …', 'The press was thrilled: the Navy expected a machine that could soon walk, talk and see. But a little logic problem from the last lesson was about to freeze the whole field …') },
   ],
 };

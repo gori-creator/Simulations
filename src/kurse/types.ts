@@ -49,6 +49,12 @@ export type Step =
    * Fehler. Danach `reveal` (die Auflösung kommt meist im nächsten Spiel).
    */
   | { kind: 'predict'; question: Localized; options: { text: Localized; feedback?: Localized }[]; reveal?: Localized }
+  /**
+   * Rechne selbst: Zahl eingeben, Kontrolle mit Toleranz (Dezimalkomma oder
+   * -punkt). Falsche Versuche zählen als Fehler; nach zwei Fehlversuchen
+   * erscheint der Lösungsweg `solution`, `hint` vorher als Tipp.
+   */
+  | { kind: 'calc'; question: Localized; answer: number; tolerance: number; unit?: string; hint?: Localized; solution: Localized }
   /** Spiel aus `games/<game>.ts` (Kurs) oder `gemeinsam/games/<game>.ts`. */
   | { kind: 'game'; game: string; intro?: Localized; props?: unknown; mood?: Mood }
   /**

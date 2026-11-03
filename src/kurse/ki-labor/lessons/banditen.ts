@@ -41,6 +41,14 @@ const lesson: LessonContent = {
         { text: L('Wie viele Beiträge es dir absichtlich nicht zeigt.', 'How many posts it deliberately doesn’t show you.'), feedback: L('Nein – belohnt wird, was dich in der App hält.', 'No – what gets rewarded is whatever keeps you in the app.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Startseite A hatte 7 Käufe bei 10 Besuchern, B 2 Käufe bei 3. Mit ε = 0,1 (Zufallswahl unter beiden Seiten): Mit welcher Wahrscheinlichkeit zeigt ε-gierig als Nächstes A?', 'Home page A had 7 sales from 10 visitors, B 2 sales from 3. With ε = 0.1 (random choice among both pages): with what probability does ε-greedy show A next?'),
+      answer: 95,
+      tolerance: 0.5, unit: '%',
+      hint: L('Erst die bisher beste Seite bestimmen; der Zufall wählt jede Seite mit ε/2.', 'First find the best page so far; randomness picks each page with ε/2.'),
+      solution: L('A: 7/10 = 0,70 > B: 2/3 ≈ 0,67, also ist A die gierige Wahl. P(A) = (1 − ε) + ε/2 = 0,9 + 0,05 = 0,95 = 95 %.', 'A: 7/10 = 0.70 > B: 2/3 ≈ 0.67, so A is the greedy choice. P(A) = (1 − ε) + ε/2 = 0.9 + 0.05 = 0.95 = 95%.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Beim Banditen zählt nur der nächste Zug. Spannender wird es, wenn Belohnungen erst nach vielen Schritten kommen – wie im Labyrinth oder beim Go.', 'With the bandit only the next move counts. It gets more exciting when rewards come only after many steps – like in a maze or in Go.') },
   ],
 };

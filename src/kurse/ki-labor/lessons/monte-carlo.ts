@@ -51,6 +51,14 @@ const lesson: LessonContent = {
         { text: L('Ein schnellerer Computer, sonst nichts.', 'A faster computer, nothing else.'), feedback: L('Rechenleistung half, entscheidend waren aber die gelernten Netze.', 'Computing power helped, but the learned networks were decisive.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Ein Zug gewinnt 60 von 100 Zufallspartien (p̂ = 0,6). Wie groß ist der Standardfehler σ(p̂) = √(p(1 − p)/n)?', 'A move wins 60 of 100 random playouts (p̂ = 0.6). What is the standard error σ(p̂) = √(p(1 − p)/n)?'),
+      answer: 0.049,
+      tolerance: 0.002,
+      hint: L('Setze p = 0,6 und n = 100 ein.', 'Use p = 0.6 and n = 100.'),
+      solution: L('σ = √(0,6·0,4/100) = √0,0024 ≈ 0,049, also etwa ±5 Prozentpunkte. Für ±2,5 Punkte bräuchte man viermal so viele Partien.', 'σ = √(0.6·0.4/100) = √0.0024 ≈ 0.049, i.e. about ±5 percentage points. For ±2.5 points you would need four times as many playouts.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Gelernte Bewertungen – damit sind wir bei der zweiten großen Säule der KI: aus Daten lernen. Die nächste Welt beginnt im Jahr 1805.', 'Learned evaluations – that brings us to the second great pillar of AI: learning from data. The next world starts in the year 1805.') },
   ],
 };

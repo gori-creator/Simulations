@@ -32,6 +32,14 @@ const lesson: LessonContent = {
         { text: L('Weil XOR in der Logik nicht vorkommt.', 'Because XOR doesn’t exist in logic.'), feedback: L('XOR („entweder … oder“) ist eine ganz normale Verknüpfung.', 'XOR (“either … or”) is a perfectly normal function.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Ein Neuron hat die Gewichte w₁ = 0,7 und w₂ = −0,4 und die Schwelle θ = 0,2. Wie groß ist die gewichtete Summe für die Eingabe (1, 1)?', 'A neuron has weights w₁ = 0.7 and w₂ = −0.4 and threshold θ = 0.2. What is the weighted sum for the input (1, 1)?'),
+      answer: 0.3,
+      tolerance: 0.001,
+      hint: L('Summe = w₁·x₁ + w₂·x₂.', 'Sum = w₁·x₁ + w₂·x₂.'),
+      solution: L('0,7·1 + (−0,4)·1 = 0,3. Weil 0,3 ≥ θ = 0,2 ist, feuert das Neuron (y = 1).', '0.7·1 + (−0.4)·1 = 0.3. Since 0.3 ≥ θ = 0.2, the neuron fires (y = 1).'),
+    },
     { kind: 'say', mood: 'wink', text: L('McCulloch und Pitts stellten die Gewichte von Hand ein. 15 Jahre später kam jemand auf die Idee, sie lernen zu lassen.', 'McCulloch and Pitts set the weights by hand. Fifteen years later someone had the idea of letting them be learned.') },
   ],
 };

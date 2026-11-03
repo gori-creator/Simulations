@@ -33,6 +33,14 @@ const lesson: LessonContent = {
         'Word vectors are learned from real text – with everything in it. In 2016 researchers around Tolga Bolukbasi showed that word2vec vectors contained analogies like “man : computer programmer = woman : homemaker”. The model has no worldview; it mirrors the frequencies in its data.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Zwei Wortvektoren: a = (1; 2) und b = (2; 1). Wie groß ist ihre Kosinus-Ähnlichkeit?', 'Two word vectors: a = (1; 2) and b = (2; 1). What is their cosine similarity?'),
+      answer: 0.8,
+      tolerance: 0.005,
+      hint: L('cos = (a·b) / (|a|·|b|).', 'cos = (a·b) / (|a|·|b|).'),
+      solution: L('a·b = 1·2 + 2·1 = 4, |a| = |b| = √5. cos = 4 / 5 = 0,8: ziemlich ähnliche Richtungen.', 'a·b = 1·2 + 2·1 = 4, |a| = |b| = √5. cos = 4 / 5 = 0.8: fairly similar directions.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Mit Tokens und Vektoren kann ein Modell Text lesen. Aber wie schreibt es? Ein Wort nach dem anderen – nach Wahrscheinlichkeit.', 'With tokens and vectors a model can read text. But how does it write? One word after another – by probability.') },
   ],
 };

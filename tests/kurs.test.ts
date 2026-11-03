@@ -19,6 +19,8 @@ const texts = (step: Step): string[] => {
       return [...all(step.question), ...all(step.reveal), ...step.options.flatMap((o) => [...all(o.text), ...all(o.feedback)])];
     case 'game':
       return all(step.intro);
+    case 'calc':
+      return [...all(step.question), ...all(step.hint), ...all(step.solution)];
   }
 };
 
@@ -162,5 +164,31 @@ describe('KI-Wörterbuch', () => {
     expect(parts.filter((p) => p.entry).map((p) => p.text)).toEqual(['Turing test', 'test']);
     expect(splitTerms('More tests.', g, used).some((p) => p.entry)).toBe(false);
     expect(splitTerms('contests', compileGlossary(entries, 'en'), new Set()).some((p) => p.entry)).toBe(false);
+  });
+});
+
+describe('Rechne selbst', () => {
+  it('jede Rechenaufgabe hat eine stimmige Antwort, Toleranz und Lösung in beiden Sprachen', async () => {
+    let count = 0;
+    for (const course of COURSES) {
+      for (const lesson of lessonsOf(course)) {
+        const content = await loadLesson(course.id, lesson.id);
+        for (const step of content.steps) {
+          if (step.kind !== 'calc') continue;
+          count += 1;
+          expect(Number.isFinite(step.answer), lesson.id).toBe(true);
+          expect(step.tolerance, lesson.id).toBeGreaterThan(0);
+          expect(step.tolerance, lesson.id).toBeLessThan(Math.max(1, Math.abs(step.answer)) * 0.05);
+          for (const lang of LANGS) {
+            expect(step.solution[lang].length, lesson.id).toBeGreaterThan(40);
+            // die Lösung nennt das Ergebnis (mit Komma auf Deutsch, Punkt auf Englisch)
+            const shown = (lang === 'de' ? String(step.answer).replace('.', ',') : String(step.answer)).replace('-', '−');
+            const plain = String(Math.abs(step.answer)).replace('.', lang === 'de' ? ',' : '.');
+            expect(step.solution[lang].includes(shown) || step.solution[lang].includes(plain), `${lesson.id}/${lang}: ${shown}`).toBe(true);
+          }
+        }
+      }
+    }
+    expect(count).toBeGreaterThanOrEqual(15);
   });
 });

@@ -50,6 +50,14 @@ const lesson: LessonContent = {
         { text: L('Es gibt gar keine Landschaft.', 'There is no landscape at all.'), feedback: L('Doch – nur in Milliarden Dimensionen.', 'There is – just in billions of dimensions.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Verlust L(w) = (w − 3)², Start bei w = 0, Lernrate η = 0,1. Wo steht w nach einem Schritt Gradientenabstieg?', 'Loss L(w) = (w − 3)², start at w = 0, learning rate η = 0.1. Where is w after one step of gradient descent?'),
+      answer: 0.6,
+      tolerance: 0.001,
+      hint: L('L′(w) = 2·(w − 3); dann w ← w − η·L′(w).', 'L′(w) = 2·(w − 3); then w ← w − η·L′(w).'),
+      solution: L('L′(0) = 2·(0 − 3) = −6. w ← 0 − 0,1·(−6) = 0,6. Der Schritt geht bergab in Richtung des Minimums bei w = 3.', 'L′(0) = 2·(0 − 3) = −6. w ← 0 − 0.1·(−6) = 0.6. The step goes downhill towards the minimum at w = 3.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Ein Modell, das die Trainingsdaten perfekt trifft, klingt toll. Ist es aber oft nicht. Warum, zeigt das nächste Experiment.', 'A model that fits the training data perfectly sounds great. Often it isn’t. The next experiment shows why.') },
   ],
 };

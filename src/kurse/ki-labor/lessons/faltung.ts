@@ -41,6 +41,14 @@ const lesson: LessonContent = {
         { text: L('9', '9'), feedback: L('9 pro Filter – und es sind 64 Filter.', '9 per filter – and there are 64 filters.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Der Kern K = [−1 0 1; −1 0 1; −1 0 1] liegt auf dem Bildausschnitt [0 0 9; 0 0 9; 0 0 9]. Welcher Wert entsteht?', 'The kernel K = [−1 0 1; −1 0 1; −1 0 1] lies on the image patch [0 0 9; 0 0 9; 0 0 9]. Which value results?'),
+      answer: 27,
+      tolerance: 0.001,
+      hint: L('Feld für Feld multiplizieren und alles addieren.', 'Multiply cell by cell and add everything up.'),
+      solution: L('Jede Zeile ergibt (−1)·0 + 0·0 + 1·9 = 9, drei Zeilen also 27. Ein großer Wert: Hier ist eine senkrechte Kante von dunkel nach hell.', 'Each row gives (−1)·0 + 0·0 + 1·9 = 9, so three rows give 27. A large value: there is a vertical edge from dark to bright here.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Die Idee gab es seit 1989. Doch lange blieben Faltungsnetze eine Nische. Dann kam das Jahr 2012.', 'The idea had existed since 1989. But for a long time convolutional networks remained a niche. Then came 2012.') },
   ],
 };

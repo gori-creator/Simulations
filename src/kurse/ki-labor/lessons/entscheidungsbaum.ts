@@ -41,6 +41,14 @@ const lesson: LessonContent = {
         'A decision tree is learned from data – and still readable like a rule book. Every path is an if-then rule. That’s why trees are popular where decisions must be explained, for example in medicine or administration. Neural networks are usually more accurate but harder to explain.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Ein Datensatz hat 9 Ja- und 5 Nein-Beispiele. Wie groß ist seine Entropie H (auf drei Nachkommastellen)?', 'A data set has 9 yes and 5 no examples. What is its entropy H (to three decimal places)?'),
+      answer: 0.94,
+      tolerance: 0.006, unit: 'Bit',
+      hint: L('H = −Σ pₖ·log₂ pₖ mit p = 9/14 und 5/14.', 'H = −Σ pₖ·log₂ pₖ with p = 9/14 and 5/14.'),
+      solution: L('H = −(9/14)·log₂(9/14) − (5/14)·log₂(5/14) ≈ 0,643·0,637 + 0,357·1,485 ≈ 0,410 + 0,531 ≈ 0,940 Bit. Fast 1 Bit, weil die Klassen fast gleich häufig sind.', 'H = −(9/14)·log₂(9/14) − (5/14)·log₂(5/14) ≈ 0.643·0.637 + 0.357·1.485 ≈ 0.410 + 0.531 ≈ 0.940 bits. Almost 1 bit because the classes are almost equally frequent.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Nächste Welt: das künstliche Neuron. Es ist älter als ID3 – und hatte einen tiefen Absturz, bevor es die Welt veränderte.', 'Next world: the artificial neuron. It is older than ID3 – and took a deep fall before it changed the world.') },
   ],
 };
