@@ -3,7 +3,7 @@ import { clear, h, s } from '../../engine/dom';
 import { solved } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { analogy, WORDS } from '../../gemeinsam/models/vektoren';
-import { groupAt, KNOWN, NEW_WORDS } from '../models/wortkarte';
+import { groupAt, KNOWN, NEW_WORDS, type MapWord } from '../models/wortkarte';
 import { scatter, sx, sy } from '../parts/scatter';
 
 /**
@@ -21,7 +21,16 @@ const game: GameMount<void> = (host, ctx) => {
   const plot = scatter(tx(L('Wörter-Landkarte', 'Word map')), tx(L('Richtung 1', 'direction 1')), tx(L('Richtung 2', 'direction 2')));
   const prompt = h('p', { class: 'kvote', attrs: { 'aria-live': 'polite' } });
   const math = h('div', { class: 'kpanel', attrs: { hidden: true } });
-  host.append(h('div', { class: 'kpanel' }, prompt, plot.svg, h('p', { class: 'khint', text: tx(L('Tippe auf die Karte, wo das neue Wort hingehört.', 'Tap the map where the new word belongs.')) })), math);
+  // Auch ohne Maus spielbar: Die vier Gegenden gibt es zusätzlich als Knöpfe
+  // (beschriftet mit den Wörtern, die dort wohnen – wie auf der Karte).
+  const areas = h('div', { class: 'krow', attrs: { role: 'group', 'aria-label': tx(L('Gegend wählen', 'Choose an area')) } });
+  for (const group of ['tiere', 'essen', 'fahrzeuge', 'wetter'] as const) {
+    const home = KNOWN.filter((w) => w.group === group);
+    const b = h('button', { class: 'kbtn', attrs: { type: 'button', 'aria-label': tx(L(`Zu ${home.map((w) => w.name.de).join(', ')}`, `Next to ${home.map((w) => w.name.en).join(', ')}`)) }, text: `${tx(L('bei', 'near'))} ${home.map((w) => w.icon).join(' ')}` });
+    b.addEventListener('click', () => place(group));
+    areas.append(b);
+  }
+  host.append(h('div', { class: 'kpanel' }, prompt, plot.svg, h('p', { class: 'khint', text: tx(L('Tippe auf die Karte, wo das neue Wort hingehört – oder wähle die Gegend mit einem Knopf.', 'Tap the map where the new word belongs – or choose the area with a button.')) }), areas), math);
 
   function draw(): void {
     clear(plot.points);
@@ -35,20 +44,27 @@ const game: GameMount<void> = (host, ctx) => {
     prompt.textContent = next ? tx(L(`Wo wohnt „${next.name.de}“ ${next.icon}?`, `Where does “${next.name.en}” ${next.icon} live?`)) : tx(L('Alle neuen Wörter haben einen Platz!', 'All new words have a place!'));
   }
 
-  plot.svg.addEventListener('click', (event: MouseEvent) => {
+  function place(group: MapWord['group']): void {
     const next = NEW_WORDS[index];
     if (!next) return;
-    const w = plot.toWorld(event as PointerEvent);
-    if (groupAt(w.x, w.y) === next.group) {
+    if (group === next.group) {
       placed.push(next.id);
       index += 1;
       ctx.say(L(`Ja! „${next.name.de}“ passt zu seinen Nachbarn – in Texten kommt es in ähnlichen Sätzen vor.`, `Yes! “${next.name.en}” fits with its neighbours – in texts it appears in similar sentences.`), 'happy');
       draw();
-      if (index === NEW_WORDS.length) showMath();
+      if (index === NEW_WORDS.length) {
+        areas.hidden = true;
+        showMath();
+      }
     } else {
       ctx.mistake();
       ctx.say(L(`Hm, dort wohnen ganz andere Wörter. Wozu passt „${next.name.de}“?`, `Hmm, quite different words live there. What does “${next.name.en}” go with?`), 'think');
     }
+  }
+
+  plot.svg.addEventListener('click', (event: MouseEvent) => {
+    const w = plot.toWorld(event as PointerEvent);
+    place(groupAt(w.x, w.y));
   });
 
   function showMath(): void {
