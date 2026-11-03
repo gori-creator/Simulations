@@ -24,6 +24,15 @@ const lesson: LessonContent = {
         'Many AIs do exactly this: they turn examples into dots and look for a border between the groups. Real AIs often use hundreds of features instead of two – you can’t draw that any more, but the idea stays the same.',
       ),
     },
+    {
+      kind: 'info',
+      tone: 'plain',
+      title: L('Was „lernen“ hier heißt', 'What “learning” means here'),
+      text: L(
+        'Ich weiß nicht, was eine Zitrone ist. Ich kenne von jeder Frucht nur zwei Zahlen: Größe und Süße. „Lernen“ heißt für mich: eine Linie so legen, dass möglichst wenige Früchte auf der falschen Seite liegen. Ein Mensch legt die Merkmale fest und schreibt die Etiketten dazu.',
+        'I don’t know what a lemon is. For each fruit I only know two numbers: size and sweetness. “Learning” for me means placing a line so that as few fruits as possible end up on the wrong side. A person chooses the features and writes the labels.',
+      ),
+    },
     { kind: 'say', mood: 'wow', text: L('Mit der Grenze kann ich Früchte einordnen, die ich noch nie gesehen habe. Das ist Lernen!', 'With the border I can sort fruit I’ve never seen before. That’s learning!') },
   ],
 };

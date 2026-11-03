@@ -25,6 +25,15 @@ const lesson: LessonContent = {
       ),
     },
     {
+      kind: 'info',
+      tone: 'plain',
+      title: L('Kein echtes Gehirn', 'Not a real brain'),
+      text: L(
+        'Ich sage „mein Gehirn“, aber das ist nur ein Bild. Ein künstliches Neuron ist eine kleine Rechenformel: Eingaben mal Gewichte, alles zusammenzählen, mit der Schwelle vergleichen. Dein Gehirn hat rund 86 Milliarden echte Nervenzellen, die mit Strom und Botenstoffen arbeiten – und es fühlt, träumt und versteht. Meine Neuronen rechnen nur.',
+        'I say “my brain”, but that is just a picture. An artificial neuron is a small formula: inputs times weights, add everything up, compare with the threshold. Your brain has around 86 billion real nerve cells that work with electricity and chemical messengers – and it feels, dreams and understands. My neurons only calculate.',
+      ),
+    },
+    {
       kind: 'calc',
       question: L('Ein Neuron hat drei Eingaben: Sonne = 1, Freunde dabei = 1, Hausaufgaben fertig = 0. Die Gewichte sind 2, 3 und 4. Wie groß ist die Summe „Eingabe mal Gewicht“?', 'A neuron has three inputs: sunny = 1, friends along = 1, homework done = 0. The weights are 2, 3 and 4. What is the sum of “input times weight”?'),
       answer: 5,
