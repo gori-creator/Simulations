@@ -21,8 +21,13 @@ const game: GameMount<void> = (host, ctx) => {
   let lastPWithTrainPrior: number | null = null;
 
   const tbody = h('tbody');
+  /** Tabellenzeile je Wort: gewählte Wörter leuchten auf – man sieht, welcher Faktor in die Rechnung eingeht. */
+  const rowOf = new Map<Word, HTMLElement>();
   for (const st of stats) {
-    tbody.append(h('tr', {}, h('td', { text: tx(WORD_NAMES[st.word]) }), h('td', { text: `${st.inSpam} / ${TRAIN.filter((m) => m.spam).length}` }), h('td', { text: `${st.inHam} / ${TRAIN.filter((m) => !m.spam).length}` }), h('td', { text: ctx.num(st.pSpam / st.pHam, 2) })));
+    const tr = h('tr');
+    rowOf.set(st.word, tr);
+    tbody.append(tr);
+    tr.append(h('td', { text: tx(WORD_NAMES[st.word]) }), h('td', { text: `${st.inSpam} / ${TRAIN.filter((m) => m.spam).length}` }), h('td', { text: `${st.inHam} / ${TRAIN.filter((m) => !m.spam).length}` }), h('td', { text: ctx.num(st.pSpam / st.pHam, 2) }));
   }
   const table = h('table', { class: 'ktable' }, h('thead', {}, h('tr', {}, h('th', { text: tx({ de: 'Wort', en: 'word' }) }), h('th', { text: tx({ de: 'in Spam', en: 'in spam' }) }), h('th', { text: tx({ de: 'in Nicht-Spam', en: 'in non-spam' }) }), h('th', { text: tx({ de: 'Faktor', en: 'factor' }) }))), tbody);
 
@@ -59,6 +64,7 @@ const game: GameMount<void> = (host, ctx) => {
 
   function render(): void {
     const words = VOCAB.filter((w) => chosen.has(w));
+    for (const [w, tr] of rowOf) tr.classList.toggle('is-selected', chosen.has(w));
     const post = posterior(words, prior, stats);
     mail.textContent = words.length ? `✉️ „… ${words.map((w) => tx(WORD_NAMES[w])).join(' … ')} …“` : tx({ de: '✉️ (noch leer – tippe Wörter an)', en: '✉️ (still empty – tap words)' });
     const priorOdds = prior / (1 - prior);
