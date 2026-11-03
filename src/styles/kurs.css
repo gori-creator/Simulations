@@ -2162,6 +2162,22 @@ button.kitem:hover:not(:disabled) {
   border-color: var(--k-tone);
 }
 
+.kword.is-spin,
+.kword.is-picked {
+  border-color: var(--k-gold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--k-gold) 45%, transparent);
+}
+
+.kword:disabled {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kword.is-picked { animation: kpulse 0.35s ease; }
+}
+
+@keyframes kpulse { 50% { transform: scale(1.06); } }
+
 .kword__p {
   color: var(--muted);
   font-weight: 600;

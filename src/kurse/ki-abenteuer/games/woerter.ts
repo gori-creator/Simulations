@@ -37,6 +37,33 @@ const game: GameMount<void> = (host, ctx) => {
   host.append(panel, h('div', { class: 'khint' }, corpusBox));
 
   const last = () => (words.length ? words[words.length - 1]! : START);
+  const reduced = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+  let busy = false;
+  const setBusy = (on: boolean) => {
+    busy = on;
+    for (const b of [dice, auto, reset, ...options.querySelectorAll<HTMLButtonElement>('button')]) b.disabled = on;
+  };
+
+  /**
+   * Zufall sichtbar machen: Eine Markierung läuft wie ein Glücksrad über die
+   * Kandidaten und bleibt beim gezogenen Wort stehen (häufige Wörter werden
+   * öfter gezogen – das Rad zeigt nur, dass gelost wird). `quick`: nur kurz zeigen.
+   */
+  async function spin(target: number, quick: boolean): Promise<void> {
+    const buttons = [...options.querySelectorAll<HTMLElement>('.kword')];
+    if (!reduced && !quick && buttons.length > 1) {
+      const n = buttons.length;
+      const total = 10 + ((((target - 10) % n) + n) % n);
+      for (let i = 0; i <= total; i++) {
+        buttons.forEach((b, j) => b.classList.toggle('is-spin', j === i % n));
+        await wait(45 + (i / total) ** 2 * 170);
+      }
+      buttons.forEach((b) => b.classList.remove('is-spin'));
+    }
+    buttons[target]?.classList.add('is-picked');
+    if (!reduced) await wait(quick ? 260 : 320);
+  }
 
   function add(word: string): void {
     words.push(word);
@@ -72,18 +99,30 @@ const game: GameMount<void> = (host, ctx) => {
     }
   }
 
-  dice.addEventListener('click', () => {
+  dice.addEventListener('click', async () => {
+    if (busy) return;
     const next = candidates(model, last());
-    if (next.length) add(sample(next, Math.random()));
+    if (!next.length) return;
+    const word = sample(next, Math.random());
+    setBusy(true);
+    await spin(next.findIndex((c) => c.word === word), false);
+    setBusy(false);
+    add(word);
   });
-  auto.addEventListener('click', () => {
+  auto.addEventListener('click', async () => {
+    if (busy) return;
+    setBusy(true);
+    // Wort für Wort, damit man sieht, wie der Satz entsteht
     for (let i = 0; i < 14; i++) {
       const next = candidates(model, last());
       if (!next.length) break;
       const w = sample(next, Math.random());
+      await spin(next.findIndex((c) => c.word === w), true);
       add(w);
+      setBusy(true);
       if (w === END) break;
     }
+    setBusy(false);
   });
   reset.addEventListener('click', () => {
     words = [];
