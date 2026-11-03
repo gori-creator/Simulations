@@ -28,14 +28,36 @@ const game: GameMount<void> = (host, ctx) => {
   const panel = h('div', { class: 'kpanel' }, plot.svg, legend(tx(L('Zitronen', 'Lemons')), tx(L('Orangen', 'Oranges'))), h('div', { class: 'krow' }, stepBtn, autoBtn, resetBtn), info, h('div', { class: 'khint' }, result.el));
   host.append(panel);
 
+  // Die Grenze gleitet zur neuen Lage (bei Einzelschritten), statt zu springen
+  let current: number[] | null = null;
+  let frame = 0;
+  function moveLine(target: number[]): void {
+    const set = (c: readonly number[]) => ['x1', 'y1', 'x2', 'y2'].forEach((a, i) => line.setAttribute(a, c[i]!.toFixed(1)));
+    cancelAnimationFrame(frame);
+    if (!current || ctx.reducedMotion || timer) {
+      current = target;
+      set(target);
+      return;
+    }
+    // Endpunkte so zuordnen, dass die Linie nicht „durchdreht“
+    const d = (a: readonly number[], b: readonly number[]) => Math.hypot(a[0]! - b[0]!, a[1]! - b[1]!) + Math.hypot(a[2]! - b[2]!, a[3]! - b[3]!);
+    const swapped = [target[2]!, target[3]!, target[0]!, target[1]!];
+    const goal = d(current, swapped) < d(current, target) ? swapped : target;
+    const start = current;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / 380);
+      const e = 1 - (1 - k) ** 3;
+      current = start.map((v, i) => v + (goal[i]! - v) * e);
+      set(current);
+      if (k < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+  }
+
   function draw(learned = -1): void {
     const b = boundary(w);
-    if (b) {
-      line.setAttribute('x1', String(sx(b[0].x)));
-      line.setAttribute('y1', String(sy(b[0].y)));
-      line.setAttribute('x2', String(sx(b[1].x)));
-      line.setAttribute('y2', String(sy(b[1].y)));
-    }
+    if (b) moveLine([sx(b[0].x), sy(b[0].y), sx(b[1].x), sy(b[1].y)]);
     paintShade(plot.shade, (x, y) => (predict(w, { x, y }) === 1 ? 'b' : 'a'), 22);
     clear(plot.over);
     for (const f of CITRUS) {

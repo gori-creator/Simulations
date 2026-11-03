@@ -39,7 +39,30 @@ const game: GameMount<void> = (host, ctx) => {
   const goals = h('ul', { class: 'kgoals' });
   host.append(h('div', { class: 'kpanel' }, pl.svg, readout, h('div', { class: 'krow' }, one, ep, all, reset), h('div', { class: 'krow' }, dataBtn)), h('div', { class: 'kpanel' }, goals));
 
-  function draw(): void {
+  // Die Trenngerade gleitet bei einer einzelnen Korrektur zur neuen Lage
+  let lineNow: number[] | null = null;
+  let lineFrame = 0;
+  function moveLine(target: number[], smooth: boolean): void {
+    const set = (c: readonly number[]) => ['x1', 'y1', 'x2', 'y2'].forEach((a, i) => line.setAttribute(a, c[i]!.toFixed(1)));
+    cancelAnimationFrame(lineFrame);
+    if (!lineNow || !smooth || ctx.reducedMotion) {
+      lineNow = target;
+      set(target);
+      return;
+    }
+    const start = lineNow;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / 380);
+      const e = 1 - (1 - k) ** 3;
+      lineNow = start.map((v, i) => v + (target[i]! - v) * e);
+      set(lineNow);
+      if (k < 1) lineFrame = requestAnimationFrame(tick);
+    };
+    lineFrame = requestAnimationFrame(tick);
+  }
+
+  function draw(smooth = false): void {
     const lo = 0;
     const hi = 10;
     const f = (q: { x: number; y: number }) => p.w1 * q.x + p.w2 * q.y + p.b;
@@ -55,12 +78,7 @@ const game: GameMount<void> = (host, ctx) => {
       }
     }
     shade.setAttribute('points', poly.map((q) => `${pl.px(q.x)},${pl.py(q.y)}`).join(' '));
-    if (Math.abs(p.w2) > 1e-9) {
-      line.setAttribute('x1', String(pl.px(lo)));
-      line.setAttribute('y1', String(pl.py(-(p.b + p.w1 * lo) / p.w2)));
-      line.setAttribute('x2', String(pl.px(hi)));
-      line.setAttribute('y2', String(pl.py(-(p.b + p.w1 * hi) / p.w2)));
-    }
+    if (Math.abs(p.w2) > 1e-9) moveLine([pl.px(lo), pl.py(-(p.b + p.w1 * lo) / p.w2), pl.px(hi), pl.py(-(p.b + p.w1 * hi) / p.w2)], smooth);
     // Normalenvektor (w1, w2) vom Mittelpunkt der sichtbaren Geraden aus
     const mx = 5;
     const my = Math.abs(p.w2) > 1e-9 ? -(p.b + p.w1 * mx) / p.w2 : 5;
@@ -107,7 +125,7 @@ const game: GameMount<void> = (host, ctx) => {
     cursor = i + 1;
     highlight = i;
     ctx.say({ de: `Punkt (${ctx.num(q.x, 1)} | ${ctx.num(q.y, 1)}) lag falsch. Neu: w ← w ${q.c > 0 ? '+' : '−'} ${ctx.num(ETA, 1)} · (${ctx.num(q.x, 1)}, ${ctx.num(q.y, 1)}, 1). Die Gerade dreht sich zu ihm hin.`, en: `Point (${ctx.num(q.x, 1)} | ${ctx.num(q.y, 1)}) was wrong. New: w ← w ${q.c > 0 ? '+' : '−'} ${ctx.num(ETA, 1)} · (${ctx.num(q.x, 1)}, ${ctx.num(q.y, 1)}, 1). The line turns towards it.` }, 'think');
-    draw();
+    draw(true);
   });
   ep.addEventListener('click', () => {
     const r = epoch(p, data, ETA);
