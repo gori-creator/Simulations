@@ -48,7 +48,8 @@ const game: GameMount<void> = (host, ctx) => {
       const x1 = x(sel);
       const x2 = x(j);
       const hgt = 18 + Math.abs(x2 - x1) * 0.28;
-      arcs.append(s('path', { class: 'katt__arc', d: `M${x1} 140 Q${(x1 + x2) / 2} ${140 - hgt * 1.6} ${x2} 140`, 'stroke-width': (1 + w[j]! * 14).toFixed(1), 'stroke-opacity': (0.15 + w[j]! * 0.85).toFixed(2) }));
+      // Bögen „schießen“ vom gewählten Wort aus los (pathLength 1 für das Zeichnen im CSS)
+      arcs.append(s('path', { class: 'katt__arc is-draw', pathLength: 1, d: `M${x1} 140 Q${(x1 + x2) / 2} ${140 - hgt * 1.6} ${x2} 140`, 'stroke-width': (1 + w[j]! * 14).toFixed(1), 'stroke-opacity': (0.15 + w[j]! * 0.85).toFixed(2) }));
     });
     clear(toks);
     t.forEach((tok, j) => {

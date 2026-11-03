@@ -3028,6 +3028,10 @@ button.kitem:hover:not(:disabled) {
 .kprobs__fill.is-neg { background: var(--k-b); }
 .katt { display: block; width: 100%; height: auto; }
 .katt__arc { fill: none; stroke: var(--k-tone); stroke-linecap: round; }
+@media (prefers-reduced-motion: no-preference) {
+  .katt__arc.is-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: katt-draw 0.6s ease-out forwards; }
+}
+@keyframes katt-draw { to { stroke-dashoffset: 0; } }
 .katt__toks { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
 .katt__tok { display: grid; justify-items: center; gap: 2px; padding: 6px 10px; border-radius: 10px; border: 2px solid var(--border-strong); background: color-mix(in srgb, var(--k-tone) calc(var(--w) * 70%), var(--surface)); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
 .katt__tok small { font-weight: 500; font-size: 0.75rem; color: var(--muted); }
