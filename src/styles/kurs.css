@@ -3253,6 +3253,10 @@ button.kitem:hover:not(:disabled) {
 }
 .kguide { overflow-wrap: anywhere; }
 @media print {
+  body:has(.kguide) { background: #fff !important; }
+  .kguide__world { break-inside: auto; background: #fff !important; }
+  .kguide__head, .kguide__grid > section, .kguide__lessons tr, .kguide__quiz li { break-inside: avoid; }
+  .kguide__head { break-after: avoid; }
   .site-header, .site-footer, .breadcrumbs, .kguide__actions, header[role='banner'], footer { display: none !important; }
   .kguide__world, .kguide__intro { border-color: #999; background: none; box-shadow: none; }
   .kguide__sources { display: block; }
@@ -3371,3 +3375,8 @@ button.kitem:hover:not(:disabled) {
 .kcalc__unit { font-weight: 700; color: var(--muted); }
 .kcalc__feedback { margin: 0; min-height: 1.4em; }
 .kcalc__q { margin: 0; padding: 12px 14px; border-radius: var(--radius); background: var(--surface-2); font-size: 1.05rem; font-weight: 600; line-height: 1.5; }
+.kguide__quiz ol { margin: 8px 0 0; padding-left: 1.4em; display: grid; gap: 6px; color: var(--text); }
+.kguide__answer { color: var(--k-good); font-weight: 700; }
+@media print {
+  .kguide__quiz, .kguide__sources { break-inside: auto; }
+}

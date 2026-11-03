@@ -172,6 +172,26 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
                   </div>
                 )}
 
+                <details class="kguide__sources kguide__quiz">
+                  <summary>❓ {L('Fragen und Rechenaufgaben aus den Lektionen (mit Lösung) – z. B. als Quiz oder Abschlussfrage', 'Questions and calculation tasks from the lessons (with answers) – e.g. as a quiz or exit ticket')}</summary>
+                  <ol>
+                    {chapterLessons.flatMap((l) =>
+                      (contents.get(l.id)?.steps ?? []).flatMap((st) => {
+                        if (st.kind === 'choice') {
+                          const right = st.options.find((o) => o.correct);
+                          return right ? [{ q: st.question[lang], a: right.text[lang] }] : [];
+                        }
+                        if (st.kind === 'calc') return [{ q: st.question[lang], a: `${st.answer.toLocaleString(lang === 'de' ? 'de-DE' : 'en-GB')}${st.unit ? ` ${st.unit}` : ''}` }];
+                        return [];
+                      }),
+                    ).map((item) => (
+                      <li>
+                        <span>{item.q}</span> <strong class="kguide__answer">→ {item.a}</strong>
+                      </li>
+                    ))}
+                  </ol>
+                </details>
+
                 <details class="kguide__sources">
                   <summary>📚 {L('Quellen der Wissenskarten dieser Welt', 'Sources of this world’s knowledge cards')}</summary>
                   <ul>
@@ -212,6 +232,17 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
 </BaseLayout>
 
 <script>
-  // Drucken (Inline-Handler verbietet die Content-Security-Policy)
+  // Drucken (Inline-Handler verbietet die Content-Security-Policy). Vorher alle
+  // aufklappbaren Abschnitte öffnen, damit Fragen, Lösungen und Quellen mit aufs Papier kommen.
+  const details = () => [...document.querySelectorAll<HTMLDetailsElement>('.kguide details')];
+  let closed: HTMLDetailsElement[] = [];
+  addEventListener('beforeprint', () => {
+    closed = details().filter((d) => !d.open);
+    for (const d of closed) d.open = true;
+  });
+  addEventListener('afterprint', () => {
+    for (const d of closed) d.open = false;
+    closed = [];
+  });
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 </script>
