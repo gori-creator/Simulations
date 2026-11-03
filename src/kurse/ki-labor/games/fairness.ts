@@ -61,7 +61,8 @@ const game: GameMount<void> = (host, ctx) => {
     svg.append(s('rect', { class: 'kfair__zone', x: x(threshold), y: y0, width: x(100) - x(threshold), height: 90, rx: 6 }));
     people.forEach((p, i) => {
       const jitter = ((i * 37) % 80) + 5;
-      svg.append(s('circle', { class: p.good ? 'kfair__good' : 'kfair__bad', cx: x(p.score), cy: y0 + jitter, r: 4 }));
+      // Abgelehnte (links der Schwelle) blass: Wer angenommen wird, springt ins Auge
+      svg.append(s('circle', { class: `${p.good ? 'kfair__good' : 'kfair__bad'}${p.score < threshold ? ' is-out' : ''}`, cx: x(p.score), cy: y0 + jitter, r: 4 }));
     });
     svg.append(s('line', { class: 'kfair__thr', x1: x(threshold), x2: x(threshold), y1: y0 - 4, y2: y0 + 94 }), s('text', { class: 'kfair__label', x: 32, y: y0 + 12 }, name));
   }

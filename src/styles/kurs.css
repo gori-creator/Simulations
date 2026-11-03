@@ -3148,6 +3148,7 @@ button.kitem:hover:not(:disabled) {
 .kfair { display: block; width: 100%; height: auto; }
 .kfair__good { fill: var(--k-good); }
 .kfair__bad { fill: var(--k-bad); }
+.kfair__good.is-out, .kfair__bad.is-out { opacity: 0.3; }
 .kfair__thr { stroke: var(--text); stroke-width: 3; }
 .kfair__label { fill: var(--text); font-size: 13px; font-weight: 700; font-family: var(--font-sans); }
 .kfair__zone { fill: color-mix(in srgb, var(--k-tone) 12%, transparent); }
