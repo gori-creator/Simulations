@@ -30,24 +30,31 @@ const game: GameMount<void> = (host, ctx) => {
   const best = fewestQuestions();
   let root: TreeNode = { items: BEASTS };
   let finished = false;
+  /** Zuletzt geteilter Knoten: seine neuen Äste wachsen sichtbar heraus. */
+  let fresh: TreeNode | null = null;
 
   const tree = h('div', { class: 'ktree' });
   const status = h('p', { class: 'khint' });
   const reset = h('button', { class: 'kbtn', attrs: { type: 'button' }, text: tx(L('↺ Neu anfangen', '↺ Start again')) });
   reset.addEventListener('click', () => {
     root = { items: BEASTS };
+    fresh = null;
     render();
   });
   const panel = h('div', { class: 'kpanel' }, tree, h('div', { class: 'krow' }, reset), status);
   host.append(panel);
 
   function nodeEl(node: TreeNode, used: Question[], label?: string): HTMLElement {
-    const animals = h('div', { class: 'ktree__animals' }, ...node.items.map((a) => h('span', { class: 'ktree__animal', attrs: { title: tx(NAME[a.id]!) } }, h('span', { attrs: { 'aria-hidden': 'true' }, text: EMOJI[a.id]! }), h('small', { text: tx(NAME[a.id]!) }))));
+    const animals = h('div', { class: 'ktree__animals' }, ...node.items.map((a, i) => {
+      const el = h('span', { class: 'ktree__animal', attrs: { title: tx(NAME[a.id]!) } }, h('span', { attrs: { 'aria-hidden': 'true' }, text: EMOJI[a.id]! }), h('small', { text: tx(NAME[a.id]!) }));
+      el.style.setProperty('--i', String(i));
+      return el;
+    }));
     const box = h('div', { class: 'ktree__node' }, label ? h('p', { class: 'ktree__answer', text: label }) : null, animals);
     if (node.question) {
       box.append(
         h('p', { class: 'ktree__q', text: `❓ ${tx(Q[node.question])}` }),
-        h('div', { class: 'ktree__kids' }, nodeEl(node.yes!, [...used, node.question], `✔ ${tx(L('Ja', 'Yes'))}`), nodeEl(node.no!, [...used, node.question], `✘ ${tx(L('Nein', 'No'))}`)),
+        h('div', { class: `ktree__kids${node === fresh ? ' is-new' : ''}` }, nodeEl(node.yes!, [...used, node.question], `✔ ${tx(L('Ja', 'Yes'))}`), nodeEl(node.no!, [...used, node.question], `✘ ${tx(L('Nein', 'No'))}`)),
       );
     } else if (isPure(node.items)) {
       box.classList.add('is-pure');
@@ -65,6 +72,7 @@ const game: GameMount<void> = (host, ctx) => {
             return;
           }
           ask(node, q);
+          fresh = node;
           render();
         });
         row.append(b);

@@ -1901,6 +1901,15 @@ button.kitem:hover:not(:disabled) {
   color: var(--muted);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .ktree__kids.is-new > .ktree__node { animation: ktree-branch 0.45s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+  .ktree__kids.is-new > .ktree__node + .ktree__node { animation-delay: 0.1s; }
+  .ktree__kids.is-new > .ktree__node > .ktree__animals > .ktree__animal { animation: kitem-in 0.3s ease both; animation-delay: calc(var(--i, 0) * 60ms + 0.2s); }
+  .ktree__kids.is-new > .ktree__node.is-pure > .ktree__done { animation: kcheck-pop 0.5s ease both; animation-delay: 0.45s; }
+}
+
+@keyframes ktree-branch { from { opacity: 0; transform: translateY(-14px) scale(0.92); } }
+
 .ktree__kids {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
