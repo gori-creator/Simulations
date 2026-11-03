@@ -4,7 +4,7 @@ import { meter, solved } from '../../engine/ui';
 import type { GameMount } from '../../types';
 import { classify, nearest } from '../models/knn';
 import { MYSTERY, PETS, type Pet } from '../models/nachbarn';
-import { legend, marker, scatter, sx, sy } from '../parts/scatter';
+import { legend, marker, scatter, sx, sy, VIEW } from '../parts/scatter';
 
 /**
  * Spiel „Frag die Nachbarn“: Zahl der Nachbarn wählen, ein Fragezeichen-Tier
@@ -67,14 +67,29 @@ const game: GameMount<void> = (host, ctx) => {
   );
   host.append(panel);
 
-  function draw(): void {
+  function draw(grow = true): void {
     clear(plot.under);
     const m = MYSTERY[selected]!;
     const near = nearest(m, PETS, k);
-    for (const n of near) {
-      plot.under.append(s('line', { class: 'kplot__link', x1: sx(m.x), y1: sy(m.y), x2: sx(n.x), y2: sy(n.y) }));
-      plot.under.append(s('circle', { class: 'kplot__ring', cx: sx(n.x), cy: sy(n.y), r: 12 }));
+    // Suchblase: wächst bis zum k-ten Nachbarn (Ellipse, weil die Achsen
+    // verschieden gestreckt sind – in Weltkoordinaten ist es ein Kreis).
+    const far = near[near.length - 1];
+    if (far) {
+      // Rand zwischen dem k-ten und dem nächsten Tier: nur Gezählte liegen drin
+      const dk = Math.hypot(far.x - m.x, far.y - m.y);
+      const next = nearest(m, PETS, k + 1)[k];
+      const gap = next ? Math.hypot(next.x - m.x, next.y - m.y) - dk : 1;
+      const d = dk + Math.min(0.35, gap / 2);
+      plot.under.append(s('ellipse', { class: `kplot__search${grow ? ' is-grow' : ''}`, cx: sx(m.x), cy: sy(m.y), rx: (d / 10) * (VIEW.w - VIEW.left - VIEW.right), ry: (d / 10) * (VIEW.h - VIEW.top - VIEW.bottom) }));
     }
+    near.forEach((n, i) => {
+      const link = s('line', { class: `kplot__link${grow ? ' is-grow' : ''}`, x1: sx(m.x), y1: sy(m.y), x2: sx(n.x), y2: sy(n.y) });
+      const ring = s('circle', { class: `kplot__ring${grow ? ' is-pop' : ''}`, cx: sx(n.x), cy: sy(n.y), r: 12 });
+      for (const el of [link, ring]) el.style.setProperty('--d', String(i));
+      link.style.setProperty('--ox', `${sx(m.x)}px`);
+      link.style.setProperty('--oy', `${sy(m.y)}px`);
+      plot.under.append(link, ring);
+    });
     mysteries.forEach((g, i) => g.classList.toggle('is-selected', i === selected));
     const rabbits = near.filter((n) => n.label === 'rabbit').length;
     const guess = classify(m, PETS, k)!;
@@ -99,7 +114,7 @@ const game: GameMount<void> = (host, ctx) => {
     triedK.add(k);
     const right = MYSTERY.filter((m) => classify(m, PETS, k) === m.label).length;
     result.set(right, 4, `${right} / 4`, right === 4);
-    draw();
+    draw(false);
     if (right === 4) {
       ctx.say(L(`Alle 4 richtig mit ${k} Nachbarn! Das Zwergkaninchen kann mich jetzt nicht mehr täuschen.`, `All 4 correct with ${k} neighbours! The dwarf rabbit can’t fool me any more.`), 'wow');
       if (!finished) {

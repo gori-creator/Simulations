@@ -1824,6 +1824,15 @@ button.kitem:hover:not(:disabled) {
 }
 
 .kplot__link { stroke: var(--text); stroke-width: 2; stroke-dasharray: 5 4; opacity: 0.7; }
+.kplot__search { fill: color-mix(in srgb, var(--k-gold) 12%, transparent); stroke: var(--k-gold); stroke-width: 1.5; stroke-dasharray: 3 4; }
+@media (prefers-reduced-motion: no-preference) {
+  .kplot__search.is-grow { transform-box: fill-box; transform-origin: center; animation: ksearch-grow 0.45s ease-out both; }
+  .kplot__link.is-grow { transform-box: view-box; transform-origin: var(--ox) var(--oy); animation: klink-grow 0.3s ease-out both; animation-delay: calc(var(--d, 0) * 110ms); }
+  .kplot__ring.is-pop { transform-box: fill-box; transform-origin: center; animation: kring-pop 0.3s ease-out both; animation-delay: calc(var(--d, 0) * 110ms + 220ms); }
+}
+@keyframes ksearch-grow { from { transform: scale(0); opacity: 0; } }
+@keyframes klink-grow { from { transform: scale(0); } }
+@keyframes kring-pop { 0% { transform: scale(0); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
 .kpoint.is-selected .kplot__mystery { stroke-width: 4; stroke-dasharray: none; fill: color-mix(in srgb, var(--k-gold) 45%, var(--surface)); }
 .kmark { font-size: 20px; font-weight: 800; font-family: var(--font-sans); }
 .kmark--ok { fill: var(--k-good); }
