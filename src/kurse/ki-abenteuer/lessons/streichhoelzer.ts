@@ -31,6 +31,14 @@ const lesson: LessonContent = {
         { text: L('Ein echter Keks für Bit.', 'A real cookie for Bit.'), feedback: L('Schön wär’s! Die Belohnung ist hier nur eine Zahl: Sieg oder Niederlage.', 'If only! Here the reward is just a number: win or loss.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('In einer Schachtel liegen 3 rote Perlen („nimm 1“) und 1 blaue Perle („nimm 2“). Bit zieht blind eine Perle. Mit wie viel Prozent nimmt er 2 Hölzer?', 'A box holds 3 red beads (“take 1”) and 1 blue bead (“take 2”). Bit draws a bead without looking. With what percentage does he take 2 sticks?'),
+      answer: 25,
+      tolerance: 0.5, unit: '%',
+      hint: L('Wie viele Perlen sind es insgesamt, wie viele davon blau?', 'How many beads are there in total, and how many are blue?'),
+      solution: L('1 von 4 Perlen ist blau: 1 : 4 = 25 %. Gewinnt Bit mit diesem Zug, kommt eine blaue Perle dazu – dann sind es 2 von 5 = 40 %. So lernt die Schachtel.', '1 of 4 beads is blue: 1 ÷ 4 = 25%. If Bit wins with this move, a blue bead is added – then it is 2 of 5 = 40%. That is how the box learns.'),
+    },
     { kind: 'say', mood: 'wow', text: L('Geschafft! Jetzt kenne ich alle drei Arten zu lernen: mit Etiketten, ohne Etiketten und durch Belohnung.', 'Done! Now I know all three ways of learning: with labels, without labels and from rewards.') },
   ],
 };

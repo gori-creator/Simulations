@@ -24,6 +24,14 @@ const lesson: LessonContent = {
         'Some AIs really learn this way: they remember all examples. When something new comes along, they look for the most similar examples and go with the majority. Experts call this “k nearest neighbours” – k is the number of neighbours.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Bit fragt die 5 nächsten Nachbarn. Wie viele müssen mindestens „Kaninchen“ sagen, damit Bit „Kaninchen“ wählt?', 'Bit asks the 5 nearest neighbours. At least how many must say “rabbit” for Bit to choose “rabbit”?'),
+      answer: 3,
+      tolerance: 0.001,
+      hint: L('Es gewinnt, wer mehr als die Hälfte der Stimmen hat.', 'Whoever has more than half of the votes wins.'),
+      solution: L('Mehr als die Hälfte von 5 heißt: mindestens 3. Mit einer ungeraden Zahl von Nachbarn gibt es nie einen Gleichstand.', 'More than half of 5 means: at least 3. With an odd number of neighbours there is never a tie.'),
+    },
     { kind: 'say', mood: 'wow', text: L('Ähnliche Dinge gehören meist zusammen. Das ist eine der einfachsten Ideen in der KI – und sie funktioniert erstaunlich gut.', 'Similar things usually belong together. That’s one of the simplest ideas in AI – and it works surprisingly well.') },
   ],
 };

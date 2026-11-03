@@ -24,6 +24,14 @@ const lesson: LessonContent = {
         'An artificial neuron only calculates: input times weight, add everything up, compare with a threshold. On its own that isn’t much. But big AIs have billions of such weights in many layers one after another. That’s called a neural network.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Ein Neuron hat drei Eingaben: Sonne = 1, Freunde dabei = 1, Hausaufgaben fertig = 0. Die Gewichte sind 2, 3 und 4. Wie groß ist die Summe „Eingabe mal Gewicht“?', 'A neuron has three inputs: sunny = 1, friends along = 1, homework done = 0. The weights are 2, 3 and 4. What is the sum of “input times weight”?'),
+      answer: 5,
+      tolerance: 0.001,
+      hint: L('Rechne jede Eingabe mal ihr Gewicht und zähle alles zusammen.', 'Multiply each input by its weight and add everything up.'),
+      solution: L('2·1 + 3·1 + 4·0 = 2 + 3 + 0 = 5. Ist die Schwelle zum Beispiel 4, sagt das Neuron „Ja“, weil 5 größer als 4 ist.', '2·1 + 3·1 + 4·0 = 2 + 3 + 0 = 5. If the threshold is 4, for example, the neuron says “yes” because 5 is bigger than 4.'),
+    },
     { kind: 'say', mood: 'wow', text: L('Du hast die Gewichte von Hand eingestellt. Aber bei Milliarden Gewichten geht das nicht. Nächstes Mal stelle ich sie selbst ein – durch Lernen!', 'You set the weights by hand. But with billions of weights that’s impossible. Next time I’ll set them myself – by learning!') },
   ],
 };

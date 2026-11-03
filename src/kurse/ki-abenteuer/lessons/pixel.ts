@@ -24,6 +24,14 @@ const lesson: LessonContent = {
         'In colour pictures every pixel has three numbers: how much red, green and blue it contains, each from 0 to 255. Pure red is (255, 0, 0). An image AI calculates with exactly these numbers.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('Ein Schwarz-Weiß-Bild hat 8 Zeilen mit je 8 Pixeln. Wie viele Zahlen speichert der Computer dafür?', 'A black-and-white picture has 8 rows of 8 pixels each. How many numbers does the computer store for it?'),
+      answer: 64,
+      tolerance: 0.001,
+      hint: L('Für jedes Pixel eine Zahl.', 'One number for each pixel.'),
+      solution: L('8 · 8 = 64 Pixel, für jedes eine Zahl (0 oder 1). Ein Handyfoto hat Millionen Pixel – und für jede Farbe Rot, Grün und Blau je eine Zahl.', '8 · 8 = 64 pixels, one number each (0 or 1). A phone photo has millions of pixels – and one number each for red, green and blue.'),
+    },
     { kind: 'say', mood: 'wow', text: L('Wenn Bilder Zahlen sind, kann ich mit ihnen rechnen und vergleichen. Nächstes Mal bringst du mir bei, Zeichen zu erkennen!', 'If pictures are numbers, I can calculate with them and compare them. Next time you’ll teach me to recognise symbols!') },
   ],
 };

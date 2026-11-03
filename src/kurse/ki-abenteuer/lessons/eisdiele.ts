@@ -30,6 +30,14 @@ const lesson: LessonContent = {
         { text: L('Ja, nie wieder hingehen!', 'Yes, never go there again!'), feedback: L('Dann verpasst du vielleicht die beste Eisdiele der Stadt.', 'Then you might miss the best shop in town.') },
       ],
     },
+    {
+      kind: 'calc',
+      question: L('Bei der Gelato Sole war das Eis an 8 von 10 Tagen lecker. Wie viel Prozent sind das?', 'At Gelato Sole the ice cream was yummy on 8 of 10 days. What percentage is that?'),
+      answer: 80,
+      tolerance: 0.5, unit: '%',
+      hint: L('8 von 10 ist 8 geteilt durch 10.', '8 out of 10 is 8 divided by 10.'),
+      solution: L('8 von 10 = 8 : 10 = 0,8 = 80 %. Mit so einer Zahl vergleicht Bit die Eisdielen.', '8 out of 10 = 8 ÷ 10 = 0.8 = 80%. Bit compares the shops with a number like this.'),
+    },
     { kind: 'say', mood: 'wink', text: L('Bei der Eisdiele zählt nur ein Schritt. Im nächsten Spiel brauche ich viele Schritte bis zur Belohnung – in einem Labyrinth!', 'At the ice-cream shop only one step counts. In the next game I need many steps to reach the reward – in a maze!') },
   ],
 };

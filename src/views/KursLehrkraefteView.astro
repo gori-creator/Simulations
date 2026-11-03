@@ -26,7 +26,9 @@ const guides = COURSE_GUIDES[course.id] ?? {};
 const L = (de: string, en: string) => (lang === 'de' ? de : en);
 const lessons = lessonsOf(course).filter((l) => l.status === 'ready');
 const minutes = lessons.reduce((sum, l) => sum + l.minutes, 0);
-const takeaways = new Map(await Promise.all(lessons.map(async (l) => [l.id, (await loadLesson(course.id, l.id)).takeaway] as const)));
+const contents = new Map(await Promise.all(lessons.map(async (l) => [l.id, await loadLesson(course.id, l.id)] as const)));
+const takeaways = new Map([...contents].map(([id, c]) => [id, c.takeaway] as const));
+const calcCount = [...contents.values()].reduce((n, c) => n + c.steps.filter((st) => st.kind === 'calc').length, 0);
 const lessonHref = (id: string) => href(lang, { kind: 'lesson', course: course.id, lesson: id });
 const source = (s: string | { de: string; en: string } | undefined) => (s === undefined ? '' : typeof s === 'string' ? s : s[lang]);
 const other = COURSES.find((c) => c.id !== course.id);
@@ -82,7 +84,7 @@ const title = L(`Handreichung: ${course.title.de}`, `Teacher’s guide: ${course
               <li>{L('„Klartext“-Kästen sagen nüchtern, was wirklich passiert. Die Figur spricht zwar in der Ich-Form, ist aber ein Programm.', '“Plain talk” boxes say soberly what really happens. The character speaks in the first person but is a program.')}</li>
               <li>{L('Jede Lektion endet mit einem Merksatz und einer Wissenskarte aus der Geschichte der KI (mit Quelle). Je Welt gibt es einen Spickzettel, eine Wiederholung mit Fragen und eine „Ich kann …“-Liste zur Selbsteinschätzung.', 'Every lesson ends with a takeaway and a knowledge card from the history of AI (with source). Each world has a cheat sheet, a review quiz and an “I can …” list for self-assessment.')}</li>
               <li>{L('Fachwörter sind antippbar und erklären sich selbst (KI-Wörterbuch); ein Vorlese-Knopf nutzt die Stimme des Geräts.', 'Technical words can be tapped for an explanation (AI dictionary); a read-aloud button uses the device’s voice.')}</li>
-              {course.id === 'ki-labor' && <li>{L('Im KI-Labor gibt es zusätzlich 17 Rechenaufgaben („Rechne selbst“) mit Tipp und Lösungsweg – gut auch als Hausaufgabe.', 'The AI Lab also has 17 calculation tasks (“Work it out”) with a hint and a worked solution – good as homework, too.')}</li>}
+              {calcCount > 0 && <li>{L(`Dazu kommen ${calcCount} Rechenaufgaben („Rechne selbst“) mit Tipp und Lösungsweg – gut auch als Hausaufgabe.`, `There are also ${calcCount} calculation tasks (“Work it out”) with a hint and a worked solution – good as homework, too.`)}</li>}
             </ul>
           </div>
         </div>

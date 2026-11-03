@@ -23,6 +23,14 @@ const lesson: LessonContent = {
         'Chatbots like ChatGPT work the same way at their core: they predict the next word. But they have read billions of texts and look not just at the last word but at the whole text before it. That’s why they sound so good. Even so, they can make up things that aren’t true.',
       ),
     },
+    {
+      kind: 'calc',
+      question: L('In Bits Texten folgt auf „Der Hund“ 3-mal „bellt“ und 1-mal „schläft“. Mit wie viel Prozent würfelt Bit „bellt“?', 'In Bit’s texts “the dog” is followed 3 times by “barks” and once by “sleeps”. With what percentage does Bit roll “barks”?'),
+      answer: 75,
+      tolerance: 0.5, unit: '%',
+      hint: L('Wie viele Fälle gibt es insgesamt? Wie viele davon sind „bellt“?', 'How many cases are there in total? How many of them are “barks”?'),
+      solution: L('3 von 4 Fällen = 3 : 4 = 75 %. „schläft“ kommt in 25 % der Fälle dran – darum klingen Bits Sätze mal so, mal so.', '3 out of 4 cases = 3 ÷ 4 = 75%. “sleeps” comes up in 25% of cases – that is why Bit’s sentences sound different each time.'),
+    },
     { kind: 'say', mood: 'wow', text: L('Jetzt weißt du, wie ich schreibe: Wort für Wort, nach Häufigkeit. Aber woher weiß ich, welche Wörter ähnlich sind? Das zeigt dir die Wörter-Landkarte.', 'Now you know how I write: word by word, by frequency. But how do I know which words are similar? The word map will show you.') },
   ],
 };

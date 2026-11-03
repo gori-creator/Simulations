@@ -58,7 +58,7 @@ Die Kurse stützen sich auf Bildungsrahmen und auf Forschung zum Lernen über KI
 
 ## Spielmechanik
 
-- **Lektion** = Folge von Schritten (`src/kurse/types.ts`): `say` (Begleitung erzählt), `choice` (Frage mit genau einer richtigen Antwort), `predict` (Vermutung ohne Wertung), `game` (Spiel), `info` („Für Neugierige“, „Klartext“, optional mit Formel), `calc` („Rechne selbst“: Zahl eingeben, Tipp, Lösungsweg; 17 Aufgaben im KI-Labor).
+- **Lektion** = Folge von Schritten (`src/kurse/types.ts`): `say` (Begleitung erzählt), `choice` (Frage mit genau einer richtigen Antwort), `predict` (Vermutung ohne Wertung), `game` (Spiel), `info` („Für Neugierige“, „Klartext“, optional mit Formel), `calc` („Rechne selbst“: Zahl eingeben, Tipp, Lösungsweg; 17 Aufgaben im KI-Labor, 6 einfache mit ganzen Zahlen und Prozenten im KI-Abenteuer).
 - **Sterne:** Fehler in Fragen und Spielen zählen (0 Fehler: 3 Sterne, 1–2: 2, sonst 1).
 - **XP:** 20 + 10 je Stern; beim Wiederholen nur für Verbesserungen; je Abzeichen 20 XP. XP lassen sich jederzeit aus Sternen und Abzeichen neu berechnen (`computeXp`).
 - **Stufen:** 10 je Kurs mit eigenen Namen (KI-Abenteuer: Funke … Meister; KI-Labor: Lochkarte, Relais, Röhre … Supercomputer). Bit und Ada verändern ihr Aussehen mit der Stufe.
