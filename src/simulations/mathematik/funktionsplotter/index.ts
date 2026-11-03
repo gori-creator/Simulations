@@ -208,6 +208,8 @@ export default defineSimulation({
       jump: 'Sprungstelle bei x {rel} {x}',
       holeAt: 'Definitionslücke bei x = {x}, Loch im Graphen bei ({x} | {y})',
       notDef: '–',
+      nearZero: 'Fast 0, aber nicht 0: Der Wert ist nur sehr klein.',
+      nearZeroTable: 'Sehr kleine Werte stehen mit mehr Stellen (0,00012) oder als Zehnerpotenz (1,2 · 10⁻⁹): nah an 0, aber nicht 0.',
       sep: '; ',
       andSep: ' · ',
       eqSign: '=',
@@ -269,6 +271,8 @@ export default defineSimulation({
       jump: 'jump at x {rel} {x}',
       holeAt: 'gap in the domain at x = {x}, hole in the graph at ({x}, {y})',
       notDef: '–',
+      nearZero: 'Almost 0, but not 0: the value is just very small.',
+      nearZeroTable: 'Very small values are shown with more digits (0.00012) or as a power of ten (1.2 · 10⁻⁹): close to 0, but not 0.',
       sep: ', ',
       andSep: ' · ',
       eqSign: '=',
@@ -318,6 +322,25 @@ export default defineSimulation({
     const nf = (v: number, d = 2) => fmt.num(round(v, d), d);
     const isRounded = (v: number, d = 2) => Math.abs(round(v, d) - v) > 1e-9 * Math.max(1, Math.abs(v));
     const rel = (...vs: number[]) => (vs.some((v) => isRounded(v)) ? '≈' : '=');
+    /** Sehr kleiner Wert, der auf 2 Stellen gerundet 0 ergäbe, aber nicht 0 ist (z. B. e^(−x²) bei x = 3). */
+    const nearZero = (v: number) => v !== 0 && Number.isFinite(v) && Math.abs(v) < 0.005;
+    const SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+    /**
+     * Funktionswert: wie nf, aber sehr kleine Werte nicht als „0“, sondern mit
+     * zwei geltenden Ziffern (0,00012) bzw. als Zehnerpotenz (1,2 · 10⁻⁹).
+     */
+    const ny = (v: number) => {
+      if (!nearZero(v)) return nf(v);
+      const e = Math.floor(Math.log10(Math.abs(v)));
+      if (e >= -4) return nf(v, 1 - e);
+      let m = v / 10 ** e;
+      let ee = e;
+      if (Math.abs(round(m, 1)) >= 10) {
+        m /= 10;
+        ee += 1;
+      }
+      return `${nf(m, 1)} · 10⁻${[...String(-ee)].map((c) => SUP[Number(c)]).join('')}`;
+    };
     /** x-Wert, bei Winkelfunktionen als Vielfaches von π, wenn das passt. */
     const xNice = (x: number, trig: boolean) => {
       if (trig && Math.abs(x) > 1e-9) {
@@ -1050,10 +1073,10 @@ export default defineSimulation({
           const approx = xr || isRounded(m.y);
           // Schnittpunkte in beiden Sprachen mit „S“ (P ist der Spurpunkt), direkt vor der Klammer
           const relStr = approx ? ' ≈ ' : lang === 'de' || m.kind === 'cross' ? '' : ' ';
-          return tr(m.kind, { rel: relStr, x: xs, y: nf(m.y) });
+          return tr(m.kind, { rel: relStr, x: xs, y: ny(m.y) });
         }
         case 'hole':
-          return tr('hole', { x: xs, y: nf(m.y) });
+          return tr('hole', { x: xs, y: ny(m.y) });
       }
     }
 
@@ -1204,7 +1227,7 @@ export default defineSimulation({
       analyze();
       traceMarker = markerAtTrace(t.slot, t.x);
       const named = traceMarker && traceMarker.kind !== 'hole' && traceMarker.kind !== 'zero';
-      const label = named ? markerText(traceMarker!) : `P${rel(t.x, t.y) === '≈' ? ' ≈ ' : ''}(${nf(t.x)}${sep}${nf(t.y)})`;
+      const label = named ? markerText(traceMarker!) : `P${rel(t.x, t.y) === '≈' ? ' ≈ ' : ''}(${nf(t.x)}${sep}${ny(t.y)})`;
       const ctrl = controlsRect();
       let best: { x: number; y: number; align: 'left' | 'right'; rect: Rect } | null = null;
       const prefRight = px < r.x + r.w - 150;
@@ -1618,14 +1641,15 @@ export default defineSimulation({
       const sep = lang === 'de' ? ' | ' : ', ';
       if (Number.isFinite(y)) {
         const named = traceMarker && traceMarker.kind !== 'hole' && traceMarker.kind !== 'zero';
-        const line = named ? markerText(traceMarker!) : `P${rel(x, y) === '≈' ? ' ≈ ' : ''}(${nf(x)}${sep}${nf(y)})`;
+        const line = named ? markerText(traceMarker!) : `P${rel(x, y) === '≈' ? ' ≈ ' : ''}(${nf(x)}${sep}${ny(y)})`;
         bs.push({ h: fs * 1.6, draw: (xx, yy) => text(surface.g, line, xx, yy + fs * 0.8, { font: `750 ${fs}px ${theme.font}`, color: c, align: 'left' }) });
+        if (nearZero(y)) bs.push(noteBlock(ctx.t('nearZero'), w, theme.muted, narrow() ? 11 : 11.5));
       } else bs.push(noteBlock(tr('undefinedAt', { f: s, x: nf(x) }), w, c, fs - 2, 700));
       // Werte der anderen Funktionen an derselben Stelle
       const others = SLOTS.filter((o) => o !== s && state[o].fn);
       for (const o of others) {
         const v = state[o].fn!(x);
-        const str = Number.isFinite(v) ? `${o}(${nf(x)}) ${rel(x, v)} ${nf(v)}` : tr('undefinedAt', { f: o, x: nf(x) });
+        const str = Number.isFinite(v) ? `${o}(${nf(x)}) ${rel(x, v)} ${ny(v)}` : tr('undefinedAt', { f: o, x: nf(x) });
         bs.push(noteBlock(str, w, colOf(o), narrow() ? 12 : 12.5, 650));
       }
       if (p.tg && Number.isFinite(y)) {
@@ -1649,9 +1673,13 @@ export default defineSimulation({
       const fs = narrow() ? 12 : 12.5;
       const rh = fs * 1.62;
       const avail = maxH - pad * 2 - (bs[0]!.h + rh) + 4;
-      const nRows = Math.max(1, Math.min(14, Math.floor(avail / rh)));
+      let nRows = Math.max(1, Math.min(14, Math.floor(avail / rh)));
+      // Sehr kleine Werte (nicht 0) bekommen einen Hinweis unter der Tabelle; dafür Platz lassen
+      const tiny = Array.from({ length: nRows }, (_, i) => p.x0 + i * p.dx).some((x) => cols.some((s) => nearZero(state[s].fn!(x))));
+      const note = tiny ? noteBlock(ctx.t('nearZero'), w, theme.muted, narrow() ? 10.5 : 11) : null;
+      if (note) nRows = Math.max(1, nRows - Math.ceil((note.h + 4) / rh));
       const xs = Array.from({ length: nRows }, (_, i) => p.x0 + i * p.dx);
-      const cell = (v: number) => (Number.isFinite(v) ? nf(v) : ctx.t('notDef'));
+      const cell = (v: number) => (Number.isFinite(v) ? ny(v) : ctx.t('notDef'));
       const values = xs.map((x) => cols.map((s) => cell(state[s].fn!(x))));
       const fontB = `750 ${fs}px ${theme.font}`;
       const font = `600 ${fs}px ${theme.font}`;
@@ -1699,6 +1727,7 @@ export default defineSimulation({
           },
         });
       });
+      if (note) bs.push({ h: 4, draw: () => {} }, note);
       return bs;
     }
 
@@ -1788,15 +1817,18 @@ export default defineSimulation({
       if (!cols.length) ctx.readout('table', null);
       else {
         const head = `<tr><th><var>x</var></th>${cols.map((s) => `<th>${span(s, `${s}(<var>x</var>)`)}</th>`).join('')}</tr>`;
+        let tiny = false;
         const body = Array.from({ length: 11 }, (_, i) => {
           const x = p.x0 + i * p.dx;
           const cur = traceSlot() !== null && Math.abs(x - traceX) < 1e-9;
           return `<tr${cur ? ' class="is-current"' : ''}><td>${esc(nf(x))}</td>${cols.map((s) => {
             const v = state[s].fn!(x);
-            return `<td>${Number.isFinite(v) ? esc(nf(v)) : '–'}</td>`;
+            if (nearZero(v)) tiny = true;
+            return `<td>${Number.isFinite(v) ? esc(ny(v)) : '–'}</td>`;
           }).join('')}</tr>`;
         }).join('');
-        ctx.readout('table', { html: `<table class="mini-table">${head}${body}</table>` });
+        const note = tiny ? `<br><small>${esc(ctx.t('nearZeroTable'))}</small>` : '';
+        ctx.readout('table', { html: `<table class="mini-table">${head}${body}</table>${note}` });
       }
       // Spur
       const t = traceInfo();
@@ -1804,13 +1836,14 @@ export default defineSimulation({
       else {
         const parts = SLOTS.filter((s) => state[s].fn).map((s) => {
           const v = state[s].fn!(t.x);
-          const body = Number.isFinite(v) ? `${s}(${nf(t.x)}) ${rel(t.x, v)} ${nf(v)}` : tr('undefinedAt', { f: s, x: nf(t.x) });
+          const body = Number.isFinite(v) ? `${s}(${nf(t.x)}) ${rel(t.x, v)} ${ny(v)}` : tr('undefinedAt', { f: s, x: nf(t.x) });
           return span(s, s === t.slot ? `<strong>${esc(body)}</strong>` : esc(body));
         });
         if (p.tg && Number.isFinite(t.y)) {
           const m = derivative(t.fn, t.x);
           parts.push(esc(m === null ? ctx.t('noSlope') : tr('slope', { rel: rel(m), m: nf(m) })));
         }
+        if (nearZero(t.y)) parts.push(esc(ctx.t('nearZero')));
         ctx.readout('trace', { html: parts.join(' · ') });
       }
     }
@@ -1826,8 +1859,8 @@ export default defineSimulation({
     function ptFull(x: number, y: number, trig: boolean): string {
       const sep = lang === 'de' ? ' | ' : ', ';
       const pi = trig ? xNice(x, true) : '';
-      const dec = `(${nf(x)}${sep}${nf(y)})`;
-      if (pi.includes('π')) return `(${pi}${sep}${nf(y)})${isRounded(y) || isRounded(x) ? ` ≈ ${dec}` : ''}`;
+      const dec = `(${nf(x)}${sep}${ny(y)})`;
+      if (pi.includes('π')) return `(${pi}${sep}${ny(y)})${isRounded(y) || isRounded(x) ? ` ≈ ${dec}` : ''}`;
       return `${rel(x, y) === '≈' ? '≈ ' : ''}${dec}`;
     }
 
