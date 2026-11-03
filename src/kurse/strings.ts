@@ -87,6 +87,8 @@ export const KS = {
   reviewTry: L('Ein paar Lücken. Schau dir die Lektionen nochmal an und versuch es bald wieder.', 'A few gaps. Have another look at the lessons and try again soon.'),
   reviewEmpty: L('Schaffe erst eine Lektion dieser Welt.', 'Finish a lesson in this world first.'),
   close: L('Schließen', 'Close'),
+  canTitle: L('Ich kann …', 'I can …'),
+  canPrefix: L('Ich kann', 'I can'),
   certTitle: L('Urkunde', 'Certificate'),
   certHint: L('Drucke deine Urkunde, wenn du alle Lektionen geschafft hast – oder schon vorher einen Lernnachweis mit deinem Stand.', 'Print your certificate once you have finished every lesson – or a progress record with your current status before that.'),
   certName: L('Dein Name (für die Urkunde)', 'Your name (for the certificate)'),

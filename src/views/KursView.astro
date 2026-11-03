@@ -5,6 +5,7 @@ import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { COURSES, COURSES_PUBLIC, getCourse, lessonsOf } from '../kurse';
 import { cardArt, worldArt } from '../kurse/art';
+import { COURSE_GUIDES } from '../kurse/guides';
 import { loadGlossary, loadLesson } from '../kurse/loaders';
 import { guideSvg } from '../kurse/engine/guide';
 import { badgeRules } from '../kurse/engine/progress';
@@ -189,6 +190,25 @@ const takeaways = new Map(await Promise.all(ready.map(async (lesson) => [lesson.
                       ))}
                   </ol>
                 </details>
+                {COURSE_GUIDES[course.id]?.[chapter.id] && (
+                  <details class="kcan">
+                    <summary>
+                      🙋 {ks(lang, 'canTitle')} <span class="knotes__count" data-can-count />
+                    </summary>
+                    <ul class="kcan__list">
+                      {COURSE_GUIDES[course.id]![chapter.id]!.goals.map((goal, gi) => (
+                        <li>
+                          <label class="kcan__item">
+                            <input type="checkbox" data-can={`${chapter.id}:${gi}`} />
+                            <span>
+                              {ks(lang, 'canPrefix')} {goal[lang]}.
+                            </span>
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <button class="btn kworld__review" type="button" data-review={chapter.id} data-review-title={ks(lang, 'reviewTitle', { world: chapter.title[lang] })} disabled>
                   🔁 {ks(lang, 'reviewButton')}
                 </button>

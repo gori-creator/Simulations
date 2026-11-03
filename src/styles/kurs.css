@@ -3346,3 +3346,15 @@ button.kitem:hover:not(:disabled) {
   .kcert__worlds { margin: 0; max-width: 170mm; font-size: 10pt; color: #333; }
   .kcert__foot { margin: 4mm 0 0; font-size: 9pt; color: #555; }
 }
+
+/* „Ich kann …“-Liste je Welt */
+.kcan { flex: 1 1 100%; order: 3; }
+.kcan > summary { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; font-weight: 700; color: var(--k-tone); list-style: none; }
+.kcan > summary::-webkit-details-marker { display: none; }
+.kcan > summary::after { content: '▾'; font-size: 0.8em; transition: transform 0.2s ease; }
+.kcan[open] > summary::after { transform: rotate(180deg); }
+.kcan__list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.kcan__item { display: grid; grid-template-columns: 1.4rem 1fr; gap: 8px; align-items: start; padding: 8px 10px; border-radius: var(--radius); background: var(--surface-2); cursor: pointer; }
+.kcan__item input { width: 1.15rem; height: 1.15rem; margin-top: 0.15rem; accent-color: var(--k-good); }
+.kcan__item:has(input:checked) { background: var(--k-good-soft); }
+.kcan__item:has(input:checked) span { color: var(--text); }

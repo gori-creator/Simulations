@@ -317,6 +317,40 @@ export function initHub(root: HTMLElement): void {
     window.setTimeout(() => item.classList.remove('is-just-done', 'is-first'), 2600);
   }
 
+  // ---------- „Ich kann …“: Selbsteinschätzung je Welt (nur in diesem Browser) ----------
+  const canKey = `kurs:${course.id}:ichkann`;
+  const readCan = (): Set<string> => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(canKey) ?? '[]');
+      return new Set(Array.isArray(raw) ? raw.filter((x): x is string => typeof x === 'string') : []);
+    } catch {
+      return new Set();
+    }
+  };
+  const renderCan = () => {
+    const checked = readCan();
+    for (const box of root.querySelectorAll<HTMLInputElement>('[data-can]')) box.checked = checked.has(box.dataset.can!);
+    for (const world of root.querySelectorAll<HTMLElement>('[data-world]')) {
+      const boxes = [...world.querySelectorAll<HTMLInputElement>('[data-can]')];
+      const count = world.querySelector('[data-can-count]');
+      if (count) count.textContent = `(${boxes.filter((b) => b.checked).length}/${boxes.length})`;
+    }
+  };
+  root.addEventListener('change', (event) => {
+    const box = (event.target as Element).closest<HTMLInputElement>('[data-can]');
+    if (!box) return;
+    const checked = readCan();
+    if (box.checked) checked.add(box.dataset.can!);
+    else checked.delete(box.dataset.can!);
+    try {
+      localStorage.setItem(canKey, JSON.stringify([...checked]));
+    } catch {
+      // ohne Speicher gilt das Häkchen nur bis zum Neuladen
+    }
+    renderCan();
+  });
+  renderCan();
+
   // ---------- Urkunde (Druckansicht; der Name wird nicht gespeichert) ----------
   const cert = q<HTMLElement>('[data-cert]');
   q<HTMLButtonElement>('[data-cert-print]')?.addEventListener('click', () => {
