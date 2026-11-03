@@ -33,7 +33,7 @@ const lesson: LessonContent = {
       ],
       explain: L('Wie bei dir in der Schule: Die Probe zeigt, ob du es verstanden hast.', 'Just like you at school: the test shows whether you understood.'),
     },
-    { kind: 'say', mood: 'wow', text: L('Ich kann jetzt auf drei Arten lernen – und du weißt, wie man fair prüft. Zum Schluss dieser Welt wartet eine Mission: Wir schreiben meinen Steckbrief!', 'I can now learn in three ways – and you know how to test fairly. At the end of this world a mission is waiting: we write my model card!') },
+    { kind: 'say', mood: 'wow', text: L('Ich kenne jetzt drei Verfahren: Nachbarn fragen, Fragen-Baum und Gruppen finden – und du weißt, wie man fair prüft. Zum Schluss dieser Welt wartet eine Mission: Wir schreiben meinen Steckbrief!', 'I now know three methods: asking neighbours, the question tree and finding groups – and you know how to test fairly. At the end of this world a mission is waiting: we write my model card!') },
   ],
 };
 

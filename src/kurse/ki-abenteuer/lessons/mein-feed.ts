@@ -39,7 +39,7 @@ const lesson: LessonContent = {
         { text: L('Weiterscrollen, gleich kommt bestimmt was Tolles.', 'Keep scrolling, something great is bound to come soon.'), feedback: L('Genau darauf ist der Feed gebaut – es kommt immer „gleich“ etwas.', 'That’s exactly what the feed is built for – something is always “coming soon”.') },
       ],
     },
-    { kind: 'say', mood: 'wink', text: L('Algorithmen bestimmen mit, was du siehst. Als Nächstes: Wie benutzt du KI so, dass sie dir wirklich hilft?', 'Algorithms help decide what you see. Next: how do you use AI so that it really helps you?') },
+    { kind: 'say', mood: 'wink', text: L('Algorithmen bestimmen mit, was du siehst. Als Nächstes prüfen wir, ob man KI-Antworten einfach glauben kann.', 'Algorithms help decide what you see. Next we check whether you can simply believe AI answers.') },
   ],
 };
 
