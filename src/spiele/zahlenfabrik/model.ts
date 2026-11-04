@@ -15,10 +15,45 @@ export interface Op {
   n: number;
 }
 
+/** Prüfung einer Weiche: Was sie bejaht, läuft geradeaus weiter, alles andere biegt ab. */
+export type Test = { kind: 'even' } | { kind: 'div'; n: number } | { kind: 'prime' } | { kind: 'gt'; n: number };
+
 export interface Part {
   /** Band (ohne Rechnung) oder Maschine. */
   op: Op | null;
+  /** Ausgang (bei der Weiche: für „ja“). */
   dir: Dir;
+  /** Weiche: Prüfung; „nein“ geht zur Seite `side` (1 = rechts, 3 = links, von der Laufrichtung aus). */
+  sort?: Test;
+  side?: 1 | 3;
+  /** Zusammenführen: zwei Zahlen werden zu Summe oder Produkt. */
+  merge?: '+' | '×';
+}
+
+/** Primzahl? (Zahlen kleiner als 2 sind keine.) */
+export function isPrime(n: number): boolean {
+  if (!Number.isInteger(n) || n < 2) return false;
+  if (n % 2 === 0) return n === 2;
+  for (let d = 3; d * d <= n; d += 2) if (n % d === 0) return false;
+  return true;
+}
+
+export function passes(test: Test, value: number): boolean {
+  switch (test.kind) {
+    case 'even':
+      return value % 2 === 0;
+    case 'div':
+      return value % test.n === 0;
+    case 'prime':
+      return isPrime(value);
+    case 'gt':
+      return value > test.n;
+  }
+}
+
+/** Ausgänge eines Teils: Weiche zwei (ja, nein), alle anderen einer. */
+export function outputs(part: Part): Dir[] {
+  return part.sort ? [part.dir, ((part.dir + (part.side ?? 1)) % 4) as Dir] : [part.dir];
 }
 
 export interface Level {
@@ -61,6 +96,8 @@ export interface Item {
   x: number;
   y: number;
   value: number;
+  /** Wartet im Zusammenführer auf eine zweite Zahl (nur offene Welt). */
+  wait?: boolean;
 }
 
 export type ErrorKind = 'fell' | 'wrong' | 'divide' | 'timeout';

@@ -16,6 +16,12 @@
   --zf-belt-edge: #8a94a6;
   --zf-belt-top: #c9d0dc;
   --zf-belt-stripe: #9aa5b8;
+  --zf-sort: #efe6ff;
+  --zf-sort-line: #7c4dcc;
+  --zf-merge: #dcf5f3;
+  --zf-merge-line: #138a80;
+  --zf-coin: #9a6a00;
+  --zf-coin-bg: #fff3c4;
 }
 
 :root[data-theme='dark'] {
@@ -34,6 +40,12 @@
   --zf-belt-edge: #0d1117;
   --zf-belt-top: #3b4658;
   --zf-belt-stripe: #56637a;
+  --zf-sort: #2a1f45;
+  --zf-sort-line: #b99cff;
+  --zf-merge: #10302d;
+  --zf-merge-line: #4fd1c5;
+  --zf-coin: #ffd866;
+  --zf-coin-bg: #3a2f12;
 }
 
 .zf {
@@ -357,3 +369,140 @@
 @keyframes zf-poof {
   to { opacity: 0; scale: 1.6; }
 }
+
+/* ---------- Offene Welt: Münzen, Aufträge, Weichen, Zusammenführen ---------- */
+
+.zf-coins { color: var(--zf-coin); }
+
+/* Auftrag an der Basis: Text, Zähler, Fortschrittsbalken, Belohnung */
+.zf-order {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0 0 10px;
+  padding: 10px 14px;
+  border: 2px solid var(--zf-target-line);
+  border-radius: var(--radius-lg);
+  background: var(--zf-target);
+}
+
+.zf-order[hidden] { display: none; }
+.zf-order__tag { font-weight: 800; font-size: 0.85rem; color: var(--zf-target-line); white-space: nowrap; }
+.zf-order__text { font-size: 1.05rem; }
+.zf-order__count { font-family: var(--font-mono); font-weight: 800; }
+
+.zf-order__bar {
+  grid-column: 1 / -1;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--zf-target-line) 18%, var(--surface));
+}
+
+.zf-order__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--zf-target-line);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-order__fill { transition: width 0.3s ease-out; }
+}
+
+.zf-order__reward { grid-column: 1 / -1; color: var(--muted); font-size: 0.85rem; font-weight: 600; }
+
+@media (max-width: 560px) {
+  .zf-order { grid-template-columns: 1fr auto; padding: 8px 12px; }
+  .zf-order__tag { grid-column: 1 / -1; }
+  .zf-order__text { font-size: 0.98rem; }
+}
+
+/* Inventar der offenen Welt: Preise, gesperrte Teile; am Handy eine wischbare Reihe */
+.zf-tool__price {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--zf-coin);
+  white-space: nowrap;
+}
+
+.zf-tool__price.is-poor { color: var(--zf-bad); }
+.zf-tool.is-locked { opacity: 0.55; border-style: dashed; }
+.zf-tool.is-locked .zf-tool__price { color: var(--muted); }
+.zf-tool--sort:not([aria-pressed='true']) { background: var(--zf-sort); border-color: var(--zf-sort-line); }
+.zf-tool--merge:not([aria-pressed='true']) { background: var(--zf-merge); border-color: var(--zf-merge-line); }
+.zf-tool--sort .zf-tool__icon,
+.zf-tool--merge .zf-tool__icon { font-size: 1rem; }
+
+@media (max-width: 760px) {
+  .zf-tools--world {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+
+  .zf-tools--world .zf-tool { flex: 0 0 auto; }
+}
+
+/* Weiche und Zusammenführen auf der Karte */
+.zf-cell--sort { border-color: var(--zf-sort-line); background: var(--zf-sort); }
+.zf-cell--merge { border-color: var(--zf-merge-line); background: var(--zf-merge); }
+.zf-cell__mid { font-size: 0.92rem; font-weight: 800; font-family: var(--font-mono); }
+.zf-cell--sort .zf-cell__small { letter-spacing: -0.02em; }
+
+.zf-ghost--sort { border-color: var(--zf-sort-line); background: var(--zf-sort); font-size: 0.95rem; }
+.zf-ghost--merge { border-color: var(--zf-merge-line); background: var(--zf-merge); font-size: 0.95rem; }
+
+/* Zahlen: große Zahlen kleiner schreiben; wartende Zahl im Zusammenführer etwas versetzt */
+.zf-item--long { font-size: 0.85rem; }
+.zf-item--wait { translate: -50% -86%; outline: 2px dashed var(--zf-merge-line); outline-offset: 2px; }
+
+/* Münzen und Jubel an der Basis */
+.zf-coin-float {
+  position: absolute;
+  translate: -50% -50%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--zf-coin-bg);
+  color: var(--zf-coin);
+  font-weight: 800;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: zf-float 0.9s ease-out forwards;
+}
+
+.zf-coin-float--big { font-size: 2rem; background: none; animation-duration: 1.2s; }
+
+@keyframes zf-float {
+  from { opacity: 1; translate: -50% -50%; }
+  to { opacity: 0; translate: -50% -180%; }
+}
+
+.zf-cell--base.is-cheering { animation: zf-cheer 0.9s ease-out; }
+
+@keyframes zf-cheer {
+  30% { scale: 1.08; box-shadow: 0 0 0 8px color-mix(in srgb, var(--success) 45%, transparent); }
+}
+
+.zf-tool[aria-pressed='true'] .zf-tool__price { color: inherit; }
+
+/* Anzeige im Spielfeld oben links */
+.zf-hud {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--shadow-sm);
+  pointer-events: none;
+}
+
+.zf-hud[hidden] { display: none; }

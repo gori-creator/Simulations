@@ -20,11 +20,12 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
   <div class="container zf" data-factory data-lang={lang}>
     <Breadcrumbs lang={lang} items={[{ label: t('Startseite', 'Home'), href: href(lang, { kind: 'home' }) }, { label: game.title[lang] }]} />
     <header class="zf-head">
-      <p class="zf-head__eyebrow">🏭 {game.title[lang]} · {t('Welt 1: Grundrechnen (Probe)', 'World 1: basic arithmetic (preview)')}</p>
+      <p class="zf-head__eyebrow" data-eyebrow>🏭 {game.title[lang]} · {t('Welt 1: Grundrechnen (Probe)', 'World 1: basic arithmetic (preview)')}</p>
       <h1 class="zf-head__title" data-title>{game.title[lang]}</h1>
       <p class="zf-head__hint" data-hint>{game.description[lang]}</p>
     </header>
     <div class="zf-levels" data-levels role="group" aria-label={t('Level', 'Levels')}></div>
+    <div class="zf-order" data-order hidden></div>
     <div class="zf-tools" data-tools role="group" aria-label={t('Inventar', 'Inventory')}></div>
     <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
     <p class="zf-status" data-status role="status" aria-live="polite"></p>
