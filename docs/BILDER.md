@@ -1072,4 +1072,4 @@ Ersatzgrafik: keine nötig (Rasterbild ohne Ladefehler-Risiko im Build). Im dunk
 
 ## Zahlenfabrik (Spiel)
 
-Prompts, Dateinamen und Prüfliste: `docs/ZAHLENFABRIK-BILDER.md` (14 Bilder: Quelle, Maschine, Weiche, Zusammenführer, Lager, volles Lager, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze). Ablage `src/assets/zahlenfabrik/<name>.webp`; ohne Datei zeichnet das Spiel seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`). Die Teile werden gedreht (Ausgang rechts = Richtung 0), daher Draufsicht ohne seitlichen Schlagschatten.
+Prompts, Dateinamen und Prüfliste: `docs/ZAHLENFABRIK-BILDER.md` (14 Bilder, alle vorhanden seit 04.11.2026: Quelle, Maschine, Weiche, Zusammenführer, Lager, volles Lager, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze). Ablage `src/assets/zahlenfabrik/<name>.webp`; ohne Datei zeichnet das Spiel seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`). Die Teile werden gedreht (Ausgang rechts = Richtung 0), daher Draufsicht ohne seitlichen Schlagschatten.

@@ -40,7 +40,7 @@ const T = {
   stepBtn: L('⏭ Ein Takt', '⏭ One tick'),
   fast: L('⏩ Schnell', '⏩ Fast'),
   stop: L('⏹ Stopp', '⏹ Stop'),
-  clear: L('🗑️ Alles abbauen', '🗑️ Clear all'),
+  clear: L('🗑️ Leeren', '🗑️ Clear'),
   hand: L('Hand', 'Hand'),
   belt: L('Band', 'Belt'),
   erase: L('Abbauen', 'Remove'),
@@ -59,6 +59,9 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
+  chooseLevel: L('🗂️ Level', '🗂️ Levels'),
+  chooseLevelLabel: L('Level wählen', 'Choose a level'),
+  worldCard: L('Münzen sammeln, Aufträge erfüllen, Land freikaufen', 'Collect coins, complete orders, unlock land'),
   undo: L('↶ Rückgängig', '↶ Undo'),
   pro: L('Profi-Level', 'pro level'),
   undoNone: L('Es gibt nichts mehr rückgängig zu machen.', 'There is nothing left to undo.'),
@@ -303,6 +306,8 @@ export function initFactory(root: HTMLElement): void {
   const orderEl = q<HTMLElement>('[data-order]');
   const howto = q<HTMLElement>('[data-howto]');
   const eyebrow = q<HTMLElement>('[data-eyebrow]');
+  const barActions = q<HTMLElement>('[data-bar-actions]');
+  const picker = q<HTMLElement>('[data-picker]');
   howto.textContent = tx(T.howto);
 
   const world = el('div', 'zf-world');
@@ -395,11 +400,20 @@ export function initFactory(root: HTMLElement): void {
     const x1 = Math.min(board.cols, Math.max(...xs) + 2);
     const y0 = Math.max(0, Math.min(...ys) - 1);
     const y1 = Math.min(board.rows, Math.max(...ys) + 2);
+    // Handy, Level: Spielfeld nur so hoch wie die Karte (kein leerer Rand oben und unten)
+    if (mode === 'level' && innerWidth <= 640) {
+      const fitW = Math.min(1.2, Math.max(0.34, box.width / ((x1 - x0) * CELL)));
+      const want = Math.round((y1 - y0) * CELL * fitW + 16);
+      viewport.style.height = `${Math.max(220, Math.min(Math.round(innerHeight * 0.56), want))}px`;
+    } else viewport.style.removeProperty('height');
+    const fresh = viewport.getBoundingClientRect();
     // Beim Einpassen nicht zu klein (Felder sollen sich noch antippen lassen); weiter heraus zoomt man selbst
-    const s = Math.min(MAX_ZOOM, Math.max(FIT_MIN_ZOOM, Math.min(box.width / ((x1 - x0) * CELL), box.height / ((y1 - y0) * CELL), 1.2)));
+    // (am Handy etwas kleiner, damit ein ganzes Level hineinpasst)
+    const minFit = innerWidth <= 640 && mode === 'level' ? 0.34 : FIT_MIN_ZOOM;
+    const s = Math.min(MAX_ZOOM, Math.max(minFit, Math.min(box.width / ((x1 - x0) * CELL), fresh.height / ((y1 - y0) * CELL), 1.2)));
     view.s = s;
     view.x = box.width / 2 - ((x0 + x1) / 2) * CELL * s;
-    view.y = box.height / 2 - ((y0 + y1) / 2) * CELL * s;
+    view.y = fresh.height / 2 - ((y0 + y1) / 2) * CELL * s;
     applyView();
   }
 
@@ -411,8 +425,8 @@ export function initFactory(root: HTMLElement): void {
     return x >= 0 && y >= 0 && x < board.cols && y < board.rows ? [x, y] : null;
   }
 
-  const zoomBtn = (label: string, aria: string, act: () => void) => {
-    const b = el('button', 'zf-zoom__btn', label);
+  const zoomBtn = (label: string, aria: string, act: () => void, extra = '') => {
+    const b = el('button', `zf-zoom__btn ${extra}`.trim(), label);
     b.type = 'button';
     b.setAttribute('aria-label', aria);
     b.title = aria;
@@ -423,8 +437,8 @@ export function initFactory(root: HTMLElement): void {
     const box = viewport.getBoundingClientRect();
     return [box.width / 2, box.height / 2] as const;
   };
-  zoomBtn('+', tx(T.zoomIn), () => zoomAt(1.25, ...center()));
-  zoomBtn('−', tx(T.zoomOut), () => zoomAt(0.8, ...center()));
+  zoomBtn('+', tx(T.zoomIn), () => zoomAt(1.25, ...center()), 'zf-zoom__btn--step');
+  zoomBtn('−', tx(T.zoomOut), () => zoomAt(0.8, ...center()), 'zf-zoom__btn--step');
   zoomBtn('⌖', tx(T.fit), fit);
 
   viewport.addEventListener(
@@ -881,7 +895,7 @@ export function initFactory(root: HTMLElement): void {
       if (part.sort) {
         const c = at(x, y, 'zf-cell--op zf-cell--sort');
         const [yes, no] = outputs(part) as [Dir, Dir];
-        c.append(art('sort', 52), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
+        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
         c.title = tx(T.sortHelp);
         continue;
       }
@@ -1155,7 +1169,35 @@ export function initFactory(root: HTMLElement): void {
   undoBtn.addEventListener('click', undo);
   const helpBtn = btn(tx(T.help));
   const soundBtn = btn('');
-  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, undoBtn, clearBtn, expandBtn, helpBtn, soundBtn);
+  controls.append(pickBox, runBtn, fastBtn, stepBtn, stopBtn, undoBtn, clearBtn, expandBtn);
+  // Kopfleiste: Level wählen, Hilfe, Töne
+  const levelBtn = btn(tx(T.chooseLevel), 'zf-btn zf-btn--bar');
+  levelBtn.setAttribute('aria-haspopup', 'dialog');
+  helpBtn.className = 'zf-btn zf-btn--bar';
+  soundBtn.className = 'zf-btn zf-btn--bar';
+  barActions.append(levelBtn, helpBtn, soundBtn);
+
+  // ---------- Level-Auswahl (eigenes Fenster) ----------
+  let pickerReturn: HTMLElement | null = null;
+  function openPicker(): void {
+    renderLevels();
+    pickerReturn = document.activeElement as HTMLElement | null;
+    picker.hidden = false;
+    picker.querySelector<HTMLElement>('[aria-pressed="true"]')?.focus();
+  }
+  function closePicker(): void {
+    if (picker.hidden) return;
+    picker.hidden = true;
+    pickerReturn?.focus?.();
+  }
+  levelBtn.addEventListener('click', openPicker);
+  picker.querySelector('[data-picker-close]')!.addEventListener('click', closePicker);
+  picker.addEventListener('click', (event) => {
+    if (event.target === picker) closePicker();
+  });
+  picker.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closePicker();
+  });
   const sound = createSound();
   const renderSound = () => {
     soundBtn.textContent = tx(sound.on ? T.soundOn : T.soundOff);
@@ -1195,7 +1237,7 @@ export function initFactory(root: HTMLElement): void {
 
   // Wertetabelle (Welten 5 und 6): unter der Karte
   const tableBox = el('div', 'zf-table');
-  viewport.after(tableBox);
+  q<HTMLElement>('.zf-goal').append(tableBox);
 
   /** Wertetabelle: x-Werte der Quelle, was das Lager will, was schon angekommen ist. */
   function renderTable(): void {
@@ -1434,44 +1476,38 @@ export function initFactory(root: HTMLElement): void {
   });
 
   // ---------- Level ----------
+  /** Level-Auswahl: alle Welten als Karten mit ihren Leveln, dazu die offene Welt. */
   function renderLevels(): void {
-    // Erste Reihe: Welten (mit Sternen), zweite Reihe: Level der gezeigten Welt
-    const tabs = el('div', 'zf-worlds');
-    tabs.setAttribute('role', 'group');
-    tabs.setAttribute('aria-label', tx(T.levels));
-    WORLDS.forEach((w, wi) => {
+    const cards = WORLDS.map((w, wi) => {
       const got = w.levels.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
-      const b = btn(`${wi + 1}`, 'zf-level zf-level--tab');
-      b.append(el('span', 'zf-level__name', tx(w.title)), el('span', 'zf-level__stars', `★ ${got}/${w.levels.length * 3}`));
-      b.setAttribute('aria-pressed', String(mode === 'level' && wi === shownWorld));
-      b.setAttribute('aria-label', `${tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.worldGrades, { g: w.grades })}, ${got}/${w.levels.length * 3} ★`);
-      b.addEventListener('click', () => {
-        shownWorld = wi;
-        const firstOpen = w.levels.find((l) => !stars[l.id]) ?? w.levels[0]!;
-        openLevel(ALL_LEVELS.indexOf(firstOpen));
+      const card = el('section', 'zf-world-card');
+      const head = el('div', 'zf-world-card__head');
+      head.append(el('strong', '', tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })), el('span', 'zf-world-card__meta', `${tx(T.worldGrades, { g: w.grades })} · ★ ${got}/${w.levels.length * 3}`));
+      const list = el('div', 'zf-levels__list');
+      w.levels.forEach((l, i) => {
+        const n = stars[l.id] ?? 0;
+        // Profi-Level (ab Nummer 7) mit Flamme
+        const pro = i >= 6 && wi < 6;
+        const b = btn('', `zf-level${pro ? ' zf-level--pro' : ''}${n ? ' is-done' : ''}`);
+        b.append(el('span', 'zf-level__num', `${i + 1}${pro ? ' 🔥' : ''}`), el('span', 'zf-level__stars', `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`));
+        b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
+        b.setAttribute('aria-label', `${tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
+        b.title = tx(l.title);
+        b.addEventListener('click', () => openLevel(ALL_LEVELS.indexOf(l)));
+        list.append(b);
       });
-      tabs.append(b);
+      card.append(head, list);
+      return card;
     });
-    const w = btn(tx(T.world), 'zf-level zf-level--world');
-    w.setAttribute('aria-pressed', String(mode === 'world'));
-    w.addEventListener('click', openWorldMode);
-    tabs.append(w);
-    const list = el('div', 'zf-levels__list');
-    list.hidden = mode !== 'level';
-    WORLDS[shownWorld]!.levels.forEach((l, i) => {
-      const n = stars[l.id] ?? 0;
-      // Profi-Level (ab Nummer 7) mit Flamme
-      const pro = i >= 6 && shownWorld < 6;
-      const b = btn(`${i + 1}${pro ? ' 🔥' : ''} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, `zf-level${pro ? ' zf-level--pro' : ''}`);
-      b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
-      b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
-      b.addEventListener('click', () => openLevel(ALL_LEVELS.indexOf(l)));
-      list.append(b);
-    });
-    levelBar.replaceChildren(tabs, list);
+    const worldBtn = btn('', 'zf-world-card zf-world-card--open');
+    worldBtn.append(el('strong', '', tx(T.world)), el('span', 'zf-world-card__meta', tx(T.worldCard)));
+    worldBtn.setAttribute('aria-pressed', String(mode === 'world'));
+    worldBtn.addEventListener('click', openWorldMode);
+    levelBar.replaceChildren(worldBtn, ...cards);
   }
 
   function openWorldMode(): void {
+    closePicker();
     if (mode === 'world') return;
     history = [];
     undoBtn.disabled = true;
@@ -1489,6 +1525,7 @@ export function initFactory(root: HTMLElement): void {
     eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
     renderPick();
+    renderTable();
     say('');
     itemsLayer.replaceChildren();
     renderLevels();
@@ -1500,6 +1537,7 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function openLevel(i: number): void {
+    closePicker();
     history = [];
     undoBtn.disabled = true;
     stopTimer();

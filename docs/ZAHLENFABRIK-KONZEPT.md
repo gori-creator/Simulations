@@ -45,7 +45,14 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - **Eigene Bilder** statt gezeichneter Grafik möglich: Prompts in `docs/ZAHLENFABRIK-BILDER.md`, Ablage `src/assets/zahlenfabrik/`; ohne Datei bleibt die gezeichnete Grafik.
 - **Rückgängig** (Knopf und Strg + Z): macht den letzten Bauschritt rückgängig (eine Geste = ein Schritt), in der offenen Welt mit Münzen.
 
-Offen: Bilder einbauen (sobald hochgeladen), Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
+## Aufgeräumte Oberfläche und Bilder (Stand 04.11.2026)
+
+- **Layout:** Kopfleiste (Welt/Level, Knöpfe „🗂️ Level“, „❓ Anleitung“, Töne), großes Spielfeld, rechts eine Seitenleiste mit drei Karten: Ziel (Tipp, Auftrag, Zahlen, Wertetabelle), Bauteile, Steuerung (Start groß, darunter Schnell, Ein Takt, Stopp, Rückgängig, Leeren). Bedienungstexte zum Aufklappen. Meldungen erscheinen als Einblendung über dem Spielfeld.
+- **Level-Auswahl** als eigenes Fenster: oben die offene Welt, darunter je Welt eine Karte mit Klassenstufe, Sternen und den Leveln (Profi-Level mit 🔥).
+- Tablet: Seitenleiste unter dem Spielfeld in zwei Spalten; Handy: eine Spalte, Bauteile und Start direkt unter dem Spielfeld, Spielfeld nur so hoch wie die Karte, Zoom mit zwei Fingern (nur „Alles zeigen“ als Knopf).
+- **Bilder eingebaut** (14 Stück, `src/assets/zahlenfabrik/`, WebP, zusammen etwa 180 KB): Quelle, Maschine, Weiche (gedreht, bei „nein“ links gespiegelt), Zusammenführer, Lager leer/voll, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze. Die gezeichnete Grafik bleibt als Ersatz.
+
+Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
 

@@ -89,7 +89,7 @@ const DRAW: Record<ArtKind, (size: number) => string> = {
  * SVG-Zeichnung für ein Feld. `size`: Kantenlänge in px (Kasten 52, ganze
  * Felder 64, Basis 3 × 64). `dir`: Richtung des Ausgusses (ohne: keiner).
  */
-export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0): SVGSVGElement | HTMLImageElement {
+export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0, flip = false): SVGSVGElement | HTMLImageElement {
   const src = imageFor(kind, variant);
   if (src) {
     // Bild: Ausgang zeigt nach rechts, für andere Richtungen gedreht
@@ -99,7 +99,8 @@ export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0): SVGSVG
     img.alt = '';
     img.decoding = 'async';
     img.draggable = false;
-    if (dir) img.style.rotate = `${dir * 90}deg`;
+    // Weiche mit „nein“ nach links: Bild gespiegelt (im Bild geht „nein“ nach unten)
+    img.style.transform = `rotate(${(dir ?? 0) * 90}deg)${flip ? ' scaleY(-1)' : ''}`;
     return img;
   }
   const svg = document.createElementNS(NS, 'svg');
@@ -110,7 +111,7 @@ export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0): SVGSVG
   svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('focusable', 'false');
   const body = DRAW[kind](size);
-  const turn = dir === undefined ? '' : `<g transform="rotate(${dir * 90} ${size / 2} ${size / 2})">${spout(size)}</g>`;
+  const turn = dir === undefined || kind === 'sort' ? '' : `<g transform="rotate(${dir * 90} ${size / 2} ${size / 2})">${spout(size)}</g>`;
   svg.innerHTML = body + turn;
   return svg;
 }
