@@ -13,6 +13,9 @@
   --zf-item: #2b5fd9;
   --zf-item-text: #ffffff;
   --zf-bad: #c0352b;
+  --zf-belt-edge: #8a94a6;
+  --zf-belt-top: #c9d0dc;
+  --zf-belt-stripe: #9aa5b8;
 }
 
 :root[data-theme='dark'] {
@@ -28,6 +31,9 @@
   --zf-item: #7ea5ff;
   --zf-item-text: #0b1220;
   --zf-bad: #ff8a80;
+  --zf-belt-edge: #0d1117;
+  --zf-belt-top: #3b4658;
+  --zf-belt-stripe: #56637a;
 }
 
 .zf {
@@ -124,9 +130,44 @@
 }
 
 .zf-cells,
-.zf-items {
+.zf-items,
+.zf-belts {
   position: absolute;
   inset: 0;
+}
+
+.zf-belts {
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Band: dunkler Rand, helle Bahn, darauf laufende Streifen */
+.zf-belt__edge,
+.zf-belt__base,
+.zf-belt__run {
+  fill: none;
+  stroke-linejoin: round;
+}
+
+.zf-belt__edge { stroke: var(--zf-belt-edge); stroke-width: 26; }
+.zf-belt__base { stroke: var(--zf-belt-top); stroke-width: 20; }
+.zf-belt__run {
+  stroke: var(--zf-belt-stripe);
+  stroke-width: 20;
+  /* Muster 16 px: passt viermal in ein Feld (64 px), daher nahtlos */
+  stroke-dasharray: 5 11;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-belt__run { animation: zf-belt 1.6s linear infinite; }
+  /* Beim Laufen so schnell wie die Zahlen: 64 px je Takt (420 ms) → 16 px in 105 ms */
+  .zf-belts.is-running .zf-belt__run { animation-duration: 0.105s; }
+  .zf-belts.is-running.is-fast .zf-belt__run { animation-duration: 0.03s; }
+}
+
+@keyframes zf-belt {
+  from { stroke-dashoffset: 16; }
+  to { stroke-dashoffset: 0; }
 }
 
 .zf-items {
@@ -144,18 +185,16 @@
   box-sizing: border-box;
 }
 
-.zf-cell--belt,
 .zf-cell--op,
 .zf-cell--source,
 .zf-cell--target {
-  margin: 3px;
-  width: 58px;
-  height: 58px;
+  margin: 6px;
+  width: 52px;
+  height: 52px;
   border: 2px solid;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.15);
 }
-
-.zf-cell--belt { border-color: var(--zf-belt-line); background: var(--zf-belt); }
 .zf-cell--op { border-color: var(--zf-op-line); background: var(--zf-op); }
 .zf-cell--source { border-color: var(--zf-source-line); background: var(--zf-source); }
 .zf-cell--target { border-color: var(--zf-target-line); background: var(--zf-target); }
@@ -287,3 +326,34 @@
 .zf-status[data-kind='bad'] { color: var(--zf-bad); }
 .zf-status[data-kind='good'] { color: var(--success); }
 .zf-status[data-kind='warn'] { color: var(--warning-text); }
+
+/* Offene Welt: Basis über 3 × 3 Felder, Wölkchen für verlorene Zahlen */
+.zf-cell--base {
+  margin: 6px;
+  border: 3px solid var(--zf-target-line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--zf-target-line) 18%, transparent), transparent 70%),
+    var(--zf-target);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+  gap: 2px;
+}
+
+.zf-base__icon { font-size: 2.4rem; line-height: 1; }
+.zf-cell--base .zf-cell__big { font-size: 1.5rem; }
+
+.zf-level--world:not([aria-pressed='true']) {
+  border-color: var(--zf-source-line);
+}
+
+.zf-poof {
+  position: absolute;
+  translate: -50% -50%;
+  font-size: 1.4rem;
+  pointer-events: none;
+  animation: zf-poof 0.6s ease-out forwards;
+}
+
+@keyframes zf-poof {
+  to { opacity: 0; scale: 1.6; }
+}
