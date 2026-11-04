@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Localized } from '../../i18n/config';
-import type { Op, Test } from './model';
+import { opLabel, type Op, type Test } from './model';
 import type { PartSpec } from './parts';
 
 /**
@@ -12,14 +12,14 @@ import type { PartSpec } from './parts';
  * Maschinen und Weichen sind einstellbar: Welche Zahl die Plus-Maschine
  * addiert oder durch welche Zahl die Weiche prüft, wählt man selbst.
  */
-export type KitId = 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'even' | 'div' | 'gt' | 'prime';
+export type KitId = 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'split' | 'sum' | 'product' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
 export type LessonId = 'belt' | KitId | 'pick' | 'seq';
 
 export interface KitItem {
   id: KitId;
-  kind: 'op' | 'sort';
+  kind: 'op' | 'sort' | 'split' | 'merge' | 'bridge';
   /** Maschine: Rechenzeichen. */
   sym?: Op['sym'];
   /** Weiche: Art der Prüfung. */
@@ -38,10 +38,18 @@ export const KIT: KitItem[] = [
   { id: 'times', kind: 'op', sym: '×', range: [2, 10], start: 2, name: L('Mal-Maschine', 'Times machine') },
   { id: 'divide', kind: 'op', sym: '÷', range: [2, 10], start: 2, name: L('Geteilt-Maschine', 'Divide machine') },
   { id: 'square', kind: 'op', sym: '²', start: 2, name: L('Quadrat-Maschine', 'Square machine') },
+  { id: 'mod', kind: 'op', sym: '%', range: [2, 10], start: 3, name: L('Rest-Maschine', 'Remainder machine') },
+  { id: 'digits', kind: 'op', sym: 'Σ', start: 2, name: L('Quersummen-Maschine', 'Digit-sum machine') },
+  { id: 'root', kind: 'op', sym: '√', start: 2, name: L('Wurzel-Maschine', 'Square-root machine') },
   { id: 'even', kind: 'sort', test: 'even', start: 0, name: L('Weiche „gerade?“', 'Switch “even?”') },
   { id: 'div', kind: 'sort', test: 'div', range: [2, 10], start: 3, name: L('Weiche „teilbar durch …?“', 'Switch “divisible by …?”') },
   { id: 'gt', kind: 'sort', test: 'gt', range: [0, 100], start: 10, name: L('Weiche „größer als …?“', 'Switch “greater than …?”') },
   { id: 'prime', kind: 'sort', test: 'prime', start: 0, name: L('Weiche „Primzahl?“', 'Switch “prime?”') },
+  { id: 'issquare', kind: 'sort', test: 'square', start: 0, name: L('Weiche „Quadratzahl?“', 'Switch “square number?”') },
+  { id: 'split', kind: 'split', start: 0, name: L('Verteiler', 'Splitter') },
+  { id: 'sum', kind: 'merge', start: 0, name: L('Zusammenführer „Summe“', 'Merger “sum”') },
+  { id: 'product', kind: 'merge', start: 0, name: L('Zusammenführer „Produkt“', 'Merger “product”') },
+  { id: 'bridge', kind: 'bridge', start: 0, name: L('Brücke', 'Bridge') },
 ];
 
 export const kitItem = (id: KitId) => KIT.find((k) => k.id === id)!;
@@ -57,12 +65,20 @@ export function clampNum(item: KitItem, n: number): number {
 /** Maschine bzw. Weiche mit eingestellter Zahl als Bauteil (im Level kostenlos). */
 export function specFor(item: KitItem, n: number): PartSpec {
   const v = clampNum(item, n);
-  if (item.kind === 'op') {
-    const op: Op = { sym: item.sym!, n: item.sym === '²' ? 2 : v };
-    return { id: item.sym === '²' ? '²2' : `${item.sym}${v}`, kind: 'op', op, price: 0 };
+  if (item.kind === 'split') return { id: 'split', kind: 'split', price: 0 };
+  if (item.kind === 'bridge') return { id: 'bridge', kind: 'bridge', price: 0 };
+  if (item.kind === 'merge') {
+    const mode = item.id === 'sum' ? '+' : '×';
+    return { id: `merge${mode}`, kind: 'merge', mode, price: 0 };
   }
-  const test: Test = item.test === 'even' ? { kind: 'even' } : item.test === 'prime' ? { kind: 'prime' } : item.test === 'div' ? { kind: 'div', n: v } : { kind: 'gt', n: v };
-  const id = test.kind === 'even' ? 'even' : test.kind === 'prime' ? 'prime' : `${test.kind}${v}`;
+  if (item.kind === 'op') {
+    // Kennung wie bei gebauten Teilen (partId), damit erneutes Antippen dreht
+    const op: Op = { sym: item.sym!, n: item.range ? v : 2 };
+    return { id: opLabel(op), kind: 'op', op, price: 0 };
+  }
+  const test: Test =
+    item.test === 'div' ? { kind: 'div', n: v } : item.test === 'gt' ? { kind: 'gt', n: v } : { kind: item.test as 'even' | 'prime' | 'square' };
+  const id = test.kind === 'div' || test.kind === 'gt' ? `${test.kind}${v}` : test.kind;
   return { id, kind: 'sort', test, price: 0 };
 }
 

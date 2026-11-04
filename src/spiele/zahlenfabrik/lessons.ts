@@ -19,8 +19,12 @@ type Scene =
   | { kind: 'chain'; from: string; op?: string; to: string }
   /** Werkzeug-Kachel mit Zahl-Einstellung. */
   | { kind: 'num'; part: 'machine' | 'sort'; label: string; n: string }
-  /** Weiche: Zahlen hinein, ✓ geradeaus, ✗ zur Seite. */
-  | { kind: 'sort'; label: string; input: string; yes: string; no: string }
+  /** Weiche: Zahlen hinein, ✓ geradeaus, ✗ zur Seite (Verteiler: `marks` → ↓, beide bekommen alles). */
+  | { kind: 'sort'; label: string; input: string; yes: string; no: string; marks?: [string, string]; part?: 'sort' | 'split' }
+  /** Zusammenführer: zwei Zahlen hinein, eine heraus. */
+  | { kind: 'merge'; a: string; b: string; label: string; out: string }
+  /** Brücke: zwei Bänder kreuzen sich. */
+  | { kind: 'cross' }
   /** Wertetabelle: x → Maschine → Werte. */
   | { kind: 'table'; xs: string[]; op: string; ys: string[] }
   /** Werkzeugkasten, der wächst. */
@@ -188,6 +192,92 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  mod: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Rest-Maschine', 'The remainder machine'),
+        text: L('Sie teilt und gibt nur den Rest weiter: 17 geteilt durch 5 ist 3 Rest 2 – also macht „mod 5“ aus 17 die 2. Rest 0 heißt: Die Zahl ist teilbar.', 'It divides and passes on only the remainder: 17 divided by 5 is 3 remainder 2 – so “mod 5” turns 17 into 2. Remainder 0 means: the number is divisible.'),
+        scene: { kind: 'chain', from: '17', op: 'mod 5', to: '2' },
+      },
+      numSlide('machine', 'mod 5', '5', L('2 bis 10', '2 to 10')),
+    ],
+  },
+  digits: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Quersummen-Maschine', 'The digit-sum machine'),
+        text: L('Sie addiert die Ziffern: Aus 1234 wird 1 + 2 + 3 + 4 = 10. Tipp: Ist die Quersumme durch 3 (oder 9) teilbar, dann auch die Zahl selbst.', 'It adds up the digits: 1234 becomes 1 + 2 + 3 + 4 = 10. Tip: if the digit sum is divisible by 3 (or 9), so is the number itself.'),
+        scene: { kind: 'chain', from: '1234', op: 'QS', to: '10' },
+      },
+    ],
+  },
+  root: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Wurzel-Maschine', 'The square-root machine'),
+        text: L('Sie ist die Umkehrung der Quadrat-Maschine: Aus 25 wird 5, weil 5 · 5 = 25. Das geht nur bei Quadratzahlen – sonst bleibt die Fabrik stehen.', 'It is the reverse of the square machine: 25 becomes 5, because 5 · 5 = 25. This only works for square numbers – otherwise the factory stops.'),
+        scene: { kind: 'chain', from: '25', op: '√x', to: '5' },
+      },
+    ],
+  },
+  issquare: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Weiche „Quadratzahl?“', 'The switch “square number?”'),
+        text: L('Quadratzahlen (1, 4, 9, 16, 25 …) laufen geradeaus, alle anderen biegen ab.', 'Square numbers (1, 4, 9, 16, 25 …) go straight on, all others turn off.'),
+        scene: { kind: 'sort', label: 'Quadrat?', input: '4 6 9 10', yes: '4 9', no: '6 10' },
+      },
+    ],
+  },
+  split: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Der Verteiler', 'The splitter'),
+        text: L('Er macht aus einer Zahl zwei gleiche Kopien: eine läuft geradeaus, die andere zur Seite. So kannst du mit derselben Zahl zwei verschiedene Dinge rechnen.', 'It turns one number into two identical copies: one goes straight on, the other to the side. This way you can calculate two different things with the same number.'),
+        scene: { kind: 'sort', label: '', input: '3', yes: '3', no: '3', marks: ['→', '↓'], part: 'split' },
+      },
+      {
+        title: L('Drehen', 'Turning'),
+        text: L('Antippen dreht den Verteiler, nach vier Drehungen geht die Kopie zur anderen Seite. Er zählt nicht als Maschine.', 'Tap to turn the splitter; after four turns the copy goes to the other side. It does not count as a machine.'),
+        scene: { kind: 'sort', label: '', input: '1 2', yes: '1 2', no: '1 2', marks: ['→', '↓'], part: 'split' },
+      },
+    ],
+  },
+  sum: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Zusammenführer „Summe“', 'Merger “sum”'),
+        text: L('Er wartet, bis aus zwei Richtungen je eine Zahl kommt, und schickt ihre Summe weiter: 3 und 4 werden zu 7. Mit dem Verteiler davor rechnest du x + x oder x² + x.', 'It waits until one number arrives from each of two directions and sends on their sum: 3 and 4 become 7. With a splitter in front you can calculate x + x or x² + x.'),
+        scene: { kind: 'merge', a: '3', b: '4', label: 'a+b', out: '7' },
+      },
+    ],
+  },
+  product: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Zusammenführer „Produkt“', 'Merger “product”'),
+        text: L('Genauso, nur mit Malnehmen: 3 und 4 werden zu 12. Damit baust du x · x, x³ oder x · (x + 2). Zusammenführer zählen nicht als Maschine.', 'The same, but multiplying: 3 and 4 become 12. With it you build x · x, x³ or x · (x + 2). Mergers do not count as machines.'),
+        scene: { kind: 'merge', a: '3', b: '4', label: 'a×b', out: '12' },
+      },
+    ],
+  },
+  bridge: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Brücke', 'The bridge'),
+        text: L('Auf einer Brücke laufen Zahlen geradeaus weiter – waagerecht unten durch, senkrecht oben drüber. So können sich zwei Wege kreuzen, ohne sich zu stören.', 'On a bridge numbers keep going straight – horizontally underneath, vertically over the top. This way two paths can cross without getting in each other’s way.'),
+        scene: { kind: 'cross' },
+      },
+    ],
+  },
   seq: {
     tag: NEW_RULE,
     slides: [
@@ -252,7 +342,7 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text?: stri
 
 /** Szene zeichnen (nur Schmuck, für Vorleseprogramme ausgeblendet). */
 function scene(s: Scene, lang: Lang): HTMLElement {
-  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?') : t);
+  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?') : t);
   const box = (kind: 'source' | 'machine' | 'target' | 'sort', text: string, dir?: 0) => {
     const c = el('div', `zf-intro__box zf-intro__box--${kind}`);
     c.append(art(kind, 52, dir), el('span', '', local(text)));
@@ -284,10 +374,25 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     stepper.append(el('span', 'zf-num__btn', '−'), el('span', 'zf-num__value', s.n), el('span', 'zf-num__btn', '+'));
     row.append(tile, stepper);
   } else if (s.kind === 'sort') {
-    row = el('div', 'zf-intro__scene zf-lesson-sort');
+    row = el('div', `zf-intro__scene zf-lesson-sort${s.part === 'split' ? ' zf-lesson-sort--split' : ''}`);
     const outs = el('div', 'zf-lesson-sort__outs');
-    outs.append(el('span', 'zf-lesson-sort__yes', `✓ ${s.yes}`), el('span', 'zf-lesson-sort__no', `✗ ${s.no}`));
+    const [m1, m2] = s.marks ?? ['✓', '✗'];
+    outs.append(el('span', 'zf-lesson-sort__yes', `${m1} ${s.yes}`), el('span', 'zf-lesson-sort__no', `${m2} ${s.no}`));
     row.append(el('span', 'zf-lesson-sort__in', s.input), belt(), box('sort', s.label, 0), outs);
+  } else if (s.kind === 'merge') {
+    row = el('div', 'zf-intro__scene zf-lesson-merge');
+    const ins = el('div', 'zf-lesson-merge__ins');
+    ins.append(el('span', 'zf-lesson-sort__in', s.a), el('span', 'zf-lesson-sort__in', s.b));
+    const m = el('div', 'zf-intro__box zf-intro__box--merge');
+    m.append(art('merge', 52, 0), el('span', '', s.label));
+    row.append(ins, belt(), m, belt(), box('target', s.out));
+  } else if (s.kind === 'cross') {
+    row = el('div', 'zf-intro__scene zf-lesson-cross');
+    const h = el('div', 'zf-intro__belt zf-lesson-cross__h');
+    const v = el('div', 'zf-intro__belt zf-lesson-cross__v');
+    const b = el('div', 'zf-lesson-cross__bridge');
+    b.append(art('bridge', 56));
+    row.append(h, v, b, el('span', 'zf-intro__dot zf-lesson-cross__dot-h', '3'), el('span', 'zf-intro__dot zf-lesson-cross__dot-v', '5'));
   } else if (s.kind === 'table') {
     row = el('div', 'zf-intro__scene zf-lesson-table');
     const table = el('table');

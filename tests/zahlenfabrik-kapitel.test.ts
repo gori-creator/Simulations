@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { allOps, clampNum, KIT, kitItem, opAllowed, specFor, testAllowed } from '../src/spiele/zahlenfabrik/kit';
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
-import { accepts, apply, isFixed, key, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Grid, type Op, type Test } from '../src/spiele/zahlenfabrik/model';
-import { bestSort, lay, own, straight } from './zahlenfabrik-loeser';
+import { accepts, apply, emitCount, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
+import { ascii, bestSort, lay, own, straight } from './zahlenfabrik-loeser';
 
 const level = (id: string) => ALL_LEVELS.find((l) => l.id === id)!;
 const op = (sym: Op['sym'], n = 2): Op => ({ sym, n });
@@ -16,12 +16,28 @@ type Solution =
   | { kind: 'chain'; ops: Op[] }
   | { kind: 'pick'; answer: number }
   | { kind: 'sort'; test: Test; ops?: Op[]; yes?: Op[]; no?: Op[] }
-  | { kind: 'three'; first: Test; second: Test; ops?: Op[] };
+  | { kind: 'three'; first: Test; second: Test; ops?: Op[] }
+  | { kind: 'grid'; grid: Grid };
 
 const chain = (...ops: Op[]): Solution => ({ kind: 'chain', ops });
 const pick = (answer: number): Solution => ({ kind: 'pick', answer });
 const sort = (test: Test, ops: Op[] = [], yes: Op[] = [], no: Op[] = []): Solution => ({ kind: 'sort', test, ops, yes, no });
 const three = (first: Test, second: Test, ops: Op[] = []): Solution => ({ kind: 'three', first, second, ops });
+const drawn = (rows: string[], legend: Record<string, Part> = {}): Solution => ({ kind: 'grid', grid: ascii(rows, legend) });
+const m = (o: Op, dir: Dir): Part => ({ op: o, dir });
+const split = (dir: Dir, side: 1 | 3): Part => ({ op: null, dir, split: true, side });
+const sorter = (test: Test, dir: Dir, side: 1 | 3): Part => ({ op: null, dir, sort: test, side });
+const merger = (mode: '+' | '×'): Part => ({ op: null, dir: 0, merge: mode });
+const sqTest: Test = { kind: 'square' };
+
+/** Verteiler-Karte: Kopie nach oben (Lager oben), weiter nach rechts und unten. */
+const SPLIT2 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..Sb........', '...v........', '...v........', '...>>>>>>>..'];
+const SPLIT3 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..STm>>>>>..', '...n........', '...v........', '...>>>>>>>..'];
+/** Zusammenführer-Karte: Kopie oben herum, unten geradeaus, Zusammenführer bei (7, 3). */
+const MERGE = (up = '>>>>', straight = '>>>', after = '>>>') => ['.............', '.............', `...${up}v.....`, `..>S${straight}M${after}..`];
+/** Brücken-Karte: Weiche/Verteiler fest bei (4, 4), Brücke bei (7, 3). */
+const CROSS = (top = '>>', side = '>>>') => ['............', '.......>>>>.', '.......^....', `....${side}B>v..`, `..>>.${top}^.v..`, '.........v..', '.........v..', '.........>>.'];
+const bridge: Part = { op: null, dir: 0, bridge: true };
 
 const SOLUTIONS: Record<string, Solution> = {
   'c1-1': chain(),
@@ -84,11 +100,61 @@ const SOLUTIONS: Record<string, Solution> = {
   'c12-6': chain(op('²'), op('−', 4)),
   'c12-7': chain(op('×', 2), op('²')),
   'c12-8': chain(op('−', 1), op('²'), op('−', 1)),
+  'c14-1': chain(op('%', 5)),
+  'c14-2': chain(op('%', 3)),
+  'c14-3': sort(even, [op('%', 2)]),
+  'c14-4': chain(op('%', 7)),
+  'c14-5': chain(op('%', 6), op('×', 9)),
+  'c15-1': chain(op('Σ')),
+  'c15-2': sort(div(3), [op('Σ')]),
+  'c15-3': chain(op('Σ'), op('Σ')),
+  'c15-4': chain(op('Σ'), op('×', 6)),
+  'c16-1': chain(op('√')),
+  'c16-2': chain(op('√')),
+  'c16-3': chain(op('√'), op('×', 7)),
+  'c16-4': pick(49),
+  'c17-1': sort(sqTest),
+  'c17-2': sort(sqTest, [op('+', 1)]),
+  'c17-3': three(sqTest, prime),
+  'c18-1': drawn(SPLIT2.map((r) => r.replace('a', '^').replace('b', 'v')), { S: split(3, 1) }),
+  'c18-2': drawn(SPLIT2, { S: split(3, 1), a: m(op('²'), 3), b: m(op('+', 10), 1) }),
+  'c18-3': drawn(SPLIT3.map((r) => r.replace('a', '^')), { S: split(3, 1), T: split(0, 1), m: m(op('×', 2), 0), n: m(op('×', 3), 1) }),
+  'c18-4': drawn(SPLIT3.map((r) => r.replace('Tm', 'W>').replace('n', 'v')), { S: split(3, 1), W: sorter(even, 0, 1), a: m(op('×', 2), 3) }),
+  'c19-1': drawn(MERGE(), { S: split(0, 3), M: merger('+') }),
+  'c19-2': drawn(MERGE(), { S: split(0, 3), M: merger('×') }),
+  'c19-3': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('+'), a: m(op('²'), 0) }),
+  'c19-4': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('×'), a: m(op('²'), 0) }),
+  'c19-5': drawn(MERGE('a>>>', 'b>>'), { S: split(0, 3), M: merger('×'), a: m(op('+', 1), 0), b: m(op('−', 1), 0) }),
+  'c19-6': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('×'), a: m(op('+', 2), 0) }),
+  'c19-7': drawn(MERGE('ab>>'), { S: split(0, 3), M: merger('×'), a: m(op('²'), 0), b: m(op('−', 1), 0) }),
+  'c19-8': drawn(MERGE('a>>>', 'bc>'), { S: split(0, 3), M: merger('+'), a: m(op('²'), 0), b: m(op('+', 1), 0), c: m(op('²'), 0) }),
+  'c20-1': drawn(CROSS(), { B: bridge }),
+  'c20-2': drawn(CROSS('a>', 'b>>'), { B: bridge, a: m(op('²'), 0), b: m(op('+', 5), 0) }),
+  'c20-3': drawn(CROSS('ab', 'cd>'), { B: bridge, a: m(op('+', 1), 0), b: m(op('²'), 0), c: m(op('×', 3), 0), d: m(op('−', 1), 0) }),
+  'c21-1': chain(op('²'), op('−', 6)),
+  'c21-2': chain(op('+', 4), op('²')),
+  'c21-3': chain(op('+', 3), op('×', 4)),
+  'c21-4': chain(op('×', 10), op('+', 2)),
+  'c21-5': chain(op('²'), op('×', 3), op('−', 5)),
+  'c21-6': chain(op('+', 4), op('²'), op('+', 2)),
+  'c21-7': chain(op('×', 9), op('²'), op('+', 5)),
+  'c21-8': chain(op('×', 3), op('−', 5), op('²')),
+  'c21-9': chain(op('×', 9), op('×', 9), op('−', 3)),
+  'c21-10': chain(op('−', 6), op('²'), op('+', 6)),
+  'c22-1': chain(op('×', 4), op('+', 9)),
+  'c22-2': chain(op('−', 1), op('²'), op('+', 2)),
+  'c22-3': chain(op('+', 4), op('²'), op('+', 3)),
+  'c22-4': chain(op('²'), op('×', 10), op('−', 5)),
+  'c22-5': chain(op('²'), op('+', 10), op('×', 5)),
+  'c22-6': chain(op('×', 4), op('+', 10), op('²')),
+  'c22-7': chain(op('%', 5), op('+', 7), op('×', 2)),
+  'c22-8': chain(op('×', 6), op('%', 10), op('−', 6)),
+  'c22-9': chain(op('×', 4), op('−', 9), op('Σ')),
   'c13-1': pick(7),
   'c13-2': chain(op('×', 5), op('×', 10), op('×', 10)),
   'c13-3': chain(op('²'), op('×', 2), op('−', 3)),
   'c13-4': pick(7),
-  'c13-5': chain(op('÷', 10), op('÷', 9), op('÷', 4)),
+  'c13-5': chain(op('×', 5), op('²'), op('+', 6)),
   'c13-6': three(gt(50), even, [op('²')]),
 };
 
@@ -108,15 +174,17 @@ function build(l: LevelInfo, s: Solution): Grid {
   if (s.kind === 'chain') return straight(l, s.ops);
   if (s.kind === 'pick') return straight(l);
   if (s.kind === 'sort') return bestSort(l, s.test, s.ops, s.yes, s.no)!;
+  if (s.kind === 'grid') return s.grid;
   return threeGrid(l, s.first, s.second, s.ops ?? []);
 }
 
-const opsOf = (s: Solution): Op[] => (s.kind === 'chain' ? s.ops : s.kind === 'sort' ? [...(s.ops ?? []), ...(s.yes ?? []), ...(s.no ?? [])] : s.kind === 'three' ? (s.ops ?? []) : []);
-const testsOf = (s: Solution): Test[] => (s.kind === 'sort' ? [s.test] : s.kind === 'three' ? [s.first, s.second] : []);
+/** Eigene Teile einer gebauten Fabrik (ohne vorgegebene). */
+const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFixed(l, ...(k.split(',').map(Number) as [number, number]))).map(([, p]) => p);
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
-  it('13 Kapitel; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig', () => {
-    expect(CHAPTERS).toHaveLength(13);
+  it('22 Kapitel, über 100 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig', () => {
+    expect(CHAPTERS).toHaveLength(22);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(110);
     const taught = CHAPTERS.flatMap((c) => c.teaches);
     expect(new Set(taught).size).toBe(taught.length);
     for (const k of KIT) expect(taught).toContain(k.id);
@@ -139,7 +207,7 @@ describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
     expect(clampNum(kitItem('times'), 1)).toBe(2);
     expect(clampNum(kitItem('gt'), 2.4)).toBe(2);
     expect(specFor(kitItem('plus'), 3)).toMatchObject({ id: '+3', kind: 'op', op: { sym: '+', n: 3 } });
-    expect(specFor(kitItem('square'), 7)).toMatchObject({ id: '²2', op: { sym: '²', n: 2 } });
+    expect(specFor(kitItem('square'), 7)).toMatchObject({ id: 'x²', op: { sym: '²', n: 2 } });
     expect(specFor(kitItem('div'), 4)).toMatchObject({ id: 'div4', kind: 'sort', test: { kind: 'div', n: 4 } });
     expect(specFor(kitItem('gt'), 50)).toMatchObject({ id: 'gt50', test: { kind: 'gt', n: 50 } });
     expect(opAllowed(kitItem('plus'), op('+', 11))).toBe(false);
@@ -166,16 +234,23 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
       for (const f of l.fixed ?? []) expect(l.walls.some(([x, y]) => x === f.x && y === f.y)).toBe(false);
       expect(totalNeed(l)).toBeGreaterThan(0);
       expect(l.title.de.length * l.title.en.length * l.hint.de.length * l.hint.en.length).toBeGreaterThan(0);
-      // Nur Teile aus dem Werkzeugkasten dieses Kapitels, mit erlaubten Zahlen
-      const kit = kitFor(l);
-      for (const o of opsOf(s)) expect(kit.some((k) => opAllowed(k, o)), `${l.id}: ${o.sym}${o.n}`).toBe(true);
-      for (const t of testsOf(s)) expect(kit.some((k) => testAllowed(k, t)), `${l.id}: ${t.kind}`).toBe(true);
-      if (l.maxMachines !== undefined) expect(opsOf(s).length).toBeLessThanOrEqual(l.maxMachines);
-      // Startzahl-Level: nur Bänder
-      if (l.source.pick) expect(l.maxMachines).toBe(0);
-      // Lösung läuft durch
+      // Lösung bauen
       const g = build(l, s);
       expect(g).not.toBeNull();
+      // Nur Teile aus dem Werkzeugkasten dieses Kapitels, mit erlaubten Zahlen
+      const kit = kitFor(l);
+      const has = (id: string) => kit.some((k) => k.id === id);
+      const parts = ownParts(l, g);
+      for (const p of parts) {
+        if (p.op) expect(kit.some((k) => opAllowed(k, p.op!)), `${l.id}: ${p.op.sym}${p.op.n}`).toBe(true);
+        if (p.sort) expect(kit.some((k) => testAllowed(k, p.sort!)), `${l.id}: ${p.sort.kind}`).toBe(true);
+        if (p.split) expect(has('split'), `${l.id}: Verteiler`).toBe(true);
+        if (p.merge) expect(has(p.merge === '+' ? 'sum' : 'product'), `${l.id}: Zusammenführer`).toBe(true);
+        if (p.bridge) expect(has('bridge'), `${l.id}: Brücke`).toBe(true);
+      }
+      if (l.maxMachines !== undefined) expect(parts.filter((p) => p.op).length).toBeLessThanOrEqual(l.maxMachines);
+      // Startzahl-Level: nur Bänder
+      if (l.source.pick) expect(l.maxMachines).toBe(0);
       const r = run(l, withFixed(l, g), s.kind === 'pick' ? s.answer : undefined);
       expect(r.error).toBeNull();
       expect(r.won).toBe(true);
@@ -206,7 +281,7 @@ function chains(l: LevelInfo, max: number): string[] {
   const t = targetsOf(l)[0]!;
   const out: string[] = [];
   const walk = (vals: (number | null)[], used: Op[]) => {
-    if (vals.every((v, i) => v !== null && accepts(t, v, i))) out.push(used.map((o) => (o.sym === '²' ? 'x²' : `${o.sym}${o.n}`)).join(' '));
+    if (vals.every((v, i) => v !== null && accepts(t, v, i))) out.push(used.map(opLabel).join(' '));
     if (used.length === max) return;
     for (const o of ops) {
       const next = vals.map((v) => (v === null ? null : apply(o, v)));
@@ -241,6 +316,37 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
   it('Wertetabellen mit mehreren Wegen (z. B. 2 · (x + 1) = 2x + 2)', () => {
     expect(chains(level('c11-4'), 2)).toEqual(expect.arrayContaining(['+1 ×2', '×2 +2']));
     expect(chains(level('c12-7'), 2)).toEqual(expect.arrayContaining(['×2 x²', 'x² ×4']));
+  });
+  it('Rätsel-Werkstatt und Funktionen-Detektiv: mit der Grenze genau ein Weg, mit einer Maschine weniger keiner', () => {
+    for (const l of [...CHAPTERS.find((c) => c.id === 'c21')!.levels, ...CHAPTERS.find((c) => c.id === 'c22')!.levels]) {
+      const s = SOLUTIONS[l.id] as { kind: 'chain'; ops: Op[] };
+      const name = s.ops.map(opLabel).join(' ');
+      expect(chains(l, l.maxMachines!), l.id).toEqual([name]);
+      expect(chains(l, l.maxMachines! - 1), l.id).toEqual([]);
+    }
+  });
+  it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
+    expect(chains(level('c14-4'), 1)).toEqual(['mod 7']);
+    expect(chains(level('c14-5'), 2)).toEqual(['mod 6 ×9']);
+    expect(chains(level('c15-4'), 2)).toEqual(['QS ×6']);
+    expect(chains(level('c16-3'), 2)).toEqual(['√x ×7']);
+    expect(chains(level('c13-5'), 3)).toEqual(['×5 x² +6']);
+  });
+  it('Zusammenführer: x · (x + 2) geht mit einer Maschine, ohne Zusammenführer nicht', () => {
+    const l = level('c19-6');
+    expect(chains(l, 1)).toEqual([]);
+    expect(run(l, (SOLUTIONS['c19-6'] as { grid: Grid }).grid).won).toBe(true);
+  });
+  it('Verteiler und Zusammenführer: Quelle gibt so viele Zahlen aus, wie gebraucht werden', () => {
+    expect(emitCount(level('c18-1'))).toBe(4);
+    expect(emitCount(level('c19-1'))).toBe(5);
+    expect(emitCount(level('c2-1'))).toBe(3);
+  });
+  it('Brücke: ohne Brücke kreuzen sich die Wege nicht (Band statt Brücke scheitert)', () => {
+    const l = level('c20-1');
+    const g = new Map((SOLUTIONS['c20-1'] as { grid: Grid }).grid);
+    g.set(key(7, 3), { op: null, dir: 3 });
+    expect(run(l, withFixed(l, g)).won).toBe(false);
   });
   it('vorgegebene Teile zählen nicht zum Teile-Ziel', () => {
     expect(isFixed(level('c6-1'), 5, 3)).toBe(true);

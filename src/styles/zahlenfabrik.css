@@ -1655,3 +1655,46 @@
   .zf-side .zf-tool .zf-tool__pic,
   .zf-side .zf-tool .zf-tool__pic img { width: 28px; height: 28px; }
 }
+
+/* Verteiler: wie eine Weiche gebaut, aber türkis (gibt in beide Richtungen) */
+.zf-cell--split { border-color: var(--zf-merge-line); background: var(--zf-merge); color: var(--zf-merge-line); }
+.zf-cell--split .zf-art--img,
+.zf-tool--split .zf-tool__pic img { filter: hue-rotate(-95deg) saturate(1.1); }
+.zf-side .zf-tool--split:not([aria-pressed='true']) .zf-tool__pic.is-plain { border-color: var(--zf-merge-line); background: var(--zf-merge); }
+.zf-cell--split .zf-cell__small { letter-spacing: -0.02em; }
+
+/* Erklärkarten: Verteiler, Zusammenführer, Brücke */
+.zf-lesson-sort--split .zf-lesson-sort__yes,
+.zf-lesson-sort--split .zf-lesson-sort__no { border-color: var(--zf-merge-line) !important; background: var(--zf-merge); }
+.zf-lesson-sort--split .zf-intro__box--sort { color: var(--zf-merge-line); background: var(--zf-merge); }
+.zf-lesson-sort--split .zf-art--img { filter: hue-rotate(-95deg) saturate(1.1); }
+.zf-lesson-merge__ins { display: grid; gap: 10px; margin-right: 6px; }
+.zf-intro__box--merge { color: var(--zf-merge-line); background: var(--zf-merge); font-size: 0.75rem; }
+
+.zf-lesson-cross { height: 150px; }
+.zf-lesson-cross__h,
+.zf-lesson-cross__v { position: absolute; left: 50%; top: 50%; }
+.zf-lesson-cross__h { width: 220px; translate: -50% -50%; }
+.zf-lesson-cross__v { width: 120px; translate: -50% -50%; rotate: 90deg; }
+.zf-lesson-cross__bridge { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 56px; height: 56px; }
+.zf-lesson-cross__bridge .zf-art { width: 56px; height: 56px; }
+.zf-lesson-cross .zf-intro__dot { animation: none; opacity: 1; z-index: 2; }
+.zf-lesson-cross__dot-h { translate: -90px -50%; }
+.zf-lesson-cross__dot-v { translate: -50% -60px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-lesson-cross__dot-h { animation: zf-cross-h 2.4s linear infinite !important; }
+  .zf-lesson-cross__dot-v { animation: zf-cross-v 2.4s linear infinite !important; }
+}
+
+@keyframes zf-cross-h { from { translate: -110px -50%; } to { translate: 80px -50%; } }
+@keyframes zf-cross-v { from { translate: -50% -70px; } to { translate: -50% 40px; } }
+
+/* Werkzeugkasten in Gruppen */
+.zf-tools__group { grid-column: 1 / -1; margin: 6px 0 -2px; color: var(--muted); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.zf-side .zf-tools--many .zf-tool--merge .zf-tool__label,
+.zf-side .zf-tools--many .zf-tool--split .zf-tool__label { font-family: var(--font-mono); }
+
+@media (max-width: 420px) {
+  .zf-lesson-merge .zf-lesson-sort__in { display: inline-block; }
+}

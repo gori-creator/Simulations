@@ -103,6 +103,9 @@ const T = {
   wantValue: L('die {n}', 'the {n}'),
   wantNext: L('als Nächstes die {n}', 'the {n} next'),
   divide: L('{v} lässt sich hier nicht glatt teilen.', '{v} can’t be divided evenly here.'),
+  root: L('Aus {v} lässt sich keine glatte Wurzel ziehen – {v} ist keine Quadratzahl.', '{v} has no whole square root – {v} is not a square number.'),
+  splitHelp: L('Verteiler: Jede Zahl läuft als Kopie in beide Richtungen weiter. Antippen dreht ihn, nach vier Drehungen wechselt die Seite.', 'Splitter: every number continues as a copy in both directions. Tap to turn it; after four turns the side switches.'),
+  splitShort: L('Kopie', 'copy'),
   timeout: L('Die Zahlen kommen nie im Lager an – fahren sie im Kreis?', 'The numbers never reach the storage – are they going round in circles?'),
   starsPar: L('★ 2: höchstens {n} Teile', '★ 2: at most {n} parts'),
   goalPar: L('höchstens {n} Teile', 'at most {n} parts'),
@@ -114,6 +117,7 @@ const T = {
   machines: L('Maschinen', 'Machines'),
   tooMany: L('Hier sind höchstens {n} Maschinen erlaubt. Bau eine ab oder gib einer Maschine eine andere Zahl.', 'At most {n} machines are allowed here. Remove one or give a machine another number.'),
   noMachines: L('Hier sind keine eigenen Maschinen erlaubt – nur Bänder. Wähle die Startzahl!', 'No machines of your own are allowed here – only belts. Choose the starting number!'),
+  noMachinesNote: L('In diesem Level sind keine Maschinen erlaubt.', 'No machines are allowed in this level.'),
   onlyBelts: L('In diesem Level stehen die Maschinen schon fest. Du brauchst nur Bänder.', 'In this level the machines are already fixed. You only need belts.'),
   ruleMax: L('höchstens {n} Maschinen', 'at most {n} machines'),
   numFor: L('Zahl für {p}', 'Number for {p}'),
@@ -121,6 +125,9 @@ const T = {
   numMore: L('Zahl größer', 'Bigger number'),
   numTile: L('{p}, eingestellt: {n}', '{p}, set to: {n}'),
   newBadge: L('Neu', 'New'),
+  groupMachines: L('Maschinen', 'Machines'),
+  groupSwitches: L('Weichen', 'Switches'),
+  groupFlow: L('Verteilen & Kreuzen', 'Split & cross'),
   newIn: L('Neu in diesem Kapitel: {p}', 'New in this chapter: {p}'),
   explain: L('Erklärung', 'Explain'),
   chapterLabel: L('Kapitel {n}: {t}', 'Chapter {n}: {t}'),
@@ -295,6 +302,8 @@ function acceptText(a: Accept, got: number): Localized {
       return not ? L('Zahlen, die keine Primzahlen sind', 'numbers that are not prime') : L('Primzahlen', 'primes');
     case 'gt':
       return not ? L(`Zahlen bis ${t.n}`, `numbers up to ${t.n}`) : L(`Zahlen größer als ${t.n}`, `numbers greater than ${t.n}`);
+    case 'square':
+      return not ? L('Zahlen, die keine Quadratzahlen sind', 'numbers that are not square numbers') : L('Quadratzahlen', 'square numbers');
   }
 }
 
@@ -643,7 +652,7 @@ export function initFactory(root: HTMLElement): void {
     const k = key(x, y);
     const part = grid.get(k);
     if (part && partId(part) === spec.id) {
-      if (part.sort) {
+      if (part.sort || part.split) {
         const r = (part.dir + (part.side === 3 ? 4 : 0) + 1) % 8;
         part.dir = (r % 4) as Dir;
         part.side = r < 4 ? 1 : 3;
@@ -658,13 +667,34 @@ export function initFactory(root: HTMLElement): void {
         return;
       }
       if (!pay(spec.price - (part && mode === 'world' ? priceOf(part) : 0))) return;
-      grid.set(k, makePart(spec, part?.dir ?? guessDir(x, y), part?.side ?? 1));
+      const dir = part?.dir ?? guessDir(x, y);
+      grid.set(k, makePart(spec, dir, part?.side ?? guessSide(x, y, dir)));
       sound.play('place');
       if (spec.kind === 'sort') say(tx(T.sortHelp));
+      if (spec.kind === 'split') say(tx(T.splitHelp));
       if (spec.kind === 'merge') say(tx(T.mergeHelp));
       if (spec.kind === 'bridge') say(tx(T.bridgeHelp));
     }
     changed();
+  }
+
+  /**
+   * Seite für Weiche bzw. Verteiler: dorthin, wo schon ein Band wegführt (oder
+   * ein Lager liegt); sonst rechts von der Laufrichtung.
+   */
+  function guessSide(x: number, y: number, dir: Dir): 1 | 3 {
+    const all = allParts();
+    const leadsAway = (d: Dir) => {
+      const nx = x + DX[d];
+      const ny = y + DY[d];
+      if (baseAt(nx, ny)) return true;
+      const p = all.get(key(nx, ny));
+      // ein Band, das nicht in dieses Feld zurückzeigt
+      return !!p && !outputs(p).some((o) => nx + DX[o] === x && ny + DY[o] === y);
+    };
+    const right = leadsAway(((dir + 1) % 4) as Dir);
+    const left = leadsAway(((dir + 3) % 4) as Dir);
+    return left && !right ? 3 : 1;
   }
 
   /** Eigene Maschinen im Level (Weichen und Bänder zählen nicht). */
@@ -740,7 +770,7 @@ export function initFactory(root: HTMLElement): void {
     if (board.walls.has(key(x, y))) return tx(T.cellRock, v);
     const part = allParts().get(key(x, y));
     if (part) {
-      const name = part.op ? opLabel(part.op) : part.sort ? `${tx(testLabel(part.sort))}` : part.merge ? `a${part.merge}b` : part.bridge ? tx(T.bridgeHelp).split(':')[0]! : tx(T.belt);
+      const name = part.op ? opLabel(part.op) : part.sort ? `${tx(testLabel(part.sort))}` : part.merge ? `a${part.merge}b` : part.split ? tx(T.splitHelp).split(':')[0]! : part.bridge ? tx(T.bridgeHelp).split(':')[0]! : tx(T.belt);
       return tx(T.cellPart, { ...v, p: name, d: tx(T.dirNames).split('|')[part.dir]! });
     }
     return tx(canBuild(x, y) ? T.cellEmpty : T.cellBlocked, v);
@@ -891,6 +921,14 @@ export function initFactory(root: HTMLElement): void {
     beltLayer.classList.toggle('is-running', running);
   }
 
+  /** Schloss an vorgegebenen Teilen (lassen sich nicht abbauen). */
+  function addLock(c: HTMLElement): void {
+    c.classList.add('zf-cell--fixed');
+    const lock = el('span', 'zf-cell__lock');
+    lock.append(icon('lock', 12));
+    c.append(lock);
+  }
+
   function renderCells(): void {
     world.style.width = `${board.cols * CELL}px`;
     world.style.height = `${board.rows * CELL}px`;
@@ -934,7 +972,7 @@ export function initFactory(root: HTMLElement): void {
       at(x, y, 'zf-cell--rock').append(art('rock', CELL, undefined, (x * 7 + y * 13) % 3));
     }
     for (const [k, part] of all) {
-      if (!part.op && !part.sort && !part.merge && !part.bridge) continue;
+      if (!part.op && !part.sort && !part.merge && !part.bridge && !part.split) continue;
       const [x, y] = k.split(',').map(Number) as [number, number];
       const fixed = board.fixed.has(k);
       if (part.sort) {
@@ -942,6 +980,15 @@ export function initFactory(root: HTMLElement): void {
         const [yes, no] = outputs(part) as [Dir, Dir];
         c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
         c.title = tx(T.sortHelp);
+        if (fixed) addLock(c);
+        continue;
+      }
+      if (part.split) {
+        const c = at(x, y, 'zf-cell--op zf-cell--split');
+        const [a, b] = outputs(part) as [Dir, Dir];
+        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(T.splitShort)), el('span', 'zf-cell__small', `${ARROW[a]} ${ARROW[b]}`));
+        c.title = tx(T.splitHelp);
+        if (fixed) addLock(c);
         continue;
       }
       if (part.bridge) {
@@ -959,11 +1006,7 @@ export function initFactory(root: HTMLElement): void {
       const c = at(x, y, 'zf-cell--op');
       if (fixed) c.classList.add('zf-cell--fixed');
       c.append(art('machine', 52, part.dir), el('span', 'zf-cell__big', opLabel(part.op!)));
-      if (fixed) {
-        const lock = el('span', 'zf-cell__lock');
-        lock.append(icon('lock', 12));
-        c.append(lock);
-      }
+      if (fixed) addLock(c);
     }
     if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
     // Noch nicht freigekauftes Land: Nebel außerhalb des offenen Gebiets
@@ -1110,12 +1153,31 @@ export function initFactory(root: HTMLElement): void {
       ? board.tools.filter((spec) => !open || open.has(spec.id) || soon.has(spec.id)).map((spec): Tool => ({ kind: 'part', spec }))
       : kit.map((item): Tool => ({ kind: 'part', spec: specFor(item, nums[item.id]), kit: item.id }));
     const fresh = new Set(world ? [] : newIn(chapterOf(level)).map((k) => k.id));
-    const list: Tool[] = [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown, { kind: 'erase' }];
+    // Level: erst die Grundwerkzeuge, dann die Bauteile nach Gruppen (Maschinen, Weichen, Verteilen & Kreuzen)
+    const list: Tool[] = world ? [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown, { kind: 'erase' }] : [{ kind: 'hand' }, { kind: 'part', spec: BELT }, { kind: 'erase' }, ...shown];
     toolsKey = toolsSignature();
     toolsEl.classList.toggle('zf-tools--world', world);
     toolsEl.classList.toggle('zf-tools--many', list.length > 7);
+    const groupOf = (t: Tool): string => {
+      if (world || t.kind !== 'part' || !t.kit) return 'base';
+      const k = kitItem(t.kit).kind;
+      return k === 'op' ? 'op' : k === 'sort' ? 'sort' : 'flow';
+    };
+    const heads: Record<string, Localized> = { op: T.groupMachines, sort: T.groupSwitches, flow: T.groupFlow };
+    let lastGroup = 'base';
     toolsEl.replaceChildren(
-      ...list.map((t) => {
+      ...list.flatMap((t): HTMLElement[] => {
+        const g = groupOf(t);
+        if (g === lastGroup) return [render(t)];
+        lastGroup = g;
+        return [el('p', 'zf-tools__group', tx(heads[g]!)), render(t)];
+      }),
+    );
+    if (!world && level.maxMachines === 0) toolsEl.append(el('p', 'zf-tools__note', tx(kit.length ? T.noMachinesNote : T.onlyBelts)));
+    renderNum();
+
+    function render(t: Tool): HTMLElement {
+      {
         const spec = t.kind === 'part' ? t.spec : null;
         const locked = !!(spec && open && !open.has(spec.id));
         const b = el('button', `zf-tool${spec && spec.kind !== 'belt' ? ` zf-tool--op zf-tool--${spec.kind}` : ''}`);
@@ -1126,7 +1188,7 @@ export function initFactory(root: HTMLElement): void {
         else if (t.kind === 'erase') pic.append(icon('erase', 22));
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
-          const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
+          const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
           const src = imageFor(kind);
           if (src) {
             const img = el('img');
@@ -1162,13 +1224,13 @@ export function initFactory(root: HTMLElement): void {
           tool = t;
           if (spec?.kind === 'sort') say(tx(T.sortHelp));
           else if (spec?.kind === 'merge') say(tx(T.mergeHelp));
+          else if (spec?.kind === 'split') say(tx(T.splitHelp));
+          else if (spec?.kind === 'bridge') say(tx(T.bridgeHelp));
           renderTools();
         });
         return b;
-      }),
-    );
-    if (!world && level.maxMachines === 0) toolsEl.append(el('p', 'zf-tools__note', tx(T.onlyBelts)));
-    renderNum();
+      }
+    }
   }
 
   // ---------- Zahl einstellen (Maschinen und Weichen im Level) ----------
@@ -1552,7 +1614,7 @@ export function initFactory(root: HTMLElement): void {
       stopTimer();
       failedRuns += 1;
       const e = state.error;
-      const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : T.timeout;
+      const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : e.kind === 'root' ? T.root : T.timeout;
       sound.play('error');
       const want = e.target !== undefined ? tx(acceptText(targetsOf(level)[e.target]!.accept, state.got[e.target] ?? 0)) : '';
       say(tx(msg, { v: ctxNum(e.value), t: want }), 'bad');
@@ -1726,7 +1788,8 @@ export function initFactory(root: HTMLElement): void {
     const wInfo = chapterOf(level);
     shownWorld = CHAPTERS.indexOf(wInfo);
     board = boardOfLevel(level);
-    kit = level.maxMachines === 0 ? [] : kitFor(level);
+    // Rückwärts-Level: nur Bänder; ohne erlaubte Maschinen: nur Weichen, Verteiler, Zusammenführer, Brücke
+    kit = level.source.pick ? [] : level.maxMachines === 0 ? kitFor(level).filter((k) => k.kind !== 'op') : kitFor(level);
     grid = new Map();
     tool = { kind: 'part', spec: BELT };
     state = start(picks[level.id]);

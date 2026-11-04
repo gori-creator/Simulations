@@ -65,6 +65,14 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - **Tests** (`tests/zahlenfabrik-kapitel.test.ts`): Jedes Level hat eine Musterlösung, die nur Teile aus dem eigenen Werkzeugkasten mit erlaubten Zahlen benutzt und die Grenze einhält; Teile-Ziel = kleinste gefundene Fabrik. Ein Löser zählt alle Rechenwege: Grenzen sind knapp (mit einer Maschine weniger unlösbar), bei „Aus 4 wird 99“ und „Aus 100 wird 3“ gibt es genau einen Weg, anderswo mehrere (z. B. 2 · (x + 1) = 2x + 2, (2x)² = 4x²).
 - Alle Kapitel sind frei wählbar (Unterricht: Lehrkraft springt zum passenden Kapitel). Alte Sterne der Welten-Level gelten nicht mehr (neue Kennungen `c1-1` …).
 
+## Neue Bausteine und viele schwere Level (Stand 04.11.2026)
+
+- **22 Kapitel, 115 Level.** Neue Kapitel: Rest-Maschine (`mod n`, Rest beim Teilen, z. B. Wochentage: 3, 10, 17, 24, 31 → mod 7), Quersummen-Maschine (`QS`, Neunerprobe), Wurzel-Maschine (`√x`, nur bei Quadratzahlen, sonst bleibt die Fabrik stehen), Weiche „Quadratzahl?“, **Verteiler** (jede Zahl als Kopie in zwei Richtungen), **Zusammenführer** „Summe“ und „Produkt“ (wartet auf je eine Zahl aus zwei Richtungen, der Reihe nach), **Brücke** (Wege kreuzen sich), dazu **Rätsel-Werkstatt** (10 Level) und **Funktionen-Detektiv** (9 Wertetabellen ohne angegebene Regel).
+- Mit Verteiler und Zusammenführer entstehen Terme wie x + x, x · x, x² + x, x³, (x + 1)(x − 1), x(x + 2), x³ − x und x² + (x + 1)²; Verteiler, Zusammenführer und Weichen zählen nicht als Maschinen, daher gehen z. B. x · x „ohne Maschine“ und x(x + 2) „mit einer Maschine“.
+- **Rätsel mit genau einem Weg:** Ein Suchprogramm hat Aufgaben gefunden, die mit allen Bauteilen und der Grenze für Maschinen genau eine Lösung haben (z. B. 2 → 329: ×9, x², +5; 8 → 1606: ×5, x², +6; Wertetabelle 5, 1, 3, 7, 2: ×4, −9, QS). Die Tests prüfen das mit einem Löser (genau ein Weg, mit einer Maschine weniger keiner).
+- Rechenlogik: Level können jetzt Verteiler, Zusammenführer und Brücken (`model.ts`, `emit` = Anzahl der Zahlen aus der Quelle). Werkzeugkasten in Gruppen (Maschinen, Weichen, Verteilen & Kreuzen); Weichen und Verteiler richten ihre Seite beim Setzen nach vorhandenen Bändern aus. Vorgegebene Weichen und Verteiler tragen ein Schloss.
+- „Zerlege 360“ in der Meisterprüfung ist durch „Aus 8 wird 1606“ ersetzt (mit der Rest-Maschine wäre es zu leicht).
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
