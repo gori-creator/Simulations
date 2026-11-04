@@ -1,7 +1,8 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
 import { WORLD_1, type LevelInfo } from './levels';
-import { canPlace, DX, DY, isFixed, isWall, key, opLabel, start, starsFor, step, withFixed, type Dir, type Grid, type Op, type State } from './model';
+import { canPlace, DX, DY, key, opLabel, start, starsFor, step, withFixed, type Dir, type Grid, type Item, type Op, type Part, type State } from './model';
+import { canBuildWorld, makeWorld, worldStart, worldStep, type OpenWorld, type WorldState } from './world';
 
 /**
  * Zahlenfabrik (Probe, Welt 1): freie Fläche aus Kästchen, die man mit der
@@ -10,6 +11,7 @@ import { canPlace, DX, DY, isFixed, isWall, key, opLabel, start, starsFor, step,
  */
 const ARROW = ['→', '↓', '←', '↑'];
 const STORE = 'spiel:zahlenfabrik';
+const WORLD_STORE = 'spiel:zahlenfabrik:welt';
 const CELL = 64;
 const MIN_ZOOM = 0.45;
 const MAX_ZOOM = 1.8;
@@ -57,7 +59,85 @@ const T = {
   starsFirst: L('★ 3: gleich beim ersten Start', '★ 3: on the first run'),
   editLocked: L('Erst stoppen, dann umbauen.', 'Stop first, then rebuild.'),
   fixed: L('schon da', 'already here'),
+  world: L('🌍 Offene Welt', '🌍 Open world'),
+  worldTitle: L('Offene Welt', 'Open world'),
+  worldHint: L(
+    'Überall stehen Zahlenquellen. Leg Bänder zu deiner Basis 🏠 und sammle so viel wie möglich. Maschinen machen die Zahlen größer – aber Vorsicht: Was vom Band fällt, ist weg. Du kannst bauen, während die Fabrik läuft.',
+    'Number sources are everywhere. Lay belts to your base 🏠 and collect as much as you can. Machines make the numbers bigger – but careful: whatever falls off the belt is gone. You can build while the factory is running.',
+  ),
+  score: L('Gesammelt: {n}', 'Collected: {n}'),
+  count: L('{n} Zahlen', '{n} numbers'),
+  lost: L('verloren: {n}', 'lost: {n}'),
+  best: L('Rekord: {n}', 'Record: {n}'),
+  base: L('Basis', 'Base'),
+  resetWorld: L('↺ Welt neu', '↺ New world'),
+  resetConfirm: L('Alle Bänder und Maschinen abbauen und neu anfangen?', 'Remove all belts and machines and start over?'),
 };
+
+/** Gespeicherte offene Welt: gebaute Teile und Rekord. */
+interface SavedWorld {
+  parts: [number, number, Dir, string | null][];
+  best: number;
+}
+
+function loadWorld(w: OpenWorld): { grid: Grid; best: number } {
+  const grid: Grid = new Map();
+  try {
+    const raw = JSON.parse(localStorage.getItem(WORLD_STORE) ?? '{}') as Partial<SavedWorld>;
+    for (const entry of raw.parts ?? []) {
+      const [x, y, dir, label] = entry;
+      if (!canBuildWorld(w, x, y) || ![0, 1, 2, 3].includes(dir)) continue;
+      const op = label ? w.tools.find((t) => opLabel(t) === label) : null;
+      if (label && !op) continue;
+      grid.set(key(x, y), { dir, op: op ?? null });
+    }
+    return { grid, best: typeof raw.best === 'number' && raw.best >= 0 ? raw.best : 0 };
+  } catch {
+    return { grid, best: 0 };
+  }
+}
+
+function saveWorld(grid: Grid, best: number): void {
+  try {
+    const parts = [...grid].map(([k, p]): SavedWorld['parts'][number] => {
+      const [x, y] = k.split(',').map(Number) as [number, number];
+      return [x, y, p.dir, p.op ? opLabel(p.op) : null];
+    });
+    localStorage.setItem(WORLD_STORE, JSON.stringify({ parts, best } satisfies SavedWorld));
+  } catch {
+    // ohne Speicher: nur für diesen Besuch
+  }
+}
+
+/**
+ * Gemeinsame Sicht auf ein Level oder die offene Welt: Größe, Quellen,
+ * Ziel (Lager oder Basis), Felsen, vorgegebene Teile, Werkzeuge.
+ */
+interface Board {
+  cols: number;
+  rows: number;
+  sources: { x: number; y: number; dir: Dir; value: number }[];
+  base: { x: number; y: number; w: number; h: number };
+  walls: Set<string>;
+  fixed: Map<string, Part>;
+  tools: Op[];
+}
+
+function boardOfLevel(l: LevelInfo): Board {
+  return {
+    cols: l.cols,
+    rows: l.rows,
+    sources: [l.source],
+    base: { x: l.target.x, y: l.target.y, w: 1, h: 1 },
+    walls: new Set(l.walls.map(([x, y]) => key(x, y))),
+    fixed: new Map((l.fixed ?? []).map((f) => [key(f.x, f.y), f.part])),
+    tools: l.tools,
+  };
+}
+
+function boardOfWorld(w: OpenWorld): Board {
+  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: w.tools };
+}
 
 function load(): Record<string, number> {
   try {
@@ -114,6 +194,17 @@ export function initFactory(root: HTMLElement): void {
 
   let index = Math.max(0, WORLD_1.findIndex((l) => !stars[l.id]));
   let level: LevelInfo = WORLD_1[index]!;
+  const openWorld = makeWorld();
+  let mode: 'level' | 'world' = 'level';
+  let board: Board = boardOfLevel(level);
+  let wstate: WorldState = worldStart();
+  let best = 0;
+  let saveCounter = 0;
+  const sourceAt = (x: number, y: number) => board.sources.find((sp) => sp.x === x && sp.y === y);
+  const baseAt = (x: number, y: number) => x >= board.base.x && y >= board.base.y && x < board.base.x + board.base.w && y < board.base.y + board.base.h;
+  const canBuild = (x: number, y: number) => (mode === 'level' ? canPlace(level, x, y) : canBuildWorld(openWorld, x, y));
+  const allParts = (): Grid => (mode === 'level' ? withFixed(level, grid) : grid);
+  const items = (): Item[] => (mode === 'level' ? state.items : wstate.items);
   let grid: Grid = new Map();
   let tool: Tool = { kind: 'belt' };
   let state: State = start();
@@ -141,13 +232,17 @@ export function initFactory(root: HTMLElement): void {
   /** Quelle, Lager und vorgegebene Teile ins Bild holen. */
   function fit(): void {
     const box = viewport.getBoundingClientRect();
-    const pts = [[level.source.x, level.source.y], [level.target.x, level.target.y], ...(level.fixed ?? []).map((f) => [f.x, f.y])];
+    // Level: Quelle, Lager, vorgegebene Teile; Welt: die Umgebung der Basis
+    const pts =
+      mode === 'level'
+        ? [[level.source.x, level.source.y], [level.target.x, level.target.y], ...(level.fixed ?? []).map((f) => [f.x, f.y])]
+        : [[board.base.x - 5, board.base.y - 4], [board.base.x + board.base.w + 4, board.base.y + board.base.h + 3]];
     const xs = pts.map((p) => p[0]!);
     const ys = pts.map((p) => p[1]!);
     const x0 = Math.max(0, Math.min(...xs) - 1);
-    const x1 = Math.min(level.cols, Math.max(...xs) + 2);
+    const x1 = Math.min(board.cols, Math.max(...xs) + 2);
     const y0 = Math.max(0, Math.min(...ys) - 1);
-    const y1 = Math.min(level.rows, Math.max(...ys) + 2);
+    const y1 = Math.min(board.rows, Math.max(...ys) + 2);
     const s = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.min(box.width / ((x1 - x0) * CELL), box.height / ((y1 - y0) * CELL), 1.2)));
     view.s = s;
     view.x = box.width / 2 - ((x0 + x1) / 2) * CELL * s;
@@ -160,7 +255,7 @@ export function initFactory(root: HTMLElement): void {
     const box = viewport.getBoundingClientRect();
     const x = Math.floor((clientX - box.left - view.x) / (CELL * view.s));
     const y = Math.floor((clientY - box.top - view.y) / (CELL * view.s));
-    return x >= 0 && y >= 0 && x < level.cols && y < level.rows ? [x, y] : null;
+    return x >= 0 && y >= 0 && x < board.cols && y < board.rows ? [x, y] : null;
   }
 
   const zoomBtn = (label: string, aria: string, act: () => void) => {
@@ -260,6 +355,7 @@ export function initFactory(root: HTMLElement): void {
 
   // ---------- Bauen ----------
   function editable(): boolean {
+    if (mode === 'world') return true;
     if (running) {
       say(tx(T.editLocked), 'warn');
       return false;
@@ -271,6 +367,7 @@ export function initFactory(root: HTMLElement): void {
   function changed(): void {
     renderCells();
     renderInfo();
+    if (mode === 'world') saveWorld(grid, best);
   }
 
   /** Band-Weg ziehen: das letzte Feld zeigt aufs neue, das neue bekommt dieselbe Richtung. */
@@ -281,7 +378,7 @@ export function initFactory(root: HTMLElement): void {
       if (d === undefined) return;
       const part = grid.get(key(...from));
       if (part) part.dir = d;
-      if (canPlace(level, ...to)) {
+      if (canBuild(...to)) {
         const existing = grid.get(key(...to));
         if (existing) existing.dir = d;
         else grid.set(key(...to), { op: null, dir: d });
@@ -297,7 +394,7 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function placeOp(op: Op | null, x: number, y: number): void {
-    if (!canPlace(level, x, y) || !editable()) return;
+    if (!canBuild(x, y) || !editable()) return;
     const k = key(x, y);
     const part = grid.get(k);
     const same = part && (part.op ? opLabel(part.op) : 'belt') === (op ? opLabel(op) : 'belt');
@@ -315,18 +412,16 @@ export function initFactory(root: HTMLElement): void {
   /** Neue Teile setzen den Weg fort; geht es geradeaus nicht weiter, dann zur Seite Richtung Lager. */
   function guessDir(x: number, y: number): Dir {
     const dirs = [0, 1, 2, 3] as Dir[];
-    for (const t of dirs) if (x + DX[t] === level.target.x && y + DY[t] === level.target.y) return t;
-    const all = withFixed(level, grid);
-    const open = (d: Dir) => {
-      const nx = x + DX[d];
-      const ny = y + DY[d];
-      return canPlace(level, nx, ny) || (nx === level.target.x && ny === level.target.y);
-    };
-    const toward = (d: Dir) => Math.abs(x + DX[d] - level.target.x) + Math.abs(y + DY[d] - level.target.y);
+    for (const t of dirs) if (baseAt(x + DX[t], y + DY[t])) return t;
+    const all = allParts();
+    const tx0 = board.base.x + (board.base.w - 1) / 2;
+    const ty0 = board.base.y + (board.base.h - 1) / 2;
+    const open = (d: Dir) => canBuild(x + DX[d], y + DY[d]) || baseAt(x + DX[d], y + DY[d]);
+    const toward = (d: Dir) => Math.abs(x + DX[d] - tx0) + Math.abs(y + DY[d] - ty0);
     for (const d of dirs) {
       const fx = x - DX[d];
       const fy = y - DY[d];
-      const from = fx === level.source.x && fy === level.source.y ? level.source.dir : all.get(key(fx, fy))?.dir;
+      const from = sourceAt(fx, fy)?.dir ?? all.get(key(fx, fy))?.dir;
       if (from !== d) continue;
       if (open(d)) return d;
       return dirs.filter((t) => t !== (d + 2) % 4 && open(t)).sort((a, c) => toward(a) - toward(c))[0] ?? d;
@@ -343,14 +438,14 @@ export function initFactory(root: HTMLElement): void {
    * damit das Muster nahtlos ins nächste Feld übergeht.
    */
   function renderBelts(all: Grid): void {
-    beltLayer.setAttribute('width', String(level.cols * CELL));
-    beltLayer.setAttribute('height', String(level.rows * CELL));
+    beltLayer.setAttribute('width', String(board.cols * CELL));
+    beltLayer.setAttribute('height', String(board.rows * CELL));
     const paths: string[] = [];
     const pointsInto = (x: number, y: number): Dir | null => {
       for (const d of [0, 1, 2, 3] as Dir[]) {
         const fx = x - DX[d];
         const fy = y - DY[d];
-        const from = fx === level.source.x && fy === level.source.y ? level.source.dir : all.get(key(fx, fy))?.dir;
+        const from = sourceAt(fx, fy)?.dir ?? all.get(key(fx, fy))?.dir;
         if (from === d) return d;
       }
       return null;
@@ -367,17 +462,20 @@ export function initFactory(root: HTMLElement): void {
       const inDir = pointsInto(x, y) ?? part.dir;
       segment(x, y, inDir, part.dir);
     }
-    // Stummel aus der Quelle heraus und ins Lager hinein
-    {
-      const { x, y, dir } = level.source;
+    // Stummel aus den Quellen heraus (nur wenn angeschlossen) und ins Ziel hinein
+    for (const { x, y, dir } of board.sources) {
+      if (mode === 'world' && !all.has(key(x + DX[dir], y + DY[dir])) && !baseAt(x + DX[dir], y + DY[dir])) continue;
       const [bx, by] = EDGE[dir]!;
       paths.push(`M${x * CELL + CELL / 2} ${y * CELL + CELL / 2}L${x * CELL + bx} ${y * CELL + by}`);
     }
-    const into = pointsInto(level.target.x, level.target.y);
-    if (into !== null) {
-      const [ax, ay] = EDGE[(into + 2) % 4]!;
-      const { x, y } = level.target;
-      paths.push(`M${x * CELL + ax} ${y * CELL + ay}L${x * CELL + CELL / 2} ${y * CELL + CELL / 2}`);
+    for (let bx0 = board.base.x; bx0 < board.base.x + board.base.w; bx0++) {
+      for (let by0 = board.base.y; by0 < board.base.y + board.base.h; by0++) {
+        const into = pointsInto(bx0, by0);
+        if (into === null) continue;
+        const [ax, ay] = EDGE[(into + 2) % 4]!;
+        const [ex, ey] = EDGE[into]!;
+        paths.push(`M${bx0 * CELL + ax} ${by0 * CELL + ay}L${bx0 * CELL + (ax + ex) / 2 + (ex - ax) * 0.1} ${by0 * CELL + (ay + ey) / 2 + (ey - ay) * 0.1}`);
+      }
     }
     const d = paths.join('');
     const mk = (cls: string) => {
@@ -391,45 +489,59 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function renderCells(): void {
-    world.style.width = `${level.cols * CELL}px`;
-    world.style.height = `${level.rows * CELL}px`;
-    const all = withFixed(level, grid);
+    world.style.width = `${board.cols * CELL}px`;
+    world.style.height = `${board.rows * CELL}px`;
+    const all = allParts();
     renderBelts(all);
     const frag = document.createDocumentFragment();
-    for (let y = 0; y < level.rows; y++) {
-      for (let x = 0; x < level.cols; x++) {
-        const c = el('div', 'zf-cell');
-        c.style.left = `${x * CELL}px`;
-        c.style.top = `${y * CELL}px`;
-        const part = all.get(key(x, y));
-        if (x === level.source.x && y === level.source.y) {
-          c.classList.add('zf-cell--source');
-          c.append(el('span', 'zf-cell__big', String(level.source.value)), el('span', 'zf-cell__small', `🏭 ${ARROW[level.source.dir]}`));
-          c.title = tx(T.source);
-        } else if (x === level.target.x && y === level.target.y) {
-          c.classList.add('zf-cell--target');
-          c.append(el('span', 'zf-cell__big', String(level.target.value)), el('span', 'zf-cell__small zf-target-count', `📦 ${state.delivered}/${level.need}`));
-          c.title = tx(T.target);
-        } else if (isWall(level, x, y)) {
-          c.classList.add('zf-cell--rock');
-          c.append(el('span', 'zf-cell__rock', '🪨'));
-        } else if (part?.op) {
-          c.classList.add('zf-cell--op');
-          if (isFixed(level, x, y)) c.classList.add('zf-cell--fixed');
-          c.dataset.dir = String(part.dir);
-          c.append(el('span', 'zf-cell__big', opLabel(part.op)), el('span', 'zf-cell__small', ARROW[part.dir]!));
-          if (isFixed(level, x, y)) c.append(el('span', 'zf-cell__lock', '🔒'));
-        }
-        if (state.error && state.error.x === x && state.error.y === y) c.classList.add('zf-cell--error');
-        frag.append(c);
-      }
+    const at = (x: number, y: number, cls: string) => {
+      const c = el('div', `zf-cell ${cls}`);
+      c.style.left = `${x * CELL}px`;
+      c.style.top = `${y * CELL}px`;
+      frag.append(c);
+      return c;
+    };
+    for (const sp of board.sources) {
+      const c = at(sp.x, sp.y, 'zf-cell--source');
+      c.append(el('span', 'zf-cell__big', String(sp.value)), el('span', 'zf-cell__small', `🏭 ${ARROW[sp.dir]}`));
+      c.title = tx(T.source);
     }
+    if (mode === 'level') {
+      const c = at(level.target.x, level.target.y, 'zf-cell--target');
+      c.append(el('span', 'zf-cell__big', String(level.target.value)), el('span', 'zf-cell__small zf-target-count', `📦 ${state.delivered}/${level.need}`));
+      c.title = tx(T.target);
+    } else {
+      const c = at(board.base.x, board.base.y, 'zf-cell--base');
+      c.style.width = `${board.base.w * CELL - 12}px`;
+      c.style.height = `${board.base.h * CELL - 12}px`;
+      c.append(el('span', 'zf-base__icon', '🏠'), el('span', 'zf-cell__big zf-base-score', ctxNum(wstate.score)), el('span', 'zf-cell__small', tx(T.base)));
+      c.title = tx(T.base);
+    }
+    for (const k of board.walls) {
+      const [x, y] = k.split(',').map(Number) as [number, number];
+      at(x, y, 'zf-cell--rock').append(el('span', 'zf-cell__rock', '🪨'));
+    }
+    for (const [k, part] of all) {
+      if (!part.op) continue;
+      const [x, y] = k.split(',').map(Number) as [number, number];
+      const c = at(x, y, 'zf-cell--op');
+      const fixed = board.fixed.has(k);
+      if (fixed) c.classList.add('zf-cell--fixed');
+      c.append(el('span', 'zf-cell__big', opLabel(part.op)), el('span', 'zf-cell__small', ARROW[part.dir]!));
+      if (fixed) c.append(el('span', 'zf-cell__lock', '🔒'));
+    }
+    if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
     cellsLayer.replaceChildren(frag);
+  }
+
+  const numberFormat = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB');
+  function ctxNum(n: number): string {
+    return numberFormat.format(n).replace('-', '−');
   }
 
   function renderItems(): void {
     const old = new Map([...itemsLayer.querySelectorAll<HTMLElement>('.zf-item')].map((e) => [e.dataset.id!, e]));
-    for (const item of state.items) {
+    for (const item of items()) {
       let e = old.get(String(item.id));
       if (!e) {
         e = el('span', 'zf-item', String(item.value));
@@ -451,6 +563,18 @@ export function initFactory(root: HTMLElement): void {
     for (const e of old.values()) e.remove();
     const count = cellsLayer.querySelector('.zf-target-count');
     if (count) count.textContent = `📦 ${state.delivered}/${level.need}`;
+    const score = cellsLayer.querySelector('.zf-base-score');
+    if (score) score.textContent = ctxNum(wstate.score);
+    // Verlorene Zahlen: kurzer Wölkchen-Effekt
+    if (mode === 'world' && !reduced) {
+      for (const [x, y] of wstate.lostAt.slice(0, 12)) {
+        const poof = el('span', 'zf-poof', '💨');
+        poof.style.left = `${x * CELL + CELL / 2}px`;
+        poof.style.top = `${y * CELL + CELL / 2}px`;
+        itemsLayer.append(poof);
+        setTimeout(() => poof.remove(), 600);
+      }
+    }
   }
 
   // ---------- Inventar ----------
@@ -458,7 +582,7 @@ export function initFactory(root: HTMLElement): void {
     const list: [Tool, string, string][] = [
       [{ kind: 'hand' }, '✋', tx(T.hand)],
       [{ kind: 'belt' }, '→', tx(T.belt)],
-      ...level.tools.map((op) => [{ kind: 'op', op }, opLabel(op), ''] as [Tool, string, string]),
+      ...board.tools.map((op) => [{ kind: 'op', op }, opLabel(op), ''] as [Tool, string, string]),
       [{ kind: 'erase' }, '🧽', tx(T.erase)],
     ];
     toolsEl.replaceChildren(
@@ -534,10 +658,28 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function renderInfo(): void {
+    if (mode === 'world') {
+      info.replaceChildren(
+        el('strong', '', tx(T.score, { n: ctxNum(wstate.score) })),
+        el('span', '', tx(T.count, { n: ctxNum(wstate.count) })),
+        el('span', 'zf-goal', tx(T.lost, { n: ctxNum(wstate.lost) })),
+        el('span', 'zf-goal', tx(T.best, { n: ctxNum(best) })),
+        el('span', 'zf-goal', `${tx(T.parts)}: ${grid.size}`),
+      );
+      return;
+    }
     info.replaceChildren(el('span', '', `${tx(T.parts)}: ${grid.size}`), el('span', '', `${tx(T.delivered)}: ${state.delivered}/${level.need}`), el('span', 'zf-goal', tx(T.starsPar, { n: level.par })), el('span', 'zf-goal', tx(T.starsFirst)));
   }
 
   function tick(): void {
+    if (mode === 'world') {
+      wstate = worldStep(openWorld, grid, wstate);
+      if (wstate.score > best) best = wstate.score;
+      renderItems();
+      renderInfo();
+      if (++saveCounter % 25 === 0) saveWorld(grid, best);
+      return;
+    }
     state = step(level, withFixed(level, grid), state);
     hasRun = true;
     if (state.error) {
@@ -591,6 +733,7 @@ export function initFactory(root: HTMLElement): void {
   function resetRun(): void {
     stopTimer();
     state = start();
+    wstate = worldStart();
     hasRun = false;
     say('');
     itemsLayer.replaceChildren();
@@ -611,8 +754,10 @@ export function initFactory(root: HTMLElement): void {
   });
   stopBtn.addEventListener('click', resetRun);
   clearBtn.addEventListener('click', () => {
+    if (mode === 'world' && grid.size > 0 && !confirm(tx(T.resetConfirm))) return;
     grid = new Map();
     resetRun();
+    if (mode === 'world') saveWorld(grid, best);
   });
 
   // ---------- Level ----------
@@ -621,18 +766,48 @@ export function initFactory(root: HTMLElement): void {
       ...WORLD_1.map((l, i) => {
         const n = stars[l.id] ?? 0;
         const b = btn(`${i + 1} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, 'zf-level');
-        b.setAttribute('aria-pressed', String(i === index));
+        b.setAttribute('aria-pressed', String(mode === 'level' && i === index));
         b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}, ${n}/3 ★`);
         b.addEventListener('click', () => openLevel(i));
         return b;
       }),
     );
+    const w = btn(tx(T.world), 'zf-level zf-level--world');
+    w.setAttribute('aria-pressed', String(mode === 'world'));
+    w.addEventListener('click', openWorldMode);
+    levelBar.append(w);
+  }
+
+  function openWorldMode(): void {
+    if (mode === 'world') return;
+    stopTimer();
+    mode = 'world';
+    board = boardOfWorld(openWorld);
+    const saved = loadWorld(openWorld);
+    grid = saved.grid;
+    best = saved.best;
+    wstate = worldStart();
+    tool = { kind: 'belt' };
+    title.textContent = tx(T.worldTitle);
+    hint.textContent = `💡 ${tx(T.worldHint)}`;
+    stepBtn.hidden = true;
+    say('');
+    itemsLayer.replaceChildren();
+    renderLevels();
+    renderTools();
+    renderCells();
+    renderInfo();
+    fit();
   }
 
   function openLevel(i: number): void {
     stopTimer();
+    if (mode === 'world') saveWorld(grid, best);
+    mode = 'level';
+    stepBtn.hidden = false;
     index = i;
     level = WORLD_1[i]!;
+    board = boardOfLevel(level);
     grid = new Map();
     tool = { kind: 'belt' };
     state = start();

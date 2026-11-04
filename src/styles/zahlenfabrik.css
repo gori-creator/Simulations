@@ -326,3 +326,34 @@
 .zf-status[data-kind='bad'] { color: var(--zf-bad); }
 .zf-status[data-kind='good'] { color: var(--success); }
 .zf-status[data-kind='warn'] { color: var(--warning-text); }
+
+/* Offene Welt: Basis über 3 × 3 Felder, Wölkchen für verlorene Zahlen */
+.zf-cell--base {
+  margin: 6px;
+  border: 3px solid var(--zf-target-line);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--zf-target-line) 18%, transparent), transparent 70%),
+    var(--zf-target);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.18);
+  gap: 2px;
+}
+
+.zf-base__icon { font-size: 2.4rem; line-height: 1; }
+.zf-cell--base .zf-cell__big { font-size: 1.5rem; }
+
+.zf-level--world:not([aria-pressed='true']) {
+  border-color: var(--zf-source-line);
+}
+
+.zf-poof {
+  position: absolute;
+  translate: -50% -50%;
+  font-size: 1.4rem;
+  pointer-events: none;
+  animation: zf-poof 0.6s ease-out forwards;
+}
+
+@keyframes zf-poof {
+  to { opacity: 0; scale: 1.6; }
+}
