@@ -1,0 +1,44 @@
+---
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import type { Lang } from '../i18n/config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { GAMES_PUBLIC, getGame } from '../spiele';
+import { alternates, href } from '../lib/routes';
+import '../styles/zahlenfabrik.css';
+
+interface Props {
+  lang: Lang;
+  gameId: string;
+}
+
+const { lang, gameId } = Astro.props;
+const game = getGame(gameId);
+const t = (de: string, en: string) => (lang === 'de' ? de : en);
+---
+
+<BaseLayout lang={lang} title={game.title[lang]} description={game.description[lang]} alternates={alternates({ kind: 'game', game: game.id })} noindex={!GAMES_PUBLIC}>
+  <div class="container zf" data-factory data-lang={lang}>
+    <Breadcrumbs lang={lang} items={[{ label: t('Startseite', 'Home'), href: href(lang, { kind: 'home' }) }, { label: game.title[lang] }]} />
+    <header class="zf-head">
+      <p class="zf-head__eyebrow">🏭 {game.title[lang]} · {t('Welt 1: Grundrechnen (Probe)', 'World 1: basic arithmetic (preview)')}</p>
+      <h1 class="zf-head__title" data-title>{game.title[lang]}</h1>
+      <p class="zf-head__hint" data-hint>{game.description[lang]}</p>
+    </header>
+    <div class="zf-levels" data-levels role="group" aria-label={t('Level', 'Levels')}></div>
+    <div class="zf-tools" data-tools role="group" aria-label={t('Werkzeuge', 'Tools')}></div>
+    <div class="zf-board-wrap">
+      <div class="zf-board" data-board></div>
+    </div>
+    <p class="zf-info" data-info></p>
+    <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
+    <p class="zf-status" data-status role="status" aria-live="polite"></p>
+    <noscript><p class="note">{t('Das Spiel braucht JavaScript.', 'The game needs JavaScript.')}</p></noscript>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initFactory } from '../spiele/zahlenfabrik/game';
+
+  const root = document.querySelector<HTMLElement>('[data-factory]');
+  if (root) initFactory(root);
+</script>

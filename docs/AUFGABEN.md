@@ -54,7 +54,7 @@ Keine Rechtsberatung – vor dem Start von einer kundigen Person prüfen lassen.
 ## Neue Vorhaben
 
 - [x] **KI-Abenteuer** (01.11.): Kurs „wie funktioniert KI“ ab Klasse 5 mit Bit, dem Roboter – 6 Bereiche, 18 Lektionen, Spielstand ohne Konto. Aufbau und Lektionen: `docs/KI-KURS-KONZEPT.md`.
-- [ ] **Zahlenfabrik** (Idee 04.11.): Fabrik-Spiel mit Zahlen, Maschinen und Aufträgen. Kurzkonzept: `docs/ZAHLENFABRIK-KONZEPT.md`; wartet auf Freigabe.
+- [ ] **Zahlenfabrik** (Idee 04.11.): Fabrik-Spiel mit Zahlen, Maschinen und Aufträgen. Kurzkonzept: `docs/ZAHLENFABRIK-KONZEPT.md`. Welt 1 als Probe (6 Level) unter `/de/zahlenfabrik/`; wartet auf Rückmeldung der Projektleitung.
 - [ ] **KI-Abenteuer freigeben** (Projektleitung): durchspielen, Texte prüfen lassen, dann `COURSES_PUBLIC = true` in `src/kurse/index.ts` (Link in der Kopfleiste, Suchmaschinen) und Hinweis auf der Startseite.
 
 ## Sicherheit
