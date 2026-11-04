@@ -506,3 +506,56 @@
 }
 
 .zf-hud[hidden] { display: none; }
+
+/* ---------- Größere Karte: Nebel über gesperrtem Land, Brücke ---------- */
+
+/* Nebel: ein Rahmen um das offene Gebiet, dessen Schatten alles außerhalb abdeckt */
+.zf-fog {
+  position: absolute;
+  border: 3px dashed var(--zf-target-line);
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px color-mix(in srgb, var(--surface-2) 72%, transparent);
+  pointer-events: none;
+}
+
+.zf-cell--source.is-locked { filter: grayscale(0.8); opacity: 0.75; }
+
+.zf-btn--expand { border-color: var(--zf-coin); }
+.zf-btn--expand.is-poor { opacity: 0.7; }
+.zf-btn[hidden] { display: none; }
+
+/* Brücke: senkrechtes Band liegt oben, mit Schatten und Geländer-Rand */
+.zf-belt__shadow {
+  fill: none;
+  stroke: rgb(0 0 0 / 0.28);
+  stroke-width: 34;
+}
+
+.zf-belt--over.zf-belt__edge { stroke-width: 28; stroke: var(--zf-op-line); }
+
+.zf-cell--bridge {
+  margin: 4px;
+  width: 56px;
+  height: 56px;
+  border: 2px dashed color-mix(in srgb, var(--zf-op-line) 60%, transparent);
+  border-radius: 10px;
+}
+
+/* Zahlen auf der Brücke leicht versetzt (waagerecht unten, senkrecht oben drüber) */
+.zf-item--under { translate: -50% -20%; }
+.zf-item--over { translate: -78% -50%; z-index: 1; }
+
+.zf-fog__label {
+  position: absolute;
+  left: 50%;
+  top: -12px;
+  translate: -50% -100%;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--zf-coin-bg);
+  color: var(--zf-coin);
+  font-size: 1.3rem;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}

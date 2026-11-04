@@ -28,6 +28,8 @@ export interface Part {
   side?: 1 | 3;
   /** Zusammenführen: zwei Zahlen werden zu Summe oder Produkt. */
   merge?: '+' | '×';
+  /** Brücke: Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt (zum Kreuzen). */
+  bridge?: true;
 }
 
 /** Primzahl? (Zahlen kleiner als 2 sind keine.) */
@@ -98,6 +100,8 @@ export interface Item {
   value: number;
   /** Wartet im Zusammenführer auf eine zweite Zahl (nur offene Welt). */
   wait?: boolean;
+  /** Richtung des letzten Schritts (für die Brücke; nur offene Welt). */
+  heading?: Dir;
 }
 
 export type ErrorKind = 'fell' | 'wrong' | 'divide' | 'timeout';

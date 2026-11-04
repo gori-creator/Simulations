@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { key, type Grid, type Part } from '../src/spiele/zahlenfabrik/model';
-import { canBuildWorld, inBase, makeWorld, MAX_VALUE, worldStart, worldStep, type OpenWorld } from '../src/spiele/zahlenfabrik/world';
+import { canBuildWorld, inBase, inRect, makeWorld, MAX_ITEMS, MAX_VALUE, spawnerAt, START_OFFSET, worldStart, worldStep, type OpenWorld } from '../src/spiele/zahlenfabrik/world';
 
 const tiny: OpenWorld = {
   id: 't',
@@ -55,18 +55,55 @@ describe('Zahlenfabrik: offene Welt', () => {
     const s = runFor(tiny, loop, 200);
     expect(s.items.every((i) => Math.abs(i.value) <= MAX_VALUE)).toBe(true);
   });
-  it('die Welt: 20 Quellen, Basis frei, alles innerhalb der Karte', () => {
+  it('die Welt: Startgebiet wie früher (20 Quellen), dazu zwei Ringe; Basis frei, alles innerhalb der Karte', () => {
     const w = makeWorld();
-    expect(w.spawners).toHaveLength(20);
     expect(makeWorld()).toEqual(w);
+    const [start, middle, all] = w.zones!;
+    expect(all).toEqual({ x: 0, y: 0, w: w.cols, h: w.rows });
+    // Startgebiet unverändert (alte Spielstände): bekannte Quellen an den alten Stellen, verschoben
+    const [ox, oy] = START_OFFSET;
+    expect(w.spawners.filter((s) => inRect(start!, s.x, s.y))).toHaveLength(20);
+    expect(spawnerAt(w, 27 + ox, 9 + oy)).toMatchObject({ dir: 1, value: 2 });
+    expect(spawnerAt(w, 26 + ox, 26 + oy)).toMatchObject({ dir: 3, value: 5 });
+    expect(w.base).toEqual({ x: 24 + ox, y: 15 + oy, w: 3, h: 3 });
     for (const s of w.spawners) {
       expect(inBase(w, s.x, s.y)).toBe(false);
       expect(s.value).toBeGreaterThanOrEqual(1);
-      // Vor jeder Quelle kann man bauen
-      expect(canBuildWorld(w, s.x + [1, 0, -1, 0][s.dir]!, s.y + [0, 1, 0, -1][s.dir]!)).toBe(true);
+      // Vor jeder Quelle kann man bauen, sobald ihr Gebiet offen ist
+      const zone = w.zones!.findIndex((z) => inRect(z, s.x, s.y));
+      expect(canBuildWorld(w, s.x + [1, 0, -1, 0][s.dir]!, s.y + [0, 1, 0, -1][s.dir]!, zone)).toBe(true);
     }
     for (const [x, y] of w.walls) expect(inBase(w, x, y)).toBe(false);
     expect(canBuildWorld(w, w.base.x, w.base.y)).toBe(false);
+    // weiter draußen größere Zahlen
+    const avg = (r: (s: { x: number; y: number }) => boolean) => {
+      const v = w.spawners.filter(r).map((s) => s.value);
+      return v.reduce((a, b) => a + b, 0) / v.length;
+    };
+    const inStart = avg((s) => inRect(start!, s.x, s.y));
+    const inMiddle = avg((s) => inRect(middle!, s.x, s.y) && !inRect(start!, s.x, s.y));
+    const outside = avg((s) => !inRect(middle!, s.x, s.y));
+    expect(inMiddle).toBeGreaterThan(inStart);
+    expect(outside).toBeGreaterThan(inMiddle);
+    expect(w.spawners.length).toBeGreaterThanOrEqual(45);
+  });
+  it('gesperrtes Gebiet: dort kann man nicht bauen, und die Quellen geben nichts aus', () => {
+    const w = makeWorld();
+    const far = w.spawners.find((s) => !inRect(w.zones![1]!, s.x, s.y))!;
+    const fx = far.x + [1, 0, -1, 0][far.dir]!;
+    const fy = far.y + [0, 1, 0, -1][far.dir]!;
+    expect(canBuildWorld(w, fx, fy, 0)).toBe(false);
+    expect(canBuildWorld(w, fx, fy, 1)).toBe(false);
+    expect(canBuildWorld(w, fx, fy, 2)).toBe(true);
+    const grid: Grid = new Map([[key(fx, fy), { op: null, dir: far.dir }]]);
+    let locked = worldStart();
+    let open = worldStart();
+    for (let i = 0; i < 6; i++) {
+      locked = worldStep(w, grid, locked, 1);
+      open = worldStep(w, grid, open, 2);
+    }
+    expect(locked.items.some((it) => it.x === far.x && it.y === far.y)).toBe(false);
+    expect(open.lost + open.items.length).toBeGreaterThan(0);
   });
 });
 
@@ -193,5 +230,65 @@ describe('Zahlenfabrik: Stau, Weichen, Zusammenführen', () => {
     s = worldStep(w, new Map(), s);
     expect(s.items).toHaveLength(0);
     expect(s.lost).toBe(1);
+  });
+});
+
+describe('Zahlenfabrik: Brücke', () => {
+  const belt = (dir: 0 | 1 | 2 | 3): Part => ({ op: null, dir });
+  it('zwei Bänder kreuzen sich auf der Brücke, ohne sich zu stören', () => {
+    // waagerecht: Quelle 2 → Brücke (3,2) → rechts nach unten in die Basis; senkrecht: Quelle 5 → über die Brücke → Basis
+    const w: OpenWorld = {
+      id: 'x', cols: 7, rows: 7, walls: [], tools: [],
+      base: { x: 2, y: 5, w: 3, h: 2 },
+      spawners: [
+        { x: 0, y: 2, dir: 0, value: 2 },
+        { x: 3, y: 0, dir: 1, value: 5 },
+      ],
+    };
+    const grid: Grid = new Map([
+      [key(1, 2), belt(0)], [key(2, 2), belt(0)], [key(3, 2), { op: null, dir: 0, bridge: true }], [key(4, 2), belt(1)], [key(4, 3), belt(1)], [key(4, 4), belt(1)],
+      [key(3, 1), belt(1)], [key(3, 3), belt(1)], [key(3, 4), belt(1)],
+    ]);
+    let s = worldStart();
+    const got: number[] = [];
+    for (let i = 0; i < 90; i++) {
+      s = worldStep(w, grid, s);
+      got.push(...s.delivered);
+      // auf der Brücke höchstens eine waagerechte und eine senkrechte Zahl
+      const onBridge = s.items.filter((it) => it.x === 3 && it.y === 2);
+      expect(onBridge.length).toBeLessThanOrEqual(2);
+      if (onBridge.length === 2) expect(new Set(onBridge.map((it) => it.heading! % 2)).size).toBe(2);
+    }
+    expect(got.filter((v) => v === 2).length).toBeGreaterThan(10);
+    expect(got.filter((v) => v === 5).length).toBeGreaterThan(10);
+    expect(s.lost).toBe(0);
+  });
+});
+
+describe('Zahlenfabrik: viele Zahlen', () => {
+  it('voll ausgebaute Welt: höchstens MAX_ITEMS Zahlen, kein Feld doppelt, und schnell genug', () => {
+    const w = makeWorld();
+    // Die ganze Karte voller Bänder (Schlangenlinie), alle Quellen geben aus
+    const z = w.zones![2]!;
+    const grid: Grid = new Map();
+    for (let x = z.x; x < z.x + z.w; x++) {
+      for (let y = z.y; y < z.y + z.h; y++) {
+        if (!canBuildWorld(w, x, y, 2)) continue;
+        const dir = (y - z.y) % 2 === 0 ? (x === z.x + z.w - 1 ? 1 : 0) : x === z.x ? 1 : 2;
+        grid.set(key(x, y), { op: null, dir });
+      }
+    }
+    let s = worldStart();
+    const t0 = performance.now();
+    for (let i = 0; i < 300; i++) {
+      s = worldStep(w, grid, s, 2);
+      const cells = s.items.map((it) => key(it.x, it.y));
+      expect(new Set(cells).size).toBe(cells.length);
+      expect(s.items.length).toBeLessThanOrEqual(MAX_ITEMS);
+    }
+    const ms = (performance.now() - t0) / 300;
+    expect(s.items.length).toBeGreaterThan(100);
+    // grobe Grenze: ein Takt deutlich unter 20 ms (Spiel: alle 120–420 ms ein Takt)
+    expect(ms).toBeLessThan(20);
   });
 });

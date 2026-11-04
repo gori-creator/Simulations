@@ -29,7 +29,7 @@ export interface Order {
 /** Die ersten Aufträge: führen Schritt für Schritt an alle Teile heran. */
 export const ORDERS: Order[] = [
   { kind: 'any', count: 10, reward: 25, unlock: ['×2'] },
-  { kind: 'exact', n: 4, count: 10, reward: 40, unlock: ['−1', '÷2'] },
+  { kind: 'exact', n: 4, count: 10, reward: 40, unlock: ['−1', '÷2', 'bridge'] },
   { kind: 'even', count: 15, reward: 60, unlock: ['even'] },
   { kind: 'odd', count: 20, reward: 80, unlock: ['+5', '×3'] },
   { kind: 'exact', n: 12, count: 10, reward: 100, unlock: ['merge+'] },
@@ -94,10 +94,12 @@ export interface Economy {
   order: number;
   /** Passende Lieferungen zum aktuellen Auftrag. */
   progress: number;
+  /** Freigekaufte Gebiete der Karte (0 = nur das Startgebiet). */
+  zone: number;
 }
 
 export function newEconomy(): Economy {
-  return { coins: START_COINS, total: 0, order: 0, progress: 0 };
+  return { coins: START_COINS, total: 0, order: 0, progress: 0, zone: 0 };
 }
 
 export const coinsFor = (v: number) => Math.max(0, Math.floor(v));
