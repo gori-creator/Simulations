@@ -559,3 +559,90 @@
   white-space: nowrap;
   box-shadow: var(--shadow-sm);
 }
+
+/* ---------- Welten 1–6: Auswahl, Startzahl, Wertetabelle ---------- */
+
+.zf-levels { display: grid; gap: 8px; }
+.zf-worlds,
+.zf-levels__list { display: flex; flex-wrap: wrap; gap: 8px; }
+.zf-levels__list[hidden] { display: none; }
+
+.zf-level--tab {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 8px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  text-align: left;
+}
+
+.zf-level__name { font-weight: 800; }
+.zf-level__stars { grid-column: 1 / -1; font-size: 0.75rem; font-weight: 700; opacity: 0.8; }
+
+@media (max-width: 560px) {
+  .zf-worlds { flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; }
+  .zf-worlds .zf-level { flex: 0 0 auto; }
+}
+
+/* Lager mit Regel (✓/✗ Frage): kleinere, schmale Schrift, damit sie ins Feld passt */
+.zf-cell--rule .zf-cell__big {
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* Startzahl wählen */
+.zf-pick {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 14px;
+  border: 2px solid var(--zf-source-line);
+  border-radius: 999px;
+  background: var(--zf-source);
+}
+
+.zf-pick[hidden] { display: none; }
+.zf-pick__label { font-weight: 800; }
+.zf-pick__btn { min-width: 44px; padding: 6px 10px; }
+
+.zf-pick__input {
+  width: 4.5ch;
+  min-height: 40px;
+  border: 2px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.zf-pick__input::-webkit-inner-spin-button,
+.zf-pick__input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Wertetabelle unter der Karte */
+.zf-table { margin-top: 10px; overflow-x: auto; }
+.zf-table[hidden] { display: none; }
+
+.zf-table table {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.zf-table th,
+.zf-table td {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.zf-table th { text-align: left; color: var(--muted); font-weight: 700; background: var(--surface-2); }
+.zf-table td { font-family: var(--font-mono); font-weight: 700; }
+.zf-table td.is-done { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }

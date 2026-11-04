@@ -1,7 +1,7 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { WORLD_1, type LevelInfo } from './levels';
-import { canPlace, DX, DY, key, opLabel, outputs, start, starsFor, step, withFixed, type Dir, type Grid, type Item, type Part, type State } from './model';
+import { ALL_LEVELS, WORLDS, type LevelInfo } from './levels';
+import { canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, withFixed, type Accept, type Dir, type Grid, type Item, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
 import { canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type OpenWorld, type WorldState } from './world';
@@ -56,8 +56,21 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
+  pick: L('Startzahl', 'Starting number'),
+  pickLess: L('Startzahl kleiner', 'Smaller starting number'),
+  pickMore: L('Startzahl größer', 'Bigger starting number'),
+  pickFirst: L('Stell zuerst bei „Startzahl“ eine Zahl ein.', 'First set a number at “Starting number”.'),
+  sourceSeq: L('Quelle gibt aus: {list}', 'Source gives: {list}'),
+  tableX: L('x', 'x'),
+  tableWant: L('Lager will', 'Storage wants'),
+  tableGot: L('angekommen', 'arrived'),
+  worldLabel: L('Welt {n}: {t}', 'World {n}: {t}'),
+  worldGrades: L('Klasse {g}', 'Grade {g}'),
+  nextWorld: L('Nächste Welt →', 'Next world →'),
   fell: L('Die {v} ist vom Band gefallen! Dort fehlt ein Teil oder es zeigt in die falsche Richtung.', 'The {v} fell off the belt! A part is missing there or points the wrong way.'),
   wrong: L('Das Lager will {t}, aber es kam {v} an.', 'The storage wants {t}, but {v} arrived.'),
+  wantValue: L('die {n}', 'the {n}'),
+  wantNext: L('als Nächstes die {n}', 'the {n} next'),
   divide: L('{v} lässt sich hier nicht glatt teilen.', '{v} can’t be divided evenly here.'),
   timeout: L('Die Zahlen kommen nie im Lager an – fahren sie im Kreis?', 'The numbers never reach the storage – are they going round in circles?'),
   starsPar: L('★ 2: höchstens {n} Teile', '★ 2: at most {n} parts'),
@@ -70,7 +83,6 @@ const T = {
     'Leg Bänder von den Zahlenquellen zu deiner Basis 🏠. Jede Zahl bringt so viele Münzen, wie sie groß ist. Aufträge schalten neue Teile frei.',
     'Lay belts from the number sources to your base 🏠. Every number earns as many coins as it is big. Orders unlock new parts.',
   ),
-  eyebrowLevels: L('🏭 Zahlenfabrik · Welt 1: Grundrechnen', '🏭 Number Factory · World 1: basic arithmetic'),
   eyebrowWorld: L('🏭 Zahlenfabrik · Offene Welt', '🏭 Number Factory · Open world'),
   score: L('Gesammelt: {n}', 'Collected: {n}'),
   count: L('{n} Zahlen', '{n} numbers'),
@@ -169,6 +181,8 @@ interface Board {
   rows: number;
   sources: { x: number; y: number; dir: Dir; value: number }[];
   base: { x: number; y: number; w: number; h: number };
+  /** Weitere Lager (Level mit mehreren Lagern). */
+  extra: { x: number; y: number; w: number; h: number }[];
   walls: Set<string>;
   fixed: Map<string, Part>;
   /** Teile im Inventar (ohne Band). */
@@ -176,19 +190,24 @@ interface Board {
 }
 
 function boardOfLevel(l: LevelInfo): Board {
+  const [first, ...rest] = targetsOf(l).map((t) => ({ x: t.x, y: t.y, w: 1, h: 1 }));
   return {
     cols: l.cols,
     rows: l.rows,
     sources: [l.source],
-    base: { x: l.target.x, y: l.target.y, w: 1, h: 1 },
+    base: first!,
+    extra: rest,
     walls: new Set(l.walls.map(([x, y]) => key(x, y))),
     fixed: new Map((l.fixed ?? []).map((f) => [key(f.x, f.y), f.part])),
-    tools: l.tools.map((op): PartSpec => ({ id: opLabel(op), kind: 'op', op, price: 0 })),
+    tools: [
+      ...l.tools.map((op): PartSpec => ({ id: opLabel(op), kind: 'op', op, price: 0 })),
+      ...(l.sorts ?? []).map((test): PartSpec => ({ id: partId({ op: null, dir: 0, sort: test }), kind: 'sort', test, price: 0 })),
+    ],
   };
 }
 
 function boardOfWorld(w: OpenWorld): Board {
-  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: WORLD_PARTS.filter((p) => p.kind !== 'belt') };
+  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, extra: [], walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: WORLD_PARTS.filter((p) => p.kind !== 'belt') };
 }
 
 function load(): Record<string, number> {
@@ -208,6 +227,32 @@ function save(stars: Record<string, number>): void {
   } catch {
     // ohne Speicher: nur für diesen Besuch
   }
+}
+
+/** Was ein Lager will, als kurzer Satzteil (für Fehlermeldungen und Beschriftungen). */
+function acceptText(a: Accept, got: number): Localized {
+  if (a.kind === 'value') return L(`die ${fmtNum(a.n, 'de')}`, `the ${fmtNum(a.n, 'en')}`);
+  if (a.kind === 'seq') {
+    const n = a.values[got % a.values.length]!;
+    return L(`als Nächstes die ${fmtNum(n, 'de')}`, `the ${fmtNum(n, 'en')} next`);
+  }
+  const t = a.test;
+  const not = !!a.not;
+  switch (t.kind) {
+    case 'even':
+      return not ? L('ungerade Zahlen', 'odd numbers') : L('gerade Zahlen', 'even numbers');
+    case 'div':
+      return not ? L(`Zahlen, die keine Vielfachen von ${t.n} sind`, `numbers that are not multiples of ${t.n}`) : L(`Vielfache von ${t.n}`, `multiples of ${t.n}`);
+    case 'prime':
+      return not ? L('Zahlen, die keine Primzahlen sind', 'numbers that are not prime') : L('Primzahlen', 'primes');
+    case 'gt':
+      return not ? L(`Zahlen bis ${t.n}`, `numbers up to ${t.n}`) : L(`Zahlen größer als ${t.n}`, `numbers greater than ${t.n}`);
+  }
+}
+
+/** Zahl mit echtem Minus (Level-Texte). */
+function fmtNum(n: number, lang: Lang): string {
+  return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB').format(n).replace('-', '−');
 }
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text?: string): HTMLElementTagNameMap[K] {
@@ -251,8 +296,13 @@ export function initFactory(root: HTMLElement): void {
   hud.hidden = true;
   viewport.append(world, zoomBar, hud);
 
-  let index = Math.max(0, WORLD_1.findIndex((l) => !stars[l.id]));
-  let level: LevelInfo = WORLD_1[index]!;
+  // Start beim ersten Level ohne Stern (in Welt-Reihenfolge)
+  let index = Math.max(0, ALL_LEVELS.findIndex((l) => !stars[l.id]));
+  let level: LevelInfo = ALL_LEVELS[index]!;
+  /** Welt, deren Level in der Leiste stehen. */
+  let shownWorld = WORLDS.findIndex((w) => w.levels.includes(level));
+  /** Selbst gewählte Startzahl je Level (Welt 2). */
+  const picks: Record<string, number> = {};
   const openWorld = makeWorld();
   let mode: 'level' | 'world' = 'level';
   let board: Board = boardOfLevel(level);
@@ -260,7 +310,8 @@ export function initFactory(root: HTMLElement): void {
   let econ: Economy = newEconomy();
   let saveCounter = 0;
   const sourceAt = (x: number, y: number) => board.sources.find((sp) => sp.x === x && sp.y === y);
-  const baseAt = (x: number, y: number) => x >= board.base.x && y >= board.base.y && x < board.base.x + board.base.w && y < board.base.y + board.base.h;
+  const inR = (r: { x: number; y: number; w: number; h: number }, x: number, y: number) => x >= r.x && y >= r.y && x < r.x + r.w && y < r.y + r.h;
+  const baseAt = (x: number, y: number) => inR(board.base, x, y) || board.extra.some((r) => inR(r, x, y));
   const canBuild = (x: number, y: number) => (mode === 'level' ? canPlace(level, x, y) : canBuildWorld(openWorld, x, y, econ.zone));
   const allParts = (): Grid => (mode === 'level' ? withFixed(level, grid) : grid);
   const items = (): Item[] => (mode === 'level' ? state.items : wstate.items);
@@ -294,7 +345,7 @@ export function initFactory(root: HTMLElement): void {
     // Level: Quelle, Lager, vorgegebene Teile; Welt: die Umgebung der Basis
     const pts =
       mode === 'level'
-        ? [[level.source.x, level.source.y], [level.target.x, level.target.y], ...(level.fixed ?? []).map((f) => [f.x, f.y])]
+        ? [[level.source.x, level.source.y], ...targetsOf(level).map((t) => [t.x, t.y]), ...(level.fixed ?? []).map((f) => [f.x, f.y])]
         : [[board.base.x - 5, board.base.y - 4], [board.base.x + board.base.w + 4, board.base.y + board.base.h + 3]];
     const xs = pts.map((p) => p[0]!);
     const ys = pts.map((p) => p[1]!);
@@ -574,8 +625,8 @@ export function initFactory(root: HTMLElement): void {
       if (mode === 'world' && !all.has(key(x + DX[dir], y + DY[dir])) && !baseAt(x + DX[dir], y + DY[dir])) continue;
       paths.push(`M${cx(x)} ${cy(y)}L${edge(x, y, dir)}`);
     }
-    for (let bx0 = board.base.x; bx0 < board.base.x + board.base.w; bx0++) {
-      for (let by0 = board.base.y; by0 < board.base.y + board.base.h; by0++) {
+    for (const r of [board.base, ...board.extra]) for (let bx0 = r.x; bx0 < r.x + r.w; bx0++) {
+      for (let by0 = r.y; by0 < r.y + r.h; by0++) {
         for (const into of insAt(all, bx0, by0)) {
           const [ax, ay] = EDGE[(into + 2) % 4]!;
           const [ex, ey] = EDGE[into]!;
@@ -616,7 +667,7 @@ export function initFactory(root: HTMLElement): void {
     const open = mode === 'world' ? zoneRect(openWorld, econ.zone) : null;
     for (const sp of board.sources) {
       const c = at(sp.x, sp.y, 'zf-cell--source');
-      c.append(el('span', 'zf-cell__big', String(sp.value)), el('span', 'zf-cell__small', `🏭 ${ARROW[sp.dir]}`));
+      c.append(el('span', 'zf-cell__big zf-source-value', sourceLabel(sp.value)), el('span', 'zf-cell__small', `🏭 ${ARROW[sp.dir]}`));
       c.title = tx(T.source);
       if (open && !inRect(open, sp.x, sp.y)) {
         c.classList.add('is-locked');
@@ -624,9 +675,12 @@ export function initFactory(root: HTMLElement): void {
       }
     }
     if (mode === 'level') {
-      const c = at(level.target.x, level.target.y, 'zf-cell--target');
-      c.append(el('span', 'zf-cell__big', String(level.target.value)), el('span', 'zf-cell__small zf-target-count', `📦 ${state.delivered}/${level.need}`));
-      c.title = tx(T.target);
+      targetsOf(level).forEach((t, i) => {
+        const c = at(t.x, t.y, `zf-cell--target${t.accept.kind === 'test' ? ' zf-cell--rule' : ''}`);
+        c.dataset.target = String(i);
+        c.append(el('span', 'zf-cell__big zf-target-label', targetLabel(t, state.got[i] ?? 0)), el('span', 'zf-cell__small zf-target-count', `📦 ${state.got[i] ?? 0}/${t.need}`));
+        c.title = `${tx(T.target)}: ${tx(acceptText(t.accept, state.got[i] ?? 0))}`;
+      });
     } else {
       const c = at(board.base.x, board.base.y, 'zf-cell--base');
       c.style.width = `${board.base.w * CELL - 12}px`;
@@ -682,6 +736,21 @@ export function initFactory(root: HTMLElement): void {
     return numberFormat.format(n).replace('-', '−');
   }
 
+  /** Aufschrift der Quelle: im Level die nächste Zahl (bzw. „?“ ohne gewählte Startzahl). */
+  function sourceLabel(fallback: number): string {
+    if (mode !== 'level') return ctxNum(fallback);
+    if (level.source.pick) return picks[level.id] === undefined ? '?' : ctxNum(picks[level.id]!);
+    return ctxNum(sourceValue(level, Math.min(state.emitted, totalNeed(level) - 1), picks[level.id]));
+  }
+
+  /** Aufschrift eines Lagers: Zahl, Regel (✓/✗ mit Frage) oder nächster Wert der Tabelle. */
+  function targetLabel(t: Target, got: number): string {
+    const a = t.accept;
+    if (a.kind === 'value') return ctxNum(a.n);
+    if (a.kind === 'seq') return ctxNum(a.values[Math.min(got, a.values.length - 1)]!);
+    return `${a.not ? '✗' : '✓'} ${tx(testLabel(a.test))}`;
+  }
+
   /** Aufschrift der Basis: Stand beim aktuellen Auftrag. */
   function baseLine(): string {
     return `${ctxNum(econ.progress)}/${ctxNum(orderAt(econ.order).count)}`;
@@ -726,8 +795,17 @@ export function initFactory(root: HTMLElement): void {
       e.style.top = `${item.y * CELL + CELL / 2}px`;
     }
     for (const e of old.values()) e.remove();
-    const count = cellsLayer.querySelector('.zf-target-count');
-    if (count) count.textContent = `📦 ${state.delivered}/${level.need}`;
+    if (mode === 'level') {
+      targetsOf(level).forEach((t, i) => {
+        const c = cellsLayer.querySelector(`[data-target="${i}"]`);
+        if (!c) return;
+        c.querySelector('.zf-target-count')!.textContent = `📦 ${state.got[i] ?? 0}/${t.need}`;
+        c.querySelector('.zf-target-label')!.textContent = targetLabel(t, state.got[i] ?? 0);
+      });
+      const sv = cellsLayer.querySelector('.zf-source-value');
+      if (sv) sv.textContent = sourceLabel(level.source.value);
+      renderTable();
+    }
     const score = cellsLayer.querySelector('.zf-base-score');
     if (score) score.textContent = baseLine();
     if (mode !== 'world') return;
@@ -837,7 +915,73 @@ export function initFactory(root: HTMLElement): void {
   const clearBtn = btn(tx(T.clear));
   fastBtn.setAttribute('aria-pressed', 'false');
   const expandBtn = btn('', 'zf-btn zf-btn--expand');
-  controls.append(runBtn, stepBtn, fastBtn, stopBtn, clearBtn, expandBtn);
+  // Startzahl wählen (Welt 2): − [Zahl] +
+  const pickBox = el('div', 'zf-pick');
+  const pickLess = btn('−', 'zf-btn zf-pick__btn');
+  const pickMore = btn('+', 'zf-btn zf-pick__btn');
+  const pickInput = el('input', 'zf-pick__input');
+  pickInput.type = 'number';
+  pickInput.inputMode = 'numeric';
+  const pickLabel = el('label', 'zf-pick__label', tx(T.pick));
+  pickInput.id = 'zf-pick';
+  pickLabel.htmlFor = 'zf-pick';
+  pickLess.setAttribute('aria-label', tx(T.pickLess));
+  pickMore.setAttribute('aria-label', tx(T.pickMore));
+  pickBox.append(pickLabel, pickLess, pickInput, pickMore);
+  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, clearBtn, expandBtn);
+
+  function setPick(v: number): void {
+    const range = level.source.pick;
+    if (!range || !Number.isFinite(v)) return;
+    const value = Math.min(range.max, Math.max(range.min, Math.round(v)));
+    picks[level.id] = value;
+    pickInput.value = String(value);
+    if (running) stopTimer();
+    resetRun();
+  }
+
+  function renderPick(): void {
+    const range = mode === 'level' ? level.source.pick : undefined;
+    pickBox.hidden = !range;
+    if (!range) return;
+    pickInput.min = String(range.min);
+    pickInput.max = String(range.max);
+    pickInput.value = picks[level.id] === undefined ? '' : String(picks[level.id]);
+    pickInput.placeholder = '?';
+  }
+
+  pickLess.addEventListener('click', () => setPick((picks[level.id] ?? (level.source.pick?.min ?? 1) + 1) - 1));
+  pickMore.addEventListener('click', () => setPick((picks[level.id] ?? (level.source.pick?.min ?? 1) - 1) + 1));
+  pickInput.addEventListener('change', () => setPick(Number(pickInput.value)));
+
+  // Wertetabelle (Welten 5 und 6): unter der Karte
+  const tableBox = el('div', 'zf-table');
+  viewport.after(tableBox);
+
+  /** Wertetabelle: x-Werte der Quelle, was das Lager will, was schon angekommen ist. */
+  function renderTable(): void {
+    const t = mode === 'level' ? targetsOf(level).find((tt) => tt.accept.kind === 'seq') : undefined;
+    tableBox.hidden = !t || !level.source.values;
+    if (!t || t.accept.kind !== 'seq' || !level.source.values) return;
+    const xs = level.source.values;
+    const want = t.accept.values;
+    const got = state.got[targetsOf(level).indexOf(t)] ?? 0;
+    const row = (head: string, cells: string[], cls = '') => {
+      const tr = el('tr', cls);
+      tr.append(el('th', '', head), ...cells.map((c, i) => {
+        const td = el('td', i < got && cls === 'zf-table__got' ? 'is-done' : '', c);
+        return td;
+      }));
+      return tr;
+    };
+    const table = el('table');
+    table.append(
+      row(tx(T.tableX), xs.map(ctxNum)),
+      row(tx(T.tableWant), want.map(ctxNum)),
+      row(tx(T.tableGot), want.map((v, i) => (i < got ? `✓ ${ctxNum(v)}` : '·')), 'zf-table__got'),
+    );
+    tableBox.replaceChildren(table);
+  }
 
   /** Knopf „Neues Gebiet“: nur in der offenen Welt, solange es noch Land gibt. */
   function renderExpand(): void {
@@ -882,7 +1026,10 @@ export function initFactory(root: HTMLElement): void {
       return;
     }
     hud.hidden = true;
-    info.replaceChildren(el('span', '', `${tx(T.parts)}: ${grid.size}`), el('span', '', `${tx(T.delivered)}: ${state.delivered}/${level.need}`), el('span', 'zf-goal', tx(T.starsPar, { n: level.par })), el('span', 'zf-goal', tx(T.starsFirst)));
+    const parts = [el('span', '', `${tx(T.parts)}: ${grid.size}`), el('span', '', `${tx(T.delivered)}: ${state.delivered}/${totalNeed(level)}`), el('span', 'zf-goal', tx(T.starsPar, { n: level.par })), el('span', 'zf-goal', tx(T.starsFirst))];
+    if (level.source.values) parts.push(el('span', 'zf-goal', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
+    info.replaceChildren(...parts);
+    renderTable();
   }
 
   /** Aktueller Auftrag mit Fortschritt, Belohnung und dem, was er freischaltet. */
@@ -947,7 +1094,8 @@ export function initFactory(root: HTMLElement): void {
       failedRuns += 1;
       const e = state.error;
       const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : T.timeout;
-      say(`✗ ${tx(msg, { v: e.value, t: level.target.value })}`, 'bad');
+      const want = e.target !== undefined ? tx(acceptText(targetsOf(level)[e.target]!.accept, state.got[e.target] ?? 0)) : '';
+      say(`✗ ${tx(msg, { v: ctxNum(e.value), t: want })}`, 'bad');
       renderItems();
       renderCells();
       return;
@@ -960,8 +1108,9 @@ export function initFactory(root: HTMLElement): void {
       save(stars);
       say(`✓ ${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
       renderLevels();
-      if (index < WORLD_1.length - 1) {
-        const n = btn(tx(T.next), 'zf-btn zf-btn--main');
+      if (index < ALL_LEVELS.length - 1) {
+        const nextWorld = !WORLDS[shownWorld]!.levels.includes(ALL_LEVELS[index + 1]!);
+        const n = btn(tx(nextWorld ? T.nextWorld : T.next), 'zf-btn zf-btn--main');
         n.addEventListener('click', () => openLevel(index + 1));
         status.append(' ', n);
         n.focus();
@@ -978,7 +1127,16 @@ export function initFactory(root: HTMLElement): void {
     runBtn.textContent = tx(T.start);
   }
 
+  /** Level mit Startzahl: erst wählen, dann starten. */
+  function needsPick(): boolean {
+    if (mode !== 'level' || !level.source.pick || picks[level.id] !== undefined) return false;
+    say(tx(T.pickFirst), 'warn');
+    pickInput.focus();
+    return true;
+  }
+
   function startTimer(): void {
+    if (needsPick()) return;
     if (state.error || state.won) resetRun();
     running = true;
     beltLayer.classList.add('is-running');
@@ -992,7 +1150,7 @@ export function initFactory(root: HTMLElement): void {
 
   function resetRun(): void {
     stopTimer();
-    state = start();
+    state = start(picks[level.id]);
     wstate = worldStart();
     hasRun = false;
     say('');
@@ -1004,6 +1162,7 @@ export function initFactory(root: HTMLElement): void {
   runBtn.addEventListener('click', () => (running ? stopTimer() : startTimer()));
   stepBtn.addEventListener('click', () => {
     if (running) stopTimer();
+    if (needsPick()) return;
     if (state.error || state.won) resetRun();
     tick();
   });
@@ -1026,20 +1185,38 @@ export function initFactory(root: HTMLElement): void {
 
   // ---------- Level ----------
   function renderLevels(): void {
-    levelBar.replaceChildren(
-      ...WORLD_1.map((l, i) => {
-        const n = stars[l.id] ?? 0;
-        const b = btn(`${i + 1} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, 'zf-level');
-        b.setAttribute('aria-pressed', String(mode === 'level' && i === index));
-        b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}, ${n}/3 ★`);
-        b.addEventListener('click', () => openLevel(i));
-        return b;
-      }),
-    );
+    // Erste Reihe: Welten (mit Sternen), zweite Reihe: Level der gezeigten Welt
+    const tabs = el('div', 'zf-worlds');
+    tabs.setAttribute('role', 'group');
+    tabs.setAttribute('aria-label', tx(T.levels));
+    WORLDS.forEach((w, wi) => {
+      const got = w.levels.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
+      const b = btn(`${wi + 1}`, 'zf-level zf-level--tab');
+      b.append(el('span', 'zf-level__name', tx(w.title)), el('span', 'zf-level__stars', `★ ${got}/${w.levels.length * 3}`));
+      b.setAttribute('aria-pressed', String(mode === 'level' && wi === shownWorld));
+      b.setAttribute('aria-label', `${tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.worldGrades, { g: w.grades })}, ${got}/${w.levels.length * 3} ★`);
+      b.addEventListener('click', () => {
+        shownWorld = wi;
+        const firstOpen = w.levels.find((l) => !stars[l.id]) ?? w.levels[0]!;
+        openLevel(ALL_LEVELS.indexOf(firstOpen));
+      });
+      tabs.append(b);
+    });
     const w = btn(tx(T.world), 'zf-level zf-level--world');
     w.setAttribute('aria-pressed', String(mode === 'world'));
     w.addEventListener('click', openWorldMode);
-    levelBar.append(w);
+    tabs.append(w);
+    const list = el('div', 'zf-levels__list');
+    list.hidden = mode !== 'level';
+    WORLDS[shownWorld]!.levels.forEach((l, i) => {
+      const n = stars[l.id] ?? 0;
+      const b = btn(`${i + 1} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, 'zf-level');
+      b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
+      b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}, ${n}/3 ★`);
+      b.addEventListener('click', () => openLevel(ALL_LEVELS.indexOf(l)));
+      list.append(b);
+    });
+    levelBar.replaceChildren(tabs, list);
   }
 
   function openWorldMode(): void {
@@ -1057,6 +1234,7 @@ export function initFactory(root: HTMLElement): void {
     howto.textContent = tx(T.worldHowto);
     eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
+    renderPick();
     say('');
     itemsLayer.replaceChildren();
     renderLevels();
@@ -1072,16 +1250,19 @@ export function initFactory(root: HTMLElement): void {
     mode = 'level';
     stepBtn.hidden = false;
     index = i;
-    level = WORLD_1[i]!;
+    level = ALL_LEVELS[i]!;
+    shownWorld = WORLDS.findIndex((w) => w.levels.includes(level));
+    const wInfo = WORLDS[shownWorld]!;
     board = boardOfLevel(level);
     grid = new Map();
     tool = { kind: 'part', spec: BELT };
-    state = start();
+    state = start(picks[level.id]);
     failedRuns = 0;
     hasRun = false;
-    title.textContent = `${i + 1}. ${tx(level.title)}`;
+    title.textContent = `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
     howto.textContent = tx(T.howto);
-    eyebrow.textContent = tx(T.eyebrowLevels);
+    eyebrow.textContent = `🏭 ${tx(T.worldLabel, { n: shownWorld + 1, t: tx(wInfo.title) })} · ${tx(T.worldGrades, { g: wInfo.grades })}`;
+    renderPick();
     renderOrder();
     hint.textContent = `💡 ${tx(level.hint)}`;
     say('');

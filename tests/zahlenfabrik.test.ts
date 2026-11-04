@@ -9,7 +9,7 @@ function solve(l: Level, ops: Record<number, Op>): Grid {
   const path = shortestPath(l)!;
   const grid: Grid = new Map();
   path.forEach(([x, y], i) => {
-    const [nx, ny] = path[i + 1] ?? [l.target.x, l.target.y];
+    const [nx, ny] = path[i + 1] ?? [l.target!.x, l.target!.y];
     const dir = ([0, 1, 2, 3] as Dir[]).find((d) => x + DX[d] === nx && y + DY[d] === ny)!;
     if (!isFixed(l, x, y)) grid.set(key(x, y), { op: ops[i] ?? null, dir });
   });
@@ -75,7 +75,7 @@ describe('Zahlenfabrik: Fehler und Regeln', () => {
   it('nicht auf Quelle, Lager, Felsen oder vorgegebene Teile bauen', () => {
     const l = level('w1-4');
     expect(canPlace(l, l.source.x, l.source.y)).toBe(false);
-    expect(canPlace(l, l.target.x, l.target.y)).toBe(false);
+    expect(canPlace(l, l.target!.x, l.target!.y)).toBe(false);
     expect(canPlace(l, 10, 6)).toBe(false);
     expect(canPlace(l, 10, 7)).toBe(false);
     expect(canPlace(l, 4, 4)).toBe(true);
