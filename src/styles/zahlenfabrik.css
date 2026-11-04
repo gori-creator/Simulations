@@ -1252,3 +1252,220 @@
 @media (max-width: 640px) {
   .zf-side { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ==========================================================================
+   Feinschliff (04.11.2026): Symbole statt Emojis, ruhige Knöpfe, Bauteile als
+   Bildkacheln, Kennzahlen und Abzeichen, gepflegte Level-Auswahl.
+   ========================================================================== */
+
+.zf-ico { flex: none; }
+
+/* Knöpfe: Symbol + Text, ruhig; Hauptknopf in Markenfarbe */
+.zf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-width: 1px;
+  border-color: var(--border-strong);
+  background: var(--surface);
+  font-weight: 650;
+  letter-spacing: 0;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.zf-btn:hover:not(:disabled) { background: var(--surface-2); }
+.zf-btn--main,
+.zf-btn--main:hover:not(:disabled) { border-color: var(--brand); background: var(--brand); color: var(--on-brand); }
+.zf-btn--main:hover:not(:disabled) { filter: brightness(1.06); }
+.zf-btn[aria-pressed='true']:not(.zf-btn--main) { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, var(--surface)); color: var(--text); }
+.zf-btn__label { white-space: nowrap; }
+
+/* Kopfleiste */
+.zf-bar__eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-weight: 650; }
+
+.zf-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.zf-pill--pro { border-color: color-mix(in srgb, var(--zf-op-line) 60%, transparent); background: var(--zf-op); color: var(--text); }
+.zf-btn--bar { border-radius: 10px; }
+
+/* Karten der Seitenleiste */
+.zf-card { border-radius: 16px; }
+.zf-card__title { margin-bottom: 10px; }
+.zf-goal__hint { margin-bottom: 12px; color: var(--text); }
+
+/* Kennzahlen und Sterne-Ziele */
+.zf-goal .zf-info { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: flex-end; }
+.zf-metric { display: inline-grid; gap: 2px; }
+.zf-metric__label { color: var(--muted); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.zf-metric__value { display: inline-flex; align-items: center; gap: 6px; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+
+.zf-goals { display: flex; flex-wrap: wrap; gap: 6px; flex-basis: 100%; }
+
+.zf-goal-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.zf-goal-chip.is-ok { color: var(--text); }
+.zf-goal-chip.is-ok .zf-ico { color: var(--zf-coin); fill: currentColor; }
+.zf-source-seq { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.85rem; }
+
+/* Münze */
+.zf-coin {
+  display: inline-block;
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe48a, #e0a400 70%);
+  vertical-align: -0.15em;
+}
+
+.zf-coin:has(img) { background: none; }
+.zf-coin img { display: block; width: 100%; height: 100%; }
+
+/* Anzeige im Spielfeld */
+.zf-hud { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px 6px 10px; font-size: 0.95rem; }
+.zf-hud .zf-coin { width: 1.25em; height: 1.25em; }
+.zf-hud__sep { width: 1px; height: 16px; margin: 0 4px; background: var(--border-strong); }
+
+/* Bauteile als Bildkacheln */
+.zf-side .zf-tool,
+.zf-side .zf-tool--op:not([aria-pressed='true']),
+.zf-side .zf-tool--sort:not([aria-pressed='true']),
+.zf-side .zf-tool--merge:not([aria-pressed='true']) {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 3px;
+  min-height: 74px;
+  padding: 8px 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+.zf-side .zf-tool:hover:not(.is-locked) { border-color: var(--border-strong); background: var(--surface-2); }
+
+.zf-side .zf-tool[aria-pressed='true'] {
+  border-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent);
+  color: var(--text);
+}
+
+.zf-tool__pic { display: grid; place-items: center; width: 34px; height: 34px; color: var(--muted); }
+.zf-tool[aria-pressed='true'] .zf-tool__pic { color: var(--brand); }
+.zf-tool__pic img { width: 34px; height: 34px; object-fit: contain; }
+
+/* ohne eigene Bilder: farbiger Würfel je Teil */
+.zf-tool__pic.is-plain { width: 26px; height: 26px; border: 2px solid var(--zf-op-line); border-radius: 7px; background: var(--zf-op); }
+.zf-tool--sort .zf-tool__pic.is-plain { border-color: var(--zf-sort-line); background: var(--zf-sort); }
+.zf-tool--merge .zf-tool__pic.is-plain { border-color: var(--zf-merge-line); background: var(--zf-merge); }
+.zf-tool--bridge .zf-tool__pic.is-plain { border-color: var(--zf-op-line); background: none; }
+
+.zf-side .zf-tool .zf-tool__label { font-size: 0.78rem; font-weight: 700; line-height: 1.1; }
+.zf-tool__label--math { font-family: var(--font-mono); font-size: 0.9rem !important; }
+.zf-tool__price { display: inline-flex; align-items: center; gap: 3px; color: var(--muted); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.zf-tool__price .zf-coin { width: 12px; height: 12px; }
+.zf-side .zf-tool.is-locked { opacity: 0.6; border-style: dashed; }
+
+/* Steuerung */
+.zf-side .zf-controls .zf-btn { gap: 6px; border-radius: 12px; font-size: 0.88rem; }
+.zf-side .zf-controls .zf-btn--main { min-height: 50px; border-radius: 14px; font-size: 1rem; }
+.zf-btn--expand .zf-coin { width: 16px; height: 16px; }
+
+/* Zoom-Knöpfe */
+.zf-zoom__btn { display: grid; place-items: center; border-color: var(--border); }
+
+/* Meldung mit Symbol */
+.zf-stage .zf-status { gap: 10px; padding: 10px 16px 10px 12px; font-weight: 650; }
+.zf-stage .zf-status > .zf-ico { color: var(--brand); }
+.zf-stage .zf-status[data-kind='good'] > .zf-ico { color: var(--success); }
+.zf-stage .zf-status[data-kind='bad'] > .zf-ico { color: var(--zf-bad); }
+.zf-stage .zf-status[data-kind='warn'] > .zf-ico { color: var(--warning-text); }
+.zf-stage .zf-status[data-kind='good'],
+.zf-stage .zf-status[data-kind='bad'],
+.zf-stage .zf-status[data-kind='warn'] { color: var(--text); }
+.zf-status__text { text-align: left; }
+
+/* Auftrag in der offenen Welt */
+.zf-order__tag { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
+
+/* Level-Auswahl */
+.zf-picker__card { padding: 22px; }
+.zf-world-card { gap: 12px; background: var(--surface); }
+.zf-world-card__head { grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; }
+
+.zf-world-card__num {
+  display: grid;
+  place-items: center;
+  grid-row: span 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--brand) 12%, var(--surface));
+  color: var(--brand);
+  font-weight: 800;
+}
+
+.zf-world-card__bar {
+  grid-column: 1 / -1;
+  height: 4px;
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface-2);
+}
+
+.zf-world-card__bar > span { display: block; height: 100%; border-radius: inherit; background: var(--zf-coin); }
+
+.zf-picker .zf-level { position: relative; background: var(--surface); }
+.zf-picker .zf-level:hover { border-color: var(--border-strong); }
+.zf-picker .zf-level[aria-pressed='true'] { border-color: var(--brand); background: var(--brand); color: var(--on-brand); }
+
+.zf-level__pro {
+  position: absolute;
+  top: -7px;
+  right: -4px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--zf-op-line);
+  color: #1b1300;
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.zf-world-card--open { display: grid; gap: 4px; padding: 14px 16px; }
+.zf-world-card--open strong { font-size: 1.05rem; }
+
+@media (max-width: 640px) {
+  .zf-zoom .zf-zoom__btn--step { display: none; }
+  /* Kopfleiste: nur Symbole, rechts neben dem Titel */
+  .zf-bar { flex-wrap: nowrap; }
+  .zf-bar__actions { width: auto; flex-wrap: nowrap; }
+  .zf-btn--bar { min-width: 40px; padding: 6px 9px; }
+  .zf-btn--bar .zf-btn__label { display: none; }
+}
