@@ -31,7 +31,13 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - **Einführung beim ersten Start** (`intro.ts`, ohne Spielfigur): vier Karten mit einer kleinen laufenden Fabrik (3 → +2 → 5); Überspringen, Pfeiltasten, Esc. Über „❓ Anleitung“ wieder aufrufbar.
 - **Töne** (`sound.ts`, standardmäßig aus, Knopf „🔇 Töne aus/🔊 Töne an“): selbst erzeugte kurze Klänge (Web Audio, keine Dateien) für Bauen, Abbauen, Liefern, Fehler, Level geschafft, Auftrag geschafft, Gebiet gekauft.
 
-Offen: Bedienung mit der Tastatur, Barrierefreiheit.
+## Tastatur und Barrierefreiheit (Stand 04.11.2026)
+
+- Die Karte ist mit Tab erreichbar (Rolle „application“, Beschriftung mit den Tasten). **Pfeiltasten** wählen ein Feld (Rahmen, Karte scrollt mit), **Leertaste/Enter** setzt das gewählte Teil bzw. dreht es, **Umschalt + Pfeil** zieht ein Band, **Entf** baut ab, **H/B/A** wählen Hand, Band, Abbauen, **1–9** die Teile im Inventar, **P** startet/pausiert, **+/−** zoomen, **F** passt ein.
+- Jedes gewählte Feld wird für Bildschirmleser angesagt („Feld 6, 5: +2, Richtung rechts“, „Lager, will die 5“, „Quelle mit 3“, „Fels“ …), ebenso der Werkzeugwechsel. Meldungen stehen in einem Statusbereich (`aria-live`).
+- Level 1 lässt sich ganz mit der Tastatur lösen (im Browser geprüft).
+
+Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
 
