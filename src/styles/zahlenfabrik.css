@@ -1469,3 +1469,189 @@
   .zf-btn--bar { min-width: 40px; padding: 6px 9px; }
   .zf-btn--bar .zf-btn__label { display: none; }
 }
+
+/* ==========================================================================
+   Kapitel mit wachsendem Werkzeugkasten (lessons.ts, kit.ts): Zahl einstellen,
+   „Neu“-Markierungen, Grenze für Maschinen, Szenen der Erklärkarten.
+   ========================================================================== */
+
+/* Zahl einstellen: unter den Bauteilen */
+.zf-num {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+.zf-num[hidden] { display: none; }
+.zf-num__label { flex: 1 1 100%; color: var(--muted); font-size: 0.78rem; font-weight: 750; }
+.zf-num .zf-num__btn { min-width: 44px; min-height: 40px; padding: 6px; border-radius: 10px; }
+
+.zf-num__input {
+  flex: 1 1 60px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 4px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: 800 1.2rem/1 var(--font-mono);
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.zf-num__input::-webkit-inner-spin-button,
+.zf-num__input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.zf-num__input:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+
+/* Neues Bauteil im Werkzeugkasten */
+.zf-side .zf-tool { position: relative; }
+.zf-side .zf-tool.is-new:not([aria-pressed='true']) { border-color: var(--zf-op-line); }
+
+.zf-tool__new {
+  position: absolute;
+  top: -7px;
+  right: -4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--zf-op-line);
+  color: #1b1300;
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.zf-tools__note { grid-column: 1 / -1; margin: 4px 0 0; color: var(--muted); font-size: 0.85rem; }
+
+/* „Neu in diesem Kapitel“ in der Aufgabe */
+.zf-new {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 8px 8px 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--zf-op-line) 55%, var(--border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--zf-op-line) 10%, var(--surface));
+}
+
+.zf-new[hidden] { display: none; }
+
+.zf-new__tag {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--zf-op-line);
+  color: #1b1300;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.zf-new__text { flex: 1 1 auto; font-weight: 700; }
+.zf-new .zf-new__btn { min-height: 34px; padding: 4px 10px; border-radius: 10px; font-size: 0.85rem; }
+
+/* Grenze für Maschinen */
+.zf-metric--rule .zf-metric__label { color: var(--zf-op-line); }
+
+/* Erklärkarten */
+.zf-intro__tag { margin: 0 0 8px; color: var(--brand); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+.zf-intro__box--sort { color: var(--zf-sort-line); background: var(--zf-sort); font-size: 0.8rem; }
+
+/* Szene: Kachel mit Zahl-Einstellung */
+.zf-lesson-num { gap: 18px; }
+
+.zf-lesson-num__tile {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  min-width: 76px;
+  padding: 8px 8px 6px;
+  border: 1px solid var(--brand);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+.zf-num--demo { margin: 0; background: var(--surface); }
+.zf-num--demo .zf-num__btn { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border-strong); border-radius: 10px; font-weight: 800; }
+.zf-num--demo .zf-num__value { min-width: 36px; font: 800 1.2rem/1 var(--font-mono); text-align: center; }
+
+/* Szene: Weiche */
+.zf-lesson-sort { gap: 0; }
+.zf-lesson-sort__in { margin-right: 6px; padding: 4px 9px; border-radius: 999px; background: var(--zf-item); color: var(--zf-item-text); font: 800 0.9rem/1.2 var(--font-mono); white-space: nowrap; }
+.zf-lesson-sort__outs { display: grid; gap: 10px; margin-left: 10px; }
+.zf-lesson-sort__outs span { padding: 3px 9px; border: 2px solid; border-radius: 10px; font: 800 0.9rem/1.2 var(--font-mono); white-space: nowrap; }
+.zf-lesson-sort__yes { border-color: var(--success) !important; background: color-mix(in srgb, var(--success) 12%, var(--surface)); }
+.zf-lesson-sort__no { border-color: var(--zf-bad) !important; background: color-mix(in srgb, var(--zf-bad) 10%, var(--surface)); }
+
+/* Szene: Wertetabelle */
+.zf-lesson-table table { border-collapse: collapse; background: var(--surface); font-family: var(--font-mono); }
+.zf-lesson-table th,
+.zf-lesson-table td { min-width: 42px; padding: 6px 10px; border: 1px solid var(--border-strong); text-align: center; }
+.zf-lesson-table th { color: var(--muted); font-size: 0.85rem; }
+.zf-lesson-table td { font-weight: 800; }
+
+/* Szene: der Werkzeugkasten wächst */
+.zf-lesson-kit { flex-wrap: wrap; gap: 8px; padding: 18px 10px; }
+
+.zf-lesson-kit__tile {
+  display: grid;
+  place-items: center;
+  min-width: 48px;
+  height: 48px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  font: 800 1rem/1 var(--font-mono);
+}
+
+.zf-lesson-kit__tile.is-new { border-color: var(--zf-op-line); background: var(--zf-op); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-lesson-kit__tile { animation: zf-kit-in 0.5s calc(var(--i) * 0.12s) both; }
+}
+
+@keyframes zf-kit-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 420px) {
+  .zf-lesson-sort__in { display: none; }
+  .zf-intro__belt { width: 30px; }
+}
+
+/* Viele Bauteile (späte Kapitel): vier Spalten, etwas kompakter */
+@media (min-width: 641px) {
+  .zf-side .zf-tools--many { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+  .zf-side .zf-tools--many .zf-tool { min-height: 64px; padding: 6px 2px 5px; }
+  .zf-side .zf-tools--many .zf-tool__pic,
+  .zf-side .zf-tools--many .zf-tool__pic img { width: 28px; height: 28px; }
+  .zf-side .zf-tools--many .zf-tool__label--math { font-size: 0.8rem !important; }
+  .zf-side .zf-tools--many .zf-tool__label { font-size: 0.72rem; }
+}
+
+/* Handy: Platz für das „Neu“-Schild über der wischbaren Reihe */
+@media (max-width: 640px) {
+  .zf-side .zf-tools { padding-top: 8px; padding-right: 4px; }
+}
+
+.zf-intro__box.zf-intro__box--sort { font-size: 0.6rem; letter-spacing: -0.02em; }
+.zf-intro__box--sort > span { padding: 1px 2px; border-radius: 4px; background: color-mix(in srgb, var(--surface) 80%, transparent); }
+
+/* Handy: Werkzeugkasten als Raster mit vier Spalten (alle Teile auf einen Blick) */
+@media (max-width: 640px) {
+  .zf-side .zf-tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; }
+  .zf-side .zf-tool { flex: none; min-height: 66px; padding: 6px 2px 5px; }
+  .zf-side .zf-tool .zf-tool__pic,
+  .zf-side .zf-tool .zf-tool__pic img { width: 28px; height: 28px; }
+}

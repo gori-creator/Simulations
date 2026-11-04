@@ -2,9 +2,10 @@ import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
 import { art, imageFor, IMAGES, type ArtKind } from './art';
 import { icon, setButton, type IconName } from './icons';
-import { introSeen, showIntro } from './intro';
+import { lessonSeen, showLessons } from './lessons';
 import { createSound } from './sound';
-import { ALL_LEVELS, WORLDS, type LevelInfo } from './levels';
+import { clampNum, KIT, kitItem, specFor, type KitId, type KitItem, type LessonId } from './kit';
+import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, type LevelInfo } from './levels';
 import { canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, withFixed, type Accept, type Dir, type Grid, type Item, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
@@ -31,7 +32,8 @@ const EDGE: [number, number][] = [
   [CELL / 2, 0],
 ];
 
-type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec } | { kind: 'erase' };
+/** Werkzeug; `kit`: einstellbares Bauteil aus dem Werkzeugkasten der Level. */
+type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec; kit?: KitId } | { kind: 'erase' };
 const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
 const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
@@ -56,8 +58,8 @@ const T = {
   fit: L('Alles zeigen', 'Show all'),
   inventory: L('Inventar', 'Inventory'),
   howto: L(
-    '✋ Hand: Karte verschieben (zwei Finger oder Mausrad: zoomen). → Band: über die Kästchen ziehen. Maschinen: aus dem Inventar auf die Karte ziehen oder antippen und dann ein Kästchen antippen. Ein Teil nochmal antippen dreht es.',
-    '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
+    'Hand: Karte verschieben (zwei Finger oder Mausrad: zoomen). Band: über die Kästchen ziehen. Maschinen und Weichen: im Werkzeugkasten wählen, darunter die Zahl einstellen, dann ein Kästchen antippen (oder das Teil hinziehen). Ein Teil mit derselben Zahl nochmal antippen dreht es, mit einer anderen Zahl bekommt es die neue Zahl.',
+    'Hand: move the map (two fingers or mouse wheel: zoom). Belt: drag across the squares. Machines and switches: choose them in the toolbox, set the number below, then tap a square (or drag the part there). Tap a part with the same number again to turn it; with another number it gets the new number.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
   chooseLevel: L('Level', 'Levels'),
@@ -70,8 +72,8 @@ const T = {
   undoNone: L('Es gibt nichts mehr rückgängig zu machen.', 'There is nothing left to undo.'),
   boardLabel: L('Fabrik-Karte. Pfeiltasten: Feld wählen. Leertaste oder Enter: Teil setzen oder drehen. Umschalt + Pfeiltaste: Band ziehen. Entf: abbauen.', 'Factory map. Arrow keys: choose a square. Space or Enter: place or turn a part. Shift + arrow key: draw a belt. Delete: remove.'),
   keys: L(
-    '⌨️ Tastatur: Karte anklicken oder mit Tab hinspringen. Pfeiltasten wählen ein Feld, Leertaste/Enter setzt oder dreht das Teil, Umschalt + Pfeil zieht ein Band, Entf baut ab, H/B/A wählen Hand, Band, Abbauen, Ziffern 1–9 die Teile im Inventar, P startet oder pausiert, + und − zoomen.',
-    '⌨️ Keyboard: click the map or tab to it. Arrow keys choose a square, Space/Enter places or turns the part, Shift + arrow draws a belt, Delete removes, H/B/A choose hand, belt, remove, digits 1–9 the parts in the inventory, P starts or pauses, + and − zoom.',
+    'Tastatur: Karte anklicken oder mit Tab hinspringen. Pfeiltasten wählen ein Feld, Leertaste/Enter setzt oder dreht das Teil, Umschalt + Pfeil zieht ein Band, Entf baut ab, H/B/A wählen Hand, Band, Abbauen, Ziffern 1–9 die Teile im Werkzeugkasten, < und > stellen ihre Zahl ein, P startet oder pausiert, + und − zoomen.',
+    'Keyboard: click the map or tab to it. Arrow keys choose a square, Space/Enter places or turns the part, Shift + arrow draws a belt, Delete removes, H/B/A choose hand, belt, remove, digits 1–9 the parts in the toolbox, < and > set their number, P starts or pauses, + and − zoom.',
   ),
   cellEmpty: L('Feld {x}, {y}: frei', 'Square {x}, {y}: empty'),
   cellBlocked: L('Feld {x}, {y}: hier kann man nicht bauen', 'Square {x}, {y}: you can’t build here'),
@@ -109,6 +111,20 @@ const T = {
   totalShort: L('Geliefert', 'Delivered'),
   lostShort: L('Verloren', 'Lost'),
   starsFirst: L('★ 3: gleich beim ersten Start', '★ 3: on the first run'),
+  machines: L('Maschinen', 'Machines'),
+  tooMany: L('Hier sind höchstens {n} Maschinen erlaubt. Bau eine ab oder gib einer Maschine eine andere Zahl.', 'At most {n} machines are allowed here. Remove one or give a machine another number.'),
+  noMachines: L('Hier sind keine eigenen Maschinen erlaubt – nur Bänder. Wähle die Startzahl!', 'No machines of your own are allowed here – only belts. Choose the starting number!'),
+  onlyBelts: L('In diesem Level stehen die Maschinen schon fest. Du brauchst nur Bänder.', 'In this level the machines are already fixed. You only need belts.'),
+  ruleMax: L('höchstens {n} Maschinen', 'at most {n} machines'),
+  numFor: L('Zahl für {p}', 'Number for {p}'),
+  numLess: L('Zahl kleiner', 'Smaller number'),
+  numMore: L('Zahl größer', 'Bigger number'),
+  numTile: L('{p}, eingestellt: {n}', '{p}, set to: {n}'),
+  newBadge: L('Neu', 'New'),
+  newIn: L('Neu in diesem Kapitel: {p}', 'New in this chapter: {p}'),
+  explain: L('Erklärung', 'Explain'),
+  chapterLabel: L('Kapitel {n}: {t}', 'Chapter {n}: {t}'),
+  nextChapter: L('Nächstes Kapitel', 'Next chapter'),
   editLocked: L('Erst stoppen, dann umbauen.', 'Stop first, then rebuild.'),
   fixed: L('schon da', 'already here'),
   world: L('Offene Welt', 'Open world'),
@@ -233,10 +249,8 @@ function boardOfLevel(l: LevelInfo): Board {
     extra: rest,
     walls: new Set(l.walls.map(([x, y]) => key(x, y))),
     fixed: new Map((l.fixed ?? []).map((f) => [key(f.x, f.y), f.part])),
-    tools: [
-      ...l.tools.map((op): PartSpec => ({ id: opLabel(op), kind: 'op', op, price: 0 })),
-      ...(l.sorts ?? []).map((test): PartSpec => ({ id: partId({ op: null, dir: 0, sort: test }), kind: 'sort', test, price: 0 })),
-    ],
+    // Im Level kommt das Werkzeug aus dem Werkzeugkasten des Kapitels (kitFor)
+    tools: [],
   };
 }
 
@@ -316,6 +330,7 @@ export function initFactory(root: HTMLElement): void {
   const eyebrow = q<HTMLElement>('[data-eyebrow]');
   const barActions = q<HTMLElement>('[data-bar-actions]');
   const picker = q<HTMLElement>('[data-picker]');
+  const newEl = q<HTMLElement>('[data-new]');
   howto.textContent = tx(T.howto);
 
   const world = el('div', 'zf-world');
@@ -354,8 +369,11 @@ export function initFactory(root: HTMLElement): void {
   // Start beim ersten Level ohne Stern (in Welt-Reihenfolge)
   let index = Math.max(0, ALL_LEVELS.findIndex((l) => !stars[l.id]));
   let level: LevelInfo = ALL_LEVELS[index]!;
-  /** Welt, deren Level in der Leiste stehen. */
-  let shownWorld = WORLDS.findIndex((w) => w.levels.includes(level));
+  /** Kapitel des aktuellen Levels. */
+  let shownWorld = CHAPTERS.indexOf(chapterOf(level));
+  /** Werkzeugkasten des aktuellen Levels und die eingestellten Zahlen je Bauteil. */
+  let kit: KitItem[] = [];
+  const nums = Object.fromEntries(KIT.map((k) => [k.id, k.start])) as Record<KitId, number>;
   /** Selbst gewählte Startzahl je Level (Welt 2). */
   const picks: Record<string, number> = {};
   const openWorld = makeWorld();
@@ -632,14 +650,28 @@ export function initFactory(root: HTMLElement): void {
       } else part.dir = ((part.dir + 1) % 4) as Dir;
     } else {
       if (mode === 'world' && !unlockedParts(econ.order).has(spec.id)) return lockedInfo(spec);
+      // Level mit Grenze: höchstens so viele eigene Maschinen (umstellen geht immer)
+      const max = mode === 'level' ? level.maxMachines : undefined;
+      if (spec.kind === 'op' && max !== undefined && !part?.op && machineCount() >= max) {
+        say(max === 0 ? tx(T.noMachines) : tx(T.tooMany, { n: max }), 'warn');
+        sound.play('error');
+        return;
+      }
       if (!pay(spec.price - (part && mode === 'world' ? priceOf(part) : 0))) return;
-      grid.set(k, makePart(spec, part?.dir ?? guessDir(x, y)));
+      grid.set(k, makePart(spec, part?.dir ?? guessDir(x, y), part?.side ?? 1));
       sound.play('place');
       if (spec.kind === 'sort') say(tx(T.sortHelp));
       if (spec.kind === 'merge') say(tx(T.mergeHelp));
       if (spec.kind === 'bridge') say(tx(T.bridgeHelp));
     }
     changed();
+  }
+
+  /** Eigene Maschinen im Level (Weichen und Bänder zählen nicht). */
+  function machineCount(): number {
+    let n = 0;
+    for (const p of grid.values()) if (p.op) n += 1;
+    return n;
   }
 
   function lockedInfo(spec: PartSpec): void {
@@ -761,6 +793,10 @@ export function initFactory(root: HTMLElement): void {
         b.click();
         announce.textContent = b.getAttribute('aria-label') ?? '';
       }
+    } else if ((event.key === '<' || event.key === '>') && currentKit()?.range) {
+      // Zahl des gewählten Bauteils kleiner/größer
+      const item = currentKit()!;
+      setNum(nums[item.id] + (event.key === '>' ? 1 : -1));
     } else if (k === 'p') runBtn.click();
     else if (event.key === '+' || event.key === '=') zoomAt(1.25, ...center());
     else if (event.key === '-') zoomAt(0.8, ...center());
@@ -1070,10 +1106,14 @@ export function initFactory(root: HTMLElement): void {
     const open = world ? unlockedParts(econ.order) : null;
     // Gesperrte Teile nur zeigen, wenn der aktuelle Auftrag sie freischaltet (als Vorschau)
     const soon = new Set(world ? orderAt(econ.order).unlock : []);
-    const shown = board.tools.filter((spec) => !open || open.has(spec.id) || soon.has(spec.id));
-    const list: Tool[] = [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown.map((spec): Tool => ({ kind: 'part', spec })), { kind: 'erase' }];
+    const shown: Tool[] = world
+      ? board.tools.filter((spec) => !open || open.has(spec.id) || soon.has(spec.id)).map((spec): Tool => ({ kind: 'part', spec }))
+      : kit.map((item): Tool => ({ kind: 'part', spec: specFor(item, nums[item.id]), kit: item.id }));
+    const fresh = new Set(world ? [] : newIn(chapterOf(level)).map((k) => k.id));
+    const list: Tool[] = [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown, { kind: 'erase' }];
     toolsKey = toolsSignature();
     toolsEl.classList.toggle('zf-tools--world', world);
+    toolsEl.classList.toggle('zf-tools--many', list.length > 7);
     toolsEl.replaceChildren(
       ...list.map((t) => {
         const spec = t.kind === 'part' ? t.spec : null;
@@ -1105,9 +1145,15 @@ export function initFactory(root: HTMLElement): void {
           b.append(price);
         }
         if (locked) b.classList.add('is-locked');
-        const same = t.kind === tool.kind && (t.kind !== 'part' || (tool.kind === 'part' && t.spec.id === tool.spec.id));
+        const kitId = t.kind === 'part' ? t.kit : undefined;
+        if (kitId && fresh.has(kitId)) {
+          b.classList.add('is-new');
+          b.append(el('span', 'zf-tool__new', tx(T.newBadge)));
+        }
+        const same = t.kind === tool.kind && (t.kind !== 'part' || (tool.kind === 'part' && (kitId ? tool.kit === kitId : !tool.kit && t.spec.id === tool.spec.id)));
         b.setAttribute('aria-pressed', String(same));
-        const name = spec ? tx(specName(spec)) : label;
+        const item = kitId ? kitItem(kitId) : undefined;
+        const name = item ? (item.range ? tx(T.numTile, { p: tx(item.name), n: ctxNum(nums[item.id]) }) : tx(item.name)) : spec ? tx(specName(spec)) : label;
         b.setAttribute('aria-label', world && spec ? `${name}, ${locked ? tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 }) : tx(T.price, { n: ctxNum(spec.price) })}` : name);
         b.title = b.getAttribute('aria-label')!;
         if (spec && !locked) bindDrag(b, spec);
@@ -1121,7 +1167,55 @@ export function initFactory(root: HTMLElement): void {
         return b;
       }),
     );
+    if (!world && level.maxMachines === 0) toolsEl.append(el('p', 'zf-tools__note', tx(T.onlyBelts)));
+    renderNum();
   }
+
+  // ---------- Zahl einstellen (Maschinen und Weichen im Level) ----------
+  const numBox = el('div', 'zf-num');
+  const numLabel = el('label', 'zf-num__label');
+  const numInput = el('input', 'zf-num__input');
+  numInput.type = 'number';
+  numInput.inputMode = 'numeric';
+  numInput.id = 'zf-num';
+  numLabel.htmlFor = 'zf-num';
+  const numLess = el('button', 'zf-btn zf-num__btn');
+  const numMore = el('button', 'zf-btn zf-num__btn');
+  numLess.type = 'button';
+  numMore.type = 'button';
+  numLess.append(icon('minus'));
+  numMore.append(icon('plus'));
+  numLess.setAttribute('aria-label', tx(T.numLess));
+  numMore.setAttribute('aria-label', tx(T.numMore));
+  numBox.append(numLabel, numLess, numInput, numMore);
+  toolsEl.after(numBox);
+
+  /** Gewähltes, einstellbares Bauteil (oder undefined). */
+  const currentKit = (): KitItem | undefined => (mode === 'level' && tool.kind === 'part' && tool.kit ? kitItem(tool.kit) : undefined);
+
+  function renderNum(): void {
+    const item = currentKit();
+    numBox.hidden = !item?.range;
+    if (!item?.range) return;
+    numLabel.textContent = tx(T.numFor, { p: tx(item.name) });
+    numInput.min = String(item.range[0]);
+    numInput.max = String(item.range[1]);
+    numInput.value = String(nums[item.id]);
+    numLess.disabled = nums[item.id] <= item.range[0];
+    numMore.disabled = nums[item.id] >= item.range[1];
+  }
+
+  function setNum(v: number): void {
+    const item = currentKit();
+    if (!item?.range) return;
+    nums[item.id] = clampNum(item, v);
+    tool = { kind: 'part', spec: specFor(item, nums[item.id]), kit: item.id };
+    renderTools();
+    announce.textContent = tx(T.numTile, { p: tx(item.name), n: ctxNum(nums[item.id]) });
+  }
+  numLess.addEventListener('click', () => setNum(nums[currentKit()?.id ?? 'plus'] - 1));
+  numMore.addEventListener('click', () => setNum(nums[currentKit()?.id ?? 'plus'] + 1));
+  numInput.addEventListener('change', () => setNum(Number(numInput.value)));
 
   /** Was das Aussehen des Inventars bestimmt: freigeschaltet und bezahlbar. */
   function toolsSignature(): string {
@@ -1248,7 +1342,7 @@ export function initFactory(root: HTMLElement): void {
     renderSound();
     sound.play('place');
   });
-  helpBtn.addEventListener('click', () => showIntro(root, lang));
+  helpBtn.addEventListener('click', () => showLessons(root, lang, mode === 'level' ? (['belt', ...chapterOf(level).teaches.filter((t) => t !== 'belt')] as LessonId[]) : ['belt']));
 
   function setPick(v: number): void {
     const range = level.source.pick;
@@ -1382,7 +1476,15 @@ export function initFactory(root: HTMLElement): void {
       return g;
     };
     goals.append(star(tx(T.goalPar, { n: level.par }), grid.size <= level.par), star(tx(T.goalFirst), failedRuns === 0));
-    const parts: Node[] = [metric(tx(T.parts), `${grid.size}`), metric(tx(T.delivered), `${state.delivered}/${totalNeed(level)}`), goals];
+    const parts: Node[] = [metric(tx(T.parts), `${grid.size}`), metric(tx(T.delivered), `${state.delivered}/${totalNeed(level)}`)];
+    // Grenze für Maschinen als Regel (kein Stern, sondern Pflicht)
+    if (level.maxMachines) {
+      const m = metric(tx(T.machines), `${machineCount()}/${level.maxMachines}`);
+      m.classList.add('zf-metric--rule');
+      m.title = tx(T.ruleMax, { n: level.maxMachines });
+      parts.push(m);
+    }
+    parts.push(goals);
     if (level.source.values) parts.push(el('p', 'zf-source-seq', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
     info.replaceChildren(...parts);
     renderTable();
@@ -1468,9 +1570,9 @@ export function initFactory(root: HTMLElement): void {
       say(`${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
       renderLevels();
       if (index < ALL_LEVELS.length - 1) {
-        const nextWorld = !WORLDS[shownWorld]!.levels.includes(ALL_LEVELS[index + 1]!);
+        const nextWorld = !CHAPTERS[shownWorld]!.levels.includes(ALL_LEVELS[index + 1]!);
         const n = btn('', 'zf-btn zf-btn--main');
-        setButton(n, null, tx(nextWorld ? T.nextWorld : T.next));
+        setButton(n, null, tx(nextWorld ? T.nextChapter : T.next));
         n.append(icon('arrow'));
         n.addEventListener('click', () => openLevel(index + 1));
         status.append(' ', n);
@@ -1548,7 +1650,7 @@ export function initFactory(root: HTMLElement): void {
   // ---------- Level ----------
   /** Level-Auswahl: alle Welten als Karten mit ihren Leveln, dazu die offene Welt. */
   function renderLevels(): void {
-    const cards = WORLDS.map((w, wi) => {
+    const cards = CHAPTERS.map((w, wi) => {
       const got = w.levels.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
       const card = el('section', 'zf-world-card');
       const head = el('div', 'zf-world-card__head');
@@ -1560,13 +1662,12 @@ export function initFactory(root: HTMLElement): void {
       const list = el('div', 'zf-levels__list');
       w.levels.forEach((l, i) => {
         const n = stars[l.id] ?? 0;
-        // Profi-Level (ab Nummer 7) mit Flamme
-        const pro = i >= 6 && wi < 6;
+        const pro = !!l.pro;
         const b = btn('', `zf-level${pro ? ' zf-level--pro' : ''}${n ? ' is-done' : ''}`);
         b.append(el('span', 'zf-level__num', String(i + 1)), el('span', 'zf-level__stars', `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`));
         if (pro) b.append(el('span', 'zf-level__pro', tx(T.proShort)));
         b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
-        b.setAttribute('aria-label', `${tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
+        b.setAttribute('aria-label', `${tx(T.chapterLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
         b.title = tx(l.title);
         b.addEventListener('click', () => openLevel(ALL_LEVELS.indexOf(l)));
         list.append(b);
@@ -1596,6 +1697,7 @@ export function initFactory(root: HTMLElement): void {
     tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
     hint.textContent = tx(T.worldHint);
+    newEl.hidden = true;
     howto.textContent = tx(T.worldHowto);
     eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
@@ -1621,9 +1723,10 @@ export function initFactory(root: HTMLElement): void {
     stepBtn.hidden = false;
     index = i;
     level = ALL_LEVELS[i]!;
-    shownWorld = WORLDS.findIndex((w) => w.levels.includes(level));
-    const wInfo = WORLDS[shownWorld]!;
+    const wInfo = chapterOf(level);
+    shownWorld = CHAPTERS.indexOf(wInfo);
     board = boardOfLevel(level);
+    kit = level.maxMachines === 0 ? [] : kitFor(level);
     grid = new Map();
     tool = { kind: 'part', spec: BELT };
     state = start(picks[level.id]);
@@ -1631,10 +1734,11 @@ export function initFactory(root: HTMLElement): void {
     hasRun = false;
     title.textContent = `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
     howto.textContent = tx(T.howto);
-    eyebrow.replaceChildren(el('span', '', tx(T.worldLabel, { n: shownWorld + 1, t: tx(wInfo.title) })), el('span', 'zf-pill', tx(T.worldGrades, { g: wInfo.grades })), ...(wInfo.levels.indexOf(level) >= 6 && shownWorld < 6 ? [el('span', 'zf-pill zf-pill--pro', tx(T.pro))] : []));
+    eyebrow.replaceChildren(el('span', '', tx(T.chapterLabel, { n: shownWorld + 1, t: tx(wInfo.title) })), el('span', 'zf-pill', tx(T.worldGrades, { g: wInfo.grades })), ...(level.pro ? [el('span', 'zf-pill zf-pill--pro', tx(T.pro))] : []));
     renderPick();
     renderOrder();
     hint.textContent = tx(level.hint);
+    renderNew();
     say('');
     itemsLayer.replaceChildren();
     renderLevels();
@@ -1643,11 +1747,24 @@ export function initFactory(root: HTMLElement): void {
     renderInfo();
     fit();
     resetCursor();
+    // Neues Bauteil in diesem Kapitel (und beim allerersten Besuch die Einführung): erklären
+    const unseen = (['belt', ...wInfo.teaches] as LessonId[]).filter((id, k, all) => all.indexOf(id) === k && !lessonSeen(id));
+    if (unseen.length) showLessons(root, lang, unseen);
+  }
+
+  /** Hinweis „Neu in diesem Kapitel“ mit Knopf zur Erklärung. */
+  function renderNew(): void {
+    const c = chapterOf(level);
+    const items = newIn(c);
+    const names = items.length ? items.map((k) => tx(k.name)) : c.teaches.filter((t) => t !== 'belt').map(() => tx(c.title));
+    newEl.hidden = !names.length || c.teaches.includes('belt');
+    if (newEl.hidden) return;
+    const b = ibtn('info', tx(T.explain), 'zf-btn zf-new__btn');
+    b.addEventListener('click', () => showLessons(root, lang, c.teaches));
+    newEl.replaceChildren(el('span', 'zf-new__tag', tx(T.newBadge)), el('span', 'zf-new__text', names.join(', ')), b);
   }
 
   openLevel(index);
   addEventListener('resize', () => applyView());
   root.classList.add('is-ready');
-  // Beim allerersten Besuch: kurze Einführung
-  if (!introSeen()) showIntro(root, lang);
 }
