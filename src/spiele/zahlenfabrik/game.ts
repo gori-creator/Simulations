@@ -59,6 +59,19 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
+  boardLabel: L('Fabrik-Karte. Pfeiltasten: Feld wählen. Leertaste oder Enter: Teil setzen oder drehen. Umschalt + Pfeiltaste: Band ziehen. Entf: abbauen.', 'Factory map. Arrow keys: choose a square. Space or Enter: place or turn a part. Shift + arrow key: draw a belt. Delete: remove.'),
+  keys: L(
+    '⌨️ Tastatur: Karte anklicken oder mit Tab hinspringen. Pfeiltasten wählen ein Feld, Leertaste/Enter setzt oder dreht das Teil, Umschalt + Pfeil zieht ein Band, Entf baut ab, H/B/A wählen Hand, Band, Abbauen, Ziffern 1–9 die Teile im Inventar, P startet oder pausiert, + und − zoomen.',
+    '⌨️ Keyboard: click the map or tab to it. Arrow keys choose a square, Space/Enter places or turns the part, Shift + arrow draws a belt, Delete removes, H/B/A choose hand, belt, remove, digits 1–9 the parts in the inventory, P starts or pauses, + and − zoom.',
+  ),
+  cellEmpty: L('Feld {x}, {y}: frei', 'Square {x}, {y}: empty'),
+  cellBlocked: L('Feld {x}, {y}: hier kann man nicht bauen', 'Square {x}, {y}: you can’t build here'),
+  cellRock: L('Feld {x}, {y}: Fels', 'Square {x}, {y}: rock'),
+  cellSource: L('Feld {x}, {y}: Quelle mit {v}', 'Square {x}, {y}: source with {v}'),
+  cellTarget: L('Feld {x}, {y}: Lager, will {t}', 'Square {x}, {y}: storage, wants {t}'),
+  cellBase: L('Feld {x}, {y}: Basis', 'Square {x}, {y}: base'),
+  cellPart: L('Feld {x}, {y}: {p}, Richtung {d}', 'Square {x}, {y}: {p}, direction {d}'),
+  dirNames: L('rechts|unten|links|oben', 'right|down|left|up'),
   help: L('❓ Anleitung', '❓ How to play'),
   soundOn: L('🔊 Töne an', '🔊 Sound on'),
   soundOff: L('🔇 Töne aus', '🔇 Sound off'),
@@ -297,11 +310,24 @@ export function initFactory(root: HTMLElement): void {
   const itemsLayer = el('div', 'zf-items');
   world.append(beltLayer, cellsLayer, itemsLayer);
   const zoomBar = el('div', 'zf-zoom');
+  // Tastatur: Feld-Auswahl (Rahmen auf der Karte) und Ansage für Bildschirmleser
+  const cursorEl = el('div', 'zf-cursor');
+  cursorEl.setAttribute('aria-hidden', 'true');
+  world.append(cursorEl);
+  const announce = el('p', 'visually-hidden zf-announce');
+  announce.setAttribute('aria-live', 'polite');
+  viewport.tabIndex = 0;
+  viewport.setAttribute('role', 'application');
+  viewport.setAttribute('aria-roledescription', lang === 'de' ? 'Fabrik-Karte' : 'factory map');
   // Anzeige im Spielfeld (offene Welt): Münzen und Stand beim Auftrag
   const hud = el('div', 'zf-hud');
   hud.setAttribute('aria-hidden', 'true');
   hud.hidden = true;
   viewport.append(world, zoomBar, hud);
+  viewport.setAttribute('aria-label', tx(T.boardLabel));
+  viewport.after(announce);
+  const keysHelp = el('p', 'zf-howto zf-keys', tx(T.keys));
+  q<HTMLElement>('[data-howto]').after(keysHelp);
 
   // Start beim ersten Level ohne Stern (in Welt-Reihenfolge)
   let index = Math.max(0, ALL_LEVELS.findIndex((l) => !stars[l.id]));
@@ -579,6 +605,102 @@ export function initFactory(root: HTMLElement): void {
     }
     return dirs.filter(open).sort((a, c) => toward(a) - toward(c))[0] ?? 0;
   }
+
+  // ---------- Tastatur ----------
+  const cursor = { x: 0, y: 0 };
+
+  /** Feld-Auswahl setzen, ins Bild holen und (für Bildschirmleser) ansagen. */
+  function placeCursor(x: number, y: number, speak = true): void {
+    cursor.x = Math.max(0, Math.min(board.cols - 1, x));
+    cursor.y = Math.max(0, Math.min(board.rows - 1, y));
+    cursorEl.style.left = `${cursor.x * CELL}px`;
+    cursorEl.style.top = `${cursor.y * CELL}px`;
+    showCell(cursor.x, cursor.y);
+    if (speak) announce.textContent = describe(cursor.x, cursor.y);
+  }
+
+  /** Karte so verschieben, dass das Feld sichtbar ist (mit etwas Rand). */
+  function showCell(x: number, y: number): void {
+    const box = viewport.getBoundingClientRect();
+    const size = CELL * view.s;
+    const margin = size * 1.2;
+    const px = view.x + x * size;
+    const py = view.y + y * size;
+    if (px < margin) view.x += margin - px;
+    else if (px + size > box.width - margin) view.x -= px + size - (box.width - margin);
+    if (py < margin) view.y += margin - py;
+    else if (py + size > box.height - margin) view.y -= py + size - (box.height - margin);
+    applyView();
+  }
+
+  /** Was auf einem Feld liegt, als Satz. */
+  function describe(x: number, y: number): string {
+    const v = { x: x + 1, y: y + 1 };
+    const sp = sourceAt(x, y);
+    if (sp) return tx(T.cellSource, { ...v, v: sourceLabel(sp.value) });
+    if (mode === 'level') {
+      const ti = targetsOf(level).findIndex((t) => t.x === x && t.y === y);
+      if (ti >= 0) return tx(T.cellTarget, { ...v, t: tx(acceptText(targetsOf(level)[ti]!.accept, state.got[ti] ?? 0)) });
+    } else if (baseAt(x, y)) return tx(T.cellBase, v);
+    if (board.walls.has(key(x, y))) return tx(T.cellRock, v);
+    const part = allParts().get(key(x, y));
+    if (part) {
+      const name = part.op ? opLabel(part.op) : part.sort ? `${tx(testLabel(part.sort))}` : part.merge ? `a${part.merge}b` : part.bridge ? tx(T.bridgeHelp).split(':')[0]! : tx(T.belt);
+      return tx(T.cellPart, { ...v, p: name, d: tx(T.dirNames).split('|')[part.dir]! });
+    }
+    return tx(canBuild(x, y) ? T.cellEmpty : T.cellBlocked, v);
+  }
+
+  /** Erstes sinnvolles Feld für die Tastatur: vor der Quelle. */
+  function resetCursor(): void {
+    const sp = board.sources.find((q) => mode === 'level' || inRect(zoneRect(openWorld, econ.zone), q.x, q.y)) ?? board.sources[0];
+    if (mode === 'world') placeCursor(board.base.x - 1, board.base.y + 1, false);
+    else if (sp) placeCursor(sp.x + DX[sp.dir], sp.y + DY[sp.dir], false);
+  }
+
+  const KEY_DIR: Record<string, Dir> = { ArrowRight: 0, ArrowDown: 1, ArrowLeft: 2, ArrowUp: 3 };
+
+  viewport.addEventListener('keydown', (event) => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const d = KEY_DIR[event.key];
+    const k = event.key.toLowerCase();
+    let handled = true;
+    if (d !== undefined) {
+      const nx = cursor.x + DX[d];
+      const ny = cursor.y + DY[d];
+      if (event.shiftKey) {
+        // Band ziehen: vom aktuellen Feld ins nächste
+        if (nx >= 0 && ny >= 0 && nx < board.cols && ny < board.rows) drawBelt([cursor.x, cursor.y], [nx, ny]);
+      }
+      placeCursor(nx, ny);
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      if (tool.kind === 'hand') tool = { kind: 'part', spec: BELT };
+      tap(cursor.x, cursor.y);
+      announce.textContent = describe(cursor.x, cursor.y);
+    } else if (event.key === 'Delete' || event.key === 'Backspace') {
+      eraseAt(cursor.x, cursor.y);
+      announce.textContent = describe(cursor.x, cursor.y);
+    } else if (k === 'h' || k === 'b' || k === 'a') {
+      tool = k === 'h' ? { kind: 'hand' } : k === 'b' ? { kind: 'part', spec: BELT } : { kind: 'erase' };
+      renderTools();
+      announce.textContent = k === 'h' ? tx(T.hand) : k === 'b' ? tx(T.belt) : tx(T.erase);
+    } else if (/^[1-9]$/.test(event.key)) {
+      const parts = [...toolsEl.querySelectorAll<HTMLButtonElement>('.zf-tool--op:not(.is-locked)')];
+      const b = parts[Number(event.key) - 1];
+      if (b) {
+        b.click();
+        announce.textContent = b.getAttribute('aria-label') ?? '';
+      }
+    } else if (k === 'p') runBtn.click();
+    else if (event.key === '+' || event.key === '=') zoomAt(1.25, ...center());
+    else if (event.key === '-') zoomAt(0.8, ...center());
+    else if (k === 'f') fit();
+    else handled = false;
+    if (handled) event.preventDefault();
+  });
+  viewport.addEventListener('focus', () => {
+    placeCursor(cursor.x, cursor.y);
+  });
 
   /** Ausgänge eines Feldes (Quelle oder Teil). */
   function outsAt(all: Grid, x: number, y: number, depth = 0): Dir[] {
@@ -1305,6 +1427,7 @@ export function initFactory(root: HTMLElement): void {
     renderCells();
     renderInfo();
     fit();
+    resetCursor();
   }
 
   function openLevel(i: number): void {
@@ -1335,6 +1458,7 @@ export function initFactory(root: HTMLElement): void {
     renderCells();
     renderInfo();
     fit();
+    resetCursor();
   }
 
   openLevel(index);
