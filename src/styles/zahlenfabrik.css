@@ -950,3 +950,305 @@
 
 .zf-btn:disabled { opacity: 0.45; cursor: default; }
 .zf-level--pro:not([aria-pressed='true']) { border-color: var(--zf-op-line); }
+
+/* ==========================================================================
+   Aufgeräumtes Layout (04.11.2026): Kopfleiste, großes Spielfeld,
+   Seitenleiste mit Ziel, Bauteilen und Steuerung; Level-Auswahl als Fenster.
+   ========================================================================== */
+
+.zf { max-width: 1240px; --zf-board-h: clamp(420px, calc(100vh - 230px), 760px); }
+
+.zf-game {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Kopfleiste */
+.zf-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.zf-bar__where { min-width: 0; }
+.zf-bar__eyebrow { margin: 0; color: var(--muted); font-size: 0.8rem; font-weight: 700; }
+.zf-bar__title { margin: 2px 0 0; font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem); line-height: 1.2; }
+.zf-bar__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+
+.zf-btn--bar {
+  min-height: 40px;
+  padding: 6px 12px;
+  border-width: 1px;
+  font-size: 0.9rem;
+}
+
+/* Spielfeld und Seitenleiste */
+.zf-main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; }
+
+.zf-stage {
+  position: relative;
+  min-width: 0;
+  padding: 12px;
+  background: var(--surface-2);
+}
+
+.zf-stage .zf-board {
+  height: var(--zf-board-h);
+  border-radius: 14px;
+}
+
+.zf-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(var(--zf-board-h) + 24px);
+  padding: 12px;
+  overflow: auto;
+  border-left: 1px solid var(--border);
+}
+
+.zf-card {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.zf-card__title {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.zf-goal__hint { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.45; }
+.zf-goal .zf-info { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; font-size: 0.85rem; }
+.zf-goal .zf-order { margin: 0 0 8px; padding: 10px; border-width: 1px; border-radius: 12px; grid-template-columns: 1fr auto; }
+.zf-goal .zf-order__tag { grid-column: 1 / -1; }
+
+/* Bauteile als ruhiges Raster */
+.zf-side .zf-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.zf-side .zf-tool {
+  min-width: 0;
+  min-height: 58px;
+  padding: 6px 4px;
+  border-width: 1px;
+  border-radius: 12px;
+}
+
+/* Steuerung: Start groß, der Rest in zwei Spalten */
+.zf-side .zf-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 0;
+}
+
+.zf-side .zf-controls .zf-btn {
+  min-height: 42px;
+  padding: 6px 8px;
+  border-width: 1px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+}
+
+.zf-side .zf-controls .zf-btn--main { grid-column: 1 / -1; min-height: 48px; font-size: 1rem; }
+.zf-side .zf-controls .zf-btn--expand,
+.zf-side .zf-controls .zf-pick { grid-column: 1 / -1; }
+.zf-side .zf-pick { justify-content: space-between; border-width: 1px; }
+
+/* Bedienung zum Aufklappen */
+.zf-help summary { cursor: pointer; font-weight: 700; }
+.zf-help .zf-howto { margin: 8px 0 0; font-size: 0.85rem; }
+
+/* Meldungen als Einblendung über dem Spielfeld */
+.zf-stage .zf-status {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: calc(100% - 48px);
+  min-height: 0;
+  margin: 0;
+  padding: 10px 16px;
+  translate: -50% 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.zf-stage .zf-status:empty { display: none; }
+.zf-stage .zf-status .zf-btn { min-height: 40px; padding: 6px 14px; }
+.zf-stage .zf-table { margin-top: 10px; }
+
+/* Level-Auswahl */
+.zf-picker {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, #0b1220 55%, transparent);
+}
+
+.zf-picker[hidden] { display: none; }
+
+.zf-picker__card {
+  width: min(900px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.zf-picker__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.zf-picker__head h2 { margin: 0; font-size: 1.3rem; }
+
+.zf-icon-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.zf-picker .zf-levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 0; }
+
+.zf-world-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+
+.zf-world-card__head { display: grid; gap: 2px; }
+.zf-world-card__meta { color: var(--muted); font-size: 0.8rem; font-weight: 600; }
+
+.zf-world-card--open {
+  grid-column: 1 / -1;
+  border: 2px solid var(--zf-source-line);
+  background: var(--zf-source);
+  cursor: pointer;
+}
+
+.zf-world-card--open[aria-pressed='true'] { border-color: var(--brand); }
+
+.zf-picker .zf-levels__list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+.zf-picker .zf-level {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  min-height: 50px;
+  padding: 4px;
+  border-width: 1px;
+  border-radius: 12px;
+}
+
+.zf-level__num { font-weight: 800; }
+.zf-level__stars { font-size: 0.72rem; letter-spacing: 0.04em; color: var(--zf-coin); }
+.zf-level[aria-pressed='true'] .zf-level__stars { color: inherit; }
+.zf-level.is-done:not([aria-pressed='true']) { border-color: color-mix(in srgb, var(--success) 60%, var(--border)); }
+
+/* Tablet: Seitenleiste unter das Spielfeld, in zwei Spalten */
+@media (max-width: 960px) {
+  .zf { --zf-board-h: clamp(360px, 62vh, 640px); }
+  .zf-main { grid-template-columns: 1fr; }
+
+  .zf-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-height: none;
+    overflow: visible;
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+
+  .zf-goal,
+  .zf-help { grid-column: 1 / -1; }
+}
+
+/* Handy: eine Spalte, Bauteile als wischbare Reihe */
+@media (max-width: 640px) {
+  .zf { --zf-board-h: 56vh; }
+  .zf-bar { flex-wrap: wrap; padding: 10px 12px; }
+  .zf-bar__actions { justify-content: flex-start; width: 100%; }
+  .zf-stage { padding: 8px; }
+  .zf-side { grid-template-columns: 1fr; padding: 8px; gap: 8px; }
+
+  .zf-side .zf-tools {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-bottom: 2px;
+  }
+
+  .zf-side .zf-tool { flex: 0 0 76px; }
+  /* Bauteile und Start direkt unter dem Spielfeld, Ziel danach */
+  .zf-card--tools { order: 1; }
+  .zf-card--controls { order: 2; }
+  .zf-goal { order: 3; }
+  .zf-help { order: 4; }
+  .zf-picker .zf-levels__list { grid-template-columns: repeat(4, 1fr); }
+  .zf-stage .zf-status { bottom: 12px; max-width: calc(100% - 24px); }
+}
+
+.zf-goal .zf-table { margin-top: 10px; }
+.zf-goal .zf-table th,
+.zf-goal .zf-table td { padding: 4px 8px; font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+  .zf-zoom { right: 6px; bottom: 6px; gap: 4px; }
+  .zf-zoom__btn { width: 34px; height: 34px; font-size: 1rem; opacity: 0.9; }
+  /* Am Handy zoomt man mit zwei Fingern; nur „Alles zeigen“ bleibt */
+  .zf-zoom__btn--step { display: none; }
+}
+
+/* Karten dürfen schmaler werden als ihr Inhalt (wischbare Bauteile am Handy) */
+.zf-card { min-width: 0; }
+
+@media (max-width: 960px) {
+  .zf-side { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .zf-side { grid-template-columns: minmax(0, 1fr); }
+}

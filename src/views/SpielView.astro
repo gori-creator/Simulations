@@ -19,19 +19,52 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
 <BaseLayout lang={lang} title={game.title[lang]} description={game.description[lang]} alternates={alternates({ kind: 'game', game: game.id })} noindex={!GAMES_PUBLIC}>
   <div class="container zf" data-factory data-lang={lang}>
     <Breadcrumbs lang={lang} items={[{ label: t('Startseite', 'Home'), href: href(lang, { kind: 'home' }) }, { label: game.title[lang] }]} />
-    <header class="zf-head">
-      <p class="zf-head__eyebrow" data-eyebrow>🏭 {game.title[lang]}</p>
-      <h1 class="zf-head__title" data-title>{game.title[lang]}</h1>
-      <p class="zf-head__hint" data-hint>{game.description[lang]}</p>
-    </header>
-    <div class="zf-levels" data-levels role="group" aria-label={t('Level', 'Levels')}></div>
-    <div class="zf-order" data-order hidden></div>
-    <div class="zf-tools" data-tools role="group" aria-label={t('Inventar', 'Inventory')}></div>
-    <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
-    <p class="zf-status" data-status role="status" aria-live="polite"></p>
-    <div class="zf-board" data-board></div>
-    <p class="zf-howto" data-howto></p>
-    <p class="zf-info" data-info></p>
+    <section class="zf-game" aria-label={game.title[lang]}>
+      <!-- Kopfleiste: wo bin ich, Level-Auswahl, Hilfe, Töne -->
+      <header class="zf-bar">
+        <div class="zf-bar__where">
+          <p class="zf-bar__eyebrow" data-eyebrow>🏭 {game.title[lang]}</p>
+          <h1 class="zf-bar__title" data-title>{game.title[lang]}</h1>
+        </div>
+        <div class="zf-bar__actions" data-bar-actions></div>
+      </header>
+      <div class="zf-main">
+        <!-- Spielfeld mit Meldungen als Einblendung -->
+        <div class="zf-stage">
+          <div class="zf-board" data-board></div>
+          <p class="zf-status" data-status role="status" aria-live="polite"></p>
+        </div>
+        <!-- Seitenleiste: Ziel, Bauteile, Steuerung -->
+        <aside class="zf-side">
+          <div class="zf-card zf-goal">
+            <p class="zf-goal__hint" data-hint>{game.description[lang]}</p>
+            <div class="zf-order" data-order hidden></div>
+            <p class="zf-info" data-info></p>
+          </div>
+          <div class="zf-card zf-card--tools">
+            <h2 class="zf-card__title">{t('Bauteile', 'Parts')}</h2>
+            <div class="zf-tools" data-tools role="group" aria-label={t('Bauteile', 'Parts')}></div>
+          </div>
+          <div class="zf-card zf-card--controls">
+            <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
+          </div>
+          <details class="zf-card zf-help">
+            <summary>{t('Bedienung', 'Controls')}</summary>
+            <p class="zf-howto" data-howto></p>
+          </details>
+        </aside>
+      </div>
+    </section>
+    <!-- Level-Auswahl als eigenes Fenster -->
+    <div class="zf-picker" data-picker hidden>
+      <div class="zf-picker__card" role="dialog" aria-modal="true" aria-labelledby="zf-picker-title">
+        <div class="zf-picker__head">
+          <h2 id="zf-picker-title">{t('Level wählen', 'Choose a level')}</h2>
+          <button type="button" class="zf-icon-btn" data-picker-close aria-label={t('Schließen', 'Close')}>✕</button>
+        </div>
+        <div class="zf-levels" data-levels role="group" aria-label={t('Level', 'Levels')}></div>
+      </div>
+    </div>
     <noscript><p class="note">{t('Das Spiel braucht JavaScript.', 'The game needs JavaScript.')}</p></noscript>
   </div>
 </BaseLayout>
