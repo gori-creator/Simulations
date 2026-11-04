@@ -1,6 +1,6 @@
 # Zahlenfabrik: Kurzkonzept (Entwurf)
 
-Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Ausprobieren unter `/de/zahlenfabrik/` (nicht verlinkt, `GAMES_PUBLIC` in `src/spiele/index.ts`). Ohne Spielfigur: Man sieht die Fabrik von oben. Code: `src/spiele/zahlenfabrik/` (Rechenlogik `model.ts`, Level `levels.ts`, Oberfläche `game.ts`), Tests `tests/zahlenfabrik.test.ts`.
+Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Ausprobieren unter `/de/zahlenfabrik/` (nicht verlinkt, `GAMES_PUBLIC` in `src/spiele/index.ts`). Ohne Spielfigur: Man sieht die Fabrik von oben. Jedes Level liegt auf einer freien Fläche aus Kästchen (verschieben mit der Hand, zoomen mit zwei Fingern, Mausrad oder +/−); Bänder zieht man über die Kästchen, Maschinen zieht man aus dem Inventar auf die Karte; Felsen und vorgegebene Maschinen (🔒) stehen schon da. Offen: Bedienung mit der Tastatur, freies Spiel mit Münzen und Kaufen (Idee der Projektleitung). Code: `src/spiele/zahlenfabrik/` (Rechenlogik `model.ts`, Level `levels.ts`, Oberfläche `game.ts`), Tests `tests/zahlenfabrik.test.ts`.
 
 ## Idee
 

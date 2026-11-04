@@ -25,13 +25,12 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
       <p class="zf-head__hint" data-hint>{game.description[lang]}</p>
     </header>
     <div class="zf-levels" data-levels role="group" aria-label={t('Level', 'Levels')}></div>
-    <div class="zf-tools" data-tools role="group" aria-label={t('Werkzeuge', 'Tools')}></div>
-    <div class="zf-board-wrap">
-      <div class="zf-board" data-board></div>
-    </div>
-    <p class="zf-info" data-info></p>
+    <div class="zf-tools" data-tools role="group" aria-label={t('Inventar', 'Inventory')}></div>
     <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
     <p class="zf-status" data-status role="status" aria-live="polite"></p>
+    <div class="zf-board" data-board></div>
+    <p class="zf-howto" data-howto></p>
+    <p class="zf-info" data-info></p>
     <noscript><p class="note">{t('Das Spiel braucht JavaScript.', 'The game needs JavaScript.')}</p></noscript>
   </div>
 </BaseLayout>

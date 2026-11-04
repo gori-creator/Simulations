@@ -94,83 +94,95 @@
   color: var(--on-brand);
 }
 
-.zf-board-wrap {
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
+/* Freie Fläche: Ausschnitt (Viewport) mit verschiebbarer, zoombarer Welt */
 .zf-board {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  gap: 4px;
-  width: min(100%, calc(var(--cols) * 92px));
-  min-width: calc(var(--cols) * 42px);
-  box-sizing: border-box;
-  padding: 8px;
+  height: clamp(300px, 52vh, 600px);
+  overflow: hidden;
   border-radius: var(--radius-lg);
-  background: var(--surface-2);
   border: 1px solid var(--border);
+  background:
+    radial-gradient(circle at 20% 20%, color-mix(in srgb, var(--brand) 6%, transparent), transparent 60%),
+    var(--surface-2);
+  touch-action: none;
+  user-select: none;
+  cursor: crosshair;
+}
+
+.zf-world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-color: var(--surface);
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--border-strong);
+}
+
+.zf-cells,
+.zf-items {
+  position: absolute;
+  inset: 0;
+}
+
+.zf-items {
+  pointer-events: none;
 }
 
 .zf-cell {
-  position: relative;
+  position: absolute;
+  width: 64px;
+  height: 64px;
   display: grid;
   place-content: center;
-  aspect-ratio: 1;
-  padding: 0;
-  border: 2px dashed var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text);
-  font: inherit;
-  cursor: pointer;
   text-align: center;
   line-height: 1.1;
-  min-width: 0;
-  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.zf-cell:hover:not(:disabled) { border-color: var(--brand); }
-.zf-cell:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
-.zf-cell:disabled { cursor: default; }
-
-.zf-cell--belt { border-style: solid; border-color: var(--zf-belt-line); background: var(--zf-belt); }
-.zf-cell--op { border-style: solid; border-color: var(--zf-op-line); background: var(--zf-op); }
-.zf-cell--source { border-style: solid; border-color: var(--zf-source-line); background: var(--zf-source); }
-.zf-cell--target { border-style: solid; border-color: var(--zf-target-line); background: var(--zf-target); }
-.zf-cell--wall { border: 0; background: repeating-linear-gradient(45deg, var(--zf-wall) 0 8px, color-mix(in srgb, var(--zf-wall) 70%, var(--surface)) 8px 16px); }
-.zf-cell--error { box-shadow: 0 0 0 4px var(--zf-bad); }
-
-.zf-cell__arrow { font-size: clamp(1.3rem, 1rem + 1.6vw, 2rem); color: var(--muted); font-weight: 800; }
-.zf-cell__big { font-size: clamp(0.95rem, 0.8rem + 0.9vw, 1.35rem); font-weight: 800; font-family: var(--font-mono); }
-.zf-cell__small { font-size: clamp(0.62rem, 0.55rem + 0.35vw, 0.8rem); color: var(--muted); font-weight: 700; }
-
-/* Zahlen liegen über dem Raster und gleiten von Feld zu Feld (Mitte des Feldes x, y) */
-.zf-items {
-  position: absolute;
-  inset: 8px;
-  pointer-events: none;
-  --cw: calc((100% - (var(--cols) - 1) * 4px) / var(--cols));
-  --ch: calc((100% - (var(--rows) - 1) * 4px) / var(--rows));
+.zf-cell--belt,
+.zf-cell--op,
+.zf-cell--source,
+.zf-cell--target {
+  margin: 3px;
+  width: 58px;
+  height: 58px;
+  border: 2px solid;
+  border-radius: 10px;
 }
+
+.zf-cell--belt { border-color: var(--zf-belt-line); background: var(--zf-belt); }
+.zf-cell--op { border-color: var(--zf-op-line); background: var(--zf-op); }
+.zf-cell--source { border-color: var(--zf-source-line); background: var(--zf-source); }
+.zf-cell--target { border-color: var(--zf-target-line); background: var(--zf-target); }
+.zf-cell--fixed { border-style: dashed; }
+.zf-cell--rock { background: color-mix(in srgb, var(--zf-wall) 55%, transparent); }
+.zf-cell--error { box-shadow: 0 0 0 4px var(--zf-bad); border-radius: 10px; }
+
+.zf-cell__arrow { font-size: 1.8rem; color: var(--muted); font-weight: 800; }
+.zf-cell__big { font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono); }
+.zf-cell__small { font-size: 0.72rem; color: var(--muted); font-weight: 700; }
+.zf-cell__rock { font-size: 2rem; }
+.zf-cell__lock { position: absolute; top: 1px; right: 3px; font-size: 0.65rem; }
 
 .zf-item {
   position: absolute;
-  left: calc(var(--x) * (var(--cw) + 4px) + var(--cw) / 2);
-  top: calc(var(--y) * (var(--ch) + 4px) + var(--ch) / 2);
   translate: -50% -50%;
   display: grid;
   place-items: center;
-  min-width: 2.1em;
-  height: 2.1em;
-  padding: 0 0.35em;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
   border-radius: 999px;
   background: var(--zf-item);
   color: var(--zf-item-text);
   font-family: var(--font-mono);
   font-weight: 800;
-  font-size: clamp(0.85rem, 0.7rem + 0.8vw, 1.15rem);
+  font-size: 1.05rem;
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
 }
 
@@ -181,6 +193,78 @@
 
 @keyframes zf-pop {
   50% { scale: 1.3; }
+}
+
+.zf-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.zf-zoom__btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Inventar über der Karte */
+.zf-tools {
+  margin: 0 0 8px;
+  padding: 8px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.zf-tool {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 64px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  touch-action: none;
+}
+
+.zf-tool__icon { font-size: 1.3rem; line-height: 1.1; }
+.zf-tool__label { font-size: 0.75rem; }
+
+.zf-ghost {
+  position: fixed;
+  z-index: 100;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 2px solid var(--zf-belt-line);
+  border-radius: 10px;
+  background: var(--zf-belt);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  pointer-events: none;
+  opacity: 0.9;
+  box-shadow: var(--shadow-lg);
+}
+
+.zf-ghost--op { border-color: var(--zf-op-line); background: var(--zf-op); }
+
+.zf-howto {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
 }
 
 .zf-info {

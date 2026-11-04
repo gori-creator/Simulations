@@ -1,11 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { WORLD_1 } from '../src/spiele/zahlenfabrik/levels';
-import { apply, canPlace, key, run, starsFor, type Dir, type Grid, type Op, type Part } from '../src/spiele/zahlenfabrik/model';
+import { apply, canPlace, DX, DY, isFixed, key, run, shortestPath, starsFor, withFixed, type Dir, type Grid, type Level, type Op } from '../src/spiele/zahlenfabrik/model';
 
-/** Weg als Liste von Feldern [x, y, Richtung, Maschine?]. */
-const build = (cells: [number, number, Dir, Op?][]): Grid => new Map(cells.map(([x, y, dir, op]) => [key(x, y), { dir, op: op ?? null } satisfies Part]));
 const level = (id: string) => WORLD_1.find((l) => l.id === id)!;
-const straight = (ops: (Op | undefined)[]): Grid => build(ops.map((op, i) => [i + 1, 1, 0, op]));
+
+/** Lösung auf dem kürzesten Weg bauen: Bänder in Wegrichtung, Maschinen an den genannten Stellen. */
+function solve(l: Level, ops: Record<number, Op>): Grid {
+  const path = shortestPath(l)!;
+  const grid: Grid = new Map();
+  path.forEach(([x, y], i) => {
+    const [nx, ny] = path[i + 1] ?? [l.target.x, l.target.y];
+    const dir = ([0, 1, 2, 3] as Dir[]).find((d) => x + DX[d] === nx && y + DY[d] === ny)!;
+    if (!isFixed(l, x, y)) grid.set(key(x, y), { op: ops[i] ?? null, dir });
+  });
+  return grid;
+}
 
 describe('Zahlenfabrik: Rechnen', () => {
   it('Maschinen', () => {
@@ -17,36 +26,41 @@ describe('Zahlenfabrik: Rechnen', () => {
   });
 });
 
-describe('Zahlenfabrik: Welt 1 ist lösbar', () => {
+describe('Zahlenfabrik: Welt 1 ist lösbar, Teile-Ziel = kürzester Weg', () => {
+  for (const l of WORLD_1) {
+    it(`${l.id}: Teile-Ziel passt zum kürzesten Weg`, () => {
+      const path = shortestPath(l);
+      expect(path).not.toBeNull();
+      expect(path!.filter(([x, y]) => !isFixed(l, x, y)).length).toBe(l.par);
+    });
+  }
   it('1: 3 + 2 = 5', () => {
-    const r = run(level('w1-1'), straight([undefined, { sym: '+', n: 2 }, undefined, undefined, undefined]));
-    expect(r.won).toBe(true);
-    expect(r.delivered).toBe(3);
+    const l = level('w1-1');
+    expect(run(l, solve(l, { 0: { sym: '+', n: 2 } })).won).toBe(true);
   });
   it('2: 4 · 3 = 12, mit +2 falsch', () => {
-    expect(run(level('w1-2'), straight([{ sym: '×', n: 3 }, undefined, undefined, undefined, undefined])).won).toBe(true);
-    const wrong = run(level('w1-2'), straight([{ sym: '+', n: 2 }, undefined, undefined, undefined, undefined]));
-    expect(wrong.error).toMatchObject({ kind: 'wrong', value: 6 });
+    const l = level('w1-2');
+    expect(run(l, solve(l, { 0: { sym: '×', n: 3 } })).won).toBe(true);
+    expect(run(l, solve(l, { 0: { sym: '+', n: 2 } })).error).toMatchObject({ kind: 'wrong', value: 6 });
   });
   it('3: Reihenfolge zählt – (2 + 3) · 2 = 10, aber 2 · 2 + 3 = 7', () => {
-    expect(run(level('w1-3'), straight([{ sym: '+', n: 3 }, { sym: '×', n: 2 }, undefined, undefined, undefined])).won).toBe(true);
-    expect(run(level('w1-3'), straight([{ sym: '×', n: 2 }, { sym: '+', n: 3 }, undefined, undefined, undefined])).error?.value).toBe(7);
+    const l = level('w1-3');
+    expect(run(l, solve(l, { 0: { sym: '+', n: 3 }, 1: { sym: '×', n: 2 } })).won).toBe(true);
+    expect(run(l, solve(l, { 0: { sym: '×', n: 2 }, 1: { sym: '+', n: 3 } })).error?.value).toBe(7);
   });
-  it('4: 20 ÷ 2 − 3 = 7; erst −3 geht beim Teilen nicht auf', () => {
-    expect(run(level('w1-4'), straight([{ sym: '÷', n: 2 }, { sym: '−', n: 3 }, undefined, undefined, undefined])).won).toBe(true);
-    expect(run(level('w1-4'), straight([{ sym: '−', n: 3 }, { sym: '÷', n: 2 }, undefined, undefined, undefined])).error?.kind).toBe('divide');
+  it('4: vorgegebene −3: 20 ÷ 2 − 3 = 7; ohne Teilen kommt 17 an', () => {
+    const l = level('w1-4');
+    expect(run(l, withFixed(l, solve(l, { 0: { sym: '÷', n: 2 } }))).won).toBe(true);
+    expect(run(l, withFixed(l, solve(l, {}))).error).toMatchObject({ kind: 'wrong', value: 17 });
+    expect(run(l, withFixed(l, solve(l, { 0: { sym: '−', n: 3 }, 1: { sym: '÷', n: 2 } }))).error?.kind).toBe('divide');
   });
-  it('5: um die Ecke mit 8 Teilen', () => {
-    const g = build([[1, 3, 0, { sym: '+', n: 3 }], [2, 3, 0, { sym: '×', n: 2 }], [3, 3, 0], [4, 3, 0], [5, 3, 0], [6, 3, 3], [6, 2, 3], [6, 1, 3]]);
-    const r = run(level('w1-5'), g);
-    expect(r.won).toBe(true);
-    expect(g.size).toBe(level('w1-5').par);
+  it('5: (5 + 3) · 2 = 16', () => {
+    const l = level('w1-5');
+    expect(run(l, solve(l, { 0: { sym: '+', n: 3 }, 1: { sym: '×', n: 2 } })).won).toBe(true);
   });
-  it('6: (1 + 9) · 10 = 100 mit 10 Teilen', () => {
-    const g = build([[0, 1, 1, { sym: '+', n: 9 }], [0, 2, 0], [1, 2, 0, { sym: '×', n: 10 }], [2, 2, 0], [3, 2, 3], [3, 1, 0], [4, 1, 0], [5, 1, 0], [6, 1, 1], [6, 2, 1]]);
-    const r = run(level('w1-6'), g);
-    expect(r.won).toBe(true);
-    expect(g.size).toBe(level('w1-6').par);
+  it('6: (1 + 9) · 10 = 100', () => {
+    const l = level('w1-6');
+    expect(run(l, solve(l, { 0: { sym: '+', n: 9 }, 1: { sym: '×', n: 10 } })).won).toBe(true);
   });
 });
 
@@ -55,16 +69,17 @@ describe('Zahlenfabrik: Fehler und Regeln', () => {
     expect(run(level('w1-1'), new Map()).error?.kind).toBe('fell');
   });
   it('Kreis ohne Ausgang endet nach der Zeitgrenze', () => {
-    const loop = build([[1, 1, 0], [2, 1, 1], [2, 2, 2], [1, 2, 3]]);
+    const loop: Grid = new Map([[key(4, 4), { op: null, dir: 0 }], [key(5, 4), { op: null, dir: 1 }], [key(5, 5), { op: null, dir: 2 }], [key(4, 5), { op: null, dir: 3 }]]);
     expect(run(level('w1-1'), loop).error?.kind).toBe('timeout');
   });
-  it('nicht auf Quelle, Lager oder Mauer bauen', () => {
-    const l = level('w1-5');
+  it('nicht auf Quelle, Lager, Felsen oder vorgegebene Teile bauen', () => {
+    const l = level('w1-4');
     expect(canPlace(l, l.source.x, l.source.y)).toBe(false);
     expect(canPlace(l, l.target.x, l.target.y)).toBe(false);
-    expect(canPlace(l, 0, 1)).toBe(false);
-    expect(canPlace(l, 3, 3)).toBe(true);
-    expect(canPlace(l, 7, 0)).toBe(false);
+    expect(canPlace(l, 10, 6)).toBe(false);
+    expect(canPlace(l, 10, 7)).toBe(false);
+    expect(canPlace(l, 4, 4)).toBe(true);
+    expect(canPlace(l, 15, 0)).toBe(false);
   });
   it('Sterne', () => {
     const l = level('w1-1');
