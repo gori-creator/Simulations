@@ -3,6 +3,7 @@ import { getCurriculum, getCurriculumGrade, STATE_CURRICULA } from '../curriculu
 import type { SubjectId } from '../curriculum/types';
 import { LANGS, type Lang, type Localized } from '../i18n/config';
 import { COURSES, getCourse, getLesson, lessonsOf } from '../kurse';
+import { GAMES, getGame } from '../spiele';
 
 /**
  * Alle Seiten der Website und ihre (sprachabhängigen) Adressen.
@@ -27,7 +28,9 @@ export type Route =
   /** Kurs (z. B. KI-Abenteuer): Karte mit allen Lektionen */
   | { kind: 'course'; course: string }
   /** Eine Lektion eines Kurses */
-  | { kind: 'lesson'; course: string; lesson: string };
+  | { kind: 'lesson'; course: string; lesson: string }
+  /** Kleines Spiel (z. B. Zahlenfabrik) */
+  | { kind: 'game'; game: string };
 
 export const INFO_PAGES: Record<InfoPageId, Localized> = {
   teachers: { de: 'lehrkraefte', en: 'teachers' },
@@ -69,6 +72,8 @@ export function routeSegments(lang: Lang, route: Route): string[] {
     }
     case 'course':
       return [getCourse(route.course).slug[lang]];
+    case 'game':
+      return [getGame(route.game).slug[lang]];
     case 'lesson':
       return [getCourse(route.course).slug[lang], getLesson(route.course, route.lesson).slug[lang]];
     case 'simulation': {
@@ -110,6 +115,7 @@ export function allRoutes(): Route[] {
     for (const area of subject.areas) routes.push({ kind: 'area', subject: subject.id, area: area.id });
   }
   for (const sim of allSimulations()) if (sim.status === 'ready') routes.push({ kind: 'simulation', id: sim.id });
+  for (const game of GAMES) routes.push({ kind: 'game', game: game.id });
   for (const course of COURSES) {
     routes.push({ kind: 'course', course: course.id });
     for (const lesson of lessonsOf(course)) if (lesson.status === 'ready') routes.push({ kind: 'lesson', course: course.id, lesson: lesson.id });

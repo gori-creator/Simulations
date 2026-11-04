@@ -1,6 +1,6 @@
 # Zahlenfabrik: Kurzkonzept (Entwurf)
 
-Stand 04.11.2026. Idee der Projektleitung, noch nicht freigegeben. Gebaut wird erst nach Freigabe.
+Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Ausprobieren unter `/de/zahlenfabrik/` (nicht verlinkt, `GAMES_PUBLIC` in `src/spiele/index.ts`). Ohne Spielfigur: Man sieht die Fabrik von oben. Code: `src/spiele/zahlenfabrik/` (Rechenlogik `model.ts`, Level `levels.ts`, Oberfläche `game.ts`), Tests `tests/zahlenfabrik.test.ts`.
 
 ## Idee
 
