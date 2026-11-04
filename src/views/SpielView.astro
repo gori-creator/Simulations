@@ -37,6 +37,7 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
         <!-- Seitenleiste: Ziel, Bauteile, Steuerung -->
         <aside class="zf-side">
           <div class="zf-card zf-goal">
+            <h2 class="zf-card__title">{t('Aufgabe', 'Task')}</h2>
             <p class="zf-goal__hint" data-hint>{game.description[lang]}</p>
             <div class="zf-order" data-order hidden></div>
             <p class="zf-info" data-info></p>

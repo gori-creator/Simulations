@@ -1,6 +1,7 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art, IMAGES } from './art';
+import { art, imageFor, IMAGES, type ArtKind } from './art';
+import { icon, setButton, type IconName } from './icons';
 import { introSeen, showIntro } from './intro';
 import { createSound } from './sound';
 import { ALL_LEVELS, WORLDS, type LevelInfo } from './levels';
@@ -35,18 +36,18 @@ const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
 const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
 const T = {
-  start: L('▶ Start', '▶ Start'),
-  pause: L('⏸ Pause', '⏸ Pause'),
-  stepBtn: L('⏭ Ein Takt', '⏭ One tick'),
-  fast: L('⏩ Schnell', '⏩ Fast'),
-  stop: L('⏹ Stopp', '⏹ Stop'),
-  clear: L('🗑️ Leeren', '🗑️ Clear'),
+  start: L('Start', 'Start'),
+  pause: L('Pause', 'Pause'),
+  stepBtn: L('Ein Takt', 'One tick'),
+  fast: L('Schnell', 'Fast'),
+  stop: L('Stopp', 'Stop'),
+  clear: L('Leeren', 'Clear'),
   hand: L('Hand', 'Hand'),
   belt: L('Band', 'Belt'),
   erase: L('Abbauen', 'Remove'),
   source: L('Quelle', 'Source'),
   target: L('Lager', 'Storage'),
-  next: L('Nächstes Level →', 'Next level →'),
+  next: L('Nächstes Level', 'Next level'),
   parts: L('Teile', 'Parts'),
   delivered: L('Geliefert', 'Delivered'),
   levels: L('Level', 'Levels'),
@@ -59,11 +60,13 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
-  chooseLevel: L('🗂️ Level', '🗂️ Levels'),
+  chooseLevel: L('Level', 'Levels'),
   chooseLevelLabel: L('Level wählen', 'Choose a level'),
   worldCard: L('Münzen sammeln, Aufträge erfüllen, Land freikaufen', 'Collect coins, complete orders, unlock land'),
-  undo: L('↶ Rückgängig', '↶ Undo'),
+  undo: L('Rückgängig', 'Undo'),
   pro: L('Profi-Level', 'pro level'),
+  proShort: L('Profi', 'Pro'),
+  task: L('Aufgabe', 'Task'),
   undoNone: L('Es gibt nichts mehr rückgängig zu machen.', 'There is nothing left to undo.'),
   boardLabel: L('Fabrik-Karte. Pfeiltasten: Feld wählen. Leertaste oder Enter: Teil setzen oder drehen. Umschalt + Pfeiltaste: Band ziehen. Entf: abbauen.', 'Factory map. Arrow keys: choose a square. Space or Enter: place or turn a part. Shift + arrow key: draw a belt. Delete: remove.'),
   keys: L(
@@ -78,21 +81,21 @@ const T = {
   cellBase: L('Feld {x}, {y}: Basis', 'Square {x}, {y}: base'),
   cellPart: L('Feld {x}, {y}: {p}, Richtung {d}', 'Square {x}, {y}: {p}, direction {d}'),
   dirNames: L('rechts|unten|links|oben', 'right|down|left|up'),
-  help: L('❓ Anleitung', '❓ How to play'),
-  soundOn: L('🔊 Töne an', '🔊 Sound on'),
-  soundOff: L('🔇 Töne aus', '🔇 Sound off'),
+  help: L('Anleitung', 'How to play'),
+  soundOn: L('Töne an', 'Sound on'),
+  soundOff: L('Töne aus', 'Sound off'),
   soundLabel: L('Töne', 'Sound'),
   pick: L('Startzahl', 'Starting number'),
   pickLess: L('Startzahl kleiner', 'Smaller starting number'),
   pickMore: L('Startzahl größer', 'Bigger starting number'),
   pickFirst: L('Stell zuerst bei „Startzahl“ eine Zahl ein.', 'First set a number at “Starting number”.'),
-  sourceSeq: L('Quelle gibt aus: {list}', 'Source gives: {list}'),
+  sourceSeq: L('Die Quelle gibt aus: {list}', 'The source gives: {list}'),
   tableX: L('x', 'x'),
   tableWant: L('Lager will', 'Storage wants'),
   tableGot: L('angekommen', 'arrived'),
   worldLabel: L('Welt {n}: {t}', 'World {n}: {t}'),
   worldGrades: L('Klasse {g}', 'Grade {g}'),
-  nextWorld: L('Nächste Welt →', 'Next world →'),
+  nextWorld: L('Nächste Welt', 'Next world'),
   fell: L('Die {v} ist vom Band gefallen! Dort fehlt ein Teil oder es zeigt in die falsche Richtung.', 'The {v} fell off the belt! A part is missing there or points the wrong way.'),
   wrong: L('Das Lager will {t}, aber es kam {v} an.', 'The storage wants {t}, but {v} arrived.'),
   wantValue: L('die {n}', 'the {n}'),
@@ -100,39 +103,44 @@ const T = {
   divide: L('{v} lässt sich hier nicht glatt teilen.', '{v} can’t be divided evenly here.'),
   timeout: L('Die Zahlen kommen nie im Lager an – fahren sie im Kreis?', 'The numbers never reach the storage – are they going round in circles?'),
   starsPar: L('★ 2: höchstens {n} Teile', '★ 2: at most {n} parts'),
+  goalPar: L('höchstens {n} Teile', 'at most {n} parts'),
+  goalFirst: L('gleich beim 1. Start', 'on the first run'),
+  coinsShort: L('Münzen', 'Coins'),
+  totalShort: L('Geliefert', 'Delivered'),
+  lostShort: L('Verloren', 'Lost'),
   starsFirst: L('★ 3: gleich beim ersten Start', '★ 3: on the first run'),
   editLocked: L('Erst stoppen, dann umbauen.', 'Stop first, then rebuild.'),
   fixed: L('schon da', 'already here'),
-  world: L('🌍 Offene Welt', '🌍 Open world'),
+  world: L('Offene Welt', 'Open world'),
   worldTitle: L('Offene Welt', 'Open world'),
   worldHint: L(
-    'Leg Bänder von den Zahlenquellen zu deiner Basis 🏠. Jede Zahl bringt so viele Münzen, wie sie groß ist. Aufträge schalten neue Teile frei.',
-    'Lay belts from the number sources to your base 🏠. Every number earns as many coins as it is big. Orders unlock new parts.',
+    'Leg Bänder von den Zahlenquellen zu deiner Basis. Jede Zahl bringt so viele Münzen, wie sie groß ist. Aufträge schalten neue Teile frei.',
+    'Lay belts from the number sources to your base. Every number earns as many coins as it is big. Orders unlock new parts.',
   ),
-  eyebrowWorld: L('🏭 Zahlenfabrik · Offene Welt', '🏭 Number Factory · Open world'),
+  eyebrowWorld: L('Zahlenfabrik · Offene Welt', 'Number Factory · Open world'),
   score: L('Gesammelt: {n}', 'Collected: {n}'),
   count: L('{n} Zahlen', '{n} numbers'),
   lost: L('verloren: {n}', 'lost: {n}'),
   base: L('Basis', 'Base'),
   resetWorld: L('↺ Welt neu', '↺ New world'),
   resetConfirm: L('Alle Bänder und Maschinen abbauen? Du bekommst die Münzen dafür zurück.', 'Remove all belts and machines? You get the coins back.'),
-  coins: L('🪙 {n} Münzen', '🪙 {n} coins'),
+  coins: L('{n} Münzen', '{n} coins'),
   total: L('Insgesamt geliefert: {n}', 'Delivered in total: {n}'),
   order: L('Auftrag {n}', 'Order {n}'),
-  reward: L('Belohnung: {n} 🪙', 'Reward: {n} 🪙'),
+  reward: L('Belohnung: {n} Münzen', 'Reward: {n} coins'),
   rewardNew: L('neu: {p}', 'new: {p}'),
   streakHint: L('Eine andere Zahl setzt auf 0 zurück.', 'Any other number resets to 0.'),
-  orderDone: L('🎉 Auftrag geschafft! +{n} 🪙', '🎉 Order complete! +{n} 🪙'),
+  orderDone: L('Auftrag geschafft! +{n} Münzen.', 'Order complete! +{n} coins.'),
   unlocked: L('Neu im Inventar: {p}', 'New in your inventory: {p}'),
   tooPoor: L('Dafür fehlen dir {n} Münzen. Liefere mehr Zahlen zur Basis!', 'You need {n} more coins. Deliver more numbers to the base!'),
-  locked: L('🔒 {p} gibt es nach Auftrag {n}.', '🔒 {p} unlocks after order {n}.'),
+  locked: L('{p} gibt es nach Auftrag {n}.', '{p} unlocks after order {n}.'),
   lockedShort: L('Auftrag {n}', 'Order {n}'),
   price: L('{n} Münzen', '{n} coins'),
   sourceLocked: L('Diese Quelle liegt in einem Gebiet, das du noch freikaufen musst.', 'This source is in an area you still have to unlock.'),
   bridgeHelp: L('Brücke: Zahlen laufen geradeaus darüber – waagerecht und senkrecht, ohne sich zu stören. So kreuzen sich zwei Bänder.', 'Bridge: numbers run straight across – horizontally and vertically, without getting in each other’s way. This is how two belts cross.'),
-  expand: L('🗺️ Neues Gebiet · {n} 🪙', '🗺️ New area · {n} 🪙'),
-  fogLabel: L('🔒 Mehr Land für {n} 🪙', '🔒 More land for {n} 🪙'),
-  expandDone: L('🗺️ Neues Land frei! Weiter draußen geben die Quellen größere Zahlen.', '🗺️ New land unlocked! Further out, the sources give bigger numbers.'),
+  expand: L('Neues Gebiet · {n}', 'New area · {n}'),
+  fogLabel: L('Mehr Land für {n} Münzen', 'More land for {n} coins'),
+  expandDone: L('Neues Land frei! Weiter draußen geben die Quellen größere Zahlen.', 'New land unlocked! Further out, the sources give bigger numbers.'),
   sortHelp: L('Weiche: Was die Frage erfüllt, läuft geradeaus (✓), alles andere biegt ab (✗). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Switch: numbers that pass go straight (✓), all others turn (✗). Tap to turn it; after four turns the side switches.'),
   mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis eine zweite kommt. Dann laufen beide als Summe (bzw. Produkt) weiter.', 'Merger: the first number waits for a second one. Then both continue as their sum (or product).'),
   worldHowto: L(
@@ -425,8 +433,9 @@ export function initFactory(root: HTMLElement): void {
     return x >= 0 && y >= 0 && x < board.cols && y < board.rows ? [x, y] : null;
   }
 
-  const zoomBtn = (label: string, aria: string, act: () => void, extra = '') => {
-    const b = el('button', `zf-zoom__btn ${extra}`.trim(), label);
+  const zoomBtn = (name: IconName, aria: string, act: () => void, extra = '') => {
+    const b = el('button', `zf-zoom__btn ${extra}`.trim());
+    b.append(icon(name));
     b.type = 'button';
     b.setAttribute('aria-label', aria);
     b.title = aria;
@@ -437,9 +446,9 @@ export function initFactory(root: HTMLElement): void {
     const box = viewport.getBoundingClientRect();
     return [box.width / 2, box.height / 2] as const;
   };
-  zoomBtn('+', tx(T.zoomIn), () => zoomAt(1.25, ...center()), 'zf-zoom__btn--step');
-  zoomBtn('−', tx(T.zoomOut), () => zoomAt(0.8, ...center()), 'zf-zoom__btn--step');
-  zoomBtn('⌖', tx(T.fit), fit);
+  zoomBtn('plus', tx(T.zoomIn), () => zoomAt(1.25, ...center()), 'zf-zoom__btn--step');
+  zoomBtn('minus', tx(T.zoomOut), () => zoomAt(0.8, ...center()), 'zf-zoom__btn--step');
+  zoomBtn('fit', tx(T.fit), fit);
 
   viewport.addEventListener(
     'wheel',
@@ -914,7 +923,11 @@ export function initFactory(root: HTMLElement): void {
       const c = at(x, y, 'zf-cell--op');
       if (fixed) c.classList.add('zf-cell--fixed');
       c.append(art('machine', 52, part.dir), el('span', 'zf-cell__big', opLabel(part.op!)));
-      if (fixed) c.append(el('span', 'zf-cell__lock', '🔒'));
+      if (fixed) {
+        const lock = el('span', 'zf-cell__lock');
+        lock.append(icon('lock', 12));
+        c.append(lock);
+      }
     }
     if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
     // Noch nicht freigekauftes Land: Nebel außerhalb des offenen Gebiets
@@ -1046,7 +1059,7 @@ export function initFactory(root: HTMLElement): void {
       pulse(board.base.x, board.base.y, 'is-receiving');
       sound.play('deliver');
     }
-    if (coins > 0) effect(board.base.x + 1, board.base.y, `+${ctxNum(coins)} 🪙`, 'zf-coin-float', 900);
+    if (coins > 0) effect(board.base.x + 1, board.base.y, `+${ctxNum(coins)}`, 'zf-coin-float', 900);
   }
 
   // ---------- Inventar ----------
@@ -1067,13 +1080,29 @@ export function initFactory(root: HTMLElement): void {
         const locked = !!(spec && open && !open.has(spec.id));
         const b = el('button', `zf-tool${spec && spec.kind !== 'belt' ? ` zf-tool--op zf-tool--${spec.kind}` : ''}`);
         b.type = 'button';
-        const icon = t.kind === 'hand' ? '✋' : t.kind === 'erase' ? '🧽' : spec!.kind === 'belt' ? '→' : tx(specLabel(spec!));
-        const label = t.kind === 'hand' ? tx(T.hand) : t.kind === 'erase' ? tx(T.erase) : spec!.kind === 'belt' ? tx(T.belt) : '';
-        b.append(el('span', 'zf-tool__icon', locked ? `🔒 ${icon}` : icon));
-        if (label) b.append(el('span', 'zf-tool__label', label));
+        // Bild: Symbol (Hand, Band, Abbauen) oder Vorschau des Teils (eigenes Bild bzw. gezeichnet)
+        const pic = el('span', 'zf-tool__pic');
+        if (t.kind === 'hand') pic.append(icon('hand', 22));
+        else if (t.kind === 'erase') pic.append(icon('erase', 22));
+        else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
+        else {
+          const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
+          const src = imageFor(kind);
+          if (src) {
+            const img = el('img');
+            img.src = src;
+            img.alt = '';
+            img.draggable = false;
+            pic.append(img);
+          } else pic.classList.add('is-plain');
+        }
+        const label = t.kind === 'hand' ? tx(T.hand) : t.kind === 'erase' ? tx(T.erase) : spec!.kind === 'belt' ? tx(T.belt) : tx(specLabel(spec!));
+        b.append(pic, el('span', `zf-tool__label${spec && spec.kind !== 'belt' && spec.kind !== 'bridge' ? ' zf-tool__label--math' : ''}`, label));
         if (world && spec) {
-          const tag = locked ? tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 }) : `🪙 ${ctxNum(spec.price)}`;
-          b.append(el('span', `zf-tool__price${!locked && econ.coins < spec.price ? ' is-poor' : ''}`, tag));
+          const price = el('span', `zf-tool__price${!locked && econ.coins < spec.price ? ' is-poor' : ''}`);
+          if (locked) price.append(icon('lock', 12), el('span', '', tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 })));
+          else price.append(coinIcon(), el('span', '', ctxNum(spec.price)));
+          b.append(price);
         }
         if (locked) b.classList.add('is-locked');
         const same = t.kind === tool.kind && (t.kind !== 'part' || (tool.kind === 'part' && t.spec.id === tool.spec.id));
@@ -1144,11 +1173,17 @@ export function initFactory(root: HTMLElement): void {
     b.type = 'button';
     return b;
   };
-  const runBtn = btn(tx(T.start), 'zf-btn zf-btn--main');
-  const stepBtn = btn(tx(T.stepBtn));
-  const fastBtn = btn(tx(T.fast));
-  const stopBtn = btn(tx(T.stop));
-  const clearBtn = btn(tx(T.clear));
+  /** Knopf mit Symbol und Beschriftung. */
+  const ibtn = (name: IconName, label: string, cls = 'zf-btn') => {
+    const b = btn('', cls);
+    setButton(b, name, label);
+    return b;
+  };
+  const runBtn = ibtn('play', tx(T.start), 'zf-btn zf-btn--main');
+  const stepBtn = ibtn('step', tx(T.stepBtn));
+  const fastBtn = ibtn('fast', tx(T.fast));
+  const stopBtn = ibtn('stop', tx(T.stop));
+  const clearBtn = ibtn('trash', tx(T.clear));
   fastBtn.setAttribute('aria-pressed', 'false');
   const expandBtn = btn('', 'zf-btn zf-btn--expand');
   // Startzahl wählen (Welt 2): − [Zahl] +
@@ -1164,18 +1199,21 @@ export function initFactory(root: HTMLElement): void {
   pickLess.setAttribute('aria-label', tx(T.pickLess));
   pickMore.setAttribute('aria-label', tx(T.pickMore));
   pickBox.append(pickLabel, pickLess, pickInput, pickMore);
-  const undoBtn = btn(tx(T.undo));
+  const undoBtn = ibtn('undo', tx(T.undo));
   undoBtn.disabled = true;
   undoBtn.addEventListener('click', undo);
-  const helpBtn = btn(tx(T.help));
+  const helpBtn = ibtn('help', tx(T.help));
   const soundBtn = btn('');
   controls.append(pickBox, runBtn, fastBtn, stepBtn, stopBtn, undoBtn, clearBtn, expandBtn);
   // Kopfleiste: Level wählen, Hilfe, Töne
-  const levelBtn = btn(tx(T.chooseLevel), 'zf-btn zf-btn--bar');
+  const levelBtn = ibtn('grid', tx(T.chooseLevel), 'zf-btn zf-btn--bar');
   levelBtn.setAttribute('aria-haspopup', 'dialog');
   helpBtn.className = 'zf-btn zf-btn--bar';
   soundBtn.className = 'zf-btn zf-btn--bar';
   barActions.append(levelBtn, helpBtn, soundBtn);
+  // am Handy zeigt die Kopfleiste nur Symbole: Beschriftung für Vorleseprogramme behalten
+  levelBtn.setAttribute('aria-label', tx(T.chooseLevelLabel));
+  helpBtn.setAttribute('aria-label', tx(T.help));
 
   // ---------- Level-Auswahl (eigenes Fenster) ----------
   let pickerReturn: HTMLElement | null = null;
@@ -1200,7 +1238,8 @@ export function initFactory(root: HTMLElement): void {
   });
   const sound = createSound();
   const renderSound = () => {
-    soundBtn.textContent = tx(sound.on ? T.soundOn : T.soundOff);
+    setButton(soundBtn, sound.on ? 'sound' : 'mute', tx(sound.on ? T.soundOn : T.soundOff));
+    soundBtn.setAttribute('aria-label', tx(sound.on ? T.soundOn : T.soundOff));
     soundBtn.setAttribute('aria-pressed', String(sound.on));
   };
   renderSound();
@@ -1270,7 +1309,8 @@ export function initFactory(root: HTMLElement): void {
     expandBtn.hidden = mode !== 'world' || next >= ZONE_PRICES.length;
     if (expandBtn.hidden) return;
     const price = ZONE_PRICES[next]!;
-    expandBtn.textContent = tx(T.expand, { n: ctxNum(price) });
+    setButton(expandBtn, 'map', tx(T.expand, { n: ctxNum(price) }));
+    expandBtn.append(coinIcon());
     expandBtn.classList.toggle('is-poor', econ.coins < price);
   }
 
@@ -1287,35 +1327,63 @@ export function initFactory(root: HTMLElement): void {
     renderTools();
   });
 
+  /** Kleine Kennzahl (Beschriftung oben, Wert groß). */
+  function metric(label: string, value: string, lead?: Node): HTMLElement {
+    const m = el('span', 'zf-metric');
+    const v = el('strong', 'zf-metric__value');
+    if (lead) v.append(lead);
+    v.append(value);
+    m.append(el('span', 'zf-metric__label', label), v);
+    return m;
+  }
+
+  /** Münz-Symbol: eigenes Bild, sonst ein gezeichneter Kreis. */
+  function coinIcon(): HTMLElement {
+    const c = el('span', 'zf-coin');
+    if (IMAGES.muenze) {
+      const img = el('img');
+      img.src = IMAGES.muenze;
+      img.alt = '';
+      c.append(img);
+    }
+    c.setAttribute('aria-hidden', 'true');
+    return c;
+  }
+
+  /** Meldung als Einblendung über dem Spielfeld (mit Symbol je nach Art). */
   function say(text: string, kind: 'info' | 'warn' | 'good' | 'bad' = 'info'): void {
-    status.textContent = text;
     status.dataset.kind = kind;
+    if (!text) return status.replaceChildren();
+    const name: IconName = kind === 'good' ? 'check' : kind === 'bad' ? 'cross' : kind === 'warn' ? 'alert' : 'info';
+    status.replaceChildren(icon(name, 20), el('span', 'zf-status__text', text));
   }
 
   function renderInfo(): void {
     if (mode === 'world') {
       info.replaceChildren(
-        el('strong', 'zf-coins', tx(T.coins, { n: ctxNum(econ.coins) })),
-        el('span', '', tx(T.total, { n: ctxNum(econ.total) })),
-        el('span', 'zf-goal', tx(T.lost, { n: ctxNum(wstate.lost) })),
-        el('span', 'zf-goal', `${tx(T.parts)}: ${grid.size}`),
+        metric(tx(T.coinsShort), ctxNum(econ.coins), coinIcon()),
+        metric(tx(T.totalShort), ctxNum(econ.total)),
+        metric(tx(T.lostShort), ctxNum(wstate.lost)),
+        metric(tx(T.parts), ctxNum(grid.size)),
       );
       renderOrder();
       hud.hidden = false;
-      hud.textContent = `${IMAGES.muenze ? '' : '🪙 '}${ctxNum(econ.coins)} · 📋 ${baseLine()}`;
-      if (IMAGES.muenze) {
-        const coin = el('img', 'zf-hud__coin');
-        coin.src = IMAGES.muenze;
-        coin.alt = '';
-        hud.prepend(coin);
-      }
+      hud.replaceChildren(coinIcon(), el('strong', '', ctxNum(econ.coins)), el('span', 'zf-hud__sep'), icon('target', 16), el('span', '', baseLine()));
       if (!expandBtn.hidden) expandBtn.classList.toggle('is-poor', econ.coins < (ZONE_PRICES[econ.zone + 1] ?? 0));
       if (toolsSignature() !== toolsKey) renderTools();
       return;
     }
     hud.hidden = true;
-    const parts = [el('span', '', `${tx(T.parts)}: ${grid.size}`), el('span', '', `${tx(T.delivered)}: ${state.delivered}/${totalNeed(level)}`), el('span', 'zf-goal', tx(T.starsPar, { n: level.par })), el('span', 'zf-goal', tx(T.starsFirst))];
-    if (level.source.values) parts.push(el('span', 'zf-goal', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
+    // Kennzahlen, dann die Sterne-Ziele als kleine Abzeichen
+    const goals = el('div', 'zf-goals');
+    const star = (text: string, ok: boolean) => {
+      const g = el('span', `zf-goal-chip${ok ? ' is-ok' : ''}`);
+      g.append(icon('star', 14), el('span', '', text));
+      return g;
+    };
+    goals.append(star(tx(T.goalPar, { n: level.par }), grid.size <= level.par), star(tx(T.goalFirst), failedRuns === 0));
+    const parts: Node[] = [metric(tx(T.parts), `${grid.size}`), metric(tx(T.delivered), `${state.delivered}/${totalNeed(level)}`), goals];
+    if (level.source.values) parts.push(el('p', 'zf-source-seq', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
     info.replaceChildren(...parts);
     renderTable();
   }
@@ -1338,7 +1406,7 @@ export function initFactory(root: HTMLElement): void {
     const unlock = o.unlock.map((id) => tx(specName(specById(id)!))).join(', ');
     const reward = tx(T.reward, { n: ctxNum(o.reward) }) + (unlock ? ` · ${tx(T.rewardNew, { p: unlock })}` : '');
     orderEl.replaceChildren(
-      el('span', 'zf-order__tag', `📋 ${tx(T.order, { n: econ.order + 1 })}`),
+      el('span', 'zf-order__tag', tx(T.order, { n: econ.order + 1 })),
       el('strong', 'zf-order__text', tx(orderText(o, ctxNum))),
       el('span', 'zf-order__count', `${ctxNum(econ.progress)}/${ctxNum(o.count)}`),
       bar,
@@ -1357,7 +1425,7 @@ export function initFactory(root: HTMLElement): void {
       void baseEl.offsetWidth;
       baseEl.classList.add('is-cheering');
     }
-    effect(board.base.x + 1, board.base.y + 1, '🎉', 'zf-coin-float zf-coin-float--big', 1200);
+    effect(board.base.x + 1, board.base.y + 1, '★', 'zf-coin-float zf-coin-float--big', 1200);
     sound.play('order');
     renderTools();
     saveWorld(grid, econ);
@@ -1385,7 +1453,7 @@ export function initFactory(root: HTMLElement): void {
       const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : T.timeout;
       sound.play('error');
       const want = e.target !== undefined ? tx(acceptText(targetsOf(level)[e.target]!.accept, state.got[e.target] ?? 0)) : '';
-      say(`✗ ${tx(msg, { v: ctxNum(e.value), t: want })}`, 'bad');
+      say(tx(msg, { v: ctxNum(e.value), t: want }), 'bad');
       renderItems();
       renderCells();
       return;
@@ -1397,11 +1465,13 @@ export function initFactory(root: HTMLElement): void {
       const got = starsFor(level, grid.size, failedRuns);
       stars[level.id] = Math.max(stars[level.id] ?? 0, got);
       save(stars);
-      say(`✓ ${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
+      say(`${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
       renderLevels();
       if (index < ALL_LEVELS.length - 1) {
         const nextWorld = !WORLDS[shownWorld]!.levels.includes(ALL_LEVELS[index + 1]!);
-        const n = btn(tx(nextWorld ? T.nextWorld : T.next), 'zf-btn zf-btn--main');
+        const n = btn('', 'zf-btn zf-btn--main');
+        setButton(n, null, tx(nextWorld ? T.nextWorld : T.next));
+        n.append(icon('arrow'));
         n.addEventListener('click', () => openLevel(index + 1));
         status.append(' ', n);
         n.focus();
@@ -1415,7 +1485,7 @@ export function initFactory(root: HTMLElement): void {
     beltLayer.classList.remove('is-running');
     clearInterval(timer);
     timer = 0;
-    runBtn.textContent = tx(T.start);
+    setButton(runBtn, 'play', tx(T.start));
   }
 
   /** Level mit Startzahl: erst wählen, dann starten. */
@@ -1432,7 +1502,7 @@ export function initFactory(root: HTMLElement): void {
     running = true;
     beltLayer.classList.add('is-running');
     beltLayer.classList.toggle('is-fast', fast);
-    runBtn.textContent = tx(T.pause);
+    setButton(runBtn, 'pause', tx(T.pause));
     say('');
     clearInterval(timer);
     timer = window.setInterval(tick, fast ? 120 : reduced ? 500 : 420);
@@ -1482,14 +1552,19 @@ export function initFactory(root: HTMLElement): void {
       const got = w.levels.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
       const card = el('section', 'zf-world-card');
       const head = el('div', 'zf-world-card__head');
-      head.append(el('strong', '', tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })), el('span', 'zf-world-card__meta', `${tx(T.worldGrades, { g: w.grades })} · ★ ${got}/${w.levels.length * 3}`));
+      const bar = el('span', 'zf-world-card__bar');
+      const fill = el('span');
+      fill.style.width = `${(100 * got) / (w.levels.length * 3)}%`;
+      bar.append(fill);
+      head.append(el('span', 'zf-world-card__num', String(wi + 1)), el('strong', '', tx(w.title)), el('span', 'zf-world-card__meta', `${tx(T.worldGrades, { g: w.grades })} · ${got}/${w.levels.length * 3} ★`), bar);
       const list = el('div', 'zf-levels__list');
       w.levels.forEach((l, i) => {
         const n = stars[l.id] ?? 0;
         // Profi-Level (ab Nummer 7) mit Flamme
         const pro = i >= 6 && wi < 6;
         const b = btn('', `zf-level${pro ? ' zf-level--pro' : ''}${n ? ' is-done' : ''}`);
-        b.append(el('span', 'zf-level__num', `${i + 1}${pro ? ' 🔥' : ''}`), el('span', 'zf-level__stars', `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`));
+        b.append(el('span', 'zf-level__num', String(i + 1)), el('span', 'zf-level__stars', `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`));
+        if (pro) b.append(el('span', 'zf-level__pro', tx(T.proShort)));
         b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
         b.setAttribute('aria-label', `${tx(T.worldLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
         b.title = tx(l.title);
@@ -1520,7 +1595,7 @@ export function initFactory(root: HTMLElement): void {
     wstate = worldStart();
     tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
-    hint.textContent = `💡 ${tx(T.worldHint)}`;
+    hint.textContent = tx(T.worldHint);
     howto.textContent = tx(T.worldHowto);
     eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
@@ -1556,10 +1631,10 @@ export function initFactory(root: HTMLElement): void {
     hasRun = false;
     title.textContent = `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
     howto.textContent = tx(T.howto);
-    eyebrow.textContent = `🏭 ${tx(T.worldLabel, { n: shownWorld + 1, t: tx(wInfo.title) })} · ${tx(T.worldGrades, { g: wInfo.grades })}`;
+    eyebrow.replaceChildren(el('span', '', tx(T.worldLabel, { n: shownWorld + 1, t: tx(wInfo.title) })), el('span', 'zf-pill', tx(T.worldGrades, { g: wInfo.grades })), ...(wInfo.levels.indexOf(level) >= 6 && shownWorld < 6 ? [el('span', 'zf-pill zf-pill--pro', tx(T.pro))] : []));
     renderPick();
     renderOrder();
-    hint.textContent = `💡 ${tx(level.hint)}`;
+    hint.textContent = tx(level.hint);
     say('');
     itemsLayer.replaceChildren();
     renderLevels();

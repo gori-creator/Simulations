@@ -52,6 +52,8 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - Tablet: Seitenleiste unter dem Spielfeld in zwei Spalten; Handy: eine Spalte, Bauteile und Start direkt unter dem Spielfeld, Spielfeld nur so hoch wie die Karte, Zoom mit zwei Fingern (nur „Alles zeigen“ als Knopf).
 - **Bilder eingebaut** (14 Stück, `src/assets/zahlenfabrik/`, WebP, zusammen etwa 180 KB): Quelle, Maschine, Weiche (gedreht, bei „nein“ links gespiegelt), Zusammenführer, Lager leer/voll, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze. Die gezeichnete Grafik bleibt als Ersatz.
 
+- **Feinschliff:** eigene Linien-Symbole statt Emojis (`icons.ts`) auf allen Knöpfen, in der Anzeige und in Meldungen; Bauteile als Bildkacheln mit Vorschau des Teils, Preis mit Münze; Ziel-Karte mit Kennzahlen (Teile, Geliefert bzw. Münzen, Verloren) und Sterne-Zielen als Abzeichen (werden golden, solange sie erreichbar sind); Kopfleiste mit Welt, Klassenstufe und „Profi“-Abzeichen; Level-Auswahl mit Welt-Nummer, Fortschrittsbalken und „Profi“-Marke; am Handy nur Symbole in der Kopfleiste.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
