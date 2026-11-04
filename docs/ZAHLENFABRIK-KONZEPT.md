@@ -24,7 +24,14 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - **Welt 5 Terme (Kl. 7–8):** x = 1 … 5, das Lager will die **Wertetabelle der Reihe nach**: x + 3, 2x, 3x + 1 (Punkt vor Strich), 2 · (x + 1) (Klammer zuerst), 5x − 2, 4 · (x + 1) mit zweimal ×2. Unter der Karte steht die Tabelle x / Lager will / angekommen.
 - **Welt 6 Funktionen (Kl. 8–9):** neue Maschine **x²**; f(x) = x², x² + 1, (x + 1)², 2x², die Gerade 3x − 1 mit x = 0 … 4 (Wert −1) und die Parabel x² − 4 mit x = −2 … 2.
 
-Offen: schönere Grafik, Einführung, Tastatur.
+## Aussehen und Gefühl (Stand 04.11.2026)
+
+- **Gezeichnete Grafik** (`art.ts`, eigene SVG-Formen statt Emojis, die auf jedem Gerät anders aussehen): Quelle mit Trichter und rauchendem Schornstein, Maschine mit Zahnrad und Schrauben, Weiche als Gabel, Zusammenführer, Lager als Kiste, Basis als Haus, Felsbrocken mit Licht und Schatten, Brücke als Bogen. Ein kleiner Ausguss zeigt, wohin ein Teil die Zahl weitergibt. Farben über CSS-Variablen (hell/dunkel).
+- **Sanfte Bewegungen:** Maschinen ruckeln kurz beim Rechnen (Zahnrad dreht sich), Quellen beim Ausgeben, Lager und Basis hüpfen beim Empfangen. Bei „Bewegung reduzieren“ bleibt alles ruhig.
+- **Einführung beim ersten Start** (`intro.ts`, ohne Spielfigur): vier Karten mit einer kleinen laufenden Fabrik (3 → +2 → 5); Überspringen, Pfeiltasten, Esc. Über „❓ Anleitung“ wieder aufrufbar.
+- **Töne** (`sound.ts`, standardmäßig aus, Knopf „🔇 Töne aus/🔊 Töne an“): selbst erzeugte kurze Klänge (Web Audio, keine Dateien) für Bauen, Abbauen, Liefern, Fehler, Level geschafft, Auftrag geschafft, Gebiet gekauft.
+
+Offen: Bedienung mit der Tastatur, Barrierefreiheit.
 
 ## Idee
 
