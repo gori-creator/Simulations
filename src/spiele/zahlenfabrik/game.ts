@@ -13,6 +13,14 @@ const STORE = 'spiel:zahlenfabrik';
 const CELL = 64;
 const MIN_ZOOM = 0.45;
 const MAX_ZOOM = 1.8;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+/** Mitte der Feldkante in Richtung d (relativ zur Feldecke). */
+const EDGE: [number, number][] = [
+  [CELL, CELL / 2],
+  [CELL / 2, CELL],
+  [0, CELL / 2],
+  [CELL / 2, 0],
+];
 
 type Tool = { kind: 'hand' } | { kind: 'belt' } | { kind: 'op'; op: Op } | { kind: 'erase' };
 
@@ -95,9 +103,12 @@ export function initFactory(root: HTMLElement): void {
   q<HTMLElement>('[data-howto]').textContent = tx(T.howto);
 
   const world = el('div', 'zf-world');
+  const beltLayer = document.createElementNS(SVG_NS, 'svg');
+  beltLayer.setAttribute('class', 'zf-belts');
+  beltLayer.setAttribute('aria-hidden', 'true');
   const cellsLayer = el('div', 'zf-cells');
   const itemsLayer = el('div', 'zf-items');
-  world.append(cellsLayer, itemsLayer);
+  world.append(beltLayer, cellsLayer, itemsLayer);
   const zoomBar = el('div', 'zf-zoom');
   viewport.append(world, zoomBar);
 
@@ -324,10 +335,66 @@ export function initFactory(root: HTMLElement): void {
   }
 
   // ---------- Zeichnen ----------
+  /**
+   * Bänder als schmaler Streifen durch die Feldmitte: von der Kante, aus der
+   * die Zahl kommt, zur Kante, in die sie weiterläuft – so entstehen auch
+   * Kurven. Die laufenden Streifen (stroke-dashoffset in zahlenfabrik.css)
+   * zeigen die Laufrichtung. Jedes Stück ist genau eine Feldbreite lang,
+   * damit das Muster nahtlos ins nächste Feld übergeht.
+   */
+  function renderBelts(all: Grid): void {
+    beltLayer.setAttribute('width', String(level.cols * CELL));
+    beltLayer.setAttribute('height', String(level.rows * CELL));
+    const paths: string[] = [];
+    const pointsInto = (x: number, y: number): Dir | null => {
+      for (const d of [0, 1, 2, 3] as Dir[]) {
+        const fx = x - DX[d];
+        const fy = y - DY[d];
+        const from = fx === level.source.x && fy === level.source.y ? level.source.dir : all.get(key(fx, fy))?.dir;
+        if (from === d) return d;
+      }
+      return null;
+    };
+    const segment = (x: number, y: number, inDir: Dir, outDir: Dir) => {
+      const ox = x * CELL;
+      const oy = y * CELL;
+      const [ax, ay] = EDGE[(inDir + 2) % 4]!;
+      const [bx, by] = EDGE[outDir]!;
+      paths.push(`M${ox + ax} ${oy + ay}L${ox + CELL / 2} ${oy + CELL / 2}L${ox + bx} ${oy + by}`);
+    };
+    for (const [k, part] of all) {
+      const [x, y] = k.split(',').map(Number) as [number, number];
+      const inDir = pointsInto(x, y) ?? part.dir;
+      segment(x, y, inDir, part.dir);
+    }
+    // Stummel aus der Quelle heraus und ins Lager hinein
+    {
+      const { x, y, dir } = level.source;
+      const [bx, by] = EDGE[dir]!;
+      paths.push(`M${x * CELL + CELL / 2} ${y * CELL + CELL / 2}L${x * CELL + bx} ${y * CELL + by}`);
+    }
+    const into = pointsInto(level.target.x, level.target.y);
+    if (into !== null) {
+      const [ax, ay] = EDGE[(into + 2) % 4]!;
+      const { x, y } = level.target;
+      paths.push(`M${x * CELL + ax} ${y * CELL + ay}L${x * CELL + CELL / 2} ${y * CELL + CELL / 2}`);
+    }
+    const d = paths.join('');
+    const mk = (cls: string) => {
+      const p = document.createElementNS(SVG_NS, 'path');
+      p.setAttribute('class', cls);
+      p.setAttribute('d', d);
+      return p;
+    };
+    beltLayer.replaceChildren(mk('zf-belt__edge'), mk('zf-belt__base'), mk('zf-belt__run'));
+    beltLayer.classList.toggle('is-running', running);
+  }
+
   function renderCells(): void {
     world.style.width = `${level.cols * CELL}px`;
     world.style.height = `${level.rows * CELL}px`;
     const all = withFixed(level, grid);
+    renderBelts(all);
     const frag = document.createDocumentFragment();
     for (let y = 0; y < level.rows; y++) {
       for (let x = 0; x < level.cols; x++) {
@@ -346,12 +413,11 @@ export function initFactory(root: HTMLElement): void {
         } else if (isWall(level, x, y)) {
           c.classList.add('zf-cell--rock');
           c.append(el('span', 'zf-cell__rock', '🪨'));
-        } else if (part) {
-          c.classList.add(part.op ? 'zf-cell--op' : 'zf-cell--belt');
+        } else if (part?.op) {
+          c.classList.add('zf-cell--op');
           if (isFixed(level, x, y)) c.classList.add('zf-cell--fixed');
           c.dataset.dir = String(part.dir);
-          if (part.op) c.append(el('span', 'zf-cell__big', opLabel(part.op)), el('span', 'zf-cell__small', ARROW[part.dir]!));
-          else c.append(el('span', 'zf-cell__arrow', ARROW[part.dir]!));
+          c.append(el('span', 'zf-cell__big', opLabel(part.op)), el('span', 'zf-cell__small', ARROW[part.dir]!));
           if (isFixed(level, x, y)) c.append(el('span', 'zf-cell__lock', '🔒'));
         }
         if (state.error && state.error.x === x && state.error.y === y) c.classList.add('zf-cell--error');
@@ -504,6 +570,7 @@ export function initFactory(root: HTMLElement): void {
 
   function stopTimer(): void {
     running = false;
+    beltLayer.classList.remove('is-running');
     clearInterval(timer);
     timer = 0;
     runBtn.textContent = tx(T.start);
@@ -512,6 +579,8 @@ export function initFactory(root: HTMLElement): void {
   function startTimer(): void {
     if (state.error || state.won) resetRun();
     running = true;
+    beltLayer.classList.add('is-running');
+    beltLayer.classList.toggle('is-fast', fast);
     runBtn.textContent = tx(T.pause);
     say('');
     clearInterval(timer);
