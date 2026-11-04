@@ -646,3 +646,223 @@
 .zf-table th { text-align: left; color: var(--muted); font-weight: 700; background: var(--surface-2); }
 .zf-table td { font-family: var(--font-mono); font-weight: 700; }
 .zf-table td.is-done { color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); }
+
+/* ---------- Gezeichnete Grafik (art.ts) ---------- */
+
+.zf-cell > :not(.zf-art) { position: relative; z-index: 1; }
+
+.zf-art {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* In Kästen mit Rand: Zeichnung bündig mit dem Kasten */
+.zf-cell--op .zf-art,
+.zf-cell--source .zf-art,
+.zf-cell--target .zf-art { inset: -2px; }
+
+.zf-art__line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: 0.35; }
+.zf-art__line--thick { stroke-width: 5; opacity: 0.22; }
+.zf-art__fill { fill: currentColor; opacity: 0.35; }
+.zf-art__spout { fill: currentColor; }
+.zf-art__gear { fill: none; stroke: currentColor; stroke-width: 2; opacity: 0.18; }
+.zf-art__bolt { fill: currentColor; opacity: 0.45; }
+.zf-art__smoke { fill: currentColor; opacity: 0.2; }
+.zf-art__roof { fill: currentColor; opacity: 0.16; }
+.zf-art__door { fill: currentColor; opacity: 0.22; }
+
+.zf-cell--source { color: var(--zf-source-line); }
+.zf-cell--op { color: var(--zf-op-line); }
+.zf-cell--sort { color: var(--zf-sort-line); }
+.zf-cell--merge { color: var(--zf-merge-line); }
+.zf-cell--target,
+.zf-cell--base { color: var(--zf-target-line); }
+.zf-cell--bridge { color: var(--zf-op-line); }
+
+/* Aufschriften behalten die Textfarbe */
+.zf-cell__big,
+.zf-cell__mid { color: var(--text); }
+
+/* Fels: Brocken mit Licht und Schatten */
+.zf-cell--rock { background: none; }
+.zf-art__rock { fill: var(--zf-rock); }
+.zf-art__rock-light { fill: var(--zf-rock-light); }
+.zf-art__rock-dark { fill: var(--zf-rock-dark); }
+
+:root {
+  --zf-rock: #a7adb8;
+  --zf-rock-light: #c9ced6;
+  --zf-rock-dark: #868d99;
+}
+
+:root[data-theme='dark'] {
+  --zf-rock: #4b5361;
+  --zf-rock-light: #5d6676;
+  --zf-rock-dark: #363c47;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-art__smoke { animation: zf-smoke 2.4s ease-in-out infinite; }
+  .zf-art__smoke--2 { animation-delay: 1.2s; }
+}
+
+@keyframes zf-smoke {
+  0%, 100% { opacity: 0.08; translate: 0 2px; }
+  50% { opacity: 0.32; translate: 0 -2px; }
+}
+
+/* Kleine Bewegungen: Maschine rechnet, Quelle gibt aus, Lager/Basis empfängt */
+@media (prefers-reduced-motion: no-preference) {
+  .zf-cell.is-working { animation: zf-work 0.32s ease-out; }
+  .zf-cell.is-working .zf-art__gear { animation: zf-spin 0.32s ease-out; transform-origin: 50% 50%; transform-box: view-box; }
+  .zf-cell.is-emitting { animation: zf-emit 0.3s ease-out; }
+  .zf-cell.is-receiving { animation: zf-receive 0.35s ease-out; }
+}
+
+@keyframes zf-work {
+  30% { scale: 1.1; }
+  60% { scale: 0.96; }
+}
+
+@keyframes zf-spin {
+  to { rotate: 45deg; }
+}
+
+@keyframes zf-emit {
+  40% { scale: 1.08; }
+}
+
+@keyframes zf-receive {
+  35% { translate: 0 -4px; }
+  70% { translate: 0 1px; }
+}
+
+/* ---------- Einführung (intro.ts) ---------- */
+
+.zf { position: relative; }
+
+.zf-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: color-mix(in srgb, #0b1220 55%, transparent);
+}
+
+.zf-intro__card {
+  width: min(520px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 22px 22px 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+
+.zf-intro__steps { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; }
+.zf-intro__steps span { width: 8px; height: 8px; border-radius: 999px; background: var(--border-strong); }
+.zf-intro__steps span.is-on { width: 22px; background: var(--brand); }
+
+.zf-intro__title { margin: 14px 0 6px; font-size: 1.35rem; }
+.zf-intro__text { margin: 0 0 16px; color: var(--muted); line-height: 1.5; }
+.zf-intro__nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.zf-intro__skip { margin-right: auto; border-color: transparent; background: none; color: var(--muted); }
+
+/* Kleine Fabrik: Quelle – Band – (Maschine – Band –) Lager, mit wandernder Zahl */
+.zf-intro__scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 0;
+  border-radius: 14px;
+  background:
+    linear-gradient(var(--border) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(90deg, var(--border) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--surface-2);
+}
+
+.zf-intro__box {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 2px solid;
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 1.15rem;
+}
+
+.zf-intro__box > span { position: relative; z-index: 1; color: var(--text); }
+.zf-intro__box .zf-art { position: absolute; inset: -2px; overflow: visible; }
+.zf-intro__box--source { color: var(--zf-source-line); background: var(--zf-source); }
+.zf-intro__box--machine { color: var(--zf-op-line); background: var(--zf-op); }
+.zf-intro__box--target { color: var(--zf-target-line); background: var(--zf-target); }
+
+.zf-intro__belt {
+  width: 44px;
+  height: 14px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(90deg, var(--zf-belt-stripe) 0 5px, var(--zf-belt-top) 5px 11px);
+  box-shadow: 0 0 0 3px var(--zf-belt-edge);
+}
+
+.zf-intro__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--zf-item);
+  color: var(--zf-item-text);
+  font-family: var(--font-mono);
+  font-weight: 800;
+  translate: -50% -50%;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .zf-intro__dot { animation: zf-intro-run 3s linear infinite; }
+  .zf-intro__dot--a { animation-name: zf-intro-a; }
+  .zf-intro__dot--b { animation-name: zf-intro-b; }
+  .zf-intro__belt { animation: zf-intro-belt 0.6s linear infinite; }
+}
+
+@keyframes zf-intro-run {
+  0% { opacity: 0; left: 22%; }
+  10% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; left: 78%; }
+}
+
+@keyframes zf-intro-a {
+  0% { opacity: 0; left: 22%; }
+  8% { opacity: 1; }
+  46% { opacity: 1; left: 50%; }
+  50%, 100% { opacity: 0; left: 50%; }
+}
+
+@keyframes zf-intro-b {
+  0%, 49% { opacity: 0; left: 50%; }
+  50% { opacity: 1; left: 50%; }
+  90% { opacity: 1; }
+  100% { opacity: 0; left: 78%; }
+}
+
+@keyframes zf-intro-belt {
+  from { background-position: 0 0; }
+  to { background-position: 11px 0; }
+}

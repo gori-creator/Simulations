@@ -1,5 +1,8 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
+import { art } from './art';
+import { introSeen, showIntro } from './intro';
+import { createSound } from './sound';
 import { ALL_LEVELS, WORLDS, type LevelInfo } from './levels';
 import { canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, withFixed, type Accept, type Dir, type Grid, type Item, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
@@ -56,6 +59,10 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
+  help: L('❓ Anleitung', '❓ How to play'),
+  soundOn: L('🔊 Töne an', '🔊 Sound on'),
+  soundOff: L('🔇 Töne aus', '🔇 Sound off'),
+  soundLabel: L('Töne', 'Sound'),
   pick: L('Startzahl', 'Starting number'),
   pickLess: L('Startzahl kleiner', 'Smaller starting number'),
   pickMore: L('Startzahl größer', 'Bigger starting number'),
@@ -505,7 +512,10 @@ export function initFactory(root: HTMLElement): void {
       if (canBuild(...to)) {
         const existing = grid.get(key(...to));
         if (existing) existing.dir = d;
-        else if (pay(BELT.price)) grid.set(key(...to), { op: null, dir: d });
+        else if (pay(BELT.price)) {
+          grid.set(key(...to), { op: null, dir: d });
+          sound.play('place');
+        }
       }
     }
     changed();
@@ -516,6 +526,7 @@ export function initFactory(root: HTMLElement): void {
     if (!part || !editable()) return;
     grid.delete(key(x, y));
     if (mode === 'world') econ.coins += priceOf(part);
+    sound.play('remove');
     changed();
   }
 
@@ -534,6 +545,7 @@ export function initFactory(root: HTMLElement): void {
       if (mode === 'world' && !unlockedParts(econ.order).has(spec.id)) return lockedInfo(spec);
       if (!pay(spec.price - (part && mode === 'world' ? priceOf(part) : 0))) return;
       grid.set(k, makePart(spec, part?.dir ?? guessDir(x, y)));
+      sound.play('place');
       if (spec.kind === 'sort') say(tx(T.sortHelp));
       if (spec.kind === 'merge') say(tx(T.mergeHelp));
       if (spec.kind === 'bridge') say(tx(T.bridgeHelp));
@@ -659,6 +671,7 @@ export function initFactory(root: HTMLElement): void {
     const frag = document.createDocumentFragment();
     const at = (x: number, y: number, cls: string) => {
       const c = el('div', `zf-cell ${cls}`);
+      c.dataset.cell = key(x, y);
       c.style.left = `${x * CELL}px`;
       c.style.top = `${y * CELL}px`;
       frag.append(c);
@@ -667,7 +680,7 @@ export function initFactory(root: HTMLElement): void {
     const open = mode === 'world' ? zoneRect(openWorld, econ.zone) : null;
     for (const sp of board.sources) {
       const c = at(sp.x, sp.y, 'zf-cell--source');
-      c.append(el('span', 'zf-cell__big zf-source-value', sourceLabel(sp.value)), el('span', 'zf-cell__small', `🏭 ${ARROW[sp.dir]}`));
+      c.append(art('source', 52, sp.dir), el('span', 'zf-cell__big zf-source-value', sourceLabel(sp.value)));
       c.title = tx(T.source);
       if (open && !inRect(open, sp.x, sp.y)) {
         c.classList.add('is-locked');
@@ -678,19 +691,19 @@ export function initFactory(root: HTMLElement): void {
       targetsOf(level).forEach((t, i) => {
         const c = at(t.x, t.y, `zf-cell--target${t.accept.kind === 'test' ? ' zf-cell--rule' : ''}`);
         c.dataset.target = String(i);
-        c.append(el('span', 'zf-cell__big zf-target-label', targetLabel(t, state.got[i] ?? 0)), el('span', 'zf-cell__small zf-target-count', `📦 ${state.got[i] ?? 0}/${t.need}`));
+        c.append(art('target', 52), el('span', 'zf-cell__big zf-target-label', targetLabel(t, state.got[i] ?? 0)), el('span', 'zf-cell__small zf-target-count', `${state.got[i] ?? 0}/${t.need}`));
         c.title = `${tx(T.target)}: ${tx(acceptText(t.accept, state.got[i] ?? 0))}`;
       });
     } else {
       const c = at(board.base.x, board.base.y, 'zf-cell--base');
       c.style.width = `${board.base.w * CELL - 12}px`;
       c.style.height = `${board.base.h * CELL - 12}px`;
-      c.append(el('span', 'zf-base__icon', '🏠'), el('span', 'zf-cell__big zf-base-score', baseLine()), el('span', 'zf-cell__small', tx(T.base)));
+      c.append(art('base', board.base.w * CELL - 12), el('span', 'zf-cell__big zf-base-score', baseLine()), el('span', 'zf-cell__small', tx(T.base)));
       c.title = tx(T.base);
     }
     for (const k of board.walls) {
       const [x, y] = k.split(',').map(Number) as [number, number];
-      at(x, y, 'zf-cell--rock').append(el('span', 'zf-cell__rock', '🪨'));
+      at(x, y, 'zf-cell--rock').append(art('rock', CELL));
     }
     for (const [k, part] of all) {
       if (!part.op && !part.sort && !part.merge && !part.bridge) continue;
@@ -699,23 +712,25 @@ export function initFactory(root: HTMLElement): void {
       if (part.sort) {
         const c = at(x, y, 'zf-cell--op zf-cell--sort');
         const [yes, no] = outputs(part) as [Dir, Dir];
-        c.append(el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
+        c.append(art('sort', 52), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
         c.title = tx(T.sortHelp);
         continue;
       }
       if (part.bridge) {
-        at(x, y, 'zf-cell--bridge').title = tx(T.bridgeHelp);
+        const c = at(x, y, 'zf-cell--bridge');
+        c.title = tx(T.bridgeHelp);
+        c.append(art('bridge', 56));
         continue;
       }
       if (part.merge) {
         const c = at(x, y, 'zf-cell--op zf-cell--merge');
-        c.append(el('span', 'zf-cell__mid', part.merge === '+' ? 'a+b' : 'a×b'), el('span', 'zf-cell__small', ARROW[part.dir]!));
+        c.append(art('merge', 52, part.dir), el('span', 'zf-cell__mid', part.merge === '+' ? 'a+b' : 'a×b'));
         c.title = tx(T.mergeHelp);
         continue;
       }
       const c = at(x, y, 'zf-cell--op');
       if (fixed) c.classList.add('zf-cell--fixed');
-      c.append(el('span', 'zf-cell__big', opLabel(part.op!)), el('span', 'zf-cell__small', ARROW[part.dir]!));
+      c.append(art('machine', 52, part.dir), el('span', 'zf-cell__big', opLabel(part.op!)));
       if (fixed) c.append(el('span', 'zf-cell__lock', '🔒'));
     }
     if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
@@ -756,6 +771,29 @@ export function initFactory(root: HTMLElement): void {
     return `${ctxNum(econ.progress)}/${ctxNum(orderAt(econ.order).count)}`;
   }
 
+  /** Kurz aufleuchten lassen: Maschine rechnet, Quelle gibt aus, Lager empfängt. */
+  function pulse(x: number, y: number, cls: string): void {
+    if (reduced) return;
+    const c = cellsLayer.querySelector<HTMLElement>(`[data-cell="${x},${y}"]`);
+    if (!c) return;
+    c.classList.remove(cls);
+    void c.offsetWidth;
+    c.classList.add(cls);
+  }
+
+  /** Lager, die seit dem letzten Bild etwas bekommen haben, hüpfen kurz. */
+  let lastGot: number[] = [];
+  function pulseTargets(): void {
+    if (mode !== 'level') return;
+    targetsOf(level).forEach((t, i) => {
+      if ((state.got[i] ?? 0) > (lastGot[i] ?? 0)) {
+        pulse(t.x, t.y, 'is-receiving');
+        sound.play('deliver');
+      }
+    });
+    lastGot = [...state.got];
+  }
+
   /** Kurzer Effekt an einem Feld (nur ohne reduzierte Bewegung). */
   function effect(x: number, y: number, text: string, cls: string, ms = 700): void {
     if (reduced) return;
@@ -784,7 +822,9 @@ export function initFactory(root: HTMLElement): void {
         e.classList.remove('zf-item--pop');
         void e.offsetWidth;
         e.classList.add('zf-item--pop');
-      }
+        pulse(item.x, item.y, 'is-working');
+      } else if (!e.dataset.seen) pulse(item.x, item.y, 'is-emitting');
+      e.dataset.seen = '1';
       e.classList.toggle('zf-item--wait', !!item.wait);
       // Auf der Brücke liegen zwei Zahlen übereinander: leicht versetzt zeigen
       const onBridge = mode === 'world' && !!grid.get(key(item.x, item.y))?.bridge;
@@ -799,12 +839,13 @@ export function initFactory(root: HTMLElement): void {
       targetsOf(level).forEach((t, i) => {
         const c = cellsLayer.querySelector(`[data-target="${i}"]`);
         if (!c) return;
-        c.querySelector('.zf-target-count')!.textContent = `📦 ${state.got[i] ?? 0}/${t.need}`;
+        c.querySelector('.zf-target-count')!.textContent = `${state.got[i] ?? 0}/${t.need}`;
         c.querySelector('.zf-target-label')!.textContent = targetLabel(t, state.got[i] ?? 0);
       });
       const sv = cellsLayer.querySelector('.zf-source-value');
       if (sv) sv.textContent = sourceLabel(level.source.value);
       renderTable();
+      pulseTargets();
     }
     const score = cellsLayer.querySelector('.zf-base-score');
     if (score) score.textContent = baseLine();
@@ -813,6 +854,10 @@ export function initFactory(root: HTMLElement): void {
     for (const [x, y] of wstate.lostAt.slice(0, 12)) effect(x, y, '💨', 'zf-poof', 600);
     for (const [x, y] of wstate.mergedAt.slice(0, 12)) effect(x, y, '✨', 'zf-poof', 600);
     const coins = wstate.delivered.reduce((a, v) => a + Math.max(0, v), 0);
+    if (wstate.delivered.length) {
+      pulse(board.base.x, board.base.y, 'is-receiving');
+      sound.play('deliver');
+    }
     if (coins > 0) effect(board.base.x + 1, board.base.y, `+${ctxNum(coins)} 🪙`, 'zf-coin-float', 900);
   }
 
@@ -928,7 +973,21 @@ export function initFactory(root: HTMLElement): void {
   pickLess.setAttribute('aria-label', tx(T.pickLess));
   pickMore.setAttribute('aria-label', tx(T.pickMore));
   pickBox.append(pickLabel, pickLess, pickInput, pickMore);
-  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, clearBtn, expandBtn);
+  const helpBtn = btn(tx(T.help));
+  const soundBtn = btn('');
+  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, clearBtn, expandBtn, helpBtn, soundBtn);
+  const sound = createSound();
+  const renderSound = () => {
+    soundBtn.textContent = tx(sound.on ? T.soundOn : T.soundOff);
+    soundBtn.setAttribute('aria-pressed', String(sound.on));
+  };
+  renderSound();
+  soundBtn.addEventListener('click', () => {
+    sound.set(!sound.on);
+    renderSound();
+    sound.play('place');
+  });
+  helpBtn.addEventListener('click', () => showIntro(root, lang));
 
   function setPick(v: number): void {
     const range = level.source.pick;
@@ -998,6 +1057,7 @@ export function initFactory(root: HTMLElement): void {
     const price = ZONE_PRICES[next];
     if (price === undefined || !pay(price)) return;
     econ.zone = next;
+    sound.play('buy');
     say(tx(T.expandDone), 'good');
     saveWorld(grid, econ);
     renderCells();
@@ -1070,6 +1130,7 @@ export function initFactory(root: HTMLElement): void {
       baseEl.classList.add('is-cheering');
     }
     effect(board.base.x + 1, board.base.y + 1, '🎉', 'zf-coin-float zf-coin-float--big', 1200);
+    sound.play('order');
     renderTools();
     saveWorld(grid, econ);
   }
@@ -1094,6 +1155,7 @@ export function initFactory(root: HTMLElement): void {
       failedRuns += 1;
       const e = state.error;
       const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : T.timeout;
+      sound.play('error');
       const want = e.target !== undefined ? tx(acceptText(targetsOf(level)[e.target]!.accept, state.got[e.target] ?? 0)) : '';
       say(`✗ ${tx(msg, { v: ctxNum(e.value), t: want })}`, 'bad');
       renderItems();
@@ -1103,6 +1165,7 @@ export function initFactory(root: HTMLElement): void {
     renderItems();
     if (state.won) {
       stopTimer();
+      sound.play('win');
       const got = starsFor(level, grid.size, failedRuns);
       stars[level.id] = Math.max(stars[level.id] ?? 0, got);
       save(stars);
@@ -1277,4 +1340,6 @@ export function initFactory(root: HTMLElement): void {
   openLevel(index);
   addEventListener('resize', () => applyView());
   root.classList.add('is-ready');
+  // Beim allerersten Besuch: kurze Einführung
+  if (!introSeen()) showIntro(root, lang);
 }
