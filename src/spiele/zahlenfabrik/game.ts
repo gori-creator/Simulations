@@ -1,7 +1,9 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
 import { WORLD_1, type LevelInfo } from './levels';
-import { canPlace, DX, DY, key, opLabel, start, starsFor, step, withFixed, type Dir, type Grid, type Item, type Op, type Part, type State } from './model';
+import { canPlace, DX, DY, key, opLabel, outputs, start, starsFor, step, withFixed, type Dir, type Grid, type Item, type Part, type State } from './model';
+import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
+import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
 import { canBuildWorld, makeWorld, worldStart, worldStep, type OpenWorld, type WorldState } from './world';
 
 /**
@@ -24,7 +26,9 @@ const EDGE: [number, number][] = [
   [CELL / 2, 0],
 ];
 
-type Tool = { kind: 'hand' } | { kind: 'belt' } | { kind: 'op'; op: Op } | { kind: 'erase' };
+type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec } | { kind: 'erase' };
+const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
+const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
 const T = {
   start: L('▶ Start', '▶ Start'),
@@ -62,48 +66,83 @@ const T = {
   world: L('🌍 Offene Welt', '🌍 Open world'),
   worldTitle: L('Offene Welt', 'Open world'),
   worldHint: L(
-    'Überall stehen Zahlenquellen. Leg Bänder zu deiner Basis 🏠 und sammle so viel wie möglich. Maschinen machen die Zahlen größer – aber Vorsicht: Was vom Band fällt, ist weg. Du kannst bauen, während die Fabrik läuft.',
-    'Number sources are everywhere. Lay belts to your base 🏠 and collect as much as you can. Machines make the numbers bigger – but careful: whatever falls off the belt is gone. You can build while the factory is running.',
+    'Leg Bänder von den Zahlenquellen zu deiner Basis 🏠. Jede Zahl bringt so viele Münzen, wie sie groß ist. Aufträge schalten neue Teile frei.',
+    'Lay belts from the number sources to your base 🏠. Every number earns as many coins as it is big. Orders unlock new parts.',
   ),
+  eyebrowLevels: L('🏭 Zahlenfabrik · Welt 1: Grundrechnen', '🏭 Number Factory · World 1: basic arithmetic'),
+  eyebrowWorld: L('🏭 Zahlenfabrik · Offene Welt', '🏭 Number Factory · Open world'),
   score: L('Gesammelt: {n}', 'Collected: {n}'),
   count: L('{n} Zahlen', '{n} numbers'),
   lost: L('verloren: {n}', 'lost: {n}'),
-  best: L('Rekord: {n}', 'Record: {n}'),
   base: L('Basis', 'Base'),
   resetWorld: L('↺ Welt neu', '↺ New world'),
-  resetConfirm: L('Alle Bänder und Maschinen abbauen und neu anfangen?', 'Remove all belts and machines and start over?'),
+  resetConfirm: L('Alle Bänder und Maschinen abbauen? Du bekommst die Münzen dafür zurück.', 'Remove all belts and machines? You get the coins back.'),
+  coins: L('🪙 {n} Münzen', '🪙 {n} coins'),
+  total: L('Insgesamt geliefert: {n}', 'Delivered in total: {n}'),
+  order: L('Auftrag {n}', 'Order {n}'),
+  reward: L('Belohnung: {n} 🪙', 'Reward: {n} 🪙'),
+  rewardNew: L('neu: {p}', 'new: {p}'),
+  streakHint: L('Eine andere Zahl setzt auf 0 zurück.', 'Any other number resets to 0.'),
+  orderDone: L('🎉 Auftrag geschafft! +{n} 🪙', '🎉 Order complete! +{n} 🪙'),
+  unlocked: L('Neu im Inventar: {p}', 'New in your inventory: {p}'),
+  tooPoor: L('Dafür fehlen dir {n} Münzen. Liefere mehr Zahlen zur Basis!', 'You need {n} more coins. Deliver more numbers to the base!'),
+  locked: L('🔒 {p} gibt es nach Auftrag {n}.', '🔒 {p} unlocks after order {n}.'),
+  lockedShort: L('Auftrag {n}', 'Order {n}'),
+  price: L('{n} Münzen', '{n} coins'),
+  sortHelp: L('Weiche: Was die Frage erfüllt, läuft geradeaus (✓), alles andere biegt ab (✗). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Switch: numbers that pass go straight (✓), all others turn (✗). Tap to turn it; after four turns the side switches.'),
+  mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis eine zweite kommt. Dann laufen beide als Summe (bzw. Produkt) weiter.', 'Merger: the first number waits for a second one. Then both continue as their sum (or product).'),
+  worldHowto: L(
+    '✋ Hand: Karte verschieben (zwei Finger oder Mausrad: zoomen). → Band: über die Kästchen ziehen. Teile kosten Münzen, Abbauen gibt sie zurück. Ein Teil nochmal antippen dreht es. Was vom Band fällt, ist weg. Du kannst bauen, während die Fabrik läuft.',
+    '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Parts cost coins; removing them gives the coins back. Tap a part again to turn it. Whatever falls off the belt is gone. You can build while the factory is running.',
+  ),
 };
 
-/** Gespeicherte offene Welt: gebaute Teile und Rekord. */
+/**
+ * Gespeicherte offene Welt: gebaute Teile (x, y, Richtung, Kennung, Seite der
+ * Weiche) und Münzen/Aufträge. Ältere Spielstände (Teile mit Maschinen-Aufschrift
+ * oder null für Bänder, dazu `best`) werden übernommen.
+ */
 interface SavedWorld {
-  parts: [number, number, Dir, string | null][];
-  best: number;
+  v?: number;
+  parts: [number, number, Dir, string | null, (1 | 3)?][];
+  econ?: Partial<Economy>;
+  best?: number;
 }
 
-function loadWorld(w: OpenWorld): { grid: Grid; best: number } {
+const nonNeg = (v: unknown, fallback: number) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.floor(v) : fallback);
+
+function loadWorld(w: OpenWorld): { grid: Grid; econ: Economy } {
   const grid: Grid = new Map();
+  const fresh = newEconomy();
   try {
     const raw = JSON.parse(localStorage.getItem(WORLD_STORE) ?? '{}') as Partial<SavedWorld>;
     for (const entry of raw.parts ?? []) {
-      const [x, y, dir, label] = entry;
+      const [x, y, dir, id, side] = entry;
       if (!canBuildWorld(w, x, y) || ![0, 1, 2, 3].includes(dir)) continue;
-      const op = label ? w.tools.find((t) => opLabel(t) === label) : null;
-      if (label && !op) continue;
-      grid.set(key(x, y), { dir, op: op ?? null });
+      const spec = specById(id ?? 'belt');
+      if (!spec) continue;
+      grid.set(key(x, y), makePart(spec, dir, side === 3 ? 3 : 1));
     }
-    return { grid, best: typeof raw.best === 'number' && raw.best >= 0 ? raw.best : 0 };
+    const e = raw.econ ?? {};
+    const econ: Economy = {
+      coins: nonNeg(e.coins, fresh.coins),
+      total: nonNeg(e.total, nonNeg(raw.best, 0)),
+      order: nonNeg(e.order, 0),
+      progress: nonNeg(e.progress, 0),
+    };
+    return { grid, econ };
   } catch {
-    return { grid, best: 0 };
+    return { grid, econ: fresh };
   }
 }
 
-function saveWorld(grid: Grid, best: number): void {
+function saveWorld(grid: Grid, econ: Economy): void {
   try {
     const parts = [...grid].map(([k, p]): SavedWorld['parts'][number] => {
       const [x, y] = k.split(',').map(Number) as [number, number];
-      return [x, y, p.dir, p.op ? opLabel(p.op) : null];
+      return p.sort ? [x, y, p.dir, partId(p), p.side ?? 1] : [x, y, p.dir, partId(p)];
     });
-    localStorage.setItem(WORLD_STORE, JSON.stringify({ parts, best } satisfies SavedWorld));
+    localStorage.setItem(WORLD_STORE, JSON.stringify({ v: 2, parts, econ } satisfies SavedWorld));
   } catch {
     // ohne Speicher: nur für diesen Besuch
   }
@@ -120,7 +159,8 @@ interface Board {
   base: { x: number; y: number; w: number; h: number };
   walls: Set<string>;
   fixed: Map<string, Part>;
-  tools: Op[];
+  /** Teile im Inventar (ohne Band). */
+  tools: PartSpec[];
 }
 
 function boardOfLevel(l: LevelInfo): Board {
@@ -131,12 +171,12 @@ function boardOfLevel(l: LevelInfo): Board {
     base: { x: l.target.x, y: l.target.y, w: 1, h: 1 },
     walls: new Set(l.walls.map(([x, y]) => key(x, y))),
     fixed: new Map((l.fixed ?? []).map((f) => [key(f.x, f.y), f.part])),
-    tools: l.tools,
+    tools: l.tools.map((op): PartSpec => ({ id: opLabel(op), kind: 'op', op, price: 0 })),
   };
 }
 
 function boardOfWorld(w: OpenWorld): Board {
-  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: w.tools };
+  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: WORLD_PARTS.filter((p) => p.kind !== 'belt') };
 }
 
 function load(): Record<string, number> {
@@ -180,7 +220,10 @@ export function initFactory(root: HTMLElement): void {
   const controls = q<HTMLElement>('[data-controls]');
   const status = q<HTMLElement>('[data-status]');
   const info = q<HTMLElement>('[data-info]');
-  q<HTMLElement>('[data-howto]').textContent = tx(T.howto);
+  const orderEl = q<HTMLElement>('[data-order]');
+  const howto = q<HTMLElement>('[data-howto]');
+  const eyebrow = q<HTMLElement>('[data-eyebrow]');
+  howto.textContent = tx(T.howto);
 
   const world = el('div', 'zf-world');
   const beltLayer = document.createElementNS(SVG_NS, 'svg');
@@ -190,7 +233,11 @@ export function initFactory(root: HTMLElement): void {
   const itemsLayer = el('div', 'zf-items');
   world.append(beltLayer, cellsLayer, itemsLayer);
   const zoomBar = el('div', 'zf-zoom');
-  viewport.append(world, zoomBar);
+  // Anzeige im Spielfeld (offene Welt): Münzen und Stand beim Auftrag
+  const hud = el('div', 'zf-hud');
+  hud.setAttribute('aria-hidden', 'true');
+  hud.hidden = true;
+  viewport.append(world, zoomBar, hud);
 
   let index = Math.max(0, WORLD_1.findIndex((l) => !stars[l.id]));
   let level: LevelInfo = WORLD_1[index]!;
@@ -198,7 +245,7 @@ export function initFactory(root: HTMLElement): void {
   let mode: 'level' | 'world' = 'level';
   let board: Board = boardOfLevel(level);
   let wstate: WorldState = worldStart();
-  let best = 0;
+  let econ: Economy = newEconomy();
   let saveCounter = 0;
   const sourceAt = (x: number, y: number) => board.sources.find((sp) => sp.x === x && sp.y === y);
   const baseAt = (x: number, y: number) => x >= board.base.x && y >= board.base.y && x < board.base.x + board.base.w && y < board.base.y + board.base.h;
@@ -206,7 +253,7 @@ export function initFactory(root: HTMLElement): void {
   const allParts = (): Grid => (mode === 'level' ? withFixed(level, grid) : grid);
   const items = (): Item[] => (mode === 'level' ? state.items : wstate.items);
   let grid: Grid = new Map();
-  let tool: Tool = { kind: 'belt' };
+  let tool: Tool = { kind: 'part', spec: BELT };
   let state: State = start();
   let running = false;
   let fast = false;
@@ -300,7 +347,7 @@ export function initFactory(root: HTMLElement): void {
       return;
     }
     const panButton = event.button === 1 || event.button === 2;
-    const mode = panButton || tool.kind === 'hand' ? 'pan' : tool.kind === 'belt' ? 'draw' : tool.kind === 'erase' ? 'erase' : 'tap';
+    const mode = panButton || tool.kind === 'hand' ? 'pan' : isBelt(tool) ? 'draw' : tool.kind === 'erase' ? 'erase' : 'tap';
     gesture = { mode, startX: event.clientX, startY: event.clientY, moved: false, last: cellAt(event.clientX, event.clientY) };
     if (mode === 'erase' && gesture.last) eraseAt(...gesture.last);
     event.preventDefault();
@@ -367,7 +414,18 @@ export function initFactory(root: HTMLElement): void {
   function changed(): void {
     renderCells();
     renderInfo();
-    if (mode === 'world') saveWorld(grid, best);
+    if (mode === 'world') saveWorld(grid, econ);
+  }
+
+  /** In der offenen Welt bezahlen (im Level ist alles umsonst); false, wenn das Geld nicht reicht. */
+  function pay(price: number): boolean {
+    if (mode !== 'world') return true;
+    if (price > 0 && econ.coins < price) {
+      say(tx(T.tooPoor, { n: ctxNum(price - econ.coins) }), 'warn');
+      return false;
+    }
+    econ.coins -= price;
+    return true;
   }
 
   /** Band-Weg ziehen: das letzte Feld zeigt aufs neue, das neue bekommt dieselbe Richtung. */
@@ -378,35 +436,54 @@ export function initFactory(root: HTMLElement): void {
       if (d === undefined) return;
       const part = grid.get(key(...from));
       if (part) part.dir = d;
+      // Auch das Start-Kästchen bekommt ein Band (nicht nur die folgenden)
+      else if (canBuild(...from) && pay(BELT.price)) grid.set(key(...from), { op: null, dir: d });
       if (canBuild(...to)) {
         const existing = grid.get(key(...to));
         if (existing) existing.dir = d;
-        else grid.set(key(...to), { op: null, dir: d });
+        else if (pay(BELT.price)) grid.set(key(...to), { op: null, dir: d });
       }
     }
     changed();
   }
 
   function eraseAt(x: number, y: number): void {
-    if (!grid.has(key(x, y)) || !editable()) return;
+    const part = grid.get(key(x, y));
+    if (!part || !editable()) return;
     grid.delete(key(x, y));
+    if (mode === 'world') econ.coins += priceOf(part);
     changed();
   }
 
-  function placeOp(op: Op | null, x: number, y: number): void {
+  /** Teil setzen; steht dort schon dasselbe, wird es gedreht (Weiche: nach vier Drehungen wechselt die Seite). */
+  function placeSpec(spec: PartSpec, x: number, y: number): void {
     if (!canBuild(x, y) || !editable()) return;
     const k = key(x, y);
     const part = grid.get(k);
-    const same = part && (part.op ? opLabel(part.op) : 'belt') === (op ? opLabel(op) : 'belt');
-    if (part && same) part.dir = ((part.dir + 1) % 4) as Dir;
-    else grid.set(k, { op, dir: part?.dir ?? guessDir(x, y) });
+    if (part && partId(part) === spec.id) {
+      if (part.sort) {
+        const r = (part.dir + (part.side === 3 ? 4 : 0) + 1) % 8;
+        part.dir = (r % 4) as Dir;
+        part.side = r < 4 ? 1 : 3;
+      } else part.dir = ((part.dir + 1) % 4) as Dir;
+    } else {
+      if (mode === 'world' && !unlockedParts(econ.order).has(spec.id)) return lockedInfo(spec);
+      if (!pay(spec.price - (part && mode === 'world' ? priceOf(part) : 0))) return;
+      grid.set(k, makePart(spec, part?.dir ?? guessDir(x, y)));
+      if (spec.kind === 'sort') say(tx(T.sortHelp));
+      if (spec.kind === 'merge') say(tx(T.mergeHelp));
+    }
     changed();
+  }
+
+  function lockedInfo(spec: PartSpec): void {
+    say(tx(T.locked, { p: tx(specName(spec)), n: unlockedBy(spec.id) + 1 }), 'warn');
   }
 
   function tap(x: number, y: number): void {
     if (tool.kind === 'hand') return;
     if (tool.kind === 'erase') return eraseAt(x, y);
-    placeOp(tool.kind === 'op' ? tool.op : null, x, y);
+    placeSpec(tool.spec, x, y);
   }
 
   /** Neue Teile setzen den Weg fort; geht es geradeaus nicht weiter, dann zur Seite Richtung Lager. */
@@ -419,14 +496,24 @@ export function initFactory(root: HTMLElement): void {
     const open = (d: Dir) => canBuild(x + DX[d], y + DY[d]) || baseAt(x + DX[d], y + DY[d]);
     const toward = (d: Dir) => Math.abs(x + DX[d] - tx0) + Math.abs(y + DY[d] - ty0);
     for (const d of dirs) {
-      const fx = x - DX[d];
-      const fy = y - DY[d];
-      const from = sourceAt(fx, fy)?.dir ?? all.get(key(fx, fy))?.dir;
-      if (from !== d) continue;
+      if (!outsAt(all, x - DX[d], y - DY[d]).includes(d)) continue;
       if (open(d)) return d;
       return dirs.filter((t) => t !== (d + 2) % 4 && open(t)).sort((a, c) => toward(a) - toward(c))[0] ?? d;
     }
     return dirs.filter(open).sort((a, c) => toward(a) - toward(c))[0] ?? 0;
+  }
+
+  /** Ausgänge eines Feldes (Quelle oder Teil). */
+  function outsAt(all: Grid, x: number, y: number): Dir[] {
+    const sp = sourceAt(x, y);
+    if (sp) return [sp.dir];
+    const part = all.get(key(x, y));
+    return part ? outputs(part) : [];
+  }
+
+  /** Aus welchen Richtungen kommen Zahlen auf dieses Feld? */
+  function insAt(all: Grid, x: number, y: number): Dir[] {
+    return ([0, 1, 2, 3] as Dir[]).filter((d) => outsAt(all, x - DX[d], y - DY[d]).includes(d));
   }
 
   // ---------- Zeichnen ----------
@@ -441,40 +528,35 @@ export function initFactory(root: HTMLElement): void {
     beltLayer.setAttribute('width', String(board.cols * CELL));
     beltLayer.setAttribute('height', String(board.rows * CELL));
     const paths: string[] = [];
-    const pointsInto = (x: number, y: number): Dir | null => {
-      for (const d of [0, 1, 2, 3] as Dir[]) {
-        const fx = x - DX[d];
-        const fy = y - DY[d];
-        const from = sourceAt(fx, fy)?.dir ?? all.get(key(fx, fy))?.dir;
-        if (from === d) return d;
-      }
-      return null;
-    };
-    const segment = (x: number, y: number, inDir: Dir, outDir: Dir) => {
-      const ox = x * CELL;
-      const oy = y * CELL;
-      const [ax, ay] = EDGE[(inDir + 2) % 4]!;
-      const [bx, by] = EDGE[outDir]!;
-      paths.push(`M${ox + ax} ${oy + ay}L${ox + CELL / 2} ${oy + CELL / 2}L${ox + bx} ${oy + by}`);
-    };
+    const cx = (x: number) => x * CELL + CELL / 2;
+    const cy = (y: number) => y * CELL + CELL / 2;
+    const edge = (x: number, y: number, d: Dir) => `${x * CELL + EDGE[d]![0]} ${y * CELL + EDGE[d]![1]}`;
     for (const [k, part] of all) {
       const [x, y] = k.split(',').map(Number) as [number, number];
-      const inDir = pointsInto(x, y) ?? part.dir;
-      segment(x, y, inDir, part.dir);
+      const ins = insAt(all, x, y);
+      const outs = outputs(part);
+      if (ins.length <= 1 && outs.length === 1) {
+        // ein Weg hinein, einer hinaus: ein durchgehender Streifen (auch um die Ecke)
+        const from = ((ins[0] ?? part.dir) + 2) % 4;
+        paths.push(`M${edge(x, y, from as Dir)}L${cx(x)} ${cy(y)}L${edge(x, y, outs[0]!)}`);
+        continue;
+      }
+      // Weiche oder Zusammenführen: jeder Eingang zur Mitte, von der Mitte zu jedem Ausgang
+      for (const d of ins.length ? ins : [part.dir]) paths.push(`M${edge(x, y, ((d + 2) % 4) as Dir)}L${cx(x)} ${cy(y)}`);
+      for (const d of outs) paths.push(`M${cx(x)} ${cy(y)}L${edge(x, y, d)}`);
     }
     // Stummel aus den Quellen heraus (nur wenn angeschlossen) und ins Ziel hinein
     for (const { x, y, dir } of board.sources) {
       if (mode === 'world' && !all.has(key(x + DX[dir], y + DY[dir])) && !baseAt(x + DX[dir], y + DY[dir])) continue;
-      const [bx, by] = EDGE[dir]!;
-      paths.push(`M${x * CELL + CELL / 2} ${y * CELL + CELL / 2}L${x * CELL + bx} ${y * CELL + by}`);
+      paths.push(`M${cx(x)} ${cy(y)}L${edge(x, y, dir)}`);
     }
     for (let bx0 = board.base.x; bx0 < board.base.x + board.base.w; bx0++) {
       for (let by0 = board.base.y; by0 < board.base.y + board.base.h; by0++) {
-        const into = pointsInto(bx0, by0);
-        if (into === null) continue;
-        const [ax, ay] = EDGE[(into + 2) % 4]!;
-        const [ex, ey] = EDGE[into]!;
-        paths.push(`M${bx0 * CELL + ax} ${by0 * CELL + ay}L${bx0 * CELL + (ax + ex) / 2 + (ex - ax) * 0.1} ${by0 * CELL + (ay + ey) / 2 + (ey - ay) * 0.1}`);
+        for (const into of insAt(all, bx0, by0)) {
+          const [ax, ay] = EDGE[(into + 2) % 4]!;
+          const [ex, ey] = EDGE[into]!;
+          paths.push(`M${bx0 * CELL + ax} ${by0 * CELL + ay}L${bx0 * CELL + (ax + ex) / 2 + (ex - ax) * 0.1} ${by0 * CELL + (ay + ey) / 2 + (ey - ay) * 0.1}`);
+        }
       }
     }
     const d = paths.join('');
@@ -514,7 +596,7 @@ export function initFactory(root: HTMLElement): void {
       const c = at(board.base.x, board.base.y, 'zf-cell--base');
       c.style.width = `${board.base.w * CELL - 12}px`;
       c.style.height = `${board.base.h * CELL - 12}px`;
-      c.append(el('span', 'zf-base__icon', '🏠'), el('span', 'zf-cell__big zf-base-score', ctxNum(wstate.score)), el('span', 'zf-cell__small', tx(T.base)));
+      c.append(el('span', 'zf-base__icon', '🏠'), el('span', 'zf-cell__big zf-base-score', baseLine()), el('span', 'zf-cell__small', tx(T.base)));
       c.title = tx(T.base);
     }
     for (const k of board.walls) {
@@ -522,12 +604,25 @@ export function initFactory(root: HTMLElement): void {
       at(x, y, 'zf-cell--rock').append(el('span', 'zf-cell__rock', '🪨'));
     }
     for (const [k, part] of all) {
-      if (!part.op) continue;
+      if (!part.op && !part.sort && !part.merge) continue;
       const [x, y] = k.split(',').map(Number) as [number, number];
-      const c = at(x, y, 'zf-cell--op');
       const fixed = board.fixed.has(k);
+      if (part.sort) {
+        const c = at(x, y, 'zf-cell--op zf-cell--sort');
+        const [yes, no] = outputs(part) as [Dir, Dir];
+        c.append(el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
+        c.title = tx(T.sortHelp);
+        continue;
+      }
+      if (part.merge) {
+        const c = at(x, y, 'zf-cell--op zf-cell--merge');
+        c.append(el('span', 'zf-cell__mid', part.merge === '+' ? 'a+b' : 'a×b'), el('span', 'zf-cell__small', ARROW[part.dir]!));
+        c.title = tx(T.mergeHelp);
+        continue;
+      }
+      const c = at(x, y, 'zf-cell--op');
       if (fixed) c.classList.add('zf-cell--fixed');
-      c.append(el('span', 'zf-cell__big', opLabel(part.op)), el('span', 'zf-cell__small', ARROW[part.dir]!));
+      c.append(el('span', 'zf-cell__big', opLabel(part.op!)), el('span', 'zf-cell__small', ARROW[part.dir]!));
       if (fixed) c.append(el('span', 'zf-cell__lock', '🔒'));
     }
     if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
@@ -539,24 +634,42 @@ export function initFactory(root: HTMLElement): void {
     return numberFormat.format(n).replace('-', '−');
   }
 
+  /** Aufschrift der Basis: Stand beim aktuellen Auftrag. */
+  function baseLine(): string {
+    return `${ctxNum(econ.progress)}/${ctxNum(orderAt(econ.order).count)}`;
+  }
+
+  /** Kurzer Effekt an einem Feld (nur ohne reduzierte Bewegung). */
+  function effect(x: number, y: number, text: string, cls: string, ms = 700): void {
+    if (reduced) return;
+    const e = el('span', cls, text);
+    e.style.left = `${x * CELL + CELL / 2}px`;
+    e.style.top = `${y * CELL + CELL / 2}px`;
+    itemsLayer.append(e);
+    setTimeout(() => e.remove(), ms);
+  }
+
   function renderItems(): void {
     const old = new Map([...itemsLayer.querySelectorAll<HTMLElement>('.zf-item')].map((e) => [e.dataset.id!, e]));
     for (const item of items()) {
       let e = old.get(String(item.id));
       if (!e) {
-        e = el('span', 'zf-item', String(item.value));
+        e = el('span', 'zf-item', ctxNum(item.value));
         e.dataset.id = String(item.id);
         e.style.left = `${item.x * CELL + CELL / 2}px`;
         e.style.top = `${item.y * CELL + CELL / 2}px`;
         itemsLayer.append(e);
       }
       old.delete(String(item.id));
-      if (e.textContent !== String(item.value)) {
-        e.textContent = String(item.value);
+      const label = ctxNum(item.value);
+      if (e.textContent !== label) {
+        e.textContent = label;
         e.classList.remove('zf-item--pop');
         void e.offsetWidth;
         e.classList.add('zf-item--pop');
       }
+      e.classList.toggle('zf-item--wait', !!item.wait);
+      e.classList.toggle('zf-item--long', label.length > 4);
       e.style.left = `${item.x * CELL + CELL / 2}px`;
       e.style.top = `${item.y * CELL + CELL / 2}px`;
     }
@@ -564,38 +677,53 @@ export function initFactory(root: HTMLElement): void {
     const count = cellsLayer.querySelector('.zf-target-count');
     if (count) count.textContent = `📦 ${state.delivered}/${level.need}`;
     const score = cellsLayer.querySelector('.zf-base-score');
-    if (score) score.textContent = ctxNum(wstate.score);
-    // Verlorene Zahlen: kurzer Wölkchen-Effekt
-    if (mode === 'world' && !reduced) {
-      for (const [x, y] of wstate.lostAt.slice(0, 12)) {
-        const poof = el('span', 'zf-poof', '💨');
-        poof.style.left = `${x * CELL + CELL / 2}px`;
-        poof.style.top = `${y * CELL + CELL / 2}px`;
-        itemsLayer.append(poof);
-        setTimeout(() => poof.remove(), 600);
-      }
-    }
+    if (score) score.textContent = baseLine();
+    if (mode !== 'world') return;
+    // Verlorene Zahlen: Wölkchen; Zusammenführen: Funke; Münzen an der Basis
+    for (const [x, y] of wstate.lostAt.slice(0, 12)) effect(x, y, '💨', 'zf-poof', 600);
+    for (const [x, y] of wstate.mergedAt.slice(0, 12)) effect(x, y, '✨', 'zf-poof', 600);
+    const coins = wstate.delivered.reduce((a, v) => a + Math.max(0, v), 0);
+    if (coins > 0) effect(board.base.x + 1, board.base.y, `+${ctxNum(coins)} 🪙`, 'zf-coin-float', 900);
   }
 
   // ---------- Inventar ----------
+  /** Merkmal, ob sich Preise/Freischaltungen geändert haben (dann Inventar neu zeichnen). */
+  let toolsKey = '';
   function renderTools(): void {
-    const list: [Tool, string, string][] = [
-      [{ kind: 'hand' }, '✋', tx(T.hand)],
-      [{ kind: 'belt' }, '→', tx(T.belt)],
-      ...board.tools.map((op) => [{ kind: 'op', op }, opLabel(op), ''] as [Tool, string, string]),
-      [{ kind: 'erase' }, '🧽', tx(T.erase)],
-    ];
+    const world = mode === 'world';
+    const open = world ? unlockedParts(econ.order) : null;
+    // Gesperrte Teile nur zeigen, wenn der aktuelle Auftrag sie freischaltet (als Vorschau)
+    const soon = new Set(world ? orderAt(econ.order).unlock : []);
+    const shown = board.tools.filter((spec) => !open || open.has(spec.id) || soon.has(spec.id));
+    const list: Tool[] = [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown.map((spec): Tool => ({ kind: 'part', spec })), { kind: 'erase' }];
+    toolsKey = toolsSignature();
+    toolsEl.classList.toggle('zf-tools--world', world);
     toolsEl.replaceChildren(
-      ...list.map(([t, icon, label]) => {
-        const b = el('button', `zf-tool${t.kind === 'op' ? ' zf-tool--op' : ''}`);
+      ...list.map((t) => {
+        const spec = t.kind === 'part' ? t.spec : null;
+        const locked = !!(spec && open && !open.has(spec.id));
+        const b = el('button', `zf-tool${spec && spec.kind !== 'belt' ? ` zf-tool--op zf-tool--${spec.kind}` : ''}`);
         b.type = 'button';
-        b.append(el('span', 'zf-tool__icon', icon), label ? el('span', 'zf-tool__label', label) : '');
-        const same = t.kind === tool.kind && (t.kind !== 'op' || (tool.kind === 'op' && opLabel(t.op) === opLabel(tool.op)));
+        const icon = t.kind === 'hand' ? '✋' : t.kind === 'erase' ? '🧽' : spec!.kind === 'belt' ? '→' : tx(specLabel(spec!));
+        const label = t.kind === 'hand' ? tx(T.hand) : t.kind === 'erase' ? tx(T.erase) : spec!.kind === 'belt' ? tx(T.belt) : '';
+        b.append(el('span', 'zf-tool__icon', locked ? `🔒 ${icon}` : icon));
+        if (label) b.append(el('span', 'zf-tool__label', label));
+        if (world && spec) {
+          const tag = locked ? tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 }) : `🪙 ${ctxNum(spec.price)}`;
+          b.append(el('span', `zf-tool__price${!locked && econ.coins < spec.price ? ' is-poor' : ''}`, tag));
+        }
+        if (locked) b.classList.add('is-locked');
+        const same = t.kind === tool.kind && (t.kind !== 'part' || (tool.kind === 'part' && t.spec.id === tool.spec.id));
         b.setAttribute('aria-pressed', String(same));
-        b.setAttribute('aria-label', label || icon);
-        if (t.kind === 'op' || t.kind === 'belt') bindDrag(b, t.kind === 'op' ? t.op : null);
+        const name = spec ? tx(specName(spec)) : label;
+        b.setAttribute('aria-label', world && spec ? `${name}, ${locked ? tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 }) : tx(T.price, { n: ctxNum(spec.price) })}` : name);
+        b.title = b.getAttribute('aria-label')!;
+        if (spec && !locked) bindDrag(b, spec);
         b.addEventListener('click', () => {
+          if (spec && locked) return lockedInfo(spec);
           tool = t;
+          if (spec?.kind === 'sort') say(tx(T.sortHelp));
+          else if (spec?.kind === 'merge') say(tx(T.mergeHelp));
           renderTools();
         });
         return b;
@@ -603,8 +731,14 @@ export function initFactory(root: HTMLElement): void {
     );
   }
 
+  /** Was das Aussehen des Inventars bestimmt: freigeschaltet und bezahlbar. */
+  function toolsSignature(): string {
+    if (mode !== 'world') return 'level';
+    return `${econ.order}|${WORLD_PARTS.filter((p) => econ.coins >= p.price).length}`;
+  }
+
   /** Teil aus dem Inventar auf die Karte ziehen. */
-  function bindDrag(button: HTMLElement, op: Op | null): void {
+  function bindDrag(button: HTMLElement, spec: PartSpec): void {
     let ghost: HTMLElement | null = null;
     let sx = 0;
     let sy = 0;
@@ -617,7 +751,7 @@ export function initFactory(root: HTMLElement): void {
       if (!button.hasPointerCapture(event.pointerId)) return;
       if (!ghost && Math.hypot(event.clientX - sx, event.clientY - sy) < 8) return;
       if (!ghost) {
-        ghost = el('div', `zf-ghost${op ? ' zf-ghost--op' : ''}`, op ? opLabel(op) : '→');
+        ghost = el('div', `zf-ghost${spec.kind !== 'belt' ? ` zf-ghost--op zf-ghost--${spec.kind}` : ''}`, spec.kind === 'belt' ? '→' : tx(specLabel(spec)));
         document.body.append(ghost);
       }
       ghost.style.left = `${event.clientX}px`;
@@ -630,7 +764,7 @@ export function initFactory(root: HTMLElement): void {
       const cell = cellAt(event.clientX, event.clientY);
       const box = viewport.getBoundingClientRect();
       const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
-      if (cell && inside) placeOp(op, ...cell);
+      if (cell && inside) placeSpec(spec, ...cell);
       // Klick nach dem Ziehen nicht als Werkzeugwahl werten
       button.addEventListener('click', (e) => e.stopImmediatePropagation(), { once: true, capture: true });
     };
@@ -660,24 +794,74 @@ export function initFactory(root: HTMLElement): void {
   function renderInfo(): void {
     if (mode === 'world') {
       info.replaceChildren(
-        el('strong', '', tx(T.score, { n: ctxNum(wstate.score) })),
-        el('span', '', tx(T.count, { n: ctxNum(wstate.count) })),
+        el('strong', 'zf-coins', tx(T.coins, { n: ctxNum(econ.coins) })),
+        el('span', '', tx(T.total, { n: ctxNum(econ.total) })),
         el('span', 'zf-goal', tx(T.lost, { n: ctxNum(wstate.lost) })),
-        el('span', 'zf-goal', tx(T.best, { n: ctxNum(best) })),
         el('span', 'zf-goal', `${tx(T.parts)}: ${grid.size}`),
       );
+      renderOrder();
+      hud.hidden = false;
+      hud.textContent = `🪙 ${ctxNum(econ.coins)} · 📋 ${baseLine()}`;
+      if (toolsSignature() !== toolsKey) renderTools();
       return;
     }
+    hud.hidden = true;
     info.replaceChildren(el('span', '', `${tx(T.parts)}: ${grid.size}`), el('span', '', `${tx(T.delivered)}: ${state.delivered}/${level.need}`), el('span', 'zf-goal', tx(T.starsPar, { n: level.par })), el('span', 'zf-goal', tx(T.starsFirst)));
+  }
+
+  /** Aktueller Auftrag mit Fortschritt, Belohnung und dem, was er freischaltet. */
+  function renderOrder(): void {
+    orderEl.hidden = mode !== 'world';
+    if (mode !== 'world') return;
+    const o = orderAt(econ.order);
+    const pct = Math.min(100, (100 * econ.progress) / o.count);
+    const bar = el('span', 'zf-order__bar');
+    const fill = el('span', 'zf-order__fill');
+    fill.style.width = `${pct}%`;
+    bar.append(fill);
+    bar.setAttribute('role', 'progressbar');
+    bar.setAttribute('aria-valuemin', '0');
+    bar.setAttribute('aria-valuemax', String(o.count));
+    bar.setAttribute('aria-valuenow', String(econ.progress));
+    bar.setAttribute('aria-label', tx(T.order, { n: econ.order + 1 }));
+    const unlock = o.unlock.map((id) => tx(specName(specById(id)!))).join(', ');
+    const reward = tx(T.reward, { n: ctxNum(o.reward) }) + (unlock ? ` · ${tx(T.rewardNew, { p: unlock })}` : '');
+    orderEl.replaceChildren(
+      el('span', 'zf-order__tag', `📋 ${tx(T.order, { n: econ.order + 1 })}`),
+      el('strong', 'zf-order__text', tx(orderText(o, ctxNum))),
+      el('span', 'zf-order__count', `${ctxNum(econ.progress)}/${ctxNum(o.count)}`),
+      bar,
+      el('span', 'zf-order__reward', o.streak ? `${reward} · ${tx(T.streakHint)}` : reward),
+    );
+  }
+
+  /** Geschaffte Aufträge melden: Münzen, neue Teile, kurzer Jubel an der Basis. */
+  function celebrate(done: Order[]): void {
+    const coins = done.reduce((a, o) => a + o.reward, 0);
+    const parts = done.flatMap((o) => o.unlock).map((id) => tx(specName(specById(id)!)));
+    say(`${tx(T.orderDone, { n: ctxNum(coins) })}${parts.length ? ` ${tx(T.unlocked, { p: parts.join(', ') })}` : ''}`, 'good');
+    const baseEl = cellsLayer.querySelector<HTMLElement>('.zf-cell--base');
+    if (baseEl && !reduced) {
+      baseEl.classList.remove('is-cheering');
+      void baseEl.offsetWidth;
+      baseEl.classList.add('is-cheering');
+    }
+    effect(board.base.x + 1, board.base.y + 1, '🎉', 'zf-coin-float zf-coin-float--big', 1200);
+    renderTools();
+    saveWorld(grid, econ);
   }
 
   function tick(): void {
     if (mode === 'world') {
       wstate = worldStep(openWorld, grid, wstate);
-      if (wstate.score > best) best = wstate.score;
+      if (wstate.delivered.length) {
+        const r = deliver(econ, wstate.delivered);
+        econ = r.econ;
+        if (r.completed.length) celebrate(r.completed);
+      }
       renderItems();
       renderInfo();
-      if (++saveCounter % 25 === 0) saveWorld(grid, best);
+      if (++saveCounter % 25 === 0) saveWorld(grid, econ);
       return;
     }
     state = step(level, withFixed(level, grid), state);
@@ -755,9 +939,13 @@ export function initFactory(root: HTMLElement): void {
   stopBtn.addEventListener('click', resetRun);
   clearBtn.addEventListener('click', () => {
     if (mode === 'world' && grid.size > 0 && !confirm(tx(T.resetConfirm))) return;
+    if (mode === 'world') for (const part of grid.values()) econ.coins += priceOf(part);
     grid = new Map();
     resetRun();
-    if (mode === 'world') saveWorld(grid, best);
+    if (mode === 'world') {
+      saveWorld(grid, econ);
+      renderTools();
+    }
   });
 
   // ---------- Level ----------
@@ -785,11 +973,13 @@ export function initFactory(root: HTMLElement): void {
     board = boardOfWorld(openWorld);
     const saved = loadWorld(openWorld);
     grid = saved.grid;
-    best = saved.best;
+    econ = saved.econ;
     wstate = worldStart();
-    tool = { kind: 'belt' };
+    tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
     hint.textContent = `💡 ${tx(T.worldHint)}`;
+    howto.textContent = tx(T.worldHowto);
+    eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
     say('');
     itemsLayer.replaceChildren();
@@ -802,18 +992,21 @@ export function initFactory(root: HTMLElement): void {
 
   function openLevel(i: number): void {
     stopTimer();
-    if (mode === 'world') saveWorld(grid, best);
+    if (mode === 'world') saveWorld(grid, econ);
     mode = 'level';
     stepBtn.hidden = false;
     index = i;
     level = WORLD_1[i]!;
     board = boardOfLevel(level);
     grid = new Map();
-    tool = { kind: 'belt' };
+    tool = { kind: 'part', spec: BELT };
     state = start();
     failedRuns = 0;
     hasRun = false;
     title.textContent = `${i + 1}. ${tx(level.title)}`;
+    howto.textContent = tx(T.howto);
+    eyebrow.textContent = tx(T.eyebrowLevels);
+    renderOrder();
     hint.textContent = `💡 ${tx(level.hint)}`;
     say('');
     itemsLayer.replaceChildren();

@@ -1,4 +1,4 @@
-import { apply, DX, DY, key, type Dir, type Grid, type Item, type Op } from './model';
+import { apply, DX, DY, key, outputs, passes, type Dir, type Grid, type Item, type Op } from './model';
 
 /**
  * Offene Welt: Auf einer großen Karte stehen viele Zahlenquellen, die ohne
@@ -28,13 +28,17 @@ export interface WorldState {
   tick: number;
   items: Item[];
   nextId: number;
-  /** Summe aller gesammelten Zahlen. */
+  /** Summe aller gesammelten Zahlen (in diesem Lauf). */
   score: number;
   /** Zahl der gesammelten Zahlen. */
   count: number;
   lost: number;
   /** Wo in diesem Takt Zahlen verloren gingen (für einen kleinen Effekt). */
   lostAt: [number, number][];
+  /** In diesem Takt in der Basis angekommene Zahlen (für Münzen und Aufträge). */
+  delivered: number[];
+  /** Wo in diesem Takt zwei Zahlen zusammengeführt wurden (für einen kleinen Effekt). */
+  mergedAt: [number, number][];
 }
 
 export const WORLD_EMIT = 3;
@@ -44,7 +48,7 @@ export const MAX_VALUE = 1_000_000;
 export const MAX_ITEMS = 400;
 
 export function worldStart(): WorldState {
-  return { tick: 0, items: [], nextId: 1, score: 0, count: 0, lost: 0, lostAt: [] };
+  return { tick: 0, items: [], nextId: 1, score: 0, count: 0, lost: 0, lostAt: [], delivered: [], mergedAt: [] };
 }
 
 export const inBase = (w: OpenWorld, x: number, y: number) => x >= w.base.x && y >= w.base.y && x < w.base.x + w.base.w && y < w.base.y + w.base.h;
@@ -57,44 +61,175 @@ export function canBuildWorld(w: OpenWorld, x: number, y: number): boolean {
   return !inBase(w, x, y) && !spawnerAt(w, x, y) && !wallAt(w, x, y);
 }
 
+/** Plan einer Zahl für diesen Takt. */
+interface Plan {
+  item: Item;
+  kind: 'stay' | 'move' | 'absorb' | 'lose';
+  /** Ziel-Feld (bei „move“). */
+  tx: number;
+  ty: number;
+  /** Laufrichtung (bei „move“). */
+  dir: Dir;
+  /** Darf aufs Ziel-Feld (nach der Vorfahrt). */
+  accepted: boolean;
+}
+
+/**
+ * Ein Takt der offenen Welt. Auf jedem Feld liegt höchstens eine Zahl: Ist
+ * das nächste Feld belegt und wird nicht frei, wartet die Zahl (Stau). Wollen
+ * zwei Zahlen aufs selbe Feld, hat die von hinten Vorrang, sonst wechseln
+ * sich die Seiten ab. In einem vollen Kreis (ab drei Feldern) rücken alle
+ * gemeinsam weiter; zwei Zahlen, die sich gegenüberstehen, blockieren sich.
+ *
+ * Weiche: Zahlen, die die Prüfung bestehen, laufen geradeaus, die anderen
+ * biegen zur Seite ab. Zusammenführen: Die erste Zahl wartet, die zweite wird
+ * mit ihr zur Summe bzw. zum Produkt; das Ergebnis läuft weiter.
+ */
 export function worldStep(w: OpenWorld, grid: Grid, state: WorldState): WorldState {
-  const s: WorldState = { ...state, tick: state.tick + 1, items: [], lostAt: [] };
+  const s: WorldState = { ...state, tick: state.tick + 1, items: [], lostAt: [], delivered: [], mergedAt: [] };
   const lose = (x: number, y: number) => {
     s.lost += 1;
     s.lostAt.push([x, y]);
   };
+  const at = new Map<string, Item>();
+  for (const item of state.items) at.set(key(item.x, item.y), item);
+
+  // 1. Wohin will jede Zahl?
+  const plans = new Map<number, Plan>();
   for (const item of state.items) {
-    const dir = spawnerAt(w, item.x, item.y)?.dir ?? grid.get(key(item.x, item.y))?.dir;
+    const plan: Plan = { item, kind: 'stay', tx: item.x, ty: item.y, dir: 0, accepted: false };
+    plans.set(item.id, plan);
+    const here = grid.get(key(item.x, item.y));
+    // Wartet im Zusammenführer (wurde der abgebaut, läuft die Zahl normal weiter bzw. fällt herunter)
+    if (item.wait && here?.merge) continue;
+    const sp = spawnerAt(w, item.x, item.y);
+    let dir: Dir | undefined = sp?.dir;
+    if (dir === undefined && here) dir = here.sort ? outputs(here)[passes(here.sort, item.value) ? 0 : 1] : here.dir;
     if (dir === undefined) {
-      lose(item.x, item.y);
+      plan.kind = 'lose';
       continue;
     }
     const x = item.x + DX[dir];
     const y = item.y + DY[dir];
     if (inBase(w, x, y)) {
-      s.score += item.value;
-      s.count += 1;
+      plan.kind = 'absorb';
       continue;
     }
-    const part = grid.get(key(x, y));
-    if (!part || !canBuildWorld(w, x, y)) {
+    if (!grid.has(key(x, y)) || !canBuildWorld(w, x, y)) {
+      plan.kind = 'lose';
+      continue;
+    }
+    Object.assign(plan, { kind: 'move', tx: x, ty: y, dir });
+  }
+
+  // 2. Vorfahrt: je Ziel-Feld so viele Zahlen, wie dort Platz haben
+  const claims = new Map<string, Plan[]>();
+  for (const plan of plans.values()) {
+    if (plan.kind !== 'move') continue;
+    const k = key(plan.tx, plan.ty);
+    const list = claims.get(k);
+    if (list) list.push(plan);
+    else claims.set(k, [plan]);
+  }
+  for (const [k, list] of claims) {
+    const part = grid.get(k)!;
+    const occ = at.get(k);
+    // von hinten zuerst, dann reihum (je Takt eine andere Seite)
+    list.sort((a, b) => rank(a) - rank(b) || a.item.id - b.item.id);
+    const room = part.merge ? (occ?.wait ? 1 : 2) : 1;
+    list.slice(0, room).forEach((p) => (p.accepted = true));
+  }
+  function rank(p: Plan): number {
+    const part = grid.get(key(p.tx, p.ty))!;
+    return p.dir === part.dir ? -1 : (p.dir - state.tick + 400) % 4;
+  }
+
+  // 3. Wer kann wirklich weiter? (Das Ziel-Feld muss frei sein oder frei werden.)
+  const verdict = new Map<number, boolean>();
+  const stack: number[] = [];
+  function moves(p: Plan): boolean {
+    if (p.kind === 'absorb' || p.kind === 'lose') return true;
+    if (p.kind === 'stay' || !p.accepted) return false;
+    const known = verdict.get(p.item.id);
+    if (known !== undefined) return known;
+    const pos = stack.indexOf(p.item.id);
+    // Kreis: ab drei Zahlen rücken alle weiter, zwei Gegenüber blockieren sich
+    if (pos >= 0) return stack.length - pos > 2;
+    stack.push(p.item.id);
+    const occ = at.get(key(p.tx, p.ty));
+    const part = grid.get(key(p.tx, p.ty))!;
+    let ok = true;
+    if (occ && !(part.merge && occ.wait)) ok = moves(plans.get(occ.id)!);
+    stack.pop();
+    verdict.set(p.item.id, ok);
+    return ok;
+  }
+
+  // 4. Ausführen
+  const arrivals = new Map<string, Item[]>();
+  const consumed = new Set<number>();
+  for (const plan of plans.values()) {
+    const { item } = plan;
+    if (plan.kind === 'lose') {
       lose(item.x, item.y);
       continue;
     }
+    if (plan.kind === 'absorb') {
+      s.score += item.value;
+      s.count += 1;
+      s.delivered.push(item.value);
+      continue;
+    }
+    if (plan.kind === 'stay' || !moves(plan)) continue;
+    const k = key(plan.tx, plan.ty);
+    const part = grid.get(k)!;
     let value = item.value;
     if (part.op) {
       const next = apply(part.op, value);
       if (next === null || Math.abs(next) > MAX_VALUE) {
-        lose(x, y);
+        lose(plan.tx, plan.ty);
+        consumed.add(item.id);
         continue;
       }
       value = next;
     }
-    s.items.push({ ...item, x, y, value });
+    const moved: Item = { id: item.id, x: plan.tx, y: plan.ty, value };
+    consumed.add(item.id);
+    if (part.merge) {
+      const list = arrivals.get(k);
+      if (list) list.push(moved);
+      else arrivals.set(k, [moved]);
+    } else s.items.push(moved);
   }
-  // Quellen geben nur aus, wenn vor ihnen ein Band, eine Maschine oder die Basis liegt
+  // Zusammenführen: wartende Zahl plus Neuankömmlinge
+  for (const [k, list] of arrivals) {
+    const part = grid.get(k)!;
+    const waiting = at.get(k);
+    const group = waiting?.wait ? [waiting, ...list] : list;
+    if (waiting?.wait) consumed.add(waiting.id);
+    const [a, b] = group as [Item, Item | undefined];
+    if (!b) {
+      s.items.push({ ...a, wait: true });
+      continue;
+    }
+    const value = part.merge === '+' ? a.value + b.value : a.value * b.value;
+    s.mergedAt.push([a.x, a.y]);
+    if (Math.abs(value) > MAX_VALUE) {
+      lose(a.x, a.y);
+      continue;
+    }
+    s.items.push({ id: a.id, x: a.x, y: a.y, value });
+  }
+  // Wer nicht weiterkam, bleibt stehen (auch wartende Zahlen)
+  for (const item of state.items) {
+    const kind = plans.get(item.id)!.kind;
+    if (!consumed.has(item.id) && (kind === 'stay' || kind === 'move')) s.items.push(item);
+  }
+
+  // Quellen geben nur aus, wenn vor ihnen ein Teil oder die Basis liegt und ihr Feld frei ist
+  const taken = new Set(s.items.map((i) => key(i.x, i.y)));
   w.spawners.forEach((sp, i) => {
-    if ((state.tick + i) % WORLD_EMIT !== 0) return;
+    if ((state.tick + i) % WORLD_EMIT !== 0 || taken.has(key(sp.x, sp.y))) return;
     const fx = sp.x + DX[sp.dir];
     const fy = sp.y + DY[sp.dir];
     if (!grid.has(key(fx, fy)) && !inBase(w, fx, fy)) return;
