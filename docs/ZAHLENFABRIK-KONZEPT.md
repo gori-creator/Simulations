@@ -14,7 +14,17 @@ Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Au
 - **Brücke** (15 Münzen, ab Auftrag 2): Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt – so kreuzen sich zwei Bänder.
 - **Leistung:** Ein Takt mit rund 400 Zahlen auf einer voll bebauten Karte braucht etwa 1 ms; im Browser läuft „Schnell“ dabei ohne Ruckeln (höchstens 600 Zahlen gleichzeitig).
 
-Offen: Level-Welten 2–6, schönere Grafik, Einführung, Tastatur.
+## Level-Welten (Stand 04.11.2026)
+
+Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt man erst die Welt, dann das Level. Jedes Level hat im Test eine Musterlösung, und das Teile-Ziel für den zweiten Stern ist die kleinste gefundene Fabrik (kürzester Weg bzw. kleinste Fabrik mit Weiche, `tests/zahlenfabrik-welten.test.ts`, Löser `tests/zahlenfabrik-loeser.ts`).
+
+- **Welt 2 Rückwärts (Kl. 5):** Die Maschinen stehen schon da (🔒), man wählt die **Startzahl** (− / Zahl / +). Genau eine Startzahl im erlaubten Bereich passt (im Test geprüft). Beispiele: ×3 → 24 (Start 8), ÷2 dann +5 → 50 (Start 90), ×5, +15, ÷2 → 40 (Start 13).
+- **Welt 3 Sortieren (Kl. 5–6):** Die Quelle gibt eine Folge aus (z. B. 1 … 9), zwei oder drei **Lager mit Regeln** („✓ gerade?“ bzw. „✗ gerade?“ = der Rest). Weichen gerade?, ÷3?, ÷4?, >10?; mit Rechnen vor der Weiche (1, 3, 5, 7 → +1 → Vielfache von 4) und mit zwei Weichen für drei Lager (Reihenfolge der Weichen zählt).
+- **Welt 4 Primzahlen (Kl. 5–6):** Primzahl-Weiche (2 … 10, 11 … 17, 2x + 1) und **Zerlegen in Primfaktoren**: 12, 60 und 210 so lange teilen, bis 1 im Lager ankommt.
+- **Welt 5 Terme (Kl. 7–8):** x = 1 … 5, das Lager will die **Wertetabelle der Reihe nach**: x + 3, 2x, 3x + 1 (Punkt vor Strich), 2 · (x + 1) (Klammer zuerst), 5x − 2, 4 · (x + 1) mit zweimal ×2. Unter der Karte steht die Tabelle x / Lager will / angekommen.
+- **Welt 6 Funktionen (Kl. 8–9):** neue Maschine **x²**; f(x) = x², x² + 1, (x + 1)², 2x², die Gerade 3x − 1 mit x = 0 … 4 (Wert −1) und die Parabel x² − 4 mit x = −2 … 2.
+
+Offen: schönere Grafik, Einführung, Tastatur.
 
 ## Idee
 

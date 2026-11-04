@@ -14,7 +14,7 @@ export const GAMES: GameMeta[] = [
     id: 'zahlenfabrik',
     slug: L('zahlenfabrik', 'number-factory'),
     title: L('Zahlenfabrik', 'Number Factory'),
-    description: L('Bau eine Fabrik aus Bändern und Rechenmaschinen: Aus der Zahl der Quelle soll die Zahl im Lager werden.', 'Build a factory from belts and calculating machines: turn the source number into the number the storage wants.'),
+    description: L('Bau eine Fabrik aus Bändern, Rechenmaschinen und Weichen: sechs Welten vom Grundrechnen über Primzahlen bis zu Funktionen, dazu eine offene Welt mit Münzen und Aufträgen.', 'Build a factory from belts, calculating machines and switches: six worlds from basic arithmetic via primes to functions, plus an open world with coins and orders.'),
   },
 ];
 
