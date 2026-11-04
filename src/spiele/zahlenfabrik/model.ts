@@ -32,8 +32,10 @@ export interface Level {
   tools: Op[];
   /** So viele Zahlen müssen ankommen. */
   need: number;
-  /** Mit so wenigen Teilen gibt es den zweiten Stern. */
+  /** Mit so wenigen Teilen gibt es den zweiten Stern (vorgegebene Teile zählen nicht). */
   par: number;
+  /** Teile, die schon auf der Karte stehen und sich nicht entfernen lassen. */
+  fixed?: { x: number; y: number; part: Part }[];
 }
 
 export type Grid = Map<string, Part>;
@@ -144,12 +146,56 @@ export function run(level: Level, grid: Grid): State {
   return s;
 }
 
-/** Ein Teil darf nur auf ein freies Feld (nicht Quelle, Lager, Mauer, außerhalb). */
+/** Ein Teil darf nur auf ein freies Feld (nicht Quelle, Lager, Fels, vorgegebenes Teil, außerhalb). */
 export function canPlace(level: Level, x: number, y: number): boolean {
   if (x < 0 || y < 0 || x >= level.cols || y >= level.rows) return false;
   if (x === level.source.x && y === level.source.y) return false;
   if (x === level.target.x && y === level.target.y) return false;
+  if (isFixed(level, x, y)) return false;
   return !isWall(level, x, y);
+}
+
+export function isFixed(level: Level, x: number, y: number): boolean {
+  return !!level.fixed?.some((f) => f.x === x && f.y === y);
+}
+
+export { isWall };
+
+/** Eigene Teile plus die vorgegebenen. */
+export function withFixed(level: Level, grid: Grid): Grid {
+  const all = new Map(grid);
+  for (const f of level.fixed ?? []) all.set(key(f.x, f.y), f.part);
+  return all;
+}
+
+/** Kürzester Weg (Zahl der Felder zwischen Quelle und Lager) um Felsen herum; vorgegebene Teile gelten als frei. Für Tests und Level-Planung. */
+export function shortestPath(level: Level): [number, number][] | null {
+  const start: [number, number] = [level.source.x + DX[level.source.dir], level.source.y + DY[level.source.dir]];
+  const free = (x: number, y: number) => x >= 0 && y >= 0 && x < level.cols && y < level.rows && !isWall(level, x, y) && !(x === level.source.x && y === level.source.y);
+  if (!free(...start)) return null;
+  const prev = new Map<string, string | null>([[key(...start), null]]);
+  const queue: [number, number][] = [start];
+  while (queue.length) {
+    const [x, y] = queue.shift()!;
+    for (const d of [0, 1, 2, 3] as Dir[]) {
+      const nx = x + DX[d];
+      const ny = y + DY[d];
+      if (nx === level.target.x && ny === level.target.y) {
+        const path: [number, number][] = [];
+        let k: string | null = key(x, y);
+        while (k) {
+          const [px, py] = k.split(',').map(Number) as [number, number];
+          path.unshift([px, py]);
+          k = prev.get(k)!;
+        }
+        return path;
+      }
+      if (!free(nx, ny) || prev.has(key(nx, ny))) continue;
+      prev.set(key(nx, ny), key(x, y));
+      queue.push([nx, ny]);
+    }
+  }
+  return null;
 }
 
 /** Sterne: geschafft 1, mit höchstens `par` Teilen +1, ohne Fehlversuch +1. */
