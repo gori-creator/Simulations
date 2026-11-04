@@ -16,7 +16,7 @@ Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Au
 
 ## Level-Welten (Stand 04.11.2026)
 
-Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt man erst die Welt, dann das Level. Jedes Level hat im Test eine Musterlösung, und das Teile-Ziel für den zweiten Stern ist die kleinste gefundene Fabrik (kürzester Weg bzw. kleinste Fabrik mit Weiche, `tests/zahlenfabrik-welten.test.ts`, Löser `tests/zahlenfabrik-loeser.ts`).
+Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt man erst die Welt, dann das Level. Jedes Level hat im Test eine Musterlösung, und das Teile-Ziel für den zweiten Stern ist die kleinste gefundene Fabrik (kürzester Weg bzw. kleinste Fabrik mit Weiche, (heute `tests/zahlenfabrik-kapitel.test.ts`), Löser `tests/zahlenfabrik-loeser.ts`).
 
 - **Welt 2 Rückwärts (Kl. 5):** Die Maschinen stehen schon da (🔒), man wählt die **Startzahl** (− / Zahl / +). Genau eine Startzahl im erlaubten Bereich passt (im Test geprüft). Beispiele: ×3 → 24 (Start 8), ÷2 dann +5 → 50 (Start 90), ×5, +15, ÷2 → 40 (Start 13).
 - **Welt 3 Sortieren (Kl. 5–6):** Die Quelle gibt eine Folge aus (z. B. 1 … 9), zwei oder drei **Lager mit Regeln** („✓ gerade?“ bzw. „✗ gerade?“ = der Rest). Weichen gerade?, ÷3?, ÷4?, >10?; mit Rechnen vor der Weiche (1, 3, 5, 7 → +1 → Vielfache von 4) und mit zwei Weichen für drei Lager (Reihenfolge der Weichen zählt).
@@ -53,6 +53,17 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - **Bilder eingebaut** (14 Stück, `src/assets/zahlenfabrik/`, WebP, zusammen etwa 180 KB): Quelle, Maschine, Weiche (gedreht, bei „nein“ links gespiegelt), Zusammenführer, Lager leer/voll, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze. Die gezeichnete Grafik bleibt als Ersatz.
 
 - **Feinschliff:** eigene Linien-Symbole statt Emojis (`icons.ts`) auf allen Knöpfen, in der Anzeige und in Meldungen; Bauteile als Bildkacheln mit Vorschau des Teils, Preis mit Münze; Ziel-Karte mit Kennzahlen (Teile, Geliefert bzw. Münzen, Verloren) und Sterne-Zielen als Abzeichen (werden golden, solange sie erreichbar sind); Kopfleiste mit Welt, Klassenstufe und „Profi“-Abzeichen; Level-Auswahl mit Welt-Nummer, Fortschrittsbalken und „Profi“-Marke; am Handy nur Symbole in der Kopfleiste.
+
+## Kapitel mit wachsendem Werkzeugkasten (Stand 04.11.2026)
+
+Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bauteile, jedes mit eigener Erklärung. Alle Bauteile nimmt man mit, damit die Werkzeuge nicht mehr die Lösung verraten.
+
+- **13 Kapitel** statt 7 Welten (`levels.ts`, `CHAPTERS`), 66 Level: 1 Bänder, 2 Plus-, 3 Minus-, 4 Mal-, 5 Geteilt-Maschine, 6 Rückwärts rechnen (Startzahl), 7–10 Weichen „gerade?“, „teilbar durch …?“, „größer als …?“, „Primzahl?“, 11 Wertetabellen, 12 Quadrat-Maschine, 13 Meisterprüfung. Profi-Level sind markiert (`pro`).
+- **Werkzeugkasten** (`kit.ts`): Ein Level bekommt alle Bauteile aus seinem Kapitel und allen davor (`kitFor`). Maschinen und Weichen sind **einstellbar**: Plus/Minus 1–10, Mal/Geteilt 2–10, „teilbar durch“ 2–10, „größer als“ 0–100. Die Zahl stellt man unter dem Werkzeugkasten ein (− / Zahl / +, Tastatur `<` `>`); ein Teil mit anderer Zahl antippen gibt ihm die neue Zahl.
+- **Grenze für Maschinen** (`maxMachines`): z. B. „Aus 4 wird 99 mit höchstens zwei Maschinen“ (nur +7, ×9). Rückwärts-Level haben 0 (nur Bänder). Die Anzeige zeigt „Maschinen 1/2“; eine Maschine zu viel wird mit Hinweis abgelehnt.
+- **Erklärkarten** (`lessons.ts`, ersetzt `intro.ts`): beim ersten Start „Willkommen“ (Bänder, der Werkzeugkasten wächst), dann beim ersten Öffnen eines Kapitels die Karten zum neuen Bauteil mit kleiner Szene (laufende Fabrik, Kachel mit Zahl-Einstellung, Weiche mit ✓/✗, Wertetabelle). Gesehenes merkt sich der Browser (`spiel:zahlenfabrik:neu`); „Neu: … · Erklärung“ in der Aufgabe und „Anleitung“ öffnen sie wieder. Neue Teile tragen im Werkzeugkasten das Schild „Neu“.
+- **Tests** (`tests/zahlenfabrik-kapitel.test.ts`): Jedes Level hat eine Musterlösung, die nur Teile aus dem eigenen Werkzeugkasten mit erlaubten Zahlen benutzt und die Grenze einhält; Teile-Ziel = kleinste gefundene Fabrik. Ein Löser zählt alle Rechenwege: Grenzen sind knapp (mit einer Maschine weniger unlösbar), bei „Aus 4 wird 99“ und „Aus 100 wird 3“ gibt es genau einen Weg, anderswo mehrere (z. B. 2 · (x + 1) = 2x + 2, (2x)² = 4x²).
+- Alle Kapitel sind frei wählbar (Unterricht: Lehrkraft springt zum passenden Kapitel). Alte Sterne der Welten-Level gelten nicht mehr (neue Kennungen `c1-1` …).
 
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 

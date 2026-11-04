@@ -93,10 +93,6 @@ export interface Level {
   /** Mehrere Lager mit eigenen Regeln. */
   targets?: Target[];
   walls: [number, number][];
-  /** Wählbare Maschinen (Bänder gibt es immer). */
-  tools: Op[];
-  /** Wählbare Weichen. */
-  sorts?: Test[];
   /** Mit so wenigen Teilen gibt es den zweiten Stern (vorgegebene Teile zählen nicht). */
   par: number;
   /** Teile, die schon auf der Karte stehen und sich nicht entfernen lassen. */

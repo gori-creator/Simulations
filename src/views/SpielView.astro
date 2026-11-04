@@ -38,13 +38,14 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
         <aside class="zf-side">
           <div class="zf-card zf-goal">
             <h2 class="zf-card__title">{t('Aufgabe', 'Task')}</h2>
+            <div class="zf-new" data-new hidden></div>
             <p class="zf-goal__hint" data-hint>{game.description[lang]}</p>
             <div class="zf-order" data-order hidden></div>
             <p class="zf-info" data-info></p>
           </div>
           <div class="zf-card zf-card--tools">
-            <h2 class="zf-card__title">{t('Bauteile', 'Parts')}</h2>
-            <div class="zf-tools" data-tools role="group" aria-label={t('Bauteile', 'Parts')}></div>
+            <h2 class="zf-card__title">{t('Werkzeugkasten', 'Toolbox')}</h2>
+            <div class="zf-tools" data-tools role="group" aria-label={t('Werkzeugkasten', 'Toolbox')}></div>
           </div>
           <div class="zf-card zf-card--controls">
             <div class="zf-controls" data-controls role="group" aria-label={t('Ablauf', 'Run')}></div>
