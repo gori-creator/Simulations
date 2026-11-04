@@ -8,8 +8,8 @@ const op = (sym: Op['sym'], n: number): Op => ({ sym, n });
 const win = (l: Level, g: Grid, pick?: number) => run(l, withFixed(l, g), pick);
 
 describe('Zahlenfabrik: alle Welten', () => {
-  it('sechs Welten mit je sechs Leveln, Kennungen eindeutig', () => {
-    expect(WORLDS).toHaveLength(6);
+  it('sieben Welten mit mindestens sechs Leveln, Kennungen eindeutig', () => {
+    expect(WORLDS).toHaveLength(7);
     for (const w of WORLDS) expect(w.levels.length).toBeGreaterThanOrEqual(6);
     expect(new Set(ALL_LEVELS.map((l) => l.id)).size).toBe(ALL_LEVELS.length);
   });
@@ -39,6 +39,9 @@ describe('Zahlenfabrik Welt 2: Rückwärts (Startzahl wählen)', () => {
     ['w2-4', 9, 30],
     ['w2-5', 90, 50],
     ['w2-6', 13, 40],
+    ['w2-7', 14, 15],
+    ['w2-8', 7, 52],
+    ['w7-1', 7, 54],
   ];
   for (const [id, answer, out] of cases) {
     it(`${id}: Startzahl ${answer} ergibt ${out}; eine andere nicht; Teile-Ziel = kürzester Weg`, () => {
@@ -83,6 +86,7 @@ describe('Zahlenfabrik Welt 3: Sortieren', () => {
   sortCase('w3-3', { kind: 'div', n: 4 }, [op('+', 1)]);
   sortCase('w3-4', { kind: 'gt', n: 10 });
   sortCase('w3-6', { kind: 'gt', n: 10 }, [op('×', 3)]);
+  sortCase('w3-8', { kind: 'even' }, [op('×', 3), op('+', 1)]);
   it('w3-3: ohne Rechnen geht es nicht (1, 3, 5, 7 sind keine Vielfachen von 4)', () => {
     const l = level('w3-3');
     expect(run(l, bestSort(l, { kind: 'div', n: 4 })!).won).toBe(false);
@@ -111,10 +115,12 @@ describe('Zahlenfabrik Welt 4: Primzahlen', () => {
   sortCase('w4-1', { kind: 'prime' });
   sortCase('w4-4', { kind: 'prime' });
   sortCase('w4-5', { kind: 'prime' }, [op('×', 2), op('+', 1)]);
+  sortCase('w4-8', { kind: 'prime' }, [op('+', 2)]);
   const factor: [string, Op[]][] = [
     ['w4-2', [op('÷', 2), op('÷', 2), op('÷', 3)]],
     ['w4-3', [op('÷', 2), op('÷', 2), op('÷', 3), op('÷', 5)]],
     ['w4-6', [op('÷', 2), op('÷', 3), op('÷', 5), op('÷', 7)]],
+    ['w4-7', [op('÷', 2), op('÷', 2), op('÷', 2), op('÷', 3), op('÷', 3), op('÷', 5)]],
   ];
   for (const [id, ops] of factor) {
     it(`${id}: zerlegen bis 1 mit ${ops.map((o) => o.sym + o.n).join(' ')}; Teile-Ziel = kürzester Weg`, () => {
@@ -142,6 +148,13 @@ describe('Zahlenfabrik Welten 5 und 6: Terme und Funktionen', () => {
     ['w6-4', [op('²', 2), op('×', 2)], [op('×', 2), op('²', 2)]],
     ['w6-5', [op('×', 3), op('−', 1)], [op('−', 1), op('×', 3)]],
     ['w6-6', [op('²', 2), op('−', 4)], [op('−', 4), op('²', 2)]],
+    ['w5-7', [op('+', 2), op('×', 3), op('−', 1)], [op('×', 3), op('+', 2), op('−', 1)]],
+    ['w5-8', [op('−', 3), op('×', 4)], [op('×', 4), op('−', 3)]],
+    ['w6-7', [op('×', 2), op('²', 2)], [op('²', 2), op('×', 2)]],
+    ['w6-8', [op('−', 1), op('²', 2), op('−', 1)], [op('²', 2), op('−', 1), op('−', 1)]],
+    ['w7-5', [op('²', 2), op('×', 2), op('−', 3)], [op('×', 2), op('²', 2), op('−', 3)]],
+    ['w1-7', [op('+', 3), op('×', 5)], [op('×', 5), op('+', 3)]],
+    ['w1-8', [op('×', 5), op('×', 5), op('−', 1)], [op('×', 5), op('−', 1), op('×', 5)]],
   ];
   for (const [id, good, bad] of cases) {
     it(`${id}: Wertetabelle stimmt; falsche Reihenfolge scheitert; Teile-Ziel = kürzester Weg`, () => {
@@ -177,5 +190,58 @@ describe('Zahlenfabrik: Lager-Regeln', () => {
   it('vorgegebene Teile zählen nicht zum Teile-Ziel', () => {
     const l = level('w2-1');
     expect(isFixed(l, 5, 3)).toBe(true);
+  });
+});
+
+/** Drei Lager mit zwei Weichen: gleiche Musterlösung wie w3-5 (16 Teile), Maschinen auf die ersten Bänder. */
+function threeWay(id: string, first: Test, second: Test, ops: Op[] = []) {
+  it(`${id}: drei Lager mit zwei Weichen, 16 Teile; vertauschte Weichen scheitern`, () => {
+    const l = level(id);
+    const g: Grid = new Map();
+    lay(l, g, [[2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4], [8, 4]], [9, 4], ops);
+    g.set(key(9, 4), { op: null, dir: 3, sort: first, side: 1 });
+    lay(l, g, [[9, 3], [9, 2], [9, 1], [10, 1]], [11, 1]);
+    g.set(key(10, 4), { op: null, dir: 0, sort: second, side: 1 });
+    lay(l, g, [[10, 5], [10, 6], [10, 7]], [11, 7]);
+    expect(g.size).toBe(l.par);
+    const r = run(l, g);
+    expect(r.error).toBeNull();
+    expect(r.won).toBe(true);
+    expect(r.got).toEqual(targetsOf(l).map((t) => t.need));
+    const swapped = new Map(g);
+    swapped.set(key(9, 4), { op: null, dir: 3, sort: second, side: 1 });
+    swapped.set(key(10, 4), { op: null, dir: 0, sort: first, side: 1 });
+    expect(run(l, swapped).won).toBe(false);
+  });
+}
+
+describe('Zahlenfabrik: Profi-Level und Meisterprüfung', () => {
+  threeWay('w3-7', { kind: 'div', n: 5 }, { kind: 'even' });
+  threeWay('w7-2', { kind: 'prime' }, { kind: 'even' });
+  threeWay('w7-6', { kind: 'gt', n: 50 }, { kind: 'even' }, [op('²', 2)]);
+  it('w7-3: Rechnen nach der Weiche (×10 oben, +100 unten); Teile-Ziel = kleinste Fabrik', () => {
+    const l = level('w7-3');
+    const g = bestSort(l, { kind: 'even' }, [], [op('×', 10)], [op('+', 100)])!;
+    expect(g.size).toBe(l.par);
+    const r = run(l, g);
+    expect(r.won).toBe(true);
+    expect(r.got).toEqual([3, 3]);
+    // ohne Maschinen hinter der Weiche geht es nicht
+    expect(run(l, bestSort(l, { kind: 'even' })!).won).toBe(false);
+  });
+  it('w7-4: gerade Zahlen halbieren ergibt Primzahlen; Teile-Ziel = kleinste Fabrik', () => {
+    const l = level('w7-4');
+    const g = bestSort(l, { kind: 'even' }, [], [op('÷', 2)])!;
+    expect(g.size).toBe(l.par);
+    expect(run(l, g).won).toBe(true);
+  });
+  it('Profi-Level sind aufwendiger als die Einstiegslevel ihrer Welt (Weg plus Maschinen)', () => {
+    const effort = (l: Level) => l.par + (l.fixed?.length ?? 0) + l.tools.length + (l.sorts?.length ?? 0);
+    for (const w of WORLDS.slice(0, 6)) {
+      const first = w.levels[0]!;
+      const pro = w.levels.slice(6);
+      expect(pro.length).toBe(2);
+      for (const l of pro) expect(effort(l)).toBeGreaterThan(effort(first));
+    }
   });
 });

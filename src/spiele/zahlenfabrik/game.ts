@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art } from './art';
+import { art, IMAGES } from './art';
 import { introSeen, showIntro } from './intro';
 import { createSound } from './sound';
 import { ALL_LEVELS, WORLDS, type LevelInfo } from './levels';
@@ -59,6 +59,9 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Machines: drag from the inventory onto the map, or tap them and then tap a square. Tap a part again to turn it.',
   ),
   won: L('Auftrag erfüllt!', 'Order complete!'),
+  undo: L('↶ Rückgängig', '↶ Undo'),
+  pro: L('Profi-Level', 'pro level'),
+  undoNone: L('Es gibt nichts mehr rückgängig zu machen.', 'There is nothing left to undo.'),
   boardLabel: L('Fabrik-Karte. Pfeiltasten: Feld wählen. Leertaste oder Enter: Teil setzen oder drehen. Umschalt + Pfeiltaste: Band ziehen. Entf: abbauen.', 'Factory map. Arrow keys: choose a square. Space or Enter: place or turn a part. Shift + arrow key: draw a belt. Delete: remove.'),
   keys: L(
     '⌨️ Tastatur: Karte anklicken oder mit Tab hinspringen. Pfeiltasten wählen ein Feld, Leertaste/Enter setzt oder dreht das Teil, Umschalt + Pfeil zieht ein Band, Entf baut ab, H/B/A wählen Hand, Band, Abbauen, Ziffern 1–9 die Teile im Inventar, P startet oder pausiert, + und − zoomen.',
@@ -309,6 +312,12 @@ export function initFactory(root: HTMLElement): void {
   const cellsLayer = el('div', 'zf-cells');
   const itemsLayer = el('div', 'zf-items');
   world.append(beltLayer, cellsLayer, itemsLayer);
+  // Eigener Boden (optional, Bilder boden/boden-dunkel aus docs/ZAHLENFABRIK-BILDER.md)
+  if (IMAGES.boden) {
+    world.classList.add('has-floor');
+    world.style.setProperty('--zf-floor', `url("${IMAGES.boden}")`);
+    world.style.setProperty('--zf-floor-dark', `url("${IMAGES['boden-dunkel'] ?? IMAGES.boden}")`);
+  }
   const zoomBar = el('div', 'zf-zoom');
   // Tastatur: Feld-Auswahl (Rahmen auf der Karte) und Ansage für Bildschirmleser
   const cursorEl = el('div', 'zf-cursor');
@@ -446,6 +455,7 @@ export function initFactory(root: HTMLElement): void {
     const panButton = event.button === 1 || event.button === 2;
     const mode = panButton || tool.kind === 'hand' ? 'pan' : isBelt(tool) ? 'draw' : tool.kind === 'erase' ? 'erase' : 'tap';
     gesture = { mode, startX: event.clientX, startY: event.clientY, moved: false, last: cellAt(event.clientX, event.clientY) };
+    if (mode !== 'pan') remember();
     if (mode === 'erase' && gesture.last) eraseAt(...gesture.last);
     event.preventDefault();
   });
@@ -496,6 +506,36 @@ export function initFactory(root: HTMLElement): void {
   viewport.addEventListener('pointerup', endPointer);
   viewport.addEventListener('pointercancel', endPointer);
   viewport.addEventListener('contextmenu', (event) => event.preventDefault());
+
+  // ---------- Rückgängig ----------
+  /** Frühere Bauzustände (je Geste einer), in der offenen Welt mit Münzen. */
+  let history: { grid: Grid; coins: number }[] = [];
+  const copyGrid = (g: Grid): Grid => new Map([...g].map(([k, p]) => [k, { ...p }]));
+
+  /** Zustand vor einer Änderung merken (höchstens 60 Schritte). */
+  function remember(): void {
+    history.push({ grid: copyGrid(grid), coins: econ.coins });
+    if (history.length > 60) history.shift();
+    undoBtn.disabled = false;
+  }
+
+  const sig = (g: Grid) => JSON.stringify([...g].sort(([a], [b]) => (a < b ? -1 : 1)));
+
+  function undo(): void {
+    // Schritte überspringen, die nichts verändert haben (z. B. Antippen eines leeren Feldes)
+    const now = sig(grid);
+    while (history.length && sig(history[history.length - 1]!.grid) === now && history[history.length - 1]!.coins === econ.coins) history.pop();
+    const last = history.pop();
+    undoBtn.disabled = history.length === 0;
+    if (!last) return say(tx(T.undoNone));
+    if (mode === 'level' && running) stopTimer();
+    if (mode === 'level' && hasRun) resetRun();
+    grid = last.grid;
+    if (mode === 'world') econ.coins = last.coins;
+    sound.play('remove');
+    changed();
+    if (mode === 'world') renderTools();
+  }
 
   // ---------- Bauen ----------
   function editable(): boolean {
@@ -661,6 +701,10 @@ export function initFactory(root: HTMLElement): void {
   const KEY_DIR: Record<string, Dir> = { ArrowRight: 0, ArrowDown: 1, ArrowLeft: 2, ArrowUp: 3 };
 
   viewport.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
+      event.preventDefault();
+      return undo();
+    }
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     const d = KEY_DIR[event.key];
     const k = event.key.toLowerCase();
@@ -670,14 +714,17 @@ export function initFactory(root: HTMLElement): void {
       const ny = cursor.y + DY[d];
       if (event.shiftKey) {
         // Band ziehen: vom aktuellen Feld ins nächste
+        remember();
         if (nx >= 0 && ny >= 0 && nx < board.cols && ny < board.rows) drawBelt([cursor.x, cursor.y], [nx, ny]);
       }
       placeCursor(nx, ny);
     } else if (event.key === 'Enter' || event.key === ' ') {
       if (tool.kind === 'hand') tool = { kind: 'part', spec: BELT };
+      remember();
       tap(cursor.x, cursor.y);
       announce.textContent = describe(cursor.x, cursor.y);
     } else if (event.key === 'Delete' || event.key === 'Backspace') {
+      remember();
       eraseAt(cursor.x, cursor.y);
       announce.textContent = describe(cursor.x, cursor.y);
     } else if (k === 'h' || k === 'b' || k === 'a') {
@@ -825,7 +872,7 @@ export function initFactory(root: HTMLElement): void {
     }
     for (const k of board.walls) {
       const [x, y] = k.split(',').map(Number) as [number, number];
-      at(x, y, 'zf-cell--rock').append(art('rock', CELL));
+      at(x, y, 'zf-cell--rock').append(art('rock', CELL, undefined, (x * 7 + y * 13) % 3));
     }
     for (const [k, part] of all) {
       if (!part.op && !part.sort && !part.merge && !part.bridge) continue;
@@ -962,6 +1009,11 @@ export function initFactory(root: HTMLElement): void {
         const c = cellsLayer.querySelector(`[data-target="${i}"]`);
         if (!c) return;
         c.querySelector('.zf-target-count')!.textContent = `${state.got[i] ?? 0}/${t.need}`;
+        // volles Lager: eigenes Bild, falls vorhanden
+        const full = (state.got[i] ?? 0) >= t.need;
+        c.classList.toggle('is-full', full);
+        const img = c.querySelector<HTMLImageElement>('img.zf-art');
+        if (img && IMAGES['kiste-voll'] && IMAGES.lager) img.src = full ? IMAGES['kiste-voll'] : IMAGES.lager;
         c.querySelector('.zf-target-label')!.textContent = targetLabel(t, state.got[i] ?? 0);
       });
       const sv = cellsLayer.querySelector('.zf-source-value');
@@ -1061,7 +1113,10 @@ export function initFactory(root: HTMLElement): void {
       const cell = cellAt(event.clientX, event.clientY);
       const box = viewport.getBoundingClientRect();
       const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
-      if (cell && inside) placeSpec(spec, ...cell);
+      if (cell && inside) {
+        remember();
+        placeSpec(spec, ...cell);
+      }
       // Klick nach dem Ziehen nicht als Werkzeugwahl werten
       button.addEventListener('click', (e) => e.stopImmediatePropagation(), { once: true, capture: true });
     };
@@ -1095,9 +1150,12 @@ export function initFactory(root: HTMLElement): void {
   pickLess.setAttribute('aria-label', tx(T.pickLess));
   pickMore.setAttribute('aria-label', tx(T.pickMore));
   pickBox.append(pickLabel, pickLess, pickInput, pickMore);
+  const undoBtn = btn(tx(T.undo));
+  undoBtn.disabled = true;
+  undoBtn.addEventListener('click', undo);
   const helpBtn = btn(tx(T.help));
   const soundBtn = btn('');
-  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, clearBtn, expandBtn, helpBtn, soundBtn);
+  controls.append(pickBox, runBtn, stepBtn, fastBtn, stopBtn, undoBtn, clearBtn, expandBtn, helpBtn, soundBtn);
   const sound = createSound();
   const renderSound = () => {
     soundBtn.textContent = tx(sound.on ? T.soundOn : T.soundOff);
@@ -1202,7 +1260,13 @@ export function initFactory(root: HTMLElement): void {
       );
       renderOrder();
       hud.hidden = false;
-      hud.textContent = `🪙 ${ctxNum(econ.coins)} · 📋 ${baseLine()}`;
+      hud.textContent = `${IMAGES.muenze ? '' : '🪙 '}${ctxNum(econ.coins)} · 📋 ${baseLine()}`;
+      if (IMAGES.muenze) {
+        const coin = el('img', 'zf-hud__coin');
+        coin.src = IMAGES.muenze;
+        coin.alt = '';
+        hud.prepend(coin);
+      }
       if (!expandBtn.hidden) expandBtn.classList.toggle('is-poor', econ.coins < (ZONE_PRICES[econ.zone + 1] ?? 0));
       if (toolsSignature() !== toolsKey) renderTools();
       return;
@@ -1358,6 +1422,7 @@ export function initFactory(root: HTMLElement): void {
   });
   stopBtn.addEventListener('click', resetRun);
   clearBtn.addEventListener('click', () => {
+    if (grid.size) remember();
     if (mode === 'world' && grid.size > 0 && !confirm(tx(T.resetConfirm))) return;
     if (mode === 'world') for (const part of grid.values()) econ.coins += priceOf(part);
     grid = new Map();
@@ -1395,9 +1460,11 @@ export function initFactory(root: HTMLElement): void {
     list.hidden = mode !== 'level';
     WORLDS[shownWorld]!.levels.forEach((l, i) => {
       const n = stars[l.id] ?? 0;
-      const b = btn(`${i + 1} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, 'zf-level');
+      // Profi-Level (ab Nummer 7) mit Flamme
+      const pro = i >= 6 && shownWorld < 6;
+      const b = btn(`${i + 1}${pro ? ' 🔥' : ''} ${'★'.repeat(n)}${'☆'.repeat(3 - n)}`, `zf-level${pro ? ' zf-level--pro' : ''}`);
       b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
-      b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}, ${n}/3 ★`);
+      b.setAttribute('aria-label', `${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
       b.addEventListener('click', () => openLevel(ALL_LEVELS.indexOf(l)));
       list.append(b);
     });
@@ -1406,6 +1473,8 @@ export function initFactory(root: HTMLElement): void {
 
   function openWorldMode(): void {
     if (mode === 'world') return;
+    history = [];
+    undoBtn.disabled = true;
     stopTimer();
     mode = 'world';
     board = boardOfWorld(openWorld);
@@ -1431,6 +1500,8 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function openLevel(i: number): void {
+    history = [];
+    undoBtn.disabled = true;
     stopTimer();
     if (mode === 'world') saveWorld(grid, econ);
     mode = 'level';

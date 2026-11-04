@@ -37,7 +37,15 @@ Sechs Welten mit je sechs Leveln (`levels.ts`, `WORLDS`); in der Leiste wählt m
 - Jedes gewählte Feld wird für Bildschirmleser angesagt („Feld 6, 5: +2, Richtung rechts“, „Lager, will die 5“, „Quelle mit 3“, „Fels“ …), ebenso der Werkzeugwechsel. Meldungen stehen in einem Statusbereich (`aria-live`).
 - Level 1 lässt sich ganz mit der Tastatur lösen (im Browser geprüft).
 
-Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
+## Mehr Level, Bilder, Rückgängig (Stand 04.11.2026)
+
+- **Profi-Level 7 und 8 in jeder Welt** (🔥 in der Leiste): z. B. „Aus 7 wird 50“ und „Aus 4 wird 99“ mit Umwegen, vier Maschinen rückwärts (Start 14), Rückwärts mit x² (Start 7), drei Lager mit der Falle „10 ist Vielfaches von 5 und gerade“, Zerlegen von 360 (sechs Faktoren), Primzahlzwillinge, 3 · (x + 2) − 1, 4 · (x − 3) mit negativen Werten, (2x)² (zwei Wege), Scheitelpunktform (x − 1)² − 1.
+- **Welt 7 „Meisterprüfung“** (6 Level): Rückwärts mit Quadrat, drei Lager „prim / gerade / Rest“ (die 2!), **Rechnen nach der Weiche** (gerade ×10, ungerade +100), Halbieren und Primzahl prüfen, 2x² − 3, großes Finale mit x² und drei Lagern.
+- Alle neuen Level mit Musterlösung im Test; Teile-Ziel = kleinste gefundene Fabrik (Löser kann jetzt auch Maschinen hinter der Weiche).
+- **Eigene Bilder** statt gezeichneter Grafik möglich: Prompts in `docs/ZAHLENFABRIK-BILDER.md`, Ablage `src/assets/zahlenfabrik/`; ohne Datei bleibt die gezeichnete Grafik.
+- **Rückgängig** (Knopf und Strg + Z): macht den letzten Bauschritt rückgängig (eine Geste = ein Schritt), in der offenen Welt mit Münzen.
+
+Offen: Bilder einbauen (sobald hochgeladen), Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
 

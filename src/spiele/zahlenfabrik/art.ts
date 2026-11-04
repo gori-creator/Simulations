@@ -11,6 +11,32 @@ import type { Dir } from './model';
  */
 const NS = 'http://www.w3.org/2000/svg';
 
+/**
+ * Eigene Bilder (optional, `src/assets/zahlenfabrik/<name>.webp`, Prompts in
+ * docs/ZAHLENFABRIK-BILDER.md). Gibt es eine Datei, nimmt das Spiel das Bild,
+ * sonst die gezeichnete Grafik unten.
+ */
+const files = import.meta.glob<string>('../../assets/zahlenfabrik/*.webp', { eager: true, query: '?url', import: 'default' });
+export const IMAGES: Record<string, string> = Object.fromEntries(Object.entries(files).map(([path, url]) => [path.split('/').pop()!.replace(/\.webp$/, ''), url]));
+
+/** Dateinamen je Teil (mehrere = Varianten, je nach Feld gewählt). */
+const FILES: Record<ArtKind, string[]> = {
+  source: ['quelle'],
+  machine: ['maschine'],
+  sort: ['weiche'],
+  merge: ['zusammenfuehren'],
+  target: ['lager'],
+  base: ['basis'],
+  rock: ['fels-1', 'fels-2', 'fels-3'],
+  bridge: ['bruecke'],
+};
+
+/** Bild-Adresse für ein Teil (oder undefined, wenn es kein Bild gibt). */
+export function imageFor(kind: ArtKind, variant = 0): string | undefined {
+  const names = FILES[kind].filter((n) => IMAGES[n]);
+  return names.length ? IMAGES[names[variant % names.length]!] : undefined;
+}
+
 export type ArtKind = 'source' | 'machine' | 'sort' | 'merge' | 'target' | 'base' | 'rock' | 'bridge';
 
 /** Ausguss an der rechten Kante (Richtung 0), wird je nach Richtung gedreht. */
@@ -63,7 +89,19 @@ const DRAW: Record<ArtKind, (size: number) => string> = {
  * SVG-Zeichnung für ein Feld. `size`: Kantenlänge in px (Kasten 52, ganze
  * Felder 64, Basis 3 × 64). `dir`: Richtung des Ausgusses (ohne: keiner).
  */
-export function art(kind: ArtKind, size: number, dir?: Dir): SVGSVGElement {
+export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0): SVGSVGElement | HTMLImageElement {
+  const src = imageFor(kind, variant);
+  if (src) {
+    // Bild: Ausgang zeigt nach rechts, für andere Richtungen gedreht
+    const img = document.createElement('img');
+    img.className = `zf-art zf-art--img zf-art--${kind}`;
+    img.src = src;
+    img.alt = '';
+    img.decoding = 'async';
+    img.draggable = false;
+    if (dir) img.style.rotate = `${dir * 90}deg`;
+    return img;
+  }
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('class', `zf-art zf-art--${kind}`);
   svg.setAttribute('viewBox', `0 0 ${size} ${size}`);

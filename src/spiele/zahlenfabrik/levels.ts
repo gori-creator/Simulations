@@ -87,6 +87,28 @@ export const WORLD_1: LevelInfo[] = [
     tools: [{ sym: '+', n: 9 }, { sym: '×', n: 10 }, { sym: '×', n: 2 }],
     need: 3, par: 25,
   },
+  {
+    id: 'w1-7',
+    title: L('Aus 7 wird 50', '7 becomes 50'),
+    hint: L('Profi-Level: Nicht jede Maschine passt. Und der Weg windet sich durch die Felsen.', 'Pro level: not every machine fits. And the path winds through the rocks.'),
+    cols: 15, rows: 9,
+    source: { x: 1, y: 1, dir: 1, value: 7 },
+    target: { x: 13, y: 7, value: 50 }, need: 3,
+    walls: [...rocks(3, 0, 3, 6), ...rocks(7, 2, 7, 8), ...rocks(11, 0, 11, 6)],
+    tools: [{ sym: '+', n: 3 }, { sym: '×', n: 5 }, { sym: '−', n: 1 }, { sym: '÷', n: 2 }],
+    par: 29,
+  },
+  {
+    id: 'w1-8',
+    title: L('Aus 4 wird 99', '4 becomes 99'),
+    hint: L('Profi-Level: Eine Maschine darfst du mehrmals setzen. Erst groß werden, dann ein kleines Stück zurück.', 'Pro level: you may use a machine more than once. Grow big first, then step back a little.'),
+    cols: 15, rows: 9,
+    source: { x: 1, y: 7, dir: 0, value: 4 },
+    target: { x: 13, y: 1, value: 99 }, need: 3,
+    walls: [...rocks(4, 3, 4, 8), ...rocks(8, 0, 8, 5), ...rocks(11, 3, 13, 3)],
+    tools: [{ sym: '×', n: 5 }, { sym: '−', n: 1 }, { sym: '+', n: 9 }],
+    par: 25,
+  },
 ];
 
 /* ---------- Bausteine für die Welten 2–6 ---------- */
@@ -171,6 +193,28 @@ export const WORLD_2: LevelInfo[] = [
     walls: [...wall(4, 7, [3]), ...wall(7, 7, [3]), ...wall(10, 7, [3])],
     fixed: [fixedOp(4, 3, '×', 5), fixedOp(7, 3, '+', 15), fixedOp(10, 3, '÷', 2)],
     tools: [], par: 7,
+  },
+  {
+    id: 'w2-7',
+    title: L('Vier Maschinen zurück', 'Four machines back'),
+    hint: L('Profi-Level: ×2, −4, ÷3, +7 – und 15 kommt an. Fang hinten an!', 'Pro level: ×2, −4, ÷3, +7 – and 15 arrives. Start at the back!'),
+    cols: 15, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 50 } },
+    target: { x: 13, y: 3, value: 15 }, need: 3,
+    walls: [...wall(3, 7, [3]), ...wall(6, 7, [3]), ...wall(9, 7, [3]), ...wall(12, 7, [3])],
+    fixed: [fixedOp(3, 3, '×', 2), fixedOp(6, 3, '−', 4), fixedOp(9, 3, '÷', 3), fixedOp(12, 3, '+', 7)],
+    tools: [], par: 7,
+  },
+  {
+    id: 'w2-8',
+    title: L('Rückwärts quadrieren', 'Squaring backwards'),
+    hint: L('Profi-Level: x², dann +3 – und 52 kommt an. Rückwärts von x² ist die Wurzel.', 'Pro level: x², then +3 – and 52 arrives. Backwards from x² is the square root.'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, pick: { min: 1, max: 30 } },
+    target: { x: 11, y: 1, value: 52 }, need: 3,
+    walls: [...wall(4, 8, [6]), ...wall(8, 8, [1])],
+    fixed: [{ x: 4, y: 6, part: { op: { sym: '²', n: 2 }, dir: 0 } }, fixedOp(8, 1, '+', 3)],
+    tools: [], par: 12,
   },
 ];
 
@@ -266,6 +310,33 @@ export const WORLD_3: LevelInfo[] = [
     walls: [[6, 3], [6, 5], [7, 3], [7, 5]],
     tools: [{ sym: '×', n: 3 }, { sym: '+', n: 3 }], sorts: [gt(10)], par: 15,
   },
+  {
+    id: 'w3-7',
+    title: L('Fünfer, gerade, Rest', 'Fives, even, rest'),
+    hint: L('Profi-Level: Vielfache von 5 nach oben, gerade Zahlen in die Mitte, der Rest nach unten. Achtung, die 10 ist beides!', 'Pro level: multiples of 5 at the top, even numbers in the middle, the rest at the bottom. Careful, 10 is both!'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [2, 5, 8, 10, 11, 15, 4, 7] },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(div(5)) },
+      { x: 11, y: 4, need: 3, accept: { kind: 'test', test: even } },
+      { x: 11, y: 7, need: 2, accept: no(even) },
+    ],
+    walls: [[6, 0], [6, 8], [3, 1], [3, 7]],
+    tools: [], sorts: [div(5), even], par: 16,
+  },
+  {
+    id: 'w3-8',
+    title: L('Erst 3x + 1, dann sortieren', 'First 3x + 1, then sort'),
+    hint: L('Profi-Level: 1 bis 8 kommen. Rechne 3x + 1 und sortiere dann gerade und ungerade.', 'Pro level: 1 to 8 arrive. Calculate 3x + 1 and then sort even and odd.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 8) },
+    targets: [
+      { x: 11, y: 1, need: 4, accept: yes(even) },
+      { x: 11, y: 7, need: 4, accept: no(even) },
+    ],
+    walls: [[5, 3], [5, 5], [8, 2], [8, 6]],
+    tools: [{ sym: '×', n: 3 }, { sym: '+', n: 1 }, { sym: '+', n: 2 }], sorts: [even, div(3)], par: 15,
+  },
 ];
 
 /**
@@ -342,6 +413,29 @@ export const WORLD_4: LevelInfo[] = [
     walls: [...wall(4, 7, [1, 5]), ...wall(9, 7, [1, 5])],
     tools: [{ sym: '÷', n: 2 }, { sym: '÷', n: 3 }, { sym: '÷', n: 5 }, { sym: '÷', n: 7 }, { sym: '÷', n: 11 }], par: 14,
   },
+  {
+    id: 'w4-7',
+    title: L('Zerlege 360', 'Break down 360'),
+    hint: L('Profi-Level: 360 hat sechs Primfaktoren. Wie viele Zweien stecken drin?', 'Pro level: 360 has six prime factors. How many twos are in it?'),
+    cols: 15, rows: 8,
+    source: { x: 1, y: 1, dir: 0, value: 360 },
+    target: { x: 13, y: 6, value: 1 }, need: 3,
+    walls: [...wall(5, 8, [1]), ...wall(10, 8, [6])],
+    tools: [{ sym: '÷', n: 2 }, { sym: '÷', n: 3 }, { sym: '÷', n: 5 }, { sym: '÷', n: 7 }], par: 16,
+  },
+  {
+    id: 'w4-8',
+    title: L('Primzahlzwillinge', 'Twin primes'),
+    hint: L('Profi-Level: 3, 5, 7 … 17 kommen. Plus 2 gerechnet: Welche Ergebnisse sind wieder Primzahlen?', 'Pro level: 3, 5, 7 … 17 arrive. After adding 2: which results are primes again?'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [3, 5, 7, 9, 11, 13, 15, 17] },
+    targets: [
+      { x: 11, y: 2, need: 6, accept: yes(prime) },
+      { x: 11, y: 6, need: 2, accept: no(prime) },
+    ],
+    walls: [[6, 0], [6, 1], [6, 7], [6, 8], [3, 3], [3, 5]],
+    tools: [{ sym: '+', n: 2 }, { sym: '+', n: 4 }], sorts: [prime, even], par: 13,
+  },
 ];
 
 const table = (f: (x: number) => number, xs: number[]) => xs.map(f);
@@ -411,6 +505,26 @@ export const WORLD_5: LevelInfo[] = [
     walls: [[6, 2], [6, 3], [6, 4]],
     tools: [{ sym: '×', n: 2 }, { sym: '+', n: 1 }, { sym: '+', n: 2 }], par: 14,
   },
+  {
+    id: 'w5-7',
+    title: L('3 · (x + 2) − 1', '3 · (x + 2) − 1'),
+    hint: L('Profi-Level: Klammer, dann mal, dann minus. Das Lager will 8, 11, 14, 17, 20.', 'Pro level: brackets, then times, then minus. The storage wants 8, 11, 14, 17, 20.'),
+    cols: 15, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 13, y: 1, need: 5, accept: { kind: 'seq', values: table((x) => 3 * (x + 2) - 1, seq(1, 5)) } }],
+    walls: [...wall(5, 8, [3]), ...wall(10, 8, [5])],
+    tools: [{ sym: '+', n: 2 }, { sym: '×', n: 3 }, { sym: '−', n: 1 }, { sym: '+', n: 1 }], par: 20,
+  },
+  {
+    id: 'w5-8',
+    title: L('4 · (x − 3)', '4 · (x − 3)'),
+    hint: L('Profi-Level: Jetzt wird es negativ! Das Lager will −8, −4, 0, 4, 8.', 'Pro level: now it gets negative! The storage wants −8, −4, 0, 4, 8.'),
+    cols: 14, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 12, y: 3, need: 5, accept: { kind: 'seq', values: table((x) => 4 * (x - 3), seq(1, 5)) } }],
+    walls: [[4, 2], [4, 3], [4, 4], [8, 1], [8, 2], [8, 4], [8, 5]],
+    tools: [{ sym: '−', n: 3 }, { sym: '×', n: 4 }, { sym: '+', n: 3 }], par: 14,
+  },
 ];
 
 /**
@@ -478,6 +592,108 @@ export const WORLD_6: LevelInfo[] = [
     walls: [[6, 1], [6, 2], [6, 3], [6, 4], [6, 5]],
     tools: [{ sym: '²', n: 2 }, { sym: '−', n: 4 }, { sym: '+', n: 4 }], par: 15,
   },
+  {
+    id: 'w6-7',
+    title: L('f(x) = (2x)²', 'f(x) = (2x)²'),
+    hint: L('Profi-Level: 4, 16, 36, 64, 100. Es gibt sogar zwei Wege – findest du beide?', 'Pro level: 4, 16, 36, 64, 100. There are even two ways – can you find both?'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 1, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 11, y: 6, need: 5, accept: { kind: 'seq', values: table((x) => (2 * x) ** 2, seq(1, 5)) } }],
+    walls: [...rocks(4, 0, 4, 4), ...rocks(8, 3, 8, 7)],
+    tools: [{ sym: '×', n: 2 }, { sym: '²', n: 2 }, { sym: '×', n: 4 }], par: 20,
+  },
+  {
+    id: 'w6-8',
+    title: L('Scheitelpunkt: f(x) = (x − 1)² − 1', 'Vertex: f(x) = (x − 1)² − 1'),
+    hint: L('Profi-Level: x = −1 … 3. Das Lager will 3, 0, −1, 0, 3 – die Parabel hat ihren tiefsten Punkt bei x = 1.', 'Pro level: x = −1 … 3. The storage wants 3, 0, −1, 0, 3 – the parabola has its lowest point at x = 1.'),
+    cols: 14, rows: 8,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: seq(-1, 3) },
+    targets: [{ x: 12, y: 3, need: 5, accept: { kind: 'seq', values: table((x) => (x - 1) ** 2 - 1, seq(-1, 3)) } }],
+    walls: [[5, 2], [5, 3], [5, 4], [9, 2], [9, 3], [9, 4]],
+    tools: [{ sym: '−', n: 1 }, { sym: '²', n: 2 }, { sym: '+', n: 1 }], par: 14,
+  },
+];
+
+/**
+ * Welt 7 „Meisterprüfung“: alles gemischt – Startzahl wählen mit x², drei
+ * Lager, Rechnen nach der Weiche, Wertetabellen mit mehreren Schritten.
+ */
+export const WORLD_7: LevelInfo[] = [
+  {
+    id: 'w7-1',
+    title: L('Rückwärts mit Quadrat', 'Backwards with a square'),
+    hint: L('+1, dann x², dann −10 – und 54 kommt an. Welche Startzahl?', '+1, then x², then −10 – and 54 arrives. Which starting number?'),
+    cols: 15, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 30 } },
+    target: { x: 13, y: 3, value: 54 }, need: 3,
+    walls: [...wall(4, 7, [3]), ...wall(8, 7, [3]), ...wall(11, 7, [3])],
+    fixed: [fixedOp(4, 3, '+', 1), { x: 8, y: 3, part: { op: { sym: '²', n: 2 }, dir: 0 } }, fixedOp(11, 3, '−', 10)],
+    tools: [], par: 8,
+  },
+  {
+    id: 'w7-2',
+    title: L('Prim, gerade, Rest', 'Prime, even, rest'),
+    hint: L('1 bis 12 auf drei Lager: Primzahlen nach oben, gerade Zahlen in die Mitte, der Rest nach unten. Die 2 ist prim und gerade – wohin damit?', '1 to 12 into three storages: primes at the top, even numbers in the middle, the rest at the bottom. 2 is prime and even – where does it go?'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 12) },
+    targets: [
+      { x: 11, y: 1, need: 5, accept: yes(prime) },
+      { x: 11, y: 4, need: 5, accept: { kind: 'test', test: even } },
+      { x: 11, y: 7, need: 2, accept: no(even) },
+    ],
+    walls: [[5, 0], [5, 1], [5, 7], [5, 8]],
+    tools: [], sorts: [prime, even], par: 16,
+  },
+  {
+    id: 'w7-3',
+    title: L('Rechnen nach der Weiche', 'Calculating after the switch'),
+    hint: L('1 bis 6: Gerade Zahlen werden mal 10 (oben: Vielfache von 20), ungerade bekommen +100 (unten: über 100). Die Maschinen stehen hinter der Weiche!', '1 to 6: even numbers are multiplied by 10 (top: multiples of 20), odd ones get +100 (bottom: over 100). The machines go after the switch!'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(div(20)) },
+      { x: 11, y: 7, need: 3, accept: yes(gt(100)) },
+    ],
+    walls: [[6, 3], [6, 4], [6, 5]],
+    tools: [{ sym: '×', n: 10 }, { sym: '+', n: 100 }], sorts: [even], par: 17,
+  },
+  {
+    id: 'w7-4',
+    title: L('Halbieren und prüfen', 'Halve and check'),
+    hint: L('6, 10, 14, 15, 21, 35: Gerade Zahlen werden halbiert und müssen oben als Primzahl ankommen. Die ungeraden kommen nach unten.', '6, 10, 14, 15, 21, 35: even numbers are halved and must arrive at the top as primes. The odd ones go to the bottom.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [6, 10, 14, 15, 21, 35] },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(prime) },
+      { x: 11, y: 7, need: 3, accept: no(even) },
+    ],
+    walls: [[4, 2], [4, 6], [8, 3], [8, 5]],
+    tools: [{ sym: '÷', n: 2 }, { sym: '÷', n: 3 }], sorts: [even, prime], par: 15,
+  },
+  {
+    id: 'w7-5',
+    title: L('f(x) = 2x² − 3', 'f(x) = 2x² − 3'),
+    hint: L('Drei Schritte in der richtigen Reihenfolge: −1, 5, 15, 29, 47.', 'Three steps in the right order: −1, 5, 15, 29, 47.'),
+    cols: 15, rows: 8,
+    source: { x: 1, y: 1, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 13, y: 6, need: 5, accept: { kind: 'seq', values: table((x) => 2 * x * x - 3, seq(1, 5)) } }],
+    walls: [...rocks(5, 0, 5, 4), ...rocks(10, 3, 10, 7)],
+    tools: [{ sym: '²', n: 2 }, { sym: '×', n: 2 }, { sym: '−', n: 3 }, { sym: '+', n: 3 }], par: 22,
+  },
+  {
+    id: 'w7-6',
+    title: L('Großes Finale', 'Grand finale'),
+    hint: L('1 bis 10, alles quadriert: Über 50 nach oben, gerade Quadratzahlen in die Mitte, der Rest nach unten.', '1 to 10, all squared: over 50 to the top, even square numbers to the middle, the rest to the bottom.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 10) },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(gt(50)) },
+      { x: 11, y: 4, need: 3, accept: { kind: 'test', test: even } },
+      { x: 11, y: 7, need: 4, accept: no(even) },
+    ],
+    walls: [[4, 2], [4, 6], [7, 0], [7, 8]],
+    tools: [{ sym: '²', n: 2 }, { sym: '×', n: 2 }], sorts: [gt(50), even], par: 16,
+  },
 ];
 
 /** Alle Welten mit Name und Klassenstufe (Reihenfolge wie im Konzept). */
@@ -495,6 +711,7 @@ export const WORLDS: WorldInfo[] = [
   { id: 'w4', title: L('Primzahlen', 'Primes'), grades: '5–6', levels: WORLD_4 },
   { id: 'w5', title: L('Terme', 'Terms'), grades: '7–8', levels: WORLD_5 },
   { id: 'w6', title: L('Funktionen', 'Functions'), grades: '8–9', levels: WORLD_6 },
+  { id: 'w7', title: L('Meisterprüfung', 'Master exam'), grades: '7–9', levels: WORLD_7 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = WORLDS.flatMap((w) => w.levels);
