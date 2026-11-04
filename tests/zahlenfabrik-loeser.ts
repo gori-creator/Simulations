@@ -60,7 +60,7 @@ function bfs(level: Level, from: Cell, to: Cell, blocked: Set<string>): Cell[] |
  * der Weiche; gibt die kleinste gefundene Fabrik zurück, deren Wege sich
  * nicht überschneiden.
  */
-export function bestSort(level: Level, test: Test, ops: Op[] = []): Grid | null {
+export function bestSort(level: Level, test: Test, ops: Op[] = [], opsYes: Op[] = [], opsNo: Op[] = []): Grid | null {
   const [a, b] = targetsOf(level) as [Target, Target];
   const front: Cell = [level.source.x + DX[level.source.dir], level.source.y + DY[level.source.dir]];
   let best: Grid | null = null;
@@ -83,15 +83,15 @@ export function bestSort(level: Level, test: Test, ops: Op[] = []): Grid | null 
           const inDir = last ? dirTo(last, s) : level.source.dir;
           if ((inDir + 2) % 4 === yd || (inDir + 2) % 4 === nd) continue;
           const pa = ya[0] === a.x && ya[1] === a.y ? [] : bfs(level, ya, [a.x, a.y], used);
-          if (!pa) continue;
+          if (!pa || pa.length < opsYes.length) continue;
           const used2 = new Set([...used, ...pa.map((c) => key(...c))]);
           const pb = na[0] === b.x && na[1] === b.y ? [] : bfs(level, na, [b.x, b.y], used2);
-          if (!pb) continue;
+          if (!pb || pb.length < opsNo.length) continue;
           const g: Grid = new Map();
           if (toS.length) lay(level, g, toS, s, ops);
           g.set(key(...s), part);
-          if (pa.length) lay(level, g, pa, [a.x, a.y]);
-          if (pb.length) lay(level, g, pb, [b.x, b.y]);
+          if (pa.length) lay(level, g, pa, [a.x, a.y], opsYes);
+          if (pb.length) lay(level, g, pb, [b.x, b.y], opsNo);
           if (!best || g.size < best.size) best = g;
         }
       }

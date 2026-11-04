@@ -1069,3 +1069,7 @@ Kein Simulationsbild, sondern das Zeichen der Website (seit 27.10.2026). Ausgew�
 | App-Icons (aus der Masterdatei verkleinert) | `public/icons/apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | 180–512 | deckend #f6f7fa |
 
 Ersatzgrafik: keine nötig (Rasterbild ohne Ladefehler-Risiko im Build). Im dunklen Farbschema und auf der Münze erscheint das Zeichen per CSS-Filter hell. Eine spätere Vektorfassung soll dieselbe Form behalten; kein neues Logo entwerfen.
+
+## Zahlenfabrik (Spiel)
+
+Prompts, Dateinamen und Prüfliste: `docs/ZAHLENFABRIK-BILDER.md` (14 Bilder: Quelle, Maschine, Weiche, Zusammenführer, Lager, volles Lager, Basis, drei Felsen, Brücke, Boden hell/dunkel, Münze). Ablage `src/assets/zahlenfabrik/<name>.webp`; ohne Datei zeichnet das Spiel seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`). Die Teile werden gedreht (Ausgang rechts = Richtung 0), daher Draufsicht ohne seitlichen Schlagschatten.

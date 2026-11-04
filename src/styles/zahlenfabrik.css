@@ -889,3 +889,64 @@
 }
 
 .zf-keys { margin-top: 4px; }
+
+/* ---------- Eigene Bilder (optional, docs/ZAHLENFABRIK-BILDER.md) ---------- */
+
+/* Bild füllt das ganze Feld; Kasten, Rand und Hintergrund entfallen */
+.zf-cell .zf-art--img,
+.zf-intro__box .zf-art--img {
+  position: absolute;
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  translate: -50% -50%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.zf-cell--base .zf-art--img { width: 100%; height: 100%; }
+.zf-cell--bridge .zf-art--img { width: 60px; height: 60px; }
+
+.zf-cell:has(> .zf-art--img) {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+}
+
+/* Aufschrift auf Bildern gut lesbar: kleines Schild */
+.zf-cell:has(> .zf-art--img) > .zf-cell__big,
+.zf-cell:has(> .zf-art--img) > .zf-cell__mid {
+  padding: 0 4px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+.zf-cell:has(> .zf-art--img) > .zf-cell__small {
+  padding: 0 3px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
+.zf-world.has-floor {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+    var(--zf-floor);
+  background-size: 64px 64px, 64px 64px, 256px 256px;
+}
+
+:root[data-theme='dark'] .zf-world.has-floor {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 60%, transparent) 1px, transparent 1px),
+    var(--zf-floor-dark);
+}
+
+.zf-hud__coin { display: inline-block; width: 1.2em; height: 1.2em; margin-right: 4px; vertical-align: -0.22em; }
+
+.zf-btn:disabled { opacity: 0.45; cursor: default; }
+.zf-level--pro:not([aria-pressed='true']) { border-color: var(--zf-op-line); }
