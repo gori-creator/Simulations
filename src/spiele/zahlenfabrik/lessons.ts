@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art, IMAGES, imageFor } from './art';
+import { art, IMAGES, imageFor, machineFile, mergeFile, switchFile, symOfLabel } from './art';
 import type { LessonId } from './kit';
 
 /**
@@ -447,7 +447,9 @@ function scene(s: Scene, lang: Lang): HTMLElement {
   const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?') : t);
   const box = (kind: 'source' | 'machine' | 'target' | 'sort', text: string, dir?: 0) => {
     const c = el('div', `zf-intro__box zf-intro__box--${kind}`);
-    c.append(art(kind, 52, dir), el('span', '', local(text)));
+    // Maschinen mit eigenem Bild je Rechenart (aus der Aufschrift erkannt)
+    const sym = kind === 'machine' ? symOfLabel(text.split(' ')[0]!) : undefined;
+    c.append(art(kind, 52, dir, 0, false, sym ? machineFile(sym) : undefined), el('span', '', local(text)));
     return c;
   };
   const belt = () => el('div', 'zf-intro__belt');
@@ -464,7 +466,7 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     row = el('div', 'zf-intro__scene zf-lesson-num');
     const tile = el('div', 'zf-lesson-num__tile');
     const pic = el('span', 'zf-tool__pic');
-    const src = imageFor(s.part);
+    const src = imageFor(s.part, 0, s.part === 'machine' ? machineFile(symOfLabel(s.label) ?? '') : switchFile(s.label.startsWith('÷') ? 'div' : s.label.startsWith('>') ? 'gt' : ''));
     if (src) {
       const img = el('img');
       img.src = src;
@@ -480,13 +482,17 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     const outs = el('div', 'zf-lesson-sort__outs');
     const [m1, m2] = s.marks ?? ['✓', '✗'];
     outs.append(el('span', 'zf-lesson-sort__yes', `${m1} ${s.yes}`), el('span', 'zf-lesson-sort__no', `${m2} ${s.no}`));
-    row.append(el('span', 'zf-lesson-sort__in', s.input), belt(), box('sort', s.label, 0), outs);
+    // Weiche mit eigenem Bild je Prüfung bzw. Wechsel-Weiche
+    const test = s.label.startsWith('gerade') ? 'even' : s.label.startsWith('÷') ? 'div' : s.label.startsWith('>') ? 'gt' : s.label.startsWith('Prim') ? 'prime' : s.label.startsWith('Quadrat') ? 'square' : '';
+    const sw = el('div', 'zf-intro__box zf-intro__box--sort');
+    sw.append(art('sort', 52, 0, 0, false, s.part === 'alt' ? 'wechselweiche' : switchFile(test)), el('span', '', local(s.label)));
+    row.append(el('span', 'zf-lesson-sort__in', s.input), belt(), sw, outs);
   } else if (s.kind === 'merge') {
     row = el('div', 'zf-intro__scene zf-lesson-merge');
     const ins = el('div', 'zf-lesson-merge__ins');
     ins.append(el('span', 'zf-lesson-sort__in', s.a), el('span', 'zf-lesson-sort__in', s.b));
     const m = el('div', 'zf-intro__box zf-intro__box--merge');
-    m.append(art('merge', 52, 0), el('span', '', s.label));
+    m.append(art('merge', 52, 0, 0, false, mergeFile(s.label[1] ?? '+')), el('span', '', s.label));
     row.append(ins, belt(), m, belt(), box('target', s.out));
   } else if (s.kind === 'cross') {
     row = el('div', 'zf-intro__scene zf-lesson-cross');

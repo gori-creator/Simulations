@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art, chapterImage, imageFor, IMAGES, machineFile, switchFile, type ArtKind } from './art';
+import { art, chapterImage, imageFor, IMAGES, machineFile, mergeFile, switchFile, type ArtKind } from './art';
 import { icon, setButton, type IconName } from './icons';
 import { lessonSeen, showLessons } from './lessons';
 import { createSound } from './sound';
@@ -1296,7 +1296,7 @@ export function initFactory(root: HTMLElement): void {
       if (part.split || part.alt) {
         const c = at(x, y, `zf-cell--op ${part.alt ? 'zf-cell--alt' : 'zf-cell--split'}`);
         const [a, b] = outputs(part) as [Dir, Dir];
-        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(part.alt ? T.altShort : T.splitShort)), el('span', 'zf-cell__small', part.alt ? `1${ARROW[a]} 2${ARROW[b]}` : `${ARROW[a]} ${ARROW[b]}`));
+        c.append(art('sort', 52, part.dir, 0, part.side === 3, part.alt ? 'wechselweiche' : undefined), el('span', 'zf-cell__mid', tx(part.alt ? T.altShort : T.splitShort)), el('span', 'zf-cell__small', part.alt ? `1${ARROW[a]} 2${ARROW[b]}` : `${ARROW[a]} ${ARROW[b]}`));
         c.title = tx(part.alt ? T.altHelp : T.splitHelp);
         if (fixed) addLock(c);
         continue;
@@ -1309,7 +1309,7 @@ export function initFactory(root: HTMLElement): void {
       }
       if (part.merge) {
         const c = at(x, y, 'zf-cell--op zf-cell--merge');
-        c.append(art('merge', 52, part.dir), el('span', 'zf-cell__mid', `a${part.merge}b`));
+        c.append(art('merge', 52, part.dir, 0, false, mergeFile(part.merge)), el('span', 'zf-cell__mid', `a${part.merge}b`));
         c.title = tx(T.mergeHelp);
         continue;
       }
@@ -1547,11 +1547,20 @@ export function initFactory(root: HTMLElement): void {
         const pic = el('span', 'zf-tool__pic');
         if (t.kind === 'hand') pic.append(icon('hand', 22));
         else if (t.kind === 'erase') pic.append(icon('erase', 22));
-        else if (t.kind === 'select' || t.kind === 'paste') pic.append(icon('select', 22));
+        else if (t.kind === 'select' || t.kind === 'paste') {
+          if (IMAGES.auswahl) {
+            const img = el('img');
+            img.src = IMAGES.auswahl;
+            img.alt = '';
+            img.draggable = false;
+            pic.append(img);
+          } else pic.append(icon('select', 22));
+        }
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
           const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' || spec!.kind === 'alt' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
-          const src = imageFor(kind, 0, spec!.kind === 'op' ? machineFile(spec!.op.sym) : spec!.kind === 'sort' ? switchFile(spec!.test.kind) : undefined);
+          const specific = spec!.kind === 'op' ? machineFile(spec!.op.sym) : spec!.kind === 'sort' ? switchFile(spec!.test.kind) : spec!.kind === 'merge' ? mergeFile(spec!.mode) : spec!.kind === 'alt' ? 'wechselweiche' : undefined;
+          const src = imageFor(kind, 0, specific);
           if (src) {
             const img = el('img');
             img.src = src;
@@ -2223,6 +2232,12 @@ export function initFactory(root: HTMLElement): void {
     });
     const editBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--editor');
     editBtn.append(el('strong', '', tx(T.editor)), el('span', 'zf-world-card__meta', tx(T.editorCard)));
+    if (IMAGES.baukasten) {
+      const img = el('img', 'zf-world-card__icon');
+      img.src = IMAGES.baukasten;
+      img.alt = '';
+      editBtn.append(img);
+    }
     editBtn.addEventListener('click', () => openEditor());
     levelBar.replaceChildren(top, dailyBtn, randomBtn, worldBtn, editBtn, ...sections);
   }
