@@ -1,6 +1,6 @@
 # Zahlenfabrik: Bilder (Prompts)
 
-Stand 04.11.2026. Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
+Stand 04.11.2026 (Runde 2 ergänzt). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
 
 ## So geht’s
 
@@ -116,6 +116,148 @@ A single shiny gold game coin seen from the front, thick rim, a simple embossed 
 ```text
 The same blue storage crate as before, now full: neatly stacked glowing round tokens inside (no numbers or symbols on them), small golden sparkle on one corner to show success.
 ```
+
+## Runde 2: weitere Bilder (Stand 04.11.2026)
+
+Für die Kapitel mit wachsendem Werkzeugkasten: jede Maschine und jede Weiche bekommt ein eigenes Aussehen, dazu Hindernisse, Belohnungen, ein Bild je Kapitel und ein Titelbild. Wieder gilt: **alles optional**, fehlt ein Bild, nimmt das Spiel das bisherige. Hochladen wie gehabt nach `incoming/zahlenfabrik/<dateiname>.png`.
+
+Für die Teile A–D den **Stil-Block von oben** voranstellen (quadratisch, transparent, von oben, Ausgang rechts, Mitte frei). Für E und F gibt es einen eigenen Stil-Block (breites Bild).
+
+### A · Maschinen je Rechenart (5)
+
+Alle mit Eingang **links**, Ausgang **rechts**, in der Mitte ein **leeres, helles Feld** (dort steht später z. B. „+3“). Gleiche Grundform wie `maschine.png`, aber jede mit eigener Farbe und eigenem Innenleben, damit man sie auf einen Blick unterscheidet.
+
+| Nr. | Datei | Motiv | Farbe |
+| --- | --- | --- | --- |
+| 15 | `maschine-plus.png` | Plus-Maschine | sonnengelb |
+| 16 | `maschine-minus.png` | Minus-Maschine | korallrot |
+| 17 | `maschine-mal.png` | Mal-Maschine | orange |
+| 18 | `maschine-geteilt.png` | Geteilt-Maschine | pink/magenta |
+| 19 | `maschine-quadrat.png` | Quadrat-Maschine | hellgrün |
+
+```text
+maschine-plus.png: A square adding machine block with a sunny yellow housing (#F2C230 family): two small feeder rollers near the LEFT input that push pieces together, rounded bolts in the corners, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-minus.png: A square subtracting machine block with a coral red housing (#E5604D family): a small rotating cutter wheel near the LEFT input and a tiny scrap tray at the bottom edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-mal.png: A square multiplying machine block with an orange housing (#F28C28 family): stacked copy rollers that look like a little printing press, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-geteilt.png: A square dividing machine block with a magenta-pink housing (#D9559B family): a small splitting blade and several narrow parallel slots near the RIGHT output, input slot on the LEFT edge, a large blank light cream panel in the center (completely empty).
+maschine-quadrat.png: A square squaring machine block with a fresh lime green housing (#8CC63F family): two mirror panels at right angles in two corners, a small glowing lens, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+```
+
+### B · Weichen je Prüfung (4)
+
+Alle violett wie `weiche.png`, mit Y-Kanal: hinein von **links**, „ja“ nach **rechts**, „nein“ nach **unten**. Unterschiedliches Innenleben in der Gabelung:
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 20 | `weiche-gerade.png` | Weiche „gerade?“ |
+| 21 | `weiche-teilbar.png` | Weiche „teilbar durch …?“ |
+| 22 | `weiche-groesser.png` | Weiche „größer als …?“ |
+| 23 | `weiche-prim.png` | Weiche „Primzahl?“ |
+
+```text
+weiche-gerade.png: A square violet sorting switch block (#8A5CD6 family) with a Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a small flap and two neat pairs of round pegs standing side by side. Calm flat center area, no markings.
+weiche-teilbar.png: A square violet sorting switch block (#8A5CD6 family) with a Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a small round sieve plate with a regular grid of holes. Calm flat center area, no markings.
+weiche-groesser.png: A square violet sorting switch block (#8A5CD6 family) with a Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a tiny balance scale with two small pans. Calm flat center area, no markings.
+weiche-prim.png: A square violet sorting switch block (#8A5CD6 family) with a Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a small faceted gem crystal in a metal holder that glows softly. Calm flat center area, no markings.
+```
+
+### C · Hindernisse und Gelände (6)
+
+Abwechslung neben den Felsen (im Spiel bunt gemischt, nur Schmuck).
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 24 | `baum-1.png` | runder Laubbaum von oben |
+| 25 | `baum-2.png` | Nadelbaum von oben |
+| 26 | `busch.png` | kleiner Busch mit Blüten |
+| 27 | `fels-4.png` | großer, flacher Felsblock |
+| 28 | `kisten.png` | Stapel alter Holzkisten |
+| 29 | `nebel.png` | Nebel über gesperrtem Land (nahtlos, halbtransparent) |
+
+```text
+baum-1.png: A single round leafy tree seen exactly from above: a fluffy round crown in fresh greens with soft highlights, a hint of trunk shadow directly underneath, no cast shadow to the side.
+baum-2.png: A single conifer tree seen exactly from above: a star-shaped crown of layered dark green needles with lighter tips, centered.
+busch.png: A small rounded bush seen from above with a few tiny white and yellow flowers, low and soft.
+fels-4.png: One big flat grey rock slab with a few cracks and a small puddle in a hollow, seen from above.
+kisten.png: A small stack of three old wooden crates seen from above, slightly rotated against each other, no labels or markings on them.
+nebel.png: Seamless tileable soft white-grey fog texture seen from above, gentle swirls, partly transparent (about 60 % opacity), edges must tile seamlessly. No objects.
+```
+
+### D · Belohnungen und Effekte (7)
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 30 | `stern-voll.png` | goldener Stern (Bewertung) |
+| 31 | `stern-leer.png` | leerer Stern (noch nicht geschafft) |
+| 32 | `pokal.png` | Pokal (Kapitel geschafft) |
+| 33 | `konfetti.png` | Konfetti-Explosion (Level geschafft) |
+| 34 | `puff.png` | kleine Staubwolke (Zahl fällt vom Band) |
+| 35 | `funke.png` | heller Funke (zwei Zahlen werden zusammengeführt) |
+| 36 | `zahnrad.png` | einzelnes Zahnrad (Ladebild, Schmuck) |
+
+Hier gilt **nicht** „von oben“: diese Motive frontal, flach und mittig.
+
+```text
+stern-voll.png: A single plump five-pointed star seen from the front, shiny warm gold with a soft highlight and a subtle bevel, friendly rounded tips.
+stern-leer.png: The same five-pointed star shape as an empty slot: light grey translucent glass-like star with a thin darker rim, no glow.
+pokal.png: A small shiny golden trophy cup with two handles on a short dark blue base, seen from the front, a little sparkle on the rim. No text or engraving.
+konfetti.png: A cheerful burst of confetti pieces and small streamers flying outward from the center in bright game colors (yellow, coral, blue, green, violet), transparent background, center mostly empty.
+puff.png: A small soft cartoon dust cloud puff, light grey with a few tiny specks, round and fluffy.
+funke.png: A small bright star-shaped spark with a warm yellow-white glow and four short rays.
+zahnrad.png: A single chunky gear wheel with eight rounded teeth in soft blue-grey metal, seen from the front, centered.
+```
+
+### E · Ein Bild je Kapitel (13)
+
+Breite Bilder für die Erklärkarten und die Level-Auswahl. **Format 16 : 9, mindestens 1536 × 864 px, deckend (nicht transparent).** Stil-Block für E und F:
+
+```text
+Wide 16:9 illustration for a chapter card in a friendly educational factory puzzle game for 10–14 year olds. Same look as the game pieces: clean stylized 3D like painted soft plastic toys, smooth rounded shapes, soft even light, bright friendly but not childish colors. A small tidy factory scene on a light floor grid, slightly from above (three-quarter top view), lots of calm empty space on the left third for a title. No people, no characters, no text, no letters, no numbers, no symbols, no logos, no watermark.
+```
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 37 | `kapitel-01.png` | Bänder |
+| 38 | `kapitel-02.png` | Plus-Maschine |
+| 39 | `kapitel-03.png` | Minus-Maschine |
+| 40 | `kapitel-04.png` | Mal-Maschine |
+| 41 | `kapitel-05.png` | Geteilt-Maschine |
+| 42 | `kapitel-06.png` | Rückwärts rechnen |
+| 43 | `kapitel-07.png` | Weiche „gerade?“ |
+| 44 | `kapitel-08.png` | Weiche „teilbar?“ |
+| 45 | `kapitel-09.png` | Weiche „größer als?“ |
+| 46 | `kapitel-10.png` | Weiche „Primzahl?“ |
+| 47 | `kapitel-11.png` | Wertetabellen |
+| 48 | `kapitel-12.png` | Quadrat-Maschine |
+| 49 | `kapitel-13.png` | Meisterprüfung |
+
+```text
+kapitel-01.png: A green source block on the right, a long grey conveyor belt curving around two round boulders to a blue storage crate; small round blank tokens travelling on the belt.
+kapitel-02.png: The same conveyor line, in its middle a sunny yellow adding machine glowing softly as tokens pass through; tokens before it are small, tokens after it a little bigger.
+kapitel-03.png: A conveyor line through a coral red subtracting machine with a tiny cutter wheel; small shavings fall into a tray; tokens get a little smaller after it.
+kapitel-04.png: A conveyor line through an orange multiplying machine that looks like a small printing press; after it the tokens are noticeably larger and stacked in a neat pile at the crate.
+kapitel-05.png: A conveyor line through a magenta dividing machine; one big token enters and several small equal tokens leave on parallel lanes.
+kapitel-06.png: A short conveyor line with three locked machines (small padlocks on them), seen from the storage side looking back towards the source, with a gentle reversed arrow made of floor tiles (no text).
+kapitel-07.png: A violet sorting switch splitting one belt into two, tokens alternating to the two blue crates; small pairs of pegs decorating the switch.
+kapitel-08.png: A violet sorting switch with a sieve plate, tokens dropping through holes into one lane while others roll on to a second crate.
+kapitel-09.png: A violet sorting switch with a tiny balance scale; big tokens go one way, small tokens the other way, two crates.
+kapitel-10.png: A violet sorting switch with a glowing gem crystal; a few special shiny tokens are sent to a crate decorated with a small gem.
+kapitel-11.png: A neat row of five blue crates side by side, a belt feeding them in order, tokens growing in size step by step from left to right like a staircase.
+kapitel-12.png: A lime green squaring machine with two mirror panels; a token enters and a much bigger square-shaped block leaves.
+kapitel-13.png: A large busy but tidy factory with all machine colors (yellow, coral, orange, magenta, lime, violet switches), several crates, and a golden trophy on a small podium in the corner.
+```
+
+### F · Titelbild (1)
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 50 | `titelbild.png` | Titelbild für die Spielseite und Vorschau beim Teilen |
+
+```text
+titelbild.png: A wide panoramic view of a cheerful number factory from slightly above: winding conveyor belts, colorful machines (sunny yellow, coral, orange, magenta, lime), violet switches, a green source block and blue storage crates, small blank round tokens on the belts, warm soft light. Calm empty space in the upper left for a title.
+```
+
+**Einbau Runde 2 (für Claude):** Maschinen nach Rechenzeichen (`maschine-plus` … `maschine-quadrat`, sonst `maschine`), Weichen nach Prüfung (`weiche-gerade` …, sonst `weiche`), Hindernisse gemischt mit den Felsen (gleiches Muster je Feld), Sterne/Pokal in Auswahl und Siegmeldung, Effekte statt der gezeichneten Wölkchen, Kapitelbilder oben in den Erklärkarten und auf den Kapitel-Karten (WebP, 960 × 540, Qualität ca. 80), Titelbild als Vorschaubild der Spielseite. Alles mit Ersatz, wenn eine Datei fehlt.
 
 ## Einbau (für Claude)
 
