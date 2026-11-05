@@ -1707,9 +1707,6 @@
 
 /* Wechsel-Weiche: wie eine Weiche gebaut, aber orange */
 .zf-cell--alt { border-color: var(--zf-op-line); background: var(--zf-op); color: var(--zf-op-line); }
-.zf-cell--alt .zf-art--img,
-.zf-tool--alt .zf-tool__pic img,
-.zf-lesson-sort--alt .zf-art--img { filter: hue-rotate(150deg) saturate(1.2); }
 .zf-side .zf-tool--alt:not([aria-pressed='true']) .zf-tool__pic.is-plain { border-color: var(--zf-op-line); background: var(--zf-op); }
 .zf-cell--alt .zf-cell__small { letter-spacing: -0.02em; }
 .zf-lesson-sort--alt .zf-lesson-sort__yes,
@@ -1922,3 +1919,7 @@
 }
 .zf-edit__input { box-sizing: border-box; width: 100%; min-width: 0; }
 .zf-edit__field { min-width: 0; }
+
+/* Baukasten-Karte mit Bild */
+.zf-world-card--editor { position: relative; padding-right: 76px !important; }
+.zf-world-card__icon { position: absolute; top: 50%; right: 12px; width: 56px; height: 56px; translate: 0 -50%; object-fit: contain; }

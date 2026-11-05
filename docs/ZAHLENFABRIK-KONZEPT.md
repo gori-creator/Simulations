@@ -107,6 +107,8 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 
 - **Zusammenführer nur für zwei verschiedene Stränge** (offene Welt): Die zweite Zahl muss aus einer anderen Richtung kommen (eine Zahl vom selben Band wartet davor), und beide müssen aus verschiedenen Quellen stammen (jede Zahl merkt sich ihre Quellen, `Item.src`). So kann sich kein Strom mit sich selbst addieren oder malnehmen, auch nicht über einen Kreis zurück; eine unpassende Zahl geht verloren.
 
+- **Bilder Runde 3 eingebaut** (37 Stück): eigene Maschinen für Rest, Quersumme, Wurzel, Vorzeichen, Betrag, Spiegel, Runden, Bruch, Kehrwert und eine neutrale Maschine; Weiche „Quadratzahl?“, Wechsel-Weiche, vier Zusammenführer (Summe, Differenz, Produkt, Quotient), drei Abnehmer, Auswählen- und Baukasten-Bild, Kapitelbilder für alle übrigen Kapitel. Erklärkarten zeigen jetzt das passende Bild je Maschine bzw. Weiche.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
