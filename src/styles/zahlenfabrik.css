@@ -917,12 +917,18 @@
   box-shadow: none;
 }
 
-/* Aufschrift auf Bildern gut lesbar: kleines Schild */
+/* Aufschrift auf Bildern gut lesbar: deckendes Schild in Textfarbe des Themas
+   (hell: dunkle Schrift auf Weiß, dunkel: helle Schrift auf Dunkel) */
 .zf-cell:has(> .zf-art--img) > .zf-cell__big,
-.zf-cell:has(> .zf-art--img) > .zf-cell__mid {
-  padding: 0 4px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+.zf-cell:has(> .zf-art--img) > .zf-cell__mid,
+.zf-intro__box:has(> .zf-art--img) > span {
+  padding: 0 5px;
+  border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  line-height: 1.25;
 }
 
 .zf-cell:has(> .zf-art--img) > .zf-cell__small {
@@ -1646,7 +1652,7 @@
 }
 
 .zf-intro__box.zf-intro__box--sort { font-size: 0.6rem; letter-spacing: -0.02em; }
-.zf-intro__box--sort > span { padding: 1px 2px; border-radius: 4px; background: color-mix(in srgb, var(--surface) 80%, transparent); }
+.zf-intro__box--sort > span { padding: 1px 2px; border-radius: 4px; background: color-mix(in srgb, var(--surface) 94%, transparent); }
 
 /* Handy: Werkzeugkasten als Raster mit vier Spalten (alle Teile auf einen Blick) */
 @media (max-width: 640px) {
