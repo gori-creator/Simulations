@@ -17,7 +17,7 @@ type Solution =
   | { kind: 'pick'; answer: number }
   | { kind: 'sort'; test: Test; ops?: Op[]; yes?: Op[]; no?: Op[] }
   | { kind: 'three'; first: Test; second: Test; ops?: Op[] }
-  | { kind: 'grid'; grid: Grid };
+  | { kind: 'grid'; grid: Grid; answer?: number };
 
 const chain = (...ops: Op[]): Solution => ({ kind: 'chain', ops });
 const pick = (answer: number): Solution => ({ kind: 'pick', answer });
@@ -36,6 +36,8 @@ const SPLIT3 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', 
 const MERGE = (up = '>>>>', straight = '>>>', after = '>>>') => ['.............', '.............', `...${up}v.....`, `..>S${straight}M${after}..`];
 /** Zwei Quellen: A (1, 3) geradeaus, B (1, 1) oben herum, Zusammenführer M bei (7, 3). */
 const TWO = (b = '>>>>>', a = '>>>>>', after = '>>>') => ['.............', `..${b}v.....`, '.......v.....', `..${a}M${after}..`];
+/** Waage (Gleichungen): beide Reihen mit Bändern, feste Teile bleiben stehen. */
+const EQ = ['.............', '..>>>>>v.....', '.......v.....', '..>>>>>.>>>..'];
 /** Brücken-Karte: Weiche/Verteiler fest bei (4, 4), Brücke bei (7, 3). */
 const CROSS = (top = '>>', side = '>>>') => ['............', '.......>>>>.', '.......^....', `....${side}B>v..`, `..>>.${top}^.v..`, '.........v..', '.........v..', '.........>>.'];
 const bridge: Part = { op: null, dir: 0, bridge: true };
@@ -179,6 +181,20 @@ const SOLUTIONS: Record<string, Solution> = {
   'c27-8': drawn(MERGE('>>>>', '>>>', 'a>>'), { S: alt(0, 3), M: merger('×'), a: m(op('−', 1), 0) }),
   'c27-9': chain(op('×', 4), op('+', 7), op('⇄')),
   'c27-10': chain(op('²'), op('≈', 3), op('+', 4)),
+  'c29-1': chain(op(':', 2)),
+  'c29-2': chain(op(':', 4)),
+  'c29-3': chain(op(':', 9)),
+  'c29-4': chain(op('⅟')),
+  'c29-5': drawn(TWO('a>>>>', 'b>>>>'), { M: merger('+'), a: m(op('⅟'), 0), b: m(op('⅟'), 0) }),
+  'c29-6': drawn(TWO('ab>>>'), { M: merger('×'), a: m(op('+', 1), 0), b: m(op('⅟'), 0) }),
+  'c29-7': drawn(TWO('a>>>>', 'b>>>>'), { M: merger('+'), a: m(op(':', 3), 0), b: m(op(':', 2), 0) }),
+  'c30-1': pick(5),
+  'c30-2': pick(7),
+  'c30-3': pick(5),
+  'c30-4': pick(8),
+  'c30-5': { ...drawn(EQ), answer: 4 } as Solution,
+  'c30-6': { ...drawn(EQ), answer: 5 } as Solution,
+  'c30-7': { ...drawn(EQ), answer: 5 } as Solution,
   'c13-1': pick(7),
   'c13-2': chain(op('×', 5), op('×', 10), op('×', 10)),
   'c13-3': chain(op('²'), op('×', 2), op('−', 3)),
@@ -212,8 +228,8 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('27 Kapitel, über 140 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(27);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(143);
+    expect(CHAPTERS).toHaveLength(29);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(157);
     // kein Verteiler mehr im Werkzeugkasten: mehrere Ausgaben kommen aus mehreren Quellen
     expect(KIT.some((k) => k.kind === 'split')).toBe(false);
     expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
@@ -284,7 +300,7 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
       if (l.maxMachines !== undefined) expect(parts.filter((p) => p.op).length).toBeLessThanOrEqual(l.maxMachines);
       // Startzahl-Level: nur Bänder
       if (l.source.pick) expect(l.maxMachines).toBe(0);
-      const r = run(l, withFixed(l, g), s.kind === 'pick' ? s.answer : undefined);
+      const r = run(l, withFixed(l, g), s.kind === 'pick' || s.kind === 'grid' ? s.answer : undefined);
       expect(r.error).toBeNull();
       expect(r.won).toBe(true);
       targetsOf(l).forEach((t, i) => expect(r.got[i]).toBe(t.need));
@@ -296,7 +312,14 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
 describe('Zahlenfabrik: Rückwärts – genau eine Startzahl passt', () => {
   for (const l of ALL_LEVELS.filter((x) => x.source.pick)) {
     it(`${l.id}`, () => {
-      const s = SOLUTIONS[l.id] as { kind: 'pick'; answer: number };
+      const s = SOLUTIONS[l.id] as { kind: 'pick'; answer: number } | { kind: 'grid'; grid: Grid; answer: number };
+      if (s.kind === 'grid') {
+        // Waage: genau ein x macht beide Seiten gleich
+        const fits = [];
+        for (let v = l.source.pick!.min; v <= l.source.pick!.max; v++) if (run(l, withFixed(l, s.grid), v).won) fits.push(v);
+        expect(fits).toEqual([s.answer]);
+        return;
+      }
       const g = straight(l);
       const path = shortestPath(l)!;
       for (const f of l.fixed!) expect(path.some(([x, y]) => x === f.x && y === f.y)).toBe(true);

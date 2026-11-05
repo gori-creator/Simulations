@@ -1801,3 +1801,124 @@
   :root:not([data-theme='light']) .zf-fog-tex { opacity: 0.22; }
 }
 .zf-side .zf-tool .zf-tool__price { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* Auswählen, Verschieben, Kopieren */
+.zf-sel { position: absolute; z-index: 4; border: 2px dashed var(--brand); border-radius: 8px; background: color-mix(in srgb, var(--brand) 10%, transparent); pointer-events: none; }
+.zf-sel[hidden] { display: none; }
+.zf-sel.is-paste { border-style: solid; background: color-mix(in srgb, var(--success) 14%, transparent); border-color: var(--success); }
+
+.zf-selbar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 7;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: calc(100% - 20px);
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow: var(--shadow-lg);
+  translate: -50% 0;
+}
+
+.zf-selbar[hidden] { display: none; }
+.zf-selbar__text { padding: 0 6px; font-size: 0.85rem; font-weight: 650; }
+.zf-selbar .zf-btn { min-height: 34px; padding: 4px 10px; border-radius: 10px; font-size: 0.85rem; }
+
+/* ==========================================================================
+   Ruhige Oberfläche (05.11.2026): weniger Kästen und Rahmen. Die Seitenleiste
+   ist eine Fläche mit Abschnitten, Werkzeuge sind leichte Symbole statt
+   Kacheln, Nebenknöpfe ohne Rahmen.
+   ========================================================================== */
+
+/* Seitenleiste: Abschnitte statt Karten */
+.zf-side { gap: 0; padding: 4px 16px 12px; background: var(--surface); }
+.zf-side .zf-card {
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.zf-side .zf-card:last-child { border-bottom: 0; }
+.zf-side .zf-card__title { margin-bottom: 8px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; }
+.zf-side details.zf-help > summary { padding: 0; }
+
+/* Werkzeuge: leichte Symbole, gewählt mit sanftem Hintergrund */
+.zf-side .zf-tool,
+.zf-side .zf-tool--op:not([aria-pressed='true']),
+.zf-side .zf-tool--sort:not([aria-pressed='true']),
+.zf-side .zf-tool--merge:not([aria-pressed='true']),
+.zf-side .zf-tools--many .zf-tool {
+  min-height: 60px;
+  padding: 6px 2px 4px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: none;
+  box-shadow: none;
+}
+.zf-side .zf-tool:hover:not(.is-locked) { border-color: transparent; background: var(--surface-2); }
+.zf-side .zf-tool[aria-pressed='true'] {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--brand) 13%, var(--surface));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--brand) 55%, transparent);
+}
+.zf-side .zf-tool.is-new:not([aria-pressed='true']) { border-color: transparent; background: color-mix(in srgb, var(--zf-op-line) 10%, transparent); }
+.zf-side .zf-tool.is-locked { border: 0; opacity: 0.45; }
+.zf-side .zf-tools { gap: 2px 4px; }
+.zf-tools__group { margin: 8px 0 0; font-size: 0.64rem; }
+
+/* Zahl einstellen: schlichte Zeile */
+.zf-num { padding: 6px 0 0; border: 0; border-top: 1px dashed var(--border); border-radius: 0; background: none; }
+
+/* Steuerung: großer Start, Nebenknöpfe ohne Rahmen */
+.zf-side .zf-controls .zf-btn:not(.zf-btn--main) { border-color: transparent; background: none; color: var(--muted); }
+.zf-side .zf-controls .zf-btn:not(.zf-btn--main):hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+.zf-side .zf-controls .zf-btn[aria-pressed='true']:not(.zf-btn--main) { background: color-mix(in srgb, var(--brand) 12%, var(--surface)); color: var(--text); }
+
+/* Aufgabe: Ziele und Rechenweg ruhiger */
+.zf-goal-chip { border-color: transparent; background: var(--surface-2); }
+.zf-trace { border-style: solid; border-color: transparent; background: var(--surface-2); }
+.zf-new { border: 0; }
+
+/* Kopfleiste: Knöpfe ohne Rahmen */
+.zf-btn--bar { border-color: transparent; background: none; }
+.zf-btn--bar:hover:not(:disabled) { background: var(--surface-2); }
+
+/* Level-Auswahl: Kapitel als ruhige Flächen, Level als kleine runde Knöpfe */
+.zf-picker .zf-world-card:not(.zf-world-card--open) { border: 0; background: var(--surface-2); }
+.zf-picker .zf-level { border-color: transparent; background: var(--surface); }
+.zf-picker .zf-level.is-done { background: color-mix(in srgb, var(--zf-op-line) 12%, var(--surface)); }
+.zf-picker .zf-world-card--open { border-width: 1px; }
+
+/* Baukasten */
+.zf-edit { display: grid; gap: 10px; }
+.zf-edit[hidden] { display: none; }
+.zf-edit__field { display: grid; gap: 3px; }
+.zf-edit__label { color: var(--muted); font-size: 0.72rem; font-weight: 750; }
+.zf-edit__input { min-height: 38px; padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface); color: var(--text); font: inherit; }
+.zf-edit__input:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+.zf-edit__size { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.zf-edit__size .zf-edit__label { flex-basis: 100%; }
+.zf-edit__size .zf-num__btn { min-width: 38px; min-height: 36px; padding: 4px; }
+.zf-edit__size-value { min-width: 64px; font: 800 1rem/1 var(--font-mono); text-align: center; }
+.zf-edit__note { margin: 0; color: var(--muted); font-size: 0.82rem; }
+.zf-edit-controls { display: grid; gap: 8px; padding: 14px 0; }
+.zf-edit-controls[hidden] { display: none; }
+.zf-edit-controls .zf-btn { justify-content: flex-start; }
+.zf-edit-controls .zf-btn--main { min-height: 48px; justify-content: center; }
+.zf-btn--back[hidden] { display: none; }
+.zf-world-card--editor { border-color: color-mix(in srgb, var(--brand) 45%, var(--border)) !important; background: color-mix(in srgb, var(--brand) 8%, var(--surface)) !important; }
+
+@media (max-width: 960px) {
+  .zf-side { padding: 4px 12px 12px; }
+  .zf-side .zf-card { border-bottom: 1px solid var(--border); }
+}
+.zf-edit__input { box-sizing: border-box; width: 100%; min-width: 0; }
+.zf-edit__field { min-width: 0; }

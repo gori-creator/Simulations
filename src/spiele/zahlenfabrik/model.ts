@@ -16,7 +16,7 @@ export const DY = [0, 1, 0, -1] as const;
  * Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√),
  * Vorzeichen wechseln (±), Betrag (|), Ziffern umdrehen (⇄), Runden auf 10ⁿ (≈).
  */
-export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈';
+export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈' | ':' | '⅟';
 export interface Op {
   sym: Sym;
   n: number;
@@ -146,7 +146,7 @@ export interface Level {
   /** So viele Zahlen gibt die Quelle aus (ohne Angabe: so viele, wie die Lager brauchen). Für Verteiler und Zusammenführer. */
   emit?: number;
   /** Weitere Quellen (geben im selben Takt aus wie die erste, je ihre eigene Zahl bzw. Folge). */
-  more?: { x: number; y: number; dir: Dir; value: number; values?: number[] }[];
+  more?: { x: number; y: number; dir: Dir; value: number; values?: number[]; pick?: true }[];
 }
 
 /** Alle Quellen eines Levels (die erste zuerst). */
@@ -170,11 +170,11 @@ export function accepts(target: Target, value: number, got: number): boolean {
   const a = target.accept;
   switch (a.kind) {
     case 'value':
-      return value === a.n;
+      return near(value, a.n);
     case 'test':
       return passes(a.test, value) !== !!a.not;
     case 'seq':
-      return value === a.values[got % a.values.length];
+      return near(value, a.values[got % a.values.length]!);
   }
 }
 
@@ -186,7 +186,28 @@ export function sourceValue(level: Level, index: number, pick?: number): number 
   return sv.value;
 }
 
+/** Gleich bis auf Rundungsfehler (Brüche wie 1/3 sind als Kommazahl nicht genau). */
+export const near = (a: number, b: number) => Math.abs(a - b) < 1e-7;
+
+/** Kommazahl als Bruch (Zähler, Nenner bis 1000) oder null, wenn es keiner ist. */
+export function asFraction(v: number): { num: number; den: number } | null {
+  if (Number.isInteger(v)) return { num: v, den: 1 };
+  for (let den = 2; den <= 1000; den++) {
+    const num = Math.round(v * den);
+    if (Math.abs(num / den - v) < 1e-9) return { num, den };
+  }
+  return null;
+}
+
+/** Rundungsreste entfernen (0,30000000000000004 → 0,3; ganze Zahlen bleiben genau). */
+const tidy = (v: number) => (Number.isInteger(v) ? v : Math.abs(v - Math.round(v)) < 1e-9 ? Math.round(v) : Math.round(v * 1e12) / 1e12);
+
 export function apply(op: Op, value: number): number | null {
+  const r = applyRaw(op, value);
+  return r === null ? null : tidy(r);
+}
+
+function applyRaw(op: Op, value: number): number | null {
   switch (op.sym) {
     case '²':
       return value * value;
@@ -212,6 +233,10 @@ export function apply(op: Op, value: number): number | null {
       return reverseDigits(value);
     case '≈':
       return roundTo(value, 10 ** op.n);
+    case ':':
+      return value / op.n;
+    case '⅟':
+      return value === 0 ? null : 1 / value;
   }
 }
 
@@ -246,6 +271,10 @@ export function opLabel(op: Op): string {
       return '⇄';
     case '≈':
       return `≈${10 ** op.n}`;
+    case ':':
+      return `x/${op.n}`;
+    case '⅟':
+      return '1/x';
     default:
       return `${op.sym}${op.n}`;
   }
@@ -387,7 +416,9 @@ export function step(level: Level, grid: Grid, state: State): State {
     s.items.push({ id: s.nextId, x: level.source.x, y: level.source.y, value: sourceValue(level, s.emitted, s.pick), heading: level.source.dir });
     s.nextId += 1;
     for (const m of level.more ?? []) {
-      s.items.push({ id: s.nextId, x: m.x, y: m.y, value: m.values?.length ? m.values[s.emitted % m.values.length]! : m.value, heading: m.dir });
+      // Gleichungen: weitere Quelle mit derselben gewählten Zahl x
+      const v = m.pick && s.pick !== undefined ? s.pick : m.values?.length ? m.values[s.emitted % m.values.length]! : m.value;
+      s.items.push({ id: s.nextId, x: m.x, y: m.y, value: v, heading: m.dir });
       s.nextId += 1;
     }
     s.emitted += 1;

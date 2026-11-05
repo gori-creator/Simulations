@@ -344,6 +344,42 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  frac: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Bruch-Maschine', 'The fraction machine'),
+        text: L('Sie teilt immer – auch wenn es nicht aufgeht. Dann kommt ein Bruch heraus: Aus 3 wird mit x/4 der Bruch 3/4. Brüche kürzt das Spiel von selbst: 6/9 ist 2/3.', 'It always divides – even if it does not come out even. Then a fraction comes out: with x/4, 3 becomes 3/4. The game reduces fractions by itself: 6/9 is 2/3.'),
+        scene: { kind: 'chain', from: '3', op: 'x/4', to: '3/4' },
+      },
+      numSlide('machine', 'x/4', '4', L('2 bis 10', '2 to 10')),
+    ],
+  },
+  inv: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Kehrwert-Maschine', 'The reciprocal machine'),
+        text: L('Sie stellt den Bruch auf den Kopf: Aus 4 wird 1/4, aus 2/3 wird 3/2. Mit zwei Quellen und einem Zusammenführer addierst du Brüche wie 1/2 + 1/3.', 'It turns the fraction upside down: 4 becomes 1/4, 2/3 becomes 3/2. With two sources and a merger you can add fractions like 1/2 + 1/3.'),
+        scene: { kind: 'chain', from: '4', op: '1/x', to: '1/4' },
+      },
+    ],
+  },
+  eq: {
+    tag: NEW_RULE,
+    slides: [
+      {
+        title: L('Gleichungen sind Waagen', 'Equations are scales'),
+        text: L('Du suchst die Zahl x. Bei „3x + 5 = 20“ rechnen die Maschinen 3x + 5 aus, und im Lager muss 20 ankommen. Stell x ein und probier – oder rechne rückwärts.', 'You are looking for the number x. For “3x + 5 = 20” the machines calculate 3x + 5, and 20 has to arrive in the storage. Set x and try – or work backwards.'),
+        scene: { kind: 'chain', from: 'x', op: '×3 +5', to: '20' },
+      },
+      {
+        title: L('Beide Seiten', 'Both sides'),
+        text: L('Bei „2x + 3 = x + 7“ geben zwei Quellen dasselbe x aus. Jede Seite wird ausgerechnet, der Zusammenführer „Differenz“ vergleicht: Kommt 0 an, sind beide Seiten gleich – dann stimmt dein x.', 'For “2x + 3 = x + 7” two sources give out the same x. Each side is calculated, the “difference” merger compares them: if 0 arrives, both sides are equal – then your x is right.'),
+        scene: { kind: 'merge', a: '11', b: '11', label: 'a−b', out: '0' },
+      },
+    ],
+  },
   seq: {
     tag: NEW_RULE,
     slides: [
