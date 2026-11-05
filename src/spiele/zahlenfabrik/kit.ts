@@ -12,14 +12,16 @@ import type { PartSpec } from './parts';
  * Maschinen und Weichen sind einstellbar: Welche Zahl die Plus-Maschine
  * addiert oder durch welche Zahl die Weiche prüft, wählt man selbst.
  */
-export type KitId = 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'split' | 'sum' | 'product' | 'bridge';
+export type KitId =
+  | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round'
+  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'alt' | 'split' | 'sum' | 'product' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
 export type LessonId = 'belt' | KitId | 'pick' | 'seq';
 
 export interface KitItem {
   id: KitId;
-  kind: 'op' | 'sort' | 'split' | 'merge' | 'bridge';
+  kind: 'op' | 'sort' | 'split' | 'merge' | 'bridge' | 'alt';
   /** Maschine: Rechenzeichen. */
   sym?: Op['sym'];
   /** Weiche: Art der Prüfung. */
@@ -28,6 +30,8 @@ export interface KitItem {
   range?: [number, number];
   /** Zahl beim ersten Wählen. */
   start: number;
+  /** Einstellung als Zehnerpotenz anzeigen (Runden: 1 → 10, 2 → 100, 3 → 1000). */
+  pow10?: true;
   name: Localized;
 }
 
@@ -41,11 +45,16 @@ export const KIT: KitItem[] = [
   { id: 'mod', kind: 'op', sym: '%', range: [2, 10], start: 3, name: L('Rest-Maschine', 'Remainder machine') },
   { id: 'digits', kind: 'op', sym: 'Σ', start: 2, name: L('Quersummen-Maschine', 'Digit-sum machine') },
   { id: 'root', kind: 'op', sym: '√', start: 2, name: L('Wurzel-Maschine', 'Square-root machine') },
+  { id: 'neg', kind: 'op', sym: '±', start: 2, name: L('Vorzeichen-Maschine', 'Sign machine') },
+  { id: 'abs', kind: 'op', sym: '|', start: 2, name: L('Betrags-Maschine', 'Absolute-value machine') },
+  { id: 'rev', kind: 'op', sym: '⇄', start: 2, name: L('Spiegel-Maschine', 'Mirror machine') },
+  { id: 'round', kind: 'op', sym: '≈', range: [1, 3], start: 1, pow10: true, name: L('Runden-Maschine', 'Rounding machine') },
   { id: 'even', kind: 'sort', test: 'even', start: 0, name: L('Weiche „gerade?“', 'Switch “even?”') },
   { id: 'div', kind: 'sort', test: 'div', range: [2, 10], start: 3, name: L('Weiche „teilbar durch …?“', 'Switch “divisible by …?”') },
   { id: 'gt', kind: 'sort', test: 'gt', range: [0, 100], start: 10, name: L('Weiche „größer als …?“', 'Switch “greater than …?”') },
   { id: 'prime', kind: 'sort', test: 'prime', start: 0, name: L('Weiche „Primzahl?“', 'Switch “prime?”') },
   { id: 'issquare', kind: 'sort', test: 'square', start: 0, name: L('Weiche „Quadratzahl?“', 'Switch “square number?”') },
+  { id: 'alt', kind: 'alt', start: 0, name: L('Wechsel-Weiche', 'Alternator') },
   { id: 'split', kind: 'split', start: 0, name: L('Verteiler', 'Splitter') },
   { id: 'sum', kind: 'merge', start: 0, name: L('Zusammenführer „Summe“', 'Merger “sum”') },
   { id: 'product', kind: 'merge', start: 0, name: L('Zusammenführer „Produkt“', 'Merger “product”') },
@@ -66,6 +75,7 @@ export function clampNum(item: KitItem, n: number): number {
 export function specFor(item: KitItem, n: number): PartSpec {
   const v = clampNum(item, n);
   if (item.kind === 'split') return { id: 'split', kind: 'split', price: 0 };
+  if (item.kind === 'alt') return { id: 'alt', kind: 'alt', price: 0 };
   if (item.kind === 'bridge') return { id: 'bridge', kind: 'bridge', price: 0 };
   if (item.kind === 'merge') {
     const mode = item.id === 'sum' ? '+' : '×';

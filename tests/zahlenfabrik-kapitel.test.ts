@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { allOps, clampNum, KIT, kitItem, opAllowed, specFor, testAllowed } from '../src/spiele/zahlenfabrik/kit';
-import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
+import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
 import { accepts, apply, emitCount, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
 import { ascii, bestSort, lay, own, straight } from './zahlenfabrik-loeser';
 
@@ -38,6 +38,7 @@ const MERGE = (up = '>>>>', straight = '>>>', after = '>>>') => ['.............'
 /** Brücken-Karte: Weiche/Verteiler fest bei (4, 4), Brücke bei (7, 3). */
 const CROSS = (top = '>>', side = '>>>') => ['............', '.......>>>>.', '.......^....', `....${side}B>v..`, `..>>.${top}^.v..`, '.........v..', '.........v..', '.........>>.'];
 const bridge: Part = { op: null, dir: 0, bridge: true };
+const alt = (dir: Dir, side: 1 | 3): Part => ({ op: null, dir, alt: true, side });
 
 const SOLUTIONS: Record<string, Solution> = {
   'c1-1': chain(),
@@ -150,6 +151,30 @@ const SOLUTIONS: Record<string, Solution> = {
   'c22-7': chain(op('%', 5), op('+', 7), op('×', 2)),
   'c22-8': chain(op('×', 6), op('%', 10), op('−', 6)),
   'c22-9': chain(op('×', 4), op('−', 9), op('Σ')),
+  'c23-1': chain(op('±')),
+  'c23-2': chain(op('|')),
+  'c23-3': chain(op('−', 10), op('|')),
+  'c23-4': chain(op('²'), op('±')),
+  'c24-1': chain(op('⇄')),
+  'c24-2': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('+'), a: m(op('⇄'), 0) }),
+  'c24-3': chain(op('⇄'), op('²')),
+  'c25-1': chain(op('≈', 1)),
+  'c25-2': chain(op('≈', 2)),
+  'c25-3': chain(op('≈', 1), op('×', 2)),
+  'c25-4': chain(op('+', 8), op('×', 6), op('≈', 1)),
+  'c26-1': drawn(SPLIT2.map((r) => r.replace('a', '^').replace('b', 'v')), { S: alt(3, 1) }),
+  'c26-2': drawn(SPLIT2, { S: alt(3, 1), a: m(op('×', 10), 3), b: m(op('+', 10), 1) }),
+  'c26-3': drawn(MERGE(), { S: alt(0, 3), M: merger('×') }),
+  'c27-1': chain(op('⇄'), op('²'), op('+', 2)),
+  'c27-2': chain(op('+', 10), op('²'), op('±')),
+  'c27-3': chain(op('²'), op('≈', 2), op('+', 6)),
+  'c27-4': chain(op('×', 8), op('+', 1), op('⇄')),
+  'c27-5': chain(op('−', 6), op('²'), op('≈', 1)),
+  'c27-6': chain(op('×', 8), op('+', 10), op('|')),
+  'c27-7': drawn(MERGE(), { S: alt(0, 3), M: merger('+') }),
+  'c27-8': drawn(MERGE('>>>>', '>>>', 'a>>'), { S: alt(0, 3), M: merger('×'), a: m(op('−', 1), 0) }),
+  'c27-9': chain(op('×', 4), op('+', 7), op('⇄')),
+  'c27-10': chain(op('²'), op('≈', 3), op('+', 4)),
   'c13-1': pick(7),
   'c13-2': chain(op('×', 5), op('×', 10), op('×', 10)),
   'c13-3': chain(op('²'), op('×', 2), op('−', 3)),
@@ -182,9 +207,10 @@ function build(l: LevelInfo, s: Solution): Grid {
 const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFixed(l, ...(k.split(',').map(Number) as [number, number]))).map(([, p]) => p);
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
-  it('22 Kapitel, über 100 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig', () => {
-    expect(CHAPTERS).toHaveLength(22);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(110);
+  it('27 Kapitel, über 140 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
+    expect(CHAPTERS).toHaveLength(27);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(140);
+    expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
     const taught = CHAPTERS.flatMap((c) => c.teaches);
     expect(new Set(taught).size).toBe(taught.length);
     for (const k of KIT) expect(taught).toContain(k.id);
@@ -245,6 +271,7 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
         if (p.op) expect(kit.some((k) => opAllowed(k, p.op!)), `${l.id}: ${p.op.sym}${p.op.n}`).toBe(true);
         if (p.sort) expect(kit.some((k) => testAllowed(k, p.sort!)), `${l.id}: ${p.sort.kind}`).toBe(true);
         if (p.split) expect(has('split'), `${l.id}: Verteiler`).toBe(true);
+      if (p.alt) expect(has('alt'), `${l.id}: Wechsel-Weiche`).toBe(true);
         if (p.merge) expect(has(p.merge === '+' ? 'sum' : 'product'), `${l.id}: Zusammenführer`).toBe(true);
         if (p.bridge) expect(has('bridge'), `${l.id}: Brücke`).toBe(true);
       }
@@ -318,7 +345,8 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(chains(level('c12-7'), 2)).toEqual(expect.arrayContaining(['×2 x²', 'x² ×4']));
   });
   it('Rätsel-Werkstatt und Funktionen-Detektiv: mit der Grenze genau ein Weg, mit einer Maschine weniger keiner', () => {
-    for (const l of [...CHAPTERS.find((c) => c.id === 'c21')!.levels, ...CHAPTERS.find((c) => c.id === 'c22')!.levels]) {
+    const graded = CHAPTERS.find((c) => c.id === 'c27')!.levels.filter((l) => SOLUTIONS[l.id]!.kind === 'chain');
+    for (const l of [...CHAPTERS.find((c) => c.id === 'c21')!.levels, ...CHAPTERS.find((c) => c.id === 'c22')!.levels, ...graded, level('c25-4')]) {
       const s = SOLUTIONS[l.id] as { kind: 'chain'; ops: Op[] };
       const name = s.ops.map(opLabel).join(' ');
       expect(chains(l, l.maxMachines!), l.id).toEqual([name]);
@@ -341,6 +369,24 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(emitCount(level('c18-1'))).toBe(4);
     expect(emitCount(level('c19-1'))).toBe(5);
     expect(emitCount(level('c2-1'))).toBe(3);
+  });
+  it('neue Maschinen rechnen richtig', () => {
+    expect(apply(op('±'), 5)).toBe(-5);
+    expect(apply(op('±'), 0)).toBe(0);
+    expect(apply(op('|'), -7)).toBe(7);
+    expect(apply(op('⇄'), 120)).toBe(21);
+    expect(apply(op('⇄'), -123)).toBe(-321);
+    expect(apply(op('≈', 1), 45)).toBe(50);
+    expect(apply(op('≈', 1), 44)).toBe(40);
+    expect(apply(op('≈', 2), 150)).toBe(200);
+    expect(apply(op('≈', 1), -45)).toBe(-50);
+    expect(apply(op('≈', 3), 400)).toBe(0);
+  });
+  it('Wechsel-Weiche: ohne sie geht 5, 5, 8, 8, 3, 3 nicht auf zwei Lager (Verteiler liefert doppelt)', () => {
+    const l = level('c26-1');
+    const g = new Map((SOLUTIONS['c26-1'] as { grid: Grid }).grid);
+    g.set(key(2, 4), { op: null, dir: 3, split: true, side: 1 });
+    expect(run(l, g).won).toBe(false);
   });
   it('Brücke: ohne Brücke kreuzen sich die Wege nicht (Band statt Brücke scheitert)', () => {
     const l = level('c20-1');

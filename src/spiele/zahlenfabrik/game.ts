@@ -5,8 +5,10 @@ import { icon, setButton, type IconName } from './icons';
 import { lessonSeen, showLessons } from './lessons';
 import { createSound } from './sound';
 import { clampNum, KIT, kitItem, specFor, type KitId, type KitItem, type LessonId } from './kit';
-import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, type LevelInfo } from './levels';
-import { canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, withFixed, type Accept, type Dir, type Grid, type Item, type Part, type State, type Target } from './model';
+import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, SPECIAL, type LevelInfo } from './levels';
+import { dailyLevel, dayKey, randomLevel } from './daily';
+import { chainLevel, solveChain } from './solver';
+import { accepts, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
 import { canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type OpenWorld, type WorldState } from './world';
@@ -106,6 +108,8 @@ const T = {
   root: L('Aus {v} lässt sich keine glatte Wurzel ziehen – {v} ist keine Quadratzahl.', '{v} has no whole square root – {v} is not a square number.'),
   splitHelp: L('Verteiler: Jede Zahl läuft als Kopie in beide Richtungen weiter. Antippen dreht ihn, nach vier Drehungen wechselt die Seite.', 'Splitter: every number continues as a copy in both directions. Tap to turn it; after four turns the side switches.'),
   splitShort: L('Kopie', 'copy'),
+  altHelp: L('Wechsel-Weiche: Die Zahlen gehen abwechselnd geradeaus (1.) und zur Seite (2.). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Alternator: the numbers go straight (1st) and to the side (2nd) in turn. Tap to turn it; after four turns the side switches.'),
+  altShort: L('Wechsel', 'turns'),
   timeout: L('Die Zahlen kommen nie im Lager an – fahren sie im Kreis?', 'The numbers never reach the storage – are they going round in circles?'),
   starsPar: L('★ 2: höchstens {n} Teile', '★ 2: at most {n} parts'),
   goalPar: L('höchstens {n} Teile', 'at most {n} parts'),
@@ -125,6 +129,28 @@ const T = {
   numMore: L('Zahl größer', 'Bigger number'),
   numTile: L('{p}, eingestellt: {n}', '{p}, set to: {n}'),
   newBadge: L('Neu', 'New'),
+  tip: L('Tipp', 'Hint'),
+  tipCount: L('Mit {n} Maschinen geht es.', 'It works with {n} machines.'),
+  tipOne: L('Mit einer Maschine geht es.', 'It works with one machine.'),
+  tipNone: L('Du brauchst gar keine Maschine – nur Bänder.', 'You don’t need any machine – just belts.'),
+  tipFirst: L('Die erste Maschine ist {p}.', 'The first machine is {p}.'),
+  tipAll: L('Eine Lösung: {p} (in dieser Reihenfolge).', 'One solution: {p} (in this order).'),
+  tipGeneral: L('Tipp: Drück „Ein Takt“ und schau, wo eine Zahl falsch abbiegt oder vom Band fällt. Die Aufgabe oben sagt, was jedes Lager will.', 'Hint: press “One tick” and watch where a number turns the wrong way or falls off the belt. The task above says what each storage wants.'),
+  tipMore: L('Noch ein Tipp', 'Another hint'),
+  traceLabel: L('Rechenweg', 'Calculation path'),
+  traceFor: L('für {v}', 'for {v}'),
+  traceGap: L('Weg endet hier – Band fehlt', 'path ends here – belt missing'),
+  traceBranch: L('weiter an der Weiche …', 'continues at the switch …'),
+  traceError: L('Maschine kann nicht rechnen', 'machine can’t calculate'),
+  traceStorage: L('Lager', 'storage'),
+  continueAt: L('Weiterspielen: Kapitel {c} · Level {l}', 'Continue: chapter {c} · level {l}'),
+  starsTotal: L('{n} von {m} Sternen', '{n} of {m} stars'),
+  daily: L('Tagesrätsel', 'Daily puzzle'),
+  dailyMeta: L('Jeden Tag ein neues Rätsel mit allen Bauteilen · {d}', 'A new puzzle with all parts every day · {d}'),
+  random: L('Zufallsrätsel', 'Random puzzle'),
+  randomMeta: L('Ein neues Rätsel mit genau einem Weg – so oft du willst', 'A new puzzle with exactly one way – as often as you like'),
+  anotherRandom: L('Noch ein Zufallsrätsel', 'Another random puzzle'),
+  building: L('Rätsel wird gebaut …', 'Building the puzzle …'),
   groupMachines: L('Maschinen', 'Machines'),
   groupSwitches: L('Weichen', 'Switches'),
   groupFlow: L('Verteilen & Kreuzen', 'Split & cross'),
@@ -652,7 +678,7 @@ export function initFactory(root: HTMLElement): void {
     const k = key(x, y);
     const part = grid.get(k);
     if (part && partId(part) === spec.id) {
-      if (part.sort || part.split) {
+      if (part.sort || part.split || part.alt) {
         const r = (part.dir + (part.side === 3 ? 4 : 0) + 1) % 8;
         part.dir = (r % 4) as Dir;
         part.side = r < 4 ? 1 : 3;
@@ -672,6 +698,7 @@ export function initFactory(root: HTMLElement): void {
       sound.play('place');
       if (spec.kind === 'sort') say(tx(T.sortHelp));
       if (spec.kind === 'split') say(tx(T.splitHelp));
+      if (spec.kind === 'alt') say(tx(T.altHelp));
       if (spec.kind === 'merge') say(tx(T.mergeHelp));
       if (spec.kind === 'bridge') say(tx(T.bridgeHelp));
     }
@@ -770,7 +797,7 @@ export function initFactory(root: HTMLElement): void {
     if (board.walls.has(key(x, y))) return tx(T.cellRock, v);
     const part = allParts().get(key(x, y));
     if (part) {
-      const name = part.op ? opLabel(part.op) : part.sort ? `${tx(testLabel(part.sort))}` : part.merge ? `a${part.merge}b` : part.split ? tx(T.splitHelp).split(':')[0]! : part.bridge ? tx(T.bridgeHelp).split(':')[0]! : tx(T.belt);
+      const name = part.op ? opLabel(part.op) : part.sort ? `${tx(testLabel(part.sort))}` : part.merge ? `a${part.merge}b` : part.split ? tx(T.splitHelp).split(':')[0]! : part.alt ? tx(T.altHelp).split(':')[0]! : part.bridge ? tx(T.bridgeHelp).split(':')[0]! : tx(T.belt);
       return tx(T.cellPart, { ...v, p: name, d: tx(T.dirNames).split('|')[part.dir]! });
     }
     return tx(canBuild(x, y) ? T.cellEmpty : T.cellBlocked, v);
@@ -972,7 +999,7 @@ export function initFactory(root: HTMLElement): void {
       at(x, y, 'zf-cell--rock').append(art('rock', CELL, undefined, (x * 7 + y * 13) % 3));
     }
     for (const [k, part] of all) {
-      if (!part.op && !part.sort && !part.merge && !part.bridge && !part.split) continue;
+      if (!part.op && !part.sort && !part.merge && !part.bridge && !part.split && !part.alt) continue;
       const [x, y] = k.split(',').map(Number) as [number, number];
       const fixed = board.fixed.has(k);
       if (part.sort) {
@@ -983,11 +1010,11 @@ export function initFactory(root: HTMLElement): void {
         if (fixed) addLock(c);
         continue;
       }
-      if (part.split) {
-        const c = at(x, y, 'zf-cell--op zf-cell--split');
+      if (part.split || part.alt) {
+        const c = at(x, y, `zf-cell--op ${part.alt ? 'zf-cell--alt' : 'zf-cell--split'}`);
         const [a, b] = outputs(part) as [Dir, Dir];
-        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(T.splitShort)), el('span', 'zf-cell__small', `${ARROW[a]} ${ARROW[b]}`));
-        c.title = tx(T.splitHelp);
+        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(part.alt ? T.altShort : T.splitShort)), el('span', 'zf-cell__small', part.alt ? `1${ARROW[a]} 2${ARROW[b]}` : `${ARROW[a]} ${ARROW[b]}`));
+        c.title = tx(part.alt ? T.altHelp : T.splitHelp);
         if (fixed) addLock(c);
         continue;
       }
@@ -1188,7 +1215,7 @@ export function initFactory(root: HTMLElement): void {
         else if (t.kind === 'erase') pic.append(icon('erase', 22));
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
-          const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
+          const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' || spec!.kind === 'alt' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
           const src = imageFor(kind);
           if (src) {
             const img = el('img');
@@ -1215,7 +1242,7 @@ export function initFactory(root: HTMLElement): void {
         const same = t.kind === tool.kind && (t.kind !== 'part' || (tool.kind === 'part' && (kitId ? tool.kit === kitId : !tool.kit && t.spec.id === tool.spec.id)));
         b.setAttribute('aria-pressed', String(same));
         const item = kitId ? kitItem(kitId) : undefined;
-        const name = item ? (item.range ? tx(T.numTile, { p: tx(item.name), n: ctxNum(nums[item.id]) }) : tx(item.name)) : spec ? tx(specName(spec)) : label;
+        const name = item ? (item.range ? tx(T.numTile, { p: tx(item.name), n: ctxNum(item.pow10 ? 10 ** nums[item.id] : nums[item.id]) }) : tx(item.name)) : spec ? tx(specName(spec)) : label;
         b.setAttribute('aria-label', world && spec ? `${name}, ${locked ? tx(T.lockedShort, { n: unlockedBy(spec.id) + 1 }) : tx(T.price, { n: ctxNum(spec.price) })}` : name);
         b.title = b.getAttribute('aria-label')!;
         if (spec && !locked) bindDrag(b, spec);
@@ -1225,6 +1252,7 @@ export function initFactory(root: HTMLElement): void {
           if (spec?.kind === 'sort') say(tx(T.sortHelp));
           else if (spec?.kind === 'merge') say(tx(T.mergeHelp));
           else if (spec?.kind === 'split') say(tx(T.splitHelp));
+          else if (spec?.kind === 'alt') say(tx(T.altHelp));
           else if (spec?.kind === 'bridge') say(tx(T.bridgeHelp));
           renderTools();
         });
@@ -1262,7 +1290,9 @@ export function initFactory(root: HTMLElement): void {
     numLabel.textContent = tx(T.numFor, { p: tx(item.name) });
     numInput.min = String(item.range[0]);
     numInput.max = String(item.range[1]);
-    numInput.value = String(nums[item.id]);
+    // Runden: Zehnerpotenz zeigen (nur mit − und + einstellbar)
+    numInput.readOnly = !!item.pow10;
+    numInput.value = item.pow10 ? ctxNum(10 ** nums[item.id]) : String(nums[item.id]);
     numLess.disabled = nums[item.id] <= item.range[0];
     numMore.disabled = nums[item.id] >= item.range[1];
   }
@@ -1273,7 +1303,7 @@ export function initFactory(root: HTMLElement): void {
     nums[item.id] = clampNum(item, v);
     tool = { kind: 'part', spec: specFor(item, nums[item.id]), kit: item.id };
     renderTools();
-    announce.textContent = tx(T.numTile, { p: tx(item.name), n: ctxNum(nums[item.id]) });
+    announce.textContent = tx(T.numTile, { p: tx(item.name), n: ctxNum(item.pow10 ? 10 ** nums[item.id] : nums[item.id]) });
   }
   numLess.addEventListener('click', () => setNum(nums[currentKit()?.id ?? 'plus'] - 1));
   numMore.addEventListener('click', () => setNum(nums[currentKit()?.id ?? 'plus'] + 1));
@@ -1550,6 +1580,7 @@ export function initFactory(root: HTMLElement): void {
     if (level.source.values) parts.push(el('p', 'zf-source-seq', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
     info.replaceChildren(...parts);
     renderTable();
+    renderTrace();
   }
 
   /** Aktueller Auftrag mit Fortschritt, Belohnung und dem, was er freischaltet. */
@@ -1631,7 +1662,15 @@ export function initFactory(root: HTMLElement): void {
       save(stars);
       say(`${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
       renderLevels();
-      if (index < ALL_LEVELS.length - 1) {
+      if (index < 0) {
+        // Tages- oder Zufallsrätsel: gleich ein neues Zufallsrätsel anbieten
+        const n = btn('', 'zf-btn zf-btn--main');
+        setButton(n, null, tx(T.anotherRandom));
+        n.append(icon('arrow'));
+        n.addEventListener('click', openRandom);
+        status.append(' ', n);
+        n.focus();
+      } else if (index < ALL_LEVELS.length - 1) {
         const nextWorld = !CHAPTERS[shownWorld]!.levels.includes(ALL_LEVELS[index + 1]!);
         const n = btn('', 'zf-btn zf-btn--main');
         setButton(n, null, tx(nextWorld ? T.nextChapter : T.next));
@@ -1712,7 +1751,8 @@ export function initFactory(root: HTMLElement): void {
   // ---------- Level ----------
   /** Level-Auswahl: alle Welten als Karten mit ihren Leveln, dazu die offene Welt. */
   function renderLevels(): void {
-    const cards = CHAPTERS.map((w, wi) => {
+    const chapterCard = (w: (typeof CHAPTERS)[number]): HTMLElement => {
+      const wi = CHAPTERS.indexOf(w);
       const got = w.levels.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
       const card = el('section', 'zf-world-card');
       const head = el('div', 'zf-world-card__head');
@@ -1736,12 +1776,55 @@ export function initFactory(root: HTMLElement): void {
       });
       card.append(head, list);
       return card;
-    });
+    };
+    // Oben: Weiterspielen, Sterne gesamt, Tages- und Zufallsrätsel, offene Welt
+    const total = ALL_LEVELS.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
+    const nextOpen = ALL_LEVELS.find((l) => !stars[l.id]);
+    const top = el('div', 'zf-picker__top');
+    if (nextOpen) {
+      const c = chapterOf(nextOpen);
+      const go = ibtn('play', tx(T.continueAt, { c: CHAPTERS.indexOf(c) + 1, l: c.levels.indexOf(nextOpen) + 1 }), 'zf-btn zf-btn--main zf-continue');
+      go.addEventListener('click', () => openLevel(nextOpen));
+      top.append(go);
+    }
+    const sum = el('span', 'zf-picker__total');
+    sum.append(icon('star', 16), el('span', '', tx(T.starsTotal, { n: total, m: ALL_LEVELS.length * 3 })));
+    top.append(sum);
+    const today = dayKey(new Date());
+    const dailyStars = stars[`t-${today}`] ?? 0;
+    const dailyBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--daily');
+    dailyBtn.append(el('strong', '', `${tx(T.daily)} ${'★'.repeat(dailyStars)}${'☆'.repeat(3 - dailyStars)}`), el('span', 'zf-world-card__meta', tx(T.dailyMeta, { d: new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB') })));
+    dailyBtn.setAttribute('aria-pressed', String(mode === 'level' && level.id === `t-${today}`));
+    dailyBtn.addEventListener('click', openDaily);
+    const randomBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--random');
+    randomBtn.append(el('strong', '', tx(T.random)), el('span', 'zf-world-card__meta', tx(T.randomMeta)));
+    randomBtn.addEventListener('click', openRandom);
     const worldBtn = btn('', 'zf-world-card zf-world-card--open');
     worldBtn.append(el('strong', '', tx(T.world)), el('span', 'zf-world-card__meta', tx(T.worldCard)));
     worldBtn.setAttribute('aria-pressed', String(mode === 'world'));
     worldBtn.addEventListener('click', openWorldMode);
-    levelBar.replaceChildren(worldBtn, ...cards);
+    const sections = PARTS.flatMap((part) => {
+      const chapters = part.chapters.map((id) => CHAPTERS.find((c) => c.id === id)!);
+      const got = chapters.reduce((a, c) => a + c.levels.reduce((b, l) => b + (stars[l.id] ?? 0), 0), 0);
+      const max = chapters.reduce((a, c) => a + c.levels.length * 3, 0);
+      const h = el('h3', 'zf-levels__part');
+      h.append(el('span', '', tx(part.title)), el('span', 'zf-levels__part-meta', `${got}/${max} ★`));
+      return [h, ...chapters.map(chapterCard)];
+    });
+    levelBar.replaceChildren(top, dailyBtn, randomBtn, worldBtn, ...sections);
+  }
+
+  /** Tages- bzw. Zufallsrätsel bauen (kurz rechnen) und öffnen. */
+  function openSpecial(make: () => LevelInfo): void {
+    say(tx(T.building));
+    // erst die Meldung zeichnen lassen, dann rechnen
+    setTimeout(() => openLevel(make()), 30);
+  }
+  function openDaily(): void {
+    openSpecial(() => dailyLevel());
+  }
+  function openRandom(): void {
+    openSpecial(() => randomLevel());
   }
 
   function openWorldMode(): void {
@@ -1760,6 +1843,8 @@ export function initFactory(root: HTMLElement): void {
     title.textContent = tx(T.worldTitle);
     hint.textContent = tx(T.worldHint);
     newEl.hidden = true;
+    renderTip();
+    traceEl.hidden = true;
     howto.textContent = tx(T.worldHowto);
     eyebrow.textContent = tx(T.eyebrowWorld);
     stepBtn.hidden = true;
@@ -1775,8 +1860,9 @@ export function initFactory(root: HTMLElement): void {
     resetCursor();
   }
 
-  function openLevel(i: number): void {
+  function openLevel(which: number | LevelInfo): void {
     closePicker();
+    const i = typeof which === 'number' ? which : ALL_LEVELS.indexOf(which);
     history = [];
     undoBtn.disabled = true;
     stopTimer();
@@ -1784,9 +1870,11 @@ export function initFactory(root: HTMLElement): void {
     mode = 'level';
     stepBtn.hidden = false;
     index = i;
-    level = ALL_LEVELS[i]!;
+    level = typeof which === 'number' ? ALL_LEVELS[i]! : which;
     const wInfo = chapterOf(level);
     shownWorld = CHAPTERS.indexOf(wInfo);
+    tips = 0;
+    tipSolution = undefined;
     board = boardOfLevel(level);
     // Rückwärts-Level: nur Bänder; ohne erlaubte Maschinen: nur Weichen, Verteiler, Zusammenführer, Brücke
     kit = level.source.pick ? [] : level.maxMachines === 0 ? kitFor(level).filter((k) => k.kind !== 'op') : kitFor(level);
@@ -1795,13 +1883,15 @@ export function initFactory(root: HTMLElement): void {
     state = start(picks[level.id]);
     failedRuns = 0;
     hasRun = false;
-    title.textContent = `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
+    const special = wInfo === SPECIAL;
+    title.textContent = special ? tx(level.title) : `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
     howto.textContent = tx(T.howto);
-    eyebrow.replaceChildren(el('span', '', tx(T.chapterLabel, { n: shownWorld + 1, t: tx(wInfo.title) })), el('span', 'zf-pill', tx(T.worldGrades, { g: wInfo.grades })), ...(level.pro ? [el('span', 'zf-pill zf-pill--pro', tx(T.pro))] : []));
+    eyebrow.replaceChildren(el('span', '', special ? tx(level.id.startsWith('t-') ? T.daily : T.random) : tx(T.chapterLabel, { n: shownWorld + 1, t: tx(wInfo.title) })), el('span', 'zf-pill', tx(T.worldGrades, { g: wInfo.grades })), ...(level.pro ? [el('span', 'zf-pill zf-pill--pro', tx(T.pro))] : []));
     renderPick();
     renderOrder();
     hint.textContent = tx(level.hint);
     renderNew();
+    renderTip();
     say('');
     itemsLayer.replaceChildren();
     renderLevels();
@@ -1813,6 +1903,67 @@ export function initFactory(root: HTMLElement): void {
     // Neues Bauteil in diesem Kapitel (und beim allerersten Besuch die Einführung): erklären
     const unseen = (['belt', ...wInfo.teaches] as LessonId[]).filter((id, k, all) => all.indexOf(id) === k && !lessonSeen(id));
     if (unseen.length) showLessons(root, lang, unseen);
+  }
+
+  // ---------- Tipps (mit Löser) ----------
+  let tips = 0;
+  let tipSolution: Op[] | null | undefined;
+  const tipBox = el('div', 'zf-tip');
+  const tipBtn = ibtn('help', tx(T.tip), 'zf-btn zf-tip__btn');
+  const tipText = el('p', 'zf-tip__text');
+  tipText.setAttribute('aria-live', 'polite');
+  tipBox.append(tipBtn, tipText);
+  hint.after(tipBox);
+
+  /** Nächster Tipp: erst wie viele Maschinen, dann die erste, dann eine ganze Lösung. */
+  function renderTip(): void {
+    tipBox.hidden = mode !== 'level';
+    setButton(tipBtn, 'help', tx(tips ? T.tipMore : T.tip));
+    if (!tips) return tipText.replaceChildren();
+    if (!chainLevel(level)) {
+      tipText.textContent = tx(T.tipGeneral);
+      tipBtn.hidden = true;
+      return;
+    }
+    if (tipSolution === undefined) tipSolution = solveChain(level, kit, Math.min(3, level.maxMachines ?? 3), 1)[0] ?? null;
+    const sol = tipSolution;
+    if (!sol) {
+      tipText.textContent = tx(T.tipGeneral);
+      tipBtn.hidden = true;
+      return;
+    }
+    const lines = [sol.length === 0 ? tx(T.tipNone) : sol.length === 1 ? tx(T.tipOne) : tx(T.tipCount, { n: sol.length })];
+    if (tips >= 2 && sol.length) lines.push(tx(T.tipFirst, { p: opLabel(sol[0]!) }));
+    if (tips >= 3 && sol.length > 1) lines.push(tx(T.tipAll, { p: sol.map(opLabel).join(', ') }));
+    tipText.replaceChildren(...lines.map((t) => el('span', '', t)));
+    tipBtn.hidden = tips >= 3 || (tips >= 2 && sol.length <= 1) || sol.length === 0;
+  }
+  tipBtn.addEventListener('click', () => {
+    tips += 1;
+    tipBtn.hidden = false;
+    renderTip();
+  });
+
+  // ---------- Rechenweg (ohne Ablauf, wird beim Bauen aktualisiert) ----------
+  const traceEl = el('div', 'zf-trace');
+  tipBox.after(traceEl);
+
+  function renderTrace(): void {
+    const sv = level.source;
+    const value = sv.pick ? picks[level.id] : sourceValue(level, 0);
+    traceEl.hidden = mode !== 'level' || value === undefined;
+    if (traceEl.hidden || value === undefined) return;
+    const t = trace(level, withFixed(level, grid), value);
+    const chips: HTMLElement[] = [el('span', 'zf-trace__label', `${tx(T.traceLabel)} ${tx(T.traceFor, { v: ctxNum(value) })}:`), el('span', 'zf-trace__num', ctxNum(value))];
+    for (const st of t.steps) chips.push(el('span', 'zf-trace__op', st.label), el('span', 'zf-trace__num', ctxNum(st.value)));
+    if (t.end === 'target') {
+      const target = targetsOf(level)[t.target!]!;
+      const ok = accepts(target, t.value, 0);
+      const end = el('span', `zf-trace__end ${ok ? 'is-ok' : 'is-bad'}`);
+      end.append(icon(ok ? 'check' : 'cross', 14), el('span', '', ok ? tx(T.traceStorage) : `${tx(T.traceStorage)}: ${targetLabel(target, 0)}`));
+      chips.push(end);
+    } else chips.push(el('span', 'zf-trace__end', tx(t.end === 'branch' ? T.traceBranch : t.end === 'error' ? T.traceError : T.traceGap)));
+    traceEl.replaceChildren(...chips);
   }
 
   /** Hinweis „Neu in diesem Kapitel“ mit Knopf zur Erklärung. */
