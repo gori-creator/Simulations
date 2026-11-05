@@ -41,6 +41,11 @@ const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
 const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
 const T = {
+  titleName: L('Zahlenfabrik', 'Number Factory'),
+  titleSub: L('Baue Fabriken, die rechnen.', 'Build factories that do maths.'),
+  titlePlay: L('Spielen', 'Play'),
+  titleLevels: L('Level wählen', 'Choose level'),
+  titleWorld: L('Offene Welt', 'Open world'),
   start: L('Start', 'Start'),
   pause: L('Pause', 'Pause'),
   stepBtn: L('Ein Takt', 'One tick'),
@@ -524,7 +529,7 @@ export function initFactory(root: HTMLElement): void {
     if (mode === 'level' && innerWidth <= 640) {
       const fitW = Math.min(1.2, Math.max(0.34, box.width / ((x1 - x0) * CELL)));
       const want = Math.round((y1 - y0) * CELL * fitW + 16);
-      viewport.style.height = `${Math.max(220, Math.min(Math.round(innerHeight * 0.56), want))}px`;
+      viewport.style.height = `${Math.max(280, Math.min(Math.round(innerHeight * 0.6), want))}px`;
     } else viewport.style.removeProperty('height');
     const fresh = viewport.getBoundingClientRect();
     // Beim Einpassen nicht zu klein (Felder sollen sich noch antippen lassen); weiter heraus zoomt man selbst
@@ -1203,6 +1208,19 @@ export function initFactory(root: HTMLElement): void {
     c.append(lock);
   }
 
+  /** Fortschritt am Lager: bis 6 Stück als Punkte (●●○), sonst als Zahl. */
+  function countBadge(got: number, need: number): HTMLElement {
+    const box = el('span', 'zf-cell__small zf-target-count');
+    box.setAttribute('aria-label', `${got}/${need}`);
+    if (need > 6) {
+      box.textContent = `${got}/${need}`;
+      return box;
+    }
+    box.classList.add('zf-pips');
+    for (let k = 0; k < need; k++) box.append(el('i', k < got ? 'is-on' : ''));
+    return box;
+  }
+
   function renderCells(): void {
     world.style.width = `${board.cols * CELL}px`;
     world.style.height = `${board.rows * CELL}px`;
@@ -1233,7 +1251,7 @@ export function initFactory(root: HTMLElement): void {
       targetsOf(level).forEach((t, i) => {
         const c = at(t.x, t.y, `zf-cell--target${t.accept.kind === 'test' ? ' zf-cell--rule' : ''}`);
         c.dataset.target = String(i);
-        c.append(art('target', 52), el('span', 'zf-cell__big zf-target-label', targetLabel(t, state.got[i] ?? 0)), el('span', 'zf-cell__small zf-target-count', `${state.got[i] ?? 0}/${t.need}`));
+        c.append(art('target', 52), el('span', 'zf-cell__big zf-target-label', targetLabel(t, state.got[i] ?? 0)), countBadge(state.got[i] ?? 0, t.need));
         c.title = `${tx(T.target)}: ${tx(acceptText(t.accept, state.got[i] ?? 0))}`;
       });
     } else {
@@ -1457,7 +1475,7 @@ export function initFactory(root: HTMLElement): void {
       targetsOf(level).forEach((t, i) => {
         const c = cellsLayer.querySelector(`[data-target="${i}"]`);
         if (!c) return;
-        c.querySelector('.zf-target-count')!.textContent = `${state.got[i] ?? 0}/${t.need}`;
+        c.querySelector('.zf-target-count')!.replaceWith(countBadge(state.got[i] ?? 0, t.need));
         // volles Lager: eigenes Bild, falls vorhanden
         const full = (state.got[i] ?? 0) >= t.need;
         c.classList.toggle('is-full', full);
@@ -1851,7 +1869,7 @@ export function initFactory(root: HTMLElement): void {
       return box;
     }
     for (let k = 0; k < 3; k++) {
-      const img = el('img');
+      const img = el('img', k < n ? '' : 'is-empty');
       img.src = k < n ? IMAGES['stern-voll']! : IMAGES['stern-leer']!;
       img.alt = '';
       img.width = size;
@@ -2666,7 +2684,51 @@ export function initFactory(root: HTMLElement): void {
     lastSpec = fromLink;
     openLevel(specToLevel(fromLink));
     backBtn.hidden = false;
-  } else openLevel(index);
+  } else {
+    openLevel(index);
+    // Titelbildschirm, wenn die Einführung schon gesehen wurde (sonst zeigt sie das Titelbild)
+    if (lessonSeen('belt')) showTitle();
+  }
   addEventListener('resize', () => applyView());
+
+  /** Startbildschirm über dem Spiel: Titelbild, Name, drei große Knöpfe. */
+  function showTitle(): void {
+    const host = root.querySelector<HTMLElement>('.zf-game');
+    if (!host) return;
+    const screen = el('div', 'zf-title');
+    screen.setAttribute('role', 'dialog');
+    screen.setAttribute('aria-modal', 'true');
+    screen.setAttribute('aria-label', tx(T.titleName));
+    if (IMAGES.titelbild) screen.style.setProperty('--zf-title-img', `url("${IMAGES.titelbild}")`);
+    const box = el('div', 'zf-title__box');
+    const name = el('p', 'zf-title__name', tx(T.titleName));
+    const sub = el('p', 'zf-title__sub', tx(T.titleSub));
+    const play = ibtn('play', tx(T.titlePlay), 'zf-btn zf-btn--main zf-title__play');
+    const levels = btn(tx(T.titleLevels), 'zf-btn zf-btn--bar');
+    const worldBtn = btn(tx(T.titleWorld), 'zf-btn');
+    const row = el('div', 'zf-title__row');
+    row.append(levels, worldBtn);
+    box.append(name, sub, play, row);
+    screen.append(box);
+    const close = () => {
+      screen.remove();
+      document.removeEventListener('keydown', onKey);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+    play.addEventListener('click', close);
+    levels.addEventListener('click', () => {
+      close();
+      openPicker();
+    });
+    worldBtn.addEventListener('click', () => {
+      close();
+      openWorldMode();
+    });
+    document.addEventListener('keydown', onKey);
+    host.append(screen);
+    play.focus();
+  }
   root.classList.add('is-ready');
 }

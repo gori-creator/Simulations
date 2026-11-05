@@ -138,3 +138,9 @@ Je nach gewählter Richtung **einen** dieser Sätze vor jeden Prompt kopieren:
 - Oberfläche: helle Platten mit Metallecken und Schrauben, gelbe Schilder mit Nieten, Warnstreifen am unteren Rand, dunkelblauer Hintergrund mit Zahnrädern.
 - Alle Bild-Prompts komplett ausgeschrieben: `docs/ZAHLENFABRIK-PROMPTS.md`.
 - Entwurf als HTML zum Nachbauen: Screenshots in der Unterhaltung; beim Umbau zuerst Spielbildschirm, dann Level-Auswahl, dann Titel.
+
+### Umsetzung (05.11.2026)
+
+- Stil-Schicht `src/styles/zahlenfabrik-skin.css` über `zahlenfabrik.css` (nur Aussehen): Platten mit Metallecken, gelbe Schilder, 3D-Knöpfe, dunkelblaue Halle mit Warnstreifen, Leuchtanzeigen auf Maschinen und Lager, Metallscheibe an der Quelle, Punkte für den Fortschritt am Lager, Boden auf zwei Felder ausgerichtet.
+- Titelbildschirm mit `titelbild` (ab dem zweiten Besuch; beim ersten Mal zeigt die Einführung das Titelbild), Level-Auswahl mit großen Kapitelbildern, Start-Knopf am Desktop immer sichtbar, Spielfeld am Handy größer, leere Sterne grau.
+- Sobald die Bilder aus `docs/ZAHLENFABRIK-PROMPTS.md` da sind, ersetzen sie die gezeichneten Formen (Platten, Knöpfe, Display).
