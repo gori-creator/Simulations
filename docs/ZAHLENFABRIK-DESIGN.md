@@ -129,3 +129,11 @@ Je nach gewählter Richtung **einen** dieser Sätze vor jeden Prompt kopieren:
 1. Projektleitung wählt eine Richtung (empfohlen D, sonst A, B, C oder eine Mischung) und gibt Feedback zu den Entwürfen.
 2. Mit dem passenden Stil-Vorsatz zuerst die **Proben** erzeugen: 4 (Schild), 12 (Rahmen), 23 (Knopf), 31 (Start-Knopf), 35 (Level-Knopf), 41 (ein paar Symbole), 65 (Zahl-Kugel). Passen sie zu den vorhandenen Spielbildern, den Rest erzeugen.
 3. Danach baut die Oberfläche um: Hauptmenü, Level-Auswahl als Kartenfenster, Spielbildschirm mit HUD, Fenster „Level geschafft“, Einstellungen. Die gezeichnete Grafik bleibt als Ersatz, wenn ein Bild fehlt.
+
+## Entwurf D2 (Stand 05.11.2026, nach Feedback der Projektleitung)
+
+- **Raster stimmt:** Das Bodenbild ist auf genau zwei Kästchen ausgerichtet, die dünnen Linien liegen auf den Feldgrenzen. Jedes Teil (Quelle, Maschine, Lager, Fels, Baum) sitzt genau in **einem** Kästchen, die Bänder laufen durch die Feldmitten, die Zahl-Kugeln liegen auf den Feldmitten.
+- **Anzeigen statt Aufdruck:** Maschinen zeigen ihre Rechnung auf einem kleinen **Leuchtdisplay** (dunkler Bildschirm, leuchtende Ziffern: Plus grün, Mal gelb, Lager blau). Die Quelle zeigt ihre Zahl auf einer runden Metallscheibe. Das Lager hat Punkte für den Fortschritt (●○○). Große Zahlen auf goldenen Kugeln.
+- **Vorhandene Bilder eingebaut:** Titelbild als Startbildschirm, die 13 **Kapitelbilder** als Karten in der Level-Auswahl, Maschinen je Rechenart, Weichen, Bäume, Büsche, Sterne, Münze.
+- Oberfläche: helle Platten mit Metallecken und Schrauben, gelbe Schilder mit Nieten, Warnstreifen am unteren Rand, dunkelblauer Hintergrund mit Zahnrädern.
+- Entwurf als HTML zum Nachbauen: Screenshots in der Unterhaltung; beim Umbau zuerst Spielbildschirm, dann Level-Auswahl, dann Titel.
