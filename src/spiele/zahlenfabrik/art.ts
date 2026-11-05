@@ -40,15 +40,37 @@ export function imageFor(kind: ArtKind, variant = 0, specific?: string): string 
 }
 
 /** Eigenes Bild je Rechenart (Maschinen) bzw. Prüfung (Weichen), sonst das allgemeine. */
-const MACHINE_FILES: Partial<Record<string, string>> = { '+': 'maschine-plus', '−': 'maschine-minus', '×': 'maschine-mal', '÷': 'maschine-geteilt', '²': 'maschine-quadrat' };
-const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim' };
-export const machineFile = (sym: string) => MACHINE_FILES[sym];
+const MACHINE_FILES: Partial<Record<string, string>> = {
+  '+': 'maschine-plus', '−': 'maschine-minus', '×': 'maschine-mal', '÷': 'maschine-geteilt', '²': 'maschine-quadrat',
+  '%': 'maschine-rest', 'Σ': 'maschine-quersumme', '√': 'maschine-wurzel', '±': 'maschine-vorzeichen', '|': 'maschine-betrag',
+  '⇄': 'maschine-spiegel', '≈': 'maschine-runden', ':': 'maschine-bruch', '⅟': 'maschine-kehrwert',
+};
+const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim', square: 'weiche-quadrat' };
+const MERGE_FILES: Partial<Record<string, string>> = { '+': 'zusammen-summe', '−': 'zusammen-differenz', '×': 'zusammen-produkt', '÷': 'zusammen-quotient' };
+/** Bild je Rechenart; ohne eigenes die neutrale Maschine. */
+export const machineFile = (sym: string) => MACHINE_FILES[sym] ?? 'maschine-allgemein';
 export const switchFile = (test: string) => SWITCH_FILES[test];
+export const mergeFile = (mode: string) => MERGE_FILES[mode];
+/** Rechenzeichen zur Aufschrift einer Maschine (für die Erklärkarten). */
+export function symOfLabel(label: string): string | undefined {
+  if (label.startsWith('mod')) return '%';
+  if (label === 'QS') return 'Σ';
+  if (label === '√x') return '√';
+  if (label === 'x²') return '²';
+  if (label === '|x|') return '|';
+  if (label === '1/x') return '⅟';
+  if (label.startsWith('x/')) return ':';
+  return label[0];
+}
 
 /** Bild je Kapitel (für Erklärkarten und Auswahl). */
 const CHAPTER_FILES: Record<string, string> = {
   c1: 'kapitel-01', c2: 'kapitel-02', c3: 'kapitel-03', c4: 'kapitel-04', c5: 'kapitel-05', c6: 'kapitel-06', c7: 'kapitel-07',
-  c8: 'kapitel-08', c9: 'kapitel-09', c10: 'kapitel-10', c11: 'kapitel-11', c12: 'kapitel-12', c13: 'kapitel-13', c27: 'kapitel-13',
+  c8: 'kapitel-08', c9: 'kapitel-09', c10: 'kapitel-10', c11: 'kapitel-11', c12: 'kapitel-12', c13: 'kapitel-13',
+  c14: 'kapitel-rest', c15: 'kapitel-quersumme', c16: 'kapitel-wurzel', c17: 'kapitel-quadratzahl', c19: 'kapitel-terme',
+  c20: 'kapitel-bruecke', c21: 'kapitel-raetsel', c22: 'kapitel-detektiv', c23: 'kapitel-vorzeichen', c24: 'kapitel-spiegel',
+  c25: 'kapitel-runden', c26: 'kapitel-wechsel', c27: 'kapitel-grossmeister', c28: 'kapitel-zusammen', c29: 'kapitel-brueche',
+  c30: 'kapitel-gleichungen',
 };
 export const chapterImage = (id: string): string | undefined => IMAGES[CHAPTER_FILES[id] ?? ''];
 
