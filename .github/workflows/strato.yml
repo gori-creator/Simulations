@@ -78,13 +78,15 @@ jobs:
         run: sudo apt-get update -q && sudo apt-get install -y -q lftp
       - name: Hochladen (SFTP)
         if: steps.ready.outputs.ok == 'true'
-        # Spiegelt dist/ in den Zielordner; Dateien, die es nicht mehr gibt, werden dort gelöscht.
-        # Zuerst kommen die neuen Dateien in _astro/ (ohne Löschen), erst danach die Seiten –
-        # sonst zeigen Seiten während des Hochladens kurz auf Bilder, die noch fehlen.
+        # Spiegelt dist/ in den Zielordner, in drei Schritten, damit keine Seite ins Leere zeigt:
+        # 1. neue Dateien in _astro/, 2. alle Seiten (noch ohne Löschen – alte Stil- und
+        # Skriptdateien bleiben, solange alte Seiten sie brauchen), 3. erst ganz am Ende
+        # löschen, was es nicht mehr gibt.
         run: |
           lftp -e "set sftp:auto-confirm yes; set net:max-retries 3; set net:timeout 30; \
             open --env-password -u \"$STRATO_USER\" sftp://$STRATO_HOST; \
             mkdir -p -f \"$STRATO_DIR/_astro\"; \
             mirror --reverse --parallel=4 --verbose=1 dist/_astro/ \"$STRATO_DIR/_astro\"; \
-            mirror --reverse --delete --parallel=4 --verbose=1 dist/ \"$STRATO_DIR\"; \
+            mirror --reverse --parallel=4 --verbose=1 dist/ \"$STRATO_DIR\"; \
+            mirror --reverse --delete --only-newer --parallel=4 --verbose=1 dist/ \"$STRATO_DIR\"; \
             bye"
