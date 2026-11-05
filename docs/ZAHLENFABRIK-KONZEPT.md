@@ -105,6 +105,8 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - Wunsch der Projektleitung: Man soll auf neue Teile sparen müssen. Nur die Preise steigen, alles andere bleibt (1 Münze je Zahl, 5 für eine zum Auftrag passende, Belohnungen und Abnehmer wie bisher).
 - Band 2, Brücke 50, Zusammenführer + 60, − 120, × 250, ÷ 300, Weichen gerade? 150, ÷3? 250, >50? 250, Primzahl? 400, Quadratzahl? 400 Münzen; neue Gebiete 1.500 und 8.000 Münzen (vorher 400 und 2.500).
 
+- **Zusammenführer nur für zwei verschiedene Stränge** (offene Welt): Die zweite Zahl muss aus einer anderen Richtung kommen (eine Zahl vom selben Band wartet davor), und beide müssen aus verschiedenen Quellen stammen (jede Zahl merkt sich ihre Quellen, `Item.src`). So kann sich kein Strom mit sich selbst addieren oder malnehmen, auch nicht über einen Kreis zurück; eine unpassende Zahl geht verloren.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee

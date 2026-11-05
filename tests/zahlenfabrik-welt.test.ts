@@ -129,14 +129,12 @@ describe('Zahlenfabrik: Stau, Weichen, Zusammenführen', () => {
     expect(s.items.length).toBeLessThanOrEqual(4);
   });
 
-  it('zwei Zusammenführer hintereinander: 1 + 1 = 2, dann 2 + 2 = 4; nichts geht verloren', () => {
+  it('ein einzelnes Band verbindet sich nicht mit sich selbst: die zweite Zahl wartet davor', () => {
     const w: OpenWorld = { ...tiny, spawners: [{ x: 0, y: 1, dir: 0, value: 1 }] };
-    const grid = g([[1, 1, belt(0)], [2, 1, { op: null, dir: 0, merge: '+' }], [3, 1, { op: null, dir: 0, merge: '+' }], [4, 1, belt(0)]]);
+    const grid = g([[1, 1, belt(0)], [2, 1, { op: null, dir: 0, merge: '+' }], [3, 1, belt(0)], [4, 1, belt(0)]]);
     const s = noOverlap(w, grid, 200);
-    // 1+1 = 2 wartet im zweiten, 1+1 = 2 kommt dazu → 4; alles kommt als 4 an
-    expect(s.count).toBeGreaterThan(5);
-    expect(s.score).toBe(4 * s.count);
-    expect(s.lost).toBe(0);
+    expect(s.count).toBe(0);
+    expect(s.score).toBe(0);
   });
 
   it('Zusammenführen (Summe): zwei Quellen 2 und 3 → nur 5 kommt an', () => {
@@ -160,12 +158,42 @@ describe('Zahlenfabrik: Stau, Weichen, Zusammenführen', () => {
     expect(s.lost).toBe(0);
   });
 
-  it('Zusammenführen (Produkt): 3 und 3 → 9', () => {
-    const w = { ...tiny, spawners: [{ x: 0, y: 1, dir: 0 as const, value: 3 }] };
-    const grid = g([[1, 1, belt(0)], [2, 1, { op: null, dir: 0, merge: '×' }], [3, 1, belt(0)], [4, 1, belt(0)]]);
+  it('Zusammenführen (Produkt): zwei Quellen 3 und 4 → 12', () => {
+    const w: OpenWorld = {
+      ...tiny,
+      rows: 5,
+      base: { x: 5, y: 1, w: 3, h: 3 },
+      spawners: [
+        { x: 0, y: 0, dir: 0, value: 3 },
+        { x: 0, y: 4, dir: 0, value: 4 },
+      ],
+    };
+    const grid = g([
+      [1, 0, belt(0)], [2, 0, belt(0)], [3, 0, belt(1)], [3, 1, belt(1)],
+      [1, 4, belt(0)], [2, 4, belt(0)], [3, 4, belt(3)], [3, 3, belt(3)],
+      [3, 2, { op: null, dir: 0, merge: '×' }], [4, 2, belt(0)],
+    ]);
     const s = noOverlap(w, grid, 120);
     expect(s.count).toBeGreaterThan(5);
-    expect(s.score).toBe(9 * s.count);
+    expect(s.score).toBe(12 * s.count);
+  });
+
+  it('kein Kreis zurück: das Ergebnis darf nicht mit Zahlen derselben Quelle zusammengehen', () => {
+    // Quelle 2 → Zusammenführer (5, 1); dessen Ergebnis läuft im Kreis zurück und käme von unten wieder an
+    const w: OpenWorld = { ...tiny, cols: 9, rows: 5, base: { x: 8, y: 0, w: 1, h: 1 }, spawners: [{ x: 0, y: 1, dir: 0, value: 2 }, { x: 5, y: 4, dir: 3, value: 3 }] };
+    const grid = g([
+      [1, 1, belt(0)], [2, 1, belt(0)], [3, 1, belt(0)], [4, 1, belt(0)],
+      [5, 1, { op: null, dir: 0, merge: '+' }],
+      [6, 1, belt(1)], [6, 2, belt(1)], [6, 3, belt(2)], [5, 3, belt(3)], [5, 2, belt(3)],
+    ]);
+    let st = worldStart();
+    let biggest = 0;
+    for (let i = 0; i < 150; i++) {
+      st = worldStep(w, grid, st);
+      for (const it of st.items) biggest = Math.max(biggest, it.value);
+    }
+    // ohne die Regel würde die Zahl im Kreis immer größer; so bleibt es bei 2 + 3 = 5
+    expect(biggest).toBeLessThanOrEqual(5);
   });
 
   it('Weiche „gerade?“: gerade Zahlen geradeaus in die Basis, ungerade zur Seite (dort fallen sie herunter)', () => {
