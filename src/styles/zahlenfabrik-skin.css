@@ -572,6 +572,7 @@
   grid-column: 1 / -1;
   grid-row: 1;
   width: calc(100% + 24px);
+  max-width: none;
   height: 118px;
   margin: -12px -12px 8px;
   border: 0;
