@@ -1762,3 +1762,42 @@
 .zf-picker .zf-levels > .zf-world-card--open { grid-column: auto; align-content: start; }
 .zf-picker__top .zf-continue { max-width: 100%; text-align: left; }
 .zf-picker__top .zf-continue .zf-btn__label { white-space: normal; }
+
+/* Effekte mit eigenen Bildern (Staubwolke, Funke) */
+.zf-poof--img { width: 40px; height: 40px; object-fit: contain; pointer-events: none; }
+
+/* ==========================================================================
+   Bilder Runde 2: Sterne, Pokal, Kapitelbilder, Konfetti, Zahnrad, Nebel
+   ========================================================================== */
+
+.zf-stars { display: inline-flex; gap: 1px; vertical-align: -0.15em; }
+.zf-stars img { display: block; object-fit: contain; }
+.zf-status .zf-stars { margin-left: 4px; }
+.zf-picker .zf-level .zf-level__stars { justify-content: center; }
+
+.zf-world-card__head { position: relative; }
+.zf-world-card__img { grid-column: 3; grid-row: 1 / span 2; width: 54px; height: 34px; border-radius: 7px; object-fit: cover; }
+.zf-world-card__head:has(.zf-world-card__img) { grid-template-columns: auto 1fr auto; }
+.zf-world-card__cup { position: absolute; top: -10px; right: -8px; width: 34px; height: 34px; filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.25)); }
+
+.zf-intro__cover { display: block; width: calc(100% + 44px); max-width: none; height: clamp(120px, 28vh, 220px); margin: -22px -22px 14px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; object-fit: cover; object-position: 60% 60%; }
+
+.zf-confetti { position: absolute; left: 50%; top: 45%; z-index: 6; width: min(70%, 420px); translate: -50% -50%; pointer-events: none; animation: zf-confetti 1.6s ease-out forwards; }
+@keyframes zf-confetti {
+  0% { opacity: 0; scale: 0.3; }
+  20% { opacity: 1; scale: 1; }
+  100% { opacity: 0; scale: 1.25; }
+}
+
+.zf-gear { width: 22px; height: 22px; }
+@media (prefers-reduced-motion: no-preference) {
+  .zf-gear { animation: zf-spin 1.2s linear infinite; }
+}
+@keyframes zf-spin { to { rotate: 360deg; } }
+
+.zf-fog-tex { position: absolute; z-index: 3; background-size: 256px 256px; opacity: 0.55; pointer-events: none; }
+:root[data-theme='dark'] .zf-fog-tex { opacity: 0.22; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .zf-fog-tex { opacity: 0.22; }
+}
+.zf-side .zf-tool .zf-tool__price { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }

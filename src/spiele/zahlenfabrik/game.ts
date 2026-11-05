@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art, imageFor, IMAGES, type ArtKind } from './art';
+import { art, chapterImage, imageFor, IMAGES, machineFile, switchFile, type ArtKind } from './art';
 import { icon, setButton, type IconName } from './icons';
 import { lessonSeen, showLessons } from './lessons';
 import { createSound } from './sound';
@@ -8,7 +8,7 @@ import { clampNum, KIT, kitItem, specFor, type KitId, type KitItem, type LessonI
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, SPECIAL, type LevelInfo } from './levels';
 import { dailyLevel, dayKey, randomLevel } from './daily';
 import { chainLevel, solveChain } from './solver';
-import { accepts, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
+import { accepts, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
 import { canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type OpenWorld, type WorldState } from './world';
@@ -94,6 +94,7 @@ const T = {
   pickMore: L('Startzahl größer', 'Bigger starting number'),
   pickFirst: L('Stell zuerst bei „Startzahl“ eine Zahl ein.', 'First set a number at “Starting number”.'),
   sourceSeq: L('Die Quelle gibt aus: {list}', 'The source gives: {list}'),
+  sourceSeqN: L('Quelle {n} gibt aus: {list}', 'Source {n} gives: {list}'),
   tableX: L('x', 'x'),
   tableWant: L('Lager will', 'Storage wants'),
   tableGot: L('angekommen', 'arrived'),
@@ -129,6 +130,7 @@ const T = {
   numMore: L('Zahl größer', 'Bigger number'),
   numTile: L('{p}, eingestellt: {n}', '{p}, set to: {n}'),
   newBadge: L('Neu', 'New'),
+  allStars: L('Alle Sterne geholt!', 'All stars collected!'),
   tip: L('Tipp', 'Hint'),
   tipCount: L('Mit {n} Maschinen geht es.', 'It works with {n} machines.'),
   tipOne: L('Mit einer Maschine geht es.', 'It works with one machine.'),
@@ -153,7 +155,7 @@ const T = {
   building: L('Rätsel wird gebaut …', 'Building the puzzle …'),
   groupMachines: L('Maschinen', 'Machines'),
   groupSwitches: L('Weichen', 'Switches'),
-  groupFlow: L('Verteilen & Kreuzen', 'Split & cross'),
+  groupFlow: L('Zusammenführen & mehr', 'Merging & more'),
   newIn: L('Neu in diesem Kapitel: {p}', 'New in this chapter: {p}'),
   explain: L('Erklärung', 'Explain'),
   chapterLabel: L('Kapitel {n}: {t}', 'Chapter {n}: {t}'),
@@ -163,8 +165,8 @@ const T = {
   world: L('Offene Welt', 'Open world'),
   worldTitle: L('Offene Welt', 'Open world'),
   worldHint: L(
-    'Leg Bänder von den Zahlenquellen zu deiner Basis. Jede Zahl bringt so viele Münzen, wie sie groß ist. Aufträge schalten neue Teile frei.',
-    'Lay belts from the number sources to your base. Every number earns as many coins as it is big. Orders unlock new parts.',
+    'Leg Bänder von den Zahlenquellen zu deiner Basis. Neue Zahlen entstehen nur, wenn du zwei Ströme zusammenführst (plus, minus, mal, geteilt); Weichen filtern sie. Jede Zahl bringt 1 Münze, eine passende für den Auftrag 5. Aufträge schalten neue Teile frei.',
+    'Lay belts from the number sources to your base. New numbers only appear when you merge two streams (plus, minus, times, divided); switches filter them. Every number earns 1 coin, one that fits the order earns 5. Orders unlock new parts.',
   ),
   eyebrowWorld: L('Zahlenfabrik · Offene Welt', 'Number Factory · Open world'),
   score: L('Gesammelt: {n}', 'Collected: {n}'),
@@ -191,7 +193,8 @@ const T = {
   fogLabel: L('Mehr Land für {n} Münzen', 'More land for {n} coins'),
   expandDone: L('Neues Land frei! Weiter draußen geben die Quellen größere Zahlen.', 'New land unlocked! Further out, the sources give bigger numbers.'),
   sortHelp: L('Weiche: Was die Frage erfüllt, läuft geradeaus (✓), alles andere biegt ab (✗). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Switch: numbers that pass go straight (✓), all others turn (✗). Tap to turn it; after four turns the side switches.'),
-  mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis eine zweite kommt. Dann laufen beide als Summe (bzw. Produkt) weiter.', 'Merger: the first number waits for a second one. Then both continue as their sum (or product).'),
+  mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis aus einer anderen Richtung eine zweite kommt. Dann laufen beide als eine Zahl weiter – Summe, Differenz (größere − kleinere), Produkt oder Quotient (größere ÷ kleinere, nur wenn es aufgeht).', 'Merger: the first number waits until a second one arrives from another direction. Then both continue as one number – sum, difference (bigger − smaller), product or quotient (bigger ÷ smaller, only if it divides evenly).'),
+  worldReset: L('Die offene Welt hat neue Regeln (nur noch Zusammenführer und Weichen, Münzen je Zahl) und startet neu.', 'The open world has new rules (only mergers and switches, coins per number) and starts afresh.'),
   worldHowto: L(
     '✋ Hand: Karte verschieben (zwei Finger oder Mausrad: zoomen). → Band: über die Kästchen ziehen. Teile kosten Münzen, Abbauen gibt sie zurück. Ein Teil nochmal antippen dreht es. Was vom Band fällt, ist weg. Du kannst bauen, während die Fabrik läuft.',
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Parts cost coins; removing them gives the coins back. Tap a part again to turn it. Whatever falls off the belt is gone. You can build while the factory is running.',
@@ -212,11 +215,19 @@ interface SavedWorld {
 
 const nonNeg = (v: unknown, fallback: number) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.floor(v) : fallback);
 
+/** Wurde ein alter Spielstand der offenen Welt verworfen? (einmal melden) */
+let worldWasReset = false;
+
 function loadWorld(w: OpenWorld): { grid: Grid; econ: Economy } {
   const grid: Grid = new Map();
   const fresh = newEconomy();
   try {
     const raw = JSON.parse(localStorage.getItem(WORLD_STORE) ?? '{}') as Partial<SavedWorld>;
+    // Bis Version 3 galten andere Regeln (Maschinen, Münzen nach Größe): neu anfangen
+    if (raw.parts && (raw.v ?? 1) < 4) {
+      worldWasReset = true;
+      return { grid, econ: fresh };
+    }
     // Bis Version 2 war die Karte nur das heutige Startgebiet: Teile dorthin verschieben
     const [ox, oy] = (raw.v ?? 1) < 3 ? START_OFFSET : [0, 0];
     const zone = Math.min(nonNeg(raw.econ?.zone, 0), ZONE_PRICES.length - 1);
@@ -249,7 +260,7 @@ function saveWorld(grid: Grid, econ: Economy): void {
       const [x, y] = k.split(',').map(Number) as [number, number];
       return p.sort ? [x, y, p.dir, partId(p), p.side ?? 1] : [x, y, p.dir, partId(p)];
     });
-    localStorage.setItem(WORLD_STORE, JSON.stringify({ v: 3, parts, econ } satisfies SavedWorld));
+    localStorage.setItem(WORLD_STORE, JSON.stringify({ v: 4, parts, econ } satisfies SavedWorld));
   } catch {
     // ohne Speicher: nur für diesen Besuch
   }
@@ -277,7 +288,7 @@ function boardOfLevel(l: LevelInfo): Board {
   return {
     cols: l.cols,
     rows: l.rows,
-    sources: [l.source],
+    sources: sourcesOf(l),
     base: first!,
     extra: rest,
     walls: new Set(l.walls.map(([x, y]) => key(x, y))),
@@ -453,7 +464,7 @@ export function initFactory(root: HTMLElement): void {
     // Level: Quelle, Lager, vorgegebene Teile; Welt: die Umgebung der Basis
     const pts =
       mode === 'level'
-        ? [[level.source.x, level.source.y], ...targetsOf(level).map((t) => [t.x, t.y]), ...(level.fixed ?? []).map((f) => [f.x, f.y])]
+        ? [...sourcesOf(level).map((sv) => [sv.x, sv.y]), ...targetsOf(level).map((t) => [t.x, t.y]), ...(level.fixed ?? []).map((f) => [f.x, f.y])]
         : [[board.base.x - 5, board.base.y - 4], [board.base.x + board.base.w + 4, board.base.y + board.base.h + 3]];
     const xs = pts.map((p) => p[0]!);
     const ys = pts.map((p) => p[1]!);
@@ -789,7 +800,7 @@ export function initFactory(root: HTMLElement): void {
   function describe(x: number, y: number): string {
     const v = { x: x + 1, y: y + 1 };
     const sp = sourceAt(x, y);
-    if (sp) return tx(T.cellSource, { ...v, v: sourceLabel(sp.value) });
+    if (sp) return tx(T.cellSource, { ...v, v: sourceLabel(sp) });
     if (mode === 'level') {
       const ti = targetsOf(level).findIndex((t) => t.x === x && t.y === y);
       if (ti >= 0) return tx(T.cellTarget, { ...v, t: tx(acceptText(targetsOf(level)[ti]!.accept, state.got[ti] ?? 0)) });
@@ -973,7 +984,9 @@ export function initFactory(root: HTMLElement): void {
     const open = mode === 'world' ? zoneRect(openWorld, econ.zone) : null;
     for (const sp of board.sources) {
       const c = at(sp.x, sp.y, 'zf-cell--source');
-      c.append(art('source', 52, sp.dir), el('span', 'zf-cell__big zf-source-value', sourceLabel(sp.value)));
+      const label = el('span', 'zf-cell__big zf-source-value', sourceLabel(sp));
+      label.dataset.src = String(board.sources.indexOf(sp));
+      c.append(art('source', 52, sp.dir), label);
       c.title = tx(T.source);
       if (open && !inRect(open, sp.x, sp.y)) {
         c.classList.add('is-locked');
@@ -996,7 +1009,7 @@ export function initFactory(root: HTMLElement): void {
     }
     for (const k of board.walls) {
       const [x, y] = k.split(',').map(Number) as [number, number];
-      at(x, y, 'zf-cell--rock').append(art('rock', CELL, undefined, (x * 7 + y * 13) % 3));
+      at(x, y, 'zf-cell--rock').append(art('rock', CELL, undefined, (x * 7 + y * 13 + ((x * y) % 5)) % 11));
     }
     for (const [k, part] of all) {
       if (!part.op && !part.sort && !part.merge && !part.bridge && !part.split && !part.alt) continue;
@@ -1005,7 +1018,7 @@ export function initFactory(root: HTMLElement): void {
       if (part.sort) {
         const c = at(x, y, 'zf-cell--op zf-cell--sort');
         const [yes, no] = outputs(part) as [Dir, Dir];
-        c.append(art('sort', 52, part.dir, 0, part.side === 3), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
+        c.append(art('sort', 52, part.dir, 0, part.side === 3, switchFile(part.sort.kind)), el('span', 'zf-cell__mid', tx(testLabel(part.sort))), el('span', 'zf-cell__small', `✓${ARROW[yes]} ✗${ARROW[no]}`));
         c.title = tx(T.sortHelp);
         if (fixed) addLock(c);
         continue;
@@ -1026,18 +1039,35 @@ export function initFactory(root: HTMLElement): void {
       }
       if (part.merge) {
         const c = at(x, y, 'zf-cell--op zf-cell--merge');
-        c.append(art('merge', 52, part.dir), el('span', 'zf-cell__mid', part.merge === '+' ? 'a+b' : 'a×b'));
+        c.append(art('merge', 52, part.dir), el('span', 'zf-cell__mid', `a${part.merge}b`));
         c.title = tx(T.mergeHelp);
         continue;
       }
       const c = at(x, y, 'zf-cell--op');
       if (fixed) c.classList.add('zf-cell--fixed');
-      c.append(art('machine', 52, part.dir), el('span', 'zf-cell__big', opLabel(part.op!)));
+      c.append(art('machine', 52, part.dir, 0, false, machineFile(part.op!.sym)), el('span', 'zf-cell__big', opLabel(part.op!)));
       if (fixed) addLock(c);
     }
     if (mode === 'level' && state.error) at(state.error.x, state.error.y, 'zf-cell--error');
     // Noch nicht freigekauftes Land: Nebel außerhalb des offenen Gebiets
     if (open && (open.w < board.cols || open.h < board.rows)) {
+      // Nebel-Bild über dem gesperrten Land (vier Streifen um das offene Gebiet)
+      if (IMAGES.nebel) {
+        const W = board.cols * CELL;
+        const H = board.rows * CELL;
+        const rects = [
+          [0, 0, W, open.y * CELL],
+          [0, (open.y + open.h) * CELL, W, H - (open.y + open.h) * CELL],
+          [0, open.y * CELL, open.x * CELL, open.h * CELL],
+          [(open.x + open.w) * CELL, open.y * CELL, W - (open.x + open.w) * CELL, open.h * CELL],
+        ];
+        for (const [l, t, w, h] of rects) {
+          if (w! <= 0 || h! <= 0) continue;
+          const f = el('div', 'zf-fog-tex');
+          Object.assign(f.style, { left: `${l}px`, top: `${t}px`, width: `${w}px`, height: `${h}px`, backgroundImage: `url("${IMAGES.nebel}")` });
+          frag.append(f);
+        }
+      }
       const fog = el('div', 'zf-fog');
       Object.assign(fog.style, { left: `${open.x * CELL}px`, top: `${open.y * CELL}px`, width: `${open.w * CELL}px`, height: `${open.h * CELL}px` });
       const price = ZONE_PRICES[econ.zone + 1];
@@ -1054,10 +1084,12 @@ export function initFactory(root: HTMLElement): void {
   }
 
   /** Aufschrift der Quelle: im Level die nächste Zahl (bzw. „?“ ohne gewählte Startzahl). */
-  function sourceLabel(fallback: number): string {
-    if (mode !== 'level') return ctxNum(fallback);
+  function sourceLabel(sp: { value: number; values?: number[] }): string {
+    if (mode !== 'level') return ctxNum(sp.value);
+    const i = Math.min(state.emitted, emitCount(level) - 1);
+    if (sp !== level.source) return ctxNum(sp.values?.length ? sp.values[i % sp.values.length]! : sp.value);
     if (level.source.pick) return picks[level.id] === undefined ? '?' : ctxNum(picks[level.id]!);
-    return ctxNum(sourceValue(level, Math.min(state.emitted, totalNeed(level) - 1), picks[level.id]));
+    return ctxNum(sourceValue(level, i, picks[level.id]));
   }
 
   /** Aufschrift eines Lagers: Zahl, Regel (✓/✗ mit Frage) oder nächster Wert der Tabelle. */
@@ -1106,6 +1138,19 @@ export function initFactory(root: HTMLElement): void {
     setTimeout(() => e.remove(), ms);
   }
 
+  /** Effekt mit eigenem Bild (Staubwolke, Funke), ohne Bild das Zeichen. */
+  function effectImg(x: number, y: number, name: string, fallback: string): void {
+    if (reduced) return;
+    if (!IMAGES[name]) return effect(x, y, fallback, 'zf-poof', 600);
+    const e = el('img', 'zf-poof zf-poof--img');
+    e.src = IMAGES[name]!;
+    e.alt = '';
+    e.style.left = `${x * CELL + CELL / 2}px`;
+    e.style.top = `${y * CELL + CELL / 2}px`;
+    itemsLayer.append(e);
+    setTimeout(() => e.remove(), 600);
+  }
+
   function renderItems(): void {
     const old = new Map([...itemsLayer.querySelectorAll<HTMLElement>('.zf-item')].map((e) => [e.dataset.id!, e]));
     for (const item of items()) {
@@ -1149,8 +1194,7 @@ export function initFactory(root: HTMLElement): void {
         if (img && IMAGES['kiste-voll'] && IMAGES.lager) img.src = full ? IMAGES['kiste-voll'] : IMAGES.lager;
         c.querySelector('.zf-target-label')!.textContent = targetLabel(t, state.got[i] ?? 0);
       });
-      const sv = cellsLayer.querySelector('.zf-source-value');
-      if (sv) sv.textContent = sourceLabel(level.source.value);
+      for (const sv of cellsLayer.querySelectorAll<HTMLElement>('.zf-source-value')) sv.textContent = sourceLabel(board.sources[Number(sv.dataset.src)] ?? level.source);
       renderTable();
       pulseTargets();
     }
@@ -1158,9 +1202,9 @@ export function initFactory(root: HTMLElement): void {
     if (score) score.textContent = baseLine();
     if (mode !== 'world') return;
     // Verlorene Zahlen: Wölkchen; Zusammenführen: Funke; Münzen an der Basis
-    for (const [x, y] of wstate.lostAt.slice(0, 12)) effect(x, y, '💨', 'zf-poof', 600);
-    for (const [x, y] of wstate.mergedAt.slice(0, 12)) effect(x, y, '✨', 'zf-poof', 600);
-    const coins = wstate.delivered.reduce((a, v) => a + Math.max(0, v), 0);
+    for (const [x, y] of wstate.lostAt.slice(0, 12)) effectImg(x, y, 'puff', '💨');
+    for (const [x, y] of wstate.mergedAt.slice(0, 12)) effectImg(x, y, 'funke', '✨');
+    const coins = wstate.delivered.length;
     if (wstate.delivered.length) {
       pulse(board.base.x, board.base.y, 'is-receiving');
       sound.play('deliver');
@@ -1216,7 +1260,7 @@ export function initFactory(root: HTMLElement): void {
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
           const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' || spec!.kind === 'alt' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
-          const src = imageFor(kind);
+          const src = imageFor(kind, 0, spec!.kind === 'op' ? machineFile(spec!.op.sym) : spec!.kind === 'sort' ? switchFile(spec!.test.kind) : undefined);
           if (src) {
             const img = el('img');
             img.src = src;
@@ -1513,6 +1557,35 @@ export function initFactory(root: HTMLElement): void {
     renderTools();
   });
 
+  /** Sterne als Bilder (ohne Bilder: ★/☆). */
+  function starRow(n: number, size: number): HTMLElement {
+    const box = el('span', 'zf-stars');
+    box.setAttribute('aria-hidden', 'true');
+    if (!IMAGES['stern-voll'] || !IMAGES['stern-leer']) {
+      box.textContent = `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`;
+      return box;
+    }
+    for (let k = 0; k < 3; k++) {
+      const img = el('img');
+      img.src = k < n ? IMAGES['stern-voll']! : IMAGES['stern-leer']!;
+      img.alt = '';
+      img.width = size;
+      img.height = size;
+      box.append(img);
+    }
+    return box;
+  }
+
+  /** Konfetti über dem Spielfeld (nur ohne reduzierte Bewegung). */
+  function celebrateWin(): void {
+    if (reduced || !IMAGES.konfetti) return;
+    const c = el('img', 'zf-confetti');
+    c.src = IMAGES.konfetti;
+    c.alt = '';
+    viewport.append(c);
+    setTimeout(() => c.remove(), 1600);
+  }
+
   /** Kleine Kennzahl (Beschriftung oben, Wert groß). */
   function metric(label: string, value: string, lead?: Node): HTMLElement {
     const m = el('span', 'zf-metric');
@@ -1577,7 +1650,10 @@ export function initFactory(root: HTMLElement): void {
       parts.push(m);
     }
     parts.push(goals);
-    if (level.source.values) parts.push(el('p', 'zf-source-seq', tx(T.sourceSeq, { list: level.source.values.map(ctxNum).join(', ') })));
+    sourcesOf(level).forEach((sv, i) => {
+      const list = sv.values?.length ? sv.values : level.more?.length ? [sv.value] : null;
+      if (list) parts.push(el('p', 'zf-source-seq', tx(level.more?.length ? T.sourceSeqN : T.sourceSeq, { n: i + 1, list: list.map(ctxNum).join(', ') })));
+    });
     info.replaceChildren(...parts);
     renderTable();
     renderTrace();
@@ -1660,7 +1736,9 @@ export function initFactory(root: HTMLElement): void {
       const got = starsFor(level, grid.size, failedRuns);
       stars[level.id] = Math.max(stars[level.id] ?? 0, got);
       save(stars);
-      say(`${tx(T.won)} ${'★'.repeat(got)}${'☆'.repeat(3 - got)}`, 'good');
+      say(tx(T.won), 'good');
+      status.append(starRow(got, 22), el('span', 'visually-hidden', `${got}/3 ★`));
+      celebrateWin();
       renderLevels();
       if (index < 0) {
         // Tages- oder Zufallsrätsel: gleich ein neues Zufallsrätsel anbieten
@@ -1761,12 +1839,30 @@ export function initFactory(root: HTMLElement): void {
       fill.style.width = `${(100 * got) / (w.levels.length * 3)}%`;
       bar.append(fill);
       head.append(el('span', 'zf-world-card__num', String(wi + 1)), el('strong', '', tx(w.title)), el('span', 'zf-world-card__meta', `${tx(T.worldGrades, { g: w.grades })} · ${got}/${w.levels.length * 3} ★`), bar);
+      // Kapitelbild klein, Pokal bei allen Sternen
+      const cover = chapterImage(w.id);
+      if (cover) {
+        const img = el('img', 'zf-world-card__img');
+        img.src = cover;
+        img.alt = '';
+        img.loading = 'lazy';
+        head.append(img);
+      }
+      if (got === w.levels.length * 3 && IMAGES.pokal) {
+        const cup = el('img', 'zf-world-card__cup');
+        cup.src = IMAGES.pokal;
+        cup.alt = tx(T.allStars);
+        cup.title = tx(T.allStars);
+        head.append(cup);
+      }
       const list = el('div', 'zf-levels__list');
       w.levels.forEach((l, i) => {
         const n = stars[l.id] ?? 0;
         const pro = !!l.pro;
         const b = btn('', `zf-level${pro ? ' zf-level--pro' : ''}${n ? ' is-done' : ''}`);
-        b.append(el('span', 'zf-level__num', String(i + 1)), el('span', 'zf-level__stars', `${'★'.repeat(n)}${'☆'.repeat(3 - n)}`));
+        const st = starRow(n, 12);
+        st.classList.add('zf-level__stars');
+        b.append(el('span', 'zf-level__num', String(i + 1)), st);
         if (pro) b.append(el('span', 'zf-level__pro', tx(T.proShort)));
         b.setAttribute('aria-pressed', String(mode === 'level' && l === level));
         b.setAttribute('aria-label', `${tx(T.chapterLabel, { n: wi + 1, t: tx(w.title) })}, ${tx(T.levels)} ${i + 1}: ${tx(l.title)}${pro ? ` (${tx(T.pro)})` : ''}, ${n}/3 ★`);
@@ -1793,7 +1889,9 @@ export function initFactory(root: HTMLElement): void {
     const today = dayKey(new Date());
     const dailyStars = stars[`t-${today}`] ?? 0;
     const dailyBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--daily');
-    dailyBtn.append(el('strong', '', `${tx(T.daily)} ${'★'.repeat(dailyStars)}${'☆'.repeat(3 - dailyStars)}`), el('span', 'zf-world-card__meta', tx(T.dailyMeta, { d: new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB') })));
+    const dailyTitle = el('strong', '', `${tx(T.daily)} `);
+    dailyTitle.append(starRow(dailyStars, 16));
+    dailyBtn.append(dailyTitle, el('span', 'zf-world-card__meta', tx(T.dailyMeta, { d: new Date().toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-GB') })));
     dailyBtn.setAttribute('aria-pressed', String(mode === 'level' && level.id === `t-${today}`));
     dailyBtn.addEventListener('click', openDaily);
     const randomBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--random');
@@ -1817,6 +1915,12 @@ export function initFactory(root: HTMLElement): void {
   /** Tages- bzw. Zufallsrätsel bauen (kurz rechnen) und öffnen. */
   function openSpecial(make: () => LevelInfo): void {
     say(tx(T.building));
+    if (IMAGES.zahnrad && !reduced) {
+      const gear = el('img', 'zf-gear');
+      gear.src = IMAGES.zahnrad;
+      gear.alt = '';
+      status.prepend(gear);
+    }
     // erst die Meldung zeichnen lassen, dann rechnen
     setTimeout(() => openLevel(make()), 30);
   }
@@ -1842,6 +1946,11 @@ export function initFactory(root: HTMLElement): void {
     tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
     hint.textContent = tx(T.worldHint);
+    if (worldWasReset) {
+      worldWasReset = false;
+      saveWorld(grid, econ);
+      setTimeout(() => say(tx(T.worldReset), 'info'), 0);
+    }
     newEl.hidden = true;
     renderTip();
     traceEl.hidden = true;
@@ -1902,7 +2011,7 @@ export function initFactory(root: HTMLElement): void {
     resetCursor();
     // Neues Bauteil in diesem Kapitel (und beim allerersten Besuch die Einführung): erklären
     const unseen = (['belt', ...wInfo.teaches] as LessonId[]).filter((id, k, all) => all.indexOf(id) === k && !lessonSeen(id));
-    if (unseen.length) showLessons(root, lang, unseen);
+    if (unseen.length) showLessons(root, lang, unseen, undefined, chapterImage(wInfo.id));
   }
 
   // ---------- Tipps (mit Löser) ----------
@@ -1974,7 +2083,7 @@ export function initFactory(root: HTMLElement): void {
     newEl.hidden = !names.length || c.teaches.includes('belt');
     if (newEl.hidden) return;
     const b = ibtn('info', tx(T.explain), 'zf-btn zf-new__btn');
-    b.addEventListener('click', () => showLessons(root, lang, c.teaches));
+    b.addEventListener('click', () => showLessons(root, lang, c.teaches, undefined, chapterImage(c.id)));
     newEl.replaceChildren(el('span', 'zf-new__tag', tx(T.newBadge)), el('span', 'zf-new__text', names.join(', ')), b);
   }
 

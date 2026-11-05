@@ -2,7 +2,7 @@
  * Hilfen für die Level-Tests der Zahlenfabrik: Wege suchen und Musterlösungen
  * bauen (Bänder, Maschinen, Weichen). Keine Tests, nur Werkzeuge.
  */
-import { DX, DY, isFixed, isWall, key, outputs, shortestPath, targetsOf, type Dir, type Grid, type Level, type Op, type Part, type Target, type Test } from '../src/spiele/zahlenfabrik/model';
+import { DX, DY, isFixed, sourcesOf, isWall, key, outputs, shortestPath, targetsOf, type Dir, type Grid, type Level, type Op, type Part, type Target, type Test } from '../src/spiele/zahlenfabrik/model';
 
 export type Cell = [number, number];
 const dirTo = (a: Cell, b: Cell): Dir => ([0, 1, 2, 3] as Dir[]).find((d) => a[0] + DX[d] === b[0] && a[1] + DY[d] === b[1])!;
@@ -27,7 +27,7 @@ export const own = (level: Level, grid: Grid) => [...grid.keys()].filter((k) => 
 /** Breitensuche von `from` zu einem Nachbarn von `to` (to selbst ist Lager oder Weiche); `blocked`: belegte Felder. */
 function bfs(level: Level, from: Cell, to: Cell, blocked: Set<string>): Cell[] | null {
   const free = (x: number, y: number) =>
-    x >= 0 && y >= 0 && x < level.cols && y < level.rows && !isWall(level, x, y) && !blocked.has(key(x, y)) && !(x === level.source.x && y === level.source.y) && !targetsOf(level).some((t) => t.x === x && t.y === y);
+    x >= 0 && y >= 0 && x < level.cols && y < level.rows && !isWall(level, x, y) && !blocked.has(key(x, y)) && !sourcesOf(level).some((sv) => sv.x === x && sv.y === y) && !targetsOf(level).some((t) => t.x === x && t.y === y);
   if (from[0] === to[0] && from[1] === to[1]) return [];
   if (!free(...from)) return null;
   const prev = new Map<string, string | null>([[key(...from), null]]);

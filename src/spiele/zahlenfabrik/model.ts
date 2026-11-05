@@ -37,10 +37,32 @@ export interface Part {
   split?: true;
   /** Wechsel-Weiche: die Zahlen gehen abwechselnd geradeaus und zur Seite `side` (die erste geradeaus). */
   alt?: true;
-  /** Zusammenführen: zwei Zahlen werden zu Summe oder Produkt. */
-  merge?: '+' | '×';
+  /** Zusammenführen: zwei Zahlen werden zu Summe, Differenz (größere − kleinere), Produkt oder Quotient (größere ÷ kleinere). */
+  merge?: MergeMode;
   /** Brücke: Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt (zum Kreuzen). */
   bridge?: true;
+}
+
+export type MergeMode = '+' | '−' | '×' | '÷';
+
+/**
+ * Zwei Zahlen zusammenführen. Differenz und Quotient rechnen immer „größere
+ * mit kleinerer“, damit die Reihenfolge egal ist; der Quotient nur, wenn er
+ * glatt aufgeht (sonst null).
+ */
+export function combine(mode: MergeMode, a: number, b: number): number | null {
+  const hi = Math.max(a, b);
+  const lo = Math.min(a, b);
+  switch (mode) {
+    case '+':
+      return a + b;
+    case '−':
+      return hi - lo;
+    case '×':
+      return a * b;
+    case '÷':
+      return lo !== 0 && hi % lo === 0 ? hi / lo : null;
+  }
 }
 
 /** Primzahl? (Zahlen kleiner als 2 sind keine.) */
@@ -123,7 +145,13 @@ export interface Level {
   fixed?: { x: number; y: number; part: Part }[];
   /** So viele Zahlen gibt die Quelle aus (ohne Angabe: so viele, wie die Lager brauchen). Für Verteiler und Zusammenführer. */
   emit?: number;
+  /** Weitere Quellen (geben im selben Takt aus wie die erste, je ihre eigene Zahl bzw. Folge). */
+  more?: { x: number; y: number; dir: Dir; value: number; values?: number[] }[];
 }
+
+/** Alle Quellen eines Levels (die erste zuerst). */
+export const sourcesOf = (level: Level) => [level.source, ...(level.more ?? [])];
+const sourceAt = (level: Level, x: number, y: number) => sourcesOf(level).find((sv) => sv.x === x && sv.y === y);
 
 export type Grid = Map<string, Part>;
 export const key = (x: number, y: number) => `${x},${y}`;
@@ -271,7 +299,8 @@ const targetIndex = (level: Level, x: number, y: number) => targetsOf(level).fin
  * prüfen die Zahl, Verteiler geben in beide Richtungen, Brücken geradeaus.
  */
 function dirsAt(level: Level, grid: Grid, item: Item, alt: Record<string, number>): Dir[] {
-  if (item.x === level.source.x && item.y === level.source.y) return [level.source.dir];
+  const sv = sourceAt(level, item.x, item.y);
+  if (sv) return [sv.dir];
   const part = grid.get(key(item.x, item.y));
   if (!part) return [];
   if (part.sort) return [outputs(part)[passes(part.sort, item.value) ? 0 : 1]!];
@@ -318,7 +347,7 @@ export function step(level: Level, grid: Grid, state: State): State {
         continue;
       }
       const part = grid.get(key(x, y));
-      if (x < 0 || y < 0 || x >= level.cols || y >= level.rows || isWall(level, x, y) || !part || (x === level.source.x && y === level.source.y)) {
+      if (x < 0 || y < 0 || x >= level.cols || y >= level.rows || isWall(level, x, y) || !part || sourceAt(level, x, y)) {
         s.error = { kind: 'fell', x: item.x, y: item.y, value: item.value };
         return s;
       }
@@ -338,7 +367,12 @@ export function step(level: Level, grid: Grid, state: State): State {
         const k = s.items.findIndex((o) => o.wait && o.x === x && o.y === y && o.from !== dir);
         if (k >= 0) {
           const other = s.items.splice(k, 1)[0]!;
-          s.items.push({ id, x, y, value: part.merge === '+' ? other.value + value : other.value * value, heading: part.dir });
+          const merged = combine(part.merge, other.value, value);
+          if (merged === null) {
+            s.error = { kind: 'divide', x, y, value: Math.max(other.value, value) };
+            return s;
+          }
+          s.items.push({ id, x, y, value: merged, heading: part.dir });
         } else s.items.push({ id, x, y, value, heading: dir, wait: true, from: dir });
         continue;
       }
@@ -352,6 +386,10 @@ export function step(level: Level, grid: Grid, state: State): State {
   if (s.emitted < emitCount(level) && state.tick % EMIT_EVERY === 0) {
     s.items.push({ id: s.nextId, x: level.source.x, y: level.source.y, value: sourceValue(level, s.emitted, s.pick), heading: level.source.dir });
     s.nextId += 1;
+    for (const m of level.more ?? []) {
+      s.items.push({ id: s.nextId, x: m.x, y: m.y, value: m.values?.length ? m.values[s.emitted % m.values.length]! : m.value, heading: m.dir });
+      s.nextId += 1;
+    }
     s.emitted += 1;
   }
   if (s.tick >= MAX_TICKS) s.error = { kind: 'timeout', x: level.source.x, y: level.source.y, value: level.source.value };
@@ -407,7 +445,7 @@ export function run(level: Level, grid: Grid, pick?: number): State {
 /** Ein Teil darf nur auf ein freies Feld (nicht Quelle, Lager, Fels, vorgegebenes Teil, außerhalb). */
 export function canPlace(level: Level, x: number, y: number): boolean {
   if (x < 0 || y < 0 || x >= level.cols || y >= level.rows) return false;
-  if (x === level.source.x && y === level.source.y) return false;
+  if (sourceAt(level, x, y)) return false;
   if (targetIndex(level, x, y) >= 0) return false;
   if (isFixed(level, x, y)) return false;
   return !isWall(level, x, y);
@@ -433,7 +471,7 @@ export function withFixed(level: Level, grid: Grid): Grid {
 export function shortestPath(level: Level, to: { x: number; y: number } = targetsOf(level)[0]!, from?: [number, number]): [number, number][] | null {
   const start: [number, number] = from ?? [level.source.x + DX[level.source.dir], level.source.y + DY[level.source.dir]];
   const free = (x: number, y: number) =>
-    x >= 0 && y >= 0 && x < level.cols && y < level.rows && !isWall(level, x, y) && !(x === level.source.x && y === level.source.y) && targetIndex(level, x, y) < 0;
+    x >= 0 && y >= 0 && x < level.cols && y < level.rows && !isWall(level, x, y) && !sourceAt(level, x, y) && targetIndex(level, x, y) < 0;
   if (!free(...start)) return null;
   const prev = new Map<string, string | null>([[key(...start), null]]);
   const queue: [number, number][] = [start];

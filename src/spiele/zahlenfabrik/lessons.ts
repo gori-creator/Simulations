@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
-import { art, imageFor } from './art';
+import { art, IMAGES, imageFor } from './art';
 import type { LessonId } from './kit';
 
 /**
@@ -233,28 +233,28 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
-  split: {
-    tag: NEW_PART,
-    slides: [
-      {
-        title: L('Der Verteiler', 'The splitter'),
-        text: L('Er macht aus einer Zahl zwei gleiche Kopien: eine läuft geradeaus, die andere zur Seite. So kannst du mit derselben Zahl zwei verschiedene Dinge rechnen.', 'It turns one number into two identical copies: one goes straight on, the other to the side. This way you can calculate two different things with the same number.'),
-        scene: { kind: 'sort', label: '', input: '3', yes: '3', no: '3', marks: ['→', '↓'], part: 'split' },
-      },
-      {
-        title: L('Drehen', 'Turning'),
-        text: L('Antippen dreht den Verteiler, nach vier Drehungen geht die Kopie zur anderen Seite. Er zählt nicht als Maschine.', 'Tap to turn the splitter; after four turns the copy goes to the other side. It does not count as a machine.'),
-        scene: { kind: 'sort', label: '', input: '1 2', yes: '1 2', no: '1 2', marks: ['→', '↓'], part: 'split' },
-      },
-    ],
-  },
   sum: {
     tag: NEW_PART,
     slides: [
       {
-        title: L('Zusammenführer „Summe“', 'Merger “sum”'),
-        text: L('Er wartet, bis aus zwei Richtungen je eine Zahl kommt, und schickt ihre Summe weiter: 3 und 4 werden zu 7. Mit dem Verteiler davor rechnest du x + x oder x² + x.', 'It waits until one number arrives from each of two directions and sends on their sum: 3 and 4 become 7. With a splitter in front you can calculate x + x or x² + x.'),
+        title: L('Zwei Quellen, ein Zusammenführer', 'Two sources, one merger'),
+        text: L('Ab jetzt gibt es Level mit zwei Quellen. Ein Zusammenführer wartet, bis aus zwei Richtungen je eine Zahl kommt, und schickt dann eine Zahl weiter: 3 und 4 werden mit „a+b“ zu 7.', 'From now on there are levels with two sources. A merger waits until one number arrives from each of two directions and then sends one number on: with “a+b”, 3 and 4 become 7.'),
         scene: { kind: 'merge', a: '3', b: '4', label: 'a+b', out: '7' },
+      },
+      {
+        title: L('Der Reihe nach', 'In order'),
+        text: L('Geben beide Quellen Folgen aus (1, 2, 3 … und 10, 20, 30 …), werden immer die ersten, dann die zweiten Zahlen zusammengeführt. Zusammenführer zählen nicht als Maschine.', 'If both sources give out sequences (1, 2, 3 … and 10, 20, 30 …), first the first numbers, then the second ones are merged. Mergers do not count as machines.'),
+        scene: { kind: 'merge', a: '2', b: '20', label: 'a+b', out: '22' },
+      },
+    ],
+  },
+  diff: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Zusammenführer „Differenz“', 'Merger “difference”'),
+        text: L('Er rechnet die größere minus die kleinere Zahl – egal, von welcher Seite sie kommt: 9 und 4 werden zu 5.', 'It calculates the bigger minus the smaller number – no matter which side it comes from: 9 and 4 become 5.'),
+        scene: { kind: 'merge', a: '9', b: '4', label: 'a−b', out: '5' },
       },
     ],
   },
@@ -263,8 +263,18 @@ const LESSONS: Record<LessonId, Lesson> = {
     slides: [
       {
         title: L('Zusammenführer „Produkt“', 'Merger “product”'),
-        text: L('Genauso, nur mit Malnehmen: 3 und 4 werden zu 12. Damit baust du x · x, x³ oder x · (x + 2). Zusammenführer zählen nicht als Maschine.', 'The same, but multiplying: 3 and 4 become 12. With it you build x · x, x³ or x · (x + 2). Mergers do not count as machines.'),
-        scene: { kind: 'merge', a: '3', b: '4', label: 'a×b', out: '12' },
+        text: L('Er nimmt die beiden Zahlen mal: 6 und 7 werden zu 42. Geben beide Quellen x aus, entsteht x · x.', 'It multiplies the two numbers: 6 and 7 become 42. If both sources give out x, you get x · x.'),
+        scene: { kind: 'merge', a: '6', b: '7', label: 'a×b', out: '42' },
+      },
+    ],
+  },
+  quot: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Zusammenführer „Quotient“', 'Merger “quotient”'),
+        text: L('Er teilt die größere durch die kleinere Zahl: 12 und 3 werden zu 4. Geht es nicht glatt auf, bleibt die Fabrik stehen.', 'It divides the bigger by the smaller number: 12 and 3 become 4. If it does not divide evenly, the factory stops.'),
+        scene: { kind: 'merge', a: '12', b: '3', label: 'a÷b', out: '4' },
       },
     ],
   },
@@ -303,7 +313,7 @@ const LESSONS: Record<LessonId, Lesson> = {
     slides: [
       {
         title: L('Die Spiegel-Maschine', 'The mirror machine'),
-        text: L('Sie liest die Ziffern rückwärts: Aus 123 wird 321, aus 120 wird 21. Mit Verteiler und Zusammenführer rechnest du x + Spiegelzahl.', 'It reads the digits backwards: 123 becomes 321, 120 becomes 21. With a splitter and a merger you can calculate x + its mirror number.'),
+        text: L('Sie liest die Ziffern rückwärts: Aus 123 wird 321, aus 120 wird 21. Mit zwei Quellen und einem Zusammenführer rechnest du x + Spiegelzahl.', 'It reads the digits backwards: 123 becomes 321, 120 becomes 21. With two sources and a merger you can calculate x + its mirror number.'),
         scene: { kind: 'chain', from: '123', op: '⇄', to: '321' },
       },
     ],
@@ -475,7 +485,7 @@ function scene(s: Scene, lang: Lang): HTMLElement {
  * Erklärkarten zu den genannten Bauteilen/Regeln zeigen (hintereinander);
  * `onClose` wird beim Schließen aufgerufen. Danach gelten sie als gesehen.
  */
-export function showLessons(root: HTMLElement, lang: Lang, ids: LessonId[], onClose: () => void = () => {}): void {
+export function showLessons(root: HTMLElement, lang: Lang, ids: LessonId[], onClose: () => void = () => {}, cover?: string): void {
   const list = ids.filter(hasLesson);
   const slides = list.flatMap((id) => LESSONS[id].slides.map((slide) => ({ slide, tag: LESSONS[id].tag })));
   if (!slides.length) return onClose();
@@ -488,6 +498,8 @@ export function showLessons(root: HTMLElement, lang: Lang, ids: LessonId[], onCl
   card.setAttribute('aria-label', tx(T.label));
   shade.append(card);
   let i = 0;
+  // Bild oben (Kapitelbild; bei der Einführung das Titelbild)
+  const banner = cover ?? (list.includes('belt') ? IMAGES.titelbild : undefined);
 
   function close(): void {
     markSeen(list);
@@ -530,7 +542,14 @@ export function showLessons(root: HTMLElement, lang: Lang, ids: LessonId[], onCl
     const h = el('h2', 'zf-intro__title', tx(slide.title));
     h.id = 'zf-intro-title';
     card.setAttribute('aria-labelledby', h.id);
-    const parts: HTMLElement[] = [el('p', 'zf-intro__tag', tx(tag)), dots];
+    const parts: HTMLElement[] = [];
+    if (banner && n === 0) {
+      const img = el('img', 'zf-intro__cover');
+      img.src = banner;
+      img.alt = '';
+      parts.push(img);
+    }
+    parts.push(el('p', 'zf-intro__tag', tx(tag)), dots);
     if (slide.scene) parts.push(scene(slide.scene, lang));
     card.replaceChildren(...parts, h, el('p', 'zf-intro__text', tx(slide.text)), nav);
     next.focus();

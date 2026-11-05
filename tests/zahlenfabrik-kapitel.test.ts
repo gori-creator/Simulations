@@ -25,9 +25,8 @@ const sort = (test: Test, ops: Op[] = [], yes: Op[] = [], no: Op[] = []): Soluti
 const three = (first: Test, second: Test, ops: Op[] = []): Solution => ({ kind: 'three', first, second, ops });
 const drawn = (rows: string[], legend: Record<string, Part> = {}): Solution => ({ kind: 'grid', grid: ascii(rows, legend) });
 const m = (o: Op, dir: Dir): Part => ({ op: o, dir });
-const split = (dir: Dir, side: 1 | 3): Part => ({ op: null, dir, split: true, side });
 const sorter = (test: Test, dir: Dir, side: 1 | 3): Part => ({ op: null, dir, sort: test, side });
-const merger = (mode: '+' | '×'): Part => ({ op: null, dir: 0, merge: mode });
+const merger = (mode: '+' | '−' | '×' | '÷'): Part => ({ op: null, dir: 0, merge: mode });
 const sqTest: Test = { kind: 'square' };
 
 /** Verteiler-Karte: Kopie nach oben (Lager oben), weiter nach rechts und unten. */
@@ -35,6 +34,8 @@ const SPLIT2 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', 
 const SPLIT3 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..STm>>>>>..', '...n........', '...v........', '...>>>>>>>..'];
 /** Zusammenführer-Karte: Kopie oben herum, unten geradeaus, Zusammenführer bei (7, 3). */
 const MERGE = (up = '>>>>', straight = '>>>', after = '>>>') => ['.............', '.............', `...${up}v.....`, `..>S${straight}M${after}..`];
+/** Zwei Quellen: A (1, 3) geradeaus, B (1, 1) oben herum, Zusammenführer M bei (7, 3). */
+const TWO = (b = '>>>>>', a = '>>>>>', after = '>>>') => ['.............', `..${b}v.....`, '.......v.....', `..${a}M${after}..`];
 /** Brücken-Karte: Weiche/Verteiler fest bei (4, 4), Brücke bei (7, 3). */
 const CROSS = (top = '>>', side = '>>>') => ['............', '.......>>>>.', '.......^....', `....${side}B>v..`, `..>>.${top}^.v..`, '.........v..', '.........v..', '.........>>.'];
 const bridge: Part = { op: null, dir: 0, bridge: true };
@@ -117,21 +118,25 @@ const SOLUTIONS: Record<string, Solution> = {
   'c17-1': sort(sqTest),
   'c17-2': sort(sqTest, [op('+', 1)]),
   'c17-3': three(sqTest, prime),
-  'c18-1': drawn(SPLIT2.map((r) => r.replace('a', '^').replace('b', 'v')), { S: split(3, 1) }),
-  'c18-2': drawn(SPLIT2, { S: split(3, 1), a: m(op('²'), 3), b: m(op('+', 10), 1) }),
-  'c18-3': drawn(SPLIT3.map((r) => r.replace('a', '^')), { S: split(3, 1), T: split(0, 1), m: m(op('×', 2), 0), n: m(op('×', 3), 1) }),
-  'c18-4': drawn(SPLIT3.map((r) => r.replace('Tm', 'W>').replace('n', 'v')), { S: split(3, 1), W: sorter(even, 0, 1), a: m(op('×', 2), 3) }),
-  'c19-1': drawn(MERGE(), { S: split(0, 3), M: merger('+') }),
-  'c19-2': drawn(MERGE(), { S: split(0, 3), M: merger('×') }),
-  'c19-3': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('+'), a: m(op('²'), 0) }),
-  'c19-4': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('×'), a: m(op('²'), 0) }),
-  'c19-5': drawn(MERGE('a>>>', 'b>>'), { S: split(0, 3), M: merger('×'), a: m(op('+', 1), 0), b: m(op('−', 1), 0) }),
-  'c19-6': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('×'), a: m(op('+', 2), 0) }),
-  'c19-7': drawn(MERGE('ab>>'), { S: split(0, 3), M: merger('×'), a: m(op('²'), 0), b: m(op('−', 1), 0) }),
-  'c19-8': drawn(MERGE('a>>>', 'bc>'), { S: split(0, 3), M: merger('+'), a: m(op('²'), 0), b: m(op('+', 1), 0), c: m(op('²'), 0) }),
   'c20-1': drawn(CROSS(), { B: bridge }),
-  'c20-2': drawn(CROSS('a>', 'b>>'), { B: bridge, a: m(op('²'), 0), b: m(op('+', 5), 0) }),
-  'c20-3': drawn(CROSS('ab', 'cd>'), { B: bridge, a: m(op('+', 1), 0), b: m(op('²'), 0), c: m(op('×', 3), 0), d: m(op('−', 1), 0) }),
+  'c20-2': drawn(CROSS('a>', 'b>>').map((r, y) => (y === 4 ? r.replace('..>>.', '..>>>') : r)), { B: bridge, a: m(op('²'), 0), b: m(op('+', 5), 0) }),
+  'c20-3': drawn(CROSS('ab', 'cd>').map((r, y) => (y === 4 ? r.replace('..>>.', '..>>>') : r)), { B: bridge, a: m(op('+', 1), 0), b: m(op('²'), 0), c: m(op('×', 3), 0), d: m(op('−', 1), 0) }),
+  'c19-1': drawn(TWO(), { M: merger('+') }),
+  'c19-2': drawn(TWO(), { M: merger('×') }),
+  'c19-3': drawn(TWO('a>>>>'), { M: merger('+'), a: m(op('²'), 0) }),
+  'c19-4': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('²'), 0) }),
+  'c19-5': drawn(TWO('a>>>>', 'b>>>>'), { M: merger('×'), a: m(op('+', 1), 0), b: m(op('−', 1), 0) }),
+  'c19-6': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('+', 2), 0) }),
+  'c19-7': drawn(TWO('ab>>>'), { M: merger('×'), a: m(op('²'), 0), b: m(op('−', 1), 0) }),
+  'c19-8': drawn(TWO('a>>>>', 'bc>>>'), { M: merger('+'), a: m(op('²'), 0), b: m(op('+', 1), 0), c: m(op('²'), 0) }),
+  'c24-2': drawn(TWO('a>>>>'), { M: merger('+'), a: m(op('⇄'), 0) }),
+  'c28-1': drawn(TWO(), { M: merger('+') }),
+  'c28-2': drawn(TWO(), { M: merger('×') }),
+  'c28-3': drawn(TWO(), { M: merger('+') }),
+  'c28-4': drawn(TWO(), { M: merger('−') }),
+  'c28-5': drawn(TWO(), { M: merger('÷') }),
+  'c28-6': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('+', 1), 0) }),
+  'c28-7': drawn(TWO('>>>>>', 'a>>>>'), { M: merger('+'), a: m(op('×', 2), 0) }),
   'c21-1': chain(op('²'), op('−', 6)),
   'c21-2': chain(op('+', 4), op('²')),
   'c21-3': chain(op('+', 3), op('×', 4)),
@@ -156,7 +161,6 @@ const SOLUTIONS: Record<string, Solution> = {
   'c23-3': chain(op('−', 10), op('|')),
   'c23-4': chain(op('²'), op('±')),
   'c24-1': chain(op('⇄')),
-  'c24-2': drawn(MERGE('a>>>'), { S: split(0, 3), M: merger('+'), a: m(op('⇄'), 0) }),
   'c24-3': chain(op('⇄'), op('²')),
   'c25-1': chain(op('≈', 1)),
   'c25-2': chain(op('≈', 2)),
@@ -209,7 +213,9 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('27 Kapitel, über 140 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
     expect(CHAPTERS).toHaveLength(27);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(140);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(143);
+    // kein Verteiler mehr im Werkzeugkasten: mehrere Ausgaben kommen aus mehreren Quellen
+    expect(KIT.some((k) => k.kind === 'split')).toBe(false);
     expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
     const taught = CHAPTERS.flatMap((c) => c.teaches);
     expect(new Set(taught).size).toBe(taught.length);
@@ -272,7 +278,7 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
         if (p.sort) expect(kit.some((k) => testAllowed(k, p.sort!)), `${l.id}: ${p.sort.kind}`).toBe(true);
         if (p.split) expect(has('split'), `${l.id}: Verteiler`).toBe(true);
       if (p.alt) expect(has('alt'), `${l.id}: Wechsel-Weiche`).toBe(true);
-        if (p.merge) expect(has(p.merge === '+' ? 'sum' : 'product'), `${l.id}: Zusammenführer`).toBe(true);
+        if (p.merge) expect(has({ '+': 'sum', '−': 'diff', '×': 'product', '÷': 'quot' }[p.merge]), `${l.id}: Zusammenführer`).toBe(true);
         if (p.bridge) expect(has('bridge'), `${l.id}: Brücke`).toBe(true);
       }
       if (l.maxMachines !== undefined) expect(parts.filter((p) => p.op).length).toBeLessThanOrEqual(l.maxMachines);
@@ -365,9 +371,10 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(chains(l, 1)).toEqual([]);
     expect(run(l, (SOLUTIONS['c19-6'] as { grid: Grid }).grid).won).toBe(true);
   });
-  it('Verteiler und Zusammenführer: Quelle gibt so viele Zahlen aus, wie gebraucht werden', () => {
-    expect(emitCount(level('c18-1'))).toBe(4);
+  it('Zwei Quellen: geben gleichzeitig aus, so viele wie gebraucht werden', () => {
+    expect(emitCount(level('c28-3'))).toBe(5);
     expect(emitCount(level('c19-1'))).toBe(5);
+    expect(emitCount(level('c28-1'))).toBe(3);
     expect(emitCount(level('c2-1'))).toBe(3);
   });
   it('neue Maschinen rechnen richtig', () => {

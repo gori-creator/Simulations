@@ -45,7 +45,7 @@ const corridor = (cols: number, rows: number, open: [number, number][]): [number
 /** Gänge der Brücken-Level: ein Weg muss den anderen kreuzen (Feld 7, 3). */
 const CROSS: [number, number][] = [
   [1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4],
-  [4, 3], [5, 3], [6, 3], [7, 3], [8, 3], [9, 3],
+  [3, 3], [4, 3], [5, 3], [6, 3], [7, 3], [8, 3], [9, 3],
   [7, 2], [7, 1], [8, 1], [9, 1], [10, 1], [11, 1],
   [9, 4], [9, 5], [9, 6], [9, 7], [10, 7], [11, 7],
 ];
@@ -1014,81 +1014,29 @@ const C17: LevelInfo[] = [
   },
 ];
 
-/* ---------- Kapitel: Verteiler ---------- */
-const C18: LevelInfo[] = [
-  {
-    id: 'c18-1',
-    title: L('Doppelt geliefert', 'Delivered twice'),
-    hint: L('Neu: der Verteiler. Beide Lager wollen 1, 2, 3, 4 – aber die Quelle gibt jede Zahl nur einmal aus.', 'New: the splitter. Both storages want 1, 2, 3, 4 – but the source gives out each number only once.'),
-    cols: 12, rows: 9,
-    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
-    targets: [
-      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
-      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
-    ],
-    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
-    emit: 4,
-    par: 21,
-  },
-  {
-    id: 'c18-2',
-    title: L('Zwei Rechnungen', 'Two calculations'),
-    hint: L('Oben will das Lager x², unten x + 10 – für dieselben Zahlen 1 bis 4.', 'The top storage wants x², the bottom one x + 10 – for the same numbers 1 to 4.'),
-    cols: 12, rows: 9,
-    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
-    targets: [
-      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => x * x, seq(1, 4)) } },
-      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => x + 10, seq(1, 4)) } },
-    ],
-    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
-    emit: 4,
-    par: 21,
-  },
-  {
-    id: 'c18-3',
-    title: L('Einmal, zweimal, dreimal', 'Once, twice, three times'),
-    hint: L('Drei Lager: x, 2x und 3x. Du brauchst zwei Verteiler.', 'Three storages: x, 2x and 3x. You need two splitters.'),
-    cols: 12, rows: 9,
-    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
-    targets: [
-      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
-      { x: 10, y: 4, need: 4, accept: { kind: 'seq', values: table((x) => 2 * x, seq(1, 4)) } },
-      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => 3 * x, seq(1, 4)) } },
-    ],
-    walls: [[6, 0], [6, 8], [5, 2], [5, 6]],
-    emit: 4,
-    par: 27,
-  },
-  {
-    id: 'c18-4',
-    title: L('Kopieren und sortieren', 'Copy and sort'),
-    hint: L('1 bis 6: Oben will das Lager alle Zahlen verdoppelt (2, 4 … 12), in der Mitte die geraden, unten die ungeraden.', '1 to 6: the top storage wants all numbers doubled (2, 4 … 12), the middle one the even ones, the bottom one the odd ones.'),
-    cols: 12, rows: 9,
-    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
-    targets: [
-      { x: 10, y: 1, need: 6, accept: { kind: 'seq', values: table((x) => 2 * x, seq(1, 6)) } },
-      { x: 10, y: 4, need: 3, accept: yes(even) },
-      { x: 10, y: 7, need: 3, accept: no(even) },
-    ],
-    walls: [[6, 0], [6, 8], [5, 2], [5, 6]],
-    emit: 6,
-    pro: true,
-    par: 27,
-  },
-];
-
-/* ---------- Kapitel: Zusammenführer ---------- */
+/* ---------- Kapitel: Terme mit zwei Quellen ---------- */
 const mergeMap = { cols: 13, rows: 7, walls: [[2, 0], [6, 0], [10, 0], [2, 5], [6, 6], [10, 5]] as [number, number][] };
-const mergeLevel = (id: string, title: Localized, hint: Localized, f: (x: number) => number, maxMachines: number, pro = false, par = 14): LevelInfo => ({
-  id, title, hint,
-  ...mergeMap,
-  source: { x: 1, y: 3, dir: 0, value: 1, values: seq(1, 5) },
-  targets: [{ x: 11, y: 3, need: 5, accept: { kind: 'seq', values: table(f, seq(1, 5)) } }],
-  emit: 5,
-  maxMachines,
-  ...(pro ? { pro } : {}),
-  par,
-});
+/** Karte mit zwei Quellen: A (1, 3) geradeaus, B (1, 1) oben herum; Zusammenführer bei (7, 3). */
+const twoMap = { cols: 13, rows: 7, walls: [[10, 0], [4, 2], [2, 5], [6, 6], [10, 5]] as [number, number][] };
+/** Zwei Quellen mit eigenen Zahlen bzw. Folgen, ein Lager mit Zahl oder Folge. */
+function twoSources(id: string, title: Localized, hint: Localized, a: number[], b: number[], want: number[] | number, maxMachines: number, pro = false): LevelInfo {
+  const seqA = a.length > 1 ? { values: a } : {};
+  const seqB = b.length > 1 ? { values: b } : {};
+  return {
+    id, title, hint,
+    ...twoMap,
+    source: { x: 1, y: 3, dir: 0, value: a[0]!, ...seqA },
+    more: [{ x: 1, y: 1, dir: 0, value: b[0]!, ...seqB }],
+    ...(typeof want === 'number'
+      ? { target: { x: 11, y: 3, value: want }, need: 3 }
+      : { targets: [{ x: 11, y: 3, need: want.length, accept: { kind: 'seq' as const, values: want } }], emit: want.length }),
+    maxMachines,
+    ...(pro ? { pro } : {}),
+    par: 16,
+  };
+}
+const mergeLevel = (id: string, title: Localized, hint: Localized, f: (x: number) => number, maxMachines: number, pro = false): LevelInfo =>
+  twoSources(id, title, hint, seq(1, 5), seq(1, 5), table(f, seq(1, 5)), maxMachines, pro);
 /** Zusammenführer-Karte mit eigener Zahlenfolge (Verteiler oder Wechsel-Weiche davor). */
 function mergeLevelFrom(id: string, title: Localized, hint: Localized, values: number[], want: number[], maxMachines: number, pro = false): LevelInfo {
   return {
@@ -1103,14 +1051,25 @@ function mergeLevelFrom(id: string, title: Localized, hint: Localized, values: n
   };
 }
 const C19: LevelInfo[] = [
-  mergeLevel('c19-1', L('x + x', 'x + x'), L('Neu: Verteiler und Zusammenführer. Ohne Maschine soll 2, 4, 6, 8, 10 ankommen: Teile jede Zahl in zwei Kopien und führ sie wieder zusammen.', 'New: splitter and merger. Without a machine, 2, 4, 6, 8, 10 should arrive: split every number into two copies and merge them again.'), (x) => x + x, 0),
-  mergeLevel('c19-2', L('x · x', 'x · x'), L('Wieder ohne Maschine: Das Lager will 1, 4, 9, 16, 25. Der Zusammenführer kann auch malnehmen.', 'Again without a machine: the storage wants 1, 4, 9, 16, 25. The merger can also multiply.'), (x) => x * x, 0),
+  mergeLevel('c19-1', L('x + x', 'x + x'), L('Beide Quellen geben 1 bis 5 aus. Ohne Maschine soll 2, 4, 6, 8, 10 ankommen.', 'Both sources give out 1 to 5. Without a machine, 2, 4, 6, 8, 10 should arrive.'), (x) => x + x, 0),
+  mergeLevel('c19-2', L('x · x', 'x · x'), L('Wieder ohne Maschine: Das Lager will 1, 4, 9, 16, 25.', 'Again without a machine: the storage wants 1, 4, 9, 16, 25.'), (x) => x * x, 0),
   mergeLevel('c19-3', L('x² + x', 'x² + x'), L('Das Lager will 2, 6, 12, 20, 30 – mit nur einer Maschine. Es gibt zwei Wege!', 'The storage wants 2, 6, 12, 20, 30 – with just one machine. There are two ways!'), (x) => x * x + x, 1),
   mergeLevel('c19-4', L('x³', 'x³'), L('Hoch drei: 1, 8, 27, 64, 125 – mit nur einer Maschine.', 'Cubed: 1, 8, 27, 64, 125 – with just one machine.'), (x) => x ** 3, 1),
   mergeLevel('c19-5', L('(x + 1) · (x − 1)', '(x + 1) · (x − 1)'), L('Das Lager will 0, 3, 8, 15, 24. Zwei Maschinen, ein Zusammenführer.', 'The storage wants 0, 3, 8, 15, 24. Two machines, one merger.'), (x) => (x + 1) * (x - 1), 2),
   mergeLevel('c19-6', L('Nur eine Maschine', 'Just one machine'), L('Das Lager will 3, 8, 15, 24, 35 – mit nur einer Maschine. Schau dir die Abstände an.', 'The storage wants 3, 8, 15, 24, 35 – with just one machine. Look at the steps between them.'), (x) => x * (x + 2), 1, true),
   mergeLevel('c19-7', L('x³ − x', 'x³ − x'), L('0, 6, 24, 60, 120 – mit höchstens zwei Maschinen. Tipp: x³ − x = x · (x² − 1).', '0, 6, 24, 60, 120 – with at most two machines. Tip: x³ − x = x · (x² − 1).'), (x) => x ** 3 - x, 2, true),
   mergeLevel('c19-8', L('Zwei Quadrate', 'Two squares'), L('x² + (x + 1)²: 5, 13, 25, 41, 61 – höchstens drei Maschinen.', 'x² + (x + 1)²: 5, 13, 25, 41, 61 – at most three machines.'), (x) => x * x + (x + 1) ** 2, 3, true),
+];
+
+/* ---------- Kapitel: Zwei Quellen und Zusammenführer (früh) ---------- */
+const C28: LevelInfo[] = [
+  twoSources('c28-1', L('Zwei Quellen', 'Two sources'), L('Neu: zwei Quellen und der Zusammenführer. Die eine gibt 3 aus, die andere 4 – das Lager will 7. Führ beide Bänder in einem Zusammenführer „a+b“ zusammen.', 'New: two sources and the merger. One gives out 3, the other 4 – the storage wants 7. Bring both belts together in an “a+b” merger.'), [3], [4], 7, 0),
+  twoSources('c28-2', L('Malnehmen', 'Multiplying'), L('6 und 7 kommen, das Lager will 42 – ohne Maschine.', '6 and 7 arrive, the storage wants 42 – without a machine.'), [6], [7], 42, 0),
+  twoSources('c28-3', L('Zwei Reihen', 'Two rows'), L('Die eine Quelle gibt 1 bis 5 aus, die andere 10, 20 … 50. Das Lager will 11, 22, 33, 44, 55.', 'One source gives out 1 to 5, the other 10, 20 … 50. The storage wants 11, 22, 33, 44, 55.'), seq(1, 5), [10, 20, 30, 40, 50], [11, 22, 33, 44, 55], 0),
+  twoSources('c28-4', L('Der Unterschied', 'The difference'), L('9, 4, 15, 8 und 2, 10, 6, 8 kommen. Das Lager will 7, 6, 9, 0 – wie weit liegen die Zahlen auseinander?', '9, 4, 15, 8 and 2, 10, 6, 8 arrive. The storage wants 7, 6, 9, 0 – how far apart are the numbers?'), [9, 4, 15, 8], [2, 10, 6, 8], [7, 6, 9, 0], 0),
+  twoSources('c28-5', L('Wie oft passt es hinein?', 'How many times does it fit?'), L('12, 5, 36, 7 und 3, 20, 4, 49 kommen. Das Lager will 4, 4, 9, 7.', '12, 5, 36, 7 and 3, 20, 4, 49 arrive. The storage wants 4, 4, 9, 7.'), [12, 5, 36, 7], [3, 20, 4, 49], [4, 4, 9, 7], 0),
+  twoSources('c28-6', L('Erst rechnen, dann zusammen', 'Calculate first, then merge'), L('Beide Quellen geben 1 bis 5 aus. Das Lager will 2, 6, 12, 20, 30 – mit nur einer Maschine.', 'Both sources give out 1 to 5. The storage wants 2, 6, 12, 20, 30 – with just one machine.'), seq(1, 5), seq(1, 5), [2, 6, 12, 20, 30], 1, true),
+  twoSources('c28-7', L('Doppelt und dazu', 'Double and more'), L('2, 3, 4 und 5, 6, 7 kommen. Das Lager will 9, 12, 15 – mit nur einer Maschine.', '2, 3, 4 and 5, 6, 7 arrive. The storage wants 9, 12, 15 – with just one machine.'), [2, 3, 4], [5, 6, 7], [9, 12, 15], 1, true),
 ];
 
 /* ---------- Kapitel: Brücke ---------- */
@@ -1132,22 +1091,24 @@ const C20: LevelInfo[] = [
     ],
     fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, sort: even, side: 3 } }],
   }),
-  crossLevel('c20-2', L('Kopien über Kreuz', 'Copies criss-cross'), L('Der Verteiler steht schon fest. Oben will das Lager x², unten x + 5.', 'The splitter is already fixed. The top storage wants x², the bottom one x + 5.'), {
+  crossLevel('c20-2', L('Zwei Quellen über Kreuz', 'Two sources criss-cross'), L('Zwei Quellen geben 1 bis 4 aus. Oben will das Lager x², unten x + 5 – die Wege kreuzen sich.', 'Two sources give out 1 to 4. The top storage wants x², the bottom one x + 5 – the paths cross.'), {
     targets: [
       { x: 11, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => x * x, seq(1, 4)) } },
       { x: 11, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => x + 5, seq(1, 4)) } },
     ],
-    fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, split: true, side: 3 } }],
+    more: [{ x: 3, y: 3, dir: 0, value: 1, values: seq(1, 4) }],
     emit: 4,
+    par: 22,
   }),
   crossLevel('c20-3', L('Kreuzung mit Rechnung', 'Crossing with calculation'), L('Oben will das Lager (x + 1)², unten 3x − 1. Vier Maschinen und eine Brücke.', 'The top storage wants (x + 1)², the bottom one 3x − 1. Four machines and a bridge.'), {
     targets: [
       { x: 11, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => (x + 1) ** 2, seq(1, 4)) } },
       { x: 11, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => 3 * x - 1, seq(1, 4)) } },
     ],
-    fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, split: true, side: 3 } }],
+    more: [{ x: 3, y: 3, dir: 0, value: 1, values: seq(1, 4) }],
     emit: 4,
     pro: true,
+    par: 22,
   }),
 ];
 
@@ -1285,7 +1246,7 @@ const C24: LevelInfo[] = [
     maxMachines: 1,
     par: 12,
   },
-  mergeLevelFrom('c24-2', L('Zahl plus Spiegelzahl', 'Number plus mirror number'), L('12, 23, 34, 45, 56 kommen. Das Lager will jede Zahl plus ihre Spiegelzahl: 33, 55, 77, 99, 121 – mit einer Maschine.', '12, 23, 34, 45, 56 arrive. The storage wants each number plus its mirror number: 33, 55, 77, 99, 121 – with one machine.'), [12, 23, 34, 45, 56], [33, 55, 77, 99, 121], 1),
+  twoSources('c24-2', L('Zahl plus Spiegelzahl', 'Number plus mirror number'), L('Beide Quellen geben 12, 23, 34, 45, 56 aus. Das Lager will jede Zahl plus ihre Spiegelzahl: 33, 55, 77, 99, 121 – mit einer Maschine.', 'Both sources give out 12, 23, 34, 45, 56. The storage wants each number plus its mirror number: 33, 55, 77, 99, 121 – with one machine.'), [12, 23, 34, 45, 56], [12, 23, 34, 45, 56], [33, 55, 77, 99, 121], 1),
   {
     id: 'c24-3',
     title: L('Aus 13 wird 961', '13 becomes 961'),
@@ -1482,12 +1443,11 @@ export interface Chapter {
 
 /** Abschnitte der Level-Auswahl (je einige Kapitel). */
 export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
-  { id: 'basics', title: L('Grundlagen', 'Basics'), chapters: ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'] },
+  { id: 'basics', title: L('Grundlagen', 'Basics'), chapters: ['c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'c28'] },
   { id: 'switches', title: L('Weichen und Teilbarkeit', 'Switches and divisibility'), chapters: ['c7', 'c8', 'c14', 'c15', 'c9', 'c10'] },
-  { id: 'terms', title: L('Terme und Funktionen', 'Terms and functions'), chapters: ['c11', 'c12', 'c16', 'c17'] },
-  { id: 'tech', title: L('Fabrik-Technik', 'Factory technology'), chapters: ['c18', 'c19', 'c20'] },
+  { id: 'terms', title: L('Terme und Funktionen', 'Terms and functions'), chapters: ['c11', 'c12', 'c16', 'c17', 'c19'] },
   { id: 'riddles', title: L('Rätsel', 'Puzzles'), chapters: ['c21', 'c22', 'c13'] },
-  { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c23', 'c24', 'c25', 'c26'] },
+  { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
 ];
 
@@ -1498,6 +1458,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c4', title: L('Mal-Maschine', 'Times machine'), grades: '5', teaches: ['times'], levels: C4 },
   { id: 'c5', title: L('Geteilt-Maschine', 'Divide machine'), grades: '5', teaches: ['divide'], levels: C5 },
   { id: 'c6', title: L('Rückwärts rechnen', 'Working backwards'), grades: '5', teaches: ['pick'], levels: C6 },
+  { id: 'c28', title: L('Zusammenführer', 'Mergers'), grades: '5', teaches: ['sum', 'diff', 'product', 'quot'], levels: C28 },
   { id: 'c7', title: L('Weiche „gerade?“', 'Switch “even?”'), grades: '5–6', teaches: ['even'], levels: C7 },
   { id: 'c8', title: L('Weiche „teilbar?“', 'Switch “divisible?”'), grades: '5–6', teaches: ['div'], levels: C8 },
   { id: 'c14', title: L('Rest-Maschine', 'Remainder machine'), grades: '5–6', teaches: ['mod'], levels: C14 },
@@ -1508,12 +1469,11 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c12', title: L('Quadrat-Maschine', 'Square machine'), grades: '8–9', teaches: ['square'], levels: C12 },
   { id: 'c16', title: L('Wurzel-Maschine', 'Square-root machine'), grades: '8–9', teaches: ['root'], levels: C16 },
   { id: 'c17', title: L('Weiche „Quadratzahl?“', 'Switch “square number?”'), grades: '6–8', teaches: ['issquare'], levels: C17 },
-  { id: 'c18', title: L('Verteiler', 'Splitter'), grades: '7–9', teaches: ['split'], levels: C18 },
-  { id: 'c19', title: L('Zusammenführer', 'Merger'), grades: '8–9', teaches: ['sum', 'product'], levels: C19 },
-  { id: 'c20', title: L('Brücke', 'Bridge'), grades: '7–9', teaches: ['bridge'], levels: C20 },
+  { id: 'c19', title: L('Terme mit zwei Quellen', 'Terms with two sources'), grades: '8–9', teaches: [], levels: C19 },
   { id: 'c21', title: L('Rätsel-Werkstatt', 'Puzzle workshop'), grades: '7–9', teaches: [], levels: C21 },
   { id: 'c22', title: L('Funktionen-Detektiv', 'Function detective'), grades: '8–9', teaches: [], levels: C22 },
   { id: 'c13', title: L('Meisterprüfung', 'Master exam'), grades: '7–9', teaches: [], levels: C13 },
+  { id: 'c20', title: L('Brücke', 'Bridge'), grades: '7–9', teaches: ['bridge'], levels: C20 },
   { id: 'c23', title: L('Vorzeichen und Betrag', 'Sign and absolute value'), grades: '7', teaches: ['neg', 'abs'], levels: C23 },
   { id: 'c24', title: L('Spiegel-Maschine', 'Mirror machine'), grades: '5–7', teaches: ['rev'], levels: C24 },
   { id: 'c25', title: L('Runden-Maschine', 'Rounding machine'), grades: '5–6', teaches: ['round'], levels: C25 },

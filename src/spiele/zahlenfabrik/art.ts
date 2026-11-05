@@ -27,15 +27,30 @@ const FILES: Record<ArtKind, string[]> = {
   merge: ['zusammenfuehren'],
   target: ['lager'],
   base: ['basis'],
-  rock: ['fels-1', 'fels-2', 'fels-3'],
+  // Hindernisse: Felsen, Bäume, Busch, Kisten (bunt gemischt, je Feld fest)
+  rock: ['fels-1', 'fels-2', 'fels-3', 'fels-4', 'fels-1', 'baum-1', 'fels-2', 'baum-2', 'fels-3', 'busch', 'kisten'],
   bridge: ['bruecke'],
 };
 
-/** Bild-Adresse für ein Teil (oder undefined, wenn es kein Bild gibt). */
-export function imageFor(kind: ArtKind, variant = 0): string | undefined {
+/** Bild-Adresse für ein Teil (oder undefined, wenn es kein Bild gibt); `specific` wird zuerst versucht. */
+export function imageFor(kind: ArtKind, variant = 0, specific?: string): string | undefined {
+  if (specific && IMAGES[specific]) return IMAGES[specific];
   const names = FILES[kind].filter((n) => IMAGES[n]);
   return names.length ? IMAGES[names[variant % names.length]!] : undefined;
 }
+
+/** Eigenes Bild je Rechenart (Maschinen) bzw. Prüfung (Weichen), sonst das allgemeine. */
+const MACHINE_FILES: Partial<Record<string, string>> = { '+': 'maschine-plus', '−': 'maschine-minus', '×': 'maschine-mal', '÷': 'maschine-geteilt', '²': 'maschine-quadrat' };
+const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim' };
+export const machineFile = (sym: string) => MACHINE_FILES[sym];
+export const switchFile = (test: string) => SWITCH_FILES[test];
+
+/** Bild je Kapitel (für Erklärkarten und Auswahl). */
+const CHAPTER_FILES: Record<string, string> = {
+  c1: 'kapitel-01', c2: 'kapitel-02', c3: 'kapitel-03', c4: 'kapitel-04', c5: 'kapitel-05', c6: 'kapitel-06', c7: 'kapitel-07',
+  c8: 'kapitel-08', c9: 'kapitel-09', c10: 'kapitel-10', c11: 'kapitel-11', c12: 'kapitel-12', c13: 'kapitel-13', c27: 'kapitel-13',
+};
+export const chapterImage = (id: string): string | undefined => IMAGES[CHAPTER_FILES[id] ?? ''];
 
 export type ArtKind = 'source' | 'machine' | 'sort' | 'merge' | 'target' | 'base' | 'rock' | 'bridge';
 
@@ -89,8 +104,8 @@ const DRAW: Record<ArtKind, (size: number) => string> = {
  * SVG-Zeichnung für ein Feld. `size`: Kantenlänge in px (Kasten 52, ganze
  * Felder 64, Basis 3 × 64). `dir`: Richtung des Ausgusses (ohne: keiner).
  */
-export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0, flip = false): SVGSVGElement | HTMLImageElement {
-  const src = imageFor(kind, variant);
+export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0, flip = false, specific?: string): SVGSVGElement | HTMLImageElement {
+  const src = imageFor(kind, variant, specific);
   if (src) {
     // Bild: Ausgang zeigt nach rechts, für andere Richtungen gedreht
     const img = document.createElement('img');

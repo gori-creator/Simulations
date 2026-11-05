@@ -8,8 +8,9 @@ import { START_COINS, STARTER_PARTS } from './parts';
  * 15 Primzahlen“ … Jeder geschaffte Auftrag bringt Münzen und schaltet
  * neue Teile frei. Danach geht es mit immer neuen Aufträgen weiter.
  *
- * Münzen gibt es außerdem für jede gelieferte Zahl: so viele, wie sie groß
- * ist (null und negative Zahlen bringen nichts).
+ * Münzen gibt es außerdem für jede gelieferte Zahl – nicht nach ihrer Größe
+ * (sonst ließen sich mit Malnehmen beliebig viele Münzen machen), sondern
+ * 1 Münze je Zahl und 4 extra, wenn sie zum aktuellen Auftrag passt.
  */
 export type OrderKind = 'any' | 'exact' | 'even' | 'odd' | 'multiple' | 'prime' | 'square' | 'greater';
 
@@ -28,18 +29,19 @@ export interface Order {
 
 /** Die ersten Aufträge: führen Schritt für Schritt an alle Teile heran. */
 export const ORDERS: Order[] = [
-  { kind: 'any', count: 10, reward: 25, unlock: ['×2'] },
-  { kind: 'exact', n: 4, count: 10, reward: 40, unlock: ['−1', '÷2', 'bridge'] },
+  { kind: 'any', count: 10, reward: 30, unlock: ['bridge'] },
+  { kind: 'greater', n: 12, count: 10, reward: 50, unlock: ['merge−'] },
   { kind: 'even', count: 15, reward: 60, unlock: ['even'] },
-  { kind: 'odd', count: 20, reward: 80, unlock: ['+5', '×3'] },
-  { kind: 'exact', n: 12, count: 10, reward: 100, unlock: ['merge+'] },
-  { kind: 'multiple', n: 3, count: 20, reward: 120, unlock: ['div3'] },
-  { kind: 'prime', count: 15, reward: 150, unlock: ['prime'] },
-  { kind: 'prime', count: 20, streak: true, reward: 250, unlock: ['merge×'] },
-  { kind: 'square', count: 10, reward: 250, unlock: ['gt50'] },
-  { kind: 'greater', n: 500, count: 5, reward: 300, unlock: ['×10'] },
-  { kind: 'exact', n: 12, count: 50, reward: 400, unlock: [] },
-  { kind: 'exact', n: 100, count: 10, reward: 500, unlock: [] },
+  { kind: 'exact', n: 10, count: 10, reward: 80, unlock: ['merge×'] },
+  { kind: 'multiple', n: 6, count: 15, reward: 100, unlock: ['div3'] },
+  { kind: 'greater', n: 50, count: 15, reward: 120, unlock: ['gt50'] },
+  { kind: 'exact', n: 1, count: 10, reward: 140, unlock: ['merge÷'] },
+  { kind: 'odd', count: 20, reward: 150, unlock: ['prime'] },
+  { kind: 'prime', count: 15, reward: 200, unlock: ['square'] },
+  { kind: 'square', count: 10, reward: 250, unlock: [] },
+  { kind: 'prime', count: 20, streak: true, reward: 300, unlock: [] },
+  { kind: 'exact', n: 24, count: 15, reward: 350, unlock: [] },
+  { kind: 'exact', n: 100, count: 10, reward: 400, unlock: [] },
 ];
 
 /** Auftrag Nummer i (ab 0). Nach der Liste kommen immer neue, etwas schwerere. */
@@ -58,7 +60,7 @@ export function orderAt(i: number): Order {
     case 3:
       return { kind: 'square', count: 15 + 5 * round, reward, unlock: [] };
     default:
-      return { kind: 'greater', n: 1000 * 10 ** Math.min(round, 3), count: 10 + 5 * round, reward, unlock: [] };
+      return { kind: 'greater', n: 200 * (round + 1), count: 10 + 5 * round, reward, unlock: [] };
   }
 }
 
@@ -88,7 +90,7 @@ export function matches(order: Order, v: number): boolean {
 /** Münzen, Gesamtsumme und Stand beim aktuellen Auftrag (wird gespeichert). */
 export interface Economy {
   coins: number;
-  /** Summe aller je gelieferten Zahlen. */
+  /** Zahl aller je gelieferten Zahlen. */
   total: number;
   /** Nummer des aktuellen Auftrags (ab 0) = Zahl der geschafften Aufträge. */
   order: number;
@@ -102,7 +104,10 @@ export function newEconomy(): Economy {
   return { coins: START_COINS, total: 0, order: 0, progress: 0, zone: 0 };
 }
 
-export const coinsFor = (v: number) => Math.max(0, Math.floor(v));
+/** Münzen für eine gelieferte Zahl: 1, und 4 extra, wenn sie zum Auftrag passt (nie nach Größe). */
+export const COIN_EACH = 1;
+export const COIN_MATCH = 4;
+export const coinsFor = (matched: boolean) => COIN_EACH + (matched ? COIN_MATCH : 0);
 
 /**
  * Gelieferte Zahlen verbuchen (in der Reihenfolge der Lieferung). Gibt den
@@ -112,10 +117,11 @@ export function deliver(econ: Economy, values: readonly number[]): { econ: Econo
   const e = { ...econ };
   const completed: Order[] = [];
   for (const v of values) {
-    e.coins += coinsFor(v);
-    e.total += v;
     const order = orderAt(e.order);
-    if (matches(order, v)) e.progress += 1;
+    const hit = matches(order, v);
+    e.coins += coinsFor(hit);
+    e.total += 1;
+    if (hit) e.progress += 1;
     else if (order.streak) e.progress = 0;
     if (e.progress >= order.count) {
       e.coins += order.reward;

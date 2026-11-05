@@ -14,7 +14,7 @@ import type { PartSpec } from './parts';
  */
 export type KitId =
   | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round'
-  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'alt' | 'split' | 'sum' | 'product' | 'bridge';
+  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'alt' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
 export type LessonId = 'belt' | KitId | 'pick' | 'seq';
@@ -55,9 +55,10 @@ export const KIT: KitItem[] = [
   { id: 'prime', kind: 'sort', test: 'prime', start: 0, name: L('Weiche „Primzahl?“', 'Switch “prime?”') },
   { id: 'issquare', kind: 'sort', test: 'square', start: 0, name: L('Weiche „Quadratzahl?“', 'Switch “square number?”') },
   { id: 'alt', kind: 'alt', start: 0, name: L('Wechsel-Weiche', 'Alternator') },
-  { id: 'split', kind: 'split', start: 0, name: L('Verteiler', 'Splitter') },
   { id: 'sum', kind: 'merge', start: 0, name: L('Zusammenführer „Summe“', 'Merger “sum”') },
+  { id: 'diff', kind: 'merge', start: 0, name: L('Zusammenführer „Differenz“', 'Merger “difference”') },
   { id: 'product', kind: 'merge', start: 0, name: L('Zusammenführer „Produkt“', 'Merger “product”') },
+  { id: 'quot', kind: 'merge', start: 0, name: L('Zusammenführer „Quotient“', 'Merger “quotient”') },
   { id: 'bridge', kind: 'bridge', start: 0, name: L('Brücke', 'Bridge') },
 ];
 
@@ -78,7 +79,7 @@ export function specFor(item: KitItem, n: number): PartSpec {
   if (item.kind === 'alt') return { id: 'alt', kind: 'alt', price: 0 };
   if (item.kind === 'bridge') return { id: 'bridge', kind: 'bridge', price: 0 };
   if (item.kind === 'merge') {
-    const mode = item.id === 'sum' ? '+' : '×';
+    const mode = item.id === 'sum' ? '+' : item.id === 'diff' ? '−' : item.id === 'product' ? '×' : '÷';
     return { id: `merge${mode}`, kind: 'merge', mode, price: 0 };
   }
   if (item.kind === 'op') {
