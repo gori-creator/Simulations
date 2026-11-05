@@ -1089,6 +1089,19 @@ const mergeLevel = (id: string, title: Localized, hint: Localized, f: (x: number
   ...(pro ? { pro } : {}),
   par,
 });
+/** Zusammenführer-Karte mit eigener Zahlenfolge (Verteiler oder Wechsel-Weiche davor). */
+function mergeLevelFrom(id: string, title: Localized, hint: Localized, values: number[], want: number[], maxMachines: number, pro = false): LevelInfo {
+  return {
+    id, title, hint,
+    ...mergeMap,
+    source: { x: 1, y: 3, dir: 0, value: 1, values },
+    targets: [{ x: 11, y: 3, need: want.length, accept: { kind: 'seq', values: want } }],
+    emit: values.length,
+    maxMachines,
+    ...(pro ? { pro } : {}),
+    par: 14,
+  };
+}
 const C19: LevelInfo[] = [
   mergeLevel('c19-1', L('x + x', 'x + x'), L('Neu: Verteiler und Zusammenführer. Ohne Maschine soll 2, 4, 6, 8, 10 ankommen: Teile jede Zahl in zwei Kopien und führ sie wieder zusammen.', 'New: splitter and merger. Without a machine, 2, 4, 6, 8, 10 should arrive: split every number into two copies and merge them again.'), (x) => x + x, 0),
   mergeLevel('c19-2', L('x · x', 'x · x'), L('Wieder ohne Maschine: Das Lager will 1, 4, 9, 16, 25. Der Zusammenführer kann auch malnehmen.', 'Again without a machine: the storage wants 1, 4, 9, 16, 25. The merger can also multiply.'), (x) => x * x, 0),
@@ -1209,6 +1222,178 @@ const C22: LevelInfo[] = [
   detective('c22-9', 2, [5, 1, 3, 7, 2], 3, true),
 ];
 
+
+/* ---------- Kapitel: Vorzeichen und Betrag ---------- */
+const C23: LevelInfo[] = [
+  {
+    id: 'c23-1',
+    title: L('Spiegeln an der Null', 'Mirroring at zero'),
+    hint: L('Neu: Vorzeichen- und Betrags-Maschine. Aus 12 soll −12 werden – mit einer Maschine.', 'New: sign and absolute-value machines. 12 should become −12 – with one machine.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 12 },
+    target: { x: 10, y: 3, value: -12 }, need: 3,
+    walls: [[5, 1], [5, 2], [5, 4], [5, 5]],
+    maxMachines: 1,
+    par: 8,
+  },
+  {
+    id: 'c23-2',
+    title: L('Nur der Abstand', 'Only the distance'),
+    hint: L('−3, −1, 2, −4 kommen. Das Lager will 3, 1, 2, 4 – mit einer Maschine.', '−3, −1, 2, −4 arrive. The storage wants 3, 1, 2, 4 – with one machine.'),
+    cols: 12, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, values: [-3, -1, 2, -4] },
+    targets: [{ x: 10, y: 1, need: 4, accept: { kind: 'seq', values: [3, 1, 2, 4] } }],
+    walls: wall(5, 8, [2]),
+    maxMachines: 1,
+    par: 13,
+  },
+  {
+    id: 'c23-3',
+    title: L('Abstand zur 10', 'Distance from 10'),
+    hint: L('4, 13, 8, 15, 10 kommen. Das Lager will, wie weit jede Zahl von der 10 entfernt ist: 6, 3, 2, 5, 0.', '4, 13, 8, 15, 10 arrive. The storage wants how far each number is from 10: 6, 3, 2, 5, 0.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: [4, 13, 8, 15, 10] },
+    targets: [{ x: 11, y: 3, need: 5, accept: { kind: 'seq', values: [6, 3, 2, 5, 0] } }],
+    walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]],
+    maxMachines: 2,
+    par: 9,
+  },
+  {
+    id: 'c23-4',
+    title: L('Umgedrehte Parabel', 'Upside-down parabola'),
+    hint: L('Für x = 1 … 5 will das Lager −1, −4, −9, −16, −25 – mit höchstens zwei Maschinen.', 'For x = 1 … 5 the storage wants −1, −4, −9, −16, −25 – with at most two machines.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 11, y: 5, need: 5, accept: { kind: 'seq', values: table((x) => -(x * x), seq(1, 5)) } }],
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3], [8, 3], [8, 4], [8, 5], [8, 6]],
+    maxMachines: 2,
+    pro: true,
+    par: 17,
+  },
+];
+
+/* ---------- Kapitel: Spiegel-Maschine ---------- */
+const C24: LevelInfo[] = [
+  {
+    id: 'c24-1',
+    title: L('Rückwärts gelesen', 'Read backwards'),
+    hint: L('Neu: die Spiegel-Maschine. Aus 123 soll 321 werden.', 'New: the mirror machine. 123 should become 321.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 123 },
+    target: { x: 10, y: 5, value: 321 }, need: 3,
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3]],
+    maxMachines: 1,
+    par: 12,
+  },
+  mergeLevelFrom('c24-2', L('Zahl plus Spiegelzahl', 'Number plus mirror number'), L('12, 23, 34, 45, 56 kommen. Das Lager will jede Zahl plus ihre Spiegelzahl: 33, 55, 77, 99, 121 – mit einer Maschine.', '12, 23, 34, 45, 56 arrive. The storage wants each number plus its mirror number: 33, 55, 77, 99, 121 – with one machine.'), [12, 23, 34, 45, 56], [33, 55, 77, 99, 121], 1),
+  {
+    id: 'c24-3',
+    title: L('Aus 13 wird 961', '13 becomes 961'),
+    hint: L('Höchstens zwei Maschinen. 961 ist eine Quadratzahl.', 'At most two machines. 961 is a square number.'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 13 },
+    target: { x: 11, y: 1, value: 961 }, need: 3,
+    walls: wall(6, 8, [3]),
+    maxMachines: 2,
+    pro: true,
+    par: 14,
+  },
+];
+
+/* ---------- Kapitel: Runden-Maschine ---------- */
+const C25: LevelInfo[] = [
+  {
+    id: 'c25-1',
+    title: L('Auf Zehner runden', 'Rounding to tens'),
+    hint: L('Neu: die Runden-Maschine. Aus 47 soll 50 werden – es gibt zwei Wege mit einer Maschine.', 'New: the rounding machine. 47 should become 50 – there are two ways with one machine.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 47 },
+    target: { x: 10, y: 3, value: 50 }, need: 3,
+    walls: [[5, 1], [5, 2], [5, 4], [5, 5]],
+    maxMachines: 1,
+    par: 8,
+  },
+  {
+    id: 'c25-2',
+    title: L('Auf Hunderter runden', 'Rounding to hundreds'),
+    hint: L('123, 456, 789, 150 kommen. Das Lager will 100, 500, 800, 200.', '123, 456, 789, 150 arrive. The storage wants 100, 500, 800, 200.'),
+    cols: 12, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, values: [123, 456, 789, 150] },
+    targets: [{ x: 10, y: 1, need: 4, accept: { kind: 'seq', values: [100, 500, 800, 200] } }],
+    walls: wall(5, 8, [2]),
+    maxMachines: 1,
+    par: 13,
+  },
+  {
+    id: 'c25-3',
+    title: L('Überschlagen', 'Estimating'),
+    hint: L('19, 31, 48, 52 kommen. Das Lager will ungefähr das Doppelte: 40, 60, 100, 100.', '19, 31, 48, 52 arrive. The storage wants roughly double: 40, 60, 100, 100.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: [19, 31, 48, 52] },
+    targets: [{ x: 11, y: 3, need: 4, accept: { kind: 'seq', values: [40, 60, 100, 100] } }],
+    walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]],
+    maxMachines: 2,
+    par: 9,
+  },
+  {
+    id: 'c25-4',
+    title: L('50, 60, 70, 70, 80', '50, 60, 70, 70, 80'),
+    hint: L('Für x = 1 … 5 will das Lager 50, 60, 70, 70, 80 – mit höchstens drei Maschinen gibt es genau einen Weg.', 'For x = 1 … 5 the storage wants 50, 60, 70, 70, 80 – with at most three machines there is exactly one way.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 11, y: 5, need: 5, accept: { kind: 'seq', values: [50, 60, 70, 70, 80] } }],
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3], [8, 3], [8, 4], [8, 5], [8, 6]],
+    maxMachines: 3,
+    pro: true,
+    par: 17,
+  },
+];
+
+/* ---------- Kapitel: Wechsel-Weiche ---------- */
+const C26: LevelInfo[] = [
+  {
+    id: 'c26-1',
+    title: L('Abwechselnd', 'Taking turns'),
+    hint: L('Neu: die Wechsel-Weiche. 5, 5, 8, 8, 3, 3 kommen – beide Lager wollen 5, 8, 3. Keine andere Weiche kann das!', 'New: the alternator. 5, 5, 8, 8, 3, 3 arrive – both storages want 5, 8, 3. No other switch can do that!'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [5, 5, 8, 8, 3, 3] },
+    targets: [
+      { x: 10, y: 1, need: 3, accept: { kind: 'seq', values: [5, 8, 3] } },
+      { x: 10, y: 7, need: 3, accept: { kind: 'seq', values: [5, 8, 3] } },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    par: 21,
+  },
+  {
+    id: 'c26-2',
+    title: L('Erste und zweite', 'First and second'),
+    hint: L('3, 3, 4, 4, 7, 7, 8, 8 kommen. Oben will das Lager 30, 40, 70, 80, unten 13, 14, 17, 18.', '3, 3, 4, 4, 7, 7, 8, 8 arrive. The top storage wants 30, 40, 70, 80, the bottom one 13, 14, 17, 18.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [3, 3, 4, 4, 7, 7, 8, 8] },
+    targets: [
+      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: [30, 40, 70, 80] } },
+      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: [13, 14, 17, 18] } },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    par: 21,
+  },
+  mergeLevelFrom('c26-3', L('Paare malnehmen', 'Multiplying pairs'), L('1 bis 6 kommen. Das Lager will 1 · 2, 3 · 4, 5 · 6 = 2, 12, 30 – ganz ohne Maschine.', '1 to 6 arrive. The storage wants 1 · 2, 3 · 4, 5 · 6 = 2, 12, 30 – without any machine.'), seq(1, 6), [2, 12, 30], 0, true),
+];
+
+/* ---------- Kapitel: Großmeister (alle Bauteile) ---------- */
+const C27: LevelInfo[] = [
+  riddle('c27-1', MAP_A, 15, 2603, 3),
+  riddle('c27-2', MAP_C, 22, -1024, 3),
+  riddle('c27-3', MAP_B, 44, 1906, 3, true),
+  detective('c27-4', 0, [9, 71, 52, 33, 14], 3),
+  detective('c27-5', 1, [30, 20, 10, 0, 0], 3, true),
+  { ...detective('c27-6', 2, [6, 2, 10, 18, 26], 3, true), source: { x: 1, y: 1, dir: 0, value: 1, values: seq(-2, 2) }, hint: L('Für x = −2 … 2 will das Lager 6, 2, 10, 18, 26. Finde die Regel – mit höchstens 3 Maschinen gibt es genau einen Weg.', 'For x = −2 … 2 the storage wants 6, 2, 10, 18, 26. Find the rule – with at most 3 machines there is exactly one way.') },
+  mergeLevelFrom('c27-7', L('Nachbarn addieren', 'Adding neighbours'), L('1 bis 8 kommen. Das Lager will 1 + 2, 3 + 4, 5 + 6, 7 + 8 – ganz ohne Maschine.', '1 to 8 arrive. The storage wants 1 + 2, 3 + 4, 5 + 6, 7 + 8 – without any machine.'), seq(1, 8), [3, 7, 11, 15], 0, true),
+  mergeLevelFrom('c27-8', L('Paare und eins weniger', 'Pairs and one less'), L('1 bis 6 kommen. Das Lager will 1, 11, 29 – mit nur einer Maschine.', '1 to 6 arrive. The storage wants 1, 11, 29 – with just one machine.'), seq(1, 6), [1, 11, 29], 1, true),
+  riddle('c27-9', MAP_E, 28, 911, 3, true),
+  riddle('c27-10', MAP_A, 61, 4004, 3, true),
+];
+
 /* ---------- Kapitel 13: Meisterprüfung (alles gemischt) ---------- */
 const C13: LevelInfo[] = [
   {
@@ -1295,6 +1480,17 @@ export interface Chapter {
   levels: LevelInfo[];
 }
 
+/** Abschnitte der Level-Auswahl (je einige Kapitel). */
+export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
+  { id: 'basics', title: L('Grundlagen', 'Basics'), chapters: ['c1', 'c2', 'c3', 'c4', 'c5', 'c6'] },
+  { id: 'switches', title: L('Weichen und Teilbarkeit', 'Switches and divisibility'), chapters: ['c7', 'c8', 'c14', 'c15', 'c9', 'c10'] },
+  { id: 'terms', title: L('Terme und Funktionen', 'Terms and functions'), chapters: ['c11', 'c12', 'c16', 'c17'] },
+  { id: 'tech', title: L('Fabrik-Technik', 'Factory technology'), chapters: ['c18', 'c19', 'c20'] },
+  { id: 'riddles', title: L('Rätsel', 'Puzzles'), chapters: ['c21', 'c22', 'c13'] },
+  { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c23', 'c24', 'c25', 'c26'] },
+  { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
+];
+
 export const CHAPTERS: Chapter[] = [
   { id: 'c1', title: L('Bänder', 'Belts'), grades: '5', teaches: ['belt'], levels: C1 },
   { id: 'c2', title: L('Plus-Maschine', 'Plus machine'), grades: '5', teaches: ['plus'], levels: C2 },
@@ -1318,18 +1514,32 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c21', title: L('Rätsel-Werkstatt', 'Puzzle workshop'), grades: '7–9', teaches: [], levels: C21 },
   { id: 'c22', title: L('Funktionen-Detektiv', 'Function detective'), grades: '8–9', teaches: [], levels: C22 },
   { id: 'c13', title: L('Meisterprüfung', 'Master exam'), grades: '7–9', teaches: [], levels: C13 },
+  { id: 'c23', title: L('Vorzeichen und Betrag', 'Sign and absolute value'), grades: '7', teaches: ['neg', 'abs'], levels: C23 },
+  { id: 'c24', title: L('Spiegel-Maschine', 'Mirror machine'), grades: '5–7', teaches: ['rev'], levels: C24 },
+  { id: 'c25', title: L('Runden-Maschine', 'Rounding machine'), grades: '5–6', teaches: ['round'], levels: C25 },
+  { id: 'c26', title: L('Wechsel-Weiche', 'Alternator'), grades: '6–9', teaches: ['alt'], levels: C26 },
+  { id: 'c27', title: L('Großmeister', 'Grandmaster'), grades: '8–9', teaches: [], levels: C27 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);
 
-export const chapterOf = (level: LevelInfo): Chapter => CHAPTERS.find((c) => c.levels.includes(level))!;
+/** Kapitel für Rätsel außerhalb der Kapitel (Tagesrätsel, Zufallsrätsel): alle Bauteile. */
+export const SPECIAL: Chapter = { id: 'special', title: L('Tagesrätsel', 'Daily puzzle'), grades: '7–9', teaches: [], levels: [] };
 
-/** Werkzeugkasten eines Levels: alle Bauteile aus seinem Kapitel und allen davor. */
+export const chapterOf = (level: LevelInfo): Chapter => CHAPTERS.find((c) => c.levels.includes(level)) ?? SPECIAL;
+
+/** Werkzeugkasten eines Levels: alle Bauteile aus seinem Kapitel und allen davor (Rätsel außerhalb: alle). */
 export function kitFor(level: LevelInfo): KitItem[] {
-  const upto = CHAPTERS.indexOf(chapterOf(level));
+  const chapter = chapterOf(level);
+  if (chapter === SPECIAL) return [...KIT];
+  const upto = CHAPTERS.indexOf(chapter);
   const ids = new Set(CHAPTERS.slice(0, upto + 1).flatMap((c) => c.teaches));
   return KIT.filter((k) => ids.has(k.id));
 }
+
+/** Karten für Rätsel mit einer Zahl (Quelle → Lager, genug Platz für drei Maschinen). */
+export const VALUE_MAPS = [MAP_A, MAP_B, MAP_C, MAP_D, MAP_E, MAP_F];
+export { riddle };
 
 /** Bauteile, die dieses Kapitel neu bringt. */
 export const newIn = (chapter: Chapter): KitItem[] => KIT.filter((k) => chapter.teaches.some((t) => isKitId(t) && t === k.id));

@@ -73,6 +73,16 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - Rechenlogik: Level können jetzt Verteiler, Zusammenführer und Brücken (`model.ts`, `emit` = Anzahl der Zahlen aus der Quelle). Werkzeugkasten in Gruppen (Maschinen, Weichen, Verteilen & Kreuzen); Weichen und Verteiler richten ihre Seite beim Setzen nach vorhandenen Bändern aus. Vorgegebene Weichen und Verteiler tragen ein Schloss.
 - „Zerlege 360“ in der Meisterprüfung ist durch „Aus 8 wird 1606“ ersetzt (mit der Rest-Maschine wäre es zu leicht).
 
+## Werkstatt, Großmeister, Tagesrätsel, Tipps (Stand 05.11.2026)
+
+- **27 Kapitel, 140 Level** in sieben Abschnitten (`PARTS`): Grundlagen, Weichen und Teilbarkeit, Terme und Funktionen, Fabrik-Technik, Rätsel, Neue Werkstatt, Großmeister.
+- **Neue Bausteine:** Vorzeichen-Maschine `±`, Betrags-Maschine `|x|`, Spiegel-Maschine `⇄` (Ziffern umdrehen, 120 → 21), Runden-Maschine `≈10/≈100/≈1000` (kaufmännisch, Einstellung als Zehnerpotenz) und **Wechsel-Weiche** (abwechselnd geradeaus und zur Seite, unabhängig von der Zahl; mit Zusammenführer dahinter werden Paare verrechnet: 1·2, 3·4, 5·6).
+- **Großmeister** (10 Level, alle Bauteile): eindeutige Rätsel wie 15 → 2603 (⇄, x², +2), 22 → −1024 (+10, x², ±), 44 → 1906 (x², ≈100, +6), Wertetabellen wie 9, 71, 52, 33, 14 (×8, +1, ⇄) und Paar-Level mit Wechsel-Weiche.
+- **Tagesrätsel und Zufallsrätsel** (`daily.ts`, `solver.ts`): „Aus a wird b“ mit allen Bauteilen, höchstens drei Maschinen und genau einem Weg; das Tagesrätsel hängt nur vom Datum ab (gleich für alle), das Zufallsrätsel ist jedes Mal neu. Die Sterne des Tagesrätsels werden gespeichert.
+- **Tipp-Knopf** (Löser für Rechenketten): erst „Mit n Maschinen geht es“, dann die erste Maschine, dann eine ganze Lösung; bei Leveln mit Weichen ein allgemeiner Tipp.
+- **Rechenweg** in der Aufgabe: zeigt beim Bauen, was aus der ersten Zahl wird (3 → +2 → 5 → Lager ✓/✗, oder wo der Weg endet).
+- **Level-Auswahl** mit „Weiterspielen“ (erstes Level ohne Stern), Sternen gesamt, Tages- und Zufallsrätsel, offener Welt und Abschnitten mit Zwischenständen.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee

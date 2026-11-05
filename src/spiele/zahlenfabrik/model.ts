@@ -12,8 +12,11 @@ export type Dir = 0 | 1 | 2 | 3; // rechts, unten, links, oben
 export const DX = [1, 0, -1, 0] as const;
 export const DY = [0, 1, 0, -1] as const;
 
-/** Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√). */
-export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√';
+/**
+ * Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√),
+ * Vorzeichen wechseln (±), Betrag (|), Ziffern umdrehen (⇄), Runden auf 10ⁿ (≈).
+ */
+export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈';
 export interface Op {
   sym: Sym;
   n: number;
@@ -32,6 +35,8 @@ export interface Part {
   side?: 1 | 3;
   /** Verteiler: jede Zahl läuft als Kopie in beide Richtungen (geradeaus und zur Seite `side`). */
   split?: true;
+  /** Wechsel-Weiche: die Zahlen gehen abwechselnd geradeaus und zur Seite `side` (die erste geradeaus). */
+  alt?: true;
   /** Zusammenführen: zwei Zahlen werden zu Summe oder Produkt. */
   merge?: '+' | '×';
   /** Brücke: Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt (zum Kreuzen). */
@@ -77,7 +82,7 @@ export function digitSum(n: number): number {
 
 /** Ausgänge eines Teils: Weiche zwei (ja, nein), Verteiler zwei (beide), alle anderen einer. */
 export function outputs(part: Part): Dir[] {
-  return part.sort || part.split ? [part.dir, ((part.dir + (part.side ?? 1)) % 4) as Dir] : [part.dir];
+  return part.sort || part.split || part.alt ? [part.dir, ((part.dir + (part.side ?? 1)) % 4) as Dir] : [part.dir];
 }
 
 /** Was ein Lager annimmt. */
@@ -171,7 +176,27 @@ export function apply(op: Op, value: number): number | null {
       return digitSum(value);
     case '√':
       return isSquare(value) ? Math.round(Math.sqrt(value)) : null;
+    case '±':
+      return value === 0 ? 0 : -value;
+    case '|':
+      return Math.abs(value);
+    case '⇄':
+      return reverseDigits(value);
+    case '≈':
+      return roundTo(value, 10 ** op.n);
   }
+}
+
+/** Ziffern umdrehen (Vorzeichen bleibt): 123 → 321, 120 → 21. */
+export function reverseDigits(n: number): number {
+  const r = Number(String(Math.abs(Math.trunc(n))).split('').reverse().join(''));
+  return n < 0 ? -r : r;
+}
+
+/** Kaufmännisch runden auf ein Vielfaches von `step` (bei negativen Zahlen gespiegelt): 45 → 50, −45 → −50. */
+export function roundTo(n: number, step: number): number {
+  const r = Math.floor(Math.abs(n) / step + 0.5) * step;
+  return n < 0 && r !== 0 ? -r : r;
 }
 
 /** Kurze Aufschrift einer Maschine (passt auf ein Feld). */
@@ -185,6 +210,14 @@ export function opLabel(op: Op): string {
       return 'QS';
     case '√':
       return '√x';
+    case '±':
+      return '±';
+    case '|':
+      return '|x|';
+    case '⇄':
+      return '⇄';
+    case '≈':
+      return `≈${10 ** op.n}`;
     default:
       return `${op.sym}${op.n}`;
   }
@@ -218,6 +251,8 @@ export interface State {
   won: boolean;
   /** Selbst gewählte Startzahl (Quelle mit `pick`). */
   pick?: number;
+  /** Wechsel-Weichen: so viele Zahlen hat jede schon weitergegeben (Feld → Anzahl). */
+  alt?: Record<string, number>;
 }
 
 export const EMIT_EVERY = 2;
@@ -235,12 +270,13 @@ const targetIndex = (level: Level, x: number, y: number) => targetsOf(level).fin
  * Richtungen, in die ein Feld eine Zahl weitergibt (leer: kein Teil). Weichen
  * prüfen die Zahl, Verteiler geben in beide Richtungen, Brücken geradeaus.
  */
-function dirsAt(level: Level, grid: Grid, item: Item): Dir[] {
+function dirsAt(level: Level, grid: Grid, item: Item, alt: Record<string, number>): Dir[] {
   if (item.x === level.source.x && item.y === level.source.y) return [level.source.dir];
   const part = grid.get(key(item.x, item.y));
   if (!part) return [];
   if (part.sort) return [outputs(part)[passes(part.sort, item.value) ? 0 : 1]!];
   if (part.split) return outputs(part);
+  if (part.alt) return [outputs(part)[(alt[key(item.x, item.y)] ?? 0) % 2]!];
   if (part.bridge) return [item.heading ?? part.dir];
   return [part.dir];
 }
@@ -256,12 +292,14 @@ export const emitCount = (level: Level) => level.emit ?? totalNeed(level);
 export function step(level: Level, grid: Grid, state: State): State {
   if (state.error || state.won) return state;
   const targets = targetsOf(level);
-  const s: State = { ...state, tick: state.tick + 1, items: [], got: [...state.got] };
+  const s: State = { ...state, tick: state.tick + 1, items: [], got: [...state.got], alt: { ...state.alt } };
   // Wartende Zahlen bleiben stehen
   for (const item of state.items) if (item.wait) s.items.push(item);
   for (const item of state.items) {
     if (item.wait) continue;
-    const dirs = dirsAt(level, grid, item);
+    const dirs = dirsAt(level, grid, item, s.alt!);
+    // Wechsel-Weiche: nächste Zahl in die andere Richtung
+    if (grid.get(key(item.x, item.y))?.alt) s.alt![key(item.x, item.y)] = (s.alt![key(item.x, item.y)] ?? 0) + 1;
     if (!dirs.length) {
       s.error = { kind: 'fell', x: item.x, y: item.y, value: item.value };
       return s;
@@ -318,6 +356,45 @@ export function step(level: Level, grid: Grid, state: State): State {
   }
   if (s.tick >= MAX_TICKS) s.error = { kind: 'timeout', x: level.source.x, y: level.source.y, value: level.source.value };
   return s;
+}
+
+/** Ein Schritt im Rechenweg: Maschine und Ergebnis. */
+export interface TraceStep {
+  label: string;
+  value: number;
+}
+
+/**
+ * Rechenweg einer Zahl von der Quelle aus (ohne Ablauf): welche Maschinen sie
+ * nacheinander trifft und wo der Weg endet – im Lager (`target`), an einer
+ * Weiche/einem Verteiler/Zusammenführer (`branch`), an einer Lücke (`gap`) oder
+ * an einer Maschine, die nicht rechnen kann (`error`).
+ */
+export function trace(level: Level, grid: Grid, value: number): { steps: TraceStep[]; end: 'target' | 'branch' | 'gap' | 'error'; target?: number; value: number } {
+  const steps: TraceStep[] = [];
+  let x = level.source.x;
+  let y = level.source.y;
+  let dir: Dir = level.source.dir;
+  let v = value;
+  const seen = new Set<string>();
+  for (let i = 0; i < 400; i++) {
+    x += DX[dir];
+    y += DY[dir];
+    const ti = targetIndex(level, x, y);
+    if (ti >= 0) return { steps, end: 'target', target: ti, value: v };
+    const part = grid.get(key(x, y));
+    if (!part || isWall(level, x, y) || seen.has(`${x},${y},${dir}`)) return { steps, end: 'gap', value: v };
+    seen.add(`${x},${y},${dir}`);
+    if (part.op) {
+      const next = apply(part.op, v);
+      if (next === null) return { steps, end: 'error', value: v };
+      v = next;
+      steps.push({ label: opLabel(part.op), value: v });
+    }
+    if (part.sort || part.split || part.merge || part.alt) return { steps, end: 'branch', value: v };
+    if (!part.bridge) dir = part.dir;
+  }
+  return { steps, end: 'gap', value: v };
 }
 
 /** Ganz durchlaufen lassen (für Tests und „schnell“). */

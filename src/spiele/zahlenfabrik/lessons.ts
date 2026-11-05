@@ -20,7 +20,7 @@ type Scene =
   /** Werkzeug-Kachel mit Zahl-Einstellung. */
   | { kind: 'num'; part: 'machine' | 'sort'; label: string; n: string }
   /** Weiche: Zahlen hinein, ✓ geradeaus, ✗ zur Seite (Verteiler: `marks` → ↓, beide bekommen alles). */
-  | { kind: 'sort'; label: string; input: string; yes: string; no: string; marks?: [string, string]; part?: 'sort' | 'split' }
+  | { kind: 'sort'; label: string; input: string; yes: string; no: string; marks?: [string, string]; part?: 'sort' | 'split' | 'alt' }
   /** Zusammenführer: zwei Zahlen hinein, eine heraus. */
   | { kind: 'merge'; a: string; b: string; label: string; out: string }
   /** Brücke: zwei Bänder kreuzen sich. */
@@ -278,6 +278,62 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  neg: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Vorzeichen-Maschine', 'The sign machine'),
+        text: L('Sie dreht das Vorzeichen um: Aus 5 wird −5, aus −3 wird 3. Das ist dasselbe wie mal (−1).', 'It flips the sign: 5 becomes −5, −3 becomes 3. That is the same as times (−1).'),
+        scene: { kind: 'chain', from: '5', op: '±', to: '−5' },
+      },
+    ],
+  },
+  abs: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Betrags-Maschine', 'The absolute-value machine'),
+        text: L('Sie nimmt den Abstand zur Null: Aus −7 wird 7, aus 7 bleibt 7. Mit „−10“ davor misst sie den Abstand zur 10.', 'It takes the distance from zero: −7 becomes 7, 7 stays 7. With “−10” in front it measures the distance from 10.'),
+        scene: { kind: 'chain', from: '−7', op: '|x|', to: '7' },
+      },
+    ],
+  },
+  rev: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Spiegel-Maschine', 'The mirror machine'),
+        text: L('Sie liest die Ziffern rückwärts: Aus 123 wird 321, aus 120 wird 21. Mit Verteiler und Zusammenführer rechnest du x + Spiegelzahl.', 'It reads the digits backwards: 123 becomes 321, 120 becomes 21. With a splitter and a merger you can calculate x + its mirror number.'),
+        scene: { kind: 'chain', from: '123', op: '⇄', to: '321' },
+      },
+    ],
+  },
+  round: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Runden-Maschine', 'The rounding machine'),
+        text: L('Sie rundet auf Zehner, Hunderter oder Tausender: Aus 47 wird mit ≈10 die 50, aus 150 wird mit ≈100 die 200 (ab 5 wird aufgerundet).', 'It rounds to tens, hundreds or thousands: with ≈10, 47 becomes 50; with ≈100, 150 becomes 200 (from 5 upwards it rounds up).'),
+        scene: { kind: 'chain', from: '47', op: '≈10', to: '50' },
+      },
+      numSlide('machine', '≈10', '10', L('10, 100 oder 1000', '10, 100 or 1000')),
+    ],
+  },
+  alt: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Wechsel-Weiche', 'The alternator'),
+        text: L('Sie schaut nicht auf die Zahl, sondern wechselt ab: die 1. Zahl geradeaus, die 2. zur Seite, die 3. wieder geradeaus … So trennst du Zahlen nach ihrer Reihenfolge.', 'It does not look at the number but takes turns: the 1st number goes straight, the 2nd to the side, the 3rd straight again … This way you separate numbers by their order.'),
+        scene: { kind: 'sort', label: '', input: '5 5 8 8', yes: '5 8', no: '5 8', marks: ['→', '↓'], part: 'alt' },
+      },
+      {
+        title: L('Paare bilden', 'Making pairs'),
+        text: L('Mit einem Zusammenführer dahinter werden je zwei Zahlen hintereinander verrechnet: 1 und 2, dann 3 und 4 …', 'With a merger behind it, every two numbers in a row are combined: 1 and 2, then 3 and 4 …'),
+        scene: { kind: 'merge', a: '1', b: '2', label: 'a×b', out: '2' },
+      },
+    ],
+  },
   seq: {
     tag: NEW_RULE,
     slides: [
@@ -374,7 +430,7 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     stepper.append(el('span', 'zf-num__btn', '−'), el('span', 'zf-num__value', s.n), el('span', 'zf-num__btn', '+'));
     row.append(tile, stepper);
   } else if (s.kind === 'sort') {
-    row = el('div', `zf-intro__scene zf-lesson-sort${s.part === 'split' ? ' zf-lesson-sort--split' : ''}`);
+    row = el('div', `zf-intro__scene zf-lesson-sort${s.part ? ` zf-lesson-sort--${s.part}` : ''}`);
     const outs = el('div', 'zf-lesson-sort__outs');
     const [m1, m2] = s.marks ?? ['✓', '✗'];
     outs.append(el('span', 'zf-lesson-sort__yes', `${m1} ${s.yes}`), el('span', 'zf-lesson-sort__no', `${m2} ${s.no}`));

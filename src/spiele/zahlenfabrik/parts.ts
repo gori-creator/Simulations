@@ -12,6 +12,7 @@ export type PartSpec =
   | { id: string; kind: 'sort'; test: Test; price: number }
   | { id: string; kind: 'merge'; mode: '+' | '×'; price: number }
   | { id: string; kind: 'split'; price: number }
+  | { id: string; kind: 'alt'; price: number }
   | { id: string; kind: 'bridge'; price: number };
 
 const op = (sym: Op['sym'], n: number, price: number): PartSpec => ({ id: `${sym}${n}`, kind: 'op', op: { sym, n }, price });
@@ -53,6 +54,7 @@ export function partId(part: Part): string {
   }
   if (part.merge) return `merge${part.merge}`;
   if (part.split) return 'split';
+  if (part.alt) return 'alt';
   if (part.bridge) return 'bridge';
   return 'belt';
 }
@@ -69,6 +71,8 @@ export function makePart(spec: PartSpec, dir: Dir, side: 1 | 3 = 1): Part {
       return { op: null, dir, merge: spec.mode };
     case 'split':
       return { op: null, dir, split: true, side };
+    case 'alt':
+      return { op: null, dir, alt: true, side };
     case 'bridge':
       return { op: null, dir, bridge: true };
   }
@@ -106,6 +110,8 @@ export function specLabel(spec: PartSpec): Localized {
       return spec.mode === '+' ? L('a+b', 'a+b') : L('a×b', 'a×b');
     case 'split':
       return L('Kopie', 'Copy');
+    case 'alt':
+      return L('Wechsel', 'Alternate');
     case 'bridge':
       return L('Brücke', 'Bridge');
   }
@@ -128,6 +134,8 @@ export function specName(spec: PartSpec): Localized {
     }
     case 'split':
       return L('Verteiler (Kopie in zwei Richtungen)', 'Splitter (copy in two directions)');
+    case 'alt':
+      return L('Wechsel-Weiche (abwechselnd geradeaus und zur Seite)', 'Alternator (straight and to the side in turn)');
     case 'merge':
       return spec.mode === '+' ? L('Zusammenführen: Summe', 'Merger: sum') : L('Zusammenführen: Produkt', 'Merger: product');
     case 'bridge':

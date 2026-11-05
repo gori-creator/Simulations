@@ -1704,3 +1704,61 @@
 @media (max-width: 420px) {
   .zf-lesson-merge .zf-lesson-sort__in { display: inline-block; }
 }
+
+/* Wechsel-Weiche: wie eine Weiche gebaut, aber orange */
+.zf-cell--alt { border-color: var(--zf-op-line); background: var(--zf-op); color: var(--zf-op-line); }
+.zf-cell--alt .zf-art--img,
+.zf-tool--alt .zf-tool__pic img,
+.zf-lesson-sort--alt .zf-art--img { filter: hue-rotate(150deg) saturate(1.2); }
+.zf-side .zf-tool--alt:not([aria-pressed='true']) .zf-tool__pic.is-plain { border-color: var(--zf-op-line); background: var(--zf-op); }
+.zf-cell--alt .zf-cell__small { letter-spacing: -0.02em; }
+.zf-lesson-sort--alt .zf-lesson-sort__yes,
+.zf-lesson-sort--alt .zf-lesson-sort__no { border-color: var(--zf-op-line) !important; background: var(--zf-op); }
+.zf-lesson-sort--alt .zf-intro__box--sort { color: var(--zf-op-line); background: var(--zf-op); }
+.zf-num__input[readonly] { cursor: default; }
+
+/* ==========================================================================
+   Tipps, Rechenweg, Level-Auswahl in Abschnitten, Tages- und Zufallsrätsel
+   ========================================================================== */
+
+.zf-tip { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; margin: -4px 0 10px; }
+.zf-tip[hidden] { display: none; }
+.zf-tip .zf-tip__btn { min-height: 32px; padding: 3px 10px; border-radius: 10px; font-size: 0.82rem; }
+.zf-tip__text { display: grid; gap: 2px; flex: 1 1 100%; margin: 0; color: var(--text); font-size: 0.9rem; }
+.zf-tip__text:empty { display: none; }
+.zf-tip__text span { padding: 4px 8px; border-left: 3px solid var(--zf-op-line); border-radius: 0 8px 8px 0; background: var(--zf-op); }
+
+.zf-trace {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.zf-trace[hidden] { display: none; }
+.zf-trace__label { flex-basis: 100%; color: var(--muted); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.zf-trace__num { padding: 1px 8px; border-radius: 999px; background: var(--zf-item); color: var(--zf-item-text); font: 800 0.85rem/1.4 var(--font-mono); }
+.zf-trace__op { color: var(--muted); font: 700 0.8rem/1 var(--font-mono); }
+.zf-trace__op::before,
+.zf-trace__end::before { content: '→ '; color: var(--muted); }
+.zf-trace__end { display: inline-flex; align-items: center; gap: 4px; color: var(--muted); font-weight: 650; }
+.zf-trace__end.is-ok { color: var(--success); }
+.zf-trace__end.is-bad { color: var(--zf-bad); }
+
+/* Level-Auswahl: oben Weiterspielen, Sterne, Rätsel; dann Abschnitte */
+.zf-picker__top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; grid-column: 1 / -1; }
+.zf-picker__top .zf-continue { min-height: 44px; padding: 8px 16px; border-radius: 12px; }
+.zf-picker__total { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 700; }
+.zf-picker__total .zf-ico { color: var(--zf-op-line); fill: currentColor; }
+.zf-levels__part { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; grid-column: 1 / -1; margin: 10px 0 -4px; padding-bottom: 6px; border-bottom: 1px solid var(--border); font-size: 1rem; }
+.zf-levels__part-meta { color: var(--muted); font-size: 0.8rem; font-weight: 700; }
+.zf-world-card--daily { border-color: color-mix(in srgb, var(--zf-op-line) 60%, var(--border)); background: color-mix(in srgb, var(--zf-op) 70%, var(--surface)); }
+.zf-world-card--random { border-color: color-mix(in srgb, var(--zf-sort-line) 50%, var(--border)); background: color-mix(in srgb, var(--zf-sort) 60%, var(--surface)); }
+.zf-picker .zf-levels > .zf-world-card--open { grid-column: auto; align-content: start; }
+.zf-picker__top .zf-continue { max-width: 100%; text-align: left; }
+.zf-picker__top .zf-continue .zf-btn__label { white-space: normal; }
