@@ -69,7 +69,7 @@ export interface OpenWorld {
 }
 
 /** Preis der Gebiete in Münzen (das erste gibt es umsonst). */
-export const ZONE_PRICES = [0, 400, 2500];
+export const ZONE_PRICES = [0, 1500, 8000];
 
 /** Offenes Gebiet bei Ausbaustufe `zone` (ohne Gebiete: die ganze Karte). */
 export function zoneRect(w: OpenWorld, zone = Infinity): Rect {

@@ -10,7 +10,7 @@ Stand 04.11.2026. Idee der Projektleitung. Welt 1 gibt es als grobe Probe zum Au
 - **Zusammenführen** (a+b, a×b): Die erste Zahl wartet, bis eine zweite kommt (aus jeder Richtung); dann läuft die Summe bzw. das Produkt weiter.
 - **Stau:** Auf jedem Feld liegt höchstens eine Zahl. Ist das nächste Feld belegt und wird nicht frei, wartet die Zahl; eine Quelle wartet, solange ihr Feld belegt ist. Wollen zwei Zahlen aufs selbe Feld, hat die von hinten Vorrang, sonst wechseln sich die Seiten ab. Ein voller Kreis (ab drei Feldern) dreht sich weiter; zwei Zahlen, die sich gegenüberstehen, blockieren sich.
 - Anzeige: Auftrag mit Fortschrittsbalken über dem Inventar, Münzen und Stand oben links im Spielfeld, „+n 🪙“ an der Basis, Jubel bei geschafftem Auftrag.
-- **Größere Karte** (72 × 52) in drei Gebieten: Das Startgebiet (40 × 28, wie die frühere Karte) ist offen, zwei Ringe darum kauft man frei (400 und 2.500 Münzen, Knopf „🗺️ Neues Gebiet“). Gesperrtes Land liegt unter Nebel; seine Quellen geben noch nichts aus. Weiter draußen geben die Quellen größere Zahlen (Start 1–9, mittlerer Ring 5–24, außen bis 50). Alte Spielstände werden ins neue Raster verschoben (`START_OFFSET`).
+- **Größere Karte** (72 × 52) in drei Gebieten: Das Startgebiet (40 × 28, wie die frühere Karte) ist offen, zwei Ringe darum kauft man frei (heute 1.500 und 8.000 Münzen, Knopf „🗺️ Neues Gebiet“). Gesperrtes Land liegt unter Nebel; seine Quellen geben noch nichts aus. Weiter draußen geben die Quellen größere Zahlen (Start 1–9, mittlerer Ring 5–24, außen bis 50). Alte Spielstände werden ins neue Raster verschoben (`START_OFFSET`).
 - **Brücke** (15 Münzen, ab Auftrag 2): Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt – so kreuzen sich zwei Bänder.
 - **Leistung:** Ein Takt mit rund 400 Zahlen auf einer voll bebauten Karte braucht etwa 1 ms; im Browser läuft „Schnell“ dabei ohne Ruckeln (höchstens 600 Zahlen gleichzeitig).
 
@@ -99,6 +99,11 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - **Baukasten** (`custom.ts`): eigene Level bauen (Quelle, Lager, Felsen, Größe, Zahlen der Quelle, Wunsch des Lagers, Maschinen-Grenze, Werkzeugkasten bis Kapitel n), testen und als Link teilen (`#eigen=…`, Base64 im Link, kein Server).
 - **Ruhigere Oberfläche**: Seitenleiste als eine Fläche mit Abschnitten statt Karten, Werkzeuge als leichte Symbole statt Kacheln, Nebenknöpfe ohne Rahmen, Kopfleiste ohne Rahmen, Level-Auswahl mit ruhigen Flächen.
 - Bilder Runde 3 angefordert (37 Prompts in `docs/ZAHLENFABRIK-BILDER.md`).
+
+## Höhere Preise in der offenen Welt (Stand 05.11.2026)
+
+- Wunsch der Projektleitung: Man soll auf neue Teile sparen müssen. Nur die Preise steigen, alles andere bleibt (1 Münze je Zahl, 5 für eine zum Auftrag passende, Belohnungen und Abnehmer wie bisher).
+- Band 2, Brücke 50, Zusammenführer + 60, − 120, × 250, ÷ 300, Weichen gerade? 150, ÷3? 250, >50? 250, Primzahl? 400, Quadratzahl? 400 Münzen; neue Gebiete 1.500 und 8.000 Münzen (vorher 400 und 2.500).
 
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
