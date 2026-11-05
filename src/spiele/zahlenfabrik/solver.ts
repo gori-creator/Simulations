@@ -11,7 +11,7 @@ const LIMIT = 100000;
 
 /** Lässt sich das Level als einfache Kette lösen (ein Lager, keine Weichen, keine vorgegebenen Teile)? */
 export function chainLevel(level: Level): boolean {
-  return targetsOf(level).length === 1 && !level.fixed?.length && !level.source.pick && level.emit === undefined;
+  return targetsOf(level).length === 1 && !level.fixed?.length && !level.source.pick && level.emit === undefined && !level.more?.length;
 }
 
 /** Kürzeste Lösungen (höchstens `want` Stück) mit den Maschinen aus `kit`. */

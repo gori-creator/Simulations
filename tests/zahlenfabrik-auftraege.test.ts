@@ -33,7 +33,8 @@ describe('Zahlenfabrik: Bauteile', () => {
     }
     expect(new Set(WORLD_PARTS.map((s) => s.id)).size).toBe(WORLD_PARTS.length);
   });
-  it('Start: Band und +1, 40 Münzen', () => {
+  it('Start: Band und Zusammenführer „Summe“, 40 Münzen; keine Maschinen für einzelne Zahlen', () => {
+    for (const spec of WORLD_PARTS) expect(spec.kind).not.toBe('op');
     expect([...unlockedParts(0)].sort()).toEqual([...STARTER_PARTS].sort());
     expect(newEconomy().coins).toBe(START_COINS);
   });
@@ -42,7 +43,8 @@ describe('Zahlenfabrik: Bauteile', () => {
     for (const spec of WORLD_PARTS) expect(all.has(spec.id)).toBe(true);
     for (const o of ORDERS) for (const id of o.unlock) expect(specById(id)).toBeDefined();
     expect(unlockedBy('belt')).toBe(-1);
-    expect(unlockedBy('×2')).toBe(0);
+    expect(unlockedBy('bridge')).toBe(0);
+    expect(unlockedBy('merge+')).toBe(-1);
   });
 });
 
@@ -57,24 +59,28 @@ describe('Zahlenfabrik: Aufträge', () => {
     expect(matches({ kind: 'multiple', n: 3, count: 1, reward: 0, unlock: [] }, 0)).toBe(true);
     expect(matches({ kind: 'greater', n: 500, count: 1, reward: 0, unlock: [] }, 500)).toBe(false);
   });
-  it('Münzen: so viele, wie die Zahl groß ist; nichts für 0 und negative', () => {
-    expect(coinsFor(7)).toBe(7);
-    expect(coinsFor(0)).toBe(0);
-    expect(coinsFor(-5)).toBe(0);
+  it('Münzen: nie nach Größe – 1 je Zahl, 5 für eine passende', () => {
+    expect(coinsFor(false)).toBe(1);
+    expect(coinsFor(true)).toBe(5);
+    // riesige Zahlen bringen nicht mehr als kleine
+    const big = deliver({ ...newEconomy(), order: 3 }, [999999]).econ.coins;
+    const small = deliver({ ...newEconomy(), order: 3 }, [7]).econ.coins;
+    expect(big).toBe(small);
   });
-  it('erster Auftrag: 10 beliebige Zahlen → +25 Münzen, ×2 frei', () => {
+  it('erster Auftrag: 10 beliebige Zahlen → 10 × 5 + 30 Münzen, Brücke frei', () => {
     const { econ, completed } = deliver(newEconomy(), Array(10).fill(3));
     expect(completed).toHaveLength(1);
-    expect(econ.coins).toBe(START_COINS + 30 + 25);
+    expect(econ.coins).toBe(START_COINS + 50 + 30);
     expect(econ.order).toBe(1);
     expect(econ.progress).toBe(0);
-    expect(unlockedParts(econ.order).has('×2')).toBe(true);
+    expect(econ.total).toBe(10);
+    expect(unlockedParts(econ.order).has('bridge')).toBe(true);
   });
-  it('„Liefere 10-mal die 4“: andere Zahlen bringen Münzen, zählen aber nicht', () => {
-    let e = { ...newEconomy(), order: 1 };
-    e = deliver(e, [4, 5, 4, 7]).econ;
+  it('„Liefere 10-mal die 10“: andere Zahlen bringen 1 Münze, zählen aber nicht', () => {
+    let e = { ...newEconomy(), order: 3 };
+    e = deliver(e, [10, 5, 10, 7]).econ;
     expect(e.progress).toBe(2);
-    expect(e.coins).toBe(START_COINS + 20);
+    expect(e.coins).toBe(START_COINS + 5 + 1 + 5 + 1);
   });
   it('„nur Primzahlen hintereinander“: eine andere Zahl setzt auf 0 zurück', () => {
     const i = ORDERS.findIndex((o) => o.streak);
@@ -88,7 +94,7 @@ describe('Zahlenfabrik: Aufträge', () => {
     expect(done.econ.order).toBe(i + 1);
   });
   it('mehrere Aufträge in einem Rutsch, Überschuss zählt für den nächsten', () => {
-    const { econ, completed } = deliver(newEconomy(), [...Array(10).fill(1), ...Array(3).fill(4)]);
+    const { econ, completed } = deliver(newEconomy(), [...Array(10).fill(1), ...Array(3).fill(14)]);
     expect(completed).toHaveLength(1);
     expect(econ.order).toBe(1);
     expect(econ.progress).toBe(3);
@@ -98,14 +104,15 @@ describe('Zahlenfabrik: Aufträge', () => {
       const o = orderAt(i);
       expect(o.count).toBeGreaterThan(0);
       expect(o.reward).toBeGreaterThan(0);
-      if (o.kind === 'exact' || o.kind === 'multiple' || o.kind === 'greater') expect(o.n).toBeGreaterThan(1);
+      if (o.kind === 'multiple' || o.kind === 'greater') expect(o.n).toBeGreaterThan(1);
+      if (o.kind === 'exact') expect(o.n).toBeGreaterThanOrEqual(1);
       expect(orderText(o).de.length).toBeGreaterThan(5);
       expect(orderText(o).en.length).toBeGreaterThan(5);
     }
     expect(orderAt(ORDERS.length + 7)).toEqual(orderAt(ORDERS.length + 7));
   });
   it('Texte', () => {
-    expect(orderText(ORDERS[1]!).de).toBe('Liefere 10-mal die 4.');
-    expect(orderText(ORDERS[1]!).en).toBe('Deliver the number 4, 10 times.');
+    expect(orderText(ORDERS[3]!).de).toBe('Liefere 10-mal die 10.');
+    expect(orderText(ORDERS[3]!).en).toBe('Deliver the number 10, 10 times.');
   });
 });

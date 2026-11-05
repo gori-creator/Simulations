@@ -1,4 +1,4 @@
-import { apply, DX, DY, key, outputs, passes, type Dir, type Grid, type Item, type Op } from './model';
+import { apply, combine, DX, DY, key, outputs, passes, type Dir, type Grid, type Item, type Op } from './model';
 
 /**
  * Offene Welt: Auf einer großen Karte stehen viele Zahlenquellen, die ohne
@@ -255,9 +255,9 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
       s.items.push({ ...a, wait: true });
       continue;
     }
-    const value = part.merge === '+' ? a.value + b.value : a.value * b.value;
+    const value = combine(part.merge!, a.value, b.value);
     s.mergedAt.push([a.x, a.y]);
-    if (Math.abs(value) > MAX_VALUE) {
+    if (value === null || Math.abs(value) > MAX_VALUE) {
       lose(a.x, a.y);
       continue;
     }

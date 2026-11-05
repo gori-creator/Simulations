@@ -292,3 +292,16 @@ describe('Zahlenfabrik: viele Zahlen', () => {
     expect(ms).toBeLessThan(20);
   });
 });
+
+describe('Zahlenfabrik: Zusammenführer der offenen Welt', () => {
+  it('Summe, Differenz (größere − kleinere), Produkt, Quotient (nur wenn glatt)', async () => {
+    const { combine } = await import('../src/spiele/zahlenfabrik/model');
+    expect(combine('+', 3, 4)).toBe(7);
+    expect(combine('−', 3, 9)).toBe(6);
+    expect(combine('−', 9, 3)).toBe(6);
+    expect(combine('×', 6, 7)).toBe(42);
+    expect(combine('÷', 4, 12)).toBe(3);
+    expect(combine('÷', 12, 5)).toBeNull();
+    expect(combine('÷', 0, 5)).toBeNull();
+  });
+});

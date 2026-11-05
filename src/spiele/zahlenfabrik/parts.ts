@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Localized } from '../../i18n/config';
-import { opLabel, type Dir, type Op, type Part, type Test } from './model';
+import { opLabel, type Dir, type MergeMode, type Op, type Part, type Test } from './model';
 
 /**
  * Bauteile der offenen Welt mit Preis (in Münzen). Jedes Teil hat eine feste
@@ -10,35 +10,35 @@ export type PartSpec =
   | { id: string; kind: 'belt'; price: number }
   | { id: string; kind: 'op'; op: Op; price: number }
   | { id: string; kind: 'sort'; test: Test; price: number }
-  | { id: string; kind: 'merge'; mode: '+' | '×'; price: number }
+  | { id: string; kind: 'merge'; mode: MergeMode; price: number }
   | { id: string; kind: 'split'; price: number }
   | { id: string; kind: 'alt'; price: number }
   | { id: string; kind: 'bridge'; price: number };
 
-const op = (sym: Op['sym'], n: number, price: number): PartSpec => ({ id: `${sym}${n}`, kind: 'op', op: { sym, n }, price });
 const sort = (id: string, test: Test, price: number): PartSpec => ({ id, kind: 'sort', test, price });
+const merge = (mode: MergeMode, price: number): PartSpec => ({ id: `merge${mode}`, kind: 'merge', mode, price });
 
-/** Alle Teile in der Reihenfolge des Inventars. */
+/**
+ * Alle Teile der offenen Welt in der Reihenfolge des Inventars. Es gibt keine
+ * Maschinen, die eine einzelne Zahl verändern (wie ×3): Zahlen entstehen nur,
+ * indem man zwei Ströme zusammenführt, und Weichen filtern sie.
+ */
 export const WORLD_PARTS: PartSpec[] = [
   { id: 'belt', kind: 'belt', price: 1 },
   { id: 'bridge', kind: 'bridge', price: 15 },
-  op('+', 1, 8),
-  op('−', 1, 8),
-  op('×', 2, 30),
-  op('÷', 2, 20),
-  op('+', 5, 25),
-  op('×', 3, 60),
-  op('×', 10, 250),
-  sort('even', { kind: 'even' }, 40),
-  sort('div3', { kind: 'div', n: 3 }, 70),
-  sort('prime', { kind: 'prime' }, 120),
-  sort('gt50', { kind: 'gt', n: 50 }, 90),
-  { id: 'merge+', kind: 'merge', mode: '+', price: 100 },
-  { id: 'merge×', kind: 'merge', mode: '×', price: 200 },
+  merge('+', 20),
+  merge('−', 30),
+  merge('×', 50),
+  merge('÷', 50),
+  sort('even', { kind: 'even' }, 30),
+  sort('div3', { kind: 'div', n: 3 }, 40),
+  sort('gt50', { kind: 'gt', n: 50 }, 40),
+  sort('prime', { kind: 'prime' }, 60),
+  sort('square', { kind: 'square' }, 60),
 ];
 
 /** Von Anfang an im Inventar; alles andere schalten Aufträge frei. */
-export const STARTER_PARTS = ['belt', '+1'];
+export const STARTER_PARTS = ['belt', 'merge+'];
 export const START_COINS = 40;
 
 export function specById(id: string): PartSpec | undefined {
@@ -107,7 +107,7 @@ export function specLabel(spec: PartSpec): Localized {
     case 'sort':
       return testLabel(spec.test);
     case 'merge':
-      return spec.mode === '+' ? L('a+b', 'a+b') : L('a×b', 'a×b');
+      return L(`a${spec.mode}b`, `a${spec.mode}b`);
     case 'split':
       return L('Kopie', 'Copy');
     case 'alt':
@@ -137,7 +137,13 @@ export function specName(spec: PartSpec): Localized {
     case 'alt':
       return L('Wechsel-Weiche (abwechselnd geradeaus und zur Seite)', 'Alternator (straight and to the side in turn)');
     case 'merge':
-      return spec.mode === '+' ? L('Zusammenführen: Summe', 'Merger: sum') : L('Zusammenführen: Produkt', 'Merger: product');
+      return spec.mode === '+'
+        ? L('Zusammenführen: Summe', 'Merger: sum')
+        : spec.mode === '−'
+          ? L('Zusammenführen: Differenz (größere − kleinere)', 'Merger: difference (bigger − smaller)')
+          : spec.mode === '×'
+            ? L('Zusammenführen: Produkt', 'Merger: product')
+            : L('Zusammenführen: Quotient (größere ÷ kleinere)', 'Merger: quotient (bigger ÷ smaller)');
     case 'bridge':
       return L('Brücke (zum Kreuzen)', 'Bridge (for crossing)');
   }

@@ -83,6 +83,13 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - **Rechenweg** in der Aufgabe: zeigt beim Bauen, was aus der ersten Zahl wird (3 → +2 → 5 → Lager ✓/✗, oder wo der Weg endet).
 - **Level-Auswahl** mit „Weiterspielen“ (erstes Level ohne Stern), Sternen gesamt, Tages- und Zufallsrätsel, offener Welt und Abschnitten mit Zwischenständen.
 
+## Zwei Quellen statt Verteiler, offene Welt neu, Bilder Runde 2 (Stand 05.11.2026)
+
+- **Zwei Quellen statt Verteiler:** Level können mehrere Quellen haben (`more` in `model.ts`, geben im selben Takt aus). Der Verteiler ist aus dem Werkzeugkasten entfernt. Neues frühes Kapitel **Zusammenführer** (Kapitel 7, nach „Rückwärts rechnen“): zwei Quellen und Zusammenführer „Summe“, „Differenz“ (größere − kleinere), „Produkt“, „Quotient“ (größere ÷ kleinere, nur wenn glatt). Die Terme (x · x, x³, x(x + 2) …) heißen jetzt „Terme mit zwei Quellen“; die Brücken-Level 2 und 3 haben eine zweite Quelle statt eines festen Verteilers.
+- **Offene Welt neu:** keine Maschinen mehr, die eine einzelne Zahl verändern (kein +1, ×3 …). Neue Zahlen entstehen nur durch Zusammenführer (+, −, ×, ÷) zweier Ströme; Weichen filtern (gerade, ÷3, >50, prim, Quadratzahl). **Münzen je Zahl statt nach Größe** (1 Münze je Zahl, 5 für eine zum Auftrag passende) – damit lässt sich kein unendliches Geld mehr erzeugen. Neue Auftragsliste. Alte Spielstände (Version < 4) starten neu, mit einem Hinweis.
+- **Bilder Runde 2 eingebaut** (36 Stück, `src/assets/zahlenfabrik/`): eigene Maschinen für +, −, ×, ÷, x² und Weichen für gerade, teilbar, größer als, prim; Bäume, Busch, großer Fels und Kisten mischen sich unter die Felsen; Nebel über gesperrtem Land; Sterne, Pokal (Kapitel mit allen Sternen), Konfetti beim Sieg, Staubwolke und Funke als Effekte in der offenen Welt, Zahnrad beim Bauen eines Rätsels; Kapitelbilder in Erklärkarten und Auswahl, Titelbild in der Einführung.
+- Vorschläge für später: `docs/ZAHLENFABRIK-VORSCHLAEGE.md`.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
