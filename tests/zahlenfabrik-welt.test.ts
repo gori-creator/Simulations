@@ -305,3 +305,35 @@ describe('Zahlenfabrik: Zusammenführer der offenen Welt', () => {
     expect(combine('÷', 0, 5)).toBeNull();
   });
 });
+
+describe('Zahlenfabrik: Abnehmer am Kartenrand', () => {
+  it('kaufen nur passende Zahlen, erst wenn sie arbeiten; andere gehen verloren', async () => {
+    const { buyerWants, worldStep, worldStart, makeWorld, BUYERS_FROM, canBuildWorld } = await import('../src/spiele/zahlenfabrik/world');
+    const w = {
+      id: 't2', cols: 8, rows: 3,
+      spawners: [{ x: 0, y: 1, dir: 0 as const, value: 24 }],
+      base: { x: 6, y: 0, w: 2, h: 1 },
+      walls: [], tools: [],
+      buyers: [{ x: 4, y: 1, w: 2, h: 2, rule: { kind: 'exact' as const, n: 24 }, pay: 12 }],
+    };
+    const g = new Map([1, 2, 3].map((x) => [key(x, 1), { dir: 0 as const, op: null }]));
+    let s = worldStart();
+    let sold = 0;
+    for (let i = 0; i < 20; i++) {
+      s = worldStep(w, g, s, Infinity, true);
+      sold += s.sold.length;
+    }
+    expect(sold).toBeGreaterThan(3);
+    expect(s.lost).toBe(0);
+    // noch nicht frei: Zahlen gehen verloren
+    let t = worldStart();
+    for (let i = 0; i < 20; i++) t = worldStep(w, g, t, Infinity, false);
+    expect(t.lost).toBeGreaterThan(3);
+    expect(buyerWants(w.buyers[0]!, 25)).toBe(false);
+    expect(BUYERS_FROM).toBeGreaterThan(3);
+    // in der großen Welt: Abnehmer stehen in den Ringen, nicht im Startgebiet, und man kann dort nicht bauen
+    const big = makeWorld();
+    expect(big.buyers!.length).toBeGreaterThanOrEqual(4);
+    for (const b of big.buyers!) expect(canBuildWorld(big, b.x, b.y)).toBe(false);
+  });
+});

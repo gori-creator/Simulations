@@ -7,11 +7,12 @@ import { createSound } from './sound';
 import { clampNum, KIT, kitItem, specFor, type KitId, type KitItem, type LessonId } from './kit';
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, SPECIAL, type LevelInfo } from './levels';
 import { dailyLevel, dayKey, randomLevel } from './daily';
+import { blankSpec, decodeSpec, encodeSpec, SIZE, specToLevel, type CustomSpec } from './custom';
 import { chainLevel, solveChain } from './solver';
-import { accepts, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
+import { accepts, asFraction, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
-import { canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type OpenWorld, type WorldState } from './world';
+import { BUYERS_FROM, canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type Buyer, type OpenWorld, type WorldState } from './world';
 
 /**
  * Zahlenfabrik (Probe, Welt 1): freie Fläche aus Kästchen, die man mit der
@@ -35,7 +36,7 @@ const EDGE: [number, number][] = [
 ];
 
 /** Werkzeug; `kit`: einstellbares Bauteil aus dem Werkzeugkasten der Level. */
-type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec; kit?: KitId } | { kind: 'erase' };
+type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec; kit?: KitId } | { kind: 'erase' } | { kind: 'select' } | { kind: 'paste' };
 const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
 const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
@@ -130,6 +131,45 @@ const T = {
   numMore: L('Zahl größer', 'Bigger number'),
   numTile: L('{p}, eingestellt: {n}', '{p}, set to: {n}'),
   newBadge: L('Neu', 'New'),
+  rock: L('Fels', 'Rock'),
+  editor: L('Baukasten', 'Level builder'),
+  editorTitle: L('Eigenes Level bauen', 'Build your own level'),
+  editorCard: L('Eigene Level bauen und als Link teilen', 'Build your own levels and share them as a link'),
+  editorHelp: L('Setz Quelle, Lager und Felsen (Quelle nochmal antippen dreht sie). Rechts stellst du die Zahlen ein. Dann „Testen“.', 'Place the source, storage and rocks (tap the source again to turn it). Set the numbers on the right. Then “Test”.'),
+  editorName: L('Name', 'Name'),
+  editorNamePh: L('z. B. Aus 3 wird 50', 'e.g. 3 becomes 50'),
+  editorSource: L('Quelle gibt aus', 'Source gives'),
+  editorWant: L('Lager will', 'Storage wants'),
+  editorSize: L('Größe', 'Size'),
+  editorNarrower: L('schmaler', 'narrower'),
+  editorWider: L('breiter', 'wider'),
+  editorLower: L('niedriger', 'lower'),
+  editorTaller: L('höher', 'taller'),
+  editorMax: L('Höchstens Maschinen', 'At most machines'),
+  editorNoLimit: L('keine Grenze', 'no limit'),
+  editorKit: L('Werkzeugkasten', 'Toolbox'),
+  editorUpTo: L('bis Kapitel {n}: {t}', 'up to chapter {n}: {t}'),
+  editorNote: L('Eine Zahl beim Lager heißt: diese Zahl dreimal. Mehrere Zahlen heißen: genau diese Folge.', 'One number at the storage means: this number three times. Several numbers mean: exactly this sequence.'),
+  editorTest: L('Testen', 'Test'),
+  editorShare: L('Link kopieren', 'Copy link'),
+  editorNew: L('Neu anfangen', 'Start over'),
+  editorCopied: L('Link kopiert! Wer ihn öffnet, spielt dein Level.', 'Link copied! Whoever opens it plays your level.'),
+  editorCopyManual: L('Link zum Kopieren:', 'Link to copy:'),
+  backToEditor: L('Baukasten', 'Builder'),
+  select: L('Auswählen', 'Select'),
+  selHelp: L('Auswählen: Zieh einen Rahmen um mehrere Teile. Dann kannst du sie kopieren, verschieben oder löschen.', 'Select: drag a frame around several parts. Then you can copy, move or delete them.'),
+  selCount: L('{n} Teile markiert', '{n} parts selected'),
+  selEmpty: L('Im markierten Bereich ist nichts gebaut.', 'Nothing is built in the selected area.'),
+  selCopy: L('Kopieren', 'Copy'),
+  selMove: L('Verschieben', 'Move'),
+  selDelete: L('Löschen', 'Delete'),
+  selCancel: L('Abbrechen', 'Cancel'),
+  selRotate: L('Drehen', 'Rotate'),
+  selDone: L('Fertig', 'Done'),
+  pasteHint: L('Tipp aufs Feld für die linke obere Ecke – so oft du willst.', 'Tap the square for the top-left corner – as often as you like.'),
+  pasteMove: L('Tipp aufs Feld, wohin die Teile sollen (linke obere Ecke).', 'Tap the square where the parts should go (top-left corner).'),
+  pasteBlocked: L('Dort ist kein Platz für alle Teile.', 'There is no room for all the parts there.'),
+  pasteLocked: L('Ein Teil davon ist noch nicht freigeschaltet.', 'One of these parts is not unlocked yet.'),
   allStars: L('Alle Sterne geholt!', 'All stars collected!'),
   tip: L('Tipp', 'Hint'),
   tipCount: L('Mit {n} Maschinen geht es.', 'It works with {n} machines.'),
@@ -194,6 +234,8 @@ const T = {
   expandDone: L('Neues Land frei! Weiter draußen geben die Quellen größere Zahlen.', 'New land unlocked! Further out, the sources give bigger numbers.'),
   sortHelp: L('Weiche: Was die Frage erfüllt, läuft geradeaus (✓), alles andere biegt ab (✗). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Switch: numbers that pass go straight (✓), all others turn (✗). Tap to turn it; after four turns the side switches.'),
   mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis aus einer anderen Richtung eine zweite kommt. Dann laufen beide als eine Zahl weiter – Summe, Differenz (größere − kleinere), Produkt oder Quotient (größere ÷ kleinere, nur wenn es aufgeht).', 'Merger: the first number waits until a second one arrives from another direction. Then both continue as one number – sum, difference (bigger − smaller), product or quotient (bigger ÷ smaller, only if it divides evenly).'),
+  buyer: L('Abnehmer', 'Buyer'),
+  buyersOpen: L('Neu: Abnehmer am Kartenrand kaufen bestimmte Zahlen und zahlen gut. Kauf Land frei, um sie zu erreichen!', 'New: buyers at the edge of the map buy certain numbers and pay well. Unlock land to reach them!'),
   worldReset: L('Die offene Welt hat neue Regeln (nur noch Zusammenführer und Weichen, Münzen je Zahl) und startet neu.', 'The open world has new rules (only mergers and switches, coins per number) and starts afresh.'),
   worldHowto: L(
     '✋ Hand: Karte verschieben (zwei Finger oder Mausrad: zoomen). → Band: über die Kästchen ziehen. Teile kosten Münzen, Abbauen gibt sie zurück. Ein Teil nochmal antippen dreht es. Was vom Band fällt, ist weg. Du kannst bauen, während die Fabrik läuft.',
@@ -299,7 +341,7 @@ function boardOfLevel(l: LevelInfo): Board {
 }
 
 function boardOfWorld(w: OpenWorld): Board {
-  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, extra: [], walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: WORLD_PARTS.filter((p) => p.kind !== 'belt') };
+  return { cols: w.cols, rows: w.rows, sources: w.spawners, base: w.base, extra: [...(w.buyers ?? [])], walls: new Set(w.walls.map(([x, y]) => key(x, y))), fixed: new Map(), tools: WORLD_PARTS.filter((p) => p.kind !== 'belt') };
 }
 
 function load(): Record<string, number> {
@@ -345,8 +387,14 @@ function acceptText(a: Accept, got: number): Localized {
 }
 
 /** Zahl mit echtem Minus (Level-Texte). */
+/** Zahl mit echtem Minus; Brüche als „3/4“ (gekürzt), sonst Kommazahl. */
 function fmtNum(n: number, lang: Lang): string {
-  return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB').format(n).replace('-', '−');
+  const nf = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: 4 });
+  if (!Number.isInteger(n)) {
+    const f = asFraction(n);
+    if (f) return `${f.num < 0 ? '−' : ''}${Math.abs(f.num)}/${f.den}`;
+  }
+  return nf.format(n).replace('-', '−');
 }
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text?: string): HTMLElementTagNameMap[K] {
@@ -526,11 +574,11 @@ export function initFactory(root: HTMLElement): void {
 
   // ---------- Zeiger auf der Karte ----------
   const pointers = new Map<number, { x: number; y: number }>();
-  let gesture: { mode: 'pan' | 'draw' | 'erase' | 'tap'; startX: number; startY: number; moved: boolean; last: [number, number] | null } | null = null;
+  let gesture: { mode: 'pan' | 'draw' | 'erase' | 'tap' | 'select'; startX: number; startY: number; moved: boolean; last: [number, number] | null } | null = null;
   let pinch: { dist: number; mx: number; my: number } | null = null;
 
   viewport.addEventListener('pointerdown', (event) => {
-    if ((event.target as Element).closest('.zf-zoom')) return;
+    if ((event.target as Element).closest('.zf-zoom, .zf-selbar')) return;
     viewport.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size === 2) {
@@ -540,14 +588,22 @@ export function initFactory(root: HTMLElement): void {
       return;
     }
     const panButton = event.button === 1 || event.button === 2;
-    const mode = panButton || tool.kind === 'hand' ? 'pan' : isBelt(tool) ? 'draw' : tool.kind === 'erase' ? 'erase' : 'tap';
+    const mode = panButton || tool.kind === 'hand' ? 'pan' : isBelt(tool) ? 'draw' : tool.kind === 'erase' ? 'erase' : tool.kind === 'select' ? 'select' : 'tap';
     gesture = { mode, startX: event.clientX, startY: event.clientY, moved: false, last: cellAt(event.clientX, event.clientY) };
-    if (mode !== 'pan') remember();
+    if (mode === 'select') {
+      selStart = gesture.last;
+      if (selStart) setSelection(selStart, selStart);
+    } else if (mode !== 'pan') remember();
     if (mode === 'erase' && gesture.last) eraseAt(...gesture.last);
     event.preventDefault();
   });
 
   viewport.addEventListener('pointermove', (event) => {
+    // Einfügen: Vorschau unter der Maus
+    if (tool.kind === 'paste' && !pointers.size) {
+      const c = cellAt(event.clientX, event.clientY);
+      if (c) showPasteGhost(...c);
+    }
     if (!pointers.has(event.pointerId)) return;
     const prev = pointers.get(event.pointerId)!;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -574,6 +630,7 @@ export function initFactory(root: HTMLElement): void {
     }
     const cell = cellAt(event.clientX, event.clientY);
     if (!cell || (gesture.last && cell[0] === gesture.last[0] && cell[1] === gesture.last[1])) return;
+    if (gesture.mode === 'select' && selStart) setSelection(selStart, cell);
     if (gesture.mode === 'erase') eraseAt(...cell);
     if (gesture.mode === 'draw') drawBelt(gesture.last, cell);
     gesture.last = cell;
@@ -589,6 +646,7 @@ export function initFactory(root: HTMLElement): void {
       const cell = cellAt(event.clientX, event.clientY);
       if (cell) tap(...cell);
     }
+    if (g.mode === 'select') finishSelection();
   };
   viewport.addEventListener('pointerup', endPointer);
   viewport.addEventListener('pointercancel', endPointer);
@@ -654,6 +712,14 @@ export function initFactory(root: HTMLElement): void {
 
   /** Band-Weg ziehen: das letzte Feld zeigt aufs neue, das neue bekommt dieselbe Richtung. */
   function drawBelt(from: [number, number] | null, to: [number, number]): void {
+    if (editing) {
+      // Baukasten: beim Ziehen Felsen setzen bzw. abbauen
+      if (editTool === 'rock' || editTool === 'erase') {
+        const has = editing.w.some(([x, y]) => x === to[0] && y === to[1]);
+        if (editTool === 'rock' ? !has : has) editTap(...to);
+      }
+      return;
+    }
     if (!editable()) return;
     if (from) {
       const d = ([0, 1, 2, 3] as Dir[]).find((dd) => from[0] + DX[dd] === to[0] && from[1] + DY[dd] === to[1]);
@@ -747,9 +813,175 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function tap(x: number, y: number): void {
-    if (tool.kind === 'hand') return;
+    if (editing) return editTool === 'hand' ? undefined : editTap(x, y);
+    if (tool.kind === 'hand' || tool.kind === 'select') return;
     if (tool.kind === 'erase') return eraseAt(x, y);
+    if (tool.kind === 'paste') return pasteAt(x, y);
     placeSpec(tool.spec, x, y);
+  }
+
+  // ---------- Auswählen, Verschieben, Kopieren ----------
+  /** Markierter Bereich (Felder, einschließlich) und Zwischenablage (Teile relativ zur linken oberen Ecke). */
+  let sel: { x0: number; y0: number; x1: number; y1: number } | null = null;
+  let selStart: [number, number] | null = null;
+  let clip: { w: number; h: number; parts: [number, number, Part][] } | null = null;
+  /** Beim Verschieben: die herausgenommenen Teile (zurück, wenn man abbricht). */
+  let moving: { grid: Grid; coins: number } | null = null;
+  const selBox = el('div', 'zf-sel');
+  selBox.hidden = true;
+  world.append(selBox);
+  const selBar = el('div', 'zf-selbar');
+  selBar.hidden = true;
+  viewport.append(selBar);
+
+  function setSelection(a: [number, number], b: [number, number]): void {
+    sel = { x0: Math.min(a[0], b[0]), y0: Math.min(a[1], b[1]), x1: Math.max(a[0], b[0]), y1: Math.max(a[1], b[1]) };
+    selBox.hidden = false;
+    Object.assign(selBox.style, { left: `${sel.x0 * CELL}px`, top: `${sel.y0 * CELL}px`, width: `${(sel.x1 - sel.x0 + 1) * CELL}px`, height: `${(sel.y1 - sel.y0 + 1) * CELL}px` });
+    selBox.classList.remove('is-paste');
+  }
+
+  /** Eigene Teile im markierten Bereich (vorgegebene bleiben stehen). */
+  function selectedParts(): [number, number, Part][] {
+    if (!sel) return [];
+    const out: [number, number, Part][] = [];
+    for (let x = sel.x0; x <= sel.x1; x++) for (let y = sel.y0; y <= sel.y1; y++) {
+      const p = grid.get(key(x, y));
+      if (p) out.push([x, y, p]);
+    }
+    return out;
+  }
+
+  const barBtn = (name: IconName, label: string, act: () => void, main = false) => {
+    const b = ibtn(name, label, `zf-btn${main ? ' zf-btn--main' : ''}`);
+    b.addEventListener('click', act);
+    return b;
+  };
+
+  function finishSelection(): void {
+    const parts = selectedParts();
+    if (!parts.length) {
+      clearSelection();
+      say(tx(T.selEmpty));
+      return;
+    }
+    selBar.hidden = false;
+    selBar.replaceChildren(
+      el('span', 'zf-selbar__text', tx(T.selCount, { n: parts.length })),
+      barBtn('copy', tx(T.selCopy), () => takeClip(false), true),
+      barBtn('move', tx(T.selMove), () => takeClip(true)),
+      barBtn('trash', tx(T.selDelete), deleteSelection),
+      barBtn('close', tx(T.selCancel), clearSelection),
+    );
+  }
+
+  function clearSelection(): void {
+    sel = null;
+    selStart = null;
+    selBox.hidden = true;
+    selBar.hidden = true;
+  }
+
+  /** In die Zwischenablage (beim Verschieben auch herausnehmen) und zum Einfügen wechseln. */
+  function takeClip(cut: boolean): void {
+    if (!sel || !editable()) return;
+    const parts = selectedParts();
+    clip = { w: sel.x1 - sel.x0 + 1, h: sel.y1 - sel.y0 + 1, parts: parts.map(([x, y, p]) => [x - sel!.x0, y - sel!.y0, { ...p }]) };
+    remember();
+    if (cut) {
+      moving = { grid: copyGrid(grid), coins: econ.coins };
+      for (const [x, y, p] of parts) {
+        grid.delete(key(x, y));
+        if (mode === 'world') econ.coins += priceOf(p);
+      }
+      changed();
+    } else moving = null;
+    startPaste();
+  }
+
+  function startPaste(): void {
+    if (!clip) return;
+    tool = { kind: 'paste' };
+    selBox.hidden = true;
+    selBar.hidden = false;
+    selBar.replaceChildren(
+      el('span', 'zf-selbar__text', tx(moving ? T.pasteMove : T.pasteHint)),
+      barBtn('rotate', tx(T.selRotate), rotateClip),
+      barBtn('check', tx(T.selDone), endPaste, true),
+    );
+    renderTools();
+  }
+
+  /** Zwischenablage um 90° im Uhrzeigersinn drehen (Lage und Richtung der Teile). */
+  function rotateClip(): void {
+    if (!clip) return;
+    const h = clip.h;
+    clip = {
+      w: clip.h,
+      h: clip.w,
+      parts: clip.parts.map(([x, y, p]) => [h - 1 - y, x, { ...p, dir: ((p.dir + 1) % 4) as Dir }]),
+    };
+    if (pasteAt.last) showPasteGhost(...pasteAt.last);
+  }
+
+  function showPasteGhost(x: number, y: number): void {
+    if (!clip) return;
+    selBox.hidden = false;
+    selBox.classList.add('is-paste');
+    Object.assign(selBox.style, { left: `${x * CELL}px`, top: `${y * CELL}px`, width: `${clip.w * CELL}px`, height: `${clip.h * CELL}px` });
+    pasteAt.last = [x, y];
+  }
+
+  /** Einfügen mit der linken oberen Ecke auf (x, y): nur, wenn alle Teile Platz haben (und Münzen bzw. Maschinen reichen). */
+  function pasteAt(x: number, y: number): void {
+    if (!clip || !editable()) return;
+    showPasteGhost(x, y);
+    const cells = clip.parts.map(([dx, dy, p]) => [x + dx, y + dy, p] as const);
+    if (cells.some(([cx, cy]) => !canBuild(cx, cy) || grid.has(key(cx, cy)))) return say(tx(T.pasteBlocked), 'warn');
+    if (mode === 'world') {
+      const cost = cells.reduce((a, [, , p]) => a + priceOf(p), 0);
+      const lockedPart = cells.find(([, , p]) => !unlockedParts(econ.order).has(partId(p)));
+      if (lockedPart) return say(tx(T.pasteLocked), 'warn');
+      if (!pay(cost)) return;
+    } else if (level.maxMachines !== undefined && machineCount() + cells.filter(([, , p]) => p.op).length > level.maxMachines) {
+      return say(tx(T.tooMany, { n: level.maxMachines }), 'warn');
+    }
+    remember();
+    for (const [cx, cy, p] of cells) grid.set(key(cx, cy), { ...p });
+    sound.play('place');
+    changed();
+    // Verschieben: einmal einfügen, dann fertig
+    if (moving) {
+      moving = null;
+      endPaste();
+    }
+  }
+  pasteAt.last = null as [number, number] | null;
+
+  function endPaste(): void {
+    // Verschieben abgebrochen: Teile wieder an ihren Platz
+    if (moving) {
+      grid = moving.grid;
+      if (mode === 'world') econ.coins = moving.coins;
+      moving = null;
+      changed();
+    }
+    tool = { kind: 'part', spec: BELT };
+    clearSelection();
+    selBox.classList.remove('is-paste');
+    renderTools();
+  }
+
+  function deleteSelection(): void {
+    if (!editable()) return;
+    remember();
+    for (const [x, y, p] of selectedParts()) {
+      grid.delete(key(x, y));
+      if (mode === 'world') econ.coins += priceOf(p);
+    }
+    sound.play('remove');
+    clearSelection();
+    changed();
   }
 
   /** Neue Teile setzen den Weg fort; geht es geradeaus nicht weiter, dann zur Seite Richtung Lager. */
@@ -824,6 +1056,10 @@ export function initFactory(root: HTMLElement): void {
   const KEY_DIR: Record<string, Dir> = { ArrowRight: 0, ArrowDown: 1, ArrowLeft: 2, ArrowUp: 3 };
 
   viewport.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && (tool.kind === 'paste' || sel)) {
+      event.preventDefault();
+      return tool.kind === 'paste' ? endPaste() : clearSelection();
+    }
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') {
       event.preventDefault();
       return undo();
@@ -1006,6 +1242,22 @@ export function initFactory(root: HTMLElement): void {
       c.style.height = `${board.base.h * CELL - 12}px`;
       c.append(art('base', board.base.w * CELL - 12), el('span', 'zf-cell__big zf-base-score', baseLine()), el('span', 'zf-cell__small', tx(T.base)));
       c.title = tx(T.base);
+      // Abnehmer am Kartenrand
+      (openWorld.buyers ?? []).forEach((b, i) => {
+        const on = econ.order >= BUYERS_FROM && !!open && inRect(open, b.x, b.y);
+        const cell = at(b.x, b.y, `zf-cell--base zf-cell--buyer${on ? '' : ' is-locked'}`);
+        cell.style.width = `${b.w * CELL - 12}px`;
+        cell.style.height = `${b.h * CELL - 12}px`;
+        const pic = IMAGES[`abnehmer-${(i % 3) + 1}`];
+        if (pic) {
+          const img = el('img', 'zf-art zf-art--img zf-buyer__img');
+          img.src = pic;
+          img.alt = '';
+          cell.append(img);
+        } else cell.append(art('target', b.w * CELL - 12));
+        cell.append(el('span', 'zf-cell__mid zf-buyer__rule', buyerRule(b)), el('span', 'zf-cell__small zf-buyer__pay', on ? `+${ctxNum(b.pay)}` : tx(T.lockedShort, { n: BUYERS_FROM + 1 })));
+        cell.title = `${tx(T.buyer)}: ${buyerRule(b)} · ${tx(T.price, { n: ctxNum(b.pay) })}${on ? '' : ` · ${tx(T.lockedShort, { n: BUYERS_FROM + 1 })}`}`;
+      });
     }
     for (const k of board.walls) {
       const [x, y] = k.split(',').map(Number) as [number, number];
@@ -1078,16 +1330,18 @@ export function initFactory(root: HTMLElement): void {
     renderExpand();
   }
 
-  const numberFormat = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB');
   function ctxNum(n: number): string {
-    return numberFormat.format(n).replace('-', '−');
+    return fmtNum(n, lang);
   }
 
   /** Aufschrift der Quelle: im Level die nächste Zahl (bzw. „?“ ohne gewählte Startzahl). */
   function sourceLabel(sp: { value: number; values?: number[] }): string {
     if (mode !== 'level') return ctxNum(sp.value);
     const i = Math.min(state.emitted, emitCount(level) - 1);
-    if (sp !== level.source) return ctxNum(sp.values?.length ? sp.values[i % sp.values.length]! : sp.value);
+    if (sp !== level.source) {
+      if ((sp as { pick?: true }).pick) return picks[level.id] === undefined ? '?' : ctxNum(picks[level.id]!);
+      return ctxNum(sp.values?.length ? sp.values[i % sp.values.length]! : sp.value);
+    }
     if (level.source.pick) return picks[level.id] === undefined ? '?' : ctxNum(picks[level.id]!);
     return ctxNum(sourceValue(level, i, picks[level.id]));
   }
@@ -1098,6 +1352,23 @@ export function initFactory(root: HTMLElement): void {
     if (a.kind === 'value') return ctxNum(a.n);
     if (a.kind === 'seq') return ctxNum(a.values[Math.min(got, a.values.length - 1)]!);
     return `${a.not ? '✗' : '✓'} ${tx(testLabel(a.test))}`;
+  }
+
+  /** Was ein Abnehmer kauft, kurz (passt auf die Kachel). */
+  function buyerRule(b: Buyer): string {
+    const r = b.rule;
+    switch (r.kind) {
+      case 'exact':
+        return ctxNum(r.n!);
+      case 'prime':
+        return tx(L('Prim', 'prime'));
+      case 'square':
+        return 'n²';
+      case 'multiple':
+        return `${ctxNum(r.n!)}·n`;
+      case 'greater':
+        return `>${ctxNum(r.n!)}`;
+    }
   }
 
   /** Aufschrift der Basis: Stand beim aktuellen Auftrag. */
@@ -1216,6 +1487,7 @@ export function initFactory(root: HTMLElement): void {
   /** Merkmal, ob sich Preise/Freischaltungen geändert haben (dann Inventar neu zeichnen). */
   let toolsKey = '';
   function renderTools(): void {
+    if (editing) return renderEditTools();
     const world = mode === 'world';
     const open = world ? unlockedParts(econ.order) : null;
     // Gesperrte Teile nur zeigen, wenn der aktuelle Auftrag sie freischaltet (als Vorschau)
@@ -1225,7 +1497,7 @@ export function initFactory(root: HTMLElement): void {
       : kit.map((item): Tool => ({ kind: 'part', spec: specFor(item, nums[item.id]), kit: item.id }));
     const fresh = new Set(world ? [] : newIn(chapterOf(level)).map((k) => k.id));
     // Level: erst die Grundwerkzeuge, dann die Bauteile nach Gruppen (Maschinen, Weichen, Verteilen & Kreuzen)
-    const list: Tool[] = world ? [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown, { kind: 'erase' }] : [{ kind: 'hand' }, { kind: 'part', spec: BELT }, { kind: 'erase' }, ...shown];
+    const list: Tool[] = world ? [{ kind: 'hand' }, { kind: 'part', spec: BELT }, ...shown, { kind: 'erase' }, { kind: 'select' }] : [{ kind: 'hand' }, { kind: 'part', spec: BELT }, { kind: 'erase' }, { kind: 'select' }, ...shown];
     toolsKey = toolsSignature();
     toolsEl.classList.toggle('zf-tools--world', world);
     toolsEl.classList.toggle('zf-tools--many', list.length > 7);
@@ -1257,6 +1529,7 @@ export function initFactory(root: HTMLElement): void {
         const pic = el('span', 'zf-tool__pic');
         if (t.kind === 'hand') pic.append(icon('hand', 22));
         else if (t.kind === 'erase') pic.append(icon('erase', 22));
+        else if (t.kind === 'select' || t.kind === 'paste') pic.append(icon('select', 22));
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
           const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' || spec!.kind === 'alt' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
@@ -1269,7 +1542,7 @@ export function initFactory(root: HTMLElement): void {
             pic.append(img);
           } else pic.classList.add('is-plain');
         }
-        const label = t.kind === 'hand' ? tx(T.hand) : t.kind === 'erase' ? tx(T.erase) : spec!.kind === 'belt' ? tx(T.belt) : tx(specLabel(spec!));
+        const label = t.kind === 'hand' ? tx(T.hand) : t.kind === 'erase' ? tx(T.erase) : t.kind === 'select' || t.kind === 'paste' ? tx(T.select) : spec!.kind === 'belt' ? tx(T.belt) : tx(specLabel(spec!));
         b.append(pic, el('span', `zf-tool__label${spec && spec.kind !== 'belt' && spec.kind !== 'bridge' ? ' zf-tool__label--math' : ''}`, label));
         if (world && spec) {
           const price = el('span', `zf-tool__price${!locked && econ.coins < spec.price ? ' is-poor' : ''}`);
@@ -1292,7 +1565,10 @@ export function initFactory(root: HTMLElement): void {
         if (spec && !locked) bindDrag(b, spec);
         b.addEventListener('click', () => {
           if (spec && locked) return lockedInfo(spec);
+          if (tool.kind === 'paste') endPaste();
+          clearSelection();
           tool = t;
+          if (t.kind === 'select') say(tx(T.selHelp));
           if (spec?.kind === 'sort') say(tx(T.sortHelp));
           else if (spec?.kind === 'merge') say(tx(T.mergeHelp));
           else if (spec?.kind === 'split') say(tx(T.splitHelp));
@@ -1650,7 +1926,7 @@ export function initFactory(root: HTMLElement): void {
       parts.push(m);
     }
     parts.push(goals);
-    sourcesOf(level).forEach((sv, i) => {
+    if (!level.source.pick) sourcesOf(level).forEach((sv, i) => {
       const list = sv.values?.length ? sv.values : level.more?.length ? [sv.value] : null;
       if (list) parts.push(el('p', 'zf-source-seq', tx(level.more?.length ? T.sourceSeqN : T.sourceSeq, { n: i + 1, list: list.map(ctxNum).join(', ') })));
     });
@@ -1704,11 +1980,29 @@ export function initFactory(root: HTMLElement): void {
 
   function tick(): void {
     if (mode === 'world') {
-      wstate = worldStep(openWorld, grid, wstate, econ.zone);
+      wstate = worldStep(openWorld, grid, wstate, econ.zone, econ.order >= BUYERS_FROM);
       if (wstate.delivered.length) {
+        const before = econ.order;
         const r = deliver(econ, wstate.delivered);
         econ = r.econ;
         if (r.completed.length) celebrate(r.completed);
+        // Abnehmer werden frei
+        if (before < BUYERS_FROM && econ.order >= BUYERS_FROM) {
+          setTimeout(() => say(tx(T.buyersOpen), 'good'), 2500);
+          renderCells();
+        }
+      }
+      // Verkäufe an Abnehmer
+      for (const [bi, v] of wstate.sold) {
+        const b = openWorld.buyers![bi]!;
+        econ.coins += b.pay;
+        econ.total += 1;
+        if (!reduced) effect(b.x + 1, b.y, `+${ctxNum(b.pay)}`, 'zf-coin-float', 900);
+        void v;
+      }
+      if (wstate.sold.length) {
+        sound.play('deliver');
+        pulse(openWorld.buyers![wstate.sold[0]![0]]!.x, openWorld.buyers![wstate.sold[0]![0]]!.y, 'is-receiving');
       }
       renderItems();
       renderInfo();
@@ -1909,7 +2203,10 @@ export function initFactory(root: HTMLElement): void {
       h.append(el('span', '', tx(part.title)), el('span', 'zf-levels__part-meta', `${got}/${max} ★`));
       return [h, ...chapters.map(chapterCard)];
     });
-    levelBar.replaceChildren(top, dailyBtn, randomBtn, worldBtn, ...sections);
+    const editBtn = btn('', 'zf-world-card zf-world-card--open zf-world-card--editor');
+    editBtn.append(el('strong', '', tx(T.editor)), el('span', 'zf-world-card__meta', tx(T.editorCard)));
+    editBtn.addEventListener('click', () => openEditor());
+    levelBar.replaceChildren(top, dailyBtn, randomBtn, worldBtn, editBtn, ...sections);
   }
 
   /** Tages- bzw. Zufallsrätsel bauen (kurz rechnen) und öffnen. */
@@ -1932,7 +2229,11 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function openWorldMode(): void {
+    if (editing) closeEditor();
+    backBtn.hidden = true;
     closePicker();
+    moving = null;
+    clearSelection();
     if (mode === 'world') return;
     history = [];
     undoBtn.disabled = true;
@@ -1970,7 +2271,10 @@ export function initFactory(root: HTMLElement): void {
   }
 
   function openLevel(which: number | LevelInfo): void {
+    if (editing) closeEditor();
     closePicker();
+    moving = null;
+    clearSelection();
     const i = typeof which === 'number' ? which : ALL_LEVELS.indexOf(which);
     history = [];
     undoBtn.disabled = true;
@@ -2087,7 +2391,267 @@ export function initFactory(root: HTMLElement): void {
     newEl.replaceChildren(el('span', 'zf-new__tag', tx(T.newBadge)), el('span', 'zf-new__text', names.join(', ')), b);
   }
 
-  openLevel(index);
+  // ---------- Baukasten: eigene Level bauen und teilen ----------
+  /** Level, das gerade gebaut wird (null: normales Spiel). */
+  let editing: CustomSpec | null = null;
+  /** Zuletzt gebautes bzw. per Link geöffnetes eigenes Level (für „Zurück zum Baukasten“). */
+  let lastSpec: CustomSpec | null = null;
+  let editTool: 'hand' | 'source' | 'target' | 'rock' | 'erase' = 'rock';
+  const editPanel = el('div', 'zf-edit');
+  editPanel.hidden = true;
+  q<HTMLElement>('.zf-goal').append(editPanel);
+  const editControls = el('div', 'zf-edit-controls');
+  editControls.hidden = true;
+  controls.after(editControls);
+  const backBtn = ibtn('arrow', tx(T.backToEditor), 'zf-btn zf-btn--bar zf-btn--back');
+  backBtn.hidden = true;
+  barActions.append(backBtn);
+  backBtn.addEventListener('click', () => lastSpec && openEditor(lastSpec));
+
+  const parseNums = (text: string) =>
+    text
+      .split(/[;,\s]+/)
+      .map((t) => t.trim().replace('−', '-').replace(',', '.'))
+      .filter(Boolean)
+      .map(Number)
+      .filter((n) => Number.isFinite(n))
+      .slice(0, 12);
+
+  /** Aus der Beschreibung ein Level bauen und zeigen (ohne Ablauf). */
+  function applySpec(): void {
+    if (!editing) return;
+    level = specToLevel(editing);
+    board = boardOfLevel(level);
+    state = start();
+    renderCells();
+    renderEditPanel(false);
+  }
+
+  function openEditor(spec: CustomSpec = lastSpec ?? blankSpec()): void {
+    closePicker();
+    stopTimer();
+    if (mode === 'world') saveWorld(grid, econ);
+    mode = 'level';
+    index = -1;
+    editing = { ...spec, w: spec.w.map((p) => [...p] as [number, number]) };
+    grid = new Map();
+    history = [];
+    undoBtn.disabled = true;
+    title.textContent = tx(T.editorTitle);
+    eyebrow.replaceChildren(el('span', '', tx(T.editor)));
+    for (const e of [hint, tipBox, traceEl, info, newEl, orderEl]) e.hidden = true;
+    tableBox.hidden = true;
+    controls.hidden = true;
+    editControls.hidden = false;
+    backBtn.hidden = true;
+    itemsLayer.replaceChildren();
+    say(tx(T.editorHelp));
+    applySpec();
+    renderEditTools();
+    renderEditPanel(true);
+    renderEditControls();
+    fit();
+  }
+
+  function closeEditor(): void {
+    editing = null;
+    hint.hidden = false;
+    info.hidden = false;
+    controls.hidden = false;
+    editControls.hidden = true;
+    editPanel.hidden = true;
+  }
+
+  function editTap(x: number, y: number): void {
+    const sp = editing!;
+    const isS = sp.s[0] === x && sp.s[1] === y;
+    const isG = sp.g[0] === x && sp.g[1] === y;
+    const rockAt = sp.w.findIndex(([wx, wy]) => wx === x && wy === y);
+    if (editTool === 'source') {
+      if (isS) sp.s = [x, y, ((sp.s[2] + 1) % 4) as Dir];
+      else if (!isG) {
+        sp.s = [x, y, sp.s[2]];
+        if (rockAt >= 0) sp.w.splice(rockAt, 1);
+      }
+    } else if (editTool === 'target') {
+      if (!isS) {
+        sp.g = [x, y];
+        if (rockAt >= 0) sp.w.splice(rockAt, 1);
+      }
+    } else if (editTool === 'rock') {
+      if (rockAt >= 0) sp.w.splice(rockAt, 1);
+      else if (!isS && !isG) sp.w.push([x, y]);
+    } else if (editTool === 'erase' && rockAt >= 0) sp.w.splice(rockAt, 1);
+    sound.play('place');
+    applySpec();
+  }
+
+  function renderEditTools(): void {
+    const tools: [typeof editTool, IconName | ArtKind, Localized][] = [
+      ['hand', 'hand', T.hand],
+      ['source', 'source', T.source],
+      ['target', 'target', T.target],
+      ['rock', 'rock', T.rock],
+      ['erase', 'erase', T.erase],
+    ];
+    toolsEl.classList.remove('zf-tools--many', 'zf-tools--world');
+    toolsEl.replaceChildren(
+      ...tools.map(([id, pic, label]) => {
+        const b = el('button', 'zf-tool');
+        b.type = 'button';
+        const p = el('span', 'zf-tool__pic');
+        if (id === 'hand' || id === 'erase') p.append(icon(pic as IconName, 22));
+        else {
+          const src = imageFor(pic as ArtKind);
+          if (src) {
+            const img = el('img');
+            img.src = src;
+            img.alt = '';
+            p.append(img);
+          } else p.classList.add('is-plain');
+        }
+        b.append(p, el('span', 'zf-tool__label', tx(label)));
+        b.setAttribute('aria-pressed', String(editTool === id));
+        b.addEventListener('click', () => {
+          editTool = id;
+          tool = id === 'hand' ? { kind: 'hand' } : { kind: 'part', spec: BELT };
+          renderEditTools();
+        });
+        return b;
+      }),
+    );
+    numBox.hidden = true;
+  }
+
+  /** Formular: Titel, Zahlen, Größe, Grenze, Werkzeugkasten. */
+  function renderEditPanel(full: boolean): void {
+    if (!editing) return;
+    editPanel.hidden = false;
+    if (!full) {
+      const sz = editPanel.querySelector('.zf-edit__size-value');
+      if (sz) sz.textContent = `${editing.c} × ${editing.r}`;
+      return;
+    }
+    const sp = editing;
+    const field = (label: string, input: HTMLElement) => {
+      const w = el('label', 'zf-edit__field');
+      w.append(el('span', 'zf-edit__label', label), input);
+      return w;
+    };
+    const text = (value: string, on: (v: string) => void, placeholder = '') => {
+      const i = el('input', 'zf-edit__input');
+      i.type = 'text';
+      i.value = value;
+      i.placeholder = placeholder;
+      i.addEventListener('change', () => on(i.value));
+      return i;
+    };
+    const fmtList = (a: number[]) => a.map((n) => String(n).replace('-', '−')).join(', ');
+    const sizeRow = el('div', 'zf-edit__size');
+    const step = (labelKey: Localized, d: [number, number]) => {
+      const b = btn('', 'zf-btn zf-num__btn');
+      b.append(icon(d[0] + d[1] > 0 ? 'plus' : 'minus'));
+      b.setAttribute('aria-label', tx(labelKey));
+      b.addEventListener('click', () => {
+        sp.c = Math.min(SIZE.maxC, Math.max(SIZE.minC, sp.c + d[0]));
+        sp.r = Math.min(SIZE.maxR, Math.max(SIZE.minR, sp.r + d[1]));
+        const inside = (x: number, y: number) => x < sp.c && y < sp.r;
+        if (!inside(sp.s[0], sp.s[1])) sp.s = [Math.min(sp.s[0], sp.c - 1), Math.min(sp.s[1], sp.r - 1), sp.s[2]];
+        if (!inside(sp.g[0], sp.g[1])) sp.g = [Math.min(sp.g[0], sp.c - 1), Math.min(sp.g[1], sp.r - 1)];
+        if (sp.s[0] === sp.g[0] && sp.s[1] === sp.g[1]) sp.g = [sp.g[0] > 0 ? sp.g[0] - 1 : 1, sp.g[1]];
+        sp.w = sp.w.filter(([x, y]) => inside(x, y));
+        applySpec();
+        fit();
+      });
+      return b;
+    };
+    sizeRow.append(
+      el('span', 'zf-edit__label', tx(T.editorSize)),
+      step(T.editorNarrower, [-1, 0]),
+      step(T.editorWider, [1, 0]),
+      el('span', 'zf-edit__size-value', `${sp.c} × ${sp.r}`),
+      step(T.editorLower, [0, -1]),
+      step(T.editorTaller, [0, 1]),
+    );
+    const maxSel = el('select', 'zf-edit__input');
+    [[-1, tx(T.editorNoLimit)], ...[0, 1, 2, 3, 4, 5].map((n) => [n, String(n)])].forEach(([v, label]) => {
+      const o = el('option', '', String(label));
+      o.value = String(v);
+      o.selected = (sp.m ?? -1) === v;
+      maxSel.append(o);
+    });
+    maxSel.addEventListener('change', () => {
+      const v = Number(maxSel.value);
+      if (v < 0) delete sp.m;
+      else sp.m = v;
+      applySpec();
+    });
+    const kitSel = el('select', 'zf-edit__input');
+    CHAPTERS.forEach((c, i) => {
+      const o = el('option', '', tx(T.editorUpTo, { n: i + 1, t: tx(c.title) }));
+      o.value = String(i);
+      o.selected = sp.k === i;
+      kitSel.append(o);
+    });
+    kitSel.addEventListener('change', () => {
+      sp.k = Number(kitSel.value);
+      applySpec();
+    });
+    editPanel.replaceChildren(
+      field(tx(T.editorName), text(sp.t, (v) => ((sp.t = v.slice(0, 60)), applySpec()), tx(T.editorNamePh))),
+      field(tx(T.editorSource), text(fmtList(sp.a), (v) => {
+        const a = parseNums(v);
+        if (a.length) sp.a = a;
+        applySpec();
+        renderEditPanel(true);
+      }, '3  oder  1, 2, 3, 4, 5')),
+      field(tx(T.editorWant), text(fmtList(sp.b), (v) => {
+        const b = parseNums(v);
+        if (b.length) sp.b = b;
+        applySpec();
+        renderEditPanel(true);
+      }, '5  oder  2, 4, 6, 8, 10')),
+      sizeRow,
+      field(tx(T.editorMax), maxSel),
+      field(tx(T.editorKit), kitSel),
+      el('p', 'zf-edit__note', tx(T.editorNote)),
+    );
+  }
+
+  function renderEditControls(): void {
+    const test = ibtn('play', tx(T.editorTest), 'zf-btn zf-btn--main');
+    test.addEventListener('click', () => {
+      if (!editing) return;
+      lastSpec = editing;
+      window.history.replaceState(null, '', `#eigen=${encodeSpec(editing)}`);
+      const l = specToLevel(editing);
+      closeEditor();
+      openLevel(l);
+      backBtn.hidden = false;
+    });
+    const share = ibtn('copy', tx(T.editorShare));
+    share.addEventListener('click', async () => {
+      if (!editing) return;
+      const url = `${location.origin}${location.pathname}#eigen=${encodeSpec(editing)}`;
+      try {
+        await navigator.clipboard.writeText(url);
+        say(tx(T.editorCopied), 'good');
+      } catch {
+        prompt(tx(T.editorCopyManual), url);
+      }
+    });
+    const fresh = ibtn('trash', tx(T.editorNew));
+    fresh.addEventListener('click', () => openEditor(blankSpec()));
+    editControls.replaceChildren(test, share, fresh);
+  }
+
+  // Eigenes Level aus dem Link (#eigen=…)
+  const fromLink = location.hash.startsWith('#eigen=') ? decodeSpec(location.hash.slice(7)) : null;
+  if (fromLink) {
+    lastSpec = fromLink;
+    openLevel(specToLevel(fromLink));
+    backBtn.hidden = false;
+  } else openLevel(index);
   addEventListener('resize', () => applyView());
   root.classList.add('is-ready');
 }

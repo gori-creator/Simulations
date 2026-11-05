@@ -90,6 +90,16 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 - **Bilder Runde 2 eingebaut** (36 Stück, `src/assets/zahlenfabrik/`): eigene Maschinen für +, −, ×, ÷, x² und Weichen für gerade, teilbar, größer als, prim; Bäume, Busch, großer Fels und Kisten mischen sich unter die Felsen; Nebel über gesperrtem Land; Sterne, Pokal (Kapitel mit allen Sternen), Konfetti beim Sieg, Staubwolke und Funke als Effekte in der offenen Welt, Zahnrad beim Bauen eines Rätsels; Kapitelbilder in Erklärkarten und Auswahl, Titelbild in der Einführung.
 - Vorschläge für später: `docs/ZAHLENFABRIK-VORSCHLAEGE.md`.
 
+## Brüche, Gleichungen, Abnehmer, Kopieren, Baukasten, ruhigere Oberfläche (Stand 05.11.2026)
+
+- **Brüche** (Kapitel „Brüche“, Klasse 6): Bruch-Maschine `x/n` (teilt immer, Ergebnis als gekürzter Bruch, z. B. 3/4) und Kehrwert-Maschine `1/x`. Zahlen sind weiterhin Kommazahlen; Lager vergleichen mit kleiner Toleranz, Anzeige als Bruch (Nenner bis 1000). Level: 3 → 3/2, 3 → 3/4, Kürzen 6 → 2/3, Stammbrüche, 1/2 + 1/3 = 5/6 mit zwei Quellen, x/(x + 1), x/2 + x/3.
+- **Gleichungen** (Klasse 7–8): x + 7 = 12, 3x = 21, 3x + 5 = 20, 2(x − 3) = 10 als Rückwärts-Level; dazu **Waagen** mit zwei Quellen, die dasselbe gewählte x ausgeben (`more[].pick`): Jede Seite wird ausgerechnet, ein fester Zusammenführer „Differenz“ vergleicht, das Lager will 0 (2x + 3 = x + 7, 5x − 4 = 3x + 6, x² = 4x + 5). Im Test passt jeweils genau ein x.
+- **Abnehmer am Kartenrand** (offene Welt, `world.ts`): sechs Gebäude in den Ringen kaufen bestimmte Zahlen (24, Quadratzahlen, Primzahlen, Vielfache von 7, 100, über 200) für 8–25 Münzen. Sie arbeiten erst ab Auftrag 7 (`BUYERS_FROM`) und nur in freigekauftem Land; andere Zahlen nehmen sie nicht an.
+- **Auswählen, Verschieben, Kopieren**: Werkzeug „Auswählen“ (Rahmen ziehen), dann Kopieren (beliebig oft einfügen, Drehen um 90°), Verschieben, Löschen; in der offenen Welt mit Münzen, im Level mit Maschinen-Grenze; Esc bricht ab.
+- **Baukasten** (`custom.ts`): eigene Level bauen (Quelle, Lager, Felsen, Größe, Zahlen der Quelle, Wunsch des Lagers, Maschinen-Grenze, Werkzeugkasten bis Kapitel n), testen und als Link teilen (`#eigen=…`, Base64 im Link, kein Server).
+- **Ruhigere Oberfläche**: Seitenleiste als eine Fläche mit Abschnitten statt Karten, Werkzeuge als leichte Symbole statt Kacheln, Nebenknöpfe ohne Rahmen, Kopfleiste ohne Rahmen, Level-Auswahl mit ruhigen Flächen.
+- Bilder Runde 3 angefordert (37 Prompts in `docs/ZAHLENFABRIK-BILDER.md`).
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee

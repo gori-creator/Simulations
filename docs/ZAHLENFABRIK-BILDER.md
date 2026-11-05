@@ -1,6 +1,6 @@
 # Zahlenfabrik: Bilder (Prompts)
 
-Stand 04.11.2026 (Runde 2 ergänzt). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
+Stand 05.11.2026 (Runde 2 eingebaut, Runde 3 angefordert). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
 
 ## So geht’s
 
@@ -258,6 +258,134 @@ titelbild.png: A wide panoramic view of a cheerful number factory from slightly 
 ```
 
 **Einbau Runde 2 (für Claude):** Maschinen nach Rechenzeichen (`maschine-plus` … `maschine-quadrat`, sonst `maschine`), Weichen nach Prüfung (`weiche-gerade` …, sonst `weiche`), Hindernisse gemischt mit den Felsen (gleiches Muster je Feld), Sterne/Pokal in Auswahl und Siegmeldung, Effekte statt der gezeichneten Wölkchen, Kapitelbilder oben in den Erklärkarten und auf den Kapitel-Karten (WebP, 960 × 540, Qualität ca. 80), Titelbild als Vorschaubild der Spielseite. Alles mit Ersatz, wenn eine Datei fehlt.
+
+## Runde 3: übrige Bausteine, Abnehmer, Kapitel (Stand 05.11.2026)
+
+Für alle Bausteine, die noch kein eigenes Bild haben, die neuen Abnehmer der offenen Welt und die neuen Kapitel. Wieder **alles optional**. Hochladen wie gehabt nach `incoming/zahlenfabrik/<dateiname>.png`.
+
+Für A–C den **Stil-Block von oben** voranstellen (quadratisch, transparent, genau von oben, Ausgang rechts, Mitte frei). Für D den Stil-Block für Kapitelbilder (16 : 9, deckend). Am besten im selben Verlauf wie Runde 2 und mit `maschine-plus.png` als Vorlage („same style as the reference image“).
+
+### A · Maschinen (10)
+
+Gleiche Grundform wie `maschine-plus.png` (Eingang **links**, Ausgang **rechts**, in der Mitte ein **großes leeres helles Feld** ohne Zeichen), jede mit eigener Farbe und eigenem Innenleben.
+
+| Nr. | Datei | Motiv | Farbe |
+| --- | --- | --- | --- |
+| 51 | `maschine-rest.png` | Rest-Maschine (mod) | türkisblau |
+| 52 | `maschine-quersumme.png` | Quersummen-Maschine | himmelblau |
+| 53 | `maschine-wurzel.png` | Wurzel-Maschine | dunkelgrün |
+| 54 | `maschine-vorzeichen.png` | Vorzeichen-Maschine (±) | rot-blau geteilt |
+| 55 | `maschine-betrag.png` | Betrags-Maschine (\|x\|) | grau-silber |
+| 56 | `maschine-spiegel.png` | Spiegel-Maschine (Ziffern umdrehen) | lila-pink |
+| 57 | `maschine-runden.png` | Runden-Maschine | braun-gold |
+| 58 | `maschine-bruch.png` | Bruch-Maschine (teilt in Teile) | hellorange |
+| 59 | `maschine-kehrwert.png` | Kehrwert-Maschine (1/x) | mint |
+| 60 | `maschine-allgemein.png` | neutrale Maschine (Ersatz für alle anderen) | hellgrau |
+
+```text
+maschine-rest.png: A square remainder machine block with a teal-blue housing (#1E9BB0 family): a small round sieve drum near the LEFT input that lets a few small leftover pieces drop into a tiny tray on the bottom edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-quersumme.png: A square digit-sum machine block with a sky-blue housing (#4FA3E8 family): a row of small funnels along the top edge that merge into one channel, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-wurzel.png: A square square-root machine block with a deep green housing (#2E8B57 family): a small stylized root-like branching pipe pattern in the corners, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-vorzeichen.png: A square sign-flip machine block whose housing is split diagonally into warm red (#E5604D family) and cool blue (#3B7DDD family), a small round flip switch in one corner, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-betrag.png: A square absolute-value machine block with a brushed silver-grey housing (#A9B3BF family), two parallel vertical rails left and right of the center panel, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-spiegel.png: A square mirror machine block with a violet-pink housing (#B65BC9 family), a small shiny mirror strip along the top edge and a curved arrow-shaped rail (no arrow symbol, just a curved rail), input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-runden.png: A square rounding machine block with a warm brown-gold housing (#C2913A family), a small set of round smoothing rollers near the input, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-bruch.png: A square fraction machine block with a light orange housing (#F5A65B family), a small cutter that slices a round token into equal wedges near the input, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-kehrwert.png: A square reciprocal machine block with a mint green housing (#5CC9A7 family), a small turntable that flips a token upside down, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-allgemein.png: A square neutral machine block with a light grey housing (#C9CED6 family), simple bolts in the corners, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+```
+
+### B · Weichen und Zusammenführer (6)
+
+Weichen wie `weiche-gerade.png` (violett, Y-Kanal: hinein von **links**, hinaus nach **rechts** und **unten**). Zusammenführer wie `zusammenfuehren.png` (türkis, hinein von **links** und **unten**, hinaus nach **rechts**), mit eigenem Innenleben je Rechenart.
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 61 | `weiche-quadrat.png` | Weiche „Quadratzahl?“ |
+| 62 | `wechselweiche.png` | Wechsel-Weiche (abwechselnd) |
+| 63 | `zusammen-summe.png` | Zusammenführer „Summe“ |
+| 64 | `zusammen-differenz.png` | Zusammenführer „Differenz“ |
+| 65 | `zusammen-produkt.png` | Zusammenführer „Produkt“ |
+| 66 | `zusammen-quotient.png` | Zusammenführer „Quotient“ |
+
+```text
+weiche-quadrat.png: The violet sorting switch block (same as weiche-gerade.png) with a Y-shaped channel; at the split point a small square frame made of four equal tiles. Calm flat center area, no markings.
+wechselweiche.png: An orange-amber sorting switch block (#F2A33D family) with the same Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a small rocking flap that tilts back and forth, with two tiny lamps. Calm flat center area, no markings.
+zusammen-summe.png: A teal merging block (same shape as zusammenfuehren.png, inputs from LEFT and BOTTOM, output on the RIGHT) whose round mixing chamber shows two small tokens joining into one bigger token. No symbols.
+zusammen-differenz.png: The same teal merging block, but the mixing chamber shows a big token next to a small token with a small slice being taken away. No symbols.
+zusammen-produkt.png: The same teal merging block, but the mixing chamber shows a little stacking press that piles tokens into a tall stack. No symbols.
+zusammen-quotient.png: The same teal merging block, but the mixing chamber shows a token being split into several equal smaller tokens. No symbols.
+```
+
+### C · Offene Welt: Abnehmer (3)
+
+Abnehmer stehen am Kartenrand und kaufen bestimmte Zahlen (2 × 2 Felder, quadratisch, von oben). Eingang an allen vier Seiten.
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 67 | `abnehmer-1.png` | kleiner Laden mit Markise |
+| 68 | `abnehmer-2.png` | Lagerhalle mit Laderampe |
+| 69 | `abnehmer-3.png` | Rakete auf Startplatz (kauft große Zahlen) |
+
+```text
+abnehmer-1.png: A small cheerful shop building seen exactly from above, square footprint, striped awning in coral and white on one side, a few crates in front, four small intake openings in the middle of each side. A calm flat blank area on the roof (empty, no signs, no letters).
+abnehmer-2.png: A medium warehouse seen exactly from above, square footprint, corrugated blue-grey roof with skylights, a loading ramp on one side with a small forklift, four small intake openings in the middle of each side. A calm flat blank area on the roof (empty, no signs).
+abnehmer-3.png: A small rocket on a round launch pad seen exactly from above, square footprint, white rocket with red fins in the center, gantry beside it, four small intake openings in the middle of each side of the pad. No letters, no flags.
+```
+
+### D · Kapitelbilder für die neuen Kapitel (16)
+
+Wie die Kapitelbilder aus Runde 2 (Stil-Block für Kapitelbilder, 16 : 9, deckend, Platz links für einen Titel).
+
+| Nr. | Datei | Kapitel |
+| --- | --- | --- |
+| 70 | `kapitel-zusammen.png` | Zusammenführer (zwei Quellen) |
+| 71 | `kapitel-rest.png` | Rest-Maschine |
+| 72 | `kapitel-quersumme.png` | Quersummen-Maschine |
+| 73 | `kapitel-wurzel.png` | Wurzel-Maschine |
+| 74 | `kapitel-quadratzahl.png` | Weiche „Quadratzahl?“ |
+| 75 | `kapitel-terme.png` | Terme mit zwei Quellen |
+| 76 | `kapitel-bruecke.png` | Brücke |
+| 77 | `kapitel-raetsel.png` | Rätsel-Werkstatt |
+| 78 | `kapitel-detektiv.png` | Funktionen-Detektiv |
+| 79 | `kapitel-vorzeichen.png` | Vorzeichen und Betrag |
+| 80 | `kapitel-spiegel.png` | Spiegel-Maschine |
+| 81 | `kapitel-runden.png` | Runden-Maschine |
+| 82 | `kapitel-wechsel.png` | Wechsel-Weiche |
+| 83 | `kapitel-grossmeister.png` | Großmeister |
+| 84 | `kapitel-brueche.png` | Brüche |
+| 85 | `kapitel-gleichungen.png` | Gleichungen |
+
+```text
+kapitel-zusammen.png: Two green source blocks on the right, each with its own belt, the two belts meeting in a teal merging machine; one bigger token leaves towards a blue crate.
+kapitel-rest.png: A teal-blue remainder machine on a belt; small leftover pieces drop into a tray beside it, the remaining tokens continue to a crate.
+kapitel-quersumme.png: A sky-blue digit-sum machine with several small funnels merging into one; many small tokens go in, one token comes out.
+kapitel-wurzel.png: A deep green square-root machine; a large square block enters and a small slim token leaves; a little plant grows on the machine roof.
+kapitel-quadratzahl.png: A violet switch with a small square frame at its fork; neat square stacks of tokens go one way, loose tokens the other way.
+kapitel-terme.png: Two sources, two belts with a yellow and a lime machine, meeting in a teal merger, leading to a row of crates with tokens growing in size.
+kapitel-bruecke.png: Two conveyor belts crossing each other with a small wooden bridge with orange rails; tokens travel on both belts.
+kapitel-raetsel.png: A tidy workshop table seen from above with several small machines arranged like puzzle pieces and a magnifying glass lying next to them.
+kapitel-detektiv.png: A row of five blue crates with tokens of different sizes, a magnifying glass hovering above them, a detective-style desk lamp casting soft light.
+kapitel-vorzeichen.png: A red-blue split sign machine on a belt; tokens above the belt are warm red, tokens below are cool blue, like a mirror line.
+kapitel-spiegel.png: A violet-pink mirror machine with a shiny mirror strip; tokens enter on one side and appear mirrored on the other.
+kapitel-runden.png: A brown-gold rounding machine with smoothing rollers; rough uneven tokens go in, smooth round tokens come out.
+kapitel-wechsel.png: An amber alternating switch sending tokens left and right in turn into two crates, one token at a time.
+kapitel-grossmeister.png: A grand finished factory at golden hour with every machine color, many crossing belts and bridges, and a big golden trophy on a podium.
+kapitel-brueche.png: A light orange fraction machine slicing round tokens into halves, thirds and quarters that travel on to a crate.
+kapitel-gleichungen.png: A large balance scale built into the factory; two belts feed tokens into the two pans, which are exactly level.
+```
+
+### E · Bauen und Bearbeiten (2)
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 86 | `baukasten.png` | Werkzeugkiste (Level-Baukasten) |
+| 87 | `auswahl.png` | Rahmen mit Ecken (Auswählen und Kopieren) |
+
+```text
+baukasten.png: An open red toolbox seen from the front, filled with small machine blocks, belts and a few tokens, friendly and tidy. Transparent background.
+auswahl.png: A rounded square selection frame made of four thick blue corner brackets with a small hand cursor next to it, seen from the front. Transparent background.
+```
 
 ## Einbau (für Claude)
 

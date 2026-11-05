@@ -1,4 +1,4 @@
-import { apply, combine, DX, DY, key, outputs, passes, type Dir, type Grid, type Item, type Op } from './model';
+import { apply, combine, DX, DY, isPrime, isSquare, key, outputs, passes, type Dir, type Grid, type Item, type Op } from './model';
 
 /**
  * Offene Welt: Auf einer großen Karte stehen viele Zahlenquellen, die ohne
@@ -21,6 +21,36 @@ export interface Rect {
   h: number;
 }
 
+/**
+ * Abnehmer am Kartenrand: kaufen nur bestimmte Zahlen und zahlen dafür
+ * Münzen. Sie arbeiten erst ab einem späteren Auftrag und nur in
+ * freigekauftem Land; andere Zahlen nehmen sie nicht an (gehen verloren).
+ */
+export interface Buyer extends Rect {
+  rule: { kind: 'exact' | 'prime' | 'square' | 'multiple' | 'greater'; n?: number };
+  /** Münzen je passender Zahl. */
+  pay: number;
+}
+
+/** Ab so vielen geschafften Aufträgen arbeiten die Abnehmer. */
+export const BUYERS_FROM = 6;
+
+export function buyerWants(b: Buyer, v: number): boolean {
+  const r = b.rule;
+  switch (r.kind) {
+    case 'exact':
+      return v === r.n;
+    case 'prime':
+      return isPrime(v);
+    case 'square':
+      return isSquare(v);
+    case 'multiple':
+      return Number.isInteger(v) && v !== 0 && v % r.n! === 0;
+    case 'greater':
+      return v > r.n!;
+  }
+}
+
 export interface OpenWorld {
   id: string;
   cols: number;
@@ -34,6 +64,8 @@ export interface OpenWorld {
    * Startgebiet). Ohne Angabe ist die ganze Karte offen.
    */
   zones?: Rect[];
+  /** Abnehmer am Kartenrand (siehe Buyer). */
+  buyers?: Buyer[];
 }
 
 /** Preis der Gebiete in Münzen (das erste gibt es umsonst). */
@@ -74,6 +106,8 @@ export interface WorldState {
   delivered: number[];
   /** Wo in diesem Takt zwei Zahlen zusammengeführt wurden (für einen kleinen Effekt). */
   mergedAt: [number, number][];
+  /** An Abnehmer verkaufte Zahlen in diesem Takt: [Nummer des Abnehmers, Zahl]. */
+  sold: [number, number][];
 }
 
 export const WORLD_EMIT = 3;
@@ -83,17 +117,19 @@ export const MAX_VALUE = 1_000_000;
 export const MAX_ITEMS = 600;
 
 export function worldStart(): WorldState {
-  return { tick: 0, items: [], nextId: 1, score: 0, count: 0, lost: 0, lostAt: [], delivered: [], mergedAt: [] };
+  return { tick: 0, items: [], nextId: 1, score: 0, count: 0, lost: 0, lostAt: [], delivered: [], mergedAt: [], sold: [] };
 }
 
 export const inBase = (w: OpenWorld, x: number, y: number) => x >= w.base.x && y >= w.base.y && x < w.base.x + w.base.w && y < w.base.y + w.base.h;
 export const spawnerAt = (w: OpenWorld, x: number, y: number) => index(w).spawners.get(key(x, y));
 const wallAt = (w: OpenWorld, x: number, y: number) => index(w).walls.has(key(x, y));
+/** Abnehmer auf diesem Feld (Nummer) oder −1. */
+export const buyerAt = (w: OpenWorld, x: number, y: number) => (w.buyers ?? []).findIndex((b) => inRect(b, x, y));
 
 /** Bauen erlaubt: im offenen Gebiet, nicht auf Basis, Quelle oder Fels. */
 export function canBuildWorld(w: OpenWorld, x: number, y: number, zone = Infinity): boolean {
   if (x < 0 || y < 0 || x >= w.cols || y >= w.rows || !inRect(zoneRect(w, zone), x, y)) return false;
-  return !inBase(w, x, y) && !spawnerAt(w, x, y) && !wallAt(w, x, y);
+  return !inBase(w, x, y) && !spawnerAt(w, x, y) && !wallAt(w, x, y) && buyerAt(w, x, y) < 0;
 }
 
 /** Achse einer Laufrichtung (für die Brücke: waagerecht und senkrecht getrennt). */
@@ -102,7 +138,9 @@ const axis = (d: Dir) => (d % 2 === 0 ? 'h' : 'v');
 /** Plan einer Zahl für diesen Takt. */
 interface Plan {
   item: Item;
-  kind: 'stay' | 'move' | 'absorb' | 'lose';
+  kind: 'stay' | 'move' | 'absorb' | 'lose' | 'sell';
+  /** Abnehmer (bei „sell“). */
+  buyer?: number;
   /** Ziel-Feld (bei „move“). */
   tx: number;
   ty: number;
@@ -123,8 +161,8 @@ interface Plan {
  * biegen zur Seite ab. Zusammenführen: Die erste Zahl wartet, die zweite wird
  * mit ihr zur Summe bzw. zum Produkt; das Ergebnis läuft weiter.
  */
-export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = Infinity): WorldState {
-  const s: WorldState = { ...state, tick: state.tick + 1, items: [], lostAt: [], delivered: [], mergedAt: [] };
+export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = Infinity, buyersOn = true): WorldState {
+  const s: WorldState = { ...state, tick: state.tick + 1, items: [], lostAt: [], delivered: [], mergedAt: [], sold: [] };
   const lose = (x: number, y: number) => {
     s.lost += 1;
     s.lostAt.push([x, y]);
@@ -156,6 +194,14 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
     const y = item.y + DY[dir];
     if (inBase(w, x, y)) {
       plan.kind = 'absorb';
+      continue;
+    }
+    // Abnehmer: kauft passende Zahlen (wenn er schon arbeitet und im offenen Land steht)
+    const bi = buyerAt(w, x, y);
+    if (bi >= 0) {
+      const b = w.buyers![bi]!;
+      const ok = buyersOn && inRect(open, b.x, b.y) && buyerWants(b, item.value);
+      Object.assign(plan, ok ? { kind: 'sell', buyer: bi } : { kind: 'lose' });
       continue;
     }
     if (!grid.has(key(x, y)) || !canBuildWorld(w, x, y, zone)) {
@@ -191,7 +237,7 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
   const verdict = new Map<number, boolean>();
   const onStack = new Map<number, number>();
   function moves(p: Plan): boolean {
-    if (p.kind === 'absorb' || p.kind === 'lose') return true;
+    if (p.kind === 'absorb' || p.kind === 'lose' || p.kind === 'sell') return true;
     if (p.kind === 'stay' || !p.accepted) return false;
     const known = verdict.get(p.item.id);
     if (known !== undefined) return known;
@@ -215,6 +261,10 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
     const { item } = plan;
     if (plan.kind === 'lose') {
       lose(item.x, item.y);
+      continue;
+    }
+    if (plan.kind === 'sell') {
+      s.sold.push([plan.buyer!, item.value]);
       continue;
     }
     if (plan.kind === 'absorb') {
@@ -417,6 +467,23 @@ export function makeWorld(seed = 7): OpenWorld {
       if (random() < 0.5) x += random() < 0.5 ? 1 : -1;
       else y += random() < 0.5 ? 1 : -1;
     }
+  }
+  // Abnehmer am Kartenrand (im ersten und zweiten Ring), Platz um sie herum frei
+  const spots: [number, number, Buyer['rule'], number][] = [
+    [9, 7, { kind: 'exact', n: 24 }, 12],
+    [61, 7, { kind: 'square' }, 10],
+    [61, 43, { kind: 'prime' }, 8],
+    [9, 43, { kind: 'multiple', n: 7 }, 8],
+    [1, 1, { kind: 'exact', n: 100 }, 25],
+    [69, 49, { kind: 'greater', n: 200 }, 12],
+  ];
+  w.buyers = [];
+  for (const [bx, by, rule, pay] of spots) {
+    const b: Buyer = { x: bx, y: by, w: 2, h: 2, rule, pay };
+    const near = (x: number, y: number) => x >= bx - 1 && y >= by - 1 && x <= bx + 2 && y <= by + 2;
+    if (w.spawners.some((sp) => near(sp.x, sp.y))) continue;
+    w.walls = w.walls.filter(([x, y]) => !near(x, y));
+    w.buyers.push(b);
   }
   return w;
 }

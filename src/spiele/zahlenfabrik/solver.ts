@@ -70,7 +70,8 @@ export function rng(seed: number): () => number {
  */
 export function makeRiddle(seed: number, kit: KitItem[]): { from: number; to: number; chain: Op[] } {
   const random = rng(seed);
-  const ops = allOps(kit);
+  // nur ganze Zahlen (Bruch- und Kehrwert-Maschine bleiben bei diesen Rätseln außen vor)
+  const ops = allOps(kit).filter((o) => o.sym !== ':' && o.sym !== '⅟');
   for (let attempt = 0; attempt < 40; attempt++) {
     const from = 2 + Math.floor(random() * 60);
     // Wie oft wird jede Zahl erreicht, und wie kurz geht es?

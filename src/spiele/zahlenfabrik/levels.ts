@@ -1,6 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Localized } from '../../i18n/config';
-import { KIT, isKitId, type KitItem, type LessonId } from './kit';
+import { KIT, isKitId, type KitId, type KitItem, type LessonId } from './kit';
 import type { Level, Op, Test } from './model';
 
 /**
@@ -17,6 +17,10 @@ export interface LevelInfo extends Level {
   maxMachines?: number;
   /** Profi-Level (schwerer, in der Auswahl markiert). */
   pro?: boolean;
+  /** Eigener Werkzeugkasten (Baukasten-Level); sonst nach Kapitel. */
+  kit?: KitId[];
+  /** Level aus dem Baukasten (eigene Level). */
+  custom?: boolean;
 }
 
 /** Felsen von (x1, y1) bis (x2, y2) als Rechteck. */
@@ -1355,6 +1359,138 @@ const C27: LevelInfo[] = [
   riddle('c27-10', MAP_A, 61, 4004, 3, true),
 ];
 
+
+/* ---------- Kapitel: Brüche ---------- */
+const C29: LevelInfo[] = [
+  {
+    id: 'c29-1',
+    title: L('Die Hälfte', 'One half'),
+    hint: L('Neu: Bruch- und Kehrwert-Maschine. Aus 3 soll 3/2 werden.', 'New: fraction and reciprocal machines. 3 should become 3/2.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 3 },
+    target: { x: 10, y: 3, value: 3 / 2 }, need: 3,
+    walls: [[5, 1], [5, 2], [5, 4], [5, 5]],
+    maxMachines: 1,
+    par: 8,
+  },
+  {
+    id: 'c29-2',
+    title: L('Drei Viertel', 'Three quarters'),
+    hint: L('Aus 3 soll 3/4 werden – mit einer Maschine.', '3 should become 3/4 – with one machine.'),
+    cols: 12, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 3 },
+    target: { x: 10, y: 1, value: 3 / 4 }, need: 3,
+    walls: wall(5, 8, [2]),
+    maxMachines: 1,
+    par: 13,
+  },
+  {
+    id: 'c29-3',
+    title: L('Kürzen', 'Reducing'),
+    hint: L('Aus 6 soll 2/3 werden – mit einer Maschine. 2/3 ist dasselbe wie 4/6 oder 6/9.', '6 should become 2/3 – with one machine. 2/3 is the same as 4/6 or 6/9.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 6 },
+    target: { x: 10, y: 5, value: 2 / 3 }, need: 3,
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3]],
+    maxMachines: 1,
+    par: 12,
+  },
+  {
+    id: 'c29-4',
+    title: L('Stammbrüche', 'Unit fractions'),
+    hint: L('1 bis 5 kommen. Das Lager will 1, 1/2, 1/3, 1/4, 1/5.', '1 to 5 arrive. The storage wants 1, 1/2, 1/3, 1/4, 1/5.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: seq(1, 5) },
+    targets: [{ x: 10, y: 3, need: 5, accept: { kind: 'seq', values: table((x) => 1 / x, seq(1, 5)) } }],
+    walls: [[5, 2], [5, 3], [5, 4]],
+    maxMachines: 1,
+    par: 12,
+  },
+  twoSources('c29-5', L('Halbe plus Drittel', 'Half plus third'), L('Die eine Quelle gibt 2 aus, die andere 3. Das Lager will 1/2 + 1/3 = 5/6.', 'One source gives out 2, the other 3. The storage wants 1/2 + 1/3 = 5/6.'), [2], [3], 5 / 6, 2),
+  twoSources('c29-6', L('x durch (x + 1)', 'x over (x + 1)'), L('Beide Quellen geben 1 bis 5 aus. Das Lager will 1/2, 2/3, 3/4, 4/5, 5/6 – mit zwei Maschinen.', 'Both sources give out 1 to 5. The storage wants 1/2, 2/3, 3/4, 4/5, 5/6 – with two machines.'), seq(1, 5), seq(1, 5), table((x) => x / (x + 1), seq(1, 5)), 2, true),
+  twoSources('c29-7', L('Halbe und Drittel addieren', 'Adding halves and thirds'), L('Beide Quellen geben 1 bis 4 aus. Das Lager will x/2 + x/3: 5/6, 5/3, 5/2, 10/3.', 'Both sources give out 1 to 4. The storage wants x/2 + x/3: 5/6, 5/3, 5/2, 10/3.'), seq(1, 4), seq(1, 4), table((x) => x / 2 + x / 3, seq(1, 4)), 2, true),
+];
+
+/* ---------- Kapitel: Gleichungen ---------- */
+/** Waage: zwei Quellen mit derselben Zahl x, Seiten in Reihe 1 und 3, Vergleich (Differenz) bei (7, 3), Lager will 0. */
+const EQ_OPEN: [number, number][] = [
+  ...Array.from({ length: 7 }, (_, i): [number, number] => [1 + i, 1]),
+  [7, 2],
+  ...Array.from({ length: 11 }, (_, i): [number, number] => [1 + i, 3]),
+];
+type FixedOp = { x: number; y: number; part: { op: Op; dir: 0 } };
+function balance(id: string, title: Localized, hint: Localized, left: FixedOp[], right: FixedOp[], pro = false): LevelInfo {
+  // 15 freie Felder für Bänder (siehe EQ_OPEN), ohne die vorgegebenen Maschinen
+  return {
+    id, title, hint,
+    cols: 13, rows: 5,
+    source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 20 } },
+    more: [{ x: 1, y: 1, dir: 0, value: 1, pick: true }],
+    target: { x: 11, y: 3, value: 0 }, need: 3,
+    walls: corridor(13, 5, EQ_OPEN),
+    fixed: [...left, ...right.map((f) => ({ ...f, y: 1 })), { x: 7, y: 3, part: { op: null, dir: 0, merge: '−' } }],
+    maxMachines: 0,
+    ...(pro ? { pro } : {}),
+    par: 15 - left.length - right.length,
+  };
+}
+const C30: LevelInfo[] = [
+  {
+    id: 'c30-1',
+    title: L('x + 7 = 12', 'x + 7 = 12'),
+    hint: L('Neu: Gleichungen. Welche Zahl x gibt plus 7 die 12? Stell x ein und leg Bänder.', 'New: equations. Which number x plus 7 gives 12? Set x and lay belts.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 20 } },
+    target: { x: 10, y: 3, value: 12 }, need: 3,
+    walls: wall(5, 7, [3]),
+    fixed: [fixedOp(5, 3, '+', 7)],
+    maxMachines: 0,
+    par: 7,
+  },
+  {
+    id: 'c30-2',
+    title: L('3 · x = 21', '3 · x = 21'),
+    hint: L('Welche Zahl mal 3 ergibt 21?', 'Which number times 3 gives 21?'),
+    cols: 12, rows: 8,
+    source: { x: 1, y: 1, dir: 0, value: 1, pick: { min: 1, max: 20 } },
+    target: { x: 10, y: 6, value: 21 }, need: 3,
+    walls: wall(6, 8, [4]),
+    fixed: [fixedOp(6, 4, '×', 3)],
+    maxMachines: 0,
+    par: 12,
+  },
+  {
+    id: 'c30-3',
+    title: L('3x + 5 = 20', '3x + 5 = 20'),
+    hint: L('Erst mal 3, dann plus 5 – und 20 kommt heraus. Rückwärts: 20 − 5, dann durch 3.', 'First times 3, then plus 5 – and 20 comes out. Backwards: 20 − 5, then divided by 3.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 20 } },
+    target: { x: 11, y: 3, value: 20 }, need: 3,
+    walls: [...wall(4, 7, [3]), ...wall(8, 7, [3])],
+    fixed: [fixedOp(4, 3, '×', 3), fixedOp(8, 3, '+', 5)],
+    maxMachines: 0,
+    par: 7,
+  },
+  {
+    id: 'c30-4',
+    title: L('2 · (x − 3) = 10', '2 · (x − 3) = 10'),
+    hint: L('Die Klammer zuerst: x − 3, dann mal 2.', 'Brackets first: x − 3, then times 2.'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, pick: { min: 1, max: 20 } },
+    target: { x: 11, y: 1, value: 10 }, need: 3,
+    walls: [...wall(4, 8, [6]), ...wall(8, 8, [1])],
+    fixed: [fixedOp(4, 6, '−', 3), fixedOp(8, 1, '×', 2)],
+    maxMachines: 0,
+    par: 12,
+  },
+  balance('c30-5', L('2x + 3 = x + 7', '2x + 3 = x + 7'), L('Zwei Quellen geben dasselbe x aus: unten wird 2x + 3 gerechnet, oben x + 7. Der Zusammenführer vergleicht – kommt 0 an, stimmt x.', 'Two sources give out the same x: below, 2x + 3 is calculated, above x + 7. The merger compares – if 0 arrives, x is right.'),
+    [fixedOp(3, 3, '×', 2), fixedOp(5, 3, '+', 3)], [fixedOp(3, 1, '+', 7)]),
+  balance('c30-6', L('5x − 4 = 3x + 6', '5x − 4 = 3x + 6'), L('Unten 5x − 4, oben 3x + 6. Für welches x sind beide Seiten gleich?', 'Below 5x − 4, above 3x + 6. For which x are both sides equal?'),
+    [fixedOp(3, 3, '×', 5), fixedOp(5, 3, '−', 4)], [fixedOp(3, 1, '×', 3), fixedOp(5, 1, '+', 6)]),
+  balance('c30-7', L('x² = 4x + 5', 'x² = 4x + 5'), L('Unten x², oben 4x + 5. Probier geschickt – oder rechne nach: x² − 4x − 5 = 0.', 'Below x², above 4x + 5. Try cleverly – or check: x² − 4x − 5 = 0.'),
+    [sq(3, 3)], [fixedOp(3, 1, '×', 4), fixedOp(5, 1, '+', 5)], true),
+];
+
 /* ---------- Kapitel 13: Meisterprüfung (alles gemischt) ---------- */
 const C13: LevelInfo[] = [
   {
@@ -1448,6 +1584,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'terms', title: L('Terme und Funktionen', 'Terms and functions'), chapters: ['c11', 'c12', 'c16', 'c17', 'c19'] },
   { id: 'riddles', title: L('Rätsel', 'Puzzles'), chapters: ['c21', 'c22', 'c13'] },
   { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
+  { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
 ];
 
@@ -1478,6 +1615,8 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c24', title: L('Spiegel-Maschine', 'Mirror machine'), grades: '5–7', teaches: ['rev'], levels: C24 },
   { id: 'c25', title: L('Runden-Maschine', 'Rounding machine'), grades: '5–6', teaches: ['round'], levels: C25 },
   { id: 'c26', title: L('Wechsel-Weiche', 'Alternator'), grades: '6–9', teaches: ['alt'], levels: C26 },
+  { id: 'c29', title: L('Brüche', 'Fractions'), grades: '6', teaches: ['frac', 'inv'], levels: C29 },
+  { id: 'c30', title: L('Gleichungen', 'Equations'), grades: '7–8', teaches: ['eq'], levels: C30 },
   { id: 'c27', title: L('Großmeister', 'Grandmaster'), grades: '8–9', teaches: [], levels: C27 },
 ];
 
@@ -1490,6 +1629,7 @@ export const chapterOf = (level: LevelInfo): Chapter => CHAPTERS.find((c) => c.l
 
 /** Werkzeugkasten eines Levels: alle Bauteile aus seinem Kapitel und allen davor (Rätsel außerhalb: alle). */
 export function kitFor(level: LevelInfo): KitItem[] {
+  if (level.kit) return KIT.filter((k) => level.kit!.includes(k.id));
   const chapter = chapterOf(level);
   if (chapter === SPECIAL) return [...KIT];
   const upto = CHAPTERS.indexOf(chapter);
