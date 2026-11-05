@@ -136,4 +136,5 @@ Je nach gewählter Richtung **einen** dieser Sätze vor jeden Prompt kopieren:
 - **Anzeigen statt Aufdruck:** Maschinen zeigen ihre Rechnung auf einem kleinen **Leuchtdisplay** (dunkler Bildschirm, leuchtende Ziffern: Plus grün, Mal gelb, Lager blau). Die Quelle zeigt ihre Zahl auf einer runden Metallscheibe. Das Lager hat Punkte für den Fortschritt (●○○). Große Zahlen auf goldenen Kugeln.
 - **Vorhandene Bilder eingebaut:** Titelbild als Startbildschirm, die 13 **Kapitelbilder** als Karten in der Level-Auswahl, Maschinen je Rechenart, Weichen, Bäume, Büsche, Sterne, Münze.
 - Oberfläche: helle Platten mit Metallecken und Schrauben, gelbe Schilder mit Nieten, Warnstreifen am unteren Rand, dunkelblauer Hintergrund mit Zahnrädern.
+- Alle Bild-Prompts komplett ausgeschrieben: `docs/ZAHLENFABRIK-PROMPTS.md`.
 - Entwurf als HTML zum Nachbauen: Screenshots in der Unterhaltung; beim Umbau zuerst Spielbildschirm, dann Level-Auswahl, dann Titel.
