@@ -12,14 +12,15 @@ export type Dir = 0 | 1 | 2 | 3; // rechts, unten, links, oben
 export const DX = [1, 0, -1, 0] as const;
 export const DY = [0, 1, 0, -1] as const;
 
-export type Sym = '+' | '−' | '×' | '÷' | '²';
+/** Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√). */
+export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√';
 export interface Op {
   sym: Sym;
   n: number;
 }
 
 /** Prüfung einer Weiche: Was sie bejaht, läuft geradeaus weiter, alles andere biegt ab. */
-export type Test = { kind: 'even' } | { kind: 'div'; n: number } | { kind: 'prime' } | { kind: 'gt'; n: number };
+export type Test = { kind: 'even' } | { kind: 'div'; n: number } | { kind: 'prime' } | { kind: 'gt'; n: number } | { kind: 'square' };
 
 export interface Part {
   /** Band (ohne Rechnung) oder Maschine. */
@@ -29,6 +30,8 @@ export interface Part {
   /** Weiche: Prüfung; „nein“ geht zur Seite `side` (1 = rechts, 3 = links, von der Laufrichtung aus). */
   sort?: Test;
   side?: 1 | 3;
+  /** Verteiler: jede Zahl läuft als Kopie in beide Richtungen (geradeaus und zur Seite `side`). */
+  split?: true;
   /** Zusammenführen: zwei Zahlen werden zu Summe oder Produkt. */
   merge?: '+' | '×';
   /** Brücke: Zahlen laufen geradeaus darüber, waagerecht und senkrecht getrennt (zum Kreuzen). */
@@ -53,12 +56,28 @@ export function passes(test: Test, value: number): boolean {
       return isPrime(value);
     case 'gt':
       return value > test.n;
+    case 'square':
+      return isSquare(value);
   }
 }
 
-/** Ausgänge eines Teils: Weiche zwei (ja, nein), alle anderen einer. */
+/** Quadratzahl? (0, 1, 4, 9, …) */
+export function isSquare(n: number): boolean {
+  if (!Number.isInteger(n) || n < 0) return false;
+  const r = Math.round(Math.sqrt(n));
+  return r * r === n;
+}
+
+/** Quersumme (Summe der Ziffern, ohne Vorzeichen). */
+export function digitSum(n: number): number {
+  return String(Math.abs(Math.trunc(n)))
+    .split('')
+    .reduce((a, d) => a + Number(d), 0);
+}
+
+/** Ausgänge eines Teils: Weiche zwei (ja, nein), Verteiler zwei (beide), alle anderen einer. */
 export function outputs(part: Part): Dir[] {
-  return part.sort ? [part.dir, ((part.dir + (part.side ?? 1)) % 4) as Dir] : [part.dir];
+  return part.sort || part.split ? [part.dir, ((part.dir + (part.side ?? 1)) % 4) as Dir] : [part.dir];
 }
 
 /** Was ein Lager annimmt. */
@@ -97,6 +116,8 @@ export interface Level {
   par: number;
   /** Teile, die schon auf der Karte stehen und sich nicht entfernen lassen. */
   fixed?: { x: number; y: number; part: Part }[];
+  /** So viele Zahlen gibt die Quelle aus (ohne Angabe: so viele, wie die Lager brauchen). Für Verteiler und Zusammenführer. */
+  emit?: number;
 }
 
 export type Grid = Map<string, Part>;
@@ -144,10 +165,30 @@ export function apply(op: Op, value: number): number | null {
       return value * op.n;
     case '÷':
       return value % op.n === 0 ? value / op.n : null;
+    case '%':
+      return ((value % op.n) + op.n) % op.n;
+    case 'Σ':
+      return digitSum(value);
+    case '√':
+      return isSquare(value) ? Math.round(Math.sqrt(value)) : null;
   }
 }
 
-export const opLabel = (op: Op) => (op.sym === '²' ? 'x²' : `${op.sym}${op.n}`);
+/** Kurze Aufschrift einer Maschine (passt auf ein Feld). */
+export function opLabel(op: Op): string {
+  switch (op.sym) {
+    case '²':
+      return 'x²';
+    case '%':
+      return `mod ${op.n}`;
+    case 'Σ':
+      return 'QS';
+    case '√':
+      return '√x';
+    default:
+      return `${op.sym}${op.n}`;
+  }
+}
 
 export interface Item {
   id: number;
@@ -156,11 +197,13 @@ export interface Item {
   value: number;
   /** Wartet im Zusammenführer auf eine zweite Zahl (nur offene Welt). */
   wait?: boolean;
-  /** Richtung des letzten Schritts (für die Brücke; nur offene Welt). */
+  /** Richtung des letzten Schritts (für die Brücke). */
   heading?: Dir;
+  /** Im Zusammenführer: aus dieser Richtung gekommen (Level). */
+  from?: Dir;
 }
 
-export type ErrorKind = 'fell' | 'wrong' | 'divide' | 'timeout';
+export type ErrorKind = 'fell' | 'wrong' | 'divide' | 'root' | 'timeout';
 
 export interface State {
   tick: number;
@@ -188,59 +231,88 @@ const isWall = (level: Level, x: number, y: number) => level.walls.some(([wx, wy
 
 const targetIndex = (level: Level, x: number, y: number) => targetsOf(level).findIndex((t) => t.x === x && t.y === y);
 
-/** Richtung, in die ein Feld eine Zahl weitergibt (null: kein Teil); Weichen prüfen die Zahl. */
-function dirAt(level: Level, grid: Grid, x: number, y: number, value: number): Dir | null {
-  if (x === level.source.x && y === level.source.y) return level.source.dir;
-  const part = grid.get(key(x, y));
-  if (!part) return null;
-  return part.sort ? outputs(part)[passes(part.sort, value) ? 0 : 1]! : part.dir;
+/**
+ * Richtungen, in die ein Feld eine Zahl weitergibt (leer: kein Teil). Weichen
+ * prüfen die Zahl, Verteiler geben in beide Richtungen, Brücken geradeaus.
+ */
+function dirsAt(level: Level, grid: Grid, item: Item): Dir[] {
+  if (item.x === level.source.x && item.y === level.source.y) return [level.source.dir];
+  const part = grid.get(key(item.x, item.y));
+  if (!part) return [];
+  if (part.sort) return [outputs(part)[passes(part.sort, item.value) ? 0 : 1]!];
+  if (part.split) return outputs(part);
+  if (part.bridge) return [item.heading ?? part.dir];
+  return [part.dir];
 }
 
-/** Ein Takt: alle Zahlen ein Feld weiter, dann ggf. eine neue aus der Quelle. */
+/** So viele Zahlen gibt die Quelle insgesamt aus. */
+export const emitCount = (level: Level) => level.emit ?? totalNeed(level);
+
+/**
+ * Ein Takt: alle Zahlen ein Feld weiter, dann ggf. eine neue aus der Quelle.
+ * Im Zusammenführer wartet eine Zahl, bis aus einer anderen Richtung eine
+ * zweite kommt (der Reihe nach); dann läuft die Summe bzw. das Produkt weiter.
+ */
 export function step(level: Level, grid: Grid, state: State): State {
   if (state.error || state.won) return state;
   const targets = targetsOf(level);
   const s: State = { ...state, tick: state.tick + 1, items: [], got: [...state.got] };
+  // Wartende Zahlen bleiben stehen
+  for (const item of state.items) if (item.wait) s.items.push(item);
   for (const item of state.items) {
-    const dir = dirAt(level, grid, item.x, item.y, item.value);
-    if (dir === null) {
+    if (item.wait) continue;
+    const dirs = dirsAt(level, grid, item);
+    if (!dirs.length) {
       s.error = { kind: 'fell', x: item.x, y: item.y, value: item.value };
       return s;
     }
-    const x = item.x + DX[dir];
-    const y = item.y + DY[dir];
-    const ti = targetIndex(level, x, y);
-    if (ti >= 0) {
-      if (!accepts(targets[ti]!, item.value, s.got[ti] ?? 0)) {
-        s.error = { kind: 'wrong', x, y, value: item.value, target: ti };
+    for (const [i, dir] of dirs.entries()) {
+      const x = item.x + DX[dir];
+      const y = item.y + DY[dir];
+      const ti = targetIndex(level, x, y);
+      if (ti >= 0) {
+        if (!accepts(targets[ti]!, item.value, s.got[ti] ?? 0)) {
+          s.error = { kind: 'wrong', x, y, value: item.value, target: ti };
+          return s;
+        }
+        s.got[ti] = (s.got[ti] ?? 0) + 1;
+        s.delivered += 1;
+        continue;
+      }
+      const part = grid.get(key(x, y));
+      if (x < 0 || y < 0 || x >= level.cols || y >= level.rows || isWall(level, x, y) || !part || (x === level.source.x && y === level.source.y)) {
+        s.error = { kind: 'fell', x: item.x, y: item.y, value: item.value };
         return s;
       }
-      s.got[ti] = (s.got[ti] ?? 0) + 1;
-      s.delivered += 1;
-      continue;
-    }
-    const part = grid.get(key(x, y));
-    if (x < 0 || y < 0 || x >= level.cols || y >= level.rows || isWall(level, x, y) || !part || (x === level.source.x && y === level.source.y)) {
-      s.error = { kind: 'fell', x: item.x, y: item.y, value: item.value };
-      return s;
-    }
-    let value = item.value;
-    if (part.op) {
-      const next = apply(part.op, value);
-      if (next === null) {
-        s.error = { kind: 'divide', x, y, value };
-        return s;
+      let value = item.value;
+      if (part.op) {
+        const next = apply(part.op, value);
+        if (next === null) {
+          s.error = { kind: part.op.sym === '√' ? 'root' : 'divide', x, y, value };
+          return s;
+        }
+        value = next;
       }
-      value = next;
+      // Verteiler: die zweite Kopie bekommt eine eigene Nummer
+      const id = i === 0 ? item.id : s.nextId++;
+      if (part.merge) {
+        // Partner aus einer anderen Richtung, der schon wartet?
+        const k = s.items.findIndex((o) => o.wait && o.x === x && o.y === y && o.from !== dir);
+        if (k >= 0) {
+          const other = s.items.splice(k, 1)[0]!;
+          s.items.push({ id, x, y, value: part.merge === '+' ? other.value + value : other.value * value, heading: part.dir });
+        } else s.items.push({ id, x, y, value, heading: dir, wait: true, from: dir });
+        continue;
+      }
+      s.items.push({ id, x, y, value, heading: dir });
     }
-    s.items.push({ ...item, x, y, value });
   }
   if (targets.every((t, i) => (s.got[i] ?? 0) >= t.need)) {
     s.won = true;
     return s;
   }
-  if (s.emitted < totalNeed(level) && state.tick % EMIT_EVERY === 0) {
-    s.items.push({ id: s.nextId, x: level.source.x, y: level.source.y, value: sourceValue(level, s.emitted, s.pick) });
+  if (s.emitted < emitCount(level) && state.tick % EMIT_EVERY === 0) {
+    s.items.push({ id: s.nextId, x: level.source.x, y: level.source.y, value: sourceValue(level, s.emitted, s.pick), heading: level.source.dir });
     s.nextId += 1;
     s.emitted += 1;
   }

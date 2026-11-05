@@ -11,6 +11,7 @@ export type PartSpec =
   | { id: string; kind: 'op'; op: Op; price: number }
   | { id: string; kind: 'sort'; test: Test; price: number }
   | { id: string; kind: 'merge'; mode: '+' | '×'; price: number }
+  | { id: string; kind: 'split'; price: number }
   | { id: string; kind: 'bridge'; price: number };
 
 const op = (sym: Op['sym'], n: number, price: number): PartSpec => ({ id: `${sym}${n}`, kind: 'op', op: { sym, n }, price });
@@ -48,9 +49,10 @@ export function partId(part: Part): string {
   if (part.op) return opLabel(part.op);
   if (part.sort) {
     const t = part.sort;
-    return t.kind === 'even' ? 'even' : t.kind === 'prime' ? 'prime' : t.kind === 'div' ? `div${t.n}` : `gt${t.n}`;
+    return t.kind === 'even' || t.kind === 'prime' || t.kind === 'square' ? t.kind : t.kind === 'div' ? `div${t.n}` : `gt${t.n}`;
   }
   if (part.merge) return `merge${part.merge}`;
+  if (part.split) return 'split';
   if (part.bridge) return 'bridge';
   return 'belt';
 }
@@ -65,6 +67,8 @@ export function makePart(spec: PartSpec, dir: Dir, side: 1 | 3 = 1): Part {
       return { op: null, dir, sort: spec.test, side };
     case 'merge':
       return { op: null, dir, merge: spec.mode };
+    case 'split':
+      return { op: null, dir, split: true, side };
     case 'bridge':
       return { op: null, dir, bridge: true };
   }
@@ -85,6 +89,8 @@ export function testLabel(test: Test): Localized {
       return L('Prim?', 'prime?');
     case 'gt':
       return L(`>${test.n}?`, `>${test.n}?`);
+    case 'square':
+      return L('Quadrat?', 'square?');
   }
 }
 
@@ -98,6 +104,8 @@ export function specLabel(spec: PartSpec): Localized {
       return testLabel(spec.test);
     case 'merge':
       return spec.mode === '+' ? L('a+b', 'a+b') : L('a×b', 'a×b');
+    case 'split':
+      return L('Kopie', 'Copy');
     case 'bridge':
       return L('Brücke', 'Bridge');
   }
@@ -115,8 +123,11 @@ export function specName(spec: PartSpec): Localized {
       if (t.kind === 'even') return L('Weiche „gerade?“', 'Switch “even?”');
       if (t.kind === 'prime') return L('Weiche „Primzahl?“', 'Switch “prime?”');
       if (t.kind === 'div') return L(`Weiche „teilbar durch ${t.n}?“`, `Switch “divisible by ${t.n}?”`);
+      if (t.kind === 'square') return L('Weiche „Quadratzahl?“', 'Switch “square number?”');
       return L(`Weiche „größer als ${t.n}?“`, `Switch “greater than ${t.n}?”`);
     }
+    case 'split':
+      return L('Verteiler (Kopie in zwei Richtungen)', 'Splitter (copy in two directions)');
     case 'merge':
       return spec.mode === '+' ? L('Zusammenführen: Summe', 'Merger: sum') : L('Zusammenführen: Produkt', 'Merger: product');
     case 'bridge':

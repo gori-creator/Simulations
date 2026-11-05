@@ -108,3 +108,20 @@ export function straight(level: Level, ops: Op[] = []): Grid {
   lay(level, g, path, [t.x, t.y], ops);
   return g;
 }
+
+const ARROWS: Record<string, Dir> = { '>': 0, v: 1, '<': 2, '^': 3 };
+
+/**
+ * Fabrik aus einer Zeichnung: Zeile = y, Spalte = x. `> v < ^` sind Bänder,
+ * Buchstaben stehen für Teile aus `legend`, alles andere bleibt frei.
+ */
+export function ascii(rows: string[], legend: Record<string, Part> = {}): Grid {
+  const g: Grid = new Map();
+  rows.forEach((row, y) =>
+    [...row].forEach((ch, x) => {
+      if (ch in ARROWS) g.set(key(x, y), { op: null, dir: ARROWS[ch]! });
+      else if (legend[ch]) g.set(key(x, y), { ...legend[ch]! });
+    }),
+  );
+  return g;
+}

@@ -33,14 +33,34 @@ const wall = (x: number, rows: number, gaps: number[]): [number, number][] =>
     .map((y): [number, number] => [x, y]);
 
 const fixedOp = (x: number, y: number, sym: Op['sym'], n: number) => ({ x, y, part: { op: { sym, n }, dir: 0 as const } });
-const square = (x: number, y: number) => ({ x, y, part: { op: { sym: '²' as const, n: 2 }, dir: 0 as const } });
+
+/** Ganze Karte Fels, nur die genannten Felder sind frei (Gänge). */
+const corridor = (cols: number, rows: number, open: [number, number][]): [number, number][] => {
+  const free = new Set(open.map(([x, y]) => `${x},${y}`));
+  const out: [number, number][] = [];
+  for (let x = 0; x < cols; x++) for (let y = 0; y < rows; y++) if (!free.has(`${x},${y}`)) out.push([x, y]);
+  return out;
+};
+
+/** Gänge der Brücken-Level: ein Weg muss den anderen kreuzen (Feld 7, 3). */
+const CROSS: [number, number][] = [
+  [1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4],
+  [4, 3], [5, 3], [6, 3], [7, 3], [8, 3], [9, 3],
+  [7, 2], [7, 1], [8, 1], [9, 1], [10, 1], [11, 1],
+  [9, 4], [9, 5], [9, 6], [9, 7], [10, 7], [11, 7],
+];
+const sq = (x: number, y: number) => ({ x, y, part: { op: { sym: '²' as const, n: 2 }, dir: 0 as const } });
 const seq = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
 const table = (f: (x: number) => number, xs: number[]) => xs.map(f);
+/** Zahl für Titel: deutsch mit Punkt, Minus als −. */
+const fmt = (n: number) => new Intl.NumberFormat('de-DE').format(n).replace('-', '−');
+const fmtEn = (n: number) => new Intl.NumberFormat('en-GB').format(n).replace('-', '−');
 
 const even: Test = { kind: 'even' };
 const div = (n: number): Test => ({ kind: 'div', n });
 const gt = (n: number): Test => ({ kind: 'gt', n });
 const prime: Test = { kind: 'prime' };
+const square: Test = { kind: 'square' };
 const yes = (test: Test) => ({ kind: 'test' as const, test });
 const no = (test: Test) => ({ kind: 'test' as const, test, not: true });
 
@@ -786,6 +806,409 @@ const C12: LevelInfo[] = [
   },
 ];
 
+
+/* ---------- Kapitel: Rest-Maschine ---------- */
+const C14: LevelInfo[] = [
+  {
+    id: 'c14-1',
+    title: L('Was bleibt übrig?', 'What is left over?'),
+    hint: L('Neu: die Rest-Maschine. Aus 17 soll 2 werden – mit nur einer Maschine. Bei welcher Zahl bleibt beim Teilen 2 übrig?', 'New: the remainder machine. 17 should become 2 – with just one machine. Dividing by which number leaves 2?'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 17 },
+    target: { x: 10, y: 3, value: 2 }, need: 3,
+    walls: [[5, 1], [5, 2], [5, 4], [5, 5]],
+    maxMachines: 1,
+    par: 8,
+  },
+  {
+    id: 'c14-2',
+    title: L('Immer Rest 1', 'Always remainder 1'),
+    hint: L('13, 25, 37, 49 kommen – und das Lager will jedes Mal die 1. Eine Maschine reicht.', '13, 25, 37, 49 arrive – and the storage wants 1 every time. One machine is enough.'),
+    cols: 12, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, values: [13, 25, 37, 49] },
+    target: { x: 10, y: 1, value: 1 }, need: 4,
+    walls: wall(5, 8, [2]),
+    maxMachines: 1,
+    par: 13,
+  },
+  {
+    id: 'c14-3',
+    title: L('Nullen und Einsen', 'Zeros and ones'),
+    hint: L('1 bis 8 kommen. Oben will das Lager nur Nullen, unten nur Einsen.', '1 to 8 arrive. The top storage only wants zeros, the bottom one only ones.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 8) },
+    targets: [
+      { x: 11, y: 1, need: 4, accept: { kind: 'value', n: 0 } },
+      { x: 11, y: 7, need: 4, accept: { kind: 'value', n: 1 } },
+    ],
+    walls: [[6, 3], [6, 5], [7, 3], [7, 5]],
+    par: 15,
+  },
+  {
+    id: 'c14-4',
+    title: L('Wochentage', 'Days of the week'),
+    hint: L('Der 3., 10., 17., 24. und 31. eines Monats sind derselbe Wochentag. Das Lager will jedes Mal die 3 – mit einer Maschine.', 'The 3rd, 10th, 17th, 24th and 31st of a month are the same weekday. The storage wants 3 every time – with one machine.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: [3, 10, 17, 24, 31] },
+    target: { x: 11, y: 3, value: 3 }, need: 5,
+    walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]],
+    maxMachines: 1,
+    pro: true,
+    par: 9,
+  },
+  {
+    id: 'c14-5',
+    title: L('Aus 71 wird 45', '71 becomes 45'),
+    hint: L('Höchstens zwei Maschinen – und nur ein Weg führt zum Ziel.', 'At most two machines – and only one way leads to the goal.'),
+    cols: 15, rows: 9,
+    source: { x: 1, y: 7, dir: 0, value: 71 },
+    target: { x: 13, y: 1, value: 45 }, need: 3,
+    walls: [...rocks(4, 3, 4, 8), ...rocks(8, 0, 8, 5), ...rocks(11, 3, 13, 3)],
+    maxMachines: 2,
+    pro: true,
+    par: 25,
+  },
+];
+
+/* ---------- Kapitel: Quersummen-Maschine ---------- */
+const C15: LevelInfo[] = [
+  {
+    id: 'c15-1',
+    title: L('Ziffern addieren', 'Adding digits'),
+    hint: L('Neu: die Quersummen-Maschine. Aus 1234 soll 10 werden.', 'New: the digit-sum machine. 1234 should become 10.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 1234 },
+    target: { x: 10, y: 5, value: 10 }, need: 3,
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3]],
+    maxMachines: 1,
+    par: 12,
+  },
+  {
+    id: 'c15-2',
+    title: L('Die Neunerprobe', 'Casting out nines'),
+    hint: L('18, 81, 36, 44, 52, 70 kommen. Oben will das Lager dreimal die 9, unten Zahlen, die nicht durch 3 teilbar sind.', '18, 81, 36, 44, 52, 70 arrive. The top storage wants 9 three times, the bottom one numbers not divisible by 3.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [18, 81, 36, 44, 52, 70] },
+    targets: [
+      { x: 10, y: 1, need: 3, accept: { kind: 'value', n: 9 } },
+      { x: 10, y: 7, need: 3, accept: no(div(3)) },
+    ],
+    walls: [[6, 2], [6, 3], [6, 5], [6, 6]],
+    par: 14,
+  },
+  {
+    id: 'c15-3',
+    title: L('Aus 7992 wird 9', '7992 becomes 9'),
+    hint: L('Höchstens zwei Maschinen. Es gibt mehr als einen Weg.', 'At most two machines. There is more than one way.'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 7992 },
+    target: { x: 11, y: 1, value: 9 }, need: 3,
+    walls: wall(6, 8, [3]),
+    maxMachines: 2,
+    par: 14,
+  },
+  {
+    id: 'c15-4',
+    title: L('Aus 59 wird 84', '59 becomes 84'),
+    hint: L('Höchstens zwei Maschinen – und nur ein einziger Weg. Was haben 59 und 84 miteinander zu tun?', 'At most two machines – and only one single way. What do 59 and 84 have to do with each other?'),
+    cols: 15, rows: 9,
+    source: { x: 1, y: 1, dir: 1, value: 59 },
+    target: { x: 13, y: 7, value: 84 }, need: 3,
+    walls: [...rocks(4, 0, 4, 5), ...rocks(9, 3, 9, 8)],
+    maxMachines: 2,
+    pro: true,
+    par: 25,
+  },
+];
+
+/* ---------- Kapitel: Wurzel-Maschine ---------- */
+const C16: LevelInfo[] = [
+  {
+    id: 'c16-1',
+    title: L('Die Wurzel', 'The square root'),
+    hint: L('Neu: die Wurzel-Maschine. Welche Zahl mal sich selbst ergibt 144?', 'New: the square-root machine. Which number times itself gives 144?'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 144 },
+    target: { x: 10, y: 3, value: 12 }, need: 3,
+    walls: [[5, 1], [5, 2], [5, 4], [5, 5]],
+    par: 8,
+  },
+  {
+    id: 'c16-2',
+    title: L('Quadratzahlen zurück', 'Square numbers back'),
+    hint: L('1, 4, 9, 16, 25 kommen. Das Lager will 1, 2, 3, 4, 5.', '1, 4, 9, 16, 25 arrive. The storage wants 1, 2, 3, 4, 5.'),
+    cols: 12, rows: 7,
+    source: { x: 1, y: 3, dir: 0, value: 1, values: [1, 4, 9, 16, 25] },
+    targets: [{ x: 10, y: 3, need: 5, accept: { kind: 'seq', values: seq(1, 5) } }],
+    walls: [[5, 2], [5, 3], [5, 4]],
+    par: 12,
+  },
+  {
+    id: 'c16-3',
+    title: L('Aus 169 wird 91', '169 becomes 91'),
+    hint: L('Höchstens zwei Maschinen – und es gibt nur einen Weg.', 'At most two machines – and there is only one way.'),
+    cols: 13, rows: 7,
+    source: { x: 1, y: 1, dir: 0, value: 169 },
+    target: { x: 11, y: 5, value: 91 }, need: 3,
+    walls: [[5, 0], [5, 1], [5, 2], [5, 3], [8, 3], [8, 4], [8, 5], [8, 6]],
+    maxMachines: 2,
+    par: 17,
+  },
+  {
+    id: 'c16-4',
+    title: L('Rückwärts mit Wurzel', 'Backwards with a root'),
+    hint: L('Erst √x, dann +3 – und 10 kommt an. Welche Startzahl? Achtung: Die Wurzel geht nur bei Quadratzahlen.', 'First √x, then +3 – and 10 arrives. Which starting number? Careful: the root only works for square numbers.'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 6, dir: 0, value: 1, pick: { min: 1, max: 100 } },
+    target: { x: 11, y: 1, value: 10 }, need: 3,
+    walls: [...wall(4, 8, [6]), ...wall(8, 8, [1])],
+    fixed: [{ x: 4, y: 6, part: { op: { sym: '√', n: 2 }, dir: 0 } }, fixedOp(8, 1, '+', 3)],
+    maxMachines: 0,
+    pro: true,
+    par: 12,
+  },
+];
+
+/* ---------- Kapitel: Weiche „Quadratzahl?“ ---------- */
+const C17: LevelInfo[] = [
+  {
+    id: 'c17-1',
+    title: L('Quadratzahlen finden', 'Finding square numbers'),
+    hint: L('1 bis 10: Quadratzahlen nach oben, alle anderen nach unten.', '1 to 10: square numbers go up, all others go down.'),
+    cols: 11, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 10) },
+    targets: [
+      { x: 9, y: 1, need: 3, accept: yes(square) },
+      { x: 9, y: 7, need: 7, accept: no(square) },
+    ],
+    walls: [[5, 0], [5, 8]],
+    par: 13,
+  },
+  {
+    id: 'c17-2',
+    title: L('Eins mehr', 'One more'),
+    hint: L('3, 5, 8, 10, 15, 20 kommen – keine Quadratzahl dabei. Oben sollen aber drei Quadratzahlen ankommen.', '3, 5, 8, 10, 15, 20 arrive – no square number among them. But three square numbers should arrive at the top.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: [3, 5, 8, 10, 15, 20] },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(square) },
+      { x: 11, y: 7, need: 3, accept: no(square) },
+    ],
+    walls: [[6, 3], [6, 5], [7, 3], [7, 5]],
+    par: 15,
+  },
+  {
+    id: 'c17-3',
+    title: L('Quadrat, prim, Rest', 'Square, prime, rest'),
+    hint: L('1 bis 12: Quadratzahlen nach oben, Primzahlen in die Mitte, der Rest nach unten.', '1 to 12: square numbers at the top, primes in the middle, the rest at the bottom.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 12) },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(square) },
+      { x: 11, y: 4, need: 5, accept: yes(prime) },
+      { x: 11, y: 7, need: 4, accept: no(prime) },
+    ],
+    walls: [[6, 0], [6, 8]],
+    pro: true,
+    par: 16,
+  },
+];
+
+/* ---------- Kapitel: Verteiler ---------- */
+const C18: LevelInfo[] = [
+  {
+    id: 'c18-1',
+    title: L('Doppelt geliefert', 'Delivered twice'),
+    hint: L('Neu: der Verteiler. Beide Lager wollen 1, 2, 3, 4 – aber die Quelle gibt jede Zahl nur einmal aus.', 'New: the splitter. Both storages want 1, 2, 3, 4 – but the source gives out each number only once.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
+    targets: [
+      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
+      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    emit: 4,
+    par: 21,
+  },
+  {
+    id: 'c18-2',
+    title: L('Zwei Rechnungen', 'Two calculations'),
+    hint: L('Oben will das Lager x², unten x + 10 – für dieselben Zahlen 1 bis 4.', 'The top storage wants x², the bottom one x + 10 – for the same numbers 1 to 4.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
+    targets: [
+      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => x * x, seq(1, 4)) } },
+      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => x + 10, seq(1, 4)) } },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    emit: 4,
+    par: 21,
+  },
+  {
+    id: 'c18-3',
+    title: L('Einmal, zweimal, dreimal', 'Once, twice, three times'),
+    hint: L('Drei Lager: x, 2x und 3x. Du brauchst zwei Verteiler.', 'Three storages: x, 2x and 3x. You need two splitters.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
+    targets: [
+      { x: 10, y: 1, need: 4, accept: { kind: 'seq', values: seq(1, 4) } },
+      { x: 10, y: 4, need: 4, accept: { kind: 'seq', values: table((x) => 2 * x, seq(1, 4)) } },
+      { x: 10, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => 3 * x, seq(1, 4)) } },
+    ],
+    walls: [[6, 0], [6, 8], [5, 2], [5, 6]],
+    emit: 4,
+    par: 27,
+  },
+  {
+    id: 'c18-4',
+    title: L('Kopieren und sortieren', 'Copy and sort'),
+    hint: L('1 bis 6: Oben will das Lager alle Zahlen verdoppelt (2, 4 … 12), in der Mitte die geraden, unten die ungeraden.', '1 to 6: the top storage wants all numbers doubled (2, 4 … 12), the middle one the even ones, the bottom one the odd ones.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 10, y: 1, need: 6, accept: { kind: 'seq', values: table((x) => 2 * x, seq(1, 6)) } },
+      { x: 10, y: 4, need: 3, accept: yes(even) },
+      { x: 10, y: 7, need: 3, accept: no(even) },
+    ],
+    walls: [[6, 0], [6, 8], [5, 2], [5, 6]],
+    emit: 6,
+    pro: true,
+    par: 27,
+  },
+];
+
+/* ---------- Kapitel: Zusammenführer ---------- */
+const mergeMap = { cols: 13, rows: 7, walls: [[2, 0], [6, 0], [10, 0], [2, 5], [6, 6], [10, 5]] as [number, number][] };
+const mergeLevel = (id: string, title: Localized, hint: Localized, f: (x: number) => number, maxMachines: number, pro = false, par = 14): LevelInfo => ({
+  id, title, hint,
+  ...mergeMap,
+  source: { x: 1, y: 3, dir: 0, value: 1, values: seq(1, 5) },
+  targets: [{ x: 11, y: 3, need: 5, accept: { kind: 'seq', values: table(f, seq(1, 5)) } }],
+  emit: 5,
+  maxMachines,
+  ...(pro ? { pro } : {}),
+  par,
+});
+const C19: LevelInfo[] = [
+  mergeLevel('c19-1', L('x + x', 'x + x'), L('Neu: Verteiler und Zusammenführer. Ohne Maschine soll 2, 4, 6, 8, 10 ankommen: Teile jede Zahl in zwei Kopien und führ sie wieder zusammen.', 'New: splitter and merger. Without a machine, 2, 4, 6, 8, 10 should arrive: split every number into two copies and merge them again.'), (x) => x + x, 0),
+  mergeLevel('c19-2', L('x · x', 'x · x'), L('Wieder ohne Maschine: Das Lager will 1, 4, 9, 16, 25. Der Zusammenführer kann auch malnehmen.', 'Again without a machine: the storage wants 1, 4, 9, 16, 25. The merger can also multiply.'), (x) => x * x, 0),
+  mergeLevel('c19-3', L('x² + x', 'x² + x'), L('Das Lager will 2, 6, 12, 20, 30 – mit nur einer Maschine. Es gibt zwei Wege!', 'The storage wants 2, 6, 12, 20, 30 – with just one machine. There are two ways!'), (x) => x * x + x, 1),
+  mergeLevel('c19-4', L('x³', 'x³'), L('Hoch drei: 1, 8, 27, 64, 125 – mit nur einer Maschine.', 'Cubed: 1, 8, 27, 64, 125 – with just one machine.'), (x) => x ** 3, 1),
+  mergeLevel('c19-5', L('(x + 1) · (x − 1)', '(x + 1) · (x − 1)'), L('Das Lager will 0, 3, 8, 15, 24. Zwei Maschinen, ein Zusammenführer.', 'The storage wants 0, 3, 8, 15, 24. Two machines, one merger.'), (x) => (x + 1) * (x - 1), 2),
+  mergeLevel('c19-6', L('Nur eine Maschine', 'Just one machine'), L('Das Lager will 3, 8, 15, 24, 35 – mit nur einer Maschine. Schau dir die Abstände an.', 'The storage wants 3, 8, 15, 24, 35 – with just one machine. Look at the steps between them.'), (x) => x * (x + 2), 1, true),
+  mergeLevel('c19-7', L('x³ − x', 'x³ − x'), L('0, 6, 24, 60, 120 – mit höchstens zwei Maschinen. Tipp: x³ − x = x · (x² − 1).', '0, 6, 24, 60, 120 – with at most two machines. Tip: x³ − x = x · (x² − 1).'), (x) => x ** 3 - x, 2, true),
+  mergeLevel('c19-8', L('Zwei Quadrate', 'Two squares'), L('x² + (x + 1)²: 5, 13, 25, 41, 61 – höchstens drei Maschinen.', 'x² + (x + 1)²: 5, 13, 25, 41, 61 – at most three machines.'), (x) => x * x + (x + 1) ** 2, 3, true),
+];
+
+/* ---------- Kapitel: Brücke ---------- */
+const crossLevel = (id: string, title: Localized, hint: Localized, extra: Partial<LevelInfo>): LevelInfo => ({
+  id, title, hint,
+  cols: 12, rows: 9,
+  source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 4) },
+  targets: [],
+  walls: corridor(12, 9, CROSS),
+  par: 21,
+  ...extra,
+});
+const C20: LevelInfo[] = [
+  crossLevel('c20-1', L('Über Kreuz', 'Criss-cross'), L('Neu: die Brücke. Die Weiche steht schon fest: Gerade Zahlen gehen geradeaus, müssen aber nach oben; ungerade gehen nach oben, müssen aber nach unten. Die Wege kreuzen sich!', 'New: the bridge. The switch is already fixed: even numbers go straight but have to go up; odd numbers go up but have to go down. The paths cross!'), {
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: yes(even) },
+      { x: 11, y: 7, need: 3, accept: no(even) },
+    ],
+    fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, sort: even, side: 3 } }],
+  }),
+  crossLevel('c20-2', L('Kopien über Kreuz', 'Copies criss-cross'), L('Der Verteiler steht schon fest. Oben will das Lager x², unten x + 5.', 'The splitter is already fixed. The top storage wants x², the bottom one x + 5.'), {
+    targets: [
+      { x: 11, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => x * x, seq(1, 4)) } },
+      { x: 11, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => x + 5, seq(1, 4)) } },
+    ],
+    fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, split: true, side: 3 } }],
+    emit: 4,
+  }),
+  crossLevel('c20-3', L('Kreuzung mit Rechnung', 'Crossing with calculation'), L('Oben will das Lager (x + 1)², unten 3x − 1. Vier Maschinen und eine Brücke.', 'The top storage wants (x + 1)², the bottom one 3x − 1. Four machines and a bridge.'), {
+    targets: [
+      { x: 11, y: 1, need: 4, accept: { kind: 'seq', values: table((x) => (x + 1) ** 2, seq(1, 4)) } },
+      { x: 11, y: 7, need: 4, accept: { kind: 'seq', values: table((x) => 3 * x - 1, seq(1, 4)) } },
+    ],
+    fixed: [{ x: 4, y: 4, part: { op: null, dir: 0, split: true, side: 3 } }],
+    emit: 4,
+    pro: true,
+  }),
+];
+
+/* ---------- Kapitel: Rätsel-Werkstatt (alle Bauteile, je genau ein Weg) ---------- */
+const MAP_A = { cols: 15, rows: 9, source: { x: 1, y: 1, dir: 1 as const, value: 0 }, walls: [...rocks(4, 0, 4, 5), ...rocks(9, 3, 9, 8)], to: { x: 13, y: 7 }, par: 25 };
+const MAP_B = { cols: 15, rows: 9, source: { x: 1, y: 1, dir: 1 as const, value: 0 }, walls: [...rocks(3, 0, 3, 6), ...rocks(7, 2, 7, 8), ...rocks(11, 0, 11, 6)], to: { x: 13, y: 7 }, par: 29 };
+const MAP_C = { cols: 15, rows: 9, source: { x: 1, y: 7, dir: 0 as const, value: 0 }, walls: [...rocks(4, 3, 4, 8), ...rocks(8, 0, 8, 5), ...rocks(11, 3, 13, 3)], to: { x: 13, y: 1 }, par: 25 };
+const MAP_D = { cols: 13, rows: 7, source: { x: 1, y: 3, dir: 0 as const, value: 0 }, walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]] as [number, number][], to: { x: 11, y: 3 }, par: 9 };
+const MAP_E = { cols: 15, rows: 8, source: { x: 1, y: 1, dir: 0 as const, value: 0 }, walls: [...wall(5, 8, [1]), ...wall(10, 8, [6])], to: { x: 13, y: 6 }, par: 16 };
+const MAP_F = { cols: 15, rows: 9, source: { x: 2, y: 6, dir: 0 as const, value: 0 }, walls: rocks(7, 0, 7, 5), to: { x: 12, y: 2 }, par: 13 };
+type ValueMap = typeof MAP_A | typeof MAP_D;
+const riddle = (id: string, map: ValueMap, from: number, to: number, maxMachines: number, pro = false): LevelInfo => ({
+  id,
+  title: L(`Aus ${fmt(from)} wird ${fmt(to)}`, `${fmtEn(from)} becomes ${fmtEn(to)}`),
+  hint: maxMachines === 2
+    ? L('Höchstens zwei Maschinen – alle Bauteile sind erlaubt, aber nur ein Weg führt zum Ziel.', 'At most two machines – all parts are allowed, but only one way leads to the goal.')
+    : L('Höchstens drei Maschinen – alle Bauteile sind erlaubt, aber nur ein einziger Weg führt zum Ziel. Rechne rückwärts!', 'At most three machines – all parts are allowed, but only one single way leads to the goal. Work backwards!'),
+  cols: map.cols, rows: map.rows,
+  source: { ...map.source, value: from },
+  target: { ...map.to, value: to }, need: 3,
+  walls: map.walls,
+  maxMachines,
+  ...(pro ? { pro } : {}),
+  par: map.par,
+});
+const C21: LevelInfo[] = [
+  riddle('c21-1', MAP_D, 12, 138, 2),
+  riddle('c21-2', MAP_F, 11, 225, 2),
+  riddle('c21-3', MAP_E, 26, 116, 2),
+  riddle('c21-4', MAP_D, 9, 92, 2),
+  riddle('c21-5', MAP_A, 13, 502, 3),
+  riddle('c21-6', MAP_C, 17, 443, 3),
+  riddle('c21-7', MAP_B, 2, 329, 3, true),
+  riddle('c21-8', MAP_A, 16, 1849, 3, true),
+  riddle('c21-9', MAP_C, 20, 1617, 3, true),
+  riddle('c21-10', MAP_B, 27, 447, 3, true),
+];
+
+/* ---------- Kapitel: Funktionen-Detektiv (Wertetabelle, Regel selbst finden) ---------- */
+const SEQ_MAPS = [
+  { cols: 13, rows: 7, source: { x: 1, y: 3, dir: 0 as const }, to: { x: 11, y: 3 }, walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]] as [number, number][], par: 9 },
+  { cols: 12, rows: 8, source: { x: 1, y: 6, dir: 0 as const }, to: { x: 10, y: 1 }, walls: wall(5, 8, [2]), par: 13 },
+  { cols: 13, rows: 7, source: { x: 1, y: 1, dir: 0 as const }, to: { x: 11, y: 5 }, walls: [[5, 0], [5, 1], [5, 2], [5, 3], [8, 3], [8, 4], [8, 5], [8, 6]] as [number, number][], par: 17 },
+];
+const detective = (id: string, mapIndex: number, values: number[], maxMachines: number, pro = false): LevelInfo => {
+  const map = SEQ_MAPS[mapIndex]!;
+  return {
+    id,
+    title: L(`${values.map(fmt).join(', ')}`, `${values.map(fmtEn).join(', ')}`),
+    hint: L(
+      `Für x = 1 … 5 will das Lager ${values.map(fmt).join(', ')}. Finde die Regel – mit höchstens ${maxMachines} Maschinen gibt es genau einen Weg.`,
+      `For x = 1 … 5 the storage wants ${values.map(fmtEn).join(', ')}. Find the rule – with at most ${maxMachines} machines there is exactly one way.`,
+    ),
+    cols: map.cols, rows: map.rows,
+    source: { ...map.source, value: 1, values: seq(1, 5) },
+    targets: [{ ...map.to, need: 5, accept: { kind: 'seq', values } }],
+    walls: map.walls,
+    maxMachines,
+    ...(pro ? { pro } : {}),
+    par: map.par,
+  };
+};
+const C22: LevelInfo[] = [
+  detective('c22-1', 0, [13, 17, 21, 25, 29], 2),
+  detective('c22-2', 1, [2, 3, 6, 11, 18], 3),
+  detective('c22-3', 2, [28, 39, 52, 67, 84], 3),
+  detective('c22-4', 0, [5, 35, 85, 155, 245], 3),
+  detective('c22-5', 1, [55, 70, 95, 130, 175], 3),
+  detective('c22-6', 2, [196, 324, 484, 676, 900], 3),
+  detective('c22-7', 0, [16, 18, 20, 22, 14], 3, true),
+  detective('c22-8', 1, [0, -4, 2, -2, -6], 3, true),
+  detective('c22-9', 2, [5, 1, 3, 7, 2], 3, true),
+];
+
 /* ---------- Kapitel 13: Meisterprüfung (alles gemischt) ---------- */
 const C13: LevelInfo[] = [
   {
@@ -796,7 +1219,7 @@ const C13: LevelInfo[] = [
     source: { x: 1, y: 6, dir: 0, value: 1, pick: { min: 1, max: 30 } },
     target: { x: 11, y: 1, value: 52 }, need: 3,
     walls: [...wall(4, 8, [6]), ...wall(8, 8, [1])],
-    fixed: [square(4, 6), fixedOp(8, 1, '+', 3)],
+    fixed: [sq(4, 6), fixedOp(8, 1, '+', 3)],
     maxMachines: 0,
     par: 12,
   },
@@ -829,17 +1252,17 @@ const C13: LevelInfo[] = [
     source: { x: 1, y: 3, dir: 0, value: 1, pick: { min: 1, max: 30 } },
     target: { x: 13, y: 3, value: 54 }, need: 3,
     walls: [...wall(4, 7, [3]), ...wall(8, 7, [3]), ...wall(11, 7, [3])],
-    fixed: [fixedOp(4, 3, '+', 1), square(8, 3), fixedOp(11, 3, '−', 10)],
+    fixed: [fixedOp(4, 3, '+', 1), sq(8, 3), fixedOp(11, 3, '−', 10)],
     maxMachines: 0,
     par: 8,
   },
   {
     id: 'c13-5',
-    title: L('Zerlege 360', 'Break down 360'),
-    hint: L('Aus 360 soll 1 werden – mit höchstens drei Maschinen.', '360 should become 1 – with at most three machines.'),
+    title: L('Aus 8 wird 1606', '8 becomes 1606'),
+    hint: L('Höchstens drei Maschinen – alle Bauteile sind erlaubt, aber nur ein einziger Weg führt zum Ziel. 1606 liegt ganz nah an einer Quadratzahl …', 'At most three machines – all parts are allowed, but only one single way leads to the goal. 1606 is very close to a square number …'),
     cols: 15, rows: 8,
-    source: { x: 1, y: 1, dir: 0, value: 360 },
-    target: { x: 13, y: 6, value: 1 }, need: 3,
+    source: { x: 1, y: 1, dir: 0, value: 8 },
+    target: { x: 13, y: 6, value: 1606 }, need: 3,
     walls: [...wall(5, 8, [1]), ...wall(10, 8, [6])],
     maxMachines: 3,
     pro: true,
@@ -881,10 +1304,19 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c6', title: L('Rückwärts rechnen', 'Working backwards'), grades: '5', teaches: ['pick'], levels: C6 },
   { id: 'c7', title: L('Weiche „gerade?“', 'Switch “even?”'), grades: '5–6', teaches: ['even'], levels: C7 },
   { id: 'c8', title: L('Weiche „teilbar?“', 'Switch “divisible?”'), grades: '5–6', teaches: ['div'], levels: C8 },
+  { id: 'c14', title: L('Rest-Maschine', 'Remainder machine'), grades: '5–6', teaches: ['mod'], levels: C14 },
+  { id: 'c15', title: L('Quersummen-Maschine', 'Digit-sum machine'), grades: '5–6', teaches: ['digits'], levels: C15 },
   { id: 'c9', title: L('Weiche „größer als?“', 'Switch “greater than?”'), grades: '5–6', teaches: ['gt'], levels: C9 },
   { id: 'c10', title: L('Weiche „Primzahl?“', 'Switch “prime?”'), grades: '5–6', teaches: ['prime'], levels: C10 },
   { id: 'c11', title: L('Wertetabellen', 'Tables of values'), grades: '7–8', teaches: ['seq'], levels: C11 },
   { id: 'c12', title: L('Quadrat-Maschine', 'Square machine'), grades: '8–9', teaches: ['square'], levels: C12 },
+  { id: 'c16', title: L('Wurzel-Maschine', 'Square-root machine'), grades: '8–9', teaches: ['root'], levels: C16 },
+  { id: 'c17', title: L('Weiche „Quadratzahl?“', 'Switch “square number?”'), grades: '6–8', teaches: ['issquare'], levels: C17 },
+  { id: 'c18', title: L('Verteiler', 'Splitter'), grades: '7–9', teaches: ['split'], levels: C18 },
+  { id: 'c19', title: L('Zusammenführer', 'Merger'), grades: '8–9', teaches: ['sum', 'product'], levels: C19 },
+  { id: 'c20', title: L('Brücke', 'Bridge'), grades: '7–9', teaches: ['bridge'], levels: C20 },
+  { id: 'c21', title: L('Rätsel-Werkstatt', 'Puzzle workshop'), grades: '7–9', teaches: [], levels: C21 },
+  { id: 'c22', title: L('Funktionen-Detektiv', 'Function detective'), grades: '8–9', teaches: [], levels: C22 },
   { id: 'c13', title: L('Meisterprüfung', 'Master exam'), grades: '7–9', teaches: [], levels: C13 },
 ];
 
