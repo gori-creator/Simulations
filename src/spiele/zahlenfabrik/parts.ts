@@ -24,17 +24,18 @@ const merge = (mode: MergeMode, price: number): PartSpec => ({ id: `merge${mode}
  * indem man zwei Ströme zusammenführt, und Weichen filtern sie.
  */
 export const WORLD_PARTS: PartSpec[] = [
-  { id: 'belt', kind: 'belt', price: 1 },
-  { id: 'bridge', kind: 'bridge', price: 15 },
-  merge('+', 20),
-  merge('−', 30),
-  merge('×', 50),
-  merge('÷', 50),
-  sort('even', { kind: 'even' }, 30),
-  sort('div3', { kind: 'div', n: 3 }, 40),
-  sort('gt50', { kind: 'gt', n: 50 }, 40),
-  sort('prime', { kind: 'prime' }, 60),
-  sort('square', { kind: 'square' }, 60),
+  // Preise bewusst hoch: Man soll auf neue Teile sparen müssen
+  { id: 'belt', kind: 'belt', price: 2 },
+  { id: 'bridge', kind: 'bridge', price: 50 },
+  merge('+', 60),
+  merge('−', 120),
+  merge('×', 250),
+  merge('÷', 300),
+  sort('even', { kind: 'even' }, 150),
+  sort('div3', { kind: 'div', n: 3 }, 250),
+  sort('gt50', { kind: 'gt', n: 50 }, 250),
+  sort('prime', { kind: 'prime' }, 400),
+  sort('square', { kind: 'square' }, 400),
 ];
 
 /** Von Anfang an im Inventar; alles andere schalten Aufträge frei. */

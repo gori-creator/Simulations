@@ -69,7 +69,7 @@ export interface OpenWorld {
 }
 
 /** Preis der Gebiete in Münzen (das erste gibt es umsonst). */
-export const ZONE_PRICES = [0, 400, 2500];
+export const ZONE_PRICES = [0, 1500, 8000];
 
 /** Offenes Gebiet bei Ausbaustufe `zone` (ohne Gebiete: die ganze Karte). */
 export function zoneRect(w: OpenWorld, zone = Infinity): Rect {
@@ -225,8 +225,10 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
     const occ = at.get(k);
     // von hinten zuerst, dann reihum (je Takt eine andere Seite)
     list.sort((a, b) => rank(a) - rank(b) || a.item.id - b.item.id);
+    // Zusammenführer: nur Zahlen aus einer anderen Richtung als die wartende (zwei verschiedene Bänder)
+    const fits = part.merge && occ?.wait ? list.filter((p) => p.dir !== occ.heading) : list;
     const room = part.merge ? (occ?.wait ? 1 : 2) : 1;
-    list.slice(0, room).forEach((p) => (p.accepted = true));
+    fits.slice(0, room).forEach((p) => (p.accepted = true));
   }
   function rank(p: Plan): number {
     const part = grid.get(key(p.tx, p.ty))!;
@@ -286,7 +288,7 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
       }
       value = next;
     }
-    const moved: Item = { id: item.id, x: plan.tx, y: plan.ty, value, heading: plan.dir };
+    const moved: Item = { id: item.id, x: plan.tx, y: plan.ty, value, heading: plan.dir, ...(item.src ? { src: item.src } : {}) };
     consumed.add(item.id);
     if (part.merge) {
       const list = arrivals.get(k);
@@ -305,13 +307,20 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
       s.items.push({ ...a, wait: true });
       continue;
     }
+    // Nur Zahlen aus verschiedenen Quellen: sonst ginge ein Strom mit sich selbst zusammen
+    // (auch über einen Kreis zurück). Die neue Zahl geht verloren, die wartende bleibt.
+    if (a.src?.some((q) => b.src?.includes(q))) {
+      lose(b.x, b.y);
+      s.items.push({ ...a, wait: true });
+      continue;
+    }
     const value = combine(part.merge!, a.value, b.value);
     s.mergedAt.push([a.x, a.y]);
     if (value === null || Math.abs(value) > MAX_VALUE) {
       lose(a.x, a.y);
       continue;
     }
-    s.items.push({ id: a.id, x: a.x, y: a.y, value, heading: part.dir });
+    s.items.push({ id: a.id, x: a.x, y: a.y, value, heading: part.dir, src: [...new Set([...(a.src ?? []), ...(b.src ?? [])])] });
   }
   // Wer nicht weiterkam, bleibt stehen (auch wartende Zahlen)
   for (const item of state.items) {
@@ -326,7 +335,7 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
     const fx = sp.x + DX[sp.dir];
     const fy = sp.y + DY[sp.dir];
     if (!grid.has(key(fx, fy)) && !inBase(w, fx, fy)) return;
-    s.items.push({ id: s.nextId, x: sp.x, y: sp.y, value: sp.value, heading: sp.dir });
+    s.items.push({ id: s.nextId, x: sp.x, y: sp.y, value: sp.value, heading: sp.dir, src: [key(sp.x, sp.y)] });
     s.nextId += 1;
   });
   if (s.items.length > MAX_ITEMS) {

@@ -291,6 +291,8 @@ export interface Item {
   heading?: Dir;
   /** Im Zusammenführer: aus dieser Richtung gekommen (Level). */
   from?: Dir;
+  /** Offene Welt: aus welchen Quellen die Zahl entstanden ist (Felder der Quellen). */
+  src?: string[];
 }
 
 export type ErrorKind = 'fell' | 'wrong' | 'divide' | 'root' | 'timeout';
