@@ -388,6 +388,8 @@ function acceptText(a: Accept, got: number): Localized {
       return not ? L(`Zahlen bis ${t.n}`, `numbers up to ${t.n}`) : L(`Zahlen größer als ${t.n}`, `numbers greater than ${t.n}`);
     case 'square':
       return not ? L('Zahlen, die keine Quadratzahlen sind', 'numbers that are not square numbers') : L('Quadratzahlen', 'square numbers');
+    case 'int':
+      return not ? L('Brüche (keine ganzen Zahlen)', 'fractions (no whole numbers)') : L('ganze Zahlen', 'whole numbers');
   }
 }
 
@@ -584,6 +586,8 @@ export function initFactory(root: HTMLElement): void {
 
   viewport.addEventListener('pointerdown', (event) => {
     if ((event.target as Element).closest('.zf-zoom, .zf-selbar')) return;
+    // Hinweis ausblenden, sobald man auf der Karte weiterbaut (verdeckt am Handy das Spielfeld)
+    if (status.dataset.kind === 'info' || status.dataset.kind === 'warn') say('');
     viewport.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size === 2) {

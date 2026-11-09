@@ -395,6 +395,31 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  buffer: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Puffer-Maschine', 'The buffer machine'),
+        text: L('Sie hält immer eine Zahl fest. Kommt die nächste, gibt sie die alte weiter und behält die neue. Am Anfang liegt eine 0 drin – die kommt als Erstes heraus.', 'It always holds one number. When the next one arrives, it passes on the old one and keeps the new one. At the start it holds a 0 – that comes out first.'),
+        scene: { kind: 'table', xs: ['4', '9', '2', '7'], op: 'x₋₁', ys: ['0', '4', '9', '2'] },
+      },
+      {
+        title: L('Nachbarn vergleichen', 'Comparing neighbours'),
+        text: L('Mit zwei Quellen und einem Zusammenführer vergleichst du jede Zahl mit ihrer Vorgängerin: Die Abstände der Quadratzahlen 1, 4, 9, 16 sind 1, 3, 5, 7 – die ungeraden Zahlen!', 'With two sources and a merger you compare every number with the one before: the gaps between the square numbers 1, 4, 9, 16 are 1, 3, 5, 7 – the odd numbers!'),
+        scene: { kind: 'merge', a: '9', b: '4', label: 'a−b', out: '5' },
+      },
+    ],
+  },
+  int: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Weiche „ganze Zahl?“', 'The switch “whole number?”'),
+        text: L('Ganze Zahlen laufen geradeaus, Brüche wie 1/2 oder 3/4 biegen ab. So trennst du, was beim Teilen aufgeht, von dem, was nicht aufgeht.', 'Whole numbers go straight on, fractions like 1/2 or 3/4 turn off. This is how you separate what divides evenly from what does not.'),
+        scene: { kind: 'sort', label: 'ganz?', input: '3 1/2 8 3/4', yes: '3 8', no: '1/2 3/4' },
+      },
+    ],
+  },
   eq: {
     tag: NEW_RULE,
     slides: [
@@ -474,7 +499,7 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text?: stri
 
 /** Szene zeichnen (nur Schmuck, für Vorleseprogramme ausgeblendet). */
 function scene(s: Scene, lang: Lang): HTMLElement {
-  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?') : t);
+  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?').replace('ganz?', 'whole?') : t);
   const box = (kind: 'source' | 'machine' | 'target' | 'sort', text: string, dir?: 0) => {
     const c = el('div', `zf-intro__box zf-intro__box--${kind}`);
     // Maschinen mit eigenem Bild je Rechenart (aus der Aufschrift erkannt)
@@ -513,7 +538,7 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     const [m1, m2] = s.marks ?? ['✓', '✗'];
     outs.append(el('span', 'zf-lesson-sort__yes', `${m1} ${s.yes}`), el('span', 'zf-lesson-sort__no', `${m2} ${s.no}`));
     // Weiche mit eigenem Bild je Prüfung bzw. Wechsel-Weiche
-    const test = s.label.startsWith('gerade') ? 'even' : s.label.startsWith('÷') ? 'div' : s.label.startsWith('>') ? 'gt' : s.label.startsWith('Prim') ? 'prime' : s.label.startsWith('Quadrat') ? 'square' : '';
+    const test = s.label.startsWith('gerade') ? 'even' : s.label.startsWith('÷') ? 'div' : s.label.startsWith('>') ? 'gt' : s.label.startsWith('Prim') ? 'prime' : s.label.startsWith('Quadrat') ? 'square' : s.label.startsWith('ganz') ? 'int' : '';
     const sw = el('div', 'zf-intro__box zf-intro__box--sort');
     sw.append(art('sort', 52, 0, 0, false, s.part === 'alt' ? 'wechselweiche' : switchFile(test)), el('span', '', local(s.label)));
     row.append(el('span', 'zf-lesson-sort__in', s.input), belt(), sw, outs);

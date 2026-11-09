@@ -51,7 +51,7 @@ export function partId(part: Part): string {
   if (part.op) return opLabel(part.op);
   if (part.sort) {
     const t = part.sort;
-    return t.kind === 'even' || t.kind === 'prime' || t.kind === 'square' ? t.kind : t.kind === 'div' ? `div${t.n}` : `gt${t.n}`;
+    return t.kind === 'even' || t.kind === 'prime' || t.kind === 'square' || t.kind === 'int' ? t.kind : t.kind === 'div' ? `div${t.n}` : `gt${t.n}`;
   }
   if (part.merge) return `merge${part.merge}`;
   if (part.split) return 'split';
@@ -96,6 +96,8 @@ export function testLabel(test: Test): Localized {
       return L(`>${test.n}?`, `>${test.n}?`);
     case 'square':
       return L('Quadrat?', 'square?');
+    case 'int':
+      return L('ganz?', 'whole?');
   }
 }
 
@@ -131,6 +133,7 @@ export function specName(spec: PartSpec): Localized {
       if (t.kind === 'prime') return L('Weiche „Primzahl?“', 'Switch “prime?”');
       if (t.kind === 'div') return L(`Weiche „teilbar durch ${t.n}?“`, `Switch “divisible by ${t.n}?”`);
       if (t.kind === 'square') return L('Weiche „Quadratzahl?“', 'Switch “square number?”');
+      if (t.kind === 'int') return L('Weiche „ganze Zahl?“', 'Switch “whole number?”');
       return L(`Weiche „größer als ${t.n}?“`, `Switch “greater than ${t.n}?”`);
     }
     case 'split':

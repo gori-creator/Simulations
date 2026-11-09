@@ -1634,6 +1634,75 @@ const C32: LevelInfo[] = [
   twoSources('c32-7', L('Dreieckszahlen rückwärts', 'Triangular numbers backwards'), L('Beide Quellen geben 1 bis 5 aus. Das Lager will 0, 1, 3, 6, 10 – mit einer Maschine. Was bleibt von einer Dreieckszahl, wenn man x abzieht?', 'Both sources give out 1 to 5. The storage wants 0, 1, 3, 6, 10 – with one machine. What is left of a triangular number if you take away x?'), seq(1, 5), seq(1, 5), [0, 1, 3, 6, 10], 1, true),
 ];
 
+/* ---------- Kapitel: Puffer-Maschine (hält eine Zahl fest, gibt die vorige weiter) ---------- */
+const C33: LevelInfo[] = [
+  seqLevel('c33-1', L('Eins zurück', 'One step behind'), L('Neu: die Puffer-Maschine. 4, 9, 2, 7 kommen – das Lager will 0, 4, 9, 2. Der Puffer behält jede Zahl und gibt die vorige weiter (am Anfang die 0).', 'New: the buffer machine. 4, 9, 2, 7 arrive – the storage wants 0, 4, 9, 2. The buffer keeps every number and passes on the one before (a 0 at the start).'), 0, [4, 9, 2, 7], [0, 4, 9, 2], 1),
+  seqLevel('c33-2', L('Verspätet verdoppelt', 'Doubled, but late'), L('3, 8, 5 kommen. Das Lager will 0, 6, 16 – zwei Maschinen.', '3, 8, 5 arrive. The storage wants 0, 6, 16 – two machines.'), 1, [3, 8, 5], [0, 6, 16], 2),
+  twoSources('c33-3', L('Abstände der Quadratzahlen', 'Gaps between square numbers'), L('Beide Quellen geben 1, 4, 9, 16, 25 aus. Das Lager will die Abstände 1, 3, 5, 7, 9 – mit einer Maschine. Vergleich jede Zahl mit der davor.', 'Both sources give out 1, 4, 9, 16, 25. The storage wants the gaps 1, 3, 5, 7, 9 – with one machine. Compare every number with the one before.'), [1, 4, 9, 16, 25], [1, 4, 9, 16, 25], [1, 3, 5, 7, 9], 1),
+  twoSources('c33-4', L('Nachbarn addieren', 'Adding neighbours'), L('Beide Quellen geben 1, 1, 2, 3, 5, 8 aus. Das Lager will 1, 2, 3, 5, 8, 13 – jede Zahl plus die davor. Kennst du diese Folge?', 'Both sources give out 1, 1, 2, 3, 5, 8. The storage wants 1, 2, 3, 5, 8, 13 – every number plus the one before. Do you know this sequence?'), [1, 1, 2, 3, 5, 8], [1, 1, 2, 3, 5, 8], [1, 2, 3, 5, 8, 13], 1),
+  twoSources('c33-5', L('Wie viel ist dazugekommen?', 'How much was added?'), L('Beide Quellen geben die Kontostände 10, 15, 22, 30 aus. Das Lager will, was jeweils dazukam: 10, 5, 7, 8.', 'Both sources give out the account balances 10, 15, 22, 30. The storage wants what was added each time: 10, 5, 7, 8.'), [10, 15, 22, 30], [10, 15, 22, 30], [10, 5, 7, 8], 1),
+  seqLevel('c33-6', L('Zwei zurück', 'Two steps behind'), L('5, 1, 8, 3, 6 kommen. Das Lager will 0, 0, 5, 1, 8 – mit zwei Maschinen.', '5, 1, 8, 3, 6 arrive. The storage wants 0, 0, 5, 1, 8 – with two machines.'), 2, [5, 1, 8, 3, 6], [0, 0, 5, 1, 8], 2, true),
+  twoSources('c33-7', L('Zahl mal Vorgängerin', 'Number times the one before'), L('Beide Quellen geben 2, 3, 4, 5 aus. Das Lager will 0, 6, 12, 20 – jede Zahl mal die Zahl davor. Eine Maschine.', 'Both sources give out 2, 3, 4, 5. The storage wants 0, 6, 12, 20 – every number times the one before. One machine.'), [2, 3, 4, 5], [2, 3, 4, 5], [0, 6, 12, 20], 1, true),
+];
+
+/* ---------- Kapitel: Weiche „ganze Zahl?“ (nach den Brüchen) ---------- */
+const whole: Test = { kind: 'int' };
+const C34: LevelInfo[] = [
+  {
+    id: 'c34-1',
+    title: L('Ganz oder Bruch?', 'Whole or fraction?'),
+    hint: L('Neu: die Weiche „ganze Zahl?“. 3, 1/2, 8, 3/4, 5, 1/5 kommen. Oben sollen die ganzen Zahlen ankommen, unten die Brüche.', 'New: the switch “whole number?”. 3, 1/2, 8, 3/4, 5, 1/5 arrive. The whole numbers should arrive at the top, the fractions at the bottom.'),
+    cols: 11, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 3, values: [3, 1 / 2, 8, 3 / 4, 5, 1 / 5] },
+    targets: [
+      { x: 9, y: 2, need: 3, accept: yes(whole) },
+      { x: 9, y: 6, need: 3, accept: no(whole) },
+    ],
+    walls: [[5, 0], [5, 8]],
+    par: 11,
+  },
+  {
+    id: 'c34-2',
+    title: L('Durch drei teilbar?', 'Divisible by three?'),
+    hint: L('1 bis 6 kommen. Teile jede Zahl durch 3 (Bruch-Maschine). Oben will das Lager die ganzen Ergebnisse 1 und 2, unten die vier Brüche.', '1 to 6 arrive. Divide every number by 3 (fraction machine). The top storage wants the whole results 1 and 2, the bottom one the four fractions.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 10, y: 1, need: 2, accept: { kind: 'seq', values: [1, 2] } },
+      { x: 10, y: 7, need: 4, accept: no(whole) },
+    ],
+    walls: [[6, 0], [6, 8], [6, 3], [6, 5]],
+    par: 14,
+  },
+  {
+    id: 'c34-3',
+    title: L('Halbe zurückholen', 'Bringing halves back'),
+    hint: L('1 bis 6 kommen, jede wird halbiert. Oben will das Lager 1, 2, 3. Unten sollen die ungeraden Zahlen 1, 3, 5 wieder ganz ankommen – eine Maschine hinter der Weiche.', '1 to 6 arrive and each is halved. The top storage wants 1, 2, 3. At the bottom, the odd numbers 1, 3, 5 should arrive whole again – one machine after the switch.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 11, y: 1, need: 3, accept: { kind: 'seq', values: [1, 2, 3] } },
+      { x: 11, y: 7, need: 3, accept: { kind: 'seq', values: [1, 3, 5] } },
+    ],
+    walls: [[6, 3], [6, 4], [6, 5]],
+    par: 17,
+  },
+  {
+    id: 'c34-4',
+    title: L('Kehrwert ganz', 'Whole reciprocal'),
+    hint: L('1 bis 6 kommen. Bilde den Kehrwert. Nur einer bleibt ganz – der kommt oben an, die fünf Stammbrüche unten.', '1 to 6 arrive. Take the reciprocal. Only one stays whole – it arrives at the top, the five unit fractions at the bottom.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 6) },
+    targets: [
+      { x: 10, y: 1, need: 1, accept: { kind: 'value', n: 1 } },
+      { x: 10, y: 7, need: 5, accept: no(whole) },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    pro: true,
+    par: 14,
+  },
+];
+
 /** Ein Kapitel: was es neu einführt, und seine Level. */
 export interface Chapter {
   id: string;
@@ -1651,9 +1720,9 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'terms', title: L('Terme und Funktionen', 'Terms and functions'), chapters: ['c11', 'c12', 'c16', 'c17', 'c19'] },
   { id: 'riddles', title: L('Rätsel', 'Puzzles'), chapters: ['c21', 'c22', 'c13'] },
   { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
-  { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c30'] },
+  { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c34', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
-  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32'] },
+  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33'] },
 ];
 
 export const CHAPTERS: Chapter[] = [
@@ -1684,10 +1753,12 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c25', title: L('Runden-Maschine', 'Rounding machine'), grades: '5–6', teaches: ['round'], levels: C25 },
   { id: 'c26', title: L('Wechsel-Weiche', 'Alternator'), grades: '6–9', teaches: ['alt'], levels: C26 },
   { id: 'c29', title: L('Brüche', 'Fractions'), grades: '6', teaches: ['frac', 'inv'], levels: C29 },
+  { id: 'c34', title: L('Weiche „ganze Zahl?“', 'Switch “whole number?”'), grades: '6', teaches: ['int'], levels: C34 },
   { id: 'c30', title: L('Gleichungen', 'Equations'), grades: '7–8', teaches: ['eq'], levels: C30 },
   { id: 'c27', title: L('Großmeister', 'Grandmaster'), grades: '8–9', teaches: [], levels: C27 },
   { id: 'c31', title: L('Zähler-Maschine', 'Counter machine'), grades: '5–6', teaches: ['count'], levels: C31 },
   { id: 'c32', title: L('Sammel-Maschine', 'Collector machine'), grades: '6–8', teaches: ['total'], levels: C32 },
+  { id: 'c33', title: L('Puffer-Maschine', 'Buffer machine'), grades: '6–8', teaches: ['buffer'], levels: C33 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);

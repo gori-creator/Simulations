@@ -16,16 +16,17 @@ export const DY = [0, 1, 0, -1] as const;
  * Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√),
  * Vorzeichen wechseln (±), Betrag (|), Ziffern umdrehen (⇄), Runden auf 10ⁿ (≈),
  * Bruch (:), Kehrwert (⅟). Maschinen mit Gedächtnis: Zähler (cnt, gibt 1, 2, 3, …
- * aus) und Sammler (acc, Summe aller Zahlen bisher).
+ * aus), Sammler (acc, Summe aller Zahlen bisher) und Puffer (prev, hält eine Zahl
+ * fest und gibt die vorige weiter; am Anfang die 0).
  */
-export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈' | ':' | '⅟' | 'cnt' | 'acc';
+export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈' | ':' | '⅟' | 'cnt' | 'acc' | 'prev';
 export interface Op {
   sym: Sym;
   n: number;
 }
 
 /** Prüfung einer Weiche: Was sie bejaht, läuft geradeaus weiter, alles andere biegt ab. */
-export type Test = { kind: 'even' } | { kind: 'div'; n: number } | { kind: 'prime' } | { kind: 'gt'; n: number } | { kind: 'square' };
+export type Test = { kind: 'even' } | { kind: 'div'; n: number } | { kind: 'prime' } | { kind: 'gt'; n: number } | { kind: 'square' } | { kind: 'int' };
 
 export interface Part {
   /** Band (ohne Rechnung) oder Maschine. */
@@ -87,8 +88,13 @@ export function passes(test: Test, value: number): boolean {
       return value > test.n;
     case 'square':
       return isSquare(value);
+    case 'int':
+      return isWhole(value);
   }
 }
+
+/** Ganze Zahl? (Brüche wie 1/3 sind als Kommazahl nicht genau, daher mit Toleranz.) */
+export const isWhole = (v: number) => Math.abs(v - Math.round(v)) < 1e-7;
 
 /** Quadratzahl? (0, 1, 4, 9, …) */
 export function isSquare(n: number): boolean {
@@ -210,7 +216,7 @@ export function apply(op: Op, value: number): number | null {
 }
 
 /** Maschinen mit Gedächtnis: Sie merken sich etwas über die Zahlen, die schon durch sie gelaufen sind. */
-export const isStateful = (sym: Sym) => sym === 'cnt' || sym === 'acc';
+export const isStateful = (sym: Sym) => sym === 'cnt' || sym === 'acc' || sym === 'prev';
 
 /**
  * Zahl in einer Maschine mit Gedächtnis verrechnen. `mem` ist der gemerkte
@@ -223,6 +229,8 @@ export function applyMem(op: Op, value: number, mem: number): { value: number; m
       return { value: mem + 1, mem: mem + 1 };
     case 'acc':
       return { value: tidy(mem + value), mem: tidy(mem + value) };
+    case 'prev':
+      return { value: mem, mem: value };
     default: {
       const r = apply(op, value);
       return { value: r ?? NaN, mem };
@@ -280,6 +288,8 @@ function applyRaw(op: Op, value: number): number | null {
       return 1;
     case 'acc':
       return value;
+    case 'prev':
+      return 0;
   }
 }
 
@@ -322,6 +332,8 @@ export function opLabel(op: Op): string {
       return '1,2,3';
     case 'acc':
       return 'Σx';
+    case 'prev':
+      return 'x₋₁';
     default:
       return `${op.sym}${op.n}`;
   }

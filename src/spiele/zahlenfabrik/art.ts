@@ -44,9 +44,9 @@ const MACHINE_FILES: Partial<Record<string, string>> = {
   '+': 'maschine-plus', '−': 'maschine-minus', '×': 'maschine-mal', '÷': 'maschine-geteilt', '²': 'maschine-quadrat',
   '%': 'maschine-rest', 'Σ': 'maschine-quersumme', '√': 'maschine-wurzel', '±': 'maschine-vorzeichen', '|': 'maschine-betrag',
   '⇄': 'maschine-spiegel', '≈': 'maschine-runden', ':': 'maschine-bruch', '⅟': 'maschine-kehrwert',
-  cnt: 'maschine-zaehler', acc: 'maschine-sammel',
+  cnt: 'maschine-zaehler', acc: 'maschine-sammel', prev: 'maschine-puffer',
 };
-const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim', square: 'weiche-quadrat' };
+const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim', square: 'weiche-quadrat', int: 'weiche-ganz' };
 const MERGE_FILES: Partial<Record<string, string>> = { '+': 'zusammen-summe', '−': 'zusammen-differenz', '×': 'zusammen-produkt', '÷': 'zusammen-quotient' };
 /** Bild je Rechenart; ohne eigenes die neutrale Maschine. */
 export const machineFile = (sym: string) => MACHINE_FILES[sym] ?? 'maschine-allgemein';
@@ -63,6 +63,7 @@ export function symOfLabel(label: string): string | undefined {
   if (label.startsWith('x/')) return ':';
   if (label === '1,2,3') return 'cnt';
   if (label === 'Σx') return 'acc';
+  if (label === 'x₋₁') return 'prev';
   return label[0];
 }
 
@@ -73,7 +74,7 @@ const CHAPTER_FILES: Record<string, string> = {
   c14: 'kapitel-rest', c15: 'kapitel-quersumme', c16: 'kapitel-wurzel', c17: 'kapitel-quadratzahl', c19: 'kapitel-terme',
   c20: 'kapitel-bruecke', c21: 'kapitel-raetsel', c22: 'kapitel-detektiv', c23: 'kapitel-vorzeichen', c24: 'kapitel-spiegel',
   c25: 'kapitel-runden', c26: 'kapitel-wechsel', c27: 'kapitel-grossmeister', c28: 'kapitel-zusammen', c29: 'kapitel-brueche',
-  c30: 'kapitel-gleichungen', c31: 'kapitel-zaehler', c32: 'kapitel-sammel',
+  c30: 'kapitel-gleichungen', c31: 'kapitel-zaehler', c32: 'kapitel-sammel', c33: 'kapitel-puffer', c34: 'kapitel-ganz',
 };
 export const chapterImage = (id: string): string | undefined => IMAGES[CHAPTER_FILES[id] ?? ''];
 
@@ -136,6 +137,10 @@ const DECOR: Record<string, (s: number) => string> = {
     `<rect class="zf-art__mark" x="${s / 2 - 11}" y="${s - 11}" width="22" height="4" rx="2"/>` +
     `<rect class="zf-art__mark" x="${s / 2 - 7}" y="${s - 16}" width="14" height="4" rx="2"/>` +
     `<rect class="zf-art__mark" x="${s / 2 - 3}" y="${s - 21}" width="6" height="4" rx="2"/>`,
+  // Puffer: Sanduhr (eine Zahl wartet)
+  'maschine-puffer': (s) => `<path class="zf-art__mark" d="M${s - 16} 5h10l-5 6zM${s - 16} 17h10l-5 -6z"/>`,
+  // Weiche „ganze Zahl?“: ein ganzer Kreis und ein Kreis mit Schnitt
+  'weiche-ganz': (s) => `<circle class="zf-art__mark" cx="${s - 10}" cy="8" r="3.5"/><circle class="zf-art__line" cx="${s - 10}" cy="${s - 8}" r="3.5"/><path class="zf-art__line" d="M${s - 10} ${s - 8}v-3.5M${s - 10} ${s - 8}h3.5"/>`,
 };
 
 /**
