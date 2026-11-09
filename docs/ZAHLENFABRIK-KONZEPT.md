@@ -109,6 +109,16 @@ Wunsch der Projektleitung: Am Anfang ein Tutorial, danach nach und nach neue Bau
 
 - **Bilder Runde 3 eingebaut** (37 Stück): eigene Maschinen für Rest, Quersumme, Wurzel, Vorzeichen, Betrag, Spiegel, Runden, Bruch, Kehrwert und eine neutrale Maschine; Weiche „Quadratzahl?“, Wechsel-Weiche, vier Zusammenführer (Summe, Differenz, Produkt, Quotient), drei Abnehmer, Auswählen- und Baukasten-Bild, Kapitelbilder für alle übrigen Kapitel. Erklärkarten zeigen jetzt das passende Bild je Maschine bzw. Weiche.
 
+## Maschinen mit Gedächtnis: Zähler und Sammler (Stand 09.11.2026)
+
+Erster Schritt des Ausbaus „tiefer und spannender“ (Wunsch der Projektleitung, 09.11.2026). Neuer Abschnitt **„Maschinen mit Gedächtnis“** hinter dem Großmeister, damit die Rätsel der früheren Kapitel eindeutig bleiben.
+
+- **Zähler-Maschine** (`1,2,3`, Kapitel 30): gibt jeder Zahl ihre Nummer – die erste wird zur 1, die zweite zur 2 … egal, was hineinkommt. Jeder Zähler zählt für sich. Level: 7, 7, 7, 7 → 1, 2, 3, 4; Zweierreihe aus Durcheinander (Zähler, ×2); Quadratzahlen aus allem (Zähler, x²); ungerade Zahlen (drei Maschinen); „Erste, zweite, dritte“ mit Weiche „gerade?“; Zahl mal Nummer mit zwei Quellen und Produkt.
+- **Sammel-Maschine** (`Σx`, Kapitel 31): gibt die Summe aller Zahlen bisher aus. Level: Dreieckszahlen 1, 3, 6, 10, 15; Zehnerreihe aus 10, 10, 10, 10; Quadratzahlen aus 1, 3, 5, 7, 9; „Spartopf“ (sammeln, dann Weiche „größer als 40?“ trennt die Gesamtsumme 45 von den Zwischenständen); doppelt gesammelt 2, 6, 12, 20, 30; aus Dreien Dreieckszahlen (Zähler, dann Sammler); Dreieckszahlen rückwärts mit zwei Quellen und Differenz (T(x) − x = T(x − 1)).
+- Rechenlogik (`model.ts`): `isStateful`, `applyMem` (Stand je Feld in `State.mem`), `applySeq` (eine Maschine auf eine ganze Folge, der Reihe nach). Löser und Tests rechnen Folgen damit der Reihe nach; das Tages- und Zufallsrätsel lässt Gedächtnis-Maschinen außen vor (Ziel immer > 10, damit kein Abkürzungsweg über Zähler und Runden entsteht).
+- Bilder: ohne eigenes Bild das allgemeine Maschinenbild, umgefärbt (Zähler blaugrün, Sammler violett), in der gezeichneten Grafik mit Zählpunkten bzw. Haufen. Prompts für alle neuen Teile des Ausbaus (auch die der nächsten Schritte): `docs/ZAHLENFABRIK-BILDER.md`, Runde 4.
+- Geplant als weitere Schritte (je ein Pull Request): Puffer-Maschine und Weiche „ganze Zahl?“, Schleife (Rückführung, Fibonacci), Rätsel mit Nebenbedingungen und Sieg-Vergleich mit Bestwerten, Endgegner-Kapitel, Erz-Arten in der offenen Welt.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee

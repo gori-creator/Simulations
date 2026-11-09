@@ -688,6 +688,10 @@
 
 /* Fels: Brocken mit Licht und Schatten */
 .zf-cell--rock { background: none; }
+.zf-art__mark { fill: currentColor; opacity: 0.4; }
+/* Maschinen ohne eigenes Bild: das allgemeine Maschinenbild, umgefärbt (Zähler blaugrün, Sammler violett) */
+.zf-art--img[data-fallback='maschine-zaehler'] { filter: hue-rotate(140deg) saturate(0.9); }
+.zf-art--img[data-fallback='maschine-sammel'] { filter: hue-rotate(260deg) saturate(0.9); }
 .zf-art__rock { fill: var(--zf-rock); }
 .zf-art__rock-light { fill: var(--zf-rock-light); }
 .zf-art__rock-dark { fill: var(--zf-rock-dark); }

@@ -13,7 +13,7 @@ import type { PartSpec } from './parts';
  * addiert oder durch welche Zahl die Weiche prüft, wählt man selbst.
  */
 export type KitId =
-  | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round' | 'frac' | 'inv'
+  | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round' | 'frac' | 'inv' | 'count' | 'total'
   | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'alt' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
@@ -51,6 +51,8 @@ export const KIT: KitItem[] = [
   { id: 'round', kind: 'op', sym: '≈', range: [1, 3], start: 1, pow10: true, name: L('Runden-Maschine', 'Rounding machine') },
   { id: 'frac', kind: 'op', sym: ':', range: [2, 10], start: 2, name: L('Bruch-Maschine', 'Fraction machine') },
   { id: 'inv', kind: 'op', sym: '⅟', start: 2, name: L('Kehrwert-Maschine', 'Reciprocal machine') },
+  { id: 'count', kind: 'op', sym: 'cnt', start: 2, name: L('Zähler-Maschine', 'Counter machine') },
+  { id: 'total', kind: 'op', sym: 'acc', start: 2, name: L('Sammel-Maschine', 'Collector machine') },
   { id: 'even', kind: 'sort', test: 'even', start: 0, name: L('Weiche „gerade?“', 'Switch “even?”') },
   { id: 'div', kind: 'sort', test: 'div', range: [2, 10], start: 3, name: L('Weiche „teilbar durch …?“', 'Switch “divisible by …?”') },
   { id: 'gt', kind: 'sort', test: 'gt', range: [0, 100], start: 10, name: L('Weiche „größer als …?“', 'Switch “greater than …?”') },

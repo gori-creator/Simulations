@@ -44,6 +44,7 @@ const MACHINE_FILES: Partial<Record<string, string>> = {
   '+': 'maschine-plus', '−': 'maschine-minus', '×': 'maschine-mal', '÷': 'maschine-geteilt', '²': 'maschine-quadrat',
   '%': 'maschine-rest', 'Σ': 'maschine-quersumme', '√': 'maschine-wurzel', '±': 'maschine-vorzeichen', '|': 'maschine-betrag',
   '⇄': 'maschine-spiegel', '≈': 'maschine-runden', ':': 'maschine-bruch', '⅟': 'maschine-kehrwert',
+  cnt: 'maschine-zaehler', acc: 'maschine-sammel',
 };
 const SWITCH_FILES: Partial<Record<string, string>> = { even: 'weiche-gerade', div: 'weiche-teilbar', gt: 'weiche-groesser', prime: 'weiche-prim', square: 'weiche-quadrat' };
 const MERGE_FILES: Partial<Record<string, string>> = { '+': 'zusammen-summe', '−': 'zusammen-differenz', '×': 'zusammen-produkt', '÷': 'zusammen-quotient' };
@@ -60,6 +61,8 @@ export function symOfLabel(label: string): string | undefined {
   if (label === '|x|') return '|';
   if (label === '1/x') return '⅟';
   if (label.startsWith('x/')) return ':';
+  if (label === '1,2,3') return 'cnt';
+  if (label === 'Σx') return 'acc';
   return label[0];
 }
 
@@ -70,7 +73,7 @@ const CHAPTER_FILES: Record<string, string> = {
   c14: 'kapitel-rest', c15: 'kapitel-quersumme', c16: 'kapitel-wurzel', c17: 'kapitel-quadratzahl', c19: 'kapitel-terme',
   c20: 'kapitel-bruecke', c21: 'kapitel-raetsel', c22: 'kapitel-detektiv', c23: 'kapitel-vorzeichen', c24: 'kapitel-spiegel',
   c25: 'kapitel-runden', c26: 'kapitel-wechsel', c27: 'kapitel-grossmeister', c28: 'kapitel-zusammen', c29: 'kapitel-brueche',
-  c30: 'kapitel-gleichungen',
+  c30: 'kapitel-gleichungen', c31: 'kapitel-zaehler', c32: 'kapitel-sammel',
 };
 export const chapterImage = (id: string): string | undefined => IMAGES[CHAPTER_FILES[id] ?? ''];
 
@@ -123,6 +126,19 @@ const DRAW: Record<ArtKind, (size: number) => string> = {
 };
 
 /**
+ * Erkennungszeichen für Maschinen, die noch kein eigenes Bild haben (in der
+ * gezeichneten Grafik): Zähler mit drei Zählpunkten, Sammler mit Haufen.
+ */
+const DECOR: Record<string, (s: number) => string> = {
+  'maschine-zaehler': (s) =>
+    [0.3, 0.5, 0.7].map((f, i) => `<circle class="zf-art__mark" cx="${(s * f).toFixed(1)}" cy="9" r="${2 + i}"/>`).join(''),
+  'maschine-sammel': (s) =>
+    `<rect class="zf-art__mark" x="${s / 2 - 11}" y="${s - 11}" width="22" height="4" rx="2"/>` +
+    `<rect class="zf-art__mark" x="${s / 2 - 7}" y="${s - 16}" width="14" height="4" rx="2"/>` +
+    `<rect class="zf-art__mark" x="${s / 2 - 3}" y="${s - 21}" width="6" height="4" rx="2"/>`,
+};
+
+/**
  * SVG-Zeichnung für ein Feld. `size`: Kantenlänge in px (Kasten 52, ganze
  * Felder 64, Basis 3 × 64). `dir`: Richtung des Ausgusses (ohne: keiner).
  */
@@ -138,6 +154,8 @@ export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0, flip = 
     img.draggable = false;
     // Weiche mit „nein“ nach links: Bild gespiegelt (im Bild geht „nein“ nach unten)
     img.style.transform = `rotate(${(dir ?? 0) * 90}deg)${flip ? ' scaleY(-1)' : ''}`;
+    // Noch kein eigenes Bild: das allgemeine, per CSS umgefärbt (zahlenfabrik.css)
+    if (specific && !IMAGES[specific] && DECOR[specific]) img.dataset.fallback = specific;
     return img;
   }
   const svg = document.createElementNS(NS, 'svg');
@@ -147,7 +165,7 @@ export function art(kind: ArtKind, size: number, dir?: Dir, variant = 0, flip = 
   svg.setAttribute('height', String(size));
   svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('focusable', 'false');
-  const body = DRAW[kind](size);
+  const body = DRAW[kind](size) + (specific && DECOR[specific] ? DECOR[specific](size) : '');
   const turn = dir === undefined || kind === 'sort' ? '' : `<g transform="rotate(${dir * 90} ${size / 2} ${size / 2})">${spout(size)}</g>`;
   svg.innerHTML = body + turn;
   return svg;

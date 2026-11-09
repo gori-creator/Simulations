@@ -48,6 +48,14 @@ describe('Zahlenfabrik: Tages- und Zufallsrätsel', () => {
       expect(run(l, straight(l, a.chain as Op[])).won).toBe(true);
     }
   });
+  it('Rätsel bleiben eindeutig, obwohl der Werkzeugkasten Zähler und Sammler enthält (Ziel immer über 10)', () => {
+    for (const seed of [3, 99, 20261109, 4711, 12345]) {
+      const a = makeRiddle(seed, KIT);
+      expect(Math.abs(a.to)).toBeGreaterThan(10);
+      expect(a.chain.every((o) => o.sym !== 'cnt' && o.sym !== 'acc')).toBe(true);
+      expect(solveChain(randomLevel(seed), KIT, 3, 5)).toHaveLength(1);
+    }
+  });
   it('Tagesrätsel hängt nur vom Datum ab', () => {
     const d = new Date(2026, 10, 5, 9);
     expect(dayKey(d)).toBe('2026-11-05');

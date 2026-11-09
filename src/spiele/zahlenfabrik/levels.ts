@@ -1567,6 +1567,73 @@ const C13: LevelInfo[] = [
   },
 ];
 
+/* ---------- Kapitel: Zähler-Maschine (Maschine mit Gedächtnis) ---------- */
+/** Weitere Karten für Folgen-Level (Quelle → Lager mit Platz für drei Maschinen). */
+const MEM_MAPS = [
+  { cols: 13, rows: 7, source: { x: 1, y: 3, dir: 0 as const }, to: { x: 11, y: 3 }, walls: [[4, 1], [4, 2], [4, 4], [4, 5], [8, 1], [8, 2], [8, 4], [8, 5]] as [number, number][], par: 9 },
+  { cols: 12, rows: 8, source: { x: 1, y: 6, dir: 0 as const }, to: { x: 10, y: 1 }, walls: wall(5, 8, [2]), par: 13 },
+  { cols: 13, rows: 7, source: { x: 1, y: 1, dir: 0 as const }, to: { x: 11, y: 5 }, walls: [[5, 0], [5, 1], [5, 2], [5, 3], [8, 3], [8, 4], [8, 5], [8, 6]] as [number, number][], par: 17 },
+  { cols: 14, rows: 8, source: { x: 1, y: 4, dir: 0 as const }, to: { x: 12, y: 4 }, walls: [...rocks(5, 2, 5, 6), ...rocks(9, 0, 9, 4)], par: 16 },
+];
+/** Level mit eigener Zahlenfolge aus der Quelle und Wertetabelle im Lager (Zähler, Sammler). */
+const seqLevel = (id: string, title: Localized, hint: Localized, mapIndex: number, values: number[], want: number[], maxMachines: number, pro = false): LevelInfo => {
+  const map = MEM_MAPS[mapIndex]!;
+  return {
+    id, title, hint,
+    cols: map.cols, rows: map.rows,
+    source: { ...map.source, value: values[0]!, values },
+    targets: [{ ...map.to, need: want.length, accept: { kind: 'seq', values: want } }],
+    walls: map.walls,
+    maxMachines,
+    ...(pro ? { pro } : {}),
+    par: map.par,
+  };
+};
+const C31: LevelInfo[] = [
+  seqLevel('c31-1', L('Zählen', 'Counting'), L('Neu: die Zähler-Maschine. Viermal die 7 kommt – das Lager will 1, 2, 3, 4. Der Zähler gibt jeder Zahl ihre Nummer.', 'New: the counter machine. The 7 arrives four times – the storage wants 1, 2, 3, 4. The counter gives every number its position.'), 0, [7, 7, 7, 7], [1, 2, 3, 4], 1),
+  seqLevel('c31-2', L('Die Zweierreihe', 'The twos'), L('4, 9, 2, 7, 5 kommen durcheinander. Das Lager will 2, 4, 6, 8, 10 – mit zwei Maschinen.', '4, 9, 2, 7, 5 arrive in a jumble. The storage wants 2, 4, 6, 8, 10 – with two machines.'), 1, [4, 9, 2, 7, 5], [2, 4, 6, 8, 10], 2),
+  seqLevel('c31-3', L('Quadratzahlen aus allem', 'Square numbers from anything'), L('3, 1, 4, 1, 5 kommen. Das Lager will 1, 4, 9, 16, 25 – egal, was hineinkommt.', '3, 1, 4, 1, 5 arrive. The storage wants 1, 4, 9, 16, 25 – whatever comes in.'), 2, [3, 1, 4, 1, 5], [1, 4, 9, 16, 25], 2),
+  seqLevel('c31-4', L('Ungerade Zahlen', 'Odd numbers'), L('Fünfmal die 6 kommt. Das Lager will 1, 3, 5, 7, 9 – höchstens drei Maschinen.', 'The 6 arrives five times. The storage wants 1, 3, 5, 7, 9 – at most three machines.'), 3, [6, 6, 6, 6, 6], [1, 3, 5, 7, 9], 3),
+  {
+    id: 'c31-5',
+    title: L('Erste, zweite, dritte', 'First, second, third'),
+    hint: L('Sechsmal die 5 kommt. Oben will das Lager 2, 4, 6, unten 1, 3, 5. Welche Nummer hat jede Zahl?', 'The 5 arrives six times. The top storage wants 2, 4, 6, the bottom one 1, 3, 5. Which position does every number have?'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 5, values: [5, 5, 5, 5, 5, 5] },
+    targets: [
+      { x: 10, y: 1, need: 3, accept: { kind: 'seq', values: [2, 4, 6] } },
+      { x: 10, y: 7, need: 3, accept: { kind: 'seq', values: [1, 3, 5] } },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    pro: true,
+    par: 14,
+  },
+  twoSources('c31-6', L('Zahl mal Nummer', 'Number times position'), L('Beide Quellen geben 3, 8, 1, 5 aus. Das Lager will jede Zahl mal ihre Nummer: 3, 16, 3, 20 – mit einer Maschine.', 'Both sources give out 3, 8, 1, 5. The storage wants every number times its position: 3, 16, 3, 20 – with one machine.'), [3, 8, 1, 5], [3, 8, 1, 5], [3, 16, 3, 20], 1, true),
+];
+
+/* ---------- Kapitel: Sammel-Maschine (Summe aller Zahlen bisher) ---------- */
+const C32: LevelInfo[] = [
+  seqLevel('c32-1', L('Dreieckszahlen', 'Triangular numbers'), L('Neu: die Sammel-Maschine. 1 bis 5 kommen – das Lager will 1, 3, 6, 10, 15. Jede Zahl wird zu allem dazugezählt, was vorher kam.', 'New: the collector machine. 1 to 5 arrive – the storage wants 1, 3, 6, 10, 15. Every number is added to everything that came before.'), 0, seq(1, 5), [1, 3, 6, 10, 15], 1),
+  seqLevel('c32-2', L('Die Zehnerreihe', 'The tens'), L('Viermal die 10 kommt. Das Lager will 10, 20, 30, 40 – mit nur einer Maschine.', 'The 10 arrives four times. The storage wants 10, 20, 30, 40 – with just one machine.'), 1, [10, 10, 10, 10], [10, 20, 30, 40], 1),
+  seqLevel('c32-3', L('Quadratzahlen aus ungeraden', 'Square numbers from odd numbers'), L('1, 3, 5, 7, 9 kommen. Das Lager will 1, 4, 9, 16, 25 – mit nur einer Maschine. Sammel sie!', '1, 3, 5, 7, 9 arrive. The storage wants 1, 4, 9, 16, 25 – with just one machine. Collect them!'), 2, [1, 3, 5, 7, 9], [1, 4, 9, 16, 25], 1),
+  {
+    id: 'c32-4',
+    title: L('Der Spartopf', 'The money box'),
+    hint: L('5, 12, 8, 20 kommen. Oben will das Lager die Gesamtsumme 45, unten die drei Zwischenstände. Sammel erst, dann prüft eine Weiche „größer als …?“.', '5, 12, 8, 20 arrive. The top storage wants the total 45, the bottom one the three subtotals. Collect first, then a “greater than …?” switch checks.'),
+    cols: 12, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 5, values: [5, 12, 8, 20] },
+    targets: [
+      { x: 10, y: 1, need: 1, accept: { kind: 'value', n: 45 } },
+      { x: 10, y: 7, need: 3, accept: no(gt(40)) },
+    ],
+    walls: [[6, 0], [6, 8], [4, 3], [4, 5]],
+    par: 14,
+  },
+  seqLevel('c32-5', L('Doppelt gesammelt', 'Collected twice'), L('Fünfmal die 2 kommt. Das Lager will 2, 6, 12, 20, 30 – mit zwei Maschinen. Schau, was einmal Sammeln ergibt.', 'The 2 arrives five times. The storage wants 2, 6, 12, 20, 30 – with two machines. Look at what collecting once gives.'), 3, [2, 2, 2, 2, 2], [2, 6, 12, 20, 30], 2),
+  seqLevel('c32-6', L('Aus Dreien Dreieckszahlen', 'Triangular numbers from threes'), L('Fünfmal die 3 kommt. Das Lager will 1, 3, 6, 10, 15 – mit zwei Maschinen.', 'The 3 arrives five times. The storage wants 1, 3, 6, 10, 15 – with two machines.'), 1, [3, 3, 3, 3, 3], [1, 3, 6, 10, 15], 2, true),
+  twoSources('c32-7', L('Dreieckszahlen rückwärts', 'Triangular numbers backwards'), L('Beide Quellen geben 1 bis 5 aus. Das Lager will 0, 1, 3, 6, 10 – mit einer Maschine. Was bleibt von einer Dreieckszahl, wenn man x abzieht?', 'Both sources give out 1 to 5. The storage wants 0, 1, 3, 6, 10 – with one machine. What is left of a triangular number if you take away x?'), seq(1, 5), seq(1, 5), [0, 1, 3, 6, 10], 1, true),
+];
+
 /** Ein Kapitel: was es neu einführt, und seine Level. */
 export interface Chapter {
   id: string;
@@ -1586,6 +1653,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
   { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
+  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32'] },
 ];
 
 export const CHAPTERS: Chapter[] = [
@@ -1618,6 +1686,8 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c29', title: L('Brüche', 'Fractions'), grades: '6', teaches: ['frac', 'inv'], levels: C29 },
   { id: 'c30', title: L('Gleichungen', 'Equations'), grades: '7–8', teaches: ['eq'], levels: C30 },
   { id: 'c27', title: L('Großmeister', 'Grandmaster'), grades: '8–9', teaches: [], levels: C27 },
+  { id: 'c31', title: L('Zähler-Maschine', 'Counter machine'), grades: '5–6', teaches: ['count'], levels: C31 },
+  { id: 'c32', title: L('Sammel-Maschine', 'Collector machine'), grades: '6–8', teaches: ['total'], levels: C32 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);

@@ -1,5 +1,5 @@
 import { allOps, type KitItem } from './kit';
-import { accepts, apply, sourceValue, targetsOf, totalNeed, type Level, type Op } from './model';
+import { accepts, apply, applySeq, isStateful, sourceValue, targetsOf, totalNeed, type Level, type Op } from './model';
 
 /**
  * Kleiner Löser für Rechenketten: Welche Maschinen nacheinander machen aus den
@@ -28,17 +28,10 @@ export function solveChain(level: Level, kit: KitItem[], max: number, want = 2):
     const next: typeof frontier = [];
     for (const f of frontier) {
       for (const op of ops) {
-        const vals: number[] = [];
-        let bad = false;
-        for (const v of f.vals) {
-          const w = apply(op, v);
-          if (w === null || Math.abs(w) > LIMIT) {
-            bad = true;
-            break;
-          }
-          vals.push(w);
-        }
-        if (bad) continue;
+        // der Reihe nach, damit Zähler und Sammler richtig rechnen
+        const seq = applySeq(op, f.vals);
+        if (seq.some((w) => w === null || Math.abs(w) > LIMIT)) continue;
+        const vals = seq as number[];
         const chain = [...f.chain, op];
         if (ok(vals)) {
           found.push(chain);
@@ -70,8 +63,8 @@ export function rng(seed: number): () => number {
  */
 export function makeRiddle(seed: number, kit: KitItem[]): { from: number; to: number; chain: Op[] } {
   const random = rng(seed);
-  // nur ganze Zahlen (Bruch- und Kehrwert-Maschine bleiben bei diesen Rätseln außen vor)
-  const ops = allOps(kit).filter((o) => o.sym !== ':' && o.sym !== '⅟');
+  // nur ganze Zahlen ohne Gedächtnis (Bruch-, Kehrwert-, Zähler- und Sammel-Maschine bleiben bei diesen Rätseln außen vor)
+  const ops = allOps(kit).filter((o) => o.sym !== ':' && o.sym !== '⅟' && !isStateful(o.sym));
   for (let attempt = 0; attempt < 40; attempt++) {
     const from = 2 + Math.floor(random() * 60);
     // Wie oft wird jede Zahl erreicht, und wie kurz geht es?
@@ -96,7 +89,8 @@ export function makeRiddle(seed: number, kit: KitItem[]): { from: number; to: nu
     }
     const plain = (c: Op[]) => c.every((o) => o.sym === '+' || o.sym === '−');
     const options = [...count]
-      .filter(([t, c]) => c === 1 && shortest.get(t) === 3 && t !== from && Math.abs(t) <= 5000 && !plain(only.get(t)!))
+      // Ziel über 10: Mit Zähler oder Sammler und Runden erreicht man aus jeder Zahl nur die 0 (und von dort −10 … 10)
+      .filter(([t, c]) => c === 1 && shortest.get(t) === 3 && t !== from && Math.abs(t) <= 5000 && Math.abs(t) > 10 && !plain(only.get(t)!))
       .map(([t]) => t)
       .sort((a, b) => a - b);
     if (options.length) {

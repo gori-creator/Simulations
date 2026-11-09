@@ -1,6 +1,6 @@
 # Zahlenfabrik: Bilder (Prompts)
 
-Stand 05.11.2026 (Runde 2 eingebaut, Runde 3 angefordert). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
+Stand 09.11.2026 (Runde 2 und 3 eingebaut, Runde 4 angefordert). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
 
 ## So geht’s
 
@@ -385,6 +385,84 @@ kapitel-gleichungen.png: A large balance scale built into the factory; two belts
 ```text
 baukasten.png: An open red toolbox seen from the front, filled with small machine blocks, belts and a few tokens, friendly and tidy. Transparent background.
 auswahl.png: A rounded square selection frame made of four thick blue corner brackets with a small hand cursor next to it, seen from the front. Transparent background.
+```
+
+## Runde 4: Maschinen mit Gedächtnis, Puffer, Weiche „ganze Zahl?“, Schleife, Erz-Arten (Stand 09.11.2026)
+
+Für die neuen Bauteile aus dem Ausbau vom 09.11.2026 (Zähler, Sammler, Puffer, Weiche „ganze Zahl?“, Verteiler für Schleifen), die neuen Quellen-Arten der offenen Welt und die neuen Kapitel. Wieder **alles optional**: Ohne Datei zeigt das Spiel das allgemeine Maschinenbild (umgefärbt) bzw. die gezeichnete Grafik. Hochladen wie gehabt nach `incoming/zahlenfabrik/<dateiname>.png`.
+
+Für A–C den **Stil-Block von oben** voranstellen (quadratisch, transparent, genau von oben, Ausgang rechts, Mitte frei), am besten mit `maschine-plus.png` als Vorlage („same style as the reference image“). Für D den Stil-Block für Kapitelbilder (16 : 9, deckend, Platz links für einen Titel).
+
+### A · Maschinen mit Gedächtnis (3)
+
+Gleiche Grundform wie `maschine-plus.png` (Eingang **links**, Ausgang **rechts**, in der Mitte ein **großes leeres helles Feld** ohne Zeichen).
+
+| Nr. | Datei | Motiv | Farbe |
+| --- | --- | --- | --- |
+| 88 | `maschine-zaehler.png` | Zähler-Maschine (gibt 1, 2, 3, … aus) | blaugrün |
+| 89 | `maschine-sammel.png` | Sammel-Maschine (Summe aller Zahlen bisher) | violett |
+| 90 | `maschine-puffer.png` | Puffer-Maschine (hält eine Zahl fest, gibt die vorige weiter) | sandgelb |
+
+```text
+maschine-zaehler.png: A square counter machine block with a blue-green housing (#2A9D8F family): along the top edge a small row of three round click-counter wheels with tiny notches (no digits), a small lever on the left, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-sammel.png: A square collector machine block with a violet housing (#7B5EA7 family): a small open hopper at the back where a neat little heap of tokens is piling up, a tiny scoop arm beside it, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+maschine-puffer.png: A square buffer machine block with a warm sand-yellow housing (#E0B756 family): a single round holding bay on top with a transparent dome, one token resting inside, a small gate on the right that lets the previous token out, input slot on the LEFT edge, output chute on the RIGHT edge, a large blank light cream panel in the center (completely empty).
+```
+
+### B · Weiche und Verteiler (2)
+
+Weiche wie `weiche-gerade.png` (violett, Y-Kanal: hinein von **links**, hinaus nach **rechts** und **unten**). Verteiler in der gleichen Form, aber **türkis** (beide Ausgänge bekommen eine Kopie).
+
+| Nr. | Datei | Motiv |
+| --- | --- | --- |
+| 91 | `weiche-ganz.png` | Weiche „ganze Zahl?“ (ganze Zahlen geradeaus, Brüche zur Seite) |
+| 92 | `verteiler.png` | Verteiler (jede Zahl als Kopie in beide Richtungen, für Schleifen) |
+
+```text
+weiche-ganz.png: The violet sorting switch block (same as weiche-gerade.png) with a Y-shaped channel; at the split point a small gauge with a whole round token on one side and a token cut into wedges on the other. Calm flat center area, no markings.
+verteiler.png: A teal splitter block (#1FA9A0 family) with the same Y-shaped channel (in from LEFT, out to RIGHT and out to BOTTOM); at the split point a small stamping press that duplicates a token, two identical tokens leaving on both exits, two tiny green lamps. Calm flat center area, no markings.
+```
+
+### C · Offene Welt: Quellen-Arten und Abnehmer (5)
+
+Neue Zahlenquellen weiter draußen auf der Karte (gleiche Grundform wie `quelle.png`: Trichter oben, Ausgang **rechts**, runde Scheibe in der Mitte frei), je mit eigener Farbe. Dazu zwei neue Abnehmer (2 × 2 Felder, von oben, Eingang an allen vier Seiten).
+
+| Nr. | Datei | Motiv | Farbe |
+| --- | --- | --- | --- |
+| 93 | `quelle-prim.png` | Primzahl-Quelle (gibt 2, 3, 5, 7, 11, … aus) | dunkelrot |
+| 94 | `quelle-quadrat.png` | Quadratzahl-Quelle (1, 4, 9, 16, …) | gold |
+| 95 | `quelle-zaehl.png` | Zähl-Quelle (1, 2, 3, 4, …) | blaugrün |
+| 96 | `abnehmer-4.png` | Sternwarte (kauft Dreieckszahlen) | nachtblau |
+| 97 | `abnehmer-5.png` | Bäckerei (kauft Vielfache von 12, „Dutzend“) | braun-creme |
+
+```text
+quelle-prim.png: The green source machine from quelle.png recolored to a deep crimson housing (#B3263B family), with a small crystal-like ore chunk sticking out of the hopper and a tiny lamp, round empty metal disc in the center, output chute on the RIGHT edge.
+quelle-quadrat.png: The source machine from quelle.png recolored to a warm gold housing (#D4A017 family), the hopper rim shaped as a neat square frame, round empty metal disc in the center, output chute on the RIGHT edge.
+quelle-zaehl.png: The source machine from quelle.png recolored to a blue-green housing (#2A9D8F family), with a small row of three click-counter wheels on the hopper rim (no digits), round empty metal disc in the center, output chute on the RIGHT edge.
+abnehmer-4.png: A small observatory seen exactly from above, square footprint, round night-blue dome with a slit and a small telescope tube, four small intake openings in the middle of each side. No letters, no symbols.
+abnehmer-5.png: A cozy bakery seen exactly from above, square footprint, brown roof with a cream-colored awning strip, a tray of round buns beside the door, four small intake openings in the middle of each side. No letters, no signs.
+```
+
+### D · Kapitelbilder (6)
+
+Wie die Kapitelbilder aus Runde 2 (Stil-Block für Kapitelbilder, 16 : 9, deckend, Platz links für einen Titel).
+
+| Nr. | Datei | Kapitel |
+| --- | --- | --- |
+| 98 | `kapitel-zaehler.png` | Zähler-Maschine |
+| 99 | `kapitel-sammel.png` | Sammel-Maschine |
+| 100 | `kapitel-puffer.png` | Puffer-Maschine |
+| 101 | `kapitel-ganz.png` | Weiche „ganze Zahl?“ |
+| 102 | `kapitel-schleife.png` | Schleife (Rückführung) |
+| 103 | `kapitel-endgegner.png` | Endgegner |
+
+```text
+kapitel-zaehler.png: A blue-green counter machine on a belt with three click-counter wheels on top; identical tokens go in, tokens of growing size come out in a neat row.
+kapitel-sammel.png: A violet collector machine with a growing heap of tokens in its hopper; small tokens go in, bigger and bigger tokens come out towards a blue crate.
+kapitel-puffer.png: A sand-yellow buffer machine with a transparent dome holding one token while the belt waits; a second token is just arriving, the first is leaving.
+kapitel-ganz.png: A violet switch with a small gauge at its fork; whole round tokens roll straight on, tokens cut into wedges turn aside into a separate crate.
+kapitel-schleife.png: A conveyor belt that runs in a closed loop around a teal splitter and a machine, with one branch leaving the loop towards a crate; tokens of growing size circle inside.
+kapitel-endgegner.png: A huge dramatic factory hall at dusk with every kind of machine, crossing belts, bridges and a giant glowing boss machine in the middle with warning stripes and a crown-shaped roof.
 ```
 
 ## Einbau (für Claude)
