@@ -217,3 +217,10 @@ Ideen und Spielmechaniken sind frei. Nicht übernehmen: fremde Namen, Logos, Gra
 - **Ziel „alle Sterne sammeln“:** Fortschrittsbalken für alle Sterne in der Level-Auswahl; wenn jedes Level geschafft ist, führt „Fehlende Sterne holen“ zum ersten Level ohne ★★★. Nach dem Sieg steht da, wie viele Teile der nächste Stern erlaubt.
 - **Meldungen:** jede Einblendung hat ein X zum Wegklicken; reine Hinweise verschwinden nach ein paar Sekunden von selbst.
 - **Offene Welt:** Bänder kosten beim Ziehen jetzt denselben Preis wie im Inventar (2 Münzen). Vorher kostete Ziehen 1 Münze, Abbauen gab aber 2 zurück – damit ließ sich Geld vermehren.
+
+## 3D-Look (10.11.2026)
+
+- **Gekippter Boden:** Das Spielfeld wird um 34° nach hinten geneigt (`perspective` + `rotateX` auf `.zf-world`). Einpassen, Zoomen und Verschieben rechnen weiter flach; `toFlat()` rechnet Bildschirmpunkte auf den geneigten Boden zurück (Tippen, Ziehen, Zoomen mit Mausrad und zwei Fingern).
+- **Aussehen:** warmer Sandboden mit Kacheln und dicker Vorderkante, Bänder als Gleise mit Schwellen (laufen beim Start mit) und runden Kurven, Teile und Felsen mit Kante und Schatten, Zahlen stehen aufrecht auf dem Gleis. Nur CSS und SVG, keine neuen Bilder.
+- **Umschalten:** Würfel-Knopf unter den Zoom-Knöpfen schaltet zwischen 3D und „von oben“ (merkt sich der Browser, `spiel:zahlenfabrik:ansicht`).
+- Angeregt von einem Spiel mit Zügen auf Sandboden (Blickwinkel, warme Farben, dicke Umrisse); keine Bilder oder Figuren daraus übernommen.

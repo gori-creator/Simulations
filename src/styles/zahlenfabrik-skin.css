@@ -822,3 +822,98 @@
   --border: #c7cfdb;
   --border-strong: #9aa5b8;
 }
+
+/* ---------- 3D-Look: gekippter Sandboden, Gleise, Teile mit Dicke ---------- */
+/* Die Neigung setzt game.ts (Klasse .is-3d, Variable --zf-tilt). Ohne 3D
+   (Ansicht „Von oben“) bleiben Boden, Gleise und Schatten, nur flach. */
+
+.zf {
+  --zf-sand: #eedca4;
+  --zf-sand-2: #e9d498;
+  --zf-sand-line: rgb(122 88 34 / 0.2);
+  --zf-sand-side: #b98f4f;
+  --zf-tie: #93603a;
+  --zf-tie-edge: #3d2615;
+  --zf-rail: #f4f5f8;
+  --zf-rail-edge: #283043;
+  --zf-ground-shadow: rgb(70 44 12 / 0.28);
+}
+
+:root[data-theme='dark'] .zf {
+  --zf-sand: #a8925b;
+  --zf-sand-2: #a08a55;
+  --zf-sand-line: rgb(40 26 8 / 0.28);
+  --zf-sand-side: #5f4a26;
+  --zf-tie: #6e4527;
+  --zf-tie-edge: #24150a;
+  --zf-rail: #dfe3ea;
+  --zf-ground-shadow: rgb(20 12 2 / 0.4);
+}
+
+.zf .zf-world,
+.zf .zf-world.has-floor,
+:root[data-theme='dark'] .zf .zf-world.has-floor {
+  background-color: var(--zf-sand);
+  background-image:
+    linear-gradient(var(--zf-sand-line) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, var(--zf-sand-line) 1.5px, transparent 1.5px),
+    conic-gradient(var(--zf-sand) 25%, var(--zf-sand-2) 0 50%, var(--zf-sand) 0 75%, var(--zf-sand-2) 0);
+  background-size: 64px 64px, 64px 64px, 128px 128px;
+  background-position: -0.75px -0.75px, -0.75px -0.75px, 0 0;
+  border-radius: 10px;
+  /* Dicke Platte: im 3D-Blick sieht man die Vorderkante */
+  box-shadow: 0 0 0 3px var(--zf-rail-edge), 0 16px 0 3px var(--zf-sand-side), 0 16px 0 6px var(--zf-rail-edge), 0 34px 40px rgb(0 0 0 / 0.35);
+}
+
+/* Gleis: Schatten, Schwellen, zwei Schienen */
+.zf .zf-track path { fill: none; stroke-linejoin: round; }
+.zf .zf-track__shadow { stroke: var(--zf-ground-shadow); stroke-width: 36; translate: 0 5px; }
+.zf .zf-track .zf-belt__edge { stroke: var(--zf-tie-edge); stroke-width: 36; stroke-dasharray: 8 8; stroke-dashoffset: 1; }
+.zf .zf-track .zf-belt__run { stroke: var(--zf-tie); stroke-width: 33; stroke-dasharray: 6 10; stroke-dashoffset: 0; }
+.zf .zf-track__mask-on { stroke: #fff; stroke-width: 24; }
+.zf .zf-track__mask-off { stroke: #000; stroke-width: 9; }
+.zf .zf-track__rail-edge { stroke: var(--zf-rail-edge); stroke-width: 24; }
+.zf .zf-track__rail { stroke: var(--zf-rail); stroke-width: 19; }
+.zf .zf-track__rail-inner { stroke: var(--zf-rail-edge); stroke-width: 12; }
+/* Brücke: oberes Gleis mit kräftigem Schatten */
+.zf .zf-track.zf-belt--over .zf-track__shadow { stroke-width: 40; translate: 0 9px; }
+.zf .zf-track.zf-belt--over .zf-belt__edge { stroke-width: 38; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Schwellen laufen mit (Muster 16 px, nahtlos) */
+  .zf .zf-track .zf-belt__edge { animation: zf-ties-edge 1.6s linear infinite; }
+  .zf .zf-belts.is-running .zf-track .zf-belt__edge { animation-duration: 0.105s; }
+  .zf .zf-belts.is-running.is-fast .zf-track .zf-belt__edge { animation-duration: 0.03s; }
+}
+
+@keyframes zf-ties-edge {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: -15; }
+}
+
+/* Teile stehen auf dem Boden: Kante und weicher Schatten nach vorn */
+.zf .zf-cell--op,
+.zf .zf-cell--source,
+.zf .zf-cell--target,
+.zf .zf-cell--base,
+.zf .zf-cell--rock {
+  filter: drop-shadow(0 5px 0 rgb(40 26 8 / 0.5)) drop-shadow(0 9px 7px var(--zf-ground-shadow));
+}
+
+.zf .zf-cell--rock { background: transparent; }
+
+/* Echtes 3D: Zahlen stehen aufrecht auf dem Gleis */
+.zf.is-3d .zf-world,
+.zf.is-3d .zf-items { transform-style: preserve-3d; }
+
+.zf.is-3d .zf-item {
+  transform: rotateX(calc(-1 * var(--zf-tilt, 0deg)));
+  transform-origin: 50% 90%;
+  box-shadow: 0 4px 0 rgb(0 0 0 / 0.35);
+}
+
+/* Spielfeld hinter der Platte: etwas Himmel statt Fläche */
+.zf.is-3d .zf-board,
+.zf.is-3d [data-board] {
+  background: radial-gradient(120% 80% at 50% 0%, #6d93d6 0%, #2c4f93 55%, #1d356a 100%);
+}

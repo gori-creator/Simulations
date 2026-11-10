@@ -28,6 +28,10 @@ const MIN_ZOOM = 0.2;
 const FIT_MIN_ZOOM = 0.45;
 const MAX_ZOOM = 1.8;
 const SVG_NS = 'http://www.w3.org/2000/svg';
+/** 3D-Ansicht: Neigung des Bodens (Grad) und Abstand der Kamera (px). */
+const TILT_DEG = 34;
+const PERSP = 1100;
+const VIEW_STORE = 'spiel:zahlenfabrik:ansicht';
 /** Mitte der Feldkante in Richtung d (relativ zur Feldecke). */
 const EDGE: [number, number][] = [
   [CELL, CELL / 2],
@@ -124,6 +128,7 @@ const T = {
   starNext: L('Nächster Stern: höchstens {n} Teile.', 'Next star: at most {n} parts.'),
   missingAt: L('Fehlende Sterne holen: Kapitel {c}, Level {l}', 'Get missing stars: chapter {c}, level {l}'),
   starsGoal: L('Sammle alle Sterne: ★★★ gibt es für die kleinste Fabrik.', 'Collect all stars: ★★★ for the smallest factory.'),
+  view3d: L('3D-Ansicht an/aus', '3D view on/off'),
   closeMsg: L('Meldung schließen', 'Close message'),
   goalBest: L('{n} Teile wie die Musterlösung', '{n} parts like the sample solution'),
   coinsShort: L('Münzen', 'Coins'),
@@ -473,6 +478,8 @@ export function initFactory(root: HTMLElement): void {
 
   const world = el('div', 'zf-world');
   const beltLayer = document.createElementNS(SVG_NS, 'svg');
+  /** Eindeutige Kennung für die Schienen-Masken (mehrere Spiele auf einer Seite). */
+  const railMask = `zf-rail-${Math.random().toString(36).slice(2, 8)}`;
   beltLayer.setAttribute('class', 'zf-belts');
   beltLayer.setAttribute('aria-hidden', 'true');
   const cellsLayer = el('div', 'zf-cells');
@@ -536,8 +543,41 @@ export function initFactory(root: HTMLElement): void {
   const view = { x: 0, y: 0, s: 1 };
 
   // ---------- Ansicht (verschieben, zoomen) ----------
+  /** Neigung in Grad (0: Blick von oben). */
+  let tilt = (() => {
+    try {
+      return localStorage.getItem(VIEW_STORE) === '2d' ? 0 : TILT_DEG;
+    } catch {
+      return TILT_DEG;
+    }
+  })();
+  /**
+   * Ansicht: Karte verschieben und zoomen (flach), dann um die Mitte des
+   * Spielfelds nach hinten kippen. Alle Rechnungen (Einpassen, Zoomen) laufen
+   * in flachen Koordinaten; `toFlat` rechnet Bildschirmpunkte zurück.
+   */
   function applyView(): void {
-    world.style.transform = `translate(${view.x}px, ${view.y}px) scale(${view.s})`;
+    const ox = viewport.clientWidth / 2;
+    const oy = viewport.clientHeight / 2;
+    const flat = `translate(${view.x}px, ${view.y}px) scale(${view.s})`;
+    world.style.transform = tilt ? `translate(${ox}px, ${oy}px) perspective(${PERSP}px) rotateX(${tilt}deg) translate(${-ox}px, ${-oy}px) ${flat}` : flat;
+    root.classList.toggle('is-3d', tilt > 0);
+    root.style.setProperty('--zf-tilt', `${tilt}deg`);
+  }
+
+  /** Bildschirmpunkt → Punkt auf dem flachen Spielfeld (relativ zum Spielfeld-Kasten). */
+  function toFlat(clientX: number, clientY: number): [number, number] {
+    const box = viewport.getBoundingClientRect();
+    const ox = viewport.clientWidth / 2;
+    const oy = viewport.clientHeight / 2;
+    const sx = clientX - box.left - ox;
+    const sy = clientY - box.top - oy;
+    if (!tilt) return [sx + ox, sy + oy];
+    const a = (tilt * Math.PI) / 180;
+    // Projektion: (u, v) → (u, v·cos a) · P / (P − v·sin a); hier umgekehrt
+    const v = (sy * PERSP) / (PERSP * Math.cos(a) + sy * Math.sin(a));
+    const u = (sx * (PERSP - v * Math.sin(a))) / PERSP;
+    return [u + ox, v + oy];
   }
 
   function zoomAt(factor: number, cx: number, cy: number): void {
@@ -565,15 +605,20 @@ export function initFactory(root: HTMLElement): void {
     const y1 = Math.min(board.rows, Math.max(...ys) + 2);
     // Handy, Level: Spielfeld nur so hoch wie die Karte (kein leerer Rand oben und unten)
     if (mode === 'level' && innerWidth <= 640) {
-      const fitW = Math.min(1.2, Math.max(0.34, box.width / ((x1 - x0) * CELL)));
-      const want = Math.round((y1 - y0) * CELL * fitW + 16);
+      const fitW = Math.min(1.2, Math.max(0.34, box.width / ((x1 - x0) * CELL * (tilt ? 1.12 : 1))));
+      // 3D: die Karte wirkt flacher (Tiefe · cos), dafür braucht die Vorderkante etwas Platz
+      const want = Math.round((y1 - y0) * CELL * fitW * (tilt ? Math.cos((tilt * Math.PI) / 180) * 1.05 : 1) + (tilt ? 40 : 16));
       viewport.style.height = `${Math.max(280, Math.min(Math.round(innerHeight * 0.6), want))}px`;
     } else viewport.style.removeProperty('height');
     const fresh = viewport.getBoundingClientRect();
     // Beim Einpassen nicht zu klein (Felder sollen sich noch antippen lassen); weiter heraus zoomt man selbst
     // (am Handy etwas kleiner, damit ein ganzes Level hineinpasst)
     const minFit = innerWidth <= 640 && mode === 'level' ? 0.34 : FIT_MIN_ZOOM;
-    const s = Math.min(MAX_ZOOM, Math.max(minFit, Math.min(box.width / ((x1 - x0) * CELL), fresh.height / ((y1 - y0) * CELL), 1.2)));
+    // 3D: der vordere Rand wird breiter, die Tiefe kürzer
+    const a = (tilt * Math.PI) / 180;
+    const wide = tilt ? 1.12 : 1;
+    const deep = tilt ? Math.cos(a) * 1.05 : 1;
+    const s = Math.min(MAX_ZOOM, Math.max(minFit, Math.min(box.width / ((x1 - x0) * CELL * wide), fresh.height / ((y1 - y0) * CELL * deep), 1.2)));
     view.s = s;
     view.x = box.width / 2 - ((x0 + x1) / 2) * CELL * s;
     view.y = fresh.height / 2 - ((y0 + y1) / 2) * CELL * s;
@@ -582,9 +627,9 @@ export function initFactory(root: HTMLElement): void {
 
   /** Bildschirmpunkt → Kästchen (oder null außerhalb der Karte). */
   function cellAt(clientX: number, clientY: number): [number, number] | null {
-    const box = viewport.getBoundingClientRect();
-    const x = Math.floor((clientX - box.left - view.x) / (CELL * view.s));
-    const y = Math.floor((clientY - box.top - view.y) / (CELL * view.s));
+    const [fx, fy] = toFlat(clientX, clientY);
+    const x = Math.floor((fx - view.x) / (CELL * view.s));
+    const y = Math.floor((fy - view.y) / (CELL * view.s));
     return x >= 0 && y >= 0 && x < board.cols && y < board.rows ? [x, y] : null;
   }
 
@@ -604,13 +649,24 @@ export function initFactory(root: HTMLElement): void {
   zoomBtn('plus', tx(T.zoomIn), () => zoomAt(1.25, ...center()), 'zf-zoom__btn--step');
   zoomBtn('minus', tx(T.zoomOut), () => zoomAt(0.8, ...center()), 'zf-zoom__btn--step');
   zoomBtn('fit', tx(T.fit), fit);
+  // 3D-Blick an/aus (merkt sich der Browser)
+  zoomBtn('cube', tx(T.view3d), () => {
+    tilt = tilt ? 0 : TILT_DEG;
+    try {
+      localStorage.setItem(VIEW_STORE, tilt ? '3d' : '2d');
+    } catch {
+      /* ohne Speicher: nur für diesen Besuch */
+    }
+    zoomBar.querySelector('.zf-zoom__btn--view')?.setAttribute('aria-pressed', String(tilt > 0));
+    fit();
+  }, 'zf-zoom__btn--view');
+  zoomBar.querySelector('.zf-zoom__btn--view')?.setAttribute('aria-pressed', String(tilt > 0));
 
   viewport.addEventListener(
     'wheel',
     (event) => {
       event.preventDefault();
-      const box = viewport.getBoundingClientRect();
-      zoomAt(event.deltaY < 0 ? 1.12 : 1 / 1.12, event.clientX - box.left, event.clientY - box.top);
+      zoomAt(event.deltaY < 0 ? 1.12 : 1 / 1.12, ...toFlat(event.clientX, event.clientY));
     },
     { passive: false },
   );
@@ -657,10 +713,11 @@ export function initFactory(root: HTMLElement): void {
       const dist = Math.hypot(a.x - b.x, a.y - b.y);
       const mx = (a.x + b.x) / 2;
       const my = (a.y + b.y) / 2;
-      const box = viewport.getBoundingClientRect();
-      view.x += mx - pinch.mx;
-      view.y += my - pinch.my;
-      zoomAt(dist / (pinch.dist || 1), mx - box.left, my - box.top);
+      const [fx, fy] = toFlat(mx, my);
+      const [px, py] = toFlat(pinch.mx, pinch.my);
+      view.x += fx - px;
+      view.y += fy - py;
+      zoomAt(dist / (pinch.dist || 1), fx, fy);
       pinch = { dist, mx, my };
       return;
     }
@@ -668,8 +725,10 @@ export function initFactory(root: HTMLElement): void {
     if (Math.hypot(event.clientX - gesture.startX, event.clientY - gesture.startY) > 6) gesture.moved = true;
     if (gesture.mode === 'pan' || (gesture.mode === 'tap' && gesture.moved)) {
       gesture.mode = 'pan';
-      view.x += event.clientX - prev.x;
-      view.y += event.clientY - prev.y;
+      const [fx, fy] = toFlat(event.clientX, event.clientY);
+      const [px, py] = toFlat(prev.x, prev.y);
+      view.x += fx - px;
+      view.y += fy - py;
       applyView();
       return;
     }
@@ -1202,7 +1261,9 @@ export function initFactory(root: HTMLElement): void {
       if (ins.length <= 1 && outs.length === 1) {
         // ein Weg hinein, einer hinaus: ein durchgehender Streifen (auch um die Ecke)
         const from = ((ins[0] ?? part.dir) + 2) % 4;
-        paths.push(`M${edge(x, y, from as Dir)}L${cx(x)} ${cy(y)}L${edge(x, y, outs[0]!)}`);
+        // Kurven rund (wie Gleise), gerade Stücke gerade
+        const turn = (from + 2) % 4 !== outs[0];
+        paths.push(`M${edge(x, y, from as Dir)}${turn ? 'Q' : 'L'}${cx(x)} ${cy(y)}${turn ? ' ' : 'L'}${edge(x, y, outs[0]!)}`);
         continue;
       }
       // Weiche oder Zusammenführen: jeder Eingang zur Mitte, von der Mitte zu jedem Ausgang
@@ -1223,20 +1284,35 @@ export function initFactory(root: HTMLElement): void {
         }
       }
     }
-    const d = paths.join('');
-    const mk = (cls: string) => {
+    const path = (cls: string, d: string) => {
       const p = document.createElementNS(SVG_NS, 'path');
       p.setAttribute('class', cls);
       p.setAttribute('d', d);
       return p;
     };
-    const mkOver = (cls: string) => {
-      const p = document.createElementNS(SVG_NS, 'path');
-      p.setAttribute('class', `${cls} zf-belt--over`);
-      p.setAttribute('d', over.join(''));
-      return p;
+    /**
+     * Ein Band als Gleis: Schatten, Schwellen (laufen beim Start mit), darüber
+     * zwei Schienen – ein breiter Strich, dessen Mitte eine Maske ausspart.
+     */
+    const track = (d: string, extra: string, n: number) => {
+      const g = document.createElementNS(SVG_NS, 'g');
+      g.setAttribute('class', `zf-track${extra}`);
+      const mask = document.createElementNS(SVG_NS, 'mask');
+      const id = `${railMask}-${n}`;
+      mask.id = id;
+      mask.setAttribute('maskUnits', 'userSpaceOnUse');
+      mask.setAttribute('x', '-64');
+      mask.setAttribute('y', '-64');
+      mask.setAttribute('width', String(board.cols * CELL + 128));
+      mask.setAttribute('height', String(board.rows * CELL + 128));
+      mask.append(path('zf-track__mask-on', d), path('zf-track__mask-off', d));
+      const rails = document.createElementNS(SVG_NS, 'g');
+      rails.setAttribute('mask', `url(#${id})`);
+      rails.append(path('zf-track__rail-edge', d), path('zf-track__rail', d), path('zf-track__rail-inner', d));
+      g.append(mask, path('zf-track__shadow', d), path('zf-belt__edge', d), path('zf-belt__run', d), rails);
+      return g;
     };
-    beltLayer.replaceChildren(mk('zf-belt__edge'), mk('zf-belt__base'), mk('zf-belt__run'), ...(over.length ? [mkOver('zf-belt__shadow'), mkOver('zf-belt__edge'), mkOver('zf-belt__base'), mkOver('zf-belt__run')] : []));
+    beltLayer.replaceChildren(track(paths.join(''), '', 0), ...(over.length ? [track(over.join(''), ' zf-belt--over', 1)] : []));
     beltLayer.classList.toggle('is-running', running);
   }
 
