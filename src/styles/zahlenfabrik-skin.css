@@ -426,6 +426,10 @@
   box-shadow: 0 5px 0 rgb(6 14 32 / 0.45);
 }
 
+/* Vergleich nach dem Sieg: der Meldungskasten ist immer hell, auch im dunklen Modus */
+.zf .zf-status .zf-compare { color: var(--sk-edge); }
+.zf .zf-status .zf-compare.is-top { color: #1a7f37; }
+
 /* ---------- Level-Auswahl ---------- */
 
 .zf .zf-picker {

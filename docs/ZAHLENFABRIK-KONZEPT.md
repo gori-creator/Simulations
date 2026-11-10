@@ -210,3 +210,10 @@ Ideen und Spielmechaniken sind frei. Nicht übernehmen: fremde Namen, Logos, Gra
 - Name: „Zahlenfabrik“ oder etwas anderes?
 - Erst Welt 1–4 (Klasse 5–6) als Probe?
 - Eigene Spielfigur oder Bit aus dem KI-Abenteuer als Fabrikleiter?
+
+## Sterne, Meldungen, Preise (10.11.2026)
+
+- **Sterne nur für die Fabrik, nicht für den ersten Versuch:** ★ geschafft, ★★ mit höchstens `par + max(2, par/4)` Teilen (`goodPar`), ★★★ so klein wie die Musterlösung (`par`). Fehlversuche kosten keinen Stern mehr – jeder Stern lässt sich später noch holen. Alte Spielstände bekommen Sterne aus dem gespeicherten Bestwert nachgetragen.
+- **Ziel „alle Sterne sammeln“:** Fortschrittsbalken für alle Sterne in der Level-Auswahl; wenn jedes Level geschafft ist, führt „Fehlende Sterne holen“ zum ersten Level ohne ★★★. Nach dem Sieg steht da, wie viele Teile der nächste Stern erlaubt.
+- **Meldungen:** jede Einblendung hat ein X zum Wegklicken; reine Hinweise verschwinden nach ein paar Sekunden von selbst.
+- **Offene Welt:** Bänder kosten beim Ziehen jetzt denselben Preis wie im Inventar (2 Münzen). Vorher kostete Ziehen 1 Münze, Abbauen gab aber 2 zurück – damit ließ sich Geld vermehren.

@@ -597,7 +597,20 @@ export function shortestPath(level: Level, to: { x: number; y: number } = target
   return null;
 }
 
-/** Sterne: geschafft 1, mit höchstens `par` Teilen +1, ohne Fehlversuch +1. */
-export function starsFor(level: Level, parts: number, failedRuns: number): 1 | 2 | 3 {
-  return (1 + (parts <= level.par ? 1 : 0) + (failedRuns === 0 ? 1 : 0)) as 1 | 2 | 3;
+/**
+ * Spielraum für den zweiten Stern: so viele Teile mehr als die Musterlösung
+ * sind erlaubt (mindestens 2, bei großen Fabriken ein Viertel mehr).
+ */
+export const parSlack = (par: number) => Math.max(2, Math.round(par / 4));
+
+/** Teile-Grenze für den zweiten Stern. */
+export const goodPar = (level: Pick<Level, 'par'>) => level.par + parSlack(level.par);
+
+/**
+ * Sterne: geschafft 1, mit höchstens `goodPar` Teilen 2, so klein wie die
+ * Musterlösung (`par`) 3. Nur die Fabrik zählt, nicht die Zahl der Versuche –
+ * so lässt sich jeder Stern auch später noch holen.
+ */
+export function starsFor(level: Pick<Level, 'par'>, parts: number): 1 | 2 | 3 {
+  return parts <= level.par ? 3 : parts <= goodPar(level) ? 2 : 1;
 }

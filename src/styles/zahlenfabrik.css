@@ -1123,6 +1123,27 @@
 .zf-stage .zf-status[data-kind='info'],
 .zf-stage .zf-status[data-kind='warn'] { pointer-events: none; }
 .zf-stage .zf-status .zf-btn { min-height: 40px; padding: 6px 14px; }
+/* X zum Wegklicken: auch bei Hinweisen antippbar, die sonst durchlässig sind */
+.zf-stage .zf-status { padding-right: 44px; }
+.zf-stage .zf-status .zf-status__close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.zf-stage .zf-status .zf-status__close:hover { background: rgb(0 0 0 / 0.08); }
+.zf-stage .zf-status .zf-status__close:focus-visible { outline: 2px solid var(--focus, currentColor); outline-offset: 1px; }
 .zf-stage .zf-table { margin-top: 10px; }
 
 /* Level-Auswahl */
@@ -1775,6 +1796,17 @@
 .zf-picker__top .zf-continue { min-height: 44px; padding: 8px 16px; border-radius: 12px; }
 .zf-picker__total { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 700; }
 .zf-picker__total .zf-ico { color: var(--zf-op-line); fill: currentColor; }
+.zf-picker__total { flex-wrap: wrap; }
+.zf-picker__bar {
+  display: block;
+  width: 120px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 25%, transparent);
+}
+.zf-picker__bar > span { display: block; height: 100%; border-radius: inherit; background: var(--zf-op-line, #f0b400); }
+.zf-compare__next { font-weight: 700; }
 .zf-levels__part { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; grid-column: 1 / -1; margin: 10px 0 -4px; padding-bottom: 6px; border-bottom: 1px solid var(--border); font-size: 1rem; }
 .zf-levels__part-meta { color: var(--muted); font-size: 0.8rem; font-weight: 700; }
 .zf-world-card--daily { border-color: color-mix(in srgb, var(--zf-op-line) 60%, var(--border)); background: color-mix(in srgb, var(--zf-op) 70%, var(--surface)); }

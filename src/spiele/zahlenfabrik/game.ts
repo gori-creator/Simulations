@@ -10,7 +10,7 @@ import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, SPECIAL, type Le
 import { dailyLevel, dayKey, randomLevel } from './daily';
 import { blankSpec, decodeSpec, encodeSpec, SIZE, specToLevel, type CustomSpec } from './custom';
 import { chainLevel, solveChain } from './solver';
-import { accepts, asFraction, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
+import { accepts, asFraction, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, goodPar, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
 import { BUYERS_FROM, canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type Buyer, type OpenWorld, type OreKind, type WorldState } from './world';
@@ -38,7 +38,8 @@ const EDGE: [number, number][] = [
 
 /** Werkzeug; `kit`: einstellbares Bauteil aus dem Werkzeugkasten der Level. */
 type Tool = { kind: 'hand' } | { kind: 'part'; spec: PartSpec; kit?: KitId } | { kind: 'erase' } | { kind: 'select' } | { kind: 'paste' };
-const BELT: PartSpec = { id: 'belt', kind: 'belt', price: 1 };
+/** Band: derselbe Preis wie im Inventar, damit Abbauen genau so viel zurückgibt, wie Bauen gekostet hat. */
+const BELT: PartSpec = specById('belt')!;
 const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
 const T = {
@@ -119,13 +120,15 @@ const T = {
   altHelp: L('Wechsel-Weiche: Die Zahlen gehen abwechselnd geradeaus (1.) und zur Seite (2.). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Alternator: the numbers go straight (1st) and to the side (2nd) in turn. Tap to turn it; after four turns the side switches.'),
   altShort: L('Wechsel', 'turns'),
   timeout: L('Die Zahlen kommen nie im Lager an – fahren sie im Kreis?', 'The numbers never reach the storage – are they going round in circles?'),
-  starsPar: L('★ 2: höchstens {n} Teile', '★ 2: at most {n} parts'),
   goalPar: L('höchstens {n} Teile', 'at most {n} parts'),
-  goalFirst: L('gleich beim 1. Start', 'on the first run'),
+  starNext: L('Nächster Stern: höchstens {n} Teile.', 'Next star: at most {n} parts.'),
+  missingAt: L('Fehlende Sterne holen: Kapitel {c}, Level {l}', 'Get missing stars: chapter {c}, level {l}'),
+  starsGoal: L('Sammle alle Sterne: ★★★ gibt es für die kleinste Fabrik.', 'Collect all stars: ★★★ for the smallest factory.'),
+  closeMsg: L('Meldung schließen', 'Close message'),
+  goalBest: L('{n} Teile wie die Musterlösung', '{n} parts like the sample solution'),
   coinsShort: L('Münzen', 'Coins'),
   totalShort: L('Geliefert', 'Delivered'),
   lostShort: L('Verloren', 'Lost'),
-  starsFirst: L('★ 3: gleich beim ersten Start', '★ 3: on the first run'),
   machines: L('Maschinen', 'Machines'),
   tooMany: L('Hier sind höchstens {n} Maschinen erlaubt. Bau eine ab oder gib einer Maschine eine andere Zahl.', 'At most {n} machines are allowed here. Remove one or give a machine another number.'),
   noMachines: L('Hier sind keine eigenen Maschinen erlaubt – nur Bänder. Wähle die Startzahl!', 'No machines of your own are allowed here – only belts. Choose the starting number!'),
@@ -446,6 +449,8 @@ export function initFactory(root: HTMLElement): void {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const stars = load();
   const best = loadBest();
+  // Sterne aus den Bestwerten nachtragen (früher zählte der erste Versuch)
+  for (const l of ALL_LEVELS) if (best[l.id] !== undefined && stars[l.id]) stars[l.id] = Math.max(stars[l.id]!, starsFor(l, best[l.id]!));
   const q = <E extends Element>(sel: string) => root.querySelector<E>(sel)!;
 
   const levelBar = q<HTMLElement>('[data-levels]');
@@ -455,6 +460,8 @@ export function initFactory(root: HTMLElement): void {
   const toolsEl = q<HTMLElement>('[data-tools]');
   const controls = q<HTMLElement>('[data-controls]');
   const status = q<HTMLElement>('[data-status]');
+  /** Ausblenden reiner Hinweise nach ein paar Sekunden. */
+  let sayTimer: ReturnType<typeof setTimeout> | undefined;
   const info = q<HTMLElement>('[data-info]');
   const orderEl = q<HTMLElement>('[data-order]');
   const howto = q<HTMLElement>('[data-howto]');
@@ -525,7 +532,6 @@ export function initFactory(root: HTMLElement): void {
   let running = false;
   let fast = false;
   let timer = 0;
-  let failedRuns = 0;
   let hasRun = false;
   const view = { x: 0, y: 0, s: 1 };
 
@@ -1953,10 +1959,20 @@ export function initFactory(root: HTMLElement): void {
 
   /** Meldung als Einblendung über dem Spielfeld (mit Symbol je nach Art). */
   function say(text: string, kind: 'info' | 'warn' | 'good' | 'bad' = 'info'): void {
+    clearTimeout(sayTimer);
     status.dataset.kind = kind;
     if (!text) return status.replaceChildren();
     const name: IconName = kind === 'good' ? 'check' : kind === 'bad' ? 'cross' : kind === 'warn' ? 'alert' : 'info';
-    status.replaceChildren(icon(name, 20), el('span', 'zf-status__text', text));
+    // Jede Meldung lässt sich mit dem X wegklicken
+    const close = el('button', 'zf-status__close');
+    close.type = 'button';
+    close.append(icon('cross', 16));
+    close.setAttribute('aria-label', tx(T.closeMsg));
+    close.title = tx(T.closeMsg);
+    close.addEventListener('click', () => say(''));
+    status.replaceChildren(icon(name, 20), el('span', 'zf-status__text', text), close);
+    // Reine Hinweise verschwinden nach ein paar Sekunden von selbst
+    if (kind === 'info' || kind === 'warn') sayTimer = setTimeout(() => say(''), Math.min(12000, 4000 + 40 * text.length));
   }
 
   function renderInfo(): void {
@@ -1982,7 +1998,7 @@ export function initFactory(root: HTMLElement): void {
       g.append(icon('star', 14), el('span', '', text));
       return g;
     };
-    goals.append(star(tx(T.goalPar, { n: level.par }), grid.size <= level.par), star(tx(T.goalFirst), failedRuns === 0));
+    goals.append(star(tx(T.goalPar, { n: goodPar(level) }), grid.size <= goodPar(level)), star(tx(T.goalBest, { n: level.par }), grid.size <= level.par));
     const parts: Node[] = [metric(tx(T.parts), `${grid.size}`), metric(tx(T.delivered), `${state.delivered}/${totalNeed(level)}`)];
     // Grenze für Maschinen als Regel (kein Stern, sondern Pflicht)
     if (level.maxMachines) {
@@ -2094,7 +2110,6 @@ export function initFactory(root: HTMLElement): void {
     hasRun = true;
     if (state.error) {
       stopTimer();
-      failedRuns += 1;
       const e = state.error;
       const msg = e.kind === 'fell' ? T.fell : e.kind === 'wrong' ? T.wrong : e.kind === 'divide' ? T.divide : e.kind === 'root' ? T.root : T.timeout;
       sound.play('error');
@@ -2108,7 +2123,7 @@ export function initFactory(root: HTMLElement): void {
     if (state.won) {
       stopTimer();
       sound.play('win');
-      const got = starsFor(level, grid.size, failedRuns);
+      const got = starsFor(level, grid.size);
       stars[level.id] = Math.max(stars[level.id] ?? 0, got);
       // Bestwert (wenigste Teile) und Vergleich mit der kleinsten bekannten Fabrik
       const newBest = isNewBest(best[level.id], grid.size);
@@ -2121,6 +2136,8 @@ export function initFactory(root: HTMLElement): void {
       const cmp = el('p', `zf-compare${over <= 0 ? ' is-top' : ''}`);
       cmp.append(el('span', '', over > 1 ? tx(T.winMore, { n: grid.size, k: over }) : over === 1 ? tx(T.winMore1, { n: grid.size }) : over === 0 ? tx(T.winPar, { n: grid.size }) : tx(T.winBetter, { n: grid.size })));
       if (newBest && hadBest) cmp.append(' ', el('strong', '', tx(T.newBest)));
+      // Ziel für den nächsten Stern (jeder Stern lässt sich später noch holen)
+      if (got < 3) cmp.append(' ', el('span', 'zf-compare__next', tx(T.starNext, { n: got === 1 ? goodPar(level) : level.par })));
       status.append(cmp);
       celebrateWin();
       renderLevels();
@@ -2272,9 +2289,25 @@ export function initFactory(root: HTMLElement): void {
       const go = ibtn('play', tx(T.continueAt, { c: CHAPTERS.indexOf(c) + 1, l: c.levels.indexOf(nextOpen) + 1 }), 'zf-btn zf-btn--main zf-continue');
       go.addEventListener('click', () => openLevel(nextOpen));
       top.append(go);
+    } else {
+      // Alles geschafft: zum ersten Level, dem noch Sterne fehlen
+      const missing = ALL_LEVELS.find((l) => (stars[l.id] ?? 0) < 3);
+      if (missing) {
+        const c = chapterOf(missing);
+        const go = ibtn('star', tx(T.missingAt, { c: CHAPTERS.indexOf(c) + 1, l: c.levels.indexOf(missing) + 1 }), 'zf-btn zf-btn--main zf-continue');
+        go.addEventListener('click', () => openLevel(missing));
+        top.append(go);
+      }
     }
+    // Sterne gesamt mit Fortschrittsbalken: Ziel ist, alle zu sammeln
+    const maxStars = ALL_LEVELS.length * 3;
     const sum = el('span', 'zf-picker__total');
-    sum.append(icon('star', 16), el('span', '', tx(T.starsTotal, { n: total, m: ALL_LEVELS.length * 3 })));
+    const sumBar = el('span', 'zf-picker__bar');
+    const sumFill = el('span');
+    sumFill.style.width = `${(100 * total) / maxStars}%`;
+    sumBar.append(sumFill);
+    sum.append(icon('star', 16), el('span', '', total === maxStars ? tx(T.allStars) : tx(T.starsTotal, { n: total, m: maxStars })), sumBar);
+    sum.title = tx(T.starsGoal);
     top.append(sum);
     const today = dayKey(new Date());
     const dailyStars = stars[`t-${today}`] ?? 0;
@@ -2396,7 +2429,6 @@ export function initFactory(root: HTMLElement): void {
     grid = new Map();
     tool = { kind: 'part', spec: BELT };
     state = start(picks[level.id]);
-    failedRuns = 0;
     hasRun = false;
     const special = wInfo === SPECIAL;
     title.textContent = special ? tx(level.title) : `${wInfo.levels.indexOf(level) + 1}. ${tx(level.title)}`;
