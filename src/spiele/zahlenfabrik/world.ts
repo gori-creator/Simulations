@@ -12,7 +12,22 @@ export interface Spawner {
   y: number;
   dir: Dir;
   value: number;
+  /**
+   * Erz-Art: Die Quelle gibt nicht immer dieselbe Zahl aus, sondern reihum
+   * die Zahlen aus `values` (Primzahlen, Quadratzahlen oder eine Zählreihe).
+   */
+  ore?: OreKind;
+  values?: number[];
 }
+
+export type OreKind = 'prime' | 'square' | 'count';
+
+/** Zahlenreihen der Erz-Arten (werden reihum ausgegeben). */
+export const ORE_VALUES: Record<OreKind, number[]> = {
+  prime: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29],
+  square: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100],
+  count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+};
 
 export interface Rect {
   x: number;
@@ -27,7 +42,7 @@ export interface Rect {
  * freigekauftem Land; andere Zahlen nehmen sie nicht an (gehen verloren).
  */
 export interface Buyer extends Rect {
-  rule: { kind: 'exact' | 'prime' | 'square' | 'multiple' | 'greater'; n?: number };
+  rule: { kind: 'exact' | 'prime' | 'square' | 'multiple' | 'greater' | 'triangle'; n?: number };
   /** Münzen je passender Zahl. */
   pay: number;
 }
@@ -48,8 +63,13 @@ export function buyerWants(b: Buyer, v: number): boolean {
       return Number.isInteger(v) && v !== 0 && v % r.n! === 0;
     case 'greater':
       return v > r.n!;
+    case 'triangle':
+      return isTriangular(v);
   }
 }
+
+/** Dreieckszahl? (1, 3, 6, 10, 15, …: 8n + 1 ist eine Quadratzahl) */
+export const isTriangular = (v: number) => Number.isInteger(v) && v >= 1 && isSquare(8 * v + 1);
 
 export interface OpenWorld {
   id: string;
@@ -108,6 +128,8 @@ export interface WorldState {
   mergedAt: [number, number][];
   /** An Abnehmer verkaufte Zahlen in diesem Takt: [Nummer des Abnehmers, Zahl]. */
   sold: [number, number][];
+  /** Erz-Quellen: so viele Zahlen hat jede schon ausgegeben (Feld → Anzahl). */
+  seq?: Record<string, number>;
 }
 
 export const WORLD_EMIT = 3;
@@ -335,7 +357,15 @@ export function worldStep(w: OpenWorld, grid: Grid, state: WorldState, zone = In
     const fx = sp.x + DX[sp.dir];
     const fy = sp.y + DY[sp.dir];
     if (!grid.has(key(fx, fy)) && !inBase(w, fx, fy)) return;
-    s.items.push({ id: s.nextId, x: sp.x, y: sp.y, value: sp.value, heading: sp.dir, src: [key(sp.x, sp.y)] });
+    // Erz-Quellen geben ihre Reihe der Reihe nach aus (und fangen dann von vorn an)
+    let value = sp.value;
+    if (sp.values?.length) {
+      const k = key(sp.x, sp.y);
+      const n = s.seq?.[k] ?? 0;
+      value = sp.values[n % sp.values.length]!;
+      s.seq = { ...s.seq, [k]: n + 1 };
+    }
+    s.items.push({ id: s.nextId, x: sp.x, y: sp.y, value, heading: sp.dir, src: [key(sp.x, sp.y)] });
     s.nextId += 1;
   });
   if (s.items.length > MAX_ITEMS) {
@@ -403,6 +433,12 @@ function startArea(seed: number): Pick<OpenWorld, 'spawners' | 'walls'> {
   }
   return out;
 }
+
+/** Neue Abnehmer (09.11.2026): Vielfache von 12 („Dutzend“) und Dreieckszahlen, in den äußeren Ecken. */
+const NEW_BUYERS: [number, number, Buyer['rule'], number][] = [
+  [69, 1, { kind: 'multiple', n: 12 }, 10],
+  [1, 49, { kind: 'triangle' }, 12],
+];
 
 /** Verschiebung des Startgebiets in der großen Karte (alte Spielstände werden so umgerechnet). */
 export const START_OFFSET: [number, number] = [16, 12];
@@ -493,6 +529,32 @@ export function makeWorld(seed = 7): OpenWorld {
     if (w.spawners.some((sp) => near(sp.x, sp.y))) continue;
     w.walls = w.walls.filter(([x, y]) => !near(x, y));
     w.buyers.push(b);
+  }
+  // Erz-Quellen (seltener und weiter draußen): eigene Zufallsfolge, damit alles Bisherige an seinem Platz bleibt
+  const oreRandom = seeded(seed * 97 + 5);
+  const nearBuyer = (x: number, y: number) => [...w.buyers!, ...NEW_BUYERS.map(([bx, by]) => ({ x: bx, y: by }))].some((b) => x >= b.x - 2 && y >= b.y - 2 && x <= b.x + 3 && y <= b.y + 3);
+  for (const wl of w.walls) taken.add(key(wl[0], wl[1]));
+  for (const [i, ore] of [[1, 'count'], [1, 'square'], [2, 'prime'], [2, 'prime'], [2, 'square'], [2, 'count']] as const) {
+    for (let tries = 0; tries < 20000; tries++) {
+      const x = 1 + Math.floor(oreRandom() * (cols - 2));
+      const y = 1 + Math.floor(oreRandom() * (rows - 2));
+      if (!ring(i, x, y) || !free(x, y, 2) || nearBuyer(x, y)) continue;
+      const dir = toward(x, y, cx, cy);
+      const fx = x + DX[dir];
+      const fy = y + DY[dir];
+      if (!inRect(zones[i]!, fx, fy)) continue;
+      w.spawners.push({ x, y, dir, value: ORE_VALUES[ore][0]!, ore, values: ORE_VALUES[ore] });
+      taken.add(key(x, y));
+      taken.add(key(fx, fy));
+      break;
+    }
+  }
+  // Neue Abnehmer in den äußeren Ecken (hinter den bisherigen, damit deren Nummern bleiben)
+  for (const [bx, by, rule, pay] of NEW_BUYERS) {
+    const near = (x: number, y: number) => x >= bx - 1 && y >= by - 1 && x <= bx + 2 && y <= by + 2;
+    if (w.spawners.some((sp) => near(sp.x, sp.y))) continue;
+    w.walls = w.walls.filter(([x, y]) => !near(x, y));
+    w.buyers.push({ x: bx, y: by, w: 2, h: 2, rule, pay });
   }
   return w;
 }

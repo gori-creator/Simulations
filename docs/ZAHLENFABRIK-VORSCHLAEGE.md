@@ -17,7 +17,7 @@ Stand 05.11.2026. Sammlung von Ideen, wie das Spiel noch besser werden könnte. 
 ## Offene Welt
 
 10. ✅ (05.11., Abnehmer) **Spezielle Lager in der Welt:** Abnehmer am Kartenrand wollen bestimmte Zahlen und zahlen dafür mehr (z. B. „nimmt nur 24“).
-11. **Erz-Arten:** Quellen geben nicht nur Zahlen, sondern auch Primzahlen-Quellen, Quadratzahl-Quellen … (seltener und weiter draußen).
+11. ✅ (10.11.) **Erz-Arten:** Quellen geben nicht nur Zahlen, sondern auch Primzahlen-Quellen, Quadratzahl-Quellen … (seltener und weiter draußen).
 12. **Ausbau der Basis:** Münzen für schnellere Quellen, größere Lager oder einen „Speicher“, der Zahlen sammelt und auf Knopfdruck abgibt.
 13. **Statistik-Fenster:** welche Zahlen am häufigsten ankommen, wie viele verloren gehen und wo (Wärmekarte).
 

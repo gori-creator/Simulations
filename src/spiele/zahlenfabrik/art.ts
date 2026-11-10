@@ -52,6 +52,8 @@ const MERGE_FILES: Partial<Record<string, string>> = { '+': 'zusammen-summe', '�
 export const machineFile = (sym: string) => MACHINE_FILES[sym] ?? 'maschine-allgemein';
 export const switchFile = (test: string) => SWITCH_FILES[test];
 export const mergeFile = (mode: string) => MERGE_FILES[mode];
+/** Bild je Erz-Art der Quellen in der offenen Welt. */
+export const oreFile = (ore?: string) => (ore ? { prime: 'quelle-prim', square: 'quelle-quadrat', count: 'quelle-zaehl' }[ore] : undefined);
 /** Rechenzeichen zur Aufschrift einer Maschine (für die Erklärkarten). */
 export function symOfLabel(label: string): string | undefined {
   if (label.startsWith('mod')) return '%';
@@ -137,6 +139,10 @@ const DECOR: Record<string, (s: number) => string> = {
     `<rect class="zf-art__mark" x="${s / 2 - 11}" y="${s - 11}" width="22" height="4" rx="2"/>` +
     `<rect class="zf-art__mark" x="${s / 2 - 7}" y="${s - 16}" width="14" height="4" rx="2"/>` +
     `<rect class="zf-art__mark" x="${s / 2 - 3}" y="${s - 21}" width="6" height="4" rx="2"/>`,
+  // Erz-Quellen: Kristall (Primzahlen), Quadrat (Quadratzahlen), Zählpunkte (Zählreihe)
+  'quelle-prim': (s) => `<path class="zf-art__mark" d="M${s / 2} ${s - 18}l6 7l-6 7l-6 -7z"/>`,
+  'quelle-quadrat': (s) => `<rect class="zf-art__mark" x="${s / 2 - 6}" y="${s - 17}" width="12" height="12" rx="1.5"/>`,
+  'quelle-zaehl': (s) => [0.3, 0.5, 0.7].map((f, i) => `<circle class="zf-art__mark" cx="${(s * f).toFixed(1)}" cy="${s - 9}" r="${2 + i}"/>`).join(''),
   // Puffer: Sanduhr (eine Zahl wartet)
   'maschine-puffer': (s) => `<path class="zf-art__mark" d="M${s - 16} 5h10l-5 6zM${s - 16} 17h10l-5 -6z"/>`,
   // Verteiler: zwei gleiche Punkte (Kopie in beide Richtungen)

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { key, type Grid, type Part } from '../src/spiele/zahlenfabrik/model';
-import { canBuildWorld, inBase, inRect, makeWorld, MAX_ITEMS, MAX_VALUE, spawnerAt, START_OFFSET, worldStart, worldStep, type OpenWorld } from '../src/spiele/zahlenfabrik/world';
+import { buyerWants, canBuildWorld, inBase, inRect, isTriangular, makeWorld, MAX_ITEMS, MAX_VALUE, ORE_VALUES, spawnerAt, START_OFFSET, worldStart, worldStep, type OpenWorld } from '../src/spiele/zahlenfabrik/world';
+import { isPrime, isSquare } from '../src/spiele/zahlenfabrik/model';
 
 const tiny: OpenWorld = {
   id: 't',
@@ -75,9 +76,9 @@ describe('Zahlenfabrik: offene Welt', () => {
     }
     for (const [x, y] of w.walls) expect(inBase(w, x, y)).toBe(false);
     expect(canBuildWorld(w, w.base.x, w.base.y)).toBe(false);
-    // weiter draußen größere Zahlen
+    // weiter draußen größere Zahlen (gewöhnliche Quellen; Erz-Quellen geben ganze Reihen aus, siehe unten)
     const avg = (r: (s: { x: number; y: number }) => boolean) => {
-      const v = w.spawners.filter(r).map((s) => s.value);
+      const v = w.spawners.filter((s) => !s.ore).filter(r).map((s) => s.value);
       return v.reduce((a, b) => a + b, 0) / v.length;
     };
     const inStart = avg((s) => inRect(start!, s.x, s.y));
@@ -85,7 +86,57 @@ describe('Zahlenfabrik: offene Welt', () => {
     const outside = avg((s) => !inRect(middle!, s.x, s.y));
     expect(inMiddle).toBeGreaterThan(inStart);
     expect(outside).toBeGreaterThan(inMiddle);
-    expect(w.spawners.length).toBeGreaterThanOrEqual(45);
+    expect(w.spawners.filter((s) => !s.ore).length).toBeGreaterThanOrEqual(45);
+  });
+  it('Erz-Quellen: nur in den Ringen, weiter draußen die Primzahlen; die bisherigen Quellen und Abnehmer bleiben an ihrem Platz', () => {
+    const w = makeWorld();
+    const ores = w.spawners.filter((s) => s.ore);
+    expect(ores.map((s) => s.ore).sort()).toEqual(['count', 'count', 'prime', 'prime', 'square', 'square']);
+    const [start, middle] = w.zones!;
+    for (const s of ores) {
+      expect(inRect(start!, s.x, s.y)).toBe(false);
+      expect(s.values).toEqual(ORE_VALUES[s.ore!]);
+      expect(s.value).toBe(s.values![0]);
+      if (s.ore === 'prime') expect(inRect(middle!, s.x, s.y)).toBe(false);
+      // nicht auf oder direkt neben einem Abnehmer, nicht auf Fels
+      expect(w.buyers!.some((b) => s.x >= b.x - 1 && s.y >= b.y - 1 && s.x <= b.x + 2 && s.y <= b.y + 2)).toBe(false);
+      expect(w.walls.some(([x, y]) => x === s.x && y === s.y)).toBe(false);
+    }
+    // Erz-Quellen stehen hinter den bisherigen in der Liste (deren Takt bleibt gleich)
+    expect(w.spawners.findIndex((s) => s.ore)).toBe(w.spawners.length - ores.length);
+    // die sechs bisherigen Abnehmer zuerst und unverändert, dahinter die zwei neuen
+    expect(w.buyers!.slice(0, 6).map((b) => [b.x, b.y, b.rule.kind, b.pay])).toEqual([[9, 7, 'exact', 12], [61, 7, 'square', 10], [61, 43, 'prime', 8], [9, 43, 'multiple', 8], [1, 1, 'exact', 25], [69, 49, 'greater', 12]]);
+    expect(w.buyers!.slice(6).map((b) => [b.x, b.y, b.rule.kind, b.rule.n, b.pay])).toEqual([[69, 1, 'multiple', 12, 10], [1, 49, 'triangle', undefined, 12]]);
+    for (const v of ORE_VALUES.prime) expect(isPrime(v)).toBe(true);
+    for (const v of ORE_VALUES.square) expect(isSquare(v)).toBe(true);
+    expect(ORE_VALUES.count).toEqual(Array.from({ length: 12 }, (_, i) => i + 1));
+  });
+  it('Erz-Quelle gibt ihre Reihe der Reihe nach aus und fängt dann von vorn an; gewöhnliche Quellen bleiben gleich', () => {
+    const w: OpenWorld = { ...tiny, spawners: [{ x: 0, y: 1, dir: 0, value: 2, ore: 'prime', values: [2, 3, 5] }] };
+    const g = belts();
+    let s = worldStart();
+    const got: number[] = [];
+    for (let i = 0; i < 60; i++) {
+      s = worldStep(w, g, s);
+      got.push(...s.delivered);
+    }
+    expect(got.slice(0, 7)).toEqual([2, 3, 5, 2, 3, 5, 2]);
+    expect(s.lost).toBe(0);
+    // gesperrtes Gebiet bzw. kein Band: die Reihe läuft nicht weiter
+    const idle = runFor(w, new Map(), 30);
+    expect(idle.seq).toBeUndefined();
+    expect(runFor(tiny, belts(), 30).seq).toBeUndefined();
+  });
+  it('neue Abnehmer: Dreieckszahlen und Vielfache von 12', () => {
+    expect([1, 3, 6, 10, 15, 21, 28].every(isTriangular)).toBe(true);
+    expect([0, 2, 4, 5, 7, 9, 16, -3, 1.5].some(isTriangular)).toBe(false);
+    const tri = { x: 0, y: 0, w: 2, h: 2, rule: { kind: 'triangle' as const }, pay: 12 };
+    expect(buyerWants(tri, 10)).toBe(true);
+    expect(buyerWants(tri, 11)).toBe(false);
+    const dozen = { x: 0, y: 0, w: 2, h: 2, rule: { kind: 'multiple' as const, n: 12 }, pay: 10 };
+    expect(buyerWants(dozen, 36)).toBe(true);
+    expect(buyerWants(dozen, 30)).toBe(false);
+    expect(buyerWants(dozen, 0)).toBe(false);
   });
   it('gesperrtes Gebiet: dort kann man nicht bauen, und die Quellen geben nichts aus', () => {
     const w = makeWorld();

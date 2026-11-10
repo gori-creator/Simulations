@@ -117,7 +117,6 @@ Erster Schritt des Ausbaus „tiefer und spannender“ (Wunsch der Projektleitun
 - **Sammel-Maschine** (`Σx`, Kapitel 31): gibt die Summe aller Zahlen bisher aus. Level: Dreieckszahlen 1, 3, 6, 10, 15; Zehnerreihe aus 10, 10, 10, 10; Quadratzahlen aus 1, 3, 5, 7, 9; „Spartopf“ (sammeln, dann Weiche „größer als 40?“ trennt die Gesamtsumme 45 von den Zwischenständen); doppelt gesammelt 2, 6, 12, 20, 30; aus Dreien Dreieckszahlen (Zähler, dann Sammler); Dreieckszahlen rückwärts mit zwei Quellen und Differenz (T(x) − x = T(x − 1)).
 - Rechenlogik (`model.ts`): `isStateful`, `applyMem` (Stand je Feld in `State.mem`), `applySeq` (eine Maschine auf eine ganze Folge, der Reihe nach). Löser und Tests rechnen Folgen damit der Reihe nach; das Tages- und Zufallsrätsel lässt Gedächtnis-Maschinen außen vor (Ziel immer > 10, damit kein Abkürzungsweg über Zähler und Runden entsteht).
 - Bilder: ohne eigenes Bild das allgemeine Maschinenbild, umgefärbt (Zähler blaugrün, Sammler violett), in der gezeichneten Grafik mit Zählpunkten bzw. Haufen. Prompts für alle neuen Teile des Ausbaus (auch die der nächsten Schritte): `docs/ZAHLENFABRIK-BILDER.md`, Runde 4.
-- Geplant als weiterer Schritt: Erz-Arten in der offenen Welt.
 
 ## Puffer-Maschine und Weiche „ganze Zahl?“ (Stand 09.11.2026, Schritt 2)
 
@@ -148,6 +147,14 @@ Erster Schritt des Ausbaus „tiefer und spannender“ (Wunsch der Projektleitun
   5. *Das große Finale:* 1 … 8, Wechsel-Weiche und Produkt → 2, 12, 30, 56; Kopie über ×4, +1, √ → 3, 7, 11, 15 (4n(n+1)+1 = (2n+1)²).
 - **Bestwerte:** wenigste Teile je Level, gespeichert neben den Sternen (`spiel:zahlenfabrik`, Feld `best`) – nur im eigenen Browser, kein Vergleich mit anderen. Anzeige „Dein Bestwert: 9 Teile“ bei der Aufgabe, „Neuer Bestwert!“ beim Unterbieten.
 
+
+## Offene Welt: Erz-Arten und zwei neue Abnehmer (Stand 10.11.2026, Schritt 6)
+
+Die Regeln der offenen Welt bleiben, wie sie sind (nur Zusammenführer und Weichen, Zusammenführer nur für zwei verschiedene Stränge, 1 Münze je Zahl bzw. 5 für eine passende, Preise unverändert).
+
+- **Erz-Arten** (`world.ts`, `Spawner.ore`/`values`, `ORE_VALUES`): sechs besondere Quellen, die reihum eine ganze Zahlenreihe ausgeben und dann von vorn anfangen. Im mittleren Ring eine **Zähl-Quelle** (1 … 12) und eine **Quadratzahl-Quelle** (1, 4, 9 … 100), im äußeren Ring zwei **Primzahl-Quellen** (2, 3, 5 … 29), eine Quadratzahl- und eine Zähl-Quelle. Im Startgebiet gibt es keine. Aufschrift „1,2,3“, „n²“ bzw. „Prim“; ohne eigenes Bild die grüne Quelle umgefärbt.
+- **Zwei neue Abnehmer** in den äußeren Ecken: „Vielfache von 12“ (10 Münzen) und „Dreieckszahlen“ (12 Münzen, `isTriangular`).
+- **Alte Spielstände bleiben:** Alle bisherigen Quellen, Felsen und Abnehmer stehen an ihrem Platz (eigene Zufallsfolge für die Erz-Quellen, neue Abnehmer hinten in der Liste; Test). Nur wer im äußeren Ring genau auf einem der acht neuen Felder gebaut hatte, verliert dort das Teil.
 
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
