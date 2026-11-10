@@ -1341,6 +1341,11 @@
 
 .zf-goal-chip.is-ok { color: var(--text); }
 .zf-goal-chip.is-ok .zf-ico { color: var(--zf-coin); fill: currentColor; }
+.zf-rule { display: flex; flex-basis: 100%; gap: 6px; align-items: center; margin: 0; color: var(--warning-text); font-size: 0.85rem; font-weight: 650; }
+.zf-best { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.85rem; }
+.zf-metric--rule.is-over .zf-metric__value { color: var(--zf-bad); }
+.zf-compare { flex-basis: 100%; margin: 0; color: var(--text); font-size: 0.9rem; font-weight: 500; }
+.zf-compare.is-top { color: var(--success); font-weight: 650; }
 .zf-source-seq { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 0.85rem; }
 
 /* Münze */

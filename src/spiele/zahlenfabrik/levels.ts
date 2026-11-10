@@ -21,6 +21,10 @@ export interface LevelInfo extends Level {
   kit?: KitId[];
   /** Level aus dem Baukasten (eigene Level). */
   custom?: boolean;
+  /** Nebenbedingung: Diese Bauteile sind hier verboten („ohne Plus-Maschine“). */
+  ban?: KitId[];
+  /** Nebenbedingung: höchstens so viele Bänder (Maschinen und Weichen zählen nicht). */
+  maxBelts?: number;
 }
 
 /** Felsen von (x1, y1) bis (x2, y2) als Rechteck. */
@@ -1726,6 +1730,41 @@ const C35: LevelInfo[] = [
   loopLevel('c35-7', L('Die 3x+1-Folge', 'The 3x+1 sequence'), L('Aus einer einzigen 6 soll 6, 3, 10, 5, 16, 8, 4, 2, 1 werden. Die Regel: Gerade Zahlen werden halbiert, ungerade mal 3 und plus 1. Niemand weiß, ob diese Folge für jede Startzahl bei 1 landet!', 'A single 6 should become 6, 3, 10, 5, 16, 8, 4, 2, 1. The rule: even numbers are halved, odd numbers times 3 plus 1. Nobody knows whether this sequence reaches 1 for every starting number!'), 6, [6, 3, 10, 5, 16, 8, 4, 2, 1], 3, true, 14),
 ];
 
+/* ---------- Kapitel: Rätsel mit Regeln (verbotene Bauteile, wenige Bänder) ---------- */
+const names = (ids: KitId[], lang: 'de' | 'en') => ids.map((id) => KIT.find((k) => k.id === id)!.name[lang]).join(lang === 'de' ? ' und ' : ' and ');
+/** „Aus a wird b“ ohne bestimmte Bauteile; mit der Grenze für Maschinen gibt es genau einen Weg. */
+const banRiddle = (id: string, map: ValueMap, from: number, to: number, ban: KitId[], maxMachines: number, extra: Localized, pro = false): LevelInfo => ({
+  ...riddle(id, map, from, to, maxMachines, pro),
+  hint: L(
+    `Regel: ohne ${names(ban, 'de')}. Höchstens ${maxMachines} Maschinen – so gibt es nur einen Weg. ${extra.de}`,
+    `Rule: without ${names(ban, 'en')}. At most ${maxMachines} machines – that leaves just one way. ${extra.en}`,
+  ),
+  ban,
+});
+/** Wenige Bänder: Der Weg ist länger als erlaubt – Maschinen müssen Bänder ersetzen und trotzdem stimmt das Ergebnis. */
+const beltRiddle = (id: string, title: Localized, hint: Localized, from: number, to: number, maxBelts: number, ban: KitId[] = [], pro = false): LevelInfo => ({
+  id, title, hint,
+  cols: MAP_D.cols, rows: MAP_D.rows,
+  source: { ...MAP_D.source, value: from },
+  target: { ...MAP_D.to, value: to }, need: 3,
+  walls: MAP_D.walls,
+  maxBelts,
+  ...(ban.length ? { ban } : {}),
+  ...(pro ? { pro } : {}),
+  par: MAP_D.par,
+});
+const C36: LevelInfo[] = [
+  beltRiddle('c36-1', L('Nur fünf Bänder', 'Only five belts'), L('Neu: Rätsel mit Regeln. Die 7 soll unverändert ins Lager – aber du hast höchstens 5 Bänder, und der Weg ist 9 Felder lang. Maschinen zählen nicht als Bänder: Welche heben sich gegenseitig auf?', 'New: puzzles with rules. The 7 should reach the storage unchanged – but you have at most 5 belts, and the path is 9 squares long. Machines do not count as belts: which ones cancel each other out?'), 7, 7, 5),
+  banRiddle('c36-2', MAP_D, 4, 64, ['times'], 2, L('Verbotene Bauteile fehlen im Werkzeugkasten.', 'Forbidden parts are missing from the toolbox.')),
+  banRiddle('c36-3', MAP_F, 5, 20, ['plus', 'times'], 2, L('5 · 4 oder 5 + 15 geht hier nicht.', '5 · 4 or 5 + 15 will not work here.')),
+  banRiddle('c36-4', MAP_E, 4, 12, ['plus', 'times'], 2, L('Verdreifachen – ganz ohne ×3 und +8.', 'Tripling – without any ×3 or +8.')),
+  beltRiddle('c36-5', L('Aus 5 wird 20 mit vier Bändern', '5 becomes 20 with four belts'), L('Höchstens 4 Bänder auf 9 Feldern: Fünf Maschinen müssen zusammen aus 5 die 20 machen.', 'At most 4 belts on 9 squares: five machines together have to turn 5 into 20.'), 5, 20, 4),
+  banRiddle('c36-6', MAP_A, 5, 255, ['plus', 'minus'], 3, L('255 ist durch 5 teilbar …', '255 is divisible by 5 …'), true),
+  banRiddle('c36-7', MAP_C, 3, 36, ['square', 'times'], 3, L('Ohne 6 · 6 und ohne 3 · 12 – denk an die Spiegel-Maschine.', 'Without 6 · 6 and without 3 · 12 – think of the mirror machine.'), true),
+  banRiddle('c36-8', MAP_B, 3, 80, ['plus', 'minus', 'times', 'divide'], 3, L('Ganz ohne die vier Grundrechenarten!', 'Without any of the four basic operations!'), true),
+  beltRiddle('c36-9', L('Aus 2 wird 100 mit drei Bändern', '2 becomes 100 with three belts'), L('Höchstens 3 Bänder auf 9 Feldern – und ohne Mal-Maschine. Sechs Maschinen, die zusammen aus 2 die 100 machen.', 'At most 3 belts on 9 squares – and without the times machine. Six machines that together turn 2 into 100.'), 2, 100, 3, ['times'], true),
+];
+
 /** Ein Kapitel: was es neu einführt, und seine Level. */
 export interface Chapter {
   id: string;
@@ -1746,6 +1785,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c34', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
   { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33', 'c35'] },
+  { id: 'finale', title: L('Regeln und Endgegner', 'Rules and bosses'), chapters: ['c36'] },
 ];
 
 export const CHAPTERS: Chapter[] = [
@@ -1783,6 +1823,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c32', title: L('Sammel-Maschine', 'Collector machine'), grades: '6–8', teaches: ['total'], levels: C32 },
   { id: 'c33', title: L('Puffer-Maschine', 'Buffer machine'), grades: '6–8', teaches: ['buffer'], levels: C33 },
   { id: 'c35', title: L('Schleife', 'Loop'), grades: '7–9', teaches: ['split'], levels: C35 },
+  { id: 'c36', title: L('Rätsel mit Regeln', 'Puzzles with rules'), grades: '6–9', teaches: ['rules'], levels: C36 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);
@@ -1799,7 +1840,8 @@ export function kitFor(level: LevelInfo): KitItem[] {
   if (chapter === SPECIAL) return [...KIT];
   const upto = CHAPTERS.indexOf(chapter);
   const ids = new Set(CHAPTERS.slice(0, upto + 1).flatMap((c) => c.teaches));
-  return KIT.filter((k) => ids.has(k.id));
+  // verbotene Bauteile fehlen im Werkzeugkasten dieses Levels
+  return KIT.filter((k) => ids.has(k.id) && !level.ban?.includes(k.id));
 }
 
 /** Karten für Rätsel mit einer Zahl (Quelle → Lager, genug Platz für drei Maschinen). */

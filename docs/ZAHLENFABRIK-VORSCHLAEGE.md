@@ -4,12 +4,12 @@ Stand 05.11.2026. Sammlung von Ideen, wie das Spiel noch besser werden könnte. 
 
 ## Spielen und Lernen
 
-1. **Lösungen vergleichen:** Nach dem Sieg zeigen, wie viele Teile und Takte man gebraucht hat, und eine kürzere Musterlösung zum Aufdecken anbieten („Geht es mit 2 Teilen weniger?“).
+1. ✅ (10.11., Vergleich der Teile-Zahl; Aufdecken der Musterlösung noch offen) **Lösungen vergleichen:** Nach dem Sieg zeigen, wie viele Teile und Takte man gebraucht hat, und eine kürzere Musterlösung zum Aufdecken anbieten („Geht es mit 2 Teilen weniger?“).
 2. ✅ (05.11.) **Eigene Level bauen (Baukasten):** Quelle, Lager, Felsen und Ziel selbst setzen und als Link teilen (nur im Link gespeichert, kein Konto, kein Server).
 3. **Lehrkräfte-Modus:** Kapitel freischalten oder sperren, eine Level-Liste als Link für die Klasse („Hausaufgabe: Kapitel 4, Level 2–5“).
-4. **Zeit- und Teile-Bestenliste nur im eigenen Browser:** persönliche Bestwerte je Level, kein Vergleich mit anderen (Datenschutz).
+4. ✅ (10.11., Teile-Bestwert) **Zeit- und Teile-Bestenliste nur im eigenen Browser:** persönliche Bestwerte je Level, kein Vergleich mit anderen (Datenschutz).
 5. **Abzeichen:** z. B. „Alle Rückwärts-Level ohne Tipp“, „10 Tagesrätsel in Folge“, „Ein Level mit genau der Mindestzahl an Teilen“.
-6. **Rätsel mit Nebenbedingung:** „ohne Plus-Maschine“, „nur gerade Zahlen auf dem Band“, „höchstens 10 Bänder“.
+6. ✅ (10.11., verbotene Bauteile und wenige Bänder) **Rätsel mit Nebenbedingung:** „ohne Plus-Maschine“, „nur gerade Zahlen auf dem Band“, „höchstens 10 Bänder“.
 7. ✅ (05.11., Brüche) **Brüche und Dezimalzahlen** (Klasse 6–7): Geteilt-Maschine mit Brüchen, Weiche „ganze Zahl?“, Lager will ½ oder 0,25.
 8. ✅ (05.11.) **Gleichungen lösen** (Klasse 7–8): Rückwärts-Level mit zwei Quellen („a + b = 20, a − b = 4“).
 9. ✅ (10.11., Kapitel „Schleife“) **Folgen erkennen:** Lager will 1, 1, 2, 3, 5, 8 … (Fibonacci mit Zusammenführer und Rückführung).
