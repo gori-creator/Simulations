@@ -823,18 +823,19 @@
   --border-strong: #9aa5b8;
 }
 
-/* ---------- 3D-Look: gekippter Sandboden, Gleise, Teile mit Dicke ---------- */
+/* ---------- 3D-Look: gekippter Sandboden, Förderbänder, Teile mit Dicke ---------- */
 /* Die Neigung setzt game.ts (Klasse .is-3d, Variable --zf-tilt). Ohne 3D
-   (Ansicht „Von oben“) bleiben Boden, Gleise und Schatten, nur flach. */
+   (Ansicht „Von oben“) bleiben Boden, Bänder und Schatten, nur flach. */
 
 .zf {
   --zf-sand: #eedca4;
   --zf-sand-2: #e9d498;
   --zf-sand-line: rgb(122 88 34 / 0.2);
   --zf-sand-side: #b98f4f;
-  --zf-tie: #93603a;
-  --zf-tie-edge: #3d2615;
-  --zf-rail: #f4f5f8;
+  --zf-belt-outline: #283043;
+  --zf-belt-frame: #aab3c2;
+  --zf-belt-rubber: #3a404d;
+  --zf-belt-rib: #5c6475;
   --zf-rail-edge: #283043;
   --zf-ground-shadow: rgb(70 44 12 / 0.28);
 }
@@ -844,9 +845,9 @@
   --zf-sand-2: #a08a55;
   --zf-sand-line: rgb(40 26 8 / 0.28);
   --zf-sand-side: #5f4a26;
-  --zf-tie: #6e4527;
-  --zf-tie-edge: #24150a;
-  --zf-rail: #dfe3ea;
+  --zf-belt-frame: #8d96a6;
+  --zf-belt-rubber: #2b303b;
+  --zf-belt-rib: #4b5263;
   --zf-ground-shadow: rgb(20 12 2 / 0.4);
 }
 
@@ -865,31 +866,17 @@
   box-shadow: 0 0 0 3px var(--zf-rail-edge), 0 16px 0 3px var(--zf-sand-side), 0 16px 0 6px var(--zf-rail-edge), 0 34px 40px rgb(0 0 0 / 0.35);
 }
 
-/* Gleis: Schatten, Schwellen, zwei Schienen */
+/* Förderband: Schatten, dunkler Umriss, Metallrahmen, Gummiband mit Rippen */
 .zf .zf-track path { fill: none; stroke-linejoin: round; }
 .zf .zf-track__shadow { stroke: var(--zf-ground-shadow); stroke-width: 36; translate: 0 5px; }
-.zf .zf-track .zf-belt__edge { stroke: var(--zf-tie-edge); stroke-width: 36; stroke-dasharray: 8 8; stroke-dashoffset: 1; }
-.zf .zf-track .zf-belt__run { stroke: var(--zf-tie); stroke-width: 33; stroke-dasharray: 6 10; stroke-dashoffset: 0; }
-.zf .zf-track__mask-on { stroke: #fff; stroke-width: 24; }
-.zf .zf-track__mask-off { stroke: #000; stroke-width: 9; }
-.zf .zf-track__rail-edge { stroke: var(--zf-rail-edge); stroke-width: 24; }
-.zf .zf-track__rail { stroke: var(--zf-rail); stroke-width: 19; }
-.zf .zf-track__rail-inner { stroke: var(--zf-rail-edge); stroke-width: 12; }
-/* Brücke: oberes Gleis mit kräftigem Schatten */
+.zf .zf-track .zf-belt__edge { stroke: var(--zf-belt-outline); stroke-width: 34; }
+.zf .zf-track__frame { stroke: var(--zf-belt-frame); stroke-width: 29; }
+.zf .zf-track .zf-belt__base { stroke: var(--zf-belt-rubber); stroke-width: 21; }
+/* Rippen quer übers Band (Muster 16 px, passt viermal in ein Feld); laufen mit */
+.zf .zf-track .zf-belt__run { stroke: var(--zf-belt-rib); stroke-width: 21; stroke-dasharray: 4 12; }
+/* Brücke: oberes Band mit kräftigem Schatten */
 .zf .zf-track.zf-belt--over .zf-track__shadow { stroke-width: 40; translate: 0 9px; }
-.zf .zf-track.zf-belt--over .zf-belt__edge { stroke-width: 38; }
-
-@media (prefers-reduced-motion: no-preference) {
-  /* Schwellen laufen mit (Muster 16 px, nahtlos) */
-  .zf .zf-track .zf-belt__edge { animation: zf-ties-edge 1.6s linear infinite; }
-  .zf .zf-belts.is-running .zf-track .zf-belt__edge { animation-duration: 0.105s; }
-  .zf .zf-belts.is-running.is-fast .zf-track .zf-belt__edge { animation-duration: 0.03s; }
-}
-
-@keyframes zf-ties-edge {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: -15; }
-}
+.zf .zf-track.zf-belt--over .zf-belt__edge { stroke-width: 36; }
 
 /* Teile stehen auf dem Boden: Kante und weicher Schatten nach vorn */
 .zf .zf-cell--op,
@@ -902,7 +889,7 @@
 
 .zf .zf-cell--rock { background: transparent; }
 
-/* Echtes 3D: Zahlen stehen aufrecht auf dem Gleis */
+/* Echtes 3D: Zahlen stehen aufrecht auf dem Band */
 .zf.is-3d .zf-world,
 .zf.is-3d .zf-items { transform-style: preserve-3d; }
 

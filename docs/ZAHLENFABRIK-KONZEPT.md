@@ -221,7 +221,7 @@ Ideen und Spielmechaniken sind frei. Nicht übernehmen: fremde Namen, Logos, Gra
 ## 3D-Look (10.11.2026)
 
 - **Gekippter Boden:** Das Spielfeld wird um 34° nach hinten geneigt (`perspective` + `rotateX` auf `.zf-world`). Einpassen, Zoomen und Verschieben rechnen weiter flach; `toFlat()` rechnet Bildschirmpunkte auf den geneigten Boden zurück (Tippen, Ziehen, Zoomen mit Mausrad und zwei Fingern).
-- **Aussehen:** warmer Sandboden mit Kacheln und dicker Vorderkante, Bänder als Gleise mit Schwellen (laufen beim Start mit) und runden Kurven, Teile und Felsen mit Kante und Schatten, Zahlen stehen aufrecht auf dem Gleis. Nur CSS und SVG, keine neuen Bilder.
+- **Aussehen:** warmer Sandboden mit Kacheln und dicker Vorderkante, Bänder als Förderbänder (Metallrahmen, Gummiband mit Rippen, die beim Start mitlaufen) mit runden Kurven, Teile und Felsen mit Kante und Schatten, Zahlen stehen aufrecht auf dem Gleis. Nur CSS und SVG, keine neuen Bilder.
 - **Handy gerade, PC in 3D:** am Handy (bis 640 px) standardmäßig von oben mit derselben Grafik.
 - **Umschalten:** Würfel-Knopf unter den Zoom-Knöpfen schaltet zwischen 3D und „von oben“ (merkt sich der Browser, `spiel:zahlenfabrik:ansicht`).
 - Angeregt von einem Spiel mit Zügen auf Sandboden (Blickwinkel, warme Farben, dicke Umrisse); keine Bilder oder Figuren daraus übernommen.
