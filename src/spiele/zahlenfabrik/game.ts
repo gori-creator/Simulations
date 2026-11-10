@@ -1,5 +1,6 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
+import { beltCount, beltsOver, cleanBest, isNewBest, overPar } from './rules';
 import { art, chapterImage, imageFor, IMAGES, machineFile, mergeFile, switchFile, type ArtKind } from './art';
 import { icon, setButton, type IconName } from './icons';
 import { lessonSeen, showLessons } from './lessons';
@@ -131,6 +132,17 @@ const T = {
   noMachinesNote: L('In diesem Level sind keine Maschinen erlaubt.', 'No machines are allowed in this level.'),
   onlyBelts: L('In diesem Level stehen die Maschinen schon fest. Du brauchst nur Bänder.', 'In this level the machines are already fixed. You only need belts.'),
   ruleMax: L('höchstens {n} Maschinen', 'at most {n} machines'),
+  rule: L('Regel', 'Rule'),
+  ruleBan: L('ohne {p}', 'without {p}'),
+  ruleBelts: L('höchstens {n} Bänder', 'at most {n} belts'),
+  belts: L('Bänder', 'Belts'),
+  tooManyBelts: L('Hier sind höchstens {n} Bänder erlaubt – du hast {k} zu viel. Ersetz Bänder durch Maschinen.', 'At most {n} belts are allowed here – you have {k} too many. Replace belts with machines.'),
+  winMore: L('Deine Fabrik hat {n} Teile. Geht es mit {k} Teilen weniger?', 'Your factory has {n} parts. Can you do it with {k} parts fewer?'),
+  winMore1: L('Deine Fabrik hat {n} Teile. Geht es mit einem Teil weniger?', 'Your factory has {n} parts. Can you do it with one part fewer?'),
+  winPar: L('{n} Teile – so klein wie die Musterlösung!', '{n} parts – as small as the sample solution!'),
+  winBetter: L('{n} Teile – sogar kleiner als die Musterlösung!', '{n} parts – even smaller than the sample solution!'),
+  best: L('Dein Bestwert: {n} Teile', 'Your best: {n} parts'),
+  newBest: L('Neuer Bestwert!', 'New best!'),
   numFor: L('Zahl für {p}', 'Number for {p}'),
   numLess: L('Zahl kleiner', 'Smaller number'),
   numMore: L('Zahl größer', 'Bigger number'),
@@ -360,9 +372,18 @@ function load(): Record<string, number> {
   }
 }
 
-function save(stars: Record<string, number>): void {
+/** Persönliche Bestwerte (wenigste Teile je Level), nur im eigenen Browser. */
+function loadBest(): Record<string, number> {
   try {
-    localStorage.setItem(STORE, JSON.stringify({ stars }));
+    return cleanBest((JSON.parse(localStorage.getItem(STORE) ?? '{}') as { best?: unknown }).best);
+  } catch {
+    return {};
+  }
+}
+
+function save(stars: Record<string, number>, best: Record<string, number>): void {
+  try {
+    localStorage.setItem(STORE, JSON.stringify({ stars, best }));
   } catch {
     // ohne Speicher: nur für diesen Besuch
   }
@@ -416,6 +437,7 @@ export function initFactory(root: HTMLElement): void {
   const tx = (t: Localized, vars: Record<string, string | number> = {}) => t[lang].replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const stars = load();
+  const best = loadBest();
   const q = <E extends Element>(sel: string) => root.querySelector<E>(sel)!;
 
   const levelBar = q<HTMLElement>('[data-levels]');
@@ -1958,7 +1980,22 @@ export function initFactory(root: HTMLElement): void {
       m.title = tx(T.ruleMax, { n: level.maxMachines });
       parts.push(m);
     }
+    // Nebenbedingungen: wenige Bänder, verbotene Bauteile
+    if (level.maxBelts !== undefined) {
+      const b = metric(tx(T.belts), `${beltCount(grid)}/${level.maxBelts}`);
+      b.classList.add('zf-metric--rule');
+      if (beltsOver(level, grid) > 0) b.classList.add('is-over');
+      b.title = tx(T.ruleBelts, { n: level.maxBelts });
+      parts.push(b);
+    }
     parts.push(goals);
+    if (level.ban?.length || level.maxBelts !== undefined) {
+      const rule = el('p', 'zf-rule');
+      const texts = [...(level.ban?.length ? [tx(T.ruleBan, { p: level.ban.map((id) => tx(kitItem(id).name)).join(', ') })] : []), ...(level.maxBelts !== undefined ? [tx(T.ruleBelts, { n: level.maxBelts })] : [])];
+      rule.append(icon('alert', 14), el('span', '', `${tx(T.rule)}: ${texts.join(' · ')}`));
+      parts.push(rule);
+    }
+    if (best[level.id] !== undefined) parts.push(el('p', 'zf-best', tx(T.best, { n: best[level.id]! })));
     if (!level.source.pick) sourcesOf(level).forEach((sv, i) => {
       const list = sv.values?.length ? sv.values : level.more?.length ? [sv.value] : null;
       if (list) parts.push(el('p', 'zf-source-seq', tx(level.more?.length ? T.sourceSeqN : T.sourceSeq, { n: i + 1, list: list.map(ctxNum).join(', ') })));
@@ -2062,9 +2099,18 @@ export function initFactory(root: HTMLElement): void {
       sound.play('win');
       const got = starsFor(level, grid.size, failedRuns);
       stars[level.id] = Math.max(stars[level.id] ?? 0, got);
-      save(stars);
+      // Bestwert (wenigste Teile) und Vergleich mit der kleinsten bekannten Fabrik
+      const newBest = isNewBest(best[level.id], grid.size);
+      const hadBest = best[level.id] !== undefined;
+      if (newBest) best[level.id] = grid.size;
+      save(stars, best);
       say(tx(T.won), 'good');
       status.append(starRow(got, 22), el('span', 'visually-hidden', `${got}/3 ★`));
+      const over = overPar(level, grid.size);
+      const cmp = el('p', `zf-compare${over <= 0 ? ' is-top' : ''}`);
+      cmp.append(el('span', '', over > 1 ? tx(T.winMore, { n: grid.size, k: over }) : over === 1 ? tx(T.winMore1, { n: grid.size }) : over === 0 ? tx(T.winPar, { n: grid.size }) : tx(T.winBetter, { n: grid.size })));
+      if (newBest && hadBest) cmp.append(' ', el('strong', '', tx(T.newBest)));
+      status.append(cmp);
       celebrateWin();
       renderLevels();
       if (index < 0) {
@@ -2098,6 +2144,12 @@ export function initFactory(root: HTMLElement): void {
 
   /** Level mit Startzahl: erst wählen, dann starten. */
   function needsPick(): boolean {
+    // Regel „höchstens n Bänder“: erst abbauen, dann starten
+    if (mode === 'level' && beltsOver(level, grid) > 0) {
+      say(tx(T.tooManyBelts, { n: level.maxBelts!, k: beltsOver(level, grid) }), 'warn');
+      sound.play('error');
+      return true;
+    }
     if (mode !== 'level' || !level.source.pick || picks[level.id] !== undefined) return false;
     say(tx(T.pickFirst), 'warn');
     pickInput.focus();

@@ -74,7 +74,7 @@ const CHAPTER_FILES: Record<string, string> = {
   c14: 'kapitel-rest', c15: 'kapitel-quersumme', c16: 'kapitel-wurzel', c17: 'kapitel-quadratzahl', c19: 'kapitel-terme',
   c20: 'kapitel-bruecke', c21: 'kapitel-raetsel', c22: 'kapitel-detektiv', c23: 'kapitel-vorzeichen', c24: 'kapitel-spiegel',
   c25: 'kapitel-runden', c26: 'kapitel-wechsel', c27: 'kapitel-grossmeister', c28: 'kapitel-zusammen', c29: 'kapitel-brueche',
-  c30: 'kapitel-gleichungen', c31: 'kapitel-zaehler', c32: 'kapitel-sammel', c33: 'kapitel-puffer', c34: 'kapitel-ganz', c35: 'kapitel-schleife',
+  c30: 'kapitel-gleichungen', c31: 'kapitel-zaehler', c32: 'kapitel-sammel', c33: 'kapitel-puffer', c34: 'kapitel-ganz', c35: 'kapitel-schleife', c36: 'kapitel-regeln',
 };
 export const chapterImage = (id: string): string | undefined => IMAGES[CHAPTER_FILES[id] ?? ''];
 

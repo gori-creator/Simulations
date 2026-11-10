@@ -17,7 +17,7 @@ export type KitId =
   | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'int' | 'alt' | 'split' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
-export type LessonId = 'belt' | KitId | 'pick' | 'seq' | 'eq';
+export type LessonId = 'belt' | KitId | 'pick' | 'seq' | 'eq' | 'rules';
 
 export interface KitItem {
   id: KitId;

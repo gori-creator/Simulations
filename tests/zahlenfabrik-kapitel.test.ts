@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { allOps, clampNum, KIT, kitItem, opAllowed, specFor, testAllowed } from '../src/spiele/zahlenfabrik/kit';
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
 import { accepts, apply, applySeq, emitCount, passes, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
+import { beltsOver } from '../src/spiele/zahlenfabrik/rules';
 import { ascii, bestSort, lay, own, straight } from './zahlenfabrik-loeser';
 
 const level = (id: string) => ALL_LEVELS.find((l) => l.id === id)!;
@@ -232,6 +233,15 @@ const SOLUTIONS: Record<string, Solution> = {
   'c35-5': drawn(LOOP2, { S: split(0, 1), T: split(1, 1), a: m(op('prev'), 1), M: { op: null, dir: 2, merge: '+' }, b: { op: null, dir: 3 } }),
   'c35-6': drawn(LOOP2, { S: split(0, 1), T: split(1, 1), a: m(op('cnt'), 1), M: { op: null, dir: 2, merge: '+' }, b: m(op('+', 1), 3) }),
   'c35-7': drawn(['............', '............', '............', '..>>S>>>>>..', '..^dW.......', '..^pt.......'], { S: split(0, 1), W: { op: null, dir: 2, sort: even, side: 3 }, d: m(op('÷', 2), 3), p: m(op('+', 1), 2), t: m(op('×', 3), 2) }),
+  'c36-1': chain(op('+', 1), op('−', 1), op('±'), op('±')),
+  'c36-2': chain(op('+', 4), op('²')),
+  'c36-3': chain(op('²'), op('−', 5)),
+  'c36-4': chain(op('²'), op('−', 4)),
+  'c36-5': chain(op('×', 2), op('×', 2), op('|'), op('|'), op('|')),
+  'c36-6': chain(op('×', 3), op('⇄'), op('×', 5)),
+  'c36-7': chain(op('+', 10), op('⇄'), op('+', 5)),
+  'c36-8': chain(op('²'), op('²'), op('≈', 1)),
+  'c36-9': chain(op('+', 8), op('²'), op('|'), op('|'), op('|'), op('|')),
   'c34-1': sort(whole),
   'c34-2': sort(whole, [op(':', 3)]),
   'c34-3': sort(whole, [op(':', 2)], [], [op('×', 2)]),
@@ -263,8 +273,8 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(34);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(188);
+    expect(CHAPTERS).toHaveLength(35);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(197);
     // der Verteiler kommt erst im Schleifen-Kapitel: vorher kommen mehrere Ausgaben aus mehreren Quellen
     const loopAt = CHAPTERS.findIndex((c) => c.id === 'c35');
     expect(CHAPTERS[loopAt]!.teaches).toEqual(['split']);
@@ -285,7 +295,9 @@ describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
       before = now;
     }
     expect(kitFor(ALL_LEVELS[0]!)).toEqual([]);
-    expect(kitFor(ALL_LEVELS[ALL_LEVELS.length - 1]!)).toHaveLength(KIT.length);
+    // am Ende sind alle Bauteile da (Rätsel mit Regeln verbieten einzelne: dort fehlen genau die verbotenen)
+    expect(kitFor([...ALL_LEVELS].reverse().find((l) => !l.ban)!)).toHaveLength(KIT.length);
+    for (const l of ALL_LEVELS.filter((x) => x.ban)) expect(kitFor(l), l.id).toHaveLength(kitFor({ ...l, ban: undefined, kit: KIT.filter((k) => kitFor(l).some((q) => q.id === k.id) || l.ban!.includes(k.id)).map((k) => k.id) }).length - l.ban!.length);
   });
   it('einstellbare Zahlen: Bereich und Bauteile', () => {
     expect(clampNum(kitItem('plus'), 15)).toBe(10);
@@ -335,6 +347,9 @@ describe('Zahlenfabrik: alle Level lösbar mit dem eigenen Werkzeugkasten', () =
         if (p.bridge) expect(has('bridge'), `${l.id}: Brücke`).toBe(true);
       }
       if (l.maxMachines !== undefined) expect(parts.filter((p) => p.op).length).toBeLessThanOrEqual(l.maxMachines);
+      // Nebenbedingung „höchstens n Bänder“ (verbotene Bauteile fehlen schon im Werkzeugkasten)
+      expect(beltsOver(l, new Map([...g].filter(([k]) => !isFixed(l, ...(k.split(',').map(Number) as [number, number]))))), `${l.id}: Bänder`).toBe(0);
+      for (const id of l.ban ?? []) expect(has(id), `${l.id}: ${id} verboten`).toBe(false);
       // Startzahl-Level: nur Bänder
       if (l.source.pick) expect(l.maxMachines).toBe(0);
       const r = run(l, withFixed(l, g), s.kind === 'pick' || s.kind === 'grid' ? s.answer : undefined);

@@ -435,6 +435,21 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  rules: {
+    tag: NEW_RULE,
+    slides: [
+      {
+        title: L('Rätsel mit Regeln', 'Puzzles with rules'),
+        text: L('Hier gelten Zusatzregeln: Manche Bauteile sind verboten und fehlen im Werkzeugkasten („ohne Mal-Maschine“). Oder du hast nur wenige Bänder – dann müssen Maschinen die Lücken füllen. Die Regel steht bei der Aufgabe.', 'Extra rules apply here: some parts are forbidden and missing from the toolbox (“without the times machine”). Or you only have a few belts – then machines have to fill the gaps. The rule is shown with the task.'),
+        scene: { kind: 'kit', labels: ['x²', '+', '−', '÷', '⇄', '≈10'] },
+      },
+      {
+        title: L('Geht es noch kleiner?', 'Can it be smaller?'),
+        text: L('Nach jedem Sieg vergleicht das Spiel deine Fabrik mit der kleinsten bekannten: „Geht es mit 2 Teilen weniger?“ Dein Bestwert wird gespeichert – nur in deinem Browser.', 'After every win the game compares your factory with the smallest known one: “Can you do it with 2 parts fewer?” Your best result is saved – only in your browser.'),
+        scene: { kind: 'chain', from: '4', op: 'x²', to: '16' },
+      },
+    ],
+  },
   eq: {
     tag: NEW_RULE,
     slides: [

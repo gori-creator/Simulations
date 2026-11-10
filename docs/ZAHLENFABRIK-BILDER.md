@@ -443,7 +443,7 @@ abnehmer-4.png: A small observatory seen exactly from above, square footprint, r
 abnehmer-5.png: A cozy bakery seen exactly from above, square footprint, brown roof with a cream-colored awning strip, a tray of round buns beside the door, four small intake openings in the middle of each side. No letters, no signs.
 ```
 
-### D · Kapitelbilder (6)
+### D · Kapitelbilder (7)
 
 Wie die Kapitelbilder aus Runde 2 (Stil-Block für Kapitelbilder, 16 : 9, deckend, Platz links für einen Titel).
 
@@ -455,6 +455,7 @@ Wie die Kapitelbilder aus Runde 2 (Stil-Block für Kapitelbilder, 16 : 9, decken
 | 101 | `kapitel-ganz.png` | Weiche „ganze Zahl?“ |
 | 102 | `kapitel-schleife.png` | Schleife (Rückführung) |
 | 103 | `kapitel-endgegner.png` | Endgegner |
+| 104 | `kapitel-regeln.png` | Rätsel mit Regeln |
 
 ```text
 kapitel-zaehler.png: A blue-green counter machine on a belt with three click-counter wheels on top; identical tokens go in, tokens of growing size come out in a neat row.
@@ -462,6 +463,7 @@ kapitel-sammel.png: A violet collector machine with a growing heap of tokens in 
 kapitel-puffer.png: A sand-yellow buffer machine with a transparent dome holding one token while the belt waits; a second token is just arriving, the first is leaving.
 kapitel-ganz.png: A violet switch with a small gauge at its fork; whole round tokens roll straight on, tokens cut into wedges turn aside into a separate crate.
 kapitel-schleife.png: A conveyor belt that runs in a closed loop around a teal splitter and a machine, with one branch leaving the loop towards a crate; tokens of growing size circle inside.
+kapitel-regeln.png: A factory floor where some machines stand behind a red-white barrier tape with a crossed-out sign shape (no symbols, no text), while a short piece of conveyor belt lies next to a small stack of only five belt pieces.
 kapitel-endgegner.png: A huge dramatic factory hall at dusk with every kind of machine, crossing belts, bridges and a giant glowing boss machine in the middle with warning stripes and a crown-shaped roof.
 ```
 
