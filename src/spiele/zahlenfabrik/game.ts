@@ -544,12 +544,17 @@ export function initFactory(root: HTMLElement): void {
 
   // ---------- Ansicht (verschieben, zoomen) ----------
   /** Neigung in Grad (0: Blick von oben). */
+  // Am Handy gerade von oben (gleiche Grafik, nur nicht gekippt), am PC in 3D;
+  // wer selbst umschaltet, behält seine Wahl
   let tilt = (() => {
+    const phone = matchMedia('(max-width: 640px)').matches;
     try {
-      return localStorage.getItem(VIEW_STORE) === '2d' ? 0 : TILT_DEG;
+      const saved = localStorage.getItem(VIEW_STORE);
+      if (saved) return saved === '2d' ? 0 : TILT_DEG;
     } catch {
-      return TILT_DEG;
+      /* kein Speicher: Standard */
     }
+    return phone ? 0 : TILT_DEG;
   })();
   /**
    * Ansicht: Karte verschieben und zoomen (flach), dann um die Mitte des
