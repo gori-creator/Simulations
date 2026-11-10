@@ -14,7 +14,7 @@ import type { PartSpec } from './parts';
  */
 export type KitId =
   | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round' | 'frac' | 'inv' | 'count' | 'total' | 'buffer'
-  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'int' | 'alt' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
+  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'int' | 'alt' | 'split' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
 export type LessonId = 'belt' | KitId | 'pick' | 'seq' | 'eq';
@@ -61,6 +61,7 @@ export const KIT: KitItem[] = [
   { id: 'issquare', kind: 'sort', test: 'square', start: 0, name: L('Weiche „Quadratzahl?“', 'Switch “square number?”') },
   { id: 'int', kind: 'sort', test: 'int', start: 0, name: L('Weiche „ganze Zahl?“', 'Switch “whole number?”') },
   { id: 'alt', kind: 'alt', start: 0, name: L('Wechsel-Weiche', 'Alternator') },
+  { id: 'split', kind: 'split', start: 0, name: L('Verteiler', 'Splitter') },
   { id: 'sum', kind: 'merge', start: 0, name: L('Zusammenführer „Summe“', 'Merger “sum”') },
   { id: 'diff', kind: 'merge', start: 0, name: L('Zusammenführer „Differenz“', 'Merger “difference”') },
   { id: 'product', kind: 'merge', start: 0, name: L('Zusammenführer „Produkt“', 'Merger “product”') },

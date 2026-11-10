@@ -40,6 +40,11 @@ const EQ = ['.............', '..>>>>>v.....', '.......v.....', '..>>>>>.>>>..'];
 /** Brücken-Karte: Weiche/Verteiler fest bei (4, 4), Brücke bei (7, 3). */
 const CROSS = (top = '>>', side = '>>>') => ['............', '.......>>>>.', '.......^....', `....${side}B>v..`, `..>>.${top}^.v..`, '.........v..', '.........v..', '.........>>.'];
 const bridge: Part = { op: null, dir: 0, bridge: true };
+const split = (dir: Dir, side: 1 | 3): Part => ({ op: null, dir, split: true, side });
+/** Einfache Schleife: Einstieg (2, 3), Verteiler S (3, 3) → Lager, Rückweg über (3, 4) und (2, 4). */
+const LOOP = (top = '..>S>>>>>>..', back = '..^a........') => ['............', '............', '............', top, back];
+/** Schleife mit zwei Verteilern (S: Kopie ins Lager, T: Kopie über a), Zusammenführer M bei (3, 5), Rückweg über b (2, 5). */
+const LOOP2 = ['............', '............', '............', '..>>S>>>>>..', '..^aT.......', '..bM<.......'];
 const alt = (dir: Dir, side: 1 | 3): Part => ({ op: null, dir, alt: true, side });
 
 const SOLUTIONS: Record<string, Solution> = {
@@ -220,6 +225,13 @@ const SOLUTIONS: Record<string, Solution> = {
   'c33-5': drawn(TWO('a>>>>'), { M: merger('−'), a: m(op('prev'), 0) }),
   'c33-6': chain(op('prev'), op('prev')),
   'c33-7': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('prev'), 0) }),
+  'c35-1': drawn(LOOP(), { S: split(0, 1), a: m(op('+', 2), 2) }),
+  'c35-2': drawn(LOOP(), { S: split(0, 1), a: m(op('×', 2), 2) }),
+  'c35-3': drawn(LOOP('..aS>>>>>>..', '..^<........'), { S: split(0, 1), a: m(op('cnt'), 0) }),
+  'c35-4': drawn(LOOP('..aSb>>>>>..', '..^<........'), { S: split(0, 1), a: m(op('cnt'), 0), b: m(op('²'), 0) }),
+  'c35-5': drawn(LOOP2, { S: split(0, 1), T: split(1, 1), a: m(op('prev'), 1), M: { op: null, dir: 2, merge: '+' }, b: { op: null, dir: 3 } }),
+  'c35-6': drawn(LOOP2, { S: split(0, 1), T: split(1, 1), a: m(op('cnt'), 1), M: { op: null, dir: 2, merge: '+' }, b: m(op('+', 1), 3) }),
+  'c35-7': drawn(['............', '............', '............', '..>>S>>>>>..', '..^dW.......', '..^pt.......'], { S: split(0, 1), W: { op: null, dir: 2, sort: even, side: 3 }, d: m(op('÷', 2), 3), p: m(op('+', 1), 2), t: m(op('×', 3), 2) }),
   'c34-1': sort(whole),
   'c34-2': sort(whole, [op(':', 3)]),
   'c34-3': sort(whole, [op(':', 2)], [], [op('×', 2)]),
@@ -251,10 +263,12 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(33);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(181);
-    // kein Verteiler mehr im Werkzeugkasten: mehrere Ausgaben kommen aus mehreren Quellen
-    expect(KIT.some((k) => k.kind === 'split')).toBe(false);
+    expect(CHAPTERS).toHaveLength(34);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(188);
+    // der Verteiler kommt erst im Schleifen-Kapitel: vorher kommen mehrere Ausgaben aus mehreren Quellen
+    const loopAt = CHAPTERS.findIndex((c) => c.id === 'c35');
+    expect(CHAPTERS[loopAt]!.teaches).toEqual(['split']);
+    for (const c of CHAPTERS.slice(0, loopAt)) expect(kitFor(c.levels[0]!).some((k) => k.kind === 'split'), c.id).toBe(false);
     expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
     const taught = CHAPTERS.flatMap((c) => c.teaches);
     expect(new Set(taught).size).toBe(taught.length);
@@ -433,6 +447,19 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(passes(whole, 1 / 3 + 1 / 3 + 1 / 3)).toBe(true);
     expect(passes(whole, 0.5)).toBe(false);
     expect(passes(whole, -4)).toBe(true);
+  });
+  it('Schleife: Die Quelle gibt nur eine Zahl aus; ohne Rückführung (Band statt Verteiler) kommt die Folge nicht zustande', () => {
+    for (const l of CHAPTERS.find((c) => c.id === 'c35')!.levels) {
+      expect(emitCount(l), l.id).toBe(1);
+      const g = new Map((SOLUTIONS[l.id] as { grid: Grid }).grid);
+      for (const [k, p] of g) if (p.split) g.set(k, { op: null, dir: p.dir });
+      expect(run(l, g).won, l.id).toBe(false);
+    }
+    // Fibonacci: genau ein Puffer als Maschine, zwei Verteiler, ein Zusammenführer
+    const fib = [...(SOLUTIONS['c35-5'] as { grid: Grid }).grid.values()];
+    expect(fib.filter((p) => p.op).map((p) => p.op!.sym)).toEqual(['prev']);
+    expect(fib.filter((p) => p.split)).toHaveLength(2);
+    expect(fib.filter((p) => p.merge)).toHaveLength(1);
   });
   it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
     expect(chains(level('c14-4'), 1)).toEqual(['mod 7']);
