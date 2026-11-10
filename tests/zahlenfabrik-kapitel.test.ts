@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { allOps, clampNum, KIT, kitItem, opAllowed, specFor, testAllowed } from '../src/spiele/zahlenfabrik/kit';
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
-import { accepts, apply, emitCount, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
+import { accepts, apply, applySeq, emitCount, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
 import { ascii, bestSort, lay, own, straight } from './zahlenfabrik-loeser';
 
 const level = (id: string) => ALL_LEVELS.find((l) => l.id === id)!;
@@ -25,13 +25,11 @@ const sort = (test: Test, ops: Op[] = [], yes: Op[] = [], no: Op[] = []): Soluti
 const three = (first: Test, second: Test, ops: Op[] = []): Solution => ({ kind: 'three', first, second, ops });
 const drawn = (rows: string[], legend: Record<string, Part> = {}): Solution => ({ kind: 'grid', grid: ascii(rows, legend) });
 const m = (o: Op, dir: Dir): Part => ({ op: o, dir });
-const sorter = (test: Test, dir: Dir, side: 1 | 3): Part => ({ op: null, dir, sort: test, side });
 const merger = (mode: '+' | '−' | '×' | '÷'): Part => ({ op: null, dir: 0, merge: mode });
 const sqTest: Test = { kind: 'square' };
 
 /** Verteiler-Karte: Kopie nach oben (Lager oben), weiter nach rechts und unten. */
 const SPLIT2 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..Sb........', '...v........', '...v........', '...>>>>>>>..'];
-const SPLIT3 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..STm>>>>>..', '...n........', '...v........', '...>>>>>>>..'];
 /** Zusammenführer-Karte: Kopie oben herum, unten geradeaus, Zusammenführer bei (7, 3). */
 const MERGE = (up = '>>>>', straight = '>>>', after = '>>>') => ['.............', '.............', `...${up}v.....`, `..>S${straight}M${after}..`];
 /** Zwei Quellen: A (1, 3) geradeaus, B (1, 1) oben herum, Zusammenführer M bei (7, 3). */
@@ -201,6 +199,19 @@ const SOLUTIONS: Record<string, Solution> = {
   'c13-4': pick(7),
   'c13-5': chain(op('×', 5), op('²'), op('+', 6)),
   'c13-6': three(gt(50), even, [op('²')]),
+  'c31-1': chain(op('cnt')),
+  'c31-2': chain(op('cnt'), op('×', 2)),
+  'c31-3': chain(op('cnt'), op('²')),
+  'c31-4': chain(op('cnt'), op('×', 2), op('−', 1)),
+  'c31-5': sort(even, [op('cnt')]),
+  'c31-6': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('cnt'), 0) }),
+  'c32-1': chain(op('acc')),
+  'c32-2': chain(op('acc')),
+  'c32-3': chain(op('acc')),
+  'c32-4': sort(gt(40), [op('acc')]),
+  'c32-5': chain(op('acc'), op('acc')),
+  'c32-6': chain(op('cnt'), op('acc')),
+  'c32-7': drawn(TWO('a>>>>'), { M: merger('−'), a: m(op('acc'), 0) }),
 };
 
 /** Drei Lager mit zwei Weichen: feste Musterlösung (16 Teile), Maschinen auf die ersten Bänder. */
@@ -227,9 +238,9 @@ function build(l: LevelInfo, s: Solution): Grid {
 const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFixed(l, ...(k.split(',').map(Number) as [number, number]))).map(([, p]) => p);
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
-  it('27 Kapitel, über 140 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(29);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(157);
+  it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
+    expect(CHAPTERS).toHaveLength(31);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(170);
     // kein Verteiler mehr im Werkzeugkasten: mehrere Ausgaben kommen aus mehreren Quellen
     expect(KIT.some((k) => k.kind === 'split')).toBe(false);
     expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
@@ -336,13 +347,14 @@ function chains(l: LevelInfo, max: number): string[] {
   const xs = Array.from({ length: totalNeed(l) }, (_, i) => sourceValue(l, i));
   const t = targetsOf(l)[0]!;
   const out: string[] = [];
-  const walk = (vals: (number | null)[], used: Op[]) => {
-    if (vals.every((v, i) => v !== null && accepts(t, v, i))) out.push(used.map(opLabel).join(' '));
+  const walk = (vals: number[], used: Op[]) => {
+    if (vals.every((v, i) => accepts(t, v, i))) out.push(used.map(opLabel).join(' '));
     if (used.length === max) return;
     for (const o of ops) {
-      const next = vals.map((v) => (v === null ? null : apply(o, v)));
+      // der Reihe nach (Zähler und Sammler rechnen mit der ganzen Folge)
+      const next = applySeq(o, vals);
       if (next.some((v) => v === null || Math.abs(v) > 1e6)) continue;
-      walk(next, [...used, o]);
+      walk(next as number[], [...used, o]);
     }
   };
   walk(xs, []);
@@ -381,6 +393,25 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
       expect(chains(l, l.maxMachines!), l.id).toEqual([name]);
       expect(chains(l, l.maxMachines! - 1), l.id).toEqual([]);
     }
+  });
+  it('Maschinen mit Gedächtnis: Zähler und Sammler rechnen der Reihe nach', () => {
+    expect(applySeq(op('cnt'), [7, 7, 7, 7])).toEqual([1, 2, 3, 4]);
+    expect(applySeq(op('acc'), [1, 2, 3, 4, 5])).toEqual([1, 3, 6, 10, 15]);
+    expect(applySeq(op('acc'), [1, 3, 5, 7, 9])).toEqual([1, 4, 9, 16, 25]);
+    expect(applySeq(op('acc'), [0.5, 0.25])).toEqual([0.5, 0.75]);
+    // ohne Vorgeschichte wie die erste Zahl (für den Rechenweg)
+    expect(apply(op('cnt'), 9)).toBe(1);
+    expect(apply(op('acc'), 9)).toBe(9);
+    // Zähler und Sammler: mit der Grenze lösbar, aber nicht mit anderen Maschinen allein
+    expect(chains(level('c31-1'), 1)).toEqual(['1,2,3']);
+    expect(chains(level('c31-2'), 2)).toEqual(['1,2,3 ×2']);
+    expect(chains(level('c31-3'), 2)).toEqual(['1,2,3 x²']);
+    expect(chains(level('c32-1'), 1)).toEqual(['Σx']);
+    expect(chains(level('c32-3'), 1)).toEqual(['Σx']);
+    expect(chains(level('c32-5'), 2)).toEqual(['Σx Σx']);
+    expect(chains(level('c32-6'), 2)).toEqual(['1,2,3 Σx']);
+    // jede Maschine zählt für sich: zwei Zähler hintereinander zählen beide von 1 an
+    expect(chains(level('c31-1'), 2)).toContain('1,2,3 1,2,3');
   });
   it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
     expect(chains(level('c14-4'), 1)).toEqual(['mod 7']);

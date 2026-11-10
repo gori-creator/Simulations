@@ -365,6 +365,36 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  count: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Zähler-Maschine', 'The counter machine'),
+        text: L('Sie zählt die Zahlen, die durch sie laufen, und gibt die Nummer weiter: Die erste Zahl wird zur 1, die zweite zur 2, die dritte zur 3 – egal, was hineinkommt.', 'It counts the numbers that run through it and passes on the position: the first number becomes 1, the second 2, the third 3 – whatever comes in.'),
+        scene: { kind: 'table', xs: ['7', '7', '7', '7'], op: '1,2,3', ys: ['1', '2', '3', '4'] },
+      },
+      {
+        title: L('Zählen und weiterrechnen', 'Count, then calculate'),
+        text: L('Hinter dem Zähler kannst du weiterrechnen: ×2 macht aus 1, 2, 3 die Zweierreihe 2, 4, 6. Jede Zähler-Maschine zählt für sich – zwei Zähler zählen beide von 1 an.', 'After the counter you can keep calculating: ×2 turns 1, 2, 3 into 2, 4, 6. Every counter counts on its own – two counters both start at 1.'),
+        scene: { kind: 'table', xs: ['4', '9', '2'], op: '1,2,3 ×2', ys: ['2', '4', '6'] },
+      },
+    ],
+  },
+  total: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Die Sammel-Maschine', 'The collector machine'),
+        text: L('Sie merkt sich alles, was bisher durchlief, und gibt die Summe weiter: Aus 1, 2, 3, 4 wird 1, 3, 6, 10 – die Dreieckszahlen. Σ ist das Zeichen für „Summe“.', 'It remembers everything that has run through and passes on the sum: 1, 2, 3, 4 becomes 1, 3, 6, 10 – the triangular numbers. Σ is the sign for “sum”.'),
+        scene: { kind: 'table', xs: ['1', '2', '3', '4'], op: 'Σx', ys: ['1', '3', '6', '10'] },
+      },
+      {
+        title: L('Immer dasselbe sammeln', 'Collecting the same thing'),
+        text: L('Kommt immer dieselbe Zahl, entsteht eine Reihe: Aus 10, 10, 10 wird 10, 20, 30. Und aus den ungeraden Zahlen 1, 3, 5, 7 werden die Quadratzahlen 1, 4, 9, 16!', 'If the same number keeps coming, you get a sequence: 10, 10, 10 becomes 10, 20, 30. And the odd numbers 1, 3, 5, 7 become the square numbers 1, 4, 9, 16!'),
+        scene: { kind: 'table', xs: ['1', '3', '5', '7'], op: 'Σx', ys: ['1', '4', '9', '16'] },
+      },
+    ],
+  },
   eq: {
     tag: NEW_RULE,
     slides: [

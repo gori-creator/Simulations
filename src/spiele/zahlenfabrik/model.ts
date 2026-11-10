@@ -14,9 +14,11 @@ export const DY = [0, 1, 0, -1] as const;
 
 /**
  * Rechenzeichen: Grundrechenarten, Quadrat, Rest (mod), Quersumme (Σ), Wurzel (√),
- * Vorzeichen wechseln (±), Betrag (|), Ziffern umdrehen (⇄), Runden auf 10ⁿ (≈).
+ * Vorzeichen wechseln (±), Betrag (|), Ziffern umdrehen (⇄), Runden auf 10ⁿ (≈),
+ * Bruch (:), Kehrwert (⅟). Maschinen mit Gedächtnis: Zähler (cnt, gibt 1, 2, 3, …
+ * aus) und Sammler (acc, Summe aller Zahlen bisher).
  */
-export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈' | ':' | '⅟';
+export type Sym = '+' | '−' | '×' | '÷' | '²' | '%' | 'Σ' | '√' | '±' | '|' | '⇄' | '≈' | ':' | '⅟' | 'cnt' | 'acc';
 export interface Op {
   sym: Sym;
   n: number;
@@ -207,6 +209,42 @@ export function apply(op: Op, value: number): number | null {
   return r === null ? null : tidy(r);
 }
 
+/** Maschinen mit Gedächtnis: Sie merken sich etwas über die Zahlen, die schon durch sie gelaufen sind. */
+export const isStateful = (sym: Sym) => sym === 'cnt' || sym === 'acc';
+
+/**
+ * Zahl in einer Maschine mit Gedächtnis verrechnen. `mem` ist der gemerkte
+ * Stand (am Anfang 0): beim Zähler die Zahl der bisherigen Zahlen, beim
+ * Sammler die Summe bisher. Zurück kommen Ergebnis und neuer Stand.
+ */
+export function applyMem(op: Op, value: number, mem: number): { value: number; mem: number } {
+  switch (op.sym) {
+    case 'cnt':
+      return { value: mem + 1, mem: mem + 1 };
+    case 'acc':
+      return { value: tidy(mem + value), mem: tidy(mem + value) };
+    default: {
+      const r = apply(op, value);
+      return { value: r ?? NaN, mem };
+    }
+  }
+}
+
+/**
+ * Eine Maschine auf eine ganze Zahlenfolge anwenden (der Reihe nach, wie die
+ * Zahlen aus der Quelle kommen). Nur so rechnen Maschinen mit Gedächtnis
+ * richtig; `null` steht für „kann nicht rechnen“ (z. B. Teilen ohne Rest).
+ */
+export function applySeq(op: Op, values: readonly number[]): (number | null)[] {
+  if (!isStateful(op.sym)) return values.map((v) => apply(op, v));
+  let mem = 0;
+  return values.map((v) => {
+    const r = applyMem(op, v, mem);
+    mem = r.mem;
+    return r.value;
+  });
+}
+
 function applyRaw(op: Op, value: number): number | null {
   switch (op.sym) {
     case '²':
@@ -237,6 +275,11 @@ function applyRaw(op: Op, value: number): number | null {
       return value / op.n;
     case '⅟':
       return value === 0 ? null : 1 / value;
+    // Gedächtnis-Maschinen ohne Vorgeschichte (erste Zahl): Zähler 1, Sammler die Zahl selbst
+    case 'cnt':
+      return 1;
+    case 'acc':
+      return value;
   }
 }
 
@@ -275,6 +318,10 @@ export function opLabel(op: Op): string {
       return `x/${op.n}`;
     case '⅟':
       return '1/x';
+    case 'cnt':
+      return '1,2,3';
+    case 'acc':
+      return 'Σx';
     default:
       return `${op.sym}${op.n}`;
   }
@@ -312,6 +359,8 @@ export interface State {
   pick?: number;
   /** Wechsel-Weichen: so viele Zahlen hat jede schon weitergegeben (Feld → Anzahl). */
   alt?: Record<string, number>;
+  /** Maschinen mit Gedächtnis: gemerkter Stand je Feld (Zähler: Anzahl, Sammler: Summe). */
+  mem?: Record<string, number>;
 }
 
 export const EMIT_EVERY = 2;
@@ -352,7 +401,7 @@ export const emitCount = (level: Level) => level.emit ?? totalNeed(level);
 export function step(level: Level, grid: Grid, state: State): State {
   if (state.error || state.won) return state;
   const targets = targetsOf(level);
-  const s: State = { ...state, tick: state.tick + 1, items: [], got: [...state.got], alt: { ...state.alt } };
+  const s: State = { ...state, tick: state.tick + 1, items: [], got: [...state.got], alt: { ...state.alt }, mem: { ...state.mem } };
   // Wartende Zahlen bleiben stehen
   for (const item of state.items) if (item.wait) s.items.push(item);
   for (const item of state.items) {
@@ -383,7 +432,12 @@ export function step(level: Level, grid: Grid, state: State): State {
         return s;
       }
       let value = item.value;
-      if (part.op) {
+      if (part.op && isStateful(part.op.sym)) {
+        // Zähler und Sammler: merken sich je Feld, was bisher durchlief
+        const r = applyMem(part.op, value, s.mem![key(x, y)] ?? 0);
+        s.mem![key(x, y)] = r.mem;
+        value = r.value;
+      } else if (part.op) {
         const next = apply(part.op, value);
         if (next === null) {
           s.error = { kind: part.op.sym === '√' ? 'root' : 'divide', x, y, value };
