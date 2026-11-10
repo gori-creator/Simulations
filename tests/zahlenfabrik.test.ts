@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CHAPTERS, ALL_LEVELS } from '../src/spiele/zahlenfabrik/levels';
-import { apply, canPlace, DX, DY, isFixed, key, run, shortestPath, starsFor, withFixed, type Dir, type Grid, type Level, type Op } from '../src/spiele/zahlenfabrik/model';
+import { apply, canPlace, DX, DY, isFixed, key, run, shortestPath, starsFor, goodPar, withFixed, type Dir, type Grid, type Level, type Op } from '../src/spiele/zahlenfabrik/model';
 
 const level = (id: string) => ALL_LEVELS.find((l) => l.id === id)!;
 const FIRST = [...CHAPTERS[0]!.levels, ...CHAPTERS[1]!.levels, ...CHAPTERS[3]!.levels];
@@ -79,9 +79,16 @@ describe('Zahlenfabrik: Fehler und Regeln', () => {
     expect(canPlace(l, 15, 0)).toBe(false);
   });
   it('Sterne', () => {
-    const l = level('c2-1');
-    expect(starsFor(l, 5, 0)).toBe(3);
-    expect(starsFor(l, 6, 0)).toBe(2);
-    expect(starsFor(l, 6, 2)).toBe(1);
+    // Nur die Größe der Fabrik zählt, nicht die Zahl der Versuche
+    const l = { par: 5 };
+    expect(starsFor(l, 4)).toBe(3);
+    expect(starsFor(l, 5)).toBe(3);
+    expect(starsFor(l, 6)).toBe(2);
+    expect(starsFor(l, 7)).toBe(2);
+    expect(starsFor(l, 8)).toBe(1);
+    // Große Fabriken: ein Viertel mehr Teile für den zweiten Stern
+    expect(goodPar({ par: 20 })).toBe(25);
+    expect(starsFor({ par: 20 }, 25)).toBe(2);
+    expect(starsFor({ par: 20 }, 26)).toBe(1);
   });
 });

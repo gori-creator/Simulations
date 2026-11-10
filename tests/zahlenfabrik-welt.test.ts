@@ -416,3 +416,12 @@ describe('Zahlenfabrik: Abnehmer am Kartenrand', () => {
     for (const b of big.buyers!) expect(canBuildWorld(big, b.x, b.y)).toBe(false);
   });
 });
+
+describe('Zahlenfabrik: Abbauen gibt genau den Kaufpreis zurück', () => {
+  it('jedes Teil der offenen Welt', async () => {
+    const { WORLD_PARTS, makePart, priceOf, specById } = await import('../src/spiele/zahlenfabrik/parts');
+    for (const spec of WORLD_PARTS) expect(priceOf(makePart(spec, 0)), spec.id).toBe(spec.price);
+    // Bänder kosten beim Ziehen denselben Preis wie im Inventar (früher 1 statt 2)
+    expect(specById('belt')!.price).toBe(priceOf({ op: null, dir: 0 }));
+  });
+});
