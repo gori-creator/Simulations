@@ -1,7 +1,7 @@
 import { L } from '../../curriculum/helpers';
 import type { Lang, Localized } from '../../i18n/config';
 import { beltCount, beltsOver, cleanBest, isNewBest, overPar } from './rules';
-import { art, chapterImage, imageFor, IMAGES, machineFile, mergeFile, switchFile, type ArtKind } from './art';
+import { art, chapterImage, imageFor, IMAGES, machineFile, mergeFile, oreFile, switchFile, type ArtKind } from './art';
 import { icon, setButton, type IconName } from './icons';
 import { lessonSeen, showLessons } from './lessons';
 import { createSound } from './sound';
@@ -13,7 +13,7 @@ import { chainLevel, solveChain } from './solver';
 import { accepts, asFraction, emitCount, sourcesOf, canPlace, DX, DY, key, opLabel, outputs, sourceValue, start, starsFor, step, targetsOf, totalNeed, trace, withFixed, type Accept, type Dir, type Grid, type Item, type Op, type Part, type State, type Target } from './model';
 import { deliver, newEconomy, orderAt, orderText, unlockedBy, unlockedParts, type Economy, type Order } from './orders';
 import { makePart, partId, priceOf, specById, specLabel, specName, testLabel, WORLD_PARTS, type PartSpec } from './parts';
-import { BUYERS_FROM, canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type Buyer, type OpenWorld, type WorldState } from './world';
+import { BUYERS_FROM, canBuildWorld, inRect, makeWorld, START_OFFSET, worldStart, worldStep, ZONE_PRICES, zoneRect, type Buyer, type OpenWorld, type OreKind, type WorldState } from './world';
 
 /**
  * Zahlenfabrik (Probe, Welt 1): freie Fläche aus Kästchen, die man mit der
@@ -248,7 +248,7 @@ const T = {
   bridgeHelp: L('Brücke: Zahlen laufen geradeaus darüber – waagerecht und senkrecht, ohne sich zu stören. So kreuzen sich zwei Bänder.', 'Bridge: numbers run straight across – horizontally and vertically, without getting in each other’s way. This is how two belts cross.'),
   expand: L('Neues Gebiet · {n}', 'New area · {n}'),
   fogLabel: L('Mehr Land für {n} Münzen', 'More land for {n} coins'),
-  expandDone: L('Neues Land frei! Weiter draußen geben die Quellen größere Zahlen.', 'New land unlocked! Further out, the sources give bigger numbers.'),
+  expandDone: L('Neues Land frei! Weiter draußen geben die Quellen größere Zahlen – und es gibt besondere Quellen für Primzahlen, Quadratzahlen und Zählreihen.', 'New land unlocked! Further out, the sources give bigger numbers – and there are special sources for primes, square numbers and counting sequences.'),
   sortHelp: L('Weiche: Was die Frage erfüllt, läuft geradeaus (✓), alles andere biegt ab (✗). Antippen dreht sie, nach vier Drehungen wechselt die Seite.', 'Switch: numbers that pass go straight (✓), all others turn (✗). Tap to turn it; after four turns the side switches.'),
   mergeHelp: L('Zusammenführen: Die erste Zahl wartet, bis aus einer anderen Richtung eine zweite aus einer anderen Quelle kommt (ein Band verbindet sich nicht mit sich selbst). Dann laufen beide als eine Zahl weiter – Summe, Differenz (größere − kleinere), Produkt oder Quotient (größere ÷ kleinere, nur wenn es aufgeht).', 'Merger: the first number waits until a second one arrives from another direction and another source (a belt does not merge with itself). Then both continue as one number – sum, difference (bigger − smaller), product or quotient (bigger ÷ smaller, only if it divides evenly).'),
   buyer: L('Abnehmer', 'Buyer'),
@@ -259,6 +259,14 @@ const T = {
     '✋ Hand: move the map (two fingers or mouse wheel: zoom). → Belt: drag across the squares. Parts cost coins; removing them gives the coins back. Tap a part again to turn it. Whatever falls off the belt is gone. You can build while the factory is running.',
   ),
 };
+
+/** Erz-Arten der Quellen in der offenen Welt: Name und kurze Aufschrift. */
+const ORE_NAMES: Record<OreKind, Localized> = {
+  prime: L('Primzahl-Quelle', 'Prime source'),
+  square: L('Quadratzahl-Quelle', 'Square-number source'),
+  count: L('Zähl-Quelle', 'Counting source'),
+};
+const ORE_SHORT: Record<OreKind, Localized> = { prime: L('Prim', 'prime'), square: L('n²', 'n²'), count: L('1,2,3', '1,2,3') };
 
 /**
  * Gespeicherte offene Welt: gebaute Teile (x, y, Richtung, Kennung, Seite der
@@ -332,7 +340,7 @@ function saveWorld(grid: Grid, econ: Economy): void {
 interface Board {
   cols: number;
   rows: number;
-  sources: { x: number; y: number; dir: Dir; value: number }[];
+  sources: { x: number; y: number; dir: Dir; value: number; ore?: OreKind; values?: number[] }[];
   base: { x: number; y: number; w: number; h: number };
   /** Weitere Lager (Level mit mehreren Lagern). */
   extra: { x: number; y: number; w: number; h: number }[];
@@ -1263,11 +1271,11 @@ export function initFactory(root: HTMLElement): void {
     };
     const open = mode === 'world' ? zoneRect(openWorld, econ.zone) : null;
     for (const sp of board.sources) {
-      const c = at(sp.x, sp.y, 'zf-cell--source');
+      const c = at(sp.x, sp.y, `zf-cell--source${sp.ore ? ' zf-cell--ore' : ''}`);
       const label = el('span', 'zf-cell__big zf-source-value', sourceLabel(sp));
       label.dataset.src = String(board.sources.indexOf(sp));
-      c.append(art('source', 52, sp.dir), label);
-      c.title = tx(T.source);
+      c.append(art('source', 52, sp.dir, 0, false, oreFile(sp.ore)), label);
+      c.title = sp.ore ? `${tx(ORE_NAMES[sp.ore])}: ${sp.values!.slice(0, 5).map(ctxNum).join(', ')} …` : tx(T.source);
       if (open && !inRect(open, sp.x, sp.y)) {
         c.classList.add('is-locked');
         c.title = tx(T.sourceLocked);
@@ -1292,7 +1300,7 @@ export function initFactory(root: HTMLElement): void {
         const cell = at(b.x, b.y, `zf-cell--base zf-cell--buyer${on ? '' : ' is-locked'}`);
         cell.style.width = `${b.w * CELL - 12}px`;
         cell.style.height = `${b.h * CELL - 12}px`;
-        const pic = IMAGES[`abnehmer-${(i % 3) + 1}`];
+        const pic = IMAGES[`abnehmer-${i + 1}`] ?? IMAGES[`abnehmer-${(i % 3) + 1}`];
         if (pic) {
           const img = el('img', 'zf-art zf-art--img zf-buyer__img');
           img.src = pic;
@@ -1379,8 +1387,9 @@ export function initFactory(root: HTMLElement): void {
   }
 
   /** Aufschrift der Quelle: im Level die nächste Zahl (bzw. „?“ ohne gewählte Startzahl). */
-  function sourceLabel(sp: { value: number; values?: number[] }): string {
-    if (mode !== 'level') return ctxNum(sp.value);
+  function sourceLabel(sp: { value: number; values?: number[]; ore?: OreKind }): string {
+    // offene Welt: Erz-Quellen zeigen ihre Art (sie geben eine ganze Reihe aus)
+    if (mode !== 'level') return sp.ore ? tx(ORE_SHORT[sp.ore]) : ctxNum(sp.value);
     const i = Math.min(state.emitted, emitCount(level) - 1);
     if (sp !== level.source) {
       if ((sp as { pick?: true }).pick) return picks[level.id] === undefined ? '?' : ctxNum(picks[level.id]!);
@@ -1412,6 +1421,8 @@ export function initFactory(root: HTMLElement): void {
         return `${ctxNum(r.n!)}·n`;
       case 'greater':
         return `>${ctxNum(r.n!)}`;
+      case 'triangle':
+        return '1,3,6…';
     }
   }
 
