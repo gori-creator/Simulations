@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { allOps, clampNum, KIT, kitItem, opAllowed, specFor, testAllowed } from '../src/spiele/zahlenfabrik/kit';
 import { ALL_LEVELS, CHAPTERS, chapterOf, kitFor, newIn, PARTS, type LevelInfo } from '../src/spiele/zahlenfabrik/levels';
-import { accepts, apply, applySeq, emitCount, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
+import { accepts, apply, applySeq, emitCount, passes, isFixed, key, opLabel, run, shortestPath, sourceValue, targetsOf, totalNeed, withFixed, type Dir, type Grid, type Op, type Part, type Test } from '../src/spiele/zahlenfabrik/model';
 import { ascii, bestSort, lay, own, straight } from './zahlenfabrik-loeser';
 
 const level = (id: string) => ALL_LEVELS.find((l) => l.id === id)!;
@@ -27,6 +27,7 @@ const drawn = (rows: string[], legend: Record<string, Part> = {}): Solution => (
 const m = (o: Op, dir: Dir): Part => ({ op: o, dir });
 const merger = (mode: '+' | '−' | '×' | '÷'): Part => ({ op: null, dir: 0, merge: mode });
 const sqTest: Test = { kind: 'square' };
+const whole: Test = { kind: 'int' };
 
 /** Verteiler-Karte: Kopie nach oben (Lager oben), weiter nach rechts und unten. */
 const SPLIT2 = ['............', '..>>>>>>>>..', '..^.........', '..a.........', '..Sb........', '...v........', '...v........', '...>>>>>>>..'];
@@ -212,6 +213,17 @@ const SOLUTIONS: Record<string, Solution> = {
   'c32-5': chain(op('acc'), op('acc')),
   'c32-6': chain(op('cnt'), op('acc')),
   'c32-7': drawn(TWO('a>>>>'), { M: merger('−'), a: m(op('acc'), 0) }),
+  'c33-1': chain(op('prev')),
+  'c33-2': chain(op('prev'), op('×', 2)),
+  'c33-3': drawn(TWO('a>>>>'), { M: merger('−'), a: m(op('prev'), 0) }),
+  'c33-4': drawn(TWO('a>>>>'), { M: merger('+'), a: m(op('prev'), 0) }),
+  'c33-5': drawn(TWO('a>>>>'), { M: merger('−'), a: m(op('prev'), 0) }),
+  'c33-6': chain(op('prev'), op('prev')),
+  'c33-7': drawn(TWO('a>>>>'), { M: merger('×'), a: m(op('prev'), 0) }),
+  'c34-1': sort(whole),
+  'c34-2': sort(whole, [op(':', 3)]),
+  'c34-3': sort(whole, [op(':', 2)], [], [op('×', 2)]),
+  'c34-4': sort(whole, [op('⅟')]),
 };
 
 /** Drei Lager mit zwei Weichen: feste Musterlösung (16 Teile), Maschinen auf die ersten Bänder. */
@@ -239,8 +251,8 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(31);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(170);
+    expect(CHAPTERS).toHaveLength(33);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(181);
     // kein Verteiler mehr im Werkzeugkasten: mehrere Ausgaben kommen aus mehreren Quellen
     expect(KIT.some((k) => k.kind === 'split')).toBe(false);
     expect(PARTS.flatMap((p) => p.chapters)).toEqual(CHAPTERS.map((c) => c.id));
@@ -412,6 +424,15 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(chains(level('c32-6'), 2)).toEqual(['1,2,3 Σx']);
     // jede Maschine zählt für sich: zwei Zähler hintereinander zählen beide von 1 an
     expect(chains(level('c31-1'), 2)).toContain('1,2,3 1,2,3');
+    // Puffer: gibt die vorige Zahl weiter, am Anfang die 0; zwei Puffer verschieben um zwei
+    expect(applySeq(op('prev'), [4, 9, 2, 7])).toEqual([0, 4, 9, 2]);
+    expect(apply(op('prev'), 9)).toBe(0);
+    expect(chains(level('c33-1'), 1)).toEqual(['x₋₁']);
+    expect(chains(level('c33-6'), 2)).toEqual(['x₋₁ x₋₁']);
+    // Weiche „ganze Zahl?“: Brüche mit Rundungsrest zählen richtig
+    expect(passes(whole, 1 / 3 + 1 / 3 + 1 / 3)).toBe(true);
+    expect(passes(whole, 0.5)).toBe(false);
+    expect(passes(whole, -4)).toBe(true);
   });
   it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
     expect(chains(level('c14-4'), 1)).toEqual(['mod 7']);

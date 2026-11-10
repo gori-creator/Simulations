@@ -692,6 +692,8 @@
 /* Maschinen ohne eigenes Bild: das allgemeine Maschinenbild, umgefärbt (Zähler blaugrün, Sammler violett) */
 .zf-art--img[data-fallback='maschine-zaehler'] { filter: hue-rotate(140deg) saturate(0.9); }
 .zf-art--img[data-fallback='maschine-sammel'] { filter: hue-rotate(260deg) saturate(0.9); }
+.zf-art--img[data-fallback='maschine-puffer'] { filter: hue-rotate(20deg) saturate(0.7) brightness(1.08); }
+.zf-art--img[data-fallback='weiche-ganz'] { filter: hue-rotate(-40deg) saturate(1.1); }
 .zf-art__rock { fill: var(--zf-rock); }
 .zf-art__rock-light { fill: var(--zf-rock-light); }
 .zf-art__rock-dark { fill: var(--zf-rock-dark); }
@@ -1112,6 +1114,9 @@
 }
 
 .zf-stage .zf-status:empty { display: none; }
+/* Hinweise (ohne Knöpfe) fangen keine Berührungen ab – am Handy liegen sie über dem Spielfeld */
+.zf-stage .zf-status[data-kind='info'],
+.zf-stage .zf-status[data-kind='warn'] { pointer-events: none; }
 .zf-stage .zf-status .zf-btn { min-height: 40px; padding: 6px 14px; }
 .zf-stage .zf-table { margin-top: 10px; }
 

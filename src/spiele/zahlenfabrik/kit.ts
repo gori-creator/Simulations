@@ -13,8 +13,8 @@ import type { PartSpec } from './parts';
  * addiert oder durch welche Zahl die Weiche prüft, wählt man selbst.
  */
 export type KitId =
-  | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round' | 'frac' | 'inv' | 'count' | 'total'
-  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'alt' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
+  | 'plus' | 'minus' | 'times' | 'divide' | 'square' | 'mod' | 'digits' | 'root' | 'neg' | 'abs' | 'rev' | 'round' | 'frac' | 'inv' | 'count' | 'total' | 'buffer'
+  | 'even' | 'div' | 'gt' | 'prime' | 'issquare' | 'int' | 'alt' | 'sum' | 'diff' | 'product' | 'quot' | 'bridge';
 
 /** Was ein Kapitel neu einführt: ein Bauteil oder eine Spielregel. */
 export type LessonId = 'belt' | KitId | 'pick' | 'seq' | 'eq';
@@ -53,11 +53,13 @@ export const KIT: KitItem[] = [
   { id: 'inv', kind: 'op', sym: '⅟', start: 2, name: L('Kehrwert-Maschine', 'Reciprocal machine') },
   { id: 'count', kind: 'op', sym: 'cnt', start: 2, name: L('Zähler-Maschine', 'Counter machine') },
   { id: 'total', kind: 'op', sym: 'acc', start: 2, name: L('Sammel-Maschine', 'Collector machine') },
+  { id: 'buffer', kind: 'op', sym: 'prev', start: 2, name: L('Puffer-Maschine', 'Buffer machine') },
   { id: 'even', kind: 'sort', test: 'even', start: 0, name: L('Weiche „gerade?“', 'Switch “even?”') },
   { id: 'div', kind: 'sort', test: 'div', range: [2, 10], start: 3, name: L('Weiche „teilbar durch …?“', 'Switch “divisible by …?”') },
   { id: 'gt', kind: 'sort', test: 'gt', range: [0, 100], start: 10, name: L('Weiche „größer als …?“', 'Switch “greater than …?”') },
   { id: 'prime', kind: 'sort', test: 'prime', start: 0, name: L('Weiche „Primzahl?“', 'Switch “prime?”') },
   { id: 'issquare', kind: 'sort', test: 'square', start: 0, name: L('Weiche „Quadratzahl?“', 'Switch “square number?”') },
+  { id: 'int', kind: 'sort', test: 'int', start: 0, name: L('Weiche „ganze Zahl?“', 'Switch “whole number?”') },
   { id: 'alt', kind: 'alt', start: 0, name: L('Wechsel-Weiche', 'Alternator') },
   { id: 'sum', kind: 'merge', start: 0, name: L('Zusammenführer „Summe“', 'Merger “sum”') },
   { id: 'diff', kind: 'merge', start: 0, name: L('Zusammenführer „Differenz“', 'Merger “difference”') },
@@ -92,7 +94,7 @@ export function specFor(item: KitItem, n: number): PartSpec {
     return { id: opLabel(op), kind: 'op', op, price: 0 };
   }
   const test: Test =
-    item.test === 'div' ? { kind: 'div', n: v } : item.test === 'gt' ? { kind: 'gt', n: v } : { kind: item.test as 'even' | 'prime' | 'square' };
+    item.test === 'div' ? { kind: 'div', n: v } : item.test === 'gt' ? { kind: 'gt', n: v } : { kind: item.test as 'even' | 'prime' | 'square' | 'int' };
   const id = test.kind === 'div' || test.kind === 'gt' ? `${test.kind}${v}` : test.kind;
   return { id, kind: 'sort', test, price: 0 };
 }
