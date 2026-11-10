@@ -117,7 +117,7 @@ Erster Schritt des Ausbaus „tiefer und spannender“ (Wunsch der Projektleitun
 - **Sammel-Maschine** (`Σx`, Kapitel 31): gibt die Summe aller Zahlen bisher aus. Level: Dreieckszahlen 1, 3, 6, 10, 15; Zehnerreihe aus 10, 10, 10, 10; Quadratzahlen aus 1, 3, 5, 7, 9; „Spartopf“ (sammeln, dann Weiche „größer als 40?“ trennt die Gesamtsumme 45 von den Zwischenständen); doppelt gesammelt 2, 6, 12, 20, 30; aus Dreien Dreieckszahlen (Zähler, dann Sammler); Dreieckszahlen rückwärts mit zwei Quellen und Differenz (T(x) − x = T(x − 1)).
 - Rechenlogik (`model.ts`): `isStateful`, `applyMem` (Stand je Feld in `State.mem`), `applySeq` (eine Maschine auf eine ganze Folge, der Reihe nach). Löser und Tests rechnen Folgen damit der Reihe nach; das Tages- und Zufallsrätsel lässt Gedächtnis-Maschinen außen vor (Ziel immer > 10, damit kein Abkürzungsweg über Zähler und Runden entsteht).
 - Bilder: ohne eigenes Bild das allgemeine Maschinenbild, umgefärbt (Zähler blaugrün, Sammler violett), in der gezeichneten Grafik mit Zählpunkten bzw. Haufen. Prompts für alle neuen Teile des Ausbaus (auch die der nächsten Schritte): `docs/ZAHLENFABRIK-BILDER.md`, Runde 4.
-- Geplant als weitere Schritte (je ein Pull Request): Endgegner-Kapitel, Erz-Arten in der offenen Welt.
+- Geplant als weiterer Schritt: Erz-Arten in der offenen Welt.
 
 ## Puffer-Maschine und Weiche „ganze Zahl?“ (Stand 09.11.2026, Schritt 2)
 
@@ -140,6 +140,12 @@ Erster Schritt des Ausbaus „tiefer und spannender“ (Wunsch der Projektleitun
   - **Höchstens n Bänder:** Der Weg ist länger als die erlaubten Bänder; Maschinen zählen nicht als Bänder und müssen die Lücken füllen (z. B. +1, −1, ±, ± heben sich auf). Anzeige „Bänder 7/5“ (rot, wenn zu viele); mit zu vielen Bändern startet die Fabrik nicht und sagt, wie viele zu viel sind.
 - **Kapitel „Rätsel mit Regeln“** (Kapitel 35, 9 Level): „Nur fünf Bänder“ (die 7 bleibt die 7), 4 → 64 ohne Mal (+4, x²), 5 → 20 ohne Plus und Mal (x², −5), 4 → 12 ohne Plus und Mal (x², −4), 5 → 20 mit vier Bändern, 5 → 255 ohne Plus und Minus (×3, ⇄, ×5), 3 → 36 ohne Quadrat und Mal (+10, ⇄, +5), 3 → 80 ohne Grundrechenarten (x², x², ≈10), 2 → 100 mit drei Bändern ohne Mal. Bei den Verbots-Rätseln gibt es mit der Maschinen-Grenze **genau einen Weg**, ohne das Verbot mindestens drei (Test).
 - **Vergleich nach dem Sieg:** „Deine Fabrik hat 12 Teile. Geht es mit 3 Teilen weniger?“ bzw. „so klein wie die Musterlösung!“ (Maßstab ist `par`, die kleinste bekannte Fabrik aus den Tests).
+- **Endgegner** (Schritt 5, letztes Kapitel, 5 Level, alle „Profi“): große Fabriken, die viele Bauteile zugleich brauchen; jede Musterlösung im Test, zusammen 15 verschiedene Bauteil-Arten.
+  1. *Das Zählwerk:* 5, 5, 5, 5, 5, 5 → Zähler → Weiche „gerade?“ → oben x² (4, 16, 36), unten Sammler (1, 4, 9).
+  2. *Zweierpotenzen:* Schleife mit ×2 aus einer 1; Weiche „Quadratzahl?“ → oben √ (1, 2, 4, 8, 16), unten Quersumme (2, 8, 5, 11).
+  3. *Fibonacci sortiert:* Fibonacci-Schleife (zwei Verteiler, Puffer, Summe), dann Weiche „gerade?“: 2, 8, 34 und 1, 1, 3, 5, 13, 21.
+  4. *Die Differenzen-Maschine:* zwei Quellen mit Kubikzahlen; zweimal Nachbarn vergleichen (Puffer, Differenz, Verteiler) → 1, 6, 12, 18, 24.
+  5. *Das große Finale:* 1 … 8, Wechsel-Weiche und Produkt → 2, 12, 30, 56; Kopie über ×4, +1, √ → 3, 7, 11, 15 (4n(n+1)+1 = (2n+1)²).
 - **Bestwerte:** wenigste Teile je Level, gespeichert neben den Sternen (`spiel:zahlenfabrik`, Feld `best`) – nur im eigenen Browser, kein Vergleich mit anderen. Anzeige „Dein Bestwert: 9 Teile“ bei der Aufgabe, „Neuer Bestwert!“ beim Unterbieten.
 
 

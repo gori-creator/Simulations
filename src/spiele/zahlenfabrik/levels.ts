@@ -1765,6 +1765,73 @@ const C36: LevelInfo[] = [
   beltRiddle('c36-9', L('Aus 2 wird 100 mit drei Bändern', '2 becomes 100 with three belts'), L('Höchstens 3 Bänder auf 9 Feldern – und ohne Mal-Maschine. Sechs Maschinen, die zusammen aus 2 die 100 machen.', 'At most 3 belts on 9 squares – and without the times machine. Six machines that together turn 2 into 100.'), 2, 100, 3, ['times'], true),
 ];
 
+/* ---------- Kapitel: Endgegner (große Fabriken mit fast allen Bauteilen) ---------- */
+const lager = (x: number, y: number, values: number[]) => ({ x, y, need: values.length, accept: { kind: 'seq' as const, values } });
+const C37: LevelInfo[] = [
+  {
+    id: 'c37-1',
+    title: L('Endgegner 1: Das Zählwerk', 'Boss 1: The counting works'),
+    hint: L('Sechsmal die 5 kommt. Oben will das Lager 4, 16, 36, unten 1, 4, 9 – beides Quadratzahlen, aber auf zwei ganz verschiedenen Wegen. Zähl zuerst, trenn dann gerade und ungerade Nummern.', 'The 5 arrives six times. The top storage wants 4, 16, 36, the bottom one 1, 4, 9 – both square numbers, but by two very different routes. Count first, then separate even and odd positions.'),
+    cols: 13, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 5, values: [5, 5, 5, 5, 5, 5] },
+    targets: [lager(10, 1, [4, 16, 36]), lager(10, 7, [1, 4, 9])],
+    walls: [[8, 4], [2, 7], [11, 4]],
+    pro: true,
+    par: 19,
+  },
+  {
+    id: 'c37-2',
+    title: L('Endgegner 2: Zweierpotenzen', 'Boss 2: Powers of two'),
+    hint: L('Die Quelle gibt nur eine einzige 1 aus. Im Kreis entstehen 1, 2, 4, 8 … 256. Oben will das Lager 1, 2, 4, 8, 16 (aus den Quadratzahlen), unten 2, 8, 5, 11 (aus dem Rest). Welche Maschinen stehen hinter der Weiche?', 'The source gives out just a single 1. The loop makes 1, 2, 4, 8 … 256. The top storage wants 1, 2, 4, 8, 16 (from the square numbers), the bottom one 2, 8, 5, 11 (from the rest). Which machines stand after the switch?'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 3, dir: 0, value: 1 },
+    targets: [lager(10, 1, [1, 2, 4, 8, 16]), lager(10, 3, [2, 8, 5, 11])],
+    walls: [[3, 1], [8, 6], [11, 5]],
+    emit: 1,
+    pro: true,
+    par: 15,
+  },
+  {
+    id: 'c37-3',
+    title: L('Endgegner 3: Fibonacci sortiert', 'Boss 3: Fibonacci sorted'),
+    hint: L('Aus einer einzigen 1 entsteht im Kreis die Fibonacci-Folge 1, 1, 2, 3, 5, 8, 13, 21, 34. Oben sollen die geraden ankommen (2, 8, 34), in der Mitte die ungeraden (1, 1, 3, 5, 13, 21). Jede dritte Fibonacci-Zahl ist gerade!', 'From a single 1 the loop makes the Fibonacci sequence 1, 1, 2, 3, 5, 8, 13, 21, 34. The even ones should arrive at the top (2, 8, 34), the odd ones in the middle (1, 1, 3, 5, 13, 21). Every third Fibonacci number is even!'),
+    cols: 13, rows: 8,
+    source: { x: 1, y: 3, dir: 0, value: 1 },
+    targets: [lager(10, 1, [2, 8, 34]), lager(10, 3, [1, 1, 3, 5, 13, 21])],
+    walls: [[5, 6], [9, 6], [3, 1]],
+    emit: 1,
+    pro: true,
+    par: 18,
+  },
+  {
+    id: 'c37-4',
+    title: L('Endgegner 4: Die Differenzen-Maschine', 'Boss 4: The difference engine'),
+    hint: L('Beide Quellen geben die Kubikzahlen 1, 8, 27, 64, 125 aus. Das Lager will die Abstände der Abstände: 1, 6, 12, 18, 24. Vergleich erst Nachbarn (Puffer und Differenz) – und dann die Ergebnisse noch einmal mit ihren Nachbarn. Dafür brauchst du eine Kopie.', 'Both sources give out the cube numbers 1, 8, 27, 64, 125. The storage wants the gaps between the gaps: 1, 6, 12, 18, 24. First compare neighbours (buffer and difference) – and then compare the results with their neighbours once more. You need a copy for that.'),
+    cols: 14, rows: 8,
+    source: { x: 1, y: 2, dir: 0, value: 1, values: [1, 8, 27, 64, 125] },
+    more: [{ x: 1, y: 4, dir: 0, value: 1, values: [1, 8, 27, 64, 125] }],
+    targets: [lager(12, 2, [1, 6, 12, 18, 24])],
+    walls: [[7, 5], [10, 5], [3, 6]],
+    emit: 5,
+    maxMachines: 2,
+    pro: true,
+    par: 18,
+  },
+  {
+    id: 'c37-5',
+    title: L('Endgegner 5: Das große Finale', 'Boss 5: The grand finale'),
+    hint: L('1 bis 8 kommen. In der Mitte will das Lager die Produkte der Paare: 1 · 2, 3 · 4, 5 · 6, 7 · 8 = 2, 12, 30, 56. Unten will es 3, 7, 11, 15 – aus denselben Produkten! Tipp: 4 · 2 + 1 = 9, 4 · 12 + 1 = 49 …', '1 to 8 arrive. The middle storage wants the products of the pairs: 1 · 2, 3 · 4, 5 · 6, 7 · 8 = 2, 12, 30, 56. The bottom one wants 3, 7, 11, 15 – from the same products! Hint: 4 · 2 + 1 = 9, 4 · 12 + 1 = 49 …'),
+    cols: 14, rows: 9,
+    source: { x: 1, y: 4, dir: 0, value: 1, values: seq(1, 8) },
+    targets: [lager(12, 4, [2, 12, 30, 56]), lager(12, 7, [3, 7, 11, 15])],
+    walls: [[8, 1], [9, 1], [2, 7], [10, 5]],
+    emit: 8,
+    maxMachines: 3,
+    pro: true,
+    par: 22,
+  },
+];
+
 /** Ein Kapitel: was es neu einführt, und seine Level. */
 export interface Chapter {
   id: string;
@@ -1785,7 +1852,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c34', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
   { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33', 'c35'] },
-  { id: 'finale', title: L('Regeln und Endgegner', 'Rules and bosses'), chapters: ['c36'] },
+  { id: 'finale', title: L('Regeln und Endgegner', 'Rules and bosses'), chapters: ['c36', 'c37'] },
 ];
 
 export const CHAPTERS: Chapter[] = [
@@ -1824,6 +1891,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c33', title: L('Puffer-Maschine', 'Buffer machine'), grades: '6–8', teaches: ['buffer'], levels: C33 },
   { id: 'c35', title: L('Schleife', 'Loop'), grades: '7–9', teaches: ['split'], levels: C35 },
   { id: 'c36', title: L('Rätsel mit Regeln', 'Puzzles with rules'), grades: '6–9', teaches: ['rules'], levels: C36 },
+  { id: 'c37', title: L('Endgegner', 'Bosses'), grades: '8–9', teaches: [], levels: C37 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);

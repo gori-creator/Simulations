@@ -242,6 +242,11 @@ const SOLUTIONS: Record<string, Solution> = {
   'c36-7': chain(op('+', 10), op('⇄'), op('+', 5)),
   'c36-8': chain(op('²'), op('²'), op('≈', 1)),
   'c36-9': chain(op('+', 8), op('²'), op('|'), op('|'), op('|'), op('|')),
+  'c37-1': drawn(['.............', '....>>>>>>...', '....^........', '....q........', '..c>Wav......', '......v......', '......v......', '......>>>>...'], { c: m(op('cnt'), 0), W: { op: null, dir: 3, sort: even, side: 1 }, q: m(op('²'), 3), a: m(op('acc'), 0) }),
+  'c37-2': drawn(['.............', '......>>>>...', '......r......', '..>S>>Wd>>...', '..^a.........'], { S: split(0, 1), a: m(op('×', 2), 2), W: { op: null, dir: 3, sort: sqTest, side: 1 }, r: m(op('√'), 3), d: m(op('Σ'), 0) }),
+  'c37-3': drawn(['.............', '.......>>>...', '.......^.....', '..>>S>>W>>...', '..^aT........', '..bM<........'], { S: split(0, 1), T: split(1, 1), a: m(op('prev'), 1), M: { op: null, dir: 2, merge: '+' }, b: { op: null, dir: 3 }, W: { op: null, dir: 3, sort: even, side: 1 } }),
+  'c37-4': drawn(['..............', '..............', '..>>MT>>N>>>..', '....^p>>^.....', '..q>^.........'], { M: merger('−'), N: merger('−'), T: split(0, 1), p: m(op('prev'), 0), q: m(op('prev'), 0) }),
+  'c37-5': drawn(['..............', '..............', '..............', '..>>v.........', '..A>MT>>>>>>..', '.....m........', '.....p........', '.....r>>>>>>..'], { A: alt(0, 3), M: merger('×'), T: split(0, 1), m: m(op('×', 4), 1), p: m(op('+', 1), 1), r: m(op('√'), 0) }),
   'c34-1': sort(whole),
   'c34-2': sort(whole, [op(':', 3)]),
   'c34-3': sort(whole, [op(':', 2)], [], [op('×', 2)]),
@@ -273,8 +278,8 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(35);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(197);
+    expect(CHAPTERS).toHaveLength(36);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(202);
     // der Verteiler kommt erst im Schleifen-Kapitel: vorher kommen mehrere Ausgaben aus mehreren Quellen
     const loopAt = CHAPTERS.findIndex((c) => c.id === 'c35');
     expect(CHAPTERS[loopAt]!.teaches).toEqual(['split']);
@@ -475,6 +480,28 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
     expect(fib.filter((p) => p.op).map((p) => p.op!.sym)).toEqual(['prev']);
     expect(fib.filter((p) => p.split)).toHaveLength(2);
     expect(fib.filter((p) => p.merge)).toHaveLength(1);
+  });
+  it('Endgegner: das letzte Kapitel, jede Musterlösung braucht mindestens drei verschiedene Bauteil-Arten, zusammen fast alle', () => {
+    const boss = CHAPTERS[CHAPTERS.length - 1]!;
+    expect(boss.id).toBe('c37');
+    expect(boss.levels.length).toBeGreaterThanOrEqual(5);
+    const kindsOf = (g: Grid) => new Set([...g.values()].map((p) => (p.op ? `op${p.op.sym}` : p.sort ? `sort${p.sort.kind}` : p.merge ? `merge${p.merge}` : p.split ? 'split' : p.alt ? 'alt' : p.bridge ? 'bridge' : 'belt')));
+    const all = new Set<string>();
+    for (const l of boss.levels) {
+      expect(l.pro, l.id).toBe(true);
+      const kinds = kindsOf((SOLUTIONS[l.id] as { grid: Grid }).grid);
+      kinds.delete('belt');
+      expect(kinds.size, l.id).toBeGreaterThanOrEqual(3);
+      for (const k of kinds) all.add(k);
+    }
+    // Zähler, Sammler, Puffer, Quadrat, Wurzel, Quersumme, ×, +, Weichen (gerade, Quadratzahl), Wechsel-Weiche, Verteiler, Summe, Differenz, Produkt
+    expect(all.size).toBeGreaterThanOrEqual(15);
+    // ohne den Verteiler bzw. die Weiche geht es nicht: Band an ihrer Stelle verliert
+    for (const l of boss.levels) {
+      const g = new Map((SOLUTIONS[l.id] as { grid: Grid }).grid);
+      for (const [k, p] of g) if (p.split || p.sort || p.alt) g.set(k, { op: null, dir: p.dir });
+      expect(run(l, g).won, l.id).toBe(false);
+    }
   });
   it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
     expect(chains(level('c14-4'), 1)).toEqual(['mod 7']);
