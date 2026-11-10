@@ -12,7 +12,7 @@ Stand 05.11.2026. Sammlung von Ideen, wie das Spiel noch besser werden könnte. 
 6. **Rätsel mit Nebenbedingung:** „ohne Plus-Maschine“, „nur gerade Zahlen auf dem Band“, „höchstens 10 Bänder“.
 7. ✅ (05.11., Brüche) **Brüche und Dezimalzahlen** (Klasse 6–7): Geteilt-Maschine mit Brüchen, Weiche „ganze Zahl?“, Lager will ½ oder 0,25.
 8. ✅ (05.11.) **Gleichungen lösen** (Klasse 7–8): Rückwärts-Level mit zwei Quellen („a + b = 20, a − b = 4“).
-9. **Folgen erkennen:** Lager will 1, 1, 2, 3, 5, 8 … (Fibonacci mit Zusammenführer und Rückführung).
+9. ✅ (10.11., Kapitel „Schleife“) **Folgen erkennen:** Lager will 1, 1, 2, 3, 5, 8 … (Fibonacci mit Zusammenführer und Rückführung).
 
 ## Offene Welt
 

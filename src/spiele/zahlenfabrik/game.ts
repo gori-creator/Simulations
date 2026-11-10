@@ -1300,7 +1300,7 @@ export function initFactory(root: HTMLElement): void {
       if (part.split || part.alt) {
         const c = at(x, y, `zf-cell--op ${part.alt ? 'zf-cell--alt' : 'zf-cell--split'}`);
         const [a, b] = outputs(part) as [Dir, Dir];
-        c.append(art('sort', 52, part.dir, 0, part.side === 3, part.alt ? 'wechselweiche' : undefined), el('span', 'zf-cell__mid', tx(part.alt ? T.altShort : T.splitShort)), el('span', 'zf-cell__small', part.alt ? `1${ARROW[a]} 2${ARROW[b]}` : `${ARROW[a]} ${ARROW[b]}`));
+        c.append(art('sort', 52, part.dir, 0, part.side === 3, part.alt ? 'wechselweiche' : 'verteiler'), el('span', 'zf-cell__mid', tx(part.alt ? T.altShort : T.splitShort)), el('span', 'zf-cell__small', part.alt ? `1${ARROW[a]} 2${ARROW[b]}` : `${ARROW[a]} ${ARROW[b]}`));
         c.title = tx(part.alt ? T.altHelp : T.splitHelp);
         if (fixed) addLock(c);
         continue;
@@ -1563,13 +1563,15 @@ export function initFactory(root: HTMLElement): void {
         else if (spec!.kind === 'belt') pic.append(icon('belt', 22));
         else {
           const kind: ArtKind = spec!.kind === 'op' ? 'machine' : spec!.kind === 'sort' || spec!.kind === 'split' || spec!.kind === 'alt' ? 'sort' : spec!.kind === 'merge' ? 'merge' : 'bridge';
-          const specific = spec!.kind === 'op' ? machineFile(spec!.op.sym) : spec!.kind === 'sort' ? switchFile(spec!.test.kind) : spec!.kind === 'merge' ? mergeFile(spec!.mode) : spec!.kind === 'alt' ? 'wechselweiche' : undefined;
+          const specific = spec!.kind === 'op' ? machineFile(spec!.op.sym) : spec!.kind === 'sort' ? switchFile(spec!.test.kind) : spec!.kind === 'merge' ? mergeFile(spec!.mode) : spec!.kind === 'alt' ? 'wechselweiche' : spec!.kind === 'split' ? 'verteiler' : undefined;
           const src = imageFor(kind, 0, specific);
           if (src) {
             const img = el('img');
             img.src = src;
             img.alt = '';
             img.draggable = false;
+            // noch kein eigenes Bild: Ersatzbild, per CSS umgefärbt
+            if (specific && !IMAGES[specific]) img.dataset.fallback = specific;
             pic.append(img);
           } else pic.classList.add('is-plain');
         }

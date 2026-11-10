@@ -1703,6 +1703,29 @@ const C34: LevelInfo[] = [
   },
 ];
 
+/* ---------- Kapitel: Schleife (Verteiler und Rückführung) ---------- */
+/** Schleifen-Level: Die Quelle gibt nur eine einzige Zahl aus; die Folge entsteht im Kreis. */
+const loopLevel = (id: string, title: Localized, hint: Localized, from: number, want: number[], maxMachines: number, pro = false, par = 10): LevelInfo => ({
+  id, title, hint,
+  cols: 12, rows: 8,
+  source: { x: 1, y: 3, dir: 0, value: from },
+  targets: [{ x: 10, y: 3, need: want.length, accept: { kind: 'seq', values: want } }],
+  walls: [[6, 0], [7, 6], [10, 6]],
+  emit: 1,
+  maxMachines,
+  ...(pro ? { pro } : {}),
+  par,
+});
+const C35: LevelInfo[] = [
+  loopLevel('c35-1', L('Im Kreis', 'Round and round'), L('Neu: Verteiler und Schleife. Die Quelle gibt nur eine einzige 3 aus – das Lager will 3, 5, 7, 9, 11. Schick eine Kopie ins Lager und die andere mit +2 im Kreis zurück.', 'New: splitter and loop. The source gives out just a single 3 – the storage wants 3, 5, 7, 9, 11. Send one copy to the storage and the other back round with +2.'), 3, [3, 5, 7, 9, 11], 1),
+  loopLevel('c35-2', L('Immer das Doppelte', 'Doubling every time'), L('Aus einer einzigen 1 soll 1, 2, 4, 8, 16, 32 werden – mit einer Maschine.', 'A single 1 should become 1, 2, 4, 8, 16, 32 – with one machine.'), 1, [1, 2, 4, 8, 16, 32], 1),
+  loopLevel('c35-3', L('Zählen ohne Ende', 'Counting without end'), L('Die Quelle gibt nur eine 9 aus. Das Lager will 1, 2, 3, 4, 5 – mit einer Maschine. Wo muss sie stehen, damit schon die erste Zahl stimmt?', 'The source gives out just one 9. The storage wants 1, 2, 3, 4, 5 – with one machine. Where must it stand so that even the first number is right?'), 9, [1, 2, 3, 4, 5], 1),
+  loopLevel('c35-4', L('Quadratzahlen im Kreis', 'Square numbers in a loop'), L('Aus einer einzigen 7 soll 1, 4, 9, 16, 25 werden – höchstens zwei Maschinen. Eine Maschine darf auch hinter der Schleife stehen.', 'A single 7 should become 1, 4, 9, 16, 25 – at most two machines. A machine may also stand after the loop.'), 7, [1, 4, 9, 16, 25], 2),
+  loopLevel('c35-5', L('Fibonacci', 'Fibonacci'), L('Aus einer einzigen 1 soll 1, 1, 2, 3, 5, 8, 13 werden: Jede Zahl ist die Summe der beiden davor. Du brauchst zwei Verteiler, einen Puffer und einen Zusammenführer „Summe“ – die Zahl im Kreis trifft auf ihre Vorgängerin.', 'A single 1 should become 1, 1, 2, 3, 5, 8, 13: every number is the sum of the two before. You need two splitters, a buffer and a “sum” merger – the number in the loop meets the one before it.'), 1, [1, 1, 2, 3, 5, 8, 13], 1, true, 14),
+  loopLevel('c35-6', L('Dreieckszahlen im Kreis', 'Triangular numbers in a loop'), L('Aus einer einzigen 1 soll 1, 3, 6, 10, 15 werden: erst +2, dann +3, dann +4 … Höchstens zwei Maschinen – ein Zähler hilft.', 'A single 1 should become 1, 3, 6, 10, 15: first +2, then +3, then +4 … At most two machines – a counter helps.'), 1, [1, 3, 6, 10, 15], 2, true, 14),
+  loopLevel('c35-7', L('Die 3x+1-Folge', 'The 3x+1 sequence'), L('Aus einer einzigen 6 soll 6, 3, 10, 5, 16, 8, 4, 2, 1 werden. Die Regel: Gerade Zahlen werden halbiert, ungerade mal 3 und plus 1. Niemand weiß, ob diese Folge für jede Startzahl bei 1 landet!', 'A single 6 should become 6, 3, 10, 5, 16, 8, 4, 2, 1. The rule: even numbers are halved, odd numbers times 3 plus 1. Nobody knows whether this sequence reaches 1 for every starting number!'), 6, [6, 3, 10, 5, 16, 8, 4, 2, 1], 3, true, 14),
+];
+
 /** Ein Kapitel: was es neu einführt, und seine Level. */
 export interface Chapter {
   id: string;
@@ -1722,7 +1745,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
   { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c34', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
-  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33'] },
+  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33', 'c35'] },
 ];
 
 export const CHAPTERS: Chapter[] = [
@@ -1759,6 +1782,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c31', title: L('Zähler-Maschine', 'Counter machine'), grades: '5–6', teaches: ['count'], levels: C31 },
   { id: 'c32', title: L('Sammel-Maschine', 'Collector machine'), grades: '6–8', teaches: ['total'], levels: C32 },
   { id: 'c33', title: L('Puffer-Maschine', 'Buffer machine'), grades: '6–8', teaches: ['buffer'], levels: C33 },
+  { id: 'c35', title: L('Schleife', 'Loop'), grades: '7–9', teaches: ['split'], levels: C35 },
 ];
 
 export const ALL_LEVELS: LevelInfo[] = CHAPTERS.flatMap((c) => c.levels);

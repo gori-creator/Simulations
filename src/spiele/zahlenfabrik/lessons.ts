@@ -420,6 +420,21 @@ const LESSONS: Record<LessonId, Lesson> = {
       },
     ],
   },
+  split: {
+    tag: NEW_PART,
+    slides: [
+      {
+        title: L('Der Verteiler', 'The splitter'),
+        text: L('Jede Zahl läuft als Kopie in beide Richtungen weiter – geradeaus und zur Seite. Antippen dreht ihn, nach vier Drehungen wechselt die Seite.', 'Every number continues as a copy in both directions – straight on and to the side. Tap to turn it; after four turns the side switches.'),
+        scene: { kind: 'sort', label: 'Kopie', input: '3', yes: '3', no: '3', marks: ['→', '↓'], part: 'split' },
+      },
+      {
+        title: L('Die Schleife', 'The loop'),
+        text: L('Führ eine Kopie mit Bändern im Kreis zurück zum Verteiler – fertig ist die Schleife. Die Zahl läuft Runde um Runde, und jedes Mal geht eine Kopie ins Lager. Mit einer Maschine in der Schleife entsteht eine Folge: Aus 3 wird mit +2 die Reihe 3, 5, 7, 9 …', 'Lead one copy back round to the splitter with belts – that makes a loop. The number goes lap after lap, and every time a copy goes to the storage. With a machine in the loop you get a sequence: with +2, 3 becomes 3, 5, 7, 9 …'),
+        scene: { kind: 'table', xs: ['1.', '2.', '3.', '4.'], op: '+2', ys: ['3', '5', '7', '9'] },
+      },
+    ],
+  },
   eq: {
     tag: NEW_RULE,
     slides: [
@@ -499,7 +514,7 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text?: stri
 
 /** Szene zeichnen (nur Schmuck, für Vorleseprogramme ausgeblendet). */
 function scene(s: Scene, lang: Lang): HTMLElement {
-  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?').replace('ganz?', 'whole?') : t);
+  const local = (t: string) => (lang === 'en' ? t.replace('gerade?', 'even?').replace('Prim?', 'prime?').replace('Quadrat?', 'square?').replace('ganz?', 'whole?').replace('Kopie', 'copy') : t);
   const box = (kind: 'source' | 'machine' | 'target' | 'sort', text: string, dir?: 0) => {
     const c = el('div', `zf-intro__box zf-intro__box--${kind}`);
     // Maschinen mit eigenem Bild je Rechenart (aus der Aufschrift erkannt)
@@ -540,7 +555,7 @@ function scene(s: Scene, lang: Lang): HTMLElement {
     // Weiche mit eigenem Bild je Prüfung bzw. Wechsel-Weiche
     const test = s.label.startsWith('gerade') ? 'even' : s.label.startsWith('÷') ? 'div' : s.label.startsWith('>') ? 'gt' : s.label.startsWith('Prim') ? 'prime' : s.label.startsWith('Quadrat') ? 'square' : s.label.startsWith('ganz') ? 'int' : '';
     const sw = el('div', 'zf-intro__box zf-intro__box--sort');
-    sw.append(art('sort', 52, 0, 0, false, s.part === 'alt' ? 'wechselweiche' : switchFile(test)), el('span', '', local(s.label)));
+    sw.append(art('sort', 52, 0, 0, false, s.part === 'alt' ? 'wechselweiche' : s.part === 'split' ? 'verteiler' : switchFile(test)), el('span', '', local(s.label)));
     row.append(el('span', 'zf-lesson-sort__in', s.input), belt(), sw, outs);
   } else if (s.kind === 'merge') {
     row = el('div', 'zf-intro__scene zf-lesson-merge');
