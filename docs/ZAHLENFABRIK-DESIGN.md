@@ -4,7 +4,7 @@
 >
 > - **Titelseite** wie die Startseite der Webseite: links Zeile „Lernspiel · Mathematik“, großer Titel, ein erklärender Satz, drei Angaben (Kapitel, Level, Klasse 5–9), ein Hauptknopf („Spielen“ bzw. „Weiterspielen“) und zwei Nebenknöpfe; rechts das Titelbild in einer Karte. Am Handy das Bild oben.
 > - **Spielansicht:** eine weiße Karte; die Aufgabe steht in einem Satz unter dem Titel (vor dem Spielfeld, auch am Handy). Seitenleiste in der Reihenfolge der Arbeit: Start (groß) mit kleinen Nebenknöpfen in einer Reihe, darunter der Werkzeugkasten, dann Tipp, Rechenweg und Kennzahlen.
-> - **Spielfeld:** heller, neutraler Boden statt Sand, dünne Kanten, schlichte weiße Schilder auf den Teilen, Zahlen als helle Scheiben. 3D-Blick und Gleise bleiben.
+> - **Spielfeld:** heller, neutraler Boden statt Sand, dünne Kanten, schlichte weiße Schilder auf den Teilen, Zahlen als helle Scheiben. Der 3D-Blick bleibt. Statt Gleisen laufen die Zahlen wieder auf einem **Förderband** (Metallrahmen, dunkles Gummiband, helle Querstreifen, die beim Start mitlaufen).
 > - Die Abschnitte unten (Richtungen A–D, D2, Prompts für Rahmen, Knöpfe und Schilder) sind damit **überholt**; die Prompts für Spielteile und Kapitelbilder gelten weiter.
 
 Stand 05.11.2026. Wunsch der Projektleitung: weg vom „Lernplattform“-Look, hin zu einem echten Spiel, auf das Kinder und Jugendliche Lust haben. Vorbild ist der Stil gängiger Handyspiele mit dicken, plastischen Rahmen und Knöpfen, Schildern, Nieten, Zahnrädern und kräftigen Farben. Die Beispielbilder der Projektleitung sind gekaufte Stock-Grafiken: Wir übernehmen **nur den Stil**, keine Bilder, Formen oder Texte daraus. Alle Grafiken entstehen neu über die Prompts unten.

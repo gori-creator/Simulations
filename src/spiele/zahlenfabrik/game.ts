@@ -485,8 +485,6 @@ export function initFactory(root: HTMLElement): void {
 
   const world = el('div', 'zf-world');
   const beltLayer = document.createElementNS(SVG_NS, 'svg');
-  /** Eindeutige Kennung für die Schienen-Masken (mehrere Spiele auf einer Seite). */
-  const railMask = `zf-rail-${Math.random().toString(36).slice(2, 8)}`;
   beltLayer.setAttribute('class', 'zf-belts');
   beltLayer.setAttribute('aria-hidden', 'true');
   const cellsLayer = el('div', 'zf-cells');
@@ -1273,7 +1271,7 @@ export function initFactory(root: HTMLElement): void {
       if (ins.length <= 1 && outs.length === 1) {
         // ein Weg hinein, einer hinaus: ein durchgehender Streifen (auch um die Ecke)
         const from = ((ins[0] ?? part.dir) + 2) % 4;
-        // Kurven rund (wie Gleise), gerade Stücke gerade
+        // Kurven rund, gerade Stücke gerade
         const turn = (from + 2) % 4 !== outs[0];
         paths.push(`M${edge(x, y, from as Dir)}${turn ? 'Q' : 'L'}${cx(x)} ${cy(y)}${turn ? ' ' : 'L'}${edge(x, y, outs[0]!)}`);
         continue;
@@ -1303,28 +1301,16 @@ export function initFactory(root: HTMLElement): void {
       return p;
     };
     /**
-     * Ein Band als Gleis: Schatten, Schwellen (laufen beim Start mit), darüber
-     * zwei Schienen – ein breiter Strich, dessen Mitte eine Maske ausspart.
+     * Ein Förderband: Schatten, dunkle Kante, Metallrahmen, Gummiband und
+     * darauf Querstreifen, die beim Start mitlaufen.
      */
-    const track = (d: string, extra: string, n: number) => {
+    const track = (d: string, extra: string) => {
       const g = document.createElementNS(SVG_NS, 'g');
       g.setAttribute('class', `zf-track${extra}`);
-      const mask = document.createElementNS(SVG_NS, 'mask');
-      const id = `${railMask}-${n}`;
-      mask.id = id;
-      mask.setAttribute('maskUnits', 'userSpaceOnUse');
-      mask.setAttribute('x', '-64');
-      mask.setAttribute('y', '-64');
-      mask.setAttribute('width', String(board.cols * CELL + 128));
-      mask.setAttribute('height', String(board.rows * CELL + 128));
-      mask.append(path('zf-track__mask-on', d), path('zf-track__mask-off', d));
-      const rails = document.createElementNS(SVG_NS, 'g');
-      rails.setAttribute('mask', `url(#${id})`);
-      rails.append(path('zf-track__rail-edge', d), path('zf-track__rail', d), path('zf-track__rail-inner', d));
-      g.append(mask, path('zf-track__shadow', d), path('zf-belt__edge', d), path('zf-belt__run', d), rails);
+      g.append(path('zf-track__shadow', d), path('zf-belt__edge', d), path('zf-track__frame', d), path('zf-belt__base', d), path('zf-belt__run', d));
       return g;
     };
-    beltLayer.replaceChildren(track(paths.join(''), '', 0), ...(over.length ? [track(over.join(''), ' zf-belt--over', 1)] : []));
+    beltLayer.replaceChildren(track(paths.join(''), ''), ...(over.length ? [track(over.join(''), ' zf-belt--over')] : []));
     beltLayer.classList.toggle('is-running', running);
   }
 
