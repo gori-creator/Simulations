@@ -1387,7 +1387,9 @@ export function initFactory(root: HTMLElement): void {
         const cell = at(b.x, b.y, `zf-cell--base zf-cell--buyer${on ? '' : ' is-locked'}`);
         cell.style.width = `${b.w * CELL - 12}px`;
         cell.style.height = `${b.h * CELL - 12}px`;
-        const pic = IMAGES[`abnehmer-${i + 1}`] ?? IMAGES[`abnehmer-${(i % 3) + 1}`];
+        // eigene Bilder: Sternwarte für Dreieckszahlen, Bäckerei für das Dutzend; sonst reihum die drei allgemeinen
+        const own = b.rule.kind === 'triangle' ? 'abnehmer-4' : b.rule.kind === 'multiple' && b.rule.n === 12 ? 'abnehmer-5' : '';
+        const pic = IMAGES[own] ?? IMAGES[`abnehmer-${(i % 3) + 1}`];
         if (pic) {
           const img = el('img', 'zf-art zf-art--img zf-buyer__img');
           img.src = pic;
