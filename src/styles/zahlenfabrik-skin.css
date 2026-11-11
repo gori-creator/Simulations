@@ -1,529 +1,160 @@
 /* ==========================================================================
-   Zahlenfabrik – Spiel-Look „Bunte Werkstatt“ (Entwurf D2, docs/ZAHLENFABRIK-DESIGN.md)
-   Liegt über zahlenfabrik.css: nur Aussehen, keine Spiellogik. Platten mit
-   Metallecken und Schrauben wie die Spielbilder, 3D-Knöpfe, Schilder,
-   Leuchtanzeigen auf den Maschinen. Gilt in hell und dunkel gleich (das
-   Spiel hat seinen eigenen dunkelblauen Hintergrund); nur der Boden wechselt.
+   Zahlenfabrik – ruhiges Aussehen im Stil der Webseite (Stand 11.11.2026)
+   Liegt über zahlenfabrik.css: nur Aussehen, keine Spiellogik. Ersetzt den
+   früheren Spiel-Look „Bunte Werkstatt“ (dicke Rahmen, Schrauben, 3D-Knöpfe):
+   Jetzt gelten die Farben, Schriften, Karten und Knöpfe der Webseite
+   (global.css), in hell und dunkel. Farbig sind nur die Spielteile selbst.
    ========================================================================== */
 
-.zf {
-  --sk-edge: #1b2a4a;
-  --sk-plate1: #ffffff;
-  --sk-plate2: #e7ecf5;
-  --sk-metal: #c2c9d6;
-  --sk-metal-dark: #8792a6;
-  --sk-o1: #ffb238;
-  --sk-o2: #f07b00;
-  --sk-oE: #8a3a00;
-  --sk-b1: #5f8cff;
-  --sk-b2: #2b5fd9;
-  --sk-bE: #14307a;
-  --sk-g1: #7ee06a;
-  --sk-g2: #2ea043;
-  --sk-gE: #165a22;
-  --sk-y1: #ffe36a;
-  --sk-y2: #f4b000;
-  --sk-muted: #56627a;
-  --sk-font: 'Arial Rounded MT Bold', 'Nunito', 'Arial Black', system-ui, sans-serif;
-}
-
-/* ---------- Spielbildschirm: dunkelblaue Halle mit Zahnrädern ---------- */
+/* ---------- Rahmen: eine Karte wie überall auf der Webseite ---------- */
 
 .zf .zf-game {
   position: relative;
   isolation: isolate;
-  border: 4px solid var(--sk-edge);
-  border-radius: 26px;
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  background:
-    radial-gradient(ellipse 70% 45% at 50% 0, rgb(90 140 230 / 0.55), transparent 70%),
-    radial-gradient(circle at 8% 92%, rgb(255 255 255 / 0.05) 0 150px, transparent 151px),
-    radial-gradient(circle at 96% 14%, rgb(255 255 255 / 0.05) 0 110px, transparent 111px),
-    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.025) 0 18px, transparent 18px 36px),
-    linear-gradient(#24498f, #0f2147);
-  box-shadow: 0 10px 0 rgb(6 14 32 / 0.35), 0 24px 40px rgb(0 0 0 / 0.25);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
-
-/* Warnstreifen unten */
-.zf .zf-game::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 10px;
-  z-index: 0;
-  background: repeating-linear-gradient(-45deg, #ffd23f 0 14px, #1b2a4a 14px 28px);
-  pointer-events: none;
-}
-
-/* ---------- Platten mit Metallecken (Karten, Spielfeld) ---------- */
-
-.zf .zf-card,
-.zf .zf-stage,
-.zf .zf-picker__card {
-  position: relative;
-  isolation: isolate;
-  border: 4px solid var(--sk-edge);
-  border-radius: 20px;
-  background: linear-gradient(var(--sk-plate1), var(--sk-plate2));
-  color: var(--sk-edge);
-  box-shadow:
-    inset 0 3px 0 #fff,
-    inset 0 -5px 0 rgb(27 42 74 / 0.1),
-    0 7px 0 rgb(6 14 32 / 0.45);
-}
-
-.zf .zf-card::before,
-.zf .zf-stage::before,
-.zf .zf-picker__card::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  z-index: -1;
-  border-radius: 20px;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 11px 11px, #fafbfd 0 2px, var(--sk-metal-dark) 2.5px 4.5px, transparent 5px),
-    radial-gradient(circle at calc(100% - 11px) 11px, #fafbfd 0 2px, var(--sk-metal-dark) 2.5px 4.5px, transparent 5px),
-    radial-gradient(circle at 11px calc(100% - 11px), #fafbfd 0 2px, var(--sk-metal-dark) 2.5px 4.5px, transparent 5px),
-    radial-gradient(circle at calc(100% - 11px) calc(100% - 11px), #fafbfd 0 2px, var(--sk-metal-dark) 2.5px 4.5px, transparent 5px),
-    linear-gradient(135deg, var(--sk-metal) 0 20px, #aab3c3 20px 22px, transparent 22px) 0 0 / 50% 50% no-repeat,
-    linear-gradient(225deg, var(--sk-metal) 0 20px, #aab3c3 20px 22px, transparent 22px) 100% 0 / 50% 50% no-repeat,
-    linear-gradient(45deg, var(--sk-metal) 0 20px, #aab3c3 20px 22px, transparent 22px) 0 100% / 50% 50% no-repeat,
-    linear-gradient(315deg, var(--sk-metal) 0 20px, #aab3c3 20px 22px, transparent 22px) 100% 100% / 50% 50% no-repeat;
-}
-
-/* Kartentitel als gelbes Schild auf der Kante */
-.zf .zf-card__title {
-  position: absolute;
-  left: 50%;
-  top: -20px;
-  translate: -50% 0;
-  margin: 0;
-  padding: 5px 24px 7px;
-  border: 4px solid var(--sk-edge);
-  border-radius: 12px;
-  background: linear-gradient(var(--sk-y1), var(--sk-y2));
-  color: #fff;
-  font-family: var(--sk-font);
-  font-size: 0.95rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  -webkit-text-stroke: 4px var(--sk-edge);
-  letter-spacing: 0.03em;
-  paint-order: stroke fill;
-  text-shadow: 0 3px 0 var(--sk-edge);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.6), inset 0 -4px 0 rgb(0 0 0 / 0.15), 0 4px 0 rgb(6 14 32 / 0.45);
-}
-
-.zf .zf-card {
-  margin-top: 22px;
-  padding: 30px 16px 16px;
-}
-
-.zf .zf-card--controls {
-  padding-top: 16px;
-}
-
-.zf .zf-help {
-  padding-top: 14px;
-}
-
-.zf .zf-help > summary {
-  color: var(--sk-edge);
-  font-weight: 900;
-}
-
-.zf .zf-goal__hint,
-.zf .zf-howto,
-.zf .zf-info,
-.zf .zf-metric__label {
-  color: var(--sk-edge);
-}
-
-.zf .zf-metric__label {
-  color: var(--sk-muted);
-}
-
-.zf .zf-metric__value {
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-}
-
-/* ---------- Kopfleiste ---------- */
 
 .zf .zf-bar {
-  border: 0;
-  background: none;
-  color: #fff;
-}
-
-.zf .zf-bar__eyebrow {
-  color: #cfe0ff;
-  font-family: var(--sk-font);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .zf .zf-bar__title {
-  display: inline-block;
-  margin-top: 4px;
-  padding: 6px 22px 8px;
-  border: 4px solid var(--sk-edge);
-  border-radius: 12px;
-  background: linear-gradient(var(--sk-y1), var(--sk-y2));
+  font-size: clamp(1.2rem, 1rem + 0.9vw, 1.6rem);
+  font-weight: 750;
+  letter-spacing: -0.015em;
+}
+
+.zf .zf-bar__eyebrow {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ---------- Seitenleiste: zuerst der Ablauf (Start), dann Aufgabe und Werkzeug ---------- */
+
+@media (min-width: 961px) {
+  .zf .zf-card--controls { order: -2; }
+  .zf .zf-card--tools { order: -1; }
+  .zf .zf-side { padding-top: 14px; border-left: 1px solid var(--border); }
+}
+
+/* Aufgabe in einem Satz unter dem Titel; in der Seitenleiste steht sie nicht noch einmal */
+.zf .zf-bar { align-items: flex-start; }
+.zf .zf-bar__task {
+  max-width: 62ch;
+  margin: 6px 0 0;
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+.zf .zf-goal__hint { display: none; }
+
+/* Ablauf: Start groß, darunter die Nebenknöpfe klein in einer Reihe (Symbol über Wort) */
+.zf .zf-side .zf-controls {
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 6px;
+}
+.zf .zf-side .zf-controls .zf-btn:not(.zf-btn--main, .zf-btn--expand) {
+  flex-direction: column;
+  gap: 3px;
+  min-height: 48px;
+  padding: 6px 2px;
+  font-size: 0.7rem;
+  line-height: 1.1;
+}
+
+.zf .zf-card__title {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Hauptknopf wie auf der Startseite: kräftiges Blau, sonst ruhige Knöpfe */
+.zf .zf-btn--main {
+  border-color: transparent;
+  border-radius: var(--radius-sm);
+  background: var(--brand);
   color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 900;
-  -webkit-text-stroke: 4px var(--sk-edge);
-  letter-spacing: 0.03em;
-  paint-order: stroke fill;
-  text-shadow: 0 3px 0 var(--sk-edge);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.6), inset 0 -4px 0 rgb(0 0 0 / 0.15), 0 5px 0 rgb(6 14 32 / 0.5);
+  font-weight: 650;
+  box-shadow: var(--shadow-sm);
 }
 
-/* ---------- 3D-Knöpfe ----------
-   zahlenfabrik.css hat viele sehr genaue Knopf-Regeln. Damit der Spiel-Look
-   sicher gewinnt, hebt `:is(…, #zf-skin)` die Wertigkeit an (die ID gibt es
-   nicht). Farben kommen nur über --b1/--b2/--bE, die Varianten setzen sie. */
+:root[data-theme='dark'] .zf .zf-btn--main { color: #0d1218; }
+.zf .zf-btn--main:hover { background: var(--brand-strong); }
 
-.zf :is(.zf-btn, .zf-icon-btn, .zf-zoom__btn, #zf-skin) {
-  --b1: var(--sk-b1);
-  --b2: var(--sk-b2);
-  --bE: var(--sk-bE);
-  border: 3.5px solid var(--bE);
-  border-radius: 14px;
-  background: linear-gradient(var(--b1), var(--b2));
-  color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 900;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 0.35);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.45), inset 0 -5px 0 rgb(0 0 0 / 0.18), 0 5px 0 var(--bE);
-  opacity: 1;
-  transition: transform 0.08s, box-shadow 0.08s, filter 0.12s;
-}
-
-.zf :is(.zf-btn, .zf-icon-btn, .zf-zoom__btn, #zf-skin):hover:not(:disabled) {
-  background: linear-gradient(var(--b1), var(--b2));
-  color: #fff;
-  filter: brightness(1.08);
-}
-
-.zf :is(.zf-btn, .zf-icon-btn, .zf-zoom__btn, #zf-skin):active:not(:disabled) {
-  transform: translateY(4px);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.35), inset 0 -3px 0 rgb(0 0 0 / 0.18), 0 1px 0 var(--bE);
-}
-
-.zf :is(.zf-btn, .zf-icon-btn, .zf-zoom__btn, #zf-skin):disabled {
-  --b1: #c9d0db;
-  --b2: #a6afbd;
-  --bE: #6b7587;
-  opacity: 0.75;
-  cursor: default;
-}
-
-.zf .zf-btn .zf-ico,
-.zf .zf-icon-btn .zf-ico {
-  filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.3));
-}
-
-/* Hauptknopf (Start) grün und groß */
-.zf :is(.zf-btn--main, #zf-skin) {
-  --b1: var(--sk-g1);
-  --b2: var(--sk-g2);
-  --bE: var(--sk-gE);
-  font-size: 1.25rem;
-  letter-spacing: 0.04em;
-  -webkit-text-stroke: 4px var(--sk-gE);
-  paint-order: stroke fill;
-  text-shadow: 0 3px 0 var(--sk-gE);
-}
-
-/* Kopfleiste und gedrückte Schalter orange */
-.zf :is(.zf-btn--bar, #zf-skin),
-.zf :is(.zf-btn, #zf-skin)[aria-pressed='true']:not(.zf-btn--main) {
-  --b1: var(--sk-o1);
-  --b2: var(--sk-o2);
-  --bE: var(--sk-oE);
-}
-
-.zf :is(.zf-btn--bar, #zf-skin) {
-  border-radius: 999px;
-}
-
-/* Zoom-Knöpfe rund und weiß */
-.zf :is(.zf-zoom__btn, #zf-skin) {
-  --b1: #ffffff;
-  --b2: #dfe5ee;
-  --bE: var(--sk-edge);
-  border-radius: 999px;
-  color: var(--sk-edge);
-  text-shadow: none;
-}
-
-.zf :is(.zf-zoom__btn, #zf-skin):hover:not(:disabled) {
-  color: var(--sk-edge);
-}
-
-/* ---------- Werkzeugkasten: Kacheln ---------- */
-
-.zf :is(.zf-tool, #zf-skin) {
-  border: 3px solid #c7cfdb;
-  border-radius: 14px;
-  background: linear-gradient(#f9fbfd, #e6ebf3);
-  color: var(--sk-edge);
-  box-shadow: inset 0 -4px 0 rgb(0 0 0 / 0.06), 0 3px 0 rgb(27 42 74 / 0.18);
-  font-family: var(--sk-font);
-  font-weight: 800;
-}
-
-.zf :is(.zf-tool, #zf-skin):hover {
-  border-color: var(--sk-b1);
-  background: linear-gradient(#ffffff, #eaf0fa);
-}
-
-.zf :is(.zf-tool, #zf-skin)[aria-pressed='true'] {
-  border-color: var(--sk-b2);
-  background: linear-gradient(#ffffff, #e3ecff);
-  color: var(--sk-edge);
-  box-shadow: 0 0 0 3px rgb(43 95 217 / 0.35), inset 0 -4px 0 rgb(0 0 0 / 0.06), 0 3px 0 rgb(27 42 74 / 0.18);
-}
-
-.zf .zf-tool__price {
-  border: 2.5px solid var(--sk-edge);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--sk-edge);
-  font-weight: 900;
+/* Werkzeug: gewähltes Teil klar markiert */
+.zf .zf-tool { border-radius: var(--radius-sm); }
+.zf .zf-tool[aria-pressed='true'] {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  box-shadow: 0 0 0 1px var(--brand);
 }
 
 /* ---------- Spielfeld ---------- */
 
-.zf .zf-stage {
-  padding: 12px;
-}
+.zf .zf-stage { background: var(--surface-2); }
 
 .zf .zf-board {
-  border: 4px solid var(--sk-edge);
-  border-radius: 12px;
-  box-shadow: inset 0 4px 10px rgb(0 0 0 / 0.18);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: inset 0 1px 3px rgb(16 24 40 / 0.06);
 }
 
-/* Boden: Das Bild zeigt 2 × 2 Kästchen – also genau zwei Felder (2 × 64 px) groß, damit die Linien auf den Feldgrenzen liegen */
-.zf .zf-world.has-floor {
-  background-image:
-    linear-gradient(rgb(27 42 74 / 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(27 42 74 / 0.1) 1px, transparent 1px),
-    var(--zf-floor);
-  background-size: 64px 64px, 64px 64px, 128px 128px;
-  background-position: 0 0;
-}
-
-:root[data-theme='dark'] .zf .zf-world.has-floor {
-  background-image:
-    linear-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.07) 1px, transparent 1px),
-    var(--zf-floor-dark);
-}
-
-/* ---------- Anzeigen auf Maschinen, Quelle und Lager ---------- */
-
-/* Rechenmaschine: Leuchtdisplay im Fenster */
-.zf .zf-cell--op > .zf-cell__big {
+/* Aufschriften auf den Teilen: schlichte, gut lesbare Schilder */
+.zf .zf-cell > .zf-cell__big,
+.zf .zf-cell > .zf-cell__mid {
   position: relative;
   z-index: 2;
-  min-width: 36px;
-  padding: 1px 6px;
-  border: 2px solid #0a1428;
+  padding: 0 6px;
+  border: 1px solid rgb(23 32 44 / 0.2);
   border-radius: 7px;
-  background: linear-gradient(#0d1f3a, #1a3358);
-  color: #ffe066;
-  font-family: 'DejaVu Sans Mono', ui-monospace, monospace;
-  font-size: 1.05rem;
-  font-weight: 900;
-  line-height: 1.35;
-  text-shadow: 0 0 6px rgb(255 214 0 / 0.85), 0 0 1px #fff;
-  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 255 255 / 0.6);
+  background: #fff;
+  color: #17202c;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  line-height: 1.3;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.2);
 }
 
-/* Quelle: Zahl auf der Metallscheibe */
+.zf .zf-cell--target > .zf-target-label { border-color: var(--brand); color: #1e47ad; }
+
 .zf .zf-cell--source > .zf-source-value {
-  position: relative;
-  z-index: 2;
   display: grid;
   place-items: center;
-  min-width: 34px;
-  height: 34px;
-  padding: 0 4px;
-  border: 3px solid var(--sk-edge);
+  min-width: 30px;
+  height: 30px;
+  padding: 0 5px;
   border-radius: 999px;
-  background: radial-gradient(circle at 35% 30%, #ffffff, #dfe5ee 60%, #b9c2d0);
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  font-size: 1.1rem;
-  font-weight: 900;
-  box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.12);
-}
-
-/* Lager: verlangte Zahl im blauen Display */
-.zf .zf-cell--target > .zf-target-label {
-  position: relative;
-  z-index: 2;
-  min-width: 34px;
-  padding: 1px 6px;
-  border: 2px solid #0a1428;
-  border-radius: 7px;
-  background: linear-gradient(#0d1f3a, #1a3358);
-  color: #8ff3ff;
-  font-family: 'DejaVu Sans Mono', ui-monospace, monospace;
-  font-weight: 900;
-  text-shadow: 0 0 6px rgb(80 230 255 / 0.9), 0 0 1px #fff;
-  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 255 255 / 0.6);
 }
 
 .zf .zf-cell > .zf-cell__small {
-  border: 2px solid var(--sk-edge);
   border-radius: 999px;
-  background: #fff;
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  font-weight: 900;
+  background: rgb(255 255 255 / 0.92);
+  color: #17202c;
+  font-weight: 650;
 }
 
-.zf .zf-cell > .zf-cell__mid {
-  border: 2px solid #0a1428;
-  border-radius: 6px;
-  background: linear-gradient(#0d1f3a, #1a3358);
-  color: #c6ff9a;
-  font-family: 'DejaVu Sans Mono', ui-monospace, monospace;
-  font-weight: 900;
-  text-shadow: 0 0 5px rgb(150 255 110 / 0.8);
-}
-
-/* Zahlen auf dem Band: glänzende Kugeln */
+/* Zahlen auf dem Band: helle Scheiben mit dunkler Zahl */
 .zf .zf-item {
-  min-width: 34px;
-  height: 34px;
-  border: 3px solid var(--sk-edge);
-  background: radial-gradient(circle at 34% 28%, #fff 0 18%, #f1f4f9 42%, #cfd7e3 100%);
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  font-weight: 900;
-  box-shadow: 0 4px 0 rgb(0 0 0 / 0.3);
-}
-
-/* ---------- Meldungen ---------- */
-
-.zf .zf-status:not(:empty) {
-  border: 3.5px solid var(--sk-edge);
-  border-radius: 14px;
-  background: linear-gradient(#ffffff, #e7ecf5);
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  font-weight: 900;
-  box-shadow: 0 5px 0 rgb(6 14 32 / 0.45);
-}
-
-/* Vergleich nach dem Sieg: der Meldungskasten ist immer hell, auch im dunklen Modus */
-.zf .zf-status .zf-compare { color: var(--sk-edge); }
-.zf .zf-status .zf-compare.is-top { color: #1a7f37; }
-
-/* ---------- Level-Auswahl ---------- */
-
-.zf .zf-picker {
-  background: rgb(8 18 40 / 0.72);
-}
-
-.zf .zf-picker__card {
-  background: linear-gradient(#f4f7fc, #e3e9f3);
-}
-
-.zf .zf-picker__head h2 {
-  display: inline-block;
-  padding: 6px 24px 8px;
-  border: 4px solid var(--sk-edge);
-  border-radius: 12px;
-  background: linear-gradient(var(--sk-y1), var(--sk-y2));
-  color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 900;
-  -webkit-text-stroke: 4px var(--sk-edge);
-  letter-spacing: 0.03em;
-  paint-order: stroke fill;
-  text-shadow: 0 3px 0 var(--sk-edge);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.6), 0 4px 0 rgb(6 14 32 / 0.45);
-}
-
-.zf :is(.zf-world-card, #zf-skin) {
-  border: 4px solid var(--sk-edge);
-  border-radius: 18px;
-  background: linear-gradient(#ffffff, #eef2f8);
-  color: var(--sk-edge);
-  box-shadow: 0 6px 0 rgb(6 14 32 / 0.3);
-}
-
-.zf .zf-world-card__img {
-  border: 3px solid var(--sk-edge);
-  border-radius: 12px;
-}
-
-.zf :is(.zf-level, #zf-skin) {
-  border: 3.5px solid var(--sk-oE);
-  border-radius: 12px;
-  background: linear-gradient(var(--sk-o1), var(--sk-o2));
-  color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 900;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 0.35);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.5), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 4px 0 var(--sk-oE);
-}
-
-.zf :is(.zf-level, #zf-skin)[aria-pressed='true'] {
-  border-color: var(--sk-bE);
-  background: linear-gradient(var(--sk-b1), var(--sk-b2));
-  box-shadow: 0 0 0 3px #fff, inset 0 3px 0 rgb(255 255 255 / 0.45), 0 4px 0 var(--sk-bE);
-}
-
-.zf :is(.zf-level--pro, #zf-skin):not([aria-pressed='true']) {
-  border-color: #7a1010;
-  background: linear-gradient(#ff7a6a, #d6302a);
-  box-shadow: inset 0 3px 0 rgb(255 255 255 / 0.45), inset 0 -4px 0 rgb(0 0 0 / 0.18), 0 4px 0 #7a1010;
-}
-
-/* ---------- Feinschliff ---------- */
-
-/* Start-Knopf immer sichtbar: Steuerung klebt unten in der Seitenleiste */
-@media (min-width: 961px) {
-  .zf .zf-side {
-    padding-top: 6px;
-    border-left: 0;
-  }
-
-  .zf .zf-card--controls {
-    position: sticky;
-    bottom: 0;
-    z-index: 3;
-    order: -1;
-  }
-}
-
-.zf .zf-side,
-.zf .zf-stage {
-  background: none;
-  border-color: transparent;
-}
-
-.zf .zf-main {
-  padding: 4px 8px 18px;
-  gap: 8px;
+  min-width: 32px;
+  height: 32px;
+  border: 1.5px solid #17202c;
+  background: #fff;
+  color: #17202c;
+  font-family: var(--font-mono);
+  font-weight: 750;
+  box-shadow: 0 2px 0 rgb(16 24 40 / 0.3);
 }
 
 /* Lager: Punkte für den Fortschritt unten am Kasten */
-.zf .zf-cell--target {
-  overflow: visible;
-}
+.zf .zf-cell--target { overflow: visible; }
 
 .zf .zf-cell--target > .zf-target-count {
   position: absolute;
@@ -531,30 +162,23 @@
   bottom: -9px;
   translate: -50% 0;
   z-index: 3;
-  padding: 1px 5px;
+  padding: 2px 5px;
   font-size: 0.66rem;
   line-height: 1.2;
   white-space: nowrap;
 }
 
-.zf .zf-pips {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-}
+.zf .zf-pips { display: flex; gap: 2px; align-items: center; }
 
 .zf .zf-pips i {
   width: 7px;
   height: 7px;
-  border: 1.5px solid var(--sk-edge);
+  border: 1.5px solid #17202c;
   border-radius: 999px;
   background: #fff;
 }
 
-.zf .zf-pips i.is-on {
-  background: #33e07a;
-  box-shadow: 0 0 4px #33e07a;
-}
+.zf .zf-pips i.is-on { border-color: #1a7f37; background: #2ea043; }
 
 /* Noch nicht geholte Sterne grau, damit sie nicht wie gewonnen aussehen */
 .zf .zf-stars img.is-empty {
@@ -562,292 +186,164 @@
   opacity: 0.5;
 }
 
-/* ---------- Level-Auswahl: Kapitelbild als großes Titelbild ---------- */
+/* ---------- Meldungen ---------- */
 
-.zf :is(.zf-world-card, #zf-skin) {
-  overflow: hidden;
+.zf .zf-status:not(:empty) {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
 }
 
-.zf .zf-world-card__head:has(.zf-world-card__img) {
-  grid-template-columns: auto 1fr;
-}
-
-.zf .zf-world-card__img {
-  grid-column: 1 / -1;
-  grid-row: 1;
-  width: calc(100% + 24px);
-  max-width: none;
-  height: 118px;
-  margin: -12px -12px 8px;
-  border: 0;
-  border-bottom: 4px solid var(--sk-edge);
-  border-radius: 0;
-  object-fit: cover;
-  object-position: 50% 55%;
-}
-
-.zf .zf-world-card__num {
-  border: 3px solid var(--sk-oE);
-  border-radius: 999px;
-  background: linear-gradient(var(--sk-o1), var(--sk-o2));
-  color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 900;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 0.3);
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.5), 0 3px 0 var(--sk-oE);
-}
-
-.zf .zf-world-card strong {
-  font-family: var(--sk-font);
-  font-weight: 900;
-}
-
-.zf .zf-world-card__cup {
-  top: 4px;
-  right: 4px;
-  width: 44px;
-  height: 44px;
-}
-
-/* Sonderkarten oben farbig */
-.zf :is(.zf-world-card--open, #zf-skin) {
-  border-color: var(--sk-edge);
-  background: linear-gradient(#b9f3a8, #7fdc6a);
-}
-
-.zf :is(.zf-world-card--daily, #zf-skin) {
-  background: linear-gradient(#fff1a8, #ffd23f);
-}
-
-.zf :is(.zf-world-card--random, #zf-skin) {
-  background: linear-gradient(#e7d4ff, #b78cff);
-}
-
-.zf :is(.zf-world-card--editor, #zf-skin) {
-  background: linear-gradient(#d4e4ff, #8fb3ff);
-}
-
-.zf :is(.zf-world-card--open, #zf-skin):hover {
-  filter: brightness(1.05);
-}
-
-.zf .zf-world-card--open .zf-world-card__meta {
-  color: rgb(27 42 74 / 0.8);
-}
-
-.zf .zf-levels__part {
-  color: var(--sk-edge);
-  font-family: var(--sk-font);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.zf .zf-world-card__bar {
-  height: 10px;
-  border: 2px solid var(--sk-edge);
-  border-radius: 999px;
-  background: #e3e8f0;
-}
-
-.zf .zf-world-card__bar > span {
-  border-radius: 999px;
-  background: repeating-linear-gradient(-45deg, #5be05a 0 6px, #2ea043 6px 12px);
-}
-
-/* ---------- Titelbildschirm ---------- */
+/* ---------- Titelseite ---------- */
 
 .zf .zf-title {
   position: absolute;
   inset: 0;
   z-index: 20;
   display: grid;
-  place-items: center;
-  align-content: center;
-  padding: 24px 16px;
-  border-radius: 22px;
-  background:
-    linear-gradient(rgb(15 33 71 / 0) 35%, rgb(15 33 71 / 0.85)),
-    var(--zf-title-img, none) center 40% / cover no-repeat,
-    linear-gradient(#24498f, #0f2147);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(20px, 5vw, 64px);
+  overflow: auto;
+  background: var(--surface);
 }
 
 .zf .zf-title__box {
   display: grid;
-  justify-items: center;
-  gap: 14px;
-  width: min(100%, 520px);
-  text-align: center;
+  gap: 16px;
+  justify-items: start;
+  max-width: 34rem;
+}
+
+.zf .zf-title__eyebrow {
+  margin: 0;
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 
 .zf .zf-title__name {
   margin: 0;
-  color: var(--sk-y1);
-  font-family: var(--sk-font);
-  font-size: clamp(2.4rem, 1.6rem + 4vw, 4.6rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  -webkit-text-stroke: 9px var(--sk-edge);
-  paint-order: stroke fill;
-  text-shadow: 0 7px 0 var(--sk-edge), 0 12px 24px rgb(0 0 0 / 0.45);
+  color: var(--text);
+  font-size: clamp(2.2rem, 1.4rem + 3.4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .zf .zf-title__sub {
   margin: 0;
-  padding: 4px 16px;
-  border-radius: 999px;
-  background: rgb(15 33 71 / 0.75);
-  color: #fff;
-  font-family: var(--sk-font);
-  font-weight: 800;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.6;
 }
 
-.zf :is(.zf-title__play, #zf-skin) {
-  min-width: min(100%, 320px);
-  min-height: 64px;
-  font-size: 1.7rem;
+.zf .zf-title__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zf .zf-title__facts li {
+  padding: 4px 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .zf .zf-title__row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
 }
 
-.zf .zf-title__row .zf-btn {
+.zf .zf-title .zf-btn {
   min-height: 48px;
-  padding: 8px 22px;
-  font-size: 1.05rem;
+  padding: 10px 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--brand);
+  font-size: 1rem;
+  font-weight: 650;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .zf .zf-title__name {
-    animation: zf-title-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) both;
-  }
-
-  .zf .zf-title__play {
-    animation: zf-title-pulse 1.8s ease-in-out 0.6s infinite;
-  }
+.zf .zf-title .zf-btn--main {
+  border-color: transparent;
+  background: var(--brand);
+  color: #fff;
 }
 
-@keyframes zf-title-in {
-  from {
-    opacity: 0;
-    scale: 0.6;
-  }
+:root[data-theme='dark'] .zf .zf-title .zf-btn--main { color: #0d1218; }
+
+.zf .zf-title__progress {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
-@keyframes zf-title-pulse {
-  50% {
-    scale: 1.04;
-  }
+.zf .zf-title__art {
+  align-self: stretch;
+  min-height: 280px;
+  max-height: 520px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2) var(--zf-title-img, none) center / cover no-repeat;
+  box-shadow: var(--shadow);
 }
 
-/* Außerhalb der Karte: dunkle Fläche statt heller Streifen */
-.zf :is(.zf-board, #zf-skin) {
-  background:
-    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.04) 0 10px, transparent 10px 20px),
-    #2b3d63;
-}
-
-/* Anzeigen klein genug fürs Fenster der Maschinenbilder (Fenster ≈ 30 × 28 px) */
-.zf .zf-game .zf-cell--op > .zf-cell__big,
-.zf .zf-game .zf-cell--target > .zf-target-label {
-  min-width: 24px;
-  max-width: 44px;
-  padding: 0 3px;
-  border-width: 1.5px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  line-height: 1.3;
-  translate: 0 -3px;
-}
-
-.zf .zf-game .zf-cell--op > .zf-cell__mid {
-  max-width: 46px;
-  padding: 0 3px;
-  font-size: 0.68rem;
-  line-height: 1.3;
-}
-
-.zf .zf-game .zf-cell--source > .zf-source-value {
-  min-width: 26px;
-  height: 26px;
-  border-width: 2.5px;
-  font-size: 0.85rem;
-}
-
-/* Handy: weniger Rand, damit das Spielfeld möglichst breit wird */
-@media (max-width: 640px) {
-  .zf .zf-game {
-    border-width: 3px;
-    border-radius: 18px;
+@media (max-width: 760px) {
+  .zf .zf-title {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 18px;
+    padding: 16px;
   }
 
-  .zf .zf-main {
-    padding: 0 4px 14px;
-  }
-
-  .zf .zf-stage {
-    padding: 6px;
-    border-width: 3px;
-    border-radius: 16px;
-  }
-
-  .zf .zf-stage::before {
-    inset: -3px;
-    border-radius: 16px;
-  }
-
-  .zf .zf-board {
-    border-width: 3px;
-  }
-
-  .zf .zf-bar__title {
-    font-size: 1.1rem;
-  }
+  .zf .zf-title__art { order: -1; min-height: 0; aspect-ratio: 16 / 9; }
+  .zf .zf-title__row { width: 100%; }
+  .zf .zf-title__row .zf-btn { flex: 1 1 auto; }
+  .zf .zf-title .zf-btn--main { flex-basis: 100%; }
 }
 
-/* Platten bleiben auch im Dunkelmodus hell (wie die Spielbilder) */
-.zf .zf-side,
-.zf .zf-picker__card,
-.zf .zf-title {
-  --surface: #ffffff;
-  --surface-2: #eef2f8;
-  --text: #1b2a4a;
-  --muted: #56627a;
-  --border: #c7cfdb;
-  --border-strong: #9aa5b8;
-}
-
-/* ---------- 3D-Look: gekippter Sandboden, Gleise, Teile mit Dicke ---------- */
+/* ---------- 3D-Look: gekippter Boden, Gleise, Teile mit Dicke ---------- */
 /* Die Neigung setzt game.ts (Klasse .is-3d, Variable --zf-tilt). Ohne 3D
    (Ansicht „Von oben“) bleiben Boden, Gleise und Schatten, nur flach. */
 
 .zf {
-  --zf-sand: #eedca4;
-  --zf-sand-2: #e9d498;
-  --zf-sand-line: rgb(122 88 34 / 0.2);
-  --zf-sand-side: #b98f4f;
-  --zf-tie: #93603a;
-  --zf-tie-edge: #3d2615;
+  --zf-sand: #ecebe6;
+  --zf-sand-2: #e4e2dc;
+  --zf-sand-line: rgb(60 70 90 / 0.14);
+  --zf-sand-side: #b9bcc4;
+  --zf-tie: #8a7a6a;
+  --zf-tie-edge: #3a3f4c;
   --zf-rail: #f4f5f8;
   --zf-rail-edge: #283043;
-  --zf-ground-shadow: rgb(70 44 12 / 0.28);
+  --zf-ground-shadow: rgb(30 40 60 / 0.2);
 }
 
 :root[data-theme='dark'] .zf {
-  --zf-sand: #a8925b;
-  --zf-sand-2: #a08a55;
-  --zf-sand-line: rgb(40 26 8 / 0.28);
-  --zf-sand-side: #5f4a26;
-  --zf-tie: #6e4527;
-  --zf-tie-edge: #24150a;
+  --zf-sand: #2a3340;
+  --zf-sand-2: #26303c;
+  --zf-sand-line: rgb(255 255 255 / 0.07);
+  --zf-sand-side: #151b24;
+  --zf-tie: #6a5f55;
+  --zf-tie-edge: #12161d;
   --zf-rail: #dfe3ea;
-  --zf-ground-shadow: rgb(20 12 2 / 0.4);
+  --zf-ground-shadow: rgb(0 0 0 / 0.45);
 }
 
 .zf .zf-world,
@@ -862,7 +358,7 @@
   background-position: -0.75px -0.75px, -0.75px -0.75px, 0 0;
   border-radius: 10px;
   /* Dicke Platte: im 3D-Blick sieht man die Vorderkante */
-  box-shadow: 0 0 0 3px var(--zf-rail-edge), 0 16px 0 3px var(--zf-sand-side), 0 16px 0 6px var(--zf-rail-edge), 0 34px 40px rgb(0 0 0 / 0.35);
+  box-shadow: 0 0 0 1px var(--border-strong), 0 12px 0 1px var(--zf-sand-side), 0 26px 36px rgb(16 24 40 / 0.18);
 }
 
 /* Gleis: Schatten, Schwellen, zwei Schienen */
@@ -897,7 +393,7 @@
 .zf .zf-cell--target,
 .zf .zf-cell--base,
 .zf .zf-cell--rock {
-  filter: drop-shadow(0 5px 0 rgb(40 26 8 / 0.5)) drop-shadow(0 9px 7px var(--zf-ground-shadow));
+  filter: drop-shadow(0 3px 0 rgb(30 40 60 / 0.35)) drop-shadow(0 8px 7px var(--zf-ground-shadow));
 }
 
 .zf .zf-cell--rock { background: transparent; }
@@ -915,5 +411,5 @@
 /* Spielfeld hinter der Platte: etwas Himmel statt Fläche */
 .zf.is-3d .zf-board,
 .zf.is-3d [data-board] {
-  background: radial-gradient(120% 80% at 50% 0%, #6d93d6 0%, #2c4f93 55%, #1d356a 100%);
+  background: linear-gradient(var(--surface-2), var(--surface-3));
 }

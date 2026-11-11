@@ -26,6 +26,8 @@ const t = (de: string, en: string) => (lang === 'de' ? de : en);
         <div class="zf-bar__where">
           <p class="zf-bar__eyebrow" data-eyebrow>🏭 {game.title[lang]}</p>
           <h1 class="zf-bar__title" data-title>{game.title[lang]}</h1>
+          <!-- Aufgabe in einem Satz: steht direkt unter dem Titel, vor dem Spielfeld -->
+          <p class="zf-bar__task" data-task>{game.description[lang]}</p>
         </div>
         <div class="zf-bar__actions" data-bar-actions></div>
       </header>

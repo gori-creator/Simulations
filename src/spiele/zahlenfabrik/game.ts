@@ -48,7 +48,12 @@ const isBelt = (t: Tool) => t.kind === 'part' && t.spec.kind === 'belt';
 
 const T = {
   titleName: L('Zahlenfabrik', 'Number Factory'),
-  titleSub: L('Baue Fabriken, die rechnen.', 'Build factories that do maths.'),
+  titleSub: L('Baue Fabriken, die rechnen: Verbinde Zahlenquellen, Maschinen und Weichen mit Förderbändern, bis im Lager genau die richtigen Zahlen ankommen.', 'Build factories that do maths: connect number sources, machines and switches with conveyor belts until exactly the right numbers reach the storage.'),
+  titleEyebrow: L('Lernspiel · Mathematik', 'Learning game · Mathematics'),
+  titleFactChapters: L('{n} Kapitel', '{n} chapters'),
+  titleFactLevels: L('{n} Level', '{n} levels'),
+  titleFactGrades: L('Klasse 5–9', 'Grades 5–9'),
+  titleContinue: L('Weiterspielen', 'Continue'),
   titlePlay: L('Spielen', 'Play'),
   titleLevels: L('Level wählen', 'Choose level'),
   titleWorld: L('Offene Welt', 'Open world'),
@@ -461,6 +466,8 @@ export function initFactory(root: HTMLElement): void {
   const levelBar = q<HTMLElement>('[data-levels]');
   const title = q<HTMLElement>('[data-title]');
   const hint = q<HTMLElement>('[data-hint]');
+  /** Dieselbe Aufgabe noch einmal oben unter dem Titel (immer sichtbar, vor dem Spielfeld). */
+  const taskLine = root.querySelector<HTMLElement>('[data-task]');
   const viewport = q<HTMLElement>('[data-board]');
   const toolsEl = q<HTMLElement>('[data-tools]');
   const controls = q<HTMLElement>('[data-controls]');
@@ -2465,6 +2472,7 @@ export function initFactory(root: HTMLElement): void {
     tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
     hint.textContent = tx(T.worldHint);
+    if (taskLine) taskLine.textContent = tx(T.worldHint);
     if (worldWasReset) {
       worldWasReset = false;
       saveWorld(grid, econ);
@@ -2520,6 +2528,7 @@ export function initFactory(root: HTMLElement): void {
     renderPick();
     renderOrder();
     hint.textContent = tx(level.hint);
+    if (taskLine) taskLine.textContent = tx(level.hint);
     renderNew();
     renderTip();
     say('');
@@ -2884,16 +2893,23 @@ export function initFactory(root: HTMLElement): void {
     screen.setAttribute('aria-modal', 'true');
     screen.setAttribute('aria-label', tx(T.titleName));
     if (IMAGES.titelbild) screen.style.setProperty('--zf-title-img', `url("${IMAGES.titelbild}")`);
+    // Links Text und Knöpfe wie auf der Startseite, rechts das Bild
     const box = el('div', 'zf-title__box');
     const name = el('p', 'zf-title__name', tx(T.titleName));
     const sub = el('p', 'zf-title__sub', tx(T.titleSub));
-    const play = ibtn('play', tx(T.titlePlay), 'zf-btn zf-btn--main zf-title__play');
+    const facts = el('ul', 'zf-title__facts');
+    for (const f of [tx(T.titleFactChapters, { n: CHAPTERS.length }), tx(T.titleFactLevels, { n: ALL_LEVELS.length }), tx(T.titleFactGrades)]) facts.append(el('li', '', f));
+    const got = ALL_LEVELS.reduce((a, l) => a + (stars[l.id] ?? 0), 0);
+    const play = ibtn('play', tx(got ? T.titleContinue : T.titlePlay), 'zf-btn zf-btn--main zf-title__play');
     const levels = btn(tx(T.titleLevels), 'zf-btn zf-btn--bar');
     const worldBtn = btn(tx(T.titleWorld), 'zf-btn');
     const row = el('div', 'zf-title__row');
-    row.append(levels, worldBtn);
-    box.append(name, sub, play, row);
-    screen.append(box);
+    row.append(play, levels, worldBtn);
+    box.append(el('p', 'zf-title__eyebrow', tx(T.titleEyebrow)), name, sub, facts, row);
+    if (got) box.append(el('p', 'zf-title__progress', tx(T.starsTotal, { n: got, m: ALL_LEVELS.length * 3 })));
+    const pic = el('div', 'zf-title__art');
+    pic.setAttribute('aria-hidden', 'true');
+    screen.append(box, pic);
     const close = () => {
       screen.remove();
       document.removeEventListener('keydown', onKey);
