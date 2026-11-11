@@ -156,6 +156,8 @@ Die Regeln der offenen Welt bleiben, wie sie sind (nur Zusammenführer und Weich
 - **Zwei neue Abnehmer** in den äußeren Ecken: „Vielfache von 12“ (10 Münzen) und „Dreieckszahlen“ (12 Münzen, `isTriangular`).
 - **Alte Spielstände bleiben:** Alle bisherigen Quellen, Felsen und Abnehmer stehen an ihrem Platz (eigene Zufallsfolge für die Erz-Quellen, neue Abnehmer hinten in der Liste; Test). Nur wer im äußeren Ring genau auf einem der acht neuen Felder gebaut hatte, verliert dort das Teil.
 
+- **Bilder Runde 4 eingebaut** (10.11.2026, 17 Stück): eigene Bilder für Zähler-, Sammel- und Puffer-Maschine, Weiche „ganze Zahl?“, Verteiler, die drei Erz-Quellen, Sternwarte (Dreieckszahlen) und Bäckerei (Vielfache von 12) sowie Kapitelbilder für die sieben neuen Kapitel. Die Umfärbung der Ersatzbilder greift nur noch, wenn eine Datei fehlt.
+
 ## Ruhiges Design im Stil der Webseite (Stand 11.11.2026)
 
 Der Spiel-Look „Bunte Werkstatt“ ist durch ein ruhiges Design ersetzt, das zur übrigen Webseite passt (Farben, Schrift, Karten und Knöpfe aus `global.css`, hell und dunkel). Neue Titelseite im Aufbau der Startseite, Aufgabe in einem Satz unter dem Titel, Seitenleiste in der Reihenfolge Start → Werkzeugkasten → Tipp und Kennzahlen, neutraler Boden. Einzelheiten: `docs/ZAHLENFABRIK-DESIGN.md` (Kasten am Anfang).

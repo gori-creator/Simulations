@@ -1,6 +1,6 @@
 # Zahlenfabrik: Bilder (Prompts)
 
-Stand 09.11.2026 (Runde 2 und 3 eingebaut, Runde 4 angefordert). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
+Stand 10.11.2026 (Runde 2, 3 und 4 eingebaut). Bilder für das Spiel Zahlenfabrik (`/de/zahlenfabrik/`). Sie ersetzen die gezeichneten Grafiken. **Alle Bilder sind optional:** Fehlt eine Datei, zeichnet das Spiel weiter seine eigene Grafik (`src/spiele/zahlenfabrik/art.ts`).
 
 ## So geht’s
 
@@ -387,7 +387,9 @@ baukasten.png: An open red toolbox seen from the front, filled with small machin
 auswahl.png: A rounded square selection frame made of four thick blue corner brackets with a small hand cursor next to it, seen from the front. Transparent background.
 ```
 
-## Runde 4: Maschinen mit Gedächtnis, Puffer, Weiche „ganze Zahl?“, Schleife, Erz-Arten (Stand 09.11.2026)
+## Runde 4: Maschinen mit Gedächtnis, Puffer, Weiche „ganze Zahl?“, Schleife, Erz-Arten (Stand 10.11.2026, eingebaut)
+
+**Eingebaut am 10.11.2026:** alle 17 Bilder (Teile 256 × 256, Abnehmer 512 × 512, Kapitelbilder 960 × 540, WebP). Die Bäckerei gehört zum Abnehmer „Vielfache von 12“, die Sternwarte zu „Dreieckszahlen“.
 
 Für die neuen Bauteile aus dem Ausbau vom 09.11.2026 (Zähler, Sammler, Puffer, Weiche „ganze Zahl?“, Verteiler für Schleifen), die neuen Quellen-Arten der offenen Welt und die neuen Kapitel. Wieder **alles optional**: Ohne Datei zeigt das Spiel das allgemeine Maschinenbild (umgefärbt) bzw. die gezeichnete Grafik. Hochladen wie gehabt nach `incoming/zahlenfabrik/<dateiname>.png`.
 
