@@ -328,9 +328,12 @@
   --zf-sand-2: #e4e2dc;
   --zf-sand-line: rgb(60 70 90 / 0.14);
   --zf-sand-side: #b9bcc4;
-  --zf-band: #3d4656;
-  --zf-band-stripe: rgb(255 255 255 / 0.34);
-  --zf-rail: #c9d0dc;
+  --zf-band: #333b49;
+  --zf-band-crown: rgb(255 255 255 / 0.07);
+  --zf-band-rib: rgb(0 0 0 / 0.5);
+  --zf-band-shine: rgb(255 255 255 / 0.2);
+  --zf-rail-gloss: #eef1f6;
+  --zf-rail: #aab3c2;
   --zf-rail-edge: #283043;
   --zf-ground-shadow: rgb(30 40 60 / 0.2);
 }
@@ -340,9 +343,12 @@
   --zf-sand-2: #26303c;
   --zf-sand-line: rgb(255 255 255 / 0.07);
   --zf-sand-side: #151b24;
-  --zf-band: #4a5568;
-  --zf-band-stripe: rgb(255 255 255 / 0.3);
-  --zf-rail: #7d8798;
+  --zf-band: #3b4454;
+  --zf-band-crown: rgb(255 255 255 / 0.07);
+  --zf-band-rib: rgb(0 0 0 / 0.55);
+  --zf-band-shine: rgb(255 255 255 / 0.18);
+  --zf-rail-gloss: #b4bdcb;
+  --zf-rail: #8690a2;
   --zf-ground-shadow: rgb(0 0 0 / 0.45);
 }
 
@@ -361,17 +367,33 @@
   box-shadow: 0 0 0 1px var(--border-strong), 0 12px 0 1px var(--zf-sand-side), 0 26px 36px rgb(16 24 40 / 0.18);
 }
 
-/* Förderband: Schatten, dunkle Kante, Metallrahmen, dunkles Gummiband mit hellen Querstreifen */
+/* Förderband: Schatten, Metallrahmen mit Glanz, gewölbtes Gummiband mit Querrippen */
 .zf .zf-track path { fill: none; stroke-linejoin: round; }
-.zf .zf-track__shadow { stroke: var(--zf-ground-shadow); stroke-width: 36; translate: 0 5px; }
-.zf .zf-track .zf-belt__edge { stroke: var(--zf-rail-edge); stroke-width: 34; stroke-dasharray: none; animation: none; }
-.zf .zf-track__frame { stroke: var(--zf-rail); stroke-width: 31; }
-.zf .zf-track .zf-belt__base { stroke: var(--zf-band); stroke-width: 23; }
-/* Streifen im 16-px-Muster (viermal je Feld, nahtlos); laufen über zf-belt aus zahlenfabrik.css */
-.zf .zf-track .zf-belt__run { stroke: var(--zf-band-stripe); stroke-width: 23; stroke-dasharray: 3 13; }
+.zf .zf-track__shadow { stroke: var(--zf-ground-shadow); stroke-width: 38; translate: 0 6px; filter: blur(1.5px); }
+.zf .zf-track .zf-belt__edge { stroke: var(--zf-rail-edge); stroke-width: 36; stroke-dasharray: none; animation: none; }
+.zf .zf-track__frame { stroke: var(--zf-rail); stroke-width: 33; }
+.zf .zf-track__gloss { stroke: var(--zf-rail-gloss); stroke-width: 29.5; }
+.zf .zf-track__groove { stroke: var(--zf-rail-edge); stroke-width: 26; }
+.zf .zf-track .zf-belt__base { stroke: var(--zf-band); stroke-width: 23.5; }
+.zf .zf-track__crown { stroke: var(--zf-band-crown); stroke-width: 13; }
+/* Rippen im 16-px-Muster (viermal je Feld, nahtlos): dunkle Kante, direkt dahinter ein Lichtstreifen */
+.zf .zf-track .zf-belt__run { stroke: var(--zf-band-rib); stroke-width: 23.5; stroke-dasharray: 2 14; }
+.zf .zf-track__shine { stroke: var(--zf-band-shine); stroke-width: 23.5; stroke-dasharray: 1.5 14.5; stroke-dashoffset: 14; }
 /* Brücke: oberes Band mit kräftigem Schatten */
-.zf .zf-track.zf-belt--over .zf-track__shadow { stroke-width: 40; translate: 0 9px; }
-.zf .zf-track.zf-belt--over .zf-belt__edge { stroke-width: 36; }
+.zf .zf-track.zf-belt--over .zf-track__shadow { stroke-width: 42; translate: 0 10px; }
+.zf .zf-track.zf-belt--over .zf-belt__edge { stroke-width: 38; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Lichtstreifen läuft mit den Rippen (gleiches Tempo wie zf-belt) */
+  .zf .zf-track__shine { animation: zf-band-shine 1.6s linear infinite; }
+  .zf .zf-belts.is-running .zf-track__shine { animation-duration: 0.105s; }
+  .zf .zf-belts.is-running.is-fast .zf-track__shine { animation-duration: 0.03s; }
+}
+
+@keyframes zf-band-shine {
+  from { stroke-dashoffset: 14; }
+  to { stroke-dashoffset: -2; }
+}
 
 /* Teile stehen auf dem Boden: Kante und weicher Schatten nach vorn */
 .zf .zf-cell--op,

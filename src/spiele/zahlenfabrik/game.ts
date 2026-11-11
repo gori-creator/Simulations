@@ -1301,13 +1301,25 @@ export function initFactory(root: HTMLElement): void {
       return p;
     };
     /**
-     * Ein Förderband: Schatten, dunkle Kante, Metallrahmen, Gummiband und
-     * darauf Querstreifen, die beim Start mitlaufen.
+     * Ein Förderband: Schatten, Metallrahmen mit Glanz, gewölbtes Gummiband
+     * und darauf Querrippen, die beim Start mitlaufen.
      */
     const track = (d: string, extra: string) => {
       const g = document.createElementNS(SVG_NS, 'g');
       g.setAttribute('class', `zf-track${extra}`);
-      g.append(path('zf-track__shadow', d), path('zf-belt__edge', d), path('zf-track__frame', d), path('zf-belt__base', d), path('zf-belt__run', d));
+      g.append(
+        path('zf-track__shadow', d),
+        // Rahmen: dunkle Kante, Metall, heller Glanzstreifen, dunkle Fuge zum Band
+        path('zf-belt__edge', d),
+        path('zf-track__frame', d),
+        path('zf-track__gloss', d),
+        path('zf-track__groove', d),
+        // Gummiband: Fläche, hellere Mitte (Wölbung), Querrippen mit Schatten- und Lichtkante
+        path('zf-belt__base', d),
+        path('zf-track__crown', d),
+        path('zf-belt__run', d),
+        path('zf-track__shine', d),
+      );
       return g;
     };
     beltLayer.replaceChildren(track(paths.join(''), ''), ...(over.length ? [track(over.join(''), ' zf-belt--over')] : []));
