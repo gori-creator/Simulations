@@ -1727,7 +1727,37 @@ const C35: LevelInfo[] = [
   loopLevel('c35-4', L('Quadratzahlen im Kreis', 'Square numbers in a loop'), L('Aus einer einzigen 7 soll 1, 4, 9, 16, 25 werden – höchstens zwei Maschinen. Eine Maschine darf auch hinter der Schleife stehen.', 'A single 7 should become 1, 4, 9, 16, 25 – at most two machines. A machine may also stand after the loop.'), 7, [1, 4, 9, 16, 25], 2),
   loopLevel('c35-5', L('Fibonacci', 'Fibonacci'), L('Aus einer einzigen 1 soll 1, 1, 2, 3, 5, 8, 13 werden: Jede Zahl ist die Summe der beiden davor. Du brauchst zwei Verteiler, einen Puffer und einen Zusammenführer „Summe“ – die Zahl im Kreis trifft auf ihre Vorgängerin.', 'A single 1 should become 1, 1, 2, 3, 5, 8, 13: every number is the sum of the two before. You need two splitters, a buffer and a “sum” merger – the number in the loop meets the one before it.'), 1, [1, 1, 2, 3, 5, 8, 13], 1, true, 14),
   loopLevel('c35-6', L('Dreieckszahlen im Kreis', 'Triangular numbers in a loop'), L('Aus einer einzigen 1 soll 1, 3, 6, 10, 15 werden: erst +2, dann +3, dann +4 … Höchstens zwei Maschinen – ein Zähler hilft.', 'A single 1 should become 1, 3, 6, 10, 15: first +2, then +3, then +4 … At most two machines – a counter helps.'), 1, [1, 3, 6, 10, 15], 2, true, 14),
+  loopLevel('c35-8', L('Fakultät', 'Factorial'), L('Aus einer einzigen 1 soll 1, 1, 2, 6, 24, 120 werden: mal 1, mal 2, mal 3, mal 4 … Eine Maschine, zwei Verteiler und ein Zusammenführer „Produkt“ – die Zahl im Kreis trifft auf ihre Rundennummer.', 'A single 1 should become 1, 1, 2, 6, 24, 120: times 1, times 2, times 3, times 4 … One machine, two splitters and a “product” merger – the number in the loop meets its lap number.'), 1, [1, 1, 2, 6, 24, 120], 1, true, 14),
   loopLevel('c35-7', L('Die 3x+1-Folge', 'The 3x+1 sequence'), L('Aus einer einzigen 6 soll 6, 3, 10, 5, 16, 8, 4, 2, 1 werden. Die Regel: Gerade Zahlen werden halbiert, ungerade mal 3 und plus 1. Niemand weiß, ob diese Folge für jede Startzahl bei 1 landet!', 'A single 6 should become 6, 3, 10, 5, 16, 8, 4, 2, 1. The rule: even numbers are halved, odd numbers times 3 plus 1. Nobody knows whether this sequence reaches 1 for every starting number!'), 6, [6, 3, 10, 5, 16, 8, 4, 2, 1], 3, true, 14),
+];
+
+/* ---------- Kapitel: Folgen-Meister (Folgen mit Gedächtnis-Maschinen, je genau ein Weg) ---------- */
+/** Folge aus der Quelle, Wunsch-Folge im Lager, höchstens drei Maschinen – genau ein Weg, und er braucht eine Maschine mit Gedächtnis. */
+const master = (id: string, mapIndex: number, values: number[], want: number[], pro = false): LevelInfo =>
+  seqLevel(
+    id,
+    L(want.map(fmt).join(', '), want.map(fmtEn).join(', ')),
+    L(
+      `${values.map(fmt).join(', ')} kommen. Das Lager will ${want.map(fmt).join(', ')}. Höchstens 3 Maschinen – es gibt genau einen Weg, und mindestens eine Maschine mit Gedächtnis (Zähler, Sammler oder Puffer) gehört dazu.`,
+      `${values.map(fmtEn).join(', ')} arrive. The storage wants ${want.map(fmtEn).join(', ')}. At most 3 machines – there is exactly one way, and at least one machine with memory (counter, collector or buffer) is part of it.`,
+    ),
+    mapIndex, values, want, 3, pro,
+  );
+const TWOS = [2, 2, 2, 2, 2];
+const ODDS = [1, 3, 5, 7, 9];
+const C38: LevelInfo[] = [
+  master('c38-1', 0, TWOS, [16, 25, 36, 49, 64]),
+  master('c38-2', 1, seq(1, 5), [4, 13, 29, 54, 90]),
+  master('c38-3', 2, TWOS, [6, 24, 54, 96, 150]),
+  master('c38-4', 3, seq(1, 5), [0, 4, 7, 12, 19]),
+  master('c38-5', 0, ODDS, [4, 36, 144, 400, 900]),
+  master('c38-6', 1, TWOS, [3, 15, 35, 63, 99]),
+  master('c38-7', 2, seq(1, 5), [2, 10, 37, 101, 226]),
+  master('c38-8', 3, seq(1, 5), [100, 144, 225, 361, 576]),
+  master('c38-9', 0, seq(1, 5), [1, 4, 10, 20, 30], true),
+  master('c38-10', 1, ODDS, [1, 16, 81, 256, 289], true),
+  master('c38-11', 2, [5, 4, 3, 2, 1], [25, 66, 116, 170, 225], true),
+  master('c38-12', 3, ODDS, [1, 5, 14, 21, 28], true),
 ];
 
 /* ---------- Kapitel: Rätsel mit Regeln (verbotene Bauteile, wenige Bänder) ---------- */
@@ -1851,7 +1881,7 @@ export const PARTS: { id: string; title: Localized; chapters: string[] }[] = [
   { id: 'workshop', title: L('Neue Werkstatt', 'New workshop'), chapters: ['c20', 'c23', 'c24', 'c25', 'c26'] },
   { id: 'more', title: L('Brüche und Gleichungen', 'Fractions and equations'), chapters: ['c29', 'c34', 'c30'] },
   { id: 'master', title: L('Großmeister', 'Grandmaster'), chapters: ['c27'] },
-  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33', 'c35'] },
+  { id: 'memory', title: L('Maschinen mit Gedächtnis', 'Machines with memory'), chapters: ['c31', 'c32', 'c33', 'c35', 'c38'] },
   { id: 'finale', title: L('Regeln und Endgegner', 'Rules and bosses'), chapters: ['c36', 'c37'] },
 ];
 
@@ -1890,6 +1920,7 @@ export const CHAPTERS: Chapter[] = [
   { id: 'c32', title: L('Sammel-Maschine', 'Collector machine'), grades: '6–8', teaches: ['total'], levels: C32 },
   { id: 'c33', title: L('Puffer-Maschine', 'Buffer machine'), grades: '6–8', teaches: ['buffer'], levels: C33 },
   { id: 'c35', title: L('Schleife', 'Loop'), grades: '7–9', teaches: ['split'], levels: C35 },
+  { id: 'c38', title: L('Folgen-Meister', 'Sequence master'), grades: '7–9', teaches: [], levels: C38 },
   { id: 'c36', title: L('Rätsel mit Regeln', 'Puzzles with rules'), grades: '6–9', teaches: ['rules'], levels: C36 },
   { id: 'c37', title: L('Endgegner', 'Bosses'), grades: '8–9', teaches: [], levels: C37 },
 ];

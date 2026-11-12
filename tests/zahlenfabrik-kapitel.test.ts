@@ -247,6 +247,19 @@ const SOLUTIONS: Record<string, Solution> = {
   'c37-3': drawn(['.............', '.......>>>...', '.......^.....', '..>>S>>W>>...', '..^aT........', '..bM<........'], { S: split(0, 1), T: split(1, 1), a: m(op('prev'), 1), M: { op: null, dir: 2, merge: '+' }, b: { op: null, dir: 3 }, W: { op: null, dir: 3, sort: even, side: 1 } }),
   'c37-4': drawn(['..............', '..............', '..>>MT>>N>>>..', '....^p>>^.....', '..q>^.........'], { M: merger('−'), N: merger('−'), T: split(0, 1), p: m(op('prev'), 0), q: m(op('prev'), 0) }),
   'c37-5': drawn(['..............', '..............', '..............', '..>>v.........', '..A>MT>>>>>>..', '.....m........', '.....p........', '.....r>>>>>>..'], { A: alt(0, 3), M: merger('×'), T: split(0, 1), m: m(op('×', 4), 1), p: m(op('+', 1), 1), r: m(op('√'), 0) }),
+  'c35-8': drawn(LOOP2, { S: split(0, 1), T: split(1, 1), a: m(op('cnt'), 1), M: { op: null, dir: 2, merge: '×' }, b: { op: null, dir: 3 } }),
+  'c38-1': chain(op('cnt'), op('+', 3), op('²')),
+  'c38-2': chain(op('+', 1), op('²'), op('acc')),
+  'c38-3': chain(op('cnt'), op('²'), op('×', 6)),
+  'c38-4': chain(op('²'), op('+', 3), op('prev')),
+  'c38-5': chain(op('+', 1), op('acc'), op('²')),
+  'c38-6': chain(op('acc'), op('²'), op('−', 1)),
+  'c38-7': chain(op('acc'), op('²'), op('+', 1)),
+  'c38-8': chain(op('acc'), op('+', 9), op('²')),
+  'c38-9': chain(op('%', 5), op('acc'), op('acc')),
+  'c38-10': chain(op('%', 8), op('acc'), op('²')),
+  'c38-11': chain(op('²'), op('acc'), op('acc')),
+  'c38-12': chain(op('acc'), op('Σ'), op('acc')),
   'c34-1': sort(whole),
   'c34-2': sort(whole, [op(':', 3)]),
   'c34-3': sort(whole, [op(':', 2)], [], [op('×', 2)]),
@@ -278,8 +291,8 @@ const ownParts = (l: LevelInfo, g: Grid): Part[] => [...g].filter(([k]) => !isFi
 
 describe('Zahlenfabrik: Kapitel und Werkzeugkasten', () => {
   it('31 Kapitel, über 170 Level; jedes Bauteil wird genau einmal eingeführt; Kennungen eindeutig; Abschnitte vollständig', () => {
-    expect(CHAPTERS).toHaveLength(36);
-    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(202);
+    expect(CHAPTERS).toHaveLength(37);
+    expect(ALL_LEVELS.length).toBeGreaterThanOrEqual(215);
     // der Verteiler kommt erst im Schleifen-Kapitel: vorher kommen mehrere Ausgaben aus mehreren Quellen
     const loopAt = CHAPTERS.findIndex((c) => c.id === 'c35');
     expect(CHAPTERS[loopAt]!.teaches).toEqual(['split']);
@@ -501,6 +514,16 @@ describe('Zahlenfabrik: Rätsel mit wenigen Maschinen', () => {
       const g = new Map((SOLUTIONS[l.id] as { grid: Grid }).grid);
       for (const [k, p] of g) if (p.split || p.sort || p.alt) g.set(k, { op: null, dir: p.dir });
       expect(run(l, g).won, l.id).toBe(false);
+    }
+  });
+  it('Folgen-Meister: mit drei Maschinen genau ein Weg, mit zwei keiner – und immer mit einer Maschine mit Gedächtnis', () => {
+    const c = CHAPTERS.find((x) => x.id === 'c38')!;
+    expect(c.levels).toHaveLength(12);
+    for (const l of c.levels) {
+      const s = SOLUTIONS[l.id] as { kind: 'chain'; ops: Op[] };
+      expect(chains(l, 3), l.id).toEqual([s.ops.map(opLabel).join(' ')]);
+      expect(chains(l, 2), l.id).toEqual([]);
+      expect(s.ops.some((o) => ['cnt', 'acc', 'prev'].includes(o.sym)), l.id).toBe(true);
     }
   });
   it('neue Bausteine: eindeutige Rätsel (mod, Quersumme, Wurzel)', () => {
