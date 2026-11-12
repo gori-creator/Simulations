@@ -169,6 +169,12 @@ Der Spiel-Look „Bunte Werkstatt“ ist durch ein ruhiges Design ersetzt, das z
 - **Sieg:** eigene Karte mitten im Spielfeld – Haken, große Sterne (erscheinen nacheinander), Vergleich mit der Musterlösung, ein Knopf „Nächstes Level“.
 - **Offene Welt:** oben nur ein kurzer Satz; die ausführliche Erklärung steht bei der Aufgabe.
 
+## Folgen-Meister und Fakultät (Stand 12.11.2026)
+
+- **Kapitel „Folgen-Meister“** (12 Level, Klasse 7–9, im Abschnitt „Maschinen mit Gedächtnis“ nach der Schleife): Die Quelle gibt eine Folge aus (1 … 5, fünfmal die 2, ungerade Zahlen, 5 … 1), das Lager will eine andere Folge. Ein Suchprogramm hat Aufgaben gewählt, die mit drei Maschinen **genau einen Weg** haben, mit zwei keinen, und bei denen immer eine Maschine mit Gedächtnis dabei ist (Test). Beispiele: 2, 2, 2, 2, 2 → 16, 25, 36, 49, 64 (Zähler, +3, x²); 1 … 5 → 4, 13, 29, 54, 90 (+1, x², Sammler); 1 … 5 → 0, 4, 7, 12, 19 (x², +3, Puffer); 1, 3, 5, 7, 9 → 1, 5, 14, 21, 28 (Sammler, Quersumme, Sammler).
+- **Schleife, Level 8 „Fakultät“:** aus einer einzigen 1 wird 1, 1, 2, 6, 24, 120 (Zähler, zwei Verteiler, Zusammenführer „Produkt“).
+- Damit 37 Kapitel und 215 Level.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
