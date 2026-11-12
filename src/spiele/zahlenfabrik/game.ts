@@ -238,6 +238,7 @@ const T = {
     'Leg Bänder von den Zahlenquellen zu deiner Basis. Neue Zahlen entstehen nur, wenn du zwei Ströme aus verschiedenen Quellen zusammenführst (plus, minus, mal, geteilt); Weichen filtern sie. Jede Zahl bringt 1 Münze, eine passende für den Auftrag 5. Aufträge schalten neue Teile frei.',
     'Lay belts from the number sources to your base. New numbers only appear when you merge two streams from different sources (plus, minus, times, divided); switches filter them. Every number earns 1 coin, one that fits the order earns 5. Orders unlock new parts.',
   ),
+  worldTask: L('Leg Bänder von den Zahlenquellen zu deiner Basis und erfülle die Aufträge.', 'Lay belts from the number sources to your base and complete the orders.'),
   eyebrowWorld: L('Zahlenfabrik · Offene Welt', 'Number Factory · Open world'),
   score: L('Gesammelt: {n}', 'Collected: {n}'),
   count: L('{n} Zahlen', '{n} numbers'),
@@ -2470,7 +2471,9 @@ export function initFactory(root: HTMLElement): void {
     tool = { kind: 'part', spec: BELT };
     title.textContent = tx(T.worldTitle);
     hint.textContent = tx(T.worldHint);
-    if (taskLine) taskLine.textContent = tx(T.worldHint);
+    // oben nur ein kurzer Satz, die ganze Erklärung steht bei der Aufgabe
+    hint.classList.add('is-world');
+    if (taskLine) taskLine.textContent = tx(T.worldTask);
     if (worldWasReset) {
       worldWasReset = false;
       saveWorld(grid, econ);
@@ -2526,6 +2529,7 @@ export function initFactory(root: HTMLElement): void {
     renderPick();
     renderOrder();
     hint.textContent = tx(level.hint);
+    hint.classList.remove('is-world');
     if (taskLine) taskLine.textContent = tx(level.hint);
     renderNew();
     renderTip();
@@ -2539,8 +2543,17 @@ export function initFactory(root: HTMLElement): void {
     resetCursor();
     // Neues Bauteil in diesem Kapitel (und beim allerersten Besuch die Einführung): erklären
     const unseen = (['belt', ...wInfo.teaches] as LessonId[]).filter((id, k, all) => all.indexOf(id) === k && !lessonSeen(id));
-    if (unseen.length) showLessons(root, lang, unseen, undefined, chapterImage(wInfo.id));
+    if (unseen.length) {
+      const show = () => showLessons(root, lang, unseen, undefined, chapterImage(wInfo.id));
+      // Solange die Titelseite offen ist, warten die Erklärkarten (sonst lägen sie darüber)
+      if (titleOpen) pendingLessons = show;
+      else show();
+    }
   }
+
+  /** Titelseite offen? Dann warten Erklärkarten, bis man „Spielen“ drückt. */
+  let titleOpen = false;
+  let pendingLessons: (() => void) | null = null;
 
   // ---------- Tipps (mit Löser) ----------
   let tips = 0;
@@ -2876,9 +2889,10 @@ export function initFactory(root: HTMLElement): void {
     openLevel(specToLevel(fromLink));
     backBtn.hidden = false;
   } else {
-    openLevel(index);
     // Titelbildschirm, wenn die Einführung schon gesehen wurde (sonst zeigt sie das Titelbild)
-    if (lessonSeen('belt')) showTitle();
+    titleOpen = lessonSeen('belt');
+    openLevel(index);
+    if (titleOpen) showTitle();
   }
   addEventListener('resize', () => applyView());
 
@@ -2908,20 +2922,25 @@ export function initFactory(root: HTMLElement): void {
     const pic = el('div', 'zf-title__art');
     pic.setAttribute('aria-hidden', 'true');
     screen.append(box, pic);
-    const close = () => {
+    const close = (lessons = true) => {
       screen.remove();
       document.removeEventListener('keydown', onKey);
+      titleOpen = false;
+      // „Spielen“: jetzt die Erklärkarten zum Level zeigen; bei „Level wählen“/„Offene Welt“ nicht
+      const show = pendingLessons;
+      pendingLessons = null;
+      if (lessons) show?.();
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') close();
     };
-    play.addEventListener('click', close);
+    play.addEventListener('click', () => close());
     levels.addEventListener('click', () => {
-      close();
+      close(false);
       openPicker();
     });
     worldBtn.addEventListener('click', () => {
-      close();
+      close(false);
       openWorldMode();
     });
     document.addEventListener('keydown', onKey);

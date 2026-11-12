@@ -162,6 +162,13 @@ Die Regeln der offenen Welt bleiben, wie sie sind (nur Zusammenführer und Weich
 
 Der Spiel-Look „Bunte Werkstatt“ ist durch ein ruhiges Design ersetzt, das zur übrigen Webseite passt (Farben, Schrift, Karten und Knöpfe aus `global.css`, hell und dunkel). Neue Titelseite im Aufbau der Startseite, Aufgabe in einem Satz unter dem Titel, Seitenleiste in der Reihenfolge Start → Werkzeugkasten → Tipp und Kennzahlen, neutraler Boden. Die Gleise sind wieder ein Förderband (Wunsch der Projektleitung, 11.11.2026). Einzelheiten: `docs/ZAHLENFABRIK-DESIGN.md` (Kasten am Anfang).
 
+## Feinschliff (Stand 12.11.2026)
+
+- **Titelseite:** Erklärkarten zum Level warten, bis man „Spielen“ drückt (vorher lagen sie bei wiederkehrenden Spielern über der Titelseite).
+- **Meldungen:** Hinweise und Fehler als schmale Leiste unten im Spielfeld (am Handy über die ganze Breite, kleine Schrift), damit die Fabrik sichtbar bleibt.
+- **Sieg:** eigene Karte mitten im Spielfeld – Haken, große Sterne (erscheinen nacheinander), Vergleich mit der Musterlösung, ein Knopf „Nächstes Level“.
+- **Offene Welt:** oben nur ein kurzer Satz; die ausführliche Erklärung steht bei der Aufgabe.
+
 Offen: Freigabe durch die Projektleitung (`GAMES_PUBLIC`, Link in Kopfleiste/Startseite).
 
 ## Idee
