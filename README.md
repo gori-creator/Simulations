@@ -2,6 +2,15 @@
 
 Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht** – für den Beamer, das Tablet und das Lernen zu Hause. Zuerst auf Deutsch, nach und nach auch auf Englisch. Chemie und Hochschulthemen folgen später.
 
+**Scitura ist Open Source und eine offene Bildungsressource (OER).** Jede und jeder kann mitmachen: Fehler melden, Texte verbessern oder eigene Simulationen beitragen – auch mit KI-Assistent und fertigen Prompts.
+
+- 🌐 Website: <https://scitura.de> · 🎮 Lernspiel: [Zahlenfabrik](https://scitura.de/de/zahlenfabrik/)
+- 🤝 Mitmachen: [`CONTRIBUTING.md`](CONTRIBUTING.md) · Simulation mit KI bauen: [`docs/MITMACHEN-SIMULATION.md`](docs/MITMACHEN-SIMULATION.md)
+- ⚖️ Lizenz: Code [MIT](LICENSE), Inhalte [CC BY-SA 4.0](LICENSE-INHALTE.md)
+- 🔒 Sicherheit: [`SECURITY.md`](SECURITY.md) · Umgang miteinander: [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+
+> *English:* Scitura is an open-source collection of interactive maths and physics simulations for schools (German and English). Code MIT, content CC BY-SA 4.0. Contributions welcome – see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 > Die Website heißt seit 27.10.2026 **Scitura** (vorher Arbeitstitel „MINT-Simulationen“). Der Name steht zentral in `src/config/site.ts`.
 
 ## Was die Seite kann
@@ -82,6 +91,6 @@ Der Basis-Pfad (z. B. `/Simulations/`) wird automatisch gesetzt. Für andere Anb
 
 ## Offene Entscheidungen
 
-- **Lizenz:** keine – alle Rechte vorbehalten (siehe `LICENSE`). Der Code ist nicht Open Source. Fremde Bestandteile (KaTeX, qrcode-generator, Astro; MIT) stehen in `public/lizenzen.txt`.
+- **Lizenz:** Open Source und OER – Code unter [MIT](LICENSE), Texte, Aufgaben und Bilder unter [CC BY-SA 4.0](LICENSE-INHALTE.md); Name und Logo „Scitura“ ausgenommen. Fremde Bestandteile (KaTeX, qrcode-generator, Astro; MIT) stehen in `public/lizenzen.txt`.
 - **Name und Domain** des Projekts.
 - **Weitere Länder-Lehrpläne:** Bayern (Gymnasium, Mathematik) ist hinterlegt; Physik und andere Bundesländer bzw. Schularten folgen.

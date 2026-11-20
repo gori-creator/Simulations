@@ -14,6 +14,7 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 - **Fachlich sauber und didaktisch durchdacht** – mit Erklärungen, Aufgaben und Ideen für den Unterricht.
 - **Für alle Geräte** – vom Smartphone bis zum interaktiven Whiteboard.
 - **Zweisprachig** – zuerst Deutsch, nach und nach auch Englisch.
+- **Open Source und OER** – Code, Texte und Bilder sind offen lizenziert. Jede und jeder kann nachprüfen, verbessern und eigene Simulationen beitragen: [Mitmachen](../mitmachen/).
 
 ## Fahrplan
 
@@ -36,6 +37,6 @@ Rückmeldungen, Fehlerberichte und Ideen sind jederzeit willkommen – am einfac
 
 ## Rechte
 
-Simulationen, Texte, Aufgaben und Grafiken sind urheberrechtlich geschützt; alle Rechte vorbehalten. Im Unterricht und zum Lernen dürfen Sie die Website selbstverständlich frei nutzen und Links teilen. Für andere Verwendungen fragen Sie bitte über das Kontaktformular an.
+Der Programmcode steht unter der MIT-Lizenz, Texte, Aufgaben und Bilder unter CC BY-SA 4.0. Sie dürfen alles im Unterricht nutzen, in Arbeitsblätter übernehmen, verändern und weitergeben – mit dem Hinweis „Scitura (scitura.de), CC BY-SA 4.0“. Name und Logo „Scitura“ sind ausgenommen. Der Quellcode liegt auf [GitHub](https://github.com/gori-creator/Simulations).
 
 Verwendete fremde Software: [KaTeX](https://katex.org) (Formelsatz), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (QR-Codes) und [Astro](https://astro.build) (Erstellen der Seite), jeweils unter der MIT-Lizenz. Die Lizenztexte stehen in der Datei [lizenzen.txt](../../lizenzen.txt).

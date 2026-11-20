@@ -49,6 +49,19 @@ export interface SimulationMeta {
   /** Zusätzliche Suchbegriffe. */
   keywords?: Localized<string[]>;
   thumb?: Thumb;
+  /**
+   * Beitrag aus der Community (Pull Request von außen). Fehlt das Feld, ist es
+   * eine offizielle, von Scitura fachlich geprüfte Simulation. Community-
+   * Simulationen sind technisch geprüft (Tests, Sicherheit), aber noch nicht
+   * fachlich; nach der fachlichen Prüfung fällt das Feld weg. Ablauf:
+   * CONTRIBUTING.md.
+   */
+  community?: {
+    /** Name oder GitHub-Name der Person, die die Simulation gebaut hat. */
+    author: string;
+    /** Adresse des Pull Requests oder Profils (optional). */
+    url?: string;
+  };
 }
 
 export interface Topic {

@@ -4,6 +4,7 @@ import { SUBJECTS } from '../curriculum';
 import type { Lang } from '../i18n/config';
 import { t } from '../i18n/utils';
 import { href } from '../lib/routes';
+import { GAMES, GAMES_PUBLIC } from '../spiele';
 import Logo from './Logo.astro';
 
 interface Props {
@@ -37,12 +38,15 @@ const subjects = SUBJECTS.filter((s) => s.status === 'active');
       <ul>
         <li><a href={href(lang, { kind: 'page', page: 'about' })}>{t(lang, 'nav.about')}</a></li>
         <li><a href={href(lang, { kind: 'page', page: 'teachers' })}>{t(lang, 'nav.teachers')}</a></li>
+        {GAMES_PUBLIC && GAMES.map((g) => <li><a href={href(lang, { kind: 'game', game: g.id })}>{g.title[lang]}</a></li>)}
+        <li><a href={href(lang, { kind: 'page', page: 'contribute' })}>{t(lang, 'nav.contribute')}</a></li>
+        <li><a href={SITE.repoUrl} rel="noopener">{t(lang, 'nav.github')}</a></li>
         <li><a href={href(lang, { kind: 'page', page: 'contact' })}>{t(lang, 'nav.contact')}</a></li>
       </ul>
     </nav>
   </div>
   <div class="container site-footer__legal">
-    <span>© {year} {SITE.name[lang]} · {t(lang, 'footer.rights')}</span>
+    <span>© {year} {SITE.name[lang]} · <a href={href(lang, { kind: 'page', page: 'contribute' })}>{t(lang, 'footer.rights')}</a></span>
     <a href={href(lang, { kind: 'page', page: 'imprint' })}>{t(lang, 'footer.imprint')}</a>
     <a href={href(lang, { kind: 'page', page: 'privacy' })}>{t(lang, 'footer.privacy')}</a>
   </div>

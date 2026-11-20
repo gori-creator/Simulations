@@ -23,10 +23,11 @@ export const SITE = {
   } satisfies Localized,
   repoUrl: 'https://github.com/gori-creator/Simulations',
   /**
-   * Knopf „Öffentlich auf GitHub melden“ im Kontaktformular. Aus: Der Code ist
-   * nicht Open Source (LICENSE), Rückmeldungen laufen nur per E-Mail.
+   * Knopf „Öffentlich auf GitHub melden“ im Kontaktformular. An, seit Scitura
+   * Open Source ist (LICENSE, LICENSE-INHALTE.md); das Repository muss dafür
+   * öffentlich sein.
    */
-  publicIssues: false,
+  publicIssues: true,
   /**
    * Empfangsadresse des Kontaktformulars (öffnet das E-Mail-Programm, siehe
    * src/components/ContactForm.astro); dieselbe wie im Impressum.

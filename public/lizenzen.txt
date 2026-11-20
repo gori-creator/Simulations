@@ -1,5 +1,5 @@
 Lizenzen fremder Bestandteile von scitura.de / third-party licences
-Der übrige Inhalt der Website: Copyright (c) Louis Bugert, alle Rechte vorbehalten.
+Der übrige Inhalt der Website ist Open Source: Code MIT, Texte und Bilder CC BY-SA 4.0 (siehe https://github.com/gori-creator/Simulations). / The rest of the site is open source: code MIT, content CC BY-SA 4.0.
 
 ===============================================================================
 katex

@@ -3574,3 +3574,72 @@
     height: 90px;
   }
 }
+
+/* ---------- Lernspiel-Hinweis (Zahlenfabrik) ---------- */
+
+.home-game {
+  margin-block: clamp(32px, 6vw, 72px);
+}
+
+.home-game__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.home-game__card:hover {
+  box-shadow: var(--shadow-md, var(--shadow-sm));
+  transform: translateY(-2px);
+}
+
+.home-game__img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+}
+
+.home-game__text {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 10px;
+  padding: clamp(20px, 4vw, 40px);
+}
+
+.home-game__text h2,
+.home-game__text p {
+  margin: 0;
+}
+
+.home-game__eyebrow {
+  color: var(--brand);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .home-game__card {
+    grid-template-columns: 1fr;
+  }
+
+  .home-game__img {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-game__card {
+    transition: none;
+  }
+}

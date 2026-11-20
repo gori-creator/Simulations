@@ -1,0 +1,33 @@
+---
+/**
+ * Startseite: Hinweis auf das Lernspiel (Zahlenfabrik) mit Titelbild.
+ * Erscheint nur, wenn die Spiele freigegeben sind (GAMES_PUBLIC).
+ */
+import titleImage from '../../assets/zahlenfabrik/titelbild.webp';
+import type { Lang } from '../../i18n/config';
+import { t } from '../../i18n/utils';
+import { href } from '../../lib/routes';
+import { GAMES_PUBLIC, getGame } from '../../spiele';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const game = getGame('zahlenfabrik');
+---
+
+{
+  GAMES_PUBLIC && (
+    <section class="container home-game" aria-labelledby="home-game-title">
+      <a class="home-game__card" href={href(lang, { kind: 'game', game: game.id })}>
+        <img class="home-game__img" src={titleImage.src} width={titleImage.width} height={titleImage.height} alt="" loading="lazy" decoding="async" />
+        <div class="home-game__text">
+          <p class="home-game__eyebrow">{t(lang, 'home.gameEyebrow')}</p>
+          <h2 id="home-game-title">{game.title[lang]}</h2>
+          <p>{game.description[lang]}</p>
+          <span class="btn btn--primary">{t(lang, 'home.gamePlay')}</span>
+        </div>
+      </a>
+    </section>
+  )
+}

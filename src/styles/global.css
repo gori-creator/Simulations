@@ -455,6 +455,30 @@ em .hat::after {
   white-space: nowrap;
 }
 
+/* Community-Simulation (Beitrag von außen, fachlich noch nicht geprüft) */
+.badge--community {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.sim-community {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: var(--radius, 12px);
+  background: var(--warning-bg);
+  color: var(--warning-text);
+  font-size: 0.92rem;
+}
+
+.sim-community a {
+  color: inherit;
+  font-weight: 700;
+}
+
 .badge--subject-mathematik {
   background: var(--math-soft);
   color: var(--math);
