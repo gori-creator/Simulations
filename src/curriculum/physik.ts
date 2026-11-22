@@ -520,6 +520,29 @@ export const physik: Subject = {
             },
           ],
         },
+        {
+          id: 'elektronik',
+          title: L('Elektronik', 'Electronics'),
+          grades: [9, 13],
+          simulations: [
+            {
+              id: 'diode-transistor',
+              status: 'ready',
+              slug: L('diode-und-transistor', 'diode-and-transistor'),
+              title: L('Diode und Transistor', 'Diode and transistor'),
+              summary: L(
+                'Nimm die Kennlinie einer Diode auf, sieh Löcher und Elektronen am pn-Übergang, richte Wechselspannung gleich und schalte mit einem kleinen Basisstrom einen großen Kollektorstrom.',
+                'Record the characteristic of a diode, watch holes and electrons at the pn junction, rectify AC voltage and switch a large collector current with a small base current.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Diode', 'Halbleiter', 'pn-Übergang', 'Sperrschicht', 'Dotierung', 'Löcher', 'Kennlinie', 'Schleusenspannung', 'Durchlassrichtung', 'Sperrrichtung', 'Shockley-Gleichung', 'Leuchtdiode', 'LED', 'Gleichrichter', 'Brückengleichrichter', 'Glättungskondensator', 'Transistor', 'Stromverstärkung', 'Dämmerungsschalter', 'Fotowiderstand', 'Elektronik'],
+                ['diode', 'semiconductor', 'pn junction', 'depletion layer', 'doping', 'holes', 'characteristic', 'threshold voltage', 'forward bias', 'reverse bias', 'Shockley equation', 'light-emitting diode', 'LED', 'rectifier', 'bridge rectifier', 'smoothing capacitor', 'transistor', 'current gain', 'twilight switch', 'photoresistor', 'electronics'],
+              ),
+            },
+          ],
+        },
       ],
     },
     {

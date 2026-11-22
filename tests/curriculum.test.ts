@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Rahmenlehrplan (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -208,6 +209,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Rahmenlehrplan (wie Berlin)',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -223,6 +225,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
     },
     'hamburg-gymnasium-mathematik': {
@@ -232,6 +235,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
@@ -275,6 +279,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
@@ -316,6 +321,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht in den Fachanforderungen (Hochschule)',
     },
     'schleswig-holstein-gymnasium-physik': {
+      'diode-transistor': 'Halbleiter, Diode und Transistor nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
       hebelgesetz: 'Hebel und Drehmoment nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-physik.md)',
     },
   };

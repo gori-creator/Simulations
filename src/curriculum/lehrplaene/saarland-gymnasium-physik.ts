@@ -118,12 +118,13 @@ const KS_9_UNITS: CurriculumUnit[] = [
       'Ladung und elektrisches Feld, Strom und Spannung, elektrische Arbeit und Leistung, Reihen- und Parallelschaltung von Widerständen, Halbleiter und Dioden.',
       'Charge and the electric field, current and voltage, electrical work and power, series and parallel resistors, semiconductors and diodes.',
     ),
-    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz'],
+    simulations: ['einfacher-stromkreis', 'reihe-parallel', 'ohmsches-gesetz', 'diode-transistor'],
   },
   {
     code: '3',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen.', 'Suggestions: internal resistance, resistivity, transistor circuits.'),
+    simulations: ['diode-transistor'],
   },
 ];
 
@@ -157,7 +158,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Astronomie, Transistoren in der Informationstechnik, Energiebedarf von Autos.', 'Suggestions: astronomy, transistors in information technology, energy needs of cars.'),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'diode-transistor'],
   },
 ];
 

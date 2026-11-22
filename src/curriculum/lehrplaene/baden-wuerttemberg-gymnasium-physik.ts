@@ -255,7 +255,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["ohmsches-gesetz", "reihe-parallel"],
+          simulations: ["ohmsches-gesetz", "reihe-parallel", "diode-transistor"],
         },
         {
           code: "3.2.6",
@@ -334,7 +334,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["induktion"],
+          simulations: ["induktion", "diode-transistor"],
         },
         {
           code: "3.2.6",

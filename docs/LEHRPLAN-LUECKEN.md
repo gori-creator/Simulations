@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **309 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,7 +182,7 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (204)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -200,7 +200,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (20)
+### Bayern · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -210,7 +210,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 3.2 | Wärmelehre › Thermischer Energietransport und Einflüsse auf unser Klima | Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. |
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
 | 9 | 4.2 | Profilbereich am NTG (nur NTG) › Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte | Wahlthemen wie Energie im Körper, Wärmedämmung, Energieversorgung, Fahrzeugtechnik oder Druck und Auftrieb, selbstständig dokumentiert und präsentiert. |
-| 10 | 5.1 | Profilbereich am NTG (nur NTG) › Halbleiterbauelemente in Experimenten | Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären. |
 | 11 | 3.2 | Eigenverantwortliche Arbeit an physikalischen Themen › Einblick in die spezielle Relativitätstheorie | Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld. |
 | 11 | 3.3 | Eigenverantwortliche Arbeit an physikalischen Themen › Energieversorgung | Umkehrbare und nicht umkehrbare Vorgänge, Energieentwertung und Wirkungsgrad sowie Fragen der heutigen und künftigen Energieversorgung. |
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
@@ -247,7 +246,7 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (76)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -321,10 +320,7 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.4.2 | Spezielle Relativitätstheorie › Relativistische Massenzunahme (nur phänomenologisch) | Phänomen der Massenzunahme bei hohen Geschwindigkeiten. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
 | 13 | Q4.4.4 | Spezielle Relativitätstheorie › Herleitung der relativistischen Massenzunahme (nur LK) | Massenzunahme aus Grundprinzipien ableiten. |
-| 13 | Q4.5.1 | Festkörperphysik › Leiter, Nichtleiter und Halbleiter | Bändermodell (qualitativ) und Dotierung. |
-| 13 | Q4.5.2 | Festkörperphysik › Diode und Transistor | p-n-Übergang, Kennlinie, Gleichrichter, Transistor als Schalter. |
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
-| 13 | Q4.5.4 | Festkörperphysik › Verstärkerschaltung (nur LK) | Transistor als Verstärker im Experiment. |
 | 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
 | 13 | Q4.6.2 | Astrophysik › Kosmologie | Galaxien, Rotverschiebung und Urknall. |
 | 13 | Q4.6.3 | Astrophysik › Struktur des Universums | Größe und Alter, Hintergrundstrahlung, dunkle Materie und Energie. |
@@ -364,17 +360,15 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | EF-2.3 | Kreisbewegung, Gravitation und physikalische Weltbilder › Wandel physikalischer Weltbilder | Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (34)
+### Rheinland-Pfalz · Gymnasium (31)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7–10 | 7 | Kosmos und Forschung | Physik als sich weiter entwickelnde Wissenschaft: Methode der Erkenntnisgewinnung, Recherche und Präsentation zu Themen moderner Physik wie Sternen, Raumfahrt oder Exoplaneten. |
 | 7–10 | 8 | Wärmetransporte und ihre Beeinflussung | Thermische Energieströme im Basiskonzept System: Temperaturdifferenz als Antrieb, thermischer Widerstand, Kühlung und Wärmedämmung, Wärmepumpe und Wärmekraftmaschine. |
-| 7–10 | 11 | Sensoren im Alltag | Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC. |
 | 7–10 | 12 | Praxis und Forschung | Selbstständig und fragengeleitet experimentieren: Hypothesen aufstellen, Experimente planen, durchführen und auswerten, mit Inhalten aus früheren oder neuen Themenfeldern. |
 | 12/13 | GF-W.5 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | GF-W.6 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
-| 12/13 | GF-W.7 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
 | 12/13 | GF-W.8 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
@@ -391,7 +385,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
 | 12/13 | LF-W.5 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | LF-W.6 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
-| 12/13 | LF-W.7 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
 | 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
 | 12/13 | LF-W.14 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
@@ -403,17 +396,16 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 
-### Saarland · Gymnasium (5)
+### Saarland · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
 | 8 | 6 | Wahlthema oder Praktikum | Wahlthema oder Praktikum nach Wahl der Lehrkraft. |
-| 9 | 3 | Wahlthema oder Praktikum | Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen. |
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (22)
+### Sachsen · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -424,18 +416,15 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | W1 | Vom Ballonfahren (Wahlbereich) | Statischer Auftrieb in Gasen, Heißluftballon und Luftschiff. |
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
-| 9 | 1 | Grundlagen der Elektronik | Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen. |
 | 9 | W2 | Energie von Wind und Sonne (Wahlbereich) | Windkraftanlagen, Solarthermie und Fotovoltaik. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
 | 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
-| 11 | GK-W1 | Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
 | 11 | GK-W3 | Relativität von Zeit und Raum (Wahlbereich Grundkurs) | Postulate, Zeitdilatation und Längenkontraktion. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
 | 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
-| 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 12 | GK-2 | Praktikum Optik und Schwingungen (Grundkurs) | Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten. |
 | 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |

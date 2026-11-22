@@ -2483,6 +2483,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.5.1',
               title: L('Leiter, Nichtleiter und Halbleiter', 'Conductors, non-conductors and semiconductors'),
               summary: L('Bändermodell (qualitativ) und Dotierung.', 'Band model (qualitative) and doping.'),
+              simulations: ['diode-transistor'],
             },
             {
               code: 'Q4.5.2',
@@ -2491,6 +2492,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'p-n-Übergang, Kennlinie, Gleichrichter, Transistor als Schalter.',
                 'p-n junction, characteristic curve, rectifier, transistor as switch.',
               ),
+              simulations: ['diode-transistor'],
             },
             {
               code: 'Q4.5.3',
@@ -2501,6 +2503,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.5.4',
               title: L('Verstärkerschaltung (nur LK)', 'Amplifier circuit (advanced course only)'),
               summary: L('Transistor als Verstärker im Experiment.', 'Transistor as amplifier in experiment.'),
+              simulations: ['diode-transistor'],
             },
             {
               code: 'Q4.5.5',

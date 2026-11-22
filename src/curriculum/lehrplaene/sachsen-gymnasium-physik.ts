@@ -183,6 +183,7 @@ const K9: CurriculumUnit[] = [
     code: '1',
     title: L('Grundlagen der Elektronik', 'Basics of electronics'),
     summary: L('Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen.', 'Semiconductor components such as diodes and solar cells, conduction in semiconductors and simple circuits.'),
+    simulations: ['diode-transistor'],
   },
   {
     code: '2',
@@ -333,6 +334,7 @@ const J11: CurriculumUnit[] = [
     code: 'GK-W1',
     title: L('Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs)', 'Conduction in semiconductors (optional, basic course)'),
     summary: L('Bändermodell, pn-Übergang, Diode und Transistor.', 'The band model, pn junction, diode and transistor.'),
+    simulations: ['diode-transistor'],
   },
   {
     code: 'GK-W2',
@@ -405,6 +407,7 @@ const J11: CurriculumUnit[] = [
     code: 'LK-W2',
     title: L('Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs)', 'Conduction in semiconductors (optional, advanced course)'),
     summary: L('Bändermodell, pn-Übergang, Diode und Transistor.', 'The band model, pn junction, diode and transistor.'),
+    simulations: ['diode-transistor'],
   },
 ];
 
