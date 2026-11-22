@@ -23,6 +23,7 @@ const RULES: Record<RuleId, { name: Loc; formula: string }> = {
   exp: { name: L('Ableitung von eˣ', 'Derivative of eˣ'), formula: '(eˣ)′ = eˣ' },
   ln: { name: L('Ableitung von ln', 'Derivative of ln'), formula: '(ln x)′ = 1 / x' },
   sqrt: { name: L('Ableitung von √x', 'Derivative of √x'), formula: '(√x)′ = 1 / (2√x)' },
+  abs: { name: L('Ableitung von |x|', 'Derivative of |x|'), formula: '(|x|)′ = x / |x|' },
   expA: { name: L('Ableitung von aˣ', 'Derivative of aˣ'), formula: '(aˣ)′ = aˣ · ln a' },
 };
 

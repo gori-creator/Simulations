@@ -123,4 +123,15 @@ describe('Modell: Ableitungsregeln – Kontrolle', () => {
       }
     }
   });
+
+  it('Betrag: (ln|x|)′ = 1/x und |u| lesen', () => {
+    const r = parse('ln(abs(x))');
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const d = derivative(r.e);
+    for (const x of [-2, -0.5, 0.7, 3]) expect(evaluate(d, x)).toBeCloseTo(1 / x, 10);
+    expect(toText(r.e)).toBe('ln(|x|)');
+    const b = parse('betrag(2x-1)');
+    expect(b.ok && evaluate(b.e, -1)).toBe(3);
+  });
 });

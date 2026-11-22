@@ -8,7 +8,7 @@
  * Alles ohne Zeichnen, geprüft in tests/ableitungsregeln.test.ts.
  */
 
-export type Fn = 'sin' | 'cos' | 'tan' | 'exp' | 'ln' | 'sqrt';
+export type Fn = 'sin' | 'cos' | 'tan' | 'exp' | 'ln' | 'sqrt' | 'abs';
 
 export type Expr =
   | { k: 'num'; v: number }
@@ -126,6 +126,8 @@ export function evaluate(e: Expr, x: number): number {
           return a > 0 ? Math.log(a) : NaN;
         case 'sqrt':
           return a >= 0 ? Math.sqrt(a) : NaN;
+        case 'abs':
+          return Math.abs(a);
       }
     }
   }
@@ -150,7 +152,7 @@ type Tok =
 
 export type ParseResult = { ok: true; e: Expr } | { ok: false; pos: number; msg: 'empty' | 'token' | 'paren' | 'end' | 'func' };
 
-const FN_NAMES: Record<string, Fn> = { sin: 'sin', cos: 'cos', tan: 'tan', exp: 'exp', ln: 'ln', sqrt: 'sqrt', wurzel: 'sqrt', root: 'sqrt', '√': 'sqrt' };
+const FN_NAMES: Record<string, Fn> = { sin: 'sin', cos: 'cos', tan: 'tan', exp: 'exp', ln: 'ln', sqrt: 'sqrt', wurzel: 'sqrt', root: 'sqrt', '√': 'sqrt', abs: 'abs', betrag: 'abs' };
 const SUPER: Record<string, string> = { '⁰': '0', '¹': '1', '²': '2', '³': '3', '⁴': '4', '⁵': '5', '⁶': '6', '⁷': '7', '⁸': '8', '⁹': '9', '⁻': '-' };
 
 function tokenize(src: string): Tok[] | { pos: number } {
@@ -204,7 +206,7 @@ function tokenize(src: string): Tok[] | { pos: number } {
       let k = 0;
       while (k < word.length) {
         const rest = word.slice(k);
-        const name = ['sqrt', 'wurzel', 'root', 'sin', 'cos', 'tan', 'exp', 'ln', 'pi'].find((n) => rest.startsWith(n));
+        const name = ['sqrt', 'wurzel', 'root', 'betrag', 'abs', 'sin', 'cos', 'tan', 'exp', 'ln', 'pi'].find((n) => rest.startsWith(n));
         if (name) {
           out.push({ t: 'id', v: name, p: i + k });
           k += name.length;
@@ -498,6 +500,7 @@ export type RuleId =
   | 'exp'
   | 'ln'
   | 'sqrt'
+  | 'abs'
   | 'expA'; // (a^x)′ = a^x · ln a
 
 export interface Part {
@@ -595,6 +598,12 @@ function go(e: Expr, depth: number, steps: Step[]): Expr {
     }
     case 'fn': {
       const a = e.a;
+      if (e.f === 'ln' && a.k === 'fn' && a.f === 'abs') {
+        // (ln|u|)′ = u′ / u
+        if (a.a.k === 'x') return record(steps, 'ln', e, [], div(num(1), X), depth);
+        const di = go(a.a, depth + 1, steps);
+        return record(steps, 'chain', e, [{ role: 'outer', expr: fn('ln', fn('abs', X)), d: div(num(1), X) }, { role: 'inner', expr: a.a, d: di }], div(di, a.a), depth);
+      }
       const outerD = basicDerivative(e.f, a);
       const rule: RuleId = e.f;
       if (a.k === 'x') return record(steps, rule, e, [], outerD, depth);
@@ -621,6 +630,9 @@ function basicDerivative(f: Fn, a: Expr): Expr {
       return div(num(1), a);
     case 'sqrt':
       return div(num(1), mul(num(2), fn('sqrt', a)));
+    case 'abs':
+      // (|u|)′ = u / |u| (für u ≠ 0)
+      return div(a, fn('abs', a));
   }
 }
 
@@ -751,6 +763,7 @@ export function toText(e: Expr, lang: 'de' | 'en' = 'de'): string {
     case 'fn': {
       if (e.f === 'exp') return `e^${wrap(t(e.a), prec(e.a) < 5 || e.a.k === 'fn')}`;
       if (e.f === 'sqrt') return `√${wrap(t(e.a), e.a.k !== 'x' && e.a.k !== 'num')}`;
+      if (e.f === 'abs') return `|${t(e.a)}|`;
       return `${e.f}(${t(e.a)})`;
     }
   }
