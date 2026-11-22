@@ -2,6 +2,8 @@
 
 Stand 22.11.2026. Grundlage: `docs/LEHRPLAN-LUECKEN.md` (407 Lernbereiche ohne Simulation in 14 Ländern, Mathematik und Physik am Gymnasium; Bayern Mathematik ist schon vollständig). Jeder dieser Lernbereiche steht unten an mindestens einer Stelle – so ist nach diesem Plan **jedes** Lehrplan-Thema abgedeckt.
 
+**Stand 22.11.2026, später:** Teil B ist erledigt (PR #184): 87 Lernbereiche haben jetzt eine vorhandene Simulation, offen sind noch 320 (`docs/LEHRPLAN-LUECKEN.md`). Einige Zeilen in Teil B wurden bewusst nicht eingetragen, weil der Inhalt in der Simulation fehlt (winkel-messen: Minuten/Sekunden, lorentzkraft: Hall-Effekt, geraden-ebenen: Scharen, brechung: Wellenmodell LK 13, teilchenmodell: innere Energie Kl. 11). Die ersten zehn Simulationen je Fach aus Teil A sind als Aufträge vergeben: `docs/agenten/AUFTRAG-LUECKEN-MATHE.md` und `docs/agenten/AUFTRAG-LUECKEN-PHYSIK.md`.
+
 **Entwurf:** Die Zuordnung ist ein Vorschlag (aus Titel und Kurzbeschreibung der Lernbereiche) und vor dem Eintragen in `src/curriculum/lehrplaene/` fachlich zu prüfen.
 
 | Teil | Was | Anzahl |
