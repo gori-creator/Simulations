@@ -491,13 +491,13 @@ const KS_10_UNITS: CurriculumUnit[] = [
         code: '3.2',
         title: L('Exponentialfunktionen', 'exponential functions'),
         summary: L('Exponentielles Wachstum, Monotonie, Verdopplungs- und Halbwertszeit, asymptotisches Verhalten und Parameter.', 'Exponential growth, monotonicity, doubling time and half-life, asymptotic behaviour and parameters.'),
-        simulations: ['exponentielles-wachstum', 'grenzverhalten', 'transformationen'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle', 'grenzverhalten', 'transformationen'],
       },
       {
         code: '3.3',
         title: L('Exponentialgleichungen', 'exponential equations'),
         summary: L('Exponentialgleichungen durch Probieren, grafisch und mit Logarithmen lösen.', 'Solving exponential equations by trial, graphically and with logarithms.'),
-        simulations: ['exponentielles-wachstum', 'logarithmus'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle', 'logarithmus'],
       },
       {
         code: '3.4',

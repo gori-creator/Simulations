@@ -1059,7 +1059,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Begriffe der Zinsrechnung erklären und die Formel für das Endkapital als exponentielles Wachstum nutzen und nach jeder Größe auflösen.",
                 "Explaining the terms of interest calculation and using the final-capital formula as exponential growth, solving it for each quantity.",
               ),
-              simulations: ["exponentielles-wachstum"],
+              simulations: ["exponentielles-wachstum", "wachstumsmodelle"],
             },
           ],
         },
@@ -1157,7 +1157,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
               ),
               simulations: [
                 "potenzfunktionen",
-                "exponentielles-wachstum",
+                "exponentielles-wachstum", "wachstumsmodelle",
                 "umkehrfunktion",
                 "transformationen",
               ],

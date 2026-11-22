@@ -418,7 +418,7 @@ const ZWEITE_STUFE_UNITS: CurriculumUnit[] = [
           'Anfangswert, Wachstumsfaktor und -rate, Verdopplungs- und Halbwertszeit, langfristige Entwicklung im Vergleich mit linearem Wachstum.',
           'Initial value, growth factor and rate, doubling time and half-life, long-term behaviour compared with linear growth.',
         ),
-        simulations: ['exponentielles-wachstum'],
+        simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
       },
       {
         code: '10.3',

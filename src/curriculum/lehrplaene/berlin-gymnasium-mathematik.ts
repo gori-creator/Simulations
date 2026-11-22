@@ -458,7 +458,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'einheitskreis',
       'potenzfunktionen',
       'hyperbel',
-      'exponentielles-wachstum',
+      'exponentielles-wachstum', 'wachstumsmodelle',
       'umkehrfunktion',
       'transformationen',
       'ganzrationale-funktionen',

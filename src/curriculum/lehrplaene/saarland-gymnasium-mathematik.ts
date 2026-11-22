@@ -289,7 +289,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '4',
     title: L('Wachstumsprozesse und Exponentialfunktionen (Teil I)', 'Growth processes and exponential functions (part I)'),
     summary: L('Lineares und exponentielles Wachstum, prozentuale Wachstumsrate, Halbwerts- und Verdopplungszeit, Exponentialgleichungen.', 'Linear and exponential growth, percentage growth rate, half-life and doubling time, exponential equations.'),
-    simulations: ['exponentielles-wachstum'],
+    simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: '5',

@@ -396,7 +396,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Lineares und exponentielles Wachstum unterscheiden, Exponentialfunktionen in Sachsituationen und ihre Darstellungen, Logarithmus als Umkehrung des Potenzierens.',
       'Telling linear and exponential growth apart, exponential functions in context and how to represent them, the logarithm as the inverse of taking powers.',
     ),
-    simulations: ['logarithmus', 'exponentielles-wachstum'],
+    simulations: ['logarithmus', 'exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: '10',
@@ -405,7 +405,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Exponentialfunktionen der Form f(x) = a · bˣ in Sachsituationen, Darstellungswechsel und Merkmale, Logarithmen mit dem Taschenrechner.',
       'Exponential functions of the form f(x) = a · bˣ in context, switching representations and features, logarithms on the calculator.',
     ),
-    simulations: ['logarithmus', 'exponentielles-wachstum'],
+    simulations: ['logarithmus', 'exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: '11',

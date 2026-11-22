@@ -2259,7 +2259,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Wachstums- und Zerfallsvorgänge mit Exponentialfunktionen beschreiben.',
                 'Describing growth and decay processes with exponential functions.',
               ),
-              simulations: ['exponentielles-wachstum'],
+              simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
             },
             {
               code: '4.2.5',
@@ -2452,7 +2452,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Parameter in f(x) = a·bˣ + c deuten, Halbwerts- und Verdopplungszeit, Modellieren mit Daten.',
                 'Interpreting parameters in f(x) = a·bˣ + c, half-life and doubling time, modelling with data.',
               ),
-              simulations: ['exponentielles-wachstum'],
+              simulations: ['exponentielles-wachstum', 'wachstumsmodelle'],
             },
             {
               code: 'E.4.2',
@@ -2728,7 +2728,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Exponentielles und begrenztes Wachstum mit Messdaten modellieren; Exponentialgleichungen lösen.',
                 'Modelling exponential and bounded growth with measured data; solving exponential equations.',
               ),
-              simulations: ['logarithmus'],
+              simulations: ['logarithmus', 'wachstumsmodelle'],
             },
             {
               code: 'Q1.3.4',
@@ -2749,6 +2749,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Logistische Wachstumsmodelle anwenden (ohne Herleitung aus der Differenzialgleichung).',
                 'Applying logistic growth models (without deriving them from the differential equation).',
               ),
+              simulations: ['wachstumsmodelle'],
             },
           ],
         },
@@ -2798,6 +2799,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Describing and developing models for growth and decay with differential equations',
               ),
               summary: L('Wachstumsannahmen in Differenzialgleichungen übersetzen.', 'Translating growth assumptions into differential equations.'),
+              simulations: ['wachstumsmodelle'],
             },
             {
               code: 'Q1.5.2',

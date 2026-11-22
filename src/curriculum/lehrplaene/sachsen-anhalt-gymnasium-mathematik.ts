@@ -449,7 +449,7 @@ const SJ_10_UNITS: CurriculumUnit[] = [
           'potenzfunktionen',
           'hyperbel',
           'ganzrationale-funktionen',
-          'exponentielles-wachstum',
+          'exponentielles-wachstum', 'wachstumsmodelle',
           'logarithmus',
           'einheitskreis',
           'sinusfunktion',
