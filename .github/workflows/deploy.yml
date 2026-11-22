@@ -1,4 +1,6 @@
-# Veröffentlicht die Website bei jedem Push auf "main" über GitHub Pages.
+# Veröffentlicht die Website über GitHub Pages – nur noch von Hand (Actions → „Veröffentlichen“ →
+# Run workflow). Die echte Seite läuft seit November 2026 auf STRATO (strato.yml); GitHub Pages
+# ist nicht eingerichtet, deshalb startet dieser Ablauf nicht mehr bei jedem Push auf "main".
 #
 # Einmalig nötig: Repository → Settings → Pages → Source: "GitHub Actions".
 #
@@ -7,8 +9,6 @@
 name: Veröffentlichen
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
