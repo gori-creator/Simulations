@@ -28,6 +28,8 @@ The content of this website, including the simulations, explanations and exercis
 
 This website contains links to external third-party websites whose content we have no influence on. The respective provider or operator is always responsible for that content. No legal violations were apparent at the time of linking. If we become aware of any infringements, we will remove the link immediately.
 
-## Copyright
+## Copyright and licence
 
-The simulations, texts, exercises, graphics, images and program code on this website are protected by copyright; all rights reserved. You are expressly welcome to use the website for teaching and learning and to share links. Any further reproduction, adaptation or distribution requires prior written permission. Third-party software components are subject to their own licences (see [lizenzen.txt](../../lizenzen.txt)).
+Scitura is open source and an open educational resource (OER). The program code is licensed under the [MIT licence](https://github.com/gori-creator/Simulations/blob/main/LICENSE); texts, exercises and images are licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/): you may copy, adapt and share them if you credit “Scitura (scitura.de), CC BY-SA 4.0” and share adaptations under the same licence. The name and logo “Scitura” are excluded. Details: [Contribute](../contribute/). Third-party software components are subject to their own licences (see [lizenzen.txt](../../lizenzen.txt)).
+
+Community simulations are marked as such and name their author. Please report mistakes or infringements via the [contact form](../contact/); we will check them promptly.

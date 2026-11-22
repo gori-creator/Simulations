@@ -118,6 +118,17 @@ const materialLabels = {
         </p>
         <h1>{sim.title[lang]}</h1>
         {sim.summary && <p class="lead">{sim.summary[lang]}</p>}
+        {
+          sim.community && (
+            <p class="sim-community">
+              <span class="badge badge--community">{t(lang, 'status.community')}</span>
+              <span>
+                {t(lang, 'status.communityBy', { author: sim.community.author })}{' '}
+                <a href={href(lang, { kind: 'page', page: 'contribute' })}>{t(lang, 'status.communityHow')}</a>
+              </span>
+            </p>
+          )
+        }
         <ul class="sim-hero__chips">
           <li>
             <a href={href(lang, { kind: 'area', subject: sim.subject, area: sim.area })}>{area.title[lang]}</a>

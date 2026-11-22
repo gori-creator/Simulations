@@ -14,6 +14,7 @@ Mathematics and physics are best understood by trying things out: change a param
 - **Sound content and good teaching** – with explanations, exercises and notes for teachers.
 - **Any device** – from phones to interactive whiteboards.
 - **Bilingual** – German first, English step by step.
+- **Open source and OER** – code, texts and images are openly licensed. Anyone can check, improve and contribute their own simulations: [Contribute](../contribute/).
 
 ## Roadmap
 
@@ -36,6 +37,6 @@ Feedback, bug reports and ideas are always welcome – simply use the [contact f
 
 ## Rights
 
-Simulations, texts, exercises and graphics are protected by copyright; all rights reserved. You are of course free to use the website for teaching and learning and to share links. For any other use, please ask via the contact form.
+The program code is licensed under the MIT licence; texts, exercises and images under CC BY-SA 4.0. You may use everything in class, put it on worksheets, adapt and share it – with the credit “Scitura (scitura.de), CC BY-SA 4.0”. The name and logo “Scitura” are excluded. The source code is on [GitHub](https://github.com/gori-creator/Simulations).
 
 Third-party software: [KaTeX](https://katex.org) (formula typesetting), [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (QR codes) and [Astro](https://astro.build) (site generator), each under the MIT licence. The licence texts are in [lizenzen.txt](../../lizenzen.txt).

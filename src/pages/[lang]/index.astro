@@ -7,6 +7,7 @@
 import HomeCarousel from '../../components/home/HomeCarousel.astro';
 import HomeCatalog from '../../components/home/HomeCatalog.astro';
 import HomeExperiment from '../../components/home/HomeExperiment.astro';
+import HomeGame from '../../components/home/HomeGame.astro';
 import HomeHero from '../../components/home/HomeHero.astro';
 import HomeSteps from '../../components/home/HomeSteps.astro';
 import { LANGS, type Lang } from '../../i18n/config';
@@ -54,6 +55,7 @@ const jsonLd = {
     <HomeExperiment lang={lang} />
     <HomeCarousel lang={lang} />
     <HomeSteps lang={lang} />
+    <HomeGame lang={lang} />
     <HomeCatalog lang={lang} />
   </div>
 </BaseLayout>

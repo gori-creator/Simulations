@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Kontaktformular (ohne GitHub)
+    url: https://scitura.de/de/kontakt/
+    about: Rückmeldungen, Fehler und Ideen auch ohne GitHub-Konto
+  - name: Sicherheitslücke melden
+    url: https://github.com/gori-creator/Simulations/blob/main/SECURITY.md
+    about: Bitte nicht öffentlich als Issue

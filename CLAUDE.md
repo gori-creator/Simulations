@@ -24,6 +24,7 @@ Interaktive MINT-Simulationen (Mathe/Physik, später Chemie) für Schulen. Stati
 - Offene Aufgaben: `docs/AUFGABEN.md`
 - Zusammenarbeit (wer macht was, Zweige, Pull Requests nach `main`): `docs/agenten/ZUSAMMENARBEIT.md`
 - **Qualitätssicherung (verbindlich für jede neue Simulation):** `docs/agenten/QUALITAETSSICHERUNG.md`
+- **Open Source:** Code MIT (`LICENSE`), Inhalte CC BY-SA 4.0 (`LICENSE-INHALTE.md`). Beiträge von außen: `CONTRIBUTING.md`, Anleitung mit Prompts `docs/MITMACHEN-SIMULATION.md`; Community-Simulationen tragen `community: { author }` im Lehrplan-Eintrag. Simulationen importieren nur aus `src/sim-core` und dem eigenen Ordner und benutzen kein Netzwerk/Speicher/`eval`/`innerHTML` (`tests/simulations-sicherheit.test.ts`).
 
 ## Konventionen
 

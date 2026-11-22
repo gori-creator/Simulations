@@ -36,6 +36,7 @@ const regionBadges = regionsOf(lang)
   data-sim-card
   data-subject={sim.subject}
   data-status={sim.status}
+  data-community={sim.community ? '' : undefined}
   data-grade-from={sim.grades[0]}
   data-grade-to={sim.uni ? Math.max(sim.grades[1], 14) : sim.grades[1]}
   data-search={searchText}
@@ -61,6 +62,7 @@ const regionBadges = regionsOf(lang)
         ))
       }
       {!ready && <span class="badge">{t(lang, 'status.planned')}</span>}
+      {sim.community && <span class="badge badge--community" title={t(lang, 'status.communityHint')}>{t(lang, 'status.community')}</span>}
     </div>
   </div>
 </article>
