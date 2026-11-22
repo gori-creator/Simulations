@@ -509,7 +509,7 @@ const S_12_UNITS: CurriculumUnit[] = [
       'Diskrete Zufallsgrößen, Binomialverteilung mit Erwartungswert, Standardabweichung und Sigma-Regeln; eA: Hypothesentests und Normalverteilung.',
       'Discrete random variables, the binomial distribution with expected value, standard deviation and sigma rules; eA: hypothesis tests and the normal distribution.',
     ),
-    simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung'],
+    simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung', 'konfidenzintervall'],
   },
   {
     code: '6',

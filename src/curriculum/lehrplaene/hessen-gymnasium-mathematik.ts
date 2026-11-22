@@ -3373,6 +3373,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q3.4.1',
               title: L('Prognoseintervalle für relative Häufigkeiten', 'Prediction intervals for relative frequencies'),
               summary: L('Erwartete Bereiche für Stichprobenergebnisse bestimmen.', 'Determining expected ranges for sample results.'),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.2',
@@ -3381,11 +3382,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen.',
                 'Estimating a range for the unknown probability from a sample.',
               ),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.3',
               title: L('Konfidenzdiagramme (Konfidenzellipse) (nur LK)', 'Confidence diagrams (confidence ellipse) (advanced course only)'),
               summary: L('Konfidenzbereiche grafisch darstellen.', 'Representing confidence regions graphically.'),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.4',
@@ -3394,6 +3397,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen.',
                 'Calculating the sample size needed for a confidence level.',
               ),
+              simulations: ['konfidenzintervall'],
             },
           ],
         },

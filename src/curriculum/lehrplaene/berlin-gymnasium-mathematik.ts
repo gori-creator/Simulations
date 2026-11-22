@@ -607,7 +607,7 @@ const Q34_UNITS: CurriculumUnit[] = [
           'Binomialverteilung mit Erwartungswert und Standardabweichung, k-σ-Intervalle und Signifikanzbegriff; LK: Hypothesentests mit Fehlern 1. und 2. Art, Glockenform der Normalverteilung.',
           'The binomial distribution with expected value and standard deviation, k-σ intervals and significance; LK: hypothesis tests with type I and type II errors, the bell shape of the normal distribution.',
         ),
-        simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung'],
+        simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung', 'konfidenzintervall'],
       },
       {
         code: 'Q4.3',

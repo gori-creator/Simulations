@@ -323,7 +323,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'S 3',
     title: L('Normalverteilungen (LK)', 'Normal distributions (LK)'),
     summary: L('LK: stetige Zufallsgrößen, Gaußsche Glockenkurve, Näherung der Binomialverteilung, σ-Umgebungen.', 'LK: continuous random variables, the Gaussian bell curve, approximating the binomial distribution, σ intervals.'),
-    simulations: ['normalverteilung'],
+    simulations: ['normalverteilung', 'konfidenzintervall'],
   },
   {
     code: 'LA/AG',

@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **315 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (105)
+## Mathematik (100)
 
 ### Baden-Württemberg · Gymnasium (7)
 
@@ -49,7 +49,7 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 | 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
-### Hessen · Gymnasium (54)
+### Hessen · Gymnasium (50)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -91,10 +91,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q2.4.4 | Matrizen zur Beschreibung von Übergangsprozessen › Bestimmen und Interpretieren von Matrixeinträgen bei Potenzen von Matrizen | Einträge von M² usw. im Kontext deuten. |
 | 12 | Q2.4.5 | Matrizen zur Beschreibung von Übergangsprozessen › Langfristige Entwicklung von Übergangsprozessen (nur LK) | Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren. |
 | 13 | Q3.3.2 | Hypothesentests › Grafische Darstellung der Wahrscheinlichkeiten für das Beibehalten beziehungsweise Verwerfen der Nullhypothese in Abhängigkeit vom wahren Wert der Trefferwahrscheinlichkeit p (nur LK) | Operationscharakteristik bzw. Gütefunktion darstellen und deuten. |
-| 13 | Q3.4.1 | Prognose- und Konfidenzintervalle › Prognoseintervalle für relative Häufigkeiten | Erwartete Bereiche für Stichprobenergebnisse bestimmen. |
-| 13 | Q3.4.2 | Prognose- und Konfidenzintervalle › Konfidenzintervalle für Wahrscheinlichkeiten | Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen. |
-| 13 | Q3.4.3 | Prognose- und Konfidenzintervalle › Konfidenzdiagramme (Konfidenzellipse) (nur LK) | Konfidenzbereiche grafisch darstellen. |
-| 13 | Q3.4.4 | Prognose- und Konfidenzintervalle › Stichprobenumfänge (nur LK) | Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen. |
 | 13 | Q3.5.3 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung | Seltene Ereignisse mit der Poisson-Verteilung berechnen. |
 | 13 | Q3.5.5 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung als Näherung der Binomialverteilung bei konstantem Erwartungswert (nur LK) | Grenzübergang für n → ∞ beweisen. |
 | 13 | Q3.5.6 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Weitere stetige Verteilungen (nur LK) | Z. B. die Exponentialverteilung. |
@@ -116,13 +112,12 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
 | 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
-### Nordrhein-Westfalen · Gymnasium (3)
+### Nordrhein-Westfalen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
 | 12/13 | Q-G.6 | Analytische Geometrie und Lineare Algebra (G) › Lineare Gleichungssysteme | Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten. |
-| 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
 ### Rheinland-Pfalz · Gymnasium (1)
 

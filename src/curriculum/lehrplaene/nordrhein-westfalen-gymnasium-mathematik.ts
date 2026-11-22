@@ -768,6 +768,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang.',
           'Advanced course only: prediction interval, confidence interval and required sample size.',
         ),
+        simulations: ['konfidenzintervall'],
       },
       {
         code: 'Q-S.6',
