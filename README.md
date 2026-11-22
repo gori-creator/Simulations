@@ -15,15 +15,9 @@ Kostenlose, interaktive Simulationen für den **Mathematik- und Physikunterricht
 
 ## Was die Seite kann
 
-- **Bibliothek entlang des Lehrplans:** Mathematik und Physik, gegliedert nach Themen (KMK-Bildungsstandards) und Klassenstufen (5–13, teils Uni). Alle geplanten Simulationen (aktuell 129, davon 93 in Mathematik) sind bereits im Katalog eingetragen und werden nach und nach umgesetzt.
-- **Nach Jahrgangsstufe:** Für Mathematik am bayerischen Gymnasium (LehrplanPLUS, Jgst. 5–13) gibt es eine Ansicht pro Jahrgangsstufe mit allen Lernbereichen und passenden Simulationen.
-- **Fertige Simulationen (20):**
-  - Mathematik – Zahlen und Terme: Bruchteile (Pizza, Kuchen, Strecke), binomische Formeln (animiertes Flächenmodell)
-  - Mathematik – Geometrie: Satz des Thales, Satz des Pythagoras (mit Puzzle-Beweis), Kreiszahl π (Abrollen, Umlegen, Archimedes)
-  - Mathematik – Funktionen: lineare Funktion, quadratische Funktion, Einheitskreis, allgemeine Sinusfunktion, exponentielles Wachstum
-  - Mathematik – Daten und Zufall: Gesetz der großen Zahlen, Ziegenproblem (spielbar), Monte-Carlo-Methode für π, Galtonbrett
-  - Mathematik – Analysis: von der Sekante zur Tangente, Ober- und Untersummen
-  - Physik: schiefer Wurf (Erde, Mond, Mars, Luftwiderstand), Fadenpendel, Energieerhaltung an der Achterbahn, Brechung und Totalreflexion
+- **129 fertige Simulationen** (93 Mathematik, 36 Physik) entlang der KMK-Bildungsstandards, Klassen 5–13 und teils Uni – von Bruchteilen und Satz des Pythagoras über Funktionen, Stochastik und Analysis bis zu Mechanik, Optik, Elektrizität, Schwingungen und Quantenphysik.
+- **Länder-Lehrpläne:** Gymnasium, Mathematik und Physik, für 14 Bundesländer (alle außer Thüringen und Mecklenburg-Vorpommern) – mit Ansicht nach Jahrgangsstufe und Lernbereich.
+- **Lernspiel Zahlenfabrik:** Fabrik-Spiel zum Rechnen für Klasse 5–9 mit über 30 Kapiteln, Tagesrätsel, eigenem Level-Baukasten und offener Welt (`src/spiele/`).
 - **Optionale Bilder:** Simulationen können Fotos nutzen (Liste mit Bild-Prompts in [`docs/BILDER.md`](docs/BILDER.md)); fehlt ein Bild, wird eine gezeichnete Ersatzgrafik verwendet.
 - **Regler, Schalter und ziehbare Punkte** – mit Maus, Stift oder Finger; Zoomen und Verschieben.
 - **Teilen per Link und QR-Code:** Jede Einstellung steckt in der Adresse. Optional mit **gesperrten Reglern** oder **verdeckten Ergebnissen** (Aufgabenmodus).

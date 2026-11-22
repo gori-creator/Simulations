@@ -42,11 +42,15 @@ Unter jeder Simulation finden Sie:
 
 Die Themen sind nach den **Bildungsstandards der Kultusministerkonferenz (KMK)** und nach Klassenstufen gegliedert. Bei jeder Simulation sehen Sie die passende Klassenstufe und die Bezüge zu Leitideen bzw. Kompetenzbereichen.
 
-Über den Knopf **Bundesland** (Ortsmarke) oben rechts lässt sich zusätzlich ein **Bundesland** wählen. Dann sind die Fachseiten nach den Jahrgangsstufen des jeweiligen Lehrplans sortiert, und bei jeder Simulation steht der passende Bezug zum Landeslehrplan. Bisher sind Lehrpläne für das Gymnasium in Mathematik und Physik eingetragen; weitere Länder und Schularten folgen. Das Lernmaterial selbst ist bewusst neutral gehalten und nennt nur ungefähre Klassenstufen.
+Über den Knopf **Bundesland** (Ortsmarke) oben rechts lässt sich zusätzlich ein **Bundesland** wählen. Dann sind die Fachseiten nach den Jahrgangsstufen des jeweiligen Lehrplans sortiert, und bei jeder Simulation steht der passende Bezug zum Landeslehrplan. Eingetragen sind die Gymnasial-Lehrpläne in Mathematik und Physik von 14 Bundesländern (alle außer Thüringen und Mecklenburg-Vorpommern); weitere Länder und Schularten folgen. Das Lernmaterial selbst ist bewusst neutral gehalten und nennt nur ungefähre Klassenstufen.
+
+## Material weiterverwenden
+
+Alle Texte, Aufgaben und Bilder stehen unter der freien Lizenz **CC BY-SA 4.0** (offene Bildungsressource, OER). Sie dürfen sie in Arbeitsblätter, Präsentationen und Lernplattformen übernehmen und verändern. Bitte nennen Sie dabei die Quelle, z. B. „Scitura (scitura.de), CC BY-SA 4.0“. Mehr dazu und wie Sie selbst mitmachen können: [Mitmachen](../mitmachen/).
 
 ## Datenschutz
 
-Die Seite speichert keine personenbezogenen Daten und setzt keine Cookies. Im Browser werden lediglich das gewählte Farbschema (hell/dunkel), die Sprache und gegebenenfalls das gewählte Bundesland gespeichert sowie – für die Offline-Nutzung – die Seiten selbst zwischengespeichert. Mehr dazu in der [Datenschutzerklärung](../datenschutz/).
+Die Seite speichert keine personenbezogenen Daten und setzt keine Cookies. Im Browser werden lediglich Einstellungen (Farbschema, Sprache, Bundesland), abgehakte Ausprobier-Schritte und der Spielstand der Zahlenfabrik gespeichert sowie – für die Offline-Nutzung – die Seiten selbst zwischengespeichert. Nichts davon wird übertragen. Mehr dazu in der [Datenschutzerklärung](../datenschutz/).
 
 ## Feedback und Wünsche
 

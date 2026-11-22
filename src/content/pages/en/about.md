@@ -18,10 +18,18 @@ Mathematics and physics are best understood by trying things out: change a param
 
 ## Roadmap
 
-1. **Secondary school mathematics and physics**, step by step along the German educational standards. All planned simulations are already listed in the catalogue.
-2. **Chemistry.**
+Already there:
+
+- **Secondary school mathematics and physics** – 129 simulations along the German educational standards, each with learning material and exercises.
+- **State curricula** – mapping to the Gymnasium curricula of 14 German states; choose your state via the federal state button at the top.
+- **Learning game** – the [Number Factory](../number-factory/) for grades 5–9.
+
+Next:
+
+1. **Chemistry.**
+2. **More curricula** – Thuringia, Mecklenburg-Western Pomerania and other school types.
 3. **University** – advanced simulations, e.g. Fourier series, differential equations and linear algebra.
-4. **State curricula** – mapping simulations to the curricula of individual German states, the state can be chosen via the federal state button at the top.
+4. **Community simulations** – see [Contribute](../contribute/).
 
 ## Technology
 

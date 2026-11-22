@@ -32,8 +32,12 @@ Two extra options turn any setup into an exercise:
 
 Topics are organised by grade and aligned with the German national educational standards (KMK). Each simulation shows its grade level and the related competences.
 
-Using the **federal state** button (location pin) at the top right you can also choose a **German state**. The subject pages are then sorted by the grades of that state’s curriculum, and each simulation shows the matching reference to the state curriculum. So far, curricula for the Gymnasium in mathematics and physics are included; more states and school types will follow. The learning material itself is deliberately neutral and only gives approximate grade levels.
+Using the **federal state** button (location pin) at the top right you can also choose a **German state**. The subject pages are then sorted by the grades of that state’s curriculum, and each simulation shows the matching reference to the state curriculum. The Gymnasium curricula for mathematics and physics of 14 German states are included (all except Thuringia and Mecklenburg-Western Pomerania); more states and school types will follow. The learning material itself is deliberately neutral and only gives approximate grade levels.
+
+## Reusing the material
+
+All texts, exercises and images are licensed under **CC BY-SA 4.0** (open educational resource, OER). You may put them on worksheets, slides and learning platforms and adapt them. Please credit the source, e.g. “Scitura (scitura.de), CC BY-SA 4.0”. More on this and how to contribute: [Contribute](../contribute/).
 
 ## Privacy
 
-The site stores no personal data and sets no cookies. Only your colour scheme, your language choice, your chosen German state (if any) and – for offline use – the pages themselves are stored in your browser. See the [privacy policy](../privacy/).
+The site stores no personal data and sets no cookies. Only settings (colour scheme, language, German state), ticked “Try it” steps and your Number Factory progress are stored in your browser, plus – for offline use – the pages themselves. None of this is transmitted. See the [privacy policy](../privacy/).

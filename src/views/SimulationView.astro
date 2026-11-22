@@ -50,6 +50,9 @@ const toc = rendered?.headings.filter((h) => h.depth === 2) ?? [];
 // Kopfbereich: Bannerbild des Bereichs (docs/BEREICHSBILDER.md), sonst das Vorschaubild der Simulation
 const banner = await bannerStyle(sim.area);
 const preview = banner ? null : previewFile(simId);
+// Vorschaubild beim Teilen: das Bild der Simulation im Format 1200 × 630
+const ogFile = previewFile(simId);
+const ogImg = ogFile ? await getImage({ src: (await ogFile()).default, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 }) : null;
 const previewImg = preview ? await getImage({ src: (await preview()).default, width: 720, height: 405, fit: 'cover', format: 'webp', quality: 80 }) : null;
 
 // Anzahl der Aufgaben: Unterüberschriften im dritten Abschnitt („Aufgaben“)
@@ -97,6 +100,7 @@ const materialLabels = {
   title={`${sim.title[lang]} – ${lang === 'de' ? 'Interaktive Simulation' : 'Interactive simulation'}`}
   description={entry?.data.description ?? sim.summary?.[lang]}
   jsonLd={jsonLd}
+  ogImage={ogImg?.src}
   alternates={alternates({ kind: 'simulation', id: simId })}
   section={sim.subject}
   stylesheets={[katexCss]}

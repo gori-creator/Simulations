@@ -34,7 +34,9 @@ Weitere Informationen finden Sie in der Datenschutzerklärung von STRATO: [strat
 
 Auf Ihrem Gerät werden – ausschließlich lokal und ohne Übertragung an uns – gespeichert:
 
-- das gewählte **Farbschema** (hell/dunkel), die gewählte **Sprache** und gegebenenfalls das gewählte **Bundesland** (im „Local Storage“ des Browsers),
+- das gewählte **Farbschema** (hell/dunkel), die gewählte **Sprache**, gegebenenfalls das gewählte **Bundesland** und die gewählte **Ansicht der Fachseiten** (im „Local Storage“ des Browsers),
+- welche Schritte unter „Ausprobieren“ Sie bei einer Simulation **abgehakt** haben,
+- der **Spielstand der Zahlenfabrik** (geschaffte Level und Sterne, die offene Welt, eigene Einstellungen wie Ton und Ansicht, welche Erklärungen schon gezeigt wurden; ebenfalls im „Local Storage“),
 - der **Spielstand im KI-Abenteuer** (geschaffte Lektionen, Sterne, Punkte, Abzeichen; ebenfalls im „Local Storage“, löschbar über „Spielstand löschen“),
 - ein noch nicht abgeschickter **Entwurf im Kontaktformular** (ebenfalls im „Local Storage“; er wird mit „Formular leeren“ gelöscht),
 - eine **Kopie der Seiten** (über einen „Service Worker“), damit die Simulationen auch offline funktionieren.
@@ -45,7 +47,13 @@ Diese Speicherung ist für die von Ihnen gewünschten Funktionen unbedingt erfor
 
 Das Kontaktformular überträgt keine Daten an uns oder an Dritte. Es setzt Ihre Angaben zu einer Nachricht zusammen und öffnet damit Ihr eigenes E-Mail-Programm. Erst wenn Sie die E-Mail dort abschicken, erhalten wir sie (das Postfach liegt bei STRATO), mit den Angaben, die Sie eingetragen haben. Alle Angaben außer der Nachricht selbst sind freiwillig; ohne Absenderadresse können wir allerdings nicht antworten. Technische Angaben (Browser, Bildschirmgröße) werden nur angehängt, wenn Sie das ankreuzen.
 
+**Öffentlich auf GitHub melden (freiwillig):** Für Fehlerberichte und Ideen bietet das Formular zusätzlich einen Knopf, der eine vorausgefüllte Meldung auf GitHub öffnet. Dabei wird nichts automatisch gesendet: Sie landen auf der Seite von GitHub (GitHub, Inc., USA) und entscheiden dort selbst, ob Sie die Meldung mit Ihrem GitHub-Konto abschicken. Dann ist sie **öffentlich sichtbar**, und es gilt die [Datenschutzerklärung von GitHub](https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement); GitHub verarbeitet Daten auch in den USA. Wenn Sie das nicht möchten, nutzen Sie einfach den Weg per E-Mail.
+
 Wir verwenden Ihre Nachricht nur, um Ihr Anliegen zu bearbeiten und Ihnen gegebenenfalls zu antworten. **Rechtsgrundlage** ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen und der Verbesserung der Website). Die E-Mail wird gelöscht, sobald sie erledigt ist und keine Aufbewahrungspflichten entgegenstehen.
+
+## Links zu anderen Websites
+
+Die Seite verlinkt auf andere Websites, zum Beispiel auf den Quellcode bei GitHub, auf die Lehrpläne der Bundesländer und auf die Creative-Commons-Lizenz. Erst wenn Sie einen solchen Link anklicken, verbindet sich Ihr Browser mit der anderen Website; dort gilt deren Datenschutzerklärung.
 
 ## Einstellungen in Links
 
@@ -69,4 +77,4 @@ Eine formlose Nachricht an kontakt@scitura.de genügt.
 
 Eine automatisierte Entscheidungsfindung einschließlich Profiling findet nicht statt.
 
-Stand: Oktober 2026
+Stand: November 2026

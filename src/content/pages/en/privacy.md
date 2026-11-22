@@ -32,13 +32,19 @@ For more information, see STRATO's privacy policy: [strato.de/datenschutz](https
 
 ## Storage in your browser
 
-Only on your device – never sent to us – the site stores your **colour scheme**, **language** and, if chosen, your **German state**, your **AI Adventure progress** (lessons, stars, points, badges), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
+Only on your device – never sent to us – the site stores your **colour scheme**, **language**, if chosen your **German state** and **subject page view**, which **“Try it” steps** you ticked, your **Number Factory progress** (levels, stars, open world, settings such as sound and view, which explanations were shown), your **AI Adventure progress** (lessons, stars, points, badges), an unsent **contact form draft** (local storage) and a **copy of the pages** (service worker) for offline use. This storage is strictly necessary for the functions you request (§ 25(2) no. 2 TDDDG), so no consent is required. You can delete this data at any time in your browser settings.
 
 ## Contact form
 
 The contact form does not transmit any data to us or to third parties. It puts your entries together into a message and opens your own email program. We only receive it once you send the email from there (the mailbox is hosted at STRATO), with the details you entered. Everything except the message itself is optional; without a sender address, however, we cannot reply. Technical details (browser, screen size) are only attached if you tick the box.
 
+**Report publicly on GitHub (optional):** For bug reports and ideas, the form also offers a button that opens a pre-filled report on GitHub. Nothing is sent automatically: you land on GitHub's site (GitHub, Inc., USA) and decide there whether to submit the report with your GitHub account. It is then **publicly visible**, and [GitHub's privacy statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement) applies; GitHub also processes data in the USA. If you don't want that, simply use email.
+
 We use your message only to handle your request and, if wished, to reply. The **legal basis** is Art. 6(1)(f) GDPR (legitimate interest in answering requests and improving the website). The email is deleted once it has been dealt with, unless retention obligations apply.
+
+## Links to other websites
+
+The site links to other websites, for example to the source code on GitHub, to the curricula of the German states and to the Creative Commons licence. Only when you click such a link does your browser connect to the other website; its privacy policy then applies.
 
 ## Settings in links
 
@@ -62,4 +68,4 @@ An informal message to kontakt@scitura.de is sufficient.
 
 No automated decision-making, including profiling, takes place.
 
-Last updated: October 2026
+Last updated: November 2026
