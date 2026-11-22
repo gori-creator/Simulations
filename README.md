@@ -87,10 +87,8 @@ Bei jedem Push auf `main` baut `.github/workflows/deploy.yml` die Seite und ver�
 
 Der Basis-Pfad (z. B. `/Simulations/`) wird automatisch gesetzt. Für andere Anbieter genügt `npm run build` und das Hochladen von `dist/`; über die Umgebungsvariablen `SITE_URL` und `BASE_PATH` lassen sich Domain und Unterpfad festlegen.
 
-**Vor dem Veröffentlichen:** Impressum und Datenschutzerklärung (`src/content/pages/de/imprint.md`, `privacy.md`) sind Vorlagen und müssen mit echten Angaben ergänzt und geprüft werden.
+## Stand der Entscheidungen
 
-## Offene Entscheidungen
-
-- **Lizenz:** Open Source und OER – Code unter [MIT](LICENSE), Texte, Aufgaben und Bilder unter [CC BY-SA 4.0](LICENSE-INHALTE.md); Name und Logo „Scitura“ ausgenommen. Fremde Bestandteile (KaTeX, qrcode-generator, Astro; MIT) stehen in `public/lizenzen.txt`.
-- **Name und Domain** des Projekts.
-- **Weitere Länder-Lehrpläne:** Bayern (Gymnasium, Mathematik) ist hinterlegt; Physik und andere Bundesländer bzw. Schularten folgen.
+- **Lizenz (entschieden 20.11.2026):** Open Source und OER – Code unter [MIT](LICENSE), Texte, Aufgaben und Bilder unter [CC BY-SA 4.0](LICENSE-INHALTE.md); Name und Logo „Scitura“ ausgenommen. Fremde Bestandteile (KaTeX, qrcode-generator, Astro; MIT) stehen in `public/lizenzen.txt`.
+- **Name und Domain (entschieden 27.10.2026):** Scitura, <https://scitura.de> (Hosting bei STRATO).
+- **Länder-Lehrpläne:** 14 von 16 Bundesländern sind hinterlegt (Gymnasium, Mathematik und Physik). Offen: Thüringen und Mecklenburg-Vorpommern (zurückgestellt), später andere Schularten.
