@@ -1519,6 +1519,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'integrationsregeln',
+            status: 'ready',
+            slug: L('integrationsregeln-werkstatt', 'integration-rules-workshop'),
+            title: L('Integrationsregeln: die Werkstatt', 'Integration rules: the workshop'),
+            summary: L(
+              'Term eingeben und Stammfunktion finden: Potenz-, Summen- und Faktorregel, lineare Substitution, Substitution und partielle Integration Schritt für Schritt – mit Formansatz, Probe durch Ableiten und der Fläche F(b) − F(a) im Graphen.',
+              'Enter a term and find an antiderivative: power, sum and constant multiple rule, linear substitution, substitution and integration by parts step by step – with an ansatz, a check by differentiating and the area F(b) − F(a) in the graph.',
+            ),
+            grades: [11, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Integrationsregeln', 'Stammfunktion', 'unbestimmtes Integral', 'bestimmtes Integral', 'Integrationskonstante', 'Potenzregel', 'Summenregel', 'Faktorregel', 'lineare Substitution', 'Substitution', 'partielle Integration', 'logarithmische Integration', 'Formansatz', 'Koeffizientenvergleich', 'Hauptsatz', 'F(b) − F(a)', 'Probe durch Ableiten', 'ln|x|'],
+              ['integration rules', 'antiderivative', 'indefinite integral', 'definite integral', 'constant of integration', 'power rule', 'sum rule', 'constant multiple rule', 'linear substitution', 'substitution', 'integration by parts', 'logarithmic integration', 'ansatz', 'comparing coefficients', 'fundamental theorem', 'F(b) − F(a)', 'check by differentiating', 'ln|x|'],
+            ),
+          },
+          {
             id: 'aenderungsrate',
             status: 'ready',
             slug: L('integral-gesamtaenderung', 'integral-total-change'),

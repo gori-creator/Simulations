@@ -851,7 +851,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'gA-2.2',
         title: L('Stammfunktion', 'Antiderivative'),
         summary: L('Stammfunktionen angeben, entwickeln und mit den Ableitungsregeln prüfen.', 'Stating, developing and checking antiderivatives with the rules of differentiation.'),
-        simulations: ['stammfunktion-grafisch'],
+        simulations: ['stammfunktion-grafisch', 'integrationsregeln'],
       },
     ],
   },
@@ -947,7 +947,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'eA-1.2',
         title: L('Integral- und Stammfunktion', 'Integral function and antiderivative'),
         summary: L('Integralfunktion als Bestands- oder Flächeninhaltsfunktion, Stammfunktionen einschließlich ln.', 'The integral function as accumulation or area function, antiderivatives including ln.'),
-        simulations: ['stammfunktion-grafisch', 'hauptsatz'],
+        simulations: ['stammfunktion-grafisch', 'hauptsatz', 'integrationsregeln'],
       },
       {
         code: 'eA-1.3',

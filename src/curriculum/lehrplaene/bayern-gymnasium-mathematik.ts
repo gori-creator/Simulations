@@ -575,7 +575,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Funktionenscharen untersuchen und vom Graphen auf eine Stammfunktion schließen.',
                 'Investigating families of functions and sketching an antiderivative from a graph.',
               ),
-              simulations: ['funktionenscharen', 'stammfunktion-grafisch'],
+              simulations: ['funktionenscharen', 'stammfunktion-grafisch', 'integrationsregeln'],
             },
             {
               code: '1.2',
@@ -671,7 +671,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Integral als Flächenbilanz, Integralfunktion und Hauptsatz, Flächen zwischen Graphen, uneigentliche Integrale, Gesamtänderung und Rotationskörper.',
             'The integral as signed area, integral functions and the fundamental theorem, areas between graphs, improper integrals, total change and solids of revolution.',
           ),
-          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+          simulations: ['ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
         },
         {
           code: '2',

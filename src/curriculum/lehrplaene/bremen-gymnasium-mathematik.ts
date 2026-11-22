@@ -299,7 +299,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'A 2',
     title: L('Einführung in die Integralrechnung', 'Introduction to integral calculus'),
     summary: L('Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz, Stammfunktionen; LK: Ober- und Untersummen, Mittelwerte, Rotationskörper.', 'The integral as reconstructed total and area, the fundamental theorem, antiderivatives; LK: upper and lower sums, mean values, solids of revolution.'),
-    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'A 3',

@@ -538,7 +538,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Bestände aus Änderungsraten rekonstruieren, Flächen mit bestimmten Integralen, Hauptsatz geometrisch begründen, Stammfunktionen; LK: ln als Stammfunktion von 1/x, uneigentliche Integrale und Rotationskörper.',
           'Reconstructing totals from rates of change, areas with definite integrals, justifying the fundamental theorem geometrically, antiderivatives; LK: ln as an antiderivative of 1/x, improper integrals and solids of revolution.',
         ),
-        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion'],
+        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion', 'integrationsregeln'],
       },
       {
         code: 'Q2.2',

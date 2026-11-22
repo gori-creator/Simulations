@@ -469,7 +469,7 @@ const S_11_UNITS: CurriculumUnit[] = [
       'Sinus- und Kosinusfunktionen mit Parametern in Sachsituationen, ihre Ableitungen und Stammfunktionen, Produkt- und Kettenregel, Flächeninhalte.',
       'Sine and cosine functions with parameters in context, their derivatives and antiderivatives, the product and chain rules, areas.',
     ),
-    simulations: ['sinusfunktion', 'transformationen', 'ableitungsregeln'],
+    simulations: ['sinusfunktion', 'transformationen', 'ableitungsregeln', 'integrationsregeln'],
   },
   {
     code: '2',

@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **314 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **308 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (99)
+## Mathematik (93)
 
 ### Baden-Württemberg · Gymnasium (4)
 
@@ -46,7 +46,7 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 | 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
-### Hessen · Gymnasium (51)
+### Hessen · Gymnasium (45)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -61,16 +61,10 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.1.3 | Funktionen und ihre Darstellung › Modellieren von Realsituationen durch geeignete Funktionsklassen | Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
-| 12 | Q1.1.4 | Einführung in die Integralrechnung › Entwickeln der Integrationsregeln mithilfe der Ableitungsregeln | Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel. |
-| 12 | Q1.1.5 | Einführung in die Integralrechnung › Integrieren von e^(ax+b), sin[b·(x − c)], cos[b·(x − c)] | Stammfunktionen von linear verketteten Funktionen bestimmen. |
-| 12 | Q1.1.6 | Einführung in die Integralrechnung › Integrieren von (ax + b)^r mit r ∈ ℚ \ {−1}, Integrieren von g(x) = f′(x)·e^f(x) (nur LK) | Weitere Stammfunktionen über die Umkehrung der Kettenregel. |
 | 12 | Q1.2.1 | Anwendungen der Integralrechnung › Flächeninhaltsberechnung | Flächen zwischen Graphen und Achsenparallelen berechnen, auch rückwärts (Grenze oder Parameter gesucht). |
 | 12 | Q1.2.3 | Anwendungen der Integralrechnung › Argumentieren und Begründen anhand von Integral-Termen | Integralausdrücke im Sachzusammenhang deuten und Aussagen begründen. |
 | 12 | Q1.2.5 | Anwendungen der Integralrechnung › Uneigentliche Integrale (nur LK) | Unendlich ausgedehnte Flächen auf endlichen Inhalt untersuchen. |
 | 12 | Q1.3.5 | Vertiefung der Differenzial- und Integralrechnung › Logistisches Wachstum (nur LK) | Logistische Wachstumsmodelle anwenden (ohne Herleitung aus der Differenzialgleichung). |
-| 12 | Q1.4.1 | Integrationsmethoden › Ermitteln einer Stammfunktion durch Formansatz mit Koeffizientenvergleich | Stammfunktion mit passendem Ansatz und Koeffizientenvergleich bestimmen. |
-| 12 | Q1.4.2 | Integrationsmethoden › Partielle Integration (nur LK) | Produktintegrale mit partieller Integration lösen. |
-| 12 | Q1.4.3 | Integrationsmethoden › Integration durch Substitution (nur LK) | Integrale durch Substitution vereinfachen. |
 | 12 | Q1.5.1 | Gewöhnliche Differenzialgleichungen › Beschreiben und Entwickeln von Modellen für Wachstums- und Zerfallsprozesse mithilfe von Differenzialgleichungen | Wachstumsannahmen in Differenzialgleichungen übersetzen. |
 | 12 | Q1.5.2 | Gewöhnliche Differenzialgleichungen › Lösungsverfahren für Differenzialgleichungen erster Ordnung | Richtungsfelder, Trennung der Variablen und weitere elementare Methoden. |
 | 12 | Q1.5.3 | Gewöhnliche Differenzialgleichungen › Untersuchen von Differenzialgleichungen zweiter Ordnung (nur LK) | Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen. |
