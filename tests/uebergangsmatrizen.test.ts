@@ -88,6 +88,15 @@ describe('Modell: Übergangsmatrizen – stabile Verteilung', () => {
     const far = stateAt(CUSTOMERS, [400, 350, 250], 200)!;
     expect(far[0]).toBeCloseTo(437.5, 6);
   });
+  it('Pfadregel: alle Wege über drei Schritte ergeben genau den Eintrag von M³ (Kunden)', () => {
+    const m3 = matPow(CUSTOMERS, 3)!;
+    for (let j = 0; j < 3; j++)
+      for (let i = 0; i < 3; i++) {
+        const sum = paths(CUSTOMERS, j, i, 3).reduce((s, q) => s + q.p, 0);
+        expect(sum, `${j} → ${i}`).toBeCloseTo(m3[i]![j]!, 12);
+      }
+    expect(paths(CUSTOMERS, 0, 0, 3).length).toBe(9);
+  });
   it('Grenzmatrix einer regulären Kette hat gleiche Spalten', () => {
     const lim = limitMatrix(WEATHER)!;
     for (const row of lim) expect(row[0]).toBeCloseTo(row[1]!, 9);
