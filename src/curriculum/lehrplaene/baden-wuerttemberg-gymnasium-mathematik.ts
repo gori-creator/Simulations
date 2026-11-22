@@ -849,6 +849,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden.",
                 "Writing numbers in scientific notation, interpreting powers with rational exponents as roots, and justifying and applying the laws of exponents.",
               ),
+              simulations: ['potenzgesetze'],
             },
             {
               code: "3.3.1 (4)–(15)",
@@ -1039,6 +1040,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden.",
                 "Writing numbers in scientific notation, interpreting powers with rational exponents as roots, and justifying and applying the laws of exponents.",
               ),
+              simulations: ['potenzgesetze'],
             },
             {
               code: "3.3.1 (4)–(15)",

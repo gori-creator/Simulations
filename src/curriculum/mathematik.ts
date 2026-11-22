@@ -198,6 +198,22 @@ export const mathematik: Subject = {
               ['square root', 'root', 'Heron’s method', 'Babylonian method', 'nested intervals', 'approximation', 'irrational number', 'real numbers', 'radicand', 'perfect square', 'simplifying roots', 'root 2', 'proof by contradiction', 'diagonal'],
             ),
           },
+          {
+            id: 'potenzgesetze',
+            status: 'ready',
+            slug: L('potenzgesetze-wurzelgesetze', 'laws-of-exponents-roots'),
+            title: L('Potenz- und Wurzelgesetze', 'Laws of exponents and roots'),
+            summary: L(
+              'Faktor-Kacheln zeigen, warum aᵐ · aⁿ = aᵐ⁺ⁿ gilt, wie sich beim Teilen Faktoren wegkürzen und woher a⁰ = 1 und negative Exponenten kommen. Gebrochene Exponenten werden zu Wurzeln, ein Termumformer nennt bei jedem Schritt das Gesetz.',
+              'Factor tiles show why aᵐ · aⁿ = aᵐ⁺ⁿ holds, how factors cancel when dividing and where a⁰ = 1 and negative exponents come from. Fractional exponents become roots, and a term simplifier names the law at every step.',
+            ),
+            grades: [8, 10],
+            kmk: ['M-L1', 'M-L2', 'M-K5', 'M-K1'],
+            keywords: L(
+              ['Potenzgesetze', 'Wurzelgesetze', 'Potenz', 'Basis', 'Exponent', 'Hochzahl', 'negativer Exponent', 'Exponent null', 'gebrochener Exponent', 'rationaler Exponent', 'n-te Wurzel', 'Kubikwurzel', 'Terme vereinfachen', 'Potenzen multiplizieren', 'Potenzen dividieren', 'Potenz potenzieren', 'Primfaktoren'],
+              ['laws of exponents', 'laws of roots', 'power', 'base', 'exponent', 'negative exponent', 'zero exponent', 'fractional exponent', 'rational exponent', 'n-th root', 'cube root', 'simplifying terms', 'multiplying powers', 'dividing powers', 'power of a power', 'prime factors'],
+            ),
+          },
         ]),
       ],
     }),

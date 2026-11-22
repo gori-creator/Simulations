@@ -1071,6 +1071,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Potenzschreibweise auf negative und gebrochene Exponenten ausweiten.',
                 'Extending power notation to negative and fractional exponents.',
               ),
+              simulations: ['potenzgesetze'],
             },
             {
               code: '1.2.4',
@@ -1514,6 +1515,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Potenzschreibweise auf negative und gebrochene Exponenten ausweiten.',
                 'Extending power notation to negative and fractional exponents.',
               ),
+              simulations: ['potenzgesetze'],
             },
             {
               code: '1.2.4',

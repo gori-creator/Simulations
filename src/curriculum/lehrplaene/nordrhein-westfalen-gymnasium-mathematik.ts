@@ -382,6 +382,7 @@ const ZWEITE_STUFE_UNITS: CurriculumUnit[] = [
         code: '9.3',
         title: L('Gesetze und Regeln', 'Laws and rules'),
         summary: L('Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise.', 'Laws of exponents and of roots, root and power notation.'),
+        simulations: ['potenzgesetze'],
       },
       {
         code: '9.4',

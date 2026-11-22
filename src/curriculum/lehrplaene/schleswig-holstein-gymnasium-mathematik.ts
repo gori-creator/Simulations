@@ -254,7 +254,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
         code: '1.6',
         title: L('Potenzen', 'powers'),
         summary: L('Potenzgesetze, negative und gebrochene Exponenten und die wissenschaftliche Schreibweise.', 'Laws of exponents, negative and fractional exponents and scientific notation.'),
-        simulations: ['zehnerpotenzen'],
+        simulations: ['zehnerpotenzen', 'potenzgesetze'],
       },
     ],
   },

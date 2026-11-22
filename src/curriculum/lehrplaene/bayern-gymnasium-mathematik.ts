@@ -321,7 +321,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Mit Bruchtermen rechnen, Potenzgesetze für ganzzahlige Exponenten, Bruchgleichungen lösen und als Schnittproblem von Graphen deuten, Formeln umstellen.',
             'Calculating with algebraic fractions, laws of exponents for integer exponents, solving fractional equations and interpreting them as intersections of graphs, rearranging formulas.',
           ),
-          simulations: ['gleichungen-grafisch'],
+          simulations: ['gleichungen-grafisch', 'potenzgesetze'],
         },
         {
           code: '5',
@@ -414,7 +414,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Graphen von y = a · xⁿ und ihre Symmetrie, allgemeine Wurzel, Potenzen mit rationalen Exponenten.',
             'Graphs of y = a · xⁿ and their symmetry, nth roots, powers with rational exponents.',
           ),
-          simulations: ['potenzfunktionen'],
+          simulations: ['potenzfunktionen', 'potenzgesetze'],
         },
         {
           code: '6',

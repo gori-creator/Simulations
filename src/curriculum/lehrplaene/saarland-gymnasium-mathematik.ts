@@ -240,7 +240,7 @@ const KS_9_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Quadratwurzeln und reelle Zahlen', 'Square roots and real numbers'),
     summary: L('Quadratwurzeln, Heron- und Intervallhalbierungsverfahren, Intervallschachtelung, irrationale und reelle Zahlen, Wurzelgesetze.', 'Square roots, Heron’s method and bisection, nested intervals, irrational and real numbers, laws of roots.'),
-    simulations: ['quadratwurzel'],
+    simulations: ['quadratwurzel', 'potenzgesetze'],
   },
   {
     code: '3',

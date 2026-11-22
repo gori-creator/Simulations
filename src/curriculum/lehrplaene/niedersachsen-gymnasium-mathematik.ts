@@ -669,7 +669,7 @@ const DJ_9_10: CurriculumUnit[] = [
         code: '20.3',
         title: L('Mit Potenzen rechnen', 'Calculating with powers'),
         summary: L('Potenzgesetze begründen, Gleichungen auch durch Logarithmieren lösen.', 'Justifying laws of exponents, solving equations also by taking logarithms.'),
-        simulations: ['logarithmus'],
+        simulations: ['logarithmus', 'potenzgesetze'],
       },
     ],
   },

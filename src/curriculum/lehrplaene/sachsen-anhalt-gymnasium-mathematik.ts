@@ -365,7 +365,7 @@ const SJ_9_UNITS: CurriculumUnit[] = [
           'Potenz-, Wurzel- und Logarithmengesetze anwenden, die drei Schreibweisen ineinander übersetzen und Zahlen mit abgetrennten Zehnerpotenzen schreiben.',
           'Applying the laws of powers, roots and logarithms, translating between the three notations and writing numbers in scientific notation.',
         ),
-        simulations: ['quadratwurzel', 'logarithmus'],
+        simulations: ['quadratwurzel', 'logarithmus', 'potenzgesetze'],
       },
     ],
   },

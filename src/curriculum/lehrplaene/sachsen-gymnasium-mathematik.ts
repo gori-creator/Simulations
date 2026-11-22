@@ -273,7 +273,7 @@ const K9: CurriculumUnit[] = [
       'Potenzen und Wurzeln mit Potenzgesetzen, Potenzfunktionen und quadratische Funktionen mit Parametern, quadratische Gleichungen lösen und einfache Extremwertaufgaben.',
       'Powers and roots with the laws of exponents, power functions and quadratic functions with parameters, solving quadratic equations and simple optimisation problems.',
     ),
-    simulations: ['quadratwurzel', 'potenzfunktionen', 'hyperbel', 'quadratische-funktion', 'gleichungen-grafisch', 'extremwert-parabel', 'funktionsplotter'],
+    simulations: ['quadratwurzel', 'potenzfunktionen', 'hyperbel', 'quadratische-funktion', 'gleichungen-grafisch', 'extremwert-parabel', 'funktionsplotter', 'potenzgesetze'],
   },
   {
     code: '2',
