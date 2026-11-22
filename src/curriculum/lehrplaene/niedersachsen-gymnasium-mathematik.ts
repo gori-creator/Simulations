@@ -969,7 +969,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'eA-2.1',
         title: L('Untersuchung von Wachstumsprozessen', 'Investigating growth processes'),
         summary: L('Begrenztes und logistisches Wachstum, asymptotisches Verhalten, Differentialgleichungen.', 'Limited and logistic growth, asymptotic behaviour, differential equations.'),
-        simulations: ['grenzverhalten'],
+        simulations: ['grenzverhalten', 'richtungsfeld'],
       },
       {
         code: 'eA-2.2',

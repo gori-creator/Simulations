@@ -2798,6 +2798,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Describing and developing models for growth and decay with differential equations',
               ),
               summary: L('Wachstumsannahmen in Differenzialgleichungen übersetzen.', 'Translating growth assumptions into differential equations.'),
+              simulations: ['richtungsfeld'],
             },
             {
               code: 'Q1.5.2',
@@ -2806,6 +2807,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Richtungsfelder, Trennung der Variablen und weitere elementare Methoden.',
                 'Slope fields, separation of variables and other elementary methods.',
               ),
+              simulations: ['richtungsfeld'],
             },
             {
               code: 'Q1.5.3',
@@ -2817,6 +2819,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen.',
                 'Second-order differential equations, e.g. for periodic processes.',
               ),
+              simulations: ['richtungsfeld'],
             },
           ],
         },

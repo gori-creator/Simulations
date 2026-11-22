@@ -490,6 +490,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-W6',
     title: L('Differentialgleichungen (Wahlbereich Grundkurs)', 'Differential equations (optional, basic course)'),
     summary: L('Einfache Differentialgleichungen für Wachstum und Bewegung.', 'Simple differential equations for growth and motion.'),
+    simulations: ['richtungsfeld'],
   },
   {
     code: 'LK-1',
@@ -601,6 +602,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-W6',
     title: L('Differentialgleichungen (Wahlbereich Leistungskurs)', 'Differential equations (optional, advanced course)'),
     summary: L('Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld.', 'Differential equations for growth, motion and the harmonic oscillator, slope fields.'),
+    simulations: ['richtungsfeld'],
   },
 ];
 

@@ -623,7 +623,7 @@ const Q34_UNITS: CurriculumUnit[] = [
       'Mögliche Zusatzkurse: nichteuklidische Geometrie, Logik, Zahlentheorie, numerische Mathematik, Differentialgleichungen, Folgen und Reihen mit Taylor-Reihen, Markowketten, Funktionentheorie, Kegelschnitte, Vertiefung der Analysis, Begründen und Beweisen.',
       'Possible additional courses: non-Euclidean geometry, logic, number theory, numerical mathematics, differential equations, sequences and series with Taylor series, Markov chains, complex analysis, conic sections, further calculus, reasoning and proof.',
     ),
-    simulations: ['taylor-polynome'],
+    simulations: ['taylor-polynome', 'richtungsfeld'],
   },
 ];
 

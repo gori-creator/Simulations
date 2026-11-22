@@ -179,7 +179,11 @@ describe('Länder-Lehrpläne', () => {
    * sie nach Wahl des Bundeslands bei keinem Jahrgang.
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
+    'baden-wuerttemberg-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
+    },
     'bayern-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
       'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
       'matrix-abbildungen': 'Matrizen nicht im LehrplanPLUS',
@@ -214,6 +218,7 @@ describe('Länder-Lehrpläne', () => {
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
     'bremen-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       strahlensaetze: 'Strahlensätze nicht im Bildungsplan (nur zentrische Streckung und Ähnlichkeit; siehe docs/lehrplaene/bremen-gymnasium-mathematik.md)',
       cavalieri: 'Prinzip von Cavalieri nicht im Bildungsplan',
       'sinussatz-kosinussatz': 'Trigonometrie nur im rechtwinkligen Dreieck',
@@ -226,6 +231,7 @@ describe('Länder-Lehrpläne', () => {
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
     },
     'hamburg-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-mathematik.md)',
       'matrix-abbildungen': 'Matrizen nur als Übergangsmatrizen im Wahlpflichtmodul Lineare Algebra',
       'taylor-polynome': 'nicht im Bildungsplan (Hochschule)',
@@ -265,6 +271,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Kernlehrplan',
       'monte-carlo-pi': 'kein passender Schwerpunkt',
@@ -282,6 +289,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'matrix-abbildungen': 'Matrizen nur als Schreibweise für lineare Gleichungssysteme (siehe docs/lehrplaene/saarland-gymnasium-mathematik.md)',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
@@ -297,6 +305,7 @@ describe('Länder-Lehrpläne', () => {
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       cavalieri: 'Prinzip von Cavalieri nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-mathematik.md)',
       kugeln: 'Kugeln nur als Körper in Schuljahrgang 7/8; Kugelgleichung und Tangentialebene nicht im Fachlehrplan',
       'matrix-abbildungen': 'Matrizen nicht im Fachlehrplan',
@@ -308,6 +317,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {
+      richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       cavalieri: 'Prinzip von Cavalieri nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-mathematik.md)',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht genannt (nur Verknüpfungen von Funktionen)',
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht in den Fachanforderungen',
