@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **306 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,9 +182,9 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (201)
 
-### Baden-Württemberg · Gymnasium (11)
+### Baden-Württemberg · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -198,9 +198,8 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | 3.5.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec. |
 | 12/13 | 3.5.7 | Astrophysik (Basisfach mit Schwerpunkt Astrophysik) | Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten. |
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
-| 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (20)
+### Bayern · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -211,7 +210,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
 | 9 | 4.2 | Profilbereich am NTG (nur NTG) › Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte | Wahlthemen wie Energie im Körper, Wärmedämmung, Energieversorgung, Fahrzeugtechnik oder Druck und Auftrieb, selbstständig dokumentiert und präsentiert. |
 | 10 | 5.1 | Profilbereich am NTG (nur NTG) › Halbleiterbauelemente in Experimenten | Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären. |
-| 11 | 3.2 | Eigenverantwortliche Arbeit an physikalischen Themen › Einblick in die spezielle Relativitätstheorie | Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld. |
 | 11 | 3.3 | Eigenverantwortliche Arbeit an physikalischen Themen › Energieversorgung | Umkehrbare und nicht umkehrbare Vorgänge, Energieentwertung und Wirkungsgrad sowie Fragen der heutigen und künftigen Energieversorgung. |
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
@@ -240,14 +238,13 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
-### Hamburg · Gymnasium (2)
+### Hamburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
-| 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (76)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -317,10 +314,7 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.2.2 | Technische Anwendungen der Quantenphysik › Rastertunnelmikroskop (nur LK) | Tunneleffekt sowie Aufbau und Anwendungen. |
 | 13 | Q4.3.3 | Kernphysik › Bindungsenergie | Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen. |
 | 13 | Q4.3.5 | Kernphysik › Potenzialtopfmodell für Kerne (nur qualitativ) (nur LK) | Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln. |
-| 13 | Q4.4.1 | Spezielle Relativitätstheorie › Relativitätspostulate | Relativitätsprinzip, Konstanz von c, Zeitdilatation, Längenkontraktion, Minkowski-Diagramme. |
-| 13 | Q4.4.2 | Spezielle Relativitätstheorie › Relativistische Massenzunahme (nur phänomenologisch) | Phänomen der Massenzunahme bei hohen Geschwindigkeiten. |
 | 13 | Q4.4.3 | Spezielle Relativitätstheorie › Lorentztransformation und Addition von Geschwindigkeiten (nur LK) | Umrechnung zwischen bewegten Bezugssystemen. |
-| 13 | Q4.4.4 | Spezielle Relativitätstheorie › Herleitung der relativistischen Massenzunahme (nur LK) | Massenzunahme aus Grundprinzipien ableiten. |
 | 13 | Q4.5.1 | Festkörperphysik › Leiter, Nichtleiter und Halbleiter | Bändermodell (qualitativ) und Dotierung. |
 | 13 | Q4.5.2 | Festkörperphysik › Diode und Transistor | p-n-Übergang, Kennlinie, Gleichrichter, Transistor als Schalter. |
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
@@ -343,7 +337,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (16)
+### Nordrhein-Westfalen · Gymnasium (15)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -361,10 +355,9 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.2 | Ionisierende Strahlung und Kernenergie › Wechselwirkung von Strahlung mit Materie | Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz. |
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 7–10 | 11.2 | Energieversorgung › Bereitstellung und Nutzung von Energie | Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit. |
-| 11 | EF-2.3 | Kreisbewegung, Gravitation und physikalische Weltbilder › Wandel physikalischer Weltbilder | Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (34)
+### Rheinland-Pfalz · Gymnasium (30)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -380,8 +373,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
 | 12/13 | GF-W.14 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Entropie | Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad. |
 | 12/13 | GF-W.16 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
-| 12/13 | GF-W.17 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
-| 12/13 | GF-W.18 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | GF-W.19 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
 | 12/13 | GF-W.20 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
@@ -395,8 +386,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
 | 12/13 | LF-W.14 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
-| 12/13 | LF-W.15 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
-| 12/13 | LF-W.16 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | LF-W.17 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
 | 12/13 | LF-W.18 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
@@ -413,7 +402,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (22)
+### Sachsen · Gymnasium (20)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -431,16 +420,14 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
 | 11 | GK-W1 | Leitungsvorgänge in Halbleitern (Wahlbereich Grundkurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 11 | GK-W2 | Messen und Modellieren (Wahlbereich Grundkurs) | Messreihen mit Videoanalyse und Messschnittstellen erfassen und mit Modellen vergleichen. |
-| 11 | GK-W3 | Relativität von Zeit und Raum (Wahlbereich Grundkurs) | Postulate, Zeitdilatation und Längenkontraktion. |
 | 11 | LK-4 | Modellbildung und Simulation (Leistungskurs) | Bewegungen numerisch modellieren, Parameter variieren und mit dem Experiment vergleichen. |
 | 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
-| 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
 | 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
 | 12 | GK-2 | Praktikum Optik und Schwingungen (Grundkurs) | Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten. |
 | 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (11)
+### Sachsen-Anhalt · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -452,7 +439,6 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | gA-4.1 | Praktika (grundlegendes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | gA-4.2 | Praktika (grundlegendes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
-| 11/12 | eA-3.1 | Ausgewählte Gebiete der nichtklassischen Physik (erhöhtes Anforderungsniveau) › Spezielle Relativitätstheorie | Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie. |
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 

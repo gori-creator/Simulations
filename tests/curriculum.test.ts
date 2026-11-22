@@ -199,6 +199,7 @@ describe('Länder-Lehrpläne', () => {
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'brandenburg-gymnasium-mathematik': {
       strahlensaetze: 'Strahlensätze nicht im Rahmenlehrplan (nur Ähnlichkeitsabbildungen; siehe docs/lehrplaene/brandenburg-gymnasium-mathematik.md)',
@@ -212,6 +213,7 @@ describe('Länder-Lehrpläne', () => {
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Rahmenlehrplan der Oberstufe',
     },
     'bremen-gymnasium-mathematik': {
       strahlensaetze: 'Strahlensätze nicht im Bildungsplan (nur zentrische Streckung und Ähnlichkeit; siehe docs/lehrplaene/bremen-gymnasium-mathematik.md)',
@@ -224,6 +226,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'bremen-gymnasium-physik': {
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Bildungsplan der Oberstufe',
     },
     'hamburg-gymnasium-mathematik': {
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Bildungsplan (siehe docs/lehrplaene/hamburg-gymnasium-mathematik.md)',
@@ -263,6 +266,7 @@ describe('Länder-Lehrpläne', () => {
       stoesse: 'Impuls und Stöße nicht im Kerncurriculum',
       planetenbahnen: 'Gravitationsgesetz und Kepler’sche Gesetze nicht im Kerncurriculum',
       'doppler-effekt': 'Doppler-Effekt nicht im Kerncurriculum',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md)',
@@ -289,6 +293,7 @@ describe('Länder-Lehrpläne', () => {
     'saarland-gymnasium-physik': {
       'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
+      zeitdilatation: 'Spezielle Relativitätstheorie nicht im Lehrplan der Oberstufe',
     },
     'sachsen-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
