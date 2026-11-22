@@ -2231,7 +2231,7 @@ export default defineSimulation({
       if (sw.IC > 1e-7) paths.push({ p: new Path([[xBat, yT], [xRight, yT], [xRight, T0.c[1]], T0.c, [xQ, yQ], T0.e, [xRight, T0.e[1]], [xRight, yB], [xBat, yB]]), key: 'coll', r: sm ? 2.5 : 3, col: elecCol() });
       for (const q of paths) carriers(q.p, q.key, sm ? 14 : 18, q.r, q.col);
       if (showVal()) {
-        pill(T0.b[0] - 2, yQ + (sm ? 16 : 20) + (ldr ? (sm ? 22 : 26) : 0), `I_B = ${amp(sw.IB, 2)}`, blue(), 'right', sm ? 10 : 11.5, r);
+        pill(T0.b[0] - 2, yQ + (sm ? 16 : 20) + (ldr ? (sm ? 22 : 26) : 0), `I_B = ${amp(sw.IB, 3)}`, blue(), 'right', sm ? 10 : 11.5, r);
         pill(xRight + 4, lampY + (sm ? 30 : 38), `I_C = ${amp(sw.IC, 2)}`, red(), 'right', sm ? 10 : 11.5, r);
       }
     }
@@ -2377,7 +2377,7 @@ export default defineSimulation({
         rows.push([T(`E ≈ ${fmt.sig(lux, 2)} lx  →  R_LDR ≈ ${ohm(sw.Rldr ?? 0)}`, `E ≈ ${fmt.sig(lux, 2)} lx  →  R_LDR ≈ ${ohm(sw.Rldr ?? 0)}`), orange()]);
         rows.push([v ? `U = U_B · R_LDR / (R₁ + R_LDR) = ${volt(sw.Udiv ?? 0, 2)}` : 'U = U_B · R_LDR / (R₁ + R_LDR) = ?', ctx.theme.text]);
       } else rows.push([p.on ? T('Taster gedrückt: Basisstrom fließt', 'Button pressed: base current flows') : T('Taster offen: kein Basisstrom', 'Button open: no base current'), p.on ? green() : ctx.theme.muted]);
-      rows.push([v ? `I_B = ${amp(sw.IB, 2)}  →  B · I_B = ${n(B_SWITCH, 0)} · ${amp(sw.IB, 2)} = ${amp(sw.ICideal, 2)}` : 'I_B = ?  →  B · I_B = ?', blue()]);
+      rows.push([v ? `I_B = ${amp(sw.IB, 3)}  →  B · I_B = ${n(B_SWITCH, 0)} · ${amp(sw.IB, 3)} = ${amp(sw.ICideal, 2)}` : 'I_B = ?  →  B · I_B = ?', blue()]);
       rows.push([
         v ? (sw.saturated ? T(`I_C = ${amp(sw.IC, 2)} (begrenzt durch die Lampe)`, `I_C = ${amp(sw.IC, 2)} (limited by the lamp)`) : `I_C = ${amp(sw.IC, 2)}`) : 'I_C = ?',
         red(),
