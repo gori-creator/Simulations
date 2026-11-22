@@ -1,5 +1,5 @@
 import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { detectModel, eulerTable, exact, exactText, fineCurve, parseTerm, solveIVP, system, type Fn3, type Method, type Model, type Sys } from './model';
+import { derivation, detectModel, eulerTable, exact, exactText, fineCurve, parseTerm, solveIVP, system, type Fn3, type Method, type Model, type Sys } from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -76,6 +76,17 @@ export default defineSimulation({
     { key: 'field', type: 'boolean', group: 'view', label: L('Richtungsfeld', 'Direction field'), default: true },
     { key: 'flow', type: 'boolean', group: 'view', label: L('Fließende Teilchen', 'Flowing particles'), default: true },
     { key: 'family', type: 'boolean', group: 'view', label: L('Weitere Lösungskurven', 'More solution curves'), default: false },
+    {
+      key: 'card',
+      type: 'choice',
+      group: 'view',
+      label: L('Rechts in der Karte', 'Side card'),
+      options: [
+        { value: 'compare', label: L('Verfahren vergleichen', 'Compare methods') },
+        { value: 'derive', label: L('Rechenweg (exakte Lösung)', 'Derivation (exact solution)') },
+      ],
+      default: 'compare',
+    },
     { key: 'iso', type: 'boolean', group: 'view', label: L('Waagerechte Stellen (f = 0)', 'Horizontal slopes (f = 0)'), default: false, visibleIf: (v) => v.order === '1' },
     { key: 'show', type: 'boolean', group: 'view', label: L('Lösungskurve zeigen', 'Show solution curve'), default: true },
   ],
@@ -95,6 +106,7 @@ export default defineSimulation({
     { id: 'circle', label: L("Kreise: y′ = −x / y", "Circles: y′ = −x / y"), values: { order: '1', f: '-x/y', x0: 0, y0: 3, x1: 2, method: 'euler', h: 0.2, iso: true } },
     { id: 'blow', label: L("y′ = y² – Lösung explodiert", "y′ = y² – solution blows up"), values: { order: '1', f: 'y^2', x0: 0, y0: 1, x1: 0.9, method: 'rk4', h: 0.1 } },
     { id: 'antideriv', label: L("y′ = 2x − 1: Stammfunktionen", "y′ = 2x − 1: antiderivatives"), values: { order: '1', f: '2x - 1', x0: 0, y0: 1, x1: 2, method: 'euler', h: 0.5, family: true } },
+    { id: 'derive', label: L('Rechenweg: logistisches Wachstum', 'Derivation: logistic growth'), values: { order: '1', f: '0,05·y·(10 - y)', x0: 0, y0: 0.5, x1: 15, method: 'none', card: 'derive', family: true } },
     { id: 'osc', label: L("Schwingung y″ = −4y", "Oscillation y″ = −4y"), values: { order: '2', f2: '-4y', x0: 0, y0: 2, v0: 0, x1: 6, method: 'euler', h: 0.1 } },
     { id: 'damped', label: L("Gedämpft y″ = −4y − 0,5y′", "Damped y″ = −4y − 0.5y′"), values: { order: '2', f2: "-4y - 0,5y'", x0: 0, y0: 2, v0: 0, x1: 8, method: 'rk4', h: 0.2 } },
     { id: 'creep', label: L("Kriechfall y″ = −4y − 5y′", "Overdamped y″ = −4y − 5y′"), values: { order: '2', f2: "-4y - 5y'", x0: 0, y0: 2, v0: 0, x1: 6, method: 'rk4', h: 0.2 } },
@@ -129,7 +141,12 @@ export default defineSimulation({
       tipEuler: 'Euler geht immer ein Stück h auf der Tangente weiter – bei gekrümmten Lösungen landet er daneben.',
       tipHeun: 'Heun mittelt die Steigung am Anfang und am Ende des Schritts.',
       tipRk4: 'Runge-Kutta mittelt vier Steigungen – meist kaum vom Exakten zu unterscheiden.',
-      sep: 'Trennen der Variablen',
+      sep: 'Rechenweg: Trennung der Variablen',
+      ansatzHead: 'Rechenweg: Exponentialansatz',
+      antiHead: 'Rechenweg: Stammfunktion bilden',
+      noDerive: 'Für diese Gleichung gibt es keinen Rechenweg aus der Schule. Die Lösungskurve kommt aus einer sehr feinen Näherung.',
+      triH: 'h',
+      triM: 'h · f',
     },
     en: {
       canvas: 'Direction field of the differential equation with flowing particles, the solution curve through the draggable start point and the approximation with the chosen method.',
@@ -160,7 +177,12 @@ export default defineSimulation({
       tipEuler: 'Euler always moves a step h along the tangent – on curved solutions it ends up off the curve.',
       tipHeun: 'Heun averages the slopes at the start and the end of the step.',
       tipRk4: 'Runge–Kutta averages four slopes – usually hard to tell apart from the exact solution.',
-      sep: 'Separation of variables',
+      sep: 'Derivation: separation of variables',
+      ansatzHead: 'Derivation: exponential ansatz',
+      antiHead: 'Derivation: antiderivative',
+      noDerive: 'There is no school method for this equation. The solution curve comes from a very fine approximation.',
+      triH: 'h',
+      triM: 'h · f',
     },
   },
   mount(ctx) {
@@ -540,6 +562,15 @@ export default defineSimulation({
         // Euler: Tangentenstücke sichtbar machen
         plot.polyline(pts, { color: col, width: 2.2, dash: m === 'euler' ? undefined : [7, 4] });
         for (const [x, y] of pts) plot.point(x, y, { color: col, radius: 3.4 });
+        // Steigungsdreieck am jeweils neuesten Euler-Schritt (1. Ordnung)
+        if (m === 'euler' && order() === 1 && pts.length >= 2) {
+          const [xa, ya] = pts[pts.length - 2]!;
+          const [xb, yb] = pts[pts.length - 1]!;
+          plot.segment([xa, ya], [xb, ya], { color: withAlpha(col, 0.75), width: 1.6 });
+          plot.segment([xb, ya], [xb, yb], { color: withAlpha(col, 0.75), width: 1.6 });
+          plot.text((xa + xb) / 2, ya, tr('triH'), { color: col, size: 11, weight: '600', offset: [0, yb >= ya ? 11 : -11], halo: true, math: true });
+          if (Math.abs(yb - ya) > 1e-9) plot.text(xb, (ya + yb) / 2, tr('triM'), { color: col, size: 11, weight: '600', offset: [6, 0], align: 'left', halo: true });
+        }
         if (shown >= n && n > 1) {
           const [xe, ye] = pts[pts.length - 1]!;
           const exY = exactAt(p.x1);
@@ -660,6 +691,10 @@ export default defineSimulation({
       y += segLine(g, [{ s: sv, c: COL.start(), w: 600 }], x, y, maxW, size - 1);
       if (eq.model && p.show) y += segLine(g, [{ s: exactText(eq.model, p.x0, p.y0, (v) => N(v, 3), p.v0), c: COL.sol(), w: 700 }], x, y + 2, maxW, size - 0.5) + 2;
       y += 6;
+      if (p.card === 'derive') {
+        drawDerivation(g, R, x, y, maxW, size);
+        return;
+      }
       // Vergleich der Verfahren bei x₁
       y += segLine(g, [{ s: tr('compare', { x: N(p.x1, 2) }), c: t.muted, w: 700 }], x, y, maxW, size - 1);
       const ex = exactAt(p.x1);
@@ -718,6 +753,42 @@ export default defineSimulation({
         return;
       }
       phaseRect = { x: -100, y: -100, w: 10, h: 10 };
+    }
+
+    /** Rechenweg der exakten Lösung mit Kennwerten. */
+    function drawDerivation(g: CanvasRenderingContext2D, R: Rect, x: number, y0: number, maxW: number, size: number): void {
+      const t = th();
+      let y = y0;
+      phaseRect = { x: -100, y: -100, w: 10, h: 10 };
+      if (!eq.ok) return;
+      if (!eq.model) {
+        y += segLine(g, [{ s: tr('noDerive'), c: t.muted }], x, y, maxW, size - 1);
+        return;
+      }
+      if (!p.show) {
+        segLine(g, [{ s: tr('hidden'), c: t.muted }], x, y, maxW, size - 1);
+        return;
+      }
+      const d = derivation(eq.model, p.x0, p.y0, p.v0, (v) => N(v, 3), ctx.lang);
+      y += segLine(g, [{ s: eq.model.kind === 'oscillation' ? tr('ansatzHead') : eq.model.kind === 'linear' ? tr('antiHead') : tr('sep'), c: t.muted, w: 700 }], x, y, maxW, size - 1);
+      d.lines.forEach((l, k) => {
+        const a = clamp(drawTw.value * (d.lines.length + 1) - k, 0, 1);
+        y += segLine(g, [{ s: `${k + 1}.  `, c: t.muted, w: 600 }, { s: l, c: k === d.lines.length - 1 ? COL.sol() : t.text, w: k === d.lines.length - 1 ? 700 : 500 }], x + 4, y, maxW - 4, size - 1, a);
+      });
+      if (!d.facts.length) return;
+      y += 8;
+      const h = d.facts.length * size * 1.55 + size * 0.8;
+      if (y + h > R.y + R.h - 6) return;
+      g.save();
+      g.fillStyle = withAlpha(COL.sol(), t.dark ? 0.16 : 0.08);
+      roundRect(g, x - 8, y - size * 0.8, maxW + 16, h, 10);
+      g.fill();
+      g.restore();
+      for (const f of d.facts) {
+        const w1 = segLine(g, [{ s: f.label, c: t.text, w: 600 }], x, y, maxW * (f.value ? 0.66 : 1), size - 1.5);
+        if (f.value) segLine(g, [{ s: f.value, c: COL.sol(), w: 800 }], x + maxW * 0.68, y, maxW * 0.32, size - 0.5);
+        y += Math.max(w1, size * 1.55);
+      }
     }
 
     function drawPhase(): void {

@@ -433,3 +433,103 @@ export function errorOrder(F: Sys, method: Method, x0: number, s0: readonly numb
   const e2 = Math.abs(solveIVP(F, method, x0, s0, x1, h / 2).s.at(-1)![0]! - exactY);
   return Math.log2(e1 / e2);
 }
+
+/* ------------------------------------------------------------------ */
+/* Rechenweg (Trennung der Variablen bzw. Exponentialansatz)            */
+/* ------------------------------------------------------------------ */
+
+export interface Derivation {
+  /** Zeilen des Rechenwegs. */
+  lines: string[];
+  /** Kennwerte (Halbwertszeit, Wendestelle, Periode …). */
+  facts: { label: string; value: string }[];
+}
+
+/**
+ * Rechenweg für die Schul-Modelle. `num` formatiert Zahlen (deutsches Komma),
+ * `lang` wählt die Sprache der Beschriftungen.
+ */
+export function derivation(m: Model, x0: number, y0: number, v0: number, num: (v: number) => string, lang: 'de' | 'en' = 'de'): Derivation {
+  const de = lang === 'de';
+  const k = 'k' in m ? m.k : 0;
+  const facts: Derivation['facts'] = [];
+  const lines: string[] = [];
+  switch (m.kind) {
+    case 'exp': {
+      lines.push(`dy/dx = ${num(k)} · y`);
+      lines.push(`${de ? 'trennen' : 'separate'}:  dy / y = ${num(k)} dx`);
+      lines.push(`${de ? 'integrieren' : 'integrate'}:  ln|y| = ${num(k)}·x + c`);
+      lines.push(`y = C · e^(${num(k)}·x)`);
+      const C = y0 * Math.exp(-k * x0);
+      lines.push(`y(${num(x0)}) = ${num(y0)}  ⇒  C = ${num(C)}`);
+      const T = Math.log(2) / Math.abs(k);
+      facts.push({ label: k > 0 ? (de ? 'Verdopplungszeit ln 2 / k' : 'doubling time ln 2 / k') : de ? 'Halbwertszeit ln 2 / |k|' : 'half-life ln 2 / |k|', value: num(T) });
+      facts.push({ label: de ? 'Wachstumsfaktor je Einheit e^k' : 'growth factor per unit e^k', value: num(Math.exp(k)) });
+      break;
+    }
+    case 'bounded': {
+      const S = m.S;
+      lines.push(`dy/dx = ${num(k)} · (${num(S)} − y)`);
+      lines.push(`${de ? 'trennen' : 'separate'}:  dy / (${num(S)} − y) = ${num(k)} dx`);
+      lines.push(`${de ? 'integrieren' : 'integrate'}:  −ln|${num(S)} − y| = ${num(k)}·x + c`);
+      lines.push(`${num(S)} − y = C · e^(−${num(k)}·x)  ⇒  y = ${num(S)} − C · e^(−${num(k)}·x)`);
+      const C = (S - y0) * Math.exp(k * x0);
+      lines.push(`y(${num(x0)}) = ${num(y0)}  ⇒  C = ${num(C)}`);
+      facts.push({ label: de ? 'Schranke S' : 'limit S', value: num(S) });
+      facts.push({ label: de ? 'Abstand zu S halbiert nach ln 2 / k' : 'distance to S halves after ln 2 / k', value: num(Math.log(2) / k) });
+      break;
+    }
+    case 'logistic': {
+      const S = m.S;
+      lines.push(`dy/dx = ${num(k)} · y · (${num(S)} − y)`);
+      lines.push(`${de ? 'trennen' : 'separate'}:  dy / (y·(${num(S)} − y)) = ${num(k)} dx`);
+      lines.push(`${de ? 'Partialbrüche' : 'partial fractions'}:  1/(y(S − y)) = (1/S) · (1/y + 1/(S − y))`);
+      lines.push(`ln|y / (${num(S)} − y)| = ${num(k * S)}·x + c`);
+      lines.push(`y = ${num(S)} / (1 + C · e^(−${num(k * S)}·x))`);
+      const C = y0 > 0 ? ((S - y0) / y0) * Math.exp(k * S * x0) : NaN;
+      if (Number.isFinite(C)) lines.push(`y(${num(x0)}) = ${num(y0)}  ⇒  C = ${num(C)}`);
+      facts.push({ label: de ? 'Schranke S' : 'limit S', value: num(S) });
+      if (y0 > 0 && y0 < S) {
+        const xw = x0 + Math.log((S - y0) / y0) / (k * S);
+        facts.push({ label: de ? 'Wendestelle (y = S/2)' : 'inflection point (y = S/2)', value: `x = ${num(xw)}` });
+        facts.push({ label: de ? 'größte Steigung k·S²/4' : 'largest slope k·S²/4', value: num((k * S * S) / 4) });
+      }
+      break;
+    }
+    case 'linear': {
+      lines.push(`dy/dx = ${num(m.a)}·x + ${num(m.b)}`);
+      lines.push(`${de ? 'Stammfunktion' : 'antiderivative'}:  y = ${num(m.a / 2)}·x² + ${num(m.b)}·x + c`);
+      const c = y0 - (m.a / 2) * x0 * x0 - m.b * x0;
+      lines.push(`y(${num(x0)}) = ${num(y0)}  ⇒  c = ${num(c)}`);
+      facts.push({ label: de ? 'Alle Lösungen sind verschobene Kopien' : 'all solutions are shifted copies', value: '' });
+      break;
+    }
+    case 'oscillation': {
+      const w = m.omega;
+      const d = m.delta;
+      lines.push(`y″ + ${num(2 * d)}·y′ + ${num(w * w)}·y = 0`);
+      lines.push(`${de ? 'Ansatz' : 'ansatz'} y = e^(λx):  λ² + ${num(2 * d)}·λ + ${num(w * w)} = 0`);
+      const disc = d * d - w * w;
+      if (disc < -1e-12) {
+        const wd = Math.sqrt(-disc);
+        lines.push(`λ = ${num(-d)} ± ${num(wd)}·i`);
+        lines.push(d === 0 ? `y = A·cos(${num(wd)}x) + B·sin(${num(wd)}x)` : `y = e^(−${num(d)}x) · (A·cos(${num(wd)}x) + B·sin(${num(wd)}x))`);
+        const B = (v0 + d * y0) / wd;
+        lines.push(`${de ? 'Startwerte' : 'start values'}  ⇒  A = ${num(y0)}, B = ${num(B)}`);
+        facts.push({ label: de ? 'Periode 2π / ω' : 'period 2π / ω', value: num((2 * Math.PI) / wd) });
+        if (d > 0) facts.push({ label: de ? 'Amplitude halbiert nach ln 2 / δ' : 'amplitude halves after ln 2 / δ', value: num(Math.log(2) / d) });
+      } else if (Math.abs(disc) <= 1e-12) {
+        lines.push(`λ = ${num(-d)} (${de ? 'doppelt' : 'double'})`);
+        lines.push(`y = (A + B·x) · e^(−${num(d)}x)`);
+        facts.push({ label: de ? 'aperiodischer Grenzfall' : 'critically damped', value: '' });
+      } else {
+        const r = Math.sqrt(disc);
+        lines.push(`λ₁ = ${num(-d + r)},  λ₂ = ${num(-d - r)}`);
+        lines.push(`y = A·e^(${num(-d + r)}x) + B·e^(${num(-d - r)}x)`);
+        facts.push({ label: de ? 'Kriechfall: keine Schwingung' : 'overdamped: no oscillation', value: '' });
+      }
+      break;
+    }
+  }
+  return { lines, facts };
+}

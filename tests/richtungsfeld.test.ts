@@ -139,3 +139,21 @@ describe('Richtungsfeld: Terme und Hilfen', () => {
     expect(1.5 ** 2 + c ** 2).toBeCloseTo(4, 7);
   });
 });
+
+describe('Richtungsfeld: Rechenweg', () => {
+  it('Kennwerte der Modelle', async () => {
+    const { derivation } = await import('../src/simulations/mathematik/richtungsfeld/model');
+    const n = (v: number) => String(Math.round(v * 1000) / 1000);
+    const e = derivation({ kind: 'exp', k: 0.5 }, 0, 2, 0, n);
+    expect(e.facts[0]!.value).toBe(n(Math.log(2) / 0.5));
+    expect(e.lines.at(-1)).toContain('C = 2');
+    const lg = derivation({ kind: 'logistic', k: 0.05, S: 10 }, 0, 0.5, 0, n);
+    // Wendestelle: y = 5 bei x = ln(19)/0,5
+    expect(lg.facts[1]!.value).toBe(`x = ${n(Math.log(19) / 0.5)}`);
+    expect(exact({ kind: 'logistic', k: 0.05, S: 10 }, 0, 0.5)(Math.log(19) / 0.5)).toBeCloseTo(5, 10);
+    const o = derivation({ kind: 'oscillation', omega: 2, delta: 0 }, 0, 2, 0, n);
+    expect(o.facts[0]!.value).toBe(n(Math.PI));
+    const b = derivation({ kind: 'bounded', k: 0.1, S: 20 }, 0, 90, 0, n, 'en');
+    expect(b.facts[1]!.value).toBe(n(Math.log(2) / 0.1));
+  });
+});
