@@ -2945,6 +2945,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Gleichungssysteme algorithmisch lösen und Lösungsmengen geometrisch deuten.',
                 'Solving systems algorithmically and interpreting solution sets geometrically.',
               ),
+              simulations: ['gauss-verfahren'],
             },
             {
               code: 'Q2.3.2',

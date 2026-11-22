@@ -445,7 +445,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'Quadratische Ergänzung, Exponentialgleichungen mit Logarithmus, Gleichungen höheren Grades und lineare Gleichungssysteme mit drei Variablen, etwa zur Rekonstruktion quadratischer Funktionen.',
       'Completing the square, exponential equations with logarithms, higher-degree equations and linear systems in three variables, for example to reconstruct quadratic functions.',
     ),
-    simulations: ['parabel-drei-punkte', 'logarithmus', 'lgs-grafisch'],
+    simulations: ['parabel-drei-punkte', 'logarithmus', 'lgs-grafisch', 'gauss-verfahren'],
   },
   '4.2': {
     summary: L(

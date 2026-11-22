@@ -1633,6 +1633,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('gleichungssysteme', L('Lineare Gleichungssysteme', 'Systems of linear equations'), [
+          {
+            id: 'gauss-verfahren',
+            status: 'ready',
+            slug: L('gauss-verfahren', 'gaussian-elimination'),
+            title: L('Gauß-Verfahren: Schritt für Schritt zur Stufenform', 'Gaussian elimination: step by step to row echelon form'),
+            summary: L(
+              'Gleichungssystem eingeben und Zeile für Zeile umformen – vorgemacht oder selbst. Eindeutige, keine oder unendlich viele Lösungen, dazu die Gleichungen als Ebenen, die sich bei jeder Umformung drehen.',
+              'Enter a system and transform it row by row – shown or by yourself. Unique, no or infinitely many solutions, with the equations as planes that turn at every step.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L2', 'M-L4', 'M-K5', 'M-K4'],
+            keywords: L(
+              ['Gauß-Verfahren', 'Gaußalgorithmus', 'lineares Gleichungssystem', 'LGS', 'Stufenform', 'Dreiecksform', 'erweiterte Koeffizientenmatrix', 'Zeilenumformung', 'Additionsverfahren', 'Rückwärtseinsetzen', 'Gauß-Jordan', 'Rang', 'Lösungsmenge', 'keine Lösung', 'unendlich viele Lösungen', 'Parameter', 'überbestimmt', 'unterbestimmt', 'Schnitt von Ebenen'],
+              ['Gaussian elimination', 'system of linear equations', 'row echelon form', 'triangular form', 'augmented matrix', 'row operation', 'elimination', 'back substitution', 'Gauss–Jordan', 'rank', 'solution set', 'no solution', 'infinitely many solutions', 'parameter', 'overdetermined', 'underdetermined', 'intersection of planes'],
+            ),
+          },
+        ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
           {
             id: 'geraden-ebenen',

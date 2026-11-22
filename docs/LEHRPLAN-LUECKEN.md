@@ -2,13 +2,13 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **315 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (105)
+## Mathematik (100)
 
-### Baden-Württemberg · Gymnasium (7)
+### Baden-Württemberg · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -18,7 +18,6 @@ Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfert
 | 12/13 | 3.5.1 (3)–(4) | Leitidee Zahl – Variable – Operation (nur Leistungsfach) › weitere Ableitungsregeln anwenden | Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
 | 12/13 | 3.6.1 (2)–(3) | Leitidee Zahl – Variable – Operation (Basisfach) › weitere Ableitungsregeln anwenden | Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden. |
-| 12/13 | 3.6.1 (9)–(10) | Leitidee Zahl – Variable – Operation (Basisfach) › lineare Gleichungssysteme untersuchen | Das Gaußverfahren bis zur Stufenform anwenden und die Lösungsvielfalt angeben. |
 
 ### Bayern · Gymnasium (0)
 
@@ -36,20 +35,17 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
 
-### Bremen · Gymnasium (1)
+### Bremen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 11/12 | LA | Schwerpunkt Lineare Algebra (LA 2 bis LA 4) | Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren. |
+Alle Lernbereiche haben eine Simulation.
 
-### Hamburg · Gymnasium (2)
+### Hamburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
-| 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
-### Hessen · Gymnasium (54)
+### Hessen · Gymnasium (53)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -80,7 +76,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.5.1 | Gewöhnliche Differenzialgleichungen › Beschreiben und Entwickeln von Modellen für Wachstums- und Zerfallsprozesse mithilfe von Differenzialgleichungen | Wachstumsannahmen in Differenzialgleichungen übersetzen. |
 | 12 | Q1.5.2 | Gewöhnliche Differenzialgleichungen › Lösungsverfahren für Differenzialgleichungen erster Ordnung | Richtungsfelder, Trennung der Variablen und weitere elementare Methoden. |
 | 12 | Q1.5.3 | Gewöhnliche Differenzialgleichungen › Untersuchen von Differenzialgleichungen zweiter Ordnung (nur LK) | Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen. |
-| 12 | Q2.3.1 | Geraden und Ebenen im Raum › Systematisches Lösen von linearen Gleichungssystemen (auch über- und unterbestimmte) | Gleichungssysteme algorithmisch lösen und Lösungsmengen geometrisch deuten. |
 | 12 | Q2.3.9 | Geraden und Ebenen im Raum › Untersuchung von Winkeln (insbesondere auf Orthogonalität und Parallelität) sowie von den genannten Lagebeziehungen jeweils in Abhängigkeit von einem (zusätzlichen) Parameter | Lage und Winkel abhängig von einem Parameter untersuchen. |
 | 12 | Q2.3.11 | Geraden und Ebenen im Raum › Anwendung in Sachzusammenhängen | Schattenwürfe, Projektionen auf Koordinatenebenen und Flächenberechnungen. |
 | 12 | Q2.3.15 | Geraden und Ebenen im Raum › Geradenscharen (nur LK) | Geraden mit Parameter untersuchen. |
@@ -116,12 +111,11 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
 | 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
-### Nordrhein-Westfalen · Gymnasium (3)
+### Nordrhein-Westfalen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
-| 12/13 | Q-G.6 | Analytische Geometrie und Lineare Algebra (G) › Lineare Gleichungssysteme | Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten. |
 | 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
 ### Rheinland-Pfalz · Gymnasium (1)

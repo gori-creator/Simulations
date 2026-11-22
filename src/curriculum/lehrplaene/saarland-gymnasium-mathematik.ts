@@ -375,7 +375,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Vektorielle Untersuchung geometrischer Strukturen', 'Vector analysis of geometric structures'),
     summary: L('Linearkombination, Geraden und Ebenen, Lagebeziehungen, Anwendungen; im Grundkurs je nach Länge der Halbjahre zum Teil im 3. Halbjahr.', 'Linear combinations, lines and planes, relative positions, applications; in the basic course partly in the third half-year, depending on its length.'),
-    simulations: ['geraden-ebenen', 'lage-abstaende'],
+    simulations: ['geraden-ebenen', 'lage-abstaende', 'gauss-verfahren'],
   },
 ];
 

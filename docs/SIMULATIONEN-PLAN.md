@@ -20,7 +20,7 @@ Reihenfolge in Teil A: zuerst die Simulationen, die in den meisten Ländern fehl
 
 | # | Simulation (Vorschlag für die Kennung) | Klasse | Was man darin macht | Länder | Deckt ab |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **Gauß-Verfahren** (`gauss-verfahren`) | 11–13 | Gleichungssystem Schritt für Schritt auf Stufenform bringen; eine, keine oder unendlich viele Lösungen, geometrisch als Ebenen. | 5 | BW 3.6.1 (9)–(10), HB LA, HH 7, HE Q2.3.1, NW Q-G.6 |
+| 1 | **Gauß-Verfahren** (`gauss-verfahren`) ✅ fertig (Zweig `mathe/luecken-gauss-verfahren`) | 11–13 | Gleichungssystem Schritt für Schritt auf Stufenform bringen; eine, keine oder unendlich viele Lösungen, geometrisch als Ebenen. | 5 | BW 3.6.1 (9)–(10), HB LA, HH 7, HE Q2.3.1, NW Q-G.6 |
 | 2 | **Zufallsexperimente und Laplace** (`zufallsexperimente`) | 5–8 | Würfel, Münze und Glücksrad: Ergebnis, Ereignis, Laplace-Wahrscheinlichkeit, Additions- und Komplementärregel. | 4 | HE 5.2.1, HE Q3.1.2, NI 9.3, NW 8.3, SH 5.3 |
 | 3 | **Zufallsgröße und Erwartungswert** (`zufallsgroesse`) | 10–13 | Verteilung als Histogramm, Erwartungswert, Varianz, Standardabweichung; faires Spiel einstellen. | 4 | HE Q3.2.1, NW Q-S.3, ST 3.1, SH S.1 |
 | 4 | **Übergangsmatrizen (Markov-Ketten)** (`uebergangsmatrizen`) | 11–13 | Zustandsgraph und Matrix, Verteilung Schritt für Schritt, Matrixpotenzen, stabile Verteilung (Fixvektor). | 3 | HB LA, HH 7, HE Q2.4.1, HE Q2.4.3, HE Q2.4.4, HE Q2.4.5 |

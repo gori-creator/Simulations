@@ -527,6 +527,7 @@ const S_12_UNITS: CurriculumUnit[] = [
       'Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten.',
       'Systems of linear equations with Gaussian elimination, growth and redistribution processes with transition matrices, matrix powers, fixed vectors and long-term behaviour.',
     ),
+    simulations: ['gauss-verfahren'],
   },
 ];
 

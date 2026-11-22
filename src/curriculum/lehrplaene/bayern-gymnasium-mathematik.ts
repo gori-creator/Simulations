@@ -689,7 +689,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
             'Parameter-, Normalen- und Koordinatenform, Lagebeziehungen, Schnittwinkel, Abstände und Kugeln.',
             'Parametric, normal and coordinate form, relative positions, angles of intersection, distances and spheres.',
           ),
-          simulations: ['geraden-ebenen', 'lage-abstaende', 'kugeln'],
+          simulations: ['geraden-ebenen', 'lage-abstaende', 'kugeln', 'gauss-verfahren'],
         },
         {
           code: '4',

@@ -411,7 +411,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-2',
     title: L('Matrizen (Grundkurs)', 'Matrices (basic course)'),
     summary: L('Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.', 'Linear systems in matrix notation, multiplying matrices and a further application.'),
-    simulations: ['matrix-abbildungen'],
+    simulations: ['matrix-abbildungen', 'gauss-verfahren'],
   },
   {
     code: 'GK-3',
@@ -514,7 +514,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-2',
     title: L('Matrizen (Leistungskurs)', 'Matrices (advanced course)'),
     summary: L('Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.', 'Linear systems in matrix notation, multiplying matrices and a further application.'),
-    simulations: ['matrix-abbildungen'],
+    simulations: ['matrix-abbildungen', 'gauss-verfahren'],
   },
   {
     code: 'LK-3',

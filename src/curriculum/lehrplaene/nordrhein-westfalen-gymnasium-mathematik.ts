@@ -720,6 +720,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten.',
           'An algorithmic method for up to three unknowns, interpreting solution sets.',
         ),
+        simulations: ['gauss-verfahren'],
       },
     ],
   },
