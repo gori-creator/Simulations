@@ -97,7 +97,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Temperatur und innere Energie, Phasenübergänge energetisch, Energieentwertung, Leistung, Arbeit und Wärme sowie Lage- und Bewegungsenergie mit dem Energieerhaltungssatz berechnen.',
       'Temperature and internal energy, phase changes in terms of energy, energy dissipation, power, work and heat, and calculating potential and kinetic energy with the law of conservation of energy.',
     ),
-    simulations: ['energieerhaltung', 'teilchenmodell'],
+    simulations: ['energieerhaltung', 'teilchenmodell', 'energieversorgung'],
   },
   {
     code: '8',
@@ -106,7 +106,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Leiter und Halbleiter, pn-Übergang, Leuchtdiode und Solarzelle, Motor, Generator und Transformator als Energiewandler sowie Gleich- und Wechselstrom.',
       'Conductors and semiconductors, the pn junction, LEDs and solar cells, motor, generator and transformer as energy converters, and direct and alternating current.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'energieversorgung'],
   },
   {
     code: '9',
@@ -168,7 +168,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Kinetische Energie und Energieerhaltungssatz als Alternative zur Kraftbetrachtung; ein Werturteil zur Energienutzung.',
           'Kinetic energy and the law of conservation of energy as an alternative to forces; a value judgement on energy use.',
         ),
-        simulations: ['energieerhaltung'],
+        simulations: ['energieerhaltung', 'energieversorgung'],
       },
     ],
   },

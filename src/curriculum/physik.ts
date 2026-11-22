@@ -450,6 +450,29 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'energieversorgung',
+          title: L('Energieversorgung', 'Energy supply'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'energieversorgung',
+              status: 'ready',
+              slug: L('energieversorgung-kraftwerke-strommix', 'energy-supply-power-plants-electricity-mix'),
+              title: L('Energieversorgung: Kraftwerke, Strommix und Netz', 'Energy supply: power plants, electricity mix and grid'),
+              summary: L(
+                'Vom Kraftwerk bis zur Steckdose: Wirkungsgrade im Energieflussdiagramm, Strommix über einen ganzen Tag mit Sonne, Wind und Speichern sowie Hochspannung gegen Leitungsverluste.',
+                'From the power plant to the socket: efficiencies in an energy flow diagram, the electricity mix over a whole day with sun, wind and storage, and high voltage against line losses.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-BK-Energie', 'P-BK-System', 'P-B', 'P-S'],
+              keywords: L(
+                ['Energieversorgung', 'Kraftwerk', 'Wirkungsgrad', 'Energieflussdiagramm', 'Sankey-Diagramm', 'Energieentwertung', 'regenerative Energien', 'erneuerbare Energien', 'erschöpfbare Energieträger', 'Windkraft', 'Photovoltaik', 'Wasserkraft', 'Biomasse', 'Kernkraftwerk', 'Kohlekraftwerk', 'Gaskraftwerk', 'Kraft-Wärme-Kopplung', 'Strommix', 'Lastgang', 'Dunkelflaute', 'Pumpspeicherkraftwerk', 'Batteriespeicher', 'Hochspannung', 'Leitungsverluste', 'Transformator', 'CO₂', 'Energiewende'],
+                ['energy supply', 'power plant', 'efficiency', 'energy flow diagram', 'Sankey diagram', 'energy dissipation', 'renewable energy', 'finite energy sources', 'wind power', 'photovoltaics', 'hydropower', 'biomass', 'nuclear power plant', 'coal power plant', 'gas power plant', 'combined heat and power', 'electricity mix', 'load curve', 'dark doldrums', 'pumped-storage plant', 'battery storage', 'high voltage', 'line losses', 'transformer', 'CO₂', 'energy transition'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
           grades: [9, 13],

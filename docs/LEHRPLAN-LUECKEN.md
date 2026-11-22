@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **302 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,9 +182,9 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (197)
 
-### Baden-Württemberg · Gymnasium (11)
+### Baden-Württemberg · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -193,26 +193,22 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
 | 7/8 | 3.1.8 | Magnetismus | Magnete, Pole und Magnetfelder experimentell untersuchen und mit Feldlinien von Stab- und Hufeisenmagnet beschreiben, einschließlich Erdmagnetfeld. |
 | 9/10 | 3.2.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern. |
-| 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
 | 12/13 | 3.4.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik) | Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten. |
 | 12/13 | 3.5.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec. |
 | 12/13 | 3.5.7 | Astrophysik (Basisfach mit Schwerpunkt Astrophysik) | Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten. |
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (20)
+### Bayern · Gymnasium (17)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | 1.1 | Physik in Natur und Technik entdecken (Entwurf: Überschrift nicht aus dem Original übernommen) › Magnetismus und Dichte (Entwurf: Überschrift nicht aus dem Original übernommen) | Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment. |
 | 8 | 4.1 | Profilbereich am NTG (nur NTG) › Untersuchungen an Solarzellen und anderen Elektrizitätsquellen | Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden. |
-| 9 | 1.2 | Energie als Erhaltungsgröße › Elektrische Energie | Ladung als Vielfaches der Elementarladung, Spannung als Potentialdifferenz, elektrische Energie und Leistung in Schaltungen sowie der Wirkungsgrad von Geräten. |
 | 9 | 3.2 | Wärmelehre › Thermischer Energietransport und Einflüsse auf unser Klima | Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. |
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
-| 9 | 4.2 | Profilbereich am NTG (nur NTG) › Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte | Wahlthemen wie Energie im Körper, Wärmedämmung, Energieversorgung, Fahrzeugtechnik oder Druck und Auftrieb, selbstständig dokumentiert und präsentiert. |
 | 10 | 5.1 | Profilbereich am NTG (nur NTG) › Halbleiterbauelemente in Experimenten | Kennlinie einer Diode aufnehmen, Transistor als Schalter und Verstärker einsetzen und einfache Halbleiterschaltungen mit Modellen erklären. |
 | 11 | 3.2 | Eigenverantwortliche Arbeit an physikalischen Themen › Einblick in die spezielle Relativitätstheorie | Einsteins Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion sowie Wissenschaft im gesellschaftlichen Spannungsfeld. |
-| 11 | 3.3 | Eigenverantwortliche Arbeit an physikalischen Themen › Energieversorgung | Umkehrbare und nicht umkehrbare Vorgänge, Energieentwertung und Wirkungsgrad sowie Fragen der heutigen und künftigen Energieversorgung. |
 | 11 | 4.1 | Profilbereich am NTG (27 Std.) (nur NTG) › Die Methode der kleinen Schritte | Bewegungen mit veränderlicher Kraft schrittweise am Computer berechnen, z. B. Fall mit Luftwiderstand und harmonische Schwingung, und mit Experimenten vergleichen. |
 | 11 | 4.2 | Profilbereich am NTG (27 Std.) (nur NTG) › Photovoltaik in Anwendungen | U-I-Kennlinie einer Solarzelle und den Punkt maximaler Leistung bestimmen, Komponenten von Photovoltaikanlagen kennen und ihren Nutzen bewerten. |
 | 11 | 4.3 | Profilbereich am NTG (27 Std.) (nur NTG) › Außerunterrichtliche Aktivität | Mindestens eine Aktivität außerhalb des Unterrichts, etwa Schülerlabor, Museum, Betriebsbesuch oder ein eigenes Forschungsprojekt. |
@@ -240,14 +236,13 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
-### Hamburg · Gymnasium (2)
+### Hamburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (74)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -257,12 +252,10 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 2.2 | Erweiterung der Sinne › Sender-Empfänger-Modell | Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
 | 6–8 | 3.2 | Energie in Umwelt und Technik › Energietransport | Wege, auf denen Energie von einem Ort zum anderen gelangt. |
-| 6–8 | 3.3 | Energie in Umwelt und Technik › Energiestrom in die Umgebung als Entwertung von Energie | Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert. |
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 6–8 | 5.4 | Wettererscheinungen und Klima › Stoffe bei Temperaturänderung | Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen. |
 | 6–8 | 5.5 | Wettererscheinungen und Klima › Anomalie des Wassers und seine Bedeutung für das irdische Leben | Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer. |
 | 6–8 | 7.1 | Technik im Dienst des Menschen › Magnetismus | Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären. |
-| 6–8 | 8.1 | Zukunftssichere Energieversorgung › Unterscheidung zwischen regenerativen und erschöpfbaren Energien | Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten. |
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
 | 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
 | 9/10 | 1.1 | Haus der Naturwissenschaften › Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie | Arbeitsweisen der drei Naturwissenschaften vergleichen. |
@@ -275,9 +268,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
 | 9/10 | 7.2 | Technik im Dienst des Menschen › Phänomen Auftrieb | Schwimmen, Schweben und Sinken experimentell untersuchen und erklären. |
 | 9/10 | 7.3 | Technik im Dienst des Menschen › Magnetische Wirkung des elektrischen Stroms | Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen. |
-| 9/10 | 8.2 | Zukunftssichere Energieversorgung › Großenergieanlagen | Kraftwerkstypen vergleichen. |
-| 9/10 | 8.3 | Zukunftssichere Energieversorgung › Speicherung und Transport von Energie | Speicher und Hochspannungsübertragung mit Transformatoren untersuchen. |
-| 9/10 | 8.4 | Zukunftssichere Energieversorgung › Energieversorgungsnetze | Zentrale und dezentrale Versorgung bewerten. |
 | 9/10 | 9.3 | Physik in der Verantwortung › Konsequenzen der Nutzung physikalischer Forschungsergebnisse | Chancen und Risiken technologischer Entwicklungen abwägen. |
 | 11 | E.1.5 | Bewegungen und ihre Beschreibung › Idealisierung | Massepunkt und Vernachlässigung der Reibung als Modellannahmen. |
 | 11 | E.2.1 | Newton’sche Axiome und Erhaltungssätze › Die drei Newton’schen Axiome | Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme. |
@@ -343,7 +333,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (16)
+### Nordrhein-Westfalen · Gymnasium (14)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -357,14 +347,12 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 6.2 | Sterne und Weltall › Universum | Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung. |
 | 7–10 | 8.2 | Druck und Auftrieb › Druckmessung | Druck und Kraftwirkungen, Druck in Pascal angeben und messen. |
 | 7–10 | 9.1 | Elektrizität › Elektrostatik | Elektrische Ladungen und Felder, Elektroskop, Spannung durch Ladungstrennung. |
-| 7–10 | 9.3 | Elektrizität › Elektrische Energie und Leistung | Energie und Leistung elektrischer Geräte berechnen und Energiekosten ermitteln. |
 | 7–10 | 10.2 | Ionisierende Strahlung und Kernenergie › Wechselwirkung von Strahlung mit Materie | Nachweis und Absorption von Strahlung, biologische Wirkung, Medizin und Strahlenschutz. |
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
-| 7–10 | 11.2 | Energieversorgung › Bereitstellung und Nutzung von Energie | Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit. |
 | 11 | EF-2.3 | Kreisbewegung, Gravitation und physikalische Weltbilder › Wandel physikalischer Weltbilder | Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (34)
+### Rheinland-Pfalz · Gymnasium (30)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -379,7 +367,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GF-W.12 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strahlenbiophysik | Dosis, biologische Wirkung, Strahlenschutz und medizinische Anwendungen. |
 | 12/13 | GF-W.13 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Elementarteilchenphysik | Fundamentalteilchen und Wechselwirkungen, Standardmodell und offene Fragen. |
 | 12/13 | GF-W.14 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Entropie | Entropie als Energieträger, Entropieerzeugung und Carnot-Wirkungsgrad. |
-| 12/13 | GF-W.16 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
 | 12/13 | GF-W.17 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
 | 12/13 | GF-W.18 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | GF-W.19 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
@@ -387,21 +374,18 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | GF-W.23 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Physik als sich weiterentwickelnde Wissenschaft | Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang. |
-| 12/13 | GF-W.24 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 | 12/13 | LF-W.2 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Veränderliche elektromagnetische Felder II | Maxwell-Gleichungen, Felder und Bezugssysteme, Lorentz-Transformation. |
 | 12/13 | LF-W.5 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektromagnetische Wellen | Rückkopplung, offener Schwingkreis, Ausbreitung und Modulation, Anwendungen und Spektrum. |
 | 12/13 | LF-W.6 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Wechselstromkreise | Effektivwerte, Impedanz und Phasenverschiebung, Wirk- und Blindleistung. |
 | 12/13 | LF-W.7 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elektronik | Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor. |
 | 12/13 | LF-W.8 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Festkörperphysik | Bändermodell und Eigenschaften von Festkörpern. |
 | 12/13 | LF-W.13 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Elementarteilchenphysik | Standardmodell, fundamentale Wechselwirkungen, experimentelle Befunde und offene Fragen. |
-| 12/13 | LF-W.14 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Energiebereitstellung | Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit. |
 | 12/13 | LF-W.15 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
 | 12/13 | LF-W.16 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | LF-W.17 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
 | 12/13 | LF-W.18 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
-| 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 
 ### Saarland · Gymnasium (5)
 
@@ -413,7 +397,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (22)
+### Sachsen · Gymnasium (21)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -425,7 +409,6 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | W2 | Kühlschrank und Wärmepumpe (Wahlbereich) | Wärmeübertragung gegen das Temperaturgefälle mit Energieaufwand. |
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
 | 9 | 1 | Grundlagen der Elektronik | Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen. |
-| 9 | W2 | Energie von Wind und Sonne (Wahlbereich) | Windkraftanlagen, Solarthermie und Fotovoltaik. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
 | 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
@@ -456,11 +439,10 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
-### Schleswig-Holstein · Gymnasium (6)
+### Schleswig-Holstein · Gymnasium (5)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7–10 | 1.3 | Energie › Herausforderungen der Energieversorgung (Block II) | Arten der Energieversorgung vergleichen und bewerten, Transport und Speicherung, regenerative Energien und verantwortungsvoller Umgang mit Energie. |
 | 7–10 | 2.2 | Elektrizitätslehre und Magnetismus › Permanentmagnetismus (Block I) | Magnetische Pole, Anziehung und Abstoßung, Magnetisierbarkeit und Magnetfelder. |
 | 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |

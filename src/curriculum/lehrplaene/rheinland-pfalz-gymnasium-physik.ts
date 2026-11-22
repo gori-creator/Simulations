@@ -115,7 +115,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.',
       'Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle.',
     ),
-    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene'],
+    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene', 'energieversorgung'],
   },
   {
     code: '11',
@@ -451,6 +451,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.16',
         title: L('Energiebereitstellung', 'Energy supply'),
         summary: L('Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.', 'Basic principle and comparison of energy supply technologies, sustainability.'),
+        simulations: ['energieversorgung'],
       },
       {
         code: 'GF-W.17',
@@ -491,6 +492,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.24',
         title: L('Individuelles Thema', 'Individual topic'),
         summary: L('Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.', 'Freely chosen content, mainly for evaluation skills, for example sustainability or climate change.'),
+        simulations: ['energieversorgung'],
       },
     ],
   },
@@ -687,6 +689,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.14',
         title: L('Energiebereitstellung', 'Energy supply'),
         summary: L('Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.', 'Basic principle and comparison of energy supply technologies, sustainability.'),
+        simulations: ['energieversorgung'],
       },
       {
         code: 'LF-W.15',
@@ -722,6 +725,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.21',
         title: L('Individuelles Thema', 'Individual topic'),
         summary: L('Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.', 'Freely chosen content, mainly for evaluation skills, for example sustainability or climate change.'),
+        simulations: ['energieversorgung'],
       },
     ],
   },
