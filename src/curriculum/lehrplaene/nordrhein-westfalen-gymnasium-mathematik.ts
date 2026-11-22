@@ -186,6 +186,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
         code: '4.2',
         title: L('Begriffsbildung', 'Concepts'),
         summary: L('Absolute und relative Häufigkeit.', 'Absolute and relative frequency.'),
+        simulations: ['gesetz-grosse-zahlen'],
       },
       {
         code: '4.3',
@@ -349,6 +350,7 @@ const ERSTE_STUFE_UNITS: CurriculumUnit[] = [
         code: '8.3',
         title: L('Begriffsbildung', 'Concepts'),
         summary: L('Ergebnis, Ereignis und Wahrscheinlichkeit.', 'Outcome, event and probability.'),
+        simulations: ['gesetz-grosse-zahlen'],
       },
     ],
   },
@@ -499,6 +501,7 @@ const ZWEITE_STUFE_UNITS: CurriculumUnit[] = [
           'Erhebungen mit digitalen Werkzeugen planen und auswerten, Diagramme kritisch prüfen und Manipulationen erkennen.',
           'Planning and evaluating surveys with digital tools, checking diagrams critically and spotting manipulation.',
         ),
+        simulations: ['diagramme'],
       },
       {
         code: '12.2',
@@ -747,6 +750,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'Q-S.3',
         title: L('Diskrete Zufallsgrößen', 'Discrete random variables'),
         summary: L('Wahrscheinlichkeitsverteilungen und ihre Kenngrößen.', 'Probability distributions and their measures.'),
+        simulations: ['binomialverteilung'],
       },
       {
         code: 'Q-S.4',

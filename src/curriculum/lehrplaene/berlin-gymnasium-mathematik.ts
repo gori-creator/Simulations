@@ -269,6 +269,7 @@ const F_PARTS: Record<string, PartSpec> = {
       'Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten.',
       'Unit prefixes from milli to kilo with powers of ten, quantities in work-related contexts.',
     ),
+    simulations: ['einheiten'],
   },
   '2.2': {
     summary: L(
@@ -289,6 +290,7 @@ const F_PARTS: Record<string, PartSpec> = {
       'Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren.',
       'Applying transformations in word problems and constructing them with geometry software.',
     ),
+    simulations: ['spiegelung'],
   },
   '4.1': {
     summary: L(
@@ -341,6 +343,7 @@ const G_PARTS: Record<string, PartSpec> = {
       'Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen.',
       'Unit prefixes from nano to tera, taking measurements from technical drawings.',
     ),
+    simulations: ['zehnerpotenzen'],
   },
   '2.2': {
     summary: L(
@@ -400,6 +403,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'Zahlen situationsgerecht darstellen, ganze, rationale und reelle Zahlen angemessen verwenden, Einschachtelung von Quadratwurzeln oder π.',
       'Representing numbers to suit the situation, using integers, rational and real numbers appropriately, nesting intervals for square roots or π.',
     ),
+    simulations: ['quadratwurzel', 'kreiszahl-pi'],
   },
   '1.2': {
     summary: L(
@@ -434,6 +438,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen.',
       'Justifying properties of geometric objects with congruence and similarity.',
     ),
+    simulations: ['vergroessern', 'strahlensaetze'],
   },
   '4.1': {
     summary: L(

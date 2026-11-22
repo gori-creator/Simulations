@@ -240,7 +240,6 @@ describe('Länder-Lehrpläne', () => {
       gasgesetze: 'Gasgesetze nicht im Bildungsplan (Sek. I nur Temperatur im Teilchenmodell)',
     },
     'hessen-gymnasium-mathematik': {
-      'parabel-drei-punkte': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-mathematik.md)',
       ziegenproblem: 'kein passender Schwerpunkt',
       'monte-carlo-pi': 'kein passender Schwerpunkt',
       kugeln: 'kein passender Schwerpunkt',

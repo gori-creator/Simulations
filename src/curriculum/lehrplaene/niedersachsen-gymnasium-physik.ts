@@ -106,6 +106,7 @@ const DJ_9_10: CurriculumUnit[] = [
       'Leiter und Halbleiter, pn-Übergang, Leuchtdiode und Solarzelle, Motor, Generator und Transformator als Energiewandler sowie Gleich- und Wechselstrom.',
       'Conductors and semiconductors, the pn junction, LEDs and solar cells, motor, generator and transformer as energy converters, and direct and alternating current.',
     ),
+    simulations: ['induktion'],
   },
   {
     code: '9',
@@ -203,6 +204,7 @@ const EF_UNITS: CurriculumUnit[] = [
           'Bilder an Linsen, Brennweite, Abbildungsgleichung und optische Geräte.',
           'Images formed by lenses, focal length, the lens equation and optical instruments.',
         ),
+        simulations: ['linsen'],
       },
       {
         code: 'EF-2.4',

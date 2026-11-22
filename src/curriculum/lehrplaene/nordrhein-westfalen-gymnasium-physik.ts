@@ -46,6 +46,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
         code: '1.1',
         title: L('Thermische Energie', 'Thermal energy'),
         summary: L('Wärme, Temperatur und Temperaturmessung, die Celsiusskala.', 'Heat, temperature and measuring temperature, the Celsius scale.'),
+        simulations: ['teilchenmodell'],
       },
       {
         code: '1.2',
@@ -147,6 +148,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Lichtquellen und Lichtempfänger, das Modell des Lichtstrahls und Abbildungen mit der Lochkamera.',
           'Light sources and receivers, the light-ray model and images formed by a pinhole camera.',
         ),
+        simulations: ['licht-schatten'],
       },
       {
         code: '4.2',
@@ -520,6 +522,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Wellen- und Teilchenmodell, Wahrscheinlichkeitsdeutung, „Welcher-Weg“-Information und Kopenhagener Deutung.',
           'Wave and particle models, probability interpretation, which-way information and the Copenhagen interpretation.',
         ),
+        simulations: ['doppelspalt', 'elektronenbeugung'],
       },
     ],
   },
@@ -566,6 +569,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen.',
           'Spectrum of electromagnetic radiation, ionising radiation, the Geiger–Müller counter and biological effects.',
         ),
+        simulations: ['radioaktiver-zerfall'],
       },
       {
         code: 'GK-4.2',
@@ -701,6 +705,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption.',
           'Types of radiation, their detection, properties and absorption.',
         ),
+        simulations: ['radioaktiver-zerfall'],
       },
       {
         code: 'LK-4.3',

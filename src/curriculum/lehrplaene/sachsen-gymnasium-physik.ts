@@ -226,6 +226,7 @@ const K9: CurriculumUnit[] = [
     code: 'W3',
     title: L('Bewegungen auf gekrümmten Bahnen (Wahlbereich)', 'Motion along curved paths (optional)'),
     summary: L('Gleichförmige Kreisbewegung, Radialkraft und Satellitenbahnen.', 'Uniform circular motion, centripetal force and satellite orbits.'),
+    simulations: ['kreisbewegung'],
   },
 ];
 

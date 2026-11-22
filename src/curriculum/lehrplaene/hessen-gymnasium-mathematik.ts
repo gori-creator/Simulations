@@ -148,6 +148,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Zahlen und Anteile am Zahlenstrahl und im Kreisdiagramm veranschaulichen.',
                 'Visualising numbers and parts on the number ray and in pie charts.',
               ),
+              simulations: ['diagramme', 'zahlengerade'],
             },
           ],
         },
@@ -216,6 +217,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Figuren und Muster mit Lineal, Geodreieck und Zirkel zeichnen.',
                 'Drawing figures and patterns with ruler, set square and compass.',
               ),
+              simulations: ['dreieckskonstruktion'],
             },
             {
               code: '2.1.3',
@@ -317,6 +319,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Typische Repräsentanten für Längen, Massen, Zeiten usw. kennen.',
                 'Knowing typical benchmarks for lengths, masses, times etc.',
               ),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.2',
@@ -334,6 +337,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Größen begründet schätzen und Ergebnisse überschlagen.',
                 'Estimating quantities with reasons and checking results by rough calculation.',
               ),
+              simulations: ['einheiten'],
             },
             {
               code: '3.1.4',
@@ -426,6 +430,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Verstehen, dass einer Größe eine andere zugeordnet wird (z. B. Menge → Preis).',
                 'Understanding that one quantity is assigned to another (e.g. amount → price).',
               ),
+              simulations: ['funktion-zuordnung', 'proportional'],
             },
             {
               code: '4.1.2',
@@ -437,6 +442,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Zuordnungen in Tabellen, Schaubildern und mit Worten beschreiben.',
                 'Describing assignments in tables, charts and in words.',
               ),
+              simulations: ['funktion-zuordnung', 'proportional'],
             },
           ],
         },
@@ -458,6 +464,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Eine Datenerhebung von der Frage bis zur Auswertung durchführen.',
                 'Carrying out a data collection from the question to the evaluation.',
               ),
+              simulations: ['diagramme'],
             },
             {
               code: '5.1.2',
@@ -492,6 +499,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '5.2.1',
               title: L('Zufallserscheinungen in alltäglichen Situationen', 'Random phenomena in everyday situations'),
               summary: L('Zufällige Ereignisse im Alltag erkennen und beschreiben.', 'Recognising and describing random events in everyday life.'),
+              simulations: ['gesetz-grosse-zahlen'],
             },
             {
               code: '5.2.2',
@@ -992,6 +1000,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Positive und negative Brüche und Dezimalzahlen als ein Zahlbereich.',
                 'Positive and negative fractions and decimals as one number set.',
               ),
+              simulations: ['zahlengerade'],
             },
             {
               code: '1.1.2',
@@ -1011,6 +1020,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Rationale und reelle Zahlen an der Zahlengeraden und in Dezimalschreibweise darstellen.',
                 'Representing rational and real numbers on the number line and in decimal notation.',
               ),
+              simulations: ['zahlengerade'],
             },
             {
               code: '1.1.4',
@@ -1019,11 +1029,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Comparing, ordering and rounding rational and real numbers',
               ),
               summary: L('Zahlen beider Vorzeichen ordnen und sinnvoll runden.', 'Ordering numbers of both signs and rounding sensibly.'),
+              simulations: ['zahlengerade'],
             },
             {
               code: '1.1.5',
               title: L('Orientierung im zweidimensionalen Koordinatensystem', 'Orientation in the two-dimensional coordinate system'),
               summary: L('Punkte in allen vier Quadranten eintragen und ablesen.', 'Plotting and reading points in all four quadrants.'),
+              simulations: ['koordinaten-lage'],
             },
           ],
         },
@@ -1088,6 +1100,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '1.2.7',
               title: L('Prozente von Prozenten', 'Percentages of percentages'),
               summary: L('Mehrere prozentuale Änderungen nacheinander verknüpfen.', 'Combining several successive percentage changes.'),
+              simulations: ['prozentstreifen'],
             },
           ],
         },
@@ -1139,6 +1152,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: '2.1.5',
               title: L('Kartesisches Koordinatensystem in allen vier Quadranten', 'Cartesian coordinate system in all four quadrants'),
               summary: L('Figuren im vollständigen Koordinatensystem darstellen.', 'Representing figures in the full coordinate system.'),
+              simulations: ['koordinaten-lage'],
             },
           ],
         },
@@ -1896,6 +1910,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Auch Pyramiden und Kegel in Netz und Schrägbild darstellen.',
                 'Representing pyramids and cones as nets and oblique drawings too.',
               ),
+              simulations: ['koerpernetze'],
             },
           ],
         },
@@ -1973,6 +1988,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Erkennen, wann ein Zusammenhang eine Funktion ist und wie er sich verändert.',
                 'Recognising when a relationship is a function and how it changes.',
               ),
+              simulations: ['funktion-zuordnung'],
             },
             {
               code: '4.1.2',
@@ -2318,6 +2334,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Achsenschnittpunkte und Schnittpunkte zweier Graphen grafisch und rechnerisch finden.',
                 'Finding axis intercepts and intersections of two graphs graphically and algebraically.',
               ),
+              simulations: ['gleichungen-grafisch'],
             },
             {
               code: 'E.1.3',
@@ -2407,6 +2424,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Aus Bedingungen (z. B. Extrempunkt, knickfreier Anschluss) eine passende Funktionsgleichung bestimmen.',
                 'Finding a suitable function equation from conditions (e.g. extreme point, smooth join).',
               ),
+              simulations: ['parabel-drei-punkte'],
             },
             {
               code: 'E.3.3',
@@ -2434,6 +2452,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Parameter in f(x) = a·bˣ + c deuten, Halbwerts- und Verdopplungszeit, Modellieren mit Daten.',
                 'Interpreting parameters in f(x) = a·bˣ + c, half-life and doubling time, modelling with data.',
               ),
+              simulations: ['exponentielles-wachstum'],
             },
             {
               code: 'E.4.2',
@@ -2442,6 +2461,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Die Zahl e und die Ableitung von eˣ anschaulich herleiten; Basiswechsel zur Basis e.',
                 'Deriving the number e and the derivative of eˣ intuitively; changing to base e.',
               ),
+              simulations: ['e-funktion'],
             },
             {
               code: 'E.4.3',
@@ -2510,6 +2530,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'E.6.1',
               title: L('Polynomdivision', 'Polynomial division'),
               summary: L('Polynome faktorisieren, um Nullstellen zu bestimmen.', 'Factorising polynomials to determine zeros.'),
+              simulations: ['ganzrationale-funktionen'],
             },
             {
               code: 'E.6.2',
@@ -2820,6 +2841,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Graphen verschieben, strecken und spiegeln; g(x) = a·f(b·(x − c)) + d deuten.',
                 'Shifting, stretching and reflecting graphs; interpreting g(x) = a·f(b·(x − c)) + d.',
               ),
+              simulations: ['transformationen'],
             },
             {
               code: 'Q2.1.3',
@@ -2849,6 +2871,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'The natural logarithm as antiderivative of 1/x (advanced course only)',
               ),
               summary: L('Ln(x) als Stammfunktion von 1/x nutzen.', 'Using ln(x) as the antiderivative of 1/x.'),
+              simulations: ['logarithmus'],
             },
             {
               code: 'Q2.1.6',
@@ -2981,6 +3004,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Calculating the angle between line and plane and between two planes',
               ),
               summary: L('Schnittwinkel mithilfe von Richtungs- und Normalenvektoren.', 'Intersection angles using direction and normal vectors.'),
+              simulations: ['lage-abstaende'],
             },
             {
               code: 'Q2.3.9',
@@ -3080,6 +3104,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Skalar-, Matrix-Vektor- und Matrixmultiplikation, Addition, einfache Inverse.',
                 'Scalar, matrix–vector and matrix multiplication, addition, simple inverses.',
               ),
+              simulations: ['matrix-abbildungen'],
             },
             {
               code: 'Q2.4.3',
@@ -3134,6 +3159,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Matrizen addieren, multiplizieren und einfache Inverse bestimmen.',
                 'Adding and multiplying matrices and finding simple inverses.',
               ),
+              simulations: ['matrix-abbildungen'],
             },
             {
               code: 'Q2.5.3',
@@ -3180,6 +3206,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Absolute und relative Häufigkeit sowie empirisches Gesetz der großen Zahlen.',
                 'Absolute and relative frequency and the empirical law of large numbers.',
               ),
+              simulations: ['gesetz-grosse-zahlen'],
             },
             {
               code: 'Q3.1.2',
@@ -3188,6 +3215,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Ergebnis, Ereignis, Laplace-Wahrscheinlichkeit und Vergleich mit Versuchsergebnissen.',
                 'Outcome, event, Laplace probability and comparison with experimental results.',
               ),
+              simulations: ['gesetz-grosse-zahlen'],
             },
             {
               code: 'Q3.1.3',
@@ -3196,6 +3224,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Determining probabilities in multi-stage random experiments',
               ),
               summary: L('Baumdiagramme und Pfadregeln anwenden.', 'Using tree diagrams and path rules.'),
+              simulations: ['baumdiagramm'],
             },
             {
               code: 'Q3.1.4',
@@ -3222,6 +3251,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Produktregel, Stichproben mit/ohne Zurücklegen, Fakultät, Binomialkoeffizient.',
                 'Product rule, samples with/without replacement, factorial, binomial coefficient.',
               ),
+              simulations: ['zaehlprinzip'],
             },
             {
               code: 'Q3.1.7',
@@ -3252,6 +3282,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Zufallsgröße, Verteilung im Histogramm, Erwartungswert, Varianz, Standardabweichung; faire Spiele.',
                 'Random variable, distribution as histogram, expected value, variance, standard deviation; fair games.',
               ),
+              simulations: ['binomialverteilung'],
             },
             {
               code: 'Q3.2.2',
@@ -3381,6 +3412,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Eigene Zufallsexperimente durchführen und mit Software simulieren.',
                 'Carrying out own random experiments and simulating them with software.',
               ),
+              simulations: ['gesetz-grosse-zahlen'],
             },
             {
               code: 'Q3.5.2',
@@ -3389,6 +3421,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Eigene Daten mit Mittelwert, empirischer Varianz und Standardabweichung beurteilen.',
                 'Assessing own data with mean, empirical variance and standard deviation.',
               ),
+              simulations: ['boxplot'],
             },
             {
               code: 'Q3.5.3',
@@ -3467,6 +3500,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q4.1.4',
               title: L('Ortskurven (nur LK)', 'Loci (advanced course only)'),
               summary: L('Ortskurven von Extrem- und Wendepunkten bestimmen.', 'Determining the loci of extreme and inflection points.'),
+              simulations: ['funktionenscharen'],
             },
           ],
         },

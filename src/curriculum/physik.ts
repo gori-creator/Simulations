@@ -595,7 +595,7 @@ export const physik: Subject = {
                 'Verschiebe eine Kerze vor einer Linse und konstruiere das Bild mit drei besonderen Strahlen. Auf dem Schirm wird es scharf.',
                 'Move a candle in front of a lens and construct the image with three special rays. It becomes sharp on the screen.',
               ),
-              grades: [6, 10],
+              grades: [6, 11],
               kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung'],
               keywords: L(
                 ['Linse', 'Sammellinse', 'Zerstreuungslinse', 'Brennweite', 'Brennpunkt', 'Parallelstrahl', 'Mittelpunktstrahl', 'Brennpunktstrahl', 'Linsengleichung', 'Abbildungsmaßstab', 'reelles Bild', 'virtuelles Bild', 'Lupe', 'Projektor', 'Kamera', 'Auge', 'Blende', 'Schärfentiefe'],
@@ -729,6 +729,22 @@ export const physik: Subject = {
           grades: [12, 14],
           simulations: [
             {
+              id: 'linienspektren',
+              status: 'ready',
+              slug: L('linienspektren-energieniveaus', 'line-spectra-energy-levels'),
+              title: L('Atommodelle und Linienspektren', 'Atomic models and line spectra'),
+              summary: L(
+                'Jedes Element leuchtet in seinen eigenen Farben. Springt ein Elektron eine Stufe tiefer, entsteht genau eine Linie im Spektrum.',
+                'Every element glows in its own colours. When an electron drops one level, exactly one line appears in the spectrum.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
+                ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
+              ),
+            },
+            {
               id: 'photoeffekt',
               status: 'ready',
               slug: L('photoeffekt-gegenfeldmethode', 'photoelectric-effect-retarding-field'),
@@ -742,22 +758,6 @@ export const physik: Subject = {
               keywords: L(
                 ['Photoeffekt', 'lichtelektrischer Effekt', 'Fotozelle', 'Gegenfeldmethode', 'Gegenspannung', 'Austrittsarbeit', 'Grenzfrequenz', 'Einstein-Gerade', 'Photon', 'Planck-Konstante', 'Bewegungsenergie', 'Intensität', 'Fotostrom', 'Quantenobjekt'],
                 ['photoelectric effect', 'photocell', 'retarding field method', 'stopping voltage', 'work function', 'threshold frequency', 'Einstein line', 'photon', 'Planck constant', 'kinetic energy', 'intensity', 'photocurrent', 'quantum object'],
-              ),
-            },
-            {
-              id: 'linienspektren',
-              status: 'ready',
-              slug: L('linienspektren-energieniveaus', 'line-spectra-energy-levels'),
-              title: L('Atommodelle und Linienspektren', 'Atomic models and line spectra'),
-              summary: L(
-                'Jedes Element leuchtet in seinen eigenen Farben. Springt ein Elektron eine Stufe tiefer, entsteht genau eine Linie im Spektrum.',
-                'Every element glows in its own colours. When an electron drops one level, exactly one line appears in the spectrum.',
-              ),
-              grades: [12, 13],
-              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Energie', 'P-BK-Mathematisieren'],
-              keywords: L(
-                ['Linienspektrum', 'Spektrallinie', 'Energieniveau', 'Termschema', 'Elektronensprung', 'Photon', 'Emission', 'Absorption', 'Emissionsspektrum', 'Absorptionsspektrum', 'Bohrsches Atommodell', 'Wasserstoff', 'Balmer-Serie', 'Lyman-Serie', 'Natrium-D-Linie', 'Quecksilber', 'Helium', 'Planck-Konstante', 'Frequenz', 'Wellenlänge', 'Spektralfarben', 'Prisma', 'Fraunhofer-Linien'],
-                ['line spectrum', 'spectral line', 'energy level', 'energy level diagram', 'electron transition', 'photon', 'emission', 'absorption', 'emission spectrum', 'absorption spectrum', 'Bohr model', 'hydrogen', 'Balmer series', 'Lyman series', 'sodium D line', 'mercury', 'helium', 'Planck constant', 'frequency', 'wavelength', 'spectral colours', 'prism', 'Fraunhofer lines'],
               ),
             },
             {
