@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **317 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (105)
+## Mathematik (102)
 
 ### Baden-Württemberg · Gymnasium (7)
 
@@ -108,13 +108,12 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.3.3 | Komplexe Zahlen › Lösen von Gleichungen in der Menge ℂ der komplexen Zahlen | Gleichungen lösen, die in ℝ keine Lösung haben. |
 | 13 | Q4.3.4 | Komplexe Zahlen › Darstellen der komplexen Zahlen mit 2x2-Matrizen (nur LK) | Komplexe Zahlen als Drehstreckungsmatrizen. |
 
-### Niedersachsen · Gymnasium (3)
+### Niedersachsen · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 8.3 | Umgang mit negativen Zahlen › Multiplizieren und dividieren | Schuldenmodell, Permanenzprinzip und Vorzeichenregeln. |
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
-| 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
 ### Nordrhein-Westfalen · Gymnasium (3)
 
@@ -138,7 +137,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
 
-### Sachsen · Gymnasium (23)
+### Sachsen · Gymnasium (21)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -158,10 +157,8 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | W1 | Komplexe Zahlen (Wahlbereich) | Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen. |
 | 10 | W2 | Logistisches Wachstum (Wahlbereich) | Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen. |
 | 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
-| 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
 | 11/12 | GK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Grundkurs) | Räuber-Beute-System und fraktale Strukturen. |
 | 11/12 | GK-W6 | Differentialgleichungen (Wahlbereich Grundkurs) | Einfache Differentialgleichungen für Wachstum und Bewegung. |
-| 11/12 | LK-W1 | Kegelschnitte (Wahlbereich Leistungskurs) | Kegelschnitte, Ellipse mit Konstruktion und Tangenten. |
 | 11/12 | LK-W3 | Dynamische Systeme und fraktale Strukturen (Wahlbereich Leistungskurs) | Räuber-Beute-System, Fraktale, Feigenbaum-Diagramm und Chaos. |
 | 11/12 | LK-W4 | Funktionen mit zwei Veränderlichen (Wahlbereich Leistungskurs) | Graphen im Raum, Schnittfiguren und partielle Ableitungen. |
 | 11/12 | LK-W6 | Differentialgleichungen (Wahlbereich Leistungskurs) | Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld. |

@@ -614,6 +614,7 @@ const DJ_9_10: CurriculumUnit[] = [
         code: '18.4',
         title: L('Parabel als Ortslinie', 'The parabola as a locus'),
         summary: L('Gleicher Abstand zu einem Punkt und einer Geraden.', 'Equal distance from a point and a line.'),
+        simulations: ['kegelschnitte'],
       },
     ],
   },
