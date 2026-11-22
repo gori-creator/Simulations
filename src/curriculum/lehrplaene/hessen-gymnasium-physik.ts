@@ -134,6 +134,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Mondphasen, Finsternisse u. Ä. mit Modellen erklären.',
                 'Explaining lunar phases, eclipses and similar phenomena with models.',
               ),
+              simulations: ['licht-schatten'],
             },
           ],
         },
@@ -242,6 +243,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '5.6',
               title: L('Druck als „Gepresstsein“ der Materie', 'Pressure as the \'compressed state\' of matter'),
               summary: L('Anschauliche Vorstellung von Druck.', 'An intuitive idea of pressure.'),
+              simulations: ['gasgesetze'],
             },
           ],
         },
@@ -1056,6 +1058,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '6.1',
               title: L('Wechselwirkung von Körpern', 'Interaction of bodies'),
               summary: L('Kräfte treten immer paarweise zwischen zwei Körpern auf.', 'Forces always occur in pairs between two bodies.'),
+              simulations: ['kraefteaddition'],
             },
             {
               code: '6.2',
@@ -1176,6 +1179,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Alpha-, Beta- und Gammastrahlung, Gefährdungen und Schutzmaßnahmen.',
                 'Alpha, beta and gamma radiation, hazards and protective measures.',
               ),
+              simulations: ['radioaktiver-zerfall'],
             },
             {
               code: '9.3',
@@ -1646,6 +1650,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Bewegung mit Reibung; freier Fall mit Luftwiderstand und Grenzgeschwindigkeit.',
                 'Motion with friction; free fall with air resistance and terminal velocity.',
               ),
+              simulations: ['freier-fall', 'schiefe-ebene'],
             },
             {
               code: 'E.4.3',
@@ -1669,6 +1674,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'E.5.1',
               title: L('Massenanziehung', 'Mass attraction'),
               summary: L('Gravitationsfeld, Gravitationsgesetz und Gewichtskraft.', 'Gravitational field, law of gravitation and weight.'),
+              simulations: ['planetenbahnen'],
             },
             {
               code: 'E.5.2',
@@ -1832,6 +1838,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q1.1.8',
               title: L('Spannung als Potenzialdifferenz (nur LK)', 'Voltage as potential difference (advanced course only)'),
               summary: L('Elektrisches Potenzial und Äquipotenziallinien.', 'Electric potential and equipotential lines.'),
+              simulations: ['feldlinien'],
             },
             {
               code: 'Q1.1.9',
@@ -1933,6 +1940,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q2.1.3',
               title: L('Gedämpfte mechanische Schwingungen', 'Damped mechanical oscillations'),
               summary: L('Abnahme der Amplitude qualitativ beschreiben.', 'Describing the decrease in amplitude qualitatively.'),
+              simulations: ['federpendel'],
             },
             {
               code: 'Q2.1.4',
@@ -1947,6 +1955,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q2.1.5',
               title: L('Gedämpfte Schwingungen (nur LK)', 'Damped oscillations (advanced course only)'),
               summary: L('Dämpfungsverläufe (ohne Herleitung) beschreiben.', 'Describing damping behaviour (without derivation).'),
+              simulations: ['federpendel'],
             },
             {
               code: 'Q2.1.6',
@@ -2000,6 +2009,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q2.2.4',
               title: L('Beispiel für eine technische Anwendung der Induktion', 'Example of a technical application of induction'),
               summary: L('Z. B. Generator oder Transformator erklären.', 'Explaining e.g. a generator or transformer.'),
+              simulations: ['induktion'],
             },
             {
               code: 'Q2.2.5',
@@ -2097,6 +2107,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Wellenphänomene z. B. in der Wellenwanne; Huygens’sches Prinzip.',
                 'Wave phenomena e.g. in a ripple tank; Huygens\' principle.',
               ),
+              simulations: ['wellen-ausbreitung', 'interferenz'],
             },
             {
               code: 'Q2.3.4',
@@ -2298,6 +2309,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Doppelspalt mit einzelnen Elektronen und Photonen; Weginformation vs. Interferenz.',
                 'Double slit with single electrons and photons; which-path information vs. interference.',
               ),
+              simulations: ['doppelspalt'],
             },
             {
               code: 'Q4.1.3',
@@ -2388,6 +2400,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Strahlungsarten, Nachweis, Wirkung, Anwendungen und Gefahren.',
                 'Types of radiation, detection, effects, applications and dangers.',
               ),
+              simulations: ['radioaktiver-zerfall'],
             },
             {
               code: 'Q4.3.2',

@@ -912,6 +912,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Schrägbilder und Netze von Prismen, Pyramiden, Zylindern und Kegeln skizzieren und ineinander überführen.",
                 "Sketching oblique views and nets of prisms, pyramids, cylinders and cones and converting between them.",
               ),
+              simulations: ['koerpernetze'],
             },
             {
               code: "3.3.3 (2)–(4)",

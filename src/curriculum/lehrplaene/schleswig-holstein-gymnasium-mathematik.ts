@@ -204,6 +204,7 @@ const KS_5_6_UNITS: CurriculumUnit[] = [
           'Zufallsexperimente, Versuche, Ergebnisse und Ergebnismengen beschreiben.',
           'Describing random experiments, trials, outcomes and sample spaces.',
         ),
+        simulations: ['gesetz-grosse-zahlen'],
       },
     ],
   },
@@ -686,6 +687,7 @@ const Q1_UNITS: CurriculumUnit[] = [
         code: 'S.1',
         title: L('Zufallsgröße, Erwartungswert, Streuungsmaße', 'random variable, expected value, measures of spread'),
         summary: L('Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel.', 'Probability distributions as predictions, expected value, variance and standard deviation, fair games.'),
+        simulations: ['binomialverteilung'],
       },
       {
         code: 'S.2',

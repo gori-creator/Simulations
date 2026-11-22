@@ -2,19 +2,18 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **407 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (167)
+## Mathematik (105)
 
-### Baden-Württemberg · Gymnasium (8)
+### Baden-Württemberg · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.2.2 | Leitidee Messen (keine Inhalte in den Klassen 7/8) | In den Klassen 7/8 sieht der Bildungsplan für diese Leitidee keine Inhalte vor. |
 | 9/10 | 3.3.1 (1)–(3) | Leitidee Zahl – Variable – Operation › mit Potenzen umgehen | Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden. |
-| 9/10 | 3.3.3 (1) | Leitidee Raum und Form › Körper zeichnerisch darstellen | Schrägbilder und Netze von Prismen, Pyramiden, Zylindern und Kegeln skizzieren und ineinander überführen. |
 | 11 | 3.4.1 (2)–(3) | Leitidee Zahl – Variable – Operation › Funktionsterme ableiten | Faktor-, Potenz- und Summenregel anwenden und die Ableitungen von Sinus und Kosinus angeben. |
 | 12/13 | 3.5.1 (3)–(4) | Leitidee Zahl – Variable – Operation (nur Leistungsfach) › weitere Ableitungsregeln anwenden | Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
@@ -25,31 +24,16 @@ Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfert
 
 Alle Lernbereiche haben eine Simulation.
 
-### Berlin · Gymnasium (10)
+### Berlin · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5 | 4.2 | Gleichungen und Funktionen (Niveaustufen C–D) › Zuordnungen und Funktionen | Direkt proportionale Zuordnungen beschreiben, in Tabelle, Text und Koordinatensystem darstellen und mit dem Dreisatz rechnen. |
-| 5 | 5.1 | Daten und Zufall (Niveaustufen C–D) › Daten | Messwerte erfassen und in Tabellen und Diagrammen darstellen, Minimum, Maximum und Spannweite ermitteln. |
-| 6 | 2.1 | Größen und Messen (Niveaustufe D, in Teilen E) › Größenvorstellungen und Messen | Längen, Flächen, Volumen und Winkel unterscheiden, messen und schätzen, Einheiten umwandeln und Größen in Dezimalschreibweise angeben. |
-| 8 | 2.1 | Größen und Messen (Niveaustufe F) › Größenvorstellungen und Messen | Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten. |
-| 8 | 3.2 | Raum und Form (Niveaustufe F) › Geometrische Abbildungen | Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren. |
-| 9 | 2.1 | Größen und Messen (Niveaustufe G) › Größenvorstellungen und Messen | Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen. |
-| 10 | 1.1 | Zahlen und Operationen (Niveaustufe H) › Zahlvorstellungen | Zahlen situationsgerecht darstellen, ganze, rationale und reelle Zahlen angemessen verwenden, Einschachtelung von Quadratwurzeln oder π. |
-| 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
-| 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
 
-### Brandenburg · Gymnasium (7)
+### Brandenburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 8 | 2.1 | Größen und Messen (Niveaustufe F) › Größenvorstellungen und Messen | Einheitenvorsätze von Milli bis Kilo mit Zehnerpotenzen, Größen in berufsorientierten Kontexten. |
-| 8 | 3.2 | Raum und Form (Niveaustufe F) › Geometrische Abbildungen | Abbildungen in Sachaufgaben anwenden und mit Geometriesoftware konstruieren. |
-| 9 | 2.1 | Größen und Messen (Niveaustufe G) › Größenvorstellungen und Messen | Einheitenvorsätze von Nano bis Tera, Maße aus technischen Zeichnungen entnehmen. |
-| 10 | 1.1 | Zahlen und Operationen (Niveaustufe H) › Zahlvorstellungen | Zahlen situationsgerecht darstellen, ganze, rationale und reelle Zahlen angemessen verwenden, Einschachtelung von Quadratwurzeln oder π. |
-| 10 | 3.2 | Raum und Form (Niveaustufe H) › Geometrische Abbildungen | Eigenschaften geometrischer Objekte mit Kongruenz und Ähnlichkeit begründen. |
-| 10 | 5.1 | Daten und Zufall (Niveaustufe H) › Daten | Mittelwerte und Streumaße wie Spannweite und Boxbreite analysieren und interpretieren. |
 | 12 | Q4.3 | 4. Kurshalbjahr: Analysis, Stochastik und Aufgaben aus allen Sachgebieten › Komplexe Aufgabenstellungen aus allen drei Sachgebieten | Aufgaben, die Analysis, analytische Geometrie und Stochastik verknüpfen. |
 
 ### Bremen · Gymnasium (1)
@@ -65,43 +49,22 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 | 12 | 7 | Lineare Algebra (Wahlpflichtmodul) | Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten. |
 
-### Hessen · Gymnasium (88)
+### Hessen · Gymnasium (54)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 1.1.9 | Zahlen › Darstellungen (Zahlenstrahl, Kreisdiagramm) | Zahlen und Anteile am Zahlenstrahl und im Kreisdiagramm veranschaulichen. |
 | 5/6 | 1.2.2 | Operationen und ihre Eigenschaften › Strategien zum vorteilhaften Rechnen | Rechnungen geschickt umstellen und zusammenfassen, um einfacher zu rechnen. |
-| 5/6 | 2.1.2 | Ebene Figuren › Konstruktion von Figuren und Mustern | Figuren und Muster mit Lineal, Geodreieck und Zirkel zeichnen. |
-| 5/6 | 3.1.1 | Umgang mit Größen › Größenvorstellungen | Typische Repräsentanten für Längen, Massen, Zeiten usw. kennen. |
-| 5/6 | 3.1.3 | Umgang mit Größen › Repräsentanten, Schätzungen und Überschlagsrechnungen | Größen begründet schätzen und Ergebnisse überschlagen. |
 | 5/6 | 3.2.3 | Messvorgänge › Währung/Geld | Mit Geldbeträgen in Euro und Cent rechnen. |
 | 5/6 | 3.2.4 | Messvorgänge › Zeitspanne | Zeitpunkte und Zeitspannen unterscheiden und berechnen. |
-| 5/6 | 4.1.1 | Zuordnungen und ihre Darstellungen › Grundvorstellungen zu Zuordnungen von Größen | Verstehen, dass einer Größe eine andere zugeordnet wird (z. B. Menge → Preis). |
-| 5/6 | 4.1.2 | Zuordnungen und ihre Darstellungen › Darstellung der Zuordnungen in Schaubildern und Tabellen und in sprachlicher Form | Zuordnungen in Tabellen, Schaubildern und mit Worten beschreiben. |
-| 5/6 | 5.1.1 | Statistische Erhebungen und ihre Auswertung › Umfragen und Erhebungen (Planung, Durchführung und statistische Auswertung) | Eine Datenerhebung von der Frage bis zur Auswertung durchführen. |
-| 5/6 | 5.2.1 | Umgang mit dem Zufall › Zufallserscheinungen in alltäglichen Situationen | Zufällige Ereignisse im Alltag erkennen und beschreiben. |
-| 7/8 | 1.1.1 | Zahlen › Rationale Zahlen | Positive und negative Brüche und Dezimalzahlen als ein Zahlbereich. |
-| 7/8 | 1.1.3 | Zahlen › Darstellungen (Zahlengerade, Dezimalbrüche) | Rationale und reelle Zahlen an der Zahlengeraden und in Dezimalschreibweise darstellen. |
-| 7/8 | 1.1.4 | Zahlen › Vergleichen, Ordnen und Runden von rationalen und reellen Zahlen | Zahlen beider Vorzeichen ordnen und sinnvoll runden. |
-| 7/8 | 1.1.5 | Zahlen › Orientierung im zweidimensionalen Koordinatensystem | Punkte in allen vier Quadranten eintragen und ablesen. |
 | 7/8 | 1.2.1 | Operationen und ihre Eigenschaften › Rechenverfahren, Rechengesetze und deren Verknüpfungen im Bereich der rationalen und reellen Zahlen | Vorzeichenregeln und Rechengesetze sicher anwenden. |
 | 7/8 | 1.2.3 | Operationen und ihre Eigenschaften › Potenzen mit rationalen Exponenten | Potenzschreibweise auf negative und gebrochene Exponenten ausweiten. |
-| 7/8 | 1.2.7 | Operationen und ihre Eigenschaften › Prozente von Prozenten | Mehrere prozentuale Änderungen nacheinander verknüpfen. |
-| 7/8 | 2.1.5 | Ebene Figuren › Kartesisches Koordinatensystem in allen vier Quadranten | Figuren im vollständigen Koordinatensystem darstellen. |
 | 7/8 | 3.1.2 | Umgang mit Größen › Größen von Winkeln (Minuten, Sekunden) | Winkel genauer in Grad, Minuten und Sekunden angeben. |
 | 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 9/10 | 2.2.2 | Körper › Körper aus der Technik und der Lebensumwelt | Reale Gegenstände als Kombination von Grundkörpern modellieren. |
-| 9/10 | 2.2.4 | Körper › Modelle, Schrägbilder und Netze bekannter Körper | Auch Pyramiden und Kegel in Netz und Schrägbild darstellen. |
-| 9/10 | 4.1.1 | Zuordnungen und ihre Darstellungen › Grundvorstellungen zu nicht-proportionalen funktionalen Zusammenhängen | Erkennen, wann ein Zusammenhang eine Funktion ist und wie er sich verändert. |
-| 11 | E.1.2 | Funktionen und ihre Darstellung › Bestimmen besonderer Punkte | Achsenschnittpunkte und Schnittpunkte zweier Graphen grafisch und rechnerisch finden. |
 | 11 | E.1.3 | Funktionen und ihre Darstellung › Modellieren von Realsituationen durch geeignete Funktionsklassen | Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben. |
 | 11 | E.2.4 | Einführung des Ableitungsbegriffs › Ableitungsregeln | Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten. |
-| 11 | E.3.2 | Anwendungen des Ableitungsbegriffs › Rekonstruktion von ganzrationalen Funktionen anhand ihrer Eigenschaften | Aus Bedingungen (z. B. Extrempunkt, knickfreier Anschluss) eine passende Funktionsgleichung bestimmen. |
-| 11 | E.4.1 | Exponentialfunktionen › Wachstums- und Zerfallsprozesse | Parameter in f(x) = a·bˣ + c deuten, Halbwerts- und Verdopplungszeit, Modellieren mit Daten. |
-| 11 | E.4.2 | Exponentialfunktionen › Die (natürliche) Exponentialfunktion f(x) = eˣ | Die Zahl e und die Ableitung von eˣ anschaulich herleiten; Basiswechsel zur Basis e. |
 | 11 | E.4.3 | Exponentialfunktionen › Produkt- und Kettenregel | Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten. |
 | 11 | E.5.3 | Trigonometrische Funktionen › Ableitung von f(x) = a·sin[b·(x − c)] + d beziehungsweise f(x) = a·cos[b·(x − c)] + d | Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen. |
-| 11 | E.6.1 | Weitere Verfahren zum Lösen von Gleichungen › Polynomdivision | Polynome faktorisieren, um Nullstellen zu bestimmen. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
 | 12 | Q1.1.4 | Einführung in die Integralrechnung › Entwickeln der Integrationsregeln mithilfe der Ableitungsregeln | Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel. |
@@ -117,37 +80,24 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | Q1.5.1 | Gewöhnliche Differenzialgleichungen › Beschreiben und Entwickeln von Modellen für Wachstums- und Zerfallsprozesse mithilfe von Differenzialgleichungen | Wachstumsannahmen in Differenzialgleichungen übersetzen. |
 | 12 | Q1.5.2 | Gewöhnliche Differenzialgleichungen › Lösungsverfahren für Differenzialgleichungen erster Ordnung | Richtungsfelder, Trennung der Variablen und weitere elementare Methoden. |
 | 12 | Q1.5.3 | Gewöhnliche Differenzialgleichungen › Untersuchen von Differenzialgleichungen zweiter Ordnung (nur LK) | Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen. |
-| 12 | Q2.1.2 | Vertiefung der Analysis › Verschiebung und Streckung | Graphen verschieben, strecken und spiegeln; g(x) = a·f(b·(x − c)) + d deuten. |
-| 12 | Q2.1.5 | Vertiefung der Analysis › Die natürliche Logarithmusfunktion als Stammfunktion von 1/x (nur LK) | Ln(x) als Stammfunktion von 1/x nutzen. |
 | 12 | Q2.3.1 | Geraden und Ebenen im Raum › Systematisches Lösen von linearen Gleichungssystemen (auch über- und unterbestimmte) | Gleichungssysteme algorithmisch lösen und Lösungsmengen geometrisch deuten. |
-| 12 | Q2.3.8 | Geraden und Ebenen im Raum › Berechnung des Winkels zwischen Gerade und Ebene sowie zwischen Ebene und Ebene | Schnittwinkel mithilfe von Richtungs- und Normalenvektoren. |
 | 12 | Q2.3.9 | Geraden und Ebenen im Raum › Untersuchung von Winkeln (insbesondere auf Orthogonalität und Parallelität) sowie von den genannten Lagebeziehungen jeweils in Abhängigkeit von einem (zusätzlichen) Parameter | Lage und Winkel abhängig von einem Parameter untersuchen. |
 | 12 | Q2.3.11 | Geraden und Ebenen im Raum › Anwendung in Sachzusammenhängen | Schattenwürfe, Projektionen auf Koordinatenebenen und Flächenberechnungen. |
 | 12 | Q2.3.15 | Geraden und Ebenen im Raum › Geradenscharen (nur LK) | Geraden mit Parameter untersuchen. |
 | 12 | Q2.3.16 | Geraden und Ebenen im Raum › Ebenenscharen, insbesondere in der Darstellung durch eine Koordinatengleichung (nur LK) | Ebenen mit Parameter untersuchen. |
 | 12 | Q2.3.17 | Geraden und Ebenen im Raum › Darstellung von Parabelbahnen mithilfe von Parametern (nur LK) | Flugbahnen (z. B. eines Balls) parametrisch beschreiben. |
 | 12 | Q2.4.1 | Matrizen zur Beschreibung von Übergangsprozessen › Beschreiben von Übergangsprozessen mithilfe von Zustands- beziehungsweise Übergangsgraphen, Zustandsvektoren und Übergangsmatrizen | Z. B. Populationen, Wählerwanderung oder Kundenströme modellieren. |
-| 12 | Q2.4.2 | Matrizen zur Beschreibung von Übergangsprozessen › Rechnen mit Matrizen | Skalar-, Matrix-Vektor- und Matrixmultiplikation, Addition, einfache Inverse. |
 | 12 | Q2.4.3 | Matrizen zur Beschreibung von Übergangsprozessen › Markov-Ketten | Zustände schrittweise (auch rückwärts) berechnen und stabile Zustände über Fixvektoren finden. |
 | 12 | Q2.4.4 | Matrizen zur Beschreibung von Übergangsprozessen › Bestimmen und Interpretieren von Matrixeinträgen bei Potenzen von Matrizen | Einträge von M² usw. im Kontext deuten. |
 | 12 | Q2.4.5 | Matrizen zur Beschreibung von Übergangsprozessen › Langfristige Entwicklung von Übergangsprozessen (nur LK) | Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren. |
-| 12 | Q2.5.2 | Matrizen zur Darstellung linearer geometrischer Abbildungen › Rechnen mit Matrizen | Matrizen addieren, multiplizieren und einfache Inverse bestimmen. |
-| 13 | Q3.1.1 | Grundlegende Begriffe und Methoden der Stochastik › Statistischer Wahrscheinlichkeitsbegriff | Absolute und relative Häufigkeit sowie empirisches Gesetz der großen Zahlen. |
-| 13 | Q3.1.2 | Grundlegende Begriffe und Methoden der Stochastik › Grundlagen der Wahrscheinlichkeitstheorie | Ergebnis, Ereignis, Laplace-Wahrscheinlichkeit und Vergleich mit Versuchsergebnissen. |
-| 13 | Q3.1.3 | Grundlegende Begriffe und Methoden der Stochastik › Bestimmen von Wahrscheinlichkeiten bei mehrstufigen Zufallsexperimenten | Baumdiagramme und Pfadregeln anwenden. |
-| 13 | Q3.1.6 | Grundlegende Begriffe und Methoden der Stochastik › Lösen kombinatorischer Zählprobleme | Produktregel, Stichproben mit/ohne Zurücklegen, Fakultät, Binomialkoeffizient. |
-| 13 | Q3.2.1 | Wahrscheinlichkeitsverteilungen › Erarbeiten grundlegender Begriffe | Zufallsgröße, Verteilung im Histogramm, Erwartungswert, Varianz, Standardabweichung; faire Spiele. |
 | 13 | Q3.3.2 | Hypothesentests › Grafische Darstellung der Wahrscheinlichkeiten für das Beibehalten beziehungsweise Verwerfen der Nullhypothese in Abhängigkeit vom wahren Wert der Trefferwahrscheinlichkeit p (nur LK) | Operationscharakteristik bzw. Gütefunktion darstellen und deuten. |
 | 13 | Q3.4.1 | Prognose- und Konfidenzintervalle › Prognoseintervalle für relative Häufigkeiten | Erwartete Bereiche für Stichprobenergebnisse bestimmen. |
 | 13 | Q3.4.2 | Prognose- und Konfidenzintervalle › Konfidenzintervalle für Wahrscheinlichkeiten | Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen. |
 | 13 | Q3.4.3 | Prognose- und Konfidenzintervalle › Konfidenzdiagramme (Konfidenzellipse) (nur LK) | Konfidenzbereiche grafisch darstellen. |
 | 13 | Q3.4.4 | Prognose- und Konfidenzintervalle › Stichprobenumfänge (nur LK) | Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen. |
-| 13 | Q3.5.1 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Statistischer Wahrscheinlichkeitsbegriff | Eigene Zufallsexperimente durchführen und mit Software simulieren. |
-| 13 | Q3.5.2 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Umgang mit Daten | Eigene Daten mit Mittelwert, empirischer Varianz und Standardabweichung beurteilen. |
 | 13 | Q3.5.3 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung | Seltene Ereignisse mit der Poisson-Verteilung berechnen. |
 | 13 | Q3.5.5 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Poisson-Verteilung als Näherung der Binomialverteilung bei konstantem Erwartungswert (nur LK) | Grenzübergang für n → ∞ beweisen. |
 | 13 | Q3.5.6 | Statistik und weitere Wahrscheinlichkeitsverteilungen › Weitere stetige Verteilungen (nur LK) | Z. B. die Exponentialverteilung. |
-| 13 | Q4.1.4 | Funktionenscharen › Ortskurven (nur LK) | Ortskurven von Extrem- und Wendepunkten bestimmen. |
 | 13 | Q4.2.1 | Problemlösen und Argumentieren › Erkennen und Formulieren mathematischer Probleme | Fragestellungen mathematisch fassen. |
 | 13 | Q4.2.2 | Problemlösen und Argumentieren › Anwenden heuristischer Strategien und Prinzipien zur Lösung mathematischer Probleme | Z. B. Vorwärts-/Rückwärtsarbeiten, systematisches Probieren, Extremal- und Symmetrieprinzip. |
 | 13 | Q4.2.3 | Problemlösen und Argumentieren › Beurteilen vorgegebener Aussagen oder Stellung nehmen zu vorgegebenen Aussagen | Aussagen prüfen und begründet bewerten. |
@@ -158,29 +108,20 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.3.3 | Komplexe Zahlen › Lösen von Gleichungen in der Menge ℂ der komplexen Zahlen | Gleichungen lösen, die in ℝ keine Lösung haben. |
 | 13 | Q4.3.4 | Komplexe Zahlen › Darstellen der komplexen Zahlen mit 2x2-Matrizen (nur LK) | Komplexe Zahlen als Drehstreckungsmatrizen. |
 
-### Niedersachsen · Gymnasium (8)
+### Niedersachsen · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 4.1 | Planung und Durchführung statistischer Erhebungen › Befragung oder Beobachtung | Merkmal und Stichprobe festlegen, Strichlisten anlegen, Hypothesen prüfen. |
-| 5/6 | 4.2 | Planung und Durchführung statistischer Erhebungen › Experiment | Durchführung planen, Daten in Tabellen festhalten, Hypothesen prüfen. |
-| 5/6 | 5.3 | Umgang mit Dezimalzahlen › Runden und schätzen | Näherungswerte und Überschlag. |
 | 7/8 | 8.3 | Umgang mit negativen Zahlen › Multiplizieren und dividieren | Schuldenmodell, Permanenzprinzip und Vorzeichenregeln. |
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
 | 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
-| 11 | EF-1.1 | Beschreibende Statistik › Datenerhebung | Merkmale, Klassierung, Repräsentativität und Säulendiagramme. |
-| 11 | EF-1.2 | Beschreibende Statistik › Kenngrößen | Lage- und Streumaße deuten und Datensätze vergleichen; fakultativ Boxplots. |
 
-### Nordrhein-Westfalen · Gymnasium (7)
+### Nordrhein-Westfalen · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 4.2 | Stochastik › Begriffsbildung | Absolute und relative Häufigkeit. |
-| 7/8 | 8.3 | Stochastik › Begriffsbildung | Ergebnis, Ereignis und Wahrscheinlichkeit. |
 | 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
-| 9/10 | 12.1 | Stochastik › Statistische Daten | Erhebungen mit digitalen Werkzeugen planen und auswerten, Diagramme kritisch prüfen und Manipulationen erkennen. |
 | 12/13 | Q-G.6 | Analytische Geometrie und Lineare Algebra (G) › Lineare Gleichungssysteme | Ein algorithmisches Lösungsverfahren für bis zu drei Unbekannte, Lösungsmengen deuten. |
-| 12/13 | Q-S.3 | Stochastik (S) › Diskrete Zufallsgrößen | Wahrscheinlichkeitsverteilungen und ihre Kenngrößen. |
 | 12/13 | Q-S.5 | Stochastik (S) › Beurteilende Statistik | Nur LK: Prognoseintervall, Konfidenzintervall und nötiger Stichprobenumfang. |
 
 ### Rheinland-Pfalz · Gymnasium (1)
@@ -189,14 +130,13 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 5/6 | 6 | Funktionaler Zusammenhang | Wird in der Orientierungsstufe nicht eigens unterrichtet: Zahlenfolgen, Terme, Operatormodell, Formeln, Maßstab und Datendarstellungen bereiten die funktionale Sichtweise in den anderen Leitideen vor. |
 
-### Saarland · Gymnasium (4)
+### Saarland · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 6 | Rechnen in anderen Zahlensystemen (nur Informatik-Zweig) | Binär- und Hexadezimalsystem, Umrechnen und Rechnen, geometrische Summenformel. |
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
-| 11 | 2 | Stereometrie | Prisma und Zylinder, Pyramide und Kegel, Prinzip von Cavalieri, Halbkugel und Kugel. |
 
 ### Sachsen · Gymnasium (23)
 
@@ -235,16 +175,14 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | gA-2.2 | Analytische Geometrie (grundlegendes Anforderungsniveau) › Kreise | Kreise in der Ebene durch Gleichungen beschreiben und die Lage von Punkt oder Gerade zum Kreis untersuchen. |
 | 11/12 | eA-2.2 | Analytische Geometrie (erhöhtes Anforderungsniveau) › Kreise | Wie im grundlegenden Niveau, zusätzlich die Lage zweier Kreise und Tangenten an einen Kreis, auch von einem Punkt außerhalb. |
 
-### Schleswig-Holstein · Gymnasium (4)
+### Schleswig-Holstein · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 5.3 | Daten und Zufall › einstufige Zufallsexperimente | Zufallsexperimente, Versuche, Ergebnisse und Ergebnismengen beschreiben. |
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
-| 12 | S.1 | Stochastik › Zufallsgröße, Erwartungswert, Streuungsmaße | Wahrscheinlichkeitsverteilungen als Prognose, Erwartungswert, Varianz und Standardabweichung, faires Spiel. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (240)
+## Physik (215)
 
 ### Baden-Württemberg · Gymnasium (11)
 
@@ -262,14 +200,13 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (21)
+### Bayern · Gymnasium (20)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7 | 1.1 | Physik in Natur und Technik entdecken (Entwurf: Überschrift nicht aus dem Original übernommen) › Magnetismus und Dichte (Entwurf: Überschrift nicht aus dem Original übernommen) | Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment. |
 | 8 | 4.1 | Profilbereich am NTG (nur NTG) › Untersuchungen an Solarzellen und anderen Elektrizitätsquellen | Solarmodule in Reihe und parallel messen und äußere Einflüsse wie Neigung und Schatten untersuchen; weitere Quellen wie galvanische Elemente oder Netzgeräte erkunden. |
 | 9 | 1.2 | Energie als Erhaltungsgröße › Elektrische Energie | Ladung als Vielfaches der Elementarladung, Spannung als Potentialdifferenz, elektrische Energie und Leistung in Schaltungen sowie der Wirkungsgrad von Geräten. |
-| 9 | 2 | Atome | Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre. |
 | 9 | 3.2 | Wärmelehre › Thermischer Energietransport und Einflüsse auf unser Klima | Spezifische Wärmekapazität, Wärme als Prozessgröße, Wärmeleitung, Konvektion und Wärmestrahlung sowie Treibhauseffekt und Strahlungsgleichgewicht der Erde. |
 | 9 | 4.1 | Profilbereich am NTG (nur NTG) › Klima | Weitere Aspekte des Klimasystems wie Meeresspiegelanstieg, Rückkopplungen und Kippelemente; alternative Erklärungen für die Erderwärmung physikalisch prüfen. |
 | 9 | 4.2 | Profilbereich am NTG (nur NTG) › Vertiefung prozessbezogener Kompetenzen anhand ausgewählter weiterer Inhalte | Wahlthemen wie Energie im Körper, Wärmedämmung, Energieversorgung, Fahrzeugtechnik oder Druck und Auftrieb, selbstständig dokumentiert und präsentiert. |
@@ -310,7 +247,7 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (92)
+### Hessen · Gymnasium (79)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -318,14 +255,12 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 1.2 | Haus der Naturwissenschaften › Physikalische Größen und ihre Messung | Größen mit Einheiten messen und Versuche planen und protokollieren. |
 | 6–8 | 2.1 | Erweiterung der Sinne › Wahrnehmung der Umgebung mit den Sinnesorganen | Wie Auge und Ohr Licht und Schall wahrnehmen. |
 | 6–8 | 2.2 | Erweiterung der Sinne › Sender-Empfänger-Modell | Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden. |
-| 6–8 | 2.5 | Erweiterung der Sinne › Astronomische Phänomene durch Konstellationen von Sonne-Erde-Mond | Mondphasen, Finsternisse u. Ä. mit Modellen erklären. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
 | 6–8 | 3.2 | Energie in Umwelt und Technik › Energietransport | Wege, auf denen Energie von einem Ort zum anderen gelangt. |
 | 6–8 | 3.3 | Energie in Umwelt und Technik › Energiestrom in die Umgebung als Entwertung von Energie | Verstehen, dass Energie nicht verschwindet, aber an Nutzbarkeit verliert. |
 | 6–8 | 4.3 | Elektrizität im Alltag › Gefahren beim Umgang mit Elektrizität im Alltag | Gefahren erkennen und sicheres Verhalten begründen. |
 | 6–8 | 5.4 | Wettererscheinungen und Klima › Stoffe bei Temperaturänderung | Ausdehnung von festen, flüssigen und gasförmigen Stoffen untersuchen. |
 | 6–8 | 5.5 | Wettererscheinungen und Klima › Anomalie des Wassers und seine Bedeutung für das irdische Leben | Dichteverhalten von Wasser bei 4 °C und Folgen für Gewässer. |
-| 6–8 | 5.6 | Wettererscheinungen und Klima › Druck als „Gepresstsein“ der Materie | Anschauliche Vorstellung von Druck. |
 | 6–8 | 7.1 | Technik im Dienst des Menschen › Magnetismus | Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären. |
 | 6–8 | 8.1 | Zukunftssichere Energieversorgung › Unterscheidung zwischen regenerativen und erschöpfbaren Energien | Energieträger nach Verfügbarkeit einordnen und eigenes Verhalten bewerten. |
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
@@ -336,7 +271,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
 | 9/10 | 5.3 | Wettererscheinungen und Klima › Druck- und Temperaturunterschiede | Wettererscheinungen als Ausgleich von Unterschieden erklären. |
-| 9/10 | 6.1 | Fortbewegung und Mobilität › Wechselwirkung von Körpern | Kräfte treten immer paarweise zwischen zwei Körpern auf. |
 | 9/10 | 6.2 | Fortbewegung und Mobilität › Trägheit eines Körpers | Trägheit als Beharrungsvermögen; Bedeutung für die Verkehrssicherheit. |
 | 9/10 | 6.4 | Fortbewegung und Mobilität › Menschliche und technische Leistungen und deren Vergleich | Eigene körperliche Leistung bestimmen und mit Maschinen vergleichen. |
 | 9/10 | 7.2 | Technik im Dienst des Menschen › Phänomen Auftrieb | Schwimmen, Schweben und Sinken experimentell untersuchen und erklären. |
@@ -344,13 +278,10 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 8.2 | Zukunftssichere Energieversorgung › Großenergieanlagen | Kraftwerkstypen vergleichen. |
 | 9/10 | 8.3 | Zukunftssichere Energieversorgung › Speicherung und Transport von Energie | Speicher und Hochspannungsübertragung mit Transformatoren untersuchen. |
 | 9/10 | 8.4 | Zukunftssichere Energieversorgung › Energieversorgungsnetze | Zentrale und dezentrale Versorgung bewerten. |
-| 9/10 | 9.2 | Physik in der Verantwortung › Auswirkungen verschiedener Strahlungsarten | Alpha-, Beta- und Gammastrahlung, Gefährdungen und Schutzmaßnahmen. |
 | 9/10 | 9.3 | Physik in der Verantwortung › Konsequenzen der Nutzung physikalischer Forschungsergebnisse | Chancen und Risiken technologischer Entwicklungen abwägen. |
 | 11 | E.1.5 | Bewegungen und ihre Beschreibung › Idealisierung | Massepunkt und Vernachlässigung der Reibung als Modellannahmen. |
 | 11 | E.2.1 | Newton’sche Axiome und Erhaltungssätze › Die drei Newton’schen Axiome | Trägheitsgesetz, Grundgleichung F = m·a, Wechselwirkungsprinzip und Inertialsysteme. |
-| 11 | E.4.2 | Weitere Bewegungen › Reibung | Bewegung mit Reibung; freier Fall mit Luftwiderstand und Grenzgeschwindigkeit. |
 | 11 | E.4.3 | Weitere Bewegungen › Numerische Simulation | Bewegungen schrittweise mit Differenzenquotienten (z. B. Tabellenkalkulation) berechnen. |
-| 11 | E.5.1 | Gravitation › Massenanziehung | Gravitationsfeld, Gravitationsgesetz und Gewichtskraft. |
 | 11 | E.6.1 | Grundlagen der Thermodynamik › Wärmeenergie als innere Energie | Begriff der inneren Energie und sein historischer Hintergrund. |
 | 11 | E.6.2 | Grundlagen der Thermodynamik › Reversible und irreversible Vorgänge | Umkehrbare und nicht umkehrbare Prozesse unterscheiden. |
 | 11 | E.6.3 | Grundlagen der Thermodynamik › Erster und zweiter Hauptsatz der Thermodynamik | Energieerhaltung und Richtung von Wärmeprozessen. |
@@ -359,22 +290,17 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | E.7.3 | Drehbewegungen › Trägheitsmoment | Anwendungsbeispiele wie die Pirouette. |
 | 12 | Q1.1.4 | Elektrisches Feld › Coulomb’sches Gesetz | Kraft zwischen Punktladungen. |
 | 12 | Q1.1.5 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen (qualitativ), Energiebetrachtung | Millikan-Versuch, Beschleunigung geladener Teilchen und Ablenkung quer zum Feld. |
-| 12 | Q1.1.8 | Elektrisches Feld › Spannung als Potenzialdifferenz (nur LK) | Elektrisches Potenzial und Äquipotenziallinien. |
 | 12 | Q1.1.9 | Elektrisches Feld › Kräfte auf Körper in homogenen elektrischen Feldern, Bahnformen, Energiebetrachtung (nur LK) | Quantitative Ablenkung (Vergleich mit waagerechtem Wurf), Linearbeschleuniger. |
 | 12 | Q1.2.1 | Magnetisches Feld › Begriff des Feldes am Beispiel von magnetischen Feldern | Feldlinien von Dauermagnet, geradem Leiter und Spule. |
 | 12 | Q1.2.2 | Magnetisches Feld › Magnetische Flussdichte | Flussdichte definieren und im Inneren einer langen Spule bestimmen. |
 | 12 | Q1.2.5 | Magnetisches Feld › Hall-Effekt (nur LK) | Spannung quer zum Strom im Magnetfeld erklären. |
 | 12 | Q1.2.6 | Magnetisches Feld › Teilchenbeschleuniger (nur LK) | Funktionsprinzip z. B. von Zyklotron und Synchrotron. |
-| 12 | Q2.1.3 | Mechanische Schwingungen › Gedämpfte mechanische Schwingungen | Abnahme der Amplitude qualitativ beschreiben. |
-| 12 | Q2.1.5 | Mechanische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfungsverläufe (ohne Herleitung) beschreiben. |
 | 12 | Q2.2.3 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität einer langen Spule (phänomenologisch) | Selbstinduktion an Spulen beobachten und beschreiben. |
-| 12 | Q2.2.4 | Induktion und elektromagnetische Schwingungen › Beispiel für eine technische Anwendung der Induktion | Z. B. Generator oder Transformator erklären. |
 | 12 | Q2.2.5 | Induktion und elektromagnetische Schwingungen › Elektromagnetische harmonische Schwingungen | Schwingkreis: Kenngrößen, Energieumwandlung, Thomson’sche Gleichung. |
 | 12 | Q2.2.7 | Induktion und elektromagnetische Schwingungen › Selbstinduktion und Induktivität (nur LK) | Ein- und Ausschaltvorgänge, Definition der Induktivität. |
 | 12 | Q2.2.8 | Induktion und elektromagnetische Schwingungen › Energie des Feldes einer stromdurchflossenen Spule (nur LK) | Magnetische Feldenergie (ohne Herleitung). |
 | 12 | Q2.2.9 | Induktion und elektromagnetische Schwingungen › Vergleich von mechanischen und elektromagnetischen Schwingungen unter energetischen Aspekten (nur LK) | Analogien zwischen Pendel und Schwingkreis. |
 | 12 | Q2.2.10 | Induktion und elektromagnetische Schwingungen › Gedämpfte Schwingungen (nur LK) | Dämpfung im Schwingkreis. |
-| 12 | Q2.3.3 | Mechanische Wellen › Brechung, Reflexion, Beugung als charakteristische Wellenphänomene | Wellenphänomene z. B. in der Wellenwanne; Huygens’sches Prinzip. |
 | 13 | Q3.1.1 | Elektromagnetische Wellen › Spektrum elektromagnetischer Wellen | Frequenzbereiche und technische Anwendungen im Überblick. |
 | 13 | Q3.1.2 | Elektromagnetische Wellen › Charakteristische Wellenphänomene | Lineare Polarisation von Licht und Totalreflexion (Glasfaser). |
 | 13 | Q3.1.4 | Elektromagnetische Wellen › Brechung, Reflexion, Beugung bei elektromagnetischen Wellen (nur LK) | Brechungsgesetz mit Wellenmodell. |
@@ -382,7 +308,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q3.2.3 | Welle-Teilchen-Dualismus › Compton-Effekt (nur LK) | Streuung von Photonen an Elektronen. |
 | 13 | Q3.3.4 | Atomvorstellungen › Röntgenstrahlung (nur LK) | Kontinuierliches und charakteristisches Röntgenspektrum, Röntgenröhre, Moseley-Gesetz. |
 | 13 | Q4.1.1 | Quantenobjekte › Qualitative Betrachtung eines quantenmechanischen Atommodells | Orbitale als Aufenthaltswahrscheinlichkeit; Elektron als stehende Welle im Potenzialtopf. |
-| 13 | Q4.1.2 | Quantenobjekte › Grundlegende Aspekte der Quantentheorie: stochastische Vorhersagbarkeit, Interferenz und Superposition, Determiniertheit der Zufallsverteilung, Komplementarität | Doppelspalt mit einzelnen Elektronen und Photonen; Weginformation vs. Interferenz. |
 | 13 | Q4.1.3 | Quantenobjekte › Quantenphysikalisches Weltbild hinsichtlich der Begriffe Realität, Lokalität, Kausalität, Determinismus | Grenzen klassischer Begriffe in der Quantenphysik diskutieren. |
 | 13 | Q4.1.4 | Quantenobjekte › Quantitative Betrachtung eines quantenmechanischen Atommodells (nur LK) | Energiewerte und Wellenfunktionen im unendlich tiefen Potenzialtopf. |
 | 13 | Q4.1.5 | Quantenobjekte › Stochastische Deutung mittels des Quadrats der quantenmechanischen Wellenfunktion (qualitativ) (nur LK) | Betragsquadrat als Wahrscheinlichkeitsmaß; Delayed-choice-Experiment. |
@@ -390,7 +315,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.1.7 | Quantenobjekte › Koinzidenzmethode zum Nachweis einzelner Photonen anhand eines Beispiels (nur LK) | Unteilbarkeit von Photonen, z. B. am Mach-Zehnder-Interferometer. |
 | 13 | Q4.2.1 | Technische Anwendungen der Quantenphysik › Laser | Metastabile Niveaus, Besetzungsinversion, stimulierte Emission, Aufbau und Anwendungen. |
 | 13 | Q4.2.2 | Technische Anwendungen der Quantenphysik › Rastertunnelmikroskop (nur LK) | Tunneleffekt sowie Aufbau und Anwendungen. |
-| 13 | Q4.3.1 | Kernphysik › Radioaktive Strahlung | Strahlungsarten, Nachweis, Wirkung, Anwendungen und Gefahren. |
 | 13 | Q4.3.3 | Kernphysik › Bindungsenergie | Massendefekt, Bindungsenergie pro Nukleon, Kernreaktionen. |
 | 13 | Q4.3.5 | Kernphysik › Potenzialtopfmodell für Kerne (nur qualitativ) (nur LK) | Getrennte Töpfe für Protonen und Neutronen; Alpha-Zerfall durch Tunneln. |
 | 13 | Q4.4.1 | Spezielle Relativitätstheorie › Relativitätspostulate | Relativitätsprinzip, Konstanz von c, Zeitdilatation, Längenkontraktion, Minkowski-Diagramme. |
@@ -407,32 +331,28 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.6.4 | Astrophysik › Energieumwandlung in der Sonne (nur LK) | Proton-Proton-Reaktion und weitere Fusionsprozesse. |
 | 13 | Q4.6.5 | Astrophysik › Sterntypen, Sternentstehung und -entwicklung (nur LK) | Hauptreihensterne und Lebenszyklus eines Sterns. |
 
-### Niedersachsen · Gymnasium (9)
+### Niedersachsen · Gymnasium (7)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 5/6 | 1 | Dauermagnete | Magnete ziehen manche Stoffe an, haben Nord- und Südpol, die sich nicht trennen lassen; Erde als Magnet, Kompass und das Modell der Elementarmagnete. |
 | 7/8 | 4 | Einführung des Energiebegriffs | Energie in Übertragungsketten und Flussdiagrammen beschreiben, Einheit Joule, qualitative Energiebilanzen und Energieerhaltung mit dem Energiestrom in die Umgebung. |
-| 9/10 | 8 | Elektrik II | Leiter und Halbleiter, pn-Übergang, Leuchtdiode und Solarzelle, Motor, Generator und Transformator als Energiewandler sowie Gleich- und Wechselstrom. |
 | 11 | EF-1.2 | Dynamik › Grundgleichung der Mechanik und newtonsche Axiome | F = m · a, Krafteinheit und die drei Axiome. |
 | 11 | EF-2.1 | Wahlmodule (Vorschläge) › Akustik | Schallgeschwindigkeit, Ton, Klang und Geräusch, Frequenz und Amplitude, Schalldruckpegel, Intervalle und Klangfarbe. |
-| 11 | EF-2.3 | Wahlmodule (Vorschläge) › Optische Abbildungen | Bilder an Linsen, Brennweite, Abbildungsgleichung und optische Geräte. |
 | 11 | EF-2.4 | Wahlmodule (Vorschläge) › Strahlungsphysik | Strahlungsgesetze, Strahlungsgleichgewicht, selektive Absorption und der Treibhauseffekt. |
 | 12/13 | Q-3.2 | Quantenobjekte › Komplementarität und Unbestimmtheit | Nur eA: Mach-Zehnder-Interferometer, Delayed-Choice-Experiment, Zustand, Präparation, Superposition und Unbestimmtheit. |
 | 12/13 | Q-5.2 | Atomkern › Energiespektren und Anwendungen | Halbleiterdetektor, Alpha-Spektrum einer Zerfallsreihe, Bragg-Kurve; nur eA: Nukleonen im Potenzialtopf. |
 
-### Nordrhein-Westfalen · Gymnasium (21)
+### Nordrhein-Westfalen · Gymnasium (16)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 5/6 | 1.1 | Temperatur und Wärme › Thermische Energie | Wärme, Temperatur und Temperaturmessung, die Celsiusskala. |
 | 5/6 | 1.2 | Temperatur und Wärme › Wärmetransport | Wärmemitführung, Wärmeleitung und Wärmestrahlung, Temperaturausgleich und Wärmedämmung. |
 | 5/6 | 2.2 | Elektrischer Strom und Magnetismus › Wirkungen des elektrischen Stroms | Wärme-, Licht- und magnetische Wirkung, Sicherungen und Gefahren durch Elektrizität. |
 | 5/6 | 2.3 | Elektrischer Strom und Magnetismus › Magnetische Kräfte und Felder | Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass. |
 | 5/6 | 2.4 | Elektrischer Strom und Magnetismus › Magnetisierung | Magnetisierbare Stoffe und das Modell der Elementarmagnete. |
 | 5/6 | 3.1 | Schall › Schwingungen und Schallwellen | Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion. |
 | 5/6 | 3.2 | Schall › Schallquellen und Schallempfänger | Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz. |
-| 5/6 | 4.1 | Licht › Ausbreitung von Licht | Lichtquellen und Lichtempfänger, das Modell des Lichtstrahls und Abbildungen mit der Lochkamera. |
 | 7–10 | 5.3 | Optische Instrumente › Licht und Farben | Zerlegung von Licht am Prisma, Infrarot und Ultraviolett, Absorption und Farbmischung (RGB, CMYK). |
 | 7–10 | 6.2 | Sterne und Weltall › Universum | Himmelsobjekte, Entfernungen in Lichtjahren und typische Stadien der Sternentwicklung. |
 | 7–10 | 8.2 | Druck und Auftrieb › Druckmessung | Druck und Kraftwirkungen, Druck in Pascal angeben und messen. |
@@ -442,9 +362,6 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 10.3 | Ionisierende Strahlung und Kernenergie › Kernenergie | Kernspaltung, Kernfusion, Kernkraftwerke und Endlagerung. |
 | 7–10 | 11.2 | Energieversorgung › Bereitstellung und Nutzung von Energie | Kraftwerke und regenerative Anlagen, Energieübertragung mit Hochspannung, Entwertung, Wirkungsgrad, Speicherung und Nachhaltigkeit. |
 | 11 | EF-2.3 | Kreisbewegung, Gravitation und physikalische Weltbilder › Wandel physikalischer Weltbilder | Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr. |
-| 12/13 | GK-2.3 | Quantenobjekte (Grundkurs) › Photon und Elektron als Quantenobjekte | Wellen- und Teilchenmodell, Wahrscheinlichkeitsdeutung, „Welcher-Weg“-Information und Kopenhagener Deutung. |
-| 12/13 | GK-4.1 | Strahlung und Materie (Grundkurs) › Strahlung | Spektrum elektromagnetischer Strahlung, ionisierende Strahlung, Geiger-Müller-Zählrohr und biologische Wirkungen. |
-| 12/13 | LK-4.2 | Atom- und Kernphysik (Leistungskurs) › Ionisierende Strahlung | Strahlungsarten, ihr Nachweis, ihre Eigenschaften und ihre Absorption. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
 ### Rheinland-Pfalz · Gymnasium (34)
@@ -496,7 +413,7 @@ Alle Lernbereiche haben eine Simulation.
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (23)
+### Sachsen · Gymnasium (22)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -509,7 +426,6 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | W3 | Elektrisches Messen nichtelektrischer Größen (Wahlbereich) | Sensoren wandeln Größen wie Temperatur oder Licht in Spannungen um. |
 | 9 | 1 | Grundlagen der Elektronik | Halbleiterbauelemente wie Diode und Solarzelle, Leitungsmechanismen in Halbleitern und einfache Schaltungen. |
 | 9 | W2 | Energie von Wind und Sonne (Wahlbereich) | Windkraftanlagen, Solarthermie und Fotovoltaik. |
-| 9 | W3 | Bewegungen auf gekrümmten Bahnen (Wahlbereich) | Gleichförmige Kreisbewegung, Radialkraft und Satellitenbahnen. |
 | 10 | W2 | Kommunikation mit elektronischen Medien (Wahlbereich) | Informationsübertragung mit Hertz’schen Wellen, Modulation und Demodulation. |
 | 10 | W3 | Fernsehbildtechnik (Wahlbereich) | Aufbau des Fernsehbilds und Funktionsweise von Bildschirmen. |
 | 11 | GK-3 | Magnetisches Feld (Grundkurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen. |
@@ -540,7 +456,7 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
-### Schleswig-Holstein · Gymnasium (9)
+### Schleswig-Holstein · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -549,8 +465,5 @@ Alle Lernbereiche haben eine Simulation.
 | 7–10 | 3.4 | Elektromagnetische Strahlung › Spektrum und Wellenlänge (Block II) | Spektralfarben, Farbaddition und -subtraktion, Absorption und Transmission, nicht sichtbare Bereiche und Sensoren. |
 | 7–10 | 3.5 | Elektromagnetische Strahlung › Klimaphysik (Block II) | Strahlungshaushalt der Erde, Albedo, natürlicher und anthropogener Treibhauseffekt und Rückkopplungen. |
 | 7–10 | 4.1 | Mechanik › Dichte (Block I) | Masse, Volumen und Dichte, Schwimmen, Schweben und Sinken. |
-| 7–10 | 5.1 | Radioaktivität und ionisierende Strahlung › Ionisierende Strahlung (Block II) | α-, β- und γ-Strahlung, Nachweis, Abschirmung, Nutzung und biologische Wirkung. |
 | 7–10 | 5.3 | Radioaktivität und ionisierende Strahlung › Kernenergie (Block II) | Kernspaltung und Kettenreaktion, Kernfusion in Reaktoren und Sonne, Chancen und Risiken. |
-| 11 | W.4 | Mechanische und elektromagnetische Schwingungen und Wellen › Spektren | Farben, elektromagnetisches Spektrum, Emissions- und Absorptionsspektren, diskrete und kontinuierliche Spektren. |
-| 11 | Q.2 | Quantenphysik und Materie › Atomvorstellungen | Quantenmechanisches Atommodell, Orbitale und Energieniveaus des Wasserstoffatoms, Linienspektren, Potenzialtopf, charakteristische Röntgenstrahlung und Pauli-Prinzip. |
 

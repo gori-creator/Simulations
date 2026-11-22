@@ -317,6 +317,7 @@ const EP_UNITS: CurriculumUnit[] = [
     code: '2',
     title: L('Stereometrie', 'Solid geometry'),
     summary: L('Prisma und Zylinder, Pyramide und Kegel, Prinzip von Cavalieri, Halbkugel und Kugel.', 'Prism and cylinder, pyramid and cone, Cavalieri’s principle, hemisphere and sphere.'),
+    simulations: ['cavalieri', 'prisma-zylinder', 'pyramide-kegel-kugel'],
   },
   {
     code: '3',

@@ -88,7 +88,7 @@ export const mathematik: Subject = {
               'Vom Sandkorn bis zur Erde in Zehnerschritten. Unterwegs wird klar, warum 10⁶ eine Million ist und wie man winzige Zahlen schreibt.',
               'From a grain of sand to the Earth in steps of ten. Along the way it becomes clear why 10⁶ is a million and how to write tiny numbers.',
             ),
-            grades: [5, 8],
+            grades: [5, 9],
             kmk: ['M-L1', 'M-L2', 'M-K4', 'M-K5'],
             keywords: L(
               ['Potenz', 'Zehnerpotenz', 'Grundzahl', 'Hochzahl', 'Exponent', 'Basis', 'Größenordnung', 'Maßstab', 'Million', 'Milliarde', 'wissenschaftliche Schreibweise', 'Längeneinheiten', 'Kilometer', 'Millimeter'],
@@ -191,7 +191,7 @@ export const mathematik: Subject = {
               'Aus einem Rechteck wird Schritt für Schritt ein Quadrat mit derselben Fläche. Das Verfahren ist fast 2000 Jahre alt und landet erstaunlich schnell bei √2.',
               'Step by step, a rectangle turns into a square with the same area. The method is almost 2000 years old and reaches √2 surprisingly quickly.',
             ),
-            grades: [7, 9],
+            grades: [7, 10],
             kmk: ['M-L1', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Quadratwurzel', 'Wurzel', 'Heron-Verfahren', 'Intervallschachtelung', 'Näherungsverfahren', 'irrationale Zahl', 'reelle Zahlen', 'Radikand', 'Quadratzahl', 'Mittelwert', 'teilweise Wurzelziehen', 'Wurzel 2', 'Widerspruchsbeweis', 'Diagonale', 'Kästchenpapier'],
@@ -288,7 +288,7 @@ export const mathematik: Subject = {
               'Zeichne beide Seiten einer Gleichung als Graphen. Die Lösungen liegen dort, wo sich die Graphen schneiden.',
               'Draw both sides of an equation as graphs. The solutions are where the graphs cross.',
             ),
-            grades: [8, 9],
+            grades: [8, 11],
             kmk: ['M-L3', 'M-K4', 'M-K5', 'M-K2'],
             keywords: L(
               ['Gleichung', 'grafisches Lösen', 'Schnittpunkt', 'Schnittstelle', 'Lösungsmenge', 'Bruchgleichung', 'quadratische Gleichung', 'Betragsgleichung', 'Differenzfunktion', 'Nullstelle', 'Berührpunkt', 'Intervallhalbierung', 'Intervallschachtelung', 'Näherung', 'Definitionsmenge'],
@@ -318,7 +318,7 @@ export const mathematik: Subject = {
               'Punkte im Koordinatensystem setzen und ablesen, Strecken und Geraden zeichnen und prüfen, ob sie parallel oder senkrecht sind.',
               'Place and read points in a coordinate system, draw segments and lines and check whether they are parallel or perpendicular.',
             ),
-            grades: [5, 5],
+            grades: [5, 8],
             kmk: ['M-L4', 'M-K4', 'M-K5'],
             keywords: L(
               ['Koordinatensystem', 'Punkt', 'Strecke', 'Halbgerade', 'Gerade', 'parallel', 'senkrecht', 'Abstand', 'Lot', 'Geodreieck', 'Kreis', 'Radius', 'Durchmesser', 'Tangente', 'Sekante', 'Passante'],
@@ -368,7 +368,7 @@ export const mathematik: Subject = {
               'Achse oder Punkt: Die Figur klappt um, und jeder Konstruktionsschritt mit dem Geodreieck bleibt sichtbar.',
               'In a line or in a point: the shape flips over, and every construction step with the set square stays visible.',
             ),
-            grades: [5, 7],
+            grades: [5, 8],
             kmk: ['M-L4', 'M-K1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Achsenspiegelung', 'Punktspiegelung', 'Spiegelachse', 'Symmetriezentrum', 'achsensymmetrisch', 'punktsymmetrisch', 'Symmetrieachse', 'Umlaufsinn', 'Fixpunkt', 'Fixgerade', 'Lot', 'Drehung um 180°', 'Konstruktion'],
@@ -586,7 +586,7 @@ export const mathematik: Subject = {
               '3,5 km sind 3500 m, aber 3,5 m² sind 35 000 cm². In der Einheitentafel sieht man, warum das Komma bei Flächen doppelt so weit springt.',
               '3.5 km is 3500 m, but 3.5 m² is 35,000 cm². The unit table shows why the decimal point jumps twice as far for areas.',
             ),
-            grades: [5, 5],
+            grades: [5, 8],
             kmk: ['M-L2', 'M-L1', 'M-K4', 'M-K5'],
             keywords: L(
               ['Einheiten', 'umrechnen', 'Einheitentafel', 'Umrechnungszahl', 'Komma verschieben', 'Länge', 'Masse', 'Gewicht', 'Zeit', 'Flächeninhalt', 'Volumen', 'Liter', 'Milliliter', 'km', 'm', 'cm', 'mm', 'kg', 'g', 't', 'm²', 'cm²', 'Ar', 'Hektar', 'cm³', 'dm³', 'Stunde', 'Minute', 'Sekunde', 'Größen'],
@@ -654,7 +654,7 @@ export const mathematik: Subject = {
               'Falte Netze von Würfel, Quader, Prisma, Pyramide und Zylinder in 3D zum Körper und berechne die Oberfläche.',
               'Fold nets of a cube, cuboid, prism, pyramid and cylinder into a solid in 3D and calculate the surface area.',
             ),
-            grades: [5, 8],
+            grades: [5, 10],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Körpernetz', 'Würfelnetz', 'Würfel', 'Quader', 'Prisma', 'Pyramide', 'Zylinder', 'Oberfläche', 'Mantel', 'Raumvorstellung', 'falten', 'Spielwürfel'],
@@ -670,7 +670,7 @@ export const mathematik: Subject = {
               'Schicht auf Schicht wächst ein Prisma in die Höhe, und der Mantel eines Zylinders rollt sich zum Rechteck aus.',
               'Layer by layer a prism grows upwards, and the curved surface of a cylinder unrolls into a rectangle.',
             ),
-            grades: [6, 9],
+            grades: [6, 11],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Prisma', 'Zylinder', 'Volumen', 'Oberfläche', 'Mantel', 'Grundfläche', 'Netz', 'Abwicklung', 'Vieleck', 'Kreis'],
@@ -686,7 +686,7 @@ export const mathematik: Subject = {
               'Dreimal umschütten, dann ist das Prisma voll: Eine Pyramide fasst genau ein Drittel. Kegel und Kugel lassen sich in 3D drehen und vermessen.',
               'Pour three times and the prism is full: a pyramid holds exactly one third. Cones and spheres can be turned and measured in 3D.',
             ),
-            grades: [7, 10],
+            grades: [7, 11],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K4'],
             keywords: L(
               ['Pyramide', 'Kegel', 'Kugel', 'Volumen', 'Oberfläche', 'Mantel', 'Seitenhöhe', 'Seitenkante', 'Mantellinie', 'Satz des Pythagoras', 'Kreissektor', 'Umschüttversuch', 'Archimedes', 'Halbkugel', 'Netz'],
@@ -702,7 +702,7 @@ export const mathematik: Subject = {
               'Schiebe einen Münzstapel schief: Die Form ändert sich, das Volumen bleibt gleich. Das ist das Prinzip von Cavalieri.',
               'Push a stack of coins sideways: the shape changes, but the volume stays the same. This is Cavalieri\'s principle.',
             ),
-            grades: [10, 10],
+            grades: [10, 11],
             kmk: ['M-L2', 'M-L4', 'M-K1', 'M-K2', 'M-K4'],
             keywords: L(
               ['Cavalieri', 'Prinzip von Cavalieri', 'Querschnitt', 'Schnittfläche', 'Volumen', 'schiefer Zylinder', 'schiefes Prisma', 'schiefe Pyramide', 'schiefer Kegel', 'Kugelvolumen', 'Halbkugel', 'Münzstapel', 'Scheiben', 'Grenzwert'],
@@ -738,7 +738,7 @@ export const mathematik: Subject = {
               'Ein Rad rollt einmal ab und kommt etwas mehr als dreimal so weit wie sein Durchmesser. Zerschnitten wird der Kreis zum Rechteck, und die Flächenformel ergibt sich.',
               'A wheel rolls once and travels a bit more than three times its diameter. Cut into pieces, the circle becomes a rectangle and the area formula follows.',
             ),
-            grades: [7, 9],
+            grades: [7, 10],
             kmk: ['M-L2', 'M-L4', 'M-K1'],
             keywords: L(
               ['Kreiszahl', 'Pi', 'Kreisumfang', 'Kreisfläche', 'Durchmesser', 'Radius', 'Archimedes', 'Kreissektor'],
@@ -769,7 +769,7 @@ export const mathematik: Subject = {
               'Doppelt so viele Äpfel kosten doppelt so viel. Bild, Tabelle und Graph zeigen gemeinsam, wann eine Zuordnung proportional ist, mit Dreisatz.',
               'Twice as many apples cost twice as much. Picture, table and graph show together when a relation is proportional, with the rule of three.',
             ),
-            grades: [6, 8],
+            grades: [5, 8],
             kmk: ['M-L3', 'M-K3', 'M-K4'],
             keywords: L(
               ['proportional', 'direkt proportional', 'indirekt proportional', 'antiproportional', 'Dreisatz', 'quotientengleich', 'produktgleich', 'Proportionalitätsfaktor', 'Ursprungsgerade', 'Hyperbel', 'Wertetabelle', 'Zuordnung', 'Verdoppeln', 'Grundgebühr'],
@@ -785,7 +785,7 @@ export const mathematik: Subject = {
               'Jedem x genau ein y? Pfeilbild, Tabelle und Graph verraten sofort, ob eine Zuordnung eine Funktion ist.',
               'Exactly one y for every x? The arrow diagram, table and graph tell you straight away whether a relation is a function.',
             ),
-            grades: [6, 8],
+            grades: [6, 10],
             kmk: ['M-L3', 'M-K4', 'M-K1', 'M-K5'],
             keywords: L(
               ['Funktion', 'Zuordnung', 'eindeutig', 'Pfeildiagramm', 'Wertetabelle', 'Graph', 'senkrechter Linientest', 'Vertikalentest', 'Definitionsmenge', 'Wertemenge', 'Funktionsgraph', 'Umkehrung', 'Kreis', 'Treppenfunktion'],
@@ -994,7 +994,7 @@ export const mathematik: Subject = {
               'Seerosen auf dem Teich, Zinseszins und Zerfall: Exponentielles Wachstum im Vergleich mit linearem Wachstum.',
               'Water lilies on a pond, compound interest and decay: exponential growth compared with linear growth.',
             ),
-            grades: [10, 10],
+            grades: [10, 11],
             kmk: ['M-L3', 'M-K3', 'M-K4'],
             keywords: L(
               ['exponentielles Wachstum', 'Wachstumsfaktor', 'Verdopplungszeit', 'Halbwertszeit', 'Zinseszins', 'Zerfall', 'Exponentialfunktion', 'logarithmische Skala'],
@@ -1047,7 +1047,7 @@ export const mathematik: Subject = {
               'Verschieben, strecken, spiegeln: Jede Bewegung des Graphen hinterlässt eine Spur im Funktionsterm.',
               'Shift, stretch, reflect: every move of the graph leaves its mark in the function\'s equation.',
             ),
-            grades: [10, 11],
+            grades: [10, 12],
             kmk: ['M-L3', 'M-K4'],
             keywords: L(
               ['Verschiebung', 'Streckung', 'Stauchung', 'Spiegelung', 'Transformation', 'Graph', 'Parameter', 'Grundfunktion', 'x-Richtung', 'y-Richtung', 'Asymptote', 'Reihenfolge', 'Definitionsmenge', 'Wertemenge'],
@@ -1109,7 +1109,7 @@ export const mathematik: Subject = {
               'Wie viele Outfits oder Eiskombinationen gibt es? Ein Baumdiagramm wächst Stufe für Stufe, und du siehst, warum man die Möglichkeiten multipliziert.',
               'How many outfits or ice cream combinations are there? A tree diagram grows step by step and shows why you multiply the options.',
             ),
-            grades: [5, 9],
+            grades: [5, 13],
             kmk: ['M-L5', 'M-L1', 'M-K2', 'M-K4'],
             keywords: L(
               ['Zählprinzip', 'Produktregel', 'Baumdiagramm', 'Kombinatorik', 'systematisches Abzählen', 'mit Wiederholung', 'ohne Wiederholung', 'Fakultät', 'Reihenfolge', 'PIN'],
@@ -1127,7 +1127,7 @@ export const mathematik: Subject = {
               'Stelle dieselben Daten als Säulen-, Linien-, Kreisdiagramm und mehr dar und entdecke, wie Diagramme täuschen können.',
               'Show the same data as bar, line and pie charts and more, and discover how charts can mislead.',
             ),
-            grades: [6, 9],
+            grades: [5, 11],
             kmk: ['M-L5', 'M-K6', 'M-K4', 'M-K1'],
             keywords: L(
               ['Diagramm', 'Säulendiagramm', 'Balkendiagramm', 'Kreisdiagramm', 'Liniendiagramm', 'Piktogramm', 'Streifendiagramm', 'Strichliste', 'Anteil', 'Prozent', 'Mittelpunktswinkel', 'abgeschnittene Achse', 'Täuschung', 'Daten'],
@@ -1143,7 +1143,7 @@ export const mathematik: Subject = {
               'Ein Ausreißer zieht den Mittelwert weg, der Median bleibt fast stehen. Ziehen an einzelnen Datenpunkten zeigt, wie robust welcher Wert ist.',
               'One outlier pulls the mean away while the median barely moves. Dragging single data points shows which value is how robust.',
             ),
-            grades: [6, 9],
+            grades: [6, 13],
             kmk: ['M-L5', 'M-K4', 'M-K1', 'M-K6'],
             keywords: L(
               ['Boxplot', 'Median', 'Zentralwert', 'Mittelwert', 'arithmetisches Mittel', 'Quartil', 'Quartilsabstand', 'Spannweite', 'Minimum', 'Maximum', 'Rangliste', 'Ausreißer', 'Kenngrößen', 'Daten vergleichen'],
@@ -1161,7 +1161,7 @@ export const mathematik: Subject = {
               'Wirf eine Münze, einen Würfel oder einen Reißnagel tausendmal: Je öfter du wirfst, desto näher kommt die relative Häufigkeit der Wahrscheinlichkeit.',
               'Toss a coin, a die or a drawing pin a thousand times: the more often you throw, the closer the relative frequency gets to the probability.',
             ),
-            grades: [6, 9],
+            grades: [6, 13],
             kmk: ['M-L5', 'M-K3', 'M-K4'],
             keywords: L(
               ['relative Häufigkeit', 'absolute Häufigkeit', 'Wahrscheinlichkeit', 'Zufallsexperiment', 'Würfel', 'Münze', 'Reißnagel', 'empirisches Gesetz der großen Zahlen'],
@@ -1178,7 +1178,7 @@ export const mathematik: Subject = {
               'Ziehe Kugeln aus einer Urne, mit oder ohne Zurücklegen. Das Baumdiagramm und die Pfadregeln zeigen, wie man Wahrscheinlichkeiten berechnet.',
               'Draw balls from an urn, with or without replacement. The tree diagram and the path rules show how to calculate probabilities.',
             ),
-            grades: [8, 10],
+            grades: [8, 13],
             kmk: ['M-L5', 'M-K4', 'M-K3', 'M-K2'],
             keywords: L(
               ['Baumdiagramm', 'Pfadregel', 'Produktregel', 'Summenregel', 'Urnenmodell', 'mit Zurücklegen', 'ohne Zurücklegen', 'mehrstufiges Zufallsexperiment', 'Ereignis', 'Gegenereignis', 'Simulation', 'relative Häufigkeit'],

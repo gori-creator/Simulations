@@ -196,6 +196,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Photonenmodell des Lichts, Farbe und Photonenenergie, Emissions- und Absorptionsspektren mit dem Energiestufenmodell sowie die Absorption in der Erdatmosphäre.",
             "Photon model of light, colour and photon energy, emission and absorption spectra explained by the energy-level model, and absorption in the Earth’s atmosphere.",
           ),
+          simulations: ['linienspektren'],
         },
         {
           code: "3",
