@@ -18,10 +18,18 @@ Mathematik und Physik versteht man am besten, wenn man selbst ausprobieren kann:
 
 ## Fahrplan
 
-1. **Mathematik und Physik der Sekundarstufe I und II** – Schritt für Schritt entlang der KMK-Bildungsstandards. Alle geplanten Simulationen sind bereits im Katalog eingetragen.
-2. **Chemie** – Teilchenmodell, Atombau, Reaktionen und Gleichgewichte.
+Schon da:
+
+- **Mathematik und Physik der Sekundarstufe I und II** – 129 Simulationen entlang der KMK-Bildungsstandards, jeweils mit Lernmaterial und Aufgaben.
+- **Länder-Lehrpläne** – Zuordnung zu den Gymnasial-Lehrplänen von 14 Bundesländern; das Bundesland lässt sich über den Knopf „Bundesland“ oben wählen.
+- **Lernspiel** – die [Zahlenfabrik](../zahlenfabrik/) für Klasse 5–9.
+
+Als Nächstes:
+
+1. **Chemie** – Teilchenmodell, Atombau, Reaktionen und Gleichgewichte.
+2. **Weitere Lehrpläne** – Thüringen, Mecklenburg-Vorpommern und weitere Schularten.
 3. **Hochschule** – vertiefende Simulationen, z. B. zu Fourier-Reihen, Differentialgleichungen und linearer Algebra.
-4. **Länder-Lehrpläne** – Zuordnung der Simulationen zu den Lehrplänen einzelner Bundesländer. Das Bundesland lässt sich über den Knopf „Bundesland“ oben wählen.
+4. **Simulationen aus der Community** – siehe [Mitmachen](../mitmachen/).
 
 ## Technik
 

@@ -4,6 +4,8 @@ import type { Lang } from '../i18n/config';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { GAMES_PUBLIC, getGame } from '../spiele';
 import { alternates, href } from '../lib/routes';
+import { getImage } from 'astro:assets';
+import titleImage from '../assets/zahlenfabrik/titelbild.webp';
 import '../styles/zahlenfabrik.css';
 import '../styles/zahlenfabrik-skin.css';
 
@@ -15,9 +17,11 @@ interface Props {
 const { lang, gameId } = Astro.props;
 const game = getGame(gameId);
 const t = (de: string, en: string) => (lang === 'de' ? de : en);
+// Vorschaubild beim Teilen (1200 × 630)
+const ogImg = await getImage({ src: titleImage, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 80 });
 ---
 
-<BaseLayout lang={lang} title={game.title[lang]} description={game.description[lang]} alternates={alternates({ kind: 'game', game: game.id })} noindex={!GAMES_PUBLIC} section="spiel">
+<BaseLayout lang={lang} title={game.title[lang]} description={game.description[lang]} alternates={alternates({ kind: 'game', game: game.id })} noindex={!GAMES_PUBLIC} section="spiel" ogImage={ogImg.src}>
   <div class="container zf" data-factory data-lang={lang}>
     <Breadcrumbs lang={lang} items={[{ label: t('Startseite', 'Home'), href: href(lang, { kind: 'home' }) }, { label: game.title[lang] }]} />
     <section class="zf-game" aria-label={game.title[lang]}>
