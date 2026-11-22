@@ -373,6 +373,7 @@ const K10: CurriculumUnit[] = [
     code: 'W1',
     title: L('Komplexe Zahlen (Wahlbereich)', 'Complex numbers (optional)'),
     summary: L('Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen.', 'The complex plane and calculating with complex numbers.'),
+    simulations: ['komplexe-zahlen'],
   },
   {
     code: 'W2',

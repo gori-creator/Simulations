@@ -199,6 +199,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('komplexe-zahlen', L('Komplexe Zahlen', 'Complex numbers'), [
+          {
+            id: 'komplexe-zahlen',
+            status: 'ready',
+            slug: L('komplexe-zahlen', 'complex-numbers'),
+            title: L('Komplexe Zahlen in der Zahlenebene', 'Complex numbers in the plane'),
+            summary: L(
+              'Mit i² = −1 bekommt jede quadratische Gleichung Lösungen. In der Gaußschen Zahlenebene wird Addieren zum Verschieben und Malnehmen zum Drehstrecken – mit Polarform, n-ten Wurzeln als regelmäßigem Vieleck und der Matrix, die dasselbe tut.',
+              'With i² = −1 every quadratic equation has solutions. In the complex plane adding becomes shifting and multiplying becomes rotating and scaling – with polar form, n-th roots as a regular polygon and the matrix that does the same.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L1', 'M-L4', 'M-K5', 'M-K4'],
+            keywords: L(
+              ['komplexe Zahlen', 'imaginäre Einheit', 'i² = −1', 'Gaußsche Zahlenebene', 'Realteil', 'Imaginärteil', 'Betrag', 'Argument', 'Polarform', 'Exponentialform', 'Euler', 'konjugiert komplex', 'Drehstreckung', 'Moivre', 'n-te Wurzel', 'Einheitswurzeln', 'quadratische Gleichung', 'negative Diskriminante', 'Matrixdarstellung', 'Zahlbereichserweiterung'],
+              ['complex numbers', 'imaginary unit', 'i² = −1', 'complex plane', 'Argand diagram', 'real part', 'imaginary part', 'modulus', 'argument', 'polar form', 'exponential form', 'Euler', 'complex conjugate', 'rotation and scaling', 'de Moivre', 'n-th root', 'roots of unity', 'quadratic equation', 'negative discriminant', 'matrix representation'],
+            ),
+          },
+        ]),
       ],
     }),
     area({
