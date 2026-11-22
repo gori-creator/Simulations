@@ -289,7 +289,7 @@ const EP_UNITS: CurriculumUnit[] = [
     code: 'A 1',
     title: L('Einführung in die Differentialrechnung', 'Introduction to differential calculus'),
     summary: L('Mittlere und lokale Änderungsrate, Tangente und Ableitungsfunktion, Ableitungsregeln, Monotonie, Krümmung, Extrem- und Wendepunkte, Steckbriefaufgaben; Newton-Verfahren als Anregung.', 'Average and local rate of change, tangent and derivative function, rules of differentiation, monotonicity, curvature, extreme and inflection points, reconstructing functions; Newton’s method as a suggestion.'),
-    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion'],
+    simulations: ['sekante-tangente', 'ableitungsfunktion', 'newton-verfahren', 'kurvendiskussion', 'ableitungsregeln'],
   },
 ];
 

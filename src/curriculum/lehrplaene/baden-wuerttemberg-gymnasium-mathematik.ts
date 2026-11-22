@@ -1256,6 +1256,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Faktor-, Potenz- und Summenregel anwenden und die Ableitungen von Sinus und Kosinus angeben.",
                 "Applying the constant-factor, power and sum rules and stating the derivatives of sine and cosine.",
               ),
+              simulations: ['ableitungsregeln'],
             },
           ],
         },
@@ -1413,6 +1414,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen.",
                 "Applying the product and chain rules, also for simple rational functions.",
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: "3.5.1 (5)–(8)",
@@ -1685,6 +1687,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden.",
                 "Applying the product rule and the chain rule (with a linear inner function).",
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: "3.6.1 (4)–(6)",
@@ -1919,6 +1922,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen.",
                 "Applying the product and chain rules, also for simple rational functions.",
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: "3.5.1 (5)–(8)",
@@ -2182,6 +2186,7 @@ export const badenWuerttembergGymnasiumMathematik: StateCurriculum = {
                 "Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden.",
                 "Applying the product rule and the chain rule (with a linear inner function).",
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: "3.6.1 (4)–(6)",

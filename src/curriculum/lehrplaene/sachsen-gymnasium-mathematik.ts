@@ -404,8 +404,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'GK-2',
@@ -507,8 +506,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'LK-2',

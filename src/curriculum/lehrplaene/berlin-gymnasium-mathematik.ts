@@ -500,7 +500,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Sekanten- und Tangentensteigung, Ableitung als lokale Änderungsrate, Ableitungsfunktion, Konstanten-, Potenz-, Faktor-, Summen-, Produkt- und Kettenregel; Ableitungsgraph aus dem Funktionsgraphen und umgekehrt.',
           'Secant and tangent slopes, the derivative as the local rate of change, the derivative function, constant, power, factor, sum, product and chain rules; derivative graph from the graph of the function and vice versa.',
         ),
-        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion'],
+        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion', 'ableitungsregeln'],
       },
       {
         code: 'Q1.2',

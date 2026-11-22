@@ -2394,6 +2394,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten.',
                 'Justifying the power, constant-factor and sum rules and differentiating polynomials.',
               ),
+              simulations: ['ableitungsregeln'],
             },
           ],
         },
@@ -2470,6 +2471,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten.',
                 'Differentiating products and compositions of polynomial and exponential functions.',
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: 'E.4.4',
@@ -2515,6 +2517,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen.',
                 'Differentiating with the chain rule and interpreting derivative values in context; tangents and normals.',
               ),
+              simulations: ['ableitungsregeln'],
             },
           ],
         },

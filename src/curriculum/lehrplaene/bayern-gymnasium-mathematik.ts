@@ -584,7 +584,7 @@ export const bayernGymnasiumMathematik: StateCurriculum = {
                 'Die Funktion, die ihre eigene Ableitung ist; Produkt- und Kettenregel, Wachstums- und Abklingvorgänge.',
                 'The function that is its own derivative; product and chain rule, growth and decay.',
               ),
-              simulations: ['e-funktion'],
+              simulations: ['e-funktion', 'ableitungsregeln'],
             },
             {
               code: '1.3',

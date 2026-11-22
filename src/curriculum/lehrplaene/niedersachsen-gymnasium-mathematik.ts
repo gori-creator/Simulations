@@ -975,7 +975,7 @@ const Q_UNITS: CurriculumUnit[] = [
         code: 'eA-2.2',
         title: L('e-Funktion', 'Exponential function e^x'),
         summary: L('Basis e, Ableitungen, Produkt- und Kettenregel, Exponentialgleichungen und Scharparameter.', 'The base e, derivatives, product and chain rules, exponential equations and family parameters.'),
-        simulations: ['e-funktion', 'logarithmus'],
+        simulations: ['e-funktion', 'logarithmus', 'ableitungsregeln'],
       },
     ],
   },

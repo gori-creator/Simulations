@@ -1417,6 +1417,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'ableitungsregeln',
+            status: 'ready',
+            slug: L('ableitungsregeln-werkstatt', 'differentiation-rules-workshop'),
+            title: L('Ableitungsregeln: die Werkstatt', 'Differentiation rules: the workshop'),
+            summary: L(
+              'Term eingeben, Regel erkennen: Produkt, Quotient oder Kette werden farbig in ihre Teile zerlegt und Schritt für Schritt abgeleitet. Der Graph zeigt, dass die Steigung passt – und du kannst deine eigene Ableitung prüfen.',
+              'Enter a term, spot the rule: products, quotients and chains are split into coloured parts and differentiated step by step. The graph shows that the slope fits – and you can check your own derivative.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Ableitungsregeln', 'Summenregel', 'Faktorregel', 'Potenzregel', 'Produktregel', 'Quotientenregel', 'Kettenregel', 'innere Ableitung', 'äußere Funktion', 'innere Funktion', 'Ableitung von sin', 'Ableitung von cos', 'e-Funktion ableiten', 'ln ableiten', 'Wurzel ableiten', 'Tangente', 'Steigung', 'Ableitung prüfen', 'Termeingabe'],
+              ['differentiation rules', 'sum rule', 'constant multiple rule', 'power rule', 'product rule', 'quotient rule', 'chain rule', 'inner derivative', 'outer function', 'inner function', 'derivative of sin', 'derivative of cos', 'derivative of exp', 'derivative of ln', 'derivative of a root', 'tangent', 'slope', 'check a derivative', 'term input'],
+            ),
+          },
+          {
             id: 'extremwertprobleme',
             status: 'ready',
             slug: L('extremwertprobleme', 'optimisation-problems'),
