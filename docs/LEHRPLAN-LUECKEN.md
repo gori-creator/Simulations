@@ -2,22 +2,19 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **299 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **293 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (99)
+## Mathematik (93)
 
-### Baden-Württemberg · Gymnasium (7)
+### Baden-Württemberg · Gymnasium (4)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.2.2 | Leitidee Messen (keine Inhalte in den Klassen 7/8) | In den Klassen 7/8 sieht der Bildungsplan für diese Leitidee keine Inhalte vor. |
 | 9/10 | 3.3.1 (1)–(3) | Leitidee Zahl – Variable – Operation › mit Potenzen umgehen | Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden. |
-| 11 | 3.4.1 (2)–(3) | Leitidee Zahl – Variable – Operation › Funktionsterme ableiten | Faktor-, Potenz- und Summenregel anwenden und die Ableitungen von Sinus und Kosinus angeben. |
-| 12/13 | 3.5.1 (3)–(4) | Leitidee Zahl – Variable – Operation (nur Leistungsfach) › weitere Ableitungsregeln anwenden | Produkt- und Kettenregel anwenden, auch für einfache gebrochenrationale Funktionen. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
-| 12/13 | 3.6.1 (2)–(3) | Leitidee Zahl – Variable – Operation (Basisfach) › weitere Ableitungsregeln anwenden | Produktregel und Kettenregel (mit linearer innerer Funktion) anwenden. |
 | 12/13 | 3.6.1 (9)–(10) | Leitidee Zahl – Variable – Operation (Basisfach) › lineare Gleichungssysteme untersuchen | Das Gaußverfahren bis zur Stufenform anwenden und die Lösungsvielfalt angeben. |
 
 ### Bayern · Gymnasium (0)
@@ -46,7 +43,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (50)
+### Hessen · Gymnasium (47)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -59,9 +56,6 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 9/10 | 2.2.2 | Körper › Körper aus der Technik und der Lebensumwelt | Reale Gegenstände als Kombination von Grundkörpern modellieren. |
 | 11 | E.1.3 | Funktionen und ihre Darstellung › Modellieren von Realsituationen durch geeignete Funktionsklassen | Sachsituationen vor allem mit linearen und quadratischen Funktionen beschreiben. |
-| 11 | E.2.4 | Einführung des Ableitungsbegriffs › Ableitungsregeln | Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten. |
-| 11 | E.4.3 | Exponentialfunktionen › Produkt- und Kettenregel | Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten. |
-| 11 | E.5.3 | Trigonometrische Funktionen › Ableitung von f(x) = a·sin[b·(x − c)] + d beziehungsweise f(x) = a·cos[b·(x − c)] + d | Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen. |
 | 11 | E.7.1 | Folgen und Reihen › Folgen | Konvergenz und Divergenz begründen und Grenzwerte mit Grenzwertsätzen bestimmen. |
 | 11 | E.7.2 | Folgen und Reihen › Reihen | Arithmetische und geometrische Reihen und ihre Grenzwerte untersuchen. |
 | 12 | Q1.1.4 | Einführung in die Integralrechnung › Entwickeln der Integrationsregeln mithilfe der Ableitungsregeln | Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel. |

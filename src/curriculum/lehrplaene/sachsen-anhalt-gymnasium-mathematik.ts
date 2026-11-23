@@ -527,7 +527,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Ableitungsregeln für ganzrationale Funktionen, die e-Funktion sowie Sinus und Kosinus; Monotonie, Krümmung, Extrem- und Wendepunkte, Tangenten und Extremwertaufgaben.',
           'Differentiation rules for polynomials, the natural exponential function and sine and cosine; monotonicity, curvature, extreme and inflection points, tangents and optimisation problems.',
         ),
-        simulations: ['ganzrationale-funktionen', 'ableitungsfunktion', 'kurvendiskussion', 'extremwertprobleme', 'e-funktion', 'stammfunktion-grafisch'],
+        simulations: ['ganzrationale-funktionen', 'ableitungsfunktion', 'kurvendiskussion', 'extremwertprobleme', 'e-funktion', 'stammfunktion-grafisch', 'ableitungsregeln'],
       },
       {
         code: 'gA-1.3',
@@ -628,8 +628,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'e-funktion',
           'newton-verfahren',
           'funktionenscharen',
-          'stammfunktion-grafisch',
-        ],
+          'stammfunktion-grafisch', 'ableitungsregeln'],
       },
       {
         code: 'eA-1.3',

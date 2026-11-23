@@ -351,7 +351,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1',
     title: L('Grundlegende Funktionen und Ableitungen', 'Basic functions and derivatives'),
     summary: L('Ganzrationale und weitere Grundfunktionen, Verknüpfung und Verkettung, Ableitungsregeln, Umkehrfunktionen; LK: Funktionenscharen.', 'Polynomial and other basic functions, combining and composing functions, rules of differentiation, inverse functions; LK: families of functions.'),
-    simulations: ['funktionsplotter', 'umkehrfunktion', 'kurvendiskussion', 'funktionenscharen'],
+    simulations: ['funktionsplotter', 'umkehrfunktion', 'kurvendiskussion', 'funktionenscharen', 'ableitungsregeln'],
   },
   {
     code: '2',

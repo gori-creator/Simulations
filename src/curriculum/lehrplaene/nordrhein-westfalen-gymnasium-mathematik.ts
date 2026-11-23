@@ -656,7 +656,7 @@ const Q_UNITS: CurriculumUnit[] = [
           'Produkt- und Kettenregel, Extremwertprobleme mit Nebenbedingung, Steckbriefaufgaben und Funktionen mit Parametern (im LK als Funktionsscharen).',
           'Product and chain rules, optimisation with constraints, reconstructing functions from conditions and functions with parameters (families of functions in the advanced course).',
         ),
-        simulations: ['extremwertprobleme', 'funktionenscharen', 'kurvendiskussion'],
+        simulations: ['extremwertprobleme', 'funktionenscharen', 'kurvendiskussion', 'ableitungsregeln'],
       },
       {
         code: 'Q-A.4',
