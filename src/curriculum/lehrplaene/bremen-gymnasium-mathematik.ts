@@ -335,6 +335,7 @@ const QP_UNITS: CurriculumUnit[] = [
     code: 'LA',
     title: L('Schwerpunkt Lineare Algebra (LA 2 bis LA 4)', 'Focus linear algebra (LA 2 to LA 4)'),
     summary: L('Lineare Gleichungssysteme und Matrizenkalkül, Umverteilungen und Populationsentwicklungen mit Übergangs- und Populationsmatrizen, Fixvektoren und Langzeitverhalten; LK: Eigenvektoren.', 'Systems of linear equations and matrix calculus, redistribution and population models with transition and population matrices, fixed vectors and long-term behaviour; LK: eigenvectors.'),
+    simulations: ['uebergangsmatrizen'],
   },
   {
     code: 'AG',

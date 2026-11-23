@@ -3099,6 +3099,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Z. B. Populationen, Wählerwanderung oder Kundenströme modellieren.',
                 'Modelling e.g. populations, voter movements or customer flows.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.2',
@@ -3107,7 +3108,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Skalar-, Matrix-Vektor- und Matrixmultiplikation, Addition, einfache Inverse.',
                 'Scalar, matrix–vector and matrix multiplication, addition, simple inverses.',
               ),
-              simulations: ['matrix-abbildungen'],
+              simulations: ['matrix-abbildungen', 'uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.3',
@@ -3116,6 +3117,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Zustände schrittweise (auch rückwärts) berechnen und stabile Zustände über Fixvektoren finden.',
                 'Calculating states step by step (also backwards) and finding stable states via fixed vectors.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.4',
@@ -3124,6 +3126,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Determining and interpreting entries of matrix powers',
               ),
               summary: L('Einträge von M² usw. im Kontext deuten.', 'Interpreting entries of M² etc. in context.'),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.5',
@@ -3135,6 +3138,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren.',
                 'Interpreting matrix powers, limiting processes and limit matrices.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
           ],
         },
