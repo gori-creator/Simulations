@@ -180,9 +180,11 @@ describe('Länder-Lehrpläne', () => {
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
     'baden-wuerttemberg-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
     },
     'bayern-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
       'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
@@ -192,6 +194,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'nur in der Lehrplanalternative Astrophysik (Jgst. 13), die nicht abgebildet ist',
     },
     'berlin-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       strahlensaetze: 'Strahlensätze nicht im Rahmenlehrplan (nur Ähnlichkeitsabbildungen; siehe docs/lehrplaene/berlin-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Rahmenlehrplan',
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Rahmenlehrplan',
@@ -205,6 +208,7 @@ describe('Länder-Lehrpläne', () => {
       'licht-schatten': 'Licht und Schatten nur im Fach Naturwissenschaften 5/6, nicht in Physik 7–10',
     },
     'brandenburg-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       strahlensaetze: 'Strahlensätze nicht im Rahmenlehrplan (nur Ähnlichkeitsabbildungen; siehe docs/lehrplaene/brandenburg-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Rahmenlehrplan',
       kugeln: 'Kugeln nur als Körper in der Sek. I; Kugelgleichung nicht im Rahmenlehrplan',
@@ -256,6 +260,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'kein passender Schwerpunkt (siehe docs/lehrplaene/hessen-gymnasium-physik.md)',
     },
     'niedersachsen-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Kerncurriculum',
       'monte-carlo-pi': 'kein passender Lernbereich',
@@ -271,6 +276,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kerncurriculum',
     },
     'nordrhein-westfalen-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-mathematik.md)',
       'newton-verfahren': 'Newton-Verfahren nicht im Kernlehrplan',
@@ -285,10 +291,12 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/rheinland-pfalz-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       'matrix-abbildungen': 'Matrizen nur als Schreibweise für lineare Gleichungssysteme (siehe docs/lehrplaene/saarland-gymnasium-mathematik.md)',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule)',
@@ -299,12 +307,14 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
     },
     'sachsen-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       'taylor-polynome': 'nicht im Lehrplan (Hochschule; siehe docs/lehrplaene/sachsen-gymnasium-mathematik.md)',
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
       kugeln: 'Kugelgleichung und Tangentialebene nicht im Lehrplan (Kugeln nur als Körper in Klasse 9)',
       cavalieri: 'Prinzip von Cavalieri nicht im Lehrplan',
     },
     'sachsen-anhalt-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       cavalieri: 'Prinzip von Cavalieri nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-mathematik.md)',
       kugeln: 'Kugeln nur als Körper in Schuljahrgang 7/8; Kugelgleichung und Tangentialebene nicht im Fachlehrplan',
@@ -317,6 +327,7 @@ describe('Länder-Lehrpläne', () => {
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {
+      uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
       richtungsfeld: 'Differenzialgleichungen und Richtungsfelder nicht im Lehrplan',
       cavalieri: 'Prinzip von Cavalieri nicht in den Fachanforderungen (siehe docs/lehrplaene/schleswig-holstein-gymnasium-mathematik.md)',
       'polstellen-asymptoten': 'gebrochenrationale Funktionen mit Polstellen nicht genannt (nur Verknüpfungen von Funktionen)',

@@ -19,6 +19,29 @@ export const physik: Subject = {
   status: 'active',
   areas: [
     {
+      id: 'messen',
+      slug: L('messen', 'measurement'),
+      title: L('Messen und Auswerten', 'Measurement and analysis'),
+      description: L('Größen ablesen, Messreihen auswerten und Unsicherheit verstehen.', 'Read quantities, analyse measurements and understand uncertainty.'),
+      grades: [5, 13],
+      kmk: ['P-E', 'P-K'],
+      topics: [{
+        id: 'messmethoden',
+        title: L('Messmethoden', 'Measurement methods'),
+        grades: [5, 13],
+        simulations: [{
+          id: 'messunsicherheit',
+          status: 'ready',
+          slug: L('messunsicherheit', 'measurement-uncertainty'),
+          title: L('Messen und Messunsicherheit', 'Measurement and uncertainty'),
+          summary: L('Lies ein Lineal ab, verändere Messwerte und untersuche Mittelwert, Streuung, Fehlerbalken und Ausgleichsgeraden. Wiederholte Versuche zeigen, warum mehr Messungen nicht jeden Fehler beseitigen.', 'Read a ruler, edit measurements and explore means, scatter, error bars and best-fit lines. Repeated experiments show why more readings do not remove every error.'),
+          grades: [5, 13],
+          kmk: ['P-E', 'P-K', 'P-S'],
+          keywords: L(['Messen', 'Einheiten', 'Messunsicherheit', 'Messfehler', 'Mittelwert', 'Standardabweichung', 'Standardfehler', 'Ausgleichsgerade', 'Regression', 'Fehlerbalken', 'Auflösung', 'Praktikum'], ['measurement', 'units', 'uncertainty', 'mean', 'standard deviation', 'standard error', 'regression', 'error bars', 'resolution', 'practical']),
+        }],
+      }],
+    },
+    {
       id: 'mechanik',
       slug: L('mechanik', 'mechanics'),
       title: L('Mechanik', 'Mechanics'),
