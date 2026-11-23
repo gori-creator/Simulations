@@ -41,6 +41,10 @@ Bei der **Schwingung** (2. Ordnung) hängt die Beschleunigung $y''$ von der Ausl
 4. Logistisch: Wo ist die Kurve am steilsten? [Logistisch](?order=1&f=0%2C05%C2%B7y%C2%B7(10%20-%20y)&x0=0&y0=0.5&x1=15&method=rk4&h=1&family=1)
 5. $y' = x - y$ hat keine Formel aus der Schule. Schalte „Waagerechte Stellen“ ein: Wo sind die Striche waagerecht? [x − y](?order=1&f=x%20-%20y&x0=-2&y0=3&x1=3&method=euler&h=0.5&family=1&iso=1)
 6. Schwingung mit Dämpfung: Ändere die Dämpfung und beobachte die Spirale. [Gedämpft](?order=2&f2=-4y%20-%200%2C5y'&x0=0&y0=2&v0=0&x1=8&method=rk4&h=0.2)
+7. Räuber und Beute: Warum hinken die Räuber der Beute immer hinterher? [Räuber und Beute](?view=sys&sk=lv&la=1&lc=0.8&lx=60&ly=5)
+8. Epidemie: Ab welchem Anteil Geimpfter startet die Welle nicht mehr? Vergleiche mit $1 - 1/R_0$. [Epidemie](?view=sys&sk=sir&r0=2.5&imm=0)
+9. Fallschirm: Stelle $k = 0{,}3$ ein. Wie schnell landet man mit offenem Schirm? [Fall](?view=sys&sk=fall&kd=0.004)
+10. Rätsel: Welches Feld passt zur Gleichung? [Rätsel](?view=quiz&qn=1)
 
 ## Aufgaben
 
@@ -74,6 +78,17 @@ Für $y'' = -4y$ mit $y(0) = 2$, $y'(0) = 0$: Welche Periode hat die Schwingung?
 <summary>Lösung anzeigen</summary>
 
 $\omega = 2$, also $y = 2\cos(2x)$ mit der Periode $T = \pi \approx 3{,}14$. [In der Simulation zeigen](?order=2&f2=-4y&x0=0&y0=2&v0=0&x1=3.1&method=rk4&h=0.1)
+
+</details>
+
+### Aufgabe 4: Herdenimmunität
+
+Bei Masern ist $R_0 \approx 15$. Welcher Anteil muss immun sein, damit sich die Krankheit nicht ausbreitet?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+Die Welle wächst nur, solange $S/N > 1/R_0$ ist. Also braucht man $1 - 1/15 \approx 93\,\%$ Immune. In der Simulation geht $R_0$ bis 6: Dort reichen $1 - 1/6 \approx 83\,\%$. [Ausprobieren](?view=sys&sk=sir&r0=6&imm=85)
 
 </details>
 

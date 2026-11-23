@@ -533,3 +533,100 @@ export function derivation(m: Model, x0: number, y0: number, v0: number, num: (v
   }
   return { lines, facts };
 }
+
+/* ------------------------------------------------------------------ */
+/* Systeme aus zwei (bzw. drei) Größen                                  */
+/* ------------------------------------------------------------------ */
+
+export type SysKind = 'lv' | 'sir' | 'fall';
+
+export interface SysParams {
+  /** Räuber-Beute: Vermehrung der Beute a, Sterberate der Räuber c (b = d fest) */
+  a: number;
+  c: number;
+  b: number;
+  d: number;
+  /** Epidemie: Basisreproduktionszahl R₀, Genesungsrate γ (pro Tag), Bevölkerung N */
+  R0: number;
+  gamma: number;
+  N: number;
+  /** Fall: Fallbeschleunigung g, Reibungsfaktor k (pro m) */
+  g: number;
+  k: number;
+}
+
+/**
+ * Rechte Seiten:
+ * Räuber-Beute (Lotka-Volterra): x′ = a·x − b·x·y, y′ = −c·y + d·x·y.
+ * Epidemie (SIR): S′ = −β·S·I/N, I′ = β·S·I/N − γ·I, R′ = γ·I mit β = R₀·γ.
+ * Fall mit Luftwiderstand: v′ = g − k·v² (Zustand [s, v]).
+ */
+export function sysRhs(kind: SysKind, p: SysParams): Sys {
+  switch (kind) {
+    case 'lv':
+      return (_t, [x, y]) => [p.a * x! - p.b * x! * y!, -p.c * y! + p.d * x! * y!];
+    case 'sir': {
+      const beta = p.R0 * p.gamma;
+      return (_t, [S, I]) => {
+        const inf = (beta * S! * I!) / p.N;
+        return [-inf, inf - p.gamma * I!, p.gamma * I!];
+      };
+    }
+    case 'fall':
+      return (_t, [, v]) => [v!, p.g - p.k * v! * Math.abs(v!)];
+  }
+}
+
+/** Lösung mit RK4 von t = 0 bis t1 (Zeitpunkte und Zustände). */
+export function solveSys(F: Sys, s0: readonly number[], t1: number, h: number): { t: number[]; s: number[][] } {
+  const t = [0];
+  const s = [[...s0]];
+  let cur = [...s0];
+  let x = 0;
+  const n = Math.ceil(t1 / h);
+  for (let i = 0; i < n; i++) {
+    cur = step(F, 'rk4', x, cur, h);
+    x += h;
+    t.push(x);
+    s.push(cur);
+  }
+  return { t, s };
+}
+
+/** Räuber-Beute: Gleichgewicht (c/d | a/b) und Erhaltungsgröße V = d·x − c·ln x + b·y − a·ln y. */
+export const lvEquilibrium = (p: SysParams): [number, number] => [p.c / p.d, p.a / p.b];
+export const lvInvariant = (p: SysParams, x: number, y: number) => p.d * x - p.c * Math.log(x) + p.b * y - p.a * Math.log(y);
+
+/** Epidemie: Herdenimmunität 1 − 1/R₀ (Anteil, ab dem I abnimmt). */
+export const herdImmunity = (R0: number) => Math.max(0, 1 - 1 / R0);
+
+/** Fall: Endgeschwindigkeit √(g/k) und exakte Lösung aus der Ruhe v(t) = v_E·tanh(g·t/v_E). */
+export const terminalSpeed = (g: number, k: number) => Math.sqrt(g / k);
+export const fallSpeed = (g: number, k: number, t: number) => {
+  const vt = terminalSpeed(g, k);
+  return vt * Math.tanh((g * t) / vt);
+};
+
+/* ------------------------------------------------------------------ */
+/* Rätsel: Welches Feld gehört zur Gleichung?                           */
+/* ------------------------------------------------------------------ */
+
+/** Auswahl an Gleichungen y′ = f(x, y) mit gut unterscheidbaren Feldern. */
+export const QUIZ_EQS: readonly string[] = ['y', '-y', 'x', '-x', 'x - y', 'x + y', 'y·(2 - y)', '2 - y', 'x·y', 'sin(x)', 'y - x^2', '-x/y'];
+
+/** Runde Nummer n: vier verschiedene Gleichungen und die gesuchte (Index 0 … 3). */
+export function quizRound(n: number): { eqs: string[]; target: number } {
+  let s = (Math.floor(n) * 2654435761 + 777) >>> 0 || 1;
+  const r = () => {
+    s ^= s << 13;
+    s >>>= 0;
+    s ^= s >>> 17;
+    s ^= s << 5;
+    s >>>= 0;
+    return s / 4294967296;
+  };
+  const pool = [...QUIZ_EQS];
+  const eqs: string[] = [];
+  while (eqs.length < 4) eqs.push(pool.splice(Math.floor(r() * pool.length) % pool.length, 1)[0]!);
+  return { eqs, target: Math.floor(r() * 4) % 4 };
+}

@@ -21,6 +21,10 @@ The right side $f(x, y)$ gives the slope of the solution curve at every point �
 2. Reduce $h$ and watch the Euler error.
 3. Cooling: [load](?order=1&f=0%2C1%C2%B7(20%20-%20y)&x0=0&y0=90&x1=30&method=euler&h=2&family=1)
 4. Damped oscillation with phase plane: [load](?order=2&f2=-4y%20-%200%2C5y'&x0=0&y0=2&v0=0&x1=8&method=rk4&h=0.2)
+5. Predator and prey: why do predators always lag behind? [load](?view=sys&sk=lv&la=1&lc=0.8&lx=60&ly=5)
+6. Epidemic: from which vaccinated share does the wave no longer start? Compare with $1 - 1/R_0$. [load](?view=sys&sk=sir&r0=2.5&imm=0)
+7. Parachute: set $k = 0.3$. How fast do you land? [load](?view=sys&sk=fall&kd=0.004)
+8. Puzzle: which field fits the equation? [load](?view=quiz&qn=1)
 
 ## Tasks
 
@@ -43,6 +47,17 @@ Tea at 90 °C in a 20 °C room, $y' = 0.1(20 - y)$. When is it at 55 °C?
 <summary>Show solution</summary>
 
 $y = 20 + 70e^{-0.1x}$, so $x = 10\ln 2 \approx 6.9$ minutes.
+
+</details>
+
+### Task 3
+
+Measles has $R_0 \approx 15$. Which share must be immune so the disease cannot spread?
+
+<details>
+<summary>Show solution</summary>
+
+$1 - 1/15 \approx 93\,\%$.
 
 </details>
 

@@ -1,5 +1,15 @@
-import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
-import { derivation, detectModel, eulerTable, exact, exactText, fineCurve, parseTerm, solveIVP, system, type Fn3, type Method, type Model, type Sys } from './model';
+import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, TapTarget, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { derivation, detectModel, eulerTable, exact, exactText, fineCurve, parseTerm, solveIVP, system, type Fn3, type Method, type Model, type Sys,
+  fallSpeed,
+  herdImmunity,
+  lvEquilibrium,
+  quizRound,
+  solveSys,
+  sysRhs,
+  terminalSpeed,
+  type SysKind,
+  type SysParams,
+} from './model';
 
 const L = (de: string, en: string) => ({ de, en });
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -23,6 +33,50 @@ export default defineSimulation({
   ],
   params: [
     {
+      key: 'view',
+      type: 'choice',
+      label: L('Ansicht', 'View'),
+      options: [
+        { value: 'one', label: L('Eine Gleichung mit Richtungsfeld', 'One equation with direction field') },
+        { value: 'sys', label: L('Systeme: Räuber-Beute, Epidemie, Fall', 'Systems: predator–prey, epidemic, fall') },
+        { value: 'quiz', label: L('Rätsel: Welches Feld passt?', 'Puzzle: which field fits?') },
+      ],
+      default: 'one',
+    },
+    {
+      key: 'sk',
+      type: 'choice',
+      label: L('System', 'System'),
+      options: [
+        { value: 'lv', label: L('Räuber und Beute (Lotka-Volterra)', 'Predator and prey (Lotka–Volterra)') },
+        { value: 'sir', label: L('Epidemie (SIR-Modell)', 'Epidemic (SIR model)') },
+        { value: 'fall', label: L('Fall mit Luftwiderstand', 'Fall with air resistance') },
+      ],
+      default: 'lv',
+      visibleIf: (v) => v.view === 'sys',
+    },
+    { key: 'la', type: 'number', label: L('Vermehrung der Beute a', 'Prey growth a'), min: 0.2, max: 2, step: 0.05, default: 1, visibleIf: (v) => v.view === 'sys' && v.sk === 'lv' },
+    { key: 'lc', type: 'number', label: L('Sterberate der Räuber c', 'Predator death rate c'), min: 0.2, max: 2, step: 0.05, default: 0.8, visibleIf: (v) => v.view === 'sys' && v.sk === 'lv' },
+    { key: 'lx', type: 'number', label: L('Beute am Anfang', 'Prey at the start'), min: 5, max: 150, step: 1, default: 60, visibleIf: (v) => v.view === 'sys' && v.sk === 'lv' },
+    { key: 'ly', type: 'number', label: L('Räuber am Anfang', 'Predators at the start'), min: 1, max: 60, step: 1, default: 5, visibleIf: (v) => v.view === 'sys' && v.sk === 'lv' },
+    { key: 'r0', type: 'number', label: L('Ansteckungszahl R₀', 'Reproduction number R₀'), help: L('So viele steckt eine kranke Person im Mittel an, solange alle empfänglich sind.', 'How many people one sick person infects on average while everyone is susceptible.'), min: 0.5, max: 6, step: 0.1, default: 2.5, visibleIf: (v) => v.view === 'sys' && v.sk === 'sir' },
+    { key: 'imm', type: 'number', label: L('Anteil schon Immuner', 'Share already immune'), min: 0, max: 90, step: 5, default: 0, unit: '%', visibleIf: (v) => v.view === 'sys' && v.sk === 'sir' },
+    { key: 'kd', type: 'number', label: L('Luftwiderstand k', 'Air resistance k'), help: L('Pro Meter; Fallschirmspringer ohne Schirm etwa 0,004, mit Schirm etwa 0,3.', 'Per metre; skydiver without parachute about 0.004, with parachute about 0.3.'), min: 0.001, max: 0.4, step: 0.001, default: 0.004, visibleIf: (v) => v.view === 'sys' && v.sk === 'fall' },
+    { key: 'qn', type: 'number', label: L('Runde', 'Round'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.view === 'quiz' },
+    {
+      key: 'qa',
+      type: 'choice',
+      label: L('Deine Wahl', 'Your choice'),
+      options: [
+        { value: '0', label: L('A', 'A') },
+        { value: '1', label: L('B', 'B') },
+        { value: '2', label: L('C', 'C') },
+        { value: '3', label: L('D', 'D') },
+      ],
+      default: '0',
+      visibleIf: (v) => v.view === 'quiz',
+    },
+    {
       key: 'order',
       type: 'choice',
       label: L('Art der Gleichung', 'Type of equation'),
@@ -31,6 +85,7 @@ export default defineSimulation({
         { value: '2', label: L("2. Ordnung: y″ = f(x, y, y′)", "2nd order: y″ = f(x, y, y′)") },
       ],
       default: '1',
+      visibleIf: (v) => v.view === 'one',
     },
     {
       key: 'f',
@@ -43,7 +98,7 @@ export default defineSimulation({
         'Variablen x (oder t) und y, Zahlen mit Komma, Funktionen sin, cos, exp, ln, sqrt. Malpunkte dürfen fehlen: 0,2y(10 − y).',
         'Variables x (or t) and y, decimals, functions sin, cos, exp, ln, sqrt. Multiplication dots may be omitted: 0.2y(10 − y).',
       ),
-      visibleIf: (v) => v.order === '1',
+      visibleIf: (v) => v.view === 'one' && (v.order === '1'),
     },
     {
       key: 'f2',
@@ -53,12 +108,12 @@ export default defineSimulation({
       maxLength: 60,
       placeholder: L("z. B. −4y − 0,5y′", "e.g. −4y − 0.5y′"),
       help: L("y′ schreibt man als y' oder v.", "Write y′ as y' or v."),
-      visibleIf: (v) => v.order === '2',
+      visibleIf: (v) => v.view === 'one' && (v.order === '2'),
     },
-    { key: 'x0', type: 'number', label: L('Startstelle x₀', 'Start x₀'), min: -20, max: 50, step: 0.1, default: 0 },
-    { key: 'y0', type: 'number', label: L('Startwert y(x₀)', 'Start value y(x₀)'), min: -200, max: 200, step: 0.1, default: 2 },
-    { key: 'v0', type: 'number', label: L('Startsteigung y′(x₀)', 'Initial slope y′(x₀)'), min: -20, max: 20, step: 0.1, default: 0, visibleIf: (v) => v.order === '2' },
-    { key: 'x1', type: 'number', label: L('Vergleich an der Stelle x₁', 'Compare at x₁'), min: -20, max: 60, step: 0.1, default: 2 },
+    { key: 'x0', type: 'number', label: L('Startstelle x₀', 'Start x₀'), min: -20, max: 50, step: 0.1, default: 0, visibleIf: (v) => v.view === 'one' },
+    { key: 'y0', type: 'number', label: L('Startwert y(x₀)', 'Start value y(x₀)'), min: -200, max: 200, step: 0.1, default: 2, visibleIf: (v) => v.view === 'one' },
+    { key: 'v0', type: 'number', label: L('Startsteigung y′(x₀)', 'Initial slope y′(x₀)'), min: -20, max: 20, step: 0.1, default: 0, visibleIf: (v) => v.view === 'one' && (v.order === '2') },
+    { key: 'x1', type: 'number', label: L('Vergleich an der Stelle x₁', 'Compare at x₁'), min: -20, max: 60, step: 0.1, default: 2, visibleIf: (v) => v.view === 'one' },
     {
       key: 'method',
       type: 'choice',
@@ -71,11 +126,12 @@ export default defineSimulation({
         { value: 'none', label: L('keins', 'none') },
       ],
       default: 'euler',
+      visibleIf: (v) => v.view === 'one',
     },
-    { key: 'h', type: 'number', group: 'num', label: L('Schrittweite h', 'Step size h'), min: 0.05, max: 2, step: 0.05, default: 0.5 },
-    { key: 'field', type: 'boolean', group: 'view', label: L('Richtungsfeld', 'Direction field'), default: true },
-    { key: 'flow', type: 'boolean', group: 'view', label: L('Fließende Teilchen', 'Flowing particles'), default: true },
-    { key: 'family', type: 'boolean', group: 'view', label: L('Weitere Lösungskurven', 'More solution curves'), default: false },
+    { key: 'h', type: 'number', group: 'num', label: L('Schrittweite h', 'Step size h'), min: 0.05, max: 2, step: 0.05, default: 0.5, visibleIf: (v) => v.view === 'one' },
+    { key: 'field', type: 'boolean', group: 'view', label: L('Richtungsfeld', 'Direction field'), default: true, visibleIf: (v) => v.view === 'one' },
+    { key: 'flow', type: 'boolean', group: 'view', label: L('Fließende Teilchen', 'Flowing particles'), default: true, visibleIf: (v) => v.view === 'one' },
+    { key: 'family', type: 'boolean', group: 'view', label: L('Weitere Lösungskurven', 'More solution curves'), default: false, visibleIf: (v) => v.view === 'one' },
     {
       key: 'card',
       type: 'choice',
@@ -86,11 +142,17 @@ export default defineSimulation({
         { value: 'derive', label: L('Rechenweg (exakte Lösung)', 'Derivation (exact solution)') },
       ],
       default: 'compare',
+      visibleIf: (v) => v.view === 'one',
     },
-    { key: 'iso', type: 'boolean', group: 'view', label: L('Waagerechte Stellen (f = 0)', 'Horizontal slopes (f = 0)'), default: false, visibleIf: (v) => v.order === '1' },
+    { key: 'iso', type: 'boolean', group: 'view', label: L('Waagerechte Stellen (f = 0)', 'Horizontal slopes (f = 0)'), default: false, visibleIf: (v) => v.view === 'one' && (v.order === '1') },
     { key: 'show', type: 'boolean', group: 'view', label: L('Lösungskurve zeigen', 'Show solution curve'), default: true },
   ],
   resultsParam: 'show',
+  actions: [
+    { id: 'qcheck', label: L('Prüfen', 'Check'), primary: true, visibleIf: (v) => v.view === 'quiz' },
+    { id: 'qnext', label: L('Nächste Runde', 'Next round'), visibleIf: (v) => v.view === 'quiz' },
+    { id: 'replay', label: L('Abspielen', 'Play'), primary: true, visibleIf: (v) => v.view === 'sys' },
+  ],
   readouts: [
     { key: 'type', label: L('Typ', 'Type') },
     { key: 'sol', label: L('Exakte Lösung', 'Exact solution'), spoiler: true },
@@ -109,10 +171,38 @@ export default defineSimulation({
     { id: 'derive', label: L('Rechenweg: logistisches Wachstum', 'Derivation: logistic growth'), values: { order: '1', f: '0,05·y·(10 - y)', x0: 0, y0: 0.5, x1: 15, method: 'none', card: 'derive', family: true } },
     { id: 'osc', label: L("Schwingung y″ = −4y", "Oscillation y″ = −4y"), values: { order: '2', f2: '-4y', x0: 0, y0: 2, v0: 0, x1: 6, method: 'euler', h: 0.1 } },
     { id: 'damped', label: L("Gedämpft y″ = −4y − 0,5y′", "Damped y″ = −4y − 0.5y′"), values: { order: '2', f2: "-4y - 0,5y'", x0: 0, y0: 2, v0: 0, x1: 8, method: 'rk4', h: 0.2 } },
+    { id: 'lv', label: L('Räuber und Beute: Zyklen', 'Predator and prey: cycles'), values: { view: 'sys', sk: 'lv', la: 1, lc: 0.8, lx: 60, ly: 5 } },
+    { id: 'sir', label: L('Epidemie mit R₀ = 2,5', 'Epidemic with R₀ = 2.5'), values: { view: 'sys', sk: 'sir', r0: 2.5, imm: 0 } },
+    { id: 'sir2', label: L('Epidemie: 60 % geimpft', 'Epidemic: 60 % vaccinated'), values: { view: 'sys', sk: 'sir', r0: 2.5, imm: 60 } },
+    { id: 'fall', label: L('Fallschirmsprung: Endgeschwindigkeit', 'Skydive: terminal velocity'), values: { view: 'sys', sk: 'fall', kd: 0.004 } },
+    { id: 'quiz', label: L('Rätsel: Feld und Gleichung zuordnen', 'Puzzle: match field and equation'), values: { view: 'quiz', qn: 1, qa: '0' } },
     { id: 'creep', label: L("Kriechfall y″ = −4y − 5y′", "Overdamped y″ = −4y − 5y′"), values: { order: '2', f2: "-4y - 5y'", x0: 0, y0: 2, v0: 0, x1: 6, method: 'rk4', h: 0.2 } },
   ],
   strings: {
     de: {
+      lvT: 'Räuber und Beute (Lotka-Volterra)',
+      lvG: 'Viel Beute → die Räuber vermehren sich → die Beute wird weniger → die Räuber hungern → die Beute erholt sich. Im Phasenbild ergibt das geschlossene Bahnen um das Gleichgewicht.',
+      lvEq: 'Gleichgewicht: {x} Beutetiere, {y} Räuber',
+      prey: 'Beute',
+      pred: 'Räuber',
+      sirT: 'Epidemie (SIR-Modell)',
+      sirG: 'S: empfänglich, I: infiziert, R: genesen. Die Zahl der Infizierten sinkt, sobald weniger als N/R₀ empfänglich sind. Mit genug Immunen beginnt die Welle gar nicht erst.',
+      sirPeak: 'Höchstens {i} gleichzeitig krank (Tag {d})',
+      sirHerd: 'Herdenimmunität ab {h} immun',
+      sirTotal: 'Insgesamt erkrankt: {t}',
+      fallT: 'Fall mit Luftwiderstand',
+      fallG: 'Je schneller, desto größer die Reibung k·v². Bei der Endgeschwindigkeit ist sie so groß wie die Gewichtskraft: Die Geschwindigkeit wächst nicht mehr.',
+      fallVt: 'Endgeschwindigkeit √(g/k) = {v} m/s ≈ {kmh} km/h',
+      fall5: 'nach 5 s: {v} m/s (ohne Luft: 49 m/s)',
+      time: 't in Tagen',
+      timeS: 't in s',
+      timeY: 't in Jahren',
+      quizT: 'Welches Richtungsfeld gehört zu',
+      quizHow: 'Tippe auf A, B, C oder D und dann auf „Prüfen“.',
+      quizOk: 'Richtig!',
+      quizNo: 'Leider nein – es ist {c}.',
+      quizScore: '{k} von {n} richtig',
+      quizHint: 'Tipp: Wo ist die Steigung 0? Hängt sie nur von x oder nur von y ab? Wo ist sie positiv?',
       canvas: 'Richtungsfeld der Differenzialgleichung mit fließenden Teilchen, Lösungskurve durch den ziehbaren Startpunkt und Näherung mit dem gewählten Verfahren.',
       eq1: "y′ =",
       eq2: "y″ =",
@@ -149,6 +239,29 @@ export default defineSimulation({
       triM: 'h · f',
     },
     en: {
+      lvT: 'Predator and prey (Lotka–Volterra)',
+      lvG: 'Lots of prey → predators multiply → prey decreases → predators starve → prey recovers. In the phase plane this gives closed orbits around the equilibrium.',
+      lvEq: 'equilibrium: {x} prey, {y} predators',
+      prey: 'prey',
+      pred: 'predators',
+      sirT: 'Epidemic (SIR model)',
+      sirG: 'S: susceptible, I: infected, R: recovered. The number of infected falls once fewer than N/R₀ are susceptible. With enough immune people, the wave does not even start.',
+      sirPeak: 'at most {i} ill at the same time (day {d})',
+      sirHerd: 'herd immunity from {h} immune',
+      sirTotal: 'ill in total: {t}',
+      fallT: 'Fall with air resistance',
+      fallG: 'The faster, the larger the friction k·v². At terminal velocity it equals the weight: the speed stops increasing.',
+      fallVt: 'terminal velocity √(g/k) = {v} m/s ≈ {kmh} km/h',
+      fall5: 'after 5 s: {v} m/s (without air: 49 m/s)',
+      time: 't in days',
+      timeS: 't in s',
+      timeY: 't in years',
+      quizT: 'Which direction field belongs to',
+      quizHow: 'Tap A, B, C or D, then “Check”.',
+      quizOk: 'Correct!',
+      quizNo: 'Sorry, no – it is {c}.',
+      quizScore: '{k} of {n} correct',
+      quizHint: 'Hint: where is the slope 0? Does it depend only on x or only on y? Where is it positive?',
       canvas: 'Direction field of the differential equation with flowing particles, the solution curve through the draggable start point and the approximation with the chosen method.',
       eq1: "y′ =",
       eq2: "y″ =",
@@ -243,11 +356,11 @@ export default defineSimulation({
       const w = surface.width;
       const h = surface.height;
       const pad = 10;
-      if (wide()) {
-        const pw = Math.round(w * 0.62);
+      if (wide() || (p.view !== 'one' && w > h * 1.3)) {
+        const pw = Math.round(w * (wide() ? 0.62 : 0.56));
         return { plot: { x: pad, y: pad, w: pw - pad, h: h - 2 * pad }, card: { x: pw + pad, y: pad, w: w - pw - 2 * pad, h: h - 2 * pad } };
       }
-      const ph = Math.round(h * 0.5);
+      const ph = Math.round(h * (p.view === 'one' ? 0.5 : p.view === 'sys' ? 0.6 : 0.58));
       return { plot: { x: pad, y: pad, w: w - 2 * pad, h: ph }, card: { x: pad, y: ph + 2 * pad, w: w - 2 * pad, h: h - ph - 3 * pad } };
     }
 
@@ -337,7 +450,7 @@ export default defineSimulation({
     plot.addHandle({
       get: () => [p.x0, p.y0],
       set: (x, y) => ctx.set({ x0: Math.round(clamp(x, -20, 50) * 10) / 10, y0: Math.round(clamp(y, -200, 200) * 10) / 10 }),
-      enabled: () => !ctx.locked,
+      enabled: () => !ctx.locked && p.view === 'one',
       color: () => COL.start(),
       axis: 'both',
     });
@@ -353,7 +466,7 @@ export default defineSimulation({
         if (Math.abs(dx) < 1e-6) return;
         ctx.set({ v0: Math.round(clamp((y - p.y0) / dx, -20, 20) * 10) / 10 });
       },
-      enabled: () => !ctx.locked && order() === 2,
+      enabled: () => !ctx.locked && p.view === 'one' && order() === 2,
       color: () => COL.start(),
       axis: 'both',
     });
@@ -361,7 +474,7 @@ export default defineSimulation({
     plot.addHandle({
       get: () => [p.x1, plot.bounds.yMin + (plot.bounds.yMax - plot.bounds.yMin) * 0.04],
       set: (x) => ctx.set({ x1: Math.round(clamp(x, -20, 60) * 10) / 10 }),
-      enabled: () => !ctx.locked && !!method(),
+      enabled: () => !ctx.locked && p.view === 'one' && !!method(),
       color: () => COL.num(),
       axis: 'x',
     });
@@ -683,6 +796,62 @@ export default defineSimulation({
       const maxW = R.w - 32;
       const size = R.w < 330 ? 13 : R.w < 440 ? 14 : 15;
       let y = R.y + 22;
+      const line = (segs: Seg[], dz: number) => {
+        y += segLine(g, segs, x, y, maxW, size + dz);
+      };
+      if (p.view === 'sys') {
+        const kind = p.sk as SysKind;
+        if (!sysRun) computeSys();
+        const run = sysRun!;
+        if (kind === 'lv') {
+          const [ex, ey] = lvEquilibrium(sysP());
+          line([{ s: ctx.t('lvT'), c: th().series[4]!, w: 800 }], 0);
+          line([{ s: `x′ = ${N(p.la, 2)}·x − 0,1·x·y`, w: 700 }], -0.5);
+          line([{ s: `y′ = −${N(p.lc, 2)}·y + 0,02·x·y`, w: 700 }], -0.5);
+          line([{ s: tr('lvEq', { x: N(ex, 1), y: N(ey, 1) }), c: th().muted, w: 600 }], -1.5);
+          y += 4;
+          line([{ s: ctx.t('lvG'), c: th().muted }], -2);
+        } else if (kind === 'sir') {
+          let iMax = 0;
+          let dMax = 0;
+          run.s.forEach((q, i) => {
+            if (q[1]! > iMax) {
+              iMax = q[1]!;
+              dMax = run.t[i]!;
+            }
+          });
+          const last = run.s.at(-1)!;
+          line([{ s: ctx.t('sirT'), c: th().series[1]!, w: 800 }], 0);
+          line([{ s: `S′ = −β·S·I/N,  I′ = β·S·I/N − γ·I,  R′ = γ·I`, w: 700 }], -1.5);
+          line([{ s: `β = R₀·γ = ${N(p.r0 * 0.1, 3)},  γ = 0,1 (10 ${ctx.lang === 'de' ? 'Tage krank' : 'days ill'})`, c: th().muted }], -1.5);
+          if (p.show) {
+            line([{ s: tr('sirPeak', { i: N(iMax, 0), d: N(dMax, 0) }), c: th().series[1]!, w: 700 }], -1);
+            line([{ s: tr('sirTotal', { t: N(last[2]! - (1000 * p.imm) / 100, 0) }), w: 600 }], -1);
+          }
+          line([{ s: tr('sirHerd', { h: `${N(herdImmunity(p.r0) * 100, 0)} %` }), c: th().series[2]!, w: 600 }], -1);
+          y += 4;
+          line([{ s: ctx.t('sirG'), c: th().muted }], -2);
+        } else {
+          const vt = terminalSpeed(9.81, p.kd);
+          line([{ s: ctx.t('fallT'), c: th().series[0]!, w: 800 }], 0);
+          line([{ s: `v′ = 9,81 − ${N(p.kd, 3)}·v²`, w: 700 }], 0);
+          line([{ s: tr('fallVt', { v: N(vt, 1), kmh: N(vt * 3.6, 0) }), c: th().series[3]!, w: 700 }], -1);
+          if (p.show) line([{ s: tr('fall5', { v: N(fallSpeed(9.81, p.kd, 5), 1) }), w: 600 }], -1);
+          y += 4;
+          line([{ s: ctx.t('fallG'), c: th().muted }], -2);
+        }
+        return;
+      }
+      if (p.view === 'quiz') {
+        line([{ s: ctx.t('quizT'), c: th().series[0]!, w: 800 }], 0);
+        line([{ s: `y′ = ${quiz.eqs[quiz.target]!.replace(/\./g, ',').replace(/-/g, '−')} ?`, w: 800 }], 3);
+        line([{ s: ctx.t('quizHow'), c: th().muted }], -1.5);
+        if (quizVerdict !== null) line([{ s: quizVerdict ? ctx.t('quizOk') : tr('quizNo', { c: 'ABCD'[quiz.target]! }), c: quizVerdict ? th().series[2]! : th().series[1]!, w: 800 }], 1);
+        if (quizScore.all) line([{ s: tr('quizScore', { k: quizScore.right, n: quizScore.all }), c: th().muted, w: 600 }], -1.5);
+        y += 4;
+        line([{ s: ctx.t('quizHint'), c: th().muted }], -2);
+        return;
+      }
       const src = order() === 1 ? p.f : p.f2;
       y += segLine(g, [{ s: `${order() === 1 ? tr('eq1') : tr('eq2')} `, c: t.muted, w: 600 }, { s: src, c: COL.sol(), w: 700 }], x, y, maxW, size + 3);
       y += segLine(g, [{ s: typeText(), c: eq.ok ? t.text : t.series[3], w: 600 }], x, y, maxW, size - 1);
@@ -870,6 +1039,243 @@ export default defineSimulation({
     }
 
     /* -------------------------------------------------------------- */
+    /* Systeme: Räuber-Beute, Epidemie, Fall                           */
+    /* -------------------------------------------------------------- */
+
+    const sysTw = new Tween(5000, ease.inOutCubic);
+    const sysP = (): SysParams => ({ a: p.la, c: p.lc, b: 0.1, d: 0.02, R0: p.r0, gamma: 0.1, N: 1000, g: 9.81, k: p.kd });
+    interface SysRun {
+      t: number[];
+      s: number[][];
+      tEnd: number;
+    }
+    let sysRun: SysRun | null = null;
+    function computeSys(): void {
+      const sp = sysP();
+      const kind = p.sk as SysKind;
+      if (kind === 'lv') {
+        const tEnd = 30;
+        const r = solveSys(sysRhs('lv', sp), [p.lx, p.ly], tEnd, 0.02);
+        sysRun = { ...r, tEnd };
+      } else if (kind === 'sir') {
+        const tEnd = 200;
+        const R0i = (sp.N * p.imm) / 100;
+        const r = solveSys(sysRhs('sir', sp), [sp.N - R0i - 1, 1, R0i], tEnd, 0.1);
+        sysRun = { ...r, tEnd };
+      } else {
+        const tEnd = Math.max(8, 4 * terminalSpeed(sp.g, sp.k) / sp.g);
+        const r = solveSys(sysRhs('fall', sp), [0, 0], tEnd, Math.min(0.02, tEnd / 1000));
+        sysRun = { ...r, tEnd };
+      }
+    }
+    function drawSys(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      drawCard(g, R, t);
+      if (!sysRun) computeSys();
+      const run = sysRun!;
+      const kind = p.sk as SysKind;
+      const topH = Math.round(R.h * 0.55);
+      plotRect = { x: R.x, y: R.y, w: R.w, h: topH };
+      phaseRect = { x: R.x + 8, y: R.y + topH + 8, w: R.w - 16, h: R.h - topH - 14 };
+      const u = sysTw.running ? sysTw.value : 1;
+      const tNow = run.tEnd * u;
+      const nShow = Math.max(2, Math.round(run.t.length * u));
+      const cols = [th().series[2]!, th().series[1]!, th().series[0]!];
+      // Zeitverlauf
+      const yMax = kind === 'fall' ? terminalSpeed(9.81, p.kd) * 1.25 : Math.max(...run.s.flatMap((q) => q.slice(0, kind === 'sir' ? 3 : 2))) * 1.12;
+      plot.setAxes({ x: { label: ctx.t(kind === 'sir' ? 'time' : kind === 'fall' ? 'timeS' : 'timeY') }, y: { label: kind === 'fall' ? 'v in m/s' : kind === 'sir' ? (ctx.lang === 'de' ? 'Personen' : 'people') : (ctx.lang === 'de' ? 'Anzahl' : 'count') } });
+      plot.setRange([-run.tEnd * (kind === 'sir' ? 0.15 : 0.1), run.tEnd], [-yMax * 0.08, yMax]);
+      plot.resize();
+      plot.begin();
+      plot.grid();
+      plot.axes();
+      const comps = kind === 'sir' ? [0, 1, 2] : kind === 'lv' ? [0, 1] : [1];
+      comps.forEach((ci, j) => {
+        const pts = run.t.slice(0, nShow).map((tt, i) => [tt, run.s[i]![ci]!] as [number, number]);
+        plot.polyline(pts, { color: cols[j % 3]!, width: 2.6 });
+        const last = pts[pts.length - 1]!;
+        plot.point(last[0], last[1], { color: cols[j % 3]!, radius: 4 });
+      });
+      if (kind === 'fall') {
+        const vt = terminalSpeed(9.81, p.kd);
+        plot.hline(vt, { color: withAlpha(th().series[3]!, 0.8), width: 1.6, dash: [6, 4] });
+        plot.fn((x) => Math.min(9.81 * x, yMax * 2), { color: withAlpha(th().muted, 0.5), width: 1.2, dash: [4, 4], from: 0 });
+      }
+      if (kind === 'sir') plot.hline(1000 / p.r0, { color: withAlpha(cols[0]!, 0.5), width: 1.2, dash: [5, 4] });
+      plot.end();
+      // Legende
+      g.save();
+      g.font = `600 12px ${t.font}`;
+      g.textBaseline = 'middle';
+      const names = kind === 'lv' ? [ctx.t('prey'), ctx.t('pred')] : kind === 'sir' ? ['S', 'I', 'R'] : ['v'];
+      let lx = R.x + Math.max(150, R.w * 0.34);
+      names.forEach((nm, j) => {
+        g.fillStyle = cols[j % 3]!;
+        g.fillRect(lx, R.y + 16, 14, 4);
+        g.fillStyle = t.text;
+        g.fillText(nm, lx + 18, R.y + 18);
+        lx += g.measureText(nm).width + 40;
+      });
+      g.restore();
+      // Phasenbild
+      if (kind === 'lv') {
+        const [ex, ey] = lvEquilibrium(sysP());
+        const xm = Math.max(...run.s.map((q) => q[0]!)) * 1.15;
+        const ym = Math.max(...run.s.map((q) => q[1]!)) * 1.15;
+        phase.setAxes({ x: { label: ctx.t('prey') }, y: { label: ctx.t('pred') } });
+        phase.setRange([-xm * 0.08, xm], [-ym * 0.1, ym]);
+        phase.resize();
+        phase.begin();
+        phase.grid();
+        phase.axes();
+        // Pfeile des Vektorfelds
+        const F = sysRhs('lv', sysP());
+        for (let i = 1; i <= 10; i++) {
+          for (let j = 1; j <= 6; j++) {
+            const x = (xm * i) / 11;
+            const y = (ym * j) / 7;
+            const [dx, dy] = F(0, [x, y]);
+            const L2 = Math.hypot(dx! / xm, dy! / ym) || 1;
+            const sx = ((dx! / xm) / L2) * xm * 0.035;
+            const sy = ((dy! / ym) / L2) * ym * 0.05;
+            phase.arrow([x - sx, y - sy], [x + sx, y + sy], { color: withAlpha(t.text, 0.3), width: 1, head: 5 });
+          }
+        }
+        phase.polyline(run.s.slice(0, nShow).map((q) => [q[0]!, q[1]!] as [number, number]), { color: th().series[4]!, width: 2.2 });
+        const cur = run.s[nShow - 1]!;
+        phase.point(cur[0]!, cur[1]!, { color: th().series[4]!, radius: 5 });
+        phase.point(ex, ey, { color: t.text, radius: 4 });
+        phase.end();
+      } else if (kind === 'sir') {
+        phase.setAxes({ x: { label: 'S' }, y: { label: 'I' } });
+        const im = Math.max(...run.s.map((q) => q[1]!)) * 1.2 + 1;
+        phase.setRange([-170, 1050], [-im * 0.1, im]);
+        phase.resize();
+        phase.begin();
+        phase.grid();
+        phase.axes();
+        phase.vline(1000 / p.r0, { color: withAlpha(th().series[2]!, 0.6), width: 1.2, dash: [5, 4] });
+        phase.polyline(run.s.slice(0, nShow).map((q) => [q[0]!, q[1]!] as [number, number]), { color: th().series[1]!, width: 2.2 });
+        const cur = run.s[nShow - 1]!;
+        phase.point(cur[0]!, cur[1]!, { color: th().series[1]!, radius: 5 });
+        phase.end();
+      } else {
+        // Phasenlinie: v′ über v
+        const vt = terminalSpeed(9.81, p.kd);
+        phase.setAxes({ x: { label: 'v' }, y: { label: "v′" } });
+        phase.setRange([-vt * 0.08, vt * 1.25], [-2, 12]);
+        phase.resize();
+        phase.begin();
+        phase.grid();
+        phase.axes();
+        phase.fn((v) => 9.81 - p.kd * v * v, { color: th().series[3]!, width: 2.2, from: 0 });
+        const cur = run.s[nShow - 1]!;
+        phase.point(cur[1]!, 9.81 - p.kd * cur[1]! * cur[1]!, { color: th().series[0]!, radius: 5 });
+        phase.point(vt, 0, { color: t.text, radius: 4 });
+        phase.end();
+      }
+      void tNow;
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Rätsel                                                          */
+    /* -------------------------------------------------------------- */
+
+    let quiz = quizRound(1);
+    let quizVerdict: boolean | null = null;
+    let quizScore = { right: 0, all: 0 };
+    let quizBoxes: Rect[] = [];
+    new TapTarget(surface, {
+      hit: (px, py) => {
+        if (p.view !== 'quiz') return null;
+        const k = quizBoxes.findIndex((b) => px >= b.x && px <= b.x + b.w && py >= b.y && py <= b.y + b.h);
+        return k < 0 ? null : String(k);
+      },
+      onTap: (id) => {
+        if (ctx.locked) return;
+        ctx.set({ qa: id as '0' | '1' | '2' | '3' });
+      },
+    });
+    function drawQuiz(g: CanvasRenderingContext2D, R: Rect): void {
+      const t = th();
+      drawCard(g, R, t);
+      plotRect = { x: -1000, y: -1000, w: 10, h: 10 };
+      plot.resize();
+      const pad = 12;
+      // quadratische Felder, damit Steigungen unverzerrt erscheinen
+      const side = Math.min((R.w - 3 * pad) / 2, (R.h - 3 * pad) / 2);
+      const cw = side;
+      const ch = side;
+      const ox = R.x + (R.w - 2 * side - 3 * pad) / 2;
+      const oy = R.y + (R.h - 2 * side - 3 * pad) / 2;
+      quizBoxes = [];
+      quiz.eqs.forEach((src, k2) => {
+        const parsed = parseTerm(src);
+        const bx = ox + pad + (k2 % 2) * (cw + pad);
+        const by = oy + pad + Math.floor(k2 / 2) * (ch + pad);
+        quizBoxes.push({ x: bx, y: by, w: cw, h: ch });
+        const chosen = String(k2) === p.qa;
+        g.save();
+        g.fillStyle = t.dark ? '#0f141c' : '#f7f9fc';
+        roundRect(g, bx, by, cw, ch, 8);
+        g.fill();
+        g.strokeStyle = quizVerdict !== null && k2 === quiz.target ? th().series[2]! : chosen ? th().series[0]! : withAlpha(t.text, 0.2);
+        g.lineWidth = chosen || (quizVerdict !== null && k2 === quiz.target) ? 3 : 1;
+        g.stroke();
+        // Achsen
+        const X = (x: number) => bx + ((x + 3) / 6) * cw;
+        const Y = (y: number) => by + ch - ((y + 3) / 6) * ch;
+        g.strokeStyle = withAlpha(t.text, 0.35);
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(X(-3), Y(0));
+        g.lineTo(X(3), Y(0));
+        g.moveTo(X(0), Y(-3));
+        g.lineTo(X(0), Y(3));
+        g.stroke();
+        if (parsed.ok) {
+          g.strokeStyle = withAlpha(t.text, 0.75);
+          g.lineWidth = 1.4;
+          const seg = Math.min(cw, ch) / 22;
+          for (let i = -5; i <= 5; i++) {
+            for (let j = -5; j <= 5; j++) {
+              const x = (i * 3) / 5.5;
+              const y = (j * 3) / 5.5;
+              const m2 = parsed.f(x, y, 0);
+              if (!Number.isFinite(m2)) continue;
+              const ang = Math.atan(m2);
+              const px = X(x);
+              const py = Y(y);
+              g.beginPath();
+              g.moveTo(px - Math.cos(ang) * seg, py + Math.sin(ang) * seg);
+              g.lineTo(px + Math.cos(ang) * seg, py - Math.sin(ang) * seg);
+              g.stroke();
+            }
+          }
+        }
+        g.font = `800 16px ${t.font}`;
+        g.fillStyle = t.dark ? '#0f141c' : '#f7f9fc';
+        roundRect(g, bx + 5, by + 7, 22, 22, 5);
+        g.fill();
+        g.fillStyle = chosen ? th().series[0]! : t.text;
+        g.fillText('ABCD'[k2]!, bx + 10, by + 22);
+        if (quizVerdict !== null) {
+          g.font = `600 12px ${t.font}`;
+          g.fillStyle = t.muted;
+          g.textAlign = 'right';
+          const lbl = `y′ = ${src.replace(/\./g, ',').replace('-', '−')}`;
+          const lw = g.measureText(lbl).width;
+          g.fillStyle = t.dark ? '#0f141c' : '#f7f9fc';
+          roundRect(g, bx + cw - lw - 16, by + 8, lw + 10, 22, 5);
+          g.fill();
+          g.fillStyle = t.muted;
+          g.fillText(`y′ = ${src.replace(/\./g, ',').replace('-', '−')}`, bx + cw - 10, by + 20);
+        }
+        g.restore();
+      });
+    }
+
+    /* -------------------------------------------------------------- */
     /* Ablauf                                                          */
     /* -------------------------------------------------------------- */
 
@@ -885,7 +1291,25 @@ export default defineSimulation({
         if (eqChanged || source === 'replace' || source === 'init') drawTw.play();
         if (eqChanged || changed.has('method') || changed.has('h') || source === 'replace') stepTw.play();
         if (changed.has('field') || changed.has('flow')) particles = [];
+        if (['view', 'sk', 'la', 'lc', 'lx', 'ly', 'r0', 'imm', 'kd'].some((k) => changed.has(k)) || source === 'init' || source === 'replace') {
+          computeSys();
+          if (p.view === 'sys' && (changed.has('view') || changed.has('sk') || source !== 'input')) sysTw.play();
+        }
+        if (changed.has('qn') || source === 'init' || source === 'replace') {
+          quiz = quizRound(p.qn);
+          quizVerdict = null;
+        }
+        if (changed.has('qa')) quizVerdict = null;
         updateReadouts();
+      },
+      action(id) {
+        if (id === 'replay') sysTw.play();
+        if (id === 'qcheck' && quizVerdict === null) {
+          quizVerdict = +p.qa === quiz.target;
+          quizScore = { right: quizScore.right + (quizVerdict ? 1 : 0), all: quizScore.all + 1 };
+        }
+        if (id === 'qnext') ctx.set({ qn: p.qn >= 999 ? 1 : p.qn + 1 });
+        ctx.requestRender();
       },
       resetView() {
         fitRange();
@@ -898,6 +1322,18 @@ export default defineSimulation({
         const g = surface.begin();
         const R = regions();
         plotRect = R.plot;
+        if (p.view === 'sys') {
+          drawSys(g, R.plot);
+          drawCardBody(g, R.card);
+          if (sysTw.running) ctx.requestRender();
+          return;
+        }
+        if (p.view === 'quiz') {
+          phaseRect = { x: -100, y: -100, w: 10, h: 10 };
+          drawQuiz(g, R.plot);
+          drawCardBody(g, R.card);
+          return;
+        }
         stepParticles(dt);
         drawPlot(g, R.plot);
         drawCardBody(g, R.card);

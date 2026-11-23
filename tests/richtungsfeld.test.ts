@@ -157,3 +157,47 @@ describe('Richtungsfeld: Rechenweg', () => {
     expect(b.facts[1]!.value).toBe(n(Math.log(2) / 0.1));
   });
 });
+
+import { fallSpeed, herdImmunity, lvEquilibrium, lvInvariant, quizRound, QUIZ_EQS, solveSys, sysRhs, terminalSpeed, parseTerm as pt } from '../src/simulations/mathematik/richtungsfeld/model';
+
+const SP = { a: 1, c: 0.8, b: 0.1, d: 0.02, R0: 3, gamma: 0.1, N: 1000, g: 9.81, k: 0.004 };
+
+describe('Richtungsfeld: Systeme', () => {
+  it('Räuber-Beute: Gleichgewicht (40 | 10), Erhaltungsgröße bleibt (RK4) erhalten', () => {
+    expect(lvEquilibrium(SP)).toEqual([40, 10]);
+    const F = sysRhs('lv', SP);
+    expect(F(0, [40, 10])).toEqual([0, 0]);
+    const r = solveSys(F, [60, 5], 40, 0.01);
+    const V0 = lvInvariant(SP, 60, 5);
+    for (const s of r.s.filter((_, i) => i % 500 === 0)) expect(lvInvariant(SP, s[0]!, s[1]!)).toBeCloseTo(V0, 4);
+  });
+  it('SIR: Summe bleibt N, Maximum der Infizierten bei S = N/R₀; Herdenimmunität 1 − 1/R₀', () => {
+    const r = solveSys(sysRhs('sir', SP), [999, 1, 0], 200, 0.05);
+    for (const s of r.s.filter((_, i) => i % 400 === 0)) expect(s[0]! + s[1]! + s[2]!).toBeCloseTo(1000, 6);
+    let iMax = 0;
+    let sAt = 0;
+    for (const s of r.s) if (s[1]! > iMax) {
+      iMax = s[1]!;
+      sAt = s[0]!;
+    }
+    expect(sAt).toBeCloseTo(1000 / 3, -1);
+    expect(herdImmunity(3)).toBeCloseTo(2 / 3, 12);
+    expect(herdImmunity(0.8)).toBe(0);
+  });
+  it('Fall mit Luftwiderstand: v_E = √(g/k) ≈ 49,5 m/s, numerisch wie tanh-Lösung', () => {
+    expect(terminalSpeed(9.81, 0.004)).toBeCloseTo(49.52, 2);
+    const r = solveSys(sysRhs('fall', SP), [0, 0], 10, 0.01);
+    expect(r.s.at(-1)![1]!).toBeCloseTo(fallSpeed(9.81, 0.004, 10), 6);
+  });
+});
+
+describe('Richtungsfeld: Rätsel', () => {
+  it('vier verschiedene, lesbare Gleichungen; gleiche Nummer gleiche Runde', () => {
+    for (const e of QUIZ_EQS) expect(pt(e).ok).toBe(true);
+    const q = quizRound(5);
+    expect(new Set(q.eqs).size).toBe(4);
+    expect(q.target).toBeGreaterThanOrEqual(0);
+    expect(q.target).toBeLessThan(4);
+    expect(quizRound(5)).toEqual(q);
+  });
+});
