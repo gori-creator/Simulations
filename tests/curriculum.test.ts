@@ -179,11 +179,13 @@ describe('Länder-Lehrpläne', () => {
    * sie nach Wahl des Bundeslands bei keinem Jahrgang.
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
-    'rheinland-pfalz-gymnasium-physik': {
-      schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
-    },
     'sachsen-gymnasium-physik': {
+      magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
+    },
+    'rheinland-pfalz-gymnasium-physik': {
+      magnete: 'In den erfassten Lernbereichen kommen Dauermagnete nicht vor (bitte am Lehrplan prüfen).',
+      schall: 'Akustik erst als Wahlthema in 12/13; die Simulation ist für Klasse 5 bis 11 gedacht.',
     },
     'baden-wuerttemberg-gymnasium-mathematik': {
       uebergangsmatrizen: 'Übergangsmatrizen und Markov-Ketten nicht im Lehrplan',
@@ -217,6 +219,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'berlin-gymnasium-physik': {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
+      magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -234,6 +237,7 @@ describe('Länder-Lehrpläne', () => {
     },
     'brandenburg-gymnasium-physik': {
       hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
+      magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -265,6 +269,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'hamburg-gymnasium-physik': {
+      magnete: 'Dauermagnete erst im Zusammenhang mit Elektromagnetismus (Jahrgang 9/10); die Simulation ist für Klasse 5–7 gedacht.',
       'licht-schatten': 'Optik vollständig im Fach Naturwissenschaften und Technik 5/6 (siehe docs/lehrplaene/hamburg-gymnasium-physik.md)',
       reflexion: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',
       brechung: 'Strahlenoptik vollständig im Fach Naturwissenschaften und Technik 5/6',

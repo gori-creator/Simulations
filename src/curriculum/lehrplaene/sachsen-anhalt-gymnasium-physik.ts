@@ -84,6 +84,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Dauermagnete mit Nord- und Südpol, magnetische Stoffe, Magnetfeld im Feldlinienmodell, Erdmagnetfeld und Kompass.',
       'Permanent magnets with north and south poles, magnetic materials, the magnetic field in the field-line model, Earth’s magnetic field and the compass.',
     ),
+    simulations: ['magnete'],
   },
 ];
 
