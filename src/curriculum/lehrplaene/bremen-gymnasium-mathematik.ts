@@ -150,7 +150,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
     code: 'A9',
     title: L('Potenzen und Wurzeln', 'Powers and roots'),
     summary: L('Quadratwurzeln, Zehnerpotenzschreibweise, Heron-Verfahren oder Intervallschachtelung mit digitalen Werkzeugen, Erweiterung zu den reellen Zahlen.', 'Square roots, scientific notation, Heron’s method or nested intervals with digital tools, extending to the real numbers.'),
-    simulations: ['quadratwurzel', 'zehnerpotenzen'],
+    simulations: ['quadratwurzel', 'zehnerpotenzen', 'potenzgesetze'],
   },
   {
     code: 'A10',

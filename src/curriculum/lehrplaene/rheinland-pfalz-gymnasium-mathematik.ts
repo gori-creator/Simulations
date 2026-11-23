@@ -457,7 +457,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
           'Potenzen auf negative und gebrochene Exponenten erweitern, Zehnerpotenzschreibweise, Potenzgesetze, n-te Wurzel und Logarithmus als Umkehrungen (E).',
           'Extending powers to negative and fractional exponents, scientific notation, the laws of exponents, nth roots and logarithms as inverses (E).',
         ),
-        simulations: ['logarithmus'],
+        simulations: ['logarithmus', 'potenzgesetze'],
       },
     ],
   },

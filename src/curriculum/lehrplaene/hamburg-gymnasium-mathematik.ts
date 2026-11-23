@@ -351,7 +351,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Zehnerpotenzschreibweise, Potenzgesetze erklären und beweisen, negative und rationale Exponenten, Wurzeln als Potenzen.',
       'Scientific notation, explaining and proving the laws of exponents, negative and rational exponents, roots as powers.',
     ),
-    simulations: ['quadratwurzel'],
+    simulations: ['quadratwurzel', 'potenzgesetze'],
   },
   {
     code: '5',

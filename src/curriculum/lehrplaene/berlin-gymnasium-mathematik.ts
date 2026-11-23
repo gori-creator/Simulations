@@ -336,7 +336,7 @@ const G_PARTS: Record<string, PartSpec> = {
       'Potenzen mit negativen Exponenten, Potenzgesetze für ganzzahlige Exponenten, Zusammenhang von Potenzieren und Radizieren.',
       'Powers with negative exponents, laws of exponents for integer exponents, the link between powers and roots.',
     ),
-    simulations: ['quadratwurzel'],
+    simulations: ['quadratwurzel', 'potenzgesetze'],
   },
   '2.1': {
     summary: L(
@@ -410,7 +410,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'Potenzen mit rationalen Exponenten und Wurzelgesetze, Logarithmen als Umkehrung des Potenzierens.',
       'Powers with rational exponents and laws of roots, logarithms as the inverse of taking powers.',
     ),
-    simulations: ['logarithmus'],
+    simulations: ['logarithmus', 'potenzgesetze'],
   },
   '2.1': {
     summary: L(

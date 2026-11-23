@@ -2,18 +2,17 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **269 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **266 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (69)
+## Mathematik (66)
 
-### Baden-Württemberg · Gymnasium (3)
+### Baden-Württemberg · Gymnasium (2)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 7/8 | 3.2.2 | Leitidee Messen (keine Inhalte in den Klassen 7/8) | In den Klassen 7/8 sieht der Bildungsplan für diese Leitidee keine Inhalte vor. |
-| 9/10 | 3.3.1 (1)–(3) | Leitidee Zahl – Variable – Operation › mit Potenzen umgehen | Zahlen in wissenschaftlicher Schreibweise angeben, Potenzen mit rationalen Exponenten als Wurzeln deuten und die Potenzgesetze begründen und anwenden. |
 | 12/13 | 3.5.3 (8) | Leitidee Raum und Form (nur Leistungsfach) › vektorielle Darstellungen beim Beweisen nutzen | Einfache geometrische Sätze mit Vektoren beweisen. |
 
 ### Bayern · Gymnasium (0)
@@ -42,7 +41,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (29)
+### Hessen · Gymnasium (28)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -50,7 +49,6 @@ Alle Lernbereiche haben eine Simulation.
 | 5/6 | 3.2.3 | Messvorgänge › Währung/Geld | Mit Geldbeträgen in Euro und Cent rechnen. |
 | 5/6 | 3.2.4 | Messvorgänge › Zeitspanne | Zeitpunkte und Zeitspannen unterscheiden und berechnen. |
 | 7/8 | 1.2.1 | Operationen und ihre Eigenschaften › Rechenverfahren, Rechengesetze und deren Verknüpfungen im Bereich der rationalen und reellen Zahlen | Vorzeichenregeln und Rechengesetze sicher anwenden. |
-| 7/8 | 1.2.3 | Operationen und ihre Eigenschaften › Potenzen mit rationalen Exponenten | Potenzschreibweise auf negative und gebrochene Exponenten ausweiten. |
 | 7/8 | 3.1.2 | Umgang mit Größen › Größen von Winkeln (Minuten, Sekunden) | Winkel genauer in Grad, Minuten und Sekunden angeben. |
 | 7/8 | 4.2.4 | Funktionen und Gleichungen › Lösen von Ungleichungen | Lineare Ungleichungen lösen und Lösungsmengen angeben. |
 | 9/10 | 2.2.2 | Körper › Körper aus der Technik und der Lebensumwelt | Reale Gegenstände als Kombination von Grundkörpern modellieren. |
@@ -84,11 +82,9 @@ Alle Lernbereiche haben eine Simulation.
 | 7/8 | 9.3 | Wahrscheinlichkeit › Additions- und Komplementärregel | Regeln begründen und anwenden. |
 | 9/10 | 18.4 | Quadratische Zusammenhänge › Parabel als Ortslinie | Gleicher Abstand zu einem Punkt und einer Geraden. |
 
-### Nordrhein-Westfalen · Gymnasium (1)
+### Nordrhein-Westfalen · Gymnasium (0)
 
-| Stufe | Nr. | Lernbereich | Kurz |
-| --- | --- | --- | --- |
-| 9/10 | 9.3 | Arithmetik/Algebra › Gesetze und Regeln | Potenzgesetze und Wurzelgesetze, Wurzel- und Potenzschreibweise. |
+Alle Lernbereiche haben eine Simulation.
 
 ### Rheinland-Pfalz · Gymnasium (1)
 
