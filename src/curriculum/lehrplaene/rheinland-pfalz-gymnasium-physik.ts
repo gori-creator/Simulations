@@ -149,7 +149,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Ort, Zeit, Geschwindigkeit und Beschleunigung; gleichförmige und gleichmäßig beschleunigte lineare Bewegung sowie gleichförmige Kreisbewegung, in Diagrammen dargestellt.',
           'Position, time, velocity and acceleration; uniform and uniformly accelerated linear motion and uniform circular motion, shown in graphs.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung', 'messunsicherheit'],
       },
       {
         code: 'GF-P.2',
@@ -205,7 +205,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Beschreibende Größen einer Bewegung und ihre funktionalen Zusammenhänge, idealisierte Bewegungsformen, Analyse einer realen Bewegung und Fehlerbetrachtung.',
           'Quantities describing motion and their functional relations, idealised forms of motion, analysing a real motion and error analysis.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung', 'messunsicherheit'],
       },
       {
         code: 'LF-P.2',
