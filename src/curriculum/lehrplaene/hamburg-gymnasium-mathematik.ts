@@ -351,7 +351,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Zehnerpotenzschreibweise, Potenzgesetze erklären und beweisen, negative und rationale Exponenten, Wurzeln als Potenzen.',
       'Scientific notation, explaining and proving the laws of exponents, negative and rational exponents, roots as powers.',
     ),
-    simulations: ['quadratwurzel'],
+    simulations: ['quadratwurzel', 'potenzgesetze'],
   },
   {
     code: '5',
@@ -396,7 +396,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Lineares und exponentielles Wachstum unterscheiden, Exponentialfunktionen in Sachsituationen und ihre Darstellungen, Logarithmus als Umkehrung des Potenzierens.',
       'Telling linear and exponential growth apart, exponential functions in context and how to represent them, the logarithm as the inverse of taking powers.',
     ),
-    simulations: ['logarithmus', 'exponentielles-wachstum'],
+    simulations: ['logarithmus', 'exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: '10',
@@ -405,7 +405,7 @@ const KS_9_10_UNITS: CurriculumUnit[] = [
       'Exponentialfunktionen der Form f(x) = a · bˣ in Sachsituationen, Darstellungswechsel und Merkmale, Logarithmen mit dem Taschenrechner.',
       'Exponential functions of the form f(x) = a · bˣ in context, switching representations and features, logarithms on the calculator.',
     ),
-    simulations: ['logarithmus', 'exponentielles-wachstum'],
+    simulations: ['logarithmus', 'exponentielles-wachstum', 'wachstumsmodelle'],
   },
   {
     code: '11',
@@ -469,7 +469,7 @@ const S_11_UNITS: CurriculumUnit[] = [
       'Sinus- und Kosinusfunktionen mit Parametern in Sachsituationen, ihre Ableitungen und Stammfunktionen, Produkt- und Kettenregel, Flächeninhalte.',
       'Sine and cosine functions with parameters in context, their derivatives and antiderivatives, the product and chain rules, areas.',
     ),
-    simulations: ['sinusfunktion', 'transformationen'],
+    simulations: ['sinusfunktion', 'transformationen', 'ableitungsregeln', 'integrationsregeln'],
   },
   {
     code: '2',
@@ -509,7 +509,7 @@ const S_12_UNITS: CurriculumUnit[] = [
       'Diskrete Zufallsgrößen, Binomialverteilung mit Erwartungswert, Standardabweichung und Sigma-Regeln; eA: Hypothesentests und Normalverteilung.',
       'Discrete random variables, the binomial distribution with expected value, standard deviation and sigma rules; eA: hypothesis tests and the normal distribution.',
     ),
-    simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung'],
+    simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung', 'konfidenzintervall'],
   },
   {
     code: '6',
@@ -527,6 +527,7 @@ const S_12_UNITS: CurriculumUnit[] = [
       'Lineare Gleichungssysteme mit dem Gauß-Verfahren, Wachstums- und Umverteilungsprozesse mit Übergangsmatrizen, Matrixpotenzen, Fixvektoren und Langzeitverhalten.',
       'Systems of linear equations with Gaussian elimination, growth and redistribution processes with transition matrices, matrix powers, fixed vectors and long-term behaviour.',
     ),
+    simulations: ['uebergangsmatrizen', 'gauss-verfahren'],
   },
 ];
 

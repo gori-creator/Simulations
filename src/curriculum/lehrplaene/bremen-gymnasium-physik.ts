@@ -63,7 +63,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.',
       'Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'magnetfeld-spule', 'magnete'],
   },
   {
     code: '5',
@@ -85,7 +85,7 @@ const EP_UNITS: CurriculumUnit[] = [
       'Gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall, Wurfbewegungen, Addition und Zerlegung von Kräften an der schiefen Ebene, Impuls und Impulserhaltung, Kreisbewegung und Zentripetalkraft, Messunsicherheiten.',
       'Uniform and uniformly accelerated motion, free fall, projectile motion, adding and resolving forces on an inclined plane, momentum and its conservation, circular motion and centripetal force, measurement uncertainty.',
     ),
-    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'stoesse', 'schiefer-wurf'],
+    simulations: ['bewegungsdiagramme', 'freier-fall', 'kraefteaddition', 'schiefe-ebene', 'kreisbewegung', 'stoesse', 'schiefer-wurf', 'messunsicherheit'],
   },
   {
     code: 'E2',
@@ -116,7 +116,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.',
       'Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction.',
     ),
-    simulations: ['induktion', 'lorentzkraft'],
+    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule'],
   },
   {
     code: '3',
@@ -125,7 +125,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Feder- und Fadenpendel, erzwungene Schwingung, Dämpfung und Resonanz, Wellenausbreitung, Überlagerung und stehende Wellen; Erweiterung: Akustik und Doppler-Effekt.',
       'Spring and simple pendulums, forced oscillation, damping and resonance, wave propagation, superposition and standing waves; extension: acoustics and the Doppler effect.',
     ),
-    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'doppler-effekt', 'interferenz', 'stehende-wellen'],
+    simulations: ['fadenpendel', 'federpendel', 'resonanz', 'wellen-ausbreitung', 'doppler-effekt', 'interferenz', 'stehende-wellen', 'schall'],
   },
   {
     code: '4',

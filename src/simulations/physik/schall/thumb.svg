@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Lautsprecher -->
+    <path d="M22 72H40L66 46V134L40 108H22Z" stroke-width="4" />
+    <path d="M82 70A28 28 0 0 1 82 110" stroke-width="3.5" stroke-opacity="0.8" />
+    <path d="M96 56A46 46 0 0 1 96 124" stroke-width="3" stroke-opacity="0.55" />
+    <!-- Oszilloskop -->
+    <rect x="128" y="30" width="172" height="120" rx="12" stroke-width="3" />
+    <path d="M128 90H300" stroke-width="1.5" stroke-opacity="0.3" />
+    <path d="M140 90C150 50 160 50 170 90S190 130 200 90S220 50 230 90S250 130 260 90S280 50 290 90" stroke-width="4" />
+    <path d="M140 90C155 72 170 72 185 90S215 108 230 90S260 72 275 90" stroke-width="2.5" stroke-opacity="0.45" stroke-dasharray="5 5" />
+  </g>
+</svg>
