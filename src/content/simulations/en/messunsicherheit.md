@@ -22,6 +22,9 @@ The best-fit line $y=at+b$ minimises the sum of squared residuals. Times are exa
 2. Drag a point and compare the purple $\bar x\pm s$ zone and the green $\bar x\pm u_A$ zone. [Steps](?steps=1)
 3. Adjust a line yourself and reduce its squared residuals. [Fit](?mode=fit&data=1.1%3B2.8%3B5.2%3B6.9%3B9&manual=1)
 4. Compare 25 and 100 readings per experiment, with and without an offset. [Repeat](?mode=repeat&noise=1&repn=25)
+5. Vernier caliper: find the vernier line that meets a millimetre line. [Caliper](?mode=caliper&jaw=23.4&nonius=0.1)
+6. Gravity from a pendulum: which measurement should you improve? [Pendulum](?mode=propagate&formula=pendulum&x1=1&u1=0.005&x2=2.006&u2=0.01)
+7. Time the pendulum yourself over one and over ten oscillations. [Timing](?mode=stopwatch&periods=1)
 
 ## Tasks
 
@@ -55,6 +58,17 @@ Fit positions 1, 2 and 4 cm at times 0, 1 and 2 s. [Load task](?mode=fit&data=1%
 <summary>Show solution</summary>
 
 The slope is $a=1.5$ cm/s and the intercept $b=5/6$ cm. Residuals are $1/6,-1/3,1/6$ cm; their squared sum is $1/6$ cm².
+
+</details>
+
+### Gravity with uncertainty
+
+$l = (1.000 \pm 0.005)\,\text{m}$, $T = (2.006 \pm 0.010)\,\text{s}$. What is $g = 4\pi^2 l/T^2$?
+
+<details>
+<summary>Show solution</summary>
+
+$g \approx 9.81\,\text{m/s}^2$; relative uncertainty $\sqrt{0.5^2 + 1.0^2}\,\% \approx 1.12\,\%$, so $g = (9.81 \pm 0.11)\,\text{m/s}^2$.
 
 </details>
 
