@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **312 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **297 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,21 +182,16 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (207)
+## Physik (192)
 
-### Baden-Württemberg · Gymnasium (10)
+### Baden-Württemberg · Gymnasium (5)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 7/8 | 3.1.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, physikalische Aussagen mit Experimenten überprüfen, Modelle nutzen und das SI-Einheitensystem kennen. |
 | 7/8 | 3.1.2 | Einführung in die Physik: Akustik | Schall erzeugen, ausbreiten und hören; Lautstärke und Tonhöhe mit Amplitude und Frequenz einer Schwingung verbinden und Hörschäden durch Lärm bewerten. |
 | 7/8 | 3.1.4 | Einführung in die Physik: Energie effizient nutzen | Grundeigenschaften der Energie und Energieketten; Wärmeleitung, Konvektion und Wärmestrahlung untersuchen, Dämmstoffe prüfen und Regeln zum Energiesparen ableiten. |
-| 9/10 | 3.2.1 | Denk- und Arbeitsweisen der Physik | Beobachtung und Erklärung unterscheiden, Aussagen experimentell überprüfen, Modelle wie das Atommodell nutzen und die Bedeutung des SI-Systems erläutern. |
 | 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
-| 12/13 | 3.4.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik) | Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten. |
-| 12/13 | 3.5.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec. |
 | 12/13 | 3.5.7 | Astrophysik (Basisfach mit Schwerpunkt Astrophysik) | Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten. |
-| 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
 ### Bayern · Gymnasium (19)
@@ -245,12 +240,11 @@ Alle Lernbereiche haben eine Simulation.
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
 | 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (78)
+### Hessen · Gymnasium (76)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 6–8 | 1.1 | Haus der Naturwissenschaften › Körper und deren Eigenschaften | Gegenstände nach messbaren Eigenschaften beschreiben und ordnen. |
-| 6–8 | 1.2 | Haus der Naturwissenschaften › Physikalische Größen und ihre Messung | Größen mit Einheiten messen und Versuche planen und protokollieren. |
 | 6–8 | 2.1 | Erweiterung der Sinne › Wahrnehmung der Umgebung mit den Sinnesorganen | Wie Auge und Ohr Licht und Schall wahrnehmen. |
 | 6–8 | 2.2 | Erweiterung der Sinne › Sender-Empfänger-Modell | Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden. |
 | 6–8 | 3.1 | Energie in Umwelt und Technik › Anschaulicher Energiebegriff | Energie als Größe, die in vielen Formen vorkommt und Vorgänge antreibt. |
@@ -263,7 +257,6 @@ Alle Lernbereiche haben eine Simulation.
 | 6–8 | 9.1 | Physik in der Verantwortung › Verantwortung gegenüber der Umwelt | Umwelt- und Gesundheitsaspekte beim Experimentieren und im Alltag berücksichtigen. |
 | 6–8 | 9.2 | Physik in der Verantwortung › Rolle der Physik bei Umwelt- und Naturereignissen | Physikalische Informationen aus Meldungen zu Ereignissen entnehmen. |
 | 9/10 | 1.1 | Haus der Naturwissenschaften › Besonderheiten und Gemeinsamkeiten der Physik, Chemie und Biologie | Arbeitsweisen der drei Naturwissenschaften vergleichen. |
-| 9/10 | 1.2 | Haus der Naturwissenschaften › Historische und aktuelle Erkenntniswege der Physik | An Beispielen zeigen, wie physikalisches Wissen entsteht; Messfehler einschätzen. |
 | 9/10 | 2.1 | Erweiterung der Sinne › Schall, Licht und ihre Ausbreitung | Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit. |
 | 9/10 | 4.3 | Elektrizität im Alltag › Elektrostatische Phänomene | Aufladung, Anziehung und Abstoßung mit Ladungen erklären. |
 | 9/10 | 5.1 | Wettererscheinungen und Klima › Übertragung thermischer Energie | Wärmeleitung, Wärmeströmung und Wärmestrahlung untersuchen. |
@@ -397,17 +390,15 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |
 
-### Saarland · Gymnasium (5)
+### Saarland · Gymnasium (3)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 8 | 3 | Druck | Druck als Zustand, Schweredruck in Flüssigkeiten, Luftdruck, Auftrieb. |
-| 8 | 6 | Wahlthema oder Praktikum | Wahlthema oder Praktikum nach Wahl der Lehrkraft. |
-| 9 | 3 | Wahlthema oder Praktikum | Vorschläge: Innenwiderstand, spezifischer Widerstand, Transistorschaltungen. |
 | 12 | 1.3 | Magnetisches Feld | Magnetfelder von Leitern und Spulen, magnetische Flussdichte. |
 | 13 | 3.4 | Elektromagnetische Wellen | Entstehung und Eigenschaften elektromagnetischer Wellen. |
 
-### Sachsen · Gymnasium (22)
+### Sachsen · Gymnasium (20)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -430,23 +421,17 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | LK-6 | Magnetisches Feld (Leistungskurs) | Feldlinienbilder, Flussdichte, Feld um Leiter und in Spulen, Materie im Magnetfeld. |
 | 11 | LK-W1 | Einblick in die Relativitätstheorie (Wahlbereich Leistungskurs) | Postulate, Michelson-Experiment, Zeitdilatation und E = m · c². |
 | 11 | LK-W2 | Leitungsvorgänge in Halbleitern (Wahlbereich Leistungskurs) | Bändermodell, pn-Übergang, Diode und Transistor. |
-| 12 | GK-2 | Praktikum Optik und Schwingungen (Grundkurs) | Experimentelle Aufgaben zu Schwingungen und Optik und Analyse von Messunsicherheiten. |
-| 12 | LK-3 | Praktikum Optik und Schwingungen (Leistungskurs) | Experimentelle Aufgaben und quantitative Analyse von Messunsicherheiten. |
 | 12 | LK-W2 | Deterministisches Chaos (Wahlbereich Leistungskurs) | Nichtlineare Systeme, Attraktoren und begrenzte Vorhersagbarkeit. |
 
-### Sachsen-Anhalt · Gymnasium (10)
+### Sachsen-Anhalt · Gymnasium (6)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
-| 6 | 1 | Die Naturwissenschaft Physik | Teilgebiete der Physik kennenlernen, Länge, Zeit, Volumen, Masse und Temperatur als Größen mit Einheiten, Längen und Zeiten messen. |
 | 7/8 | 4 | Druck und Auftrieb | Druck bei festen Körpern, in Flüssigkeiten und Gasen, Auftrieb nach Archimedes, Schwimmen, Schweben und Sinken, dynamischer Auftrieb. |
 | 10 | 4 | Klimaphysik | Elektromagnetisches Spektrum, Strahlungshaushalt der Erde, Albedo, Stefan-Boltzmann-Gesetz, natürlicher und menschengemachter Treibhauseffekt. |
-| 10 | 5 | Experimentalpraktikum | Experimente selbst planen, durchführen und auswerten, mit Blick auf Messabweichungen und das Verallgemeinern zu Gesetzen. |
-| 11/12 | gA-4.1 | Praktika (grundlegendes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | gA-4.2 | Praktika (grundlegendes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben: Bilanzen, Analogien, Vereinfachen und passende Modelle wählen. |
 | 11/12 | eA-2.4 | Elektrodynamik (erhöhtes Anforderungsniveau) › Wechselstromwiderstände und elektromagnetische Schwingungen | Effektivwerte, induktiver und kapazitiver Widerstand mit Zeigerdiagramm, Schwingkreis und Thomson’sche Gleichung. |
 | 11/12 | eA-3.1 | Ausgewählte Gebiete der nichtklassischen Physik (erhöhtes Anforderungsniveau) › Spezielle Relativitätstheorie | Einstein’sche Postulate, Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, relativistische Masse und Energie. |
-| 11/12 | eA-4.1 | Praktika (erhöhtes Anforderungsniveau) › Experimentalpraktikum | Eigene Experimente planen und auswerten, Messunsicherheiten abschätzen. |
 | 11/12 | eA-4.2 | Praktika (erhöhtes Anforderungsniveau) › Aufgabenpraktikum | Strategien zum Lösen physikalischer Aufgaben üben, auch mit Kraftansätzen und der Wahl eines geeigneten Bezugssystems. |
 
 ### Schleswig-Holstein · Gymnasium (5)

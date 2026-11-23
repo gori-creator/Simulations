@@ -163,7 +163,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
         code: '4.2',
         title: L('Kinematik (Block I)', 'Kinematics (block I)'),
         summary: L('Geschwindigkeit als gerichtete Größe, Durchschnitts- und Momentangeschwindigkeit, gleichförmige und ungleichförmige Bewegung in Zeit-Weg- und Zeit-Geschwindigkeits-Diagrammen.', 'Velocity as a vector, average and instantaneous speed, uniform and non-uniform motion in distance–time and velocity–time graphs.'),
-        simulations: ['bewegungsdiagramme'],
+        simulations: ['bewegungsdiagramme', 'messunsicherheit'],
       },
       {
         code: '4.3',
@@ -316,7 +316,7 @@ const EP_UNITS: CurriculumUnit[] = [
         code: 'M.1',
         title: L('Kinematik', 'Kinematics'),
         summary: L('Ort, Zeit, Geschwindigkeit und Beschleunigung, gleichförmige und gleichmäßig beschleunigte Bewegung, freier Fall und waagerechter Wurf.', 'Position, time, velocity and acceleration, uniform and uniformly accelerated motion, free fall and horizontal projection.'),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'schiefer-wurf', 'messunsicherheit'],
       },
       {
         code: 'M.2',
