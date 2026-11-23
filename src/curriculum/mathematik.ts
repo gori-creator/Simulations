@@ -215,6 +215,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('komplexe-zahlen', L('Komplexe Zahlen', 'Complex numbers'), [
+          {
+            id: 'komplexe-zahlen',
+            status: 'ready',
+            slug: L('komplexe-zahlen', 'complex-numbers'),
+            title: L('Komplexe Zahlen in der Zahlenebene', 'Complex numbers in the plane'),
+            summary: L(
+              'Mit i² = −1 bekommt jede quadratische Gleichung Lösungen. In der Gaußschen Zahlenebene wird Addieren zum Verschieben und Malnehmen zum Drehstrecken – mit Polarform, n-ten Wurzeln als regelmäßigem Vieleck und der Matrix, die dasselbe tut.',
+              'With i² = −1 every quadratic equation has solutions. In the complex plane adding becomes shifting and multiplying becomes rotating and scaling – with polar form, n-th roots as a regular polygon and the matrix that does the same.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L1', 'M-L4', 'M-K5', 'M-K4'],
+            keywords: L(
+              ['komplexe Zahlen', 'imaginäre Einheit', 'i² = −1', 'Gaußsche Zahlenebene', 'Realteil', 'Imaginärteil', 'Betrag', 'Argument', 'Polarform', 'Exponentialform', 'Euler', 'konjugiert komplex', 'Drehstreckung', 'Moivre', 'n-te Wurzel', 'Einheitswurzeln', 'quadratische Gleichung', 'negative Diskriminante', 'Matrixdarstellung', 'Zahlbereichserweiterung'],
+              ['complex numbers', 'imaginary unit', 'i² = −1', 'complex plane', 'Argand diagram', 'real part', 'imaginary part', 'modulus', 'argument', 'polar form', 'exponential form', 'Euler', 'complex conjugate', 'rotation and scaling', 'de Moivre', 'n-th root', 'roots of unity', 'quadratic equation', 'negative discriminant', 'matrix representation'],
+            ),
+          },
+        ]),
       ],
     }),
     area({
@@ -1353,6 +1371,22 @@ export const mathematik: Subject = {
               ['normal distribution', 'Gaussian', 'bell curve', 'density', 'distribution function', 'mean', 'standard deviation', 'sigma rules', 'z-score', 'quantile', 'z table', 'point of inflection', 'tolerance', 'quality control', 'continuous random variable', 'binomial distribution', 'approximation', 'continuity correction', 'Laplace condition', 'sample', 'histogram'],
             ),
           },
+          {
+            id: 'konfidenzintervall',
+            status: 'ready',
+            slug: L('prognose-konfidenzintervall', 'prediction-confidence-interval'),
+            title: L('Prognose- und Konfidenzintervalle', 'Prediction and confidence intervals'),
+            summary: L(
+              'Viele Stichproben ziehen und zusehen, wie die Intervalle das wahre p treffen oder verfehlen – mit Prognoseintervall, Konfidenzellipse und dem nötigen Stichprobenumfang für eine Umfrage.',
+              'Draw many samples and watch the intervals hit or miss the true p. Plus the prediction interval, the confidence ellipse and the sample size needed for a poll.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L5', 'M-K1', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Konfidenzintervall', 'Vertrauensintervall', 'Prognoseintervall', 'Sicherheitswahrscheinlichkeit', 'Konfidenzniveau', 'Sigma-Regeln', 'relative Häufigkeit', 'Schätzen', 'beurteilende Statistik', 'Konfidenzellipse', 'Stichprobenumfang', 'Umfrage', 'Fehlerschranke', 'Laplace-Bedingung', 'Überdeckungswahrscheinlichkeit', 'Wilson-Intervall'],
+              ['confidence interval', 'prediction interval', 'confidence level', 'sigma rules', 'relative frequency', 'estimation', 'inferential statistics', 'confidence ellipse', 'sample size', 'poll', 'margin of error', 'coverage probability', 'Wilson interval'],
+            ),
+          },
         ]),
       ],
     }),
@@ -1430,6 +1464,22 @@ export const mathematik: Subject = {
             keywords: L(
               ['Kurvendiskussion', 'Funktionsuntersuchung', 'Monotonie', 'Extremstelle', 'Hochpunkt', 'Tiefpunkt', 'Terrassenpunkt', 'Wendepunkt', 'notwendige Bedingung', 'hinreichende Bedingung', 'Vorzeichenwechsel', 'Vorzeichentabelle', 'Krümmung', 'Symmetrie', 'Tangente', 'f″-Kriterium'],
               ['curve sketching', 'monotonicity', 'extremum', 'maximum', 'minimum', 'terrace point', 'inflection point', 'necessary condition', 'sufficient condition', 'sign change', 'sign chart', 'concavity', 'symmetry', 'tangent', 'second-derivative test'],
+            ),
+          },
+          {
+            id: 'ableitungsregeln',
+            status: 'ready',
+            slug: L('ableitungsregeln-werkstatt', 'differentiation-rules-workshop'),
+            title: L('Ableitungsregeln: die Werkstatt', 'Differentiation rules: the workshop'),
+            summary: L(
+              'Term eingeben, Regel erkennen: Produkt, Quotient oder Kette werden farbig in ihre Teile zerlegt und Schritt für Schritt abgeleitet. Der Graph zeigt, dass die Steigung passt – und du kannst deine eigene Ableitung prüfen.',
+              'Enter a term, spot the rule: products, quotients and chains are split into coloured parts and differentiated step by step. The graph shows that the slope fits – and you can check your own derivative.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Ableitungsregeln', 'Summenregel', 'Faktorregel', 'Potenzregel', 'Produktregel', 'Quotientenregel', 'Kettenregel', 'innere Ableitung', 'äußere Funktion', 'innere Funktion', 'Ableitung von sin', 'Ableitung von cos', 'e-Funktion ableiten', 'ln ableiten', 'Wurzel ableiten', 'Tangente', 'Steigung', 'Ableitung prüfen', 'Termeingabe'],
+              ['differentiation rules', 'sum rule', 'constant multiple rule', 'power rule', 'product rule', 'quotient rule', 'chain rule', 'inner derivative', 'outer function', 'inner function', 'derivative of sin', 'derivative of cos', 'derivative of exp', 'derivative of ln', 'derivative of a root', 'tangent', 'slope', 'check a derivative', 'term input'],
             ),
           },
           {
@@ -1519,6 +1569,22 @@ export const mathematik: Subject = {
             ),
           },
           {
+            id: 'integrationsregeln',
+            status: 'ready',
+            slug: L('integrationsregeln-werkstatt', 'integration-rules-workshop'),
+            title: L('Integrationsregeln: die Werkstatt', 'Integration rules: the workshop'),
+            summary: L(
+              'Term eingeben und Stammfunktion finden: Potenz-, Summen- und Faktorregel, lineare Substitution, Substitution und partielle Integration Schritt für Schritt – mit Formansatz, Probe durch Ableiten und der Fläche F(b) − F(a) im Graphen.',
+              'Enter a term and find an antiderivative: power, sum and constant multiple rule, linear substitution, substitution and integration by parts step by step – with an ansatz, a check by differentiating and the area F(b) − F(a) in the graph.',
+            ),
+            grades: [11, 13],
+            kmk: ['M-L3', 'M-K5', 'M-K1', 'M-K4'],
+            keywords: L(
+              ['Integrationsregeln', 'Stammfunktion', 'unbestimmtes Integral', 'bestimmtes Integral', 'Integrationskonstante', 'Potenzregel', 'Summenregel', 'Faktorregel', 'lineare Substitution', 'Substitution', 'partielle Integration', 'logarithmische Integration', 'Formansatz', 'Koeffizientenvergleich', 'Hauptsatz', 'F(b) − F(a)', 'Probe durch Ableiten', 'ln|x|'],
+              ['integration rules', 'antiderivative', 'indefinite integral', 'definite integral', 'constant of integration', 'power rule', 'sum rule', 'constant multiple rule', 'linear substitution', 'substitution', 'integration by parts', 'logarithmic integration', 'ansatz', 'comparing coefficients', 'fundamental theorem', 'F(b) − F(a)', 'check by differentiating', 'ln|x|'],
+            ),
+          },
+          {
             id: 'aenderungsrate',
             status: 'ready',
             slug: L('integral-gesamtaenderung', 'integral-total-change'),
@@ -1548,6 +1614,24 @@ export const mathematik: Subject = {
             keywords: L(
               ['Rotationskörper', 'Rotationsvolumen', 'Integral', 'Scheibenmethode', 'Querschnitt', 'Kugel', 'Kegel', 'Paraboloid', 'Gabriels Horn', 'Volumen'],
               ['solid of revolution', 'volume of revolution', 'integral', 'disc method', 'cross-section', 'sphere', 'cone', 'paraboloid', 'Gabriel’s horn', 'volume'],
+            ),
+          },
+        ]),
+        topic('differenzialgleichungen', L('Differenzialgleichungen', 'Differential equations'), [
+          {
+            id: 'richtungsfeld',
+            status: 'ready',
+            slug: L('richtungsfeld-differenzialgleichungen', 'direction-field-differential-equations'),
+            title: L('Richtungsfeld und Differenzialgleichungen', 'Direction fields and differential equations'),
+            summary: L(
+              'Das Richtungsfeld fließt: Startpunkt ziehen und die Lösungskurve folgt. Euler, Heun und Runge-Kutta im Vergleich zur exakten Lösung – für Wachstum, Zerfall, logistisches Wachstum und Schwingungen.',
+              'The direction field flows: drag the start point and the solution curve follows. Euler, Heun and Runge–Kutta compared with the exact solution – for growth, decay, logistic growth and oscillations.',
+            ),
+            grades: [12, 13],
+            kmk: ['M-L3', 'M-L4', 'M-K3', 'M-K5'],
+            keywords: L(
+              ['Differenzialgleichung', 'Differentialgleichung', 'DGL', 'Richtungsfeld', 'Steigungsfeld', 'Anfangswertproblem', 'Lösungskurve', 'Euler-Verfahren', 'Heun-Verfahren', 'Runge-Kutta', 'Schrittweite', 'exponentielles Wachstum', 'beschränktes Wachstum', 'logistisches Wachstum', 'Abkühlung', 'Schwingung', 'Dämpfung', 'Phasenebene', 'Isokline', 'Trennung der Variablen'],
+              ['differential equation', 'ODE', 'direction field', 'slope field', 'initial value problem', 'solution curve', 'Euler method', 'Heun method', 'Runge–Kutta', 'step size', 'exponential growth', 'bounded growth', 'logistic growth', 'cooling', 'oscillation', 'damping', 'phase plane', 'isocline', 'separation of variables'],
             ),
           },
         ]),
@@ -1649,6 +1733,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('gleichungssysteme', L('Lineare Gleichungssysteme', 'Systems of linear equations'), [
+          {
+            id: 'gauss-verfahren',
+            status: 'ready',
+            slug: L('gauss-verfahren', 'gaussian-elimination'),
+            title: L('Gauß-Verfahren: Schritt für Schritt zur Stufenform', 'Gaussian elimination: step by step to row echelon form'),
+            summary: L(
+              'Gleichungssystem eingeben und Zeile für Zeile umformen – vorgemacht oder selbst. Eindeutige, keine oder unendlich viele Lösungen, dazu die Gleichungen als Ebenen, die sich bei jeder Umformung drehen.',
+              'Enter a system and transform it row by row – shown or by yourself. Unique, no or infinitely many solutions, with the equations as planes that turn at every step.',
+            ),
+            grades: [10, 13],
+            kmk: ['M-L2', 'M-L4', 'M-K5', 'M-K4'],
+            keywords: L(
+              ['Gauß-Verfahren', 'Gaußalgorithmus', 'lineares Gleichungssystem', 'LGS', 'Stufenform', 'Dreiecksform', 'erweiterte Koeffizientenmatrix', 'Zeilenumformung', 'Additionsverfahren', 'Rückwärtseinsetzen', 'Gauß-Jordan', 'Rang', 'Lösungsmenge', 'keine Lösung', 'unendlich viele Lösungen', 'Parameter', 'überbestimmt', 'unterbestimmt', 'Schnitt von Ebenen'],
+              ['Gaussian elimination', 'system of linear equations', 'row echelon form', 'triangular form', 'augmented matrix', 'row operation', 'elimination', 'back substitution', 'Gauss–Jordan', 'rank', 'solution set', 'no solution', 'infinitely many solutions', 'parameter', 'overdetermined', 'underdetermined', 'intersection of planes'],
+            ),
+          },
+        ]),
         topic('geraden-ebenen', L('Geraden, Ebenen und Kugeln', 'Lines, planes and spheres'), [
           {
             id: 'geraden-ebenen',
@@ -1696,6 +1798,24 @@ export const mathematik: Subject = {
             keywords: L(
               ['Kugel', 'Kugelgleichung', 'Mittelpunkt', 'Radius', 'Punktprobe', 'Schnittkreis', 'Kugel und Ebene', 'Kugel und Gerade', 'Sekante', 'Tangente', 'Passante', 'Diskriminante', 'Tangentialebene', 'Berührpunkt', 'Abstand Punkt Ebene', 'Großkreis'],
               ['sphere', 'equation of a sphere', 'centre', 'radius', 'point test', 'circle of intersection', 'sphere and plane', 'sphere and line', 'secant', 'tangent', 'passing line', 'discriminant', 'tangent plane', 'point of contact', 'distance point plane', 'great circle'],
+            ),
+          },
+        ]),
+        topic('uebergangsprozesse', L('Matrizen und Übergangsprozesse', 'Matrices and transition processes'), [
+          {
+            id: 'uebergangsmatrizen',
+            status: 'ready',
+            slug: L('uebergangsmatrizen-markov-ketten', 'transition-matrices-markov-chains'),
+            title: L('Übergangsmatrizen und Markov-Ketten', 'Transition matrices and Markov chains'),
+            summary: L(
+              'Kunden wechseln den Anbieter, Wetter schlägt um, Käfer legen Eier: Ein Graph und eine Matrix sagen, wie es Schritt für Schritt weitergeht – und wohin es auf lange Sicht läuft.',
+              'Customers switch providers, the weather changes, beetles lay eggs: a graph and a matrix tell how things go on step by step – and where they head in the long run.',
+            ),
+            grades: [11, 13],
+            kmk: ['M-L3', 'M-L5', 'M-K3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Übergangsmatrix', 'Markov-Kette', 'Übergangsgraph', 'Zustandsgraph', 'Zustandsvektor', 'Verteilung', 'stochastische Matrix', 'Spaltensumme', 'Matrixpotenz', 'Matrixmultiplikation', 'Fixvektor', 'stabile Verteilung', 'stationäre Verteilung', 'Grenzmatrix', 'absorbierender Zustand', 'Populationsmatrix', 'Leslie-Matrix', 'Zyklus', 'inverse Matrix', 'Wählerwanderung', 'Kundenwanderung', 'Langzeitverhalten'],
+              ['transition matrix', 'Markov chain', 'transition graph', 'state graph', 'state vector', 'distribution', 'stochastic matrix', 'column sum', 'matrix power', 'matrix multiplication', 'fixed vector', 'stable distribution', 'stationary distribution', 'limit matrix', 'absorbing state', 'population matrix', 'Leslie matrix', 'cycle', 'inverse matrix', 'voter migration', 'customer migration', 'long-term behaviour'],
             ),
           },
         ]),

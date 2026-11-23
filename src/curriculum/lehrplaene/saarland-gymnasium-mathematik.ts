@@ -351,13 +351,13 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '1',
     title: L('Grundlegende Funktionen und Ableitungen', 'Basic functions and derivatives'),
     summary: L('Ganzrationale und weitere Grundfunktionen, Verknüpfung und Verkettung, Ableitungsregeln, Umkehrfunktionen; LK: Funktionenscharen.', 'Polynomial and other basic functions, combining and composing functions, rules of differentiation, inverse functions; LK: families of functions.'),
-    simulations: ['funktionsplotter', 'umkehrfunktion', 'kurvendiskussion', 'funktionenscharen'],
+    simulations: ['funktionsplotter', 'umkehrfunktion', 'kurvendiskussion', 'funktionenscharen', 'ableitungsregeln'],
   },
   {
     code: '2',
     title: L('Integralrechnung', 'Integral calculus'),
     summary: L('Flächeninhalte und Rekonstruktion von Beständen, Integralfunktion und Hauptsatz, Integrationsregeln, Anwendungen bis zu Rotationskörpern.', 'Areas and reconstructing totals, the integral function and the fundamental theorem, rules of integration, applications including solids of revolution.'),
-    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['stammfunktion-grafisch', 'ober-untersummen', 'hauptsatz', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: '3',
@@ -375,7 +375,7 @@ const HP_12_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Vektorielle Untersuchung geometrischer Strukturen', 'Vector analysis of geometric structures'),
     summary: L('Linearkombination, Geraden und Ebenen, Lagebeziehungen, Anwendungen; im Grundkurs je nach Länge der Halbjahre zum Teil im 3. Halbjahr.', 'Linear combinations, lines and planes, relative positions, applications; in the basic course partly in the third half-year, depending on its length.'),
-    simulations: ['geraden-ebenen', 'lage-abstaende'],
+    simulations: ['geraden-ebenen', 'lage-abstaende', 'gauss-verfahren'],
   },
 ];
 

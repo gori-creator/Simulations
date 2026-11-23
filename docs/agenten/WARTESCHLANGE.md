@@ -28,6 +28,7 @@ P01 M01 M23 P03 M05 P02 M06 P04 M03 M07 M11 P05 (fertig) | P06 (fertig) | T01 (f
 - T04 läuft (Physik-Helfer, lokal, ohne GitHub), ab 20.10. — **Überarbeitung der vier ältesten Physik-Simulationen** auf das heutige Niveau (Tests, Vorschaubild, Lernmaterial): schiefer-wurf, energieerhaltung, fadenpendel, brechung. Grundlage: ZIP vom Stand `main` b780ff1. Rückgabe in zwei ZIPs (Teil 1: schiefer-wurf, energieerhaltung; Teil 2: fadenpendel, brechung), nur die Dateien der vier Simulationen und je der Lehrplan-Eintragsblock. Einbau, Abnahme und Pull Request nach `main` durch die Vertretung der Projektleitung. **Bitte diese vier nicht anfassen.**
 
 ### Physik
+- Lehrplan-Lücke 3 gebaut, in Abnahme (Codex): messunsicherheit — eigener Zweig `physik/luecken-messunsicherheit`.
 - P01 fertig — bewegungsdiagramme, freier-fall, hookesches-gesetz
 - P02 fertig — hebelgesetz, kraefteaddition, schiefe-ebene
 - P03 fertig — einfacher-stromkreis, ohmsches-gesetz, reihe-parallel
