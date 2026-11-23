@@ -13,6 +13,7 @@
  */
 import AreaGlyph from '../AreaGlyph.astro';
 import { GRADE_BANDS, readySimulations, simulationsOf, SUBJECTS } from '../../curriculum';
+import { byShowcase, showcaseRank } from '../../lib/home/showcase';
 import type { Lang } from '../../i18n/config';
 import { t } from '../../i18n/utils';
 import { href } from '../../lib/routes';
@@ -25,12 +26,17 @@ const { lang } = Astro.props;
 const sims = readySimulations();
 const countOf = (subject: string) => simulationsOf({ subject: subject as (typeof SUBJECTS)[number]['id'] }).filter((s) => s.status === 'ready').length;
 
-// Themenreihen: jeder Bereich mit fertigen Simulationen, in der Reihenfolge des Lehrplans
+// Themenreihen: jeder Bereich mit fertigen Simulationen. Reihen und Karten so geordnet,
+// dass die eindrucksvollsten Simulationen (lib/home/showcase.ts) vorn stehen; sonst
+// Reihenfolge des Lehrplans.
 const rows = SUBJECTS.flatMap((subject) =>
   subject.areas
-    .map((area) => ({ subject, area, sims: sims.filter((s) => s.subject === subject.id && s.area === area.id) }))
+    .map((area) => ({ subject, area, sims: byShowcase(sims.filter((s) => s.subject === subject.id && s.area === area.id)) }))
     .filter((row) => row.sims.length > 0),
-);
+)
+  .map((row, i) => ({ row, i, r: Math.min(...row.sims.map((s) => showcaseRank(s.id))) }))
+  .sort((a, b) => (a.r === b.r ? a.i - b.i : a.r - b.r))
+  .map((x) => x.row);
 const rowId = (subject: string, area: string) => `reihe-${subject}-${area}`;
 ---
 
