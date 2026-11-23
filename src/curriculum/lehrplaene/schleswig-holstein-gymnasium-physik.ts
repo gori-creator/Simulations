@@ -348,7 +348,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Beispiele, auch für ein Profilseminar: Astronomie, Astrophysik, Relativitätstheorie, Kernphysik, Elementarteilchenphysik, Festkörperphysik, Thermodynamik, Klimaphysik, Biophysik, Ozean und Klima, Medizin und Sensorik, Elektromobilität.',
       'Examples, also for a profile seminar: astronomy, astrophysics, relativity, nuclear physics, particle physics, solid-state physics, thermodynamics, climate physics, biophysics, ocean and climate, medicine and sensors, electric mobility.',
     ),
-    simulations: ['planetenbahnen', 'radioaktiver-zerfall', 'gasgesetze'],
+    simulations: ['planetenbahnen', 'radioaktiver-zerfall', 'gasgesetze', 'hr-diagramm'],
   },
 ];
 

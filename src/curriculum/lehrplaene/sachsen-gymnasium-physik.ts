@@ -257,7 +257,7 @@ const K10: CurriculumUnit[] = [
       'Sonne und Planeten, Orientierung am Himmel, vom geozentrischen zum heliozentrischen Weltbild mit den Kepler’schen Gesetzen und dem Gravitationsgesetz sowie Methoden der Astronomie.',
       'The Sun and planets, finding one’s way in the sky, from the geocentric to the heliocentric world view with Kepler’s laws and the law of gravitation, and methods of astronomy.',
     ),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'hr-diagramm'],
   },
   {
     code: '4',

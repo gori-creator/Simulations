@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180">
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Achsen -->
+    <path d="M30 16V164H300" stroke-width="2.5" stroke-opacity="0.6" />
+    <!-- Hauptreihe -->
+    <path d="M44 30C90 56 150 92 200 120C230 136 262 150 286 156" stroke-width="10" stroke-opacity="0.18" />
+  </g>
+  <g fill="currentColor">
+    <!-- Hauptreihe -->
+    <circle cx="52" cy="34" r="6" /><circle cx="78" cy="48" r="5" /><circle cx="104" cy="62" r="5" /><circle cx="130" cy="78" r="4.5" />
+    <circle cx="156" cy="94" r="4.5" /><circle cx="182" cy="110" r="4" /><circle cx="208" cy="124" r="3.5" /><circle cx="236" cy="138" r="3" />
+    <circle cx="262" cy="148" r="2.5" /><circle cx="284" cy="155" r="2.5" />
+    <!-- Riesen und Überriesen -->
+    <circle cx="232" cy="64" r="8" fill-opacity="0.75" /><circle cx="252" cy="54" r="7" fill-opacity="0.75" /><circle cx="244" cy="76" r="6" fill-opacity="0.75" />
+    <circle cx="270" cy="26" r="13" fill-opacity="0.6" /><circle cx="140" cy="24" r="9" fill-opacity="0.6" />
+    <!-- Weiße Zwerge -->
+    <circle cx="76" cy="138" r="2.5" /><circle cx="92" cy="146" r="2.5" /><circle cx="64" cy="130" r="2.5" />
+  </g>
+</svg>

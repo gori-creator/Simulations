@@ -2543,11 +2543,13 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.6.4',
               title: L('Energieumwandlung in der Sonne (nur LK)', 'Energy conversion in the Sun (advanced course only)'),
               summary: L('Proton-Proton-Reaktion und weitere Fusionsprozesse.', 'Proton–proton chain and other fusion processes.'),
+              simulations: ['hr-diagramm'],
             },
             {
               code: 'Q4.6.5',
               title: L('Sterntypen, Sternentstehung und -entwicklung (nur LK)', 'Star types, star formation and evolution (advanced course only)'),
               summary: L('Hauptreihensterne und Lebenszyklus eines Sterns.', 'Main-sequence stars and the life cycle of a star.'),
+              simulations: ['hr-diagramm'],
             },
           ],
         },

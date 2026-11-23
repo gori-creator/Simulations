@@ -157,7 +157,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
     code: '5',
     title: L('Wahlthema oder Praktikum', 'Elective topic or practical'),
     summary: L('Vorschläge: Astronomie, Transistoren in der Informationstechnik, Energiebedarf von Autos.', 'Suggestions: astronomy, transistors in information technology, energy needs of cars.'),
-    simulations: ['planetenbahnen'],
+    simulations: ['planetenbahnen', 'hr-diagramm'],
   },
 ];
 

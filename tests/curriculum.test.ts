@@ -195,6 +195,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -208,6 +209,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -223,6 +225,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
     },
     'hamburg-gymnasium-mathematik': {
@@ -258,6 +261,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       hebelgesetz: 'Hebel und einfache Maschinen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-physik.md)',
       'schiefe-ebene': 'schiefe Ebene, Kräftezerlegung und Reibung nicht im Kerncurriculum',
       stoesse: 'Impuls und Stöße nicht im Kerncurriculum',
@@ -305,6 +309,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
     },
     'sachsen-anhalt-gymnasium-physik': {
+      'hr-diagramm': 'Astrophysik und Sterne kommen in den erfassten Lernbereichen nicht vor (bitte am Lehrplan prüfen).',
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {

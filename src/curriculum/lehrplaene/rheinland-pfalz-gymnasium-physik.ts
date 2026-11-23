@@ -466,6 +466,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.19',
         title: L('Astrophysik', 'Astrophysics'),
         summary: L('Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.', 'Properties of the Sun, stellar evolution and the standard solar model.'),
+        simulations: ['hr-diagramm'],
       },
       {
         code: 'GF-W.20',
@@ -702,6 +703,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.17',
         title: L('Astrophysik', 'Astrophysics'),
         summary: L('Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.', 'Properties of the Sun, stellar evolution and the standard solar model.'),
+        simulations: ['hr-diagramm'],
       },
       {
         code: 'LF-W.18',
