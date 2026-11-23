@@ -3599,6 +3599,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q4.3.1',
               title: L('Algebraische Form', 'Algebraic form'),
               summary: L('Real- und Imaginärteil, Grundrechenarten.', 'Real and imaginary part, basic operations.'),
+              simulations: ['komplexe-zahlen'],
             },
             {
               code: 'Q4.3.2',
@@ -3607,11 +3608,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Darstellung in der Gaußschen Zahlenebene und geometrische Deutung der Rechenarten.',
                 'Representation in the complex plane and geometric interpretation of the operations.',
               ),
+              simulations: ['komplexe-zahlen'],
             },
             {
               code: 'Q4.3.3',
               title: L('Lösen von Gleichungen in der Menge ℂ der komplexen Zahlen', 'Solving equations in the set ℂ of complex numbers'),
               summary: L('Gleichungen lösen, die in ℝ keine Lösung haben.', 'Solving equations that have no solution in ℝ.'),
+              simulations: ['komplexe-zahlen'],
             },
             {
               code: 'Q4.3.4',
@@ -3620,6 +3623,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Representing complex numbers with 2×2 matrices (advanced course only)',
               ),
               summary: L('Komplexe Zahlen als Drehstreckungsmatrizen.', 'Complex numbers as rotation-dilation matrices.'),
+              simulations: ['komplexe-zahlen'],
             },
           ],
         },

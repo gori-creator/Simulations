@@ -2,11 +2,11 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **274 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **269 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
-## Mathematik (74)
+## Mathematik (69)
 
 ### Baden-Württemberg · Gymnasium (3)
 
@@ -42,7 +42,7 @@ Alle Lernbereiche haben eine Simulation.
 | --- | --- | --- | --- |
 | 9/10 | 11 | Üben und Vertiefen | Üben und Vertiefen zu allen Leitideen und prozessbezogenen Kompetenzen mit Blick auf die Prüfung. |
 
-### Hessen · Gymnasium (33)
+### Hessen · Gymnasium (29)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -75,10 +75,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.2.3 | Problemlösen und Argumentieren › Beurteilen vorgegebener Aussagen oder Stellung nehmen zu vorgegebenen Aussagen | Aussagen prüfen und begründet bewerten. |
 | 13 | Q4.2.4 | Problemlösen und Argumentieren › Nachvollziehen, Erläutern und Entwickeln von Argumentationen und logischen Schlussfolgerungen | Argumentationsketten verstehen und selbst aufbauen. |
 | 13 | Q4.2.5 | Problemlösen und Argumentieren › Anwendung auf exemplarisch durch die Lehrkraft ausgewählte Themenfelder | Beispiele aus Analysis, Analytischer Geometrie, Linearer Algebra und Stochastik. |
-| 13 | Q4.3.1 | Komplexe Zahlen › Algebraische Form | Real- und Imaginärteil, Grundrechenarten. |
-| 13 | Q4.3.2 | Komplexe Zahlen › Polarform | Darstellung in der Gaußschen Zahlenebene und geometrische Deutung der Rechenarten. |
-| 13 | Q4.3.3 | Komplexe Zahlen › Lösen von Gleichungen in der Menge ℂ der komplexen Zahlen | Gleichungen lösen, die in ℝ keine Lösung haben. |
-| 13 | Q4.3.4 | Komplexe Zahlen › Darstellen der komplexen Zahlen mit 2x2-Matrizen (nur LK) | Komplexe Zahlen als Drehstreckungsmatrizen. |
 
 ### Niedersachsen · Gymnasium (3)
 
@@ -108,7 +104,7 @@ Alle Lernbereiche haben eine Simulation.
 | 8 | 7 | Aussagenlogik (nur Informatik-Zweig) | Aussagen und Wahrheitswerte, Verknüpfungen wie Konjunktion, Disjunktion, NAND und NOR, Wahrheitstafeln. |
 | 8 | 8 | Vertiefung der regulären Themenfelder (nur Informatik-Zweig) | Vertiefungen zu den Themenfeldern 1 bis 5, zum Beispiel Mittelwerte, Parkettierungen und Füllgraphen. |
 
-### Sachsen · Gymnasium (21)
+### Sachsen · Gymnasium (20)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -125,7 +121,6 @@ Alle Lernbereiche haben eine Simulation.
 | 9 | 5 | Vernetzung: Mathematik und moderne Rechentechnik | Rechentechnik beim Problemlösen nutzen und Ergebnisse kritisch werten. |
 | 9 | W1 | Der goldene Schnitt (Wahlbereich) | Definition, Konstruktion und Vorkommen in Kunst und Architektur. |
 | 9 | W3 | Baupläne und Bauzeichnungen (Wahlbereich) | Parallelprojektionen und wahre Größen in Bauzeichnungen. |
-| 10 | W1 | Komplexe Zahlen (Wahlbereich) | Gauß’sche Zahlenebene und Rechnen mit komplexen Zahlen. |
 | 10 | W2 | Logistisches Wachstum (Wahlbereich) | Modell des logistischen Wachstums, explizit und rekursiv, mit seinen Grenzen. |
 | 10 | W3 | Kurven in Parameterdarstellung und in Polarkoordinaten (Wahlbereich) | Kurven mit Parametern und Polarkoordinaten beschreiben. |
 | 11/12 | GK-W1 | Kegelschnitte (Wahlbereich Grundkurs) | Kreis, Ellipse, Parabel und Hyperbel als Kegelschnitte; Konstruktion der Ellipse. |
