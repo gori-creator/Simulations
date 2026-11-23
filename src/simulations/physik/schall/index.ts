@@ -1,4 +1,4 @@
-import { defineSimulation, drawCard, ease, Plot, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, roundRect, Surface, Tween, withAlpha, type Rect } from '../../../sim-core';
 import {
   addLevels,
   audible,
@@ -1704,12 +1704,14 @@ export default defineSimulation({
       update(changed, source) {
         if (changed.has('mode') || source === 'init' || source === 'replace') {
           intro.play();
-          ctx.clock.play();
+          // Bei „reduzierter Bewegung“ läuft nichts von selbst: fester Zeitpunkt, Welle schon ausgebreitet.
+          if (prefersReducedMotion()) simT = 3.37;
+          else ctx.clock.play();
           if (p.mode === 'echo' || p.mode === 'level') stopAudio();
           shoutAt = null;
         }
         if (changed.has('f') || changed.has('mode') || changed.has('med') || source === 'init') {
-          waveStart = simT;
+          waveStart = prefersReducedMotion() ? simT - 20 : simT;
           tbFrom = tbNow();
           tbTo = timebase(p.f, 10);
           if (tbFrom !== tbTo) tbTw.play();
