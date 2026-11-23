@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { checkFoci, directorCirclePoint, ellipseTangent, focalAngles, hyperbolaTangent, makeTask, parabolaTangent, rayLineParam, reflect, taskCurve, taskEquation, taskFoci, coneEccentricity, coneSection, coneSectionKind, dist, ellipse, ellipsePoint, focalCurve, focalFromCoef, focalRadius, hyperbola, hyperbolaPoint, kindOf, parabola, parabolaFromDirectrix, parabolaPoint } from '../src/simulations/mathematik/kegelschnitte/model';
+import { checkFoci, directorCirclePoint, ellipseTangent, focalAngles, hyperbolaTangent, makeTask, parabolaTangent, rayLineParam, reflect, taskCurve, taskEquation, taskFoci, coneEccentricity, coneSection, coneSectionKind, dist, ellipse, ellipsePoint, focalCurve, focalFromCoef, focalRadius, hyperbola, hyperbolaPoint, kindOf, parabola, parabolaFromDirectrix, parabolaPoint, circularSpeed, escapeSpeed, orbitFromLaunch, simulateOrbit, sweptArea, keplerE, classifyGeneral, implicitSegments } from '../src/simulations/mathematik/kegelschnitte/model';
 
 describe('Kegelschnitte: Lehrbuchwerte', () => {
   it('Ellipse a = 5, b = 3 → e = 4, Brennpunkte (±4 | 0), Abstandssumme 10', () => {
@@ -217,5 +217,70 @@ describe('Kegelschnitte: Übungsaufgaben', () => {
     const g = F.map((q) => [q[0] + 0.1, q[1] - 0.1] as [number, number]).reverse();
     expect(checkFoci(T, g).ok).toBe(true);
     expect(checkFoci(T, F.map((q) => [q[0] + 1, q[1]] as [number, number])).ok).toBe(false);
+  });
+});
+
+describe('Planetenbahnen', () => {
+  it('Kreis-, Ellipsen-, Parabel- und Hyperbelstart', () => {
+    const r = 4;
+    const vk = circularSpeed(1, r);
+    expect(orbitFromLaunch(r, vk, 1).kind).toBe('circle');
+    expect(orbitFromLaunch(r, 1.2 * vk, 1).kind).toBe('ellipse');
+    expect(orbitFromLaunch(r, escapeSpeed(1, r), 1, 1e-6).kind).toBe('parabola');
+    expect(orbitFromLaunch(r, 1.6 * vk, 1).kind).toBe('hyperbola');
+    expect(escapeSpeed(1, r) / vk).toBeCloseTo(Math.SQRT2, 12);
+  });
+  it('Perihel, Aphel und Umlaufzeit (3. Keplersches Gesetz)', () => {
+    const o = orbitFromLaunch(4, 0.8 * 0.5, 1);
+    // Start langsamer als Kreisbahn: Startpunkt ist das Aphel
+    expect(o.rApo).toBeCloseTo(4, 9);
+    expect(o.rPeri + o.rApo!).toBeCloseTo(2 * o.a, 9);
+    expect(o.T).toBeCloseTo(2 * Math.PI * Math.sqrt(o.a ** 3), 9);
+  });
+  it('numerische Bahn kehrt nach einer Umlaufzeit zurück und hält den Flächensatz', () => {
+    const o = orbitFromLaunch(4, 0.6, 1);
+    const run = simulateOrbit(4, 0.6, 1, o.T!, o.T! / 20000);
+    const last = run.pos.at(-1)!;
+    expect(Math.hypot(last[0] - 4, last[1])).toBeLessThan(1e-3);
+    const n = run.pos.length - 1;
+    const q = Math.floor(n / 4);
+    const a1 = sweptArea(run.pos, 0, q);
+    const a2 = sweptArea(run.pos, q, 2 * q);
+    expect(a1 / a2).toBeCloseTo(1, 3);
+    expect(sweptArea(run.pos, 0, n)).toBeCloseTo(Math.PI * o.a * o.a * Math.sqrt(1 - o.e * o.e), 2);
+  });
+  it('Kepler-Gleichung', () => {
+    for (const e of [0, 0.3, 0.9]) {
+      const E = keplerE(1.2, e);
+      expect(E - e * Math.sin(E)).toBeCloseTo(1.2, 12);
+    }
+  });
+});
+
+describe('allgemeine Kegelschnittgleichung', () => {
+  const G = (A: number, B: number, C: number, D: number, E: number, F: number) => ({ A, B, C, D, E, F });
+  it('erkennt die Arten', () => {
+    expect(classifyGeneral(G(1, 0, 1, 0, 0, -4)).kind).toBe('circle');
+    expect(classifyGeneral(G(1, 0, 4, 0, 0, -4)).kind).toBe('ellipse');
+    expect(classifyGeneral(G(1, 0, 0, 0, -1, 0)).kind).toBe('parabola');
+    expect(classifyGeneral(G(0, 1, 0, 0, 0, -1)).kind).toBe('hyperbola');
+    expect(classifyGeneral(G(1, 0, -1, 0, 0, 0)).kind).toBe('lines');
+    expect(classifyGeneral(G(1, 0, 1, 0, 0, 0)).kind).toBe('point');
+    expect(classifyGeneral(G(1, 0, 1, 0, 0, 4)).kind).toBe('empty');
+  });
+  it('Drehwinkel und Mittelpunkt', () => {
+    const h = classifyGeneral(G(0, 1, 0, 0, 0, -1));
+    expect(h.angle).toBeCloseTo(Math.PI / 4, 12);
+    // A = 1, B = 1, C = 2: Hauptachse bei −22,5°
+    expect(classifyGeneral(G(1, 1, 2, 0, 0, -4)).angle).toBeCloseTo(-Math.PI / 8, 12);
+    // (x − 2)² + (y + 1)² = 9  →  x² + y² − 4x + 2y − 4 = 0
+    const c = classifyGeneral(G(1, 0, 1, -4, 2, -4));
+    expect(c.center![0]).toBeCloseTo(2, 12);
+    expect(c.center![1]).toBeCloseTo(-1, 12);
+  });
+  it('Marching Squares liefert Punkte auf der Kurve', () => {
+    const segs = implicitSegments((x, y) => x * x + y * y - 4, [-3, 3], [-3, 3], 60, 60);
+    expect(segs.length).toBeGreaterThan(50);
+    for (const [a] of segs) expect(Math.abs(Math.hypot(a[0], a[1]) - 2)).toBeLessThan(0.02);
   });
 });

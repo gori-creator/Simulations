@@ -21,6 +21,8 @@ Ellipse $a = 5$, $b = 3$: $e = 4$, foci $(\pm 4 \mid 0)$, sum of distances $10$.
 5. Tangent and reflection – the tangent makes equal angles with both focal rays: [whispering gallery](?mode=ellipse&a=5&b=3&t=70&tan=1) · [parabolic mirror](?mode=parabola&f=1.5&t=60&tan=1)
 6. Director circle around $F_1$ with radius $2a$: $\lvert PF_2\rvert = \lvert PQ\rvert$, so $\lvert PF_1\rvert + \lvert PF_2\rvert = 2a$: [load](?mode=ellipse&a=4&b=3&t=40&cons=circle)
 7. Practice – drag the foci to the right place: [load](?mode=quiz&q=1)
+8. Planetary orbit: raise the launch speed from 0.6 to 1.8. When does the ellipse become a parabola, when a hyperbola? [load](?mode=orbit&ov=1.2)
+9. General equation: change $B$ and watch the ellipse rotate and finally turn into a hyperbola: [load](?mode=general&gA=1&gB=1&gC=2&gD=0&gE=0&gF=-4)
 
 ## Tasks
 
@@ -54,6 +56,17 @@ Foci of $\dfrac{(x-2)^2}{2.25} + \dfrac{(y+1)^2}{6.25} = 1$?
 <summary>Show solution</summary>
 
 Centre $(2 \mid -1)$, long axis vertical, $a = 2.5$, $b = 1.5$, $e = 2$: $F_1(2 \mid -3)$, $F_2(2 \mid 1)$. [Practise](?mode=quiz&q=2)
+
+</details>
+
+### Task 5
+
+Which conic is $x^2 + 4xy + y^2 = 3$?
+
+<details>
+<summary>Show solution</summary>
+
+$B^2 - 4AC = 12 > 0$: a hyperbola, axes rotated by $45°$ since $A = C$.
 
 </details>
 

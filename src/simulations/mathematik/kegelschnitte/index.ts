@@ -1,6 +1,16 @@
-import { defineSimulation, drawCard, ease, Plot, Surface, Tween, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
+import { defineSimulation, drawCard, ease, Plot, prefersReducedMotion, Surface, Tween, View3D, withAlpha, type Rect, type Vec3 } from '../../../sim-core';
 import {
   checkFoci,
+  circularSpeed,
+  classifyGeneral,
+  evalGeneral,
+  implicitSegments,
+  orbitFromLaunch,
+  simulateOrbit,
+  sweptArea,
+  type GeneralConic,
+  type GeneralKind,
+  type OrbitRun,
   coneEccentricity,
   coneSection,
   coneSectionKind,
@@ -65,6 +75,8 @@ export default defineSimulation({
         { value: 'hyperbola', label: L('Hyperbel: Abstandsdifferenz', 'Hyperbola: difference of distances') },
         { value: 'focal', label: L('Alle über die Exzentrizität ε', 'All via the eccentricity ε') },
         { value: 'cone', label: L('Schnitt am Doppelkegel (3D)', 'Section of a double cone (3D)') },
+        { value: 'orbit', label: L('Planetenbahnen (Kepler)', 'Planetary orbits (Kepler)') },
+        { value: 'general', label: L('Allgemeine Gleichung Ax² + Bxy + …', 'General equation Ax² + Bxy + …') },
         { value: 'quiz', label: L('Üben: Brennpunkte finden', 'Practice: find the foci') },
       ],
       default: 'ellipse',
@@ -88,10 +100,28 @@ export default defineSimulation({
     { key: 'alpha', type: 'number', label: L('Halber Öffnungswinkel α des Kegels', 'Half opening angle α of the cone'), min: 10, max: 60, step: 1, default: 30, unit: '°', visibleIf: (v) => v.mode === 'cone' },
     { key: 'beta', type: 'number', label: L('Neigung β der Ebene', 'Tilt β of the plane'), min: 0, max: 89, step: 1, default: 40, unit: '°', visibleIf: (v) => v.mode === 'cone' },
     { key: 'h', type: 'number', label: L('Höhe der Ebene über der Spitze', 'Height of the plane above the apex'), min: 0.2, max: 3, step: 0.05, default: 1, visibleIf: (v) => v.mode === 'cone' },
-    { key: 't', type: 'number', label: L('Punkt P auf der Kurve', 'Point P on the curve'), min: -180, max: 180, step: 1, default: 50, visibleIf: (v) => v.mode !== 'cone' && v.mode !== 'quiz' },
+    { key: 't', type: 'number', label: L('Punkt P auf der Kurve', 'Point P on the curve'), min: -180, max: 180, step: 1, default: 50, visibleIf: (v) => v.mode !== 'cone' && v.mode !== 'quiz' && v.mode !== 'orbit' && v.mode !== 'general' },
     { key: 'tan', type: 'boolean', label: L('Tangente und Spiegelung zeigen', 'Show tangent and reflection'), default: false, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'parabola' || v.mode === 'hyperbola' },
     { key: 'q', type: 'number', label: L('Aufgabe Nr.', 'Task no.'), min: 1, max: 999, step: 1, default: 1, visibleIf: (v) => v.mode === 'quiz' },
     { key: 'dir', type: 'boolean', label: L('Leitlinien zeigen', 'Show directrices'), default: false, visibleIf: (v) => v.mode === 'ellipse' || v.mode === 'hyperbola' },
+    {
+      key: 'ov',
+      type: 'number',
+      label: L('Startgeschwindigkeit (× Kreisbahn)', 'Launch speed (× circular)'),
+      help: L('1 ergibt eine Kreisbahn, √2 ≈ 1,41 ist die Fluchtgeschwindigkeit.', '1 gives a circular orbit, √2 ≈ 1.41 is the escape speed.'),
+      min: 0.3,
+      max: 1.8,
+      step: 0.01,
+      default: 1.2,
+      visibleIf: (v) => v.mode === 'orbit',
+    },
+    { key: 'areas', type: 'boolean', label: L('Gleiche Zeiten markieren (Flächensatz)', 'Mark equal times (law of areas)'), default: true, visibleIf: (v) => v.mode === 'orbit' },
+    { key: 'gA', type: 'number', label: L('A (vor x²)', 'A (of x²)'), min: -5, max: 5, step: 0.5, default: 1, visibleIf: (v) => v.mode === 'general' },
+    { key: 'gB', type: 'number', label: L('B (vor xy)', 'B (of xy)'), min: -5, max: 5, step: 0.5, default: 1, visibleIf: (v) => v.mode === 'general' },
+    { key: 'gC', type: 'number', label: L('C (vor y²)', 'C (of y²)'), min: -5, max: 5, step: 0.5, default: 2, visibleIf: (v) => v.mode === 'general' },
+    { key: 'gD', type: 'number', label: L('D (vor x)', 'D (of x)'), min: -10, max: 10, step: 0.5, default: 0, visibleIf: (v) => v.mode === 'general' },
+    { key: 'gE', type: 'number', label: L('E (vor y)', 'E (of y)'), min: -10, max: 10, step: 0.5, default: 0, visibleIf: (v) => v.mode === 'general' },
+    { key: 'gF', type: 'number', label: L('F (Zahl)', 'F (constant)'), min: -20, max: 20, step: 0.5, default: -4, visibleIf: (v) => v.mode === 'general' },
     { key: 'show', type: 'boolean', label: L('Werte zeigen', 'Show values'), default: true },
   ],
   resultsParam: 'show',
@@ -122,10 +152,39 @@ export default defineSimulation({
     { id: 'hyp-mirror', label: L('Hyperbel als Spiegel', 'Hyperbola as a mirror'), values: { mode: 'hyperbola', a: 3, b: 4, t: 25, tan: true, cons: 'dist' } },
     { id: 'lk-e', label: L('Leitkreis: Ellipse', 'Director circle: ellipse'), values: { mode: 'ellipse', a: 4, b: 3, t: 40, cons: 'circle' } },
     { id: 'lk-h', label: L('Leitkreis: Hyperbel', 'Director circle: hyperbola'), values: { mode: 'hyperbola', a: 2, b: 3, t: 20, cons: 'circle' } },
+    { id: 'orb-c', label: L('Bahn: Kreis (v = Kreisbahngeschwindigkeit)', 'Orbit: circle (v = circular speed)'), values: { mode: 'orbit', ov: 1 } },
+    { id: 'orb-e', label: L('Bahn: Ellipse wie ein Planet', 'Orbit: ellipse like a planet'), values: { mode: 'orbit', ov: 1.2 } },
+    { id: 'orb-k', label: L('Bahn: Komet mit langer Ellipse', 'Orbit: comet with a long ellipse'), values: { mode: 'orbit', ov: 1.37 } },
+    { id: 'orb-p', label: L('Bahn: Fluchtgeschwindigkeit → Parabel', 'Orbit: escape speed → parabola'), values: { mode: 'orbit', ov: 1.41 } },
+    { id: 'orb-h', label: L('Bahn: Vorbeiflug → Hyperbel', 'Orbit: fly-by → hyperbola'), values: { mode: 'orbit', ov: 1.7 } },
+    { id: 'orb-s', label: L('Bahn: zu langsam gestartet', 'Orbit: launched too slowly'), values: { mode: 'orbit', ov: 0.6 } },
+    { id: 'gen-rot', label: L('Gleichung: gedrehte Ellipse', 'Equation: rotated ellipse'), values: { mode: 'general', gA: 1, gB: 1, gC: 2, gD: 0, gE: 0, gF: -4 } },
+    { id: 'gen-xy', label: L('Gleichung: xy = 1 ist eine Hyperbel', 'Equation: xy = 1 is a hyperbola'), values: { mode: 'general', gA: 0, gB: 1, gC: 0, gD: 0, gE: 0, gF: -1 } },
+    { id: 'gen-par', label: L('Gleichung: gedrehte Parabel', 'Equation: rotated parabola'), values: { mode: 'general', gA: 1, gB: -2, gC: 1, gD: -4, gE: -4, gF: 0 } },
+    { id: 'gen-circ', label: L('Gleichung: verschobener Kreis', 'Equation: shifted circle'), values: { mode: 'general', gA: 1, gB: 0, gC: 1, gD: -4, gE: 2, gF: -4 } },
+    { id: 'gen-lines', label: L('Gleichung: entartet in zwei Geraden', 'Equation: degenerate into two lines'), values: { mode: 'general', gA: 1, gB: 0, gC: -1, gD: 0, gE: 0, gF: 0 } },
     { id: 'quiz', label: L('Üben: Brennpunkte finden', 'Practice: find the foci'), values: { mode: 'quiz', q: 1 } },
   ],
   strings: {
     de: {
+      orbT: 'Planetenbahn: Die Sonne sitzt in einem Brennpunkt',
+      orbV: 'Start mit {v} × Kreisbahngeschwindigkeit',
+      orbK1: '1. Keplersches Gesetz: Die Bahn ist ein Kegelschnitt, die Sonne steht im Brennpunkt.',
+      orbK2: '2. Keplersches Gesetz: Der Fahrstrahl überstreicht in gleichen Zeiten gleich große Flächen. Nah an der Sonne ist der Planet schneller.',
+      orbK3: '3. Keplersches Gesetz: T² ist proportional zu a³ – hier T = {t} Kreisumläufe bei a = {a}.',
+      orbEsc: 'Ab √2-facher Kreisbahngeschwindigkeit (Fluchtgeschwindigkeit) kommt der Körper nie zurück.',
+      orbPeri: 'sonnennächster Punkt r = {p}',
+      orbApo: 'sonnenfernster Punkt r = {a}',
+      orbArea: 'jede Fläche ≈ {A}',
+      sun: 'Sonne',
+      genT: 'Allgemeine Kegelschnittgleichung',
+      genDisc: 'B² − 4AC = {d}',
+      genAngle: 'Drehung der Achsen: θ = ½·arctan(B/(A − C)) = {w}°',
+      genCenter: 'Mittelpunkt ({x} | {y})',
+      genRule: 'B² − 4AC < 0: Ellipse (oder Kreis), = 0: Parabel, > 0: Hyperbel. Ist die 3×3-Determinante 0, zerfällt die Kurve (zwei Geraden oder ein Punkt).',
+      genLines: 'entartet: Geradenpaar',
+      genPoint: 'entartet: nur ein Punkt',
+      genEmpty: 'leer: kein Punkt erfüllt die Gleichung',
       canvas: 'Kegelschnitte als Ortslinien in der Ebene mit Brennpunkten, Leitlinien und einem beweglichen Punkt P, oder der Schnitt einer Ebene mit einem Doppelkegel im Raum.',
       ellT: 'Ellipse: Summe der Abstände zu F₁ und F₂ ist immer 2a',
       ellG: 'Gärtnerkonstruktion: Ein Faden der Länge 2a ist an zwei Pflöcken befestigt. Hält man ihn mit einem Stift straff, zeichnet der Stift eine Ellipse.',
@@ -168,6 +227,24 @@ export default defineSimulation({
       score: '{k} von {n} richtig',
     },
     en: {
+      orbT: 'Planetary orbit: the sun sits at a focus',
+      orbV: 'launched at {v} × circular speed',
+      orbK1: 'Kepler’s 1st law: the orbit is a conic with the sun at a focus.',
+      orbK2: 'Kepler’s 2nd law: the radius sweeps out equal areas in equal times. Close to the sun the planet is faster.',
+      orbK3: 'Kepler’s 3rd law: T² is proportional to a³ – here T = {t} circular periods with a = {a}.',
+      orbEsc: 'From √2 times the circular speed (escape speed) the body never comes back.',
+      orbPeri: 'closest to the sun r = {p}',
+      orbApo: 'farthest from the sun r = {a}',
+      orbArea: 'each area ≈ {A}',
+      sun: 'sun',
+      genT: 'General conic equation',
+      genDisc: 'B² − 4AC = {d}',
+      genAngle: 'rotation of the axes: θ = ½·arctan(B/(A − C)) = {w}°',
+      genCenter: 'centre ({x} | {y})',
+      genRule: 'B² − 4AC < 0: ellipse (or circle), = 0: parabola, > 0: hyperbola. If the 3×3 determinant is 0, the curve degenerates (two lines or one point).',
+      genLines: 'degenerate: pair of lines',
+      genPoint: 'degenerate: a single point',
+      genEmpty: 'empty: no point satisfies the equation',
       canvas: 'Conic sections as loci in the plane with foci, directrices and a movable point P, or the section of a plane with a double cone in space.',
       ellT: 'Ellipse: the sum of the distances to F₁ and F₂ is always 2a',
       ellG: 'Gardener’s method: a string of length 2a is tied to two pegs. Keeping it tight with a pen, the pen draws an ellipse.',
@@ -238,8 +315,9 @@ export default defineSimulation({
       const W = surface.width;
       const H = surface.height;
       const pad = 10;
-      if (wide()) {
-        const mw = Math.round(W * 0.62);
+      const newMode = p.mode === 'orbit' || p.mode === 'general';
+      if (wide() || (newMode && W > H * 1.3)) {
+        const mw = Math.round(W * (wide() ? 0.62 : 0.56));
         return { main: { x: pad, y: pad, w: mw - pad, h: H - 2 * pad }, card: { x: mw + pad, y: pad, w: W - mw - 2 * pad, h: H - 2 * pad } };
       }
       const mh = Math.round(H * 0.58);
@@ -289,6 +367,8 @@ export default defineSimulation({
       m = Math.min(m, 25);
       plot.setRange([-m, m], [-m * 0.75, m * 0.75]);
       if (p.mode === 'quiz') plot.setRange([-10.5, 10.5], [-8, 8]);
+      if (p.mode === 'orbit') fitOrbitRef();
+      if (p.mode === 'general') fitGeneralRef();
       if (p.mode === 'parabola') plot.setRange([-m, m], [-p.f * 2.2, m * 1.2]);
       if (p.mode === 'focal' && p.eps < 1) {
         const rFar = focalRadius(p.eps, p.d, 0) ?? m;
@@ -298,6 +378,9 @@ export default defineSimulation({
         plot.setRange([Math.min(cx - half, -p.d - 1), cx + half], [-half * 0.8, half * 0.8]);
       }
     }
+    // Vorwärtsverweise: die Bereichsfunktionen für Bahn und Gleichung stehen weiter unten
+    let fitOrbitRef = (): void => {};
+    let fitGeneralRef = (): void => {};
     fitRange();
 
     /** Punkt P zum Parameter t (Grad). */
@@ -412,6 +495,173 @@ export default defineSimulation({
         color: () => (i === 0 ? COL.f1() : COL.f2()),
         axis: 'both',
       });
+    }
+
+
+    /* -------------------------------------------------------------- */
+    /* Planetenbahnen                                                  */
+    /* -------------------------------------------------------------- */
+
+    const R0 = 4;
+    const MU = 1;
+    const T0 = 2 * Math.PI * Math.sqrt((R0 * R0 * R0) / MU);
+    const reduced = prefersReducedMotion();
+    let orbRun: OrbitRun = { t: [0], pos: [[R0, 0]], vel: [[0, 0.5]] };
+    let orbDt = 0.01;
+    let orbClosed = false;
+    let orbTime = 0;
+    let orbLast = performance.now();
+    function computeOrbit(): void {
+      const v0 = p.ov * circularSpeed(MU, R0);
+      const o = orbitFromLaunch(R0, v0, MU);
+      orbClosed = o.T !== null && o.e < 0.985;
+      if (orbClosed) {
+        orbDt = o.T! / 3000;
+        orbRun = simulateOrbit(R0, v0, MU, o.T!, orbDt);
+      } else {
+        orbDt = 0.04;
+        orbRun = simulateOrbit(R0, v0, MU, 400, orbDt, 45);
+      }
+      orbTime = reduced ? (orbClosed ? o.T! * 0.3 : orbRun.t.at(-1)! * 0.4) : 0;
+    }
+    computeOrbit();
+    function orbitIndex(): number {
+      const n = orbRun.pos.length - 1;
+      return Math.min(n, Math.max(0, Math.round(orbTime / orbDt)));
+    }
+    function fitOrbit(): void {
+      const xs = orbRun.pos.map((q) => q[0]);
+      const ys = orbRun.pos.map((q) => q[1]);
+      const lim = orbClosed ? 26 : 15;
+      const x0 = Math.max(-lim, Math.min(...xs)) - 1;
+      const x1 = Math.min(lim, Math.max(...xs)) + 1;
+      const y0 = Math.max(-lim, Math.min(...ys)) - 2.5;
+      const y1 = Math.min(lim, Math.max(...ys)) + 1;
+      plot.setRange([x0, x1], [y0, y1]);
+    }
+    function drawOrbit(): void {
+      const v0 = p.ov * circularSpeed(MU, R0);
+      const o = orbitFromLaunch(R0, v0, MU);
+      const n = orbRun.pos.length - 1;
+      const k = orbitIndex();
+      // Flächen in gleichen Zeiten
+      if (p.areas) {
+        const step = orbClosed ? o.T! / 12 : T0 / 12;
+        const per = Math.max(1, Math.round(step / orbDt));
+        const upto = orbClosed && lapDone ? n : k;
+        for (let s0 = 0, j = 0; s0 + per <= upto; s0 += per, j++) {
+          const pts: [number, number][] = [[0, 0]];
+          for (let q = s0; q <= s0 + per; q += Math.max(1, Math.floor(per / 40))) pts.push([orbRun.pos[q]![0], orbRun.pos[q]![1]]);
+          pts.push([orbRun.pos[s0 + per]![0], orbRun.pos[s0 + per]![1]]);
+          plot.polygon(pts, { fill: withAlpha(j % 2 ? COL.f2() : COL.f1(), 0.22), stroke: withAlpha(j % 2 ? COL.f2() : COL.f1(), 0.5), width: 1 });
+        }
+      }
+      // Bezugskreis (Kreisbahn)
+      plot.circle(0, 0, R0, { stroke: withAlpha(th().text, 0.25), width: 1.2, dash: [5, 5] });
+      // Bahn
+      poly(orbRun.pos as Pt[], orbClosed ? 1 : k / n, COL.curve(), 2.8);
+      if (orbClosed) poly(orbRun.pos as Pt[], 1, withAlpha(COL.curve(), 0.35), 1.6);
+      else poly(orbRun.pos as Pt[], 1, withAlpha(COL.curve(), 0.25), 1.4);
+      // Sonne
+      plot.arcPx(0, 0, 15, 0, 2 * Math.PI, { fill: withAlpha(COL.dir(), 0.25) });
+      plot.point(0, 0, { color: COL.dir(), radius: 10 });
+      plot.text(0, 0, tr('sun'), { color: COL.dir(), size: 12, weight: 'bold', offset: [14, 18], align: 'left', halo: true });
+      // zweiter Brennpunkt der Ellipse
+      if (orbClosed && o.e > 0.02) {
+        // Start im Perihel (v ≥ Kreisbahn) bzw. im Aphel: F₂ liegt gegenüber
+        const F2: Pt = [p.ov >= 1 ? -2 * o.a * o.e : 2 * o.a * o.e, 0];
+        plot.point(F2[0], F2[1], { color: withAlpha(th().text, 0.6), radius: 4, hollow: true });
+      }
+      // Planet und Geschwindigkeit
+      const P = orbRun.pos[k]!;
+      const V = orbRun.vel[k]!;
+      const vs = 4;
+      plot.arrow([P[0], P[1]], [P[0] + V[0] * vs, P[1] + V[1] * vs], { color: COL.p(), width: 2.2, head: 8 });
+      seg([0, 0], P, withAlpha(COL.aux(), 0.8), 1.6);
+      plot.point(P[0], P[1], { color: COL.aux(), radius: 7 });
+      if (p.show) plot.text(P[0], P[1], `v = ${N(Math.hypot(V[0], V[1]) / circularSpeed(MU, R0), 2)}·v_K`, { color: COL.p(), size: 12, weight: 'bold', offset: [0, -20], halo: true });
+    }
+    let lapDone = false;
+    fitOrbitRef = fitOrbit;
+    fitGeneralRef = fitGeneral;
+    function stepOrbit(): void {
+      const now = performance.now();
+      const dt = Math.min(0.05, (now - orbLast) / 1000);
+      orbLast = now;
+      if (reduced || p.mode !== 'orbit') return;
+      orbTime += dt * (T0 / 7);
+      const tMax = orbRun.t.at(-1)!;
+      if (orbTime > tMax) {
+        orbTime = orbClosed ? orbTime % tMax : 0;
+        lapDone = orbClosed;
+      }
+    }
+
+    /* -------------------------------------------------------------- */
+    /* Allgemeine Gleichung                                            */
+    /* -------------------------------------------------------------- */
+
+    const gen = (): GeneralConic => ({ A: p.gA, B: p.gB, C: p.gC, D: p.gD, E: p.gE, F: p.gF });
+    const GEN_NAMES: Record<GeneralKind, () => string> = {
+      ellipse: () => KIND_NAMES.ellipse[ctx.lang],
+      circle: () => KIND_NAMES.circle[ctx.lang],
+      parabola: () => KIND_NAMES.parabola[ctx.lang],
+      hyperbola: () => KIND_NAMES.hyperbola[ctx.lang],
+      lines: () => tr('genLines'),
+      point: () => tr('genPoint'),
+      empty: () => tr('genEmpty'),
+    };
+    function genEquation(): string {
+      const G = gen();
+      const terms: [number, string][] = [
+        [G.A, 'x²'],
+        [G.B, 'xy'],
+        [G.C, 'y²'],
+        [G.D, 'x'],
+        [G.E, 'y'],
+        [G.F, ''],
+      ];
+      let out = '';
+      for (const [c, v] of terms) {
+        if (Math.abs(c) < 1e-12) continue;
+        const a = Math.abs(c);
+        const num = v && Math.abs(a - 1) < 1e-12 ? '' : N(a, 2);
+        out += out ? (c < 0 ? ' − ' : ' + ') : c < 0 ? '−' : '';
+        out += num + v;
+      }
+      return `${out || '0'} = 0`;
+    }
+    function fitGeneral(): void {
+      const info = classifyGeneral(gen());
+      const c = info.center && Math.hypot(info.center[0], info.center[1]) < 15 ? info.center : ([0, 0] as Pt);
+      plot.setRange([c[0] - 7, c[0] + 7], [c[1] - 5, c[1] + 5]);
+    }
+    function drawGeneral(): void {
+      const G = gen();
+      const info = classifyGeneral(G);
+      const b = plot.bounds;
+      const rr = plot.rect;
+      const nx = Math.max(40, Math.round(rr.w / 4));
+      const ny = Math.max(30, Math.round(rr.h / 4));
+      const segsAll = implicitSegments((x, y) => evalGeneral(G, x, y), [b.xMin, b.xMax], [b.yMin, b.yMax], nx, ny);
+      const tt = trace.running ? trace.value : 1;
+      const xCut = b.xMin + (b.xMax - b.xMin) * tt;
+      // Hauptachsen durch den Mittelpunkt
+      if (info.center && info.kind !== 'lines' && info.kind !== 'empty') {
+        const [cx, cy] = info.center;
+        const u: Pt = [Math.cos(info.angle), Math.sin(info.angle)];
+        plot.line([cx, cy], [cx + u[0], cy + u[1]], { color: withAlpha(COL.aux(), 0.7), width: 1.4, dash: [6, 5] });
+        plot.line([cx, cy], [cx - u[1], cy + u[0]], { color: withAlpha(COL.aux(), 0.7), width: 1.4, dash: [6, 5] });
+        if (Math.abs(info.angle) > 1e-6) plot.arcPx(cx, cy, 34, Math.min(0, info.angle), Math.max(0, info.angle), { stroke: COL.aux(), width: 1.8, fill: withAlpha(COL.aux(), 0.18), sector: true });
+        plot.point(cx, cy, { color: COL.aux(), radius: 4 });
+      }
+      const col = COL.curve();
+      for (const [A, B] of segsAll) {
+        if (A[0] > xCut && B[0] > xCut) continue;
+        plot.segment([A[0], A[1]], [B[0], B[1]], { color: col, width: 3 });
+      }
+      if (trace.running) plot.vline(xCut, { color: withAlpha(COL.p(), 0.6), width: 1.4 });
+      if (info.kind === 'point' && info.center) plot.point(info.center[0], info.center[1], { color: col, radius: 6 });
     }
 
     /* -------------------------------------------------------------- */
@@ -881,6 +1131,39 @@ export default defineSimulation({
         }
         line([{ s: tr(base), c: t.muted }], -2);
       };
+      if (p.mode === 'orbit') {
+        const o = orbitFromLaunch(R0, p.ov * circularSpeed(MU, R0), MU);
+        const kind = kindOf(o.e, 0.006);
+        line([{ s: tr('orbT'), c: COL.curve(), w: 800 }], 0);
+        line([{ s: tr('orbV', { v: N(p.ov, 2) }), c: t.text, w: 600 }, { s: ` → ${KIND_NAMES[kind][ctx.lang]}`, c: COL.p(), w: 800 }], 0);
+        if (p.show) {
+          line([{ s: `ε = ${N(o.e, 3)},  `, w: 700 }, { s: tr('orbPeri', { p: N(o.rPeri, 2) }), c: t.muted }], -1);
+          if (o.rApo !== null && o.e < 0.985) line([{ s: tr('orbApo', { a: N(o.rApo, 2) }), c: t.muted }], -1);
+          if (p.areas) {
+            const per = Math.max(1, Math.round((orbClosed ? o.T! / 12 : T0 / 12) / orbDt));
+            if (orbRun.pos.length > per) line([{ s: tr('orbArea', { A: N(sweptArea(orbRun.pos, 0, per), 2) }), c: COL.f1(), w: 700 }], -1);
+          }
+        }
+        y += 4;
+        line([{ s: tr('orbK1'), c: t.muted }], -2);
+        line([{ s: tr('orbK2'), c: t.muted }], -2);
+        if (o.T !== null && o.e < 0.985) line([{ s: tr('orbK3', { t: N(o.T / T0, 2), a: N(o.a / R0, 2) + ' r₀' }), c: t.muted }], -2);
+        else line([{ s: tr('orbEsc'), c: t.muted }], -2);
+        return;
+      }
+      if (p.mode === 'general') {
+        const info = classifyGeneral(gen());
+        line([{ s: tr('genT'), c: COL.curve(), w: 800 }], 0);
+        line([{ s: genEquation(), c: t.text, w: 700 }], 1);
+        line([{ s: tr('genDisc', { d: N(info.disc, 2) }), c: t.text, w: 600 }, { s: `  → ${GEN_NAMES[info.kind]()}`, c: COL.p(), w: 800 }], 0);
+        if (p.show) {
+          if (info.kind === 'ellipse' || info.kind === 'parabola' || info.kind === 'hyperbola') line([{ s: tr('genAngle', { w: N(info.angle / DEG, 1) }), c: COL.aux(), w: 600 }], -1);
+          if (info.center) line([{ s: tr('genCenter', { x: N(info.center[0], 2), y: N(info.center[1], 2) }), c: t.muted, w: 600 }], -1);
+        }
+        y += 4;
+        line([{ s: tr('genRule'), c: t.muted }], -2);
+        return;
+      }
       switch (p.mode) {
         case 'quiz': {
           line([{ s: tr('quizT'), c: COL.curve(), w: 800 }], 0.5);
@@ -989,6 +1272,22 @@ export default defineSimulation({
     /* -------------------------------------------------------------- */
 
     function updateReadouts(): void {
+      if (p.mode === 'orbit') {
+        const o = orbitFromLaunch(R0, p.ov * circularSpeed(MU, R0), MU);
+        ctx.readout('eq', `r = ${N(o.p, 3)} / (1 + ${N(o.e, 3)}·cos θ)`);
+        ctx.readout('foci', `${tr('sun')} (0 | 0)`);
+        ctx.readout('eps', N(o.e, 3));
+        ctx.readout('prop', KIND_NAMES[kindOf(o.e, 0.006)][ctx.lang]);
+        return;
+      }
+      if (p.mode === 'general') {
+        const info = classifyGeneral(gen());
+        ctx.readout('eq', genEquation());
+        ctx.readout('foci', info.center ? `M (${N(info.center[0], 2)} | ${N(info.center[1], 2)})` : '–');
+        ctx.readout('eps', '–');
+        ctx.readout('prop', `B² − 4AC = ${N(info.disc, 2)}: ${GEN_NAMES[info.kind]()}`);
+        return;
+      }
       switch (p.mode) {
         case 'ellipse': {
           const E = ellipse(p.a, p.b);
@@ -1038,6 +1337,12 @@ export default defineSimulation({
 
     return {
       update(changed, source) {
+        if (changed.has('ov') || source === 'init' || source === 'replace') {
+          computeOrbit();
+          lapDone = false;
+          if (p.mode === 'orbit') fitOrbit();
+        }
+        if (p.mode === 'general' && ['gA', 'gB', 'gC', 'gD', 'gE', 'gF'].some((q) => changed.has(q)) && source !== 'input') fitGeneral();
         if (['mode', 'a', 'b', 'f', 'eps', 'd', 'cons'].some((q) => changed.has(q)) || source === 'init' || source === 'replace') fitRange();
         if (changed.has('q') || changed.has('mode') || source === 'init' || source === 'replace') newTask();
         if (changed.has('cons')) trace.play();
@@ -1046,6 +1351,10 @@ export default defineSimulation({
       },
       action(id) {
         if (id === 'play') trace.play();
+        if (id === 'play' && p.mode === 'orbit') {
+          orbTime = 0;
+          lapDone = false;
+        }
         if (id === 'check' && p.mode === 'quiz') {
           verdict = checkFoci(task, guess);
           tries++;
@@ -1087,11 +1396,15 @@ export default defineSimulation({
           else if (p.mode === 'parabola') drawParabola();
           else if (p.mode === 'hyperbola') drawHyperbola();
           else if (p.mode === 'quiz') drawQuiz();
+          else if (p.mode === 'orbit') {
+            stepOrbit();
+            drawOrbit();
+          } else if (p.mode === 'general') drawGeneral();
           else drawFocal();
           plot.end();
         }
         drawCardBody(g, R.card);
-        if (trace.running) ctx.requestRender();
+        if (trace.running || (p.mode === 'orbit' && !reduced)) ctx.requestRender();
       },
       destroy: () => surface.destroy(),
     };

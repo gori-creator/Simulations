@@ -394,3 +394,198 @@ export function checkFoci(T: ConicTask, guess: readonly Pt[], tol = 0.25): { err
   }
   return { err, ok: err <= tol };
 }
+
+/* ------------------------------------------------------------------ */
+/* Planetenbahnen (Zweikörperproblem, μ = G·M)                          */
+/* ------------------------------------------------------------------ */
+
+export interface OrbitElements {
+  /** Exzentrizität ε. */
+  e: number;
+  /** Bahnparameter p = h²/μ (Halbparameter). */
+  p: number;
+  /** Große Halbachse; Infinity bei der Parabel, negativ bei der Hyperbel. */
+  a: number;
+  /** Umlaufzeit, nur bei Kreis und Ellipse. */
+  T: number | null;
+  rPeri: number;
+  rApo: number | null;
+  kind: Kind;
+}
+
+/** Kreisbahn- und Fluchtgeschwindigkeit im Abstand r. */
+export const circularSpeed = (mu: number, r: number) => Math.sqrt(mu / r);
+export const escapeSpeed = (mu: number, r: number) => Math.sqrt((2 * mu) / r);
+
+/**
+ * Bahnelemente bei einem Start senkrecht zum Fahrstrahl im Abstand r0 mit
+ * der Geschwindigkeit v0. Der Startpunkt ist dann Perihel oder Aphel.
+ */
+export function orbitFromLaunch(r0: number, v0: number, mu: number, tol = 1e-9): OrbitElements {
+  const h = r0 * v0;
+  const p = (h * h) / mu;
+  const e = Math.abs((r0 * v0 * v0) / mu - 1);
+  const energy = (v0 * v0) / 2 - mu / r0;
+  const kind = kindOf(e, tol);
+  const a = Math.abs(energy) < tol ? Infinity : -mu / (2 * energy);
+  const T = energy < 0 ? 2 * Math.PI * Math.sqrt((a * a * a) / mu) : null;
+  return { e, p, a, T, rPeri: p / (1 + e), rApo: e < 1 ? p / (1 - e) : null, kind };
+}
+
+/** Kepler-Gleichung E − e·sin E = M (Newton-Verfahren), für 0 ≤ e < 1. */
+export function keplerE(M: number, e: number): number {
+  let E = e < 0.8 ? M : Math.PI;
+  for (let i = 0; i < 50; i++) {
+    const dE = (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+    E -= dE;
+    if (Math.abs(dE) < 1e-13) break;
+  }
+  return E;
+}
+
+export interface OrbitRun {
+  t: number[];
+  pos: Pt[];
+  vel: Pt[];
+}
+
+/**
+ * Bahn numerisch (Velocity-Verlet) ab (r0 | 0) mit Geschwindigkeit (0 | v0),
+ * bis tEnd oder bis der Abstand rMax überschreitet.
+ */
+export function simulateOrbit(r0: number, v0: number, mu: number, tEnd: number, dt: number, rMax = 1e3): OrbitRun {
+  let x = r0;
+  let y = 0;
+  let vx = 0;
+  let vy = v0;
+  const acc = (px: number, py: number): Pt => {
+    const r3 = Math.pow(px * px + py * py, 1.5);
+    return [(-mu * px) / r3, (-mu * py) / r3];
+  };
+  let [ax, ay] = acc(x, y);
+  const out: OrbitRun = { t: [0], pos: [[x, y]], vel: [[vx, vy]] };
+  const n = Math.ceil(tEnd / dt);
+  for (let i = 1; i <= n; i++) {
+    vx += 0.5 * dt * ax;
+    vy += 0.5 * dt * ay;
+    x += dt * vx;
+    y += dt * vy;
+    [ax, ay] = acc(x, y);
+    vx += 0.5 * dt * ax;
+    vy += 0.5 * dt * ay;
+    out.t.push(i * dt);
+    out.pos.push([x, y]);
+    out.vel.push([vx, vy]);
+    if (Math.hypot(x, y) > rMax) break;
+  }
+  return out;
+}
+
+/** Vom Fahrstrahl (Ursprung) überstrichene Fläche entlang pts[i..j]. */
+export function sweptArea(pts: readonly Pt[], i: number, j: number): number {
+  let s = 0;
+  for (let k = i; k < j; k++) s += pts[k]![0] * pts[k + 1]![1] - pts[k + 1]![0] * pts[k]![1];
+  return Math.abs(s) / 2;
+}
+
+/* ------------------------------------------------------------------ */
+/* Allgemeine Gleichung A·x² + B·x·y + C·y² + D·x + E·y + F = 0          */
+/* ------------------------------------------------------------------ */
+
+export interface GeneralConic {
+  A: number;
+  B: number;
+  C: number;
+  D: number;
+  E: number;
+  F: number;
+}
+
+export type GeneralKind = 'ellipse' | 'circle' | 'parabola' | 'hyperbola' | 'lines' | 'point' | 'empty';
+
+export interface GeneralInfo {
+  /** Diskriminante B² − 4AC. */
+  disc: number;
+  /** Determinante der 3×3-Matrix; 0 heißt entartet. */
+  det: number;
+  kind: GeneralKind;
+  /** Drehwinkel der Hauptachsen gegen die x-Achse (Bogenmaß). */
+  angle: number;
+  /** Mittelpunkt (nicht bei der Parabel). */
+  center: Pt | null;
+}
+
+export const evalGeneral = (G: GeneralConic, x: number, y: number) => G.A * x * x + G.B * x * y + G.C * y * y + G.D * x + G.E * y + G.F;
+
+export function classifyGeneral(G: GeneralConic, tol = 1e-9): GeneralInfo {
+  const { A, B, C, D, E, F } = G;
+  const disc = B * B - 4 * A * C;
+  // Matrix [[A, B/2, D/2], [B/2, C, E/2], [D/2, E/2, F]]
+  const det = A * (C * F - (E * E) / 4) - (B / 2) * ((B / 2) * F - (E * D) / 4) + (D / 2) * ((B / 2) * (E / 2) - C * (D / 2));
+  let angle = Math.abs(B) < tol && Math.abs(A - C) < tol ? 0 : 0.5 * Math.atan2(B, A - C);
+  // in (−45°, 45°] bringen; die zweite Achse steht senkrecht dazu
+  if (angle > Math.PI / 4 + 1e-12) angle -= Math.PI / 2;
+  if (angle <= -Math.PI / 4 - 1e-12) angle += Math.PI / 2;
+  let center: Pt | null = null;
+  if (Math.abs(disc) > tol) {
+    // 2A·x + B·y = −D, B·x + 2C·y = −E
+    const dd = 4 * A * C - B * B;
+    center = [(B * E - 2 * C * D) / dd, (B * D - 2 * A * E) / dd];
+  }
+  let kind: GeneralKind;
+  if (Math.abs(A) < tol && Math.abs(B) < tol && Math.abs(C) < tol) kind = 'lines';
+  else if (Math.abs(det) < tol) kind = disc < -tol ? 'point' : 'lines';
+  else if (disc < -tol) {
+    // Wert im Mittelpunkt muss das Vorzeichen gegenüber A haben, sonst leer
+    const fc = evalGeneral(G, center![0], center![1]);
+    if (fc * (A + C) > 0) kind = 'empty';
+    else kind = Math.abs(B) < tol && Math.abs(A - C) < tol ? 'circle' : 'ellipse';
+  } else if (disc > tol) kind = 'hyperbola';
+  else kind = 'parabola';
+  return { disc, det, kind, angle, center };
+}
+
+/**
+ * Nullstellenlinie von f im Rechteck (Marching Squares). Liefert einzelne
+ * Strecken; für die Darstellung genügt das.
+ */
+export function implicitSegments(f: (x: number, y: number) => number, xr: readonly [number, number], yr: readonly [number, number], nx: number, ny: number): [Pt, Pt][] {
+  const out: [Pt, Pt][] = [];
+  const dx = (xr[1] - xr[0]) / nx;
+  const dy = (yr[1] - yr[0]) / ny;
+  const val: number[][] = [];
+  for (let i = 0; i <= nx; i++) {
+    const col: number[] = [];
+    for (let j = 0; j <= ny; j++) col.push(f(xr[0] + i * dx, yr[0] + j * dy));
+    val.push(col);
+  }
+  const lerp = (a: Pt, b: Pt, fa: number, fb: number): Pt => {
+    const s = fa / (fa - fb);
+    return [a[0] + s * (b[0] - a[0]), a[1] + s * (b[1] - a[1])];
+  };
+  for (let i = 0; i < nx; i++) {
+    for (let j = 0; j < ny; j++) {
+      const x0 = xr[0] + i * dx;
+      const y0 = yr[0] + j * dy;
+      const c: Pt[] = [
+        [x0, y0],
+        [x0 + dx, y0],
+        [x0 + dx, y0 + dy],
+        [x0, y0 + dy],
+      ];
+      const v = [val[i]![j]!, val[i + 1]![j]!, val[i + 1]![j + 1]!, val[i]![j + 1]!];
+      const hits: Pt[] = [];
+      for (let k = 0; k < 4; k++) {
+        const a = v[k]!;
+        const b = v[(k + 1) % 4]!;
+        if ((a < 0 && b >= 0) || (a >= 0 && b < 0)) hits.push(lerp(c[k]!, c[(k + 1) % 4]!, a, b));
+      }
+      if (hits.length === 2) out.push([hits[0]!, hits[1]!]);
+      else if (hits.length === 4) {
+        out.push([hits[0]!, hits[1]!]);
+        out.push([hits[2]!, hits[3]!]);
+      }
+    }
+  }
+  return out;
+}

@@ -22,7 +22,11 @@ Eine **Ortslinie** ist die Menge aller Punkte mit einer bestimmten Eigenschaft. 
 
 **Tangente und Spiegelung:** Die Tangente in $P$ bildet mit beiden Brennstrahlen $PF_1$ und $PF_2$ gleich große Winkel. Ein Lichtstrahl aus $F_1$ wird an einer spiegelnden Ellipse deshalb immer nach $F_2$ gelenkt (Flüstergewölbe). Bei der Parabel wird Licht, das parallel zur Achse einfällt, in den Brennpunkt gespiegelt. Bei der Hyperbel scheint das gespiegelte Licht aus $F_2$ aus $F_1$ zu kommen.
 
-**Leitkreis:** Zeichnet man um $F_1$ einen Kreis mit Radius $2a$ und wählt darauf einen Punkt $Q$, dann schneidet die Mittelsenkrechte von $Q$ und $F_2$ die Gerade $F_1Q$ in einem Kurvenpunkt $P$. Wegen $\lvert PF_2vert = \lvert PQvert$ gilt $\lvert PF_1vert + \lvert PF_2vert = 2a$. Liegt $F_2$ außerhalb des Kreises, entsteht eine Hyperbel.
+**Leitkreis:** Zeichnet man um $F_1$ einen Kreis mit Radius $2a$ und wählt darauf einen Punkt $Q$, dann schneidet die Mittelsenkrechte von $Q$ und $F_2$ die Gerade $F_1Q$ in einem Kurvenpunkt $P$. Wegen $\lvert PF_2
+vert = \lvert PQ
+vert$ gilt $\lvert PF_1
+vert + \lvert PF_2
+vert = 2a$. Liegt $F_2$ außerhalb des Kreises, entsteht eine Hyperbel.
 
 **Kegelschnitte:** Schneidet man einen Doppelkegel mit einer Ebene, entsteht je nach Neigung ein Kreis, eine Ellipse, eine Parabel (Ebene parallel zu einer Mantellinie) oder eine Hyperbel (Ebene schneidet beide Kegelhälften).
 
@@ -36,6 +40,8 @@ Eine **Ortslinie** ist die Menge aller Punkte mit einer bestimmten Eigenschaft. 
 6. Schalte die Tangente ein und ziehe $P$. Bleiben die beiden Winkel gleich? [Flüstergewölbe](?mode=ellipse&a=5&b=3&t=70&tan=1) · [Parabolspiegel](?mode=parabola&f=1.5&t=60&tan=1)
 7. Ziehe $Q$ auf dem Leitkreis einmal herum. Welche Kurve zeichnet $P$? [Leitkreis](?mode=ellipse&a=4&b=3&t=40&cons=circle)
 8. Üben: Ziehe die Brennpunkte an die richtige Stelle und prüfe. [Üben](?mode=quiz&q=1)
+9. Planetenbahn: Erhöhe die Startgeschwindigkeit von 0,6 bis 1,8. Wann wird aus der Ellipse eine Parabel, wann eine Hyperbel? [Planet](?mode=orbit&ov=1.2) · [Komet](?mode=orbit&ov=1.37)
+10. Allgemeine Gleichung: Verändere $B$. Wie dreht sich die Ellipse, und ab wann wird sie zur Hyperbel? [Gedrehte Ellipse](?mode=general&gA=1&gB=1&gC=2&gD=0&gE=0&gF=-4) · [xy = 1](?mode=general&gA=0&gB=1&gC=0&gD=0&gE=0&gF=-1)
 
 ## Aufgaben
 
@@ -80,6 +86,17 @@ Wo liegen die Brennpunkte der Ellipse $\dfrac{(x-2)^2}{2{,}25} + \dfrac{(y+1)^2}
 <summary>Lösung anzeigen</summary>
 
 Mittelpunkt $(2 \mid -1)$. Die größere Zahl $6{,}25$ steht bei $y$, die lange Achse ist also senkrecht: $a = 2{,}5$, $b = 1{,}5$, $e = \sqrt{6{,}25 - 2{,}25} = 2$. Brennpunkte $F_1(2 \mid -3)$ und $F_2(2 \mid 1)$. [In der Simulation üben](?mode=quiz&q=2)
+
+</details>
+
+### Aufgabe 5: Welche Kurve?
+
+Welche Art Kegelschnitt beschreibt $x^2 + 4xy + y^2 = 3$?
+
+<details>
+<summary>Lösung anzeigen</summary>
+
+$B^2 - 4AC = 16 - 4 = 12 > 0$: eine Hyperbel. Ihre Achsen sind um $45°$ gedreht, weil $A = C$ ist. [In der Simulation zeigen](?mode=general&gA=1&gB=4&gC=1&gD=0&gE=0&gF=-3)
 
 </details>
 
