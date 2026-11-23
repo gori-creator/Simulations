@@ -46,6 +46,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Eigenschaften von Dauermagneten, Elementarmagnete und Erdmagnetfeld; dazu die Dichte als Stoffeigenschaft, bestimmt im eigenen Experiment.",
                 "Properties of permanent magnets, the model of elementary magnets and the Earth’s magnetic field; plus density as a property of a material, measured in an own experiment.",
               ),
+              simulations: ['magnete'],
             },
             {
               code: "1.2",
@@ -266,7 +267,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Magnetfelder mit Feldlinien beschreiben, Kraft auf stromdurchflossene Leiter und Lorentzkraft, Elektromotor, Induktion, Generator und idealer Transformator.",
             "Describing magnetic fields with field lines, the force on current-carrying conductors and the Lorentz force, electric motors, induction, generators and the ideal transformer.",
           ),
-          simulations: ["induktion", "lorentzkraft"],
+          simulations: ["induktion", "lorentzkraft", "magnetfeld-spule"],
         },
         {
           code: "2",
@@ -452,7 +453,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
                 "Wahlthemen wie Physik auf dem Jahrmarkt, Akustik und Resonanz, Licht in der Technik oder Computermodelle für Würfe mit Luftwiderstand und Planetenbahnen.",
                 "Optional topics such as physics at the fair, acoustics and resonance, light in technology, or computer models of throws with air resistance and planetary orbits.",
               ),
-              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz"],
+              simulations: ["schiefer-wurf", "planetenbahnen", "resonanz", "schall"],
             },
           ],
         },
@@ -746,6 +747,7 @@ export const bayernGymnasiumPhysik: StateCurriculum = {
             "Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell.",
             "Structure and mass of the Milky Way, dark matter, distances of galaxies, the Hubble relation and the Big Bang model.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "E1",

@@ -98,6 +98,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -106,6 +107,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -281,6 +283,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.',
                 'Investigating magnets, drawing field lines and explaining them with elementary magnets.',
               ),
+              simulations: ['magnete'],
             },
           ],
         },
@@ -374,6 +377,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -382,6 +386,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -561,6 +566,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.',
                 'Investigating magnets, drawing field lines and explaining them with elementary magnets.',
               ),
+              simulations: ['magnete'],
             },
           ],
         },
@@ -654,6 +660,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: '2.1',
               title: L('Wahrnehmung der Umgebung mit den Sinnesorganen', 'Perceiving the surroundings with the sense organs'),
               summary: L('Wie Auge und Ohr Licht und Schall wahrnehmen.', 'How eye and ear perceive light and sound.'),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -662,6 +669,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Lichtquelle bzw. Schallquelle, Ausbreitung und Empfänger unterscheiden.',
                 'Distinguishing source, propagation and receiver of light or sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.3',
@@ -840,6 +848,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Magnete untersuchen, Feldlinien zeichnen und mit Elementarmagneten erklären.',
                 'Investigating magnets, drawing field lines and explaining them with elementary magnets.',
               ),
+              simulations: ['magnete'],
             },
           ],
         },
@@ -936,6 +945,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.',
                 'Comparing how light and sound propagate, including the speed of sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -1123,6 +1133,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.',
                 'Understanding electromagnets and electromagnetic energy converters such as motors.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
           ],
         },
@@ -1244,6 +1255,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Ausbreitung von Licht und Schall vergleichen, auch die Schallgeschwindigkeit.',
                 'Comparing how light and sound propagate, including the speed of sound.',
               ),
+              simulations: ['schall'],
             },
             {
               code: '2.2',
@@ -1428,6 +1440,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Elektromagnete und elektromagnetische Energiewandler wie Motoren verstehen.',
                 'Understanding electromagnets and electromagnetic energy converters such as motors.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
           ],
         },
@@ -1870,6 +1883,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q1.2.1',
               title: L('Begriff des Feldes am Beispiel von magnetischen Feldern', 'Concept of a field using magnetic fields'),
               summary: L('Feldlinien von Dauermagnet, geradem Leiter und Spule.', 'Field lines of permanent magnet, straight wire and solenoid.'),
+              simulations: ['magnetfeld-spule'],
             },
             {
               code: 'Q1.2.2',
@@ -1878,6 +1892,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Flussdichte definieren und im Inneren einer langen Spule bestimmen.',
                 'Defining flux density and determining it inside a long solenoid.',
               ),
+              simulations: ['magnetfeld-spule'],
             },
             {
               code: 'Q1.2.3',
@@ -2535,6 +2550,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
               code: 'Q4.6.2',
               title: L('Kosmologie', 'Cosmology'),
               summary: L('Galaxien, Rotverschiebung und Urknall.', 'Galaxies, redshift and Big Bang.'),
+              simulations: ['hubble'],
             },
             {
               code: 'Q4.6.3',
@@ -2543,6 +2559,7 @@ export const hessenGymnasiumPhysik: StateCurriculum = {
                 'Größe und Alter, Hintergrundstrahlung, dunkle Materie und Energie.',
                 'Size and age, background radiation, dark matter and energy.',
               ),
+              simulations: ['hubble'],
             },
             {
               code: 'Q4.6.4',

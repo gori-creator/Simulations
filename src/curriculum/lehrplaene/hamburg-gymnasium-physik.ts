@@ -115,6 +115,7 @@ const KS_10_UNITS: CurriculumUnit[] = [
       'Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie.',
       'Magnetic fields of a straight conductor and a coil, the field line model and field concept, electromagnet, relay and electric motor, transport and storage of electrical energy.',
     ),
+    simulations: ['magnetfeld-spule'],
   },
   {
     code: '2.3',
@@ -172,7 +173,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Erzeugung und Ausbreitung harmonischer Wellen, Transversal- und Longitudinalwellen, Ausbreitungsgeschwindigkeit und Wellenlänge, Beugung, Reflexion und Brechung, Polarisation, elektromagnetisches Spektrum.',
       'Generation and propagation of harmonic waves, transverse and longitudinal waves, speed and wavelength, diffraction, reflection and refraction, polarisation, the electromagnetic spectrum.',
     ),
-    simulations: ['wellen-ausbreitung'],
+    simulations: ['wellen-ausbreitung', 'schall'],
   },
   {
     code: '2.3',
@@ -217,7 +218,7 @@ const S_UNITS: CurriculumUnit[] = [
       'Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten.',
       'Observing the sky and instruments, spacetime, stellar evolution and black holes, gravitational waves, scales in the universe, radiation budgets of planets.',
     ),
-    simulations: ['hr-diagramm'],
+    simulations: ['hubble', 'hr-diagramm'],
   },
 ];
 

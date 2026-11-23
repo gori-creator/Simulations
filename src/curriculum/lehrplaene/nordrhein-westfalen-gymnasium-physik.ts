@@ -99,11 +99,13 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Anziehung und Abstoßung, Magnetpole, Feldlinienbilder, Magnetfeld der Erde und Kompass.',
           'Attraction and repulsion, magnetic poles, field-line patterns, the Earth’s magnetic field and the compass.',
         ),
+        simulations: ['magnete'],
       },
       {
         code: '2.4',
         title: L('Magnetisierung', 'Magnetisation'),
         summary: L('Magnetisierbare Stoffe und das Modell der Elementarmagnete.', 'Magnetisable materials and the model of elementary magnets.'),
+        simulations: ['magnete'],
       },
     ],
   },
@@ -122,6 +124,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Tonhöhe und Lautstärke, Schallausbreitung im Teilchenmodell, Absorption und Reflexion.',
           'Pitch and loudness, sound propagation in the particle model, absorption and reflection.',
         ),
+        simulations: ['schall'],
       },
       {
         code: '3.2',
@@ -130,6 +133,7 @@ const ERPROBUNG_UNITS: CurriculumUnit[] = [
           'Sender-Empfänger-Modell, Ultraschall in Natur, Medizin und Technik, Lärm und Lärmschutz.',
           'Sender–receiver model, ultrasound in nature, medicine and technology, noise and noise protection.',
         ),
+        simulations: ['schall'],
       },
     ],
   },
@@ -378,7 +382,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.',
           'Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
       {
         code: '11.2',

@@ -280,7 +280,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Eigenschaften statischer Felder, Feldlinienbilder, Superposition von Feldern, elektrische Feldstärke, magnetische Flussdichte und das Magnetfeld einer Spule.',
           'Properties of static fields, field line patterns, superposition of fields, electric field strength, magnetic flux density and the field of a coil.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'magnetfeld-spule'],
       },
       {
         code: 'GF-P.2',
@@ -472,6 +472,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.20',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'GF-W.21',
@@ -510,7 +511,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.',
           'As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'magnetfeld-spule'],
       },
       {
         code: 'LF-P.2',
@@ -709,6 +710,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.18',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'LF-W.19',

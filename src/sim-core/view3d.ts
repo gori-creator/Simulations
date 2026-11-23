@@ -1788,6 +1788,11 @@ export class View3D implements PointerTarget {
     this.controlsEl = el;
   }
 
+  /** Zoom-Knöpfe ein- oder ausblenden (z. B. wenn die Szene gerade nicht gezeigt wird). */
+  setControlsVisible(visible: boolean): void {
+    if (this.controlsEl) this.controlsEl.style.display = visible ? '' : 'none';
+  }
+
   private positionControls(): void {
     if (!this.controlsEl) return;
     const r = this.camera.rect;

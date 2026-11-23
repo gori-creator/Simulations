@@ -84,6 +84,7 @@ const SJ_6_UNITS: CurriculumUnit[] = [
       'Dauermagnete mit Nord- und Südpol, magnetische Stoffe, Magnetfeld im Feldlinienmodell, Erdmagnetfeld und Kompass.',
       'Permanent magnets with north and south poles, magnetic materials, the magnetic field in the field-line model, Earth’s magnetic field and the compass.',
     ),
+    simulations: ['magnete'],
   },
 ];
 
@@ -140,7 +141,7 @@ const SJ_7_8_UNITS: CurriculumUnit[] = [
       'Ohm’sches Gesetz und Widerstand, Reihen- und Parallelschaltung, elektrische Arbeit und Leistung, Elektromagnet und Gleichstrommotor.',
       'Ohm’s law and resistance, series and parallel circuits, electrical work and power, electromagnets and the DC motor.',
     ),
-    simulations: ['ohmsches-gesetz', 'reihe-parallel'],
+    simulations: ['ohmsches-gesetz', 'reihe-parallel', 'magnetfeld-spule'],
   },
 ];
 
@@ -277,7 +278,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Magnetfelder von Magnet, Leiter und Spule, magnetische Flussdichte, Lorentzkraft und Kreisbahnen geladener Teilchen.',
           'Magnetic fields of magnets, conductors and coils, magnetic flux density, the Lorentz force and circular paths of charged particles.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule'],
       },
       {
         code: 'gA-2.3',
@@ -369,7 +370,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Harmonische Wellen mathematisch beschreiben, Huygens’sches Prinzip, Interferenz, Polarisation, stehende Wellen und Schall.',
           'Describing harmonic waves mathematically, Huygens’ principle, interference, polarisation, standing waves and sound.',
         ),
-        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen'],
+        simulations: ['wellen-ausbreitung', 'interferenz', 'stehende-wellen', 'schall'],
       },
       {
         code: 'eA-1.3',
@@ -415,7 +416,7 @@ const QPHASE_UNITS: CurriculumUnit[] = [
           'Lorentzkraft quantitativ, Hall-Effekt, spezifische Ladung des Elektrons, Flussdichte einer Spule und Massenspektrograph.',
           'The Lorentz force quantitatively, the Hall effect, the specific charge of the electron, flux density of a coil and the mass spectrograph.',
         ),
-        simulations: ['lorentzkraft'],
+        simulations: ['lorentzkraft', 'magnetfeld-spule'],
       },
       {
         code: 'eA-2.3',

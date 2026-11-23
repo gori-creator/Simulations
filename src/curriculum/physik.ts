@@ -274,9 +274,32 @@ export const physik: Subject = {
         'Pendel, Resonanz, Wellenausbreitung und Interferenz – mit Zeitlupe und Diagrammen in Echtzeit.',
         'Pendulums, resonance, wave propagation and interference – with slow motion and real-time graphs.',
       ),
-      grades: [10, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
       topics: [
+        {
+          id: 'akustik',
+          title: L('Akustik', 'Acoustics'),
+          grades: [5, 11],
+          simulations: [
+            {
+              id: 'schall',
+              status: 'ready',
+              slug: L('schall-tonhoehe-lautstaerke', 'sound-pitch-loudness'),
+              title: L('Schall: Tonhöhe und Lautstärke', 'Sound: pitch and loudness'),
+              summary: L(
+                'Höher heißt schneller schwingen, lauter heißt weiter schwingen. Auf dem Oszilloskop sieht man den Unterschied, und hören kann man ihn auch.',
+                'Higher means vibrating faster, louder means vibrating further. You can see the difference on the oscilloscope, and hear it too.',
+              ),
+              grades: [5, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schall', 'Akustik', 'Tonhöhe', 'Lautstärke', 'Frequenz', 'Hertz', 'Amplitude', 'Periodendauer', 'Oszilloskop', 'Klangfarbe', 'Obertöne', 'Schallgeschwindigkeit', 'Wellenlänge', 'Längswelle', 'Schallausbreitung', 'Vakuum', 'Dezibel', 'Schallpegel', 'Lärm', 'Gehör', 'Hörbereich', 'Ultraschall', 'Infraschall', 'Echo', 'Schwebung', 'Saite', 'Pfeife', 'Sender', 'Empfänger', 'Lautsprecher'],
+                ['sound', 'acoustics', 'pitch', 'loudness', 'frequency', 'hertz', 'amplitude', 'period', 'oscilloscope', 'timbre', 'overtones', 'speed of sound', 'wavelength', 'longitudinal wave', 'propagation of sound', 'vacuum', 'decibel', 'sound level', 'noise', 'hearing', 'range of hearing', 'ultrasound', 'infrasound', 'echo', 'beats', 'string', 'pipe', 'transmitter', 'receiver', 'loudspeaker'],
+              ),
+            },
+          ],
+        },
         {
           id: 'schwingungen',
           title: L('Mechanische Schwingungen', 'Mechanical oscillations'),
@@ -414,9 +437,32 @@ export const physik: Subject = {
         'Stromkreise bauen, Spannungen messen, Felder sichtbar machen und Induktion verstehen.',
         'Build circuits, measure voltages, visualise fields and understand induction.',
       ),
-      grades: [6, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Wechselwirkung'],
       topics: [
+        {
+          id: 'magnetismus',
+          title: L('Magnetismus', 'Magnetism'),
+          grades: [5, 7],
+          simulations: [
+            {
+              id: 'magnete',
+              status: 'ready',
+              slug: L('magnete-kompass', 'magnets-compass'),
+              title: L('Magnete und Kompass', 'Magnets and compass'),
+              summary: L(
+                'Nordpol trifft Südpol: Die Magnete schnappen zusammen. Eisenfeilspäne und Kompassnadeln zeigen das unsichtbare Feld, und die ganze Erde ist ein riesiger Magnet.',
+                'North pole meets south pole: the magnets snap together. Iron filings and compass needles show the invisible field, and the whole Earth is a giant magnet.',
+              ),
+              grades: [5, 7],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-System'],
+              keywords: L(
+                ['Magnet', 'Dauermagnet', 'Permanentmagnet', 'Stabmagnet', 'Hufeisenmagnet', 'Nordpol', 'Südpol', 'Anziehung', 'Abstoßung', 'Magnetfeld', 'Feldlinien', 'Kompass', 'Kompassnadel', 'Eisenfeilspäne', 'Elementarmagnete', 'Magnetisierung', 'Entmagnetisieren', 'Curie-Temperatur', 'Erdmagnetfeld', 'Inklination', 'Eisen', 'Nickel', 'Kobalt', 'ferromagnetisch'],
+                ['magnet', 'permanent magnet', 'bar magnet', 'horseshoe magnet', 'north pole', 'south pole', 'attraction', 'repulsion', 'magnetic field', 'field lines', 'compass', 'compass needle', 'iron filings', 'elementary magnets', 'magnetisation', 'demagnetise', 'Curie temperature', 'Earth’s magnetic field', 'inclination', 'iron', 'nickel', 'cobalt', 'ferromagnetic'],
+              ),
+            },
+          ],
+        },
         {
           id: 'stromkreise',
           title: L('Stromkreise', 'Circuits'),
@@ -475,8 +521,24 @@ export const physik: Subject = {
         {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
+            {
+              id: 'magnetfeld-spule',
+              status: 'ready',
+              slug: L('magnetfeld-leiter-spule', 'magnetic-field-wire-coil'),
+              title: L('Magnetfeld von Leiter und Spule', 'Magnetic field of a wire and a coil'),
+              summary: L(
+                'Fließt Strom durch einen Draht, dreht sich die Kompassnadel daneben weg. Wickelt man den Draht zur Spule, entsteht ein Elektromagnet, der Relais schaltet und Motoren antreibt.',
+                'When current flows through a wire, the compass needle next to it turns away. Wind the wire into a coil and you get an electromagnet that switches relays and drives motors.',
+              ),
+              grades: [8, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Magnetfeld', 'Elektromagnetismus', 'Ørsted', 'Oersted', 'Kompass', 'Rechte-Faust-Regel', 'Feldlinien', 'magnetische Flussdichte', 'Tesla', 'Hallsonde', 'gerader Leiter', 'Leiterschleife', 'Spule', 'Windungszahl', 'Eisenkern', 'Permeabilität', 'Elektromagnet', 'Relais', 'Elektromotor', 'Stromwender', 'Kommutator', 'Drehmoment', 'magnetische Feldkonstante'],
+                ['magnetic field', 'electromagnetism', 'Ørsted', 'Oersted', 'compass', 'right-hand grip rule', 'field lines', 'magnetic flux density', 'tesla', 'Hall probe', 'straight wire', 'current loop', 'coil', 'solenoid', 'number of turns', 'iron core', 'permeability', 'electromagnet', 'relay', 'electric motor', 'commutator', 'torque', 'magnetic constant'],
+              ),
+            },
             {
               id: 'induktion',
               status: 'ready',
@@ -765,6 +827,29 @@ export const physik: Subject = {
               keywords: L(
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
                 ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'astrophysik',
+          title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'hubble',
+              status: 'ready',
+              slug: L('expandierendes-universum-hubble', 'expanding-universe-hubble'),
+              title: L('Expandierendes Universum', 'Expanding universe'),
+              summary: L(
+                'Je weiter eine Galaxie entfernt ist, desto schneller flieht sie und desto röter ist ihr Licht. Rückwärts gerechnet führt das zum Urknall vor etwa 14 Milliarden Jahren.',
+                'The farther away a galaxy is, the faster it recedes and the redder its light. Run backwards, this leads to the Big Bang about 14 billion years ago.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Hubble', 'Hubble-Konstante', 'Hubble-Gesetz', 'Hubble-Diagramm', 'Rotverschiebung', 'Spektrallinie', 'Fluchtgeschwindigkeit', 'Galaxie', 'Expansion', 'Urknall', 'Weltalter', 'Hubble-Zeit', 'Skalenfaktor', 'Friedmann', 'Dunkle Energie', 'Dunkle Materie', 'Hintergrundstrahlung', 'Kosmologie', 'Standardkerze', 'Supernova', 'Cepheiden', 'Parsec', 'Lichtjahr'],
+                ['Hubble', 'Hubble constant', 'Hubble’s law', 'Hubble diagram', 'redshift', 'spectral line', 'recession velocity', 'galaxy', 'expansion', 'Big Bang', 'age of the universe', 'Hubble time', 'scale factor', 'Friedmann', 'dark energy', 'dark matter', 'background radiation', 'cosmology', 'standard candle', 'supernova', 'Cepheids', 'parsec', 'light year'],
               ),
             },
           ],
