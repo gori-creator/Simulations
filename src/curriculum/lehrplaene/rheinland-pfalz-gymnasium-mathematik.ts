@@ -674,8 +674,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'parabel-drei-punkte',
       'funktionenscharen',
       'extremwertprobleme',
-      'funktionsplotter',
-    ],
+      'funktionsplotter', 'ableitungsregeln'],
   },
   {
     code: 'GF-3',
@@ -684,7 +683,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Flächen mit Rechtecksummen annähern, das Integral als rekonstruierten Bestand deuten, Integrationsregeln, Hauptsatz und Stammfunktionen, Sachaufgaben bis zum Volumen von Rotationskörpern.',
       'Approximating areas with rectangle sums, reading the integral as a reconstructed total, integration rules, the fundamental theorem and antiderivatives, applications up to the volume of solids of revolution.',
     ),
-    simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'rotationskoerper'],
+    simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'GF-4',
@@ -710,7 +709,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Matrizen mit Vektoren und miteinander multiplizieren, Potenzen und Inverse, Anwendungen wie Produktionsprozesse und Übergänge; exemplarisch Matrizen als geometrische Abbildungen.',
           'Multiplying matrices with vectors and with each other, powers and inverses, applications such as production processes and transitions; matrices as geometric transformations as an example.',
         ),
-        simulations: ['matrix-abbildungen'],
+        simulations: ['matrix-abbildungen', 'gauss-verfahren'],
       },
       {
         code: 'GF-5.2',
@@ -719,7 +718,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Linearkombination, Geraden und Ebenen in Parameterform, ihre gegenseitige Lage, Zeichnen im Koordinatensystem, Skalarprodukt und Normalengleichung der Ebene.',
           'Linear combination, lines and planes in parametric form, their relative position, drawing in the coordinate system, the dot product and the normal equation of a plane.',
         ),
-        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende'],
+        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende', 'gauss-verfahren'],
       },
     ],
   },
@@ -747,7 +746,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Binomialwahrscheinlichkeiten mit der Standard-Normalverteilung annähern, Konfidenzintervalle für eine unbekannte Wahrscheinlichkeit bestimmen und ihre Länge mit dem Stichprobenumfang vergleichen.',
           'Approximating binomial probabilities with the standard normal distribution, finding confidence intervals for an unknown probability and relating their length to the sample size.',
         ),
-        simulations: ['normalverteilung', 'binomialverteilung'],
+        simulations: ['normalverteilung', 'binomialverteilung', 'konfidenzintervall'],
       },
       {
         code: 'GF-7.2',
@@ -804,7 +803,7 @@ const MSS_UNITS: CurriculumUnit[] = [
       'Produkt-, Quotienten- und Kettenregel, gebrochen-rationale Funktionen, Ableitung von Sinus, Kosinus und Tangens, e-Funktion und ln, Substitution und partielle Integration sowie Beispiele für Differentialgleichungen.',
       'Product, quotient and chain rules, rational functions, derivatives of sine, cosine and tangent, the exponential function and ln, substitution and integration by parts, and examples of differential equations.',
     ),
-    simulations: ['polstellen-asymptoten', 'e-funktion', 'logarithmus', 'umkehrfunktion'],
+    simulations: ['polstellen-asymptoten', 'e-funktion', 'logarithmus', 'umkehrfunktion', 'ableitungsregeln', 'integrationsregeln', 'richtungsfeld'],
   },
   {
     code: 'LF-5',
@@ -821,7 +820,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Vektoralgebra und Skalarprodukt, Matrizenoperationen, affine Abbildungen mit Fixelementen und Invarianten, Kongruenz- und Ähnlichkeitsabbildungen sowie nichtgeometrische Anwendungen von Matrizen.',
           'Vector algebra and the dot product, matrix operations, affine transformations with fixed elements and invariants, congruence and similarity transformations, and non-geometric applications of matrices.',
         ),
-        simulations: ['vektoren-3d', 'skalar-vektorprodukt', 'matrix-abbildungen'],
+        simulations: ['vektoren-3d', 'skalar-vektorprodukt', 'matrix-abbildungen', 'gauss-verfahren'],
       },
       {
         code: 'LF-5.2',
@@ -830,7 +829,7 @@ const MSS_UNITS: CurriculumUnit[] = [
           'Geraden und Ebenen in Parameter- und Normalenform, Lagebeziehungen mit Begründung, Hessesche Normalenform, Winkel und Abstände, Kreis- und Kugelgleichung sowie Vektorprodukt.',
           'Lines and planes in parametric and normal form, relative positions with justification, the Hesse normal form, angles and distances, equations of circles and spheres, and the cross product.',
         ),
-        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende', 'kugeln'],
+        simulations: ['koordinaten-3d', 'vektoren-3d', 'skalar-vektorprodukt', 'geraden-ebenen', 'lage-abstaende', 'kugeln', 'gauss-verfahren'],
       },
     ],
   },

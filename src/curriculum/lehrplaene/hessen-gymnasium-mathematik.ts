@@ -2394,6 +2394,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Potenz-, Faktor- und Summenregel begründen und ganzrationale Funktionen ableiten.',
                 'Justifying the power, constant-factor and sum rules and differentiating polynomials.',
               ),
+              simulations: ['ableitungsregeln'],
             },
           ],
         },
@@ -2470,6 +2471,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Produkte und Verkettungen aus ganzrationalen und Exponentialfunktionen ableiten.',
                 'Differentiating products and compositions of polynomial and exponential functions.',
               ),
+              simulations: ['ableitungsregeln'],
             },
             {
               code: 'E.4.4',
@@ -2515,6 +2517,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Mit der Kettenregel ableiten und Ableitungswerte im Sachkontext deuten; Tangenten und Normalen.',
                 'Differentiating with the chain rule and interpreting derivative values in context; tangents and normals.',
               ),
+              simulations: ['ableitungsregeln'],
             },
           ],
         },
@@ -2621,6 +2624,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktionen von Potenzen, eˣ, sin x und cos x; Faktor- und Summenregel.',
                 'Antiderivatives of powers, eˣ, sin x and cos x; constant-factor and sum rule.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.1.5',
@@ -2629,6 +2633,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktionen von linear verketteten Funktionen bestimmen.',
                 'Finding antiderivatives of functions with a linear inner function.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.1.6',
@@ -2637,6 +2642,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Integrating (ax + b)^r with r ∈ ℚ \\ {−1}, integrating g(x) = f′(x)·e^f(x) (advanced course only)',
               ),
               summary: L('Weitere Stammfunktionen über die Umkehrung der Kettenregel.', 'Further antiderivatives by reversing the chain rule.'),
+              simulations: ['integrationsregeln'],
             },
           ],
         },
@@ -2770,16 +2776,19 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Stammfunktion mit passendem Ansatz und Koeffizientenvergleich bestimmen.',
                 'Determining an antiderivative with a suitable ansatz and comparison of coefficients.',
               ),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.4.2',
               title: L('Partielle Integration (nur LK)', 'Integration by parts (advanced course only)'),
               summary: L('Produktintegrale mit partieller Integration lösen.', 'Solving integrals of products by integration by parts.'),
+              simulations: ['integrationsregeln'],
             },
             {
               code: 'Q1.4.3',
               title: L('Integration durch Substitution (nur LK)', 'Integration by substitution (advanced course only)'),
               summary: L('Integrale durch Substitution vereinfachen.', 'Simplifying integrals by substitution.'),
+              simulations: ['integrationsregeln'],
             },
           ],
         },
@@ -2798,6 +2807,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Describing and developing models for growth and decay with differential equations',
               ),
               summary: L('Wachstumsannahmen in Differenzialgleichungen übersetzen.', 'Translating growth assumptions into differential equations.'),
+              simulations: ['richtungsfeld'],
             },
             {
               code: 'Q1.5.2',
@@ -2806,6 +2816,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Richtungsfelder, Trennung der Variablen und weitere elementare Methoden.',
                 'Slope fields, separation of variables and other elementary methods.',
               ),
+              simulations: ['richtungsfeld'],
             },
             {
               code: 'Q1.5.3',
@@ -2817,6 +2828,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Differenzialgleichungen zweiter Ordnung, etwa bei periodischen Vorgängen.',
                 'Second-order differential equations, e.g. for periodic processes.',
               ),
+              simulations: ['richtungsfeld'],
             },
           ],
         },
@@ -2871,7 +2883,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'The natural logarithm as antiderivative of 1/x (advanced course only)',
               ),
               summary: L('Ln(x) als Stammfunktion von 1/x nutzen.', 'Using ln(x) as the antiderivative of 1/x.'),
-              simulations: ['logarithmus'],
+              simulations: ['logarithmus', 'integrationsregeln'],
             },
             {
               code: 'Q2.1.6',
@@ -2945,6 +2957,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Gleichungssysteme algorithmisch lösen und Lösungsmengen geometrisch deuten.',
                 'Solving systems algorithmically and interpreting solution sets geometrically.',
               ),
+              simulations: ['gauss-verfahren'],
             },
             {
               code: 'Q2.3.2',
@@ -3096,6 +3109,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Z. B. Populationen, Wählerwanderung oder Kundenströme modellieren.',
                 'Modelling e.g. populations, voter movements or customer flows.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.2',
@@ -3104,7 +3118,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Skalar-, Matrix-Vektor- und Matrixmultiplikation, Addition, einfache Inverse.',
                 'Scalar, matrix–vector and matrix multiplication, addition, simple inverses.',
               ),
-              simulations: ['matrix-abbildungen'],
+              simulations: ['matrix-abbildungen', 'uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.3',
@@ -3113,6 +3127,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Zustände schrittweise (auch rückwärts) berechnen und stabile Zustände über Fixvektoren finden.',
                 'Calculating states step by step (also backwards) and finding stable states via fixed vectors.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.4',
@@ -3121,6 +3136,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Determining and interpreting entries of matrix powers',
               ),
               summary: L('Einträge von M² usw. im Kontext deuten.', 'Interpreting entries of M² etc. in context.'),
+              simulations: ['uebergangsmatrizen'],
             },
             {
               code: 'Q2.4.5',
@@ -3132,6 +3148,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Matrixpotenzen, Grenzprozesse und Grenzmatrizen interpretieren.',
                 'Interpreting matrix powers, limiting processes and limit matrices.',
               ),
+              simulations: ['uebergangsmatrizen'],
             },
           ],
         },
@@ -3373,6 +3390,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
               code: 'Q3.4.1',
               title: L('Prognoseintervalle für relative Häufigkeiten', 'Prediction intervals for relative frequencies'),
               summary: L('Erwartete Bereiche für Stichprobenergebnisse bestimmen.', 'Determining expected ranges for sample results.'),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.2',
@@ -3381,11 +3399,13 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Aus einer Stichprobe einen Bereich für die unbekannte Wahrscheinlichkeit schätzen.',
                 'Estimating a range for the unknown probability from a sample.',
               ),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.3',
               title: L('Konfidenzdiagramme (Konfidenzellipse) (nur LK)', 'Confidence diagrams (confidence ellipse) (advanced course only)'),
               summary: L('Konfidenzbereiche grafisch darstellen.', 'Representing confidence regions graphically.'),
+              simulations: ['konfidenzintervall'],
             },
             {
               code: 'Q3.4.4',
@@ -3394,6 +3414,7 @@ export const hessenGymnasiumMathematik: StateCurriculum = {
                 'Nötigen Stichprobenumfang für ein Konfidenzniveau berechnen.',
                 'Calculating the sample size needed for a confidence level.',
               ),
+              simulations: ['konfidenzintervall'],
             },
           ],
         },

@@ -445,7 +445,7 @@ const H_PARTS: Record<string, PartSpec> = {
       'Quadratische Ergänzung, Exponentialgleichungen mit Logarithmus, Gleichungen höheren Grades und lineare Gleichungssysteme mit drei Variablen, etwa zur Rekonstruktion quadratischer Funktionen.',
       'Completing the square, exponential equations with logarithms, higher-degree equations and linear systems in three variables, for example to reconstruct quadratic functions.',
     ),
-    simulations: ['parabel-drei-punkte', 'logarithmus', 'lgs-grafisch'],
+    simulations: ['parabel-drei-punkte', 'logarithmus', 'lgs-grafisch', 'gauss-verfahren'],
   },
   '4.2': {
     summary: L(
@@ -500,7 +500,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Sekanten- und Tangentensteigung, Ableitung als lokale Änderungsrate, Ableitungsfunktion, Konstanten-, Potenz-, Faktor-, Summen-, Produkt- und Kettenregel; Ableitungsgraph aus dem Funktionsgraphen und umgekehrt.',
           'Secant and tangent slopes, the derivative as the local rate of change, the derivative function, constant, power, factor, sum, product and chain rules; derivative graph from the graph of the function and vice versa.',
         ),
-        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion'],
+        simulations: ['sekante-tangente', 'ableitungsfunktion', 'grenzverhalten', 'e-funktion', 'ableitungsregeln'],
       },
       {
         code: 'Q1.2',
@@ -538,7 +538,7 @@ const Q12_UNITS: CurriculumUnit[] = [
           'Bestände aus Änderungsraten rekonstruieren, Flächen mit bestimmten Integralen, Hauptsatz geometrisch begründen, Stammfunktionen; LK: ln als Stammfunktion von 1/x, uneigentliche Integrale und Rotationskörper.',
           'Reconstructing totals from rates of change, areas with definite integrals, justifying the fundamental theorem geometrically, antiderivatives; LK: ln as an antiderivative of 1/x, improper integrals and solids of revolution.',
         ),
-        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion'],
+        simulations: ['ober-untersummen', 'hauptsatz', 'stammfunktion-grafisch', 'aenderungsrate', 'logarithmus', 'umkehrfunktion', 'integrationsregeln'],
       },
       {
         code: 'Q2.2',
@@ -607,7 +607,7 @@ const Q34_UNITS: CurriculumUnit[] = [
           'Binomialverteilung mit Erwartungswert und Standardabweichung, k-σ-Intervalle und Signifikanzbegriff; LK: Hypothesentests mit Fehlern 1. und 2. Art, Glockenform der Normalverteilung.',
           'The binomial distribution with expected value and standard deviation, k-σ intervals and significance; LK: hypothesis tests with type I and type II errors, the bell shape of the normal distribution.',
         ),
-        simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung'],
+        simulations: ['galtonbrett', 'binomialverteilung', 'signifikanztest', 'normalverteilung', 'konfidenzintervall'],
       },
       {
         code: 'Q4.3',
@@ -623,7 +623,7 @@ const Q34_UNITS: CurriculumUnit[] = [
       'Mögliche Zusatzkurse: nichteuklidische Geometrie, Logik, Zahlentheorie, numerische Mathematik, Differentialgleichungen, Folgen und Reihen mit Taylor-Reihen, Markowketten, Funktionentheorie, Kegelschnitte, Vertiefung der Analysis, Begründen und Beweisen.',
       'Possible additional courses: non-Euclidean geometry, logic, number theory, numerical mathematics, differential equations, sequences and series with Taylor series, Markov chains, complex analysis, conic sections, further calculus, reasoning and proof.',
     ),
-    simulations: ['taylor-polynome'],
+    simulations: ['taylor-polynome', 'richtungsfeld'],
   },
 ];
 

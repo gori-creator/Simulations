@@ -405,14 +405,13 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'GK-2',
     title: L('Matrizen (Grundkurs)', 'Matrices (basic course)'),
     summary: L('Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.', 'Linear systems in matrix notation, multiplying matrices and a further application.'),
-    simulations: ['matrix-abbildungen'],
+    simulations: ['matrix-abbildungen', 'gauss-verfahren'],
   },
   {
     code: 'GK-3',
@@ -439,13 +438,13 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'Stammfunktionen, bestimmtes Integral als rekonstruierter Bestand und Flächeninhalt, Hauptsatz und Flächenberechnung.',
       'Antiderivatives, the definite integral as reconstructed total and area, the fundamental theorem and calculating areas.',
     ),
-    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch'],
+    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'integrationsregeln'],
   },
   {
     code: 'GK-6',
     title: L('Beurteilende Statistik (Grundkurs)', 'Inferential statistics (basic course)'),
     summary: L('Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.', 'Estimating parameters and one- and two-sided significance tests for the binomial distribution.'),
-    simulations: ['signifikanztest'],
+    simulations: ['signifikanztest', 'konfidenzintervall'],
   },
   {
     code: 'GK-7',
@@ -491,6 +490,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'GK-W6',
     title: L('Differentialgleichungen (Wahlbereich Grundkurs)', 'Differential equations (optional, basic course)'),
     summary: L('Einfache Differentialgleichungen für Wachstum und Bewegung.', 'Simple differential equations for growth and motion.'),
+    simulations: ['richtungsfeld'],
   },
   {
     code: 'LK-1',
@@ -508,14 +508,13 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'grenzverhalten',
       'ganzrationale-funktionen',
       'e-funktion',
-      'parabel-drei-punkte',
-    ],
+      'parabel-drei-punkte', 'ableitungsregeln'],
   },
   {
     code: 'LK-2',
     title: L('Matrizen (Leistungskurs)', 'Matrices (advanced course)'),
     summary: L('Gleichungssysteme in Matrizenschreibweise, Matrizen multiplizieren und ein weiteres Anwendungsbeispiel.', 'Linear systems in matrix notation, multiplying matrices and a further application.'),
-    simulations: ['matrix-abbildungen'],
+    simulations: ['matrix-abbildungen', 'gauss-verfahren'],
   },
   {
     code: 'LK-3',
@@ -542,7 +541,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
       'Wie im Grundkurs, dazu Integralfunktion, lineare Substitution und Volumen von Rotationskörpern.',
       'As in the basic course, plus the integral function, linear substitution and volumes of solids of revolution.',
     ),
-    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper'],
+    simulations: ['ober-untersummen', 'aenderungsrate', 'hauptsatz', 'stammfunktion-grafisch', 'rotationskoerper', 'integrationsregeln'],
   },
   {
     code: 'LK-6',
@@ -554,7 +553,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-7',
     title: L('Beurteilende Statistik (Leistungskurs)', 'Inferential statistics (advanced course)'),
     summary: L('Parameter schätzen und ein- und zweiseitige Signifikanztests für die Binomialverteilung.', 'Estimating parameters and one- and two-sided significance tests for the binomial distribution.'),
-    simulations: ['signifikanztest'],
+    simulations: ['signifikanztest', 'konfidenzintervall'],
   },
   {
     code: 'LK-8',
@@ -602,6 +601,7 @@ const OBERSTUFE_UNITS: CurriculumUnit[] = [
     code: 'LK-W6',
     title: L('Differentialgleichungen (Wahlbereich Leistungskurs)', 'Differential equations (optional, advanced course)'),
     summary: L('Differentialgleichungen für Wachstum, Bewegung und den harmonischen Oszillator, Richtungsfeld.', 'Differential equations for growth, motion and the harmonic oscillator, slope fields.'),
+    simulations: ['richtungsfeld'],
   },
 ];
 
