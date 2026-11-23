@@ -377,7 +377,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
           'Magnetfelder von Leiter und Spule, Elektromotor, Generator, Wechselspannung und Transformator.',
           'Magnetic fields of wires and coils, electric motors, generators, alternating voltage and transformers.',
         ),
-        simulations: ['induktion'],
+        simulations: ['induktion', 'magnetfeld-spule'],
       },
       {
         code: '11.2',

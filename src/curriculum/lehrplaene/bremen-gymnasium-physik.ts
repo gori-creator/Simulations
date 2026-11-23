@@ -63,7 +63,7 @@ const KS_7_9_UNITS: CurriculumUnit[] = [
       'Magnetische Grundphänomene und Elementarmagnete, Magnetfelder von Magneten, Erde und Spule, Elektromagnet und Elektromotor, Induktion, Generator und Transformator.',
       'Basic magnetic phenomena and elementary magnets, magnetic fields of magnets, the Earth and coils, the electromagnet and electric motor, induction, generator and transformer.',
     ),
-    simulations: ['induktion'],
+    simulations: ['induktion', 'magnetfeld-spule'],
   },
   {
     code: '5',
@@ -116,7 +116,7 @@ const QP_UNITS: CurriculumUnit[] = [
       'Magnetische Feldlinienbilder und Flussdichte, Lorentzkraft und Kreisbahnen, Teilchen in senkrecht zueinander stehenden Feldern, Induktionsgesetz; LK: differenzielle Form und Selbstinduktion.',
       'Magnetic field line patterns and flux density, the Lorentz force and circular paths, particles in perpendicular fields, the law of induction; LK: differential form and self-induction.',
     ),
-    simulations: ['induktion', 'lorentzkraft'],
+    simulations: ['induktion', 'lorentzkraft', 'magnetfeld-spule'],
   },
   {
     code: '3',

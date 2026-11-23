@@ -255,7 +255,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["ohmsches-gesetz", "reihe-parallel"],
+          simulations: ["ohmsches-gesetz", "reihe-parallel", "magnetfeld-spule"],
         },
         {
           code: "3.2.6",
@@ -334,7 +334,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Widerstand und Kennlinien, Ersatzwiderstand in Reihen- und Parallelschaltung; Induktion qualitativ, Generator, Transformator und elektrische Energieversorgung.",
             "Resistance and characteristic curves, equivalent resistance in series and parallel; induction qualitatively, generator, transformer and electrical power supply.",
           ),
-          simulations: ["induktion"],
+          simulations: ["induktion", "magnetfeld-spule"],
         },
         {
           code: "3.2.6",
@@ -665,7 +665,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",
@@ -979,7 +979,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
                 "Magnetfelder von Leiter und Spule, Kraft auf Leiter und Lorentzkraft, Hall-Effekt, Kreisbahnen geladener Teilchen quantitativ sowie gekreuzte Felder in Wien-Filter und Massenspektrograph.",
                 "Magnetic fields of wire and coil, force on a conductor and Lorentz force, Hall effect, quantitative circular paths of charged particles, and crossed fields in the Wien filter and mass spectrometer.",
               ),
-              simulations: ["lorentzkraft"],
+              simulations: ["lorentzkraft", "magnetfeld-spule"],
             },
             {
               code: "3.6.2.3",
