@@ -179,6 +179,9 @@ describe('Länder-Lehrpläne', () => {
    * sie nach Wahl des Bundeslands bei keinem Jahrgang.
    */
   const NOT_IN_CURRICULUM: Record<string, Record<string, string>> = {
+    'sachsen-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
+    },
     'bayern-gymnasium-mathematik': {
       'taylor-polynome': 'nicht im LehrplanPLUS (Hochschule)',
       'fourier-reihen': 'nicht im LehrplanPLUS (Hochschule)',
@@ -195,6 +198,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'berlin-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium (siehe docs/lehrplaene/berlin-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an ISS/Gemeinschaftsschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -208,6 +212,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Rahmenlehrplan (Hochschule)',
     },
     'brandenburg-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       stoesse: 'Impuls und Stöße nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium (siehe docs/lehrplaene/brandenburg-gymnasium-physik.md)',
       'schiefer-wurf': 'Wurfbewegungen nur im Wahlpflichtthema der Einführungsphase an Gesamtschulen, nicht am Gymnasium',
       'doppler-effekt': 'Doppler-Effekt nicht im Rahmenlehrplan',
@@ -223,6 +228,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Bildungsplan (Hochschule)',
     },
     'bremen-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       hebelgesetz: 'Hebel und Drehmoment nicht im Bildungsplan (siehe docs/lehrplaene/bremen-gymnasium-physik.md)',
     },
     'hamburg-gymnasium-mathematik': {
@@ -258,6 +264,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Kerncurriculum (Hochschule)',
     },
     'niedersachsen-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       hebelgesetz: 'Hebel und einfache Maschinen nicht im Kerncurriculum (siehe docs/lehrplaene/niedersachsen-gymnasium-physik.md)',
       'schiefe-ebene': 'schiefe Ebene, Kräftezerlegung und Reibung nicht im Kerncurriculum',
       stoesse: 'Impuls und Stöße nicht im Kerncurriculum',
@@ -275,6 +282,7 @@ describe('Länder-Lehrpläne', () => {
       'matrix-abbildungen': 'Matrizen nicht im Kernlehrplan',
     },
     'nordrhein-westfalen-gymnasium-physik': {
+      hubble: 'Nur „Universum“ in Klasse 7–10 (Sterne, Lichtjahre); Kosmologie und Hubble-Beziehung fehlen.',
       'doppler-effekt': 'Doppler-Effekt nicht im Kernlehrplan (siehe docs/lehrplaene/nordrhein-westfalen-gymnasium-physik.md)',
     },
     'rheinland-pfalz-gymnasium-mathematik': {
@@ -287,6 +295,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Lehrplan (Hochschule)',
     },
     'saarland-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'schiefer-wurf': 'Einführungsphase nur mit senkrechtem Wurf; der waagerechte Wurf in der Hauptphase nur als qualitativer Vergleichsversuch (siehe docs/lehrplaene/saarland-gymnasium-physik.md)',
       'doppler-effekt': 'Doppler-Effekt nicht im Lehrplan',
     },
@@ -305,6 +314,7 @@ describe('Länder-Lehrpläne', () => {
       'fourier-reihen': 'nicht im Fachlehrplan (Hochschule)',
     },
     'sachsen-anhalt-gymnasium-physik': {
+      hubble: 'Kosmologie, Rotverschiebung und Hubble-Beziehung kommen im Lehrplan nicht vor.',
       'doppler-effekt': 'Doppler-Effekt nicht im Fachlehrplan (siehe docs/lehrplaene/sachsen-anhalt-gymnasium-physik.md)',
     },
     'schleswig-holstein-gymnasium-mathematik': {

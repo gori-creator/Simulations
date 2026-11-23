@@ -2,7 +2,7 @@
 
 <!-- Automatisch erzeugt mit `npm run lehrplan:luecken` aus src/curriculum/lehrplaene/ – nicht von Hand bearbeiten. -->
 
-Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **320 von 1773** Lernbereichen ohne Simulation.
+Lernbereiche der Länder-Lehrpläne, zu denen es noch **keine** Simulation gibt – Vorrat für neue Simulationen (Anleitung: `docs/NEUE-SIMULATION.md`). Insgesamt **313 von 1773** Lernbereichen ohne Simulation.
 
 Nicht jeder Lernbereich eignet sich für eine Simulation (z. B. reine Rechenfertigkeiten oder Methoden). Kommt ein Thema in mehreren Ländern vor, lohnt es sich besonders.
 
@@ -182,9 +182,9 @@ Alle Lernbereiche haben eine Simulation.
 | 7–9 | 2.4 | Größen und Messen › Sachaufgaben | Größen in Sachzusammenhängen bestimmen und Ergebnisse und Lösungsweg bewerten. |
 | 12 | S.3 | Stochastik › Hypergeometrische Verteilung | Ziehen ohne Zurücklegen mit der hypergeometrischen Verteilung beschreiben. |
 
-## Physik (215)
+## Physik (208)
 
-### Baden-Württemberg · Gymnasium (11)
+### Baden-Württemberg · Gymnasium (10)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -196,11 +196,10 @@ Alle Lernbereiche haben eine Simulation.
 | 9/10 | 3.2.6 | Wärmelehre und Klimaphysik | Erwärmungsenergie mit der spezifischen Wärmekapazität berechnen und den natürlichen und menschengemachten Treibhauseffekt, Kippelemente und Wege der Energieversorgung beurteilen. |
 | 12/13 | 3.4.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Quantenphysik) | Überprüfbarkeit physikalischer Aussagen durch das Experiment, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten wie der Planck’schen Konstanten. |
 | 12/13 | 3.5.1 | Denk- und Arbeitsweisen der Physik (Basisfach mit Schwerpunkt Astrophysik) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht, Materie und Kosmos und die Rolle von Naturkonstanten; dazu Astronomie als Beobachtungswissenschaft und astronomische Einheiten wie Lichtjahr und Parsec. |
-| 12/13 | 3.5.7 | Astrophysik (Basisfach mit Schwerpunkt Astrophysik) | Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten. |
 | 12/13 | 3.6.1 | Denk- und Arbeitsweisen der Physik (nur Leistungsfach) | Überprüfbarkeit physikalischer Aussagen, Modelle von Licht und Materie und die Bedeutung von Naturkonstanten. |
 | 12/13 | 3.6.7 | Vertiefendes Themengebiet (nur Leistungsfach) | Ein Forschungsgebiet der Physik (z. B. Relativitätstheorie, Laser- oder Teilchenphysik, Astrophysik) vertieft erarbeiten und typische Methoden daran anwenden. |
 
-### Bayern · Gymnasium (20)
+### Bayern · Gymnasium (19)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -220,7 +219,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | 4.1 | Kernphysik › Ein einfaches Kernmodell der Quantenphysik | Bindungsenergie je Nukleon, Potentialtopfmodell des Kerns, Entstehung der Strahlungsarten und Energiebilanzen bei Zerfällen und Kernreaktionen. |
 | 13 | A1 | Orientierung am Himmel (nur Astrophysik) | Sternbilder und Objekte am Nachthimmel mit Sternkarte oder Software finden, Sichtbarkeit beurteilen und Schleifenbahnen der Planeten erklären. |
 | 13 | A4 | Sterne (nur Astrophysik) | Parallaxe, Helligkeit und Leuchtkraft, Spektralklassen, Hertzsprung-Russell-Diagramm und Sternentwicklung, Doppelsterne, Gravitationswellen und Exoplaneten. |
-| 13 | A5 | Großstrukturen im Weltall (nur Astrophysik) | Aufbau und Masse der Milchstraße, Dunkle Materie, Entfernung von Galaxien, Hubble-Beziehung und Urknallmodell. |
 | 13 | E1.2 | Grundideen der Quantenphysik (erhöhtes Niveau) › Einblick in das Weltbild der Quantenphysik | Wellenfunktion, Unbestimmtheitsrelation, Messprozess, Quantenradierer, Nicht-Lokalität und Dekohärenz sowie Quantentechnik und ihr Missbrauch in Texten. |
 | 13 | E3 | Strukturuntersuchungen zum Aufbau der Materie (erhöhtes Niveau) | Methoden der Strukturuntersuchung und Standardmodell, zusätzlich Röntgen-Strukturanalyse und Synchrotronstrahlung. |
 | 13 | E4.1 | Kernphysik (erhöhtes Niveau) › Ein einfaches Kernmodell | Bindungsenergie, Potentialtopfmodell, Entstehung der Strahlungsarten, Energie- und Impulsbilanzen, Zerfallsreihen und Nuklidkarte. |
@@ -240,14 +238,13 @@ Alle Lernbereiche haben eine Simulation.
 | 11/12 | 4 | Elektromagnetische Schwingungen | Harmonische elektromagnetische Schwingungen, Schwingkreis, Ausbreitung und Spektrum elektromagnetischer Wellen. |
 | 11/12 | 8 | Struktur der Materie (LK) | LK: Bausteine der Materie, Kernmasse und Kernradius, Paarbildung, Quarks und Teilchenzoo. |
 
-### Hamburg · Gymnasium (2)
+### Hamburg · Gymnasium (1)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
 | 10 | 1.3 | Magnetfelder und Elektromagnetismus | Magnetfelder von geradem Leiter und Spule, Feldlinienmodell und Feldkonzept, Elektromagnet, Relais und Elektromotor, Transport und Speicherung elektrischer Energie. |
-| 11/12 | 4.2 | Aspekte der Astrophysik (Wahlthema) | Himmelsbeobachtung und Instrumente, Raumzeit, Sternentwicklung und schwarze Löcher, Gravitationswellen, Skalen im Universum, Strahlungsbilanzen von Planeten. |
 
-### Hessen · Gymnasium (79)
+### Hessen · Gymnasium (77)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -326,8 +323,6 @@ Alle Lernbereiche haben eine Simulation.
 | 13 | Q4.5.3 | Festkörperphysik › Quantenphysikalische Erklärung der Energiebänder (nur LK) | Fermienergie (qualitativ). |
 | 13 | Q4.5.4 | Festkörperphysik › Verstärkerschaltung (nur LK) | Transistor als Verstärker im Experiment. |
 | 13 | Q4.5.5 | Festkörperphysik › Supraleitung (nur qualitativ) (nur LK) | Phänomen der Supraleitung. |
-| 13 | Q4.6.2 | Astrophysik › Kosmologie | Galaxien, Rotverschiebung und Urknall. |
-| 13 | Q4.6.3 | Astrophysik › Struktur des Universums | Größe und Alter, Hintergrundstrahlung, dunkle Materie und Energie. |
 | 13 | Q4.6.4 | Astrophysik › Energieumwandlung in der Sonne (nur LK) | Proton-Proton-Reaktion und weitere Fusionsprozesse. |
 | 13 | Q4.6.5 | Astrophysik › Sterntypen, Sternentstehung und -entwicklung (nur LK) | Hauptreihensterne und Lebenszyklus eines Sterns. |
 
@@ -364,7 +359,7 @@ Alle Lernbereiche haben eine Simulation.
 | 11 | EF-2.3 | Kreisbewegung, Gravitation und physikalische Weltbilder › Wandel physikalischer Weltbilder | Geo- und heliozentrisches Weltbild, Grundprinzipien der speziellen Relativitätstheorie und Zeitdilatation an der Lichtuhr. |
 | 12/13 | LK-4.4 | Atom- und Kernphysik (Leistungskurs) › Kernspaltung und -fusion | Bindungsenergien, Massendefekt und Kettenreaktion. |
 
-### Rheinland-Pfalz · Gymnasium (34)
+### Rheinland-Pfalz · Gymnasium (32)
 
 | Stufe | Nr. | Lernbereich | Kurz |
 | --- | --- | --- | --- |
@@ -383,7 +378,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | GF-W.17 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
 | 12/13 | GF-W.18 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | GF-W.19 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
-| 12/13 | GF-W.20 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
 | 12/13 | GF-W.21 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | GF-W.22 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | GF-W.23 | Wahlpflichtbausteine (Grundfach, fünf zu wählen) › Physik als sich weiterentwickelnde Wissenschaft | Wissenschaftliche Revolutionen und physikalische Arbeitsweisen im historischen und gesellschaftlichen Zusammenhang. |
@@ -398,7 +392,6 @@ Alle Lernbereiche haben eine Simulation.
 | 12/13 | LF-W.15 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Kinematik | Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme. |
 | 12/13 | LF-W.16 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Relativistische Dynamik | Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld. |
 | 12/13 | LF-W.17 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Astrophysik | Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell. |
-| 12/13 | LF-W.18 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Kosmologie | Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung. |
 | 12/13 | LF-W.19 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Chaos und Fraktale – Nichtlineare dynamische Systeme | Chaosphänomene, Merkmale chaotischer Systeme und fraktale Strukturen. |
 | 12/13 | LF-W.20 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Strömungsphysik | Strömungsarten, Kontinuitätsgleichung, Bernoulli-Gleichung und dynamischer Auftrieb. |
 | 12/13 | LF-W.21 | Wahlpflichtbausteine (Leistungsfach, sieben zu wählen) › Individuelles Thema | Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel. |

@@ -626,6 +626,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
@@ -941,6 +942,7 @@ export const badenWuerttembergGymnasiumPhysik: StateCurriculum = {
             "Entwicklung des Universums vom Urknall an, Galaxien, Rotverschiebung und Hubble-Beziehung; Entstehung, Leben und Ende von Sternen sowie Methoden zum Nachweis und zur Untersuchung von Exoplaneten.",
             "Evolution of the universe from the Big Bang, galaxies, redshift and the Hubble relation; birth, life and death of stars, and methods for detecting and studying exoplanets.",
           ),
+          simulations: ['hubble'],
         },
         {
           code: "3.6.1",
