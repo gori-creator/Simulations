@@ -19,6 +19,29 @@ export const physik: Subject = {
   status: 'active',
   areas: [
     {
+      id: 'messen',
+      slug: L('messen', 'measurement'),
+      title: L('Messen und Auswerten', 'Measurement and analysis'),
+      description: L('Größen ablesen, Messreihen auswerten und Unsicherheit verstehen.', 'Read quantities, analyse measurements and understand uncertainty.'),
+      grades: [5, 13],
+      kmk: ['P-E', 'P-K'],
+      topics: [{
+        id: 'messmethoden',
+        title: L('Messmethoden', 'Measurement methods'),
+        grades: [5, 13],
+        simulations: [{
+          id: 'messunsicherheit',
+          status: 'ready',
+          slug: L('messunsicherheit', 'measurement-uncertainty'),
+          title: L('Messen und Messunsicherheit', 'Measurement and uncertainty'),
+          summary: L('Lies ein Lineal ab, verändere Messwerte und untersuche Mittelwert, Streuung, Fehlerbalken und Ausgleichsgeraden. Wiederholte Versuche zeigen, warum mehr Messungen nicht jeden Fehler beseitigen.', 'Read a ruler, edit measurements and explore means, scatter, error bars and best-fit lines. Repeated experiments show why more readings do not remove every error.'),
+          grades: [5, 13],
+          kmk: ['P-E', 'P-K', 'P-S'],
+          keywords: L(['Messen', 'Einheiten', 'Messunsicherheit', 'Messfehler', 'Mittelwert', 'Standardabweichung', 'Standardfehler', 'Ausgleichsgerade', 'Regression', 'Fehlerbalken', 'Auflösung', 'Praktikum'], ['measurement', 'units', 'uncertainty', 'mean', 'standard deviation', 'standard error', 'regression', 'error bars', 'resolution', 'practical']),
+        }],
+      }],
+    },
+    {
       id: 'mechanik',
       slug: L('mechanik', 'mechanics'),
       title: L('Mechanik', 'Mechanics'),
@@ -274,9 +297,32 @@ export const physik: Subject = {
         'Pendel, Resonanz, Wellenausbreitung und Interferenz – mit Zeitlupe und Diagrammen in Echtzeit.',
         'Pendulums, resonance, wave propagation and interference – with slow motion and real-time graphs.',
       ),
-      grades: [10, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-Superposition', 'P-BK-Mathematisieren'],
       topics: [
+        {
+          id: 'akustik',
+          title: L('Akustik', 'Acoustics'),
+          grades: [5, 11],
+          simulations: [
+            {
+              id: 'schall',
+              status: 'ready',
+              slug: L('schall-tonhoehe-lautstaerke', 'sound-pitch-loudness'),
+              title: L('Schall: Tonhöhe und Lautstärke', 'Sound: pitch and loudness'),
+              summary: L(
+                'Höher heißt schneller schwingen, lauter heißt weiter schwingen. Auf dem Oszilloskop sieht man den Unterschied, und hören kann man ihn auch.',
+                'Higher means vibrating faster, louder means vibrating further. You can see the difference on the oscilloscope, and hear it too.',
+              ),
+              grades: [5, 11],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Energie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Schall', 'Akustik', 'Tonhöhe', 'Lautstärke', 'Frequenz', 'Hertz', 'Amplitude', 'Periodendauer', 'Oszilloskop', 'Klangfarbe', 'Obertöne', 'Schallgeschwindigkeit', 'Wellenlänge', 'Längswelle', 'Schallausbreitung', 'Vakuum', 'Dezibel', 'Schallpegel', 'Lärm', 'Gehör', 'Hörbereich', 'Ultraschall', 'Infraschall', 'Echo', 'Schwebung', 'Saite', 'Pfeife', 'Sender', 'Empfänger', 'Lautsprecher'],
+                ['sound', 'acoustics', 'pitch', 'loudness', 'frequency', 'hertz', 'amplitude', 'period', 'oscilloscope', 'timbre', 'overtones', 'speed of sound', 'wavelength', 'longitudinal wave', 'propagation of sound', 'vacuum', 'decibel', 'sound level', 'noise', 'hearing', 'range of hearing', 'ultrasound', 'infrasound', 'echo', 'beats', 'string', 'pipe', 'transmitter', 'receiver', 'loudspeaker'],
+              ),
+            },
+          ],
+        },
         {
           id: 'schwingungen',
           title: L('Mechanische Schwingungen', 'Mechanical oscillations'),
@@ -414,9 +460,32 @@ export const physik: Subject = {
         'Stromkreise bauen, Spannungen messen, Felder sichtbar machen und Induktion verstehen.',
         'Build circuits, measure voltages, visualise fields and understand induction.',
       ),
-      grades: [6, 13],
+      grades: [5, 13],
       kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Wechselwirkung'],
       topics: [
+        {
+          id: 'magnetismus',
+          title: L('Magnetismus', 'Magnetism'),
+          grades: [5, 7],
+          simulations: [
+            {
+              id: 'magnete',
+              status: 'ready',
+              slug: L('magnete-kompass', 'magnets-compass'),
+              title: L('Magnete und Kompass', 'Magnets and compass'),
+              summary: L(
+                'Nordpol trifft Südpol: Die Magnete schnappen zusammen. Eisenfeilspäne und Kompassnadeln zeigen das unsichtbare Feld, und die ganze Erde ist ein riesiger Magnet.',
+                'North pole meets south pole: the magnets snap together. Iron filings and compass needles show the invisible field, and the whole Earth is a giant magnet.',
+              ),
+              grades: [5, 7],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-System'],
+              keywords: L(
+                ['Magnet', 'Dauermagnet', 'Permanentmagnet', 'Stabmagnet', 'Hufeisenmagnet', 'Nordpol', 'Südpol', 'Anziehung', 'Abstoßung', 'Magnetfeld', 'Feldlinien', 'Kompass', 'Kompassnadel', 'Eisenfeilspäne', 'Elementarmagnete', 'Magnetisierung', 'Entmagnetisieren', 'Curie-Temperatur', 'Erdmagnetfeld', 'Inklination', 'Eisen', 'Nickel', 'Kobalt', 'ferromagnetisch'],
+                ['magnet', 'permanent magnet', 'bar magnet', 'horseshoe magnet', 'north pole', 'south pole', 'attraction', 'repulsion', 'magnetic field', 'field lines', 'compass', 'compass needle', 'iron filings', 'elementary magnets', 'magnetisation', 'demagnetise', 'Curie temperature', 'Earth’s magnetic field', 'inclination', 'iron', 'nickel', 'cobalt', 'ferromagnetic'],
+              ),
+            },
+          ],
+        },
         {
           id: 'stromkreise',
           title: L('Stromkreise', 'Circuits'),
@@ -473,10 +542,49 @@ export const physik: Subject = {
           ],
         },
         {
+          id: 'energieversorgung',
+          title: L('Energieversorgung', 'Energy supply'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'energieversorgung',
+              status: 'ready',
+              slug: L('energieversorgung-kraftwerke-strommix', 'energy-supply-power-plants-electricity-mix'),
+              title: L('Energieversorgung: Kraftwerke, Strommix und Netz', 'Energy supply: power plants, electricity mix and grid'),
+              summary: L(
+                'Vom Kraftwerk bis zur Steckdose: Wirkungsgrade im Energieflussdiagramm, Strommix über einen ganzen Tag mit Sonne, Wind und Speichern sowie Hochspannung gegen Leitungsverluste.',
+                'From the power plant to the socket: efficiencies in an energy flow diagram, the electricity mix over a whole day with sun, wind and storage, and high voltage against line losses.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-BK-Energie', 'P-BK-System', 'P-B', 'P-S'],
+              keywords: L(
+                ['Energieversorgung', 'Kraftwerk', 'Wirkungsgrad', 'Energieflussdiagramm', 'Sankey-Diagramm', 'Energieentwertung', 'regenerative Energien', 'erneuerbare Energien', 'erschöpfbare Energieträger', 'Windkraft', 'Photovoltaik', 'Wasserkraft', 'Biomasse', 'Kernkraftwerk', 'Kohlekraftwerk', 'Gaskraftwerk', 'Kraft-Wärme-Kopplung', 'Strommix', 'Lastgang', 'Dunkelflaute', 'Pumpspeicherkraftwerk', 'Batteriespeicher', 'Hochspannung', 'Leitungsverluste', 'Transformator', 'CO₂', 'Energiewende'],
+                ['energy supply', 'power plant', 'efficiency', 'energy flow diagram', 'Sankey diagram', 'energy dissipation', 'renewable energy', 'finite energy sources', 'wind power', 'photovoltaics', 'hydropower', 'biomass', 'nuclear power plant', 'coal power plant', 'gas power plant', 'combined heat and power', 'electricity mix', 'load curve', 'dark doldrums', 'pumped-storage plant', 'battery storage', 'high voltage', 'line losses', 'transformer', 'CO₂', 'energy transition'],
+              ),
+            },
+          ],
+        },
+        {
           id: 'felder',
           title: L('Elektrische und magnetische Felder', 'Electric and magnetic fields'),
-          grades: [9, 13],
+          grades: [8, 13],
           simulations: [
+            {
+              id: 'magnetfeld-spule',
+              status: 'ready',
+              slug: L('magnetfeld-leiter-spule', 'magnetic-field-wire-coil'),
+              title: L('Magnetfeld von Leiter und Spule', 'Magnetic field of a wire and a coil'),
+              summary: L(
+                'Fließt Strom durch einen Draht, dreht sich die Kompassnadel daneben weg. Wickelt man den Draht zur Spule, entsteht ein Elektromagnet, der Relais schaltet und Motoren antreibt.',
+                'When current flows through a wire, the compass needle next to it turns away. Wind the wire into a coil and you get an electromagnet that switches relays and drives motors.',
+              ),
+              grades: [8, 12],
+              kmk: ['P-S', 'P-E', 'P-BK-Wechselwirkung', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Magnetfeld', 'Elektromagnetismus', 'Ørsted', 'Oersted', 'Kompass', 'Rechte-Faust-Regel', 'Feldlinien', 'magnetische Flussdichte', 'Tesla', 'Hallsonde', 'gerader Leiter', 'Leiterschleife', 'Spule', 'Windungszahl', 'Eisenkern', 'Permeabilität', 'Elektromagnet', 'Relais', 'Elektromotor', 'Stromwender', 'Kommutator', 'Drehmoment', 'magnetische Feldkonstante'],
+                ['magnetic field', 'electromagnetism', 'Ørsted', 'Oersted', 'compass', 'right-hand grip rule', 'field lines', 'magnetic flux density', 'tesla', 'Hall probe', 'straight wire', 'current loop', 'coil', 'solenoid', 'number of turns', 'iron core', 'permeability', 'electromagnet', 'relay', 'electric motor', 'commutator', 'torque', 'magnetic constant'],
+              ),
+            },
             {
               id: 'induktion',
               status: 'ready',
@@ -539,6 +647,29 @@ export const physik: Subject = {
               keywords: L(
                 ['Kondensator', 'Kapazität', 'Laden', 'Entladen', 'RC-Glied', 'Zeitkonstante', 'Halbwertszeit', 'Exponentialfunktion', 'Tangente', 'Ladestrom', 'Energie im Kondensator', 'Widerstand'],
                 ['capacitor', 'capacitance', 'charging', 'discharging', 'RC circuit', 'time constant', 'half-life', 'exponential function', 'tangent', 'charging current', 'energy in a capacitor', 'resistor'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'elektronik',
+          title: L('Elektronik', 'Electronics'),
+          grades: [9, 13],
+          simulations: [
+            {
+              id: 'diode-transistor',
+              status: 'ready',
+              slug: L('diode-und-transistor', 'diode-and-transistor'),
+              title: L('Diode und Transistor', 'Diode and transistor'),
+              summary: L(
+                'Nimm die Kennlinie einer Diode auf, sieh Löcher und Elektronen am pn-Übergang, richte Wechselspannung gleich und schalte mit einem kleinen Basisstrom einen großen Kollektorstrom.',
+                'Record the characteristic of a diode, watch holes and electrons at the pn junction, rectify AC voltage and switch a large collector current with a small base current.',
+              ),
+              grades: [9, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-System', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Diode', 'Halbleiter', 'pn-Übergang', 'Sperrschicht', 'Dotierung', 'Löcher', 'Kennlinie', 'Schleusenspannung', 'Durchlassrichtung', 'Sperrrichtung', 'Shockley-Gleichung', 'Leuchtdiode', 'LED', 'Gleichrichter', 'Brückengleichrichter', 'Glättungskondensator', 'Transistor', 'Stromverstärkung', 'Dämmerungsschalter', 'Fotowiderstand', 'Elektronik'],
+                ['diode', 'semiconductor', 'pn junction', 'depletion layer', 'doping', 'holes', 'characteristic', 'threshold voltage', 'forward bias', 'reverse bias', 'Shockley equation', 'light-emitting diode', 'LED', 'rectifier', 'bridge rectifier', 'smoothing capacitor', 'transistor', 'current gain', 'twilight switch', 'photoresistor', 'electronics'],
               ),
             },
           ],
@@ -720,9 +851,32 @@ export const physik: Subject = {
         'Radioaktiver Zerfall, Spektrallinien und Photoeffekt – Zufall und Quantisierung erleben.',
         'Radioactive decay, spectral lines and the photoelectric effect – experience randomness and quantisation.',
       ),
-      grades: [9, 14],
+      grades: [7, 14],
       kmk: ['P-S', 'P-E', 'P-BK-Zufall', 'P-BK-Materie'],
       topics: [
+        {
+          id: 'sterne',
+          title: L('Sterne', 'Stars'),
+          grades: [7, 13],
+          simulations: [
+            {
+              id: 'hr-diagramm',
+              status: 'ready',
+              slug: L('sterne-hertzsprung-russell-diagramm', 'stars-hertzsprung-russell-diagram'),
+              title: L('Sterne und Hertzsprung-Russell-Diagramm', 'Stars and the Hertzsprung–Russell diagram'),
+              summary: L(
+                'Blaue Riesen, Rote Zwerge, Weiße Zwerge: Im HR-Diagramm bekommt jeder Stern seinen Platz. Du verfolgst den Lebensweg eines Sterns bis zur Supernova und misst Entfernungen mit der Parallaxe.',
+                'Blue giants, red dwarfs, white dwarfs: in the HR diagram every star gets its place. Follow the life of a star up to a supernova and measure distances with the parallax.',
+              ),
+              grades: [7, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Materie', 'P-BK-Mathematisieren'],
+              keywords: L(
+                ['Stern', 'Sterne', 'Hertzsprung-Russell-Diagramm', 'HR-Diagramm', 'Hauptreihe', 'Roter Riese', 'Überriese', 'Weißer Zwerg', 'Leuchtkraft', 'Oberflächentemperatur', 'Spektralklasse', 'Stefan-Boltzmann-Gesetz', 'Wiensches Verschiebungsgesetz', 'Planck', 'Schwarzer Körper', 'Sternentwicklung', 'Supernova', 'Neutronenstern', 'Schwarzes Loch', 'Planetarischer Nebel', 'Parallaxe', 'Parsec', 'Lichtjahr', 'absolute Helligkeit', 'Sonne', 'Beteigeuze', 'Sirius'],
+                ['star', 'stars', 'Hertzsprung–Russell diagram', 'HR diagram', 'main sequence', 'red giant', 'supergiant', 'white dwarf', 'luminosity', 'surface temperature', 'spectral class', 'Stefan–Boltzmann law', 'Wien’s displacement law', 'Planck', 'black body', 'stellar evolution', 'supernova', 'neutron star', 'black hole', 'planetary nebula', 'parallax', 'parsec', 'light year', 'absolute magnitude', 'Sun', 'Betelgeuse', 'Sirius'],
+              ),
+            },
+          ],
+        },
         {
           id: 'radioaktivitaet',
           title: L('Radioaktivität', 'Radioactivity'),
@@ -742,6 +896,52 @@ export const physik: Subject = {
               keywords: L(
                 ['Radioaktivität', 'radioaktiver Zerfall', 'Halbwertszeit', 'Zerfallsgesetz', 'Zerfallskonstante', 'Aktivität', 'Becquerel', 'Zählrohr', 'Geiger-Müller-Zählrohr', 'Zählrate', 'Alphazerfall', 'Betazerfall', 'Gammastrahlung', 'Mutterkern', 'Tochterkern', 'Zerfallsgleichung', 'Nuklid', 'C-14-Methode', 'Altersbestimmung', 'Zufall', 'Exponentialfunktion'],
                 ['radioactivity', 'radioactive decay', 'half-life', 'decay law', 'decay constant', 'activity', 'becquerel', 'Geiger counter', 'count rate', 'alpha decay', 'beta decay', 'gamma radiation', 'parent nucleus', 'daughter nucleus', 'decay equation', 'nuclide', 'radiocarbon dating', 'chance', 'exponential function'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'relativitaet',
+          title: L('Relativitätstheorie', 'Theory of relativity'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'zeitdilatation',
+              status: 'ready',
+              slug: L('zeitdilatation-laengenkontraktion', 'time-dilation-length-contraction'),
+              title: L('Zeitdilatation und Längenkontraktion', 'Time dilation and length contraction'),
+              summary: L(
+                'Eine Lichtuhr fährt im Zug mit: Vom Bahnsteig aus läuft das Licht schräg und braucht länger. Auch Zug und Tunnel, ein Lichtblitz in der Zugmitte, Myonen und E = m · c² kommen vor.',
+                'A light clock rides on a train: seen from the platform, the light travels diagonally and takes longer. A train and a tunnel, a flash in the middle of the train, muons and E = m · c² follow.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-K', 'P-BK-Mathematisieren', 'P-BK-Energie', 'P-BK-Erhaltung'],
+              keywords: L(
+                ['spezielle Relativitätstheorie', 'Relativitätstheorie', 'Einstein', 'Postulate', 'Relativitätsprinzip', 'Lichtgeschwindigkeit', 'Konstanz der Lichtgeschwindigkeit', 'Lichtuhr', 'Zeitdilatation', 'Eigenzeit', 'Längenkontraktion', 'Ruhelänge', 'Lorentzfaktor', 'Relativität der Gleichzeitigkeit', 'Gleichzeitigkeit', 'Inertialsystem', 'Bezugssystem', 'Myon', 'Höhenstrahlung', 'GPS', 'relativistische Masse', 'Massenzunahme', 'Ruheenergie', 'Gesamtenergie', 'E = mc²', 'relativistischer Impuls', 'Teilchenbeschleuniger', 'Weltbild'],
+                ['special relativity', 'theory of relativity', 'Einstein', 'postulates', 'principle of relativity', 'speed of light', 'constancy of the speed of light', 'light clock', 'time dilation', 'proper time', 'length contraction', 'rest length', 'Lorentz factor', 'relativity of simultaneity', 'simultaneity', 'inertial frame', 'frame of reference', 'muon', 'cosmic rays', 'GPS', 'relativistic mass', 'mass increase', 'rest energy', 'total energy', 'E = mc²', 'relativistic momentum', 'particle accelerator', 'world view'],
+              ),
+            },
+          ],
+        },
+        {
+          id: 'astrophysik',
+          title: L('Astrophysik und Kosmologie', 'Astrophysics and cosmology'),
+          grades: [11, 13],
+          simulations: [
+            {
+              id: 'hubble',
+              status: 'ready',
+              slug: L('expandierendes-universum-hubble', 'expanding-universe-hubble'),
+              title: L('Expandierendes Universum', 'Expanding universe'),
+              summary: L(
+                'Je weiter eine Galaxie entfernt ist, desto schneller flieht sie und desto röter ist ihr Licht. Rückwärts gerechnet führt das zum Urknall vor etwa 14 Milliarden Jahren.',
+                'The farther away a galaxy is, the faster it recedes and the redder its light. Run backwards, this leads to the Big Bang about 14 billion years ago.',
+              ),
+              grades: [11, 13],
+              kmk: ['P-S', 'P-E', 'P-BK-Mathematisieren', 'P-BK-Energie'],
+              keywords: L(
+                ['Hubble', 'Hubble-Konstante', 'Hubble-Gesetz', 'Hubble-Diagramm', 'Rotverschiebung', 'Spektrallinie', 'Fluchtgeschwindigkeit', 'Galaxie', 'Expansion', 'Urknall', 'Weltalter', 'Hubble-Zeit', 'Skalenfaktor', 'Friedmann', 'Dunkle Energie', 'Dunkle Materie', 'Hintergrundstrahlung', 'Kosmologie', 'Standardkerze', 'Supernova', 'Cepheiden', 'Parsec', 'Lichtjahr'],
+                ['Hubble', 'Hubble constant', 'Hubble’s law', 'Hubble diagram', 'redshift', 'spectral line', 'recession velocity', 'galaxy', 'expansion', 'Big Bang', 'age of the universe', 'Hubble time', 'scale factor', 'Friedmann', 'dark energy', 'dark matter', 'background radiation', 'cosmology', 'standard candle', 'supernova', 'Cepheids', 'parsec', 'light year'],
               ),
             },
           ],

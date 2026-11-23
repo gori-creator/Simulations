@@ -115,7 +115,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Maschinen im Basiskonzept Energie: Energieerhaltung, Energieflussdiagramme, ΔE = P · Δt = F · Δs, Wirkungsgrad und einfache Maschinen wie lose Rolle und Flaschenzug.',
       'Machines and energy: conservation of energy, energy flow diagrams, ΔE = P · Δt = F · Δs, efficiency and simple machines such as pulleys and block and tackle.',
     ),
-    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene'],
+    simulations: ['energieerhaltung', 'hebelgesetz', 'schiefe-ebene', 'energieversorgung'],
   },
   {
     code: '11',
@@ -124,6 +124,7 @@ const SEK_I_UNITS: CurriculumUnit[] = [
       'Physikalische Grundprinzipien alltäglicher Technik: wie Sensoren und Signalwandler mit bekannten Wechselwirkungen Messgrößen in elektrische Signale umwandeln, etwa Mikrofon, CCD oder NTC.',
       'Basic physics of everyday technology: how sensors and transducers use known interactions to turn quantities into electrical signals, for example microphone, CCD or thermistor.',
     ),
+    simulations: ['diode-transistor'],
   },
   {
     code: '12',
@@ -149,7 +150,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Ort, Zeit, Geschwindigkeit und Beschleunigung; gleichförmige und gleichmäßig beschleunigte lineare Bewegung sowie gleichförmige Kreisbewegung, in Diagrammen dargestellt.',
           'Position, time, velocity and acceleration; uniform and uniformly accelerated linear motion and uniform circular motion, shown in graphs.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung', 'messunsicherheit'],
       },
       {
         code: 'GF-P.2',
@@ -205,7 +206,7 @@ const EP_UNITS: CurriculumUnit[] = [
           'Beschreibende Größen einer Bewegung und ihre funktionalen Zusammenhänge, idealisierte Bewegungsformen, Analyse einer realen Bewegung und Fehlerbetrachtung.',
           'Quantities describing motion and their functional relations, idealised forms of motion, analysing a real motion and error analysis.',
         ),
-        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung'],
+        simulations: ['bewegungsdiagramme', 'freier-fall', 'kreisbewegung', 'messunsicherheit'],
       },
       {
         code: 'LF-P.2',
@@ -280,7 +281,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Eigenschaften statischer Felder, Feldlinienbilder, Superposition von Feldern, elektrische Feldstärke, magnetische Flussdichte und das Magnetfeld einer Spule.',
           'Properties of static fields, field line patterns, superposition of fields, electric field strength, magnetic flux density and the field of a coil.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'magnetfeld-spule'],
       },
       {
         code: 'GF-P.2',
@@ -402,6 +403,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.7',
         title: L('Elektronik', 'Electronics'),
         summary: L('Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.', 'Basic circuits, intrinsic and extrinsic conduction, diode and transistor.'),
+        simulations: ['diode-transistor'],
       },
       {
         code: 'GF-W.8',
@@ -451,26 +453,31 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.16',
         title: L('Energiebereitstellung', 'Energy supply'),
         summary: L('Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.', 'Basic principle and comparison of energy supply technologies, sustainability.'),
+        simulations: ['energieversorgung'],
       },
       {
         code: 'GF-W.17',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'GF-W.18',
         title: L('Relativistische Dynamik', 'Relativistic dynamics'),
         summary: L('Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.', 'Mass–energy equivalence, the speed limit and time in a gravitational field.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'GF-W.19',
         title: L('Astrophysik', 'Astrophysics'),
         summary: L('Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.', 'Properties of the Sun, stellar evolution and the standard solar model.'),
+        simulations: ['hr-diagramm'],
       },
       {
         code: 'GF-W.20',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'GF-W.21',
@@ -491,6 +498,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'GF-W.24',
         title: L('Individuelles Thema', 'Individual topic'),
         summary: L('Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.', 'Freely chosen content, mainly for evaluation skills, for example sustainability or climate change.'),
+        simulations: ['energieversorgung'],
       },
     ],
   },
@@ -509,7 +517,7 @@ const QP_UNITS: CurriculumUnit[] = [
           'Wie im Grundfach, zusätzlich Influenz und Polarisation, Magnetisierung und Coulomb-Gesetz.',
           'As in the basic course, plus induction of charge and polarisation, magnetisation and Coulomb’s law.',
         ),
-        simulations: ['feldlinien'],
+        simulations: ['feldlinien', 'magnetfeld-spule'],
       },
       {
         code: 'LF-P.2',
@@ -648,6 +656,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.7',
         title: L('Elektronik', 'Electronics'),
         summary: L('Grundschaltungen, Eigen- und Störstellenleitung, Diode und Transistor.', 'Basic circuits, intrinsic and extrinsic conduction, diode and transistor.'),
+        simulations: ['diode-transistor'],
       },
       {
         code: 'LF-W.8',
@@ -687,26 +696,31 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.14',
         title: L('Energiebereitstellung', 'Energy supply'),
         summary: L('Grundprinzip und Vergleich von Techniken der Energiebereitstellung, Nachhaltigkeit.', 'Basic principle and comparison of energy supply technologies, sustainability.'),
+        simulations: ['energieversorgung'],
       },
       {
         code: 'LF-W.15',
         title: L('Relativistische Kinematik', 'Relativistic kinematics'),
         summary: L('Relativität der Gleichzeitigkeit, Zeitdilatation und Längenkontraktion, Raum-Zeit-Diagramme.', 'Relativity of simultaneity, time dilation and length contraction, spacetime diagrams.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'LF-W.16',
         title: L('Relativistische Dynamik', 'Relativistic dynamics'),
         summary: L('Masse-Energie-Äquivalenz, Grenzgeschwindigkeit und Zeit im Gravitationsfeld.', 'Mass–energy equivalence, the speed limit and time in a gravitational field.'),
+        simulations: ['zeitdilatation'],
       },
       {
         code: 'LF-W.17',
         title: L('Astrophysik', 'Astrophysics'),
         summary: L('Zustandsgrößen der Sonne, Sternentwicklung und Standardsonnenmodell.', 'Properties of the Sun, stellar evolution and the standard solar model.'),
+        simulations: ['hr-diagramm'],
       },
       {
         code: 'LF-W.18',
         title: L('Kosmologie', 'Cosmology'),
         summary: L('Struktur und Entwicklung des Universums, Urknall und Hintergrundstrahlung.', 'Structure and evolution of the universe, the Big Bang and background radiation.'),
+        simulations: ['hubble'],
       },
       {
         code: 'LF-W.19',
@@ -722,6 +736,7 @@ const QP_UNITS: CurriculumUnit[] = [
         code: 'LF-W.21',
         title: L('Individuelles Thema', 'Individual topic'),
         summary: L('Frei gewählte Inhalte, vor allem zur Bewertungskompetenz, etwa Nachhaltigkeit oder Klimawandel.', 'Freely chosen content, mainly for evaluation skills, for example sustainability or climate change.'),
+        simulations: ['energieversorgung'],
       },
     ],
   },
