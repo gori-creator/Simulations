@@ -1134,7 +1134,7 @@ export default defineSimulation({
       drawCompassPx(g, cx, cy, rad, cAng);
       if (p.val) {
         const B = Math.hypot(...field(p.cx, p.cy));
-        tag(g, cx, cy - rad - 20, `${ctx.t('strength')}: ${strengthWord(B)}`, COL.purple(), r, 12);
+        tag(g, cx, cy + rad + 20, `${ctx.t('strength')}: ${strengthWord(B)}`, COL.purple(), r, 12);
       }
       plot.end();
       void ps;
