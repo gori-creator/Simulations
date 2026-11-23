@@ -1715,6 +1715,24 @@ export const mathematik: Subject = {
             ),
           },
         ]),
+        topic('uebergangsprozesse', L('Matrizen und Übergangsprozesse', 'Matrices and transition processes'), [
+          {
+            id: 'uebergangsmatrizen',
+            status: 'ready',
+            slug: L('uebergangsmatrizen-markov-ketten', 'transition-matrices-markov-chains'),
+            title: L('Übergangsmatrizen und Markov-Ketten', 'Transition matrices and Markov chains'),
+            summary: L(
+              'Kunden wechseln den Anbieter, Wetter schlägt um, Käfer legen Eier: Ein Graph und eine Matrix sagen, wie es Schritt für Schritt weitergeht – und wohin es auf lange Sicht läuft.',
+              'Customers switch providers, the weather changes, beetles lay eggs: a graph and a matrix tell how things go on step by step – and where they head in the long run.',
+            ),
+            grades: [11, 13],
+            kmk: ['M-L3', 'M-L5', 'M-K3', 'M-K4', 'M-K5'],
+            keywords: L(
+              ['Übergangsmatrix', 'Markov-Kette', 'Übergangsgraph', 'Zustandsgraph', 'Zustandsvektor', 'Verteilung', 'stochastische Matrix', 'Spaltensumme', 'Matrixpotenz', 'Matrixmultiplikation', 'Fixvektor', 'stabile Verteilung', 'stationäre Verteilung', 'Grenzmatrix', 'absorbierender Zustand', 'Populationsmatrix', 'Leslie-Matrix', 'Zyklus', 'inverse Matrix', 'Wählerwanderung', 'Kundenwanderung', 'Langzeitverhalten'],
+              ['transition matrix', 'Markov chain', 'transition graph', 'state graph', 'state vector', 'distribution', 'stochastic matrix', 'column sum', 'matrix power', 'matrix multiplication', 'fixed vector', 'stable distribution', 'stationary distribution', 'limit matrix', 'absorbing state', 'population matrix', 'Leslie matrix', 'cycle', 'inverse matrix', 'voter migration', 'customer migration', 'long-term behaviour'],
+            ),
+          },
+        ]),
         topic('matrizen', L('Matrizen (Hochschule)', 'Matrices (university)'), [
           {
             id: 'matrix-abbildungen',
