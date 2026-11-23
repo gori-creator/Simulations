@@ -1744,9 +1744,10 @@ export default defineSimulation({
       }
 
       // Kraftpfeile
-      if (p.arrows) drawFloatForces(geo, level);
-
-      // Eintauchanteil am Körper
+      // Kraftpfeile und Eintauchanteil: Etiketten weichen einander und den Pfeilen aus
+      const labs: Lab[] = [];
+      const obstacles: Rect[] = [];
+      if (p.arrows) drawFloatForces(geo, level, labs, obstacles);
       const st = floatTargetState();
       const depthNow = level - mo.z;
       const atRest = !floatDrag && Math.abs(mo.v) < 0.004 && Math.abs(mo.z - floatRest()) < 0.002;
@@ -1755,8 +1756,11 @@ export default defineSimulation({
         const pct = (body.shape.submerged(dEq) / body.shape.volume) * 100;
         const bxp = bRect.x - 10;
         bracket(bxp, Y(level) + geo.bodyShift[1], bodyBottomPx, green(), 1);
-        label(tr('under', { p: n(pct, 1) }), bxp - 6, (Y(level) + geo.bodyShift[1] + bodyBottomPx) / 2, sm ? 10.5 : 12, green(), 'right', r);
+        labs.push({ text: tr('under', { p: n(pct, 1) }), x: bxp - 6, y: (Y(level) + geo.bodyShift[1] + bodyBottomPx) / 2, align: 'right', color: green(), size: sm ? 10.5 : 12 });
       }
+      const dpx = dims.d * k;
+      obstacles.push({ x: bRect.x, y: bRect.y + dpx * OBL[1], w: bRect.w + dpx * OBL[0], h: bRect.h - dpx * OBL[1] });
+      placeLabels(labs, obstacles, r);
       // Schiff: Freibord bzw. vollgelaufen; U-Boot: Tauchzelle
       if (obj() === 'ship') {
         if (shipWater > 0.95 * SHIP_INNER) pill(bRect.x + bRect.w / 2, bRect.y - (sm ? 30 : 36), ctx.t('flooded'), orange(), 'center', sm ? 10.5 : 11.5, false, r);
@@ -1793,7 +1797,43 @@ export default defineSimulation({
       gx.restore();
     }
 
-    function drawFloatForces(geo: FloatGeo, level: number): void {
+    interface Lab {
+      text: string;
+      x: number;
+      y: number;
+      align: 'left' | 'right' | 'center';
+      color: string;
+      size: number;
+    }
+    const overlaps = (a: Rect, b: Rect) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+
+    /**
+     * Etiketten der Reihe nach setzen: Liegt eines auf einem schon gesetzten oder
+     * einem Hindernis (Pfeil, Körper), wird es abwechselnd nach unten und oben
+     * versetzt; alles bleibt innerhalb der Fläche.
+     */
+    function placeLabels(labs: Lab[], obstacles: Rect[], bounds: Rect): void {
+      const placed = [...obstacles];
+      for (const lb of labs) {
+        const w = subW(lb.text, lb.size);
+        const h = lb.size + 5;
+        let rect: Rect = { x: 0, y: 0, w, h };
+        for (let kTry = 0; kTry < 16; kTry++) {
+          const dy = kTry === 0 ? 0 : (kTry % 2 === 1 ? 1 : -1) * Math.ceil(kTry / 2) * (h * 0.6);
+          const y = clamp(lb.y + dy, bounds.y + h, bounds.y + bounds.h - h);
+          const left = clamp(lb.align === 'left' ? lb.x : lb.align === 'right' ? lb.x - w : lb.x - w / 2, bounds.x + 4, bounds.x + bounds.w - 4 - w);
+          rect = { x: left, y: y - h / 2, w, h };
+          if (!placed.some((q) => overlaps(q, rect))) break;
+        }
+        placed.push(rect);
+        sub(lb.text, rect.x, rect.y + h / 2, lb.size, lb.color, 'left', 700, ctx.theme.bg);
+      }
+    }
+
+    /** Pfeil als Hindernis für Etiketten. */
+    const arrowBox = (x: number, y0: number, y1: number): Rect => ({ x: x - 6, y: Math.min(y0, y1) - 2, w: 12, h: Math.abs(y1 - y0) + 4 });
+
+    function drawFloatForces(geo: FloatGeo, level: number, labs: Lab[], obstacles: Rect[]): void {
       const sm = small();
       const body = floatBody();
       const t = tank();
@@ -1812,26 +1852,28 @@ export default defineSimulation({
       const lw = sm ? 2.6 : 3.2;
       const off = Math.min(12, b.w * 0.18);
       const right = b.x + b.w + floatDims().d * geo.k * OBL[0] + 8;
+      const left = b.x - 8;
+      // Gewichtskraft am Schwerpunkt; Etikett rechts neben dem Körper auf Höhe der Pfeilspitze
       const lenG = Math.max(6, FG * scale);
-      // Gewichtskraft am Schwerpunkt
       arrowPx(cx - off, cy, cx - off, cy + lenG, red(), lw);
-      label(`F_G = ${fN(FG)} N`, cx - off, Math.min(cy + lenG + 12, bottom - 6), size, red(), 'center', geo.r);
-      // Auftrieb am Mittelpunkt des eingetauchten Teils
+      obstacles.push(arrowBox(cx - off, cy, cy + lenG));
+      labs.push({ text: `F_G = ${fN(FG)} N`, x: right, y: Math.min(cy + lenG - 4, bottom - 6), align: 'left', color: red(), size });
+      // Auftrieb am Mittelpunkt des eingetauchten Teils; Etikett links auf Höhe der Pfeilspitze
       if (FA > 1e-6) {
         const yb = b.y + b.h - (Math.min(depth, body.shape.height) * geo.k) / 2;
         const lenA = Math.max(6, FA * scale);
         arrowPx(cx + off, yb, cx + off, yb - lenA, blue(), lw);
-        if (obj() === 'ship') label(`F_A = ${fN(FA)} N`, b.x - 6, yb - lenA + 6, size, blue(), 'right', geo.r);
-        else label(`F_A = ${fN(FA)} N`, right, yb - lenA + 6, size, blue(), 'left', geo.r);
+        obstacles.push(arrowBox(cx + off, yb, yb - lenA));
+        labs.push({ text: `F_A = ${fN(FA)} N`, x: left, y: Math.min(yb - lenA + 4, b.y - 4), align: 'right', color: blue(), size });
       }
-      // Boden trägt den Rest
+      // Boden trägt den Rest (Pfeil rechts neben dem Körper)
       if (mo.z <= 1e-6 && !floatDrag && FG > FA + 1e-6) {
         const FN = FG - FA;
         const len = Math.max(6, FN * scale);
-        const ship = obj() === 'ship';
-        const xN = ship ? b.x + 14 : b.x - 12;
+        const xN = right;
         arrowPx(xN, b.y + b.h, xN, b.y + b.h - len, green(), lw * 0.85, 9);
-        label(`F_N = ${fN(FN)} N`, xN - 8, b.y + b.h - len * 0.6, size, green(), 'right', geo.r);
+        obstacles.push(arrowBox(xN, b.y + b.h, b.y + b.h - len));
+        labs.push({ text: `F_N = ${fN(FN)} N`, x: xN + 10, y: b.y + b.h - len + 6, align: 'left', color: green(), size });
       }
       // Hand beim Festhalten
       if (floatDrag) {
@@ -1840,7 +1882,8 @@ export default defineSimulation({
           const len = Math.abs(FH) * scale;
           if (FH > 0) arrowPx(cx, b.y, cx, b.y - len, purple(), lw * 0.9, 9);
           else arrowPx(cx, b.y - len, cx, b.y, purple(), lw * 0.9, 9);
-          label(tr('hand', { F: fN(Math.abs(FH)) }) + (FH > 0 ? ' ↑' : ' ↓'), cx, b.y - len - 10, size, purple(), 'center', geo.r);
+          obstacles.push(arrowBox(cx, b.y, b.y - len));
+          labs.push({ text: tr('hand', { F: fN(Math.abs(FH)) }) + (FH > 0 ? ' ↑' : ' ↓'), x: cx, y: b.y - len - 10, align: 'center', color: purple(), size });
         }
       }
     }
@@ -3136,6 +3179,7 @@ export default defineSimulation({
     }
 
     function drawBalloonScene(r: Rect): void {
+      const ballLabs: Lab[] = [];
       const gx = g();
       const theme = ctx.theme;
       const dark = theme.dark;
@@ -3239,7 +3283,7 @@ export default defineSimulation({
         gx.lineTo(r.x + r.w - 10, y);
         gx.stroke();
         gx.setLineDash([]);
-        if (heq <= view) label(tr('hoverLine', { h: fmt.num(Math.round(heq / 10) * 10, 0) }), axX + 8, y - 10, sm ? 10.5 : 11.5, purple(), 'left', r);
+        if (heq <= view) ballLabs.push({ text: tr('hoverLine', { h: fmt.num(Math.round(heq / 10) * 10, 0) }), x: axX + 8, y: y - 10, align: 'left', color: purple(), size: sm ? 10.5 : 11.5 });
       }
       gx.globalAlpha = appear;
       // Ballon
@@ -3361,9 +3405,11 @@ export default defineSimulation({
       label(tr('inside', { t: n(bm.TIn - KELVIN, 0) }), bx, cy + R * 0.25, size, theme.dark ? '#fff1d6' : '#5a1e08', 'center', r);
       // Hinweise zum Antippen
       if (!ctx.locked) {
-        label(ctx.t('burner'), bx - basketW / 2 - 10, burnerY - 2, sm ? 10 : 10.5, orange(), 'right', r);
-        label(ctx.t('vent'), bx, cy - R * 1.12 - 12, sm ? 10 : 10.5, blue(), 'center', r);
+        ballLabs.push({ text: ctx.t('burner'), x: bx - basketW / 2 - 10, y: burnerY - 2, align: 'right', color: orange(), size: sm ? 10 : 10.5 });
+        ballLabs.push({ text: ctx.t('vent'), x: bx, y: cy - R * 1.12 - 12, align: 'center', color: blue(), size: sm ? 10 : 10.5 });
       }
+      // Schwebehöhe, Brenner und Ventil dürfen sich nicht überdecken
+      placeLabels(ballLabs, [{ x: bx - R * 1.05, y: cy - R, w: R * 2.1, h: R * 2.1 }], r);
       // Kraftpfeile
       if (p.arrows) {
         const fo = balloonForces(p.Vb, TOut, bm.TIn, p.ml, bm.h);
